@@ -3473,6 +3473,16 @@ GameGunneryHost::Impl::ship_model_slots(int type_id) {
                     }
                 }
                 if (!any) continue;
+                // Census (GUNNERY 174): where each section element sits in model space,
+                // against the whole mesh's box, for the bomb element-trace question.
+                log.notef("gunnery: vehicle class %d section element kind=%d index=%u tris=%zu "
+                    "box=(%.1f %.1f %.1f)..(%.1f %.1f %.1f) mesh_y=[%.1f %.1f] (00723D60)",
+                    type_id, el.kind, static_cast<unsigned>(el.node_index),
+                    el.triangle_ordinals.size(), static_cast<double>(elo[0]),
+                    static_cast<double>(elo[1]), static_cast<double>(elo[2]),
+                    static_cast<double>(ehi[0]), static_cast<double>(ehi[1]),
+                    static_cast<double>(ehi[2]), static_cast<double>(lo[1]),
+                    static_cast<double>(hi[1]));
                 entry.section_present[slot] = true;   // the last element of a kind wins
                 for (int k = 0; k < 3; ++k) {
                     entry.section_point[slot][k] = (elo[k] + ehi[k]) * 0.5f;   // 00723030

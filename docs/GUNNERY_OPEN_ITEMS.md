@@ -12004,3 +12004,37 @@ unidentified.
   - A dive bomb's fall of 3 to 5 s gives under 0.6 m.
 - **Expected by mission:** USN13's level-bomb rows move (hull hits are likely fewer, given 158's 135 direct hits).
   Dive-bomb missions (USN01, LOMP10) are mostly unchanged, but a single flipped hit cascades.
+
+## 174. Can a level bomb's element trace land on a `magazine` element? Yes, on Essex the magazine is the forward hull section (lead queue item 4; cc9-gunnery35, 2026-10-12)
+
+**Question** (163 item 5, 169.2 item 3). `00723D60` keeps the closest hit over the GeomMesh elements, and a triangle
+outside every element is never tested. Is a falling bomb's segment ever able to reach a `magazine` element (kind 8),
+or does the deck always come first?
+
+**Evidence: the new census line** (`gunnery: vehicle class N section element kind= ... box= mesh_y=`, printed once
+per class at load from the decoded GeomMesh; `local\g35_census_usn13.log`).
+- Every class prints `triangles == element_triangles`, so no triangle lies outside an element. That clause of
+  `00723D60` excludes nothing on these hulls.
+- **Essex** (`models/ships/us/Essex.mmod`, class 256: Intrepid on USN13). The magazine element is 894 triangles,
+  boxed at x `-22.3..17.1`, y `-9.6..18.2`, z `54.0..108.9`. Fuel is z `-85.7..-54.0`, y up to 18.2. Engine is z
+  `-21.5..9.1`, y up to 35.0 (the island). The mesh's y range is `-9.6..35.0`.
+- So the three section elements are slices of the hull along z, from the keel up to the flight deck (about 18 m),
+  not compartments inside it. A bomb that strikes the forward 55 m of the deck (or the hull side there) hits a
+  magazine triangle first.
+- The other classes printed follow the same pattern: a forward magazine slice, a central engine slice, an aft fuel
+  slice, each spanning the hull's height.
+
+**Consistent with the run.** In `g35_ag_usn13l.log` the first `component failure Explosion on Intrepid` is at
+171.31 s, in the step of a `bullet=78` blast on Intrepid. Any magazine hit of 100 hp or more explodes (`p = damage /
+100`, 163 item 5).
+
+**Verdict.**
+- The host's trace already lands level bombs on the magazine, as the image's would.
+- The open item is closed, with no binding.
+- USN13's hit volume therefore depends on where along the deck the bombs land. 173's drift is the remaining lever.
+
+**Uncertainty.**
+- The box shows that the element reaches deck height. It does not show that the deck triangles in that slice belong
+  to the magazine element rather than to `body`. Whatever the deck triangles' kind, the hull-side triangles in the
+  slice belong to it.
+- One run's explosion was attributed by timing only; the hit record's element kind is not logged per hit.
