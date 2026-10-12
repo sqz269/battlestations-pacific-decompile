@@ -980,6 +980,27 @@ constexpr bool kHullElementSegmentBound = true;
 //    docs/AA_LETHALITY_AUDIT.md section 9.5.
 //    Packet cc9_plane_mesh_hit.
 constexpr bool kPlaneMeshHitTestBound = true;
+//  * kLandStructureMeshHitTestBound: a shell's direct-hit test against a LAND
+//    STRUCTURE (IsKindOf 1Bh: MLandFort, MCommandBuilding) uses the triangles of
+//    its model's GeomMesh, as kPlaneMeshHitTestBound does for a plane. 0087BCC0
+//    builds the unit-part instance for every unit and picks the land-structure
+//    LOD constant [00CED9E0] by vtable[5Ch](1Bh) at 0087BE0D, so a fort's 00CFD768
+//    shapes carry its GeomMesh too. JM08's Headquarter 01 (command_hq.mmod) spans
+//    x -29.2..7.6, y -0.1..15.6, z -36..35 against the host's 65 x 26 x 80 box
+//    centred on the origin: AA truck 05's muzzle is 2.6 m from the box and 27.5 m
+//    from the mesh (docs/CC13_JM08_AA_TRUCK_HQ_DAMAGE.md). Labelled substitutions
+//    as for the plane: every triangle of every mesh in the file, and the record
+//    keeps 0Ah / -1. The blast distance stays the class box. OFF: the class box.
+//    Packet cc13_jm08_aa_truck_hq_damage.
+constexpr bool kLandStructureMeshHitTestBound = false;
+//  * kLandStructureBlastElementEntriesBound: a burst's distance to a LAND
+//    STRUCTURE is taken per GeomMesh element, as kPlaneBlastElementEntriesBound
+//    does for a plane (the image's sphere test is 0070F720 -> 00723F80 on the
+//    same unit-part shapes). UNCERTAIN: how the structure damage path consumes
+//    per-element entries (a structure's elements are `body`, kind 9) is unread
+//    (docs/CC13_JM08_AA_TRUCK_HQ_DAMAGE.md section 4). OFF: the class box.
+//    Packet cc13_jm08_aa_truck_hq_damage.
+constexpr bool kLandStructureBlastElementEntriesBound = false;
 //  * kPlaneBlastElementEntriesBound: a burst's distance to a PLANE is taken per
 //    GeomMesh element, as kBlastElementEntriesBound does for a ship. The image's
 //    sphere test for the plane's unit-part shape is 0070F720, which ends in
@@ -2482,9 +2503,21 @@ struct GameGunneryHost::Impl {
         const ShipModelSlots& model = ship_model_slots(type_id);
         return model.has_mesh ? &model : nullptr;
     }
+    // Packet cc13_jm08_aa_truck_hq_damage. See kLandStructureMeshHitTestBound.
+    // `blast` asks for the blast switch (kLandStructureBlastElementEntriesBound) instead.
+    const ShipModelSlots* land_structure_mesh_of(std::size_t index, bool blast = false) {
+        if (!(blast ? kLandStructureBlastElementEntriesBound : kLandStructureMeshHitTestBound)
+            || index >= unit_state.size()) return nullptr;
+        if (!units.unit_is_kind_of(index, bsp::kUnitKindQueryLandStructure)) return nullptr;
+        const int type_id = unit_state[index].row.type_id;
+        if (type_id < 0) return nullptr;
+        const ShipModelSlots& model = ship_model_slots(type_id);
+        return model.has_mesh ? &model : nullptr;
+    }
     const ShipModelSlots* hit_mesh_of(std::size_t index) {
         if (const ShipModelSlots* ship = ship_mesh_of(index)) return ship;
-        return plane_mesh_of(index);
+        if (const ShipModelSlots* plane = plane_mesh_of(index)) return plane;
+        return land_structure_mesh_of(index);
     }
     // Packet cc9_aa_turn_average: 00901C20's turn-rate average, 00901CC1..00901EEE,
     // on the target velocity `v` in place. See kAaTargetTurnAverageBound.
@@ -8238,8 +8271,6 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
     // The hull box in its own frame: a slab test along the three pose rows.
     float right[3], up[3], forward[3], origin[3];
     owner_.unit_pose(index, right, up, forward, origin);
-    const GameGunneryHost::Impl::ShipModelSlots* plane_model = owner_.ship_mesh_of(index) == nullptr
-        ? owner_.plane_mesh_of(index) : nullptr;
     if (const GameGunneryHost::Impl::ShipModelSlots* census = owner_.ship_mesh_of(index) == nullptr
             ? owner_.plane_mesh_of(index, true) : nullptr) {
         // Census only, on both sides of the switch: the class box's and the
@@ -8307,8 +8338,10 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
         float best = 2.0f;
         int best_kind = 0x0A;
         int best_index = kDirectHitHullSegment;
+        // A plane's or a land structure's record keeps 0Ah / -1 (see the switches).
+        const bool ship_model = model == owner_.ship_mesh_of(index);
         const bool by_element = kHullElementSegmentBound && !model->element_tris.empty()
-            && plane_model == nullptr;
+            && ship_model;
         const auto& tri = by_element ? model->element_tris : model->tris;
         for (std::size_t n = 0; n + 2 < tri.size(); n += 3) {
             const auto& a = tri[n];
@@ -8353,7 +8386,7 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
         bsp::hit_record_set_entity_00470370(record, entity);
         hit_unit = index + 1;
         hit_landscape = 0;
-        if (plane_model == nullptr) ++owner_.shell_mesh_hits;
+        if (ship_model) ++owner_.shell_mesh_hits;
         return true;
     }
     const GameGunneryHost::Impl::UnitState& state = owner_.unit_state[index];
@@ -10478,6 +10511,10 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
                 plane_blast_box_distance_matched += distance;
             }
             if (kPlaneBlastElementEntriesBound) model = plane_mesh;
+        }
+        // See kLandStructureBlastElementEntriesBound.
+        if (model == nullptr && plane_mesh == nullptr) {
+            if (const ShipModelSlots* structure = land_structure_mesh_of(i, true)) model = structure;
         }
         if (model != nullptr && !model->element_ranges.empty()) {
             gather_elements(*model, element_entries);
