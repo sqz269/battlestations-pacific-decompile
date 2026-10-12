@@ -84,15 +84,21 @@ list-style screens copying a container's extent onto their rows (BSP_ControlBind
 builder 0055D380, 00561BE0, BSP_LeaderboardsScreen_FillRows 00561EB0).
 
 The reader is the recursive hit walk 00AA8BD0. Each edge is skipped when it is exactly 0.0
-(UCOMISS against zero, LAHF, TEST AH,44h, JNP), otherwise the widget is rejected when its hit
-box leaves the rectangle: left limit > box left (00AA8CDF..00AA8D3B), box right > right limit
-(00AA8D41..00AA8D63), top limit > box top (00AA8D69..00AA8D87), box bottom > bottom limit
-(00AA8D89..00AA8DAB). So the rectangle is a hit-test clip: rows scrolled outside a list box
-cannot be clicked, and a widget partly outside is rejected whole, not clipped.
-`include/bsp/gui_layer.hpp` (`GuiHitLimits`) already models these four compares but labels the
-fields from its own box naming (`gate_right` for +38h, `min_left` for +3Ch, ...); the edge
-order here follows the writer 00AA8F30, which stores the smaller x at +38h. That file is not
-edited here.
+(UCOMISS against zero, LAHF, TEST AH,44h, JNP); otherwise the widget is rejected when its hit
+box lies wholly outside that edge: left limit > box right (00AA8CDF..00AA8D3B), box left >
+right limit (00AA8D41..00AA8D63), top limit > box bottom (00AA8D69..00AA8D87), box top > bottom
+limit (00AA8D89..00AA8DAB). Which stack value is which box edge follows the pointer
+containment compares that come next (00AA8DAD..00AA8DD1: pointer x below the value at x87
+st(3) rejects, so that value is the box's left, and so on), tracked on the all-limits-zero path.
+So the rectangle is a hit-test clip: rows scrolled fully outside a list box cannot be clicked,
+while a partly visible row stays hittable over its whole box.
+
+`include/bsp/gui_layer.hpp` (`GuiHitLimits`, a 2026-09-10 reconstruction) already modelled these
+four compares correctly, but named the fields `gate_right`, `min_left`, `min_bottom` and
+`min_top`. This packet renamed them `left`, `right`, `top` and `bottom` with the evidence above
+and updated the four uses in `src/gui_layer.cpp`; the logic is unchanged. (An earlier version of
+this section had the edge roles inverted and said a partly outside widget is rejected; the
+pointer compares above corrected that.)
 
 The sweep (`local/gui6_rect_scan.py 00A90000 00AD8000`: Capstone over every INT3-delimited
 chunk, non-CALL/LEA memory operands at +38h, +3Ch, +40h and +44h on one base register) found
