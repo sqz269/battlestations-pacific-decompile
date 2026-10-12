@@ -56,6 +56,11 @@ The parameters come from the scene record's +990h environment block, applied by 
 The constructor 004CB420 defaults these to +2Ch = 0.6, +30h = 100.0, +34h = 1.0, +4Ch = 0.5,
 +50h = 64.0, +54h = 80.0, +58h = 0.04 and +5Ch = 1.0.
 
+**Corrected 2026-10-11 (section 8): the conclusion of the next three paragraphs is wrong.**
+00BA0090 stores field+24h = field+B8h (Waves.HeightScale) on every in-mission render frame
+(00BA0B90 `FLD [ESI+2Ch]`, 00BA0B93 `FSTP [ESI+24h]`), so the image's CPU sea is not flat. The
+census below missed a store that lies inside its scanned band. They are kept for history.
+
 **The amplitude.** field+24h is stored once, as 0.0, by the base constructor (00BA19C6 `XORPS`,
 00BA19C9 `MOVSS [ESI+24h]`). I searched for every other store to it. Every encoding below was
 scanned over 00B98000..00BA7FFF. The FSTP and MOVSS forms were also scanned over 00BA8000..00BBFFFF
@@ -105,7 +110,8 @@ multiplies the wave height in 0078CF20, so with a zero amplitude it cannot chang
 | 0078C890 and 00B9CF50 | the rules above | the same rules, now `concrete` |
 
 Since the amplitude is 0.0 in both, the host's water height equals the image's: ±0.0
-everywhere.
+everywhere. **Superseded by section 8:** the image's +24h is HeightScale after the first
+in-mission render frame, and its grid is live; the host row is still 0.0 and a zero grid.
 
 ## 4. Predictions (local/ow_predictions.txt, written before any run)
 
@@ -218,7 +224,107 @@ A rel32 census of the executable on disk (local/rel32_scan.py) finds:
 - **0078CF20**, the water height: 49 calls.
 
 Every one of these paths ends in 0078C890's multiply by field+24h, so every CPU consumer sees the
-same zero amplitude. The last four callers of 0078C890 sit in the water-effects module
+same amplitude (HeightScale, not zero: section 8). The last four callers of 0078C890 sit in the water-effects module
 (00B9..00BB, beside the water tracers). The rendered waves therefore cannot come through 0078C890.
 They come from the spectrum vectors the renderer uploads, which is the renderer's contract and is
 not bound here.
+
+## 8. Correction: the CPU sea is live (packet cc9_physics1_sea, 2026-10-11, read-only inventory)
+
+Base: main fa36636cd. Found by cc13 (docs/CC13_WATER_RENDER.md section 1); re-read here from the
+disk bytes (`bsp.py disasm-raw`), because Ghidra bodies after `_free` calls are being restored and
+live decompiles there are not trusted. Names are hypotheses.
+
+### (a) The writer, every in-mission render frame
+
+| Site | Instruction / call | Meaning |
+|---|---|---|
+| 004CA440 BSP_Game_Render | interface level 1 enqueues job B (docs/GAME_RENDER_FRAME.md) | only the 3D view runs it; levels 2/3 (map views) never do |
+| 004B4820 | `mov ecx,[00E198C4]; call 0068A0D0` | job B |
+| 0068A0D5..0068A0EC | `fld [00F876A4]`, push; ECX = `[[00E188A8]+19F0h]`; `call 0078CFF0` | the world, with the fixed-step mission clock |
+| 0078CFF0..0078D1A6 | no branch skips the tail; `RET 8` | |
+| 0078D180..0078D19D | `fld [esp+18h]` (the clock), `fmul qword [00D7A3A0]` (= (double)0.1f), ECX = `[EDI+0A8h]`, push camera, `call 00BA0090` | t = float(clock * 0.1) |
+| 00BA00A8..00BA00BA | `[01090494] = float(t * 10.0)` (00CE3DC0) | the ocean clock global |
+| 00BA00C0..00BA00DA | ECX = field+BCh (the spectrum); `call [vtbl+8]` with float(t * field+20h) | step; +20h is Waves.TimeScale |
+| 00BA00DC..00BA00E7 | `call [vtbl+18h]` | 00B96E80, a bare `RET` |
+| 00BA0B32..00BA0B6D | +2Ch = +B8h (MOVSS); +28h = +30h = float(+B8h * [spectrum+88h]) | cWaveScale |
+| 00BA0B8B | `call 00B9F0A0` | reflection pass; its 0078C890 call (00B9F163) still sees the old +24h |
+| **00BA0B90 / 00BA0B93** | `FLD [ESI+2Ch]` / `FSTP [ESI+24h]` (D9 46 2C / D9 5E 24) | **amplitude = HeightScale** |
+| 00BA0BF1 | `RET 8` | two stack arguments (camera, t) |
+
+The listing 00BA0090..00BA0C30 has no jump or return between the entry and 00BA0B93 that leaves the
+function (every Jcc lands below 00BA0B1C), so the store is unconditional per call.
+
+**Order against the simulation.** GGame::OnMove (004E4A40) runs the simulation, including the
+fixed-step driver 00875BB0, and only then BSP_Game_Render (004E54BC, docs/GAME_RENDER_TAIL.md).
+So the fixed steps of frame N read the grid and amplitude that frame N-1's render produced, and
+the clock the render passes is 00875BB0's end-of-frame value (00875F26 adds the leftover
+accumulator back, so it is not a multiple of the step). Before the first level-1 render frame the
+amplitude is the constructor's 0.0.
+
+### (b) The spectrum object (field+BCh)
+
+- Allocated by the world constructor, not the field: 0078DB09 `new(90h)`, 0078DB20 `call 00B97100`
+  (BSP_OceanSpectrum_Construct, vtable 00D638F8), then 0078DB3B `call 00B9DD90`, which stores
+  field+BCh = spectrum and spectrum+8 = field (00B9DDD1).
+- The constructor sizes six vectors (one of 1081h and three of 1000h eight-byte cells, two of
+  1000h floats), sets +84h = 0.5 (00CE3800), and ends with 00B96B90(1105h, 1.5707960 (00D638CC),
+  32.0, 60.0, 2.0, 0.02, 0.00005) (00D638CC..00D638E0, `RET 1Ch`): +6Ch/+70h = cos/sin of the
+  direction (FCOS/FSIN), +74h = 32.0, +80h = 60.0, +84h = 2.0, +88h = 0.02, +8Ch = 0.00005, then
+  00B95750. The first argument is not stored.
+- Vtable 00D638F8: +8h = 00B96C80 (the step), +0Ch = 00B96E50 (`RET 4`), +10h = 00B96E60, +14h =
+  00B96E70, +18h = 00B96E80 (all bare `RET`).
+- **The step, 00B96C80(float t), `RET 4`.** vtbl+14h (no-op); 00B95D30(t); `[spectrum+8]->vtbl[0]`,
+  which is the field's slot 0, 00B9D7B0 RefreshGridTiles (render tiles); vtbl+10h (no-op).
+- **The build, 00B95750** (`__fastcall`, no stack argument): +78h = float(+74h² / [00CF9058]),
+  +7Ch = float(+78h * +8Ch); a Mersenne state seeded with 1105h by 00BF0CF0 **on its own stack**
+  (ECX = `lea [esp+28h]`), so it never touches the game's shared stream 00BD2F10; two draws of
+  00BF0DF0(state, 0.0, 1.0) per cell, 00B94CA0 (the spectrum term), a square root (00BF7030) and
+  the scale [0109048C]; stores the 41h×41h half-plane into the vector at +10h, then two 64×64 float
+  tables (+60h and +50h). Body to be read in full in packet (2).
+- 0078C9B0 applies the scene's +990h block: 00B96C50(WaveHeight → +80h, ChoppyWavesFactor → +88h)
+  and 00B9A450 → 00B96C10(direction, speed), each rebuilding through 00B95750, and +B8h =
+  HeightScale (section 7(a)).
+
+### (c) The readers
+
+The rel32 census of the disk image (local/p1_rel32.py) finds 49 calls to 0078CF20, 10 to 0078D1B0
+BisectWaterCrossing and 7 to 0078C890 (section 7(b)). Every one now sees grid(u,v) · HeightScale
+(times the coverage mask, for 0078CF20). Attribution by `ghidra proto --brief`, which may
+under-report bodies Ghidra truncated after `_free`; five 0078CF20 sites (00435060, 0068A0A4,
+008159AA, 0084B08D/0084B0E3/0084B1A3) and three 0078D1B0 sites (0084B14C, 0084B20C) report no
+function.
+
+| Image reader (site) | Host equivalent | What the host's reader gets today |
+|---|---|---|
+| 00826985 ship motion wave gate (00825F20) | game_hosts_units.cpp `ocean_height` → OceanFieldBinding | 0078CF20 run whole over amplitude 0.0, zero grid: 0.0 |
+| 00932D6B hydro forces (009329C0) | game_hosts_units.cpp `water_height_0078cf20` → OceanFieldBinding | 0.0 |
+| 00825972/0082599F unit update, 008348D3/00834BFF/00834D62 bow wave, spray, stern wave | game_hosts_units.cpp `sample_ocean_height` → OceanFieldBinding | 0.0 |
+| 007DCF05..007DD3E7 plane water-surface law, 007CBD2B, 007CC523 | game_hosts_units.cpp 17401 → OceanFieldBinding | 0.0 |
+| 0041BC20-side avoid surface (substitution) | game_hosts_units.cpp `avoid_surface_height` → OceanFieldBinding | 0.0 |
+| 009D390E segment occluders, OFF arm | game_hosts_units.cpp 17970/17977 → OceanFieldBinding | 0.0 |
+| 0042F38B/0042F3B1 camera keep-above-water | game_hosts_hud.cpp CameraOceanField (its own copy) | 0.0 |
+| 0068CBDE in-game interface update | game_hosts_hud.cpp `water_height`, a record | 0.0, unimplemented |
+| 00446340 dynamics buoyancy step (004462D0) | game_hosts_fixed_step.cpp, a record | 0.0, unimplemented |
+| 006FD08C depth charge in water, 006FD7C1, 008569B3/00856A85 torpedo enters water, 00856FC6 torpedo steer, 0084B3F8..0084B5B5 projectile water traces, 006E8680 projectile create | game_hosts_gunnery.cpp (cc9-gunnery35's lane): the plane y = 0 written inline ("open sea is height zero", lines ~8689 and ~8775); projectile_helpers.cpp and bomb_torpedo_tick.cpp take a sampler interface no game host implements | 0.0 |
+| 00854BBF/00855198 submarine update | not traced in this inventory | |
+| 008451FB shipyard launched unit | game_hosts_gunnery.cpp 11398 comment; no sample | 0.0 |
+| 0043BA49, 00487C3C, 00491BC0, 00498CBD, 0049BADE, 006E21D7, 006E2E5C, 0078D3D0/0078D6C0/0078D785 (seven sites), 007BCDAE, 007C384F, 007C6442, 0085ED6D, 0085F850 | none found by address in src/include | |
+
+So every host reader of the sea answers 0.0; none runs the spectrum, none reads the amplitude.
+
+### (d) What the host has and lacks
+
+| Piece | Image | Host |
+|---|---|---|
+| 0078C890 sample rule, 00B960C0 bilinear grid, 00B9CF50 mask, 0078CF20 product | section 1-2 | reconstructed (src/ocean_wave_field.cpp, src/ocean_height.cpp) |
+| amplitude +24h | HeightScale after the first level-1 render (00BA0B93) | 0.0 constant (game_hosts_units.cpp, game_hosts_hud.cpp) |
+| HeightScale +B8h, TimeScale +20h, tile +B0h/+B4h | the scene's Waves keys via 0078C9B0 | not read; tile fixed at 100.0 |
+| the spectrum (00B97100, 00B96B90/C10/C50, 00B95750, 00B95D30, 00B95AA0 and its stages 00B94E90/00B950B0/00B952D0, the Phillips term 00B94CA0, the Mersenne pair 00BF0CF0/00BF0DF0) | runs | absent; a labelled zero grid |
+| the per-frame step 00BA00C0..00DD and the 00F876A4 clock at the render point | runs | absent; the clock exists as `FixedStepClock::simulation_clock` (in_mission_subsystem_tick.cpp, 00875F26) |
+| coverage regions | 00883090..008830AA: each landscape load (BSP_Landscape_LoadTerrain) adds one through 00BA1370 → 00BA0C00 from a landscape texture | none; the mask is 1.0 everywhere, so the host would over-state waves near islands |
+| 00BA2B50 horizontal displacement | one rel32 caller, 00BA36CB in the beam system 00BA2FF0; no absolute reference | none; not a gameplay reader (item 4 of the queue) |
+
+Open for packet (2): the full bodies of 00B95750, 00B94CA0, 00BF0CF0/00BF0DF0, 00B95D30,
+00B95AA0 and the FFT stages, the writer of [0109048C], and where the host's mission frame can run
+the step after the fixed-step driver.
