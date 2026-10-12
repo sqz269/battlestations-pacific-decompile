@@ -275,9 +275,9 @@ void write_settings_008d64a0(const GameSettingsBlock& settings, SettingsWriter& 
         writer.write_field(key.name, value); // virtual +0Ch
     }
     writer.begin_section(kDownloadedContentSectionName); // 008d6a6c
-    for (std::size_t i = 0; i < settings.downloaded_content.size(); ++i) {
+    for (std::size_t i = 0; i < settings.disabled_downloaded_content.size(); ++i) {
         writer.write_field(gui_lua_key_by_index(static_cast<std::int32_t>(i)),
-            SettingsValue::from_text(settings.downloaded_content[i].c_str()));
+            SettingsValue::from_text(settings.disabled_downloaded_content[i].c_str()));
     }
     writer.end_section(); // 008d6ac7
     writer.end_section(); // 008d6ad0
