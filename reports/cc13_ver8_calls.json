@@ -1,0 +1,15 @@
+{
+  "packet": "cc13-ver8",
+  "doc": "docs/CC13_VER_8.md",
+  "steps": [
+    {"address": "00959507", "native": "009813a0", "function": "00959450", "note": "unit kill report after the cause-1 and clock gates"},
+    {"address": "007f3b56", "native": "009813a0", "function": "007f3b10", "note": "squadron kill report after the cause-1 gate"},
+    {"address": "0095945b", "native": "00878990", "function": "00959450", "note": "Dead publication before the kill report"},
+    {"address": "009294e5", "native": "00929150", "function": "00929460", "note": "timed think call after the +1E0h store"},
+    {"address": "009294f5", "native": "00929150", "function": "00929460", "note": "untimed think call"},
+    {"address": "00929597", "native": "00928380", "function": "00929460", "note": "splice of the pending list"},
+    {"address": "007edc5a", "native": "00923be0", "function": "007edc30", "note": "per-member health in the squadron average"},
+    {"address": "00734003", "native": "005bca70", "function": "00733ff0", "note": "countdown HUD begin"},
+    {"address": "007340e1", "native": "005bcab0", "function": "007340a0", "note": "countdown HUD end"}
+  ]
+}
