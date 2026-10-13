@@ -41,6 +41,8 @@ struct Vec3 {
 struct LuaArgs : LuaBindingArgumentReader {
     virtual bool is_boolean(int index) = 0;   // 00B66000
     virtual bool is_number(int index) = 0;    // 00B66050
+    virtual bool is_integer(int index) = 0;   // 00B66A60
+    virtual bool is_table(int index) = 0;     // 00B661B0
     virtual Vec3 read_vector3(int index) = 0; // 00888760, reads fields x/y/z of a table
     virtual bool is_vector3_table(int index) = 0; // 0088B840
     virtual void* to_userdata(int index) = 0; // 00B662D0
@@ -320,6 +322,26 @@ inline constexpr const char* kSafeZoneGuiPage = "SafeZoneGui";
 int lua_enable_objectives_toggle(LuaArgs& args, InterfaceHost& host);       // 008C0CA0
 int lua_hide_unit_hp(LuaArgs& args, InterfaceHost& host);                   // 008C1F50
 int lua_hide_score_display(LuaArgs& args, InterfaceHost& host);             // 008C24B0
+
+// DisplayScores 008C20D0 and DisplayUnitHP 008C1B10 send to the HUD counters [[00E198C4]+C8h].
+struct HudScoreHost {
+    virtual ~HudScoreHost() = default;
+    virtual void display_score(int a, int b, const std::string& c, const std::string& d) = 0; // 0052B620
+    virtual void display_score_pair(int a, int b, const std::string& c, const std::string& d,
+        int e, int f) = 0;                                                                   // 0052B780
+    // 0088A900 over a table argument: the entity list it collects.
+    virtual std::vector<void*> entity_list_0088a900(LuaArgs& args, int index) = 0;
+    virtual void display_unit_hp(int id, const std::vector<void*>& entities,
+        const std::string& text) = 0;                                                        // 0052B400
+};
+// DisplayScores: with exactly six arguments 0052B780(int arg0, int arg1, string arg2, string
+// arg3, int arg4, int arg5), read in the order 5, 4, 3, 2, 1, 0; with exactly four, 0052B620
+// (int arg0, int arg1, string arg2, string arg3), read 3, 2, 1, 0; any other count does nothing.
+int lua_display_scores(LuaArgs& args, HudScoreHost& host);
+// DisplayUnitHP: an optional leading integer id (00B66A60), then a table argument giving the
+// entity list and an optional string after it. Without the table the native builds the text
+// "missing entitylist" in a local it never passes; the call gets an empty string.
+int lua_display_unit_hp(LuaArgs& args, HudScoreHost& host);
 
 // ---------------------------------------------------------------------------
 // Localisation, environment, narrative, effects and class bindings
@@ -729,6 +751,27 @@ struct PartEffectHost {
     virtual void unit_part_effect_start_by_index(void* object, int index, const std::string& name) = 0;
 };
 int lua_add_animated_part_effect(LuaArgs& args, PartEffectHost& host);
+
+// Effect 008A9730. Arguments 0 and 1 are tested with 00B660A0 / 0088B840 and the answers are
+// discarded. With an entity at argument 2: the entity's vtable+18h(vector arg1) gives the
+// attach point, 00871BA0 AcquireByName(string arg0, 1) and 008689C0 PointEffect_Create on it.
+// Otherwise 008685E0 CreateFromPosition(definition, scene root [[00E188A8]+19ECh], vector arg1, 0,
+// 0). A created effect gets byte +9 = 1, is pre-run when argument 3 is a positive number in
+// steps of at most 0.2f (qword 00CE3D10 / float 00CE54A0) through 00867790 UpdateChildren with
+// the game camera, and is returned as {Pointer = light userdata}; no effect returns nothing.
+struct EffectSpawnHost {
+    virtual ~EffectSpawnHost() = default;
+    virtual void* effect_create_on_entity(const std::string& name, void* entity, const Vec3& offset) = 0;
+    virtual void* effect_create_at_position(const std::string& name, const Vec3& position) = 0;
+    virtual void effect_set_byte9(void* effect) = 0;
+    virtual void effect_update_children(void* effect, float step) = 0;
+};
+struct EffectPointerResults {
+    virtual ~EffectPointerResults() = default;
+    virtual void push_pointer_table(void* effect) = 0; // NewTable, "Pointer" = light userdata
+};
+int lua_effect(LuaArgs& args, EffectPointerResults& results, EffectSpawnHost& host);
+inline constexpr float kEffectPrerunStep = 0.2f;
 // ---------------------------------------------------------------------------
 // Read-only world and entity queries
 // ---------------------------------------------------------------------------

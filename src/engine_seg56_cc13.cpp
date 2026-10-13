@@ -521,6 +521,45 @@ int lua_hide_score_display(LuaArgs& args, InterfaceHost& host)
     return 0;
 }
 
+int lua_display_scores(LuaArgs& args, HudScoreHost& host)
+{
+    if (args.count() == 6) {
+        const int f = args.get_integer(5);
+        const int e = args.get_integer(4);
+        const std::string d = args.get_string(3);
+        const std::string c = args.get_string(2);
+        const int b = args.get_integer(1); // ESI, read first of the two
+        const int a = args.get_integer(0);
+        host.display_score_pair(a, b, c, d, e, f); // 008C22DA
+    } else if (args.count() == 4) {
+        const std::string d = args.get_string(3);
+        const std::string c = args.get_string(2);
+        const int b = args.get_integer(1);
+        const int a = args.get_integer(0);
+        host.display_score(a, b, c, d); // 008C241A
+    }
+    return 0;
+}
+
+int lua_display_unit_hp(LuaArgs& args, HudScoreHost& host)
+{
+    int id = 0;
+    int next = 0;
+    if (args.count() >= 1 && args.is_integer(0)) {
+        id = args.get_integer(0);
+        next = 1;
+    }
+    std::vector<void*> entities;
+    std::string text;
+    if (args.count() > next && args.is_table(next)) {
+        entities = host.entity_list_0088a900(args, next);
+        if (args.count() > next + 1 && args.is_string(next + 1)) {
+            text = args.get_string(next + 1);
+        }
+    }
+    host.display_unit_hp(id, entities, text);
+    return 0;
+}
 // ---------------------------------------------------------------------------
 // Localisation, environment, narrative, effects and classes
 // ---------------------------------------------------------------------------
@@ -1255,6 +1294,32 @@ int lua_add_animated_part_effect(LuaArgs& args, PartEffectHost& host)
         host.unit_part_effect_start_by_index(object, args.get_integer(1), name);
     }
     return 0;
+}
+int lua_effect(LuaArgs& args, EffectPointerResults& results, EffectSpawnHost& host)
+{
+    void* effect = nullptr;
+    if (args.count() > 2 && args.is_entity_table(2)) {
+        void* entity = args.entity_at(2);
+        const std::string name = args.get_string(0);
+        effect = host.effect_create_on_entity(name, entity, args.read_vector3(1));
+    } else {
+        const std::string name = args.get_string(0);
+        effect = host.effect_create_at_position(name, args.read_vector3(1));
+    }
+    if (effect == nullptr) {
+        return 0;
+    }
+    host.effect_set_byte9(effect);
+    if (args.count() > 3) {
+        float remaining = narrow(args.get_number(3));
+        while (remaining > 0.0f) {
+            const float step = kEffectPrerunStep < remaining ? kEffectPrerunStep : remaining;
+            host.effect_update_children(effect, step);
+            remaining = narrow(static_cast<double>(remaining) - kEffectPrerunStep);
+        }
+    }
+    results.push_pointer_table(effect);
+    return 1;
 }
 // ---------------------------------------------------------------------------
 // Read-only queries

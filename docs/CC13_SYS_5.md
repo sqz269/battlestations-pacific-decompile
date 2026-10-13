@@ -14,21 +14,24 @@ reconstruction record nor a tag. 414 of them are mission Lua binding handlers of
 
 | Group | Count | Action |
 | --- | --- | --- |
-| Presentation, tooling, input, GUI, localisation and environment bindings | 82 | reconstructed, build-tested, recorded |
-| Non-binding helpers (colours, objective entry reads, dotted GUI path, language list, perf registry) | 13 | reconstructed or modelled, recorded |
-| Existing reconstructions without records (`lua_binding_core.cpp`, `game_settings.cpp`) | 12 | backfilled |
+| Presentation, tooling, camera, input, GUI, localisation, environment and generic-read bindings | 129 | reconstructed, build-tested, recorded |
+| Non-binding helpers (colours, objective entry reads, dotted GUI path, language list, perf registry, small accessors) | 19 | reconstructed or modelled, recorded |
+| Existing reconstructions without records (`lua_binding_core.cpp` 9, `game_settings.cpp` 3, `game_hosts_lua.cpp` 1) | 13 | backfilled |
 | Scene tokenizer bodies modelled by `scene_file.cpp` / `scene_property_bag.cpp` | 5 | recorded as `partial_projection` |
 | `STL_*` / template bodies | 23 | tagged (`stl_shape`, `tmpl_shape`) |
-| Gameplay bindings and the rest | 355 | left to owners (below) |
+| Gameplay bindings and the rest | 301 | left to owners or open (below) |
 
+All 166 recorded functions also carry a pointer to their reconstruction in the naming-ledger
+evidence, applied to Ghidra with `tools/ghidra_annotate.py` (prior values in `local/`), and their
+exports were refreshed.
 ## Status
 
 | Item | Exported | Reconstructed | Build-tested | Validated |
 | --- | --- | --- | --- | --- |
-| 82 bindings in `engine_seg56_cc13.cpp` | yes | yes (between the machine prologue and epilogue) | yes | no |
+| 129 bindings in `engine_seg56_cc13.cpp` | yes | yes (between the machine prologue and epilogue) | yes | no |
 | Perf-timing registry `008D1A10/008D1AB0/008D1B80` | yes | object semantics only (`PerfTimingRegistry`) | yes | no |
 | Helpers `008DA920/970/A60`, `008DACD0/AD30/ADC0/B990`, `008C8C20/9F80`, `008D76C0` | yes | yes | yes | no |
-| Backfilled `lua_binding_core.cpp` (9) and `game_settings.cpp` (3) | yes | earlier packets | yes | no |
+| Backfilled `lua_binding_core.cpp` (9), `game_settings.cpp` (3), `game_hosts_lua.cpp` (1) | yes | earlier packets | yes | no |
 
 Nothing is ABI compatible or game-validated. No game runs were made.
 
@@ -154,14 +157,66 @@ navigator/pilot (`Navigator*`, `Pilot*`), unit orders (`Order`, `PutTo`, `SetPar
 `SetDeviceReload*`, `GameOver`, `Pause`, `Countdown*`, `SetWeather`, `SetShallowWater`.
 `SetParty` 008A8930 and `SetThink` 00897FB0 got backfilled records only.
 
+## Fifth batch
+
+`DisplayScores` 008C20D0 (exactly six or exactly four arguments; ESI = argument 1 is read before
+EDI = argument 0), `DisplayUnitHP` 008C1B10 (the "missing entitylist" text is built and never
+passed), `Effect` 008A9730 (pre-run in 0.2 s steps; returns `{Pointer = userdata}` or nothing).
+
+Loading_Finish 008C77F0 reaches `004CD0F0` with `(0, 0, 1)`. That function is the sole writer of
+the cinematic flags, and game+635h is the simulation gate (`cinematic_flags_004cd0f0` in
+`src/simulation_gate.cpp`). The binding model only calls the host; whoever wires it must route
+the call to that gate. Pause 008AFD50 and Loading_Start 008CC850 were left out for the same
+reason.
+
 ## Open (non-gameplay, not done in this pass)
 
-The camera mode family `MovCam_HandMode_*`, `MovCam_RefPos*`, `MovCam_PathWalk*`,
-`MovCam_ViktorMode`, `MovCam_TompiMode*`, `MovCam_SetSecondaryTarget`, `MovCam_AddInterpolator`,
-`MovCam_PickSnittDeckPosition`, `MovCam_SetPosRotZoom`; camera reads `GetCameraRelPosW/L`,
-`GetCameraState`, `GetDistFromCrosshair`, `GameCameraLookAtTarget`; `SetCloudVisibility`,
-`SetOldCloudAlpha`; HUD `DisplayUnitHP`, `DisplayScores`; `Message`, `OverrideMessage`,
-`MissionNarrative`/`Urgent`/`Override`, `StartDialog`, `SetGuiName`; Lua glue `class_enumeration`,
-`UnloadClass`, `DebugTrap`, `UnloadMessageMap`, `GetConfiguredInput`, `ForceEnableInput`;
-`HackPressInput` with `HackInput_QueuePress` 008D0060 (its list insert `0088B410` is in the
-excluded band); `SceneTokenizer_NextTokenIsInt` 008D8F10 and `ConvertByUnitToken` 008D9750.
+- `MissionNarrative` 008B0C10, `MissionNarrativeUrgent` 008B0E10, `MissionNarrativeOverride`
+  008B1010 and `Message` 00898C60 use the LuaStateHolder variant path (00887120 / 00887370
+  collect the arguments as 14h-byte variants). `00734870` is `__thiscall` on game+21E8h and its
+  first stack argument is the payload dword of variant 0, which the decompiler types as a
+  pointer. The variant layout has to be read before these can be modelled.
+- `OverrideMessage` 008D0EA0, `DebugTrap` 008C8390, `class_enumeration` 008C8560 (pumps a
+  front-end frame and destroys the world containers first), `MovCam_PathWalkPathPointProperty*`
+  008B4DA0 (the decompiler lost the argument indices), `SetVisibilityTerrainNode` 008C3170,
+  `FakePing` 008C0F90 (the ECX of `008E2E50` BSP_MapPing_AddLocal is not traced), `SetVisibility` 008A13D0.
+- `HackPressInput` 008D0430, `HackInput_QueuePress` 008D0060 and `HackInputPress_Construct`
+  008C89D0: the press list at game+5BCh is keyed through 008CFC10 and appended by 0088B410, which
+  is in the excluded band.
+- `SceneTokenizer_ConvertByUnitToken` 008D9750 (unit table 00F88A58, stride 10h, count
+  [00F88BC0]); `MapPingEntry_DescribeProperties` 008DC210 (property-sink visitor:
+  ID/text/quiet/type/state/positions); `MultiLobbySettings_Destroy` 008D3E00 (two tree walks
+  freeing per-node buffers); `NavPoint_SEntityInit` 008DA100; `thunk_008DB510` 008DBAA0 (no
+  export).
+
+## For cc9: read-only gameplay queries
+
+These read unit state without writing it, but their hosts live in the cc9 lanes, so they were
+not modelled here: GetFormationShape, GetPlaneSurelyLanded, GetPlaneLandingAborted,
+GetShipMaxSpeed, GetShipSpeed, GetCatapultStock, GetNumCatapulted, GetLastCatapulted,
+GetSubmarineAirSupply, GetCrewLevel, GetSkillLevel, GetAirBaseStatus, GetAirBaseSlotStatus,
+GetAirBasePlaneLimit, InferiorIsDisabled, IsFormationLeader/Follower, IsInFormation,
+GetFormationLeader, GetSquadronPlanes/Landed/Plane/LandedBase, GetPlaneSquadron, IsInPosition,
+GetSquadFlyTime, IsPlayerControlled, UnitGetFireStance, UnitGetAttackTarget, GetPrimaryTarget,
+GetRelativeSpeed, GetETA, IsAreaEmpty, GetRoleAvailable, GetPlayerIndexBySlot,
+GetValidPlayerInSlot, GetRoleOwner, GetFire, GetRepairLevel, GetAirbaseOrders, GetBorderZone,
+GetBorderCross, IsInBorderZone, GetPlayerActWeapon, GetPlaneEquipment, GetPlaneIsReloading,
+GetSquadTorpedoes, GetTargetInfoTarget, GetDevice, GetKamikazeByDummy, GetFormationPositions,
+GetPayloads, GetPayload, GetGuns, Multi_GetPlayers, GetPlayerDetails, IsUnitSelectable,
+GetSelectedUnit, Scoring_Get*, ScoringIsUnlocked, CountdownTimeLeft, TrulyDead, FindEntity,
+FindEntityByID, FindHiddenEntity, SortByDistance.
+
+## Handoff
+
+State: branch `agent/cc13-sys5`, all work committed; build passes after the final merge of
+`origin/main`. Verification: `tools/verify_report_calls.py local/sys5_calls_report.json`
+checked ten call-site claims against live Ghidra (0 failed). Nothing was game-run.
+
+Next steps, in order of value:
+
+1. Read the LuaStateHolder variant layout (00887120, 00887370, 006EDF00, 0x14-byte rows) and model
+   the four narrative/message bindings; `read_movcam_tail`'s extras would then get a real type.
+2. The open items above.
+3. When these bindings are wired, the hosts must keep presentation code off the shared gameplay
+   RNG. No recorded binding calls 00BD2F10 directly (index query); callees such as effect
+   creation were not checked.
