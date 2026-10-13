@@ -2203,7 +2203,12 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         return tick_member_is_plane_squadron(member);
     }
     bool close_member_squadron_excluded(void* member) override {
-        return tick_squadron_excluded_007eda90(member);
+        if (tick_squadron_excluded_007eda90(member)) return true;   // 00A14413 JE
+        // 00A1441B: 009FFEB0 runs only on the squadron arm (00A143F5).
+        if (kCloseAttackSquadronHomeBound && tick_member_is_plane_squadron(member)) {
+            return tick_squadron_excluded_009ffeb0(member);
+        }
+        return false;
     }
     // 00A143ED PUSH 18h, 00A14402 PUSH 17h, 00A1440C the +C24h byte, 00A14413
     // JE, then the other arm's 00A14427 PUSH 6 and 00A1443D vtable[+2Ch]. One

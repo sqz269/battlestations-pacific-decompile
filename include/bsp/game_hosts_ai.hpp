@@ -100,6 +100,15 @@ inline constexpr bool kAiCommandAvoidZonePointBound = true;
 // ON by the pairs of 2026-09-29 (section 40): exact, read whole, zero reach on
 // USN13 and IJN01 at 9000 frames, gameplay identical.
 inline constexpr bool kAiSquadronRtbExclusionBound = true;
+// The 00A13B60 close-attack member gate (docs/CC13_GPR_69.md 7.2 item 5). For a
+// squadron member (00A143ED vtable[5Ch](18h)) the image first applies the
+// inline 007EDA90 shape (00A14402 PUSH 17h on [ESI+3D0h], 00A1440C the +C24h
+// byte, 00A14413 JE skips), then 00A1441B CALL 009FFEB0 and skips the member
+// when it answers true (00A14442 TEST AL,AL / 00A14444 JNZ 00A14D4D); 009FFEB0
+// may itself place the squadron's return-to-base order. True: the host's
+// close_member_squadron_excluded adds tick_squadron_excluded_009ffeb0 after
+// the 007EDA90 shape. False: 007EDA90 only, as before.
+inline constexpr bool kCloseAttackSquadronHomeBound = false;
 // Packet cc9_group_release_idle (docs/SHIP_AI_OPEN_ITEMS.md section 30). Every
 // ATTACK-family command registers its observer (+8h) on the target group
 // (00A10767, 00694A60), and all four observer vtables (00D22B64, 00D22BA4,
