@@ -108,7 +108,7 @@ inline constexpr bool kAiSquadronRtbExclusionBound = true;
 // may itself place the squadron's return-to-base order. True: the host's
 // close_member_squadron_excluded adds tick_squadron_excluded_009ffeb0 after
 // the 007EDA90 shape. False: 007EDA90 only, as before.
-inline constexpr bool kCloseAttackSquadronHomeBound = false;
+inline constexpr bool kCloseAttackSquadronHomeBound = true;  // ON: lead AI pair (USN15/USN12/IJN18 wins identical, 2026-10-13)
 // order_attack's arm choice, 00A2CC2E-00A2CC65 (docs/CC13_GPR_69.md section 3).
 // The image takes MOVETOATTACK without a draw when the group's first member is
 // ship-base (00A2CC36 PUSH 6 / vtable[5Ch], 00A2CC3C JNE) or when
@@ -117,13 +117,13 @@ inline constexpr bool kCloseAttackSquadronHomeBound = false;
 // (FCOMIP / JBE) takes CAUTIOUSATTACK. True: ai_attack_arm_00a2cbd0 with
 // ai_should_route_cautiously_00a2c9f0, and the host's private 00BD2F10 LCG
 // draws only after both gates. False: the host draws for every order.
-inline constexpr bool kOrderAttackCautiousGatesBound = false;
+inline constexpr bool kOrderAttackCautiousGatesBound = true;  // ON: lead AI pair (USN15/USN12/IJN18 wins identical, 2026-10-13)
 // The Capture planner's current-target distance, 00A2A5C0-00A2A5CE: FLD qword
 // [00CE3820] (BB BD D7 D9 DF 7C DB 3D, the double 1.0e-10), FLD float d^2,
 // FCOMI / JBE: sqrt only when d^2 > 1e-10, else 0 (docs/CC13_GPR_69.md 7.4
 // item 4). True: capture_plan_00a29fd0 compares with bsp::kAiTailLengthEpsilon
 // (1e-10). False: the host's literal 1e-11, as before.
-inline constexpr bool kCaptureCurrentTargetEpsilonBound = false;
+inline constexpr bool kCaptureCurrentTargetEpsilonBound = true;  // ON: lead AI pair (USN15/USN12/IJN18 wins identical, 2026-10-13)
 // The Defend think 00A28A60 (docs/CC13_GPR_69.md 7.3, packet cc13-fix2). Pass A
 // calls 00A2DEF0(team = planner+30h) per owned group: a member is a candidate
 // when vt+5Ch(1Ch) answers (00A2DF2B) OR 008DDF90 finds it in
