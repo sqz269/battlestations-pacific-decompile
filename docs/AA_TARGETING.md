@@ -69,7 +69,7 @@ Most of this was read earlier, in `docs/UNIT_GUNNERY_PASS.md` section 5 and
 | untouchable gate `00862440` | unit-AI `+1D4h` | always false | contract unread, unchanged |
 | visibility `00864D90` / `00864680` | a line-of-sight test with a cache | always visible, with a random TTL | unimplemented, unchanged |
 | order and walk | rank, then nearest, director targets first | the reconstructed rule table | faithful |
-| flak minimum air range `005459E0`/`00729B90` | kind 5/6, `MinRange` | flag keyed on category 7 (TORPEDO), minimum 0 | **differs, bound** for kind 5; kind 6's second ammunition is not loaded, so its minimum stays 0 |
+| flak minimum air range `005459E0`/`00729B90` | kind 5/6, `MinRange` (`+58h`) of the first ammunition, or of the second (`[+74h]+7Ch`) for kind 6, against the sort distance (leader penalty included) | flag keyed on category 7 (TORPEDO), minimum 0 | **faithful now** (cc13-ver19 correction): kind 5 bound and ON (`kAaMinRangeBound`); kind 6's second ammunition is loaded since `kDualPurposeSecondAmmoBound` and its `MinRange` is read in `bind_aa_acceptance`. Docs/CC13_VER_19.md lists what remains of the pick. |
 | gun range `[proj+60h]` | per round | `max_range`, the derived engagement range | faithful |
 | AA gunner armour test `008FBE00` | `max(DamageMax, BlastDamageMax) <= Armour` refuses | none | **differs, bound** |
 | fire window `0085A9A0` | the target must lie in the gun's authored fire window | none | **differs, bound**, in the hull frame and the shared muzzle point the host's aim already uses (the host builds no gun node) |

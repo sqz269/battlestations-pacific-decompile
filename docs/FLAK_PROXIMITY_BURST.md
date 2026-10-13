@@ -16,8 +16,13 @@ round.
 2. **Expiry.** `0070C3AA`-`0070C3C8`: once the flight time `+1C4h` passes FlyTime (`class+54h`),
    `0070C210(proj, 0)` expires the round. The host's life bound already does this.
 3. **Arming.** `0070C3DA`-`0070C400`: the round is armed only when the flight time exceeds
-   FlakFuseTime (`class+D8h`) and the scaled step is non-zero. No reader writes `+D8h`, so it is 0
-   from the constructor `006E8320`.
+   FlakFuseTime (`class+D8h`) and the scaled step is non-zero. `+D8h` is written by the flak class's
+   finalise `0070C0B0` once the base finalise `006E9890` answers 1: `FLD [esi+58h]; FDIV [esi+50h];
+   FSTP [esi+D8h]` (`0070C0BC`-`0070C0C2`), so FlakFuseTime = MinRange / V0, not 0. (Correction,
+   cc13-ver19: the earlier text said no writer exists and the constructor's 0 stands.) The host
+   already computes this value as `WeaponClassFinaliseResult::flak_fuse_time`
+   (`src/bullet_engagement_range.cpp`) but nothing reads it; the arming test is
+   `flak_fuse_armed_0070c3da` (`src/flak_ver_cc13.cpp`, docs/CC13_VER_16.md).
 4. **The step segment.** `0070C41C`-`0070C491`: `D = pos(+FCh) - prev snapshot (+1DCh)`, its length
    `L` (`0042B2F0`) and unit direction. `0070C4A8`-`0070C4FF`: the midpoint `M = (pos + prev) / 2`.
 5. **The search, only while the lock byte `+288h` is clear** (`0070C4A4`, `0070C503`).
