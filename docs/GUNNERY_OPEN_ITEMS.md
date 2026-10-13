@@ -13133,3 +13133,13 @@ row's `current` is set once at issue (`finish_issue_tail`) and never re-read aft
 keeps an unauthored unit's old target (`kCommandTargetKeepUnauthoredBound`). USN12 win: exit 1, `dead_targets=0`.
 Added (same switch): `GameCommandsHost::retire_ended_command_rows` clears `current` on the unit's rows of the ended
 class, and each live member's resolved target is cleared when it is the dead one (0071EBF0's neutral record).
+
+**199.2 Verdict: ON** (`518193e10` OFF `local\g38_rtoff_*` against ON `local\g38_rt2on_*`). ESMP08 `l46_e8_orders2`: exit 3,
+`dead_targets=12 ends=12`, first divergence the `squadron retest` lines themselves (Chiyoda_sqn38, Zuikaku_sqn48 at
+Santa Fe's death, 1162.51 s); the ended squadrons drop the dead name (Chiyoda_sqn56's members resolve "San Diego" by
+1680 s instead of Washington); torpedo releases 47/306 -> 51/356; still no completion in 90000 frames, as predicted.
+USN12 win: exit 1, `dead_targets=0`, completed 1539.83 s with the guard. The other five wins were not re-run here
+(wins keeper). **ESMP08 needs, in the order file:** a re-target of each torpedo/dive slot whose target sinks
+(`order <carrier> <slot> 1`, then `order <carrier> <slot> 3 <live ship>`), because `009F8470` does not re-target a player
+squadron, plus an allocation that reaches the destroyers (Fanning, Grayson, Woodworth, Dunlap) before about 1750 s;
+`local\g38_e8_retarget.py` generates the first part from a run log.
