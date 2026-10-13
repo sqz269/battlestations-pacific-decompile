@@ -1172,4 +1172,48 @@ void hud_limbo_register_00565ee0(Raw screen, Fe3ReadHost& host);
 // (jump table 00566030), +0D8h otherwise ("" when null); shown on [+0Ch] while active (+5h).
 void hud_limbo_set_state_00565fb0(Raw screen, std::int32_t state, Fe3ReadHost& host);
 
+// ---------------------------------------------------------------------------
+// Packet cc13-fe6 additions (docs/CC13_FE_6.md)
+// ---------------------------------------------------------------------------
+
+// 00566080 BSP_HudLimboScreen_Enter, slot +18h of 00CEEBAC, __fastcall(ECX = screen), RET.
+// +0Ch = "Message_Text" (00CED36C) and +10h = "Continue_Text" (00CEEBE0) under page +8h;
+// +10h hidden; 00565FB0(+14h); timer +18h = 6.0f (00CE6630); 00A95CB0 clears every gamepad
+// force channel.
+struct Fe6LimboHost {
+    virtual ~Fe6LimboHost() = default;
+    virtual void* find_child_by_name_00aa7e00(void* parent, std::string_view name) = 0;
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;  // vtable +34h
+    virtual void hud_limbo_set_state_00565fb0(Raw screen, std::int32_t state) = 0;
+    virtual void gamepad_force_clear_all_channels_00a95cb0() = 0;
+};
+inline constexpr float kLimboContinueDelay = 6.0f;  // 00CE6630
+void hud_limbo_enter_00566080(Raw screen, Fe6LimboHost& host);
+
+// 00561860 BSP_LeaderboardsScreen_MoveSelection, __thiscall(screen, scroller, list box, clip,
+// bool no_scroll), RET 10h. The board list box (+94h) uses first/last/selected +B0h/+B4h/+B8h,
+// any other list +140h/+144h/+148h. first = the list's row count (+104h), last = 0. With the
+// clip's top-left C = pos - size * anchor (+18h, +1Ch), each row (00A9BE00) is visible when its
+// top-left y (rounded to float) is below C.y and row.y + row.h < C.y + clip.h (both sums in
+// x87 extended precision); visible rows update first (when smaller) or else last (when
+// larger), and every row gets vtable +60h(visible). Then, while the scroller's +48h byte and
+// +20h are clear and no_scroll is false, a selection above first scrolls toward the start
+// (00683680) and one below last toward the end (00683700), by the current row's (00425E50)
+// height. Otherwise a selection outside [first, last] snaps to first / last through 00A9C8F0
+// and is stored in the selected slot.
+struct Fe6LeaderboardHost {
+    virtual ~Fe6LeaderboardHost() = default;
+    virtual std::array<float, 3> widget_resolved_position_00aa6750(void* widget) = 0;
+    virtual std::array<float, 2> widget_size_00aa6740(void* widget) = 0;
+    virtual void* list_box_row_00a9be00(void* list_box, std::int32_t index) = 0;
+    virtual void widget_set_enabled_60(void* widget, std::uint32_t enabled) = 0;  // vtable +60h
+    virtual std::int32_t list_box_selected_index_00a9c920(void* list_box) = 0;
+    virtual void* list_box_current_row_00425e50(void* list_box) = 0;
+    virtual void list_box_select_index_silently_00a9c8f0(void* list_box, std::int32_t index) = 0;
+    virtual void scroller_toward_start_00683680(void* scroller, float delta) = 0;
+    virtual void scroller_toward_end_00683700(void* scroller, float delta) = 0;
+};
+void leaderboards_move_selection_00561860(Raw screen, void* scroller, void* list_box, void* clip, bool no_scroll,
+    Fe6LeaderboardHost& host);
+
 } // namespace bsp::cc13_fe3
