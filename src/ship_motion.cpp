@@ -310,6 +310,9 @@ ShipMotionStepResult ship_motion_step_00825f20(ShipMotionState& state,
     gate_in.class_id = state.class_id;
     gate_in.pose_base_y = state.position[1];
     gate_in.submerged_scale = 1.0f; // settings+4B4h reaches the gate through this field
+    if constexpr (kShipSubmergedThrottleBound) {
+        gate_in.submerged_scale = kShipSubmarineDepthSpeedMulInstalled; // cc13-ver3 S1
+    }
     result.gate = ship_throttle_gate_00826994(gate_in);
 
     // 00826754..0082676E, hoisted far above the command tail in the listing.
