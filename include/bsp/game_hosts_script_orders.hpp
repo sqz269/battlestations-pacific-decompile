@@ -455,6 +455,15 @@ inline constexpr bool kAiSquadronSetTargetIntakeBound = true;
 // bsm_04_vengance_at_luzon.lua:1718 indexes nil and luaStartMission fails on
 // every think.
 inline constexpr bool kGetSquadronPlanesBound = true;   // ON: SQUADRON_LAND_TASK 5cn.1
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 2). 0089CC50 reads the squadron
+// object the argument's Lua table holds, and that object survives its lead plane.
+// This host resolves the argument to the squadron through the unit it names, the
+// wing-0 plane, so once that plane dies (and leaves `member_units` for
+// `departed_units`) find_by_member_unit answers null and the table comes back
+// empty while the squadron still flies. True: the lookup is
+// find_by_member_or_departed_unit, the squadron the unit belongs to OR left at its
+// death. False: find_by_member_unit, as before.
+inline constexpr bool kGetSquadronPlanesDepartedLeadBound = false;
 
 // Packet cc9_lua_countdown (docs/SQUADRON_LAND_TASK.md 5dr). True: the three
 // countdown natives run on the countdown object at [game+21E8h] (constructed by

@@ -3626,9 +3626,13 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         const std::size_t index = index_of(entity);
         ++squadron_planes_calls_;
         lua_createtable(state_, 0, 0);
+        // Packet cc13-fix5: with kGetSquadronPlanesDepartedLeadBound, a dead lead
+        // still names its squadron (find_by_member_or_departed_unit).
         const bsp::PlaneSquadronHostRecord* record =
-            index < units_.count() ? bsp::plane_squadron_registry().find_by_member_unit(index)
-                                   : nullptr;
+            index >= units_.count() ? nullptr
+            : kGetSquadronPlanesDepartedLeadBound
+                ? bsp::plane_squadron_registry().find_by_member_or_departed_unit(index)
+                : bsp::plane_squadron_registry().find_by_member_unit(index);
         int slot = 0;
         if (record != nullptr) {
             for (const std::size_t member : record->member_units) {
