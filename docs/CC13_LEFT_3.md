@@ -70,3 +70,48 @@ weather preset change shifts gameplay stream 0 by `7n` draws.
 
 `007FCD90` updates the profile's post-mission award map, which is meta-state. No item in this
 section moves simulation state, so the For cc9 list is empty.
+
+## 2. Segments 4, 6 and 9 (`engine_seg4_6_9_cc13.*`)
+
+Twelve records.
+
+| Address | Function | Notes |
+|---|---|---|
+| `0044C970` | `session_message_e1_construct_0044c970` | Builds the E1 message's `Dialogues = {...}` Lua source. |
+| `004CAC30` | `game_pump_front_end_frame_004cac30` | Front-end frame: pump, GUI update, render. |
+| `004CCBD0` | `game_render_foliage_and_shadows_004ccbd0` | Foliage visibility, shadow view, main scene. |
+| `004CB420` | `scene_environment_block_construct_004cb420` | Default environment block and terrain globals. |
+| `004CCCC0` | `game_leave_session_004cccc0` | Session teardown sequence. |
+| `004CD450` | `game_save_next_screenshot_004cd450` | Unreferenced screenshot writer. |
+| `004C9EC0` | `scene_ensure_default_lighting_004c9ec0` | "AllLights", ambient, "TestDirectionalLight". |
+| `00471080` | `anim_entity_sentity_init_00471080` | Draws stream 0. See below. |
+| `00479BD0` | `vehicle_visual_entity_sentity_init_00479bd0` | Base init, then +18Ch = 0. |
+| `00466BB0` / `00466C00` | `scene_name_hash_iterator_begin/next` | The 64-bucket chained hash iterator. |
+| `00467C80` | `scene_property_value_construct_vector3_00467c80` | Byte/word header, xyz, w. |
+
+- **`0044C970`** takes its LuaObject argument by value (14h bytes, `RET 1Ch`) and reassigns it to
+  `table["sequence"]` before iterating. `00B662B0` (GetString) takes no stack argument, so the
+  `00CE4AFC` push before it (`",},`) is the argument of the third append.
+- **`004CB420`** has no code worth transcribing by hand: it is 118 block stores and 85 global
+  stores. `local/l3_envblock.py` resolves them from the live decompile, tracking the `uVar`/`local`
+  temporaries and reading `.rdata` constants from the PE. `local/l3_envcheck.py` then compares the
+  set of offsets with every `[ESI+disp]` and absolute store in the listing. The listing has 116
+  `[ESI+disp]` stores; `+140h` and `+20Ch` are written through `EDI`/`EBP`. The 85 absolute stores
+  match the table with no difference. The globals are the terrain shader globals that `004EE9E0`
+  overwrites (cc13-weather1).
+- **`00471080`** draws `00BD2F10` with `ECX = 0`, which is stream 0 (census site `004710BB`,
+  classed PRESENTATION). The reconstruction routes the draw through
+  `AnimEntityInitHost::random_uniform_00bd2f10_stream0`, and its comment records that the image
+  shares the gameplay stream.
+- **`00466BB0`** tests the bound before it increments, so its scan can stop at bucket index 40h and
+  read one slot past the 64 heads (`table+108h`). A non-zero count rules that case out.
+  `SceneNameHashTable` keeps a 65th slot so that the read stays defined.
+
+## For cc9
+
+- `004C3C90` (no callers): `004BFDF0` clears the local player's unit lists, then the 004C3CB0
+  latch `game+193Ch` = 0. This is gameplay unit-list state, which lives in `game_hosts_world`.
+  Not reconstructed here.
+- `004C6BE0` `BSP_Game_GenerateObject` (caller `00944FD0`, which `cc9-lua52` holds a lease on):
+  `0046DC10` creates a hidden entity, and `004C3840(0)` runs when `game+1FE4h != 0`. This creates
+  gameplay entities. Not reconstructed here.
