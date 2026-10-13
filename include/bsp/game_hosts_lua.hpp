@@ -252,7 +252,7 @@ inline constexpr bool kLuaKillAttackerBound = true;
 // evaluated on the next mission frame as `kill` is, not inside the hit; a squadron
 // slot's death waits for its last plane, as the `kill` dispatcher does.
 // False: entityKilled subscriptions are stored and never fire, as before.
-inline constexpr bool kLuaEntityKilledListenersBound = false;
+inline constexpr bool kLuaEntityKilledListenersBound = true;  // ON: lead pair (USN02/PRCP01/LOMP06 wins identical, 2026-10-13)
 
 // Packet cc13-ver5 (docs/CC13_VER_5.md D2). In the image a victim's `Dead` is written
 // before its `kill` channel fires: 00959450 calls 00878990 -> 0077D270 -> 00929B60 ->
@@ -268,7 +268,7 @@ inline constexpr bool kLuaEntityKilledListenersBound = false;
 // the same values again); and the `hit` channel is evaluated before `kill`, as the image
 // fires it inside the hit (0077CE60 -> 00988510) ahead of the flush, so a hit callback
 // on the lethal hit still sees the victim alive. False: as before.
-inline constexpr bool kKillListenerDeadFirstBound = false;
+inline constexpr bool kKillListenerDeadFirstBound = true;  // ON: lead pair (USN02/PRCP01/LOMP06 wins identical, 2026-10-13)
 
 // Packet cc13-ver8 (docs/CC13_VER_8.md V1). The image reaches the `kill` channel 009813A0
 // from two places only, and both require cause 1 ("harm"):
