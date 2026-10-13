@@ -200,3 +200,39 @@ by `tools/verify_report_calls.py` (0 failed).
 - `in_game_screen23_bind_unit_005178f0` (005178F0) sends 0077C470 (role 1FEh, 0) to the unit it
   releases and makes the airfield camera the game's camera mover (004BC410). Wiring it into the host
   changes in-game unit state; that is the gameplay lane's decision.
+
+## Handoff (cc13-fe8, 2026-10-12)
+
+Forty routines reconstructed and build-tested (40 ledger records; 0055D180's record was replaced once
+to correct its ABI), plus the 006DBAC0 DL-argument fix in `marker_manager_cc13`. No Ghidra renames or
+comments. Commits are on `agent/cc13-fe8` (batches 1 to 8, then the final merge of origin/main).
+
+Still open in segments 12/17 (the fe3 list minus this pass):
+
+- **Tactical library, large bodies:** 004FE870 BindLayout (3.3 KB), 004FF6F0 ShowDifficultySelect,
+  00500A90 FillOrderOfBattleRow, 005021E0 LoadDownloadableClasses, 00502480 Preview_SetupEnvironment
+  (3.5 KB), 00503510 FrontEndPreview_Draw (3 KB), 00504130 LoadClassTables, 00506660
+  BuildOrderOfBattleList, 005072C0 Preview_OnModelLoaded (7.9 KB), 0050A400 ReadVehicleClassRow,
+  0050AA10 Preview_LoadVehicleModel, 0050B8E0 / 0050BF00 / 0050C300 / 0050C760 / 0050CE70 (the Lua
+  library loaders: power-ups, nose art, movies, tutorials, units; `Fe8LuaHost` in the header fits them),
+  0050E3C0 / 0050EF80 OpenEntryAs*, 0050FDB0 Register (3.7 KB: entry vector, atlas UVs, map-name
+  prefix parsing, then the seven loaders), 00510C20 RefreshEntryDetail (3.9 KB), 00515050
+  UpdateTutorialMovie.
+- **Control binding:** 0055C5A0 UpdateBindingRowText, 0055D380 BuildSettingsList (4 KB), 0055E3A0
+  RefreshPage (5 KB), 0055F710 LoadSelectedPreset (LuaReader archive), 0055FCA0 ListboxListener04.
+  The this-pointer convention is settled: list listener screen+8h, widget listener screen+0Ch, page
+  +168h, per-page selections +16Ch.
+- **Session browser:** 005684D0 BuildCreateOptions.
+- **Templates (STL instantiations, left as such):** 00501A50, 00506C80 (`vector<NativeString>::operator=`),
+  00509390, 0050DA40, 005630F0, 0055BF00, 00559E00, 0055A000, 0055A520, 0055B520.
+- **Skipped / other lanes:** 00554680 (x87 bounds outline); 00518F30 (cc9's `game_hosts_hud` host).
+- **fe1 (frontend_screens_cc13):** 00601200 BuildHintList (4 KB, std::map/list, strstr/substring of
+  the award tracker's hint history), 005BB130 HudNarrative register, 005AB190 HudMap register (11 KB).
+  Not started in this pass.
+
+Tools (this worktree's `local/`, not committed): `fe8_dump.py` (disasm-raw dump bounded by the next
+index function, output cap disabled, plus the call summary), `fe8_asm.py`, `fe8_calls.py`,
+`fe8_binds.py`, `fe8_img.py` (strings/floats/doubles/dwords from the PE on disk), `fe8_callrows.py`,
+`fe8_ledger.py`, `fe8_open.py`. `fe8_calls.py` follows linear flow: it reported ECX = 0 for 00923870 in
+005178F0 / 005198F0 from the failed-allocation branch, so read ECX from the listing at any call reached
+through a branch merge.
