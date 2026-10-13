@@ -712,4 +712,118 @@ bool sound_sample_has_resource_word08_00a818d0(const void* sample) noexcept {
     return get<std::uint32_t>(get<const void*>(sample, 0x78), 8) != 0;
 }
 
+// ---------------------------------------------------------------------------
+// cc13-sound3: sound class table (raw) and sample-tree destroys.
+
+void reserve_sound_class_table_raw_00a7bbe0(NativePointerArray& table, std::int32_t requested) {
+    if (requested < 1) {
+        requested = 1;
+    }
+    if (table.capacity >= requested) {
+        return;
+    }
+    std::uint32_t* const fresh = allocate_slots(requested);
+    for (std::int32_t i = 0; i < table.count; i = add32(i, 1)) {
+        if (fresh + i != nullptr) {
+            fresh[i] = 0;
+            if (const std::uint32_t object = table.data[i]; object != 0) {
+                fresh[i] = object;
+                InterlockedIncrement(reinterpret_cast<volatile LONG*>(object + 4));
+            }
+        }
+    }
+    for (std::int32_t i = 0; i < table.count; i = add32(i, 1)) {
+        if (table.data[i] != 0) {
+            release_object(reinterpret_cast<void*>(static_cast<std::uintptr_t>(table.data[i])));
+            table.data[i] = 0;
+        }
+    }
+    singleton_lifetime_free(table.data);
+    table.data = fresh;
+    table.capacity = requested;
+}
+
+void resize_sound_class_table_raw_00a7c2c0(NativePointerArray& table, std::int32_t count) {
+    if (table.capacity < count) {
+        reserve_sound_class_table_raw_00a7bbe0(table, count);
+    }
+    for (std::int32_t i = table.count; i < count; i = add32(i, 1)) {
+        if (table.data + i != nullptr) {
+            table.data[i] = 0;
+        }
+    }
+    while (count < table.count) {
+        table.count = add32(table.count, -1);
+        std::uint32_t& slot = table.data[table.count];
+        if (slot != 0) {
+            release_object(reinterpret_cast<void*>(static_cast<std::uintptr_t>(slot)));
+            slot = 0;
+        }
+    }
+    table.count = count;
+}
+
+void append_retained_sound_class_raw_00a7c240(NativePointerArray& table, void* const* source) {
+    if (table.count == table.capacity) {
+        const std::int32_t doubled = add32(table.capacity, table.capacity);
+        reserve_sound_class_table_raw_00a7bbe0(table, doubled < 2 ? 1 : doubled);
+    }
+    std::uint32_t* const slot = table.data + table.count;
+    if (slot != nullptr) {
+        *slot = 0;
+        if (void* const object = *source; object != nullptr) {
+            *slot = static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(object));
+            InterlockedIncrement(reinterpret_cast<volatile LONG*>(static_cast<unsigned char*>(object) + 4));
+        }
+    }
+    table.count = add32(table.count, 1);
+}
+
+void destroy_sound_class_table_raw(NativePointerArray& table) {
+    resize_sound_class_table_raw_00a7c2c0(table, 0);
+    singleton_lifetime_free(table.data);
+}
+
+NativeSoundTreeIterator erase_sound_tree_range_00a88490(NativeSoundTree& tree, NativeSoundTreeIterator first,
+    NativeSoundTreeIterator last, NativeStringStorage& strings, void (*invalid_iterator_00bf6713)(),
+    void (*increment_00a81ad0)(NativeSoundTreeIterator&),
+    void (*erase_iterator_00a839c0)(NativeSoundTree&, NativeSoundTreeIterator)) {
+    if (first.owner == nullptr || first.owner != &tree) {
+        invalid_iterator_00bf6713();
+    }
+    if (first.node == tree.head->left) {
+        if (last.owner == nullptr || last.owner != &tree) {
+            invalid_iterator_00bf6713();
+        }
+        if (last.node == tree.head) {
+            erase_sound_name_subtree_00a88400(tree, tree.head->parent, strings);
+            tree.head->parent = tree.head;
+            tree.size = 0;
+            tree.head->left = tree.head;
+            tree.head->right = tree.head;
+            return {&tree, tree.head->left};
+        }
+    }
+    for (;;) {
+        if (first.owner == nullptr || first.owner != last.owner) {
+            invalid_iterator_00bf6713();
+        }
+        if (first.node == last.node) {
+            return first;
+        }
+        const NativeSoundTreeIterator erased = first;
+        increment_00a81ad0(first);
+        erase_iterator_00a839c0(tree, erased);
+    }
+}
+
+void destroy_sound_sample_tree_raw(NativeSoundTree& tree, NativeStringStorage& strings) {
+    // The whole-tree path never reaches the callbacks; they are passed as null in the image's
+    // sense of "not taken" and would fault if the precondition (first == begin) failed.
+    erase_sound_tree_range_00a88490(tree, {&tree, tree.head->left}, {&tree, tree.head}, strings,
+        +[] {}, nullptr, nullptr);
+    singleton_lifetime_free(tree.head);
+    tree.head = nullptr;
+    tree.size = 0;
+}
 } // namespace bsp::sound_cc13

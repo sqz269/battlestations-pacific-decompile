@@ -147,6 +147,8 @@ mshd field names come from the existing Lua reader reconstruction.
 | --- | --- |
 | 00B529A0 | Old film: an 820-line x87 body with three child rebuilds (dust count from params[3], scratch/line lists from params[8] and params[13]), stack-copied uninitialised records and draws from the shared generator; needs a block-by-block listing trace. |
 
+00B529A0 is now reconstructed: see docs/CC13_RENDER_2.md (cc13-render2b).
+
 Backfilled records (reconstructed earlier, `reconstructed_ledger_backfilled_from_source`):
 00B33A10 `release_texture_source_frames_00b33a10`, 00B3C960 `cockpit_begin_frame_00b3c960`
 and 00B3C6E0 `cockpit_draw_00b3c6e0` in `src/scene_renderer_cc13.cpp`
