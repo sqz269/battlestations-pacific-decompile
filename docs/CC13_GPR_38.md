@@ -158,6 +158,43 @@ The inputs are the latch state, each member's dkz state, its ordnance and target
   `luaRemoveDeadsFromTable(Mission.FinalTrgs)`.
 - I have not traced whether a landed Betty counts as dead.
 
+### 1.6 The two follow-up answers (cc13-gpr38b)
+
+These answers are static, with no run made.
+
+- **What `007F16D0` answers for class 32: land at site, Airfield3 on this map.**
+  - The null arm does not apply:
+    - class 32's `MinWaterSpd` is 22.222221 (`vehicleclasses.lua:18874`, this installation, mtime
+      2026-05-09);
+    - the Betty head is kind 10h, not 17h. The `007F1709` kamikaze null arm catches only the Ohka
+      spawns (`Betty*_kz*` resolve to null in g39_bb0).
+  - Squadron `+369h` is the scene property `ReloadEnabled`:
+    - `007F1FE0` writes it from the bag (`ReloadEnabled`, type 3) or from the spawn record +124h;
+    - the constructor `007F2D09` defaults it to 1 (`C6 86 69 03 00 00 01`);
+    - `us_osumi.scn`'s Betty rows (`PlaneSquadronGen`, template `Japan\AIR\Betty`) carry no
+      `ReloadEnabled`, so it stays 1, and the land arms are tried.
+  - `[00E17BF2]` stays 0, because `us_osumi.lua` never calls `SetDeviceReloadEnabled`. So the
+    latch and B5 gates pass.
+  - The home arm fails, because `HomeBase = ""`.
+  - The site arm `006C0840` keeps same-party airfields with a live owner (a kind-10h head needs
+    approach bit 20h) and takes the nearest by key. In g39_bb0, Japanese squadrons resolve
+    `land at site Airfield3` (line 37065 and following), and Airfield3 is still a live Japanese home
+    at 1644.08 s (line 365970).
+  - The answer would be `retreat` (border zone, then Kill(4) `exitzone`) only if no Japanese
+    airfield qualified.
+  - Host note: `issue_return_to_base_007f16d0` pins `in.has_deck_369 = true`
+    (`src/game_hosts_units.cpp:11837`). That is right for USNOS, but it should read
+    `ReloadEnabled`.
+- **A landed Betty counts as dead.**
+  - A plane that lands is stock-returned and killed with cause 5, `landed` (docs/SHIP_AI_OPEN_ITEMS.md
+    200.2). USNOS already shows three `KillReason=landed` at Airfield3.
+  - The squadron entity, which is what `Mission.FinalTrgs` holds, is killed by `007F3970` when its
+    member count reaches zero (`007F3A16` / `007F3A2A`, docs/ENTITY_DEAD_FLAG.md section 8). Its
+    cause is the last plane's cause. `luaRemoveDeadsFromTable` (`commandhelpers.lua:1593`) reads
+    only `.Dead`, so a fully landed squadron, or a mix of landed and shot-down planes, leaves the
+    table.
+  - Host caveat (cc9): the squadron-Dead switch does not model removal by landing (`007F3970` with
+    argument 1).
 ## 2. Segment 38 reference models
 
 Code: `include/bsp/gameplay_seg38_cc13.hpp`, `src/gameplay_seg38_cc13.cpp` (namespace
