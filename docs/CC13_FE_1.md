@@ -15,7 +15,7 @@ cc13-ng2 plate comments. Names are hypotheses, not recovered symbols.
 
 | Level | What |
 | --- | --- |
-| Reconstruction records added | 252 so far (batch 1: 204, batch 2: 48) |
+| Reconstruction records added | 266 (batch 1: 204, batch 2: 48, batch 3: 14), including the one backfill |
 | Reconstructed, build-tested | every record with source `src/frontend_screens_cc13.cpp`; `./scripts/build.ps1` passes (2/2 tests) |
 | Backfilled record for existing source | 005BD550 `hud_minimap_screen_enter` (`src/hud_screens.cpp:718`), checked against the listing |
 | Fixture-tested / ABI-compatible / game-validated | none. New C++ interfaces over raw native storage and host objects; no native adapter; nothing wired into `bsp_game`; no game run |
@@ -40,7 +40,8 @@ reconstruction record and no tag.
 - Byte-identical or same-shape routines share one table-driven function (the record scope is
   `shared_shape_model` and the note names the table).
 - `reports/cc13_fe1_calls.json` lists the direct CALL/JMP sites from the reconstructed routines to
-  every address the header and source name; `tools/verify_report_calls.py` checks them all.
+  every address the header and source name; `tools/verify_report_calls.py` checks all 242 rows
+  (0 failed, after the final `git merge origin/main`).
 
 ## Pitfalls found while reading
 
@@ -120,6 +121,15 @@ Main menu: async text completion 00590A00, profile loaded 00590D80, prompt thunk
 Options and pause: 005F0390, 005F0730, slider listener 005F4C10, the pause Lua console command 005FD360
 (log formats in the original Hungarian, read from the image), 005F60F0.
 
+## What was reconstructed (batch 3)
+
+HUD map and minimap pools: marker object deletion 005A3AA0, the arrow widget pool 005A4A00, the unit
+icon get-or-create 005B2CB0, and the minimap screen constructor, exit and destructor (005C0810,
+005C0E10, 005C0520). Two-page registers: lobby 005E1820 (`FE_lobby`, `FE_lobby_settings`) and options
+005F0250 (`_Options`, `FE_options`). Options screen constructor/destructor (005F6030, 005F1BB0) and the
+pause screen constructor/destructor (005FFCB0, 005FF980). Mission tree: the int-vector table reader
+005C4AD0 and the 154h side-block constructor 005C4BE0.
+
 ## Uncertainty
 
 - Field meanings in comments (focus byte +D4h, "active" list box, pending order bytes) follow the
@@ -134,3 +144,35 @@ Options and pause: 005F0390, 005F0730, slider listener 005F4C10, the pause Lua c
   the image they report an invalid parameter and do not return normally.
 - 0059AA40 `BSP_Math_PiecewiseLerp4` is reconstructed in `src/ng2_cc13.cpp` by cc13-ng2 without a
   record; it is left to that packet.
+
+## Handoff (cc13-fe1)
+
+Commits on agent/cc13-fe1: a7f62a2ea (batch 1), 2f9acedc7 (batch 2), 2c8ffff15 (batch 3) and the
+merge of origin/main 80fa541fd, plus the final doc commit. `./scripts/build.ps1` passes after the
+merge (2/2 tests). Nothing was run in `bsp_game`; Ghidra was not modified.
+
+Remaining in the two segments (ledger name, no record, no tag; regenerate the list with the query in
+the packet brief): 153 functions, of which 15 are 256 bytes or less, 87 are 256-1024 bytes and 51 are
+larger. The small ones left on purpose:
+
+- 0059AA40 is reconstructed in `src/ng2_cc13.cpp` by cc13-ng2; that packet should add its record.
+- 00594290 has an index extent of 16 bytes but its body (the mission score record member teardown)
+  runs to about 250 decompiled lines; check the function bounds before reconstructing it.
+- 00592640 (play-mission prompt: resets the 800h-pair vehicle class index maps at registry+10h and
+  +2010h, then remaps the profile's checkpoint class) touches the class registry that cc9's
+  game_hosts_lua.cpp models; coordinate before wiring it.
+- x87-heavy layout helpers 0059D350, 0059D6D0, 005B7390: read them with `local/sc2_x87.py`-style
+  tracing; constants are doubles in .rdata.
+- 005EA810 (XNet QoS lookup), 005EF550 (XStringVerify), 005EFAB0 (mbstowcs of the gamer tag) are
+  thin wrappers around XLive imports.
+- 0058EE40, 0059FAD0, 005A07B0, 005A1220, 005A2650, 005F6EF0 are straightforward next targets.
+
+Next by value among the larger routines: the screen Enter/Update/HandleGuiEvent bodies (HudPause
+00603120/00603CA0/00604190, HudObjectives 005EEA00/005EEF60, HudOrder 005FAD70/005F9DD0, the multi
+main menu 005E7160/005E73A0/005EA2D0), the options rows (005F7C40, 005F54F0, 005F5BD0), and the lobby
+005E4490/005E2320. 005AB190 (11 KB HudMap register) and 005B45C0 (map update; its zoom part is in
+`map_screen_update_cc13.hpp`) need range-by-range passes.
+
+Tooling (worker tree `local/`, not committed): `fe1_dec.py` (cached live decompile), `fe1_asmf.py`
+(compact listing; it hides only prologue pushes and epilogue pops, an earlier version hid argument
+pushes too), `fe1_calls.py`, `fe1_records.py` (all records, lease-checked upsert), `fe1_callreport.py`.
