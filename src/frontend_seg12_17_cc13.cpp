@@ -2686,16 +2686,17 @@ bool control_binding_scroll_to_selection_0055cec0(Raw screen, bool no_scroll, Fe
     return true;
 }
 
-void control_binding_on_selection_changed_0055d180(Raw screen, void* row, void* list_box,
+void control_binding_on_selection_changed_0055d180(Raw listener, void* row, void* list_box,
                                                    Fe8ControlBindingHost& host) {
     if (row == nullptr) return;
-    const std::int32_t page = screen.at<std::int32_t>(0x160);
-    screen.at<std::int32_t>(0x164 + page * 4) = host.list_box_selected_index_00a9c920(list_box);
+    const Raw screen{listener.p - 8};
+    const std::int32_t page = screen.at<std::int32_t>(0x168);
+    screen.at<std::int32_t>(0x16C + page * 4) = host.list_box_selected_index_00a9c920(list_box);
     if (page == 0) {
         host.command_bar_set_help_line_0054a0c0(std::string(native_view(raw(row), 0xF4)) + "_help");
     } else if (page == 1) {
         host.command_bar_set_help_line_0054a0c0("FE_pc.cs_loadcontrollerpreset_help");
-    } else if (page == 2 && list_box == screen.ptr(0x18)) {
+    } else if (page == 2 && list_box == screen.ptr(0x20)) {
         host.control_binding_refresh_selected_binding_0055c3b0(screen);
         host.widget_set_enabled_60(list_box, 1);
         while (host.control_binding_scroll_to_selection_0055cec0(screen, false)) {
@@ -3325,6 +3326,87 @@ void control_binding_bind_widgets_00555dc0(Raw screen, Fe8ControlBindWidgetsHost
     host.widget_set_listener_fields_00aa6bc0(find(screen.ptr(0x30), "arrow_left_Icon"), widget_listener, 0);
     host.widget_set_listener_fields_00aa6bc0(find(screen.ptr(0x30), "arrow_right_Icon"), widget_listener, 0);
     screen.ptr(0x34) = find(screen.ptr(0x14), "SelectedConflict_Text");
+}
+
+namespace {
+
+constexpr float kControlVariantThreshold = 0.625f;  // 00CEE8DC
+
+void control_select_row(Raw screen, std::uint32_t id, Fe8ControlEventHost& host) {
+    host.control_binding_refresh_selected_binding_0055c3b0(screen);
+    host.list_box_select_index_00a9c7c0(screen.ptr(0x20), static_cast<std::int32_t>(id & 0xFFFF));
+}
+
+} // namespace
+
+void control_binding_handle_gui_event_00560bf0(Raw listener, void* widget, Fe8ControlEventHost& host) {
+    const Raw screen{listener.p - 0x0C};
+    const std::int32_t page = screen.at<std::int32_t>(0x168);
+    if (page == 3) return;
+    if (host.widget_type_5c(widget) == 0x10) return;
+    if (host.widget_type_5c(widget) == 6 && raw(widget).ptr(0x70) != screen.ptr(0x1FC)) {
+        const std::uint32_t id = raw(raw(widget).ptr(0x70)).at<std::uint32_t>(0xD8);
+        if (id == 0) return;
+        screen.at<std::uint32_t>(0x180) = host.gui_manager_field_5c() > kControlVariantThreshold ? 1u : 0u;
+        control_select_row(screen, id, host);
+        if (host.widget_child_count_98(widget) <= 1) return;
+        if (host.native_string_has_prefix_at_00553c80(host.widget_virtual_28(widget, "arrow_left_Icon", 0))) {
+            host.control_binding_adjust_setting_0055ccc0(screen, -1);
+            return;
+        }
+        if (host.native_string_has_prefix_at_00553c80(host.widget_virtual_28(widget, "arrow_right_Icon", 0)))
+            host.control_binding_adjust_setting_0055ccc0(screen, 1);
+        return;
+    }
+    if (host.widget_type_5c(widget) == 2) {
+        const std::uint32_t id = raw(widget).at<std::uint32_t>(0xD8);
+        if (id == 0) return;
+        screen.at<std::uint32_t>(0x180) = host.gui_manager_field_5c() > kControlVariantThreshold ? 1u : 0u;
+        control_select_row(screen, id, host);
+        return;
+    }
+    if (host.widget_type_5c(widget) == 3) {
+        host.widget_set_alpha_4c(widget, 1.0f);
+        const auto* const label = static_cast<const std::uint8_t*>(raw(widget).ptr(0xF0));
+        const std::uint8_t lead = label != nullptr ? label[0] : 0;  // "" at 00E1942C
+        if (lead == 0xA7) return;
+        if (lead == 0xA2) {
+            if (page == 0 || page == 1)
+                host.list_listener_activate_04(screen.p + 8, host.list_box_current_row_00425e50(screen.ptr(0x1C)), screen.ptr(0x1C));
+            return;
+        }
+        if (lead == 0xA3) {
+            if (page == 0) {
+                host.set_options_page_00e19650(0);
+                host.front_end_push_interface_request_004cc460(0x0C, 0);
+                if (!host.input_config_load_suppressed_00f88a30()) host.input_configuration_load_00698a10();
+                for (const std::size_t off : {0x16Cu, 0x170u, 0x174u, 0x178u, 0x17Cu}) screen.at<std::uint32_t>(off) = 0;
+                host.widget_set_visible_34(screen.ptr(0x210), 0);
+            } else if (page == 1) {
+                host.control_binding_refresh_page_0055e3a0(screen, 0);
+            } else if (page == 2) {
+                host.control_binding_confirm_or_next_device_00560210(screen);
+            }
+            return;
+        }
+        const std::uint32_t id = raw(widget).at<std::uint32_t>(0xD8);
+        if (id == 0) return;
+        if ((id & 0xFF000000u) == 0xFE000000u) screen.at<std::uint32_t>(0x180) = 0;
+        else if ((id & 0xFF000000u) == 0xFF000000u) screen.at<std::uint32_t>(0x180) = 1;
+        control_select_row(screen, id, host);
+        host.control_binding_position_marker_00553b00(screen, screen.at<std::uint8_t>(0x18C) != 0 ? nullptr : screen.ptr(0x190));
+        host.control_binding_refresh_page_0055e3a0(screen, 3);
+        return;
+    }
+    void* const scroller = screen.p + 0x1A0;
+    if (widget == screen.ptr(0x204)) host.scroller_set_auto_scroll_00683300(scroller, 2, kLeaderboardAutoScrollSpeed, 1);
+    else if (widget == screen.ptr(0x200)) host.scroller_set_auto_scroll_00683300(scroller, 1, kLeaderboardAutoScrollSpeed, 1);
+    else if (widget == screen.ptr(0x20C)) host.scroller_begin_thumb_drag_00683a40(scroller);
+    if (host.widget_type_5c(widget) == 6) {
+        host.widget_set_highlight_88(widget, 2, 0, 1.0f);
+        return;
+    }
+    if (host.widget_type_5c(widget) == 0x12) host.widget_set_highlight_84(widget, 2);
 }
 
 } // namespace bsp::cc13_fe3

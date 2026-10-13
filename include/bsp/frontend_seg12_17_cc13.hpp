@@ -1466,9 +1466,9 @@ struct Fe8LeaderboardUpdateHost : Fe8LeaderboardInputHost {
 void leaderboards_update_00565540(Raw screen, float dt, Fe8LeaderboardUpdateHost& host);
 
 // ---------------------------------------------------------------------------
-// Packet cc13-fe8: control binding screen (segment 17). Screen offsets: +18h page-2 list box,
-// +20h settings list box, +34h conflict text, +160h page, +164h + page*4 per-page selection,
-// +16Ch input device index, +180h binding variant, +184h binding name (NativeString), +18Ch
+// Packet cc13-fe8: control binding screen (segment 17). Screen offsets: list listener +8h, widget
+// listener +0Ch, +20h settings list box, +34h conflict text, +168h page, +16Ch + page*4 per-page
+// selection (page 0's slot +16Ch is the input device index), +180h binding variant, +184h binding name (NativeString), +18Ch
 // "binding unknown", +190h binding text widget, +1A0h scroller (embedded; its +48h byte is
 // screen +1E8h and +20h is +1C0h), +218h clip, +21Ch / +220h first / last visible row, +224h row.
 // ---------------------------------------------------------------------------
@@ -1533,12 +1533,14 @@ void control_binding_refresh_selected_binding_0055c3b0(Raw screen, Fe8ControlBin
 // the row, and 1 is returned; 0 when nothing moved or the row index is -1.
 bool control_binding_scroll_to_selection_0055cec0(Raw screen, bool no_scroll, Fe8ControlBindingHost& host);
 
-// 0055D180 BSP_ControlBindingScreen_OnListboxSelectionChanged, __thiscall(screen, row, list box),
-// RET 8. A null row does nothing. +164h + page*4 = the list's selection (00A9C920). Page 0: the
-// help line (0054A0C0 on [00E1930C]) is the row label (+0F4h) + "_help" (00CEE6BC; 004261A0
-// concatenation); page 1: "FE_pc.cs_loadcontrollerpreset_help" (00CEE698); page 2 with the list
-// +18h: 0055C3B0, list vtable +60h(1), then 0055CEC0(0) until it returns 0.
-void control_binding_on_selection_changed_0055d180(Raw screen, void* row, void* list_box,
+// 0055D180 BSP_ControlBindingScreen_OnListboxSelectionChanged, __thiscall(listener = screen+8h,
+// row, list box), RET 8 (screen offsets below; the body rebases with ADD ESI, -8 at 0055D2E3). A
+// null row does nothing. +16Ch + page(+168h)*4 = the list's selection (00A9C920), so page 0 writes
+// the device index. Page 0: the help line (0054A0C0 on [00E1930C]) is the row label (+0F4h) +
+// "_help" (00CEE6BC; 004261A0 concatenation); page 1: "FE_pc.cs_loadcontrollerpreset_help"
+// (00CEE698); page 2 with the settings list +20h: 0055C3B0, list vtable +60h(1), then 0055CEC0(0)
+// until it returns 0.
+void control_binding_on_selection_changed_0055d180(Raw listener, void* row, void* list_box,
     Fe8ControlBindingHost& host);
 
 struct Fe8ControlBindingEnterHost {
@@ -1906,5 +1908,49 @@ struct Fe8ControlBindWidgetsHost {
 // its arrows (listener +0Ch) and 005F0390(+2Ch, +0Ch); +20h "toggle_text_Group" -> +30h (hidden),
 // its arrows (listener +0Ch). +14h "SelectedConflict_Text" -> +34h.
 void control_binding_bind_widgets_00555dc0(Raw screen, Fe8ControlBindWidgetsHost& host);
+
+struct Fe8ControlEventHost {
+    virtual ~Fe8ControlEventHost() = default;
+    virtual std::int32_t widget_type_5c(void* widget) = 0;                                   // vtable +5Ch
+    virtual std::int16_t widget_child_count_98(void* widget) = 0;                            // vtable +98h
+    virtual void* widget_virtual_28(void* widget, const char* name, std::uint32_t zero) = 0; // vtable +28h
+    virtual bool native_string_has_prefix_at_00553c80(void* result) = 0;                     // ECX = result
+    virtual void widget_set_alpha_4c(void* widget, float alpha) = 0;
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;
+    virtual void widget_set_highlight_88(void* widget, std::uint32_t state, std::uint32_t zero, float one) = 0;
+    virtual void widget_set_highlight_84(void* widget, std::uint32_t state) = 0;
+    virtual float gui_manager_field_5c() = 0;                                                // 004C12B0() +5Ch
+    virtual void list_box_select_index_00a9c7c0(void* list_box, std::int32_t index) = 0;
+    virtual void* list_box_current_row_00425e50(void* list_box) = 0;
+    virtual void list_listener_activate_04(void* listener, void* row, void* list_box) = 0;   // [screen+8] vtable +4
+    virtual void scroller_set_auto_scroll_00683300(void* scroller, std::uint32_t a, float speed, std::uint32_t b) = 0;
+    virtual void scroller_begin_thumb_drag_00683a40(void* scroller) = 0;
+    virtual void set_options_page_00e19650(std::int32_t page) = 0;
+    virtual void front_end_push_interface_request_004cc460(std::uint32_t a, std::uint32_t b) = 0;  // ECX = [00E198B8]
+    virtual bool input_config_load_suppressed_00f88a30() = 0;                                // byte [00F88A30]
+    virtual void input_configuration_load_00698a10() = 0;                                    // ECX = game +3Ch
+    // Control binding routines (ECX = screen).
+    virtual void control_binding_refresh_selected_binding_0055c3b0(Raw screen) = 0;
+    virtual void control_binding_adjust_setting_0055ccc0(Raw screen, std::int32_t delta) = 0;
+    virtual void control_binding_refresh_page_0055e3a0(Raw screen, std::int32_t page) = 0;
+    virtual void control_binding_confirm_or_next_device_00560210(Raw screen) = 0;
+    virtual void control_binding_position_marker_00553b00(Raw screen, void* widget) = 0;
+};
+
+// 00560BF0 BSP_ControlBindingScreen_HandleGuiEvent, slot +4h of the widget listener at screen+0Ch,
+// __thiscall(listener, widget), RET 4 (screen offsets). Page +168h == 3 or widget type 10h: nothing.
+// Type 6 outside the slider group (+1FCh) and type 2 select their row id ([widget+70h]+0D8h /
+// widget+0D8h; zero does nothing): +180h = (004C12B0()+5Ch > 0.625f (00CEE8DC)), 0055C3B0, settings
+// list +20h selects id & 0FFFFh; a type-6 widget with more than one child (vtable +98h) then
+// adjusts the setting by -1 / +1 (0055CCC0) when vtable +28h("arrow_left_Icon" / "arrow_right_Icon",
+// 0) passes 00553C80. Type 3: vtable +4Ch(1.0f); label (+0F0h, "" 00E1942C) A7h does nothing; A2h on
+// pages 0/1 activates the list listener (screen+8h vtable +4) with (the main list's (+1Ch) current
+// row, that list); A3h on page 0 sets [00E19650] = 0, 004CC460(0Ch, 0), reloads the input configuration
+// (00698A10 on game +3Ch) unless [00F88A30], clears +16Ch..+17Ch and hides +210h; page 1 ->
+// 0055E3A0(0); page 2 -> 00560210. Any other label with a row id: top byte FEh / FFh sets +180h to
+// 0 / 1, 0055C3B0, selection as above, 00553B00(+18Ch ? 0 : +190h), 0055E3A0(3). Other types:
+// +204h / +200h auto-scroll +1A0h (2 / 1, 0.004f, 1), +20Ch begins a drag; then type 6 -> vtable
+// +88h(2, 0, 1.0f), type 12h -> vtable +84h(2).
+void control_binding_handle_gui_event_00560bf0(Raw listener, void* widget, Fe8ControlEventHost& host);
 
 } // namespace bsp::cc13_fe3

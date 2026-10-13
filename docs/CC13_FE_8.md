@@ -43,7 +43,7 @@ by `tools/verify_report_calls.py` (0 failed).
 | 0055C200 | `control_binding_show_conflict_text_0055c200` | fastcall(ECX screen), RET | |
 | 0055C3B0 | `control_binding_refresh_selected_binding_0055c3b0` | fastcall(ECX screen), RET | |
 | 0055CEC0 | `control_binding_scroll_to_selection_0055cec0` | thiscall(screen, BYTE no_scroll), RET 4, AL | x87 visibility test |
-| 0055D180 | `control_binding_on_selection_changed_0055d180` | thiscall(screen, row, list box), RET 8 | |
+| 0055D180 | `control_binding_on_selection_changed_0055d180` | thiscall(listener = screen+8h, row, list box), RET 8 | rebases with ADD ESI, -8 |
 | 0055FA80 | `control_binding_enter_0055fa80` | fastcall(ECX screen), RET | in-mission list choice |
 | 00560210 | `control_binding_confirm_or_next_device_00560210` | fastcall(ECX screen), RET | accept-changes prompt |
 | 005001A0 | `library_build_unlocks_list_005001a0` | fastcall(ECX screen), RET | one row |
@@ -71,6 +71,7 @@ by `tools/verify_report_calls.py` (0 failed).
 | 004FD500 | `library_find_entry_for_side_004fd500` | thiscall(library, ref*, dword[4]), RET 8, AL | ledger name CountAvailableMapsForSide |
 | 00511BF0 | `library_select_order_of_battle_side_00511bf0` | thiscall(screen, side), RET 4 | x87 +438h and scroll range; jump table 00511F10 |
 | 00555DC0 | `control_binding_bind_widgets_00555dc0` | fastcall(ECX screen), RET | 23 lookups, scroll bar |
+| 00560BF0 | `control_binding_handle_gui_event_00560bf0` | thiscall(listener = screen+0Ch, widget), RET 4 | |
 
 ### Leaderboards
 
@@ -182,6 +183,13 @@ by `tools/verify_report_calls.py` (0 failed).
 - 00555DC0: the five setting_Group children come from the pointer table 00E086A0..00E086B0 (`main_Text`,
   `var_1_Text`, `var_2_Text`, `conflict_1_Group`, `conflict_2_Group`); the three texts are cleared with
   00ABBE50(`"`, 0) and the two groups hidden. 005F0390 takes (ECX = the slider group, EDX = screen+0Ch).
+- Control binding this-pointers: 0055D180 runs on the list listener (screen+8h) and rebases with
+  `ADD ESI, -8` before calling 0055C3B0 / 0055CEC0; 00560BF0 runs on the widget listener (screen+0Ch,`LEA EBX, [EDI-0Ch]`).
+  The page is screen+168h and the per-page selections start at +16Ch, so page 0's slot is the device
+  index that 0055C200 / 0055C3B0 read. The first draft of 0055D180 (batch 1) used screen offsets 8
+  too low; it was corrected in batch 8 together with its ledger ABI.
+- 00560BF0's A2h path calls the list listener's vtable +4 with (current row of +1Ch, the list +1Ch):
+  the `PUSH ECX` before 00425E50 is that call's second argument, since 00425E50 takes none.
 
 ## For cc9
 
