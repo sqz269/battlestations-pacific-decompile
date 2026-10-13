@@ -289,7 +289,7 @@ inline constexpr bool kKillListenerDeadFirstBound = true;  // ON: lead pair (USN
 // (its bytes +C41h / +100Ah / +36Ah are not held here); the death time is the gunnery
 // host's death clock, not the flush's [00F876A4]; members that die on the same clock
 // are ordered by unit index. False: every death is dispatched, as before.
-inline constexpr bool kKillListenerHarmOnlyBound = false;
+inline constexpr bool kKillListenerHarmOnlyBound = true;  // ON: lead pair, six wins identical (2026-10-13)
 
 // Packet cc13-fix3 (docs/CC13_VER_8.md V5). The `exitzone` channel 00982120,
 // __thiscall(manager [00F8A0C4], entity, exited byte), RET 8. It replaces the entity with
@@ -316,7 +316,7 @@ inline constexpr bool kKillListenerHarmOnlyBound = false;
 // producer yet, and no subscription in this installation watches a plane with
 // exited = false. The HUD warning 00982120 builds for exited = 0 is not modelled.
 // False: exitzone subscriptions are stored and never fire, as before.
-inline constexpr bool kLuaExitZoneListenersBound = false;
+inline constexpr bool kLuaExitZoneListenersBound = true;  // ON: lead pair, six wins identical (2026-10-13)
 
 // Packet cc9_lua54_prcp01 (docs/SQUADRON_LAND_TASK.md 5gj): the four natives on the
 // config at [game+21C4h]. 008B2320 SetSimplifiedReconMultiplier stores Lua argument 1
