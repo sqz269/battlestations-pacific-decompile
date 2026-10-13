@@ -687,5 +687,81 @@ Vec3 trial_integrate_at_climb_angle_007d9360(float angle, float probe_speed, flo
     }
     return body;
 }
+
+// ---- cc13-ver1 -------------------------------------------------------------
+
+float takeoff_speed_floor_007d87c7(float body_vz, float timer_c8, float floor_cc) {
+    if (!(timer_c8 > 0.0f)) return body_vz;    // 007D87CF COMISS / 007D87D2 JBE
+    if (floor_cc > body_vz) return floor_cc;   // 007D87E5 FCOMIP / 007D87E9 JBE
+    return body_vz;
+}
+
+float takeoff_floor_speed_007db2c0(float level_flight_speed_007c47f0) {
+    // double 00CF2510 = 3FF0CCCCC0000000, the float 1.05 widened.
+    return static_cast<float>(static_cast<double>(level_flight_speed_007c47f0) *
+                              1.0499999523162842);
+}
+
+float rate_law_floor_factor_007da710(float forward_speed, float desc_184, float pitch_c64,
+                                     float stall_range_min, float stall_range_max,
+                                     float stall_off_pitch, float stall_on_pitch) {
+    const float ratio = forward_speed / desc_184;                  // 007DAAC5 FDIV, FSTP float
+    const float by_pitch = dive_bomb_interpolate_clamped_00419010(  // 007DAAFE
+        stall_off_pitch, 1.0f, stall_on_pitch, 0.0f, pitch_c64);
+    const float by_speed = dive_bomb_interpolate_clamped_00419010(  // 007DAB31
+        stall_range_min, 1.0f, stall_range_max, 0.0f, ratio);
+    return by_speed * by_pitch;                                     // 007DAB36
+}
+
+float rate_law_deflection_floor_007da710(int axis, float current, float sp) {
+    const float magnitude = std::fabs(current);   // AND 7FFFFFFFh (007DAC12, 007DAD9A)
+    if (axis == 0) return (magnitude * 1.5f) * sp;
+    if (axis == 1) return magnitude * sp;
+    return -1.0f;
+}
+
+float dead_meat_forward_drag_007dbc77(float dyn_0c, bool ctl_94, float lost_drag_timer_c3c,
+                                      float altitude_100, float forward_speed) {
+    if (!ctl_94) return dyn_0c;                          // 007DBC77
+    if (!(lost_drag_timer_c3c > 1.0f)) return dyn_0c;    // 007DBC8F COMISS against XMM0 = 1.0f
+    const float excess = lost_drag_timer_c3c - 1.0f;     // 007DBCA9, double 1.0, FSTP float
+    // 007DBCFC: x0 -8.0f (00CE3CC8), y0 10.0f (00CE38B8), x1 -1.0f (00D7A260), y1 1.0f.
+    const float depth = dive_bomb_interpolate_clamped_00419010(-8.0f, 10.0f, -1.0f, 1.0f,
+                                                               altitude_100);
+    const float scaled = forward_speed * depth;          // 007DBD0C, rounded at 24 bits
+    const float share = excess > 1.0f ? 1.0f : excess;   // 00415510(&1.0f, &excess)
+    return dyn_0c - share * scaled;                      // 007DBD21 / 007DBD28 FSUBR
+}
+
+Vec3 velocity_lowpass_007dc762(const Vec3& prev_30, const Vec3& world_velocity_18, float step) {
+    if (!(step < 0.25f) && !std::isnan(step)) return world_velocity_18;   // 007DC759 JB
+    const float keep = 0.25f - step;                                      // 007DC788, FSTP float
+    const float x = prev_30.x * keep + world_velocity_18.x * step;        // 007DC7B3
+    const float y = prev_30.y * keep + world_velocity_18.y * step;
+    const float z = prev_30.z * keep + world_velocity_18.z * step;
+    return Vec3{x * 4.0f, y * 4.0f, z * 4.0f};                            // 007DC7DB-007DC7F7
+}
+
+ReparentVelocity reparent_velocity_007d9ce0(const ReparentVelocity& in, bool same_parent,
+                                            bool has_old_parent, bool has_new_parent,
+                                            const ReparentCallbacks& cb) {
+    if (same_parent) return in;                                  // 007D9CF2 CMP / 007D9CF4 JE
+    ReparentVelocity out = in;
+    if (has_old_parent) {
+        const Vec3 r = cb.old_parent_to_world(out.velocity_18);  // 007D9D29
+        const Vec3 p = cb.old_parent_velocity();                 // 007D9D4A
+        out.velocity_18 = Vec3{p.x + r.x, p.y + r.y, p.z + r.z};
+        out.vector_24 = cb.old_parent_to_world(out.vector_24);   // 007D9D84
+    }
+    if (has_new_parent) {
+        const Vec3 p = cb.new_parent_velocity();                 // 007D9DAE
+        out.velocity_18 = Vec3{out.velocity_18.x - p.x, out.velocity_18.y - p.y,
+                               out.velocity_18.z - p.z};
+        out.velocity_18 = cb.world_to_new_parent(out.velocity_18);  // 007D9E03
+        out.vector_24 = cb.world_to_new_parent(out.vector_24);      // 007D9E48
+    }
+    out.previous_30 = out.velocity_18;
+    return out;
+}
 }  // namespace gameplay_seg48_cc13
 }  // namespace bsp
