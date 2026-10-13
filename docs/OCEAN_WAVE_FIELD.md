@@ -556,3 +556,196 @@ that root's [+120h] / [+128h]. Item translations are never applied. Section 10(b
 the host now adds landscape_world[12] / [14] for every damp section. Census of the damp items' own composed
 translations (local p1 script over the 107 terrain models): 86 of 87 are (0, 0), so their boxes did not move. Only
 dlc_pu_04's `DLC_PU_04:waterdamp` was misplaced, by (-3.639, -22.063). None of the pair rows' landscapes is affected.
+
+## 15. The combined pair: live sea + live water crossing (2026-10-12)
+
+Exports of 327ae7e86: ON flips `kWaveFieldLiveAmplitudeBound` and `kGunneryLiveWaterSurfaceBound` (main ec19522f3)
+both true (local\p1_on, SHA-256 36BC07976E68), OFF both false (local\p1_off, 7C9A6AD100D3); reference form;
+logs local\p1c_{off,on}_<key>.log (local\p1_combined.ps1, summary local\p1_csum.py). Every row pair_diff exit 3.
+Mechanism: each ON log has `ocean waves:` with the scene's HeightScale, the same +24h amplitude at 1000 render
+steps, the predicted coverage regions, and gunnery's `live water crossings=N bound=1`. OFF has none of these.
+
+| Row | OFF | ON |
+|---|---|---|
+| USN04 3000 | impacts 101, water 9 | impacts 94, water 9 |
+| JM06 3000 | 2 deaths; impacts 141, water 4 | **10 deaths**: the player subs' torpedoes sink eight US ships; shots 235 -> 512, every one a live crossing. A torpedo launched below y = 0 never satisfied the old `from > 0` test, so it never started its swim; 0084B380 needs only end.y <= surface |
+| LOMP10 3000 | impacts 118 | impacts 142 |
+| USN01 l50_u1_u2 | completed 475.21 s | **no completion** |
+| USN02 s36_u2_p7 | completed 782.03 s | completed **203.01 s** |
+| LOMP10 s37_l10_p2 | completed 1127.67 s | **no completion**; only-OFF deaths include Oyodo (Coastal gun) |
+| USN12 s38_u12_p2 | completed 1529.92 s | **no completion**; only-OFF deaths: Charles, Claxton (Japanese torpedoes) |
+| ESMP08 l46_e8_orders2 | completed 3456.80 s | completed 2807.71 s |
+| LOMP06 l50_l6_q6 | completed 486.80 s | completed 397.53 s |
+| BSM01 l50_b1_a | EndMission 767.94 s | EndMission 767.94 s |
+
+The OFF wins moved from AG on current main (USN01 702.85 -> 475.21, LOMP10 957.54 -> 1127.67, ESMP08 3204.10 ->
+3456.80); these are other lanes' commits, so compare within the pair only. Wins with both ON: USN02, ESMP08, LOMP06
+and BSM01 hold; USN01, LOMP10 and USN12 are lost. USN02 came back: it was lost with the sea alone and completes with
+the crossing too. The LOMP10 and USN12 losses are not explained per entity yet.
+
+## 16. The LOMP10 and USN12 losses, per entity (cc9-physics2, 2026-10-12)
+
+Logs from section 15's pair (local\p1c_*); per-entity tools are local\p1_deaths.py and local\p2_health.py.
+
+**USN12 (s38_u12_p2): a knife-edge on a one-ship plan.** Phase 3 completes when `luaRemoveDeadsFromTable(MontGrp)[1]`
+comes within 1000 of ClEscape (usn_12_augusta.lua, this installation, 2024-07-13). The orders steer only
+Montpelier. Both runs have Agano launch the same 8-torpedo salvo at Charles (OFF 818.87..822.67 s, ON
+812.73..816.52 s). In OFF it sinks Charles at 830.67 s; in ON it sinks Montpelier at 824.07 s. Haguro's next salvo
+likewise sinks Claxton in OFF and Columbia in ON. With Montpelier dead, the escape test runs on Cleveland, which
+nothing steers. Systematic damage is not what changed: deaths are 20 / 20, and only the victims of one salvo
+differ.
+
+**LOMP10 (s37_l10_p2): a stalemate after a chaotic divergence.** The win is MonitorSanJoseForce's
+`getn(alive) == 3` over 8 ships (10_san_jose.lua), polled each second. OFF loses 5 (Kasumi 472.96 s, Asashimo
+938.14, Sugi 968.69, Oyodo 1044.49, Kaya 1111.71). ON loses 4 (Kasumi 442.52, Kaya 474.31, Asashimo 954.79, Sugi
+1044.84). The killers and times line up: the same CB4 squadrons, CB4 itself, and Coastal Gun 02 at about 1044.5 s.
+The gun takes Oyodo in OFF and Sugi in ON, because in ON Sugi survived the CB4 strike that sank it at 968 s. An ON
+run extended to 40000 frames (local\p2s_on_l10x.log) has no fifth death and no completion. The four survivors
+(Ashigara, Oyodo at hull-water health 0.073, Kiyoshimo, Kashi) take no damage after the 1500 s cap, so this is not a
+frame-cap artefact. The first moved entity is Kasumi, 30 s earlier, to the same squadron. Verdict: chance, not a
+directional effect of the sea; the plan has no margin for one kill fewer.
+
+## 17. The flip: live sea and live water crossing ON (cc9-physics3, 2026-10-12)
+
+`kWaveFieldLiveAmplitudeBound` (include/bsp/ocean_spectrum.hpp) and `kGunneryLiveWaterSurfaceBound`
+(src/game_hosts_gunnery.cpp) are set true together, by the lead's decision. Basis: the mechanism matched every
+prediction in sections 11 and 15 (the scene's HeightScale as the +24h amplitude, one render step per frame, the
+predicted coverage regions, every round's water crossing at 0084B380 -> 0078D1B0 on the live surface), and each win
+the combined pair lost (USN01, LOMP10, USN12) was explained per entity as a knife-edge or chance, not a directional
+effect (section 16). The two switches go together because the crossing samples the live sea: with the sea alone a
+round still crosses at y = 0 while hulls ride the waves. The wins pair on main with and without this commit follows
+in its own section.
+
+## 18. The seven wins, main against main + the flip (cc9-physics3, 2026-10-12)
+
+Exports: OFF = origin/main db5ab3c4e (local\p3_off, SHA-256 8151D0015447), ON = fe01ecf32, section 17's commit
+(local\p3_on, B22D402CE8ED). Reference form with `--stop-after-end 40`, BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1;
+logs local\p3w_{off,on}_<key>.log (local\p3_runs.ps1, summary local\p3_sum.py, one-sided deaths local\p3_deathdiff.py).
+Every row is pair_diff exit 3; every ON log has `live water crossings=N bound=1`, OFF has 0. Every completion logs
+the exec guard's sus_prog.exe refusal.
+
+| Row | OFF (main) | ON (main + flip) | Deaths OFF / ON |
+|---|---|---|---|
+| USN01 l50_u1_u2 | completed 425.72 s | **no completion** (22000 frames) | 91 / 61 |
+| USN02 s36_u2_p7 | completed 198.06 s | completed 203.01 s | 14 / 12 |
+| LOMP10 s37_l10_p2 | completed 1184.73 s | **no completion** (30000 frames) | 56 / 71 |
+| USN12 s38_u12_p2 | completed 1589.38 s | completed 1554.69 s | 109 / 109 |
+| ESMP08 l46_e8_orders2 | **no completion** (80000 frames) | completed 3714.45 s | 738 / 711 |
+| LOMP06 l50_l6_q6 | completed 369.98 s | completed 535.24 s | 7 / 4 |
+| BSM01 l50_b1_a | EndMission 767.94 s | EndMission 767.94 s | 194 / 188 |
+
+Per entity:
+- USN01: the only OFF-only ship death is Convoy6 (194.96 s, ConTBD3, cat 1), the same single roll as section 13.
+  The ON-only deaths are shore targets after 619 s. A plan casualty, as before.
+- LOMP10: OFF-only Kasumi (466.46 s, CB4 squadron) and Kiyoshimo (1167.96 s, Coastal gun 02); ON-only Oyodo
+  (950.69 s, CB4). The plan needs every ship, and one fewer falls. The same kind as section 16.
+- USN12 is back: it completes ON with the same 109 deaths.
+- ESMP08 is back: Cassin dies at 438.32 s in ON (Zuikaku_sqn02, cat 10), which is the strike main's Dyn precision
+  flip lost (GUNNERY 183). On main alone it is still lost (Cassin survives; Zuikaku dies at 1673.16 s).
+
+Net: main holds six of seven (all but ESMP08); main + the flip holds five (USN02, USN12, ESMP08, LOMP06, BSM01).
+Lost by the flip: USN01 and LOMP10. Gained: ESMP08.
+
+## 19. classDesc+74h over the bullet classes, and 006E8680's (x, y) (cc9-physics3, 2026-10-12, read-only)
+
+**+74h.** `0084C11C..0084C14C` runs the exit trace `0084B4B0` only when the shot's vtable[2Ch] (its medium) is
+non-zero and `0084C133 cmp byte [edi+74h], 0` finds zero; otherwise the entry trace `0084B380`. The vtable[30h]
+accessor `006E2580` reads the same byte (`mov eax,[ecx+4]; mov al,[eax+74h]; ret`). The byte is the weapon class's
+`ExplWaterHit` (include/bsp/projectile_kinds.hpp `kWeaponClassOffExplWaterHit`, read with default false at
+projectile_kinds.cpp 191). Census of this installation's bulletclasses.lua (local\p3_explwater.py; realistic
+105 entries, mtime 2025-06-02; arcade 119 entries, mtime 2026-05-09, locally modified like vehicleclasses.lua):
+
+| Type | realistic | arcade |
+|---|---|---|
+| Artillery, Bomb, Bullet, Flak, Rocket, Kamikaze, DummyKamikazePlane, DummySubmarine, DummyTarget | all `true` (83) | all `true` (96) |
+| Torpedo, Depthcharge, WaterMine, Paratrooper | all absent, so false (22) | all absent (23) |
+
+So the exit trace can run only for a torpedo, depth charge, mine or paratrooper already in the water; every
+other round ends at the water whichever medium it is in. That is what the host does (GUNNERY 182).
+
+**006E8680.** `006E8673` stores `[esi+100h]` as the second argument and `006E867D` `[esi+0FCh]` as the first, then
+`006E8680` calls `0078CF20` (which passes both straight to `0078C890` and `00B9CF50`) and `006E8685` compares
+`[esi+100h]` with the result: y <= h selects vtable[28h], else [24h]. The spawn-time medium test therefore samples
+(x, y), the same axis defect as `0084B3D8` and `0078D29D` (docs/PROJECTILE_HELPERS.md section 1). The host's
+`create_projectile_006e8430` (projectile_kinds.cpp 339) samples (x, z); it has no caller in src, so nothing moves.
+The one-line correction was routed to the lead (not this lane's file).
+## 20. Re-planned USN01 and LOMP10 for main + the flip (cc9-physics3, 2026-10-12)
+
+All runs on local\p3_on (fe01ecf32), reference form, `--stop-after-end 40`; order files and logs in
+J:\PROG\battlestations-pacific-decompile-cc9-physics1\local (p3_u1_*.txt, p3_l10_*.txt, p3r_on_*.log). Each
+completion logs the exec guard's sus_prog.exe refusal.
+
+**LOMP10.** The win is `getn(alive SanJoseForce) == 3` of eight (this installation's usn\LOMP\10_san_jose.lua 557,
+mtime 2024-07-13): five of Ashigara, Oyodo, Kiyoshimo, Asashimo, Sugi, Kashi, Kaya, Kasumi must sink. Section 18's ON
+run sank four. s37_l10_p2's launches end at frame 11000 and most of its retries are refused ("slot not in state 1 or
+5"). The re-plan keeps s37_l10_p2 and adds a CB4_AF launch every 200 frames from 11400 to 26000, slots 1..4 with the
+same classes (118, 104, 135, 104). **p3_l10_b.txt** (targets alternate Kasumi, Kiyoshimo): completed 978.43 s, the
+fifth death Kiyoshimo at 863.86 s (CB4_AF_sqn17). p3_l10_a.txt (Kasumi, Kiyoshimo, Kashi): completed 1034.48 s.
+
+**USN01.** Phase 2 completes on `getn(alive Mission.Convoy) == 0` (usn\usn_1_marshall.lua 535, mtime 2024-07-13), and
+only the Con* squadrons are player units then: `select` of a cruiser is refused (00645060) and Enterprise's slots are
+empty for a Convoy6 launch (006C0F00). After the strike the squadrons are spent: retargets at 200-400 s apply but
+Convoy6 keeps 1348/2400 with damage control on, and the squadrons ditch at 23 m after 525 s (p3_u1_a..f). Retargets
+before the strike move which ship survives (p3_u1_g/h/i/k each leave one or two). What works is one retarget in the
+middle of the strike: ConTBD3, whose second plane sinks Convoy5 at 185.16 s, is pointed at Convoy6 for its remaining
+torpedo. **p3_u1_o.txt** (l50_u1_u2 + `3690 select ConTBD3`, `3691 target ConTBD3 Convoy6`): completed 618.72 s, Convoy6
+sunk at 200.36 s. p3_u1_m.txt (the same at 3704): completed 618.72 s. At 3720 (p3_u1_n) it is too late.
+## 21. The plane water laws next to the ocean object (cc9-physics3, 2026-10-12, read-only)
+
+cc13's band sweep (docs/CC13_BAND_0074_0078.md) left `0078D3D0`, `0078D6C0` and `0078D785` to this lane. Callers are
+from a rel32/absolute-dword scan of the image on disk (local\p3_xref.py; it finds the known calls, so a missing
+caller is a real absence of literal references, not a vacuous scan).
+
+| Address | What it is | Callers |
+|---|---|---|
+| `0078D3D0`..`0078D53E` (RET 0Ch, thiscall world) | the water-surface normal at (x, z): four `0078CF20` samples at x +- 1.0 and z +- 1.0 (the double `00D7A210` = 1.0), a cross product `004F9B30` of the two differences (with the float `00D7A24C` = 1.0 as the step component) and a normalize through `00419440` | `007DD034` and `007DD39D`, both in `007DCDD0`, the plane's state-6 water law |
+| `0078D6C0`..`0078D81E` (RET 1Ch) | a segment's water crossing: samples `0078CF20` at the start, then bisects with `0078D1B0` towards the entry (start above) or, from `0078D785`, the exit (start below) | one, `0053FC0A` in `0053F2D0`, the menu screen burst update (include/bsp/menu_screens_2.hpp 994): not gameplay |
+| `0078D785` | not a function: the start-below branch target of `0078D6C0` (`0078D6EB JBE`) | none |
+
+**What the host does against the live sea.**
+- The free-flight water line (`007CC523`..`007CC562`, game_hosts_units.cpp 17550) samples `0078CF20` through
+  `OceanFieldBinding`, which returns the live field when the sea is on. Logged contacts now show non-zero water
+  heights (USN01 p3r_on_u1o: Mav4 water -0.58, Mav3 1.07). Live; no gap.
+- The depth kill (`007CE313`..`007CE3AC`) compares the absolute altitude with -30.0, as the image does. No gap.
+- A live aircraft with a non-zero MinWaterSpd (every torpedo and dive bomber) ignores a contact (`007CB7F0`'s early
+  return) and stays in free flight, so a low torpedo run sees the live surface only through the line above. No gap.
+- **The gap is the state-6 arm `007CBA50` -> `007DCDD0`** (docs/WATER_SURFACE_LAW.md 2.3): the buoyancy law with the
+  `0078D3D0` normal, the `007DB680` water arm (partly unread at `007DC426`..`007DC64A`), the righting term, the
+  speed damping and the 1.5 m lift-off back to state 7. The host freezes a state-6 aircraft where it touched.
+
+**Reach of the gap.** Only aircraft in state 6: dead ones (a wreck that floats instead of freezing) and live
+classes with MinWaterSpd zero. In this installation's vehicleclasses.lua (mtime 2026-05-09) those are the nine
+floatplanes and flying boats: M6A Seiran, OS2U Kingfisher, PBY Catalina, F1M Pete, E13A Jake, H6K Mavis, H8K Emily,
+A6M-N Rufe, Black Cat (local\p3_minwater.py). In the logs on disk the only live state-6 entry is JM08's "Movie
+Mavis" (alive, MinWaterSpd 0, cc9-gunnery35 g35_*_jm08 logs), a scripted alighting. No win row and no torpedo row
+has one. Not bound: the binding would be the whole `007DCDD0` law with an unread arm, and nothing scored reaches it.
+## 22. Section 21's gap, closed (cc9-physics4, 2026-10-12)
+
+The state-6 arm `007CBA50` -> `007DCDD0` is read whole and bound: `kPlaneWaterSurfaceLawBound`, ON at
+`25d13aa63` (docs/WATER_SURFACE_LAW.md sections 10-12). `007DC426`-`007DC64A` is read. USN01 and ESMP08
+pairs are gameplay identical; only the wrecks move. `0078D6C0` (the menu burst's water crossing) stays
+unbound: not gameplay.
+
+## 23. cc9-physics4 handoff (sea/physics lane + WINS KEEPER), 2026-10-13 01:18 UTC
+
+(GUNNERY_OPEN_ITEMS.md was leased by gunnery38, so the handoff lives here.) Tree
+J:\PROG\battlestations-pacific-decompile-cc9-physics1 (branch agent/cc9-physics1), merged with origin/main. Run launcher
+local\p4_runs.ps1 (sets ga, arc, wr, lt, u1z4; -Seq runs one pair at a time; orders from config/win_orders). Edit
+scripts local\p4_*.py.
+
+Done and flipped ON: kPlaneWaterSurfaceLawBound (25d13aa63), kPlaneWreckDepthRemovalBound (0ea291d35),
+kGunAimDegreePrecisionBound (f435022e8), kGunArcFloatPrecisionBound (67e99782c). Docs: WATER_SURFACE_LAW 10-13,
+X87_CONTROL_WORD (the host precision policy and the spots), DYN_LCP_IMPULSE_MATH / DYN_CONTACT_SOLVER corrections,
+PLANE_INPUT_CHECKS_CC9.md. Win order files in config/win_orders (3bde171d1).
+
+Open, in order:
+1. **USN01 re-plan** on main once the lead confirms n1 and lua53's kamikaze+sweep flip have landed (gunnery38's O1,
+   avoid-pick and gun-burst are on main at bc4f4022a). First divergences in GUNNERY 198-199: Convoy5 survives (n1),
+   Convoy1/6 (gun-burst/O1), phase 3 escort (avoid-pick). Method: WINS_TABLE keeper notes (retarget mid-strike).
+2. **kPlaneLeaderTurnRollBound** (8b0e7bfce, OFF): faithful, loses USN01 p3_u1_z4 (deaths 90 -> 68); the lead decides
+   flip + re-plan. Its USN12 half was invalid (no order file): re-pair USN12 + LOMP10 from config/win_orders.
+3. **Channel C (the wing fold) at the elevator:** read whole (PLANE_INPUT_CHECKS_CC9.md (a)); the binding needs a Lua
+   accessor for VehicleClass[i].PartAnims.Wings[1..3] (lua lane), then a per-plane value stepped in the fixed step and
+   the elevator test value == 0.0 for the ten Wings classes.
+4. Census row 1 skipped by the lead's ruling; the sea bands' raw-ownership leftovers are teardown helpers only.
+5. One launch died at renderer init with the session on the console (18:05 local): check query session first.

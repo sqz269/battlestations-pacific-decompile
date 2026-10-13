@@ -1,0 +1,25 @@
+{
+ "packet": "cc13_scene_headers2",
+ "document": "docs/CC13_SCENE_WEATHER.md",
+ "source": "src/scene_weather_cc13.cpp",
+ "status": "reconstructed_build_tested",
+ "call_sites": [
+  {"function": "004f1d70", "address": "004f2205", "native": "004eb9b0", "name": "BSP_SceneRecord_ReadWaterProperties"},
+  {"function": "004f1d70", "address": "004f232a", "native": "004ee9e0", "name": "BSP_SceneRecord_ReadStaticShadowAndShaderTextures"},
+  {"function": "004f1d70", "address": "004f2349", "native": "004e8510", "name": "BSP_SceneRecord_ApplyPostEffectProperties"},
+  {"function": "00469bf0", "address": "00469d53", "native": "004ed910", "name": "BSP_SceneFile_ApplyTerrainTextureHeader"},
+  {"function": "004eb9b0", "address": "004ec9f6", "native": "004eb180", "name": "BSP_SceneRecord_ReadAnimatedTextureFrames"},
+  {"function": "004eb9b0", "address": "004ec99e", "native": "004e5d20", "name": "BSP_Color_ScaleRgbaByScalar"},
+  {"function": "004eb9b0", "address": "004ebb21", "native": "004e5c00", "name": "BSP_Color_LinearizeRgbGamma22"},
+  {"function": "004e8510", "address": "004e876a", "native": "00b0e9b0", "name": "BSP_SceneRenderer_SetHdrParams"},
+  {"function": "004e8510", "address": "004e88a5", "native": "00b0ea20", "name": "BSP_SceneRenderer_SetMotionBlurParams"},
+  {"function": "004e8510", "address": "004e8a78", "native": "00b0ea70", "name": "BSP_SceneRenderer_SetUnderwaterWaveParams"},
+  {"function": "004ed910", "address": "004ed989", "native": "00b1b830", "name": "BSP_WorldParameterTable_SetString"},
+  {"function": "004ed910", "address": "004eddca", "native": "00a83fd0", "name": "BSP_SoundSampleCache_AcquireByName"},
+  {"function": "004ed910", "address": "004ede43", "native": "00a7f2f0", "name": "BSP_SoundSystem_SetRetainedChannel"},
+  {"function": "004ed910", "address": "004ede61", "native": "00bdf940", "name": "BSP_VFS_ClearAliases"},
+  {"function": "004ed910", "address": "004ee0a9", "native": "00bdf590", "name": "BSP_VFS_AddAlias"},
+  {"function": "004ed910", "address": "004ee17a", "native": "00ad60d0", "name": "BSP_FoliageSystem_RefreshBushTextures"}
+ ]
+}
+

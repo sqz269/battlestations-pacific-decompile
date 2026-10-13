@@ -97,7 +97,7 @@ Rt   = classDesc+268h TurnCircleRadius * 1.4                      009C6853 -> ba
 
 ```
 009c6861  +1Ch != 0                      -> 009c6929, skip the arm whole (the LATCH)
-009c6889  1.5 * sin(Eabs) * R  >  Rt     -> +19h = 0, T = 0 (009C6893's XORPS zero)
+009c6889  (0.5 + 0.5 sin(Eabs)) * R > Rt -> +19h = 0, T = 0 (009C6893's XORPS zero)
 009c68a0  otherwise                         approach+CCh = 3, the weapon selector
 009c68d4  cos(Eabs) * R - 120.0 <= 0     -> 009c6919 +1Ch = 1
           otherwise                      -> +19h = 0 and 009C6911's T
@@ -107,7 +107,9 @@ Rt   = classDesc+268h TurnCircleRadius * 1.4                      009C6853 -> ba
 ```
 
 `120.0` is the **double** at `00D1F3F8` (`009C68C2 FSUB double ptr`); the `0.5` at `00D7A280` is a
-double too, and `009C686F`-`009C6877` folds it into `sin + 0.5 * sin`, i.e. `1.5 * sin`. So the
+double too, and `009C686F`-`009C6877` give `0.5 + 0.5 sin` (CORRECTED by cc13-audit9: `009C6875 FMUL ST(1),ST(0)`
+leaves the 0.5 in ST0 for `009C6877 FADDP`; the earlier reading was `1.5 * sin`; host behind
+`kDiveFlyAboveCrossTrackBound`, GUNNERY 192). So the
 cross-track test is "does the roll-in fit inside one turn circle" and the along-track test is "am I
 within 120 m of the lead point".
 

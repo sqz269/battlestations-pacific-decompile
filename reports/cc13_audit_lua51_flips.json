@@ -1,0 +1,27 @@
+{
+  "doc": "docs/CC13_AUDIT_LUA51_FLIPS.md",
+  "steps": [
+    {"address": "009816D5", "native": "006E6670", "function": "009813A0", "note": "the kill dispatcher copies the victim's +2B0h handle; its id word +2C8h is copied at 009816DA"},
+    {"address": "00981869", "native": "0097B8C0", "function": "009813A0", "note": "first kill evaluation over (victim +174h, attacker id, +2D8h)"},
+    {"address": "009818ED", "native": "00884A90", "function": "009813A0", "note": "Lua argument 1, the victim"},
+    {"address": "0098191F", "native": "00884AC0", "function": "009813A0", "note": "Lua argument 2, the attacker handle"},
+    {"address": "00981953", "native": "00884A00", "function": "009813A0", "note": "Lua argument 3, +2D8h"},
+    {"address": "009819AB", "native": "00887E50", "function": "009813A0", "note": "each matched callback is called with the three arguments"},
+    {"address": "00981AE9", "native": "006E1B90", "function": "009813A0", "note": "second pass: the handle is re-pointed at attacker->vtable[140h]()"},
+    {"address": "00981C31", "native": "0097B8C0", "function": "009813A0", "note": "second kill evaluation"},
+    {"address": "00981D6C", "native": "00887E50", "function": "009813A0", "note": "second-pass callback call"},
+    {"address": "0077CF84", "native": "0077CC80", "function": "0077CE60", "note": "victim+2B0h = shot source +98h; +2D8h written at 0077CFC5 / 0077D067 / 0077D08A"},
+    {"address": "0077D11A", "native": "0077CC80", "function": "0077CE60", "note": "the parent (victim->vtable[140h](), IsKindOf(2)) gets the same attacker; parent+2D8h = [src+1Ch] at 0077D122"},
+    {"address": "00988706", "native": "0077CC80", "function": "00988510", "note": "the hit dispatcher's attacker handle from the shot source +98h"},
+    {"address": "00988D17", "native": "0097B8C0", "function": "00988510", "note": "first hit evaluation"},
+    {"address": "00988E2C", "native": "00884FC0", "function": "00988510", "note": "Lua argument 4, the attackType string from 00E08E58"},
+    {"address": "00988F5D", "native": "00887E50", "function": "00988510", "note": "first-pass hit callback call, 8 arguments"},
+    {"address": "00989060", "native": "006E1B90", "function": "00988510", "note": "hit second pass: the attacker handle re-pointed at vtable[140h]()"},
+    {"address": "009892E4", "native": "0097B8C0", "function": "00988510", "note": "second hit evaluation"},
+    {"address": "0098952A", "native": "00887E50", "function": "00988510", "note": "second-pass hit callback call"},
+    {"address": "0046D426", "native": "0046C550", "function": "0046CF40", "note": "scene gate for a non-hidden entity, last argument 0 (PUSH 0 at 0046D3E0)"},
+    {"address": "0046D655", "native": "0046C550", "function": "0046CF40", "note": "scene gate for a Hidden entity, last argument 1 (PUSH 1 at 0046D60F)"},
+    {"address": "0046CC01", "native": "0046C450", "function": "0046C550", "note": "mode 9 with GenerateInGame: the 5Ch record appended to this+24h, then 0046CC29 returns 1 only when the last argument is set"},
+    {"address": "0046F27C", "native": "0046AC50", "function": "0046F160", "note": "first insert (44h) into the scene database's +158h set"}
+  ]
+}

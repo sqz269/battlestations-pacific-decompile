@@ -1,0 +1,184 @@
+{
+ "packet": "cc13-legmgr1",
+ "document": "docs/CC13_LEG_ALTITUDE_MANAGER.md",
+ "source": "src/leg_altitude_manager_cc13.cpp",
+ "functions": [
+  {
+   "address_entry": "009fc000",
+   "cpp": "LegAltitudeManager::register_009fc000",
+   "steps": [
+    {
+     "address": "009fc01c",
+     "native": "009fb010",
+     "function": "009fc000"
+    },
+    {
+     "address": "009fc0f7",
+     "native": "00bf55be",
+     "function": "009fc000"
+    },
+    {
+     "address": "009fc14f",
+     "native": "00bf6989",
+     "function": "009fc000"
+    }
+   ]
+  },
+  {
+   "address_entry": "009fc1c0",
+   "cpp": "LegAltitudeManager::remove_009fc1c0",
+   "steps": [
+    {
+     "address": "009fc1c4",
+     "native": "009fb010",
+     "function": "009fc1c0"
+    }
+   ]
+  },
+  {
+   "address_entry": "009fc260",
+   "cpp": "LegAltitudeManager::altitude_009fc260",
+   "steps": [
+    {
+     "address": "009fc27d",
+     "native": "009fb010",
+     "function": "009fc260"
+    },
+    {
+     "address": "009fc317",
+     "native": "00bf55be",
+     "function": "009fc260"
+    },
+    {
+     "address": "009fc3f4",
+     "native": "0042e740",
+     "function": "009fc260"
+    },
+    {
+     "address": "009fc6a8",
+     "native": "0042e740",
+     "function": "009fc260"
+    },
+    {
+     "address": "009fc6e7",
+     "native": "00bf6989",
+     "function": "009fc260"
+    }
+   ]
+  },
+  {
+   "address_entry": "009fb010",
+   "cpp": "(host lock; not reconstructed)",
+   "steps": [
+    {
+     "address": "009fb036",
+     "native": "00415350",
+     "function": "009fb010"
+    },
+    {
+     "address": "009fb06c",
+     "native": "00bf681b",
+     "function": "009fb010"
+    },
+    {
+     "address": "009fb083",
+     "native": "009fa9f0",
+     "function": "009fb010"
+    },
+    {
+     "address": "009fb096",
+     "native": "00415350",
+     "function": "009fb010"
+    },
+    {
+     "address": "009fb0a4",
+     "native": "00bd0c30",
+     "function": "009fb010"
+    }
+   ]
+  },
+  {
+   "address_entry": "callers",
+   "cpp": "users of the manager (rel32 scan)",
+   "steps": [
+    {
+     "address": "009fd07f",
+     "native": "009fc000",
+     "function": "009fd050"
+    },
+    {
+     "address": "009fd0c5",
+     "native": "009fc1c0",
+     "function": "009fd050"
+    },
+    {
+     "address": "009fd078",
+     "native": "009bd400",
+     "function": "009fd050"
+    },
+    {
+     "address": "009fd0be",
+     "native": "009bd400",
+     "function": "009fd050"
+    },
+    {
+     "address": "009bd6bc",
+     "native": "009bd400",
+     "function": "009bd4d0"
+    },
+    {
+     "address": "009bd6cd",
+     "native": "009fc260",
+     "function": "009bd4d0"
+    },
+    {
+     "address": "009bd52f",
+     "native": "009fd050",
+     "function": "009bd4d0"
+    },
+    {
+     "address": "009bd642",
+     "native": "009fd050",
+     "function": "009bd4d0"
+    },
+    {
+     "address": "009bd138",
+     "native": "009fd050",
+     "function": "009bd120"
+    },
+    {
+     "address": "009beca9",
+     "native": "009bd400",
+     "function": "009beba0"
+    },
+    {
+     "address": "009becba",
+     "native": "009fc260",
+     "function": "009beba0"
+    },
+    {
+     "address": "009bec85",
+     "native": "009fd050",
+     "function": "009beba0"
+    },
+    {
+     "address": "009c358f",
+     "native": "009beba0",
+     "function": "009c3570"
+    },
+    {
+     "address": "009c32b8",
+     "native": "009fd050",
+     "function": "009c32a0",
+     "kind": "no_ghidra_function"
+    },
+    {
+     "address": "009fb610",
+     "native": "009fb010",
+     "function": "009fb610",
+     "kind": "no_ghidra_function"
+    }
+   ]
+  }
+ ]
+}

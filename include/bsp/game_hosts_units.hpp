@@ -451,10 +451,39 @@ inline constexpr bool kDepartedWingmanTaskBlockBound = true;  // ON: pairs (docs
 inline constexpr bool kDiveProfileDrawBound = true;  // ON: pairs (docs/DIVE_BOMB_TASK.md)
 inline constexpr bool kSquadronAttackAltBound = true;  // ON: pairs (docs/LUA_BINDING_MISSION.md)
 inline constexpr bool kSquadronTravelAltBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
+// Packet cc13-cadence2 (docs/CC13_TASK_PROFILE_CADENCE.md). A task's vtable +54h
+// cruise profile runs only when the task becomes the bot's head: 0099AEB3 after
+// 0099A4C0 changed the head (the 0099A170 install), and 0099AE2B for the parked
+// task. No other vt[54h] dispatch on a task exists. True: the dive (009C8920),
+// level-bomb (009B8C90), land (009B3C60) and moveto (009C3650) profile bodies run
+// once per install; the dive draw is made then. False: they run per think (the
+// moveto gate per 0.5 s refresh), as before.
+inline constexpr bool kTaskProfileActivationOnlyBound = true;  // GUNNERY 193: ON by pair verdict
+// Packet cc13-audit13 (docs/CC13_AUDIT13_RECENT_FLIPS.md, A3). The dive profile's
+// third block, the +39Ch release-altitude gate (009C89E4-009C8A17: +38Eh, +384h < 0,
+// +3ABh, the 9999 write 009C8A0E, the lock clear 009C8A17), is in the same leader
+// branch as the +398h block. True: with kTaskProfileActivationOnlyBound it runs at
+// activation only, so a non-forced SquadronSetReleaseAlt lasts for the task. False:
+// per think, which ends the script value one think after its 0.5 s countdown.
+inline constexpr bool kDiveReleaseAltActivationOnlyBound = false;
 
 inline constexpr bool kPlaneRowPositionBound = true;  // ON: mechanism held, one premise miss (docs/CONTROLLED_UNIT.md)
 
 inline constexpr bool kSubmarineDiveTeleportBound = true;  // ON: pairs held (docs/SUBMARINE_MODEL.md section 15)
+// Packet cc13-smalldiffs1 (docs/CC13_SMALL_DIFFS_BATCH_2.md item 1). The moveto
+// refresh 009BEBA0 zeroes approach+2Ch (009BEBAA-009BEBB7) while the squadron
+// byte +3ADh is 0, which the Lua altitude natives 0089F550 / 008A22B0 /
+// 008A24E0 store and the profile writes 009C375A / 009C3906 / 009C89D6 undo.
+// True: the steer altitude drops the random offset while a script altitude is
+// live. False: cruise - offset always.
+inline constexpr bool kMoveToLuaAltZeroOffsetBound = true;  // GUNNERY 193: ON by pair verdict
+// Packet cc13-audit13 (docs/CC13_AUDIT13_RECENT_FLIPS.md, A4). With the moveto
+// activation draws ON, the leader's +3ADh = 1 store (009C375A / 009C3906) belongs
+// after the activation's own refresh 009C36BF, not after the install's 009C1D9D.
+// True: the store moves there, so a script altitude that the activation retires
+// still zeroes the freshly drawn +2Ch. False: the store follows the install's
+// refresh, and the activation's +2Ch survives.
+inline constexpr bool kMoveToActivationLuaAltOrderBound = false;
 
 class GameUnitsHost {
 public:
@@ -556,6 +585,9 @@ public:
     // unit has no slot.
     // Packet cc9_squadron_attack_alt: 008A22B0's five stores on the squadron's slot.
     bool set_squadron_attack_alt_008a22b0(std::size_t unit_index, float altitude, bool force);
+    // Packet cc13_natives1: 008A24E0's five stores on the squadron's third block
+    // (+384h, +38Eh, +39Ch, +3ABh, +3ADh); 009C8920 / 009C7A80 read +39Ch.
+    bool set_squadron_release_alt_008a24e0(std::size_t unit_index, float altitude, bool force);
     bool set_squadron_travel_alt_0089f550(std::size_t unit_index, float altitude, bool force);
 
     // Packet cc9_difficulty. SetSkillLevel's leaf, unit->vtable[128h]: 009565A0
@@ -1113,6 +1145,10 @@ public:
     // and the compiled predicates in unit_kind_query.hpp. Missing/unrecognized
     // identity and invalid indices answer false. docs/GAME_UNIT_KIND_BINDING.md.
     bool unit_is_kind_of(std::size_t index, int class_id) const;
+    // Packet cc13_natives1: unit+720h, the byte 0095AD0A sets on message 7Dh
+    // (InferiorFailure); here the airfield destruction rule's inferior arm has
+    // run at least once. What 00953E60 answers for "InferiorFailure".
+    bool inferior_failure_720(std::size_t index) const;
     // Packet cc9_unit_class_lands_troops. [unit+538h]->vtable[2Ch](): 00827FB0 on a
     // ship-family class ([class+78Ch] LandingShip and [class+790h] LandingShipAmount
     // both non-zero), 00963C70 on the landing-ship class (creator 0074BE00:

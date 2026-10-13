@@ -36,6 +36,12 @@ enum class StrafeState : int {
 // goaway and script dogfights are unmeasured (5cb).
 inline constexpr bool kStrafeTaskBound = true;   // ON: SQUADRON_LAND_TASK 5cb
 
+// Packet cc13-smalldiffs1 (docs/CC13_SMALL_DIFFS_BATCH_2.md item 3). The
+// attackrun constructor 009CAC80 seeds its countdown +1Ch = -U(0, 1)
+// (009CACDA, stream 1); the enter 009CAD90 resets only +18h and +20h. True: the
+// install draws it on the "#star1c" key. False: +1Ch starts at 0.
+inline constexpr bool kStrafeAttackrunSeedDrawBound = true;   // GUNNERY 193: ON by pair verdict
+
 // 007EEC50's guns inputs in the PilotSetTarget choice (src/
 // game_hosts_script_orders.cpp): guns_available = PilotFires (plane+C24h,
 // 007EEB08 / 007EEBB7) and guns_suppressed = 0047B850 (kind 10h or 16h,
@@ -101,6 +107,13 @@ void strafe_approach_update_009cced0(StrafeApproachUpdate& ap, float dt,
 // tick 009B99E0, ends at 00996300). The strafe arm is suspended while one
 // runs and resumes when it ends. False: the gate is only counted.
 inline constexpr bool kStrafeBreakoffBound = true;   // ON: SQUADRON_LAND_TASK 5cm.1
+
+// Packet cc13-smalldiffs1 (docs/CC13_SMALL_DIFFS_BATCH_2.md item 2). The goaway
+// bank 009CB87E (FMUL qword [00D05858]), the goaway pitch cap 009CB6F8 (FADD
+// qword [00D05850]) and the gotowards alignment test 009CAB7B (FLD qword
+// [00D057D8]) load doubles that are not a widened float. True: the image's
+// doubles. False: the float values the host used before.
+inline constexpr bool kStrafeDoubleConstantsBound = true;   // GUNNERY 193: ON by pair verdict
 
 // 009BAFC0's pitch reference for tightturn (009BB018-009BB12B, read from the
 // listing). altitude = unit+100h, speed = unit vtable[38h], pitch = unit+C64h,

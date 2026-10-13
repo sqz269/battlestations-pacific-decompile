@@ -1,0 +1,12 @@
+{
+  "packet": "cc13-sweep60",
+  "doc": "docs/CC13_BAND_0060_0066.md",
+  "steps": [
+    {"address": "004bfeb3", "function": "004bfe50", "native": "006529f0", "claim": "the spectator gate calls the support-manager screen mode test with ECX = [[00E198C4]+BCh]"},
+    {"address": "0064516f", "function": "00645160", "native": "00645060", "claim": "the forwarder calls BSP_Unit_IsSelectableForControl with EDX = the current player index"},
+    {"address": "006451bb", "function": "00645180", "native": "00645060", "claim": "the single-player branch of the local-player test calls BSP_Unit_IsSelectableForControl"},
+    {"address": "00658597", "function": "00658580", "native": "00aa6740", "claim": "world-to-map reads the size of the support-manager screen's widget +1C0h"},
+    {"address": "00622e85", "function": "00622e30", "native": "00621c60", "kind": "tail_jump", "claim": "the page step tail-jumps to the page refresh when no forward page is enabled"},
+    {"address": "006067e6", "function": "006067e0", "native": "00606880", "kind": "tail_jump", "claim": "the +170h adjustor thunk jumps to the cockpit camera's scalar deleting destructor"}
+  ]
+}

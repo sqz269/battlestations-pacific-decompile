@@ -12,6 +12,7 @@
 
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/lua_exec_guard.hpp"
+#include "bsp/kamikaze_task_host.hpp"   // packet cc9_lua52_kamikaze_wiring
 #include "bsp/game_hosts_mission_frame.hpp"
 
 #include "bsp/air_operations.hpp"
@@ -56,6 +57,7 @@
 #include "bsp/recon_values.hpp"
 #include "bsp/recon_slot_lists.hpp"  // packet cc9_recon_publication
 #include "bsp/shipyard_production.hpp"  // packet cc9_lua_add_shipyard_stock
+#include "bsp/plane_retreat_task.hpp"   // packet cc13_natives1, 00489C40
 #include "bsp/vfs_locale_runtime.hpp"
 #include "bsp/vfs_provider_manager.hpp"
 
@@ -472,12 +474,18 @@ int binding_trampoline(lua_State* state) {
     const bool add_damage_row = kLuaAddDamageBound && dispatch_row.address == 0x0088e000u;
     const bool aa_enable_row = kLuaAAEnableBound && dispatch_row.address == 0x0089c740u;
     const bool ship_speed_row = kLuaSetShipSpeedBound && dispatch_row.address == 0x00890d30u;
+    // Packet cc13_natives1.
+    const bool set_failure_row = kLuaSetFailureBound && dispatch_row.address == 0x0088eff0u;
+    const bool get_failure_row = kLuaSetFailureBound && dispatch_row.address == 0x0088f1d0u;
     // Packet cc9_unit_get_attack_target.
     const bool attack_target_row = kLuaUnitGetAttackTargetBound
         && dispatch_row.address == 0x008a6de0u;
     // Packet cc9_squadron_set_speed.
     const bool squadron_speed_row = kLuaSquadronSetSpeedBound
         && dispatch_row.address == 0x0089f780u;
+    // Packet cc13_natives1.
+    const bool force_gunner_row = kLuaSquadronForceGunnerModeBound
+        && dispatch_row.address == 0x0089f950u;
     // Packet cc9_is_class_changed.
     const bool class_changed_row = kLuaIsClassChangedBound
         && dispatch_row.address == 0x008cc4b0u;
@@ -487,6 +495,8 @@ int binding_trampoline(lua_State* state) {
     // Packet cc9_lua_submarine_on_surface.
     const bool sub_surface_row = kLuaGetSubmarineOnSurfaceBound
         && dispatch_row.address == 0x008942c0u;
+    // Packet cc13_natives1.
+    const bool truly_dead_row = kLuaTrulyDeadBound && dispatch_row.address == 0x00899500u;
     // Packet cc9_set_air_base_slot_count.
     const bool slot_count_row = kLuaSetAirBaseSlotCountBound
         && dispatch_row.address == 0x008963e0u;
@@ -502,12 +512,18 @@ int binding_trampoline(lua_State* state) {
     // Packet cc9_squadron_travel_alt.
     const bool travel_alt_row = kSquadronTravelAltBound
         && dispatch_row.address == 0x0089f550u;
+    // Packet cc13_natives1.
+    const bool release_alt_row = kLuaSquadronSetReleaseAltBound
+        && dispatch_row.address == 0x008a24e0u;
     // Packet cc9_squadron_attack_alt.
     const bool attack_alt_row = kSquadronAttackAltBound
         && dispatch_row.address == 0x008a22b0u;
     // Packet cc9_get_closest_border_zone.
     const bool border_zone_row = kLuaClosestBorderZoneBound
         && dispatch_row.address == 0x008aecd0u;
+    // Packet cc13_natives1.
+    const bool in_border_zone_row = kLuaIsInBorderZoneBound
+        && dispatch_row.address == 0x008af020u;
     // Packet cc9_lua_formation_query.
     const bool in_formation_row = kLuaFormationQueryBound
         && dispatch_row.address == 0x008996a0u;
@@ -560,19 +576,24 @@ int binding_trampoline(lua_State* state) {
         && (dispatch_row.address == 0x008acb70u || dispatch_row.address == 0x008aca30u);
     const bool handled = checkpoint_row || avoidance_setting || objective_row || get_property_row || kill_row
         || add_listener_row || remove_listener_row || listener_active_row || set_invincible_row
+        || set_failure_row || get_failure_row
         || forced_recon_row || add_damage_row || aa_enable_row || ship_speed_row
         || override_hp_row
         || attack_target_row || squadron_speed_row || class_changed_row || sub_depth_row
         || sub_surface_row
+        || force_gunner_row
         || slot_count_row || add_stock_row || shipyard_stock_row || device_reload_row
         || unlimited_air_row
         || in_formation_row || leave_formation_row || travel_alt_row || border_zone_row
         || untouchable_row
+        || truly_dead_row
         || attack_alt_row
         || ready_row
         || launch_row || generate_row || spawn_new_row || scoring_play_time_row
         || spawn_id_requested_row || spawn_id_remove_row
+        || in_border_zone_row
         || select_unit_row || movie_add_row || force_select_row
+        || release_alt_row
         || (orders != nullptr && GameScriptOrdersHost::handles(dispatch_row.name));
     // The replay of a failed named call, which the executable makes only to
     // recover the error message, must not count a second time.
@@ -704,6 +725,10 @@ int binding_trampoline(lua_State* state) {
         if (!host->error_replay()) host->run_squadron_set_travel_alt_0089f550(state, argc);
         return 0;
     }
+    if (release_alt_row) {
+        if (!host->error_replay()) host->run_squadron_set_release_alt_008a24e0(state, argc);
+        return 0;
+    }
     if (in_formation_row && !host->error_replay()) {
         return host->run_is_in_formation_008996a0(state, argc);
     }
@@ -720,6 +745,9 @@ int binding_trampoline(lua_State* state) {
     if (border_zone_row && !host->error_replay()) {
         return host->run_get_closest_border_zone_008aecd0(state, argc);
     }
+    if (in_border_zone_row && !host->error_replay()) {
+        return host->run_is_in_border_zone_008af020(state, argc);
+    }
     if (leave_formation_row) {
         if (!host->error_replay()) host->run_leave_formation_00899eb0(state, argc);
         return 0;
@@ -734,8 +762,15 @@ int binding_trampoline(lua_State* state) {
     if (sub_surface_row && !host->error_replay()) {
         return host->run_get_submarine_on_surface_008942c0(state, argc);
     }
+    if (truly_dead_row && !host->error_replay()) {
+        return host->run_truly_dead_00899500(state, argc);
+    }
     if (squadron_speed_row) {
         if (!host->error_replay()) host->run_squadron_set_speed_0089f780(state, argc);
+        return 0;
+    }
+    if (force_gunner_row) {
+        if (!host->error_replay()) host->run_squadron_force_gunner_mode_0089f950(state, argc);
         return 0;
     }
     if (attack_target_row && !host->error_replay()) {
@@ -744,6 +779,13 @@ int binding_trampoline(lua_State* state) {
     if (ship_speed_row) {
         if (!host->error_replay()) host->run_set_ship_speed_00890d30(state, argc);
         return 0;
+    }
+    if (set_failure_row) {
+        if (!host->error_replay()) host->run_set_failure_0088eff0(state, argc);
+        return 0;
+    }
+    if (get_failure_row && !host->error_replay()) {
+        return host->run_get_failure_0088f1d0(state, argc);
     }
     if (aa_enable_row) {
         if (!host->error_replay()) host->run_aa_enable_0089c740(state, argc);
@@ -2578,6 +2620,8 @@ void GameMissionLuaHost::attach_script_orders(GameScriptOrdersHost* orders) noex
     // (004DFAC3 writes 00F89B3C in BSP_Game_ConstructWorld and 004D2D7E clears
     // it in BSP_Game_DestroyWorld), so a request cannot outlive its mission.
     bsp::set_spawn_queue_drain(orders == nullptr ? nullptr : this);
+    // Packet cc9_lua52_kamikaze_wiring: the released rounds live with the world.
+    bsp::dummy_kamikaze_rounds().clear();
     if (orders == nullptr) {
         bsp::spawn_request_queue().clear();
         bsp::set_air_ops_squadron_factory(nullptr);
@@ -3417,6 +3461,7 @@ void GameMissionLuaHost::run_spawn_queue_0094c490(float step_seconds) {
     dispatch_hit_listeners_00988510();
     if (kLuaListenersBound && kLuaReconListenersBound) dispatch_recon_listeners_00980e50();
     if (kReconPublishBound) publish_recon_slot_tables_00806b10();
+    if constexpr (bsp::kDropKamikazeTaskBound) run_dummy_kamikaze_rounds_006fec00(step_seconds);
     // DAT_00F876A4. 0094C490 never reads the delta 0094C8F0 pushes for it, so
     // the step is used only to advance the clock the interval is measured on.
     spawn_world_clock_ += step_seconds;
@@ -3809,6 +3854,36 @@ void GameMissionLuaHost::report_spawn_queue() {
             "removes=%llu removed=%llu (00945850/00945A20, packet cc9_spawn_new_id_queries)",
             g_spawn_id_census.requested, g_spawn_id_census.answered_true,
             g_spawn_id_census.removes, g_spawn_id_census.removed);
+    }
+}
+
+// Packet cc9_lua52_kamikaze_wiring. 006FEC00 for every released
+// DummyKamikazePlane round. SUBSTITUTION, labelled: the image ticks the round in
+// the bomb pass of the fixed step; here it is stepped once per mission frame,
+// ahead of the spawn queue, and the unit it makes takes the same route as an
+// air-ops squadron (create, AutoAttackTarget, the SEntity init push).
+void GameMissionLuaHost::run_dummy_kamikaze_rounds_006fec00(float step_seconds) {
+    if (script_orders_ == nullptr) return;
+    const std::vector<bsp::DummyKamikazeSpawn> spawns =
+        bsp::dummy_kamikaze_rounds().step(step_seconds);
+    for (const bsp::DummyKamikazeSpawn& s : spawns) {
+        const std::size_t units_before = script_orders_->units().count();
+        std::string name;
+        const std::uint32_t entity =
+            script_orders_->create_dummy_kamikaze_squadron_006fec00(s, name);
+        if (entity == 0u) continue;
+        // 006FEE41-006FEE5F: AutoAttackTarget only with a target at +98h;
+        // 007F4BA0 turns it into the attack order (007F15F0 -> 007EEC50).
+        if (s.target_plus_one > 0) {
+            script_orders_->queue_auto_attack_target_007f15f0(
+                entity, static_cast<std::uint32_t>(s.target_plus_one));
+        }
+        if constexpr (kSEntityInitAllBound) {
+            route_push_squadron(static_cast<int>(entity), name, s.plane_class, units_before);
+        } else if (attach_created_entity_00928a00(static_cast<int>(entity), name,
+                                                  s.plane_class)) {
+            attach_wing_member_tables(units_before, entity, s.plane_class);
+        }
     }
 }
 
@@ -5015,15 +5090,20 @@ void GameMissionLuaHost::dispatch_kill_listeners_009813a0() {
         ++summary_.listener_kill_deaths;
         const int victim = static_cast<int>(unit + 1);
         // Packet cc9_lua51_listener_args: the boxed lastAttacker (+2C8h, one based, 0 =
-        // none) and +2D8h. SUBSTITUTION (labelled): +2D8h is the host's credited slot
-        // from its 0077CE60 rule, 0 for a victim no attributed hit reached.
+        // none) and +2D8h. The unit constructor 0077EED0 leaves +2C8h = 0 (0077EFDD)
+        // and +2D8h = -1 (0077EFEF OR EAX,-1; 0077F012), and only 0077CE60's block
+        // write changes them, so a victim no attributed hit reached boxes (nil, -1).
+        // SUBSTITUTION (labelled): +2D8h otherwise is the host's credited slot from
+        // its 0077CE60 rule, whose owning slot is the gunnery host's side stand-in.
         const GameGunneryHost* gunnery = units_hooks_->gunnery();
         int attacker = 0;
-        int attacker_slot = 0;
+        int attacker_slot = -1;
         if ((kLuaKillAttackerBound || kLuaListenerCallbackArgsBound) && gunnery != nullptr) {
             attacker = static_cast<int>(gunnery->kill_last_attacker(unit));
-            attacker_slot = gunnery->kill_credited_slot(unit);
-            if (attacker != 0) ++summary_.listener_kill_with_attacker;
+            if (attacker != 0) {
+                attacker_slot = gunnery->kill_credited_slot(unit);
+                ++summary_.listener_kill_with_attacker;
+            }
         }
         std::vector<std::string> callbacks;
         auto evaluate = [&](int attacker_id) {
@@ -5521,6 +5601,40 @@ int GameMissionLuaHost::run_squadron_set_speed_0089f780(lua_State* state, int ar
     return 0;
 }
 
+// Packet cc13_natives1 (docs/CC13_WIN_PATH_NATIVES.md section 4). 0089F950
+// SquadronForceGunnerMode(entity, flag), 0089F950-0089FAE4 RET: 0089FA4E 00888AA0
+// on argument 0 (ESI), 0089FA80 00B66250 on argument 1, 0089FA9C MOV [ESI+379h],BL.
+// No class or null test, no result. The squadron constructor 007F2C60 clears the
+// byte (007F2D25). Readers: 0064A1E0 (HUD root update, the controlled unit when
+// IsKindOf(18h)) and 00647080 (which keeps interface 23h while it is set).
+// SUBSTITUTIONS (labelled): the byte is kept per units-host slot here rather than
+// on the entity; an entity with no slot is counted unresolved (the image would
+// write through whatever 00888AA0 returned).
+int GameMissionLuaHost::run_squadron_force_gunner_mode_0089f950(lua_State* state,
+    int argument_count) {
+    ++summary_.force_gunner_calls;
+    const bool flag = argument_count >= 2 && ::lua_toboolean(state, 2) != 0;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    if (units == nullptr || id <= 0 || static_cast<std::size_t>(id) > units->count()) {
+        ++summary_.force_gunner_unresolved;
+        return 0;
+    }
+    const std::size_t index = static_cast<std::size_t>(id - 1);
+    if (force_gunner_379_.size() <= index) force_gunner_379_.resize(index + 1, 0);
+    force_gunner_379_[index] = flag ? 1 : 0;
+    if (flag) ++summary_.force_gunner_set;
+    const GameUnitRow* row = units->unit_row(index);
+    log_.notef("  SquadronForceGunnerMode 0089f950: \"%s\" +379h=%d (packet cc13_natives1)",
+        row != nullptr ? row->name.c_str() : "?", flag ? 1 : 0);
+    log_.implemented("MissionLuaNative::SquadronForceGunnerMode", "0089f950");
+    return 0;
+}
+
+bool GameMissionLuaHost::squadron_force_gunner_mode_379(std::size_t unit_index) const {
+    return unit_index < force_gunner_379_.size() && force_gunner_379_[unit_index] != 0;
+}
+
 // Packet cc9_is_class_changed. 008CC4B0 IsClassChanged(id): argument 0 as an integer
 // (00B66290, 008CC5AF), then 00437F50 and CMP [EAX+ESI*4+2010h],ESI / SETNZ
 // (008CC5CB..008CC5D6) into 00B66450 (lua_pushboolean). One result.
@@ -5579,6 +5693,31 @@ int GameMissionLuaHost::run_get_submarine_on_surface_008942c0(lua_State* state,
     if (on_surface) ++summary_.sub_surface_true;
     ::lua_pushboolean(state, on_surface ? 1 : 0);
     log_.implemented("MissionLuaNative::GetSubmarineOnSurface", "008942c0");
+    return 1;
+}
+
+// Packet cc13_natives1 (docs/CC13_WIN_PATH_NATIVES.md section 2). 00899500
+// TrulyDead(entity), 00899500-00899695 RET, ECX the Lua state: 008995EF
+// 00B677E0 (argument 0), 00899609 00B67800 GetByName("Ptr", 00CFAD08), 00899618
+// 00B662D0 ToUserdata and 0089964A 00B66450 with `pointer == null`; one result.
+// There is no class test. The image nulls `Ptr` only in 00928C80 (the on-killed
+// slot vtable[80h], reached from the kill list's drain), so a unit that is `Dead`
+// but still in the world (a sinking hull) answers false.
+// SUBSTITUTIONS (labelled): the host's self tables carry the entity id as light
+// userdata and nothing in the host nulls it yet (the units host records 00928C80),
+// so every entity table answers false until that hook exists; a non-table
+// argument, where the image's GetByName has no table to index, answers true.
+int GameMissionLuaHost::run_truly_dead_00899500(lua_State* state, int argument_count) {
+    ++summary_.truly_dead_calls;
+    void* ptr = nullptr;
+    if (argument_count >= 1 && ::lua_type(state, 1) == LUA_TTABLE) {
+        ::lua_getfield(state, 1, "Ptr");
+        ptr = ::lua_touserdata(state, -1);
+        ::lua_settop(state, argument_count);
+    }
+    if (ptr == nullptr) ++summary_.truly_dead_true;
+    ::lua_pushboolean(state, ptr == nullptr ? 1 : 0);
+    log_.implemented("MissionLuaNative::TrulyDead", "00899500");
     return 1;
 }
 
@@ -5943,6 +6082,31 @@ int GameMissionLuaHost::run_squadron_set_attack_alt_008a22b0(lua_State* state,
     return 0;
 }
 
+// Packet cc13_natives1 (docs/CC13_WIN_PATH_NATIVES.md section 7). 008A24E0
+// SquadronSetReleaseAlt(squadron, altitude[, force]), 008A24E0-008A2702 RET:
+// 008A25E6 00888AA0 on argument 0 (ESI), 008A2617 00B66270 on argument 1, and
+// argument 2 through 00B66250 (008A265F) only when 008A2634 00B663F0 counts
+// exactly three arguments; then the five stores 008A2692..008A26B9. No result.
+// SUBSTITUTION (labelled): an entity with no squadron slot stores nothing.
+int GameMissionLuaHost::run_squadron_set_release_alt_008a24e0(lua_State* state,
+    int argument_count) {
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    const float altitude = argument_count >= 2 ? static_cast<float>(::lua_tonumber(state, 2)) : 0.0f;
+    const bool force = argument_count == 3 && ::lua_toboolean(state, 3) != 0;
+    bool stored = false;
+    if (units != nullptr && id > 0 && static_cast<std::size_t>(id) <= units->count()) {
+        stored = units->set_squadron_release_alt_008a24e0(static_cast<std::size_t>(id - 1),
+            altitude, force);
+    }
+    const GameUnitRow* row = stored ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
+    log_.notef("  SquadronSetReleaseAlt 008a24e0: \"%s\" alt=%.1f force=%d stored=%d (packet "
+        "cc13_natives1)", row != nullptr ? row->name.c_str() : "?",
+        static_cast<double>(altitude), force ? 1 : 0, stored ? 1 : 0);
+    log_.implemented("MissionLuaNative::SquadronSetReleaseAlt", "008a24e0");
+    return 0;
+}
+
 // Packet cc9_lua_formation_query. 008996A0 IsInFormation(unit): argument 0 through
 // BSP_ObjectHandle_FromLuaTable, then lua_pushboolean([unit+284h] != 0). One result.
 // SUBSTITUTION (labelled): an entity with no units-host slot answers false (the image
@@ -6188,7 +6352,16 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
             next = static_cast<float>(clock + (quick ? 9.99999974737875e-05 : 2.0));
             ++summary_.listener_hit_throttle_passed;
         }
-        const int victim = static_cast<int>(hit.victim + 1);
+        int victim = static_cast<int>(hit.victim + 1);
+        if (kLuaHitTargetSquadronBound) {
+            // 00988530..0098859B: target = hitEntity->vtable[140h](), a plane's squadron.
+            if (const bsp::PlaneSquadronHostRecord* sqn =
+                    bsp::plane_squadron_registry().find_by_member_unit(hit.victim)) {
+                if (sqn->squadron_unit != bsp::kPlaneSquadronNoUnit) {
+                    victim = static_cast<int>(sqn->squadron_unit + 1);
+                }
+            }
+        }
         const GameBulletClassRow* bullet = gunnery->bullet_class_row(hit.bullet_class);
         const std::string type = bullet != nullptr ? bullet->type : std::string();
         std::vector<std::string> callbacks;
@@ -6390,6 +6563,51 @@ int GameMissionLuaHost::run_get_closest_border_zone_008aecd0(lua_State* state,
     return 1;
 }
 
+// Packet cc13_natives1 (docs/CC13_WIN_PATH_NATIVES.md section 3). 008AF020
+// IsInBorderZone(entity | position), 008AF020-008AF257, RET, ECX the Lua state.
+// 008AF11E 008889C0 asks whether argument 0 is an entity handle: yes, 008AF153
+// 00888AA0 and the translation +FCh/+100h/+104h (00414DB0 first when +C8h is
+// clear); no, 008AF1AC 00888760. 008AF1EF 0071C4F0 with ECX = [00E188A8]; when
+// it answers outside, 008AF1FF 00489C40 (same ECX) and 008AF20C 00B664B0 push
+// the record's +4h, its side (0 or 1 after the twelve 004C7150 calls). Inside,
+// nothing is pushed and the script reads nil. A side of 0 is a true value in Lua.
+// SUBSTITUTIONS (labelled): the entity test is the host's `ID` field read (an
+// entity table with an ID resolving to a units-host slot), and the translation is
+// the slot's +FCh row; with no zone records the image would dereference null, the
+// host pushes nothing and counts it.
+int GameMissionLuaHost::run_is_in_border_zone_008af020(lua_State* state,
+    int argument_count) {
+    ++summary_.in_border_zone_calls;
+    float position[3] = {0.0f, 0.0f, 0.0f};
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    if (units != nullptr && id > 0 && static_cast<std::size_t>(id) <= units->count()) {
+        units->unit_position_00fc(static_cast<std::size_t>(id - 1), position[0], position[1],
+            position[2]);
+    } else if (argument_count >= 1) {
+        read_vector3_00888760(state, 1, position);
+    }
+    const std::array<float, 3> p{position[0], position[1], position[2]};
+    log_.implemented("MissionLuaNative::IsInBorderZone", "008af020");
+    if (!border_zones_loaded_) {
+        ++summary_.in_border_zone_no_zone;   // no Map bounds: read as inside
+        return 0;
+    }
+    if (!bsp::point_outside_world_map_0071c4f0(border_bounds_, p)) return 0;
+    ++summary_.in_border_zone_outside;
+    const bsp::BorderZoneRecord* zone
+        = bsp::border_zone_at_point_00489c40(border_bounds_, border_zones_, p);
+    if (zone == nullptr) {
+        ++summary_.in_border_zone_no_zone;
+        return 0;
+    }
+    ::lua_pushinteger(state, static_cast<lua_Integer>(zone->side));
+    log_.notef("  IsInBorderZone 008af020: (%.2f, %.2f, %.2f) outside the map, side %d "
+        "(packet cc13_natives1)", static_cast<double>(p[0]), static_cast<double>(p[1]),
+        static_cast<double>(p[2]), zone->side);
+    return 1;
+}
+
 // Packet cc9_set_invincible_native. 00897A50 SetInvincible(entity, value):
 // argument 0 through 00888AA0; argument 1 is a boolean (00897B6F) giving 1.0 or
 // 0.0, otherwise its number, a fraction of maximum health (a nil or missing
@@ -6414,6 +6632,112 @@ int GameMissionLuaHost::run_override_hp_008c1930(lua_State* state, int argument_
     units->gunnery()->override_hp_008c1930(static_cast<std::size_t>(id - 1), value);
     log_.implemented("MissionLuaNative::OverrideHP", "008c1930");
     return 0;
+}
+
+namespace {
+// Packet cc13_natives1: the case-blind compares of 008132C0 (_stricmp, 00425850),
+// 008135C0, 00953DA0 and 00953E60.
+bool failure_name_equals(const std::string& name, const char* literal) {
+    const std::size_t n = std::strlen(literal);
+    if (name.size() != n) return false;
+    for (std::size_t i = 0; i < n; ++i) {
+        if (std::tolower(static_cast<unsigned char>(name[i]))
+            != std::tolower(static_cast<unsigned char>(literal[i]))) return false;
+    }
+    return true;
+}
+// The class test 008C6DD0 uses for a ship (IsKindOf 4).
+constexpr int kFailureShipKindOfClassId = 4;
+}  // namespace
+
+// Packet cc13_natives1 (docs/CC13_WIN_PATH_NATIVES.md section 1). 0088EFF0
+// SetFailure(entity, name, ...), 0088EFF0-0088F1CB RET: 0088F0EE 00888AA0 on
+// argument 0 (ESI, no null or class test), 0088F121 00B662B0 on argument 1 into a
+// NativeString, 0088F14C CALL [vtable+194h](name, frame); no result. The ship
+// vtables (eight, +194h = 008132C0):
+//   "Explosion" (_stricmp): 008133A2..008133D0 read argument 2 and 3 as integers,
+//     4 and 5 as numbers and 6 as an integer into message 6Ah +24h/+28h/+2Ch/+30h/
+//     +34h (008133D5); 008198A0 schedules 00818110, whose step applies
+//     vtable[1ACh](msg+30h). A call with no extra arguments explodes for 0.
+//   "SteeringJam": message 6Bh only (008134C4) -> 0081999D unit+9E4h = 1. No
+//     record and no duration: nothing in the image retires it.
+//   "EngineJam": 00813530 007619B0 message 6Ch -> 008199C7 unit+9E5h = 1, then
+//     0081356F 0093BD80 on unit+A20h pushes {5, "EngineJam", argument 2 when it is a
+//     number, else 1e10 (00CE4970)}; 0093C520 runs it down and 00813660's 6Eh
+//     clears the byte.
+//   "Periscope": 00813595 009373C0 on [unit+1018h] unless +122Ch == 2.
+// Other classes: 00953DA0 sends 7Dh for "InferiorFailure" (+720h); the airfield's
+// 006D2210 tests RunwayFailure / HangarFailure first.
+// SUBSTITUTIONS (labelled): the ship test is IsKindOf(4) through the units host,
+// standing in for the eight vtables; the messages apply at the call, not on the
+// session pump; the Explosion keeps only msg+30h; the non-ship arms are counted
+// and not applied.
+int GameMissionLuaHost::run_set_failure_0088eff0(lua_State* state, int argument_count) {
+    ++summary_.set_failure_calls;
+    const char* text = argument_count >= 2 ? ::lua_tostring(state, 2) : nullptr;
+    const std::string name = text != nullptr ? text : "";
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    if (units == nullptr || units->gunnery() == nullptr || id <= 0
+        || static_cast<std::size_t>(id) > units->count()) {
+        ++summary_.set_failure_unresolved;
+        log_.notef("  SetFailure 0088eff0: \"%s\" on entity id %d with no units-host slot "
+            "(packet cc13_natives1)", name.c_str(), id);
+        return 0;
+    }
+    const std::size_t index = static_cast<std::size_t>(id - 1);
+    int arm = 0;
+    if (units->unit_is_kind_of(index, kFailureShipKindOfClassId)) {
+        // 0093BD80: more than two arguments and argument 2 a number, else 1e10.
+        const float seconds = argument_count >= 3 && ::lua_type(state, 3) == LUA_TNUMBER
+            ? static_cast<float>(::lua_tonumber(state, 3)) : 1e10f;
+        // 008133C5: argument 5, msg+30h; a missing argument reads 0.
+        const float damage = argument_count >= 6
+            ? static_cast<float>(::lua_tonumber(state, 6)) : 0.0f;
+        arm = units->gunnery()->script_set_failure_008132c0(index, name, seconds, damage);
+    }
+    if (arm != 0) ++summary_.set_failure_applied;
+    else ++summary_.set_failure_other;
+    const GameUnitRow* row = units->unit_row(index);
+    log_.notef("  SetFailure 0088eff0: \"%s\" on \"%s\" arm=%d (packet cc13_natives1)",
+        name.c_str(), row != nullptr ? row->name.c_str() : "?", arm);
+    log_.implemented("MissionLuaNative::SetFailure", "0088eff0");
+    return 0;
+}
+
+// Packet cc13_natives1 (docs/CC13_WIN_PATH_NATIVES.md section 1). 0088F1D0
+// GetFailure(entity, name), 0088F1D0-0088F3BE RET: 0088F2CE 00888AA0, 0088F301
+// 00B662B0, 0088F331 CALL [vtable+198h](name, frame, &out) RET 0Ch, 0088F373
+// 00B66450 with out's low byte; one result. `out` is never written before the call,
+// so an unmatched name pushes a stale stack byte. Ship 008135C0: SteeringJam +9E4h,
+// EngineJam +9E5h, Periscope +122Ch == 2, else 00953E60: InferiorFailure +720h.
+// Airfield 006D2350: RunwayFailure +748h, HangarFailure +749h, else 00953E60.
+// SUBSTITUTIONS (labelled): an unmatched name answers false; Periscope, RunwayFailure
+// and HangarFailure answer false (not modelled); +720h is the units host's inferior
+// arm of the airfield destruction rule.
+int GameMissionLuaHost::run_get_failure_0088f1d0(lua_State* state, int argument_count) {
+    ++summary_.get_failure_calls;
+    const char* text = argument_count >= 2 ? ::lua_tostring(state, 2) : nullptr;
+    const std::string name = text != nullptr ? text : "";
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    bool out = false;
+    if (units != nullptr && id > 0 && static_cast<std::size_t>(id) <= units->count()) {
+        const std::size_t index = static_cast<std::size_t>(id - 1);
+        const bool ship = units->unit_is_kind_of(index, kFailureShipKindOfClassId);
+        if (ship && units->gunnery() != nullptr && failure_name_equals(name, "SteeringJam")) {
+            out = units->gunnery()->ship_jam_flag(index, true);
+        } else if (ship && units->gunnery() != nullptr
+                   && failure_name_equals(name, "EngineJam")) {
+            out = units->gunnery()->ship_jam_flag(index, false);
+        } else if (failure_name_equals(name, "InferiorFailure")) {
+            out = units->inferior_failure_720(index);
+        }
+    }
+    if (out) ++summary_.get_failure_true;
+    ::lua_pushboolean(state, out ? 1 : 0);
+    log_.implemented("MissionLuaNative::GetFailure", "0088f1d0");
+    return 1;
 }
 
 int GameMissionLuaHost::run_set_invincible_00897a50(lua_State* state, int argument_count) {
@@ -6693,6 +7017,42 @@ float GameMissionLuaHost::read_vehicle_class_nested_number(int index, const char
     return value;
 }
 
+bool GameMissionLuaHost::read_vehicle_class_part_anim(int index, const char* key,
+    float& first, float& second, float& third, bool& has_third) {
+    first = 0.0f;
+    second = 0.0f;
+    third = 0.0f;
+    has_third = false;
+    if (state_ == nullptr || index < 0 || key == nullptr) return false;
+    const int top = ::lua_gettop(state_);
+    bool present = false;
+    ::lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
+    if (::lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_pushinteger(state_, index);
+        ::lua_gettable(state_, -2);
+        if (::lua_type(state_, -1) == LUA_TTABLE) {
+            ::lua_getfield(state_, -1, "PartAnims");
+            if (::lua_type(state_, -1) == LUA_TTABLE) {
+                ::lua_getfield(state_, -1, key);
+                if (::lua_type(state_, -1) == LUA_TTABLE) {
+                    present = true;
+                    float* const slots[3] = {&first, &second, &third};
+                    for (int i = 0; i < 3; ++i) {
+                        ::lua_rawgeti(state_, -1, i + 1);
+                        if (::lua_type(state_, -1) == LUA_TNUMBER) {
+                            *slots[i] = static_cast<float>(::lua_tonumber(state_, -1));
+                            if (i == 2) has_third = true;
+                        }
+                        ::lua_pop(state_, 1);
+                    }
+                }
+            }
+        }
+    }
+    ::lua_settop(state_, top);
+    return present;
+}
+
 float GameMissionLuaHost::read_vehicle_class_number(int index, const char* key,
     float fallback) {
     // The same plain `VehicleClass[index][key]` lookup as
@@ -6736,6 +7096,33 @@ float GameMissionLuaHost::read_bullet_class_number(int index, const char* key,
             ::lua_getfield(state_, -1, key);
             if (::lua_type(state_, -1) == LUA_TNUMBER) {
                 value = static_cast<float>(::lua_tonumber(state_, -1));
+            }
+        }
+    }
+    ::lua_settop(state_, top);
+    return value;
+}
+
+float GameMissionLuaHost::read_bullet_class_nested_number(int index, const char* key,
+    const char* nested_key, float fallback) {
+    // Packet cc9_lua53_kamikaze_impact: Bullets[index].Blast.BlastDamageMin and
+    // its siblings, one table deeper than read_bullet_class_number reaches.
+    if (state_ == nullptr || index < 0 || key == nullptr || nested_key == nullptr) {
+        return fallback;
+    }
+    const int top = ::lua_gettop(state_);
+    float value = fallback;
+    ::lua_getfield(state_, LUA_GLOBALSINDEX, "Bullets");
+    if (::lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_pushinteger(state_, index);
+        ::lua_gettable(state_, -2);
+        if (::lua_type(state_, -1) == LUA_TTABLE) {
+            ::lua_getfield(state_, -1, key);
+            if (::lua_type(state_, -1) == LUA_TTABLE) {
+                ::lua_getfield(state_, -1, nested_key);
+                if (::lua_type(state_, -1) == LUA_TNUMBER) {
+                    value = static_cast<float>(::lua_tonumber(state_, -1));
+                }
             }
         }
     }
@@ -7944,6 +8331,13 @@ void GameMissionLuaHost::report_mission_script_state() {
     log_.notef("summary mission script ship speed bound=%d calls=%llu units=%llu unresolved=%llu "
         "(00890D30 -> 00890E6F, packet cc9_lua_set_ship_speed)", kLuaSetShipSpeedBound ? 1 : 0,
         summary_.ship_speed_calls, summary_.ship_speed_units, summary_.ship_speed_unresolved);
+    log_.notef("summary mission script failures bound=%d jam_motion=%d set=%llu applied=%llu "
+        "other=%llu unresolved=%llu get=%llu true=%llu (0088EFF0 / 0088F1D0 -> 008132C0 / "
+        "008135C0, packet cc13_natives1)", kLuaSetFailureBound ? 1 : 0,
+        kShipJamMotionBound ? 1 : 0, summary_.set_failure_calls,
+        summary_.set_failure_applied, summary_.set_failure_other,
+        summary_.set_failure_unresolved, summary_.get_failure_calls,
+        summary_.get_failure_true);
     log_.notef("summary mission script attack target bound=%d calls=%llu fire_arm=%llu "
         "command_arm=%llu pushed=%llu nil=%llu unresolved=%llu (008A6DE0, packet "
         "cc9_unit_get_attack_target)", kLuaUnitGetAttackTargetBound ? 1 : 0,
@@ -7954,6 +8348,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         "unresolved=%llu (0089F780 -> 0074E1E0 -> 007D9E80, packet cc9_squadron_set_speed)",
         kLuaSquadronSetSpeedBound ? 1 : 0, summary_.squadron_speed_calls,
         summary_.squadron_speed_planes, summary_.squadron_speed_unresolved);
+    log_.notef("summary mission script squadron force gunner mode bound=%d calls=%llu set=%llu "
+        "unresolved=%llu (0089F950 -> entity+379h, packet cc13_natives1)",
+        kLuaSquadronForceGunnerModeBound ? 1 : 0, summary_.force_gunner_calls,
+        summary_.force_gunner_set, summary_.force_gunner_unresolved);
     log_.notef("summary mission script class changed bound=%d calls=%llu true=%llu "
         "(008CC4B0, registry+2010h, packet cc9_is_class_changed)",
         kLuaIsClassChangedBound ? 1 : 0, summary_.class_changed_calls,
@@ -7967,6 +8365,9 @@ void GameMissionLuaHost::report_mission_script_state() {
         "cc9_lua_submarine_on_surface)", kLuaGetSubmarineOnSurfaceBound ? 1 : 0,
         summary_.sub_surface_calls, summary_.sub_surface_true, summary_.sub_surface_unseeded,
         summary_.sub_surface_unresolved);
+    log_.notef("summary mission script truly dead bound=%d calls=%llu true=%llu (00899500, "
+        "Ptr == null, packet cc13_natives1)", kLuaTrulyDeadBound ? 1 : 0,
+        summary_.truly_dead_calls, summary_.truly_dead_true);
     log_.notef("summary mission script air base slot count bound=%d calls=%llu resized=%llu "
         "unresolved=%llu (008963E0 -> 006C7E20, packet cc9_set_air_base_slot_count)",
         kLuaSetAirBaseSlotCountBound ? 1 : 0, summary_.slot_count_calls,
@@ -8021,6 +8422,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         "(008AECD0 / 004C7730, packet cc9_get_closest_border_zone)",
         kLuaClosestBorderZoneBound ? 1 : 0, border_zones_loaded_ ? 1 : 0,
         summary_.border_zone_calls, summary_.border_zone_missing);
+    log_.notef("summary mission script in border zone bound=%d calls=%llu outside=%llu "
+        "no_zone=%llu (008AF020 -> 0071C4F0 / 00489C40, packet cc13_natives1)",
+        kLuaIsInBorderZoneBound ? 1 : 0, summary_.in_border_zone_calls,
+        summary_.in_border_zone_outside, summary_.in_border_zone_no_zone);
     log_.notef("summary mission script set invincible calls=%llu units=%llu unresolved=%llu "
         "(00897A50 -> 0042ED80, packet cc9_set_invincible_native)", summary_.invincible_calls,
         summary_.invincible_units, summary_.invincible_unresolved);

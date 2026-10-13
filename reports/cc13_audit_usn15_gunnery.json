@@ -1,0 +1,14 @@
+{
+  "doc": "docs/CC13_AUDIT_USN15_GUNNERY.md",
+  "steps": [
+    {"address": "008778A4", "native": "00470510", "note": "unit hit apply: direct hull damage (record+14h * modifier - armour) * weapon scale"},
+    {"address": "00826FA3", "native": "00470510", "note": "ship hit apply: the same direct law"},
+    {"address": "008275B5", "native": "004705C0", "note": "ship hit apply: blast part damage max(0, falloff * base * modifier - armour) * scale"},
+    {"address": "008779D3", "native": "004705C0", "note": "unit hit apply: the same blast law"},
+    {"address": "0047057F", "native": "008E6430", "note": "the owner modifier product, gated by 00E0C978 and [00F88C30]+94h"},
+    {"address": "00862581", "native": "00861D70", "note": "director bridge: the torpedo category mask word from director+222h"},
+    {"address": "0089CA52", "native": "0071E0D0", "note": "Lua TorpedoEnable sends the torpedo-enable message"},
+    {"address": "00A11B5C", "native": "0071E0D0", "note": "AI CloseAttack enables its own group's ship torpedoes"},
+    {"address": "0072E708", "native": "00729560", "note": "gun setup installs the line-of-fire predicate (weapon kinds 1, 5, 6 only)"}
+  ]
+}

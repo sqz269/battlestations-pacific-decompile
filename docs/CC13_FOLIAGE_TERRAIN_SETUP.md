@@ -126,3 +126,13 @@ compare, not a pointer compare), removing each from its quadtree first when it i
 - `./scripts/build.ps1`: build and both existing test targets pass.
 - `python tools/verify_report_calls.py reports/cc13_gui6_foliage_calls.json`: 42 rows, 0 failed.
 - No new tests.
+
+## Correction (cc13-sceneloose1, 2026-10-12)
+
+The open question above says no store to +A88h was found. That is wrong. The header reader
+`BSP_SceneRecord_ReadWeatherFogAndCloudLights` 004ECA30 writes both fields:
+`004ECE34 MOVSS [EDI+0A88h], XMM0` from `xFoliageRenderClip` and `004ECE6A MOVSS [EDI+0A8Ch], XMM0`
+from `xFoliageLowResDist` (a disp32 byte scan with Capstone decode; see docs/CC13_SCENE_WEATHER.md).
+Foliage system +08h is therefore the foliage render clip, and +0Ch is the low-resolution distance.
+`include/bsp/world_construct.hpp` now calls them `kSceneRecordFoliageRenderClipOffset` and
+`kSceneRecordFoliageLowResDistOffset`.

@@ -53,7 +53,8 @@ const GuiWidgetClass kClasses[] = {
 
 // The descriptor rows of 00AAA710, in call order. Every offset is the widget
 // field address the native frame stages; every literal address is the pointer
-// pushed with tag 0.
+// pushed with tag 0 (re-read from the 00AAA710 listing by cc13-gui2: 00AAA783..
+// 00AAACB9).
 const GuiPropertyDescriptor kBaseProperties[] = {
     {"Pos", GuiValueTag::Vec3, 0x0c, 0x00cf168c},
     {"Size", GuiValueTag::Vec2, 0x20, 0x00cff278},
@@ -61,10 +62,10 @@ const GuiPropertyDescriptor kBaseProperties[] = {
     {"Scale", GuiValueTag::Vec2, 0x28, 0x00ce60ac},
     {"Rotate", GuiValueTag::Float, 0x48, 0x00d5c220},
     {"Color", GuiValueTag::Color, 0x50, 0x00ce93f8},
-    {"LowColor", GuiValueTag::Color, 0xa4, 0x00d5c1f4},
-    {"HighColor", GuiValueTag::Color, 0xb4, 0x00d5c1ec},
+    {"LowColor", GuiValueTag::Color, 0xa4, 0x00d5c214},
+    {"HighColor", GuiValueTag::Color, 0xb4, 0x00d5c208},
     {"BlendFactor", GuiValueTag::Float, 0xc4, 0x00d5c1fc},
-    {"WideScreenAlign", GuiValueTag::String, 0xe0, 0x00ce92e4},
+    {"WideScreenAlign", GuiValueTag::String, 0xe0, 0x00d5c1ec}, // 00AAAAF9; "Left"/"Right" are 00CE92E4/00CE92DC
     {"Visible", GuiValueTag::Bool, 0xe4, 0x00d5c1e4},
     {"MouseBlock", GuiValueTag::Bool, 0x84, 0x00d5c1d8},
     {"MouseHit", GuiValueTag::Bool, 0x78, 0x00d5c1cc},

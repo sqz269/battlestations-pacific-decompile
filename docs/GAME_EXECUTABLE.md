@@ -15687,3 +15687,160 @@ Append-only correction; the text above is left as written.
 - `0109db48` is counter ticks per second. Its only writer is the static initializer at `00cd8f30` (`CALL 00be3310; FSTP qword [0109db48]; RET`). `00be3310` (`BSP_PerfCounter_CalibrateTicksPerSecond`) takes QueryPerformanceCounter before and after `Sleep(100)` and returns the difference times 10 (`__allmul` `00bf7df0`). Every converted profiler value is therefore in seconds, consistent with the 0.1 full scale and the 1/60 grid step of the overlay.
 
 Evidence: docs/CC13_ENGINE_CORE.md.
+
+
+## Mission reference baselines, 2026-10-12 ah (main dd31c362a)
+
+Packet `cc9_reference_rebaseline_36`, worker cc9-gunnery36. The base is main `dd31c362a`; the previous reference is AG
+(`10bef4a99`, `local\g35_ag` in cc9-gunnery35's tree, whose binary is re-run here).
+
+### The switch diff and the plan
+
+`local\g36_switches.py 10bef4a99 dd31c362a` lists fifteen switches that are new and ON, or flipped ON, since AG.
+The anchor (`local\g36_anc`) is `dd31c362a` with all fifteen set false; AH (`local\g36_ah`) is `dd31c362a` unflipped.
+New switches still OFF at the base (`kGunneryLiveWaterSurfaceBound`, `kMissionCheckpointBound`,
+`kWaveFieldLiveAmplitudeBound`, `kDynWorkerPrecisionBound`) are not part of AH. `kAimDiveBrakeRatioBound` (GUNNERY 181.2,
+ON on `agent/cc9-gunnery36`) is not on main and not in AH.
+
+| group | switches | record |
+| --- | --- | --- |
+| `aa` | `kAaLineOfFireExpiryDrawBound`, `kTailGunnerNoArmourTestBound` | GUNNERY 164 |
+| `ptg` | `kPlayerTorpedoGroupFireBound` | GUNNERY 170 |
+| `dive` | `kBombDropDriftBound`, `kDiveAimHeadingBlendBound` | GUNNERY 173, 178 |
+| `yard` | `kShipyardHangarHiddenBound` | GUNNERY 176 |
+| `sqn` | `kSquadronKillQueueEraseBound`, `kLandTaskRetireQueueEraseBound`, `kLandCommandOwnTargetBound`, `kCarrierLiftHeightFromRunwayBound` | SHIP_AI 208, 210 |
+| `cap` | `kCaptureStatePartyFromUnitBound` | SHIP_AI 207 |
+| `lua` | `kLuaHitSquadronSecondPassBound` | SQUADRON_LAND_TASK 5ft |
+| `movie` | `kEngineMovieEntryBound`, `kEngineMovieStopRosterBound`, `kMovieKeyframeModifierBound` | SQUADRON_LAND_TASK 5fj, 5fp, 5fr |
+
+**Rows.** AG's twenty-two in AG's launch form (`BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle
+player) plus `--stop-after-end 40`, and the seven scripted wins with their current order files, copied to
+`local\g36_ord_<key>.txt`: USN02 `s36_u2_p7`, LOMP10 `s37_l10_p2`, USN12 `s38_u12_p2`, ESMP08 `l46_e8_orders2`, USN01
+`l50_u1_u2`, LOMP06 `l50_l6_q6`, BSM01 `l50_b1_a`. AG's own binary, the anchor and AH each run all twenty-nine.
+Leave-one-out is by group, on every row AH moves against the anchor and on all seven wins.
+
+### Predictions (written before any reference run started)
+
+- **Anchor against AG:** not identical. Unswitched gameplay fixes landed between the bases (among them the hull-contact
+  rescale), so rows with ship-terrain or ship-ship contact may move; rows with no contact stay exit 0/1. Every move is
+  bisected to a commit range before it is attributed.
+- **AH against the anchor.**
+  - `aa` moves every row with AA fire at planes (the expiry draw consumes the shared stream): USN04, E2, JM08 rows,
+    LOMP10, USN13, JM05, IJN rows. Exit 3 almost everywhere a plane flies.
+  - `dive` moves rows with dive or level bombing (USN04 phase rows, JM08, USN01 win).
+  - `ptg` is inert on idle rows (no player torpedo order) and may move wins whose orders fire torpedoes (USN02, LOMP06).
+  - `yard` is inert except where a shipyard hangar hides a ship (JM08, JM05 were identical in 176).
+  - `sqn` moves rows where squadrons die or land (JM08, USN04 long, USNOS). `cap` moves USNOS (HQ captures).
+  - `lua` moves rows whose scripts call the squadron hit query; uncertain which.
+  - `movie` moves presentation only, except where a script waits on a movie end (JM05, JM06, USNOS per 5fp/5fr).
+- **Wins (AH).** All seven complete and log the exec guard's `sus_prog.exe` refusal, at the times their owners
+  recorded or within a few seconds: USN02 782.03, LOMP10 957.54, USN12 1529.92, ESMP08 3204.10, USN01 702.85, LOMP06
+  486.80, BSM01 773.93 s. GUNNERY 181.2's control already shows USN01 at 475.21 s on `b58e2621e`, so USN01's time has
+  moved since its owner's base; the other six are not predicted to the second.
+
+### Interim results (stopped by the lead before leave-one-out; a fresh AH follows the pending plane and flak fixes)
+
+- **Anchor = AG** on all twenty-two rows and the seven wins, up to each mission end. AG's binary predates
+  `--stop-after-end`, so it ran without it (rows: cc9-gunnery35's `g35_ag_<row>.log`; wins: `local\g36_agw_<key>.log`);
+  the only differences are the post-end tails (exit 3 on USN02 9000 and JM08 long, both failing at the same time on
+  both sides, every changed death row after the end). The unswitched changes since AG move nothing on these rows.
+  The first prediction missed: the anchor was predicted to move.
+- **AH against the anchor** (`local\g36_dAH_<row>.txt`, `local\g36_dAHw_<key>.txt`):
+  - exit 3: E2, JM05, **JM05 long (now fails at 321.05 s; the anchor ran 9000 frames)**, JM06, LOMP10, LOMP10 long,
+    USN04, **USN13 long (fails at 366.33 s, the drift knife-edge of GUNNERY 173.1)**, USNOS, USNOS long, USNRM01;
+  - exit 1: BSM01, ESMP08 long, IJN01, IJN11, JM08, JM08 long, LOMP06, USN01, USN02, USN12, USN13.
+- **No win lost.** All seven complete on AH and log the exec guard's `sus_prog.exe` refusal:
+
+| win | orders | anchor | AH |
+| --- | --- | --- | --- |
+| USN02 | `s36_u2_p7` | 782.03 s | 782.03 s (exit 1) |
+| LOMP06 | `l50_l6_q6` | 486.80 s | 486.80 s (exit 1) |
+| USN12 | `s38_u12_p2` | 1529.92 s | 1529.92 s (exit 1) |
+| BSM01 | `l50_b1_a` | `EndMission` 767.94 s | 767.94 s (exit 3 inside) |
+| USN01 | `l50_u1_u2` | 712.75 s | **475.21 s** |
+| LOMP10 | `s37_l10_p2` | 957.54 s | **1127.67 s** |
+| ESMP08 | `l46_e8_orders2` | 3204.10 s | **3456.80 s** |
+
+- Leave-one-out was not run (cancelled with 8 of its 144 runs done), so the moves are not attributed to groups, and
+  no `reports/cc9_reference_rebaseline_36.json` is written for this interim.
+
+### Final AH (cc9-gunnery37; base `89e89ffa1` = origin/main `088103ce0` + `agent/cc9-gunnery36`)
+
+**Plan.** `local\g36_switches.py 10bef4a99 89e89ffa1` lists 53 switches ON at the base that are new or flipped since
+AG (`local\g37_ah_switches.txt`): the fifteen of the interim, the plane batch of GUNNERY 186-193, the flak pair,
+the Lua listener/kill switches, the Dyn and live-sea switches (`kDynWorkerPrecisionBound`,
+`kDynListingAssociationBound`, `kGunneryLiveWaterSurfaceBound`, `kWaveFieldLiveAmplitudeBound`), and
+`kSubmergedTorpedoLaunchSwimBound`. Anchor `local\g37_anc` = the base with all 53 false (`pair_export`, 53 flips);
+AH `local\g37_ah` = the base as built. Both run AG's twenty-two rows and the seven wins (`local\g36_ref_jobs.py`,
+AG launch form, `--stop-after-end 40`; win orders `local\g36_ord_<key>.txt`, ESMP08's byte-identical to
+`l46_e8_orders2`). Logs `local\g37_{anc,ah}_<key>.log`, queue `local\g37_q_ahref.jobs`. Leave-one-out groups, for
+every row AH moves and all seven wins: `aa` (kind-6 gate, expiry draw, tail-gunner armour/aim/own-aim), `flak`
+(burst, falloff), `ptg` (player torpedo group, submerged swim), `dive` (drift, heading blend, brake ratio, yaw mode,
+audit7 A/C and C2/D/E, audit9 trio, six draw pins), `plane` (cadence, moveto draws, Lua alt zero, roll arm,
+torpedo-aim three, strafe two), `yard`, `sqn` (kill queue, retire queue, own target, lift height, fused slot),
+`cap` (capture party, party refresh), `lua` (hit second pass, hit target squadron, kill attacker, kill box, listener
+args), `movie` (three), `sea` (live water surface, live amplitude), `dyn` (worker precision, listing association).
+
+**Predictions (before any result).**
+- AH against the anchor: exit 3 on every row with flying planes or moving ships (the sea and Dyn groups alone move
+  every ship row); exit 0/1 is not expected on any row.
+- Wins on AH: USN02 about 203 s, USN12 about 1555 s, ESMP08 about 3447 s, LOMP06 about 535 s, BSM01 767.94 s (the
+  lead's main table); USN01 lost (live sea, and the convoy-strike sensitivity of GUNNERY 193); LOMP10 uncertain
+  (lost on main to the live sea; audit9 brought it back on the flat sea at 1327.37 s).
+
+### Final AH (cc9-gunnery38; base origin/main `1de67cfb9`; supersedes the 37 plan above, which never ran)
+
+**Plan.** `local\g36_switches.py 10bef4a99 1de67cfb9` lists 56 switches ON at the base that are new or flipped since
+AG (`local\g38_ah_switches.txt`): the 53 of the 37 plan plus three DC-form / sign fixes landed after
+`355b60167` (`kApproachSideWeightDcFormBound`, `kUnitPartSpinSignBound`, `kUnitSteeringDcFormBound`). Anchor
+`local\g38_anc` = the base with all 56 false; AH `local\g38_ah` = the base as exported (`local\g38_ah.ps1`). Per the
+lead's queue only the seven scripted wins run, with the WINS_TABLE.md order files (copied to `local\g38_ord_<key>.txt`:
+USN01 `p3_u1_z4`, USN02 `s36_u2_p7`, LOMP10 `p3_l10_b`, USN12 `s38_u12_p2`, LOMP06 `l50_l6_q6`, BSM01 `l50_b1_a`,
+ESMP08 `l46_e8_orders2`), AG launch form plus `--stop-after-end 40` (`BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`,
+lockstep 0.05), frames USN01/LOMP10 32000, USN12 36000, BSM01 40000, ESMP08 90000. Logs `local\g38_{anc,ah}_<key>.log`.
+A win lost on AH is bisected by switch group from the anchor side.
+
+**Predictions (before any run).**
+- AH against the keeper's `355b60167` row: USN02 203.01 s, LOMP06 535.24 s, BSM01 `EndMission` 767.94 s unchanged
+  (the three DC-form fixes are ship steering/approach and part spin; these wins have been identical through every
+  plane batch); USN12 near 1540 s and LOMP10 near 1000 s but moved by the steering fix; USN01 completes but its
+  convoy strike re-rolls (uncertain); ESMP08 no completion (Cummings and three others survive the late Jill strikes).
+- Anchor: AG-era behaviour with the flat sea and none of the plane batch; ESMP08 completes there (AG 3204.10 s with
+  the same order file); USN01 with `p3_u1_z4` is a plan written for the live sea and may not complete.
+
+**Results.** Anchor binary `local\g37_anc` (the 37 anchor directory re-exported at `1de67cfb9` with the 56 flips;
+`local\g38_anc` was abandoned when its first build was interrupted), AH `local\g38_ah` (SHA-256 A26224DD5045). Diffs
+`local\g38_dAH_<key>.txt`; `reports/cc9_reference_rebaseline_36.json`.
+
+| win | orders | anchor | AH | AH vs anchor |
+| --- | --- | --- | --- | --- |
+| USN01 | `p3_u1_z4` | 658.31 s | 1014.63 s | exit 3 (deaths 96 -> 90) |
+| USN02 | `s36_u2_p7` | 782.03 s | 203.01 s | exit 3 |
+| LOMP06 | `l50_l6_q6` | 486.80 s | 535.24 s | exit 3 |
+| LOMP10 | `p3_l10_b` | 957.54 s | 1002.18 s | exit 3 |
+| USN12 | `s38_u12_p2` | 1529.92 s | 1539.83 s | exit 3 |
+| BSM01 | `l50_b1_a` | `EndMission` 767.94 s | `EndMission` 767.94 s | exit 3 |
+| ESMP08 | `l46_e8_orders2` | 3204.10 s | **no completion** (90000 frames) | exit 3 (deaths 613 -> 909) |
+
+Every completion logs the exec guard's `sus_prog.exe` refusal. The six AH wins equal the keeper's `355b60167` row to
+the hundredth of a second, so the three DC-form switches added since then move none of them. The predictions held
+except LOMP10 and USN12, which were predicted to move with the steering fix and did not. The anchor completes all
+seven, ESMP08 at AG's 3204.10 s; USN01's `p3_u1_z4` also completes there (658.31 s), against the "may not complete"
+prediction.
+
+**ESMP08, leave-one-out on AH** (`local\g38_loo<tag>_e8.log`):
+
+| switches set false on AH | ESMP08 |
+| --- | --- |
+| `kFlakFlyTimeBurstBound` + `kFlakBlastIgnoreFalloffBound` | completed 2594.66 s, guard logged |
+| `kFlakBlastIgnoreFalloffBound` alone | completed 2594.66 s, guard logged |
+| `kFlakFlyTimeBurstBound` alone | no completion (deaths 907) |
+| `kLuaHitTargetSquadronBound` alone | no completion (deaths 909) |
+
+So ESMP08 is lost to `kFlakBlastIgnoreFalloffBound` (GUNNERY 188, ON in 193; cc13-audit13 A1 found it faithful).
+Squadron plane deaths before 2594 s: 173 on AH, 127 of them flak blasts (`killer_cat=6 killer_blast=1`), against 110
+and 40 with the switch false; with it false the last four US ships (Dunlap 1404.74, Grayson 2184.41, Woodworth
+2356.57, Cummings 2590.55 s) die to torpedo squadrons. On AH the late strikes die at 1400-1460 m, 200-600 m from
+their killer: squadrons whose launch target is already dead keep resolving its name (`command target 0071EBF0`),
+end their attack run in one tick, sit in `done` at the cruise altitude and fly into the fleet's full-damage flak.
+The switch is image-faithful, so this is a plan casualty; GUNNERY 197 has the dead-target reading.

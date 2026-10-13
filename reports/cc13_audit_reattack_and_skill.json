@@ -1,0 +1,9 @@
+{
+  "doc": "docs/CC13_AUDIT_REATTACK_AND_SKILL.md",
+  "steps": [
+    {"address": "0099993C", "native": "0099B740", "note": "the bot think runs the abandon test that sets squadron+370h to 1 before the task arm"},
+    {"address": "0099B774", "native": "007ED3F0", "note": "the abandon test's set of squadron+370h"},
+    {"address": "007BCAEB", "native": "007F3970", "note": "a plane leaves its squadron's +3D0h array at its death (VAL_SQUADRON_REGISTRY 2)"},
+    {"address": "007F3A2A", "native": "00926D90", "note": "the squadron entity is killed only when +3CCh reaches 0 (ENTITY_DEAD_FLAG 8)"}
+  ]
+}

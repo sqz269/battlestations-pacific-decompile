@@ -593,3 +593,7 @@ the order screen's attack (`005FAAE0`): refused unless the unit is the controlle
 back role 1 (`0077C470(unit, 2, 0)`) and issues `attackmove` on the named target through
 `0077D600`. The target is the rest of the line, so names with spaces work. Labels:
 docs/SCRIPTED_HELM.md section 11.
+- Because the refusal is checked at every issue, a `repeat` re-issue is refused once another unit has been
+  selected: in a group of `select X` / `attack X T` pairs only the last selected unit's repeat takes effect
+  (SHIP_AI 214, USN15 variant c). `select` takes a single word unless the name is double-quoted
+  (`select "West Virginia"`).

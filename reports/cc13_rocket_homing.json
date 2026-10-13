@@ -1,0 +1,29 @@
+{
+  "packet": "cc13-homing1",
+  "doc": "docs/CC13_ROCKET_HOMING.md",
+  "status": "reconstructed_build_tested; host glue suggested, OFF (kRocketHomingBound)",
+  "steps": [
+    {"address": "0080a28a", "native": "00414db0", "function": "0080a000", "note": "refresh the target's world before the body point transform"},
+    {"address": "0080a2a1", "native": "004142e0", "function": "0080a000", "note": "+480h through target+CCh"},
+    {"address": "0080a2da", "native": "004142e0", "function": "0080a000", "note": "world point through rocket+110h"},
+    {"address": "0080a31d", "native": "00809e10", "function": "0080a000", "note": "flight time on the body point's local z"},
+    {"address": "0080a385", "native": "00414d10", "function": "0080a000", "note": "lead point through rocket+110h"},
+    {"address": "0080a3c2", "native": "00415550", "function": "0080a000", "note": "max(z, VMax)"},
+    {"address": "0080a3dd", "native": "0042ae80", "function": "0080a000", "note": "divide by 0.5*max"},
+    {"address": "0080a419", "native": "00415690", "function": "0080a000", "note": "clamp x"},
+    {"address": "0080a437", "native": "00415690", "function": "0080a000", "note": "clamp y"},
+    {"address": "0080a501", "native": "0042d5e0", "function": "0080a000", "note": "forward row = aim, orthonormalize"},
+    {"address": "0080a508", "native": "0042ed50", "function": "0080a000", "note": "invalidate subtree pose"},
+    {"address": "0080a52c", "native": "0042d7e0", "function": "0080a000", "note": "world matrix"},
+    {"address": "0080a53a", "native": "0042d0d0", "function": "0080a000", "note": "velocity = R (0,0,axial)"},
+    {"address": "007b56f6", "native": "0080aa20", "function": "007b5430", "note": "rocket task release"},
+    {"address": "009fd4fb", "native": "0080aa20", "function": "009fd0e0", "note": "opportunistic rocket release"},
+    {"address": "00997373", "native": "009fd0e0", "note": "caller of the opportunistic rocket sub-object"},
+    {"address": "0099998c", "native": "009fd0e0", "function": "009998a0", "note": "BSP_PilotBot_Update"}
+  ],
+  "vtable": {"slot": "00d090e8+19c", "address": "00d09284", "value": "0080a000"},
+  "constants": {
+    "00d7a218": "float 0.0", "00ce3938": "double 50.0", "00d7a280": "double 0.5",
+    "00d0de84": "float 0.05", "00d7a208": "float -0.0", "00cf9058": "double 9.8100004196167"
+  }
+}

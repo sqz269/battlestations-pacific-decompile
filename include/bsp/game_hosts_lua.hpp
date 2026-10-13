@@ -219,7 +219,8 @@ inline constexpr bool kLuaHitSquadronSecondPassBound = true;
 // number); `hit` (00988510, 00988D87..00988F2C) passes (target, targetDevice, attacker
 // entities, attackType string, attackerPlayerIndex number, damage, fire, leak numbers).
 // True: the host pushes them. False: callbacks are called with no argument, as before.
-inline constexpr bool kLuaListenerCallbackArgsBound = false;
+// ON (5fu): ESMP08's win now ends on entity="Case" (luaUSNSunk's argument) instead of "".
+inline constexpr bool kLuaListenerCallbackArgsBound = true;
 
 // Packet cc9_lua51_listener_args. 009813A0 boxes the victim's last attacker (the
 // handle copied from victim+2B0h at 009816CA; its id word is +2C8h, which 0077CC80
@@ -229,7 +230,17 @@ inline constexpr bool kLuaListenerCallbackArgsBound = false;
 // replaced by vtable[140h]() (the plane's squadron, 007B97E0) and the channel is
 // evaluated again (00981C31). True: the host matches both sets and runs that second
 // pass. False: a subscription with either set non-empty is skipped (counted).
-inline constexpr bool kLuaKillAttackerBound = false;
+// ON (5fu): BSM01/BSM04/JM06/USN03/ESMP03/LOMP05 gameplay-identical; nothing the rows'
+// attacker sets name lands a kill in them.
+inline constexpr bool kLuaKillAttackerBound = true;
+
+// docs/CC13_AUDIT_LUA51_FLIPS.md item 1c. 00988510 boxes, and 0097B8C0 matches,
+// the target as hitEntity->vtable[140h]() kept only when it answers IsKindOf(2)
+// (00988530..0098859B): for a plane that is its squadron (007B97E0, plane+9D4h).
+// True: a hit on a squadron member is reported with the squadron as target.
+// False: the hit unit, as before. ON (5fz): BSM04's UNDERATTACK1 now starts at 73.95 s on the first
+// hit to B-17|.-2 instead of waiting for wing 0; gameplay identical.
+inline constexpr bool kLuaHitTargetSquadronBound = true;
 
 // Packet cc9_lua_aa_enable (docs/LUA_BINDING_MISSION.md, "AAEnable, 0089C740").
 // AAEnable(entity, flag): director = entity->vtable[114h](); when it exists,
@@ -244,6 +255,14 @@ inline constexpr bool kLuaAAEnableBound = true;  // ON: identity pairs (docs/LUA
 // mission clock at +28h (00890E6F), the commanded-speed pair the cruise path reads
 // (docs/UNIT_COMMANDED_SPEED.md). True: GameUnitsHost::store_commanded_speed_00890e6f
 // for the resolved slot. False: record.
+// Packet cc13_natives1 (docs/CC13_WIN_PATH_NATIVES.md section 1). 0088EFF0
+// SetFailure(entity, name, ...) calls entity->vtable[194h](name, frame) and returns
+// nothing; 0088F1D0 GetFailure(entity, name) calls vtable[198h](name, frame, &out)
+// and pushes out's low byte. On the eight ship vtables those are 008132C0 and
+// 008135C0 (the jam bytes +9E4h / +9E5h, Explosion, Periscope); 00953DA0 /
+// 00953E60 are the base pair (InferiorFailure, +720h). True: both rows run on the
+// gunnery and units hosts. False: unimplemented, nil.
+inline constexpr bool kLuaSetFailureBound = true;  // ON: n1 pairs (GUNNERY 197-199, cc9-gunnery38)
 inline constexpr bool kLuaSetShipSpeedBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
 // Packet cc9_unit_get_attack_target (docs/LUA_BINDING_MISSION.md, "UnitGetAttackTarget,
@@ -261,6 +280,13 @@ inline constexpr bool kLuaUnitGetAttackTargetBound = true;  // ON: pairs held (d
 // each of the +3CCh members at +3D0h (0089F8CA..0089F8FF); on a plane that is
 // 0074E1E0 -> 007D9E80, the controller's forward-speed set. True: route the row to
 // run_squadron_set_speed_0089f780. False: unimplemented.
+// Packet cc13_natives1 (docs/CC13_WIN_PATH_NATIVES.md section 4). 0089F950
+// SquadronForceGunnerMode(entity, flag) stores argument 1 (00B66250) in the byte
+// entity+379h (0089FA9C), with no class test and no result. Its only reader is the
+// HUD root update (0064A1E0 on the controlled kind-18h unit) and 00647080, which
+// keep the player in the gunner interface (23h). True: the byte is kept per unit
+// for squadron_force_gunner_mode_379. False: unimplemented, nothing stored.
+inline constexpr bool kLuaSquadronForceGunnerModeBound = false;
 inline constexpr bool kLuaSquadronSetSpeedBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
 // Packet cc9_is_class_changed (docs/LUA_BINDING_MISSION.md, "IsClassChanged, 008CC4B0").
@@ -283,6 +309,12 @@ inline constexpr bool kLuaSetSubmarineDepthLevelBound = true;  // ON: pairs held
 // (+1204h + +1200h) / 3.0, with no class test. True: route the row to
 // run_get_submarine_on_surface_008942c0. False: unimplemented (nil, read as false).
 inline constexpr bool kLuaGetSubmarineOnSurfaceBound = true;  // ON: JM06 24000 pair (docs/LUA_BINDING_MISSION.md)
+// Packet cc13_natives1 (docs/CC13_WIN_PATH_NATIVES.md section 2). 00899500
+// TrulyDead(entity) reads argument 0's `Ptr` field (00B67800, key 00CFAD08) as
+// userdata (00B662D0) and pushes `Ptr == null` (00B66450). Only the on-killed slot
+// 00928C80 (vtable[80h], from the kill list's drain) nulls `Ptr`. True: the same
+// read on the host's self tables. False: unimplemented, nil.
+inline constexpr bool kLuaTrulyDeadBound = false;
 
 // Packet cc9_set_air_base_slot_count (docs/LUA_BINDING_MISSION.md, "SetAirBaseSlotCount,
 // 008963E0"). SetAirBaseSlotCount(entity, n) resizes the air-ops block's 58h slot array
@@ -340,6 +372,14 @@ inline constexpr bool kLuaHitAttackerPlayerIndexBound = true;  // ON: identity p
 // False: unimplemented, neutral.
 inline constexpr bool kLuaSpawnNewIdQueriesBound = true;  // ON: pairs (docs/LUA_BINDING_MISSION.md)
 inline constexpr bool kLuaClosestBorderZoneBound = true;  // ON: pairs (docs/LUA_BINDING_MISSION.md)
+// Packet cc13_natives1 (docs/CC13_WIN_PATH_NATIVES.md section 3). 008AF020
+// IsInBorderZone(entity | position): an entity handle (008889C0) gives the pose
+// translation +FCh..+104h, anything else the 00888760 vector; then 0071C4F0 on the
+// game singleton [00E188A8] and, only when the point is outside the map, the side
+// (+4h) of 00489C40's zone record through 00B664B0. Inside the map nothing is
+// pushed. True: run it on the zones set_world_border_zones keeps. False:
+// unimplemented, nil (the inside answer).
+inline constexpr bool kLuaIsInBorderZoneBound = false;
 
 // Packet cc9_hit_rate_limit (docs/LUA_BINDING_MISSION.md, "The hit-callback rate
 // limit"). 00988510 keys a map at this+168h (009882F0 / 00499030) by (victim,
@@ -397,6 +437,13 @@ bool lua_device_reload_enabled_00e17bf2() noexcept;
 // MOV byte [EAX+1D4h],1 (008AC263). No other write, no null test, no result
 // (008AC269 00B66400). The byte is what the unit-AI untouchable gate 00862440
 // reads. True: the row sets the flag below; false: the row stays unimplemented.
+// Packet cc13_natives1 (docs/CC13_WIN_PATH_NATIVES.md section 7). 008A24E0
+// SquadronSetReleaseAlt(squadron, altitude[, force]) writes the squadron's third
+// block: +384h = 0.5, +38Eh = force (only with exactly three arguments), +39Ch =
+// altitude, +3ABh = 1, +3ADh = 0. 009C8920 overwrites +39Ch with 9999 once the
+// countdown and lock allow, and 009C7A80 reads it into the dive altitude. True:
+// route the row to the units host's third block. False: unimplemented.
+inline constexpr bool kLuaSquadronSetReleaseAltBound = false;
 inline constexpr bool kLuaAddUntouchableUnitBound = true;   // ON on identity (LUA_BINDING_MISSION)
 // The +1D4h byte of units-host index `index`'s AI object, as AddUntouchableUnit
 // left it. False for every unit while kLuaAddUntouchableUnitBound is false.
@@ -677,6 +724,9 @@ struct GameMissionLuaSummary {
     // Packet cc9_get_closest_border_zone.
     unsigned long long border_zone_calls{0};
     unsigned long long border_zone_missing{0};
+    unsigned long long in_border_zone_calls{0};     // packet cc13_natives1, 008AF020
+    unsigned long long in_border_zone_outside{0};
+    unsigned long long in_border_zone_no_zone{0};
     unsigned long long forced_recon_calls{0};
     unsigned long long forced_recon_units{0};
     unsigned long long forced_recon_unresolved{0};
@@ -689,6 +739,12 @@ struct GameMissionLuaSummary {
     unsigned long long ship_speed_calls{0};
     unsigned long long ship_speed_units{0};
     unsigned long long ship_speed_unresolved{0};
+    unsigned long long set_failure_calls{0};        // packet cc13_natives1, 0088EFF0
+    unsigned long long set_failure_applied{0};      // an arm of 008132C0 matched
+    unsigned long long set_failure_other{0};        // not a ship, or no arm matched
+    unsigned long long set_failure_unresolved{0};
+    unsigned long long get_failure_calls{0};        // 0088F1D0
+    unsigned long long get_failure_true{0};
     unsigned long long attack_target_calls{0};
     unsigned long long attack_target_fire_arm{0};
     unsigned long long attack_target_command_arm{0};
@@ -698,6 +754,9 @@ struct GameMissionLuaSummary {
     unsigned long long squadron_speed_calls{0};
     unsigned long long squadron_speed_planes{0};
     unsigned long long squadron_speed_unresolved{0};
+    unsigned long long force_gunner_calls{0};       // packet cc13_natives1, 0089F950
+    unsigned long long force_gunner_set{0};
+    unsigned long long force_gunner_unresolved{0};
     unsigned long long class_changed_calls{0};
     unsigned long long class_changed_true{0};
     unsigned long long sub_depth_calls{0};
@@ -707,6 +766,8 @@ struct GameMissionLuaSummary {
     unsigned long long sub_surface_true{0};
     unsigned long long sub_surface_unseeded{0};
     unsigned long long sub_surface_unresolved{0};
+    unsigned long long truly_dead_calls{0};         // packet cc13_natives1, 00899500
+    unsigned long long truly_dead_true{0};
     unsigned long long slot_count_calls{0};
     unsigned long long slot_count_resized{0};
     unsigned long long slot_count_unresolved{0};
@@ -878,11 +939,26 @@ public:
     float read_vehicle_class_nested_number(int index, const char* key,
         const char* nested_key, float fallback);
 
+    // `VehicleClass[index].PartAnims[key]`, the three-element record 007D381A /
+    // 007D3990 / 007D3B06 fold into class+5C8h / +5D8h / +5E8h. True when the
+    // sub-table exists (the record's present flag, e.g. class+5E4h for Wings).
+    // `first`/`second` are elements [1]/[2] (0.0f when not numbers); `third` is
+    // element [3] and `has_third` says whether it was a number, in which case it
+    // replaces |[1] - [2]| as the duration. Packet cc9_wing_fold (cc9-physics5).
+    bool read_vehicle_class_part_anim(int index, const char* key, float& first,
+        float& second, float& third, bool& has_third);
+
     // `Bullets[index][key]` from the live Lua state - the bullet class table that
     // Scripts/datatables/autoload/bulletclasses.lua publishes. Used for the
     // fields the flattened per-platform BSPGun table does not carry, notably
     // "FlyTime" and "WaterTravelSpeed". docs/TORPEDO_CATEGORY_ADMISSION.md.
     float read_bullet_class_number(int index, const char* key, float fallback);
+
+    // `Bullets[index][key][nested_key]`: the Blast sub-table's numbers, which a
+    // dotted key does not reach through read_bullet_class_number. Packet
+    // cc9_lua53_kamikaze_impact (the plane crash class's blast, 007C0910).
+    float read_bullet_class_nested_number(int index, const char* key,
+        const char* nested_key, float fallback);
 
     // `Bullets[index][key]` as a string; "" when absent. Used for `Type`.
     std::string read_bullet_class_string(int index, const char* key);
@@ -1267,6 +1343,9 @@ public:
     int run_aa_enable_0089c740(lua_State* state, int argument_count);
     // Packet cc9_lua_set_ship_speed, under kLuaSetShipSpeedBound.
     int run_set_ship_speed_00890d30(lua_State* state, int argument_count);
+    // Packet cc13_natives1, under kLuaSetFailureBound.
+    int run_set_failure_0088eff0(lua_State* state, int argument_count);
+    int run_get_failure_0088f1d0(lua_State* state, int argument_count);
     // Packet cc9_unit_get_attack_target, under kLuaUnitGetAttackTargetBound.
     int run_unit_get_attack_target_008a6de0(lua_State* state, int argument_count);
     // Packet cc9_squadron_set_speed, under kLuaSquadronSetSpeedBound.
@@ -1277,6 +1356,8 @@ public:
     int run_set_submarine_depth_level_00893f40(lua_State* state, int argument_count);
     // Packet cc9_lua_submarine_on_surface, under kLuaGetSubmarineOnSurfaceBound.
     int run_get_submarine_on_surface_008942c0(lua_State* state, int argument_count);
+    // Packet cc13_natives1, under kLuaTrulyDeadBound.
+    int run_truly_dead_00899500(lua_State* state, int argument_count);
     // Packet cc9_set_air_base_slot_count, under kLuaSetAirBaseSlotCountBound.
     int run_set_air_base_slot_count_008963e0(lua_State* state, int argument_count);
     // Packet cc9_lua_add_air_base_stock, under kLuaAddAirBaseStockBound.
@@ -1289,18 +1370,28 @@ public:
     unsigned shipyard_units_serial_{0};
     // Packet cc9_device_reload_enabled, under kLuaDeviceReloadEnabledBound.
     int run_set_device_reload_enabled_008c1350(lua_State* state, int argument_count);
+    // Packet cc13_natives1, under kLuaSquadronForceGunnerModeBound: the byte
+    // entity+379h per units-host slot, and its reader for the HUD root's
+    // controlled_unit_flag_379 (0064A1E0). False for an unset or unknown slot.
+    int run_squadron_force_gunner_mode_0089f950(lua_State* state, int argument_count);
+    bool squadron_force_gunner_mode_379(std::size_t unit_index) const;
+    std::vector<std::uint8_t> force_gunner_379_;
     // Packet cc9_lua_formation_query, under kLuaFormationQueryBound.
     int run_is_in_formation_008996a0(lua_State* state, int argument_count);
     int run_get_formation_leader_00899af0(lua_State* state, int argument_count);
     int run_get_last_catapulted_00892860(lua_State* state, int argument_count);
     int run_add_untouchable_unit_008ac140(lua_State* state, int argument_count);
     int run_leave_formation_00899eb0(lua_State* state, int argument_count);
+    // Packet cc13_natives1, under kLuaSquadronSetReleaseAltBound.
+    int run_squadron_set_release_alt_008a24e0(lua_State* state, int argument_count);
     // Packet cc9_squadron_travel_alt, under kSquadronTravelAltBound.
     int run_squadron_set_travel_alt_0089f550(lua_State* state, int argument_count);
     // Packet cc9_squadron_attack_alt, under kSquadronAttackAltBound.
     int run_squadron_set_attack_alt_008a22b0(lua_State* state, int argument_count);
     // Packet cc9_get_closest_border_zone, under kLuaClosestBorderZoneBound.
     int run_get_closest_border_zone_008aecd0(lua_State* state, int argument_count);
+    // Packet cc13_natives1, under kLuaIsInBorderZoneBound.
+    int run_is_in_border_zone_008af020(lua_State* state, int argument_count);
     // Packet cc9_submarine_air, under kSubmarineAirBound.
     int run_set_unlimited_air_00893c00(lua_State* state, int argument_count);
 
@@ -1342,6 +1433,8 @@ public:
     // frame's, because the native's own clock is the world time at DAT_00F876A4.
     void run_spawn_queue_0094c490(float step_seconds) override;
     void report_spawn_queue();
+    // Packet cc9_lua52_kamikaze_wiring: 006FEC00 over the released rounds.
+    void run_dummy_kamikaze_rounds_006fec00(float step_seconds);
 
     // --- bsp::AirOpsSquadronFactory, packet cc8_airops_launch_tick ----------
     // 006C5050's seam. The unit is made by the script-orders host, which owns the
