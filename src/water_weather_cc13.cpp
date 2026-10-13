@@ -5128,3 +5128,183 @@ void* w4_ocean_wave_field_base_construct_00ba1400(void* field, void* world, void
 }
 
 }  // namespace bsp::water_weather_cc13
+
+namespace bsp::water_weather_cc13 {
+
+void w4_ocean_height_generator_initialize_passes_00ba7530(void* generator, std::int32_t width, std::int32_t height,
+    const volatile std::int32_t& scale_00e14454, void* device_00f8d394, NativeStringStorage& strings,
+    W4_EngineCalls& calls, const W4_HeightGeneratorCalls& passes) {
+    const auto make_scene = [&](const char* name) -> void* {
+        void* const block = w3_new(0x24);
+        if (block == nullptr) return nullptr;
+        W3_Temporary temporary(name, strings);
+        return passes.scene_construct_00b724e0(block, temporary.get());
+    };
+    const auto make_camera = [&](const char* name) -> void* {
+        void* const slot = calls.camera_allocate_raw_slot_00b71930(0x458);
+        if (slot == nullptr) return nullptr;
+        W3_Temporary temporary(name, strings);
+        return calls.camera_construct_00b71a80(slot, temporary.get());
+    };
+    const auto set_viewport = [&](void* camera, std::uint32_t w, std::uint32_t h) {
+        void* const block = w3_new(0x34);
+        void* const viewport = block != nullptr ? calls.viewport_construct_00b1f850(block) : nullptr;
+        const std::uint32_t size[2] = {w, h};
+        calls.viewport_set_dimensions_00b1f940(viewport, size);
+        calls.camera_set_viewport_00b71990(camera, viewport);
+        if (viewport != nullptr) w2_release_object(viewport);
+    };
+    const auto make_buffer = [&](const char* declaration_file) -> void* {
+        void* declaration;
+        {
+            W3_Temporary file(declaration_file, strings);
+            declaration = w3_vcall<void*>(device_00f8d394, 0x38, file.get());
+        }
+        void* const buffer = w3_vcall<void*>(device_00f8d394, 0x5C, 4u, 1u, declaration);
+        w2_release_object(declaration);
+        return buffer;
+    };
+    static constexpr float kQuad[4][6] = {
+        {-1.0f, -1.0f, 0.5f, 1.0f, 0.0f, 1.0f},
+        {-1.0f, 1.0f, 0.5f, 1.0f, 0.0f, 0.0f},
+        {1.0f, -1.0f, 0.5f, 1.0f, 1.0f, 1.0f},
+        {1.0f, 1.0f, 0.5f, 1.0f, 1.0f, 0.0f}};
+    const auto fill_simple = [](void* buffer) {
+        auto* const v = w3_vcall<float*>(buffer, 0x10, 0u, 0u, 0u);
+        std::memcpy(v, kQuad, sizeof kQuad);
+        w3_vcall<void>(buffer, 0x14);
+    };
+    // The common tail of each pass: mesh, material, section, model rooted under `scene`.
+    const auto finish = [&](void* buffer, std::size_t material_offset, const char* effect,
+                            const auto& register_constants, std::size_t model_offset, const char* model_name,
+                            std::size_t scene_offset) {
+        void* const mesh = w4_make_mesh(calls);
+        calls.mesh_set_vertex_stream_00b73bb0(mesh, 0, buffer);
+        w2_release_object(buffer);
+        {
+            W3_Temporary name(effect, strings);
+            w3_field<void*>(generator, material_offset) = calls.material_create_for_effect_name_00535320(name.get());
+        }
+        calls.material_set_parameter_owner_00b18a40(w3_field<void*>(generator, material_offset), generator, nullptr);
+        register_constants(w3_field<void*>(generator, material_offset));
+        void* const section = calls.draw_section_create_00533fa0();
+        w3_field<std::uint32_t>(section, 0x08) = 5;
+        w3_field<std::uint32_t>(section, 0x0C) = 0;
+        w3_field<std::uint32_t>(section, 0x10) = 4;
+        w3_field<std::uint32_t>(section, 0x14) = 0;
+        w3_field<std::uint32_t>(section, 0x18) = 2;
+        calls.draw_section_set_material_00b864c0(section, w3_field<void*>(generator, material_offset));
+        calls.draw_section_rebuild_layout_00b865a0(section, mesh);
+        calls.mesh_append_draw_section_00b73c60(mesh, section);
+        w3_field<void*>(generator, model_offset) = w4_make_model(model_name, strings, calls);
+        calls.generated_model_set_geometry_00b75170(w3_field<void*>(generator, model_offset), 0, mesh, -1.0f, -1.0f);
+        calls.node_propagate_root_00b6d890(w3_field<void*>(generator, model_offset), w3_field<void*>(generator, scene_offset));
+        w2_release_object(section);
+        w2_release_object(mesh);
+    };
+    const auto float4 = [&](void* material, const char* name, void* value) {
+        W3_Temporary temporary(name, strings);
+        calls.material_register_float4_array_00b18ac0(material, temporary.get(), value, 1);
+    };
+    const auto named = [&](void (*register_value)(void*, const void*, void*), void* material, const char* name,
+                           void* value) {
+        W3_Temporary temporary(name, strings);
+        register_value(material, temporary.get(), value);
+    };
+    // 1. Height map generation.
+    w3_field<void*>(generator, 0x30) = make_scene("oceanheightmapscene");
+    w3_field<void*>(generator, 0x34) = make_camera("OceanHeigtmapGen");
+    calls.camera_set_clear_flags_00b6fe10(w3_field<void*>(generator, 0x34), 0);
+    passes.camera_set_render_mode_00b6fdf0(w3_field<void*>(generator, 0x34), 0);
+    {
+        void* const block = w3_new(0x34);
+        void* const viewport = block != nullptr ? calls.viewport_construct_00b1f850(block) : nullptr;
+        const std::uint32_t size[2] = {static_cast<std::uint32_t>(scale_00e14454 * width),
+                                       static_cast<std::uint32_t>(scale_00e14454 * height)};
+        calls.viewport_set_dimensions_00b1f940(viewport, size);
+        calls.camera_set_viewport_00b71990(w3_field<void*>(generator, 0x34), viewport);
+        if (viewport != nullptr) w2_release_object(viewport);
+    }
+    {
+        void* const buffer = make_buffer("oceanheightmapgen.mvfm");
+        fill_simple(buffer);
+        finish(buffer, 0x3C, "oceanheightmapgen.mshd",
+               [&](void* material) {
+                   float4(material, "cCorner0", w3_bytes(generator) + 0xC0);
+                   float4(material, "cCorner1", w3_bytes(generator) + 0xD0);
+                   float4(material, "cCorner2", w3_bytes(generator) + 0xE0);
+                   float4(material, "cCorner3", w3_bytes(generator) + 0xF0);
+                   named(passes.material_register_float_00b18b20, material, "cLayerScale", w3_bytes(generator) + 0x9C);
+                   named(passes.material_register_float3_00b18ae0, material, "cWaveScale", w3_bytes(generator) + 0x100);
+                   named(passes.material_register_float3_00b18ae0, material, "cEyePos", w3_bytes(generator) + 0x10C);
+               },
+               0x38, "OceanHeightmapgen", 0x30);
+    }
+    // 2. Normal map generation.
+    w3_field<void*>(generator, 0x1C) = make_scene("oceannormalgenscene");
+    w3_field<void*>(generator, 0x24) = make_camera("OceanNormalgenCamera");
+    calls.camera_set_clear_flags_00b6fe10(w3_field<void*>(generator, 0x24), 7);
+    set_viewport(w3_field<void*>(generator, 0x24), static_cast<std::uint32_t>(scale_00e14454 * width),
+                 static_cast<std::uint32_t>(scale_00e14454 * height));
+    {
+        void* const buffer = make_buffer("oceannormalmapgen.mvfm");
+        auto* const v = w3_vcall<float*>(buffer, 0x10, 0u, 0u, 0u);
+        const std::uint32_t sw = static_cast<std::uint32_t>(scale_00e14454 * width);
+        const float dx = static_cast<float>(1.0 / w4_unsigned_to_double(sw));
+        const std::uint32_t sh = static_cast<std::uint32_t>(scale_00e14454 * height);
+        const float dy = static_cast<float>(1.0 / w4_unsigned_to_double(sh));
+        w3_field<float>(generator, 0xB8) = dx;
+        w3_field<float>(generator, 0xBC) = dy;
+        for (int k = 0; k < 4; ++k) {
+            const float u = kQuad[k][4], t = kQuad[k][5];
+            const float vertex[14] = {kQuad[k][0], kQuad[k][1], kQuad[k][2], kQuad[k][3], u, t,
+                                      static_cast<float>(static_cast<double>(u) - dx), t,
+                                      static_cast<float>(static_cast<double>(u) + dx), t,
+                                      u, static_cast<float>(static_cast<double>(t) - dy),
+                                      u, static_cast<float>(static_cast<double>(t) + dy)};
+            std::memcpy(v + k * 14, vertex, sizeof vertex);
+        }
+        w3_vcall<void>(buffer, 0x14);
+        finish(buffer, 0x28, "oceannormalgen.mshd",
+               [&](void* material) {
+                   unsigned char* const corners = w3_field<unsigned char*>(generator, 0x88);
+                   float4(material, "cCorner0", corners);
+                   float4(material, "cCorner1", corners + 0x10);
+                   float4(material, "cCorner2", corners + 0x20);
+                   float4(material, "cCorner3", corners + 0x30);
+                   named(passes.material_register_float2_00b18b00, material, "cInvMapSize", w3_bytes(generator) + 0xB8);
+               },
+               0x20, "OceanNormalGen", 0x1C);
+    }
+    // 3. Height scale.
+    w3_field<void*>(generator, 0x4C) = make_scene("oceanHeightScalescene");
+    w3_field<void*>(generator, 0x54) = make_camera("OceanHeightScaleCam");
+    calls.camera_set_clear_flags_00b6fe10(w3_field<void*>(generator, 0x54), 0);
+    set_viewport(w3_field<void*>(generator, 0x54), static_cast<std::uint32_t>(width), static_cast<std::uint32_t>(height));
+    {
+        void* const buffer = make_buffer("oceanheightmapgen.mvfm");
+        fill_simple(buffer);
+        finish(buffer, 0x58, "oceanheightscale.mshd", [](void*) {}, 0x50, "OceanHeightScale", 0x4C);
+    }
+    // 4. Wave damping target.
+    w3_field<void*>(generator, 0x08) = make_scene("wave_damp_scene");
+    w3_field<void*>(generator, 0x0C) = make_camera("wave_damp_camera");
+    calls.camera_set_clear_color_00b6fe50(w3_field<void*>(generator, 0x0C), 0xFFFFFFFFu);
+    calls.camera_set_clear_flags_00b6fe10(w3_field<void*>(generator, 0x0C), 1);
+    {
+        void* const block = w3_new(0x34);
+        void* const viewport = block != nullptr ? calls.viewport_construct_00b1f850(block) : nullptr;
+        const std::uint32_t size[2] = {0x80, 0x80};
+        calls.viewport_set_dimensions_00b1f940(viewport, size);
+        calls.camera_set_viewport_00b71990(w3_field<void*>(generator, 0x0C), viewport);
+        void* const targets = w3_new(0x40);
+        void* const built = targets != nullptr ? calls.frame_targets_construct_00b1fbb0(targets) : nullptr;
+        w3_field<void*>(generator, 0x18) = built;
+        calls.frame_targets_set_color_00b1fab0(built, 0, w3_field<void*>(generator, 0x14));
+        if (viewport != nullptr) w2_release_object(viewport);
+    }
+    w3_field<std::uint32_t>(generator, 0x80) = 0;
+    w3_field<std::uint32_t>(generator, 0x84) = 1;
+}
+
+}  // namespace bsp::water_weather_cc13

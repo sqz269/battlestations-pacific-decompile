@@ -2445,3 +2445,42 @@ void* w4_ocean_wave_field_base_construct_00ba1400(void* field, void* world, void
     const W4_WaveFieldBaseCalls& base);
 
 }  // namespace bsp::water_weather_cc13
+
+namespace bsp::water_weather_cc13 {
+
+// 00BA7530 BSP_OceanHeightGenerator_InitializePasses, __thiscall(ECX generator, width, height) RET 8. Caller
+// 00BA94F0. Listing read in full; the normal pass's x87 vertex block traced symbolically. s = the global
+// 00E14454 (read at each use). Each pass draws one full-screen quad of four vertices at (-1, -1), (-1, 1),
+// (1, -1), (1, 1), z 0.5, w 1, uv (0, 1), (0, 0), (1, 1), (1, 0), built through a declaration, a vertex
+// buffer device +5Ch(4, 1, decl) (declaration released, no null test), a mesh (0BCh) with vertex stream 0
+// (buffer released), a material with parameter owner (generator, 0), a draw section {5, 0, 4, 0, 2} with
+// that material, rebuilt for and appended to the mesh, and a model with geometry (0, mesh, -1.0f, -1.0f)
+// rooted under the pass scene; section and mesh released (no null tests).
+// 1. scene "oceanheightmapscene" +30h; camera "OceanHeigtmapGen" +34h, clear flags 0, 00B6FDF0(0), viewport
+//    {s*w, s*h}; "oceanheightmapgen.mvfm" with 6-float vertices {x, y, z, w, u, v}; material
+//    "oceanheightmapgen.mshd" +3Ch with float4 arrays (count 1) cCorner0..3 = +0C0h, +0D0h, +0E0h, +0F0h,
+//    float cLayerScale +9Ch (00B18B20), float3 cWaveScale +100h and cEyePos +10Ch (00B18AE0); model
+//    "OceanHeightmapgen" +38h under +30h.
+// 2. scene "oceannormalgenscene" +1Ch; camera "OceanNormalgenCamera" +24h, clear flags 7, viewport
+//    {s*w, s*h}; "oceannormalmapgen.mvfm" with 14-float vertices {x, y, z, w, u, v, u-dx, v, u+dx, v, u,
+//    v-dy, u, v+dy}, dx = float(1 / (s*w)), dy = float(1 / (s*h)) (unsigned FILD), kept at +0B8h / +0BCh;
+//    material "oceannormalgen.mshd" +28h with cCorner0..3 from the owner (+88h, read once) +0h..+30h and
+//    float2 cInvMapSize +0B8h (00B18B00); model "OceanNormalGen" +20h under +1Ch.
+// 3. scene "oceanHeightScalescene" +4Ch; camera "OceanHeightScaleCam" +54h, clear flags 0, viewport {w, h};
+//    the pass-1 declaration and quad; material "oceanheightscale.mshd" +58h (no constants); model
+//    "OceanHeightScale" +50h under +4Ch.
+// 4. scene "wave_damp_scene" +8h; camera "wave_damp_camera" +0Ch with clear colour FFFFFFFFh (00B6FE50),
+//    clear flags 1 and a viewport {80h, 80h}; frame targets (40h) +18h with colour surface 0 = +14h.
+// Viewports are released when non-null. Finally +80h = 0, +84h = 1.
+struct W4_HeightGeneratorCalls {
+    void* (*scene_construct_00b724e0)(void* block, const void* name);
+    void (*camera_set_render_mode_00b6fdf0)(void* camera, std::uint32_t mode);       // RET 4
+    void (*material_register_float_00b18b20)(void* material, const void* name, void* value);  // RET 8
+    void (*material_register_float3_00b18ae0)(void* material, const void* name, void* value);  // RET 8
+    void (*material_register_float2_00b18b00)(void* material, const void* name, void* value);  // RET 8
+};
+void w4_ocean_height_generator_initialize_passes_00ba7530(void* generator, std::int32_t width, std::int32_t height,
+    const volatile std::int32_t& scale_00e14454, void* device_00f8d394, NativeStringStorage& strings,
+    W4_EngineCalls& calls, const W4_HeightGeneratorCalls& passes);
+
+}  // namespace bsp::water_weather_cc13
