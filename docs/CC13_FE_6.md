@@ -30,6 +30,13 @@ were checked from the bytes (`ghidra bytes`), not from listing text.
 
 | 005E4490 | `lobby_handle_gui_event_005e4490` | thiscall(this = lobby+0Ch, event widget), RET 4 | 856 instructions |
 | 00602280 | `hud_pause_register_00602280` | fastcall(ECX screen), RET | three pages, 26 lookups, scroller wiring |
+| 006037D0 | `hud_pause_update_hints_006037d0` | fastcall(ECX screen), RET | marks the selected hint line read |
+
+- 006037D0: 00425E50 is the list box's current-row getter. It takes no stack arguments; the two
+  pushes before it belong to the following 00AA7E00. The mark-read call (00690FB0) and the
+  unread test on tracker+7Ch use the routine's local title name, which stays "" when no title
+  precedes the row. The line list comes from `map[title]` through 005FF5D0, a std::map
+  `operator[]` that can insert. Both details are kept.
 
 - 00602280: the bindings were extracted mechanically (literal, ECX parent, EAX store). The
   scroll bar call 00683380 receives (thumb +7Ch, span, up +74h, down +78h) from the pushes at

@@ -1794,6 +1794,38 @@ struct PauseRegisterHost : ScreenLifetimeHost {
     virtual void scroller_attach_scroll_bar_00683380(void* scroller, std::uint32_t thumb, float span,
         std::uint32_t up, std::uint32_t down) = 0;
 };
+// 006037D0 HudPause UpdateHints, __fastcall(ECX = screen), RET. Runs while the
+// hint list box +2Ch has rows (+154h) and its current row's (00425E50)
+// "felkialtojel_Text" (exclamation mark, 00CF3F84) is shown (vtable +38h).
+// +134h = top (+164h), +138h = selected; for row = top + selected that is not
+// a hint title (005FD220 find on +11Ch misses), the nearest preceding title is
+// the map node with the largest key below row (ties take the later node). Its
+// name indexes the award tracker's line lists (+94h, 006002B0, case-insensitive)
+// and the (row - title)th line (1-based; "" when past the end) is marked read
+// (00690FB0(name, line)). The selected row's exclamation is hidden; when the
+// title row is on the page (title >= top) and the tracker's unread list for the
+// name (+7Ch) is empty, the title row's (00A9BE00(title - top)) exclamation is
+// hidden too.
+struct PauseHintsHost : WidgetHost {
+    virtual void* award_tracker_004e1ca0() = 0;
+    virtual std::uint32_t list_box_current_row_00425e50(std::uint32_t list_box) = 0;
+    virtual std::uint32_t list_box_row_00a9be00(std::uint32_t list_box, std::int32_t index) = 0;
+    virtual std::int32_t list_box_selected_index_00a9c920(std::uint32_t list_box) = 0;
+    virtual std::uint32_t find_child_by_name_00aa7e00(std::uint32_t parent, std::string_view name) = 0;
+    virtual bool widget_virtual_38(std::uint32_t widget) = 0;
+    virtual const NativeString* hint_name_at_row_005fd220(void* screen, std::int32_t row) = 0;
+    virtual void* tree_next_005fce00(void* node) = 0;
+    // 005FF5D0: std::map operator[] on +11Ch (inserts a missing key).
+    virtual const NativeString& hint_map_subscript_005ff5d0(void* screen, std::int32_t key) = 0;
+    // The (index)th line (1-based) of a copy of tracker+94h[name]; null past the end.
+    virtual const NativeString* tracker_hint_line(const NativeString& name, std::int32_t index) = 0;
+    // A null name or line stands for the image's empty local NativeString.
+    virtual void tracker_mark_hint_read_00690fb0(const NativeString* name, const NativeString* line) = 0;
+    virtual std::int32_t tracker_unread_count_7c(const NativeString* name) = 0;  // tracker+7Ch[name] +8h
+};
+inline constexpr std::string_view kHintExclamationText = "felkialtojel_Text";  // 00CF3F84
+void hud_pause_update_hints_006037d0(void* screen, PauseHintsHost& host);
+
 inline constexpr std::string_view kPauseSinglePage = "GUI_pause_single";          // 00CF40D4
 inline constexpr std::string_view kPauseTipPage = "GUI_pause_tip";                // 00CF40C4
 inline constexpr std::string_view kPauseObjectivesPage = "GUI_pause_objectives";  // 00CF402C

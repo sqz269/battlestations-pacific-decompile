@@ -2298,6 +2298,47 @@ void hud_pause_on_listbox_activate_00604190(void* listener, std::uint32_t row, s
     host.list_box_virtual_80(widget_at(screen, 0x2C), false);
 }
 
+void hud_pause_update_hints_006037d0(void* screen, PauseHintsHost& host) {
+    const std::uint32_t list_box = widget_at(screen, 0x2C);
+    void* list = reinterpret_cast<void*>(static_cast<std::uintptr_t>(list_box));
+    if (read_field<std::int32_t>(list, 0x154) == 0) return;
+    if (!host.widget_virtual_38(
+            host.find_child_by_name_00aa7e00(host.list_box_current_row_00425e50(list_box), kHintExclamationText)))
+        return;
+    write_field(screen, 0x134, read_field<std::int32_t>(list, 0x164));
+    const std::int32_t selected = host.list_box_selected_index_00a9c920(list_box);
+    const std::int32_t row = read_field<std::int32_t>(screen, 0x134) + selected;
+    write_field(screen, 0x138, selected);
+    if (host.hint_name_at_row_005fd220(screen, row) != nullptr) return;
+
+    // Nearest preceding title in the map +11Ch (head +120h; key +0Ch, name +10h).
+    std::int32_t title = 0;
+    const NativeString* name = nullptr;
+    void* head = read_field<void*>(screen, 0x120);
+    for (void* node = read_field<void*>(head, 0x0); node != read_field<void*>(screen, 0x120);
+         node = host.tree_next_005fce00(node)) {
+        const std::int32_t key = read_field<std::int32_t>(node, 0xC);
+        if (key < row && row - key <= row - title) {
+            title = key;
+            name = reinterpret_cast<const NativeString*>(at(node, 0x10));
+        }
+    }
+    // The image keeps the title name in a local NativeString initialised to ""
+    // (name == nullptr here); the lines come from map[title] through 005FF5D0.
+    const NativeString* line =
+        host.tracker_hint_line(host.hint_map_subscript_005ff5d0(screen, title), row - title);
+    host.tracker_mark_hint_read_00690fb0(name, line);
+    host.set_shown(host.find_child_by_name_00aa7e00(
+                       host.list_box_row_00a9be00(list_box, read_field<std::int32_t>(screen, 0x138)), kHintExclamationText),
+        false);
+    if (read_field<std::int32_t>(screen, 0x134) <= title && host.tracker_unread_count_7c(name) == 0) {
+        host.set_shown(host.find_child_by_name_00aa7e00(
+                           host.list_box_row_00a9be00(list_box, title - read_field<std::int32_t>(screen, 0x134)),
+                           kHintExclamationText),
+            false);
+    }
+}
+
 void hud_pause_register_00602280(void* screen, PauseRegisterHost& host) {
     const auto bind = [&](std::size_t parent, std::size_t store, std::string_view name) {
         write_field(screen, store, host.find_child_by_name_00aa7e00(widget_at(screen, parent), name));
