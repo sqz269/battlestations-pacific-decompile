@@ -6,11 +6,14 @@
 #include "bsp/band_0076_cc13.hpp"
 #include "bsp/camera_decomposition.hpp"
 #include "bsp/unit_rudder.hpp"
+#include "bsp/native_bit_cursor_fields.hpp"
+#include "bsp/native_bit_cursor_numeric_array.hpp"
 #include "bsp/native_bit_cursor_write.hpp"
 #include "bsp/ship_ai_bearing_rating.hpp"
 
 #include <cmath>
 #include <cstring>
+#include <utility>
 
 namespace bsp::cc13cam2 {
 namespace {
@@ -804,6 +807,131 @@ void movie_camera_add_key_pair_007a2bb0(std::uintptr_t source, std::uint32_t& ne
     next_id_3c0 += 1;
 }
 
+// ---------------------------------------------------------------------------
+// Keyframe serialization
+
+namespace {
+constexpr std::uint32_t kF8 = 0x41000000u;      // 8.0, 00CE3918
+constexpr std::uint32_t kFMax = 0x7F7FFFFFu;    // FLT_MAX, 00D7A248
+constexpr std::uint32_t kF64 = 0x42800000u;     // 64.0, 00CE7820
+constexpr std::uint32_t kF256 = 0x43800000u;    // 256.0, 00CF8B3C
+}  // namespace
+
+void movie_key_write_bits_00791360(const MovieKeyBits& k, NativeBitCursor* cursor, MovieKeyBitsHost& host) {
+    const NativeBitNumericContext& ctx = host.numeric_context();
+    write_native_bool_bit_004290b0(cursor, k.terrain_avoid_d9);
+    write_native_numeric_float_004295c0(cursor, k.field_cc, 0, 0, kF8, 16, ctx);
+    write_native_numeric_float_array_00429790(cursor, k.local_34.data(), 3, 0, 1, kFMax, 32, ctx);
+    write_native_numeric_float_array_00429790(cursor, k.up_58.data(), 3, 0, 1, kFMax, 32, ctx);
+    write_native_numeric_float_004295c0(cursor, k.zoom_c4, 0, 0, kF64, 16, ctx);
+    write_native_numeric_float_004295c0(cursor, k.blend_f4, 0, 1, kF256, 16, ctx);
+    write_native_numeric_float_004295c0(cursor, k.start_f0, 0, 1, kF256, 16, ctx);
+    write_native_numeric_float_004295c0(cursor, k.nonlinear_d4, 1, 0, kF8, 10, ctx);
+    write_native_bool_bit_004290b0(cursor, k.camera_28);
+    write_native_bool_bit_004290b0(cursor, k.linked_25);
+    write_native_bool_bit_004290b0(cursor, k.wanderer_26);
+    write_native_unsigned_dword_bits_00429070(cursor, k.transform_2c, 4);
+    write_native_bool_bit_004290b0(cursor, k.use_current_d8);
+    write_native_bool_bit_004290b0(cursor, k.has_position_27);
+    write_native_bool_bit_004290b0(cursor, k.then_none_30);
+    write_native_bool_bit_004290b0(cursor, k.flag_dc);
+    if (!k.parent_attached_24 || k.parent_1c == 0) {
+        write_native_bool_bit_004290b0(cursor, 0);
+    } else {
+        write_native_bool_bit_004290b0(cursor, 1);
+        write_native_word_bits_00429120(cursor, host.net_id_174(k.parent_1c), 12);  // 007914E1
+    }
+    if (k.modifier_e4 != 0) {
+        write_native_unsigned_dword_bits_00429070(cursor, static_cast<std::uint32_t>(host.modifier_type_slot30(k.modifier_e4)), 4);
+        host.modifier_write_slot24(k.modifier_e4, cursor);  // 0079151D
+        return;
+    }
+    write_native_unsigned_dword_bits_00429070(cursor, 0, 4);
+}
+
+void movie_key_read_bits_007a2370(MovieKeyBits& k, NativeBitCursor* cursor, MovieKeyBitsHost& host) {
+    const NativeBitNumericContext& ctx = host.numeric_context();
+    read_native_bool_bit_00428d70(cursor, &k.terrain_avoid_d9);
+    read_native_numeric_float_004293f0(cursor, &k.field_cc, 0, 0, kF8, 16, ctx);
+    read_native_numeric_float_array_004294f0(cursor, k.local_34.data(), 3, 0, 1, kFMax, 32, ctx);
+    read_native_numeric_float_array_004294f0(cursor, k.up_58.data(), 3, 0, 1, kFMax, 32, ctx);
+    read_native_numeric_float_004293f0(cursor, &k.zoom_c4, 0, 0, kF64, 16, ctx);
+    read_native_numeric_float_004293f0(cursor, &k.blend_f4, 0, 1, kF256, 16, ctx);
+    read_native_numeric_float_004293f0(cursor, &k.start_f0, 0, 1, kF256, 16, ctx);
+    read_native_numeric_float_004293f0(cursor, &k.nonlinear_d4, 1, 0, kF8, 10, ctx);
+    read_native_bool_bit_00428d70(cursor, &k.camera_28);
+    read_native_bool_bit_00428d70(cursor, &k.linked_25);
+    read_native_bool_bit_00428d70(cursor, &k.wanderer_26);
+    read_native_u32_bits_00428d10(cursor, &k.transform_2c, 4);
+    read_native_bool_bit_00428d70(cursor, &k.use_current_d8);
+    read_native_bool_bit_00428d70(cursor, &k.has_position_27);
+    read_native_bool_bit_00428d70(cursor, &k.then_none_30);
+    read_native_bool_bit_00428d70(cursor, &k.flag_dc);
+    read_native_bool_bit_00428d70(cursor, &k.parent_attached_24);
+    if (k.parent_attached_24) {
+        std::uint16_t id = 0;
+        read_native_word_bits_00428e30(cursor, &id, 12);
+        const std::size_t entity = host.entity_from_net_id(id);
+        if (k.parent_1c != entity) {
+            if (k.parent_1c != 0) host.unregister_006952a0(k.parent_1c, &k);
+            k.parent_1c = entity;
+            if (entity != 0) host.register_00694a60(entity, &k);
+        }
+        if (k.parent_1c != 0 && host.destroyed_5e(k.parent_1c)) {
+            const std::array<float, 3> p = host.position_fc(k.parent_1c);
+            for (std::size_t i = 0; i < 3; ++i) {
+                float v;
+                std::memcpy(&v, &k.local_34[i], sizeof v);
+                v = static_cast<float>(static_cast<double>(p[i]) + v);
+                std::memcpy(&k.local_34[i], &v, sizeof v);
+            }
+            host.unregister_006952a0(k.parent_1c, &k);
+            k.parent_1c = 0;
+            k.parent_attached_24 = false;
+        }
+    }
+    std::uint32_t type = 0;
+    read_native_u32_bits_00428d10(cursor, &type, 4);
+    if (type != 1 && type != 2 && type != 3) return;
+    const std::uintptr_t modifier = host.new_modifier(static_cast<int>(type));
+    if (modifier == 0) return;
+    host.modifier_read_slot28(modifier, cursor);  // 007A2665
+    host.set_modifier_00799de0(k, modifier);
+}
+
+bool lua_is_vector3_table_0079c040(bool is_table, const std::vector<LuaEntryView>& entries) {
+    if (!is_table) return false;
+    auto iequal = [](const std::string& a, const char* b) {
+        std::size_t i = 0;
+        for (; i < a.size() && b[i] != '\0'; ++i) {
+            const char x = (a[i] >= 'A' && a[i] <= 'Z') ? static_cast<char>(a[i] - 'A' + 'a') : a[i];
+            const char y = (b[i] >= 'A' && b[i] <= 'Z') ? static_cast<char>(b[i] - 'A' + 'a') : b[i];
+            if (x != y) return false;
+        }
+        return i == a.size() && b[i] == '\0';
+    };
+    int count = 0;
+    for (const LuaEntryView& e : entries) {
+        if (!e.key_is_string || !e.value_is_number) return false;  // 0079C0BB / 0079C0CC
+        const bool x = !e.key_text_null && iequal(e.key, "x");    // __stricmp only with text
+        if (!x && !iequal(e.key, "y") && !iequal(e.key, "z")) return false;
+        ++count;
+    }
+    return count == 3;
+}
+
+void lua_read_xyz_0078fd70(std::array<float, 3>& out, const std::vector<LuaNumberEntry>& entries) {
+    for (const LuaNumberEntry& e : entries) {
+        if (e.key == "x") {
+            out[0] = static_cast<float>(e.number);
+        } else if (e.key == "y") {
+            out[1] = static_cast<float>(e.number);
+        } else if (e.key == "z") {
+            out[2] = static_cast<float>(e.number);
+        }
+    }
+}
+
 void movie_camera_stop_0078e8e0(bool& running_391, float& fov_410, MovieCameraStopHost& host) {
     host.inherit_race_and_activate_0042a910();
     running_391 = false;
@@ -1054,6 +1182,42 @@ void peer_row_update_quality_007865d0(band0076_cc13::PeerRow& row, PeerQualityHo
     const float a = host.interpolate_clamped_00419010(8.0f, 0.0f, 16.0f, 1.0f, pending);
     const float b = host.interpolate_clamped_00419010(0.15f, 0.0f, 0.6f, 1.0f, latency);
     host.smoothed_triplet_update_007862c0(row, b, a);  // 00786697, ECX = row+4
+}
+
+void peer_rows_update_007866b0(band0076_cc13::PeerRows& rows, float dt, PeerRowsUpdateHost& host) {
+    if (rows.enabled == 0) return;
+    if (0.10000000149011612 <= static_cast<double>(dt)) dt = 0.1f;
+restart:
+    for (int i = 0; i < 8; ++i) {
+        band0076_cc13::PeerRow& row = rows.rows[i];
+        if (row.peer == 0) continue;
+        const int j = host.peer_record_slot(row.peer);
+        if (j < 0 || j == i) continue;
+        band0076_cc13::PeerRow& target = rows.rows[j];
+        if (target.peer != 0) {  // 00786730: swap through a stack copy, rescan
+            std::swap(row, target);
+            goto restart;
+        }
+        target = row;
+        row.peer = 0;
+        row.probing = 0;
+        row.probe_accum_small = 0.0f;
+        row.probe_accum_large = 0.0f;
+        row.value_04 = 0.0f;
+        row.value_08 = 0.0f;
+        row.quality = 1.0f;  // 00D7A24C
+    }
+    for (int i = 0; i < 8; ++i) host.send_probes_00786150(rows.rows[i], dt);
+    const float timer = static_cast<float>(static_cast<double>(rows.period_timer) - dt);  // 007867B7
+    rows.period_timer = timer;
+    if (0.0f < timer) return;
+    rows.period_timer = 0.2f;
+    rows.connstate_accum = static_cast<float>(static_cast<double>(rows.connstate_accum) + 0.20000000298023224);
+    for (int i = 1; i < 8; ++i) host.update_quality_007865d0(rows.rows[i]);
+    if (rows.connstate_accum < 0.5f) return;
+    rows.connstate_accum = 0.0f;
+    if (!host.game_present_00e188a8()) return;
+    host.send_connstate_00786390(rows);
 }
 
 void mnetwork_client_open_00782880(std::uint32_t& state_9c, MNetworkClientHost& host) {
