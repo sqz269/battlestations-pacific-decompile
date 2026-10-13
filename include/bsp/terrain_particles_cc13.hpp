@@ -1099,6 +1099,17 @@ struct TerrainLeftHost {
     virtual void shadow_reserve_pointer_vector_00ae1440(void* vector, std::int32_t n) = 0;
     virtual void enter_critical_section(void* section) = 0;
     virtual void leave_critical_section(void* section) = 0;
+    // RAM images: 00BEFBB0 BSP_RamImage_Construct (ECX 1Ch block, width, height, a, b) RET 10h -> EAX;
+    // 00BEFB60 BSP_RamImage_GetData (ECX image) -> EAX bytes; 00BF0050 BSP_RamImage_SaveTgaFile (ECX
+    // const string* file, EDX image).
+    virtual void* ram_image_construct_00befbb0(void* block, std::int32_t width, std::int32_t height,
+                                               std::uint32_t a, std::uint32_t b) = 0;
+    virtual std::uint8_t* ram_image_data_00befb60(void* image) = 0;
+    virtual void ram_image_save_tga_00bf0050(const void* file, void* image) = 0;
+    // 00ADBD00 BSP_TerrainHeightField_ComputeHeightRange (ECX field): refreshes +10h min / +14h max.
+    virtual void height_field_compute_range_00adbd00(void* field) = 0;
+    // 00B74390 BSP_GeneratedModel_SetLocalBounds (ECX model, const float sphere[4]) RET 4.
+    virtual void generated_model_set_local_bounds_00b74390(void* model, const float* bounds) = 0;
 };
 // One-load getters the bodies below call, inlined: 00B74640 model geometry [+180h] (RET 4, argument
 // unused); 00B732C0 element i [[+54h] + 4i]; 00AF1130 particle resources sub-object [+24h].
@@ -1171,4 +1182,34 @@ std::int32_t bush_cell_cull_and_emit_lod_00ae1a10(void* cell, void* group, std::
 // max(2 * capacity, 4) through 00AE1440); restore the saved far plane (same view-type test).
 void* bush_group_model_build_bush_object_00ae1fb0(void* type, void* camera, void* foliage_system_00f8c210,
     TerrainHost& host, TerrainLeftHost& left);
+// 00ADC1C0 BSP_TerrainHeightField_DumpHeightTga, __thiscall(ECX field, const string* file) RET 4: an 8-bit
+// RAM image (operator new(1Ch) + 00BEFBB0(32 * cols + 1, 32 * rows + 1, 1, 32h); cols +38h, rows +3Ch,
+// k = 32 from .rdata 00D5D658); the field's range (00ADBD00); lo = +10h when > 0 else 0 (COMISS; NaN
+// gives 0); range = f(+14h - lo). For each tile of the grid +40h (row-major, cols wide): a null tile
+// zeroes its 33 x 33 block; otherwise its block +1Ch is sampled through vtable +8h(&out, u, v) for
+// v, u in 0..32, each sample clamped to >= 0 (NaN gives 0), lo re-read and clamped, and the byte is
+// CVTTSS2SI(f((sample - lo) / range * 255.0)) (double 00CE4B48) at ((32 row + v) * stride + u + 32 col),
+// stride = 32 cols + 1. Then 00BF0050(ECX file, EDX image) and release the image (no null test).
+void height_field_dump_height_tga_00adc1c0(void* field, const void* file, TerrainHost& host, TerrainLeftHost& left);
+// 00ADB6F0 BSP_TerrainHeightField_StampByteAtWorld, __thiscall(ECX field, float x, float z, float h) RET
+// 0Ch; no caller or data xref. inv = f(1 / +1Ch); i = _ftol2(f(x * inv)), j = _ftol2(f(z * inv))
+// (00BF7420, truncation); i, j raised to 0 and lowered to vtable +10h / +14h (the count itself, not
+// count - 1); split through vtable +44h(&tx, &tz, &lx, &lz, i, j); when the tile +40h[+38h * tz + tx]
+// is set: h raised to 0 (NaN gives 0), hf = f(h / 60.0 * 255.0) (doubles 00CE3D68 / 00CE4B48), value
+// = CVTTSS2SI(hf when 255.0 > hf, else 255.0f from 00CEDD44; unordered takes 255) as a byte, stamped
+// with 00ADB160 (max) on the tile's layer (+1Ch) at (lx, lz), (lx + 1, lz), (lx + 1, lz + 1), (lx, lz + 1).
+void height_field_stamp_byte_at_world_00adb6f0(void* field, float x, float z, float h, HeightFieldHost& fields);
+// 00ADB980 BSP_TerrainTileGrid_GetOrCreateTile, __thiscall(ECX grid, x, y) RET 8 -> EAX tile: an existing
+// grid +40h[+38h * y + x] is returned. Otherwise tile = [00F8C218] vtable +4h(grid, x, y) (00AD9C40,
+// RET 0Ch); two 33 x 33 float blocks (operator new(38h) + 00AEDAC0, null stays null) set through
+// 00ADF8B0 and 00ADF920 and released (no null test); every sample of both is set to 0.0f through
+// vtable +1Ch(0.0f, i, j), with the inlined min/max of those zeros (m from 1.0e10f: m = 0 unless
+// 0 > m; M = m when m > 0 else 0); 00ADEB00; tile vtable +8h; model = tile +24h; scales sx, sy, sz =
+// model +0F0h, +104h, +118h (world matrix refreshed before each read unless model +5Ch bit 1); box
+// min {0/sx, m/sy, 0/sz}, max {g/sx, M/sy, g/sz} with g = grid +18h (x87, each quotient stored as a
+// float); centre from 00ADA600; radius = f(g / max(sx, sy, sz)) (sx > sy ? sx : sy, then > sz ? : sz;
+// unordered picks the later one); 00B74390(model, {centre, radius}); model vtable +48h; store and
+// return the tile.
+void* terrain_tile_grid_get_or_create_tile_00adb980(void* grid, std::int32_t x, std::int32_t y,
+    HeightFieldHost& fields, TerrainHost& host, BlockHost& blocks, TerrainLeftHost& left);
 } // namespace bsp::cc13_terrain

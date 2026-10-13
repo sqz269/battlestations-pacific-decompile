@@ -2258,4 +2258,120 @@ void* bush_group_model_build_bush_object_00ae1fb0(void* type, void* camera, void
     if (!left_view_keeps_far_plane(camera)) left.camera_set_far_plane_00b6fc10(camera, saved_far);
     return model;
 }
+
+void height_field_dump_height_tga_00adc1c0(void* field, const void* file, TerrainHost& host, TerrainLeftHost& left) {
+    constexpr std::int32_t k = 32;  // 00D5D658
+    void* const block = host.operator_new(0x1C);
+    void* const image = block != nullptr
+        ? left.ram_image_construct_00befbb0(block, k * rd<std::int32_t>(field, 0x38) + 1, k * rd<std::int32_t>(field, 0x3C) + 1, 1, 0x32)
+        : nullptr;
+    const std::int32_t stride = rd<std::int32_t>(field, 0x38) * k + 1;
+    std::uint8_t* const data = left.ram_image_data_00befb60(image);
+    left.height_field_compute_range_00adbd00(field);
+    const auto clamp_low = [](float value) { return value > 0.0f ? value : 0.0f; };  // COMISS / JBE
+    const float range = f(static_cast<double>(rd<float>(field, 0x14)) - clamp_low(rd<float>(field, 0x10)));
+    for (std::uint32_t row = 0; row < rd<std::uint32_t>(field, 0x3C); ++row) {
+        for (std::uint32_t column = 0; column < rd<std::uint32_t>(field, 0x38); ++column) {
+            void* const tile = rd<void**>(field, 0x40)[rd<std::uint32_t>(field, 0x38) * row + column];
+            const auto pixel = [&](std::int32_t u, std::int32_t v) -> std::uint8_t& {
+                return data[k * static_cast<std::int32_t>(column) + (k * static_cast<std::int32_t>(row) + v) * stride + u];
+            };
+            if (tile == nullptr) {
+                for (std::int32_t v = 0; v < 0x21; ++v)
+                    for (std::int32_t u = 0; u < 0x21; ++u) pixel(u, v) = 0;
+                continue;
+            }
+            void* const samples = rd<void*>(tile, 0x1C);  // 00ADEA70
+            for (std::int32_t v = 0; v < 0x21; ++v) {
+                for (std::int32_t u = 0; u < 0x21; ++u) {
+                    float sample = 0.0f;
+                    using Sample = void(__thiscall*)(void*, float*, std::int32_t, std::int32_t);
+                    reinterpret_cast<Sample>(rd<void*>(rd<void*>(samples, 0), 8))(samples, &sample, u, v);
+                    if (!(sample > 0.0f)) sample = 0.0f;  // COMISS / JA keeps
+                    const float lo = clamp_low(rd<float>(field, 0x10));
+                    const float scaled = f((static_cast<double>(sample) - lo) / range * 255.0);  // 00CE4B48
+                    pixel(u, v) = static_cast<std::uint8_t>(static_cast<std::int32_t>(scaled));  // CVTTSS2SI
+                }
+            }
+        }
+    }
+    left.ram_image_save_tga_00bf0050(file, image);
+    left_release(image);
+}
+
+void height_field_stamp_byte_at_world_00adb6f0(void* field, float x, float z, float h, HeightFieldHost& fields) {
+    const float inv = f(1.0 / rd<float>(field, 0x1C));
+    std::int32_t i = static_cast<std::int32_t>(f(static_cast<double>(inv) * x));  // _ftol2 truncates
+    std::int32_t j = static_cast<std::int32_t>(f(static_cast<double>(inv) * z));
+    const std::int32_t wide = fields.slot10_samples_wide(field);
+    if (i <= 0) i = 0;
+    if (i >= wide) i = wide;
+    const std::int32_t deep = fields.slot14_samples_deep(field);
+    if (j <= 0) j = 0;
+    if (j >= deep) j = deep;
+    std::int32_t tx = 0, tz = 0, lx = 0, lz = 0;
+    fields.slot44_split_index(field, &tx, &tz, &lx, &lz, i, j);
+    void* const tile = rd<void**>(field, 0x40)[rd<std::int32_t>(field, 0x38) * tz + tx];
+    if (tile == nullptr) return;
+    const float height = h > 0.0f ? h : 0.0f;  // COMISS / JBE: NaN gives 0
+    const float hf = f(static_cast<double>(height) / 60.0 * 255.0);  // 00CE3D68, 00CE4B48
+    const float chosen = 255.0 > static_cast<double>(hf) ? hf : 255.0f;  // FCOMPI / JBE; 00CEDD44
+    const auto value = static_cast<std::uint8_t>(static_cast<std::int32_t>(chosen));  // CVTTSS2SI, low byte
+    void* const layer = rd<void*>(tile, 0x1C);  // 00ADEA70, re-read before each stamp in the image
+    byte_layer_stamp_max_00adb160(layer, lx, lz, value);
+    byte_layer_stamp_max_00adb160(rd<void*>(tile, 0x1C), lx + 1, lz, value);
+    byte_layer_stamp_max_00adb160(rd<void*>(tile, 0x1C), lx + 1, lz + 1, value);
+    byte_layer_stamp_max_00adb160(rd<void*>(tile, 0x1C), lx, lz + 1, value);
+}
+
+void* terrain_tile_grid_get_or_create_tile_00adb980(void* grid, std::int32_t x, std::int32_t y,
+    HeightFieldHost& fields, TerrainHost& host, BlockHost& blocks, TerrainLeftHost& left) {
+    void*& existing = rd<void**>(grid, 0x40)[rd<std::int32_t>(grid, 0x38) * y + x];
+    if (existing != nullptr) return existing;
+    void* const tile = fields.create_tile(grid, x, y);
+    void* const memory_a = host.operator_new(0x38);
+    void* const block_a = memory_a != nullptr ? terrain_block_construct(0x00AEDAC0, memory_a, 0x21, 0x21, host) : nullptr;
+    terrain_tile_set_block_00adf8b0(tile, block_a, host, blocks);
+    left_release(block_a);
+    void* const memory_b = host.operator_new(0x38);
+    void* const block_b = memory_b != nullptr ? terrain_block_construct(0x00AEDAC0, memory_b, 0x21, 0x21, host) : nullptr;
+    terrain_tile_set_second_block_00adf920(tile, block_b, host);
+    left_release(block_b);
+    const float g = rd<float>(grid, 0x18);
+    float low = 0.0f, high = 0.0f;
+    std::uint32_t low_bits = 0x501502F9u;  // 00CE4970 1.0e10f
+    std::memcpy(&low, &low_bits, 4);
+    using SetSample = void(__thiscall*)(void*, float, std::int32_t, std::int32_t);
+    for (std::int32_t j = 0; j < 0x21; ++j) {
+        for (std::int32_t i = 0; i < 0x21; ++i) {
+            reinterpret_cast<SetSample>(rd<void*>(rd<void*>(block_a, 0), 0x1C))(block_a, 0.0f, i, j);
+            if (!(0.0f > low)) low = 0.0f;   // COMISS 0, m / JA
+            high = low > 0.0f ? low : 0.0f;  // COMISS m, 0 / JBE
+            reinterpret_cast<SetSample>(rd<void*>(rd<void*>(block_b, 0), 0x1C))(block_b, 0.0f, i, j);
+        }
+    }
+    terrain_tile_refresh_height_range_00adeb00(tile, blocks);
+    using Slot = void(__thiscall*)(void*);
+    reinterpret_cast<Slot>(rd<void*>(rd<void*>(tile, 0), 8))(tile);
+    void* const model = rd<void*>(tile, 0x24);  // 00ADEAF0
+    const auto refresh = [&] {
+        if ((rd<std::uint8_t>(model, 0x5C) & 2u) == 0) fields.refresh_world_matrix_00b6db70(model);
+    };
+    refresh();
+    const float sx = rd<float>(model, 0xF0);
+    refresh();
+    const float sy = rd<float>(model, 0x104);
+    refresh();
+    const float sz = rd<float>(model, 0x118);
+    const TerrainVec3f box_min{f(0.0 / sx), f(static_cast<double>(low) / sy), f(0.0 / sz)};
+    const TerrainVec3f box_max{f(static_cast<double>(g) / sx), f(static_cast<double>(high) / sy), f(static_cast<double>(g) / sz)};
+    const TerrainSphere sphere = terrain_box_bounding_sphere_00ada600(box_min, box_max);
+    const float wider = sx > sy ? sx : sy;          // FCOMPI / JBE
+    const float widest = wider > sz ? wider : sz;   // FCOMPI / JA
+    float bounds[4] = {sphere.centre.x, sphere.centre.y, sphere.centre.z, f(static_cast<double>(rd<float>(grid, 0x18)) / widest)};
+    left.generated_model_set_local_bounds_00b74390(model, bounds);
+    reinterpret_cast<Slot>(rd<void*>(rd<void*>(model, 0), 0x48))(model);
+    rd<void**>(grid, 0x40)[rd<std::int32_t>(grid, 0x38) * y + x] = tile;
+    return tile;
+}
 } // namespace bsp::cc13_terrain
