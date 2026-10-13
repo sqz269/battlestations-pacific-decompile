@@ -13565,3 +13565,10 @@ entry. Counters: `summary mission gunnery blast crash/kamikaze shape walks=`. OF
 | --- | --- |
 | USN12 s38_u12_p2 | completes as OFF (1534.87 s); the spread moves (more flak admissions on tall ships, as in 205); exit 3 |
 | USNOS s45_os_k 200000 | kamikaze and crash blasts reach a unit only within range of its shapes: `no_shape_in_range` > 0 on high bursts; an Ohka striking TroopTrans3's upper works (5gg's case) now reaches it; whether the row fails as 205's ON run did is open (205's failure was divergence, not a blast mechanism) |
+
+**209 verdict: ON (cc9-gunnery40).** OFF `468379e49` as built (`local\g40_tb0`), against ON (`g39_rk0`):
+- USN01 p6_u1_g 26000: pair_diff exit 1 (gameplay identical), `fall breakups=0`, completed (exec guard refusals logged).
+- LOMP10 p3_l10_b 32000: exit 1, `breakups=0`, completed.
+- ESMP08 90000 (ON `local\g40_tc1_e8.log`): 39 drops, `breakups=0`, `water_entry_breakups=0`. The fall test is the
+  only path the switch adds, and it never fired, so the OFF partner was not run.
+As predicted on all three rows. Mechanism matches the image, so the switch is flipped ON.

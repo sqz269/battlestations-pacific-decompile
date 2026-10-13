@@ -276,7 +276,8 @@ constexpr bool kTurningGunFireClearsRequestBound = false;
 //    [classDesc+0ECh], FCHS, FCOMIP, JA: the round breaks up when
 //    vy < -sqrt(2 * MaxFall * 9.81) (00855AAE..00855AD3, 9.81 the double at
 //    00CF9058). The host applied only the MaxWaterHitVel limit. OFF: as before.
-constexpr bool kTorpedoMaxFallBreakupBound = false;
+//    ON since the pairs (GUNNERY_OPEN_ITEMS 209: breakups=0, gameplay identical).
+constexpr bool kTorpedoMaxFallBreakupBound = true;
 //  * kTorpedoSwimDepthHomingBound: packet cc9_g40_torpedo_swim (lead items 2b
 //    and 3; docs/CC13_GPR_53.md 1.2, 1.3, 1.6; docs/TORPEDO_TICK.md). The
 //    swimming torpedo runs the faithful 00857480 (torpedo_swim_00857480 with
