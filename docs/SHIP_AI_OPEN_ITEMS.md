@@ -17419,3 +17419,48 @@ so 05 bears -27 (on the bow, 830 m) and 04 bears -66 (660 m).
 | `s47_cj5_n1` | 20,5 | 02 2238 s; 04 lives until the Yamato sinks it at 5888 s; `completed` at 5901.74 s (close to the 6000 s run) |
 Every completion logs `bsp: refused a mission script's process launch: sus_prog.exe` first. Order file
 `config/win_orders/jm06_s47_j6_n1.txt`; JM06, 120000 frames.
+
+## 232. The ship out-of-map exit 00826D70: `kShipOutOfMapExitBound`, OFF (cc9-ships47, 2026-10-13; lead item 2)
+
+cc13-ver7 Finding 1 (`docs/CC13_VER_7.md`) modelled 00826D70 (`src/ship_nav_ver_cc13.cpp`), slot +1D8h of every ship
+class vtable (read from the PE: Battleship 00CF90B0, Cargo 00CFA778 and Cruiser 00CFB738 all hold 00826D70 at
++1D8h, 0080E1B0 at +174h and 00812CD0 at +178h). Its caller: `00825FAC` in the ship motion tick 00825F20 calls
+00953CC0, whose `00953D98` runs vtable[1D8h] unless unit+520h is set (00953D84). The host never modelled that call
+for ships. **Wiring** (`src/game_hosts_units.cpp`, `ShipOutOfMapBinding`): once per live ship per step, after the
+host's order-ring refill at the head of the ship motion path, while `generic_suppress_520` is clear and the world
+border and Retreat globals are loaded.
+- `00811F50(1)` read whole (00811F50-0081204F): the local player's unit (00927F30(0); SUBSTITUTION, labelled: the
+  host's controlled unit) or unit+184h (`unit_player_controlled_0184`), the same two on 007788D0's formation leader;
+  then the current command (0071BE40): stop 0; retreat and cruise 1; attackmove and moveto 1 when 00812CD0's
+  descriptor has +1h set and its position is outside the map; moveonpath 1 when 007B1350's last path point is valid
+  and outside; else 0 (`bsp::command_blocks_auto_action`).
+- Settings: `Retreat.ExitDist` / `ExitTime` / `WarningRepeatTime` from the plane globals (the same Lua keys the
+  plane countdown 007C6C30 reads). The ship's +6ECh / +6F0h reuse the slot's retreat fields (both start 0: the ship
+  constructor 00963380 stores EDI = 0 at 009634C8 over the base constructor's 60.0 at 0095CDAE).
+- The exit: SUBSTITUTION, labelled: 00811E80's MT_UNITEXITED is not routed; the host runs 0081BEB0's body at once:
+  0081BF0C 00982120(ship, 1) through cc13's `note_exit_zone_00982120(ship, true)` (`kLuaExitZoneListenersBound`,
+  CC13_VER_8; its game+18ECh gate 00927C50 is not modelled), then `note_kill_cause(ship, 4)` and
+  `kill_unit_00926d90(ship, 4)`, so Lua sees `KillReason == "exitzone"`. `ExitZoneParty` is a record. The warning
+  00826E8F 00982120(ship, 0) goes through the same hook with `exited = false`.
+- Log lines `ship exit zone countdown:` (first counting tick per ship), `ship exit zone:` (each exit) and
+  `summary ship exit zone bound=... calls counting warnings kills`.
+
+**Predictions.** OFF identical (the summary line only). ON moves only rows where a ship is outside the map box while
+held: the player's ship, a retreat or cruise, or a moveto / attackmove / moveonpath whose end is outside. A follower
+in a convoy is not held unless its leader is the player's, so an escaping convoy exits only through its leader. Per
+CC13_VER_7: LOMP06 (an exited CrucialCargo fails the mission), USN05, USN06, USN10, JM02.
+
+**Pairs** (an export of this branch with the patch, OFF and ON from the same tree; `local\s47_exit_patch.py`; logs
+`local\s47_x?_*`, `local\s47_y?_*`):
+| row | result |
+| --- | --- |
+| LOMP06 `lomp06_l50_l6_q6`, 14000 | gameplay identical; completed 384.23 s both; no ship counts down |
+| JM06 `jm06_s47_j6_n1`, 120000 (ON only, first patch) | completed 4108.77 s, as OFF (231); no ship counts down |
+| USN12 `usn12_s38_u12_p2`, 36000 | gameplay identical; completed 1524.96 s both |
+| USN01 `usn01_p6_u1_g`, 20000 | gameplay identical |
+| USN06 idle 18000 / 60000 | gameplay identical (no reach) |
+| JM02 idle 40000 | gameplay identical: **the host runs no ship motion in JM02 at all** (no `ShipMotion::order_ring_tick` / `force_model` row in the native table, and 00826D70 never called), a separate host gap to look at |
+| JM06 probe `local\s47_j6_exitprobe.txt` (takehelm PlayerSub 01 to (116, -60000)), 24000 | ON: countdown from z = -6000.2 at 566.04 s (timer 19.95, ExitTime 20), `ship exit zone: unit="PlayerSub 01" t=586.03 ... command=cruise`, death cause exitzone; the AI boat PlayerSub 02 (cruise) leaves the same edge and exits at 941.64 s. OFF: both sail on |
+The menu rows USN01, USN06 and USN12 load `usn_1_marshall.lua`, `usn_6_guad.lua` and `usn_12_augusta.lua`, not the
+COTP scripts whose ship exitzone listeners CC13_VER_8 counts, so no run here exercises a ship listener. **Verdict: ON
+by mechanism** (the image's countdown and kill reproduce on the probe; every win row is identical).

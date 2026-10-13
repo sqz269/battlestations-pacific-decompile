@@ -55,6 +55,8 @@
 #include "bsp/pilot_order_bindings.hpp"
 #include "bsp/plane_squadron_host.hpp"
 #include "bsp/plane_retreat_task.hpp"         // packet cc9_plane_retreat_task
+#include "bsp/ship_nav_ver_cc13.hpp"           // packet cc9_ship_exit_zone (00826D70)
+#include "bsp/command_execution.hpp"           // packet cc9_ship_exit_zone (command classes)
 #include "bsp/plane_level_bomb_task.hpp"      // packet cc9_plane_level_bomb_task
 #include "bsp/squadron_spent_ordnance.hpp"    // packet cc9_squadron_spent_ordnance_rtb
 #include "bsp/scene_record_side_blocks.hpp"
@@ -854,6 +856,10 @@ struct GameUnitSlot {
     bool retreat_squadron_ordered{false};
     float retreat_exit_6f0{0.0f};           // unit+6F0h
     int retreat_exit_state_6ec{0};          // unit+6ECh: 1 inside, 2 counting, 3 expired
+    // Packet cc9_ship_exit_zone: a ship reuses +6ECh / +6F0h above (00826D70 writes the
+    // same unit fields); +100Ch is its warning repeat timer.
+    float ship_exit_warning_100c{0.0f};     // unit+100Ch
+    bool ship_exit_counting_logged{false};
     unsigned long long retreat_ticks{0}, retreat_moveto_ticks{0}, retreat_enter_ticks{0},
         retreat_leave_ticks{0}, retreat_follow_ticks{0}, retreat_refreshes{0},
         retreat_zone_misses{0}, retreat_outside_ticks{0};
@@ -2631,6 +2637,16 @@ struct GameUnitsHost::Impl {
         return bsp::drop_kamikaze_should_break_off_009ae1b0(bi);
     }
     unsigned long long retest_dead_targets{0}, retest_ends{0};   // kSquadronDeadTargetRetestBound
+    // Packet cc9_ship_exit_zone (docs/SHIP_AI_OPEN_ITEMS.md 232; cc13-ver7 Finding 1,
+    // docs/CC13_VER_7.md). 00826D70 is vtable slot +1D8h of every ship class, which
+    // 00953CC0 (called at 00825FAC, the head of the ship motion tick) runs at 00953D98
+    // while unit+520h is clear. Outside the map and held by 00811F50(1) the timer +6F0h
+    // counts down; past Retreat.ExitDist or below zero 00811E80 routes MT_UNITEXITED and
+    // the ship's handler 0081BEB0 kills it with reason 4 ("exitzone"). True: the host
+    // runs it for every live ship. False: no ship ever leaves the map, as before.
+    static constexpr bool kShipOutOfMapExitBound = false;
+    unsigned long long ship_exit_calls{0}, ship_exit_counting{0}, ship_exit_warnings{0},
+        ship_exit_kills{0};
     void note_kill_cause(std::size_t unit, int cause) {
         if (kill_cause_by_unit.size() <= unit) kill_cause_by_unit.resize(unit + 1, 1);
         kill_cause_by_unit[unit] = cause;
@@ -17250,6 +17266,95 @@ void GameUnitsHost::Impl::run_world_contact_phase(float step_seconds) {
     }
     world_contact_pending.clear();
 }
+
+// Packet cc9_ship_exit_zone: the hooks of 00826D70 (bsp::ShipOutOfMapHost) for one ship.
+class ShipOutOfMapBinding final : public bsp::ShipOutOfMapHost {
+public:
+    ShipOutOfMapBinding(GameUnitsHost& self, GameUnitsHost::Impl& host, std::size_t index,
+        const bsp::WorldMapBounds& bounds)
+        : self_(self), host_(host), index_(index), slot_(*host.slots[index]), bounds_(bounds) {}
+
+    bool point_outside_map_0071c4f0() override {
+        const float* p = slot_.motion.position;
+        return bsp::point_outside_world_map_0071c4f0(bounds_, {p[0], p[1], p[2]});
+    }
+    // 00811F50 with check_player = 1 (00826DA9 PUSH 1), read whole (00811F50-0081204F).
+    bool command_blocks_auto_action_00811f50() override {
+        // 00811F5C 00927F30(0) and 00811F6D unit+184h, then the same two tests on
+        // 007788D0's formation leader.
+        if (local_player(index_) || self_.unit_player_controlled_0184(index_)) return true;
+        const std::size_t leader = self_.formation_leader_0014(slot_.formation_group);
+        if (slot_.formation_group >= 0 && leader < host_.slots.size()
+            && (local_player(leader) || self_.unit_player_controlled_0184(leader)))
+            return true;
+        // 00811FA5 vtable[174h] = 0080E1B0 -> 0071BE40.
+        const std::uint32_t command = host_.commands.current_command_0071be40(index_);
+        bool target_outside = false;
+        bool path_outside = false;
+        if (command == bsp::kCommandAttackMove || command == bsp::kCommandMoveTo) {
+            // 00811FEE vtable[178h] = 00812CD0 (0071EB60's descriptor): +1h set and the
+            // position outside the map (0059BD20, 0071C4F0).
+            bsp::SceneCommandTarget target;
+            int mode = 0;
+            host_.commands.active_command_descriptor_0071eb60(index_, target, mode);
+            target_outside = target.position_valid != 0
+                && bsp::point_outside_world_map_0071c4f0(bounds_,
+                    {target.position[0], target.position[1], target.position[2]});
+        } else if (command == bsp::kCommandMoveOnPath) {
+            // 00812020 0071BFF0(0), 00812029 007B1350: the path's last point, when valid.
+            float last[3]{};
+            path_outside = host_.commands.path_final_point_007b1350(index_, last)
+                && bsp::point_outside_world_map_0071c4f0(bounds_, {last[0], last[1], last[2]});
+        }
+        return bsp::command_blocks_auto_action(command, target_outside, path_outside);
+    }
+    bool point_beyond_map_margin_0059c9b0(float margin) override {
+        const float* p = slot_.motion.position;
+        return bsp::point_beyond_map_margin_0059c9b0(bounds_, p[0], p[2], margin);
+    }
+    bool formation_follower_007788b0() override {
+        return self_.unit_is_formation_follower_007788b0(index_);
+    }
+    bool local_player_role_00927f30() override { return local_player(index_); }
+    void dispatch_exit_zone_warning_00982120() override {
+        // 00826E8F 00982120([00F8A0C4], unit, 0): the exitzone channel, exited = 0.
+        ++host_.ship_exit_warnings;
+        host_.lua.note_exit_zone_00982120(index_, false);
+        host_.done("ShipUnit::exit_zone_warning_00982120", 0x00982120u);
+    }
+    // SUBSTITUTION, labelled: 00811E80 routes MT_UNITEXITED (50h) and 0081BEB0 runs on
+    // its delivery; the host runs the handler's body here: 0081BF0C 00982120(unit, 1),
+    // the exitzone channel (cc13's dispatcher; its game+18ECh gate 00927C50 is not
+    // modelled), then Kill(4). The Lua ExitZoneParty store is a record.
+    void route_unit_exited_00811e80() override {
+        GameGunneryHost* const gun = host_.gunnery.get();
+        if (gun == nullptr || gun->unit_dead(index_)) return;
+        ++host_.ship_exit_kills;
+        host_.log.notef("ship exit zone: unit=\"%s\" t=%.2f pos=(%.1f, %.1f) command=%s "
+            "(00826D70 -> 00811E80 -> 0081BEB0 Kill(4), packet cc9_ship_exit_zone)",
+            slot_.row.name.c_str(), static_cast<double>(host_.summary.simulated_seconds),
+            static_cast<double>(slot_.motion.position[0]),
+            static_cast<double>(slot_.motion.position[2]),
+            host_.commands.command_name_of(host_.commands.current_command_0071be40(index_)));
+        host_.lua.note_exit_zone_00982120(index_, true);
+        host_.done("ShipUnit::exit_zone_channel_0081bf0c", 0x0081bf0cu);
+        host_.note_kill_cause(index_, 4);
+        gun->kill_unit_00926d90(index_, 4);
+        host_.record("ShipUnit::exit_zone_party_lua_0081beb0", 0x0081beb0u);
+    }
+
+private:
+    // SUBSTITUTION, labelled: 00927F30(0), the local player's role, is the host's
+    // controlled unit.
+    bool local_player(std::size_t unit) const {
+        return host_.controlled_bound && host_.controlled_index == unit;
+    }
+    GameUnitsHost& self_;
+    GameUnitsHost::Impl& host_;
+    std::size_t index_;
+    GameUnitSlot& slot_;
+    const bsp::WorldMapBounds& bounds_;
+};
 
 void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     Impl& host = *impl_;
@@ -34345,6 +34450,44 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                 host.player_helm_issue_0064b870(slot);
             }
         }
+        // Packet cc9_ship_exit_zone: 00825FAC 00953CC0 -> 00953D98 vtable[1D8h] = 00826D70,
+        // skipped while unit+520h is set (00953D84).
+        if constexpr (Impl::kShipOutOfMapExitBound) {
+            const bsp::WorldMapBounds* bounds = host.lua.world_border_bounds();
+            if (bounds != nullptr && host.lua.plane_globals_loaded() && host.gunnery != nullptr
+                && !slot.generic_suppress_520) {
+                const bsp::GameTuningBlock& g = host.lua.plane_globals();
+                bsp::ShipOutOfMapState st;
+                st.exit_state_6ec = slot.retreat_exit_state_6ec;
+                st.exit_timer_6f0 = slot.retreat_exit_6f0;
+                st.warning_timer_100c = slot.ship_exit_warning_100c;
+                bsp::ShipOutOfMapSettings settings;
+                settings.exit_dist_22c = g.retreat_exit_dist;
+                settings.exit_time_230 = g.retreat_exit_time;
+                settings.warning_repeat_234 = g.retreat_warning_repeat_time;
+                ShipOutOfMapBinding exit_hooks(*this, host, index, *bounds);
+                const bsp::ShipOutOfMapResult r = bsp::ship_out_of_map_countdown_00826d70(
+                    host.gunnery->unit_dead(index), st, settings, step_seconds, exit_hooks);
+                slot.retreat_exit_state_6ec = st.exit_state_6ec;
+                slot.retreat_exit_6f0 = st.exit_timer_6f0;
+                slot.ship_exit_warning_100c = st.warning_timer_100c;
+                ++host.ship_exit_calls;
+                if (r.counting) {
+                    ++host.ship_exit_counting;
+                    if (!slot.ship_exit_counting_logged) {
+                        slot.ship_exit_counting_logged = true;
+                        host.log.notef("ship exit zone countdown: unit=\"%s\" t=%.2f "
+                            "pos=(%.1f, %.1f) timer=%.2f (00826D70, packet cc9_ship_exit_zone)",
+                            slot.row.name.c_str(),
+                            static_cast<double>(host.summary.simulated_seconds),
+                            static_cast<double>(slot.motion.position[0]),
+                            static_cast<double>(slot.motion.position[2]),
+                            static_cast<double>(st.exit_timer_6f0));
+                    }
+                }
+                host.done("ShipUnit::out_of_map_countdown", 0x00826d70u);
+            }
+        }
         // Milestone 2n: 009e1170's AI arm is no longer run from here. It is the
         // `cruise` state's vtable +0Ch, and 009f5186 calls it on a re-plan tick
         // of the controller above, which is what milestone 2l's own correction
@@ -36702,6 +36845,10 @@ void GameUnitsHost::report() {
             }
         }
     }
+    host.log.notef("summary ship exit zone bound=%d calls=%llu counting=%llu warnings=%llu "
+        "kills=%llu (00826D70 / 00811F50 / 0081BEB0, packet cc9_ship_exit_zone)",
+        GameUnitsHost::Impl::kShipOutOfMapExitBound ? 1 : 0, host.ship_exit_calls,
+        host.ship_exit_counting, host.ship_exit_warnings, host.ship_exit_kills);
     if constexpr (kSquadronReturnToBaseResolveBound) {
         host.log.notef("summary plane retreat task bound=%d orders=%llu installs=%llu "
             "rtb_installs=%llu refused=%llu retired=%llu exits=%llu exit_members=%llu "
