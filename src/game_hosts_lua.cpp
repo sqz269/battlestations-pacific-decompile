@@ -526,6 +526,16 @@ int binding_trampoline(lua_State* state) {
         && dispatch_row.address == 0x008975b0u;
     const bool start_landing2_row = kLuaStartLanding2Bound
         && dispatch_row.address == 0x0089ac30u;
+    const bool squadron_plane_row = kLuaGetSquadronPlaneBound
+        && dispatch_row.address == 0x0089cfe0u;
+    const bool disband_row = kLuaDisbandFormationBound
+        && dispatch_row.address == 0x0089a020u;
+    const bool land_convoy_row
+        = (kLuaLandConvoyStartBound && dispatch_row.address == 0x00895570u)
+        || (kLuaLandConvoyStopBound && dispatch_row.address == 0x008956e0u)
+        || (kLuaLandConvoySetSpeedBound && dispatch_row.address == 0x00895850u);
+    const bool launch_slot_row = kLuaLaunchAirBaseSlotBound
+        && dispatch_row.address == 0x00896750u;
     // Packet cc9_squadron_attack_alt.
     const bool attack_alt_row = kSquadronAttackAltBound
         && dispatch_row.address == 0x008a22b0u;
@@ -601,7 +611,8 @@ int binding_trampoline(lua_State* state) {
         || sub_surface_row
         || force_gunner_row
         || slot_count_row || add_stock_row || shipyard_stock_row || device_reload_row
-        || remove_all_stock_row || start_landing2_row
+        || remove_all_stock_row || start_landing2_row || squadron_plane_row || disband_row
+        || land_convoy_row || launch_slot_row
         || unlimited_air_row
         || in_formation_row || leave_formation_row || travel_alt_row || border_zone_row
         || untouchable_row
@@ -731,6 +742,20 @@ int binding_trampoline(lua_State* state) {
     }
     if (start_landing2_row && !host->error_replay()) {
         return host->run_start_landing2_0089ac30(state, argc);
+    }
+    if (squadron_plane_row && !host->error_replay()) {
+        return host->run_get_squadron_plane_0089cfe0(state, argc);
+    }
+    if (disband_row) {
+        if (!host->error_replay()) host->run_disband_formation_0089a020(state, argc);
+        return 0;
+    }
+    if (land_convoy_row) {
+        if (!host->error_replay()) host->run_land_convoy_native(state, argc, dispatch_row.address);
+        return 0;
+    }
+    if (launch_slot_row && !host->error_replay()) {
+        return host->run_launch_air_base_slot_00896750(state, argc);
     }
     if (shipyard_stock_row) {
         if (!host->error_replay()) host->run_add_shipyard_stock_00896cc0(state, argc);
@@ -6295,6 +6320,203 @@ int GameMissionLuaHost::run_start_landing2_0089ac30(lua_State* state, int argume
     log_.notef("  StartLanding2 0089ac30: entity id %d -> %s answer=%d (packet cc13-fix5)", id,
         path, answer);
     log_.implemented("MissionLuaNative::StartLanding2", "0089ac30");
+    return 1;
+}
+
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 4). 0089CFE0 GetSquadronPlane(squadron, i),
+// lua_CFunction: 00888AA0 on argument 0 (EDI), 0089D111 00B66290 argument 1 as an
+// integer (ESI); 0089D128 JL and 0089D130 CMP [EDI+3CCh] JGE skip to the result count
+// with nothing pushed; 0089D13C CMP ESI,5 JGE and a null [EDI+ESI*4+3D0h] push nil;
+// else thisTable[member+174h] is pushed. Results: 0 or 1.
+// SUBSTITUTIONS (labelled): the squadron is the registry record whose members hold the
+// argument's unit, or held it when it died (find_by_member_or_departed_unit, the
+// object the image keeps after its lead dies); +3D0h/+3CCh are its live members in
+// order; a member's +174h is its unit index plus one, the `thisTable` key. An argument
+// with no record pushes nothing (the image reads a non-squadron's +3CCh).
+int GameMissionLuaHost::run_get_squadron_plane_0089cfe0(lua_State* state, int argument_count) {
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    const int i = argument_count >= 2 ? static_cast<int>(::lua_tonumber(state, 2)) : 0;
+    if (script_orders_ != nullptr) script_orders_->resolve_plane_squadron_members();
+    const bsp::PlaneSquadronHostRecord* record = nullptr;
+    if (units != nullptr && id > 0 && static_cast<std::size_t>(id) <= units->count()) {
+        record = bsp::plane_squadron_registry().find_by_member_or_departed_unit(
+            static_cast<std::size_t>(id - 1));
+    }
+    std::vector<std::size_t> live;
+    if (record != nullptr) {
+        for (const std::size_t member : record->member_units) {
+            if (member != bsp::kPlaneSquadronNoUnit && member < units->count()) live.push_back(member);
+        }
+    }
+    int results = 0;
+    const char* answer = "nothing";
+    if (record != nullptr && i >= 0 && i < static_cast<int>(live.size())) {
+        results = 1;
+        answer = "nil";
+        if (i >= 5 || !push_resolved_entity_by_id(state, static_cast<int>(live[i]) + 1)) {
+            ::lua_pushnil(state);
+        } else {
+            answer = "plane";
+        }
+    }
+    log_.notef("  GetSquadronPlane 0089cfe0: entity id %d index %d of %zu -> %s (packet "
+        "cc13-fix5)", id, i, live.size(), answer);
+    log_.implemented("MissionLuaNative::GetSquadronPlane", "0089cfe0");
+    return results;
+}
+
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 5). 0089A020 DisbandFormation(unit),
+// lua_CFunction, no result: 0089A11F 00888AA0 on argument 0, 0089A138 0077CA60 on it.
+// 0077CA60: nothing unless [unit+284h]; a snapshot of the group's members by
+// 0070D060 over +4F8h, skipping nulls and the leader [group+14h], with the leader
+// appended last; then for each one whose +284h is still set, the slot counter bump
+// for +1ACh < 8 (00905300) and 77h with a null target through 0077C2A0 (class 7),
+// whose receiver is 0077BD70's leave, the one LeaveFormation's 0077C980 sends.
+// SUBSTITUTIONS (labelled), as in run_leave_formation_00899eb0: each leave runs at the
+// call instead of through the session queue, in the snapshot's order; the member
+// order is the units host's index order (the +4F8h array order is not carried); the
+// slot counter is not modelled.
+int GameMissionLuaHost::run_disband_formation_0089a020(lua_State* state, int argument_count) {
+    static_cast<void>(argument_count);
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    const bool valid = units != nullptr && id > 0
+        && static_cast<std::size_t>(id) <= units->count();
+    const std::int32_t group = valid
+        ? units->unit_formation_group_0284(static_cast<std::size_t>(id - 1)) : -1;
+    std::size_t left = 0;
+    if (group >= 0) {
+        const std::size_t leader = units->formation_leader_0014(group);
+        std::vector<std::size_t> snapshot;
+        for (std::size_t u = 0; u < units->count(); ++u) {
+            if (u != leader && units->unit_formation_group_0284(u) == group) snapshot.push_back(u);
+        }
+        if (leader < units->count()) snapshot.push_back(leader);
+        for (const std::size_t u : snapshot) {
+            if (units->unit_formation_group_0284(u) < 0) continue;
+            units->leave_group_on_destroy_0077bd70(u);
+            ++left;
+        }
+    }
+    const GameUnitRow* row = valid ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
+    log_.notef("  DisbandFormation 0089a020: \"%s\" group=%d left=%zu (0077CA60 -> 77h -> "
+        "0077BD70, packet cc13-fix5)", row != nullptr ? row->name.c_str() : "?",
+        static_cast<int>(group), left);
+    log_.implemented("MissionLuaNative::DisbandFormation", "0089a020");
+    return 0;
+}
+
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 6). The LandConvoy natives, lua_CFunction,
+// no result: argument 0 through 00888D20 (0089566F, 008957DF, 0089594F), then
+// 00895688 00741120 (+3A8h = 0, Start), 008957F8 00741130 (+3A8h = 1, Stop), or
+// 00895980 00B66270 on argument 1 and 008959A3 00741140 (+368h = speed, SetSpeed).
+// SUBSTITUTIONS (labelled): the convoy is the units host's bound motion state named
+// like the argument (its `Name` field, else the scene marker's name for its `ID`);
+// an argument that names no bound convoy stores nothing (the image writes through
+// whatever pointer Ptr holds).
+int GameMissionLuaHost::run_land_convoy_native(lua_State* state, int argument_count,
+    std::uint32_t address) {
+    std::string name;
+    if (::lua_type(state, 1) == LUA_TTABLE) {
+        lua_getfield(state, 1, "Name");
+        if (const char* text = ::lua_tostring(state, -1)) name = text;
+        ::lua_settop(state, ::lua_gettop(state) - 1);
+    }
+    const int id = air_ops_entity_id(state);
+    if (name.empty() && id > 0) {
+        if (const PendingEntity* node = find_pending(id)) name = node->name;
+    }
+    bool stored = false;
+    const char* what = "?";
+    float speed = 0.0f;
+    if (units_hooks_ != nullptr && !name.empty()) {
+        if (address == 0x00895570u) {
+            what = "Start";
+            stored = units_hooks_->set_land_convoy_stopped_3a8(name, false);
+        } else if (address == 0x008956e0u) {
+            what = "Stop";
+            stored = units_hooks_->set_land_convoy_stopped_3a8(name, true);
+        } else if (address == 0x00895850u) {
+            what = "SetSpeed";
+            speed = argument_count >= 2 ? static_cast<float>(::lua_tonumber(state, 2)) : 0.0f;
+            stored = units_hooks_->set_land_convoy_speed_368(name, speed);
+        }
+    }
+    log_.notef("  LandConvoy%s %08x: \"%s\" (id %d) speed=%.2f stored=%d (packet cc13-fix5)",
+        what, address, name.c_str(), id, static_cast<double>(speed), stored ? 1 : 0);
+    if (address == 0x00895570u) log_.implemented("MissionLuaNative::LandConvoyStart", "00895570");
+    if (address == 0x008956e0u) log_.implemented("MissionLuaNative::LandConvoyStop", "008956e0");
+    if (address == 0x00895850u) {
+        log_.implemented("MissionLuaNative::LandConvoySetSpeed", "00895850");
+    }
+    return 0;
+}
+
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 8). 00896750 LaunchAirBaseSlot(base,
+// slot[, now]), lua_CFunction. 00888AA0 and 006BCD20 for the block; argument 1 as an
+// integer; argument 2 through 00B66250 only when 00B663F0 counts three or more,
+// else 0. A slot whose +2Ch is 2 returns with nothing pushed. Otherwise
+// 00896915..00896964 route 83h {slot - 1, now} (0077C2A0(msg, 0, 0)), 00896972 sets
+// slot+34h, 00896976 00874D00 (CL = 1), 00896983 006CDC70(0.0) on the block,
+// 0089698A 00874D00 (CL = 1), and with slot+28h set the result is
+// thisTable[[slot+28h]+174h].
+// SUBSTITUTIONS (labelled):
+// - the block is the deck registry's entry for the entity; a missing deck or a slot
+//   number outside the array (the image indexes it unchecked) does nothing;
+// - 83h is delivered at the call, after the +34h store, which is where the first
+//   extra step's session pump delivers it in the image; its receiver is
+//   air_ops_launch_slot_message_006ca8e0;
+// - of 006CDC70(0) only its 006C64B0 is run, for this deck: the queue head that
+//   is served is launched by 006C7490(slot, 0), the 89h 006CD6C0 case 8 runs, at
+//   the call; the step-0 slot ticks and the other sub-updates are not run;
+// - the two 00874D00 calls run through the host's runner (kRunExtraFixedStepBound);
+// - the squadron's handle is its entity id, which push_resolved_entity_by_id turns
+//   into the `thisTable` slot (nil when that slot is not built yet).
+// The 83h/85h/89h peer messages, 006BF150's publish and 00984EB0 are records.
+int GameMissionLuaHost::run_launch_air_base_slot_00896750(lua_State* state,
+    int argument_count) {
+    const int id = air_ops_entity_id(state);
+    const int slot_number = argument_count >= 2 ? static_cast<int>(::lua_tonumber(state, 2)) : 0;
+    const bool now = argument_count >= 3 && ::lua_toboolean(state, 3) != 0;
+    const int index = slot_number - 1;
+    bsp::AirOpsDeck* deck = id > 0 ? bsp::air_ops_decks().find_mutable_by_entity_id(id) : nullptr;
+    if (deck == nullptr || index < 0 || static_cast<std::size_t>(index) >= deck->slots.size()) {
+        log_.notef("  LaunchAirBaseSlot 00896750: entity id %d slot %d unresolved (deck %s) "
+            "(packet cc13-fix5)", id, slot_number, deck != nullptr ? "present" : "missing");
+        return 0;
+    }
+    if (deck->slots[static_cast<std::size_t>(index)].state == bsp::AirOpsSlotState::kLaunching) {
+        log_.notef("  LaunchAirBaseSlot 00896750: entity id %d slot %d already in state 2 "
+            "(packet cc13-fix5)", id, slot_number);
+        return 0;
+    }
+    deck->slots[static_cast<std::size_t>(index)].launch_requested = true;   // 00896972
+    const bsp::AirOpsLaunchSlotMessageResult message =
+        bsp::air_ops_launch_slot_message_006ca8e0(*deck, index, now);
+    log_.unimplemented("AirOps::launch_slot_peer_messages", "006bf150");
+    if (kRunExtraFixedStepBound && extra_fixed_step_ != nullptr) {
+        extra_fixed_step_->run_extra_fixed_step_00874d00(true, 0x00896976u);
+    }
+    // The extra step can register decks (GenerateObject), so the deck is found again.
+    deck = bsp::air_ops_decks().find_mutable_by_entity_id(id);
+    int served = -1;
+    if (deck != nullptr) {
+        served = bsp::air_ops_queued_slot_wait_006c64b0(*deck);
+        if (served >= 0) bsp::air_ops_launch_start_006c7490(*deck, served);
+    }
+    if (kRunExtraFixedStepBound && extra_fixed_step_ != nullptr) {
+        extra_fixed_step_->run_extra_fixed_step_00874d00(true, 0x0089698au);
+    }
+    deck = bsp::air_ops_decks().find_mutable_by_entity_id(id);
+    const std::uint32_t squadron = deck != nullptr && static_cast<std::size_t>(index) < deck->slots.size()
+        ? deck->slots[static_cast<std::size_t>(index)].launched_squadron : 0u;
+    log_.notef("  LaunchAirBaseSlot 00896750: entity id %d slot %d now=%d -> %s, served=%d, "
+        "stock left %d, squadron %u (packet cc13-fix5)", id, slot_number, now ? 1 : 0,
+        message.started ? "launched" : "queued", served + 1, message.stock_left, squadron);
+    log_.implemented("MissionLuaNative::LaunchAirBaseSlot", "00896750");
+    if (squadron == 0u) return 0;
+    if (!push_resolved_entity_by_id(state, static_cast<int>(squadron))) ::lua_pushnil(state);
     return 1;
 }
 

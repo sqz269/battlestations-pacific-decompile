@@ -582,6 +582,38 @@ inline constexpr bool kLuaRemoveAllAirBasePlanesBound = false;
 // ship AI host's two models and pushes the answer. False: unimplemented, no
 // result (jm08.lua:653 then fails on tonumber(nil) < 0).
 inline constexpr bool kLuaStartLanding2Bound = false;
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 4). 0089CFE0 GetSquadronPlane(squadron,
+// i): 00888AA0 on argument 0, argument 1 as an integer; when 0 <= i < [sq+3CCh] it
+// pushes thisTable[[sq+3D0h+4i]+174h] (i < 5 and the member non-null) or nil, and
+// pushes nothing for any other i. True: the row answers from the squadron registry
+// record (live members in order). False: unimplemented, no result.
+inline constexpr bool kLuaGetSquadronPlaneBound = false;
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 5). 0089A020 DisbandFormation(unit):
+// 00888AA0 on argument 0, then 0077CA60 on it (0089A138): with [unit+284h] set it
+// snapshots the group's members (+4F8h count, 0070D060), the leader (+14h) last and
+// skipped in the walk, and routes 77h with a null target (0077BD70's leave) to each
+// one still in a group. True: the row runs the units host's leave for every member
+// of the argument's group, the leader last. False: unimplemented.
+inline constexpr bool kLuaDisbandFormationBound = false;
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 6). The LandConvoy natives take
+// argument 0 through 00888D20 (the table's Ptr) and make one store on the convoy:
+// 00895570 LandConvoyStart -> 00741120 (+3A8h = 0), 008956E0 LandConvoyStop ->
+// 00741130 (+3A8h = 1), 00895850 LandConvoySetSpeed(convoy, speed) -> 00741140
+// (+368h = argument 1 through 00B66270). No result. True: the row makes the store
+// on the units host's bound convoy of that name, which 00743060's stopped gate and
+// speed already read. False: unimplemented.
+inline constexpr bool kLuaLandConvoyStartBound = false;
+inline constexpr bool kLuaLandConvoyStopBound = false;
+inline constexpr bool kLuaLandConvoySetSpeedBound = false;
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 8). 00896750 LaunchAirBaseSlot(base,
+// slot[, now]): the block (006BCD20), slot = argument 1 - 1, now = argument 2 only
+// with three arguments. A slot in state 2 does nothing. Otherwise: 83h {slot, now}
+// routed (00896964), slot+34h = 1 (00896972), 00874D00(CL=1), 006CDC70(0) on the
+// block, 00874D00(CL=1) again, and when slot+28h is set, thisTable[squadron+174h] is the
+// one result. 83h's receiver 006CA8E0 launches at once (006C7490 flag 1) or queues
+// (state 2, the launch list), and consumes the slot's stock either way (006C7D10).
+// True: the row runs that sequence on the entity's deck. False: unimplemented.
+inline constexpr bool kLuaLaunchAirBaseSlotBound = false;
 inline constexpr bool kLuaAddUntouchableUnitBound = true;   // ON on identity (LUA_BINDING_MISSION)
 // The +1D4h byte of units-host index `index`'s AI object, as AddUntouchableUnit
 // left it. False for every unit while kLuaAddUntouchableUnitBound is false.
@@ -1546,6 +1578,15 @@ public:
     int run_remove_all_air_base_planes_008975b0(lua_State* state, int argument_count);
     // Packet cc13-fix5, under kLuaStartLanding2Bound.
     int run_start_landing2_0089ac30(lua_State* state, int argument_count);
+    // Packet cc13-fix5, under kLuaGetSquadronPlaneBound.
+    int run_get_squadron_plane_0089cfe0(lua_State* state, int argument_count);
+    // Packet cc13-fix5, under kLuaDisbandFormationBound.
+    int run_disband_formation_0089a020(lua_State* state, int argument_count);
+    // Packet cc13-fix5: the LandConvoy natives (00895570, 008956E0, 00895850), each
+    // under its own switch. `address` selects the store.
+    int run_land_convoy_native(lua_State* state, int argument_count, std::uint32_t address);
+    // Packet cc13-fix5, under kLuaLaunchAirBaseSlotBound.
+    int run_launch_air_base_slot_00896750(lua_State* state, int argument_count);
     // Packet cc9_squadron_travel_alt, under kSquadronTravelAltBound.
     int run_squadron_set_travel_alt_0089f550(lua_State* state, int argument_count);
     // Packet cc9_squadron_attack_alt, under kSquadronAttackAltBound.

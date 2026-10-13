@@ -1141,6 +1141,12 @@ public:
     void land_convoy_step_waves(float step);
     // The interpolation wave 00875160: +4h 00743060(leftover), not committed.
     void land_convoy_interpolation_wave(float leftover);
+    // Packet cc13-fix5: the LandConvoy Lua natives' stores on the convoy named
+    // `convoy` (its bound motion state). 00741120 / 00741130: +3A8h = 0 / 1 (the
+    // stopped byte 00743063 gates on); 00741140: +368h = speed. False when no
+    // convoy of that name is bound. Callers: the GameMissionLuaHost rows only.
+    bool set_land_convoy_stopped_3a8(const std::string& convoy, bool stopped);
+    bool set_land_convoy_speed_368(const std::string& convoy, float speed);
     // Instance vtable+5Ch dispatch using the class selected by VehicleClass.Type
     // and the compiled predicates in unit_kind_query.hpp. Missing/unrecognized
     // identity and invalid indices answer false. docs/GAME_UNIT_KIND_BINDING.md.

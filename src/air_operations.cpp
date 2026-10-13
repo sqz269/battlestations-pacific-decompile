@@ -519,6 +519,10 @@ bool air_ops_slot_is_free_006c56d0(const AirOpsSlot& slot) noexcept {
 }
 
 void air_ops_launch_start_006c7490(AirOpsDeck& deck, int slot_index) noexcept {
+    air_ops_launch_start_006c7490(deck, slot_index, false);
+}
+
+void air_ops_launch_start_006c7490(AirOpsDeck& deck, int slot_index, bool flag) noexcept {
     if (slot_index < 0 || static_cast<std::size_t>(slot_index) >= deck.slots.size()) return;
     AirOpsSlot& slot = deck.slots[static_cast<std::size_t>(slot_index)];
     // 006C74C2: the requested count takes the assigned count, but only when the
@@ -558,7 +562,7 @@ void air_ops_launch_start_006c7490(AirOpsDeck& deck, int slot_index) noexcept {
     request.race = deck.owner_race;
     request.owner_player = deck.owner_player;
     request.home_base = deck.owner_name;
-    request.state = 1;                     // the flag argument is zero from 006CC690
+    request.state = flag ? 7 : 1;          // the flag argument, zero from 006CC690
     if constexpr (kAirOpsPlayerLaunchBound) {
         // Packet cc9_player_air_ops_launch. 006C5050's `AutoAttackTarget`: the
         // +174h of the object at slot+4Ch, written only when it is not null.
