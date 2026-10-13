@@ -440,6 +440,10 @@ public:
     // cursor->vtable[4h](&out, leg); leg < 0 is the sentinel both 009E5A50 and
     // 00836C89 pass, which stands for the cursor's own index.
     bool path_cursor_point(std::size_t unit_index, int leg, float& x, float& z) const;
+    // Packet cc13-moveonpath1: the same point with its height (009BD4D0 reads all
+    // three), and 007B1350's last point of a PATH_FM_SIMPLE (cursor+0Ch == 1) path.
+    bool path_cursor_point3(std::size_t unit_index, float out[3]) const;
+    bool path_final_point_007b1350(std::size_t unit_index, float out[3]) const;
 
     // 00836BF0-00836D66, the director step's `moveonpath` arm. `unit_radius` is
     // unit+9C8h and `turn_radius` is 0082E850 on the unit's class; the arm takes
@@ -598,6 +602,11 @@ public:
     // remaining drive behavior is still outside this host's projection.
 
     const std::vector<GameCommandRow>& rows() const noexcept;
+    // Packet cc9-gunnery38 (bsp::kSquadronDeadTargetRetestBound): a row is current
+    // only while 0071BE40 answers its class (finish_issue_tail), but nothing
+    // re-reads that after 0071E430 ends the command. Clears `current` on this
+    // unit's current rows of that command class; returns how many.
+    std::size_t retire_ended_command_rows(std::size_t unit_index, std::uint32_t command_object);
     const GameCommandsSummary& summary() const noexcept;
 
     // The per-unit table and the one-line summary the milestone reports.

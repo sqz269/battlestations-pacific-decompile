@@ -15746,3 +15746,62 @@ All with `BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`, 8000 frames.
   law's command altitude would normally hold a fighter well above that. The host's follow altitude after a
   target loss is the suspect: a **plane-lane altitude defect candidate**, not established. The crash itself is
   the image's rule once the plane is there.
+
+## 5gd. MOVEONPATH and the leg altitude manager, wired OFF (packet `cc9_lua53_moveonpath`, cc9-lua53, 2026-10-12)
+
+cc13's glue (docs/CC13_MOVEONPATH_TASK.md section 8, docs/CC13_LEG_ALTITUDE_MANAGER.md section 6) applied as written
+on main a89235172: two read-only accessors on the commands host (`path_cursor_point3`, `path_final_point_007b1350`),
+the plane install on `PilotMoveOnPath` in the script-orders host, the kind-6 task arm `009BD990` in the units host,
+and the process-wide leg registry `009BD400`/`009FC260`. Switches `kMoveOnPathTaskBound` and
+`kLegAltitudeManagerBound` in `include/bsp/pilot_order_bindings.hpp`, both OFF. cc13's labelled substitutions stand
+(slot +54h once at the install, the moveto follow body for wingmen, circle kept as a record; moveto/attackmove
+still record `009FD050` only, so moveonpath planes separate only against each other).
+
+**Predictions (cc13 section 5, written before the pairs).**
+- OFF: gameplay identical to main.
+- BSM01 (win row l50_b1_a), `kMoveOnPathTaskBound` ON: both P-40s take class `00E08F80` and fly their patrol
+  paths under PATH_FM_CIRCLE (no leg weight: `007B1350` answers invalid), at the point's y + altOffset or 200 less
+  travelAltOffset. They are in `Mission.JapFighterTrgGang`, so the Japanese fighters' chase and the AA numbers move.
+- JM06, ON: `PBY Catalina 01` flies its 12-point SIMPLE path once; within 3000 m of the last point the leg altitude
+  applies (with the manager ON, from the registry).
+
+### 5gd, the pairs (cc9-lua53, 2026-10-12)
+
+OFF = `local\l53_B0` (487cf8170), ON = `local\l53_M1` (both switches). `BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`.
+- **BSM01** (keeper orders `config/win_orders/bsm01_l50_b1_a.txt`, 30000 frames): both P-40s take the task
+  (`PilotMoveOnPath` PatrolPath1/2, mode 1 in the native table; `009BD990` 2220 ticks). pair_diff MOVED only in
+  the two P-40 death rows: same death times, altitude at death 221 -> 88 and 246 -> 95 (they now fly their
+  patrol paths low instead of holding their old task's altitude). Every other row, the unit table and the death
+  modes are identical. **The win holds:** EndMission at 767.94 s on both sides, guard line
+  ("refused a mission script's process launch: sus_prog.exe") logged on both.
+- **JM06** (9000 frames): `PBY Catalina 01` takes the task on its SIMPLE path (`009BD990` 4500 ticks); the leg
+  manager runs (`009FC000` 4500, `009FC260` 4499 calls). Gameplay identical: nothing reads `Mission.Catalina`.
+- **Verdict: mechanism matches the prediction; both switches flipped ON.** Open: the moveto/attackmove refresh
+  still records `009FD050` only, so the registry separates moveonpath planes only against each other.
+
+## 5ge. Handoff (cc9-lua53, 2026-10-12, at about 73% context)
+
+Tree `J:\PROG\battlestations-pacific-decompile-cc9-lua52` (branch `agent/cc9-lua52`); launcher `local\l53_lane.ps1`
+(rows u19/u17/u21/u18/u22/osx/j8/u01/u02/u12/j6/j5/l10/b1/smoke; `-Exe` an export); exports `local\l53_*`.
+No leases held after the commit that carries this section.
+
+**Done (all on main or in this commit):** packet 1 kamikaze impact (5gc: `2d59381e8`, `d2625de56`, `4ed685822`, flip
+`0cdef1968` with kKamikazeTaskBound, kDropKamikazeTaskBound, kPlaneCrashSweepBound and the lead's kLuaSetFailureBound
+ON); packet 3 MOVEONPATH + leg altitude manager (5gd: `487cf8170` OFF, flipped ON in this commit).
+
+**Open, in priority order:**
+1. **USNOS drop pair on a run that reaches the finale.** The drop switch is ON by the lead's verdict (K4: 22 Ohka
+   releases). ships45 is re-tuning USNOS; pair the drop on its best order file when the lead hands it over.
+2. **TroopTrans3's 0-damage c98** (5gc): the sweep hit its mesh but `plane_crash_impact_0084bc60`'s blast loop
+   reached no hull box. Check that unit's `hull_width/length` and the burst centre against its pose.
+3. **The 16 m storage crash** (5gc): a live fighter in dogfight follow after a target loss at 16 m over land. It is a
+   plane-lane altitude defect candidate: read the follow command altitude and whether terrain avoidance `0099F1C0`
+   is hosted on that path.
+4. **Rockets (queue 2), option (a) later:** the rocket task applies only to Tiny Tim (bullet 6 is the only rocket
+   with IgnitionDelay > 0 in this installation), so only USN22's AvengerTinyTim. The glue is CC13_ROCKET_TASK.md
+   section 7 and needs the has_rocket_ordnance feed in `src/game_hosts_script_orders.cpp` (kind 33h on a rack
+   whose bullet has IgnitionDelay > 0). The rocket flight law and spawn are gunnery38's contract.
+5. **Queue 4:** the HintSystem bindings (IsHintActive loops) and the event-channel audit (CC13_EVENT_CHANNELS.md).
+6. **For gunnery38 (reported to the lead):** `read_bullet_class_number` cannot read dotted keys, so the second-ammo
+   `Blast.BlastDamageMin/Max` reads near `src/game_hosts_gunnery.cpp` ~4470 always return 0.
+   `read_bullet_class_nested_number(id, "Blast", key, fallback)` exists now.

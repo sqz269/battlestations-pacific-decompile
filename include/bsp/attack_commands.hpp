@@ -243,7 +243,7 @@ bool attack_command_survives_retest(int category,
 // for the torpedo (00D213E8) and dive-bomb (00D20E38) tasks. True: the units host
 // runs that retest per squadron and ends a dead target's command. False: the
 // command keeps its dead target, as before.
-inline constexpr bool kSquadronDeadTargetRetestBound = false;
+inline constexpr bool kSquadronDeadTargetRetestBound = true;  // GUNNERY 199.2: ON by pair verdict
 
 // 00811F50, the six-class suppression predicate. The previous packet recorded
 // this address as a name table; it is not one. It answers whether the unit's
