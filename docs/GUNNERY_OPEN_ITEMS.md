@@ -13819,3 +13819,21 @@ submarine category gate refusals`. Categories 8 and 9 (depth charges, ASW) now n
 | --- | --- |
 | USN15 / USN12 | refusals > 0 only if a submarine is present; otherwise exit 0 or 1 |
 | USN21 (Dace, Darter) | refusals > 0 (categories 8/9 always, 1-6 while submerged); exit 3 if a submerged boat's pick moved |
+
+## 224. The kill funnel keeps its cause: `kKillFunnelCauseBound`, OFF (lead queue item 3; cc9-gunnery41, 2026-10-13)
+
+**Image.** `00926D90` returns on `+5Fh`, else stores its cause at `+70h` (`00926E02`; 7 is stored as 2), and the
+`Dead` (script orders), `entityKilled` and `kill` publishers read `00E0CF04[+70h]` = none, harm, soft, sell,
+exitzone, landed, editor. Lua `Kill(x, true)` (`008AC5C0`) passes 2 ("soft"); this installation's scripts make
+882 such calls (lead's count).
+
+**Host.** `GameGunneryHost::kill_unit_00926d90` dropped the cause, so `GameUnitsHost::kill_cause_00926d90` answered
+1 for every death but the units host's own cause-4/5 kills. ON: for a unit not yet dead the funnel records
+`normalized_kill_cause_00926d90(cause)` through the new `GameUnitsHost::note_kill_cause_00926e02` (shared
+units files, claimed for this one commit). Counter `kill_funnel_non_harm_causes`. Cause 2 also comes from the
+ship-AI funnel call (`game_hosts_ship_ai.cpp`, `kill_unit_00926d90(u, 2)`).
+
+**Predictions, written before any ON run.** Listeners filtered on "harm" stop firing for soft kills, and a
+`Dead` reason reads "soft". Rows whose scripts call `Kill(x, true)` mid-mission can move (exit 3); a script
+that counted kills by reason may branch differently. USN12/USN15/USN01: report the non-harm count; expect exit 0
+or 1 where no harm-filtered listener meets a soft kill.

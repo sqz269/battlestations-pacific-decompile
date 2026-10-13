@@ -385,6 +385,15 @@ constexpr bool kDirectorLeaderFireTargetBound = false;
 //    so the guns KEEP their target. The host answered true for every unit.
 //    ON: the submarine gate. OFF: as before.
 constexpr bool kSubmarineCategoryGateBound = false;
+//  * kKillFunnelCauseBound: packet cc9_g41_kill_cause (lead queue item 3).
+//    00926D90 stores its cause argument at +70h (00926E02; 7 is stored as 2),
+//    and the `Dead` / entityKilled / kill publishers read 00E0CF04[+70h]
+//    ("none", "harm", "soft", ...). Lua Kill(x, true) (008AC5C0) passes 2. The
+//    host's funnel dropped the cause, so the units host answered 1 ("harm")
+//    for every death but its own cause-4/5 kills. ON: the funnel records the
+//    normalised cause through GameUnitsHost::note_kill_cause_00926e02.
+//    OFF: as before.
+constexpr bool kKillFunnelCauseBound = false;
 //  * kTorpedoSwimThrustBound: packet cc9_torpedo_tube_turn,
 //    docs/TORPEDO_FRIENDLY_CROSSING.md section 6. 00857480, the swim advance,
 //    per step on a torpedo in the water: 00856BB0 -> 00857061 yaws the NOSE
@@ -2454,6 +2463,7 @@ struct GameGunneryHost::Impl {
     unsigned long long aa_slot_origin_flips{0};    // kAaSlotRangeOriginBound
     unsigned long long leader_fire_target_inherits{0}; // kDirectorLeaderFireTargetBound
     unsigned long long submarine_category_gate_refusals{0}; // kSubmarineCategoryGateBound
+    unsigned long long kill_funnel_non_harm_causes{0};      // kKillFunnelCauseBound
     unsigned long long aa_negative_halvings{0};
     unsigned long long water_depth_kills{0};   // packet cc9_water_surface_law
     unsigned long long airfield_destroy_kills{0};  // packet cc9_airfield_destruction_rule
@@ -13757,9 +13767,15 @@ bool GameGunneryHost::director_allow_move_3d(std::size_t unit_index) const noexc
 
 void GameGunneryHost::kill_unit_00926d90(std::size_t unit_index, int cause) {
     if (unit_index >= impl_->unit_state.size()) return;
-    // Cause 1 is the only one a caller passes (007CE3A7); the funnel is the
-    // one a gunfire death takes, which is also cause 1 (0077D1A0 -> 00926C80).
-    (void)cause;
+    // The funnel is the one a gunfire death takes (cause 1, 0077D1A0 -> 00926C80).
+    // kKillFunnelCauseBound: 00926D90 returns on +5Fh, else stores the cause at
+    // +70h (00926E02, 7 stored as 2), which the `Dead`/entityKilled publishers
+    // read as 00E0CF04[cause]: Lua Kill(x, true) passes 2, "soft".
+    if (kKillFunnelCauseBound && !impl_->unit_state[unit_index].dead) {
+        const int stored = bsp::normalized_kill_cause_00926d90(cause);
+        impl_->units.note_kill_cause_00926e02(unit_index, stored);
+        if (stored != 1) ++impl_->kill_funnel_non_harm_causes;
+    }
     ++impl_->water_depth_kills;
     impl_->kill_unit(unit_index);
 }
@@ -14570,6 +14586,9 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery submarine category gate refusals=%llu "
             "bound=%d (008627A0, packet cc9_g41_aa_pick_d4)", host.submarine_category_gate_refusals,
             kSubmarineCategoryGateBound ? 1 : 0);
+        host.log.notef("summary mission gunnery kill funnel non-harm causes=%llu bound=%d "
+            "(00926E02, packet cc9_g41_kill_cause)", host.kill_funnel_non_harm_causes,
+            kKillFunnelCauseBound ? 1 : 0);
         host.log.notef("summary mission gunnery water depth kills=%llu (007CE3A7, packet "
             "cc9_water_surface_law)", host.water_depth_kills);
         host.log.notef("summary mission gunnery airfield sub-entity asks=%llu listed=%llu "
