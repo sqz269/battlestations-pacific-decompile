@@ -96,6 +96,29 @@ Torpedo bullets answer 2Bh, so finding 3 does not depend on any of this.
   - It is only consulted from attacking states (`dive_bomb_task.cpp:107`), so the two are equivalent there.
 - **Level-bomb release and abort flags, `009B639A`-`009B6428`.** These match `plane_level_bomb_task.cpp:263-274`.
 
+- **Level-bomb release tick `009B59F0`-`009B5AF0`.** It matches `lb_release_tick_009b59f0`:
+  - the one-shot `007BBBA0` and `+2Ch -= 1`;
+  - the bank and pitch holds;
+  - the countdown that runs only while +18h is set and unit+C25h is clear, else re-seeding 5.0.
+- **Approach+A8h.** `009C7AB3`-`009C7AF6` lowers it each tick to `ctl+39Ch - 0.05*A8`.
+  `dive_bomb_decay_dive_altitude_009c7a94` already does this.
+
+## Host fixes landed (OFF)
+
+Both landed under HOST FIX TERMS, each with its own switch:
+
+| sha | switch | finding |
+| --- | --- | --- |
+| `fe1dbc68e` | `kTorpedoArmFallthroughReleaseBound` (`torpedo_task_arm.hpp`) | 3a |
+| `80da020b3` | `kReleaseOrderLeaderBlockBound` (`torpedo_release_orders.hpp`) | 3b |
+
+- With the switch OFF, behaviour is unchanged byte for byte.
+- With the switch ON but no host change, behaviour is also unchanged: the new inputs default to false, and the
+  new host virtuals default to skipping the block.
+- The feeds belong in `game_hosts_units.cpp`, so they are adoption notes.
+- Correction to `fe1dbc68e`'s message: its RNG line names stream 1 and the `009FA3A0` reseed. That is wrong for
+  this path. A wingman drop through `0099B6A0` never runs `009FA3A0`, and the fix adds no draws of its own.
+
 ## What the logs say stops the strikes
 
 - **USN21 torpedo.** No aircraft opens the lead flag.
