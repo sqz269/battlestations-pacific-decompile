@@ -13520,3 +13520,23 @@ commented out. Others that call it: JM12 (1, then 1.5), ESMP03/04/06/07, USN09/1
   `+3Ch`/`+40h` have no reader. The bookkeeping is recorded here, not bound.
 - **`00955630` ledger record** added (`config/reconstruction/00950000.jsonl`): body `00955630..00955822` exclusive
   (`0095581F RET 10h`, `INT3` at `00955822`, `disasm-raw`), rule in `src/gun_gravity_arc.cpp`.
+
+## 213. Rocket impact: the `0084BAD0` blast and the `0080A55D` fuze; the `00CE3820` constant (lead queue item 7; cc9-gunnery40, 2026-10-13)
+
+- **`0084BAD0` already runs for a rocket impact.** Its callers (`ghidra xrefs`) are `0084BEE3` in `0084BC60`
+  (`BSP_Projectile_OnImpact`, step 7), `006FD032` (depth charge), `0070C280` (flak), `0085F80C` (mine), `00819C14`
+  (kamikaze) and three HUD sites; MRocket has no call of its own. A released rocket (`is_rocket`) takes the
+  host's common sweep and entity impact, which runs step 7 as `apply_impact_blast` with the rocket's class row. HVAR
+  (realistic `RealisticTable[8]`, 2025-06-02) has `Blast` 30/30 over 25 m and DamageMin/Max 130/150. So the small
+  damage on the rack rows (GUNNERY 202) is a 30-point blast and a 130..150 direct hit against ship armour, not a
+  missing blast. Labelled: the row's blast fields come from the flat `bmin/bmax/brange` keys (`:4671`), as for every
+  first-ammunition row; this pass did not log the rocket row's values.
+- **`0080A55D` is an anti-aircraft proximity fuze**, which no row exercises. The listing (`0080A55D..0080A9F8`): it
+  runs only when classDesc `+E4h` (byte) is set or `[00F874FD]` is set, the rocket has an owner link `+3BCh` and
+  world mode is not 2. It walks the owner side's `008053C0(+54h)+DE8h` list for `IsKindOf(0Fh)` (planes) and
+  measures from `+FCh`; the rest is x87, unread here. Ship-target racks (HVAR, Tiny Tim) never enter it. It
+  matters only for R4M / 4.7'' AA salvos against aircraft, and no current row fires those (GUNNERY 202). Not
+  reconstructed; the next owner should start at `0080A5DA`.
+- **`00CE3820` is the double 1.0e-10** (bytes `BB BD D7 D9 DF 7C DB 3D`). `include/bsp/ai_planners.hpp:218`
+  (`kAiPlannerNearRadiusSquared`) and `include/bsp/ai_planner_tails.hpp:68` (`kAiTailLengthEpsilon`) say 1.0e-11.
+  Both are other lanes' files; the exact edits went to the lead. Both are coincidence floors, so no row should move.
