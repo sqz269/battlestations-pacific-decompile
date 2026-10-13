@@ -216,3 +216,8 @@ Remaining by value: HudPause enter/update/activate (00603120, 00603CA0, 00604190
 enter/update (005EEA00, 005EEF60; x87), HudOrder update 005F9DD0 (x87), multi main update 005EA2D0,
 options ActivateListRow 005F7C40 and BuildMainList 005F54F0, lobby 005E4490 / 005E2320, and the large
 registers (005AB190, 005BB130, 00602280).
+cc13-fe6 (docs/CC13_FE_6.md) reconstructed HudPause enter/update/activate/register/UpdateHints
+(00603120, 00603CA0, 00604190, 00602280, 006037D0), HudObjectives enter/update (005EEA00,
+005EEF60), HudOrder update 005F9DD0, multi main update 005EA2D0, options BuildMainList 005F54F0
+and ActivateListRow 005F7C40, and lobby 005E4490 / 005E2320. Still open: 00601200 BuildHintList,
+005AB190 and 005BB130.

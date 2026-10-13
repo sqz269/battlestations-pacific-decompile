@@ -17191,3 +17191,63 @@ So the lane's call always comes later and finds `LandingFinished` and `+118Ch` a
 is read only as a flag (`jm08.lua`, `jm11.lua`, `jm13.lua`, `usn_07_invasion_of_tarawa.lua`). A Lua write of the
 `gyorsPartraszallas` property (`0074C280`) could set `+118Bh` without the unload; no script of this installation
 names it (the 13 `partraszall` matches under `scripts\` are Hungarian comments and local tables).
+
+## 225. JM06 completes: variant k (cc9-ships45, 2026-10-12; lead item 3 of the new queue)
+
+Build: this branch with origin/main `bd3b0c333` merged (kamikaze, drop, crash sweep, n1, land-mesh and the listener
+callback arguments ON). JM06, 0.05 s, reference env, `--stop-after-end 40`. Order files are hand-written
+(`local\s45_j6_<v>.txt`); logs `local\s45_j6_<v>.log` with trajectories.
+
+**The script** (this installation's `scripts\missions\COTP-IJN\jm06.lua`, 2024-07-13, `luaJM6CheckObjectives`):
+phase 1, the convoy (`CargoTargets`) dead; phase 2, `MessageTransmitted` (a 24 s `Countdown` while surfaced);
+phase 3, primary 2: a `hit` listener on the Lexington with the player's unit as attacker, completed only when the
+callback's `arg[4] == "TORPEDO"` (`luaJM6CVHitByPlayer`); phase 4, every `Mission.Escorts` ship and the Lexington
+dead, then `luaJM6FinishMission` (`TrulyDead(Mission.Yamato)`, unbound, decides the end entity only).
+
+**Idle row** (`s45_j6_idle`, 40000 frames): the player's sub sinks the convoy itself by 128 s, the countdown runs at
+608.97 s and phase 3 starts; the Lexington (5 m/s) and Fletcher-class 01-05 sail from (-325, 1650) south-east past
+(884, -67) at 1600 s; no torpedo of the player hits it.
+
+| v | orders (`PlayerSub 01`) | outcome |
+| --- | --- | --- |
+| a | torpedo `at "Lexington-class 01"` + release every 1000 frames from 13000, sub left at its start (116, -4120) | refused beyond the 1852 m category range; phase 3 holds |
+| b | moveto (800, -1500) at 13000, torpedoes from 20000 | 16 tube fires, no hit (closest pass about 1.2 km, outside the tube window) |
+| c, d | moveto (1500, -1100) / (2200, -1700) directly | the sub stops after about 100 m and never arrives |
+| e | moveto (800, -1500) at 13000, then (1500, -1100) at 21000; torpedoes every 300 frames 29000-45000 | **the Lexington sinks at 1879.21 s** (killer PlayerSub 01, category 7) and Fletcher-class 01 with it; phase 4. Fletcher-class 05 dies at 2457 s; 02, 03 and 04 stop about 0.9-1.0 km west of the sub and live |
+| g | e, then torpedoes at Fletcher-class 02/03/04 in rotation | the sub faces away (heading 72.8, targets at bearing about -50): almost every snap fails; 03 dies, 02 and 04 live |
+| h | g with a moveto toward the escorts at 38000 | the sub closes to about 700 m and is sunk at 2168 s |
+| i | e, then a short moveto (180 m) at 52000 | the move is accepted but the sub does not move |
+| j | e, then `takehelm "PlayerSub 01" 0.3 710 -455 stop 850` at 52000 (turns it to face the stopped escorts), torpedoes at 02/04 from 54000 | Fletcher-class 02 and 04 die at 2747 s; 03 lives at (592, -654) |
+| **k** | j to 56000, then `takehelm ... 592 -654 stop 800` and torpedoes at Fletcher-class 03 from 57000 | **complete** |
+
+**k, the win** (`local\s45_j6_k.log`, 100000 frames): Lexington 1879 s, Fletcher-class 05 2457 s, 02 and 04 2747 s,
+03 2867 s, then `mission end: MissionStatus at 2880.63 s status=completed text="ijn06.obj_missioncompleted"
+entity="Yamato #3.1"`, with `bsp: refused a mission script's process launch: sus_prog.exe` before it. The Yamato
+(at (-2221, 1152)) never engages; the player's sub does all of it. Order file
+`config/win_orders/jm06_s45_j6_k.txt` (= `local\s45_j6_k.txt`); JM06, 100000 frames. Not checked with jitter.
+
+## 226. Handoff (cc9-ships45, 2026-10-12)
+
+Branch `agent/cc9-ships44`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-ships44` (origin/main `bd3b0c333`
+merged). No leases held. Tools in `local\`: `s45_rows.ps1` (launcher; `name=MISSION:frames:orderfile` rows, `-Traj`,
+`-Jitter`, `-Exe`), `s45_mk.py` (USN15 writer, quotes names), `s45_osedit.py` (derive USNOS files), `s45_j8gen.py` +
+`s45_splice.py` (JM08), `s45_rel32.py` (rel32/absolute-dword reference scan of the PE), `s45_tbl.py`, `s45_hqdmg.py`;
+`s44_sum.ps1`, `s44_peek.ps1`, `s44_pos.py` from the predecessor.
+
+**Done:** 219 USN15 l2 (win, also with jitter); 220 JM08 land-mesh pair (flipped ON by the lead); 221 USNOS k (win on
+`1de67cfb9`); 222 shallow water (dead code / render, nothing to model); 223 JM08 m10 (win; re-checked on `bd3b0c333`:
+completes at 3528.42 s, `local\s45_rc_j8m10.log`); 224 the lane's FinishLanding (duplicate, not bound); 225 JM06 k
+(win). Win order files: `config/win_orders/usnos_s45_os_k.txt`, `jm08_s45_j8_m10.txt` (556128cc5),
+`jm06_s45_j6_k.txt` (8537b097f).
+
+**Open, in order:**
+1. **USNOS k on `bd3b0c333` stalls** (`local\s45_rc_osk.log`): the battle matches the win (Takao group, Haku3/4,
+   all three bases, Yamato 3733 s, Musashi 3856 s, Haku1 7174 s, Haku2 7217 s; Enterprise and TroopTrans6 alive), but
+   `HideScoreDisplay(4, 0)` (ReinDead, us_osumi.lua:1180) never comes, so `luaBombFadeOut` never runs. In the win it
+   came 0.2 s after Haku2 died. Either a FinalTrgs unit is not `.Dead` to Lua or `luaCheckObjectives` raises before
+   line 1180 (candidate: the primary-2 `luaAirfieldManager` calls); the log shows no Lua error. Find a way to see the
+   error (lua lane) before re-tuning.
+2. Landing troops (CC13_SOLDIER_TRAFFIC section 3/5, 00428420 read: only non-`Defence` members forward `Damage`, one
+   kill per projectile segment, sphere radius `[00CE3958]` = 2.0) were dropped by the lead: zero reach on the wins
+   (no landing begins on USNOS k or JM08 m10). Paratroopers went to the plane lane (JM05).
+3. `kAiGroupPartyChangeRemovalBound` (216) still needs a row that SetParties grouped ships.
