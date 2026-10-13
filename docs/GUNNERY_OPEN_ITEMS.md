@@ -13578,3 +13578,85 @@ USN12 s38_u12_p2, USN15 s45_u15_l2 and LOMP06 l50_l6_q6 each give pair_diff exit
 `clears=0`. Every completion is unchanged and the exec guard's refusal is logged. As predicted: on these rows no
 rapid-class gun holds `+4D4h` through a step in which `0072D130` does not send. LOMP06's `009E2B99` raises do not
 reach a shot that the clear would change. The mechanism matches the image, so the switch is flipped ON.
+
+**214 verdict: `kBlastMeshBoundsBound` stays OFF (cc9-gunnery40).** OFF `530944a5c` as built (`local\g40_bm0`) against
+ON (`local\g39_lo`):
+- USN12 s38_u12_p2: pair_diff exit 3, completes in both runs (exec guard logged). The forts (no element mesh,
+  `entries=0`) now take box distances from the model box, so the early fort kills move by 2..9 s. The spread moved
+  as predicted.
+- USNOS s45_os_k 200000: OFF runs out without an end, as in 205. ON **fails at 2119.54 s ("Game Over", HQ1), the
+  same instant as 205's ON run**, even though 214 changes only the crash and kamikaze arms (`shape walks=3`,
+  `no_shape_in_range=0` ON). The failure is therefore deterministic and comes from the mesh-box admission
+  itself, not from those arms. NH again dies at 1482.72 s to Shimotsuke's category 6
+  (`hits c6=36 dmg c6=15802 killer_blast=1`), yet the `impact blast ... on NH` lines carry only a few hundred
+  points. So most of that damage reaches NH by a path that logs no `impact blast` line. The only reader of the
+  mesh box is `blast_box_distance` (impact, crash and kamikaze arms), so the open question is which arm's record
+  goes unlogged.
+- Mechanism not shown to match; the switch stays OFF with 214's arms in place. Next step: log every blast record
+  that `blast_box_distance` admits under the mesh box (unit, arm, distance, entries) on USNOS ON up to 1482 s.
+
+**210 verdict: ON by mechanism, with a spread miss (cc9-gunnery40).** OFF `3bed008bc` (`local\g40_sw0`) against ON
+(`g39_rk1`), plus a census re-pair at `4cd9ce03a` (`local\g40_sx0` / `g40_sx1`) that adds
+`summary mission gunnery torpedo swim entity impacts`:
+
+| row | OFF | ON |
+| --- | --- | --- |
+| USN02 s36_u2_p7 | completed; deaths 12; 27 swims, **6 entity impacts**, 3 torpedo kills | completed ~5 s earlier; deaths 10; 30 swims, `mean_y=-2.51`, **4 impacts**, 1 torpedo kill |
+| JM06 s46_j6_m 60000 | no end in 3000 s (as ON); deaths 19 | no end; deaths 23; 54 swims, `mean_y=-5.43` (sub launches rise from depth at the 5 m/s clamp) |
+| JM12 (no orders) 30000 | no end; no drops | no end; 86 swims, `mean_y=-3.82`; no drops, so `scans=0` |
+| ESMP08 90000 | no end; deaths 902; 39 drops | no end; deaths 904; 39 drops, `mean_y=-2.50` |
+
+`sub_vs_sub=0` on every row. The depth controller holds swimdepth + surface as predicted, and rounds at -2.5 m
+still strike hulls (4 entity impacts on USN02). The impacts fell from 6 to 4, which misses the +-25% band I
+predicted. On counts this small it reads as spread: the launches differ (27 against 30 swims) and the targets
+move differently. The homing half (Fido) is not exercised: no row drops a Fido (JM12 needs the Avenger sent at a
+surfaced player boat). It is gated on the class homing speeds, which only Fido sets. Flipped ON. Fido homing
+should be checked when a JM12 row exists.
+
+**211 verdict: ON (cc9-gunnery40).** USN15 OFF (`local\g40_tf0_u15.log`, the `4cb4287bf` OFF build; the switch adds
+no OFF behaviour) against ON (`g39_rk2`, `local\g40_rm1_u15.log`): pair_diff exit 1, gameplay identical. Both runs
+end at 2641.80 s, first hit 447.41 s in both, and the exec guard's refusal is logged. The 0.75 multiplier reaches
+the recon pass as predicted: sensor-pass blips 15780 -> 8455, identified 69052 -> 62016, mean enemy triple
+7.3 -> 4.6, and the first unit-list publication at 3.05 s holds 0 enemies instead of 9. Detection narrows, but
+the engagements, all inside the shorter ranges, are unchanged. The first-hit prediction ("later") missed:
+on this row it is the same. Mechanism matches; flipped ON.
+
+## 215. Handoff (cc9-gunnery40, 2026-10-13, at about 75% context)
+
+**On `agent/cc9-gunnery36`, newest first** (built, ctest 2/2; origin/main merged at the start of the session):
+
+| sha | what |
+|---|---|
+| `2acc14665` | `kReconMultiplierForwardBound` ON (211) |
+| `8572ddf97` | `kTorpedoSwimDepthHomingBound` ON (210; depth keeping matched, Fido homing unexercised) |
+| `78e7b6dd0` | `kBlastMeshBoundsBound` stays OFF (214 verdict: USNOS ON fails at 2119.54 s, as in 205) |
+| `4cd9ce03a` | census `torpedo swim entity impacts` |
+| `9a386a522` / `bb076842a` | `kTurningGunFireClearsRequestBound` ON (208) / `kTorpedoMaxFallBreakupBound` ON (209) |
+| `1c6ac6cb9` | rocket impact read (213): `0084BAD0` already runs; `0080A55D` is an AA fuze; `00CE3820` = 1e-10 |
+| `530944a5c` | crash/kamikaze blasts measured to shapes under `kBlastMeshBoundsBound` (214) |
+| `76d8e66ef` | cc13-gpr61: `00955630` record; skill fan-out and repair extras need no binding (212) |
+| `3bb026011` / `3bed008bc` / `468379e49` / `4cb4287bf` | the four OFF bindings (211 / 210 / 209 / 208) |
+
+**Routed to the lead (other lanes' files):** `include/bsp/ai_planners.hpp:217-218` and
+`include/bsp/ai_planner_tails.hpp:68`, change 1.0e-11 to 1.0e-10 (`00CE3820`); and the stale "gun bots read no skill"
+comment at `src/game_hosts_script_orders.cpp:~3123`.
+
+**Open, in order of value.**
+1. **`kBlastMeshBoundsBound`** (214): USNOS ON fails deterministically at 2119.54 s, and NH dies at 1482.72 s to
+   Shimotsuke category 6 (`c6=36, 15802`). Only a few hundred points of that show as `impact blast ... on NH`
+   lines. Log every record `blast_box_distance` admits under the mesh box on USNOS ON up to 1482 s and find the
+   unlogged arm.
+2. **0072C970's sub-vs-sub depth** (210): `sub_vs_sub` was 0 on every row run. If a row shows non-zero, export
+   the boat's dive state (`SubmarineDepthFields`/`SubmarineDiveRates`, `gameplay_seg53_cc13.hpp`) from the units
+   host and call `submarine_predict_depth_after_00852410` at the torpedo spawn (`shot.swim_depth`).
+3. **Fido homing** (210): no row drops a Fido. A JM12 order file that surfaces the player boat and draws the
+   Avenger would exercise `torpedo_steer_00856bb0`'s homing branch (`scans`/`binds`/`target_steps` counters).
+4. **`0080A55D`** AA proximity fuze (213), from `0080A5DA`; only for R4M / 4.7'' AA salvos.
+
+**Tools** (this tree's `local\`): `g36_queue.ps1` as before. Job lists `g40_*.jobs` were built in PowerShell. Never
+name a loop variable `$r` next to a `$R` path: PowerShell variables are case-insensitive, and that corrupted
+`g40_tb.jobs`/`g40_q2.jobs`. A queued run that waits for a launcher slot keeps its `.launch.txt` open, so a manual
+re-launch of the same log fails at once with an empty launch file. Check
+`Get-CimInstance Win32_Process -Filter "Name='pwsh.exe'"` for the waiting launcher before re-launching. Export
+dirs: `g40_tf` (turning ON), `g39_rk0` (fall ON), `g39_rk1` / `g40_sx1` (swim ON), `g39_rk2` (recon ON),
+`g39_lo` (mesh box ON); OFF snapshots `g40_tfoff`, `g40_tb0`, `g40_sw0`, `g40_sx0`, `g40_bm0`.

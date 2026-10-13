@@ -601,9 +601,12 @@ PlaneDynAccumulators accumulate_free_flight_007db680(const PlaneFreeFlightState&
 // so the resisting terms act only against the motion and stop it at zero.
 // Then 007D8755-007D8774 adds dyn+88h..90h (the constructor 007D7B90 copies
 // it from the read-only global 00F87574; zero here) and 007D8777-007D87C2
-// zeroes any component under 0.01f (00D7A238). The takeoff floor (dyn+C8h),
-// the contact terms (dyn+A4h/+94h) and the unit+904h sink term do not run in
-// free flight and are not part of this rule.
+// zeroes any component under 0.01f (00D7A238). The contact terms (dyn+A4h/+94h)
+// and the unit+904h sink term do not run in free flight and are not part of
+// this rule. The dyn+C8h speed floor (007D87C7-007D87F1) DOES run in free
+// flight: 0099BF30's band repair arms it there through 007D7A40 and 007D81B0
+// parks it outside free flight; the host applies it after this step behind
+// kPlaneSpeedFloorBound (docs/CC13_GPR_48.md 8.3 V1, 9).
 struct PlaneBodyVelocityStep {
     float velocity[3] = {0.0f, 0.0f, 0.0f};
 };

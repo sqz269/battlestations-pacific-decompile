@@ -224,3 +224,14 @@ mechanism is in the cd761bb52 section above).
   2730.99 s (was 2641.80), JM08 f 2693.50 s (was 2141.01), LOMP10 1006.93 s (was 1158.10), IJN18 2317.59 s (was
   2208.58), guard logged. USN02, LOMP06, BSM01, USN01, PRCP01 and USN12 not re-run on it yet.
 - **ESMP08 is a win again: `config/win_orders/esmp08_p6_e8_br3l.txt`** (cc9-physics6, 2026-10-13), the Br3L plan above, on agent/cc9-physics1 at d2bb05c0e (origin/main with `kAirOpsSquadronCeilingRaisedBound` ON, cddc07577), exe D764DF0C5DBE, 140000 frames, reference env: **completed 2619.43 s** (`local\p6e8_m3.log`), **3283.38 s under `BSP_FRAME_JITTER 20,3`** (`local\p6e8_m3j.log`), guard logged both; Br2L completes at 3788.77 s (`local\p6e8_m2.log`).
+- **Times on main before V1/R1** (cc9-physics6, scratch export `local\p6_rf` of 9d9854241, both switches OFF):
+  USN12 `s38_u12_p2` 1524.96 s, LOMP10 `p3_l10_b` 1006.93 s, USN01 `usn01_p6_u1_g` 1118.67 s, guard logged.
+- **V1 + R1 ON (57fce131f, CC13_GPR_48 9)**: USN12 still completes at 1524.96 s, LOMP10 977.48 s. R1 loses USN01 g,
+  so USN01 is re-planned: **`config/win_orders/usn01_p6_u1_k6.txt`** (g with `3306 target ConTBD1 Convoy6`)
+  completes at 514.80 s on 57fce131f (exe 344896BA8503, 26000 frames, guard logged, `local\p6m7_k6.log`). All six
+  convoys sink to torpedoes by 245 s. **Knife-edge:** it fails under jitter 20,3 and 20,7, and with V1/R1 OFF.
+- **JM06 is a win again** (cc9-ships47, SHIP_AI 231, reported through the lead): `config/win_orders/jm06_s47_j6_n1.txt`,
+  120000 frames: 4108.77 s, 2667.48 s under jitter 20,3, 5901.74 s under 20,5 (tight), guard logged, on main with
+  kShipSubmergedThrottleBound and kShipRightingImageConstantsBound ON.
+- **PRCP01 is a win again** (reported through the lead): `prcp01_l55_p01_c` completes at 720.25 s on main 2c0421b51
+  with cc13-fix5's eight natives ON, guard logged.

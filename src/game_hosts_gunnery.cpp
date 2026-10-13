@@ -298,14 +298,17 @@ constexpr bool kTorpedoMaxFallBreakupBound = true;
 //    counted, not modelled (the unit host does not export the boat's dive
 //    state); the +74h matrix starts from the entry velocity's direction; the
 //    wake tail and the 008E6430 modifiers (1) are not modelled. OFF: as before.
-constexpr bool kTorpedoSwimDepthHomingBound = false;
+//    ON since the pairs (GUNNERY_OPEN_ITEMS 210: depth keeping matched, wins kept;
+//    the homing half is not exercised by any row).
+constexpr bool kTorpedoSwimDepthHomingBound = true;
 //  * kReconMultiplierForwardBound: packet cc9_g40_recon_mult. The recon pass
 //    reads [game+21C4h]+74h (SimplifiedReconMultiplier) into 00804947's range
 //    scale and +78h (SimplifiedSonarMultiplier) into the submerged scale
 //    008049A3. The Lua host stores what 008B2320 / 008B25F0 set
 //    (kSimplifiedReconNativesBound) but the gunnery host answered 1.0f. ON:
 //    the stored values. OFF: 1.0f.
-constexpr bool kReconMultiplierForwardBound = false;
+//    ON since the USN15 pair (GUNNERY_OPEN_ITEMS 211: ranges x0.75, gameplay identical).
+constexpr bool kReconMultiplierForwardBound = true;
 //  * kTorpedoSwimThrustBound: packet cc9_torpedo_tube_turn,
 //    docs/TORPEDO_FRIENDLY_CROSSING.md section 6. 00857480, the swim advance,
 //    per step on a torpedo in the water: 00856BB0 -> 00857061 yaws the NOSE
@@ -1501,7 +1504,8 @@ struct GameGunneryHost::Impl {
     unsigned long long dc_launches{0}, dc_water_entries{0}, dc_breakups{0},
         dc_water_steps{0}, dc_contact_detonations{0}, dc_depth_detonations{0};
     unsigned long long torpedo_fall_breakups{0};
-    unsigned long long blast_shape_walks{0}, blast_shape_misses{0};   // blast_shape_entries   // 00856932, kTorpedoMaxFallBreakupBound
+    unsigned long long blast_shape_walks{0}, blast_shape_misses{0};   // blast_shape_entries
+    unsigned long long torpedo_swim_entity_impacts{0};   // 00856932, kTorpedoMaxFallBreakupBound
     void depth_charge_activate_006fd9b0(GameProjectileRow& shot, std::size_t gun_row);
     bool depth_charge_advance_006fcd20(GameProjectileRow& shot, float dt);
     // Packet cc9_player_weapon_group_fire (kPlayerWeaponGroupFireBound).
@@ -9412,6 +9416,7 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
             const float direction[3] = {shot.flight.velocity.x, shot.flight.velocity.y,
                 shot.flight.velocity.z};
             ++summary.impacts_entity;
+            if (shot.swimming) ++torpedo_swim_entity_impacts;   // census, packet cc9_g40_torpedo_swim
             shot.fate = 2;
             if (trace) {
                 log.notef("  torpedo trace %llu exit=entity_impact hit=%s "
@@ -14221,6 +14226,8 @@ void GameGunneryHost::report() {
                 : 0.0,
             host.torpedo_homing_scans, host.torpedo_homing_binds,
             host.torpedo_homing_turn_steps, host.torpedo_sub_vs_sub_launches);
+        host.log.notef("summary mission gunnery torpedo swim entity impacts=%llu (swimming rounds that "
+            "struck an entity, 0084BC60)", host.torpedo_swim_entity_impacts);
         host.log.notef("summary mission gunnery bullet throw cone=%llu fan=%llu zero=%llu "
             "mean_magnitude_deg=%.4f mean_angle_deg=%.4f seats aa=%llu tail=%llu flak=%llu "
             "torpedo=%llu depth=%llu artillery=%llu pilot=%llu none=%llu bound=%d "
