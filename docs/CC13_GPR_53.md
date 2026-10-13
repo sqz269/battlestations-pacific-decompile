@@ -258,22 +258,18 @@ grouped by name prefix:
 | `BSP_FixedStringBuilder` | 2 | 00851EE0, 00852140 |
 | `CG` | 56 | 00851F20, 00853010, 00853020, 00853030, 00853040, 00853380, 008533A0, 00856230, 00856250, 00856340, 00857D80, 00857D90, 00857DA0, 00857DB0, 00857E00, 00858150, 00858220, 008586E0, 0085EAE0, 0085EB00, 0085EB60, 00861BA0, 00862630, 00862750, 008627F0, 00863100, 00864660, 00864FD0, 00865CB0, 00866090, 00866280, 00866300, 00867060, 00869CF0, 0086A400, 0086B710, 0086B850, 0086B9A0, 0086BED0, 0086C240, 0086CD10, 0086CF10, 0086CF70, 0086D080, 0086E5A0, 0086E870, 0086FD70, 0086FF00, 008716E0, 00872280, 00873060, 008730E0, 00873420, 00873890, 00873A90, 00873E90 |
 | `BSP_ShipClass` | 1 | 00852200 |
-| `BSP_UnitInstance` | 2 | 00852210, 00857C20 |
 | `TRIV` | 10 | 00852FB0, 00852FC0, 008561D0, 008561E0, 008561F0, 00856200, 00856210, 00858170, 0085EA30, 0086B980 |
-| `BSP_TorpedoProjectile` | 4 | 008559D0, 00855B00, 00855BB0, 00855F50 |
 | `BSP_ObserverLink14` | 1 | 00855FE0 |
 | `Unwind@00856220` | 1 | 00856220 |
 | `Unwind@00856240` | 1 | 00856240 |
 | `BSP_TorpedoBoatClass` | 2 | 00857D60, 00857E20 |
-| `BSP_TraceLineEffectInstance` | 4 | 008580A0, 008583A0, 00858530, 008585D0 |
 | `BSP_NodeHandle` | 2 | 008580C0, 008658C0 |
-| `TMPL_PointerArray` | 3 | 008580E0, 008583D0, 00858660 |
+| `TMPL_PointerArray` | 2 | 008580E0, 008583D0 |
 | `BSP_NoOpRet4` | 1 | 00858180 |
 | `BSP_NoOpRet8` | 1 | 008581B0 |
 | `BSP_ReturnFalseByte` | 1 | 008581E0 |
 | `BSP_NoOp` | 1 | 00858200 |
 | `BSP_NativeTraceline` | 1 | 00858330 |
-| `BSP_EffectTraceLine` | 3 | 00858700, 00859240, 00859370 |
 | `BSP_SessionMessage` | 5 | 00859410, 00859C80, 00859CC0, 00859FA0, 00859FE0 |
 | `BSP_TurningGun` | 13 | 00859550, 008598B0, 00859920, 00859A20, 00859B10, 0085A130, 0085A3D0, 0085A8B0, 0085AB50, 0085AD00, 0085B980, 0085BA30, 0085BB50 |
 | `BSP_Unit` | 1 | 00859830 |
@@ -283,8 +279,6 @@ grouped by name prefix:
 | `BSP_Matrix` | 3 | 0085C0F0, 0085C220, 0085E4D0 |
 | `BSP_Ellipsoid` | 1 | 0085C5D0 |
 | `BSP_Geometry` | 2 | 0085CDB0, 0085DF60 |
-| `BSP_WaterMine` | 1 | 0085EAC0 |
-| `BSP_WaterMineShot` | 1 | 0085F1A0 |
 | `BSP_DebugDraw` | 13 | 0085F990, 0085FB30, 0085FB70, 0085FFF0, 00860030, 00860140, 008605C0, 00860710, 008608B0, 00860AD0, 00860BB0, 00860BE0, 00861260 |
 | `TMPL_Pair8` | 1 | 00861920 |
 | `BSP_UnitGunneryDirectorBridge` | 7 | 00861970, 00861980, 00861990, 008619A0, 008619B0, 008619C0, 008624C0 |
@@ -309,12 +303,11 @@ grouped by name prefix:
 | `BSP_RefPtr` | 11 | 00866730, 00866970, 00866C30, 0086AC50, 0086AC80, 0086ACB0, 0086ACE0, 0086AFC0, 0086B080, 0086B750, 00873AB0 |
 | `BSP_EffectDeletionLock` | 1 | 00866760 |
 | `BSP_EffectManager` | 2 | 008669A0, 008674A0 |
-| `BSP_EffectSound` | 1 | 00868D00 |
-| `BSP_EffectFlare` | 2 | 00869300, 0086BDB0 |
-| `BSP_EffectThunderStorm` | 5 | 00869370, 0086F3B0, 0086FB40, 0086FBC0, 0086FC20 |
-| `BSP_EffectWaterdrops` | 2 | 008693E0, 0086BDF0 |
-| `BSP_EffectLight` | 2 | 00869450, 0086BE30 |
-| `BSP_EffectSplash` | 2 | 008695B0, 0086BE70 |
+| `BSP_EffectFlare` | 1 | 0086BDB0 |
+| `BSP_EffectThunderStorm` | 4 | 0086F3B0, 0086FB40, 0086FBC0, 0086FC20 |
+| `BSP_EffectWaterdrops` | 1 | 0086BDF0 |
+| `BSP_EffectLight` | 1 | 0086BE30 |
+| `BSP_EffectSplash` | 1 | 0086BE70 |
 | `BSP_Effects` | 1 | 00869D20 |
 | `BSP_EffectParticle` | 2 | 00869D70, 0086BC50 |
 | `BSP_NativeDwordVector` | 6 | 0086A280, 0086A910, 0086A950, 0086AA10, 0086B630, 00872E70 |
@@ -323,7 +316,7 @@ grouped by name prefix:
 | `BSP_NativeString` | 1 | 0086B290 |
 | `BSP_EffectComponent` | 1 | 0086B7C0 |
 | `BSP_EffectTracer` | 2 | 0086B990, 0086B9B0 |
-| `BSP_EffectWaterTracer` | 5 | 0086BD10, 0086BD20, 0086BF10, 0086C120, 0086D180 |
+| `BSP_EffectWaterTracer` | 4 | 0086BD10, 0086BD20, 0086BF10, 0086C120 |
 | `BSP_EffectShake` | 1 | 0086BD60 |
 | `BSP_EffectNamedRecord14` | 1 | 0086CDB0 |
 | `BSP_EffectNamedRecord14Array` | 4 | 0086CE10, 0086E670, 0086E6F0, 0086F900 |
@@ -495,7 +488,7 @@ models in this packet's files, the two trivial thunderstorm slots 00872100 and 0
 2 checked host rows (00856260, 0085EB20). All are build-tested; none is wired, fixture-tested or
 game-validated. Section 6's open table now lists 337 addresses.
 
-Open, in value order:
+Open, in value order (items 1 to 3 and most of 4 were done by cc13-gpr53e; see section 7.9):
 
 1. `BSP_EffectTraceLine_ReadLua` 00858700 reads Width (x0.5), WidthSpeed, WidthSpeedEnd,
    MaxSegmentNum (default 10), MinSegmentLength (1.0), SegmentLifeTime (1.0), OuterColor,
@@ -515,3 +508,131 @@ Open, in value order:
 6. Notes for other owners: docs/CC13_SCENE_WEATHER.md says the rain step draws on stream 0;
    the bytes say stream 1 (section 7.6). 0072C970's ledger name and the submarine_model
    "save schema" comments are as section 3 lists.
+
+## 7.9 Pass cc13-gpr53e
+
+Same terms: models only in `src/gameplay_seg53_cc13.cpp` and `include/bsp/gameplay_seg53_cc13.hpp`,
+nothing wired, no host edits, no game runs, gunnery lane skipped. Every model is **reconstructed
+and build-tested**; none is fixture-tested, ABI-compatible or game-validated. All bodies were read
+from the disk bytes (`bsp.py disasm-raw`), strings and constants from the PE
+(`local/g53e_peread.py`).
+
+### 7.9.1 The trace-line ("Tracer") effect
+
+**The ECX base of 00858700.** The "Tracer" row of 00870400 allocates A0h bytes, and 0086B8B0
+builds a trace-line definition at +0 (vtable 00D0D5B0) and the effect component at +80h (vtable
+00D0D590). The loader passes the component pointer to the reader slot (vtable +14h), so ECX is
+allocation + 80h, and the reader's `[ESI-6Ch]`..`[ESI-4]` stores land at definition +14h..+7Ch. The
+types agree with 0086B8B0's defaults (+14h = 0.1f, +20h = 3, +28h = FLT_MAX, +2Ch = 10.0f, +4 = 0,
++5 = 1). CreateInstance 00859240 confirms the base: it takes the definition in ECX and stores
+`definition + 80h` as the instance's component.
+
+| address | model | what it does |
+|---|---|---|
+| `00858700` | `trace_line_read_lua_00858700` | 31 keys in listing order (section 7.8 listed the first 13). Width x 0.5 -> +14h, WidthSpeed, WidthSpeedEnd, MaxSegmentNum [10], MinSegmentLength [1], SegmentLifeTime [1], OuterColor (packed BGRA), AnimOnOff / AnimLoop [false], AnimStartFrame [0], AnimEndFrame [the start], AnimPlaySpeed [0]. TextureName loads into the {data, count, capacity} array +4Ch. Then ShowBullet, BulletTailTexture ["tr_bullet.dds"], BulletHeadTexture ["tr_glow_add.dds"], TailLength [16], HeadRadius [0.8], BulletLifeTime [2], BulletFadeBegin [1.6], +7Ch = life - fade begin, TailColor [FFFFFFFFh when nil], HeadColor [87FF8032h when nil] and UVTileLength [1]. Last come the vertex format "pf43uf43ccuf44uf41.mvfm" (+40h) and its vtable+40h binding (+44h). |
+| `00858660` | `trace_line_pointer_array_append_00858660` | count == capacity -> n = 2c + 2, grow when n > c. The same code is inlined four times in 00858700. |
+| `00859240` / `00859370` | `trace_line_create_instance_00859240`, `..._slot_00859370` | Instance new(20h): prefix, +10h owner (EDX), +14h component, +18h = 3. Node 00AF3430(1B8h) + 00858260("TraceLine"), vtable 00D0C928, then node vtable+5Ch(definition, world root). The slot passes EDX = [ESP+4] and ECX - 80h. |
+| `008585D0` | `trace_line_instance_update_008585d0` | Refreshes the owner node, then 00AF2630(node, world position, dt) and 00AF1EB0(node, dt). Sets node+194h = 1 when the owner is stopping (+9). RET 8; the second argument is unused. |
+| `00858530` / `008583A0` | `..._destruct_00858530`, `..._detach_from_root_008583a0` | When node+A4h is the world root, 00B6D890(node, root). The destructor then runs 00B6DFA0 and 00BD30F0. 008583A0 is vtable +2Ch, which is the destructor's first step. |
+| `008580A0` / `00858500` / `00858520` | `is_complete`, `set_19c`, `stop` | vtable +08h: node+190h == 0. +14h: node+19Ch = arg. +30h Stop: node+1A8h = 1. |
+
+**Findings.** (1) The texture loop stops at the **first** frame with no atlas item
+(00858BC7 -> 00858C81 -> 00858CA8). Later frames are never tried. The same thing happens in
+`load_native_tracer_particle_textures_00b0a920`, which already models it. (2) When TextureName is
+not a string, the item for "cloud_snake.dds" is appended **without** a null test, so a missing
+atlas item appends a null pointer. (3) Neither allocation in 00859240 is null-tested on the
+later path: a failed instance faults at 0085930C, and a failed node faults at 00859346. (4) The
+vtable+40h block (00859200) has only +0 (the format) and +10h (= 1) written. Its +4h..+0Ch are
+uninitialised stack.
+
+### 7.9.2 The water tracer reader 0086D180
+
+ECX is the component itself (C4h, vtable 00D0D5D4), so the offsets are positive. The model is
+`water_tracer_read_lua_0086d180`. The section 7.8 key list (from cc13-effects1's ledger note) was
+partly wrong: the bytes give ShowForward, ShowBackwards, FitToWater, Lifetime, TimeScale, Divisions,
+LineDistance, LOD, FullLines, TextureRate, TextureFile, TextureFile2, AlphaScale, AlphaScaler,
+WidthScale, WidthScaler, WidthOffset, BoneLength, BoneCount, Length, HeightScale, Alpha, Width,
+HeightX, HeightY, FadeIn, StartTime, StartSpeed, StopTime, StopSpeed, LocalSpace, WidthWave,
+WidthSpeed, HeadingLines, HeadingLength, SegmentCount, VertTessPower, HorizDivisions,
+HorizTessPower, DisplacementScale and WaterSpray. Each key's field and default is in the header
+comment. 0086C120 (ledger "DestroyCurves") is the destructor of the six-array WaterSpray local,
+which runs in reverse field order. It is the `WaterSprayDefinition` destructor in the model.
+
+Findings:
+
+1. **The HeightY curve is gated on HeightX.** 0086D9C8 pushes "HeightX" for the IsTable test and
+   0086DA0C pushes "HeightY" for the load. A row with HeightY but no HeightX table gets a null
+   +70h curve.
+2. **TimeScale is the curve scale, not a field.** It is stored in [ESP+2Ch] and passed as the
+   third argument of 00869E40 for Alpha, Width, HeightX and HeightY. WidthSpeed gets 1.0 and is
+   loaded with no table test.
+3. Each curve field is released and replaced **even when the gate fails** (it becomes null).
+   +98h, +9Ch and +C0h are zeroed at entry without a release.
+4. The Divisions clamp is unsigned (`CMP / JAE`), so a negative Divisions passes unchanged. The
+   Lifetime and LineDistance clamps compare against (double)0.1 and store 0.1f. A NaN passes.
+5. FitToWater == 1 forces BoneCount = 40 and BoneLength = max-like(f(Length / 39.0), 3.0f). The
+   NaN case keeps the quotient.
+6. HeightScale is written to +60h and then overwritten by DisplacementScale. Only
+   DisplacementScale reaches the 44h block.
+7. **Correction for the 00BADC70 comment in include/bsp/water_weather_cc13.hpp** (another file;
+   not edited). Block +0Ch is not a DWORD: it is `&component+68h`, the Width curve holder. +10h and
+   +14h are &+6Ch and &+70h. Block +4h is SETNE CL over ECX = &+68h, so its upper three bytes are
+   address bits. The rest map as follows: +0 BoneCount, +8 LocalSpace, +18h SegmentCount (unread),
+   +1Ch VertTessPower, +20h HorizDivisions, +24h HorizTessPower, +28h..+40h WidthScaler,
+   WidthOffset, WidthScale, DisplacementScale, Length, TextureRate, AlphaScaler.
+
+### 7.9.3 The light constructor and the CreateInstance family
+
+| address | model | what it does |
+|---|---|---|
+| `008740E0` | `construct_effect_light_instance_008740e0` | Prefix, type 0, tables 00D0DBF0 / 00D0DBEC. Light = 00B7BD30(1FCh), and 00B7C710 names it "dynamic_light_" + [[point+84h]+1Ch]. Then 004B62E0 sets the diffuse from def+28h, light+1C4h = specular def+38h, light+1F8h = radius when > 0.01f (else 0.01f, including NaN), and +20h = Duration. |
+| `00868D00`, `00869300`, `00869370`, `008693E0`, `00869450`, `008695B0` | `effect_create_instance_00869300_family`, `kEffectInstanceKinds` | new(20h/20h/24h/24h/24h/20h) + the kind's constructor (00873AE0, 00873010, 00873EB0, 00873090, 008740E0, 008739A0), or 0. |
+
+Finding: in the light constructor, the light is **not null-tested** after the allocation. A failed
+00B7BD30 faults in 004B62E0 (00874212). The section 7.7 light Update (008738B0) also uses
+light+1F8h, but as the intensity. Here the constructor writes the clamped Radius into it.
+
+### 7.9.4 Torpedo, water-mine and unit wrappers
+
+| address | model | what it does |
+|---|---|---|
+| `00855B00` | `torpedo_commit_step_pose_00855b00` | 006E1010, then copies node(+BCh)+74h to +C0h (004134F0). |
+| `008559D0` / `0085EAC0` | `forward_slot_198_to_194_008559d0` | own vtable+194h(dt). |
+| `00855BB0` / `00855B90` | `torpedo_set_node_visibility_00855bb0` | With +464h: 00B6DA70(model+0Ch, 0.0 or 1.0, 0). 00855B90 is not a Ghidra function. It begins after 00855B30's RET 4 and six CCh bytes (00855B8A..8F), so no record was added for it. |
+| `0085F1A0` | `water_mine_place_step_pose_0085f1a0` | 006E1060(dt), then [[[+84h]+160h]+0Ch] vtable+38h(this - 370h). |
+| `00855F50` | `torpedo_send_create_message_00855f50` | 00855CC0 message, 00779FC0 send to the peer, 007668E0. |
+| `00857C20` / `00852210` | `unit_create_motion_controller_c_00857c20`, `..._b_00852210` | new + 00939F20 / 00939E50 -> unit+1018h. B also sets +1210h = the first body in the 00C31DC0 chain (+208h link) with 00C32450 bit 1. B does not null-test the controller. |
+
+**Ledger correction:** the 00852210 and 00857C20 ledger notes say "operator new(0x390)", but the
+PUSH immediates are **39Ch** (00852228) and **394h** (00857C37). The records added here carry the
+correct sizes. The name evidence was not edited.
+
+### 7.9.5 Adoption notes
+
+| model | replaces (host file:line) | inputs | RNG | OFF-switch prediction |
+|---|---|---|---|---|
+| `00858700` | nothing: `GameplayEffectScalarComponentDispatcher::read_lua_slot_14` (src/gameplay_effect_scalar_components.cpp:273) has no 00D0D590 row and hands the Tracer component to `remaining_` | the Lua row accessors, the atlas finder [00F8C26C], the frame helpers 00AF3A20 / 00AF3B50, renderer vtable +38h / +40h | none | presentation only: unchanged with OFF; with ON, Tracer components get their fields and textures |
+| `00859240` / `008585D0` / `00858530` and the slots | nothing (the host does not tick effect instances, section 7.7) | owner node position, dt, the world root | none | presentation only |
+| `0086D180` | nothing (no 00D0D5D4 row in that dispatcher either) | the row accessors, `load_tracer_parameter_curve_00869e40` (src/tracer_parameter_curve_loading.cpp), `w4_water_tracer_resource_initialize_00badc70` and `w4_water_spray_resource_construct_00bae2e0` (src/water_weather_cc13.cpp) | none in the reader. 00BAE2E0 draws once per spray sub-element from 00BD2F10 **stream 0** in the image; that model already routes the draw through `W4_PresentationRandom`, so wiring must keep a presentation stream (cc9 RNG rule) | presentation only; with ON and the shared stream, every later stream-0 draw would shift, so ON must use the presentation stream |
+| `008740E0` and the CreateInstance family | nothing | definition fields (`read_effect_light_00869fd0`), the point's name, light setters | none | presentation only |
+| torpedo / water-mine / unit wrappers | nothing wired: the host builds torpedoes and unit controllers its own way (sections 1.3 and 2) | entity fields and host callbacks | none | none until those entities are bound |
+
+### 7.9.6 Handoff (cc13-gpr53e)
+
+Records added in this pass: 26 `add-function` records (00855B90 has none, as noted above). The open
+table in section 6 drops 23 addresses, to **314**. Build: `scripts/build.ps1` passes.
+`tools/verify_report_calls.py local/g53e_calls.json` checked 78 call rows with 0 failures. No tests
+were added, there were no game runs, and no Ghidra annotations were made in this pass.
+
+Still open, in value order:
+
+1. The WaterTracer instance side (0086BD10, 0086BD20, 0086BF10) and the remaining effect
+   constructor-side rows (0086BDB0, 0086BDF0, 0086BE30, 0086BE70 and the thunderstorm's 0086F3B0,
+   0086FB40, 0086FBC0, 0086FC20).
+2. The trace-line leftovers: the two unreferenced pointer-array helpers 008580E0 and 008583D0,
+   and the node handle 008580C0.
+3. Item 4 of section 7.8, still open: 0085C0F0 / 0085C220 (no callers) and 0085C5D0 (no
+   reference).
+4. The gunnery lane (unchanged; cc9's).
+5. Notes for other owners: the 00BADC70 block comment (7.9.2, item 7) and the 0x390 controller
+   size in the 00852210 / 00857C20 ledger names (7.9.4).

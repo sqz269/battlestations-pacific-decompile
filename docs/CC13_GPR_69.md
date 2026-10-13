@@ -348,3 +348,303 @@ Next, by value:
 3. **`00A08020`/`00A08420`**, only if a mode planner (modes 4..7) is ever run.
 
 Not done: no Ghidra comment beyond the four renames; no game run (cc9's terms).
+
+## 7. gpr69b: the host reconstructions checked against the listing
+
+Packet `cc13-gpr69b` (cc13 lineage, Claude) continues this one on the same terms: the cc13 files
+only, ledger records, no host edit, no wiring, no game run. Each body below was read whole from the
+disk bytes with Capstone `disasm-raw`; the x87 forms of the arithmetic tails were read from the bytes
+(`local/tools_scene2/sc2_x87.py` in the cc13 tree). Constants were read from the PE
+(`local/g69b_pe.py`, not committed). New models are in `src/gameplay_seg69_70_cc13.cpp` and are
+**reconstructed and build-tested**; none is ABI-compatible, wired or game-validated.
+
+### 7.1 `00A0C650` with every argument (`00A0C330`, `00A0C3C0`)
+
+The host has `compose_attack_value_00a0c650` and `group_value_pair_00a0c3c0`
+(src/game_hosts_ai.cpp:5375 and :5229) for the one argument set `00A0F970` and `00A250A0` pass,
+`(0, -1.0, no debug, 0, 1.0)`, and they match the listing on that set. `00A23980` (the spawn
+composition, section 1.2) also calls `(1, arg7, debug, byte5, factor)` and `(0, 100.0, 0, 0, 1.0)`,
+so this pass models the general body:
+
+- `00A0C3C0` uses its distance argument as given unless it is negative (`COMISS`/`JBE`); only then
+  does it take `00414C60` over the pose delta (both `+0Ch` bytes set) or 0. `00A23980`'s fixed 100.0
+  therefore puts every threat pair inside the arrive distance. `arg1` is not read.
+- `00A0C650`: with `byte5` set, every attacker but the last scores with the rnd flag clear (no
+  `+18h` spreads) and is multiplied by `factor`, or by 0.001 (`[00D7A23C]`) when 0.001 (`[00D7A318]`)
+  is greater. Both the per-attacker and the per-target best are kept (from 0.0). With `arg1` set, three
+  penalties apply: `+21Ch` x attackers whose best is <= 0, `+220h` x targets whose best is <= 0, and
+  `+224h` x pairs of attackers sharing `record+0h`. The tail, from the bytes:
+  `result = f(speed + base) - ((unattacked + idle) + repeat)`, then 0 when `0 > result`.
+
+### 7.2 `00A13B60`, the CLOSEATTACK/DEFENDPOSITION pass: ten divergences
+
+`ai_close_attack_pass_00a13b60` is the whole body as a model. The host's reconstruction
+(src/ai_close_attack_tick.cpp:71) says its collection walk was "read for its bounds and its filter
+but not instruction by instruction". Read whole, the image differs from the host in these points
+(cc9's code; no edit made):
+
+1. **The candidate set is five world-registry lists, not every unit.** `[[00E188A8]+19CCh] + 1Ch +
+   id*0Ch` for ids 6 (ships), 24 (plane squadrons), 45h, 46h and 1Bh (the `009FE0B0` trio), in that
+   order, each entity with `+5Ch` set and `+5Dh`, `+60h`, `+5Eh` clear.
+2. **The team rule depends on the list.** Ships and squadrons must be on the enemy team,
+   `+54h == (group+5638h == 0)`; a third-party ship (`+54h >= 2`) is never a candidate. The trio lists
+   take any entity not on the own team, so neutral buildings are. The host takes `team != own` for all.
+3. **Ties go to list order** (ships, squadrons, 45h, 46h, 1Bh, each in list order); the host's order
+   is its unit index.
+4. **The collect test is `f(dz^2 + dx^2) < r^2`, strict and without a square root;** the host takes
+   `sqrt` and keeps `d^2 <= r^2`.
+5. **The squadron gate calls `009FFEB0`.** After the inline `007EDA90` shape (leader kind 17h with
+   `+C24h` clear skips), the image calls `009FFEB0 BSP_AiCommand_SendEmptySquadronHome` and skips the
+   squadron when it answers true; that call may itself issue the squadron's return order. The host's
+   `close_member_squadron_excluded` answers `007EDA90` only, although the host already has
+   `tick_squadron_excluded_009ffeb0` (src/game_hosts_ai.cpp:2723).
+6. **The member's current target joins the list** when it lies outside the collect radius but inside
+   `2 r^2` (`00A14604`-`00A1464C`); it stays in the list for the members after it in the same pass.
+7. **The current target only counts when it answers `vtable+5Ch(2)` and is on the enemy team**
+   (`00A144C8`-`00A144F1`); otherwise no sticky multiplier applies.
+8. **The best seed is -1e10 (`[00CE4ADC]`), not 0.** An admitted candidate scoring 0 (beyond
+   `+1FCh` FarDist, or a zero-weight target-group member) or less still wins over "none", so the member
+   gets an order where the host sends it to the fallback.
+9. **Product order:** `(sticky * group) * (range * weight)` (`00A14990`-`00A1499C`); the host multiplies
+   `((range * weight) * group) * sticky`. A last-bit difference when both multipliers apply.
+10. **Fallback rounding:** each of `0.4 * pos` and `0.6 * centre` is stored as a float before the add
+    (`00A14CC1`-`00A14D41`); the host forms the sum in double.
+
+The host's `kCloseAttackFallbackOffsetBound` arm matches otherwise (radius `max(pop * 160, 400)`,
+strict `>`).
+
+### 7.3 `00A28A60`, the Defend think
+
+The host (src/game_hosts_ai.cpp:4629) matches passes B and C, the hand-off, the anchor search, the
+resource subtraction, the orders and the merge pass. Two divergences and one model:
+
+1. **Pass A misses half of `00A2DEF0`.** A member is a defend candidate when it answers
+   `vtable+5Ch(1Ch)` **or** `008DDF90` finds it in the team's set `[game + 21A4h + team*4]`
+   (`ai_defend_member_is_candidate_00a2def0`). The host collects only kind 1Ch.
+2. **The records are sorted.** `00A28300` is the STL introsort; with 32 or fewer records only the
+   insertion pass `00A25750` runs, whose predicate puts `x` before `y` when `0 < x.T` and
+   `y.weight < x.weight` (record `+4h`, `+8h`). `ai_defend_sort_records_00a28300` returns that order
+   (nullopt above 32, whose partition path was not read). The host keeps build order, so with two or
+   more records the nearest-record search and the spawn tail can pick differently.
+3. The anchor lists are a map keyed by the entity pointer (labelled in the host).
+
+`00A243D0` (the record scorer, src/game_hosts_ai.cpp:4530) matches except: the requirement is
+`+1E8h * (+19Ch * b)` in the image and `(1.5 * point) * b` in the host; the 1Ch skip is `IsKindOf`
+in the image and a class-id test in the host; a NaN `00A03510` weight is not skipped
+(`FCOMPI`/`JAE`); the Lua `StrategicGain` is fixed at 0 by the host.
+
+### 7.4 `00A29FD0`, the Capture think, and `00A1E250`
+
+The host's target path (src/game_hosts_ai.cpp:4099, :4371) matches the records, the price, the group
+weights, the assignment loop's order and tests, the price decrement, the merges and the hand-off.
+Divergences:
+
+1. **The no-target path hands off per group, not per side.** With no enemy list-28 entity the image
+   still builds the group records; each unassigned group goes to `brain+8h` when its record found a
+   nearest own list-28 entity **not in that group** (`node+1Ch`), else to `brain+4h`. The host
+   (src/game_hosts_ai.cpp:3755) sends every group to slot 2 whenever any own CommandBuilding exists.
+2. **The target test has no activity filter in the image:** a list-28 entity with `+54h` other than
+   the planner's side is a target; the host requires `unit_active` and kind 1Ch over all units.
+3. **The clock prologue runs on every think** (`00A29FF7`-`00A2A0C1`): `+40h`, `+38h` and `+3Ch` advance
+   even with no target. The host advances them only on the target path, so the planner age that drives
+   the spawn ramp starts at the first think with a target instead of the first think. Model:
+   `ai_capture_planner_clock_00a29fd0`.
+4. **The length epsilon is 1e-10.** `[00CE3820]` holds the double 1e-10; the host's
+   `kAiTailLengthEpsilon` and the literal in `capture_plan_00a29fd0` use 1e-11.
+5. **Score rounding:** `f(+1BCh * s + d((1 - +1BCh) * w))` with each step at 24-bit precision
+   (`ai_capture_assignment_score_00a2ac11`); the host forms it in double.
+6. `00A1E250`: the image divides by `+19Ch` without the host's substitute of 35 for 0, and forms
+   `res * ((1 / pv) * factor)`; the host forms `res * factor / pv`.
+
+The `[00F8A9E0] == 1` arm (group `+5624h`/`+5628h` resets and the `00A2B950`/`00A2BCC0` calls) is not
+modelled; nothing in this process writes `[00F8A9E0]`.
+
+### 7.5 `00A14DD0`
+
+The CAUTIOUSMOVE route pass (src/ai_command_tick.cpp:415) matches the listing, including the x87
+forms of the three candidate points (`base`, `base + off`, `base - off`).
+
+### 7.6 `009FE270`, the bullet-type accuracy: two arms are conditional
+
+`ai_bullet_type_accuracy_offset_009fe270` (src/ai_tuning_globals.cpp:219) reproduces the dispatch
+(the byte table `009FE6EC` and the jump table `009FE6C4` were read from the PE) and every four-way arm,
+but the function first calls the target class's `vtable+1Ch` (its class id) and two arms test it:
+
+- DepthCharge (sub-type 0Bh, `009FE44A CMP EAX,8 / JNE 009FE6BB`) answers `+148h` only against
+  class id 8; any other target gets 0.0.
+- Paratroopers (0Fh, `009FE465 CMP EAX,1Ch / JNE`) answers `+14Ch` only against class id 1Ch.
+
+The host answers both unconditionally. Any caller that weights a depth charge against a surface
+target, or a paratrooper drop against anything but a CommandBuilding, gets a non-zero accuracy the
+image does not give.
+
+### 7.7 The command ticks: `00A11070` runs after almost every tick and is not in the host
+
+`00A11070 BSP_AiCommand_FormationShapePass` is the tail of the MOVETO, MOVETOATTACK (closing arm),
+PATROLTO, IDLE, REGROUPINGMOVE and SELLING (ground arm) ticks. For a group led by a ship with a
+formation object (`leader+284h`) it applies shape 0 (`0070EFD0`), then gives every later ship member
+that has a formation record the next of 24 fixed slots, `record+10h/+20h = -(x, z) * tuning+210h`
+(the table at `00F8A7B0`, filled once), and broadcasts `FORMATION_SET`. The host records it on the IDLE
+arm (src/game_hosts_ai.cpp:2185) and omits it elsewhere. Model: `ai_formation_shape_00a11070`.
+
+Also modelled:
+- `ai_regrouping_move_tick_00a126c0`: REGROUPINGMOVE (`00A126C0`, not in the host). With a follower
+  beyond `AutoMerge_LeaveDist` from the leader, the leader goes to `(dest + 3 * centroid) / 4` of all
+  members (each step stored as a float); otherwise to the destination.
+- `ai_order_cautious_move_00a2ccf0`: the move twin of `00A2CBD0`, called only by the Duel think
+  `00A25F70`; the stream-1 draw happens only for a non-ship leader that `00A2C9F0` routes cautiously.
+
+Checked and matching: `00A02020` (the order bridge), `00A10EC0` (the auto-merge leave pass),
+`00A11690` (the wedge, spot-checked from the bytes), `00A0F810` (the candidate weight, epilogue
+`((B*C)*D)*A`), `00A12A90` and `00A15570` (apart from `00A11070`). `00A11FF0` (SELLING) differs in
+three labelled ways: the host issues `returntobase` per plane where the image orders the squadron, it
+omits `00A11070`, and it records the per-member session message 51h. `00A04560` matches apart from the
+host's labelled spread and class query.
+
+### 7.8 The mode planners: Duel and Escort have their own bodies
+
+The host's `ai_mode_planner_tick` (src/ai_planners.cpp) runs `00A1CB80` on the first owned group for
+all four mode planners. That is right for Siege (`00A26510`) and Competitive (`00A265F0`, whose reset
+flag is a constant 0), but the Duel and Escort thinks do something else:
+
+- **Duel (`00A25F70`)**, model `ai_duel_think_00a25f70`: the nearest enemy group (`00A1C960`) is attacked
+  (`00A2CBD0`, aggressive 1.0) when it is within 4000 (`16e6 > d^2`) or the own team has one group;
+  otherwise the group moves (`00A2CCF0`, ratio 1.0) to a blend of the two team centroids,
+  `own * t + enemy * (1 - t)` with `t` rising from 0 at 500 to 1 at 2000 units between the leader and
+  the own centroid. With no enemy group it moves to the own centroid. `00A2CCF0` with ratio 1.0 always
+  installs MOVETO but still draws stream 1 when its gates pass.
+- **Escort (`00A26210`)**, model `ai_escort_think_00a26210`: the nearest entity of the team's objective
+  set (`[game + team*4 + 21A4h] + 18h`) decides: an own entity is escorted (PATROLTO to the midpoint of
+  it and the enemy centroid), an enemy entity is attacked through its AI group or patrolled to; only an
+  empty set falls back to `00A1CB80`.
+
+`00A1CB80` itself matches but for the product order (`((range * base) * own) * sticky` in the image),
+the host's near radius (9e6 in `near_radius_squared()`, 1e-10 in the image; no effect while
+`FreeAttack_NearDist` is 5000 or 9000) and the per-candidate target-list records it writes when reset.
+
+Also checked and matching: `00A22800` (the Sell think), `00A2E4C0` (the air split), `00A11B80` (the
+transport moves, spot-checked).
+
+**The constant at `00CE3820` is the double 1e-10** (`BB BD D7 D9 DF 7C DB 3D`). `kAiPlannerNearRadiusSquared`
+(include/bsp/ai_planners.hpp:218), `kAiTailLengthEpsilon` (include/bsp/ai_planner_tails.hpp:68) and the
+literal in `capture_plan_00a29fd0` (src/game_hosts_ai.cpp:4180) say 1e-11; include/bsp/gameplay_seg33_cc13.hpp
+already notes the same.
+
+### 7.9 `00A03760`: the arrival value's speed guard is inverted in the host
+
+`00A03760 BSP_AiCapture_UnitArrivalValue` feeds the `a`/`b` terms of every Capture target score
+(`00A1E250`). Outside the CommandBuilding's capture range the bytes at `00A0382C` are
+
+```
+DD 05 A0 A3 D7 00   FLD  qword [00D7A3A0]      ; 0.1
+F3 0F 11 44 24 08   MOVSS [esp+8], xmm0         ; the unit's class speed
+D9 44 24 08         FLD  dword [esp+8]
+DB F1               FCOMI ST0, ST1              ; speed vs 0.1
+DD D9               FSTP ST1
+77 54               JA   00A03896               ; speed > 0.1 -> return 0.0
+```
+
+so any unit faster than 0.1 contributes **nothing** outside the range, and only a unit at or below
+0.1 (or NaN) reaches the linear `(1 - time / limit) * w` arm. The host's
+`ai_tail_unit_arrival_value` (src/ai_planner_tails.cpp:92) has the guard the other way round: it
+returns 0 for speed <= 0.1 and gives every moving ship the approach value. On the image's rule the
+Capture terms count only units inside the capture range. Model: `ai_unit_arrival_value_00a03760`.
+Whether the image's rule is an original bug does not matter for parity; the host should follow the
+bytes.
+
+Also checked: `00A03510` (the capture weights; the host fixes the CommandBuilding's Lua
+`CaptureWeight` at 1.0), `00A0F970`, `00A250A0`, `00A1A7A0`, `00A1D010` (matching), `00A1A720` (the
+image passes the party slot's aggressive ratio `[00F8A8D0 + party*1Ch]`, the host the constant 0.5)
+and `00A22750` (the host's labelled refusal of a group another planner holds).
+
+### 7.10 Smaller checks
+
+- `00A2DB80` (the merge): every ATTACK-family command aimed at the absorbed group is replaced by a
+  **new** command of the same class (`00A10890`, `00A109B0`, `00A10AE0`, installed by `00A2BD00`); the
+  host rebinds the existing command's target in place, so state the constructors reset (the
+  CAUTIOUSATTACK route counter `+28h = 4`, its flag `+24h = 0`, the member-pass schedule) survives a
+  merge in the host.
+- `00A010F0` (the danger cost): the image walks list 5 (`world+58h`) by team with no liveness test;
+  the host walks its active units.
+- `00A15970`: matches for modes 0..3; for modes 4..7 the image asks the mode planner's `vt+30h`, the
+  host answers false.
+- `00A32350` / `00A31730`: the controller creation also clears the forced-target-weight tree
+  (`00A03A60`); the think-schedule seed and the party-slot election are sections 1.3 and 1.7.
+- `00A1CF90`, `00A152B0`, `00A11F70`, `00A31DB0`, `00A13340` (the name-to-recipe step) and `00A16EF0`
+  (the routing) match. `00A12430` (IDLE) matches but for `00A11070`.
+
+### 7.11 Adoption notes for the gpr69b models (cc9 terms)
+
+| model | replaces (host file:line) | inputs | RNG | OFF-switch prediction |
+| --- | --- | --- | --- | --- |
+| `ai_compose_attack_value_00a0c650` (+ `ai_pair_attack_value_00a0c3c0`, `ai_pair_base_value_00a0c330`) | `compose_attack_value_00a0c650` / `group_value_pair_00a0c3c0` (src/game_hosts_ai.cpp:5375, :5229) for the general argument sets | the `AiValueRecord`s, `00A08460`, the class kind and speed, tuning `+D8h..+FCh`, `+214h..+22Ch`, `00A07C10` | none | OFF: none. ON with the host's `(0, -1.0, 0, 0, 1.0)`: identical numbers. ON for `00A23980`'s two calls: the spawn composition gains the byte5 factor, the penalties and the fixed distance 100.0 |
+| `ai_close_attack_pass_00a13b60` | `ai_close_attack_tick_00a13b60` (src/ai_close_attack_tick.cpp:71) | the five world lists in order with `+5Ch/+5Dh/+5Eh/+60h/+54h`, member gate inputs, current target (kind 2), `009FFEB0`, `00A0F810`, `00A2C720`, tuning `+1F4h..+204h` | none in the pass; `009FFEB0` may issue a squadron's return order | OFF: none. ON: neutral ships stop being targets and neutral buildings start; empty bombers go home instead of being ordered; a member's current target up to sqrt(2) x the collect radius stays a candidate; zero-score admitted candidates are ordered instead of falling back |
+| `ai_defend_member_is_candidate_00a2def0`, `ai_defend_sort_records_00a28300` | pass A and the record order of `defend_think_00a28a60` (src/game_hosts_ai.cpp:4680, :4733) | member kind 1Ch, `008DDF90` on `[game+21A4h+team*4]`; record T and weight | none | OFF: none. ON: members of the team's objective set become defend records; with two or more records the anchors and the spawn tail follow the sorted order |
+| `ai_capture_planner_clock_00a29fd0`, `ai_capture_assignment_score_00a2ac11` | the dt block of `capture_target_path_00a29fd0` (src/game_hosts_ai.cpp:4376) and the score at :4205 | the float clock, `+38h/+3Ch/+40h`, tuning `+1C0h..+1C8h`, `+1BCh` | none | OFF: none. ON: the Capture planner age counts from the first think, so the spawn ramp is further along when a target appears; last-bit score changes |
+| `ai_formation_shape_00a11070` | nothing (recorded on IDLE, src/game_hosts_ai.cpp:2185) | leader kind 6 and `+284h`, `0070D080` records, tuning `+210h` | none | OFF: none. ON: ship groups under MOVETO/MOVETOATTACK/PATROLTO/IDLE/REGROUPINGMOVE/SELLING get the 24-slot box formation offsets every tick (`FORMATION_SET` broadcast) |
+| `ai_regrouping_move_tick_00a126c0` | nothing (REGROUPINGMOVE has no host tick) | member poses, `+8h`, tuning `+20Ch`, `[00F87574]` | none | OFF: none. ON: a Lua `REGROUPINGMOVE` group with stragglers steers to `(dest + 3 * centroid) / 4` |
+| `ai_order_cautious_move_00a2ccf0`, `ai_duel_think_00a25f70`, `ai_escort_think_00a26210` | `ai_mode_planner_tick` (src/ai_planners.cpp) for Duel and Escort | the nearest enemy group and its d^2, team centroids `00A1CA60`, the objective set, `00A2C150`, `00A2C9F0` | **stream 1**: one `00BD2F40` per `00A2CCF0` call that passes the ship and `00A2C9F0` gates | OFF: none. ON: only in effective modes 4 (Duel) and 5 (Escort); Duel groups hold near their centroid until within 4000 of an enemy, Escort groups follow the objective set |
+| `ai_unit_arrival_value_00a03760` | `ai_tail_unit_arrival_value` (src/ai_planner_tails.cpp:92) via `CaptureScoreHost::unit_arrival_value` (src/game_hosts_ai.cpp:3912) | weight, distance, `+7A0h`, class speed, tuning `+198h` | none | OFF: none. ON: moving units outside a CommandBuilding's capture range stop counting in the Capture `a`/`b` terms; target totals and the assignment change wherever such units were approaching |
+
+None of the new models draws from stream 0.
+
+### 7.12 Divergences for cc9, by expected effect
+
+1. `00A03760`: the arrival value's speed guard is inverted in the host (7.9).
+2. `00A13B60`: the candidate set, the team rule per list, the `009FFEB0` squadron call, the current
+   target's extended radius and the -1e10 best seed (7.2, items 1, 2, 5, 6, 8).
+3. `00A11070` is not run after the MOVETO, MOVETOATTACK, PATROLTO, IDLE, REGROUPINGMOVE and SELLING
+   ticks (7.7).
+4. `00A28A60`: pass A misses objective-set members, and the records are not sorted (7.3).
+5. `00A29FD0`: the no-target hand-off and the clock prologue (7.4, items 1 and 3).
+6. `009FE270`: DepthCharge and Paratroopers are conditional on the target class id (7.6).
+7. Duel and Escort run `00A1CB80` in the host (7.8).
+8. `00A2DB80`: rebinding instead of new commands (7.10).
+9. `00A1A720` and `00A1CF90` use the constant 0.5 for the party's aggressive ratio (labelled).
+10. The constant `00CE3820` is 1e-10 (7.8), and last-bit product/sum orders in `00A0C650` users,
+    `00A13B60`, `00A1CB80`, `00A243D0`, `00A1E250` and the capture score.
+
+### 7.13 Ledger (gpr69b)
+
+Function records added (`config/reconstruction`, all citing this doc), 52 in all:
+- models in `src/gameplay_seg69_70_cc13.cpp` (12): `00A0C330`, `00A0C3C0`, `00A0C650`, `00A13B60`,
+  `00A2DEF0`, `00A28300` (partial: more than 32 records), `00A11070`, `00A126C0`, `00A2CCF0`, `00A25F70`,
+  `00A26210`, `00A03760`; the planner clock and the assignment score are named in `00A29FD0`'s record;
+- listing-checked host records (40): `00A14DD0`, `00A28A60`*, `00A243D0`*, `00A29FD0`*, `00A1E250`*,
+  `00A0F810`, `00A04560`*, `009FE270`*, `00A02020`, `00A12A90`*, `00A15570`*, `00A10EC0`, `00A11690`,
+  `00A11FF0`*, `00A1CB80`*, `00A26510`, `00A265F0`, `00A22800`, `00A2E4C0`, `00A11B80`, `00A03510`*,
+  `00A0F970`, `00A250A0`, `00A1A7A0`, `00A1A720`*, `00A1D010`, `00A22750`*, `00A010F0`*, `00A15970`*,
+  `00A32350`*, `00A31730`*, `00A13340`*, `00A16EF0`*, `00A2DB80`*, `00A31DB0`*, `009FFC10`*, `00A152B0`,
+  `00A12430`*, `00A11F70`, `00A1CF90` (* partial, the divergence in the record's evidence).
+
+No Ghidra annotation was made in this pass (no rename was needed; the names stand).
+
+### 7.14 Verification
+
+- `./scripts/build.ps1` passed in this tree after the final `git merge origin/main`: the build and
+  ctest (2 of 2). No test was added.
+- `tools/verify_report_calls.py local/g69b_calls.json local/g69b_calls2.json`: 82 call-site rows cited
+  in this section, 0 failures (row files not committed).
+- `tools/x87_dc_form_scan.py --range 009FE130-00A371A0`: the DC-form sites in the bodies modelled here
+  (`00A126C0` x2, `00A13B60` x2, `00A26210`) were read with `--context 3`; each is the
+  `FLD K / FMUL ST1,ST0 / FXCH` scale idiom and the models scale the loaded component.
+
+### 7.15 Open and handoff
+
+114 of the 165 functions of the band without a record (EH funclets excluded, index rebuilt after
+`git merge origin/main`) at the start of this pass remain without one: 31 debug writers and
+describers, 33 constructors, destructors and container helpers, and these real bodies:
+- host reconstructions not yet checked: `00A2C790`, `00A2D9D0`, `00A2DDE0`, `00A2E260`, `00A2EEE0`,
+  `00A2DFA0`, `00A15A70`, `00A32500`, `00A07EB0`, `00A2C8D0`, `00A2BD00`, `00A2BD50`, `00A2BD90`,
+  `00A2BDB0`, `00A2BE10`, `00A2DB50`, `00A1E210`, `00A1F310`, `009FFEB0` (the host's
+  `rtb_exclusion_arm`), `00A07FB0`, `00A184F0`, `00A0FC50`, `00A0FC90`, `00A317C0`;
+- no host and no model: `00A152E0` is a vtable slot the host does model inline (record pending),
+  `00A12580`, `00A25B90` with `00A08420`/`00A08020` (the mode planners' quick spawn), `00A31C90`/
+  `00A329F0` (multiplayer party messages, unreferenced broadcast);
+- unreferenced (no caller or data reference): `00A13280`, `00A13080`, `00A22920`, `00A2BE70`,
+  `00A2C2A0`, `00A185E0`, `009FE130`, `009FE170`, `009FE1B0`, `009FFE00`, `009FFF20`;
+- small helpers and Lua setters: `009FF3A0`, `009FFD60`, `00A038C0`, `00A03A60`, `00A07F60`,
+  `00A07F80`, `00A16990`, `00A16B20`, `00A31800`, `00A31C60`.
+
+Next, by value: cc9's decisions on 7.12 items 1-5; then the membership operations (`00A2D9D0`,
+`00A2DDE0`, `00A2E260`, `00A2C790`) against the host, which matter for every group think.
