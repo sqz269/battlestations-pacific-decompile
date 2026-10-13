@@ -389,7 +389,8 @@ constexpr bool kDirectorLeaderFireTargetBound = false;
 //    refused gate skips the gather and the assignment (008651D1 JE 00865773),
 //    so the guns KEEP their target. The host answered true for every unit.
 //    ON: the submarine gate. OFF: as before.
-constexpr bool kSubmarineCategoryGateBound = false;
+//    ON since the win set (GUNNERY_OPEN_ITEMS 227: LOMP06 365 refusals, every win kept).
+constexpr bool kSubmarineCategoryGateBound = true;
 //  * kKillFunnelCauseBound: packet cc9_g41_kill_cause (lead queue item 3).
 //    00926D90 stores its cause argument at +70h (00926E02; 7 is stored as 2),
 //    and the `Dead` / entityKilled / kill publishers read 00E0CF04[+70h]
