@@ -120,12 +120,12 @@ tree; the previous ledger records stay in git history):
 
 | area | open at start | reconstructed and recorded | still open |
 |---|---|---|---|
-| water and weather (CC13_LEFT_1 list) | 11 | 11, plus the 5 map helpers | 0 |
+| water and weather (CC13_LEFT_1 list) | 11 | 11, plus `00BD23E0` and the 5 map helpers | 0 |
 | terrain (CC13_LEFT_1 list) | 6 | 5 | `00ADC930` |
 | sound (Pass 3 list) | 17 named | 17 | the shadow/input bodies of segment 74 (below) |
 | segment 1 | about 125 untagged | 7 | the rest (below) |
 
-That is 52 reconstruction records, all `reconstructed_build_tested`. `./scripts/build.ps1` passes.
+That is 46 reconstruction records, all `reconstructed_build_tested`. `./scripts/build.ps1` passes.
 
 ## Handoff
 
