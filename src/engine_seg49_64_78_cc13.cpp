@@ -1703,4 +1703,243 @@ void gui_layer_save_backup_00ac5820(void* layer, const std::string& layer_name_1
     host.write_layer_archive(layer, path, "GuiScreen");
 }
 
+
+// --- segment 49: the rain model (vtable 00D08D58) -------------------------------------------------
+
+void rain_model_construct_00802250(RainModelFields& f, RainModelHost& host)
+{
+    // After the generated-model base (BSP_GeneratedModel_Construct): the +188h vector, the six
+    // counted references +1ACh..+1C0h and the name +1C4h zeroed, colour +1F4h = 80D0D0FFh.
+    f = RainModelFields{};
+    f.color_1f4 = 0x80D0D0FFu;
+    // The +1B0h/+1B8h/+1C0h resets that follow release nothing (just zeroed); then the global
+    // drop fraction [00F87470] goes back to 1.0 (00D7A24C).
+    host.store_drop_num_percent_00f87470(1.0f);
+}
+
+void rain_model_destroy_00801b70(RainModelFields& f, RainModelHost& host)
+{
+    // Live effects at +1B8h and +1C0h are stopped first (00867B10, byte +9 = 1).
+    for (void* effect : {f.refs_1ac[3], f.refs_1ac[5]}) {
+        if (effect != nullptr) {
+            host.effect_stop_children_00867b10(effect);
+            host.effect_set_byte_9(effect);
+        }
+    }
+    f.name_1c4.clear();                                  // returned to the sized pool
+    for (int i = 5; i >= 0; --i) {                       // +1C0h down to +1ACh
+        if (f.refs_1ac[i] != nullptr) {
+            host.release(f.refs_1ac[i]);
+            f.refs_1ac[i] = nullptr;
+        }
+    }
+    f.vector_188.clear();                                // _free of the block, three words zero
+    f.vector_188.shrink_to_fit();
+}
+
+RainModelParams& rain_model_params_assign_008019a0(RainModelParams& out, const RainModelParams& in)
+{
+    if (&out != &in) out.name = in.name;
+    for (int i = 0; i < 11; ++i) out.words_08[i] = in.words_08[i];
+    return out;
+}
+
+void rain_model_submit_00800b20(RainModelFields& f, void* self, void* context, float a, float b,
+                                std::uint32_t c, RainModelHost& host)
+{
+    void* node = host.context_node_8(context);           // [context+8h]
+    if (host.node_hidden_198(node)) return;              // [node+198h] != 0
+    f.offset_1f8[0] = f.offset_1f8[1] = f.offset_1f8[2] = 0.0f;
+    f.clock_210 = host.clock_00f876a4();
+    host.node_refresh_world_if_stale(node);              // byte +5Ch bit 1 clear -> 00B6DB70
+    const float k = f.drop_1ec;
+    float axis[3];
+    host.node_world_row_110(node, axis);                 // +110h..+118h
+    // Each product is spilled as a float (FSTP f), each sum too: plain float arithmetic.
+    const float scaled[3] = {k * axis[0], axis[1] * k, k * axis[2]};
+    host.node_refresh_world_if_stale(node);
+    float origin[3];
+    host.node_world_translation_120(node, origin);       // +120h..+128h
+    for (int i = 0; i < 3; ++i) f.position_204[i] = scaled[i] + origin[i];
+    host.node_refresh_world_if_stale(node);
+    host.model_virtual_34(self, node);                   // vtable +34h with node+F0h
+    host.render_00b748e0(self, context, a, b, c);        // the arguments passed through
+}
+
+
+// --- segment 49: the rain model's pool (532-byte slots, two per page) -----------------------------
+
+void rain_pool_page_construct_00800450(RainPoolPage& page, std::uint32_t page_index)
+{
+    page.free_count_434 = 2;
+    for (std::uint16_t i = 0; i < 2; ++i) {
+        page.free_stack_430[i] = static_cast<std::uint16_t>(1 - i);  // slot 0 is popped first
+        page.slot_page_index_214[i] = page_index;
+    }
+}
+
+void rain_pool_construct_00800c60(RainPool& pool, RainPoolHost& host)
+{
+    host.registry_link_head_00e188b4(pool);             // prev +4h = 0, next +8h = old head
+    host.initialize_critical_section_0c(pool);
+    pool.pages.clear();
+    pool.capacity_30 = 32;                              // the array grows to 20h entries (80h bytes)
+    pool.pages.reserve(32);
+    pool.lowest_free_34 = -1;
+}
+
+void* rain_pool_allocate_00800ec0(RainPool& pool, RainPoolHost& host)
+{
+    host.lock_0c(pool);                                 // EnterCriticalSection, +24h + 1
+    if (pool.lowest_free_34 == -1) {
+        pool.lowest_free_34 = static_cast<std::int32_t>(pool.pages.size());
+        // operator_new(438h); a failed allocation stores a null page that the pop below
+        // dereferences. make_unique throws instead.
+        auto page = std::make_unique<RainPoolPage>();
+        rain_pool_page_construct_00800450(*page, static_cast<std::uint32_t>(pool.lowest_free_34));
+        if (pool.pages.size() == pool.capacity_30) {
+            pool.capacity_30 = pool.capacity_30 * 2 + 2;  // copy into operator_new(cap*4), _free old
+            pool.pages.reserve(pool.capacity_30);
+        }
+        pool.pages.push_back(std::move(page));
+    }
+    RainPoolPage& page = *pool.pages[static_cast<std::size_t>(pool.lowest_free_34)];
+    --page.free_count_434;
+    const std::uint16_t slot = page.free_stack_430[page.free_count_434];
+    void* result = page.slots[slot].data();
+    if (page.free_count_434 == 0) {
+        // Look for the next page with a free slot after this one; none leaves -1.
+        std::uint32_t next = static_cast<std::uint32_t>(pool.lowest_free_34) + 1;
+        pool.lowest_free_34 = -1;
+        for (; next < pool.pages.size(); ++next) {
+            if (pool.pages[next]->free_count_434 != 0) {
+                pool.lowest_free_34 = static_cast<std::int32_t>(next);
+                break;
+            }
+        }
+    }
+    host.unlock_0c(pool);
+    return result;
+}
+
+void rain_pool_free_008007a0(RainPool& pool, RainPoolHost& host, std::uint32_t page_index,
+                             std::uint16_t slot)
+{
+    host.lock_0c(pool);
+    // The page comes from the slot's +214h word, the slot from (pointer - page) / 218h.
+    RainPoolPage& page = *pool.pages[page_index];
+    page.free_stack_430[page.free_count_434] = slot;
+    ++page.free_count_434;
+    // Unsigned compare: -1 (no free page) is above every index.
+    if (page_index < static_cast<std::uint32_t>(pool.lowest_free_34)) {
+        pool.lowest_free_34 = static_cast<std::int32_t>(page_index);
+    }
+    host.unlock_0c(pool);
+}
+
+void rain_pool_trim_00800e20(RainPool& pool)
+{
+    // No lock. Each fully free page is freed, the last page moves into its slot and has its two
+    // slot index words renumbered, and the same index is examined again.
+    for (std::size_t i = 0; i < pool.pages.size(); ++i) {
+        if (pool.pages[i]->free_count_434 != 2) continue;
+        pool.pages[i] = std::move(pool.pages.back());
+        pool.pages.pop_back();
+        if (i < pool.pages.size()) {
+            for (auto& index : pool.pages[i]->slot_page_index_214) index = static_cast<std::uint32_t>(i);
+        }
+        --i;  // unsigned wrap at 0 followed by ++, as in the native loop
+    }
+    pool.lowest_free_34 = -1;
+    for (std::size_t i = 0; i < pool.pages.size(); ++i) {
+        if (pool.pages[i]->free_count_434 != 0) {
+            pool.lowest_free_34 = static_cast<std::int32_t>(i);
+            break;
+        }
+    }
+}
+
+void rain_pool_destroy_00800d90(RainPool& pool, RainPoolHost& host)
+{
+    pool.pages.clear();                                 // each page _free, then the array
+    host.release_lock_fully_and_delete_0c(pool);        // LeaveCriticalSection while +24h > 0
+    host.registry_unlink_00e188b4(pool);                // prev/next relink, head when prev is 0
+}
+
+
+// --- segment 49: the rain emitter step ------------------------------------------------------------
+
+namespace {
+
+void* spawn_rain_effect(RainEmitterHost& host, void* definition, float translate_y, float translate_z)
+{
+    // Identity with an optional translation (row 3: m13, m14), transform word 1, options 0, 0,
+    // parented to the camera [game+19FCh]; 008687C0 consumes one reference to the definition.
+    float matrix[16] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, translate_y, translate_z, 1};
+    if (definition != nullptr) host.add_ref(definition);  // IAT 00CE221C
+    return host.create_point_effect_008687c0(host.camera_node_19fc(), definition, matrix);
+}
+
+void assign_retained(RainEmitterHost& host, void*& slot, void* created)
+{
+    // 004845D0 then the temporary's release.
+    if (slot != created) {
+        if (created != nullptr) host.add_ref(created);
+        if (slot != nullptr) host.release(slot);
+        slot = created;
+    }
+    if (created != nullptr) host.release(created);
+}
+
+} // namespace
+
+void rain_emitter_step_00801400(RainModelFields& f, float dt, float camera_altitude_4,
+                                RainEmitterHost& host)
+{
+    // k = [00F87470] * 100.0 (00D7A220), spilled as a float.
+    const float k = static_cast<float>(static_cast<double>(host.drop_num_percent_00f87470()) * 100.0);
+    void* splash = nullptr;  // [ESP+14h], released on exit
+    // 00BD2F10 with ECX = 1: U(0, k*dt) on stream 1. A presentation draw; the host owns it.
+    const float hi = k * dt;
+    const float draw = host.random_uniform_00bd2f10_stream1(0.0f, hi);
+    // The threshold dt * 0.3 (00D04368) * k stays on the x87 stack; double stands in.
+    const double threshold = static_cast<double>(dt) * 0.3 * static_cast<double>(k);
+    if (static_cast<double>(draw) > threshold) {         // FCOMIP; JBE skips
+        void* camera = host.camera_node_19fc();
+        host.node_refresh_world_if_stale(camera);
+        float origin[3];
+        host.node_world_translation_120(camera, origin);
+        if (origin[1] > 0.0f) {                          // COMISS [camera+124h], 0
+            void* created = spawn_rain_effect(host, f.refs_1ac[0], 0.0f, 0.0f);  // +1ACh
+            assign_retained(host, splash, created);
+            host.effect_set_byte_9(splash);              // 008015A6, no null test
+        }
+    }
+    if (f.refs_1ac[3] == nullptr && static_cast<double>(k) > 25.0) {  // +1B8h, 00CE3880
+        // Definition +1B4h, translation (0, 40, 150) (00CE685C, 00CE3808).
+        void* created = spawn_rain_effect(host, f.refs_1ac[2], 40.0f, 150.0f);
+        assign_retained(host, f.refs_1ac[3], created);
+        // Velocity +5Ch..+64h = 100 * the rain direction +1E0h..+1E8h (DC C9 at 008016D6), +28h = 0.
+        float velocity[3];
+        for (int i = 0; i < 3; ++i) {
+            velocity[i] = static_cast<float>(static_cast<double>(f.direction_1e0[i]) * 100.0);
+        }
+        host.effect_set_velocity_5c(f.refs_1ac[3], velocity);
+        host.effect_set_word_28(f.refs_1ac[3], 0);
+    }
+    const double altitude = static_cast<double>(camera_altitude_4);
+    if (200.0 > altitude && f.refs_1ac[5] == nullptr && static_cast<double>(k) > 25.0) {
+        // Definition +1BCh into +1C0h, translation (0, -0.0 - altitude, 150) (00D7A208 SUBSS).
+        void* created = spawn_rain_effect(host, f.refs_1ac[4], -0.0f - camera_altitude_4, 150.0f);
+        assign_retained(host, f.refs_1ac[5], created);
+    }
+    if ((altitude > 200.0 || 25.0 > static_cast<double>(k)) && f.refs_1ac[5] != nullptr) {
+        host.effect_stop_children_00867b10(f.refs_1ac[5]);
+        host.effect_set_byte_9(f.refs_1ac[5]);
+        host.release(f.refs_1ac[5]);
+        f.refs_1ac[5] = nullptr;
+    }
+    if (splash != nullptr) host.release(splash);
+}
+
 } // namespace bsp::cc13_seg49_64_78

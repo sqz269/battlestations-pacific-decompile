@@ -10,9 +10,11 @@
 // game-validated. Gameplay code of these segments (recon, sensors, rockets, repair zones,
 // the turn-path planner) is left to the cc9 lanes; the doc lists it.
 
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <map>
+#include <memory>
 #include <set>
 #include <string>
 #include <vector>
@@ -917,5 +919,112 @@ struct GuiLayerBackupHost {
 };
 void gui_layer_save_backup_00ac5820(void* layer, const std::string& layer_name_100,
                                     GuiLayerBackupHost& host);
+
+// ===================================================================================================
+// Segment 49: the rain model (vtable 00D08D58, allocated from the 532-byte pool 00800EC0).
+// ===================================================================================================
+
+// The part past the generated-model base. refs_1ac are six counted references (+1ACh..+1C0h);
+// +1B8h and +1C0h are point effects.
+struct RainModelFields {
+    std::vector<std::uint8_t> vector_188{};  // +188h..+190h, POD (only _free on destruction)
+    void* refs_1ac[6]{};
+    std::string name_1c4{};
+    float direction_1e0[3]{};                 // +1E0h..+1E8h, the rain direction
+    float drop_1ec{0.0f};                     // +1ECh, scales the node's +110h row
+    std::uint32_t color_1f4{0};
+    float offset_1f8[3]{};
+    float position_204[3]{};
+    float clock_210{0.0f};
+};
+
+// The 34h parameter record 008019A0 assigns: a NativeString and 11 words.
+struct RainModelParams {
+    std::string name{};
+    std::uint32_t words_08[11]{};
+};
+
+struct RainModelHost {
+    virtual ~RainModelHost() = default;
+    virtual void store_drop_num_percent_00f87470(float fraction) = 0;
+    virtual void effect_stop_children_00867b10(void* effect) = 0;
+    virtual void effect_set_byte_9(void* effect) = 0;
+    virtual void release(void* object) = 0;           // InterlockedDecrement, slot 0 at zero
+    virtual float clock_00f876a4() = 0;
+    virtual void* context_node_8(void* context) = 0;
+    virtual bool node_hidden_198(void* node) = 0;
+    virtual void node_refresh_world_if_stale(void* node) = 0;
+    virtual void node_world_row_110(void* node, float out[3]) = 0;
+    virtual void node_world_translation_120(void* node, float out[3]) = 0;
+    virtual void model_virtual_34(void* model, void* node) = 0;
+    virtual void render_00b748e0(void* model, void* context, float a, float b, std::uint32_t c) = 0;
+};
+
+// 00802250, __thiscall(model, arg), returning ECX: the base, then the stores above; it also resets
+// the global drop fraction [00F87470] to 1.0.
+void rain_model_construct_00802250(RainModelFields& f, RainModelHost& host);
+// 00801B70, the destructor body: effects stopped, name released, references released in reverse,
+// the vector freed, then BSP_Model_Destroy. 00801DB0 adds the pool free (008007A0) for flag 1.
+void rain_model_destroy_00801b70(RainModelFields& f, RainModelHost& host);
+// 008019A0: NativeString assignment (skipped for self) and 11 words.
+RainModelParams& rain_model_params_assign_008019a0(RainModelParams& out, const RainModelParams& in);
+// 00800B20, __thiscall(model, context, float a, float b, uint c), RET 10h: unless the node is
+// hidden, clear +1F8h..+200h, stamp the clock, position +204h = drop * row(+110h) + origin(+120h)
+// in float, vtable +34h(node+F0h), then 00B748E0(context, a, b, c).
+void rain_model_submit_00800b20(RainModelFields& f, void* self, void* context, float a, float b,
+                                std::uint32_t c, RainModelHost& host);
+
+// The rain model's pool allocator (Mit_PoolAllocator<532, 2>, vtable 00D08D54, registered on the
+// allocator list 00E188B4). A page is 438h bytes: two 218h slots (532-byte payload, then the page
+// index at +214h), a free-slot stack of two uint16 at +430h and the free count at +434h.
+struct RainPoolPage {
+    std::array<std::array<std::uint8_t, 0x214>, 2> slots{};
+    std::uint32_t slot_page_index_214[2]{};
+    std::uint16_t free_stack_430[2]{};
+    std::uint16_t free_count_434{0};
+};
+struct RainPool {
+    std::vector<std::unique_ptr<RainPoolPage>> pages{};  // +28h data, +2Ch count
+    std::size_t capacity_30{0};
+    std::int32_t lowest_free_34{-1};                     // lowest page with a free slot, or -1
+};
+struct RainPoolHost {
+    virtual ~RainPoolHost() = default;
+    virtual void registry_link_head_00e188b4(RainPool& pool) = 0;
+    virtual void registry_unlink_00e188b4(RainPool& pool) = 0;
+    virtual void initialize_critical_section_0c(RainPool& pool) = 0;
+    virtual void lock_0c(RainPool& pool) = 0;      // EnterCriticalSection(+0Ch), +24h + 1
+    virtual void unlock_0c(RainPool& pool) = 0;    // +24h - 1, LeaveCriticalSection
+    virtual void release_lock_fully_and_delete_0c(RainPool& pool) = 0;
+};
+void rain_pool_page_construct_00800450(RainPoolPage& page, std::uint32_t page_index);  // RET 4
+void rain_pool_construct_00800c60(RainPool& pool, RainPoolHost& host);
+void* rain_pool_allocate_00800ec0(RainPool& pool, RainPoolHost& host);
+// 008007A0, __thiscall(pool, slot pointer), RET 4; 00800B10 is a thunk to it. The model takes
+// the page index (+214h word) and slot number the native derives from the pointer.
+void rain_pool_free_008007a0(RainPool& pool, RainPoolHost& host, std::uint32_t page_index,
+                             std::uint16_t slot);
+void rain_pool_trim_00800e20(RainPool& pool);  // vtable slot 0 (00D08D54)
+void rain_pool_destroy_00800d90(RainPool& pool, RainPoolHost& host);
+
+// The emitter step's calls beyond the model host.
+struct RainEmitterHost : RainModelHost {
+    virtual float drop_num_percent_00f87470() = 0;
+    // 00BD2F10 with ECX = 1 (stream 1 of the thread generator, not gameplay stream 0): U(lo, hi).
+    virtual float random_uniform_00bd2f10_stream1(float lo, float hi) = 0;
+    virtual void* camera_node_19fc() = 0;                       // [game+19FCh]
+    virtual void add_ref(void* object) = 0;                     // InterlockedIncrement(+4h)
+    virtual void* create_point_effect_008687c0(void* parent, void* definition,
+                                               const float matrix[16]) = 0;
+    virtual void effect_set_velocity_5c(void* effect, const float velocity[3]) = 0;
+    virtual void effect_set_word_28(void* effect, std::uint32_t value) = 0;
+};
+// 00801400, __thiscall(model, float dt, const camera* (altitude at +4h), unused), RET 0Ch. With
+// k = 100 * [00F87470]: a stream-1 draw U(0, k*dt) above dt*0.3*k spawns a one-shot splash
+// (+1ACh) when the camera is above 0; k > 25 starts the sheet effect +1B8h (from +1B4h, velocity
+// 100 * direction) and, below altitude 200, the near effect +1C0h (from +1BCh); altitude above 200
+// or k below 25 stops +1C0h.
+void rain_emitter_step_00801400(RainModelFields& f, float dt, float camera_altitude_4,
+                                RainEmitterHost& host);
 
 }  // namespace bsp::cc13_seg49_64_78
