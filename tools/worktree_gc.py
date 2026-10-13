@@ -379,7 +379,9 @@ def remove_tree(tree, branch=None, delete_branch=False, archive=True, log=print)
     log(f"  {'PARTLY removed' if remaining else 'removed'} {tree} ({freed / 2**30:.2f} GB freed)")
     if delete_branch and branch and not remaining:
         if merged_into(branch, 'origin/main'):
-            run = git('branch', '-d', branch)
+            # -D: `-d` compares with the main checkout's HEAD, which is often a stale local main;
+            # the commits are already in origin/main, which is what was just checked
+            run = git('branch', '-D', branch)
             log('  ' + ((run.stdout + run.stderr).strip() or f'deleted branch {branch}'))
         else:
             log(f'  branch {branch} kept: not merged into origin/main')
