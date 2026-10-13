@@ -2041,4 +2041,93 @@ inline constexpr const char* kOptionsSaveConfirmPrompt = "FE_xbox.xsm_saveconfir
 inline constexpr float kOptionsTransitionTime = 0.1f;  // 00D7A2F0
 void options_activate_list_row_005f7c40(void* listener, std::uint32_t row, OptionsActivateHost& host);
 
+// 005E4490 MultiGameLobby HandleGuiEvent, slot of 00CF23B4, __thiscall(this =
+// lobby+0Ch, event widget), RET 4. Offsets below are this-relative (lobby =
+// this-0Ch); +10h focused widget, +14h / +1Ch / +80h / +98h focusable panels,
+// +24h / +C0h / +14Ch embedded scrollers, +9Ch "Players_Listbox", +144h chat
+// panel. Player slot records are game+18CCh[i] (+9 AI, +0Ah ready, +2Ch AI
+// skill, +80h/+84h XUID); the session object is game+1EF0h.
+//   Event kind 2 (vtable +5Ch): ignored when +0Ch's vtable +38h is true and
+//     [+21Ch]+85h is set; else +9Ch selects the event's row data (+D8h), the chat
+//     sub-object ([[00E198B4]+54h]+8, vtable +0Ch) is notified when +10h is the
+//     chat panel, and the lobby focuses +98h (005D67E0).
+//   Kind 3: event vtable +4Ch(1.0f); the command byte is [event+F0h] or 00E19608:
+//     A2h: settings open -> 005DA530; else by focus: +14h 005D9F90; +80h input
+//       update 0.0 and 005D5870(1); +1Ch: [[00E198AC]+70h] +98h = the local slot
+//       record's +28h, +94h = 8, request interface 0Bh (00688AD0 on [00E198B4]);
+//       +98h: the listener slot +04h of lobby+8 with 00A9BE00(+9Ch, selected).
+//     B7h: 005D9660(lobby, 0, 1).
+//     B8h: unless [00F8A2FC] vtable +198h and its +4Dh are both set: rebind +9Ch,
+//       then for the selected slot: empty / not ready and not standard mode
+//       (005D4A10) -> RequestSlotAiEnable(sel, 1) and skill 3; else skill by the
+//       AI kind +2Ch (1 or 3 -> 4, 4 -> 5); other kinds: unless standard mode,
+//       RequestSlotAiEnable(sel, 0).
+//     A3h: 005DA210 confirm leave.
+//     A7h: focus +98h and host (game+1FE4h == 1): an AI slot toggles
+//       RequestSlotAiEnable(sel, !ready); a human slot other than the local one
+//       (005D5130) asks to kick (005D8530). Focus +80h: 0051DCE0 on
+//       [[00E198AC]+64h] with 005D8650(local slot +28h), then interface 3.
+//     A5h: list box +9Ch active, a human slot: XShowGamerCardUI(
+//       00A3EAC0 on [00F8ABE8], +80h, +84h).
+//     B1h: 005D71B0.
+//   Other kinds, by widget: +98h, +14h, +80h, +1Ch: unless settings are open,
+//     notify chat when +10h is the chat panel and focus it. +144h: unless
+//     settings are open, with [00E198B4] and its chat +5 set and game +218Ch
+//     clear: focus, 005D11F0(2) chat mode, input context 1Eh level 0. +90h / +8Ch
+//     (focus +80h) and +130h / +12Ch, +B0h / +ACh: auto-scroll (00683300) of
+//     +24h, +14Ch, +C0h by 2 / 1 at 0.004f; +84h (focus +80h), +148h, +BCh:
+//     thumb drag (00683A40) of +24h, +14Ch, +C0h; +214h / +218h step the
+//     setting by -1 / +1 (005E1CF0); +138h / +13Ch / +140h set team-only 0 / 1
+//     (005D1000) and restyle the three (+88h(2 or 0, 0, 1.0f)), then return;
+//     anything else returns while settings are open.
+//   Tail (scroll, drag, step and unmatched widgets): kind 6 -> event
+//     +88h(2, 0, 1.0f); kind 12h -> event +84h(2).
+struct LobbyEventHost {
+    virtual ~LobbyEventHost() = default;
+    virtual void* game_00e188a8() = 0;
+    virtual std::int32_t widget_kind_5c(std::uint32_t widget) = 0;
+    virtual bool widget_virtual_38(std::uint32_t widget) = 0;
+    virtual void widget_virtual_4c(std::uint32_t widget, float value) = 0;
+    virtual void widget_virtual_84(std::uint32_t widget, std::int32_t value) = 0;
+    virtual void widget_virtual_88(std::uint32_t widget, std::int32_t a, std::int32_t b, float c) = 0;
+    virtual std::uint8_t default_command_00e19608() = 0;
+    virtual void list_box_select_index_00a9c7c0(std::uint32_t list_box, std::int32_t index) = 0;
+    virtual std::int32_t list_box_selected_index_00a9c920(std::uint32_t list_box) = 0;
+    virtual std::uint32_t list_box_row_00a9be00(std::uint32_t list_box, std::int32_t index) = 0;
+    virtual std::uint32_t find_child_by_name_00aa7e00(std::uint32_t parent, std::string_view name) = 0;
+    virtual void* multi_menu_00e198b4() = 0;
+    virtual void chat_notify_focus() = 0;  // [[00E198B4]+54h]+8, vtable +0Ch
+    virtual void lobby_set_focus_005d67e0(void* lobby, std::uint32_t widget) = 0;
+    virtual bool lobby_settings_open_005d5490(void* lobby) = 0;
+    virtual void lobby_apply_selected_map_005da530(void* lobby) = 0;
+    virtual void lobby_apply_local_map_005d9f90(void* lobby) = 0;
+    virtual void input_manager_update_00a92c40(float dt) = 0;
+    virtual void lobby_set_editable_005d5870(void* lobby, bool editable) = 0;
+    virtual void* briefing_screen_00e198ac() = 0;
+    virtual void push_request_interface_00688ad0(std::int32_t interface_id) = 0;
+    virtual void lobby_listener_activate_04(void* listener, std::uint32_t row) = 0;  // [lobby+8] vtable +04h
+    virtual void lobby_refresh_players_005d9660(void* lobby, std::int32_t a, std::int32_t b) = 0;
+    virtual bool online_virtual_198_00f8a2fc() = 0;
+    virtual std::uint8_t online_byte_4d_00f8a2fc() = 0;
+    virtual bool game_is_standard_mode_005d4a10(void* lobby) = 0;
+    virtual void session_request_slot_ai_enable_00771e80(std::int32_t slot, bool enable) = 0;  // ECX = game+1EF0h
+    virtual void session_set_slot_ai_skill_0076cc40(std::int32_t slot, std::int32_t level) = 0;  // ECX = game+1EF0h
+    virtual void lobby_confirm_leave_005da210(void* lobby) = 0;
+    virtual const void* game_local_slot_record_005d5130() = 0;
+    virtual void lobby_confirm_kick_005d8530() = 0;
+    virtual const void* mission_record_005d8650(std::int32_t id) = 0;
+    virtual void briefing_set_mission_data_0051dce0(void* briefing_64, const void* record) = 0;
+    virtual void show_gamer_card(std::uint32_t xuid_lo, std::uint32_t xuid_hi) = 0;  // 00A3EAC0 + XShowGamerCardUI
+    virtual void lobby_check_client_compatibility_005d71b0(void* lobby) = 0;
+    virtual void chat_set_mode_005d11f0(std::int32_t mode) = 0;      // ECX = [[00E198B4]+54h]
+    virtual void chat_set_team_only_005d1000(bool team_only) = 0;    // ECX = [[00E198B4]+54h]
+    virtual void input_set_context_level_00a933f0(std::int32_t index, std::int32_t level) = 0;
+    virtual void scroller_set_auto_scroll_00683300(void* scroller, std::int32_t direction, float speed,
+        std::int32_t arg) = 0;
+    virtual void scroller_begin_thumb_drag_00683a40(void* scroller) = 0;
+    virtual void lobby_step_setting_005e1cf0(void* lobby, std::int32_t step) = 0;
+};
+inline constexpr float kLobbyAutoScrollSpeed = 0.004f;  // 00CEC178
+void lobby_handle_gui_event_005e4490(void* self, std::uint32_t event, LobbyEventHost& host);
+
 }  // namespace bsp::cc13_fe1

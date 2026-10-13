@@ -2733,4 +2733,171 @@ void options_activate_list_row_005f7c40(void* listener, std::uint32_t row, Optio
         apply();
     }
 }
+
+void lobby_handle_gui_event_005e4490(void* self, std::uint32_t event, LobbyEventHost& host) {
+    std::byte* lobby = static_cast<std::byte*>(self) - 0xC;
+    void* game = host.game_00e188a8();
+    const auto focused = [&] { return widget_at(self, 0x10); };
+    const auto selected_record = [&]() -> const void* {
+        if (host.list_box_selected_index_00a9c920(widget_at(self, 0x9C)) <= -1) return nullptr;
+        const std::int32_t sel = host.list_box_selected_index_00a9c920(widget_at(self, 0x9C));
+        return read_field<void*>(game, 0x18CC + 4 * static_cast<std::size_t>(sel));
+    };
+    const auto local_slot = [&] {
+        return read_field<void*>(game, 0x18CC + 4 * static_cast<std::size_t>(read_field<std::int32_t>(game, 0x18EC)));
+    };
+    const auto focus_panel = [&](std::size_t offset) {
+        if (host.lobby_settings_open_005d5490(lobby)) return;
+        if (focused() == widget_at(self, 0x144)) host.chat_notify_focus();
+        host.lobby_set_focus_005d67e0(lobby, widget_at(self, offset));
+    };
+
+    const std::int32_t kind = host.widget_kind_5c(event);
+    if (kind == 2) {
+        if (host.widget_virtual_38(widget_at(self, 0xC)) &&
+            read_field<std::uint8_t>(native_widget(widget_at(self, 0x21C)), 0x85) != 0)
+            return;
+        host.list_box_select_index_00a9c7c0(widget_at(self, 0x9C),
+            read_field<std::int32_t>(native_widget(event), 0xD8));
+        if (focused() == widget_at(self, 0x144)) host.chat_notify_focus();
+        host.lobby_set_focus_005d67e0(lobby, widget_at(self, 0x98));
+        return;
+    }
+    if (host.widget_kind_5c(event) == 3) {
+        host.widget_virtual_4c(event, 1.0f);
+        const auto* code_ptr = read_field<const std::uint8_t*>(native_widget(event), 0xF0);
+        const std::uint8_t code = code_ptr != nullptr ? *code_ptr : host.default_command_00e19608();
+        switch (code) {
+        case 0xA2:
+            if (host.lobby_settings_open_005d5490(lobby)) {
+                host.lobby_apply_selected_map_005da530(lobby);
+            } else if (focused() == widget_at(self, 0x14)) {
+                host.lobby_apply_local_map_005d9f90(lobby);
+            } else if (focused() == widget_at(self, 0x80)) {
+                host.input_manager_update_00a92c40(0.0f);
+                host.lobby_set_editable_005d5870(lobby, true);
+            } else if (focused() == widget_at(self, 0x1C)) {
+                void* brief = read_field<void*>(host.briefing_screen_00e198ac(), 0x70);
+                write_field(brief, 0x98, read_field<std::int32_t>(local_slot(), 0x28));
+                write_field<std::int32_t>(read_field<void*>(host.briefing_screen_00e198ac(), 0x70), 0x94, 8);
+                host.push_request_interface_00688ad0(0x0B);
+            } else if (focused() == widget_at(self, 0x98)) {
+                const std::int32_t sel = host.list_box_selected_index_00a9c920(widget_at(self, 0x9C));
+                // The listener sub-object at lobby+8 (this-4), its vtable slot +04h.
+                host.lobby_listener_activate_04(static_cast<std::byte*>(self) - 0x4,
+                    host.list_box_row_00a9be00(widget_at(self, 0x9C), sel));
+            }
+            return;
+        case 0xB7: host.lobby_refresh_players_005d9660(lobby, 0, 1); return;
+        case 0xB8: {
+            if (host.online_virtual_198_00f8a2fc() && host.online_byte_4d_00f8a2fc() != 0) return;
+            write_field(self, 0x9C, host.find_child_by_name_00aa7e00(widget_at(self, 0x8), "Players_Listbox"));
+            const void* record = selected_record();
+            std::int32_t level = 0;
+            if ((record == nullptr || read_field<std::uint8_t>(record, 0xA) == 0) &&
+                !host.game_is_standard_mode_005d4a10(lobby)) {
+                host.session_request_slot_ai_enable_00771e80(
+                    host.list_box_selected_index_00a9c920(widget_at(self, 0x9C)), true);
+                level = 3;
+            } else {
+                const std::int32_t sel = host.list_box_selected_index_00a9c920(widget_at(self, 0x9C));
+                const std::int32_t ai = read_field<std::int32_t>(
+                    read_field<void*>(game, 0x18CC + 4 * static_cast<std::size_t>(sel)), 0x2C);
+                if (ai == 3 || ai == 1) {
+                    level = 4;
+                } else if (ai == 4) {
+                    level = 5;
+                } else {
+                    if (host.game_is_standard_mode_005d4a10(lobby)) return;
+                    host.session_request_slot_ai_enable_00771e80(
+                        host.list_box_selected_index_00a9c920(widget_at(self, 0x9C)), false);
+                    return;
+                }
+            }
+            host.session_set_slot_ai_skill_0076cc40(host.list_box_selected_index_00a9c920(widget_at(self, 0x9C)), level);
+            return;
+        }
+        case 0xA3: host.lobby_confirm_leave_005da210(lobby); return;
+        case 0xA7:
+            if (focused() == widget_at(self, 0x98)) {
+                const void* record = selected_record();
+                const bool ai_or_empty = record == nullptr || read_field<std::uint8_t>(record, 0x9) != 0;
+                const bool ready = record != nullptr && read_field<std::uint8_t>(record, 0xA) != 0;
+                if (read_field<std::int32_t>(game, 0x1FE4) != 1 || record == nullptr) return;
+                if (ai_or_empty) {
+                    host.session_request_slot_ai_enable_00771e80(
+                        host.list_box_selected_index_00a9c920(widget_at(self, 0x9C)), !ready);
+                } else if (record != host.game_local_slot_record_005d5130()) {
+                    host.lobby_confirm_kick_005d8530();
+                }
+            } else if (focused() == widget_at(self, 0x80)) {
+                const void* mission = host.mission_record_005d8650(read_field<std::int32_t>(local_slot(), 0x28));
+                host.briefing_set_mission_data_0051dce0(read_field<void*>(host.briefing_screen_00e198ac(), 0x64), mission);
+                host.push_request_interface_00688ad0(3);
+            }
+            return;
+        case 0xA5: {
+            const void* record = selected_record();
+            const bool ai_or_empty = record == nullptr || read_field<std::uint8_t>(record, 0x9) != 0;
+            if (read_field<std::uint8_t>(native_widget(widget_at(self, 0x9C)), 0x85) == 0) return;
+            if (record == nullptr || ai_or_empty) return;
+            host.show_gamer_card(read_field<std::uint32_t>(record, 0x80), read_field<std::uint32_t>(record, 0x84));
+            return;
+        }
+        case 0xB1: host.lobby_check_client_compatibility_005d71b0(lobby); return;
+        default: return;
+        }
+    }
+
+    const auto auto_scroll = [&](std::size_t scroller, std::int32_t direction) {
+        host.scroller_set_auto_scroll_00683300(at(self, scroller), direction, kLobbyAutoScrollSpeed, 1);
+    };
+    const auto focus_list = [&] {
+        if (focused() != widget_at(self, 0x80)) host.lobby_set_focus_005d67e0(lobby, widget_at(self, 0x80));
+    };
+    if (event == widget_at(self, 0x98)) { focus_panel(0x98); return; }
+    if (event == widget_at(self, 0x14)) { focus_panel(0x14); return; }
+    if (event == widget_at(self, 0x80)) { focus_panel(0x80); return; }
+    if (event == widget_at(self, 0x1C)) { focus_panel(0x1C); return; }
+    if (event == widget_at(self, 0x144)) {
+        if (host.lobby_settings_open_005d5490(lobby)) return;
+        void* menu = host.multi_menu_00e198b4();
+        if (menu == nullptr || read_field<std::uint8_t>(read_field<void*>(menu, 0x54), 0x5) == 0) return;
+        if (read_field<std::uint8_t>(game, 0x218C) != 0) return;
+        host.lobby_set_focus_005d67e0(lobby, widget_at(self, 0x144));
+        host.chat_set_mode_005d11f0(2);
+        host.input_set_context_level_00a933f0(0x1E, 0);
+        return;
+    }
+    if (event == widget_at(self, 0x90)) { focus_list(); auto_scroll(0x24, 2); }
+    else if (event == widget_at(self, 0x8C)) { focus_list(); auto_scroll(0x24, 1); }
+    else if (event == widget_at(self, 0x84)) { focus_list(); host.scroller_begin_thumb_drag_00683a40(at(self, 0x24)); }
+    else if (event == widget_at(self, 0x130)) auto_scroll(0x14C, 2);
+    else if (event == widget_at(self, 0x12C)) auto_scroll(0x14C, 1);
+    else if (event == widget_at(self, 0x148)) host.scroller_begin_thumb_drag_00683a40(at(self, 0x14C));
+    else if (event == widget_at(self, 0xB0)) auto_scroll(0xC0, 2);
+    else if (event == widget_at(self, 0xAC)) auto_scroll(0xC0, 1);
+    else if (event == widget_at(self, 0xBC)) host.scroller_begin_thumb_drag_00683a40(at(self, 0xC0));
+    else if (event == widget_at(self, 0x214)) host.lobby_step_setting_005e1cf0(lobby, -1);
+    else if (event == widget_at(self, 0x218)) host.lobby_step_setting_005e1cf0(lobby, 1);
+    else if (event == widget_at(self, 0x138)) {
+        host.chat_set_team_only_005d1000(false);
+        host.widget_virtual_88(widget_at(self, 0x138), 2, 0, 1.0f);
+        host.widget_virtual_88(widget_at(self, 0x13C), 0, 0, 1.0f);
+        host.widget_virtual_88(widget_at(self, 0x140), 0, 0, 1.0f);
+        return;
+    } else if (event == widget_at(self, 0x13C) || event == widget_at(self, 0x140)) {
+        host.chat_set_team_only_005d1000(true);
+        host.widget_virtual_88(widget_at(self, 0x138), 0, 0, 1.0f);
+        host.widget_virtual_88(widget_at(self, 0x13C), 2, 0, 1.0f);
+        host.widget_virtual_88(widget_at(self, 0x140), 2, 0, 1.0f);
+        return;
+    } else if (host.lobby_settings_open_005d5490(lobby)) {
+        return;
+    }
+    if (host.widget_kind_5c(event) == 6)
+        host.widget_virtual_88(event, 2, 0, 1.0f);
+    else if (host.widget_kind_5c(event) == 0x12)
+        host.widget_virtual_84(event, 2);
+}
 }  // namespace bsp::cc13_fe1

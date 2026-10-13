@@ -28,6 +28,21 @@ were checked from the bytes (`ghidra bytes`), not from listing text.
 | 005F54F0 | `options_build_main_list_005f54f0` | fastcall(ECX screen), RET | seven rows "Elem_<n>_Text" |
 | 005F7C40 | `options_activate_list_row_005f7c40` | thiscall(listener = screen+8, unused, row), RET 8 | whole routine, 881 instructions |
 
+| 005E4490 | `lobby_handle_gui_event_005e4490` | thiscall(this = lobby+0Ch, event widget), RET 4 | 856 instructions |
+
+### MultiGameLobby HandleGuiEvent (005E4490)
+
+- `this` is lobby+0Ch, and the B8h arm rebases ESI to the lobby (`add esi, -0Ch` at 005E46F0).
+  The B8h-arm offsets were converted back to `this`-relative: `[esi+A8h]` is this+9Ch, the
+  "Players_Listbox".
+- The scrollers at this+24h, +C0h and +14Ch are embedded objects (`LEA ECX`). Auto-scroll uses
+  direction 2/1 at speed 0.004f (00CEC178).
+- The decompiler drops the third argument of the chat team buttons' vtable +88h; the bytes push
+  (state, 0, 1.0f) for all three buttons.
+- The second briefing route (A7h with the panel +80h focused) passes the local slot's +28h through
+  005D8650 to 0051DCE0 on `[[00E198AC]+64h]` and requests interface 3. This matches
+  docs/BRIEFING_SECOND_FILLER.md.
+
 ### Options (005F54F0 / 005F7C40)
 
 - BuildMainList: 00A9CDF0 `BSP_GuiListbox_ClearOtherTwo` takes **EDX** as a register argument.
@@ -117,3 +132,7 @@ were checked from the bytes (`ghidra bytes`), not from listing text.
   (src/game_hosts_lua.cpp) if the lane wants it. It calls 005E21B0 StepOption as a side effect
   when the stored option is disabled.
 - The 006DBAC0 DL argument above affects `marker_manager_cc13.hpp`'s host signature.
+- 005E4490 changes session slot state through host calls only: 00771E80
+  `BSP_Session_RequestSlotAiEnable` and 0076CC40 `BSP_Session_SetSlotAiSkillLevel`, both with
+  ECX = game+1EF0h. It also writes the briefing record `[[00E198AC]+70h]` +94h/+98h. These are
+  pre-mission session settings; any host wiring of them is the gameplay lane's decision.
