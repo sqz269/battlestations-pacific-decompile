@@ -631,7 +631,7 @@ constexpr bool kAaKind6GateMountFrameBound = true;   // GUNNERY 197: ON, inert o
 //    tier reads the class's Blast.BlastDamageMin; read_bullet_class_number takes the
 //    dotted key as one flat name and answers 0. True: the nested reader. False: 0,
 //    as before. No Artillery class in this installation changes tier either way.
-constexpr bool kBulletBlastDamageMinNestedBound = false;
+constexpr bool kBulletBlastDamageMinNestedBound = true;   // ON: GUNNERY 203, USN12/USN02 identical
 //  * kLandscapeSpatialAttachBound: packet cc9_landscape_spatial_attach
 //    (docs/SCENE_CONTENTS_HOSTS.md section 8). Each Landscape joins the segment
 //    query as a loose entry after the units (00884078 attaches its collision

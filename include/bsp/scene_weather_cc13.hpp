@@ -18,7 +18,8 @@
 // already written, as the native would have before faulting.
 //
 // RNG: none of these readers draws. The rain these fields enable does: the rain
-// emitter 00801400 draws from 00BD2F10 (shared stream 0) every frame while
+// emitter 00801400 draws from 00BD2F10 with ECX = 1 (stream 1, not the shared
+// gameplay stream 0; 00801439, census site 0080144F; cc13-sys6b) every frame while
 // block+60h (IsRain) is set (docs/CC13_RNG_STREAM_CENSUS.md). Nothing here wires
 // rain into the host.
 

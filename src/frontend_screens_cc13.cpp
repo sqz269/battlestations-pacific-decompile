@@ -3181,5 +3181,164 @@ void hud_pause_build_hint_list_00601200(void* screen, Fe9HintListHost& host) {
     write_field(screen, 0x94, width);
     host.widget_set_size_58(thumb, {width, height});
 }
+// --- packet cc13-fe11: 005AB190 BSP_HudMapScreen_Register --------------------
+
+void hud_map_register_setup_005ab190(void* screen, Fe11HudMapRegisterHost& host) {
+    host.frontend_screen_register_004f71d0(screen);
+    host.simple_3d_scene_init_0093ccc0(at(screen, 0x08));
+    write_field<float>(screen, 0x84, 1.0f);
+    write_field<std::uint8_t>(screen, 0x88, 0);
+    const float width = static_cast<float>(static_cast<double>(host.world_bound(0x7124)) - host.world_bound(0x7130));
+    const float x = static_cast<float>(static_cast<double>(width) / 0.75 * 1.100000023841858);
+    const float depth = static_cast<float>(static_cast<double>(host.world_bound(0x7128)) - host.world_bound(0x711C));
+    const float y = static_cast<float>(static_cast<double>(depth) * 1.100000023841858);
+    const float m = x > y ? x : y;
+    float* const ext = host.map_zoom_extents_00e0cf40();
+    std::int32_t level;
+    if (8000.0 >= m) {  // FCOMIP + JB: an unordered m takes the larger levels
+        level = 2;
+        ext[2] = m;
+    } else if (25000.0f >= m) {
+        level = 1;
+        ext[1] = m;
+        ext[2] = static_cast<float>(static_cast<double>(m) * 0.4000000059604645);
+    } else {
+        level = 0;
+        ext[0] = m;
+        ext[1] = static_cast<float>(0.375 * m);
+        ext[2] = static_cast<float>(static_cast<double>(m) * 0.16599999368190765);
+    }
+    write_field<std::int32_t>(screen, 0x2C, level);
+    write_field<std::int32_t>(screen, 0x5FC, level);
+    const float* const crossfade = host.map_zoom_crossfade_00e0cf50();
+    float* const scales = host.map_zoom_scales_00f89ae4();
+    const double base = ext[3];
+    for (int i = 0; i < 3; ++i) scales[i] = static_cast<float>(static_cast<double>(crossfade[i]) * ext[i] / base);
+    scales[3] = static_cast<float>(static_cast<double>(crossfade[3]) * base / base);
+    write_field<float>(screen, 0x1C, static_cast<float>(static_cast<double>(level) + 1.0));
+    const float extent = ext[level];
+    write_field<float>(screen, 0x30, extent);
+    write_field<float>(screen, 0x34, static_cast<float>(0.75 * extent));
+    void* const light = read_field<void*>(screen, 0x18);
+    void* const owner = host.directional_light_create_shadow_owner_00a8fd30(light);
+    host.directional_light_set_shadow_owner_00b7bdf0(light, owner);
+    host.ref_release(owner);
+    write_field(screen, 0x8C, host.gui_load_page_00aa5840("GUI_map", 1, 0));
+    write_field(screen, 0x90, host.gui_load_page_00aa5840("GUI_classicons", 1, 0));
+    const float pan_x = static_cast<float>((static_cast<double>(host.world_bound(0x7128)) + host.world_bound(0x711C)) * 0.5);
+    const float pan_y = static_cast<float>((static_cast<double>(host.world_bound(0x7130)) + host.world_bound(0x7124)) * 0.5);
+    write_field<float>(screen, 0x54C, pan_x);
+    write_field<float>(screen, 0x550, pan_y);
+    write_field<float>(screen, 0x554, pan_x);
+    write_field<float>(screen, 0x558, read_field<float>(screen, 0x550));
+    write_field<float>(screen, 0x5AC, 0.0f);
+    write_field<std::uint8_t>(screen, 0x40, 0);
+    write_field<float>(screen, 0x5B0, read_field<float>(screen, 0x30));
+    write_field<std::uint8_t>(screen, 0x41, 0);
+    write_field<float>(screen, 0x5B4, read_field<float>(screen, 0x34));
+    write_field<float>(screen, 0x5E8, read_field<float>(screen, 0x54C));
+    write_field<float>(screen, 0x5EC, read_field<float>(screen, 0x550));
+    write_field<float>(screen, 0x5D0, 0.0f);
+    write_field<float>(screen, 0x5D4, 1.0f);
+}
+
+void hud_map_register_objects_005ab519(void* screen, Fe11HudMapObjectsHost& host) {
+    for (void* link = host.map_object_list_head(); link != nullptr; link = read_field<void*>(link, 4)) {
+        void* const object = read_field<void*>(link, 8);
+        void* const resource = host.resource_load_default_factory_00b80d70(at(object, 0x424));
+        void* const instance = host.resource_instantiate_08(resource, 6, 1.0f);
+        void* const root = read_field<void*>(instance, 0x0C);
+        host.node_propagate_root_registration_00b6d890(root, read_field<void*>(screen, 0x0C));
+        void* const inner = host.node_virtual_10(root, 6, 0);
+        if (read_field<std::uint8_t>(object, 0xC8) == 0) {
+            void* const parent = read_field<void*>(object, 0x3C);
+            if (parent != nullptr) host.entity_pose_refresh_world_00414db0(parent);
+            std::array<float, 16> world{};
+            if (read_field<void*>(object, 0x3C) != nullptr) {
+                world = host.matrix_multiply_00413920(reinterpret_cast<const float*>(at(object, 0x74)),
+                    reinterpret_cast<const float*>(at(read_field<void*>(object, 0x3C), 0xCC)));
+            } else {
+                std::memcpy(world.data(), at(object, 0x74), sizeof world);
+            }
+            std::memcpy(at(object, 0xCC), world.data(), sizeof world);
+            write_field<std::uint8_t>(object, 0xC8, 1);
+            write_field<std::uint8_t>(object, 0x10C, 0);
+        }
+        host.node_set_world_matrix_34(root, reinterpret_cast<const float*>(at(object, 0xCC)));
+        host.dword_vector_push(at(screen, 0x510), root);
+        host.map_scene_setup_ocean_materials_0093d2d0(at(screen, 0x08), root, 1);
+        host.map_scene_setup_ocean_materials_0093d2d0(at(screen, 0x08), inner, 0);
+        for (void* child = read_field<void*>(inner, 0x34); child != nullptr; child = read_field<void*>(child, 0x3C)) {
+            const char* const name = host.node_name_00b6d800(child);
+            host.debug_print_004254b0("Terrain child %s", name != nullptr ? name : "");  // 00CF0A68, "" 00E1952D
+        }
+        host.dword_vector_push(at(screen, 0x500), inner);
+        host.node_set_parent_00b6e680(inner, root);
+        host.ref_release(resource);
+        host.list_push_back_498(at(screen, 0x498), instance);
+    }
+}
+
+void hud_map_register_quads_005ab7c5(void* screen, Fe11HudMapQuadsHost& host) {
+    const float dx = static_cast<float>(static_cast<double>(host.world_bound(0x7128)) - host.world_bound(0x711C));
+    const float dz = static_cast<float>(static_cast<double>(host.world_bound(0x7124)) - host.world_bound(0x7130));
+    write_field<float>(screen, 0x55C, dx);
+    write_field<float>(screen, 0x560, dz);
+    const float cx = static_cast<float>((static_cast<double>(host.world_bound(0x7128)) + host.world_bound(0x711C)) * 0.5);
+    write_field<float>(screen, 0x564, -0.0f - cx);
+    const float cz = static_cast<float>(0.5 * (static_cast<double>(host.world_bound(0x7130)) + host.world_bound(0x7124)));
+    write_field<float>(screen, 0x568, -0.0f - cz);
+    const float padded_w = static_cast<float>(static_cast<double>(dx) + 6000.0);
+    const float padded_h = static_cast<float>(static_cast<double>(dz) + 6000.0);
+    for (const Fe11MapQuad& quad : kHudMapQuads) {
+        float w = padded_w;
+        float h = padded_h;
+        if (quad.size == Fe11QuadSize::Extent) {
+            w = read_field<float>(screen, 0x30);
+            h = read_field<float>(screen, 0x34);
+        } else if (quad.size == Fe11QuadSize::World) {
+            w = dx;
+            h = dz;
+        }
+        void* const model = host.map_scene_build_quad_0093de10(at(screen, 0x08), quad, w, h);
+        if (quad.mode == 0x0D || quad.mode == 0x0E) {
+            host.material_register_float2_00b18b00(host.generated_model_material(model), "cLength",
+                reinterpret_cast<const float*>(at(screen, 0x55C)));
+            host.material_register_float2_00b18b00(host.generated_model_material(model), "cOffset",
+                reinterpret_cast<const float*>(at(screen, 0x564)));
+        }
+    }
+    for (std::size_t i = 0; i < 0x61; ++i) {
+        write_field<std::int32_t>(screen, 0x130 + i * 4, 0);
+        write_field<std::int32_t>(screen, 0x2B4 + i * 4, 0);
+    }
+}
+
+void hud_map_register_resources_005ac390(void* screen, Fe11HudMapResourcesHost& host) {
+    for (const Fe11MapResource& model : kHudMapModels) {
+        if (model.offset == 0x43C)
+            for (std::uint32_t off = 0x438; off <= 0x44C; off += 4) write_field<std::int32_t>(screen, off, 0);
+        if (model.offset == 0x450)
+            for (std::uint32_t off = 0x450; off <= 0x460; off += 4) write_field<std::int32_t>(screen, off, 0);
+        write_field(screen, model.offset, host.resource_load_default_factory_00b80d70(model.path));
+    }
+    for (const Fe11MapResource& texture : kHudMapTextures)
+        write_field(screen, texture.offset, host.texture_manager_load_64(texture.path, 0));
+    write_field<std::int32_t>(screen, 0x128, 0);
+    write_field<float>(screen, 0x12C, 0.0f);
+    write_field(screen, 0xF8, read_field<void*>(screen, 0xF4));
+    const float config = host.global_config_2bc();  // 00432650 runs before the table read
+    const float scale = static_cast<float>(
+        static_cast<double>(host.map_zoom_scales_00f89ae4()[read_field<std::int32_t>(screen, 0x2C)]) * config);
+    write_field<float>(screen, 0x5BC, scale);
+    write_field<float>(screen, 0x5DC, scale);
+}
+
+void hud_map_register_005ab190(void* screen, Fe11HudMapHost& host) {
+    hud_map_register_setup_005ab190(screen, static_cast<Fe11HudMapRegisterHost&>(host));
+    hud_map_register_objects_005ab519(screen, static_cast<Fe11HudMapObjectsHost&>(host));
+    hud_map_register_quads_005ab7c5(screen, static_cast<Fe11HudMapQuadsHost&>(host));
+    hud_map_register_resources_005ac390(screen, static_cast<Fe11HudMapResourcesHost&>(host));
+}
 
 }  // namespace bsp::cc13_fe1

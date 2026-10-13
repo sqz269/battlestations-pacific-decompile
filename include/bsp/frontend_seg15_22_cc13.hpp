@@ -22,12 +22,14 @@
 #include <string_view>
 
 #include "bsp/ingame_gui_cc13.hpp"
+#include "bsp/main_menu_command_bar.hpp"
 
 namespace bsp::frontend_seg15_22_cc13 {
 
 using bsp::ingame_gui_cc13::Raw;
 using bsp::ingame_gui_cc13::TrivialSlot;
 using bsp::ingame_gui_cc13::TrivialSlotKind;
+using bsp::MainMenuCommandArgument;
 
 // ---------------------------------------------------------------------------
 // Image addresses the routines store or compare (vtables, globals, constants).
@@ -914,6 +916,250 @@ bool multi_game_lobby_check_client_compatibility_005d71b0(Raw s, Seg15Host& host
 // type 6 or +84h(focus) for type 12h.
 inline constexpr float kLobbyFocusDimAlpha = 0.5f;  // 00CE3800
 void multi_game_lobby_on_focus_005d6060(Raw s, void* widget, bool focus, Seg15Host& host);
+
+// ---------------------------------------------------------------------------
+// cc13-fe10 additions (docs/CC13_FE_10.md).
+// ---------------------------------------------------------------------------
+struct Fe10Host : Seg15Host {
+    // Scroller block routines (ECX = the block): 00683320 end a thumb drag,
+    // 00683300(int, float, int) set the auto-scroll state.
+    virtual void scroller_end_thumb_drag_00683320(Raw scroller) = 0;
+    virtual void scroller_set_auto_scroll_00683300(Raw scroller, std::int32_t a, float speed, std::int32_t c) = 0;
+    // 00AA8240, ECX = widget, (const vec3*): place the widget at a resolved position.
+    virtual void widget_set_resolved_position_00aa8240(void* widget, const float xyz[3]) = 0;
+    // 0076CC40, ECX = [*00E188A8]+1EF0h, (slot, level): the slot's AI skill level.
+    virtual void session_set_slot_ai_skill_level_0076cc40(std::int32_t slot, std::int32_t level) = 0;
+    // 00AAB4C0(0), ECX = template widget: clone it (no parent).
+    virtual void* widget_clone_00aab4c0(void* template_widget) = 0;
+    // 00A9D750(row, 0, 0), ECX = listbox: append a row.
+    virtual void listbox_insert_row_00a9d750(void* listbox, void* row) = 0;
+    // 00A9AC50, ECX = listbox: the row block (+8h is the row count).
+    virtual Raw listbox_row_block_00a9ac50(void* listbox) = 0;
+    // 00A9CF30(a, b), ECX = listbox: reset the highlight.
+    virtual void listbox_reset_highlight_00a9cf30(void* listbox, std::int32_t a, std::int32_t b) = 0;
+    // Widget virtuals +7Ch (int) and +80h (int).
+    virtual void widget_virtual_7c(void* widget, std::int32_t value) = 0;
+    virtual void widget_virtual_80(void* widget, std::int32_t value) = 0;
+    // 004E1CA0: the award tracker singleton (std::map at +7Ch, head +80h,
+    // size +84h; +9Ch the pending-award count).
+    virtual Raw award_tracker_004e1ca0() = 0;
+    // 004B7DE0, ECX = &iterator: std::_Tree iterator increment (the node).
+    virtual Raw tree_iterator_next_004b7de0(Raw node) = 0;
+    // 004D48A0 copy-construct of the pooled string list at list, then its +8h
+    // count, then 004D05E0 + _free(00BF65AC) on the copy.
+    virtual std::uint32_t pooled_string_list_copy_count_004d48a0(Raw list) = 0;
+    // Pause screen [*00E198C4+D8h] (ECX): 00683820(1) on its scroller +9Ch,
+    // 006037D0 hints update.
+    virtual void pause_screen_scroller_update_00683820() = 0;
+    virtual void pause_screen_update_hints_006037d0() = 0;
+    // 004C43C0(action), ECX = *00E188A8: action pressed this frame.
+    virtual bool action_pressed_004c43c0(std::int32_t action) = 0;
+    // 00425D10: the menu command (prompt) screen singleton (+4h busy byte).
+    virtual Raw menu_command_screen_00425d10() = 0;
+    // 0054B530, ECX = *00E1930C: rebuild the command bar from five triples.
+    virtual void command_bar_rebuild_0054b530(const MainMenuCommandArgument (&arguments)[5]) = 0;
+    // 004C1E90(id) then 00427190, ECX = that owner.
+    virtual void auto_test_step_00427190(std::int32_t id) = 0;
+    // 004C5E60, ECX = dst wide string, (const char*): widen a C string.
+    virtual void wide_string_from_cstring_004c5e60(Raw dst, const char* source) = 0;
+    // Widget geometry, ECX = widget: 00AA67F0 local position (vec3*), 00AA6740
+    // size (vec2*), 00AA7DC0(const vec3*) set local position and bounds,
+    // 00AB6BD0 normalized text height (ST0), vtable +58h set size (const vec2*).
+    virtual const float* widget_local_position_00aa67f0(void* widget) = 0;
+    virtual const float* widget_size_00aa6740(void* widget) = 0;
+    virtual void widget_set_local_position_00aa7dc0(void* widget, const float xyz[3]) = 0;
+    virtual double text_normalized_height_00ab6bd0(void* text) = 0;
+    virtual void widget_set_size_58(void* widget, const float xy[2]) = 0;
+    // 00AAB4C0(parent), ECX = template widget: clone under a parent.
+    virtual void* widget_clone_under_00aab4c0(void* template_widget, void* parent) = 0;
+    // Singleton lifetime: 00415350 the manager (critical section at +10h,
+    // users +18h; EnterCriticalSection 00CE2218 / LeaveCriticalSection
+    // 00CE2210), 00BD0C30(object), ECX = manager: register for teardown.
+    virtual Raw singleton_lifetime_manager_00415350() = 0;
+    virtual void critical_section_enter(void* section) = 0;
+    virtual void critical_section_leave(void* section) = 0;
+    virtual void singleton_lifetime_register_00bd0c30(Raw manager, void* object) = 0;
+    // 00BE9760, ECX = block: the fingerprint payload constructor (204h bytes).
+    virtual void* fingerprint_payload_construct_00be9760(void* block) = 0;
+    // 00424C40: the game settings singleton (free-camera effect records:
+    // vector +740h..+744h, 30h bytes each).
+    virtual Raw game_settings_00424c40() = 0;
+    // Store a refcounted handle into slot: InterlockedIncrement (00CE221C) the
+    // new one, InterlockedDecrement (00CE2220) the old one and its vtable +0 at
+    // zero.
+    virtual void handle_assign(Raw slot, void* handle) = 0;
+    // Free-camera effect records: 00540CA0(const record*), ECX = vector:
+    // push_back; 0053E0E0, ECX = record: the built-in test effects; 0053DF40,
+    // ECX = record: destroy.
+    virtual void free_camera_effect_vector_push_back_00540ca0(Raw vector, Raw record) = 0;
+    virtual void free_camera_acquire_test_effects_0053e0e0(Raw record) = 0;
+    virtual void free_camera_effect_record_destroy_0053df40(Raw record) = 0;
+    // 0093CC80, ECX = screen+8h: the simple 3D scene sub-object destructor.
+    virtual void simple_3d_scene_destroy_0093cc80(Raw scene) = 0;
+};
+
+// Widget focus byte (+D4h) the lobby listeners read.
+inline constexpr std::size_t kWidgetFocusedByte = 0xD4;
+
+// 005D5D50 __thiscall(ECX = screen+0Ch listener, widget), RET 4: the lobby's
+// activation hook. Type 2 widgets are ignored; type 3 gets alpha 0.5 / 1.0 by
+// its focus byte. The buttons +20h, +8Ch, +28h, +150h are left alone. The
+// scroll arrows +9Ch/+98h, +13Ch/+138h, +BCh/+B8h stop their pane's auto
+// scroll (00683300(0, 0.0, 0) on +30h, +158h, +CCh) and the thumbs +90h,
+// +154h, +C8h end a thumb drag (00683320 on the same blocks); with the
+// settings page open only +220h / +224h reach the common tail; the three side
+// widgets +144h / +148h / +14Ch switch frames together (the multiplayer
+// side flag [*00E198B4+54h]+8Ch picks which pair is lit). The tail shows the
+// focus through +88h(focus, 0, 1.0) for type 6 or +84h(focus) for type 12h.
+void multi_game_lobby_on_activate_005d5d50(Raw s, void* widget, Fe10Host& host);
+
+// 005D6E30 __fastcall(screen): the map preview icons. "settings_Group" is
+// found in the page +14h and its "map_001_Icon" gives a resolved position that
+// every widget of the pointer array +1F8h..+1FCh takes (00AA8240); the page
+// +18h's own "map_001_Icon" does the same for +244h..+248h.
+void multi_game_lobby_build_map_preview_005d6e30(Raw s, Fe10Host& host);
+
+// 005D9660 __thiscall(ECX = screen, bool step_a, bool step_b), RET 8: step the
+// AI of the selected "Players_Listbox" slot (the listbox is re-found into
+// +A8h from page +14h). Nothing happens while the online service (vslot
+// +198h) is busy with byte +4Dh set, or with neither flag. An empty or
+// non-AI slot (record byte +0Ah clear) outside the standard game mode enables
+// AI and sets level 3 (5 with step_b); otherwise the slot's kind +2Ch moves:
+// 1/3 -> 4 on step_a, 4 -> 5 on step_a, 4 -> 1 (standard mode) / 3 on step_b,
+// 5 -> 4 on step_b, 1/3 -> 5 on step_b in the standard mode unless byte
+// 00F88A30 is set; outside the standard mode the remaining cases disable AI.
+// Ledger name RefreshPlayersListbox is wrong (renamed, docs/CC13_FE_10.md).
+void multi_game_lobby_step_selected_slot_ai_005d9660(Raw s, bool step_a, bool step_b, Fe10Host& host);
+
+// Multiplayer pause menu (19h). Nine rows, shown by the flag bytes
+// 00E19544..00E1954C; the keys are the char* cells 00E0889C..00E088BC
+// (FE.multi_ingame_resume first); 00E19550 remembers the selected row.
+inline constexpr std::uint32_t kPauseRowFlags = 0x00E19544;
+inline constexpr std::uint32_t kPauseRowKeys = 0x00E0889C;
+inline constexpr std::uint32_t kPauseRememberedRow = 0x00E19550;
+inline constexpr int kPauseRowCount = 9;
+inline constexpr double kPauseIconScreenWidth = 960.0;  // 00CEC380
+inline constexpr double kPauseIconHalf = 0.5;           // 00D7A280
+inline constexpr double kPauseIconGap = 0.014999999664723873;   // 00CEE6C8
+inline constexpr double kPauseIconLift = 0.0010000000474974513;  // 00D7A318
+inline constexpr float kPauseInputDelay = 0.1f;          // 00D7A2F0
+
+// 005D39A0 __fastcall(ECX = listbox, EDX = wanted row): rebuild the rows.
+// The listener is dropped, the rows cleared, "MainListbox_Text" is the row
+// template; each shown row is a clone with its key (row 2, the awards row, is
+// greyed through +7Ch(0/1) by the tracker's +9Ch). The selection is the
+// wanted row's position, or for wanted row 0 the remembered row clamped to
+// the row count (and stored back). Then +80h(1), the pause listener
+// ([*00E198C4+E4h]+8h or null) and 00A9CF30(1, 1).
+void pause_multi_build_menu_rows_005d39a0(void* listbox, std::int32_t wanted, Fe10Host& host);
+
+// 005D3B40 __thiscall(ECX = screen): enter. Frame 0 titled "ingame.paused"
+// when game+218Ch is set, else "ingame.pause_multi_title"; the listbox +20h
+// ("Main_Listbox" in page +10h) with the arrow icons "felki_bal_Icon" (+14h)
+// and "felki_jobb_Icon" (+18h), both hidden; listener +8h, focus; byte +1Ch
+// cleared; the row flags (row 1 off, row 5 for a live session whose local
+// slot record +1Bh is clear, row 6 the opposite); rows rebuilt at 0; the arrow
+// icons are placed beside the awards row ((width/960)*0.5 + 0.015 to either
+// side, 0.001 lower); +24h = 0.1.
+void pause_multi_enter_005d3b40(Raw s, Fe10Host& host);
+
+// 005D3F20 __thiscall(ECX = screen, float seconds), RET 4: update. With the
+// pause hint page open, its scroller and hints update; otherwise the arrow
+// icons show while any award-tracker entry has a non-empty string list. While
+// +24h is positive in a live session it counts down; else action 4Bh or 1
+// with no prompt raised closes the hint page (005FD890(0, 1)) or toggles the
+// pause menu and forgets the row. Then the command bar (select A2h, navigate
+// B3h, back A3h), an empty help line and auto-test step 10h.
+void pause_multi_update_005d3f20(Raw s, float seconds, Fe10Host& host);
+
+// 005D92B0 __thiscall(ECX = lobby screen, const NativeString* name, int kind),
+// RET 8: find name (case-insensitive, equal lengths) in the string vector
+// (+4h: first +8h, last +0Ch, 8-byte elements) of the 24h-byte map records
+// +2E4h..+2E8h whose dword +0 equals kind; on a hit copy it into the native
+// string 00E195BC and store record / string index in +2F0h / +2F4h. An empty
+// name clears +2F0h / +2F4h (-1) and the strings 00E195BC / 00E195C4. No hit
+// recurses with "" and kind -1, then empties game+600h.
+inline constexpr std::uint32_t kLobbyMapNameString = 0x00E195BC;
+inline constexpr std::uint32_t kLobbySubSceneString = 0x00E195C4;
+void multi_game_lobby_select_map_by_name_005d92b0(Raw s, Raw name, std::int32_t kind, Fe10Host& host);
+
+// 005D09A0 __thiscall(ECX unused, text, const NativeString* sender, colour,
+// const WideString* message, unused), RET 14h: a chat row. With an empty
+// sender the message is submitted as is, otherwise sender (or the empty C
+// string 00E19530) + L": " + message; the colour is config +208h + 10h*index
+// through vtable +50h.
+inline constexpr std::uint32_t kChatEmptyName = 0x00E19530;
+inline constexpr std::uint16_t kChatSeparator[3] = {u':', u' ', 0};  // 00CF1A84
+void multi_chat_format_message_row_005d09a0(void* text, Raw sender, std::int32_t colour, Raw message,
+                                            Fe10Host& host);
+
+// 005D0C60 __thiscall(ECX = chat screen, template text, list widget), RET 8 ->
+// AL: when +8Dh is set, rebuild the rows from the list chosen by +40h (1/2:
+// std::list +80h, rows downward; 3: +68h with fields +0Ch/+14h/+1Ch; 4: +74h;
+// rows upward), each a clone of the template under the list widget placed at
+// the running position and shown by +8Dh; the list widget is resized to its
+// width by the covered height. Clears +8Dh and returns 1 (0 when +8Dh was
+// clear; another mode only clears it).
+bool multi_chat_rebuild_message_rows_005d0c60(Raw s, void* row_template, void* list, Fe10Host& host);
+
+// 005D14D0 __thiscall(ECX = chat screen): bind the layout of page +3Ch:
+// "ChatModeOn_Group" +44h (its "SendMessage_Text" +5Ch and hidden
+// "MessageTemplate_Text" +54h), "ChatModeOff_Group" +48h (hidden template
+// +50h), "Lobby_Group" +4Ch ("SendMessage_Text" +60h); input string +20h
+// emptied, mode +40h = 0, the groups hidden, byte +64h = 0, the editor
+// (screen+8h) inactive on +5Ch, +60h hidden, mode label refreshed, and the
+// sound request byte +1Ah set.
+void multi_chat_load_layout_005d14d0(Raw s, Fe10Host& host);
+
+// 0053BC00 __cdecl() -> the fingerprint payload singleton (*0109DB78),
+// created under the lifetime manager's lock (double-checked: 204h bytes,
+// 00BE9760) and registered for teardown (00BD0C30).
+inline constexpr std::uint32_t kFingerprintPayloadGlobal = 0x0109DB78;
+void* fingerprint_payload_get_singleton_0053bc00(Fe10Host& host);
+
+// 00540D50 __thiscall(ECX = free-camera settings block, screen+64h): one
+// effect record per game-settings record (+740h, 30h bytes): floats from
+// +8h, +0Ch, +14h, +18h, +1Ch, +20h, the byte +10h, the name +0h and the
+// three refcounted handles +24h, +28h, +2Ch, pushed into the vector +4h; with
+// no settings records the built-in test effects (0053E0E0) are pushed.
+void free_camera_bind_settings_00540d50(Raw block, Fe10Host& host);
+
+// 00540FE0 __thiscall(ECX = free-camera screen): register. Base register;
+// block +64h: +88h = 0.0, +84h = 0, +8Ch = 0.0, then 00540D50; page
+// "GUI_freecam" into +1Ch, its hidden "weapon_Text" into +20h.
+void free_camera_register_00540fe0(Raw s, Fe10Host& host);
+
+// 00538A80 __thiscall(ECX = HUD formation screen): destructor body. Vtables
+// 00CED6FC / 00CED6F8 (+8h) / 00CED6E0 (+64h) / 00CED6CC (+78h); the pages
+// +98h, +A4h, +9Ch, +A0h, +A8h removed; the handles of the list +1A0h (node
+// +8h) released and the list freed with its head; the list +198h freed; the
+// vector +12Ch..+134h freed; the trees +11Ch and +110h erased (00538360 over
+// [begin, end)) and their heads freed; +78h back to the listener base
+// 00CEB0FC; the callback owner +64h, the scene +8h and the base destroyed.
+void hud_formation_destruct_00538a80(Raw s, Fe10Host& host);
+
+// 0052CF60 __thiscall(ECX = HUD counters screen, const record* r), RET 4:
+// apply a counter record by its kind +20h. Kind 1: remove (+24h) the entry
+// +18h, or show it as a score pair (+25h: strings +28h / +30h, values +38h /
+// +3Ch) or a score. Kind 0: remove counter A (+24h), or gather the units of
+// the id words +40h[0..+44h) from the two object registries (id below
+// *00F89A10: *00F89A54 at (id - *00F89A0C) * 10h + 0Ch, else *00F89AA8 at
+// (id - *00F89A60) * 10h + 0Ch) into a pointer array and show their hit
+// points with the text +4Ch (0052BFA0), then free the array.
+void hud_counters_apply_counter_record_0052cf60(Raw s, Raw r, Fe10Host& host);
+
+// 00529A30 __thiscall(ECX = HUD counters screen): re-lay the counters out.
+// Entries (pointer array +20h) whose widget +0 is hidden (vtable +38h) and
+// whose bytes +A5h..+A9h are all clear are erased; the row starts at x =
+// 0.07 (-0.07 wide) or, with [*00E198C4+C0h]+4 set or the support manager in
+// its mode (006529E0), 0.385 (0.23 wide); each kept entry's widget goes to x
+// and x += size(+2Ch).w + 0.0305; when the first entry sat left of -900 the
+// entries are parked 1000 further left again; tail jump to 00529810.
+inline constexpr double kCounterRowGap = 0.030500000342726707;  // 00CED060
+inline constexpr float kCounterRowStart = 0.07000000029802322f;         // 00CED070 (00CED074 wide: -)
+inline constexpr float kCounterRowStartManager = 0.38499999046325684f;  // 00CED068
+inline constexpr float kCounterRowStartManagerWide = 0.23000000417232513f;  // 00CED06C
+void hud_counters_relayout_00529a30(Raw s, Fe10Host& host);
 
 }  // namespace bsp::frontend_seg15_22_cc13
 
