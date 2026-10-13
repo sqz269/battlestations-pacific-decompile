@@ -950,5 +950,20 @@ struct EscortThinkInputs {
 // its +FCh when it has none; any other team -> None.
 ModeThinkResult ai_escort_think_00a26210(const EscortThinkInputs& in);
 
+// ---------------------------------------------------------------------------
+// 00A03760 BSP_AiCapture_UnitArrivalValue, __fastcall(ECX = unit, EDX = target).
+// ---------------------------------------------------------------------------
+
+// w = 00A03510(unit); d = 009FFC10(unit pose - target pose); R = (float) FILD
+// target+7A0h. d <= R (FCOMPI/JBE): w. Otherwise speed = class+500h (ship, 6) or
+// squadron class+188h (18h) or 0, and the guard at 00A0383C is FCOMI speed vs
+// 0.1 [00D7A3A0] / JA to the 0.0 return: a unit FASTER than 0.1 scores 0 outside
+// R. Only speed <= 0.1 (or NaN) reaches time = (d - R) / speed (DE F1),
+// limit = max(+198h, 1.0) (FCOMI/JBE), and f((1 - time / limit) * w) when
+// time < limit (JB), else 0. The bytes (DD 05 A0A3D700 ... DB F1 DD D9 77 54)
+// were read from the PE.
+float ai_unit_arrival_value_00a03760(float capture_weight_00a03510, float distance_009ffc10,
+                                     int target_7a0, float speed, float tuning_198) noexcept;
+
 }  // namespace gameplay_seg69_70_cc13
 }  // namespace bsp

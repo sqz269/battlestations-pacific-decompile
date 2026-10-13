@@ -529,3 +529,30 @@ transport moves, spot-checked).
 (include/bsp/ai_planners.hpp:218), `kAiTailLengthEpsilon` (include/bsp/ai_planner_tails.hpp:68) and the
 literal in `capture_plan_00a29fd0` (src/game_hosts_ai.cpp:4180) say 1e-11; include/bsp/gameplay_seg33_cc13.hpp
 already notes the same.
+
+### 7.9 `00A03760`: the arrival value's speed guard is inverted in the host
+
+`00A03760 BSP_AiCapture_UnitArrivalValue` feeds the `a`/`b` terms of every Capture target score
+(`00A1E250`). Outside the CommandBuilding's capture range the bytes at `00A0382C` are
+
+```
+DD 05 A0 A3 D7 00   FLD  qword [00D7A3A0]      ; 0.1
+F3 0F 11 44 24 08   MOVSS [esp+8], xmm0         ; the unit's class speed
+D9 44 24 08         FLD  dword [esp+8]
+DB F1               FCOMI ST0, ST1              ; speed vs 0.1
+DD D9               FSTP ST1
+77 54               JA   00A03896               ; speed > 0.1 -> return 0.0
+```
+
+so any unit faster than 0.1 contributes **nothing** outside the range, and only a unit at or below
+0.1 (or NaN) reaches the linear `(1 - time / limit) * w` arm. The host's
+`ai_tail_unit_arrival_value` (src/ai_planner_tails.cpp:92) has the guard the other way round: it
+returns 0 for speed <= 0.1 and gives every moving ship the approach value. On the image's rule the
+Capture terms count only units inside the capture range. Model: `ai_unit_arrival_value_00a03760`.
+Whether the image's rule is an original bug does not matter for parity; the host should follow the
+bytes.
+
+Also checked: `00A03510` (the capture weights; the host fixes the CommandBuilding's Lua
+`CaptureWeight` at 1.0), `00A0F970`, `00A250A0`, `00A1A7A0`, `00A1D010` (matching), `00A1A720` (the
+image passes the party slot's aggressive ratio `[00F8A8D0 + party*1Ch]`, the host the constant 0.5)
+and `00A22750` (the host's labelled refusal of a group another planner holds).

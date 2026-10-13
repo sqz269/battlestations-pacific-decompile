@@ -1147,6 +1147,17 @@ ModeThinkResult ai_escort_think_00a26210(const EscortThinkInputs& in) {
     return out;
 }
 
+float ai_unit_arrival_value_00a03760(float capture_weight_00a03510, float distance_009ffc10,
+                                     int target_7a0, float speed, float tuning_198) noexcept {
+    const float r = static_cast<float>(target_7a0);                     // 00A037CF FILD, FSTP float
+    if (!(distance_009ffc10 > r)) return capture_weight_00a03510;       // 00A037E5 JBE
+    if (static_cast<double>(speed) > 0.10000000149011612) return 0.0f; // 00A03840 JA -> 00A03896
+    const float time = (distance_009ffc10 - r) / speed;                 // 00A03846 FSUB, DE F1
+    const float limit = 1.0f > tuning_198 ? 1.0f : tuning_198;          // 00A0386A FCOMI/JBE
+    if (time >= limit) return 0.0f;                                     // 00A03890 JB (NaN computes)
+    return (1.0f - time / limit) * capture_weight_00a03510;             // DE F1, DE E9, FMUL
+}
+
 bool ai_defend_member_is_candidate_00a2def0(bool member_kind_1c, bool in_team_set) noexcept {
     return member_kind_1c || in_team_set;   // 00A2DF2F JNE / 00A2DF4A JE
 }
