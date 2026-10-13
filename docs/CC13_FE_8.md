@@ -53,6 +53,15 @@ by `tools/verify_report_calls.py` (0 failed).
 | 00500E90 | `library_build_power_up_list_00500e90` | fastcall(ECX screen), RET | three rows |
 | 005010C0 | `library_build_academy_list_005010c0` | fastcall(ECX screen), RET | thirteen candidates |
 | 005012F0 | `library_build_achievements_list_005012f0` | fastcall(ECX screen), RET | six rows |
+| 004F9D80 | `library_colour_static_grey_004f9d80` | no arguments, EAX = 00E18D64 | function-static colour |
+| 00506510 | `library_reset_vehicle_class_order_00506510` | fastcall(ECX screen), tail JMP 004F8FA0 | |
+| 00506550 | `library_show_current_entry_detail_00506550` | fastcall(ECX screen), RET | registry permutation swap |
+| 005661C0 | `session_list_absolute_selection_005661c0` | fastcall(ECX list box), EAX | ECX is the list box itself |
+| 00568290 | `gui_icon_set_uv_rect_00568290` | thiscall(icon, const float uv[4]), RET 4 | |
+| 004FFD00 | `library_show_unlocks_page_004ffd00` | fastcall(ECX screen), RET | command bar, title |
+| 004FFF20 | `library_show_order_of_battle_page_004fff20` | fastcall(ECX screen), RET | command bar, title |
+| 00509DE0 | `library_build_map_entries_00509de0` | fastcall(ECX screen), RET | locked flags from the game map |
+| 0050D900 | `library_filter_entries_0050d900` | thiscall(screen, source, out), RET 8 | ledger name ClearList |
 
 ### Leaderboards
 
@@ -122,6 +131,17 @@ by `tools/verify_report_calls.py` (0 failed).
 - 005001A0 builds one row: the vehicle-class name of record 0's id at +458h when that id equals +454h,
   else `FE.unitlib_nounlock` with +454h = -1 and +458h = +138h = 0. The image raises the checked-
   iterator report (00BF6713) when the record vector is empty; the model assumes a record.
+- 005661C0 passes its own ECX to 00A9C920 unchanged, so the object is the session list box (a list
+  box with a scroll offset +164h behind the +148h byte), not the browser screen. `menu_screens_2`'s
+  host already calls it on list +30h.
+- 004FFD00 calls atol on the current item's name and discards the result.
+- 00506550 resets both registry permutation tables (+10h, +2010h, 800h dwords) to the identity and
+  then swaps one pair: table1[rec] = class id and table2[class id] = rec, where rec is the first dword
+  of the order-of-battle record named by the current item.
+- 00509DE0's find is the inlined `lower_bound` plus `!(key < node)`: an empty key orders before
+  any non-empty node key, and a non-empty key against an empty node key counts as found.
+- 0050D900 (ledger `ClearList`) filters: it empties the output vector and copies the entries whose
+  +40h side equals +3C0h or exceeds 59h and whose +44h byte is set, then resets the view by kind.
 
 ## For cc9
 

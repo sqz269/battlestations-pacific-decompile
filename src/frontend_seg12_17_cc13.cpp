@@ -2833,4 +2833,162 @@ void library_build_achievements_list_005012f0(Raw screen, Fe8LibraryListHost& ho
     host.list_box_reset_highlight_00a9cf30(screen.ptr(0xB8), 1, 1);
 }
 
+const float* library_colour_static_grey_004f9d80(Fe8LibrarySmallHost& host) {
+    float* const colour = host.static_grey_00e18d64();
+    std::uint32_t& guard = host.static_grey_guard_00e18d74();
+    if ((guard & 1) == 0) {
+        guard |= 1;
+        colour[0] = 0.25f;  // 00CE3868
+        colour[1] = 0.25f;
+        colour[2] = 0.25f;
+        colour[3] = 1.0f;   // 00D7A24C
+    }
+    return colour;
+}
+
+namespace {
+
+void vehicle_class_identity_order(Raw registry) {
+    for (std::uint32_t i = 0; i < 0x800; ++i) {
+        registry.at<std::uint32_t>(0x10 + i * 4) = i;
+        registry.at<std::uint32_t>(0x2010 + i * 4) = i;
+    }
+}
+
+} // namespace
+
+void library_reset_vehicle_class_order_00506510(Raw screen, Fe8LibrarySmallHost& host) {
+    screen.at<std::uint32_t>(0x134) = 0;
+    vehicle_class_identity_order(host.vehicle_class_registry_00437f50());
+    host.library_reset_order_state_004f8fa0(screen);
+}
+
+void library_show_current_entry_detail_00506550(Raw screen, Fe8LibrarySmallHost& host) {
+    const auto* const entries = static_cast<const std::uint8_t*>(screen.ptr(0x448));
+    screen.at<std::int32_t>(0x4B0) =
+        *reinterpret_cast<const std::int32_t*>(entries + screen.at<std::uint32_t>(0x434) * 0x6C + 0x48);
+    const Raw name = host.widget_name_28(host.list_box_current_item_00a9ca00(screen.ptr(0xB8)));
+    const char* const text = static_cast<const char*>(name.ptr(4));
+    const std::int32_t index = host.atol_00bf8417(text != nullptr ? text : "");
+    const auto* const records = static_cast<const std::uint8_t*>(screen.ptr(0x460));
+    const std::int32_t record = *reinterpret_cast<const std::int32_t*>(records + index * 0x2C);
+    const std::int32_t class_id = screen.at<std::int32_t>(0x4B0);
+    if (class_id == screen.at<std::int32_t>(0x134)) return;
+    host.library_refresh_unlock_rows_00503250(screen, class_id);
+    screen.at<std::int32_t>(0x134) = class_id;
+    vehicle_class_identity_order(host.vehicle_class_registry_00437f50());
+    const Raw registry = host.vehicle_class_registry_00437f50();
+    registry.at<std::int32_t>(0x10 + record * 4) = class_id;
+    registry.at<std::int32_t>(0x2010 + class_id * 4) = record;
+}
+
+std::int32_t session_list_absolute_selection_005661c0(void* list_box, Fe8LibrarySmallHost& host) {
+    const std::int32_t offset = raw(list_box).at<std::uint8_t>(0x148) != 0 ? raw(list_box).at<std::int32_t>(0x164) : 0;
+    return host.list_box_selected_index_00a9c920(list_box) + offset;
+}
+
+void gui_icon_set_uv_rect_00568290(Raw icon, const float uv[4], Fe8LibrarySmallHost& host) {
+    for (int i = 0; i < 4; ++i) icon.at<float>(0x118 + i * 4) = uv[i];
+    host.widget_apply_uv_8c(icon.p);
+}
+
+namespace {
+
+// atol of the current library item's name (vtable +28h string data, "" 00E18D78 when null).
+std::int32_t library_current_item_index(void* item, Fe8LibrarySmallHost& host) {
+    const char* const text = static_cast<const char*>(host.widget_name_28(item).ptr(4));
+    return host.atol_00bf8417(text != nullptr ? text : "");
+}
+
+} // namespace
+
+void library_show_unlocks_page_004ffd00(Raw screen, Fe8LibraryPageHost& host) {
+    if (screen.at<std::int32_t>(0x94) != 6) return;
+    void* const item = host.list_box_current_item_00a9ca00(screen.ptr(0xB8));
+    if (item == nullptr) return;
+    library_current_item_index(item, host);  // result unused in the image
+    const char* const view = screen.at<std::int32_t>(0x90) == 1 ? "globals.2dview" : "globals.3dview";
+    host.rebuild_command_bar_0054b530({{
+        {0xA2, "globals.select", 0},
+        {0xA7, view, 1},
+        {0xB2, "globals.scroll_menu", 1},
+        {0xAF, "globals.change", 1},
+        {0xA3, "globals.back", 2},
+    }});
+    host.frame_select_00518d60(0xFFFFFFFFu, 0, 0, "FE.taclib_unlocks_title");
+}
+
+void library_show_order_of_battle_page_004fff20(Raw screen, Fe8LibraryPageHost& host) {
+    if (screen.at<std::int32_t>(0x94) != 5) return;
+    void* const item = host.list_box_current_item_00a9ca00(screen.ptr(0xB8));
+    if (item == nullptr) return;
+    const std::int32_t index = library_current_item_index(item, host);
+    const Raw record{static_cast<std::uint8_t*>(screen.ptr(0x460)) + index * 0x2C};
+    const auto* const ids = static_cast<const std::int32_t*>(record.ptr(0x1C));
+    const std::int32_t id_count =
+        ids == nullptr ? 0 : static_cast<std::int32_t>(static_cast<const std::int32_t*>(record.ptr(0x20)) - ids);
+    const bool change = id_count > 0 && record.at<std::uint8_t>(0x0C) != 0;
+    const char* const view = screen.at<std::int32_t>(0x90) == 1 ? "globals.2dview" : "globals.3dview";
+    host.rebuild_command_bar_0054b530({{
+        {0xA2, "globals.continue", 0},
+        {0xA7, view, 1},
+        {0xB3, "globals.navigate", 1},
+        {static_cast<std::uint8_t>(change ? 0xAF : 0), change ? "globals.change" : "", 1},
+        {0xA3, "globals.back", 2},
+    }});
+    host.frame_select_00518d60(0xFFFFFFFFu, 0, 0, "FE.taclib_orderofbattle_title");
+}
+
+void library_build_map_entries_00509de0(Raw screen, Fe8LibraryMapHost& host) {
+    for (std::uint32_t i = 0;; ++i) {
+        auto* const begin = static_cast<std::uint8_t*>(screen.ptr(0x3D8));
+        auto* const end = static_cast<std::uint8_t*>(screen.ptr(0x3DC));
+        if (begin == nullptr || i >= static_cast<std::uint32_t>((end - begin) / 0x6C)) return;
+        const Raw entry{begin + i * 0x6C};
+        const Raw game = host.game();
+        void* const map = game.p + 0x6F0;
+        void* const head = game.ptr(0x6F4);
+        const Raw key{entry.p + 0x28};
+        void* const node = host.string_int_map_lower_bound_004bf370(map, key.p);
+        bool found = false;
+        if (node != head) {
+            const Raw n{static_cast<std::uint8_t*>(node)};
+            std::int32_t order = 0;  // key compared with the node key (+0Ch length, +10h data)
+            if (key.at<std::uint32_t>(0) == 0) order = n.at<std::uint32_t>(0x0C) != 0 ? -1 : 0;
+            else if (n.at<std::uint32_t>(0x0C) != 0)
+                order = host.stricmp_00bf7fbf(static_cast<const char*>(key.ptr(4)), static_cast<const char*>(n.ptr(0x10)));
+            found = order >= 0;
+        }
+        const bool unlocked = found && host.string_int_map_index_005070c0(map, key.p) > 0;
+        entry.at<std::uint8_t>(0x45) = unlocked ? 0 : 1;
+    }
+}
+
+void library_filter_entries_0050d900(Raw screen, void* source, void* out, Fe8LibraryFilterHost& host) {
+    host.entry_vector_clear_00505de0(out);
+    for (std::uint32_t i = 0; i < host.entry_vector_size_004f92e0(source); ++i) {
+        const std::int32_t side = host.entry_vector_at_005056c0(source, i).at<std::int32_t>(0x40);
+        if ((side == screen.at<std::int32_t>(0x3C0) || host.entry_vector_at_005056c0(source, i).at<std::int32_t>(0x40) > 0x59) &&
+            host.entry_vector_at_005056c0(source, i).at<std::uint8_t>(0x44) != 0) {
+            host.entry_vector_push_back_0050ad00(out, host.entry_vector_at_005056c0(source, i));
+        }
+    }
+    switch (screen.at<std::int32_t>(0x94)) {
+    case 4:
+        for (const std::size_t movie : {0x51Cu, 0x520u, 0x524u})
+            if (screen.ptr(movie) != nullptr) host.gui_movie_stop_00aac870(screen.ptr(movie));
+        screen.at<std::int32_t>(0x558) = -1;
+        screen.at<std::int32_t>(0x55C) = -1;
+        break;
+    case 5:
+        host.library_view5_reset_0050b730(screen);
+        break;
+    case 6:
+        host.library_view6_reset_0050b440(screen);
+        break;
+    default:
+        break;
+    }
+}
+
 } // namespace bsp::cc13_fe3

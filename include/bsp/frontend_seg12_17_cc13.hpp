@@ -1622,4 +1622,93 @@ void library_build_academy_list_005010c0(Raw screen, Fe8LibraryListHost& host);
 // 005012F0 BuildAchievementsList: six rows labelled [00E084D8 + i*4].
 void library_build_achievements_list_005012f0(Raw screen, Fe8LibraryListHost& host);
 
+struct Fe8LibrarySmallHost {
+    virtual ~Fe8LibrarySmallHost() = default;
+    // 00437F50: the vehicle class registry; two 800h-dword permutation tables at +10h and +2010h.
+    virtual Raw vehicle_class_registry_00437f50() = 0;
+    virtual void library_reset_order_state_004f8fa0(Raw screen) = 0;                         // tail call
+    virtual void library_refresh_unlock_rows_00503250(Raw screen, std::int32_t class_id) = 0;
+    virtual void* list_box_current_item_00a9ca00(void* list_box) = 0;
+    virtual Raw widget_name_28(void* widget) = 0;                                            // vtable +28h -> NativeString
+    virtual std::int32_t atol_00bf8417(const char* text) = 0;
+    // The function-static colour at 00E18D64 and its guard dword 00E18D74.
+    virtual float* static_grey_00e18d64() = 0;
+    virtual std::uint32_t& static_grey_guard_00e18d74() = 0;
+    virtual std::int32_t list_box_selected_index_00a9c920(void* list_box) = 0;
+    virtual void widget_apply_uv_8c(void* widget) = 0;                                       // vtable +8Ch
+};
+
+// 004F9D80 BSP_Color_StaticGrey, EAX = 00E18D64: the first call (guard bit 0) stores {0.25, 0.25,
+// 0.25 (00CE3868), 1.0 (00D7A24C)}.
+const float* library_colour_static_grey_004f9d80(Fe8LibrarySmallHost& host);
+// 00506510 BSP_TacticalLibraryScreen_ResetVehicleClassOrder, __fastcall(ECX = screen): +134h = 0;
+// both registry tables get the identity permutation (0..7FFh); tail 004F8FA0(screen).
+void library_reset_vehicle_class_order_00506510(Raw screen, Fe8LibrarySmallHost& host);
+// 00506550 BSP_TacticalLibraryScreen_ShowCurrentEntryDetail, __fastcall(ECX = screen): +4B0h =
+// the class id (+48h) of entry [+434h] of the 6Ch-entry vector +448h; the current row of +0B8h
+// (00A9CA00) names a record index (atol of vtable +28h's string, "" 00E18D78 when null); rec = the
+// first dword of that 2Ch record (+460h). When +4B0h differs from +134h: 00503250(+4B0h), +134h =
+// +4B0h, both tables reset to the identity, then table1[rec] = +4B0h and table2[+4B0h] = rec.
+void library_show_current_entry_detail_00506550(Raw screen, Fe8LibrarySmallHost& host);
+// 005661C0 (named GetSelectedSessionIndex), __fastcall(ECX = list box), EAX: the list's own
+// selection (00A9C920 with the same ECX) plus +164h when the +148h byte is set.
+std::int32_t session_list_absolute_selection_005661c0(void* list_box, Fe8LibrarySmallHost& host);
+// 00568290 BSP_GuiIcon_SetUvRect, __thiscall(icon, const float uv[4]), RET 4: +118h..+124h = uv,
+// then vtable +8Ch().
+void gui_icon_set_uv_rect_00568290(Raw icon, const float uv[4], Fe8LibrarySmallHost& host);
+
+struct Fe8LibraryPageHost : Fe8LibrarySmallHost {
+    virtual void rebuild_command_bar_0054b530(const std::array<MainMenuCommandArgument, 5>& arguments) = 0;
+    // 00518D60, ECX = -1, EDX = 0, stack (0, title NativeString), RET 8.
+    virtual void frame_select_00518d60(std::uint32_t ecx, std::uint32_t edx, std::uint32_t zero,
+        std::string_view title) = 0;
+};
+
+// 004FFD00 BSP_TacticalLibraryScreen_ShowUnlocksPage, __fastcall(ECX = screen), RET. Only for view
+// kind +94h == 6 with a current item in +0B8h (00A9CA00). The item name is passed to atol and the
+// result discarded. Command bar (A2h "globals.select" 0, A7h "globals.3dview" ("globals.2dview"
+// when +90h == 1) 1, B2h "globals.scroll_menu" 1, AFh "globals.change" 1, A3h "globals.back" 2);
+// then 00518D60(ECX -1, EDX 0; 0, "FE.taclib_unlocks_title").
+void library_show_unlocks_page_004ffd00(Raw screen, Fe8LibraryPageHost& host);
+// 004FFF20 BSP_TacticalLibraryScreen_ShowOrderOfBattlePage, __fastcall(ECX = screen), RET. Only
+// for view kind 5 with a current item: rec = the 2Ch record (+45Ch vector, 004F9360) at atol(item
+// name). Command bar (A2h "globals.continue" 0, A7h 3dview/2dview 1, B3h "globals.navigate" 1,
+// (AFh "globals.change" when rec has ids (+1Ch..+20h) and its +0Ch byte is set, else (0, "")) 1,
+// A3h "globals.back" 2); then 00518D60(-1, 0; 0, "FE.taclib_orderofbattle_title").
+void library_show_order_of_battle_page_004fff20(Raw screen, Fe8LibraryPageHost& host);
+
+struct Fe8LibraryMapHost {
+    virtual ~Fe8LibraryMapHost() = default;
+    virtual Raw game() = 0;                                                                  // [00E188A8]
+    // The case-insensitive std::map<NativeString, int> at game +6F0h (head at +6F4h): 004BF370
+    // lower_bound and 005070C0 operator[], both ECX = the map; nodes keep the key at +0Ch.
+    virtual void* string_int_map_lower_bound_004bf370(void* map, const void* key) = 0;
+    virtual std::int32_t& string_int_map_index_005070c0(void* map, const void* key) = 0;
+    virtual std::int32_t stricmp_00bf7fbf(const char* a, const char* b) = 0;
+};
+
+// 00509DE0 BSP_TacticalLibraryScreen_BuildMapEntries, __fastcall(ECX = screen), RET. For each
+// 6Ch entry of +3D8h..+3DCh, its +28h name is looked up in the game's map (+6F0h): found
+// (lower_bound plus the !(key < node) test, empty names ordering first) with a positive value
+// clears the entry's +45h "locked" byte; otherwise it is set to 1.
+void library_build_map_entries_00509de0(Raw screen, Fe8LibraryMapHost& host);
+
+struct Fe8LibraryFilterHost {
+    virtual ~Fe8LibraryFilterHost() = default;
+    virtual void entry_vector_clear_00505de0(void* vector) = 0;                              // erase(begin, end)
+    virtual std::uint32_t entry_vector_size_004f92e0(void* vector) = 0;
+    virtual Raw entry_vector_at_005056c0(void* vector, std::uint32_t index) = 0;
+    virtual void entry_vector_push_back_0050ad00(void* vector, Raw entry) = 0;
+    virtual void gui_movie_stop_00aac870(void* movie) = 0;
+    virtual void library_view5_reset_0050b730(Raw screen) = 0;
+    virtual void library_view6_reset_0050b440(Raw screen) = 0;
+};
+
+// 0050D900 (named ClearList; it filters a list), __thiscall(screen, source vector, out vector),
+// RET 8. out is emptied (00505DE0 over [begin, end), both bounds checked), then gets every source
+// entry (005056C0) whose +40h equals +3C0h or exceeds 59h and whose +44h byte is set (0050AD00).
+// Then by view kind +94h (jump table 0050DA10): 4 stops the movies +51Ch, +520h, +524h (non-null,
+// 00AAC870) and sets +558h = +55Ch = -1; 5 -> 0050B730(screen); 6 -> 0050B440(screen).
+void library_filter_entries_0050d900(Raw screen, void* source, void* out, Fe8LibraryFilterHost& host);
+
 } // namespace bsp::cc13_fe3
