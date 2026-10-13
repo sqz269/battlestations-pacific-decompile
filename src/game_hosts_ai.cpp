@@ -2118,6 +2118,23 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                 tick.orders_issued += sell.orders_issued;
                 tick.formation_requests += sell.formation_requests;
                 tick.followers_walked += sell.followers_walked;
+                tick.formation_shape_due = tick.formation_shape_due || sell.formation_shape_due;
+            }
+        }
+        if constexpr (bsp::kAiFormationShapeBound) {
+            // 00A11070 at the image's call sites; for PATROLTO it precedes
+            // 00A13B60 (00A15665 before 00A15671), so it runs here.
+            if (tick.formation_shape_due) {
+                const bsp::AiFormationShapeTickResult shape =
+                    bsp::ai_formation_shape_pass_00a11070(*this, cmd->owner_group);
+                ++formation_shape_calls;
+                if (shape.ran) {
+                    ++formation_shape_runs;
+                    formation_shape_placed += static_cast<unsigned long long>(shape.placed);
+                    formation_shape_no_record += static_cast<unsigned long long>(shape.no_record);
+                    if (shape.table_overrun) ++formation_shape_overruns;
+                    done("AiCommand::formation_shape_00a11070", 0x00a11070u);
+                }
             }
         }
         if (cmd->type == bsp::AiCommandType::PatrolTo) {
@@ -2193,8 +2210,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             cmd->type == bsp::AiCommandType::Idle) {
             if (kAiAutoMergeLeaveBound) done("AiCommand::tick_000c", 0x00a10ec0u);
             else record("AiCommand::tick_000c", 0x00a10ec0u);
-            // IDLE's tail, JMP 00A11070 (00A12442): the idle formation shape, unbound.
-            if (cmd->type == bsp::AiCommandType::Idle) {
+            // IDLE's tail, JMP 00A11070 (00A12442): run above when kAiFormationShapeBound.
+            if (!bsp::kAiFormationShapeBound && cmd->type == bsp::AiCommandType::Idle) {
                 record("AiCommand::idle_formation_00a11070", 0x00a11070u);
             }
         } else {
@@ -3191,6 +3208,25 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         return units.set_formation_member_offset_0070d080(unit_index_of(leader),
             unit_index_of(member), 0, lateral, axial);
     }
+    bool tick_formation_has_record_0070d080(void* leader, void* member) override {
+        // 0070D081..0070D0A1: the linear search of [leader+284h]+18h for the
+        // entity, the records set_formation_member_offset_0070d080 walks.
+        if (leader == nullptr || member == nullptr) return false;
+        const std::int32_t group = units.unit_formation_group_0284(unit_index_of(leader));
+        if (group < 0) return false;
+        const std::size_t want = unit_index_of(member);
+        const std::int32_t count = units.formation_member_count(group);
+        for (std::int32_t slot = 0; slot < count; ++slot) {
+            if (units.formation_member_unit(group, slot) == want) return true;
+        }
+        return false;
+    }
+    // Census of 00A11070 (kAiFormationShapeBound).
+    unsigned long long formation_shape_calls{0};
+    unsigned long long formation_shape_runs{0};
+    unsigned long long formation_shape_placed{0};
+    unsigned long long formation_shape_no_record{0};
+    unsigned long long formation_shape_overruns{0};
     void log_cautious_wedge(void* group, const bsp::AiCautiousWedgeResult& w) {
         if (cautious_wedge_logs >= 60) return;
         ++cautious_wedge_logs;
@@ -4934,6 +4970,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             result.orders_issued += follow.orders_issued;
             result.formation_requests += follow.formation_requests;
             result.followers_walked += follow.followers_walked;
+            result.formation_shape_due = true;                       // 00A12350
             record("AiCommand::selling_sell_message_00a123f8", 0x00a123f8u);
         } else {
             for (const std::size_t unit : g->members) {
@@ -6235,6 +6272,12 @@ void GameAiCoordinatorHost::report() {
         bsp::kCautiousWedgeBound ? 1 : 0, host.cautious_wedge_calls, host.cautious_wedge_runs,
         host.cautious_wedge_placed, host.cautious_wedge_no_record,
         host.cautious_wedge_zero_frame);
+    if constexpr (bsp::kAiFormationShapeBound) {
+        host.log.notef("summary mission ai formation shape calls=%llu runs=%llu placed=%llu "
+            "no_record=%llu overruns=%llu (00A11070, packet cc13-fix2)",
+            host.formation_shape_calls, host.formation_shape_runs, host.formation_shape_placed,
+            host.formation_shape_no_record, host.formation_shape_overruns);
+    }
     host.log.notef("summary mission ai coordinator game_mode=%d compose=%llu seeds=%llu "
         "groups_created=%llu destroyed=%llu members_added=%llu evicted=%llu splits=%llu "
         "splits_taken=%llu auto_merges=%llu prox_merges=%llu member_passes=%llu "
