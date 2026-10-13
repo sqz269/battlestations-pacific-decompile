@@ -177,7 +177,8 @@ After the lead landed sys6, the same worker continued on the open cc13 items:
 
 Still open after sys6b: `008023B0` (rain emitter build, 543 lines), `007FB520`, `007FC490`,
 `007FCD90`, `00AAE770`, `00AB4CE0`, and the x87 layout bodies `00AB9240`, `00AC0610`, `00AC0970`,
-`00AC0BD0`, `00AC10A0`.
+`00AC0BD0`, `00AC10A0`. Packet cc13-left3 reconstructed all of these later
+(`docs/CC13_LEFT_3.md`, section 1).
 
 ## Handoff
 

@@ -409,6 +409,41 @@ int start_index_for_position_007b11f0(PathJoinSource& source, const Vec3& pos, b
     return s > 0.0f ? candidate : nearest;  // 007B1303 FCOMPI(s, 0), JA keeps the candidate
 }
 
+int simple_source_nearest_index_007ada60(PathJoinSource& source, const Vec3& pos,
+                                         const std::function<float(const std::array<float, 3>&)>& length) {
+    if (source.point_count() == 0) return -1;  // 007ADA6B-007ADA6F, 007ADB86
+    const Vec3 p0 = source.point(0);           // 007ADA7F PUSH EBP (0)
+    float best = f32(length({f32(static_cast<double>(pos.x) - p0.x), f32(static_cast<double>(pos.y) - p0.y),
+                             f32(static_cast<double>(pos.z) - p0.z)}));  // 007ADAAD, 007ADAB4 FSTP
+    int best_index = 0;
+    for (int i = 1; i < source.point_count(); ++i) {  // count re-read each pass (007ADB70)
+        const Vec3 p = source.point(1);                 // 007ADAD5 PUSH 1: always point 1
+        const float d = point_distance_007aed10(pos, p);
+        if (best > d) {  // 007ADB52 FCOMPI(best, d), JBE skips
+            best = d;
+            best_index = i;
+        }
+    }
+    return best_index;
+}
+
+bool drop_points_onto_landscape_007b15f0(const std::vector<Vec3>& points, bool knots_fixed_18,
+                                         LandscapeDropHost& host) {
+    if (!host.parent_is_landscape()) return false;  // 007B1606-007B161E
+    for (std::size_t i = 0; i < points.size(); ++i) {
+        float h[4];
+        host.to_world_h(points[i], h);
+        const float inv = f32(1.0 / static_cast<double>(h[3]));  // 007B16C8
+        const float x = f32(static_cast<double>(h[0]) * inv);
+        const float z = f32(static_cast<double>(inv) * h[2]);
+        const float y = f32(host.forward_height_at(x, z));  // 007B16F5, 007B16FD FSTP
+        float l[4];
+        host.to_local_h(Vec3{x, y, z}, l);
+        host.set_point(static_cast<int>(i), path_local_from_homogeneous_007b0900(l));  // 007B17A3-007B17CB
+    }
+    return !knots_fixed_18;  // 007AF150 runs when +18h is clear
+}
+
 Vec3 centroid_007ae6d0(const Vec3* points, int count) noexcept {
     float sx = 0.0f, sy = 0.0f, sz = 0.0f;
     for (int i = 0; i < count; ++i) {

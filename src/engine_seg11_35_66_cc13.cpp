@@ -2477,4 +2477,258 @@ std::int32_t to_upper_ascii_004f9ab0(const char* c) noexcept {
     return value;
 }
 
+namespace {
+
+std::string format_build(const char* format, const std::string& csd, std::uint32_t build)
+{
+    char buffer[0x800];   // [ESP+104h]
+    std::snprintf(buffer, sizeof buffer, format, csd.c_str(), static_cast<unsigned>(build & 0xFFFFu));
+    return buffer;
+}
+
+}  // namespace
+
+bool describe_os_version_0098c9c0(std::string& description_234, bool& nt5_or_later_c34, OsVersionCalls& calls)
+{
+    nt5_or_later_c34 = false;
+    description_234.clear();
+    OsVersionInfoEx v{};
+    const bool have_ex = calls.get_version_ex(0x9C, v);       // EBP keeps this result
+    if (!have_ex && !calls.get_version_ex(0x94, v)) return false;
+    if (v.major_04 >= 5) nt5_or_later_c34 = true;
+    std::string& s = description_234;                          // every append is an inline strcat
+    const char csd1 = v.csd_version_14.size() > 1 ? v.csd_version_14[1] : '\0';
+
+    if (v.platform_10 == 0) {
+        s += "Microsoft Win32s";
+        return true;
+    }
+    if (v.platform_10 == 1) {
+        if (v.major_04 != 4) return true;
+        if (v.minor_08 == 0) {
+            s += "Microsoft Windows 95 ";
+            if (csd1 == 'C' || csd1 == 'B') s += "OSR2 ";
+        } else if (v.minor_08 == 10) {
+            s += "Microsoft Windows 98 ";
+            if (csd1 == 'A') s += "SE ";
+        } else if (v.minor_08 == 0x5A) {
+            s += "Microsoft Windows Millennium Edition";
+        }
+        return true;
+    }
+    if (v.platform_10 != 2) return true;
+
+    // 0098CA5A: the name by version; major > 6 and major == 6 are separate tests.
+    if (v.major_04 > 6) s += "Higher than Microsoft Windows Vista ";
+    if (v.major_04 == 6) {
+        s += "Microsoft Windows Vista ";
+    } else if (v.major_04 == 5) {
+        if (v.minor_08 == 2) s += "Microsoft Windows Server 2003, ";
+        else if (v.minor_08 == 1) s += "Microsoft Windows XP ";
+        else if (v.minor_08 == 0) s += "Microsoft Windows 2000 ";
+    } else if (v.major_04 <= 4) {
+        s += "Microsoft Windows NT ";
+    }
+
+    const auto build_suffix = [&]() {                          // 0098CD1C
+        s += format_build("%s (Build %d)", v.csd_version_14, v.build_0c);
+        return true;
+    };
+    const auto service_pack_6 = [&]() {                        // 0098D0FC
+        if (_stricmp(v.csd_version_14.c_str(), "Service Pack 6") != 0) return build_suffix();
+        if (calls.reg_open_hklm("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Hotfix\\Q246009")) {
+            char buffer[0x800];
+            std::snprintf(buffer, sizeof buffer, "Service Pack 6a (Build %d)",
+                          static_cast<unsigned>(v.build_0c & 0xFFFFu));
+            s += buffer;
+        } else {
+            s += format_build("%s (Build %d)", v.csd_version_14, v.build_0c);
+        }
+        calls.reg_close();                                     // also after a failed open
+        return true;
+    };
+    const auto tail = [&]() {                                  // 0098D0F3: CMP major, 4
+        return v.major_04 == 4 ? service_pack_6() : build_suffix();
+    };
+
+    if (have_ex) {
+        const std::uint8_t suite = static_cast<std::uint8_t>(v.suite_mask_98);
+        if (v.product_type_9a == 1) {                          // VER_NT_WORKSTATION
+            if (v.major_04 == 4) {
+                s += "Workstation 4.0 ";
+                return service_pack_6();
+            }
+            s += (v.suite_mask_98 & 0x200) != 0 ? "Home Edition " : "Professional ";
+            return tail();
+        }
+        if (v.product_type_9a != 3 && v.product_type_9a != 2) return tail();
+        if (v.major_04 == 5 && v.minor_08 == 2) {
+            if ((suite & 0x80) != 0) s += "Datacenter Edition ";        // TEST AL, AL; JNS
+            else if ((suite & 0x02) != 0) s += "Enterprise Edition ";
+            else if (v.suite_mask_98 == 0x400) s += "Web Edition ";      // CMP AX, 400h
+            else s += "Standard Edition ";
+            return build_suffix();
+        }
+        if (v.major_04 == 5 && v.minor_08 == 0) {
+            if ((suite & 0x80) != 0) s += "Datacenter Server ";
+            else if ((suite & 0x02) != 0) s += "Advanced Server ";
+            else s += "Server ";
+            return build_suffix();
+        }
+        // 0098CF10: every other server version, Vista included.
+        if ((v.suite_mask_98 & 0x02) != 0) {
+            s += "Server 4.0, Enterprise Edition ";
+        } else {
+            s += "Server 4.0 ";
+        }
+        return tail();
+    }
+
+    // 0098CF69: no OSVERSIONINFOEX; the product type from the registry.
+    if (!calls.reg_open_hklm("SYSTEM\\CurrentControlSet\\Control\\ProductOptions")) return false;
+    std::string type;
+    std::uint32_t length = 0x50;
+    if (!calls.reg_query_string("ProductType", type, length)) return false;
+    if (length > 0x50) return false;                           // the key stays open
+    calls.reg_close();
+    if (_stricmp("WINNT", type.c_str()) == 0) s += "Workstation ";
+    if (_stricmp("LANMANNT", type.c_str()) == 0) s += "Server ";
+    if (_stricmp("SERVERNT", type.c_str()) == 0) s += "Advanced Server ";
+    char buffer[0x800];
+    std::snprintf(buffer, sizeof buffer, "%d.%d ", static_cast<int>(v.major_04), static_cast<int>(v.minor_08));
+    s += buffer;
+    return tail();
+}
+
+void download_manager_scan_content_00995690(std::vector<ContentScanRecord>& records,
+                                            std::vector<std::string>& folders_20,
+                                            std::vector<std::string>& names_2c, bool& busy_1c,
+                                            ContentScanCalls& calls)
+{
+    folders_20.clear();
+    names_2c.clear();
+    // Function-scope strings: a skipped record reuses the previous record's folder and name.
+    std::string folder;   // [ESP+24h]
+    std::string name;     // [ESP+1Ch]
+    for (std::size_t i = 0; i < records.size(); ++i) {
+        ContentScanRecord& rec = records[i];
+        rec.damaged_12 = calls.verify_installed_package(i) != 0;
+        if (rec.listed_10 && !rec.mounted_11) {
+            const std::string wide_path = calls.content_path_low_bytes(i);
+            folder = wide_path + "\\content";
+            name.clear();
+            void* directory = calls.vfs_mount_00be1890(calls.compose_path_00994770(folder), ".", -10, 1, -1);
+            std::vector<std::string> listing = calls.directory_list_14(directory, "", "", 1);
+            bool found = false;
+            while (!listing.empty() && !found) {
+                const std::string& entry = listing.back();
+                calls.log_004254b0(std::to_string(static_cast<std::int32_t>(i)) + "    " + entry);  // "%d    %s"
+                // strstr(entry, "") == entry holds for any non-empty buffer; then ".mpkg".
+                if (!entry.empty()) {
+                    const std::size_t at = entry.find(".mpkg");
+                    const std::int32_t index = at == std::string::npos ? -1 : static_cast<std::int32_t>(at);
+                    // size - 5: a four-character name without ".mpkg" also matches (-1 == 4 - 5).
+                    if (index == static_cast<std::int32_t>(entry.size()) - 5) {
+                        rec.package_08 = entry.substr(entry.size() - 12, 7);  // 00469840(size - 0Ch, 7)
+                        name = entry;
+                        calls.vfs_mount_00be1890(name, ".", -10, 0, -1);
+                        found = true;
+                        break;
+                    }
+                }
+                listing.pop_back();                            // the entry's buffer back to the pool
+            }
+            if (!rec.package_08.empty()) {
+                calls.vfs_package_found_00bdef80(rec.package_08);
+            } else {
+                calls.log_004254b0("Damaged content " + rec.title_00);  // null buffer -> 00F8A308
+                rec.damaged_12 = true;
+                calls.vfs_unmount_00be0750(calls.compose_path_00994770(calls.compose_path_00994770(wide_path)), ".");
+                calls.vfs_package_missing_00bdd020(rec.package_08);
+            }
+        }
+        rec.mounted_11 = rec.listed_10 && !rec.damaged_12;
+        if (rec.mounted_11) {
+            folders_20.push_back(folder);                       // 004CDC20
+            names_2c.push_back(name);
+        } else {
+            folders_20.emplace_back();
+            names_2c.emplace_back();
+        }
+    }
+    busy_1c = false;
+}
+
+void update_fish_school_00707b00(FishSchoolDescLayout& school, float dt, FishUpdateCalls& calls,
+                                 PresentationRandom& random, VectorNormalizer& normalizer)
+{
+    if (dt == 0.0f) return;                                    // UCOMISS dt, 0; JNP: equal only
+    void* model = school.model_78;
+    void* camera = calls.camera_node_19fc();
+    if (camera == nullptr) {
+        calls.set_visibility_factor_00b6da70(model, 0.0f, 0);
+        return;
+    }
+    calls.node_refresh_world_if_stale(camera);
+    if (calls.node_translation_120(camera)[1] > 0.0f) {        // COMISS [camera+124h], 0; JA
+        calls.set_visibility_factor_00b6da70(model, 0.0f, 0);
+        return;
+    }
+    calls.node_refresh_world_if_stale(model);
+    auto* fish = static_cast<float*>(school.fish_64);          // 28h records: pos, +0Ch, dir +18h, speed +24h
+    const std::array<float, 3> p = calls.transform_point_00414d10(model, fish);
+    calls.node_refresh_world_if_stale(camera);
+    const std::array<float, 3> c = calls.node_translation_120(camera);
+    const float dx = p[0] - c[0];
+    const float dy = p[1] - c[1];
+    const float dz = p[2] - c[2];
+    const float dist2 = (dx * dx + dy * dy) + dz * dz;          // y and x squared first, then z
+    if (dist2 > 90000.0f) {                                    // FCOMIP; JA (00CFD404)
+        calls.set_visibility_factor_00b6da70(model, 0.0f, 0);
+        return;
+    }
+    calls.set_visibility_factor_00b6da70(model, 1.0f, 0);
+    auto* state = reinterpret_cast<float*>(school.state_68);   // +68h timer, +6Ch target direction
+    state[0] = state[0] - dt;
+    if (!(0.0f < state[0])) respawn_fish_007077b0(school, random, normalizer);  // FCOMIP 0, timer; JB skips
+    const FishSchoolParams& prm = school.params_04;
+    const float k = calls.min_float_00415510(1.0f, prm.word_40 * dt);   // ECX = &1.0, EDX = &(+44h * dt)
+
+    float* dir0 = fish + 6;
+    const float r[3] = {state[1] - dir0[0], state[2] - dir0[1], state[3] - dir0[2]};  // 00427C90
+    for (int a = 0; a < 3; ++a) dir0[a] = k * r[a] + dir0[a];
+    normalizer.normalize_0042b260(dir0);
+    const float v0 = fish[9] * dt;
+    for (int a = 0; a < 3; ++a) fish[a] = fish[a] + v0 * dir0[a];       // 0042AEB0
+    const float up[3] = {0.0f, 1.0f, 0.0f};
+    std::array<float, 3> basis_a = calls.cross_004f9b30(up, dir0);
+    std::array<float, 3> basis_b = calls.cross_004f9b30(dir0, basis_a.data());
+    normalizer.normalize_0042b260(basis_a.data());
+    normalizer.normalize_0042b260(basis_b.data());
+
+    const auto* offsets = static_cast<const float*>(school.positions_60);
+    for (std::int32_t i = 1; i < prm.count_00; ++i) {
+        float* f = fish + i * 10;
+        const float* o = offsets + i * 3;
+        float target[3];
+        for (int a = 0; a < 3; ++a) {
+            const float t2 = o[2] * dir0[a];
+            const float t0 = o[0] * basis_a[a];
+            const float t1 = o[1] * basis_b[a];
+            target[a] = ((fish[a] + t2) + t0) + t1;
+        }
+        float u[3] = {target[0] - f[0], target[1] - f[1], target[2] - f[2]};
+        const float length = calls.length_00419440(u) + 0.005f;      // 00CEC8F8, float-exact
+        for (float& x : u) x = x / length;                            // DE FA, D8 F1, D8 7C
+        float* dir = f + 6;
+        for (int a = 0; a < 3; ++a) dir[a] = dir[a] + k * (u[a] - dir[a]);  // DE EA: u - dir
+        normalizer.normalize_0042b260(dir);
+        float speed_target = prm.word_38 + (length / 5.0f) * (prm.word_3c - prm.word_38);
+        if (speed_target > prm.word_3c) speed_target = prm.word_3c;   // FCOMIP; JBE keeps it
+        f[9] = f[9] + (speed_target - f[9]) * k;
+        const float step = f[9] * dt;
+        for (int a = 0; a < 3; ++a) f[a] = f[a] + step * dir[a];
+    }
+}
+
 }  // namespace bsp::engine_seg11_35_66_cc13

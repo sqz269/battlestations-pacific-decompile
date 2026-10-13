@@ -865,6 +865,41 @@ void nose_art_load_textures_007fa2d0(void* (&textures_104)[3], ProfileCheckpoint
 // 007F8690, __cdecl(const uint32 record[3]): message E3h, applied locally on the server or sent.
 void send_nose_art_selection_007f8690(const std::uint32_t (&record)[3], ProfileCheckpointHost& host);
 
+// 007FB520, __thiscall(ECX = profile, std::vector<long>* out), RET 4 (no caller found by xref):
+// for the unlock set +70h, then the pending set +7Ch, in tree order, every name whose first 11
+// characters equal "DL_Content_" (__stricmp, equal length) pushes _atol of the rest. A null
+// substring buffer falls back to 00F8745C (.bss, zero-fill, so "").
+void collect_content_ids_007fb520(const ProfileUnlockState& profile, std::vector<std::int32_t>& out);
+
+// 007FC490, __thiscall(ECX = profile, out, const NativeString* name), RET 8: 007FBED0 finds or
+// inserts the name in the checkpoint map +94h, 00437490 copy-constructs the 14h record into out.
+struct ProfileCheckpointRecord {
+    std::uint32_t words[3]{};
+    std::string text_0c{};
+};
+struct ProfileCheckpointMapHost {
+    virtual ~ProfileCheckpointMapHost() = default;
+    virtual ProfileCheckpointRecord& checkpoint_find_or_insert_007fbed0(const std::string& name) = 0;
+};
+ProfileCheckpointRecord checkpoint_get_copy_007fc490(ProfileCheckpointMapHost& host,
+                                                     const std::string& name);
+
+// 007FCD90, __thiscall(ECX = profile = game+650h, bool keep_earned), RET 4; sole caller
+// BSP_RewardsScreen_Enter (0062C5A7, pushes 0). Walks a copy of the commit record's (004B4750,
+// 00593CA0) +6Ch string->int tree and updates the profile's case-insensitive map +A0h:
+//   - keep_earned false and 0090C000 says the key's badge is earned: map[key] += value;
+//   - otherwise, a key other than "RANK" whose badge is not earned: map[key] = value;
+//   - "RANK" (non-null buffer, __stricmp): map["RANK"] = value when value > map["RANK"];
+//   - anything else is left alone.
+struct RankAwardHost {
+    virtual ~RankAwardHost() = default;
+    // 0090C000 on [game+21A0h] with the key by value.
+    virtual bool badge_earned_0090c000(const std::string& key) = 0;
+};
+void evaluate_rank_award_007fcd90(UnlockCounterMap& awards_a0,
+                                  const std::vector<std::pair<std::string, std::int32_t>>& record_6c,
+                                  bool keep_earned, RankAwardHost& host);
+
 // 007FFB50, __fastcall(ECX = const NativeString*): the first record of the race table (00F87464/68)
 // whose name +8h equals it (equal length, then empty or __stricmp), or null. Checked iterators.
 RaceRecord* race_records_find_by_name_007ffb50(const RaceRecordTable& table, const std::string& name);
@@ -924,14 +959,29 @@ void gui_layer_save_backup_00ac5820(void* layer, const std::string& layer_name_1
 // Segment 49: the rain model (vtable 00D08D58, allocated from the 532-byte pool 00800EC0).
 // ===================================================================================================
 
+// One 14h element of the +184h vector, written by the build (008023B0): a column centre and the
+// two quad extents.
+struct RainColumn {
+    float x_00{0.0f};
+    float y_04{0.0f};
+    float z_08{0.0f};
+    float width_0c{0.0f};
+    float height_10{0.0f};
+};
+
 // The part past the generated-model base. refs_1ac are six counted references (+1ACh..+1C0h);
-// +1B8h and +1C0h are point effects.
+// +1B8h and +1C0h are point effects. +1C4h..+1F7h is a copy of the 34h descriptor (008019A0):
+// name, then words +1CCh..+1F4h.
 struct RainModelFields {
-    std::vector<std::uint8_t> vector_188{};  // +188h..+190h, POD (only _free on destruction)
+    std::vector<RainColumn> vector_188{};    // +184h object, +188h..+190h, POD (only _free on destruction)
+    float position_194[3]{};                  // +194h..+19Ch, set by the build from the camera
+    float vector_1a0[3]{};                    // +1A0h..+1A8h, zeroed by the build
     void* refs_1ac[6]{};
     std::string name_1c4{};
+    float descriptor_1cc[5]{};                // +1CCh..+1DCh: count, +0Ch..+18h of the descriptor
     float direction_1e0[3]{};                 // +1E0h..+1E8h, the rain direction
     float drop_1ec{0.0f};                     // +1ECh, scales the node's +110h row
+    float box_radius_1f0{0.0f};               // +1F0h, the shader's "box_radius"
     std::uint32_t color_1f4{0};
     float offset_1f8[3]{};
     float position_204[3]{};
@@ -1027,6 +1077,73 @@ struct RainEmitterHost : RainModelHost {
 void rain_emitter_step_00801400(RainModelFields& f, float dt, float camera_altitude_4,
                                 RainEmitterHost& host);
 
+// The calls of the rain build (008023B0) beyond the emitter host. Renderer calls are the vtable
+// slots of [00F8D394]; buffer and stream objects are refcounted (release = InterlockedDecrement
+// of +4h, slot 0 at zero).
+struct RainModelRef {
+    void* object{nullptr};             // the pool slot (vtable 00D08D58)
+    RainModelFields* fields{nullptr};  // its +184h.. part
+};
+struct RainBuildHost : RainEmitterHost {
+    // 00800EC0 on the pool 00F87478, then 00802250 with the name "RainModel" when the slot is
+    // non-null. The native does not test the result before 008019A0.
+    virtual RainModelRef allocate_rain_model_00800ec0(const std::string& name) = 0;
+    // 00BD2F10 with ECX = 0: U(lo, hi) on stream 0, the shared gameplay stream (census sites
+    // 00802507..0080266D, 008029B0, 008029D1). The image shares stream 0 here; a host that wires
+    // the build in must give it a separate presentation stream or keep it behind an OFF switch.
+    virtual float random_uniform_00bd2f10_stream0(float lo, float hi) = 0;
+    virtual void* mesh_allocate_construct_00b73b60_bc() = 0;      // 00B73B60(BCh), 00B73D70
+    virtual void generated_model_set_geometry_00b75170(void* model, std::uint32_t slot, void* mesh,
+                                                       float a, float b) = 0;
+    virtual void geometry_set_bounds_00b72650(void* mesh, const float sphere[4]) = 0;
+    virtual void* renderer_vertex_format_38(const std::string& name) = 0;
+    virtual void* renderer_vertex_buffer_5c(std::uint32_t vertices, std::uint32_t flag, void* format) = 0;
+    virtual void* renderer_index_buffer_60(std::uint32_t indices, std::uint32_t flag,
+                                           std::uint32_t format) = 0;
+    virtual void* renderer_vertex_declaration_40(void* format, std::uint32_t word_10) = 0;
+    virtual void* renderer_texture_by_name_64(const std::string& name, std::uint32_t flag) = 0;
+    virtual void geometry_set_vertex_stream_00b73bb0(void* mesh, std::uint32_t index, void* stream) = 0;
+    virtual void geometry_set_index_stream_00b73b70(void* mesh, void* stream) = 0;
+    virtual std::uint16_t* index_buffer_lock_0c(void* buffer) = 0;    // vtable +0Ch(0, 0, 0)
+    virtual void index_buffer_unlock_10(void* buffer) = 0;            // vtable +10h
+    virtual float* vertex_buffer_lock_10(void* buffer) = 0;           // vtable +10h(0, 0, 0)
+    virtual void vertex_buffer_unlock_14(void* buffer) = 0;           // vtable +14h
+    virtual void store_vertex_count_00f87474(std::uint32_t count) = 0;
+    virtual std::uint32_t vertex_count_00f87474() = 0;
+    virtual void* material_create_00535320(const std::string& shader) = 0;
+    virtual float* lightning_intensity_010909b4() = 0;
+    virtual void material_register_float_00b18b20(void* material, const std::string& name,
+                                                  float* value) = 0;
+    virtual void material_register_float3_00b18ae0(void* material, const std::string& name,
+                                                   float* value) = 0;
+    virtual void material_set_texture_slot_00b189f0(void* material, std::uint32_t slot,
+                                                    void* texture) = 0;
+    virtual void* draw_section_allocate_construct_00b85ee0() = 0;     // 60h, 00B857F0
+    virtual void* geometry_vertex_stream_00b73260(void* mesh, std::uint32_t index) = 0;
+    virtual void draw_section_append_vertex_stream_00b85b80(void* section, void* stream) = 0;
+    virtual void draw_section_set_vertex_layout_00b86650(void* section, void* declaration) = 0;
+    virtual void draw_section_set_material_00b864c0(void* section, void* material) = 0;
+    virtual void geometry_append_draw_section_00b73c60(void* mesh, void* section) = 0;
+    // Plain stores to the section: +8h, +0Ch, +10h, +14h, +18h.
+    virtual void draw_section_store_words(void* section, std::uint32_t word_08, std::uint32_t word_0c,
+                                          std::uint32_t word_10, std::uint32_t word_14,
+                                          std::uint32_t word_18) = 0;
+    virtual void mesh_element_set_bounds_00b855b0(void* section, const float sphere[4]) = 0;
+    virtual void mesh_clear_draw_section_owners_00b73c10(void* mesh) = 0;
+    virtual void* scene_root_19ec() = 0;                              // [game+19ECh]
+    virtual void node_attach_root_00b6d890(void* model, void* root) = 0;
+    // 00870CD0 / 00871BA0: a retained temporary handle (the caller releases it).
+    virtual void* effect_acquire_00870cd0(std::uint32_t id, std::uint32_t flag) = 0;
+    virtual void* effect_acquire_by_name_00871ba0(const std::string& name, std::uint32_t flag) = 0;
+};
+// 008023B0, __fastcall(ECX = the 34h descriptor), returning the model (sole caller
+// BSP_WorldAtmosphere_ApplyPreset 00865900). Descriptor floats as RainModelParams words: count +8h,
+// height base +14h and spread +18h, width base +0Ch and spread +10h, direction +1Ch..+24h, box
+// radius +2Ch, colour +30h. Builds `count` quads (four vertices of 2Ch bytes,
+// "pf43ccuf42uf42uf43.mvfm", six 16-bit indices), the "rain.mshd" material and the three effect
+// references. Seven draws on shared stream 0, routed through the host.
+RainModelRef rain_emitter_build_008023b0(const RainModelParams& descriptor, RainBuildHost& host);
+
 // 007FBA30, __thiscall(record, a, b, c, const uint8* bytes, int count), RET 14h (caller: the
 // session browser filter edit 0057A910): three words at +20h..+28h, the byte list +14h (head
 // +18h, size +1Ch) emptied and refilled with `count` bytes, +2Ch = count (also when below 1).
@@ -1037,5 +1154,188 @@ struct ByteListRecord {
 };
 void byte_list_record_assign_007fba30(ByteListRecord& record, std::uint32_t a, std::uint32_t b,
                                       std::uint32_t c, const std::uint8_t* bytes, std::int32_t count);
+
+// ===================================================================================================
+// Segment 78, continued (cc13-left3): the movie widget's loaded hook.
+// ===================================================================================================
+
+// A vertex buffer's colour element as 00AAE770 writes it: base +8h, stride +0Ch, and either a
+// packed colour offset +34h (>= 0) or four float channel offsets +38h..+44h.
+struct GuiQuadVertexColorLayout {
+    std::int32_t packed_offset_34{-1};
+    std::int32_t channel_offsets_38[4]{};
+    std::uint32_t stride_0c{0};
+};
+struct GuiMovieLoadedHookHost {
+    virtual ~GuiMovieLoadedHookHost() = default;
+    virtual void deactivate_and_refresh_bounds_00aa7170(void* widget) = 0;
+    // [00F8AEFC] vtable +4h with the byte widget+F4h: the movie player, stored at +F0h.
+    virtual void* movie_player_00f8aefc_4(std::uint8_t index_f4) = 0;
+    virtual bool movie_player_virtual_44(void* player) = 0;
+    virtual void* generated_model_4c(void* widget) = 0;
+    virtual void* mesh_allocate_construct_00b73b60_bc() = 0;
+    virtual void generated_model_set_geometry_00b75170(void* model, std::uint32_t slot, void* mesh,
+                                                       float a, float b) = 0;
+    virtual void release(void* object) = 0;                // InterlockedDecrement(+4h), slot 0 at zero
+    virtual void* renderer_vertex_format_38(const std::string& name) = 0;
+    virtual void* renderer_vertex_buffer_5c(std::uint32_t vertices, std::uint32_t flag, void* format) = 0;
+    virtual void* renderer_index_buffer_60(std::uint32_t indices, std::uint32_t flag,
+                                           std::uint32_t format) = 0;
+    virtual void geometry_set_vertex_stream_00b73bb0(void* mesh, std::uint32_t index, void* stream) = 0;
+    virtual void geometry_set_index_stream_00b73b70(void* mesh, void* stream) = 0;
+    virtual std::uint16_t* index_buffer_lock_0c(void* buffer, std::uint32_t count) = 0;  // (count, 0, 0)
+    virtual void index_buffer_unlock_10(void* buffer) = 0;
+    virtual void vertex_buffer_lock_10(void* buffer, std::uint32_t count) = 0;          // (count, 0, 0)
+    virtual void vertex_buffer_unlock_14(void* buffer) = 0;
+    virtual GuiQuadVertexColorLayout vertex_color_layout(void* buffer) = 0;
+    virtual void vertex_store_dword(void* buffer, std::uint32_t vertex, std::int32_t offset,
+                                    std::uint32_t value) = 0;
+    virtual void vertex_store_float(void* buffer, std::uint32_t vertex, std::int32_t offset, float value) = 0;
+    virtual void* draw_section_create_00533fa0() = 0;
+    virtual void* material_create_00535320(const std::string& shader) = 0;
+    virtual void draw_section_store_words(void* section, std::uint32_t word_08, std::uint32_t word_0c,
+                                          std::uint32_t word_10, std::uint32_t word_14,
+                                          std::uint32_t word_18) = 0;
+    virtual void widget_virtual_58(void* widget) = 0;      // vtable +58h with widget+20h
+    virtual void widget_virtual_50(void* widget) = 0;      // vtable +50h with widget+50h
+    virtual void draw_section_set_material_00b864c0(void* section, void* material) = 0;
+    virtual void draw_section_rebuild_vertex_layout_00b865a0(void* section, void* mesh) = 0;
+    virtual void geometry_append_draw_section_00b73c60(void* mesh, void* section) = 0;
+    virtual void set_source_00aae320(void* widget, std::uint32_t loop) = 0;  // (&widget+FCh, 1)
+};
+// 00AAE770, __fastcall(ECX = widget), plain RET; vtable 00D5C270 slot 30. Stores the player at
+// +F0h; unless +74h is set or the player's vtable +44h answers true, it builds a one-quad mesh
+// ("SimpleColor.mvfm", four white vertices, indices 0 1 2 0 2 3, "guidefault.mshd"). Then, when
+// the source string +FCh is non-empty (size word non-zero), 00AAE320 with loop 1.
+void gui_movie_loaded_hook_00aae770(void* widget, void*& player_f0, bool flag_74,
+                                    std::uint32_t source_size_fc, std::uint8_t index_f4,
+                                    GuiMovieLoadedHookHost& host);
+
+// 00AB4CE0, __thiscall(ECX = anim icon, const NativeString* prefix), RET 4; vtable 00D5BCE0 slot
+// 27. For each 40h frame record of +F4h..+F8h it builds prefix + "." + i + ":" + name(+4h) + "(" +
+// texture name(+0h, 00B33E40) + ")" and destroys it unused; then the base 00AAA0F0(prefix). The
+// returned list is the strings the image builds and drops.
+struct GuiAnimIconFrame {
+    void* texture_00{nullptr};
+    std::string name_04{};
+};
+struct GuiAnimIconVisitHost {
+    virtual ~GuiAnimIconVisitHost() = default;
+    virtual std::string texture_name_00b33e40(void* texture) = 0;
+    virtual void visit_child_paths_00aaa0f0(const std::string& prefix) = 0;
+};
+std::vector<std::string> gui_anim_icon_visit_child_paths_00ab4ce0(
+    const std::vector<GuiAnimIconFrame>& frames_f4, const std::string& prefix,
+    GuiAnimIconVisitHost& host);
+
+// The widget calls the segment-78 layout bodies make. Sizes and positions come back as the floats
+// the native reads through the returned pointer.
+struct GuiLayoutHost {
+    virtual ~GuiLayoutHost() = default;
+    virtual std::array<float, 2> widget_size_00aa6740(void* widget) = 0;
+    virtual std::array<float, 3> widget_resolved_position_00aa6750(void* widget) = 0;
+    virtual std::array<float, 3> widget_local_position_00aa67f0(void* widget) = 0;
+    virtual void widget_set_local_xy_00aa7d00(void* widget, float x, float y) = 0;
+    virtual void widget_set_local_y_00aa78f0(void* widget, float y) = 0;
+    virtual void widget_set_local_position_00aa7dc0(void* widget, const float xyz[3]) = 0;
+    virtual void* widget_parent_70(void* widget) = 0;                  // [widget+70h]
+    virtual void widget_virtual_58(void* widget, const std::array<float, 2>& size) = 0;
+    virtual void widget_virtual_30(void* widget, void* source) = 0;    // with source+18h
+    virtual std::int32_t widget_virtual_5c(void* widget) = 0;          // 3 = text
+    virtual void widget_virtual_34(void* widget, std::uint32_t visible) = 0;
+    virtual void widget_virtual_50(void* widget, const float rect[4]) = 0;
+    virtual float text_normalized_height_00ab6bd0(void* text) = 0;
+    // 00AC06C0, ECX widget, EDX size out, stack (offset out, padding float[2], float).
+    virtual void measure_padded_relative_bounds_00ac06c0(void* widget, float size[2], float offset[2],
+                                                         const float padding[2], float extra) = 0;
+    virtual GuiFrameBoxBorderIconLayout border_icon_layout_00ab6cb0(void* widget) = 0;
+    // (short)[[widget+108h]+14h], or 0 when the font is null.
+    virtual std::int32_t text_font_height_108(void* widget) = 0;
+    virtual void* widget_find_child_00aa7e00(void* widget, const std::string& name, std::uint32_t flag) = 0;
+    // 00AC0970's vertex work: vtable +A0h gives the stream; +10h(0,0,0) locks, +14h unlocks.
+    virtual void* widget_vertex_stream_a0(void* widget) = 0;
+    virtual void stream_lock_10(void* stream) = 0;
+    virtual void stream_unlock_14(void* stream) = 0;
+    virtual std::array<float, 3> stream_read_position_004768d0(void* stream, std::uint32_t index) = 0;
+    // A plain store at base +8h + index * stride +0Ch + position offset +10h.
+    virtual void stream_store_position(void* stream, std::uint32_t index, const float xyz[3]) = 0;
+    virtual void* widget_generated_model_4c(void* widget) = 0;
+    virtual void* generated_model_geometry_00b74640(void* model, std::uint32_t index) = 0;
+    virtual void* mesh_element_00b732c0(void* geometry, std::uint32_t index) = 0;
+    virtual void draw_section_rebuild_vertex_layout_00b865a0(void* section, void* geometry) = 0;
+};
+
+// 00AC0970, __stdcall(widget, float w, float h), RET 0Ch (ECX unused; callers load the layout
+// object into it). A size below 0 other than -1.0 (00D7A260, UCOMISS) hides the widget (vtable
+// +34h(0)). Otherwise it shows it (+34h(1)), locks the vtable +A0h stream and, for w > 0, moves
+// vertices 1 and 3 to x = w unless vertex 1 already has it; for h > 0, vertices 2 and 3 get
+// y = 0.75 * h ([00E12FF0], .data, only two literal readers and no literal writer) unless the
+// y of vertex 2 equals h. Then unlock and rebuild the first draw section's vertex layout.
+void gui_frame_box_set_icon_extent_00ac0970(void* widget, float w, float h, GuiLayoutHost& host);
+
+// The layout object of 00AC0610/00AC0BD0/00AC10A0 (vtables 00D5C980/00D5C984): +4h the icon
+// widget, +8h the text-icon container, +0Ch/+10h the extra size, +14h..+30h the eight border
+// pieces UL, U, UR, L, R, BL, B, BR.
+struct GuiFrameBoxLayout {
+    void* icon_04{nullptr};
+    void* container_08{nullptr};
+    float extra_0c{0.0f};
+    float extra_10{0.0f};
+    void* pieces_14[8]{};
+};
+// 00AC0610, __thiscall(layout, widget source, unused), RET 8: the icon goes to source's
+// resolved position relative to the icon's parent, takes source's size (vtable +58h) and
+// +18h (vtable +30h), and is placed at that offset minus half of +0Ch/+10h.
+void gui_frame_box_place_border_icon_00ac0610(const GuiFrameBoxLayout& layout, void* source,
+                                              GuiLayoutHost& host);
+// 00AC0BD0, __thiscall(layout, widget), RET 4; vtable 00D5C980 slot 1: the icon's height is
+// h = (the widget's height, or for text 00AB6BD0) + extra_10; extent (-1, h * 4/3 (00CF5750)); then
+// icon y = widget y + (icon height - h) * 0.5 - h / 6.0 (00CE6628).
+void gui_text_icon_pair_layout_00ac0bd0(const GuiFrameBoxLayout& layout, void* widget,
+                                        GuiLayoutHost& host);
+// 00AC10A0, __thiscall(layout, widget), RET 4: measures the widget with padding (0.04, 0.02)
+// (00CE3910, 00CE9BAC) and lays out the eight pieces around it, then places the icon (00AC0610).
+// For a text widget (vtable +5Ch == 3) the container follows the icon at z +-0.1 and, when the
+// widget's border flag +15Ch is set, the container's eight named children are laid out the same
+// way, shifted by the font height / 720 * +164h, and given the +168h rect (vtable +50h).
+void gui_frame_box_layout_border_icons_00ac10a0(const GuiFrameBoxLayout& layout, void* widget,
+                                                GuiLayoutHost& host);
+
+// 00AB9240, __thiscall(ECX = text, uint index), RET 4: the text cursor quad.
+struct GuiGlyphMetrics {
+    std::int16_t bearing_10{0};
+    std::uint16_t advance_12{0};
+    std::uint16_t width_14{0};
+};
+struct GuiTextCursorFields {
+    std::uint32_t length_ec{0};
+    const std::uint16_t* glyphs_f0{nullptr};  // null -> 00F8BE50
+    void* font_108{nullptr};
+    std::uint32_t mode_17c{0};
+    std::uint32_t index_180{0};
+    void* cursor_model_184{nullptr};
+    float x_start_18c{0.0f};
+    float x_190{0.0f};
+    float advance_scale_1d8{0.0f};
+};
+struct GuiTextCursorHost {
+    virtual ~GuiTextCursorHost() = default;
+    virtual void ensure_cursor_model_00ab8910(void* text) = 0;
+    virtual std::uint16_t empty_glyph_00f8be50() = 0;
+    virtual GuiGlyphMetrics font_select_glyph_00ad4480(void* font, std::uint16_t ch) = 0;
+    virtual std::int16_t font_height_14(void* font) = 0;
+    virtual float vertical_scale_00e12fd4() = 0;          // .data, image value 0.75
+    virtual void* cursor_vertex_stream(void* model) = 0;  // 00B74640(0), 00B73260(0)
+    virtual void stream_lock_10(void* stream) = 0;
+    virtual void stream_unlock_14(void* stream) = 0;
+    virtual GuiQuadVertexColorLayout vertex_color_layout(void* stream) = 0;
+    virtual void stream_store_position(void* stream, std::uint32_t index, const float xyz[3]) = 0;
+    virtual void stream_store_uv_28(void* stream, std::uint32_t index, const float uv[2]) = 0;
+    virtual void vertex_store_dword(void* stream, std::uint32_t index, std::int32_t offset,
+                                    std::uint32_t value) = 0;
+    virtual void vertex_store_float(void* stream, std::uint32_t index, std::int32_t offset, float value) = 0;
+};
+void gui_text_position_cursor_00ab9240(void* text, GuiTextCursorFields& f, std::uint32_t index,
+                                       GuiTextCursorHost& host);
 
 }  // namespace bsp::cc13_seg49_64_78
