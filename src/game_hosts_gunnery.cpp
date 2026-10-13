@@ -277,6 +277,26 @@ constexpr bool kTurningGunFireClearsRequestBound = false;
 //    vy < -sqrt(2 * MaxFall * 9.81) (00855AAE..00855AD3, 9.81 the double at
 //    00CF9058). The host applied only the MaxWaterHitVel limit. OFF: as before.
 constexpr bool kTorpedoMaxFallBreakupBound = false;
+//  * kTorpedoSwimDepthHomingBound: packet cc9_g40_torpedo_swim (lead items 2b
+//    and 3; docs/CC13_GPR_53.md 1.2, 1.3, 1.6; docs/TORPEDO_TICK.md). The
+//    swimming torpedo runs the faithful 00857480 (torpedo_swim_00857480 with
+//    00856BB0, kTorpedoHomingYawPairBound) in 3D instead of the horizontal
+//    kTorpedoSwimThrustBound swim: the nose levels (forward.y * (1 - 3 dt)),
+//    the depth controller drives vy toward swimdepth + 15/15 * surface within
+//    +/-5 m/s, the heading controller turns about the up row, and a class with
+//    HomingHorzTurnSpeed > 0 (Fido) scans the owner side's +DE8h list once per
+//    +514h = 1 s (phase -U(0, 1), 00856132) for the nearest IsKindOf(8) and,
+//    with HomingVertTurnSpeed > 0 and the boat below 00852820's depth, turns
+//    in pitch and bearing and skips both controllers. The thrust 008576C6 is
+//    along the 3D forward row. The entry keeps its vy (006E6450); the surface
+//    hold is not applied. Rotations: 0085E880 turns forward then up about the
+//    row by 0085C3F0 (Rodrigues, axis x perp) and re-runs 0085DC80.
+//    SUBSTITUTIONS, labelled: swimdepth is 00856050's -2.5 for every launch;
+//    0072C970's 00852410 prediction (a submarine firing at a submarine) is
+//    counted, not modelled (the unit host does not export the boat's dive
+//    state); the +74h matrix starts from the entry velocity's direction; the
+//    wake tail and the 008E6430 modifiers (1) are not modelled. OFF: as before.
+constexpr bool kTorpedoSwimDepthHomingBound = false;
 //  * kTorpedoSwimThrustBound: packet cc9_torpedo_tube_turn,
 //    docs/TORPEDO_FRIENDLY_CROSSING.md section 6. 00857480, the swim advance,
 //    per step on a torpedo in the water: 00856BB0 -> 00857061 yaws the NOSE
@@ -1757,6 +1777,7 @@ struct GameGunneryHost::Impl {
         tail_gunner_error = 26, // 008FFCD9 / 008FFD05 offsets, 008FFD37 period, key (gun, 0)
         damage_smoke = 21,    // 008227E0's respawn draws, key (unit, slot * 2 [+1 for stream 0])
         plane_crash_blast = 27, // 0084BAD0's blast for a plane's crash shot (007C0910), key (plane, 0)
+        torpedo_scan_phase = 28, // 00856132, -U(0, 1) into record+518h, stream 1, key (shot serial, 0)
     };
     unsigned long long next_projectile_serial{0};
     static bool rng_streams_enabled() {
@@ -1797,6 +1818,22 @@ struct GameGunneryHost::Impl {
     // torpedo's nose yaw, keyed by the shot's serial. The velocity follows it.
     std::map<unsigned long long, float> torpedo_nose_yaw;
     unsigned long long torpedo_thrust_steps{0};
+    // Packet cc9_g40_torpedo_swim (kTorpedoSwimDepthHomingBound): the faithful
+    // swim 00857480 / 00856BB0 per swimming torpedo, keyed by the shot's serial.
+    // `m` is the record's +74h matrix (no parent, so local and world agree).
+    struct TorpedoSwimRuntime {
+        bsp::BombMatrix4x3 m{};
+        bsp::TorpedoSwimState st{};
+        std::size_t target_plus_one{0};   // record+510h, observer-bound (00694A60)
+    };
+    std::map<unsigned long long, TorpedoSwimRuntime> torpedo_swim_by_serial;
+    unsigned long long torpedo_swim3d_starts{0}, torpedo_swim3d_steps{0},
+        torpedo_homing_scans{0}, torpedo_homing_binds{0}, torpedo_homing_turn_steps{0},
+        torpedo_sub_vs_sub_launches{0};
+    double torpedo_swim3d_depth_sum{0.0};
+    unsigned long long torpedo_swim3d_depth_samples{0};
+    void torpedo_swim3d_start(GameProjectileRow& shot);
+    void torpedo_swim3d_step(GameProjectileRow& shot, float dt);
     unsigned long long wave_order_pre_steps{0};
     // Packet cc9_aa_bot_fire_tests: 008FFA20's +58h / +59h / +5Ch per gun.
     struct TailGunnerFire {
@@ -4595,6 +4632,10 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                     gun.bullet_class, "MaxFall", 0.0f);
                 b.heading_turn = lua.read_bullet_class_number(
                     gun.bullet_class, "HeadingTurn", 0.0f);
+                b.homing_horz_turn_speed = lua.read_bullet_class_number(
+                    gun.bullet_class, "HomingHorzTurnSpeed", 0.0f);     // 008566B0
+                b.homing_vert_turn_speed = lua.read_bullet_class_number(
+                    gun.bullet_class, "HomingVertTurnSpeed", 0.0f);
                 {
                     // Packet cc13-homing1: classDesc+E0h/+D8h/+DCh for 0080A000. Read
                     // for every class; only a released rocket uses them.
@@ -8154,6 +8195,10 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             if (shot.flight.class_disables_gravity) ++no_gravity_shots;
         }
         if constexpr (kDepthChargeInWaterBound) depth_charge_activate_006fd9b0(shot, g);
+        if (kTorpedoSwimDepthHomingBound && torpedo_gun && have_target
+            && units.unit_is_kind_of(owner_unit, 8) && units.unit_is_kind_of(target, 8)) {
+            ++torpedo_sub_vs_sub_launches;   // 0072C970 would predict 00852410's depth
+        }
         if (kPlayerTorpedoGroupFireBound && kTorpedoGyroHeadingBound && torpedo_gun
             && gun.player_order_heading != 10000.0f) {
             // Packet cc9_player_torpedo_group: 00856637 installs the player's
@@ -8927,6 +8972,181 @@ bool GameGunneryHost::Impl::depth_charge_advance_006fcd20(GameProjectileRow& sho
     return true;
 }
 
+// Packet cc9_g40_torpedo_swim (kTorpedoSwimDepthHomingBound). The record a
+// swimming torpedo carries into 00857480: 00856050's defaults (swimdepth -2.5
+// at 00D0C314, +514h = 1.0, +518h = -U(0, 1) on stream 1 at 00856132) and
+// 00857780's rates (dragfront 0.59999943, dragside 3.0000007, depthsmoothrate
+// = waverate = 15). LABELLED: the +74h matrix is seeded from the entry
+// velocity's direction (the air pose is not tracked), with world up
+// orthogonalised by 0085DC80.
+void GameGunneryHost::Impl::torpedo_swim3d_start(GameProjectileRow& shot) {
+    TorpedoSwimRuntime& r = torpedo_swim_by_serial[shot.serial];
+    const float vx = shot.flight.velocity.x, vy = shot.flight.velocity.y,
+        vz = shot.flight.velocity.z;
+    const float len = std::sqrt(vx * vx + vy * vy + vz * vz);
+    float m16[16] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+    if (len > 0.0f) {
+        m16[8] = vx / len;
+        m16[9] = vy / len;
+        m16[10] = vz / len;
+    }
+    bsp::orthonormalize_pose_matrix_0085dc80(m16);
+    r.m.right = {m16[0], m16[1], m16[2]};
+    r.m.up = {m16[4], m16[5], m16[6]};
+    r.m.forward = {m16[8], m16[9], m16[10]};
+    r.m.translation = {shot.position[0], shot.position[1], shot.position[2]};
+    r.st.run_time = 0.0f;
+    r.st.commanded_heading = shot.commanded_heading;             // 00856637, or 10000
+    r.st.scan_interval = 1.0f;                                   // 00856050
+    r.st.scan_countdown = -draw(Draw::torpedo_scan_phase,
+        static_cast<std::size_t>(shot.serial), 0, 0.0f, 1.0f);  // 00856132
+    r.st.swim_depth = shot.swim_depth;                           // +47Ch
+    r.st.axial_drag = 0.59999943f;                               // 00857780
+    r.st.lateral_drag = 3.0000007f;
+    r.st.depth_gain = 15.0f;
+    r.st.surface_gain = 15.0f;
+    r.st.velocity = {vx, vy, vz};
+    r.st.pose_valid = true;
+    ++torpedo_swim3d_starts;
+}
+
+void GameGunneryHost::Impl::torpedo_swim3d_step(GameProjectileRow& shot, float dt) {
+    TorpedoSwimRuntime& r = torpedo_swim_by_serial[shot.serial];
+    const GameBulletClassRow* round = bullet(shot.bullet_class);
+    struct Swim final : bsp::TorpedoSwimHost {
+        Impl& h;
+        GameProjectileRow& shot;
+        TorpedoSwimRuntime& r;
+        Swim(Impl& host, GameProjectileRow& s, TorpedoSwimRuntime& rt)
+            : h(host), shot(s), r(rt) {}
+        static void rotate(bsp::BombVector3& v, const bsp::BombVector3& k, float a) {
+            // 0085C3F0: v = (v.k)k + cos(a)(v - (v.k)k) + sin(a)(k x perp),
+            // unchanged when |perp|^2 < 1e-4 ([00D7A268]).
+            const float d = v.x * k.x + v.y * k.y + v.z * k.z;
+            const bsp::BombVector3 par{k.x * d, k.y * d, k.z * d};
+            const bsp::BombVector3 p{v.x - par.x, v.y - par.y, v.z - par.z};
+            if (p.x * p.x + p.y * p.y + p.z * p.z < 9.999999747378752e-05f) return;
+            const bsp::BombVector3 c{k.y * p.z - k.z * p.y, k.z * p.x - k.x * p.z,
+                                     k.x * p.y - k.y * p.x};
+            const float cs = std::cos(a), sn = std::sin(a);
+            v = {cs * p.x + par.x + sn * c.x, cs * p.y + par.y + sn * c.y,
+                 cs * p.z + par.z + sn * c.z};
+        }
+        void rotate_rows(const bsp::BombVector3 axis, float a) {
+            // 0085E880: forward (+20h) then up (+10h) about the axis, then 0085DC80.
+            rotate(r.m.forward, axis, a);
+            rotate(r.m.up, axis, a);
+            orthonormalize(r.m);
+        }
+        void refresh_world_pose() override {}
+        void orthonormalize(bsp::BombMatrix4x3& m) override {
+            float m16[16] = {m.right.x, m.right.y, m.right.z, 0, m.up.x, m.up.y, m.up.z, 0,
+                m.forward.x, m.forward.y, m.forward.z, 0, 0, 0, 0, 1};
+            bsp::orthonormalize_pose_matrix_0085dc80(m16);
+            m.right = {m16[0], m16[1], m16[2]};
+            m.up = {m16[4], m16[5], m16[6]};
+            m.forward = {m16[8], m16[9], m16[10]};
+        }
+        void rotate_about_right(float a) override { rotate_rows(r.m.right, a); }
+        void rotate_about_up(float a) override { rotate_rows(r.m.up, a); }
+        void* acquire_nearest_target() override {
+            // 00856C31..00856D6B: the owner side's +DE8h list, IsKindOf(8) only,
+            // the smallest squared distance (004193E0) wins.
+            ++h.torpedo_homing_scans;
+            r.target_plus_one = 0;
+            const auto* t = h.recon_triples_for(shot.owner_side);
+            if (t == nullptr) return nullptr;
+            float best = 0.0f;
+            std::size_t pick = 0;
+            for (const std::size_t i : t->lists[1]) {
+                if (i >= h.unit_state.size() || h.unit_state[i].dead) continue;
+                if (!h.units.unit_is_kind_of(i, 8)) continue;
+                float x = 0.0f, y = 0.0f, z = 0.0f;
+                h.units.unit_position_00fc(i, x, y, z);
+                const float dx = x - shot.position[0], dy = y - shot.position[1],
+                    dz = z - shot.position[2];
+                const float d2 = dx * dx + dy * dy + dz * dz;
+                if (pick == 0 || best > d2) {
+                    best = d2;
+                    pick = i + 1;
+                }
+            }
+            return pick == 0 ? nullptr : reinterpret_cast<void*>(pick);
+        }
+        void* current_target() override {
+            const std::size_t t = r.target_plus_one;
+            if (t == 0 || t - 1 >= h.unit_state.size() || h.unit_state[t - 1].dead) {
+                r.target_plus_one = 0;                   // 00694A60's observer drop
+                return nullptr;
+            }
+            return reinterpret_cast<void*>(t);
+        }
+        void bind_target(void* target) override {
+            r.target_plus_one = reinterpret_cast<std::size_t>(target);
+            if (r.target_plus_one != 0) ++h.torpedo_homing_binds;
+        }
+        bool target_is_homing_kind(void* target) override {
+            return h.units.unit_is_kind_of(reinterpret_cast<std::size_t>(target) - 1, 8);
+        }
+        bool target_suppresses_homing(void* target) override {
+            // 00852820: y > (band1 + band0) / 3.0, the boat is above its
+            // depth-charge depth.
+            const std::size_t i = reinterpret_cast<std::size_t>(target) - 1;
+            float x = 0.0f, y = 0.0f, z = 0.0f;
+            h.units.unit_position_00fc(i, x, y, z);
+            float band0 = 0.0f, band1 = -20.0f;                  // 00E0B578 defaults
+            h.units.submarine_band_y(i, 0, band0);
+            h.units.submarine_band_y(i, 1, band1);
+            return !bsp::ship_ai_attackmove_altitude_gate_00852860(y, band1, band0);
+        }
+        void direction_to_pitch_yaw(const bsp::BombVector3& d, float& pitch,
+                                    float& yaw) override {
+            // 00521370: asin(clamp(d.y)) and atan2(d.x, d.z).
+            pitch = std::asin(std::max(-1.0f, std::min(1.0f, d.y)));
+            yaw = std::atan2(d.x, d.z);
+        }
+        bsp::BombVector3 direction_to_target(void* target) override {
+            // 00856DCA: normalize(target+FCh - record+FCh) through 00419510.
+            float x = 0.0f, y = 0.0f, z = 0.0f;
+            h.units.unit_position_00fc(reinterpret_cast<std::size_t>(target) - 1, x, y, z);
+            bsp::BombVector3 d{x - shot.position[0], y - shot.position[1],
+                               z - shot.position[2]};
+            const float l = std::sqrt(d.x * d.x + d.y * d.y + d.z * d.z);
+            if (l > 0.0f) d = {d.x / l, d.y / l, d.z / l};
+            return d;
+        }
+        float sample_water_height(float x, float z) override {
+            return kGunneryLiveWaterSurfaceBound
+                ? bsp::ocean_live_field_water_height_0078cf20(x, z) : 0.0f;
+        }
+        float gameplay_modifier(int) override { return 1.0f; }
+        bsp::BombMatrix4x3 world_matrix() override { return r.m; }
+        bsp::BombMatrix4x3 local_matrix() override { return r.m; }
+        void set_local_matrix(const bsp::BombMatrix4x3& m) override { r.m = m; }
+    } host(*this, shot, r);
+    bsp::TorpedoSwimClass cls;
+    cls.heading_turn_degrees = round != nullptr ? round->heading_turn : 0.0f;
+    cls.homing_horz_turn_speed = round != nullptr ? round->homing_horz_turn_speed : 0.0f;
+    cls.homing_vert_turn_speed = round != nullptr ? round->homing_vert_turn_speed : 0.0f;
+    r.m.translation = {shot.position[0], shot.position[1], shot.position[2]};
+    r.st.velocity = {shot.flight.velocity.x, shot.flight.velocity.y, shot.flight.velocity.z};
+    bsp::torpedo_swim_00857480(r.st, cls, host, dt);
+    if (r.target_plus_one != 0) ++torpedo_homing_turn_steps;   // steps with a bound target
+    // 008576C6..0085775D: + forward * record+470h * dt (the 008E6430(0Eh)
+    // modifier taken as 1).
+    const float thrust = round != nullptr ? round->swim_speed : 0.0f;
+    r.st.velocity.x += r.m.forward.x * thrust * dt;
+    r.st.velocity.y += r.m.forward.y * thrust * dt;
+    r.st.velocity.z += r.m.forward.z * thrust * dt;
+    shot.flight.velocity.x = r.st.velocity.x;
+    shot.flight.velocity.y = r.st.velocity.y;
+    shot.flight.velocity.z = r.st.velocity.z;
+    shot.commanded_heading = r.st.commanded_heading;
+    ++torpedo_swim3d_steps;
+    torpedo_swim3d_depth_sum += shot.position[1];
+    ++torpedo_swim3d_depth_samples;
+}
+
 void GameGunneryHost::Impl::run_projectiles(float dt) {
     for (GameProjectileRow& shot : shots) {
         if (!shot.alive) continue;
@@ -8936,7 +9156,9 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
             if (depth_charge_advance_006fcd20(shot, dt)) continue;
         }
         if (shot.swimming) shot.swim_seconds += dt;   // 0085748A, record+488h += dt
-        if (kTorpedoSwimThrustBound && shot.swimming) {
+        if (kTorpedoSwimDepthHomingBound && shot.swimming) {
+            torpedo_swim3d_step(shot, dt);
+        } else if (kTorpedoSwimThrustBound && shot.swimming) {
             // 00857480 steps 4 and 5 and its tail, horizontally.
             const GameBulletClassRow* round = bullet(shot.bullet_class);
             auto nose_it = torpedo_nose_yaw.find(shot.serial);
@@ -9040,9 +9262,10 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
             shot.flight.velocity.z += shot.bomb_drift[2] * dt;
             ++bomb_drift_steps;
         }
-        if (kGunneryLiveWaterSurfaceBound && shot.swimming) {
+        if (kGunneryLiveWaterSurfaceBound && shot.swimming && !kTorpedoSwimDepthHomingBound) {
             // 00856BB0: the depth controller samples 0078CF20 at +FCh/+104h every
-            // swim step. LABELLED: held at its surface equilibrium.
+            // swim step. LABELLED: held at its surface equilibrium. Under
+            // kTorpedoSwimDepthHomingBound the controller itself runs instead.
             shot.flight.local_position.y = bsp::ocean_live_field_water_height_0078cf20(
                 shot.flight.local_position.x, shot.flight.local_position.z);
         }
@@ -9512,15 +9735,23 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
                     shot.flight.velocity.x = vx / horizontal * swim;
                     shot.flight.velocity.z = vz / horizontal * swim;
                 }
-                shot.flight.velocity.y = 0.0f;
+                // kTorpedoSwimDepthHomingBound: 006E6450 keeps the whole entry
+                // velocity, and 00856BB0's depth controller takes vy from here.
+                if (!kTorpedoSwimDepthHomingBound) shot.flight.velocity.y = 0.0f;
                 // kGunneryLiveWaterSurfaceBound: the surface is where the trace
                 // put the round; OFF, the y = 0 plane.
                 const float level_y = kGunneryLiveWaterSurfaceBound
                     ? bsp::ocean_live_field_water_height_0078cf20(shot.position[0], shot.position[2])
                     : 0.0f;
-                shot.position[1] = level_y;
-                shot.flight.local_position.y = level_y;
-                shot.flight.snapshot_current.y = level_y;
+                // Under kTorpedoSwimDepthHomingBound a round launched under water
+                // (from y <= 0, kSubmergedTorpedoLaunchSwimBound) keeps its depth:
+                // there is no crossing to bisect.
+                if (!kTorpedoSwimDepthHomingBound || from[1] > 0.0f) {
+                    shot.position[1] = level_y;
+                    shot.flight.local_position.y = level_y;
+                    shot.flight.snapshot_current.y = level_y;
+                }
+                if (kTorpedoSwimDepthHomingBound) torpedo_swim3d_start(shot);
                 ++summary.torpedo_swims_started;
                 if (trace) {
                     log.notef("  torpedo trace %llu swim_started life=%.2f "
@@ -13904,6 +14135,17 @@ void GameGunneryHost::report() {
             host.torpedo_swims_kept_entry
                 ? host.torpedo_entry_speed_sum / static_cast<double>(host.torpedo_swims_kept_entry)
                 : 0.0);
+        host.log.notef("summary mission gunnery torpedo swim 3d bound=%d starts=%llu steps=%llu "
+            "mean_y=%.2f homing scans=%llu binds=%llu target_steps=%llu sub_vs_sub=%llu "
+            "(00857480 / 00856BB0 / 0072C970, packet cc9_g40_torpedo_swim)",
+            kTorpedoSwimDepthHomingBound ? 1 : 0, host.torpedo_swim3d_starts,
+            host.torpedo_swim3d_steps,
+            host.torpedo_swim3d_depth_samples
+                ? host.torpedo_swim3d_depth_sum
+                    / static_cast<double>(host.torpedo_swim3d_depth_samples)
+                : 0.0,
+            host.torpedo_homing_scans, host.torpedo_homing_binds,
+            host.torpedo_homing_turn_steps, host.torpedo_sub_vs_sub_launches);
         host.log.notef("summary mission gunnery bullet throw cone=%llu fan=%llu zero=%llu "
             "mean_magnitude_deg=%.4f mean_angle_deg=%.4f seats aa=%llu tail=%llu flak=%llu "
             "torpedo=%llu depth=%llu artillery=%llu pilot=%llu none=%llu bound=%d "

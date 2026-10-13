@@ -13434,3 +13434,49 @@ torpedo rows MaxFall 50..100 (limit 31.3..44.3 m/s; two rows have 1400). The OFF
 | ESMP08 | `fall breakups=0`; exit 0 or 1 |
 
 A non-zero count would mean a drop from far above the authored release height (a plane hit or diving at release).
+
+## 210. The faithful 3D torpedo swim with depth keeping and Fido homing: `kTorpedoSwimDepthHomingBound`, OFF (lead queue items 2b and 3; cc9-gunnery40, 2026-10-13)
+
+**Why one switch.** The host swim (`kTorpedoSwimThrustBound`) is horizontal: the round is levelled onto the surface
+and has no swimdepth, depth controller or homing. A 00852410 depth (item 2b) has nothing to drive without the vertical
+half of `00856BB0`, which the Fido homing (item 3) also needs. So both are one binding of the existing faithful model
+`torpedo_swim_00857480` / `torpedo_steer_00856bb0` (`src/bomb_torpedo_tick.cpp`, with `kTorpedoHomingYawPairBound` ON).
+
+**Image read for the wiring.** `0072C970` (listing via `bsp.py show`): for a gun whose owner `IsKindOf(8)`, with a
+target link `+39Ch`, category 7 and a target that casts to a submarine, it returns `00852410(target sub,
+|pos(sub) - pos(gun)| / class+E4h)`; otherwise `-2.5` (`00D0C314`). So only a submarine firing at a submarine gets a
+predicted depth. `0085E880` rotates the forward row (`+20h`) and then the up row (`+10h`) about the given axis through
+`0085C3F0` and re-runs `0085DC80`. `0085C3F0` is Rodrigues with `axis x perp` (the units host's reading at
+`src/game_hosts_units.cpp` 00952340). That convention is internally consistent with `00856BB0`: the fallback
+`rotate_about_right(own_pitch)` levels the nose, and the heading controller's `-wrap(yaw - cmd)` turns toward `cmd`.
+The thrust tail `008576C6..0085775D` multiplies the 3D forward row (stack copy `+5Ch..+64h` of the `+74h` matrix) by
+`+470h * dt`; it is gated on `[00E0C978]` and `[[00F88C30]+130h]`, taken as set as the existing swim does.
+
+**Host.** Per swimming torpedo: the record defaults of `00856050` / `00857780` (swimdepth -2.5, scan interval 1.0,
+countdown `-U(0, 1)` keyed `Draw::torpedo_scan_phase` (shot, 0), drag 0.59999943 / 3.0000007, both gains 15), a
+`+74h` matrix seeded from the entry velocity and `0085DC80`, then `torpedo_swim_00857480` plus the 3D thrust every
+step. The entry keeps its vy; the surface hold and the snap are skipped for a round launched under water. Homing
+candidates are the owner side's published enemy list (`recon_triples_for(side)->lists[1]`, the host's `+DE8h`),
+`IsKindOf(8)` and alive, nearest by squared distance. `00852820` is the class-arms test
+(`ship_ai_attackmove_altitude_gate_00852860`). Counters: `summary mission gunnery torpedo swim 3d`.
+**Substitutions (labelled):** every launch uses -2.5 (sub-vs-sub launches are counted as `sub_vs_sub`, not
+predicted; the boat's dive state is not exported by the units host); the matrix is seeded from the velocity, not
+the air pose; the 008E6430 modifiers are 1; the wake tail is not modelled.
+
+**Fido in this installation.** Only `Torpedo Fido Homing Airplane` (realistic bulletclasses.lua line 101, 2025-06-02)
+has the homing rates. The only mission script that names it is `jm12.lua` (`ShowHint("IJN12_Fido")` when the
+Avenger is sent at the surfaced player boat). JM06 logs in this tree show `torpedo_drop drops=0`, so JM06 tests
+depth keeping, not homing.
+
+**Predictions, written before any ON run.**
+
+| row | prediction ON |
+| --- | --- |
+| all | `mean_y` near -2.5 (the equilibrium is swimdepth + surface); `starts` = OFF `swims_started` |
+| USN02 s36_u2_p7 | `scans=0`; torpedo hits within +-25% of OFF; exit 3; win kept unless the hull sweep misses at -2.5 m |
+| JM06 s46_j6_m | `scans=0`; `sub_vs_sub` reported (expected 0); exit 3 |
+| ESMP08 | 70 drops swim at depth; exit 3; result unchanged (lost) |
+| JM12 (no orders) | if the Avenger drops on the surfaced boat: `scans > 0`, `binds > 0`; with the boat surfaced 00852820 suppresses the turns, so the heading controller steers to the bearing |
+
+A torpedo-hit collapse on USN02 or JM06 would mean the host's hull sweep does not reach 2.5 m below the waterline.
+That would be a host geometry gap, not a reason to keep the surface swim.
