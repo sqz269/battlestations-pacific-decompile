@@ -262,7 +262,7 @@ inline constexpr bool kLuaAAEnableBound = true;  // ON: identity pairs (docs/LUA
 // 008135C0 (the jam bytes +9E4h / +9E5h, Explosion, Periscope); 00953DA0 /
 // 00953E60 are the base pair (InferiorFailure, +720h). True: both rows run on the
 // gunnery and units hosts. False: unimplemented, nil.
-inline constexpr bool kLuaSetFailureBound = false;
+inline constexpr bool kLuaSetFailureBound = true;  // ON: n1 pairs (GUNNERY 197-199, cc9-gunnery38)
 inline constexpr bool kLuaSetShipSpeedBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
 // Packet cc9_unit_get_attack_target (docs/LUA_BINDING_MISSION.md, "UnitGetAttackTarget,

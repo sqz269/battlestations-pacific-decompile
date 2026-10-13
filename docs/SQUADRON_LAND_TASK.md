@@ -15733,3 +15733,16 @@ All with `BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`, 8000 frames.
 - **Verdict: the mechanism matches on all three switches.** The kamikaze task strikes and dies with its crash
   class, the drop carriers release Ohkas that strike with class 98, and the crash class of ordinary planes (99)
   acts on mid-air and low-pass contacts as the image's sweep would.
+- **Flipped (lead's verdict, 2026-10-12):** `kKamikazeTaskBound`, `kDropKamikazeTaskBound` and `kPlaneCrashSweepBound`
+  ON, faithful by mechanism, with `kLuaSetFailureBound` ON in the same commit (n1, GUNNERY 197-199, cc9-gunnery38).
+- **Open: TroopTrans3's 0-damage c98** (K4, 1545.88 s). The sweep hit its mesh, but the blast loop reached no unit:
+  the hull-box distance from the burst centre exceeded 30 m, or the transport's box extents are zero. Not read.
+- **Open: the 16 m storage crash.** `Enterprise_sqn01|.-3` is an F6F-class fighter (type 810) in the dogfight task.
+  It launched from Enterprise at 71.75 s, killed `plane #1.6` at 294.40 s, then lost its target ("target -> none
+  (empty squadron)") and went aim -> follow. It took two Zao1 flak blasts (health 221 -> 141.6) and was still alive
+  in free flight (state 7) at 16 m over land when its wing point (point 2) crossed `Storage - Raktar03 01` at
+  (-8161, 11, -8736). So no torpedo run, dive pull-out or take-off is involved: a live fighter following at 16 m
+  over a land structure. The image's terrain avoidance (`0099F1C0` `BSP_PilotBot_AvoidTerrain`) and the follow
+  law's command altitude would normally hold a fighter well above that. The host's follow altitude after a
+  target loss is the suspect: a **plane-lane altitude defect candidate**, not established. The crash itself is
+  the image's rule once the plane is there.
