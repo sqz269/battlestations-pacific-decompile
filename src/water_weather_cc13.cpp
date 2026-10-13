@@ -6,8 +6,14 @@
 
 #include "bsp/allocator_list.hpp"
 #include "bsp/native_resource_cache_leaves.hpp"
+#include "bsp/random.hpp"
 #include "bsp/random_threads.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/native_physical_file_date.hpp"
+#include "bsp/native_physical_index_tree.hpp"
+#include "bsp/native_vfs_container_allocation.hpp"
+#include "bsp/native_vfs_open_logging.hpp"
+#include "bsp/sound_stream_runtime.hpp"
 #include <cmath>
 #include <cstdio>
 #include <cstring>
@@ -4215,6 +4221,1090 @@ void* w3_ocean_height_generator_construct_derived_00bb3ab0(void* generator, void
         w2_ref_release(&held);
     }
     return generator;
+}
+
+}  // namespace bsp::water_weather_cc13
+
+// ================================================================================================
+// Part g (cc13-left2, docs/CC13_LEFT_2.md)
+// ================================================================================================
+namespace bsp::water_weather_cc13 {
+namespace {
+
+struct W4_Header {
+    std::uint32_t length;
+    char* data;
+};
+
+void w4_release(void* header, NativeStringStorage& strings) {
+    auto& h = *static_cast<W4_Header*>(header);
+    if (h.data != nullptr) strings.release(h.data, h.length + 1u);
+}
+
+// 0041E870 on a raw header: zero, strlen, resize preserving, copy length + 1 into the current data.
+void w4_assign_cstring(void* header, const char* text, NativeStringStorage& strings) {
+    auto& h = *static_cast<W4_Header*>(header);
+    h = {0, nullptr};
+    resize_native_string_header_0041dd40(&h, strings, static_cast<std::uint32_t>(std::strlen(text)), true);
+    if (h.data != nullptr) std::memcpy(h.data, text, h.length + 1u);
+}
+
+// Append a header's bytes to out when its length is nonzero (resize preserving, copy length bytes).
+void w4_append_header(void* out, const W4_Header& source, NativeStringStorage& strings) {
+    const std::uint32_t length = source.length;
+    if (length == 0) return;
+    auto& o = *static_cast<W4_Header*>(out);
+    const std::uint32_t previous = o.length;
+    resize_native_string_header_0041dd40(&o, strings, previous + length, true);
+    std::memcpy(o.data + previous, source.data, length);
+}
+
+// The inlined literal append of 00BD23E0: a temporary {0, 0} resized to the literal length (preserving),
+// the literal copied with its terminator, appended when nonempty, released.
+void w4_append_literal(void* out, const char* text, NativeStringStorage& strings) {
+    W4_Header temporary{0, nullptr};
+    resize_native_string_header_0041dd40(&temporary, strings, static_cast<std::uint32_t>(std::strlen(text)), true);
+    if (temporary.data != nullptr) std::memcpy(temporary.data, text, temporary.length + 1u);
+    w4_append_header(out, temporary, strings);
+    w4_release(&temporary, strings);
+}
+
+void w4_invalid(const SingletonLifetimeCallbacks& callbacks) { callbacks.invalid_parameter(callbacks.context); }
+
+void* w4_head(const W4_AssertionRecord* record) noexcept { return record->tree_head; }
+void* w4_tree(const W4_AssertionRecord* record) noexcept {
+    return const_cast<std::uint32_t*>(&record->tree_allocator);
+}
+const W4_Header& w4_node_key(void* node) noexcept { return w3_field<W4_Header>(node, 0x0C); }
+const W4_Header& w4_node_value(void* node) noexcept { return w3_field<W4_Header>(node, 0x14); }
+
+// 004263B0 on raw headers: out = copy of prefix (the 00BD2390 shape), then the "%d" text of value
+// (004260B0, a 52-byte buffer) appended through a temporary that is released.
+void* w4_concat_int_004263b0(const void* prefix, void* out, std::int32_t value, NativeStringStorage& strings) {
+    w3_native_string_copy_construct_into_00bd2390(prefix, out, strings);
+    char buffer[52];
+    std::snprintf(buffer, sizeof buffer, "%d", value);
+    w4_append_literal(out, buffer, strings);
+    return out;
+}
+
+}  // namespace
+
+void* w4_string_tree_allocate_node_00485f50() { return allocate_native_tree_node_00bdaba0(); }
+
+void w4_string_tree_iterator_increment_00480620(void* iterator, const SingletonLifetimeCallbacks& callbacks) {
+    advance_native_physical_index_00bd9860(iterator, callbacks);
+}
+
+void w4_string_tree_erase_subtree_00494ef0(void* tree, void* root, NativeStringStorage& strings) noexcept {
+    destroy_native_physical_index_subtree_00bdf7a0(tree, root, strings);
+}
+
+void* w4_string_tree_erase_iterator_00494c30(void* tree, void* output, void* owner, void* node,
+                                             NativeStringStorage& strings, const SingletonLifetimeCallbacks& callbacks) {
+    return erase_native_physical_index_iterator_00bdfd80(tree, output, owner, node, strings, callbacks);
+}
+
+void* w4_string_tree_erase_range_0049a230(void* tree, void* output, void* first_owner, void* first_node,
+                                          void* last_owner, void* last_node, NativeStringStorage& strings,
+                                          const SingletonLifetimeCallbacks& callbacks) {
+    return erase_native_physical_index_range_00be0c30(tree, output, first_owner, first_node, last_owner, last_node,
+                                                      strings, callbacks);
+}
+
+W4_AssertionRecord* w4_assertion_record_construct_00bd29c0(W4_AssertionRecord* record, const char* expression,
+                                                          NativeStringStorage& strings) {
+    record->file_length = 0;
+    record->file_data = nullptr;
+    w4_assign_cstring(&record->expression_length, expression, strings);
+    void* const head = w4_string_tree_allocate_node_00485f50();
+    record->tree_head = head;
+    w3_field<std::uint8_t>(head, 0x1D) = 1;
+    w3_field<void*>(record->tree_head, 4) = record->tree_head;
+    w3_field<void*>(record->tree_head, 0) = record->tree_head;
+    w3_field<void*>(record->tree_head, 8) = record->tree_head;
+    record->tree_size = 0;
+    record->message_length = 0;
+    record->message_data = nullptr;
+    record->level = 1;
+    return record;
+}
+
+void w4_assertion_record_destroy_00bd2a50(W4_AssertionRecord* record, NativeStringStorage& strings,
+                                          const SingletonLifetimeCallbacks& callbacks) {
+    w4_release(&record->message_length, strings);
+    void* output[2]{};
+    void* const tree = w4_tree(record);
+    w4_string_tree_erase_range_0049a230(tree, output, tree, w3_field<void*>(record->tree_head, 0), tree,
+                                        record->tree_head, strings, callbacks);
+    singleton_lifetime_free(record->tree_head);
+    record->tree_head = nullptr;
+    record->tree_size = 0;
+    w4_release(&record->expression_length, strings);
+    w4_release(&record->file_length, strings);
+}
+
+void* w4_assertion_record_format_context_00bd23e0(const W4_AssertionRecord* record, void* out,
+                                                  NativeStringStorage& strings,
+                                                  const SingletonLifetimeCallbacks& callbacks) {
+    auto& o = *static_cast<W4_Header*>(out);
+    o = {0, nullptr};
+    void* const tree = w4_tree(record);
+    void* iterator[2]{tree, w3_field<void*>(w4_head(record), 0)};
+    for (;;) {
+        if (iterator[0] == nullptr || iterator[0] != tree) w4_invalid(callbacks);
+        if (iterator[1] == w4_head(record)) break;
+        w4_append_literal(out, "<", strings);
+        if (iterator[0] == nullptr) w4_invalid(callbacks);
+        if (iterator[1] == w3_field<void*>(iterator[0], 4)) w4_invalid(callbacks);
+        w4_append_header(out, w4_node_key(iterator[1]), strings);
+        w4_append_literal(out, "=", strings);
+        if (iterator[1] == w3_field<void*>(iterator[0], 4)) w4_invalid(callbacks);
+        w4_append_header(out, w4_node_value(iterator[1]), strings);
+        w4_append_literal(out, "> ", strings);
+        w4_string_tree_iterator_increment_00480620(iterator, callbacks);
+    }
+    w4_append_header(out, *reinterpret_cast<const W4_Header*>(&record->message_length), strings);
+    return out;
+}
+
+void* w4_assertion_record_format_report_00bd2760(const W4_AssertionRecord* record, void* out,
+                                                 NativeStringStorage& strings,
+                                                 const SingletonLifetimeCallbacks& callbacks,
+                                                 const char* null_format_01090ab4) {
+    alignas(4) unsigned char builder[0x18];
+    construct_native_log_builder_004264a0(builder, strings);
+    static constexpr const char* kLevels[] = {"WARNING", "DEBUG", "ERROR", "FATAL"};
+    if (record->level >= 0 && record->level <= 3) {
+        append_native_log_cstring_00bd1a60(builder, kLevels[record->level], strings);
+    }
+    void* b = append_native_log_cstring_00bd1a60(builder, " level assertion failed\n", strings);
+    b = append_native_log_cstring_00bd1a60(builder, "Expression: ", strings);
+    b = append_native_log_header_00bd1a20(b, &record->expression_length, strings);
+    append_native_log_cstring_00bd1a60(b, "\n", strings);
+    b = append_native_log_cstring_00bd1a60(builder, "File: ", strings);
+    b = append_native_log_header_00bd1a20(b, &record->file_length, strings);
+    b = append_native_log_cstring_00bd1a60(b, " (", strings);
+    b = append_native_log_int_00bd1bb0(b, record->line, strings, null_format_01090ab4);
+    append_native_log_cstring_00bd1a60(b, ")\n", strings);
+    append_native_log_header_00bd1a20(builder, &record->message_length, strings);
+    void* const tree = w4_tree(record);
+    void* iterator[2]{tree, w3_field<void*>(w4_head(record), 0)};
+    for (;;) {
+        if (iterator[0] == nullptr || iterator[0] != tree) w4_invalid(callbacks);
+        if (iterator[1] == w4_head(record)) break;
+        if (iterator[0] == nullptr) w4_invalid(callbacks);
+        if (iterator[1] == w3_field<void*>(iterator[0], 4)) w4_invalid(callbacks);
+        if (iterator[1] == w3_field<void*>(iterator[0], 4)) w4_invalid(callbacks);
+        b = append_native_log_cstring_00bd1a60(builder, "\t", strings);
+        b = append_native_log_header_00bd1a20(b, &w4_node_key(iterator[1]), strings);
+        b = append_native_log_cstring_00bd1a60(b, ": ", strings);
+        b = append_native_log_header_00bd1a20(b, &w4_node_value(iterator[1]), strings);
+        append_native_log_cstring_00bd1a60(b, "\n", strings);
+        w4_string_tree_iterator_increment_00480620(iterator, callbacks);
+    }
+    w3_native_string_copy_construct_into_00bd2390(builder, out, strings);
+    destroy_native_log_builder_00425f80(builder, strings);
+    return out;
+}
+
+void w4_error_reporter_fail_with_location_00bd2b30(W4_AssertionRecord* record, const W4_FailCalls& calls,
+                                                   NativeStringStorage& strings,
+                                                   const SingletonLifetimeCallbacks& callbacks) {
+    if (calls.handler_01090ab8 != nullptr) {
+        W4_Header text{};
+        w4_assertion_record_format_context_00bd23e0(record, &text, strings, callbacks);
+        calls.handler_01090ab8(&text);
+        w4_release(&text, strings);
+    } else {
+        W4_Header close{}, line_label{}, file_label{}, file{}, context{};
+        W4_Header with_label{}, with_file{}, with_line_label{}, with_line{}, report{};
+        w4_assign_cstring(&close, ")", strings);
+        w4_assign_cstring(&line_label, "\", line: ", strings);
+        w4_assign_cstring(&file_label, " (file: \"", strings);
+        w3_native_string_copy_construct_into_00bd2390(record, &file, strings);
+        w4_assertion_record_format_context_00bd23e0(record, &context, strings, callbacks);
+        concatenate_native_string_headers_004261a0(&context, &with_label, &file_label, strings);
+        concatenate_native_string_headers_004261a0(&with_label, &with_file, &file, strings);
+        concatenate_native_string_headers_004261a0(&with_file, &with_line_label, &line_label, strings);
+        w4_concat_int_004263b0(&with_line_label, &with_line, record->line, strings);
+        concatenate_native_string_headers_004261a0(&with_line, &report, &close, strings);
+        calls.reporter_fail_00bf1f50(calls.reporter_singleton_00bd2180(), &report);
+        for (W4_Header* h : {&report, &with_line, &with_line_label, &with_file, &with_label, &context, &file,
+                             &file_label, &line_label, &close}) {
+            w4_release(h, strings);
+        }
+    }
+    w4_assertion_record_destroy_00bd2a50(record, strings, callbacks);
+}
+
+}  // namespace bsp::water_weather_cc13
+
+namespace bsp::water_weather_cc13 {
+namespace {
+
+// Release a reference slot when non-null and clear it (the "release and clear" step before a store).
+void w4_release_clear(void*& slot) {
+    if (slot != nullptr) {
+        w2_release_object(slot);
+        slot = nullptr;
+    }
+}
+
+// operator new (00BF55BE) of count * size, saturated to FFFFFFFFh when the product overflows (SETO/NEG/OR).
+void* w4_new_saturated(std::uint32_t count, std::uint32_t size) {
+    const std::uint64_t bytes = static_cast<std::uint64_t>(count) * size;
+    return w3_new(bytes > 0xFFFFFFFFull ? 0xFFFFFFFFu : static_cast<std::size_t>(bytes));
+}
+
+// An x87 FILD of a DWORD the source treats as unsigned: the signed value, plus 2^32 (00CE3978) when negative.
+double w4_unsigned_to_double(std::uint32_t v) noexcept {
+    double d = static_cast<double>(static_cast<std::int32_t>(v));
+    if (static_cast<std::int32_t>(v) < 0) d += 4294967296.0;
+    return d;
+}
+
+// Model allocate (184h) and construct with a pooled name, the name released only when constructed.
+void* w4_make_model(const char* name, NativeStringStorage& strings, W3_EngineCalls& calls) {
+    void* const slot = calls.model_allocate_raw_slot_00b74eb0(0x184);
+    if (slot == nullptr) return nullptr;
+    W3_Temporary temporary(name, strings);
+    return calls.generated_model_construct_00b75030(slot, temporary.get());
+}
+
+void* w4_make_mesh(W3_EngineCalls& calls) {
+    void* const slot = calls.mesh_allocate_raw_slot_00b73b60(0xBC);
+    return slot != nullptr ? calls.mesh_construct_00b73d70(slot) : nullptr;
+}
+
+// {4n, 4n+1, 4n+2, 4n+1, 4n+3, 4n+2}: the quad index order of the beams and water particles.
+void w4_fill_quads_strip(std::uint16_t* p, std::uint32_t n) {
+    const std::uint16_t b = static_cast<std::uint16_t>(n * 4u);
+    p[0] = b;
+    p[1] = static_cast<std::uint16_t>(b + 1);
+    p[2] = static_cast<std::uint16_t>(b + 2);
+    p[3] = static_cast<std::uint16_t>(b + 1);
+    p[4] = static_cast<std::uint16_t>(b + 3);
+    p[5] = static_cast<std::uint16_t>(b + 2);
+}
+
+void* w4_root_of_owner(void* object) {
+    void* const owner = w3_field<void*>(object, 0x0C);
+    return owner != nullptr ? w3_field<void*>(owner, 8) : nullptr;
+}
+
+}  // namespace
+
+void* w4_water_spray_resource_construct_00bae2e0(void* resource, const void* definition, void* device_00f8d394,
+                                                 NativeStringStorage& strings, W4_EngineCalls& calls,
+                                                 const W4_PresentationRandom& random) {
+    w3_field<std::uint32_t>(resource, 0) = 0x00CEB130u;
+    w3_field<std::uint32_t>(resource, 4) = 1;
+    w3_field<std::uint32_t>(resource, 0) = 0x00D64094u;
+    w3_field<void*>(resource, 0x08) = nullptr;
+    w3_field<void*>(resource, 0x0C) = nullptr;
+    w3_field<std::uint32_t>(resource, 0x14) = 0;
+    w3_field<std::uint32_t>(resource, 0x18) = 0;
+    const auto counts = [definition]() { return w3_field<const std::uint32_t*>(definition, 0x3C); };
+    const auto elements = [definition]() { return w3_field<std::uint32_t>(definition, 0x40); };
+    std::uint32_t total = 0;
+    for (std::uint32_t i = 0; i < elements(); ++i) {
+        w3_field<std::uint32_t>(resource, 0x14) += counts()[i] * 4u;
+        w3_field<std::uint32_t>(resource, 0x18) += counts()[i] * 2u;
+        total += counts()[i];
+    }
+    void* declaration;
+    {
+        W3_Temporary file("waterspray.mvfm", strings);
+        declaration = w3_vcall<void*>(device_00f8d394, 0x38, file.get());
+    }
+    void* const vertices = w3_vcall<void*>(device_00f8d394, 0x5C, w3_field<std::uint32_t>(resource, 0x14), 1u,
+                                           declaration);
+    w2_release_object(declaration);
+    auto* out = w3_vcall<float*>(vertices, 0x10, 0u, 0u, 0u);
+    for (std::uint32_t i = 0; i < elements(); ++i) {
+        const float* const p = w3_field<const float*>(definition, 0x00) + i * 2u;
+        const float* const q = w3_field<const float*>(definition, 0x0C) + i * 2u;
+        const float px = p[0], py = p[1], qx = q[0], qy = q[1];
+        const float a = w3_field<const float*>(definition, 0x24)[i];
+        const float b = w3_field<const float*>(definition, 0x30)[i];
+        const float c = w3_field<const float*>(definition, 0x18)[i];
+        for (std::uint32_t j = 0; j < counts()[i]; ++j) {
+            // 00BD2F10(stream 0, -2pi, 2pi) in the image; a presentation draw here.
+            const float r = random.uniform_range_00bd2f10(random.context, -6.28318548f, 6.28318548f);
+            const float t = static_cast<float>(w4_unsigned_to_double(j) / w4_unsigned_to_double(counts()[i]));
+            const float minus_c = static_cast<float>(static_cast<double>(c) * -1.0);  // FMUL QWORD 00D7A250
+            const float corners[4][2] = {{minus_c, c}, {minus_c, minus_c}, {c, minus_c}, {c, c}};
+            for (const auto& corner : corners) {
+                const float vertex[12] = {px, 0.0f, py, corner[0], corner[1], qx, qy, a, b, 1.0f, r, t};
+                std::memcpy(out, vertex, sizeof vertex);
+                out += 12;
+            }
+        }
+    }
+    w3_vcall<void>(vertices, 0x14);
+    void* const indices = w3_vcall<void*>(device_00f8d394, 0x60, total * 6u, 1u, 0x65u);
+    auto* index = w3_vcall<std::uint16_t*>(indices, 0x0C, 0u, 0u, 0u);
+    for (std::uint32_t n = 0; n < total; ++n, index += 6) {
+        const std::uint16_t base = static_cast<std::uint16_t>(n * 4u);
+        index[1] = static_cast<std::uint16_t>(base + 1);
+        index[0] = base;
+        index[2] = static_cast<std::uint16_t>(base + 2);
+        index[3] = static_cast<std::uint16_t>(base + 2);
+        index[4] = static_cast<std::uint16_t>(base + 3);
+        index[5] = base;
+    }
+    w3_vcall<void>(indices, 0x10);
+    void* const mesh = w4_make_mesh(calls);
+    w3_field<void*>(resource, 0x08) = mesh;
+    calls.mesh_set_vertex_stream_00b73bb0(mesh, 0, vertices);
+    w2_release_object(vertices);
+    calls.mesh_set_index_stream_00b73b70(w3_field<void*>(resource, 0x08), indices);
+    w2_release_object(indices);
+    {
+        W3_Temporary effect("waterspray.mshd", strings);
+        w3_field<void*>(resource, 0x0C) = w3_vcall<void*>(device_00f8d394, 0x48, effect.get());
+    }
+    w3_field<float>(resource, 0x1C) = 0.0f;
+    w3_field<float>(resource, 0x20) = 0.0f;
+    w3_field<float>(resource, 0x24) = 0.0f;
+    w3_field<float>(resource, 0x28) = 1.0e10f;  // 00CE4970
+    {
+        W3_Temporary texture("p_bubbles_0002.dds", strings);
+        w3_field<void*>(resource, 0x10) = w3_vcall<void*>(device_00f8d394, 0x64, texture.get(), 0u);
+    }
+    return resource;
+}
+
+void w4_ocean_beams_initialize_00ba3bd0(void* beams, void* device_00f8d394, NativeStringStorage& strings,
+                                        W4_EngineCalls& calls) {
+    const std::uint32_t n = w3_field<std::uint32_t>(beams, 0x2C);
+    if (n == 0) return;
+    w3_field<std::uint32_t>(beams, 0xF8) = n * 6u;
+    w3_field<std::uint32_t>(beams, 0xF4) = n * 4u;
+    void* const texture = w3_vcall<void*>(device_00f8d394, 0x64, w3_bytes(beams) + 0x34, 0u);
+    void* material;
+    {
+        W3_Temporary effect("beam.mshd", strings);
+        material = calls.material_create_for_effect_name_00535320(effect.get());
+    }
+    calls.material_set_texture_slot_00b189f0(material, 0, texture);
+    if (texture != nullptr) w2_release_object(texture);
+    void* declaration;
+    {
+        W3_Temporary file("beam.mvfm", strings);
+        declaration = w3_vcall<void*>(device_00f8d394, 0x38, file.get());
+    }
+    W4_DeclarationList list{{declaration, nullptr, nullptr, nullptr}, 1};
+    w3_field<void*>(beams, 0x28) = w3_vcall<void*>(device_00f8d394, 0x40, &list);
+    void* const vertices = w3_vcall<void*>(device_00f8d394, 0x5C, w3_field<std::uint32_t>(beams, 0xF4), 1u,
+                                           declaration);
+    w4_release_clear(w3_field<void*>(beams, 0x24));
+    w3_field<void*>(beams, 0x24) = vertices;
+    w2_release_object(declaration);
+    void* const indices = w3_vcall<void*>(device_00f8d394, 0x60, w3_field<std::uint32_t>(beams, 0xF8), 1u, 0x65u);
+    w4_release_clear(w3_field<void*>(beams, 0x20));
+    w3_field<void*>(beams, 0x20) = indices;
+    w3_field<void*>(beams, 0x1C) = calls.draw_section_create_00533fa0();
+    calls.draw_section_set_material_00b864c0(w3_field<void*>(beams, 0x1C), material);
+    w2_release_object(material);
+    w3_field<std::uint32_t>(w3_field<void*>(beams, 0x1C), 0x08) = 4;
+    w3_field<std::uint32_t>(w3_field<void*>(beams, 0x1C), 0x0C) = 0;
+    w3_field<std::uint32_t>(w3_field<void*>(beams, 0x1C), 0x10) = w3_field<std::uint32_t>(beams, 0xF4);
+    w3_field<std::uint32_t>(w3_field<void*>(beams, 0x1C), 0x14) = 0;
+    w3_field<std::uint32_t>(w3_field<void*>(beams, 0x1C), 0x18) = w3_field<std::uint32_t>(beams, 0x2C) * 2u;
+    w3_field<void*>(beams, 0x14) = w4_make_model("UnderwaterBeam", strings, calls);
+    calls.node_propagate_root_00b6d890(w3_field<void*>(beams, 0x14), w4_root_of_owner(beams));
+    w3_field<std::uint32_t>(w3_field<void*>(beams, 0x14), 0x138) &= ~3u;
+    auto* index = w3_vcall<std::uint16_t*>(w3_field<void*>(beams, 0x20), 0x0C, 0u, 0u, 0u);
+    for (std::uint32_t i = 0; i < w3_field<std::uint32_t>(beams, 0x2C); ++i, index += 6) w4_fill_quads_strip(index, i);
+    w3_vcall<void>(w3_field<void*>(beams, 0x20), 0x10);
+    w3_field<void*>(beams, 0x18) = w4_make_mesh(calls);
+    calls.mesh_set_vertex_stream_00b73bb0(w3_field<void*>(beams, 0x18), 0, w3_field<void*>(beams, 0x24));
+    calls.mesh_set_index_stream_00b73b70(w3_field<void*>(beams, 0x18), w3_field<void*>(beams, 0x20));
+    calls.draw_section_append_vertex_stream_00b85b80(w3_field<void*>(beams, 0x1C), w3_field<void*>(beams, 0x24));
+    calls.draw_section_set_vertex_layout_00b86650(w3_field<void*>(beams, 0x1C), w3_field<void*>(beams, 0x28));
+    calls.draw_section_rebuild_layout_00b865a0(w3_field<void*>(beams, 0x1C), w3_field<void*>(beams, 0x18));
+    calls.mesh_append_draw_section_00b73c60(w3_field<void*>(beams, 0x18), w3_field<void*>(beams, 0x1C));
+    calls.generated_model_set_geometry_00b75170(w3_field<void*>(beams, 0x14), 0, w3_field<void*>(beams, 0x18),
+                                                -1.0f, -1.0f);  // 00D7A260
+    const std::uint32_t count = w3_field<std::uint32_t>(beams, 0x2C);
+    w3_field<std::uint32_t>(beams, 0xE0) = count;
+    w3_field<std::uint32_t>(beams, 0xDC) = 0;
+    w3_field<void*>(beams, 0xE4) = w4_new_saturated(count, 0x14);
+    w3_field<void*>(beams, 0xE8) = w4_new_saturated(w3_field<std::uint32_t>(beams, 0xE0), 4);
+    for (std::uint32_t i = 0; i < w3_field<std::uint32_t>(beams, 0xE0); ++i) {
+        w3_field<void**>(beams, 0xE8)[i] = w3_field<unsigned char*>(beams, 0xE4) + i * 0x14u;
+    }
+    for (std::uint32_t i = 0; i < w3_field<std::uint32_t>(beams, 0xE0); ++i) {
+        w3_field<float>(w3_field<unsigned char*>(beams, 0xE4) + i * 0x14u, 0x0C) = -1.0f;
+        w3_field<float>(w3_field<unsigned char*>(beams, 0xE4) + i * 0x14u, 0x10) = -1.0f;
+    }
+    const float x = w3_field<float>(beams, 0x7C);
+    const float y = w3_field<float>(beams, 0x80);
+    w3_field<std::uint32_t>(beams, 0xDC) = w3_field<std::uint32_t>(beams, 0xE0);
+    w3_field<float>(beams, 0xCC) = x;
+    w3_field<float>(beams, 0xD0) = y;
+    w3_field<float>(beams, 0xD4) = x > 0.0f ? static_cast<float>(1.0 / static_cast<double>(x)) : 0.0f;
+    w3_field<float>(beams, 0xD8) = y > 0.0f ? static_cast<float>(1.0 / static_cast<double>(y)) : 0.0f;
+    if (0.0f > w3_field<float>(beams, 0x50)) w3_field<float>(beams, 0x50) = 0.00999999978f;  // 00D7A238
+    w3_field<float>(beams, 0xF0) = -1.0f;
+    w3_field<float>(beams, 0xEC) = -1.0f;
+}
+
+void w4_ocean_water_particles_initialize_00ba44f0(void* particles, RandomState& state_00e13a88,
+                                                  void* device_00f8d394, NativeStringStorage& strings,
+                                                  W4_EngineCalls& calls) {
+    const std::uint32_t n = w3_field<std::uint32_t>(particles, 0x20);
+    if (n == 0) return;
+    w3_field<std::uint32_t>(particles, 0xC8) = n * 6u;
+    w3_field<std::uint32_t>(particles, 0xC4) = n * 4u;
+    void* const texture = w3_vcall<void*>(device_00f8d394, 0x64, w3_bytes(particles) + 0x28, 0u);
+    void* material;
+    {
+        W3_Temporary effect("WaterParticle.mshd", strings);
+        material = calls.material_create_for_effect_name_00535320(effect.get());
+    }
+    const std::pair<const char*, std::size_t> arrays[] = {
+        {"cVolumeSize", 0xCC}, {"cVolumeCorner", 0xDC}, {"cTex1", 0xEC}, {"cTex2", 0xFC}, {"cMyTime", 0x10C}};
+    for (const auto& [name, offset] : arrays) {
+        W3_Temporary temporary(name, strings);
+        calls.material_register_float4_array_00b18ac0(material, temporary.get(), w3_bytes(particles) + offset, 1);
+    }
+    {
+        W3_Temporary temporary("cColor", strings);
+        calls.material_register_float4_00b18aa0(material, temporary.get(), w3_bytes(particles) + 0x30);
+    }
+    calls.material_set_parameter_owner_00b18a40(material, particles, nullptr);
+    calls.material_set_texture_slot_00b189f0(material, 0, texture);
+    calls.material_set_texture_slot_00b189f0(material, 1, nullptr);
+    w2_release_object(texture);
+    void* declaration;
+    {
+        W3_Temporary file("WaterParticle.mvfm", strings);
+        declaration = w3_vcall<void*>(device_00f8d394, 0x38, file.get());
+    }
+    W4_DeclarationList list{{declaration, nullptr, nullptr, nullptr}, 1};
+    w3_field<void*>(particles, 0x1C) = w3_vcall<void*>(device_00f8d394, 0x40, &list);
+    void* const vertices = w3_vcall<void*>(device_00f8d394, 0x5C, w3_field<std::uint32_t>(particles, 0xC4), 1u,
+                                           declaration);
+    w4_release_clear(w3_field<void*>(particles, 0x18));
+    w3_field<void*>(particles, 0x18) = vertices;
+    const std::uint32_t bytes = w3_field<std::uint32_t>(declaration, 0xCC) * w3_field<std::uint32_t>(particles, 0xC4);
+    std::memset(w3_vcall<void*>(vertices, 0x10, 0u, 0u, 0u), 0, bytes);
+    w3_vcall<void>(w3_field<void*>(particles, 0x18), 0x14);
+    w2_release_object(declaration);
+    void* const indices = w3_vcall<void*>(device_00f8d394, 0x60, w3_field<std::uint32_t>(particles, 0xC8), 1u, 0x65u);
+    w4_release_clear(w3_field<void*>(particles, 0x14));
+    w3_field<void*>(particles, 0x14) = indices;
+    void* const section = calls.draw_section_create_00533fa0();
+    calls.draw_section_set_material_00b864c0(section, material);
+    w2_release_object(material);
+    w3_field<std::uint32_t>(section, 0x0C) = 0;
+    w3_field<std::uint32_t>(section, 0x08) = 4;
+    w3_field<std::uint32_t>(section, 0x10) = w3_field<std::uint32_t>(particles, 0xC4);
+    w3_field<std::uint32_t>(section, 0x14) = 0;
+    w3_field<std::uint32_t>(section, 0x18) = w3_field<std::uint32_t>(particles, 0x20) * 2u;
+    w3_field<void*>(particles, 0x10) = w4_make_model("WaterParticles", strings, calls);
+    calls.node_propagate_root_00b6d890(w3_field<void*>(particles, 0x10), w4_root_of_owner(particles));
+    auto* index = w3_vcall<std::uint16_t*>(w3_field<void*>(particles, 0x14), 0x0C, 0u, 0u, 0u);
+    for (std::uint32_t i = 0; i < w3_field<std::uint32_t>(particles, 0x20); ++i, index += 6) {
+        w4_fill_quads_strip(index, i);
+    }
+    w3_vcall<void>(w3_field<void*>(particles, 0x14), 0x10);
+    void* const mesh = w4_make_mesh(calls);
+    calls.mesh_set_vertex_stream_00b73bb0(mesh, 0, w3_field<void*>(particles, 0x18));
+    calls.mesh_set_index_stream_00b73b70(mesh, w3_field<void*>(particles, 0x14));
+    calls.draw_section_append_vertex_stream_00b85b80(section, w3_field<void*>(particles, 0x18));
+    calls.draw_section_set_vertex_layout_00b86650(section, w3_field<void*>(particles, 0x1C));
+    calls.mesh_append_draw_section_00b73c60(mesh, section);
+    w2_release_object(section);
+    calls.generated_model_set_geometry_00b75170(w3_field<void*>(particles, 0x10), 0, mesh, -1.0f, -1.0f);
+    w2_release_object(mesh);
+    w3_vcall<void*>(w3_field<void*>(particles, 0x18), 0x10, 0u, 0u, 0u);
+    const auto draw_byte = [&state_00e13a88]() -> std::uint8_t {
+        const std::uint32_t v = random_next_u32_00ba2c20(state_00e13a88);
+        const float u = static_cast<float>(w4_unsigned_to_double(v) * 2.3283064365386963e-10);  // 00D63B80
+        return static_cast<std::uint8_t>(static_cast<std::int32_t>(static_cast<double>(u) * 255.0));  // chop
+    };
+    for (std::uint32_t i = 0; i < w3_field<std::uint32_t>(particles, 0x20); ++i) {
+        const std::uint8_t b0 = draw_byte();
+        const std::uint8_t b1 = draw_byte();
+        const std::uint8_t b2 = draw_byte();
+        for (std::uint32_t k = 0; k < 4; ++k) {
+            void* const buffer = w3_field<void*>(particles, 0x18);
+            const std::uint8_t b3 = static_cast<std::uint8_t>(k << 6);
+            unsigned char* const vertex = w3_field<unsigned char*>(buffer, 8) +
+                                          (k + i * 4u) * w3_field<std::uint32_t>(buffer, 0x0C);
+            const std::int32_t packed_offset = w3_field<std::int32_t>(buffer, 0x34);
+            if (packed_offset >= 0) {
+                w3_field<std::uint32_t>(vertex, static_cast<std::uint32_t>(packed_offset)) =
+                    b2 | (static_cast<std::uint32_t>(b1) << 8) | (static_cast<std::uint32_t>(b0) << 16) |
+                    (static_cast<std::uint32_t>(b3) << 24);
+            } else {
+                const std::uint8_t channels[4] = {b0, b1, b2, b3};
+                for (std::size_t c = 0; c < 4; ++c) {
+                    w3_field<float>(vertex, w3_field<std::uint32_t>(buffer, 0x38 + c * 4)) =
+                        static_cast<float>(static_cast<double>(channels[c]) / 255.0);
+                }
+            }
+        }
+    }
+    w3_vcall<void>(w3_field<void*>(particles, 0x18), 0x14);
+}
+
+}  // namespace bsp::water_weather_cc13
+
+namespace bsp::water_weather_cc13 {
+
+void w4_water_tracer_build_skinned_mesh_00bad150(void* resource, std::uint32_t rings, float k,
+    std::uint8_t skip_curves, const W2_Array* counts, void* const* curve_b, void* const* curve_a,
+    void* device_00f8d394, NativeStringStorage& strings, W3_EngineCalls& calls, const W4_CrtMath& crt,
+    W4_TracerVertexWriter write_vertex_00baa0f0) {
+    w3_field<std::uint32_t>(resource, 0x30) += rings;
+    void* declaration;
+    {
+        W3_Temporary file("watertracerskined.mvfm", strings);
+        declaration = w3_vcall<void*>(device_00f8d394, 0x38, file.get());
+    }
+    void* const vertices = w3_vcall<void*>(device_00f8d394, 0x5C, w3_field<std::uint32_t>(resource, 0x30), 1u,
+                                           declaration);
+    w2_release_object(declaration);
+    float* const vertex_data = w3_vcall<float*>(vertices, 0x10, 0u, 0u, 0u);
+    float* out = vertex_data;
+    const auto ring_count = [counts](std::uint32_t i) { return static_cast<const std::uint32_t*>(counts->data)[i]; };
+    const float step = static_cast<float>(1.0 / static_cast<double>(static_cast<std::int32_t>(rings - 1u)));
+    float t = 0.0f;
+    std::uint32_t triangles = 0;
+    for (std::uint32_t i = 0; i < rings; ++i) {
+        float e;
+        if (k > 1.0f) {
+            const float l = static_cast<float>(crt.log_00bfa910(t));
+            const float lk = static_cast<float>(static_cast<double>(l) * k);
+            e = static_cast<float>(crt.exp_00bfeeec(lk));
+        } else {
+            e = t;
+        }
+        const float points = static_cast<float>(w4_unsigned_to_double(w3_field<std::uint32_t>(resource, 0x10) - 1u));
+        const float m = points > 1.0f ? points : 1.0f;
+        const float w = static_cast<float>(-static_cast<double>(e) * m);
+        for (std::uint32_t j = 0; j < ring_count(i); ++j) {
+            const float s = static_cast<float>(
+                (w4_unsigned_to_double(j) / static_cast<double>(static_cast<std::int32_t>(ring_count(i) - 1u)) - 0.5) *
+                2.0);
+            float product = 0.0f;
+            if (skip_curves == 0) {
+                const float magnitude = s > 0.0f ? s : -0.0f - s;
+                const double a = w3_vcall<double>(*curve_a, 8, e);
+                const double b = w3_vcall<double>(*curve_b, 8, magnitude);
+                product = static_cast<float>(b * a);
+            }
+            if (s == 0.0f) {
+                write_vertex_00baa0f0(resource, out, s, w, product, -1.0f);
+                out += 16;
+                write_vertex_00baa0f0(resource, out, s, w, product, 1.0f);
+            } else {
+                write_vertex_00baa0f0(resource, out, s, w, product, 0.0f > s ? -1.0f : 1.0f);
+            }
+            out += 16;
+        }
+        t = static_cast<float>(static_cast<double>(t) + step);
+        if (i < rings - 1u) triangles += ring_count(i) + ring_count(i + 1) - 2u;
+    }
+    void* const indices = w3_vcall<void*>(device_00f8d394, 0x60, triangles * 3u, 1u, 0x65u);
+    auto* const index_data = w3_vcall<std::uint16_t*>(indices, 0x0C, 0u, 0u, 0u);
+    std::uint16_t* index = index_data;
+    std::uint32_t a = 0;
+    std::uint32_t b = ring_count(0) + 1u;
+    for (std::uint32_t r = 0; r + 1u < rings; ++r) {
+        const std::uint32_t strip = ring_count(r) + ring_count(r + 1) - 2u;
+        std::uint32_t x = a, y = b, z = a + 1u;
+        if (strip != 0) {
+            const std::int32_t mid = static_cast<std::int32_t>(strip) / 2 - 1;
+            for (std::uint32_t n = 0; n < strip; ++n) {
+                index[0] = static_cast<std::uint16_t>(x);
+                index[1] = static_cast<std::uint16_t>(y);
+                index[2] = static_cast<std::uint16_t>(z);
+                index += 3;
+                const std::uint32_t old_y = y, old_z = z;
+                x = old_y;
+                y = old_z;
+                z = old_y + 1u;
+                if (n == static_cast<std::uint32_t>(mid)) {
+                    x = z;
+                    y = old_z + 1u;
+                    z = old_y + 2u;
+                }
+            }
+        }
+        a = a + ring_count(r) + 1u;
+        b = b + ring_count(r + 1) + 1u;
+    }
+    for (std::uint32_t q = 0; q < w3_field<std::uint32_t>(resource, 0x10); ++q) {
+        std::uint32_t counted = 0, highest = 0;
+        const float limit = static_cast<float>(static_cast<std::int32_t>(q));
+        const std::uint16_t* triangle = index_data;
+        bool stopped = false;
+        for (std::uint32_t n = 0; n < triangles && !stopped; ++n, triangle += 3) {
+            for (std::uint32_t c = 0; c < 3; ++c) {
+                const std::uint32_t idx = triangle[c];
+                if (static_cast<std::int32_t>(highest) <= static_cast<std::int32_t>(idx)) highest = idx;
+                const float* const v = vertex_data + idx * 16u;
+                if (v[4] > limit || v[5] > limit || v[6] > limit) {
+                    stopped = true;
+                    break;
+                }
+            }
+            if (!stopped) ++counted;
+        }
+        w3_field<std::uint32_t*>(resource, 0x18)[q] = static_cast<std::int32_t>(counted) > 0 ? highest + 1u : 0u;
+        w3_field<std::uint32_t*>(resource, 0x24)[q] = counted;
+    }
+    w3_vcall<void>(vertices, 0x14);
+    w3_vcall<void>(indices, 0x10);
+    void* const mesh = w4_make_mesh(calls);
+    w3_field<void*>(resource, 0x0C) = mesh;
+    calls.mesh_set_vertex_stream_00b73bb0(mesh, 0, vertices);
+    w2_release_object(vertices);
+    calls.mesh_set_index_stream_00b73b70(w3_field<void*>(resource, 0x0C), indices);
+    w2_release_object(indices);
+}
+
+void* w4_water_tracer_resource_initialize_00badc70(void* resource, const std::uint32_t* parameters,
+    void* device_00f8d394, NativeStringStorage& strings, W3_EngineCalls& calls, const W4_CrtMath& crt,
+    const W4_TracerCalls& tracer) {
+    const auto word = [parameters](std::size_t offset) { return parameters[offset / 4]; };
+    const auto real = [parameters](std::size_t offset) {
+        float f;
+        std::memcpy(&f, &parameters[offset / 4], 4);
+        return f;
+    };
+    w3_field<std::uint32_t>(resource, 0) = 0x00CEB130u;
+    w3_field<std::uint32_t>(resource, 4) = 1;
+    w3_field<std::uint32_t>(resource, 0) = 0x00D63F94u;
+    w3_field<float>(resource, 0x08) = real(0x34);
+    w3_field<void*>(resource, 0x14) = nullptr;
+    auto& first = w3_field<W2_Array>(resource, 0x18);
+    auto& second = w3_field<W2_Array>(resource, 0x24);
+    first = W2_Array{};
+    second = W2_Array{};
+    w3_field<std::uint32_t>(resource, 0x48) = word(0x0C);
+    w3_field<float>(resource, 0x4C) = real(0x38);
+    {
+        W3_Temporary effect((word(0x08) & 0xFFu) != 0 ? "watertracerstatic.mshd" : "watertracerskined.mshd", strings);
+        w3_field<void*>(resource, 0x14) = w3_vcall<void*>(device_00f8d394, 0x48, effect.get());
+    }
+    w3_field<std::uint32_t>(resource, 0x10) = word(0x00);
+    tracer.resize_00468050(first, static_cast<std::int32_t>(word(0x00)));
+    tracer.resize_00468050(second, static_cast<std::int32_t>(w3_field<std::uint32_t>(resource, 0x10)));
+    for (std::uint32_t i = 0; i < static_cast<std::uint32_t>(first.count); ++i) {
+        static_cast<std::uint32_t*>(first.data)[i] = 0;
+        static_cast<std::uint32_t*>(second.data)[i] = 0;
+    }
+    const std::uint32_t rings = w3_field<std::uint32_t>(resource, 0x10) * 2u - 2u;
+    W2_Array local{};
+    tracer.resize_00468050(local, static_cast<std::int32_t>(rings));
+    w3_field<std::uint32_t>(resource, 0x30) = 0;
+    if (rings != 0) {
+        const double step = 1.0 / w4_unsigned_to_double(rings - 1u);
+        for (std::uint32_t i = 0; i < rings; ++i) {
+            const float x = static_cast<float>(w4_unsigned_to_double(i) * step);
+            auto& count = static_cast<std::uint32_t*>(local.data)[i];
+            const float k = real(0x24);
+            if (k == 0.0f) {
+                count = word(0x20);
+            } else {
+                const float l = static_cast<float>(crt.log_00bfa910(x));
+                const float lk = static_cast<float>(static_cast<double>(l) * k);
+                const float v = static_cast<float>(crt.exp_00bfeeec(lk));
+                const float m = static_cast<float>((1.0 - static_cast<double>(v)) * w4_unsigned_to_double(word(0x20)));
+                const float bounded = m > 3.0f ? m : 3.0f;
+                float rounded = static_cast<float>(crt.floor_00bf85b0(bounded));
+                const float fraction = static_cast<float>(static_cast<double>(bounded) - rounded);
+                double value = rounded;
+                if (std::fabs(fraction) > 0.5f) value += 1.0;  // FADD QWORD 00D7A210
+                count = static_cast<std::uint32_t>(static_cast<std::int32_t>(static_cast<float>(value)));  // _ftol2
+            }
+            w3_field<std::uint32_t>(resource, 0x30) += count;
+        }
+    }
+    if ((word(0x08) & 0xFFu) != 0) {
+        tracer.build_static_mesh_00bacbd0(resource, rings, real(0x1C), 1u, &local, word(0x0C), word(0x10), word(0x14),
+                                          real(0x28), real(0x2C), real(0x30), real(0x34), real(0x38), real(0x3C),
+                                          real(0x40));
+    } else {
+        tracer.build_skinned_mesh_00bad150(resource, rings, real(0x1C), 1u, &local,
+                                           reinterpret_cast<void* const*>(static_cast<std::uintptr_t>(word(0x10))),
+                                           reinterpret_cast<void* const*>(static_cast<std::uintptr_t>(word(0x14))));
+    }
+    void* const slot = tracer.draw_section_allocate_00b85ee0(0x60);
+    void* const section = slot != nullptr ? tracer.draw_section_construct_00b857f0(slot) : nullptr;
+    w3_field<std::uint32_t>(section, 0x08) = 5;
+    for (std::size_t offset : {0x0Cu, 0x10u, 0x14u, 0x18u}) w3_field<std::uint32_t>(section, offset) = 0;
+    calls.draw_section_rebuild_layout_00b865a0(section, w3_field<void*>(resource, 0x0C));
+    calls.mesh_append_draw_section_00b73c60(w3_field<void*>(resource, 0x0C), section);
+    w2_release_object(section);
+    singleton_lifetime_free(local.data);  // 00BF6989
+    return resource;
+}
+
+}  // namespace bsp::water_weather_cc13
+
+namespace bsp::water_weather_cc13 {
+namespace {
+
+// The 9-float triangle written into a generated model's vertex stream 0 (00D0C5F8 50000.0f, 00D63AB8
+// -50000.0f), through the stream's lock (+10h with 0, 0, 0) and unlock (+14h).
+void w4_write_ocean_triangle(void* model) {
+    void* const geometry = w3_field<void*>(model, 0x180);         // 00B74640
+    void* const stream = w3_field<void*>(geometry, 0x64);         // 00B73260(0)
+    auto* const v = w3_vcall<float*>(stream, 0x10, 0u, 0u, 0u);
+    v[2] = 50000.0f;
+    v[0] = 0.0f;
+    v[1] = 0.0f;
+    v[3] = 50000.0f;
+    v[4] = 0.0f;
+    v[5] = -50000.0f;
+    v[6] = -50000.0f;
+    v[7] = 0.0f;
+    v[8] = -50000.0f;
+    w3_vcall<void>(stream, 0x14);
+}
+
+// 00B4C700 with three pooled temporaries (name in ECX, geometry in EDX, shader on the stack).
+void* w4_create_generated_model(const char* name, const char* geometry, const char* shader, std::uint32_t a,
+                                std::uint32_t b, std::uint32_t c, std::uint32_t d, NativeStringStorage& strings,
+                                W3_EngineCalls& calls) {
+    W3_Temporary shader_name(shader, strings);
+    W3_Temporary geometry_name(geometry, strings);
+    W3_Temporary model_name(name, strings);
+    return calls.create_generated_model_00b4c700(model_name.get(), geometry_name.get(), shader_name.get(), a, b, c, d);
+}
+
+// Camera with clear flags 7, a 200h x 200h viewport and a system fog owner; frame targets into `targets`.
+void w4_make_water_camera(void* field, std::size_t camera_offset, std::size_t targets_offset, const char* name,
+                          NativeStringStorage& strings, W4_EngineCalls& calls, const W4_WaveFieldBaseCalls& base) {
+    void* camera = nullptr;
+    if (void* const slot = calls.camera_allocate_raw_slot_00b71930(0x458)) {
+        W3_Temporary temporary(name, strings);
+        camera = calls.camera_construct_00b71a80(slot, temporary.get());
+    }
+    w3_field<void*>(field, camera_offset) = camera;
+    calls.camera_set_clear_flags_00b6fe10(w3_field<void*>(field, camera_offset), 7);
+    void* const targets = w3_new(0x40);
+    w3_field<void*>(field, targets_offset) = targets != nullptr ? calls.frame_targets_construct_00b1fbb0(targets) : nullptr;
+    void* const viewport_block = w3_new(0x34);
+    void* const viewport = viewport_block != nullptr ? calls.viewport_construct_00b1f850(viewport_block) : nullptr;
+    calls.camera_set_viewport_00b71990(w3_field<void*>(field, camera_offset), viewport);
+    const std::uint32_t size[2] = {0x200, 0x200};
+    calls.viewport_set_dimensions_00b1f940(viewport, size);
+    w2_release_object(viewport);
+    void* const fog_block = w3_new(0x94);
+    void* const fog = fog_block != nullptr ? base.fog_owner_construct_00b84e50(fog_block) : nullptr;
+    base.camera_set_fog_owner_00b71940(w3_field<void*>(field, camera_offset), fog);
+    w2_release_object(fog);
+}
+
+}  // namespace
+
+void* w4_ocean_wave_field_base_construct_00ba1400(void* field, void* world, void* device_00f8d394,
+    void* floating_particles_00f8c274, NativeStringStorage& strings, W4_EngineCalls& calls,
+    const W4_WaveFieldBaseCalls& base) {
+    w3_field<std::uint32_t>(field, 0) = 0x00D63928u;
+    base.weak_owner_construct_00925490(w3_bytes(field) + 4);
+    w3_field<std::uint32_t>(field, 0) = 0x00D63B5Cu;
+    w3_field<std::uint32_t>(field, 4) = 0x00D63B54u;
+    w3_field<std::uint32_t>(field, 0x14) = 0;
+    w3_field<std::uint8_t>(field, 0x84) = 0;
+    for (std::size_t o : {0xA0u, 0xA4u, 0xA8u, 0xACu}) w3_field<std::uint32_t>(field, o) = 0;
+    w3_field<float>(field, 0x114) = 20.0f;  // 00CE3930
+    for (std::size_t o : {0xBCu, 0xC0u, 0xC4u, 0xC8u}) w3_field<std::uint32_t>(field, o) = 0;
+    w3_field<std::uint8_t>(field, 0xCC) = 0;
+    for (std::size_t o : {0xD0u, 0xE4u, 0xE8u, 0xF0u, 0xF4u}) w3_field<std::uint32_t>(field, o) = 0;
+    w3_field<std::uint8_t>(field, 0xF8) = 1;
+    w3_field<float>(field, 0x118) = 0.5f;  // 00CE3800
+    for (std::size_t o : {0x11Cu, 0x120u, 0x124u, 0x12Cu, 0x130u, 0x27Cu, 0x280u, 0x284u, 0x288u, 0x2ACu, 0x2B0u,
+                          0x2B4u, 0x2B8u, 0x2BCu, 0x498u, 0x49Cu, 0x4A0u, 0x4E4u, 0x4E8u, 0x4F0u, 0x4F8u, 0x4FCu,
+                          0x500u, 0x504u, 0x5F4u, 0x5F8u, 0x5FCu, 0x600u, 0x604u, 0x60Cu, 0x610u, 0x614u, 0x618u,
+                          0x61Cu, 0x620u, 0x624u, 0x628u}) {
+        w3_field<std::uint32_t>(field, o) = 0;
+    }
+    w3_field<std::uint8_t>(field, 0x10) = base.check_vertex_texture_format_00b20190(device_00f8d394, 0x71);
+    w3_field<float>(field, 0x66C) = 5000.0f;  // 00D1AF84
+    w3_field<float>(field, 0x670) = 0.0f;
+    w3_field<float>(field, 0x674) = 0.0f;
+    w3_field<float>(field, 0x678) = 0.0f;
+    w3_field<float>(field, 0xD4) = 0.5f;
+    w3_field<float>(field, 0x20) = 1.0f;
+    w3_field<float>(field, 0xD8) = 0.0500000007f;  // 00CE7638
+    for (std::size_t o : {0x34u, 0x38u, 0x3Cu, 0x40u}) w3_field<float>(field, o) = 1.0f;
+    w3_field<std::uint32_t>(field, 0xE0) = 0;
+    w3_field<std::uint32_t>(field, 0xDC) = 0;
+    const auto make_scene = [&](const char* name) -> void* {
+        void* const block = w3_new(0x24);
+        if (block == nullptr) return nullptr;
+        W3_Temporary temporary(name, strings);
+        return base.scene_construct_00b724e0(block, temporary.get());
+    };
+    w3_field<void*>(field, 0x14) = make_scene("FloatingObjectScene");
+    base.create_floating_particles_00af0f20(floating_particles_00f8c274);
+    calls.node_propagate_root_00b6d890(w3_field<void*>(floating_particles_00f8c274, 0x24), w3_field<void*>(field, 0x14));
+    w4_make_water_camera(field, 0xC8, 0x604, "WaterReflection", strings, calls, base);
+    w4_make_water_camera(field, 0xD0, 0x608, "WaterRefraction", strings, calls, base);
+    w3_field<float>(field, 0xB0) = 300.0f;          // 00CE3AE8
+    w3_field<float>(field, 0xB4) = 0.00333333341f;  // 00D63B1C
+    w3_field<float>(field, 0xB8) = 1.39999998f;     // 00D06874
+    w3_field<float>(field, 0x24) = 0.0f;
+    void* const old_world = w3_field<void*>(field, 0xC0);
+    if (old_world != world) {
+        w3_field<void*>(field, 0xC0) = world;
+        if (world != nullptr) _InterlockedIncrement(reinterpret_cast<volatile long*>(w3_bytes(world) + 4));
+        if (old_world != nullptr) w2_release_object(old_world);
+    }
+    w3_field<std::uint32_t>(field, 0x278) = 0;
+    w3_field<std::uint32_t>(field, 0x274) = 0;
+    w3_field<void*>(field, 0x11C) = w4_make_model("OceanSurface", strings, calls);
+    calls.node_propagate_root_00b6d890(w3_field<void*>(field, 0x11C), w3_field<void*>(field, 0xC0));
+    w3_field<float>(field, 0x28C) = 0.0f;
+    w3_field<float>(field, 0x294) = 0.0f;
+    w3_field<float>(field, 0x290) = 1.0f;
+    w3_field<float>(field, 0x298) = 1.0f;
+    w3_field<float>(field, 0x29C) = 0.0f;
+    w3_field<float>(field, 0x2A4) = 0.0f;
+    w3_field<float>(field, 0x2A0) = 1.0f;
+    w3_field<float>(field, 0x2A8) = 3.0f;  // 00D63924
+    w3_field<void*>(field, 0x4A0) = w4_create_generated_model(
+        "ShadowRender", "position.mvfm",
+        w3_field<std::uint8_t>(field, 0x10) != 0 ? "oceanshadow_vsampler.mshd" : "oceanshadow.mshd", 4, 3, 1, 0,
+        strings, calls);
+    calls.node_propagate_root_00b6d890(w3_field<void*>(field, 0x4A0), w3_field<void*>(field, 0x14));
+    const auto shadow_material = [field]() {
+        return w3_field<void*>(w3_field<void**>(w3_field<void*>(w3_field<void*>(field, 0x4A0), 0x180), 0x54)[0], 0x20);
+    };
+    {
+        W3_Temporary name("cStaticShot_Size_OffsetX_OffsetY", strings);
+        calls.material_register_float4_array_00b18ac0(shadow_material(), name.get(), w3_bytes(field) + 0x66C, 1);
+    }
+    {
+        W3_Temporary name("cCameraViewMat", strings);
+        base.material_register_matrix_00b18b40(shadow_material(), name.get(), w3_bytes(field) + 0x67C);
+    }
+    w4_write_ocean_triangle(w3_field<void*>(field, 0x4A0));
+    void* resource = nullptr;
+    if (void* const block = w3_new(0x3C)) {
+        W3_Temporary name("AllLights", strings);
+        resource = base.scene_resource_construct_00b83c50(block, name.get());
+    }
+    base.scene_set_resource_00b723f0(w3_field<void*>(field, 0x14), resource);
+    if (resource != nullptr) w2_release_object(resource);
+    void* const lighting = base.scene_lighting_owner_00b72110(w3_field<void*>(field, 0xC0));
+    void* const head = w3_field<void*>(lighting, 0x1C);
+    void* const first = w3_field<void*>(head, 0);
+    if (first == head) base.invalid_iterator_00bf6713();
+    void* const sun_source = w3_field<void*>(first, 8);
+    void* sun = nullptr;
+    if (void* const slot = base.directional_light_allocate_00b7bd40(0x1EC)) {
+        W3_Temporary name("TheSun", strings);
+        sun = base.directional_light_construct_00b7c6b0(slot, name.get());
+    }
+    w3_field<void*>(field, 0x600) = sun;
+    base.light_set_shadow_owner_00b7bdf0(w3_field<void*>(field, 0x600), base.light_shadow_owner_00b7aab0(sun_source));
+    for (std::size_t o : {0x600u, 0x4A0u}) {
+        void* const object = w3_field<void*>(field, o);
+        w3_vcall<void>(object, 0x50, base.scene_lighting_owner_00b72110(w3_field<void*>(field, 0x14)), 1u);
+    }
+    w3_field<void*>(field, 0x120) =
+        w4_create_generated_model("OceanFoam", "position.mvfm", "oceanfoam.mshd", 4, 3, 1, 0, strings, calls);
+    w4_write_ocean_triangle(w3_field<void*>(field, 0x120));
+    w3_field<void*>(field, 0x504) =
+        w4_create_generated_model("Splashes", "pf43nf43uf44.mvfm", "oceansplash.mshd", 4, 0, 0, 0, strings, calls);
+    w3_field<void*>(field, 0x4E4) = make_scene("EmptyReflection");
+    for (std::size_t o : {0x104u, 0x108u, 0x10Cu, 0x110u}) w3_field<float>(field, o) = -1.0e10f;  // 00CE4ADC
+    void* const velocity = w4_create_generated_model("OceanVelAndDepth", "position.mvfm", "ocean_vel_and_depth.mshd", 4,
+                                                     3, 1, 0, strings, calls);
+    calls.node_propagate_root_00b6d890(velocity, world);
+    w4_write_ocean_triangle(velocity);
+    return field;
+}
+
+}  // namespace bsp::water_weather_cc13
+
+namespace bsp::water_weather_cc13 {
+
+void w4_ocean_height_generator_initialize_passes_00ba7530(void* generator, std::int32_t width, std::int32_t height,
+    const volatile std::int32_t& scale_00e14454, void* device_00f8d394, NativeStringStorage& strings,
+    W4_EngineCalls& calls, const W4_HeightGeneratorCalls& passes) {
+    const auto make_scene = [&](const char* name) -> void* {
+        void* const block = w3_new(0x24);
+        if (block == nullptr) return nullptr;
+        W3_Temporary temporary(name, strings);
+        return passes.scene_construct_00b724e0(block, temporary.get());
+    };
+    const auto make_camera = [&](const char* name) -> void* {
+        void* const slot = calls.camera_allocate_raw_slot_00b71930(0x458);
+        if (slot == nullptr) return nullptr;
+        W3_Temporary temporary(name, strings);
+        return calls.camera_construct_00b71a80(slot, temporary.get());
+    };
+    const auto set_viewport = [&](void* camera, std::uint32_t w, std::uint32_t h) {
+        void* const block = w3_new(0x34);
+        void* const viewport = block != nullptr ? calls.viewport_construct_00b1f850(block) : nullptr;
+        const std::uint32_t size[2] = {w, h};
+        calls.viewport_set_dimensions_00b1f940(viewport, size);
+        calls.camera_set_viewport_00b71990(camera, viewport);
+        if (viewport != nullptr) w2_release_object(viewport);
+    };
+    const auto make_buffer = [&](const char* declaration_file) -> void* {
+        void* declaration;
+        {
+            W3_Temporary file(declaration_file, strings);
+            declaration = w3_vcall<void*>(device_00f8d394, 0x38, file.get());
+        }
+        void* const buffer = w3_vcall<void*>(device_00f8d394, 0x5C, 4u, 1u, declaration);
+        w2_release_object(declaration);
+        return buffer;
+    };
+    static constexpr float kQuad[4][6] = {
+        {-1.0f, -1.0f, 0.5f, 1.0f, 0.0f, 1.0f},
+        {-1.0f, 1.0f, 0.5f, 1.0f, 0.0f, 0.0f},
+        {1.0f, -1.0f, 0.5f, 1.0f, 1.0f, 1.0f},
+        {1.0f, 1.0f, 0.5f, 1.0f, 1.0f, 0.0f}};
+    const auto fill_simple = [](void* buffer) {
+        auto* const v = w3_vcall<float*>(buffer, 0x10, 0u, 0u, 0u);
+        std::memcpy(v, kQuad, sizeof kQuad);
+        w3_vcall<void>(buffer, 0x14);
+    };
+    // The common tail of each pass: mesh, material, section, model rooted under `scene`.
+    const auto finish = [&](void* buffer, std::size_t material_offset, const char* effect,
+                            const auto& register_constants, std::size_t model_offset, const char* model_name,
+                            std::size_t scene_offset) {
+        void* const mesh = w4_make_mesh(calls);
+        calls.mesh_set_vertex_stream_00b73bb0(mesh, 0, buffer);
+        w2_release_object(buffer);
+        {
+            W3_Temporary name(effect, strings);
+            w3_field<void*>(generator, material_offset) = calls.material_create_for_effect_name_00535320(name.get());
+        }
+        calls.material_set_parameter_owner_00b18a40(w3_field<void*>(generator, material_offset), generator, nullptr);
+        register_constants(w3_field<void*>(generator, material_offset));
+        void* const section = calls.draw_section_create_00533fa0();
+        w3_field<std::uint32_t>(section, 0x08) = 5;
+        w3_field<std::uint32_t>(section, 0x0C) = 0;
+        w3_field<std::uint32_t>(section, 0x10) = 4;
+        w3_field<std::uint32_t>(section, 0x14) = 0;
+        w3_field<std::uint32_t>(section, 0x18) = 2;
+        calls.draw_section_set_material_00b864c0(section, w3_field<void*>(generator, material_offset));
+        calls.draw_section_rebuild_layout_00b865a0(section, mesh);
+        calls.mesh_append_draw_section_00b73c60(mesh, section);
+        w3_field<void*>(generator, model_offset) = w4_make_model(model_name, strings, calls);
+        calls.generated_model_set_geometry_00b75170(w3_field<void*>(generator, model_offset), 0, mesh, -1.0f, -1.0f);
+        calls.node_propagate_root_00b6d890(w3_field<void*>(generator, model_offset), w3_field<void*>(generator, scene_offset));
+        w2_release_object(section);
+        w2_release_object(mesh);
+    };
+    const auto float4 = [&](void* material, const char* name, void* value) {
+        W3_Temporary temporary(name, strings);
+        calls.material_register_float4_array_00b18ac0(material, temporary.get(), value, 1);
+    };
+    const auto named = [&](void (*register_value)(void*, const void*, void*), void* material, const char* name,
+                           void* value) {
+        W3_Temporary temporary(name, strings);
+        register_value(material, temporary.get(), value);
+    };
+    // 1. Height map generation.
+    w3_field<void*>(generator, 0x30) = make_scene("oceanheightmapscene");
+    w3_field<void*>(generator, 0x34) = make_camera("OceanHeigtmapGen");
+    calls.camera_set_clear_flags_00b6fe10(w3_field<void*>(generator, 0x34), 0);
+    passes.camera_set_render_mode_00b6fdf0(w3_field<void*>(generator, 0x34), 0);
+    {
+        void* const block = w3_new(0x34);
+        void* const viewport = block != nullptr ? calls.viewport_construct_00b1f850(block) : nullptr;
+        const std::uint32_t size[2] = {static_cast<std::uint32_t>(scale_00e14454 * width),
+                                       static_cast<std::uint32_t>(scale_00e14454 * height)};
+        calls.viewport_set_dimensions_00b1f940(viewport, size);
+        calls.camera_set_viewport_00b71990(w3_field<void*>(generator, 0x34), viewport);
+        if (viewport != nullptr) w2_release_object(viewport);
+    }
+    {
+        void* const buffer = make_buffer("oceanheightmapgen.mvfm");
+        fill_simple(buffer);
+        finish(buffer, 0x3C, "oceanheightmapgen.mshd",
+               [&](void* material) {
+                   float4(material, "cCorner0", w3_bytes(generator) + 0xC0);
+                   float4(material, "cCorner1", w3_bytes(generator) + 0xD0);
+                   float4(material, "cCorner2", w3_bytes(generator) + 0xE0);
+                   float4(material, "cCorner3", w3_bytes(generator) + 0xF0);
+                   named(passes.material_register_float_00b18b20, material, "cLayerScale", w3_bytes(generator) + 0x9C);
+                   named(passes.material_register_float3_00b18ae0, material, "cWaveScale", w3_bytes(generator) + 0x100);
+                   named(passes.material_register_float3_00b18ae0, material, "cEyePos", w3_bytes(generator) + 0x10C);
+               },
+               0x38, "OceanHeightmapgen", 0x30);
+    }
+    // 2. Normal map generation.
+    w3_field<void*>(generator, 0x1C) = make_scene("oceannormalgenscene");
+    w3_field<void*>(generator, 0x24) = make_camera("OceanNormalgenCamera");
+    calls.camera_set_clear_flags_00b6fe10(w3_field<void*>(generator, 0x24), 7);
+    set_viewport(w3_field<void*>(generator, 0x24), static_cast<std::uint32_t>(scale_00e14454 * width),
+                 static_cast<std::uint32_t>(scale_00e14454 * height));
+    {
+        void* const buffer = make_buffer("oceannormalmapgen.mvfm");
+        auto* const v = w3_vcall<float*>(buffer, 0x10, 0u, 0u, 0u);
+        const std::uint32_t sw = static_cast<std::uint32_t>(scale_00e14454 * width);
+        const float dx = static_cast<float>(1.0 / w4_unsigned_to_double(sw));
+        const std::uint32_t sh = static_cast<std::uint32_t>(scale_00e14454 * height);
+        const float dy = static_cast<float>(1.0 / w4_unsigned_to_double(sh));
+        w3_field<float>(generator, 0xB8) = dx;
+        w3_field<float>(generator, 0xBC) = dy;
+        for (int k = 0; k < 4; ++k) {
+            const float u = kQuad[k][4], t = kQuad[k][5];
+            const float vertex[14] = {kQuad[k][0], kQuad[k][1], kQuad[k][2], kQuad[k][3], u, t,
+                                      static_cast<float>(static_cast<double>(u) - dx), t,
+                                      static_cast<float>(static_cast<double>(u) + dx), t,
+                                      u, static_cast<float>(static_cast<double>(t) - dy),
+                                      u, static_cast<float>(static_cast<double>(t) + dy)};
+            std::memcpy(v + k * 14, vertex, sizeof vertex);
+        }
+        w3_vcall<void>(buffer, 0x14);
+        finish(buffer, 0x28, "oceannormalgen.mshd",
+               [&](void* material) {
+                   unsigned char* const corners = w3_field<unsigned char*>(generator, 0x88);
+                   float4(material, "cCorner0", corners);
+                   float4(material, "cCorner1", corners + 0x10);
+                   float4(material, "cCorner2", corners + 0x20);
+                   float4(material, "cCorner3", corners + 0x30);
+                   named(passes.material_register_float2_00b18b00, material, "cInvMapSize", w3_bytes(generator) + 0xB8);
+               },
+               0x20, "OceanNormalGen", 0x1C);
+    }
+    // 3. Height scale.
+    w3_field<void*>(generator, 0x4C) = make_scene("oceanHeightScalescene");
+    w3_field<void*>(generator, 0x54) = make_camera("OceanHeightScaleCam");
+    calls.camera_set_clear_flags_00b6fe10(w3_field<void*>(generator, 0x54), 0);
+    set_viewport(w3_field<void*>(generator, 0x54), static_cast<std::uint32_t>(width), static_cast<std::uint32_t>(height));
+    {
+        void* const buffer = make_buffer("oceanheightmapgen.mvfm");
+        fill_simple(buffer);
+        finish(buffer, 0x58, "oceanheightscale.mshd", [](void*) {}, 0x50, "OceanHeightScale", 0x4C);
+    }
+    // 4. Wave damping target.
+    w3_field<void*>(generator, 0x08) = make_scene("wave_damp_scene");
+    w3_field<void*>(generator, 0x0C) = make_camera("wave_damp_camera");
+    calls.camera_set_clear_color_00b6fe50(w3_field<void*>(generator, 0x0C), 0xFFFFFFFFu);
+    calls.camera_set_clear_flags_00b6fe10(w3_field<void*>(generator, 0x0C), 1);
+    {
+        void* const block = w3_new(0x34);
+        void* const viewport = block != nullptr ? calls.viewport_construct_00b1f850(block) : nullptr;
+        const std::uint32_t size[2] = {0x80, 0x80};
+        calls.viewport_set_dimensions_00b1f940(viewport, size);
+        calls.camera_set_viewport_00b71990(w3_field<void*>(generator, 0x0C), viewport);
+        void* const targets = w3_new(0x40);
+        void* const built = targets != nullptr ? calls.frame_targets_construct_00b1fbb0(targets) : nullptr;
+        w3_field<void*>(generator, 0x18) = built;
+        calls.frame_targets_set_color_00b1fab0(built, 0, w3_field<void*>(generator, 0x14));
+        if (viewport != nullptr) w2_release_object(viewport);
+    }
+    w3_field<std::uint32_t>(generator, 0x80) = 0;
+    w3_field<std::uint32_t>(generator, 0x84) = 1;
 }
 
 }  // namespace bsp::water_weather_cc13

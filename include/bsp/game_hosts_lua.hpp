@@ -452,7 +452,7 @@ inline constexpr bool kLuaLastCatapultedBound = true;  // ON by its pairs (LUA_B
 // True: answers the class LaunchStock (LABELLED: neither writer is built here, so the
 // constructor value stands). False: the unimplemented row pushes nothing, which breaks
 // commandhelpers' luaCheckpoint (`GetCatapultStock(unit) > 0`) for every ship.
-inline constexpr bool kLuaGetCatapultStockBound = false;
+inline constexpr bool kLuaGetCatapultStockBound = true;   // ON: SQUADRON_LAND_TASK 5gm
 inline constexpr bool kLuaFormationQueryBound = true;  // ON: mechanism matched, spread miss recorded (docs/LUA_BINDING_MISSION.md)
 
 // The process-wide 00E17BF2. It is reset from the lobby flags when a mission's settings
