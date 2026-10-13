@@ -463,3 +463,40 @@ modelled; nothing in this process writes `[00F8A9E0]`.
 
 The CAUTIOUSMOVE route pass (src/ai_command_tick.cpp:415) matches the listing, including the x87
 forms of the three candidate points (`base`, `base + off`, `base - off`).
+
+### 7.6 `009FE270`, the bullet-type accuracy: two arms are conditional
+
+`ai_bullet_type_accuracy_offset_009fe270` (src/ai_tuning_globals.cpp:219) reproduces the dispatch
+(the byte table `009FE6EC` and the jump table `009FE6C4` were read from the PE) and every four-way arm,
+but the function first calls the target class's `vtable+1Ch` (its class id) and two arms test it:
+
+- DepthCharge (sub-type 0Bh, `009FE44A CMP EAX,8 / JNE 009FE6BB`) answers `+148h` only against
+  class id 8; any other target gets 0.0.
+- Paratroopers (0Fh, `009FE465 CMP EAX,1Ch / JNE`) answers `+14Ch` only against class id 1Ch.
+
+The host answers both unconditionally. Any caller that weights a depth charge against a surface
+target, or a paratrooper drop against anything but a CommandBuilding, gets a non-zero accuracy the
+image does not give.
+
+### 7.7 The command ticks: `00A11070` runs after almost every tick and is not in the host
+
+`00A11070 BSP_AiCommand_FormationShapePass` is the tail of the MOVETO, MOVETOATTACK (closing arm),
+PATROLTO, IDLE, REGROUPINGMOVE and SELLING (ground arm) ticks. For a group led by a ship with a
+formation object (`leader+284h`) it applies shape 0 (`0070EFD0`), then gives every later ship member
+that has a formation record the next of 24 fixed slots, `record+10h/+20h = -(x, z) * tuning+210h`
+(the table at `00F8A7B0`, filled once), and broadcasts `FORMATION_SET`. The host records it on the IDLE
+arm (src/game_hosts_ai.cpp:2185) and omits it elsewhere. Model: `ai_formation_shape_00a11070`.
+
+Also modelled:
+- `ai_regrouping_move_tick_00a126c0`: REGROUPINGMOVE (`00A126C0`, not in the host). With a follower
+  beyond `AutoMerge_LeaveDist` from the leader, the leader goes to `(dest + 3 * centroid) / 4` of all
+  members (each step stored as a float); otherwise to the destination.
+- `ai_order_cautious_move_00a2ccf0`: the move twin of `00A2CBD0`, called only by the Duel think
+  `00A25F70`; the stream-1 draw happens only for a non-ship leader that `00A2C9F0` routes cautiously.
+
+Checked and matching: `00A02020` (the order bridge), `00A10EC0` (the auto-merge leave pass),
+`00A11690` (the wedge, spot-checked from the bytes), `00A0F810` (the candidate weight, epilogue
+`((B*C)*D)*A`), `00A12A90` and `00A15570` (apart from `00A11070`). `00A11FF0` (SELLING) differs in
+three labelled ways: the host issues `returntobase` per plane where the image orders the squadron, it
+omits `00A11070`, and it records the per-member session message 51h. `00A04560` matches apart from the
+host's labelled spread and class query.

@@ -1001,6 +1001,76 @@ float ai_capture_assignment_score_00a2ac11(float k_1bc, float target_total,
     return sterm + wterm;                                               // FADD qword, FSTP float
 }
 
+// 00A11110..00A112B1: xmm0 = -1.0 [00D7A260], xmm1 = 1.0 [00D7A24C],
+// xmm2 = -2.0 [00CE7D7C], xmm3 = 2.0 [00CE3958], xmm4 = 0.
+const std::array<std::array<float, 2>, kFormationShapeSlots> kFormationShapeTable00f8a7b0{{
+    {-1.0f, 0.0f}, {1.0f, 0.0f}, {0.0f, 1.0f}, {-1.0f, 1.0f}, {1.0f, 1.0f}, {0.0f, -1.0f},
+    {-1.0f, -1.0f}, {1.0f, -1.0f}, {-2.0f, 0.0f}, {2.0f, 0.0f}, {-2.0f, 1.0f}, {2.0f, 1.0f},
+    {-2.0f, -1.0f}, {2.0f, -1.0f}, {0.0f, 2.0f}, {-1.0f, 2.0f}, {1.0f, 2.0f}, {-2.0f, 2.0f},
+    {2.0f, 2.0f}, {0.0f, -2.0f}, {-1.0f, -2.0f}, {1.0f, -2.0f}, {-2.0f, -2.0f}, {2.0f, -2.0f},
+}};
+
+FormationShapeResult ai_formation_shape_00a11070(bool leader_ship_06, bool leader_has_formation_284,
+                                                 float tuning_210,
+                                                 const std::vector<FormationShapeFollower>& followers) {
+    FormationShapeResult out;
+    if (!leader_ship_06 || !leader_has_formation_284) return out;      // 00A110B2 / 00A110DF
+    out.ran = true;
+    int slot = 0;
+    for (const FormationShapeFollower& f : followers) {                 // 00A112DF..00A1136B
+        if (!f.ship_06 || !f.has_record) continue;                      // 00A11321 / 00A1133C
+        if (slot >= kFormationShapeSlots) break;                        // image: reads past the table
+        FormationShapeSlot s;
+        s.member = f.member;
+        s.slot = slot;
+        s.record_010 = -kFormationShapeTable00f8a7b0[slot][0] * tuning_210;  // FCHS, FMULP
+        s.record_020 = -kFormationShapeTable00f8a7b0[slot][1] * tuning_210;
+        out.slots.push_back(s);
+        ++slot;                                                         // ADD EBP,8
+    }
+    return out;
+}
+
+RegroupingMoveResult ai_regrouping_move_tick_00a126c0(
+    const std::vector<std::array<float, 3>>& members, const float destination[3],
+    float tuning_20c, const float origin_00f87574[3]) {
+    RegroupingMoveResult out;
+    for (int k = 0; k < 3; ++k) out.point[k] = destination[k];          // 00A127EA LEA EDX,[EBP+8]
+    if (members.size() <= 1u) return out;                               // 00A126D3
+    const float r2 = tuning_20c * tuning_20c;                           // 00A12740
+    const std::array<float, 3>& lead = members.front();
+    bool straggler = false;
+    for (std::size_t i = 1; i < members.size() && !straggler; ++i) {    // 00A1274A..00A127CC
+        straggler = planar_d2(members[i][0], members[i][2], lead[0], lead[2]) > r2;  // JA
+    }
+    if (!straggler) return out;
+    out.regrouping = true;
+    float c[3] = {origin_00f87574[0], origin_00f87574[1], origin_00f87574[2]};  // 00A127F2
+    int n = 0;
+    for (const std::array<float, 3>& m : members) {                     // 00A12840..00A1297C
+        ++n;
+        for (int k = 0; k < 3; ++k) c[k] = c[k] + m[k];
+    }
+    const float nf = static_cast<float>(n);                             // 00A12981 FILD
+    for (int k = 0; k < 3; ++k) {
+        const float mean = c[k] / nf;                                   // 00A1299F..00A129B1
+        const float scaled = mean * 3.0f;                               // [00D7A2B0]
+        const float sum = destination[k] + scaled;                      // 00A129E0..00A129F6
+        out.point[k] = sum * 0.25f;                                     // [00D7A348]
+    }
+    return out;
+}
+
+OrderMoveChoice ai_order_cautious_move_00a2ccf0(std::uint32_t population_5644, const float point[3],
+                                                float ratio, OrderMoveHost& host) {
+    if (population_5644 == 0u) return OrderMoveChoice::None;           // 00A2CCFA
+    if (host.already_moving_to_00a2c150(point)) return OrderMoveChoice::Kept;  // 00A2CD0D
+    if (host.leader_is_ship()) return OrderMoveChoice::MoveTo;          // 00A2CD34
+    if (!host.should_route_cautiously_00a2c9f0(point)) return OrderMoveChoice::MoveTo;  // 00A2CD40
+    const float draw = host.uniform01_stream1();                        // 00A2CD47
+    return draw > ratio ? OrderMoveChoice::CautiousMove : OrderMoveChoice::MoveTo;  // 00A2CD52 JBE
+}
+
 bool ai_defend_member_is_candidate_00a2def0(bool member_kind_1c, bool in_team_set) noexcept {
     return member_kind_1c || in_team_set;   // 00A2DF2F JNE / 00A2DF4A JE
 }

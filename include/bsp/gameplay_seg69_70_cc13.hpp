@@ -798,5 +798,94 @@ bool ai_capture_planner_clock_00a29fd0(CapturePlannerClock& clock, float now,
 // 00A1E250 total (rec+4h), w the group's weight for it (> 0 only, 00A2AC02).
 float ai_capture_assignment_score_00a2ac11(float k_1bc, float target_total, float group_weight) noexcept;
 
+// ---------------------------------------------------------------------------
+// 00A11070 BSP_AiCommand_FormationShapePass, __thiscall(command), the tail of
+// the MOVETO, MOVETOATTACK, PATROLTO and IDLE ticks. Not in the host (its
+// IDLE arm records it, src/game_hosts_ai.cpp:2185).
+// ---------------------------------------------------------------------------
+
+// The static slot table 00F8A7B0..00F8A86F, 24 (x, z) pairs filled once under
+// bit 0 of [00F8A870] (00A110FE..00A112B1).
+inline constexpr int kFormationShapeSlots = 24;
+extern const std::array<std::array<float, 2>, kFormationShapeSlots> kFormationShapeTable00f8a7b0;
+
+struct FormationShapeFollower {
+    const void* member{nullptr};
+    bool ship_06{false};          // vtable+5Ch(6)
+    bool has_record{false};       // 0070D080(formation, member) != 0
+};
+
+struct FormationShapeSlot {
+    const void* member{nullptr};
+    float record_010{0.0f};       // f(-x * spacing)
+    float record_020{0.0f};       // f(-z * spacing)
+    int slot{0};
+};
+
+struct FormationShapeResult {
+    bool ran{false};              // leader is a ship and leader+284h is set
+    std::vector<FormationShapeSlot> slots;
+};
+
+// Gate: the first member answers vtable+5Ch(6) and its +284h formation is set.
+// Then 0070EFD0(formation, 0); spacing = tuning +210h; every later member that
+// is a ship and has a 0070D080 record takes the next table slot (the leader is
+// skipped, a member without a record does not consume a slot); finally
+// 0077A080 / 0077C880 build and broadcast FORMATION_SET. The image reads past
+// the table from the 25th slot on (the guard dword, then .data beyond); the
+// model stops at 24 and says so in `slots.size()`.
+FormationShapeResult ai_formation_shape_00a11070(bool leader_ship_06, bool leader_has_formation_284,
+                                                 float tuning_210,
+                                                 const std::vector<FormationShapeFollower>& followers);
+
+// ---------------------------------------------------------------------------
+// 00A126C0 BSP_AiCommand_RegroupingMove_Tick, __thiscall(command) (vt+0Ch of
+// REGROUPINGMOVE). Not in the host (include/bsp/ai_command_tick.hpp names it).
+// ---------------------------------------------------------------------------
+
+struct RegroupingMoveResult {
+    bool regrouping{false};        // a follower is beyond AutoMerge_LeaveDist
+    float point[3]{0.0f, 0.0f, 0.0f};   // what 00A02020 gets for the first member
+};
+
+// members: every +563Ch member's refreshed +FCh/+100h/+104h, the leader first.
+// With a population of 1 or less (00A126CA JBE), or when no follower lies at
+// f(dz^2 + dx^2) > f(+20Ch^2) from the leader (FCOMPI/JA), the point is the
+// command's +8h destination. Otherwise it is f(f(dest + f(f(c/n) * 3.0)) * 0.25)
+// per axis, c the sum of every member's pose (the leader too) seeded with
+// origin_00f87574 and n the FILD count ([00D7A2B0] 3.0, [00D7A348] 0.25). Both
+// arms then run 00A10DC0 and tail-jump to 00A11070.
+RegroupingMoveResult ai_regrouping_move_tick_00a126c0(
+    const std::vector<std::array<float, 3>>& members, const float destination[3],
+    float tuning_20c, const float origin_00f87574[3]);
+
+// ---------------------------------------------------------------------------
+// 00A2CCF0 BSP_AiGroup_OrderCautiousMove, __thiscall(group)(point, ratio),
+// RET 8; its only caller is the Duel think 00A25F70. The move twin of 00A2CBD0.
+// ---------------------------------------------------------------------------
+
+enum class OrderMoveChoice { None, Kept, MoveTo, CautiousMove };
+
+class OrderMoveHost {
+public:
+    virtual ~OrderMoveHost() = default;
+    // 00A2C150(group)(point): the group already holds a move to this point.
+    virtual bool already_moving_to_00a2c150(const float point[3]) = 0;
+    // The first member's vtable+5Ch(6).
+    virtual bool leader_is_ship() = 0;
+    // 00A2C9F0(group)(point) (ai_should_route_cautiously_00a2c9f0).
+    virtual bool should_route_cautiously_00a2c9f0(const float point[3]) = 0;
+    // 00BD2F40 with ECX = 1: a stream-1 uniform in [0, 1).
+    virtual float uniform01_stream1() = 0;
+};
+
+// Empty group (+5644h == 0): None. 00A2C150 true: Kept. A ship leader, or
+// 00A2C9F0 false: MoveTo (new(14h), vtable 00D22ABC) without a draw. Otherwise
+// one stream-1 draw; CautiousMove (00A102D0) when draw > ratio (FCOMPI/JBE),
+// else MoveTo. Both arms delete the previous +564Ch command (vtable+0(1)) and
+// store the new one there (00A2CDA3..00A2CDB7).
+OrderMoveChoice ai_order_cautious_move_00a2ccf0(std::uint32_t population_5644, const float point[3],
+                                                float ratio, OrderMoveHost& host);
+
 }  // namespace gameplay_seg69_70_cc13
 }  // namespace bsp
