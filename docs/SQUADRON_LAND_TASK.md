@@ -16097,3 +16097,15 @@ LABELLED: the catapult-launch decrement (`00957450`) and `SetCatapultStock` (`00
 (the Zuiho group respawns, the reinforcement movie runs, `dlg_Cruisersinrange` -> `luaUS03Primary4Add`). Win rows:
 identical unless their scripts reach `luaCheckpoint` with a ship alive, in which case the post-checkpoint code
 that used to be cut short now runs.
+
+### 5gm, the pairs (cc9-lua55, 2026-10-13)
+
+Exports `local\l55_O2` (bbbb78388 OFF) and `local\l55_C` (ON). Census over every cc9 tree's logs of the last two
+days: only JM06 and PRCP01 reach `GetCatapultStock` (one call each); USN12, JM08 and the other win rows never call it.
+- **USN12 34000:** GAMEPLAY identical, completed 1534.87 s both, refusal logged.
+- **PRCP01 `l55_p01_c.txt` 90000 (ON):** the checkpoint walks the six US ships (each answers 0; the Fletchers have
+  no catapult), `luaUS03SaveCheckpoint1 ran`, `usn03.timepasses` at 767 s, the Zuiho kill listener is added and
+  `luaUS03Primary4Add` runs: **phase 4 reached**. Only one Zuiho strike launched (frame 15640); every later launch
+  was refused `no such slot` (no Enterprise slot in state 1 or 5). The Hornet sank at 1431 s and the Northampton at
+  1714 s, and the **Enterprise was sunk at 2429.90 s**: failed `usn03.obj_p2_fail`, MissionPhase 4.
+- **Flipped ON.** JM06 (not a win row) gains the same checkpoint completion; its owners should expect it.
