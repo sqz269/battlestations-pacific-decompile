@@ -105,6 +105,21 @@ inline constexpr double kShipMotionHalf = 0.5;
 inline constexpr double kShipMotionRighting = 0.2617991025660515;
 // 00D05AA8, a float: the same angle to float precision, the damper's threshold.
 inline constexpr float kShipMotionRightingThreshold = 0.2617843747f;
+// Packet cc13-ver3 (docs/CC13_VER_3.md, R1). The image bytes: 00D19628 is the double
+// 0x3FD0C15240000000 and 00D05AA8 the float 0x3E860A92, both float(pi/12) =
+// 0x1.0c1524p-2 = 0.2617993950843811. The two constants above are 2.9e-7 and 1.5e-5
+// below them. True: 0092E9E1 uses the image's values. False: the values above, as before.
+inline constexpr bool kShipRightingImageConstantsBound = false;
+inline constexpr double kShipMotionRightingImage = 0x1.0c1524p-2;        // 00D19628
+inline constexpr float kShipMotionRightingThresholdImage = 0x1.0c1524p-2f; // 00D05AA8
+// Packet cc13-ver3 (docs/CC13_VER_3.md, S1). 008269E6 multiplies a dived submarine's
+// throttle (class id 8, unit+100h below -3.0f) by settings+4B4h,
+// Submarine.SubmarineDepthSpeedMul. True: the gate uses the value below. False: 1.0, as
+// before. SUBSTITUTION, labelled: 0.834 is this installation's shipglobals.lua:457 value;
+// the loaded settings object lives in the units host, so the field itself is not read
+// here. On adoption the host should pass its loaded settings+4B4h instead.
+inline constexpr bool kShipSubmergedThrottleBound = false;
+inline constexpr float kShipSubmarineDepthSpeedMulInstalled = 0.834f;
 // 00CE3DC0, a double. The damper's gain, per second.
 inline constexpr double kShipMotionRightingGain = 10.0;
 

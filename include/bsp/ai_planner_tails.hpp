@@ -91,6 +91,12 @@ struct AiTailArrivalValueInputs {
     float arrive_to_range_time = kAiTailDefaultArriveToRangeTime;
 };
 
+// 00A0382C-00A03840: FLD qword [00D7A3A0] (0.1); FLD speed; FCOMI ST0,ST1; JA 00A03896
+// returns 0.0 for a unit FASTER than 0.1 outside the capture radius, so only a unit at or
+// below 0.1 (or NaN) reaches the linear arm. The host's guard was the other way round
+// (docs/CC13_GPR_69.md 7.9). OFF keeps the host's inverted guard; ON follows the bytes.
+inline constexpr bool kAiArrivalSpeedGuardBound = false;
+
 float ai_tail_unit_arrival_value(const AiTailArrivalValueInputs& in) noexcept;
 
 // ---------------------------------------------------------------------------

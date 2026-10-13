@@ -100,6 +100,30 @@ inline constexpr bool kAiCommandAvoidZonePointBound = true;
 // ON by the pairs of 2026-09-29 (section 40): exact, read whole, zero reach on
 // USN13 and IJN01 at 9000 frames, gameplay identical.
 inline constexpr bool kAiSquadronRtbExclusionBound = true;
+// The 00A13B60 close-attack member gate (docs/CC13_GPR_69.md 7.2 item 5). For a
+// squadron member (00A143ED vtable[5Ch](18h)) the image first applies the
+// inline 007EDA90 shape (00A14402 PUSH 17h on [ESI+3D0h], 00A1440C the +C24h
+// byte, 00A14413 JE skips), then 00A1441B CALL 009FFEB0 and skips the member
+// when it answers true (00A14442 TEST AL,AL / 00A14444 JNZ 00A14D4D); 009FFEB0
+// may itself place the squadron's return-to-base order. True: the host's
+// close_member_squadron_excluded adds tick_squadron_excluded_009ffeb0 after
+// the 007EDA90 shape. False: 007EDA90 only, as before.
+inline constexpr bool kCloseAttackSquadronHomeBound = false;
+// order_attack's arm choice, 00A2CC2E-00A2CC65 (docs/CC13_GPR_69.md section 3).
+// The image takes MOVETOATTACK without a draw when the group's first member is
+// ship-base (00A2CC36 PUSH 6 / vtable[5Ch], 00A2CC3C JNE) or when
+// 00A2C9F0(group)(00A10C20(target)) answers false (00A2CC4F JE); only then
+// 00A2CC51 MOV ECX,1 / CALL 00BD2F40 draws on stream 1, and draw > aggressive
+// (FCOMIP / JBE) takes CAUTIOUSATTACK. True: ai_attack_arm_00a2cbd0 with
+// ai_should_route_cautiously_00a2c9f0, and the host's private 00BD2F10 LCG
+// draws only after both gates. False: the host draws for every order.
+inline constexpr bool kOrderAttackCautiousGatesBound = false;
+// The Capture planner's current-target distance, 00A2A5C0-00A2A5CE: FLD qword
+// [00CE3820] (BB BD D7 D9 DF 7C DB 3D, the double 1.0e-10), FLD float d^2,
+// FCOMI / JBE: sqrt only when d^2 > 1e-10, else 0 (docs/CC13_GPR_69.md 7.4
+// item 4). True: capture_plan_00a29fd0 compares with bsp::kAiTailLengthEpsilon
+// (1e-10). False: the host's literal 1e-11, as before.
+inline constexpr bool kCaptureCurrentTargetEpsilonBound = false;
 // Packet cc9_group_release_idle (docs/SHIP_AI_OPEN_ITEMS.md section 30). Every
 // ATTACK-family command registers its observer (+8h) on the target group
 // (00A10767, 00694A60), and all four observer vtables (00D22B64, 00D22BA4,

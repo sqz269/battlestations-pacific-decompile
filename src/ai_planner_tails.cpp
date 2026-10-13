@@ -95,7 +95,12 @@ float ai_tail_unit_arrival_value(const AiTailArrivalValueInputs& in) noexcept {
         return in.capture_weight;
     }
     // 00A03840: a unit that is neither IsType(6) nor IsType(18h) has no speed.
-    if (in.speed <= kAiTailMinArrivalSpeed) {
+    if (kAiArrivalSpeedGuardBound) {
+        // 00A03840 JA: speed > 0.1 (the double 0.10000000149011612) returns zero.
+        if (static_cast<double>(in.speed) > static_cast<double>(kAiTailMinArrivalSpeed)) {
+            return 0.0F;
+        }
+    } else if (in.speed <= kAiTailMinArrivalSpeed) {
         return 0.0F;
     }
     const float time_to_arrive = (in.distance - in.capture_radius) / in.speed;
