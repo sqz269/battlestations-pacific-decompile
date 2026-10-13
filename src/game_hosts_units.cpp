@@ -5478,7 +5478,7 @@ struct GameUnitsHost::Impl {
     // +5Fh clear (only the explosion path 007D0CFD kills it), so Kill sets +5Fh and queues
     // it on 00F899B4 for the on-killed dispatch: the wreck leaves the world, as an
     // exploded plane does here (plane_death_removed). False: the wreck sinks without limit.
-    static constexpr bool kPlaneWreckDepthRemovalBound = false;
+    static constexpr bool kPlaneWreckDepthRemovalBound = true;  // ON: ESMP08 gameplay identical
     // Packet cc9_plane_touchdown (docs/SQUADRON_LAND_TASK.md section 5k): the
     // free-flight arm's site probe 007C5AC0 (006C0840 with its key, 007B8E80,
     // 006BC530 into plane+BF8h/+BFCh), the touchdown test 007CC440-007CC4CA and
