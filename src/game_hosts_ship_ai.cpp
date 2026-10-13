@@ -594,6 +594,12 @@ inline constexpr bool kShipAiTurnLeadResetBound = false;
 // on the next call. False: two separate host fields, as before, and the refresh
 // waits out NearbyShip_WayClearCheckTime (0.25 in this installation).
 inline constexpr bool kShipAiClearanceTimerSharedBound = false;
+// Packet cc13-ver7 (docs/CC13_VER_7.md, D6). True: a direction change zeroes the
+// stall accumulator blk+384h that 009F3F80 reads (009F489E, 009F49D9, 009F4A2B),
+// as the image's six direction-change stores do. False: the zeroes go to a field
+// nothing reads, as before. The stall only grows in the back-off arm, so this
+// has no reach unless kShipAiSectorBlockerBound is on too.
+inline constexpr bool kShipAiStallSharedBound = false;
 // Packet cc9_command_building_capture_bind (docs/SHIP_AI_OPEN_ITEMS.md sections 80
 // and 81). True: a CommandBuilding (kind 1Ch) whose health reaches 0 is neutralized
 // (006F3270 -> 006F2940 -> 006F4D10 slot 9) instead of killed; a neutral building
@@ -11579,6 +11585,18 @@ void GameShipAiHost::Impl::drive_order_ring_009f3f80(std::size_t index, Controll
     // stored node pointer, so the record is filled from the node as it is now;
     // 009EBEF7 raised the node's lifetime when it blocked, and a node that has
     // since left the list is read as no blocker.
+    // Packet cc13-ver7 (D6): blk+384h is one float. The direction-change zeroes
+    // (009D5277, 009ED86F, 009ED8AD, 009EDB73 and the arm tail's copies) land in
+    // ShipAiControlBlock::direction_counter_384, the stall 009F47EE accumulates
+    // in ShipAiObstacleState::stall_time_384. A non-zero mark left here after
+    // the previous drive shows whether any of those writers ran since.
+    if (kShipAiStallSharedBound) {
+        if (ctl.blk.direction_counter_384 == 0) {
+            ctl.obstacle.stall_time_384 = 0.0f;
+            done("ShipAiObstacle::stall_reset_on_latch_384", 0x009ed86fu);
+        }
+        ctl.blk.direction_counter_384 = 1;
+    }
     if (kShipAiSectorBlockerBound) {
         for (std::size_t s = 0; s < ctl.sector_blocker_node.size(); ++s) {
             bsp::ShipAiObstacleNode* node = ctl.sector_blocker_node[s];
