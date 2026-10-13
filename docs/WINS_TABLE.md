@@ -6,18 +6,21 @@ order files are re-run on a fresh export of current main in the reference form w
 A lost win is re-planned, preferring plans with margin over knife-edges. "Guard" is the exec guard's
 `bsp: refused a mission script's process launch: sus_prog.exe` line, which every completion must log.
 
-Order files (absolute paths; o-files live in the worker trees' local\ directories):
+Win order files live in config/win_orders; local\ copies are scratch. (Committed 2026-10-12 after a worktree
+cleanup removed cc9-ships36, cc9-ships38 and cc9-lua46; USN02, USN12, LOMP06 and BSM01 are the
+cc9-gunnery36\local\g38_ord_*.txt copies that reference AH reproduced every win time from; USN01, LOMP10, LOMP06
+and BSM01 are byte-identical to the files the last wins used.)
 
-| Row | Order file |
-|---|---|
-| USN01 | cc9-physics1\local\p3_u1_z4.txt (since main cd761bb52; before: p3_u1_o.txt, l50_u1_u2.txt) |
-| USN02 | cc9-ships36\local\s36_u2_p7.txt |
-| LOMP10 | cc9-physics1\local\p3_l10_b.txt (since 2026-10-12; was cc9-ships37\local\s37_l10_p2.txt) |
-| USN12 | cc9-ships38\local\s38_u12_p2.txt |
-| ESMP08 | cc9-lua46\local\l46_e8_orders2.txt |
-| LOMP06 | cc9-lua50\local\l50_l6_q6.txt |
-| BSM01 | cc9-lua50\local\l50_b1_a.txt (the win is EndMission) |
-| USN15 | cc9-ships44\local\s45_u15_l2.txt (90000 frames; the win is EndMission; since 2026-10-12, replaces s44_u15_h of SHIP_AI 219, ac9652105) |
+| Row | Order file | Was |
+|---|---|---|
+| USN01 | config/win_orders/usn01_p3_u1_z4.txt | cc9-physics1\local\p3_u1_z4.txt (since main cd761bb52; before: p3_u1_o.txt, l50_u1_u2.txt) |
+| USN02 | config/win_orders/usn02_s36_u2_p7.txt | cc9-ships36\local\s36_u2_p7.txt |
+| LOMP10 | config/win_orders/lomp10_p3_l10_b.txt | cc9-physics1\local\p3_l10_b.txt (was cc9-ships37\local\s37_l10_p2.txt) |
+| USN12 | config/win_orders/usn12_s38_u12_p2.txt | cc9-ships38\local\s38_u12_p2.txt |
+| ESMP08 | not committed (2.3 MB, not a win now): cc9-gunnery36\local\g38_ord_e8.txt | cc9-lua46\local\l46_e8_orders2.txt |
+| LOMP06 | config/win_orders/lomp06_l50_l6_q6.txt | cc9-lua50\local\l50_l6_q6.txt |
+| BSM01 | config/win_orders/bsm01_l50_b1_a.txt (the win is EndMission) | cc9-lua50\local\l50_b1_a.txt |
+| USN15 | config/win_orders/usn15_s45_u15_l2.txt (90000 frames; the win is EndMission) | cc9-ships44\local\s45_u15_l2.txt (replaces s44_u15_h of SHIP_AI 219) |
 
 ## 2026-10-12, build fe01ecf32 (origin/main db5ab3c4e + the live-sea flip; main landed the flip as ecb1c55d1 on a later base), SHA-256 B22D402CE8ED
 
@@ -136,3 +139,5 @@ mechanism is in the cd761bb52 section above).
 - **cc9-physics4's flips, checked on their pairs:** `kPlaneWaterSurfaceLawBound` (25d13aa63) and
   `kGunAimDegreePrecisionBound` (f435022e8) leave USN01 (1014.63 s) and USN12 (1539.83 s) at identical times;
   ESMP08 is unchanged (lost).
+- **Retracted: "USN12 lost on 8b0e7bfce".** That run (local\p4l_off_u12.log) logged `helm orders refused: cannot open` its order file: cc9-ships38 had been removed minutes before. USN12 ran with no orders; it says nothing about main.
+- **kPlaneLeaderTurnRollBound flipped ON** (cc9-physics5, 2026-10-13, ruling (a)): faithful, loses USN01 `p3_u1_z4` (deaths 90 -> 68 on the 8b0e7bfce pair). USN01 stays a win row pending the re-plan on current main; until then treat `p3_u1_z4` as expected to fail.

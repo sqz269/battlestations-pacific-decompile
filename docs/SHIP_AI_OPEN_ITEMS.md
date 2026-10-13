@@ -17068,3 +17068,67 @@ cc9-lua48's `l48_diag_hq.py` hit lines (exports `local\s45_dg_{off,on}`, not for
   image's mesh test; the expected truck-05 effect could not be shown on this base because the self-damage no
   longer happens on either side. The blast-distance residual (`kLandStructureBlastElementEntriesBound`) stays as
   it is.
+
+## 221. USNOS re-tuned on main `1de67cfb9`: variant k completes (cc9-ships45, 2026-10-12; lead item 1)
+
+Build and launcher as 219 (row `USNOS`, 200000 frames, 0.05 s). Order files are derived from cc9-ships43's x
+(`local\s44_os_x.txt`, identical to `cc9-ships43\local\s43_os_x.txt`) by `local\s45_osedit.py` (drop lines by
+regex, add `select` + `moveto|attack` pairs). Logs `local\s45_{base,v,t}_os<v>.log`.
+
+**x on this base** (`s45_base_osxf.log`): fail at 2154.23 s. Two new threats to the Enterprise, both scripted:
+`luaMoveToPh2` (us_osumi.lua:1625) sends the Takao group (Takao1, Shima4-7) to `NavigatorAttackMove` the
+Enterprise; it parks about 3 km away at (10700, -1900) by about 1590 s, and on this base its Shimas sink the
+Enterprise with a category-7 hit in a few seconds (a, e, g: 1622-2123 s). Later Haku3/Haku4 close to 1.3 km and
+sink it with guns (i: 2239.86 s, Haku3, c6 hits 107). The troop transports are the other limit: the base capture
+rule (us_osumi.lua:1100-1106) is "a neutral HQ with a live `Mission.Troops` ship within 1500 m becomes allied", and
+the mission fails when every transport is dead (line 985). TroopTrans1/2/4 die to planes by 446 s on every
+variant; TroopTrans3 and 5 die between 1187 and 1800 s.
+
+| v | change (each from the previous unless said) | outcome |
+| --- | --- | --- |
+| a | x, DM1 moved at 40000 instead of 44000 | Enterprise <- Shima7 2122.60 s (after the 32000-40000 Shima6 strikes kill Shima6) |
+| b | x without the Shima6 strikes | Enterprise <- DM1 2152.42 s, as x |
+| c | x with the Shima6 strikes spread over Shima4-7 | as b |
+| d | b, DM1 moved at 40000 | DM1 kills Shima4-7 and Haku3 (2076-2167 s); fail at 2273.14 s when TroopTrans6, the last transport, dies |
+| e, f | d, TroopTrans3/6 (and 5) sent to HQ2 earlier | Enterprise <- Shima4 1622 s / all transports dead 1609 s |
+| g | d, TroopTrans6 to (2000, 4200) at 26100 (next to HQ2) and to (-2100, 3300) at 37400 (next to HQ1) | Enterprise <- Shima4 1627.26 s |
+| i | g, `attack` DM1 -> Shima4, Gear1 -> Shima5, Gear2 -> Shima6, Gear3 -> Shima7 at 28000-28300 | DM1 sinks the Takao group 1535-1581 s; HQ2 captured 1698 s, HQ1 2228 s (TroopTrans6); Enterprise <- Haku3 2239.86 s |
+| j | g with those attacks at 30000 | too late: Enterprise <- Shima5 1621.06 s |
+| **k** | i, plus DM1 and Gear2 -> Haku3, Gear1 -> Haku4 at 40500-40700 and again at 42500-42700 | **completes** |
+
+**k, the win** (`local\s45_v_osk.log`): DM1 sinks the Takao group (1535-1581 s), Haku3 (2085 s) and Haku4
+(2163 s); TroopTrans6 alone captures HQ2 (1698 s), HQ1 (2228 s) and, on x's CB2 route, CB2 (4239 s); Loui2 sinks
+Yamato (3643 s), Loui1 Musashi (3801 s), Haku1 (7168 s) and Haku2 (7257 s); then `luaBombFadeOut` and
+`mission end: MissionStatus at 7332.83 s status=completed text="The Japanese Empire is finished! - Mission
+Complete!"`, with `bsp: refused a mission script's process launch: sus_prog.exe` logged just before it. Order file
+`J:\PROG\battlestations-pacific-decompile-cc9-ships44\local\s45_os_k.txt` (1149 orders). Regenerate from x with
+`s45_osedit.py`: drop `launch Enterprise 0 331 3 Shima6`, change `44000 moveto DM1` to 40000, then add
+`26100:moveto TroopTrans6 2000 4200`, `37400:moveto TroopTrans6 -2100 3300`, the four 28000-28300 attacks and the
+six 40500-42700 attacks above. One transport carries all three captures, so the row is a knife-edge on
+TroopTrans6 (it survives to the end here); not checked with frame jitter (each full run takes over an hour of wall time with the shared slots).
+
+## 222. The shallow-water functions do not reach ship navigation (cc9-ships45, 2026-10-12; lead item 4, a read)
+
+docs/CC13_LEFTOVERS_1.md section 4 left `00880080`, `00880420`, `00880250` (avoid-zone byte-grid code, called from
+`00423640`) and `00880220` (under `BSP_LuaBinding_SetShallowWater` `008C4B50`) for cc9. Question: does ship
+navigation depend on them? **No; nothing to model.**
+
+Evidence (disk bytes of this installation's `battlestationspacific.exe`; `local\s45_rel32.py` scans every E8/E9
+rel32 in `.text` and every absolute dword in every section; positive control: it finds the one call to
+`00880420` and the binding-table row of `008C4B50`):
+- `00880420`: one call, `004237A6`; `00880250`: one call, `004236F2`; both inside `00423640` (body
+  `00423640`.., preceded by `RET` at `0042363D` and `INT3` padding, so a real function start).
+- `00880080`: called only from `00880420` (`00880544`, `008805CD`). Its one other dword match, `00D7EF14`, lies
+  in the load config's SafeSEH handler table (`00D7CD50`, 7240 entries; the load-config words before the `RSDS`
+  record at `00D7A3E8` name the table and the count 1C48h), whose entries are RVAs: that dword is RVA 880080h, VA
+  `00C80080`, an EH handler stub (`MOV EAX,00DAD720; JMP 00BF6B43`), not a reference to `00880080`.
+- `00423640`: **no reference at all** (no rel32 call or jump, no absolute dword, and `ghidra xrefs` finds none).
+  Its segment's keywords (`mpakscenes`, `terraingrid`, `avoidzone`) suggest offline avoid-zone building; the
+  label is a hypothesis. So the byte-grid flood never runs in the shipped image, and the ship AI's avoid zones
+  come only from the scene (`BSP_AvoidZoneManager_GroupForLayerOrBelow` `004120D0` has 25 other callers, all
+  outside this code).
+- `00880220` (`RET 4`): if `[ECX+42Ch]` (the landscape's `ShallowWater` decal, docs/SCENE_CONTENTS_HOSTS.md,
+  landscape pass A) is set, it calls the ocean `[[[00E188A8]+19F0h]+A8h]` vtable+20h with that decal and the
+  string argument: it re-textures a render decal. No script of this installation calls `SetShallowWater` (454
+  `.lua` files under `scripts\`; control: 40 of them call `SetWeather` or `SetDayTime`); the 223 `.scn` files
+  that contain the string are the scene's `ShallowWater` block, which landscape pass A already reads.

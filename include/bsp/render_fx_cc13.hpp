@@ -955,4 +955,39 @@ void mshd_shader_construct_00b571e0(std::uint8_t* shader, const PooledString& na
 std::uint8_t* shader_constant_list_construct_00b58400(std::uint8_t* list, const ArrayResizeFn& resize_00b580c0);
 void shader_constant_rows_push_back_00b57fd0(RawArray& rows, const std::uint8_t* row, const RowCopyFn& copy_row_00b57680,
     const ArrayResizeFn& reserve_00b576f0);
+// ===========================================================================
+// 00B529A0 old film (packet cc13-render2b). __thiscall(state, targets, const float* params,
+// char extended, float a, float b), RET 14h; caller 00B156C0. Full evidence and layout in
+// docs/CC13_RENDER_2.md.
+//
+// RNG: the image draws every uniform from 00BD2F10 (BSP_Random_UniformFloatRange(NULL, lo,
+// hi), result in ST0) and every integer from 00BD2FC0 (BSP_RandomThreads_NextU32), both on
+// the SHARED GAMEPLAY STREAM 0. This model takes them from the host callbacks below in the
+// image's draw order; a host must route them to a presentation stream (or keep the effect
+// OFF) so that same-binary gameplay pairs stay coupled only where the image couples them.
+// Nothing wires this model into a host.
+class OldFilmHost {
+public:
+    virtual ~OldFilmHost() = default;
+    virtual void* targets_color_surface_00b1f6d0(void* targets, std::uint32_t index) = 0;
+    virtual std::uint32_t surface_width_vt1c(void* surface) = 0;
+    virtual std::uint32_t surface_height_vt20(void* surface) = 0;
+    // operator new(24h) + 00B4E840(this, "oldfilm_dust.mshd", quad_count, 0); null when the
+    // allocation fails (the name temporary is still returned to the pool).
+    virtual void* create_child_00b4e840(std::uint32_t quad_count) = 0;
+    virtual void release(void* ref_counted) = 0;                              // +04h, slot 0
+    virtual void child_set_texture_slot0(void* child, void* texture) = 0;     // 00B4CBF0 + 00B189F0
+    virtual std::uint32_t child_quad_count_00b4cc00(void* child) = 0;
+    virtual void child_populate_00b4d4c0(void* child, const void* records) = 0;
+    virtual void child_set_frame_target_00b4e3d0(void* child, void* targets) = 0;
+    virtual void child_submit_00b4def0(void* child) = 0;
+    virtual float clock_now_01090ab0() = 0;                                   // [[01090AB0]+04h]
+    virtual double uniform_00bd2f10(float lo, float hi) = 0;                  // image: stream 0
+    virtual std::uint32_t next_u32_00bd2fc0() = 0;                            // image: stream 0
+    // Image reserves of the 24h record lists (00B51FC0) and the 0Ch line states (00B52040).
+    virtual void reserve_records_00b51fc0(RawArray& records, std::int32_t n) = 0;
+    virtual void reserve_line_states_00b52040(RawArray& states, std::int32_t n) = 0;
+};
+void old_film_render_00b529a0(std::uint8_t* state, void* targets, const float* params, bool extended,
+    float a, float b, OldFilmHost& host);
 } // namespace bsp::cc13_render1

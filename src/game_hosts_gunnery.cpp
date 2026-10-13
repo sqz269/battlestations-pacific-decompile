@@ -626,7 +626,7 @@ constexpr bool kAaKind6GateBound = true;   // ON: GUNNERY_OPEN_ITEMS 184.3
 //    unit scale is taken (docs/MOUNT_FRAME_SCALE.md). ON: horz and vert are the
 //    lifted direction's hull-frame pair. OFF: the unlifted hull-frame bearing, and
 //    the world lift added to the hull-frame elevation (184.1's substitution).
-constexpr bool kAaKind6GateMountFrameBound = false;
+constexpr bool kAaKind6GateMountFrameBound = true;   // GUNNERY 197: ON, inert on USN02/USN13 9000
 //  * kLandscapeSpatialAttachBound: packet cc9_landscape_spatial_attach
 //    (docs/SCENE_CONTENTS_HOSTS.md section 8). Each Landscape joins the segment
 //    query as a loose entry after the units (00884078 attaches its collision
@@ -1002,7 +1002,7 @@ constexpr bool kPlaneMeshHitTestBound = true;
 //    as for the plane: every triangle of every mesh in the file, and the record
 //    keeps 0Ah / -1. The blast distance stays the class box. OFF: the class box.
 //    Packet cc13_jm08_aa_truck_hq_damage.
-constexpr bool kLandStructureMeshHitTestBound = false;
+constexpr bool kLandStructureMeshHitTestBound = true;  // ON: JM08 b3 pair, mechanism matches (SHIP_AI 220, cc9-ships45)
 //  * kLandStructureBlastElementEntriesBound: a burst's distance to a LAND
 //    STRUCTURE is taken per GeomMesh element, as kPlaneBlastElementEntriesBound
 //    does for a plane (the image's sphere test is 0070F720 -> 00723F80 on the
