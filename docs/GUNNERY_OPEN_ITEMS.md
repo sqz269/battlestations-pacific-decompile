@@ -13187,3 +13187,58 @@ t1 <pat>` (lines between simulated times), `g38_e8scan.py`, `g38_e8_retarget.py`
 `local\g36_queue.ps1 -Jobs <f> -Parallel n` started by `Start-Process pwsh` (hidden). Run slots are contended:
 expect 10-30 min waits per run. Renderer-init failures (0x88760868) hit three launches at about 01:07 UTC and
 cleared by themselves.
+
+## 202. Plane rockets: the 0080A000 flight law, the 0080AA20 spawn and the 009FD0E0 opportunistic tick, bound OFF (lead queue item 2; cc9-gunnery39, 2026-10-13)
+
+**What was there.** No host path spawned a rocket: no gun row in the AH logs (USN13, JM08) carries a `Type=Rocket`
+bullet class, the rocket task (`kRocketTaskBound`) and `009FD0E0` were unhosted, and a rocket rack fired by the
+rack tick would drop through the bomb arm (`rack_bullet_class_per_rack != 2Bh`). So "rockets fly as plain rounds"
+is stronger than the code: they did not fly at all (as CC13_ROCKET_HOMING 0 says).
+
+**Applied** (cc13-homing1's diff, CC13_ROCKET_HOMING 6, plus these changes):
+- `GameGunneryHost::release_rocket_0080aa20(unit, target+1, body_point, angle, bullet_class)` spawns one rocket
+  from the unit's `Type "Rocket"` gun row (the one firing `bullet_class`, the rack's `Bullet[1]`). LABELLED as in
+  cc13's diff: the plane's origin and rows at `0092D730` speed. The class `IgnitionDelay`/`VMax`/`Acceleration`
+  are now read for every bullet row (no behaviour; only a rocket uses them).
+- `run_projectiles` runs `rocket_air_step_0080a000` on every rocket (ignition with the gravity give-back, thrust
+  to VMax). Only the HOMING BLOCK is gated: `kRocketHomingBound` (cc13's switch, `rocket_homing_cc13.hpp`) decides
+  whether the spawn calls `rocket_set_homing_target_0080aa20`. OFF, the rocket flies unguided (the constructor's
+  zeroed `+47Ch`).
+- `kOpportunisticRocketBound` (`opportunistic_rocket_cc13.hpp`, OFF): cc13-oprocket1's units glue
+  (CC13_OPPORTUNISTIC_ROCKET 7), two hunks re-anchored by hand, plus:
+  - the adapter's `0080AA20` sink keeps the request (rack, target, point, angle) on the slot;
+  - its `007BBBA0` sink is a **SUBSTITUTION, labelled**: the host spawns the picked rack's rocket at once through
+    `release_rocket_0080aa20` and spends one of that rack's rounds, instead of raising the bay request. The bay
+    chain is the bomb/torpedo one (the issue stage raises the squadron and fires the first rack holding a
+    round), and that the image's request launches the 007C1EB0 rocket is itself assumed (CC13_OPPORTUNISTIC_ROCKET 8);
+  - `plane_rack_census()` before each tick (007C1EB0 walks the racks).
+- Log: `summary mission gunnery rocket launches= guided= ignitions= homing_steps= lock_lost=`, and the first two
+  releases per unit as `opportunistic rocket: unit= rack= bullet= target= angle=`.
+
+**Predictions** (written before any run). Both OFF: gameplay-identical to main (the only new lines are the
+summary). `kOpportunisticRocketBound` ON: launches only where an R4M or HVAR plane is in a dogfight or strafe
+(USN13's Raiden if it dogfights; JM08's Shinden/Kikka with set 2; USN19's Shinden). R4M against planes hits on
+contact only (no fuze), so few kills; HVAR strafes add ship/fort damage. RNG: the tick's own keyed `#or` draws
+only; the shared stream 1 is untouched, so gunnery spread elsewhere should not move unless a death moves.
+`kRocketHomingBound` ON on top: `guided` = `launches` against IsKindOf(5) targets, `homing_steps` > 0, a small
+hit-rate rise.
+
+## 203. The small gunnery items from cc13's band sweeps (lead queue item 3; cc9-gunnery39, 2026-10-13)
+
+1. **AA firepower `00812600` counts 1.0 per mount with no dead-byte test** (CC13_GP_0080_0084 finding 2). Its
+   only consumer is `008127E0` `BSP_Unit_RefreshFirepowerRatios`, called from `0088DC10`
+   `BSP_LuaBinding_GetFirepower` and `0081F980` (bind time) (`ghidra callers`). No host binds `GetFirepower`, and
+   this installation's only Lua caller (`scripts/global/commandhelpers.lua:2413`, mtime 2024-10-29,
+   `luaCheckDamageRetreatConditions`) sits inside a `--[[ ... ]]` block. Nothing to change: inert here.
+2. **`0081DCB0`'s random torpedo barrel pick draws stream 1** (finding 3). The host already models it so:
+   `unload_random_torpedo_barrel_0081dcb0` (`src/game_hosts_gunnery.cpp` ~2962) draws through `draw(...)`,
+   whose default is the gunnery host's one shared generator, which stands for stream ECX=1 (comment at
+   ~1678; `torpedo_unload` keyed under BSP_GUNNERY_RNG_STREAMS). No change.
+3. **BOMB_FAMILY_TICK.md's `vtable[3Ch]`** (CC13_GP_006B_0070 note). The sentence is right: `0080A0FE` calls
+   through the interface embedded at `record+310h` (rocket table `00D09078` -> `00809F20`, bomb table
+   `00CF95E0` -> `006E1CD0`); `006E6C20` is `+3Ch` of the shot's primary table `00CF93B0`. Clarified in
+   BOMB_FAMILY_TICK.md; no host path dispatches either slot (`on_spawn_flag` has no implementer).
+4. **The dotted-key blast read** (`kBulletBlastDamageMinNestedBound`, OFF, GUNNERY 200 item 2): applied at both
+   `build_guns` sites as gunnery38 prepared it. `local\g38_tier_census.py` re-run on this installation's
+   arcade and realistic `bulletclasses.lua`: 32 and 26 Artillery classes, 0 change tier. Predicted
+   gameplay-identical everywhere.
