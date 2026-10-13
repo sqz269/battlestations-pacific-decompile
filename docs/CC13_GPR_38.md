@@ -157,3 +157,92 @@ The inputs are the latch state, each member's dkz state, its ordnance and target
 - A `retreat` ends in Kill(4) `exitzone`, which counts as dead for
   `luaRemoveDeadsFromTable(Mission.FinalTrgs)`.
 - I have not traced whether a landed Betty counts as dead.
+
+## 2. Segment 38 reference models
+
+Code: `include/bsp/gameplay_seg38_cc13.hpp`, `src/gameplay_seg38_cc13.cpp` (namespace
+`bsp::gameplay_seg38_cc13`). These are semantic models taking values and host interfaces:
+- engine queries (vtable answers, target resolution, the handle tables) are inputs;
+- the bit cursor is the `BitSink` / `BitSource` interface, named after the native helpers;
+- the session router's messages are returned as `RoutedDirectorMessage` records.
+
+They are not native layouts and nothing is wired. Status of each: **reconstructed, build-tested**.
+
+### 2.1 Adoption table
+
+| model | address | host or stub it would replace | inputs | RNG | OFF-switch prediction |
+| --- | --- | --- | --- | --- | --- |
+| `on_entity_removed_0071ddb0` | `0071DDB0` | `release_observed_target_0071ddb0` (src/game_hosts_commands.cpp) answers one slot | per-slot "targets the removed entity", vt70/vt74 answers, `[GGame+5D4h]`, session mode | none | OFF: identical. ON: a removed target also clears every later queued slot whose class vt74 allows it (`0071D900`), on top of ending slot 0 |
+| `retarget_to_member_or_point_0071edd0` | `0071EDD0` | the attack-target conversion inside the commands host (none separate) | the target, squadron member list and live bytes, positions | none | ON: a squadron target with two or more live members resolves to the **last** live member, because the distance gate is `d^2 < FLT_MAX` (`00D7A278` is `47EFFFFFE0000000`); a non-squadron entity becomes a fixed point |
+| `controller_update_0071f290` | `0071F290` | the commands host's per-step director entry | unit live bytes, dt, slot and override presence, the two vt78 answers, session mode | none | ON: the `+40h` override-delay countdown, and a command ends at stage 2 when its vt78 validity test fails while `+44h` is clear |
+| queue predicates (`0071BDE0`, `0071C0C0`, `0071D780`, `0071DEE0`, `0071DF70`, `0071DC80`, `0071D6D0`, `0071E200`) | | the host's per-unit command rows answer these implicitly | slot classes, categories, path facts | none | no change until a host keeps a ten-slot queue |
+| messages (`0071C730`, `0071CDD0`, `0071D3E0`, `0071D900`, `0071D980`, `0071DAD0`/`0071DD30`/`0071E050`/`0071E150`, `0071E2E0`) | | the session messages are not routed by the single-player host | payload values | none | none |
+| descriptor and snapshot codec (`00721070`..`007219C0`) | | none (network/save path) | descriptor fields | none | none |
+| geometry (`0071CEA0`, `0071CF30`, `0071CE60`, `0071DB90`, `0071D600`, `00722CA0`) | | none | rect, points | none | none |
+
+### 2.2 Findings worth knowing
+
+- **`0071EDD0` picks the last live member, not the nearest.** The ledger name was
+  `TargetStillValid`. The member loop overwrites its choice for every member that passes
+  `d^2 < (double)FLT_MAX`, so only a NaN or infinite distance is rejected. A member index of 5 or
+  more reads a null member (`+5Dh` at address 5Dh), so the image relies on at most five members.
+- **`0071CF30` has an operand slip.** Its fourth "inside" test compares the b-axis coordinate
+  with `-half_a` (`0071CFD0 FCOMPI ST(3)`) where the other three tests pair each axis with its own
+  half extent. The model keeps the image's test.
+- **`0071D600` takes the maximum of twenty floats** (`+1D0h..+21Ch`, four unrolled groups of five),
+  not eight as its ledger name says. The seed is `-1e10f` (`00CE4ADC`).
+- **`0071F570` drops only the last point.** It is `0071F3E0(count - 1)`, an erase-at-index, and
+  only runs when there are two or more points. It does not clear the list.
+- **`0071C1B0` writes the path of the last filled slot.** It indexes `+1A0h + first_empty*4`, so
+  with an empty queue it writes through `director+1A0h`, which is not a path pointer.
+- **`0071E4C0` with a null slot-0 path** calls `007B1350` with ECX = 10h (null + 10h). The model
+  does not cover it (see section 3).
+- **Defaults of the director path object** (`0071FB90`): followMode 1, startMode 5, `+2Ch` = -1,
+  `+3Ch` = -1.0f.
+
+### 2.3 Existing reconstructions checked and recorded, not duplicated
+
+| address | existing model | check |
+| --- | --- | --- |
+| `00722400`, `007225F0` | `radix_sort_records16_00722210` (src/band_0067_cc13.cpp) with key index 1 / 2 | the decompiles differ from `00722210` only in the key dword (+4h / +8h) |
+
+## 3. Records, status and what is still open
+
+**Records.**
+- 71 `ledger add-function` records with source `src/gameplay_seg38_cc13.cpp`, status
+  `semantic_build_tested`, `abi_compatible: false`. The four 5Ah senders share one model, and the
+  two thunks `007213B0` and `007213C0` point at the routines they jump to.
+- Two records point at the existing `radix_sort_records16_00722210`, as listed in section 2.3.
+- No Ghidra renames or comments were applied in this packet.
+
+**Build.** `./scripts/build.ps1` passes in the worktree, and both CTest suites pass.
+
+**Not modelled (open), with the reason:**
+- **Existing models elsewhere, not re-checked here.** I did not add records for these:
+  - `0071BA20` (`model_collect_children_by_prefix_0071ba20`, src/frontend_seg12_17_cc13.cpp);
+  - `0071BE60`, `0071D810`, `0071D9E0` (src/unit_commanded_speed.cpp);
+  - `0071BFF0` (src/ship_ai_state_steps.cpp);
+  - `0071D2A0`, `0071D340`, `0071FC40` (src/ai_command_tick.cpp);
+  - `0071D880` (src/entity_command_arms.cpp);
+  - `0071EBF0` (src/unit_gunnery_pass.cpp);
+  - `00722210` (src/band_0067_cc13.cpp).
+  
+  A follow-up should check each against the bytes and record it.
+- **`0071FDE0` AddPoint.** Its world-bounds clipping (`BSP_Point3Vector_ClipToWorldBounds`,
+  `BSP_Game_ClipSegmentToWorldBounds`) and the two pushes need those helpers' contracts first. The
+  gate is read: without replace, more than 7 points past the cursor are rejected; with replace the
+  list is erased first.
+- **`00720450` CopyStateFrom.** Long, with a land-to-attackmove rewrite for kind-6 owners that goes
+  through `0071DB90`.
+- **`0071F600` BeginCommandBase** and **`0071E4C0` CurrentPathPoint.** Docs exist
+  (docs/COMMAND_EXECUTION.md); not modelled here.
+- **`0071F9F0`, `0071FD10`, `0071FC70`.** Vector assign, path copy and path destructor: STL and
+  ownership plumbing.
+- **Reference-count plumbing:** `0071EA60`, `0071F0E0`, `0071F110`, `0071F3B0`, `0071F460`,
+  `0071F530`.
+- **Thin forwards and accessors:** `0071BFC0`, `0071C150`, `0071C1A0`, `0071C280` (noop),
+  `0071C470`, `0071F150`, `00721030`, `00721CB0`, `00721CC0`.
+- **The USNOS question (section 1).** It is static. No game run was made, by the packet's terms.
+  Still open:
+  - which arm `007F16D0` answers for class 32;
+  - whether a landed Betty leaves `Mission.FinalTrgs`.
