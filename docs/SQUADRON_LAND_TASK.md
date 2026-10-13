@@ -16309,3 +16309,20 @@ and 38. The image keeps no such count.
 
 **Predictions.** USN12 (control): identical, it makes far fewer than 64 squadrons. USN21 (`s46_u21_f.txt`): exit 3, launches
 after about 860 s carry a squadron (`squadron=` non-zero) and the strikes continue until the decks' stock or slots run out.
+
+### 5gq.1 Measured: **ON** (cc9-lua56, 2026-10-13)
+
+Same tree: OFF `04c7ac88a`, ON `04c7ac88a` + flip. Logs `local\l56_b{0,1}_{osk,u12}.log`.
+- **USN12 (control): identical**, `torpedo_refused_class=0` (every torpedo bomber flies 00E08F18).
+- **USNOS (`usnos_s45_os_k.txt`, 200000 frames): MOVED; no completion on either side** (the row already fails to complete on main,
+  docs/WINS_TABLE.md). The mechanism held: `torpedo_refused_class=24` (Betty1-6, four each, all `00E08F30`), torpedo-task aircraft
+  60 -> 36; the spent-RTB summary goes `latches=35 ends=31 issues=31` -> `latches=38 ends=38 issues=38`. Betty2, Betty3 and Betty6
+  reach B5 within 0.1 s of the latch (1601.34, 1616.75, 1627.06 s) and 007F16D0 answers land at site Airfield2; Betty5 and Betty4
+  (1683.22, 1718.15 s) land at site Airfield1.
+- **Why USNOS still does not complete (open):**
+  - No Betty touches down (`touchdowns=0`): the returning Betties fly over the US screen and are shot down (Betty6's four by
+    Gear14 at 1654-1668 s); Betty deaths 16 -> 20.
+  - Betty1 never latches: its leader released at 1624.56 s, but 2 of the 24 Ohkas are never released (`releases=22`), so a member
+    still holds a rack round and 009F8160 does not latch. Which Betty1 wingman keeps its round, and why its drop-kamikaze task
+    never reaches release, is the next read.
+- **Verdict: ON.**
