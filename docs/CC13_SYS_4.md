@@ -12,7 +12,7 @@ game-validated; the hosts take field values and callbacks where the image works 
 | 13 lazy singleton getters, 2 teardowns | yes | table + `lazy_singleton_get`, `lazy_singleton_destroy` | yes | no |
 | x87 geometry `0046F550..00470150` (7) | yes | yes | yes | no |
 | `004656D0` particle-effect movie action run | yes | yes | yes | no |
-| Segment-9 helpers (20) | yes | yes | yes | no |
+| Segment-9 helpers (20 + 35) | yes | yes | yes | no |
 
 ## Singleton getters
 
@@ -99,8 +99,27 @@ unsigned `JA`), `004BDF50` (apply pending size through vtable `+10h`), `004BEA10
 `004C5140` (input context level 5), `004C5E00`, `004C5E20` (wide-string assign), `004C5EC0`/`004C5EF0`
 (profiler scope), `004C5F10`/`004C5F40` (session message E4).
 
+## Segment-9 helpers, second batch (35)
+
+- Pooled-string releases as one table (`kPooledStringReleases`): `004C67E0`, `004C6800`,
+  `004C89E0`, `004C8260` (UTF-16, `len*2+2`), `004C8DB0`, `004CE690` (`__stdcall`), and the record
+  destructors `004C5720` (three strings) and `004C6760` (two). `004C9420` and `004CC650` reuse it.
+- Strings: `004C8DD0` (wide copy construct), `004C8900`/`004C8950`/`004C89A0` (the game's command
+  line text at `+600h` and console string at `+2198h`), `004C9220`/`004CC390` (60h-byte entry
+  assign/copy), `004C95D0` (named entry), `004C9680` (front-end frame select with an empty title).
+- `004C7070` and `004C70C0` format the diagnostic text and then call only the sink getter
+  `004C14C0`, with no arguments. The text never reaches the sink, so release-build diagnostics are
+  dropped.
+- `004CEB40` (platform pause; the tail-jump sibling `004CEC00` has no Ghidra function and no
+  absolute reference), `004CA120` (high-latency warning via the client's `007349C0`), `004BC4E0`,
+  `004BC520`, `004BC7F0` (XLive presence, friends enumeration, leaderboard cancel; the friends
+  enumerator leaks its handle when `XEnumerate` fails), `004BB3E0` (lobby slots: state 3 to 1 in
+  modes 0..3, 1 to 3 otherwise), `004C6B00` (next scene record, signed `IDIV`).
+- Containers: `004CAF10`, `004CC8E0`, `004CDE20` (string deque pop), `004CE460`,
+  `004CEC20`/`004CEC40` (resize to zero, then free), `004CF590` (forward to `004CC760`), `004C7F80`.
+
 ## Evidence method
 
 Live `bsp.py ghidra decompile`, `disasm-raw` for every listed body, constants from the PE
 (`local/sys4_consts.py`). Call-site rows: `reports/cc13_sys4_calls.json`
-(`tools/verify_report_calls.py`: 33 rows, 0 failed).
+(`tools/verify_report_calls.py`: 59 rows, 0 failed).

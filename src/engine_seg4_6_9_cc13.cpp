@@ -550,4 +550,306 @@ bool session_message_e4_is_id_004c5f40(std::uint32_t id) {
     return id == 0xE4;
 }
 
+// Offsets from each body's MOV reg,[ECX+data] / MOV reg,[ECX+length] and the
+// ADD 1 / LEA [len+len+2] before the pool call.
+const std::array<PooledStringReleaseRow, 8> kPooledStringReleases{{
+    {0x004C67E0, "__fastcall(ECX object), RET", {{{0x08, 0x0C, 1}}}, 1},
+    {0x004C6800, "__fastcall(ECX object), RET", {{{0x08, 0x0C, 1}}}, 1},
+    {0x004C89E0, "__fastcall(ECX object), RET", {{{0x08, 0x0C, 1}}}, 1},
+    {0x004C8260, "__fastcall(ECX object), RET", {{{0x08, 0x0C, 2}}}, 1},
+    {0x004C8DB0, "__fastcall(ECX object), RET", {{{0x0C, 0x10, 1}}}, 1},
+    {0x004CE690, "__stdcall(object), RET 4", {{{0x08, 0x0C, 2}}}, 1},
+    {0x004C5720, "__fastcall(ECX record), RET", {{{0x10, 0x14, 1}, {0x08, 0x0C, 1}, {0x00, 0x04, 1}}}, 3},
+    {0x004C6760, "__fastcall(ECX record), RET", {{{0x10, 0x14, 1}, {0x00, 0x04, 1}}}, 2},
+}};
+
+const PooledStringReleaseRow* find_pooled_string_release(std::uint32_t address) {
+    for (const auto& row : kPooledStringReleases) {
+        if (row.address == address) return &row;
+    }
+    return nullptr;
+}
+
+void release_pooled_strings(const PooledStringReleaseRow& row, const void* object,
+                            const std::function<void(void*, std::uint32_t, std::int32_t)>& pool_return_00bd1510) {
+    const auto* bytes = static_cast<const unsigned char*>(object);
+    for (std::uint8_t i = 0; i < row.count; ++i) {
+        const PooledStringField& field = row.fields[i];
+        void* data = nullptr;
+        std::uint32_t length = 0;
+        std::memcpy(&data, bytes + field.data_offset, sizeof data);
+        if (data == nullptr) continue;
+        std::memcpy(&length, bytes + field.length_offset, sizeof length);
+        pool_return_00bd1510(data, field.unit == 2 ? length * 2 + 2 : length + 1, 1);
+    }
+}
+
+NativeWideString& wide_string_copy_construct_004c8dd0(
+    NativeWideString& dst, const NativeWideString& src,
+    const std::function<void(NativeWideString&, std::uint32_t, std::int32_t)>& size_004c53e0) {
+    dst.length = 0;                                                               // 004C8DDA
+    dst.data = nullptr;                                                           // 004C8DE0
+    return wide_string_assign_004c5e20(dst, src, size_004c53e0);
+}
+
+void game_clear_scene_records_004c8900(const std::function<void()>& destroy_all_004bf930, void*& record_block_5fc,
+                                       NativeNarrowString& text_600, const NarrowStringResize& resize_0041dd40) {
+    destroy_all_004bf930();
+    record_block_5fc = nullptr;
+    resize_0041dd40(text_600, 0, 0);
+    static const char kEmpty_00ce3a0c[1] = {0};
+    if (text_600.data != nullptr) std::memcpy(text_600.data, kEmpty_00ce3a0c, text_600.length);
+}
+
+void game_set_command_line_text_004c8950(NativeNarrowString& text_600, const char* text,
+                                         const NarrowStringResize& resize_0041dd40) {
+    const std::uint32_t length = text == nullptr ? 0 : static_cast<std::uint32_t>(std::strlen(text));
+    resize_0041dd40(text_600, length, 0);
+    if (text_600.data != nullptr && text_600.length != 0) std::memcpy(text_600.data, text, text_600.length);
+}
+
+void game_assign_console_string_004c89a0(NativeNarrowString& string_2198, const NativeNarrowString& src,
+                                         const NarrowStringResize& resize_0041dd40) {
+    if (&string_2198 == &src) return;
+    resize_0041dd40(string_2198, src.length, 1);
+    if (src.length != 0) std::memcpy(string_2198.data, src.data, string_2198.length);
+}
+
+LocalisedEntry60& localised_entry_assign_004c9220(
+    LocalisedEntry60& dst, const LocalisedEntry60& src,
+    const std::function<void(NativeWideString&, std::uint32_t, std::int32_t)>& size_004c53e0) {
+    dst.byte_00 = src.byte_00;
+    dst.dword_04 = src.dword_04;
+    wide_string_assign_004c5e20(dst.text_08, src.text_08, size_004c53e0);
+    dst.dwords_10 = src.dwords_10;
+    return dst;
+}
+
+NamedEntry16& named_entry_construct_004c95d0(NamedEntry16& entry, std::uint32_t a, std::uint32_t b, std::uint32_t c,
+                                             const NativeNarrowString& name, std::uint8_t flag,
+                                             const NarrowStringResize& resize_0041dd40) {
+    entry.a_00 = a;                                                               // 004C95EA..004C95EF
+    entry.b_04 = b;
+    entry.c_08 = c;
+    entry.name_0c = NativeNarrowString{};                                         // 004C95F2..004C95F8
+    if (&entry.name_0c != &name) {
+        resize_0041dd40(entry.name_0c, name.length, 1);                           // 004C9609
+        if (name.length != 0) std::memcpy(entry.name_0c.data, name.data, entry.name_0c.length); // 004C961F
+    }
+    entry.flag_14 = flag;
+    entry.byte_15 = 0;
+    return entry;
+}
+
+void named_record_scalar_deleting_destructor_004c9420(
+    void* record, std::uint8_t flags, const std::function<void(void*, std::uint32_t, std::int32_t)>& pool_return_00bd1510,
+    const std::function<void(void*)>& node_pool_return_0043b0a0) {
+    static constexpr PooledStringReleaseRow kRow{0x004C9420, "__thiscall(ECX record, flags), RET 4",
+                                                 {{{0x00, 0x04, 1}}}, 1};
+    release_pooled_strings(kRow, record, pool_return_00bd1510);
+    if ((flags & 1) != 0) node_pool_return_0043b0a0(record);
+}
+
+void front_end_frame_select_default_004c9680(FrontEndFrameSelectHost& host) {
+    NativeNarrowString name;
+    host.resize_0041dd40(name, 0, 1);                                             // 004C96B0
+    static const char kEmpty_00ce3a0c[1] = {0};
+    // 004C96CA copies length + 1 bytes; the length is 0 after the resize, so one byte.
+    if (name.data != nullptr) std::memcpy(name.data, kEmpty_00ce3a0c, 1);
+    host.select_00518d60(-1, -1, -1, name);                                       // 004C96E5
+    if (name.data != nullptr) host.pool_return_00bd1510(name.data, name.length + 1, 1); // 004C9704..004C970B
+}
+
+void game_show_high_latency_warning_004ca120(std::int32_t state_5d4, void* client_21e8, HighLatencyWarningHost& host) {
+    if (state_5d4 != 0x0D || client_21e8 == nullptr) return;                      // 004CA13B..004CA14B
+    NativeNarrowString key = host.make_string_0041e870("ingame.multi_highlatency"); // 004CA15C, 00CE76B8
+    NativeNarrowString empty;
+    host.client_007349c0(client_21e8, key, empty, 0);                             // 004CA183
+    host.release_string(empty);
+    host.release_string(key);
+}
+
+void native_string_vector_pop_back_004caf10(
+    NativeNarrowString* data, std::uint32_t& count,
+    const std::function<void(void*, std::uint32_t, std::int32_t)>& pool_return_00bd1510) {
+    if (count == 0) return;
+    NativeNarrowString& last = data[count - 1];
+    if (last.data != nullptr) pool_return_00bd1510(last.data, last.length + 1, 1);
+    --count;
+}
+
+void native_string_pointer_delete_004cc8e0(
+    NativeNarrowString*& slot, const std::function<void(void*, std::uint32_t, std::int32_t)>& pool_return_00bd1510,
+    const std::function<void(void*)>& node_pool_return_0043b0a0) {
+    NativeNarrowString* string = slot;
+    if (string == nullptr) return;
+    if (string->data != nullptr) pool_return_00bd1510(string->data, string->length + 1, 1);
+    node_pool_return_0043b0a0(string);
+    slot = nullptr;
+}
+
+void game_set_paused_by_platform_004ceb40(bool paused, const PlatformPauseGame& game, std::uint8_t& flag_00e188ae,
+                                          std::uint8_t& paused_00e188bc, PlatformPauseHost& host) {
+    flag_00e188ae = paused ? 1 : 0;                                               // 004CEB48
+    if (game.state_5d4 != 0x0D) return;                                           // 004CEB4D
+    if (game.field_1fe4 != 0 && game.byte_218c == 0) return;                      // 004CEB5A..004CEB6A
+    if (paused) {
+        if (game.byte_634 != 0) return;                                           // 004CEB74
+        paused_00e188bc = 1;
+        host.set_cinematic_mode_004cd0f0(1, 0, 0);                                // 004CEB8A
+        host.hud_pause_open_005ff0d0();                                           // 004CEB9A
+        host.dialogs_set_all_paused_00a77760(1);                                  // 004CEBA7
+        return;
+    }
+    if (paused_00e188bc != 0) {
+        host.set_cinematic_mode_004cd0f0(0, 0, 0);                                // 004CEBBC
+        host.hud_pause_resume_005fd440();                                         // 004CEBCD
+        host.dialogs_set_all_paused_00a77760(0);                                  // 004CEBDA
+        host.input_update_00a92c40(0.0f);                                         // 004CEBEC
+    }
+    paused_00e188bc = 0;                                                          // 004CEBF1
+}
+
+void game_reapply_platform_pause_004cec00(const PlatformPauseGame& game, std::uint8_t& flag_00e188ae,
+                                          std::uint8_t& paused_00e188bc, PlatformPauseHost& host) {
+    if (flag_00e188ae != 0) game_set_paused_by_platform_004ceb40(true, game, flag_00e188ae, paused_00e188bc, host);
+}
+
+void vector_tidy_resize_then_free(void* vector, void* const& data_slot, const std::function<void(void*)>& resize_to_zero,
+                                  const std::function<void(void*)>& free_block) {
+    resize_to_zero(vector);
+    free_block(data_slot); // read after the resize ([ESI] at 004CEC2A)
+}
+
+void narrow_string_deque_pop_back_004cde20(
+    NarrowStringDeque& deque, const std::function<void(void*, std::uint32_t, std::int32_t)>& pool_return_00bd1510) {
+    if (deque.count == 0) return;
+    const std::uint32_t index = deque.count - 1 + deque.offset;
+    std::uint32_t block = index >> 1;
+    if (deque.map_size <= block) block -= deque.map_size;
+    NativeNarrowString& element = deque.map[block][index & 1];
+    if (element.data != nullptr) pool_return_00bd1510(element.data, element.length + 1, 1);
+    if (--deque.count == 0) deque.offset = 0;
+}
+
+void two_vector_record_tidy_004ce460(TwoVectorRecord& record, const std::function<void(void*)>& free_00bf65ac) {
+    if (record.vector_14[0] != nullptr) free_00bf65ac(record.vector_14[0]);
+    record.vector_14 = {};
+    if (record.vector_04[0] != nullptr) free_00bf65ac(record.vector_04[0]);
+    record.vector_04 = {};
+}
+
+void game_set_presence_context_004bc4e0(std::uint8_t& presence_set_22dc, GameLiveHost& host) {
+    if (host.has_selected_user_00a3e510())                                        // 004BC4E9
+        host.x_user_set_context(host.active_user_slot_00a3eac0(), 0x8001, 4);     // 004BC4FF..004BC505
+    presence_set_22dc = 1;                                                        // 004BC50A
+}
+
+void game_create_friends_enumerator_004bc520(void* friends_buffer_22de, std::uint32_t* friends_count_7034,
+                                             GameLiveHost& host) {
+    std::uint32_t size = 0;
+    void* handle = nullptr;
+    if (host.x_friends_create_enumerator(host.active_user_slot_00a3eac0(), 0, 100, &size, &handle) != 0) return; // 004BC540
+    if (host.x_enumerate(handle, friends_buffer_22de, 0x4D54, friends_count_7034, nullptr) != 0) return;      // 004BC562
+    host.close_handle(handle);                                                                                  // 004BC570
+}
+
+void game_cancel_leaderboard_read_004bc7f0(void* overlapped_7038, void*& buffer_7054, std::uint32_t& field_7058,
+                                           GameLiveHost& host) {
+    host.x_cancel_overlapped(overlapped_7038);
+    if (buffer_7054 != nullptr) {
+        host.free_block(buffer_7054);
+        buffer_7054 = nullptr;
+    }
+    field_7058 = 0;
+}
+
+void game_reset_lobby_slots_for_mode_004bb3e0(std::int32_t mode_614, std::array<std::int32_t*, 8> slot_states) {
+    const bool standard = mode_614 >= 0 && mode_614 <= 3;                         // 004BB3E6..004BB3FD
+    for (std::int32_t* state : slot_states) {                                     // 004BB406 ESI = 8
+        if (*state == 3 && standard) {
+            *state = 1;                                                           // 004BB41B
+        } else if (*state == 1 && !standard) {
+            *state = 3;                                                           // 004BB42C
+        }
+    }
+}
+
+void game_select_next_scene_record_004c6b00(std::int32_t& index_60c, std::int32_t count_5f0,
+                                            const std::function<void(std::int32_t)>& select_004c6890) {
+    index_60c = (index_60c + 1) % count_5f0;                                      // 004C6B0A IDIV
+    select_004c6890(index_60c);
+}
+
+namespace {
+
+std::string diagnostic_compose(std::size_t count, const std::function<void()>& sink_get_004c14c0,
+                               const char* format, va_list args) {
+    std::string text(count, '\0');
+    const int n = std::vsnprintf(text.data(), count, format, args);               // 00BF7289
+    if (n < 0 || static_cast<std::size_t>(n) >= count)
+        throw std::length_error("diagnostic text does not fit the buffer");
+    text.resize(static_cast<std::size_t>(n));
+    text += '\n';                                                                 // "%s\n" 00CE3A30
+    if (text.size() >= count) throw std::length_error("diagnostic text does not fit the buffer");
+    sink_get_004c14c0();                                                          // 004C70AC
+    return text;
+}
+
+} // namespace
+
+std::string diagnostic_printf_004c7070(const std::function<void()>& sink_get_004c14c0, const char* format, ...) {
+    va_list args;
+    va_start(args, format);
+    try {
+        std::string text = diagnostic_compose(0xFF, sink_get_004c14c0, format, args);
+        va_end(args);
+        return text;
+    } catch (...) {
+        va_end(args);
+        throw;
+    }
+}
+
+std::string diagnostic_printf_large_004c70c0(const std::function<void()>& sink_get_004c14c0, const char* format, ...) {
+    va_list args;
+    va_start(args, format);
+    try {
+        std::string text = diagnostic_compose(0xFFC, sink_get_004c14c0, format, args);
+        va_end(args);
+        return text;
+    } catch (...) {
+        va_end(args);
+        throw;
+    }
+}
+
+LocalisedEntry60& localised_entry_copy_construct_004cc390(
+    LocalisedEntry60& dst, const LocalisedEntry60& src,
+    const std::function<void(NativeWideString&, std::uint32_t, std::int32_t)>& size_004c53e0) {
+    dst.byte_00 = src.byte_00;
+    dst.dword_04 = src.dword_04;
+    wide_string_copy_construct_004c8dd0(dst.text_08, src.text_08, size_004c53e0);
+    dst.dwords_10 = src.dwords_10;
+    return dst;
+}
+
+void named_vector_record_destruct_004cc650(
+    void* record, const std::function<void(void*)>& destruct_004c8f00,
+    const std::function<void(void*, std::uint32_t, std::int32_t)>& pool_return_00bd1510) {
+    destruct_004c8f00(static_cast<unsigned char*>(record) + 8);                   // 004CC678
+    static constexpr PooledStringReleaseRow kRow{0x004CC650, "__fastcall(ECX record), RET", {{{0x00, 0x04, 1}}}, 1};
+    release_pooled_strings(kRow, record, pool_return_00bd1510);                   // 004CC67D..004CC69C
+}
+
+void reference_pointer_range_release_forward_004cf590(void* first, void* last,
+                                                      const std::function<void(void*, void*)>& release_004cc760) {
+    release_004cc760(first, last);
+}
+
+void record14_clear_004c7f80(Record14& record) {
+    record.field_00 = record.field_04 = record.field_08 = 0;
+    record.field_0c = record.field_10 = 0.0f;
+}
+
 } // namespace bsp::cc13_sys

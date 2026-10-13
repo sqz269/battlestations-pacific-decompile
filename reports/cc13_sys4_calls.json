@@ -2,38 +2,359 @@
   "packet": "cc13-sys4",
   "doc": "docs/CC13_SYS_4.md",
   "steps": [
-    {"function": "00472200", "address": "0047225c", "native": "00bf681b", "note": "operator new 10h"},
-    {"function": "00472200", "address": "00472273", "native": "00472100", "note": "AnimClass registry constructor"},
-    {"function": "00472200", "address": "00472294", "native": "00bd0c30", "note": "lifetime register"},
-    {"function": "004656d0", "address": "004656f9", "native": "00414db0", "note": "refresh world pose"},
-    {"function": "004656d0", "address": "00465780", "native": "00871ba0", "note": "effect handle by name"},
-    {"function": "004656d0", "address": "0046578b", "native": "008687c0", "note": "point effect with parent matrix"},
-    {"function": "004656d0", "address": "00465810", "native": "00867790", "note": "children update step"},
-    {"function": "0046f550", "address": "0046f692", "native": "00bf7030", "note": "CRT sqrt"},
-    {"function": "0046f940", "address": "0046fbcb", "native": "0042b2f0", "note": "distance between closest points"},
-    {"function": "0046f940", "address": "0046fc25", "native": "0046f550", "note": "parallel case"},
-    {"function": "0046fe80", "address": "0046fe90", "native": "00419440", "note": "axis length"},
-    {"function": "0046ff70", "address": "0046ffca", "native": "00419440", "note": "segment length"},
-    {"function": "0046ff70", "address": "004700b9", "native": "0042b2f0", "note": "|p - a|"},
-    {"function": "0046ff70", "address": "004700f6", "native": "0042b2f0", "note": "|b - p|"},
-    {"function": "0046ff70", "address": "0047013b", "native": "0042b2f0", "note": "perpendicular distance"},
-    {"function": "004bb600", "address": "004bb609", "native": "00a3e510", "note": "has selected user"},
-    {"function": "004bb600", "address": "004bb614", "native": "00a3ead0", "note": "sign-in state"},
-    {"function": "004bcb40", "address": "004bcb66", "native": "00bf9440", "note": "_strstr"},
-    {"function": "004bea10", "address": "004bea1c", "native": "006b9380", "note": "award registry storage"},
-    {"function": "004bea10", "address": "004bea22", "native": "00bf65ac", "note": "_free"},
-    {"function": "004bef00", "address": "004bef43", "native": "00694a60", "note": "register observer pair"},
-    {"function": "004bfd70", "address": "004bfd79", "native": "00b0feb0", "note": "reset remap textures"},
-    {"function": "004c2d60", "address": "004c2d7e", "native": "006952a0", "note": "unregister observer pair"},
-    {"function": "004c2fd0", "address": "004c2fd3", "native": "00419cc0", "note": "sized storage pool"},
-    {"function": "004c2fd0", "address": "004c2fe1", "native": "00bd1120", "note": "pool allocate"},
-    {"function": "004c5140", "address": "004c5147", "native": "004bec00", "note": "input manager"},
-    {"function": "004c5140", "address": "004c514e", "native": "00a933f0", "note": "set context level"},
-    {"function": "004c5e20", "address": "004c5e31", "native": "004c53e0", "note": "size storage"},
-    {"function": "004c5ec0", "address": "004c5ec3", "native": "004c1dd0", "note": "profiler"},
-    {"function": "004c5ec0", "address": "004c5ee2", "native": "00be3640", "note": "profiler begin"},
-    {"function": "004c5ef0", "address": "004c5efd", "native": "00be3660", "note": "profiler end"},
-    {"function": "004c5f10", "address": "004c5f22", "native": "004c0fd0", "note": "payload release when kind 3"},
-    {"function": "004c5f10", "address": "004c5f2a", "native": "004c1f70", "note": "payload destructor"}
+    {
+      "function": "00472200",
+      "address": "0047225c",
+      "native": "00bf681b",
+      "note": "operator new 10h"
+    },
+    {
+      "function": "00472200",
+      "address": "00472273",
+      "native": "00472100",
+      "note": "AnimClass registry constructor"
+    },
+    {
+      "function": "00472200",
+      "address": "00472294",
+      "native": "00bd0c30",
+      "note": "lifetime register"
+    },
+    {
+      "function": "004656d0",
+      "address": "004656f9",
+      "native": "00414db0",
+      "note": "refresh world pose"
+    },
+    {
+      "function": "004656d0",
+      "address": "00465780",
+      "native": "00871ba0",
+      "note": "effect handle by name"
+    },
+    {
+      "function": "004656d0",
+      "address": "0046578b",
+      "native": "008687c0",
+      "note": "point effect with parent matrix"
+    },
+    {
+      "function": "004656d0",
+      "address": "00465810",
+      "native": "00867790",
+      "note": "children update step"
+    },
+    {
+      "function": "0046f550",
+      "address": "0046f692",
+      "native": "00bf7030",
+      "note": "CRT sqrt"
+    },
+    {
+      "function": "0046f940",
+      "address": "0046fbcb",
+      "native": "0042b2f0",
+      "note": "distance between closest points"
+    },
+    {
+      "function": "0046f940",
+      "address": "0046fc25",
+      "native": "0046f550",
+      "note": "parallel case"
+    },
+    {
+      "function": "0046fe80",
+      "address": "0046fe90",
+      "native": "00419440",
+      "note": "axis length"
+    },
+    {
+      "function": "0046ff70",
+      "address": "0046ffca",
+      "native": "00419440",
+      "note": "segment length"
+    },
+    {
+      "function": "0046ff70",
+      "address": "004700b9",
+      "native": "0042b2f0",
+      "note": "|p - a|"
+    },
+    {
+      "function": "0046ff70",
+      "address": "004700f6",
+      "native": "0042b2f0",
+      "note": "|b - p|"
+    },
+    {
+      "function": "0046ff70",
+      "address": "0047013b",
+      "native": "0042b2f0",
+      "note": "perpendicular distance"
+    },
+    {
+      "function": "004bb600",
+      "address": "004bb609",
+      "native": "00a3e510",
+      "note": "has selected user"
+    },
+    {
+      "function": "004bb600",
+      "address": "004bb614",
+      "native": "00a3ead0",
+      "note": "sign-in state"
+    },
+    {
+      "function": "004bcb40",
+      "address": "004bcb66",
+      "native": "00bf9440",
+      "note": "_strstr"
+    },
+    {
+      "function": "004bea10",
+      "address": "004bea1c",
+      "native": "006b9380",
+      "note": "award registry storage"
+    },
+    {
+      "function": "004bea10",
+      "address": "004bea22",
+      "native": "00bf65ac",
+      "note": "_free"
+    },
+    {
+      "function": "004bef00",
+      "address": "004bef43",
+      "native": "00694a60",
+      "note": "register observer pair"
+    },
+    {
+      "function": "004bfd70",
+      "address": "004bfd79",
+      "native": "00b0feb0",
+      "note": "reset remap textures"
+    },
+    {
+      "function": "004c2d60",
+      "address": "004c2d7e",
+      "native": "006952a0",
+      "note": "unregister observer pair"
+    },
+    {
+      "function": "004c2fd0",
+      "address": "004c2fd3",
+      "native": "00419cc0",
+      "note": "sized storage pool"
+    },
+    {
+      "function": "004c2fd0",
+      "address": "004c2fe1",
+      "native": "00bd1120",
+      "note": "pool allocate"
+    },
+    {
+      "function": "004c5140",
+      "address": "004c5147",
+      "native": "004bec00",
+      "note": "input manager"
+    },
+    {
+      "function": "004c5140",
+      "address": "004c514e",
+      "native": "00a933f0",
+      "note": "set context level"
+    },
+    {
+      "function": "004c5e20",
+      "address": "004c5e31",
+      "native": "004c53e0",
+      "note": "size storage"
+    },
+    {
+      "function": "004c5ec0",
+      "address": "004c5ec3",
+      "native": "004c1dd0",
+      "note": "profiler"
+    },
+    {
+      "function": "004c5ec0",
+      "address": "004c5ee2",
+      "native": "00be3640",
+      "note": "profiler begin"
+    },
+    {
+      "function": "004c5ef0",
+      "address": "004c5efd",
+      "native": "00be3660",
+      "note": "profiler end"
+    },
+    {
+      "function": "004c5f10",
+      "address": "004c5f22",
+      "native": "004c0fd0",
+      "note": "payload release when kind 3"
+    },
+    {
+      "function": "004c5f10",
+      "address": "004c5f2a",
+      "native": "004c1f70",
+      "note": "payload destructor"
+    },
+    {
+      "function": "004c67e0",
+      "address": "004c67f1",
+      "native": "00419cc0",
+      "note": "sized pool"
+    },
+    {
+      "function": "004c67e0",
+      "address": "004c67f8",
+      "native": "00bd1510",
+      "note": "pool return"
+    },
+    {
+      "function": "004c8dd0",
+      "address": "004c8dee",
+      "native": "004c53e0",
+      "note": "size wide storage"
+    },
+    {
+      "function": "004c95d0",
+      "address": "004c9609",
+      "native": "0041dd40",
+      "note": "narrow resize"
+    },
+    {
+      "function": "004c95d0",
+      "address": "004c961f",
+      "native": "00bf7680",
+      "note": "_memcpy"
+    },
+    {
+      "function": "004c9680",
+      "address": "004c96b0",
+      "native": "0041dd40",
+      "note": "narrow resize"
+    },
+    {
+      "function": "004c9680",
+      "address": "004c96e5",
+      "native": "00518d60",
+      "note": "front-end frame select"
+    },
+    {
+      "function": "004ca120",
+      "address": "004ca15c",
+      "native": "0041e870",
+      "note": "string from text"
+    },
+    {
+      "function": "004ca120",
+      "address": "004ca183",
+      "native": "007349c0",
+      "note": "client call"
+    },
+    {
+      "function": "004ceb40",
+      "address": "004ceb8a",
+      "native": "004cd0f0",
+      "note": "cinematic mode on"
+    },
+    {
+      "function": "004ceb40",
+      "address": "004ceb9a",
+      "native": "005ff0d0",
+      "note": "HUD pause open"
+    },
+    {
+      "function": "004ceb40",
+      "address": "004ceba7",
+      "native": "00a77760",
+      "note": "dialogs paused"
+    },
+    {
+      "function": "004ceb40",
+      "address": "004cebcd",
+      "native": "005fd440",
+      "note": "HUD pause resume"
+    },
+    {
+      "function": "004ceb40",
+      "address": "004cebec",
+      "native": "00a92c40",
+      "note": "input update"
+    },
+    {
+      "function": "004cec20",
+      "address": "004cec25",
+      "native": "004cb160",
+      "note": "resize to zero"
+    },
+    {
+      "function": "004cec40",
+      "address": "004cec45",
+      "native": "004cb220",
+      "note": "resize to zero"
+    },
+    {
+      "function": "004bc4e0",
+      "address": "004bc4ff",
+      "native": "00a3eac0",
+      "note": "active user slot"
+    },
+    {
+      "function": "004bc4e0",
+      "address": "004bc505",
+      "native": "00a4d3f2",
+      "note": "XUserSetContext"
+    },
+    {
+      "function": "004bc520",
+      "address": "004bc540",
+      "native": "00a4d3fe",
+      "note": "XFriendsCreateEnumerator"
+    },
+    {
+      "function": "004bc520",
+      "address": "004bc562",
+      "native": "00a4d3f8",
+      "note": "XEnumerate"
+    },
+    {
+      "function": "004c6b00",
+      "address": "004c6b17",
+      "native": "004c6890",
+      "note": "select scene record"
+    },
+    {
+      "function": "004c7070",
+      "address": "004c708d",
+      "native": "00bf7289",
+      "note": "_vsprintf_s"
+    },
+    {
+      "function": "004c7070",
+      "address": "004c70a4",
+      "native": "004b8410",
+      "note": "format 255"
+    },
+    {
+      "function": "004c7070",
+      "address": "004c70ac",
+      "native": "004c14c0",
+      "note": "diagnostic sink getter"
+    },
+    {
+      "function": "004cc650",
+      "address": "004cc678",
+      "native": "004c8f00",
+      "note": "member destructor"
+    },
+    {
+      "function": "004cf590",
+      "address": "004cf59e",
+      "native": "004cc760",
+      "note": "pointer range release"
+    }
   ]
 }

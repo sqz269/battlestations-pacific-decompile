@@ -522,4 +522,269 @@ void session_message_e4_destruct_004c5f10(std::uint32_t& vtable, std::uint8_t ki
                                           SessionMessageE4DestructHost& host);
 bool session_message_e4_is_id_004c5f40(std::uint32_t id);
 
+// Pooled NativeString storage release. Each field is a {u32 length, data}
+// pair; when data is non-null it goes back to the sized pool (00419CC0, then
+// 00BD1510 with ECX = pool, (data, bytes, 1)), bytes = length + 1 for narrow
+// strings and length*2 + 2 for UTF-16. Fields are released in table order.
+// The pool call does not clear the fields.
+struct PooledStringField {
+    std::uint16_t length_offset;
+    std::uint16_t data_offset;
+    std::uint8_t unit; // 1 or 2 bytes
+};
+struct PooledStringReleaseRow {
+    std::uint32_t address;
+    const char* abi;
+    std::array<PooledStringField, 3> fields;
+    std::uint8_t count;
+};
+// 004C67E0, 004C6800, 004C89E0 (+8/+0Ch narrow), 004C8260 (+8/+0Ch UTF-16),
+// 004C8DB0 (+0Ch/+10h narrow), 004CE690 (__stdcall(object), RET 4, +8/+0Ch
+// UTF-16), 004C5720 (+10h/+14h, +8/+0Ch, +0/+4, under an EH frame),
+// 004C6760 (+10h/+14h, +0/+4).
+extern const std::array<PooledStringReleaseRow, 8> kPooledStringReleases;
+const PooledStringReleaseRow* find_pooled_string_release(std::uint32_t address);
+void release_pooled_strings(
+    const PooledStringReleaseRow& row, const void* object,
+    const std::function<void(void* data, std::uint32_t bytes, std::int32_t count)>& pool_return_00bd1510);
+
+// 004C7F80, __fastcall(ECX = record), RET, EAX = record: +0, +4, +8 = 0 and
+// the floats +0Ch, +10h = 0.0f.
+struct Record14 {
+    std::uint32_t field_00{1}, field_04{1}, field_08{1};
+    float field_0c{1.0f}, field_10{1.0f};
+};
+void record14_clear_004c7f80(Record14& record);
+
+// 004C8DD0, __thiscall(ECX = dst, src), RET 4, EAX = dst: dst = {0, null},
+// then the 004C5E20 assignment (self-copy skipped).
+NativeWideString& wide_string_copy_construct_004c8dd0(
+    NativeWideString& dst, const NativeWideString& src,
+    const std::function<void(NativeWideString& self, std::uint32_t length, std::int32_t flag)>& size_004c53e0);
+
+// The narrow NativeString {u32 length, char* data}; 0041DD40 (ECX = string,
+// length, flag) resizes it, and each body then copies `length` bytes (the
+// length after the resize) with _memcpy (00BF7680) when data is non-null.
+struct NativeNarrowString {
+    std::uint32_t length{0};
+    char* data{nullptr};
+};
+using NarrowStringResize = std::function<void(NativeNarrowString& string, std::uint32_t length, std::int32_t flag)>;
+
+// 004C8900, __fastcall(ECX = game), RET: 004BF930 (destroy every scene
+// record), game+5FCh = 0, and the string at game+600h is resized to 0 (flag
+// 0) and filled from the empty string 00CE3A0C.
+void game_clear_scene_records_004c8900(const std::function<void()>& destroy_all_004bf930, void*& record_block_5fc,
+                                       NativeNarrowString& text_600, const NarrowStringResize& resize_0041dd40);
+// 004C8950, __thiscall(ECX = game, const char* text), RET 4: the string at
+// game+600h takes strlen(text) (0 for null) with flag 0, then the bytes.
+void game_set_command_line_text_004c8950(NativeNarrowString& text_600, const char* text,
+                                         const NarrowStringResize& resize_0041dd40);
+// 004C89A0, __thiscall(ECX = game, const NativeString* src), RET 4: the string
+// at game+2198h takes src (flag 1) unless it is src itself; the copy is
+// skipped when src is empty.
+void game_assign_console_string_004c89a0(NativeNarrowString& string_2198, const NativeNarrowString& src,
+                                         const NarrowStringResize& resize_0041dd40);
+
+// 004C9220, __thiscall(ECX = dst, src), RET 4, EAX = dst: a 60h-byte entry.
+// Byte +0 and dword +4, the UTF-16 string at +8 by 004C53E0 + unit copy
+// (skipped for self), then the dwords +10h..+5Ch.
+struct LocalisedEntry60 {
+    std::uint8_t byte_00{0};
+    std::uint32_t dword_04{0};
+    NativeWideString text_08;
+    std::array<std::uint32_t, 20> dwords_10{};
+};
+LocalisedEntry60& localised_entry_assign_004c9220(
+    LocalisedEntry60& dst, const LocalisedEntry60& src,
+    const std::function<void(NativeWideString& self, std::uint32_t length, std::int32_t flag)>& size_004c53e0);
+
+// 004C95D0, __thiscall(ECX = entry, a, b, c, const NativeString* name, u8
+// flag), RET 14h, EAX = entry: +0 a, +4 b, +8 c, the string at +0Ch cleared
+// then assigned from name (0041DD40 flag 1; skipped when name is the field
+// itself; bytes copied only for a non-empty name), byte +14h = flag, +15h = 0.
+struct NamedEntry16 {
+    std::uint32_t a_00{0}, b_04{0}, c_08{0};
+    NativeNarrowString name_0c;
+    std::uint8_t flag_14{0};
+    std::uint8_t byte_15{0};
+};
+NamedEntry16& named_entry_construct_004c95d0(NamedEntry16& entry, std::uint32_t a, std::uint32_t b, std::uint32_t c,
+                                             const NativeNarrowString& name, std::uint8_t flag,
+                                             const NarrowStringResize& resize_0041dd40);
+
+// 004C9420, __thiscall(ECX = record, u8 flags), RET 4, EAX = record: the
+// narrow string at +0/+4 back to the pool, then 0043B0A0 (14h-byte node pool
+// return) when flags & 1.
+void named_record_scalar_deleting_destructor_004c9420(
+    void* record, std::uint8_t flags,
+    const std::function<void(void* data, std::uint32_t bytes, std::int32_t count)>& pool_return_00bd1510,
+    const std::function<void(void* record)>& node_pool_return_0043b0a0);
+
+// 004C9680, __cdecl(void), RET: a local empty string (0041DD40 to length 0,
+// flag 1, then length+1 bytes from 00CE3A0C), 00518D60 with ECX = EDX = -1
+// (backdrop and panel), title -1 and the string, then the string's block back
+// to the pool.
+struct FrontEndFrameSelectHost {
+    virtual ~FrontEndFrameSelectHost() = default;
+    virtual void resize_0041dd40(NativeNarrowString& string, std::uint32_t length, std::int32_t flag) = 0;
+    virtual void select_00518d60(std::int32_t backdrop, std::int32_t panel, std::int32_t title,
+                                 const NativeNarrowString& text) = 0;
+    virtual void pool_return_00bd1510(void* data, std::uint32_t bytes, std::int32_t count) = 0;
+};
+void front_end_frame_select_default_004c9680(FrontEndFrameSelectHost& host);
+
+// 004CA120, __fastcall(ECX = game), RET: only in game state 0Dh (+5D4h) with
+// a client at +21E8h. Builds "ingame.multi_highlatency" (00CE76B8, through
+// 0041E870) and an empty string, calls 007349C0 (ECX = client, &key, &empty,
+// 0), then returns the empty string's block and the key's block to the pool.
+struct HighLatencyWarningHost {
+    virtual ~HighLatencyWarningHost() = default;
+    virtual NativeNarrowString make_string_0041e870(const char* text) = 0;
+    virtual void client_007349c0(void* client, const NativeNarrowString& key, NativeNarrowString& out,
+                                 std::int32_t arg) = 0;
+    virtual void release_string(NativeNarrowString& string) = 0; // pool return when data is set
+};
+void game_show_high_latency_warning_004ca120(std::int32_t state_5d4, void* client_21e8, HighLatencyWarningHost& host);
+
+// 004CAF10, __fastcall(ECX = vector {data, count}), RET: when count != 0 the
+// last 8-byte string's block goes back to the pool and the count drops by 1.
+// 004CC8E0, __fastcall(ECX = slot), RET: when the slot holds a string, its
+// block goes back to the pool, the 14h-byte node back to 0043B0A0, slot = 0.
+// Same body as 0046A0C0.
+void native_string_vector_pop_back_004caf10(
+    NativeNarrowString* data, std::uint32_t& count,
+    const std::function<void(void* data, std::uint32_t bytes, std::int32_t count)>& pool_return_00bd1510);
+// 004CEB40, __fastcall(CL = paused), RET. Stores CL in 00E188AE first. Acts
+// only when the game ([00E188A8]) is in state 0Dh (+5D4h) and either +1FE4h
+// is 0 or the byte +218Ch is set. Pausing (CL != 0) needs the byte +634h
+// clear: 00E188BC = 1, 004CD0F0(1, 0, 0), 005FF0D0 on the HUD (ECX =
+// [[00E198C4]+0D8h]), 00A77760(1) on [00F8BBCC]. Resuming: when 00E188BC is
+// set, 004CD0F0(0, 0, 0), 005FD440 on the HUD, 00A77760(0), then 00A92C40
+// (ECX = input manager 004BEC00, 0.0f); 00E188BC = 0 in either case.
+// 004CEC00 (no Ghidra function, no absolute reference; rel32 callers not
+// scanned): when 00E188AE is set, a tail jump to 004CEB40 with CL = 1.
+struct PlatformPauseGame {
+    std::int32_t state_5d4;
+    std::int32_t field_1fe4;
+    std::uint8_t byte_218c;
+    std::uint8_t byte_634;
+};
+struct PlatformPauseHost {
+    virtual ~PlatformPauseHost() = default;
+    virtual void set_cinematic_mode_004cd0f0(std::int32_t on, std::int32_t b, std::int32_t c) = 0;
+    virtual void hud_pause_open_005ff0d0() = 0;
+    virtual void hud_pause_resume_005fd440() = 0;
+    virtual void dialogs_set_all_paused_00a77760(std::int32_t paused) = 0;
+    virtual void input_update_00a92c40(float seconds) = 0;
+};
+void game_set_paused_by_platform_004ceb40(bool paused, const PlatformPauseGame& game, std::uint8_t& flag_00e188ae,
+                                          std::uint8_t& paused_00e188bc, PlatformPauseHost& host);
+void game_reapply_platform_pause_004cec00(const PlatformPauseGame& game, std::uint8_t& flag_00e188ae,
+                                          std::uint8_t& paused_00e188bc, PlatformPauseHost& host);
+
+// 004CEC20 / 004CEC40, __fastcall(ECX = vector), RET: resize to 0 (004CB160
+// / 004CB220, ECX = vector), then operator delete (00BF6989) of the data.
+void vector_tidy_resize_then_free(void* vector, void* const& data_slot, const std::function<void(void* vector)>& resize_to_zero,
+                                  const std::function<void(void*)>& free_block);
+
+// 004CDE20, __fastcall(ECX = deque), RET: a deque of 8-byte narrow strings,
+// two per block (map +4, map size +8, offset +0Ch, count +10h). When count
+// != 0: index = offset + count - 1, block = index >> 1 (wrapped by the map
+// size once), element = map[block] + (index & 1)*8; its storage goes back
+// to the pool, count--, and offset = 0 when the count reaches 0.
+struct NarrowStringDeque {
+    NativeNarrowString** map{nullptr};
+    std::uint32_t map_size{0};
+    std::uint32_t offset{0};
+    std::uint32_t count{0};
+};
+void narrow_string_deque_pop_back_004cde20(
+    NarrowStringDeque& deque,
+    const std::function<void(void* data, std::uint32_t bytes, std::int32_t count)>& pool_return_00bd1510);
+
+// 004CE460, __fastcall(ECX = record), RET: _free the vector data at +14h
+// then at +4 (each only when non-null) and zero both {data, end, capacity}
+// triples.
+struct TwoVectorRecord {
+    std::array<void*, 3> vector_04{};
+    std::uint32_t field_10{0};
+    std::array<void*, 3> vector_14{};
+};
+void two_vector_record_tidy_004ce460(TwoVectorRecord& record, const std::function<void(void*)>& free_00bf65ac);
+
+// XLive calls of the game's online helpers. ECX = [00F8ABE8] (Xenon system
+// manager) for the user-slot queries.
+struct GameLiveHost {
+    virtual ~GameLiveHost() = default;
+    virtual bool has_selected_user_00a3e510() = 0;
+    virtual std::uint32_t active_user_slot_00a3eac0() = 0;
+    virtual std::uint32_t x_user_set_context(std::uint32_t slot, std::uint32_t context, std::uint32_t value) = 0;
+    virtual std::uint32_t x_friends_create_enumerator(std::uint32_t slot, std::uint32_t start, std::uint32_t count,
+                                                      std::uint32_t* buffer_size, void** handle) = 0;
+    virtual std::uint32_t x_enumerate(void* handle, void* buffer, std::uint32_t buffer_size,
+                                      std::uint32_t* items_returned, void* overlapped) = 0;
+    virtual void close_handle(void* handle) = 0;
+    virtual void x_cancel_overlapped(void* overlapped) = 0;
+    virtual void free_block(void* block) = 0; // _free
+};
+// 004BC4E0, __fastcall(ECX = game), RET: with a selected user,
+// XUserSetContext(slot, 8001h (presence), 4); byte game+22DCh = 1 always.
+void game_set_presence_context_004bc4e0(std::uint8_t& presence_set_22dc, GameLiveHost& host);
+// 004BC520, __fastcall(ECX = game), RET: XFriendsCreateEnumerator(slot, 0,
+// 100, &size, &handle); on success XEnumerate(handle, game+22DEh, 4D54h,
+// game+7034h, null) and CloseHandle only when that succeeds too (the handle
+// leaks when XEnumerate fails).
+void game_create_friends_enumerator_004bc520(void* friends_buffer_22de, std::uint32_t* friends_count_7034,
+                                             GameLiveHost& host);
+// 004BC7F0, __fastcall(ECX = game), RET: XCancelOverlapped(game+7038h),
+// _free and clear the buffer at +7054h, zero +7058h.
+void game_cancel_leaderboard_read_004bc7f0(void* overlapped_7038, void*& buffer_7054, std::uint32_t& field_7058,
+                                           GameLiveHost& host);
+
+// 004BB3E0, __fastcall(ECX = game), RET: the eight lobby slot records at
+// +1034h (stride 118h, first dword = slot state). For the modes 0..3
+// (game+614h) a state of 3 becomes 1; for any other mode a state of 1
+// becomes 3.
+void game_reset_lobby_slots_for_mode_004bb3e0(std::int32_t mode_614, std::array<std::int32_t*, 8> slot_states);
+
+// 004C6B00, __fastcall(ECX = game), RET: game+60Ch = (game+60Ch + 1) %
+// game+5F0h (CDQ/IDIV, signed), then 004C6890 (ECX = game, index).
+void game_select_next_scene_record_004c6b00(std::int32_t& index_60c, std::int32_t count_5f0,
+                                            const std::function<void(std::int32_t)>& select_004c6890);
+
+// 004C7070, __cdecl(a, b, c, fmt, ...), and 004C70C0, __cdecl(a, b, c, d,
+// fmt, ...): _vsprintf_s (00BF7289) into a stack buffer (count 0FFh /
+// 0FFCh), then "%s\n" (00CE3A30) through 004B8410 / 004B8450 (same counts) into a
+// second buffer, then 004C14C0 (the diagnostic sink getter) with no
+// arguments. The text is never handed to the sink: the release build formats
+// and drops it. The leading arguments are not read. The host returns the
+// composed text and throws where the CRT would call its invalid-parameter
+// handler (text too long for a buffer).
+std::string diagnostic_printf_004c7070(const std::function<void()>& sink_get_004c14c0, const char* format, ...);
+std::string diagnostic_printf_large_004c70c0(const std::function<void()>& sink_get_004c14c0, const char* format, ...);
+
+// 004CC390, __thiscall(ECX = dst, src), RET 4, EAX = dst: copy construction
+// of the 60h-byte entry (byte, dword, 004C8DD0 on +8, dwords +10h..+5Ch).
+LocalisedEntry60& localised_entry_copy_construct_004cc390(
+    LocalisedEntry60& dst, const LocalisedEntry60& src,
+    const std::function<void(NativeWideString& self, std::uint32_t length, std::int32_t flag)>& size_004c53e0);
+
+// 004CC650, __fastcall(ECX = record), RET, under an EH frame: 004C8F00 on the
+// member at +8, then the narrow string at +0/+4 back to the pool.
+void named_vector_record_destruct_004cc650(
+    void* record, const std::function<void(void* member_08)>& destruct_004c8f00,
+    const std::function<void(void* data, std::uint32_t bytes, std::int32_t count)>& pool_return_00bd1510);
+
+// 004CF590, __thiscall(ECX unused, first, last), RET 8: 004CC760 with ECX =
+// first, EDX = last (its two stack arguments, the incoming ECX and `last`,
+// are not read). Called from catch blocks.
+void reference_pointer_range_release_forward_004cf590(
+    void* first, void* last, const std::function<void(void* first, void* last)>& release_004cc760);
+
+void native_string_pointer_delete_004cc8e0(
+    NativeNarrowString*& slot,
+    const std::function<void(void* data, std::uint32_t bytes, std::int32_t count)>& pool_return_00bd1510,
+    const std::function<void(void* node)>& node_pool_return_0043b0a0);
+
 } // namespace bsp::cc13_sys
