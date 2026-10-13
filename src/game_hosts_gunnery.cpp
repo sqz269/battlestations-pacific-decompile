@@ -330,6 +330,16 @@ constexpr bool kFlakSecondAmmoCadenceBound = false;
 //    v - (v + 0.02) * 0.5 (flak_bot_vertical_adjust_00903297). The host added
 //    the error and fired as solved. OFF: as before.
 constexpr bool kFlakNegativeVerticalBound = false;
+//  * kAaLeadDistanceGateBound: packet cc9_g41_flak_d3d1 (docs/CC13_VER_14.md
+//    D1, docs/CC13_VER_16.md D3). The AAGunnerBot's fire gate
+//    (00902FC0..00902FE2, slot < [proj+60h] * 0.9f) and the AAFlakBot's range
+//    gate (0090332C..00903344, [class+58h] < slot < [class+60h], both strict)
+//    read the slot 00901C20 writes as outDist (pushed at 009029FD / 00902A4F
+//    and 009031F4 / 0090319A): |lead point - muzzle|. The host measured to the
+//    target's current aim point. ON: both gates use the aim block's lead
+//    distance. The TailGunnerBot (a category-1 gun under a plane, no 00901C20
+//    lead) keeps its own measure. OFF: as before.
+constexpr bool kAaLeadDistanceGateBound = false;
 //  * kTorpedoSwimThrustBound: packet cc9_torpedo_tube_turn,
 //    docs/TORPEDO_FRIENDLY_CROSSING.md section 6. 00857480, the swim advance,
 //    per step on a torpedo in the water: 00856BB0 -> 00857061 yaws the NOSE
@@ -2392,6 +2402,7 @@ struct GameGunneryHost::Impl {
     unsigned long long dp_air_rounds{0};
     unsigned long long dp_cadence_shots{0};   // kFlakSecondAmmoCadenceBound
     unsigned long long flak_vertical_adjusts{0};   // kFlakNegativeVerticalBound
+    unsigned long long aa_lead_gate_moves{0};      // kAaLeadDistanceGateBound
     unsigned long long aa_negative_halvings{0};
     unsigned long long water_depth_kills{0};   // packet cc9_water_surface_law
     unsigned long long airfield_destroy_kills{0};  // packet cc9_airfield_destruction_rule
@@ -6999,6 +7010,8 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         // |bot+60h - raw heading| for the friendly-crossing gate below.
         std::array<float, 2> torpedo_lead_xz{{0.0f, 0.0f}};
         float torpedo_snap_radians = 0.0f;
+        // kAaLeadDistanceGateBound: |lead - muzzle|, 00901C20's outDist.
+        float lead_distance = -1.0f;
         if (have_target) {
             float theirs[3];
             if (kArtilleryAimPointBound && artillery_bot_aims(gun.category, target)
@@ -7224,6 +7237,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             const float delta[3] = {lead[0] - muzzle[0], lead[1] - muzzle[1],
                 lead[2] - muzzle[2]};
             const float distance = length3(delta);
+            lead_distance = distance;
             if (distance > 0.0f) {
                 const float unit_delta[3] = {delta[0] / distance, delta[1] / distance,
                     delta[2] / distance};
@@ -7702,6 +7716,16 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 unit_aim_point(target, tp);
                 const float d[3] = {tp[0] - muzzle[0], tp[1] - muzzle[1], tp[2] - muzzle[2]};
                 distance = length3(d);
+            }
+            // kAaLeadDistanceGateBound: 00902FC0 (AAGunnerBot) and 0090332C
+            // (AAFlakBot) read 00901C20's outDist, the LEAD distance.
+            const bool lead_gate = kAaLeadDistanceGateBound && have_target
+                && lead_distance >= 0.0f
+                && !(gun.category == 1
+                     && units.unit_is_kind_of(owner_unit, bsp::kUnitGunneryKindPlaneBase));
+            if (lead_gate) {
+                if (distance != lead_distance) ++aa_lead_gate_moves;
+                distance = lead_distance;
             }
             const float dh = std::fabs(bsp::wrapped_angle_subtract_00438b10(gun.angles.horz,
                 want_horz));
@@ -14365,6 +14389,9 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery flak negative vertical adjusts=%llu bound=%d "
             "(00903297, packet cc9_g41_flak_d6)", host.flak_vertical_adjusts,
             kFlakNegativeVerticalBound ? 1 : 0);
+        host.log.notef("summary mission gunnery aa lead distance gate moves=%llu bound=%d "
+            "(00902FC0 / 0090332C, packet cc9_g41_flak_d3d1)", host.aa_lead_gate_moves,
+            kAaLeadDistanceGateBound ? 1 : 0);
         host.log.notef("summary mission gunnery water depth kills=%llu (007CE3A7, packet "
             "cc9_water_surface_law)", host.water_depth_kills);
         host.log.notef("summary mission gunnery airfield sub-entity asks=%llu listed=%llu "

@@ -13701,3 +13701,22 @@ counter `flak_vertical_adjusts`, logged as `summary mission gunnery flak negativ
 | USN15 | `adjusts=0`; exit 0 or 1 |
 | USN12 | `adjusts` > 0 (low torpedo legs); exit 3; flak hits on low planes up; win kept |
 | USN21 | `adjusts` > 0; exit 3; DP kills on low legs up (cc13: up to 2x per 5-inch round at 2000-2500 m) |
+
+## 218. Flak D3 + AA D1: the AA fire gates measure to the lead point: `kAaLeadDistanceGateBound`, OFF (lead queue item 1; cc9-gunnery41, 2026-10-13)
+
+**Image** (docs/CC13_VER_14.md D1, docs/CC13_VER_16.md D3). The AAGunnerBot gate `00902FC0`-`00902FE2`
+(slot < [proj+60h] * 0.9f) and the AAFlakBot range gate `0090332C`-`00903344` ([class+58h] < slot < [class+60h],
+strict, NaN fails) both read the slot `00901C20` writes as outDist: |lead point - muzzle|.
+
+**Host.** The aim block keeps its `|lead - muzzle|` as `lead_distance`; with the switch ON the AA test block
+gates the AAGunnerBot (cat 1 on a ship) and the AAFlakBot (cat 5, cat 6 against a plane) on it. The TailGunnerBot
+keeps its target-origin distance (it has no `00901C20` lead). Counter `aa_lead_gate_moves` (ticks where the two
+distances differ), logged as `summary mission gunnery aa lead distance gate`. No RNG change of its own.
+
+**Predictions, written before any ON run.**
+
+| row | prediction ON |
+| --- | --- |
+| USN15 | moves=0 (no air); exit 0 or 1 |
+| USN12 | exit 3; MG and flak open fire earlier inbound (about x(1 + vr/V0)), stop earlier outbound; cat-1 kills beyond 1404 m appear |
+| USN21 | exit 3; Yamato flak opens at about 3300-3550 m against 3150 m; releases down slightly |
