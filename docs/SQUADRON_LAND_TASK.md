@@ -16267,3 +16267,31 @@ Avenger strike, which sank the Junyo at 581 s (`Enterprise_sqn06|.-3`), and the 
 `RemoveAllAirBasePlanes` (2), `PutFormationTo`/`PutRelTo` (2 each), `DisbandFormation`, `AddProximityTrigger` (1, in a
 commented block's sibling), `TrulyDead` (2), `IsInvincible` (4), `IsUnitUntouchable` (1). PRCP01 now completes without them,
 so none is win-critical; ForceFireDepthCharge is the one with per-tick reach.
+
+## 5gq. USNOS: spent BettyOhka squadrons never go home (packet `cc9_dkz_spent_rtb`, cc9-lua56, 2026-10-13)
+
+From cc13-gpr38/38b (docs/CC13_GPR_38.md 1.1-1.6), read against the host.
+- **Phantom torpedo task.** `run_torpedo_task_arm_009d4850` installed a torpedo task on any plane with 2Bh ordnance and a command
+  target. BettyOhka's racks are `[2Bh 2Fh]`, so each Betty under `dropkamikaze` (00E08F30) also flew a torpedo task. 0099A170
+  builds `MakeTorpedo` only for 00E08F18.
+- **The ending ignores drop-kamikaze.** 009F7C90's loop (`007EE6B0`) asks each member's head task `vtable[1Ch]`; the host asked
+  dive, torpedo and level-bomb only, so a Betty was answered by its phantom torpedo task. Measured by cc13 in
+  `cc9-gunnery36\local\g39_bb0_os.log`: Betty1-4 latch (1602-1744 s) and never reach B5.
+- **The binding (`kDropKamikazeSpentRtbBound`, committed OFF).** (1) The torpedo install also needs `attack_command_class ==
+  00E08F18` (a refusal is logged once per unit); (2) the ending asks a drop-kamikaze member `009AE1B0`
+  (`drop_kamikaze_should_break_off_009ae1b0`, cc13's model) with the torpedo feed's inputs: 0099C230 true, the command target
+  and its +5Dh, reload as ctl+369h and `[00E17BF2]`, the dkz state and +4B9h.
+- **Not changed (recorded).** 0084E595's moveto-self fallback: per 1.3 step 5 it belongs to the latch-clear arm (bVar4), and
+  007F16D0 answers land at site for class 32 on USNOS (1.6), so it is not on this path. `issue_return_to_base_007f16d0`'s
+  `has_deck_369` now names the shared ReloadEnabled substitution (`kLuaDeviceReloadEnabledBound`, value 1, as before).
+- **The squadron's `Dead` after landing is already modelled.** The stock return 007CC8B0 -> 007F1CA0 removes the plane from the
+  squadron's members (007F3970) and kills it with cause 5 through the gunnery host, so `kSquadronDeadOnLastMemberBound` publishes
+  the squadron's `Dead` once its last member has landed or died. docs/ENTITY_DEAD_FLAG.md line 239 predates that packet.
+
+**Predictions (written before the pairs).**
+- **USN12 (control): identical.** Its torpedo bombers fly 00E08F18; `torpedo_refused_class=0`.
+- **USNOS (`usnos_s45_os_k.txt`, 200000 frames): exit 3.** The Betty rows lose their torpedo lines (`torpedo reset engage
+  Betty*`, glide census, 009D0380 draws); `torpedo_refused_class` counts the Betties; each spent Betty squadron logs
+  `spent ordnance ... B5` within a step or so of the latch, 007F16D0 answers land at site Airfield3, the Betties land there
+  (`KillReason` landed), the squadron entities go Dead and leave `Mission.FinalTrgs`. If the objective at us_osumi.lua:1181 was
+  waiting only on them, the mission completes.
