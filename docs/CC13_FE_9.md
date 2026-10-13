@@ -35,3 +35,26 @@ case-insensitive tree (head +4h) of binding names with a name vector +34h, a set
 - 0055FCA0: on page 0 selection 0 is the "general" header row and leaves the screen (options page 4,
   interface request 0Ch); on page 1 selection 0 is the built-in preset (sets +38h), a positive
   selection is a file preset (`Presets/%s.preset` into +3Ch, prompt only when the VFS has it).
+
+## Tactical library
+
+- 004FE870 binds the layout (three list boxes with listener +64h and input filter 004F90D0, the
+  category groups, the info box scroller +0CCh with its scroll bar).
+- The five loaders fill 6Ch entries (layout in docs/CC13_FE_8.md / 004FE310). The grouped ones
+  (power-ups 3 groups, tutorials 13, units 5) open their own Lua owner (`Open(4)`, script run with
+  flag 0) and append a fresh entry before filling the vector's last element in place; the nose-art
+  and movie loaders reuse one local entry. The nose-art loop runs `NoseArt[0..999]` and skips nil or
+  non-table items rather than stopping. Texture paths: `models/Textures/noseart/` + Texture,
+  `fe/movies/` + the image table at 00E08498, `fe/units/` + GUITextureBackGround and `common/icons/`
+  + GUITextureForeGround; power-ups use the two names unprefixed. A fresh entry leaves +40h..+48h
+  uninitialised in the image; the model zeroes them.
+- 0050FDB0 also builds the "no unlock" entry +5B0h (dereferenced even when `operator new` fails) and
+  the achievements list from the award table: category by name prefix (`RANK_` 0, `CA_` 1, `MA_` and
+  `AO_` 2, `RUA_` 3, `GA_` 4, `SA_` 5, `B` 7 with +44h cleared, otherwise 6), then calls the loaders
+  in the order unit library, 00504130, power-ups, movies, tutorials, nose art, 00502480.
+- The five view accessors 004FA890..004FAA00 read the filtered vector through the view at +434h
+  (index +0h, float position +4h); 004FAA00 clamps the next card to the last entry.
+- 00510C20 drives the three-card carousel and the detail text. Tutorials run their `LuaCommand`
+  through 006B8AD0 and log the result through the empty 004254B0 (Hungarian format strings at
+  00CEBD60 / 00CEBD34); their description takes the `_pc` key when `[00F88A30]` is clear and the key
+  localises to something other than itself.

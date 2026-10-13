@@ -3886,4 +3886,483 @@ void control_binding_list_listener_activate_0055fca0(Raw listener, void* row, vo
     host.prompt_focus_last_navigation_00530c20();
 }
 
+void library_bind_layout_004fe870(Raw screen, Fe9LibraryLayoutHost& host) {
+    const auto bind = [&](std::size_t parent, const char* name, std::size_t store) {
+        screen.ptr(store) = host.find_child_by_name_00aa7e00(screen.ptr(parent), name);
+    };
+    bind(0x4E0, "homaly_Clipbox", 0xC8);
+    for (const auto& [name, store] : {std::pair<const char*, std::size_t>{"MainOOB_Listbox", 0xBC},
+                                      {"Main_Listbox", 0xC0}, {"Difficulty_Listbox", 0xC4}}) {
+        bind(0x4E4, name, store);
+        host.list_box_set_listener_00a9ac40(screen.ptr(store), screen.p + 0x64);
+        host.list_box_set_input_filter_00a9ac70(screen.ptr(store), 0x004F90D0);
+    }
+    bind(0x4E4, "Fixed_Text", 0x128);
+    bind(0x4E4, "Changeable_Text", 0x12C);
+    bind(0x4E4, "Bonus_Text", 0x130);
+    bind(0x4DC, "hajnal_Group", 0x4E8);
+    bind(0x4E8, "powerups_Group", 0x4F8);
+    bind(0x4E8, "achievment_Group", 0x4F4);
+    bind(0x4E8, "movies_Group", 0x4F0);
+    bind(0x4E8, "tutorial_Group", 0x500);
+    bind(0x4E8, "units_Group", 0x4EC);
+    bind(0x4E8, "noseart_Group", 0x504);
+    bind(0x4E8, "arrow_left_Icon", 0x56C);
+    bind(0x4E8, "arrow_right_Icon", 0x570);
+    bind(0x4E8, "left_big_Icon", 0x574);
+    bind(0x4E8, "right_big_Icon", 0x578);
+    bind(0x4DC, "background_Group", 0x518);
+    host.widget_set_visible_34(screen.ptr(0x518), 1);
+    bind(0x4DC, "INFO_box_Group", 0x4FC);
+    bind(0x4FC, "test_Clipbox", 0x5AC);
+    bind(0x5AC, "textbox_Group", 0x514);
+    bind(0x514, "content_main_Text", 0xA8);
+    host.widget_set_visible_34(screen.ptr(0xA8), 0);
+    void* const scroller = screen.p + 0xCC;
+    host.scroller_attach_content_00683790(scroller, screen.ptr(0x514));
+    bind(0x4FC, "arrow_top_scroll_Icon", 0x5B8);
+    bind(0x4FC, "arrow_botton_scroll_Icon", 0x5BC);
+    bind(0x4FC, "textx_scroll_Framebox", 0x5C0);
+    for (const std::size_t off : {0x5C0u, 0x5B8u, 0x5BCu})
+        host.widget_set_listener_fields_00aa6bc0(screen.ptr(off), screen.p + 0x68, 0);
+    host.scroller_attach_scroll_bar_00683380(scroller, screen.ptr(0x5C0), 0.0902777761220932f, screen.ptr(0x5B8),
+                                             screen.ptr(0x5BC));
+}
+
+namespace {
+
+struct alignas(4) LibraryEntryBuffer {
+    std::uint8_t bytes[0x6C];
+};
+
+Raw library_entry_blank(LibraryEntryBuffer& buffer) {
+    std::memset(buffer.bytes, 0, sizeof buffer.bytes);
+    const Raw e{buffer.bytes};
+    for (const std::size_t uv : {std::size_t{4}, std::size_t{0x18}}) {
+        e.at<float>(uv + 8) = 1.0f;   // 00D7A24C
+        e.at<float>(uv + 12) = 1.0f;
+    }
+    return e;
+}
+
+// Resolve, then release the old reference, then store (the image's order).
+void library_entry_set_texture(Raw entry, std::size_t ref, std::size_t uv, std::string_view name,
+                               Fe9LibraryLoaderHost& host) {
+    float size[2] = {};
+    void* const texture = host.resolve_gui_texture_00aa2660(name, &entry.at<float>(uv), size, 1.0f);
+    if (entry.ptr(ref) != nullptr) host.texture_ref_release(entry.ptr(ref));
+    entry.ptr(ref) = texture;
+}
+
+std::string lua_string_or_empty(void* table, const char* name, Fe9LibraryLoaderHost& host) {
+    void* const field = host.lua_get_by_name_00b67800(table, name);
+    const char* const text = host.lua_get_string_00b662b0(field);
+    std::string out = text != nullptr ? text : "";
+    host.lua_release_00b67700(field);
+    return out;
+}
+
+bool lua_index_is_nil(void* table, std::int32_t index, Fe9LibraryLoaderHost& host) {
+    void* const probe = host.lua_get_by_index_00b67720(table, index);
+    const bool nil = host.lua_is_nil_00b65fb0(probe);
+    host.lua_release_00b67700(probe);
+    return nil;
+}
+
+std::string native_string_text(Raw s) { return std::string(native_view(s, 0)); }
+
+// The grouped loaders 0050B8E0 / 0050C760 / 0050CE70: groups[g + 1].GroupName into the name slots,
+// then each non-nil item of the group appended as a fresh entry and filled in place.
+template <typename Fill>
+void library_load_grouped(Raw screen, const char* script, const char* table_name, std::int32_t groups,
+                          std::size_t names, std::size_t vector, Fill fill, Fe9LibraryLoaderHost& host) {
+    void* const owner = host.lua_owner_open_run_00b6a020(4, script);
+    void* const globals = host.lua_owner_globals_00b67980(owner);
+    void* const classes = host.lua_get_by_name_00b67800(globals, table_name);
+    host.lua_release_00b67700(globals);
+    for (std::int32_t g = 0; g < groups; ++g) {
+        void* const group = host.lua_get_by_index_00b67720(classes, g + 1);
+        host.native_string_assign(screen.p + names + g * 8, lua_string_or_empty(group, "GroupName", host));
+        for (std::int32_t j = 1; !lua_index_is_nil(group, j, host); ++j) {
+            LibraryEntryBuffer fresh;
+            const Raw blank = library_entry_blank(fresh);
+            void* const list = screen.p + vector;
+            host.entry_vector_push_back_0050ad00(list, blank);
+            host.library_entry_destruct_004fd1d0(blank);
+            const Raw back{static_cast<std::uint8_t*>(raw(list).ptr(8)) - 0x6C};
+            void* const item = host.lua_get_by_index_00b67720(group, j);
+            fill(back, item, g);
+            host.lua_release_00b67700(item);
+        }
+        host.lua_release_00b67700(group);
+    }
+    host.lua_release_00b67700(classes);
+    host.lua_owner_close_00b669a0(owner);
+}
+
+} // namespace
+
+void library_load_power_up_lib_0050b8e0(Raw screen, Fe9LibraryLoaderHost& host) {
+    library_load_grouped(screen, "Scripts\\datatables\\PowerUpLib.lua", "PowerupClasses", 3, 0x340, 0x3E4,
+        [&](Raw back, void* item, std::int32_t g) {
+            host.lua_read_string_field("name", back.p + 0x28, item);
+            LibraryEntryBuffer temp;
+            const Raw strings = library_entry_blank(temp);  // two scratch NativeStrings at +28h / +30h
+            host.lua_read_string_field("GUITextureBackGround", strings.p + 0x28, item);
+            host.lua_read_string_field("GUITextureForeGround", strings.p + 0x30, item);
+            library_entry_set_texture(back, 0x00, 0x04, native_view(strings, 0x28), host);
+            library_entry_set_texture(back, 0x14, 0x18, native_view(strings, 0x30), host);
+            back.at<std::int32_t>(0x40) = g;
+            back.at<std::uint8_t>(0x44) = 1;
+            host.lua_read_string_field("description", back.p + 0x5C, item);
+            host.library_entry_destruct_004fd1d0(strings);
+        },
+        host);
+}
+
+void library_load_nose_art_0050bf00(Raw screen, Fe9LibraryLoaderHost& host) {
+    void* const globals = host.lua_owner_globals_00b67980(host.game_lua_owner_1a0c());
+    void* const table = host.lua_get_by_name_00b67800(globals, "NoseArt");
+    host.lua_release_00b67700(globals);
+    LibraryEntryBuffer buffer;
+    const Raw entry = library_entry_blank(buffer);
+    if (host.lua_is_table_00b661b0(table)) {
+        for (std::int32_t i = 0; i < 1000; ++i) {
+            void* const item = host.lua_get_by_index_00b67720(table, i);
+            if (!host.lua_is_nil_00b65fb0(item) && host.lua_is_table_00b661b0(item)) {
+                const std::string path = "models/Textures/noseart/" + lua_string_or_empty(item, "Texture", host);
+                library_entry_set_texture(entry, 0x00, 0x04, path, host);
+                void* const japan = host.lua_get_by_name_00b67800(item, "IsJapan");
+                entry.at<std::int32_t>(0x40) = host.lua_get_integer_00b66290(japan);
+                host.lua_release_00b67700(japan);
+                host.native_string_assign(entry.p + 0x5C, "");
+                entry.at<std::int32_t>(0x48) = i;
+                entry.at<std::uint8_t>(0x44) = 1;
+                host.entry_vector_push_back_0050ad00(screen.p + 0x414, entry);
+            }
+            host.lua_release_00b67700(item);
+        }
+    }
+    host.library_entry_destruct_004fd1d0(entry);
+    host.lua_release_00b67700(table);
+}
+
+void library_load_movie_list_0050c300(Raw screen, Fe9LibraryLoaderHost& host) {
+    static constexpr const char* kImage[4] = {"JP_intro.tga", "JP_outro.tga", "US_intro.tga", "US_outro.tga"};
+    static constexpr const char* kMission[4] = {"", "IJN14", "", "USN14"};
+    static constexpr const char* kTitle[4] = {"FE.movie_BG_JP_intro", "FE.movie_BG_JP_outro",
+                                              "FE.movie_BG_US_intro", "FE.movie_BG_US_outro"};
+    LibraryEntryBuffer buffer;
+    const Raw entry = library_entry_blank(buffer);
+    for (int i = 0; i < 4; ++i) {
+        library_entry_set_texture(entry, 0x00, 0x04, std::string("fe/movies/") + kImage[i], host);
+        host.native_string_assign(entry.p + 0x30, kMission[i]);
+        entry.at<std::int32_t>(0x40) = 0;
+        entry.at<std::uint8_t>(0x44) = 1;
+        host.native_string_assign(entry.p + 0x5C, kTitle[i]);
+        host.entry_vector_push_back_0050ad00(screen.p + 0x3C4, entry);
+    }
+    host.library_entry_destruct_004fd1d0(entry);
+}
+
+void library_load_tutorial_lib_0050c760(Raw screen, Fe9LibraryLoaderHost& host) {
+    library_load_grouped(screen, "Scripts\\datatables\\TutorialLib.lua", "TutorialLib", 13, 0x358, 0x404,
+        [&](Raw back, void* item, std::int32_t g) {
+            host.lua_read_string_field("Name", back.p + 0x28, item);
+            void* const index = host.lua_get_by_name_00b67800(item, "Index");
+            back.at<std::int32_t>(0x48) = host.lua_get_integer_00b66290(index);
+            host.lua_release_00b67700(index);
+            LibraryEntryBuffer temp;
+            const Raw strings = library_entry_blank(temp);
+            host.lua_read_string_field("Movie", strings.p + 0x28, item);
+            host.native_string_assign(back.p + 0x30, native_view(strings, 0x28));
+            back.at<std::uint8_t>(0x44) = 1;
+            void* const command = host.lua_get_by_name_00b67800(item, "LuaCommand");
+            const bool nil = host.lua_is_nil_00b65fb0(command);
+            host.lua_release_00b67700(command);
+            host.native_string_assign(back.p + 0x38, nil ? std::string() : lua_string_or_empty(item, "LuaCommand", host));
+            back.at<std::int32_t>(0x40) = g;
+            back.at<std::uint8_t>(0x44) = 1;
+            host.lua_read_string_field("Description", back.p + 0x5C, item);
+            host.library_entry_destruct_004fd1d0(strings);
+        },
+        host);
+}
+
+void library_load_unit_lib_0050ce70(Raw screen, Fe9LibraryLoaderHost& host) {
+    library_load_grouped(screen, "Scripts\\datatables\\UnitLib.lua", "UnitLib", 5, 0x318, 0x3F4,
+        [&](Raw back, void* item, std::int32_t g) {
+            host.lua_read_string_field("Name", back.p + 0x28, item);
+            void* const vehicle_class = host.lua_get_by_name_00b67800(item, "VehicleClass");
+            back.at<std::int32_t>(0x48) = host.lua_get_integer_00b66290(vehicle_class);
+            host.lua_release_00b67700(vehicle_class);
+            LibraryEntryBuffer temp;
+            const Raw strings = library_entry_blank(temp);
+            host.lua_read_string_field("GUITextureBackGround", strings.p + 0x28, item);
+            host.lua_read_string_field("GUITextureForeGround", strings.p + 0x30, item);
+            library_entry_set_texture(back, 0x00, 0x04, "fe/units/" + native_string_text(Raw{strings.p + 0x28}), host);
+            library_entry_set_texture(back, 0x14, 0x18, "common/icons/" + native_string_text(Raw{strings.p + 0x30}), host);
+            back.at<std::int32_t>(0x40) = g;
+            back.at<std::uint8_t>(0x44) = 1;
+            back.at<std::uint8_t>(0x45) = 0;
+            void* const description = host.lua_get_by_name_00b67800(item, "Description");
+            host.lua_read_string_by_index_004fe1e0(1, back.p + 0x4C, description);
+            host.lua_read_string_by_index_004fe1e0(2, back.p + 0x54, description);
+            host.lua_read_string_by_index_004fe1e0(3, back.p + 0x5C, description);
+            host.lua_read_string_field_00501d10(4, back.p + 0x64, description, "");
+            host.lua_release_00b67700(description);
+            host.library_entry_destruct_004fd1d0(strings);
+        },
+        host);
+}
+
+void library_register_0050fdb0(Raw screen, Fe9LibraryRegisterHost& host) {
+    host.frontend_screen_register_004f71d0(screen);
+    screen.ptr(0x4DC) = host.gui_load_page_00aa5840("FE_tactical", 1, 0);
+    screen.ptr(0x4E0) = host.gui_load_page_00aa5840("FE_tactical_text", 1, 0);
+    screen.ptr(0x4E4) = host.gui_load_page_00aa5840("FE_tactical_listbox", 1, 0);
+    screen.ptr(0x6C) = host.resource_load_64("colourremap.tga", 0);
+    screen.ptr(0x70) = host.resource_load_64("oceannormalmap04.tga", 0);
+    screen.ptr(0x74) = host.resource_load_64("hdr_rcs_usn_04_defend_g_ocean.tga", 0);
+    screen.ptr(0x78) = host.resource_load_64("hdr_RCS_usn_04_Defend_G.tga", 0);
+    host.screen_virtual_14(screen);
+    screen.at<std::int32_t>(0x4C8) = 1;
+    screen.at<std::int32_t>(0x454) = -1;
+    screen.at<std::int32_t>(0x458) = 0;
+    screen.at<std::int32_t>(0x94) = 3;
+    screen.at<std::int32_t>(0x9C) = 0;
+    screen.at<std::int32_t>(0xA0) = 2;
+    for (std::size_t off = 0x540; off <= 0x554; off += 4) screen.at<std::uint32_t>(off) = 0;
+
+    void* const storage = host.operator_new_00bf681b(0x6C);
+    if (storage != nullptr) {
+        LibraryEntryBuffer blank;
+        library_entry_blank(blank);
+        std::memcpy(storage, blank.bytes, sizeof blank.bytes);
+    }
+    screen.ptr(0x5B0) = storage;
+    const Raw locked = raw(storage);
+    host.native_string_assign(locked.p + 0x28, "FE.unitlib_nounlock");
+    locked.at<std::int32_t>(0x48) = -1;
+    library_entry_set_texture(locked, 0x00, 0x04, "fe/lobby/unlock_disabled.tga", host);
+    locked.at<std::int32_t>(0x40) = -1;
+    locked.at<std::uint8_t>(0x44) = 1;
+    locked.at<std::uint8_t>(0x46) = 1;
+    host.native_string_assign(locked.p + 0x4C, "FE.unitlib_nounit_d1");
+    host.native_string_assign(locked.p + 0x54, "FE.unitlib_nounit_d2");
+    host.native_string_assign(locked.p + 0x5C, "FE.unitlib_nounit_d3");
+    host.native_string_assign(locked.p + 0x64, " ");
+
+    static constexpr std::pair<const char*, std::int32_t> kCategory[] = {
+        {"RANK_", 0}, {"CA_", 1}, {"MA_", 2}, {"AO_", 2}, {"RUA_", 3}, {"GA_", 4}, {"SA_", 5}};
+    for (std::uint32_t i = 0;; ++i) {
+        const Raw awards = host.award_table_00e19900();
+        const auto* first = static_cast<std::uint8_t*>(awards.ptr(4));
+        if (first == nullptr || i >= static_cast<std::uint32_t>((static_cast<std::uint8_t*>(awards.ptr(8)) - first) / 8)) break;
+        const Raw name{const_cast<std::uint8_t*>(first) + i * 8};
+        LibraryEntryBuffer fresh;
+        const Raw blank = library_entry_blank(fresh);
+        void* const list = screen.p + 0x3D4;
+        host.entry_vector_push_back_0050ad00(list, blank);
+        host.library_entry_destruct_004fd1d0(blank);
+        const Raw back{static_cast<std::uint8_t*>(raw(list).ptr(8)) - 0x6C};
+        const Raw record = host.award_table_find_record_0050fc30(name.p);
+        // The image builds the path through a NativeString and re-reads it as a C string.
+        const std::string icon(native_view(record, 0x14));
+        library_entry_set_texture(back, 0x14, 0x18, icon.c_str(), host);
+        library_entry_set_texture(back, 0x00, 0x04, "common/whiteGui.tga", host);
+        back.at<std::int32_t>(0x40) = 6;
+        const std::string_view text = native_view(name, 0);
+        for (const auto& [prefix, category] : kCategory) {
+            const std::string_view head = text.substr(0, std::strlen(prefix));
+            if (!head.empty() && equals_case_insensitive(head, prefix)) back.at<std::int32_t>(0x40) = category;
+        }
+        const std::string_view head = text.substr(0, 1);
+        if (!head.empty() && equals_case_insensitive(head, "B")) {
+            back.at<std::int32_t>(0x40) = 7;
+            back.at<std::uint8_t>(0x44) = 0;
+        } else {
+            back.at<std::uint8_t>(0x44) = 1;
+        }
+        host.native_string_assign(back.p + 0x28, text);
+        back.at<std::uint8_t>(0x45) = 1;
+    }
+    host.library_load_unit_lib_0050ce70(screen);
+    host.library_load_class_tables_00504130(screen);
+    host.library_load_power_up_lib_0050b8e0(screen);
+    host.library_load_movie_list_0050c300(screen);
+    host.library_load_tutorial_lib_0050c760(screen);
+    host.library_load_nose_art_0050bf00(screen);
+    host.library_preview_setup_environment_00502480(screen);
+}
+
+namespace {
+
+std::int32_t library_view_count(Raw view) {
+    const auto* first = static_cast<std::uint8_t*>(view.ptr(0x14));
+    return first == nullptr ? 0 : static_cast<std::int32_t>((static_cast<std::uint8_t*>(view.ptr(0x18)) - first) / 0x6C);
+}
+
+std::uint8_t* library_view_entry(Raw view, std::int32_t index) {
+    return static_cast<std::uint8_t*>(view.ptr(0x14)) + index * 0x6C;
+}
+
+std::string upper_ascii(std::string_view text) {  // 004FB1F0
+    std::string out(text);
+    for (char& c : out) {
+        if (c >= 'a' && c <= 'z') c = static_cast<char>(c - 32);
+    }
+    return out;
+}
+
+} // namespace
+
+std::uint8_t* library_view_class_id_004fa890(Raw view) {
+    return library_view_entry(view, view.at<std::int32_t>(0)) + 0x48;
+}
+
+std::uint8_t* library_view_previous_004fa8f0(Raw view) {
+    return library_view_entry(view, static_cast<std::int32_t>(view.at<float>(4)) - 1);
+}
+
+std::uint8_t* library_view_at_position_004fa960(Raw view) {
+    return library_view_entry(view, static_cast<std::int32_t>(view.at<float>(4)));
+}
+
+std::uint8_t* library_view_current_004fa9c0(Raw view) { return library_view_entry(view, view.at<std::int32_t>(0)); }
+
+std::uint8_t* library_view_next_004faa00(Raw view) {
+    std::int32_t index = static_cast<std::int32_t>(view.at<float>(4)) + 1;
+    const std::int32_t count = library_view_count(view);
+    if (static_cast<std::uint32_t>(index + 1) > static_cast<std::uint32_t>(count)) index = count - 1;
+    return library_view_entry(view, index);
+}
+
+void library_refresh_entry_detail_00510c20(Raw screen, Fe9LibraryDetailHost& host) {
+    if (screen.ptr(0x508) == nullptr) return;
+    const Raw view{screen.p + 0x434};
+    const std::int32_t count = library_view_count(view);
+    if (count == 0) {
+        host.sleep_00ce2230(1);
+        return;
+    }
+    if (screen.at<std::int32_t>(0x90) == 0) {
+        std::uint32_t shown[3] = {1, 1, 1};
+        if (count == 1) {
+            shown[0] = 0;
+            shown[2] = 0;
+        } else {
+            const std::int32_t at = static_cast<std::int32_t>(view.at<float>(4));
+            if (at == 0) shown[0] = 0;
+            else if (at == count - 1) shown[2] = 0;
+        }
+        host.widget_set_visible_34(screen.ptr(0x508), shown[0]);
+        host.widget_set_visible_34(screen.ptr(0x50C), shown[1]);
+        host.widget_set_visible_34(screen.ptr(0x510), shown[2]);
+        struct Card {
+            std::size_t card, back, front, extra;
+            std::uint8_t* (*entry)(Raw);
+        };
+        static constexpr Card kCards[3] = {{0x508, 0x580, 0x57C, 0x584, library_view_previous_004fa8f0},
+                                           {0x50C, 0x58C, 0x588, 0x590, library_view_at_position_004fa960},
+                                           {0x510, 0x598, 0x594, 0x59C, library_view_next_004faa00}};
+        static constexpr float kScale[2] = {1.0000100135803223f, 1.0000100135803223f};  // 00CEBDC8
+        for (const Card& c : kCards) {
+            if (!host.widget_virtual_38(screen.ptr(c.card))) continue;
+            const Raw e{c.entry(view)};
+            if (e.ptr(0) != nullptr) {
+                host.gui_set_state_texture_uv_00ab2690(screen.ptr(c.back), 0, e.ptr(0), &e.at<float>(4));
+                host.widget_set_scale_recursive_00aa86b0(screen.ptr(c.back), kScale);
+            }
+            if (e.ptr(0x14) != nullptr) {
+                host.gui_set_state_texture_uv_00ab2690(screen.ptr(c.front), 0, e.ptr(0x14), &e.at<float>(0x18));
+                host.widget_set_scale_recursive_00aa86b0(screen.ptr(c.front), kScale);
+                if (screen.ptr(c.extra) != nullptr) {
+                    host.gui_set_state_texture_uv_00ab2690(screen.ptr(c.extra), 0, e.ptr(0x14), &e.at<float>(0x18));
+                    host.widget_set_scale_recursive_00aa86b0(screen.ptr(c.extra), kScale);
+                }
+            }
+            const bool grey = screen.at<std::int32_t>(0x94) == 6 && Raw{c.entry(view)}.at<std::uint8_t>(0x46) == 0;
+            host.widget_set_colour_50(screen.ptr(c.back), grey ? host.colour_static_grey_004f9d80()
+                                                               : host.colour_static_white_004f9d30());
+            host.widget_set_colour_50(screen.ptr(c.front), grey ? host.colour_static_grey_004f9d80()
+                                                                : host.colour_static_white_004f9d30());
+        }
+    }
+
+    void* const left = screen.ptr(0x574);
+    void* const right = screen.ptr(0x578);
+    if (screen.at<std::uint8_t>(0x560) != 0) {
+        host.widget_set_visible_34(left, 1);
+        host.widget_set_listener_fields_00aa6bc0(left, screen.p + 0x68, 0);
+        host.widget_set_visible_34(right, 1);
+        host.widget_set_listener_fields_00aa6bc0(right, screen.p + 0x68, 0);
+        const auto arrow = [&host](void* widget, bool at_end) {
+            if (at_end) {
+                host.widget_set_state_88(widget, 3, 0, 1.0f);
+                return;
+            }
+            const std::int16_t state = host.widget_state_94(widget);
+            if (state < 1 || state > 2) host.widget_set_state_88(widget, 0, 0, 1.0f);
+        };
+        const std::int32_t index = view.at<std::int32_t>(0);
+        arrow(left, index == 0);
+        arrow(right, index == count - 1);
+    } else {
+        host.widget_set_visible_34(left, 0);
+        host.widget_set_listener_fields_00aa6bc0(left, nullptr, 0);
+        host.widget_set_visible_34(right, 0);
+        host.widget_set_listener_fields_00aa6bc0(right, nullptr, 0);
+    }
+
+    static constexpr const char* kSep = "|. |####|";  // 00CEBDBC
+    void* const text = screen.ptr(0xA8);
+    const Raw current{library_view_current_004fa9c0(view)};
+    const std::string name = upper_ascii(native_view(current, 0x28));
+    switch (screen.at<std::int32_t>(0x94)) {
+    case 0: {
+        const Raw record = host.award_table_find_record_0050fc30(current.p + 0x28);
+        const std::string award = upper_ascii(native_view(record, 0));
+        if (current.at<std::uint8_t>(0x45) != 0 && Raw{library_view_at_position_004fa960(view)}.at<std::int32_t>(0x40) == 5) {
+            host.gui_text_set_localised_cstring_00abbe50(text, "FE.achievement_secret_desc", 1);
+            break;
+        }
+        const Raw again = host.award_table_find_record_0050fc30(current.p + 0x28);
+        host.gui_text_set_localised_source_00abaed0(text, award + kSep + std::string(native_view(again, 0x0C)), 1);
+        break;
+    }
+    case 1:
+    case 3:
+    case 8:
+        host.gui_text_set_localised_source_00abaed0(text, name + kSep + std::string(native_view(current, 0x5C)), 1);
+        break;
+    case 2:
+    case 5:
+    case 6:
+        screen.at<std::uint32_t>(0x4B0) = *reinterpret_cast<std::uint32_t*>(library_view_class_id_004fa890(view));
+        host.gui_text_set_localised_source_00abaed0(
+            text, name + kSep + std::string(native_view(current, 0x5C)) + kSep + std::string(native_view(current, 0x64)), 1);
+        if (screen.at<std::int32_t>(0x90) == 1) host.library_preview_load_vehicle_model_0050aa10(screen);
+        break;
+    case 4: {
+        const std::string command(native_view(current, 0x38));
+        if (current.at<std::uint32_t>(0x38) != 0) {
+            const std::int32_t failed = host.lua_machine_run_string_006b8ad0(command.c_str(), 0, 0, 2);
+            host.debug_print_004254b0(failed != 0 ? "Nem sikerult vegrehajtani a: %s lua parancsot a Tutorialban."
+                                                  : "%s lua parancs vegrehajtva a Tutorialban.",
+                                      command.c_str());
+        }
+        std::string description(native_view(current, 0x5C));
+        if (!host.input_config_load_suppressed_00f88a30()) {
+            const std::string key = description + "_pc";
+            if (!equals_case_insensitive(host.localization_resolve_narrow(key), key)) description = key;
+        }
+        host.gui_text_set_localised_source_00abaed0(text, name + kSep + description, 1);
+        break;
+    }
+    default:
+        break;
+    }
+}
+
 } // namespace bsp::cc13_fe3
