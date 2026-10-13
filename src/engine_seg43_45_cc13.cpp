@@ -898,6 +898,39 @@ void movie_key_read_bits_007a2370(MovieKeyBits& k, NativeBitCursor* cursor, Movi
     host.set_modifier_00799de0(k, modifier);
 }
 
+bool lua_is_vector3_table_0079c040(bool is_table, const std::vector<LuaEntryView>& entries) {
+    if (!is_table) return false;
+    auto iequal = [](const std::string& a, const char* b) {
+        std::size_t i = 0;
+        for (; i < a.size() && b[i] != '\0'; ++i) {
+            const char x = (a[i] >= 'A' && a[i] <= 'Z') ? static_cast<char>(a[i] - 'A' + 'a') : a[i];
+            const char y = (b[i] >= 'A' && b[i] <= 'Z') ? static_cast<char>(b[i] - 'A' + 'a') : b[i];
+            if (x != y) return false;
+        }
+        return i == a.size() && b[i] == '\0';
+    };
+    int count = 0;
+    for (const LuaEntryView& e : entries) {
+        if (!e.key_is_string || !e.value_is_number) return false;  // 0079C0BB / 0079C0CC
+        const bool x = !e.key_text_null && iequal(e.key, "x");    // __stricmp only with text
+        if (!x && !iequal(e.key, "y") && !iequal(e.key, "z")) return false;
+        ++count;
+    }
+    return count == 3;
+}
+
+void lua_read_xyz_0078fd70(std::array<float, 3>& out, const std::vector<LuaNumberEntry>& entries) {
+    for (const LuaNumberEntry& e : entries) {
+        if (e.key == "x") {
+            out[0] = static_cast<float>(e.number);
+        } else if (e.key == "y") {
+            out[1] = static_cast<float>(e.number);
+        } else if (e.key == "z") {
+            out[2] = static_cast<float>(e.number);
+        }
+    }
+}
+
 void movie_camera_stop_0078e8e0(bool& running_391, float& fov_410, MovieCameraStopHost& host) {
     host.inherit_race_and_activate_0042a910();
     running_391 = false;

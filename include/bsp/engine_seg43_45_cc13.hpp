@@ -672,6 +672,31 @@ void movie_key_write_bits_00791360(const MovieKeyBits& k, NativeBitCursor* curso
 // types return before the modifier step.
 void movie_key_read_bits_007a2370(MovieKeyBits& k, NativeBitCursor* cursor, MovieKeyBitsHost& host);
 
+// ---------------------------------------------------------------------------
+// 0079C040: fastcall (ECX LuaObject), AL result; SEH. True when the object is
+// a table (00B661B0) whose every entry has a string key (00B660A0, Lua's
+// isstring) and a number value (00B66050) with the key "x" (__stricmp, only
+// when the key text is non-null), "y" or "z" (00425850, case-insensitive),
+// and there are exactly three entries. Iteration is 00B67080/00B67190 until
+// the key is unbound (00B66420).
+struct LuaEntryView {
+    bool key_is_string{false};
+    std::string key;   // 00B662B0 text of the key
+    bool key_text_null{false};
+    bool value_is_number{false};
+};
+bool lua_is_vector3_table_0079c040(bool is_table, const std::vector<LuaEntryView>& entries);
+// 0078FD70: ECX out float[3] (EAX out). Walks the table; a key equal
+// (00B660F0) to "x" (00CEB488), "y" or "z" stores f(GetNumber 00B66270) of its
+// value into that component; the last match wins. A component with no key is
+// whatever the image's stack slot held (uninitialised); here it keeps the
+// value `out` had.
+struct LuaNumberEntry {
+    std::string key;     // empty for a non-string key
+    double number{0.0};  // 00B66270
+};
+void lua_read_xyz_0078fd70(std::array<float, 3>& out, const std::vector<LuaNumberEntry>& entries);
+
 // 0078E8E0: fastcall camera. 0042A910 (ECX camera), then +391h = 0 and the
 // field of view +410h = 0.6981317 (00CE7D20).
 struct MovieCameraStopHost {
