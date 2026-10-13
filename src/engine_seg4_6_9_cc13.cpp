@@ -607,6 +607,59 @@ std::uint8_t selected_user_live_byte_004bb600(SelectedUserLiveHost& host) {
     return 0;                                                                               // 004BB61E
 }
 
+bool game_clip_segment_to_world_bounds_004bbdd0(
+    const WorldBoundsXZ& box, const std::array<float, 3>& start, std::array<float, 3>& end,
+    std::array<float, 3>& out,
+    const std::function<std::array<float, 3>(const std::array<float, 3>&)>& normalize_00419510) {
+    const std::array<float, 3> original = end;
+    const double sx = start[0], sz = start[2];
+    bool clipped = false;
+    // f(s + f(e - s) * r): the difference is stored, r stays on the stack.
+    auto lerp = [](double s, float e, double r) { return static_cast<float>(s + static_cast<double>(static_cast<float>(e - s)) * r); };
+    const double x = end[0];
+    if (box.min_x_711c > x) {                                                     // 004BBDF5 FCOMIP; JBE
+        clipped = true;
+        end[2] = lerp(sz, end[2], (sx - box.min_x_711c) / (sx - x));              // 004BBE24..004BBE51
+        end[0] = static_cast<float>(static_cast<double>(box.min_x_711c) + 1.0);   // 004BBE54..004BBE5C
+    } else if (x > box.max_x_7128) {                                              // 004BBE68 FCOMI; JBE
+        clipped = true;
+        end[2] = lerp(sz, end[2], (box.max_x_7128 - sx) / (x - sx));              // 004BBE7D..004BBEAA
+        end[0] = static_cast<float>(static_cast<double>(box.max_x_7128) - 1.0);   // 004BBEAD..004BBEB5
+    }
+    const double z = end[2];
+    if (z > box.max_z_7124) {                                                     // 004BBECC FCOMI; JBE
+        clipped = true;
+        end[0] = lerp(sx, end[0], (box.max_z_7124 - sz) / (z - sz));              // 004BBEE1..004BBF0B
+        end[2] = static_cast<float>(static_cast<double>(box.max_z_7124) - 1.0);   // 004BBF0D FSUBR
+    } else if (box.min_z_7130 > z) {                                              // 004BBF1E FCOMIP; JBE
+        clipped = true;
+        end[0] = lerp(sx, end[0], (sz - box.min_z_7130) / (sz - z));              // 004BBF31..004BBF5B
+        end[2] = static_cast<float>(1.0 + box.min_z_7130);                        // 004BBF5D
+    } else if (!clipped) {
+        return false;                                                             // 004BBF6E
+    }
+    auto magnitude = [](float v) { return v > 0.0f ? v : -0.0f - v; };
+    float dx = end[0] - start[0];                                                 // 004BBF74..004BBF80
+    float dz = end[2] - start[2];                                                 // 004BBF84..004BBF8A
+    const bool too_short = 1.0f > magnitude(dx) || 1.0f > magnitude(dz);          // 004BBFB3, 004BBFCF
+    if (too_short) {                                                              // 004BBFD4..004BBFFE
+        end[0] = original[0];
+        end[2] = original[2];
+        dx = original[0] - start[0];
+        dz = original[2] - start[2];
+    }
+    const std::array<float, 3> n = normalize_00419510({dx, 0.0f, dz});            // 004BC010
+    const float az = magnitude(n[2]);
+    const float ax = magnitude(n[0]);
+    float m = az > ax ? ax : az;                                                  // 004BC073 FCOMIP; JA
+    if (0.019999999552965164 > m) m = 0.02f;                                      // 004BC08C, 00CE746C
+    const float s = static_cast<float>(3000.0 / m);                               // 004BC0B0 FDIVR
+    out[0] = end[0] + n[0] * s;                                                   // 004BC0BA..004BC0E4
+    out[1] = original[1] + s * n[1];
+    out[2] = end[2] + s * n[2];
+    return true;
+}
+
 std::int32_t counted_string_find_004bcb40(std::uint32_t length, const char* data, const char* needle,
                                           std::int32_t start) {
     if (data == nullptr || needle == nullptr) return -1;                          // 004BCB46..004BCB50
@@ -918,6 +971,45 @@ void narrow_string_deque_pop_back_004cde20(
     NativeNarrowString& element = deque.map[block][index & 1];
     if (element.data != nullptr) pool_return_00bd1510(element.data, element.length + 1, 1);
     if (--deque.count == 0) deque.offset = 0;
+}
+
+void award_tracker_drain_hint_deque_004d0140(
+    NarrowStringDeque& deque, const std::function<void(void*, std::uint32_t, std::int32_t)>& pool_return_00bd1510,
+    const std::function<void(void*)>& free_00bf65ac) {
+    while (deque.count != 0) narrow_string_deque_pop_back_004cde20(deque, pool_return_00bd1510);
+    for (std::uint32_t i = deque.map_size; i != 0;) {
+        --i;
+        if (deque.map[i] != nullptr) free_00bf65ac(deque.map[i]);
+    }
+    if (deque.map != nullptr) free_00bf65ac(deque.map);
+    deque.map = nullptr;
+    deque.map_size = 0;
+}
+
+void counted_reference_vector_reserve_004c8310(CountedReferenceVector& vector, std::int32_t n,
+                                               CountedReferenceHost& host) {
+    if (n < 1) n = 1;
+    if (!(vector.capacity < n)) return;
+    auto** block = static_cast<void**>(host.operator_new(static_cast<std::uint32_t>(n) * 4));
+    for (std::int32_t i = 0; i < vector.size; ++i) {
+        const std::uintptr_t address = reinterpret_cast<std::uintptr_t>(block) + static_cast<std::uintptr_t>(i) * 4;
+        if (address == 0) continue;                                               // the image tests the slot address
+        void** slot = reinterpret_cast<void**>(address);
+        *slot = nullptr;
+        if (void* counted = vector.data[i]) {
+            *slot = counted;
+            host.add_ref(counted);
+        }
+    }
+    for (std::int32_t i = 0; i < vector.size; ++i) {
+        if (vector.data[i] != nullptr) {
+            host.release(vector.data[i]);
+            vector.data[i] = nullptr;
+        }
+    }
+    host.free_block(vector.data);
+    vector.data = block;
+    vector.capacity = n;
 }
 
 void two_vector_record_tidy_004ce460(TwoVectorRecord& record, const std::function<void(void*)>& free_00bf65ac) {

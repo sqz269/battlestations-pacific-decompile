@@ -12,7 +12,7 @@ game-validated; the hosts take field values and callbacks where the image works 
 | 13 lazy singleton getters, 2 teardowns | yes | table + `lazy_singleton_get`, `lazy_singleton_destroy` | yes | no |
 | x87 geometry `0046F550..00470150` (7) | yes | yes | yes | no |
 | `004656D0` particle-effect movie action run | yes | yes | yes | no |
-| Segment-9 helpers (20 + 35) | yes | yes | yes | no |
+| Segment-9 helpers (20 + 35 + 3) | yes | yes | yes | no |
 | Segment-4/6 helpers, matrices, `004702E0` (23 + 12) | yes | yes | yes | no |
 
 ## Singleton getters
@@ -151,8 +151,47 @@ push_back; Ghidra's decompile drops the `size++` at `00467F91`), the cloud parti
 `00476E40`/`00476EE0`/`00477020` (`00477020` frees the data, so it is a tidy, not a clear), and
 `00477110` (cloud class destructor).
 
+## Segment 9, fifth batch (3)
+
+- `004BBDD0` clips the director-path segment to the world's xz box (caller `0071FDE0`, director
+  path AddPoint). The x87 body was traced by hand and the DE forms checked with
+  `tools/x87_dc_form_scan.py`. Two quirks: if the clipped end is less than 1.0 from the start in
+  `|dx|` or `|dz|`, the end gets its x and z back, but the function still returns 1; and with no
+  clip at all it returns 0 without writing `out`. Otherwise `out` is the end pushed `3000 / m`
+  along the normalised xz direction, where `m` is the smaller of the two direction components,
+  floored at 0.02.
+- `004D0140` drains the award tracker's hint deque and frees the map, and `004C8310` reserves a
+  vector of counted references (it adds a reference for each copy and releases the old elements).
+
 ## Evidence method
 
 Live `bsp.py ghidra decompile`, `disasm-raw` for every listed body, constants from the PE
 (`local/sys4_consts.py`). Call-site rows: `reports/cc13_sys4_calls.json`
-(`tools/verify_report_calls.py`: 81 rows, 0 failed).
+(`tools/verify_report_calls.py`: 82 rows, 0 failed).
+
+## Handoff
+
+Done: 116 reconstruction records (13 getters + 2 teardowns, 7 geometry, 1 particle run, 58
+segment-9 helpers, 35 segment-4/6 helpers including `004702E0`), five Ghidra renames
+(`0046F7B0`, `0046F940`, `0046FF70`, `00470150`, `00452B00`) and two corrected ledger notes
+(`004656D0` step 0.2, `0047C2A0` order).
+
+Still open in the three segments (not taken; owners in brackets where known):
+- Larger bodies: `004C0170` (presence update, 181 decompile lines), `00452BD0` (lens flare from
+  the camera, 169 lines), `004BC580`/`004BC6D0` (leaderboard reads), `0044C970` (E1 message
+  constructor through stream objects), `004C9870` (calls the unnamed `00468050` and a `_free`
+  thunk), `004CA2F0` (window close with the quit prompt), `004CAC30`, `004CB420`, `004CCBD0`,
+  `004CCCC0` (LeaveSession), `004CD450` (unreferenced screenshot writer), `004C9EC0`, `004C3C90`,
+  `004C6BE0`, the cloud entity bodies `00475990`/`00476550`/`00476BD0`/`00476D80`/`00477180`,
+  `00471080`/`00479BD0` (SEntity init), `00466BB0`/`00466C00`/`00467C80`.
+- `004CD7F0` already has a reconstruction (`derive_scene_short_name`, `src/mission_scene_load.cpp`)
+  without a record; its owner should backfill after an ABI check (the third `char` argument was not
+  checked here).
+- Left to cc9: `004C74C0` (border zone, read by the cc9 retreat chain), `004BC410` (camera mover,
+  cc9_mission_camera), `004CC3F0` (end-of-mission movie), the dialog/panel classes in segment 4,
+  and the list in the brief.
+- Left to the scene-database owner: the `SceneNameHash`/`SceneDatabase`/`SceneRecord`/`SceneClassMap`
+  bodies in segment 6.
+- Thunks and catch funclets (`004BD350`, `004C4590`, `004C8070`, `004C8B70`, `004C8BF0`,
+  `004C9A60`, `00453570`, `00468790`, `Catch_All@...`) were not tagged.
+- Precision: every x87 host assumes 53-bit precision control.

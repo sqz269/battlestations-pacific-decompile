@@ -560,6 +560,28 @@ struct SelectedUserLiveHost {
 };
 std::uint8_t selected_user_live_byte_004bb600(SelectedUserLiveHost& host);
 
+// 004BBDD0, __thiscall(ECX = game, const float* start, float* end, float*
+// out), RET 0Ch, AL = clipped. Caller 0071FDE0 (director path AddPoint).
+// The world box is minX +711Ch, maxZ +7124h, maxX +7128h, minZ +7130h. In x:
+// end.x < minX moves end to minX + 1 and interpolates end.z with r = (sx -
+// minX)/(sx - x); end.x > maxX moves it to maxX - 1 with r = (maxX - sx)/(x -
+// sx). Then the same in z against maxZ (end.z - 1 side) and minZ, which
+// interpolates end.x. Each new coordinate is f(s + f(e - s) * r), with r kept
+// on the stack. With no clip it returns 0 and writes nothing. After a clip, a
+// moved end closer than 1.0 to the start in |dx| or |dz| is put back. In that
+// case `end` regains its x and z, and the function still returns 1. Then d =
+// (f(end.x - sx), 0, f(end.z - sz)) is normalised (00419510) to n, m =
+// min-like(|n.x|, |n.z|) (|n.z| > |n.x| keeps |n.x|, otherwise |n.z|), raised
+// to 0.02f when below double 0.02 (00D7A2F8), s = f(3000.0 / m) (00CE7530),
+// and out = f(end + f(n * s)), where out.y uses the end's y.
+struct WorldBoundsXZ {
+    float min_x_711c, max_z_7124, max_x_7128, min_z_7130;
+};
+bool game_clip_segment_to_world_bounds_004bbdd0(
+    const WorldBoundsXZ& box, const std::array<float, 3>& start, std::array<float, 3>& end,
+    std::array<float, 3>& out,
+    const std::function<std::array<float, 3>(const std::array<float, 3>&)>& normalize_00419510);
+
 // 004BCB40, __thiscall(ECX = {u32 length, char* data}, needle, int start),
 // RET 8: -1 for null data or needle; a negative start becomes 0, a start
 // above the length (unsigned JA) gives -1; _strstr (00BF9440) from
@@ -881,6 +903,36 @@ struct NarrowStringDeque {
 void narrow_string_deque_pop_back_004cde20(
     NarrowStringDeque& deque,
     const std::function<void(void* data, std::uint32_t bytes, std::int32_t count)>& pool_return_00bd1510);
+
+// 004D0140, __fastcall(ECX = tracker), RET: the hint deque at +4: pop_back
+// (the 004CDE20 body, inlined) until the count is 0, then _free every map
+// block from the last to the first (null ones skipped), _free the map, and
+// zero the map pointer and size.
+void award_tracker_drain_hint_deque_004d0140(
+    NarrowStringDeque& deque,
+    const std::function<void(void* data, std::uint32_t bytes, std::int32_t count)>& pool_return_00bd1510,
+    const std::function<void(void*)>& free_00bf65ac);
+
+// 004C8310, __thiscall(ECX = vector {data, size, capacity} of counted
+// references, n), RET 4: n = max(n, 1); when capacity < n: operator new(n*4),
+// copy each element with InterlockedIncrement(+4) (null stays null), release
+// every old element (InterlockedDecrement(+4), vtable slot 0 at zero) and
+// clear it, _free the old block, data = new block, capacity = n. The size is
+// unchanged.
+struct CountedReferenceVector {
+    void** data{nullptr};
+    std::int32_t size{0};
+    std::int32_t capacity{0};
+};
+struct CountedReferenceHost {
+    virtual ~CountedReferenceHost() = default;
+    virtual void* operator_new(std::uint32_t bytes) = 0;
+    virtual void add_ref(void* counted) = 0;
+    virtual void release(void* counted) = 0;
+    virtual void free_block(void* block) = 0;
+};
+void counted_reference_vector_reserve_004c8310(CountedReferenceVector& vector, std::int32_t n,
+                                               CountedReferenceHost& host);
 
 // 004CE460, __fastcall(ECX = record), RET: _free the vector data at +14h
 // then at +4 (each only when non-null) and zero both {data, end, capacity}
