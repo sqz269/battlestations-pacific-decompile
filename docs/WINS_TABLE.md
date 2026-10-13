@@ -17,6 +17,7 @@ Order files (absolute paths; o-files live in the worker trees' local\ directorie
 | ESMP08 | cc9-lua46\local\l46_e8_orders2.txt |
 | LOMP06 | cc9-lua50\local\l50_l6_q6.txt |
 | BSM01 | cc9-lua50\local\l50_b1_a.txt (the win is EndMission) |
+| USN15 | cc9-ships44\local\s45_u15_l2.txt (90000 frames; the win is EndMission; since 2026-10-12, replaces s44_u15_h of SHIP_AI 219, ac9652105) |
 
 ## 2026-10-12, build fe01ecf32 (origin/main db5ab3c4e + the live-sea flip; main landed the flip as ecb1c55d1 on a later base), SHA-256 B22D402CE8ED
 
@@ -124,3 +125,14 @@ Logs local\p3k3_on_<row>.log.
 ESMP08 against the k1 win: Cummings, Dunlap, Grayson and Woodworth now survive (in k1 they died between 1353 and
 2814 s, all to torpedoes). The batch did not restore it. Next keeper: re-plan ESMP08 from its torpedo budget (the
 mechanism is in the cd761bb52 section above).
+## 2026-10-12, keeper notes (cc9-physics4)
+
+- **New row USN15 (Surigao)**, reported by cc9-ships45: `s45_u15_l2.txt`, 90000 frames, reference form,
+  EndMission 2775.58 s on main 1de67cfb9 with the guard (log cc9-ships44\local\s45_v_l2.log); it also wins with
+  `BSP_FRAME_JITTER 20,3` at 2671.53 s. Replaces s44_u15_h.
+- **gunnery38's AH batch** (reported): the six wins hold at identical times. ESMP08 stays lost: late Jill/Kate
+  squadrons loiter at 1450 m over a dead target (Washington) and the flak kills them; with the flak pair OFF it
+  completes at 2594.66 s. The flak stays ON; gunnery38 is binding the unhosted command retest 009F8160.
+- **cc9-physics4's flips, checked on their pairs:** `kPlaneWaterSurfaceLawBound` (25d13aa63) and
+  `kGunAimDegreePrecisionBound` (f435022e8) leave USN01 (1014.63 s) and USN12 (1539.83 s) at identical times;
+  ESMP08 is unchanged (lost).

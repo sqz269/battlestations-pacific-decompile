@@ -67,6 +67,7 @@
 #include "bsp/ship_hit_record.hpp"
 #include "bsp/part_damage_reachability.hpp"
 #include "bsp/plane_squadron_host.hpp"
+#include "bsp/plane_crash_sweep.hpp"
 #include "bsp/unit_fire_flooding.hpp"
 #include "bsp/submarine_model.hpp"
 #include "bsp/unit_kind_query.hpp"
@@ -1278,6 +1279,12 @@ float intercept_time_00901c20(const float rel[3], const float vel[3], float spee
 // SPNormal 1, SPVeteran 2, MPNormal 3, MPVeteran 4, Elite 5. MaxAngleError is
 // DEG(x) in the file.
 constexpr float kDegToRad = 0.01745329251994329577f;
+// cc9-physics4 (docs/X87_CONTROL_WORD.md, the host precision policy): the gun bot's aim
+// error 00902CF5..00902D07 and the torpedo gyro jitter 00900856..00900876 multiply by the
+// qword 00CE3D28 = 3.1415927410125732 (pi as a float) and divide by the qword 180.0. On
+// the 24-bit main thread that is the float product below; on a 53-bit pool worker it is
+// the double chain. False: the double chain with 3.14159265358979.
+inline constexpr bool kGunAimDegreePrecisionBound = true;  // ON: USN12 / USN01 identical
 constexpr bsp::ArtilleryGunnerAimErrorLevel kArtilleryGunnerLevels[6] = {
     {10.0f * kDegToRad, 1.0f},  // 0 Stun
     {5.0f * kDegToRad, 1.0f},   // 1 SPNormal
@@ -1705,6 +1712,7 @@ struct GameGunneryHost::Impl {
         line_of_fire_ttl = 25, // 0072F76D, the cache record's unread expiry, key (gun, target)
         tail_gunner_error = 26, // 008FFCD9 / 008FFD05 offsets, 008FFD37 period, key (gun, 0)
         damage_smoke = 21,    // 008227E0's respawn draws, key (unit, slot * 2 [+1 for stream 0])
+        plane_crash_blast = 27, // 0084BAD0's blast for a plane's crash shot (007C0910), key (plane, 0)
     };
     unsigned long long next_projectile_serial{0};
     static bool rng_streams_enabled() {
@@ -3205,6 +3213,25 @@ struct GameGunneryHost::Impl {
     unsigned long long kz_blast_records{0};
     unsigned long long kz_self_records{0};
     double kz_blast_damage{0.0};
+    // Packet cc9_lua53_kamikaze_impact (bsp::kPlaneCrashSweepBound): 007C0910,
+    // the plane's crash shot. include/bsp/plane_crash_sweep.hpp.
+    void run_plane_crash_sweeps_007c0910(float step);
+    void plane_crash_impact_0084bc60(std::size_t plane, std::size_t victim,
+        const float point[3], const float direction[3], const GameBulletClassRow& weapon);
+    const GameBulletClassRow* plane_crash_bullet(int id);
+    struct PlaneCrashPrev {
+        bool valid{false};
+        float points[3][3]{};
+        float cooldown_9dc{0.0f};   // unit+9DCh stand-in
+    };
+    std::vector<PlaneCrashPrev> crash_prev;
+    std::vector<GameBulletClassRow> crash_bullets;   // read on first use, by id
+    unsigned long long pc_plane_steps{0}, pc_segments{0}, pc_unit_hits{0};
+    unsigned long long pc_same_squadron{0}, pc_land_hits{0}, pc_submerged{0};
+    unsigned long long pc_surface_cuts{0}, pc_impacts{0}, pc_blast_records{0};
+    unsigned long long pc_hits_21{0}, pc_hits_98{0}, pc_hits_99{0}, pc_hits_other{0};
+    unsigned long long pc_logged{0}, pc_cooldown_steps{0};
+    double pc_blast_damage{0.0};
     // DIAGNOSTIC: the closest any live kamikaze bow came to a hostile hull box.
     float kz_min_gap{-1.0f};
     double kz_min_gap_t{-1.0};
@@ -7103,9 +7130,14 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                             }
                         }
                         // 00902CF5..00902D07: double pi / 180, then the float sum.
-                        e = static_cast<float>(static_cast<double>(
-                            draw(Draw::aa_gunner_error, g, 0, 0.0f, row[1]))
-                            * 3.14159265358979 / 180.0 + static_cast<double>(e));
+                        if constexpr (kGunAimDegreePrecisionBound) {
+                            const float d = draw(Draw::aa_gunner_error, g, 0, 0.0f, row[1]);
+                            e = d * 3.1415927f / 180.0f + e;
+                        } else {
+                            e = static_cast<float>(static_cast<double>(
+                                draw(Draw::aa_gunner_error, g, 0, 0.0f, row[1]))
+                                * 3.14159265358979 / 180.0 + static_cast<double>(e));
+                        }
                         if (units.unit_is_kind_of(target, bsp::kUnitGunneryKindShipBase)) {
                             e /= role_ai_held_00521e70(target, 0) ? kAaGunnerModifierVersusAi
                                                                   : kAaGunnerModifierVersusPlayer;
@@ -8073,8 +8105,15 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 // 0090083E 00BD2FC0 & 1 -> +1 or -1 (0090084A..0090084F).
                 const float sign = draw(Draw::torpedo_gyro, g, 1, 0.0f, 1.0f) < 0.5f
                     ? -1.0f : 1.0f;
-                shot.commanded_heading = static_cast<float>(std::atan2(dx, dz)
-                    + sign * magnitude * 3.14159265358979 / 180.0);
+                if constexpr (kGunAimDegreePrecisionBound) {
+                    // 00900513..00900526: the run heading is stored as a float first.
+                    const float run = static_cast<float>(std::atan2(static_cast<double>(dx),
+                        static_cast<double>(dz)));
+                    shot.commanded_heading = sign * magnitude * 3.1415927f / 180.0f + run;
+                } else {
+                    shot.commanded_heading = static_cast<float>(std::atan2(dx, dz)
+                        + sign * magnitude * 3.14159265358979 / 180.0);
+                }
                 const float vyaw = std::atan2(shot.flight.velocity.x, shot.flight.velocity.z);
                 torpedo_gyro_offset_sum_deg += std::fabs(bsp::wrapped_angle_subtract_00438b10(
                     shot.commanded_heading, vyaw)) * 57.2957795;
@@ -10422,6 +10461,219 @@ std::vector<int> GameGunneryHost::destroyed_hull_segments(std::size_t unit_index
     return out;
 }
 
+// Packet cc9_lua53_kamikaze_impact: the plane's crash class (unit+730h, class
+// +210h KamikazeBulletClass) as 0084BF00's shot class. Its row is not one a
+// gun loads, so the Bullets row is read here on first use.
+const GameBulletClassRow* GameGunneryHost::Impl::plane_crash_bullet(int id) {
+    if (id < 0) return nullptr;
+    for (const GameBulletClassRow& row : crash_bullets) {
+        if (row.id == id) return &row;
+    }
+    GameBulletClassRow row;
+    row.id = id;
+    row.type = lua.read_bullet_class_string(id, "Type");
+    row.name = lua.read_bullet_class_string(id, "Name");
+    row.found = !row.type.empty();
+    row.damage_min = lua.read_bullet_class_number(id, "DamageMin", 0.0f);
+    row.damage_max = lua.read_bullet_class_number(id, "DamageMax", 0.0f);
+    row.blast_damage_min = lua.read_bullet_class_nested_number(id, "Blast", "BlastDamageMin", 0.0f);
+    row.blast_damage_max = lua.read_bullet_class_nested_number(id, "Blast", "BlastDamageMax", 0.0f);
+    row.blast_range = lua.read_bullet_class_nested_number(id, "Blast", "BlastRange", 0.0f);
+    crash_bullets.push_back(row);
+    log.notef("gunnery: plane crash class %d \"%s\" Type=%s damage=%.0f..%.0f blast=%.0f..%.0f "
+        "range=%.0f (007C0910 [unit+730h], packet cc9_lua53_kamikaze_impact)", id,
+        row.name.c_str(), row.type.c_str(), static_cast<double>(row.damage_min),
+        static_cast<double>(row.damage_max), static_cast<double>(row.blast_damage_min),
+        static_cast<double>(row.blast_damage_max), static_cast<double>(row.blast_range));
+    return &crash_bullets.back();
+}
+
+// 007C0910 BSP_Plane_SweepCollisionPoints, once per fixed step for every
+// plane (007CEF67 in 007CE040). include/bsp/plane_crash_sweep.hpp has the
+// image read and the labelled substitutions. The cooldown unit+9DCh is armed
+// on the first free-flight step (below). OMITTED, labelled: unit+61h, the player-plane skip (007CEF00) and unit+9E0h's drop of
+// entity/plane hits (007CF02D; the pilot control-state byte the host does not
+// carry), and the 0.75 folded-wing scale (the shot record's vtable[38h]).
+void GameGunneryHost::Impl::run_plane_crash_sweeps_007c0910(float step) {
+    crash_prev.resize(unit_state.size());
+    for (std::size_t i = 0; i < unit_state.size(); ++i) {
+        PlaneCrashPrev& prev = crash_prev[i];
+        const UnitState& st = unit_state[i];
+        if (st.dead || st.kamikaze_bullet_class < 0
+            || !units.unit_is_kind_of(i, bsp::kUnitGunneryKindPlaneBase)) {
+            prev.valid = false;
+            continue;
+        }
+        int state_900 = 0;
+        bool landed = false, enabled = false;
+        unsigned int command_class = 0;
+        const bool airborne = units.plane_order_view(i, state_900, landed, enabled, command_class)
+            && !landed && state_900 == 7;   // 7: free flight (007C6481, 007D6600)
+        float r[3], u[3], f[3], c[3];
+        unit_pose(i, r, u, f, c);
+        // The origin and the bbox fallback's two wing points (007D57F0..007D583F).
+        const float half = st.hull_width * bsp::kPlaneCrashWingPointRatio;
+        const int point_count = half > 0.0f ? 3 : 1;
+        float now[3][3];
+        for (int a = 0; a < 3; ++a) {
+            now[0][a] = c[a];
+            now[1][a] = c[a] - r[a] * half;
+            now[2][a] = c[a] + r[a] * half;
+        }
+        const bool had_prev = prev.valid;
+        float from_points[3][3];
+        std::memcpy(from_points, prev.points, sizeof(from_points));
+        std::memcpy(prev.points, now, sizeof(now));
+        prev.valid = airborne;
+        // 007C091C..007C092D / 007C0C43: the cooldown unit+9DCh, decremented by
+        // the step. LABELLED stand-in for 007C5F60's launch-spot stores (3.0 s,
+        // 00CE3854): armed on the first free-flight step, because a host plane is
+        // in state 7 while still on its deck.
+        if (airborne && !had_prev) prev.cooldown_9dc = bsp::kPlaneCrashLaunchCooldown;
+        if (!airborne || !had_prev) continue;
+        if (prev.cooldown_9dc > 0.0f) {
+            prev.cooldown_9dc -= step;
+            ++pc_cooldown_steps;
+            continue;
+        }
+        ++pc_plane_steps;
+        for (int p = 0; p < point_count; ++p) {
+            const float* from = from_points[p];
+            float to[3] = {now[p][0], now[p][1], now[p][2]};
+            // 007C0ABA..007C0ACE: both ends under -1.0 end the sweep (mode 2).
+            if (from[1] < bsp::kPlaneCrashSubmergedY && to[1] < bsp::kPlaneCrashSubmergedY) {
+                ++pc_submerged;
+                break;
+            }
+            // 007C0AD4..007C0B53: pull a current end under -2.0 back to y = -2.
+            if (to[1] < bsp::kPlaneCrashSurfaceCutY && from[1] > to[1]) {
+                const float t = (from[1] - bsp::kPlaneCrashSurfaceCutY) / (from[1] - to[1]);
+                for (int a = 0; a < 3; ++a) to[a] = from[a] + t * (to[a] - from[a]);
+                ++pc_surface_cuts;
+            }
+            const bsp::TickPoint3 seg_a{from[0], from[1], from[2]};
+            const bsp::TickPoint3 seg_b{to[0], to[1], to[2]};
+            if (!bsp::projectile_segment_is_sweepable(seg_a, seg_b)) continue;
+            ++pc_segments;
+            std::size_t hit_unit = 0;
+            float hit_point[3] = {0.0f, 0.0f, 0.0f};
+            bool land = false;
+            const bool hit = query_segment_units_impl(*this, from, to, i + 1, hit_unit,
+                hit_point, &land);
+            if (!hit) {
+                if (land) ++pc_land_hits;
+                continue;
+            }
+            const std::size_t victim = hit_unit - 1;
+            const GameBulletClassRow* weapon = plane_crash_bullet(st.kamikaze_bullet_class);
+            // 0084BF00 step 6: a Kamikaze-type (11h) shot skips its squadron.
+            if (weapon != nullptr && weapon->type == "Kamikaze") {
+                const auto* own =
+                    bsp::plane_squadron_registry().find_by_member_unit(i);
+                if (own != nullptr && own == bsp::plane_squadron_registry().find_by_member_unit(victim)) {
+                    ++pc_same_squadron;
+                    continue;
+                }
+            }
+            ++pc_unit_hits;
+            switch (st.kamikaze_bullet_class) {
+            case 21: ++pc_hits_21; break;
+            case 98: ++pc_hits_98; break;
+            case 99: ++pc_hits_99; break;
+            default: ++pc_hits_other; break;
+            }
+            const float direction[3] = {to[0] - from[0], to[1] - from[1], to[2] - from[2]};
+            if (pc_logged < 60) {
+                ++pc_logged;
+                log.notef("plane crash sweep: plane=%s class=%d point=%d victim=%s t=%.2f "
+                    "at=(%.1f %.1f %.1f) width=%.1f bound=%d (007C0910 -> 0084BF00)",
+                    st.row.name.c_str(), st.kamikaze_bullet_class, p,
+                    unit_state[victim].row.name.c_str(), static_cast<double>(clock_seconds),
+                    static_cast<double>(hit_point[0]), static_cast<double>(hit_point[1]),
+                    static_cast<double>(hit_point[2]), static_cast<double>(st.hull_width),
+                    bsp::kPlaneCrashSweepBound ? 1 : 0);
+            }
+            if constexpr (bsp::kPlaneCrashSweepBound) {
+                if (weapon != nullptr) {
+                    plane_crash_impact_0084bc60(i, victim, hit_point, direction, *weapon);
+                }
+            }
+            break;   // 0084BF00 takes the first hit of the list
+        }
+    }
+}
+
+// 0084BC60 for the plane's crash shot: the class's blast (0084BAD0, the source
+// skipped at 0084BBF9), then the impact message 0CAh's Kill(1) (007BBA10).
+// LABELLED, as kamikaze_detonate_00819a20's blast arm: the hull-box distance
+// with one part entry, no element gather, no weapon scale or attribution; the
+// direct record is not queued because no crash class authors DamageMin/Max.
+void GameGunneryHost::Impl::plane_crash_impact_0084bc60(std::size_t plane, std::size_t victim,
+    const float point[3], const float direction[3], const GameBulletClassRow& weapon) {
+    ++pc_impacts;
+    float centre[3] = {point[0], point[1], point[2]};
+    const float length = std::sqrt(dot3(direction, direction));
+    if (length > 0.0f) {
+        for (int a = 0; a < 3; ++a) centre[a] -= (direction[a] / length) * kBlastCentreBackOff;
+    }
+    std::size_t reached = 0;
+    double dealt = 0.0;
+    if (weapon.blast_range > 0.0f) {
+        const float damage = draw(Draw::plane_crash_blast, plane, 0, weapon.blast_damage_min,
+            weapon.blast_damage_max);
+        for (std::size_t i = 0; i < unit_state.size(); ++i) {
+            if (i == plane) continue;
+            if (unit_state[i].dead) continue;
+            if (hit_index_detached(i)) continue;
+            const UnitState& st = unit_state[i];
+            const float ext[3] = {st.hull_width * 0.5f, st.hull_height * 0.5f,
+                st.hull_length * 0.5f};
+            if (ext[0] <= 0.0f || ext[2] <= 0.0f) continue;
+            float r[3], u[3], f[3], c[3];
+            unit_pose(i, r, u, f, c);
+            const float rel[3] = {centre[0] - c[0], centre[1] - c[1], centre[2] - c[2]};
+            const float* axes[3] = {r, u, f};
+            float outside = 0.0f;
+            for (int a = 0; a < 3; ++a) {
+                const float excess = std::fabs(dot3(rel, axes[a])) - ext[a];
+                if (excess > 0.0f) outside += excess * excess;
+            }
+            const float distance = std::sqrt(outside);
+            if (distance > weapon.blast_range) continue;
+            bsp::HitPartEntry entry;
+            entry.kind = 0;
+            entry.part_index = 0;
+            entry.distance = distance;
+            bsp::HitRecord blast;
+            blast.hull_damage_base = 0.0f;
+            blast.part_damage_base = damage;
+            blast.falloff_range = weapon.blast_range;
+            blast.ignore_falloff = false;
+            blast.armour_selector = 0.0f;
+            blast.hull_segment = kDirectHitHullSegment;
+            blast.weapon_scale = 1.0f;
+            blast.owner_modifier = 1.0f;
+            blast.part_hits = &entry;
+            blast.part_hit_count = 1;
+            ++pc_blast_records;
+            const float before = unit_state[i].health;
+            apply_gunless_blast_hit(plane, i, point, blast);
+            dealt += before - unit_state[i].health;
+            ++reached;
+        }
+    }
+    pc_blast_damage += dealt;
+    log.notef("plane crash impact: plane=%s victim=%s t=%.2f class=%d blast=%.0f..%.0f range=%.0f "
+        "reached=%zu dealt=%.1f victim_health=%.1f (0084BC60 / 007BBA10, packet "
+        "cc9_lua53_kamikaze_impact)", unit_state[plane].row.name.c_str(),
+        unit_state[victim].row.name.c_str(), static_cast<double>(clock_seconds), weapon.id,
+        static_cast<double>(weapon.blast_damage_min), static_cast<double>(weapon.blast_damage_max),
+        static_cast<double>(weapon.blast_range), reached, dealt,
+        static_cast<double>(unit_state[victim].health));
+    // 007BBA10: Kill(1) for an entity or plane hit.
+    if (!unit_state[plane].dead) kill_unit(plane);
+}
+
 void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
     std::size_t gun_row, int team_id, const float point[3], const float direction[3],
     bool ignore_falloff) {
@@ -12284,6 +12536,8 @@ void GameGunneryHost::fixed_step(float step_seconds) {
     }
     host.run_gun_aim_and_fire(step_seconds);
     host.run_projectiles(step_seconds);
+    // Packet cc9_lua53_kamikaze_impact: 007C0910 (a census while OFF).
+    host.run_plane_crash_sweeps_007c0910(step_seconds);
     if constexpr (kKamikazeContactDetonationBound) {
         host.run_kamikaze_contacts(step_seconds);
     }
@@ -14049,6 +14303,14 @@ void GameGunneryHost::report() {
         host.kz_detonations, host.kz_direct_arms, host.kz_blast_records, host.kz_self_records,
         host.kz_blast_damage, static_cast<double>(host.kz_min_gap), host.kz_min_gap_t,
         kKamikazeContactDetonationBound ? 1 : 0);
+    host.log.notef("summary mission gunnery plane crash sweep plane_steps=%llu segments=%llu "
+        "unit_hits=%llu (c21=%llu c98=%llu c99=%llu other=%llu) same_squadron=%llu "
+        "land_hits=%llu submerged=%llu surface_cuts=%llu cooldown_steps=%llu impacts=%llu blast_records=%llu "
+        "blast_damage=%.1f bound=%d (007C0910 -> 0084BF00, packet cc9_lua53_kamikaze_impact)",
+        host.pc_plane_steps, host.pc_segments, host.pc_unit_hits, host.pc_hits_21,
+        host.pc_hits_98, host.pc_hits_99, host.pc_hits_other, host.pc_same_squadron,
+        host.pc_land_hits, host.pc_submerged, host.pc_surface_cuts, host.pc_cooldown_steps, host.pc_impacts,
+        host.pc_blast_records, host.pc_blast_damage, bsp::kPlaneCrashSweepBound ? 1 : 0);
     host.log.notef("summary mission gunnery ground target origin aims=%llu bound=%d "
         "(006DF520 with 0042D810, packet cc9_ground_target_aim_point)",
         host.ground_origin_aims, kArtilleryGroundOriginAimBound ? 1 : 0);
