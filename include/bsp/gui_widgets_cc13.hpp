@@ -24,6 +24,7 @@
 #include "bsp/gui_widget.hpp"
 #include "bsp/gui_render.hpp"
 #include "bsp/gui_texture.hpp"
+#include "bsp/gui_icon.hpp"
 #include "bsp/light_type_bootstrap.hpp"
 #include "bsp/native_gui_widget_pools_cc13.hpp"
 
@@ -1337,4 +1338,302 @@ struct GuiModelCopyHost {
 void* gui_model_copy_construct_00accf70(void* self, const void* source, GuiModelCopyHost& host,
     GuiNativeStringHost& strings);
 
+// ===========================================================================
+// Packet cc13-gui2 (docs/CC13_GUI_2.md): the remaining property writers, the
+// Icon state routines, the Curve/Line geometry writers and the Model loaders.
+// ===========================================================================
+
+// 00AAD9A0, __thiscall(movie, writer), RET 4: 00AAAED0, then "MovieName"
+// (00CF1698) from the native string at +FCh (buffer +100h; a null buffer reads
+// as the empty literal 00F8BD94) when it differs from "" (00CE3A0C).
+void gui_movie_describe_properties_00aad9a0(const void* movie, GuiPropertyWriter& writer,
+    GuiDescribeHost& host);
+
+// 00AB7B60, __thiscall(text, writer), RET 4. Text fields (gui_text.hpp has the
+// typed layout): +F4h DefaultText, +FCh Multiline, +100h Align, +104h
+// VerticalAlign, +10Ch DistanceBetweenLines, +118h has-MISColors, +11Ch..+158h
+// the four MISColors, +15Ch Shadowed, +160h shadow position, +164h
+// ShadowOffset, +168h ShadowColor, +1C0h ShaderName, +1C8h Font, +1D0h
+// DefaultShadow, +1D8h FontScale. Order and defaults, from the listing:
+//   Font always (empty literal 00F8BE4C for a null buffer); FontScale (1.0);
+//   Multiline (true); DistanceBetweenLines (0); DefaultText (""); ShaderName
+//   only when its length is nonzero (""); Align always (2 Right, 1 Center,
+//   3 Justified, otherwise Left); VerticalAlign always (2 Bottom, 1 Center,
+//   otherwise Top); when +118h: table "MISColors" holding Normal, Focus,
+//   Selected, Disabled unconditionally; DefaultShadow (Int, -1); and only
+//   when DefaultShadow is -1: Shadowed (false), then when shadowed
+//   ShadowColor (default 00E12FD8 = (0,0,0,0.75)), ShadowPos and ShadowOffset
+//   (0.05, 00D5C5C0).
+// ShadowPos is written as "Behind" whatever +160h holds: 00AB8028 compares
+// +160h with 1 but no branch reads the flags (both arms store 00D5C604).
+void gui_text_describe_properties_00ab7b60(const void* text, GuiPropertyWriter& writer,
+    GuiDescribeHost& host);
+
+// 00ABC7A0, __thiscall(curve, writer), RET 4: 00AAAED0; when the point vector
+// (+134h first, +138h last, 8-byte {x, y} elements) is non-empty, table
+// "PosArray" (00D5C7D0) with integer keys 1..n each holding a Vec3 (x, y,
+// width), the width read unchecked from the float array at +F8h; then
+// "Texture" (00CE5FEC) always, from the native string at +104h (buffer +108h,
+// empty literal 00F8BEA4).
+void gui_curve_describe_properties_00abc7a0(const void* curve, GuiPropertyWriter& writer,
+    GuiDescribeHost& host);
+
+// What the Icon state routines need from the engine. Texture references are
+// intrusive: InterlockedIncrement / InterlockedDecrement (IAT 00CE221C /
+// 00CE2220) on texture+4, and at zero the texture's vtable slot 0 runs with no
+// arguments.
+struct GuiIconStateHost {
+    virtual ~GuiIconStateHost() = default;
+    virtual void retain_texture(void* texture) = 0;
+    virtual void release_texture(void* texture) = 0;
+    // 00F8D394 vtable +64h(const NativeString*, 0): returns an unreferenced texture.
+    virtual void* load_texture_00f8d394_64(const std::string& name) = 0;
+    // 00AB17B0 (__fastcall(out, texture), uv on the stack): the native extent.
+    virtual GuiWidgetSize native_size_00ab17b0(void* texture, const GuiUvRect& uv) = 0;
+    // Icon vtable +80h (00AB3CB0 rebuild) with a state index.
+    virtual void rebuild_virtual_80(GuiIconWidget& icon, std::int32_t state) = 0;
+    // 004C12B0 (GUI manager) then 00AA2660(name, uv, size, 1.0): a REFERENCED texture.
+    virtual void* resolve_texture_00aa2660(const std::string& name, GuiUvRect& uv,
+        GuiWidgetSize& size, float scale) = 0;
+    // 00AB2690, __thiscall(icon, index, texture, const float uv[4]).
+    virtual void set_state_texture_00ab2690(GuiIconWidget& icon, std::uint32_t index,
+        void* texture, const GuiUvRect& uv) = 0;
+    // 00B33E40, __fastcall(ECX = texture): the texture's name string.
+    virtual const std::string& texture_name_00b33e40(void* texture) = 0;
+};
+
+// 00AB10D0, __thiscall(icon), RET 0 (vtable +8Ch): vtable +80h with the
+// current state zero-extended from its 16-bit field (MOVZX), so -1 arrives as
+// 0000FFFFh rather than -1.
+void gui_icon_rebuild_current_state_00ab10d0(GuiIconWidget& icon, GuiIconStateHost& host);
+
+// 00AB3840, __thiscall(icon, NativeString name BY VALUE, texture), RET 0Ch.
+// For every state whose texture name equals `name` (same length, then either
+// both empty or _stricmp 00BF7FBF equal): assign the texture (retain the new
+// one, release the old one, skipped when they are the same pointer); when the
+// state Size is exactly (0,0), fill it from 00AB17B0 over the resolved UVs;
+// clear +3Ch, set +3Dh; and when the state is the current one (signed compare)
+// rebuild it through vtable +80h. The by-value string is freed on return.
+void gui_icon_apply_delayed_texture_00ab3840(GuiIconWidget& icon, const std::string& name,
+    void* texture, GuiIconStateHost& host);
+
+// 00AB3B30, __fastcall(ECX = state record), RET 0: set +3Ch, clear +3Dh, load
+// kGuiIconDelayedPlaceholder (00D5C058, 29h bytes) through the texture manager
+// and assign it to the record with the same retain/release as 00AB3840.
+void gui_icon_state_set_delayed_placeholder_00ab3b30(GuiIconState& state, GuiIconStateHost& host);
+
+// 00AB44B0, __thiscall(icon, index, const NativeString* name, const float
+// uv[4]), RET 0Ch. Checked index; the state's texture name is assigned from
+// `name` (skipped for self-assignment) and the authored UV (+1Ch..+28h) from
+// `uv`. Unless DelayedTextureLoad (+101h) is set, the texture is resolved
+// with the UV (0,0,1,1) and scale 1.0, handed to 00AB2690 with the resolved
+// rectangle, and the resolve's reference is released. The size pair the
+// resolve receives is uninitialized stack (00AB4569 points at [ESP+10h], never
+// written); its result is discarded. The release does not test for null.
+void gui_icon_set_state_texture_00ab44b0(GuiIconWidget& icon, std::uint32_t index,
+    const std::string& name, const GuiUvRect& uv, GuiIconStateHost& host);
+
+// 00AB64C0, __thiscall(icon, texture, const float uv[4]), RET 8, returning the
+// new state's index (count - 1). A stack record starts with both UV rects
+// (0,0,1,1), the widget's Pivot (+18h/+1Ch) and Size (+20h/+24h) and clear
+// flags; a non-null texture is retained and its name copied from 00B33E40,
+// otherwise the name is "". The resolved UV becomes `uv` with the 00AB1680
+// flip rules applied against the default authored rect (which never flips);
+// then push_back (00AB63A0) and the stack record's release (00AB3280).
+std::int32_t gui_icon_add_state_00ab64c0(GuiIconWidget& icon, const GuiWidgetTransform& base,
+    void* texture, const GuiUvRect& uv, GuiIconStateHost& host);
+// The engine calls the Curve and Line geometry builders make. Objects are
+// intrusively counted (texture+4 style); release_object is the inlined
+// InterlockedDecrement (00CE2220) with the vtable slot 0 call at zero.
+struct GuiGeometryHost {
+    virtual ~GuiGeometryHost() = default;
+    // 00B73B60 (ECX = 0BCh, allocation) then 00B73D70 (construct); null when
+    // the allocation fails.
+    virtual void* new_mesh_object_00b73b60() = 0;
+    // 00B75170, __thiscall(scene, 0, mesh, float, float), here (-1, -1) from 00D7A260.
+    virtual void set_geometry_00b75170(void* scene, std::uint32_t slot, void* mesh, float a, float b) = 0;
+    // 00535320(const NativeString*): the material for an effect name.
+    virtual void* create_material_00535320(const std::string& effect) = 0;
+    // 00B18B20 / 00B18AA0, __thiscall(material, const NativeString*, const float*).
+    virtual void register_float_00b18b20(void* material, const std::string& name, const float* value) = 0;
+    virtual void register_float4_00b18aa0(void* material, const std::string& name, const float* value) = 0;
+    // 00B18A40, __thiscall(material, owner, 1).
+    virtual void set_parameter_owner_00b18a40(void* material, void* owner, std::uint32_t flag) = 0;
+    // 00AA9F10, __thiscall(widget, material).
+    virtual void register_clip_parameters_00aa9f10(void* widget, void* material) = 0;
+    // 00AA7DC0, __thiscall(widget, const float pos[3]).
+    virtual void set_local_position_00aa7dc0(void* widget, const float (&position)[3]) = 0;
+    // The texture manager 00F8D394: +38h(const NativeString*) vertex format,
+    // +5Ch(4, 1, format) vertex buffer, +60h(8, 1, 65h) index buffer.
+    virtual void* vertex_format_00f8d394_38(const std::string& name) = 0;
+    virtual void* vertex_buffer_00f8d394_5c(std::uint32_t a, std::uint32_t b, void* format) = 0;
+    virtual void* index_buffer_00f8d394_60(std::uint32_t a, std::uint32_t b, std::uint32_t c) = 0;
+    // Mesh object: 00B73BB0(0, vb), 00B73B70(ib), 00B73C60(section).
+    virtual void mesh_set_vertex_stream_00b73bb0(void* mesh, std::uint32_t slot, void* vb) = 0;
+    virtual void mesh_set_index_stream_00b73b70(void* mesh, void* ib) = 0;
+    virtual void mesh_append_section_00b73c60(void* mesh, void* section) = 0;
+    // 00533FA0 draw section; its +8h/+0Ch/+14h dwords; 00B864C0(material);
+    // 00B865A0(mesh).
+    virtual void* create_draw_section_00533fa0() = 0;
+    virtual void section_set_dwords(void* section, std::uint32_t at8, std::uint32_t atC, std::uint32_t at14) = 0;
+    virtual void section_set_material_00b864c0(void* section, void* material) = 0;
+    virtual void section_rebuild_layout_00b865a0(void* section, void* mesh) = 0;
+    // 004C12B0 GUI manager +28h (a texture), and 00B189F0(material, 0, texture).
+    virtual void* gui_manager_texture_28() = 0;
+    virtual void material_set_texture_00b189f0(void* material, std::uint32_t slot, void* texture) = 0;
+    virtual void release_object(void* object) = 0;
+};
+
+// 00ABCC70, __fastcall(ECX = curve), RET 0 (Curve vtable +74h). Unless the
+// widget byte +74h is set: a mesh object goes into the scene at +4Ch
+// (00B75170 with -1, -1), the "guidefault.mshd" material is created into
+// +12Ch and given cOverbrightFactor (+94h), cLowColor (+A4h), cHighColor
+// (+B4h) and cBlendFactor (+C4h), owned by the widget, registered for clip
+// parameters, and the mesh reference is released (no null test). In every
+// case the local position is then set to (0,0,0) through 00AA7DC0.
+void gui_curve_create_geometry_00abcc70(void* curve, GuiGeometryHost& host);
+
+// 00AC2430, __fastcall(ECX = line), RET 0 (Line vtable +74h). A mesh object
+// goes into the scene at +4Ch and its reference is released at once (no null
+// test); then a "SimpleColor.mvfm" vertex format, a vertex buffer (4, 1,
+// format) on stream 0, an index buffer (8, 1, 65h), a draw section (+8h = 2,
+// +0Ch = +14h = 0) with the "guidefault.mshd" material (its reference dropped
+// right after the section takes it), the section laid out against the mesh and
+// appended to it, the GUI manager's +28h texture in material slot 0; finally
+// the index buffer, vertex buffer, format and section are released. Unlike
+// the Curve there is no +74h guard and no position reset, and the material
+// is not stored on the widget.
+void gui_line_create_geometry_00ac2430(void* line, GuiGeometryHost& host);
+// The scene-graph, resource and material calls the Model loaders make.
+struct GuiModelLoadHost {
+    virtual ~GuiModelLoadHost() = default;
+    // node vtable +0Ch(00B74310()): is the node a generated model?
+    virtual bool is_generated_model(void* node) = 0;
+    // 00B74650 geometry count, 00B74640(i) geometry; 00B72B40 section count,
+    // 00B732C0(i) section; the section's material at +20h.
+    virtual std::uint32_t geometry_count_00b74650(void* node) = 0;
+    virtual void* geometry_00b74640(void* node, std::uint32_t index) = 0;
+    virtual std::uint32_t section_count_00b72b40(void* mesh) = 0;
+    virtual void* section_00b732c0(void* mesh, std::uint32_t index) = 0;
+    virtual void* section_material(void* section) = 0; // section +20h
+    // node +34h first child, child +3Ch next sibling.
+    virtual void* first_child(void* node) = 0;
+    virtual void* next_sibling(void* node) = 0;
+    // 00B172E0, __thiscall(material +7Ch, 0).
+    virtual void set_effect_priority_00b172e0(void* effect, std::uint32_t priority) = 0;
+    virtual void* material_effect(void* material) = 0; // material +7Ch
+    virtual void register_float_00b18b20(void* material, const std::string& name, const float* value) = 0;
+    virtual void register_float4_00b18aa0(void* material, const std::string& name, const float* value) = 0;
+    virtual void register_clip_parameters_00aa9f10(void* widget, void* material) = 0;
+    // 004C1400 resource manager, 00B80D70(const NativeString*): the resource or null.
+    virtual void* load_resource_00b80d70(const std::string& name) = 0;
+    // resource vtable +8h(6, 1.0f): a referenced model instance.
+    virtual void* instantiate_resource_08(void* resource, std::uint32_t kind, float scale) = 0;
+    virtual void* instance_root(void* instance) = 0; // instance +0Ch
+    // 00B6E680, __thiscall(node, parent).
+    virtual void set_parent_00b6e680(void* node, void* parent) = 0;
+    // 00ACBEC0, __thiscall(model, const float scale[3], const float euler[3]).
+    virtual void set_transform_vectors_00acbec0(void* model, const float* scale, const float* euler) = 0;
+    // 00F8D394 vtable +64h(const NativeString*, 0): an unreferenced texture.
+    virtual void* load_texture_00f8d394_64(const std::string& name) = 0;
+    virtual void material_set_texture_00b189f0(void* material, std::uint32_t slot, void* texture) = 0;
+    virtual void release_object(void* object) = 0;
+    // The native string fields +10Ch ModelName and +114h ModelTextureOverride.
+    virtual void assign_string(void* model, std::size_t offset, const std::string& value) = 0;
+};
+
+// 00ACC8A0, __thiscall(model, node), RET 4. When the node is a generated
+// model: for every section of every geometry, the section material's effect
+// gets priority 0 and the material is given cOverbrightFactor (+94h),
+// cLowColor (+A4h), cHighColor (+B4h) and cBlendFactor (+C4h) of the widget,
+// then registered for clip parameters. Then recurse over the node's children.
+void gui_model_setup_material_constants_00acc8a0(void* model, void* node, GuiModelLoadHost& host);
+
+// 00ACCB90, __thiscall(model, const NativeString* name), RET 4, returning
+// whether a scene root was obtained. Releases the instance at +F0h and clears
+// +ECh, stores the name at +10Ch, and only for a non-empty name: resource
+// 00B80D70(name), instance = resource vtable +8h(6, 1.0) into +F0h, resource
+// released, root = instance +0Ch into +ECh; a root is parented to the scene at
+// +4Ch and 00ACC8A0 runs over +4Ch (the widget's scene, not the root).
+bool gui_model_load_resource_00accb90(void* model, const std::string& name, GuiModelLoadHost& host);
+
+// 00ACCCF0, __thiscall(model, const NativeString* name, const NativeString*
+// override), RET 8. 00ACCB90(name) (its result ignored), +114h = override,
+// 00ACBEC0(+F4h ScaleVector, +100h RotationEuler); when the override is
+// non-empty the target is +ECh when it is a generated model, else its first
+// child, and every section of the target's geometry 0 gets the override
+// texture in material slot 0 (loaded per section, reference dropped) and a
+// clip-parameter registration. +ECh is dereferenced without a null test, so
+// an override with a failed load faults.
+void gui_model_load_model_00acccf0(void* model, const std::string& name, const std::string& texture_override,
+    GuiModelLoadHost& host);
+// 00AA5B40 BSP_GuiListbox_CopyConstruct, __thiscall(this, source), RET 4,
+// returning this. No static reference in the image (vtable 00D5BBF8 slot).
+// Base copy 00AA9520, vtable 00D5BBF8, then in listing order: +ECh dword,
+// +F0h..+F8h floats, the +FCh list (00AA57C0), +108h..+118h dwords,
+// +11Ch..+121h bytes, +124h..+134h floats, +138h byte, +13Ch float, +140h/+141h
+// bytes, +144h dword, +148h..+14Ah bytes, the +14Ch list (00AA57C0),
+// +158h..+164h dwords, +168h float, and the +16Ch checked string vector
+// (00557BC0). Floats move through FLD/FSTP, which would quiet a signalling NaN;
+// the C++ copies the bits.
+struct GuiListboxCopyHost {
+    virtual ~GuiListboxCopyHost() = default;
+    virtual void copy_widget_base_00aa9520(void* self, const void* source) = 0;
+    virtual void copy_string_vector_00557bc0(void* destination, const void* source) = 0;
+};
+inline constexpr std::uint32_t kGuiListboxVtable = 0x00D5BBF8;
+void* gui_listbox_copy_construct_00aa5b40(void* self, const void* source, GuiListboxCopyHost& host,
+    msvc9_containers::ListCopyHost& lists);
+// 00AC0C90 BSP_GuiNineSliceTemplate_Construct_Unreferenced, __thiscall(this,
+// widget, const float size[2]), RET 8, returning this. No reference in the PE.
+// +0Ch/+10h = size, base vtable 00D5C980, +4h = widget, +8h = the widget's
+// subtree clone (00AAB4C0(0)) which then gets its vtable +34h(0), derived
+// vtable 00D5C9C8, and +14h..+30h = the widget's children found by name
+// (00AA7E00(name, 1)) in the order UL_Icon, U_Icon, UR_Icon, L_Icon, R_Icon,
+// BL_Icon, B_Icon, BR_Icon (00D5C9C0..00D5C988). There is no centre slice.
+struct GuiNineSliceHost {
+    virtual ~GuiNineSliceHost() = default;
+    virtual void* clone_subtree_00aab4c0(void* widget, std::uint32_t flag) = 0;
+    virtual void clone_virtual_34(void* clone, std::uint32_t arg) = 0;
+    virtual void* find_child_00aa7e00(void* widget, const std::string& name, std::uint32_t recursive) = 0;
+};
+inline constexpr std::uint32_t kGuiNineSliceBaseVtable = 0x00D5C980;
+inline constexpr std::uint32_t kGuiNineSliceVtable = 0x00D5C9C8;
+void* gui_nine_slice_construct_00ac0c90(void* self, void* widget, const float (&size)[2], GuiNineSliceHost& host);
+
+// 00AC6BE0 BSP_GuiPreloadLuaAssets_Unreferenced, register ABI: ECX = texture
+// vector, EDX = model vector, stack (sound vector, const LuaObject* table),
+// RET 8. Only reference is its own recursion (00AC6C78). Iterates the table
+// (00B67080 first, 00B67190 next, until 00B66420): a table value recurses with
+// the same three vectors; otherwise, when key and value are both strings,
+//   "Texture":   00AA2660(name, uv (0,0,1,1), an uninitialized size, scale 0.0)
+//                pushed to the texture vector (00AC6B50), its reference dropped;
+//   "ModelName": resource manager 00B80D70(name) pushed to the model vector
+//                (00AC6AC0), its reference dropped;
+//   "SoundEfx":  sound cache [00F8BBE8] 00A83FD0(name) pushed to the sound
+//                vector (00AC6A30), the temporary slot destroyed (004C3810).
+// Key tests are exact (00B660F0) and tried in that order.
+struct GuiLuaPreloadHost {
+    virtual ~GuiLuaPreloadHost() = default;
+    // One iteration step: false at the end. Returns the key and value as
+    // strings when they are strings, and whether the value is a table.
+    struct Entry {
+        bool key_is_string{false};
+        bool value_is_string{false};
+        bool value_is_table{false};
+        std::string key;
+        std::string value;
+        const void* value_table{nullptr};
+    };
+    virtual bool first_00b67080(const void* table, Entry& entry) = 0;
+    virtual bool next_00b67190(const void* table, Entry& entry) = 0;
+    virtual void* resolve_texture_00aa2660(const std::string& name, float scale) = 0; // referenced
+    virtual void* load_resource_00b80d70(const std::string& name) = 0;             // referenced
+    virtual void push_texture_00ac6b50(void* textures, void* texture) = 0;
+    virtual void push_model_00ac6ac0(void* models, void* model) = 0;
+    virtual void push_sound_from_cache_00a83fd0(void* sounds, const std::string& name) = 0;
+    virtual void release_object(void* object) = 0;
+};
+void gui_preload_lua_assets_00ac6be0(void* textures, void* models, void* sounds, const void* table,
+    GuiLuaPreloadHost& host);
 } // namespace bsp::gui_widgets_cc13

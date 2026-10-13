@@ -1,0 +1,552 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00aa7880",
+    "end_address": "00aa788c"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00aa7880",
+    "end_address": "00aa788b",
+    "bytes_disassembled": 12,
+    "message": "Successfully disassembled 12 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00aa7880",
+    "disassemble_first": false,
+    "name": "BSP_GuiWidgetPool_FreeThunk"
+   },
+   "result": {
+    "success": true,
+    "address": "00aa7880",
+    "function_name": "BSP_GuiWidgetPool_FreeThunk",
+    "entry_point": "00aa7880",
+    "body_size": 12,
+    "message": "Function created successfully at 00aa7880",
+    "warnings": [
+     "Function name 'BSP_GuiWidgetPool_FreeThunk' \u2014 main part 'GuiWidgetPool_FreeThunk' is not PascalCase. Expected: GuiwidgetpoolFreethunk",
+     "Function name 'BSP_GuiWidgetPool_FreeThunk' \u2014 main part 'GuiWidgetPool_FreeThunk' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiWidgetPool_FreeThunk' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00aa7880",
+   "end": "00aa788c",
+   "name": "BSP_GuiWidgetPool_FreeThunk",
+   "after": "Function: BSP_GuiWidgetPool_FreeThunk at 00aa7880\nSignature: undefined BSP_GuiWidgetPool_FreeThunk(void)\nEntry: 00aa7880\nBody: 00aa7880 - 00aa788b"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00aa7cf0",
+    "end_address": "00aa7cfa"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00aa7cf0",
+    "end_address": "00aa7cf9",
+    "bytes_disassembled": 10,
+    "message": "Successfully disassembled 10 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00aa7cf0",
+    "disassemble_first": false,
+    "name": "BSP_GuiWidgetPool_AllocateStub"
+   },
+   "result": {
+    "success": true,
+    "address": "00aa7cf0",
+    "function_name": "BSP_GuiWidgetPool_AllocateStub",
+    "entry_point": "00aa7cf0",
+    "body_size": 10,
+    "message": "Function created successfully at 00aa7cf0",
+    "warnings": [
+     "Function name 'BSP_GuiWidgetPool_AllocateStub' \u2014 main part 'GuiWidgetPool_AllocateStub' is not PascalCase. Expected: GuiwidgetpoolAllocatestub",
+     "Function name 'BSP_GuiWidgetPool_AllocateStub' \u2014 main part 'GuiWidgetPool_AllocateStub' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiWidgetPool_AllocateStub' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00aa7cf0",
+   "end": "00aa7cfa",
+   "name": "BSP_GuiWidgetPool_AllocateStub",
+   "after": "Function: BSP_GuiWidgetPool_AllocateStub at 00aa7cf0\nSignature: undefined BSP_GuiWidgetPool_AllocateStub(void)\nEntry: 00aa7cf0\nBody: 00aa7cf0 - 00aa7cf9"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00aa9320",
+    "end_address": "00aa9343"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00aa9320",
+    "end_address": "00aa9342",
+    "bytes_disassembled": 35,
+    "message": "Successfully disassembled 35 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00aa9320",
+    "disassemble_first": false,
+    "name": "STL_PopHeap_WidgetByName_00aa9320"
+   },
+   "result": {
+    "success": true,
+    "address": "00aa9320",
+    "function_name": "STL_PopHeap_WidgetByName_00aa9320",
+    "entry_point": "00aa9320",
+    "body_size": 35,
+    "message": "Function created successfully at 00aa9320",
+    "warnings": [
+     "Function name 'STL_PopHeap_WidgetByName_00aa9320' \u2014 main part 'PopHeap_WidgetByName_00aa9320' is not PascalCase. Expected: PopheapWidgetbyname00aa9320",
+     "Function name 'STL_PopHeap_WidgetByName_00aa9320' \u2014 main part 'PopHeap_WidgetByName_00aa9320' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00aa9320",
+   "end": "00aa9343",
+   "name": "STL_PopHeap_WidgetByName_00aa9320",
+   "after": "Function: STL_PopHeap_WidgetByName_00aa9320 at 00aa9320\nSignature: undefined STL_PopHeap_WidgetByName_00aa9320(void)\nEntry: 00aa9320\nBody: 00aa9320 - 00aa9342"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00aa9350",
+    "end_address": "00aa9390"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00aa9350",
+    "end_address": "00aa938f",
+    "bytes_disassembled": 64,
+    "message": "Successfully disassembled 64 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00aa9350",
+    "disassemble_first": false,
+    "name": "BSP_GuiElement_TypeIdInitReturn"
+   },
+   "result": {
+    "success": true,
+    "address": "00aa9350",
+    "function_name": "BSP_GuiElement_TypeIdInitReturn",
+    "entry_point": "00aa9350",
+    "body_size": 64,
+    "message": "Function created successfully at 00aa9350",
+    "warnings": [
+     "Function name 'BSP_GuiElement_TypeIdInitReturn' \u2014 main part 'GuiElement_TypeIdInitReturn' is not PascalCase. Expected: GuielementTypeidinitreturn",
+     "Function name 'BSP_GuiElement_TypeIdInitReturn' \u2014 main part 'GuiElement_TypeIdInitReturn' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiElement_TypeIdInitReturn' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00aa9350",
+   "end": "00aa9390",
+   "name": "BSP_GuiElement_TypeIdInitReturn",
+   "after": "Function: BSP_GuiElement_TypeIdInitReturn at 00aa9350\nSignature: undefined BSP_GuiElement_TypeIdInitReturn(void)\nEntry: 00aa9350\nBody: 00aa9350 - 00aa938f"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ab31d0",
+    "end_address": "00ab3219"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ab31d0",
+    "end_address": "00ab3218",
+    "bytes_disassembled": 73,
+    "message": "Successfully disassembled 73 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ab31d0",
+    "disassemble_first": false,
+    "name": "BSP_GuiIcon_TypeIdInitReturn"
+   },
+   "result": {
+    "success": true,
+    "address": "00ab31d0",
+    "function_name": "BSP_GuiIcon_TypeIdInitReturn",
+    "entry_point": "00ab31d0",
+    "body_size": 73,
+    "message": "Function created successfully at 00ab31d0",
+    "warnings": [
+     "Function name 'BSP_GuiIcon_TypeIdInitReturn' \u2014 main part 'GuiIcon_TypeIdInitReturn' is not PascalCase. Expected: GuiiconTypeidinitreturn",
+     "Function name 'BSP_GuiIcon_TypeIdInitReturn' \u2014 main part 'GuiIcon_TypeIdInitReturn' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiIcon_TypeIdInitReturn' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ab31d0",
+   "end": "00ab3219",
+   "name": "BSP_GuiIcon_TypeIdInitReturn",
+   "after": "Function: BSP_GuiIcon_TypeIdInitReturn at 00ab31d0\nSignature: undefined BSP_GuiIcon_TypeIdInitReturn(void)\nEntry: 00ab31d0\nBody: 00ab31d0 - 00ab3218"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ac2390",
+    "end_address": "00ac23d7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ac2390",
+    "end_address": "00ac23d6",
+    "bytes_disassembled": 71,
+    "message": "Successfully disassembled 71 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ac2390",
+    "disassemble_first": false,
+    "name": "BSP_GuiLine_TypeIdInit"
+   },
+   "result": {
+    "success": true,
+    "address": "00ac2390",
+    "function_name": "BSP_GuiLine_TypeIdInit",
+    "entry_point": "00ac2390",
+    "body_size": 71,
+    "message": "Function created successfully at 00ac2390",
+    "warnings": [
+     "Function name 'BSP_GuiLine_TypeIdInit' \u2014 main part 'GuiLine_TypeIdInit' is not PascalCase. Expected: GuilineTypeidinit",
+     "Function name 'BSP_GuiLine_TypeIdInit' \u2014 main part 'GuiLine_TypeIdInit' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiLine_TypeIdInit' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ac2390",
+   "end": "00ac23d7",
+   "name": "BSP_GuiLine_TypeIdInit",
+   "after": "Function: BSP_GuiLine_TypeIdInit at 00ac2390\nSignature: undefined BSP_GuiLine_TypeIdInit(void)\nEntry: 00ac2390\nBody: 00ac2390 - 00ac23d6"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ac23e0",
+    "end_address": "00ac2429"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ac23e0",
+    "end_address": "00ac2428",
+    "bytes_disassembled": 73,
+    "message": "Successfully disassembled 73 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ac23e0",
+    "disassemble_first": false,
+    "name": "BSP_GuiLine_TypeIdInitReturn"
+   },
+   "result": {
+    "success": true,
+    "address": "00ac23e0",
+    "function_name": "BSP_GuiLine_TypeIdInitReturn",
+    "entry_point": "00ac23e0",
+    "body_size": 73,
+    "message": "Function created successfully at 00ac23e0",
+    "warnings": [
+     "Function name 'BSP_GuiLine_TypeIdInitReturn' \u2014 main part 'GuiLine_TypeIdInitReturn' is not PascalCase. Expected: GuilineTypeidinitreturn",
+     "Function name 'BSP_GuiLine_TypeIdInitReturn' \u2014 main part 'GuiLine_TypeIdInitReturn' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiLine_TypeIdInitReturn' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ac23e0",
+   "end": "00ac2429",
+   "name": "BSP_GuiLine_TypeIdInitReturn",
+   "after": "Function: BSP_GuiLine_TypeIdInitReturn at 00ac23e0\nSignature: undefined BSP_GuiLine_TypeIdInitReturn(void)\nEntry: 00ac23e0\nBody: 00ac23e0 - 00ac2428"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ac8500",
+    "end_address": "00ac8547"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ac8500",
+    "end_address": "00ac8546",
+    "bytes_disassembled": 71,
+    "message": "Successfully disassembled 71 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ac8500",
+    "disassemble_first": false,
+    "name": "BSP_GuiScrollbar_TypeIdInit"
+   },
+   "result": {
+    "success": true,
+    "address": "00ac8500",
+    "function_name": "BSP_GuiScrollbar_TypeIdInit",
+    "entry_point": "00ac8500",
+    "body_size": 71,
+    "message": "Function created successfully at 00ac8500",
+    "warnings": [
+     "Function name 'BSP_GuiScrollbar_TypeIdInit' \u2014 main part 'GuiScrollbar_TypeIdInit' is not PascalCase. Expected: GuiscrollbarTypeidinit",
+     "Function name 'BSP_GuiScrollbar_TypeIdInit' \u2014 main part 'GuiScrollbar_TypeIdInit' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiScrollbar_TypeIdInit' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ac8500",
+   "end": "00ac8547",
+   "name": "BSP_GuiScrollbar_TypeIdInit",
+   "after": "Function: BSP_GuiScrollbar_TypeIdInit at 00ac8500\nSignature: undefined BSP_GuiScrollbar_TypeIdInit(void)\nEntry: 00ac8500\nBody: 00ac8500 - 00ac8546"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ac8550",
+    "end_address": "00ac8599"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ac8550",
+    "end_address": "00ac8598",
+    "bytes_disassembled": 73,
+    "message": "Successfully disassembled 73 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ac8550",
+    "disassemble_first": false,
+    "name": "BSP_GuiScrollbar_TypeIdInitReturn"
+   },
+   "result": {
+    "success": true,
+    "address": "00ac8550",
+    "function_name": "BSP_GuiScrollbar_TypeIdInitReturn",
+    "entry_point": "00ac8550",
+    "body_size": 73,
+    "message": "Function created successfully at 00ac8550",
+    "warnings": [
+     "Function name 'BSP_GuiScrollbar_TypeIdInitReturn' \u2014 main part 'GuiScrollbar_TypeIdInitReturn' is not PascalCase. Expected: GuiscrollbarTypeidinitreturn",
+     "Function name 'BSP_GuiScrollbar_TypeIdInitReturn' \u2014 main part 'GuiScrollbar_TypeIdInitReturn' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiScrollbar_TypeIdInitReturn' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ac8550",
+   "end": "00ac8599",
+   "name": "BSP_GuiScrollbar_TypeIdInitReturn",
+   "after": "Function: BSP_GuiScrollbar_TypeIdInitReturn at 00ac8550\nSignature: undefined BSP_GuiScrollbar_TypeIdInitReturn(void)\nEntry: 00ac8550\nBody: 00ac8550 - 00ac8598"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00acea20",
+    "end_address": "00acea67"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00acea20",
+    "end_address": "00acea66",
+    "bytes_disassembled": 71,
+    "message": "Successfully disassembled 71 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00acea20",
+    "disassemble_first": false,
+    "name": "BSP_GuiClipBox_TypeIdInit"
+   },
+   "result": {
+    "success": true,
+    "address": "00acea20",
+    "function_name": "BSP_GuiClipBox_TypeIdInit",
+    "entry_point": "00acea20",
+    "body_size": 71,
+    "message": "Function created successfully at 00acea20",
+    "warnings": [
+     "Function name 'BSP_GuiClipBox_TypeIdInit' \u2014 main part 'GuiClipBox_TypeIdInit' is not PascalCase. Expected: GuiclipboxTypeidinit",
+     "Function name 'BSP_GuiClipBox_TypeIdInit' \u2014 main part 'GuiClipBox_TypeIdInit' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiClipBox_TypeIdInit' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00acea20",
+   "end": "00acea67",
+   "name": "BSP_GuiClipBox_TypeIdInit",
+   "after": "Function: BSP_GuiClipBox_TypeIdInit at 00acea20\nSignature: undefined BSP_GuiClipBox_TypeIdInit(void)\nEntry: 00acea20\nBody: 00acea20 - 00acea66"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00acea70",
+    "end_address": "00aceab9"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00acea70",
+    "end_address": "00aceab8",
+    "bytes_disassembled": 73,
+    "message": "Successfully disassembled 73 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00acea70",
+    "disassemble_first": false,
+    "name": "BSP_GuiClipBox_TypeIdInitReturn"
+   },
+   "result": {
+    "success": true,
+    "address": "00acea70",
+    "function_name": "BSP_GuiClipBox_TypeIdInitReturn",
+    "entry_point": "00acea70",
+    "body_size": 73,
+    "message": "Function created successfully at 00acea70",
+    "warnings": [
+     "Function name 'BSP_GuiClipBox_TypeIdInitReturn' \u2014 main part 'GuiClipBox_TypeIdInitReturn' is not PascalCase. Expected: GuiclipboxTypeidinitreturn",
+     "Function name 'BSP_GuiClipBox_TypeIdInitReturn' \u2014 main part 'GuiClipBox_TypeIdInitReturn' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiClipBox_TypeIdInitReturn' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00acea70",
+   "end": "00aceab9",
+   "name": "BSP_GuiClipBox_TypeIdInitReturn",
+   "after": "Function: BSP_GuiClipBox_TypeIdInitReturn at 00acea70\nSignature: undefined BSP_GuiClipBox_TypeIdInitReturn(void)\nEntry: 00acea70\nBody: 00acea70 - 00aceab8"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ad0780",
+    "end_address": "00ad07c7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ad0780",
+    "end_address": "00ad07c6",
+    "bytes_disassembled": 71,
+    "message": "Successfully disassembled 71 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ad0780",
+    "disassemble_first": false,
+    "name": "BSP_GuiFrameBox_TypeIdInit"
+   },
+   "result": {
+    "success": true,
+    "address": "00ad0780",
+    "function_name": "BSP_GuiFrameBox_TypeIdInit",
+    "entry_point": "00ad0780",
+    "body_size": 71,
+    "message": "Function created successfully at 00ad0780",
+    "warnings": [
+     "Function name 'BSP_GuiFrameBox_TypeIdInit' \u2014 main part 'GuiFrameBox_TypeIdInit' is not PascalCase. Expected: GuiframeboxTypeidinit",
+     "Function name 'BSP_GuiFrameBox_TypeIdInit' \u2014 main part 'GuiFrameBox_TypeIdInit' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiFrameBox_TypeIdInit' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ad0780",
+   "end": "00ad07c7",
+   "name": "BSP_GuiFrameBox_TypeIdInit",
+   "after": "Function: BSP_GuiFrameBox_TypeIdInit at 00ad0780\nSignature: undefined BSP_GuiFrameBox_TypeIdInit(void)\nEntry: 00ad0780\nBody: 00ad0780 - 00ad07c6"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ad07d0",
+    "end_address": "00ad0819"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ad07d0",
+    "end_address": "00ad0818",
+    "bytes_disassembled": 73,
+    "message": "Successfully disassembled 73 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ad07d0",
+    "disassemble_first": false,
+    "name": "BSP_GuiFrameBox_TypeIdInitReturn"
+   },
+   "result": {
+    "success": true,
+    "address": "00ad07d0",
+    "function_name": "BSP_GuiFrameBox_TypeIdInitReturn",
+    "entry_point": "00ad07d0",
+    "body_size": 73,
+    "message": "Function created successfully at 00ad07d0",
+    "warnings": [
+     "Function name 'BSP_GuiFrameBox_TypeIdInitReturn' \u2014 main part 'GuiFrameBox_TypeIdInitReturn' is not PascalCase. Expected: GuiframeboxTypeidinitreturn",
+     "Function name 'BSP_GuiFrameBox_TypeIdInitReturn' \u2014 main part 'GuiFrameBox_TypeIdInitReturn' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiFrameBox_TypeIdInitReturn' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ad07d0",
+   "end": "00ad0819",
+   "name": "BSP_GuiFrameBox_TypeIdInitReturn",
+   "after": "Function: BSP_GuiFrameBox_TypeIdInitReturn at 00ad07d0\nSignature: undefined BSP_GuiFrameBox_TypeIdInitReturn(void)\nEntry: 00ad07d0\nBody: 00ad07d0 - 00ad0818"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
