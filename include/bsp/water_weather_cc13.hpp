@@ -1968,4 +1968,124 @@ void* w3_application_create_cloud_plane_model_00bc0350(void* a, void* b, void* c
 void* w3_application_create_cloud_puff_00bc03c0(void* a, void* b, float c, float d,
     void* (*construct_00bc6430)(void* object, void* a, void* b, float c, float d));
 
+// D3D builders. They call the renderer device (the object at 00F8D394) through its native vtable:
+//   +80h  size* (size* out): writes the back-buffer {width, height} and returns out
+//   +88h  texture* (width, height, levels, format, usage): a render-target texture
+//   +94h  surface* (width, height, format, a, float b, c): a depth-stencil surface
+// Slot meanings are read from these call sites; the D3DFMT values (15h A8R8G8B8, 17h R5G6B5, 71h
+// A16B16G16R16F, 4Bh D24S8, 50h D16) are the arguments the listing passes.
+// 00B9DC20 BSP_OceanWaveField_CreateReflectionTargets, __thiscall(ECX field, format, const size*) RET 8:
+// release and clear +0E4h, +0E8h, +288h; +0E4h = +88h(size.w, size.h, 1, format, 10h); +0E8h =
+// +88h(bb.w, bb.h, 1, 71h, 10h); +288h = +94h(bb.w, bb.h, format == 17h ? 50h : 4Bh, 0, 0.0f, 1). Each
+// back-buffer pair calls +80h twice, taking the width from the first result and the height from the
+// second (listing 00B9DCD6..00B9DD79).
+void w3_ocean_wave_field_create_reflection_targets_00b9dc20(void* field, std::uint32_t format,
+                                                            const std::uint32_t* size, void* device_00f8d394);
+
+// Engine routines the builders call that have no native-storage reconstruction here. Each method is the
+// native routine at the address in its name, with the native register/stack arguments in order.
+class W3_EngineCalls {
+public:
+    virtual ~W3_EngineCalls() = default;
+    // 00B4C700 BSP_D3D9Renderer_CreateGeneratedModel: ECX name*, EDX geometry file*, stack (shader file*,
+    // a, b, c, d) -> EAX model.
+    virtual void* create_generated_model_00b4c700(const void* name, const void* geometry, const void* shader,
+                                                  std::uint32_t a, std::uint32_t b, std::uint32_t c, std::uint32_t d) = 0;
+    // 00B6D890 BSP_Node_PropagateRootRegistration, __thiscall(ECX node, root) RET 4.
+    virtual void node_propagate_root_00b6d890(void* node, void* root) = 0;
+    // 00B189F0 BSP_Material_SetTextureSlot, __thiscall(ECX material, slot, texture) RET 8.
+    virtual void material_set_texture_slot_00b189f0(void* material, std::uint32_t slot, void* texture) = 0;
+    // 00B86500 BSP_DrawSection_SetVertexStream, __thiscall(ECX section, index, stream) RET 8.
+    virtual void draw_section_set_vertex_stream_00b86500(void* section, std::uint32_t index, void* stream) = 0;
+    // 00B1FBB0 BSP_FrameTargets_Construct, __fastcall(ECX 40h block) -> EAX; 00B1FAB0 SetColorSurface,
+    // __thiscall(ECX, index, surface) RET 8; 00B1FB00 SetDepthSurface, __thiscall(ECX, surface) RET 4.
+    virtual void* frame_targets_construct_00b1fbb0(void* block) = 0;
+    virtual void frame_targets_set_color_00b1fab0(void* targets, std::uint32_t index, void* surface) = 0;
+    virtual void frame_targets_set_depth_00b1fb00(void* targets, void* surface) = 0;
+    // Model assembly. ECX carries the byte size into the three raw-slot allocators.
+    virtual void* material_allocate_raw_slot_00b18780(std::uint32_t size) = 0;
+    virtual void* material_construct_with_effect_00b18900(void* slot, void* effect) = 0;           // RET 4
+    virtual void material_set_parameter_owner_00b18a40(void* material, void* owner, void* b) = 0;  // RET 8
+    virtual void* mesh_allocate_raw_slot_00b73b60(std::uint32_t size) = 0;
+    virtual void* mesh_construct_00b73d70(void* slot) = 0;
+    virtual void mesh_set_vertex_stream_00b73bb0(void* mesh, std::uint32_t index, void* stream) = 0;  // RET 8
+    virtual void mesh_set_index_stream_00b73b70(void* mesh, void* stream) = 0;                         // RET 4
+    virtual void mesh_append_draw_section_00b73c60(void* mesh, void* section) = 0;                     // RET 4
+    virtual void* draw_section_create_00533fa0() = 0;
+    virtual void draw_section_rebuild_layout_00b865a0(void* section, void* mesh) = 0;                  // RET 4
+    virtual void draw_section_set_material_00b864c0(void* section, void* material) = 0;                // RET 4
+    virtual void* model_allocate_raw_slot_00b74eb0(std::uint32_t size) = 0;
+    virtual void* generated_model_construct_00b75030(void* slot, const void* name) = 0;                // RET 4
+    // 00B75170 BSP_GeneratedModel_SetGeometry, __thiscall(ECX model, a, mesh, float, float) RET 10h.
+    virtual void generated_model_set_geometry_00b75170(void* model, std::uint32_t a, void* mesh, float x, float y) = 0;
+    virtual void node_set_parent_00b6e680(void* node, void* parent) = 0;                               // RET 4
+    virtual void generated_model_set_local_bounds_00b74390(void* model, const float* bounds) = 0;      // RET 4
+};
+// Further device and texture slots used below: device +38h declaration* (const string* file); device
+// +5Ch vertex buffer* (count, 1, declaration); texture +30h surface* (level, 0); surface +1Ch width,
+// +20h height.
+// Field getters these builders call, inlined because each is one load: 00B74640 model geometry [+180h]
+// (RET 4, its argument unused); 00B732C0 element i [[+54h] + 4i]; 00B73260 vertex stream i [+64h + 4i];
+// 00B72B40 element count [+58h]; 00BA7080 current height stream [+78h + 4 * [+84h]]; 00BA7190 [+44h];
+// 00BA7170 [+8h]; 00B9A500 BYTE [+10h].
+
+// 00BA4EB0 BSP_OceanWaveField_BindHeightStream, __fastcall(ECX field). When BYTE [field +10h] is set:
+// the height generator's (+2BCh) texture [+44h] goes to slot 8 of the materials +12Ch and +130h and to
+// slot 0 of the first element's material of model +4A0h. Otherwise: generator vtable +8h, then for each
+// element of model +11Ch's geometry (count reread every pass) set vertex stream 1 to the generator's
+// current height stream.
+void w3_ocean_wave_field_bind_height_stream_00ba4eb0(void* field, W3_EngineCalls& calls);
+
+// 00BB3DB0 BSP_OceanHeightGenerator_CreateStreams, __thiscall(ECX, width, height) RET 8: release +78h and
+// +7Ch; declaration = device +38h("oceanheightmap.mvfm"); +78h and +7Ch = device +5Ch(width * height, 1,
+// declaration); release the declaration (no null test).
+void w3_ocean_height_generator_create_streams_00bb3db0(void* generator, std::int32_t width, std::int32_t height,
+                                                      void* device_00f8d394, NativeStringStorage& strings);
+// 00BA94F0 BSP_OceanHeightGenerator_Construct, __thiscall(ECX, owner, width, height, const float[4]) RET 10h
+// -> EAX: vtable 00CEB130, count 1, +88h = 0, vtable 00D63E34; fields zeroed; +8Ch..+98h = the four
+// DWORDs; +88h = owner; +68h..+7Ch = 0; render targets through device +88h: +68h (s*w, s*h, 1, 71h, 10h),
+// +6Ch (s*w, s*h, 1, 15h, 10h) with s = the global 00E14454 (read per call), +44h (w, h, 1, 71h, 10h) with
+// surface +48h, +60h (w, h, 1, 71h, 2) with surface +64h, surfaces +70h / +74h of +68h / +6Ch, +10h (80h,
+// 80h, 1, 15h, 10h) with surface +14h; then 00BB3DB0(w, h) and BSP_OceanHeightGenerator_InitializePasses
+// 00BA7530(w, h).
+void* w3_ocean_height_generator_construct_00ba94f0(void* generator, void* owner, std::int32_t width,
+    std::int32_t height, const std::uint32_t* params, const volatile std::int32_t& scale_00e14454,
+    void* device_00f8d394, NativeStringStorage& strings,
+    void (*initialize_passes_00ba7530)(void* generator, std::int32_t width, std::int32_t height));
+// 00BB3AB0 BSP_OceanHeightGenerator_ConstructDerived, __thiscall(ECX, a, b, c, d) RET 10h -> EAX: 00BA94F0
+// (a, b, c, d); vtable 00D64168; depth = device +94h(width, height, 4Bh, 0, 0.0f, 1) of the surface +70h
+// (vtable +20h height is called first, then +1Ch width); three frame targets
+// (operator new(40h) + 00B1FBB0, null stays null) at +40h, +5Ch, +2Ch with colour surfaces +70h, +48h,
+// +74h and that depth; release the depth when non-null.
+// 00BAE900 BSP_WaterSprayObject_Construct, __thiscall(ECX, parent, const resource*) RET 8 -> EAX. No static
+// reference (cc13-water1). Ref-counted base, vtable 00D6409C, +8h = +0Ch = 0; material (110h slot,
+// constructed with resource +0Ch) at +0Ch, owner this, texture resource +10h in slot 0; a mesh (0BCh slot)
+// with vertex stream 0 of resource +8h and its index stream (+60h); one draw section {+8h 4, +0Ch 0,
+// +10h resource +14h, +14h 0, +18h resource +18h} with the material, appended and released (no null test);
+// model "WaterSpray" (184h slot) at +8h with that geometry (00B75170 with 0 and -1.0f twice, 00D7A260),
+// parent and local bounds (resource +1Ch); release the mesh; +10h = +14h = 0.0f.
+void* w3_water_spray_object_construct_00bae900(void* object, void* parent, const void* resource,
+                                               NativeStringStorage& strings, W3_EngineCalls& calls);
+// 00BB0E30 BSP_CoastMesh_Construct, __thiscall(ECX, ref* a, ref* b, ref* c) RET 0Ch -> EAX. No static
+// reference (cc13-water1). Weak owner 00925490; vtable 00D640E4; +0Ch/+10h/+14h = *a/*b/*c with added
+// references; +18h..+20h, +68h..+7Ch = 0 (the null +20h/+1Ch/+18h release-and-clear); the tuning DWORDs
+// below, copied from .rdata; strings "foamwave.dds" +70h, "foamcoast.dds" +78h, "coast1.dat" +68h (resize
+// WITHOUT preserve, copy exactly length bytes); +0D8h = +120h = 0.
+void* w3_coast_mesh_construct_00bb0e30(void* mesh, void* const* a, void* const* b, void* const* c,
+                                       NativeStringStorage& strings, W3_Body weak_owner_construct_00925490);
+void* w3_ocean_height_generator_construct_derived_00bb3ab0(void* generator, void* owner, std::int32_t width,
+    std::int32_t height, const std::uint32_t* params, void* device_00f8d394, W3_EngineCalls& calls,
+    void* (*construct_00ba94f0)(void* generator, void* owner, std::int32_t width, std::int32_t height,
+                                const std::uint32_t* params));
+
+// 00B9EA50 BSP_OceanWaveField_CreateWaveDampObject, __thiscall(ECX field, const float* a, const float* b,
+// const string* texture) RET 0Ch -> EAX model. No static reference (cc13-water1 census). Builds the
+// "WaveDampObject" model from "pf43uf42.mvfm" / "oceanwavedamp.mshd" (00B4C700 with 5, 4, 2, 0),
+// registers it under [field +2BCh] +8h (the 00BA7170 getter), locks the vertex stream (vtable +10h with
+// 0, 0, 0) and writes four 5-float vertices {x, 0, z, u, v} spanning a..b with u, v in {0, 1}
+// (1.0f = 00D7A24C; MOVSS copies), unlocks (+14h), loads the texture through the device vtable +64h
+// (name, 0), binds it to slot 0 of the first element's material (+20h) and releases it.
+void* w3_ocean_wave_field_create_wave_damp_object_00b9ea50(void* field, const float* a, const float* b,
+    const void* texture, void* device_00f8d394, NativeStringStorage& strings, W3_EngineCalls& calls);
+
 }  // namespace bsp::water_weather_cc13

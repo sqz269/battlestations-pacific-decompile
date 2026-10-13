@@ -3702,4 +3702,295 @@ void* w3_application_create_cloud_puff_00bc03c0(void* a, void* b, float c, float
     return construct_00bc6430(raw, a, b, stored_c, stored_d);
 }
 
+namespace {
+
+template<class R, class... A>
+R w3_vcall(void* object, std::size_t slot, A... args) {
+    using Fn = R(__thiscall*)(void*, A...);
+    return reinterpret_cast<Fn>(w3_field<void*>(w3_field<void*>(object, 0), slot))(object, args...);
+}
+
+struct W3_Size {
+    std::uint32_t width;
+    std::uint32_t height;
+};
+
+W3_Size w3_back_buffer_pair(void* device) {
+    W3_Size first{}, second{};
+    const W3_Size* const a = w3_vcall<const W3_Size*>(device, 0x80, &first);
+    const W3_Size* const b = w3_vcall<const W3_Size*>(device, 0x80, &second);
+    return {a->width, b->height};
+}
+
+}  // namespace
+
+void w3_ocean_wave_field_create_reflection_targets_00b9dc20(void* field, std::uint32_t format,
+                                                            const std::uint32_t* size, void* device_00f8d394) {
+    w2_ref_release(&w3_field<void*>(field, 0xE4));
+    w2_ref_release(&w3_field<void*>(field, 0xE8));
+    w2_ref_release(&w3_field<void*>(field, 0x288));
+    const std::uint32_t depth_format = format == 0x17 ? 0x50u : 0x4Bu;
+    w3_field<void*>(field, 0xE4) = w3_vcall<void*>(device_00f8d394, 0x88, size[0], size[1], 1u, format, 0x10u);
+    const W3_Size colour = w3_back_buffer_pair(device_00f8d394);
+    w3_field<void*>(field, 0xE8) = w3_vcall<void*>(device_00f8d394, 0x88, colour.width, colour.height, 1u, 0x71u, 0x10u);
+    const W3_Size depth = w3_back_buffer_pair(device_00f8d394);
+    w3_field<void*>(field, 0x288) = w3_vcall<void*>(device_00f8d394, 0x94, depth.width, depth.height, depth_format, 0u, 0.0f, 1u);
+}
+
+namespace {
+
+// A pooled temporary built the way these bodies inline it: zero header, resize preserving, copy the
+// length + 1 bytes of the literal; released with the length + 1 the header holds at release time.
+class W3_Temporary {
+public:
+    W3_Temporary(const char* text, NativeStringStorage& strings) : strings_(strings) {
+        resize_native_string_header_0041dd40(&header_, strings, static_cast<std::uint32_t>(std::strlen(text)), true);
+        if (header_.data != nullptr) std::memcpy(header_.data, text, header_.length + 1u);
+    }
+    ~W3_Temporary() {
+        if (header_.data != nullptr) strings_.release(header_.data, header_.length + 1u);
+    }
+    W3_Temporary(const W3_Temporary&) = delete;
+    W3_Temporary& operator=(const W3_Temporary&) = delete;
+    const void* get() const noexcept { return &header_; }
+
+private:
+    W3_Header header_{0, nullptr};
+    NativeStringStorage& strings_;
+};
+
+void* w3_geometry(void* model) { return w3_field<void*>(model, 0x180); }                               // 00B74640
+void* w3_element(void* geometry, std::uint32_t i) { return w3_field<void**>(geometry, 0x54)[i]; }     // 00B732C0
+void* w3_vertex_stream(void* geometry, std::uint32_t i) { return w3_field<void*>(geometry, 0x64 + 4u * i); }  // 00B73260
+
+}  // namespace
+
+void* w3_ocean_wave_field_create_wave_damp_object_00b9ea50(void* field, const float* a, const float* b,
+    const void* texture, void* device_00f8d394, NativeStringStorage& strings, W3_EngineCalls& calls) {
+    void* model;
+    {
+        W3_Temporary shader("oceanwavedamp.mshd", strings);
+        W3_Temporary geometry("pf43uf42.mvfm", strings);
+        W3_Temporary name("WaveDampObject", strings);
+        model = calls.create_generated_model_00b4c700(name.get(), geometry.get(), shader.get(), 5, 4, 2, 0);
+    }  // released in reverse construction order: name, geometry, shader (listing 00B9EB31..00B9EB9F)
+    calls.node_propagate_root_00b6d890(model, w3_field<void*>(w3_field<void*>(field, 0x2BC), 8));
+    void* const stream = w3_vertex_stream(w3_geometry(model), 0);
+    auto* const v = w3_vcall<float*>(stream, 0x10, 0u, 0u, 0u);
+    const float one = 1.0f;  // 00D7A24C
+    const float zero = 0.0f;
+    const float values[20] = {
+        a[0], zero, a[1], zero, one,
+        a[0], zero, b[1], zero, zero,
+        b[0], zero, a[1], one,  one,
+        b[0], zero, b[1], one,  zero,
+    };
+    std::memcpy(v, values, sizeof values);
+    w3_vcall<void>(stream, 0x14);
+    void* const loaded = w3_vcall<void*>(device_00f8d394, 0x64, texture, 0u);
+    void* const element = w3_element(w3_geometry(model), 0);
+    calls.material_set_texture_slot_00b189f0(w3_field<void*>(element, 0x20), 0, loaded);
+    if (loaded != nullptr) {
+        void* slot = loaded;
+        w2_ref_release(&slot);
+    }
+    return model;
+}
+
+void w3_ocean_wave_field_bind_height_stream_00ba4eb0(void* field, W3_EngineCalls& calls) {
+    void* const generator = w3_field<void*>(field, 0x2BC);
+    if (w3_field<std::uint8_t>(field, 0x10) != 0) {
+        calls.material_set_texture_slot_00b189f0(w3_field<void*>(field, 0x12C), 8, w3_field<void*>(generator, 0x44));
+        calls.material_set_texture_slot_00b189f0(w3_field<void*>(field, 0x130), 8, w3_field<void*>(generator, 0x44));
+        void* const material = w3_field<void*>(w3_element(w3_geometry(w3_field<void*>(field, 0x4A0)), 0), 0x20);
+        calls.material_set_texture_slot_00b189f0(material, 0, w3_field<void*>(w3_field<void*>(field, 0x2BC), 0x44));
+        return;
+    }
+    w3_vcall<void>(generator, 8);
+    for (std::uint32_t i = 0; i < w3_field<std::uint32_t>(w3_geometry(w3_field<void*>(field, 0x11C)), 0x58); ++i) {
+        void* const element = w3_element(w3_geometry(w3_field<void*>(field, 0x11C)), i);
+        void* const height = w3_field<void*>(field, 0x2BC);
+        void* const stream = w3_field<void*>(height, 0x78 + 4u * w3_field<std::uint32_t>(height, 0x84));
+        calls.draw_section_set_vertex_stream_00b86500(element, 1, stream);
+    }
+}
+
+void w3_ocean_height_generator_create_streams_00bb3db0(void* generator, std::int32_t width, std::int32_t height,
+                                                      void* device_00f8d394, NativeStringStorage& strings) {
+    w2_ref_release(&w3_field<void*>(generator, 0x78));
+    w2_ref_release(&w3_field<void*>(generator, 0x7C));
+    void* declaration;
+    {
+        W3_Temporary file("oceanheightmap.mvfm", strings);
+        declaration = w3_vcall<void*>(device_00f8d394, 0x38, file.get());
+    }
+    const std::int32_t count = width * height;
+    w3_field<void*>(generator, 0x78) = w3_vcall<void*>(device_00f8d394, 0x5C, count, 1u, declaration);
+    w3_field<void*>(generator, 0x7C) = w3_vcall<void*>(device_00f8d394, 0x5C, count, 1u, declaration);
+    w2_release_object(declaration);  // no null test in the listing (00BB3EB3)
+}
+
+void* w3_ocean_height_generator_construct_00ba94f0(void* generator, void* owner, std::int32_t width,
+    std::int32_t height, const std::uint32_t* params, const volatile std::int32_t& scale_00e14454,
+    void* device_00f8d394, NativeStringStorage& strings,
+    void (*initialize_passes_00ba7530)(void* generator, std::int32_t width, std::int32_t height)) {
+    w3_field<std::uint32_t>(generator, 0) = 0x00CEB130u;
+    w3_field<std::uint32_t>(generator, 4) = 1;
+    w3_field<std::uint32_t>(generator, 0x88) = 0;
+    w3_field<std::uint32_t>(generator, 0) = 0x00D63E34u;
+    for (std::size_t offset : {0x08u, 0x0Cu, 0x10u, 0x14u, 0x18u, 0x1Cu, 0x2Cu, 0x30u, 0x34u, 0x38u, 0x40u, 0x44u,
+                               0x48u, 0x5Cu, 0x60u, 0x64u}) {
+        w3_field<std::uint32_t>(generator, offset) = 0;
+    }
+    for (std::size_t i = 0; i < 4; ++i) w3_field<std::uint32_t>(generator, 0x8C + 4 * i) = params[i];
+    w3_field<void*>(generator, 0x88) = owner;
+    const std::int32_t scaled_height = scale_00e14454 * height;
+    const std::int32_t scaled_width = scale_00e14454 * width;
+    for (std::size_t offset : {0x6Cu, 0x68u, 0x7Cu, 0x78u, 0x74u, 0x70u}) w3_field<std::uint32_t>(generator, offset) = 0;
+    void* const device = device_00f8d394;
+    w3_field<void*>(generator, 0x68) = w3_vcall<void*>(device, 0x88, scaled_width, scaled_height, 1u, 0x71u, 0x10u);
+    w3_field<void*>(generator, 0x6C) = w3_vcall<void*>(device, 0x88, scale_00e14454 * width, scale_00e14454 * height, 1u, 0x15u, 0x10u);
+    w3_field<void*>(generator, 0x44) = w3_vcall<void*>(device, 0x88, width, height, 1u, 0x71u, 0x10u);
+    w3_field<void*>(generator, 0x48) = w3_vcall<void*>(w3_field<void*>(generator, 0x44), 0x30, 0u, 0u);
+    w3_field<void*>(generator, 0x60) = w3_vcall<void*>(device, 0x88, width, height, 1u, 0x71u, 2u);
+    w3_field<void*>(generator, 0x64) = w3_vcall<void*>(w3_field<void*>(generator, 0x60), 0x30, 0u, 0u);
+    w3_field<void*>(generator, 0x70) = w3_vcall<void*>(w3_field<void*>(generator, 0x68), 0x30, 0u, 0u);
+    w3_field<void*>(generator, 0x74) = w3_vcall<void*>(w3_field<void*>(generator, 0x6C), 0x30, 0u, 0u);
+    w3_field<void*>(generator, 0x10) = w3_vcall<void*>(device, 0x88, 0x80, 0x80, 1u, 0x15u, 0x10u);
+    w3_field<void*>(generator, 0x14) = w3_vcall<void*>(w3_field<void*>(generator, 0x10), 0x30, 0u, 0u);
+    w3_ocean_height_generator_create_streams_00bb3db0(generator, width, height, device, strings);
+    initialize_passes_00ba7530(generator, width, height);
+    return generator;
+}
+
+void* w3_water_spray_object_construct_00bae900(void* object, void* parent, const void* resource,
+                                               NativeStringStorage& strings, W3_EngineCalls& calls) {
+    auto* const res = const_cast<void*>(resource);
+    w3_field<std::uint32_t>(object, 0) = 0x00CEB130u;
+    w3_field<std::uint32_t>(object, 4) = 1;
+    w3_field<std::uint32_t>(object, 0) = 0x00D6409Cu;
+    w3_field<void*>(object, 8) = nullptr;
+    w3_field<void*>(object, 0x0C) = nullptr;
+    void* const material_slot = calls.material_allocate_raw_slot_00b18780(0x110);
+    void* const material = material_slot != nullptr
+        ? calls.material_construct_with_effect_00b18900(material_slot, w3_field<void*>(res, 0x0C)) : nullptr;
+    w3_field<void*>(object, 0x0C) = material;
+    calls.material_set_parameter_owner_00b18a40(material, object, nullptr);
+    calls.material_set_texture_slot_00b189f0(w3_field<void*>(object, 0x0C), 0, w3_field<void*>(res, 0x10));
+    void* const mesh_slot = calls.mesh_allocate_raw_slot_00b73b60(0xBC);
+    void* const mesh = mesh_slot != nullptr ? calls.mesh_construct_00b73d70(mesh_slot) : nullptr;
+    calls.mesh_set_vertex_stream_00b73bb0(mesh, 0, w3_vertex_stream(w3_field<void*>(res, 8), 0));
+    calls.mesh_set_index_stream_00b73b70(mesh, w3_field<void*>(w3_field<void*>(res, 8), 0x60));
+    void* const section = calls.draw_section_create_00533fa0();
+    w3_field<std::uint32_t>(section, 0x0C) = 0;
+    w3_field<std::uint32_t>(section, 0x08) = 4;
+    w3_field<std::uint32_t>(section, 0x14) = 0;
+    w3_field<std::uint32_t>(section, 0x10) = w3_field<std::uint32_t>(res, 0x14);
+    w3_field<std::uint32_t>(section, 0x18) = w3_field<std::uint32_t>(res, 0x18);
+    calls.draw_section_rebuild_layout_00b865a0(section, mesh);
+    calls.draw_section_set_material_00b864c0(section, w3_field<void*>(object, 0x0C));
+    calls.mesh_append_draw_section_00b73c60(mesh, section);
+    w2_release_object(section);
+    void* const model_slot = calls.model_allocate_raw_slot_00b74eb0(0x184);
+    void* model = nullptr;
+    if (model_slot != nullptr) {
+        W3_Temporary name("WaterSpray", strings);
+        model = calls.generated_model_construct_00b75030(model_slot, name.get());
+        w3_field<void*>(object, 8) = model;
+    } else {
+        w3_field<void*>(object, 8) = nullptr;
+    }
+    const float minus_one = -1.0f;  // 00D7A260
+    calls.generated_model_set_geometry_00b75170(w3_field<void*>(object, 8), 0, mesh, minus_one, minus_one);
+    calls.node_set_parent_00b6e680(w3_field<void*>(object, 8), parent);
+    calls.generated_model_set_local_bounds_00b74390(w3_field<void*>(object, 8),
+                                                    reinterpret_cast<const float*>(w3_bytes(res) + 0x1C));
+    if (mesh != nullptr) w2_release_object(mesh);
+    w3_field<float>(object, 0x10) = 0.0f;
+    w3_field<float>(object, 0x14) = 0.0f;
+    return object;
+}
+
+namespace {
+
+void w3_assign_literal_no_preserve(void* header, const char* text, NativeStringStorage& strings) {
+    resize_native_string_header_0041dd40(header, strings, static_cast<std::uint32_t>(std::strlen(text)), false);
+    char* const data = w3_field<char*>(header, 4);
+    if (data != nullptr) std::memcpy(data, text, w3_field<std::uint32_t>(header, 0));
+}
+
+}  // namespace
+
+void* w3_coast_mesh_construct_00bb0e30(void* mesh, void* const* a, void* const* b, void* const* c,
+                                       NativeStringStorage& strings, W3_Body weak_owner_construct_00925490) {
+    weak_owner_construct_00925490(mesh);
+    w3_field<std::uint32_t>(mesh, 0) = 0x00D640E4u;
+    w3_store_added_ref(mesh, 0x0C, a);
+    w3_store_added_ref(mesh, 0x10, b);
+    w3_store_added_ref(mesh, 0x14, c);
+    for (std::size_t offset : {0x18u, 0x1Cu, 0x20u, 0x68u, 0x6Cu, 0x70u, 0x74u, 0x78u, 0x7Cu}) w3_field<void*>(mesh, offset) = nullptr;
+    for (std::size_t offset : {0x20u, 0x1Cu, 0x18u}) {
+        w2_ref_release(&w3_field<void*>(mesh, offset));
+        w3_field<void*>(mesh, offset) = nullptr;
+    }
+    // {offset, DWORD}: the .rdata source and value of each store, in listing order.
+    const std::pair<std::size_t, std::uint32_t> first[] = {
+        {0x48, 0x40A00000u},  // 00CE3850 5.0
+        {0x58, 0x41000000u}, {0x5C, 0x41000000u},  // 00CE3918 8.0
+        {0x64, 0x3CF5C28Fu},  // 00CE3DB8 0.03
+        {0x60, 0x3F800000u},  // 00D7A24C 1.0
+        {0x80, 0x3F000000u}, {0x84, 0x3F000000u}, {0x88, 0x3F000000u}, {0x90, 0x3F000000u},  // 00CE3800 0.5
+        {0x8C, 0x3F400000u},  // 00CEE07C 0.75
+        {0x94, 0x3F000000u}, {0x98, 0x3F000000u},
+        {0x44, 0}, {0x3C, 0}, {0x40, 0}, {0x4C, 4}, {0x50, 0x32}, {0x54, 0},
+        {0x9C, 0x3F400000u},
+    };
+    for (const auto& [offset, value] : first) w3_field<std::uint32_t>(mesh, offset) = value;
+    w3_assign_literal_no_preserve(w3_bytes(mesh) + 0x70, "foamwave.dds", strings);
+    w3_assign_literal_no_preserve(w3_bytes(mesh) + 0x78, "foamcoast.dds", strings);
+    w3_assign_literal_no_preserve(w3_bytes(mesh) + 0x68, "coast1.dat", strings);
+    const std::pair<std::size_t, std::uint32_t> second[] = {
+        {0xA0, 0x3F19999Au}, {0xC0, 0x3F19999Au},  // 00CE3D30 0.6
+        {0xC4, 0x3DCCCCCDu}, {0xC8, 0x3DCCCCCDu},  // 00D7A2F0 0.1
+        {0xA4, 0x3C6703B0u},  // 00D640F8 0.0141
+        {0xCC, 0xBF4CCCCDu},  // 00D05E14 -0.8
+        {0xA8, 0x43040000u},  // 00D640F0 132.0
+        {0xD0, 0x3E4CCCCDu},  // 00CE54A0 0.2
+        {0xAC, 0x3C23D70Au},  // 00D7A238 0.01
+        {0xB0, 0x3C4985F0u},  // 00D640F4 0.0123
+        {0xB8, 0x3C23D70Au},
+        {0xD4, 0x3ECCCCCDu},  // 00CE7804 0.4
+        {0xB4, 0x42E20000u},  // 00D640EC 113.0
+        {0xBC, 0x3E99999Au},  // 00CE69C8 0.3
+        {0xD8, 0}, {0x120, 0},
+    };
+    for (const auto& [offset, value] : second) w3_field<std::uint32_t>(mesh, offset) = value;
+    return mesh;
+}
+
+void* w3_ocean_height_generator_construct_derived_00bb3ab0(void* generator, void* owner, std::int32_t width,
+    std::int32_t height, const std::uint32_t* params, void* device_00f8d394, W3_EngineCalls& calls,
+    void* (*construct_00ba94f0)(void* generator, void* owner, std::int32_t width, std::int32_t height,
+                                const std::uint32_t* params)) {
+    construct_00ba94f0(generator, owner, width, height, params);
+    w3_field<std::uint32_t>(generator, 0) = 0x00D64168u;
+    void* const colour = w3_field<void*>(generator, 0x70);
+    const std::uint32_t surface_height = w3_vcall<std::uint32_t>(colour, 0x20);
+    const std::uint32_t surface_width = w3_vcall<std::uint32_t>(colour, 0x1C);
+    void* const depth = w3_vcall<void*>(device_00f8d394, 0x94, surface_width, surface_height, 0x4Bu, 0u, 0.0f, 1u);
+    const std::pair<std::size_t, std::size_t> targets[] = {{0x40, 0x70}, {0x5C, 0x48}, {0x2C, 0x74}};
+    for (const auto& [slot, colour_offset] : targets) {
+        void* const block = w3_new(0x40);
+        void* const built = block != nullptr ? calls.frame_targets_construct_00b1fbb0(block) : nullptr;
+        w3_field<void*>(generator, slot) = built;
+        calls.frame_targets_set_color_00b1fab0(built, 0, w3_field<void*>(generator, colour_offset));
+        calls.frame_targets_set_depth_00b1fb00(w3_field<void*>(generator, slot), depth);
+    }
+    if (depth != nullptr) {
+        void* held = depth;
+        w2_ref_release(&held);
+    }
+    return generator;
+}
+
 }  // namespace bsp::water_weather_cc13
