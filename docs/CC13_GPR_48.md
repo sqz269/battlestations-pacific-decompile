@@ -642,3 +642,42 @@ These cover the pieces above that the host has no reconstruction for. None is wi
 - **The readers of ctl+30h (C2).**
 - **The class accel magnitudes (desc+1BCh/1C0h/1C4h).** They are needed to size R1.
 - **The water arms.** `007DA380` mode 2 and `007DB680` `007DC205`+ were excluded by the packet.
+
+## 9. V1 and R1 bound in the host, OFF (cc9-physics6, 2026-10-13)
+
+Packet cc9_plane_rate_floor. Two switches in `src/game_hosts_units.cpp`, both committed OFF, both using the 8.4
+models.
+- `kPlaneSpeedFloorBound` (V1):
+  - Arming. `gunfire_repair_0099bf30`'s `finish()` arms dyn+C8h = 1.2f. It does so inside the changed arm of
+    command[1] and command[0], and only in free flight (unit+900h == 7), as 0099C011-0099C032 and
+    0099C0CC-0099C0ED do.
+  - The other caller is 0099B1B0, a JMP to 007D7A40. It has no reference at all: no rel32, and the absolute
+    dword `B0 B1 99 00` does not occur in the image.
+  - Countdown and floor. In the integrate, after `integrate_body_velocity_007d8611`, 007D81B0's countdown runs
+    first (subtract the step from a positive timer; park it at -1.0f outside free flight). Then 007D87C7 raises
+    the body forward velocity to float(007C47F0() x 1.05).
+  - SUBSTITUTION, labelled: dyn+CCh is taken from `bot_desired_speed_007c47f0` at each step rather than stored at
+    spawn by 007DB2C0. Its inputs are per class.
+- `kPlaneRateLawCrossingFloorBound` (R1): when 007DA380's byte is set, the axis step takes the overload in
+  `src/plane_control_rate.cpp`:
+  - pitch: (|w| x 1.5) x sp
+  - yaw: |w| x sp
+  - roll: no floor
+  - sp: the 007DAABD-007DAB36 stall factor. Its inputs are the step's forward speed, StallSpd, unit+C64h and
+    tuning +22Ch..+238h.
+- Summary line: `summary mission plane rate floor`.
+
+**Predictions, before the pairs** (the rows: USN12 `usn12_s38_u12_p2`, LOMP10 `p3_l10_b`, USN01 `usn01_p6_u1_g`,
+which has carrier launches):
+- OFF against the tree build: gameplay identical; the counts are 0, and the summary line shows bound=0/0.
+- V1 ON:
+  - `speed_floor_arms` > 0 on every row with bot planes under the gunfire-repair bands (attack runs into flak).
+  - `speed_floor_raises` > 0 only where an armed plane is below about 1.89 x StallSpd: dive pull-outs, climbs and
+    slow approaches.
+  - Gameplay moves (verdict 3) on the plane-heavy rows. It may be identical where no plane flies slowly while
+    repaired.
+- R1 ON:
+  - `rate_floor_steps` counts every flight-control step.
+  - Roll reversals lose their floor, and pitch and yaw lose theirs above 1.6 x StallSpd or a 20 deg pitch.
+  - So turn reversals get slower and every plane path moves: verdict 3 on every row.
+  - Torpedo and dive approach lines change, so the knife-edge wins (USN01) may be lost.
