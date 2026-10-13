@@ -1915,6 +1915,9 @@ struct GameUnitSlot {
     // 007D0B80 set (unit+C39h power lost, +C36h spinning, +C3Ah message seen),
     // and whether the aircraft has been killed and left the world.
     bsp::PlaneDeathMode plane_death_mode{bsp::PlaneDeathMode::None};
+    // 007CB8DC / 007CBE02 raised "powerlost" on the water: the death-mode step
+    // takes PowerLost without 007CA8A0's draw (packet cc9_lua54_follow_altitude).
+    bool plane_water_powerlost_raised{false};
     float plane_death_timer_c10{-1.0f};
     bool plane_death_c39{false};
     bool plane_death_c36{false};
@@ -5824,6 +5827,13 @@ struct GameUnitsHost::Impl {
     // 009A7650 the null that 007F3970 leaves in +3D0h[0]. OFF: the host keeps
     // the last target, dead or not.
     static constexpr bool kDogfightEmptySquadronClearBound = true;
+    // Packet cc9_lua54_follow_altitude (docs/SQUADRON_LAND_TASK.md 5gf):
+    // 007CB8DC and 007CBE02 raise "powerlost" (00D059F8) through vtable[194h]
+    // 007BBFA0 on a plane that reaches the water past 007BC5B0, and 007D0B80's
+    // tail destroys it. OFF: the effect is a contract and a live plane floats
+    // in state 6, still its squadron's leader. ON by verdict (5gf: USNOS and
+    // USN12 pairs, mechanism matches).
+    static constexpr bool kPlaneWaterPowerLostBound = true;
     // Packet cc9_taskless_plan_arms (docs/TASKLESS_PLAN_ARMS.md): 0099D300 runs
     // its arms for a plane with no commanded target. OFF: the host returns
     // before any arm, which froze a task-less Zero after an avoidance repair.
@@ -17180,7 +17190,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         bsp::PlaneDeathModeInputs din;
                         din.health_370 = 0.0f;
                         // 007CA914: 00BD2F10(ECX = 1, 0.0, 1.0), the shared stream.
-                        din.draw = gun_host->death_mode_draw_00bd2f10(1, index, 0.0f, 1.0f);
+                        // A water "powerlost" calls 007BBFA0 directly; 007CA8A0
+                        // (and its draw) runs only from SetHealth.
+                        din.draw = slot.plane_water_powerlost_raised ? -1.0f
+                            : gun_host->death_mode_draw_00bd2f10(1, index, 0.0f, 1.0f);
                         din.rammed_dfc = false;
                         din.spin_side_800 = -1;
                         if (host.lua.plane_globals_loaded()) {
@@ -17190,7 +17203,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             din.chance_spinning = g.death_mode_chances_spinning;
                             din.chance_powerloss = g.death_mode_chances_powerloss;
                         }
-                        const bsp::PlaneDeathMode mode = bsp::plane_death_mode_007ca8a0(din);
+                        const bsp::PlaneDeathMode mode = slot.plane_water_powerlost_raised
+                            ? bsp::PlaneDeathMode::PowerLost
+                            : bsp::plane_death_mode_007ca8a0(din);
                         // planepartclasses.lua ExplosionExplosionDelay, which
                         // 004A9BD0 stores at [00E18710] / [00E1870C].
                         static bool delay_read = false;
@@ -18145,6 +18160,32 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                             if (!contact_ignored && unit_.motion.position[1] < line) {
                                 ++unit_.plane_water_contacts;
+                                // Packet cc9_lua54_follow_altitude: 007CB8A7-007CB927.
+                                // BL (MinWaterSpd zero) with up-axis unit+E0h above
+                                // 0.8 (00CE3D40, double) skips to the tail; otherwise,
+                                // in net modes other than 2, vtable[194h] 007BBFA0
+                                // raises "powerlost" and 007D0B80's tail 007D12FC
+                                // destroys the plane. SUBSTITUTION, labelled: the
+                                // destroy is the gunnery host's Kill funnel.
+                                if constexpr (GameUnitsHost::Impl::kPlaneWaterPowerLostBound) {
+                                    const bool bl = min_water_spd == 0.0f;
+                                    if (!(bl && static_cast<double>(unit_.motion.pose_row1[1]) > 0.8)
+                                        && gun_host != nullptr
+                                        && self_index < owner_.slots.size()
+                                        && !gun_host->unit_dead(self_index)) {
+                                        unit_.plane_water_powerlost_raised = true;
+                                        owner_.log.notef("plane water powerlost raised: unit=%s "
+                                            "t=%.2f alt=%.2f MinWaterSpd=%.3f up_y=%.4f "
+                                            "(007CB8DC -> 007BBFA0 -> 007D0B80, packet "
+                                            "cc9_lua54_follow_altitude)",
+                                            unit_.row.name.c_str(),
+                                            static_cast<double>(owner_.summary.simulated_seconds),
+                                            static_cast<double>(unit_.motion.position[1]),
+                                            static_cast<double>(min_water_spd),
+                                            static_cast<double>(unit_.motion.pose_row1[1]));
+                                        gun_host->kill_unit_00926d90(self_index, 1);
+                                    }
+                                }
                                 // 007CB92C: 7, 4 and 5 all go to 6. The
                                 // "powerlost" effect and the 0C3h session message
                                 // are contracts; 0090F6C0(unit, 3) is the SA_OC
@@ -33435,6 +33476,25 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             di.tuning_water_max_depth = g.dynamics_water_max_depth;
                         }
                         if (bsp::water_drown_test_007cbd79(di).engine_drowns) {
+                            // Packet cc9_lua54_follow_altitude: 007CBE02 raises
+                            // "powerlost" through vtable[194h] (net mode test
+                            // 007CBDE6-007CBE00), as 007CB8DC does.
+                            if constexpr (GameUnitsHost::Impl::kPlaneWaterPowerLostBound) {
+                                GameGunneryHost* const gh = owner_.gunnery.get();
+                                const std::size_t self = unit_.process_index;
+                                if (gh != nullptr && self < owner_.slots.size()
+                                    && owner_.slots[self].get() == &unit_
+                                    && !gh->unit_dead(self)) {
+                                    unit_.plane_water_powerlost_raised = true;
+                                    owner_.log.notef("plane water powerlost raised: unit=%s "
+                                        "t=%.2f depth=%.2f (007CBE02 -> 007BBFA0 -> 007D0B80, "
+                                        "packet cc9_lua54_follow_altitude)",
+                                        unit_.row.name.c_str(),
+                                        static_cast<double>(owner_.summary.simulated_seconds),
+                                        static_cast<double>(depth));
+                                    gh->kill_unit_00926d90(self, 1);
+                                }
+                            }
                             if (++unit_.plane_water_powerlost == 1) {
                                 owner_.log.notef("plane water powerlost: unit=%s depth=%.2f "
                                     "dead=%d (007CBE02, counted; packet cc9_plane_water_law)",
