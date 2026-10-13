@@ -4762,4 +4762,437 @@ void library_fill_order_of_battle_row_00500a90(Raw screen, std::int32_t index, F
     }
 }
 
+// --- packet cc13-fe11 ------------------------------------------------------
+
+void front_end_show_difficulty_select_004ff6f0(Raw screen, Fe11DifficultyHost& host) {
+    screen.at<std::int32_t>(0x94) = 7;
+    screen.at<std::int32_t>(0x98) = 99;
+    for (const std::size_t off : {0x508u, 0x50Cu, 0x510u, 0x12Cu, 0x130u, 0x128u, 0x574u})
+        host.widget_set_visible_34(screen.ptr(off), 0);
+    host.widget_set_listener_fields_00aa6bc0(screen.ptr(0x574), nullptr, 0);
+    host.widget_set_visible_34(screen.ptr(0x578), 0);
+    host.widget_set_listener_fields_00aa6bc0(screen.ptr(0x578), nullptr, 0);
+    host.widget_set_visible_34(screen.ptr(0x56C), 0);
+    host.widget_set_visible_34(screen.ptr(0x570), 0);
+    for (std::size_t i = 0; i < 0x28; ++i) {
+        host.widget_set_visible_34(screen.ptr(0x1D8 + i * 4), 0);
+        host.widget_set_visible_34(screen.ptr(0x278 + i * 4), 0);
+    }
+    host.widget_set_visible_34(screen.ptr(0xA8), 0);
+    host.widget_set_visible_34(screen.ptr(0x4FC), 0);
+    host.widget_set_visible_34(screen.ptr(0x518), 1);
+    host.frame_select_00518d60(0, 0, 0, "FE.main_difficulty_title");
+    host.command_bar_set_help_line_0054a0c0("");
+    host.rebuild_command_bar_0054b530({{
+        {0xA2, "FE.play", 0},
+        {0xB3, "globals.navigate", 1},
+        {0, "", 1},
+        {0xA3, "globals.back", 2},
+        {0, "", 1},
+    }});
+    void* const list = screen.ptr(0xC4);
+    host.list_box_clear_rows_00a9bec0(list);
+    host.widget_set_visible_34(screen.ptr(0xB8), 0);
+    raw(screen.ptr(0xB8)).at<std::uint8_t>(0x77) = 1;
+    (void)host.widget_resolved_position_00aa6750(list); // overwritten by the 0.5 pair before any read
+    host.widget_set_enabled_60(list, 1);
+    const float half[2]{0.5f, 0.5f};
+    const char* const keys[3]{"FE.easy", "FE.normal", "FE.hard"};
+    for (int i = 0; i < 3; ++i) {
+        void* const row = host.widget_clone_subtree_00aab4c0(screen.ptr(0xB0), 0);
+        raw(row).at<std::uint8_t>(0x78) = 1;
+        host.widget_set_listener_fields_00aa6bc0(row, screen.p + 0x68, 0);
+        if (i == 0) raw(row).at<std::int32_t>(0x100) = 1;
+        host.widget_virtual_30(row, half);
+        host.gui_text_set_localised_cstring_00abbe50(row, keys[i], 1);
+        raw(row).at<std::uint8_t>(0x77) = 0;
+        if (i == 2) raw(row).at<std::int32_t>(0x100) = 1;
+        host.list_box_insert_row_00a9d750(list, row, 0, 0);
+        if (i == 1) raw(row).at<std::int32_t>(0x100) = 1;
+    }
+    host.widget_set_visible_34(list, 1);
+    raw(list).at<std::uint8_t>(0x77) = 0;
+    host.list_box_select_index_00a9c7c0(list, 1);
+    host.list_box_scroll_by_00a9cc50(list, 1);
+    host.list_box_scroll_by_00a9cc50(list, 2);
+    host.list_box_reset_highlight_00a9cf30(list, 1, 1);
+    host.list_box_select_index_00a9c7c0(list, host.profile_difficulty_6ac());
+}
+
+void front_end_preview_draw_00503510(Raw screen, Fe11PreviewDrawHost& host) {
+    using Vec3 = Fe11PreviewDrawHost::Vec3;
+    using Vec4 = Fe11PreviewDrawHost::Vec4;
+    screen.at<float>(0x7C) = host.preview_distance_00e084f8();
+    if (screen.at<std::int32_t>(0x90) == 0) return;
+    const float d = screen.at<std::uint8_t>(0x4CC) != 0 ? 50.0f : 0.0f;
+    const float v = screen.at<float>(0x7C);
+    const float h = static_cast<float>(static_cast<double>(v) * 0.33333331346511841 + d);
+    const Vec3 target{0.0f, static_cast<float>(d + 0.0), 0.0f};
+    const Vec3 up{0.0f, 1.0f, 0.0f};
+    void* const camera = screen.ptr(0x10);
+    // The rotated eye, divided through by w (1/w is stored to float first).
+    const auto eye = [&] {
+        const float angle = -static_cast<float>(static_cast<double>(host.game_time_64c()) / 3.0);
+        const Vec4 p = host.vector4_transform_00b62d10({v, h, 0.0f, 1.0f}, host.rotation_y_00b646e0(angle));
+        const float r = static_cast<float>(1.0 / p[3]);
+        return Vec3{p[0] * r, p[1] * r, p[2] * r};
+    };
+    host.camera_set_view_matrix_00b71490(camera, host.look_at_00b63f10(eye(), target, up));
+    host.camera_set_field_of_view_00b6fbb0(camera, 0.785398185f);
+    host.camera_set_near_plane_00b6fbf0(camera, 1.0f);
+    host.camera_set_far_plane_00b6fc10(camera, 10000.0f);
+    void* const gui_camera = raw(raw(screen.ptr(0x4DC)).ptr(0xF0)).ptr(0x18);
+    const auto project_anchor = [&](std::size_t widget) {
+        void* const node = raw(screen.ptr(widget)).ptr(0x4C);
+        if ((raw(node).at<std::uint8_t>(0x5C) & 2) == 0) host.transform_refresh_world_matrix_00b6db70(node);
+        const Vec4 in{raw(node).at<float>(0x120), raw(node).at<float>(0x124), raw(node).at<float>(0x128), 1.0f};
+        const Vec4 p = host.vector4_transform_00b62d10(in, host.camera_view_projection_00b70490(gui_camera));
+        return std::array<float, 2>{static_cast<float>(static_cast<double>(p[0]) / p[3]),
+            static_cast<float>(static_cast<double>(p[1]) / p[3])};
+    };
+    const auto a = project_anchor(0x574);
+    const auto b = project_anchor(0x578);
+    const float cx = static_cast<float>((static_cast<double>(b[0]) + a[0]) * 0.5);
+    const float cy = static_cast<float>((static_cast<double>(b[1]) + a[1]) * 0.5);
+    const Vec4 t = host.vector4_transform_00b62d10({target[0], target[1], target[2], 1.0f},
+        host.camera_view_projection_00b70490(camera));
+    const float depth = static_cast<float>(static_cast<double>(t[2]) / t[3]);
+    const Vec4 q = host.vector4_transform_00b62d10({cx, cy, depth, 1.0f},
+        host.matrix_invert_general_00b632d0(host.camera_projection_00b6fcf0(camera)));
+    const float qx = static_cast<float>(static_cast<double>(q[0]) / q[3]);
+    const float qy = static_cast<float>(static_cast<double>(q[1]) / q[3]);
+    const auto translation = [](float x, float y, float z) {
+        return Fe11PreviewDrawHost::Mat4{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, x, y, z, 1};
+    };
+    const auto shift = translation(qx, qy, 0.0f);
+    const auto look = host.look_at_00b63f10(eye(), target, up);
+    host.camera_set_view_matrix_00b71490(camera, host.matrix_multiply_00413920(look, shift));
+    // The image re-checks the index against the vector before each of the three reads (00BF6713 on
+    // failure); the loop condition already guarantees it.
+    for (std::uint32_t i = 0;; ++i) {
+        auto* const first = static_cast<void**>(screen.ptr(0x428));
+        if (first == nullptr || i >= static_cast<std::uint32_t>(static_cast<void**>(screen.ptr(0x42C)) - first)) break;
+        host.debug_print_004254b0("Rotor %d=0x%x", i, first[i]);
+        const Vec3 pos = host.node_copy_local_position_00b6e0a0(first[i]);
+        const float time = host.game_time_64c();
+        const float spin = -static_cast<float>(static_cast<double>(time) + time);
+        void* const rotor = static_cast<void**>(screen.ptr(0x428))[i];
+        host.node_set_local_matrix_38(rotor,
+            host.matrix_multiply_00413920(host.rotation_z_00b64780(spin), translation(pos[0], pos[1], pos[2])));
+    }
+    const std::int32_t width = host.display_width_24();
+    const std::int32_t height = host.display_height_28();
+    const auto size = host.camera_viewport_size(camera);
+    if (width != size[0] || height != host.camera_viewport_size(camera)[1]) {
+        if (screen.ptr(0x4B8) != nullptr) {
+            host.object_delete_04(screen.ptr(0x4B8), 1);
+            screen.ptr(0x4B8) = nullptr;
+        }
+        host.library_preview_setup_environment_00502480(screen);
+        host.scene_renderer_set_hdr_params_00b0e9b0(&kPreviewHdrParams);
+        for (std::uint32_t slot = 0; slot < 4; ++slot) host.render_resources_set_remap_texture(slot, "ColourRemap.tga");
+    }
+    host.camera_set_aspect_ratio_00b6fbd0(camera, host.display_aspect_10());
+    const std::int32_t dims[2]{host.display_width_24(), host.display_height_28()};
+    host.camera_viewport_set_dimensions(camera, dims);
+    void* const lighting = host.scene_lighting_owner_00b72110(screen.ptr(0xC));
+    void* const head = raw(lighting).ptr(0x1C);
+    void* const first_light = raw(head).ptr(0);
+    if (first_light == head) host.crt_invalid_parameter_00bf6713();
+    host.shadow_map_update_view_from_camera_00a8f3b0(
+        host.light_shadow_map_owner_00b7aab0(raw(first_light).ptr(8), camera));
+    if (screen.ptr(0x4B8) != nullptr)
+        host.environment_update_0078cff0(screen.ptr(0x4B8), camera, host.game_time_64c());
+    host.scene_renderer_submit_scene_render_00b101c0(screen.ptr(0xC), camera);
+}
+
+void library_build_order_of_battle_list_00506660(Raw screen, Fe11OrderOfBattleListHost& host) {
+    void* const list = screen.ptr(0xB8);
+    host.list_box_clear_rows_00a9bec0(list);
+    host.widget_set_visible_34(list, 1);
+    std::vector<std::int32_t> type2, type3, type1;
+    const auto records = [&] { return static_cast<std::uint8_t*>(screen.ptr(0x460)); };
+    for (std::int32_t i = 0; records() != nullptr &&
+         static_cast<std::uint32_t>(i) < static_cast<std::uint32_t>(
+             (static_cast<std::uint8_t*>(screen.ptr(0x464)) - records()) / 0x2C); ++i) {
+        switch (raw(records() + i * 0x2C).at<std::int32_t>(0x28)) {
+        case 1: type1.push_back(i); break;
+        case 2: type2.push_back(i); break;
+        case 3: type3.push_back(i); break;
+        default: break;
+        }
+    }
+    for (const std::int32_t i : type2) host.library_fill_order_of_battle_row_00500a90(screen, i);
+    for (const std::int32_t i : type3) host.library_fill_order_of_battle_row_00500a90(screen, i);
+    for (const std::int32_t i : type1) host.library_fill_order_of_battle_row_00500a90(screen, i);
+    const auto n2 = static_cast<std::int32_t>(type2.size());
+    const auto n3 = static_cast<std::int32_t>(type3.size());
+    if (n2 != 0) host.list_box_scroll_to_item_00a9d360(list, n2, 0.023f, 0);
+    if (n3 != 0) host.list_box_scroll_to_item_00a9d360(list, n2 + n3, 0.023f, 0);
+    const auto place_header = [&](std::size_t header, std::int32_t first_row) {
+        void* const row = host.list_box_row_00a9be00(list, first_row);
+        void* const text = host.find_child_by_name_00aa7e00(row, "MenuItem_Text");
+        const auto p = host.widget_resolved_position_00aa6750(text);
+        const float moved[3]{static_cast<float>(p[0] - 0.029999999329447746),
+            static_cast<float>(p[1] - 0.054999999701976776), static_cast<float>(p[2] - 0.0)};
+        host.widget_set_resolved_position_00aa8240(screen.ptr(header), moved);
+        host.widget_set_visible_34(screen.ptr(header), 1);
+    };
+    if (n2 != 0) place_header(0x128, 0);
+    if (n3 != 0) place_header(0x12C, n2);
+    if (!type1.empty()) place_header(0x130, n2 + n3);
+    host.list_box_reset_highlight_00a9cf30(list, 1, 1);
+}
+
+void library_open_entry_as_unlocks_0050e3c0(Raw screen, std::uintptr_t data, std::int32_t side,
+    Fe11OpenEntryHost& host) {
+    host.library_records_clear_0050a110(screen);
+    Fe11VehicleClassRows rows = host.library_read_vehicle_class_rows_0050a400();
+    Fe11LibraryRecord record;
+    record.byte_0d = 1;
+    record.byte_0c = 1;
+    record.id = -10;
+    record.count = -1;
+    std::vector<std::string> list;
+    static constexpr std::uint32_t kModeOffsets[8]{0x1CC, 0x1DC, 0x1EC, 0x1FC, 0x18C, 0x1AC, 0x19C, 0x1BC};
+    const std::int32_t mode = host.game_effective_mode_004bca50();
+    if (mode >= 0 && mode <= 7)
+        list = host.string_vector_copy_00506c80(data, static_cast<std::uint32_t>(side) * 0x154 + kModeOffsets[mode]);
+    if (host.game_effective_mode_004bca50() == 4) {
+        std::string wanted;
+        bool heavy_wanted = true;
+        switch (host.selected_class_00e1956c()) {
+        case 0: wanted = "Destroyer"; break;
+        case 1: wanted = "Cruiser"; heavy_wanted = false; break;
+        case 2: wanted = "Cruiser"; break;
+        case 3: wanted = "BattleShip"; break;
+        case 4: wanted = "TorpedoBoat"; break;
+        case 5: wanted = "Submarine"; break;
+        case 6: wanted = "Fighter"; break;
+        default: break;
+        }
+        for (std::size_t i = 0; i < list.size(); ++i) {
+            void* const globals = host.lua_owner_globals_00b67980(host.game_lua_owner_1a0c());
+            void* const classes = host.lua_get_by_name_00b67800(globals, "VehicleClass");
+            host.lua_release_00b67700(globals);
+            void* const entry = host.lua_get_by_index_00b67720(classes, host.crt_atol_00bf8417(list[i].c_str()));
+            void* const type_object = host.lua_get_by_name_00b67800(entry, "Type");
+            const std::string type = host.lua_get_string_00b662b0(type_object); // not null-checked in the image
+            host.lua_release_00b67700(type_object);
+            bool match = equals_case_insensitive(type, wanted);
+            if (match && !wanted.empty() && equals_case_insensitive(wanted, "Cruiser")) {
+                void* const flag = host.lua_get_by_name_00b67800(entry, "HeavyCruiser");
+                const bool heavy = host.lua_is_boolean_00b66000(flag) && host.lua_get_boolean_00b66250(flag);
+                host.lua_release_00b67700(flag);
+                match = heavy == heavy_wanted;
+            }
+            if (match) {
+                const std::int32_t id = host.crt_atol_00bf8417(list[i].c_str());
+                list.clear();
+                list.push_back(host.native_string_from_int_004260b0(id));
+            }
+            host.lua_release_00b67700(entry);
+            host.lua_release_00b67700(classes);
+            if (match) break;
+        }
+    }
+    record.ids.push_back(-1);
+    for (const std::string& listed : list) {
+        const std::int32_t n = host.crt_atol_00bf8417(listed.c_str());
+        const std::string type = host.vehicle_class_type_004fd7c0(screen, n);
+        for (std::size_t j = 0; j < rows.types.size(); ++j) {
+            if (!equals_case_insensitive(rows.types[j], type)) continue;
+            const bool heavy = host.vehicle_class_is_heavy_cruiser_004fab40(screen, n);
+            if (host.vehicle_class_is_heavy_cruiser_004fab40(screen, rows.ids[j]) != heavy) continue;
+            if (rows.flags[j] != side) continue;
+            if (host.library_find_entry_by_id_004fb090(screen, rows.ids[j]) == nullptr) continue;
+            record.ids.push_back(rows.ids[j]);
+            rows.ids[j] = -10;
+            rows.flags[j] = -10;
+            rows.types[j] = "0_0_0";
+        }
+    }
+    host.library_records_push_0050e110(screen, record);
+}
+
+void library_open_entry_as_order_of_battle_0050ef80(Raw screen, std::uintptr_t data, std::int32_t side,
+    Fe11OrderOfBattleOpenHost& host) {
+    host.library_battle_records_clear_0050a110(screen);
+    const Fe11VehicleClassRows rows = host.library_read_vehicle_class_rows_0050a400();
+    std::vector<Fe11LibraryRecord> satisfied, locked;
+    const std::uintptr_t block = data + static_cast<std::uintptr_t>(side) * 0x154;
+    // Ids of the class rows sharing `type` with record id `id` (rows are left as they are).
+    const auto add_related = [&](Fe11LibraryRecord& record, const std::string& type) {
+        for (std::size_t j = 0; j < rows.types.size(); ++j) {
+            if (!equals_case_insensitive(rows.types[j], type) || rows.flags[j] != side || rows.ids[j] == record.id)
+                continue;
+            if (host.library_find_entry_by_id_004fb090(screen, rows.ids[j]) != nullptr) record.ids.push_back(rows.ids[j]);
+        }
+    };
+    const auto counts = host.string_vector_at(block + 0x170);
+    const auto entries = host.string_vector_at(block + 0x160);
+    const auto texts = host.string_vector_at(block + 0x180);
+    for (std::size_t k = 0; k < counts.size(); ++k) {
+        Fe11LibraryRecord record;
+        record.byte_0d = 1;
+        record.type = 1;
+        record.id = host.crt_atol_00bf8417(entries[k * 2].c_str());
+        if (!host.profile_unlock_satisfied_007fc4c0(entries[k * 2 + 1])) {
+            record.byte_0c = 0;
+            record.byte_0d = 0;
+            record.count = -1;
+            record.text = texts.empty() ? std::string() : texts[k];
+            locked.push_back(record);
+            continue;
+        }
+        record.byte_0c = host.library_order_of_battle_contains_004fc840(data, side, record.id) ? 1 : 0;
+        record.byte_0d = 1;
+        record.count = host.crt_atol_00bf8417(counts[k].c_str());
+        record.text = texts.empty() ? std::string() : texts[k] + "_reached";
+        const std::string type = host.vehicle_class_type_004fd7c0(screen, record.id);
+        if (record.byte_0c != 0) add_related(record, type);
+        satisfied.push_back(record);
+    }
+    const auto changes = host.string_vector_at(block + 0x130);
+    const auto change_counts = host.string_vector_at(block + 0x140);
+    for (std::size_t k = 0; k < changes.size(); ++k) {
+        Fe11LibraryRecord record;
+        record.byte_0d = 1;
+        record.id = host.crt_atol_00bf8417(changes[k].c_str());
+        record.byte_0c = host.library_order_of_battle_contains_004fc840(data, side, record.id) ? 1 : 0;
+        record.count = host.crt_atol_00bf8417(change_counts[k].c_str());
+        if (record.byte_0c == 0) {
+            record.type = 2;
+            record.text = "fixed";
+        } else {
+            add_related(record, host.vehicle_class_type_004fd7c0(screen, record.id));
+            record.type = 3;
+            record.text = "change";
+        }
+        host.library_battle_records_push_0050e110(screen, record);
+    }
+    for (const Fe11LibraryRecord& record : satisfied) host.library_battle_records_push_0050e110(screen, record);
+    for (const Fe11LibraryRecord& record : locked) host.library_battle_records_push_0050e110(screen, record);
+}
+
+void library_update_tutorial_movie_00515050(Raw screen, float rate, Fe11CarouselStepHost& host) {
+    auto* const entries = static_cast<std::uint8_t*>(screen.ptr(0x448));
+    if (entries == nullptr) return;
+    const auto count = static_cast<std::uint32_t>((static_cast<std::uint8_t*>(screen.ptr(0x44C)) - entries) / 0x6C);
+    if (count == 0) return;
+    const float target = static_cast<float>(screen.at<std::int32_t>(0x434));
+    const float current = screen.at<float>(0x438);
+    if (target == current) return;
+    const float delta = static_cast<float>(static_cast<double>(target) - current);
+    const float distance = delta > 0.0f ? delta : -0.0f - delta;
+    if (distance < 0.002f) return;
+    const double step = static_cast<double>(rate) * (static_cast<double>(target) - current);
+    const float position = static_cast<float>(step + step + current);
+    screen.at<float>(0x438) = position;
+    const float f = static_cast<float>(static_cast<double>(position) - static_cast<std::int32_t>(position));
+    host.library_refresh_entry_detail_00510c20(screen);
+    const float spacing = screen.at<float>(0x43C);
+    const float middle = static_cast<float>(static_cast<double>(screen.at<float>(0x440)) - static_cast<double>(spacing) * f);
+    host.widget_set_local_x_00aa78d0(screen.ptr(0x508), static_cast<float>(static_cast<double>(middle) - spacing));
+    host.widget_set_local_x_00aa78d0(screen.ptr(0x50C), middle);
+    host.widget_set_local_x_00aa78d0(screen.ptr(0x510), static_cast<float>(static_cast<double>(middle) + screen.at<float>(0x43C)));
+    if (f > 0.5f) {
+        const float half[2]{0.5f, 0.5f};
+        const float ff[2]{f, f};
+        host.widget_virtual_48(screen.ptr(0x508), half);
+        host.widget_virtual_48(screen.ptr(0x50C), half);
+        host.widget_virtual_48(screen.ptr(0x510), ff);
+    } else if (f < 0.5f && f > 0.0f) {
+        host.widget_set_uniform_scale_004fb9e0(screen.ptr(0x508), 0.5f);
+        host.widget_set_uniform_scale_004fb9e0(screen.ptr(0x50C), static_cast<float>(1.0 - f));
+        host.widget_set_uniform_scale_004fb9e0(screen.ptr(0x510), 0.5f);
+    } else if (!(f > -0.5f && f < 0.0f)) {
+        host.widget_set_uniform_scale_004fb9e0(screen.ptr(0x508), 0.5f);
+        host.widget_set_uniform_scale_004fb9e0(screen.ptr(0x50C), 1.0f);
+        host.widget_set_uniform_scale_004fb9e0(screen.ptr(0x510), 0.5f);
+    }
+    host.widget_set_visible_34(screen.ptr(0xA8), 1);
+    if (screen.ptr(0x508) != nullptr && screen.ptr(0x50C) != nullptr && screen.ptr(0x510) != nullptr &&
+        screen.at<std::int32_t>(0x94) == 8) {
+        void* frames[3];
+        void* icons[3];
+        for (int i = 0; i < 3; ++i) frames[i] = host.find_child_by_name_00aa7e00(screen.ptr(0x508 + i * 4), "keret_Framebox", 1);
+        for (int i = 0; i < 3; ++i) icons[i] = host.find_child_by_name_00aa7e00(screen.ptr(0x508 + i * 4), "icon_big_BG_Icon", 0);
+        std::array<float, 3> p[3];
+        for (int i = 0; i < 3; ++i) p[i] = host.widget_resolved_position_00aa6750(icons[i]);
+        for (int i = 0; i < 3; ++i) {
+            const float moved[3]{p[i][0] + 0.0f, p[i][1] + 0.0f, static_cast<float>(p[i][2] + 3.0)};
+            host.widget_set_resolved_position_00aa8240(frames[i], moved);
+        }
+    }
+    const Raw view{screen.p + 0x434};
+    const std::int32_t kind = screen.at<std::int32_t>(0x94);
+    const auto trunc_position = [&] { return static_cast<std::int32_t>(screen.at<float>(0x438)); };
+    if (kind == 0 || kind == 3) {
+        const std::size_t arrows = kind == 0 ? 0x540 : 0x54C;
+        if (trunc_position() - 1 > -1)
+            host.widget_set_visible_34(screen.ptr(arrows), raw(library_view_previous_004fa8f0(view)).at<std::uint8_t>(0x45) != 0);
+        host.widget_set_visible_34(screen.ptr(arrows + 4), raw(library_view_at_position_004fa960(view)).at<std::uint8_t>(0x45) != 0);
+        const auto size = static_cast<std::uint32_t>((static_cast<std::uint8_t*>(screen.ptr(0x44C)) - entries) / 0x6C);
+        if (static_cast<std::uint32_t>(static_cast<std::int64_t>(screen.at<float>(0x438)) + 1) <= size)
+            host.widget_set_visible_34(screen.ptr(arrows + 8), raw(library_view_next_004faa00(view)).at<std::uint8_t>(0x45) != 0);
+        if (kind == 3) return;
+        if (raw(library_view_at_position_004fa960(view)).at<std::int32_t>(0x40) == 5 &&
+            raw(library_view_current_004fa9c0(view)).at<std::uint8_t>(0x45) != 0)
+            host.gui_text_set_localised_cstring_00abbe50(screen.ptr(0xA8), "FE.achievement_secret_desc", 1);
+        return;
+    }
+    if (kind != 4) return;
+    void* const left = screen.ptr(0x51C);
+    void* const centre = screen.ptr(0x520);
+    void* const right = screen.ptr(0x524);
+    const auto movie_path = [&](std::int32_t index) {
+        return "movies/Tutorials/" + host.native_string_text(entries + index * 0x6C + 0x30) + ".bik";
+    };
+    const std::int32_t index = trunc_position();
+    if (index == screen.at<std::int32_t>(0x434)) {
+        const std::string path = movie_path(static_cast<std::int32_t>(static_cast<std::int64_t>(screen.at<float>(0x438))));
+        if (screen.at<std::int32_t>(0x558) == trunc_position() && host.gui_movie_is_playing_00aac8e0(centre)) return;
+        host.gui_movie_stop_00aac870(centre);
+        host.gui_movie_set_source_00aae320(centre, path, 1);
+        host.gui_movie_start_00ab0eb0(centre);
+        host.widget_set_visible_34(centre, 1);
+        host.widget_set_visible_34(screen.ptr(0x52C), 0);
+        screen.at<std::int32_t>(0x558) = trunc_position();
+        host.gui_movie_set_callback_7c(centre, 0x004FAAB0);
+        host.gui_movie_forward_player_slot10_00aac8c0(left);
+        host.widget_set_visible_34(left, 0);
+        host.widget_set_visible_34(screen.ptr(0x528), 1);
+        host.gui_movie_forward_player_slot10_00aac8c0(right);
+        host.widget_set_visible_34(right, 0);
+        host.widget_set_visible_34(screen.ptr(0x530), 1);
+    } else if (index + 1 == screen.at<std::int32_t>(0x434)) {
+        const std::string path = movie_path(static_cast<std::int32_t>(static_cast<std::int64_t>(screen.at<float>(0x438))) + 1);
+        if (screen.at<std::int32_t>(0x55C) == trunc_position() + 1 && host.gui_movie_is_playing_00aac8e0(right)) return;
+        host.gui_movie_stop_00aac870(right);
+        host.gui_movie_set_source_00aae320(right, path, 1);
+        host.gui_movie_start_00ab0eb0(right);
+        host.widget_set_visible_34(right, 1);
+        host.widget_set_visible_34(screen.ptr(0x530), 0);
+        screen.at<std::int32_t>(0x55C) = trunc_position() + 1;
+        host.gui_movie_set_callback_7c(right, 0x004FAAB0);
+        host.gui_movie_forward_player_slot10_00aac8c0(left);
+        host.widget_set_visible_34(left, 0);
+        host.widget_set_visible_34(screen.ptr(0x528), 1);
+        host.gui_movie_forward_player_slot10_00aac8c0(centre);
+        host.widget_set_visible_34(centre, 0);
+        host.widget_set_visible_34(screen.ptr(0x52C), 1);
+    } else {
+        host.gui_movie_forward_player_slot10_00aac8c0(left);
+        host.widget_set_visible_34(screen.ptr(0x528), 1);
+        host.widget_set_visible_34(left, 0);
+        host.gui_movie_forward_player_slot10_00aac8c0(centre);
+        host.widget_set_visible_34(screen.ptr(0x52C), 1);
+        host.widget_set_visible_34(centre, 0);
+        host.gui_movie_forward_player_slot10_00aac8c0(right);
+        host.widget_set_visible_34(screen.ptr(0x530), 1);
+        host.widget_set_visible_34(right, 0);
+    }
+}
+
 } // namespace bsp::cc13_fe3

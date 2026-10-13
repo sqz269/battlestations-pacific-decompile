@@ -2565,4 +2565,258 @@ struct Fe9cOrderOfBattleRowHost {
 // the row +77h, empties NumUnits_Text and sets byte +121h of the list +0B8h.
 void library_fill_order_of_battle_row_00500a90(Raw screen, std::int32_t index, Fe9cOrderOfBattleRowHost& host);
 
+// ---------------------------------------------------------------------------
+// Packet cc13-fe11 (docs/CC13_FE_11.md): last open tactical library / preview bodies.
+// ---------------------------------------------------------------------------
+struct Fe11DifficultyHost {
+    virtual ~Fe11DifficultyHost() = default;
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;            // vtable +34h
+    virtual void widget_set_listener_fields_00aa6bc0(void* widget, void* listener, std::uint32_t zero) = 0;
+    // 00518D60, ECX = 0, EDX = 0, stack (0, title NativeString), RET 8.
+    virtual void frame_select_00518d60(std::uint32_t ecx, std::uint32_t edx, std::uint32_t zero,
+        std::string_view title) = 0;
+    virtual void command_bar_set_help_line_0054a0c0(std::string_view line) = 0;              // ECX = [00E1930C]
+    virtual void rebuild_command_bar_0054b530(const std::array<MainMenuCommandArgument, 5>& arguments) = 0;
+    virtual void list_box_clear_rows_00a9bec0(void* list_box) = 0;
+    virtual std::array<float, 3> widget_resolved_position_00aa6750(void* widget) = 0;
+    virtual void widget_set_enabled_60(void* widget, std::uint32_t enabled) = 0;             // vtable +60h
+    virtual void* widget_clone_subtree_00aab4c0(void* source, std::uint32_t zero) = 0;
+    virtual void widget_virtual_30(void* widget, const float* pair) = 0;                     // vtable +30h
+    virtual void gui_text_set_localised_cstring_00abbe50(void* text, const char* key, std::uint32_t flag) = 0;
+    virtual void list_box_insert_row_00a9d750(void* list_box, void* row, std::uint32_t a, std::uint32_t b) = 0;
+    virtual void list_box_select_index_00a9c7c0(void* list_box, std::int32_t index) = 0;
+    virtual void list_box_scroll_by_00a9cc50(void* list_box, std::int32_t step) = 0;
+    virtual void list_box_reset_highlight_00a9cf30(void* list_box, std::uint32_t a, std::uint32_t b) = 0;
+    virtual std::int32_t profile_difficulty_6ac() = 0;                                       // [[00E188A8]+6ACh]
+};
+
+// 004FF6F0 BSP_FrontEnd_ShowDifficultySelect, __fastcall(ECX = screen), RET. +94h = 7, +98h = 99;
+// hides +508h, +50Ch, +510h, +12Ch, +130h, +128h, +574h (listener fields cleared), +578h (same),
+// +56Ch, +570h, the forty pairs +1D8h[i] / +278h[i], +0A8h and +4FCh, shows +518h. Frame title
+// "FE.main_difficulty_title" (00CEB3B8), help line "", command bar (A2h "FE.play" slot 3, B3h
+// "globals.navigate", 0 "", A3h "globals.back" slot 4, 0 ""). The list +0C4h is cleared, +0B8h is
+// hidden and marked +77h; 00AA6750 runs on +0C4h with its result overwritten unread; +0C4h vtable
+// +60h(1). Three rows cloned from +0B0h ("FE.easy" 00CEB384, "FE.normal" 00CEB378, "FE.hard"
+// 00CEB370): +78h = 1, listener screen+68h, vtable +30h(&{0.5f, 0.5f}) (00CE3800), the key set on the
+// row itself, +77h = 0, +100h = 1 (the second row sets it after the insert), appended with (0, 0).
+// The list is shown, +77h = 0, then 00A9C7C0(1), 00A9CC50(1), 00A9CC50(2), 00A9CF30(1, 1) and
+// 00A9C7C0 with the profile difficulty [[00E188A8]+6ACh].
+void front_end_show_difficulty_select_004ff6f0(Raw screen, Fe11DifficultyHost& host);
+
+struct Fe11PreviewDrawHost {
+    using Mat4 = std::array<float, 16>;
+    using Vec4 = std::array<float, 4>;
+    using Vec3 = std::array<float, 3>;
+    virtual ~Fe11PreviewDrawHost() = default;
+    virtual float preview_distance_00e084f8() = 0;                                           // float [00E084F8]
+    virtual float game_time_64c() = 0;                                                       // float [[00E188A8]+64Ch]
+    virtual Mat4 rotation_y_00b646e0(float angle) = 0;                                       // ECX out, EDX &angle
+    virtual Mat4 rotation_z_00b64780(float angle) = 0;                                       // ECX out, EDX &angle
+    virtual Vec4 vector4_transform_00b62d10(const Vec4& in, const Mat4& matrix) = 0;         // ECX in, (out, matrix)
+    virtual Mat4 look_at_00b63f10(const Vec3& eye, const Vec3& target, const Vec3& up) = 0;
+    virtual Mat4 matrix_multiply_00413920(const Mat4& left, const Mat4& right) = 0;
+    virtual Mat4 matrix_invert_general_00b632d0(const Mat4& source) = 0;
+    virtual void camera_set_view_matrix_00b71490(void* camera, const Mat4& view) = 0;
+    virtual void camera_set_field_of_view_00b6fbb0(void* camera, float fov) = 0;
+    virtual void camera_set_near_plane_00b6fbf0(void* camera, float near_plane) = 0;
+    virtual void camera_set_far_plane_00b6fc10(void* camera, float far_plane) = 0;
+    virtual void camera_set_aspect_ratio_00b6fbd0(void* camera, float aspect) = 0;
+    virtual Mat4 camera_view_projection_00b70490(void* camera) = 0;
+    virtual Mat4 camera_projection_00b6fcf0(void* camera) = 0;
+    virtual void transform_refresh_world_matrix_00b6db70(void* node) = 0;
+    virtual void debug_print_004254b0(const char* format, std::uint32_t index, void* node) = 0; // empty body
+    virtual Vec3 node_copy_local_position_00b6e0a0(void* node) = 0;
+    virtual void node_set_local_matrix_38(void* node, const Mat4& matrix) = 0;               // vtable +38h
+    // 00B6FDE0 (camera viewport) then 00B1F740 (size, two dwords).
+    virtual std::array<std::int32_t, 2> camera_viewport_size(void* camera) = 0;
+    // 00B6FDE0 then 00B1F940(&{width, height}).
+    virtual void camera_viewport_set_dimensions(void* camera, const std::int32_t* size) = 0;
+    virtual std::int32_t display_width_24() = 0;                                             // [[0109CF04]+24h]
+    virtual std::int32_t display_height_28() = 0;                                            // [[0109CF04]+28h]
+    virtual float display_aspect_10() = 0;                                                   // float [[0109CF04]+10h]
+    virtual void object_delete_04(void* object, std::uint32_t flags) = 0;                    // vtable +4h
+    virtual void library_preview_setup_environment_00502480(Raw screen) = 0;
+    virtual void scene_renderer_set_hdr_params_00b0e9b0(const void* params) = 0;            // ECX = [00F8D39C]
+    // 00B0FD70 / 00B0FDC0 / 00B0FE10 / 00B0FE60 on [00F8D39C] (slot 0..3, NativeString name).
+    virtual void render_resources_set_remap_texture(std::uint32_t slot, std::string_view name) = 0;
+    virtual void* scene_lighting_owner_00b72110(void* scene) = 0;
+    virtual void crt_invalid_parameter_00bf6713() = 0;
+    virtual void* light_shadow_map_owner_00b7aab0(void* light, void* camera) = 0;
+    virtual void shadow_map_update_view_from_camera_00a8f3b0(void* shadow) = 0;
+    // 0078CFF0, ECX = the environment object +4B8h, (camera, time).
+    virtual void environment_update_0078cff0(void* environment, void* camera, float time) = 0;
+    virtual void scene_renderer_submit_scene_render_00b101c0(void* scene, void* camera) = 0; // ECX = [00F8D39C]
+};
+
+// 00503510 BSP_FrontEndPreview_Draw, __fastcall(ECX = preview screen), RET. +7Ch = [00E084F8] (v); the
+// rest runs only when +90h is set. d = 50.0f (00CEB4D4) when the class byte +4CCh is set, else 0;
+// h = (float)(v * 0.33333331346511841 (00CEB5B0) + d); a = -(float)([[00E188A8]+64Ch] / 3.0).
+// eye = (x, y, z) * (float)(1 / w) of (v, h, 0, 1) * RotY(a); view = LookAt(eye, (0, d, 0), (0, 1, 0)) on
+// the camera +10h, field of view 0.785398185f (00CEB5A8), near 1.0, far 10000.0f (00CE3D64).
+// The anchors +574h / +578h (node +4Ch, world matrix refreshed when +5Ch bit 1 is clear, position
+// +120h..+128h) project through the GUI camera [[[+4DCh]+0F0h]+18h]; their screen centre (mean of the
+// x/w and y/w pairs, (float)(sum * 0.5)) at the depth z/w of the target projected through the 3D
+// camera is unprojected with the inverse projection. The view is rebuilt as LookAt(eye again) *
+// Translation(Qx/w, Qy/w, 0). Each rotor node of +428h..+42Ch gets RotZ(-(float)(t + t)) *
+// Translation(its local position) through vtable +38h. When the camera viewport differs from the
+// display size [0109CF04]+24h/+28h: the environment +4B8h is deleted (vtable +4h(1)), 00502480 runs,
+// HDR parameters (the 00504130 block) and "ColourRemap.tga" in the four remap slots. Then aspect
+// [[0109CF04]+10h], viewport dimensions, the shadow map of the scene's first light follows the
+// camera, 0078CFF0(camera, t) on +4B8h when set, and the scene (+0Ch) is submitted with the camera.
+// x87: the quotients and products are stored to float before reuse; the model computes them in
+// double and rounds at each store.
+void front_end_preview_draw_00503510(Raw screen, Fe11PreviewDrawHost& host);
+
+struct Fe11OrderOfBattleListHost {
+    virtual ~Fe11OrderOfBattleListHost() = default;
+    virtual void list_box_clear_rows_00a9bec0(void* list_box) = 0;
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;            // vtable +34h
+    virtual void library_fill_order_of_battle_row_00500a90(Raw screen, std::int32_t index) = 0;
+    virtual void list_box_scroll_to_item_00a9d360(void* list_box, std::int32_t index, float offset,
+        std::uint32_t zero) = 0;
+    virtual void* list_box_row_00a9be00(void* list_box, std::int32_t index) = 0;
+    virtual void* find_child_by_name_00aa7e00(void* parent, std::string_view name) = 0;     // (name, 1)
+    virtual std::array<float, 3> widget_resolved_position_00aa6750(void* widget) = 0;
+    virtual void widget_set_resolved_position_00aa8240(void* widget, const float* position) = 0;
+    virtual void list_box_reset_highlight_00a9cf30(void* list_box, std::uint32_t a, std::uint32_t b) = 0;
+};
+
+// 00506660 BSP_TacticalLibraryScreen_BuildOrderOfBattleList, __fastcall(ECX = screen), RET. Clears the
+// list +0B8h and shows it. The 2Ch-byte records of +460h..+464h are grouped by their +28h type into
+// three local index vectors (00442190): type 2, type 3, type 1 (other types are skipped), and the rows
+// are filled (00500A90) in that group order. 00A9D360(index, 0.023f (00CEB698), 0) runs with the type 2
+// count when that group is non-empty, then with the type 2 + type 3 count when the type 3 group is
+// non-empty. Each non-empty group's header (+128h for type 2, +12Ch for type 3, +130h for type 1) is
+// moved to the resolved position of the "MenuItem_Text" child of the group's first row minus (0.03,
+// 0.055, 0.0) (doubles 00CEB690 / 00CEB688 / 00D7A258, each difference rounded to float), and shown.
+// 00A9CF30(1, 1) ends it. The record reads re-check the index (00BF6713), which the loop bound already
+// guarantees.
+void library_build_order_of_battle_list_00506660(Raw screen, Fe11OrderOfBattleListHost& host);
+
+// The class table 0050A400 builds (three parallel vectors) and a 2Ch-byte record of +46Ch as
+// 0050E3C0 / 0050EF80 build it.
+struct Fe11VehicleClassRows {
+    std::vector<std::int32_t> ids;
+    std::vector<std::string> types;
+    std::vector<std::int32_t> flags;   // Race 1 or 4
+};
+struct Fe11LibraryRecord {
+    std::int32_t id = 0;               // +0h class / entry id
+    std::int32_t count = 0;            // +8h unit count (-1 disables the row); +4h is left uninitialised
+    std::uint8_t byte_0c = 0;          // +0Ch
+    std::uint8_t byte_0d = 0;          // +0Dh
+    std::string text;                  // +10h NativeString
+    std::vector<std::int32_t> ids;     // +18h vector (begin +1Ch)
+    std::int32_t type = 0;             // +28h group (00506660)
+};
+
+struct Fe11OpenEntryHost : Fe8LuaHost {
+    virtual void library_records_clear_0050a110(Raw screen) = 0;                            // +46Ch erase all
+    // 0050A400 with the three local vectors (ECX and the fourth argument unused).
+    virtual Fe11VehicleClassRows library_read_vehicle_class_rows_0050a400() = 0;
+    virtual std::int32_t game_effective_mode_004bca50() = 0;                                 // ECX = [00E188A8]
+    // 00506C80: copy of the string vector at `data + offset`.
+    virtual std::vector<std::string> string_vector_copy_00506c80(std::uintptr_t data, std::uint32_t offset) = 0;
+    virtual std::int32_t selected_class_00e1956c() = 0;                                      // [00E1956C]
+    virtual void* game_lua_owner_1a0c() = 0;                                                 // [00E188A8]+1A0Ch
+    virtual bool lua_is_boolean_00b66000(void* object) = 0;
+    virtual bool lua_get_boolean_00b66250(void* object) = 0;
+    virtual std::int32_t crt_atol_00bf8417(const char* text) = 0;
+    virtual std::string native_string_from_int_004260b0(std::int32_t value) = 0;
+    // 004FD7C0 BSP_VehicleClassLua_GetType, __thiscall(screen, id, out).
+    virtual std::string vehicle_class_type_004fd7c0(Raw screen, std::int32_t id) = 0;
+    // 004FAB40 BSP_VehicleClassLua_IsHeavyCruiser, __thiscall(screen, id), AL.
+    virtual bool vehicle_class_is_heavy_cruiser_004fab40(Raw screen, std::int32_t id) = 0;
+    virtual void* library_find_entry_by_id_004fb090(Raw screen, std::int32_t id) = 0;
+    virtual void library_records_push_0050e110(Raw screen, const Fe11LibraryRecord& record) = 0; // ECX = +46Ch
+};
+
+// 0050E3C0 BSP_TacticalLibraryScreen_OpenEntryAsUnlocks, __thiscall(screen, data, side, unused), RET 0Ch.
+// Empties +46Ch, reads the class rows (0050A400) and copies the string vector `data + side*154h + off`
+// where off is chosen by the effective game mode (004BCA50): 0 1CCh, 1 1DCh, 2 1ECh, 3 1FCh, 4 18Ch,
+// 5 1ACh, 6 19Ch, 7 1BCh (jump table 0050EF40); other modes leave the list empty. In mode 4 the list is
+// cut down to the first id whose VehicleClass[atol(id)].Type equals, ignoring case, the type picked
+// by [00E1956C] (0 Destroyer, 1 Cruiser (not heavy), 2 Cruiser, 3 BattleShip, 4 TorpedoBoat, 5
+// Submarine, 6 Fighter; jump table 0050EF60), with HeavyCruiser (a boolean true) matching for Cruiser;
+// the list is then erased and that id appended as a decimal string. The record (kind -10, +8h -1,
+// +0Ch / +0Dh 1, text "") gets ids -1 and then, for every listed class n and every class row j whose
+// type equals n's type (004FD7C0), whose heavy-cruiser flag (004FAB40) equals n's, whose Race flag
+// equals `side` and whose entry exists (004FB090): ids[j]; the row is consumed (id and flag -10, type
+// "0_0_0" (00CEBBE0)). The record is appended to +46Ch (0050E110).
+void library_open_entry_as_unlocks_0050e3c0(Raw screen, std::uintptr_t data, std::int32_t side,
+    Fe11OpenEntryHost& host);
+
+struct Fe11OrderOfBattleOpenHost {
+    virtual ~Fe11OrderOfBattleOpenHost() = default;
+    virtual Fe11VehicleClassRows library_read_vehicle_class_rows_0050a400() = 0;
+    virtual std::int32_t crt_atol_00bf8417(const char* text) = 0;
+    virtual std::string vehicle_class_type_004fd7c0(Raw screen, std::int32_t id) = 0;
+    virtual void* library_find_entry_by_id_004fb090(Raw screen, std::int32_t id) = 0;
+    // 0050E110 on the two local 2Ch-record vectors is modelled with std::vector; this one appends to +45Ch.
+    virtual void library_battle_records_clear_0050a110(Raw screen) = 0;                     // +45Ch erase all
+    virtual void library_battle_records_push_0050e110(Raw screen, const Fe11LibraryRecord& record) = 0;
+    // String vectors of the side block (8-byte NativeStrings, null data read as "").
+    virtual std::vector<std::string> string_vector_at(std::uintptr_t address) = 0;
+    virtual bool profile_unlock_satisfied_007fc4c0(std::string_view id) = 0;                // ECX = game +650h
+    // 004FC840, __stdcall(data, side, id), RET 0Ch, AL.
+    virtual bool library_order_of_battle_contains_004fc840(std::uintptr_t data, std::int32_t side,
+        std::int32_t id) = 0;
+};
+
+// 0050EF80 BSP_TacticalLibraryScreen_OpenEntryAsOrderOfBattle, __thiscall(screen, data, side), RET 8.
+// Empties +45Ch and reads the class rows (0050A400). With E = data + side*154h:
+// - for k below the count of E+170h: a record (type 1, +0Dh 1) with id atol(E+160h[2k]); when the unlock
+//   E+160h[2k+1] is not satisfied (007FC4C0) it gets +0Ch 0, +0Dh 0, count -1 and text E+180h[k] (""
+//   when E+180h is empty) and goes to a local list U; otherwise +0Ch = 004FC840(data, side, id), count
+//   atol(E+170h[k]), text E+180h[k] + "_reached" (or ""), and, when +0Ch is set, the ids of every class
+//   row with the same type (004FD7C0, case-insensitive), Race flag == side, a different id and an
+//   existing entry (004FB090); it goes to a local list S. Rows are not consumed here.
+// - for k below the count of E+130h: a record (+0Dh 1) with id atol(E+130h[k]), +0Ch = 004FC840, count
+//   atol(E+140h[k]); not contained: type 2, text "fixed" (00CEBBF0); contained: the same row ids, type
+//   3, text "change". These go straight to +45Ch.
+// Then S and U are appended to +45Ch in that order. Index reads past a shorter E+160h / E+180h / E+140h trip
+// the CRT bounds check (00BF6713); the model assumes consistent tables.
+void library_open_entry_as_order_of_battle_0050ef80(Raw screen, std::uintptr_t data, std::int32_t side,
+    Fe11OrderOfBattleOpenHost& host);
+
+struct Fe11CarouselStepHost {
+    virtual ~Fe11CarouselStepHost() = default;
+    virtual void library_refresh_entry_detail_00510c20(Raw screen) = 0;
+    virtual void widget_set_local_x_00aa78d0(void* widget, float x) = 0;                   // thiscall, RET 4
+    virtual void widget_virtual_48(void* widget, const float xy[2]) = 0;                    // vtable +48h
+    virtual void widget_set_uniform_scale_004fb9e0(void* widget, float scale) = 0;          // vtable +48h(&{s, s})
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;            // vtable +34h
+    virtual void* find_child_by_name_00aa7e00(void* parent, std::string_view name, std::uint32_t recurse) = 0;
+    virtual std::array<float, 3> widget_resolved_position_00aa6750(void* widget) = 0;
+    virtual void widget_set_resolved_position_00aa8240(void* widget, const float* position) = 0;
+    virtual void gui_text_set_localised_cstring_00abbe50(void* text, const char* key, std::uint32_t flag) = 0;
+    virtual std::string native_string_text(const void* string) = 0;                          // 8-byte NativeString
+    virtual bool gui_movie_is_playing_00aac8e0(void* movie) = 0;
+    virtual void gui_movie_stop_00aac870(void* movie) = 0;
+    virtual void gui_movie_set_source_00aae320(void* movie, std::string_view path, std::uint32_t flag) = 0;
+    virtual void gui_movie_start_00ab0eb0(void* movie) = 0;
+    virtual void gui_movie_set_callback_7c(void* movie, std::uint32_t callback) = 0;        // vtable +7Ch
+    virtual void gui_movie_forward_player_slot10_00aac8c0(void* movie) = 0;
+};
+
+// 00515050 BSP_TacticalLibraryScreen_UpdateTutorialMovie (ledger name; the body is the carousel
+// animation step, the tutorial movies are its kind-4 tail), __thiscall(screen, float rate), RET 4.
+// Nothing when the filtered entries (+448h..+44Ch, 6Ch each) are empty, when T = (float)+434h equals the
+// position C = +438h, or when |(float)(T - C)| < 0.002f (00CE779C). Else C' = (float)(C + 2*rate*(T -
+// C)) (extended until the store) goes to +438h, f = (float)(C' - trunc(C')), and 00510C20 runs. The cards
+// +508h / +50Ch / +510h move to x = m - s, m, m + s (00AA78D0) with s = +43Ch, m = (float)(+440h - s*f).
+// Scale: f > 0.5 -> vtable +48h (0.5, 0.5), (0.5, 0.5), (f, f); 0 < f < 0.5 -> 004FB9E0 0.5,
+// (float)(1 - f), 0.5; -0.5 < f < 0 -> unchanged; otherwise 0.5, 1.0, 0.5. +0A8h is shown. With all
+// three cards present and kind +94h == 8, each card's "keret_Framebox" (recursive) is moved to its
+// "icon_big_BG_Icon" (direct child) resolved position (x + 0, y + 0, z + 3.0). Kind 0 / 3: arrows
+// +540h..+548h / +54Ch..+554h show the +45h flag of the previous card (only when trunc(C') - 1 > -1),
+// the card at the position and the next card (only when trunc(C') + 1 <= count);
+// kind 0 then sets "FE.achievement_secret_desc" (00CEBDA0) on +0A8h when the positioned entry's +40h is
+// 5 and the current entry's +45h is set. Kind 4: the movie slots +51Ch / +520h / +524h with frames
+// +528h / +52Ch / +530h: when trunc(C') == T the centre movie +520h plays "movies/Tutorials/" + entry
+// +30h + ".bik" for entry trunc(C') (skipped while +558h is that index and it is playing), +558h =
+// index, end callback 004FAAB0; when trunc(C') + 1 == T the right movie +524h plays entry trunc(C') + 1
+// (+55Ch); otherwise every movie forwards (00AAC8C0) and only the frames show.
+void library_update_tutorial_movie_00515050(Raw screen, float rate, Fe11CarouselStepHost& host);
+
 } // namespace bsp::cc13_fe3
