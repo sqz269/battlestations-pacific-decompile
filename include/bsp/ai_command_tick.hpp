@@ -203,7 +203,7 @@ inline constexpr bool kCautiousWedgeBound = true;  // ON: docs/AI_CAUTIOUS_ROUTE
 // the next of the 24 slots at 00F8A7B0, scaled by Formation_UnitDist. The
 // REGROUPINGMOVE call (00A12A48) belongs to that tick, which this host lacks.
 // False: not run, as before (the IDLE census record stays).
-inline constexpr bool kAiFormationShapeBound = false;
+inline constexpr bool kAiFormationShapeBound = true;  // ON: by mechanism; unreachable on campaign rows in the image too (cc13-fix2b), coordinator sessions only
 // Packet cc13-fix2, docs/CC13_GPR_69.md 7.7: 00A126C0 BSP_AiCommand_RegroupingMove_Tick
 // (REGROUPINGMOVE vt+0Ch). With a population above 1 (00A126CA JBE) and a member
 // beyond AutoMerge_LeaveDist (+20Ch) of the leader, the point is
