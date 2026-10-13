@@ -15844,3 +15844,40 @@ and 40 with the switch false; with it false the last four US ships (Dunlap 1404.
 their killer: squadrons whose launch target is already dead keep resolving its name (`command target 0071EBF0`),
 end their attack run in one tick, sit in `done` at the cruise altitude and fly into the fleet's full-damage flak.
 The switch is image-faithful, so this is a plan casualty; GUNNERY 197 has the dead-target reading.
+
+## Mission reference baselines, 2026-10-13 ai (main 02c6b592f; a wins re-check)
+
+Packet: lead queue item 1, worker cc9-gunnery39. Binary `local\g39_ai` (pair_export of `02c6b592f`, SHA-256
+`E09EC3737147`), AH launch form (`BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, `--stop-after-end
+40`), order files from `config/win_orders/`. USN01, ESMP08 and USNOS were skipped (being re-planned or re-checked).
+Switches ON since AH (1de67cfb9): the kamikaze trio (`0cdef1968`), n1 (`0eee3ce5f`), leader turn roll, the
+land-structure mesh test, MOVEONPATH and the leg manager, the dead-target retest, and cc9-gunnery38's O1/dogfight/
+kind-6/wreck/precision/water flips.
+
+| row | order file | frames | AI | was (AH + n1, `local\g38_n1on_*`) |
+| --- | --- | --- | --- | --- |
+| USN02 | usn02_s36_u2_p7 | 16000 | completed 203.01 s | 203.01 s |
+| LOMP10 | lomp10_p3_l10_b | 32000 | completed 1158.10 s | 1002.18 s |
+| USN12 | usn12_s38_u12_p2 | 36000 | completed 1534.87 s | 1534.87 s |
+| LOMP06 | lomp06_l50_l6_q6 | 16000 | completed 535.24 s | 535.24 s |
+| BSM01 | bsm01_l50_b1_a | 40000 | **LOST**: luaMissionFailed at 1521.36 s (phase 3), no guard line | EndMission 767.94 s |
+| USN15 | usn15_s45_u15_l2 | 90000 | EndMission 2641.80 s, guard logged | 2775.58 s (keeper, 1de67cfb9) |
+
+Every completion logs the exec guard's `sus_prog.exe` refusal. A rerun of BSM01 on the same binary
+(`local\g39_ai_r2_b1.log`) repeats the loss exactly (1521.36 s, 639 deaths).
+
+**BSM01.** In the win the player's HenryPT rams MiniSub at 437.77 s (death row: killer HenryPT, range 34 m, no
+hits), which ends phase 3. On AI the run diverges from 133 s (the plane crash sweep's first land-structure hits,
+`Pearl buildings 13 01`), MiniSub is never rammed, and HenryPT finally dies to Sacramento's flak at 1520.06 s.
+Bisect (before tree checked first: `518193e10`, retest OFF and without the later main merges, `local\g38_rt2OFF`,
+wins at 767.94 s):
+- `02c6b592f` with the kamikaze trio OFF (`local\g39_bx1`): wins 767.94 s; with the other five OFF (`g39_bx2`): wins.
+- One switch OFF at a time (`local\g39_lo_<x>`): `kPlaneCrashSweepBound` OFF wins (767.94 s); 
+  `kLandStructureMeshHitTestBound` OFF wins (767.94 s); `kPlaneLeaderTurnRollBound` OFF loses (1509.35 s);
+  `kMoveOnPathTaskBound`, `kLegAltitudeManagerBound` and `kSquadronDeadTargetRetestBound` OFF each lose (1521.36 s, 639 deaths, identical to AI).
+- The kamikaze and drop-kamikaze tasks never run here (`ordered_planes=0`); the crash sweep logs 158 unit and
+  1671 land hits.
+
+So the loss needs both the crash sweep and the mesh hit test: crashing planes now strike Pearl's buildings on
+their meshes, the battle shifts, and the ram that ends phase 3 does not happen. Both switches were flipped on
+mechanism; this is a plan casualty (an order-file re-plan for the keeper), not a host defect.
