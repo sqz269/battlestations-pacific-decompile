@@ -33,8 +33,8 @@ param(
     [string]$Log = 'local\game_run.log',
     [string]$Lock = "$env:USERPROFILE\.bsp\bsp_game.lock",
     [int]$WaitSeconds = 2400,
-    [int]$Slots = 3,
-    [int[]]$Cores = @(2, 4, 6),
+    [int]$Slots = 6,
+    [int[]]$Cores = @(2, 4, 6, 8, 10, 12),
     [Parameter(ValueFromRemainingArguments = $true)]
     [string[]]$GameArgs = @()
 )

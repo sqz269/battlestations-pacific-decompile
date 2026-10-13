@@ -234,6 +234,42 @@ inline constexpr bool kLuaListenerCallbackArgsBound = true;
 // attacker sets name lands a kill in them.
 inline constexpr bool kLuaKillAttackerBound = true;
 
+// Packet cc13-ver5 (docs/CC13_VER_5.md section 3). The `entityKilled` channel: every
+// unit destroy runs vtable[70h] = 0077D1A0, whose tail calls 00986480 on [00F8A0C4]
+// (0077D248..0077D253) with no session gate. 00986480 boxes the entity (word +174h)
+// and the KillReason string 00E0CF04[entity+70h] (cause 1 = "harm" for a damage death),
+// and calls every subscription whose `entity` set (+0Ch) and `killReason` set (+1Ch,
+// 00968FF0) hold, through 00887E50. It skips an entity whose +3Ch scene parent exists
+// and is not IsKindOf(44h), the Landscape (009864D2..009864F1). Ten scripts in this
+// installation listen on it (three copies of JM01, for its Radio station and the
+// Oklahoma's secondary objective; five sea-training and two air-training missions,
+// whose stages end on it); the host never delivered it.
+// True: AddListener keeps the two sets, and each host death fires the channel once,
+// before `kill`, with (entity, KillReason) as arguments when kLuaListenerCallbackArgsBound;
+// the reason is the cause the host's kill recorded, as the `Dead` publisher names it.
+// SUBSTITUTIONS (labelled): the host's units carry no scene parent other than the
+// Landscape, so the 44h gate always passes; the death is the host's destroyed-unit row,
+// evaluated on the next mission frame as `kill` is, not inside the hit; a squadron
+// slot's death waits for its last plane, as the `kill` dispatcher does.
+// False: entityKilled subscriptions are stored and never fire, as before.
+inline constexpr bool kLuaEntityKilledListenersBound = false;
+
+// Packet cc13-ver5 (docs/CC13_VER_5.md D2). In the image a victim's `Dead` is written
+// before its `kill` channel fires: 00959450 calls 00878990 -> 0077D270 -> 00929B60 ->
+// 00929800 (Dead, KillReason) at 0095945B, and 009813A0 (the kill channel) only at
+// 00959507, in the same row-15 flush. The host evaluates `kill` in the world tick's spawn
+// drain and publishes `Dead` afterwards in run_script_timers, so a kill callback that
+// reads the victim's .Dead, or luaRemoveDeadsFromTable over a table holding it, without
+// setting it itself sees it alive. 55 kill callbacks in this installation do (USN02's
+// convoy hidden objective, ESMP01's luaJPCVSunk failure, USN03's Zuiho, LOMP05's
+// Vanguard, ...); on the last victim of a set the objective or failure never triggers.
+// True: before a victim's kill callbacks run, its self table gets Dead = true and
+// KillReason (the host's recorded cause), as 00929800 does (the later publisher writes
+// the same values again); and the `hit` channel is evaluated before `kill`, as the image
+// fires it inside the hit (0077CE60 -> 00988510) ahead of the flush, so a hit callback
+// on the lethal hit still sees the victim alive. False: as before.
+inline constexpr bool kKillListenerDeadFirstBound = false;
+
 // Packet cc9_lua54_prcp01 (docs/SQUADRON_LAND_TASK.md 5gj): the four natives on the
 // config at [game+21C4h]. 008B2320 SetSimplifiedReconMultiplier stores Lua argument 1
 // at +74h (008B243C), 008B24A0 GetSimplifiedReconMultiplier pushes it (008B258A);
@@ -726,6 +762,9 @@ struct GameMissionLuaSummary {
     unsigned long long listener_queries{0};
     unsigned long long listener_kill_deaths{0};
     unsigned long long listener_kill_fires{0};
+    unsigned long long listener_entity_killed_deaths{0};   // packet cc13-ver5
+    unsigned long long listener_entity_killed_fires{0};
+    unsigned long long listener_kill_dead_first{0};          // packet cc13-ver5
     unsigned long long listener_attacker_filtered{0};
     unsigned long long listener_recon_changes{0};
     unsigned long long listener_recon_fires{0};
@@ -1358,6 +1397,7 @@ public:
     int run_remove_listener_008c6990(lua_State* state, int argument_count);
     int run_is_listener_active_008c6bb0(lua_State* state, int argument_count);
     void dispatch_kill_listeners_009813a0();
+    void dispatch_entity_killed_listeners_00986480();   // packet cc13-ver5
     void dispatch_recon_listeners_00980e50();
     void publish_recon_slot_tables_00806b10();
     void dispatch_hit_listeners_00988510();
@@ -1636,6 +1676,9 @@ private:
         std::vector<float> leak_range;      // leakCaused (+74h)
         // Packet cc9_hit_attacker_player_index: attackerPlayerIndex (+4Ch).
         std::vector<int> attacker_player_indices;
+        // `entityKilled` (00972F00) under kLuaEntityKilledListenersBound: entity +0Ch
+        // (009721C0, kept in entity_ids) and killReason +1Ch (00970FF0).
+        std::vector<std::string> kill_reasons;
     };
     std::vector<ListenerEntry> listeners_;
     // Packet cc9_get_closest_border_zone: world+711Ch..+7130h and world+7134h.
@@ -1646,6 +1689,7 @@ private:
     // attacking unit) -> the clock at which the next hit on the pair is evaluated.
     std::map<std::pair<std::size_t, std::size_t>, float> hit_rate_limit_;
     std::vector<bool> listener_death_seen_;
+    std::vector<bool> listener_entity_killed_seen_;   // packet cc13-ver5
     // Packet cc9_lua_recon_listeners: the last level per unit and party, and the
     // recon pass generation they were taken at.
     std::vector<int> recon_listener_levels_;

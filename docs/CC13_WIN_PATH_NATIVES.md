@@ -579,8 +579,9 @@ still in the world, such as a sinking hull, and true once the drain has released
 
 **The hook it needs (not in the diff):** `GameMissionLuaHost` should null the self table's `Ptr`, as `00928C80` does
 through `00B67530(self, "Ptr", nullptr)`, wherever the units host records `Entity::on_killed_lua_self_00928c80`. Today
-that is only the kill-depth drain, and the comment on `kSunkShipKillDepthBound` (`game_hosts_units.cpp:5842`) records
-that no host wreck has reached KillDepth, so even that hook would not fire in any measured mission.
+that is only the kill-depth drain. The comment on `kSunkShipKillDepthBound` (`game_hosts_units.cpp:5842`) records
+that no host wreck had reached KillDepth, but that is stale: host wrecks now do reach it (for example 85 wrecks and 85
+KillDepth kills in cc9-ships44 `local\s46_b_a4.log`; docs/CC13_VER_5.md, 2026-10-13), so the hook does fire.
 
 **Call sites:**
 

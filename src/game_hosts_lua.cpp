@@ -3520,8 +3520,16 @@ void GameMissionLuaHost::run_spawn_queue_0094c490(float step_seconds) {
     // Packet cc9_lua_listeners. SUBSTITUTION (labelled): the `kill` channel is
     // evaluated here, once per mission frame, for the deaths since the last
     // frame; the image evaluates it inside the kill flush (009813A0).
+    // Packet cc13-ver5, kKillListenerDeadFirstBound: `hit` first, as the image fires it
+    // inside the hit (0077CE60 -> 00988510), ahead of the row-15 flush.
+    if constexpr (kKillListenerDeadFirstBound) dispatch_hit_listeners_00988510();
+    // Packet cc13-ver5: `entityKilled` before `kill`, as 0077D1A0 fires it inside the
+    // destroy, before the flush that reaches 009813A0.
+    if constexpr (kLuaEntityKilledListenersBound) {
+        if (kLuaListenersBound) dispatch_entity_killed_listeners_00986480();
+    }
     if (kLuaListenersBound) dispatch_kill_listeners_009813a0();
-    dispatch_hit_listeners_00988510();
+    if constexpr (!kKillListenerDeadFirstBound) dispatch_hit_listeners_00988510();
     if (kLuaListenersBound && kLuaReconListenersBound) dispatch_recon_listeners_00980e50();
     if (kReconPublishBound) publish_recon_slot_tables_00806b10();
     if constexpr (bsp::kDropKamikazeTaskBound) run_dummy_kamikaze_rounds_006fec00(step_seconds);
@@ -5073,6 +5081,24 @@ int GameMissionLuaHost::run_add_listener_008c6760(lua_State* state, int argument
             listener_read_int_set_fn(state, 3, "newLevel", entry.new_levels);
             listener_read_int_set_fn(state, 3, "party", entry.parties);
         }
+        if (kLuaEntityKilledListenersBound && listener_key_equal(entry.channel, "entityKilled")) {
+            // Packet cc13-ver5. 00972F00: callback, entity (+0Ch, 009721C0) and
+            // killReason (+1Ch, 00970FF0, a table of strings).
+            listener_read_entity_set(state, 3, "entity", entry.entity_ids);
+            ::lua_getfield(state, 3, "killReason");
+            if (::lua_type(state, -1) == LUA_TTABLE) {
+                const int reasons = ::lua_gettop(state);
+                ::lua_pushnil(state);
+                while (::lua_next(state, reasons) != 0) {
+                    if (::lua_type(state, -1) == LUA_TSTRING) {
+                        const char* text = ::lua_tolstring(state, -1, nullptr);
+                        if (text != nullptr) entry.kill_reasons.emplace_back(text);
+                    }
+                    ::lua_pop(state, 1);
+                }
+            }
+            ::lua_pop(state, 1);
+        }
     }
     for (ListenerEntry& existing : listeners_) {
         if (listener_key_equal(existing.channel, entry.channel)
@@ -5124,6 +5150,86 @@ int GameMissionLuaHost::run_is_listener_active_008c6bb0(lua_State* state, int ar
     return 1;
 }
 
+// Packet cc13-ver5, under kLuaEntityKilledListenersBound. 00986480's `entityKilled`
+// channel, reached from every unit destroy (0077D1A0 -> 0077D253). The victim is the
+// unit's entity (id = index + 1) and the reason is 00E0CF04[entity+70h], the cause the
+// host's kill recorded (kill_cause_00926d90, as the `Dead` publisher in
+// game_hosts_script_orders.cpp reads it: 1 "harm" unless a kill passed another).
+// 00968FF0 tests the entity set, then the killReason set; an empty set matches all.
+void GameMissionLuaHost::dispatch_entity_killed_listeners_00986480() {
+    if (units_hooks_ == nullptr || state_ == nullptr) return;
+    const std::vector<std::pair<std::size_t, float>> deaths = units_hooks_->destroyed_units();
+    if (listener_entity_killed_seen_.size() < units_hooks_->count()) {
+        listener_entity_killed_seen_.resize(units_hooks_->count(), false);
+    }
+    // 00E0CF04: none, harm, soft, sell, exitzone, landed, editor.
+    static const char* const kKillReasons[] = {
+        "none", "harm", "soft", "sell", "exitzone", "landed", "editor"};
+    for (const auto& death : deaths) {
+        const std::size_t unit = death.first;
+        if (unit >= listener_entity_killed_seen_.size() || listener_entity_killed_seen_[unit]) {
+            continue;
+        }
+        // The same squadron hold as the `kill` dispatcher (SUBSTITUTION, labelled there).
+        bool squadron_alive = false;
+        for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+            if (r.squadron_unit != bsp::kPlaneSquadronNoUnit && r.squadron_unit == unit
+                && r.live_count() > 0) {
+                squadron_alive = true;
+                break;
+            }
+        }
+        if (squadron_alive) continue;
+        listener_entity_killed_seen_[unit] = true;
+        ++summary_.listener_entity_killed_deaths;
+        const int victim = static_cast<int>(unit + 1);
+        const int cause = units_hooks_->kill_cause_00926d90(unit);
+        const char* const kReason = (cause >= 0 && cause < 7) ? kKillReasons[cause] : "harm";
+        // 0097B8C0 collects every matching callback first, then 00887E50 calls each.
+        std::vector<std::string> callbacks;
+        for (const ListenerEntry& entry : listeners_) {
+            if (!listener_key_equal(entry.channel, "entityKilled")) continue;
+            if (!entry.entity_ids.empty()
+                && std::find(entry.entity_ids.begin(), entry.entity_ids.end(), victim)
+                    == entry.entity_ids.end()) {
+                continue;
+            }
+            if (!entry.kill_reasons.empty()) {
+                bool reason = false;
+                for (const std::string& r : entry.kill_reasons) {
+                    if (listener_key_equal(r, kReason)) { reason = true; break; }
+                }
+                if (!reason) continue;
+            }
+            if (!entry.callback.empty()) callbacks.push_back(entry.callback);
+        }
+        for (const std::string& name : callbacks) {
+            const int top = ::lua_gettop(state_);
+            lua_getfield(state_, LUA_GLOBALSINDEX, name.c_str());
+            if (!lua_isfunction(state_, -1)) {
+                ::lua_settop(state_, top);
+                continue;
+            }
+            ++summary_.listener_entity_killed_fires;
+            const GameUnitRow* row = units_hooks_->unit_row(unit);
+            log_.notef("  entityKilled listener 00986480: entity \"%s\" reason %s -> %s() "
+                "(packet cc13-ver5)", row != nullptr ? row->name.c_str() : "?", kReason,
+                name.c_str());
+            int pushed = 0;
+            if (kLuaListenerCallbackArgsBound) {
+                if (!push_resolved_entity_by_id(state_, victim)) lua_pushnil(state_);
+                ::lua_pushstring(state_, kReason);
+                pushed = 2;
+            }
+            if (::lua_pcall(state_, pushed, 0, 0) != 0) {
+                const char* message = lua_tolstring(state_, -1, nullptr);
+                note_error(message != nullptr ? message : std::string("(no message)"));
+            }
+            ::lua_settop(state_, top);
+        }
+    }
+}
+
 // 009813A0's `kill` channel: 0097B8C0 collects the callback of every subscription
 // whose condition (0096ACE0) holds, then each is called. The victim is the unit's
 // entity (id = index + 1).
@@ -5152,6 +5258,29 @@ void GameMissionLuaHost::dispatch_kill_listeners_009813a0() {
         listener_death_seen_[unit] = true;
         ++summary_.listener_kill_deaths;
         const int victim = static_cast<int>(unit + 1);
+        if constexpr (kKillListenerDeadFirstBound) {
+            // Packet cc13-ver5: 0095945B (Dead, KillReason via 00929800) runs before
+            // 00959507 (this channel). Same slot test as the Dead publisher: the self
+            // table's Ptr must be this unit's id.
+            if (push_resolved_entity_by_id(state_, victim)) {
+                lua_getfield(state_, -1, "Ptr");
+                const bool own_slot = lua_touserdata(state_, -1)
+                    == reinterpret_cast<void*>(static_cast<std::uintptr_t>(victim));
+                ::lua_settop(state_, ::lua_gettop(state_) - 1);
+                if (own_slot) {
+                    static const char* const kKillReasons[] = {
+                        "none", "harm", "soft", "sell", "exitzone", "landed", "editor"};
+                    const int cause = units_hooks_->kill_cause_00926d90(unit);
+                    lua_pushboolean(state_, 1);
+                    lua_setfield(state_, -2, "Dead");
+                    ::lua_pushstring(state_, (cause >= 0 && cause < 7) ? kKillReasons[cause]
+                                                                       : "harm");
+                    lua_setfield(state_, -2, "KillReason");
+                    ++summary_.listener_kill_dead_first;
+                }
+                ::lua_settop(state_, ::lua_gettop(state_) - 1);
+            }
+        }
         // Packet cc9_lua51_listener_args: the boxed lastAttacker (+2C8h, one based, 0 =
         // none) and +2D8h. The unit constructor 0077EED0 leaves +2C8h = 0 (0077EFDD)
         // and +2D8h = -1 (0077EFEF OR EAX,-1; 0077F012), and only 0077CE60's block
@@ -8413,6 +8542,15 @@ void GameMissionLuaHost::report_mission_script_state() {
         summary_.listener_adds, summary_.listener_removes, summary_.listener_queries,
         listeners_.size(), summary_.listener_kill_deaths, summary_.listener_kill_fires,
         summary_.listener_attacker_filtered);
+    if constexpr (kLuaEntityKilledListenersBound) {
+        log_.notef("summary mission script entityKilled listeners bound=1 deaths=%llu "
+            "fires=%llu (00986480, packet cc13-ver5)", summary_.listener_entity_killed_deaths,
+            summary_.listener_entity_killed_fires);
+    }
+    if constexpr (kKillListenerDeadFirstBound) {
+        log_.notef("summary mission script kill dead-first bound=1 published=%llu "
+            "(0095945B before 00959507, packet cc13-ver5)", summary_.listener_kill_dead_first);
+    }
     log_.notef("summary mission script hit listeners bound=%d events=%llu fires=%llu "
         "unmodelled=%llu (00988510, packet cc9_lua_hit_listeners)", kLuaHitListenersBound ? 1 : 0,
         summary_.listener_hit_events, summary_.listener_hit_fires,
