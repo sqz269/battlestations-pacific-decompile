@@ -638,6 +638,7 @@ struct GameUnitSlot {
     float kz_moveto_near{0.0f};            // 009AED20: BotStateMoveTo(+4Ch, +4Ch, +48h)
     float kz_moveto_speed_range{0.0f};
     bool drop_kamikaze_task_installed{false};
+    bool torpedo_install_refused_class{false};   // packet cc9_dkz_spent_rtb, logged once
     std::size_t dkz_target_plus_one{0};
     bsp::DropKamikazeTask dkz;
     bsp::PilotAttackMode dkz_attack_mode_370{bsp::PilotAttackMode::kForced};
@@ -2601,6 +2602,25 @@ struct GameUnitsHost::Impl {
     std::map<std::string, SpentOrdnanceRtb> spent_rtb;
     unsigned long long spent_rtb_latches{0}, spent_rtb_ends{0}, spent_rtb_issues{0};
     unsigned long long rack_device_reloads{0};   // packet cc9_rack_device_reload
+    unsigned long long torpedo_install_refused_class{0};   // packet cc9_dkz_spent_rtb
+    // Packet cc9_dkz_spent_rtb: 009AE1B0, the drop-kamikaze task's break-off
+    // (task vtable +1Ch), asked by 007EE6B0 for 009F7C90's ending. Inputs as the
+    // torpedo feed takes them: 0099C230 true (no in-mission interface manager),
+    // the target the unit's command resolves to and its +5Dh (state->simulate),
+    // reload as ctl+369h (1) and [00E17BF2], the task's state and +4B9h.
+    bool drop_kamikaze_breaks_off_009ae1b0(const GameUnitSlot& u) const {
+        bsp::DropKamikazeBreakOffInputs bi;
+        bi.base_allows = true;
+        const GameUnitSlot* tgt = nullptr;
+        if (u.command_target_plus_one != 0 && u.command_target_plus_one - 1 < slots.size())
+            tgt = slots[u.command_target_plus_one - 1].get();
+        bi.has_target_440 = tgt != nullptr;
+        bi.target_marked_5d = tgt != nullptr && tgt->state != nullptr && tgt->state->simulate != 0;
+        bi.reload_enabled = kLuaDeviceReloadEnabledBound && lua_device_reload_enabled_00e17bf2();
+        bi.current = u.dkz.state;
+        bi.has_ordnance_4b9 = u.dkz.ap.has_ordnance_c1;
+        return bsp::drop_kamikaze_should_break_off_009ae1b0(bi);
+    }
     unsigned long long retest_dead_targets{0}, retest_ends{0};   // kSquadronDeadTargetRetestBound
     void note_kill_cause(std::size_t unit, int cause) {
         if (kill_cause_by_unit.size() <= unit) kill_cause_by_unit.resize(unit + 1, 1);
@@ -6226,6 +6246,13 @@ struct GameUnitsHost::Impl {
     // the torpedo feed (cc9_device_reload_feeds) already does. False: both read
     // false, so a spent dive bomber breaks off to `done` whatever the flag.
     static constexpr bool kDiveBreakOffReloadFeedBound = true;   // ON: SQUADRON_LAND_TASK 5go.1
+    // Packet cc9_dkz_spent_rtb (docs/CC13_GPR_38.md 1.4-1.6, SQUADRON_LAND_TASK 5gq).
+    // True: the torpedo task is installed only under the torpedo command 00E08F18
+    // (0099A170's class chain), and 009F7C90's ending asks a drop-kamikaze member
+    // its 009AE1B0. So a spent BettyOhka squadron reaches 0084E010's B5 and is
+    // sent home. False: every plane with 2Bh ordnance and a target also gets a
+    // torpedo task, whose break-off answers for the Betty.
+    static constexpr bool kDropKamikazeSpentRtbBound = false;
     // Packet cc9_lua45_rack_equipment_device (GUNNERY 144, SQUADRON_LAND_TASK 5ev).
     // True: (a) an absent RepeatTime reads as 006E0242's default, 00B66330 with
     // [00CE3D30] = 0.6f, at both rack readers; (b) a rack's device is the plane's
@@ -11834,7 +11861,10 @@ void GameUnitsHost::Impl::record_return_to_base_007f16d0(std::size_t unit_index)
     in.head_present = true;
     in.head_is_kamikaze_17 = bsp::unit_is_kind_of(slots[head]->class_id, 0x17);
     in.head_c24 = false;
-    in.has_deck_369 = true;
+    // sq+369h ReloadEnabled: 007F1FE0 from the scene bag over the constructor's 1
+    // (007F2D09); no scene in this installation authors it, so the substitution
+    // shared with the other +369h readers (cc13-gpr38b).
+    in.has_deck_369 = kLuaDeviceReloadEnabledBound;
     const bool home_authored = sq->squadron_unit < slots.size()
         && !slots[sq->squadron_unit]->scene_home_base_key.empty();
     in.home_arm_issues = false;
@@ -15311,6 +15341,10 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
                 // Packet cc9_plane_level_bomb_task: its vtable[1Ch] 009B8D80.
                 else if (bsp::kPlaneLevelBombTaskBound && u.level_bomb_task_installed)
                     all = all && u.lb_break_off_now;
+                // Packet cc9_dkz_spent_rtb: the drop-kamikaze task's vtable[1Ch]
+                // 009AE1B0 (docs/CC13_GPR_38.md 1.3 step 4).
+                else if (Impl::kDropKamikazeSpentRtbBound && u.drop_kamikaze_task_installed)
+                    all = all && h.drop_kamikaze_breaks_off_009ae1b0(u);
             }
             if (all) {
                 st.ended = true;
@@ -26240,6 +26274,21 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // true on exactly ONE tick per aircraft, arm tick 0
                             // in moveto at 4183 m, and false at the drop.
                             if (!bsp::ordnance_has_torpedo_2bh(set)) return;
+                            // Packet cc9_dkz_spent_rtb: 0099A170 builds MakeTorpedo
+                            // only for the director's 00E08F18; a BettyOhka (racks
+                            // 2Bh and 2Fh) under dropkamikaze gets that task alone.
+                            if (GameUnitsHost::Impl::kDropKamikazeSpentRtbBound &&
+                                unit_.attack_command_class != bsp::kAttackCmdTorpedo) {
+                                if (!unit_.torpedo_install_refused_class) {
+                                    unit_.torpedo_install_refused_class = true;
+                                    ++owner_.torpedo_install_refused_class;
+                                    owner_.log.notef("  torpedo task %s: not installed, command "
+                                        "class %08X is not torpedo (0099A170, packet "
+                                        "cc9_dkz_spent_rtb)", unit_.row.name.c_str(),
+                                        unit_.attack_command_class);
+                                }
+                                return;
+                            }
                             unit_.torpedo_task_installed = true;
                             // 009D3050 leaves +310h on the moveto/follow pair
                             // 009D2DA0 registered; 009D24E0 leaves +98h at -1.
@@ -36509,6 +36558,9 @@ void GameUnitsHost::report() {
                 "(006E57A4, packet cc9_rack_device_reload)",
                 GameUnitsHost::Impl::kRackDeviceReloadBound ? 1 : 0, host.rack_device_reloads,
                 lua_device_reload_enabled_00e17bf2() ? 1 : 0);
+            host.log.notef("summary dkz spent rtb bound=%d torpedo_refused_class=%llu (0099A170 / 009AE1B0, "
+                "packet cc9_dkz_spent_rtb)", GameUnitsHost::Impl::kDropKamikazeSpentRtbBound ? 1 : 0,
+                host.torpedo_install_refused_class);
             host.log.notef("summary mission squadron retest bound=%d dead_targets=%llu ends=%llu "
                 "(009F8160 / 009F7C90, cc9-gunnery38)", bsp::kSquadronDeadTargetRetestBound ? 1 : 0,
                 host.retest_dead_targets, host.retest_ends);
