@@ -3122,7 +3122,7 @@ void GameScriptOrdersHost::entity_set_skill_level(void* entity, int level) {
     // unit+390h; a ship reaches 009565A0 through 0080DF90. The host keeps both
     // as the slot's one index. Its readers: the dive-bomb approach's capture
     // (009F9D22). The weapon director's and child objects' re-skill that
-    // 009565A0 also performs is not modelled (the gun bots read no skill here).
+    // 009565A0 also performs is not modelled (the gun bots read units.skill_level() live, so 00727E70's bot+34h fan-out is in effect; GUNNERY_OPEN_ITEMS 212).
     const std::size_t index = index_of(entity);
     if (!kSkillLevelBound || index >= units_.count()) {
         log_.unimplemented("UnitInstance::set_skill_level", "0089539a");
