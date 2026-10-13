@@ -3,11 +3,15 @@
 #include "bsp/camera_affine.hpp"
 #include "bsp/camera_multiply.hpp"
 #include "bsp/camera_projection.hpp"
+#include "bsp/native_physical_file_date.hpp"
+#include "bsp/native_pooled_string_substring.hpp"
+#include "bsp/native_string.hpp"
 
 #include <intrin.h>
 
 #include <algorithm>
 #include <array>
+#include <utility>
 #include <cmath>
 #include <new>
 #include <stdexcept>
@@ -2651,6 +2655,122 @@ void terrain_visibility_group_build_flat_00ade0e0(void* group, const void* name,
             rd<void**>(group, 0x40)[rd<std::int32_t>(group, 0x38) * y + x] = tile;
         }
     }
+}
+
+void bush_group_initialise_00ae2450(void* group, void* stream, std::uint32_t count, void* name_a,
+    void* name_b, NativeStringStorage& strings, TerrainHost& host, TerrainLeft2Host& left,
+    const TerrainLeft2BushCalls& bush) {
+    struct Header {
+        std::uint32_t length;
+        char* data;
+    };
+    const auto release = [&strings](Header& h) {
+        if (h.data != nullptr) strings.release(h.data, h.length + 1u);
+    };
+    const auto literal = [&strings](Header& h, const char* text) {
+        h = {0, nullptr};
+        resize_native_string_header_0041dd40(&h, strings, static_cast<std::uint32_t>(std::strlen(text)), true);
+        if (h.data != nullptr) std::memcpy(h.data, text, h.length + 1u);
+    };
+    const auto assign = [&strings](void* destination, const void* source) {
+        if (destination == source) return;
+        resize_native_string_header_0041dd40(destination, strings, rd<std::uint32_t>(source, 0), true);
+        if (rd<std::uint32_t>(source, 0) != 0) {
+            std::memcpy(rd<char*>(destination, 4), rd<const char*>(source, 4), rd<std::uint32_t>(destination, 0));
+        }
+    };
+    wr<std::uint8_t>(group, 0x40, 1);
+    wr<std::uint32_t>(group, 0x14, count);
+    assign(at(group, 0x04), name_a);
+    assign(at(group, 0x0C), name_b);
+    Header normal_a{}, normal_b{};
+    {
+        Header suffix{}, stem{};
+        literal(suffix, "_normal.tga");
+        construct_native_string_substring_00469840(at(group, 0x04), &stem, 0, rd<std::uint32_t>(group, 0x04) - 4u, strings);
+        concatenate_native_string_headers_004261a0(&stem, &normal_a, &suffix, strings);
+        release(stem);
+        release(suffix);
+    }
+    {
+        Header suffix{}, stem{};
+        literal(suffix, "_normal.tga");
+        construct_native_string_substring_00469840(at(group, 0x0C), &stem, 0, rd<std::uint32_t>(group, 0x0C) - 4u, strings);
+        concatenate_native_string_headers_004261a0(&stem, &normal_b, &suffix, strings);
+        release(stem);
+        release(suffix);
+    }
+    void* const device = host.read_global(0x00F8D394);
+    void* declaration;
+    {
+        Header file{};
+        literal(file, "pf44nss2uf42uf44cc.mvfm");
+        declaration = l2_vcall<void*>(device, 0x38, &file);
+        release(file);
+    }
+    wr<void*>(group, 0x28, l2_vcall<void*>(device, 0x5C, count * 6u, 1u, declaration));
+    void* const data = l2_vcall<void*>(rd<void*>(group, 0x28), 0x10, count * 6u, 0u, 0u);
+    l2_vcall<void>(stream, 0x24, data, count * 0x120u, 0u);
+    l2_vcall<void>(rd<void*>(group, 0x28), 0x14);
+    struct {
+        void* declarations[4];
+        std::uint32_t count;
+    } list{{declaration, nullptr, nullptr, nullptr}, 1};  // [1..3] stack garbage in the image
+    wr<void*>(group, 0x50, l2_vcall<void*>(device, 0x40, &list));
+    if (declaration != nullptr) l2_release(declaration);
+    if (rd<void*>(group, 0x20) == nullptr) {
+        void* model = nullptr;
+        if (void* const slot = bush.bush_model_pool_allocate_00ae1870(reinterpret_cast<void*>(0x00F8C228))) {
+            Header name{};
+            literal(name, "BushGroup");
+            model = left.generated_model_construct_00b75030(slot, &name);
+            wr<std::uint32_t>(model, 0, 0x00D5D4A0u);
+            release(name);
+        }
+        wr<void*>(group, 0x20, model);
+        wr<std::uint32_t>(model, 0x138, rd<std::uint32_t>(model, 0x138) & ~3u);
+        left.node_set_parent_00b6e680(rd<void*>(group, 0x20), l2_vcall<void*>(rd<void*>(group, 0x00), 0x40));
+        left.node_propagate_root_00b6d890(rd<void*>(group, 0x20),
+                                          rd<void*>(l2_vcall<void*>(rd<void*>(group, 0x00), 0x40), 0xA4));
+        wr<void*>(rd<void*>(group, 0x20), 0x184, group);
+        for (const auto& [offset, effect] : {std::pair<std::uint32_t, const char*>{0x3C, "bush_lores.mshd"},
+                                             std::pair<std::uint32_t, const char*>{0x38, "bush.mshd"}}) {
+            Header name{};
+            literal(name, effect);
+            wr<void*>(group, offset, left.material_create_for_effect_name_00535320(&name));
+            release(name);
+        }
+        void* const registry = host.read_global(0x00F8C26C);
+        const auto text = [](const char* p) { return p != nullptr ? p : ""; };  // 00F8C224
+        bush.atlas_find_item_00aefb20(registry, text(rd<const char*>(group, 0x10)));
+        bush.atlas_find_item_00aefb20(registry, text(rd<const char*>(group, 0x08)));
+        bush.atlas_find_item_00aefb20(registry, text(normal_b.data));
+        bush.atlas_find_item_00aefb20(registry, text(normal_a.data));
+        void* const foliage = host.read_global(0x00F8C210);
+        left.material_set_texture_slot_00b189f0(rd<void*>(group, 0x3C), 0, bush.bush_texture_00ad57d0(foliage));
+        left.material_set_texture_slot_00b189f0(rd<void*>(group, 0x3C), 1, bush.bush_normal_texture_00ad57e0(foliage));
+        left.material_set_texture_slot_00b189f0(rd<void*>(group, 0x3C), 2,
+                                                bush.shadow_map_texture_00b0d140(host.read_global(0x00F8D39C)));
+        left.material_set_texture_slot_00b189f0(rd<void*>(group, 0x38), 0, bush.bush_texture_00ad57d0(foliage));
+        left.material_set_texture_slot_00b189f0(rd<void*>(group, 0x38), 1, bush.bush_normal_texture_00ad57e0(foliage));
+    }
+    float box[6];
+    l2_vcall<void>(rd<void*>(group, 0x00), 0x0C, box);
+    float centre[3], half[3];
+    for (int i = 0; i < 3; ++i) {
+        centre[i] = f(static_cast<double>(f(static_cast<double>(box[i]) + box[i + 3])) * 0.5);  // 00D7A280
+        half[i] = f(static_cast<double>(f(static_cast<double>(box[i + 3]) - box[i])) * 0.5);
+    }
+    void* node = nullptr;
+    if (void* const block = host.operator_new(0x38)) {  // 00BF681B
+        const float y = rd<float>(l2_refreshed_node(l2_vcall<void*>(rd<void*>(group, 0x00), 0x40), left), 0x124);
+        node = bush.bush_quad_node_read_00ae0f10(block, stream, centre, half, y);
+    }
+    wr<void*>(group, 0x18, node);
+    release(normal_b);
+    release(normal_a);
+    release(*static_cast<Header*>(name_a));  // the by-value arguments, owned by the callee (RET 18h)
+    release(*static_cast<Header*>(name_b));
 }
 
 } // namespace bsp::cc13_terrain

@@ -69,6 +69,9 @@ The new image calls are in `TerrainLeft2Host` (and `TerrainLeft2NodeCalls` for t
   address is 8, which the image dereferences.
 - `00AE5870` tree group initialiser. The instance vertex buffer is read straight from the stream;
   the visibility object `00AE5550` gets the owner's box less the owner node's world translation.
+- `00AE2450` bush group initialiser. The two names arrive by value and the callee releases them;
+  the source takes ownership the same way. The x87 box centre and half extents were checked against the
+  bytes (`DC C9`, `DE E6`/`E1`/`E2`).
 - `00ADE0E0` flat visibility group. It is the `00ADB980` tile body run for a 4 x 4 grid, except that
   only the first height block's samples are set.
 

@@ -1287,4 +1287,36 @@ struct TerrainLeft2NodeCalls {
 };
 void terrain_visibility_group_build_flat_00ade0e0(void* group, const void* name, HeightFieldHost& fields,
     TerrainHost& host, BlockHost& blocks, TerrainLeft2Host& left, const TerrainLeft2NodeCalls& nodes);
+
+// 00AE2450 BSP_BushGroup_Initialise, __thiscall(ECX group, stream, count, NativeString a, NativeString b)
+// RET 18h; the two strings arrive by value and the callee releases them at the end. BYTE +40h = 1; +14h =
+// count; a and b are assigned into +4h and +0Ch (resize keeping, copy; no self test needed); the normal
+// names a[0 .. len-4) + "_normal.tga" and b[...] + "_normal.tga" (00469840, 004261A0) are kept as
+// temporaries; declaration "pf44nss2uf42uf44cc.mvfm"; +28h = device +5Ch(6 * count, 1, decl), locked
+// (+10h with 6 * count, 0, 0), filled by stream vtable +24h(data, count * 120h, 0) and unlocked; +50h =
+// device +40h({decl, count 1}); the declaration released when non-null. When +20h is null: +20h = model
+// "BushGroup" from the pool at 00F8C228 (00AE1870, then 00B75030 and vtable 00D5D4A0), +138h &= ~3, parent
+// and root from the owner node (vtable +40h), model +184h = group; +3Ch = "bush_lores.mshd", +38h =
+// "bush.mshd" (00535320); atlas 00AEFB20 lookups (results unused) of b, a, b's normal and a's normal, each
+// "" (00F8C224, zero-fill) when null; +3Ch slots 0 / 1 / 2 = 00AD57D0 / 00AD57E0 of [00F8C210] and
+// 00B0D140 of [00F8D39C]; +38h slots 0 / 1 the first two. Then, on every path, the owner's box (vtable
+// +0Ch) gives centre = float(float(min + max) * 0.5) and half = float(float(max - min) * 0.5) per axis
+// (x87 checked: DC C9, DE E6 / E1 / E2); +18h = 00AE0F10(new 38h, stream, &centre, &half, owner node +124h)
+// (null when the allocation fails). The temporaries are released, normal b then normal a, then a, b.
+} // namespace bsp::cc13_terrain
+namespace bsp {
+class NativeStringStorage;
+}
+namespace bsp::cc13_terrain {
+struct TerrainLeft2BushCalls {
+    void* (*bush_model_pool_allocate_00ae1870)(void* pool_00f8c228);
+    void* (*atlas_find_item_00aefb20)(void* registry, const char* name);       // ECX [00F8C26C]
+    void* (*bush_texture_00ad57d0)(void* foliage);                             // ECX [00F8C210]
+    void* (*bush_normal_texture_00ad57e0)(void* foliage);
+    void* (*shadow_map_texture_00b0d140)(void* shadow_owner);                  // ECX [00F8D39C]
+    void* (*bush_quad_node_read_00ae0f10)(void* node, void* stream, const float* centre, const float* half, float y);
+};
+void bush_group_initialise_00ae2450(void* group, void* stream, std::uint32_t count, void* name_a,
+    void* name_b, NativeStringStorage& strings, TerrainHost& host, TerrainLeft2Host& left,
+    const TerrainLeft2BushCalls& bush);
 } // namespace bsp::cc13_terrain
