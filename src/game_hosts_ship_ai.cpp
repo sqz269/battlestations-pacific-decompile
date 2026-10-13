@@ -573,7 +573,7 @@ inline constexpr bool kShipAiClearanceOutcomeWiringBound = true;
 // always was, and 009F47A7 is unreachable. Flip it together with
 // bsp::kShipAiObstacleBackoffCountdownBound: without the countdown an armed
 // latch never expires and the ship stays in the astern-only window.
-inline constexpr bool kShipAiSectorBlockerBound = false;
+inline constexpr bool kShipAiSectorBlockerBound = true;  // ON: lead navigator pair; all four wins hold (2026-10-13)
 // The record 009F3F80 and 009D8B90 read through sector+24h, filled from the live
 // node when the drive runs. `record` must stay the first member: the obstacle
 // binding maps the record back to its unit.
@@ -587,19 +587,19 @@ static_assert(std::is_standard_layout_v<ShipAiSectorBlockerRecord>);
 // lead, is zeroed at the top of every 009ED6B0 tick (009ED708), so the arm
 // tail's setback allowance (009EEAFE, 32Ch * |328h|) is zero on a tick whose
 // lead did not apply. False: the last applied lead persists, as it always did.
-inline constexpr bool kShipAiTurnLeadResetBound = false;
+inline constexpr bool kShipAiTurnLeadResetBound = true;  // ON: lead navigator pair; all four wins hold (2026-10-13)
 // Packet cc13-ver7 (docs/CC13_VER_7.md, D5). True: 009EF910's way-clear timer
 // and the block's -1.0f "direction change" mark share blk+374h, as in the image,
 // so a latch or escape flip forces the clearance (blk+37Ch, +370h) to refresh
 // on the next call. False: two separate host fields, as before, and the refresh
 // waits out NearbyShip_WayClearCheckTime (0.25 in this installation).
-inline constexpr bool kShipAiClearanceTimerSharedBound = false;
+inline constexpr bool kShipAiClearanceTimerSharedBound = true;  // ON: lead navigator pair; all four wins hold (2026-10-13)
 // Packet cc13-ver7 (docs/CC13_VER_7.md, D6). True: a direction change zeroes the
 // stall accumulator blk+384h that 009F3F80 reads (009F489E, 009F49D9, 009F4A2B),
 // as the image's six direction-change stores do. False: the zeroes go to a field
 // nothing reads, as before. The stall only grows in the back-off arm, so this
 // has no reach unless kShipAiSectorBlockerBound is on too.
-inline constexpr bool kShipAiStallSharedBound = false;
+inline constexpr bool kShipAiStallSharedBound = true;  // ON: lead navigator pair; all four wins hold (2026-10-13)
 // Packet cc9_command_building_capture_bind (docs/SHIP_AI_OPEN_ITEMS.md sections 80
 // and 81). True: a CommandBuilding (kind 1Ch) whose health reaches 0 is neutralized
 // (006F3270 -> 006F2940 -> 006F4D10 slot 9) instead of killed; a neutral building

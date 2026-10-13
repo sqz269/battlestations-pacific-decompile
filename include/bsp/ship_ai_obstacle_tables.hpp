@@ -309,7 +309,7 @@ bool ship_ai_backoff_countdown_009f3f89(float& hold_354, ShipAiObstacleState& ob
 // latch 009F47A7 arms at 1.0f is never counted down, so an AI ship that backs
 // off once stays astern-only (009F47FC's [-1, 0] window) and the escape
 // section (009F488D) never runs again unless the stall passes 10.
-inline constexpr bool kShipAiObstacleBackoffCountdownBound = false;
+inline constexpr bool kShipAiObstacleBackoffCountdownBound = true;  // ON: lead navigator pair; all four wins hold (2026-10-13)
 
 // 009ED788, MOV byte [ESI+36Ch],0 with ESI = blk, in 009ED6B0's unconditional
 // per-step reset span (009ED759..009ED795). The escape byte is set again only by
