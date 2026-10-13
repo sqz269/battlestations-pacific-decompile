@@ -13,7 +13,7 @@ namespace bsp {
 // ---------------------------------------------------------------------------
 // Settings this installation feeds the motion tail (00424C40 singleton), read from
 // scripts/datatables/shipglobals.lua on disk. The host passes 1.0 / 0 / 0 for the
-// first three (src/ship_motion.cpp:307, src/game_hosts_units.cpp:9568 and :9962).
+// first three (src/ship_motion.cpp:307, src/game_hosts_units.cpp:9595 and :9989).
 // ---------------------------------------------------------------------------
 struct ShipMotionSettingsCc13 {
     float submarine_depth_speed_mul_4b4{0.834f};  // Submarine.SubmarineDepthSpeedMul, 008269E6

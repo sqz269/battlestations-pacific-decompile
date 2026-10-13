@@ -43,14 +43,14 @@ them as divergences.
 
 | function | host | verdict |
 | --- | --- | --- |
-| `00825F20` command tail `00826754`-`00826B84` | `ship_motion_step_00825f20` and its helpers (src/ship_motion.cpp:139-394), bound by `ShipMotionBinding` (src/game_hosts_units.cpp:9490-9999) | **partial**: S1, B1 |
-| `00825F20` motion tail `00826C34`-`00826D69` | `ship_motion_tail_00826c34` (src/ship_ai_rudder_hop.cpp:15), with `tin.dt = step_seconds` (src/game_hosts_units.cpp:34272) | **partial**: D1, which is latent |
+| `00825F20` command tail `00826754`-`00826B84` | `ship_motion_step_00825f20` and its helpers (src/ship_motion.cpp:139-394), bound by `ShipMotionBinding` (src/game_hosts_units.cpp:9517-10026) | **partial**: S1, B1 |
+| `00825F20` motion tail `00826C34`-`00826D69` | `ship_motion_tail_00826c34` (src/ship_ai_rudder_hop.cpp:15), with `tin.dt = step_seconds` (src/game_hosts_units.cpp:34321) | **partial**: D1, which is latent |
 | `0092D300` | `unit_approach_axial_speed_0092d300` (src/unit_forces.cpp:149) | **matches** |
 | `0092E8C0` | `ship_apply_steering_0092e8c0`, `ship_righting_rate_0092e9e1` (src/ship_motion.cpp:49-133) | **partial**: R1 (constants) |
 | `00811890`, `0092D730`, `0082ECB0`, `0082E890` | `unit_yaw_rate_00811890` and its helpers (src/unit_rudder.cpp:53-120), `unit_forward_speed_0092d730` (src/unit_motion.cpp:66) | **match** |
 | `00825DE0` | `unit_propeller_turn_assist_00825de0` (src/unit_forces.cpp:218); settings passed as 0 | **formula matches**; inert in both (section 2.3) |
 | `00825EC0` | `unit_forward_acceleration_00825ec0` (src/unit_forces.cpp:140); settings+228h passed as 0 | **formula matches**; inert in both |
-| `00937440` | `unit_steering_torque_00937440` (src/unit_forces.cpp:236), called for every surface ship (src/game_hosts_units.cpp:9551-9582) | **partial**: T1 and T2 |
+| `00937440` | `unit_steering_torque_00937440` (src/unit_forces.cpp:236), called for every surface ship (src/game_hosts_units.cpp:9578-9609) | **partial**: T1 and T2 |
 | `009329C0` | `ship_hydro_apply_forces_009329c0` (src/ship_hydro_forces.cpp:282) | **formulas match**. Leased to `cc13-ver5`, so I added no record (section 2.5) |
 | `00834E90` | `unit_update_propellers_00834e90` (src/unit_motion.cpp:375), bound by `run_propellers_00834e90` (src/unit_instance_step11.cpp:207) | **head matches**, including the `DC C9` form. The per-propeller loop is presentation and is not reached in the host |
 | `00815520`, `00815590` | not hosted by cc9; modelled by `kHelmSaveKeys_00815520` (include/bsp/gameplay_seg50_cc13.hpp:129) | **model matches** |
@@ -222,7 +222,7 @@ The only differences are the sign of a zero (`0 - x` against `-1*x`, `x + 0`) an
 - **B1, the torpedo boat turbo has no class values and no seeded reserve.**
   - Host:
     - `boost_capacity` (class+808h) and `boost_speed_scale` (class+80Ch) stay 0;
-    - `boost_refill_time` (class+810h) is 1.0 (src/game_hosts_units.cpp:15772);
+    - `boost_refill_time` (class+810h) is 1.0 (src/game_hosts_units.cpp:15806);
     - the reserve unit+1188h starts at 0.
   - Image:
     - `00857F40` reads TurboTime (default 10.0), TurboStrength (default 3.0) and
@@ -243,7 +243,7 @@ The only differences are the sign of a zero (`0 - x` against `-1*x`, `x + 0`) an
   - Model: `torpedo_boat_turbo_class_00857f40`. The seed is already modelled as
     `torpedo_boat_sentity_init_00857c80` (gameplay_seg53_cc13.hpp:484).
 - **T1, the torpedo boat rudder torque is zero.**
-  - Host: src/game_hosts_units.cpp:9568 sets `in.settings_rudder_torque = 0.0f` ("settings+588h, not
+  - Host: src/game_hosts_units.cpp:9595 sets `in.settings_rudder_torque = 0.0f` ("settings+588h, not
     recovered").
   - Image: settings+588h is `Physics.TBoatNyomatekSzorzo`, **1500** here (shipglobals.lua:553;
     reader default 30000 at `0083FDDF`). `00937440` adds a torque along the hull's forward axis:
@@ -254,7 +254,7 @@ The only differences are the sign of a zero (`0 - x` against `-1*x`, `x + 0`) an
     - The heel shifts the buoyancy elements and so feeds back through `009329C0`.
     - The host's boats do not heel from the rudder.
     - The size depends on the body inertia, which I did not measure.
-    - The host comment at :9541 says its inverse inertia is zero anyway. If so, wiring the value
+    - The host comment at game_hosts_units.cpp:9560-9569 says its inverse inertia is zero anyway. If so, wiring the value
       alone would move nothing.
   - Model: `tboat_rudder_torque_00937440`, in the image's grouping.
 - **T2, the host applies `00937440` to every surface ship.**
@@ -285,7 +285,7 @@ The only differences are the sign of a zero (`0 - x` against `-1*x`, `x + 0`) an
 - **D1, the motion tail uses the raw dt (latent).**
   - Image: `00826D04 FSUB [ESP+0C4h]` subtracts the slot that `00826144` overwrote with the scaled
     dt. The same slot feeds `00826B59`/`00826B6F`.
-  - Host: src/game_hosts_units.cpp:34272 passes `step_seconds`.
+  - Host: src/game_hosts_units.cpp:34321 passes `step_seconds`.
   - Effect: it differs only when unit+340h (the per-unit time scale, CheatTurbo) is > 0. The host
     never sets it, so there is no effect now.
 - **NaN-only differences.** None of these is reachable with finite inputs:
