@@ -138,3 +138,5 @@ one step below 1.0f once it began to close. The switch takes the raw listing's g
 release. Nothing in the host reads the bay below 1.0f except `007BBBA0`'s `!= 1.0f` guard, which a stalled bay and a
 closed bay both pass. So: gameplay identical (verdict 0 or 1) on the torpedo rows (USN01 plan d, LOMP10, ESMP08). If
 so, the switch can flip ON and the wing pairs are re-run on top of it.
+
+**The pair** (OFF = tree build at `1f83f2ffa`/`c01d9516e`, ON = `local\p5_so`, `local\p5so_{off,on}_*.log`): USN01 plan d 22000 exit 1, LOMP10 `p3_l10_b` exit 1 (completed 1158.10 s both), ESMP08 30000 exit 0. As predicted: gameplay identical. **Flipped ON** (cc9-physics5, 2026-10-13).

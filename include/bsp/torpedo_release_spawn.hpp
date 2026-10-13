@@ -83,7 +83,7 @@ struct PlaneActuatorBlock {
 // host's earlier order, which guarded each channel by its OWN enabled byte and
 // value == 1.0f, so an enabled channel below 1.0f never moved (the bay stalled
 // one step below 1.0f once it began to close). Packet cc9_actuator_step_order.
-inline constexpr bool kActuatorBlockStepOrderBound = false;
+inline constexpr bool kActuatorBlockStepOrderBound = true;  // ON: USN01 d, LOMP10, ESMP08 30000 gameplay identical
 void plane_actuator_block_step_007de3a0(PlaneActuatorBlock& block, float dt,
     unsigned frame);
 
