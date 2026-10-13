@@ -875,3 +875,10 @@ Plan for the resume, APPROVED by the lead:
 4. USN04 V1 confirmation (queue 2): write a minimal USN04 order file that reaches phase 2 (read
    usn_19_coralus.lua's phase-1 exit). Pair V1 OFF/ON with BSP_FRAME_JITTER=20,3, --frames 45200 --mission-frames
    45000 --mission-frame-seconds 0.0222 and the reference env.
+
+**Update, same day:** plan step 1 is DONE. The four switches are ON in the commit that adds this note (lead's go
+under the pause). Still pending for the resume:
+- ESMP08 br3l on this build. The all-ON run was stopped before it ended; on main it was already lost, so expect a
+  re-plan with `p6_e8_extend.py` or re-targets to Cummings.
+- The USN01 `usn01_p7_u1_a` jitter checks.
+- Steps 3-4 above.
