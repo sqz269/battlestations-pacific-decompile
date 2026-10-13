@@ -340,6 +340,13 @@ constexpr bool kFlakNegativeVerticalBound = false;
 //    distance. The TailGunnerBot (a category-1 gun under a plane, no 00901C20
 //    lead) keeps its own measure. OFF: as before.
 constexpr bool kAaLeadDistanceGateBound = false;
+//  * kFlakFuseArmTimeBound: packet cc9_g41_flak_d5 (docs/CC13_VER_16.md D5).
+//    0070C0B0, the MFlakBullet finalise, stores +D8h = MinRange / V0
+//    (0070C0BC..0070C0C2; WeaponClassFinaliseResult::flak_fuse_time), and
+//    0070C3DA..0070C3E6 skips the proximity lock search unless the flight
+//    time is strictly greater. The host searched from the first step after
+//    launch. ON: the search waits for the fuse time. OFF: as before.
+constexpr bool kFlakFuseArmTimeBound = false;
 //  * kTorpedoSwimThrustBound: packet cc9_torpedo_tube_turn,
 //    docs/TORPEDO_FRIENDLY_CROSSING.md section 6. 00857480, the swim advance,
 //    per step on a torpedo in the water: 00856BB0 -> 00857061 yaws the NOSE
@@ -1764,6 +1771,8 @@ struct GameGunneryHost::Impl {
     }
     // "MinRange", classDesc+58h (0070C030), per bullet class; 00729B90 reads it.
     std::map<int, float> bullet_min_range;
+    // kFlakFuseArmTimeBound: 0070C0B0's +D8h = MinRange / V0, by bullet class.
+    std::map<int, float> flak_fuse_time_by_class;
     unsigned long long aa_window_rejects{0};
     unsigned long long aa_kind6_gate_rejects{0};   // GUNNERY 184
     unsigned long long aa_armour_rejects{0};
@@ -2403,6 +2412,7 @@ struct GameGunneryHost::Impl {
     unsigned long long dp_cadence_shots{0};   // kFlakSecondAmmoCadenceBound
     unsigned long long flak_vertical_adjusts{0};   // kFlakNegativeVerticalBound
     unsigned long long aa_lead_gate_moves{0};      // kAaLeadDistanceGateBound
+    unsigned long long flak_fuse_unarmed_steps{0}; // kFlakFuseArmTimeBound
     unsigned long long aa_negative_halvings{0};
     unsigned long long water_depth_kills{0};   // packet cc9_water_surface_law
     unsigned long long airfield_destroy_kills{0};  // packet cc9_airfield_destruction_rule
@@ -4614,6 +4624,7 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                 // used to discard: +8h after the 006E9968 rewrite. 009FE270
                 // switches on it for the AI target-weight accuracy.
                 gun.bullet_sub_type = finalised.sub_type;
+                flak_fuse_time_by_class[gun.bullet_class] = finalised.flak_fuse_time;
                 if (finalised.engagement_range > 0.0f) {
                     gun.max_range = finalised.engagement_range;
                     ++summary.bullet_ranges_derived;
@@ -4662,6 +4673,7 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                     second.throw_amount = flat_scaled(type_id, make("2throw"), kAngleScale, 0.0f);
                     second.sub_type = r2.sub_type;
                     bullet_min_range[b2] = fin2.flak_min_range;
+                    flak_fuse_time_by_class[b2] = r2.flak_fuse_time;
                     second_ammo_by_gun[guns.size()] = second;
                     if (bullet(b2) == nullptr) {
                         GameBulletClassRow r;
@@ -9606,8 +9618,19 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
         }
         if constexpr (kFlakProximityBurstBound) {
             const GameBulletClassRow* const fc = bullet(shot.bullet_class);
+            // kFlakFuseArmTimeBound: 0070C3DA..0070C3E6 searches only once the
+            // flight time is strictly past +D8h = MinRange / V0.
+            float fuse_time = 0.0f;
+            if (kFlakFuseArmTimeBound) {
+                const auto ft = flak_fuse_time_by_class.find(shot.bullet_class);
+                if (ft != flak_fuse_time_by_class.end()) fuse_time = ft->second;
+                if (fc != nullptr && fc->type == "Flak" && fc->blast_range > 0.0f
+                    && shot.life > 0.0f && !(shot.life > fuse_time)) {
+                    ++flak_fuse_unarmed_steps;
+                }
+            }
             if (fc != nullptr && fc->type == "Flak" && fc->blast_range > 0.0f
-                && shot.life > 0.0f) {
+                && shot.life > 0.0f && shot.life > fuse_time) {
                 const float seg[3] = {shot.position[0] - from[0],
                     shot.position[1] - from[1], shot.position[2] - from[2]};
                 const float seg_len = length3(seg);
@@ -14392,6 +14415,9 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery aa lead distance gate moves=%llu bound=%d "
             "(00902FC0 / 0090332C, packet cc9_g41_flak_d3d1)", host.aa_lead_gate_moves,
             kAaLeadDistanceGateBound ? 1 : 0);
+        host.log.notef("summary mission gunnery flak fuse unarmed steps=%llu bound=%d "
+            "(0070C3DA, packet cc9_g41_flak_d5)", host.flak_fuse_unarmed_steps,
+            kFlakFuseArmTimeBound ? 1 : 0);
         host.log.notef("summary mission gunnery water depth kills=%llu (007CE3A7, packet "
             "cc9_water_surface_law)", host.water_depth_kills);
         host.log.notef("summary mission gunnery airfield sub-entity asks=%llu listed=%llu "

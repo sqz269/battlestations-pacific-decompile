@@ -13720,3 +13720,21 @@ distances differ), logged as `summary mission gunnery aa lead distance gate`. No
 | USN15 | moves=0 (no air); exit 0 or 1 |
 | USN12 | exit 3; MG and flak open fire earlier inbound (about x(1 + vr/V0)), stop earlier outbound; cat-1 kills beyond 1404 m appear |
 | USN21 | exit 3; Yamato flak opens at about 3300-3550 m against 3150 m; releases down slightly |
+
+## 219. Flak D5: the proximity fuse arms after MinRange / V0: `kFlakFuseArmTimeBound`, OFF (lead queue item 1; cc9-gunnery41, 2026-10-13)
+
+**Image** (docs/CC13_VER_16.md D5). `0070C0B0` stores `+D8h = MinRange / V0` (`0070C0BC`-`0070C0C2`), already
+reconstructed as `WeaponClassFinaliseResult::flak_fuse_time`; `0070C3DA`-`0070C3E6` skips the lock search unless
+the flight time is strictly greater. `docs/FLAK_PROXIMITY_BURST.md` step 3 ("+D8h is 0") is wrong, as cc13 says.
+
+**Host.** `flak_fuse_time_by_class` is filled at both class loads (Bullet[1] and Bullet[2]); with the switch ON
+the `kFlakProximityBurstBound` search needs `shot.life > fuse_time`. Counter `flak_fuse_unarmed_steps`, logged as
+`summary mission gunnery flak fuse unarmed steps`. No RNG change of its own.
+
+**Predictions, written before any ON run.** Yamato shells arm at 1.11 s (1000 m), 5-inch at 0.25 s (200 m).
+
+| row | prediction ON |
+| --- | --- |
+| USN15 | steps=0; exit 0 or 1 |
+| USN12 | steps > 0; exit 3 only if a round locked inside its MinRange; small, slightly less lethal |
+| USN21 | steps > 0; small (every Yamato kill was at 1225 m or more); slightly fewer flak kills |
