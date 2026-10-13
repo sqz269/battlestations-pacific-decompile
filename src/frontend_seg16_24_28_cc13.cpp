@@ -4,6 +4,8 @@
 
 #include "bsp/frontend_seg16_24_28_cc13.hpp"
 
+#include "bsp/band_0067_cc13.hpp"
+
 #include <cmath>
 #include <cstring>
 #include <initializer_list>
@@ -1444,7 +1446,7 @@ void plane_screen_apply_view_mode_00608280(Raw screen, Fe5Host& host) {
     const Raw plane{static_cast<std::uint8_t*>(screen.ptr(0xB8))};
     if (plane.p != nullptr && !host.unit_is_kind_5c(plane, 0x10) && !host.unit_is_kind_5c(plane, 0x16) &&
         screen.at<std::uint32_t>(0xFC) != 0) {
-        host.plane_screen_ensure_cockpit_camera_00607f60(screen);
+        plane_screen_ensure_cockpit_camera_00607f60(screen, host);
         return;
     }
     plane_screen_ensure_chase_camera_00605e50(screen, host);
@@ -1492,7 +1494,7 @@ void plane_screen_collect_children_00608ef0(Raw screen, void* out, Fe5Host& host
 void plane_screen_set_plane_00609390(Raw screen, void* plane, Fe5Host& host) {
     screen.ptr(0x168) = plane;
     if (screen.at<std::uint8_t>(5) == 0) return;
-    host.plane_screen_rebuild_widgets_00608f30(screen);
+    plane_screen_rebuild_widgets_00608f30(screen, host);
     static_cast<std::uint8_t*>(screen.ptr(0x108))[0x18] = 0;
     static_cast<std::uint8_t*>(screen.ptr(0x10C))[0x18] = 0;
     plane_screen_update_payload_icon_00605380(screen, host);
@@ -2212,7 +2214,7 @@ void plane_screen_enter_006093d0(Raw screen, Fe5Host& host) {
     host.widget_set_visible_34(screen.ptr(0xE0), false);
     screen.at<std::uint8_t>(8) = 1;
     plane_screen_update_payload_icon_00605380(screen, host);
-    host.plane_screen_rebuild_widgets_00608f30(screen);
+    plane_screen_rebuild_widgets_00608f30(screen, host);
     screen.at<std::uint8_t>(0x190) = 1;
 }
 
@@ -2281,6 +2283,357 @@ void plane_effects_register_00607be0(Raw screen, Fe5Host& host) {
     };
     for (const auto& [off, name] : kPlaneEffectHandles) swap_in(off, host.effect_handle_acquire_00871ba0(name));
     swap_in(0x78, host.effect_handle_acquire_id_00870cd0(kPlaneEffectHandleId78));
+}
+
+// ---------------------------------------------------------------------------
+// cc13-fe7: plane HUD widget rebuild, unit library update, idle camera shot
+// vector insert (docs/CC13_FE_7.md).
+// ---------------------------------------------------------------------------
+namespace {
+// A std::vector<widget*> {proxy, first, last, end} at screen+base: delete
+// each widget (virtual +4h(1)) and null its cell, then erase(begin, end)
+// (the image's memmove_s of the empty tail moves nothing; last = first).
+void widget_vector_delete_all(Raw screen, std::size_t base, Fe5Host& host) {
+    for (std::uint32_t i = 0;; ++i) {
+        auto* const first = static_cast<void**>(screen.ptr(base + 4));
+        auto* const last = static_cast<void**>(screen.ptr(base + 8));
+        if (first == nullptr || i >= static_cast<std::uint32_t>(last - first)) break;
+        if (first[i] != nullptr) {
+            host.object_virtual_int(Raw{static_cast<std::uint8_t*>(first[i])}, 0x04, 1);
+            first[i] = nullptr;
+        }
+    }
+    screen.ptr(base + 8) = screen.ptr(base + 4);
+}
+
+// push_back: in place while last < end, else the out-of-line insert.
+void widget_vector_push(Raw screen, std::size_t base, std::uint32_t insert_routine, void* widget, Fe5Host& host) {
+    auto* const first = static_cast<void**>(screen.ptr(base + 4));
+    auto* const last = static_cast<void**>(screen.ptr(base + 8));
+    auto* const end = static_cast<void**>(screen.ptr(base + 0x0C));
+    if (first != nullptr && last - first < end - first) {
+        *last = widget;
+        screen.ptr(base + 8) = last + 1;
+    } else {
+        host.widget_vector_insert_one(Raw{screen.p + base}, insert_routine, last, widget);
+    }
+}
+}  // namespace
+
+int plane_hud_payload_layout(std::int32_t plane_type) noexcept {
+    switch (plane_type) {  // jump table 00609344
+    case 0x09: return 0;
+    case 0x0A: return 5;
+    case 0x0B: return 1;
+    case 0x0D: return 2;
+    case 0x0F: return 3;
+    case 0x12: return 4;
+    default: return -1;
+    }
+}
+
+void plane_screen_rebuild_widgets_00608f30(Raw screen, Fe5Host& host) {
+    widget_vector_delete_all(screen, 0x94, host);
+    widget_vector_delete_all(screen, 0xA4, host);
+    const Raw plane{static_cast<std::uint8_t*>(screen.ptr(0x168))};
+    if (plane.p == nullptr) return;
+    const int layout = plane_hud_payload_layout(plane.at<std::int32_t>(0x970));
+    std::int32_t count = 0;
+    if (layout == 4) {
+        for (Raw child{static_cast<std::uint8_t*>(plane.ptr(0x48))}; child.p != nullptr;
+             child = Raw{static_cast<std::uint8_t*>(child.ptr(0x44))}) {
+            if (host.unit_is_kind_5c(child, 0x26)) {
+                count = child.at<std::int32_t>(0x488);  // 006E3520
+                break;
+            }
+            if (host.unit_is_kind_5c(child, 0x25)) {
+                count = 1;
+                break;
+            }
+        }
+    } else if (layout >= 0) {
+        for (Raw child{static_cast<std::uint8_t*>(plane.ptr(0x48))}; child.p != nullptr;
+             child = Raw{static_cast<std::uint8_t*>(child.ptr(0x44))}) {
+            if (host.unit_is_kind_5c(child, 0x25)) ++count;
+        }
+    }
+    const bool odd = (count & 1) != 0;
+    std::int32_t even_step = -1;
+    for (std::int32_t i = 0; i < count; ++i, --even_step) {
+        // x87: FLD qword step, FIMUL int, FADD qword centre, FSTP float (the
+        // image keeps the product and sum in extended precision).
+        float pos[3] = {kPlaneSlotDefaultX, kPlaneSlotY, kPlaneSlotZ};
+        if (odd) {
+            if (i != 0) {
+                const std::int32_t half = i / 2;
+                const std::int32_t k = (i & 1) != 0 ? half : -half;
+                pos[0] = static_cast<float>(kPlaneSlotOddStep * k + kPlaneSlotOddCentre);
+            }
+        } else {
+            const std::int32_t k = (i & 1) != 0 ? i + 1 : even_step;
+            pos[0] = static_cast<float>(kPlaneSlotEvenStep * k + kPlaneSlotEvenCentre);
+        }
+        void* const front = host.gui_widget_clone_subtree_00aab4c0(screen.ptr(0x8C), 0);
+        host.widget_set_local_position_00aa7dc0(front, pos);
+        widget_vector_push(screen, 0x94, 0x0043DB60, front, host);
+        void* const back = host.gui_widget_clone_subtree_00aab4c0(screen.ptr(0x90), 0);
+        const float back_pos[3] = {pos[0] + 0.0f, pos[1] + 0.0f,
+                                   static_cast<float>(pos[2] - kPlaneSlotBackDepth)};
+        host.widget_set_local_position_00aa7dc0(back, back_pos);
+        widget_vector_push(screen, 0xA4, 0x0052EB90, back, host);
+    }
+}
+
+void unit_library_update_00681ba0(Raw screen, float /*dt*/, Fe5Host& host) {
+    const std::int32_t mode = screen.at<std::int32_t>(0xE8);
+    if (mode == 0) {
+        const bool cursor_row = host.listbox_selected_index_00a9c920(screen.ptr(0x70)) == 0;
+        const bool digit_row = host.listbox_selected_index_00a9c920(screen.ptr(0x70)) == 1;
+        if (host.front_end_action_edge_or_repeat_004d92b0(0x4B)) {
+            host.front_end_manager_push_request_004cc460(host.manager_global(0x00E198AC), 1);
+            return;
+        }
+        if (host.front_end_action_edge_or_repeat_004d92b0(0x4C) || host.front_end_action_edge_or_repeat_004d92b0(0x4D)) {
+            if (cursor_row) {
+                screen.at<std::int32_t>(0xEC) += host.input_action_held_004c5090(0x4C) ? -1 : 1;
+            } else if (digit_row) {
+                const int delta = host.input_action_held_004c5090(0x4C) ? -1 : 1;
+                band_0067_cc13::digit_spinner_step_0067df40(
+                    screen.at<std::int32_t>(0xF0 + 4 * static_cast<std::size_t>(screen.at<std::int32_t>(0xEC))), delta);
+            }
+        }
+    } else if (mode == 1) {
+        if (host.front_end_action_edge_or_repeat_004d92b0(0x4B)) {
+            host.unit_library_reset_selection_0067e580(screen);
+            return;
+        }
+        host.front_end_action_edge_or_repeat_004d92b0(0x4A);  // result unused (00681CD3)
+    }
+    if (host.front_end_action_edge_or_repeat_004d92b0(0x4C)) {
+        screen.at<std::int32_t>(0xE4) = -1;
+    } else if (host.front_end_action_edge_or_repeat_004d92b0(0x4D)) {
+        screen.at<std::int32_t>(0xE4) = 1;
+    }
+    if (screen.at<std::int32_t>(0xE4) == 0) return;
+    void* const globals = host.lua_globals_00b67980();
+    void* const classes = host.lua_get_by_name_00b67800(globals, "VehicleClass");  // 00CE5880
+    host.lua_release_00b67700(globals);
+    void* const entry = host.lua_nil_00b65f50();
+    bool again = true;
+    while (again) {
+        const std::int32_t index = (screen.at<std::int32_t>(0x130) + 1000 + screen.at<std::int32_t>(0xE4)) % 1000;
+        screen.at<std::int32_t>(0x130) = index;
+        void* const row = host.lua_get_by_index_00b67720(classes, index);
+        host.lua_assign_00b67690(entry, row);
+        host.lua_release_00b67700(row);
+        again = true;
+        if (host.lua_is_table_00b661b0(entry)) {
+            void* const mesh = host.lua_get_by_name_00b67800(entry, "Mesh");  // 00CE5FD0
+            again = !host.lua_is_string_00b660a0(mesh);
+            host.lua_release_00b67700(mesh);
+        }
+    }
+    host.unit_library_load_unit_model_00680db0(screen);
+    screen.at<std::int32_t>(0xE4) = 0;
+    host.lua_release_00b67700(entry);
+    host.lua_release_00b67700(classes);
+}
+
+std::uint8_t* idle_camera_shot_uninit_fill_00550dd0(std::uint8_t* dest, std::size_t count, Raw value, Fe5Host& host) {
+    std::uint8_t* p = dest;
+    try {
+        for (; count != 0; --count, p += 0x1C) idle_camera_shot_placement_copy_00550990(p, value, host);
+    } catch (...) {
+        idle_camera_shot_destroy_range_00550e10(dest, p, host);  // Catch_All@00550C4B
+        throw;
+    }
+    return p;
+}
+
+namespace {
+// 00550AC0 / 00550F40: uninitialized copy of [first, last) to dest.
+std::uint8_t* idle_camera_shot_uninit_copy(std::uint8_t* first, std::uint8_t* last, std::uint8_t* dest, Fe5Host& host) {
+    std::uint8_t* p = dest;
+    try {
+        for (; first != last; first += 0x1C, p += 0x1C) idle_camera_shot_placement_copy_00550990(p, Raw{first}, host);
+    } catch (...) {
+        idle_camera_shot_destroy_range_00550e10(dest, p, host);
+        throw;
+    }
+    return p;
+}
+
+// 00550A10: assign value to every shot of [first, last).
+void idle_camera_shot_fill(std::uint8_t* first, std::uint8_t* last, Raw value, Fe5Host& host) {
+    for (; first != last; first += 0x1C) idle_camera_shot_assign_005506c0(Raw{first}, value, host);
+}
+
+std::size_t shot_span(const void* first, const void* last) {
+    return static_cast<std::size_t>(static_cast<const std::uint8_t*>(last) - static_cast<const std::uint8_t*>(first)) / 0x1C;
+}
+}  // namespace
+
+void idle_camera_shot_vector_insert_n_00550fc0(Raw vector, std::uint8_t* where, std::size_t count, Raw value,
+                                               Fe5Host& host) {
+    constexpr std::size_t kMaxShots = 0x09249249;  // max_size() for 1Ch-byte elements
+    std::uint8_t tmp_storage[0x1C];
+    const Raw tmp{tmp_storage};
+    idle_camera_shot_copy_construct_005507e0(tmp, value, host);
+    auto first = [&] { return static_cast<std::uint8_t*>(vector.ptr(4)); };
+    auto last = [&] { return static_cast<std::uint8_t*>(vector.ptr(8)); };
+    auto size = [&] { return first() == nullptr ? std::size_t{0} : shot_span(first(), last()); };
+    std::size_t capacity = first() == nullptr ? 0 : shot_span(first(), vector.ptr(0x0C));
+    if (count != 0) {
+        if (kMaxShots - size() < count) host.stl_xlen_00550b50();
+        if (capacity < size() + count) {
+            capacity = kMaxShots - capacity / 2 < capacity ? 0 : capacity + capacity / 2;
+            if (capacity < size() + count) capacity = size() + count;  // 0054ED10 size()
+            std::uint8_t* const fresh = host.idle_camera_shot_allocate_0054eef0(capacity);
+            std::uint8_t* p = fresh;
+            try {
+                p = idle_camera_shot_uninit_copy(first(), where, fresh, host);
+                p = idle_camera_shot_uninit_fill_00550dd0(p, count, tmp, host);
+                idle_camera_shot_uninit_copy(where, last(), p, host);
+            } catch (...) {
+                idle_camera_shot_destroy_range_00550e10(fresh, p, host);  // Catch_All@00551186
+                host.crt_free(fresh);
+                throw;
+            }
+            const std::size_t new_size = count + size();
+            if (first() != nullptr) {
+                idle_camera_shot_destroy_range_00550e10(first(), last(), host);
+                host.crt_free(first());
+            }
+            vector.ptr(0x0C) = fresh + capacity * 0x1C;
+            vector.ptr(8) = fresh + new_size * 0x1C;
+            vector.ptr(4) = fresh;
+        } else if (shot_span(where, last()) < count) {
+            std::uint8_t* const old_last = last();
+            idle_camera_shot_uninit_copy(where, old_last, where + count * 0x1C, host);
+            try {
+                idle_camera_shot_uninit_fill_00550dd0(old_last, count - shot_span(where, old_last), tmp, host);
+            } catch (...) {
+                idle_camera_shot_destroy_range_00550e10(where + count * 0x1C, last() + count * 0x1C, host);  // 00551240
+                throw;
+            }
+            vector.ptr(8) = old_last + count * 0x1C;
+            idle_camera_shot_fill(where, last() - count * 0x1C, tmp, host);
+        } else {
+            std::uint8_t* const old_last = last();
+            vector.ptr(8) = idle_camera_shot_uninit_copy(old_last - count * 0x1C, old_last, old_last, host);
+            idle_camera_shot_copy_backward_00550930(where, old_last - count * 0x1C, old_last, host);  // 00550BC0
+            idle_camera_shot_fill(where, where + count * 0x1C, tmp, host);
+        }
+    }
+    idle_camera_shot_destroy_00550390(tmp, host);
+}
+
+void plane_screen_ensure_cockpit_camera_00607f60(Raw screen, Fe5Host& host) {
+    if (screen.ptr(0x98) == nullptr) {
+        const Raw built = host.plane_cockpit_camera_new_006065d0();
+        screen.ptr(0x98) = built.p;
+        const float identity[16] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};  // 00D7A24C = 1.0
+        host.camera_add_to_scene_00923870(built, host.game_00e188a8().ptr(0x19CC), identity);
+        host.observer_register_00694a60(screen.ptr(0x98), screen.p + 8);
+    }
+    if (screen.ptr(0x94) != nullptr) {
+        float scratch[3];
+        const float* const pos = host.camera_position_0042cd00(Raw{static_cast<std::uint8_t*>(screen.ptr(0x94))}, scratch);
+        screen.at<float>(0xF0) = pos[0];
+        screen.at<float>(0xF4) = pos[1];
+        screen.at<float>(0xF8) = pos[2];
+    }
+    host.game_set_camera_mover_004bc410(screen.ptr(0x98));
+    screen.ptr(0x94) = nullptr;
+    const Raw plane{static_cast<std::uint8_t*>(screen.ptr(0xB8))};
+    const Raw model{static_cast<std::uint8_t*>(plane.ptr(0x538))};
+    float* const eye_out = &screen.at<float>(0xF0);
+    if (host.object_virtual_ret(plane, 0x1C0) != nullptr) {
+        host.object_virtual(plane, 0x1C4);
+        host.game_set_camera_near_plane_004b4940(kCockpitNearPlane);
+        const Raw camera{static_cast<std::uint8_t*>(screen.ptr(0x98))};
+        host.cockpit_camera_set_position_0042e030(
+            camera, host.unit_local_to_world_18(plane, &model.at<float>(0x244), eye_out));
+        host.cockpit_camera_reset_0042aa00(camera);
+        const Raw link{camera.p + 0x500};
+        void* const observed = link.ptr(0x14);
+        if (observed != plane.p) {
+            if (observed != nullptr) host.observer_unregister_006952a0(observed, link.p);
+            link.ptr(0x14) = plane.p;
+            if (plane.p != nullptr) host.observer_register_00694a60(plane.p, link.p);
+        }
+    } else {
+        const float eye[3] = {0.0f, kCockpitFallbackEyeY,
+                              static_cast<float>(model.at<float>(0xA0) * kCockpitFallbackEyeScale)};
+        const Raw camera{static_cast<std::uint8_t*>(screen.ptr(0x98))};
+        host.cockpit_camera_set_position_0042e030(camera, host.unit_local_to_world_18(plane, eye, eye_out));
+        host.cockpit_camera_reset_0042aa00(camera);
+        const Raw link{camera.p + 0x500};
+        if (link.ptr(0x14) != nullptr) {
+            host.observer_unregister_006952a0(link.ptr(0x14), link.p);
+            link.ptr(0x14) = nullptr;
+        }
+    }
+}
+
+void plane_screen_update_drop_indicator_00609620(Raw screen, Fe5Host& host) {
+    if (screen.ptr(0x168) == nullptr) return;
+    // Locals of the image: two std::vector<bool> (0049F2D0 push_back) and a
+    // std::vector<float> (0045AFD0), destroyed at the end.
+    std::vector<bool> ready;
+    std::vector<bool> gate;
+    std::vector<float> fill;
+    const Raw plane{static_cast<std::uint8_t*>(screen.ptr(0x168))};
+    auto fraction = [](float remaining, float full) {  // FDIV, FLD1, FSUBRP, FSTP float
+        return static_cast<float>(1.0 - static_cast<double>(remaining) / full);
+    };
+    const std::int32_t layout = host.plane_screen_payload_frame_00604c80(screen);
+    auto next = [](Raw child) { return Raw{static_cast<std::uint8_t*>(child.ptr(0x44))}; };
+    if (layout == 4) {
+        for (Raw child{static_cast<std::uint8_t*>(plane.ptr(0x48))}; child.p != nullptr; child = next(child)) {
+            if (host.unit_is_kind_5c(child, 0x26)) {
+                for (std::int32_t j = 0; j < child.at<std::int32_t>(0x488); ++j) {  // 006E3520 each pass
+                    ready.push_back(child.at<std::uint8_t>(0x654 + j) != 0 || child.at<std::uint32_t>(0x514 + 4 * j) != 0);
+                    gate.push_back(true);
+                    fill.push_back(fraction(child.at<float>(0x5B4 + 4 * j), child.at<float>(0x48C)));
+                }
+                break;
+            }
+            if (host.unit_is_kind_5c(child, 0x25)) {
+                ready.push_back(host.unit_virtual_210(child, 0x2A, 0) != 0);
+                gate.push_back(host.plane_drop_attitude_gate_007cc8e0(plane, 0) != 0);
+                fill.push_back(fraction(child.at<float>(0x490), child.at<float>(0x48C)));
+                break;
+            }
+        }
+    } else if (layout >= 0 && layout <= 5) {
+        for (Raw child{static_cast<std::uint8_t*>(plane.ptr(0x48))}; child.p != nullptr; child = next(child)) {
+            if (!host.unit_is_kind_5c(child, 0x25)) continue;
+            ready.push_back(host.unit_virtual_210(child, 0x2A, 0) != 0);
+            const Raw owner{static_cast<std::uint8_t*>(screen.ptr(0x168))};
+            gate.push_back((host.unit_is_kind_5c(owner, 0x10) ? host.plane_level_bomb_attitude_gate_007c7750(owner, 0)
+                                                              : host.plane_drop_attitude_gate_007cc8e0(owner, 0)) != 0);
+            fill.push_back(fraction(child.at<float>(0x490), child.at<float>(0x48C)));
+        }
+    }
+    auto* const front = static_cast<void**>(screen.ptr(0x98));
+    if (front == nullptr) return;
+    const std::int32_t count = static_cast<std::int32_t>(static_cast<void**>(screen.ptr(0x9C)) - front);
+    for (std::int32_t i = 0; i < count; ++i) {
+        const bool shown = screen.at<std::uint8_t>(0x190) != 0;  // re-read per call (MOVZX)
+        // The image indexes through checked accessors (00BF6713 on a miss).
+        void* const widget = static_cast<void**>(screen.ptr(0x98))[i];
+        host.widget_set_visible_34(widget, shown);
+        void* const back = static_cast<void**>(screen.ptr(0xA8))[i];
+        if (ready.at(static_cast<std::size_t>(i))) {
+            host.widget_set_frame_88(widget, gate.at(static_cast<std::size_t>(i)) ? 0 : 1, 0, 1.0f);
+            host.widget_set_visible_34(back, false);
+        } else {
+            host.widget_set_frame_88(widget, 2, 0, 1.0f);
+            host.widget_set_visible_34(back, shown);
+            host.widget_set_quad_floats_00abe6e0(back, fill.at(static_cast<std::size_t>(i)), 0.0f, 0.0f, 1.0f);
+        }
+    }
 }
 // @impl-end
 

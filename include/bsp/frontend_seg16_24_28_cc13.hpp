@@ -459,10 +459,8 @@ struct Fe5Host {
     // 00AA67F0, ECX = widget -> local position (x, y, z).
     virtual const float* widget_local_position_00aa67f0(void* widget) = 0;
     // Plane-screen routines reached through the host where they are not
-    // reconstructed here: 00607F60 ensure cockpit camera, 00608F30 rebuild
-    // widgets, ECX = screen.
-    virtual void plane_screen_ensure_cockpit_camera_00607f60(Raw screen) = 0;
-    virtual void plane_screen_rebuild_widgets_00608f30(Raw screen) = 0;
+    // reconstructed here (00607F60 and 00608F30 are reconstructed below by
+    // cc13-fe7).
     // 00637620(x, y), ECX = (*00E198C4)+48h (the markers screen).
     virtual void markers_screen_set_view_centre_00637620(float x, float y) = 0;
     // 0048F930(&tmp, flag) on object+C4h, then 0048F230 on the result -> AL.
@@ -539,6 +537,59 @@ struct Fe5Host {
     // 00870CD0(&out, 1) with EDX = effect id: acquire an effect handle by id
     // (one reference for the caller).
     virtual void* effect_handle_acquire_id_00870cd0(std::uint32_t id) = 0;
+    // --- cc13-fe7 additions ---
+    // 00AAB4C0(flag), ECX = template widget -> a cloned widget subtree.
+    virtual void* gui_widget_clone_subtree_00aab4c0(void* widget, int flag) = 0;
+    // The out-of-line insert of a std::vector<widget*> (the image passes a
+    // scratch iterator, the vector, the end position and &value):
+    // 0043DB60 for screen+94h, 0052EB90 for screen+A4h.
+    virtual void widget_vector_insert_one(Raw vector, std::uint32_t routine, void* where, void* value) = 0;
+    // 004D92B0(action), ECX = *00E188A8 -> AL: action edge or auto-repeat.
+    virtual bool front_end_action_edge_or_repeat_004d92b0(int action) = 0;
+    // 004C5090(action), ECX = *00E188A8 -> AL: action held.
+    virtual bool input_action_held_004c5090(int action) = 0;
+    // 00A9C920, ECX = listbox -> selected row.
+    virtual std::int32_t listbox_selected_index_00a9c920(void* listbox) = 0;
+    // Lua objects (handles; one reference each, released with 00B67700):
+    // 00B67980 globals of [00E188A8]+1A0Ch, 00B67800 GetByName, 00B67720
+    // GetByIndex, 00B65F50 nil object, 00B67690 assign, 00B661B0 IsTable,
+    // 00B660A0 IsString.
+    virtual void* lua_globals_00b67980() = 0;
+    virtual void* lua_get_by_name_00b67800(void* table, const char* name) = 0;
+    virtual void* lua_get_by_index_00b67720(void* table, std::int32_t index) = 0;
+    virtual void* lua_nil_00b65f50() = 0;
+    virtual void lua_assign_00b67690(void* dst, void* src) = 0;
+    virtual bool lua_is_table_00b661b0(void* object) = 0;
+    virtual bool lua_is_string_00b660a0(void* object) = 0;
+    virtual void lua_release_00b67700(void* object) = 0;
+    // 0067E580, ECX = unit library screen (reconstructed with another host as
+    // ingame_gui_cc13::unit_library_reset_selection_0067e580).
+    virtual void unit_library_reset_selection_0067e580(Raw screen) = 0;
+    // 00680DB0, ECX = unit library screen: load the selected class's model
+    // (not reconstructed here).
+    virtual void unit_library_load_unit_model_00680db0(Raw screen) = 0;
+    // 0054EEF0(ECX = count, EDX = 0) -> storage for count 1Ch-byte shots;
+    // 00550B50 throws length_error ("vector<T> too long").
+    virtual std::uint8_t* idle_camera_shot_allocate_0054eef0(std::size_t count) = 0;
+    [[noreturn]] virtual void stl_xlen_00550b50() = 0;
+    // operator new(518h), memset 0, 006065D0 (ECX = block): the plane cockpit
+    // camera; null when the allocation failed.
+    virtual Raw plane_cockpit_camera_new_006065d0() = 0;
+    // 0042CD00(&out), ECX = camera -> pointer to its position (x, y, z).
+    virtual const float* camera_position_0042cd00(Raw camera, float out[3]) = 0;
+    // 0042E030(const float* position), ECX = cockpit camera.
+    virtual void cockpit_camera_set_position_0042e030(Raw camera, const float* position) = 0;
+    // Unit virtual +18h(const float local[3], float out[3]) -> out: a local
+    // point to world.
+    virtual const float* unit_local_to_world_18(Raw unit, const float local[3], float out[3]) = 0;
+    // Unit virtual +210h(a, b) -> EAX (the image tests the whole register).
+    virtual std::uint32_t unit_virtual_210(Raw unit, std::int32_t a, std::int32_t b) = 0;
+    // 007C7750 / 007CC8E0 (0), ECX = plane -> EAX: the level-bomb and drop
+    // attitude gates (tested as whole registers by 0049F2D0).
+    virtual std::uint32_t plane_level_bomb_attitude_gate_007c7750(Raw plane, std::int32_t arg) = 0;
+    virtual std::uint32_t plane_drop_attitude_gate_007cc8e0(Raw plane, std::int32_t arg) = 0;
+    // 00ABE6E0(a, b, c, d), ECX = widget: set the quad floats.
+    virtual void widget_set_quad_floats_00abe6e0(void* widget, float a, float b, float c, float d) = 0;
     // @host-end
 };
 
@@ -783,8 +834,8 @@ void attract_screen_destruct_00689c60(Raw screen, Fe5Host& host);
 void* attract_screen_construct_00689d90(Raw screen, Fe5Host& host);
 // 00689E80 __thiscall(screen) (vtable +8h): base activate, show the page,
 // activate the movie player screen (+4h/+5h = 1, commit, its +18h virtual) and
-// play the theme movie with (1, -902.0f, loop 1). The plate comment's 1.0f is
-// the movie path's flag; the float pushed at 00689EFF is -902.0.
+// play the theme movie with (1, -902.0f, loop 1). The float pushed at 00689EFF
+// is -902.0 (00CEFCB8); the plate comment was corrected by cc13-fe7 (it said 1.0f).
 void attract_screen_activate_00689e80(Raw screen, Fe5Host& host);
 
 // ---------------------------------------------------------------------------
@@ -1517,6 +1568,78 @@ inline constexpr std::array<std::pair<std::uint16_t, std::string_view>, 3> kPlan
     {0x60, "Planewindsmoke"}, {0x68, "warning heartbeat only"}, {0x74, "Turbo_Effect"}}};
 inline constexpr std::uint32_t kPlaneEffectHandleId78 = 0x153;
 void plane_effects_register_00607be0(Raw screen, Fe5Host& host);
+
+// --- cc13-fe7 (docs/CC13_FE_7.md) ---
+// 00608F30 __fastcall(ECX = plane HUD screen 3Eh), plain RET: delete every
+// widget of the vectors +94h (first +98h) and +A4h (first +A8h) through their
+// virtual +4h(1), empty both; then, for the plane +168h, map its type +970h
+// (9, 0Bh, 0Dh, 0Fh, 12h, 0Ah -> layout 0..5, else none), count its payload
+// children (list +48h, next +44h): layouts 0-3 and 5 count children of kind
+// 25h; layout 4 takes the first child of kind 26h (its rounds, +488h, the
+// getter 006E3520) or of kind 25h (1). For each payload slot clone the
+// template +8Ch at (x, 0.6, -100) and the template +90h at (x, 0.6, -101),
+// pushed onto +94h / +A4h. x: odd counts centre slot 0 at 0.5 and step
+// +-0.02 around 0.51 (00D7A2F8, 00CF4850); even counts step 0.005 around 0.5
+// (00CEC8F8, 00D7A280), odd slots (i + 1), even slots -1, -2, ... per slot.
+inline constexpr float kPlaneSlotDefaultX = 0.5f;          // 00CE3800
+inline constexpr float kPlaneSlotY = 0.6f;                 // 00CE3D30 (0x3F19999A)
+inline constexpr float kPlaneSlotZ = -100.0f;              // 00CE65D8
+inline constexpr double kPlaneSlotOddStep = 0.019999999552965164;    // 00D7A2F8
+inline constexpr double kPlaneSlotOddCentre = 0.5099999997764826;    // 00CF4850
+inline constexpr double kPlaneSlotEvenStep = 0.004999999888241291;   // 00CEC8F8
+inline constexpr double kPlaneSlotEvenCentre = 0.5;                  // 00D7A280
+inline constexpr double kPlaneSlotBackDepth = 1.0;                   // 00D7A210
+int plane_hud_payload_layout(std::int32_t plane_type) noexcept;
+void plane_screen_rebuild_widgets_00608f30(Raw screen, Fe5Host& host);
+// 00681BA0 __thiscall(ECX = unit library screen, dt unused), RET 4. Mode +E8h
+// 0: action 4Bh pops to interface 1; 4Ch / 4Dh with listbox +70h on row 0
+// move the digit cursor +ECh (-1 while 4Ch is held, else +1), on row 1 step
+// the digit (0067DF40, -1 / +1). Mode 1: 4Bh resets the selection (0067E580),
+// else 4Ah is polled. Then 4Ch sets +E4h = -1, 4Dh +1; when +E4h != 0 step
+// the class index +130h ((i + 1000 + step) % 1000) until VehicleClass[i] is
+// a table whose "Mesh" is a string, load its model (00680DB0), +E4h = 0.
+void unit_library_update_00681ba0(Raw screen, float dt, Fe5Host& host);
+// 00550DD0 (ECX = &value; dest, count, allocator proxy), RET 0Ch:
+// uninitialized_fill_n of 1Ch-byte idle camera shots (00550BF0: copy
+// construct 005507E0 each, destroy the constructed ones on a throw); returns
+// dest + count.
+std::uint8_t* idle_camera_shot_uninit_fill_00550dd0(std::uint8_t* dest, std::size_t count, Raw value, Fe5Host& host);
+// 00550FC0 __thiscall(ECX = vector {proxy, first, last, end}; where (checked
+// iterator: proxy, pointer), count, const shot&), RET 10h: std::vector<shot>::
+// _Insert_n (VC8): copy the value, grow by half (or to size + count) and
+// rebuild, or shift the tail in place.
+void idle_camera_shot_vector_insert_n_00550fc0(Raw vector, std::uint8_t* where, std::size_t count, Raw value,
+                                               Fe5Host& host);
+// 00607F60 __fastcall(ECX = plane effects screen 3Fh), plain RET: build the
+// cockpit camera +98h when absent (006065D0, identity matrix into the scene
+// [00E188A8]+19CCh, observed through screen+8h); copy the chase camera +94h's
+// position into +F0h..+F8h when one exists; install +98h as the camera mover
+// (004BC410) and clear +94h. With the plane's +1C0h answer non-zero: call its
+// +1C4h, near plane 0.5 (00CE3800), eye = model([plane+538h]+244h) to world
+// through the plane's +18h into +F0h, set the camera position (0042E030),
+// reset it (0042AA00(0, 0, 0)) and observe the plane (link +500h, observed
+// +514h). Otherwise the eye is (0, 1.8, [model+A0h] * 0.6) (00CF4848,
+// 00CEFF98; FMUL in x87, one float store), and the plane is not observed.
+inline constexpr float kCockpitNearPlane = 0.5f;                         // 00CE3800
+inline constexpr float kCockpitFallbackEyeY = 1.7999999523162842f;       // 00CF4848
+inline constexpr double kCockpitFallbackEyeScale = 0.6000000238418579;  // 00CEFF98
+void plane_screen_ensure_cockpit_camera_00607f60(Raw screen, Fe5Host& host);
+// 00609620 __fastcall(ECX = plane HUD screen 3Eh), plain RET. With a plane
+// (+168h), per payload layout (00604C80) collect per slot: ready (bit vector
+// A), gate (bit vector B) and fill = 1 - remaining / full (float, x87 FDIV
+// then FSUBR from 1, one float store):
+//   layouts 0-3, 5: each child of kind 25h: A = child+210h(2Ah, 0), B = the
+//     level-bomb gate 007C7750(0) when the plane is kind 10h else the drop
+//     gate 007CC8E0(0), fill from child +490h / +48Ch;
+//   layout 4: the first child of kind 26h gives one slot per round (+488h):
+//     A = byte +654h+j or dword +514h+4j non-zero, B = 1, fill from
+//     +5B4h+4j / +48Ch; else the first child of kind 25h one slot with the
+//     drop gate.
+// Then for each front widget i (+94h vector; count read once): show it with
+// byte +190h; when A[i] is set, frame +88h(B[i] == 0, 0, 1.0) and hide the
+// back widget i (+A4h); else frame +88h(2, 0, 1.0), show the back widget with
+// +190h and set its quad floats (fill[i], 0, 0, 1.0).
+void plane_screen_update_drop_indicator_00609620(Raw screen, Fe5Host& host);
 // @decl-end
 
 }  // namespace bsp::cc13_fe5
