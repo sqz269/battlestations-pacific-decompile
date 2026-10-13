@@ -793,6 +793,8 @@ struct GuiSectionFields {
     float rim_width_percent_108{0.5f};
     bool clockwise_10c{true};
     std::int32_t texture_mode_110{0};
+    void* texture_ref_114{nullptr};    // counted reference (copy retains it)
+    std::uint32_t words_118[4]{};      // +118h..+124h, copied verbatim
 };
 void gui_section_describe_properties_00abf090(const void* section, const GuiSectionFields& f,
                                               GuiPropertyWriter& writer, GuiDescribeHost& host);
@@ -866,5 +868,54 @@ void send_nose_art_selection_007f8690(const std::uint32_t (&record)[3], ProfileC
 RaceRecord* race_records_find_by_name_007ffb50(const RaceRecordTable& table, const std::string& name);
 // 007FFD60: every non-null record deleted through vtable slot 0 (007FFB10) with 1, slot cleared.
 void race_records_delete_all_007ffd60(RaceRecordTable& table, NativeStringStorage& strings);
+
+// ===================================================================================================
+// Small leaves.
+// ===================================================================================================
+
+// 007FF320, __fastcall(ECX = &owned): a non-null object is deleted through vtable slot 0 with 1
+// and the pointer cleared.
+void owned_object_ptr_reset_007ff320(void*& object, void (*deleting_destructor)(void*, std::uint32_t));
+
+// 008003B0, __cdecl(float): the rain drop-count fraction, one store to [00F87470].
+struct RainDropSettingHost {
+    virtual ~RainDropSettingHost() = default;
+    virtual void store_drop_num_percent_00f87470(float fraction) = 0;
+};
+void rain_set_drop_num_percent_008003b0(RainDropSettingHost& host, float fraction);
+
+// 00AAE390 / 00AAE3F0: copy constructors of two GUI records that start with a NativeString.
+struct GuiStringRecord14 {          // 14h: string, +08h, +0Ch, bytes +10h/+11h
+    std::string text{};
+    std::uint32_t word_08{0};
+    std::uint32_t word_0c{0};
+    std::uint8_t byte_10{0};
+    std::uint8_t byte_11{0};
+};
+struct GuiStringRecord24 {          // 24h: string, +08h..+18h, byte +1Ch, +20h
+    std::string text{};
+    std::uint32_t words_08[5]{};
+    std::uint8_t byte_1c{0};
+    std::uint32_t word_20{0};
+};
+GuiStringRecord14 gui_string_record14_copy_00aae390(const GuiStringRecord14& in);
+GuiStringRecord24 gui_string_record24_copy_00aae3f0(const GuiStringRecord24& in);
+
+// 00ABF5B0, the Section copy constructor's own part (after the base copy).
+void gui_section_copy_00abf5b0(GuiSectionFields& out, const GuiSectionFields& in,
+                               GuiIconStateHost& host);
+
+// 00AC5820, __fastcall(ECX = layer): the GUI editor backup. The script path (00AC5770), the
+// backup name path + ".guiedbak", remove(backup), rename(path, backup), then the layer written
+// back to `path` under "GuiScreen".
+struct GuiLayerBackupHost {
+    virtual ~GuiLayerBackupHost() = default;
+    virtual void compose_script_path(const std::string& layer_name, std::string& out) = 0;
+    virtual void remove_file_00bffd99(const std::string& path) = 0;
+    virtual void rename_file_00bffdc8(const std::string& from, const std::string& to) = 0;
+    virtual void write_layer_archive(void* layer, const std::string& path, const char* section) = 0;
+};
+void gui_layer_save_backup_00ac5820(void* layer, const std::string& layer_name_100,
+                                    GuiLayerBackupHost& host);
 
 }  // namespace bsp::cc13_seg49_64_78

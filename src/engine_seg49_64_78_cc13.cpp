@@ -1645,4 +1645,62 @@ void race_records_delete_all_007ffd60(RaceRecordTable& table, NativeStringStorag
     }
 }
 
+
+// --- small leaves -----------------------------------------------------------------------------------
+
+void owned_object_ptr_reset_007ff320(void*& object, void (*deleting_destructor)(void*, std::uint32_t))
+{
+    if (object == nullptr) return;
+    deleting_destructor(object, 1);                     // vtable slot 0 with 1
+    object = nullptr;
+}
+
+void rain_set_drop_num_percent_008003b0(RainDropSettingHost& host, float fraction)
+{
+    host.store_drop_num_percent_00f87470(fraction);     // one store to [00F87470]
+}
+
+GuiStringRecord14 gui_string_record14_copy_00aae390(const GuiStringRecord14& in)
+{
+    GuiStringRecord14 out;
+    out.text = in.text;                                 // 0041DD40 + memcpy (skipped for self)
+    out.word_08 = in.word_08;
+    out.word_0c = in.word_0c;
+    out.byte_10 = in.byte_10;
+    out.byte_11 = in.byte_11;
+    return out;
+}
+
+GuiStringRecord24 gui_string_record24_copy_00aae3f0(const GuiStringRecord24& in)
+{
+    GuiStringRecord24 out;
+    out.text = in.text;
+    for (int i = 0; i < 5; ++i) out.words_08[i] = in.words_08[i];
+    out.byte_1c = in.byte_1c;
+    out.word_20 = in.word_20;
+    return out;
+}
+
+void gui_section_copy_00abf5b0(GuiSectionFields& out, const GuiSectionFields& in,
+                               GuiIconStateHost& host)
+{
+    // After the base copy (00AAxxxx) and vtable 00D5C8E8: the texture name, +F4h..+108h, the
+    // byte +10Ch, +110h..+124h, then InterlockedIncrement on a non-null +114h.
+    out = in;
+    if (out.texture_ref_114 != nullptr) host.retain_texture(out.texture_ref_114);
+}
+
+void gui_layer_save_backup_00ac5820(void* layer, const std::string& layer_name_100,
+                                    GuiLayerBackupHost& host)
+{
+    std::string path;
+    host.compose_script_path(layer_name_100, path);     // 00AC5770
+    const std::string backup = path + ".guiedbak";      // 0041DD40 + 004261A0
+    host.remove_file_00bffd99(backup);                  // DeleteFileA through IAT 00CE2234
+    host.rename_file_00bffdc8(path, backup);            // MoveFileA through IAT 00CE20DC
+    // 00BD5CE0 opens a stdio stream writer on `path`; +4h ("GuiScreen"), the layer's describe
+    // (vtable +1Ch) into it, +8h, then the stream is destroyed.
+    host.write_layer_archive(layer, path, "GuiScreen");
+}
+
 } // namespace bsp::cc13_seg49_64_78
