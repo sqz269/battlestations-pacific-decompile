@@ -790,5 +790,6 @@
  "gp9f_vector_ctor": "cc13-gp9f shape: zeroes first/last/end (std::vector default constructor)",
  "gp9f_vector_fill": "cc13-gp9f shape: forwards to _Uninit_fill_n and returns first+n*sizeof(T) (std::vector::_Ufill)",
  "gp9f_vector_insertn": "cc13-gp9f shape: vector _Insert_n(where,count,val) with capacity growth, xlen throw and checked-iterator hooks (std::vector::_Insert_n)",
- "gp9f_vector_size": "cc13-gp9f shape: (last-first)/sizeof(T) with null check (std::vector::size)"
+ "gp9f_vector_size": "cc13-gp9f shape: (last-first)/sizeof(T) with null check (std::vector::size)",
+ "cs2_stl_seg4_6_9": "cc13-sys2: compiler-instantiated std::_Tree / std::vector / std::pair / string bodies and compiler-generated adjustor deleting destructors in segments 4, 6 and 9, already named by earlier cc13 sweeps. Library or compiler code: no reconstruction record. docs/CC13_SYS_2.md."
 }

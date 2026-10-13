@@ -15939,3 +15939,82 @@ death paths. Producers: `007C6C30` plane out-of-action countdown and `007F31A0` 
 threshold crossings of the subscription's `hp` on reason `damage`/`repair`, producer `00879070`
 ApplyDamage in the gunnery host): USN14's capture check. Neither is on a current win row. The Lua side
 (subscription parse plus the dispatcher) is this lane's; the producer hooks are gunnery/units edits to route.
+
+## 5gj. PRCP01 (Santa Cruz) bring-up: the phase-3 stall (packet `cc9_lua54_prcp01`, cc9-lua54, 2026-10-12)
+
+Menu id **PRCP01** ("Vanilla - Battle of Santa Cruz", scene `COTP-USN/PRCPUS/usn_03_Battle_of_Santa_Cruz.scn`,
+StageScript `COTP-USN\PRCPUS\usn_03_battle_of_santa_cruz`, mtime 2024-07-13). `--menu-select USN03` is LOMP Ceylon.
+
+**This copy has no player tutorial on the phase path.** `dlg_Cruisersinrange` (script line 295) ends in the
+callback `luaUS03Primary4Add`, which sets `MissionPhase = 4` directly; `luaUS03TargetObjective` (the `input`
+listener on IC_CMD_SETTARGET, then the `target` listener) is never called in this file. The chain to phase 5 is:
+phase 3 `luaUS03EndReconMovie` adds the Junyo `kill` listener -> Junyo sunk -> movie -> checkpoint ->
+`luaUS03GotoPhase4` -> reinforcement movie -> `luaUS03CruisersInRange` -> phase 4 -> the Vanguard `recon`
+listener (oldLevel 1 -> newLevel 2 for the Allies) -> EscapePath -> `exitzone` -> phase 5.
+
+**The stall, from `local\l54_E0_p01.log` (main bd3b0c333, 24000 frames, no orders).** Two script errors:
+- `US03Think failed: commandhelpers.lua:16266: attempt to perform arithmetic on a nil value` in `luaPutToRecon`
+  from `luaUS03SpawnPhase1EnterpriseKillers` (script line 1645): `dist * GetSimplifiedReconMultiplier()`, and
+  `GetSimplifiedReconMultiplier` (`008B24A0`) was an UNIMPLEMENTED row that pushes nothing. The phase-1 spawn
+  of the Enterprise's attackers stops there. **Host defect.**
+- `luaTimetable failed: usn_03:1186: bad argument #1 to 'pairs'` in `luaUS03EndReconMovie`: it has already set
+  `MissionPhase = 3`, then `luaGetSlotsAndSquads(Mission.Enterprise)` returns `0, nil` because the Enterprise has
+  no squadron in its slots, and `pairs(nil)` throws before the Junyo `kill` listener is added. **Phase 3 can
+  then never end.** The image raises the same error for a carrier with no squadron up (commandhelpers'
+  `luaGetSlotsAndSquads` answers `0, nil` and the script does not test it), so this is the player's job: the
+  order file must have Enterprise squadrons launched before the recon movie ends.
+
+**The binding** (`kSimplifiedReconNativesBound`, `include/bsp/game_hosts_lua.hpp`, OFF): the four natives on
+`[game+21C4h]` (`008B2320`/`008B24A0` at `+74h`, `008B25F0`/`008B2770` at `+78h`, default 1.0f from `00444D20`;
+docs/GUNNERY_RECON_DETECTION.md). LABELLED: a set value is not forwarded to the gunnery host's recon detection.
+
+**Predictions (before the pairs).**
+- OFF: identical.
+- PRCP01 ON: no `luaPutToRecon` error; `luaUS03SpawnPhase1EnterpriseKillers` completes, so phase 1 spawns more
+  Japanese attackers against the Enterprise (more plane deaths and Enterprise damage). Phase 3 still stalls at
+  line 1186 without an order file that launches Enterprise squadrons.
+- BSM01 ON (win row; bsm_01 calls `SetSimplifiedReconMultiplier`): gameplay identical (only the setter row
+  becomes concrete; detection still reads 1.0); the win holds.
+
+### 5gj, the pairs (cc9-lua54, 2026-10-12)
+
+Exports `l54_R0` (584332397 OFF) and `l54_R1` (switch ON); order file `local\l54_p01_a.txt` (launch Enterprise
+Wildcats, slots 1 and 2, at frames 600/620, targeted on the Enterprise).
+- **PRCP01 24000 with the orders:** gameplay identical OFF vs ON. With squadrons up, `luaUS03EndReconMovie` runs
+  to its end on both sides: the Junyo `kill` listener and `ReinforcementHintlistenerID` are added and no script
+  call fails. `GetSimplifiedReconMultiplier` was not called in either run (no row for it in either log), so the
+  getter is unexercised here (why `luaUS03SpawnPhase1EnterpriseKillers` did not reach `luaPutToRecon` with
+  Wildcats up was not read); the no-orders run `l54_E0_p01` is the one that raised the error.
+- **BSM01 30000:** identical OFF vs ON (no Set/GetSimplified call reached). **Both sides end with no
+  EndMission at MissionPhase 3**, where `l53_M1_b1` (487cf8170) completed at 767.94 s: BSM01 has regressed on
+  main bd3b0c333 independently of this switch (reported to the lead).
+- **Flipped ON:** the four natives answer the image's own stored values (default 1.0f), both pairs are
+  identical, and OFF is a proven script error on the no-orders path. The rest of PRCP01 stays open.
+
+## 5gk. Handoff (cc9-lua54, 2026-10-12, at about 76% context)
+
+Tree `J:\PROG\battlestations-pacific-decompile-cc9-lua52` (branch `agent/cc9-lua52`); launcher `local\l54_lane.ps1`
+(rows as l53 plus `os` = USNOS s45_os_k, `u03`, `u14`, `p01` (no orders), `p01o` (PRCP01 + `local\l54_p01_a.txt`);
+`-EnvExtra` passes env lines; `-Exe` an export). Scanners: `local\l54_listen_scan.py` (AddListener census),
+`local\l54_reach.py` (menu id -> scene StageScript -> listeners), `local\l54_tree.py` (menu ids),
+`local\l54_cb_body.py` (callback bodies), `local\l54_live_water.py`, `local\l54_trace.py`. No leases held.
+
+**Done:** 5gf (kPlaneWaterPowerLostBound ON, e7f7a279d/e89b2b7d6), 5gg (TroopTrans3 box, routed to gunnery39),
+5gh (HintSystem, no binding), 5gi (event-channel audit, abeef3acf), 5gj (kSimplifiedReconNativesBound, ON in
+this commit). hpEvent closed: no menu row reaches usn_14_battle_of_okinawa (menu USN14 is "New - Battle of the
+Philippine Sea"). Paratroopers stopped by the lead (JM05's Dakotas are PilotMoveTo'd; JM05 fails at 441 s).
+
+**Next, the PRCP01 bring-up (lead's order (a)):**
+1. Phase 3 now waits for **the Junyo to die** (`luaUS03JunyoKilled`, kill listener). The Enterprise deck has
+   only Wildcats (101x30; 113 and 108 stock 0), so the order file needs another striker: read what the phase-3
+   script gives the player (Hornet strike `dlg_HornetStrike`, `Mission.Timer = GameTime() + 1200`, the
+   `ReinforcementHintlistenerID` callback) and extend `l54_p01_a.txt`. The Junyo is generated by GenerateObject
+   in the phase-3 movie init (5fy), so its name resolves only after that.
+2. Then the reinforcement movie -> `luaUS03CruisersInRange` -> `dlg_Cruisersinrange` -> `luaUS03Primary4Add`
+   (phase 4). **No `input` or `target` listener is on this copy's path** (5gj); bind them only if a later step
+   needs them.
+3. Phase 4 -> the Vanguard `recon` listener (hosted) -> EscapePath -> the ship out-of-map countdown
+   `00826D70` -> `00811F50` -> `00811E80` -> `0081BEB0` (exitzone(1), Kill(4), `ExitZoneParty`) -> phase 5.
+   The lead logged the countdown as a ships-lane item; the `exitzone` Lua dispatcher is this lane's
+   (5gi has the channel contract; the status/filter strings are case-insensitive exact sets).
+4. Write the winning order file to `config/win_orders/`.
