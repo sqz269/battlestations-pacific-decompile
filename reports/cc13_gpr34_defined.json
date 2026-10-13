@@ -1,0 +1,61 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006ffa40",
+    "end_address": "006ffdec"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006ffa40",
+    "end_address": "006ffdeb",
+    "bytes_disassembled": 940,
+    "message": "Successfully disassembled 940 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006ffa40",
+    "disassemble_first": false,
+    "name": "BSP_DummySubmarine_FixedStepTick"
+   },
+   "result": {
+    "success": true,
+    "address": "006ffa40",
+    "function_name": "BSP_DummySubmarine_FixedStepTick",
+    "entry_point": "006ffa40",
+    "body_size": 934,
+    "message": "Function created successfully at 006ffa40",
+    "warnings": [
+     "Function name 'BSP_DummySubmarine_FixedStepTick' \u2014 main part 'DummySubmarine_FixedStepTick' is not PascalCase. Expected: DummysubmarineFixedsteptick",
+     "Function name 'BSP_DummySubmarine_FixedStepTick' \u2014 main part 'DummySubmarine_FixedStepTick' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_DummySubmarine_FixedStepTick' does not start with a recognized verb. First word 'Dummy' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "006ffa40",
+   "end": "006ffdec",
+   "name": "BSP_DummySubmarine_FixedStepTick",
+   "after": "Function: BSP_DummySubmarine_FixedStepTick at 006ffa40\nSignature: undefined BSP_DummySubmarine_FixedStepTick(void)\nEntry: 006ffa40\nBody: 006ffa40 - 006ffdeb"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
