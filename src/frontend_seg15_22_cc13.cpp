@@ -9,6 +9,7 @@
 #include <cstdio>
 #include <cstring>
 #include <cwchar>
+#include <string.h>
 
 namespace bsp::frontend_seg15_22_cc13 {
 
@@ -2298,6 +2299,305 @@ void pause_multi_exit_005d3960(Raw s, Seg15Host& host) {
 
 void pause_multi_collect_children_005d3990(Raw s, void* out, Seg15Host& host) {
     host.push_page_slot_004d6790(out, reinterpret_cast<void**>(s.p + 0x10));
+}
+
+// ---------------------------------------------------------------------------
+// Multiplayer game lobby helpers
+// ---------------------------------------------------------------------------
+
+bool lobby_slot_swap_has_pair_005d4910(Raw lobby) {
+    return lobby.at<std::int32_t>(0x2F0) != -1 && lobby.at<std::int32_t>(0x2F4) != -1;
+}
+
+void lobby_settings_copy_stored_options_005d49e0(const std::uint32_t* src, Seg15Host& host) {
+    Raw stored = host.global_block(0x00E1955C);
+    for (std::size_t i = 0; i < 14; ++i) stored.at<std::uint32_t>(i * 4) = src[i];
+}
+
+// Four unconditional mode reads, then mode0 == 0 || mode1 == 1 || mode2 == 2 || mode3 == 3.
+bool game_is_standard_game_mode_005d4a10(Seg15Host& host) {
+    const bool a = host.game_effective_mode_004bca50() == 0;
+    const bool b = host.game_effective_mode_004bca50() == 1;
+    const bool c = host.game_effective_mode_004bca50() == 2;
+    const bool d = host.game_effective_mode_004bca50() == 3;
+    return a || b || c || d;
+}
+
+bool session_record_flag_274_005d50e0(Raw record) { return record.at<std::uint8_t>(0x274) != 0; }
+
+void* game_local_slot_record_005d5130(Raw game) {
+    const std::int32_t slot = game.at<std::int32_t>(0x18EC);
+    return (slot >= 0 && slot < 8) ? game.ptr(0x18CC + slot * 4) : nullptr;
+}
+
+bool multi_lobby_local_slot_valid_005d51f0(Seg15Host& host) {
+    Raw game = host.global_object(kGameGlobal);
+    const std::int32_t slot = game.at<std::int32_t>(0x18EC);
+    return game.at<std::int32_t>(0x18C8) >= 0 && slot >= 0 && slot < 8;
+}
+
+bool multi_lobby_local_player_ready_005d5220(Seg15Host& host) {
+    Raw game = host.global_object(kGameGlobal);
+    if (!multi_lobby_local_slot_valid_005d51f0(host)) return false;
+    return Raw{static_cast<std::uint8_t*>(game.ptr(0x18CC + game.at<std::int32_t>(0x18EC) * 4))}.at<std::uint8_t>(0xC) != 0;
+}
+
+// 005D5260: every present human slot (+750h set, +751h clear) must be ready
+// (+754h); then with two or more such players, or the flag game+218Ch, mode 7
+// may start and any other mode needs participants on both sides (004BB770).
+bool lobby_ready_to_start_005d5260(Seg15Host& host) {
+    Raw game = host.global_object(kGameGlobal);
+    std::int32_t humans = 0;
+    for (std::int32_t i = 0; i < 8; ++i) {
+        Raw slot{game.p + 0x750 + i * 0x118};
+        if (slot.at<std::uint8_t>(0) != 0 && slot.at<std::uint8_t>(1) == 0) {
+            ++humans;
+            if (slot.at<std::uint8_t>(4) == 0) return false;
+        }
+    }
+    if (humans < 2 && game.at<std::uint8_t>(0x218C) == 0) return false;
+    if (host.game_effective_mode_004bca50() == 7) return true;
+    std::int32_t a = 0, b = 0;
+    host.game_count_participants_by_side_004bb770(&a, &b);
+    return a > 0 && b > 0;
+}
+
+// 005D5490: the settings panel (+18h) visible and the settings list (+228h) byte +85h.
+bool multi_game_lobby_settings_open_005d5490(Raw s, Seg15Host& host) {
+    return host.widget_is_visible_38(s.ptr(0x18))
+        && Raw{static_cast<std::uint8_t*>(s.ptr(0x228))}.at<std::uint8_t>(0x85) != 0;
+}
+
+std::int32_t lobby_settings_slot_for_menu_row_005d5630(std::int32_t row, Seg15Host& host) {
+    for (std::int32_t slot = 0; slot < 0xE; ++slot) {
+        if (host.lobby_settings_menu_row_005d5500(slot) == row) return slot;
+    }
+    return -1;
+}
+
+void multi_mode_selector_set_mode_005d5660(std::int32_t mode, Seg15Host& host) {
+    const std::int32_t applied = (mode >= 0 && mode < 4) ? host.global_block(0x00E19568).at<std::int32_t>(0) : mode;
+    host.global_block(0x00E19564).at<std::int32_t>(0) = mode;
+    host.game_set_game_mode_004bc890(applied, 0);
+}
+
+// 005D5690: kick every present slot whose name (+58h) matches the target name
+// (native string 00E195CC / data 00E195D0) case-insensitively; a null target
+// matches an empty name.
+void prompt_result_kick_player_005d5690(std::int32_t result, Seg15Host& host) {
+    if (result != 1) return;
+    Raw game = host.global_object(kGameGlobal);
+    const char* target = static_cast<const char*>(host.global_block(0x00E195D0).ptr(0));
+    for (std::int32_t i = 0; i < 8; ++i) {
+        Raw slot{game.p + 0x748 + i * 0x118};
+        if (slot.at<std::uint8_t>(8) == 0) continue;
+        const char* name = reinterpret_cast<const char*>(slot.p + 0x58);
+        const bool match = target == nullptr ? name[0] == 0 : _stricmp(target, name) == 0;
+        if (match) host.session_kick_player_peer_0076c790(slot);
+    }
+}
+
+// 005D57F0: accept (00E0895C, 00E08960) and leave the tactical library when it
+// is on the multiplayer menu stack (interface 0Bh); otherwise refuse. The pending
+// swap 00E0895C is reset to -1 on every path.
+void prompt_result_accept_slot_swap_005d57f0(std::int32_t result, Seg15Host& host) {
+    Raw pending = host.global_block(0x00E0895C);
+    const std::int32_t a = pending.at<std::int32_t>(0);
+    const std::int32_t b = host.global_block(0x00E08960).at<std::int32_t>(0);
+    if (result == 1) {
+        host.session_swap_slot_accept_00771ac0(a, b);
+        if (host.global_object(kMainFrontEndGlobal).p != nullptr && host.global_object(kMultiMenuGlobal).p != nullptr
+            && host.multi_menu_has_interface_00687860(0xB)) {
+            host.tactical_library_leave_00515bc0();
+        }
+    } else {
+        host.session_swap_slot_refuse_00771cc0(a, b);
+    }
+    pending.at<std::int32_t>(0) = -1;
+}
+
+// 005D5790: +281h = the local player's ready byte; the client (session mode 2) sets +280h.
+void multi_game_lobby_refresh_local_ready_005d5790(Raw s, Seg15Host& host) {
+    s.at<std::uint8_t>(0x281) = multi_lobby_local_player_ready_005d5220(host) ? 1 : 0;
+    if (host.global_object(kGameGlobal).at<std::int32_t>(0x1FE4) == 2) s.at<std::uint8_t>(0x280) = 1;
+}
+
+// 005D5870: editable only for the host (session mode 1): the settings panel
+// (+18h) shown and the settings list (+228h) focused; when editable the two
+// buttons +94h / +A8h lose focus, the stored options are copied to +284h..,
+// +2BCh = game+60Ch, the swap pair is saved (+2F8h, +2FCh) and the scroller
+// (+30h) is reset (range 0.0, no content).
+void multi_game_lobby_set_editable_005d5870(Raw s, bool editable, Seg15Host& host) {
+    if (host.global_object(kGameGlobal).at<std::int32_t>(0x1FE4) != 1) editable = false;
+    host.widget_set_visible_34(s.ptr(0x18), editable);
+    host.widget_set_focus_60(s.ptr(0x228), editable);
+    if (!editable) return;
+    host.widget_set_focus_60(s.ptr(0x94), false);
+    host.widget_set_focus_60(s.ptr(0xA8), false);
+    Raw stored = host.global_block(0x00E1955C);
+    for (std::size_t i = 0; i < 14; ++i) s.at<std::uint32_t>(0x284 + i * 4) = stored.at<std::uint32_t>(i * 4);
+    s.at<std::uint32_t>(0x2BC) = host.global_object(kGameGlobal).at<std::uint32_t>(0x60C);
+    s.at<std::uint32_t>(0x2F8) = s.at<std::uint32_t>(0x2F0);
+    s.at<std::uint32_t>(0x2FC) = s.at<std::uint32_t>(0x2F4);
+    host.scroller_set_range_006834a0(Raw{s.p + 0x30}, 0.0f);
+    host.scroller_attach_content_00683790(Raw{s.p + 0x30}, nullptr);
+}
+
+std::int32_t multi_game_lobby_find_setting_row_005d5930(Raw s, std::int32_t id) {
+    auto* first = static_cast<std::uint8_t*>(s.ptr(0x2E4));
+    if (first == nullptr) return 0;
+    const auto count = static_cast<std::uint32_t>((static_cast<std::uint8_t*>(s.ptr(0x2E8)) - first) / 0x24);
+    for (std::uint32_t i = 0; i < count; ++i) {
+        Raw row{first + i * 0x24};
+        if (row.at<std::int32_t>(0) != id) continue;
+        auto* begin = static_cast<std::uint8_t*>(row.ptr(8));
+        return begin ? static_cast<std::int32_t>((static_cast<std::uint8_t*>(row.ptr(0xC)) - begin) >> 3) : 0;
+    }
+    return 0;
+}
+
+// 005D62B0: mode 00E19564 (0..3 through 00E19568) applied; the settings copied
+// to game+2020h; broadcasts of the settings, the scene index and, with a scene
+// (game+5FCh), its sub-scene (00E195C4 with scene +1098h).
+void multi_game_lobby_apply_settings_005d62b0(Seg15Host& host) {
+    std::int32_t mode = host.global_block(0x00E19564).at<std::int32_t>(0);
+    if (static_cast<std::uint32_t>(mode) < 4) mode = host.global_block(0x00E19568).at<std::int32_t>(0);
+    host.game_set_game_mode_004bc890(mode, 0);
+    Raw game = host.global_object(kGameGlobal);
+    Raw stored = host.global_block(0x00E1955C);
+    for (std::size_t i = 0; i < 14; ++i) game.at<std::uint32_t>(0x2020 + i * 4) = stored.at<std::uint32_t>(i * 4);
+    host.session_broadcast_multi_settings_0076c9c0(stored);
+    host.session_broadcast_scene_index_00772390();
+    if (game.ptr(0x5FC) != nullptr) {
+        host.session_broadcast_sub_scene_00772430(host.global_block(0x00E195C4),
+                                                  Raw{static_cast<std::uint8_t*>(game.ptr(0x5FC))}.at<std::uint32_t>(0x1098));
+    }
+}
+
+// 005D6350: the settings slot shown on menu row 1 takes the value (with no
+// such slot the index is -1 and the image writes 00E19558); +10h = 2.
+void multi_game_lobby_set_setting_for_row1_005d6350(Raw s, std::uint32_t value, Seg15Host& host) {
+    const std::int32_t slot = lobby_settings_slot_for_menu_row_005d5630(1, host);
+    host.global_block(static_cast<std::uint32_t>(0x00E1955C + slot * 4)).at<std::uint32_t>(0) = value;
+    s.at<std::int32_t>(0x10) = 2;
+}
+
+void* multi_game_lobby_selected_player_slot_005d63a0(Raw s, Seg15Host& host) {
+    std::int32_t index = host.listbox_selected_index_00a9c920(s.ptr(0xA8));
+    Raw game = host.global_object(kGameGlobal);
+    for (std::int32_t i = 0; i < 8; ++i) {
+        std::uint8_t* slot = game.p + 0x748 + i * 0x118;
+        if (slot[8] == 0) continue;
+        if (index == 0) return slot;
+        --index;
+    }
+    return nullptr;
+}
+
+// 005D6BA0: unless the profile-hints owner disables the check (+8h), every
+// present human slot's content words (+C7h / +CBh past its +751h byte) must contain the
+// required masks game+2060h / +2064h.
+bool multi_game_lobby_slots_meet_content_masks_005d6ba0(Seg15Host& host) {
+    if (host.profile_hints_owner_004c1e90().at<std::uint32_t>(8) != 0) return true;
+    Raw game = host.global_object(kGameGlobal);
+    const std::uint32_t need_a = game.at<std::uint32_t>(0x2060);
+    const std::uint32_t need_b = game.at<std::uint32_t>(0x2064);
+    for (std::int32_t i = 0; i < 8; ++i) {
+        Raw slot{game.p + 0x751 + i * 0x118};
+        if (Raw{slot.p - 1}.at<std::uint8_t>(0) == 0 || slot.at<std::uint8_t>(0) != 0) continue;
+        if ((slot.at<std::uint32_t>(199) & need_a) != need_a || (slot.at<std::uint32_t>(0xCB) & need_b) != need_b) {
+            return false;
+        }
+    }
+    return true;
+}
+
+// 005D6CD0: pending load prompt 00E08958 = -1, dismiss prompt slot 1.
+void session_dismiss_load_prompt_005d6cd0(Seg15Host& host) {
+    host.global_block(0x00E08958).at<std::int32_t>(0) = -1;
+    host.menu_prompt_dismiss_slot_00532a20(1);
+}
+
+bool multi_game_lobby_local_map_available_005d8b30(Seg15Host& host) {
+    Raw game = host.global_object(kGameGlobal);
+    Raw scene{static_cast<std::uint8_t*>(game.ptr(0x5FC))};
+    if (scene.p == nullptr || scene.at<std::uint8_t>(0x914) == 0) return false;
+    Raw rec{static_cast<std::uint8_t*>(game.ptr(0x18CC + game.at<std::int32_t>(0x18EC) * 4))};
+    return host.tactical_library_map_unlocked_0050fd10(host.lobby_map_index_005d8650(rec.at<std::uint32_t>(0x28)));
+}
+
+namespace {
+Raw lobby_screen_from_multi_menu(Seg15Host& host) {
+    return Raw{static_cast<std::uint8_t*>(host.global_object(kMultiMenuGlobal).ptr(0x48))};
+}
+}  // namespace
+
+// 005D98C0: tail jump to 005D8410 (leave to menu).
+void prompt_result_leave_lobby_005d98c0(std::int32_t result, Seg15Host& host) {
+    if (result == 1) host.lobby_call(0x005D8410, lobby_screen_from_multi_menu(host));
+}
+
+void prompt_result_close_game_005d9fe0(std::int32_t result, Seg15Host& host) {
+    if (result == 1) multi_game_lobby_close_game_005d9ef0(lobby_screen_from_multi_menu(host), host);
+}
+
+// 005D9D60: with a local slot 0..7: map icon 005D6C10, map availability
+// 005D98E0, then (tail jump) the slot reset 005D5340.
+void multi_game_lobby_on_local_slot_changed_005d9d60(Raw s, Seg15Host& host) {
+    const std::int32_t slot = host.global_object(kGameGlobal).at<std::int32_t>(0x18EC);
+    if (slot < 0 || slot >= 8) return;
+    host.lobby_call(0x005D6C10, s);
+    host.lobby_call(0x005D98E0, s);
+    host.lobby_call(0x005D5340, s);
+}
+
+// 005D9EF0: broadcast game closed (0); if the online service is hosting
+// (+180h), end it (+170h(0)), +270h = 1 and 00E08700 = 0; otherwise leave to
+// the menu (tail jump 005D8410).
+void multi_game_lobby_close_game_005d9ef0(Raw s, Seg15Host& host) {
+    host.session_broadcast_game_closed_007728b0(0);
+    if (host.online_service_virtual(0x180)) {
+        host.online_service_virtual_arg(0x170, 0);
+        s.at<std::uint8_t>(0x270) = 1;
+        host.global_block(0x00E08700).at<std::uint8_t>(0) = 0;
+        return;
+    }
+    host.lobby_call(0x005D8410, s);
+}
+
+// 005D9F50: a selected slot other than the local record goes to the kick
+// confirmation (tail jump 005D8530 with ECX = the slot).
+void multi_game_lobby_request_selected_slot_005d9f50(Raw s, Seg15Host& host) {
+    void* selected = multi_game_lobby_selected_player_slot_005d63a0(s, host);
+    if (selected == nullptr) return;
+    Raw game = host.global_object(kGameGlobal);
+    if (selected != game_local_slot_record_005d5130(game)) host.lobby_call(0x005D8530, Raw{static_cast<std::uint8_t*>(selected)});
+}
+
+// 005D9F90: with the local map available, the scene loader (*(*00E198AC + 70h))
+// takes the map index (+9Ch), the map (+A0h) and +A4h = 1, and the tactical
+// library (interface 0Bh) is pushed.
+void multi_game_lobby_apply_local_map_005d9f90(Seg15Host& host) {
+    if (!multi_game_lobby_local_map_available_005d8b30(host)) return;
+    Raw game = host.global_object(kGameGlobal);
+    Raw rec{static_cast<std::uint8_t*>(game.ptr(0x18CC + game.at<std::int32_t>(0x18EC) * 4))};
+    const std::uint32_t map = rec.at<std::uint32_t>(0x28);
+    const std::int32_t index = host.lobby_map_index_005d8650(map);
+    Raw loader{static_cast<std::uint8_t*>(host.global_object(kMainFrontEndGlobal).ptr(0x70))};
+    loader.at<std::int32_t>(0x9C) = index;
+    loader.at<std::uint32_t>(0xA0) = map;
+    loader.at<std::uint8_t>(0xA4) = 1;
+    host.multi_menu_push_request_00688ad0(0xB);
+}
+
+void two_vector_record_construct_005dac60(Raw record) {
+    for (std::size_t off : {0x8u, 0xCu, 0x10u, 0x18u, 0x1Cu, 0x20u}) record.at<std::uint32_t>(off) = 0;
+}
+
+void lobby_map_entry_copy_005daf10(Raw dst, Raw src, Seg15Host& host) {
+    dst.at<std::uint32_t>(0) = src.at<std::uint32_t>(0);
+    host.checked_string_vector_copy_00557bc0(Raw{dst.p + 4}, Raw{src.p + 4});
+    host.checked_string_vector_copy_00557bc0(Raw{dst.p + 0x14}, Raw{src.p + 0x14});
 }
 
 void byte_sbo_uninit_fill_n_005443f0(std::uint8_t* dest, std::uint32_t count, const std::uint8_t* value,

@@ -187,9 +187,35 @@ focus dims 005D3440 / 005D35A0 (types 3, 6, 12h), selection store 005D34E0 (00E1
 005D3540, destroy 005D3710, activate 005D3790 (A2h activates the listbox selection, A3h resumes),
 register 005D38A0 (GUI_pause_multi), exit 005D3960, collect 005D3990.
 
+### Multiplayer game lobby helpers
+
+Slot swap pair 005D4910, stored options 005D49E0 (00E1955C..00E19590), standard-mode test
+005D4A10 (four unconditional mode reads), record flag 005D50E0, local slot record / validity /
+ready 005D5130 / 005D51F0 / 005D5220, start test 005D5260, settings-open test 005D5490, slot for
+menu row 005D5630, mode selector 005D5660, kick / slot-swap prompt results 005D5690 / 005D57F0,
+local ready 005D5790, editable 005D5870, setting row count 005D5930, apply settings 005D62B0
+(game+2020h and three broadcasts), auto-test setting 005D6350, selected player slot 005D63A0,
+content masks 005D6BA0, load prompt dismiss 005D6CD0, local map availability 005D8B30, leave /
+close prompt results 005D98C0 / 005D9FE0, local slot change 005D9D60, close game 005D9EF0, selected
+slot request 005D9F50, local map apply 005D9F90, two-vector record 005DAC60, map entry copy 005DAF10.
+
+Corrections:
+
+- 005D5260 is not a counter (ledger name CountUnreadyPlayers): it returns false as soon as a
+  present human slot (+750h set, +751h clear) is not ready (+754h); with fewer than two humans and
+  game+218Ch clear it returns false; mode 7 then returns true, any other mode needs participants on
+  both sides (004BB770).
+- 005D5870's decompile loses its flag argument; the listing shows the editable flag (host only)
+  driving +18h / +228h and the reset block.
+- 005D8B30 passes one argument to 0050FD10 (the decompile shows two).
+
 ## Backfilled
 
-- 00530970 menu prompt exit (`src/menu_screens_2.cpp`).
+- 00530970 menu prompt exit (`src/menu_screens_2.cpp`), checked line by line.
+- Light checks (ABI and callee sequence against disasm-raw, not a re-derivation):
+  `src/menu_screens_2.cpp` credits 0052D9C0 / 0052FFC0 / 0052EE30, HUD formation 00536800 /
+  0053A4D0, frame stats 0053C740, free camera 0053DD90 / 00540390; `src/mission_lobby_settings.cpp`
+  005D5500 (`lobby_settings_menu_row`, which takes the effective mode as a parameter).
 
 ## For cc9
 

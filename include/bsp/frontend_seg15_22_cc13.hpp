@@ -276,6 +276,47 @@ struct Seg15Host : bsp::ingame_gui_cc13::HudScreenServices {
     virtual void pause_screen_show_page_005fd890(std::int32_t page, std::int32_t show) = 0;
     // 004C9680: select the default front-end frame (tail jump).
     virtual void front_end_frame_select_default_004c9680() = 0;
+    // 004BCA50, ECX = *00E188A8: the effective game mode; 004BC890 set (mode, 0);
+    // 004BB770 (&side a, &side b) participants by side.
+    virtual std::int32_t game_effective_mode_004bca50() = 0;
+    virtual void game_set_game_mode_004bc890(std::int32_t mode, std::int32_t flag) = 0;
+    virtual void game_count_participants_by_side_004bb770(std::int32_t* a, std::int32_t* b) = 0;
+    // 005D5500 (src/mission_lobby_settings.cpp): the menu row of a settings slot.
+    virtual std::int32_t lobby_settings_menu_row_005d5500(std::int32_t slot) = 0;
+    // Session (ECX = *00E188A8 + 1EF0h): 0076C790 kick (slot record), 00771AC0 /
+    // 00771CC0 slot swap accept / refuse (a, b).
+    virtual void session_kick_player_peer_0076c790(Raw slot) = 0;
+    virtual void session_swap_slot_accept_00771ac0(std::int32_t a, std::int32_t b) = 0;
+    virtual void session_swap_slot_refuse_00771cc0(std::int32_t a, std::int32_t b) = 0;
+    // 00687860, ECX = *00E198B4, (id, 0): interface on the stack.
+    virtual bool multi_menu_has_interface_00687860(std::int32_t id) = 0;
+    // 00515BC0, ECX = *(*00E198AC + 70h): leave the tactical library.
+    virtual void tactical_library_leave_00515bc0() = 0;
+    // 006834A0 (float) / 00683790 (0), ECX = scroller block.
+    virtual void scroller_set_range_006834a0(Raw scroller, float range) = 0;
+    virtual void scroller_attach_content_00683790(Raw scroller, void* content) = 0;
+    // Session broadcasts (ECX = *00E188A8 + 1EF0h): 0076C9C0 settings (block),
+    // 00772390 scene index, 00772430 sub-scene (00E195C4, value).
+    virtual void session_broadcast_multi_settings_0076c9c0(Raw block) = 0;
+    virtual void session_broadcast_scene_index_00772390() = 0;
+    virtual void session_broadcast_sub_scene_00772430(Raw name, std::uint32_t value) = 0;
+    // 004C1E90: the profile-hints owner (+8h: content checks off).
+    virtual Raw profile_hints_owner_004c1e90() = 0;
+    // 00425D10 then 00532A20(slot), ECX = the menu command screen.
+    virtual void menu_prompt_dismiss_slot_00532a20(std::int32_t slot) = 0;
+    // 005D8650(map id) -> index; 0050FD10, ECX = *(*00E198AC + 70h), (index): unlocked.
+    virtual std::int32_t lobby_map_index_005d8650(std::uint32_t map) = 0;
+    virtual bool tactical_library_map_unlocked_0050fd10(std::int32_t index) = 0;
+    // Lobby routines not reconstructed here, ECX = the given object.
+    virtual void lobby_call(std::uint32_t routine, Raw object) = 0;
+    // 007728B0, ECX = *00E188A8 + 1EF0h, (0): broadcast game closed.
+    virtual void session_broadcast_game_closed_007728b0(std::int32_t value) = 0;
+    // *00F8A2FC virtual with one argument (+170h end hosting).
+    virtual void online_service_virtual_arg(std::uint16_t slot, std::int32_t arg) = 0;
+    // 00688AD0, ECX = *00E198B4, (id): push an interface request (logged).
+    virtual void multi_menu_push_request_00688ad0(std::int32_t id) = 0;
+    // 00557BC0, ECX = dst, (src): checked native-string vector copy.
+    virtual void checked_string_vector_copy_00557bc0(Raw dst, Raw src) = 0;
     // Native string substring (count, data) of the first n characters.
     virtual void native_string_truncate(Raw string, std::uint32_t n) = 0;
 };
@@ -663,6 +704,60 @@ void pause_multi_on_activate_005d3790(Raw listener, void* widget, Seg15Host& hos
 void pause_multi_register_005d38a0(Raw s, Seg15Host& host);
 void pause_multi_exit_005d3960(Raw s, Seg15Host& host);
 void pause_multi_collect_children_005d3990(Raw s, void* out, Seg15Host& host);
+
+// Multiplayer game lobby (and its helpers). Player slots: 8 x 118h at game+748h
+// (+8h present, +9h AI, +0Ch ready, +58h name); slot records game+18CCh[i];
+// local slot index game+18ECh, local player game+18C8h.
+bool lobby_slot_swap_has_pair_005d4910(Raw lobby);
+// 005D49E0, __fastcall(ECX src): the fourteen stored options 00E1955C..00E19590.
+void lobby_settings_copy_stored_options_005d49e0(const std::uint32_t* src, Seg15Host& host);
+bool game_is_standard_game_mode_005d4a10(Seg15Host& host);
+bool session_record_flag_274_005d50e0(Raw record);
+// 005D5130, __fastcall(game): the local slot record or null.
+void* game_local_slot_record_005d5130(Raw game);
+bool multi_lobby_local_slot_valid_005d51f0(Seg15Host& host);
+bool multi_lobby_local_player_ready_005d5220(Seg15Host& host);
+// 005D5260: the ledger calls it CountUnreadyPlayers; the body answers whether
+// the lobby may start (see the doc).
+bool lobby_ready_to_start_005d5260(Seg15Host& host);
+bool multi_game_lobby_settings_open_005d5490(Raw s, Seg15Host& host);
+// 005D5630, __fastcall(ECX row): the settings slot whose menu row (005D5500) is row, or -1.
+std::int32_t lobby_settings_slot_for_menu_row_005d5630(std::int32_t row, Seg15Host& host);
+// 005D5660, __fastcall(ECX mode): 00E19564 = mode; modes 0..3 apply 00E19568.
+void multi_mode_selector_set_mode_005d5660(std::int32_t mode, Seg15Host& host);
+// Prompt results, __fastcall(ECX result).
+void prompt_result_kick_player_005d5690(std::int32_t result, Seg15Host& host);
+void prompt_result_accept_slot_swap_005d57f0(std::int32_t result, Seg15Host& host);
+void multi_game_lobby_refresh_local_ready_005d5790(Raw s, Seg15Host& host);
+// 005D5870, __thiscall(screen, bool), RET 4.
+void multi_game_lobby_set_editable_005d5870(Raw s, bool editable, Seg15Host& host);
+// 005D5930, __thiscall(screen, id), RET 4: the element count (8-byte elements)
+// of the setting row with that id (rows 24h at +2E4h..+2E8h, id +0, vector +4h).
+std::int32_t multi_game_lobby_find_setting_row_005d5930(Raw s, std::int32_t id);
+// 005D62B0: apply the mode and the fourteen settings to the game and broadcast them.
+void multi_game_lobby_apply_settings_005d62b0(Seg15Host& host);
+// 005D6350, __thiscall(screen, value), RET 4.
+void multi_game_lobby_set_setting_for_row1_005d6350(Raw s, std::uint32_t value, Seg15Host& host);
+// 005D63A0, __fastcall(screen): the n-th present player slot for the player listbox (+A8h) selection.
+void* multi_game_lobby_selected_player_slot_005d63a0(Raw s, Seg15Host& host);
+bool multi_game_lobby_slots_meet_content_masks_005d6ba0(Seg15Host& host);
+void session_dismiss_load_prompt_005d6cd0(Seg15Host& host);
+// 005D8B30: a loaded scene (game+5FCh, +914h) and the local slot record's map
+// (+28h) unlocked in the tactical library (005D8650 index, 0050FD10).
+bool multi_game_lobby_local_map_available_005d8b30(Seg15Host& host);
+// Prompt callbacks (ECX result) that tail-jump with ECX = *(*00E198B4 + 48h).
+void prompt_result_leave_lobby_005d98c0(std::int32_t result, Seg15Host& host);
+void prompt_result_close_game_005d9fe0(std::int32_t result, Seg15Host& host);
+// 005D9D60, __fastcall(screen).
+void multi_game_lobby_on_local_slot_changed_005d9d60(Raw s, Seg15Host& host);
+// 005D9EF0, __fastcall(screen).
+void multi_game_lobby_close_game_005d9ef0(Raw s, Seg15Host& host);
+// 005D9F50, __fastcall(screen).
+void multi_game_lobby_request_selected_slot_005d9f50(Raw s, Seg15Host& host);
+void multi_game_lobby_apply_local_map_005d9f90(Seg15Host& host);
+void two_vector_record_construct_005dac60(Raw record);
+// 005DAF10, __thiscall(dst, src), RET 4: id +0 and two checked string vectors (+4h, +14h).
+void lobby_map_entry_copy_005daf10(Raw dst, Raw src, Seg15Host& host);
 
 }  // namespace bsp::frontend_seg15_22_cc13
 
