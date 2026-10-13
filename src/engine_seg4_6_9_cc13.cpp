@@ -3,10 +3,12 @@
 #include <cmath>
 #include <cstdio>
 #include <cstring>
+#include <vector>
 #include <stdexcept>
 
 #include "bsp/camera_decomposition.hpp"
 #include "bsp/gamepad_force_events.hpp"
+#include "bsp/mission_scene_load.hpp"
 #include "bsp/native_bit_cursor_owned_string.hpp"
 #include "bsp/native_bit_cursor_read.hpp"
 #include "bsp/native_bit_cursor_write.hpp"
@@ -514,6 +516,26 @@ void raw_list_clear_storage_004683b0(std::int32_t& count, RawListNode*& head, Ra
     }
 }
 
+void pod_pointer_array_resize_00468050(PodPointerArray& array, std::int32_t n,
+                                       const std::function<void(PodPointerArray&, std::int32_t)>& reserve_004674f0) {
+    if (n > array.capacity) reserve_004674f0(array, n);                           // 00468058..0046805E
+    for (std::int32_t i = array.size; i < n; ++i) {                               // 00468063..00468084
+        const std::uintptr_t slot = reinterpret_cast<std::uintptr_t>(array.data) + static_cast<std::uintptr_t>(i) * 4;
+        if (slot != 0) *reinterpret_cast<std::uint32_t*>(slot) = 0;
+    }
+    while (n < array.size) --array.size;                                          // 00468086..00468096
+    array.size = n;                                                               // 00468098
+}
+
+void sound_record_set_destruct_004c9870(std::array<PodPointerArray*, 4> arrays_28_1c_10_04,
+                                        const std::function<void(PodPointerArray&, std::int32_t)>& reserve_004674f0,
+                                        const std::function<void(void*)>& free_block) {
+    for (PodPointerArray* array : arrays_28_1c_10_04) {                           // 004C988E..004C98FC
+        pod_pointer_array_resize_00468050(*array, 0, reserve_004674f0);
+        free_block(array->data);
+    }
+}
+
 void pod_pointer_array_push_back_00467f60(PodPointerArray& array, std::uint32_t value,
                                           const std::function<void(PodPointerArray&, std::int32_t)>& reserve_004674f0) {
     if (array.size == array.capacity) {
@@ -579,6 +601,82 @@ void lens_flare_pow_response_00452b00(float k_1c, float x, float& out_04, float&
     }
     out_04 = result;                                                              // 00452B61
     out_08 = result;
+}
+
+namespace {
+
+// FYL2X/FRNDINT/F2XM1/FSCALE on |v| with exponent e, stored float; 0 for v == 0.
+float x87_power_response(float v, double e) {
+    if (v == 0.0f) return 0.0f;
+    const float magnitude = 0.0f > v ? -0.0f - v : v;
+    return static_cast<float>(std::exp2(e * std::log2(static_cast<double>(magnitude))));
+}
+
+} // namespace
+
+void lens_flare_update_from_camera_00452bd0(LensFlareFields& flare, float dt, float zoom, LensFlareHost& host) {
+    if (!host.camera_world_current()) host.refresh_camera_world_00b6db70();      // 00452BF7..00452C03
+    const std::array<float, 3> pos = host.camera_position_120();
+    if (0.0f >= pos[1]) {                                                         // 00452C3B COMISS; JB (NaN continues)
+        host.set_lens_effect_00b0d020(0, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f);
+        return;
+    }
+    if (!host.camera_world_current()) host.refresh_camera_world_00b6db70();      // 00452C6C..00452C74
+    const std::array<float, 3> fwd = host.camera_forward_110();
+    const std::array<float, 3> reach{static_cast<float>(fwd[0] * 10000.0), static_cast<float>(fwd[1] * 10000.0),
+                                     static_cast<float>(10000.0 * fwd[2])};      // 00452C79..00452CA3
+    const std::array<float, 3> end{reach[0] + pos[0], reach[1] + pos[1], reach[2] + pos[2]}; // 00452CBF..00452CD7
+    const float inv_scale = static_cast<float>(1.0 / flare.scale_18);            // 00452CF8..00452D0E
+    const float brightness = static_cast<float>(
+        (static_cast<double>(zoom) - 1.0) * (-0.699999988079071 / (static_cast<double>(inv_scale) - 1.0)) + 1.0); // 00452D12..00452D2B
+    auto dot_forward = [&](const std::array<float, 3>& d) {
+        return static_cast<float>((static_cast<double>(fwd[1]) * d[1] + static_cast<double>(fwd[0]) * d[0])
+                                  + static_cast<double>(d[2]) * fwd[2]);
+    };
+    float v = 0.0f;
+    std::array<float, 3> hit{};
+    if (host.query_segment_0098add0(pos, end, hit)) {                            // 00452D49
+        const float d = dot_forward({hit[0] - pos[0], hit[1] - pos[1], hit[2] - pos[2]}); // 00452D5E..00452DA7
+        v = 1.0f > d ? 1.0f : d;                                                  // 00452DB9
+    } else {
+        const float quarter = static_cast<float>(host.camera_fov_1c4() * 0.25);   // 00452DF1..00452E05
+        float best_dot = static_cast<float>(std::cos(static_cast<double>(quarter))); // 00452E0D FCOS
+        void* best = nullptr;
+        float last_y = reach[1];
+        for (void* light : host.lights()) {                                       // 00452E40..00452EE5
+            if (!host.light_pose_current_c8(light)) host.refresh_light_pose_00414db0(light);
+            const std::array<float, 3> lp = host.light_position_fc(light);
+            std::array<float, 3> d{lp[0] - pos[0], lp[1] - pos[1], lp[2] - pos[2]};
+            normalize_camera_basis_0042b260(d);                                   // 00452E99
+            last_y = d[1];
+            const float dot = dot_forward(d);
+            if (dot > best_dot) {                                                 // 00452ECC FCOMIP; JBE
+                best_dot = dot;
+                best = light;
+            }
+        }
+        if (best != nullptr) {
+            if (!host.light_pose_current_c8(best)) host.refresh_light_pose_00414db0(best); // 00452EEF..00452EF9
+            v = 100000.0f;                                                        // 00CE4BC8
+        } else if (!(0.0f > last_y)) {                                            // 00452F25 COMISS; JBE
+            v = 10000.0f;                                                         // 00CE3D64
+        } else {
+            const float sine = static_cast<float>(std::sin(static_cast<double>(-0.0f - fwd[1]))); // 00452F2C..00452F43
+            const float r = static_cast<float>(static_cast<double>(pos[1]) / sine); // 00452F47..00452F53
+            if (1.0f > r) v = 1.0f;                                               // 00452F5D
+            else if (r > 100000.0f) v = 100000.0f;                                // 00452F7E JA 00452DBE
+            else v = 1.0f > r ? 1.0f : r;                                         // 00452DB1
+        }
+    }
+    const float p = x87_power_response(v, flare.exponent_1c);                    // 00452DC6..00452FD5
+    const double w = static_cast<double>(flare.gain_14) * dt;                     // 00452FE2..00452FE5
+    const float a1 = flare.value_04;
+    flare.value_04 = static_cast<float>(a1 + (static_cast<double>(p) - a1) * w);  // 00452FF0..00453006
+    const float a2 = flare.value_08;
+    flare.value_08 = static_cast<float>(a2 + w * (static_cast<double>(flare.value_04) - a2)); // 00453009..0045302F
+    const float inv_exponent = static_cast<float>(1.0 / flare.exponent_1c);      // 00453036..00453043
+    const float out = x87_power_response(flare.value_08, inv_exponent);          // 00453047..00453086
+    host.set_lens_effect_00b0d020(1, out, out, out, brightness, 1.0f);            // 004530B4
 }
 
 void lens_flare_set_enabled_00452b80(
@@ -658,6 +756,85 @@ bool game_clip_segment_to_world_bounds_004bbdd0(
     out[1] = original[1] + s * n[1];
     out[2] = end[2] + s * n[2];
     return true;
+}
+
+std::int32_t scene_mode_suffix_index_004cdb32(const ShortNameModeFields& game) {
+    if (game.byte_61c != 0) return game.mode_614;                                 // 004CDB37..004CDB40
+    if (game.field_1fe4 != 0) return game.mode_614;                               // 004CDB48..004CDB55
+    if (game.mode_614 == 9 || game.mode_614 == 8) return game.mode_614;           // 004CDB57..004CDB5F
+    return 8;                                                                     // 004CDB61
+}
+
+std::string derive_scene_short_name_004cd7f0(const std::string& path, bool append_mode, const ShortNameModeFields& game) {
+    std::string name = derive_scene_short_name(path);                             // 004CD80B..004CDB22
+    if (!append_mode) return name;                                                // 004CDB27
+    const std::int32_t index = scene_mode_suffix_index_004cdb32(game);
+    if (index < 0 || index >= static_cast<std::int32_t>(kSceneModeSuffixes_00e08240.size()))
+        throw std::out_of_range("scene mode index outside 00E08240");             // the image reads past the table
+    name += kSceneModeSuffixes_00e08240[static_cast<std::size_t>(index)];         // 004CDB66..004CDBA2
+    return name;
+}
+
+void game_update_presence_context_004c0170(const PresenceGameFields& game, PresenceState& state, PresenceHost& host) {
+    if (!host.has_selected_user_00a3e510()) return;                               // 004C0180
+    std::int64_t ticks = 0, frequency = 1;
+    host.frame_clock_vslot_20(ticks, frequency);                                  // 004C01A3
+    const bool online = game.mode.field_1fe4 != 0;                                // 004C01BE
+    const float t = static_cast<float>(static_cast<double>(ticks) / static_cast<double>(frequency)); // 004C01A5..004C01CE
+    if (state.first_00e082e8 != 0) state.stamp_00e18b30 = t;
+    state.first_00e082e8 = 0;
+    bool force = false;
+    if (static_cast<double>(t) - state.stamp_00e18b30 > 3.0) {                    // 004C01ED..004C01FF
+        force = true;
+        state.stamp_00e18b30 = t;
+    }
+    bool hosted = false;                                                          // 004C020E..004C023D
+    if (host.has_object_00e198b4() && game.state_5d4 == 8)
+        hosted = host.object_00e198b4_test_00687860(0x14, 0) && game.byte_218c == 0;
+    const bool outside = game.state_5d4 != 0x0D && !hosted;                       // 004C023F..004C024C
+    if (!game.has_record_block_5fc || outside) {                                  // 004C0251..004C0260
+        if (force) host.x_user_set_context(host.active_user_slot_00a3eac0(), 0x8001, 5); // 004C026D..004C0280
+        return;
+    }
+    force = *game.presence_dirty_22dc != 0 || force;                              // 004C028B..004C02A0
+    *game.presence_dirty_22dc = 0;
+    const std::int32_t record_id = game.record_id_1098;
+    const std::int32_t mode_index = scene_mode_suffix_index_004cdb32(game.mode);  // 004C02B3..004C02F3
+    const std::uint64_t xuid = host.active_xuid_00a3eb00();                       // 004C02FB
+    if (xuid != state.xuid_00e18b28) force = true;
+    if (state.record_id_00e18b24 != record_id) force = true;
+    if (state.mode_index_00e18b20 == mode_index && !force) return;               // 004C032D..004C033A
+    const std::int32_t kind = host.mission_campaign_kind_004bffa0();              // 004C0343
+    const std::uint32_t players = online ? 3 : 2;                                 // 004C0348..004C035B
+    std::uint32_t bucket = 0;                                                     // 004C0361 table 004C0490
+    switch (mode_index) {
+    case 4: bucket = 1; break;
+    case 5: bucket = 2; break;
+    case 6: bucket = 3; break;
+    case 7: bucket = 4; break;
+    default: bucket = 0; break;
+    }
+    std::uint32_t game_type = 1;                                                  // 004C0393 table 004C04B0
+    switch (kind) {
+    case 1: game_type = 3; break;
+    case 2: game_type = 4; break;
+    case 3: game_type = 5; break;
+    case 4:
+        if (game.byte_218c != 0) game_type = 2;
+        else if (game.state_5d4 == 8 && host.has_object_00e198b4() && host.object_00e198b4_test_00687860(0x14, 0) &&
+                 game.state_5d4 == 8)
+            game_type = 6;
+        break;
+    default: break;
+    }
+    host.x_user_set_context_ex(host.active_user_slot_00a3eac0(), 0, game_type, nullptr);           // 004C0404
+    const std::uint32_t record_value = (kind == 1 || kind == 2) ? 0u : static_cast<std::uint32_t>(record_id);
+    host.x_user_set_context_ex(host.active_user_slot_00a3eac0(), 1, record_value, nullptr);        // 004C042C
+    host.x_user_set_context_ex(host.active_user_slot_00a3eac0(), 0x0F, bucket, nullptr);           // 004C0442
+    host.x_user_set_context_ex(host.active_user_slot_00a3eac0(), 0x8001, players, nullptr);        // 004C045F
+    state.xuid_00e18b28 = xuid;                                                   // 004C0470..004C0481
+    state.record_id_00e18b24 = record_id;
+    state.mode_index_00e18b20 = mode_index;
 }
 
 std::int32_t counted_string_find_004bcb40(std::uint32_t length, const char* data, const char* needle,
@@ -901,6 +1078,17 @@ void front_end_frame_select_default_004c9680(FrontEndFrameSelectHost& host) {
     if (name.data != nullptr) host.pool_return_00bd1510(name.data, name.length + 1, 1); // 004C9704..004C970B
 }
 
+void game_process_window_close_request_004ca2f0(std::int32_t state_5d4, WindowCloseHost& host) {
+    if (!host.take_close_request_180()) return;                                   // 004CA30F..004CA315
+    if (host.platform_busy_3e8()) return;                                         // 004CA327
+    if (state_5d4 == 1 || state_5d4 == 2 || state_5d4 == 4) {                     // 004CA33A..004CA344
+        host.set_exit_flag_00e1ae75();                                            // 004CA349
+        return;
+    }
+    host.raise_prompt_00531b00(6, "FE_pc.main_quit_confirm", 1, 0x004BBC50, 1, "", 0, 0); // 004CA3CB
+    host.prompt_screen_00530c20();                                                // 004CA422
+}
+
 void game_show_high_latency_warning_004ca120(std::int32_t state_5d4, void* client_21e8, HighLatencyWarningHost& host) {
     if (state_5d4 != 0x0D || client_21e8 == nullptr) return;                      // 004CA13B..004CA14B
     NativeNarrowString key = host.make_string_0041e870("ingame.multi_highlatency"); // 004CA15C, 00CE76B8
@@ -1032,6 +1220,50 @@ void game_create_friends_enumerator_004bc520(void* friends_buffer_22de, std::uin
     if (host.x_friends_create_enumerator(host.active_user_slot_00a3eac0(), 0, 100, &size, &handle) != 0) return; // 004BC540
     if (host.x_enumerate(handle, friends_buffer_22de, 0x4D54, friends_count_7034, nullptr) != 0) return;      // 004BC562
     host.close_handle(handle);                                                                                  // 004BC570
+}
+
+void game_begin_friends_leaderboard_read_004bc580(const LeaderboardFields& game, std::uint32_t view, GameLiveHost& host) {
+    if (*game.buffer_7054 != nullptr) {                                           // 004BC589..004BC59C
+        host.free_block(*game.buffer_7054);
+        *game.buffer_7054 = nullptr;
+    }
+    *game.state_7058 = 2;                                                         // 004BC5AF
+    const std::uint32_t friends = *game.friends_count_7034;
+    std::vector<std::uint64_t> xuids(friends + 1);
+    for (std::uint32_t i = 0; i < friends; ++i)                   // 004BC5D0..004BC5EE
+        std::memcpy(&xuids[i], game.friends_22de + i * 0xC4, 8);
+    xuids[friends] = host.active_xuid_00a3eb00();                 // 004BC5FC..004BC613
+    const std::uint32_t spec[3] = {view, 1, 0};
+    std::uint32_t size = 0;
+    const std::uint32_t count = friends + 1;
+    if (host.x_user_read_stats(0, count, xuids.data(), 1, spec, &size, nullptr, nullptr) != 0x7A) return; // 004BC64F
+    *game.buffer_7054 = host.operator_new(size);                                  // 004BC65F
+    game.overlapped_7038->fill(0);                                                // 004BC66C..004BC694
+    host.x_user_read_stats(0, count, xuids.data(), 1, spec, &size, *game.buffer_7054, nullptr); // 004BC6C1
+}
+
+void game_begin_leaderboard_read_004bc6d0(const LeaderboardFields& game, std::uint32_t rank_start, std::uint64_t xuid,
+                                          std::uint32_t view, bool friends, GameLiveHost& host) {
+    if (friends) {
+        game_create_friends_enumerator_004bc520(game.friends_22de, game.friends_count_7034, host); // 004BC6E3
+        game_begin_friends_leaderboard_read_004bc580(game, view, host);          // 004BC702
+        return;
+    }
+    if (*game.buffer_7054 != nullptr) {                                           // 004BC711..004BC724
+        host.free_block(*game.buffer_7054);
+        *game.buffer_7054 = nullptr;
+    }
+    const std::uint32_t spec[3] = {view, 0, 0};
+    std::uint32_t size = 0;
+    void* handle = nullptr;
+    if (rank_start != 0)
+        host.x_user_create_stats_enumerator_by_rank(0, rank_start, 0x11, 1, spec, &size, &handle); // 004BC762
+    else
+        host.x_user_create_stats_enumerator_by_xuid(0, xuid, 0x11, 1, spec, &size, &handle);       // 004BC78E
+    *game.buffer_7054 = host.operator_new(size);                                  // 004BC798
+    game.overlapped_7038->fill(0);                                                // 004BC7AF..004BC7C5
+    host.x_enumerate(handle, *game.buffer_7054, size, nullptr, game.overlapped_7038->data());       // 004BC7D5
+    *game.state_7058 = 2;                                                         // 004BC7DA
 }
 
 void game_cancel_leaderboard_read_004bc7f0(void* overlapped_7038, void*& buffer_7054, std::uint32_t& field_7058,
