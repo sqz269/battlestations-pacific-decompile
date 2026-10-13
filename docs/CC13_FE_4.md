@@ -201,10 +201,48 @@ slot request 005D9F50, local map apply 005D9F90, two-vector record 005DAC60, map
 leave to menu 005D8410 (the PUSH EDI before 00688C70 is the delayed callee-save of EDI, not an
 argument), row objects delete 005D8A70, map entry destruct 005DACA0.
 
+## Handoff (2026-10-12)
+
+State: 268 records (35 trivial rows, 223 reconstructed routines, 10 backfills) out of the 334
+candidates; 10 more are listed for cc9 below. 56 remain, all unreconstructed and without records.
+Everything here is build-tested only (`scripts/build.ps1` passes); nothing is ABI-compatible or
+game-validated.
+
+Tools in the worktree's `local/` (not committed): `fe4_list.txt` (the 334 candidates),
+`fe4_dump.py` / `fe4_asm.py` (live decompiles and disasm-raw dumps into `local/fe4_dec`,
+`local/fe4_asm`; `fe4_asm.py calls <addr>` names the callees), `fe4_view.py` (compact decompile
+view), `fe4_triv.py` (trivial-slot rows), `fe4_pe.py` (floats, doubles, strings from the exe),
+`fe4_records.py` (all records, lease-checked; `--list` prints the covered addresses),
+`fe4_remaining.py` (what is left), `fe4_calls_report.py` (the call-site report).
+
+Remaining, by why they were left:
+
+- x87 layout bodies (need disasm-raw throughout): HUD counter layouts 00529D70, 0052A100, 0052A470,
+  0052A860, 0052BB10, relayout 00529A30, tick 0052B080; formation target drawing 00535430, quad
+  model 00536310; error buttons 005D20A0; outline 005D63E0.
+- Large bodies: control layout enter 00528240 (decompile stack confusion), formation order labels
+  00536A90 and register 00538F80, frame stats lines 0053BCC0, free camera effect update 0053EE00 /
+  0053F2D0 / bind 00540D50 / register 00540FE0, chat row format / rebuild / layout / update
+  005D09A0 / 005D0C60 / 005D14D0 / 005D18A0, error enter 005D26D0, pause rows / enter / update /
+  confirm 005D39A0 / 005D3B40 / 005D3F20 / 005D43C0, lobby player rows 005D73A0, lobby bind
+  005DB050 (over 2000 decompile lines), map selection 005D92B0, lobby activate / focus / map
+  preview / compatibility 005D5D50 / 005D6060 / 005D6E30 / 005D71B0.
+- Counter entry constructors 0052C1B0 / 0052C640 and apply-record 0052CF60, formation destruct
+  00538A80, UnitOrderIcon 00534870 (a per-class constant table; attack_commands.cpp mentions it).
+- Smaller lobby routines needing an ECX pass: 005D5340 (slot AI reset; the decompile loses the loop
+  counter), 005D67E0, 005D6C10, 005D8530, 005D8800, 005D8950, 005D98E0, 005D9A10, 005D9C50 (returns
+  `1 << atol(suffix)` as a 64-bit mask, check), 005D9D90, 005DA000, 005DA210, 005DA530.
+- 0053BC00 (fingerprint payload singleton): game_hosts_frontend.cpp logs it as a host step only.
+- 005DECA0 refreshes the lobby map and resets the mission statistics (BSP_MissionStats_ResetForMission)
+  and the loading-screen text; check with cc9 before reconstructing.
+
+Next step: take the smaller lobby routines with one disasm-raw pass each, then the HUD counter
+layouts (they share one entry layout, documented above).
+
 ## Verification
 
 `reports/cc13_fe4_calls.json` (built by `local/fe4_calls_report.py` from the disasm-raw dumps)
-lists the 704 direct call and tail-jump sites of the reconstructed bodies;
+lists the 712 direct call and tail-jump sites of the reconstructed bodies;
 `python tools/verify_report_calls.py reports/cc13_fe4_calls.json` checks every one against the live
 listing: 0 failed. Three sites were left out because they lie in unlisted code right after
 005299D0 and 0052E3B0 (00529A22, 0052E401, 0052E408; the second is a string release at 0052E3F0

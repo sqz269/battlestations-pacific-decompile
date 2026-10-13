@@ -2645,6 +2645,14 @@ void lobby_map_entry_destruct_005daca0(Raw entry, Seg15Host& host) {
     }
 }
 
+void multi_game_lobby_on_player_row_activate_005d8700(Raw s, Seg15Host& host) {
+    const std::int32_t index = host.listbox_selected_index_00a9c920(s.ptr(0xA8));
+    host.global_block(0x00E08958).at<std::int32_t>(0) = index;
+    auto* row = static_cast<std::uint8_t*>(host.gui_find_child_00aa7e00(s.ptr(0x250 + index * 4), "player_name_Text"));
+    Raw target = host.global_block(0x00E195D4);
+    if (target.p != row + 0xF4) host.native_string_copy_0041dd40(target, Raw{row + 0xF4});
+}
+
 void byte_sbo_uninit_fill_n_005443f0(std::uint8_t* dest, std::uint32_t count, const std::uint8_t* value,
                                      Seg15Host& host) {
     for (; count != 0; --count, dest += 0x24) {

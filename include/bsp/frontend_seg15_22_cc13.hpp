@@ -768,6 +768,9 @@ void multi_game_lobby_leave_to_menu_005d8410(Raw s, Seg15Host& host);
 void multi_game_lobby_delete_row_objects_005d8a70(Raw s, Seg15Host& host);
 // 005DACA0, __fastcall(entry): both string vectors (+14h, +4h) destroyed and freed.
 void lobby_map_entry_destruct_005daca0(Raw entry, Seg15Host& host);
+// 005D8700, __fastcall(screen): 00E08958 = the player listbox (+A8h) selection;
+// the selected row widget's (+250h[i]) player_name_Text text goes to 00E195D4.
+void multi_game_lobby_on_player_row_activate_005d8700(Raw s, Seg15Host& host);
 
 }  // namespace bsp::frontend_seg15_22_cc13
 
