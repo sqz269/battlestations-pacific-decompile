@@ -1528,6 +1528,9 @@ struct GameUnitSlot {
     // descriptor 007C0D90 asks vtable[8] of: 2Ah bomb, 2Bh torpedo, 2Ch depth
     // charge, 33h rocket) and its RepeatTime (desc+E0h), in census order.
     std::vector<int> rack_bullet_class_per_rack;
+    // Packet cc9_lua53_kamikaze_impact: the rack's Bullet[1].Bullet id itself (the
+    // vector above holds the descriptor's kind), census order. -1 when absent.
+    std::vector<int> rack_bullet_id_per_rack;
     std::vector<float> rack_repeat_per_rack;
     int rack_drops_unspawned{0};       // drops whose host torpedo spawn returned false
     // GUNNERY 133.3 / 137, a diagnostic (no behaviour): single-rack drops since
@@ -3813,6 +3816,25 @@ struct GameUnitsHost::Impl {
     // vtable[8] with (docs/ORDNANCE_KIND_IDENTITY.md, docs/ENTITY_CLASS_IDS.md):
     // Bomb 2Ah, Torpedo 2Bh, Depthcharge 2Ch, DummyKamikazePlane 2Fh,
     // Paratrooper 31h, Rocket 33h. Any other type answers 0.
+    // Packet cc9_lua53_kamikaze_impact: DeviceClass[device].Bullet[1].Bullet, the
+    // bullet class id (-1 when absent).
+    int read_device_bullet_id(int device) {
+        if (device < 0) return -1;
+        char chunk[384];
+        std::snprintf(chunk, sizeof(chunk),
+            "local d = type(DeviceClass) == 'table' and DeviceClass[%d] or nil\n"
+            "if type(d) ~= 'table' or type(d.Bullet) ~= 'table' or type(d.Bullet[1]) ~= 'table' then return -1 end\n"
+            "return tonumber(d.Bullet[1].Bullet) or -1\n", device);
+        const int top = lua.lua_gettop();
+        int id = -1;
+        if (lua.luaL_loadbuffer(chunk, static_cast<int>(std::strlen(chunk)),
+                                "bsp_device_bullet_id") == 0 &&
+            lua.lua_pcall(0, 1, 0) == 0) {
+            id = std::atoi(lua.lua_tolstring_at_top().c_str());
+        }
+        lua.lua_settop(top);
+        return id;
+    }
     int read_device_bullet_class_id(int device) {
         if (device < 0) return 0;
         char chunk[512];
@@ -23293,9 +23315,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // whether it still holds a round: 007B93E0 on the unit.
                     int dkz_find_rack() {
                         for (std::size_t i = 0; i < unit_.rack_bullet_class_per_rack.size(); ++i) {
+                            // The vector holds read_device_bullet_class_id's kind:
+                            // 2Fh is a Type "DummyKamikazePlane" bullet (packet
+                            // cc9_lua53_kamikaze_impact; the id compare never matched).
                             const int b = unit_.rack_bullet_class_per_rack[i];
-                            if (b >= 0 && owner_.lua.read_bullet_class_string(b, "Type") ==
-                                              "DummyKamikazePlane") {
+                            if (b == 0x2F) {
                                 return static_cast<int>(i);
                             }
                         }
@@ -23315,7 +23339,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     void dkz_release_007bbba0() {
                         if (!dkz_has_round_007b93e0()) return;
                         const std::size_t i = static_cast<std::size_t>(unit_.dkz_rack);
-                        const int bullet = unit_.rack_bullet_class_per_rack[i];
+                        const int bullet = i < unit_.rack_bullet_id_per_rack.size()
+                            ? unit_.rack_bullet_id_per_rack[i] : -1;
                         if (unit_.rack_ammo_per_rack[i] > 0) --unit_.rack_ammo_per_rack[i];
                         if (unit_.rack_ammo > 0) --unit_.rack_ammo;
                         bsp::DummyKamikazeRound r;
@@ -23473,6 +23498,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.dkz_target_plus_one = unit_.command_target_plus_one;
                         unit_.dkz_attack_mode_370 = bsp::PilotAttackMode::kForced;
                         unit_.dkz_rack = dkz_find_rack();
+                        // The rack rounds as the level-bomb path seeds them (once).
+                        if (unit_.dkz_rack >= 0) lb_rack_state_seed();
                         ++unit_.dkz_installs;
                         bsp::DropKamikazeSeedInputs seed;
                         seed.class_speed_188 = unit_.plane_max_spd;
@@ -26367,6 +26394,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // the bullet is not read.
                                 unit_.rack_bullet_class_per_rack.push_back(
                                     owner_.read_device_bullet_class_id(dev));
+                                unit_.rack_bullet_id_per_rack.push_back(
+                                    owner_.read_device_bullet_id(dev));
                                 // 006E0242 00B66330 default [00CE3D30] = 0.6f.
                                 unit_.rack_repeat_per_rack.push_back(
                                     owner_.lua.read_device_class_number(dev, "RepeatTime",
