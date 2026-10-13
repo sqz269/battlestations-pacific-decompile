@@ -535,6 +535,9 @@ int binding_trampoline(lua_State* state) {
     // Packet cc9_get_last_catapulted.
     const bool last_catapulted_row = kLuaLastCatapultedBound
         && dispatch_row.address == 0x00892860u;
+    // Packet cc9_lua55_catapult_stock.
+    const bool catapult_stock_row = kLuaGetCatapultStockBound
+        && dispatch_row.address == 0x00892de0u;
     // Packet cc9_add_untouchable_unit.
     const bool untouchable_row = kLuaAddUntouchableUnitBound
         && dispatch_row.address == 0x008ac140u;
@@ -593,7 +596,7 @@ int binding_trampoline(lua_State* state) {
         || truly_dead_row
         || attack_alt_row
         || ready_row
-        || simplified_row
+        || simplified_row || catapult_stock_row
         || launch_row || generate_row || spawn_new_row || scoring_play_time_row
         || spawn_id_requested_row || spawn_id_remove_row
         || in_border_zone_row
@@ -742,6 +745,9 @@ int binding_trampoline(lua_State* state) {
     }
     if (last_catapulted_row && !host->error_replay()) {
         return host->run_get_last_catapulted_00892860(state, argc);
+    }
+    if (catapult_stock_row && !host->error_replay()) {
+        return host->run_get_catapult_stock_00892de0(state, argc);
     }
     if (untouchable_row) {
         if (!host->error_replay()) host->run_add_untouchable_unit_008ac140(state, argc);
@@ -6217,6 +6223,46 @@ int GameMissionLuaHost::run_get_last_catapulted_00892860(lua_State* state,
     }
     ++summary_.last_catapulted_nil;
     ::lua_pushnil(state);
+    return 1;
+}
+
+// Packet cc9_lua55_catapult_stock. 00892DE0 GetCatapultStock(entity): 00888AA0 on
+// argument 0, vtable[5Ch](5), then (x < 0) - 1 & x on unit+638h, i.e. max(x, 0);
+// any other entity, or none, pushes 0 (00892F1F). One integer result.
+// LABELLED: unit+638h is the init value [unit+538h]+C8h (0095E5B0), the class
+// Catapult.LaunchStock, read here from the entity's `Class` table; the catapult
+// launch decrement (00957450) and SetCatapultStock (009539A0) are not built.
+int GameMissionLuaHost::run_get_catapult_stock_00892de0(lua_State* state,
+    int argument_count) {
+    static_cast<void>(argument_count);
+    ++summary_.catapult_stock_calls;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    const bool valid = units != nullptr && id > 0
+        && static_cast<std::size_t>(id) <= units->count();
+    const bool kind5 = valid && units->unit_is_kind_of(static_cast<std::size_t>(id - 1), 5);
+    lua_Integer stock = 0;
+    if (kind5 && push_resolved_entity_by_id(state, id)) {
+        const int base = ::lua_gettop(state);
+        ::lua_getfield(state, -1, "Class");
+        if (lua_istable(state, -1)) {
+            ::lua_getfield(state, -1, "Catapult");
+            if (lua_istable(state, -1)) {
+                ::lua_getfield(state, -1, "LaunchStock");
+                if (::lua_type(state, -1) == LUA_TNUMBER) stock = ::lua_tointeger(state, -1);
+            }
+        }
+        ::lua_settop(state, base - 1);
+    }
+    if (stock < 0) stock = 0;
+    if (summary_.catapult_stock_calls <= 8) {
+        const GameUnitRow* row = valid ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
+        log_.notef("  GetCatapultStock 00892de0: \"%s\" kind5=%d -> %d (class "
+            "Catapult.LaunchStock, packet cc9_lua55_catapult_stock)",
+            row != nullptr ? row->name.c_str() : "?", kind5 ? 1 : 0, static_cast<int>(stock));
+    }
+    log_.implemented("MissionLuaNative::GetCatapultStock", "00892de0");
+    ::lua_pushinteger(state, stock);
     return 1;
 }
 

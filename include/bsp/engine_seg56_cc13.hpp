@@ -730,17 +730,19 @@ int lua_temp_add_anim(LuaArgs& args, AmbientHost& host);
 // RemoveTempAddedStuff 008C5E20: 0049DE90(string arg0).
 int lua_remove_temp_added_stuff(LuaArgs& args, AmbientHost& host);
 
-// SetTipEffect 0089E670: for i below the engine count +3CCh of entity arg0, 007C4DD0 on the
-// engine pointer +3D0h[i] (null past index 4, the array has five slots; CMP ESI,4 / JA) with
-// the float of boolean arg1, re-read every iteration.
+// SetTipEffect 0089E670: for i below the member count +3CCh of entity arg0, 007C4DD0 on the
+// member pointer +3D0h[i] (null past index 4, the array has five slots; CMP ESI,4 / JA) with
+// the float of boolean arg1, re-read every iteration. cc13-sys5b: SetVisibility 008A13D0 walks
+// the same +3CCh/+3D0h pair only after the object's vtable+5Ch(18h) answers true and treats a
+// vtable+5Ch(5) object as a single member, so the pair is a squadron's planes, not a plane's
+// engines as cc13-sys5 first named it.
 struct EngineEffectHost {
     virtual ~EngineEffectHost() = default;
-    virtual int plane_engine_count_3cc(void* entity) = 0;
-    virtual void* plane_engine_3d0(void* entity, int index) = 0;
-    virtual void plane_update_engine_effects(void* engine, float on) = 0; // 007C4DD0
+    virtual int squadron_member_count_3cc(void* squadron) = 0;
+    virtual void* squadron_member_3d0(void* squadron, int index) = 0;
+    virtual void plane_update_engine_effects(void* plane, float on) = 0; // 007C4DD0
 };
-int lua_set_tip_effect(LuaArgs& args, EngineEffectHost& host);
-inline constexpr int kPlaneEngineSlots = 5;
+int lua_set_tip_effect(LuaArgs& args, EngineEffectHost& host);inline constexpr int kSquadronMemberSlots = 5;
 
 // AddAnimatedPartEffect 008A5650: the object 00888960 returns for arg0; when its vtable+20h
 // answers non-zero, string arg2 then int arg1, and 00711210 on the object with (index, name).
@@ -751,6 +753,29 @@ struct PartEffectHost {
     virtual void unit_part_effect_start_by_index(void* object, int index, const std::string& name) = 0;
 };
 int lua_add_animated_part_effect(LuaArgs& args, PartEffectHost& host);
+
+// SetVisibility 008A13D0 (cc13-sys5b): boolean arg1 read first, object 00888D20(arg0). When
+// vtable+5Ch(18h) answers true, 00951F40(member, flag) for every squadron member as in
+// SetTipEffect (null past slot 4); else when vtable+5Ch(5) answers true, 00951F40(object, flag).
+// The ledger name of 00951F40 (BSP_Plane_SetElevatorAttachment) does not fit this use; it was
+// left unchanged.
+struct VisibilityHost {
+    virtual ~VisibilityHost() = default;
+    virtual void* lua_table_entity_ptr(LuaArgs& args, int index) = 0; // 00888D20
+    virtual bool object_vcall_5c(void* object, int selector) = 0;
+    virtual int squadron_member_count_3cc(void* squadron) = 0;
+    virtual void* squadron_member_3d0(void* squadron, int index) = 0;
+    virtual void plane_set_visible_00951f40(void* plane, bool visible) = 0;
+};
+inline constexpr int kObjectKindSquadron = 0x18;
+inline constexpr int kObjectKindPlane = 5;
+int lua_set_visibility(LuaArgs& args, VisibilityHost& host);
+// FakePing 008C0F90 (cc13-sys5b): 008E2E50 __fastcall(ECX = int arg0, vector arg1 by value).
+struct MapPingHost {
+    virtual ~MapPingHost() = default;
+    virtual void map_ping_add_local(int type, const Vec3& position) = 0; // 008E2E50
+};
+int lua_fake_ping(LuaArgs& args, MapPingHost& host);
 
 // Effect 008A9730. Arguments 0 and 1 are tested with 00B660A0 / 0088B840 and the answers are
 // discarded. With an entity at argument 2: the entity's vtable+18h(vector arg1) gives the
@@ -811,6 +836,86 @@ int lua_get_direction(LuaArgs& args, LuaResults& results, QueryHost& host);
 int lua_relative_position(LuaArgs& args, LuaResults& results, QueryHost& host);
 // GetBounding 0089B4E0: two tables, min then max.
 int lua_get_bounding(LuaArgs& args, LuaResults& results, QueryHost& host);
+// ---------------------------------------------------------------------------
+// Variant-argument bindings: MissionNarrative*, Message (packet cc13-sys5b)
+// ---------------------------------------------------------------------------
+
+// These four do not use the LuaStateOwner frame. They build a LuaStateHolder (006B7E30) and a
+// script override list (008875F0), then collect the call frame as 14h-byte variant records:
+// 00887120(-1, 4) takes every argument, 00887370(first, -1, 4) takes stack slots first..top
+// (1-based, so `first` 2 is argument 1); 4 is the table-expansion depth of 00886E00
+// (include/bsp/mission_named_call_args.hpp). A string variant keeps a pointer to its native
+// string at record +8h. The records after a fixed prefix are pushed one by one (006EDF00) into a
+// new 0Ch-byte vector the callee takes. The bindings return a literal 0.
+struct NarrativeHost {
+    virtual ~NarrativeHost() = default;
+    // The three queue entry points on [[00E188A8]+21E8h], each __thiscall(text, &callback,
+    // extras or null): 00734870 (MissionNarrative), 007349C0 (Urgent), 00734E50 (Override).
+    // `extras_from` is the first argument index of the extras vector, -1 for null.
+    virtual void narrative_post(std::uint32_t entry_point, const std::string& text,
+        const std::string& callback, LuaArgs& args, int extras_from) = 0;
+    // 009291D0 on the entity with the collected variants of arguments 1..n (00887370(2, -1, 4));
+    // the same publisher BSP_MissionLua_PublishInputEvent and the Lua death notice use.
+    virtual void entity_publish_lua_message(void* entity, LuaArgs& args, int first) = 0;
+};
+inline constexpr std::uint32_t kNarrativePost = 0x00734870u;
+inline constexpr std::uint32_t kNarrativePostUrgent = 0x007349C0u;
+inline constexpr std::uint32_t kNarrativePostOverride = 0x00734E50u;
+// MissionNarrative 008B0C10 / Urgent 008B0E10 / Override 008B1010: text = variant 0's string,
+// passed by pointer; callback = variant 1's string copied when there are at least two
+// arguments, else empty; extras = variants 2..n when there are at least three (CMP 3 / JL).
+int lua_mission_narrative_post(std::uint32_t entry_point, LuaArgs& args, NarrativeHost& host);
+// Message 00898C60: entity arg0 (00888AA0, read before the holder is built), then the publish.
+int lua_message(LuaArgs& args, NarrativeHost& host);
+
+// DebugTrap 008C8390: 00887750 on the mission Lua host [[00E188A8]+1A08h] with (no self key,
+// "debug.traceback" (00D153C8), no argument vector, stack range 0..-1, a result sink
+// (008875D0), not forced); 00885A30 joins the results as text. With any argument, string
+// arg0 goes to 004254B0 as the format string itself; then the traceback text (or the empty
+// buffer 00F8790C) does too. Returns a literal 0.
+struct DebugTrapHost {
+    virtual ~DebugTrapHost() = default;
+    virtual std::string call_named_results_text(const std::string& name) = 0;
+    virtual void log_format_string(const std::string& format) = 0; // 004254B0, no arguments
+};
+inline constexpr const char* kDebugTrapFunction = "debug.traceback";
+int lua_debug_trap(LuaArgs& args, DebugTrapHost& host);
+
+// OverrideMessage 008D0EA0: a list of strings from arg0 (the string itself, or, for any other
+// type, GetString of every entry the table iteration visits, in iteration order), optional
+// entities arg1 and arg2 (null when absent), then 00979670 with (&list, e1, e2).
+struct OverrideMessageHost {
+    virtual ~OverrideMessageHost() = default;
+    // IterateFirst/IterateNext over arg `index` until unbound, GetString of each entry.
+    virtual std::vector<std::string> table_entry_strings(LuaArgs& args, int index) = 0;
+    virtual void warning_report_string_list(const std::vector<std::string>& lines, void* first,
+        void* second) = 0; // 00979670
+};
+int lua_override_message(LuaArgs& args, OverrideMessageHost& host);
+
+// Scripted input presses (cc13-sys5b). 008C89D0, __thiscall(press, float duration, const
+// NativeString* name, float delay), RET 0Ch, builds the 14h-byte record below; the start time is
+// the float clock 00F876A4 plus the delay. 008D0060, __thiscall(game, int input, float duration,
+// const NativeString* name, float delay), indexes the map at game+5BCh by the input (008CFC10)
+// and appends the record (0088B410).
+struct HackInputPress {
+    float duration_00{};
+    float start_time_04{};
+    std::string name_08;
+    bool flag_10{false};
+};
+HackInputPress make_hack_input_press(float duration, const std::string& name, float delay,
+    float clock) noexcept;
+struct HackInputHost {
+    virtual ~HackInputHost() = default;
+    virtual float clock_seconds_00f876a4() = 0;
+    virtual void queue_press(int input, HackInputPress press) = 0; // game+5BCh[input].push_back
+};
+void hack_input_queue_press(int input, float duration, const std::string& name, float delay,
+    HackInputHost& host);
+// HackPressInput 008D0430: int arg0; duration = number arg1 (default 1.0f, 00D7A24C); name =
+// string arg2 (strlen copy, default empty); delay = number arg3 (default 0).
+int lua_hack_press_input(LuaArgs& args, HackInputHost& host);
 
 // ---------------------------------------------------------------------------
 // Small accessors and value types
@@ -819,10 +924,47 @@ int lua_get_bounding(LuaArgs& args, LuaResults& results, QueryHost& host);
 // 008D8F10: the peeked token (delimiters 00CE3A34) is an int when sscanf("%d") assigns one
 // field. 008D8F40 is the "%f" twin (delimiters 00CE4334), already modelled as parse_float.
 bool scene_token_is_int(const std::string& token);
+
+// 008D9750 (cc13-sys5b), __thiscall(tokenizer, float value, const char* unit), RET 8: converts
+// a scene value into `unit` by the unit token that follows it. Rows are the 10h-byte records at
+// 00F88A50 (count [00F88BC0]) that 008D9150 appends (include/bsp/native_game_tables.hpp):
+// source +0, target +4, float factor +8, reciprocal byte +0Ch. Comparisons are 00438E10.
+// - end flag +80Ah set, or an empty current token (+5) with byte +4 clear: value unchanged;
+// - token == unit: consumed (008D8960), value unchanged;
+// - first row with token == source and unit == target: the token is copied to +405h and byte
+//   +805h cleared (not consumed); result factor / value when the byte is set, else factor *
+//   value;
+// - else first row with token == target and unit == source: consumed; result (1 / value) /
+//   factor when the byte is set (FLD1 / FDIVRP / FDIV), else value / factor;
+// - no row: value unchanged. Every result is narrowed through a float store.
+struct UnitConversionRow {
+    std::string source;
+    std::string target;
+    float factor{};
+    bool reciprocal{};
+};
+struct UnitTokenizerHost {
+    virtual ~UnitTokenizerHost() = default;
+    virtual std::string peek_token() = 0;              // 008D8A70
+    virtual bool end_flag_80a() = 0;
+    virtual bool current_token_empty_and_byte4_clear() = 0;
+    virtual void consume_token() = 0;                  // 008D8960
+    virtual void retain_current_token_405() = 0;       // +5 copied to +405h, +805h = 0
+};
+float scene_convert_by_unit_token(float value, const std::string& unit,
+    const std::vector<UnitConversionRow>& rows, UnitTokenizerHost& host);
 // 008DAD70: dword +28h of an objective entry (no caller in the index).
 std::int32_t objective_entry_field_28(const std::uint8_t* entry) noexcept;
 // 008DADA0: [world+21A4h] != 0 (no caller in the index).
 bool world_has_entity_set0(const std::uint8_t* world) noexcept;
+// 008DA100 (cc13-sys5b), __thiscall(nav point), RET: 009277E0 on the object, then dword +58h
+// (the entity party field, include/bsp/lua_binding_core.hpp kEntityPartyFieldOffset) = 0.
+struct NavPointInitHost {
+    virtual ~NavPointInitHost() = default;
+    virtual void entity_inherit_race_and_activate(void* entity) = 0; // 009277E0
+    virtual void entity_set_dword_58(void* entity, std::int32_t value) = 0;
+};
+void nav_point_sentity_init(void* nav_point, NavPointInitHost& host);
 // 008DAD80, __thiscall(message, int id), RET 4: 0075B430 (session message base) with the id, dword
 // +4 = 1, vtable 00D16024.
 struct ObjectiveSessionMessageHeader {
@@ -894,6 +1036,38 @@ struct PropertyKeySink {
     virtual void vcall_10(int zero, const char* key) = 0;
 };
 std::uint32_t objective_entry_select_entity_or_pos_key(PropertyKeySink& sink);
+
+// 008DC210 (cc13-sys5b), __thiscall(ping entry, PropertyWriter* sink), RET 4. Every key and
+// value is an 8-byte (tag, payload) pair passed by value: key tag 0 = name, 1 = array index;
+// value tag 0 = string (null -> the empty buffer 00F88C14), 1 = int, 3 = bool, 4 = entity, 5 =
+// pointer to a vector. sink vtable+0Ch sets, +4 opens a key, +8 closes it. Order: ID (+8h),
+// text (+10h), quiet (+14h), type (+18h), state (+1Ch), then positions: for each element of
+// the list at +20h (head +24h), key index i, then entity (record +0) when non-null, else pos
+// (record +4).
+struct MapPingPosition {
+    void* entity{};
+    Vec3 pos{};
+};
+struct MapPingEntryView {
+    std::string id_08;
+    std::string text_10;
+    bool quiet_14{};
+    std::int32_t type_18{};
+    std::int32_t state_1c{};
+    std::vector<MapPingPosition> positions_20;
+};
+struct PropertyWriter {
+    virtual ~PropertyWriter() = default;
+    virtual void set_string(const char* key, const std::string& value) = 0;
+    virtual void set_int(const char* key, std::int32_t value) = 0;
+    virtual void set_bool(const char* key, bool value) = 0;
+    virtual void set_entity(const char* key, void* entity) = 0;
+    virtual void set_vector(const char* key, const Vec3& value) = 0;
+    virtual void open_name(const char* key) = 0;
+    virtual void open_index(int index) = 0;
+    virtual void close() = 0;
+};
+void map_ping_entry_describe_properties(const MapPingEntryView& entry, PropertyWriter& sink);
 
 // 008C8C20, __fastcall(path): the GUI widget named by a dotted path. A '.' (00CE3A70) is
 // appended, the first segment names a page (00AA3140 on the GUI manager 004C12B0), and each
