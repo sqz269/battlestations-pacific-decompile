@@ -46,7 +46,7 @@ bool in(const std::uint32_t (&list)[N], std::uint32_t address) noexcept {
 constexpr std::uint32_t kReserve[] = {0x00AD62A0, 0x00AD65C0, 0x00AD6620, 0x00AFEB60, 0x00ADB050};
 constexpr std::uint32_t kResize[] = {0x00AD64D0, 0x00AD6DB0, 0x00AD6E00, 0x00AFEC20, 0x00ADBE60};
 constexpr std::uint32_t kDestroy[] = {0x00AD7500, 0x00AD76E0, 0x00AD7700, 0x00AFEE50, 0x00ADD130};
-constexpr std::uint32_t kPushBack[] = {0x00AD6A90, 0x00AF6820, 0x00AF88F0, 0x00ADBDF0};
+constexpr std::uint32_t kPushBack[] = {0x00AD6A90, 0x00AF6820, 0x00AF88F0, 0x00ADBDF0, 0x00AEE010, 0x00AEE080};
 
 // vector<void*> push_back through the 00AD8A00/00AD8A90 InsertAt path: _Insert_n(last, 1).
 void vector4_push_back(NativeVector4& v, std::uint32_t value, TerrainHost& host) {
@@ -1797,6 +1797,100 @@ void terrain_block_read_chunk(std::uint32_t address, void* block, void* node, Ch
             std::memcpy(rd<std::uint8_t*>(block, 0x40) + (rd<std::int32_t>(block, 0x38) * r + c) * size, &v, size);
         }
     }
+}
+
+void* texture_atlas_find_by_substring_00aee150(void* atlas, const void* needle, AtlasHost& atlases) {
+    for (std::int32_t i = 0; i < rd<std::int32_t>(atlas, 0x14); ++i) {
+        void* texture = rd<void**>(atlas, 0x10)[i];
+        const void* name = atlases.texture_name_00b33e40(texture);
+        const char* hay = rd<const char*>(name, 4);
+        const char* pin = rd<const char*>(needle, 4);
+        if (hay == nullptr || pin == nullptr) continue;
+        const char* p = atlases.strstr_00bf9440(hay, pin);
+        if (p != nullptr && static_cast<std::int32_t>(p - hay) > -1) return texture;
+    }
+    return nullptr;
+}
+
+void texture_atlas_item_destruct_00aee220(void* item, TerrainHost& host) {
+    release_native_string(at(item, 0xC), host);
+    release_native_string(item, host);
+}
+
+void* texture_atlas_item_construct_00aee4d0(void* item, const void* name, void* texture, const void* descriptor,
+    TerrainHost& host, AtlasHost& atlases) {
+    for (std::uint32_t off : {0x0u, 0x4u, 0xCu, 0x10u}) wr<std::uint32_t>(item, off, 0);
+    copy_string_field(item, descriptor, host);
+    copy_string_field(at(item, 0xC), name, host);
+    NativeStr dot{0, nullptr};
+    host.native_string_assign_0041dd40(&dot, ".", 1);  // 00CE3A70
+    const std::uint32_t index = atlases.reverse_find_00467cf0(at(item, 0xC), &dot, 0x7FFFFFFF);
+    release_native_string(&dot, host);
+    if (index != 0xFFFFFFFFu) {
+        const std::uint32_t old_len = rd<std::uint32_t>(item, 0xC);
+        host.native_string_resize_0041dd40(at(item, 0xC), index);
+        if (old_len < rd<std::uint32_t>(item, 0xC))
+            std::memset(rd<std::uint8_t*>(item, 0x10) + old_len, 0x20, rd<std::uint32_t>(item, 0xC) - old_len);
+    }
+    wr<void*>(item, 8, texture);
+    return item;
+}
+
+void pointer_vector_push_back_min4_00ae16b0(PtrArray& a, void* value, const PtrReserve& reserve) {
+    if (a.count == a.capacity) {
+        std::int32_t n = a.capacity * 2;
+        if (n < 5) n = 4;
+        reserve(a, n);
+    }
+    a.data[a.count++] = value;
+}
+
+void* bush_group_model_scalar_deleting_dtor_00ae1680(void* model, std::uint8_t flags, AtlasHost& atlases) {
+    wr<std::uint32_t>(model, 0, 0x00D5D4A0);
+    atlases.model_destroy(model);
+    if (flags & 1) atlases.bush_model_pool_free_00ae13d0(model);
+    return model;
+}
+
+void particle_container_unused_slot0_00b05400(std::uint32_t) {}
+
+std::uint32_t height_field_attach_foliage_00adac90(void* field, TerrainHost& host, AtlasHost& atlases) {
+    void* foliage = host.read_global(0x00F8C210);
+    wr<void*>(field, 0x5C, foliage);
+    apply_field_setter(0x00AD56C0, foliage, rd<std::uint32_t>(field, 0xC));
+    atlases.foliage_load_landscape_00ad92c0(foliage, field);
+    return 0;
+}
+
+void bush_group_set_diffuse_factor_00ae22d0(void* group, float factor, GroupModelHost& models) {
+    wr<float>(group, 0x24, factor);
+    const float* source = reinterpret_cast<const float*>(at(group, 0x24));
+    models.material_register_float_00b18b20(rd<void*>(group, 0x3C), "cDiffuseFactor", source);
+    models.material_register_float_00b18b20(rd<void*>(group, 0x38), "cDiffuseFactor", source);
+}
+
+void bush_group_model_render_filter_00ae23f0(void* model, void* ctx, std::uint32_t a, std::uint32_t b,
+    std::uint32_t c, TerrainHost& host, GroupModelHost& models) {
+    void* view = rd<void*>(ctx, 8);
+    if (rd<std::int32_t>(view, 0x198) == 2 && !models.foliage_bush_shadow_allowed_00ad5760(host.read_global(0x00F8C210)))
+        return;
+    if (void* owner = rd<void*>(model, 0x184)) models.render_slot20(models.bush_build_object_00ae1fb0(owner, view), ctx, a, b, c);
+}
+
+void* tree_group_instance_construct_00ae5070(void* instance, void* landscape, void* type, void* root,
+    std::uint32_t extra, GroupModelHost& models) {
+    wr<void*>(instance, 0, landscape);
+    wr<void*>(instance, 4, type);
+    void* stream = models.geometry_vertex_stream_00b73260(models.generated_model_geometry_00b74640(rd<void*>(type, 8)));
+    wr<void*>(instance, 0x20, stream);
+    _InterlockedIncrement(reinterpret_cast<volatile long*>(at(stream, 4)));
+    wr<std::int32_t>(type, 0x44, rd<std::int32_t>(type, 0x44) + 1);
+    wr<void*>(instance, 0x14, root);
+    wr<std::uint32_t>(instance, 8, 0);
+    wr<std::uint32_t>(instance, 0xC, extra);
+    wr<void*>(instance, 0x18, models.scene_find_node_by_name_00b72270(rd<void*>(instance, 0x14), "TreeGroup"));
+    wr<std::uint32_t>(instance, 0x10, 0);
+    return instance;
 }
 
 void height_field_destroy_00add1b0(void* field, TerrainHost& host, HeightFieldDestroyHost& more) {

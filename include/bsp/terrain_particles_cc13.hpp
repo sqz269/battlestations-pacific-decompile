@@ -45,6 +45,8 @@ struct TerrainHost {
     // 0041DD40 BSP_NativeString_Resize(ECX = string, len, 1) followed by _memcpy of the
     // characters: the NativeString {len, chars} assignment the bodies inline.
     virtual void native_string_assign_0041dd40(void* string, const void* chars, std::uint32_t len) = 0;
+    // 0041DD40 alone: resize to len keeping the leading characters (new ones unspecified).
+    virtual void native_string_resize_0041dd40(void* string, std::uint32_t len) = 0;
     // 0041E870 BSP_NativeString_Assign(string, const char* literal).
     virtual void native_string_assign_literal_0041e870(void* string, const char* literal) = 0;
     // __stricmp 00BF7FBF.
@@ -176,7 +178,8 @@ void vector4_tidy(NativeVector4& v, TerrainHost& host);
 //   00AD7500, 00AD76E0, 00AD7700, 00AFEE50, 00ADD130.
 // Push back (count == capacity -> reserve(2 * capacity, or 1 below 2), append) through the
 // named reserve: 00AD6A90 (00AD62A0), 00AF6820 (BSP_NativeParticleEmitterPointers_Reserve),
-// 00AF88F0 (BSP_NativeParticleObject_ReserveModels), 00ADBDF0 (00ADB050). The reserve is the caller's callback.
+// 00AF88F0 (BSP_NativeParticleObject_ReserveModels), 00ADBDF0 (00ADB050), 00AEE010 (00735F90),
+// 00AEE080 (BSP_PointerArray_ReserveCurrentStorage). The reserve is the caller's callback.
 using PtrReserve = std::function<void(PtrArray&, std::int32_t)>;
 bool is_pointer_array_routine(std::uint32_t address) noexcept;
 void pointer_array_reserve(std::uint32_t address, PtrArray& a, std::int32_t n);
@@ -920,5 +923,85 @@ void terrain_tile_write_node_chunk_00ae0250(void* tile, void* writer, ChunkHost&
 // (two bytes / one byte each) into +40h row-major. (00ADC6C0's load path is also modelled in
 // cc9's loader.)
 void terrain_block_read_chunk(std::uint32_t address, void* block, void* node, ChunkHost& chunks);
+
+// ---------------------------------------------------------------------------
+// Atlases, models and small leftovers.
+// ---------------------------------------------------------------------------
+struct AtlasHost {
+    virtual ~AtlasHost() = default;
+    // 00B33E40 BSP_LogicalTextureBase_GetNameAddress (ECX = texture) -> NativeString*.
+    virtual const void* texture_name_00b33e40(void* texture) = 0;
+    // _strstr 00BF9440.
+    virtual const char* strstr_00bf9440(const char* haystack, const char* needle) = 0;
+    // 00467CF0 BSP_NativeString_ReverseFindHeader(ECX = string, set, start) -> index or -1.
+    virtual std::uint32_t reverse_find_00467cf0(const void* string, const void* set, std::uint32_t start) = 0;
+    // BSP_Model_Destroy (ECX = model); BSP_BushGroupModelPool_Free (00AE13D0, ECX = pool).
+    virtual void model_destroy(void* model) = 0;
+    virtual void bush_model_pool_free_00ae13d0(void* object) = 0;
+    // 00AD92C0 BSP_FoliageSystem_LoadLandscapeFoliage (ECX = system, landscape)
+    // (reconstructed as bsp::foliage_setup_cc13::load_landscape_foliage_00ad92c0).
+    virtual void foliage_load_landscape_00ad92c0(void* system, void* landscape) = 0;
+};
+// 00AEE150 BSP_TextureAtlas_FindTextureBySubstring, __thiscall(atlas, const NativeString*
+// needle), RET 4 -> EAX: the first texture of the list +10h (count +14h) whose name contains
+// the needle (_strstr, both strings non-null, offset > -1). DEVIATION: on a miss the image
+// returns EAX as the loop left it (0 after a failed _strstr, the name record when a string
+// was null, undefined for an empty list); this model returns null.
+void* texture_atlas_find_by_substring_00aee150(void* atlas, const void* needle, AtlasHost& atlases);
+// 00AEE220 BSP_TextureAtlasItem_Destruct, __fastcall(item): strings +0Ch then +00.
+void texture_atlas_item_destruct_00aee220(void* item, TerrainHost& host);
+// 00AEE4D0 BSP_TextureAtlasItem_Ctor, __thiscall(item, const NativeString* name, texture,
+// const NativeString* descriptor), RET 0Ch -> item: +00 = descriptor, +0Ch = name, then the
+// name is cut at the last "." (a pooled one-character string from 00CE3A70; 00467CF0 from
+// 7FFFFFFFh); a found index resizes +0Ch to it (a growth would blank-fill with spaces); +08 =
+// texture on every path.
+void* texture_atlas_item_construct_00aee4d0(void* item, const void* name, void* texture, const void* descriptor,
+    TerrainHost& host, AtlasHost& atlases);
+// 00AE16B0, __thiscall(vector {data, count, capacity}, const T*), RET 4: when full,
+// BSP_Shadow_ReservePointerVector(2 * capacity, at least 4); append.
+void pointer_vector_push_back_min4_00ae16b0(PtrArray& a, void* value, const PtrReserve& reserve);
+// 00AE1680 BSP_BushGroupModel_ScalarDeletingDtor, __thiscall(model, flags), RET 4 -> model:
+// vtable 00D5D4A0, BSP_Model_Destroy, the pool Free when bit 0 is set.
+void* bush_group_model_scalar_deleting_dtor_00ae1680(void* model, std::uint8_t flags, AtlasHost& atlases);
+// 00B05400, slot 0 of the vtable 00D5DF24: a bare RET 4 (00B05400..00B05402); no effect.
+void particle_container_unused_slot0_00b05400(std::uint32_t ignored);
+// 00ADAC90 (ledger: BSP_TerrainRenderObject_LoadFoliageDefault), __fastcall(field) -> EAX = 0:
+// field+5Ch = [00F8C210]; on that foliage system 00AD56C0(field+0Ch) (its +3Ch) and
+// 00AD92C0(field).
+std::uint32_t height_field_attach_foliage_00adac90(void* field, TerrainHost& host, AtlasHost& atlases);
+
+struct GroupModelHost {
+    virtual ~GroupModelHost() = default;
+    // 00B18B20 BSP_Material_RegisterFloatParameter(ECX = material, const NativeString* name,
+    // const float* source).
+    virtual void material_register_float_00b18b20(void* material, const char* name, const float* source) = 0;
+    // 00AD5760 BSP_FoliageSystem_GetBushShadowAllowed (ECX = [00F8C210]).
+    virtual bool foliage_bush_shadow_allowed_00ad5760(void* system) = 0;
+    // 00AE1FB0 BSP_BushGroupModel_BuildBushObject (ECX = model+184h object, view) -> object;
+    // object vtable +20h(ctx, a, b, c).
+    virtual void* bush_build_object_00ae1fb0(void* owner, void* view) = 0;
+    virtual void render_slot20(void* object, void* ctx, std::uint32_t a, std::uint32_t b, std::uint32_t c) = 0;
+    // 00B74640 BSP_GeneratedModel_GetGeometry (ECX = model, 0); 00B73260 vertex stream of a
+    // geometry; 00B72270 BSP_Scene_FindNodeByName (ECX = root, name, 0).
+    virtual void* generated_model_geometry_00b74640(void* model) = 0;
+    virtual void* geometry_vertex_stream_00b73260(void* geometry) = 0;
+    virtual void* scene_find_node_by_name_00b72270(void* root, const char* name) = 0;
+};
+// 00AE22D0 (ledger: BSP_BushGroupModel_RegisterDiffuseFactor; ECX is a bush group),
+// __thiscall(group, float factor), RET 4: +24h = factor; "cDiffuseFactor" registered with
+// source &+24h on the material +3Ch, then on +38h (a pooled name built and released each
+// time).
+void bush_group_set_diffuse_factor_00ae22d0(void* group, float factor, GroupModelHost& models);
+// 00AE23F0 BSP_BushGroupModel_RenderFilter, slot +20h of 00D5D4A0, __thiscall(model, ctx, a,
+// b, c), RET 10h: view = ctx+08; view type (+198h) 2 with bush shadows disallowed -> skip;
+// when +184h is set, 00AE1FB0(view) and the built object's slot +20h(ctx, a, b, c).
+void bush_group_model_render_filter_00ae23f0(void* model, void* ctx, std::uint32_t a, std::uint32_t b,
+    std::uint32_t c, TerrainHost& host, GroupModelHost& models);
+// 00AE5070 BSP_TreeGroupInstance_Construct, __thiscall(instance 3Ch, landscape, type,
+// root, extra), RET 10h -> instance: +00 landscape, +04 type, +20h = the vertex stream of
+// the type's model (+08) geometry, retained; type+44h++ (instances); +14h root, +08 = 0,
+// +0Ch extra, +18h = root's node "TreeGroup", +10h = 0.
+void* tree_group_instance_construct_00ae5070(void* instance, void* landscape, void* type, void* root,
+    std::uint32_t extra, GroupModelHost& models);
 
 } // namespace bsp::cc13_terrain
