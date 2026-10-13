@@ -6219,13 +6219,13 @@ struct GameUnitsHost::Impl {
     // while SetDeviceReloadEnabled's byte [00E17BF2] is set: an empty rack gets
     // its rounds back ReloadTime seconds (the equipment entry's, default 30, floor
     // 1) after it emptied. False: an emptied rack stays empty, as before.
-    static constexpr bool kRackDeviceReloadBound = false;
+    static constexpr bool kRackDeviceReloadBound = true;   // ON: SQUADRON_LAND_TASK 5go.1
     // Packet cc9_rack_device_reload, part 2 (5go). True: both feeds of the dive-bomb
     // break-off 009C8A90 pass ctl+369h and [00E17BF2], so with device reload set
     // (step 4, 009C8ABE-009C8ACD) a live target never breaks the attack off, as
     // the torpedo feed (cc9_device_reload_feeds) already does. False: both read
     // false, so a spent dive bomber breaks off to `done` whatever the flag.
-    static constexpr bool kDiveBreakOffReloadFeedBound = false;
+    static constexpr bool kDiveBreakOffReloadFeedBound = true;   // ON: SQUADRON_LAND_TASK 5go.1
     // Packet cc9_lua45_rack_equipment_device (GUNNERY 144, SQUADRON_LAND_TASK 5ev).
     // True: (a) an absent RepeatTime reads as 006E0242's default, 00B66330 with
     // [00CE3D30] = 0.6f, at both rack readers; (b) a rack's device is the plane's
