@@ -79,6 +79,7 @@
 #include "bsp/plane_pose_commit.hpp"
 #include "bsp/shipyard_production.hpp"
 #include "bsp/vehicle_class.hpp"
+#include "bsp/flak_ver_cc13.hpp"
 
 namespace bsp::game {
 namespace {
@@ -322,6 +323,13 @@ constexpr bool kReconMultiplierForwardBound = true;
 //    SetFireTarget; 0072D5B0's barrel pass only consumes rounds on a
 //    successful ammo ask and so leaves the timers. OFF: as before.
 constexpr bool kFlakSecondAmmoCadenceBound = false;
+//  * kFlakNegativeVerticalBound: packet cc9_g41_flak_d6 (docs/CC13_VER_16.md
+//    D6). 00903297..009032E9, after the AAFlakBot adds bot+5Ch: a negative
+//    vertical against a plane (IsKindOf(0Fh), 009032B3) is fired flat (0);
+//    against anything else, below -0.02f (00D7A320) it becomes
+//    v - (v + 0.02) * 0.5 (flak_bot_vertical_adjust_00903297). The host added
+//    the error and fired as solved. OFF: as before.
+constexpr bool kFlakNegativeVerticalBound = false;
 //  * kTorpedoSwimThrustBound: packet cc9_torpedo_tube_turn,
 //    docs/TORPEDO_FRIENDLY_CROSSING.md section 6. 00857480, the swim advance,
 //    per step on a torpedo in the water: 00856BB0 -> 00857061 yaws the NOSE
@@ -2383,6 +2391,7 @@ struct GameGunneryHost::Impl {
     std::map<std::size_t, SecondAmmo> second_ammo_by_gun;
     unsigned long long dp_air_rounds{0};
     unsigned long long dp_cadence_shots{0};   // kFlakSecondAmmoCadenceBound
+    unsigned long long flak_vertical_adjusts{0};   // kFlakNegativeVerticalBound
     unsigned long long aa_negative_halvings{0};
     unsigned long long water_depth_kills{0};   // packet cc9_water_surface_law
     unsigned long long airfield_destroy_kills{0};  // packet cc9_airfield_destruction_rule
@@ -7360,6 +7369,12 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     AaFlakError& fe = aa_flak_error_by_gun[g];
                     want_horz += fe.h;
                     want_vert += fe.v;
+                    if (kFlakNegativeVerticalBound) {
+                        const float adjusted = bsp::flak_bot_vertical_adjust_00903297(want_vert,
+                            units.unit_is_kind_of(target, bsp::kUnitGunneryKindPlaneBase));
+                        if (adjusted != want_vert) ++flak_vertical_adjusts;
+                        want_vert = adjusted;
+                    }
                     if (fe.fired) {
                         fe.fired = false;
                         const float* row = kAaFlakErrorRows[aa_level];
@@ -14347,6 +14362,9 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery flak mode-1 cadence shots=%llu bound=%d "
             "(008FF200 -> 0072D5B0(1), packet cc9_g41_flak_d4)", host.dp_cadence_shots,
             kFlakSecondAmmoCadenceBound ? 1 : 0);
+        host.log.notef("summary mission gunnery flak negative vertical adjusts=%llu bound=%d "
+            "(00903297, packet cc9_g41_flak_d6)", host.flak_vertical_adjusts,
+            kFlakNegativeVerticalBound ? 1 : 0);
         host.log.notef("summary mission gunnery water depth kills=%llu (007CE3A7, packet "
             "cc9_water_surface_law)", host.water_depth_kills);
         host.log.notef("summary mission gunnery airfield sub-entity asks=%llu listed=%llu "

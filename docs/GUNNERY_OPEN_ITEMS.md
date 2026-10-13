@@ -13684,3 +13684,20 @@ substitution: the mode is chosen per shot from the target, not held from the las
 | USN12 s38_u12_p2 36000 | exit 3; DP flak rounds up about 1.5-1.7x (reload 3-6 s against 6-9 s); the 0.6 AAFlak seat replaces 0.9; plane losses up; win kept |
 | USN21 (ships44 `s46_u21_d`) 60000 | exit 3; `dp_air_rounds` about 1832 -> 3150 (cc13); DP kills up; strike releases down slightly |
 | USN01 p3_u1_z4 | exit 3 (175 DP rounds); small; win kept |
+
+## 217. Flak D6: a negative flak vertical against a plane is fired flat: `kFlakNegativeVerticalBound`, OFF (lead queue item 1; cc9-gunnery41, 2026-10-13)
+
+**Image** (docs/CC13_VER_16.md D6). `00903297`-`009032E9`, after the AAFlakBot adds bot+5Ch: v < 0 against a
+plane (`IsKindOf(0Fh)`, `009032B3`) becomes 0; against anything else, below -0.02f (`00D7A320`), it becomes
+v - (v + 0.02) * 0.5. cc13's model `bsp::flak_bot_vertical_adjust_00903297` (`src/flak_ver_cc13.cpp`).
+
+**Host.** Applied to `want_vert` right after the `fe.v` add, in the cat-5 / cat-6-against-a-plane flak block;
+counter `flak_vertical_adjusts`, logged as `summary mission gunnery flak negative vertical adjusts`. No RNG change.
+
+**Predictions, written before any ON run.**
+
+| row | prediction ON |
+| --- | --- |
+| USN15 | `adjusts=0`; exit 0 or 1 |
+| USN12 | `adjusts` > 0 (low torpedo legs); exit 3; flak hits on low planes up; win kept |
+| USN21 | `adjusts` > 0; exit 3; DP kills on low legs up (cc13: up to 2x per 5-inch round at 2000-2500 m) |
