@@ -145,7 +145,43 @@ type byte `+10h` (8 bits), the NativeString `+18h`, the byte `+20h` (2 bits) and
   `004C5E00`, `004C74C0`, `004CA2F0`, `004CD450` (unreferenced screenshot writer), `004CD7F0` (cited
   by the mission Lua hosts), `004CE75C` (catch funclet), `004C9800`, `004C9820`.
 
+## Second batch (after the index refresh)
+
+A fresh index after the first commit listed 321 functions in the ranges: the reviewed-name ledger had
+grown since the first listing. The second batch took:
+
+- Registry teardown: `00472420`, `00473CE0`, `00475860`, `00479AC0`, `0047B4E0` were named
+  `..._ForEachClass` and are now `..._DeleteAllClasses`. Each one deletes every mapped class (vtable
+  slot 0 with 1, at node `+14h` or `+10h`) and then erases the map. This answers open item 3 of
+  `docs/CC13_SCENE_BROWSER.md`: `BSP_Game_DestroyWorldContainers` calls the Buoy, Cloud, Anim and
+  VehicleClass slots at `004D2B8A..004D2B99`. The Bullets slot has no rel32 (E8/E9) or absolute
+  reference (scripted scan of `.text` and the whole file; the same scan finds the 004D2B94 call to
+  `00472420`), so the Bullets visual classes are never deleted. The host is the template
+  `delete_all_scene_classes`.
+- Unwind slots that clear a singleton pointer (`00470D30`, `00472990`, `00474220`, `00476440`,
+  `0047A080`, `0047C120`): the global is set to 0 and the vtable to `00CE3818`.
+- Entity constructors `004707A0`, `004724D0`, `00473DB0`, `004762D0`, `00479B70`: the create slots'
+  field writes without allocation (class ids checked in each listing), added to
+  `kVisualEntityKinds`. The class constructors `004707F0`, `00473DF0`, `004770F0` correspond to the
+  default member initialisers of `AnimClass`/`BuoyClass`/`CloudClass` and are recorded there.
+- `00476B90`: `[[entity+360h]+160h]` or 0.
+- `0046FDD0` (project onto an axis), traced from the x87 listing. `s` is the length of the axis from
+  `00419440`, stored as a float. `inv = 1/s` when `s > 0`, otherwise 0 (a NaN length also gives 0
+  through `FCOMI`/`JBE`). `n = axis * inv` is stored per component. The dot product is
+  `(v1*n1 + v0*n0) + v2*n2` on the stack, rounded once to float, and the result is `n * d`. The host
+  evaluates the dot in double, which matches 53-bit precision control. Under 24-bit precision control
+  (Direct3D's default without `FPU_PRESERVE`) the sums would round differently. The rest of the
+  `0046F550..004702E0` cluster (reject, closest point, segment-plane intersection, direction and
+  length, orthonormal frame) needs the same x87 tracing and was left.
+- `004BE940` (list payload by index; an index past the end returns the last payload),
+  `004C2DF0` (`__cdecl(string*, token)`: exact equality through the legacy string compare
+  `004BEB60`), `004C6820` (screenshot base name, index `-1`, tail jump to `004BFBF0`).
+- 37 more `STL_*`/`TMPL_*` bodies tagged (`stl_shape`, `tmpl_shape`).
+
 ## Divergences and uncertainty
+
+- `command_line_matches_token_004c2df0` assumes `004BEB60` has `std::string::compare(pos, n, s,
+  count)` semantics; its body was not re-read.
 
 - The create-entity and sourced-class hosts model field writes only; allocation, the base
   constructors and the NativeString storage are not reproduced.
@@ -162,5 +198,5 @@ worktree). Call-site rows: `reports/cc13_sys2_calls.json` (`tools/verify_report_
 
 ## Handoff
 
-Done: 51 new reconstructions, 10 alias records, 17 backfills, 11 tags. Next: the shared singleton
+Done: 51 + 21 new reconstructions, 10 + 3 alias/default-init records, 17 backfills, 48 tags, five registry renames. Next: the shared singleton
 getter pattern (12 functions), the scene-database cluster with its owner, and `004656D0`.

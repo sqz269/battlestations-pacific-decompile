@@ -66,6 +66,7 @@ void movie_particle_effect_stop_004661a0(void*& handle_at_44, const std::functio
 // entity on the pending list); Cloud also clears dword +1A4h and byte +1A8h.
 struct VisualEntityKind {
     std::uint32_t create_entity;
+    std::uint32_t entity_constructor; // the same field writes without allocation
     const char* table;
     std::uint32_t bytes;
     std::int32_t class_id;
@@ -99,6 +100,42 @@ struct SourcedVisualClassFields {
 };
 SourcedVisualClassFields construct_sourced_visual_class(const void* source, const char* source_name_at_14);
 
+// The registry teardown slots 00472420 (Anim), 00473CE0 (Bullets), 00475860
+// (Buoy), 00479AC0 (Cloud), 0047B4E0 (VehicleClass), __cdecl, RET: for every
+// node, call the mapped class's scalar deleting destructor with 1 (vtable
+// slot 0) and null the node value, then erase all nodes and reset the head.
+// BSP_Game_DestroyWorldContainers (004D2B10) calls four of them at
+// 004D2B8A..004D2B99; the Bullets one has no rel32 or absolute reference, so
+// the Bullets visual classes are never deleted.
+template <class Map>
+void delete_all_scene_classes(Map& registry) {
+    for (auto& entry : registry) entry.second.reset();
+    registry.clear();
+}
+
+// The registry "clear singleton pointer" unwind slots 00470D30, 00472990,
+// 00474220, 00476440, 0047A080, and 0047C120 (soldier globals),
+// __fastcall(ECX object), RET: the global slot is set to null and the object's
+// vtable to the singleton base 00CE3818.
+struct SingletonSlotView {
+    void** global{nullptr};
+    std::uint32_t* vtable{nullptr};
+};
+void clear_singleton_pointer(SingletonSlotView slot);
+
+// 00476B90, __fastcall(ECX entity), RET: the visual at entity+360h, then its
+// field +160h, or 0 without a visual.
+std::uint32_t entity_visual_class_field_00476b90(const void* visual_at_360,
+                                                 const std::function<std::uint32_t(const void*)>& field_160);
+
+// 0046FDD0, __fastcall(ECX = Vec3 out, EDX = v, [ESP+4] = axis), RET 4:
+// s = 00419440 length of axis (stored float); inv = 1/s when s > 0, else 0
+// (NaN gives 0). n = axis * inv per component, stored float. d = (v0*n0 +
+// v1*n1) + v2*n2 on the x87 stack, stored float. out = n * d per component.
+// The host evaluates the dot in double, which matches 53-bit precision control.
+std::array<float, 3> project_onto_axis_0046fdd0(const std::array<float, 3>& v, const std::array<float, 3>& axis,
+                                                 const std::function<float(const std::array<float, 3>&)>& length);
+
 // ---------------------------------------------------------------------------
 // Segment 6: small helpers.
 // ---------------------------------------------------------------------------
@@ -117,6 +154,30 @@ const void* scene_node_child_at_00467f30(const void* head, std::int32_t count, s
 // ---------------------------------------------------------------------------
 // Segment 9.
 // ---------------------------------------------------------------------------
+
+// 004BE940, __thiscall(list, int index), RET 4: node = list+4; for each step
+// a null node gives 0, and a node whose next (+4) is null ends the walk early,
+// so an index past the end returns the last payload (+8).
+struct PayloadNode {
+    const PayloadNode* next{nullptr}; // +4
+    std::uint32_t payload{0};         // +8
+};
+std::uint32_t linked_list_nth_payload_004be940(const PayloadNode* head_at_4, std::int32_t index);
+
+// 004C2DF0: the string object's compare(0, size(+14h), token, strlen(token))
+// through 004BEB60; true when it returns 0, i.e. exact case-sensitive equality.
+bool command_line_matches_token_004c2df0(const std::string& text, const char* token);
+
+// 004C6820, __fastcall(ECX NativeString* name), RET: assigns the global base
+// name 00E18998 unless the argument is that global, stores -1 at 00E08210 and,
+// when byte 00E188AD is set, tail-jumps to 004BFBF0 (begin the sequence).
+struct ScreenshotNaming {
+    std::string base_name_e18998;
+    std::int32_t index_e08210{0};
+    bool sequence_enabled_e188ad{false};
+};
+void screenshot_set_base_name_004c6820(ScreenshotNaming& state, const std::string* name,
+                                       const std::function<void()>& begin_sequence);
 
 // 004BBC50, __fastcall(ECX = dialog result), RET: byte [[0109CF04]+180h] = 0
 // and, for result 1, byte 00E1AE75 = 1.

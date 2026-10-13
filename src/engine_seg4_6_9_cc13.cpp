@@ -74,11 +74,11 @@ void movie_particle_effect_stop_004661a0(void*& handle_at_44, const std::functio
 // MOV [ESI+C4h],id). Table names and entity bytes agree with
 // docs/CC13_SCENE_BROWSER.md.
 const std::array<VisualEntityKind, 5> kVisualEntityKinds{{
-    {0x00470C90, "AnimClass", 0x194, 0x3E, 0x00CE5A20, 0x00CE5A08, 0x00CE5A00, false},
-    {0x004728F0, "Bullets", 0x18C, 0x39, 0x00CE5B90, 0x00CE5B78, 0x00CE5B70, true},
-    {0x00474160, "BuoyClass", 0x18C, 0x3C, 0x00CE5CF0, 0x00CE5CD8, 0x00CE5CD0, false},
-    {0x00476360, "CloudClass", 0x1AC, 0x3D, 0x00CE5E68, 0x00CE5E50, 0x00CE5E48, true},
-    {0x00479FE0, "VehicleClass", 0x190, 0x38, 0x00CE6130, 0x00CE6114, 0x00CE610C, false},
+    {0x00470C90, 0x004707A0, "AnimClass", 0x194, 0x3E, 0x00CE5A20, 0x00CE5A08, 0x00CE5A00, false},
+    {0x004728F0, 0x004724D0, "Bullets", 0x18C, 0x39, 0x00CE5B90, 0x00CE5B78, 0x00CE5B70, true},
+    {0x00474160, 0x00473DB0, "BuoyClass", 0x18C, 0x3C, 0x00CE5CF0, 0x00CE5CD8, 0x00CE5CD0, false},
+    {0x00476360, 0x004762D0, "CloudClass", 0x1AC, 0x3D, 0x00CE5E68, 0x00CE5E50, 0x00CE5E48, true},
+    {0x00479FE0, 0x00479B70, "VehicleClass", 0x190, 0x38, 0x00CE6130, 0x00CE6114, 0x00CE610C, false},
 }};
 
 bool create_visual_entity(std::uint32_t create_entity, const void* cls, VisualEntityClassLink& link,
@@ -99,6 +99,28 @@ SourcedVisualClassFields construct_sourced_visual_class(const void* source, cons
     fields.source = source;
     fields.name = source_name_at_14 ? source_name_at_14 : "";
     return fields;
+}
+
+void clear_singleton_pointer(SingletonSlotView slot) {
+    *slot.global = nullptr;      // MOV [global],0
+    *slot.vtable = 0x00CE3818;   // MOV [ECX],00CE3818
+}
+
+std::uint32_t entity_visual_class_field_00476b90(const void* visual_at_360,
+                                                 const std::function<std::uint32_t(const void*)>& field_160) {
+    return visual_at_360 ? field_160(visual_at_360) : 0;
+}
+
+std::array<float, 3> project_onto_axis_0046fdd0(const std::array<float, 3>& v, const std::array<float, 3>& axis,
+                                                 const std::function<float(const std::array<float, 3>&)>& length) {
+    const float s = length(axis);                   // 0046FDE0 CALL 00419440, FSTP float
+    const float inv = s > 0.0f ? 1.0f / s : 0.0f;   // 0046FDEF FCOMI; JBE also takes NaN
+    const std::array<float, 3> n{axis[0] * inv, axis[1] * inv, axis[2] * inv}; // 0046FE0A..0046FE28
+    // 0046FE2C..0046FE55: (v1*n1 + v0*n0) + v2*n2, one rounding to float.
+    const double dot = (static_cast<double>(v[1]) * n[1] + static_cast<double>(v[0]) * n[0])
+                       + static_cast<double>(v[2]) * n[2];
+    const float d = static_cast<float>(dot);
+    return {n[0] * d, n[1] * d, n[2] * d};         // 0046FE59..0046FE70
 }
 
 std::string format_to_buffer32_00467310(const char* format, ...) {
@@ -124,6 +146,27 @@ const void* scene_node_child_at_00467f30(const void* head, std::int32_t count, s
         if (!node) return nullptr;
     }
     return node;
+}
+
+std::uint32_t linked_list_nth_payload_004be940(const PayloadNode* head_at_4, std::int32_t index) {
+    const PayloadNode* node = head_at_4;
+    for (; index > 0; --index) {
+        if (!node) return 0;
+        if (!node->next) return node->payload; // 004BE96D: stop on the last node
+        node = node->next;
+    }
+    return node ? node->payload : 0;
+}
+
+bool command_line_matches_token_004c2df0(const std::string& text, const char* token) {
+    return text.compare(0, text.size(), token) == 0;
+}
+
+void screenshot_set_base_name_004c6820(ScreenshotNaming& state, const std::string* name,
+                                       const std::function<void()>& begin_sequence) {
+    if (name != &state.base_name_e18998) state.base_name_e18998 = *name; // 004C6835..004C6850
+    state.index_e08210 = -1;                                             // 004C685F
+    if (state.sequence_enabled_e188ad) begin_sequence();                 // 004C686C JMP 004BFBF0
 }
 
 void on_quit_confirmation_004bbc50(std::int32_t result, QuitConfirmationFlags& flags) {
