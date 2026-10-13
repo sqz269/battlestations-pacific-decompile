@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cctype>
 #include <cmath>
+#include <cstring>
 
 // Segments 88/89 routines. Evidence and ABIs: docs/CC13_SCENE_GRAPH_NODES.md.
 // x87 expressions are evaluated in double and rounded to float wherever the native code
@@ -333,5 +334,172 @@ std::vector<std::vector<std::string>> resource_dump_rows_00b811c0(std::vector<Re
 
 std::string resource_dump_file_name_00b811c0(const std::string& suffix) {
     return "ResourceDump_" + suffix + ".csv";
+}
+
+// ---------------------------------------------------------------------------
+// cc13-scene3 bodies (docs/CC13_SCENE_3.md).
+
+namespace {
+// FLD dword / FSTP dword: the value round-trips unchanged except that a signalling NaN is quieted.
+float x87_reload(float v) noexcept {
+    std::uint32_t bits;
+    std::memcpy(&bits, &v, sizeof bits);
+    if ((bits & 0x7F800000u) == 0x7F800000u && (bits & 0x007FFFFFu) != 0u) bits |= 0x00400000u;
+    float r;
+    std::memcpy(&r, &bits, sizeof r);
+    return r;
+}
+
+void update_hires_projection(HiresCamera& camera) noexcept {
+    for (float& v : camera.projection_1e0) v = x87_reload(v);
+    for (int k = 0; k < 16; ++k) camera.projection_copy_2a0[k] = x87_reload(camera.projection_1e0[k]);
+    camera.flags_2f0 = (camera.flags_2f0 & 0xFFFFFF4Bu) | 8u;
+}
+} // namespace
+
+std::uint8_t camera_render_hires_tiles_00b708e0(HiresCamera& camera, const char* file, std::int32_t width,
+    std::int32_t height, HiresTileCallback callback, void* context, HiresTileServices& s) {
+    std::uint8_t result = 0;
+    const bool was_in_scene = s.in_scene_2c();
+    if (was_in_scene) s.end_scene_14();
+    const std::int32_t vw = s.viewport_size_00b1f740()[0];
+    const std::int32_t vh = s.viewport_size_00b1f740()[1];
+    const std::int32_t tx = width / vw;   // IDIV: truncation toward zero
+    const std::int32_t ty = height / vh;
+    void* const target = s.create_surface_84(tx * vw, ty * vh, 0x16, 2);
+    float saved[16];
+    std::memcpy(saved, camera.projection_1e0, sizeof saved); // REP MOVSD
+    camera.projection_1e0[0] = f(static_cast<double>(tx) * camera.projection_1e0[0]);
+    camera.projection_1e0[5] = f(static_cast<double>(ty) * camera.projection_1e0[5]);
+    if (tx > 0) {
+        const float column_span = static_cast<float>(tx - 1); // CVTSI2SS
+        std::int32_t x = 0;
+        for (std::int32_t j = 0; j < tx; ++j) {
+            camera.projection_1e0[8] = f(static_cast<double>(column_span) - 2.0 * j);
+            if (ty > 0) {
+                const float row_span = static_cast<float>(ty - 1);
+                std::int32_t y = 0;
+                for (std::int32_t i = 0; i < ty; ++i) {
+                    camera.projection_1e0[9] = f(-(static_cast<double>(row_span) - 2.0 * i));
+                    update_hires_projection(camera);
+                    s.begin_scene_0c();
+                    result = callback(context);
+                    s.end_scene_14();
+                    alignas(4) unsigned char holder[0x3C];
+                    s.holder_construct_00b3f450(holder);
+                    if (s.get_back_buffer_7c(holder)) {
+                        s.surface_copy_from_38(target, holder, 0, HiresTileRect{x, y, x + vw, y + vh});
+                    }
+                    s.holder_destroy_00b3f4e0(holder);
+                    y += vh;
+                }
+            }
+            x += vw;
+        }
+    }
+    std::memcpy(camera.projection_1e0, saved, sizeof saved);       // MOVSS, bit-exact
+    std::memcpy(camera.projection_copy_2a0, saved, sizeof saved);
+    camera.flags_2f0 = (camera.flags_2f0 & 0xFFFFFF4Bu) | 8u;
+    s.surface_save_34(target, file, 0);
+    s.surface_delete_04(target, 1);
+    if (was_in_scene) s.begin_scene_0c();
+    return result;
+}
+
+void flare_build_geometry_00b8dd60(cc13_scene2::FlareView& flare, const void* elements_source,
+    std::uint32_t& vertex_layout_1cc, FlareGeometryServices& s) {
+    s.assign_elements_00b8d850(flare, elements_source);
+    void* const mesh = s.new_mesh_object_00b73b60();
+    const auto count = static_cast<std::uint32_t>(flare.elements.size()); // flare +190h
+    void* const declaration = s.create_vertex_declaration_38("simplecolor2.mvfm");
+    void* const vertices = s.create_vertex_buffer_5c(count * 4u, 1, declaration);
+    s.release(declaration);
+    vertex_layout_1cc = s.create_vertex_layout_40(declaration); // the record keeps the (released) pointer
+    s.geometry_set_vertex_stream_00b73bb0(mesh, 0, vertices);
+    s.release(vertices);
+    void* const indices = s.create_index_buffer_60(count * 6u, 1, 0x65);
+    std::uint16_t* out = s.lock_indices_0c(indices);
+    for (std::uint32_t i = 0; i < count; ++i, out += 6) {
+        const auto base = static_cast<std::uint16_t>(i * 4u);
+        out[0] = base;
+        out[1] = static_cast<std::uint16_t>(base + 1);
+        out[2] = static_cast<std::uint16_t>(base + 2);
+        out[3] = static_cast<std::uint16_t>(base + 2);
+        out[4] = static_cast<std::uint16_t>(base + 3);
+        out[5] = base;
+        cc13_scene2::FlareElement& e = *flare.elements[i];
+        for (int k = 0; k < 2; ++k) {
+            // Compared with a fresh empty string: an empty name gives a null rect.
+            e.rects[k] = e.names[k].empty() ? nullptr : s.atlas_find_item_00aefb20(e.names[k].c_str());
+        }
+        e.size[0] = x87_reload(e.origin[0]);
+        e.size[1] = x87_reload(e.origin[1]);
+    }
+    s.unlock_indices_10(indices);
+    s.geometry_set_index_stream_00b73b70(mesh, indices);
+    s.release(indices);
+    void* const flare_material = s.material_create_00535320("flare.mshd");
+    void* const flare2_material = s.material_create_00535320("flare2.mshd");
+    std::uint32_t n0 = 0, n1 = 0, n2 = 0;
+    for (std::uint32_t i = 0; i < count; ++i) {
+        cc13_scene2::FlareElement& e = *flare.elements[i];
+        switch (e.type) {
+        case 0:
+            if (n1 == 0 && n0 == 0) {
+                s.material_set_texture_slot_00b189f0(flare_material, 0, s.atlas_item_texture(e.rects[0]));
+            }
+            ++n0;
+            break;
+        case 1:
+            if (n1 == 0 && n0 == 0) {
+                s.material_set_texture_slot_00b189f0(flare_material, 0, s.atlas_item_texture(e.rects[0]));
+            }
+            ++n1;
+            break;
+        case 2:
+            if (n2 == 0) {
+                for (std::uint32_t k = 0; k < 2; ++k) {
+                    void* const texture = e.rects[k] != nullptr ? s.atlas_item_texture(e.rects[k]) : nullptr;
+                    s.material_set_texture_slot_00b189f0(flare2_material, k, texture);
+                }
+            }
+            ++n2;
+            break;
+        default:
+            break;
+        }
+    }
+    std::uint32_t first_vertex = 0;
+    std::uint32_t first_index = 0;
+    const auto add_section = [&](std::uint32_t quads, void* material) {
+        void* const section = s.new_draw_section_00b85ee0();
+        FlareDrawRanges ranges;
+        ranges.first_vertex_0c = first_vertex;
+        ranges.vertex_count_10 = quads * 4u;
+        ranges.first_index_14 = first_index;
+        ranges.primitive_count_18 = (quads * 4u) >> 1;
+        s.section_write_ranges(section, ranges); // the listing writes through a possibly null section
+        s.section_set_material_00b864c0(section, material);
+        s.section_append_vertex_stream_00b85b80(section, s.geometry_vertex_stream_00b73260(mesh, 0));
+        s.section_set_vertex_layout_00b86650(section, vertex_layout_1cc);
+        s.geometry_append_section_00b73c60(mesh, section);
+        s.release(section);
+    };
+    if (n0 != 0) {
+        add_section(n0, flare_material); // the listing stores 0 for both starts here
+        first_index = n0 * 6u;
+        first_vertex = n0 * 4u;
+    }
+    if (n1 != 0) {
+        add_section(n1, flare_material);
+        first_vertex += n1 * 4u;
+        first_index += n1 * 6u;
+    }
+    if (n2 != 0) add_section(n2, flare2_material);
+    s.release(flare_material);
+    s.release(flare2_material);
+    s.set_geometry_00b75170(flare, 0, mesh, -1.0f, -1.0f);
+    s.release(mesh);
+    s.initialize_occlusion_00b8dac0(flare);
 }
 }  // namespace bsp::cc13_scene

@@ -353,7 +353,7 @@ inline constexpr bool kTorpedoStockBound = true;
 // motion reads them at 00826754 (engine gate, target speed 0) and 00826B2E (the
 // rudder slew 0092E8C0 skipped). True: the units host copies them into the ship
 // motion state before each 00825F20 step. False: the motion never sees a jam.
-inline constexpr bool kShipJamMotionBound = false;
+inline constexpr bool kShipJamMotionBound = true;  // ON: n1 pairs, faithful (GUNNERY 197-199, cc9-gunnery38)
 
 // Packet cc9_torpedo_supply_tick (docs/UNIT_WEAPON_DEVICES.md, "The supply
 // tick"). True: every ship runs 00825450 once per fixed step, and the stock

@@ -745,7 +745,7 @@ GridResolution quality_grid_resolution_00ba6bd0(bool simple_ocean_f9) {
     return simple_ocean_f9 ? GridResolution{0x20, 0x20} : GridResolution{0x80, 0x100};
 }
 
-WaterRingRecord make_water_ring_00b9e3f0(const Float3& position, float a, std::uint32_t b,
+WaterRingRecord make_water_ring_00b9e3f0(const Float3& position, float a, float b,
                                          float duration, float ocean_clock) {
     WaterRingRecord ring;
     ring.position_00 = position;

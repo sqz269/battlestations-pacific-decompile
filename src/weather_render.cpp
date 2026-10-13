@@ -471,7 +471,7 @@ CloudInstanceStep cloud_instance_step_00bbe8b0(CloudInstanceState& s, WeatherMat
     const Vec3 pos = host.position();
     const float t = cloud_instance_fade_00bbe8b0(reach_from(pos));
     const float shown = f32(1.0 - t);
-    host.set_visibility(f32(static_cast<double>(s.alpha) * shown));
+    host.set_visibility(f32(static_cast<double>(s.visibility_1c4) * shown));  // 00BBEA2A: +1C4, not the SetAlpha field
 
     if (shown == 0.0f) {
         if (math.length(s.scroll) == 0.0f) {
