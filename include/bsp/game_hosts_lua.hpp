@@ -245,6 +245,15 @@ inline constexpr bool kLuaKillAttackerBound = true;
 // gunnery host's recon detection (`simplified_recon_multiplier()` stays 1.0f).
 inline constexpr bool kSimplifiedReconNativesBound = true;   // ON: SQUADRON_LAND_TASK 5gj
 
+// Packet cc9_lua55_genobj (docs/SQUADRON_LAND_TASK.md 5gl). GenerateObject 00944FD0 ->
+// 0046D930 instantiates on every call; this host answers a repeat call with the earlier
+// entity (a deviation against duplicated capital ships). PRCP01's luaEngineMovieInit
+// generates the Junyo and Zuiho groups for the intro, phase 0 kills them (usn_03:599),
+// and phases 3 and 4 generate them again (usn_03:1135, 1244), which here answered the
+// dead entity. True: a repeat call whose earlier instance is Dead (its thisTable slot)
+// makes a new entity; a live earlier instance keeps the deviation. False: as before.
+inline constexpr bool kGenerateObjectRespawnsDeadBound = false;
+
 // docs/CC13_AUDIT_LUA51_FLIPS.md item 1c. 00988510 boxes, and 0097B8C0 matches,
 // the target as hitEntity->vtable[140h]() kept only when it answers IsKindOf(2)
 // (00988530..0098859B): for a plane that is its squadron (007B97E0, plane+9D4h).
@@ -821,6 +830,7 @@ struct GameMissionLuaSummary {
     unsigned long long generate_object_calls{0};
     unsigned long long generate_object_created{0};
     unsigned long long generate_object_repeat{0};
+    unsigned long long generate_object_respawned{0};   // packet cc9_lua55_genobj
     unsigned long long generate_object_unknown{0};
     // Packet cc9_generated_entity_party.
     unsigned long long generated_party_nodes{0};

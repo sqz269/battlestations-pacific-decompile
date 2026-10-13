@@ -3080,7 +3080,23 @@ int GameMissionLuaHost::run_generate_object_00944fd0(lua_State* state, int argum
     // process keeps the entry so a second call cannot make a second carrier, and
     // answers it with the same entity, which is a DEVIATION and is here because
     // a duplicated capital ship is worse than a repeated handle.
-    if (entry->spawned) {
+    // kGenerateObjectRespawnsDeadBound narrows the deviation to a live earlier
+    // instance: once the script sees it Dead, the call instantiates again.
+    bool respawn = false;
+    if constexpr (kGenerateObjectRespawnsDeadBound) {
+        if (entry->spawned && push_resolved_entity_by_id(state, entry->entity_id)) {
+            ::lua_getfield(state, -1, "Dead");
+            respawn = ::lua_toboolean(state, -1) != 0;
+            ::lua_settop(state, ::lua_gettop(state) - 2);
+        }
+        if (respawn) {
+            ++summary_.generate_object_respawned;
+            log_.notef("  GenerateObject 00944fd0: \"%s\": the earlier instance (id %d) is "
+                "Dead, so a new one is made, as 0046D930 does on every call (packet "
+                "cc9_lua55_genobj)", name.c_str(), entry->entity_id);
+        }
+    }
+    if (entry->spawned && !respawn) {
         ++summary_.generate_object_repeat;
         if (push_resolved_entity_by_id(state, entry->entity_id)) return 1;
         return 0;
