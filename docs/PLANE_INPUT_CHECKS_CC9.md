@@ -51,3 +51,9 @@ recounts on `007EE790`'s countdown and reads the previous buffer index; the host
 falls from TurnRollLimitLarge (0.977) toward TurnRollLeader (0.873 for the classes CC13_AUDIT_PLANNER_ROLL.md
 read) while wingmen follow; `summary mission leader turn roll: uses` non-zero ON only. Leaders turn wider, so
 torpedo and dive releases may move; verdict 3 likely, the win should hold.
+
+**The pair** (OFF = tree build at `8b0e7bfce`, ON = its flip; `local\p4l_{off,on}_{u1z4,u12}.log`): the mechanism engages
+(`leader turn roll: uses` 21546 on USN01, 32243 on USN12, 0 OFF). USN01 `p3_u1_z4`: OFF completed 1014.63 s with the
+guard; ON **no completion** (deaths 90 -> 68, hits 3965 -> 2690, torpedo-task releases 6 of 13 -> 5 of 10). USN12
+`s38_u12_p2`: INVALID, both sides ran without orders (the file's tree was removed; `helm orders refused`). Faithful, and it loses the USN01 plan: **kept OFF** for the lead's decision (flip with a
+re-plan, as for gunnery38's O1).
