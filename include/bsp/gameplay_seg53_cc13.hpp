@@ -412,8 +412,10 @@ TorpedoWakeResult torpedo_wake_step_008571f0(const TorpedoWakeInputs& in, const 
 // The second turn reads the YAW slots: 0085E880 returns with RET 8, so after
 // the first rotation ESP is back at E-30h, and 00856EE8 / 00856EF3 load E-20h
 // (target yaw) and E-1Ch (own yaw), not the pitch slots E-28h / E-24h. The
-// existing src/bomb_torpedo_tick.cpp torpedo_steer_00856bb0 feeds the pitch
-// error to both turns (its comment at 00856F51); see docs/CC13_GPR_53.md.
+// host model src/bomb_torpedo_tick.cpp torpedo_steer_00856bb0 reads the yaw
+// pair for the second turn behind kTorpedoHomingYawPairBound (commit
+// 853396a79, switched ON in 6e7850ad1); with the switch OFF it keeps the old
+// pitch-error reading. See docs/CC13_GPR_53.md section 1.6.
 struct TorpedoHomingCandidate {
     bool is_submarine{false};   // entity vtable[5Ch](8)
     Vec3 position{};

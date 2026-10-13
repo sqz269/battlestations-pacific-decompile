@@ -140,13 +140,14 @@ retired while the torpedo is below `2*swimdepth`, and the emitter is stopped (00
   `clamp(wrap(own_pitch - target_pitch), ±Vert*dt)`. It then rotates about the up row (+84h)
   by `clamp(-wrap(own_yaw - target_yaw), ±Horz*dt)`, and the function returns without running
   the depth and heading controllers. Otherwise it rotates about the right row by own_pitch.
-- **Defect in the existing model.** `src/bomb_torpedo_tick.cpp` `torpedo_steer_00856bb0`
-  (lines ~366-376) and docs/TORPEDO_TICK.md (lines 198-205) feed the PITCH error to the second
-  turn. Their ESP bookkeeping misses that 00438B10 is itself `RET 8` (00438B4C). Take E = ESP
-  at 00856E6C: `SUB ESP,8` followed by the call leaves E, and 0085E880 (`RET 8`) leaves E
-  again. So 00856EE8 reads [E+10h] (target yaw) and 00856EF3 reads [E+14h] (own yaw). The doc
-  itself says the yaw outputs live at those two slots. The second turn is a real bearing turn.
-  I did not edit the file; it needs its owner.
+- **The second turn reads the yaw pair (fixed in the host model).** Take E = ESP at 00856E6C:
+  `SUB ESP,8` followed by the call to 00438B10 (itself `RET 8`, 00438B4C) leaves E, and
+  0085E880 (`RET 8`) leaves E again. So 00856EE8 reads [E+10h] (target yaw) and 00856EF3 reads
+  [E+14h] (own yaw): the second turn is a real bearing turn. `src/bomb_torpedo_tick.cpp`
+  `torpedo_steer_00856bb0` used to feed the pitch error to it; commit 853396a79 (cc13-gpr53c)
+  put the yaw pair behind `kTorpedoHomingYawPairBound` and corrected docs/TORPEDO_TICK.md, and
+  6e7850ad1 switched it ON. The model is still not called by the live host (the gunnery host
+  runs its own swim with no homing), so neither commit changes a run today.
 - I checked the depth and heading controllers that follow (00856F83..0085714E) against the
   same file. `torpedo_depth_velocity`, the ±5 clamp (00CE3850 / 00CFBC84), `atan2(fwd.x,
   fwd.z)`, and `HeadingTurn * pi / 180 * modifier` all match.
@@ -189,7 +190,7 @@ Host comments in submarine_model.hpp and docs/SUBMARINE_MODEL.md still call it t
 | `00857160` / `00855CC0` | network create (the host has no MT torpedo create) | state, net ids | none | none in single player |
 | water mine (`0085EBC0`, `0085ECD0`, `0085F160`, `0085F6D0`, `0085F7A0`, `0085F500`) | nothing (the host has no water mine; src/game_hosts_ai.cpp:6538 lists only the class name) | class row; world water height (0078CF20); the ships list with each ship's inverse transform and class Length/Width/Height (+A0h/+A4h/+A8h); the depth-charge list | **two draws on stream 1**: activate U(1-r, 1+r) (off a client) and kill U(BlastDamageMin, Max) | OFF: unchanged. ON: missions that lay mines get rounds that sink to FloatingDepth, arm when nearly at rest, and detonate on ship boxes or depth charges. Every mine shifts stream-1 consumers by two draws. JM06 is not known to use mines (not checked). |
 | `00852970` debris | nothing (presentation) | node matrix, owner velocity | none | presentation only |
-| `00856BB0` homing (fragment) | `torpedo_steer_00856bb0` in src/bomb_torpedo_tick.cpp (not wired in the gunnery host: game_hosts_gunnery.cpp runs its own swim, :262) | target list (submarines), own and target pitch/yaw, the 00852820 test on the target, class Homing speeds, +514h/+518h | none here; the +518h phase comes from the 00856132 stream-1 draw | OFF: unchanged. ON: Fido torpedoes (JM06 air attacks on the player's boat) home in pitch and **bearing**, and stop depth-keeping while homed. Binding the existing model unfixed would turn by the pitch error instead. |
+| `00856BB0` homing (fragment) | `torpedo_steer_00856bb0` in src/bomb_torpedo_tick.cpp (not wired in the gunnery host: game_hosts_gunnery.cpp runs its own swim, :262) | target list (submarines), own and target pitch/yaw, the 00852820 test on the target, class Homing speeds, +514h/+518h | none here; the +518h phase comes from the 00856132 stream-1 draw | OFF: unchanged. ON: Fido torpedoes (JM06 air attacks on the player's boat) home in pitch and **bearing**, and stop depth-keeping while homed. The host model now turns by bearing too (`kTorpedoHomingYawPairBound`, ON); with that switch OFF it would turn by the pitch error. |
 | `00853E10` submarine activate | the units host's submarine spawn (no submarine-side AutoAttackTarget or DummyObjectID moveto found; the host reads AutoAttackTarget for squadrons, game_hosts_lua.cpp:3966) | creation kind and record, the scene property, DummyObjectID, heading, pose, band 1 | **stream 1, one draw per dummy-object submarine** (008540EA) | OFF: unchanged. ON: saved-game loads restore air/depth/periscope; spawned subs with AutoAttackTarget get an attackmove; dummy-object subs wander 250 m off at ±17 deg. |
 | `008571F0` wake | nothing (presentation) | emitter, bubble point, speed, depth | none | presentation only |
 
@@ -201,8 +202,8 @@ already model that (presentation stream).
 
 1. **0072C970 returns a swim depth.** See 1.2. Its ledger name `BSP_Gun_TorpedoLaunchHeading`
    should become a depth name; the owner of segment 40 decides.
-2. **Horizontal homing turns by bearing, not pitch** (1.6). This must be fixed in
-   src/bomb_torpedo_tick.cpp and docs/TORPEDO_TICK.md before anyone binds homing.
+2. **Horizontal homing turns by bearing, not pitch** (1.6). Fixed in src/bomb_torpedo_tick.cpp
+   and docs/TORPEDO_TICK.md behind `kTorpedoHomingYawPairBound` (853396a79, ON since 6e7850ad1).
 3. The host's 008568E0 comment (game_hosts_gunnery.cpp:9399) names the second limit wrongly;
    see the adoption table.
 4. 00853E10 is a load, not a save (1.6). The submarine_model comments that call it the save
@@ -211,8 +212,8 @@ already model that (presentation stream).
    establish why. This is faithful to the bytes.
 6. Water-mine use in this installation's missions was not surveyed. The torpedo-boat turbo
    (+1188h/+118Ch, TurboTime/TurboStrength) has no consumer in this segment.
-7. The effects band models in src/effects_cc13.cpp (docs/CC13_EFFECTS.md) have no ledger
-   records (e.g. 00873AE0); a `tools/ledger_backfill.py` run would add them.
+7. The 20 effects band models in src/effects_cc13.cpp (docs/CC13_EFFECTS.md) now have ledger
+   records (cc13-gpr53d), each checked against the disk bytes first (section 7).
 
 ## 4. Ledger
 
@@ -237,7 +238,7 @@ already model that (presentation stream).
 
 Still open, in priority order:
 
-1. Fix `torpedo_steer_00856bb0`'s second turn (owner of src/bomb_torpedo_tick.cpp).
+1. (Done: `torpedo_steer_00856bb0`'s second turn, 853396a79 / 6e7850ad1.)
 2. Segment 53 code in cc9's gunnery lane, not touched: the turning gun, gunnery AI,
    artillery-director getters and gunnery target records (0085xxxx-00864xxx). 00862CD0,
    00864880 and 00864D90 draw from the RNG.
