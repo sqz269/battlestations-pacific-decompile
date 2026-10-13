@@ -9,6 +9,7 @@
 
 #include "bsp/band_0076_cc13.hpp"
 #include "bsp/cc13_camera_controllers.hpp"
+#include "bsp/native_bit_cursor_numeric.hpp"
 #include "bsp/native_bit_cursor_read.hpp"
 
 #include <array>
@@ -612,6 +613,64 @@ void movie_camera_insert_key_007a2cd0(MovieKeyLinks& k, MovieKeyHost& host);
 // linked to it appended to +414h; both get the id word +3C0h, which then
 // increments.
 void movie_camera_add_key_pair_007a2bb0(std::uintptr_t source, std::uint32_t& next_id_3c0, MovieKeyHost& host);
+
+// ---------------------------------------------------------------------------
+// Keyframe network serialization (00791360 write, 007A2370 read). Floats are
+// raw bits for the native numeric codec (004295C0 / 004293F0 and the array
+// forms 00429790 / 004294F0). Field order and codec arguments (zero flag,
+// signed flag, scale, bits):
+//   +D9h bool; +CCh (0,0,8.0,16); +34h[3] and +58h[3] (0,1,FLT_MAX,32);
+//   +C4h (0,0,64.0,16); +F4h then +F0h (0,1,256.0,16); +D4h (1,0,8.0,10);
+//   bools +28h +25h +26h; +2Ch in 4 bits; bools +D8h +27h +30h +DCh;
+//   parent: bool, then the parent's 12-bit net id (+174h) when +24h and +1Ch
+//   are set; modifier type id (slot +30h) in 4 bits (0 without one), then its
+//   slot +24h writer / +28h reader.
+struct MovieKeyBits {
+    bool terrain_avoid_d9{false};
+    std::uint32_t field_cc{0};
+    std::array<std::uint32_t, 3> local_34{};
+    std::array<std::uint32_t, 3> up_58{};
+    std::uint32_t zoom_c4{0};
+    std::uint32_t blend_f4{0};
+    std::uint32_t start_f0{0};
+    std::uint32_t nonlinear_d4{0};
+    bool camera_28{false};
+    bool linked_25{false};
+    bool wanderer_26{false};
+    std::uint32_t transform_2c{0};
+    bool use_current_d8{false};
+    bool has_position_27{false};
+    bool then_none_30{false};
+    bool flag_dc{false};
+    bool parent_attached_24{false};
+    std::size_t parent_1c{0};
+    std::uintptr_t modifier_e4{0};
+};
+struct MovieKeyBitsHost {
+    virtual ~MovieKeyBitsHost() = default;
+    virtual const NativeBitNumericContext& numeric_context() = 0;
+    virtual std::uint16_t net_id_174(std::size_t entity) = 0;
+    virtual int modifier_type_slot30(std::uintptr_t modifier) = 0;
+    virtual void modifier_write_slot24(std::uintptr_t modifier, NativeBitCursor* cursor) = 0;
+    // Reader side.
+    // 00F89A10/00F89A0C/00F89A54 or 00F89A60/00F89AA8: the entity of a net id.
+    virtual std::size_t entity_from_net_id(std::uint16_t id) = 0;
+    virtual void register_00694a60(std::size_t entity, const void* observer) = 0;
+    virtual void unregister_006952a0(std::size_t entity, const void* observer) = 0;
+    virtual bool destroyed_5e(std::size_t entity) = 0;
+    virtual std::array<float, 3> position_fc(std::size_t entity) = 0;  // after 00414DB0
+    // operator new + 0078E790 (2Ch) / 007A0650 (64h) / 007A06D0(0) (7Ch); 0 on failure.
+    virtual std::uintptr_t new_modifier(int type) = 0;
+    virtual void modifier_read_slot28(std::uintptr_t modifier, NativeBitCursor* cursor) = 0;
+    virtual void set_modifier_00799de0(MovieKeyBits& k, std::uintptr_t modifier) = 0;
+};
+// 00791360: ECX keyframe, stack cursor, RET 4.
+void movie_key_write_bits_00791360(const MovieKeyBits& k, NativeBitCursor* cursor, MovieKeyBitsHost& host);
+// 007A2370: ECX keyframe, stack cursor, RET 4; SEH. A parent that is already
+// being destroyed (+5Eh) is folded into the local point (+34h += its
+// position, float adds) and dropped (unregistered, +24h = 0). Unknown modifier
+// types return before the modifier step.
+void movie_key_read_bits_007a2370(MovieKeyBits& k, NativeBitCursor* cursor, MovieKeyBitsHost& host);
 
 // 0078E8E0: fastcall camera. 0042A910 (ECX camera), then +391h = 0 and the
 // field of view +410h = 0.6981317 (00CE7D20).
