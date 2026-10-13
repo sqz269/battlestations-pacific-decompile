@@ -75,9 +75,15 @@ struct PlaneActuatorBlock {
 };
 
 // 007DE3A0 BSP_PlaneActuatorBlock_Step, void __thiscall(this, float dt), RET 4.
-// Slot 3 of vtable 00D0862C. Steps +44h, +28h then +60h in that order, each
-// call guarded by `enabled == 0 || value == 1.0f`, then clears +11h at 007DE417
-// when all three moving bytes are down.
+// Slot 3 of vtable 00D0862C. The raw listing (007DE3A0-007DE41D): +44h steps on
+// every call (007DE3B1); +28h only when +44h is disabled or exactly 1.0f
+// (007DE3B6-007DE3D8, 00D7A24C); +60h only when +28h is disabled or exactly
+// 0.0f (007DE3DD-007DE400, 00D7A218); then +11h falls at 007DE417 when all
+// three moving bytes are down. kActuatorBlockStepOrderBound false keeps the
+// host's earlier order, which guarded each channel by its OWN enabled byte and
+// value == 1.0f, so an enabled channel below 1.0f never moved (the bay stalled
+// one step below 1.0f once it began to close). Packet cc9_actuator_step_order.
+inline constexpr bool kActuatorBlockStepOrderBound = true;  // ON: USN01 d, LOMP10, ESMP08 30000 gameplay identical
 void plane_actuator_block_step_007de3a0(PlaneActuatorBlock& block, float dt,
     unsigned frame);
 
