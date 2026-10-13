@@ -204,6 +204,15 @@ inline constexpr bool kCautiousWedgeBound = true;  // ON: docs/AI_CAUTIOUS_ROUTE
 // REGROUPINGMOVE call (00A12A48) belongs to that tick, which this host lacks.
 // False: not run, as before (the IDLE census record stays).
 inline constexpr bool kAiFormationShapeBound = false;
+// Packet cc13-fix2, docs/CC13_GPR_69.md 7.7: 00A126C0 BSP_AiCommand_RegroupingMove_Tick
+// (REGROUPINGMOVE vt+0Ch). With a population above 1 (00A126CA JBE) and a member
+// beyond AutoMerge_LeaveDist (+20Ch) of the leader, the point is
+// (dest + 3 * centroid) / 4; otherwise the +8h destination (00A127EA). Then
+// 00A02020 on the first member (00A12A33, no 009FE080 gate), 00A10DC0
+// (00A12A3A) and JMP 00A11070 (00A12A48). True: the tick runs through the cc13
+// model ai_regrouping_move_tick_00a126c0. False: REGROUPINGMOVE does nothing,
+// as before.
+inline constexpr bool kAiRegroupingMoveTickBound = false;
 
 // 00A14E54..00A1500D: the waypoint offset is leader->target turned by
 // 0042B490(00CE3C64 = pi/2), i.e. BSP_Matrix_BuildRotationY(-0.0 - pi/2), and

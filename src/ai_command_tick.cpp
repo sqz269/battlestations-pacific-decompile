@@ -1,5 +1,6 @@
 #include "bsp/ai_command_tick.hpp"
 #include "bsp/gameplay_seg69_70_cc13.hpp"
+#include <array>
 #include <cmath>
 #include <vector>
 
@@ -380,6 +381,33 @@ AiCommandTickResult ai_command_tick_vt000c(AiCommandTickHost& host,
         result.patrol_near = collect2 > d2;
         add(result, ai_command_follower_pass_00a10dc0(host, group));
         result.formation_shape_due = true;                         // 00A15665
+        return result;
+    }
+    case AiCommandType::RegroupingMove: {
+        if constexpr (kAiRegroupingMoveTickBound) {
+            // 00A126C0: the cc13 model ai_regrouping_move_tick_00a126c0 picks the
+            // point (the +8h destination, or (dest + 3 * centroid) / 4 with a
+            // follower beyond AutoMerge_LeaveDist), then 00A02020 on the first
+            // member (00A12A33), 00A10DC0 (00A12A3A) and JMP 00A11070 (00A12A48).
+            if (host.tick_group_population(group) == 0u) return result;
+            std::vector<std::array<float, 3>> members;
+            const std::size_t count = host.tick_member_count(group);
+            for (std::size_t i = 0; i < count; ++i) {
+                void* member = host.tick_member_at(group, i);
+                if (member == nullptr) continue;
+                std::array<float, 3> p{0.0f, 0.0f, 0.0f};
+                host.tick_member_position(member, p.data());
+                members.push_back(p);
+            }
+            static const float kOrigin00f87574[3] = {0.0f, 0.0f, 0.0f};
+            const gameplay_seg69_70_cc13::RegroupingMoveResult move =
+                gameplay_seg69_70_cc13::ai_regrouping_move_tick_00a126c0(members,
+                    command.target_position, host.tick_tuning_field(kAiTuningAutoMergeLeaveDist),
+                    kOrigin00f87574);
+            order_leader(host, group, move.point, result);
+            add(result, ai_command_follower_pass_00a10dc0(host, group));
+            result.formation_shape_due = true;
+        }
         return result;
     }
     case AiCommandType::Idle:
