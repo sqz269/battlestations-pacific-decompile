@@ -217,6 +217,12 @@ struct NativeSessionMessageE1Fields {
     std::uint8_t* small_20;  // two bits on the wire
     void* text_24;
 };
+// 0044CCE0, __fastcall(ECX = message), RET, under an EH frame: vtable
+// 00CE4B2C, the strings at +24h/+28h and +18h/+1Ch back to the pool, base
+// vtable 00CE4974.
+void session_message_e1_destruct_0044cce0(
+    std::uint32_t& vtable, const void* message,
+    const std::function<void(void* data, std::uint32_t bytes, std::int32_t count)>& pool_return_00bd1510);
 // 00449A70, __thiscall(message, NativeBitCursor*), RET 4.
 void write_session_message_e1_00449a70(const NativeSessionMessageE1Fields& m, NativeBitCursor* cursor,
                                        const char* empty_string_backing_00e17669);
@@ -382,8 +388,79 @@ float point_segment_distance_0046ff70(const std::array<float, 3>& p, const std::
 // d1/d2 tests of 0046FF70; false when d1 < 0 (AL only, the rest of EAX is not
 // cleared) or when d2 < 0 or d2 is NaN (JB after FCOMIP; XOR EAX), else true
 // (MOV EAX,1). A NaN d1 passes the first test.
+// 004702E0, __fastcall(ECX = axis, EDX = v, [ESP+4] = out), RET 4, all in
+// place: v = 0046FE80(v, axis); 0042B260 normalises axis, then v; out =
+// axis x v, each component one product difference rounded once
+// (y: v0*a2 - a0*v2, as the listing orders it).
+void orthonormal_frame_from_axis_004702e0(std::array<float, 3>& axis, std::array<float, 3>& v,
+                                          std::array<float, 3>& out, const GeometryLength& length);
+
 bool point_projects_onto_segment_00470150(const std::array<float, 3>& p, const std::array<float, 3>& a,
                                           const std::array<float, 3>& b, const GeometryLength& length);
+
+// ---------------------------------------------------------------------------
+// Packet cc13-sys4: segment-6 matrix helpers. Matrices are 16 row-major
+// floats; 00413920 is out = left * right (ECX = left, [ESP+4] = out,
+// [ESP+8] = right, RET 8).
+// ---------------------------------------------------------------------------
+using Matrix4 = std::array<float, 16>;
+using MatrixMultiply = std::function<Matrix4(const Matrix4& left, const Matrix4& right)>;
+
+// 0047C210, __thiscall(ECX = m, const Matrix4* right), RET 4, EAX = m: a
+// stack temporary = m * right (00413920), then 004134F0 copies it into m.
+void matrix_multiply_into_0047c210(Matrix4& m, const Matrix4& right, const MatrixMultiply& multiply_00413920);
+
+// 0047C240, __fastcall(ECX = out, EDX = const float t[3]), RET, EAX = out:
+// identity (1.0f from 00D7A24C) with the translation in +30h..+38h.
+void transform_init_translation_0047c240(Matrix4& out, const std::array<float, 3>& t);
+
+// 0047C2A0, __fastcall(ECX = out, EDX = const float angles[3]), RET, EAX =
+// out: Ry = 00B646E0(angles[0]), Rx = 00B64640(angles[1]), Rz =
+// 00B64780(angles[2]); tmp = Rz * Rx, out = tmp * Ry. The older ledger
+// note left the order unchecked.
+struct EulerRotationHost {
+    virtual ~EulerRotationHost() = default;
+    virtual Matrix4 rotation_y_00b646e0(const float& angle) = 0;
+    virtual Matrix4 rotation_x_00b64640(const float& angle) = 0;
+    virtual Matrix4 rotation_z_00b64780(const float& angle) = 0;
+    virtual Matrix4 multiply_00413920(const Matrix4& left, const Matrix4& right) = 0;
+};
+void matrix_build_from_euler_yxz_0047c2a0(Matrix4& out, const std::array<float, 3>& angles, EulerRotationHost& host);
+
+// ---------------------------------------------------------------------------
+// Packet cc13-sys4: segment-4 render settings and the system error box.
+// ---------------------------------------------------------------------------
+
+// 00452A50, __thiscall(ECX = settings, near, far), RET 8: +14h = near, +1Ch = far.
+void depth_of_field_set_range_00452a50(float& near_14, float& far_1c, float near_value, float far_value);
+
+// 00452B00, __thiscall(ECX = flare, float x), RET 4: +4 = +8 = |x|^k with k
+// at +1Ch, through FYL2X (k * log2|x|), FRNDINT, F2XM1, FLD1/FADDP, FSCALE,
+// stored float. x == 0 (UCOMISS, LAHF/TEST AH,44h/JNP) gives 0; a negative x
+// becomes -0.0f - x (00D7A208). The earlier note "2^(k*|x|)" missed the
+// FYL2X. The host evaluates exp2(k * log2|x|) in double; the image keeps
+// 64-bit extended precision until the float store.
+void lens_flare_pow_response_00452b00(float k_1c, float x, float& out_04, float& out_08);
+
+// 00452B80, __thiscall(ECX = flare, u8 on), RET 4: byte +0 = on; when off,
+// 00B0D020 (ECX = [00F8D39C]) with (0, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f) and
+// +4 = 1e-4f (00CE3C68).
+void lens_flare_set_enabled_00452b80(
+    std::uint8_t on, std::uint8_t& enabled_00, float& value_04,
+    const std::function<void(std::int32_t, float, float, float, float, float)>& set_lens_effect_00b0d020);
+
+// 004531F0, __fastcall(ECX = const char* context), RET:
+// FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM, null, GetLastError(), 0,
+// 00E18000, 3FFh, null), then MessageBoxA(null, 00439AC0("%s\n%s", context,
+// 00E18000), "System error", MB_ICONERROR (10h)). 00439AC0 formats into a static
+// buffer; its size limit is not modelled.
+struct SystemErrorBoxHost {
+    virtual ~SystemErrorBoxHost() = default;
+    virtual std::uint32_t get_last_error() = 0;
+    virtual std::string format_system_message(std::uint32_t error, std::uint32_t size) = 0;
+    virtual void message_box(const std::string& text, const char* caption, std::uint32_t type) = 0;
+};
+void show_last_system_error_box_004531f0(const char* context, SystemErrorBoxHost& host);
 
 // ---------------------------------------------------------------------------
 // Packet cc13-sys4: small segment-9 helpers.
@@ -541,12 +618,14 @@ struct PooledStringReleaseRow {
 // 004C67E0, 004C6800, 004C89E0 (+8/+0Ch narrow), 004C8260 (+8/+0Ch UTF-16),
 // 004C8DB0 (+0Ch/+10h narrow), 004CE690 (__stdcall(object), RET 4, +8/+0Ch
 // UTF-16), 004C5720 (+10h/+14h, +8/+0Ch, +0/+4, under an EH frame),
-// 004C6760 (+10h/+14h, +0/+4).
-extern const std::array<PooledStringReleaseRow, 8> kPooledStringReleases;
+// 004C6760 (+10h/+14h, +0/+4), and the byte-identical +0/+4 bodies 0044BA70,
+// 00468B30, 00468B50, 00471340, 00474780, 00477200.
+extern const std::array<PooledStringReleaseRow, 14> kPooledStringReleases;
 const PooledStringReleaseRow* find_pooled_string_release(std::uint32_t address);
 void release_pooled_strings(
     const PooledStringReleaseRow& row, const void* object,
     const std::function<void(void* data, std::uint32_t bytes, std::int32_t count)>& pool_return_00bd1510);
+
 
 // 004C7F80, __fastcall(ECX = record), RET, EAX = record: +0, +4, +8 = 0 and
 // the floats +0Ch, +10h = 0.0f.
@@ -570,6 +649,22 @@ struct NativeNarrowString {
     char* data{nullptr};
 };
 using NarrowStringResize = std::function<void(NativeNarrowString& string, std::uint32_t length, std::int32_t flag)>;
+
+// A narrow string key with a dword value at +8.
+struct NarrowStringPair {
+    NativeNarrowString key;
+    std::uint32_t value_08{0};
+};
+// 00469AB0, 0044C5D0, 004713B0, 004747F0, 00478A50 (byte-identical apart from
+// call displacements), __thiscall(ECX = dst, const NativeString* key, const
+// u32* value), RET 8, EAX = dst: key = {0, null} then the 0041DD40 (flag 1)
+// assignment, skipped for self and copied only when non-empty; +8 = *value.
+// 0044C6E0, __thiscall(ECX = dst, const pair* src), RET 4: the same with the
+// value taken from src+8.
+NarrowStringPair& narrow_string_pair_construct(NarrowStringPair& dst, const NativeNarrowString& key,
+                                               std::uint32_t value, const NarrowStringResize& resize_0041dd40);
+NarrowStringPair& narrow_string_pair_copy_construct_0044c6e0(NarrowStringPair& dst, const NarrowStringPair& src,
+                                                             const NarrowStringResize& resize_0041dd40);
 
 // 004C8900, __fastcall(ECX = game), RET: 004BF930 (destroy every scene
 // record), game+5FCh = 0, and the string at game+600h is resized to 0 (flag
@@ -614,12 +709,13 @@ NamedEntry16& named_entry_construct_004c95d0(NamedEntry16& entry, std::uint32_t 
                                              const NarrowStringResize& resize_0041dd40);
 
 // 004C9420, __thiscall(ECX = record, u8 flags), RET 4, EAX = record: the
-// narrow string at +0/+4 back to the pool, then 0043B0A0 (14h-byte node pool
+// narrow string at +0/+4 back to the pool, then 0043B0A0 (ECX = node pool:
+// 00E175E8 here, 00E18514 for the body-identical 00469B20; 14h-byte node pool
 // return) when flags & 1.
 void named_record_scalar_deleting_destructor_004c9420(
     void* record, std::uint8_t flags,
     const std::function<void(void* data, std::uint32_t bytes, std::int32_t count)>& pool_return_00bd1510,
-    const std::function<void(void* record)>& node_pool_return_0043b0a0);
+    std::uint32_t node_pool, const std::function<void(std::uint32_t pool, void* record)>& node_pool_return_0043b0a0);
 
 // 004C9680, __cdecl(void), RET: a local empty string (0041DD40 to length 0,
 // flag 1, then length+1 bytes from 00CE3A0C), 00518D60 with ECX = EDX = -1
@@ -650,7 +746,8 @@ void game_show_high_latency_warning_004ca120(std::int32_t state_5d4, void* clien
 // 004CAF10, __fastcall(ECX = vector {data, count}), RET: when count != 0 the
 // last 8-byte string's block goes back to the pool and the count drops by 1.
 // 004CC8E0, __fastcall(ECX = slot), RET: when the slot holds a string, its
-// block goes back to the pool, the 14h-byte node back to 0043B0A0, slot = 0.
+// block goes back to the pool, the 14h-byte node back to 0043B0A0 (ECX =
+// 00E175E8; 00E18514 for the body-identical 0046A0C0), slot = 0.
 // Same body as 0046A0C0.
 void native_string_vector_pop_back_004caf10(
     NativeNarrowString* data, std::uint32_t& count,
@@ -785,6 +882,6 @@ void reference_pointer_range_release_forward_004cf590(
 void native_string_pointer_delete_004cc8e0(
     NativeNarrowString*& slot,
     const std::function<void(void* data, std::uint32_t bytes, std::int32_t count)>& pool_return_00bd1510,
-    const std::function<void(void* node)>& node_pool_return_0043b0a0);
+    std::uint32_t node_pool, const std::function<void(std::uint32_t pool, void* node)>& node_pool_return_0043b0a0);
 
 } // namespace bsp::cc13_sys

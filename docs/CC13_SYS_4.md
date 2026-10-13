@@ -13,6 +13,7 @@ game-validated; the hosts take field values and callbacks where the image works 
 | x87 geometry `0046F550..00470150` (7) | yes | yes | yes | no |
 | `004656D0` particle-effect movie action run | yes | yes | yes | no |
 | Segment-9 helpers (20 + 35) | yes | yes | yes | no |
+| Segment-4/6 helpers, matrices, `004702E0` (23) | yes | yes | yes | no |
 
 ## Singleton getters
 
@@ -118,8 +119,29 @@ unsigned `JA`), `004BDF50` (apply pending size through vtable `+10h`), `004BEA10
 - Containers: `004CAF10`, `004CC8E0`, `004CDE20` (string deque pop), `004CE460`,
   `004CEC20`/`004CEC40` (resize to zero, then free), `004CF590` (forward to `004CC760`), `004C7F80`.
 
+## Segments 4 and 6, third batch (23)
+
+- `004702E0` closes the x87 cluster: `v = 0046FE80(v, axis)`, `0042B260` normalises the axis and then
+  `v`, and `out = axis x v` with each component one product difference rounded once.
+- Matrices (row-major, `00413920` is `out = left * right`): `0047C210` multiplies in place,
+  `0047C240` builds an identity with a translation, and `0047C2A0` computes `out = (Rz * Rx) * Ry`.
+  The order is now read from the listing, where the older note had left it unchecked.
+- `00452B00` (renamed `BSP_LensFlare_PowResponse`) stores `|x|^k` with `k` at `+1Ch`. The body is
+  `FYL2X`, `FRNDINT`, `F2XM1`, `FSCALE`, and it stores 0 for `x == 0`. The earlier "2^(k*|x|)"
+  reading missed the `FYL2X`. `00452A50` sets the depth-of-field range. `00452B80` enables the
+  lens effect; when it turns the effect off it calls `00B0D020(0, 0,0,0,0, 1.0f)` and stores
+  `+4 = 1e-4f`. `004531F0` shows the last Win32 error in a MessageBox (`FormatMessageA` into
+  `00E18000`, size 3FFh, `"%s\n%s"` through the static 400h formatter).
+- Six more byte-identical `+0/+4` string releases join `kPooledStringReleases`. `00469B20` and
+  `0046A0C0` are the `004C9420`/`004CC8E0` bodies, but they return the node to the pool at
+  `00E18514` instead of `00E175E8`, because `0043B0A0` takes the pool in ECX.
+- The key/value pair constructors `00469AB0`, `0044C5D0`, `004713B0`, `004747F0` and `00478A50`
+  are identical apart from their call displacements. `0044C6E0` is the copy variant (RET 4).
+  `0044CCE0` is the E1 message destructor (the constructor `0044C970` builds through stream
+  objects and is still open).
+
 ## Evidence method
 
 Live `bsp.py ghidra decompile`, `disasm-raw` for every listed body, constants from the PE
 (`local/sys4_consts.py`). Call-site rows: `reports/cc13_sys4_calls.json`
-(`tools/verify_report_calls.py`: 59 rows, 0 failed).
+(`tools/verify_report_calls.py`: 74 rows, 0 failed).

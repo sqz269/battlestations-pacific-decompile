@@ -1,9 +1,11 @@
 #include "bsp/engine_seg4_6_9_cc13.hpp"
 
+#include <cmath>
 #include <cstdio>
 #include <cstring>
 #include <stdexcept>
 
+#include "bsp/camera_decomposition.hpp"
 #include "bsp/gamepad_force_events.hpp"
 #include "bsp/native_bit_cursor_owned_string.hpp"
 #include "bsp/native_bit_cursor_read.hpp"
@@ -349,10 +351,10 @@ F3 project_onto_plane_0046f7b0(const F3& point, const F3& plane_point, const F3&
 float closest_points_between_lines_0046f940(const F3& p1, const F3& u, const F3& p3, const F3& v, F3* out_a,
                                             F3* out_b) {
     F3 a{}, b{};
-    float distance = 0.0f;
+    float separation = 0.0f;
     if (dot3(u, v) == 1.0f) {                              // 0046F943..0046F983
         a = p1;                                            // 0046FBE8..0046FC1F
-        b = closest_point_on_line_0046f550(p1, p3, v, distance); // 0046FC25
+        b = closest_point_on_line_0046f550(p1, p3, v, separation); // 0046FC25
     } else {
         const float uu = dot3(u, u);                       // 0046F9BB
         const float uv = dot3(u, v);                       // 0046F9CD
@@ -367,11 +369,11 @@ float closest_points_between_lines_0046f940(const F3& p1, const F3& u, const F3&
         const float t = f32(-((uw - static_cast<double>(s) * uv) / uu)); // 0046FAD8..0046FAF1
         a = add3(p1, scale3(u, t));                        // 0046FAF5..0046FB51
         b = add3(p3, scale3(v, s));                        // 0046FB55..0046FBAF
-        distance = force_event_vector_length_0042b2f0(sub3(a, b)); // 0046FBB3..0046FBD6
+        separation = force_event_vector_length_0042b2f0(sub3(a, b)); // 0046FBB3..0046FBD6
     }
     if (out_a != nullptr) *out_a = a;                      // 0046FC38..0046FC5B
     if (out_b != nullptr) *out_b = b;                      // 0046FC60..0046FC75
-    return distance;
+    return separation;
 }
 
 F3 reject_from_axis_0046fe80(const F3& v, const F3& axis, const GeometryLength& length) {
@@ -379,6 +381,18 @@ F3 reject_from_axis_0046fe80(const F3& v, const F3& axis, const GeometryLength& 
     const F3 n = scale3(axis, inv);                        // 0046FEBA..0046FED8
     const float d = dot3(v, n);                            // 0046FEDC..0046FF1F
     return sub3(v, scale3(n, d));                          // 0046FF23..0046FF60
+}
+
+void orthonormal_frame_from_axis_004702e0(F3& axis, F3& v, F3& out, const GeometryLength& length) {
+    v = reject_from_axis_0046fe80(v, axis, length);                               // 004702EE..00470302
+    normalize_camera_basis_0042b260(axis);                                        // 00470305
+    normalize_camera_basis_0042b260(v);                                           // 0047030C
+    auto diff = [](float p, float q, float r, float s) {
+        return f32(static_cast<double>(p) * q - static_cast<double>(r) * s);
+    };
+    out[0] = diff(axis[1], v[2], axis[2], v[1]);                                  // 00470311..00470323
+    out[1] = diff(v[0], axis[2], axis[0], v[2]);                                  // 00470325..00470331
+    out[2] = diff(axis[0], v[1], axis[1], v[0]);                                  // 00470334..00470342
 }
 
 namespace {
@@ -413,6 +427,67 @@ bool point_projects_onto_segment_00470150(const F3& p, const F3& a, const F3& b,
     const SegmentDots s = segment_dots(p, a, b, length);
     if (s.d1 < 0.0f) return false;                         // 00470261 FCOMI; JBE
     return !(s.d2 < 0.0f || s.d2 != s.d2);                 // 004702BB FCOMIP; JB (unordered sets CF)
+}
+
+// ---------------------------------------------------------------------------
+// Packet cc13-sys4: segment-6 matrix helpers.
+// ---------------------------------------------------------------------------
+
+void matrix_multiply_into_0047c210(Matrix4& m, const Matrix4& right, const MatrixMultiply& multiply_00413920) {
+    const Matrix4 product = multiply_00413920(m, right);                          // 0047C222
+    m = product;                                                                  // 0047C22A 004134F0
+}
+
+void transform_init_translation_0047c240(Matrix4& out, const std::array<float, 3>& t) {
+    out = Matrix4{};
+    out[0] = out[5] = out[10] = out[15] = 1.0f;
+    out[12] = t[0];                                                               // 0047C24F
+    out[13] = t[1];                                                               // 0047C25E
+    out[14] = t[2];                                                               // 0047C26E
+}
+
+void matrix_build_from_euler_yxz_0047c2a0(Matrix4& out, const std::array<float, 3>& angles, EulerRotationHost& host) {
+    const Matrix4 ry = host.rotation_y_00b646e0(angles[0]);                       // 0047C2B3
+    const Matrix4 rx = host.rotation_x_00b64640(angles[1]);                       // 0047C2C1
+    const Matrix4 rz = host.rotation_z_00b64780(angles[2]);                       // 0047C2D6
+    const Matrix4 zx = host.multiply_00413920(rz, rx);                            // 0047C2DD
+    out = host.multiply_00413920(zx, ry);                                         // 0047C2E4
+}
+
+// ---------------------------------------------------------------------------
+// Packet cc13-sys4: segment-4 render settings and the system error box.
+// ---------------------------------------------------------------------------
+
+void depth_of_field_set_range_00452a50(float& near_14, float& far_1c, float near_value, float far_value) {
+    near_14 = near_value;
+    far_1c = far_value;
+}
+
+void lens_flare_pow_response_00452b00(float k_1c, float x, float& out_04, float& out_08) {
+    float result = 0.0f;
+    if (!(x == 0.0f)) {                                                           // 00452B17..00452B24
+        float magnitude = x;
+        if (0.0f > x) magnitude = -0.0f - x;                                      // 00452B26..00452B37
+        result = static_cast<float>(std::exp2(static_cast<double>(k_1c) * std::log2(static_cast<double>(magnitude))));
+    }
+    out_04 = result;                                                              // 00452B61
+    out_08 = result;
+}
+
+void lens_flare_set_enabled_00452b80(
+    std::uint8_t on, std::uint8_t& enabled_00, float& value_04,
+    const std::function<void(std::int32_t, float, float, float, float, float)>& set_lens_effect_00b0d020) {
+    enabled_00 = on;
+    if (on != 0) return;
+    set_lens_effect_00b0d020(0, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f);                    // 00452BAF
+    value_04 = 9.999999747378752e-05f;                                            // 00CE3C68
+}
+
+void show_last_system_error_box_004531f0(const char* context, SystemErrorBoxHost& host) {
+    const std::string message = host.format_system_message(host.get_last_error(), 0x3FF); // 00453201..0045320F
+    const std::string text = std::string(context) + "\n" + message;               // 00453227 "%s\n%s"
+    if (text.size() >= 0x400) throw std::length_error("error text does not fit 00E177E8");
+    host.message_box(text, "System error", 0x10);                                 // 00453232
 }
 
 // ---------------------------------------------------------------------------
@@ -552,7 +627,7 @@ bool session_message_e4_is_id_004c5f40(std::uint32_t id) {
 
 // Offsets from each body's MOV reg,[ECX+data] / MOV reg,[ECX+length] and the
 // ADD 1 / LEA [len+len+2] before the pool call.
-const std::array<PooledStringReleaseRow, 8> kPooledStringReleases{{
+const std::array<PooledStringReleaseRow, 14> kPooledStringReleases{{
     {0x004C67E0, "__fastcall(ECX object), RET", {{{0x08, 0x0C, 1}}}, 1},
     {0x004C6800, "__fastcall(ECX object), RET", {{{0x08, 0x0C, 1}}}, 1},
     {0x004C89E0, "__fastcall(ECX object), RET", {{{0x08, 0x0C, 1}}}, 1},
@@ -561,6 +636,12 @@ const std::array<PooledStringReleaseRow, 8> kPooledStringReleases{{
     {0x004CE690, "__stdcall(object), RET 4", {{{0x08, 0x0C, 2}}}, 1},
     {0x004C5720, "__fastcall(ECX record), RET", {{{0x10, 0x14, 1}, {0x08, 0x0C, 1}, {0x00, 0x04, 1}}}, 3},
     {0x004C6760, "__fastcall(ECX record), RET", {{{0x10, 0x14, 1}, {0x00, 0x04, 1}}}, 2},
+    {0x0044BA70, "__fastcall(ECX string), RET", {{{0x00, 0x04, 1}}}, 1},
+    {0x00468B30, "__fastcall(ECX string), RET", {{{0x00, 0x04, 1}}}, 1},
+    {0x00468B50, "__fastcall(ECX string), RET", {{{0x00, 0x04, 1}}}, 1},
+    {0x00471340, "__fastcall(ECX string), RET", {{{0x00, 0x04, 1}}}, 1},
+    {0x00474780, "__fastcall(ECX string), RET", {{{0x00, 0x04, 1}}}, 1},
+    {0x00477200, "__fastcall(ECX string), RET", {{{0x00, 0x04, 1}}}, 1},
 }};
 
 const PooledStringReleaseRow* find_pooled_string_release(std::uint32_t address) {
@@ -643,11 +724,11 @@ NamedEntry16& named_entry_construct_004c95d0(NamedEntry16& entry, std::uint32_t 
 
 void named_record_scalar_deleting_destructor_004c9420(
     void* record, std::uint8_t flags, const std::function<void(void*, std::uint32_t, std::int32_t)>& pool_return_00bd1510,
-    const std::function<void(void*)>& node_pool_return_0043b0a0) {
+    std::uint32_t node_pool, const std::function<void(std::uint32_t, void*)>& node_pool_return_0043b0a0) {
     static constexpr PooledStringReleaseRow kRow{0x004C9420, "__thiscall(ECX record, flags), RET 4",
                                                  {{{0x00, 0x04, 1}}}, 1};
     release_pooled_strings(kRow, record, pool_return_00bd1510);
-    if ((flags & 1) != 0) node_pool_return_0043b0a0(record);
+    if ((flags & 1) != 0) node_pool_return_0043b0a0(node_pool, record);
 }
 
 void front_end_frame_select_default_004c9680(FrontEndFrameSelectHost& host) {
@@ -680,11 +761,11 @@ void native_string_vector_pop_back_004caf10(
 
 void native_string_pointer_delete_004cc8e0(
     NativeNarrowString*& slot, const std::function<void(void*, std::uint32_t, std::int32_t)>& pool_return_00bd1510,
-    const std::function<void(void*)>& node_pool_return_0043b0a0) {
+    std::uint32_t node_pool, const std::function<void(std::uint32_t, void*)>& node_pool_return_0043b0a0) {
     NativeNarrowString* string = slot;
     if (string == nullptr) return;
     if (string->data != nullptr) pool_return_00bd1510(string->data, string->length + 1, 1);
-    node_pool_return_0043b0a0(string);
+    node_pool_return_0043b0a0(node_pool, string);
     slot = nullptr;
 }
 
@@ -845,6 +926,32 @@ void named_vector_record_destruct_004cc650(
 void reference_pointer_range_release_forward_004cf590(void* first, void* last,
                                                       const std::function<void(void*, void*)>& release_004cc760) {
     release_004cc760(first, last);
+}
+
+NarrowStringPair& narrow_string_pair_construct(NarrowStringPair& dst, const NativeNarrowString& key,
+                                               std::uint32_t value, const NarrowStringResize& resize_0041dd40) {
+    dst.key = NativeNarrowString{};                                               // 00469AB8..00469ABF
+    if (&dst.key != &key) {
+        resize_0041dd40(dst.key, key.length, 1);                                  // 00469AC9
+        if (key.length != 0) std::memcpy(dst.key.data, key.data, dst.key.length); // 00469ADE
+    }
+    dst.value_08 = value;                                                         // 00469AF2
+    return dst;
+}
+
+NarrowStringPair& narrow_string_pair_copy_construct_0044c6e0(NarrowStringPair& dst, const NarrowStringPair& src,
+                                                             const NarrowStringResize& resize_0041dd40) {
+    return narrow_string_pair_construct(dst, src.key, src.value_08, resize_0041dd40); // 0044C71B
+}
+
+void session_message_e1_destruct_0044cce0(
+    std::uint32_t& vtable, const void* message,
+    const std::function<void(void*, std::uint32_t, std::int32_t)>& pool_return_00bd1510) {
+    vtable = 0x00CE4B2C;                                                          // 0044CCFD
+    static constexpr PooledStringReleaseRow kRow{
+        0x0044CCE0, "__fastcall(ECX message), RET", {{{0x24, 0x28, 1}, {0x18, 0x1C, 1}}}, 2};
+    release_pooled_strings(kRow, message, pool_return_00bd1510);                  // 0044CD03..0044CD45
+    vtable = 0x00CE4974;                                                          // 0044CD4E
 }
 
 void record14_clear_004c7f80(Record14& record) {
