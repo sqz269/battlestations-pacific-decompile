@@ -217,6 +217,12 @@ struct NativeSessionMessageE1Fields {
     std::uint8_t* small_20;  // two bits on the wire
     void* text_24;
 };
+// 0044CCE0, __fastcall(ECX = message), RET, under an EH frame: vtable
+// 00CE4B2C, the strings at +24h/+28h and +18h/+1Ch back to the pool, base
+// vtable 00CE4974.
+void session_message_e1_destruct_0044cce0(
+    std::uint32_t& vtable, const void* message,
+    const std::function<void(void* data, std::uint32_t bytes, std::int32_t count)>& pool_return_00bd1510);
 // 00449A70, __thiscall(message, NativeBitCursor*), RET 4.
 void write_session_message_e1_00449a70(const NativeSessionMessageE1Fields& m, NativeBitCursor* cursor,
                                        const char* empty_string_backing_00e17669);
@@ -224,5 +230,792 @@ void write_session_message_e1_00449a70(const NativeSessionMessageE1Fields& m, Na
 // stream+4.
 void read_session_message_e1_00449ab0(const NativeSessionMessageE1Fields& m, NativeBitCursor* stream_cursor_04,
                                       NativeStringRawPoolContext& pool);
+
+// ---------------------------------------------------------------------------
+// Packet cc13-sys4: the lazy singleton getters of segments 6 and 9.
+// ---------------------------------------------------------------------------
+
+// Every getter is __cdecl(void), plain RET, EAX = the cached global. Shape
+// (00472200 listing 0047225A..004722BC): test the global; on null take the
+// lifetime manager's lock (00415350, critical section at +10h, depth at +18h),
+// test again, operator new (00BF681B), on success construct (a __thiscall
+// constructor returning `this`, or inline vtable stores), on failure store 0,
+// publish, then register (00BD0C30, ECX = manager) the global plus
+// `registered_offset`, or null when the allocation failed. The register call
+// is made even with a null pointer. Unlock, return the global.
+struct LazySingletonGetterRow {
+    std::uint32_t getter;
+    std::uint32_t global;
+    std::uint32_t allocation_size;
+    std::uint32_t constructor;       // 0: the inline vtable stores below
+    std::uint32_t registered_offset; // lifetime sub-object
+    // Inline construction only: [+4] = base vtable, [+0] = primary, then [+4] = lifetime vtable.
+    std::uint32_t base_vtable_04;
+    std::uint32_t primary_vtable_00;
+    std::uint32_t lifetime_vtable_04;
+};
+extern const std::array<LazySingletonGetterRow, 13> kLazySingletonGetters;
+const LazySingletonGetterRow* find_lazy_singleton_getter(std::uint32_t getter);
+
+struct LazySingletonHost {
+    virtual ~LazySingletonHost() = default;
+    virtual void lock() = 0;                                        // 00415350, EnterCriticalSection, depth++
+    virtual void unlock() = 0;                                      // depth--, LeaveCriticalSection
+    virtual void* operator_new(std::uint32_t size) = 0;             // 00BF681B
+    virtual void* construct(std::uint32_t constructor, void* memory) = 0; // ECX = memory, EAX = this
+    virtual void register_lifetime(void* subobject) = 0;            // 00BD0C30
+};
+// The shared body. The host stores the inline vtables into the allocation.
+void* lazy_singleton_get(const LazySingletonGetterRow& row, void*& global, LazySingletonHost& host);
+
+// 004C0E40 (00F87440) and 004C0EF0 (00F8753C), __cdecl(void), RET: the
+// matching teardown (same template as 007361A0). When the global is set: lock, test again,
+// unregister of the global (00BCFCA0, ECX = manager),
+// the deleting destructor (vtable slot 0 with 1) when still non-null, clear
+// the global, unlock.
+struct LazySingletonDestroyHost {
+    virtual ~LazySingletonDestroyHost() = default;
+    virtual void lock() = 0;
+    virtual void unlock() = 0;
+    virtual void unregister_lifetime(void* object) = 0;
+    virtual void delete_object(void* object) = 0; // (*vtable[0])(1)
+};
+void lazy_singleton_destroy(void*& global, LazySingletonDestroyHost& host);
+
+// ---------------------------------------------------------------------------
+// Packet cc13-sys4: 004656D0, aParticleEffect run (vtable 00CE5558 slot 0),
+// __thiscall(ECX = action, [ESP+4] = entity), RET 4.
+// ---------------------------------------------------------------------------
+// The effect's children update 00867790 dispatches into effect code that can
+// draw random numbers; in the image those draws share stream 0 of 00BD2F10
+// with gameplay. RNG RULE: a host wiring this run in must route them to a
+// presentation stream or keep the run behind an OFF switch.
+struct MovieParticleEffectRunHost {
+    virtual ~MovieParticleEffectRunHost() = default;
+    // entity vtable +18h, ECX = entity; skipped (parent 0) for a null entity.
+    virtual void* entity_parent(void* entity) = 0;
+    // byte entity+C8h; read even when the entity is null (the image faults).
+    virtual bool entity_world_pose_current(void* entity) = 0;
+    virtual void refresh_world_pose_00414db0(void* entity) = 0;
+    // 00871BA0, ECX = the handle argument slot of 008687C0, EDX = name
+    // (action+2Ch), [ESP+4] = 1.
+    virtual void* acquire_effect_handle_00871ba0(const void* name_at_2c, std::int32_t flag) = 0;
+    // 008687C0, ECX = result smart pointer, EDX = parent; stack: the handle
+    // (consumed), the matrix, 1, 0, 0. Returns the effect (*result).
+    virtual void* create_point_effect_008687c0(void* parent, void* handle, const std::array<float, 16>& matrix,
+                                               std::uint32_t transform_word, std::uint32_t option_word,
+                                               std::uint32_t tail_word) = 0;
+    // The result smart pointer's release: InterlockedDecrement(+4), slot 0
+    // when it reaches zero. The raw effect pointer is kept regardless.
+    virtual void release_result_reference(void* effect) = 0;
+    virtual void clear_effect_byte_09(void* effect) = 0;
+    // 00867790, ECX = effect, [ESP+4] = float step, [ESP+8] = [[00E188A8]+19FCh].
+    virtual void update_children_00867790(void* effect, float step) = 0;
+};
+// Identity 4x4 (1.0f from 00D7A24C), transform word 1. When StartTime
+// (action+20h) > 0.0f (00D7A218): step = remaining when remaining <= 0.2
+// (double 00CE3D10; NaN too), else 0.2f (00CE54A0); remaining = f(remaining
+// - 0.2) (DC E9, ST1 - ST0); repeat while remaining > 0. The effect is stored
+// at action+44h. (The older ledger note says 0.1f; the constants are 0.2.)
+void movie_particle_effect_run_004656d0(void* entity, float start_time_at_20, const void* name_at_2c,
+                                        void*& effect_at_44, MovieParticleEffectRunHost& host);
+
+// ---------------------------------------------------------------------------
+// Packet cc13-sys4: the x87 geometry cluster 0046F550..004702E0 (with 0046FDD0
+// above). Traced from the disk bytes (capstone). Every named intermediate is
+// stored to a float slot and reloaded; the sums between those stores stay on
+// the x87 stack, which the hosts evaluate in double (53-bit precision control,
+// as for 0046FDD0). Float*float products are exact in double. `length` is
+// 00419440 (ECX = vector, ST0 = length).
+// ---------------------------------------------------------------------------
+using GeometryLength = std::function<float(const std::array<float, 3>&)>;
+
+// 0046F550, __fastcall(ECX = out, EDX = point, [ESP+4] = line_point,
+// [ESP+8] = dir, [ESP+0Ch] = float* distance), RET 0Ch, EAX = out. dir is
+// used as given (a unit direction is assumed, not checked). w = f(point -
+// line_point); t = f((dir0*w0 + dir1*w1) + dir2*w2); out = f(line_point +
+// f(dir * t)); *distance = 0042B2F0(f(point - out)) (sqrt when the float sum
+// of squares is above 1e-10, else 0).
+std::array<float, 3> closest_point_on_line_0046f550(const std::array<float, 3>& point,
+                                                    const std::array<float, 3>& line_point,
+                                                    const std::array<float, 3>& dir, float& distance);
+
+// 0046F6D0, __fastcall(ECX = point, EDX = origin, [ESP+4] = dir), RET 4,
+// ST0 = float: the length of the projection of (point - origin) on dir,
+// computed as the 0042B2F0-style length of f(dir * t) (t as in 0046F550).
+float distance_along_axis_0046f6d0(const std::array<float, 3>& point, const std::array<float, 3>& origin,
+                                   const std::array<float, 3>& dir);
+
+// 0046F7B0 (the ledger's "ClosestPointOnSegment" is wrong), same ABI as
+// 0046F550: out = f(point - f(normal * t)), t = dot(f(point - plane_point),
+// normal): the projection of point onto the plane through plane_point with
+// unit normal `normal`. *distance = 0042B2F0(f(out - plane_point)), the
+// in-plane distance from plane_point.
+std::array<float, 3> project_onto_plane_0046f7b0(const std::array<float, 3>& point,
+                                                 const std::array<float, 3>& plane_point,
+                                                 const std::array<float, 3>& normal, float& distance);
+
+// 0046F940 (the ledger's "SegmentPlaneIntersect" is wrong), __fastcall(ECX =
+// p1, EDX = u, [ESP+4] = p3, [ESP+8..10h] = v by value, [ESP+14h] = out_a or
+// null, [ESP+18h] = out_b or null), RET 18h, ST0 = float distance. Closest
+// points of the lines p1 + t*u and p3 + s*v. When f(dot(u, v)) == 1.0 exactly
+// (FUCOMIP, LAHF/TEST AH,44h/JNP; NaN takes the general path) a = p1 and b =
+// 0046F550(p1, p3, v) with its distance. Otherwise uu, uv, vv, uw, vw (w =
+// f(p1 - p3)) are float dots, s = f((vw*uu - uw*uv) / (vv*uu - uv*uv)) with
+// numerator and denominator kept on the stack, t = f(-((uw - s*uv) / uu)),
+// a = f(p1 + f(u*t)), b = f(p3 + f(v*s)), distance = 0042B2F0(f(a - b)).
+// Anti-parallel unit directions (dot -1) divide by zero.
+float closest_points_between_lines_0046f940(const std::array<float, 3>& p1, const std::array<float, 3>& u,
+                                            const std::array<float, 3>& p3, const std::array<float, 3>& v,
+                                            std::array<float, 3>* out_a, std::array<float, 3>* out_b);
+
+// 0046FE80, __fastcall(ECX = out, EDX = v, [ESP+4] = axis), RET 4, EAX = out:
+// the 0046FDD0 projection subtracted from v. n and d as in 0046FDD0; out =
+// f(v - f(n * d)).
+std::array<float, 3> reject_from_axis_0046fe80(const std::array<float, 3>& v, const std::array<float, 3>& axis,
+                                               const GeometryLength& length);
+
+// 0046FF70 (the ledger's "DirectionAndLength" is a hypothesis this replaces),
+// __fastcall(ECX = p, EDX = a, [ESP+4] = b), RET 4, ST0 = float: distance from
+// p to the segment [a, b]. n = f(f(b - a) * inv), inv = f(1/length) when
+// length > 0 else 0. d1 = f(dot(f(p - a), n)): d1 < 0 gives 0042B2F0(p - a).
+// d2 = f(dot(f(b - p), n)): d2 < 0 gives 0042B2F0(b - p). Otherwise
+// 0042B2F0(f(f(p - a) - f(n * d1))). NaN dots fall through (FCOMI/JBE).
+float point_segment_distance_0046ff70(const std::array<float, 3>& p, const std::array<float, 3>& a,
+                                      const std::array<float, 3>& b, const GeometryLength& length);
+
+// 00470150 (ledger "DirectionAndLengthChecked"), same ABI, AL = bool: the
+// d1/d2 tests of 0046FF70; false when d1 < 0 (AL only, the rest of EAX is not
+// cleared) or when d2 < 0 or d2 is NaN (JB after FCOMIP; XOR EAX), else true
+// (MOV EAX,1). A NaN d1 passes the first test.
+// 004702E0, __fastcall(ECX = axis, EDX = v, [ESP+4] = out), RET 4, all in
+// place: v = 0046FE80(v, axis); 0042B260 normalises axis, then v; out =
+// axis x v, each component one product difference rounded once
+// (y: v0*a2 - a0*v2, as the listing orders it).
+void orthonormal_frame_from_axis_004702e0(std::array<float, 3>& axis, std::array<float, 3>& v,
+                                          std::array<float, 3>& out, const GeometryLength& length);
+
+bool point_projects_onto_segment_00470150(const std::array<float, 3>& p, const std::array<float, 3>& a,
+                                          const std::array<float, 3>& b, const GeometryLength& length);
+
+// ---------------------------------------------------------------------------
+// Packet cc13-sys4: segment-6 matrix helpers. Matrices are 16 row-major
+// floats; 00413920 is out = left * right (ECX = left, [ESP+4] = out,
+// [ESP+8] = right, RET 8).
+// ---------------------------------------------------------------------------
+using Matrix4 = std::array<float, 16>;
+using MatrixMultiply = std::function<Matrix4(const Matrix4& left, const Matrix4& right)>;
+
+// 0047C210, __thiscall(ECX = m, const Matrix4* right), RET 4, EAX = m: a
+// stack temporary = m * right (00413920), then 004134F0 copies it into m.
+void matrix_multiply_into_0047c210(Matrix4& m, const Matrix4& right, const MatrixMultiply& multiply_00413920);
+
+// 0047C240, __fastcall(ECX = out, EDX = const float t[3]), RET, EAX = out:
+// identity (1.0f from 00D7A24C) with the translation in +30h..+38h.
+void transform_init_translation_0047c240(Matrix4& out, const std::array<float, 3>& t);
+
+// 0047C2A0, __fastcall(ECX = out, EDX = const float angles[3]), RET, EAX =
+// out: Ry = 00B646E0(angles[0]), Rx = 00B64640(angles[1]), Rz =
+// 00B64780(angles[2]); tmp = Rz * Rx, out = tmp * Ry. The older ledger
+// note left the order unchecked.
+struct EulerRotationHost {
+    virtual ~EulerRotationHost() = default;
+    virtual Matrix4 rotation_y_00b646e0(const float& angle) = 0;
+    virtual Matrix4 rotation_x_00b64640(const float& angle) = 0;
+    virtual Matrix4 rotation_z_00b64780(const float& angle) = 0;
+    virtual Matrix4 multiply_00413920(const Matrix4& left, const Matrix4& right) = 0;
+};
+void matrix_build_from_euler_yxz_0047c2a0(Matrix4& out, const std::array<float, 3>& angles, EulerRotationHost& host);
+
+// 00470B80, __fastcall(ECX = size), RET, EAX = block: operator new
+// (00BF55BE) then memset(block, 0, size) (00BF79F0) with no null test.
+void* memory_alloc_zeroed_00470b80(std::uint32_t size, const std::function<void*(std::uint32_t)>& operator_new_00bf55be);
+
+// 00470BA0, __thiscall(ECX unused, float out[3]), RET 4: out = the three
+// floats at 00F87574/78/7C (a static vector).
+void class_entity37_velocity_00470ba0(std::array<float, 3>& out, const std::array<float, 3>& static_00f87574);
+
+// 00472530 and 00473E30: a bare JMP 0048DBD0 (the shared SEntity init base).
+// 00472540, __thiscall(ECX = object, arg), RET 4: CALL [vtable+0D8h] with
+// ECX = object and the stack as it is (the callee sees the caller's return
+// address where an argument would be), then RET 4. Modelled as the slot
+// called with no arguments; `arg` is not forwarded.
+void scene_object_forward_slot_d8_00472540(void* object, const std::function<void(void*)>& vslot_d8);
+
+// 0047BEC0 (body-identical to 004B7EF0 and 0042BCA0), __fastcall(ECX =
+// link), RET, under an EH frame: vtable 00CE6430; when +14h is set, 006952A0
+// (ECX = subject, EDX = link); then 00695870 (ECX = link).
+struct ObserverSlotFields;
+void observer_link_destroy_base_0047bec0(ObserverSlotFields& link,
+                                         const std::function<void(void* subject, void* observer)>& unregister_006952a0,
+                                         const std::function<void(void* link)>& destroy_callback_owner_00695870);
+
+// 00475E60, __thiscall(ECX = node, u32 mask), RET 4: node+48h |= mask, then
+// the same on every child (first child +34h, next sibling +3Ch), depth first.
+void node_or_flags_recursive_00475e60(void* node, std::uint32_t mask);
+
+// Intrusive list nodes {prev +0, next +4, payload ...} freed with _free.
+struct RawListNode {
+    RawListNode* prev;
+    RawListNode* next;
+};
+// 00467B50 (body-identical to 004837D0 and 00928030), __thiscall(ECX = list
+// {count, head}, node), RET 4, EAX = the next node or 0: unlink (head = next
+// when there is no prev), count--, _free. No tail is kept.
+RawListNode* raw_list_erase_node_00467b50(std::int32_t& count, RawListNode*& head, RawListNode* node,
+                                          const std::function<void(void*)>& free_00bf65ac);
+// 004683B0 and the thunk 00468790 (body-identical to 004C2CE0 and 004BF8E0),
+// __fastcall(ECX = list {count, head, tail}), RET: while count != 0, unlink
+// the head (tail = prev when it was last), count--, _free.
+void raw_list_clear_storage_004683b0(std::int32_t& count, RawListNode*& head, RawListNode*& tail,
+                                     const std::function<void(void*)>& free_00bf65ac);
+
+// 00467F60, __thiscall(ECX = array {data, size, capacity}, const u32* value),
+// RET 4: when size == capacity, 004674F0 reserves max(capacity*2, 1) (JG 1);
+// the value is stored when the slot address is non-null, and size++ always.
+struct PodPointerArray {
+    std::uint32_t* data{nullptr};
+    std::int32_t size{0};
+    std::int32_t capacity{0};
+};
+void pod_pointer_array_push_back_00467f60(PodPointerArray& array, std::uint32_t value,
+                                          const std::function<void(PodPointerArray&, std::int32_t)>& reserve_004674f0);
+
+// Cloud particle arrays {data, size, capacity} of 20h-byte elements; 00476550
+// reserves (ECX = array, count).
+struct CloudParticleArray {
+    std::array<std::uint32_t, 8>* data{nullptr};
+    std::int32_t size{0};
+    std::int32_t capacity{0};
+};
+using CloudParticleReserve = std::function<void(CloudParticleArray&, std::int32_t)>;
+// 00476E40, __thiscall(ECX = array, const element*), RET 4: grow to
+// max(capacity*2, 1) when full, copy the eight dwords when the slot address is
+// non-null, size++.
+void cloud_particle_array_push_back_00476e40(CloudParticleArray& array, const std::array<std::uint32_t, 8>& element,
+                                             const CloudParticleReserve& reserve_00476550);
+// 00476EE0, __fastcall(ECX = array), RET: 00476550(0) when capacity < 0, the
+// size counted down to 0 (the elements are trivial), size = 0.
+// 00477020, __fastcall(ECX = array), RET: the same, then _free (00BF6989) of
+// the data; the data pointer is left as it was.
+void cloud_particle_array_clear_00476ee0(CloudParticleArray& array, const CloudParticleReserve& reserve_00476550);
+void cloud_particle_array_tidy_00477020(CloudParticleArray& array, const CloudParticleReserve& reserve_00476550,
+                                        const std::function<void(void*)>& free_block);
+
+// 00477110, __fastcall(ECX = class), RET, under an EH frame: vtable 00CE5FB4,
+// the string at +2Ch/+30h back to the pool, then 00489E80 (named class base).
+void cloud_class_destruct_00477110(
+    std::uint32_t& vtable, const void* cloud_class,
+    const std::function<void(void* data, std::uint32_t bytes, std::int32_t count)>& pool_return_00bd1510,
+    const std::function<void(const void* cloud_class)>& named_class_base_destroy_00489e80);
+
+// ---------------------------------------------------------------------------
+// Packet cc13-sys4: segment-4 render settings and the system error box.
+// ---------------------------------------------------------------------------
+
+// 00452A50, __thiscall(ECX = settings, near, far), RET 8: +14h = near, +1Ch = far.
+void depth_of_field_set_range_00452a50(float& near_14, float& far_1c, float near_value, float far_value);
+
+// 00452B00, __thiscall(ECX = flare, float x), RET 4: +4 = +8 = |x|^k with k
+// at +1Ch, through FYL2X (k * log2|x|), FRNDINT, F2XM1, FLD1/FADDP, FSCALE,
+// stored float. x == 0 (UCOMISS, LAHF/TEST AH,44h/JNP) gives 0; a negative x
+// becomes -0.0f - x (00D7A208). The earlier note "2^(k*|x|)" missed the
+// FYL2X. The host evaluates exp2(k * log2|x|) in double; the image keeps
+// 64-bit extended precision until the float store.
+void lens_flare_pow_response_00452b00(float k_1c, float x, float& out_04, float& out_08);
+
+// 00452B80, __thiscall(ECX = flare, u8 on), RET 4: byte +0 = on; when off,
+// 00B0D020 (ECX = [00F8D39C]) with (0, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f) and
+// +4 = 1e-4f (00CE3C68).
+void lens_flare_set_enabled_00452b80(
+    std::uint8_t on, std::uint8_t& enabled_00, float& value_04,
+    const std::function<void(std::int32_t, float, float, float, float, float)>& set_lens_effect_00b0d020);
+
+// 004531F0, __fastcall(ECX = const char* context), RET:
+// FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM, null, GetLastError(), 0,
+// 00E18000, 3FFh, null), then MessageBoxA(null, 00439AC0("%s\n%s", context,
+// 00E18000), "System error", MB_ICONERROR (10h)). 00439AC0 formats into a static
+// buffer; its size limit is not modelled.
+struct SystemErrorBoxHost {
+    virtual ~SystemErrorBoxHost() = default;
+    virtual std::uint32_t get_last_error() = 0;
+    virtual std::string format_system_message(std::uint32_t error, std::uint32_t size) = 0;
+    virtual void message_box(const std::string& text, const char* caption, std::uint32_t type) = 0;
+};
+void show_last_system_error_box_004531f0(const char* context, SystemErrorBoxHost& host);
+
+// ---------------------------------------------------------------------------
+// Packet cc13-sys4: small segment-9 helpers.
+// ---------------------------------------------------------------------------
+
+// 004BB600, __cdecl(void), AL. ECX = [00F8ABE8] (Xenon system manager) for
+// each call: 00A3E510 (has a selected user) and 00A3EAD0 (sign-in state)
+// == 2, then a tail jump to 00A3EB20 (the byte at manager+118h); otherwise
+// XOR AL,AL.
+struct SelectedUserLiveHost {
+    virtual ~SelectedUserLiveHost() = default;
+    virtual bool has_selected_user_00a3e510() = 0;
+    virtual std::int32_t selected_sign_in_state_00a3ead0() = 0;
+    virtual std::uint8_t active_slot_byte_118_00a3eb20() = 0;
+};
+std::uint8_t selected_user_live_byte_004bb600(SelectedUserLiveHost& host);
+
+// 004BBDD0, __thiscall(ECX = game, const float* start, float* end, float*
+// out), RET 0Ch, AL = clipped. Caller 0071FDE0 (director path AddPoint).
+// The world box is minX +711Ch, maxZ +7124h, maxX +7128h, minZ +7130h. In x:
+// end.x < minX moves end to minX + 1 and interpolates end.z with r = (sx -
+// minX)/(sx - x); end.x > maxX moves it to maxX - 1 with r = (maxX - sx)/(x -
+// sx). Then the same in z against maxZ (end.z - 1 side) and minZ, which
+// interpolates end.x. Each new coordinate is f(s + f(e - s) * r), with r kept
+// on the stack. With no clip it returns 0 and writes nothing. After a clip, a
+// moved end closer than 1.0 to the start in |dx| or |dz| is put back. In that
+// case `end` regains its x and z, and the function still returns 1. Then d =
+// (f(end.x - sx), 0, f(end.z - sz)) is normalised (00419510) to n, m =
+// min-like(|n.x|, |n.z|) (|n.z| > |n.x| keeps |n.x|, otherwise |n.z|), raised
+// to 0.02f when below double 0.02 (00D7A2F8), s = f(3000.0 / m) (00CE7530),
+// and out = f(end + f(n * s)), where out.y uses the end's y.
+struct WorldBoundsXZ {
+    float min_x_711c, max_z_7124, max_x_7128, min_z_7130;
+};
+bool game_clip_segment_to_world_bounds_004bbdd0(
+    const WorldBoundsXZ& box, const std::array<float, 3>& start, std::array<float, 3>& end,
+    std::array<float, 3>& out,
+    const std::function<std::array<float, 3>(const std::array<float, 3>&)>& normalize_00419510);
+
+// 004BCB40, __thiscall(ECX = {u32 length, char* data}, needle, int start),
+// RET 8: -1 for null data or needle; a negative start becomes 0, a start
+// above the length (unsigned JA) gives -1; _strstr (00BF9440) from
+// data + start; the match offset from data, or -1.
+std::int32_t counted_string_find_004bcb40(std::uint32_t length, const char* data, const char* needle,
+                                          std::int32_t start);
+
+// 004BDF50, __fastcall(ECX = interface), RET: when +4 != +20h or +1Ch !=
+// +38h, vtable +10h(+20h, +38h) (the pending size). +4/+1Ch are not written here.
+struct PendingSizeFields {
+    std::int32_t current_04, current_1c, pending_20, pending_38;
+};
+void multiplayer_interface_apply_pending_size_004bdf50(
+    const PendingSizeFields& f, const std::function<void(std::int32_t, std::int32_t)>& vslot_10);
+
+// 004BEA10 / 004BEA40 / 004BEA70, __fastcall(ECX = owner pointer slot), RET:
+// when the slot is set, the destructor (ECX = object), _free (00BF65AC),
+// slot = 0. Destructors: 004BEA10 -> 006B9380 (award registry storage),
+// 004BEA40 -> 0045D930 (cutscene player), 004BEA70 -> 009496A0.
+struct OwnedPointerDeleteRow {
+    std::uint32_t address;
+    std::uint32_t destroy;
+};
+extern const std::array<OwnedPointerDeleteRow, 3> kOwnedPointerDeletes;
+void owned_pointer_delete(void*& slot, const std::function<void(void*)>& destroy,
+                          const std::function<void(void*)>& free_block);
+
+// 004BEAD0, __fastcall(ECX = unit), RET: the unit when non-null and its
+// vtable +5Ch(0Fh) returns non-zero AL, else 0.
+void* unit_cast_if_class_flag_0f_004bead0(void* unit, const std::function<bool(void*, std::int32_t)>& vslot_5c);
+
+// 004BFD70, __fastcall(ECX = game), RET: 00B0FEB0 on [00F8D39C], the
+// renderer's ([00F8D394]) vtable +124h, then when game+5FCh is set the three
+// counted references at +D5Ch, +D70h, +D84h of that block are released
+// (InterlockedDecrement(+4); vtable slot 0 at zero) and cleared.
+struct SessionRenderResourcesHost {
+    virtual ~SessionRenderResourcesHost() = default;
+    virtual void reset_remap_textures_00b0feb0() = 0;
+    virtual void renderer_vslot_124() = 0;
+    virtual void release_reference(void* counted) = 0;
+};
+void release_session_render_resources_004bfd70(void* block_at_5fc, SessionRenderResourcesHost& host);
+
+// The 18h-byte observer slot: vtable, three cleared dwords +4..+0Ch, byte
+// +10h = 1, observed subject +14h.
+struct ObserverSlotFields {
+    std::uint32_t vtable{0};
+    std::uint32_t field_04{0}, field_08{0}, field_0c{0};
+    std::uint8_t flag_10{0};
+    void* subject_14{nullptr};
+};
+// 004C2D40, __fastcall(ECX = slot), RET, EAX = slot: vtable 00CE75CC
+// (slot 0 = deleting destructor 004C2DC0, slot 1 = 004C2D90), subject 0.
+void construct_observer_slot_004c2d40(ObserverSlotFields& slot);
+// 004BEF00, __thiscall(ECX = request, subject), RET 4, EAX = request: vtable
+// 00CE3C8C, subject +14h, then 00694A60 (ECX = subject, EDX = request)
+// when the subject is non-null.
+void construct_interface_request_004bef00(ObserverSlotFields& request, void* subject,
+                                          const std::function<void(void* subject, void* observer)>& register_pair);
+// 004C2D60 and 004C2D90 (00CE75CC slot 1), __thiscall(ECX = slot, notifier),
+// RET 4: notifier vtable +4h yields the object; when it is +14h, clear +14h
+// and 006952A0 (ECX = object, EDX = slot). Same body as 004884F0.
+void observer_slot_release_if_subject(ObserverSlotFields& slot, void* notifier,
+                                      const std::function<void*(void* notifier)>& notifier_object_04,
+                                      const std::function<void(void* subject, void* observer)>& unregister_pair);
+
+// 004C2FD0, __fastcall(ECX = character count), RET, EAX = block: 00419CC0
+// (sized storage pool) then 00BD1120 (ECX = pool, count*2 + 2 bytes, 1): a
+// UTF-16 buffer with room for the terminator.
+void* wide_string_allocate_storage_004c2fd0(
+    std::uint32_t count, const std::function<void*(std::uint32_t bytes, std::int32_t flag)>& pool_allocate_00bd1120);
+
+// 004C5140, __stdcall(context), RET 4: 004BEC00 (input manager), then
+// 00A933F0 (ECX = manager, context, 5).
+void input_context_level5_004c5140(std::int32_t context,
+                                   const std::function<void(std::int32_t context, std::int32_t level)>& set_00a933f0);
+
+// 004C5E00, __thiscall(ECX = storage manager, out string), RET 4, EAX = out:
+// manager vtable +10h(out). The zeroed stack dword is the NRVO construction
+// flag and is not read.
+void storage_manager_newest_slot_name_004c5e00(void* out, const std::function<void(void* out)>& vslot_10);
+
+// 004C5E20, __thiscall(ECX = this, other), RET 4, EAX = this. Strings are
+// {u32 length, char16_t* data}. Self-assignment does nothing; otherwise
+// 004C53E0 (ECX = this, other.length, 1) sizes the storage, and when
+// other.length != 0 the UTF-16 units are copied up to and including the
+// terminator.
+struct NativeWideString {
+    std::uint32_t length{0};
+    char16_t* data{nullptr};
+};
+NativeWideString& wide_string_assign_004c5e20(
+    NativeWideString& self, const NativeWideString& other,
+    const std::function<void(NativeWideString& self, std::uint32_t length, std::int32_t flag)>& size_004c53e0);
+
+// 004C5EC0, __thiscall(ECX = scope, index, const u32* colour), RET 8, EAX =
+// scope: profiler (004C1DD0) +24h colour array[index] = *colour, scope.index
+// = index, then 00BE3640 (ECX = profiler, index).
+// 004C5EF0, __fastcall(ECX = scope), RET: 00BE3660 (ECX = profiler, scope.index).
+struct ProfilerScopeHost {
+    virtual ~ProfilerScopeHost() = default;
+    virtual std::uint32_t* colour_array_24() = 0;
+    virtual void begin_00be3640(std::int32_t index) = 0;
+    virtual void end_00be3660(std::int32_t index) = 0;
+};
+void profiler_scope_begin_004c5ec0(std::int32_t& scope_index, std::int32_t index, const std::uint32_t& colour,
+                                   ProfilerScopeHost& host);
+void profiler_scope_end_004c5ef0(std::int32_t scope_index, ProfilerScopeHost& host);
+
+// 004C5F10, __fastcall(ECX = message), RET: vtable 00CE7608; when the byte at
+// +18h is 3, 004C0FD0 on +1Ch; then 004C1F70 on +1Ch; base vtable 00CE4974.
+// 004C5F40, __thiscall(ECX unused, id), RET 4: id == 0E4h.
+struct SessionMessageE4DestructHost {
+    virtual ~SessionMessageE4DestructHost() = default;
+    virtual void release_payload_004c0fd0(void* payload_1c) = 0;
+    virtual void destruct_payload_004c1f70(void* payload_1c) = 0;
+};
+void session_message_e4_destruct_004c5f10(std::uint32_t& vtable, std::uint8_t kind_18, void* payload_1c,
+                                          SessionMessageE4DestructHost& host);
+bool session_message_e4_is_id_004c5f40(std::uint32_t id);
+
+// Pooled NativeString storage release. Each field is a {u32 length, data}
+// pair; when data is non-null it goes back to the sized pool (00419CC0, then
+// 00BD1510 with ECX = pool, (data, bytes, 1)), bytes = length + 1 for narrow
+// strings and length*2 + 2 for UTF-16. Fields are released in table order.
+// The pool call does not clear the fields.
+struct PooledStringField {
+    std::uint16_t length_offset;
+    std::uint16_t data_offset;
+    std::uint8_t unit; // 1 or 2 bytes
+};
+struct PooledStringReleaseRow {
+    std::uint32_t address;
+    const char* abi;
+    std::array<PooledStringField, 3> fields;
+    std::uint8_t count;
+};
+// 004C67E0, 004C6800, 004C89E0 (+8/+0Ch narrow), 004C8260 (+8/+0Ch UTF-16),
+// 004C8DB0 (+0Ch/+10h narrow), 004CE690 (__stdcall(object), RET 4, +8/+0Ch
+// UTF-16), 004C5720 (+10h/+14h, +8/+0Ch, +0/+4, under an EH frame),
+// 004C6760 (+10h/+14h, +0/+4), and the byte-identical +0/+4 bodies 0044BA70,
+// 00468B30, 00468B50, 00471340, 00474780, 00477200.
+extern const std::array<PooledStringReleaseRow, 14> kPooledStringReleases;
+const PooledStringReleaseRow* find_pooled_string_release(std::uint32_t address);
+void release_pooled_strings(
+    const PooledStringReleaseRow& row, const void* object,
+    const std::function<void(void* data, std::uint32_t bytes, std::int32_t count)>& pool_return_00bd1510);
+
+
+// 004C7F80, __fastcall(ECX = record), RET, EAX = record: +0, +4, +8 = 0 and
+// the floats +0Ch, +10h = 0.0f.
+struct Record14 {
+    std::uint32_t field_00{1}, field_04{1}, field_08{1};
+    float field_0c{1.0f}, field_10{1.0f};
+};
+void record14_clear_004c7f80(Record14& record);
+
+// 004C8DD0, __thiscall(ECX = dst, src), RET 4, EAX = dst: dst = {0, null},
+// then the 004C5E20 assignment (self-copy skipped).
+NativeWideString& wide_string_copy_construct_004c8dd0(
+    NativeWideString& dst, const NativeWideString& src,
+    const std::function<void(NativeWideString& self, std::uint32_t length, std::int32_t flag)>& size_004c53e0);
+
+// The narrow NativeString {u32 length, char* data}; 0041DD40 (ECX = string,
+// length, flag) resizes it, and each body then copies `length` bytes (the
+// length after the resize) with _memcpy (00BF7680) when data is non-null.
+struct NativeNarrowString {
+    std::uint32_t length{0};
+    char* data{nullptr};
+};
+using NarrowStringResize = std::function<void(NativeNarrowString& string, std::uint32_t length, std::int32_t flag)>;
+
+// A narrow string key with a dword value at +8.
+struct NarrowStringPair {
+    NativeNarrowString key;
+    std::uint32_t value_08{0};
+};
+// 00469AB0, 0044C5D0, 004713B0, 004747F0, 00478A50 (byte-identical apart from
+// call displacements), __thiscall(ECX = dst, const NativeString* key, const
+// u32* value), RET 8, EAX = dst: key = {0, null} then the 0041DD40 (flag 1)
+// assignment, skipped for self and copied only when non-empty; +8 = *value.
+// 0044C6E0, __thiscall(ECX = dst, const pair* src), RET 4: the same with the
+// value taken from src+8.
+NarrowStringPair& narrow_string_pair_construct(NarrowStringPair& dst, const NativeNarrowString& key,
+                                               std::uint32_t value, const NarrowStringResize& resize_0041dd40);
+NarrowStringPair& narrow_string_pair_copy_construct_0044c6e0(NarrowStringPair& dst, const NarrowStringPair& src,
+                                                             const NarrowStringResize& resize_0041dd40);
+
+// 004C8900, __fastcall(ECX = game), RET: 004BF930 (destroy every scene
+// record), game+5FCh = 0, and the string at game+600h is resized to 0 (flag
+// 0) and filled from the empty string 00CE3A0C.
+void game_clear_scene_records_004c8900(const std::function<void()>& destroy_all_004bf930, void*& record_block_5fc,
+                                       NativeNarrowString& text_600, const NarrowStringResize& resize_0041dd40);
+// 004C8950, __thiscall(ECX = game, const char* text), RET 4: the string at
+// game+600h takes strlen(text) (0 for null) with flag 0, then the bytes.
+void game_set_command_line_text_004c8950(NativeNarrowString& text_600, const char* text,
+                                         const NarrowStringResize& resize_0041dd40);
+// 004C89A0, __thiscall(ECX = game, const NativeString* src), RET 4: the string
+// at game+2198h takes src (flag 1) unless it is src itself; the copy is
+// skipped when src is empty.
+void game_assign_console_string_004c89a0(NativeNarrowString& string_2198, const NativeNarrowString& src,
+                                         const NarrowStringResize& resize_0041dd40);
+
+// 004C9220, __thiscall(ECX = dst, src), RET 4, EAX = dst: a 60h-byte entry.
+// Byte +0 and dword +4, the UTF-16 string at +8 by 004C53E0 + unit copy
+// (skipped for self), then the dwords +10h..+5Ch.
+struct LocalisedEntry60 {
+    std::uint8_t byte_00{0};
+    std::uint32_t dword_04{0};
+    NativeWideString text_08;
+    std::array<std::uint32_t, 20> dwords_10{};
+};
+LocalisedEntry60& localised_entry_assign_004c9220(
+    LocalisedEntry60& dst, const LocalisedEntry60& src,
+    const std::function<void(NativeWideString& self, std::uint32_t length, std::int32_t flag)>& size_004c53e0);
+
+// 004C95D0, __thiscall(ECX = entry, a, b, c, const NativeString* name, u8
+// flag), RET 14h, EAX = entry: +0 a, +4 b, +8 c, the string at +0Ch cleared
+// then assigned from name (0041DD40 flag 1; skipped when name is the field
+// itself; bytes copied only for a non-empty name), byte +14h = flag, +15h = 0.
+struct NamedEntry16 {
+    std::uint32_t a_00{0}, b_04{0}, c_08{0};
+    NativeNarrowString name_0c;
+    std::uint8_t flag_14{0};
+    std::uint8_t byte_15{0};
+};
+NamedEntry16& named_entry_construct_004c95d0(NamedEntry16& entry, std::uint32_t a, std::uint32_t b, std::uint32_t c,
+                                             const NativeNarrowString& name, std::uint8_t flag,
+                                             const NarrowStringResize& resize_0041dd40);
+
+// 004C9420, __thiscall(ECX = record, u8 flags), RET 4, EAX = record: the
+// narrow string at +0/+4 back to the pool, then 0043B0A0 (ECX = node pool:
+// 00E175E8 here, 00E18514 for the body-identical 00469B20; 14h-byte node pool
+// return) when flags & 1.
+void named_record_scalar_deleting_destructor_004c9420(
+    void* record, std::uint8_t flags,
+    const std::function<void(void* data, std::uint32_t bytes, std::int32_t count)>& pool_return_00bd1510,
+    std::uint32_t node_pool, const std::function<void(std::uint32_t pool, void* record)>& node_pool_return_0043b0a0);
+
+// 004C9680, __cdecl(void), RET: a local empty string (0041DD40 to length 0,
+// flag 1, then length+1 bytes from 00CE3A0C), 00518D60 with ECX = EDX = -1
+// (backdrop and panel), title -1 and the string, then the string's block back
+// to the pool.
+struct FrontEndFrameSelectHost {
+    virtual ~FrontEndFrameSelectHost() = default;
+    virtual void resize_0041dd40(NativeNarrowString& string, std::uint32_t length, std::int32_t flag) = 0;
+    virtual void select_00518d60(std::int32_t backdrop, std::int32_t panel, std::int32_t title,
+                                 const NativeNarrowString& text) = 0;
+    virtual void pool_return_00bd1510(void* data, std::uint32_t bytes, std::int32_t count) = 0;
+};
+void front_end_frame_select_default_004c9680(FrontEndFrameSelectHost& host);
+
+// 004CA120, __fastcall(ECX = game), RET: only in game state 0Dh (+5D4h) with
+// a client at +21E8h. Builds "ingame.multi_highlatency" (00CE76B8, through
+// 0041E870) and an empty string, calls 007349C0 (ECX = client, &key, &empty,
+// 0), then returns the empty string's block and the key's block to the pool.
+struct HighLatencyWarningHost {
+    virtual ~HighLatencyWarningHost() = default;
+    virtual NativeNarrowString make_string_0041e870(const char* text) = 0;
+    virtual void client_007349c0(void* client, const NativeNarrowString& key, NativeNarrowString& out,
+                                 std::int32_t arg) = 0;
+    virtual void release_string(NativeNarrowString& string) = 0; // pool return when data is set
+};
+void game_show_high_latency_warning_004ca120(std::int32_t state_5d4, void* client_21e8, HighLatencyWarningHost& host);
+
+// 004CAF10, __fastcall(ECX = vector {data, count}), RET: when count != 0 the
+// last 8-byte string's block goes back to the pool and the count drops by 1.
+// 004CC8E0, __fastcall(ECX = slot), RET: when the slot holds a string, its
+// block goes back to the pool, the 14h-byte node back to 0043B0A0 (ECX =
+// 00E175E8; 00E18514 for the body-identical 0046A0C0), slot = 0.
+// Same body as 0046A0C0.
+void native_string_vector_pop_back_004caf10(
+    NativeNarrowString* data, std::uint32_t& count,
+    const std::function<void(void* data, std::uint32_t bytes, std::int32_t count)>& pool_return_00bd1510);
+// 004CEB40, __fastcall(CL = paused), RET. Stores CL in 00E188AE first. Acts
+// only when the game ([00E188A8]) is in state 0Dh (+5D4h) and either +1FE4h
+// is 0 or the byte +218Ch is set. Pausing (CL != 0) needs the byte +634h
+// clear: 00E188BC = 1, 004CD0F0(1, 0, 0), 005FF0D0 on the HUD (ECX =
+// [[00E198C4]+0D8h]), 00A77760(1) on [00F8BBCC]. Resuming: when 00E188BC is
+// set, 004CD0F0(0, 0, 0), 005FD440 on the HUD, 00A77760(0), then 00A92C40
+// (ECX = input manager 004BEC00, 0.0f); 00E188BC = 0 in either case.
+// 004CEC00 (no Ghidra function, no absolute reference; rel32 callers not
+// scanned): when 00E188AE is set, a tail jump to 004CEB40 with CL = 1.
+struct PlatformPauseGame {
+    std::int32_t state_5d4;
+    std::int32_t field_1fe4;
+    std::uint8_t byte_218c;
+    std::uint8_t byte_634;
+};
+struct PlatformPauseHost {
+    virtual ~PlatformPauseHost() = default;
+    virtual void set_cinematic_mode_004cd0f0(std::int32_t on, std::int32_t b, std::int32_t c) = 0;
+    virtual void hud_pause_open_005ff0d0() = 0;
+    virtual void hud_pause_resume_005fd440() = 0;
+    virtual void dialogs_set_all_paused_00a77760(std::int32_t paused) = 0;
+    virtual void input_update_00a92c40(float seconds) = 0;
+};
+void game_set_paused_by_platform_004ceb40(bool paused, const PlatformPauseGame& game, std::uint8_t& flag_00e188ae,
+                                          std::uint8_t& paused_00e188bc, PlatformPauseHost& host);
+void game_reapply_platform_pause_004cec00(const PlatformPauseGame& game, std::uint8_t& flag_00e188ae,
+                                          std::uint8_t& paused_00e188bc, PlatformPauseHost& host);
+
+// 004CEC20 / 004CEC40, __fastcall(ECX = vector), RET: resize to 0 (004CB160
+// / 004CB220, ECX = vector), then operator delete (00BF6989) of the data.
+void vector_tidy_resize_then_free(void* vector, void* const& data_slot, const std::function<void(void* vector)>& resize_to_zero,
+                                  const std::function<void(void*)>& free_block);
+
+// 004CDE20, __fastcall(ECX = deque), RET: a deque of 8-byte narrow strings,
+// two per block (map +4, map size +8, offset +0Ch, count +10h). When count
+// != 0: index = offset + count - 1, block = index >> 1 (wrapped by the map
+// size once), element = map[block] + (index & 1)*8; its storage goes back
+// to the pool, count--, and offset = 0 when the count reaches 0.
+struct NarrowStringDeque {
+    NativeNarrowString** map{nullptr};
+    std::uint32_t map_size{0};
+    std::uint32_t offset{0};
+    std::uint32_t count{0};
+};
+void narrow_string_deque_pop_back_004cde20(
+    NarrowStringDeque& deque,
+    const std::function<void(void* data, std::uint32_t bytes, std::int32_t count)>& pool_return_00bd1510);
+
+// 004D0140, __fastcall(ECX = tracker), RET: the hint deque at +4: pop_back
+// (the 004CDE20 body, inlined) until the count is 0, then _free every map
+// block from the last to the first (null ones skipped), _free the map, and
+// zero the map pointer and size.
+void award_tracker_drain_hint_deque_004d0140(
+    NarrowStringDeque& deque,
+    const std::function<void(void* data, std::uint32_t bytes, std::int32_t count)>& pool_return_00bd1510,
+    const std::function<void(void*)>& free_00bf65ac);
+
+// 004C8310, __thiscall(ECX = vector {data, size, capacity} of counted
+// references, n), RET 4: n = max(n, 1); when capacity < n: operator new(n*4),
+// copy each element with InterlockedIncrement(+4) (null stays null), release
+// every old element (InterlockedDecrement(+4), vtable slot 0 at zero) and
+// clear it, _free the old block, data = new block, capacity = n. The size is
+// unchanged.
+struct CountedReferenceVector {
+    void** data{nullptr};
+    std::int32_t size{0};
+    std::int32_t capacity{0};
+};
+struct CountedReferenceHost {
+    virtual ~CountedReferenceHost() = default;
+    virtual void* operator_new(std::uint32_t bytes) = 0;
+    virtual void add_ref(void* counted) = 0;
+    virtual void release(void* counted) = 0;
+    virtual void free_block(void* block) = 0;
+};
+void counted_reference_vector_reserve_004c8310(CountedReferenceVector& vector, std::int32_t n,
+                                               CountedReferenceHost& host);
+
+// 004CE460, __fastcall(ECX = record), RET: _free the vector data at +14h
+// then at +4 (each only when non-null) and zero both {data, end, capacity}
+// triples.
+struct TwoVectorRecord {
+    std::array<void*, 3> vector_04{};
+    std::uint32_t field_10{0};
+    std::array<void*, 3> vector_14{};
+};
+void two_vector_record_tidy_004ce460(TwoVectorRecord& record, const std::function<void(void*)>& free_00bf65ac);
+
+// XLive calls of the game's online helpers. ECX = [00F8ABE8] (Xenon system
+// manager) for the user-slot queries.
+struct GameLiveHost {
+    virtual ~GameLiveHost() = default;
+    virtual bool has_selected_user_00a3e510() = 0;
+    virtual std::uint32_t active_user_slot_00a3eac0() = 0;
+    virtual std::uint32_t x_user_set_context(std::uint32_t slot, std::uint32_t context, std::uint32_t value) = 0;
+    virtual std::uint32_t x_friends_create_enumerator(std::uint32_t slot, std::uint32_t start, std::uint32_t count,
+                                                      std::uint32_t* buffer_size, void** handle) = 0;
+    virtual std::uint32_t x_enumerate(void* handle, void* buffer, std::uint32_t buffer_size,
+                                      std::uint32_t* items_returned, void* overlapped) = 0;
+    virtual void close_handle(void* handle) = 0;
+    virtual void x_cancel_overlapped(void* overlapped) = 0;
+    virtual void free_block(void* block) = 0; // _free
+};
+// 004BC4E0, __fastcall(ECX = game), RET: with a selected user,
+// XUserSetContext(slot, 8001h (presence), 4); byte game+22DCh = 1 always.
+void game_set_presence_context_004bc4e0(std::uint8_t& presence_set_22dc, GameLiveHost& host);
+// 004BC520, __fastcall(ECX = game), RET: XFriendsCreateEnumerator(slot, 0,
+// 100, &size, &handle); on success XEnumerate(handle, game+22DEh, 4D54h,
+// game+7034h, null) and CloseHandle only when that succeeds too (the handle
+// leaks when XEnumerate fails).
+void game_create_friends_enumerator_004bc520(void* friends_buffer_22de, std::uint32_t* friends_count_7034,
+                                             GameLiveHost& host);
+// 004BC7F0, __fastcall(ECX = game), RET: XCancelOverlapped(game+7038h),
+// _free and clear the buffer at +7054h, zero +7058h.
+void game_cancel_leaderboard_read_004bc7f0(void* overlapped_7038, void*& buffer_7054, std::uint32_t& field_7058,
+                                           GameLiveHost& host);
+
+// 004BB3E0, __fastcall(ECX = game), RET: the eight lobby slot records at
+// +1034h (stride 118h, first dword = slot state). For the modes 0..3
+// (game+614h) a state of 3 becomes 1; for any other mode a state of 1
+// becomes 3.
+void game_reset_lobby_slots_for_mode_004bb3e0(std::int32_t mode_614, std::array<std::int32_t*, 8> slot_states);
+
+// 004C6B00, __fastcall(ECX = game), RET: game+60Ch = (game+60Ch + 1) %
+// game+5F0h (CDQ/IDIV, signed), then 004C6890 (ECX = game, index).
+void game_select_next_scene_record_004c6b00(std::int32_t& index_60c, std::int32_t count_5f0,
+                                            const std::function<void(std::int32_t)>& select_004c6890);
+
+// 004C7070, __cdecl(a, b, c, fmt, ...), and 004C70C0, __cdecl(a, b, c, d,
+// fmt, ...): _vsprintf_s (00BF7289) into a stack buffer (count 0FFh /
+// 0FFCh), then "%s\n" (00CE3A30) through 004B8410 / 004B8450 (same counts) into a
+// second buffer, then 004C14C0 (the diagnostic sink getter) with no
+// arguments. The text is never handed to the sink: the release build formats
+// and drops it. The leading arguments are not read. The host returns the
+// composed text and throws where the CRT would call its invalid-parameter
+// handler (text too long for a buffer).
+std::string diagnostic_printf_004c7070(const std::function<void()>& sink_get_004c14c0, const char* format, ...);
+std::string diagnostic_printf_large_004c70c0(const std::function<void()>& sink_get_004c14c0, const char* format, ...);
+
+// 004CC390, __thiscall(ECX = dst, src), RET 4, EAX = dst: copy construction
+// of the 60h-byte entry (byte, dword, 004C8DD0 on +8, dwords +10h..+5Ch).
+LocalisedEntry60& localised_entry_copy_construct_004cc390(
+    LocalisedEntry60& dst, const LocalisedEntry60& src,
+    const std::function<void(NativeWideString& self, std::uint32_t length, std::int32_t flag)>& size_004c53e0);
+
+// 004CC650, __fastcall(ECX = record), RET, under an EH frame: 004C8F00 on the
+// member at +8, then the narrow string at +0/+4 back to the pool.
+void named_vector_record_destruct_004cc650(
+    void* record, const std::function<void(void* member_08)>& destruct_004c8f00,
+    const std::function<void(void* data, std::uint32_t bytes, std::int32_t count)>& pool_return_00bd1510);
+
+// 004CF590, __thiscall(ECX unused, first, last), RET 8: 004CC760 with ECX =
+// first, EDX = last (its two stack arguments, the incoming ECX and `last`,
+// are not read). Called from catch blocks.
+void reference_pointer_range_release_forward_004cf590(
+    void* first, void* last, const std::function<void(void* first, void* last)>& release_004cc760);
+
+void native_string_pointer_delete_004cc8e0(
+    NativeNarrowString*& slot,
+    const std::function<void(void* data, std::uint32_t bytes, std::int32_t count)>& pool_return_00bd1510,
+    std::uint32_t node_pool, const std::function<void(std::uint32_t pool, void* node)>& node_pool_return_0043b0a0);
 
 } // namespace bsp::cc13_sys
