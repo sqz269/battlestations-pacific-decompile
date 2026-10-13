@@ -57,6 +57,7 @@
 #include "bsp/lua_binding_mission.hpp"
 #include "bsp/lua_binding_navigator.hpp"
 #include "bsp/mission_blackout.hpp"
+#include "bsp/script_orders_ver_cc13.hpp"
 
 namespace bsp {
 struct DummyKamikazeSpawn;
@@ -863,6 +864,10 @@ private:
     int run_unit_set_fire_stance(GameScriptOrderRow& row);
     // Packet cc9_scripted_order_natives (kScriptedOrderNativesBound).
     int run_unit_hold_fire(GameScriptOrderRow& row);
+    // Packet cc13-ver12 (kLuaUnitFreeFireBound): UnitFreeAttack / UnitFreeFire.
+    int run_unit_free_fire(GameScriptOrderRow& row, ScriptFireOrder order);
+    // Packet cc13-ver12 (kLuaNavigatorStopBound): NavigatorStop 008A7400.
+    int run_navigator_stop(GameScriptOrderRow& row);
     int run_navigator_enable(GameScriptOrderRow& row);
     int run_pilot_land(GameScriptOrderRow& row);
     unsigned long long pilot_land_calls_{0};
