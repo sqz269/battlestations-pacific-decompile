@@ -266,4 +266,49 @@ std::uint32_t input_manager_context_level_00a92290(const void* manager, std::int
 // [[sample+78h]+8h] != 0.
 bool sound_sample_has_resource_word08_00a818d0(const void* sample) noexcept;
 
+// ---------------------------------------------------------------------------
+// cc13-sound3: raw forms of the sound class table and the sample-tree destroys
+// (docs/CC13_SOUND_1.md, "Pass 3").
+//
+// Sound class table: a pointer array whose slots hold intrusive references (count at +4h,
+// release through vtable slot 0). SoundClassOwnership (src/sound_class_ownership.cpp)
+// models the same bodies over a projection; these work on the native header.
+// 00A7BBE0 reserve, __thiscall(ECX header, int requested), RET 4: requested raised to 1; when
+// the capacity is below it, operator new(requested*4); every live slot is copied with a
+// retain (destination zeroed first); a SECOND pass releases and clears every old slot; the
+// old data is freed; data then capacity are stored.
+void reserve_sound_class_table_raw_00a7bbe0(NativePointerArray& table, std::int32_t requested);
+// 00A7C2C0 resize (and its JMP thunk 00A7D9A0), __thiscall(ECX header, int count), RET 4:
+// reserve when count exceeds the capacity, zero the new slots, then pop down to count
+// releasing (and clearing) every non-null slot from the top; count = n.
+void resize_sound_class_table_raw_00a7c2c0(NativePointerArray& table, std::int32_t count);
+// 00A7C240 append-retained (and its JMP thunk 00A7D990), __thiscall(ECX header, const
+// object** source), RET 4: grow to max(2*capacity, 1) through 00A7BBE0 when full; the new
+// slot is zeroed, then set to *source and retained when *source is non-null; count + 1.
+void append_retained_sound_class_raw_00a7c240(NativePointerArray& table, void* const* source);
+// 00A7D9B0 and 00A7F2D0 (byte-identical), __fastcall(ECX header): resize 0 through 00A7C2C0,
+// then free(data).
+void destroy_sound_class_table_raw(NativePointerArray& table);
+
+// Sample-tree iterator (checked iterator {owner tree, node}).
+struct NativeSoundTreeIterator {
+    NativeSoundTree* owner;
+    NativeSoundTreeNode* node;
+};
+// 00A88490 STL_SoundSampleTree_EraseRange, __thiscall(ECX tree, iterator* out, first, last),
+// RET 14h. A first iterator whose owner is null or not this tree goes to 00BF6713 (the CRT
+// invalid-iterator report; execution continues). When first is begin() (head->left) and last
+// (owner checked the same way) is end() (the head), the whole tree goes through 00A88400
+// from the root, the head is reset (parent/left/right = head, size 0) and out = {tree,
+// head->left}. Otherwise, while last's owner matches and first != last: first is advanced by
+// 00A81AD0 and the old position erased by 00A839C0 (rebalancing erase; host callback here);
+// out = first.
+NativeSoundTreeIterator erase_sound_tree_range_00a88490(NativeSoundTree& tree, NativeSoundTreeIterator first,
+    NativeSoundTreeIterator last, NativeStringStorage& strings, void (*invalid_iterator_00bf6713)(),
+    void (*increment_00a81ad0)(NativeSoundTreeIterator&),
+    void (*erase_iterator_00a839c0)(NativeSoundTree&, NativeSoundTreeIterator));
+// 00A88560, 00A885A0 and 00A885E0 (byte-identical bodies), __fastcall(ECX tree): erase
+// [head->left, head) through 00A88490 (always the whole-tree path, so neither callback is
+// reached), free the head, then head = 0 and size = 0.
+void destroy_sound_sample_tree_raw(NativeSoundTree& tree, NativeStringStorage& strings);
 } // namespace bsp::sound_cc13
