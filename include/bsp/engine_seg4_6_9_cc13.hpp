@@ -13,6 +13,7 @@
 #include <functional>
 #include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "bsp/engine_movie_actions.hpp"
@@ -1198,5 +1199,192 @@ void native_string_pointer_delete_004cc8e0(
     NativeNarrowString*& slot,
     const std::function<void(void* data, std::uint32_t bytes, std::int32_t count)>& pool_return_00bd1510,
     std::uint32_t node_pool, const std::function<void(std::uint32_t pool, void* node)>& node_pool_return_0043b0a0);
+
+// ---------------------------------------------------------------------------
+// Packet cc13-left3: bodies left open by sys4b. Evidence: docs/CC13_LEFT_3.md.
+// ---------------------------------------------------------------------------
+
+// Lua objects are opaque handles owned by the host (B65F50 construct, B67700 destruct).
+using LuaRef = std::uintptr_t;
+struct DialogScriptLuaHost {
+    virtual ~DialogScriptLuaHost() = default;
+    virtual bool is_table_00b661b0(LuaRef object) = 0;
+    virtual bool is_nil_00b65fb0(LuaRef object) = 0;
+    virtual LuaRef get_by_name_00b67800(LuaRef table, const char* name) = 0;
+    virtual void assign_00b67690(LuaRef& target, LuaRef source) = 0;
+    virtual std::string get_string_00b662b0(LuaRef object) = 0;
+    // 00B67080 / 00B67190 (table, key out, value out); 00B66420 tests the key for kind 0.
+    virtual void iterate_first_00b67080(LuaRef table, LuaRef& key, LuaRef& value) = 0;
+    virtual void iterate_next_00b67190(LuaRef table, LuaRef& key, LuaRef& value) = 0;
+    virtual bool is_unbound_00b66420(LuaRef key) = 0;
+    virtual void construct_base_0075b430(std::uint32_t type) = 0;
+};
+// The E1 message (vtable 00CE4B2C; slots WriteBody/ReadBody/TypeEquals).
+struct SessionMessageE1 {
+    std::uint32_t word_04{0};
+    std::string name_18{};
+    std::int32_t value_20{0};
+    std::string script_24{};
+};
+// 0044C970, __thiscall(ECX = message, const NativeString* name, LuaObject table (14h, by
+// value, destroyed by the callee), int value), RET 1Ch; sole caller BSP_LuaBinding_StartDialog.
+// script = 'Dialogues = { ["' name '"]={["sequence"]={' then, when the table is a table, for each
+// entry of table.sequence that is a table with a non-nil "message": '{ ["message"]= "' message
+// '",},', and finally '},},};'.
+void session_message_e1_construct_0044c970(SessionMessageE1& message, const std::string& name,
+                                           LuaRef table, std::int32_t value, DialogScriptLuaHost& host);
+
+// The render-frame calls of 004CAC30 and 004CCBD0.
+struct GameFrameHost {
+    virtual ~GameFrameHost() = default;
+    virtual void front_end_screens_pump_004f8830(float dt) = 0;
+    virtual void* gui_manager_004c12b0() = 0;
+    virtual void gui_manager_update_00aa4f80(void* manager, float dt, std::uint32_t flag) = 0;
+    virtual std::uint32_t& scene_begun_34() = 0;                  // [game+34h]
+    virtual std::uint32_t render_queue_retention_00b1bf90() = 0;  // on 004C11F0
+    virtual void renderer_begin_0c() = 0;                         // [00F8D394] vtable +0Ch
+    virtual void game_render_004ca440() = 0;
+    virtual void game_finish_render_frame_004ca1f0() = 0;
+    // 004CCBD0
+    virtual void* camera_rig_a8() = 0;                            // [[game+19F0h]+A8h]
+    virtual bool camera_rig_alternate_cc(void* rig) = 0;          // byte +CCh
+    virtual void* camera_rig_view(void* rig, bool alternate) = 0; // +D0h or +C8h
+    virtual void* camera_node_19fc() = 0;
+    virtual void foliage_build_visible_set_00af0c50(void* camera, void* view) = 0;  // on [00F8C274]
+    virtual void foliage_frame_counter_increment_20() = 0;        // [[00F8C274]+20h] += 1
+    virtual void shadow_driver_virtual_0c(float value) = 0;       // [00F88C20] vtable +0Ch
+    virtual void shadow_driver_virtual_04() = 0;                  // [00F88C20] vtable +4h
+    virtual void* light_shadow_map_owner_00b7aab0(void* camera) = 0;   // on [game+19F8h]
+    virtual void shadow_map_update_from_camera_00a8f3b0(void* owner) = 0;
+    virtual void submit_main_scene_0068a0d0() = 0;                // ECX = [00E198C4]
+};
+// 004CAC30, no register or stack input, plain RET: 004F8830(0.0), 00AA4F80(GUI manager, 0.0,
+// 0), the scene begin when [game+34h] is 0 and the queue retains nothing, then 004CA440 and a tail
+// JMP to 004CA1F0.
+void game_pump_front_end_frame_004cac30(GameFrameHost& host);
+// 004CCBD0, __fastcall(ECX = game), returns AL = 1.
+bool game_render_foliage_and_shadows_004ccbd0(GameFrameHost& host);
+
+// 004CB420, __fastcall(ECX = block), returns the block: the 288h-byte environment block's
+// defaults. The scalar stores (118, including the zeroing of the string fields) and the 85
+// global stores (00E18804..00E18988, the terrain shader globals) are tables resolved from the
+// decompile and checked offset for offset against the listing (local/l3_envcheck.py).
+struct EnvironmentBlockStore {
+    std::uint16_t offset;
+    std::uint8_t width;   // 1 or 4
+    std::uint32_t bits;
+};
+struct EnvironmentGlobalStore {
+    std::uint32_t address;
+    std::uint32_t bits;
+};
+extern const std::array<EnvironmentBlockStore, 118> kEnvironmentBlockDefaults_004cb420;
+extern const std::array<EnvironmentGlobalStore, 85> kEnvironmentGlobalDefaults_004cb420;
+struct EnvironmentBlockImage {
+    std::array<std::uint8_t, 0x288> bytes{};
+    std::vector<std::pair<std::uint16_t, std::string>> strings{};  // NativeString fields by offset
+};
+struct EnvironmentGlobalsHost {
+    virtual ~EnvironmentGlobalsHost() = default;
+    virtual void store_dword(std::uint32_t address, std::uint32_t bits) = 0;
+    virtual void assign_string_00e18990(const std::string& text) = 0;
+};
+void scene_environment_block_construct_004cb420(EnvironmentBlockImage& block, EnvironmentGlobalsHost& host);
+
+// 004CCCC0, __fastcall(ECX = game), RET: leave the session and tear down the mission objects.
+struct LeaveSessionHost {
+    virtual ~LeaveSessionHost() = default;
+    virtual std::int32_t session_mode_1fe4() = 0;
+    virtual void session_set_mode_0076fad0(std::int32_t mode) = 0;   // ECX = game+1EF0h
+    // Each slot: when non-null, the virtual named by slot (0 or 0Ch) with 1, then cleared.
+    virtual void delete_slot(std::uint32_t where, std::uint32_t vtable_slot) = 0;
+    virtual void class_registry_clear_globals_004a9ac0() = 0;
+    // [00E19900]: 006B9380 then _free, cleared.
+    virtual void award_registry_destroy_00e19900() = 0;
+    // [game+7188h]: its string (+14h/+18h) back to the pool, _free, cleared.
+    virtual void free_record_7188() = 0;
+    virtual void singleton_00f87440_destroy_004c0e40() = 0;
+    virtual void singleton_00f8753c_destroy_004c0ef0() = 0;
+    virtual void clear_byte_719c() = 0;
+    // 00415350 then 00BCFCA0([00F8A304]); then [00F8A304] slot 0 (1) and cleared.
+    virtual void singleton_lifetime_unregister_00f8a304() = 0;
+    virtual void allocation_report_00be3fd0(const char* caption) = 0;
+};
+void game_leave_session_004cccc0(LeaveSessionHost& host);
+
+// 004CD450, __fastcall(ECX = game), unreferenced: +1940h is incremented until
+// "c:\screenshot_<n>.png" does not open with fopen "rb", then [00F8D394] vtable +110h(path).
+struct ScreenshotHost {
+    virtual ~ScreenshotHost() = default;
+    virtual bool file_exists_fopen_rb(const std::string& path) = 0;   // _fopen != null, then _fclose
+    virtual void renderer_save_screenshot_110(const std::string& path) = 0;
+};
+void game_save_next_screenshot_004cd450(std::int32_t& counter_1940, ScreenshotHost& host);
+
+// 004C9EC0, __fastcall(ECX = game), RET: the scene's lighting resource ("AllLights", 3Ch, made
+// when 00B72110 finds none), the ambient light +19F4h (98h, 00B7C290) and the directional light
+// +19F8h ("TestDirectionalLight", 1ECh pool 00B7BD40) when missing; the owner's ambient set
+// (00B825D0), the directional light's vtable +38h with the identity matrix, 004BACD0(ambient,
+// directional, [game+5FCh]) and the directional light's vtable +50h(owner, 1).
+struct DefaultLightingHost {
+    virtual ~DefaultLightingHost() = default;
+    virtual void* scene_lighting_owner_00b72110() = 0;                     // on [game+19ECh]
+    virtual void* scene_resource_create_all_lights() = 0;                  // new 3Ch, "AllLights"
+    virtual void scene_set_resource_00b723f0(void* owner) = 0;
+    virtual void release(void* object) = 0;
+    virtual void*& ambient_light_19f4() = 0;
+    virtual void* ambient_light_create_00b7c290() = 0;                     // new 98h
+    virtual void owner_set_ambient_00b825d0(void* owner, void* ambient) = 0;
+    virtual void*& directional_light_19f8() = 0;
+    virtual void* directional_light_create_00b7c6b0(const std::string& name) = 0;  // pool 1ECh
+    virtual void light_virtual_38(void* light, const float matrix[16]) = 0;
+    virtual void* lighting_configuration_5fc() = 0;
+    virtual void lighting_apply_004bacd0(void* ambient, void* directional, void* configuration) = 0;
+    virtual void light_virtual_50(void* light, void* owner, std::uint32_t flag) = 0;
+};
+void scene_ensure_default_lighting_004c9ec0(DefaultLightingHost& host);
+
+// 00471080, __fastcall(ECX = entity), RET; vtable slot +A0h of the anim entity: base 0048DBD0,
+// +18Ch = 00B6DC90([[[e+178h]+160h]+0Ch], 0), +190h = U(0, +18Ch) from 00BD2F10 with ECX = 0.
+// The draw is on stream 0, the shared gameplay stream (census site 004710BB, PRESENTATION).
+struct AnimEntityInitHost {
+    virtual ~AnimEntityInitHost() = default;
+    virtual void sentity_init_base_0048dbd0() = 0;
+    virtual float animation_length_00b6dc90(std::uint32_t arg) = 0;
+    virtual float random_uniform_00bd2f10_stream0(float lo, float hi) = 0;
+};
+void anim_entity_sentity_init_00471080(float& length_18c, float& phase_190, AnimEntityInitHost& host);
+// 00479BD0, __fastcall(ECX = entity), RET: base 0048DBD0, then +18Ch = 0.0.
+void vehicle_visual_entity_sentity_init_00479bd0(float& field_18c, AnimEntityInitHost& host);
+
+// The scene name hash: table +4h count, +8h 64 bucket heads; node next +0Ch. Iterator +0h table,
+// +4h node, +8h bucket index. Both are __fastcall(ECX = iterator), RET.
+struct SceneNameHashNode {
+    const SceneNameHashNode* next_0c{nullptr};
+};
+struct SceneNameHashTable {
+    std::uint32_t count_04{0};
+    // Bucket heads; the image reads one slot past the 64 (table +108h) when every bucket from
+    // 1 on is empty, which a non-zero count rules out.
+    std::array<const SceneNameHashNode*, 65> buckets_08{};
+};
+struct SceneNameHashIterator {
+    const SceneNameHashTable* table_00{nullptr};
+    const SceneNameHashNode* node_04{nullptr};
+    std::uint32_t bucket_08{0};
+};
+void scene_name_hash_iterator_begin_00466bb0(SceneNameHashIterator& it);
+bool scene_name_hash_iterator_next_00466c00(SceneNameHashIterator& it);
+
+// 00467C80, __thiscall(ECX = value, const float* xyz, float w), RET 8.
+struct ScenePropertyVector3Value {
+    std::uint8_t byte_00{0};
+    std::uint8_t byte_01{0};
+    std::uint16_t word_02{0};
+    std::uint32_t word_04{0};
+    float xyz_08[3]{};
+    float w_14{0.0f};
+};
+void scene_property_value_construct_vector3_00467c80(ScenePropertyVector3Value& value, const float* xyz, float w);
 
 } // namespace bsp::cc13_sys
