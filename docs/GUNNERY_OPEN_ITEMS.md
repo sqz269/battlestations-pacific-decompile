@@ -13760,3 +13760,24 @@ gunnery flak error attach rolls`. RNG: about 7 more stream-1 draws per roll.
 | USN15 | rolls 0; exit 0 or 1 |
 | USN12 | exit 3 (stream re-ordered); first salvos carry error, so slightly fewer flak hits early; win kept |
 | USN21 | exit 3; cc13: perfect first salvos were about 40-55 hits (5-7 % of flak damage), so about 2-4 fewer flak kills |
+
+## 221. AA pick D2 (+D1): the per-gun range gate measures mount to pose origin: `kAaSlotRangeOriginBound`, OFF (lead queue item 2; cc9-gunnery41, 2026-10-13)
+
+**Image** (docs/CC13_VER_19.md D2, D1). `00729BC0`'s gate (`00729C35`-`00729C7A`, `00729C8A` JA) measures the gun
+entity's `+FCh` (the mount) to the target's `+FCh`; the director arms (`008654E1` CALL `00427EB0`, and
+`piVar2[3Fh..41h]`) measure `+FCh` too. No class Height is added anywhere.
+
+**Host.** `gun_inputs` measured unit aim point to target aim point (both Height-raised, no mount);
+`unit_world_position_00427eb0` / `entity_world_position` returned aim points. ON: the gate measures
+`gun_muzzle_point` (the mount when known, else the aim point) to the target pose origin, and both arm hooks
+return pose origins. Counter `aa_slot_origin_flips` (asks whose answer differs), logged as `summary mission
+gunnery slot range origin flips`. The gate is every category's, so ship-to-ship gunnery moves too. The stale
+"+D8h has no writer" comment in the flak step is corrected.
+
+**Predictions, written before any ON run.**
+
+| row | prediction ON |
+| --- | --- |
+| USN15 | flips > 0 (surface gunnery at the range edge); exit 3; first-fire times move by seconds per mount; win kept |
+| USN12 | exit 3; AA first rounds seconds earlier (bow) or later (stern); win kept |
+| USN21 | exit 3; RNG-coupled per-plane fates, no attributable sign |

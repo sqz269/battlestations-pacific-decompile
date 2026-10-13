@@ -357,6 +357,16 @@ constexpr bool kFlakFuseArmTimeBound = false;
 //    salvo had no error. ON: the attach roll (at the gun's first flak tick,
 //    labelled) and the re-send roll. OFF: as before.
 constexpr bool kFlakErrorRerollBound = false;
+//  * kAaSlotRangeOriginBound: packet cc9_g41_aa_pick_d2 (docs/CC13_VER_19.md D2,
+//    D1 folded in). 00729BC0's per-gun range gate (00729C35..00729C7A, then
+//    00729C8A JA: !(distance > [ammo+60h])) measures the gun entity's +FCh, the
+//    mount, against the target's +FCh, the pose origin; the director arms
+//    (008654E1 CALL 00427EB0, and piVar2[3Fh..41h]) measure +FCh too. The host
+//    measured class-Height-raised aim points for all three. ON: the gate uses
+//    gun_muzzle_point (the mount when known) to the target pose origin, and
+//    the arms use pose origins. Every category's gate moves, not only AA.
+//    OFF: as before.
+constexpr bool kAaSlotRangeOriginBound = false;
 //  * kTorpedoSwimThrustBound: packet cc9_torpedo_tube_turn,
 //    docs/TORPEDO_FRIENDLY_CROSSING.md section 6. 00857480, the swim advance,
 //    per step on a torpedo in the water: 00856BB0 -> 00857061 yaws the NOSE
@@ -2423,6 +2433,7 @@ struct GameGunneryHost::Impl {
     unsigned long long flak_vertical_adjusts{0};   // kFlakNegativeVerticalBound
     unsigned long long aa_lead_gate_moves{0};      // kAaLeadDistanceGateBound
     unsigned long long flak_fuse_unarmed_steps{0}; // kFlakFuseArmTimeBound
+    unsigned long long aa_slot_origin_flips{0};    // kAaSlotRangeOriginBound
     unsigned long long aa_negative_halvings{0};
     unsigned long long water_depth_kills{0};   // packet cc9_water_surface_law
     unsigned long long airfield_destroy_kills{0};  // packet cc9_airfield_destruction_rule
@@ -5681,6 +5692,12 @@ public:
 
     std::array<float, 3> unit_world_position_00427eb0() override {
         float point[3];
+        if (kAaSlotRangeOriginBound) {
+            // 008654E1 CALL 00427EB0: the unit's +FCh, the pose origin.
+            float right[3], up[3], forward[3];
+            owner_.unit_pose(unit_, right, up, forward, point);
+            return {point[0], point[1], point[2]};
+        }
         owner_.unit_aim_point(unit_, point);
         return {point[0], point[1], point[2]};
     }
@@ -5740,7 +5757,15 @@ public:
     std::array<float, 3> entity_world_position(void* entity) override {
         const std::size_t other = unit_of(entity);
         float point[3] = {0.0f, 0.0f, 0.0f};
-        if (other < owner_.units.count()) owner_.unit_aim_point(other, point);
+        if (other < owner_.units.count()) {
+            if (kAaSlotRangeOriginBound) {
+                // The second director arm, piVar2[3Fh..41h]: the element's +FCh.
+                float right[3], up[3], forward[3];
+                owner_.unit_pose(other, right, up, forward, point);
+            } else {
+                owner_.unit_aim_point(other, point);
+            }
+        }
         return {point[0], point[1], point[2]};
     }
     float vector_length_0042b2f0(const std::array<float, 3>& v) override {
@@ -5782,7 +5807,24 @@ public:
                 theirs[2] - mine[2]};
             const GameGunneryHost::Impl::SecondAmmo* dp = owner_.dp_air_ammo(slot,
                 row.category, other);
-            in_range = length3(delta) <= (dp != nullptr ? dp->max_range : row.max_range);
+            float reach = length3(delta);
+            if (kAaSlotRangeOriginBound) {
+                // 00729C35..00729C7A: the gun entity's +FCh (the mount) against
+                // the target's +FCh (the pose origin, no Height).
+                float right[3], up[3], forward[3], origin[3];
+                owner_.unit_pose(unit_, right, up, forward, origin);
+                float tr[3], tu[3], tf[3], target_pos[3];
+                owner_.unit_pose(other, tr, tu, tf, target_pos);
+                float muzzle[3];
+                owner_.gun_muzzle_point(row, state_, right, up, forward, origin, muzzle);
+                const float m[3] = {target_pos[0] - muzzle[0], target_pos[1] - muzzle[1],
+                    target_pos[2] - muzzle[2]};
+                const float mount_reach = length3(m);
+                const float range = dp != nullptr ? dp->max_range : row.max_range;
+                if ((mount_reach <= range) != (reach <= range)) ++owner_.aa_slot_origin_flips;
+                reach = mount_reach;
+            }
+            in_range = reach <= (dp != nullptr ? dp->max_range : row.max_range);  // 00729C8A JA
         }
         in.slot_accepts_target = in_range;
         // Evaluated on every call so a run with the switch off still counts what
@@ -9592,8 +9634,9 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
         // 006E6490 (the base tick and its direct-strike sweep above):
         //   0070C3B1: FlyTime (+54h) spent -> 0070C210(proj, 0), the silent
         //             expiry the host's life bound already models;
-        //   0070C3E2: armed once flight time > FlakFuseTime (+D8h; no reader
-        //             writes it, so 0 from 006E8320) and the scaled step > 0;
+        //   0070C3E2: armed once flight time > FlakFuseTime (+D8h, which
+        //             0070C0B0 writes as MinRange / V0; kFlakFuseArmTimeBound)
+        //             and the scaled step > 0;
         //   0070C41C: the step segment from the previous snapshot, its length L
         //             and unit direction; M the segment midpoint (0070C4A8);
         //   unlocked (byte +288h clear): walk the world entity list
@@ -14461,6 +14504,9 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery flak error attach rolls=%llu send rolls=%llu "
             "bound=%d (008FF055 / 008FF247, packet cc9_g41_flak_d2)", host.aa_flak_attach_rolls,
             host.aa_flak_send_rolls, kFlakErrorRerollBound ? 1 : 0);
+        host.log.notef("summary mission gunnery slot range origin flips=%llu bound=%d "
+            "(00729C35, packet cc9_g41_aa_pick_d2)", host.aa_slot_origin_flips,
+            kAaSlotRangeOriginBound ? 1 : 0);
         host.log.notef("summary mission gunnery water depth kills=%llu (007CE3A7, packet "
             "cc9_water_surface_law)", host.water_depth_kills);
         host.log.notef("summary mission gunnery airfield sub-entity asks=%llu listed=%llu "
