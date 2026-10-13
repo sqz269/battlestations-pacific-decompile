@@ -278,3 +278,29 @@ There, a script launch makes a squadron immediately and returns it, where today 
 
 RNG: whatever the squadron factory and the two extra steps draw. Those are the same paths GenerateObject and the
 deck's own launches already take, and only in those missions.
+
+## 9. PutFormationTo 008AA260 (verified)
+
+Switch: `kLuaPutFormationToBound` (src/game_hosts_script_orders.cpp).
+
+What it does, from the bytes:
+- Argument 0 is read through 00888D20 (the `Ptr` field) and argument 1 as a Vector3.
+- With exactly four arguments (008AA3CA), argument 3 is taken times 00CE3D28 (pi as a float, the double
+  0x400921FB60000000) and divided by 00CE3D20 (180.0).
+- With three or more (008AA41F), argument 2 is the shape; otherwise the shape is -1.
+- In single player (`[game+1FE4h] == 0`):
+  - 008AA4E0 calls 0070EFD0(shape) on `[unit+284h]` when shape - 1 < 3 and the unit is grouped;
+  - then `vtable[118h](pos)` and, with the heading, `vtable[11Ch](heading)`.
+- In multiplayer it routes the relocate message instead.
+- It has no result.
+
+So it is PutTo with an optional formation reshape before the move. The host runs PutTo's placement:
+- 008193A0;
+- the squadron member placement under `kSquadronPutToMembersBound`;
+- the heading stays the same record PutTo keeps.
+
+LABELLED: the reshape 0070EFD0(shape) is a record. The host has only the AI host's shape-0 tick, not a reshape by
+shape.
+
+**Prediction.** No WIN script calls it. There are 12 calls: COTP usn_02/03/06 (both copies), prcp_06 and jm07. Those
+units jump to the scripted point, where today they stay put. RNG: none.

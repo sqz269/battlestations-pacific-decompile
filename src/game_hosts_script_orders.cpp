@@ -137,6 +137,13 @@ inline constexpr bool kLuaNavigatorStopBound = false;
 // descriptor, 1) at 008A7729 (bsp::navigator_cruise_order_008a75c0), through
 // entity_issue_command. False leaves it an unimplemented record, as before.
 inline constexpr bool kLuaNavigatorCruiseBound = false;
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 9). True binds PutFormationTo
+// 008AA260 (unit, pos[, shape[, heading]]), single player: with shape 1..3 and the
+// unit in a group, 0070EFD0(shape) on [unit+284h] (a record here: no host reshape
+// by shape), then vtable[118h](pos) and, with exactly four arguments,
+// vtable[11Ch](heading * pi / 180) - PutTo's placement (008193A0, the squadron's
+// member placement) and its heading record. False: unimplemented, as before.
+inline constexpr bool kLuaPutFormationToBound = false;
 inline constexpr bool kPilotLandNativeBound = true;
 constexpr bool kDisablePhysicsBound = true;
 constexpr bool kAddMatrixInterpolatorBound = true;
@@ -179,6 +186,8 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     {"NavigatorStop", 0x008a7400u},
     // Packet cc13-fix5: handled only with kLuaNavigatorCruiseBound.
     {"NavigatorCruise", 0x008a75c0u},
+    // Packet cc13-fix5: handled only with kLuaPutFormationToBound.
+    {"PutFormationTo", 0x008aa260u},
     // Packet cc9_scripted_order_natives part 2: SetShipMaxSpeed is handled only
     // with kScriptedOrderNatives2Bound, PilotLand only with kPilotLandNativeBound.
     {"SetShipMaxSpeed", 0x00890a10u},
@@ -602,6 +611,7 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
     }
     if (std::strcmp(binding->name, "NavigatorStop") == 0) return kLuaNavigatorStopBound;
     if (std::strcmp(binding->name, "NavigatorCruise") == 0) return kLuaNavigatorCruiseBound;
+    if (std::strcmp(binding->name, "PutFormationTo") == 0) return kLuaPutFormationToBound;
     if (std::strcmp(binding->name, "SetShipMaxSpeed") == 0) return kScriptedOrderNatives2Bound;
     if (std::strcmp(binding->name, "PilotLand") == 0) return kPilotLandNativeBound;
     if (std::strcmp(binding->name, "PilotRetreat") == 0) return bsp::kPlaneRetreatTaskBound;
@@ -3698,6 +3708,41 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             index < units_.count() ? name_of(entity).c_str() : "?",
             static_cast<double>(pos[0]), static_cast<double>(pos[1]),
             static_cast<double>(pos[2]), placed ? 1 : 0);
+        results = 0;
+    } else if (std::strcmp(binding->name, "PutFormationTo") == 0) {
+        // 008AA260, packet cc13-fix5 (docs/CC13_FIX_5.md section 9): argument 0
+        // through 00888D20 (the Ptr field), argument 1 as a Vector3; with exactly
+        // four arguments (008AA3CA) argument 3 * 00CE3D28 (pi as a float) /
+        // 00CE3D20 (180.0); with three or more (008AA41F) argument 2 as the shape,
+        // else -1. Single player ([game+1FE4h] == 0): 008AA4E0 0070EFD0(shape) on
+        // [unit+284h] when shape - 1 < 3 and the unit is grouped, then
+        // vtable[118h](pos) and vtable[11Ch](heading). No result.
+        void* entity = argument_ptr_field(0);
+        if (entity == nullptr) entity = entity_from_argument(0);
+        float pos[3] = {0.0f, 0.0f, 0.0f};
+        const bool have_pos = argument_vector3(1, pos);
+        const int shape = argument_count_ >= 3 ? argument_integer(2) : -1;
+        const std::size_t index = index_of(entity);
+        bool placed = false;
+        if (entity != nullptr && index < units_.count()) {
+            if (static_cast<unsigned>(shape - 1) < 3u && units_.unit_formation_group_0284(index) >= 0) {
+                log_.unimplemented("PutFormationTo::apply_formation_shape", "0070efd0");
+            }
+            if (have_pos) {
+                placed = units_.place_at_world_position_008193a0(index, pos);
+                // 007F2E8F: a squadron's vtable[118h] then places its members.
+                if (kSquadronPutToMembersBound && placed) {
+                    units_.place_squadron_members_007f2920(index);
+                }
+            }
+        }
+        if (argument_count_ == 4) {
+            log_.unimplemented("PutFormationTo::set_heading_vtable_011c", "008196b0");
+        }
+        log_.notef("  PutFormationTo: %s pos=(%.1f, %.1f, %.1f) shape=%d placed=%d (008AA260, "
+            "packet cc13-fix5)", index < units_.count() ? name_of(entity).c_str() : "?",
+            static_cast<double>(pos[0]), static_cast<double>(pos[1]),
+            static_cast<double>(pos[2]), shape, placed ? 1 : 0);
         results = 0;
     } else if (std::strcmp(binding->name, "Scoring_GetPlayerShotDown") == 0) {
         // 008BC9B0: slot = argument 0 as an integer, 0 when absent (not
