@@ -639,6 +639,14 @@ int lua_kill_dialog(LuaArgs& args, ContentHost& host)
     return 0;
 }
 
+int lua_start_dialog(LuaArgs& args, DialogStartHost& host)
+{
+    host.dialog_start_from_lua(args.get_string(0), args, 1);
+    if (host.game_session_mode_1fe4() == 1) {
+        host.session_send_dialog_e1(args.get_string(0), args, 1);
+    }
+    return 0;
+}
 int lua_stop_effect(LuaArgs& args, ContentHost& host)
 {
     void* effect = args.to_userdata(0);
@@ -1061,6 +1069,17 @@ int lua_movcam_pick_snitt_deck_position(LuaArgs& args, MovCamModeHost& host)
     host.pick_deck_position(name, entity, other);
     return 0;
 }
+int lua_movcam_set_pos_rot_zoom(LuaArgs& args, MovCamPoseHost& host)
+{
+    const Vec3 position = args.read_vector3(0);
+    const Vec3 rotation = args.read_vector3(1);
+    const float zoom = narrow(args.get_number(2));
+    host.movcam_ensure_target();
+    host.movcam_set_pos_rot(position, rotation); // 008BFCCE
+    host.movcam_ensure_target();
+    host.movcam_set_zoom(zoom);
+    return 0;
+}
 // ---------------------------------------------------------------------------
 // Clouds
 // ---------------------------------------------------------------------------
@@ -1217,6 +1236,96 @@ int lua_remove_temp_added_stuff(LuaArgs& args, AmbientHost& host)
 {
     host.remove_temp_added_0049de90(args.get_string(0));
     return 0;
+}
+int lua_set_tip_effect(LuaArgs& args, EngineEffectHost& host)
+{
+    void* entity = args.entity_at(0);
+    for (int i = 0; i < host.plane_engine_count_3cc(entity); ++i) {
+        void* engine = i < kPlaneEngineSlots ? host.plane_engine_3d0(entity, i) : nullptr;
+        const bool on = args.get_boolean(1);
+        host.plane_update_engine_effects(engine, on ? 1.0f : 0.0f); // CVTSI2SS of the byte
+    }
+    return 0;
+}
+int lua_add_animated_part_effect(LuaArgs& args, PartEffectHost& host)
+{
+    void* object = host.lua_object_00888960(args, 0);
+    if (host.object_vcall_20(object)) {
+        const std::string name = args.get_string(2);
+        host.unit_part_effect_start_by_index(object, args.get_integer(1), name);
+    }
+    return 0;
+}
+// ---------------------------------------------------------------------------
+// Read-only queries
+// ---------------------------------------------------------------------------
+
+int lua_is_landscape(LuaArgs& args, LuaResults& results, QueryHost& host)
+{
+    float height = 0.0f;
+    if (host.world_ground_height_at(args.read_vector3(0), height) && height > 0.0f) {
+        results.push_float(height);
+    } else {
+        results.push_nil();
+    }
+    return 1;
+}
+
+int lua_is_ship(LuaArgs& args, LuaResults& results, QueryHost& host)
+{
+    const Vec3 point = args.read_vector3(0);
+    Vec3 top = point;
+    top.y = kIsShipProbeHeight;
+    Vec3 bottom = point;
+    bottom.y = 0.0f; // XORPS
+    bool kind6 = false;
+    float value = 0.0f;
+    if (host.spatial_query_segment(top, bottom, kind6, value) && kind6) {
+        results.push_float(value);
+    } else {
+        results.push_nil();
+    }
+    return 1;
+}
+
+int lua_do_vector3(LuaArgs& args, LuaResults& results)
+{
+    Vec3 v;
+    v.x = narrow(args.get_number(0));
+    v.y = narrow(args.get_number(1));
+    v.z = narrow(args.get_number(2));
+    results.push_vector3(v);
+    return 1;
+}
+
+int lua_get_entity_speed(LuaArgs& args, LuaResults& results, QueryHost& host)
+{
+    results.push_float(host.entity_vcall_38_speed(args.entity_at(0)));
+    return 1;
+}
+
+int lua_get_direction(LuaArgs& args, LuaResults& results, QueryHost& host)
+{
+    results.push_vector3(host.entity_world_row_ec(args.entity_at(0)));
+    return 1;
+}
+
+int lua_relative_position(LuaArgs& args, LuaResults& results, QueryHost& host)
+{
+    void* entity = args.entity_at(0);
+    const Vec3 point = args.read_vector3(1);
+    results.push_vector3(host.entity_local_to_world(entity, point));
+    return 1;
+}
+
+int lua_get_bounding(LuaArgs& args, LuaResults& results, QueryHost& host)
+{
+    Vec3 lo;
+    Vec3 hi;
+    host.entity_bounding_box(args.entity_at(0), lo, hi);
+    results.push_vector3(lo);
+    results.push_vector3(hi);
+    return 2;
 }
 // ---------------------------------------------------------------------------
 // Small accessors and value types

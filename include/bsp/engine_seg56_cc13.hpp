@@ -376,6 +376,17 @@ int lua_mission_narrative_party(LuaArgs& args, ContentHost& host);       // 008B
 int lua_mission_narrative_player(LuaArgs& args, ContentHost& host);      // 008B13E0
 int lua_break_dialog(LuaArgs& args, ContentHost& host);                  // 008B07C0
 int lua_kill_dialog(LuaArgs& args, ContentHost& host);                   // 008B0940
+// StartDialog 008B0540: the LuaObject of arg1 is built first in the outgoing argument area,
+// then string arg0; 00451A90 on [[00E188A8]+21E4h] with (name, arg1). When game+1FE4h == 1:
+// string arg0 again, session message E1 (0044C970 with the name and the LuaObject of arg1),
+// 0076A9F0 on game+1EF0h, 0044CCE0.
+struct DialogStartHost {
+    virtual ~DialogStartHost() = default;
+    virtual void dialog_start_from_lua(const std::string& name, LuaArgs& args, int index) = 0;
+    virtual std::int32_t game_session_mode_1fe4() = 0;
+    virtual void session_send_dialog_e1(const std::string& name, LuaArgs& args, int index) = 0;
+};
+int lua_start_dialog(LuaArgs& args, DialogStartHost& host);
 int lua_stop_effect(LuaArgs& args, ContentHost& host);                   // 008A9CA0
 int lua_destroy_effect(LuaArgs& args, ContentHost& host);                // 008CB5B0
 
@@ -592,6 +603,15 @@ int lua_movcam_tompi_mode(LuaArgs& args, MovCamModeHost& host);           // 008
 int lua_movcam_set_secondary_target(LuaArgs& args, MovCamModeHost& host); // 008B60C0
 int lua_movcam_add_interpolator(LuaArgs& args, MovCamModeHost& host);     // 008B6740
 int lua_movcam_pick_snitt_deck_position(LuaArgs& args, MovCamModeHost& host); // 008B6AD0
+// MovCam_SetPosRotZoom 008BFA70: vectors arg0 and arg1 and number arg2; 005CD160, 007998C0(arg0
+// by value, arg1 by value), then 005CD160 again and 0078E480(zoom).
+struct MovCamPoseHost {
+    virtual ~MovCamPoseHost() = default;
+    virtual void movcam_ensure_target() = 0;                                  // 005CD160
+    virtual void movcam_set_pos_rot(const Vec3& position, const Vec3& rotation) = 0; // 007998C0
+    virtual void movcam_set_zoom(float zoom) = 0;                            // 0078E480
+};
+int lua_movcam_set_pos_rot_zoom(LuaArgs& args, MovCamPoseHost& host);
 // ---------------------------------------------------------------------------
 // Cloud bindings
 // ---------------------------------------------------------------------------
@@ -687,6 +707,67 @@ int lua_temp_add_floatsam(LuaArgs& args, AmbientHost& host);
 int lua_temp_add_anim(LuaArgs& args, AmbientHost& host);
 // RemoveTempAddedStuff 008C5E20: 0049DE90(string arg0).
 int lua_remove_temp_added_stuff(LuaArgs& args, AmbientHost& host);
+
+// SetTipEffect 0089E670: for i below the engine count +3CCh of entity arg0, 007C4DD0 on the
+// engine pointer +3D0h[i] (null past index 4, the array has five slots; CMP ESI,4 / JA) with
+// the float of boolean arg1, re-read every iteration.
+struct EngineEffectHost {
+    virtual ~EngineEffectHost() = default;
+    virtual int plane_engine_count_3cc(void* entity) = 0;
+    virtual void* plane_engine_3d0(void* entity, int index) = 0;
+    virtual void plane_update_engine_effects(void* engine, float on) = 0; // 007C4DD0
+};
+int lua_set_tip_effect(LuaArgs& args, EngineEffectHost& host);
+inline constexpr int kPlaneEngineSlots = 5;
+
+// AddAnimatedPartEffect 008A5650: the object 00888960 returns for arg0; when its vtable+20h
+// answers non-zero, string arg2 then int arg1, and 00711210 on the object with (index, name).
+struct PartEffectHost {
+    virtual ~PartEffectHost() = default;
+    virtual void* lua_object_00888960(LuaArgs& args, int index) = 0;
+    virtual bool object_vcall_20(void* object) = 0;
+    virtual void unit_part_effect_start_by_index(void* object, int index, const std::string& name) = 0;
+};
+int lua_add_animated_part_effect(LuaArgs& args, PartEffectHost& host);
+// ---------------------------------------------------------------------------
+// Read-only world and entity queries
+// ---------------------------------------------------------------------------
+
+struct QueryHost {
+    virtual ~QueryHost() = default;
+    // 00903860: true with the height when the point has ground.
+    virtual bool world_ground_height_at(const Vec3& point, float& height) = 0;
+    // 0098ADD0 on the spatial index 0042E630, segment `top` to `bottom` into a hit record
+    // (00470470 / 004704B0); on a hit, the object's vtable+5Ch(6) answer and the record float.
+    virtual bool spatial_query_segment(const Vec3& top, const Vec3& bottom, bool& hit_is_kind6,
+        float& hit_value) = 0;
+    virtual float entity_vcall_38_speed(void* entity) = 0;          // vtable+38h
+    // World matrix rows at +CCh (refreshed by 00414DB0 when byte +C8h is clear).
+    virtual Vec3 entity_world_row_ec(void* entity) = 0;             // +ECh, the third row
+    virtual Vec3 entity_local_to_world(void* entity, const Vec3& point) = 0; // 004142E0, +CCh
+    // *( *(entity+360h)+160h )+0Ch vtable+4Ch: the box (min, max). The native has no test of
+    // +360h: a null there faults.
+    virtual void entity_bounding_box(void* entity, Vec3& lo, Vec3& hi) = 0;
+};
+
+// IsLandscape 00894820: the ground height at vector arg0 when there is ground and it is above
+// 0.0f (00D7A218), else nil.
+int lua_is_landscape(LuaArgs& args, LuaResults& results, QueryHost& host);
+// IsShip 008949D0: segment from (x, 50.0f (00CEB4D4), z) down to (x, 0, z) of vector arg0;
+// pushes the hit value when the hit object answers vtable+5Ch(6), else nil.
+inline constexpr float kIsShipProbeHeight = 50.0f;
+int lua_is_ship(LuaArgs& args, LuaResults& results, QueryHost& host);
+// DoVector3 00899300: {x = arg0, y = arg1, z = arg2}.
+int lua_do_vector3(LuaArgs& args, LuaResults& results);
+// GetEntitySpeed 008C0820: the entity's vtable+38h float.
+int lua_get_entity_speed(LuaArgs& args, LuaResults& results, QueryHost& host);
+// GetDirection 008A7CB0: the world-matrix row at +ECh as {x, y, z}.
+int lua_get_direction(LuaArgs& args, LuaResults& results, QueryHost& host);
+// RelativePosition 008A8070: vector arg1 through the entity's world matrix (004142E0 with the
+// point as ECX and the matrix +CCh), as {x, y, z}.
+int lua_relative_position(LuaArgs& args, LuaResults& results, QueryHost& host);
+// GetBounding 0089B4E0: two tables, min then max.
+int lua_get_bounding(LuaArgs& args, LuaResults& results, QueryHost& host);
 
 // ---------------------------------------------------------------------------
 // Small accessors and value types

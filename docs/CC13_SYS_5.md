@@ -108,6 +108,18 @@ Added after the first commit, same method:
   `StopVehicleAnim` 008C3060, `GetVisibilityTerrainNode` 008C3410, `InsertFishSchool` 008C2970,
   `TempAddFloatsam` 008C5B80, `TempAddAnim` 008C5CD0, `RemoveTempAddedStuff` 008C5E20.
 
+## Fourth batch
+
+- Generic world and entity reads (no state change): `IsLandscape` 00894820, `IsShip` 008949D0
+  (a vertical probe from y = 50 to 0 through the spatial index), `DoVector3` 00899300,
+  `GetEntitySpeed` 008C0820, `GetDirection` 008A7CB0 (the world-matrix row at +ECh),
+  `RelativePosition` 008A8070 (004142E0 takes the point as ECX and the output on the stack),
+  `GetBounding` 0089B4E0.
+- `MovCam_SetPosRotZoom` 008BFA70 (two vectors by value, then a second 005CD160 for the zoom),
+  `StartDialog` 008B0540, `SetTipEffect` 0089E670 (the engine array at +3D0h has five slots and
+  the loop bound +3CCh is not clamped: past index 4 the call gets a null ECX),
+  `AddAnimatedPartEffect` 008A5650.
+
 ## Divergences and uncertainty
 
 - The models take values and callbacks; nothing reproduces native object layout.
