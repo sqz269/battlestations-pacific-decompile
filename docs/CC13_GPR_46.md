@@ -121,6 +121,15 @@ This pass reads both.
 | `007AE7B0` | `distance_to_polyline_007ae7b0` | One point: `0042B2F0(pos - p0)`. Otherwise the minimum over the legs of `0046FF70(pos, p[i], p[i+1])` (reusing `cc13_sys::point_segment_distance_0046ff70`), starting from FLT_MAX. |
 | `007B1EC0` | `erase_points_outside_world_007b1ec0` | Read whole. The ledger calls it a clip, but it **erases**. Each point with `x < [game+711Ch]`, `x > [+7128h]`, `z > [+7124h]` or `z < [+7130h]` is removed through `0071F3E0`, and the walk then restarts at index 0. The compares are strict, so a NaN coordinate keeps its point. The caller is `0071FDE0` `BSP_DirectorPathObject_AddPoint`. |
 
+### 1.8 Path sources and landscape drop (cc13-gpr46b)
+
+| address | model | what it does |
+| --- | --- | --- |
+| `007ADA60` | `simple_source_nearest_index_007ada60` | The nearest-index slot +14h of three sources: the base (`00D052F0`), the **simple** source (`00D0532C`, built by `007B2250` on the kind-0 moveonpath arm) and the owned-points source (`00D05454`). **Image quirk, read from the bytes:** inside the loop the point fetch `vslot +8h(&out, 1)` pushes the constant 1 (`007ADAD5 6A 01`), not the loop index. Only points 0 and 1 are ever compared, so the answer is -1 with no points, otherwise 0 or 1. Point 0's distance is `0042B2F0` stored to float; point 1's uses the inline 1e-10/sqrt form; the strictly smaller wins. |
+| `007B15F0` | `drop_points_onto_landscape_007b15f0` | Runs only when the path entity's parent answers IsKindOf(44h). For each point: to world (+CCh matrix, divide, x and z only), `y = f(0087FA50 forward height)`, back to local (+110h inverse, divide), then `vslot +4h` stores the point. After the loop, `007AF150` runs when byte +18h is clear. |
+
+`007AEEC0` (`BSP_Point3PtrArray_NearestPointToLine`) has no code or data reference (`ghidra xrefs`), so it was
+not modelled.
 ## 2. Adoption table (cc9 terms)
 
 | model | replaces (host file:line) | inputs and where the host gets them | RNG | OFF-switch prediction |
@@ -132,6 +141,8 @@ This pass reads both.
 
 | `nearest_point_index_007aed10`, `path_local_from_homogeneous_007b0900`, `start_index_for_position_007b11f0` | `src/game_hosts_commands.cpp:3142` (`ship_ai_path_nearest_index_007b1100`, the planar hypothesis, fed only x and z) and the `007B11F0` head at `:3132` | the path's points in the path entity's local frame and that entity's inverse world matrix (the authored path is a scene entity, `pathID`); the cursor's direction byte; `00419260` (`native_vector2_reciprocal_length_00419260`) | none | OFF: none. ON, two effects. First, the nearest index becomes 3-D in the path's local frame, so it moves only where the path points or the ship sit off y = 0 or the path entity is transformed. Second, the start index takes the next point in the travel direction whenever the unit is already past the nearest point along that leg, so a ship joining mid-leg stops turning back to the point behind it. Ships on move-on-path orders can therefore change course at the join; which missions move was not measured. |
 | `centroid_007ae6d0`, `distance_to_polyline_007ae7b0` | none found (their callers are the world wrappers `007B0650`/`007B0710`, reached through the path interface's vtable; no host caller was traced) | path points, query position, `0042B2F0` | none | none known until a caller is bound |
+| `simple_source_nearest_index_007ada60` | `src/game_hosts_commands.cpp:3142`, the same planar search as above, for paths built on the kind-0 (slot) arm | the simple source's points (`vslot +8h`) and `0042B2F0` | none | ON: a ship that joins a slot-built path starts at point 0 or 1, never further along; `007B11F0` then picks the neighbour. Authored `Path` entities (USN04's arm) are not affected. |
+| `drop_points_onto_landscape_007b15f0` | none found | the path entity's matrices, the landscape forward height `0087FA50` | none | none known until a caller is bound |
 | `erase_points_outside_world_007b1ec0` | none (the host has no `0071FDE0` DirectorPathObject AddPoint) | the point vector and the map box `[game+711Ch..+7130h]` (as in `band_007a_cc13`'s `007EF8F0`) | none | ON: script-added path points outside the map box are dropped rather than kept |
 
 The capture itself (`006F6760` adds `CapturePower` per capturer) is the ship-AI host's arm 3 and is not
@@ -139,15 +150,30 @@ modelled here.
 
 ## 3. Open questions
 
-- **`flying` (`+458h`).** The only native writes are the constructor's clear (`007AB980`) and the network
-  create (`006E1A35`, from message `+11Ch`). `BSP_BombProjectile_Activate` (`006E2E10`) binds it as the script
-  property `{3, &+458h}` / `{0, "flying"}` under `"_bulletBase"` (`006E30D8`-`006E30F7`, `BSP_LuaReader_ReadField`
-  `00BD6830`). Byte scans for stores (`C6 ?? 58 04 00 00 01`, `88 ?? 58 04 00 00` and their SIB forms,
-  `C7`/`66 89`/`0F 9x`) found no other writer.
-  - Without `flying`, `007AB360` holds the round in "fall" and never calls `+19Ch`, and `007AC000` never
-    lands it.
-  - It is not settled whether a rack-dropped round reaches `flying = 1` through that property read. A
-    host bind must answer that before a JM05 prediction is trusted.
+- **`flying` (`+458h`): SETTLED (cc13-gpr46b).** The drop itself sets it. The setter is
+  `006E1FA3 MOV byte ptr [EBP+148h], 1` in `006E1F00` (`BSP_BombRack_DropCone`), where EBP = round+310h
+  (`006E1F05`/`006E1F0E`). The path to it, all read from bytes:
+  1. `006E4D50` walks the rack's children to the first that answers IsKindOf(2Ah). The paratrooper (31h ->
+     2Ah) qualifies (`006E4EC0`-`006E4EE3`).
+  2. `006E520B` calls the round's `vslot +108h`. In the paratrooper vtable `00D05060` that slot is `006E27C0`
+     `BSP_BombProjectile_BulletBlock`, which answers round+310h.
+  3. `006E529C` calls that sub-object's `vslot +34h`. In the paratrooper's +310h vtable `00D04FF0`, slot +34h
+     (`00D05024`) is `006E1F00`.
+
+  So every rack drop, the paratrooper drop included, detaches the round, sets its release velocity and sets
+  `flying = 1`. `006E1F00` also stores the water byte `+354h`: 1 when the round is above the water height,
+  else 0.
+
+  The earlier search missed this because it scanned disp32 `458h`. The store goes through the +310h
+  sub-object as disp `148h`; this is the vacuous-scan trap.
+
+  The other two writers stay as recorded:
+  - `006E1A35`, the network create, copies message `+11Ch`;
+  - `006E2E10` restores `flying` from a saved game. `006E3047`-`006E30F7` run only when `[+C0h]+4 == 3`, and
+    read `SEntity_GetSavedEntityLuaData` -> `"_bomb"` -> `"_bulletBase"` -> `"flying"`.
+
+  No mission Lua in this installation names `flying` or `_bulletBase` (a grep of `scripts\`, which also
+  found nothing in `jm05`). A JM05 bind can therefore set `flying_458 = true` at the host's rack drop.
 - `class+5Ch` is the BombClass step scale (CC13_FLAK_FLYTIME_BURST.md); its Lua key was not read here.
 - `007AB590`'s soldier attach (`vslot +98h` with `+3Ch`/`+30h` and an identity matrix) and the chute hide are
   scene work, left to the host.
@@ -155,11 +181,24 @@ modelled here.
 - The x87 keeps 80-bit intermediates. The models carry them in double, so a last-bit difference against the
   image is possible.
 
+### 3.1 JM05's paratroopers (this installation's `scripts\missions\ijn\JM\jm05.lua`)
+
+`luaJM5SpawnParatroopers` (`jm05.lua:3288`) spawns an allied group at `USNSpawn 01`, y = 600:
+- type 136 "C47 Dakota", WingCount 3, `Equipment` 1;
+- type 135 "Warhawk", WingCount 3.
+
+`luaJM5ParatroopersSpawned` (`:3338`) gives the `LevelBomber` member `PilotMoveTo(v, Mission.Airfields[1])`,
+not an attack order, and sends the fighter after it.
+
+How the drop gets there was not traced in this pass. It is the bot's decision, through the level-bomb
+command and the paratrooper option in the AI target weights (`ai_target_weights.cpp` `00A08A23`), and then
+the release `007C0D90` -> `006E3F90`. `jm05.lua:2733` counts the Dakota squads, not the rounds.
+
 ## 4. Ledger
 
 Function records (`config/reconstruction`): `007AB8C0`, `007ABA50`, `007AC530`, `007AB230`, `007ABB30`,
 `007AB360`, `007AB0B0`, `007AC000`, `007AB590`, `007AAE10`, `006E3F90`, `007AED10`, `007B0900` (partial: the
-divide), `007B11F0`, `007AE6D0`, `007AE7B0`, `007B1EC0`. Fragments: `006E541F`, `006E55E7`.
+divide), `007B11F0`, `007AE6D0`, `007AE7B0`, `007B1EC0`, `007ADA60`, `007B15F0`. Fragments: `006E541F`, `006E55E7`.
 Names (`config/names`): `007AB0B0` `BSP_MParatrooper_AnimClock`, `007AB330` `BSP_MParatrooper_HandleMessage71`
 (neither has a Ghidra function).
 `006E3F90`/`006E541F`/`006E55E7` are outside segment 46. They are the rack branch cc9 asked for, read-only
@@ -179,21 +218,25 @@ there, and no other lease holds them.
   `006E3F90`/`007BCCF0` at `007C0EC1`/`007C0EC9`, and the landing, steer and kill calls), with 0 failures; six more rows cover the path pieces (`0046FF70`, `0042B2F0`, `00419260`, `007AED10`, `007B0900`, `00BF7030`), also with 0 failures. The
   row files are `local/g46_calls.json` and `local/g46_calls2.json`, which are not committed.
 
-## 6. Handoff
+## 6. Handoff (after cc13-gpr46b)
 
-The cc9 priorities are done: the JM05 paratrooper entity and the level-bomb paratrooper branch. The path join
-was also done, because it closes an unread hypothesis in the ship-AI path code. Segment 46 still has about 60
-functions with names but no record. None of them is gameplay-critical:
-- **Movie camera (`007A49A0`-`007AADD0`).** These are presentation. The camera lanes (cc13-cam*) own them;
-  `BSP_MovCam_*` such as `007A49A0` draw on stream 0 per docs/CC13_BAND_0079_007F.md 3.2.
-- **Path networking and archives.** `007AD5C0`-`007AD7A0` (MT_PATH_SET/ADD/INSERT/DELETE),
-  `007B0B00`-`007B0D30`, `007B0F00`, `007B1120`/`007B1170`, `007B2C00`, and the PATH_CREATE message `007B0BF0`/`007B2950`.
-- **Path-source plumbing.** `007B19B0`/`007B1BF0`/`007B1D90` (refcounted source handles), the constructors
-  `007B28C0`/`007B28F0`/`007B2AB0`, and `007B1B10`.
-- **Lua float readers** `007AAE50`-`007AAFD0`, and the paratrooper class reader `007AC780`. Its field table is
-  in CC13_SOLDIER_TRAFFIC.md 10.1 and was not re-read here.
-- **Small path-cursor accessors.** `007ADB90` PointAtIndex (it answers zero without a path, and a negative index
-  means the cursor's own), `007ADD50` (`vtable[8](007ADCC0())`), `007B1320`
-  (`vtable[4](out, 007ADCC0())`) and `007AE060`.
+These are done: the paratrooper entity, the rack branch, the `flying` setter, the path join (`007B11F0`, `007B1100`
+chain and `007ADA60`), the polyline geometry and the landscape drop. What is left in segment 46 has no
+gameplay decision in it, or belongs to another lane, so it was documented here rather than modelled.
 
-Open question to settle before binding the paratrooper: how a rack-dropped round gets `flying` (section 3).
+| addresses | what they are | why not modelled |
+| --- | --- | --- |
+| `007A49A0`-`007AADD0` (`BSP_MovCam_*`, `BSP_MovieCam*`), `007AF740`, `007AFC60`, `007AFD60` | movie-camera control and camera-path sampling | presentation; cc13-cam owns them (lead's instruction) |
+| `007AD180`, `007AD330`, `007AD4E0` | set/add/insert one path point. Each takes a world point to the path's local frame (+110h inverse, the `007B0900` divide) and calls the component's `vslot` +4h/+8h/+0Ch. `007AD4E0` has no reference. | the transform is the `007B0900` divide already modelled; the store is a vector edit |
+| `007AD5C0`/`007AD660`/`007AD700`/`007AD7A0` | MT_PATH_SET/ADD/INSERT/DELETE (D9h..DCh): `BSP_SessionMessage_ConstructBase`, then `(index, point)`, then `BSP_Session_RouteMessage` | multiplayer replication |
+| `007B0BF0`, `007B2950` | the PATH_CREATE message, write and construct | multiplayer replication |
+| `007AE650`, `007AF020`, `007AF090`, `007AF110`, `007B0B00`, `007B0B40`, `007B0BA0`, `007B0D30`, `007B0F00`, `007B1120`, `007B1170`, `007B2C00` | archive save/load of point vectors and path sources | serialization |
+| `007B19B0`, `007B1BF0`, `007B1D90`, `007B1B10`, `007B28C0`, `007B28F0`, `007B2AB0`, `007B2CF0` | refcounted source handles, point allocation, constructors, free | ownership plumbing |
+| `007B0E30`, `007B1030`, `007B10A0`, `007B10C0` | point count; GetPoint and LastPoint through `007AF800` (an empty path asks for index -1) | thin delegations, which the `PathJoinSource` interface stands for |
+| `007ADB90`, `007ADD50`, `007B1320`, `007AE060` | the cursor accessors. `007ADB90` answers the zero vector without a path, and a negative index means the cursor's own. `007ADD50` is `vtable[8](007ADCC0())` and `007B1320` is `vtable[4](out, 007ADCC0())`. | covered by `ship_ai_path_cursor.hpp`'s `007ADCC0` |
+| `007AAE50`-`007AAFD0`, `007AC780` | the Lua float readers and the paratrooper class reader (field table in CC13_SOLDIER_TRAFFIC.md 10.1) | the host already parses those fields (`game_hosts_lua.cpp:7422`) |
+| `007AEEC0` | nearest point to a line | no reference |
+| `007AC2C0`, `007AC4C0`, `007AB7D0`, `007ABAB0`, `007ABAF0` | descriptor create (`operator new` 4BCh, the constructor, velocity `class+50h * dir`), the network create message B9h, and world-list register/unregister | entity plumbing a host does its own way |
+
+The open item for a JM05 bind is how the C-47's bot reaches the paradrop release (section 3.1). That is cc9's
+plane-task lane.
