@@ -4,7 +4,7 @@ Addresses: none (process)
 
 Every rule below exists because a second-pass review found the mistake in a merged packet.
 A worker runs the checks before committing; an orchestrator runs the mechanical ones again at
-integration (`python tools/verify_report_calls.py reports/<name>.json`). The rule names are the
+integration (`python tools/verify_report_calls.py reports/<name>.json` or `docs/<name>.md`). The rule names are the
 words to use in a report when one of them could not be satisfied.
 
 ## 1. Callee before contract (`clear_help_line` -> `clear_command_bar`)
@@ -25,6 +25,9 @@ reading when you scrolled past it. `disasm-raw` is linear and shows no boundarie
 Check: `python tools/bsp.py ghidra proto <site> --brief` prints the containing function and its
 body range; the host-table row must cite that function. `tools/verify_report_calls.py` checks
 every `address`/`native` row of a report against the live function bodies and the call graph.
+A markdown report is checked too: it reads listing lines (`0090358D CALL 00903420`), "`Y` at `S`",
+"`Y` (`S`)" and "`X`, which calls `Y`" claims and `name_00901ba0` suffixes, fails a wrong call
+stated in one sentence, and lists claims it cannot pair as `unchecked`, which are not failures.
 
 ## 3. All call sites before a contract (`commit_screen_visibility(id)` needed `visible`)
 
