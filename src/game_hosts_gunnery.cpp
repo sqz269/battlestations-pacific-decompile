@@ -653,6 +653,25 @@ constexpr bool kLandscapeSpatialAttachBound = true;
 //    00929B80 runs 0085CDB0 on the shape's local box with the segment
 //    carried into its frame. OFF: the oriented-box slab tests.
 constexpr bool kAabb0085cdb0Bound = true;
+//  * kBlastMeshBoundsBound (cc9-gunnery39, GUNNERY 205; lua54's SQUADRON_LAND_TASK 5gg).
+//    The blast gathers (0084BAD0 for shells, 0084BC60 for a crashing plane, 00819A20's
+//    kamikaze arm) measure the burst against a box per unit. The image's gather
+//    (00904470 -> 0098C630 -> 0098AAE0) tests the sphere against the collision node's
+//    AABB, the mesh bounds. True: the model BoundingBox (centre offset included) when
+//    the class model reads, else the class box. False: the class Width x Height x Length
+//    box about the origin, so a burst on a mast or the upper works (34 m up on a
+//    Height-5 transport) lies past a 30 m range.
+constexpr bool kBlastMeshBoundsBound = false;
+//  * kGunSubmergedArtilleryKindBound (cc9-gunnery39, GUNNERY 206; cc13-fe5's note).
+//    00729A80's second submerged-fire test 005459B0 (005459B0-005459D8) answers
+//    whether the weapon kind [[gun+3F4h]+80h] is 2, 3, 4 or 6, so an artillery gun
+//    whose muzzle is below the waterline (00729B2F) cannot fire. The host's kind is
+//    the gun category, as for the torpedo test. False: the answer stays false.
+constexpr bool kGunSubmergedArtilleryKindBound = false;
+inline bool gun_artillery_kind_005459b0(int kind) noexcept {
+    return kGunSubmergedArtilleryKindBound
+        && (kind == 2 || kind == 3 || kind == 4 || kind == 6);
+}
 //  * kArtilleryAimPointBound: the ArtilleryGunnerBot (006DF520, sub-types 2, 3,
 //    4, 9, and 6 against a non-plane) aims at a point ON its ship target, not
 //    at the target origin raised by the class Height. Step 4: when bot+B4h
@@ -2403,6 +2422,7 @@ struct GameGunneryHost::Impl {
     unsigned long long line_of_fire_blocked{0};
     unsigned long long line_of_fire_refusals{0};
     unsigned long long line_of_fire_aabb_tests{0};
+    unsigned long long blast_mesh_box_uses{0};   // kBlastMeshBoundsBound
     unsigned long long narrowphase_box_0085cdb0{0};
     // 0072CDD0 with 0098B130: true when the raised segment's nearest unit hit
     // (firer and target excluded) is on the firer's side.
@@ -3223,6 +3243,9 @@ struct GameGunneryHost::Impl {
     void run_plane_crash_sweeps_007c0910(float step);
     void plane_crash_impact_0084bc60(std::size_t plane, std::size_t victim,
         const float point[3], const float direction[3], const GameBulletClassRow& weapon);
+    // The burst centre's distance to unit i's blast box (kBlastMeshBoundsBound);
+    // false when the unit has no box (zero Width or Length).
+    bool blast_box_distance(std::size_t i, const float centre[3], float& distance);
     const GameBulletClassRow* plane_crash_bullet(int id);
     struct PlaneCrashPrev {
         bool valid{false};
@@ -7829,7 +7852,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         gate.weapon_type_id = gun.category;
         gate.muzzle_world_y = muzzle[1];
         gate.muzzle_submerged = false;
-        gate.muzzle_blocked = false;
+        gate.artillery_kind_005459b0 = gun_artillery_kind_005459b0(gun.category);
         gate.barrel_count = gun.barrel_num;
         gate.reload_timers = gun.fire.barrel_timers.data();
         const bool can_fire = bsp::gun_can_fire_turning_0085a830(inhibited, arcs,
@@ -10257,20 +10280,8 @@ void GameGunneryHost::Impl::kamikaze_detonate_00819a20(std::size_t unit, std::si
     if (kr.blast_514 > 0.0f) {
         for (std::size_t i = 0; i < unit_state.size(); ++i) {
             if (unit_state[i].dead) continue;  // 009239A6 refuses +5Eh/+5Fh; wrecks are skipped here
-            const UnitState& st = unit_state[i];
-            const float ext[3] = {st.hull_width * 0.5f, st.hull_height * 0.5f,
-                st.hull_length * 0.5f};
-            if (ext[0] <= 0.0f || ext[2] <= 0.0f) continue;
-            float r[3], u[3], f[3], c[3];
-            unit_pose(i, r, u, f, c);
-            const float rel[3] = {centre[0] - c[0], centre[1] - c[1], centre[2] - c[2]};
-            const float* axes[3] = {r, u, f};
-            float outside = 0.0f;
-            for (int a = 0; a < 3; ++a) {
-                const float excess = std::fabs(dot3(rel, axes[a])) - ext[a];
-                if (excess > 0.0f) outside += excess * excess;
-            }
-            const float distance = std::sqrt(outside);
+            float distance = 0.0f;
+            if (!blast_box_distance(i, centre, distance)) continue;
             if (distance > kr.range_518) continue;
             bsp::HitPartEntry entry;
             entry.kind = 0;
@@ -10669,6 +10680,35 @@ void GameGunneryHost::Impl::run_plane_crash_sweeps_007c0910(float step) {
     }
 }
 
+bool GameGunneryHost::Impl::blast_box_distance(std::size_t i, const float centre[3],
+                                               float& distance) {
+    const UnitState& st = unit_state[i];
+    float ctr[3] = {0.0f, 0.0f, 0.0f};
+    float ext[3] = {st.hull_width * 0.5f, st.hull_height * 0.5f, st.hull_length * 0.5f};
+    if (kBlastMeshBoundsBound && st.row.type_id >= 0) {
+        const ShipModelSlots& model = ship_model_slots(st.row.type_id);
+        if (model.has_box) {
+            for (int a = 0; a < 3; ++a) {
+                ctr[a] = (model.box[a] + model.box[a + 3]) * 0.5f;
+                ext[a] = (model.box[a + 3] - model.box[a]) * 0.5f;
+            }
+            ++blast_mesh_box_uses;
+        }
+    }
+    if (ext[0] <= 0.0f || ext[2] <= 0.0f) return false;
+    float r[3], u[3], f[3], c[3];
+    unit_pose(i, r, u, f, c);
+    const float rel[3] = {centre[0] - c[0], centre[1] - c[1], centre[2] - c[2]};
+    const float* axes[3] = {r, u, f};
+    float outside = 0.0f;
+    for (int a = 0; a < 3; ++a) {
+        const float excess = std::fabs(dot3(rel, axes[a]) - ctr[a]) - ext[a];
+        if (excess > 0.0f) outside += excess * excess;
+    }
+    distance = std::sqrt(outside);
+    return true;
+}
+
 // 0084BC60 for the plane's crash shot: the class's blast (0084BAD0, the source
 // skipped at 0084BBF9), then the impact message 0CAh's Kill(1) (007BBA10).
 // LABELLED, as kamikaze_detonate_00819a20's blast arm: the hull-box distance
@@ -10691,20 +10731,8 @@ void GameGunneryHost::Impl::plane_crash_impact_0084bc60(std::size_t plane, std::
             if (i == plane) continue;
             if (unit_state[i].dead) continue;
             if (hit_index_detached(i)) continue;
-            const UnitState& st = unit_state[i];
-            const float ext[3] = {st.hull_width * 0.5f, st.hull_height * 0.5f,
-                st.hull_length * 0.5f};
-            if (ext[0] <= 0.0f || ext[2] <= 0.0f) continue;
-            float r[3], u[3], f[3], c[3];
-            unit_pose(i, r, u, f, c);
-            const float rel[3] = {centre[0] - c[0], centre[1] - c[1], centre[2] - c[2]};
-            const float* axes[3] = {r, u, f};
-            float outside = 0.0f;
-            for (int a = 0; a < 3; ++a) {
-                const float excess = std::fabs(dot3(rel, axes[a])) - ext[a];
-                if (excess > 0.0f) outside += excess * excess;
-            }
-            const float distance = std::sqrt(outside);
+            float distance = 0.0f;
+            if (!blast_box_distance(i, centre, distance)) continue;
             if (distance > weapon.blast_range) continue;
             bsp::HitPartEntry entry;
             entry.kind = 0;
@@ -10777,18 +10805,11 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
         // sweeps, so a round that struck the hull bursts at distance zero.
         float right[3], up[3], forward[3], origin[3];
         unit_pose(i, right, up, forward, origin);
-        const float extents[3] = {state.hull_width * 0.5f, state.hull_height * 0.5f,
-            state.hull_length * 0.5f};
-        if (extents[0] <= 0.0f || extents[2] <= 0.0f) continue;
         const float rel[3] = {centre[0] - origin[0], centre[1] - origin[1],
             centre[2] - origin[2]};
         const float* axes[3] = {right, up, forward};
-        float outside = 0.0f;
-        for (int a = 0; a < 3; ++a) {
-            const float excess = std::fabs(dot3(rel, axes[a])) - extents[a];
-            if (excess > 0.0f) outside += excess * excess;
-        }
-        const float distance = std::sqrt(outside);
+        float distance = 0.0f;
+        if (!blast_box_distance(i, centre, distance)) continue;
         if (distance > weapon->blast_range) continue;
 
         bsp::HitPartEntry entry;
@@ -11753,7 +11774,7 @@ bool GameGunneryHost::Impl::torpedo_tube_can_fire_1d0(std::size_t g) {
     gate.weapon_type_id = gun.category;
     gate.muzzle_world_y = muzzle[1];
     gate.muzzle_submerged = false;
-    gate.muzzle_blocked = false;
+    gate.artillery_kind_005459b0 = gun_artillery_kind_005459b0(gun.category);
     gate.barrel_count = gun.barrel_num;
     gate.reload_timers = gun.fire.barrel_timers.data();
     const bsp::GunPlatformArcs arcs{gun.arcs.data(), gun.arcs.size()};
@@ -14088,6 +14109,9 @@ void GameGunneryHost::report() {
             format_land_hit_census().c_str(), host.impacts_land);
         host.log.notef("summary mission gunnery landscape attach traces=%llu",
             host.landscape_traces);
+        host.log.notef("summary mission gunnery blast mesh box uses=%llu bound=%d "
+            "(0098AAE0 node AABB, GUNNERY 205)", host.blast_mesh_box_uses,
+            kBlastMeshBoundsBound ? 1 : 0);
         host.log.notef("summary mission gunnery aabb 0085cdb0 line_of_fire_tests=%llu "
             "narrowphase_box_hits=%llu bound=%d (0098B130/00929B80, packet cc9_aabb_0085cdb0)",
             host.line_of_fire_aabb_tests, host.narrowphase_box_0085cdb0, kAabb0085cdb0Bound ? 1 : 0);
