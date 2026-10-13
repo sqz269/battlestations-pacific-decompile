@@ -2635,6 +2635,347 @@ void plane_screen_update_drop_indicator_00609620(Raw screen, Fe5Host& host) {
         }
     }
 }
+
+void plane_screen_altitude_blink_00605b20(Raw screen, float altitude, Fe5Host& host) {
+    const double step = kBlinkSlowBelow > altitude ? kBlinkStepLow
+                        : altitude > kBlinkFastAbove ? kBlinkStepHigh
+                                                     : kBlinkStepMid;
+    const double phase = screen.at<float>(0x134);
+    screen.at<float>(0x134) = static_cast<float>(screen.at<std::uint8_t>(0x130) != 0 ? phase - step : phase + step);
+    const float now = screen.at<float>(0x134);
+    if (0.0f >= now) {  // COMISS 0, phase; JB skips (a NaN phase changes nothing)
+        screen.at<std::uint8_t>(0x130) = 0;
+    } else if (now >= kBlinkPhaseTop) {
+        screen.at<std::uint8_t>(0x130) = 1;
+    }
+    const Raw plane{static_cast<std::uint8_t*>(screen.ptr(0x168))};
+    if (plane.at<std::uint8_t>(0xC8) == 0) host.entity_pose_refresh_00414db0(plane);
+    if (kLowAltitude > plane.at<float>(0x100)) {
+        host.widget_set_visible_34(screen.ptr(0xEC), screen.at<std::uint8_t>(0x130) != 0);
+    }
+}
+
+void plane_screen_update_instruments_00609bd0(Raw screen, float dt, bool ordnance_view, bool aim_view,
+                                              Fe5Host& host) {
+    plane_screen_hide_indicator_grid_00604c20(screen, host);
+    if (host.game_00e188a8().at<std::uint8_t>(0x61F) != 0) return;
+    auto plane = [&] { return Raw{static_cast<std::uint8_t*>(screen.ptr(0x168))}; };
+    auto refresh = [&](Raw unit) {
+        if (unit.at<std::uint8_t>(0xC8) == 0) host.entity_pose_refresh_00414db0(unit);
+    };
+    auto show = [&](std::size_t off) { host.widget_set_visible_34(screen.ptr(off), screen.at<std::uint8_t>(0x190) != 0); };
+    auto unit_at = [](Raw block, std::size_t off) { return Raw{static_cast<std::uint8_t*>(block.ptr(off))}; };
+
+    // Quad fade +16Ch: target 1 (0064A530) while the effects screen's unit
+    // ([*00E198C4+6Ch]+B8h) is neither kind 10h nor 16h and its +FCh is 1,
+    // else 0 (0064A520).
+    const Raw effects = unit_at(host.ingame_interface_00e198c4(), 0x6C);
+    const Raw viewed = unit_at(effects, 0xB8);
+    const Raw fade{screen.p + 0x16C};
+    const bool fade_in = viewed.p != nullptr && !host.unit_is_kind_5c(viewed, 0x10) &&
+                         !host.unit_is_kind_5c(viewed, 0x16) && effects.at<std::int32_t>(0xFC) == 1;
+    fade.at<std::int32_t>(0x20) = fade_in ? 1 : 0;
+    host.quad_fade_update_0064abd0(fade, dt);
+
+    Raw p = plane();
+    refresh(p);
+    const float altitude = p.at<float>(0x100);
+    gauge_needle_set_value_00605410(unit_at(screen, 0x150), altitude, host);
+    gauge_needle_set_value_00605410(unit_at(screen, 0x154), altitude, host);
+    host.widget_set_visible_34(screen.ptr(0xE8), kLowAltitude > altitude);
+    host.widget_set_visible_34(screen.ptr(0xEC), kLowAltitude > altitude);
+    host.widget_set_visible_34(screen.ptr(0xD4), unit_at(plane(), 0x538).at<float>(0x600) != 0.0f);
+
+    float speed = static_cast<float>(host.unit_virtual_float(plane(), 0x204) * kSpeedToKnots);
+    speed = static_cast<float>(static_cast<double>(host.game_tuning_0042e740().at<float>(0x6A0)) * speed);
+    if (host.byte_00f88988() != 0) speed = static_cast<float>(speed * kKnotsToMph);
+    host.digit_gauge_update_0043b370(screen.ptr(0x108), kSpeedShownBelow > speed ? speed : kSpeedShownCap, dt);
+    if (plane().at<std::int32_t>(0x970) != 0) {
+        const std::int32_t rounds = host.unit_count_remaining_ordnance_rounds_007c1db0(plane());
+        host.digit_gauge_update_0043b370(screen.ptr(0x10C), static_cast<float>(rounds), dt);
+    }
+    plane_screen_update_drop_indicator_00609620(screen, host);
+
+    // Ladder: y = +114h - float(v * v) * 0.104 (FMULP, FSTP, FMUL qword, FSUBP).
+    const float v = plane().at<float>(0x9F0);
+    const float v_squared = static_cast<float>(static_cast<double>(v) * v);
+    host.widget_set_local_y_00aa78f0(screen.ptr(0xC8),
+                                     static_cast<float>(screen.at<float>(0x114) - v_squared * kLadderScale));
+
+    const Raw span_block = host.static_needle_span_block_00e1968c();
+    if ((span_block.at<std::uint32_t>(4) & 1) == 0) {
+        span_block.at<std::uint32_t>(4) |= 1;
+        span_block.at<float>(0) = kThrottleNeedleSpan;
+    }
+    const float raw_throttle = plane().at<float>(0xE84);
+    float throttle;
+    if (0.0f > raw_throttle) {
+        throttle = 0.0f;
+    } else if (raw_throttle > 1.0f) {  // 00D7A24C
+        throttle = 1.0f;
+    } else {
+        throttle = raw_throttle;
+    }
+    const double span = span_block.at<float>(0);
+    host.widget_set_rotation_44(screen.ptr(0xDC), static_cast<float>(kThrottleNeedleHalf * span - throttle * span));
+
+    // Horizon: RotY(-pi) * RotX(+C64h) * RotZ(+C68h - pi) into ([+C4h]+ECh)+38h.
+    const float angle_c68 = static_cast<float>(plane().at<float>(0xC68) - kHorizonRollBias);
+    const Raw horizon = unit_at(unit_at(screen, 0xC4), 0xEC);
+    float rot_z[16], rot_x[16], rot_y[16], yx[16], yxz[16];
+    host.matrix_rotation_z_00b64780(rot_z, angle_c68);
+    host.matrix_rotation_x_00b64640(rot_x, plane().at<float>(0xC64));
+    host.matrix_rotation_y_00b646e0(rot_y, kHorizonYaw);
+    host.matrix_multiply_00413920(rot_y, rot_x, yx);
+    host.matrix_multiply_00413920(yx, rot_z, yxz);
+    host.node_set_matrix_38(horizon, yxz);
+
+    // Aim point: position (+FCh, +100h, +104h) + 1000 * forward (+ECh, +F0h, +F4h).
+    p = plane();
+    refresh(p);
+    const float ahead[3] = {static_cast<float>(p.at<float>(0xEC) * kAimDistance),
+                            static_cast<float>(p.at<float>(0xF0) * kAimDistance),
+                            static_cast<float>(kAimDistance * p.at<float>(0xF4))};
+    p = plane();
+    refresh(p);
+    const float aim[3] = {static_cast<float>(ahead[0] + p.at<float>(0xFC)),
+                          static_cast<float>(p.at<float>(0x100) + ahead[1]),
+                          static_cast<float>(p.at<float>(0x104) + ahead[2])};
+    const Raw target = unit_at(unit_at(host.ingame_interface_00e198c4(), 0xCC), 0x4C);
+    auto relation = [&](Raw unit) {
+        return host.recon_relation_if_identified_00803ce0(unit_at(plane(), 0x54), unit);
+    };
+    auto hostile_unmarked = [&](Raw unit) {  // relation 0, not kind 36h, not the plane itself
+        return unit.p != nullptr && relation(unit) == 0 && !host.unit_is_kind_5c(unit, 0x36) && unit.p != plane().p;
+    };
+    bool handled = false;
+    bool rows = false;  // reach 0060A31B
+    std::size_t row = 0;
+    bool ordnance = false;
+    if (plane().p == nullptr) {
+        if (ordnance_view) ordnance = true;
+        else rows = aim_view;  // 0060A317
+    } else if (ordnance_view) {
+        ordnance = true;
+    } else if (aim_view || host.unit_is_kind_5c(plane(), 0x17)) {
+        float on_screen[3];
+        if (host.camera_project_world_to_screen_0043a660(aim, on_screen, 1, 1) == 7) {
+            if (!aim_view && host.unit_is_kind_5c(plane(), 0x17)) {
+                void* const sight = screen.ptr(0x38);
+                if (sight != nullptr) {
+                    host.widget_set_frame_88(sight, 1, 0, 1.0f);
+                    float resolved[3];
+                    host.widget_resolved_position_00aa6750(sight, resolved);
+                    const float pos[3] = {on_screen[0], on_screen[1], resolved[2]};
+                    host.widget_set_resolved_position_00aa8240(sight, pos);
+                    show(0x38);
+                }
+            } else {
+                if (target.p != nullptr && target.at<std::uint8_t>(0x5D) == 0) {
+                    const float* const from = host.unit_world_position_00427eb0(plane());
+                    const float* const to = host.unit_world_position_00427eb0(target);
+                    float delta[3];
+                    host.vector_subtract_00427c90(to, delta, from);
+                    const double d2 = host.vector_length_squared_00427e30(delta);  // compared unrounded
+                    if (plane().at<float>(0x49C) > d2) {
+                        if (!host.object_virtual_al(target, 0x10C)) {
+                            if (relation(target) == 1) {
+                                show(0x20);
+                                handled = true;
+                            } else if (!host.unit_is_kind_5c(target, 0x36)) {
+                                show(0x14);
+                            }
+                        } else if (relation(target) != 1 && !host.unit_is_kind_5c(target, 0x36) &&
+                                   target.p != plane().p) {
+                            show(0x14);
+                        }
+                    }
+                }
+                if (aim_view && !handled) {
+                    const Raw locked = unit_at(unit_at(host.ingame_interface_00e198c4(), 0xCC), 0x4C);
+                    if (locked.p != nullptr && host.object_virtual_al(locked, 0x10C)) {
+                        const float* const from = host.unit_world_position_00427eb0(locked);
+                        const float* const to = host.unit_world_position_00427eb0(plane());
+                        float delta[3];
+                        host.vector_subtract_00427c90(to, delta, from);
+                        const float d2 = static_cast<float>(host.vector_length_squared_00427e30(delta));  // FSTP
+                        if (plane().at<float>(0x49C) > d2) {
+                            show(0x20);
+                            handled = true;
+                        }
+                    }
+                }
+                float pos[3];
+                host.widget_resolved_position_00aa6750(screen.ptr(0x10), pos);  // unconditional
+                pos[0] = on_screen[0];
+                pos[1] = on_screen[1];
+                for (std::size_t off : {0x10u, 0x20u, 0x18u, 0x1Cu, 0x14u}) {
+                    if (screen.ptr(off) != nullptr) host.widget_set_resolved_position_00aa8240(screen.ptr(off), pos);
+                }
+                rows = aim_view;
+            }
+        }
+    }
+    if (ordnance) {
+        // ECX = the plane for every query (null on the plane-less path, as in
+        // the image).
+        float impact[3] = {};
+        bool project = false;
+        auto take = [&](std::uint32_t routine) {
+            float scratch[3];
+            const float* const point = host.plane_ordnance_point(plane(), routine, scratch);
+            impact[0] = point[0];
+            impact[1] = point[1];
+            impact[2] = point[2];
+        };
+        if (host.plane_weapon_query(plane(), 0x007B9320)) {
+            row = 2;
+            take(0x007C21D0);
+            host.widget_set_frame_88(screen.ptr(0x38), plane().at<std::int32_t>(0xC4) != 0x10 ? 1 : 0, 0, 1.0f);
+            if (host.plane_can_release_ordnance_007bb110(plane())) project = true;
+            else handled = true;
+        } else if (host.plane_weapon_query(plane(), 0x007B9400)) {
+            row = 1;
+            take(0x007C2450);
+            project = true;
+        } else if (host.plane_weapon_query(plane(), 0x007B9500)) {
+            row = 4;
+            take(0x007BCCF0);
+            project = true;
+        } else if (host.plane_weapon_query(plane(), 0x007B94F0)) {
+            row = 5;
+            take(0x007C21D0);
+            if (hostile_unmarked(target)) show(0x78);
+            project = true;
+        } else if (host.plane_weapon_query(plane(), 0x007B93F0)) {
+            row = 3;
+            show(0x5C);
+            float marker_y = kTorpedoMarkerY;
+            if (altitude > kTorpedoMarkerAbove) {
+                const float rise = static_cast<float>((altitude - kTorpedoMarkerBase) * kTorpedoMarkerSlope);
+                const float capped = rise > kTorpedoMarkerLimit ? kTorpedoMarkerLimitF : rise;
+                marker_y = static_cast<float>(kReticleOffset - (capped + kTorpedoMarkerPad));
+            }
+            host.widget_set_local_y_00aa78f0(screen.ptr(0x5C), marker_y);
+            if (hostile_unmarked(target)) show(0x50);
+        } else {
+            handled = true;
+        }
+        if (project) {
+            float on_screen[3];
+            if (host.camera_project_world_to_screen_0043a660(impact, on_screen, 1, 1) != 7) {
+                handled = true;
+            } else {
+                const std::size_t base = 0x10 + row * 0x14;
+                auto place = [&](void* widget) {
+                    host.widget_set_local_xy_00aa7d00(widget, static_cast<float>(kReticleOffset + on_screen[0]),
+                                                      static_cast<float>(on_screen[1] + kReticleOffset));
+                };
+                place(screen.ptr(base));  // no null test (0060A4D6)
+                for (std::size_t off : {0x08u, 0x0Cu, 0x04u, 0x10u}) {
+                    if (screen.ptr(base + off) != nullptr) place(screen.ptr(base + off));
+                }
+                if (row == 1) {
+                    const Raw locked = unit_at(unit_at(host.ingame_interface_00e198c4(), 0xCC), 0x4C);
+                    if (locked.p != nullptr && locked.at<std::uint8_t>(0x5D) == 0 && plane().p != nullptr) {
+                        if (relation(locked) == 1) {
+                            show(0x34);
+                            handled = true;
+                        } else {
+                            show(0x28);
+                        }
+                    }
+                }
+            }
+        }
+        rows = true;
+    }
+    if (rows) {
+        if (!handled) show(0x10 + row * 0x14);
+        const std::int32_t mode = host.manager_global(0x00F8A0C4).at<std::int32_t>(0x178);
+        if (mode == 1 && screen.ptr(0x18 + row * 0x14) != nullptr) show(0x18 + row * 0x14);
+        else if (mode == 2 && screen.ptr(0x1C + row * 0x14) != nullptr) show(0x1C + row * 0x14);
+    }
+
+    // 0060A37F: the altitude blinker while the plane's +72Ch sub-object says so.
+    if (host.object_virtual_al(Raw{plane().p + 0x72C}, 0x38)) {
+        p = plane();
+        refresh(p);
+        plane_screen_altitude_blink_00605b20(screen, p.at<float>(0x100), host);
+    }
+    const float previous = screen.at<float>(0x138);
+    const float current = plane().at<float>(0xE84);
+    if (previous > current) {
+        if (!host.widget_is_visible_38(screen.ptr(0xE0))) host.widget_set_visible_34(screen.ptr(0xE0), true);
+        host.plane_screen_pulse_alpha_00604cf0(screen);
+    } else if (current > previous && host.widget_is_visible_38(screen.ptr(0xE0))) {
+        host.widget_set_visible_34(screen.ptr(0xE0), false);
+        host.widget_set_alpha_4c(screen.ptr(0xE0), 0.0f);
+        screen.at<std::uint8_t>(0x140) = 0;
+    }
+    screen.at<float>(0x138) = plane().at<float>(0xE84);
+    host.widget_set_visible_34(screen.ptr(0xBC), false);
+
+    // Shake: stick vector (tuning +194h / +198h / +19Ch), length capped at
+    // tuning +1A0h, timer +164h toggling byte +160h.
+    p = plane();
+    const float t194 = host.game_tuning_0042e740().at<float>(0x194);
+    const float t198 = host.game_tuning_0042e740().at<float>(0x198);
+    const float t19c = host.game_tuning_0042e740().at<float>(0x19C);
+    float stick[3] = {
+        static_cast<float>(static_cast<double>(t194) * p.at<float>(0xBE8) + static_cast<double>(p.at<float>(0xBF0)) * t198),
+        static_cast<float>(static_cast<double>(t194) * p.at<float>(0xBEC) + static_cast<double>(p.at<float>(0xBF0)) * t198),
+        host.float_00f8757c()};
+    const Raw model = unit_at(plane(), 0x538);
+    const float over = static_cast<float>(host.unit_virtual_float(plane(), 0x38) / model.at<float>(0x188) - 1.0);
+    if (over > 0.0f) {
+        const double add = static_cast<double>(over) * t19c;
+        stick[0] = static_cast<float>(stick[0] + add);
+        stick[1] = static_cast<float>(stick[1] + add);
+        stick[2] = static_cast<float>(stick[2] + add);
+    }
+    const float cap = host.game_tuning_0042e740().at<float>(0x1A0);
+    float strength = static_cast<float>(host.vector_length_0042b2f0(stick));
+    if (strength > cap) strength = cap;
+    const float timer = static_cast<float>(screen.at<float>(0x164) - dt);
+    screen.at<float>(0x164) = timer;
+    if (0.0f > timer) {
+        const bool on = screen.at<std::uint8_t>(0x160) == 0;
+        screen.at<std::uint8_t>(0x160) = on ? 1 : 0;
+        const Raw tuning = host.game_tuning_0042e740();
+        const float y0 = on ? tuning.at<float>(0x1B0) : tuning.at<float>(0x1AC);
+        const float y1 = on ? tuning.at<float>(0x1B4) : tuning.at<float>(0x1A8);
+        screen.at<float>(0x164) = static_cast<float>(host.clamped_interpolate_00419010(0.0f, y0, cap, y1, strength));
+        const double next = screen.at<float>(0x164);
+        const float high = static_cast<float>(next * host.game_tuning_0042e740().at<float>(0x1B8));
+        const float low = static_cast<float>(-next * host.game_tuning_0042e740().at<float>(0x1B8));
+        // ECX = 1 (0060AAA2): RNG stream 1, not the gameplay stream 0.
+        screen.at<float>(0x164) =
+            static_cast<float>(host.random_uniform_00bd2f10(1, low, high) + screen.at<float>(0x164));
+    }
+    bool shake = screen.at<std::uint8_t>(0x160) != 0 && strength > 0.0f;  // 00D7A218
+    if (!shake) {
+        const float threshold = static_cast<float>(host.game_tuning_0042e740().at<float>(0x1BC) * static_cast<double>(cap));
+        shake = strength >= threshold;
+    }
+    if (shake) {
+        if (screen.at<std::uint8_t>(0x160) == 0) strength = static_cast<float>(strength * kShakeHalf);
+        void* const scene = host.game_00e188a8().ptr(0x1ED4);
+        if (scene != nullptr) {
+            host.scene_apply_0042c450(
+                scene, static_cast<float>(host.game_tuning_0042e740().at<float>(0x1A4) * static_cast<double>(strength)));
+        }
+    } else {
+        const Raw effect = unit_at(screen, 0x15C);
+        if (effect.p != nullptr) {
+            host.point_effect_stop_children_00867b10(effect);
+            effect.at<std::uint8_t>(9) = 1;
+            refcounted_ptr_release_00605600(Raw{screen.p + 0x15C}, host);  // 00484620(0)
+        }
+    }
+    const Raw last = plane();
+    host.widget_set_visible_34(screen.ptr(0x11C), last.p != nullptr && last.at<std::int32_t>(0xC30) != 0);
+}
 // @impl-end
 
 }  // namespace bsp::cc13_fe5

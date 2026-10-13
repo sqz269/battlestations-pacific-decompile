@@ -590,6 +590,68 @@ struct Fe5Host {
     virtual std::uint32_t plane_drop_attitude_gate_007cc8e0(Raw plane, std::int32_t arg) = 0;
     // 00ABE6E0(a, b, c, d), ECX = widget: set the quad floats.
     virtual void widget_set_quad_floats_00abe6e0(void* widget, float a, float b, float c, float d) = 0;
+    // 0064ABD0(dt), ECX = quad fade (screen+16Ch).
+    virtual void quad_fade_update_0064abd0(Raw fade, float dt) = 0;
+    // 00414DB0, ECX = unit: refresh the world pose (called when byte +C8h is 0).
+    virtual void entity_pose_refresh_00414db0(Raw unit) = 0;
+    // 0043B370(value, dt), ECX = digit gauge.
+    virtual void digit_gauge_update_0043b370(void* gauge, float value, float dt) = 0;
+    // 007C1DB0, ECX = plane -> EAX: remaining ordnance rounds.
+    virtual std::int32_t unit_count_remaining_ordnance_rounds_007c1db0(Raw plane) = 0;
+    // A unit virtual returning a float in ST0 (kept as double: x87 extended).
+    virtual double unit_virtual_float(Raw unit, std::uint16_t slot) = 0;
+    // An object virtual returning AL (ECX = object).
+    virtual bool object_virtual_al(Raw object, std::uint16_t slot) = 0;
+    // Byte global 00F88988 (speed shown in mph when set) and float global
+    // 00F8757C.
+    virtual std::uint8_t byte_00f88988() = 0;
+    virtual float float_00f8757c() = 0;
+    // The function-local static of 00609BD0: float 00E1968C and its guard
+    // dword 00E19690 (bit 0), returned as one 8-byte block.
+    virtual Raw static_needle_span_block_00e1968c() = 0;
+    // 00B64780 / 00B64640 / 00B646E0 (ECX = out matrix, EDX = &angle): the
+    // rotation builders about Z, X, Y (the image copies each result through
+    // 004134F0).
+    virtual void matrix_rotation_z_00b64780(float out[16], float angle) = 0;
+    virtual void matrix_rotation_x_00b64640(float out[16], float angle) = 0;
+    virtual void matrix_rotation_y_00b646e0(float out[16], float angle) = 0;
+    // 00413920(out, b), ECX = a -> out: 4x4 multiply.
+    virtual void matrix_multiply_00413920(const float a[16], const float b[16], float out[16]) = 0;
+    // Node virtual +38h(const float matrix[16]).
+    virtual void node_set_matrix_38(Raw node, const float matrix[16]) = 0;
+    // 00427EB0, ECX = unit -> its world position (refreshed); 00427C90(out,
+    // b), ECX = a: out = a - b; 00427E30, ECX = vector -> length squared in
+    // ST0.
+    virtual const float* unit_world_position_00427eb0(Raw unit) = 0;
+    virtual void vector_subtract_00427c90(const float* a, float out[3], const float* b) = 0;
+    virtual double vector_length_squared_00427e30(const float v[3]) = 0;
+    // 00803CE0, ECX = recon block ([plane+54h]), EDX = unit -> EAX relation
+    // (1 for the value the HUD treats as friendly).
+    virtual std::int32_t recon_relation_if_identified_00803ce0(Raw recon, Raw unit) = 0;
+    // 0043A660(a, b), ECX = &world, EDX = &out -> EAX (7: on screen).
+    virtual std::int32_t camera_project_world_to_screen_0043a660(const float world[3], float out[3], int a, int b) = 0;
+    // 00AA7D00(x, y), ECX = widget: set local x, y and bounds.
+    virtual void widget_set_local_xy_00aa7d00(void* widget, float x, float y) = 0;
+    // Plane ordnance queries (ECX = plane, (0)) -> AL: 007B9320 general bomb,
+    // 007B9400 rocket, 007B9500 level bomb, 007B94F0 depth charge, 007B93F0
+    // torpedo.
+    virtual bool plane_weapon_query(Raw plane, std::uint32_t routine) = 0;
+    // Plane ordnance points (ECX = plane, (&out)) -> EAX = &out: 007C21D0
+    // bomb impact, 007C2450 rocket impact, 007BCCF0 release point.
+    virtual const float* plane_ordnance_point(Raw plane, std::uint32_t routine, float out[3]) = 0;
+    // 007BB110, ECX = plane -> AL: ordnance can be released.
+    virtual bool plane_can_release_ordnance_007bb110(Raw plane) = 0;
+    // 00604CF0, ECX = plane HUD screen: the pulse alpha step.
+    virtual void plane_screen_pulse_alpha_00604cf0(Raw screen) = 0;
+    // 0042B2F0, ECX = vector -> length in ST0.
+    virtual double vector_length_0042b2f0(const float v[3]) = 0;
+    // 00419010(x0, y0, x1, y1, x) -> ST0: clamped interpolation
+    // (src/unit_rudder.cpp models it file-locally).
+    virtual double clamped_interpolate_00419010(float x0, float y0, float x1, float y1, float x) = 0;
+    // 00BD2F10(lo, hi) with the stream id in ECX -> ST0.
+    virtual double random_uniform_00bd2f10(int stream, float lo, float hi) = 0;
+    // 0042C450(amount), ECX = [*00E188A8+1ED4h].
+    virtual void scene_apply_0042c450(void* scene, float amount) = 0;
     // @host-end
 };
 
@@ -1640,6 +1702,55 @@ void plane_screen_ensure_cockpit_camera_00607f60(Raw screen, Fe5Host& host);
 // back widget i (+A4h); else frame +88h(2, 0, 1.0), show the back widget with
 // +190h and set its quad floats (fill[i], 0, 0, 1.0).
 void plane_screen_update_drop_indicator_00609620(Raw screen, Fe5Host& host);
+// 00605B20 __thiscall(ECX = plane HUD screen, float altitude), RET 4: the
+// low-altitude blinker. Phase +134h moves down while byte +130h is set, else
+// up, by 0.12 below 10, 0.03 above 33.33, else 0.06 (FSUB / FADD qword, one
+// float store); at <= 0 the direction flips up (+130h = 0), at >= 0.6 down
+// (+130h = 1). When the plane's altitude (+100h, pose refreshed) is below 50
+// the widget +ECh is shown with +130h (tail jump into its +34h).
+inline constexpr float kBlinkSlowBelow = 10.0f;                       // 00CE38B8
+inline constexpr float kBlinkFastAbove = 33.33333206176758f;          // 00CF4390
+inline constexpr double kBlinkStepLow = 0.11999999731779099;          // 00CE67E8
+inline constexpr double kBlinkStepHigh = 0.029999999329447746;        // 00CEB690
+inline constexpr double kBlinkStepMid = 0.05999999865889549;          // 00CF0AC0
+inline constexpr float kBlinkPhaseTop = 0.6000000238418579f;          // 00CE3D30
+inline constexpr double kLowAltitude = 50.0;                          // 00CE3938
+void plane_screen_altitude_blink_00605b20(Raw screen, float altitude, Fe5Host& host);
+// 00609BD0 __thiscall(ECX = plane HUD screen, float dt, bool ordnance_view,
+// bool aim_view), RET 0Ch: the instruments update (see docs/CC13_FE_7.md for
+// the full walk). Altimeter needles +150h / +154h and low-altitude widgets
+// +E8h / +ECh; speed (plane +204h * 1.946, * tuning +6A0h, * 0.621 when
+// 00F88988 is set, shown when below 999 else 999) into the digit gauge
+// +108h; remaining rounds into +10Ch; the drop indicator 00609620; the
+// ladder +C8h at y = +114h - v^2 * 0.104 (v = plane +9F0h); the throttle
+// needle +DCh at span*0.5 - clamp(+E84h)*span (span 00E1968C = 1.4660766);
+// the horizon node ([+C4h]+ECh)+38h with RotY(-pi) * RotX(+C64h) *
+// RotZ(+C68h - pi); the aim point (pose +FCh + 1000 * forward +ECh) or the
+// ordnance points place the reticle rows (+10h + row*14h, five widgets per
+// row); the warning +E0h pulse against +138h; the camera shake from the
+// stick vector, timer +164h / byte +160h and the stream-1 RNG (ECX = 1 at
+// 0060AAA2; not the gameplay stream 0).
+inline constexpr double kSpeedToKnots = 1.9459999799728394;           // 00CF4898
+inline constexpr double kKnotsToMph = 0.621;                          // 00CF4890
+inline constexpr double kSpeedShownBelow = 999.0;                     // 00CF4880
+inline constexpr float kSpeedShownCap = 999.0f;                       // 00CF4888
+inline constexpr double kLadderScale = 0.10400000214576721;           // 00CF4878
+inline constexpr float kThrottleNeedleSpan = 1.4660766124725342f;     // 00CF4870
+inline constexpr double kThrottleNeedleHalf = 0.5;                    // 00D7A280
+inline constexpr double kHorizonRollBias = 3.1415927410125732;        // 00CE3D28
+inline constexpr float kHorizonYaw = -3.1415927410125732f;            // 00CE684C
+inline constexpr double kAimDistance = 1000.0;                        // 00CE47A0
+inline constexpr double kReticleOffset = 0.25;                        // 00D7A348
+inline constexpr float kTorpedoMarkerY = 0.25f;                       // 00CE3868
+inline constexpr float kTorpedoMarkerAbove = 45.0f;                   // 00CE3D60
+inline constexpr double kTorpedoMarkerBase = 45.0;                    // 00D7A368
+inline constexpr double kTorpedoMarkerSlope = 0.0005000000237487257;  // 00CF4868
+inline constexpr double kTorpedoMarkerLimit = 0.05000000074505806;    // 00D7A270
+inline constexpr float kTorpedoMarkerLimitF = 0.05000000074505806f;   // 00CE7638
+inline constexpr double kTorpedoMarkerPad = 0.014999999664723873;     // 00CEE6C8
+inline constexpr double kShakeHalf = 0.5;                             // 00D7A280
+void plane_screen_update_instruments_00609bd0(Raw screen, float dt, bool ordnance_view, bool aim_view,
+                                              Fe5Host& host);
 // @decl-end
 
 }  // namespace bsp::cc13_fe5
