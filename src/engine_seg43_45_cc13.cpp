@@ -13,6 +13,7 @@
 
 #include <cmath>
 #include <cstring>
+#include <utility>
 
 namespace bsp::cc13cam2 {
 namespace {
@@ -1181,6 +1182,42 @@ void peer_row_update_quality_007865d0(band0076_cc13::PeerRow& row, PeerQualityHo
     const float a = host.interpolate_clamped_00419010(8.0f, 0.0f, 16.0f, 1.0f, pending);
     const float b = host.interpolate_clamped_00419010(0.15f, 0.0f, 0.6f, 1.0f, latency);
     host.smoothed_triplet_update_007862c0(row, b, a);  // 00786697, ECX = row+4
+}
+
+void peer_rows_update_007866b0(band0076_cc13::PeerRows& rows, float dt, PeerRowsUpdateHost& host) {
+    if (rows.enabled == 0) return;
+    if (0.10000000149011612 <= static_cast<double>(dt)) dt = 0.1f;
+restart:
+    for (int i = 0; i < 8; ++i) {
+        band0076_cc13::PeerRow& row = rows.rows[i];
+        if (row.peer == 0) continue;
+        const int j = host.peer_record_slot(row.peer);
+        if (j < 0 || j == i) continue;
+        band0076_cc13::PeerRow& target = rows.rows[j];
+        if (target.peer != 0) {  // 00786730: swap through a stack copy, rescan
+            std::swap(row, target);
+            goto restart;
+        }
+        target = row;
+        row.peer = 0;
+        row.probing = 0;
+        row.probe_accum_small = 0.0f;
+        row.probe_accum_large = 0.0f;
+        row.value_04 = 0.0f;
+        row.value_08 = 0.0f;
+        row.quality = 1.0f;  // 00D7A24C
+    }
+    for (int i = 0; i < 8; ++i) host.send_probes_00786150(rows.rows[i], dt);
+    const float timer = static_cast<float>(static_cast<double>(rows.period_timer) - dt);  // 007867B7
+    rows.period_timer = timer;
+    if (0.0f < timer) return;
+    rows.period_timer = 0.2f;
+    rows.connstate_accum = static_cast<float>(static_cast<double>(rows.connstate_accum) + 0.20000000298023224);
+    for (int i = 1; i < 8; ++i) host.update_quality_007865d0(rows.rows[i]);
+    if (rows.connstate_accum < 0.5f) return;
+    rows.connstate_accum = 0.0f;
+    if (!host.game_present_00e188a8()) return;
+    host.send_connstate_00786390(rows);
 }
 
 void mnetwork_client_open_00782880(std::uint32_t& state_9c, MNetworkClientHost& host) {

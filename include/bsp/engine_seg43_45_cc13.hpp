@@ -977,6 +977,26 @@ struct PeerQualityHost {
 };
 void peer_row_update_quality_007865d0(band0076_cc13::PeerRow& row, PeerQualityHost& host);
 
+// 007866B0: ECX rows (session+8h), stack dt, RET 4; SEH. Only when +E0h is set.
+// dt is capped at 0.1 (00D7A3A0 / 00D7A2F0). Each row whose peer has a record
+// (+D50h) with a slot (+1Ch) other than the row index moves there: into an
+// empty row (the old row cleared: peer, +4, +8, +10h, +14h, +18h zero, quality
+// 1.0), or by swapping with an occupied one and rescanning from row 0. Then
+// 00786150(dt) on all eight rows; +E4h = f(+E4h - dt) and, once not above
+// zero, +E4h = 0.2 (00D042F8), +E8h = f(+E8h + 0.2) (double 00CE3D10),
+// 007865D0 on rows 1..7, and when +E8h reaches 0.5 (00D042FC) it is zeroed
+// and, with a game, MT_CONNSTATE (00786390) goes to 0076A9F0(game+1EF0h, msg, 0).
+struct PeerRowsUpdateHost {
+    virtual ~PeerRowsUpdateHost() = default;
+    // [peer+D50h] != 0 and its +1Ch slot; -1 when the peer has no record.
+    virtual int peer_record_slot(std::uint32_t peer) = 0;
+    virtual void send_probes_00786150(band0076_cc13::PeerRow& row, float dt) = 0;
+    virtual void update_quality_007865d0(band0076_cc13::PeerRow& row) = 0;
+    virtual bool game_present_00e188a8() = 0;
+    virtual void send_connstate_00786390(const band0076_cc13::PeerRows& rows) = 0;  // then 0076A9F0
+};
+void peer_rows_update_007866b0(band0076_cc13::PeerRows& rows, float dt, PeerRowsUpdateHost& host);
+
 // MNetwork client virtuals: +28h open, +2Ch begin LAN search (a, b), +30h end
 // LAN search, +40h connect to the server, +48h disconnect; +9Ch the state.
 struct MNetworkClientHost {
