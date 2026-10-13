@@ -134,6 +134,16 @@ inline constexpr bool kCaptureCurrentTargetEpsilonBound = false;
 // (above 32 records the build order stays, labelled). False: kind 1Ch only and
 // build order, as before.
 inline constexpr bool kDefendThinkImageBound = false;
+// The Capture think 00A29FD0 with no enemy CommandBuilding (docs/CC13_GPR_69.md
+// 7.4 items 1 and 3, packet cc13-fix2). The image has no separate no-target
+// body: the clock prologue 00A29FFA..00A2A0C1 (+40h, +38h, +3Ch) runs on every
+// think, the group records are built, and every unassigned group is handed to
+// brain+8h when its record found an own list-28 entity outside the group
+// (00A2A319, 00A2A84E) or to brain+4h otherwise (00A2AFC0). True: the no-target
+// branch runs capture_target_path_00a29fd0. False: every group goes to slot 2
+// when any own active CommandBuilding exists, else slot 1, and the clock waits
+// for the first think with a target, as before.
+inline constexpr bool kCaptureNoTargetImageBound = false;
 // Packet cc9_group_release_idle (docs/SHIP_AI_OPEN_ITEMS.md section 30). Every
 // ATTACK-family command registers its observer (+8h) on the target group
 // (00A10767, 00694A60), and all four observer vtables (00D22B64, 00D22BA4,

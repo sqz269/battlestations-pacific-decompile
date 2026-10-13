@@ -3796,6 +3796,15 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         ++capture_thinks;
         Brain* brain = (slot >= 0 && slot < bsp::kAiGroupPartySlotCount)
             ? brains[static_cast<std::size_t>(slot)].get() : nullptr;
+        if constexpr (kCaptureNoTargetImageBound && kAiCaptureTargetPathBound) {
+            // 00A29FD0 has one body: the clock prologue (00A29FFA..00A2A0C1)
+            // runs on every think, the group records are built with an empty
+            // target map, and 00A2AFC0 hands each unassigned group to brain+8h
+            // (own list-28 entity outside the group, node+1Ch) or brain+4h; the
+            // spawn arm is skipped with no live target (00A2B3F0).
+            capture_target_path_00a29fd0(p, side, brain);
+            return true;
+        }
         if (brain == nullptr) return true;
         const std::vector<Group*> owned = p.owned;
         for (Group* g : owned) {
