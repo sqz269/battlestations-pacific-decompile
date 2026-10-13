@@ -530,7 +530,9 @@ int binding_trampoline(lua_State* state) {
         && dispatch_row.address == 0x0089cfe0u;
     const bool disband_row = kLuaDisbandFormationBound
         && dispatch_row.address == 0x0089a020u;
-    const bool land_convoy_row = kLuaLandConvoyStartBound && dispatch_row.address == 0x00895570u;
+    const bool land_convoy_row
+        = (kLuaLandConvoyStartBound && dispatch_row.address == 0x00895570u)
+        || (kLuaLandConvoyStopBound && dispatch_row.address == 0x008956e0u);
     // Packet cc9_squadron_attack_alt.
     const bool attack_alt_row = kSquadronAttackAltBound
         && dispatch_row.address == 0x008a22b0u;
