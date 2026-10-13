@@ -246,7 +246,18 @@ struct WarningReportResult {
     // timestamp it refreshed. kNoMissionEvent when neither happened.
     std::size_t touched{kNoMissionEvent};
     bool touched_applied_queue{false}; // the +ECh walk rather than the +E0h walk
+    // Expired entries retired by this call (kMissionWarningReportWalkAllBound only).
+    std::size_t retired_count{0};
 };
+
+// 009763e0 retires an expired entry (slot 0 (1), node unlinked and freed,
+// count - 1) and then CONTINUES with the next node (0097653C JMP 00976470; the
+// +ECh walk does the same through 0096C220), so one Report call can retire
+// several entries and still queue the incoming warning. True: report_walk does
+// that. False (default): the earlier projection, which returns after the first
+// retirement (outcome RetiredExpired) and drops the incoming warning.
+// Packet cc13-sys6b, docs/CC13_SYS_6.md.
+inline constexpr bool kMissionWarningReportWalkAllBound = false;
 
 // 009763e0, __thiscall(this, Warning*). Walks the pending queue then the applied
 // queue; the first expired entry is retired and the call returns, and the first

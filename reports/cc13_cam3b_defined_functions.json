@@ -1,0 +1,60 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0079d830",
+    "end_address": "0079d83b"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0079d830",
+    "end_address": "0079d83a",
+    "bytes_disassembled": 11,
+    "message": "Successfully disassembled 11 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0079d830",
+    "disassemble_first": false,
+    "name": "CG_adjustor_thunk_0079d830"
+   },
+   "result": {
+    "success": true,
+    "address": "0079d830",
+    "function_name": "CG_adjustor_thunk_0079d830",
+    "entry_point": "0079d830",
+    "body_size": 11,
+    "message": "Function created successfully at 0079d830",
+    "warnings": [
+     "Function name 'CG_adjustor_thunk_0079d830' \u2014 main part 'CG_adjustor_thunk_0079d830' is not PascalCase. Expected: CgAdjustorThunk0079d830",
+     "Function name 'CG_adjustor_thunk_0079d830' \u2014 main part 'CG_adjustor_thunk_0079d830' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "0079d830",
+   "end": "0079d83b",
+   "name": "CG_adjustor_thunk_0079d830",
+   "after": "Function: CG_adjustor_thunk_0079d830 at 0079d830\nSignature: undefined CG_adjustor_thunk_0079d830(void)\nEntry: 0079d830\nBody: 0079d830 - 0079d83a"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

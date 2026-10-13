@@ -177,6 +177,15 @@ inline constexpr bool kKamikazeShipBlockedBound = true;
 // stays an unimplemented record and answers nothing (the script sees nil).
 inline constexpr bool kFillPathPointsBound = true;
 
+// Packet cc9_lua55_prcp01 (docs/SQUADRON_LAND_TASK.md 5gl). HARNESS, not an image
+// path: the `launch` and `order` lines name their target, and a scene template
+// that a script kills at stage init and then re-creates by GenerateObject leaves
+// two unit rows with one name (PRCP01: the template "Junyo", unit 5, dead at
+// 3.05 s; the generated "Junyo", object id 6). True: the name resolves to the
+// first row that passes the marker gate 0043F080 (the player can only pick a
+// live, shown marker), else to the first row as before. False: the first row.
+inline constexpr bool kHarnessTargetPrefersLiveBound = true;   // ON: SQUADRON_LAND_TASK 5gl
+
 // Packet cc9_bsm01_think_natives (docs/LUA_BINDING_MISSION.md,
 // "Scoring_GetPlayerShotDown and PutTo"). True: Scoring_GetPlayerShotDown
 // (008BC9B0) answers slot argument 0's (default 0) count of enemy aircraft
@@ -558,6 +567,11 @@ PlayerAirOpsOrderResult script_orders_player_air_ops_order(const std::string& ba
 // The class+134h (DefaultEquipment) reader 006C0F00 needs; the mission Lua host
 // sets it, since it holds the class table.
 void script_orders_set_class_default_arm_reader(int (*reader)(int vehicle_class));
+
+// HARNESS: every --helm-orders unit or target name (launch, order, select, moveto,
+// takehelm, attack, fire, torpedo, release, build) -> unit row (units.count() when
+// no row has it); kHarnessTargetPrefersLiveBound takes a live, shown row first.
+std::size_t harness_target_row(const GameUnitsHost& units, const std::string& name);
 // The host the reconstructed binding bodies run over. Owned for the whole run
 // because the rows are per run and the units it addresses are the created scene
 // instances.

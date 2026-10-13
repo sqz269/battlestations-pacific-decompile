@@ -17132,3 +17132,122 @@ rel32 in `.text` and every absolute dword in every section; positive control: it
   string argument: it re-textures a render decal. No script of this installation calls `SetShallowWater` (454
   `.lua` files under `scripts\`; control: 40 of them call `SetWeather` or `SetDayTime`); the 223 `.scn` files
   that contain the string are the scene's `ShallowWater` block, which landscape pass A already reads.
+
+## 223. JM08 completes: variant m10 (cc9-ships45, 2026-10-12; lead item 2, phase 2)
+
+Build: this branch (gameplay as main `1de67cfb9`, `kLandStructureMeshHitTestBound` OFF); JM08, 0.05 s, reference
+env. Order files come from cc9-lua51's generator (copied as `local\s45_j8gen.py`; it regenerates `l51_j8_b3.txt`
+byte for byte, copied as `local\s45_j8_b3.txt`) and `local\s45_splice.py` (orders of file A before frame F, of
+file B from F). Logs `local\s45_j8*_<v>.log`.
+
+**What the script needs** (this installation's `scripts\missions\COTP-IJN\jm08.lua`, 2024-07-13,
+`luaJM8CheckObjectives`): fail when the CommandBuilding (`Headquarter 01`) is no longer Japanese; phase 1 -> 2
+when every `USNLsts` and `USNCargos` ship is dead (`TransportsDestroyed`, then `luaJM8Checkpoint1`); phase 2
+completes when `NoMoreAirSpawn` and `AirPatrol` is empty, and fails if the stocks run out while it is not.
+
+**Why b3 fails on this base** (220): Missouri and Helena shell the HQ from about 855 s, before phase 2.
+
+| v | change | outcome (36000/72000 frames) |
+| --- | --- | --- |
+| m1, m2 | Missouri, Helena first in the airfield and Hosho lists (m2: and the ship/boat lists) | Missouri <- Gyoraitei #Y2 at 362 s; the HQ holds, but only 3-5 of 11 landing ships die by 1500 s |
+| m3, m4 | m1/m2 before frame 7400, b3 after | Isokaze/Fubuki die about 700 s; 5 landing ships by 1800 s |
+| m5 | b3 with Missouri first in the airfield list before frame 7400 only | Missouri 362 s; 9 of 11 by 1690 s; LST 02/03 never die (3600 s, no end) |
+| m6 | b3 with Missouri first in the Hosho list before 7400 only | HQ destroyed 1090.64 s |
+| m7 | m5 before frame 24000, then the LSTs first in every list | all 11 dead by 1933 s, phase 2 at 1949 s; HQ destroyed 2191.81 s by the B-17s |
+| m8 / m9 | m7 before frame 38000, then the airfield launches only at `B-17 #2.1-2.4` every 100 / 200 frames | **complete** 2319.79 s (B-17s die 2064-2241 s); with `kLandStructureMeshHitTestBound` ON or jitter `20,3`: LST 01/LSM 02 survive, no end |
+| **m10** | m5 before frame 24000; then the airfield and Hosho lists are the B-17s first and the landing ships after (LST 03, 02, 01, LSM 02, 01, the transports), every 200 frames, to 72000 | **complete** |
+
+**m10, the win** (`local\s45_j8_m10.log`, 72000 frames): Missouri dies at 362 s, the last landing ship
+(USTroopTransport 01) at 2262 s, phase 2 fades in at 2277.65 s, the fighters sink B-17 #2.1-2.4 at 2405-2474 s, and
+`mission end: MissionStatus at 2645.96 s status=completed text="Mission Completed - Guadalacanal is safe from
+invasion!"`, with `bsp: refused a mission script's process launch: sus_prog.exe` logged before it. The same file
+also completes on the `kLandStructureMeshHitTestBound` ON export (`local\s45_j8lsmon_m10.log`: 3062.46 s, guard
+line present), so it survives the 220 flip. With frame jitter `20,3` it fails in phase 2 (HQ destroyed 2281.20 s,
+no B-17 down), so the phase-2 interception is the knife-edge. Order file
+`J:\PROG\battlestations-pacific-decompile-cc9-ships44\local\s45_j8_m10.txt`; JM08, 72000 frames.
+Regenerate: g10 = `s45_j8gen.py <g10> --ships C --boats C --end 72000 --air-until 72000 --air-every 200 --air-order
+900 --hosho B,C --air B,C --period 800` with B = `B-17 #2.1,B-17 #2.2,B-17 #2.3,B-17 #2.4` and C = `LST 03,LST 02,LST
+01,LSM 02,LSM 01,USTroopTransport 01..06`; m5 = `s45_splice.py g5 s45_j8_b3.txt 7400` where g5 is b3's command line
+with `--air` = `Missouri,` + b3's air list; m10 = `s45_splice.py m5 g10 24000`.
+
+No C-47 appears in either completing log (0 lines), so the C-47 waves CC13_WIN_READINESS expected were not
+reached; why `AirPatrol` empties (in the ON run only B-17 #2.1 has a death row) was not traced.
+
+## 224. The landing lane's second `FinishLanding` is always a duplicate (cc9-ships45, 2026-10-12; lead item 3a, a read)
+
+docs/CC13_SOLDIER_TRAFFIC.md section 5 item 3: the landing lane's tick `0049A410` calls
+`BSP_LandingShip_FinishLanding` `0074AD90` (at `0049A529`) when its progress `+84h` reaches `+190h`, which `0048C230`
+sets; the host models only the ramp caller `0074B2D9`. The two are the only calls (`local\s45_rel32.py 0074AD90`).
+
+**Verdict: no gameplay reach; not bound.** The lane only starts (`0048C230`, from `0049A42C`) once ship `+118Bh` is
+set. The disp-118Bh accesses in the image (`scan-bytes '8b 11 00 00'`, 7 hits) are `0047B8D2` (in
+`BSP_Unit_UsesSmallTurnRollLimit`), `0049A425` (the lane's read), `0074A2A8` (the save routine `0074A1F0`),
+`0074B17B`/`0074B18F` (the unload block of `BSP_LandingShip_Update` `0074AF50`), `0074BF0B` (InitAll's zero) and
+`0074C3B2` (the Lua property table `0074C280`). The one `.text` setter is `0074B18F`, and the same unload block calls
+`0074AD90` at `0074B2D9` in that frame (host: `landing_ship_ramp_unload_0074b109`, `publish_landing_unloads_0074ad90`).
+So the lane's call always comes later and finds `LandingFinished` and `+118Ch` already set; what it adds is a second
+`shipLanded` event (`00986820`, when `[00F8A0C4]` is set). The installation's only `shipLanded` listeners
+(`jm11.lua:2283`, `jm13.lua:2696`, 2024-07-13) call `RemoveListener` in their first callback, and `LandingFinished`
+is read only as a flag (`jm08.lua`, `jm11.lua`, `jm13.lua`, `usn_07_invasion_of_tarawa.lua`). A Lua write of the
+`gyorsPartraszallas` property (`0074C280`) could set `+118Bh` without the unload; no script of this installation
+names it (the 13 `partraszall` matches under `scripts\` are Hungarian comments and local tables).
+
+## 225. JM06 completes: variant k (cc9-ships45, 2026-10-12; lead item 3 of the new queue)
+
+Build: this branch with origin/main `bd3b0c333` merged (kamikaze, drop, crash sweep, n1, land-mesh and the listener
+callback arguments ON). JM06, 0.05 s, reference env, `--stop-after-end 40`. Order files are hand-written
+(`local\s45_j6_<v>.txt`); logs `local\s45_j6_<v>.log` with trajectories.
+
+**The script** (this installation's `scripts\missions\COTP-IJN\jm06.lua`, 2024-07-13, `luaJM6CheckObjectives`):
+phase 1, the convoy (`CargoTargets`) dead; phase 2, `MessageTransmitted` (a 24 s `Countdown` while surfaced);
+phase 3, primary 2: a `hit` listener on the Lexington with the player's unit as attacker, completed only when the
+callback's `arg[4] == "TORPEDO"` (`luaJM6CVHitByPlayer`); phase 4, every `Mission.Escorts` ship and the Lexington
+dead, then `luaJM6FinishMission` (`TrulyDead(Mission.Yamato)`, unbound, decides the end entity only).
+
+**Idle row** (`s45_j6_idle`, 40000 frames): the player's sub sinks the convoy itself by 128 s, the countdown runs at
+608.97 s and phase 3 starts; the Lexington (5 m/s) and Fletcher-class 01-05 sail from (-325, 1650) south-east past
+(884, -67) at 1600 s; no torpedo of the player hits it.
+
+| v | orders (`PlayerSub 01`) | outcome |
+| --- | --- | --- |
+| a | torpedo `at "Lexington-class 01"` + release every 1000 frames from 13000, sub left at its start (116, -4120) | refused beyond the 1852 m category range; phase 3 holds |
+| b | moveto (800, -1500) at 13000, torpedoes from 20000 | 16 tube fires, no hit (closest pass about 1.2 km, outside the tube window) |
+| c, d | moveto (1500, -1100) / (2200, -1700) directly | the sub stops after about 100 m and never arrives |
+| e | moveto (800, -1500) at 13000, then (1500, -1100) at 21000; torpedoes every 300 frames 29000-45000 | **the Lexington sinks at 1879.21 s** (killer PlayerSub 01, category 7) and Fletcher-class 01 with it; phase 4. Fletcher-class 05 dies at 2457 s; 02, 03 and 04 stop about 0.9-1.0 km west of the sub and live |
+| g | e, then torpedoes at Fletcher-class 02/03/04 in rotation | the sub faces away (heading 72.8, targets at bearing about -50): almost every snap fails; 03 dies, 02 and 04 live |
+| h | g with a moveto toward the escorts at 38000 | the sub closes to about 700 m and is sunk at 2168 s |
+| i | e, then a short moveto (180 m) at 52000 | the move is accepted but the sub does not move |
+| j | e, then `takehelm "PlayerSub 01" 0.3 710 -455 stop 850` at 52000 (turns it to face the stopped escorts), torpedoes at 02/04 from 54000 | Fletcher-class 02 and 04 die at 2747 s; 03 lives at (592, -654) |
+| **k** | j to 56000, then `takehelm ... 592 -654 stop 800` and torpedoes at Fletcher-class 03 from 57000 | **complete** |
+
+**k, the win** (`local\s45_j6_k.log`, 100000 frames): Lexington 1879 s, Fletcher-class 05 2457 s, 02 and 04 2747 s,
+03 2867 s, then `mission end: MissionStatus at 2880.63 s status=completed text="ijn06.obj_missioncompleted"
+entity="Yamato #3.1"`, with `bsp: refused a mission script's process launch: sus_prog.exe` before it. The Yamato
+(at (-2221, 1152)) never engages; the player's sub does all of it. Order file
+`config/win_orders/jm06_s45_j6_k.txt` (= `local\s45_j6_k.txt`); JM06, 100000 frames. Not checked with jitter.
+
+## 226. Handoff (cc9-ships45, 2026-10-12)
+
+Branch `agent/cc9-ships44`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-ships44` (origin/main `bd3b0c333`
+merged). No leases held. Tools in `local\`: `s45_rows.ps1` (launcher; `name=MISSION:frames:orderfile` rows, `-Traj`,
+`-Jitter`, `-Exe`), `s45_mk.py` (USN15 writer, quotes names), `s45_osedit.py` (derive USNOS files), `s45_j8gen.py` +
+`s45_splice.py` (JM08), `s45_rel32.py` (rel32/absolute-dword reference scan of the PE), `s45_tbl.py`, `s45_hqdmg.py`;
+`s44_sum.ps1`, `s44_peek.ps1`, `s44_pos.py` from the predecessor.
+
+**Done:** 219 USN15 l2 (win, also with jitter); 220 JM08 land-mesh pair (flipped ON by the lead); 221 USNOS k (win on
+`1de67cfb9`); 222 shallow water (dead code / render, nothing to model); 223 JM08 m10 (win; re-checked on `bd3b0c333`:
+completes at 3528.42 s, `local\s45_rc_j8m10.log`); 224 the lane's FinishLanding (duplicate, not bound); 225 JM06 k
+(win). Win order files: `config/win_orders/usnos_s45_os_k.txt`, `jm08_s45_j8_m10.txt` (556128cc5),
+`jm06_s45_j6_k.txt` (8537b097f).
+
+**Open, in order:**
+1. **USNOS k on `bd3b0c333` stalls** (`local\s45_rc_osk.log`): the battle matches the win (Takao group, Haku3/4,
+   all three bases, Yamato 3733 s, Musashi 3856 s, Haku1 7174 s, Haku2 7217 s; Enterprise and TroopTrans6 alive), but
+   `HideScoreDisplay(4, 0)` (ReinDead, us_osumi.lua:1180) never comes, so `luaBombFadeOut` never runs. In the win it
+   came 0.2 s after Haku2 died. Either a FinalTrgs unit is not `.Dead` to Lua or `luaCheckObjectives` raises before
+   line 1180 (candidate: the primary-2 `luaAirfieldManager` calls); the log shows no Lua error. Find a way to see the
+   error (lua lane) before re-tuning.
+2. Landing troops (CC13_SOLDIER_TRAFFIC section 3/5, 00428420 read: only non-`Defence` members forward `Damage`, one
+   kill per projectile segment, sphere radius `[00CE3958]` = 2.0) were dropped by the lead: zero reach on the wins
+   (no landing begins on USNOS k or JM08 m10). Paratroopers went to the plane lane (JM05).
+3. `kAiGroupPartyChangeRemovalBound` (216) still needs a row that SetParties grouped ships.

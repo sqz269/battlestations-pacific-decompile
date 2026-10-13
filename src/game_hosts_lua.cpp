@@ -535,6 +535,9 @@ int binding_trampoline(lua_State* state) {
     // Packet cc9_get_last_catapulted.
     const bool last_catapulted_row = kLuaLastCatapultedBound
         && dispatch_row.address == 0x00892860u;
+    // Packet cc9_lua55_catapult_stock.
+    const bool catapult_stock_row = kLuaGetCatapultStockBound
+        && dispatch_row.address == 0x00892de0u;
     // Packet cc9_add_untouchable_unit.
     const bool untouchable_row = kLuaAddUntouchableUnitBound
         && dispatch_row.address == 0x008ac140u;
@@ -542,6 +545,10 @@ int binding_trampoline(lua_State* state) {
     const bool unlimited_air_row = kSubmarineAirBound
         && dispatch_row.address == 0x00893c00u;
     const bool ready_row = dispatch_row.address == 0x00895d20u;
+    // Packet cc9_lua54_prcp01.
+    const bool simplified_row = kSimplifiedReconNativesBound
+        && (dispatch_row.address == 0x008b2320u || dispatch_row.address == 0x008b24a0u
+            || dispatch_row.address == 0x008b25f0u || dispatch_row.address == 0x008b2770u);
     const bool launch_row = dispatch_row.address == 0x0089e3c0u;
     // Packet cc8_lua_generate_object. It is handled here rather than routed to
     // the orders host because it needs both the units host, through that host,
@@ -589,6 +596,7 @@ int binding_trampoline(lua_State* state) {
         || truly_dead_row
         || attack_alt_row
         || ready_row
+        || simplified_row || catapult_stock_row
         || launch_row || generate_row || spawn_new_row || scoring_play_time_row
         || spawn_id_requested_row || spawn_id_remove_row
         || in_border_zone_row
@@ -738,6 +746,9 @@ int binding_trampoline(lua_State* state) {
     if (last_catapulted_row && !host->error_replay()) {
         return host->run_get_last_catapulted_00892860(state, argc);
     }
+    if (catapult_stock_row && !host->error_replay()) {
+        return host->run_get_catapult_stock_00892de0(state, argc);
+    }
     if (untouchable_row) {
         if (!host->error_replay()) host->run_add_untouchable_unit_008ac140(state, argc);
         return 0;
@@ -822,6 +833,9 @@ int binding_trampoline(lua_State* state) {
     if (kill_row) {
         if (!host->error_replay()) host->run_kill_008ac5c0(state, argc);
         return 0;
+    }
+    if (simplified_row && !host->error_replay()) {
+        return host->run_simplified_multiplier(state, argc, dispatch_row.address);
     }
     if (ready_row && !host->error_replay()) {
         return host->run_is_ready_to_send_planes_00895d20(state, argc);
@@ -2605,6 +2619,15 @@ void GameMissionLuaHost::note_error(const std::string& message) {
         summary_.first_error = message;
         summary_.first_error_phase = phase_;
     }
+    // Harness diagnostic, not image behaviour: the summary keeps only the first
+    // error, so a later error raised inside a listener or delayed callback was
+    // silent. Log each one, capped so a per-frame failure cannot flood the log.
+    static int logged = 0;
+    if (!message.empty() && logged < 50) {
+        ++logged;
+        log_.notef("lua error (%d of at most 50, phase %s): %s", logged,
+            phase_.c_str(), message.c_str());
+    }
 }
 
 void GameMissionLuaHost::attach_script_orders(GameScriptOrdersHost* orders) noexcept {
@@ -2849,6 +2872,30 @@ int GameMissionLuaHost::run_is_ready_to_send_planes_00895d20(lua_State* state,
     return 1;
 }
 
+// Packet cc9_lua54_prcp01. The setters read argument 1 through GetNumber
+// (008B2320 -> 008B243C) and push nothing; the getters push the stored float.
+int GameMissionLuaHost::run_simplified_multiplier(lua_State* state, int argument_count,
+                                                  std::uint32_t address) {
+    if (state == nullptr) return 0;
+    const bool sonar = address == 0x008b25f0u || address == 0x008b2770u;
+    float& value = sonar ? simplified_sonar_78_ : simplified_recon_74_;
+    if (address == 0x008b2320u || address == 0x008b25f0u) {
+        value = argument_count >= 1 ? static_cast<float>(::lua_tonumber(state, 1)) : 0.0f;
+        log_.notef("  %s %08x: +%s = %.3f", sonar ? "SetSimplifiedSonarMultiplier"
+            : "SetSimplifiedReconMultiplier", static_cast<unsigned>(address),
+            sonar ? "78h" : "74h", static_cast<double>(value));
+        log_.implemented(sonar ? "MissionLuaNative::SetSimplifiedSonarMultiplier"
+            : "MissionLuaNative::SetSimplifiedReconMultiplier",
+            sonar ? "008b25f0" : "008b2320");
+        return 0;
+    }
+    ::lua_pushnumber(state, static_cast<lua_Number>(value));
+    log_.implemented(sonar ? "MissionLuaNative::GetSimplifiedSonarMultiplier"
+        : "MissionLuaNative::GetSimplifiedReconMultiplier",
+        sonar ? "008b2770" : "008b24a0");
+    return 1;
+}
+
 int GameMissionLuaHost::run_launch_squadron_0089e3c0(lua_State* state, int argument_count) {
     if (state == nullptr) return 0;
     bsp::AirOpsDeck* deck = bsp::air_ops_decks().find_mutable_by_entity_id(
@@ -3039,7 +3086,23 @@ int GameMissionLuaHost::run_generate_object_00944fd0(lua_State* state, int argum
     // process keeps the entry so a second call cannot make a second carrier, and
     // answers it with the same entity, which is a DEVIATION and is here because
     // a duplicated capital ship is worse than a repeated handle.
-    if (entry->spawned) {
+    // kGenerateObjectRespawnsDeadBound narrows the deviation to a live earlier
+    // instance: once the script sees it Dead, the call instantiates again.
+    bool respawn = false;
+    if constexpr (kGenerateObjectRespawnsDeadBound) {
+        if (entry->spawned && push_resolved_entity_by_id(state, entry->entity_id)) {
+            ::lua_getfield(state, -1, "Dead");
+            respawn = ::lua_toboolean(state, -1) != 0;
+            ::lua_settop(state, ::lua_gettop(state) - 2);
+        }
+        if (respawn) {
+            ++summary_.generate_object_respawned;
+            log_.notef("  GenerateObject 00944fd0: \"%s\": the earlier instance (id %d) is "
+                "Dead, so a new one is made, as 0046D930 does on every call (packet "
+                "cc9_lua55_genobj)", name.c_str(), entry->entity_id);
+        }
+    }
+    if (entry->spawned && !respawn) {
         ++summary_.generate_object_repeat;
         if (push_resolved_entity_by_id(state, entry->entity_id)) return 1;
         return 0;
@@ -6160,6 +6223,46 @@ int GameMissionLuaHost::run_get_last_catapulted_00892860(lua_State* state,
     }
     ++summary_.last_catapulted_nil;
     ::lua_pushnil(state);
+    return 1;
+}
+
+// Packet cc9_lua55_catapult_stock. 00892DE0 GetCatapultStock(entity): 00888AA0 on
+// argument 0, vtable[5Ch](5), then (x < 0) - 1 & x on unit+638h, i.e. max(x, 0);
+// any other entity, or none, pushes 0 (00892F1F). One integer result.
+// LABELLED: unit+638h is the init value [unit+538h]+C8h (0095E5B0), the class
+// Catapult.LaunchStock, read here from the entity's `Class` table; the catapult
+// launch decrement (00957450) and SetCatapultStock (009539A0) are not built.
+int GameMissionLuaHost::run_get_catapult_stock_00892de0(lua_State* state,
+    int argument_count) {
+    static_cast<void>(argument_count);
+    ++summary_.catapult_stock_calls;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    const bool valid = units != nullptr && id > 0
+        && static_cast<std::size_t>(id) <= units->count();
+    const bool kind5 = valid && units->unit_is_kind_of(static_cast<std::size_t>(id - 1), 5);
+    lua_Integer stock = 0;
+    if (kind5 && push_resolved_entity_by_id(state, id)) {
+        const int base = ::lua_gettop(state);
+        ::lua_getfield(state, -1, "Class");
+        if (lua_istable(state, -1)) {
+            ::lua_getfield(state, -1, "Catapult");
+            if (lua_istable(state, -1)) {
+                ::lua_getfield(state, -1, "LaunchStock");
+                if (::lua_type(state, -1) == LUA_TNUMBER) stock = ::lua_tointeger(state, -1);
+            }
+        }
+        ::lua_settop(state, base - 1);
+    }
+    if (stock < 0) stock = 0;
+    if (summary_.catapult_stock_calls <= 8) {
+        const GameUnitRow* row = valid ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
+        log_.notef("  GetCatapultStock 00892de0: \"%s\" kind5=%d -> %d (class "
+            "Catapult.LaunchStock, packet cc9_lua55_catapult_stock)",
+            row != nullptr ? row->name.c_str() : "?", kind5 ? 1 : 0, static_cast<int>(stock));
+    }
+    log_.implemented("MissionLuaNative::GetCatapultStock", "00892de0");
+    ::lua_pushinteger(state, stock);
     return 1;
 }
 

@@ -5987,7 +5987,15 @@ void GameGunneryHost::Impl::refresh_command_targets() {
     std::map<std::string, std::size_t> by_name;
     for (std::size_t i = 0; i < units.count(); ++i) {
         const GameUnitRow* row = units.unit_row(i);
-        if (row != nullptr && !row->name.empty()) by_name.emplace(row->name, i + 1);
+        if (row == nullptr || row->name.empty()) continue;
+        // Packet cc9_lua55_genobj: a re-created object (PRCP01's Junyo) leaves a dead
+        // earlier row with its name; the live one takes the name.
+        const auto placed = by_name.emplace(row->name, i + 1);
+        if (!placed.second && kGenerateObjectRespawnsDeadBound
+            && !units.unit_alive_and_visible(placed.first->second - 1)
+            && units.unit_alive_and_visible(i)) {
+            placed.first->second = i + 1;
+        }
     }
     // Step one, the backward walk: per unit, the accepting row that sits in the
     // highest slot. A row the host never pushed carries slot_index -1; those

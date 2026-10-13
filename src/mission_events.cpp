@@ -143,6 +143,13 @@ bool report_walk(
         if (warning_is_expired(now, entry.applied_at, lifetime)) {
             host.destroy_warning(index, !applied_queue);
             queue.erase(queue.begin() + static_cast<std::ptrdiff_t>(index));
+            if (kMissionWarningReportWalkAllBound) {
+                // 0097653C JMP 00976470: the walk goes on with the next node,
+                // which the erase moved to this index.
+                ++result.retired_count;
+                --index;
+                continue;
+            }
             result.outcome = WarningReportOutcome::RetiredExpired;
             result.touched = index;
             result.touched_applied_queue = applied_queue;

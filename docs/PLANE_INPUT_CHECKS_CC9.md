@@ -87,7 +87,7 @@ re-plan, as for gunnery38's O1).
   value stepped in the plane's fixed step with the target rule above, and the elevator check `value == 0.0` when the
   class has Wings.
 
-## (a), the binding (cc9-physics5, 2026-10-13): `kPlaneWingFoldElevatorBound` and `kPlaneWingSpreadTakeoffBound`, OFF
+## (a), the binding (cc9-physics5, 2026-10-13): `kPlaneWingFoldElevatorBound` and `kPlaneWingSpreadTakeoffBound`, ON since the JM08 pair (cc9-physics6)
 
 **Census.** A rel32 scan of the image (`local\p5_rel32_scan.py`) finds exactly the seven calls the Ghidra xrefs
 list: `007B8D40` from `006D06E8`; `007B8D10` from `009CDEED` and `009CF2ED`; `007B8DC0` from `009CF2F8` and
@@ -126,3 +126,38 @@ value that was not already 0.0, and the elevator takes only folded planes). Reco
 hold unless a restrike's timing matters. ON (takeoff half, on top): `prep_holds` non-zero only for a plane whose
 wings are below 1.0 at prepare (a relaunched plane after the carry's reset spreads over its duration first), so
 relaunches move later by up to 4 s; deck spawns in state 6/7 start at 1.0 and never hold.
+
+## The block step order: `kActuatorBlockStepOrderBound` (cc9-physics5, 2026-10-13), OFF
+
+The wing pair found that the host's `plane_actuator_block_step_007de3a0` stepped a channel only when it was disabled
+or at exactly 1.0f. So an enabled wing channel starting at 0 never moved: with both wing switches ON, every
+Enterprise Wildcat waited forever in the takeoff prepare (2774 holds, no takeoff run). The torpedo bay also stalled
+one step below 1.0f once it began to close. The switch takes the raw listing's gates (header comment,
+`include/bsp/torpedo_release_spawn.hpp`). **Predictions, before the pair:** with the wing switches OFF, the
+`+44h` and `+28h` channels are disabled, so `+60h` (the bay) steps every call and now closes fully after a
+release. Nothing in the host reads the bay below 1.0f except `007BBBA0`'s `!= 1.0f` guard, which a stalled bay and a
+closed bay both pass. So: gameplay identical (verdict 0 or 1) on the torpedo rows (USN01 plan d, LOMP10, ESMP08). If
+so, the switch can flip ON and the wing pairs are re-run on top of it.
+
+**The pair** (OFF = tree build at `1f83f2ffa`/`c01d9516e`, ON = `local\p5_so`, `local\p5so_{off,on}_*.log`): USN01 plan d 22000 exit 1, LOMP10 `p3_l10_b` exit 1 (completed 1158.10 s both), ESMP08 30000 exit 0. As predicted: gameplay identical. **Flipped ON** (cc9-physics5, 2026-10-13).
+
+
+**The pair on a carrier-launch row** (cc9-physics6, 2026-10-13; tree at origin/main 168cb72a9, block step order ON;
+OFF = tree build SHA-256 69A028621EE7, elevator half = `local\p5_wf` 04EAF0FA58D9, both = `local\p5_wt` 80C6922E93C9;
+JM08 `jm08_s45_j8_m10`, 72000 frames, reference env; logs `local\p6wf_{off,el,on}_j8.log`). The earlier pairs (USN01,
+LOMP10, ESMP08 without orders) had no Wings plane taking off from a carrier; JM08's Hosho launches Kates (class 162,
+`PartAnims.Wings {5.2, 8.2}`, 3.0 s).
+- Elevator half alone: gameplay identical (completed 3528.42 s both, 273 deaths), `classes=36`, every other count 0
+  (no Wings plane lands on a carrier in this row).
+- Both: GAMEPLAY MOVED, `classes=24 prep_holds=390`, the rest 0. The first divergence is the takeoff prepare: Hosho_sqn07
+  leaves prepare at 310.30 s instead of 307.30 s, exactly the class duration. **Prediction corrected:** the Hosho
+  squadrons start inside the carrier in state 1 (`base launch inside start`), so their wings start folded (0.0) and the
+  first launch holds too, not only a relaunch. 009CDEED's hold is the image's; the delay is the mechanism, not a defect.
+  The later Hosho strikes arrive seconds late, the battle re-rolls (deaths 273 -> 258, dive-bomb releases 47/75 ->
+  27/99) and JM08 does not complete in 72000 frames.
+- **Flipped ON, both switches** (cc9-physics6, 2026-10-13): mechanism matches, so the lost win goes to re-plan (JM08
+  is a knife-edge already: it fails under `BSP_FRAME_JITTER 20,3`).
+- ESMP08 WITH orders (`g38_ord_e8.txt`, 90000 frames; OFF = `local\p6_wo` F1AC46BB9E55, ON = tree at ae34e5462;
+  `local\p6wf_{off,on}_e8.log`): `classes=714 prep_holds=3948`, the rest 0; GAMEPLAY MOVED (first hit 374.68 ->
+  376.78 s, torpedo drops 68 -> 36, deaths 911 -> 903); no completion either side (OFF: Dunlap 1892.62 s and Fanning
+  2757.92 s sink; ON: Dunlap only, 2729.99 s). The ESMP08 re-plan starts from the ON run.

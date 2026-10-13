@@ -15805,3 +15805,295 @@ ON); packet 3 MOVEONPATH + leg altitude manager (5gd: `487cf8170` OFF, flipped O
 6. **For gunnery38 (reported to the lead):** `read_bullet_class_number` cannot read dotted keys, so the second-ammo
    `Blast.BlastDamageMin/Max` reads near `src/game_hosts_gunnery.cpp` ~4470 always return 0.
    `read_bullet_class_nested_number(id, "Blast", key, fallback)` exists now.
+
+## 5gf. The 16 m storage crash: a live plane on the water stays its squadron's leader (packet `cc9_lua54_follow_altitude`, cc9-lua54, 2026-10-12)
+
+**The chain, from `local\l53_K4_osx.log` (5gc).** `Enterprise_sqn01|.-3` was not flying a low follow of its own:
+- `plane #1.5`'s Betty squadron dropped on TroopTrans2 at 1409 m (129.20 s), went `goaway`, latched spent ordnance at
+  141.00 s and took the land task to **Airfield3 at (-8163.5, 3.2, -8844.6)**. Its planes descended on the approach:
+  `|.-4` died at 197 m (288.40 s), `|.-2` at 73 m (296.95 s), the head at **14 m** (320.20 s).
+- The Enterprise leader `Enterprise_sqn01` chased that head in dogfight aim down the approach. The aim law matches the
+  target's speed and height (`009A76E0`; terrain avoidance `0099F1C0` is the only floor, docs/DOGFIGHT_THROTTLE_RETAKE.md),
+  so it reached 4.9 m at 23 m/s with throttle 0 (surface probe, 313.55 s) and touched the water alive
+  (health 164.6: `plane water contact ... state 7 -> 6`, later `plane water powerlost ... dead=0`).
+- The host then left that plane alive in state 6 for the rest of the run, still `members[0]` of its squadron. The
+  wingman `|.-3` lost its own target ("target -> none (empty squadron)") and went aim -> follow, and the follow
+  state (`009C1FD0`) flies the station `007F23A0` hands it off **its leader, on the water** near Airfield3. Station
+  (seat local (60, 25, 70) in the formation log) keeps the wingman near the floating leader's height, 16 m over the airfield, where its wing point met
+  `Storage - Raktar03 01` (329.54 s, (-8161, 11, -8736), 108 m from the Airfield3 site).
+
+**What the image does at that contact.** `007CB7F0` (BSP_Plane_OnWaterContact, listing read whole to `007CB9C2`):
+- `007CB81A`-`007CB82B`: `BL = 1` when the class's MinWaterSpd `desc+198h` is zero.
+- `007CB82D`-`007CB838`: return when `007BC5B0` is false and `BL` is clear. Since packet `cc9_water_invincible_test`
+  the host answers `007BC5B0` from `unit+150h` (the invincibility float), so a live AI plane passes: the 5gc leader
+  did ("not ignored").
+- `007CB83E`-`007CB8A2`: the SA_OC award (scoring only).
+- `007CB8A7`-`007CB8CB`: with `BL` set, an up-axis `unit+E0h` above 0.8 (`00CE3D40`, double) skips to the tail.
+- `007CB8CD`-`007CB927`: in net modes other than 2 (`[00E188A8]+1FE4h`), **`vtable[194h]` (`007BBFA0`) with
+  `"powerlost"` (`00D059F8`)**. `007BBFA0` stores `unit+C10h = 1000.0` and routes message 66h; `007D0B80` takes the
+  powerlost arm (`unit+C39h = 1`) and its tail `007D12FC` sets `C3Ah` and calls `vtable[70h](1)`, the destroy
+  (docs/PLANE_DEATH_MODES.md step 4). **The plane is dead from the contact on** and `007BCAA0` removes it from its
+  squadron, so the next member leads.
+- `007CB92C`: the tail, 7/4/5 -> 6.
+- The state-6 arm's drown test raises the same effect at `007CBE02` (`007CBDD0`-`007CBE2B`, the same net-mode test).
+
+**The host** before this packet: `src/game_hosts_units.cpp` takes the gate and the tail (state 6) and counts the
+drown, but "powerlost" was a contract at both sites ("a live one would need 007BBFA0's death"). So every live plane
+that glides onto the water (a stalled chase, a low pull-out) became a floating, live squadron leader.
+
+**The binding** (`kPlaneWaterPowerLostBound`, OFF): at `007CB8DC` and `007CBE02`, for a plane the gunnery host has
+alive, kill it through `kill_unit_00926d90(unit, 1)` and mark it so the death-mode step takes **PowerLost without
+the `007CA8A0` draw** (the image calls `007BBFA0` directly; `007CA8A0` runs only from SetHealth). SUBSTITUTIONS,
+labelled: the destroy is the gunnery host's Kill funnel (as the depth kill `007CE3A7` already is), and the effect
+lands in the same step.
+
+**Predictions (written before the pairs).**
+- OFF: gameplay identical.
+- ON, USNOS 9000 (`s45_os_k` orders): the Enterprise leader dies at its water contact (~313.6 s, mode powerlost);
+  `|.-2` or `|.-3` leads; `|.-3` no longer flies a station off a floating leader, so the c99 storage crash at
+  329.54 s is gone (it may still die to Zao1's flak, which had it at 141.6). Every other live water contact in the
+  run (`plane water contact` lines with health left) becomes a death row with mode powerlost, so death counts rise
+  by those planes and AA shots at floating planes fall.
+- ON, USN12 (win row): the same rule for any live ditching; the win should hold. Read the `plane water contact`
+  lines before predicting a count.
+
+### 5gf, the pairs (cc9-lua54, 2026-10-12)
+
+Launcher `local\l54_lane.ps1` (row `os` = USNOS with `cc9-ships44\local\s45_os_k.txt`; `u12` now reads
+`config/win_orders/usn12_s38_u12_p2.txt`, the ships38 tree is gone). Exports `l54_W0` (e7f7a279d OFF), `l54_W1`
+(the switch ON). `BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`.
+- **First, the trace on main (`l54_T0_os`, 7000 frames, `BSP_PLANE_RATE_TRACE`).** On these orders the wingman's
+  crash moves to 332.74 s (`Multi Hangar 1`, (-8121, 10, -8804), 17 m) and it is **in aim**, not follow: its target
+  is the Betty `plane #1.5|.-2` on its Airfield3 approach (that Betty dies at 13 m, 333.99 s), and the aim law's
+  commanded height is the target's (5.3). So the low pass has two causes: (a) the aim law chasing a landing
+  bomber over its own airfield, which is the image's rule as read (no floor but `0099F1C0`'s terrain layer, which
+  holds no buildings); (b) in K4, the follow station off a leader floating on the water, which is the host defect.
+- **USNOS 9000, W0 vs W1:** pair_diff MOVED. Two live water contacts in W0 (`Enterprise_sqn01` and `|.-2`, both at
+  ~23 m/s after chasing the Betties down; `local\l54_live_water.py`) become powerlost deaths in W1 (330.64 s,
+  330.89 s; draw -1, c10 1000, no `007CA8A0` draw). In W0 the leader floated alive to the end of the run and `|.-2`
+  until 380.38 s, under ship fire: shots 16372 -> 11501 (Aki2 2653 -> 248, Aki1 1714 -> 196, Ada2 754 -> 42), and
+  those rounds' blasts had killed `Heavy AA 01` and `Heavy AA 03` (Aki1, 393 s and 405 s), which now survive.
+  Deaths 157 -> 156. The 332.74 s hangar crash stays (cause (a)); the prediction that it would go was wrong for
+  these orders, right for K4's chain.
+- **USN12 34000 (win row):** no live water contact in W0; gameplay identical; completes at 1534.87 s both ways,
+  the guard line ("refused a mission script's process launch: sus_prog.exe") logged on both.
+- **Verdict: the mechanism matches; flipped ON** (this commit). Open: (a) is faithful as read, so a fighter that
+  chases a landing bomber over its airfield can still meet a hangar.
+
+### 5gg. TroopTrans3's 0-damage Ohka (cc9-lua54, 2026-10-12, read only)
+
+`local\l53_K4_osx.log`: `Betty1|.-4_kz06` (c98, range 30) crossed TroopTrans3's mesh at (2505.8, **34.3**, 2165.3),
+`reached=0`. `plane_crash_impact_0084bc60` (`src/game_hosts_gunnery.cpp`) measures the burst against the hull box
+from the class row, and VehicleClass[234] ("US Troop Transport (Strafeable)", this installation's
+`vehicleclasses.lua`, 2026-05-09) has `Height = 5`, so the box's half-height is 2.5 m. A burst 34 m up (a mast or
+the upper works on the mesh) lies about 31 m above the box, past the 30 m range. **A host defect of the
+substitution, not of the sweep:** the image's gather (`00904470` -> `0098C630` -> `0098AAE0`) tests the sphere
+against the collision node's AABB (`node+13Ch`-`+150h`, the mesh bounds) and its shapes
+(docs/EXPLOSION_RADIAL_DAMAGE.md), and the struck node contains the burst. The shape set and the falloff distance
+are a labelled gap there, so the faithful distance is not established. Candidate (gunnery lane, routed to the
+lead): take the struck victim's vertical extent from the mesh bounds the sweep already queries, not the class
+`Height`. The same box serves the shells' blasts, so a mast hit by a shell loses its blast the same way.
+
+### 5gh. HintSystem (queue 3a, cc9-lua54, 2026-10-12, read only)
+
+`IsHintActive` (`008D2850`) is called by `usn_01_battle_of_eastern_solomons.lua` (865, 1750, 1773: hide the
+unit-switch, turbo and map hints) and by jm01/jm03/jm05/jm07/jm10 (`luaJM1IsHintActive` and siblings: the
+message queue holds dialogs and hints while a critical hint shows). None gates a phase, an objective or a win:
+the USN01 calls only hide hints, and the JM queues only order and delay dialog. `ShowHint` / `ShowHintForced`
+are unimplemented (`local\l53_B0_j6.log`), so no hint is ever active and the unimplemented `IsHintActive` returns no value (nil, `binding_trampoline` returns 0), which the JM
+wrappers read as "none". The image would delay queued dialogs while a critical hint shows; that is presentation
+timing, not flow. No binding made.
+
+### 5gi. The event-channel audit (queue 3b, cc9-lua54, 2026-10-12, read only)
+
+Census of `AddListener` in this installation's `scripts/missions` (`local\l54_listen_scan.py`; COTP and `ijn\JM`
+copies counted once below, training grounds and PRCP left out). "Host" is whether a run delivers the channel to
+Lua today: only `kill` (`009813A0`), `recon` (`00980E50`) and `hit` (`00988510`) have Lua dispatchers in
+`src/game_hosts_lua.cpp`. `command` (`00984300`) is reported by `GameCommandsHost::report_command_event_00984300`,
+but no `AddListener` fills `command_event_subscriptions`, so it never calls Lua.
+
+| channel | campaign subscribers (callback -> effect) | flow role |
+| --- | --- | --- |
+| `exitzone` | USN03 `luaUS03EnterpriseExits` -> **`MissionPhase = 5`**; USN01 `luaUS01CargoesExited`, `luaUS01BomberExited`; USN05/06/10 exits handled as the unit's death (`luaUS05USShipKilled`, `luaUSN06_SubmarineWasDestroyed`, `luaUSN10_IowaWasDestroyed`, `luaUSN10_EnterpriseWasDestroyed`); BSM09 `luaJapsEscaped` | **phase and fail paths** |
+| `hpEvent` | USN14 `luaUS14HQDamaged1` -> **`luaUS14CaptureCheck()`**; USN05/06/08 and USN14's convoy rows: dialogs | USN14 capture path; else dialog |
+| `shipLanded` | USN07 `luaUS07BoatsLanded` -> `Mission.Landed = 1` (never read again in usn_07); JM11/JM13 -> landing movie | presentation |
+| `entityKilled` | JM01 radio/Oklahoma -> dialog | dialog |
+| `generate` | JM08 PT/Mavis -> `PlayerCtrl` and spawn counters (a fallback `luaJM8CheckPlayerPTs` sets `PlayerCtrl` too); USN04 empty body; JM04 player spawn | player control |
+| `command` | JM06 `submove`, JM07 `fleet1move`/`atlantamove`, JM13 `junklistener`: filter `status = {"finish"}`; JM02 `BettyRetreat` (`command = {"retreat"}`, any status) | see below |
+| `ammoType` | USN01 retreat listeners, JM02 bomb timer | USN01 already wins |
+| `target`, `repair`, `Kill` | USN03 attack/vanguard, USN02/JM03 repair button (player input) | USN03 hidden objective |
+| `input`, `gui` | camera and tutorial input | player input |
+
+**The `command` "finish" filters can never match, in the image either.** The status the image posts at a path's
+end is `"finished"` (`009E5BBC PUSH 00D09FD8`, `00D09FD8` = "finished"; the moveto sibling and `00836D20` use the same
+literal), the binary holds no `"finish\0"` string, and the status filter is a string set: slot 0 of its vtable
+`00D1B73C` is `0097BC70`, a `BSP_NativeStringSet_Find` (`004C7F10`) over `BSP_NativeString_LessCaseInsensitive`
+(`00443D00`), so the test is a case-insensitive exact match. JM06's `Mission.PathEnd` (the AI subs' attack on the
+cargos), JM07's fleet path changes and JM13's junk traffic therefore never fire in the image, and the host's
+silence matches it. Only JM02's `BettyRetreat` (any status) would fire, which hands the Betty to the AI and plays a
+narrative.
+
+**Recommended bindings, in order:** (1) `exitzone` (`00982120`): USN03's phase 5 and the USN01/05/06/10 exit-as-
+death paths. Producers: `007C6C30` plane out-of-action countdown and `007F31A0` squadron left-map (both in
+`src/game_hosts_units.cpp`), `0081BEB0` and `00826D70` (unit virtuals, not hosted). (2) `hpEvent` (`00986B00`,
+threshold crossings of the subscription's `hp` on reason `damage`/`repair`, producer `00879070`
+ApplyDamage in the gunnery host): USN14's capture check. Neither is on a current win row. The Lua side
+(subscription parse plus the dispatcher) is this lane's; the producer hooks are gunnery/units edits to route.
+
+## 5gj. PRCP01 (Santa Cruz) bring-up: the phase-3 stall (packet `cc9_lua54_prcp01`, cc9-lua54, 2026-10-12)
+
+Menu id **PRCP01** ("Vanilla - Battle of Santa Cruz", scene `COTP-USN/PRCPUS/usn_03_Battle_of_Santa_Cruz.scn`,
+StageScript `COTP-USN\PRCPUS\usn_03_battle_of_santa_cruz`, mtime 2024-07-13). `--menu-select USN03` is LOMP Ceylon.
+
+**This copy has no player tutorial on the phase path.** `dlg_Cruisersinrange` (script line 295) ends in the
+callback `luaUS03Primary4Add`, which sets `MissionPhase = 4` directly; `luaUS03TargetObjective` (the `input`
+listener on IC_CMD_SETTARGET, then the `target` listener) is never called in this file. The chain to phase 5 is:
+phase 3 `luaUS03EndReconMovie` adds the Junyo `kill` listener -> Junyo sunk -> movie -> checkpoint ->
+`luaUS03GotoPhase4` -> reinforcement movie -> `luaUS03CruisersInRange` -> phase 4 -> the Vanguard `recon`
+listener (oldLevel 1 -> newLevel 2 for the Allies) -> EscapePath -> `exitzone` -> phase 5.
+
+**The stall, from `local\l54_E0_p01.log` (main bd3b0c333, 24000 frames, no orders).** Two script errors:
+- `US03Think failed: commandhelpers.lua:16266: attempt to perform arithmetic on a nil value` in `luaPutToRecon`
+  from `luaUS03SpawnPhase1EnterpriseKillers` (script line 1645): `dist * GetSimplifiedReconMultiplier()`, and
+  `GetSimplifiedReconMultiplier` (`008B24A0`) was an UNIMPLEMENTED row that pushes nothing. The phase-1 spawn
+  of the Enterprise's attackers stops there. **Host defect.**
+- `luaTimetable failed: usn_03:1186: bad argument #1 to 'pairs'` in `luaUS03EndReconMovie`: it has already set
+  `MissionPhase = 3`, then `luaGetSlotsAndSquads(Mission.Enterprise)` returns `0, nil` because the Enterprise has
+  no squadron in its slots, and `pairs(nil)` throws before the Junyo `kill` listener is added. **Phase 3 can
+  then never end.** The image raises the same error for a carrier with no squadron up (commandhelpers'
+  `luaGetSlotsAndSquads` answers `0, nil` and the script does not test it), so this is the player's job: the
+  order file must have Enterprise squadrons launched before the recon movie ends.
+
+**The binding** (`kSimplifiedReconNativesBound`, `include/bsp/game_hosts_lua.hpp`, OFF): the four natives on
+`[game+21C4h]` (`008B2320`/`008B24A0` at `+74h`, `008B25F0`/`008B2770` at `+78h`, default 1.0f from `00444D20`;
+docs/GUNNERY_RECON_DETECTION.md). LABELLED: a set value is not forwarded to the gunnery host's recon detection.
+
+**Predictions (before the pairs).**
+- OFF: identical.
+- PRCP01 ON: no `luaPutToRecon` error; `luaUS03SpawnPhase1EnterpriseKillers` completes, so phase 1 spawns more
+  Japanese attackers against the Enterprise (more plane deaths and Enterprise damage). Phase 3 still stalls at
+  line 1186 without an order file that launches Enterprise squadrons.
+- BSM01 ON (win row; bsm_01 calls `SetSimplifiedReconMultiplier`): gameplay identical (only the setter row
+  becomes concrete; detection still reads 1.0); the win holds.
+
+### 5gj, the pairs (cc9-lua54, 2026-10-12)
+
+Exports `l54_R0` (584332397 OFF) and `l54_R1` (switch ON); order file `local\l54_p01_a.txt` (launch Enterprise
+Wildcats, slots 1 and 2, at frames 600/620, targeted on the Enterprise).
+- **PRCP01 24000 with the orders:** gameplay identical OFF vs ON. With squadrons up, `luaUS03EndReconMovie` runs
+  to its end on both sides: the Junyo `kill` listener and `ReinforcementHintlistenerID` are added and no script
+  call fails. `GetSimplifiedReconMultiplier` was not called in either run (no row for it in either log), so the
+  getter is unexercised here (why `luaUS03SpawnPhase1EnterpriseKillers` did not reach `luaPutToRecon` with
+  Wildcats up was not read); the no-orders run `l54_E0_p01` is the one that raised the error.
+- **BSM01 30000:** identical OFF vs ON (no Set/GetSimplified call reached). **Both sides end with no
+  EndMission at MissionPhase 3**, where `l53_M1_b1` (487cf8170) completed at 767.94 s: BSM01 has regressed on
+  main bd3b0c333 independently of this switch (reported to the lead).
+- **Flipped ON:** the four natives answer the image's own stored values (default 1.0f), both pairs are
+  identical, and OFF is a proven script error on the no-orders path. The rest of PRCP01 stays open.
+
+## 5gk. Handoff (cc9-lua54, 2026-10-12, at about 76% context)
+
+Tree `J:\PROG\battlestations-pacific-decompile-cc9-lua52` (branch `agent/cc9-lua52`); launcher `local\l54_lane.ps1`
+(rows as l53 plus `os` = USNOS s45_os_k, `u03`, `u14`, `p01` (no orders), `p01o` (PRCP01 + `local\l54_p01_a.txt`);
+`-EnvExtra` passes env lines; `-Exe` an export). Scanners: `local\l54_listen_scan.py` (AddListener census),
+`local\l54_reach.py` (menu id -> scene StageScript -> listeners), `local\l54_tree.py` (menu ids),
+`local\l54_cb_body.py` (callback bodies), `local\l54_live_water.py`, `local\l54_trace.py`. No leases held.
+
+**Done:** 5gf (kPlaneWaterPowerLostBound ON, e7f7a279d/e89b2b7d6), 5gg (TroopTrans3 box, routed to gunnery39),
+5gh (HintSystem, no binding), 5gi (event-channel audit, abeef3acf), 5gj (kSimplifiedReconNativesBound, ON in
+this commit). hpEvent closed: no menu row reaches usn_14_battle_of_okinawa (menu USN14 is "New - Battle of the
+Philippine Sea"). Paratroopers stopped by the lead (JM05's Dakotas are PilotMoveTo'd; JM05 fails at 441 s).
+
+**Next, the PRCP01 bring-up (lead's order (a)):**
+1. Phase 3 now waits for **the Junyo to die** (`luaUS03JunyoKilled`, kill listener). The Enterprise deck has
+   only Wildcats (101x30; 113 and 108 stock 0), so the order file needs another striker: read what the phase-3
+   script gives the player (Hornet strike `dlg_HornetStrike`, `Mission.Timer = GameTime() + 1200`, the
+   `ReinforcementHintlistenerID` callback) and extend `l54_p01_a.txt`. The Junyo is generated by GenerateObject
+   in the phase-3 movie init (5fy), so its name resolves only after that.
+2. Then the reinforcement movie -> `luaUS03CruisersInRange` -> `dlg_Cruisersinrange` -> `luaUS03Primary4Add`
+   (phase 4). **No `input` or `target` listener is on this copy's path** (5gj); bind them only if a later step
+   needs them.
+3. Phase 4 -> the Vanguard `recon` listener (hosted) -> EscapePath -> the ship out-of-map countdown
+   `00826D70` -> `00811F50` -> `00811E80` -> `0081BEB0` (exitzone(1), Kill(4), `ExitZoneParty`) -> phase 5.
+   The lead logged the countdown as a ships-lane item; the `exitzone` Lua dispatcher is this lane's
+   (5gi has the channel contract; the status/filter strings are case-insensitive exact sets).
+4. Write the winning order file to `config/win_orders/`.
+
+## 5gl. PRCP01 phase 3: the Junyo strike and the duplicate-name target (packet `cc9_lua55_prcp01`, cc9-lua55, 2026-10-12)
+
+**The strikers exist.** `luaUS03GotoPhase3` (script line 1131) runs `AddAirBaseStock(Enterprise, 108, 30)` and
+`(113, 30)` (lines 1152-1153; logged `AddAirBaseStock 00896a90: entity id 1 class 108 +30 -> 30`, mission frame
+~1082) and `SetAirBaseSlotCount(Enterprise, 4)`. The 113x0/108x0 seen in 5gk is the stage-init stock. Phase 3 has no
+fail timer: `Mission.Timer = GameTime() + 1200` (line 1192) is never read in phase 3; the 20 minutes are
+`luaDelay(luaUS03SpawnEnterpriseKillers, 1200)` (line 1174) and `luaUS03JunyoAngry` at 600 s (Junyo ELITE, 8 slots).
+`dlg_HornetStrike` belongs to the phase-1 fake divebombers (line 1092), not to phase 3. Phase 3 fails only if the
+Enterprise dies or is out of planes for two thinks.
+
+**The win is the Zuiho.** `luaUS03ZuihoKilled` (line 1553, the `kill` listener added by
+`luaUS03EndReinforcementMovie`) sets EndMission and calls `luaMissionCompletedNew`. The Vanguard recon ->
+EscapePath -> `exitzone` chain (phase 5) is the Enterprise's retreat, not the win.
+
+**The harness defect.** The stage init kills the scene templates (`entity dead: unit=5 "Junyo" died=3.05 s`, also
+Zuiho unit 8, Kumano unit 9), and GenerateObject re-creates each under the same name (`"Junyo" ... -> id 6`). The
+`launch` line resolved the target name to the FIRST row, the dead template, so every Junyo launch was refused
+(`the target fails 0043F080`, `local\l55_A0_p01b.log`, 22 lines). `kHarnessTargetPrefersLiveBound`
+(`include/bsp/game_hosts_script_orders.hpp`, OFF) makes `harness_target_row` take the first row by name that passes
+`unit_alive_and_visible` (else the first, as before); used by `player_air_ops_launch`, `player_air_ops_order` and (lead's loan) every unit/target name lookup in
+`game_hosts_mission_frame.cpp` (launch, select, moveto/takehelm, attack, fire, torpedo, release, build). HARNESS only: the player picks live markers.
+
+**Predictions.** OFF identical. ON: identical on every row whose target names are unique (all current win files,
+unless a file names a re-created template, in which case a refused line becomes applied); PRCP01 with
+`local\l55_p01_c.txt`: the Junyo and Zuiho launches are applied once each exists.
+
+**The real phase-3 defect (cc9-lua55, after the first pair).** With the harness switch ON the Junyo launches were
+still refused: there is ONE Junyo row. `luaEngineMovieInit` (script line 4) generates the Junyo and Zuiho groups for
+the intro, phase 0 kills every Japanese ship (`Kill(unit, true)`, line 599-601; the 3.05 s deaths), and
+`luaUS03GotoPhase3` (line 1135) and `luaUS03GotoPhase4` (line 1244) generate them again. 0046D930 instantiates on every
+call (its only gate, 0046C550 BSP_SceneEntity_ShouldGenerate, is the MultiType/game-mode predicate, not an
+already-created test), but this host answers a repeat call with the earlier entity (a recorded deviation against
+duplicated carriers), so the script's Junyo was the dead intro instance: the `kill` listener can never fire and
+phase 3 can never end. `kGenerateObjectRespawnsDeadBound` (`include/bsp/game_hosts_lua.hpp`, OFF): a repeat call
+whose earlier instance is `Dead` in its thisTable slot makes a new entity; a live earlier instance keeps the
+deviation. It needs `kHarnessTargetPrefersLiveBound` for the order file to reach the new row.
+
+**Predictions.** OFF identical. ON: PRCP01 logs `the earlier instance (id 6) is Dead, so a new one is made` for
+Junyo, Kuroshio and Hayashio at phase 3 (and the Zuiho group at phase 4), the Junyo launches are applied, and the
+Junyo can be sunk. Win rows: identical unless a script regenerates a killed object (none known).
+
+### 5gl, the pairs (cc9-lua55, 2026-10-13)
+
+Exports: OFF `local\l55_O` (c696e9051 build copy; the USN12 OFF run is fa67842f1, identical OFF by construction),
+both switches ON `local\l55_G`. Reference env, `--stop-after-end 40`.
+- **USN12 `usn12_s38_u12_p2` 34000:** GAMEPLAY identical (107 deaths, completed 1534.87 s both), sus_prog.exe refusal logged.
+- **JM08 `jm08_s45_j8_m10` 72000:** GAMEPLAY identical (273 deaths, completed 3528.42 s both), refusal logged.
+  Neither win row regenerates a dead object (no `is Dead, so a new one` line).
+- **PRCP01 `local\l55_p01_c.txt` 40000 (ON only):** the Junyo, Kuroshio and Hayashio respawn at phase 3 (new Junyo
+  unit 25, thisTable[26]); the 1600/1620 launches are applied (slots 3 and 4: Avengers and Dauntlesses). The phase-3
+  enemy waves (Kate1/Val1, `luaUS03SpawnEnterpriseKillers`/air waves) now also respawn every wave, as the image does.
+  **The Junyo is not sunk:** the squadron's command target resolves by NAME in the gunnery host's 0071EBF0 resolver
+  (`src/game_hosts_gunnery.cpp` ~5990, `by_name.emplace` keeps the first row, the dead intro Junyo), so
+  `squadron retest: target Junyo dead` ends the leader's attack at launch. That hunk was sent to the lead (gunnery
+  lane); it is identical while respawn is OFF, because duplicate names exist only with respawn ON.
+- **Flipped both ON** (wins identical; respawn is the image's 0046D930 behaviour, the harness rule is a player pick).
+
+## 5gm. PRCP01 after the Junyo: the checkpoint's GetCatapultStock (packet `cc9_lua55_catapult_stock`, cc9-lua55, 2026-10-13)
+
+With main 974089548 (gunnery39's live-name rule in the 0071EBF0 resolver) merged, `local\l55_R1_p01c.log` (60000
+frames, `l55_p01_c.txt`): the Avengers drop three torpedoes, later strikes follow, and **the Junyo is sunk at
+752.04 s** (`kill listener 009813a0: victim "Junyo" attacker "Enterprise_sqn08" -> luaUS03JunyoKilled()`). The
+movie ends, `Blackout(true, "luaUS03SaveCheckpoint1")` fires, and the callback fails:
+`blackout callback luaUS03SaveCheckpoint1 failed: commandhelpers.lua:16462: attempt to compare number with nil`.
+That line is `if GetCatapultStock(unit) > 0 then` in commandhelpers' `luaCheckpoint` ship branch (this
+installation's commandhelpers.lua, mtime 2024-10-29), and `GetCatapultStock` (`00892DE0`) was an UNIMPLEMENTED row
+that pushes nothing. `luaUS03BlackoutDelay` -> `luaUS03GotoPhase4` never runs: the mission stays at MissionPhase 666.
+Any mission whose checkpoint walks a ship hits the same error.
+
+**The binding** (`kLuaGetCatapultStockBound`, `include/bsp/game_hosts_lua.hpp`, OFF): vtable[5Ch](5), then
+max(unit+638h, 0), else 0. unit+638h is set at init from `[unit+538h]+C8h` (`0095E5B0`, the class
+`Catapult.LaunchStock`, docs/AIR_OPERATIONS.md) and is read here from the entity's `Class.Catapult.LaunchStock`.
+LABELLED: the catapult-launch decrement (`00957450`) and `SetCatapultStock` (`009539A0`) are not built.
+
+**Predictions.** OFF identical. PRCP01 ON: `luaUS03SaveCheckpoint1` completes, `usn03.timepasses`, phase 4 starts
+(the Zuiho group respawns, the reinforcement movie runs, `dlg_Cruisersinrange` -> `luaUS03Primary4Add`). Win rows:
+identical unless their scripts reach `luaCheckpoint` with a ship alive, in which case the post-checkpoint code
+that used to be cut short now runs.

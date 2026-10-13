@@ -141,3 +141,37 @@ mechanism is in the cd761bb52 section above).
   ESMP08 is unchanged (lost).
 - **Retracted: "USN12 lost on 8b0e7bfce".** That run (local\p4l_off_u12.log) logged `helm orders refused: cannot open` its order file: cc9-ships38 had been removed minutes before. USN12 ran with no orders; it says nothing about main.
 - **kPlaneLeaderTurnRollBound flipped ON** (cc9-physics5, 2026-10-13, ruling (a)): faithful, loses USN01 `p3_u1_z4` (deaths 90 -> 68 on the 8b0e7bfce pair). USN01 stays a win row pending the re-plan on current main; until then treat `p3_u1_z4` as expected to fail.
+- **New row USNOS** (reported by cc9-ships45 through the lead, 2026-10-13): `config/win_orders/usnos_s45_os_k.txt` (source cc9-ships44\local\s45_os_k.txt), 200000 frames at 0.05 s, reference env, `--stop-after-end 40`; mission completed at 7332.83 s on 1de67cfb9 with the sus_prog.exe guard line logged (SHIP_AI_OPEN_ITEMS 221, 975b45791). Knife-edge on one transport (TroopTrans6), not jitter-checked. **Pending re-check on main with kamikaze/drop/sweep/n1 ON (ships45).**
+- **USN01 re-planned (cc9-physics5, 2026-10-13): `config/win_orders/usn01_p5_u1_e.txt`**, replaces `p3_u1_z4`. Tree agent/cc9-physics1 at origin/main 3eac809d6 (leader turn roll, O1, avoid pick, gun burst, kamikaze/drop/sweep/n1 ON), bsp_game.exe SHA-256 A449FC8E71B1, 26000 mission frames at 0.05 s, reference env, `--stop-after-end 40`: **completed 1183.08 s** with the sus_prog.exe guard line (`local\p5r_e26.log`; the 36000-frame run `p5r_e` ends identically). The first divergence from z4: `ConTBD1|.-3` flies into Convoy3 at 179.71 s (plane crash sweep, 150.6 dealt), so Convoy3 survived; `3306 target ConTBD1 Convoy3` gives Convoy3 to ConTBD1|.-3's guns at 188.71 s, and Convoy2/1/6 fall to Northampton and SaltLakeCity by 934.20 s. z4's Enterprise Wildcat launches (frames 4400+) stop phase 3 (escort to NavEscort1) from completing by 1800 s on main, so they are removed (`p5_u1_d` with them: no completion; `p5_u1_f`, launches only after 22000: 1183.08 s). **Knife-edge:** with `BSP_FRAME_JITTER 20,3` it fails (Convoy1 and Convoy6 survive; `p5r_ej`, `p5r_fj`).
+- **LOMP10 `p3_l10_b`** holds on the same tree: completed 1158.10 s with the guard (`local\p5wf_off_l10.log`).
+- **New row JM08** (reported by cc9-ships45 through the lead, 2026-10-13): `config/win_orders/jm08_s45_j8_m10.txt` (source cc9-ships44\local\s45_j8_m10.txt), 72000 frames at 0.05 s, reference env, `--stop-after-end 40`; completed 2645.96 s on 1de67cfb9 (3062.46 s with land-mesh ON), guard line logged. Fails under `BSP_FRAME_JITTER 20,3` (the phase-2 B-17 interception). **USNOS and JM08: pending re-check on current main (ships45).**
+- **USN12 `s38_u12_p2`** completes at 1534.87 s on main (cc9-lua54's pair; 1539.83 s before n1 and the sweep flips).
+- **USN01 `usn01_p5_u1_e` LOST again on main 64675c644** (cc9-physics5, tree e97058a57's base; `local\p5so_on_u1e.log`, 26000 frames): Convoy5/3/4 die as before, Convoy1 now at 282.75 s (ConTBD1, cat 0), and Convoy2 and Convoy6 survive (on 3eac809d6 Northampton and SaltLakeCity sank them at 888/934 s). Main commits since: gunnery38's dead-target retest ON (395e1fec0, 518193e10), lua52 and ships44 merges (630f7ae95, 0b274d016, d69822767). Re-plan needed (handoff OCEAN_WAVE_FIELD 24).
+- **Keeper updates, current main (reported through the lead, 2026-10-13):** JM08 `jm08_s45_j8_m10` completes at 3528.42 s on bd3b0c333 (ships45, guard logged, cc9-ships44\local\s45_rc_j8m10.log); USNOS `k` re-check still running. gunnery39's reference on 02c6b592f: USN02 203.01 s, LOMP06 535.24 s, USN12 1534.87 s, LOMP10 1158.10 s (was 1002.18), USN15 2641.80 s. **BSM01 `l50_b1_a` LOST** (luaMissionFailed 1521.36 s; HenryPT never rams MiniSub); it won at 767.94 s on 518193e10, and gunnery39 is bisecting the five switches since.
+
+- **JM08 `jm08_s45_j8_m10` LOST by the wing fold flip** (cc9-physics6, 2026-10-13; docs/PLANE_INPUT_CHECKS_CC9.md, the
+  JM08 pair): on origin/main 168cb72a9 it completes at 3528.42 s with the switches OFF (guard logged,
+  `local\p6wf_off_j8.log`) and does not complete in 72000 frames with `kPlaneWingFoldElevatorBound` and
+  `kPlaneWingSpreadTakeoffBound` ON (`local\p6wf_on_j8.log`): every Hosho Kate launch waits 3.0 s for its wings in the
+  takeoff prepare (009CDEED). Faithful, flipped ON; JM08 needs a re-plan.
+
+- **New row JM06** (reported by cc9-ships45 through the lead, 2026-10-13): `config/win_orders/jm06_s45_j6_k.txt`,
+  100000 frames at 0.05 s, reference env, `--stop-after-end 40`; completed at 2880.63 s on bd3b0c333
+  (`ijn06.obj_missioncompleted`), guard line logged (SHIP_AI 225). Not jitter-checked.
+- **USNOS `usnos_s45_os_k` does NOT complete on current main** (reported through the lead, 2026-10-13): every
+  FinalTrgs unit dies, but ReinDead / `HideScoreDisplay(4,0)` never fires and the mission stays in phase 2.
+  cc9-ships46 is investigating with Lua error logging.
+- **JM08 re-plan assigned to cc9-physics6** (2026-10-13). On 6a7062611 (wing fold ON) `m10` sinks only 4 of 11
+  landing ships: Grayson kills Isokaze (655 s) and Fubuki (682 s) before they reach the transports (in the win
+  Fubuki sank LSM 01, TT02 and TT04 by 720 s). Hosho still dies at 509 s (Hawaii) either way.
+- **JM08 re-planned (cc9-physics6, 2026-10-13): `config/win_orders/jm08_p6_j8_f.txt`**, replaces `jm08_s45_j8_m10`
+  (kept). Tree agent/cc9-physics1 at 974089548's merge (origin/main with the wing fold ON), bsp_game.exe SHA-256
+  6C400EF57F47, **110000 mission frames** at 0.05 s, reference env, `--stop-after-end 40`: **completed 2974.03 s**,
+  guard line logged (`local\p6j8_f.log`). The plan is m10 (SHIP_AI 223) with its late generator part regenerated to
+  110000 frames (`local\p6_j8gen.py` = s45_j8gen.py, same arguments with `--end 110000 --air-until 110000`, spliced
+  at 24000; the splice at 72000 reproduces m10 byte for byte) and the airfield's launch groups between frames 6000
+  and 24000 given Grayson, then Helena, as first targets (`local\p6_prepend.py`). Grayson had sunk Isokaze and
+  Fubuki before they reached the transports; with it engaged the destroyers survive to 661/714 s and the airfield
+  finishes the landing ships by 2590 s, then the B-17 interception completes at 2974 s. Variants: Hosho at Grayson
+  (a, and a+airfield c): HQ destroyed 1706.84 s; airfield at Grayson only to frame 14000 (b, 72000 frames): 10 of
+  11 landing ships, no end.

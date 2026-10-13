@@ -234,6 +234,26 @@ inline constexpr bool kLuaListenerCallbackArgsBound = true;
 // attacker sets name lands a kill in them.
 inline constexpr bool kLuaKillAttackerBound = true;
 
+// Packet cc9_lua54_prcp01 (docs/SQUADRON_LAND_TASK.md 5gj): the four natives on the
+// config at [game+21C4h]. 008B2320 SetSimplifiedReconMultiplier stores Lua argument 1
+// at +74h (008B243C), 008B24A0 GetSimplifiedReconMultiplier pushes it (008B258A);
+// 008B25F0 / 008B2770 do the same for SimplifiedSonarMultiplier at +78h (008B270C).
+// Both default to 1.0f (00444D20). True: the host keeps the two values and answers
+// the getters. False: the rows are unimplemented and the getters push nothing, so
+// commandhelpers.lua's luaPutToRecon (line 16266, `dist * GetSimplifiedRecon...()`)
+// raises an arithmetic-on-nil error. LABELLED: a set value is not forwarded to the
+// gunnery host's recon detection (`simplified_recon_multiplier()` stays 1.0f).
+inline constexpr bool kSimplifiedReconNativesBound = true;   // ON: SQUADRON_LAND_TASK 5gj
+
+// Packet cc9_lua55_genobj (docs/SQUADRON_LAND_TASK.md 5gl). GenerateObject 00944FD0 ->
+// 0046D930 instantiates on every call; this host answers a repeat call with the earlier
+// entity (a deviation against duplicated capital ships). PRCP01's luaEngineMovieInit
+// generates the Junyo and Zuiho groups for the intro, phase 0 kills them (usn_03:599),
+// and phases 3 and 4 generate them again (usn_03:1135, 1244), which here answered the
+// dead entity. True: a repeat call whose earlier instance is Dead (its thisTable slot)
+// makes a new entity; a live earlier instance keeps the deviation. False: as before.
+inline constexpr bool kGenerateObjectRespawnsDeadBound = true;   // ON: SQUADRON_LAND_TASK 5gl
+
 // docs/CC13_AUDIT_LUA51_FLIPS.md item 1c. 00988510 boxes, and 0097B8C0 matches,
 // the target as hitEntity->vtable[140h]() kept only when it answers IsKindOf(2)
 // (00988530..0098859B): for a plane that is its squadron (007B97E0, plane+9D4h).
@@ -424,6 +444,15 @@ inline constexpr bool kLuaFormationLeaderBound = true;   // ON by its pairs (LUA
 // catapult launch, so the index stays -1. True: the row answers from that
 // state; false: the row stays unimplemented.
 inline constexpr bool kLuaLastCatapultedBound = true;  // ON by its pairs (LUA_BINDING_MISSION)
+
+// Packet cc9_lua55_catapult_stock (docs/SQUADRON_LAND_TASK.md 5gm). GetCatapultStock
+// 00892DE0: vtable[5Ch](5), then max(unit+638h, 0); 0 for any other entity. unit+638h
+// is written at init from the class Catapult.LaunchStock (0095E5B0: [unit+538h]+C8h),
+// decremented by a catapult launch (00957450) and set by SetCatapultStock (009539A0).
+// True: answers the class LaunchStock (LABELLED: neither writer is built here, so the
+// constructor value stands). False: the unimplemented row pushes nothing, which breaks
+// commandhelpers' luaCheckpoint (`GetCatapultStock(unit) > 0`) for every ship.
+inline constexpr bool kLuaGetCatapultStockBound = false;
 inline constexpr bool kLuaFormationQueryBound = true;  // ON: mechanism matched, spread miss recorded (docs/LUA_BINDING_MISSION.md)
 
 // The process-wide 00E17BF2. It is reset from the lobby flags when a mission's settings
@@ -785,6 +814,7 @@ struct GameMissionLuaSummary {
     unsigned long long in_formation_true{0};
     unsigned long long formation_leader_calls{0};   // packet cc9_get_formation_leader
     unsigned long long last_catapulted_calls{0};    // packet cc9_get_last_catapulted
+    unsigned long long catapult_stock_calls{0};     // packet cc9_lua55_catapult_stock
     unsigned long long last_catapulted_nil{0};
     unsigned long long last_catapulted_not_ship{0};
     unsigned long long untouchable_calls{0};        // packet cc9_add_untouchable_unit
@@ -810,6 +840,7 @@ struct GameMissionLuaSummary {
     unsigned long long generate_object_calls{0};
     unsigned long long generate_object_created{0};
     unsigned long long generate_object_repeat{0};
+    unsigned long long generate_object_respawned{0};   // packet cc9_lua55_genobj
     unsigned long long generate_object_unknown{0};
     // Packet cc9_generated_entity_party.
     unsigned long long generated_party_nodes{0};
@@ -1380,6 +1411,7 @@ public:
     int run_is_in_formation_008996a0(lua_State* state, int argument_count);
     int run_get_formation_leader_00899af0(lua_State* state, int argument_count);
     int run_get_last_catapulted_00892860(lua_State* state, int argument_count);
+    int run_get_catapult_stock_00892de0(lua_State* state, int argument_count);
     int run_add_untouchable_unit_008ac140(lua_State* state, int argument_count);
     int run_leave_formation_00899eb0(lua_State* state, int argument_count);
     // Packet cc13_natives1, under kLuaSquadronSetReleaseAltBound.
@@ -1405,6 +1437,11 @@ public:
     bool stationary_class_exists(const std::string& name);
 
     int run_is_ready_to_send_planes_00895d20(lua_State* state, int argument_count);
+    // Packet cc9_lua54_prcp01: 008B2320/008B24A0 and 008B25F0/008B2770.
+    int run_simplified_multiplier(lua_State* state, int argument_count,
+                                  std::uint32_t address);
+    float simplified_recon_74_{1.0f};
+    float simplified_sonar_78_{1.0f};
     int run_launch_squadron_0089e3c0(lua_State* state, int argument_count);
     // 00944FD0 GenerateObject. Instantiates one of the entities the scene pass
     // held back at 0046D3C5, by name, and pushes its `thisTable` slot the way the
