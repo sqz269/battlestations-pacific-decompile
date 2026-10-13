@@ -588,6 +588,12 @@ static_assert(std::is_standard_layout_v<ShipAiSectorBlockerRecord>);
 // tail's setback allowance (009EEAFE, 32Ch * |328h|) is zero on a tick whose
 // lead did not apply. False: the last applied lead persists, as it always did.
 inline constexpr bool kShipAiTurnLeadResetBound = false;
+// Packet cc13-ver7 (docs/CC13_VER_7.md, D5). True: 009EF910's way-clear timer
+// and the block's -1.0f "direction change" mark share blk+374h, as in the image,
+// so a latch or escape flip forces the clearance (blk+37Ch, +370h) to refresh
+// on the next call. False: two separate host fields, as before, and the refresh
+// waits out NearbyShip_WayClearCheckTime (0.25 in this installation).
+inline constexpr bool kShipAiClearanceTimerSharedBound = false;
 // Packet cc9_command_building_capture_bind (docs/SHIP_AI_OPEN_ITEMS.md sections 80
 // and 81). True: a CommandBuilding (kind 1Ch) whose health reaches 0 is neutralized
 // (006F3270 -> 006F2940 -> 006F4D10 slot 9) instead of killed; a neutral building
@@ -10808,8 +10814,18 @@ public:
         ctl_.clearance.avoidance_enabled_3f4 = ctl_.avoidance.flag_3fc;
         ctl_.clearance.static_zone_present_a3c = ctl_.avoid_search->list(0).head != nullptr;
         ClearanceBinding clearance(owner_, index_);
+        // Packet cc13-ver7 (D5): blk+374h is one field. The -1.0f stores the
+        // block names direction_value_374 (009D526F, 009ED867, 009ED8B5,
+        // 009EDB8B, 009F4B16, 009F4B7B) are writes to this refresh timer, and
+        // 009EF91D..009EF956 are its only reads.
+        if (kShipAiClearanceTimerSharedBound) {
+            ctl_.clearance.refresh_timer_374 = ctl_.blk.direction_value_374;
+        }
         bsp::ship_ai_refresh_turn_clearance_009ef910(ctl_.clearance, geometry, settings,
                                                      seconds, clearance);
+        if (kShipAiClearanceTimerSharedBound) {
+            ctl_.blk.direction_value_374 = ctl_.clearance.refresh_timer_374;
+        }
         owner_.done("ShipAi::refresh_turn_clearance_009ef910", 0x009ef910u);
         if (ctl_.clearance.outcome_370 == bsp::ShipAiClearanceOutcome::HeadingErrorLarge) {
             ++owner_.summary.clearance_heading_error_large;
