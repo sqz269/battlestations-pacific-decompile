@@ -528,6 +528,8 @@ int binding_trampoline(lua_State* state) {
         && dispatch_row.address == 0x0089ac30u;
     const bool squadron_plane_row = kLuaGetSquadronPlaneBound
         && dispatch_row.address == 0x0089cfe0u;
+    const bool disband_row = kLuaDisbandFormationBound
+        && dispatch_row.address == 0x0089a020u;
     // Packet cc9_squadron_attack_alt.
     const bool attack_alt_row = kSquadronAttackAltBound
         && dispatch_row.address == 0x008a22b0u;
@@ -603,7 +605,7 @@ int binding_trampoline(lua_State* state) {
         || sub_surface_row
         || force_gunner_row
         || slot_count_row || add_stock_row || shipyard_stock_row || device_reload_row
-        || remove_all_stock_row || start_landing2_row || squadron_plane_row
+        || remove_all_stock_row || start_landing2_row || squadron_plane_row || disband_row
         || unlimited_air_row
         || in_formation_row || leave_formation_row || travel_alt_row || border_zone_row
         || untouchable_row
@@ -736,6 +738,10 @@ int binding_trampoline(lua_State* state) {
     }
     if (squadron_plane_row && !host->error_replay()) {
         return host->run_get_squadron_plane_0089cfe0(state, argc);
+    }
+    if (disband_row) {
+        if (!host->error_replay()) host->run_disband_formation_0089a020(state, argc);
+        return 0;
     }
     if (shipyard_stock_row) {
         if (!host->error_replay()) host->run_add_shipyard_stock_00896cc0(state, argc);
@@ -6344,6 +6350,47 @@ int GameMissionLuaHost::run_get_squadron_plane_0089cfe0(lua_State* state, int ar
         "cc13-fix5)", id, i, live.size(), answer);
     log_.implemented("MissionLuaNative::GetSquadronPlane", "0089cfe0");
     return results;
+}
+
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 5). 0089A020 DisbandFormation(unit),
+// lua_CFunction, no result: 0089A11F 00888AA0 on argument 0, 0089A138 0077CA60 on it.
+// 0077CA60: nothing unless [unit+284h]; a snapshot of the group's members by
+// 0070D060 over +4F8h, skipping nulls and the leader [group+14h], with the leader
+// appended last; then for each one whose +284h is still set, the slot counter bump
+// for +1ACh < 8 (00905300) and 77h with a null target through 0077C2A0 (class 7),
+// whose receiver is 0077BD70's leave, the one LeaveFormation's 0077C980 sends.
+// SUBSTITUTIONS (labelled), as in run_leave_formation_00899eb0: each leave runs at the
+// call instead of through the session queue, in the snapshot's order; the member
+// order is the units host's index order (the +4F8h array order is not carried); the
+// slot counter is not modelled.
+int GameMissionLuaHost::run_disband_formation_0089a020(lua_State* state, int argument_count) {
+    static_cast<void>(argument_count);
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    const bool valid = units != nullptr && id > 0
+        && static_cast<std::size_t>(id) <= units->count();
+    const std::int32_t group = valid
+        ? units->unit_formation_group_0284(static_cast<std::size_t>(id - 1)) : -1;
+    std::size_t left = 0;
+    if (group >= 0) {
+        const std::size_t leader = units->formation_leader_0014(group);
+        std::vector<std::size_t> snapshot;
+        for (std::size_t u = 0; u < units->count(); ++u) {
+            if (u != leader && units->unit_formation_group_0284(u) == group) snapshot.push_back(u);
+        }
+        if (leader < units->count()) snapshot.push_back(leader);
+        for (const std::size_t u : snapshot) {
+            if (units->unit_formation_group_0284(u) < 0) continue;
+            units->leave_group_on_destroy_0077bd70(u);
+            ++left;
+        }
+    }
+    const GameUnitRow* row = valid ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
+    log_.notef("  DisbandFormation 0089a020: \"%s\" group=%d left=%zu (0077CA60 -> 77h -> "
+        "0077BD70, packet cc13-fix5)", row != nullptr ? row->name.c_str() : "?",
+        static_cast<int>(group), left);
+    log_.implemented("MissionLuaNative::DisbandFormation", "0089a020");
+    return 0;
 }
 
 // Packet cc9_lua_add_shipyard_stock (docs/SQUADRON_LAND_TASK.md 5ej). 00896CC0

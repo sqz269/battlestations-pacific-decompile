@@ -148,3 +148,28 @@ by `find_by_member_or_departed_unit`, for the reason given in section 2 (labelle
 
 **Prediction.** No WIN script calls it. COTP usn_01:802 reads `GetPayloads(GetSquadronPlane(SelectedBomber, 0))`; it
 is not a WIN row. RNG: none.
+
+## 5. DisbandFormation 0089A020
+
+Switch: `kLuaDisbandFormationBound`.
+
+The image body, from disk bytes:
+- 0089A11F: 00888AA0 on argument 0.
+- 0089A138: 0077CA60 on it. The native has no result.
+
+0077CA60 does nothing unless `[unit+284h]` is set. When it is:
+- It snapshots the group's members (0070D060 over +4F8h), skipping nulls and the leader `[group+14h]`, and appends the
+  leader last.
+- For each one still in a group, it bumps the slot counter (+1ACh < 8, 00905300) and routes 77h with a null target
+  (class 7).
+- 77h's receiver is 0077BD70's leave, the same one that LeaveFormation's 0077C980 sends.
+
+The host runs `leave_group_on_destroy_0077bd70` at the call for each snapshot member, the leader last. The
+substitutions are labelled, as in `run_leave_formation_00899eb0`:
+- the order is the units host's index order;
+- the session queue is not used;
+- the slot counter is not modelled.
+
+**Prediction.** No WIN script calls it. There are 30 calls in 17 files: COTP usn_03/04/06, jm03/05/10 and three
+multiplayer maps. Those groups break up at the scripted moment instead of sailing on in formation. RNG: none in the
+leave itself.

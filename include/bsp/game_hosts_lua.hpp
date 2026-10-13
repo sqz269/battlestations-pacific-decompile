@@ -588,6 +588,13 @@ inline constexpr bool kLuaStartLanding2Bound = false;
 // pushes nothing for any other i. True: the row answers from the squadron registry
 // record (live members in order). False: unimplemented, no result.
 inline constexpr bool kLuaGetSquadronPlaneBound = false;
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 5). 0089A020 DisbandFormation(unit):
+// 00888AA0 on argument 0, then 0077CA60 on it (0089A138): with [unit+284h] set it
+// snapshots the group's members (+4F8h count, 0070D060), the leader (+14h) last and
+// skipped in the walk, and routes 77h with a null target (0077BD70's leave) to each
+// one still in a group. True: the row runs the units host's leave for every member
+// of the argument's group, the leader last. False: unimplemented.
+inline constexpr bool kLuaDisbandFormationBound = false;
 inline constexpr bool kLuaAddUntouchableUnitBound = true;   // ON on identity (LUA_BINDING_MISSION)
 // The +1D4h byte of units-host index `index`'s AI object, as AddUntouchableUnit
 // left it. False for every unit while kLuaAddUntouchableUnitBound is false.
@@ -1554,6 +1561,8 @@ public:
     int run_start_landing2_0089ac30(lua_State* state, int argument_count);
     // Packet cc13-fix5, under kLuaGetSquadronPlaneBound.
     int run_get_squadron_plane_0089cfe0(lua_State* state, int argument_count);
+    // Packet cc13-fix5, under kLuaDisbandFormationBound.
+    int run_disband_formation_0089a020(lua_State* state, int argument_count);
     // Packet cc9_squadron_travel_alt, under kSquadronTravelAltBound.
     int run_squadron_set_travel_alt_0089f550(lua_State* state, int argument_count);
     // Packet cc9_squadron_attack_alt, under kSquadronAttackAltBound.
