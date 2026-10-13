@@ -1,6 +1,10 @@
 #include "bsp/water_weather_cc13.hpp"
 
 #include <algorithm>
+#include <intrin.h>
+#include <new>
+
+#include "bsp/singleton_lifetime.hpp"
 #include <cmath>
 #include <cstring>
 #include <limits>
@@ -2687,6 +2691,261 @@ W1D_Mat4 scene_node_random_roll_world_00bc7c10(const W1D_Mat4& source_world, flo
     const W1D_Mat4 sr = lightning_matrix_multiply_w1d(scale, lightning_matrix_rotation_z_00b64780(roll));
     const W1D_Mat4 srt = lightning_matrix_multiply_w1d(sr, translate);
     return lightning_matrix_multiply_w1d(srt, source_world);
+}
+
+}  // namespace bsp::water_weather_cc13
+
+// ================================================================================================
+// Part e (cc13-water2b): container plumbing and small shells on native storage. docs/CC13_WATER_2B.md.
+// ================================================================================================
+namespace bsp::water_weather_cc13 {
+namespace {
+
+unsigned char* w2_bytes(void* p) noexcept { return static_cast<unsigned char*>(p); }
+template<class T> T& w2_field(void* p, std::size_t offset) noexcept { return *reinterpret_cast<T*>(w2_bytes(p) + offset); }
+
+std::int32_t w2_add32(std::int32_t n, std::int32_t k) noexcept {
+    return static_cast<std::int32_t>(static_cast<std::uint32_t>(n) + static_cast<std::uint32_t>(k));
+}
+
+// FLD dword / FSTP dword: unchanged except that a signalling NaN is quieted.
+std::uint32_t w2_x87_reload_bits(std::uint32_t bits) noexcept {
+    if ((bits & 0x7F800000u) == 0x7F800000u && (bits & 0x007FFFFFu) != 0u) bits |= 0x00400000u;
+    return bits;
+}
+
+void w2_copy_element(void* destination, const void* source, std::uint32_t size, W2_Copy copy) noexcept {
+    if (copy == W2_Copy::dwords) {
+        std::memcpy(destination, source, size);
+        return;
+    }
+    for (std::uint32_t k = 0; k < size; k += 4) {
+        std::uint32_t bits;
+        std::memcpy(&bits, static_cast<const unsigned char*>(source) + k, 4);
+        bits = w2_x87_reload_bits(bits);
+        std::memcpy(static_cast<unsigned char*>(destination) + k, &bits, 4);
+    }
+}
+
+void w2_release_object(void* object) {
+    auto* const count = reinterpret_cast<volatile long*>(w2_bytes(object) + 4);
+    if (_InterlockedDecrement(count) == 0) {
+        using Slot0 = void(__thiscall*)(void*);
+        reinterpret_cast<Slot0>(w2_field<void*>(w2_field<void*>(object, 0), 0))(object);
+    }
+}
+
+} // namespace
+
+void w2_pod_reserve(W2_Array& array, std::int32_t requested, std::uint32_t element_size, W2_Copy copy) {
+    if (requested < 1) requested = 1;
+    if (array.capacity >= requested) return;
+    const std::size_t bytes = static_cast<std::size_t>(static_cast<std::uint32_t>(requested) * element_size);
+    auto* const fresh = static_cast<unsigned char*>(
+        singleton_lifetime_allocate({SingletonAllocationKind::object, bytes, bytes}));
+    for (std::int32_t i = 0; i < array.count; ++i) {
+        unsigned char* const destination = fresh + static_cast<std::uint32_t>(i) * element_size;
+        if (destination != nullptr) {
+            w2_copy_element(destination, w2_bytes(array.data) + static_cast<std::uint32_t>(i) * element_size,
+                            element_size, copy);
+        }
+    }
+    singleton_lifetime_free(array.data);
+    array.data = fresh;
+    array.capacity = requested;
+}
+
+void w2_pod_resize(W2_Array& array, std::int32_t count, std::uint32_t element_size, W2_Copy copy) {
+    if (count > array.capacity) w2_pod_reserve(array, count, element_size, copy);
+    for (std::int32_t i = array.count; i < count; ++i) {
+        unsigned char* const slot = w2_bytes(array.data) + static_cast<std::uint32_t>(i) * element_size;
+        if (slot != nullptr) std::memset(slot, 0, element_size);
+    }
+    while (count < array.count) array.count = w2_add32(array.count, -1);
+    array.count = count;
+}
+
+void w2_pod_push_back(W2_Array& array, const void* element, std::uint32_t element_size, W2_Copy copy) {
+    if (array.count == array.capacity) {
+        std::int32_t capacity = w2_add32(array.capacity, array.capacity);
+        if (capacity <= 1) capacity = 1;
+        w2_pod_reserve(array, capacity, element_size, copy);
+    }
+    unsigned char* const slot = w2_bytes(array.data) + static_cast<std::uint32_t>(array.count) * element_size;
+    if (slot != nullptr) w2_copy_element(slot, element, element_size, copy);
+    array.count = w2_add32(array.count, 1);
+}
+
+void w2_push_back_dword_via_00b9dfd0(W2_Array& array, const std::uint32_t* value, W2_Reserve reserve_0073eac0) {
+    if (array.count == array.capacity) {
+        std::int32_t capacity = w2_add32(array.capacity, array.capacity);
+        if (capacity <= 1) capacity = 1;
+        reserve_0073eac0(array, capacity);
+    }
+    auto* const slot = static_cast<std::uint32_t*>(array.data) + array.count;
+    if (slot != nullptr) *slot = *value;
+    array.count = w2_add32(array.count, 1);
+}
+
+void w2_pod_destroy(W2_Array& array, std::uint32_t element_size) {
+    w2_pod_resize(array, 0, element_size, W2_Copy::dwords);
+    singleton_lifetime_free(array.data);
+}
+
+void w2_destroy_via(W2_Array& array, W2_Resize resize) {
+    resize(array, 0);
+    singleton_lifetime_free(array.data);
+}
+
+W2_Array& w2_byte_vector_assign_00b9e5d0(W2_Array& self, const W2_Array& source) {
+    w2_pod_resize(self, 0, 1, W2_Copy::dwords);
+    w2_pod_reserve(self, source.count, 1, W2_Copy::dwords);
+    for (std::int32_t i = 0; i < source.count; ++i) {
+        w2_pod_push_back(self, static_cast<const unsigned char*>(source.data) + i, 1, W2_Copy::dwords);
+    }
+    return self;
+}
+
+void w2_clear_counting_down(W2_Array& array, W2_Reserve reserve, bool free_data) {
+    if (array.capacity < 0) reserve(array, 0);
+    while (array.count > 0) array.count = w2_add32(array.count, -1);
+    array.count = 0;
+    if (free_data) singleton_lifetime_free(array.data);
+}
+
+void w2_coast_point_vector_delete_00bb0590(W2_Array** slot, W2_Reserve reserve) {
+    W2_Array* const vector = *slot;
+    if (vector != nullptr) {
+        w2_clear_counting_down(*vector, reserve, true);
+        singleton_lifetime_free(vector);
+    }
+}
+
+void w2_free_storage_at_8(void* object) noexcept {
+    void*& data = w2_field<void*>(object, 8);
+    if (data != nullptr) {
+        singleton_lifetime_free(data);
+        data = nullptr;
+    }
+    w2_field<std::uint32_t>(object, 4) = 0;
+    w2_field<std::uint32_t>(object, 0) = 0;
+}
+
+void w2_pointer_array_grow_00bc6ca0(W2_Array& array) { engine_services_cc13::grow_pointer_array_00bf2ee0(array); }
+
+void w2_free_data(void** slot) noexcept { engine_services_cc13::free_owned_block(slot); }
+
+void** w2_ref_release_return_self_00b9d6c0(void** slot) {
+    return engine_services_cc13::release_ref_slot_return_self_00be9b80(slot);
+}
+
+void w2_ref_release(void** slot) { engine_services_cc13::release_ref_slot(slot); }
+
+void** w2_ref_add_00ba2b10(void** slot) {
+    if (*slot != nullptr) _InterlockedIncrement(reinterpret_cast<volatile long*>(w2_bytes(*slot) + 4));
+    return slot;
+}
+
+void** w2_ref_assign(void** slot, void* object) { return engine_services_cc13::assign_ref_slot_00bef1e0(slot, object); }
+
+void w2_node_handle_release_00b9ab40(void** slot, void (*unlink_and_release)(void* node)) {
+    if (*slot != nullptr) unlink_and_release(*slot);
+}
+
+void w2_release_string(void* header, NativeStringStorage& strings) noexcept {
+    destroy_native_string_header_0041dd20(header, strings);
+}
+
+void w2_archive_name_record_destroy(void* record, NativeStringStorage& strings) noexcept {
+    void* const data = w2_field<void*>(record, 0x18);
+    if (data != nullptr) singleton_lifetime_free(data);
+    w2_field<std::uint32_t>(record, 0x18) = 0;
+    w2_field<std::uint32_t>(record, 0x1C) = 0;
+    w2_field<std::uint32_t>(record, 0x20) = 0;
+    destroy_native_string_header_0041dd20(record, strings);
+}
+
+void* w2_name_record_copy_construct_00bb64a0(void* record, const NativeString& name, NativeStringStorage& strings) {
+    auto& text = w2_field<NativeString>(record, 0);
+    ::new (&text) NativeString();
+    text.copy_from_00be0a30_fragment(strings, name);
+    w2_field<std::uint32_t>(record, 8) = 0;
+    w2_field<std::uint32_t>(record, 0x0C) = 0;
+    w2_field<std::uint32_t>(record, 0x10) = 0;
+    return record;
+}
+
+void* w2_archive_entry_record_construct_00bba8f0(void* record, const NativeString& name, std::uint32_t a,
+    std::uint32_t b, std::uint8_t flag, std::uint32_t c, NativeStringStorage& strings) {
+    auto& text = w2_field<NativeString>(record, 0);
+    ::new (&text) NativeString();
+    text.copy_from_00be0a30_fragment(strings, name);
+    w2_field<std::uint32_t>(record, 8) = a;
+    w2_field<std::uint8_t>(record, 0x10) = flag;
+    w2_field<std::uint32_t>(record, 0x0C) = b;
+    w2_field<std::uint32_t>(record, 0x14) = c;
+    return record;
+}
+
+void* w2_archive_entry_record_copy_00bba950(void* record, const void* source, NativeStringStorage& strings) {
+    auto* const from = const_cast<void*>(source);
+    auto& text = w2_field<NativeString>(record, 0);
+    ::new (&text) NativeString();
+    text.copy_from_00be0a30_fragment(strings, w2_field<NativeString>(from, 0));
+    w2_field<std::uint32_t>(record, 8) = w2_field<std::uint32_t>(from, 8);
+    w2_field<std::uint32_t>(record, 0x0C) = w2_field<std::uint32_t>(from, 0x0C);
+    w2_field<std::uint8_t>(record, 0x10) = w2_field<std::uint8_t>(from, 0x10);
+    w2_field<std::uint32_t>(record, 0x14) = w2_field<std::uint32_t>(from, 0x14);
+    return record;
+}
+
+void* w2_stream_buffer_read_whole_00bb8530(void* buffer, void* stream, std::uint32_t size) {
+    void* const data = singleton_lifetime_allocate({SingletonAllocationKind::object, size, size});
+    w2_field<void*>(buffer, 0) = data;
+    using Read = void(__thiscall*)(void*, void*, std::uint32_t, void*);
+    reinterpret_cast<Read>(w2_field<void*>(w2_field<void*>(stream, 0), 0x24))(stream, data, size, w2_bytes(buffer) + 4);
+    w2_field<void*>(buffer, 8) = w2_field<void*>(buffer, 0);
+    return buffer;
+}
+
+void w2_free_first_word(void* object) noexcept { singleton_lifetime_free(w2_field<void*>(object, 0)); }
+
+void* w2_memory_stream_create_00bb9100(void* backing) {
+    void* const stream = singleton_lifetime_allocate({SingletonAllocationKind::object, 0x14, 0x14});
+    if (stream != nullptr) {
+        w2_field<std::uint32_t>(stream, 0) = 0x00CEB130u;
+        w2_field<std::uint32_t>(stream, 4) = 1;
+        w2_field<std::uint32_t>(stream, 8) = 0;
+        w2_field<std::uint32_t>(stream, 0x0C) = 0;
+        w2_field<std::uint32_t>(stream, 0x10) = 0;
+        w2_field<std::uint32_t>(stream, 0) = 0x00D64328u;
+    }
+    // The listing continues through a null allocation (operator new throws in practice).
+    void*& held = w2_field<void*>(stream, 8);
+    if (held != nullptr) {
+        w2_release_object(held);
+        held = nullptr;
+    }
+    held = backing;
+    _InterlockedIncrement(reinterpret_cast<volatile long*>(w2_bytes(backing) + 4));
+    const std::uint32_t begin = w2_field<std::uint32_t>(backing, 8);
+    w2_field<std::uint32_t>(stream, 0x10) = begin;
+    w2_field<std::uint32_t>(stream, 0x0C) = w2_field<std::uint32_t>(backing, 0x0C) + begin;
+    return stream;
+}
+
+void* w2_record30_copy_00bc7f00(void* destination, const void* source) noexcept {
+    w2_copy_element(destination, source, 0x30, W2_Copy::floats);
+    return destination;
+}
+
+void w2_record30_remove_swap_last_00bc81d0(W2_Array& array, std::int32_t index) noexcept {
+    if (index == -1) return;
+    if (index != array.count - 1) {
+        w2_record30_copy_00bc7f00(w2_bytes(array.data) + static_cast<std::uint32_t>(index) * 0x30u,
+                                  w2_bytes(array.data) + static_cast<std::uint32_t>(array.count) * 0x30u - 0x30u);
+    }
+    array.count = w2_add32(array.count, -1);
 }
 
 }  // namespace bsp::water_weather_cc13

@@ -1905,4 +1905,39 @@ void height_field_destroy_00add1b0(void* field, TerrainHost& host, HeightFieldDe
     more.weak_link_destruct_00ae9930(field);
 }
 
+// ---------------------------------------------------------------------------
+// cc13-terrain2: ballistic extrema. Extended-precision chains are evaluated in double and
+// rounded at each FSTP float.
+
+namespace {
+float ballistic_extremum(const float* curve, const float* other, bool maximum) noexcept {
+    const float a = curve[7], b = curve[8], c = curve[9], d = curve[10], x0 = curve[0];
+    const float disc = static_cast<float>(static_cast<double>(b) * 4.0 * b - static_cast<double>(a) * 12.0 * c);
+    const bool fallback = 0.0f > disc || a == 0.0f;
+    if (!fallback) {
+        const float s = static_cast<float>(std::sqrt(static_cast<double>(disc)));
+        const double six_a = static_cast<double>(a) * 6.0;
+        const float t1 = static_cast<float>((static_cast<double>(s) - static_cast<double>(b) * 2.0) / six_a + x0);
+        const float t2 = static_cast<float>((static_cast<double>(b) * -2.0 - s) / six_a + x0);
+        for (const float t : {t1, t2}) {
+            if (!(t > x0) || !(other[0] > t)) continue;
+            const float u = static_cast<float>(static_cast<double>(t) - x0);
+            const double slope = six_a * u + static_cast<double>(b) * 2.0;
+            if (maximum ? !(0.0 > slope) : !(slope > 0.0)) continue;
+            return static_cast<float>(((static_cast<double>(a) * u + b) * u + c) * u + d);
+        }
+    }
+    const float y0 = curve[1], y1 = other[1];
+    if (maximum) return y0 > y1 ? y0 : y1;
+    return y1 > y0 ? y0 : y1;
+}
+} // namespace
+
+float ballistic_max_height_00afb7f0(const float* curve, const float* other) noexcept {
+    return ballistic_extremum(curve, other, true);
+}
+
+float ballistic_min_height_00afba40(const float* curve, const float* other) noexcept {
+    return ballistic_extremum(curve, other, false);
+}
 } // namespace bsp::cc13_terrain

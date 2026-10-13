@@ -2792,6 +2792,19 @@ void GameScriptOrdersHost::session_route_path_order_message(void* entity,
                 "path \"%s\": 007ADC30 then answers `no legs` on the first state step "
                 "and the ship holds its heading", path_name.c_str());
         }
+        // Packet cc13-moveonpath1 (docs/CC13_MOVEONPATH_TASK.md): on a plane, the
+        // pilot bot's 0099A170 now reads `moveonpath` as the current command and its
+        // arm at 0099A24A builds the kind-6 task (009BDBB0). The units host
+        // constructs and ticks it (run_moveonpath_task_arm_009bd990).
+        if constexpr (bsp::kMoveOnPathTaskBound) {
+            if (units_.unit_is_kind_of(index, 0x0F)) {   // kUnitKindQueryPlane
+                ScriptOrderAttackCommandHost bot_host(units_, log_, bsp::kCommandMoveOnPath, 0u);
+                if (bsp::bot_install_command_task_0099a170(
+                        static_cast<std::uint32_t>(index + 1u), bot_host) != 0u) {
+                    units_.store_unit_attack_command_class(index, bsp::kCommandMoveOnPath);
+                }
+            }
+        }
     }
     });
 }

@@ -3186,6 +3186,31 @@ bool GameCommandsHost::path_cursor_point(std::size_t unit_index, int leg,
     return true;
 }
 
+bool GameCommandsHost::path_cursor_point3(std::size_t unit_index, float out[3]) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.directors.size()) return false;
+    const GameDirector& director = host.directors[unit_index];
+    if (!director.path_built || director.path_points.empty()) return false;
+    const int count = static_cast<int>(director.path_points.size());
+    int index = director.path_cursor.index_08;
+    if (index < 0) index = 0;
+    if (index >= count) index = count - 1;
+    for (int k = 0; k < 3; ++k) out[k] = director.path_points[static_cast<std::size_t>(index)][k];
+    return true;
+}
+
+bool GameCommandsHost::path_final_point_007b1350(std::size_t unit_index, float out[3]) const {
+    // 007B1350: cursor+0Ch == 1 and a path with a positive count, else the valid
+    // byte is cleared.
+    const Impl& host = *impl_;
+    if (unit_index >= host.directors.size()) return false;
+    const GameDirector& director = host.directors[unit_index];
+    if (!director.path_built || director.path_points.empty()) return false;
+    if (director.path_cursor.follow_mode_0c != 1) return false;
+    for (int k = 0; k < 3; ++k) out[k] = director.path_points.back()[k];
+    return true;
+}
+
 bool GameCommandsHost::advance_path_cursor_00836bf0(std::size_t unit_index,
     float unit_x, float unit_z, float unit_radius, float turn_radius) {
     Impl& host = *impl_;
