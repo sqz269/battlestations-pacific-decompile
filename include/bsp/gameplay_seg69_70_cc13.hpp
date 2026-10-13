@@ -32,6 +32,7 @@
 #include <array>
 #include <cstdint>
 #include <optional>
+#include <utility>
 #include <vector>
 
 namespace bsp {
@@ -531,6 +532,44 @@ struct DefendSpawnRecord {
 // ramp gate and no +3Ch reset in this arm.
 std::optional<PlannerSpawnCall> ai_defend_spawn_arm_00a29be7(
     const PlannerSpawnBudgetInputs& in, const std::vector<DefendSpawnRecord>& records);
+
+// ---------------------------------------------------------------------------
+// Small group and planner helpers
+// ---------------------------------------------------------------------------
+
+// 00A2C530 BSP_AiGroup_ResourceSum, __thiscall(group): the float sum of
+// member+304h over the +563Ch list, in order (FLD/FADD/FSTP float).
+float ai_group_resource_sum_00a2c530(const std::vector<float>& member_304) noexcept;
+
+// 00A18480 BSP_AiPlanner_TakeReplanFlag: returns planner+2Ch and clears it.
+bool ai_planner_take_replan_flag_00a18480(bool& replan_02c) noexcept;
+
+// 00A1D110 / 00A1D140 / 00A1D170, the Duel, Escort and Siege needs-replan slot
+// (vtable +30h): takes and clears +2Ch; with owned groups (+28h, unsigned) it
+// answers true when the first owned group's command is not engaged (00A2CB10)
+// and the old flag otherwise; with none, the old flag.
+bool ai_mode_planner_needs_replan_00a1d110(bool& replan_02c, std::uint32_t owned_028,
+                                           bool first_owned_engaged) noexcept;
+
+// 00A2E1E0 BSP_AiGroup_CountUnitTypes, __thiscall(group)(map&) RET 4: for each
+// member, map[member+170h vtable slot 0 ()] += 009FE060(member) (00625900 is the
+// map's operator[]).
+struct CountedMember {
+    std::uint32_t type_key{0};   // [member+170h]->vtable[0]()
+    int kind18_count{0};         // 009FE060 BSP_Unit_Kind18Count(member)
+};
+void ai_group_count_unit_types_00a2e1e0(const std::vector<CountedMember>& members,
+                                        std::vector<std::pair<std::uint32_t, int>>& map_in_out);
+
+// 00A1A6D0 BSP_AiPlanner_OrderDefendGroup, (group, entity) RET 8: when
+// 00A2C5A0 (BSP_AiGroup_HasGroupableCombatant) answers true the group is ordered
+// to patrol to entity+FCh (00A2C310), otherwise to defend its position (00A2BE20).
+enum class DefendOrder { PatrolToEntity, DefendPosition };
+DefendOrder ai_order_defend_group_00a1a6d0(bool has_groupable_combatant) noexcept;
+
+// 00A04530 BSP_Ai_HintedClassWeight, __thiscall(unit):
+// float(00A04240(unit) * double 009FDF30([unit+C4h])).
+float ai_hinted_class_weight_00a04530(float hint_multiplier, float class_weight) noexcept;
 
 }  // namespace gameplay_seg69_70_cc13
 }  // namespace bsp

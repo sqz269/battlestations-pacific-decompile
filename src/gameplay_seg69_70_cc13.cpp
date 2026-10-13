@@ -682,5 +682,56 @@ std::optional<PlannerSpawnCall> ai_defend_spawn_arm_00a29be7(
     return std::nullopt;
 }
 
+// ---------------------------------------------------------------------------
+// Small group and planner helpers
+// ---------------------------------------------------------------------------
+
+float ai_group_resource_sum_00a2c530(const std::vector<float>& member_304) noexcept {
+    float sum = 0.0f;
+    for (const float v : member_304) sum = v + sum;   // 00A2C570 FLD, 00A2C576 FADD
+    return sum;
+}
+
+bool ai_planner_take_replan_flag_00a18480(bool& replan_02c) noexcept {
+    const bool old = replan_02c;   // MOV AL,[ECX+2Ch]
+    replan_02c = false;
+    return old;
+}
+
+bool ai_mode_planner_needs_replan_00a1d110(bool& replan_02c, std::uint32_t owned_028,
+                                           bool first_owned_engaged) noexcept {
+    const bool old = replan_02c;
+    replan_02c = false;
+    if (owned_028 == 0u) return old;              // CMP [ECX+28h],0 / JBE
+    return first_owned_engaged ? old : true;      // 00A2CB10, TEST AL / MOV AL,1 / JE
+}
+
+void ai_group_count_unit_types_00a2e1e0(const std::vector<CountedMember>& members,
+                                        std::vector<std::pair<std::uint32_t, int>>& map_in_out) {
+    for (const CountedMember& m : members) {
+        std::pair<std::uint32_t, int>* slot = nullptr;
+        for (auto& kv : map_in_out) {
+            if (kv.first == m.type_key) {
+                slot = &kv;
+                break;
+            }
+        }
+        if (slot == nullptr) {                     // operator[] inserts 0
+            map_in_out.emplace_back(m.type_key, 0);
+            slot = &map_in_out.back();
+        }
+        slot->second += m.kind18_count;            // 00A2E23F ADD [EBX],EAX
+    }
+}
+
+DefendOrder ai_order_defend_group_00a1a6d0(bool has_groupable_combatant) noexcept {
+    return has_groupable_combatant ? DefendOrder::PatrolToEntity : DefendOrder::DefendPosition;
+}
+
+float ai_hinted_class_weight_00a04530(float hint_multiplier, float class_weight) noexcept {
+    return static_cast<float>(static_cast<double>(hint_multiplier) *
+                              static_cast<double>(class_weight));   // FMUL qword, FSTP float
+}
+
 }  // namespace gameplay_seg69_70_cc13
 }  // namespace bsp

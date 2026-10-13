@@ -199,6 +199,18 @@ or 46h. `00A24870` uses the sphere filter of vtable `00D22CC0` (slot 0 = `00A1A6
 target with `r^2 = float(tuning+1A4h squared)`, team = planner+34h, and falls back to the target's own
 record. The host's labelled stand-in `capture_defenders_00a24870` (src/game_hosts_ai.cpp:4027)
 matches these rules except that it reads `+5Dh` through `unit_active` and walks its world list 2.
+### 1.6 Small group and planner helpers
+
+- **`00A2C530`**, the group resource: the float sum of `member+304h`. The host substitutes the
+  constant 0 (src/game_hosts_ai.cpp:3814, `kCaptureGroupResource`), on the stated ground that the
+  field is 0 on this installation; the model is the image's rule for when it is not.
+- **`00A18480`** takes and clears the planner's replan byte `+2Ch`; **`00A1D110`, `00A1D140`,
+  `00A1D170`** (Duel, Escort, Siege, vtable `+30h`, byte-identical) take it too, and with owned
+  groups answer true when the first owned group's command is not engaged (`00A2CB10`).
+- **`00A2E1E0`** counts unit types for the Lua group info: `map[member+170h key] += 009FE060(member)`.
+- **`00A1A6D0`**, from the script group creator `00A16EF0`: a group with a groupable combatant
+  (`00A2C5A0`) patrols to the entity, any other defends its position.
+- **`00A04530`**: `float(00A04240(unit) * 009FDF30([unit+C4h]))`, the factor `00A046C0` also applies.
 ## 2. Adoption table (cc9 terms)
 
 | model | replaces (host file:line) | inputs and where the host gets them | RNG | OFF-switch prediction |
@@ -212,6 +224,9 @@ matches these rules except that it reads `+5Dh` through `unit_active` and walks 
 
 No model draws from stream 0.
 | i_capture_spawn_arm_00a2b477, i_defend_spawn_arm_00a29be7, i_planner_owned_resource_00a1c900 | the records capture_spawn_arm_00a2b400 (src/game_hosts_ai.cpp:4424) and defend_spawn_tail_00a29b8e |  0946970 (queued requests), the Defend percent,  0942130, the owned groups'  0A2C530, the plan targets / defend records | none | OFF: none. ON: the same decision the host counts, plus the amount and the threats handed to  0A25A30; nothing spawns without the chain above and authored stock |
+
+| i_group_resource_sum_00a2c530 | the constant kCaptureGroupResource (src/game_hosts_ai.cpp:3814) | member+304h | none | OFF: none. ON: none on this installation, where +304h is 0 for every member (the host's own finding); otherwise capture prices drop by the group resource |
+| i_planner_take_replan_flag_00a18480, i_mode_planner_needs_replan_00a1d110, i_group_count_unit_types_00a2e1e0, i_order_defend_group_00a1a6d0, i_hinted_class_weight_00a04530 | none (mode planners, Lua info, the script creator's order) | planner +28h/+2Ch,  0A2CB10; member +170h,  09FE060;  0A2C5A0 | none | OFF: none. ON: single-player rows run none of the mode planners; the Lua info and the script order are not bound |
 
 ## 3. For cc9 (no host edits made)
 
@@ -238,9 +253,12 @@ Renames (config/names, applied with 	ools/ghidra_annotate.py --apply; prior anno
 |  0A07FB0 | BSP_AiGroup_MaxSpeed | BSP_AiGroup_MinSpeed |
 |  0A1C900 | STL_inst_00a1c900 (tag) | BSP_AiPlanner_OwnedResourceSum |
 
+Batch 5:  0A2C530,  0A18480,  0A1D110,  0A1D140,  0A1D170,  0A2E1E0,  0A1A6D0,  0A04530.
+
 Records for existing reconstructions, each checked against the listing in this pass (local/gpr69_dis.py, local/gpr69_clonecheck.py):
 - the AI command GetType slots (12, to the AiCommandType enum in include/bsp/ai_planners.hpp) and IsType slots (15, to i_command_is_type in src/ai_planners.cpp);
 - in src/band_009f_cc13.cpp (cc13-gp9f's models): the twelve CloneForGroup slots (partial: the type only), the planner IsType and GetName slots (16),  0A2C0A0,  0A2C0D0,  0A2C100,  0A16450,  0A15950,  0A1A660,  0A2C150,  0A2C1C0,  0A2C230,  09FEC40,  0A1C960,  0A1CA60 (the D8 C9, DE FA, D8 F1, D8 7F forms read from the bytes),  0A2B8F0,  0A2B950,  0A2BCC0,  0A2C3D0 (the model divides by the list size where the image divides by +5644h).
+- in the host and its rule files:  0A113D0 (src/ai_command_tick.cpp:526),  0A18510,  0A18520,  09FFE50 (partial: the multiplayer arm tail-calls  04B5510 where the host answers false; src/ai_group_think.cpp),  0A10040 (partial: src/game_hosts_ai.cpp:1620 models the target arm; the other arm installs a null command).
 
 ## 5. Verification
 
