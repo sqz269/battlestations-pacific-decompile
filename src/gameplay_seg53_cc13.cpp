@@ -432,6 +432,31 @@ void torpedo_create_message_apply_00857160(
     state.target_entity_4f8 = target;
 }
 
+// 0085721C..0085744D. The depth test is FLD y; FLD swimdepth; FADD ST0,ST0;
+// FCOMPI; JBE: 2 * swimdepth > y takes the retire loop.
+TorpedoWakeResult torpedo_wake_step_008571f0(const TorpedoWakeInputs& in, const TorpedoWakeHost& host) {
+    TorpedoWakeResult out;
+    out.run_time_498 = in.dt + in.run_time_498;  // 00857220..00857235
+    if (!in.water_mode_nonzero || !in.has_emitter_334) {
+        return out;                              // 0085723F, 00857254
+    }
+    host.place_emitter();                        // 0085725A..00857290
+    host.set_emitter_rate(host.speed());         // 00857295..008572AC
+    host.set_emitter_direction();                // 008572BF..008572EB
+    out.action = TorpedoWakeAction::Placed;
+    if (!(in.homing_vert_turn_speed_f4 > 0.0f)) {
+        return out;                              // 00857300 COMISS, JBE
+    }
+    const float twice = in.swim_depth_47c + in.swim_depth_47c;
+    if (twice > in.world_y_100) {
+        out.action = TorpedoWakeAction::RetireType4;  // 00857340..008573F2
+    } else {
+        out.action = in.has_type4_child ? TorpedoWakeAction::KeepType4
+                                        : TorpedoWakeAction::StopEmitter;  // 0085740A..00857448
+    }
+    return out;
+}
+
 // 00855B59..00855B7D: FLD dt, FMUL qword 00D0C318, FSTP float.
 float torpedo_propeller_angle_00855b30(float dt) noexcept {
     return static_cast<float>(dt * kPropellerRate);

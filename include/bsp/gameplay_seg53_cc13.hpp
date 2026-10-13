@@ -313,6 +313,50 @@ void torpedo_create_message_apply_00857160(
     const TorpedoCreateMessage& msg, TorpedoState& state,
     const std::function<std::uint32_t(std::uint16_t)>& entity_by_net_id);
 
+// 008571F0, entity vtable 00D0C3E8 slot DCh (data ref 00D0C4C4), __thiscall
+// (this, float dt), RET 4: the wake ("bubor") emitter step. Presentation: no
+// RNG, and nothing it writes is read by the round's motion. +498h += dt
+// always. Then, only while the shot's water mode (vtable[2Ch], 00855F00) is
+// non-zero and the emitter +334h exists: the emitter is placed at the bubble
+// point in world space, its +54h takes the speed (vtable[38h]), its +68h..+70h
+// the forward row and +2Ch = 0. For a class with HomingVertTurnSpeed (+F4h) > 0
+// only: below 2 * swimdepth every type-4 child is retired (00866E60 /
+// 008679D0 loop); otherwise, with no type-4 child, 00867B10 then 00866B70.
+// It is not homing guidance: HomingVertTurnSpeed only selects this branch.
+enum class TorpedoWakeAction {
+    None,              // air, or no emitter
+    Placed,            // emitter placed; no homing branch
+    RetireType4,       // homing class, y < 2 * swimdepth
+    StopEmitter,       // homing class, shallower, no type-4 child: 00867B10, 00866B70
+    KeepType4,         // homing class, shallower, a type-4 child exists
+};
+struct TorpedoWakeInputs {
+    float dt{0.0f};
+    float run_time_498{0.0f};
+    bool water_mode_nonzero{false};
+    bool has_emitter_334{false};
+    float homing_vert_turn_speed_f4{0.0f};
+    float world_y_100{0.0f};
+    float swim_depth_47c{-2.5f};
+    bool has_type4_child{false};
+};
+struct TorpedoWakeHost {
+    std::function<void()> place_emitter;      // 004142E0(+33Ch, pose) then 004842C0
+    std::function<float()> speed;             // vtable[38h]
+    std::function<void(float)> set_emitter_rate;     // emitter+54h
+    std::function<void()> set_emitter_direction;     // emitter+68h..+70h = pose +ECh..+F4h, +2Ch = 0
+};
+struct TorpedoWakeResult {
+    float run_time_498{0.0f};
+    TorpedoWakeAction action{TorpedoWakeAction::None};
+};
+TorpedoWakeResult torpedo_wake_step_008571f0(const TorpedoWakeInputs& in, const TorpedoWakeHost& host);
+
+// 00855B90 (vtable 00D0C3E8 slot 68h, data ref 00D0C450) and 00855BB0: node
+// +464h shown / hidden through 00B6DA70(1.0 / 0.0, 0). 00855BD0 (no
+// reference in the image): the create message's target, net id +128h through
+// the 00F89A0C / 00F89A60 tables, 0 for id 0 (the same lookup 00857160 inlines).
+
 // 00855B30, __thiscall(this, float dt), RET 4: 006E2220 extrapolation, then,
 // with a propeller node at +4A0h, the node matrix is cached at +4A4h and its
 // basis turned about the axis +4C4h by dt * 26.1799 rad (1500 deg/s).
