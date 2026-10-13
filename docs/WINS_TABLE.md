@@ -148,3 +148,9 @@ mechanism is in the cd761bb52 section above).
 - **USN12 `s38_u12_p2`** completes at 1534.87 s on main (cc9-lua54's pair; 1539.83 s before n1 and the sweep flips).
 - **USN01 `usn01_p5_u1_e` LOST again on main 64675c644** (cc9-physics5, tree e97058a57's base; `local\p5so_on_u1e.log`, 26000 frames): Convoy5/3/4 die as before, Convoy1 now at 282.75 s (ConTBD1, cat 0), and Convoy2 and Convoy6 survive (on 3eac809d6 Northampton and SaltLakeCity sank them at 888/934 s). Main commits since: gunnery38's dead-target retest ON (395e1fec0, 518193e10), lua52 and ships44 merges (630f7ae95, 0b274d016, d69822767). Re-plan needed (handoff OCEAN_WAVE_FIELD 24).
 - **Keeper updates, current main (reported through the lead, 2026-10-13):** JM08 `jm08_s45_j8_m10` completes at 3528.42 s on bd3b0c333 (ships45, guard logged, cc9-ships44\local\s45_rc_j8m10.log); USNOS `k` re-check still running. gunnery39's reference on 02c6b592f: USN02 203.01 s, LOMP06 535.24 s, USN12 1534.87 s, LOMP10 1158.10 s (was 1002.18), USN15 2641.80 s. **BSM01 `l50_b1_a` LOST** (luaMissionFailed 1521.36 s; HenryPT never rams MiniSub); it won at 767.94 s on 518193e10, and gunnery39 is bisecting the five switches since.
+
+- **JM08 `jm08_s45_j8_m10` LOST by the wing fold flip** (cc9-physics6, 2026-10-13; docs/PLANE_INPUT_CHECKS_CC9.md, the
+  JM08 pair): on origin/main 168cb72a9 it completes at 3528.42 s with the switches OFF (guard logged,
+  `local\p6wf_off_j8.log`) and does not complete in 72000 frames with `kPlaneWingFoldElevatorBound` and
+  `kPlaneWingSpreadTakeoffBound` ON (`local\p6wf_on_j8.log`): every Hosho Kate launch waits 3.0 s for its wings in the
+  takeoff prepare (009CDEED). Faithful, flipped ON; JM08 needs a re-plan.

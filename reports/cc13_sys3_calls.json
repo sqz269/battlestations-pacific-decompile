@@ -1,0 +1,384 @@
+{
+  "packet": "cc13-sys3",
+  "document": "docs/CC13_SYS_3.md",
+  "host_steps": [
+    {
+      "function": "00706160",
+      "address": "0070645f",
+      "native": "00705c50",
+      "host": "MessageManagerCalls::lookup_record_00705c50"
+    },
+    {
+      "function": "00706160",
+      "address": "00706466",
+      "native": "00704590",
+      "host": "read_message_record_00704590"
+    },
+    {
+      "function": "00706160",
+      "address": "00706480",
+      "native": "00702300",
+      "host": "MessageManagerCalls::lower_bound_key_00702300"
+    },
+    {
+      "function": "00706160",
+      "address": "00706500",
+      "native": "00702bd0",
+      "host": "mark_record_unloaded_00702bd0"
+    },
+    {
+      "function": "00706160",
+      "address": "007063c9",
+      "native": "0057c1a0",
+      "host": "MessageManagerCalls::report_loading_progress_0057c1a0"
+    },
+    {
+      "function": "00706160",
+      "address": "00706281",
+      "native": "00bd5f50",
+      "host": "MessageManagerCalls::enumerate_keys_00bd5f50"
+    },
+    {
+      "function": "00704590",
+      "address": "00704693",
+      "native": "00704190",
+      "host": "MessageManagerCalls::resize_timed_keys_00704190"
+    },
+    {
+      "function": "00704590",
+      "address": "00704947",
+      "native": "008d57a0",
+      "host": "MessageManagerCalls::language_name_008d57a0"
+    },
+    {
+      "function": "00704590",
+      "address": "00704c6f",
+      "native": "004cad40",
+      "host": "LANGUAGE replacement (inline in read_message_record_00704590)"
+    },
+    {
+      "function": "00704590",
+      "address": "00704e52",
+      "native": "00a83fd0",
+      "host": "MessageManagerCalls::load_sound_bank_00a83fd0"
+    },
+    {
+      "function": "00706060",
+      "address": "00706103",
+      "native": "00705e00",
+      "host": "MessageManagerCalls::resolve_record_00705e00"
+    },
+    {
+      "function": "00703380",
+      "address": "00703394",
+      "native": "007030d0",
+      "host": "MessageManagerCalls::record_key_007030d0"
+    },
+    {
+      "function": "00703400",
+      "address": "00703411",
+      "native": "00469840",
+      "host": "substring in has_prefix_insensitive_00703400"
+    },
+    {
+      "function": "00703400",
+      "address": "00703419",
+      "native": "00435c40",
+      "host": "case-insensitive equality in has_prefix_insensitive_00703400"
+    },
+    {
+      "function": "007072c0",
+      "address": "0070735a",
+      "native": "004bcb80",
+      "host": "find_last_of in load_message_map_list_007072c0"
+    },
+    {
+      "function": "007072c0",
+      "address": "007073a4",
+      "native": "00bf8417",
+      "host": "MessageManagerCalls::atol_00bf8417"
+    },
+    {
+      "function": "007072c0",
+      "address": "007073b2",
+      "native": "00706760",
+      "host": "load_message_map_00706760"
+    },
+    {
+      "function": "00992640",
+      "address": "00992646",
+      "native": "0098c9c0",
+      "host": "HardwareCollectCalls::describe_os_version_0098c9c0"
+    },
+    {
+      "function": "00992640",
+      "address": "00992662",
+      "native": "00992180",
+      "host": "HardwareCollectCalls::query_processor_info_00992180"
+    },
+    {
+      "function": "00992640",
+      "address": "0099266d",
+      "native": "0098c940",
+      "host": "HardwareCollectCalls::measure_cpu_clock_0098c940"
+    },
+    {
+      "function": "00992640",
+      "address": "00992677",
+      "native": "00991ef0",
+      "host": "HardwareCollectCalls::query_display_driver_00991ef0"
+    },
+    {
+      "function": "00994b10",
+      "address": "00994b34",
+      "native": "00a3e510",
+      "host": "DownloadManagerCalls::has_selected_user_00a3e510"
+    },
+    {
+      "function": "00994b10",
+      "address": "00994d0a",
+      "native": "0043e9a0",
+      "host": "DownloadManagerCalls::matches_at_offset_0043e9a0"
+    },
+    {
+      "function": "00994b10",
+      "address": "00994d38",
+      "native": "004cdc20",
+      "host": "DownloadManagerCalls::append_new_content_name_004cdc20"
+    },
+    {
+      "function": "00994f40",
+      "address": "00994f85",
+      "native": "00994dc0",
+      "host": "assign_content_array_00994dc0"
+    },
+    {
+      "function": "00994f40",
+      "address": "00994f8f",
+      "native": "00994a80",
+      "host": "resize_content_array_00994a80"
+    },
+    {
+      "function": "00994f40",
+      "address": "009950a4",
+      "native": "0043e9a0",
+      "host": "DownloadManagerCalls::matches_at_offset_0043e9a0"
+    },
+    {
+      "function": "00994f40",
+      "address": "009950cb",
+      "native": "00994a00",
+      "host": "push_back_content_array_00994a00"
+    },
+    {
+      "function": "00995150",
+      "address": "00995303",
+      "native": "00994770",
+      "host": "content_path_compose_00994770"
+    },
+    {
+      "function": "00995150",
+      "address": "00995314",
+      "native": "00be0750",
+      "host": "DownloadManagerCalls::unmount_00be0750"
+    },
+    {
+      "function": "00995150",
+      "address": "00995475",
+      "native": "00bdd020",
+      "host": "DownloadManagerCalls::remove_content_package_00bdd020"
+    },
+    {
+      "function": "0070aa70",
+      "address": "0070ab8a",
+      "native": "00709cf0",
+      "host": "FlagClothCalls::calculate_normals_00709cf0"
+    },
+    {
+      "function": "0070aa70",
+      "address": "0070ab99",
+      "native": "00709ef0",
+      "host": "apply_flag_wind_00709ef0"
+    },
+    {
+      "function": "0070aa70",
+      "address": "0070abb9",
+      "native": "0070a450",
+      "host": "integrate_flag_cloth_0070a450"
+    },
+    {
+      "function": "0070ac00",
+      "address": "0070ac23",
+      "native": "007099c0",
+      "host": "FlagRenderCalls::set_hierarchy_mask_007099c0"
+    },
+    {
+      "function": "0070ac00",
+      "address": "0070ac9a",
+      "native": "00b748e0",
+      "host": "FlagRenderCalls::render_generated_model_00b748e0"
+    },
+    {
+      "function": "004e7e90",
+      "address": "004e7e93",
+      "native": "00928560",
+      "host": "SceneEntityCalls::register_base_00928560"
+    },
+    {
+      "function": "004e7e90",
+      "address": "004e7ea2",
+      "native": "00484540",
+      "host": "SceneEntityCalls::camera_path_list_push_back_00484540"
+    },
+    {
+      "function": "004e99b0",
+      "address": "004e9a13",
+      "native": "006af3d0",
+      "host": "SceneEntityCalls::network_id_from_name_006af3d0"
+    },
+    {
+      "function": "004e99b0",
+      "address": "004e9a26",
+      "native": "00928630",
+      "host": "SceneEntityCalls::construct_game_entity_00928630"
+    },
+    {
+      "function": "004f0db0",
+      "address": "004f0dfb",
+      "native": "004e7ef0",
+      "host": "construct_simple_effect_004e7ef0"
+    },
+    {
+      "function": "004f0db0",
+      "address": "004f0e4e",
+      "native": "004f03c0",
+      "host": "SceneEntityCalls::defer_hierarchy_004f03c0"
+    },
+    {
+      "function": "004e7f90",
+      "address": "004e7fb5",
+      "native": "00928630",
+      "host": "SceneEntityCalls::construct_game_entity_00928630"
+    },
+    {
+      "function": "004e7f90",
+      "address": "004e7fcd",
+      "native": "00875890",
+      "host": "SceneEntityCalls::construct_tick_registration_00875890"
+    },
+    {
+      "function": "00708d20",
+      "address": "00708d95",
+      "native": "00b75170",
+      "host": "FishGeometryCalls::set_model_geometry_00b75170"
+    },
+    {
+      "function": "00708d20",
+      "address": "00708dee",
+      "native": "00b72650",
+      "host": "FishGeometryCalls::set_mesh_bounds_00b72650"
+    },
+    {
+      "function": "00708d20",
+      "address": "00708ea0",
+      "native": "00b73bb0",
+      "host": "FlagMaterialCalls::set_vertex_stream_00b73bb0"
+    },
+    {
+      "function": "00708d20",
+      "address": "00708ec0",
+      "native": "00b73b70",
+      "host": "FlagMaterialCalls::set_index_stream_00b73b70"
+    },
+    {
+      "function": "00708d20",
+      "address": "007092a2",
+      "native": "00b855b0",
+      "host": "FishGeometryCalls::set_section_bounds_00b855b0"
+    },
+    {
+      "function": "00708d20",
+      "address": "007092ae",
+      "native": "00b865a0",
+      "host": "FlagMaterialCalls::rebuild_vertex_layout_00b865a0"
+    },
+    {
+      "function": "00708d20",
+      "address": "007092b6",
+      "native": "00b73c60",
+      "host": "FlagMaterialCalls::append_section_00b73c60"
+    },
+    {
+      "function": "00708d20",
+      "address": "007092f0",
+      "native": "00b6d890",
+      "host": "FishGeometryCalls::propagate_root_registration_00b6d890"
+    },
+    {
+      "function": "0070b9d0",
+      "address": "0070b9fb",
+      "native": "00b73bb0",
+      "host": "FlagMaterialCalls::set_vertex_stream_00b73bb0"
+    },
+    {
+      "function": "0070b9d0",
+      "address": "0070ba06",
+      "native": "00b73b70",
+      "host": "FlagMaterialCalls::set_index_stream_00b73b70"
+    },
+    {
+      "function": "0070b9d0",
+      "address": "0070bb62",
+      "native": "00b73c10",
+      "host": "FlagMaterialCalls::clear_section_owners_00b73c10"
+    },
+    {
+      "function": "0070b9d0",
+      "address": "0070bb6a",
+      "native": "00b865a0",
+      "host": "FlagMaterialCalls::rebuild_vertex_layout_00b865a0"
+    },
+    {
+      "function": "0070b9d0",
+      "address": "0070bb72",
+      "native": "00b73c60",
+      "host": "FlagMaterialCalls::append_section_00b73c60"
+    },
+    {
+      "function": "00991ef0",
+      "address": "00991feb",
+      "native": "0098e0e0",
+      "host": "DisplayModeList::contains_0098e0e0"
+    },
+    {
+      "function": "00991ef0",
+      "address": "0099200b",
+      "native": "00991c20",
+      "host": "DisplayModeList::append_00991c20"
+    },
+    {
+      "function": "00709620",
+      "address": "00709643",
+      "native": "00708b00",
+      "host": "init_fish_school_params_00708b00"
+    },
+    {
+      "function": "00709620",
+      "address": "007096e6",
+      "native": "00709310",
+      "host": "init_fish_school_00709310"
+    },
+    {
+      "function": "007077b0",
+      "address": "007077cd",
+      "native": "00bd2f10",
+      "host": "PresentationRandom::uniform_00bd2f10"
+    },
+    {
+      "function": "007077b0",
+      "address": "007077fa",
+      "native": "00bd2f10",
+      "host": "PresentationRandom::uniform_00bd2f10"
+    }
+  ]
+}
