@@ -196,3 +196,9 @@ load path that 00AD9050 / 00AD91C0 now reach through `FoliageLoadHost`.
 Still open: the group initialisers and type constructors, 00AE1A10, 00AE1FB0, the atlas
 group, 00AF0F20, 00AFDCF0 (needs its register arguments read from the listing), and the
 five terrain bodies.
+
+## Continued by cc13-left1
+
+docs/CC13_LEFT_1.md reconstructs 11 of the 17 left by Pass 2: the atlas group, `00AF0F20`,
+`00AE1E10`, `00AE1A10`, `00AE1FB0`, `00ADC1C0`, `00ADB6F0` and `00ADB980`. Still open: `00AFDCF0`,
+`00AE5160`, `00ADE0E0`, `00ADC930`, `00AE5870` and `00AE2450`.
