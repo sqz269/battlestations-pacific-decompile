@@ -16191,3 +16191,15 @@ live ordnance mask (`kRackLiveOrdnanceMaskBound`) drops it. With the reload boun
   drop again (more `bomb drop`/torpedo drops, Junyo damage earlier); one whose task went to `done` and flew off needs a re-issue
   (the chooser or a new order), which is the next read. Still `touchdowns=0`: nothing here lands a squadron.
 - **JM08 (flag set at prcpjm08.lua 104): exit 3** if any rack empties in the run; Japanese bombers re-arm.
+
+**Part 2, the dive-bomb break-off feed (`kDiveBreakOffReloadFeedBound`, committed OFF).** On `l55_C1_p01c` every Enterprise SBD
+went `aimglide -> done` with `breakoff=1` right after its drop although the flag was set. 009C8A90 step 4 (`009C8ABE`-`009C8ACD`:
+`ctl+369h` and `[00E17BF2]` both set -> FALSE) is in `dive_bomb_should_break_off_009c8a90`, but neither host feed (the transition
+inputs and the task host's `should_break_off`) passed the two values, so they read false. The torpedo feed already passes them
+(packet `cc9_device_reload_feeds`). With the switch, both dive feeds pass `kLuaDeviceReloadEnabledBound` and the byte. In the image
+a spent SBD under device reload therefore never breaks off to `done` while its target lives; with the in-range latch's reload
+hold (`009C7BFC`, already fed) it stays engaged and keeps attacking (re-attack through the go-away, docs/DIVE_BOMB_REATTACK.md),
+with its bomb back after 60 s.
+- **Prediction (both switches ON, PRCP01):** no `aimglide -> done` for an SBD while the Junyo lives; repeated `bomb drop` lines
+  per Enterprise SBD about 60 s apart; the Junyo takes more bomb hits and dies earlier than 752 s. USN12 and JM08 have no
+  device-reload SBD attack in the window (USN12 flag 0), so they stay identical for this part.

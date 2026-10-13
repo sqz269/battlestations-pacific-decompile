@@ -4675,6 +4675,11 @@ struct GameUnitsHost::Impl {
             // image's. docs/BOMBER_AFTER_TASK.md 10.10.
             b.distance_to_target = slot.db_aim_point_3d;
             b.speed_ratio_41c = 1.0f;
+            if constexpr (kDiveBreakOffReloadFeedBound) {
+                // 009C8ABE-009C8ACD: ctl+369h (ReloadEnabled, default 1) and [00E17BF2].
+                b.control_flag_369 = kLuaDeviceReloadEnabledBound;
+                b.global_e17bf2 = lua_device_reload_enabled_00e17bf2();
+            }
             in.should_break_off = bsp::dive_bomb_should_break_off_009c8a90(b);
             // 009C8B40-009C8B51: the range arm is `[tuning+4C8h] * [task+41Ch]`
             // against the 3-D range. NOTE the id-space collision: that +4C8h is
@@ -6215,6 +6220,12 @@ struct GameUnitsHost::Impl {
     // its rounds back ReloadTime seconds (the equipment entry's, default 30, floor
     // 1) after it emptied. False: an emptied rack stays empty, as before.
     static constexpr bool kRackDeviceReloadBound = false;
+    // Packet cc9_rack_device_reload, part 2 (5go). True: both feeds of the dive-bomb
+    // break-off 009C8A90 pass ctl+369h and [00E17BF2], so with device reload set
+    // (step 4, 009C8ABE-009C8ACD) a live target never breaks the attack off, as
+    // the torpedo feed (cc9_device_reload_feeds) already does. False: both read
+    // false, so a spent dive bomber breaks off to `done` whatever the flag.
+    static constexpr bool kDiveBreakOffReloadFeedBound = false;
     // Packet cc9_lua45_rack_equipment_device (GUNNERY 144, SQUADRON_LAND_TASK 5ev).
     // True: (a) an absent RepeatTime reads as 006E0242's default, 00B66330 with
     // [00CE3D30] = 0.6f, at both rack readers; (b) a rack's device is the plane's
@@ -19579,6 +19590,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // the aim point, 009C8B14-009C8B3B.
                             in.distance_to_target = slot_.db_aim_point_3d;
                             in.speed_ratio_41c = 1.0f;
+                            if constexpr (GameUnitsHost::Impl::kDiveBreakOffReloadFeedBound) {
+                                // 009C8ABE-009C8ACD, as at the transition feed.
+                                in.control_flag_369 = kLuaDeviceReloadEnabledBound;
+                                in.global_e17bf2 = lua_device_reload_enabled_00e17bf2();
+                            }
                             return bsp::dive_bomb_should_break_off_009c8a90(in);
                         }
                         bool manual_release_requested(void*) override {
