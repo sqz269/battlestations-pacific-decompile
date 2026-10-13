@@ -869,4 +869,166 @@ std::int32_t matchmaking_poll_search_00a49df0(void* matchmaking, SearchPollCalls
 // for one entry before the count at +78h, and the three pointer arrays
 // overlap (see 00A4A420), so a second result overwrites live fields.
 std::int32_t host_qos_poll_00a4a4e0(void* qos, SearchPollCalls& x);
+
+// ---------------------------------------------------------------------------
+// Session browser records and the per-frame update
+// ---------------------------------------------------------------------------
+
+// The A0h-byte session record of the result vector at system +174h, as
+// 00A48450 (host and matchmaking results) and 00A488D0 (LAN servers) fill
+// it. Offsets not listed stay as the record constructor left them.
+//   +00h object*: new(88h) with vtable 00CEED04: +4h XNKID, +0Ch XNKEY,
+//        +1Ch XNADDR (null for LAN records)
+//   +04h BYTE  index: 0FFh for the hosted entry, the server index for LAN
+//   +08h std::wstring name (MSVC9: buffer +0Ch, size +1Ch, capacity +20h)
+//   +24h int   property 10000030h
+//   +28h int   filled slots (public + private)
+//   +2Ch int   total slots
+//   +30h int   median RTT in ms (XNQOSINFO +0Eh), LAN: 0
+//   +38h DWORD up bits per second (XNQOSINFO +10h), LAN: 7D0000h
+//   +3Ch DWORD down bits per second (XNQOSINFO +14h), LAN: 7D0000h
+//   +48h BYTE  property 10000047h, +49h BYTE property 10000048h
+//   +4Ch DWORD settings[0Eh] (the 100000xxh block of 00A4A890)
+//   +88h qword property 200000D7h, +90h 100000D9h, +94h 100000DAh,
+//   +98h qword 200000DBh
+struct SessionRecordCalls {
+    virtual ~SessionRecordCalls() = default;
+    // 005707A0 (00A48450) and 00571E50 (00A488D0) on a stack record.
+    virtual void session_record_init_005707a0(void* record) = 0;
+    virtual void session_record_construct_00571e50(void* record) = 0;
+    // 00BF681B operator new(88h); the C++ writes vtable 00CEED04 itself.
+    virtual void* operator_new_00bf681b(std::uint32_t bytes) = 0;
+    // 0067D5A0 (assign count units) / 0067D6B0 (assign NUL-terminated) on
+    // the record's wide string at +8h.
+    virtual void wstring_assign_0067d5a0(void* string, const char16_t* text, std::uint32_t count) = 0;
+    virtual void wstring_assign_z_0067d6b0(void* string, const char16_t* text) = 0;
+    virtual void free_00bf65ac(void* block) = 0;
+    virtual void result_vector_push_back_00575150(void* vector, const void* record) = 0;
+    virtual void result_vector_erase_all_00573490(void* vector) = 0;
+    virtual void delete_result_object(void* object) = 0;
+    // MultiByteToWideChar(CP_ACP, 0, text, length, out, 32h) (IAT 00CE2268).
+    virtual void multi_byte_to_wide(const char* text, std::int32_t length, char16_t* out, std::int32_t units) = 0;
+};
+
+// 00A48450 BSP_XLiveSystem_RefreshHostQosUi, __fastcall(ECX = system). The
+// result objects are deleted and the vector erased. Host QoS done (state
+// +1B74h == 4) with an entry (+1B60h): one record with index 0FFh from the
+// entry at +1AE8h (XNKID +26h, XNKEY +2Eh, XNADDR +3Eh, the wide name at +0,
+// property 10000030h from +22h, QoS figures from the info at +72h when set),
+// pushed; then 00A4AFD0 and +EDh = 0. Otherwise one record per matchmaking
+// result (+198Ch of them, F6h each from +184h): XNKID/XNKEY/XNADDR, the name
+// at +20h, filled = +EAh + +EEh, total +10h, 10000030h +42h, bytes +4Ah and
+// +46h, settings +56h..+8Bh, D7 +8Eh, D9 +4Eh, DA +52h, DB +9Eh, QoS figures
+// from +F2h; then 00A4B250 and +EDh = 0. Index +4h is 0FFh for every record.
+void refresh_session_records_00a48450(void* system, SessionRecordCalls& host, XLiveSearchCalls& search);
+
+struct SystemUpdateCalls {
+    virtual ~SystemUpdateCalls() = default;
+    virtual bool system_virtual_19c(void* system) = 0;
+    virtual bool system_virtual_40(void* system) = 0;
+    virtual void system_virtual_44(void* system) = 0;
+    virtual bool singleton_virtual_198() = 0;                    // [00F8A2FC] vtable +198h
+    virtual void session_delete_00a4adc0(void* session) = 0;     // BSP_XLiveSession_Delete
+    virtual void session_poll_overlapped_00a4b1f0(void* session) = 0;
+    // [00E198B4] and its screen +4Ch: 005789C0(6) BuildRows, 00688AD0(1Ah).
+    virtual void* multi_menu() = 0;
+    virtual void browser_build_rows_005789c0(void* screen, std::uint32_t mode) = 0;
+    virtual void multi_menu_push_request_00688ad0(void* menu, std::uint32_t request) = 0;
+    // [00E188A8] game setup; its +207Ch network client (+9Ch state, +C8h
+    // 00A39750 PollCreateResult, +A0h LAN server vector).
+    virtual void* game_setup() = 0;
+    virtual std::int32_t client_poll_create_result_00a39750(void* client_c8) = 0;
+    virtual void game_1ef0_0076a7a0(void* game_1ef0, std::uint32_t argument) = 0;
+    // The LAN server vector at client +A0h: element count and the server
+    // info (element->+20h, a game-setup block like 00A4BB00's).
+    virtual std::uint32_t lan_server_count(void* client) = 0;
+    virtual const void* lan_server_info(void* client, std::uint32_t index) = 0;
+    // 00566310 / 005663B0: size / at() of the result vector (system +174h).
+    virtual std::uint32_t result_vector_size_00566310(void* vector) = 0;
+    virtual void* result_vector_at_005663b0(void* vector, std::uint32_t index) = 0;
+    virtual void result_vector_clear_00573c90(void* vector) = 0;
+    virtual void* xenon_system() = 0;                            // [00F8ABE8]
+    virtual void xenon_request_upload_00a3f4a0(void* xenon, std::uint32_t a, std::uint32_t b) = 0;
+    virtual void update_friends_and_voice_00a46480(void* system, float dt) = 0;
+    virtual void refresh_session_records_00a48450(void* system) = 0;
+    virtual std::int32_t matchmaking_poll_00a49df0(void* matchmaking) = 0;
+    virtual std::int32_t host_qos_poll_00a4a4e0(void* qos) = 0;
+    virtual std::int32_t matchmaking_relink_00a49d20(void* matchmaking) = 0;
+    virtual std::int32_t host_qos_relink_00a4a420(void* qos) = 0;
+    virtual void matchmaking_reset_00a4b250(void* matchmaking) = 0;
+    virtual void host_qos_cancel_00a4afd0(void* qos) = 0;
+};
+
+// 00A488D0 BSP_XLiveSystem_Update, __thiscall(system, float dt), RET 4.
+//  1. lan = vtable +19Ch. A pending delete (+220Eh) with session state
+//     +21F0h != 2 runs 00A4ADC0 and clears +220Eh.
+//  2. Searching (+EDh), not LAN: done when (+EFh ? host state +1B74h :
+//     matchmaking state +1AC0h) == 4 -> +EDh = 0.
+//  3. Not by id (+F0h), not searching, not LAN, records stale (+EEh): when
+//     (+EFh ? +1B74h == 4 : +1AC0h == 0Ch): +EEh = 0, 00A48450, and the
+//     browser screen rebuilds its rows (005789C0(6)).
+//  4. A search state in 1..3 (either object): poll the active one (+EFh
+//     picks host QoS). 0: when +EEh is clear and +EDh set, matchmaking
+//     without +F0h relinks (00A49D20), host QoS relinks (00A4A420), and +EEh
+//     = 1; 00A48450 in every case. Negative: cancel/reset, +EDh = 0.
+//     Otherwise, searching in LAN mode with setup +2210h->+1FE4h == 2: the
+//     result objects are deleted and the vector cleared, and every LAN
+//     server with open slots (c2A - c29 - c28 + c27 > 0) becomes a record
+//     (name through MultiByteToWideChar, at most 32h units).
+//  5. Byte +4Ch with client state 6 and 00A39750 == 217h: 0076A7A0 on the
+//     game with the screen's +24h, menu request 1Ah, +4Ch = 0, return.
+//  6. vtable +40h false -> vtable +44h; 00A4B1F0; session state 4 or 2
+//     sets +220Dh once.
+//  7. Singleton +198h true: Xenon +12Ch == 4 -> setup +73Ch/+740h = the
+//     unsigned maxima with Xenon +358h/+35Ch, Xenon +12Ch = 1, and
+//     00A3F4A0(a, b) unless Xenon already holds both; == 0Ah -> setup
+//     values 0 and 00A3F4A0(0, 0).
+//  8. Voice active (+1D28h): 00A46480(dt).
+void system_update_00a488d0(void* system, float dt, SystemUpdateCalls& host, SessionRecordCalls& records);
+
+// ---------------------------------------------------------------------------
+// End-of-session stats
+// ---------------------------------------------------------------------------
+
+struct SessionStatsCalls {
+    virtual ~SessionStatsCalls() = default;
+    virtual bool system_virtual_19c(void* system) = 0;
+    virtual void* game_setup() = 0;                                  // [00E188A8]
+    virtual void* singleton() = 0;                                   // [00F8A2FC]
+    virtual void stats_fill_from_game_00993220(void* singleton) = 0;
+    // A native std::vector of 50h-byte stat records: {alloc, first, last, end}.
+    virtual void stat_vector_assign_00a47350(void* destination, const void* source) = 0;
+    virtual void stat_vector_sort_00a47560(void* vector) = 0;        // checked [first, last)
+    virtual void stat_record_assign_00992f60(void* destination, const void* source) = 0;
+    virtual void stat_vector_destroy_00993990(void* first, void* last) = 0;
+    virtual void free_00bf65ac(void* block) = 0;
+    // 004C6090 + 004CF800: push_back of the 38h-byte value into the std::list
+    // at system +2200h (head +2204h).
+    virtual void stats_list_push_back(void* list, const void* value_38) = 0;
+    // 00A46150 builds a session message from the list and 0076A9F0(message,
+    // 0) sends it through setup +1EF0h; the message is then destroyed
+    // inline (vtable 00CE7608, list clear when its +18h byte is 3, tidy,
+    // vtable 00CE4974).
+    virtual void send_stats_message(void* game_1ef0, void* list) = 0;
+    // 004C04C0 BSP_OnlineStats_WriteSessionStats on the game setup, 12 dwords.
+    virtual void write_session_stats_004c04c0(void* setup, const std::uint32_t arguments[12]) = 0;
+};
+
+// 00A47B80 BSP_XLiveSystem_WriteSessionStats, __fastcall(ECX = system).
+// +88h = -1.0 (00D7A260); LAN (vtable +19Ch) stops there. Otherwise +88h =
+// 60.0 (00CEB4B0), and the stats session id = setup +207Ch ? client +9CCh :
+// system +21C4h; -1 or 0 stops. The singleton's stats block is refreshed
+// (00993220) unless its +74h is set, copied into a local vector (00A47350)
+// and sorted (00A47560). top = record[0] +10h. Each record i is then copied
+// INTO record[0] (00992F60; record[0] is the scratch slot, so the vector ends
+// with record[0] = the last record) and record[0] gets +18h = id, +20h/+24h
+// = its own +0h/+4h, +28h = system +48h, +30h = system +4Dh, +34h = (+4Dh ?
+// count - i - 1 : 0), +38h = (+10h != top) + 1; the 38h bytes from +18h are
+// appended to the list at +2200h. When setup +1FE4h == 1 the list goes out
+// as a session message. Then the FIRST list node's value C[0..0Dh] (the
+// list is never cleared here, so an older node wins) gives
+// 004C04C0(id, C2, C3, system +48h, C5, C6, C10, C8, C7, 0, C11, C12), and
+// the local vector is destroyed. (Argument order from the pushes at
+// 00A47E25..00A47E5D.)
+void write_session_stats_00a47b80(void* system, SessionStatsCalls& host);
 } // namespace bsp::online_cc13

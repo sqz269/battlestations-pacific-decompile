@@ -1148,4 +1148,281 @@ std::int32_t host_qos_poll_00a4a4e0(void* q, SearchPollCalls& x) {
     }
     return 0;
 }
+
+namespace {
+constexpr std::uint32_t kSessionInfoHolderVtable = 0x00CEED04u;
+
+// The inline wide-string reset before 005707A0 and after each push
+// (00A48588..00A48594, 00A488A2..00A488AA): capacity 7, size 0, unit 0.
+void reset_record_name(std::byte* record) noexcept {
+    write_field<std::uint32_t>(record, 0x20, 7);
+    write_field<std::uint32_t>(record, 0x1C, 0);
+    write_field<std::uint16_t>(record, 0x0C, 0);
+}
+
+// The name's heap buffer goes back when the capacity is 8 units or more.
+void release_record_name(std::byte* record, SessionRecordCalls& host) {
+    if (read_field<std::uint32_t>(record, 0x20) >= 8) host.free_00bf65ac(read_field<void*>(record, 0x0C));
+}
+
+// new(88h) holder: vtable, XNKID +4h, XNKEY +0Ch, XNADDR +1Ch, copied from
+// a record whose XNKID is at `id` (key id+8h, address id+18h).
+void* make_session_info_holder(const std::byte* id, SessionRecordCalls& host) {
+    void* holder = host.operator_new_00bf681b(0x88);
+    if (holder != nullptr) write_field<std::uint32_t>(holder, 0, kSessionInfoHolderVtable);
+    auto* const h = static_cast<std::byte*>(holder);
+    std::memcpy(h + 0x0C, id + 0x08, 16);
+    std::memcpy(h + 0x04, id, 8);
+    std::memcpy(h + 0x1C, id + 0x18, 0x24);
+    return holder;
+}
+
+void assign_record_name(std::byte* record, const std::byte* wide, SessionRecordCalls& host) {
+    std::uint32_t units = 0;
+    while (read_field<std::uint16_t>(wide, units * 2) != 0) ++units;
+    host.wstring_assign_0067d5a0(record + 0x08, reinterpret_cast<const char16_t*>(wide), units);
+}
+
+void copy_qos_figures(std::byte* record, const std::byte* info) {
+    if (info == nullptr) return;
+    write_field<std::uint32_t>(record, 0x30, read_field<std::uint16_t>(info, 0x0E));
+    write_field<std::uint32_t>(record, 0x38, read_field<std::uint32_t>(info, 0x10));
+    write_field<std::uint32_t>(record, 0x3C, read_field<std::uint32_t>(info, 0x14));
+}
+
+void delete_result_objects(void* system, SessionRecordCalls& host) {
+    const auto first = read_field<std::uintptr_t>(system, 0x178);
+    if (first != 0) {
+        const auto count = (read_field<std::uintptr_t>(system, 0x17C) - first) / 0xA0;
+        for (std::uintptr_t i = 0; i < count; ++i) {
+            const auto record = read_field<std::uintptr_t>(system, 0x178) + i * 0xA0;
+            if (void* object = *reinterpret_cast<void**>(record)) host.delete_result_object(object);
+        }
+    }
+}
+} // namespace
+
+void refresh_session_records_00a48450(void* system, SessionRecordCalls& host, XLiveSearchCalls& search) {
+    auto* const base = static_cast<std::byte*>(system);
+    delete_result_objects(system, host);
+    host.result_vector_erase_all_00573490(base + 0x174);
+    alignas(8) std::byte record[0xA0] = {};
+    if (read_field<std::uint32_t>(system, 0x1B74) == 4 && read_field<std::uint32_t>(system, 0x1B60) != 0) {
+        std::byte* const entry = base + 0x1AE8;
+        reset_record_name(record);
+        host.session_record_init_005707a0(record);
+        write_field<std::uint8_t>(record, 4, 0xFF);
+        write_field<void*>(record, 0, make_session_info_holder(entry + 0x26, host));
+        assign_record_name(record, entry, host);
+        write_field<std::uint32_t>(record, 0x24, read_field<std::uint32_t>(entry, 0x22));
+        copy_qos_figures(record, read_field<const std::byte*>(entry, 0x72));
+        host.result_vector_push_back_00575150(base + 0x174, record);
+        host_qos_cancel_00a4afd0(entry, search);
+        release_record_name(record, host);
+        write_field<std::uint8_t>(system, 0xED, 0);
+        return;
+    }
+    const std::uint32_t count = read_field<std::uint32_t>(system, 0x198C);
+    for (std::uint32_t i = 0; i < count; ++i) {
+        // EBP = the result's XNKID (+A6h); the result itself starts at +184h.
+        const std::byte* const result = base + 0x184 + i * 0xF6;
+        reset_record_name(record); // 00A486C0..00A486CA, every iteration
+        host.session_record_init_005707a0(record);
+        write_field<std::uint8_t>(record, 4, 0xFF);
+        write_field<void*>(record, 0, make_session_info_holder(result + 0xA6, host));
+        write_field<std::uint32_t>(record, 0x28,
+            read_field<std::uint32_t>(result, 0xEE) + read_field<std::uint32_t>(result, 0xEA));
+        write_field<std::uint32_t>(record, 0x2C, read_field<std::uint32_t>(result, 0x10));
+        assign_record_name(record, result + 0x20, host);
+        write_field<std::uint32_t>(record, 0x24, read_field<std::uint32_t>(result, 0x42));
+        write_field<std::uint8_t>(record, 0x49, read_field<std::uint8_t>(result, 0x46));
+        write_field<std::uint8_t>(record, 0x48, read_field<std::uint8_t>(result, 0x4A));
+        write_field<std::uint64_t>(record, 0x88, read_field<std::uint64_t>(result, 0x8E));
+        write_field<std::uint32_t>(record, 0x94, read_field<std::uint32_t>(result, 0x52));
+        write_field<std::uint32_t>(record, 0x90, read_field<std::uint32_t>(result, 0x4E));
+        write_field<std::uint64_t>(record, 0x98, read_field<std::uint64_t>(result, 0x9E));
+        std::memcpy(record + 0x4C, result + 0x56, 14 * 4);
+        copy_qos_figures(record, read_field<const std::byte*>(result, 0xF2));
+        host.result_vector_push_back_00575150(base + 0x174, record);
+        release_record_name(record, host);
+        reset_record_name(record);
+    }
+    matchmaking_reset_00a4b250(base + 0x184, search);
+    write_field<std::uint8_t>(system, 0xED, 0);
+}
+
+void system_update_00a488d0(void* system, float dt, SystemUpdateCalls& host, SessionRecordCalls& records) {
+    auto* const base = static_cast<std::byte*>(system);
+    void* const matchmaking = base + 0x184;
+    void* const qos = base + 0x1AE8;
+    const bool lan = host.system_virtual_19c(system);
+    if (read_field<std::uint8_t>(system, 0x220E) != 0 && read_field<std::uint32_t>(system, 0x21F0) != 2) {
+        host.session_delete_00a4adc0(base + 0x2098);
+        write_field<std::uint8_t>(system, 0x220E, 0);
+    }
+    const auto host_qos_used = [&] { return read_field<std::uint8_t>(system, 0xEF) != 0; };
+    const auto mm_state = [&] { return read_field<std::uint32_t>(system, 0x1AC0); };
+    const auto qos_state = [&] { return read_field<std::uint32_t>(system, 0x1B74); };
+    if (read_field<std::uint8_t>(system, 0xED) != 0 && !lan) {
+        if (host_qos_used() ? qos_state() == 4 : mm_state() == 4) write_field<std::uint8_t>(system, 0xED, 0);
+    }
+    if (read_field<std::uint8_t>(system, 0xF0) == 0 && read_field<std::uint8_t>(system, 0xED) == 0 && !lan &&
+        read_field<std::uint8_t>(system, 0xEE) != 0) {
+        if (host_qos_used() ? qos_state() == 4 : mm_state() == 0x0C) {
+            write_field<std::uint8_t>(system, 0xEE, 0);
+            host.refresh_session_records_00a48450(system);
+            void* const menu = host.multi_menu();
+            if (menu != nullptr) {
+                if (void* screen = read_field<void*>(menu, 0x4C)) host.browser_build_rows_005789c0(screen, 6);
+            }
+        }
+    }
+    const auto m = mm_state();
+    const auto h = qos_state();
+    if (m == 1 || m == 2 || m == 3 || h == 1 || h == 2 || h == 3) {
+        const std::int32_t result = host_qos_used() ? host.host_qos_poll_00a4a4e0(qos)
+                                                    : host.matchmaking_poll_00a49df0(matchmaking);
+        if (result == 0) {
+            if (read_field<std::uint8_t>(system, 0xEE) == 0 && read_field<std::uint8_t>(system, 0xED) != 0) {
+                if (!host_qos_used()) {
+                    if (read_field<std::uint8_t>(system, 0xF0) == 0) host.matchmaking_relink_00a49d20(matchmaking);
+                } else {
+                    host.host_qos_relink_00a4a420(qos);
+                }
+                write_field<std::uint8_t>(system, 0xEE, 1);
+            }
+            host.refresh_session_records_00a48450(system);
+        } else if (result < 0) {
+            if (host_qos_used()) host.host_qos_cancel_00a4afd0(qos);
+            else host.matchmaking_reset_00a4b250(matchmaking);
+            write_field<std::uint8_t>(system, 0xED, 0);
+        }
+    } else if (read_field<std::uint8_t>(system, 0xED) != 0 && lan &&
+               read_field<std::uint32_t>(read_field<void*>(system, 0x2210), 0x1FE4) == 2) {
+        void* const vector = base + 0x174;
+        for (std::uint32_t i = 0; i < host.result_vector_size_00566310(vector); ++i) {
+            if (void* object = read_field<void*>(host.result_vector_at_005663b0(vector, i), 0))
+                records.delete_result_object(object);
+        }
+        host.result_vector_clear_00573c90(vector);
+        void* const client = read_field<void*>(host.game_setup(), 0x207C);
+        const std::uint32_t servers = host.lan_server_count(client);
+        for (std::uint32_t index = 0; index < servers; ++index) {
+            const auto* const info = static_cast<const char*>(host.lan_server_info(client, index));
+            alignas(8) std::byte record[0xA0] = {};
+            records.session_record_construct_00571e50(record);
+            auto c = [&](std::size_t o) { return static_cast<std::int32_t>(static_cast<signed char>(info[o])); };
+            if (c(0x2A) - c(0x29) - c(0x28) + c(0x27) > 0) {
+                char16_t name[0x32] = {};
+                records.multi_byte_to_wide(info, static_cast<std::int32_t>(std::strlen(info)), name, 0x32);
+                records.wstring_assign_z_0067d6b0(record + 0x08, name);
+                write_field<std::int32_t>(record, 0x24, c(0x25));
+                write_field<std::uint8_t>(record, 0x04, static_cast<std::uint8_t>(index));
+                write_field<void*>(record, 0x00, nullptr);
+                write_field<std::int32_t>(record, 0x28, c(0x28));
+                write_field<std::int32_t>(record, 0x2C, c(0x27));
+                write_field<std::uint32_t>(record, 0x30, 0);
+                write_field<std::uint8_t>(record, 0x48, static_cast<std::uint8_t>(info[0x2D]));
+                write_field<std::uint8_t>(record, 0x49, static_cast<std::uint8_t>(info[0x2C]));
+                std::memcpy(record + 0x88, info + 0x70, 0x18);
+                std::memcpy(record + 0x4C, info + 0x30, 14 * 4);
+                write_field<std::uint32_t>(record, 0x3C, 0x7D0000);
+                write_field<std::uint32_t>(record, 0x38, 0x7D0000);
+                records.result_vector_push_back_00575150(vector, record);
+            }
+            release_record_name(record, records);
+        }
+    }
+    if (read_field<std::uint8_t>(system, 0x4C) != 0) {
+        void* const setup = host.game_setup();
+        auto* const client = read_field<std::byte*>(setup, 0x207C);
+        if (read_field<std::uint32_t>(client, 0x9C) == 6 &&
+            host.client_poll_create_result_00a39750(client + 0xC8) == 0x217) {
+            void* const menu = host.multi_menu();
+            host.game_1ef0_0076a7a0(static_cast<std::byte*>(setup) + 0x1EF0,
+                read_field<std::uint32_t>(read_field<void*>(menu, 0x4C), 0x24));
+            host.multi_menu_push_request_00688ad0(host.multi_menu(), 0x1A);
+            write_field<std::uint8_t>(system, 0x4C, 0);
+            return;
+        }
+    }
+    if (!host.system_virtual_40(system)) host.system_virtual_44(system);
+    host.session_poll_overlapped_00a4b1f0(base + 0x2098);
+    const auto session_state = read_field<std::uint32_t>(system, 0x21F0);
+    if ((session_state == 4 || session_state == 2) && read_field<std::uint8_t>(system, 0x220D) == 0)
+        write_field<std::uint8_t>(system, 0x220D, 1);
+    if (host.singleton_virtual_198()) {
+        void* const xenon = host.xenon_system();
+        void* const setup = host.game_setup();
+        const auto upload = read_field<std::uint32_t>(xenon, 0x12C);
+        if (upload == 4) {
+            const auto a = (std::max)(read_field<std::uint32_t>(xenon, 0x358), read_field<std::uint32_t>(setup, 0x73C));
+            const auto b = (std::max)(read_field<std::uint32_t>(xenon, 0x35C), read_field<std::uint32_t>(setup, 0x740));
+            write_field<std::uint32_t>(setup, 0x73C, a);
+            write_field<std::uint32_t>(setup, 0x740, b);
+            write_field<std::uint32_t>(xenon, 0x12C, 1);
+            if (read_field<std::uint32_t>(xenon, 0x358) != a || read_field<std::uint32_t>(xenon, 0x35C) != b)
+                host.xenon_request_upload_00a3f4a0(xenon, a, b);
+        } else if (upload == 0x0A) {
+            write_field<std::uint32_t>(setup, 0x73C, 0);
+            write_field<std::uint32_t>(setup, 0x740, 0);
+            host.xenon_request_upload_00a3f4a0(xenon, 0, 0);
+        }
+    }
+    if (read_field<std::uint32_t>(system, 0x1D28) != 0) host.update_friends_and_voice_00a46480(system, dt);
+}
+
+void write_session_stats_00a47b80(void* system, SessionStatsCalls& host) {
+    auto* const base = static_cast<std::byte*>(system);
+    write_field<float>(system, 0x88, -1.0f);
+    if (host.system_virtual_19c(system)) return;
+    write_field<float>(system, 0x88, 60.0f);
+    void* const setup = host.game_setup();
+    const bool send_message = read_field<std::uint32_t>(setup, 0x1FE4) == 1;
+    const std::uint8_t ranked = read_field<std::uint8_t>(system, 0x4D);
+    const std::uint32_t value_48 = read_field<std::uint32_t>(system, 0x48);
+    void* const client = read_field<void*>(setup, 0x207C);
+    const std::uint32_t id = client != nullptr ? read_field<std::uint32_t>(client, 0x9CC)
+                                               : read_field<std::uint32_t>(system, 0x21C4);
+    if (id == 0xFFFFFFFFu || id == 0) return;
+    alignas(4) std::byte vector[0x10] = {};
+    void* const singleton = host.singleton();
+    if (read_field<std::uint8_t>(singleton, 0x74) == 0) host.stats_fill_from_game_00993220(singleton);
+    host.stat_vector_assign_00a47350(vector, static_cast<std::byte*>(singleton) + 0x64);
+    host.stat_vector_sort_00a47560(vector);
+    auto* const first = read_field<std::byte*>(vector, 4);
+    // An empty vector reaches the checked at(0) in 00992B30, whose range test
+    // calls 00BF6713 (invalid parameter, no return); the C++ stops instead.
+    if (first == nullptr) return;
+    const std::uint32_t top = read_field<std::uint32_t>(first, 0x10);
+    std::byte* const scratch = first;
+    for (std::uint32_t i = 0;; ++i) {
+        auto* const f = read_field<std::byte*>(vector, 4);
+        if (f == nullptr) break;
+        const auto count = static_cast<std::uint32_t>((read_field<std::byte*>(vector, 8) - f) / 0x50);
+        if (i >= count) break;
+        host.stat_record_assign_00992f60(scratch, f + i * 0x50);
+        write_field<std::uint32_t>(scratch, 0x18, id);
+        write_field<std::uint32_t>(scratch, 0x24, read_field<std::uint32_t>(scratch, 4));
+        write_field<std::uint32_t>(scratch, 0x20, read_field<std::uint32_t>(scratch, 0));
+        write_field<std::uint32_t>(scratch, 0x28, value_48);
+        write_field<std::uint8_t>(scratch, 0x30, ranked);
+        write_field<std::uint32_t>(scratch, 0x34, ranked != 0 ? count - i - 1 : 0);
+        write_field<std::uint32_t>(scratch, 0x38, (read_field<std::uint32_t>(scratch, 0x10) != top ? 1u : 0u) + 1u);
+        host.stats_list_push_back(base + 0x2200, scratch + 0x18);
+    }
+    if (send_message) host.send_stats_message(static_cast<std::byte*>(setup) + 0x1EF0, base + 0x2200);
+    // 00A47E06..00A47E23: head->next must not be the head (00BF6713 check),
+    // then its 0Eh-dword value.
+    const auto* const head = read_field<const std::byte*>(system, 0x2204);
+    const auto* const node = read_field<const std::byte*>(head, 0);
+    std::uint32_t c[14];
+    std::memcpy(c, node + 8, sizeof(c));
+    const std::uint32_t arguments[12] = {id, c[2], c[3], value_48, c[5], c[6], c[10], c[8], c[7], 0, c[11], c[12]};
+    host.write_session_stats_004c04c0(setup, arguments);
+    if (auto* const f = read_field<std::byte*>(vector, 4)) {
+        host.stat_vector_destroy_00993990(f, read_field<std::byte*>(vector, 8));
+        host.free_00bf65ac(f);
+    }
+}
 } // namespace bsp::online_cc13
