@@ -33,8 +33,8 @@
 //   * the triggers 00750000 / 00750230 / 007504F0: nothing; mission_lua_host.cpp
 //     :516-518 lists the three natives unbound.
 // - Inputs: see each section; the host supplies poses, unit flags (+5Ch alive
-//   gate, +5Dh dead, +5Eh, +60h), party (+54h), the class rows (+13Ch/+160h
-//   effect definitions, +164h SmokeFireChanceMul, +168h/+16Ch fire duration
+//   gate, +5Dh dead, +5Eh, +60h), party (+54h), the class rows (+13Ch
+//   ExplosionEfx and +160h SmokeFireEfx, +164h SmokeFireChanceMul, +168h/+16Ch fire duration
 //   min/max), and the fixed-step clock [00F876A4].
 // - RNG: one draw, through LandFortHost::uniform on STREAM 0 in image order:
 //   007465E0's U(class+168h, class+16Ch) at 0074672B / 0074679D (ECX = 0).
@@ -173,7 +173,7 @@ struct FortTimers {
 };
 
 struct FortClassRow {
-    bool death_smoke_definition_160{false};
+    bool smoke_fire_efx_160{false};      // SmokeFireEfx, one handle (00749379)
     float smoke_fire_chance_mul_164{0.0f};
     float fire_duration_min_168{0.0f};
     float fire_duration_max_16c{0.0f};
@@ -207,7 +207,7 @@ public:
     virtual void master_add_damage(float amount) = 0;  // master->vtable[1ACh]
     virtual bool master_die_gate() = 0;            // master +5Ch set, +5Dh/+60h/+5Eh clear
     virtual void master_die() = 0;                 // master->vtable[1A8h]
-    // 008689C0 with class+13Ch at class+1Ch[0]+0Ch, parented to +4A4h.
+    // 008689C0 with ExplosionEfx (class+13Ch) at class+1Ch[0]+0Ch, parented to +4A4h.
     virtual void create_death_effect() = 0;
     virtual void start_death_fire() = 0;           // 007465E0
     virtual void base_on_destroyed_00959450() = 0;
@@ -225,14 +225,35 @@ struct FortDestroyInput {
 // vtable[7Ch], 00747170.
 void on_destroyed_00747170(const FortDestroyInput& in, FortDestroyHost& host);
 
+// vtable[164h], 00744BE0 (both classes; MCommandBuilding reaches it from its own
+// handler). 4Bh (MT_ROLEOWNER): the unit base 0095ABE0, answer forced true.
+// D1h (MT_LANDFORT_EFFECT, 00744870 shape): msg+28h set -> vtable[208h]
+// (007460E0, kind msg+1Ch, float msg+24h; kind 7 is the SmokeFireEfx replica),
+// else vtable[20Ch] (00745FA0, kind msg+1Ch, msg+20h). Anything else: the base,
+// whose answer is returned. Both effect slots are presentation.
+enum class FortMessageRoute { base_forced_true_4b, state_effect_208, damage_effect_20c, base };
+FortMessageRoute handle_message_00744be0(std::uint8_t kind_10, bool flag_28);
+
+// 00746B90 __fastcall(LuaObject* ECX, default EDX), the only caller
+// 00749210's "FakedType" (class+178h): nil or no match returns `default_type`;
+// otherwise the first case-insensitive match (00425850) in image order.
+// `name` nullptr stands for a nil Lua value.
+std::int32_t unit_type_from_name_00746b90(const char* name, std::int32_t default_type);
+
 // ---------------------------------------------------------------------------
 // 3. MLandingShip (vtable 00CFFA30; tick element at unit+310h, table 00CFF9EC).
+//    The save section "_landingship" (0074A1F0) names the fields in Hungarian:
+//    nyitva (open) +1188h, horgony (anchor) +1189h, partraszallas (landing)
+//    +118Ah, gyorsPartraszallas (fast landing) +118Bh, partraszalltunk (we have
+//    landed) +118Ch, rampaElfordulas (ramp turn) +11A4h, lastTalaj (last
+//    ground) +11A8h, nyitzarTimer (open/close timer) +11ACh, horgonyPont
+//    (anchor point) +11B4h, horgonyMatrix (anchor matrix) +11C0h.
 // ---------------------------------------------------------------------------
 struct LandingShipAnchor {
-    bool ramp_down_1188{false};
-    bool anchored_1189{false};
-    Vec3 ramp_node_11b4;              // first +1198h record's node world position
-    float pose_11c0[16]{};            // pose +74h captured at the lowering
+    bool ramp_down_1188{false};       // nyitva
+    bool anchored_1189{false};        // horgony
+    Vec3 ramp_node_11b4;              // horgonyPont: first +1198h record's node world position
+    float pose_11c0[16]{};            // horgonyMatrix: pose +74h captured at the lowering
 };
 // 0074A420 LowerRamp. `node_world` is the first +1198h record's node +120h
 // (refreshed through 00B6DB70 when its +5Ch bit 2 is clear).
@@ -255,6 +276,44 @@ Vec3 get_ramp_point_0074bca0(const Vec3& point_1214, const Vec3& point_1220, boo
 bool small_and_moving_0074bbd0(float class_length_a0, float speed);
 // vtable[240h]: false while on a pad (+1200h), else the base 008128E0(0).
 bool slot240_00749810(bool on_pad_1200, bool base_008128e0);
+
+// vtable[164h], 0074B570 (HandleMessage). Kind byte msg+10h.
+class LandingShipMessageHost {
+public:
+    virtual ~LandingShipMessageHost() = default;
+    virtual void set_role_available_0077f360(std::uint32_t mask, std::uint32_t value) = 0;  // vtable[148h]
+    // msg+1Ch (pad) and msg+1Eh (building) are u16 entity handles resolved
+    // through the two handle tables at 00F89A0C/00F89A60 (entity_identity.hpp).
+    virtual void begin_landing_0074a990(std::uint16_t pad_handle_1c,
+                                        std::uint16_t building_handle_1e) = 0;
+    // 00644A60 == this: 00566050, then the front-end request 34h (004CC460) or
+    // the HUD list's vtable[10h]; presentation.
+    virtual void hud_landing_prompt_if_selected() = 0;
+    virtual void lower_ramp_0074a420() = 0;
+    virtual bool base_handle_message_00821e80() = 0;
+};
+// 0A5h (the LandAtPad message 00749D90 builds): role mask 1FFh = 8, begin the
+// landing, the HUD prompt; 0A6h (00749AA0): lower the ramp; else the ship base.
+bool handle_message_0074b570(std::uint8_t kind_10, std::uint16_t pad_handle_1c,
+                             std::uint16_t building_handle_1e, LandingShipMessageHost& host);
+
+// 0074B0B0..0074B104 of the update 0074AF50 (not in cc9's two fragments): the
+// HUD "captureship" warning 00977DA0([00F8A0C4], 0, this). It runs every frame
+// for a live ship (+5Ch set, +5Dh/+60h/+5Eh clear). Presentation.
+bool capture_ship_warning_gate_0074b0b0(bool ramp_open_1188, bool on_pad_1200,
+                                        bool slot240_00749810, bool has_weapon_command_174,
+                                        bool weapon_command_slot8);
+
+// 0074B329..0074B535 of 0074AF50: when rampaElfordulas (+11A4h) differs from
+// its value at entry (FUCOMIP, JNP: equal skips, NaN runs), each +1198h record
+// (4Ch stride) steps its turn +44h toward +48h in place and its node (+0h)
+// gets vtable[38h](RotationX(-0.0 - turn) * rest matrix +4h). Presentation.
+struct RampNodeTurn {
+    float turn_44{0.0f};
+    float target_48{0.0f};
+};
+// Returns the X rotation the node is given.
+float ramp_node_step_0074b44b(RampNodeTurn& node, float ramp_turn_11a4);
 
 // ---------------------------------------------------------------------------
 // 4. Lua mission triggers (base 00D00554). Each check is the trigger's
@@ -291,6 +350,43 @@ enum class SquadOrdnanceCheck { target_gone, fire, wait };
 // 007ED790(squadron, 0) answers false.
 SquadOrdnanceCheck squad_ordnance_check_007504f0(bool squadron_present_30,
                                                  bool any_can_drop_007ed790);
+
+// ---------------------------------------------------------------------------
+// 5. The ship leak manager (unit+10D4h; constructor 0074E7B0, init 0074F490,
+//    hosted by src/game_hosts_units.cpp). The save section names its fields:
+//    "leak" (+18h, one float per zone), "water" (+1Ch), "isWater" (+24h, byte),
+//    "sumForces" (+28h) and "sumLeaks" (+2Ch); count +14h.
+// ---------------------------------------------------------------------------
+struct LeakManagerZones {
+    std::vector<float> leak_18;     // +14h entries
+    std::vector<float> water_1c;    // +14h entries
+    bool is_water_24{false};
+    float sum_forces_28{0.0f};
+    float sum_leaks_2c{0.0f};
+};
+// 0074E830: memset water (+1Ch) then leak (+18h), +14h * 4 bytes each. The arm
+// of message 91h MT_SHIP_LEAKCHEATWATER (008221ED).
+void clear_all_zones_0074e830(LeakManagerZones& z);
+// 0074E860: copies `count` (msg+1Ch) floats from msg+20h into leak +18h, the
+// arm of 92h MT_SHIP_SINK (0082220D). The image does not bound `count` by
+// +14h; false here means the image would write past the array (nothing copied).
+bool load_zone_array_0074e860(LeakManagerZones& z, std::int32_t count, const float* src);
+
+// 0074EDC0 (read) and 0074EF20 (write) visit the same keys in this order; the
+// type codes are the archive's (2 float, 3 byte). Section names open with
+// vtable[4h] and close with vtable[8h].
+struct LeakSaveKey {
+    const char* section;   // nullptr: a plain key
+    const char* key;       // nullptr: per-zone index entries
+    int type;
+};
+inline constexpr LeakSaveKey kLeakSaveKeys_0074edc0[] = {
+    {"leak", nullptr, 2},          // 00D0054C, index i, +18h[i]
+    {"water", nullptr, 2},         // +1Ch[i]
+    {nullptr, "isWater", 3},       // +24h
+    {nullptr, "sumForces", 2},     // +28h
+    {nullptr, "sumLeaks", 2},      // +2Ch
+};
 
 }  // namespace gameplay_seg41_cc13
 }  // namespace bsp
