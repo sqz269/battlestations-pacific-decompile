@@ -246,7 +246,7 @@ They are not native layouts and nothing is wired. Status of each: **reconstructe
 ## 3. Records, status and what is still open
 
 **Records.**
-- 85 `ledger add-function` records with source `src/gameplay_seg38_cc13.cpp`, status
+- 82 `ledger add-function` records with source `src/gameplay_seg38_cc13.cpp`, status
   `semantic_build_tested`, `abi_compatible: false`. Some records share a model:
   - the four 5Ah senders share one;
   - the two thunks `007213B0` and `007213C0` point at the routines they jump to;
