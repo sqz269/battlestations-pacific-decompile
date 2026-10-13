@@ -259,7 +259,7 @@ Records for existing reconstructions, checked against the listing, with no host 
 
 - batch 3: `007D99C0` (model); and, checked against the listing, `007D7DA0`
   (`src/game_hosts_units.cpp:5727`), `007DB4D0` (`:8173`, partial: the `+260h` rewrite) and `007DB630` (the inline
-  wire seed at `:14474`).
+  wire seed at `:14474`); `007EF8F0` and `007E1D80` (`src/band_007a_cc13.cpp:111`, `:149`).
 
 Renames (`config/names`, applied to Ghidra with `tools/ghidra_annotate.py --apply`; the old evidence is kept
 in each record, and the prior annotations are in the tool's local JSON):
@@ -301,8 +301,7 @@ Not done in this packet, by priority:
    - `007DA710` (`src/plane_control_rate.cpp:40`/`:104`);
    - `007DB680`, the core law (`src/plane_flight.cpp:319`);
    - `007D9050`/`007D9140`/`007DA380` (inline in the hosts);
-   - `007D9CE0` (the deck reparent);
-   - `007E1D80` and `007EF8F0` (`src/band_007a_cc13.cpp`).
+   - `007D9CE0` (the deck reparent).
 2. **`007D9360`.** The climb-angle trial integration behind `007D98F0`: the host substitutes its predicate.
 3. **`007EB380`, the effects-component step**, beyond the flying flag:
    - the power filter (`+34h`/`+38h`/`+3Ch`);
