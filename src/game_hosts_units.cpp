@@ -1577,6 +1577,11 @@ struct GameUnitSlot {
     // 1.0f on the same frame regardless, so the rate only governs how long the
     // bay takes to close again.
     bsp::PlaneActuatorBlock actuator_block_dec{};
+    // Packet cc9_wing_fold (kPlaneWingFoldElevatorBound): channel +44h of the
+    // block is PartAnims.Wings (the host's channel_a). The class record is read
+    // once; the last +900h state the 007C11E0 stand-in has seen (-1: none yet).
+    bool wing_fold_read{false};
+    std::int32_t wing_notified_state_900{-1};
     int torpedo_bay_requests_accepted{0};   // 007BBBA0 moved the channel
     int torpedo_bay_requests_refused{0};    // a guard rejected it
     int torpedo_drops_spawned{0};           // a round actually left the plane
@@ -5507,6 +5512,41 @@ struct GameUnitsHost::Impl {
     // when 007B95E0 says the plane leads a squadron with active wingmen, else
     // TurnRoll (+25Ch). False: TurnRoll for every aircraft.
     static constexpr bool kPlaneLeaderTurnRollBound = true;  // ON by ruling (a): faithful; USN01 re-plan
+    // Packet cc9_wing_fold (docs/PLANE_INPUT_CHECKS_CC9.md, "the binding"). True:
+    // the +DECh block's channel +44h (PartAnims.Wings, the host's channel_a) is
+    // enabled per class as 007EABC0 does (class+5E4h, rate 1/class+5E0h, value 0),
+    // its target follows 007C11E0 (state 4..7 spread), the ground roll 007CBFA0
+    // extends it off the deck and folds it (007CC18E) while the holder's site
+    // holds the plane (006CFFC0: 20.0 > 006CFE90 on a carrier), the elevator carry
+    // zeroes it (006FC15E) and the elevator takes a landed plane only at value
+    // 0.0 (006D06E8, 007B8D40). False: the channel stays disabled and 007B8D40
+    // answers true, as before.
+    static constexpr bool kPlaneWingFoldElevatorBound = false;
+    // Packet cc9_wing_fold, the takeoff half (requires the switch above): the
+    // takeoff prepare step holds while the wings are not at 1.0 (009CDEED) and
+    // the takeoff run extends them (009CF2F8) and runs its aligned arm only once
+    // they are (009CF2ED). False: 007B8D10 answers true in both, as before.
+    static constexpr bool kPlaneWingSpreadTakeoffBound = false;
+    unsigned long long wing_fold_classes{0}, wing_fold_extends{0}, wing_fold_retracts{0};
+    unsigned long long wing_fold_resets{0}, wing_fold_elevator_waits{0};
+    unsigned long long wing_spread_prep_holds{0}, wing_spread_run_holds{0};
+    // 007B8DC0 / 007B8DA0: the target to 1 / 0, the moving byte and +11h raised.
+    static void wing_target_007b8dc0(bsp::PlaneActuatorBlock& b, bool spread) {
+        bsp::PlaneActuatorChannel& c = b.channel_a;
+        if (c.target != spread) {
+            c.target = spread;
+            c.moving = true;
+        }
+        if (c.moving) b.moving_any = true;
+    }
+    // 007B8D10 / 007B8D40: true when the channel is disabled or its value is
+    // exactly 1.0 / 0.0 (UCOMISS, so a NaN answers false).
+    static bool wing_at_007b8d10(const bsp::PlaneActuatorBlock& b, float end) {
+        return !b.channel_a.enabled || b.channel_a.value == end;
+    }
+    void wing_fold_class_007eabc0(GameUnitSlot& u);
+    void wing_fold_notify_007c11e0(GameUnitSlot& u);
+    bool wing_fold_site_holds_006cffc0(const GameUnitSlot& u) const;
     // Packet cc9_plane_touchdown (docs/SQUADRON_LAND_TASK.md section 5k): the
     // free-flight arm's site probe 007C5AC0 (006C0840 with its key, 007B8E80,
     // 006BC530 into plane+BF8h/+BFCh), the touchdown test 007CC440-007CC4CA and
@@ -13273,6 +13313,78 @@ bool GameUnitsHost::Impl::carrier_elevator_lane_006d0390(const LandingDeck& d,
 // 006FC0D0: with a platform plane, its local position = the lift point less
 // clamp(P+18h, 0, depth) in y plus its offset (+38h..+40h); 00951F40(1). The
 // host writes the local pose and carries it to the world at once.
+// 007EABC0 007EAD70-007EADB6 (the animated-model branch): channel +44h enabled
+// from class+5E4h (PartAnims.Wings present), target 0, value 0, rate
+// 1/class+5E0h (FLD1 / FDIV). SUBSTITUTION, labelled: read from the live
+// VehicleClass table at the plane's first block step, and every plane is taken
+// as having an animated model (model+130h != 0).
+void GameUnitsHost::Impl::wing_fold_class_007eabc0(GameUnitSlot& u) {
+    u.wing_fold_read = true;
+    if (!bsp::unit_is_kind_of(u.class_id, 0x0f)) return;
+    float first = 0.0f, second = 0.0f, third = 0.0f;
+    bool has_third = false;
+    if (!lua.read_vehicle_class_part_anim(u.row.type_id, "Wings", first, second, third,
+            has_third)) {
+        return;
+    }
+    // 007D3990: |[1] - [2]| (007D3883), replaced by a numeric [3].
+    const float duration = has_third ? third
+                                     : bsp::plane_class_part_anim_duration_007d3883(first, second);
+    bsp::PlaneActuatorChannel& c = u.actuator_block_dec.channel_a;
+    c.enabled = true;
+    c.target = false;
+    c.value = 0.0f;
+    c.rate = 1.0f / duration;
+    ++wing_fold_classes;
+    log.notef("  wing fold %s: class %d PartAnims.Wings {%.3f, %.3f%s} duration %.3f s "
+        "(007EABC0, packet cc9_wing_fold)", u.row.name.c_str(), u.row.type_id,
+        static_cast<double>(first), static_cast<double>(second), has_third ? ", [3]" : "",
+        static_cast<double>(duration));
+}
+
+// 007C11E0 BSP_Plane_NotifyFlightState, channel +44h only: target = state in
+// {4, 5, 6, 7}; with argument 1 the value is set at once. SUBSTITUTION,
+// labelled: the image notifies at each of its 19 call sites when +900h changes;
+// the host compares +900h with the last state seen here, once per fixed step
+// before the block step, and treats the first state seen as the spawn chooser's
+// 007C641A / 007C649F call with argument 1 (a deck spawn in state 1 or 2 passes
+// 0, which gives the same 0.0 from the constructor).
+void GameUnitsHost::Impl::wing_fold_notify_007c11e0(GameUnitSlot& u) {
+    if (!u.wing_fold_read) wing_fold_class_007eabc0(u);
+    if (!u.actuator_block_dec.channel_a.enabled) return;
+    const std::int32_t s = u.plane_control_mode_900;
+    if (s == u.wing_notified_state_900) return;
+    const bool first = u.wing_notified_state_900 < 0;
+    u.wing_notified_state_900 = s;
+    const bool spread = s == 4 || s == 5 || s == 6 || s == 7;
+    bsp::PlaneActuatorChannel& c = u.actuator_block_dec.channel_a;
+    if (first) {
+        const float v = spread ? 1.0f : 0.0f;
+        if (c.target != spread || c.value != v) {
+            c.value = v;
+            c.target = spread;
+            c.moving = true;
+        }
+        if (c.moving) u.actuator_block_dec.moving_any = true;
+        return;
+    }
+    wing_target_007b8dc0(u.actuator_block_dec, spread);
+}
+
+// 007CC16C-007CC186: (+BF4h)->+4h->+3Ch vtable[38h](unit). A carrier's site is
+// the elevator site (vtable 00CF8A58, slot 006CFFC0: 20.0f (00CE3930) >
+// 006CFE90, the nose's distance to the lift, FCOMI so a NaN answers false);
+// an airfield's launch site (vtable 00CF89F8, slot 006CEBF0) answers false.
+// SUBSTITUTION, labelled: a mother-ship deck whose elevator this host has not
+// built (no lift point) answers false, as it never takes a plane either.
+bool GameUnitsHost::Impl::wing_fold_site_holds_006cffc0(const GameUnitSlot& u) const {
+    const std::size_t hd = u.plane_contact_deck_bf4;
+    if (hd == 0 || hd > landing_decks.size()) return false;
+    const LandingDeck& d = landing_decks[hd - 1u];
+    if (!d.mother_ship || !d.elevator.built) return false;
+    return 20.0f > carrier_elevator_nose_distance_006cfe90(d, u);
+}
+
 void GameUnitsHost::Impl::carrier_elevator_carry_006fc0d0(LandingDeck& d) {
     CarrierElevator& e = d.elevator;
     if (e.plane_34 >= slots.size() || !slots[e.plane_34]) return;
@@ -13283,7 +13395,19 @@ void GameUnitsHost::Impl::carrier_elevator_carry_006fc0d0(LandingDeck& d) {
     p.deck_local_pos[0] = e.lift[0] + e.off_38[0];
     p.deck_local_pos[1] = static_cast<float>(static_cast<double>(e.lift[1]) - y) + e.off_38[1];
     p.deck_local_pos[2] = e.lift[2] + e.off_38[2];
-    for (float& v : p.deck_local_vel) v = 0.0f;      // 007B8DE0, taken as the stop
+    // The velocity stop predates packet cc9_wing_fold and stays; 007B8DE0 at
+    // 006FC15E is the wing reset: target 0 and value 0.0 at once.
+    for (float& v : p.deck_local_vel) v = 0.0f;
+    if constexpr (kPlaneWingFoldElevatorBound) {
+        bsp::PlaneActuatorChannel& c = p.actuator_block_dec.channel_a;
+        if (c.target || c.value != 0.0f) {
+            if (c.enabled && c.value != 0.0f) ++wing_fold_resets;
+            c.value = 0.0f;
+            c.target = false;
+            c.moving = true;
+        }
+        if (c.moving) p.actuator_block_dec.moving_any = true;
+    }
     carrier_deck_carry_in(p);
     p.plane_hit_node_detached = false;               // 00951F40(1) -> 00710AD0
 }
@@ -14128,8 +14252,14 @@ void GameUnitsHost::Impl::carrier_elevator_site_tick_006d0600(LandingDeck& d, fl
             if (!o.plane_landed_904) continue;
             if (!carrier_elevator_intake_006cff70(d, o)) continue;
             if (!(1.3888889f > avoid_len(o.plane_world_velocity))) continue;   // 00CF8AAC
-            // 007B8D40, the gear channel: this host carries no +DECh block, so
-            // the channel is absent and the test answers true (labelled).
+            // 007B8D40: channel +44h (the wings, not the gear) disabled or at
+            // exactly 0.0. Unbound, the channel stays disabled and this is true.
+            if constexpr (kPlaneWingFoldElevatorBound) {
+                if (!wing_at_007b8d10(o.actuator_block_dec, 0.0f)) {
+                    ++wing_fold_elevator_waits;
+                    continue;
+                }
+            }
             cand = oi;
         }
         if (cand < slots.size()) {
@@ -16922,6 +17052,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
         // docs/TORPEDO_RELEASE_SPAWN.md.
         for (std::unique_ptr<GameUnitSlot>& unit_slot : host.slots) {
             if (unit_slot == nullptr) continue;
+            if constexpr (GameUnitsHost::Impl::kPlaneWingFoldElevatorBound) {
+                host.wing_fold_notify_007c11e0(*unit_slot);
+            }
             bsp::plane_actuator_block_step_007de3a0(unit_slot->actuator_block_dec,
                 step_seconds, static_cast<unsigned>(host.summary.motion_steps));
         }
@@ -30104,7 +30237,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.plan_slots[bsp::kPilotSlotYaw].desired = 0.0f;
                         unit_.plan_slots[bsp::kPilotSlotYaw].active = 1;
                         unit_.gl_yaw_mode_2d4_zero = true;
-                        // 007B8D10: the +DECh channel absent here, so true.
+                        // 009CDEED 007B8D10: the wings not at 1.0 return here
+                        // (009CE106). Unbound, the channel is absent, so true.
+                        if constexpr (GameUnitsHost::Impl::kPlaneWingFoldElevatorBound
+                                      && GameUnitsHost::Impl::kPlaneWingSpreadTakeoffBound) {
+                            if (!GameUnitsHost::Impl::wing_at_007b8d10(
+                                    unit_.actuator_block_dec, 1.0f)) {
+                                ++owner_.wing_spread_prep_holds;
+                                return;
+                            }
+                        }
                         unit_.takeoff_prep_t_1c += dt;
                         // 009CDF0C-009CDF1F: a holder whose owner answers IsKindOf(45h),
                         // an airfield (a holder that is not a mother ship here).
@@ -30502,9 +30644,22 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             clamped_interpolate_00419010(-yk, -1.0f, yk, 1.0f, err2);
                         p.plan_slots[bsp::kPilotSlotYaw].active = 1;
                         p.gl_yaw_mode_2d4_zero = true;
-                        // 007B8D10: no +DECh here, so true and 007B8DC0 is not reached.
+                        // 009CF2ED 007B8D10: wings not at 1.0 extend (009CF2F8
+                        // 007B8DC0) and take the not-aligned path (009CF2FD).
+                        // Unbound, the channel is absent, so true.
+                        bool spread = true;
+                        if constexpr (GameUnitsHost::Impl::kPlaneWingFoldElevatorBound
+                                      && GameUnitsHost::Impl::kPlaneWingSpreadTakeoffBound) {
+                            spread = GameUnitsHost::Impl::wing_at_007b8d10(
+                                p.actuator_block_dec, 1.0f);
+                            if (!spread) {
+                                ++owner_.wing_spread_run_holds;
+                                GameUnitsHost::Impl::wing_target_007b8dc0(
+                                    p.actuator_block_dec, true);
+                            }
+                        }
                         const bool log_row = (p.takeoff_run_ticks % 20u) == 1u;
-                        if (aligned) {
+                        if (aligned && spread) {
                             ++p.takeoff_run_aligned;
                             if (p.takeoff_run_first_aligned < 0.0f) {
                                 p.takeoff_run_first_aligned = owner_.summary.simulated_seconds;
@@ -32766,6 +32921,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         pilot_think_and_commit(step);
                         // Step 1, 007CBFC3: the pre-pass 007C5AC0.
                         owner_.plane_site_probe_007c5ac0(unit_, step);
+                        if constexpr (GameUnitsHost::Impl::kPlaneWingFoldElevatorBound) {
+                            // Step 2, 007CBFC8-007CBFEC: off the deck (+904h clear),
+                            // the wings spread (the block's +44h channel).
+                            if (!unit_.plane_landed_904) {
+                                if (!unit_.actuator_block_dec.channel_a.target
+                                    && unit_.actuator_block_dec.channel_a.enabled) {
+                                    ++owner_.wing_fold_extends;
+                                }
+                                GameUnitsHost::Impl::wing_target_007b8dc0(
+                                    unit_.actuator_block_dec, true);
+                            }
+                        }
                         // Steps 2-5 (the actuator block +DECh, the dead-plane fuse,
                         // the steering-authority byte +C0Ch and 007CAF10) are not
                         // carried: no channel block, no dead plane on this path.
@@ -32783,6 +32950,22 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         } else {
                             ++unit_.ground_law_steps;
                             run_core_law_007db680(step, true);
+                        }
+                        if constexpr (GameUnitsHost::Impl::kPlaneWingFoldElevatorBound) {
+                            // Step 7, 007CC163-007CC1AF: landed, the holder's site
+                            // (+BF4h -> +4h -> +3Ch) vtable[38h] decides the fold
+                            // (007CC18E 007B8DA0); not landed, the wings spread.
+                            bsp::PlaneActuatorBlock& wb = unit_.actuator_block_dec;
+                            if (unit_.plane_landed_904) {
+                                if (owner_.wing_fold_site_holds_006cffc0(unit_)) {
+                                    if (wb.channel_a.target && wb.channel_a.enabled) {
+                                        ++owner_.wing_fold_retracts;
+                                    }
+                                    GameUnitsHost::Impl::wing_target_007b8dc0(wb, false);
+                                }
+                            } else {
+                                GameUnitsHost::Impl::wing_target_007b8dc0(wb, true);
+                            }
                         }
                         // Step 8, 007CC1B3-007CC2B3, the lift-off request: state 4,
                         // BFCh - WheelHeight > 0.1 and unit+ACCh (ctl+1Ch, world vy)
@@ -36553,6 +36736,13 @@ void GameUnitsHost::report() {
         host.log.notef("summary mission leader turn roll: uses=%d bound=%d (007B95E0, packet "
             "cc9_leader_turn_roll)", host.leader_turn_roll_uses,
             GameUnitsHost::Impl::kPlaneLeaderTurnRollBound ? 1 : 0);
+        host.log.notef("summary mission wing fold: classes=%llu extends=%llu retracts=%llu "
+            "resets=%llu elevator_waits=%llu prep_holds=%llu run_holds=%llu bound=%d/%d "
+            "(007EABC0 / 007CC18E / 006D06E8 / 009CDEED / 009CF2ED, packet cc9_wing_fold)",
+            host.wing_fold_classes, host.wing_fold_extends, host.wing_fold_retracts,
+            host.wing_fold_resets, host.wing_fold_elevator_waits, host.wing_spread_prep_holds,
+            host.wing_spread_run_holds, GameUnitsHost::Impl::kPlaneWingFoldElevatorBound ? 1 : 0,
+            GameUnitsHost::Impl::kPlaneWingSpreadTakeoffBound ? 1 : 0);
     }
     host.log.notef("summary mission plane motion: distance_moved=%.2f m "
         "pose_right_reference=%llu pose_collapsed=%llu "
