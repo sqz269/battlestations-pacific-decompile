@@ -15787,3 +15787,60 @@ args), `movie` (three), `sea` (live water surface, live amplitude), `dyn` (worke
 - Wins on AH: USN02 about 203 s, USN12 about 1555 s, ESMP08 about 3447 s, LOMP06 about 535 s, BSM01 767.94 s (the
   lead's main table); USN01 lost (live sea, and the convoy-strike sensitivity of GUNNERY 193); LOMP10 uncertain
   (lost on main to the live sea; audit9 brought it back on the flat sea at 1327.37 s).
+
+### Final AH (cc9-gunnery38; base origin/main `1de67cfb9`; supersedes the 37 plan above, which never ran)
+
+**Plan.** `local\g36_switches.py 10bef4a99 1de67cfb9` lists 56 switches ON at the base that are new or flipped since
+AG (`local\g38_ah_switches.txt`): the 53 of the 37 plan plus three DC-form / sign fixes landed after
+`355b60167` (`kApproachSideWeightDcFormBound`, `kUnitPartSpinSignBound`, `kUnitSteeringDcFormBound`). Anchor
+`local\g38_anc` = the base with all 56 false; AH `local\g38_ah` = the base as exported (`local\g38_ah.ps1`). Per the
+lead's queue only the seven scripted wins run, with the WINS_TABLE.md order files (copied to `local\g38_ord_<key>.txt`:
+USN01 `p3_u1_z4`, USN02 `s36_u2_p7`, LOMP10 `p3_l10_b`, USN12 `s38_u12_p2`, LOMP06 `l50_l6_q6`, BSM01 `l50_b1_a`,
+ESMP08 `l46_e8_orders2`), AG launch form plus `--stop-after-end 40` (`BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`,
+lockstep 0.05), frames USN01/LOMP10 32000, USN12 36000, BSM01 40000, ESMP08 90000. Logs `local\g38_{anc,ah}_<key>.log`.
+A win lost on AH is bisected by switch group from the anchor side.
+
+**Predictions (before any run).**
+- AH against the keeper's `355b60167` row: USN02 203.01 s, LOMP06 535.24 s, BSM01 `EndMission` 767.94 s unchanged
+  (the three DC-form fixes are ship steering/approach and part spin; these wins have been identical through every
+  plane batch); USN12 near 1540 s and LOMP10 near 1000 s but moved by the steering fix; USN01 completes but its
+  convoy strike re-rolls (uncertain); ESMP08 no completion (Cummings and three others survive the late Jill strikes).
+- Anchor: AG-era behaviour with the flat sea and none of the plane batch; ESMP08 completes there (AG 3204.10 s with
+  the same order file); USN01 with `p3_u1_z4` is a plan written for the live sea and may not complete.
+
+**Results.** Anchor binary `local\g37_anc` (the 37 anchor directory re-exported at `1de67cfb9` with the 56 flips;
+`local\g38_anc` was abandoned when its first build was interrupted), AH `local\g38_ah` (SHA-256 A26224DD5045). Diffs
+`local\g38_dAH_<key>.txt`; `reports/cc9_reference_rebaseline_36.json`.
+
+| win | orders | anchor | AH | AH vs anchor |
+| --- | --- | --- | --- | --- |
+| USN01 | `p3_u1_z4` | 658.31 s | 1014.63 s | exit 3 (deaths 96 -> 90) |
+| USN02 | `s36_u2_p7` | 782.03 s | 203.01 s | exit 3 |
+| LOMP06 | `l50_l6_q6` | 486.80 s | 535.24 s | exit 3 |
+| LOMP10 | `p3_l10_b` | 957.54 s | 1002.18 s | exit 3 |
+| USN12 | `s38_u12_p2` | 1529.92 s | 1539.83 s | exit 3 |
+| BSM01 | `l50_b1_a` | `EndMission` 767.94 s | `EndMission` 767.94 s | exit 3 |
+| ESMP08 | `l46_e8_orders2` | 3204.10 s | **no completion** (90000 frames) | exit 3 (deaths 613 -> 909) |
+
+Every completion logs the exec guard's `sus_prog.exe` refusal. The six AH wins equal the keeper's `355b60167` row to
+the hundredth of a second, so the three DC-form switches added since then move none of them. The predictions held
+except LOMP10 and USN12, which were predicted to move with the steering fix and did not. The anchor completes all
+seven, ESMP08 at AG's 3204.10 s; USN01's `p3_u1_z4` also completes there (658.31 s), against the "may not complete"
+prediction.
+
+**ESMP08, leave-one-out on AH** (`local\g38_loo<tag>_e8.log`):
+
+| switches set false on AH | ESMP08 |
+| --- | --- |
+| `kFlakFlyTimeBurstBound` + `kFlakBlastIgnoreFalloffBound` | completed 2594.66 s, guard logged |
+| `kFlakBlastIgnoreFalloffBound` alone | completed 2594.66 s, guard logged |
+| `kFlakFlyTimeBurstBound` alone | no completion (deaths 907) |
+| `kLuaHitTargetSquadronBound` alone | no completion (deaths 909) |
+
+So ESMP08 is lost to `kFlakBlastIgnoreFalloffBound` (GUNNERY 188, ON in 193; cc13-audit13 A1 found it faithful).
+Squadron plane deaths before 2594 s: 173 on AH, 127 of them flak blasts (`killer_cat=6 killer_blast=1`), against 110
+and 40 with the switch false; with it false the last four US ships (Dunlap 1404.74, Grayson 2184.41, Woodworth
+2356.57, Cummings 2590.55 s) die to torpedo squadrons. On AH the late strikes die at 1400-1460 m, 200-600 m from
+their killer: squadrons whose launch target is already dead keep resolving its name (`command target 0071EBF0`),
+end their attack run in one tick, sit in `done` at the cruise altitude and fly into the fleet's full-damage flak.
+The switch is image-faithful, so this is a plan casualty; GUNNERY 197 has the dead-target reading.

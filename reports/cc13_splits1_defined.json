@@ -1,0 +1,1495 @@
+{
+ "events": [
+  {
+   "delete_inside": "006f2a67",
+   "range": [
+    "006f2a50",
+    "006f2bc7"
+   ]
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "006f2a67"
+   },
+   "result": {
+    "success": true,
+    "address": "006f2a67",
+    "deleted_function": "FUN_006f2a67",
+    "body_size": 352,
+    "message": "Function 'FUN_006f2a67' deleted at 006f2a67"
+   }
+  },
+  {
+   "recreate": "006f2a50",
+   "previous": "Function: BSP_CommandBuilding_TakeLandingPad at 006f2a50\nSignature: undefined BSP_CommandBuilding_TakeLandingPad(void)\nEntry: 006f2a50\nBody: 006f2a50 - 006f2a66",
+   "plate": "[BSP reconstruction 006f2a50]\nHypothesis, not a recovered symbol. SHIP_AI_OPEN_ITEMS.md: takes a pad with 006F2A50(building)(ship), -4 when none; the take is 006F2A67..006F2BC6 (Ghidra split it into FUN_006f2a67); callers BSP_LandingShip_RequestLandingAtNearestBuilding, 008128E0, BSP_TroopTransport_LaunchLandingCraft. Doc: docs/CC13_GP_006B_0070.md."
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "006f2a50"
+   },
+   "result": {
+    "success": true,
+    "address": "006f2a50",
+    "deleted_function": "BSP_CommandBuilding_TakeLandingPad",
+    "body_size": 23,
+    "message": "Function 'BSP_CommandBuilding_TakeLandingPad' deleted at 006f2a50"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006f2a50",
+    "end_address": "006f2bc7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006f2a50",
+    "end_address": "006f2bc6",
+    "bytes_disassembled": 375,
+    "message": "Successfully disassembled 375 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006f2a50",
+    "disassemble_first": false,
+    "name": "BSP_CommandBuilding_TakeLandingPad"
+   },
+   "result": {
+    "success": true,
+    "address": "006f2a50",
+    "function_name": "BSP_CommandBuilding_TakeLandingPad",
+    "entry_point": "006f2a50",
+    "body_size": 375,
+    "message": "Function created successfully at 006f2a50",
+    "warnings": [
+     "Function name 'BSP_CommandBuilding_TakeLandingPad' \u2014 main part 'CommandBuilding_TakeLandingPad' is not PascalCase. Expected: CommandbuildingTakelandingpad",
+     "Function name 'BSP_CommandBuilding_TakeLandingPad' \u2014 main part 'CommandBuilding_TakeLandingPad' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_CommandBuilding_TakeLandingPad' does not start with a recognized verb. First word 'Command' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "006f2a50",
+    "comment": "[BSP reconstruction 006f2a50]\nHypothesis, not a recovered symbol. SHIP_AI_OPEN_ITEMS.md: takes a pad with 006F2A50(building)(ship), -4 when none; the take is 006F2A67..006F2BC6 (Ghidra split it into FUN_006f2a67); callers BSP_LandingShip_RequestLandingAtNearestBuilding, 008128E0, BSP_TroopTransport_LaunchLandingCraft. Doc: docs/CC13_GP_006B_0070.md."
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 006f2a50",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "006f2a50",
+   "end": "006f2bc7",
+   "name": "BSP_CommandBuilding_TakeLandingPad",
+   "after": "Function: BSP_CommandBuilding_TakeLandingPad at 006f2a50\nSignature: undefined BSP_CommandBuilding_TakeLandingPad(void)\nEntry: 006f2a50\nBody: 006f2a50 - 006f2bc6"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "delete_inside": "0084ddc1",
+   "range": [
+    "0084dda0",
+    "0084e00d"
+   ]
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "0084ddc1"
+   },
+   "result": {
+    "success": true,
+    "address": "0084ddc1",
+    "deleted_function": "FUN_0084ddc1",
+    "body_size": 588,
+    "message": "Function 'FUN_0084ddc1' deleted at 0084ddc1"
+   }
+  },
+  {
+   "recreate": "0084dda0",
+   "previous": "Function: BSP_PlaneSquadronCommandBlock_BeginCommand at 0084dda0\nSignature: undefined BSP_PlaneSquadronCommandBlock_BeginCommand(void)\nEntry: 0084dda0\nBody: 0084dda0 - 0084ddc0",
+   "plate": "[BSP reconstruction 0084dda0]\nHypothesis, not a recovered symbol. cc13-gp80 (docs/CC13_GP_0080_0084.md). Slot +78h of 00D0BD98. BSP_WeaponDirector_BeginCommandBase, then a moveto on the block's own unit +224h while the plane flies below BSP_PlaneClass_LevelFlightSpeed * 00D7A280 becomes a stop (00E08F88) and toggles vtable +40h/+44h; routes MT_RESUME_AI_CONTROL (57h). Ghidra also has a spurious function start at 0084DDC1 inside this body."
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "0084dda0"
+   },
+   "result": {
+    "success": true,
+    "address": "0084dda0",
+    "deleted_function": "BSP_PlaneSquadronCommandBlock_BeginCommand",
+    "body_size": 33,
+    "message": "Function 'BSP_PlaneSquadronCommandBlock_BeginCommand' deleted at 0084dda0"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0084dda0",
+    "end_address": "0084e00d"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0084dda0",
+    "end_address": "0084e00c",
+    "bytes_disassembled": 621,
+    "message": "Successfully disassembled 621 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0084dda0",
+    "disassemble_first": false,
+    "name": "BSP_PlaneSquadronCommandBlock_BeginCommand"
+   },
+   "result": {
+    "success": true,
+    "address": "0084dda0",
+    "function_name": "BSP_PlaneSquadronCommandBlock_BeginCommand",
+    "entry_point": "0084dda0",
+    "body_size": 621,
+    "message": "Function created successfully at 0084dda0",
+    "warnings": [
+     "Function name 'BSP_PlaneSquadronCommandBlock_BeginCommand' \u2014 main part 'PlaneSquadronCommandBlock_BeginCommand' is not PascalCase. Expected: PlanesquadroncommandblockBegincommand",
+     "Function name 'BSP_PlaneSquadronCommandBlock_BeginCommand' \u2014 main part 'PlaneSquadronCommandBlock_BeginCommand' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_PlaneSquadronCommandBlock_BeginCommand' does not start with a recognized verb. First word 'Plane' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "0084dda0",
+    "comment": "[BSP reconstruction 0084dda0]\nHypothesis, not a recovered symbol. cc13-gp80 (docs/CC13_GP_0080_0084.md). Slot +78h of 00D0BD98. BSP_WeaponDirector_BeginCommandBase, then a moveto on the block's own unit +224h while the plane flies below BSP_PlaneClass_LevelFlightSpeed * 00D7A280 becomes a stop (00E08F88) and toggles vtable +40h/+44h; routes MT_RESUME_AI_CONTROL (57h). Ghidra also has a spurious function start at 0084DDC1 inside this body."
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 0084dda0",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "0084dda0",
+   "end": "0084e00d",
+   "name": "BSP_PlaneSquadronCommandBlock_BeginCommand",
+   "after": "Function: BSP_PlaneSquadronCommandBlock_BeginCommand at 0084dda0\nSignature: undefined BSP_PlaneSquadronCommandBlock_BeginCommand(void)\nEntry: 0084dda0\nBody: 0084dda0 - 0084e00c"
+  },
+  {
+   "delete_inside": "00953dc4",
+   "range": [
+    "00953da0",
+    "00953e53"
+   ]
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00953dc4"
+   },
+   "result": {
+    "success": true,
+    "address": "00953dc4",
+    "deleted_function": "BSP_Unit_SetInferiorFailureProperty_SplitTail",
+    "body_size": 143,
+    "message": "Function 'BSP_Unit_SetInferiorFailureProperty_SplitTail' deleted at 00953dc4"
+   }
+  },
+  {
+   "recreate": "00953da0",
+   "previous": "Function: BSP_Unit_SetInferiorFailureProperty at 00953da0\nSignature: undefined BSP_Unit_SetInferiorFailureProperty(void)\nEntry: 00953da0\nBody: 00953da0 - 00953dc3",
+   "plate": "[BSP reconstruction 00953da0]\ncc13-gp95: unit property setter by name (slot 7 of 00CFB1A0, slot 4 of 00CFCEE4, the slot before BSP_Unit_QueryInferiorFailure): for \"InferiorFailure\" (__stricmp) builds the session message 7Dh (vtable 00D1A57C, value 1) and routes it with BSP_Session_RouteMessage(msg, 7, 0); returns 1 when handled"
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00953da0"
+   },
+   "result": {
+    "success": true,
+    "address": "00953da0",
+    "deleted_function": "BSP_Unit_SetInferiorFailureProperty",
+    "body_size": 36,
+    "message": "Function 'BSP_Unit_SetInferiorFailureProperty' deleted at 00953da0"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00953da0",
+    "end_address": "00953e53"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00953da0",
+    "end_address": "00953e52",
+    "bytes_disassembled": 179,
+    "message": "Successfully disassembled 179 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00953da0",
+    "disassemble_first": false,
+    "name": "BSP_Unit_SetInferiorFailureProperty"
+   },
+   "result": {
+    "success": true,
+    "address": "00953da0",
+    "function_name": "BSP_Unit_SetInferiorFailureProperty",
+    "entry_point": "00953da0",
+    "body_size": 179,
+    "message": "Function created successfully at 00953da0",
+    "warnings": [
+     "Function name 'BSP_Unit_SetInferiorFailureProperty' \u2014 main part 'Unit_SetInferiorFailureProperty' is not PascalCase. Expected: UnitSetinferiorfailureproperty",
+     "Function name 'BSP_Unit_SetInferiorFailureProperty' \u2014 main part 'Unit_SetInferiorFailureProperty' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Unit_SetInferiorFailureProperty' does not start with a recognized verb. First word 'Unit_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00953da0",
+    "comment": "[BSP reconstruction 00953da0]\ncc13-gp95: unit property setter by name (slot 7 of 00CFB1A0, slot 4 of 00CFCEE4, the slot before BSP_Unit_QueryInferiorFailure): for \"InferiorFailure\" (__stricmp) builds the session message 7Dh (vtable 00D1A57C, value 1) and routes it with BSP_Session_RouteMessage(msg, 7, 0); returns 1 when handled"
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00953da0",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00953da0",
+   "end": "00953e53",
+   "name": "BSP_Unit_SetInferiorFailureProperty",
+   "after": "Function: BSP_Unit_SetInferiorFailureProperty at 00953da0\nSignature: undefined BSP_Unit_SetInferiorFailureProperty(void)\nEntry: 00953da0\nBody: 00953da0 - 00953e52"
+  },
+  {
+   "delete_inside": "00953ec4",
+   "range": [
+    "00953ea0",
+    "00953f53"
+   ]
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00953ec4"
+   },
+   "result": {
+    "success": true,
+    "address": "00953ec4",
+    "deleted_function": "BSP_Unit_ClearInferiorFailureProperty_SplitTail",
+    "body_size": 143,
+    "message": "Function 'BSP_Unit_ClearInferiorFailureProperty_SplitTail' deleted at 00953ec4"
+   }
+  },
+  {
+   "recreate": "00953ea0",
+   "previous": "Function: BSP_Unit_ClearInferiorFailureProperty at 00953ea0\nSignature: undefined BSP_Unit_ClearInferiorFailureProperty(void)\nEntry: 00953ea0\nBody: 00953ea0 - 00953ec3",
+   "plate": "[BSP reconstruction 00953ea0]\ncc13-gp95: unit property slot after BSP_Unit_QueryInferiorFailure (slot 9 of 00CFB1A0, slot 6 of 00CFCEE4): for \"InferiorFailure\" builds the session message 7Eh (vtable 00D1A590) and routes it with BSP_Session_RouteMessage(msg, 7, 0). Set/clear reading of 7Dh/7Eh is provisional"
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00953ea0"
+   },
+   "result": {
+    "success": true,
+    "address": "00953ea0",
+    "deleted_function": "BSP_Unit_ClearInferiorFailureProperty",
+    "body_size": 36,
+    "message": "Function 'BSP_Unit_ClearInferiorFailureProperty' deleted at 00953ea0"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00953ea0",
+    "end_address": "00953f53"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00953ea0",
+    "end_address": "00953f52",
+    "bytes_disassembled": 179,
+    "message": "Successfully disassembled 179 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00953ea0",
+    "disassemble_first": false,
+    "name": "BSP_Unit_ClearInferiorFailureProperty"
+   },
+   "result": {
+    "success": true,
+    "address": "00953ea0",
+    "function_name": "BSP_Unit_ClearInferiorFailureProperty",
+    "entry_point": "00953ea0",
+    "body_size": 179,
+    "message": "Function created successfully at 00953ea0",
+    "warnings": [
+     "Function name 'BSP_Unit_ClearInferiorFailureProperty' \u2014 main part 'Unit_ClearInferiorFailureProperty' is not PascalCase. Expected: UnitClearinferiorfailureproperty",
+     "Function name 'BSP_Unit_ClearInferiorFailureProperty' \u2014 main part 'Unit_ClearInferiorFailureProperty' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Unit_ClearInferiorFailureProperty' does not start with a recognized verb. First word 'Unit_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00953ea0",
+    "comment": "[BSP reconstruction 00953ea0]\ncc13-gp95: unit property slot after BSP_Unit_QueryInferiorFailure (slot 9 of 00CFB1A0, slot 6 of 00CFCEE4): for \"InferiorFailure\" builds the session message 7Eh (vtable 00D1A590) and routes it with BSP_Session_RouteMessage(msg, 7, 0). Set/clear reading of 7Dh/7Eh is provisional"
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00953ea0",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00953ea0",
+   "end": "00953f53",
+   "name": "BSP_Unit_ClearInferiorFailureProperty",
+   "after": "Function: BSP_Unit_ClearInferiorFailureProperty at 00953ea0\nSignature: undefined BSP_Unit_ClearInferiorFailureProperty(void)\nEntry: 00953ea0\nBody: 00953ea0 - 00953f52"
+  },
+  {
+   "delete_inside": "00a9e428",
+   "range": [
+    "00a9e400",
+    "00a9e7d2"
+   ]
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00a9e428"
+   },
+   "result": {
+    "success": true,
+    "address": "00a9e428",
+    "deleted_function": "BSP_GuiListbox_ReadProperties_SplitTail",
+    "body_size": 938,
+    "message": "Function 'BSP_GuiListbox_ReadProperties_SplitTail' deleted at 00a9e428"
+   }
+  },
+  {
+   "recreate": "00a9e400",
+   "previous": "Function: BSP_GuiListbox_ReadProperties at 00a9e400\nSignature: undefined BSP_GuiListbox_ReadProperties(void)\nEntry: 00a9e400\nBody: 00a9e400 - 00a9e427",
+   "plate": "[BSP reconstruction 00a9e400]\nHypothesis, not a recovered symbol. listbox full properties reader (src/gui_type_dispatch.cpp and include/bsp/gui_listbox_runtime.hpp 'Full properties A9E400'); tail-calls BSP_GuiWidget_ReadPropertiesAndChildren (cc13-sweep9x, docs/CC13_BAND_0090_00BF.md)"
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00a9e400"
+   },
+   "result": {
+    "success": true,
+    "address": "00a9e400",
+    "deleted_function": "BSP_GuiListbox_ReadProperties",
+    "body_size": 40,
+    "message": "Function 'BSP_GuiListbox_ReadProperties' deleted at 00a9e400"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a9e400",
+    "end_address": "00a9e7d2"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a9e400",
+    "end_address": "00a9e7d1",
+    "bytes_disassembled": 978,
+    "message": "Successfully disassembled 978 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a9e400",
+    "disassemble_first": false,
+    "name": "BSP_GuiListbox_ReadProperties"
+   },
+   "result": {
+    "success": true,
+    "address": "00a9e400",
+    "function_name": "BSP_GuiListbox_ReadProperties",
+    "entry_point": "00a9e400",
+    "body_size": 978,
+    "message": "Function created successfully at 00a9e400",
+    "warnings": [
+     "Function name 'BSP_GuiListbox_ReadProperties' \u2014 main part 'GuiListbox_ReadProperties' is not PascalCase. Expected: GuilistboxReadproperties",
+     "Function name 'BSP_GuiListbox_ReadProperties' \u2014 main part 'GuiListbox_ReadProperties' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiListbox_ReadProperties' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00a9e400",
+    "comment": "[BSP reconstruction 00a9e400]\nHypothesis, not a recovered symbol. listbox full properties reader (src/gui_type_dispatch.cpp and include/bsp/gui_listbox_runtime.hpp 'Full properties A9E400'); tail-calls BSP_GuiWidget_ReadPropertiesAndChildren (cc13-sweep9x, docs/CC13_BAND_0090_00BF.md)"
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00a9e400",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00a9e400",
+   "end": "00a9e7d2",
+   "name": "BSP_GuiListbox_ReadProperties",
+   "after": "Function: BSP_GuiListbox_ReadProperties at 00a9e400\nSignature: undefined BSP_GuiListbox_ReadProperties(void)\nEntry: 00a9e400\nBody: 00a9e400 - 00a9e7d1"
+  },
+  {
+   "delete_inside": "00729ff4",
+   "range": [
+    "00729fd0",
+    "0072a083"
+   ]
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00729ff4"
+   },
+   "result": {
+    "success": true,
+    "address": "00729ff4",
+    "deleted_function": "FUN_00729ff4",
+    "body_size": 143,
+    "message": "Function 'FUN_00729ff4' deleted at 00729ff4"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00729fd0",
+    "end_address": "0072a083"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00729fd0",
+    "end_address": "0072a082",
+    "bytes_disassembled": 179,
+    "message": "Successfully disassembled 179 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00729fd0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00729fd0",
+    "function_name": "FUN_00729fd0",
+    "entry_point": "00729fd0",
+    "body_size": 179,
+    "message": "Function created successfully at 00729fd0"
+   }
+  },
+  {
+   "defined": "00729fd0",
+   "end": "0072a083",
+   "name": null,
+   "after": "Function: FUN_00729fd0 at 00729fd0\nSignature: undefined FUN_00729fd0(void)\nEntry: 00729fd0\nBody: 00729fd0 - 0072a082"
+  },
+  {
+   "delete_inside": "0072a0f4",
+   "range": [
+    "0072a0d0",
+    "0072a183"
+   ]
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "0072a0f4"
+   },
+   "result": {
+    "success": true,
+    "address": "0072a0f4",
+    "deleted_function": "FUN_0072a0f4",
+    "body_size": 143,
+    "message": "Function 'FUN_0072a0f4' deleted at 0072a0f4"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0072a0d0",
+    "end_address": "0072a183"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0072a0d0",
+    "end_address": "0072a182",
+    "bytes_disassembled": 179,
+    "message": "Successfully disassembled 179 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0072a0d0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "0072a0d0",
+    "function_name": "FUN_0072a0d0",
+    "entry_point": "0072a0d0",
+    "body_size": 179,
+    "message": "Function created successfully at 0072a0d0"
+   }
+  },
+  {
+   "defined": "0072a0d0",
+   "end": "0072a183",
+   "name": null,
+   "after": "Function: FUN_0072a0d0 at 0072a0d0\nSignature: undefined FUN_0072a0d0(void)\nEntry: 0072a0d0\nBody: 0072a0d0 - 0072a182"
+  },
+  {
+   "delete_inside": "0074a8e4",
+   "range": [
+    "0074a8d0",
+    "0074a98f"
+   ]
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "0074a8e4"
+   },
+   "result": {
+    "success": true,
+    "address": "0074a8e4",
+    "deleted_function": "FUN_0074a8e4",
+    "body_size": 164,
+    "message": "Function 'FUN_0074a8e4' deleted at 0074a8e4"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0074a8d0",
+    "end_address": "0074a98f"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0074a8d0",
+    "end_address": "0074a98e",
+    "bytes_disassembled": 191,
+    "message": "Successfully disassembled 191 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0074a8d0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "0074a8d0",
+    "function_name": "FUN_0074a8d0",
+    "entry_point": "0074a8d0",
+    "body_size": 184,
+    "message": "Function created successfully at 0074a8d0"
+   }
+  },
+  {
+   "defined": "0074a8d0",
+   "end": "0074a98f",
+   "name": null,
+   "after": "Function: FUN_0074a8d0 at 0074a8d0\nSignature: undefined FUN_0074a8d0(void)\nEntry: 0074a8d0\nBody: 0074a8d0 - 0074a98e"
+  },
+  {
+   "delete_inside": "0078d785",
+   "range": [
+    "0078d6c0",
+    "0078d81e"
+   ]
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "0078d785"
+   },
+   "result": {
+    "success": true,
+    "address": "0078d785",
+    "deleted_function": "FUN_0078d785",
+    "body_size": 153,
+    "message": "Function 'FUN_0078d785' deleted at 0078d785"
+   }
+  },
+  {
+   "recreate": "0078d6c0",
+   "previous": "Function: FUN_0078d6c0 at 0078d6c0\nSignature: undefined FUN_0078d6c0(void)\nEntry: 0078d6c0\nBody: 0078d6c0 - 0078d784",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "0078d6c0"
+   },
+   "result": {
+    "success": true,
+    "address": "0078d6c0",
+    "deleted_function": "FUN_0078d6c0",
+    "body_size": 197,
+    "message": "Function 'FUN_0078d6c0' deleted at 0078d6c0"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0078d6c0",
+    "end_address": "0078d81e"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0078d6c0",
+    "end_address": "0078d81d",
+    "bytes_disassembled": 350,
+    "message": "Successfully disassembled 350 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0078d6c0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "0078d6c0",
+    "function_name": "FUN_0078d6c0",
+    "entry_point": "0078d6c0",
+    "body_size": 350,
+    "message": "Function created successfully at 0078d6c0"
+   }
+  },
+  {
+   "defined": "0078d6c0",
+   "end": "0078d81e",
+   "name": null,
+   "after": "Function: FUN_0078d6c0 at 0078d6c0\nSignature: undefined FUN_0078d6c0(void)\nEntry: 0078d6c0\nBody: 0078d6c0 - 0078d81d"
+  },
+  {
+   "delete_inside": "0084a5d0",
+   "range": [
+    "00849f70",
+    "0084acae"
+   ]
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "0084a5d0"
+   },
+   "result": {
+    "success": true,
+    "address": "0084a5d0",
+    "deleted_function": "FUN_0084a5d0",
+    "body_size": 1758,
+    "message": "Function 'FUN_0084a5d0' deleted at 0084a5d0"
+   }
+  },
+  {
+   "recreate": "00849f70",
+   "previous": "Function: BSP_Shipyard_LoadFromProperties at 00849f70\nSignature: undefined BSP_Shipyard_LoadFromProperties(void)\nEntry: 00849f70\nBody: 00849f70 - 0084a5cf",
+   "plate": "[BSP reconstruction 00849f70]\nHypothesis, not a recovered symbol. cc13-gp80 (docs/CC13_GP_0080_0084.md). Shipyard virtual (no direct caller). Builds the hangars +780h from \"Hangar 1\"..\"Hangar 12\" (entity and path, appended through 00848150), the stock +774h and the per-slot queue +794h from NumSlots / \"Slot %d\" / \"Stock %d\"; a saved game (mode 3) restores the stock through 008499A0. docs/GUNNERY_OPEN_ITEMS.md section 134.1."
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00849f70"
+   },
+   "result": {
+    "success": true,
+    "address": "00849f70",
+    "deleted_function": "BSP_Shipyard_LoadFromProperties",
+    "body_size": 1632,
+    "message": "Function 'BSP_Shipyard_LoadFromProperties' deleted at 00849f70"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00849f70",
+    "end_address": "0084acae"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00849f70",
+    "end_address": "0084acad",
+    "bytes_disassembled": 3390,
+    "message": "Successfully disassembled 3390 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00849f70",
+    "disassemble_first": false,
+    "name": "BSP_Shipyard_LoadFromProperties"
+   },
+   "result": {
+    "success": true,
+    "address": "00849f70",
+    "function_name": "BSP_Shipyard_LoadFromProperties",
+    "entry_point": "00849f70",
+    "body_size": 3390,
+    "message": "Function created successfully at 00849f70",
+    "warnings": [
+     "Function name 'BSP_Shipyard_LoadFromProperties' \u2014 main part 'Shipyard_LoadFromProperties' is not PascalCase. Expected: ShipyardLoadfromproperties",
+     "Function name 'BSP_Shipyard_LoadFromProperties' \u2014 main part 'Shipyard_LoadFromProperties' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Shipyard_LoadFromProperties' does not start with a recognized verb. First word 'Shipyard_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00849f70",
+    "comment": "[BSP reconstruction 00849f70]\nHypothesis, not a recovered symbol. cc13-gp80 (docs/CC13_GP_0080_0084.md). Shipyard virtual (no direct caller). Builds the hangars +780h from \"Hangar 1\"..\"Hangar 12\" (entity and path, appended through 00848150), the stock +774h and the per-slot queue +794h from NumSlots / \"Slot %d\" / \"Stock %d\"; a saved game (mode 3) restores the stock through 008499A0. docs/GUNNERY_OPEN_ITEMS.md section 134.1."
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00849f70",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00849f70",
+   "end": "0084acae",
+   "name": "BSP_Shipyard_LoadFromProperties",
+   "after": "Function: BSP_Shipyard_LoadFromProperties at 00849f70\nSignature: undefined BSP_Shipyard_LoadFromProperties(void)\nEntry: 00849f70\nBody: 00849f70 - 0084acad"
+  },
+  {
+   "delete_inside": "0072d5d1",
+   "range": [
+    "0072d5b0",
+    "0072d6dc"
+   ]
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "0072d5d1"
+   },
+   "result": {
+    "success": true,
+    "address": "0072d5d1",
+    "deleted_function": "BSP_Gun_SelectBulletRecord",
+    "body_size": 267,
+    "message": "Function 'BSP_Gun_SelectBulletRecord' deleted at 0072d5d1"
+   }
+  },
+  {
+   "recreate": "0072d5b0",
+   "previous": "Function: BSP_Gun_SelectFireMode at 0072d5b0\nSignature: undefined BSP_Gun_SelectFireMode(void)\nEntry: 0072d5b0\nBody: 0072d5b0 - 0072d5d0",
+   "plate": "[BSP reconstruction 0072d5b0]\nHypothesis, not a recovered symbol. switches the gun to fire mode n: +3B4h = +3A8h[n] (14h records), +3FCh = n, +3F8h = descriptor (+3F4h)->+74h[n] (48h records), and resets the barrels unless the flag is set; GUN_BOT_TICKS.md: 0072D5B0(gun, 0, 0); 9 callers. Doc: docs/CC13_GP_0071_0078.md."
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "0072d5b0"
+   },
+   "result": {
+    "success": true,
+    "address": "0072d5b0",
+    "deleted_function": "BSP_Gun_SelectFireMode",
+    "body_size": 33,
+    "message": "Function 'BSP_Gun_SelectFireMode' deleted at 0072d5b0"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0072d5b0",
+    "end_address": "0072d6dc"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0072d5b0",
+    "end_address": "0072d6db",
+    "bytes_disassembled": 300,
+    "message": "Successfully disassembled 300 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0072d5b0",
+    "disassemble_first": false,
+    "name": "BSP_Gun_SelectFireMode"
+   },
+   "result": {
+    "success": true,
+    "address": "0072d5b0",
+    "function_name": "BSP_Gun_SelectFireMode",
+    "entry_point": "0072d5b0",
+    "body_size": 300,
+    "message": "Function created successfully at 0072d5b0",
+    "warnings": [
+     "Function name 'BSP_Gun_SelectFireMode' \u2014 main part 'Gun_SelectFireMode' is not PascalCase. Expected: GunSelectfiremode",
+     "Function name 'BSP_Gun_SelectFireMode' \u2014 main part 'Gun_SelectFireMode' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Gun_SelectFireMode' does not start with a recognized verb. First word 'Gun_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "0072d5b0",
+    "comment": "[BSP reconstruction 0072d5b0]\nHypothesis, not a recovered symbol. switches the gun to fire mode n: +3B4h = +3A8h[n] (14h records), +3FCh = n, +3F8h = descriptor (+3F4h)->+74h[n] (48h records), and resets the barrels unless the flag is set; GUN_BOT_TICKS.md: 0072D5B0(gun, 0, 0); 9 callers. Doc: docs/CC13_GP_0071_0078.md."
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 0072d5b0",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "0072d5b0",
+   "end": "0072d6dc",
+   "name": "BSP_Gun_SelectFireMode",
+   "after": "Function: BSP_Gun_SelectFireMode at 0072d5b0\nSignature: undefined BSP_Gun_SelectFireMode(void)\nEntry: 0072d5b0\nBody: 0072d5b0 - 0072d6db"
+  },
+  {
+   "delete_inside": "009cfba4",
+   "range": [
+    "009cfb60",
+    "009cfc65"
+   ]
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "009cfba4"
+   },
+   "result": {
+    "success": true,
+    "address": "009cfba4",
+    "deleted_function": "BSP_Unit_Send7AhMessage_009cfba4",
+    "body_size": 193,
+    "message": "Function 'BSP_Unit_Send7AhMessage_009cfba4' deleted at 009cfba4"
+   }
+  },
+  {
+   "recreate": "009cfb60",
+   "previous": "Function: BSP_TakeoffStateSlow_ShouldLeave at 009cfb60\nSignature: undefined BSP_TakeoffStateSlow_ShouldLeave(void)\nEntry: 009cfb60\nBody: 009cfb60 - 009cfba3",
+   "plate": "[BSP reconstruction 009cfb60]\nProvisional (cc9-lua26, docs/SQUADRON_LAND_TASK.md 5bd, 52366dd9b): body 009CFB60..009CFC65 (RET); true when +AA0h <= 0 or the plane has moved more than 60 m; the 60 m arm sends message 7Ah (plane case z at 007CD171 -> 007B83F0 sets +AA0h = -1.0)."
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "009cfb60"
+   },
+   "result": {
+    "success": true,
+    "address": "009cfb60",
+    "deleted_function": "BSP_TakeoffStateSlow_ShouldLeave",
+    "body_size": 68,
+    "message": "Function 'BSP_TakeoffStateSlow_ShouldLeave' deleted at 009cfb60"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "009cfb60",
+    "end_address": "009cfc65"
+   },
+   "result": {
+    "success": true,
+    "start_address": "009cfb60",
+    "end_address": "009cfc64",
+    "bytes_disassembled": 261,
+    "message": "Successfully disassembled 261 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "009cfb60",
+    "disassemble_first": false,
+    "name": "BSP_TakeoffStateSlow_ShouldLeave"
+   },
+   "result": {
+    "success": true,
+    "address": "009cfb60",
+    "function_name": "BSP_TakeoffStateSlow_ShouldLeave",
+    "entry_point": "009cfb60",
+    "body_size": 261,
+    "message": "Function created successfully at 009cfb60",
+    "warnings": [
+     "Function name 'BSP_TakeoffStateSlow_ShouldLeave' \u2014 main part 'TakeoffStateSlow_ShouldLeave' is not PascalCase. Expected: TakeoffstateslowShouldleave",
+     "Function name 'BSP_TakeoffStateSlow_ShouldLeave' \u2014 main part 'TakeoffStateSlow_ShouldLeave' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_TakeoffStateSlow_ShouldLeave' does not start with a recognized verb. First word 'Takeoff' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "009cfb60",
+    "comment": "[BSP reconstruction 009cfb60]\nProvisional (cc9-lua26, docs/SQUADRON_LAND_TASK.md 5bd, 52366dd9b): body 009CFB60..009CFC65 (RET); true when +AA0h <= 0 or the plane has moved more than 60 m; the 60 m arm sends message 7Ah (plane case z at 007CD171 -> 007B83F0 sets +AA0h = -1.0)."
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 009cfb60",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "009cfb60",
+   "end": "009cfc65",
+   "name": "BSP_TakeoffStateSlow_ShouldLeave",
+   "after": "Function: BSP_TakeoffStateSlow_ShouldLeave at 009cfb60\nSignature: undefined BSP_TakeoffStateSlow_ShouldLeave(void)\nEntry: 009cfb60\nBody: 009cfb60 - 009cfc64"
+  },
+  {
+   "delete_inside": "00adac95",
+   "range": [
+    "00adac90",
+    "00adacb5"
+   ]
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00adac95"
+   },
+   "result": {
+    "success": true,
+    "address": "00adac95",
+    "deleted_function": "BSP_TerrainRenderObject_LoadFoliage",
+    "body_size": 32,
+    "message": "Function 'BSP_TerrainRenderObject_LoadFoliage' deleted at 00adac95"
+   }
+  },
+  {
+   "recreate": "00adac90",
+   "previous": "Function: BSP_TerrainRenderObject_LoadFoliageDefault at 00adac90\nSignature: undefined BSP_TerrainRenderObject_LoadFoliageDefault(void)\nEntry: 00adac90\nBody: 00adac90 - 00adac94",
+   "plate": "[BSP reconstruction 00adac90]\ncc13-mopup1: 5-byte head: EAX = [00F8C210], falls into 00ADAC95; caller BSP_Landscape_LoadTerrain"
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00adac90"
+   },
+   "result": {
+    "success": true,
+    "address": "00adac90",
+    "deleted_function": "BSP_TerrainRenderObject_LoadFoliageDefault",
+    "body_size": 5,
+    "message": "Function 'BSP_TerrainRenderObject_LoadFoliageDefault' deleted at 00adac90"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00adac90",
+    "end_address": "00adacb5"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00adac90",
+    "end_address": "00adacb4",
+    "bytes_disassembled": 37,
+    "message": "Successfully disassembled 37 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00adac90",
+    "disassemble_first": false,
+    "name": "BSP_TerrainRenderObject_LoadFoliageDefault"
+   },
+   "result": {
+    "success": true,
+    "address": "00adac90",
+    "function_name": "BSP_TerrainRenderObject_LoadFoliageDefault",
+    "entry_point": "00adac90",
+    "body_size": 37,
+    "message": "Function created successfully at 00adac90",
+    "warnings": [
+     "Function name 'BSP_TerrainRenderObject_LoadFoliageDefault' \u2014 main part 'TerrainRenderObject_LoadFoliageDefault' is not PascalCase. Expected: TerrainrenderobjectLoadfoliagedefault",
+     "Function name 'BSP_TerrainRenderObject_LoadFoliageDefault' \u2014 main part 'TerrainRenderObject_LoadFoliageDefault' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_TerrainRenderObject_LoadFoliageDefault' does not start with a recognized verb. First word 'Terrain' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00adac90",
+    "comment": "[BSP reconstruction 00adac90]\ncc13-mopup1: 5-byte head: EAX = [00F8C210], falls into 00ADAC95; caller BSP_Landscape_LoadTerrain"
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00adac90",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00adac90",
+   "end": "00adacb5",
+   "name": "BSP_TerrainRenderObject_LoadFoliageDefault",
+   "after": "Function: BSP_TerrainRenderObject_LoadFoliageDefault at 00adac90\nSignature: undefined BSP_TerrainRenderObject_LoadFoliageDefault(void)\nEntry: 00adac90\nBody: 00adac90 - 00adacb4"
+  },
+  {
+   "delete_inside": "00adad02",
+   "range": [
+    "00adacf0",
+    "00adadb7"
+   ]
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00adad02"
+   },
+   "result": {
+    "success": true,
+    "address": "00adad02",
+    "deleted_function": "BSP_TerrainGridU32_Resize_Tail",
+    "body_size": 181,
+    "message": "Function 'BSP_TerrainGridU32_Resize_Tail' deleted at 00adad02"
+   }
+  },
+  {
+   "recreate": "00adacf0",
+   "previous": "Function: BSP_TerrainGridU32_Resize at 00adacf0\nSignature: undefined BSP_TerrainGridU32_Resize(void)\nEntry: 00adacf0\nBody: 00adacf0 - 00adad01",
+   "plate": "[BSP reconstruction 00adacf0]\ncc13-mopup1: thiscall(grid, w, h): allocates w*h dwords and copies the overlapping min(w,old w) x min(h,old h) block (18-byte head sets EAX=w*h, falls into 00ADAD02)"
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00adacf0"
+   },
+   "result": {
+    "success": true,
+    "address": "00adacf0",
+    "deleted_function": "BSP_TerrainGridU32_Resize",
+    "body_size": 18,
+    "message": "Function 'BSP_TerrainGridU32_Resize' deleted at 00adacf0"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00adacf0",
+    "end_address": "00adadb7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00adacf0",
+    "end_address": "00adadb6",
+    "bytes_disassembled": 199,
+    "message": "Successfully disassembled 199 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00adacf0",
+    "disassemble_first": false,
+    "name": "BSP_TerrainGridU32_Resize"
+   },
+   "result": {
+    "success": true,
+    "address": "00adacf0",
+    "function_name": "BSP_TerrainGridU32_Resize",
+    "entry_point": "00adacf0",
+    "body_size": 199,
+    "message": "Function created successfully at 00adacf0",
+    "warnings": [
+     "Function name 'BSP_TerrainGridU32_Resize' \u2014 main part 'TerrainGridU32_Resize' is not PascalCase. Expected: Terraingridu32Resize",
+     "Function name 'BSP_TerrainGridU32_Resize' \u2014 main part 'TerrainGridU32_Resize' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_TerrainGridU32_Resize' does not start with a recognized verb. First word 'Terrain' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00adacf0",
+    "comment": "[BSP reconstruction 00adacf0]\ncc13-mopup1: thiscall(grid, w, h): allocates w*h dwords and copies the overlapping min(w,old w) x min(h,old h) block (18-byte head sets EAX=w*h, falls into 00ADAD02)"
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00adacf0",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00adacf0",
+   "end": "00adadb7",
+   "name": "BSP_TerrainGridU32_Resize",
+   "after": "Function: BSP_TerrainGridU32_Resize at 00adacf0\nSignature: undefined BSP_TerrainGridU32_Resize(void)\nEntry: 00adacf0\nBody: 00adacf0 - 00adadb6"
+  },
+  {
+   "delete_inside": "00adaf62",
+   "range": [
+    "00adaf50",
+    "00adb016"
+   ]
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00adaf62"
+   },
+   "result": {
+    "success": true,
+    "address": "00adaf62",
+    "deleted_function": "BSP_TerrainGridU16_Resize_Tail",
+    "body_size": 180,
+    "message": "Function 'BSP_TerrainGridU16_Resize_Tail' deleted at 00adaf62"
+   }
+  },
+  {
+   "recreate": "00adaf50",
+   "previous": "Function: BSP_TerrainGridU16_Resize at 00adaf50\nSignature: undefined BSP_TerrainGridU16_Resize(void)\nEntry: 00adaf50\nBody: 00adaf50 - 00adaf61",
+   "plate": "[BSP reconstruction 00adaf50]\ncc13-mopup1: thiscall(grid, w, h): 2-byte element version of 00ADACF0 (head; body 00ADAF62)"
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00adaf50"
+   },
+   "result": {
+    "success": true,
+    "address": "00adaf50",
+    "deleted_function": "BSP_TerrainGridU16_Resize",
+    "body_size": 18,
+    "message": "Function 'BSP_TerrainGridU16_Resize' deleted at 00adaf50"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00adaf50",
+    "end_address": "00adb016"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00adaf50",
+    "end_address": "00adb015",
+    "bytes_disassembled": 198,
+    "message": "Successfully disassembled 198 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00adaf50",
+    "disassemble_first": false,
+    "name": "BSP_TerrainGridU16_Resize"
+   },
+   "result": {
+    "success": true,
+    "address": "00adaf50",
+    "function_name": "BSP_TerrainGridU16_Resize",
+    "entry_point": "00adaf50",
+    "body_size": 198,
+    "message": "Function created successfully at 00adaf50",
+    "warnings": [
+     "Function name 'BSP_TerrainGridU16_Resize' \u2014 main part 'TerrainGridU16_Resize' is not PascalCase. Expected: Terraingridu16Resize",
+     "Function name 'BSP_TerrainGridU16_Resize' \u2014 main part 'TerrainGridU16_Resize' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_TerrainGridU16_Resize' does not start with a recognized verb. First word 'Terrain' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00adaf50",
+    "comment": "[BSP reconstruction 00adaf50]\ncc13-mopup1: thiscall(grid, w, h): 2-byte element version of 00ADACF0 (head; body 00ADAF62)"
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00adaf50",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00adaf50",
+   "end": "00adb016",
+   "name": "BSP_TerrainGridU16_Resize",
+   "after": "Function: BSP_TerrainGridU16_Resize at 00adaf50\nSignature: undefined BSP_TerrainGridU16_Resize(void)\nEntry: 00adaf50\nBody: 00adaf50 - 00adb015"
+  },
+  {
+   "delete_inside": "00aed2e2",
+   "range": [
+    "00aed2d0",
+    "00aed429"
+   ]
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00aed2e2"
+   },
+   "result": {
+    "success": true,
+    "address": "00aed2e2",
+    "deleted_function": "BSP_TerrainGridF32_Resize_Tail",
+    "body_size": 327,
+    "message": "Function 'BSP_TerrainGridF32_Resize_Tail' deleted at 00aed2e2"
+   }
+  },
+  {
+   "recreate": "00aed2d0",
+   "previous": "Function: BSP_TerrainGridF32_Resize at 00aed2d0\nSignature: undefined BSP_TerrainGridF32_Resize(void)\nEntry: 00aed2d0\nBody: 00aed2d0 - 00aed2e1",
+   "plate": "[BSP reconstruction 00aed2d0]\ncc13-mopup1: thiscall(grid, w, h): 4-byte (float) grid resize (head; body 00AED2E2)"
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00aed2d0"
+   },
+   "result": {
+    "success": true,
+    "address": "00aed2d0",
+    "deleted_function": "BSP_TerrainGridF32_Resize",
+    "body_size": 18,
+    "message": "Function 'BSP_TerrainGridF32_Resize' deleted at 00aed2d0"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00aed2d0",
+    "end_address": "00aed429"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00aed2d0",
+    "end_address": "00aed428",
+    "bytes_disassembled": 345,
+    "message": "Successfully disassembled 345 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00aed2d0",
+    "disassemble_first": false,
+    "name": "BSP_TerrainGridF32_Resize"
+   },
+   "result": {
+    "success": true,
+    "address": "00aed2d0",
+    "function_name": "BSP_TerrainGridF32_Resize",
+    "entry_point": "00aed2d0",
+    "body_size": 345,
+    "message": "Function created successfully at 00aed2d0",
+    "warnings": [
+     "Function name 'BSP_TerrainGridF32_Resize' \u2014 main part 'TerrainGridF32_Resize' is not PascalCase. Expected: Terraingridf32Resize",
+     "Function name 'BSP_TerrainGridF32_Resize' \u2014 main part 'TerrainGridF32_Resize' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_TerrainGridF32_Resize' does not start with a recognized verb. First word 'Terrain' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00aed2d0",
+    "comment": "[BSP reconstruction 00aed2d0]\ncc13-mopup1: thiscall(grid, w, h): 4-byte (float) grid resize (head; body 00AED2E2)"
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00aed2d0",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00aed2d0",
+   "end": "00aed429",
+   "name": "BSP_TerrainGridF32_Resize",
+   "after": "Function: BSP_TerrainGridF32_Resize at 00aed2d0\nSignature: undefined BSP_TerrainGridF32_Resize(void)\nEntry: 00aed2d0\nBody: 00aed2d0 - 00aed428"
+  },
+  {
+   "delete_inside": "00af09aa",
+   "range": [
+    "00af0990",
+    "00af0a5e"
+   ]
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00af09aa"
+   },
+   "result": {
+    "success": true,
+    "address": "00af09aa",
+    "deleted_function": "BSP_GraphicsSingleton_00f8c278_Get_Tail",
+    "body_size": 180,
+    "message": "Function 'BSP_GraphicsSingleton_00f8c278_Get_Tail' deleted at 00af09aa"
+   }
+  },
+  {
+   "recreate": "00af0990",
+   "previous": "Function: BSP_GraphicsSingleton_00f8c278_Get at 00af0990\nSignature: undefined BSP_GraphicsSingleton_00f8c278_Get(void)\nEntry: 00af0990\nBody: 00af0990 - 00af09a9",
+   "plate": "[BSP reconstruction 00af0990]\ncc13-mopup1: lazily creates the 8-byte singleton 00F8C278 under the singleton lifetime manager's critical section (head; 00AF09AA is the tail)"
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00af0990"
+   },
+   "result": {
+    "success": true,
+    "address": "00af0990",
+    "deleted_function": "BSP_GraphicsSingleton_00f8c278_Get",
+    "body_size": 26,
+    "message": "Function 'BSP_GraphicsSingleton_00f8c278_Get' deleted at 00af0990"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00af0990",
+    "end_address": "00af0a5e"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00af0990",
+    "end_address": "00af0a5d",
+    "bytes_disassembled": 206,
+    "message": "Successfully disassembled 206 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00af0990",
+    "disassemble_first": false,
+    "name": "BSP_GraphicsSingleton_00f8c278_Get"
+   },
+   "result": {
+    "success": true,
+    "address": "00af0990",
+    "function_name": "BSP_GraphicsSingleton_00f8c278_Get",
+    "entry_point": "00af0990",
+    "body_size": 206,
+    "message": "Function created successfully at 00af0990",
+    "warnings": [
+     "Function name 'BSP_GraphicsSingleton_00f8c278_Get' \u2014 main part 'GraphicsSingleton_00f8c278_Get' is not PascalCase. Expected: Graphicssingleton00f8c278Get",
+     "Function name 'BSP_GraphicsSingleton_00f8c278_Get' \u2014 main part 'GraphicsSingleton_00f8c278_Get' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GraphicsSingleton_00f8c278_Get' does not start with a recognized verb. First word 'Graphics' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00af0990",
+    "comment": "[BSP reconstruction 00af0990]\ncc13-mopup1: lazily creates the 8-byte singleton 00F8C278 under the singleton lifetime manager's critical section (head; 00AF09AA is the tail)"
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00af0990",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00af0990",
+   "end": "00af0a5e",
+   "name": "BSP_GraphicsSingleton_00f8c278_Get",
+   "after": "Function: BSP_GraphicsSingleton_00f8c278_Get at 00af0990\nSignature: undefined BSP_GraphicsSingleton_00f8c278_Get(void)\nEntry: 00af0990\nBody: 00af0990 - 00af0a5d"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

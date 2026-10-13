@@ -12994,3 +12994,196 @@ hung in this tree since the morning; harmless.
 - **JM08 mesh verdict** for `kLandStructureMeshHitTestBound` is lua51/lua52's (JM08 b3 with the switch ON); my
   control pair is in 193.
 - Leases released.
+
+## 196. cc13-audit13's A3 and A4 and the strafe activation seed O1, applied OFF (lead queue; cc9-gunnery38, 2026-10-12)
+
+Source: docs/CC13_AUDIT13_RECENT_FLIPS.md. Image sites re-read here (`disasm-raw`):
+- **A3** `009C8920` (dive cruise profile): `009C8931 007B8AD0 / 009C8938 JE 009C8A1B` puts all three blocks in the
+  leader branch; the `+39Ch` block is `009C89E4..009C8A17` (`+38Eh` clear, `0 > +384h`, `+3ABh` clear: `+39Ch =
+  [00CE4C04]`, `+3ADh = 1`; `+3ABh = 0` at `009C8A17`). Applied as written: `kDiveReleaseAltActivationOnlyBound`
+  (`include/bsp/game_hosts_units.hpp`), OFF.
+- **A4** `009C3650` (moveto profile): draws `009C367C` (+460h) and `009C36A3` (+424h), `+464h = 0`, refresh
+  `009C36BF CALL 009BEBA0`, then the leader test `009C36CA` and `+3ADh = 1` at `009C375A`. Applied as written:
+  `kMoveToActivationLuaAltOrderBound`, OFF.
+- **O1** `009CD020` (strafe cruise profile; the doc's listing): leader branch `009CD02E/009CD035`, glide seed
+  `009CD0AA CALL 009CA3B0` (`009CA41E U(0.8, 1.2)`, `009CA459 U(-10, 40)`). cc13 offered no diff. New
+  `GameUnitsHost::Impl::kStrafeProfileActivationSeedBound` (OFF, `src/game_hosts_units.cpp`): the install and each
+  manoeuvre retire (`0099B690`, the strafe task is head again) set `st_profile_activation_pending`; the next arm call
+  consumes it and, ON, re-runs `st_glide_seed_009ca3b0()` for the flight leader. New census line `summary mission
+  strafe profile activations bound=%d activations=%d leader_seeds=%d` (both builds). LABELLED: the profile's
+  `+394h/+398h` gates and its every-unit `009CCED0(0)` call stay unhosted (the seed keeps its alt substitution); the
+  activation is consumed on the next arm call rather than inside the retire's think.
+
+**Predictions (before any ON run).**
+- A3: reach only where a dive-bomber squadron has a non-forced `SquadronSetReleaseAlt` (this installation's
+  `bsm_09` 321, 220 m; `usn_07` 1708, 400 m). BSM09 and USN07 9000 frames: exit 3, the dive pull-out capped
+  lower (`control_alt_39c` holds the script value for the task). Win rows (USN01, USN02): exit 0/1.
+- A4: USNRM01 9000 and JM08 `l50_j8_r7`: exit 3; second-activation movetos after a script altitude fly at the
+  default cruise altitude, i.e. up to TravelAltRandom HIGHER than OFF (OFF keeps the drawn offset); draw counts
+  unchanged. USN01 win: identical (no Lua altitude call there, 193).
+- O1: ESMP08 9000 and USNOS 9000 (the 193 strafe rows): `activations` equal in both builds, `leader_seeds` > 0 ON
+  only; exit 3 on ESMP08 (leader glide angle/offset re-drawn), USNOS possibly exit 1; non-strafe rows identical.
+
+## 197. Verdicts on 196, n1, the dogfight trio and the kind-6 mount frame (cc9-gunnery38, 2026-10-12)
+
+Base `1de67cfb9` (OFF exports `local\g38_auOFF` = `8ca0a4fc0`, gameplay-identical to it; win OFFs are AH's
+`local\g38_ah_<key>.log`). ON exports by `pair_export` (directories reused: A3 `g37_a9allON`, A4 `g37_rabON`, O1
+`g37_sbs2ON`, turn-after `g37_a9xON`, avoid pick `g37_sbrON`, gun burst `g37_hqmON`, k6 mount `g36_tgON`, n1
+`g36_sbsON`). Diffs `local\g38_d_<on>_<row>.txt`.
+
+- **A3 `kDiveReleaseAltActivationOnlyBound`: stays OFF, unexercised.** `sq_release_alt_set` is written only by
+  `SquadronSetReleaseAlt` (`game_hosts_units.cpp`), whose binding is behind `kLuaSquadronSetReleaseAltBound` (n7, OFF), so
+  the block is latent in every build. Its two reach rows also fail: BSM09 does not start in this harness ("unit observer
+  creator projection is unavailable: unit=NEW_Cloud 01"), USN07 9000 is idle (no shot, exit 1).
+- **A4 `kMoveToActivationLuaAltOrderBound`: stays OFF, unexercised.** USNRM01 9000 and JM08 `l50_j8_r7` exit 1 (only the
+  refills noise). The prediction (exit 3) missed: no moveto install in those windows retires a script altitude.
+- **O1 `kStrafeProfileActivationSeedBound`: mechanism held; flip pending the lead's USN01 ruling.** ESMP08 9000 exit 3
+  (`activations=33` both, `leader_seeds=11` ON only; first divergence `strafe F4U Corsair #1.6|.-2 follow -> gotowards`
+  altitude 1426.0 -> 1426.9, the re-seeded leader's wing), USNOS 9000 exit 3 (`activations=12`, `leader_seeds=3`, first
+  divergence `plane #1.1|.-3 follow -> gotowards` one second earlier). USN01 `p3_u1_z4` is LOST (Convoy6 survives; first
+  divergence ConTBD1|.-3's strafe `gotowards -> aim`).
+- **n1 (`kShipJamMotionBound` + `kLuaSetFailureBound`, SQUADRON_LAND_TASK 5gb): mechanism re-confirmed; flip pending.**
+  JM05 9000 exit 3, as lua52's pair: `component failure EngineJam on Mogami-class 01 t=46.45`, GetFailure 5 calls.
+  Wins: USN02 203.01, LOMP06 535.24, LOMP10 1002.18, BSM01 767.94 unchanged; USN12 1539.83 -> 1534.87; USN01 LOST (all six
+  convoys dead by 242 s, the script stays in MissionPhase 2).
+- **Dogfight trio** (docs/CC13_DOGFIGHT_DRAWS.md). No dogfight task runs on USN04 4500, E2, LOMP10 9000 (all exit 1);
+  USN01's win is the only row with one (`aircraft=11`).
+  - `kDogfightTurnAfterDrawBound`: **ON**; USN01 exit 1 (gameplay-identical), inert where measured.
+  - `kDogfightAvoidPickDrawBound`: mechanism held (first divergence `dogfight Enterprise_sqn01 aim -> avoid_roll` becomes
+    `avoid_turn`); USN01 LOST in phase 3 (convoys as in AH, the escort-to-navpoint phase of this installation's
+    `usn_01_battle_of_eastern_solomons.lua` 706 never ends). Flip pending.
+  - `kDogfightGunBurstDrawBound`: USN01 LOST (Convoy1 and Convoy6 survive). Flip pending.
+- **`kAaKind6GateMountFrameBound` (195): ON.** USN13 9000 exit 0 and USN02 9000 exit 1, `kind6_gate_rejects` 1576/1576
+  and 1811/1811: on the two rows with the most rejects the lifted hull-frame pair decides no gate differently.
+- **Audits of `kLuaHitTargetSquadronBound`, `kLuaHitSquadronSecondPassBound`, `kEngineMovieStopRosterBound`.** Re-read
+  `00988530..0098859B`, `0098900B..00989060` and the `0046B730` exemption rule against the host: faithful, as
+  cc13-audit11 found. One residual: `0098854C JE 00988994` skips the whole hit evaluation when `vtable[140h]()` is null
+  (a plane with no squadron); the host keeps the plane as the target.
+- **USN01 `p3_u1_z4`** is lost by every plane switch that moves its air battle (O1, avoid pick, gun burst, n1's ship jams):
+  the plan has no margin in phases 2-3. Lead's ruling needed, as in 193.
+
+**ESMP08 (lead queue item 5).** AH loses ESMP08 to `kFlakBlastIgnoreFalloffBound` (GAME_EXECUTABLE.md AH). The late
+strikes are not shot down "before their descent": they never start one. `l46_e8_orders2` has no `order <carrier> <slot>
+1/3` re-target line between frames 27747 and 45341, and none for Zuiho after 26927, so a squadron whose launch target
+sinks keeps the dead name (`command target 0071EBF0 ... token="Washington"` for 900 s after 1748.83 s), ends each
+attackrun in one tick (`Zuiho_sqn62 ... states[moveto=3753 done=25002 attackrun=12]`) and loiters at 1450 m until the
+fleet's flak kills it. Nine squadrons in AH (`local\g38_e8scan.py`). In the image `009F8160` marks the dead target
+(bot `+3Dh`) but `009F8470` re-targets only AI-held or slot-8 parties, or with `+3Ch`, `+3Dh` and attack mode 2 together,
+so a player squadron needs the order lines as well. The host's `attack_command_survives_retest` (`src/attack_commands.cpp`)
+has no caller; binding 009F8160 is a separate item. Re-plan in progress: `local\g38_e8_retarget.py <plan> <log> <out>`
+adds `order 1` + `order 3` lines at each such target death.
+
+**ESMP08 re-plan, first two iterations (AH binary, falloff ON).** `local\g38_ord_e8r1.txt` (`l46_e8_orders2` + 88 re-target
+lines from AH's log) and `local\g38_ord_e8r2.txt` (+59 from r1's log, following accepted `order 3` re-targets) both fail
+to complete in 90000 frames: r1 leaves Fanning, Grayson and Woodworth afloat, r2 Dunlap, Fanning, Grayson and Woodworth.
+The re-target recipe works (`order <c> <s> 1: answer 1` then `order 3 -> Cummings: answer 1`), and the loiter deaths are
+gone: strike-plane deaths after 1800 s above 1000 m go from 9 of 19 on AH to 0 of 13 on r2 (7 of them at or below
+300 m). Nothing large is left after about 1750 s; the late waves (hundreds of applied launches after frame 36000) do
+not sink the destroyers under full-damage flak, where AH-with-falloff-false needed only 4 late launches to finish them
+(Dunlap 1404.74, Grayson 2184.41, Woodworth 2356.57, Cummings 2590.55 s). So ESMP08 on main needs a different
+allocation (destroyers taken earlier, while the big ships still draw the flak), not only re-targets. The image does not
+re-target a player squadron itself (009F8470's party gate), so these lines are the plan's job.
+
+## 198. Lead rulings on 197 applied (cc9-gunnery38, 2026-10-12)
+
+- **ON by mechanism (ruling a):** `kStrafeProfileActivationSeedBound` (O1), `kDogfightAvoidPickDrawBound`,
+  `kDogfightGunBurstDrawBound`. USN01 `p3_u1_z4` is a plan casualty of each; its re-plan goes to the wins keeper.
+  First divergences on USN01 (OFF = `local\g38_ah_u1.log`) for the keeper:
+  - O1 (`local\g38_o1on_wu1.log`): ConTBD1|.-3's post-drop strafe `gotowards -> aim` at 234.31 s (the leader's
+    re-seeded glide); Convoy1 dies at 283 s instead of 330, Convoy6 never (AH 836 s).
+  - Avoid pick (`local\g38_dfapon_wu1.log`): `dogfight Enterprise_sqn01 aim -> avoid_roll` becomes `avoid_turn`
+    (d=185.5); all six convoys die at AH's times, but phase 3 (escort to navpoint, this installation's
+    `usn_01_battle_of_eastern_solomons.lua` 706-740) never ends.
+  - Gun burst (`local\g38_dfgbon_wu1.log`): Convoy4's killer ConSBD1|.-2 lands 84 gun hits instead of 95 (the SBD's
+    gun-task burst clock, 009FCED1), so Convoy4 dies at 193.91 s instead of 193.26; Convoy1 and Convoy6 survive.
+- **BSM09** does not start in this harness: `startup failed: unit observer creator projection is unavailable:
+  unit=NEW_Cloud 01 creator=00000000 (no vehicle-class descriptor; a StationaryClass row carries no Type)`
+  (`local\g38_auoff_bsm09.log`). Whoever takes BSM09 needs that projection first.
+- n1 is held for the USN01 phase-2 explanation (next section).
+
+## 199. 009F8160's dead-target retest bound OFF: `kSquadronDeadTargetRetestBound` (lead queue item 5; cc9-gunnery38, 2026-10-12)
+
+Image (read here): `009F8470` (`BSP_SquadronAutoTarget_Tick`) calls `009F8160` with its own `this` (`009F8482 MOV ECX,ESI`),
+then `009F7C90`. In `009F8160`, for the seven ordnance classes and `[00E17BF2] == 0`: when `007ED790` (any member can
+drop) answers true and the object's `+3Dh` is clear, a resolved target that is absent or fails `007EE8F0` goes to
+`009F8412` (`+3Dh = 1`). `009F7C90` (`009F7D01`): `+3Dh` set and `007EE720` true -> (a kind-1Ch target re-issues a
+moveto, `009F7D1D..009F7D45`) -> `0071E430(current command, 1)`. `007EE720` asks each member's head task `vtable[20h]`;
+both the torpedo task (vtable `00D213C8`, slot `00D213E8`) and the dive task (`00D20E38`) hold `007B40F0` (`MOV AL,1;
+RET`), so the command ends on the tick its target dies. `009F8470`'s own re-target (`009F84A5..`) runs only for party
+slot 8 or an AI-held party (`00927F10`), or with the director's `+3Ch` and `+3Dh` (allowFire, allowMove) and the
+unit's `+370h == 2`; it is not bound here.
+
+Host: `bsp::kSquadronDeadTargetRetestBound` (`include/bsp/attack_commands.hpp`, OFF), run in
+`GameUnitsHost::run_spent_ordnance_rtb_0084e010`'s squadron loop: the leader's resolved command target, dead per the
+gunnery host, while a member still holds a rack round, ends the command through `end_command_0071e430(leader,
+command, true)` once per target (`squadron retest:` lines, `summary mission squadron retest`). LABELLED: 007EE8F0 is not
+re-asked; a null target is not taken as gone; depthcharge and the kind-1Ch moveto re-issue are not modelled.
+`attack_command_survives_retest` keeps its shape (the gate is the death test above).
+
+**Predictions (before any ON run).** ESMP08 (`l46_e8_orders2`, 90000 frames): `dead_targets` > 0 ON only (about the
+nine squadrons of 197); each ended command leaves its squadron with no attack command, so the loiter's `done` ticks
+fall and the `command target 0071EBF0 ... token="Washington"` lines stop after 1748 s for that squadron; whether the
+slot then accepts the plan's `order 3` lines is unknown. Outcome: ESMP08 still not completed (the plan has no order
+lines for those slots). USN12 win: exit 0/1 or a small move, completion held.
+
+**199.1 First ON run: the ended command did not reach the plane** (`local\g38_rton_we8.log`, c8a347ab4 ON):
+`dead_targets=15 ends=15` (e.g. `Chiyoda_sqn56 target Washington dead at 1633.42 s ... ended (queue_stage_by_mode,
+stage 2)`), but `command target 0071EBF0: unit=Chiyoda_sqn56 token="Washington"` kept resolving after 1633 s: a command
+row's `current` is set once at issue (`finish_issue_tail`) and never re-read after `0071E430`, and the gunnery refresh
+keeps an unauthored unit's old target (`kCommandTargetKeepUnauthoredBound`). USN12 win: exit 1, `dead_targets=0`.
+Added (same switch): `GameCommandsHost::retire_ended_command_rows` clears `current` on the unit's rows of the ended
+class, and each live member's resolved target is cleared when it is the dead one (0071EBF0's neutral record).
+
+**199.2 Verdict: ON** (`518193e10` OFF `local\g38_rtoff_*` against ON `local\g38_rt2on_*`). ESMP08 `l46_e8_orders2`: exit 3,
+`dead_targets=12 ends=12`, first divergence the `squadron retest` lines themselves (Chiyoda_sqn38, Zuikaku_sqn48 at
+Santa Fe's death, 1162.51 s); the ended squadrons drop the dead name (Chiyoda_sqn56's members resolve "San Diego" by
+1680 s instead of Washington); torpedo releases 47/306 -> 51/356; still no completion in 90000 frames, as predicted.
+USN12 win: exit 1, `dead_targets=0`, completed 1539.83 s with the guard. The other five wins were not re-run here
+(wins keeper). **ESMP08 needs, in the order file:** a re-target of each torpedo/dive slot whose target sinks
+(`order <carrier> <slot> 1`, then `order <carrier> <slot> 3 <live ship>`), because `009F8470` does not re-target a player
+squadron, plus an allocation that reaches the destroyers (Fanning, Grayson, Woodworth, Dunlap) before about 1750 s;
+`local\g38_e8_retarget.py` generates the first part from a run log.
+
+## 200. Handoff (cc9-gunnery38, 2026-10-12, at about 75% context)
+
+**On `agent/cc9-gunnery36`, newest first** (built, ctest 2/2; merged with origin/main at `a0e306a25`):
+
+| sha | what |
+|---|---|
+| `395e1fec0` | `kSquadronDeadTargetRetestBound` ON (199.2) |
+| `518193e10` | retest also retires the ended command's rows and dead target (199.1) |
+| `c8a347ab4` | 009F8160/009F7C90 dead-target retest bound OFF (199) |
+| `bc4f4022a` | O1, dogfight avoid pick, gun burst ON by mechanism (lead ruling a; 198) |
+| `6190adabc` | ESMP08 re-target iterations r1/r2 (197) |
+| `39f80436c` | `kAaKind6GateMountFrameBound`, `kDogfightTurnAfterDrawBound` ON (197) |
+| `8ca0a4fc0` | A3, A4, O1 applied OFF (196) |
+| `ae364204e` / `8a7e6cfde` | reference AH (GAME_EXECUTABLE.md '2026-10-12 ah', reports/cc9_reference_rebaseline_36.json) |
+
+**Open, in the lead's order.**
+1. **n1 flip** (`kShipJamMotionBound` in `include/bsp/game_hosts_gunnery.hpp` + `kLuaSetFailureBound` in
+   `include/bsp/game_hosts_lua.hpp:265`, one commit; the lead granted the lua.hpp line). Blocked: `lease claim` on
+   game_hosts_lua.hpp is refused by `cc9_lua53_kamikaze_impact_lua` (until 05:02 UTC). Verdict is faithful: USN01 runs
+   this installation's `usn\usn_1_marshall.lua` (no SetFailure/GetFailure; phase 2 waits for `getn(alive Mission.Convoy)
+   == 0` after `MainAttackHere`, 515-545); with n1 the hit-started EngineJams stop Convoy6/4/2/5 and Convoy5 survives
+   (an Explosion failure at 197.46 s), so the convoy table never empties: a plan re-roll, not a host defect. Pairs:
+   `local\g38_n1on_*` against AH (`local\g38_ah_*`): JM05 9000 exit 3 (the 46.45 s Mogami EngineJam), USN02/LOMP06/
+   LOMP10/BSM01 unchanged, USN12 1534.87 s, USN01 lost. Add USN01 to the keeper's notes when flipped.
+2. **read_bullet_class_number dotted key** (lead item; `game_hosts_gunnery.cpp` ~4450 and ~4498, `"Blast.BlastDamageMin"`
+   read flat, always 0). What it feeds: only `WeaponClassFinaliseInput::blast_damage_min`, i.e. the 006E99E7 artillery
+   tier (`weapon_class_refined_sub_type`: Light 5 / Medium 6 / Heavy 7 below 75 / 150 on BOTH DamageMin and
+   BlastDamageMin), then `gun.bullet_sub_type` (009FE270's accuracy, the kind-6 gate). Census
+   (`local\g38_tier_census.py` over this installation's classtables arcade, 2026-05-09, and realistic, 2025-06-02,
+   bulletclasses.lua): 32 and 26 Artillery classes, **none changes tier** with the authored value. So the fix
+   (`lua.read_bullet_class_nested_number(id, "Blast", "BlastDamageMin", 0.0f)` at both sites, behind an OFF switch)
+   is predicted gameplay-identical everywhere; not applied because `game_hosts_gunnery.cpp` was on loan to physics4.
+3. **ESMP08 re-plan** (wins keeper): needs order-file re-targets after each target death (`local\g38_e8_retarget.py
+   <plan> <log> <out>`) and an allocation that reaches Fanning, Grayson, Woodworth and Dunlap before about 1750 s
+   (199.2). The other five wins were not re-run with the retest ON.
+4. BSM09 does not start in this harness (198).
+
+**Tools** (this tree's `local\`): `g38_jobs.py` (row/win keys, wins on `g38_ord_<key>.txt`), `g38_mkq.py` (one queue
+from `<dir>:<prefix>:<keys>` triples), `g38_ref_jobs.py`, `g38_ends.py` (end, guard, deaths), `g38_window.py <log> t0
+t1 <pat>` (lines between simulated times), `g38_e8scan.py`, `g38_e8_retarget.py`, `g38_tier_census.py`. Queue with
+`local\g36_queue.ps1 -Jobs <f> -Parallel n` started by `Start-Process pwsh` (hidden). Run slots are contended:
+expect 10-30 min waits per run. Renderer-init failures (0x88760868) hit three launches at about 01:07 UTC and
+cleared by themselves.

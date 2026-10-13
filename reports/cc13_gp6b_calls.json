@@ -1,0 +1,17 @@
+{
+  "packet": "cc13-gp6b",
+  "doc": "docs/CC13_GP_006B_0070.md",
+  "steps": [
+    {"address": "006cd6e1", "function": "006cd6c0", "native": "006c47f0", "claim": "the air-ops message switch, case 0 (81h), applies the slot setup"},
+    {"address": "006cd6ef", "function": "006cd6c0", "native": "006cd160", "claim": "case 1 (82h) issues the slot order"},
+    {"address": "006cd705", "function": "006cd6c0", "native": "006ca8e0", "claim": "case 2 (83h) launches or queues the slot"},
+    {"address": "006cd713", "function": "006cd6c0", "native": "006c83b0", "claim": "case 3 (84h) applies the slot record"},
+    {"address": "006d2956", "function": "006d2910", "native": "006cd6c0", "claim": "the airfield message handler passes air-ops messages to the deck switch"},
+    {"address": "006f54a9", "function": "006f5460", "native": "006f4d10", "claim": "the command building handler routes D3h to the neutralize/capture handler"},
+    {"address": "006f5492", "function": "006f5460", "native": "006f29d0", "claim": "the command building handler routes D5h to 006F29D0"},
+    {"address": "006c8820", "function": "006c8800", "native": "006c7680", "claim": "the all-blocks walk retires the landing squadron on each block"},
+    {"address": "006c7711", "function": "006c7680", "native": "006bf7f0", "claim": "landing retirement swap-erases the queue record"},
+    {"address": "006e1672", "function": "006e1640", "native": "006e0d20", "claim": "the bomb's create-message slot builds the B6h create message"},
+    {"address": "006fbafb", "function": "006fbad0", "native": "006fb750", "claim": "the debug inspector panel prints the flooded line"}
+  ]
+}
