@@ -194,6 +194,25 @@ inline constexpr bool kCautiousMoveRouteBound = true;  // ON: identity, no creat
 // (00A11A57 / 00A11A5C). False: not run, as before. RETREAT's tick 00A156E0
 // also calls it (00A156EE); that tick is not bound in this host.
 inline constexpr bool kCautiousWedgeBound = true;  // ON: docs/AI_CAUTIOUS_ROUTE.md section 14
+// Packet cc13-fix2, docs/CC13_GPR_69.md section 7.7 and docs/CC13_FIX_2.md.
+// True: 00A11070 runs where the image calls it: after the follower pass of
+// MOVETO (00A12538 JMP), MOVETOATTACK's closing arm (00A12BE0), PATROLTO's
+// groupable arm (00A15665, before 00A13B60), IDLE (00A12442 JMP) and SELLING's
+// ground arm (00A12350). With a ship leader in a formation group it rewrites
+// column 0 to shape 0 (0070EFD0) and gives each later ship member with a record
+// the next of the 24 slots at 00F8A7B0, scaled by Formation_UnitDist. The
+// REGROUPINGMOVE call (00A12A48) belongs to that tick, which this host lacks.
+// False: not run, as before (the IDLE census record stays).
+inline constexpr bool kAiFormationShapeBound = false;
+// Packet cc13-fix2, docs/CC13_GPR_69.md 7.7: 00A126C0 BSP_AiCommand_RegroupingMove_Tick
+// (REGROUPINGMOVE vt+0Ch). With a population above 1 (00A126CA JBE) and a member
+// beyond AutoMerge_LeaveDist (+20Ch) of the leader, the point is
+// (dest + 3 * centroid) / 4; otherwise the +8h destination (00A127EA). Then
+// 00A02020 on the first member (00A12A33, no 009FE080 gate), 00A10DC0
+// (00A12A3A) and JMP 00A11070 (00A12A48). True: the tick runs through the cc13
+// model ai_regrouping_move_tick_00a126c0. False: REGROUPINGMOVE does nothing,
+// as before.
+inline constexpr bool kAiRegroupingMoveTickBound = false;
 
 // 00A14E54..00A1500D: the waypoint offset is leader->target turned by
 // 0042B490(00CE3C64 = pi/2), i.e. BSP_Matrix_BuildRotationY(-0.0 - pi/2), and
@@ -261,6 +280,18 @@ struct AiCommandTickResult {
     // kCautiousWedgeBound: 00A11690 was called by the tick.
     bool wedge_ran{false};
     AiCautiousWedgeResult wedge{};
+    // The image's tick reached its 00A11070 call (kAiFormationShapeBound); the
+    // caller runs ai_formation_shape_pass_00a11070 when the switch is on.
+    bool formation_shape_due{false};
+};
+
+// What one 00A11070 call did, for the census (kAiFormationShapeBound).
+struct AiFormationShapeTickResult {
+    bool ran{false};               // past both gates (ship leader, +284h set)
+    int shape0_records{0};         // records 0070EFD0(0) rewrote
+    int placed{0};                 // ship members given a slot
+    int no_record{0};              // ship members 0070D080 did not find
+    bool table_overrun{false};     // a 25th slot was due (the image reads past 00F8A86F)
 };
 
 // MOVETOATTACK's transition at 00A12B55-00A12BA8: the tick reads tuning +1F4h
@@ -331,7 +362,18 @@ struct AiCommandTickHost {
     // written, when 0070D080 answers no record.
     virtual bool tick_formation_set_column0_0070d080(void* leader, void* member,
                                                      float lateral, float axial) = 0;
+    // 0070D080 on [leader+284h] for the member without a store (00A1133C, the
+    // 00A11070 slot test): the member has a record in the formation.
+    virtual bool tick_formation_has_record_0070d080(void* leader, void* member) = 0;
 };
+
+// 00A11070 BSP_AiCommand_FormationShapePass, __fastcall(base) with [base+4h]
+// the owner group (kAiFormationShapeBound). The slot arithmetic is the cc13
+// model gameplay_seg69_70_cc13::ai_formation_shape_00a11070; this drives it
+// against the host and writes column 0 through 0070D080. The tail 0077A080 /
+// 0077C880 (MT_FORMATION_SET to peers) is not sent, as for 00A11690. The
+// model stops at 24 slots where the image reads past its table (labelled).
+AiFormationShapeTickResult ai_formation_shape_pass_00a11070(AiCommandTickHost& host, void* group);
 
 // 00A11690 BSP_AiCommand_FormationWedge (hypothesis), __fastcall(base) with
 // [base+4h] the owner group, body 00A11690-00A11AED read whole

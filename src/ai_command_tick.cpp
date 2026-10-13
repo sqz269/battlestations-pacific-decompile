@@ -1,5 +1,8 @@
 #include "bsp/ai_command_tick.hpp"
+#include "bsp/gameplay_seg69_70_cc13.hpp"
+#include <array>
 #include <cmath>
+#include <vector>
 
 namespace bsp {
 namespace {
@@ -237,6 +240,7 @@ AiCommandTickResult ai_command_tick_vt000c(AiCommandTickHost& host,
         if (leader == nullptr || !host.tick_member_is_groupable_combatant(leader)) return result;
         order_leader(host, group, command.target_position, result);
         add(result, ai_command_follower_pass_00a10dc0(host, group));
+        result.formation_shape_due = true;                         // 00A12538 JMP 00A11070
         return result;
     }
     case AiCommandType::CautiousMove: {
@@ -277,6 +281,7 @@ AiCommandTickResult ai_command_tick_vt000c(AiCommandTickHost& host,
         if (ai_moveto_attack_keeps_closing(groupable, distance, collect)) {
             order_leader(host, group, target_point, result);
             add(result, ai_command_follower_pass_00a10dc0(host, group));
+            result.formation_shape_due = true;                     // 00A12BE0
             return result;
         }
         host.tick_replace_command(group, AiCommandType::CloseAttack);
@@ -375,6 +380,34 @@ AiCommandTickResult ai_command_tick_vt000c(AiCommandTickHost& host,
         const float collect2 = collect * collect;
         result.patrol_near = collect2 > d2;
         add(result, ai_command_follower_pass_00a10dc0(host, group));
+        result.formation_shape_due = true;                         // 00A15665
+        return result;
+    }
+    case AiCommandType::RegroupingMove: {
+        if constexpr (kAiRegroupingMoveTickBound) {
+            // 00A126C0: the cc13 model ai_regrouping_move_tick_00a126c0 picks the
+            // point (the +8h destination, or (dest + 3 * centroid) / 4 with a
+            // follower beyond AutoMerge_LeaveDist), then 00A02020 on the first
+            // member (00A12A33), 00A10DC0 (00A12A3A) and JMP 00A11070 (00A12A48).
+            if (host.tick_group_population(group) == 0u) return result;
+            std::vector<std::array<float, 3>> members;
+            const std::size_t count = host.tick_member_count(group);
+            for (std::size_t i = 0; i < count; ++i) {
+                void* member = host.tick_member_at(group, i);
+                if (member == nullptr) continue;
+                std::array<float, 3> p{0.0f, 0.0f, 0.0f};
+                host.tick_member_position(member, p.data());
+                members.push_back(p);
+            }
+            static const float kOrigin00f87574[3] = {0.0f, 0.0f, 0.0f};
+            const gameplay_seg69_70_cc13::RegroupingMoveResult move =
+                gameplay_seg69_70_cc13::ai_regrouping_move_tick_00a126c0(members,
+                    command.target_position, host.tick_tuning_field(kAiTuningAutoMergeLeaveDist),
+                    kOrigin00f87574);
+            order_leader(host, group, move.point, result);
+            add(result, ai_command_follower_pass_00a10dc0(host, group));
+            result.formation_shape_due = true;
+        }
         return result;
     }
     case AiCommandType::Idle:
@@ -382,6 +415,7 @@ AiCommandTickResult ai_command_tick_vt000c(AiCommandTickHost& host,
         // JMP 00A11070 at 00A12442. The follower pass is the middle call;
         // 00A10EC0 and 00A11070 were not read.
         add(result, ai_command_follower_pass_00a10dc0(host, group));
+        result.formation_shape_due = true;                         // 00A12442 JMP 00A11070
         return result;
     default:
         // NONCONTROL is a bare JMP to 00A10EC0, which was not read; the other
@@ -680,6 +714,51 @@ AiCautiousWedgeResult ai_formation_wedge_00a11690(AiCommandTickHost& host, void*
     // group's +500h column and every record's four columns, and 0077C880 sends
     // it: 0077C7B0 (to the other peers) unless [00E188A8+1FE4h] is 2. A
     // single-player session has no peer, so nothing is delivered here.
+    return out;
+}
+
+AiFormationShapeTickResult ai_formation_shape_pass_00a11070(AiCommandTickHost& host, void* group) {
+    AiFormationShapeTickResult out;
+    if (group == nullptr || host.tick_group_population(group) == 0u) return out;
+    // 00A110AE / 00A110B2: the first member's vt+5Ch(6); 00A110CF / 00A110DF: its +284h.
+    void* leader = host.tick_member_at(group, 0);
+    if (leader == nullptr) return out;
+    const bool ship = host.tick_member_is_ship_base(leader);
+    const bool formation = ship && host.tick_member_has_formation_0284(leader);
+    // 00A112DF..00A1136B: every later member; only a ship (00A11321) is asked
+    // for its 0070D080 record (00A1133C).
+    std::vector<gameplay_seg69_70_cc13::FormationShapeFollower> followers;
+    const std::size_t count = host.tick_member_count(group);
+    for (std::size_t i = 1; i < count; ++i) {
+        void* member = host.tick_member_at(group, i);
+        if (member == nullptr) continue;
+        gameplay_seg69_70_cc13::FormationShapeFollower f;
+        f.member = member;
+        f.ship_06 = host.tick_member_is_ship_base(member);
+        f.has_record = f.ship_06 && formation && host.tick_formation_has_record_0070d080(leader, member);
+        if (f.ship_06 && formation && !f.has_record) ++out.no_record;
+        followers.push_back(f);
+    }
+    const float spacing = formation ? host.tick_tuning_field(kAiTuningFormationUnitDist) : 0.0f;
+    const gameplay_seg69_70_cc13::FormationShapeResult shape =
+        gameplay_seg69_70_cc13::ai_formation_shape_00a11070(ship, formation, spacing, followers);
+    if (!shape.ran) return out;
+    out.ran = true;
+    out.shape0_records = host.tick_formation_shape0_0070efd0(leader);   // 00A110E7 0070EFD0(0)
+    for (const gameplay_seg69_70_cc13::FormationShapeSlot& s : shape.slots) {
+        // 00A11350 / 00A1135A: record+10h and record+20h, column 0.
+        if (host.tick_formation_set_column0_0070d080(leader, const_cast<void*>(s.member),
+                                                     s.record_010, s.record_020)) {
+            ++out.placed;
+        }
+    }
+    int ships_with_record = 0;
+    for (const auto& f : followers) {
+        if (f.ship_06 && f.has_record) ++ships_with_record;
+    }
+    out.table_overrun = ships_with_record > gameplay_seg69_70_cc13::kFormationShapeSlots;
+    // 00A11379 / 00A1138B: 0077A080 / 0077C880, MT_FORMATION_SET to the peers;
+    // a single-player session has none (as in 00A11690).
     return out;
 }
 
