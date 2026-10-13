@@ -583,6 +583,11 @@ struct ShipAiSectorBlockerRecord {
     std::size_t unit{0};
 };
 static_assert(std::is_standard_layout_v<ShipAiSectorBlockerRecord>);
+// Packet cc13-ver7 (docs/CC13_VER_7.md, D3). True: blk+328h, the navigation turn
+// lead, is zeroed at the top of every 009ED6B0 tick (009ED708), so the arm
+// tail's setback allowance (009EEAFE, 32Ch * |328h|) is zero on a tick whose
+// lead did not apply. False: the last applied lead persists, as it always did.
+inline constexpr bool kShipAiTurnLeadResetBound = false;
 // Packet cc9_command_building_capture_bind (docs/SHIP_AI_OPEN_ITEMS.md sections 80
 // and 81). True: a CommandBuilding (kind 1Ch) whose health reaches 0 is neutralized
 // (006F3270 -> 006F2940 -> 006F4D10 slot 9) instead of killed; a neutral building
@@ -10524,6 +10529,15 @@ public:
             owner_.done("ShipAi::escape_byte_reset_36c", 0x009ed788u);
         } else {
             owner_.record("ShipAi::escape_byte_reset_36c", 0x009ed788u);
+        }
+        // Packet cc13-ver7 (D3): 009ED708 MOVSS [ESI+328h],XMM0(0) in the same
+        // unconditional span. 009EE9D8 rewrites the turn lead only when it
+        // applies, and the arm tail reads it at 009EEAFE in the same tick.
+        if (kShipAiTurnLeadResetBound) {
+            ctl_.nav.turn_lead_328 = 0.0f;
+            owner_.done("ShipAi::turn_lead_reset_328", 0x009ed708u);
+        } else {
+            owner_.record("ShipAi::turn_lead_reset_328", 0x009ed708u);
         }
         // Packet cc9_ship_ai_reset_span_304_338 (section 67): 009ED78F MOV
         // [ESI+304h],ECX(0) and 009ED795 MOV byte [ESI+338h],CL(0) in the same
