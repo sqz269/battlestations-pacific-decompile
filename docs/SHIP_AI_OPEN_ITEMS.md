@@ -16997,3 +16997,74 @@ IJN01 writer). No leases held.
 6. `kAiGroupPartyChangeRemovalBound` (216): pair on a mission that SetParties grouped ships (`usn_16_endgame_at_kure`,
    `islandcapture*`, `usn_09_leyte`) before flipping.
 7. **The shallow-water functions** (lead's list): not started in this lineage; take the addresses from the lead's queue.
+
+## 219. USN15 re-tuned on main `1de67cfb9`: variant l2 wins (cc9-ships45, 2026-10-12; lead item 1)
+
+Build: this branch at `1de67cfb9` (origin/main, no local gameplay change). Env `BSP_GUNNERY_RNG_STREAMS=1
+BSP_DEATH_TABLE=1`, launcher `local\s45_rows.ps1` (s44_rows.ps1 with the s45 prefix: `-WaitSeconds 14400`,
+`--stop-after-end 40`, `--mission-frame-seconds 0.05`). Order files are written by `local\s45_mk.py` (s44_mk.py
+that double-quotes names with spaces; h's unquoted `select West Virginia` is refused on current main). Logs
+`local\s45_{base,t,v,vj}_<row>.log` in this tree.
+
+**Why h stopped winning.** On `1de67cfb9` h fails at 1368.41 s ("Game Over"): Yamashiro no longer turns to fight
+but steams straight up x = 100..250 at 12.6 m/s (trajectory `s45_t_u15h`: (148, 4400) at 1000 s, (63, 8783) at
+1350 s) and the escape test `luaGetShipsAround(JapanGoTo, 3000, "enemy")` fires once it is inside 3 km of (0, 12000)
+while the held BBs at (-2988, 9481) see it (the idle row of 214 never failed because no US ship saw it there). The
+Lua `random(1,2)` choices are unchanged (Fuso and Nachi to JapanEdgeMove1, Yamashiro to JapanGoTo). Since
+h's attack order comes at 2000 s, Yamashiro must now die before about 1350 s instead. Fletcher-class24/25/26 die
+by 573 s, so h's recall orders are refused.
+
+| v | orders | result (no jitter) | jitter `20,3` |
+| --- | --- | --- | --- |
+| h | 214 | fail 1368.41 s (escape); Yamashiro 10%, Fuso 32% | |
+| j | BBs hold (-3000, 9500) at 200; all 18 survivors attack Yamashiro at 16000 (800 s) | Yamashiro dies 1263 s; no end (Fuso lives at (6427, 10135)) | |
+| k | j with the attack at 12000 (600 s) | Yamashiro 1221 s; no end | |
+| m | j, then all attack Fuso at 26000 (1300 s) | **win**, EndMission 2641.80 s | fail 1368.41 s (Yamashiro 24.5%) |
+| n | m plus Fletcher `torpedo ... at Fuso` waves from 30000 | win 2636.85 s (44 tube snap failures) | |
+| o | k plus the Fuso attack | Yamashiro 1221 s, then one US ship left; no end | |
+| p | m plus Fletcher torpedo waves at Yamashiro from 17000 | fail 1368.41 s: the select/torpedo churn costs the gun attack | |
+| r | m with the Yamashiro attack at 14000 (700 s) | **win** 2770.63 s (Yamashiro 1193 s) | fail 1368.41 s (Yamashiro 12%) |
+| **l2** | BB group holds at (-2500, 5000) (frame 200); all attack Yamashiro at 16000, Fuso at 26000 | **win** 2775.58 s (Yamashiro 1021 s, Fuso 2773 s) | **win** 2671.53 s (Yamashiro 1205 s) |
+
+**l2, the win** (`local\s45_v_l2.log`): the BBs sit 2.5 km west of Yamashiro's track, so the whole force engages it
+at 1000 s; Yamashiro dies at 1021 s (Tennessee), 350 s before the escape test can fire. Fuso runs on toward JapanEdgeMove1 (in j it stopped at (6427, 10135)) and the
+survivors sink it at 2773 s (Pennsylvania), so `luaCompleteAll` runs and EndMission comes at
+2775.58 s, with `bsp: refused a mission script's process launch: sus_prog.exe` on the log (the exec guard). It is
+the only variant that also wins with frame jitter `20,3` (`local\s45_vj_l2.log`: Yamashiro 1205 s, EndMission
+2671.53 s, guard line present), so it is less of a knife-edge than h was. Regenerate with
+`python local\s45_mk.py local\s45_u15_l2.txt "<comment>" 200:moveto:Mississippi:-2500:5000 "16000:attack:Yamashiro:<all>:repeat" "26000:attack:Fuso:<all>:repeat"`,
+`<all>` = `Phoenix,Boise,Shropshire,Fletcher-class10,Fletcher-class11,Fletcher-class12,Fletcher-class14,Fletcher-class15,Fletcher-class17,Fletcher-class18,Fletcher-class19,Fletcher-class20,Maryland,West Virginia,Tennessee,California,Pennsylvania,Mississippi`.
+Run it as `USN15`, 90000 frames, 0.05 s.
+
+Player torpedoes did not help (n, p): every `torpedo` order re-selects, and 44 of 96 tube snaps fail outside the
+tube window, as in 214's variant i.
+
+## 220. JM08 pair of `kLandStructureMeshHitTestBound` (cc9-ships45, 2026-10-12; lead item 2)
+
+The switch is cc13's diff (docs/CC13_JM08_AA_TRUCK_HQ_DAMAGE.md section 5), on main OFF since `57b3684ba`
+(`src/game_hosts_gunnery.cpp:1004`, the gunnery lane's file): a shell's direct-hit test against a land structure
+uses its model's GeomMesh, as the image does (`00724510 -> 00723AA0`), instead of the class box.
+
+Pair: OFF = this tree's build at `ac9652105` (gameplay as main `1de67cfb9`), ON = `pair_export --flip
+kLandStructureMeshHitTestBound=true` (`local\s45_lsm_on`); JM08 with cc9-lua51's `l51_j8_b3.txt`, 30000 frames,
+0.05 s, reference env; logs `local\s45_lsm{off,on}_j8.log`, diff `local\s45_lsm_diff.txt`. Diagnostic pair with
+cc9-lua48's `l48_diag_hq.py` hit lines (exports `local\s45_dg_{off,on}`, not for commit; census
+`local\s45_hqdmg.py`, a copy of `l48_hqdmg.py`): logs `local\s45_dg{off,on}_j8.log`.
+
+- `pair_diff`: exit 3. The rows part at 10 s (gunnery step 200: hits 11 -> 15) on the first shells into land
+  structures (watchtowers, bunkers, houses), as the changed silhouettes predict; deaths 236 -> 221, hit records
+  6521 -> 7313, AA line-of-fire queries 6041 -> 5447 (blocked 601 -> 466). Both sides still fail with "The HQ has been
+  destroyed!" (OFF 1098.25 s, ON 1108.71 s).
+- **The truck-05 self-damage is not on this base.** The HQ census: ON, 264 hits from 17.5 s, AA truck 05 four
+  blast hits (17.5-66.4 s) for 0 hp, trucks 03/04 73 hp; the HQ is shelled down by the US side from 885 s
+  (Missouri 6705 hp, Helena 3030, Gleaves/Bristol/Macomb 2192). OFF (the diagnostic run crashed in the
+  diagnostic hit line at mission frame 19666, `c0000005` reading 0, so its census stops at 979.68 s): truck 05 one
+  blast hit at 37.5 s for 0 hp, Missouri 3894 hp from 854.86 s. So on `1de67cfb9` the b3 timeline is gone: the HQ
+  falls to Missouri's and Helena's bombardment before phase 2, not to truck 05 and the B-17s (5fx's
+  1256-1270 s). cc13's 960-985 s truck-05 lines are absent on both sides.
+- Mechanism check: the ON run moves only through land-structure hit volumes (first divergence 10 s on building
+  hits, no change in the first hit at 5.25 s); no mechanism failure.
+- **Verdict: ON** (recommended; routed to the lead because the file is the gunnery lane's). The ON arm is the
+  image's mesh test; the expected truck-05 effect could not be shown on this base because the self-damage no
+  longer happens on either side. The blast-distance residual (`kLandStructureBlastElementEntriesBound`) stays as
+  it is.

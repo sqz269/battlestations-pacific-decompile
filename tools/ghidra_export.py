@@ -170,7 +170,8 @@ def decompile(client, output, addresses, force=False):
             # defined after the snapshot (integrator definitions, worker-found leaves): accept it when
             # Ghidra has a function there now, and note the provenance in the metadata
             info = str(client.get('get_function_by_address', address=address))
-            if 'No function' in info or 'error' in info.lower():
+            # match a missing function or an error reply, not a function name containing "Error"
+            if 'No function' in info or not info.startswith('Function: '):
                 # skip rather than abort the batch: the caller sees it in the failure list
                 failures.append({'address': address, 'error': 'not a function in this snapshot or in Ghidra'})
                 print(f'{address}: skipped, not a function in this snapshot or in Ghidra', flush=True)

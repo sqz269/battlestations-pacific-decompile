@@ -626,7 +626,7 @@ constexpr bool kAaKind6GateBound = true;   // ON: GUNNERY_OPEN_ITEMS 184.3
 //    unit scale is taken (docs/MOUNT_FRAME_SCALE.md). ON: horz and vert are the
 //    lifted direction's hull-frame pair. OFF: the unlifted hull-frame bearing, and
 //    the world lift added to the hull-frame elevation (184.1's substitution).
-constexpr bool kAaKind6GateMountFrameBound = false;
+constexpr bool kAaKind6GateMountFrameBound = true;   // GUNNERY 197: ON, inert on USN02/USN13 9000
 //  * kLandscapeSpatialAttachBound: packet cc9_landscape_spatial_attach
 //    (docs/SCENE_CONTENTS_HOSTS.md section 8). Each Landscape joins the segment
 //    query as a loose entry after the units (00884078 attaches its collision
@@ -1284,7 +1284,7 @@ constexpr float kDegToRad = 0.01745329251994329577f;
 // qword 00CE3D28 = 3.1415927410125732 (pi as a float) and divide by the qword 180.0. On
 // the 24-bit main thread that is the float product below; on a 53-bit pool worker it is
 // the double chain. False: the double chain with 3.14159265358979.
-inline constexpr bool kGunAimDegreePrecisionBound = false;
+inline constexpr bool kGunAimDegreePrecisionBound = true;  // ON: USN12 / USN01 identical
 constexpr bsp::ArtilleryGunnerAimErrorLevel kArtilleryGunnerLevels[6] = {
     {10.0f * kDegToRad, 1.0f},  // 0 Stun
     {5.0f * kDegToRad, 1.0f},   // 1 SPNormal

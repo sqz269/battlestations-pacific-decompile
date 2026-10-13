@@ -1,0 +1,219 @@
+{
+ "packet": "cc9_reference_rebaseline_36",
+ "reference": "AH",
+ "worker": "cc9-gunnery38",
+ "base": "1de67cfb9",
+ "previous": {
+  "reference": "AG",
+  "base": "10bef4a99",
+  "report": "reports/cc9_reference_rebaseline_35.json"
+ },
+ "binaries": {
+  "ah": "local\\g38_ah",
+  "anchor": "local\\g37_anc (re-exported at 1de67cfb9 with the 56 flips)"
+ },
+ "switches_off_in_anchor": [
+  "kAaKind6GateBound",
+  "kAaLineOfFireExpiryDrawBound",
+  "kAimDiveBrakeRatioBound",
+  "kAimDiveRearmDrawBound",
+  "kAimGlideRearmDrawBound",
+  "kApproachSideWeightDcFormBound",
+  "kBandShaperPlan264Bound",
+  "kBombDropDriftBound",
+  "kCaptureStatePartyFromUnitBound",
+  "kCarrierLiftHeightFromRunwayBound",
+  "kDiveAimGlideArmsBound",
+  "kDiveAimHeadingBlendBound",
+  "kDiveFlyAboveBankArmsBound",
+  "kDiveFlyAboveCarriedFlagsBound",
+  "kDiveFlyAboveCrossTrackBound",
+  "kDiveFlyAboveTermsBound",
+  "kDiveTurnRollDrawBound",
+  "kDiveTurnSideBankBound",
+  "kDiveTurnSideCoinBound",
+  "kDiveTurnSideLatchBound",
+  "kDiveYawModeZeroBound",
+  "kDynListingAssociationBound",
+  "kDynWorkerPrecisionBound",
+  "kEngineMovieEntryBound",
+  "kEngineMovieStopRosterBound",
+  "kFlakBlastIgnoreFalloffBound",
+  "kFlakFlyTimeBurstBound",
+  "kFusedSquadronSlotSelectableBound",
+  "kGunneryLiveWaterSurfaceBound",
+  "kLandCommandOwnTargetBound",
+  "kLandTaskRetireQueueEraseBound",
+  "kLuaHitSquadronSecondPassBound",
+  "kLuaHitTargetSquadronBound",
+  "kLuaKillAttackerBound",
+  "kLuaKillBoxFromHitBound",
+  "kLuaListenerCallbackArgsBound",
+  "kMoveToActivationDrawsBound",
+  "kMoveToLuaAltZeroOffsetBound",
+  "kMovieKeyframeModifierBound",
+  "kPartyChangeRefreshesGunneryBound",
+  "kPlayerTorpedoGroupFireBound",
+  "kRollArmBaseNumeratorBound",
+  "kShipyardHangarHiddenBound",
+  "kSquadronKillQueueEraseBound",
+  "kStrafeAttackrunSeedDrawBound",
+  "kStrafeDoubleConstantsBound",
+  "kSubmergedTorpedoLaunchSwimBound",
+  "kTailGunnerAimErrorBound",
+  "kTailGunnerNoArmourTestBound",
+  "kTailGunnerOwnAimBound",
+  "kTaskProfileActivationOnlyBound",
+  "kTorpedoAimClassInputsBound",
+  "kTorpedoAimPlanWritesBound",
+  "kUnitPartSpinSignBound",
+  "kUnitSteeringDcFormBound",
+  "kWaveFieldLiveAmplitudeBound"
+ ],
+ "launch": "BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1, lockstep 0.05, --stop-after-end 40, local\\g38_ref_jobs.py",
+ "wins": [
+  {
+   "win": "USN01",
+   "orders": "p3_u1_z4",
+   "anchor": "completed at 658.31 s",
+   "anchor_guard": true,
+   "ah": "completed at 1014.63 s",
+   "ah_guard": true,
+   "ah_vs_anchor": 3,
+   "headline_anchor_to_ah": {
+    "deaths": "96 -> 90",
+    "torpedo-task releases": "5 of 10 -> 6 of 13",
+    "dive-bomb-task releases": "2 of 5 -> 2 of 3"
+   },
+   "logs": [
+    "local\\g38_anc_u1.log",
+    "local\\g38_ah_u1.log"
+   ]
+  },
+  {
+   "win": "USN02",
+   "orders": "s36_u2_p7",
+   "anchor": "completed at 782.03 s",
+   "anchor_guard": true,
+   "ah": "completed at 203.01 s",
+   "ah_guard": true,
+   "ah_vs_anchor": 3,
+   "headline_anchor_to_ah": {
+    "deaths": "18 -> 12"
+   },
+   "logs": [
+    "local\\g38_anc_u2.log",
+    "local\\g38_ah_u2.log"
+   ]
+  },
+  {
+   "win": "LOMP06",
+   "orders": "l50_l6_q6",
+   "anchor": "completed at 486.80 s",
+   "anchor_guard": true,
+   "ah": "completed at 535.24 s",
+   "ah_guard": true,
+   "ah_vs_anchor": 3,
+   "headline_anchor_to_ah": {
+    "deaths": "5 -> 4"
+   },
+   "logs": [
+    "local\\g38_anc_l6.log",
+    "local\\g38_ah_l6.log"
+   ]
+  },
+  {
+   "win": "LOMP10",
+   "orders": "p3_l10_b",
+   "anchor": "completed at 957.54 s",
+   "anchor_guard": true,
+   "ah": "completed at 1002.18 s",
+   "ah_guard": true,
+   "ah_vs_anchor": 3,
+   "headline_anchor_to_ah": {
+    "deaths": "81 -> 60",
+    "dive-bomb-task releases": "68 of 53 -> 57 of 35"
+   },
+   "logs": [
+    "local\\g38_anc_l10.log",
+    "local\\g38_ah_l10.log"
+   ]
+  },
+  {
+   "win": "USN12",
+   "orders": "s38_u12_p2",
+   "anchor": "completed at 1529.92 s",
+   "anchor_guard": true,
+   "ah": "completed at 1539.83 s",
+   "ah_guard": true,
+   "ah_vs_anchor": 3,
+   "headline_anchor_to_ah": {
+    "deaths": "103 -> 108",
+    "torpedo-task releases": "3 of 100 -> 5 of 100"
+   },
+   "logs": [
+    "local\\g38_anc_u12.log",
+    "local\\g38_ah_u12.log"
+   ]
+  },
+  {
+   "win": "BSM01",
+   "orders": "l50_b1_a",
+   "anchor": "EndMission 767.94 s",
+   "anchor_guard": true,
+   "ah": "EndMission 767.94 s",
+   "ah_guard": true,
+   "ah_vs_anchor": 3,
+   "headline_anchor_to_ah": {
+    "deaths": "180 -> 194",
+    "torpedo-task releases": "25 of 57 -> 18 of 56",
+    "dive-bomb-task releases": "27 of 38 -> 34 of 40"
+   },
+   "logs": [
+    "local\\g38_anc_b1.log",
+    "local\\g38_ah_b1.log"
+   ]
+  },
+  {
+   "win": "ESMP08",
+   "orders": "l46_e8_orders2",
+   "anchor": "completed at 3204.10 s",
+   "anchor_guard": true,
+   "ah": "none",
+   "ah_guard": false,
+   "ah_vs_anchor": 3,
+   "headline_anchor_to_ah": {
+    "deaths": "613 -> 909",
+    "torpedo-task releases": "43 of 235 -> 46 of 310",
+    "dive-bomb-task releases": "15 of 175 -> 76 of 229"
+   },
+   "logs": [
+    "local\\g38_anc_e8.log",
+    "local\\g38_ah_e8.log"
+   ]
+  }
+ ],
+ "esmp08_leave_one_out_on_ah": {
+  "kFlakFlyTimeBurstBound, kFlakBlastIgnoreFalloffBound false": {
+   "esmp08": "completed at 2594.66 s",
+   "guard": true,
+   "log": "local\\g38_looflak_e8.log"
+  },
+  "kLuaHitTargetSquadronBound false": {
+   "esmp08": "none",
+   "guard": false,
+   "log": "local\\g38_loohit_e8.log"
+  },
+  "kFlakFlyTimeBurstBound false": {
+   "esmp08": "none",
+   "guard": false,
+   "log": "local\\g38_looburst_e8.log"
+  },
+  "kFlakBlastIgnoreFalloffBound false": {
+   "esmp08": "completed at 2594.66 s",
+   "guard": true,
+   "log": "local\\g38_loofall_e8.log"
+  }
+ },
+ "doc": "docs/GAME_EXECUTABLE.md '2026-10-12 ah', Final AH (cc9-gunnery38)"
+}
