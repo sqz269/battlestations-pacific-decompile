@@ -225,4 +225,301 @@ void write_session_message_e1_00449a70(const NativeSessionMessageE1Fields& m, Na
 void read_session_message_e1_00449ab0(const NativeSessionMessageE1Fields& m, NativeBitCursor* stream_cursor_04,
                                       NativeStringRawPoolContext& pool);
 
+// ---------------------------------------------------------------------------
+// Packet cc13-sys4: the lazy singleton getters of segments 6 and 9.
+// ---------------------------------------------------------------------------
+
+// Every getter is __cdecl(void), plain RET, EAX = the cached global. Shape
+// (00472200 listing 0047225A..004722BC): test the global; on null take the
+// lifetime manager's lock (00415350, critical section at +10h, depth at +18h),
+// test again, operator new (00BF681B), on success construct (a __thiscall
+// constructor returning `this`, or inline vtable stores), on failure store 0,
+// publish, then register (00BD0C30, ECX = manager) the global plus
+// `registered_offset`, or null when the allocation failed. The register call
+// is made even with a null pointer. Unlock, return the global.
+struct LazySingletonGetterRow {
+    std::uint32_t getter;
+    std::uint32_t global;
+    std::uint32_t allocation_size;
+    std::uint32_t constructor;       // 0: the inline vtable stores below
+    std::uint32_t registered_offset; // lifetime sub-object
+    // Inline construction only: [+4] = base vtable, [+0] = primary, then [+4] = lifetime vtable.
+    std::uint32_t base_vtable_04;
+    std::uint32_t primary_vtable_00;
+    std::uint32_t lifetime_vtable_04;
+};
+extern const std::array<LazySingletonGetterRow, 13> kLazySingletonGetters;
+const LazySingletonGetterRow* find_lazy_singleton_getter(std::uint32_t getter);
+
+struct LazySingletonHost {
+    virtual ~LazySingletonHost() = default;
+    virtual void lock() = 0;                                        // 00415350, EnterCriticalSection, depth++
+    virtual void unlock() = 0;                                      // depth--, LeaveCriticalSection
+    virtual void* operator_new(std::uint32_t size) = 0;             // 00BF681B
+    virtual void* construct(std::uint32_t constructor, void* memory) = 0; // ECX = memory, EAX = this
+    virtual void register_lifetime(void* subobject) = 0;            // 00BD0C30
+};
+// The shared body. The host stores the inline vtables into the allocation.
+void* lazy_singleton_get(const LazySingletonGetterRow& row, void*& global, LazySingletonHost& host);
+
+// 004C0E40 (00F87440) and 004C0EF0 (00F8753C), __cdecl(void), RET: the
+// matching teardown (same template as 007361A0). When the global is set: lock, test again,
+// unregister of the global (00BCFCA0, ECX = manager),
+// the deleting destructor (vtable slot 0 with 1) when still non-null, clear
+// the global, unlock.
+struct LazySingletonDestroyHost {
+    virtual ~LazySingletonDestroyHost() = default;
+    virtual void lock() = 0;
+    virtual void unlock() = 0;
+    virtual void unregister_lifetime(void* object) = 0;
+    virtual void delete_object(void* object) = 0; // (*vtable[0])(1)
+};
+void lazy_singleton_destroy(void*& global, LazySingletonDestroyHost& host);
+
+// ---------------------------------------------------------------------------
+// Packet cc13-sys4: 004656D0, aParticleEffect run (vtable 00CE5558 slot 0),
+// __thiscall(ECX = action, [ESP+4] = entity), RET 4.
+// ---------------------------------------------------------------------------
+// The effect's children update 00867790 dispatches into effect code that can
+// draw random numbers; in the image those draws share stream 0 of 00BD2F10
+// with gameplay. RNG RULE: a host wiring this run in must route them to a
+// presentation stream or keep the run behind an OFF switch.
+struct MovieParticleEffectRunHost {
+    virtual ~MovieParticleEffectRunHost() = default;
+    // entity vtable +18h, ECX = entity; skipped (parent 0) for a null entity.
+    virtual void* entity_parent(void* entity) = 0;
+    // byte entity+C8h; read even when the entity is null (the image faults).
+    virtual bool entity_world_pose_current(void* entity) = 0;
+    virtual void refresh_world_pose_00414db0(void* entity) = 0;
+    // 00871BA0, ECX = the handle argument slot of 008687C0, EDX = name
+    // (action+2Ch), [ESP+4] = 1.
+    virtual void* acquire_effect_handle_00871ba0(const void* name_at_2c, std::int32_t flag) = 0;
+    // 008687C0, ECX = result smart pointer, EDX = parent; stack: the handle
+    // (consumed), the matrix, 1, 0, 0. Returns the effect (*result).
+    virtual void* create_point_effect_008687c0(void* parent, void* handle, const std::array<float, 16>& matrix,
+                                               std::uint32_t transform_word, std::uint32_t option_word,
+                                               std::uint32_t tail_word) = 0;
+    // The result smart pointer's release: InterlockedDecrement(+4), slot 0
+    // when it reaches zero. The raw effect pointer is kept regardless.
+    virtual void release_result_reference(void* effect) = 0;
+    virtual void clear_effect_byte_09(void* effect) = 0;
+    // 00867790, ECX = effect, [ESP+4] = float step, [ESP+8] = [[00E188A8]+19FCh].
+    virtual void update_children_00867790(void* effect, float step) = 0;
+};
+// Identity 4x4 (1.0f from 00D7A24C), transform word 1. When StartTime
+// (action+20h) > 0.0f (00D7A218): step = remaining when remaining <= 0.2
+// (double 00CE3D10; NaN too), else 0.2f (00CE54A0); remaining = f(remaining
+// - 0.2) (DC E9, ST1 - ST0); repeat while remaining > 0. The effect is stored
+// at action+44h. (The older ledger note says 0.1f; the constants are 0.2.)
+void movie_particle_effect_run_004656d0(void* entity, float start_time_at_20, const void* name_at_2c,
+                                        void*& effect_at_44, MovieParticleEffectRunHost& host);
+
+// ---------------------------------------------------------------------------
+// Packet cc13-sys4: the x87 geometry cluster 0046F550..004702E0 (with 0046FDD0
+// above). Traced from the disk bytes (capstone). Every named intermediate is
+// stored to a float slot and reloaded; the sums between those stores stay on
+// the x87 stack, which the hosts evaluate in double (53-bit precision control,
+// as for 0046FDD0). Float*float products are exact in double. `length` is
+// 00419440 (ECX = vector, ST0 = length).
+// ---------------------------------------------------------------------------
+using GeometryLength = std::function<float(const std::array<float, 3>&)>;
+
+// 0046F550, __fastcall(ECX = out, EDX = point, [ESP+4] = line_point,
+// [ESP+8] = dir, [ESP+0Ch] = float* distance), RET 0Ch, EAX = out. dir is
+// used as given (a unit direction is assumed, not checked). w = f(point -
+// line_point); t = f((dir0*w0 + dir1*w1) + dir2*w2); out = f(line_point +
+// f(dir * t)); *distance = 0042B2F0(f(point - out)) (sqrt when the float sum
+// of squares is above 1e-10, else 0).
+std::array<float, 3> closest_point_on_line_0046f550(const std::array<float, 3>& point,
+                                                    const std::array<float, 3>& line_point,
+                                                    const std::array<float, 3>& dir, float& distance);
+
+// 0046F6D0, __fastcall(ECX = point, EDX = origin, [ESP+4] = dir), RET 4,
+// ST0 = float: the length of the projection of (point - origin) on dir,
+// computed as the 0042B2F0-style length of f(dir * t) (t as in 0046F550).
+float distance_along_axis_0046f6d0(const std::array<float, 3>& point, const std::array<float, 3>& origin,
+                                   const std::array<float, 3>& dir);
+
+// 0046F7B0 (the ledger's "ClosestPointOnSegment" is wrong), same ABI as
+// 0046F550: out = f(point - f(normal * t)), t = dot(f(point - plane_point),
+// normal): the projection of point onto the plane through plane_point with
+// unit normal `normal`. *distance = 0042B2F0(f(out - plane_point)), the
+// in-plane distance from plane_point.
+std::array<float, 3> project_onto_plane_0046f7b0(const std::array<float, 3>& point,
+                                                 const std::array<float, 3>& plane_point,
+                                                 const std::array<float, 3>& normal, float& distance);
+
+// 0046F940 (the ledger's "SegmentPlaneIntersect" is wrong), __fastcall(ECX =
+// p1, EDX = u, [ESP+4] = p3, [ESP+8..10h] = v by value, [ESP+14h] = out_a or
+// null, [ESP+18h] = out_b or null), RET 18h, ST0 = float distance. Closest
+// points of the lines p1 + t*u and p3 + s*v. When f(dot(u, v)) == 1.0 exactly
+// (FUCOMIP, LAHF/TEST AH,44h/JNP; NaN takes the general path) a = p1 and b =
+// 0046F550(p1, p3, v) with its distance. Otherwise uu, uv, vv, uw, vw (w =
+// f(p1 - p3)) are float dots, s = f((vw*uu - uw*uv) / (vv*uu - uv*uv)) with
+// numerator and denominator kept on the stack, t = f(-((uw - s*uv) / uu)),
+// a = f(p1 + f(u*t)), b = f(p3 + f(v*s)), distance = 0042B2F0(f(a - b)).
+// Anti-parallel unit directions (dot -1) divide by zero.
+float closest_points_between_lines_0046f940(const std::array<float, 3>& p1, const std::array<float, 3>& u,
+                                            const std::array<float, 3>& p3, const std::array<float, 3>& v,
+                                            std::array<float, 3>* out_a, std::array<float, 3>* out_b);
+
+// 0046FE80, __fastcall(ECX = out, EDX = v, [ESP+4] = axis), RET 4, EAX = out:
+// the 0046FDD0 projection subtracted from v. n and d as in 0046FDD0; out =
+// f(v - f(n * d)).
+std::array<float, 3> reject_from_axis_0046fe80(const std::array<float, 3>& v, const std::array<float, 3>& axis,
+                                               const GeometryLength& length);
+
+// 0046FF70 (the ledger's "DirectionAndLength" is a hypothesis this replaces),
+// __fastcall(ECX = p, EDX = a, [ESP+4] = b), RET 4, ST0 = float: distance from
+// p to the segment [a, b]. n = f(f(b - a) * inv), inv = f(1/length) when
+// length > 0 else 0. d1 = f(dot(f(p - a), n)): d1 < 0 gives 0042B2F0(p - a).
+// d2 = f(dot(f(b - p), n)): d2 < 0 gives 0042B2F0(b - p). Otherwise
+// 0042B2F0(f(f(p - a) - f(n * d1))). NaN dots fall through (FCOMI/JBE).
+float point_segment_distance_0046ff70(const std::array<float, 3>& p, const std::array<float, 3>& a,
+                                      const std::array<float, 3>& b, const GeometryLength& length);
+
+// 00470150 (ledger "DirectionAndLengthChecked"), same ABI, AL = bool: the
+// d1/d2 tests of 0046FF70; false when d1 < 0 (AL only, the rest of EAX is not
+// cleared) or when d2 < 0 or d2 is NaN (JB after FCOMIP; XOR EAX), else true
+// (MOV EAX,1). A NaN d1 passes the first test.
+bool point_projects_onto_segment_00470150(const std::array<float, 3>& p, const std::array<float, 3>& a,
+                                          const std::array<float, 3>& b, const GeometryLength& length);
+
+// ---------------------------------------------------------------------------
+// Packet cc13-sys4: small segment-9 helpers.
+// ---------------------------------------------------------------------------
+
+// 004BB600, __cdecl(void), AL. ECX = [00F8ABE8] (Xenon system manager) for
+// each call: 00A3E510 (has a selected user) and 00A3EAD0 (sign-in state)
+// == 2, then a tail jump to 00A3EB20 (the byte at manager+118h); otherwise
+// XOR AL,AL.
+struct SelectedUserLiveHost {
+    virtual ~SelectedUserLiveHost() = default;
+    virtual bool has_selected_user_00a3e510() = 0;
+    virtual std::int32_t selected_sign_in_state_00a3ead0() = 0;
+    virtual std::uint8_t active_slot_byte_118_00a3eb20() = 0;
+};
+std::uint8_t selected_user_live_byte_004bb600(SelectedUserLiveHost& host);
+
+// 004BCB40, __thiscall(ECX = {u32 length, char* data}, needle, int start),
+// RET 8: -1 for null data or needle; a negative start becomes 0, a start
+// above the length (unsigned JA) gives -1; _strstr (00BF9440) from
+// data + start; the match offset from data, or -1.
+std::int32_t counted_string_find_004bcb40(std::uint32_t length, const char* data, const char* needle,
+                                          std::int32_t start);
+
+// 004BDF50, __fastcall(ECX = interface), RET: when +4 != +20h or +1Ch !=
+// +38h, vtable +10h(+20h, +38h) (the pending size). +4/+1Ch are not written here.
+struct PendingSizeFields {
+    std::int32_t current_04, current_1c, pending_20, pending_38;
+};
+void multiplayer_interface_apply_pending_size_004bdf50(
+    const PendingSizeFields& f, const std::function<void(std::int32_t, std::int32_t)>& vslot_10);
+
+// 004BEA10 / 004BEA40 / 004BEA70, __fastcall(ECX = owner pointer slot), RET:
+// when the slot is set, the destructor (ECX = object), _free (00BF65AC),
+// slot = 0. Destructors: 004BEA10 -> 006B9380 (award registry storage),
+// 004BEA40 -> 0045D930 (cutscene player), 004BEA70 -> 009496A0.
+struct OwnedPointerDeleteRow {
+    std::uint32_t address;
+    std::uint32_t destroy;
+};
+extern const std::array<OwnedPointerDeleteRow, 3> kOwnedPointerDeletes;
+void owned_pointer_delete(void*& slot, const std::function<void(void*)>& destroy,
+                          const std::function<void(void*)>& free_block);
+
+// 004BEAD0, __fastcall(ECX = unit), RET: the unit when non-null and its
+// vtable +5Ch(0Fh) returns non-zero AL, else 0.
+void* unit_cast_if_class_flag_0f_004bead0(void* unit, const std::function<bool(void*, std::int32_t)>& vslot_5c);
+
+// 004BFD70, __fastcall(ECX = game), RET: 00B0FEB0 on [00F8D39C], the
+// renderer's ([00F8D394]) vtable +124h, then when game+5FCh is set the three
+// counted references at +D5Ch, +D70h, +D84h of that block are released
+// (InterlockedDecrement(+4); vtable slot 0 at zero) and cleared.
+struct SessionRenderResourcesHost {
+    virtual ~SessionRenderResourcesHost() = default;
+    virtual void reset_remap_textures_00b0feb0() = 0;
+    virtual void renderer_vslot_124() = 0;
+    virtual void release_reference(void* counted) = 0;
+};
+void release_session_render_resources_004bfd70(void* block_at_5fc, SessionRenderResourcesHost& host);
+
+// The 18h-byte observer slot: vtable, three cleared dwords +4..+0Ch, byte
+// +10h = 1, observed subject +14h.
+struct ObserverSlotFields {
+    std::uint32_t vtable{0};
+    std::uint32_t field_04{0}, field_08{0}, field_0c{0};
+    std::uint8_t flag_10{0};
+    void* subject_14{nullptr};
+};
+// 004C2D40, __fastcall(ECX = slot), RET, EAX = slot: vtable 00CE75CC
+// (slot 0 = deleting destructor 004C2DC0, slot 1 = 004C2D90), subject 0.
+void construct_observer_slot_004c2d40(ObserverSlotFields& slot);
+// 004BEF00, __thiscall(ECX = request, subject), RET 4, EAX = request: vtable
+// 00CE3C8C, subject +14h, then 00694A60 (ECX = subject, EDX = request)
+// when the subject is non-null.
+void construct_interface_request_004bef00(ObserverSlotFields& request, void* subject,
+                                          const std::function<void(void* subject, void* observer)>& register_pair);
+// 004C2D60 and 004C2D90 (00CE75CC slot 1), __thiscall(ECX = slot, notifier),
+// RET 4: notifier vtable +4h yields the object; when it is +14h, clear +14h
+// and 006952A0 (ECX = object, EDX = slot). Same body as 004884F0.
+void observer_slot_release_if_subject(ObserverSlotFields& slot, void* notifier,
+                                      const std::function<void*(void* notifier)>& notifier_object_04,
+                                      const std::function<void(void* subject, void* observer)>& unregister_pair);
+
+// 004C2FD0, __fastcall(ECX = character count), RET, EAX = block: 00419CC0
+// (sized storage pool) then 00BD1120 (ECX = pool, count*2 + 2 bytes, 1): a
+// UTF-16 buffer with room for the terminator.
+void* wide_string_allocate_storage_004c2fd0(
+    std::uint32_t count, const std::function<void*(std::uint32_t bytes, std::int32_t flag)>& pool_allocate_00bd1120);
+
+// 004C5140, __stdcall(context), RET 4: 004BEC00 (input manager), then
+// 00A933F0 (ECX = manager, context, 5).
+void input_context_level5_004c5140(std::int32_t context,
+                                   const std::function<void(std::int32_t context, std::int32_t level)>& set_00a933f0);
+
+// 004C5E00, __thiscall(ECX = storage manager, out string), RET 4, EAX = out:
+// manager vtable +10h(out). The zeroed stack dword is the NRVO construction
+// flag and is not read.
+void storage_manager_newest_slot_name_004c5e00(void* out, const std::function<void(void* out)>& vslot_10);
+
+// 004C5E20, __thiscall(ECX = this, other), RET 4, EAX = this. Strings are
+// {u32 length, char16_t* data}. Self-assignment does nothing; otherwise
+// 004C53E0 (ECX = this, other.length, 1) sizes the storage, and when
+// other.length != 0 the UTF-16 units are copied up to and including the
+// terminator.
+struct NativeWideString {
+    std::uint32_t length{0};
+    char16_t* data{nullptr};
+};
+NativeWideString& wide_string_assign_004c5e20(
+    NativeWideString& self, const NativeWideString& other,
+    const std::function<void(NativeWideString& self, std::uint32_t length, std::int32_t flag)>& size_004c53e0);
+
+// 004C5EC0, __thiscall(ECX = scope, index, const u32* colour), RET 8, EAX =
+// scope: profiler (004C1DD0) +24h colour array[index] = *colour, scope.index
+// = index, then 00BE3640 (ECX = profiler, index).
+// 004C5EF0, __fastcall(ECX = scope), RET: 00BE3660 (ECX = profiler, scope.index).
+struct ProfilerScopeHost {
+    virtual ~ProfilerScopeHost() = default;
+    virtual std::uint32_t* colour_array_24() = 0;
+    virtual void begin_00be3640(std::int32_t index) = 0;
+    virtual void end_00be3660(std::int32_t index) = 0;
+};
+void profiler_scope_begin_004c5ec0(std::int32_t& scope_index, std::int32_t index, const std::uint32_t& colour,
+                                   ProfilerScopeHost& host);
+void profiler_scope_end_004c5ef0(std::int32_t scope_index, ProfilerScopeHost& host);
+
+// 004C5F10, __fastcall(ECX = message), RET: vtable 00CE7608; when the byte at
+// +18h is 3, 004C0FD0 on +1Ch; then 004C1F70 on +1Ch; base vtable 00CE4974.
+// 004C5F40, __thiscall(ECX unused, id), RET 4: id == 0E4h.
+struct SessionMessageE4DestructHost {
+    virtual ~SessionMessageE4DestructHost() = default;
+    virtual void release_payload_004c0fd0(void* payload_1c) = 0;
+    virtual void destruct_payload_004c1f70(void* payload_1c) = 0;
+};
+void session_message_e4_destruct_004c5f10(std::uint32_t& vtable, std::uint8_t kind_18, void* payload_1c,
+                                          SessionMessageE4DestructHost& host);
+bool session_message_e4_is_id_004c5f40(std::uint32_t id);
+
 } // namespace bsp::cc13_sys
