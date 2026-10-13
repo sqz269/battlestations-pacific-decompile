@@ -5565,12 +5565,12 @@ struct GameUnitsHost::Impl {
     // zeroes it (006FC15E) and the elevator takes a landed plane only at value
     // 0.0 (006D06E8, 007B8D40). False: the channel stays disabled and 007B8D40
     // answers true, as before.
-    static constexpr bool kPlaneWingFoldElevatorBound = false;
+    static constexpr bool kPlaneWingFoldElevatorBound = true;
     // Packet cc9_wing_fold, the takeoff half (requires the switch above): the
     // takeoff prepare step holds while the wings are not at 1.0 (009CDEED) and
     // the takeoff run extends them (009CF2F8) and runs its aligned arm only once
     // they are (009CF2ED). False: 007B8D10 answers true in both, as before.
-    static constexpr bool kPlaneWingSpreadTakeoffBound = false;
+    static constexpr bool kPlaneWingSpreadTakeoffBound = true;
     unsigned long long wing_fold_classes{0}, wing_fold_extends{0}, wing_fold_retracts{0};
     unsigned long long wing_fold_resets{0}, wing_fold_elevator_waits{0};
     unsigned long long wing_spread_prep_holds{0}, wing_spread_run_holds{0};
