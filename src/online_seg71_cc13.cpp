@@ -753,6 +753,113 @@ void client_delete_session_00a397d0(void* c, ClientSessionCalls& host) {
     write_field<void*>(c, 0x904, nullptr);
 }
 
+std::uint8_t take_storage_removed_00a3e420(void* x, std::uint8_t take) noexcept {
+    const auto value = read_field<std::uint8_t>(x, 0x2F);
+    if (take != 0) write_field<std::uint8_t>(x, 0x2F, 0);
+    return value;
+}
+std::uint8_t take_invite_accepted_00a3e440(void* x, std::uint8_t take) noexcept {
+    const auto value = read_field<std::uint8_t>(x, 0x31);
+    if (take != 0) write_field<std::uint8_t>(x, 0x31, 0);
+    return value;
+}
+
+namespace {
+std::uint32_t find_slot_with_xuid(const void* x, std::size_t xuid_offset) noexcept {
+    for (std::uint32_t slot = 0; slot < 1; ++slot) {
+        if (read_field<std::uint32_t>(x, 0x8C + 4 * slot) != 0 &&
+            read_field<std::uint64_t>(x, 0x110 + 8 * slot) == read_field<std::uint64_t>(x, xuid_offset))
+            return slot;
+    }
+    return 1;
+}
+} // namespace
+
+std::uint32_t find_slot_for_invitee_00a3e470(const void* x) noexcept { return find_slot_with_xuid(x, 0x32); }
+std::uint32_t find_slot_for_inviter_00a3e4b0(const void* x) noexcept { return find_slot_with_xuid(x, 0x3A); }
+std::uint32_t slot_state_00a3e530(const void* x, std::uint32_t slot) noexcept {
+    return read_field<std::uint32_t>(x, 0x8C + 4 * slot);
+}
+std::uint64_t online_xuid_00a3e5d0(const void* x, XenonCalls& host) {
+    const auto user = read_field<std::uint32_t>(x, 0x3B8);
+    if (user == 1) return 0;
+    std::uint8_t info[0x28] = {};
+    host.xuser_get_signin_info(user, 2, info);
+    return read_field<std::uint64_t>(info, 0);
+}
+std::uint64_t active_xuid_00a3eb00(const void* x) noexcept {
+    return read_field<std::uint64_t>(x, 0x110 + 8 * read_field<std::uint32_t>(x, 0x11C));
+}
+std::uint8_t active_slot_byte_00a3eb20(const void* x) noexcept {
+    return read_field<std::uint8_t>(x, 0x118 + read_field<std::uint32_t>(x, 0x11C));
+}
+bool communication_privilege_00a3eb30(const void* x, std::uint8_t* friends_only, XenonCalls& host) {
+    if (read_field<std::uint8_t>(x, 0x119) == 0) {
+        *friends_only = 0;
+        return false;
+    }
+    std::uint32_t level = 0;
+    if (read_field<std::uint32_t>(x, 0x8C) != 0 || read_field<std::uint32_t>(x, 0x11C) == 0) {
+        std::uint32_t granted = 0;
+        host.xuser_check_privilege(0, 0xFC, &granted);
+        if (granted != 0) {
+            level = 2;
+        } else {
+            host.xuser_check_privilege(0, 0xFB, &granted);
+            level = granted != 0 ? 1u : 0u;
+        }
+    }
+    *friends_only = 0;
+    if (level == 0) return false;
+    if (level == 1) *friends_only = 1;
+    return true;
+}
+
+void client_update_00a39d10(void* c, MiscNetworkCalls& host) {
+    if (read_field<std::uint8_t>(c, 0x818) == 0) return;
+    if (read_field<std::uint8_t>(c, 0x879) != 0) host.client_enumerate_lan_servers_00a39900(c);
+    else if (read_field<std::uint8_t>(c, 0x880) != 0) host.console_virtual_14(c);
+}
+void client_set_server_address_00a39d40(void* c, const void* sockaddr_in, MiscNetworkCalls& host) {
+    void* const target = read_field<void*>(c, 0x874);
+    std::memcpy(at(target, 0xD74), sockaddr_in, 16);
+    write_field<std::uint8_t>(c, 0x878, 1);
+    host.activate_first_free_channel_00a3baa0(at(read_field<void*>(c, 0x874), 0xD74));
+}
+void client_close_00a39d90(void* c, MiscNetworkCalls& host) {
+    host.console_unregister_key_00a394c0(c);
+    host.console_close_sockets_00a39500(c);
+    if (read_field<std::uint8_t>(c, 0x860) == 0) host.client_delete_session_00a397d0(c);
+    write_field<std::uint8_t>(c, 0x818, 0);
+}
+void client_handle_packet_thunk_00a3a320(void* c, MiscNetworkCalls& host) { host.client_handle_packet_00a3a160(c); }
+void server_handle_packet_thunk_00a3e3a0(void* s, MiscNetworkCalls& host) { host.server_handle_packet_00a3e000(s); }
+void nop_00a3d460() noexcept {}
+std::uint32_t send_thread_entry_00a3cec0(void* sender, MiscNetworkCalls& host) {
+    host.thread_set_debug_name_008e24f0(-1, "cNetworkConsoleSend::sSendThread");
+    return host.send_worker_00a3c5e0(sender);
+}
+std::uint32_t receive_thread_entry_00a3cee0(void* sender, MiscNetworkCalls& host) {
+    host.thread_set_debug_name_008e24f0(-1, "cNetworkConsoleSend::sRecvThread");
+    return host.receive_worker_00a3caf0(sender);
+}
+void ignore_player_record_00a44800(bsp::online_cc13::OnlinePlayerRecord record, MiscNetworkCalls& host) {
+    if (record.name.capacity_18 >= 0x10) host.free_00bf65ac(record.name.buffer_04.heap);
+}
+void ignore_player_record_00a44820(bsp::online_cc13::OnlinePlayerRecord record, MiscNetworkCalls& host) {
+    if (record.name.capacity_18 >= 0x10) host.free_00bf65ac(record.name.buffer_04.heap);
+}
+void set_record_and_refresh_00a454f0(void* s, const void* record, MiscNetworkCalls& host) {
+    host.player_record_assign_006883b0(at(s, 8), record);
+    host.system_virtual_20(s);
+}
+void clear_list_168_00a45d90(void* s, MiscNetworkCalls& host) { host.list_clear_00a45510(at(s, 0x168)); }
+bool stop_voice_00a46240(void* s, MiscNetworkCalls& host) {
+    if (voice_active(s)) host.voice_shutdown_00a49270(at(s, 0x1C24));
+    host.player_list_clear_00688780(at(s, 0x10C));
+    return true;
+}
+
 float client_peer_latency_00a41ba0(void* peer, MNetworkCalls& host) { return server_peer_latency_00a41440(peer, host); }
 float client_peer_profile_value_00a41bd0(void* peer, MNetworkCalls& host) { return server_peer_profile_value_00a41470(peer, host); }
 std::uint32_t client_peer_pending_count_00a41c00(void* peer, MNetworkCalls& host) { return server_peer_pending_count_00a414a0(peer, host); }

@@ -566,4 +566,105 @@ std::int32_t client_poll_create_result_00a39750(void* client, ClientSessionCalls
 // SessionDeleted", +90Eh = 1, XCloseHandle(+904h); +904h = 0.
 void client_delete_session_00a397d0(void* client, ClientSessionCalls& host);
 
+// ---------------------------------------------------------------------------
+// XenonSystemManager ([00F8ABE8]) accessors 00A3E420..00A3EB30. Fields:
+// +2Fh storage removed, +31h invite accepted, +32h invitee XUID, +3Ah
+// inviter XUID, +8Ch slot states (one slot), +110h slot XUIDs, +118h slot
+// bytes, +119h signed in, +11Ch active slot, +3B8h sign-in user index.
+// ---------------------------------------------------------------------------
+
+struct XenonCalls {
+    virtual ~XenonCalls() = default;
+    // XUserGetSigninInfo (00A4D560)(user, flags, XUSER_SIGNIN_INFO* (28h)).
+    virtual std::uint32_t xuser_get_signin_info(std::uint32_t user, std::uint32_t flags, void* info) = 0;
+    // XUserCheckPrivilege (00A4D482)(user, privilege, BOOL* result).
+    virtual std::uint32_t xuser_check_privilege(std::uint32_t user, std::uint32_t privilege, std::uint32_t* result) = 0;
+};
+
+// 00A3E420 / 00A3E440, __thiscall(xenon, BYTE take), RET 4: AL = +2Fh / +31h,
+// cleared when `take` is set.
+std::uint8_t take_storage_removed_00a3e420(void* xenon, std::uint8_t take) noexcept;
+std::uint8_t take_invite_accepted_00a3e440(void* xenon, std::uint8_t take) noexcept;
+// 00A3E470 / 00A3E4B0, EAX: the first slot (the loop bound is 1) with a
+// nonzero state whose XUID equals the invitee (+32h) / inviter (+3Ah) XUID;
+// 1 when none matches.
+std::uint32_t find_slot_for_invitee_00a3e470(const void* xenon) noexcept;
+std::uint32_t find_slot_for_inviter_00a3e4b0(const void* xenon) noexcept;
+// 00A3E530, RET 4: EAX = +8Ch[slot] (no bound).
+std::uint32_t slot_state_00a3e530(const void* xenon, std::uint32_t slot) noexcept;
+// 00A3E5D0 BSP_XenonSystemManager_GetOnlineXuid, EDX:EAX: user +3B8h == 1 ->
+// 0; else XUserGetSigninInfo(user, 2 = ONLINE_XUID_ONLY, &info) and the
+// info's first qword (the call's result is not checked).
+std::uint64_t online_xuid_00a3e5d0(const void* xenon, XenonCalls& host);
+// 00A3EB00 EDX:EAX = +110h[active slot +11Ch]; 00A3EB20 AL = +118h[active].
+std::uint64_t active_xuid_00a3eb00(const void* xenon) noexcept;
+std::uint8_t active_slot_byte_00a3eb20(const void* xenon) noexcept;
+// 00A3EB30 BSP_XenonSystemManager_GetCommunicationPrivilege, __thiscall(xenon,
+// BYTE* friends_only), RET 4, AL. Not signed in (+119h): *out = 0, AL = 0.
+// With slot state nonzero or active slot 0: user 0 (hard-coded) is checked
+// for XPRIVILEGE_COMMUNICATIONS (0FCh) -> level 2, else
+// COMMUNICATIONS_FRIENDS_ONLY (0FBh) -> level 1, else 0; otherwise level 0.
+// *out = (level == 1); AL = (level != 0).
+bool communication_privilege_00a3eb30(const void* xenon, std::uint8_t* friends_only, XenonCalls& host);
+
+// ---------------------------------------------------------------------------
+// Small client/server/thread/system routines
+// ---------------------------------------------------------------------------
+
+struct MiscNetworkCalls {
+    virtual ~MiscNetworkCalls() = default;
+    virtual void client_enumerate_lan_servers_00a39900(void* client) = 0;
+    virtual void console_virtual_14(void* console) = 0;
+    virtual void activate_first_free_channel_00a3baa0(void* address) = 0;   // on [00F8ABDC]
+    virtual void console_unregister_key_00a394c0(void* console) = 0;
+    virtual void console_close_sockets_00a39500(void* console) = 0;
+    virtual void client_delete_session_00a397d0(void* client) = 0;
+    virtual void client_handle_packet_00a3a160(void* client) = 0;           // JMP target, stack args forwarded
+    virtual void server_handle_packet_00a3e000(void* server) = 0;           // JMP target, stack args forwarded
+    virtual void thread_set_debug_name_008e24f0(std::int32_t thread, const char* name) = 0;
+    virtual std::uint32_t send_worker_00a3c5e0(void* sender) = 0;
+    virtual std::uint32_t receive_worker_00a3caf0(void* sender) = 0;
+    virtual void free_00bf65ac(void* block) = 0;
+    virtual void player_record_assign_006883b0(void* destination, const void* source) = 0;
+    virtual void system_virtual_20(void* system) = 0;
+    virtual void list_clear_00a45510(void* list) = 0;
+    virtual void voice_shutdown_00a49270(void* voice) = 0;
+    virtual void player_list_clear_00688780(void* list) = 0;
+};
+
+// 00A39D10 BSP_cNetworkClient_Update, __thiscall(client, float dt), RET 4
+// (dt unused): sockets open (+818h): LAN search (+879h) -> 00A39900, else
+// connected (+880h) -> vtable +14h.
+void client_update_00a39d10(void* client, MiscNetworkCalls& host);
+// 00A39D40 BSP_cNetworkClient_SetServerAddress, __thiscall(client, const
+// sockaddr_in*), RET 4: the target [+874h] gets the 16 bytes at +0D74h,
+// +878h = 1, then tail 00A3BAA0(target +0D74h) on the sender.
+void client_set_server_address_00a39d40(void* client, const void* sockaddr_in, MiscNetworkCalls& host);
+// 00A39D90 BSP_cNetworkClient_Close: 00A394C0, 00A39500, 00A397D0 when no
+// key of ours is valid (+860h clear), +818h = 0.
+void client_close_00a39d90(void* client, MiscNetworkCalls& host);
+// 00A3A320 / 00A3E3A0: JMP 00A3A160 / 00A3E000 (the HandlePacket bodies).
+void client_handle_packet_thunk_00a3a320(void* client, MiscNetworkCalls& host);
+void server_handle_packet_thunk_00a3e3a0(void* server, MiscNetworkCalls& host);
+// 00A3D460: RET.
+void nop_00a3d460() noexcept;
+// 00A3CEC0 / 00A3CEE0, __stdcall thread procedures (parameter = sender),
+// RET 4: 008E24F0(-1, "cNetworkConsoleSend::sSendThread" /
+// "cNetworkConsoleSend::sRecvThread"), then EAX = 00A3C5E0 / 00A3CAF0(sender).
+std::uint32_t send_thread_entry_00a3cec0(void* sender, MiscNetworkCalls& host);
+std::uint32_t receive_thread_entry_00a3cee0(void* sender, MiscNetworkCalls& host);
+// 00A44800 / 00A44820, __thiscall(system, OnlinePlayerRecord by value), RET
+// 40h: the record is only destroyed (its string buffer is freed when the
+// capacity at record +18h is 10h or more).
+void ignore_player_record_00a44800(bsp::online_cc13::OnlinePlayerRecord record, MiscNetworkCalls& host);
+void ignore_player_record_00a44820(bsp::online_cc13::OnlinePlayerRecord record, MiscNetworkCalls& host);
+// 00A454F0, __thiscall(system, const record*), RET 4: 006883B0 into system
+// +8h, then vtable +20h.
+void set_record_and_refresh_00a454f0(void* system, const void* record, MiscNetworkCalls& host);
+// 00A45D90: ECX += 168h, JMP 00A45510.
+void clear_list_168_00a45d90(void* system, MiscNetworkCalls& host);
+// 00A46240 BSP_XLiveSystem_StopVoice, AL = 1: voice active -> 00A49270
+// (+1C24h); the LAN player list +10Ch is cleared (00688780).
+bool stop_voice_00a46240(void* system, MiscNetworkCalls& host);
+
 } // namespace bsp::online_seg71_cc13
