@@ -303,11 +303,6 @@ grouped by name prefix:
 | `BSP_RefPtr` | 11 | 00866730, 00866970, 00866C30, 0086AC50, 0086AC80, 0086ACB0, 0086ACE0, 0086AFC0, 0086B080, 0086B750, 00873AB0 |
 | `BSP_EffectDeletionLock` | 1 | 00866760 |
 | `BSP_EffectManager` | 2 | 008669A0, 008674A0 |
-| `BSP_EffectFlare` | 1 | 0086BDB0 |
-| `BSP_EffectThunderStorm` | 4 | 0086F3B0, 0086FB40, 0086FBC0, 0086FC20 |
-| `BSP_EffectWaterdrops` | 1 | 0086BDF0 |
-| `BSP_EffectLight` | 1 | 0086BE30 |
-| `BSP_EffectSplash` | 1 | 0086BE70 |
 | `BSP_Effects` | 1 | 00869D20 |
 | `BSP_EffectParticle` | 2 | 00869D70, 0086BC50 |
 | `BSP_NativeDwordVector` | 6 | 0086A280, 0086A910, 0086A950, 0086AA10, 0086B630, 00872E70 |
@@ -316,7 +311,7 @@ grouped by name prefix:
 | `BSP_NativeString` | 1 | 0086B290 |
 | `BSP_EffectComponent` | 1 | 0086B7C0 |
 | `BSP_EffectTracer` | 2 | 0086B990, 0086B9B0 |
-| `BSP_EffectWaterTracer` | 4 | 0086BD10, 0086BD20, 0086BF10, 0086C120 |
+| `BSP_EffectWaterTracer` | 1 | 0086C120 |
 | `BSP_EffectShake` | 1 | 0086BD60 |
 | `BSP_EffectNamedRecord14` | 1 | 0086CDB0 |
 | `BSP_EffectNamedRecord14Array` | 4 | 0086CE10, 0086E670, 0086E6F0, 0086F900 |
@@ -636,3 +631,169 @@ Still open, in value order:
 4. The gunnery lane (unchanged; cc9's).
 5. Notes for other owners: the 00BADC70 block comment (7.9.2, item 7) and the 0x390 controller
    size in the 00852210 / 00857C20 ledger names (7.9.4).
+
+## 7.10 Pass cc13-gpr53f
+
+Same terms as 7.9, plus the lead's request to correct the 00BADC70 comment in
+`include/bsp/water_weather_cc13.hpp`, which cc13 owns and this pass leased. That comment now says
+that block +0Ch is the address of the Width curve holder (component + 68h), and that +10h and +14h
+are the HeightX and HeightY holders. Only the comment changed; the code is untouched. Every model is
+**reconstructed and build-tested** from the disk bytes.
+
+| address | model | what it does |
+|---|---|---|
+| `0086BD10` / `0086BD20` | `effect_water_tracer_category_0086bd10`, `..._restart_0086bd20` | 4; `MOV AL, 1`. |
+| `0086BDB0` / `0086BDF0` / `0086BE30` / `0086BE70` / `0086FC20` | `effect_*_category_*` | flare 5; waterdrops, light, splash and thunderstorm 0. Each equals the type +18h that the kind's instance constructor writes (section 7.7). |
+| `0086BF10` | `water_tracer_destruct_0086bf10` | Releases each non-null reference and nulls it, in this order: +98h, +9Ch, +A4h, +C0h, +8Ch, +70h, +6Ch, +68h, +64h (InterlockedDecrement, slot 0 at zero). Then the strings +50h and +48h, then the base 0086B7E0. |
+| `0086F3B0` | `thunderstorm_read_lua_0086f3b0` | Every key is read from **row.ParamsTable**: GlowTexture -> +40h, Has3Dlightning [true] -> +54h, MinLifeTime / MaxLifeTime [0.5 / 4] -> +24h / +28h, MinScale / MaxScale [0.5 / 4] -> +2Ch / +30h, MaxSpawnCount [15] -> +38h, SpawnDelay [1] -> +3Ch (CVTSI2SS). +34h = 2.5f is a constant, not a key. The Textures array +48h is resized to 0 and refilled with {Origo[1], Origo[2] (each [0.5]), Name} records. |
+| `0086FB40` / `0086FBC0` | `thunderstorm_destroy_members_0086fb40`, `thunderstorm_destruct_0086fbc0` | 0086FB40 runs with ECX = component + 24h: the texture array (resize 0, then free), then GlowTexture. The destructor sets vtable 00D0DA38, runs 0086FB40 and then the base 0086B7E0. |
+
+Findings:
+
+1. The water tracer reader zeroes +98h, +9Ch and +C0h without a release (7.9.2). The destructor
+   does release them. The reader also overwrites +A4h (0086DF83) without a release. So a
+   component that is read twice leaks the first textures, the first tracer resource and the first
+   spray resource. It does not leak its curves, which the reader releases before replacing.
+2. SpawnDelay is read as an integer and stored as a float, so a fractional delay in Lua is
+   truncated.
+3. In the Textures loop, the Name copy writes its terminator at 0086F71D before the pool
+   allocation's null test, so a failed allocation faults.
+
+Adoption: this is presentation only, with no RNG. Nothing in the host is replaced: the effect
+component dispatcher in src/gameplay_effect_scalar_components.cpp:273 has no 00D0DA38 or 00D0D5D4
+row. With the switch OFF nothing changes. With it ON, the thunderstorm and water tracer components
+get their fields, and the strike timing is still in 00BC0510 on stream 1 (section 7.2).
+
+Records: 11 `add-function` records. The section 6 open table now lists **303** addresses. Build:
+`scripts/build.ps1` passes. `verify_report_calls` (local/g53f_calls.json) checked 20 rows with 0
+failures. No tests were added and there were no game runs.
+
+### 7.10.1 Handoff (cc13-gpr53f)
+
+Still open: the trace-line leftovers 008580C0, 008580E0 and 008583D0 (unreferenced); 0085C0F0,
+0085C220 and 0085C5D0; the gunnery lane (cc9's); and the remaining table rows (mostly STL, CG and
+the trivial leaves).
+
+## 8. cc13-ver2: verification of the torpedo, bomb and depth-charge host paths
+
+This pass is a read-only check of the code cc9's host runs against the disk bytes, using
+`disasm-raw`, `sc2_x87.py` and a byte check of every register-register x87 form quoted below. No
+host file was edited, nothing was wired, there were no game runs, and the gunnery bots were
+skipped. Flags were read at origin/main ea64971c5. The one new model is
+`bomb_release_velocity_006e0a70_006e1f00` (src/gameplay_seg53_cc13.cpp), which is build-tested.
+
+### 8.1 What the host runs (default flags)
+
+| path | host code | image | verdict |
+|---|---|---|---|
+| Torpedo swim (kTorpedoSwimThrustBound ON, kTorpedoSwimDepthHomingBound OFF) | game_hosts_gunnery.cpp:9172-9202 | 00857480 + 00856BB0 heading turn | matches in the horizontal plane; the vertical is a labelled substitution (8.2 item 4) |
+| Torpedo water entry | :9681-9776 | 008568E0, 006E6450 | first limit matches; second limit OFF (item 3) |
+| Air ballistics of bombs and torpedoes | `projectile_flight_step` (src/projectile_impact.cpp:88) and the drift add at :9266 | 006E7670 position, 006E65C0 / 006E1510 velocity | formulas match; the gravity constant is wrong (item 2) |
+| Bomb release | `release_bomb_drop` :13688 | 006E0A70 (vtable+190h), 006E1F00, 006E4D50 cone | the velocity choice matches; the turn basis diverges (item 1) |
+| Torpedo release | `release_ordnance_drop` (:13533) | the same 006E0A70 / 006E1F00 (torpedo vtable 00D0C3E8 +190h = 006E0A70) | diverges (item 1b) |
+| Depth charge in water | :8936 `depth_charge_advance_006fcd20` | 006FCD20 | matches apart from the constant and one data source (item 5) |
+
+Checked and matching:
+- **Swim drag.** In 00857480 the split is `along = (vx fx + vy fy) + vz fz`, the axial part is
+  scaled by `f(1 - 0.5999994 dt)` and the lateral part by `f(1 - 3.0000007 dt)`, and the thrust
+  is `f(f(f(fwd * 470h) * mod) * dt)` with mod = 1 (0085776A). These are the host's
+  kTorpedoAxialDrag474 / kTorpedoLateralDrag478 (00D0C5EC / 00D0C5E8).
+- **Heading turn.** 00857061..0085714E: `e = -00438B10(atan2(fx, fz), cmd)`, clamped to +/-rate,
+  then times dt, and the rotation is about the up row (0085E880). In a horizontal frame this is
+  the host's `nose += step`.
+- **Water entry.** 008568E0 reads shot = entity + 310h, so shot+8 is velocity +318h and shot+0Ch
+  is vy. The first limit is `|v| > MaxWaterHitVel` (FCOMI / JA), as in the host. 006E6450 only
+  sets the water flag and the trail effects; it sets no speed.
+- **Depth charge.** In 006FCD20 the velocity is `v += f(f(-k v) dt)` with `f(-k vy - g)` on y.
+  The scan runs below -5, with a radius of 625. The box test is `|local| - box * 0.5 < 10`,
+  using the inverse world matrix through 004142E0. The axis pairing is x with +A4h Width, y with
+  +A8h Height and z with +A0h Length, and the 006FCEFA `DC C9` FMUL ST(1),ST(0) was checked from
+  the bytes.
+- **Bomb fall.** 006E1510 computes `vy = f(f(a.y dt) + f(vy - g dt))` and then `v += a dt` with
+  a = +348h. a is the drift, and 006E1F00 zeroes its y. This is the host's flight step plus the
+  :9272 drift add.
+
+### 8.2 Divergences
+
+1. **Bomb release basis (006E1F00 vs game_hosts_gunnery.cpp:13766-13773).** 006E1F00 passes a
+   copy of the bomb's world matrix to vtable+190h, which is 006E0A70. For a plane faster than
+   1.3888890f, 006E0A70 sets velocity = w = the owner's world velocity with 3.0 taken off y
+   ([00E08E54], which only has reads). It also writes w into **matrix row 2** and runs 0085DC80.
+   The turn is then
+   `v_i = f(f(f(f(Dx r0_i) L) + f(f(Dy r1_i) L)) + f(f(r2_i Dz) L))`, with L = |w| and D =
+   (t cos a, -t sin a, 1) (006E4F91 / 006E4FB1, stream 1). Its rows are that velocity-aligned
+   frame, so with t = 0 the bomb keeps w exactly.
+   - **Image:** `v = |w| (Dx r0' + Dy r1' + w/|w|)`.
+   - **Host:** `v = |w| (Dx right + Dy up + forward_plane)`, using the plane's pose.
+
+   So every host bomb leaves along the **nose** with speed |w|, even with no cone. The 3 m/s
+   that 006E0A70 subtracts survives only in the magnitude, and any angle of attack or sideslip
+   is folded in. cc13-gpr33 labelled the substitution; the effect was never stated.
+   **Prediction:** with a plane flying along its nose (forward = v/|v|), a host bomb starts
+   about 3 m/s slower downward than the image's. Falls of 1000 to 3000 m (fall time t of
+   14-25 s) take about 0.3 s longer (dt is about 3/g). At 100 m/s the bomb lands about **25-30 m
+   long**, and that is also against 007BCC80's fall time, which assumes the -3. A steep dive
+   (vy about -100) moves by only a few metres. Level bombers (kind 10h) on ship targets about
+   20-30 m wide are where this shows. The image model is
+   `bomb_release_velocity_006e0a70_006e1f00`.
+   1b. **Torpedo release.** The host's torpedo drop sets velocity = forward x
+   unit_forward_speed_0092d730, with no 006E0A70 step: no world velocity and no -3 m/s. The
+   image torpedo enters the water about 3 m/s faster downward, which matters for item 3 and for
+   MaxWaterHitVel. The time to the water shortens by about 0.1-0.3 s, so a torpedo launched at
+   80 m/s lands about 10-25 m shorter.
+2. **Gravity constant.** `kProjectileGravity = 9.8103800773621` (include/bsp/projectile_impact.hpp:27)
+   is also used as `kGravity` (src/bomb_torpedo_tick.cpp:30). 00CF9058 is the double 9.8100004196
+   (= (double)9.81f), so the image computes with 9.81f; docs/GUN_GRAVITY_ARC.md already noted
+   this, and it is still unfixed. It affects 006E65C0, 006E7670, 006E8430's 0.05 bias, 006E1510
+   and 006FCD20. g/g differs by 3.9e-5, which over a 3000 m fall is about 0.12 m and 1 ms:
+   negligible, but every same-binary pair carries it. 006E7670 also associates differently:
+   the image computes `y = f(f(f(vy s) - (s (s g)) 0.5) + snap.y)`, the host
+   `(snap + vy s) - g term`. That is a last-bit effect.
+3. **Torpedo MaxFall break-up (kTorpedoMaxFallBreakupBound OFF).** 00856923..00856932 breaks the
+   round up when `vy < -sqrt(2 MaxFall 9.81)`. With the realistic table's MaxFall 50 (lines 115,
+   823, 1608) the limit is 31.3 m/s; with 60 (line 886) it is 34.3 m/s. A free drop crosses
+   31.3 m/s from **about 50 m** (about 49.5 m with the image's -3 m/s). The host has this
+   limit OFF. **Prediction:** torpedo drops from about 50-60 m and up break up in the image but
+   swim in the host. Torpedo-bomber missions whose AI releases above that height score hits the
+   image would not; the counter `torpedo_fall_breakups` measures it with the switch ON. The
+   host's `max_fall > 0` / `hit_limit > 0` gates do not matter, because every torpedo row in
+   this installation's realistic bulletclasses.lua sets both keys.
+4. **Torpedo vertical (labelled).** The image keeps the entry vy (006E6450). In 00857480 the
+   nose levels by `f(fy + (0 - fy)(3 dt))`, the vertical velocity is part of the lateral
+   component and decays by `1 - 3 dt`, and 00856BB0's depth controller drives it to swimdepth.
+   The host sets vy = 0 and holds y on the surface (:9751, :9276). The faithful 3D path exists
+   behind kTorpedoSwimDepthHomingBound. **Prediction:** a host torpedo runs at the surface, not
+   at -2.5 m. The hit tests use the hull box, so a hit/miss change needs a target whose box
+   bottom lies between 0 and -2.5 m. That was not checked. JM06's submarine is
+   the case to check with the switch ON.
+5. **Depth charge (JM06).** The formula matches. Two inputs differ:
+   - The host's box comes from `flat_scaled(type_id, "length"/"width"/"height", kMilliScale)`
+     (:4340-4342), not from the class Lua row's +A0h..+A8h. Whether the two agree for the
+     submarines was not checked; if they differ, the 10 m contact margin moves by half the
+     difference.
+   - The `[game+1FE4h] == 2` skip (006FCDC2) is not modelled. In single-player there is no
+     effect.
+
+   **Prediction for JM06:** contact detonations agree when the flat and class dimensions agree;
+   otherwise they change only at the box edge.
+6. **Heading-turn rate rounding.** The image computes `f(f(turn * (double)pi_f) / 180)` (00CE3D28 =
+   3.1415927410125732, both at 24-bit precision). The host computes
+   `(float)(turn * 3.14159265358979 / 180.0)`. For 127 of 360 half-degree values from 0.5 to 180
+   the host rate is one ULP lower, which is negligible.
+
+### 8.3 Records
+
+Seven records were re-added with `--replace`, keeping their names and sources, with coverage
+`partial` and the finding appended to the evidence: 006E1F00, 006E0A70, 006E65C0, 006E7670,
+006E8430, 006E1510 and 006FCD20. The previous records stay in git history. The 008568E0 record
+still points at `torpedo_enter_water_008568e0` (complete), and the host's OFF limit is item 3.
+00857480's record (bomb_torpedo_tick.cpp) was not re-checked as a whole, because the host runs
+it only with kTorpedoSwimDepthHomingBound ON.
+
+### 8.4 Open
+
+- Check the flat dimensions against class +A0h..+A8h for the JM06 submarines (item 5).
+- Check the torpedo release heights in the torpedo-bomber missions' logs (item 3), using
+  existing logs only.
+- 006E4D50's remaining rack body.
+- 007BCC80's fall-time prediction, against item 1.

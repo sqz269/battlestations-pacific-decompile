@@ -9,6 +9,7 @@
 
 #include <cmath>
 #include <cstring>
+#include <utility>
 
 namespace bsp {
 namespace gameplay_seg53_cc13 {
@@ -1851,6 +1852,93 @@ MotionControllerCreateResult unit_create_motion_controller_b_00852210(const Moti
             break;
         }
     }
+    return r;
+}
+
+// ---------------------------------------------------------------------------
+// Pass cc13-gpr53f.
+
+void water_tracer_destruct_0086bf10(WaterTracerComponent& c, const WaterTracerDestructHost& host) {
+    for (std::uintptr_t* field : {&c.texture_98, &c.texture2_9c, &c.tracer_resource_a4,
+                                  &c.spray_resource_c0, &c.width_speed_curve_8c, &c.height_y_curve_70,
+                                  &c.height_x_curve_6c, &c.width_curve_68, &c.alpha_curve_64}) {
+        if (*field != 0) {
+            host.release(*field);
+            *field = 0;
+        }
+    }
+    c.texture_file2_50.clear();
+    c.texture_file_48.clear();
+    host.destroy_base();
+}
+
+void thunderstorm_read_lua_0086f3b0(ThunderStormComponent& c, const ThunderStormParams& params) {
+    c.glow_texture_40 = params.string("GlowTexture");
+    c.has_3d_lightning_54 = params.boolean_or("Has3Dlightning", true);
+    {
+        const float min_life = params.number_or("MinLifeTime", 0.5f);  // 0086F4DE
+        const float max_life = params.number_or("MaxLifeTime", 4.0f);  // 0086F4F3
+        c.min_life_time_24 = min_life;
+        c.max_life_time_28 = max_life;
+    }
+    {
+        const float min_scale = params.number_or("MinScale", 0.5f);
+        const float max_scale = params.number_or("MaxScale", 4.0f);
+        c.min_scale_2c = min_scale;
+        c.max_scale_30 = max_scale;
+    }
+    c.max_spawn_count_38 = params.integer_or("MaxSpawnCount", 15);
+    c.spawn_delay_3c = static_cast<float>(params.integer_or("SpawnDelay", 1));  // 0086F617
+    c.constant_34 = 2.5f;                                                      // 0086F646
+    c.textures_48.clear();                                                     // 0086F680
+    for (ThunderStormTexture& t : params.textures("Textures")) {
+        c.textures_48.push_back(std::move(t));
+    }
+}
+
+void thunderstorm_destroy_members_0086fb40(ThunderStormComponent& c) {
+    c.textures_48.clear();
+    c.textures_48.shrink_to_fit();
+    c.glow_texture_40.clear();
+}
+
+void thunderstorm_destruct_0086fbc0(ThunderStormComponent& c, const std::function<void()>& destroy_base) {
+    thunderstorm_destroy_members_0086fb40(c);
+    destroy_base();
+}
+
+// ---------------------------------------------------------------------------
+// Pass cc13-ver2.
+
+BombReleaseResult bomb_release_velocity_006e0a70_006e1f00(const float rack_matrix[16],
+                                                         const BombReleaseOwner& owner,
+                                                         const Vec3& cone_d) {
+    BombReleaseResult r{};
+    std::memcpy(r.matrix, rack_matrix, sizeof r.matrix);
+    Vec3 v = owner.world_velocity_34;
+    if (owner.is_plane_5c_0f && owner.speed_38 > 1.38888896f) {  // 006E0A9B FCOMI / JBE
+        v.y = v.y - 3.0f;                                          // 006E0AB3
+        r.matrix[8] = v.x;                                         // 006E0AE7..006E0AEF
+        r.matrix[9] = v.y;
+        r.matrix[10] = v.z;
+        orthonormalize_pose_matrix_0085dc80(r.matrix);             // 006E0AF4
+    }
+    if (!(cone_d.x == 1.0f && cone_d.y == 1.0f && cone_d.z == 1.0f)) {  // 006E1FD5..006E200A
+        const float sq = (v.y * v.y + v.x * v.x) + v.z * v.z;               // 006E2010..006E2029
+        const float len = static_cast<double>(sq) > 1e-10 ? static_cast<float>(std::sqrt(sq)) : 0.0f;
+        const float* r0 = &r.matrix[0];
+        const float* r1 = &r.matrix[4];
+        const float* r2 = &r.matrix[8];
+        float out[3];
+        for (int i = 0; i < 3; ++i) {
+            const float w2 = (r2[i] * cone_d.z) * len;
+            const float w1 = (cone_d.y * r1[i]) * len;
+            const float w0 = (cone_d.x * r0[i]) * len;
+            out[i] = (w0 + w1) + w2;                                        // 006E213D..006E2181
+        }
+        v = Vec3{out[0], out[1], out[2]};
+    }
+    r.velocity = v;
     return r;
 }
 
