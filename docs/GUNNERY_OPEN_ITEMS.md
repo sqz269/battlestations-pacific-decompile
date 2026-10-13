@@ -13222,3 +13222,23 @@ contact only (no fuze), so few kills; HVAR strafes add ship/fort damage. RNG: th
 only; the shared stream 1 is untouched, so gunnery spread elsewhere should not move unless a death moves.
 `kRocketHomingBound` ON on top: `guided` = `launches` against IsKindOf(5) targets, `homing_steps` > 0, a small
 hit-rate rise.
+
+## 203. The small gunnery items from cc13's band sweeps (lead queue item 3; cc9-gunnery39, 2026-10-13)
+
+1. **AA firepower `00812600` counts 1.0 per mount with no dead-byte test** (CC13_GP_0080_0084 finding 2). Its
+   only consumer is `008127E0` `BSP_Unit_RefreshFirepowerRatios`, called from `0088DC10`
+   `BSP_LuaBinding_GetFirepower` and `0081F980` (bind time) (`ghidra callers`). No host binds `GetFirepower`, and
+   this installation's only Lua caller (`scripts/global/commandhelpers.lua:2413`, mtime 2024-10-29,
+   `luaCheckDamageRetreatConditions`) sits inside a `--[[ ... ]]` block. Nothing to change: inert here.
+2. **`0081DCB0`'s random torpedo barrel pick draws stream 1** (finding 3). The host already models it so:
+   `unload_random_torpedo_barrel_0081dcb0` (`src/game_hosts_gunnery.cpp` ~2962) draws through `draw(...)`,
+   whose default is the gunnery host's one shared generator, which stands for stream ECX=1 (comment at
+   ~1678; `torpedo_unload` keyed under BSP_GUNNERY_RNG_STREAMS). No change.
+3. **BOMB_FAMILY_TICK.md's `vtable[3Ch]`** (CC13_GP_006B_0070 note). The sentence is right: `0080A0FE` calls
+   through the interface embedded at `record+310h` (rocket table `00D09078` -> `00809F20`, bomb table
+   `00CF95E0` -> `006E1CD0`); `006E6C20` is `+3Ch` of the shot's primary table `00CF93B0`. Clarified in
+   BOMB_FAMILY_TICK.md; no host path dispatches either slot (`on_spawn_flag` has no implementer).
+4. **The dotted-key blast read** (`kBulletBlastDamageMinNestedBound`, OFF, GUNNERY 200 item 2): applied at both
+   `build_guns` sites as gunnery38 prepared it. `local\g38_tier_census.py` re-run on this installation's
+   arcade and realistic `bulletclasses.lua`: 32 and 26 Artillery classes, 0 change tier. Predicted
+   gameplay-identical everywhere.

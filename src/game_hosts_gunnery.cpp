@@ -627,6 +627,11 @@ constexpr bool kAaKind6GateBound = true;   // ON: GUNNERY_OPEN_ITEMS 184.3
 //    lifted direction's hull-frame pair. OFF: the unlifted hull-frame bearing, and
 //    the world lift added to the hull-frame elevation (184.1's substitution).
 constexpr bool kAaKind6GateMountFrameBound = true;   // GUNNERY 197: ON, inert on USN02/USN13 9000
+//  * kBulletBlastDamageMinNestedBound (cc9-gunnery38/39, GUNNERY 203): 006E99E7's artillery
+//    tier reads the class's Blast.BlastDamageMin; read_bullet_class_number takes the
+//    dotted key as one flat name and answers 0. True: the nested reader. False: 0,
+//    as before. No Artillery class in this installation changes tier either way.
+constexpr bool kBulletBlastDamageMinNestedBound = false;
 //  * kLandscapeSpatialAttachBound: packet cc9_landscape_spatial_attach
 //    (docs/SCENE_CONTENTS_HOSTS.md section 8). Each Landscape joins the segment
 //    query as a loose entry after the units (00884078 attaches its collision
@@ -4446,8 +4451,11 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                     gun.bullet_class, "FlyTime", bsp::kWeaponClassFlyTimeDefault);
                 fin.damage_min = lua.read_bullet_class_number(
                     gun.bullet_class, "DamageMin", 0.0f);
-                fin.blast_damage_min = lua.read_bullet_class_number(
-                    gun.bullet_class, "Blast.BlastDamageMin", 0.0f);
+                fin.blast_damage_min = kBulletBlastDamageMinNestedBound
+                    ? lua.read_bullet_class_nested_number(gun.bullet_class, "Blast",
+                          "BlastDamageMin", 0.0f)
+                    : lua.read_bullet_class_number(
+                          gun.bullet_class, "Blast.BlastDamageMin", 0.0f);
                 fin.name = lua.read_bullet_class_string(gun.bullet_class, "Name");
                 fin.water_travel_speed = lua.read_bullet_class_number(
                     gun.bullet_class, "WaterTravelSpeed", 0.0f);
@@ -4494,8 +4502,9 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                     fin2.fly_time = lua.read_bullet_class_number(b2, "FlyTime",
                         bsp::kWeaponClassFlyTimeDefault);
                     fin2.damage_min = lua.read_bullet_class_number(b2, "DamageMin", 0.0f);
-                    fin2.blast_damage_min = lua.read_bullet_class_number(b2,
-                        "Blast.BlastDamageMin", 0.0f);
+                    fin2.blast_damage_min = kBulletBlastDamageMinNestedBound
+                        ? lua.read_bullet_class_nested_number(b2, "Blast", "BlastDamageMin", 0.0f)
+                        : lua.read_bullet_class_number(b2, "Blast.BlastDamageMin", 0.0f);
                     fin2.name = lua.read_bullet_class_string(b2, "Name");
                     fin2.flak_min_range = lua.read_bullet_class_number(b2, "MinRange", 0.0f);
                     const bsp::WeaponClassFinaliseResult r2 =
