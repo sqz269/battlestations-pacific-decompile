@@ -17464,3 +17464,36 @@ CC13_VER_7: LOMP06 (an exited CrucialCargo fails the mission), USN05, USN06, USN
 The menu rows USN01, USN06 and USN12 load `usn_1_marshall.lua`, `usn_6_guad.lua` and `usn_12_augusta.lua`, not the
 COTP scripts whose ship exitzone listeners CC13_VER_8 counts, so no run here exercises a ship listener. **Verdict: ON
 by mechanism** (the image's countdown and kill reproduce on the probe; every win row is identical).
+
+## 233. Small items: the torpedo-boat rudder torque (T1/T2), 00812B00, 00853E10; IJN08 b (cc9-ships47, 2026-10-13; lead items 4 and 5)
+
+**T1/T2, `kTorpedoBoatRudderTorqueBound`** (`ShipMotionBinding`, `src/game_hosts_units.cpp`; patch
+`local\s47_t1_patch.py`). cc13-ver3 section 6: 00937440 is slot 0 only of the controller vtable 00D196F0 that
+00939F20 builds for the TorpedoBoat (00857C20, vtable 00D0C648 +230h); other ships' controllers run 009329C0 alone.
+True: the torque runs for units answering IsKindOf(0Eh) only, with settings+588h = 1500 (SUBSTITUTION, labelled:
+this installation's shipglobals.lua:553 `TBoatNyomatekSzorzo`, not the loaded field), through
+`tboat_rudder_torque_00937440` (the image's grouping); every other ship goes straight to 009329C0. False: every
+surface ship runs the torque with gain 0, as before.
+**Predictions.** OFF identical. ON: only the `ShipMotion::force_model` / `add_rudder_torque` counts drop to the
+torpedo boats; gameplay identical while the hull's inverse inertia stays zero (the host comment at the force model:
+00C5C940, the AABB producer, unread).
+**Pair** (export of this branch, USN06 idle 18000, `local\s47_t?_u6`): gameplay identical (deaths 79, shots 4564
+both); `force_model` 652279 -> 112279 and `add_rudder_torque` 625072 -> 85072 calls (the ten torpedo boats; the
+torpedo-boat summary counts 112279 trait queries). **Verdict: ON by mechanism.** Not committed yet: it needs the
+`game_hosts_units.cpp` claim.
+
+**00812B00** (cc13-gpr50, ship vtable[168h] command availability): no reach. Its only host consumer would be
+`008162B0` for ships, which is not bound; the script-order host asks `entity_may_follow_target_00779d50` directly.
+Nothing to wire until that is bound.
+
+**00853E10** (cc13-gpr53b, submarine activate): no reach in this installation. No `.scn` or `.props` file under
+`universe\` and no script under `scripts\` contains `AutoAttackTarget` or `DummyObjectID` (byte search of every
+file), so neither the attackmove nor the stream-1 wander draw can run; the saved-game arm is outside the harness.
+
+**IJN08 b** (`local\s47_i08_b.txt`: s46's a without its Maru lines, plus `select Maru1` / `attack Maru1 HQ` every
+2000 frames 13000-70000; 80000 frames). The early selects and the attackmove at the HQ are **accepted** (the
+section-230 refusal was after Maru1 had died). Both transports exist (Maru2 is the right fleet's). Maru1 dies to
+DamagedBB at 2615.03 s (first damage 993 s), Maru2 to US_Airfield_01 bombers at 2784.39 s, and primary 2
+(`JapTrans` all dead) fails the mission: `Game Over` at 2786.59 s. Maru1 starts at (-1000, -11700), about 20 km
+from the HQ at (-1804, 8280). Next: escort or delay the Marus until DamagedBB and the US airfields are down, then
+send them.
