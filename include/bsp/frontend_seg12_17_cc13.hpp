@@ -15,6 +15,7 @@
 #include <cstdint>
 #include <string>
 #include <string_view>
+#include <vector>
 
 namespace bsp::cc13_fe3 {
 
@@ -1952,5 +1953,616 @@ struct Fe8ControlEventHost {
 // +204h / +200h auto-scroll +1A0h (2 / 1, 0.004f, 1), +20Ch begins a drag; then type 6 -> vtable
 // +88h(2, 0, 1.0f), type 12h -> vtable +84h(2).
 void control_binding_handle_gui_event_00560bf0(Raw listener, void* widget, Fe8ControlEventHost& host);
+
+// ---------------------------------------------------------------------------
+// Packet cc13-fe9 (docs/CC13_FE_9.md): control binding bodies left open by cc13-fe8.
+// ---------------------------------------------------------------------------
+struct Fe9ControlRowsHost {
+    virtual ~Fe9ControlRowsHost() = default;
+    virtual Raw input_settings_005547d0() = 0;
+    virtual void* input_device_map_index_0055c110(void* map, const void* key) = 0;
+    // 005548C0, ECX = entry tree: the case-insensitive lower bound (kTreeLowerBound row 0).
+    virtual void* binding_tree_lower_bound_005548c0(void* tree, std::string_view name) = 0;
+    virtual void* find_child_by_name_00aa7e00(void* parent, std::string_view name, std::uint32_t recurse) = 0;
+    // 006A9850, ECX = settings: (NativeString* out, key, name, variant) -> the slot's key text.
+    virtual std::string input_binding_slot_text_006a9850(Raw settings, const void* key, std::string_view name,
+        std::uint32_t variant) = 0;
+    // 006AAC50 with a null conflict output.
+    virtual bool input_binding_has_conflict_006aac50(Raw settings, const void* key, std::string_view name,
+        std::uint32_t variant) = 0;
+    virtual void gui_text_set_localised_source_00abaed0(void* text, std::string_view source, std::uint32_t flag) = 0;
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;             // vtable +34h
+    virtual void widget_set_local_x_00aa78d0(void* widget, float x) = 0;                   // thiscall, RET 4
+    virtual void control_binding_show_conflict_text_0055c200(Raw screen) = 0;
+};
+
+// 0055C5A0 BSP_ControlBindingScreen_UpdateBindingRowText, __fastcall(ECX = screen), RET. entry =
+// map[device key] (0055C110 on settings +8h, key = settings +18h + [+16Ch]*8, checked index). Walks
+// the std::list of rows at settings list +20h (+14Ch, head pointer +150h, row at node +8h). A row
+// without a "main_Text" child (00AA7E00 recurse 0) is skipped; otherwise its main_Text (recurse 1)
+// NativeString (+0F4h) is the binding name. When the entry holds the name (lower bound 005548C0,
+// then !(name < node), with an empty name below any non-empty node key and _stricmp otherwise):
+// var_1_Text / var_2_Text get 006A9850(key, name, 0 / 1) through 00ABAED0(text, 1); for slot 0 then
+// 1, conflict_N_Group (00E086AC / 00E086B0) gets vtable +34h(006AAC50(key, name, slot, null)) (the
+// image pushes a dword whose upper bytes are stale) and, on a conflict, its "Left_Text" (00CEE65C)
+// child moves to x = -(float)(var_N_Text +114h / 960.0) (00CEC380; FDIV by the double, FSTP to a
+// float, FCHS). Ends with 0055C200. The checked-iterator reports (00BF6713) are not modelled.
+void control_binding_update_binding_row_text_0055c5a0(Raw screen, Fe9ControlRowsHost& host);
+
+struct Fe9ControlListHost : Fe9ControlRowsHost {
+    virtual void list_box_set_listener_00a9ac40(void* list, void* listener) = 0;
+    virtual void list_box_clear_rows_00a9bec0(void* list) = 0;
+    virtual void list_box_insert_row_00a9d750(void* list, void* row, std::uint32_t a, std::uint32_t b) = 0;
+    virtual void list_box_select_index_00a9c7c0(void* list, std::int32_t index) = 0;
+    virtual void* list_box_row_00a9be00(void* list, std::int32_t index) = 0;
+    virtual void* widget_clone_subtree_00aab4c0(void* widget, std::uint32_t flag) = 0;
+    virtual void widget_set_listener_fields_00aa6bc0(void* widget, void* listener, std::uint32_t flag) = 0;
+    virtual void widget_set_hit_clip_rect_00aa8f30(void* widget, void* clip, std::uint32_t flag) = 0;
+    virtual void widget_set_enabled_60(void* widget, std::uint32_t enabled) = 0;           // vtable +60h
+    virtual void widget_virtual_80(void* widget, std::uint32_t value) = 0;                 // vtable +80h
+    virtual void gui_text_set_localised_cstring_00abbe50(void* text, const char* source, std::uint32_t flag) = 0;
+    // 0055A9A0, ECX = entry +18h: map<NativeString, setting>::operator[]; the setting's kind is +0h.
+    virtual std::int32_t* setting_map_index_0055a9a0(void* map, std::string_view name) = 0;
+    // 00444BE0, ECX = entry +24h: map<NativeString, float>::operator[].
+    virtual float* setting_value_map_index_00444be0(void* map, std::string_view name) = 0;
+    // 005F3750 BSP_ControlBindingScreen_SetSliderRow, __fastcall(ECX = row, EDX = position).
+    virtual void control_set_slider_row_005f3750(void* row, std::int32_t position) = 0;
+    virtual void control_binding_refresh_selected_binding_0055c3b0(Raw screen) = 0;
+    virtual void scroller_attach_content_00683790(void* scroller, void* content) = 0;
+    virtual void scroller_set_scroll_range_006834a0(void* scroller, float range) = 0;
+    virtual std::array<float, 3> widget_resolved_position_00aa6750(void* widget) = 0;
+    virtual std::array<float, 2> widget_size_00aa6740(void* widget) = 0;
+};
+
+// 0055D380 BSP_ControlBindingScreen_BuildSettingsList, __fastcall(ECX = screen), RET. The list +20h
+// loses its listener (00A9AC40(0)), is disabled (vtable +60h(0)) and cleared (00A9BEC0). entry =
+// map[device key]. Bindings: for each name i of the entry's vector +34h (8-byte NativeStrings) a
+// clone of template +28h is shown, gets the widget listener (screen+0Ch, 00AA6BC0), row id i |
+// FFFF0000h at +0D8h and the clip +218h (00AA8F30). Its main_Text shows the name when the entry's
+// tree holds it (the 005548C0 lookup of 0055C5A0) and "^" + name otherwise. Unknown names mark the
+// row +77h; known ones clear main_Text +78h, fill var_1_Text / var_2_Text from 006A9850(slot 0 / 1)
+// (each also +78h = 1, the widget listener, id i | FE000000h / i | FF000000h) and show
+// conflict_N_Group per 006AAC50(slot, null), whose "Right_Text" (00CEE730) moves to x =
+// (float)((float)(var_N_Text +114h / 960.0) + 1/96.0) (00CEC380, 00CEE728). Each row is appended
+// (00A9D750(row, 0, 0)). Settings (the vector +44h, when not empty): a spacer (template +28h, +77h)
+// and the "^FE_pc.cs_invert" (00CEE710) header (+77h, +78h = 0); kind (0055A9A0 on entry +18h) 3
+// or 4 gets a template +30h row: main_Text = the name, var_Text = "FE.opt_normal" when the value
+// (00444BE0 on entry +24h) is above 0.0f (00D7A218, COMISS) else "FE.opt_inverted". With at least one
+// such row a second spacer and header follow; the "^FE_pc.controls_sensitivities" (00CEE6F0) label
+// lands on that header, or on the invert header when there were none. Every other kind gets a
+// template +2Ch slider row whose "dodgeListboxAutoControl_Group" +0D8h is the row index, slider
+// position 005F3750(-1 - (int)(value * -4.0)). Rows built from +30h / +2Ch carry id = the list's row
+// count | FFFF0000h. Then selection min(+174h, count - 1) (00A9C7C0), vtable +80h(1), the list
+// listener (screen+8h), vtable +60h(1), list +77h = 0, page 2 -> 0055C3B0. The scroller +1A0h is
+// detached (00683790(0)) and gets the range ((float)(last.y - first.y) + first.h + 0.015 (00CEE6C8))
+// rounded to float, minus the clip's height, rounded to float. The second 0055A9A0 call of each
+// settings row (result discarded) and the checked-iterator reports are not modelled.
+void control_binding_build_settings_list_0055d380(Raw screen, Fe9ControlListHost& host);
+
+struct Fe9ControlPageHost : Fe9ControlListHost, Fe8LuaHost {
+    virtual void input_manager_update_00a92c40(float dt) = 0;                                // ECX = 004BEC00()
+    virtual bool input_flag_61f() = 0;                                                       // byte [00E188A8]+61Fh
+    virtual bool flag_00e19428() = 0;                                                        // byte [00E19428]
+    virtual std::uint8_t flag_00f88a30() = 0;                                                // byte [00F88A30]
+    // 004BA6D0 on [00F8BBF4]: (class, index) -> the device or null.
+    virtual void* input_backend_device_004ba6d0(std::int32_t device_class, std::int32_t index) = 0;
+    // 006A9EA0, ECX = settings: does any binding of the device (key) use slot kind 2.
+    virtual bool input_device_has_kind2_binding_006a9ea0(Raw settings, const void* key) = 0;
+    virtual void widget_virtual_7c(void* widget, std::uint32_t value) = 0;                  // vtable +7Ch
+    virtual void widget_virtual_84(void* widget, std::uint32_t value) = 0;                  // vtable +84h
+    virtual void widget_set_size_58(void* widget, std::array<float, 2> size) = 0;           // vtable +58h
+    virtual void rebuild_command_bar_0054b530(const std::array<MainMenuCommandArgument, 5>& arguments) = 0;
+    // 00531B00 on 00425D10(): (slot, message, kind, callback, 0, title "", 0.0f, 0, "", 1).
+    virtual void raise_prompt_00531b00(std::int32_t slot, const char* message, std::int32_t kind,
+        std::uint32_t callback) = 0;
+    virtual void command_bar_set_help_line_0054a0c0(std::string_view line) = 0;              // ECX = [00E1930C]
+    // 00518D60: ECX, EDX, one stack word and the title NativeString, RET 8.
+    virtual void frame_select_00518d60(std::int32_t ecx, std::int32_t edx, std::uint32_t stack_word,
+        std::string_view title) = 0;
+    virtual void list_box_reset_highlight_00a9cf30(void* list, std::uint32_t a, std::uint32_t b) = 0;
+    virtual void gui_text_set_ellipsized_00abb000(void* text, std::string_view source, float width,
+        std::uint32_t flag) = 0;
+    // 00BDD990 on [0109CEEC]: (directory, extension, 0, list*) -> the matching resource names; the
+    // image pops them front first (00557A90).
+    virtual std::vector<std::string> vfs_enumerate_resources_00bdd990(std::string_view directory,
+        std::string_view extension, std::uint32_t flag) = 0;
+    // [0109CEEC] vtable +4(path, 2) -> stream or null; stream vtable +18h is-open, +24h read(buffer,
+    // length, &count), +4h(1) deleting destructor.
+    virtual void* vfs_open_04(std::string_view path, std::uint32_t mode) = 0;
+    virtual bool stream_is_open_18(void* stream) = 0;
+    virtual void stream_read_24(void* stream, void* buffer, std::uint32_t length) = 0;
+    virtual void stream_delete_04(void* stream) = 0;
+    virtual void control_binding_build_settings_list_0055d380(Raw screen) = 0;
+};
+
+// 0055E3A0 BSP_ControlBindingScreen_RefreshPage, __thiscall(screen, page), RET 4. 00A92C40(0.0f),
+// +195h = 1, +198h = 0.5f (00CE3800), [+214h] vtable +84h([00E188A8]+61Fh != 0). Command bar per
+// page: 2 -> (0,"",1)(0,"",1)(B3h navigate,1)(0,"",1)(A3h back,2); 3 -> five (0,"",1); others ->
+// (A2h select,0)(0,"",1)(B3h,1)(0,"",1)(A3h,2). Page 2 with [00E19428] clear, no class-2 device
+// (004BA6D0(2, 0)) and a device binding of kind 2 (006A9EA0) raises "FE_pc.cs_touchcontroller"
+// (slot 3, kind 3), sets +168h = 4 and returns. +214h is shown on pages 2/3 and hidden otherwise.
+// Moving between pages 2 and 3 keeps the settings list; +168h = page; both lists are hidden and
+// disabled, the help line cleared, and without the 2/3 move list +20h loses its listener. +34h
+// hidden. Page 0: frame (6, 0, 0, "^FE_pc.controls_categories"), the device list (+1Ch) gets the
+// "FE_pc.controls_general" header, one row per device key (settings +18h; vtable +7Ch([00F88A30])),
+// and "FE_pc.controls_loadpreset" (+0D8h = 1); shown, 00A9CF30(1, 1), +19Ch = 0, and with
+// [00E188A8]+61Fh frame (0, 0, 0, the categories title) again. Page 1: frame (6, 0, 0,
+// "^FE_pc.controls_loadpreset"), one row per string of the input settings' Lua global
+// ControlPresetsOrder[1..] (settings +78h), then up to 10 (7 with +61Fh) list rows from the
+// "Presets" / ".preset" resources: the name loses its first 8 characters and its first ".preset",
+// must be non-empty and [0-9A-Za-z ] only, and the file (VFS vtable +4(path, 2)) must start with
+// "CONTROL_PRESET\x01" (00CEE75C, 15 bytes read into a zeroed 40h buffer); the row is sized
+// (0.3645833f (00CEE758), its height) and ellipsized at -1.0f (00D7A260). Pages 0, 1 and any
+// other page end with: the device list selects +16Ch + page*4, enabled, +77h = 0, list listener,
+// vtable +80h(1), +1FCh hidden. Page 2: map[key] (result unused), frame (6, 0, 0, "^" + key)
+// unless +61Fh, 0055D380 unless kept (kept: enabled, +77h = 0, listener), list +20h and +1FCh
+// shown. Page 3: frame (6, 0, 0, "^FE_pc.controls_adjust") unless +61Fh, list +20h disabled with
+// +77h = 1, then shown and enabled, +1FCh shown. All paths but the prompt end with the device
+// list's listener (screen+8h) and list +20h byte +14Ah = 0. A null Lua string (strlen on null in
+// the image) is read as "".
+void control_binding_refresh_page_0055e3a0(Raw screen, std::int32_t page, Fe9ControlPageHost& host);
+
+struct Fe9ControlPresetHost : Fe8LuaHost {
+    virtual Raw input_settings_005547d0() = 0;
+    virtual void* list_box_current_row_00425e50(void* list_box) = 0;
+    // A fresh 00B66BD0 owner, 00B6A020 Open(libs), 00B69D40 RunScriptWithOverrides(path, flag).
+    virtual void* lua_owner_open_run_flagged(std::uint32_t libs, std::string_view script, std::uint32_t flag) = 0;
+    virtual void* lua_get_by_native_string_00b68100(void* table, std::string_view key) = 0;
+    // 006ABA50 on the input settings with a 004425C0 LuaReader over a 00B66FA0 copy of the
+    // object; the reader is destroyed afterwards (00441A20).
+    virtual void input_settings_read_keyboard_archive_006aba50(void* lua_object) = 0;
+    virtual void control_binding_refresh_page_0055e3a0(Raw screen, std::int32_t page) = 0;
+};
+
+// 0055F710 BSP_ControlBindingScreen_LoadSelectedPreset, __fastcall(ECX = screen), RET. With +38h
+// set (a built-in preset): the input settings' Lua globals (owner +78h) ControlPresets (00CEE820)
+// [the device list's (+1Ch) current row text +0F4h] is read through 006ABA50 (no nil check).
+// Otherwise a fresh Lua owner, opened with 1, runs the path +3Ch (flag 1); its global Preset
+// (00CEE818) is read the same way unless nil, and the owner is closed. Then 0055E3A0(0).
+void control_binding_load_selected_preset_0055f710(Raw screen, Fe9ControlPresetHost& host);
+
+struct Fe9ControlListenerHost {
+    virtual ~Fe9ControlListenerHost() = default;
+    virtual std::int32_t list_box_selected_index_00a9c920(void* list_box) = 0;
+    virtual Raw input_settings_005547d0() = 0;
+    virtual void set_options_page_00e19650(std::int32_t page) = 0;
+    virtual void front_end_mark_field_40() = 0;                                              // [[00E198B8]+40h]+78h = 1
+    virtual void front_end_push_interface_request_004cc460(std::uint32_t a, std::uint32_t b) = 0;  // ECX = [00E198B8]
+    virtual bool input_flag_61f() = 0;                                                       // byte [00E188A8]+61Fh
+    virtual void frame_select_00518d60(std::int32_t ecx, std::int32_t edx, std::uint32_t stack_word,
+        std::string_view title) = 0;
+    virtual bool input_config_load_suppressed_00f88a30() = 0;                                // byte [00F88A30]
+    virtual void input_configuration_load_00698a10() = 0;                                    // ECX = [00E188A8]+3Ch
+    virtual void control_binding_refresh_page_0055e3a0(Raw screen, std::int32_t page) = 0;
+    virtual void input_settings_006aa1c0(Raw settings) = 0;                                  // ECX = settings
+    virtual void frame_select_default_004c9680() = 0;
+    virtual void control_binding_open_virtual_keyboard_00553bf0(Raw screen) = 0;
+    virtual void raise_prompt_00531b00(std::int32_t slot, const char* message, std::int32_t kind,
+        std::uint32_t callback) = 0;
+    virtual void prompt_focus_last_navigation_00530c20() = 0;                                // ECX = 00425D10()
+    virtual void native_string_assign_cstring_0041e350(void* string, const char* text) = 0;
+    virtual bool vfs_exists_08(std::string_view path) = 0;                                   // [0109CEEC] vtable +8
+};
+
+// 0055FCA0 BSP_ControlBindingScreen_ListboxListener04, slot +4h of the list listener at screen+8h,
+// __thiscall(listener, row, list box), RET 8 (screen offsets below). +16Ch + page(+168h)*4 = the
+// list's selection. Page 0 (n device keys): selection 0 sets [00E19650] = 4, [[00E198B8]+40h]+78h,
+// pushes interface request (0Ch, 0), with +61Fh frames (-1, -1, 0, "FE.opt_title_main"), reloads the
+// input configuration unless [00F88A30], and clears +16Ch..+17Ch; 1..n chooses device sel - 1 (+16Ch),
+// +174h = 0, +180h = 1, 0055E3A0(2), 006AA1C0 on the settings, then 004C9680 when +61Fh; n + 3
+// pushes (0Ch, 0) and reloads / clears as above; otherwise the row's +0D8h 1 -> 0055E3A0(1), 2 ->
+// 00553BF0. Page 1: a row text (+0F4h) equal to "FE.opt_cancel" (00449AF0, case-insensitive) ->
+// 0055E3A0(0); selection 0 sets +38h and raises "FE_pc.cs_loadpreset_confirm" (slot 0, kind 1,
+// callback 0055F9E0), then 00530C20; a positive selection clears +38h, sets +3Ch =
+// sprintf_s("Presets/%s.preset", text) (buffer 100h) and, when the VFS has it (vtable +8), raises the
+// same prompt; a negative one -> 0055E3A0(0). Other pages: only the selection store.
+void control_binding_list_listener_activate_0055fca0(Raw listener, void* row, void* list_box,
+    Fe9ControlListenerHost& host);
+
+// ---------------------------------------------------------------------------
+// Packet cc13-fe9: tactical library bodies.
+// ---------------------------------------------------------------------------
+struct Fe9LibraryLayoutHost {
+    virtual ~Fe9LibraryLayoutHost() = default;
+    virtual void* find_child_by_name_00aa7e00(void* parent, std::string_view name) = 0;     // (name, 1)
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;             // vtable +34h
+    virtual void list_box_set_listener_00a9ac40(void* list_box, void* listener) = 0;
+    // 00A9AC70: the list's input filter callback (004F90D0 here).
+    virtual void list_box_set_input_filter_00a9ac70(void* list_box, std::uint32_t callback) = 0;
+    virtual void widget_set_listener_fields_00aa6bc0(void* widget, void* listener, std::uint32_t zero) = 0;
+    virtual void scroller_attach_content_00683790(void* scroller, void* content) = 0;
+    virtual void scroller_attach_scroll_bar_00683380(void* scroller, void* thumb, float span, void* up,
+        void* down) = 0;
+};
+
+// 004FE870 BSP_TacticalLibraryScreen_BindLayout, slot +14h of 00CEB9B4, __fastcall(ECX = screen), RET.
+// Lookups (parent -> store): +4E0h "homaly_Clipbox" -> +0C8h; +4E4h "MainOOB_Listbox" -> +0BCh,
+// "Main_Listbox" -> +0C0h, "Difficulty_Listbox" -> +0C4h (each: listener +64h, input filter
+// 004F90D0), "Fixed_Text" -> +128h, "Changeable_Text" -> +12Ch, "Bonus_Text" -> +130h; +4DCh
+// "hajnal_Group" -> +4E8h; +4E8h "powerups_Group" +4F8h, "achievment_Group" +4F4h, "movies_Group"
+// +4F0h, "tutorial_Group" +500h, "units_Group" +4ECh, "noseart_Group" +504h, "arrow_left_Icon" +56Ch,
+// "arrow_right_Icon" +570h, "left_big_Icon" +574h, "right_big_Icon" +578h; +4DCh "background_Group"
+// -> +518h (shown) and "INFO_box_Group" -> +4FCh; +4FCh "test_Clipbox" -> +5ACh; +5ACh "textbox_Group"
+// -> +514h; +514h "content_main_Text" -> +0A8h (hidden); scroller +0CCh content +514h; +4FCh
+// "arrow_top_scroll_Icon" +5B8h, "arrow_botton_scroll_Icon" +5BCh, "textx_scroll_Framebox" +5C0h
+// (widget listener +68h on +5C0h, +5B8h, +5BCh); scroll bar (+5C0h, 0.0902778f (00CEB19C), +5B8h,
+// +5BCh).
+void library_bind_layout_004fe870(Raw screen, Fe9LibraryLayoutHost& host);
+
+// The five library loaders called by 0050FDB0. Entries are 6Ch records (layout at 004FE310);
+// a fresh one has +0h/+14h null, uv rects +4h and +18h = (0, 0, 1, 1), strings +28h..+3Ch and
+// +4Ch..+68h empty, and +40h..+48h uninitialised in the image (zero here).
+struct Fe9LibraryLoaderHost : Fe8LuaHost {
+    virtual void* game_lua_owner_1a0c() = 0;                                                 // [00E188A8]+1A0Ch
+    virtual bool lua_is_table_00b661b0(void* object) = 0;
+    // 004FDF20 / 004FDFD0 / 004FE080 / 004FE130 (lua_object_read_string_field): out = object[name].
+    virtual void lua_read_string_field(const char* name, void* out_string, void* object) = 0;
+    virtual void lua_read_string_by_index_004fe1e0(std::int32_t index, void* out_string, void* object) = 0;
+    virtual void lua_read_string_field_00501d10(std::int32_t index, void* out_string, void* object,
+        std::string_view fallback) = 0;
+    // A NativeString assignment (the inlined pool resize + copy, or 0041DD40 + copy).
+    virtual void native_string_assign(void* string, std::string_view text) = 0;
+    // 00AA2660 through 004C12B0: (name, uv rect out, size out, 1.0f) -> a new texture reference.
+    virtual void* resolve_gui_texture_00aa2660(std::string_view name, float* uv, float* size, float scale) = 0;
+    // InterlockedDecrement([00CE2220]) of ref +4h; at zero the ref's vtable +0.
+    virtual void texture_ref_release(void* ref) = 0;
+    virtual void entry_vector_push_back_0050ad00(void* vector, Raw entry) = 0;
+    virtual void library_entry_destruct_004fd1d0(Raw entry) = 0;
+};
+
+// 0050B8E0 BSP_TacticalLibraryScreen_LoadPowerUpLib, __fastcall(ECX = screen), RET. A fresh Lua owner
+// (Open(4)) runs "Scripts\datatables\PowerUpLib.lua" (00CEBAF0, flag 0); for groups g = 0..2 of the
+// global PowerupClasses: +340h + g*8 = group[g+1].GroupName (null -> ""); then while group[j] (j from
+// 1) is not nil, a fresh entry is appended to +3E4h and the vector's last entry filled: +28h = name,
+// +0h/+4h = texture GUITextureBackGround, +14h/+18h = texture GUITextureForeGround, +40h = g, +44h =
+// 1, +5Ch = description.
+void library_load_power_up_lib_0050b8e0(Raw screen, Fe9LibraryLoaderHost& host);
+// 0050BF00 BSP_TacticalLibraryScreen_LoadNoseArt, __fastcall(ECX = screen), RET. The game's Lua
+// globals ([00E188A8]+1A0Ch) NoseArt, when a table: for i = 0..999 (index 0 first; nil or non-table
+// items are skipped, not a stop), one reused entry gets +0h/+4h = texture "models/Textures/noseart/"
+// + Texture, +40h = IsJapan, +5Ch = "", +48h = i, +44h = 1, and is appended to +414h.
+void library_load_nose_art_0050bf00(Raw screen, Fe9LibraryLoaderHost& host);
+// 0050C300 BSP_TacticalLibraryScreen_LoadMovieList, __fastcall(ECX = screen), RET. For the four movies
+// (00E08498 images, 00E084C8 missions, 00E084A8 titles) a reused entry gets +0h/+4h = texture
+// "fe/movies/" + image, +30h = mission, +40h = 0, +44h = 1, +5Ch = title, and is appended to +3C4h.
+void library_load_movie_list_0050c300(Raw screen, Fe9LibraryLoaderHost& host);
+// 0050C760 BSP_TacticalLibraryScreen_LoadTutorialLib: as 0050B8E0 with "Scripts\datatables\
+// TutorialLib.lua" (00CEBB78), global TutorialLib, 13 groups, names at +358h, entries in +404h:
+// +28h = Name, +48h = Index, +30h = Movie, +38h = LuaCommand ("" when nil), +40h = g, +44h = 1,
+// +5Ch = Description.
+void library_load_tutorial_lib_0050c760(Raw screen, Fe9LibraryLoaderHost& host);
+// 0050CE70 BSP_TacticalLibraryScreen_LoadUnitLib: as 0050B8E0 with "Scripts\datatables\UnitLib.lua"
+// (00CEBBC0), global UnitLib, 5 groups, names at +318h, entries in +3F4h: +28h = Name, +48h =
+// VehicleClass, +0h/+4h = texture "fe/units/" + GUITextureBackGround, +14h/+18h = texture
+// "common/icons/" + GUITextureForeGround, +40h = g, +44h = 1, +45h = 0, and from Description:
+// +4Ch/+54h/+5Ch = [1]/[2]/[3] (004FE1E0), +64h = [4] or "" (00501D10).
+void library_load_unit_lib_0050ce70(Raw screen, Fe9LibraryLoaderHost& host);
+
+struct Fe9LibraryRegisterHost : Fe9LibraryLoaderHost {
+    virtual void frontend_screen_register_004f71d0(Raw screen) = 0;
+    virtual void* gui_load_page_00aa5840(std::string_view name, std::uint32_t a, std::uint32_t b) = 0;  // ECX = 004C12B0()
+    virtual void* resource_load_64(std::string_view name, std::uint32_t flag) = 0;          // [00F8D394] vtable +64h
+    virtual void screen_virtual_14(Raw screen) = 0;                                          // vtable +14h (004FE870)
+    virtual void* operator_new_00bf681b(std::uint32_t bytes) = 0;
+    virtual Raw award_table_00e19900() = 0;                                                  // [00E19900]
+    // 0050FC30 BSP_AwardTable_FindRecord, ECX = [00E19900]+10h: (const NativeString* name) -> record.
+    virtual Raw award_table_find_record_0050fc30(const void* name) = 0;
+    virtual void library_load_unit_lib_0050ce70(Raw screen) = 0;
+    virtual void library_load_class_tables_00504130(Raw screen) = 0;
+    virtual void library_load_power_up_lib_0050b8e0(Raw screen) = 0;
+    virtual void library_load_movie_list_0050c300(Raw screen) = 0;
+    virtual void library_load_tutorial_lib_0050c760(Raw screen) = 0;
+    virtual void library_load_nose_art_0050bf00(Raw screen) = 0;
+    virtual void library_preview_setup_environment_00502480(Raw screen) = 0;
+};
+
+// 0050FDB0 BSP_TacticalLibraryScreen_Register, __fastcall(ECX = screen), RET. 004F71D0; pages
+// (00AA5840(name, 1, 0)) "FE_tactical" -> +4DCh, "FE_tactical_text" -> +4E0h, "FE_tactical_listbox"
+// -> +4E4h; [00F8D394] vtable +64h(name, 0): "colourremap.tga" +6Ch, "oceannormalmap04.tga" +70h,
+// "hdr_rcs_usn_04_defend_g_ocean.tga" +74h, "hdr_RCS_usn_04_Defend_G.tga" +78h; vtable +14h; +4C8h = 1,
+// +454h = -1, +458h = 0, +94h = 3, +9Ch = 0, +0A0h = 2, +540h..+554h = 0. +5B0h = a new blank entry
+// (null when the allocation fails, then dereferenced anyway): +28h "FE.unitlib_nounlock", +48h = -1,
+// texture "fe/lobby/unlock_disabled.tga", +40h = -1, +44h = +46h = 1, +4Ch/+54h/+5Ch
+// "FE.unitlib_nounit_d1/2/3", +64h " ". Each award name of [00E19900] (vector +4h, 8-byte
+// NativeStrings) appends a blank entry to +3D4h and fills it: +14h/+18h = texture of the award
+// record's (0050FC30) +14h string, +0h/+4h = texture "common/whiteGui.tga", category +40h = 6, then by
+// prefix (case-insensitive): RANK_ 0, CA_ 1, MA_ 2, AO_ 2, RUA_ 3, GA_ 4, SA_ 5, B 7 (and +44h = 0;
+// otherwise +44h = 1); +28h = the name, +45h = 1. Then the unit library, 00504130, power-ups,
+// movies, tutorials, nose art and 00502480.
+void library_register_0050fdb0(Raw screen, Fe9LibraryRegisterHost& host);
+
+// The library view at screen+434h: +0h current index, +4h float carousel position, +14h/+18h the
+// filtered 6Ch-entry vector (screen +448h/+44Ch). Accessors, __fastcall(ECX = view), EAX (the
+// checked-index reports 00BF6713 are not modelled; truncation is FISTP under RC = chop or CVTTSS2SI):
+std::uint8_t* library_view_class_id_004fa890(Raw view);     // &entries[+0h] + 48h
+std::uint8_t* library_view_previous_004fa8f0(Raw view);     // entries[(int)pos - 1]
+std::uint8_t* library_view_at_position_004fa960(Raw view);  // entries[(int)pos]
+std::uint8_t* library_view_current_004fa9c0(Raw view);      // entries[+0h]
+std::uint8_t* library_view_next_004faa00(Raw view);         // entries[(int)pos + 1], or the last one
+
+struct Fe9LibraryDetailHost {
+    virtual ~Fe9LibraryDetailHost() = default;
+    virtual void sleep_00ce2230(std::uint32_t milliseconds) = 0;
+    virtual bool widget_virtual_38(void* widget) = 0;                                        // vtable +38h
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;
+    virtual void gui_set_state_texture_uv_00ab2690(void* widget, std::uint32_t state, void* texture,
+        const float* uv) = 0;
+    // 00AA86B0: vtable +48h(scale) on the widget and, recursively, its children.
+    virtual void widget_set_scale_recursive_00aa86b0(void* widget, const float scale[2]) = 0;
+    virtual void widget_set_colour_50(void* widget, const void* colour) = 0;                 // vtable +50h
+    virtual const void* colour_static_grey_004f9d80() = 0;
+    virtual const void* colour_static_white_004f9d30() = 0;
+    virtual void widget_set_listener_fields_00aa6bc0(void* widget, void* listener, std::uint32_t zero) = 0;
+    virtual std::int16_t widget_state_94(void* widget) = 0;                                  // vtable +94h
+    virtual void widget_set_state_88(void* widget, std::uint32_t state, std::uint32_t zero, float one) = 0;
+    virtual void gui_text_set_localised_source_00abaed0(void* text, std::string_view source, std::uint32_t flag) = 0;
+    virtual void gui_text_set_localised_cstring_00abbe50(void* text, const char* source, std::uint32_t flag) = 0;
+    virtual Raw award_table_find_record_0050fc30(const void* name) = 0;                     // ECX = [00E19900]+10h
+    // 006B8AD0 BSP_LuaMachine_RunString on [[00E188A8]+1A08h]+4h: (text, 0, 0, 2) -> 0 on success.
+    virtual std::int32_t lua_machine_run_string_006b8ad0(const char* text, std::uint32_t a, std::uint32_t b,
+        std::uint32_t c) = 0;
+    virtual void debug_print_004254b0(const char* format, const char* text) = 0;             // empty body
+    virtual bool input_config_load_suppressed_00f88a30() = 0;                                // byte [00F88A30]
+    // 00A9FAD0 on [00F8BC4C] (resolve the key to its wide text), then 00436630 (low bytes).
+    virtual std::string localization_resolve_narrow(std::string_view key) = 0;
+    virtual void library_preview_load_vehicle_model_0050aa10(Raw screen) = 0;
+};
+
+// 00510C20 BSP_TacticalLibraryScreen_RefreshEntryDetail, __fastcall(ECX = screen), RET. No card
+// (+508h) -> nothing; an empty entry vector -> Sleep(1). With +90h == 0 the carousel cards (+508h
+// previous, +50Ch current, +510h next) are shown as (0,1,0) for one entry, (0,1,1) at position 0,
+// (1,1,0) at the last position, else (1,1,1); every visible card (vtable +38h) takes its entry's
+// textures (+0h/+4h on the first widget, +14h/+18h on the second and, when present, the third:
+// +580h/+57Ch/+584h, +58Ch/+588h/+590h, +598h/+594h/+59Ch) through 00AB2690(0, ...), each scaled to
+// 1.00001f (00CEBDC8; 00AA86B0), and is greyed (004F9D80) on page kind 6 for entries whose +46h is
+// clear, white (004F9D30) otherwise. Arrows +574h / +578h: with +560h shown and given the widget
+// listener (+68h), state 3 at the first / last index, else state 0 unless already 1 or 2 (vtable
+// +94h / +88h(state, 0, 1.0f)); without +560h hidden with a null listener. Detail text +0A8h by kind
+// +94h, with sep = "|. |####|" (00CEBDBC) and NAME = the current entry's +28h upper-cased (004FB1F0):
+// 0 (awards): the award record's (0050FC30) name upper-cased; with the current entry's +45h set and
+// the entry at the position in category 5 "FE.achievement_secret_desc", else that name + sep +
+// record +0Ch; 1, 3, 8: NAME + sep + +5Ch; 2, 5, 6:
+// +4B0h = class id (+48h), NAME + sep + +5Ch + sep + +64h, then 0050AA10 when +90h == 1; 4 (tutorials,
+// non-empty vector): a LuaCommand (+38h) is run (006B8AD0(command, 0, 0, 2)) and logged through
+// 004254B0; the description +5Ch takes "_pc" when [00F88A30] is clear and that key localises to
+// something else; NAME + sep + description; 7: nothing.
+void library_refresh_entry_detail_00510c20(Raw screen, Fe9LibraryDetailHost& host);
+
+// The preview scene's environment block: a 288h-byte stack record built by 004CB420 and destroyed
+// by 004C6520; fog colour +80h, directional fog colours +90h..+CCh, fog scalars +0D0h..+0E4h (see
+// scene_weather_cc13.hpp for the authored names), NativeStrings +1Ch, +24h, +44h, +208h, +210h,
+// +218h, +234h, +23Ch, +244h, +24Ch, +254h and +280h.
+inline constexpr std::size_t kPreviewEnvironmentBlockSize = 0x288;
+struct PreviewEnvironmentWrite {
+    std::uint16_t offset;
+    float value;
+};
+
+struct Fe9PreviewEnvironmentHost {
+    virtual ~Fe9PreviewEnvironmentHost() = default;
+    virtual void* operator_new_00bf681b(std::uint32_t bytes) = 0;
+    // 0078DAA0 BSP_OceanEnvironment_Construct, __thiscall(storage, ocean source, 0), EAX = storage.
+    virtual void* ocean_environment_construct_0078daa0(void* storage, void* source, std::uint32_t zero) = 0;
+    virtual void scene_environment_block_construct_004cb420(void* block) = 0;
+    virtual void scene_environment_block_destruct_004c6520(void* block) = 0;
+    virtual void native_string_assign(void* string, std::string_view text) = 0;
+    // 00B1B830 on [00F8D434]: (const NativeString* name, const NativeString* value).
+    virtual void world_parameter_set_string_00b1b830(std::string_view name, const void* value) = 0;
+    // Fog owner = [screen+10h]+184h.
+    virtual void fog_set_color_00b84c40(void* fog, const float* rgba) = 0;
+    virtual void fog_set_directional_color_00b84fa0(void* fog, const float* rgba, std::uint32_t index) = 0;
+    virtual void fog_set_scalar_68_00b84d00(void* fog, float value) = 0;
+    virtual void fog_set_scalar_6c_00b84d10(void* fog, float value) = 0;
+    virtual void fog_set_scalar_70_00b84d20(void* fog, float value) = 0;
+    virtual void fog_set_scalar_74_00b84d30(void* fog, float value) = 0;
+    virtual void fog_set_scalar_78_00b84d40(void* fog, float value) = 0;
+    // 004FB850, __thiscall(out dword, const float rgba[4]): the ARGB word.
+    virtual std::uint32_t colour_float_rgba_to_argb_004fb850(const float* rgba) = 0;
+    virtual void camera_set_clear_color_00b6fe50(void* camera, std::uint32_t argb) = 0;
+    virtual void linearize_rgb_004e5c00(float* rgb) = 0;                                     // scene_weather_cc13
+    // 0078C9B0, ECX = the ocean environment: applies the block.
+    virtual void ocean_environment_apply_0078c9b0(void* ocean, void* block) = 0;
+    virtual bool flag_00f88a0c() = 0;                                                        // byte [00F88A0C]
+    // 00BBDFF0 BSP_Atmosphere_Construct, __thiscall(storage, ocean source, const NativeString* sky).
+    virtual void* atmosphere_construct_00bbdff0(void* storage, void* source, std::string_view sky) = 0;
+    virtual void* atmosphere_get_sky_box_00bbddb0(void* atmosphere) = 0;
+    virtual void sky_box_set_rotation_degrees_00bbf1a0(void* sky_box, float degrees) = 0;
+    virtual void sky_box_set_luminance_00bbf200(void* sky_box, float luminance) = 0;
+    virtual void resource_manager_virtual_120() = 0;                                         // [00F8D394] vtable +120h
+};
+
+// 00502480 BSP_TacticalLibraryPreview_SetupEnvironment, __fastcall(ECX = screen), RET. Only when
+// +4B8h is null: +4B8h = a new B8h ocean environment (0078DAA0(+0Ch, 0); null when the allocation
+// fails). A default block (004CB420) gets the strings "hdr_RCS_usn_04_Defend_G.dds" +208h,
+// "hdr_RCS_usn_04_Defend_G_ocean.dds" +210h and "white.tga" at +218h, +234h, +23Ch, +244h, +24Ch,
+// +254h (resize with preserve 0, then the characters); world parameters ReflectionCubeMap = +208h and
+// StaticShadowTexture = +254h; the first constant table (kPreviewEnvironmentFog); fog colour +80h,
+// directional colours +90h + i*10h (i < 4), the camera's (+10h) clear colour from +80h (004FB850),
+// fog scalars 68h/6Ch/70h/78h/74h from +0D0h/+0D4h/+0D8h/+0DCh/+0E0h; the second table
+// (kPreviewEnvironmentBlock), strings +280h "oceannormalmap04.tga", +1Ch and +24h "white.tga", byte
+// +0Ch = 0, +44h emptied; 004E5C00 on the triples +154h, +1A0h, +164h, +174h, +118h, +1E4h (none is
+// written again afterwards); 0078C9B0(+4B8h, block). The sky is "sky_069" (00CEB4A8), "HDR_sky_069"
+// with [00F88A0C]; +4BCh = a new 40h atmosphere (00BBDFF0(+0Ch, sky); null when the allocation fails)
+// whose sky box turns to 70.0f (00CE77B4) and gets luminance 0.8f (00CE74F8); then [00F8D394] vtable
+// +120h and the block's destructor. The tables were taken from the listing by a symbolic pass over the
+// stack stores (local/fe9_stackfill.py); they keep the image's store order, duplicates included.
+void library_preview_setup_environment_00502480(Raw screen, Fe9PreviewEnvironmentHost& host);
+
+// ---------------------------------------------------------------------------
+// Packet cc13-fe9: session browser.
+// ---------------------------------------------------------------------------
+struct Fe9SessionCreateHost {
+    virtual ~Fe9SessionCreateHost() = default;
+    virtual std::array<float, 3> widget_resolved_position_00aa6750(void* widget) = 0;
+    virtual void widget_set_resolved_position_00aa8240(void* widget, const std::array<float, 3>& position) = 0;
+    virtual void* widget_clone_subtree_00aab4c0(void* widget, void* parent) = 0;
+    virtual void gui_text_set_localised_cstring_00abbe50(void* text, const char* source, std::uint32_t flag) = 0;
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;
+    virtual std::uint32_t online_system_virtual_198() = 0;                                   // [00F8A2FC] vtable +198h
+    virtual void scroller_set_scroll_range_006834a0(void* scroller, float range) = 0;
+};
+
+// 005684D0 BSP_MultiSessionBrowserScreen_BuildCreateOptions, __fastcall(ECX = screen), RET. From the
+// label template +94h's resolved position (x, y, z) and the row step +260h, clones (parent +124h) go
+// to that position with y advancing by the step after each row ((float)(step + y)): +0C0h
+// "FE.multi_createrankmin" (shown); +0DCh (value template +0A4h, hidden) and +0C4h "-" (shown);
+// +0C8h "FE.multi_createrankmax" (shown); +0E0h (+0A4h, hidden) and +0CCh "-" (shown); +0D4h
+// "FE.multi_createdroprate" and, one row on, +0E4h (+0A4h, hidden) and +0D8h "-", both labels shown
+// per [00F8A2FC] vtable +198h(). The scroller +188h range is (float)(y - 0.501) (00CEED08) with y the
+// row after the last.
+void session_browser_build_create_options_005684d0(Raw screen, Fe9SessionCreateHost& host);
+
+// ---------------------------------------------------------------------------
+// Packet cc13-fe9c (docs/CC13_FE_9C.md): remaining tactical library bodies.
+// ---------------------------------------------------------------------------
+struct Fe9cLibraryDlcHost : Fe8LuaHost {
+    virtual void* game_lua_owner_1a0c() = 0;                                                 // [00E188A8]+1A0Ch
+    // 004FD8D0 BSP_VehicleClassLua_GetUnlockDlcMinimum, __thiscall(screen, class id, out).
+    virtual std::string vehicle_class_unlock_dlc_minimum_004fd8d0(Raw screen, std::int32_t class_id) = 0;
+    virtual std::uint64_t owned_dlc_mask_2060() = 0;                                         // [00E188A8]+2060h
+};
+
+// 005021E0 BSP_TacticalLibraryScreen_LoadDownloadableClasses, __fastcall(ECX = screen), RET. Fetches
+// (and only releases) the game Lua global VehicleClass; for each 6Ch entry of +3F8h..+3FCh: the
+// class's UnlockDLCMinimum (004FD8D0 with the entry's +48h) loses every "DL_Content_" (00CEB49C;
+// 004CAD40 with "" and count 7FFFFFFFh), n = atol of the rest, and +46h = (mask & owned) == mask for
+// the 64-bit mask 1 << (n - 1) (__allshl: a count of 64 or more, n = 0 included, gives 0, so 1).
+void library_load_downloadable_classes_005021e0(Raw screen, Fe9cLibraryDlcHost& host);
+
+struct Fe9cVehicleRowHost : Fe8LuaHost {
+    virtual void* game_lua_owner_1a0c() = 0;
+    virtual void lua_iterate_first_00b67080(void* table, void* key, void* value) = 0;
+    virtual void lua_iterate_next_00b67190(void* table, void* key, void* value) = 0;
+    virtual bool lua_is_unbound_00b66420(void* key) = 0;
+    virtual bool lua_is_table_00b661b0(void* object) = 0;
+    virtual bool lua_is_boolean_00b66000(void* object) = 0;
+    virtual bool lua_get_boolean_00b66250(void* object) = 0;
+    virtual bool lua_is_string_00b660a0(void* object) = 0;
+    // 007FC4C0 on [00E188A8]+650h: is the unlock with this id satisfied.
+    virtual bool profile_is_unlock_satisfied_007fc4c0(std::string_view id) = 0;
+    // Key/value iteration handles owned by the host for the walk.
+    virtual void* lua_new_object_00b65f50() = 0;
+    virtual void int_vector_push_back_00442190(void* vector, std::int32_t value) = 0;
+    virtual void string_vector_append_00450540(void* vector, std::string_view text) = 0;
+};
+
+// 0050A400 BSP_TacticalLibrary_ReadVehicleClassRow, __thiscall(ECX unused, class ids, types, flags,
+// unused), RET 10h. Walks the game Lua global VehicleClass (00B67080 / 00B67190 until the key is
+// unbound); a table value whose Unlock is the boolean true and whose UnlockID is nil, "" or a
+// satisfied unlock (007FC4C0; a non-string non-nil id fails) and whose Race is not nil with an
+// integer above 0 appends: the key's integer to class ids, Type to types (00450540), and (Race 1 or
+// 4) to flags.
+void library_read_vehicle_class_rows_0050a400(void* class_ids, void* types, void* flags,
+    Fe9cVehicleRowHost& host);
+
+struct Fe9cPreviewLoadHost : Fe8LuaHost {
+    virtual void* game_lua_owner_1a0c() = 0;
+    virtual void library_preview_clear_rotors_0050a950(Raw screen) = 0;
+    virtual void debug_print_004254b0(const char* format, std::int32_t value) = 0;           // empty body
+    // 00BDF4C0 on [0109CEEC]: does the resource exist.
+    virtual bool vfs_resolve_existing_00bdf4c0(std::string_view name) = 0;
+    // 005055C0 on 004FDE20(): enqueue a load job for the path; the last job's +1Ch is then set to
+    // 00509FB0 when the queue (+10h, count +14h) is not empty.
+    virtual void loading_queue_enqueue_005055c0(std::string_view path) = 0;
+    virtual void loading_queue_set_last_callback(std::uint32_t callback) = 0;
+    virtual void* operator_new_00bf681b(std::uint32_t bytes) = 0;
+    virtual void* library_preview_model_construct_004fcfc0(void* storage) = 0;
+    virtual void native_string_assign_cstring_0041e350(void* string, const char* text) = 0;
+    // 00504D20 on 004FDE20(): (const NativeString* name, model).
+    virtual void loading_queue_submit_00504d20(void* name, void* model) = 0;
+};
+
+// 0050AA10 BSP_TacticalLibraryPreview_LoadVehicleModel, __fastcall(ECX = screen), RET. Nothing when
+// +4B4h == +4B0h; else 0050A950, +4B4h = +4B0h, and nothing more for -1. The pack is
+// "mpak/Class_own_<class>.mpak", else "mpak/Class_<class>.mpak", else (logging "ERROR:MPAK files not
+// found for class %d!!!") "giachievement_model_load_temp"; it is enqueued (005055C0) and the last job
+// gets the callback 00509FB0. A new 60h preview model (004FCFC0; null when the allocation fails,
+// then dereferenced) gets +8h = VehicleClass[class].Mesh, +18h = 0, +1Ch = the class, and is
+// submitted (00504D20(model +8h, model)).
+void library_preview_load_vehicle_model_0050aa10(Raw screen, Fe9cPreviewLoadHost& host);
+
+struct Fe9cPreviewSceneHost {
+    virtual ~Fe9cPreviewSceneHost() = default;
+    virtual void simple_3d_scene_init_0093ccc0(void* scene) = 0;                            // ECX = screen+8h
+    virtual void camera_set_render_mode_and_mask_00b6fdf0(void* camera, std::uint32_t value) = 0;
+    virtual void camera_set_clear_flags_00b6fe10(void* camera, std::uint32_t flags) = 0;
+    virtual void* scene_lighting_owner_00b72110(void* scene) = 0;
+    // 004B4D80 BSP_Lighting_DirectionFromAngles(out, a, b).
+    virtual std::array<float, 3> lighting_direction_from_angles_004b4d80(float a, float b) = 0;
+    virtual bool flag_00f88a0c() = 0;                                                        // byte [00F88A0C]
+    virtual void linearize_rgb_004e5c00(float* rgb) = 0;
+    virtual void light_set_base_diffuse_004b62e0(void* light, const float* rgba) = 0;
+    virtual void light_set_diffuse_scale_00b7af90(void* light, float scale) = 0;
+    virtual void light_set_specular_scale_00b7b010(void* light, float scale) = 0;
+    virtual void ambient_set_00b7af20(void* ambient, const float* rgba) = 0;
+    virtual void ambient_set_cube_face_00b7af60(void* ambient, const float* rgba, std::uint32_t face) = 0;
+    virtual void render_device_virtual_04(std::uint32_t value) = 0;                          // [00F8BBF0] vtable +4h
+    virtual std::uint8_t flag_00f88a04() = 0;
+    virtual std::uint8_t flag_00f88a0d() = 0;
+    virtual std::uint32_t dword_00f889d8() = 0;
+    // 00B107F0 on [00F8D39C]: (a0c, a0d, 9d8).
+    virtual void render_resources_initialize_00b107f0(std::uint32_t a, std::uint32_t b, std::uint32_t c) = 0;
+    virtual void scene_renderer_set_hdr_params_00b0e9b0(const void* params) = 0;            // ECX = [00F8D39C]
+    // 00A8FD30, ECX = light, DL = 0 -> a referenced shadow owner.
+    virtual void* directional_light_create_shadow_owner_00a8fd30(void* light) = 0;
+    virtual void directional_light_set_shadow_owner_00b7bdf0(void* light, void* owner) = 0;
+    virtual void ref_release(void* object) = 0;                                              // [00CE2220] at +4h, vtable +0
+    virtual void lua_run_script_00b69d40(std::string_view script, std::uint32_t flag) = 0;   // on [00E188A8]+1A0Ch
+};
+
+// 00504130 BSP_TacticalLibraryScreen_LoadClassTables (the name is the ledger's; most of the body sets up
+// the preview scene), __fastcall(ECX = screen), RET. 0093CCC0 on +8h; camera +10h render mode 0, clear
+// flags 7; the first light of the scene's (+0Ch) lighting owner (+1Ch list): direction from angles
+// (0.4363323f, 4.363323f) (00CEB664 / 00CEB668) into +1E0h..+1E8h; base diffuse (1.0, 0.8, 0.6157,
+// 1.0) linearised with [00F88A0C]; the same colour (rebuilt) stored raw at +1C4h..+1D0h; diffuse
+// scale 4.0f, specular scale 35.0f. The ambient (lighting +10h) gets (0.2392, 0.24315, 0.17645) linearised
+// with alpha 1.0f, and six cube faces (kPreviewAmbientFaces): s = (float)(s * 1.5) (00CE3D78), colour
+// ((float)(r*s), (float)(g*s), (float)(b*s), 1.0f) linearised, face i. Then [00F8BBF0] vtable
+// +4h([00F88A04]); 00B107F0([00F88A0C], [00F88A0D], [00F889D8]); HDR parameters (kPreviewHdrParams,
+// byte +24h = 0); a shadow owner created for the light, set and released; +48Ch = 0; the game Lua
+// runs "SCRIPTS/datatables/autoload/VehicleClasses.lua" and ".../DeviceClasses.lua" (flag 0);
+// +4B0h = 1.
+inline constexpr std::array<std::array<float, 4>, 6> kPreviewAmbientFaces{{
+    {0.24709999561309814f, 0.29409998655319214f, 0.3215999901294708f, 1.0f},
+    {0.7293999791145325f, 0.7215999960899353f, 0.5960999727249146f, 1.0f},
+    {0.26669999957084656f, 0.28630000352859497f, 0.3176000118255615f, 1.0f},
+    {0.1412000060081482f, 0.18039999902248383f, 0.20389999449253082f, 0.5f},
+    {0.40779998898506165f, 0.45489999651908875f, 0.53329998254776f, 1.0f},
+    {0.8587999939918518f, 0.8510000109672546f, 0.7922000288963318f, 1.0f},
+}};
+struct PreviewHdrParams {
+    float values[9];   // +00h..+20h
+    std::uint8_t flag; // +24h
+    float scale;       // +28h
+};
+inline constexpr PreviewHdrParams kPreviewHdrParams{
+    {0.5f, 2.0f, 0.30000001192092896f, 0.05000000074505806f, 0.10000000149011612f, 0.10000000149011612f, 10.0f, 2.0f,
+     10.0f},
+    0,
+    1.0f};
+void library_load_class_tables_00504130(Raw screen, Fe9cPreviewSceneHost& host);
+
+struct Fe9cOrderOfBattleRowHost {
+    virtual ~Fe9cOrderOfBattleRowHost() = default;
+    virtual void* library_find_entry_by_id_004fb090(Raw screen, std::int32_t id) = 0;      // result unused
+    virtual std::string vehicle_class_name_or_no_unlock_004fda50(Raw screen, std::int32_t id) = 0;
+    virtual void* widget_clone_subtree_00aab4c0(void* widget, void* parent) = 0;
+    virtual void* find_child_by_name_00aa7e00(void* parent, std::string_view name) = 0;     // (name, 1)
+    virtual void widget_set_name_2c(void* widget, std::string_view name) = 0;               // vtable +2Ch
+    virtual void gui_text_set_ellipsized_00abb000(void* text, std::string_view source, float width,
+        std::uint32_t flag) = 0;
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;
+    virtual void gui_text_set_localised_source_00abaed0(void* text, std::string_view source, std::uint32_t flag) = 0;
+    virtual void gui_text_set_localised_cstring_00abbe50(void* text, const char* source, std::uint32_t flag) = 0;
+    virtual void list_box_insert_row_00a9d750(void* list, void* row, std::uint32_t a, std::uint32_t b) = 0;
+};
+
+// 00500A90 BSP_TacticalLibraryScreen_FillOrderOfBattleRow, __thiscall(screen, index), RET 4. Record =
+// the 2Ch-byte row index of +460h..+464h (id +0h, count +8h). 004FB090(id) runs with its result unused;
+// a template +0ACh clone is named by the decimal index (vtable +2Ch), +77h = 0; "MenuItem_Text" gets
+// the class name (004FDA50), ellipsized at -1.0f, shown; "NumUnits_Text" is shown with "x" + count
+// for a positive count, else " " (00CE3A90). The row is appended to +0B8h; a count of -1 then marks
+// the row +77h, empties NumUnits_Text and sets byte +121h of the list +0B8h.
+void library_fill_order_of_battle_row_00500a90(Raw screen, std::int32_t index, Fe9cOrderOfBattleRowHost& host);
 
 } // namespace bsp::cc13_fe3

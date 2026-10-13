@@ -3013,4 +3013,173 @@ void lobby_handle_gui_event_005e4490(void* self, std::uint32_t event, LobbyEvent
     else if (host.widget_kind_5c(event) == 0x12)
         host.widget_virtual_84(event, 2);
 }
+
+// ---------------------------------------------------------------------------
+// Packet cc13-fe9 (docs/CC13_FE_9.md)
+// ---------------------------------------------------------------------------
+
+void hud_narrative_register_005bb130(void* screen, Fe9NarrativeRegisterHost& host) {
+    const auto ptr = [screen](std::size_t offset) { return read_field<void*>(screen, offset); };
+    const auto find = [&host](void* parent, std::string_view name) { return host.find_child_by_name_00aa7e00(parent, name); };
+    host.frontend_screen_register_004f71d0(screen);
+    write_field(screen, 0x20, host.gui_load_page_00aa5840("GUI_blackout", 1, 0));
+    void* const warnings = find(ptr(0x20), "Warnings_Group");
+    write_field(screen, 0x2C, find(warnings, "MessageBoxTemplate_Group"));
+    host.voice_slot_stop_007026f0(at(screen, 0x08));
+    write_field<std::uint8_t>(screen, 0x60, 0);
+    write_field(screen, 0x28, host.gui_load_page_00aa5840("GUI_subtitle", 1, 0));
+    write_field(screen, 0x30, find(ptr(0x28), "textbox_main_Group"));
+    write_field(screen, 0x34, find(ptr(0x30), "textbox_main_Text"));
+    write_field(screen, 0x38, find(ptr(0x30), "textbox_main_Text"));
+    write_field(screen, 0x3C, find(ptr(0x30), "textbox_main_FrameBox"));
+    write_field(screen, 0x40, find(ptr(0x30), "textbox_main_Icon"));
+    const std::array<float, 4> colour = *host.text_colour_54(ptr(0x34));
+    write_field(screen, 0x44, colour);
+
+    void* const box = host.message_boxes_reset_to_one(at(screen, 0x90));
+    write_field(box, 0x00, ptr(0x30));
+    write_field(box, 0x04, find(ptr(0x30), "textbox_main_FrameBox"));
+    write_field(box, 0x08, find(ptr(0x30), "textbox_main_Text"));
+    write_field(box, 0x10, read_field<std::array<float, 4>>(screen, 0x44));
+    write_field(box, 0x0C, 0.0f);
+    write_field<std::uint8_t>(box, 0x20, 1);
+    write_field<std::int32_t>(box, 0x24, 0);
+    write_field<std::int32_t>(box, 0x28, 0);
+    write_field(box, 0x2C, 0.0f);
+    write_field<std::int32_t>(box, 0x30, -1);
+
+    void* const owner = host.lua_owner_open_run(1, "Scripts/datatables/DialogGlobals.lua", 0);
+    write_field(screen, 0x78, static_cast<float>(host.lua_global_number(owner, "DialogFadeTime")));
+    write_field(screen, 0x88, 0.0f);
+    write_field<std::int32_t>(screen, 0x84, -1);
+    write_field(screen, 0x7C, static_cast<float>(host.lua_global_number(owner, "TempCharWait")));
+    write_field(screen, 0x80, static_cast<float>(host.lua_global_number(owner, "TempWaitBase")));
+    write_field(screen, 0x8C, 0.0f);
+    write_field<std::int32_t>(screen, 0x70, -1);
+    write_field<std::int32_t>(screen, 0x74, 0);
+    write_field(screen, 0xBC, find(ptr(0x20), "Blackout_Icon"));
+    write_field(screen, 0x24, host.gui_load_page_00aa5840("GUI_narrative", 1, 0));
+    write_field(screen, 0xAC, find(ptr(0x24), "MissionInfoTitle_Group"));
+    write_field(screen, 0xB0, find(ptr(0xAC), "textbox_obj_Text"));
+    write_field(screen, 0xB4, find(ptr(0xAC), "textbox_obj_FrameBox"));
+    write_field(screen, 0xD8, 1.0f);
+    write_field(screen, 0xD4, 0.0f);
+    write_field(screen, 0xDC, 8.0f);  // 00CE3918
+    write_field(screen, 0xC8, 0.0f);
+    write_field(screen, 0xC4, 0.0f);
+    write_field(screen, 0xC0, 0.0f);
+    host.widget_set_visible_34(ptr(0xBC), 0);
+    write_field<std::uint8_t>(screen, 0x04, 1);
+    host.lua_owner_close_00b669a0(owner);
+}
+
+namespace {
+
+std::string_view fe9_native_view(const void* string) {
+    const char* data = read_field<const char*>(string, 4);
+    return data != nullptr ? std::string_view(data, read_field<std::uint32_t>(string, 0)) : std::string_view();
+}
+
+bool fe9_equal_ci(std::string_view a, std::string_view b) {
+    if (a.size() != b.size()) return false;
+    for (std::size_t i = 0; i < a.size(); ++i) {
+        const auto lower = [](char c) { return (c >= 'A' && c <= 'Z') ? static_cast<char>(c + 32) : c; };
+        if (lower(a[i]) != lower(b[i])) return false;
+    }
+    return true;
+}
+
+}  // namespace
+
+void hud_pause_build_hint_list_00601200(void* screen, Fe9HintListHost& host) {
+    const auto ptr = [screen](std::size_t offset) { return read_field<void*>(screen, offset); };
+    void* const list = ptr(0x2C);
+    host.list_box_clear_items_00a9bf90(list);
+    void* const index_map = at(screen, 0x11C);
+    void* const head = read_field<void*>(index_map, 4);
+    host.index_tree_erase_005fe9e0(index_map, read_field<void*>(head, 4));
+    write_field(head, 4, head);
+    write_field<std::uint32_t>(index_map, 8, 0);
+    write_field(head, 0, head);
+    write_field(head, 8, head);
+
+    std::int32_t index = 0;
+    void* const tracker = host.award_tracker_004e1ca0();
+    void* const history_head = read_field<void*>(tracker, 0x98);
+    for (void* node = read_field<void*>(history_head, 0); node != history_head;
+         node = host.tree_iterator_next_004b7de0(node)) {
+        void* const row = host.widget_clone_subtree_00aab4c0(ptr(0x38), nullptr);
+        void* const hint = host.find_child_by_name_00aa7e00(row, "hint_Text");
+        host.widget_set_visible_34(host.find_child_by_name_00aa7e00(row, "felkialtojel_Text"), 0);
+        const std::string key(fe9_native_view(at(node, 0x0C)));
+        std::string shown = key;
+        if (shown.find("AAAAAA") != std::string::npos) shown = shown.substr(6, shown.size() - 6);
+        const float width = static_cast<float>(host.widget_size_00aa6740(hint)[0] - 0.020833333333333332);  // 00CF0000
+        host.widget_set_size_58(hint, {width, host.widget_size_00aa6740(hint)[1]});
+        host.gui_text_set_ellipsized_00abb000(hint, shown, -1.0f, 1);
+        write_field(hint, 0x30, -0.03020833246409893f);  // 00CF3F80
+        write_field(hint, 0x34, 0.0f);
+        write_field<std::uint8_t>(hint, 0x1F0, 0);
+        host.widget_set_size_58(hint, {0.1979166716337204f, host.widget_size_00aa6740(hint)[1]});  // 00CF3F7C
+        host.list_box_insert_row_00a9d750(list, row, 0, 0);
+        host.index_map_assign_005ff5d0(index_map, index, key);
+        ++index;
+
+        std::vector<std::string> fresh;
+        if (host.new_hints_contains_005fd120(key) && host.new_hints_count_006002b0(key) != 0) {
+            host.widget_set_visible_34(host.find_child_by_name_00aa7e00(row, "felkialtojel_Text"), 1);
+            fresh = host.new_hints_list_005fd4b0(key);
+        }
+        host.widget_set_state_88(host.find_child_by_name_00aa7e00(row, "button_Icon"), 0, 0, 1.0f);
+        void* const expanded = at(screen, 0x128);
+        void* const expanded_head = read_field<void*>(expanded, 4);
+        bool open = false;
+        for (void* item = read_field<void*>(expanded_head, 0); item != expanded_head; item = read_field<void*>(item, 0)) {
+            if (fe9_equal_ci(fe9_native_view(at(item, 8)), key)) {
+                open = true;
+                break;
+            }
+        }
+        if (!open) continue;
+        host.widget_set_state_88(host.find_child_by_name_00aa7e00(row, "button_Icon"), 1, 0, 1.0f);
+        for (const std::string& sub : host.history_sub_hints_004d48a0(node)) {
+            void* const sub_row = host.widget_clone_subtree_00aab4c0(ptr(0x3C), nullptr);
+            void* const sub_hint = host.find_child_by_name_00aa7e00(sub_row, "hint_Text");
+            host.widget_set_visible_34(host.find_child_by_name_00aa7e00(sub_row, "felkialtojel_Text"), 0);
+            const HintTexts texts = host.hint_texts_005ffb20(sub);
+            const float sub_width = static_cast<float>(host.widget_size_00aa6740(sub_hint)[0] - 0.016666666666666666);  // 00CF3F68
+            host.widget_set_size_58(sub_hint, {sub_width, host.widget_size_00aa6740(sub_hint)[1]});
+            write_field<std::uint8_t>(sub_hint, 0xFC, 0);
+            const std::int32_t language = host.language_index();
+            std::string_view text = sub;
+            if (language == 0 && !texts.language0.empty()) text = texts.language0;
+            else if (language == 1 && !texts.language1.empty()) text = texts.language1;
+            else if (!texts.fallback.empty()) text = texts.fallback;
+            host.gui_text_set_ellipsized_00abb000(sub_hint, text, -1.0f, 1);
+            write_field(sub_hint, 0x30, -0.00937500037252903f);  // 00CF3F64
+            write_field(sub_hint, 0x34, 0.0f);
+            write_field<std::uint8_t>(sub_hint, 0x1F0, 0);
+            host.widget_set_size_58(sub_hint, {0.18541666865348816f, host.widget_size_00aa6740(sub_hint)[1]});  // 00CF3F60
+            host.list_box_insert_row_00a9d750(list, sub_row, 0, 0);
+            for (const std::string& f : fresh) {
+                if (fe9_equal_ci(f, sub)) {
+                    host.widget_set_visible_34(host.find_child_by_name_00aa7e00(sub_row, "felkialtojel_Text"), 1);
+                    break;
+                }
+            }
+            ++index;
+        }
+    }
+
+    host.list_box_enable_paging_00a9e230(list, 0x10);
+    const std::int32_t rows = read_field<std::int32_t>(list, 0x154);
+    void* const thumb = ptr(0x80);
+    const float width = host.widget_size_00aa6740(thumb)[0];
+    const float height = rows > 0x10 ? static_cast<float>(16.0 / rows * read_field<float>(screen, 0x84))  // 00CED9F8
+                                     : read_field<float>(screen, 0x84);
+    write_field(screen, 0x98, height);
+    write_field(screen, 0x94, width);
+    host.widget_set_size_58(thumb, {width, height});
+}
+
 }  // namespace bsp::cc13_fe1

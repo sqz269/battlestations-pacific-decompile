@@ -154,3 +154,24 @@ mechanism is in the cd761bb52 section above).
   `local\p6wf_off_j8.log`) and does not complete in 72000 frames with `kPlaneWingFoldElevatorBound` and
   `kPlaneWingSpreadTakeoffBound` ON (`local\p6wf_on_j8.log`): every Hosho Kate launch waits 3.0 s for its wings in the
   takeoff prepare (009CDEED). Faithful, flipped ON; JM08 needs a re-plan.
+
+- **New row JM06** (reported by cc9-ships45 through the lead, 2026-10-13): `config/win_orders/jm06_s45_j6_k.txt`,
+  100000 frames at 0.05 s, reference env, `--stop-after-end 40`; completed at 2880.63 s on bd3b0c333
+  (`ijn06.obj_missioncompleted`), guard line logged (SHIP_AI 225). Not jitter-checked.
+- **USNOS `usnos_s45_os_k` does NOT complete on current main** (reported through the lead, 2026-10-13): every
+  FinalTrgs unit dies, but ReinDead / `HideScoreDisplay(4,0)` never fires and the mission stays in phase 2.
+  cc9-ships46 is investigating with Lua error logging.
+- **JM08 re-plan assigned to cc9-physics6** (2026-10-13). On 6a7062611 (wing fold ON) `m10` sinks only 4 of 11
+  landing ships: Grayson kills Isokaze (655 s) and Fubuki (682 s) before they reach the transports (in the win
+  Fubuki sank LSM 01, TT02 and TT04 by 720 s). Hosho still dies at 509 s (Hawaii) either way.
+- **JM08 re-planned (cc9-physics6, 2026-10-13): `config/win_orders/jm08_p6_j8_f.txt`**, replaces `jm08_s45_j8_m10`
+  (kept). Tree agent/cc9-physics1 at 974089548's merge (origin/main with the wing fold ON), bsp_game.exe SHA-256
+  6C400EF57F47, **110000 mission frames** at 0.05 s, reference env, `--stop-after-end 40`: **completed 2974.03 s**,
+  guard line logged (`local\p6j8_f.log`). The plan is m10 (SHIP_AI 223) with its late generator part regenerated to
+  110000 frames (`local\p6_j8gen.py` = s45_j8gen.py, same arguments with `--end 110000 --air-until 110000`, spliced
+  at 24000; the splice at 72000 reproduces m10 byte for byte) and the airfield's launch groups between frames 6000
+  and 24000 given Grayson, then Helena, as first targets (`local\p6_prepend.py`). Grayson had sunk Isokaze and
+  Fubuki before they reached the transports; with it engaged the destroyers survive to 661/714 s and the airfield
+  finishes the landing ships by 2590 s, then the B-17 interception completes at 2974 s. Variants: Hosho at Grayson
+  (a, and a+airfield c): HQ destroyed 1706.84 s; airfield at Grayson only to frame 14000 (b, 72000 frames): 10 of
+  11 landing ships, no end.
