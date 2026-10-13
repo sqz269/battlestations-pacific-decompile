@@ -189,10 +189,81 @@ DC-form register operation in `006E2200`-`006E2900`, `006E3400`-`006E5F90` or `0
   catapult (air ops), gun bots, command classes and command buildings (cc9's lanes), STL bodies. None
   was attempted.
 
+## Second pass (cc13-gpr33b): command classes, catapult, gun bots, command buildings
+
+Lease `cc13-gpr33b` (same range and files). 77 more records: 9 own (`src/gameplay_seg33_cc13.cpp`), 68 pointer records.
+
+### Command classes (63 records)
+
+`local/g33_cmd.py` reads the 26 command-class vtables (`00CFB3A4`..`00CFB67C`) from the PE and
+decodes slots `+4h` (name), `+8h` (target predicate), `+0Ch` (category) and `+10h`. Every name,
+predicate and category agrees with `kEntityOrderCommandClasses` (`src/entity_orders.cpp:32`), so
+those bodies and the 26 constructors (base vtable `00CFB378`, ordinal `++[00E19A68]` at `+4h`,
+registry append `006F7D40`, then the class vtable) got pointer records.
+
+Slot `+10h` is new: 0 for every class except closetoship (`006F8E80`, `MOV EAX,1`); stop, retreat
+and returntobase inherit the base `006F7F50`. `006F9110` ends with `006F7C20(006F7B30)`, which
+`entity_order_collect_by_category_006f9110` (`src/entity_orders.cpp:232`) does not apply. The sort is
+a cursor walk: the best later node replaces the cursor's place when `compare(best, scan) == -1`, and
+the cursor itself moves to the tail. With the category-3 menu (follow, moveto, cruise, moveonpath,
+stop, retreat, returntobase, land, closetoship, tutorial, as far as the entity accepts them),
+closetoship comes first and the first entry (follow, when accepted) goes last; the rest keep registry
+order. `command_menu_sort_006f7c20` models it (`kCommandClassSlot10`,
+`command_class_compare_006f7b30`).
+
+Adoption: the menu host `EntityOrderMenu` (`include/bsp/entity_orders.hpp:311`) would apply the sort to
+`entries` after the collect. Inputs: the collected list and the slot table. RNG none. OFF prediction:
+only the order of the player's category-3 command menu changes (HUD, no gameplay).
+
+### Catapult (`MCatapult`, 28h)
+
+No host launches from a catapult (`GetLastCatapulted` answers -1, `src/game_hosts_lua.cpp:6197`).
+`006ED1C0` (tick-element slot `+8h` of `00CFAA70`) was read from the listing and modelled:
+
+| elapsed t (s, ticks x 0.05) | targets | launch speed `+4D4h` |
+|---|---|---|
+| t < 1 | rest (+4ACh/+4B0h), `+4CCh` = class+E4h | 0 |
+| 1 <= t < 2 | yaw = launch heading (006ED000) | 0 |
+| 2 <= t < turn + 0.5 | yaw = heading, pitch = +4B0h (+) class+DCh | 10 + 70 (t - turn) once t > turn |
+| t >= turn + 0.5 | release: the plane gets (0,0,speed) through its frame and PLANE_TAKEOFF; rest again after turn + 1 | -4 |
+
+turn = clamp(max(|class+DCh| / class+8Ch + 1, |yaw delta| / class+88h), 1, 4) + 1.5. VEHICLE_ADD_LAUNCHED
+goes out once after 1 s (modes 0/1). The sequence ends (`launchTick` = -1) when the reload timer
+`[+414h]` is not positive and class+E4h >= `+4CCh`. Functions: `catapult_fire_head_006ed1c0`,
+`catapult_turn_time_006ed2c1`, `catapult_launch_timeline_006ed261`.
+
+Adoption: nothing to replace; a ship-launch host would call it per fixed step for a catapult with
+`launchTick` set by `006EC070` (`catapult_after_launch_006ec070`, `src/air_operations.cpp:130`). Inputs:
+the global tick `[00F876B0]`, the launch heading (006ED000, gun-arc geometry, not modelled), class
+`+88h/+8Ch/+DCh/+E4h`, `[+414h]`. RNG none. OFF prediction: in missions whose ships launch scouts, a
+floatplane leaves the catapult about 45 m/s along its forward axis at turn + 0.5 s.
+
+### Gun bots and command buildings (pointer records)
+
+| address | source | check |
+|---|---|---|
+| `006DEFF0` | `src/gun_dispersion.cpp:162` | named there, not re-read |
+| `006F1F90` | `src/game_hosts_ship_ai.cpp:12822` | decompile compared, complete |
+| `006F1F20` | `src/game_hosts_ship_ai.cpp:12837` | decompile compared, the gate |
+| `006F2DE0`, `006F2FB0` | `src/building_pads.cpp:80`, `:88` | decompile compared (lock not modelled) |
+| `006F2E60`, `006F3AF0`, `006F5CC0` | `src/building_pads.cpp:60`, `:241`, `:45` | named there, not re-read |
+| `006F6760`, `006F4D10` | `src/command_building_capture.cpp:30`, `:113` | named there, not re-read |
+| `006F3660` | `src/game_hosts_gunnery.cpp:12823` | named there, not re-read |
+| `006F38E0` | `src/game_hosts_ship_ai.cpp:12857` | named there, partial per its comment |
+
+"Not re-read" records carry the status `reconstructed_in_existing_source_named_not_rechecked_by_cc13_gpr33`.
+One own leaf: `006F5960` `command_building_capture_range_squared_006f5960`.
+
+**Name correction for the lead:** `006F4A00` `BSP_CommandBuilding_CountGarrisonOfKind` does not count.
+It returns true (`RET 4` at `006F4B0C`) at the first garrison entry (`+778h`, stride 64h, count `+77Ch`)
+that answers `vtable[5Ch](kind)` and whose `vtable[198h]("InferiorFailure", 0, &flag)` sets the flag,
+else 0. A name like `BSP_CommandBuilding_AnyGarrisonOfKindInferiorFailure` fits; no Ghidra rename was
+made here.
+
 ## Handoff
 
-Done: 54 records, the two rack models, the speed and extrapolation leaves; build passed in this tree.
+Done (first pass): 54 records, the two rack models, the speed and extrapolation leaves; build passed in this tree.
 Next, if wanted: the single rack's save state `006E6010` / serializer `006E4A60` field list (names for
 the host's per-rack state), and the bomb record's `006E16D0` ApplyLaunchState (the fire-message
 path). Scripts: this tree's `local/g33_*.py`. Call claims: `reports/cc13_gpr33_calls.json`
-(`tools/verify_report_calls.py`: 9 rows, 0 failed).
+(`tools/verify_report_calls.py`: 13 rows, 0 failed). Second pass next steps: the catapult's launch heading `006ED000` and turn step `006EBD90`, the remaining command-building bodies (`006F3010` pad refresh, the "named, not re-read" pointers), the LandFort leaves `006F57C0`/`006F57F0`; message plumbing and serializers were not attempted.
