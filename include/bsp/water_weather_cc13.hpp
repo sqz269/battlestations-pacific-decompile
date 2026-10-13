@@ -1631,3 +1631,520 @@ void* w2_record30_copy_00bc7f00(void* destination, const void* source) noexcept;
 void w2_record30_remove_swap_last_00bc81d0(W2_Array& array, std::int32_t index) noexcept;
 
 }  // namespace bsp::water_weather_cc13
+
+// ================================================================================================
+// Part f (cc13-left1, docs/CC13_LEFT_1.md): bodies left open by Part e, read from the live decompile
+// (reliable, lead correction 2026-10-13) with the listing checked for x87 copies and register
+// arguments. Native storage as in Part e. Build-tested only.
+// ================================================================================================
+namespace bsp::water_weather_cc13 {
+
+// Native 2-D cell grid (0Ch): +0h width, +4h height, +8h data of width*height 18h-byte cells. These are
+// the native-storage forms of 00B9D490 / 00B9E0C0, whose semantic models are ocean_cell_grid_* above;
+// the vectors below need them on native storage.
+// 00B9D490 __thiscall(ECX grid, int width, int height) RET 8: operator new(width*height*18h, saturated
+// to FFFFFFFFh on 32-bit overflow); copy the min(width) x min(height) overlap row by row (DWORD moves);
+// free the old data when non-null; store width, height, data.
+void w3_cell_grid_resize_00b9d490(void* grid, std::int32_t width, std::int32_t height);
+// 00B9E0C0 __thiscall(ECX grid, const grid*) RET 4 -> EAX grid: self-assignment returns; free data and
+// zero width/height; resize to the source dimensions; copy every cell.
+void* w3_cell_grid_assign_00b9e0c0(void* self, const void* source);
+// 00B9E7A0 BSP_OceanVector12_Reserve, __thiscall(ECX array, int n) RET 4: element is the 0Ch grid. n is
+// raised to 1; when capacity < n: operator new(n*0Ch), zero-construct then assign (00B9E0C0) each old
+// grid into the new block (null destinations skipped), free each old grid's data (00B9E090 shape),
+// free the old block, store data and capacity.
+void w3_grid_vector_reserve_00b9e7a0(W2_Array& array, std::int32_t requested);
+// 00B9EF20 BSP_OceanVector12_Resize, __thiscall(ECX array, int n) RET 4: reserve when n > capacity;
+// zero the new grids; destroy (free +8h, zero +0h/+4h) the grids above n from the top; count = n.
+void w3_grid_vector_resize_00b9ef20(W2_Array& array, std::int32_t count);
+
+// Native coverage region (30h): +0h owner, +4h byte vector {data, count, capacity}, +10h..+2Ch eight
+// DWORDs copied verbatim (W1A_OceanCoverageRecord is the semantic model).
+// 00B9E6B0 BSP_OceanCoverageRegion_DestroyMask, __fastcall(ECX region): byte vector +4h resize(0)
+// (00B9DF80) and free its data.
+void w3_coverage_region_destroy_mask_00b9e6b0(void* region);
+// 00B9E6F0 BSP_OceanCoverageRegion_Assign, __thiscall(ECX, const region*) RET 4 -> EAX: +0h, byte
+// assign (00B9E5D0) of +4h, then +10h..+2Ch. No self-assignment test.
+void* w3_coverage_region_assign_00b9e6f0(void* self, const void* source);
+// 00B9ED40 BSP_OceanCoverageRegion_CopyConstruct: as the assign, with +4h..+0Ch zeroed first.
+void* w3_coverage_region_copy_construct_00b9ed40(void* self, const void* source);
+// 00B9EDA0 BSP_OceanCoverageRegionVector_Reserve, RET 4: n raised to 1; when capacity < n operator
+// new(n*30h), copy-construct each old region (null destinations skipped), destroy each old mask (the
+// inline 00B9DF80 resize(0) then free), free the old block, store data and capacity.
+void w3_coverage_region_vector_reserve_00b9eda0(W2_Array& array, std::int32_t requested);
+// 00B9EFA0 BSP_OceanCoverageRegionVector_Resize, RET 4: reserve when n > capacity; zero +0h..+0Ch of
+// each new region (the eight trailing DWORDs are left as allocated); destroy masks above n from the top.
+void w3_coverage_region_vector_resize_00b9efa0(W2_Array& array, std::int32_t count);
+// 00B9FFF0 BSP_OceanCoverageRegionVector_PushBack, __thiscall(ECX array, const region*) RET 4: when full
+// reserve max(capacity*2, 1); copy-construct at the end unless that address is null; count++.
+void w3_coverage_region_vector_push_back_00b9fff0(W2_Array& array, const void* region);
+// 00B9ECE0 BSP_OceanCoverageRegionVector_EraseAt, RET 4: index -1 does nothing; otherwise assign the
+// last region over index unless it is the last, destroy the last region's mask, count--.
+void w3_coverage_region_vector_erase_at_00b9ece0(W2_Array& array, std::int32_t index);
+
+// 30h lightning segments (twelve floats, copied by FLD/FSTP; the listing at 00BC7FEC / 00BC817E).
+// 00BC7FA0 BSP_LightningSegmentVector_Reserve: w2_pod_reserve(array, n, 30h, floats).
+void w3_lightning_segment_vector_reserve_00bc7fa0(W2_Array& array, std::int32_t requested);
+// 00BC8150 BSP_LightningSegmentVector_Append: w2_pod_push_back(array, segment, 30h, floats).
+void w3_lightning_segment_vector_append_00bc8150(W2_Array& array, const void* segment);
+
+}  // namespace bsp::water_weather_cc13
+
+namespace bsp {
+struct TrackedCriticalSection;
+}
+
+namespace bsp::water_weather_cc13 {
+
+// Runtime plumbing at the end of segment 94 (00BD15D0-00BD2B30).
+// 00BD15D0 BSP_GameAllocator_Destroy, __fastcall(ECX allocator): vtable 00D68204; the shared small-return
+// shutdown gate 01090AA4 = 1; drain the positive SIGNED depth at +0B89AB0h (LeaveCriticalSection on the
+// section at +0B89A98h each step); DeleteCriticalSection; the publication 01090AAC = 0; base vtable
+// 00CE3818. The second pool owner, twin of destroy_native_string_pool_00bd14c0 (whose section sits at
+// +8AD484h and publication at 01090AA8). No unregister or free.
+void w3_game_allocator_destroy_00bd15d0(void* allocator, volatile std::uint32_t& small_returns_disabled_01090aa4,
+                                        void* volatile& published_01090aac) noexcept;
+// 00BD1890 BSP_CountedCriticalSection_Create: byte-identical to 00BD1860 (operator new(1Ch),
+// InitializeCriticalSection, depth +18h = 0; null when the allocation is null). No caller or data xref.
+TrackedCriticalSection* w3_counted_critical_section_create_00bd1890();
+// 00BD18F0 BSP_Event_Destroy, __fastcall(ECX event): vtable 00D6821C; CloseHandle(+4h); vtable 00D68208.
+// No caller or data xref in the image.
+void w3_event_destroy_00bd18f0(void* event) noexcept;
+// String builder appends into the builder's first eight-byte string (native_vfs_open_logging.hpp
+// layout: +0h text, +8h "%d" format, +10h "%.3f" format; data pointers at +0Ch and +14h).
+// 00BD1B10 BSP_StringBuilder_AppendChar, __thiscall(ECX builder, char) RET 4 -> EAX: a two-byte pooled
+// block (00419CC0 + 00BD1120(2)) holding {c, 0}; resize the text by one, preserving (0041DD40); store
+// the byte; return the block (00BD1510(2)).
+void* w3_string_builder_append_char_00bd1b10(void* builder, char c, NativeStringStorage& strings);
+// 00BD1D90 BSP_StringBuilder_AppendFloat, __thiscall(ECX builder, float) RET 4 -> EAX: sprintf into a
+// 64-byte local with the format at +14h (01090AB4 when null) and the value widened to double; the
+// pooled temporary/append/release schedule of 00BD1BB0. Output that does not fit 64 bytes overruns
+// the native stack buffer; this source rejects it, as append_native_log_int_00bd1bb0 does.
+void* w3_string_builder_append_float_00bd1d90(void* builder, float value, NativeStringStorage& strings,
+                                              const char* null_format_01090ab4);
+// 00BD1E80 BSP_StringBuilder_AppendPointer, __thiscall(ECX builder, void*) RET 4 -> EAX: as above with
+// the fixed format "0x%p".
+void* w3_string_builder_append_pointer_00bd1e80(void* builder, const void* value, NativeStringStorage& strings);
+// 00BD2180 BSP_Singleton0109DBDC_Get, no arguments -> EAX: the error reporter singleton. When 0109DBDC is
+// null: under the manager's section (00415350 +10h, with its +18h depth), recheck, operator new(18h),
+// BSP_ErrorReporter_Construct 00BF2C40 (null stays null), register with the manager (00BD0C30).
+void* w3_error_reporter_singleton_00bd2180(void*& published_0109dbdc, SingletonLifetimeDomain& domain,
+                                           engine_services_cc13::EngineServiceCalls& calls);
+// 00BD2390 BSP_NativeString_CopyConstructInto_00bd2390, __thiscall(ECX source, string* destination)
+// RET 4 -> EAX destination: zero the destination; unless it is the source, resize it to the source
+// length (preserving) and copy that many bytes when the length is nonzero.
+void* w3_native_string_copy_construct_into_00bd2390(const void* source, void* destination,
+                                                    NativeStringStorage& strings);
+// 00BD26B0 BSP_LogMessage_AppendCString, __thiscall(ECX message, const char*) RET 4 -> EAX message: a
+// temporary from the C text (0041E870: zero, strlen, resize preserving, copy length + 1), appended to
+// the message text at +20h when nonempty, then released (length + 1 bytes).
+void* w3_log_message_append_cstring_00bd26b0(void* message, const char* text, NativeStringStorage& strings);
+
+}  // namespace bsp::water_weather_cc13
+
+namespace bsp {
+struct AllocatorListElement;
+class AllocatorListDomain;
+}
+
+namespace bsp::water_weather_cc13 {
+
+// Small shells. A routine these bodies call and this file does not reconstruct on native storage is
+// passed in by the caller, named after its address.
+using W3_Body = void (*)(void* object);
+
+// Deleting destructors, __thiscall(ECX object, BYTE flags) RET 4 -> EAX object: store vtable (when
+// nonzero), call the body (when present), then dispose of the object when flags bit 0 is set.
+//   00BC51F0 BSP_CloudRenderModel_DeletingDestructor  vtable 00D64878, body 00BBE2D0, dispose pool 010909F4 free 00BC5070
+//   00BC5D60 BSP_CloudPlaneModel_DeletingDestructor   vtable 00D648E0, body 00BC7BB0, dispose pool 01090A2C free 00BC5BE0
+//   00BC6F70 BSP_LightningModel_DeletingDestructor    vtable 00D64958, body 00BC8380, dispose pool 01090A68 free 00BC6DF0
+//   00BC2A00 BSP_WaterdropsPooled_DeletingDestructor  vtable 00D647D0, body 00BC1F30, dispose pool 010909BC free 00BC2880
+//   00BBE600 BSP_CloudInstance_DeletingDestructor     vtable 00D64528, body 00B750C0, dispose 00B748C0
+//   00BC7BE0 BSP_GeneratedModel_ScalarDeletingDestructor_00bc7be0 vtable 00D649E8, body 00B750C0, dispose 00B748C0
+//   00BC93C0 BSP_LightningModel_DeletingDestructor    no vtable store, body 00BC8380, dispose 00B748C0
+//   00BC2010 BSP_Waterdrops_DeletingDestructor        no vtable store, body 00BC1F30, dispose 00B748C0
+//   00BBC460 BSP_ProceduralTextureFactory_ScalarDeletingDestructor vtable 00D64468, no body, dispose
+//            00BF65AC (the flag is tested before the store; the order is unobservable)
+void* w3_deleting_destructor(void* object, std::uint32_t flags, std::uint32_t vtable, W3_Body body, W3_Body dispose);
+
+// "SUB ECX,4; JMP target" adjustor thunks: 00BA24A0 (-> 00BA29F0) and 00BA6F70 (-> 00BA6F90), the
+// secondary-base slots of the wave field base and wave field vtables. Flags stay on the stack.
+void* w3_adjustor_thunk_minus4(void* secondary, std::uint32_t flags, void* (*target)(void* object, std::uint32_t flags));
+
+// 00BBE7C0 BSP_CloudInstance_TypeInfoThunk, __fastcall(ECX) -> EAX ECX: call 00BBE770 (once-only type info
+// "cCloudInstance"), return the object.
+void* w3_cloud_instance_type_info_thunk_00bbe7c0(void* object, W3_Body init_type_info_00bbe770);
+
+// 00BBC4A0 / 00BBC4C0 BSP_ProceduralFactorySlot_DeleteIfSet_*, __fastcall(ECX slot): when *slot is non-null,
+// its vtable slot 0 (scalar deleting destructor) with flag 1, then *slot = 0.
+void w3_delete_slot_if_set(void** slot);
+
+// 00BC7B60 BSP_RefCountedBase_Construct_00bc7b60, __fastcall(ECX) -> EAX: vtable 00CEB130, count +4h = 1,
+// vtable 00D649DC.
+void* w3_ref_counted_base_construct_00bc7b60(void* object) noexcept;
+// 00BBC670 BSP_CausticsTextureSource_Construct / 00BBC7C0 BSP_ShoreWaveTextureSource_Construct,
+// __fastcall(ECX) -> EAX: BSP_TextureSource_Construct 00C30470, then vtable 00D64478 / 00D644B4.
+void* w3_caustics_texture_source_construct_00bbc670(void* object) noexcept;
+void* w3_shore_wave_texture_source_construct_00bbc7c0(void* object) noexcept;
+// 00BC2160 BSP_WaterdropsResource_Construct, __fastcall(ECX) -> EAX: BSP_Waterdrops_Construct 00BC2030,
+// then the pooled vtable 00D647D0.
+void* w3_waterdrops_pooled_construct_00bc2160(void* object, W3_Body waterdrops_construct_00bc2030);
+// GeneratedModel subclasses, __fastcall(ECX) -> EAX: a pooled temporary name, BSP_GeneratedModel_Construct
+// 00B75030(object, &name), release the name, store the vtable.
+//   00BC7DB0 BSP_CloudPlaneModel_ConstructBase: "cloudplane", vtable 00D649E8.
+//   00BC93E0 BSP_LightningModel_ConstructBase: "Lightning", vtable 00D64A50, then +188h..+1B4h = 0 (the
+//            strand and segment vector headers).
+using W3_ConstructGeneratedModel = void* (*)(void* object, const void* name_header);
+void* w3_cloud_plane_model_construct_base_00bc7db0(void* object, NativeStringStorage& strings,
+                                                  W3_ConstructGeneratedModel construct_00b75030);
+void* w3_lightning_model_construct_base_00bc93e0(void* object, NativeStringStorage& strings,
+                                                W3_ConstructGeneratedModel construct_00b75030);
+
+// 00BB8690 BSP_MemoryStream_CastFromStream_00bb8690, __fastcall(ECX stream) -> EAX: null stays null;
+// otherwise the stream's vtable +0Ch (IsKindOf) on the memory file type (00BEF480 returns 0109DBA0); the
+// stream when that returns nonzero AL, else null.
+void* w3_memory_stream_cast_00bb8690(void* stream, void* memory_file_type_0109dba0);
+// 00BB8E70 BSP_MpkgProvider_OpenEntry, __thiscall(ECX provider, name, flags) RET 8: tail jump to
+// BSP_MPKG_OpenNamedEntry 00BB8D60 with ECX = provider +14h.
+void* w3_mpkg_provider_open_entry_00bb8e70(void* provider, const void* name, std::uint32_t flags,
+    void* (*open_named_entry_00bb8d60)(void* state, const void* name, std::uint32_t flags));
+// 00BB5330 BSP_MpakDirectory_MakeMemberIterator: ECX out, EDX name (a register input; the body pushes it
+// as the third argument of 00BB4F40), stack (container, first, unused, end) RET 10h -> EAX out:
+// out +4h = BSP_MpakDirectoryVector_FindMember 00BB4F40(ECX first, EDX end, name); out +0h = container.
+// No caller or data xref in the image.
+void* w3_mpak_directory_make_member_iterator_00bb5330(void* out, const void* name, void* container, void* first,
+    void* end, void* (*find_member_00bb4f40)(void* first, void* end, const void* name));
+// 00BACA80 BSP_TracerParameterCurve_DestroyRecords, __fastcall(ECX records): resize 00BAC5E0(0), free
+// the data at +0h (00BF6989); the w2_destroy_via shape.
+void w3_tracer_curve_destroy_records_00baca80(W2_Array& records, W2_Resize resize_00bac5e0);
+
+// Fixed-block model pools (Mit::allocator_list_elem, list head 00E188B4), 38h bytes, the same layout as
+// DirectionalLightPoolStorage. CloudPagedPool above models the block bookkeeping; these are the native
+// constructor and destructor shells.
+struct W3_ModelPoolStorage {
+    std::uint32_t native_vtable_00;
+    void* previous_04;
+    void* next_08;
+    alignas(4) std::byte critical_section_0c[24];
+    std::int32_t recursion_24;
+    std::byte** blocks_28;
+    std::uint32_t block_count_2c;
+    std::uint32_t table_capacity_30;
+    std::uint32_t first_free_34;
+};
+static_assert(sizeof(W3_ModelPoolStorage) == 0x38);
+// Construct, __fastcall(ECX) -> EAX: base vtable 00D7A0C0, prepend to 00E188B4; vtable; InitializeCriticalSection
+// +0Ch; +24h..+30h = 0, +34h = -1; reserve the block table to 32 entries (operator new(80h), copy, free).
+//   00BC5220 BSP_CloudRenderModelPool_Construct (vtable 00D648D8, global 010909F4),
+//   00BC5D90 BSP_CloudPlaneModelPool_Construct (00D6493C, 01090A2C),
+//   00BC7190 BSP_LightningModelPool_Construct (00D649B8, 01090A68).
+void w3_model_pool_construct(W3_ModelPoolStorage& pool, AllocatorListDomain& list_00e188b4, std::uint32_t vtable);
+// Destroy, __fastcall(ECX): vtable; free every block, then the table when non-null; drain the positive
+// lock depth (LeaveCriticalSection); DeleteCriticalSection; base vtable and unlink from 00E188B4.
+//   00BC4FB0 (00D648D8), 00BC5B20 (00D6493C), 00BC6D10 (00D649B8).
+void w3_model_pool_destroy(W3_ModelPoolStorage& pool, AllocatorListDomain& list_00e188b4, std::uint32_t vtable) noexcept;
+// Free thunks, __fastcall(ECX object): the pool free on the global pool (RET 4 callee).
+//   00BC51E0 (010909F4, 00BC5070), 00BC5D50 (01090A2C, 00BC5BE0), 00BC6F60 (01090A68, 00BC6DF0).
+void w3_model_pool_free_thunk(void* object, void* pool, void (*pool_free)(void* pool, void* object));
+
+// Destructor bodies and the cloud class constructor (segment 94).
+// 00BC8380 BSP_LightningModel_DestructBody, __fastcall(ECX): vtable 00D64A50; the inline clear-and-free
+// of the four vectors in the order +1ACh (8-byte strands, reserve 00BC8070), +1A0h (30h segments,
+// 00BC7FA0), +194h (strands), +188h (segments); BSP_Model_Destroy 00B750C0.
+void w3_lightning_model_destruct_body_00bc8380(void* model, W3_Body model_destroy_00b750c0);
+// 00BC4660 BSP_CloudClass_DestructBody, __fastcall(ECX): vtable 00D64860; release and clear each puff
+// reference in the pointer vector at +1Ch; release and clear +68h; release the texture name string at
+// +60h; clear-and-free the 16-byte sphere vector at +30h (reserve 00BC31E0); resize the puff vector to
+// 0 (00BC3270) and free it; release the name string at +0Ch; BSP_RefCounted_DestroyBase 00BD30F0.
+void w3_cloud_class_destruct_body_00bc4660(void* cloud_class, NativeStringStorage& strings,
+                                          W3_Body destroy_base_00bd30f0);
+// 00BC4A60 BSP_CloudClass_Construct, __thiscall(ECX, manager_18, value_14, const string* name, const
+// string* texture, owner_08) RET 14h -> EAX: vtable 00CEB130, count 1, vtable 00D64860; +8h = owner;
+// name copied into +0Ch (the 00BD2390 copy body); +14h, +18h; the puff and sphere vector headers (+1Ch..
+// +24h, +30h..+38h) = 0; texture copied into +60h; BYTE +28h = BYTE +40h = 0; BSP_CloudClass_Load
+// 00BC47D0 (ECX this).
+void* w3_cloud_class_construct_00bc4a60(void* cloud_class, std::uint32_t manager_18, std::uint32_t value_14,
+    const void* name, const void* texture, std::uint32_t owner_08, NativeStringStorage& strings,
+    W3_Body load_00bc47d0);
+// 00BBF6D0 BSP_SkyBox_DestructBody, __fastcall(ECX): vtable 00D64618; release and clear the three layer
+// references at +84h, +0D8h, +12Ch (54h stride); release and clear +8h and +10h; clear-and-free the
+// 4-byte vectors at +24h then +18h (the inline 4-byte reserve-to-1 when capacity < 0); base 00BD30F0.
+void w3_sky_box_destruct_body_00bbf6d0(void* sky_box, W3_Body destroy_base_00bd30f0);
+
+// Release-sequence destructors. Each body below is a fixed list of steps over the object's fields,
+// run in listing order; the step kinds are the inline idioms of these destructors:
+//   ref           release (InterlockedDecrement +4h, slot 0 at zero) and clear when non-null
+//   node          when non-null BSP_Node_UnlinkAndRelease 00B6DFA0 (ECX node), then clear
+//   node_keep     the same without the clear
+//   node_always   00B6DFA0 without a null test or clear
+//   free_clear    when non-null free (00BF6989) and clear;  free_only: free without the clear
+//   string        release the eight-byte string (0041DD20 shape: length + 1 bytes)
+//   destroy_via   resize(0) then free the data of a {data, count, capacity} header
+//   clear_vector  w2_clear_counting_down (reserve(0) when capacity < 0, count down, free)
+//   owner_null    BSP_Material_SetParameterOwner 00B18A40(ECX field, 0, 0)
+//   parent_null   BSP_Node_SetParent 00B6E680(ECX field, 0)
+// A resize or reserve this file does not reconstruct is supplied in W3_ReleaseCalls.
+struct W3_ReleaseCalls {
+    W3_Body node_unlink_and_release_00b6dfa0;
+    void (*node_set_parent_00b6e680)(void* node, void* parent);
+    void (*material_set_parameter_owner_00b18a40)(void* material, void* a, void* b);
+    W2_Resize bound_resize;    // the one external resize a body uses (named per body)
+    W2_Reserve bound_reserve;  // the one external reserve a body uses (named per body)
+    W3_Body base_destructor;   // the final base call (named per body)
+    NativeStringStorage* strings;
+};
+// 00BA24B0 BSP_OceanWaveFieldBase_Destruct, __fastcall(ECX): vtables 00D63B5C / 00D63B54 (+4h); 34 field
+// steps; vectors +620h (00B9EFA0), +614h (00B9D360), +5F4h (bound 0059FCE0), +4F8h (00B9D310), +2B0h
+// (00B9EF20), +27Ch (00B9E040); strings +0A8h, +0A0h; base BSP_WeakOwner_Destroy 00925540.
+void w3_ocean_wave_field_base_destruct_00ba24b0(void* field, const W3_ReleaseCalls& calls);
+// 00BA2E60 BSP_OceanBeams_Destruct: vtable 00D63B88; base 00925540.
+void w3_ocean_beams_destruct_00ba2e60(void* beams, const W3_ReleaseCalls& calls);
+// 00BA42A0 BSP_OceanWaterParticles_Destruct: vtable 00D63BB4; base 00925540.
+void w3_ocean_water_particles_destruct_00ba42a0(void* particles, const W3_ReleaseCalls& calls);
+// 00BA71C0 BSP_OceanHeightGenerator_Destruct: vtable 00D63E34; 30 field steps; base 00BD30F0.
+void w3_ocean_height_generator_destruct_00ba71c0(void* generator, const W3_ReleaseCalls& calls);
+// 00BAC8A0 BSP_WaterTracerResource_Destruct: vtable 00D63F94; vectors +24h, +18h over bound 00468050;
+// base 00BD30F0.
+void w3_water_tracer_resource_destruct_00bac8a0(void* resource, const W3_ReleaseCalls& calls);
+// 00BAE170 BSP_WaterSprayResource_Destruct: vtable 00D64094; +0Ch, +8h; base 00BD30F0.
+void w3_water_spray_resource_destruct_00bae170(void* resource, const W3_ReleaseCalls& calls);
+// 00BAE210 BSP_WaterSprayObject_Destruct: vtable 00D6409C; SetParent(+8h, 0); unlink +8h (no test);
+// +0Ch; base 00BD30F0.
+void w3_water_spray_object_destruct_00bae210(void* object, const W3_ReleaseCalls& calls);
+// 00BB03D0 BSP_Coastline_Destruct: vtable 00D640DC; vector +14h over bound 00BAF070, vector +8h clear
+// over bound reserve 00BAEFB0; base 00BD30F0.
+void w3_coastline_destruct_00bb03d0(void* coastline, const W3_ReleaseCalls& calls);
+// 00BB0C90 BSP_CoastMesh_Destruct: vtable 00D640E4; base 00925540.
+void w3_coast_mesh_destruct_00bb0c90(void* mesh, const W3_ReleaseCalls& calls);
+// 00BBB660 BSP_MsarProvider_Destroy, __fastcall(ECX): vtable 00D643C4; release +14h; when the entry
+// vector's begin (+1Ch) is non-null: destroy [begin, end +20h) (00BBB020: ECX first, EDX last, stack
+// &vector +18h, tag) and operator delete (00BF65AC) the block; +1Ch..+24h = 0; BSP_FileProviderBase_Destroy
+// 00BB5380.
+void w3_msar_provider_destroy_00bbb660(void* provider, const W3_ReleaseCalls& calls,
+    void (*destroy_range_00bbb020)(void* first, void* last, void* vector));
+
+// Beams and water particles constructors. Each builds a default scene-record texture layer in its
+// 0A4h-byte frame, copies the settings out of it and releases the record's string (+8h length,
+// +0Ch data).
+struct W3_SettingsCalls {
+    W3_Body weak_owner_construct_00925490;         // ECX object
+    W3_Body construct_default_layer;               // 004C63E0 (beams) / 004C62A0 (particles), ECX record
+    void (*assign_settings)(void* object, const void* record);  // 0078D9F0 / 0078D940, ECX object, RET 4
+    NativeStringStorage* strings;
+};
+// 00BA3A60 BSP_OceanBeams_Construct, __thiscall(ECX, ref* a, ref* b) RET 8 -> EAX: weak owner; vtable
+// 00D63B88; +0Ch = *a, +10h = *b (each with an added reference); +20h..+28h, +34h, +38h, +0E4h, +0E8h,
+// +14h = 0; the (null) +24h and +20h release-and-clear; settings; +0F0h = 0.0f.
+void* w3_ocean_beams_construct_00ba3a60(void* beams, void* const* a, void* const* b, const W3_SettingsCalls& calls);
+// 00BA43B0 BSP_OceanWaterParticles_Construct, __thiscall(ECX, ref* a) RET 4 -> EAX: weak owner; vtable
+// 00D63BB4; +0Ch = *a (added reference); +14h..+1Ch, +28h, +2Ch, +10h = 0; the (null) +18h and +14h
+// release-and-clear; settings; +0C0h = 0.0f.
+void* w3_ocean_water_particles_construct_00ba43b0(void* particles, void* const* a, const W3_SettingsCalls& calls);
+// 00BBB5B0 BSP_MsarProvider_Construct, __thiscall(ECX, name) RET 4 -> EAX: BSP_FileProviderBase_Construct
+// 00BB5590 (ECX this, name); vtable 00D643C4; +1Ch..+24h = 0; +14h = file system 0109CEEC vtable +4h (ECX fs,
+// this +8h, 2), the backing stream.
+void* w3_msar_provider_construct_00bbb5b0(void* provider, void* name, void* file_system_0109ceec,
+    void (*file_provider_base_construct)(void* provider, void* name));
+
+// Factories: allocate, then construct when the allocation is non-null (EAX 0 otherwise).
+// 00BA6FB0 BSP_OceanWaveField_Create, __fastcall(ECX world, EDX flat byte) -> EAX: operator new(6BCh)
+// (00BF681B), BSP_OceanWaveField_Construct 00BA6C40(obj, world, flat).
+void* w3_ocean_wave_field_create_00ba6fb0(void* world, std::uint32_t flat,
+    void* (*construct_00ba6c40)(void* field, void* world, std::uint32_t flat));
+// 00BB3C60 BSP_OceanHeightGenerator_Create, __fastcall(ECX a, EDX b, c, d) RET 8 -> EAX: operator new(118h),
+// BSP_OceanHeightGenerator_ConstructDerived 00BB3AB0(obj, a, b, c, d).
+void* w3_ocean_height_generator_create_00bb3c60(void* a, void* b, void* c, void* d,
+    void* (*construct_00bb3ab0)(void* generator, void* a, void* b, void* c, void* d));
+// Application vtable 00CFEAB0 factories (ECX application unused):
+//   00BC02E0 +1Ch, RET 8: pool 010909F4 allocate (00BC54E0), BSP_CloudRenderModel_Construct 00BC54F0(slot, a, b).
+//   00BC0440 +28h, RET 8: pool 01090A68 allocate (00BC7450), BSP_LightningModel_Construct 00BC7460(slot, a, b).
+void* w3_application_create_pooled2(void* (*pool_allocate)(), void* a, void* b,
+    void* (*construct)(void* slot, void* a, void* b));
+//   00BC0350 +20h, RET 10h: pool 01090A2C allocate (00BC6050), BSP_CloudPlaneModel_Construct 00BC6060(slot, a, b, c, d).
+void* w3_application_create_cloud_plane_model_00bc0350(void* a, void* b, void* c, void* d, void* (*pool_allocate_00bc6050)(),
+    void* (*construct_00bc6060)(void* slot, void* a, void* b, void* c, void* d));
+//   00BC03C0 +24h, RET 10h: operator new(38h), 00BC6430(obj, a, b, float c, float d); the two floats are
+//   re-stored through FLD/FSTP on the way.
+void* w3_application_create_cloud_puff_00bc03c0(void* a, void* b, float c, float d,
+    void* (*construct_00bc6430)(void* object, void* a, void* b, float c, float d));
+
+// D3D builders. They call the renderer device (the object at 00F8D394) through its native vtable:
+//   +80h  size* (size* out): writes the back-buffer {width, height} and returns out
+//   +88h  texture* (width, height, levels, format, usage): a render-target texture
+//   +94h  surface* (width, height, format, a, float b, c): a depth-stencil surface
+// Slot meanings are read from these call sites; the D3DFMT values (15h A8R8G8B8, 17h R5G6B5, 71h
+// A16B16G16R16F, 4Bh D24S8, 50h D16) are the arguments the listing passes.
+// 00B9DC20 BSP_OceanWaveField_CreateReflectionTargets, __thiscall(ECX field, format, const size*) RET 8:
+// release and clear +0E4h, +0E8h, +288h; +0E4h = +88h(size.w, size.h, 1, format, 10h); +0E8h =
+// +88h(bb.w, bb.h, 1, 71h, 10h); +288h = +94h(bb.w, bb.h, format == 17h ? 50h : 4Bh, 0, 0.0f, 1). Each
+// back-buffer pair calls +80h twice, taking the width from the first result and the height from the
+// second (listing 00B9DCD6..00B9DD79).
+void w3_ocean_wave_field_create_reflection_targets_00b9dc20(void* field, std::uint32_t format,
+                                                            const std::uint32_t* size, void* device_00f8d394);
+
+// Engine routines the builders call that have no native-storage reconstruction here. Each method is the
+// native routine at the address in its name, with the native register/stack arguments in order.
+class W3_EngineCalls {
+public:
+    virtual ~W3_EngineCalls() = default;
+    // 00B4C700 BSP_D3D9Renderer_CreateGeneratedModel: ECX name*, EDX geometry file*, stack (shader file*,
+    // a, b, c, d) -> EAX model.
+    virtual void* create_generated_model_00b4c700(const void* name, const void* geometry, const void* shader,
+                                                  std::uint32_t a, std::uint32_t b, std::uint32_t c, std::uint32_t d) = 0;
+    // 00B6D890 BSP_Node_PropagateRootRegistration, __thiscall(ECX node, root) RET 4.
+    virtual void node_propagate_root_00b6d890(void* node, void* root) = 0;
+    // 00B189F0 BSP_Material_SetTextureSlot, __thiscall(ECX material, slot, texture) RET 8.
+    virtual void material_set_texture_slot_00b189f0(void* material, std::uint32_t slot, void* texture) = 0;
+    // 00B86500 BSP_DrawSection_SetVertexStream, __thiscall(ECX section, index, stream) RET 8.
+    virtual void draw_section_set_vertex_stream_00b86500(void* section, std::uint32_t index, void* stream) = 0;
+    // 00B1FBB0 BSP_FrameTargets_Construct, __fastcall(ECX 40h block) -> EAX; 00B1FAB0 SetColorSurface,
+    // __thiscall(ECX, index, surface) RET 8; 00B1FB00 SetDepthSurface, __thiscall(ECX, surface) RET 4.
+    virtual void* frame_targets_construct_00b1fbb0(void* block) = 0;
+    virtual void frame_targets_set_color_00b1fab0(void* targets, std::uint32_t index, void* surface) = 0;
+    virtual void frame_targets_set_depth_00b1fb00(void* targets, void* surface) = 0;
+    // Model assembly. ECX carries the byte size into the three raw-slot allocators.
+    virtual void* material_allocate_raw_slot_00b18780(std::uint32_t size) = 0;
+    virtual void* material_construct_with_effect_00b18900(void* slot, void* effect) = 0;           // RET 4
+    virtual void material_set_parameter_owner_00b18a40(void* material, void* owner, void* b) = 0;  // RET 8
+    virtual void* mesh_allocate_raw_slot_00b73b60(std::uint32_t size) = 0;
+    virtual void* mesh_construct_00b73d70(void* slot) = 0;
+    virtual void mesh_set_vertex_stream_00b73bb0(void* mesh, std::uint32_t index, void* stream) = 0;  // RET 8
+    virtual void mesh_set_index_stream_00b73b70(void* mesh, void* stream) = 0;                         // RET 4
+    virtual void mesh_append_draw_section_00b73c60(void* mesh, void* section) = 0;                     // RET 4
+    virtual void* draw_section_create_00533fa0() = 0;
+    virtual void draw_section_rebuild_layout_00b865a0(void* section, void* mesh) = 0;                  // RET 4
+    virtual void draw_section_set_material_00b864c0(void* section, void* material) = 0;                // RET 4
+    virtual void* model_allocate_raw_slot_00b74eb0(std::uint32_t size) = 0;
+    virtual void* generated_model_construct_00b75030(void* slot, const void* name) = 0;                // RET 4
+    // 00B75170 BSP_GeneratedModel_SetGeometry, __thiscall(ECX model, a, mesh, float, float) RET 10h.
+    virtual void generated_model_set_geometry_00b75170(void* model, std::uint32_t a, void* mesh, float x, float y) = 0;
+    virtual void node_set_parent_00b6e680(void* node, void* parent) = 0;                               // RET 4
+    virtual void generated_model_set_local_bounds_00b74390(void* model, const float* bounds) = 0;      // RET 4
+    // Cameras and viewports.
+    virtual void* camera_allocate_raw_slot_00b71930(std::uint32_t size) = 0;  // ECX size
+    virtual void* camera_construct_00b71a80(void* slot, const void* name) = 0;                         // RET 4
+    virtual void camera_set_clear_flags_00b6fe10(void* camera, std::uint32_t flags) = 0;               // RET 4
+    virtual void camera_set_clear_color_00b6fe50(void* camera, std::uint32_t argb) = 0;                // RET 4
+    virtual void* viewport_construct_00b1f850(void* block) = 0;
+    virtual void camera_set_viewport_00b71990(void* camera, void* viewport) = 0;                       // RET 4
+    virtual void viewport_set_dimensions_00b1f940(void* viewport, const std::uint32_t* size) = 0;      // RET 4
+    virtual void* material_create_for_effect_name_00535320(const void* name) = 0;  // ECX name -> EAX
+    virtual void* particle_index_stream_00af10a0(void* resources) = 0;             // ECX resources -> EAX
+    virtual void mesh_set_bounds_00b72650(void* mesh, const float* bounds) = 0;    // RET 4
+    virtual void scene_node_set_visibility_factor_00b6da70(void* node, float factor, std::uint32_t b) = 0;  // RET 8
+    virtual void draw_section_append_vertex_stream_00b85b80(void* section, void* stream) = 0;              // RET 4
+    // Wave field pieces this part does not reconstruct.
+    virtual const std::uint32_t* wave_field_reflection_target_size_00b9a3b0(void* field, std::uint32_t* out) = 0;
+    virtual void wave_field_initialize_render_resources_00ba5610(void* field) = 0;
+};
+// Further device and texture slots used below: device +38h declaration* (const string* file); device
+// +5Ch vertex buffer* (count, 1, declaration); texture +30h surface* (level, 0); surface +1Ch width,
+// +20h height.
+// Field getters these builders call, inlined because each is one load: 00B74640 model geometry [+180h]
+// (RET 4, its argument unused); 00B732C0 element i [[+54h] + 4i]; 00B73260 vertex stream i [+64h + 4i];
+// 00B72B40 element count [+58h]; 00BA7080 current height stream [+78h + 4 * [+84h]]; 00BA7190 [+44h];
+// 00BA7170 [+8h]; 00B9A500 BYTE [+10h].
+
+// 00BA4EB0 BSP_OceanWaveField_BindHeightStream, __fastcall(ECX field). When BYTE [field +10h] is set:
+// the height generator's (+2BCh) texture [+44h] goes to slot 8 of the materials +12Ch and +130h and to
+// slot 0 of the first element's material of model +4A0h. Otherwise: generator vtable +8h, then for each
+// element of model +11Ch's geometry (count reread every pass) set vertex stream 1 to the generator's
+// current height stream.
+void w3_ocean_wave_field_bind_height_stream_00ba4eb0(void* field, W3_EngineCalls& calls);
+
+// 00BB3DB0 BSP_OceanHeightGenerator_CreateStreams, __thiscall(ECX, width, height) RET 8: release +78h and
+// +7Ch; declaration = device +38h("oceanheightmap.mvfm"); +78h and +7Ch = device +5Ch(width * height, 1,
+// declaration); release the declaration (no null test).
+void w3_ocean_height_generator_create_streams_00bb3db0(void* generator, std::int32_t width, std::int32_t height,
+                                                      void* device_00f8d394, NativeStringStorage& strings);
+// 00BA94F0 BSP_OceanHeightGenerator_Construct, __thiscall(ECX, owner, width, height, const float[4]) RET 10h
+// -> EAX: vtable 00CEB130, count 1, +88h = 0, vtable 00D63E34; fields zeroed; +8Ch..+98h = the four
+// DWORDs; +88h = owner; +68h..+7Ch = 0; render targets through device +88h: +68h (s*w, s*h, 1, 71h, 10h),
+// +6Ch (s*w, s*h, 1, 15h, 10h) with s = the global 00E14454 (read per call), +44h (w, h, 1, 71h, 10h) with
+// surface +48h, +60h (w, h, 1, 71h, 2) with surface +64h, surfaces +70h / +74h of +68h / +6Ch, +10h (80h,
+// 80h, 1, 15h, 10h) with surface +14h; then 00BB3DB0(w, h) and BSP_OceanHeightGenerator_InitializePasses
+// 00BA7530(w, h).
+void* w3_ocean_height_generator_construct_00ba94f0(void* generator, void* owner, std::int32_t width,
+    std::int32_t height, const std::uint32_t* params, const volatile std::int32_t& scale_00e14454,
+    void* device_00f8d394, NativeStringStorage& strings,
+    void (*initialize_passes_00ba7530)(void* generator, std::int32_t width, std::int32_t height));
+// 00BB3AB0 BSP_OceanHeightGenerator_ConstructDerived, __thiscall(ECX, a, b, c, d) RET 10h -> EAX: 00BA94F0
+// (a, b, c, d); vtable 00D64168; depth = device +94h(width, height, 4Bh, 0, 0.0f, 1) of the surface +70h
+// (vtable +20h height is called first, then +1Ch width); three frame targets
+// (operator new(40h) + 00B1FBB0, null stays null) at +40h, +5Ch, +2Ch with colour surfaces +70h, +48h,
+// +74h and that depth; release the depth when non-null.
+// 00BAE900 BSP_WaterSprayObject_Construct, __thiscall(ECX, parent, const resource*) RET 8 -> EAX. No static
+// reference (cc13-water1). Ref-counted base, vtable 00D6409C, +8h = +0Ch = 0; material (110h slot,
+// constructed with resource +0Ch) at +0Ch, owner this, texture resource +10h in slot 0; a mesh (0BCh slot)
+// with vertex stream 0 of resource +8h and its index stream (+60h); one draw section {+8h 4, +0Ch 0,
+// +10h resource +14h, +14h 0, +18h resource +18h} with the material, appended and released (no null test);
+// model "WaterSpray" (184h slot) at +8h with that geometry (00B75170 with 0 and -1.0f twice, 00D7A260),
+// parent and local bounds (resource +1Ch); release the mesh; +10h = +14h = 0.0f.
+void* w3_water_spray_object_construct_00bae900(void* object, void* parent, const void* resource,
+                                               NativeStringStorage& strings, W3_EngineCalls& calls);
+// 00BB0E30 BSP_CoastMesh_Construct, __thiscall(ECX, ref* a, ref* b, ref* c) RET 0Ch -> EAX. No static
+// reference (cc13-water1). Weak owner 00925490; vtable 00D640E4; +0Ch/+10h/+14h = *a/*b/*c with added
+// references; +18h..+20h, +68h..+7Ch = 0 (the null +20h/+1Ch/+18h release-and-clear); the tuning DWORDs
+// below, copied from .rdata; strings "foamwave.dds" +70h, "foamcoast.dds" +78h, "coast1.dat" +68h (resize
+// WITHOUT preserve, copy exactly length bytes); +0D8h = +120h = 0.
+// 00BA6C40 BSP_OceanWaveField_Construct, __thiscall(ECX, world, BYTE flat) RET 8 -> EAX: base 00BA1400
+// (this, world); BYTE +0F9h = flat; vtables 00D63E10 / 00D63E08 (+4h); reflection targets (00B9DC20) with
+// format 71h when BYTE 00F8D398 is set, else 15h, at the 00B9A3B0 size; 00BA5610; +498h = device
+// +88h(400h, 400h, 1, 15h, 10h); camera "OceanShadowRenderCamera" (458h slot) at +49Ch, clear flags 7,
+// clear colour 0, a new viewport (34h) sized {texture +3Ch width, +40h height} of +498h and released
+// (no null test); depth = device +94h(width, height, 4Bh, 0, 0.0f, 1); frame targets +60Ch (new) with
+// the +498h level-0 surface and that depth; then the existing +604h / +608h get the surfaces of
+// +0E4h / +0E8h with the depth +288h. Each surface is released without a null test, the depth with one.
+void* w3_ocean_wave_field_construct_00ba6c40(void* field, void* world, std::uint8_t flat,
+    const volatile std::uint8_t& hdr_00f8d398, void* device_00f8d394, NativeStringStorage& strings,
+    W3_EngineCalls& calls, void* (*base_construct_00ba1400)(void* field, void* world));
+// 00BC2D50 BSP_Waterdrops_BuildGeometry, __fastcall(ECX waterdrops): a mesh (0BCh slot); declaration
+// "simplecolor.mvfm" (device +38h); vertex buffer device +5Ch(4 * [+190h], 1000h, declaration) as stream 0;
+// one draw section {+8h 4, rest 0} with material 00535320("waterdrops.mshd") textured from +1C8h (slot 0);
+// the shared index stream 00AF10A0 of the particle resources object at 00F8C280; geometry on the model
+// (0, -1.0f, -1.0f); bounds {0, 0, 0, 1.0e10f (00CE4970)} on the mesh (00B72650) and the model (00B74390).
+// Declaration, buffer, material, section and mesh are released without null tests.
+void w3_waterdrops_build_geometry_00bc2d50(void* waterdrops, void* particle_resources_00f8c280,
+    void* device_00f8d394, NativeStringStorage& strings, W3_EngineCalls& calls);
+// 00BC54F0 BSP_CloudRenderModel_Construct, __thiscall(ECX slot, parent, const cloud class*) RET 8 -> EAX:
+// cloud instance 00BBE7D0; +184h = class; vtable 00D64878; the shared image block at 01090904..010909AF:
+// sixteen 1.0f DWORDs at 01090970..010909AC (listing order below), 01090908 = 0.5f, 01090904 = 3.0f
+// (00CE3854); +1C8h = +1D8h = 1.0f; parent (00B6E680); a mesh (0BCh) with declaration "cloud.mvfm",
+// vertex buffer +1A8h = device +5Ch(4 * class +20h, 1, declaration) as stream 0 (one reference
+// dropped, pointer kept), index buffer device +60h(6 * class +20h, 1, 65h); a draw section {4, 0,
+// 4n, 0, 2n} with a clone (00B18B60, 110h slot) of the class material +68h; geometry (0, -1.0f, -1.0f);
+// bounds {0, 0, 0, class +2Ch through FLD/FSTP}; tail: BYTE +188h = 0, +198h..+1A0h = 0.0f,
+// +18Ch..+194h = 99999.0f (00D119AC), BYTE +1A4h = BYTE +1B4h = 0.
+void* w3_cloud_render_model_construct_00bc54f0(void* model, void* parent, void* cloud_class,
+    std::uint32_t* image_01090904, void* device_00f8d394, NativeStringStorage& strings, W3_EngineCalls& calls,
+    W3_Body cloud_instance_construct_00bbe7d0, void* (*material_clone_construct_00b18b60)(void* slot, void* source));
+// 00BC6060 BSP_CloudPlaneModel_Construct, __thiscall(ECX slot, owner, parent, const string* effect, const
+// string* texture) RET 10h -> EAX: base 00BC7DB0; vtable 00D648E0; +184h = +188h = 0.0f; parent; visibility
+// (0.0f, 0); material 00535320(effect) with texture device +64h(texture, 0) in slot 0 and parameter owner
+// `owner`; a mesh with geometry (0, -1.0f, -1.0f) and bounds {0, 0, 0, 1.0e10f}; a 4-vertex buffer
+// (declaration "cloud.mvfm", device +5Ch(4, 1, decl)) appended to a draw section {4, 0, 4, 0, 2} with the
+// material; the buffer is filled with a unit quad {x, y, 0, FFFFFFFFh, 10x, 10y, u, v} (constants 1.0f,
+// -1.0f, 10.0f 00CE38B8, -10.0f 00CE6848); a 6-index buffer device +60h(6, 1, 65h) with {0, 1, 2, 2, 3, 0}
+// (Ghidra's body ends at 00BC63AB; the tail was read from the PE). Every object is released without a
+// null test.
+void* w3_cloud_plane_model_construct_00bc6060(void* model, void* owner, void* parent, const void* effect,
+    const void* texture, void* device_00f8d394, NativeStringStorage& strings, W3_EngineCalls& calls,
+    W3_ConstructGeneratedModel construct_00b75030);
+void* w3_coast_mesh_construct_00bb0e30(void* mesh, void* const* a, void* const* b, void* const* c,
+                                       NativeStringStorage& strings, W3_Body weak_owner_construct_00925490);
+void* w3_ocean_height_generator_construct_derived_00bb3ab0(void* generator, void* owner, std::int32_t width,
+    std::int32_t height, const std::uint32_t* params, void* device_00f8d394, W3_EngineCalls& calls,
+    void* (*construct_00ba94f0)(void* generator, void* owner, std::int32_t width, std::int32_t height,
+                                const std::uint32_t* params));
+
+// 00B9EA50 BSP_OceanWaveField_CreateWaveDampObject, __thiscall(ECX field, const float* a, const float* b,
+// const string* texture) RET 0Ch -> EAX model. No static reference (cc13-water1 census). Builds the
+// "WaveDampObject" model from "pf43uf42.mvfm" / "oceanwavedamp.mshd" (00B4C700 with 5, 4, 2, 0),
+// registers it under [field +2BCh] +8h (the 00BA7170 getter), locks the vertex stream (vtable +10h with
+// 0, 0, 0) and writes four 5-float vertices {x, 0, z, u, v} spanning a..b with u, v in {0, 1}
+// (1.0f = 00D7A24C; MOVSS copies), unlocks (+14h), loads the texture through the device vtable +64h
+// (name, 0), binds it to slot 0 of the first element's material (+20h) and releases it.
+void* w3_ocean_wave_field_create_wave_damp_object_00b9ea50(void* field, const float* a, const float* b,
+    const void* texture, void* device_00f8d394, NativeStringStorage& strings, W3_EngineCalls& calls);
+
+}  // namespace bsp::water_weather_cc13
