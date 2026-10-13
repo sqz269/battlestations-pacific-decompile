@@ -154,3 +154,13 @@ mechanism is in the cd761bb52 section above).
   `local\p6wf_off_j8.log`) and does not complete in 72000 frames with `kPlaneWingFoldElevatorBound` and
   `kPlaneWingSpreadTakeoffBound` ON (`local\p6wf_on_j8.log`): every Hosho Kate launch waits 3.0 s for its wings in the
   takeoff prepare (009CDEED). Faithful, flipped ON; JM08 needs a re-plan.
+
+- **New row JM06** (reported by cc9-ships45 through the lead, 2026-10-13): `config/win_orders/jm06_s45_j6_k.txt`,
+  100000 frames at 0.05 s, reference env, `--stop-after-end 40`; completed at 2880.63 s on bd3b0c333
+  (`ijn06.obj_missioncompleted`), guard line logged (SHIP_AI 225). Not jitter-checked.
+- **USNOS `usnos_s45_os_k` does NOT complete on current main** (reported through the lead, 2026-10-13): every
+  FinalTrgs unit dies, but ReinDead / `HideScoreDisplay(4,0)` never fires and the mission stays in phase 2.
+  cc9-ships46 is investigating with Lua error logging.
+- **JM08 re-plan assigned to cc9-physics6** (2026-10-13). On 6a7062611 (wing fold ON) `m10` sinks only 4 of 11
+  landing ships: Grayson kills Isokaze (655 s) and Fubuki (682 s) before they reach the transports (in the win
+  Fubuki sank LSM 01, TT02 and TT04 by 720 s). Hosho still dies at 509 s (Hawaii) either way.
