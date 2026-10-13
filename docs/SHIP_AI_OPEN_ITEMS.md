@@ -17251,3 +17251,31 @@ completes at 3528.42 s, `local\s45_rc_j8m10.log`); 224 the lane's FinishLanding 
    kill per projectile segment, sphere radius `[00CE3958]` = 2.0) were dropped by the lead: zero reach on the wins
    (no landing begins on USNOS k or JM08 m10). Paratroopers went to the plane lane (JM05).
 3. `kAiGroupPartyChangeRemovalBound` (216) still needs a row that SetParties grouped ships.
+
+## 227. JM06 under frame jitter: k fails, m completes (cc9-ships46, 2026-10-13; lead item 2)
+
+Build: this branch with origin/main `a35f4093c` merged. JM06, 100000 frames, 0.05 s, reference env,
+`--stop-after-end 40`; jitter rows add `BSP_FRAME_JITTER=20,3`. Logs `local\s46_c_j6k.log`, `local\s46_d_j6mj.log`,
+`local\s46_d_j6m.log`, all with trajectories except the last.
+
+**k under jitter** (`s46_c_j6k`): the Lexington sinks at 1862.24 s, Fletcher-class 01 at 1832.16 s, 05 at 1996.97 s,
+03 at 2863.57 s; **02 and 04 live**, no mission end. Under jitter the escorts stop at different points: 02 at
+(575, -714), 03 at (610, -657), 04 at (909, -61), against (722, -434), (592, -654), (699, -478) in the win. At
+54000 the sub sits at (1463, -843) heading -62.1 (the same pose as the win, so the `takehelm` at 52000 is not what
+moved). Heading here is atan2(dx, dy): the win's 02 bearing is -61.1 (on the bow), but under jitter 02 bears -81.7
+and 04 -35.3, so the six fires at 02/04 from 54000 to 55800 are all applied and none hits. k then fires only at 03.
+
+**m** (`config/win_orders/jm06_s46_j6_m.txt`, from `local\s46_j6gen.py`): k's orders before frame 60000 unchanged;
+torpedoes at Fletcher-class 02 every 300 frames 60000-65700 (after the 56000 `takehelm` toward 03, 02 bears about
+-82.6 against heading -77.5); `takehelm "PlayerSub 01" 0.3 909 -61 stop 800` at 66000; then torpedoes rotating
+04/02/03 every 300 frames 67000-90000. Without jitter k completes at 2880.63 s (frame 57613), before anything m
+changes, so m without jitter is k.
+
+| row | jitter | result |
+| --- | --- | --- |
+| `s46_c_j6k` (k) | 20,3 | no end: 02 and 04 live |
+| `s46_d_j6mj` (m) | 20,3 | 02 3104.20 s, 04 3409.85 s; `mission end: MissionStatus at 3421.16 s status=completed`, guard line `refused a mission script's process launch: sus_prog.exe` before it |
+| `s46_d_j6m` (m) | none | `completed` at 2880.63 s (= k), guard line present |
+
+m hardens one seed only. The fixed 66000 heading is aimed at seed 3's stop point for 04; another seed that strands an
+escort elsewhere may need its own turn.
