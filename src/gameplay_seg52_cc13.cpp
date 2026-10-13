@@ -291,6 +291,53 @@ bool support_site_can_supply_class_0084d050(bool active_340,
     return true;
 }
 
+std::vector<SupportStockEntry> support_site_build_supply_class_list_0084d560(
+    const SupplyClassListInputs& in) {
+    std::vector<SupportStockEntry> out;
+    if (in.owner_present && !entity_live(in.owner)) return out;  // 0084D5B1..0084D5CF -> 0084D78C
+    if (!in.site) return out;
+    // 0084D5D5..0084D5E1: team 0 -> +328h (AlliedList), else +31Ch (JapanList).
+    const std::vector<SupportStockEntry>& src = in.team == 0 ? in.site->allied_328 : in.site->japan_31c;
+
+    std::int32_t key = 0x61;  // 0084D617
+    if (in.session && in.flag && in.player_unit_present) key = in.player_unit_key_1c;  // 0084D649
+    const bool drop_kind_6 = in.command_building_344 && in.shipyard_failure_46;   // 0084D659
+    const bool drop_kind_0f = in.command_building_344 && in.airfield_failure_45;  // 0084D675
+
+    bool marked = false;
+    for (const SupportStockEntry& e : src) {
+        const SupplyClassView cls = in.class_of ? in.class_of(e.type) : SupplyClassView{};  // 0084D6BC
+        if (drop_kind_6 && cls.kind_6) continue;     // 0084D6CF..0084D6D7 -> unlink 0084D6FF
+        if (drop_kind_0f && cls.kind_0f) continue;   // 0084D6E5..0084D6ED
+        out.push_back(e);
+        if (cls.key_1c == key) marked = true;        // 0084D728..0084D734
+    }
+    if (marked) {
+        // 0084D74D: the player unit's +70h; with no unit (key 61h matched) the image
+        // dereferences null here, so the model needs the unit present.
+        SupportStockEntry added;
+        added.type = in.player_unit_class_70;
+        added.count = -1;
+        added.squad_size = 3;
+        out.push_back(added);
+    }
+    return out;
+}
+
+// --- shipyard stock registration -------------------------------------------------
+
+std::vector<ShipyardStockRegistration> shipyard_register_stock_008433c0(
+    std::int32_t party,
+    const std::function<std::optional<std::int32_t>(std::int32_t index)>& stock_type) {
+    std::vector<ShipyardStockRegistration> out;
+    for (std::int32_t k = 1; k <= 20; ++k) {  // 008433D6, 00843446..0084344C
+        const std::optional<std::int32_t> type = stock_type ? stock_type(k) : std::nullopt;
+        if (!type || *type == 0) continue;     // 008433FF..0084340E, 0084341C
+        out.push_back({k, *type, party});      // 00843435 0095BA60, 00843441 0046BE90
+    }
+    return out;
+}
+
 // --- stationary props ---------------------------------------------------------------
 
 StationaryHitResult stationary_apply_hit_0084f020(bool dead_5d, float hit_damage,

@@ -324,6 +324,77 @@ float ramp_node_step_0074b44b(RampNodeTurn& node, float ramp_turn_11a4) {
     return -0.0f - node.turn_44;
 }
 
+// 0074BEC0-0074C273 (cc13-gprx). The base 00822C20 is the caller's.
+void landing_ship_init_all_0074bec0(LandingShipInitState& s,
+                                    const std::vector<LandingShipRampNode>& ramp_nodes,
+                                    const std::optional<Vec3>& soldierbox_1,
+                                    const std::optional<Vec3>& soldierbox_2) {
+    s.landing_118a = false;      // 0074BEF4
+    s.anchored_1189 = false;     // 0074BEFB
+    s.ramp_down_1188 = false;    // 0074BF02
+    s.fast_landing_118b = false; // 0074BF09
+    s.landed_118c = false;       // 0074BF10
+    s.field_1190 = 2.0f;         // 0074BF17 [00CE3958]
+    if (!ramp_nodes.empty()) {
+        // 0074BFBB resize(i) per found node, then the record at i-1.
+        s.ramps_1198.resize(ramp_nodes.size());
+        for (std::size_t i = 0; i < ramp_nodes.size(); ++i) {
+            LandingShipRampRecord& r = s.ramps_1198[i];
+            r.node = ramp_nodes[i].node;
+            r.rest = ramp_nodes[i].local;
+            r.turn.turn_44 = 0.0f;                   // the zero store before +48h
+            r.turn.target_48 = -1.5707963705062866f; // 0074C078 [00CE3CCC]
+        }
+    }
+    s.ramp_turn_11a4 = 0.0f;               // 0074C0DA
+    s.timer_11ac = 0.0f;                   // 0074C0E2
+    s.last_ground_11a8 = -10000000000.0f;  // 0074C100 [00CE4ADC]
+    s.field_11b0 = 2.0f;                   // 0074C108
+    s.point_1214 = soldierbox_1.value_or(Vec3{});  // 0074C13F 00718870(.., 1); 0074C185 zero
+    s.point_1220 = soldierbox_2.value_or(Vec3{});  // 0074C1F0 00718870(.., 2); 0074C22B zero
+}
+
+// 0074C280-0074C62F (cc13-gprx). The base 0081F980 is the caller's.
+std::optional<LandingShipBeginLanding> landing_ship_load_saved_state_0074c280(
+    const LandingShipLoadInputs& in, LandingShipSaveTarget& t) {
+    if (in.source_kind == 3 && in.saved != nullptr) {  // 0074C2B1
+        const LandingShipSaved& v = *in.saved;
+        LandingShipInitState* s = t.state;
+        LandingShipAnchor* a = t.anchor;
+        // 0074C32E..0074C4B4, in key order; 00BD6830 writes every key.
+        if (s) s->ramp_down_1188 = v.nyitva;
+        if (a) a->ramp_down_1188 = v.nyitva;
+        if (s) s->anchored_1189 = v.horgony;
+        if (a) a->anchored_1189 = v.horgony;
+        if (s) {
+            s->landing_118a = v.partraszallas;
+            s->fast_landing_118b = v.gyors_partraszallas;
+            s->landed_118c = v.partraszalltunk;
+            s->ramp_turn_11a4 = v.rampa_elfordulas;
+            s->last_ground_11a8 = v.last_talaj;
+            s->timer_11ac = v.nyitzar_timer;
+        }
+        // 0074C4B4 CMP [EDI],0 (EDI = +1189h): the anchor point and matrix only while the horgony just read is set.
+        if (v.horgony && a) {
+            a->ramp_node_11b4 = v.horgony_pont;
+            std::memcpy(a->pose_11c0, v.horgony_matrix.data(), sizeof a->pose_11c0);
+        }
+    }
+    if (in.source_kind == 2) {  // 0074C547
+        if (in.spawn_pad_12c == 0 || in.spawn_building_12e == 0) return std::nullopt;  // 0074C55A, 0074C56A
+        return LandingShipBeginLanding{in.spawn_pad_12c, in.spawn_building_12e};
+    }
+    // 0074C5C8..0074C5DD: a commander value of type 0, else 8.
+    t.commander_player_120c = (in.commander_player.present && in.commander_player.value_type == 0)
+        ? in.commander_player.value : 8;
+    if (in.spawn_phase.present && in.spawn_phase.value_type == 0) {  // 0074C5E7..0074C5F4
+        t.spawn_phase_1208 = in.spawn_phase.value;
+    }
+    if (!in.landing_point.present || !in.command_building.present) return std::nullopt;  // 0074C5FA..0074C600
+    return LandingShipBeginLanding{static_cast<std::uint16_t>(in.landing_point.value),
+                                   static_cast<std::uint16_t>(in.command_building.value)};
+}
+
 // ---------------------------------------------------------------------------
 // 4. Lua mission triggers
 // ---------------------------------------------------------------------------

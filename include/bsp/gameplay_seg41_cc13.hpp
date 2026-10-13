@@ -51,7 +51,9 @@
 //   +48h/+44h chain holds a live element does not die at health 0, (c) dead
 //   forts with a death-smoke definition draw one stream-0 value each.
 
+#include <array>
 #include <cstdint>
+#include <optional>
 #include <vector>
 
 namespace bsp {
@@ -315,6 +317,109 @@ struct RampNodeTurn {
 };
 // Returns the X rotation the node is given.
 float ramp_node_step_0074b44b(RampNodeTurn& node, float ramp_turn_11a4);
+
+// 0074BEC0 InitAll (cc13-gprx), vtable[0A0h] of 00CFFA30 (00CFFAD0),
+// __fastcall(ECX = ship), bare RET, body 0074BEC0-0074C273.
+// 1. 00822C20 (the unit SEntityInit) first.
+// 2. +118Ah, +1189h, +1188h, +118Bh, +118Ch = 0 in that order (0074BEF4..0074BF10),
+//    +1190h = 2.0f (00CE3958).
+// 3. For i = 1, 2, ...: the model note node "rampa<i>" (00476B90 then 0071AD50,
+//    case-sensitive) ends the loop when absent. Otherwise the +1198h vector is
+//    resized to i records of 4Ch (0074BA20) and record i-1 gets {node, the node's
+//    local matrix (16 floats, 00B6DB60), turn +44h = 0.0f, target +48h =
+//    -1.5707964f (00CE3CCC)}. With no "rampa1" the vector is not touched, so a
+//    re-run keeps the old records.
+// 4. +11A4h = 0.0f, +11ACh = 0.0f, +11A8h = -1e10f (00CE4ADC), +11B0h = 2.0f.
+// 5. +1214h..+121Ch = point 0 of the class resource's ([+538h]+50h) point group
+//    "soldierbox" index 1 (00718870, 00484270), or (0, 0, 0) when the group is
+//    missing; +1220h..+1228h the same from index 2. These are the two points
+//    get_ramp_point_0074bca0 picks between.
+struct LandingShipRampRecord {
+    std::uint32_t node = 0;                  // +0h
+    std::array<float, 16> rest{};            // +4h..+43h, the node's local matrix
+    RampNodeTurn turn{0.0f, -1.5707963705062866f};  // +44h, +48h
+};
+struct LandingShipInitState {
+    bool ramp_down_1188{false};
+    bool anchored_1189{false};
+    bool landing_118a{false};
+    bool fast_landing_118b{false};
+    bool landed_118c{false};
+    float field_1190{2.0f};
+    std::vector<LandingShipRampRecord> ramps_1198;
+    float ramp_turn_11a4{0.0f};
+    float last_ground_11a8{-10000000000.0f};
+    float timer_11ac{0.0f};
+    float field_11b0{2.0f};
+    Vec3 point_1214;
+    Vec3 point_1220;
+};
+struct LandingShipRampNode {
+    std::uint32_t node = 0;
+    std::array<float, 16> local{};
+};
+// `ramp_nodes` are the "rampa1", "rampa2", ... nodes found, in order, up to the
+// first missing one.
+void landing_ship_init_all_0074bec0(LandingShipInitState& s,
+                                    const std::vector<LandingShipRampNode>& ramp_nodes,
+                                    const std::optional<Vec3>& soldierbox_1,
+                                    const std::optional<Vec3>& soldierbox_2);
+
+// 0074C280 (cc13-gprx), vtable[0A4h] of 00CFFA30, __fastcall(ECX = ship), bare RET,
+// body 0074C280-0074C62F. The ledger calls it LoadSavedState; it also binds the
+// landing pad for a fresh ship.
+// 1. 0081F980 (the ship base) first.
+// 2. When the source record +C0h is non-null and of kind 3 (a save), the
+//    "_landingship" table is read (the reader's {type, &field} pairs): nyitva
+//    +1188h, horgony +1189h, partraszallas +118Ah, gyorsPartraszallas +118Bh,
+//    partraszalltunk +118Ch (type 3, bytes), rampaElfordulas +11A4h, lastTalaj
+//    +11A8h, nyitzarTimer +11ACh (type 2, floats); only when the horgony just read
+//    is set, horgonyPont +11B4h (type 5) and horgonyMatrix +11C0h (type 7).
+// 3. Then, for every source kind (the record +C0h is read again with no null
+//    check at 0074C541):
+//    - kind 2 (a spawn record +8h): its words +12Ch (pad) and +12Eh (building);
+//      either zero returns; else 0074A990(pad, building), both resolved through
+//      00521E30 (building first).
+//    - any other kind (the scene bag +8h, the save included): "LandingCommanderPlayer"
+//      of value type 0 sets +120Ch, else +120Ch = 8; "SpawnPhase" of type 0 sets
+//      +1208h (else unchanged); with both "LandingPoint" and "CommandBuilding"
+//      present (no type test) 0074A990(LandingPoint +0Ch word, CommandBuilding +0Ch
+//      word).
+// The reader slot is 00BD6830 (no presence test), so every key is written: an
+// absent key reaches 00BD63B0 as nil and stores false / 0.0f (lua_toboolean,
+// lua_tonumber; docs/GUI_LUA_READER.md). The caller passes those values for a
+// missing key; what tags 5 and 7 store for nil was not read.
+struct LandingShipSaved {
+    bool nyitva = false, horgony = false, partraszallas = false, gyors_partraszallas = false,
+         partraszalltunk = false;
+    float rampa_elfordulas = 0.0f, last_talaj = 0.0f, nyitzar_timer = 0.0f;
+    Vec3 horgony_pont;
+    std::array<float, 16> horgony_matrix{};  // tag 7: t[i][j], row major
+};
+struct LandingShipSaveTarget {
+    LandingShipInitState* state = nullptr;
+    LandingShipAnchor* anchor = nullptr;     // +1189h, +11B4h, +11C0h
+    std::int32_t commander_player_120c = 0;
+    std::int32_t spawn_phase_1208 = 0;
+};
+struct LandingShipSceneValue {
+    bool present = false;
+    std::int32_t value_type = 0;    // +4h
+    std::int32_t value = 0;         // +0Ch (a u16 handle for the two entity keys)
+};
+struct LandingShipLoadInputs {
+    std::int32_t source_kind = 0;   // [+C0h]+4h
+    const LandingShipSaved* saved = nullptr;  // kind 3
+    std::uint16_t spawn_pad_12c = 0, spawn_building_12e = 0;  // kind 2
+    LandingShipSceneValue landing_point, command_building, spawn_phase, commander_player;
+};
+struct LandingShipBeginLanding {
+    std::uint16_t pad_handle = 0;
+    std::uint16_t building_handle = 0;
+};
+// Returns the 0074A990 call when one is made.
+std::optional<LandingShipBeginLanding> landing_ship_load_saved_state_0074c280(
+    const LandingShipLoadInputs& in, LandingShipSaveTarget& t);
 
 // ---------------------------------------------------------------------------
 // 4. Lua mission triggers (base 00D00554). Each check is the trigger's
