@@ -48,8 +48,10 @@
 
 namespace bsp {
 
-// OFF: nothing in the host reads it yet. Flip only through a cc9 pair.
-inline constexpr bool kStrikeCtlCruiseCapBound = false;
+// ON (packet cc9_l57_ctl_cruise_cap, docs/SQUADRON_LAND_TASK.md 5gt.1): the
+// host feeds it at the four strike sites through
+// apply_strike_ctl_cruise_cap_009fba9b (src/game_hosts_units.cpp).
+inline constexpr bool kStrikeCtlCruiseCapBound = true;
 
 enum class StrikeCruiseTask {
     kNone,       // no task profile has written +394h: the 007F2BE8 init value
