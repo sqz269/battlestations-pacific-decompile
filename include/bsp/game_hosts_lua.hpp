@@ -604,6 +604,7 @@ inline constexpr bool kLuaDisbandFormationBound = false;
 // speed already read. False: unimplemented.
 inline constexpr bool kLuaLandConvoyStartBound = false;
 inline constexpr bool kLuaLandConvoyStopBound = false;
+inline constexpr bool kLuaLandConvoySetSpeedBound = false;
 inline constexpr bool kLuaAddUntouchableUnitBound = true;   // ON on identity (LUA_BINDING_MISSION)
 // The +1D4h byte of units-host index `index`'s AI object, as AddUntouchableUnit
 // left it. False for every unit while kLuaAddUntouchableUnitBound is false.
