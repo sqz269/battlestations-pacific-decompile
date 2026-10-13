@@ -840,7 +840,11 @@ struct SessionMessageHost {
     virtual void construct_base_0075b430(Raw message, std::uint8_t type) = 0;
     virtual void write_header_0075b480(Raw message, void* cursor) = 0;
     virtual void read_header_0075b4c0(Raw message, void* cursor) = 0;
-    // Bit cursor, ECX = cursor.
+    // Bit cursor. Writes take ECX = the cursor passed to Write (00650390:
+    // `mov ecx,edi`). Reads take ECX = that cursor + 4h, a sub-object of the
+    // object passed to Read (006503C0: `add edi,4; mov ecx,edi`; 00605300 and
+    // 0064A7E0: `lea ecx,[edi+4]`; 00656530 and 006563A0 the same for 00428D10
+    // and 00428E30); the header read 0075B4C0 takes the unadjusted pointer.
     virtual void write_bool_004290b0(void* cursor, std::uint8_t value) = 0;
     virtual void write_signed_00429090(void* cursor, std::int32_t value, int bits) = 0;
     virtual void write_unsigned_00429070(void* cursor, std::uint32_t value, int bits) = 0;

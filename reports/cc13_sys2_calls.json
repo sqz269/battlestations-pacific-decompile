@@ -1,0 +1,21 @@
+{
+  "packet": "cc13-sys2",
+  "doc": "docs/CC13_SYS_2.md",
+  "steps": [
+    {"function": "00465c40", "address": "00465c4b", "native": "00465b60", "note": "action base constructor"},
+    {"function": "00465d00", "address": "00465d30", "native": "0041dd40", "note": "NativeString for explosion_delayed"},
+    {"function": "004661a0", "address": "004661aa", "native": "008673b0", "note": "release the particle handle"},
+    {"function": "00470c90", "address": "00470caf", "native": "00bf55be", "note": "operator new 194h"},
+    {"function": "00470c90", "address": "00470cd8", "native": "00489f30", "note": "37h visual base"},
+    {"function": "00470c90", "address": "00470d0a", "native": "0047b9e0", "note": "class at +170h"},
+    {"function": "004728f0", "address": "00472977", "native": "00926be0", "note": "Bullets entity pushed pending"},
+    {"function": "00476360", "address": "004763f8", "native": "00926be0", "note": "Cloud entity pushed pending"},
+    {"function": "00472ff0", "address": "0047300f", "native": "00489e60", "note": "named class base"},
+    {"function": "00472ff0", "address": "00473057", "native": "0041dd40", "note": "name from source+14h"},
+    {"function": "00467310", "address": "00467321", "native": "00bf7289", "note": "_vsprintf_s with 20h"},
+    {"function": "00449a70", "address": "00449a81", "native": "00428ff0", "note": "byte +10h, 8 bits"},
+    {"function": "00449a70", "address": "00449a8c", "native": "00429ac0", "note": "string +18h"},
+    {"function": "00449ab0", "address": "00449ac3", "native": "00428c70", "note": "byte +10h, 8 bits"},
+    {"function": "00449ab0", "address": "00449ace", "native": "00429f20", "note": "string +18h"}
+  ]
+}

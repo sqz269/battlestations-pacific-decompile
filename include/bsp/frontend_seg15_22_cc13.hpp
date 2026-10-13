@@ -18,6 +18,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <string>
 #include <string_view>
 
 #include "bsp/ingame_gui_cc13.hpp"
@@ -323,6 +324,67 @@ struct Seg15Host : bsp::ingame_gui_cc13::HudScreenServices {
     virtual void multi_menu_leave_to_main_00688c70() = 0;
     // Native string substring (count, data) of the first n characters.
     virtual void native_string_truncate(Raw string, std::uint32_t n) = 0;
+    // --- cc13-fe7 additions (docs/CC13_FE_7.md) ---
+    // Listbox routines, ECX = listbox: 00A9BEC0 clear rows, 00A9C7C0 select
+    // row, 00A9CDC0 clear, 00A9CDF0 (ECX = this, EDX = other, stack = third)
+    // clear the other two, 00A9BE00(row) -> row widget.
+    virtual void listbox_clear_rows_00a9bec0(void* listbox) = 0;
+    virtual void listbox_select_index_00a9c7c0(void* listbox, std::int32_t row) = 0;
+    virtual void listbox_clear_00a9cdc0(void* listbox) = 0;
+    virtual void listbox_clear_other_two_00a9cdf0(void* listbox, void* edx_listbox, void* stack_listbox) = 0;
+    virtual void* listbox_row_00a9be00(void* listbox, std::int32_t row) = 0;
+    // 004C12B0 then 00AA0F70, ECX = GUI manager: reset the screens.
+    virtual void gui_manager_reset_screens_00aa0f70() = 0;
+    // 004BEC00 then 00A92C40(seconds), ECX = input manager.
+    virtual void input_manager_update_00a92c40(float seconds) = 0;
+    // Tactical library ([*00E198AC+70h]) routines: 004FD500 / 004FD3A0(&handle,
+    // uv[4]) fill a texture handle (one reference) and its uv rectangle;
+    // 004FBE90(bool) sets the maps-available flag.
+    virtual void tactical_library_map_icon_004fd500(Raw library, void** handle, float uv[4]) = 0;
+    virtual void tactical_library_available_icon_004fd3a0(Raw library, void** handle, float uv[4]) = 0;
+    virtual void tactical_library_set_maps_available_004fbe90(Raw library, bool available) = 0;
+    // 00AB2690(state, texture, const uv*), ECX = widget.
+    virtual void widget_set_state_texture_00ab2690(void* widget, std::int32_t state, void* texture,
+                                                   const float uv[4]) = 0;
+    // Drop one reference (InterlockedDecrement of +4h; virtual +0h when it
+    // reaches zero).
+    virtual void refcounted_release(void* object) = 0;
+    // Session routines, ECX = [*00E188A8]+1EF0h: 00771E80(slot, flag) AI
+    // enable, 007718F0(a, b) select player, 00771990(a, b) swap slot request.
+    virtual void session_slot_ai_enable_00771e80(std::int32_t slot, std::int32_t flag) = 0;
+    virtual void session_request_select_player_007718f0(std::int32_t a, std::int32_t b) = 0;
+    virtual void session_swap_slot_request_00771990(std::int32_t a, std::int32_t b) = 0;
+    // 004BB850(record), ECX = *00E188A8 -> AL (unused by the kick prompt).
+    virtual bool game_participant_side_has_room_004bb850(Raw record) = 0;
+    // 00531B00 on the 00425D10 singleton (frontend_prompts.hpp's order):
+    // slot, message key, kind, callback, unused, title (a native string),
+    // timeout, timeout result, countdown key (by value), dismissible.
+    virtual void menu_prompt_raise_00531b00(std::int32_t slot, std::string_view message, std::int32_t kind,
+                                            std::uint32_t callback, std::int32_t unused, Raw title, float timeout,
+                                            std::int32_t timeout_result, std::string_view countdown,
+                                            std::int32_t dismissible) = 0;
+    // 00425D10 then 00530C20 / 00530670: focus the prompt's last / first
+    // navigation row.
+    virtual void menu_prompt_focus_last_00530c20() = 0;
+    virtual void menu_prompt_focus_first_00530670() = 0;
+    // Resize + memcpy of a C string into a native string.
+    virtual void native_string_assign_cstr(Raw dst, const char* text) = 0;
+    // The characters of a native string (count, data).
+    virtual std::string native_string_value(Raw string) = 0;
+    // 005D8650 (no arguments) -> the selected map record (name native string
+    // at +10h).
+    virtual Raw lobby_selected_map_record_005d8650() = 0;
+    // 005D5160, ECX = lobby screen -> the map list block (native string vector
+    // at +4h: first +8h, last +0Ch, 8-byte elements).
+    virtual Raw lobby_map_list_005d5160(Raw screen) = 0;
+    // 004C8950(const char*) / 004C6890(int), ECX = *00E188A8.
+    virtual void game_set_command_line_text_004c8950(const char* text) = 0;
+    virtual void game_select_scene_record_004c6890(std::int32_t index) = 0;
+    // Session ([*00E188A8]+1EF0h): 0076F360 collect incompatible clients;
+    // 00771DD0(player, flag, 1) request player ready
+    // (multiplayer_session_cc13::request_player_ready_00771dd0 models it).
+    virtual void session_collect_incompatible_clients_0076f360() = 0;
+    virtual void session_request_player_ready_00771dd0(std::int32_t player, bool flag, std::int32_t c) = 0;
 };
 
 // MSVC 8 vector layout used by the screens: {allocator dword, first, last, end}.
@@ -771,6 +833,87 @@ void lobby_map_entry_destruct_005daca0(Raw entry, Seg15Host& host);
 // 005D8700, __fastcall(screen): 00E08958 = the player listbox (+A8h) selection;
 // the selected row widget's (+250h[i]) player_name_Text text goes to 00E195D4.
 void multi_game_lobby_on_player_row_activate_005d8700(Raw s, Seg15Host& host);
+
+// --- cc13-fe7: lobby routines (docs/CC13_FE_7.md) ---
+// 005D5340 (no ECX use), plain RET: when the online service's +198h answers
+// and its byte +4Dh is set, enable AI on all eight session slots (00771E80(i,
+// 0)); else, for game modes 0..3 (004BCA50), mark the sides (dword +20h) of the
+// eight participant records (game+750h + k*118h, active +0, not AI +1) and
+// enable AI (flag 1) on the first slot record (game+18CCh[k], side +28h) of
+// each side without one, 0 on the rest.
+void multi_game_lobby_reset_slots_005d5340(Seg15Host& host);
+// 005D67E0 __thiscall(screen, widget), RET 4: move the focus (+1Ch) with the
+// widgets' +84h(0/1), remember the player listbox row when leaving +A4h,
+// update the input manager with 0, set the focus bytes +1B1h / +125h / +89h
+// and [+A4h]+78h, and (when [+228h]+85h is clear) select the remembered row
+// and add 100 to the scroll offset +2D0h, or clear both listboxes.
+void multi_game_lobby_set_focus_005d67e0(Raw s, void* widget, Seg15Host& host);
+// 005D6C10 __fastcall(screen): map icon texture (004FD500) on widget +2Ch,
+// state 0.
+void multi_game_lobby_refresh_map_icon_005d6c10(Raw s, Seg15Host& host);
+// 005D8530 __fastcall(slot record): copy the record's name (+58h) to 00E195CC,
+// 004BB850(record), raise "FE.multi_lobby_kickplayerconfirm" (kind 1, result
+// 005D5690, title 00E195CC) and focus its last row; nothing for null.
+void multi_game_lobby_confirm_kick_005d8530(Raw record, Seg15Host& host);
+// 005D8800 (ECX = requesting slot, EDX = target slot), plain RET: with no
+// pending swap (00E0895C == -1) and EDX the local slot (game+18ECh), store the
+// pair in 00E0895C / 00E08960 and raise "FE.multi_lobby_wantswapslot" (kind 1,
+// result 005D57F0, title = the requester's name, game+7A0h + slot*118h), focus
+// the first row; else refuse (00771CC0(ECX slot, EDX slot)).
+void multi_game_lobby_prompt_swap_slot_005d8800(std::int32_t requester, std::int32_t target, Seg15Host& host);
+// 005D8950 (EDX = slot), plain RET: when a swap is pending (00E08958 != -1),
+// raise "FE.multi_lobby_swapslotrefused" (kind 2, no result), clear 00E08958
+// and set the slot's retry time 00E1959C[slot] = game+64Ch + 30.
+inline constexpr double kLobbySwapRetrySeconds = 30.0;  // 00CE7630
+void multi_game_lobby_show_swap_refused_005d8950(std::int32_t slot, Seg15Host& host);
+// 005D98E0 __fastcall(screen): +2DCh = 005D8B30; tell the tactical library;
+// when available draw 004FD3A0's icon on widget +24h (state 2, +88h(2) when
+// a texture came back, else +88h(0)), else +88h(1).
+void multi_game_lobby_refresh_map_availability_005d98e0(Raw s, Seg15Host& host);
+// 005D9A10 __fastcall(screen): clear the listboxes +A8h and +94h, dismiss
+// prompt slot 1, byte [*00E19698]+4 = 0, delete the row objects (005D8A70),
+// reset the GUI screens, scroller +30h range 0 and no content, +ACh = 0.
+void multi_game_lobby_exit_005d9a10(Raw s, Seg15Host& host);
+// 005D9C50 (ECX passed through, one unused stack argument), RET 4 -> EDX:EAX:
+// the selected map's (005D8650) number suffix after the last '_' as a mask,
+// 1 << (atol(suffix) - 1) through __allshl (0 for an empty name or a shift of
+// 64 or more).
+std::uint64_t multi_game_lobby_map_mask_005d9c50(Seg15Host& host);
+// 005D9D90 __thiscall(ECX = screen+8h listener, widget, flag), RET 8: player
+// listbox activation (select a player, or ask to swap slots no sooner than
+// the slot's retry time; a beep through the sound request otherwise).
+void multi_game_lobby_on_listbox_activate_005d9d90(Raw s, void* widget, std::uint32_t flag, Seg15Host& host);
+// 005DA000 __thiscall(ECX = screen+0Ch listener, widget), RET 4: list
+// selection routing by widget type (2: a player row; 12h: the buttons +A4h,
+// +20h, +8Ch, +28h).
+void multi_game_lobby_on_list_select_005da000(Raw s, void* widget, Seg15Host& host);
+// 005DA210 __fastcall(screen): leave the lobby, through a confirmation prompt
+// when hosting with more than one player or when a client.
+void multi_game_lobby_confirm_leave_005da210(Raw s, Seg15Host& host);
+// 005DA530 __fastcall(screen): apply the map list entry +2F4h (when +2F0h and
+// +2F4h are set) as the command-line text and into 00E195C4, select scene
+// record *00E19594, store the map mask (+2C0h/+2C4h, game+2060h/+2064h with
+// +2C8h/+2CCh), apply the settings, +10h = 1 and tail-call 005DA210.
+void multi_game_lobby_apply_selected_map_005da530(Raw s, Seg15Host& host);
+// 005D71B0 __fastcall(screen) -> AL: with a local player (game+18C8h >= 0,
+// slot game+18ECh in 0..7) and a loaded scene (game+5FCh, byte +914h): as host
+// (game+1FE4h == 1), when 005D6BA0 fails raise "globals.some_clients_incompatible"
+// (prompt slot 2, kind 2) and return 0; when 005D5260 says ready, dismiss the
+// load prompt (005D6CD0), byte +271h = 1, byte [*00F8A2FC]+75h = 1, collect the
+// incompatible clients (0076F360) and return 1. Otherwise (a session that is not
+// closing, and either host or a client whose [game+207Ch]+C4h is set) refresh
+// the local ready state (005D5790) and request ready for game+18C8h with flag
+// (local slot record +0Ch == 0); return 0.
+bool multi_game_lobby_check_client_compatibility_005d71b0(Raw s, Seg15Host& host);
+// 005D6060 __thiscall(ECX = screen+0Ch listener, widget, bool focus), RET 8:
+// widget type 3 gets alpha 0.5 / 1.0 (00CE3800 / 00D7A24C); the five buttons
+// (+A4h, +20h, +8Ch, +28h, +150h) are left alone; +90h and +154h only when
+// bytes +78h / +1A0h are clear; with the settings page open (005D5490) only
+// +220h and +224h; the three side widgets +144h / +148h / +14Ch switch
+// frames together; any other widget shows the focus through +88h(focus) for
+// type 6 or +84h(focus) for type 12h.
+inline constexpr float kLobbyFocusDimAlpha = 0.5f;  // 00CE3800
+void multi_game_lobby_on_focus_005d6060(Raw s, void* widget, bool focus, Seg15Host& host);
 
 }  // namespace bsp::frontend_seg15_22_cc13
 

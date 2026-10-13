@@ -7,6 +7,7 @@
 
 #include <cstdarg>
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <cwchar>
 #include <string.h>
@@ -2651,6 +2652,368 @@ void multi_game_lobby_on_player_row_activate_005d8700(Raw s, Seg15Host& host) {
     auto* row = static_cast<std::uint8_t*>(host.gui_find_child_00aa7e00(s.ptr(0x250 + index * 4), "player_name_Text"));
     Raw target = host.global_block(0x00E195D4);
     if (target.p != row + 0xF4) host.native_string_copy_0041dd40(target, Raw{row + 0xF4});
+}
+
+// ---------------------------------------------------------------------------
+// cc13-fe7: lobby routines (docs/CC13_FE_7.md)
+// ---------------------------------------------------------------------------
+void multi_game_lobby_reset_slots_005d5340(Seg15Host& host) {
+    if (host.online_service_virtual(0x198) && host.global_object(0x00F8A2FC).at<std::uint8_t>(0x4D) != 0) {
+        for (std::int32_t slot = 0; slot < 8; ++slot) host.session_slot_ai_enable_00771e80(slot, 0);
+        return;
+    }
+    if (static_cast<std::uint32_t>(host.game_effective_mode_004bca50()) > 3) return;
+    const Raw game = host.global_object(0x00E188A8);
+    std::uint8_t side_taken[3] = {0, 0, 0};
+    for (std::size_t k = 0; k < 8; ++k) {
+        const Raw record{game.p + 0x750 + k * 0x118};
+        if (record.at<std::uint8_t>(0) != 0 && record.at<std::uint8_t>(1) == 0) {
+            side_taken[record.at<std::int32_t>(0x20)] = 1;
+        }
+    }
+    for (std::int32_t slot = 0; slot < 8; ++slot) {
+        const Raw record{static_cast<std::uint8_t*>(host.global_object(0x00E188A8).ptr(0x18CC + slot * 4))};
+        const std::int32_t side = record.at<std::int32_t>(0x28);
+        if (side_taken[side] != 0) {
+            host.session_slot_ai_enable_00771e80(slot, 0);
+        } else {
+            host.session_slot_ai_enable_00771e80(slot, 1);
+            side_taken[record.at<std::int32_t>(0x28)] = 1;
+        }
+    }
+}
+
+void multi_game_lobby_set_focus_005d67e0(Raw s, void* widget, Seg15Host& host) {
+    if (s.ptr(0x1C) == widget) return;
+    if (s.ptr(0x1C) == s.ptr(0xA4)) s.at<std::int32_t>(0xAC) = host.listbox_selected_index_00a9c920(s.ptr(0xA8));
+    host.input_manager_update_00a92c40(0.0f);
+    if (s.ptr(0x1C) != nullptr) host.widget_virtual_84(s.ptr(0x1C), 0);
+    s.ptr(0x1C) = widget;
+    if (widget != nullptr) host.widget_virtual_84(widget, 1);
+    void* const focus = s.ptr(0x1C);
+    s.at<std::uint8_t>(0x1B1) = focus == s.ptr(0x150);
+    s.at<std::uint8_t>(0x125) = focus == s.ptr(0xC4);
+    s.at<std::uint8_t>(0x89) = focus != s.ptr(0x150) && focus != s.ptr(0xC4);
+    static_cast<std::uint8_t*>(s.ptr(0xA4))[0x78] = focus != s.ptr(0xA4);
+    if (static_cast<const std::uint8_t*>(s.ptr(0x228))[0x85] != 0) return;
+    if (s.ptr(0x1C) == s.ptr(0xA4)) {
+        void* const players = s.ptr(0xA8);
+        host.listbox_select_index_00a9c7c0(players, s.at<std::int32_t>(0xAC));
+        s.at<float>(0x2D0) = static_cast<float>(s.at<float>(0x2D0) + 100.0);  // 00D7A220
+        host.listbox_clear_other_two_00a9cdf0(players, s.ptr(0x94), s.ptr(0xA8));
+    } else {
+        host.listbox_clear_00a9cdc0(s.ptr(0x94));
+        host.listbox_clear_00a9cdc0(s.ptr(0xA8));
+    }
+}
+
+namespace {
+// Shared by 005D6C10 and 005D98E0: a texture handle (one reference) and its
+// uv rectangle (0, 0, 1, 1 before the call).
+struct LobbyIcon {
+    void* handle = nullptr;
+    float uv[4] = {0.0f, 0.0f, 1.0f, 1.0f};  // 00D7A24C = 1.0
+};
+}  // namespace
+
+void multi_game_lobby_refresh_map_icon_005d6c10(Raw s, Seg15Host& host) {
+    LobbyIcon icon;
+    host.tactical_library_map_icon_004fd500(Raw{static_cast<std::uint8_t*>(host.global_object(0x00E198AC).ptr(0x70))},
+                                            &icon.handle, icon.uv);
+    if (icon.handle != nullptr) host.widget_set_state_texture_00ab2690(s.ptr(0x2C), 0, icon.handle, icon.uv);
+    if (icon.handle != nullptr) host.refcounted_release(icon.handle);
+}
+
+void multi_game_lobby_confirm_kick_005d8530(Raw record, Seg15Host& host) {
+    if (record.p == nullptr) return;
+    const char* const name = reinterpret_cast<const char*>(record.p + 0x58);
+    host.native_string_assign_cstr(host.global_block(0x00E195CC), name);
+    host.game_participant_side_has_room_004bb850(record);  // result unused
+    host.menu_prompt_raise_00531b00(1, "FE.multi_lobby_kickplayerconfirm", 1, 0x005D5690, 0,  // 00CF2160
+                                    host.global_block(0x00E195CC), 0.0f, 0, "", 1);
+    host.menu_prompt_focus_last_00530c20();
+}
+
+void multi_game_lobby_prompt_swap_slot_005d8800(std::int32_t requester, std::int32_t target, Seg15Host& host) {
+    const Raw game = host.global_object(0x00E188A8);
+    if (host.global_block(0x00E0895C).at<std::int32_t>(0) != -1 || target != game.at<std::int32_t>(0x18EC)) {
+        host.session_swap_slot_refuse_00771cc0(requester, target);
+        return;
+    }
+    host.global_block(0x00E0895C).at<std::int32_t>(0) = requester;
+    host.global_block(0x00E08960).at<std::int32_t>(0) = target;
+    const char* const name = reinterpret_cast<const char*>(host.global_object(0x00E188A8).p + 0x748 + requester * 0x118 + 0x58);
+    host.menu_prompt_raise_00531b00(1, "FE.multi_lobby_wantswapslot", 1, 0x005D57F0, 0,  // 00CF2184
+                                    host.native_string_temp(name), 0.0f, 0, "", 1);
+    host.menu_prompt_focus_first_00530670();
+}
+
+void multi_game_lobby_show_swap_refused_005d8950(std::int32_t slot, Seg15Host& host) {
+    if (host.global_block(0x00E08958).at<std::int32_t>(0) == -1) return;
+    host.menu_prompt_raise_00531b00(1, "FE.multi_lobby_swapslotrefused", 2, 0, 0,  // 00CF21A0
+                                    host.native_string_temp(""), 0.0f, 0, "", 1);
+    host.global_block(0x00E08958).at<std::int32_t>(0) = -1;
+    host.global_block(0x00E1959C).at<float>(static_cast<std::size_t>(slot) * 4) = static_cast<float>(
+        host.global_object(0x00E188A8).at<float>(0x64C) + kLobbySwapRetrySeconds);
+}
+
+void multi_game_lobby_refresh_map_availability_005d98e0(Raw s, Seg15Host& host) {
+    const bool available = multi_game_lobby_local_map_available_005d8b30(host);
+    s.at<std::uint8_t>(0x2DC) = available ? 1 : 0;
+    const Raw library{static_cast<std::uint8_t*>(host.global_object(0x00E198AC).ptr(0x70))};
+    host.tactical_library_set_maps_available_004fbe90(library, available);
+    if (s.at<std::uint8_t>(0x2DC) == 0) {
+        host.widget_virtual_88(s.ptr(0x24), 1, 0, 1.0f);
+        return;
+    }
+    LobbyIcon icon;
+    host.tactical_library_available_icon_004fd3a0(
+        Raw{static_cast<std::uint8_t*>(host.global_object(0x00E198AC).ptr(0x70))}, &icon.handle, icon.uv);
+    if (icon.handle != nullptr) {
+        host.widget_set_state_texture_00ab2690(s.ptr(0x24), 2, icon.handle, icon.uv);
+        host.widget_virtual_88(s.ptr(0x24), 2, 0, 1.0f);
+    } else {
+        host.widget_virtual_88(s.ptr(0x24), 0, 0, 1.0f);
+    }
+    if (icon.handle != nullptr) host.refcounted_release(icon.handle);
+}
+
+void multi_game_lobby_exit_005d9a10(Raw s, Seg15Host& host) {
+    host.listbox_clear_rows_00a9bec0(s.ptr(0xA8));
+    host.listbox_clear_rows_00a9bec0(s.ptr(0x94));
+    host.menu_prompt_dismiss_slot_00532a20(1);
+    host.global_object(0x00E19698).at<std::uint8_t>(4) = 0;
+    multi_game_lobby_delete_row_objects_005d8a70(s, host);
+    host.gui_manager_reset_screens_00aa0f70();
+    host.scroller_set_range_006834a0(Raw{s.p + 0x30}, 0.0f);
+    host.scroller_attach_content_00683790(Raw{s.p + 0x30}, nullptr);
+    s.at<std::uint32_t>(0xAC) = 0;
+}
+
+std::uint64_t multi_game_lobby_map_mask_005d9c50(Seg15Host& host) {
+    const Raw map = host.lobby_selected_map_record_005d8650();
+    const Raw name{map.p + 0x10};
+    if (name.at<std::uint32_t>(0) == 0) return 0;
+    const std::string text = host.native_string_value(name);
+    // 00467CF0 reverse find of "_" (00CE7890), 00469840 substring after it
+    // (the whole name when there is no '_': -1 + 1 = 0).
+    const std::size_t underscore = text.rfind('_');
+    const std::size_t start = underscore == std::string::npos ? 0 : underscore + 1;
+    const std::string suffix = text.substr(start);
+    const long number = std::atol(suffix.c_str());
+    const std::uint32_t shift = static_cast<std::uint32_t>(number - 1) & 0xFF;  // __allshl reads CL
+    return shift >= 64 ? 0 : (std::uint64_t{1} << shift);
+}
+
+void multi_game_lobby_on_listbox_activate_005d9d90(Raw s, void* widget, std::uint32_t /*flag*/, Seg15Host& host) {
+    if (host.global_object(0x00E188A8).at<std::uint8_t>(0x2164) != 0) return;
+    const auto* const editor = static_cast<const std::uint8_t*>(s.ptr(0x228));
+    if (host.widget_is_visible_38(s.ptr(0x18)) && editor[0x85] != 0 && widget != s.ptr(0x228)) return;
+    if (widget == s.ptr(0x94) || widget != s.ptr(0xA8)) return;
+    if (s.ptr(0x1C) != s.ptr(0xA4)) multi_game_lobby_set_focus_005d67e0(s, s.ptr(0xA4), host);
+    const std::int32_t row = host.listbox_selected_index_00a9c920(s.ptr(0xA8));
+    const Raw game = host.global_object(0x00E188A8);
+    void* const record = game.ptr(0x18CC + row * 4);
+    const std::int32_t local = game.at<std::int32_t>(0x18EC);
+    void* const local_record = local >= 0 && local <= 7 ? game.ptr(0x18CC + local * 4) : nullptr;
+    if (record == local_record || host.global_block(0x00E08958).at<std::int32_t>(0) != -1) {
+        host.sound_request_singleton_004c1b90().at<std::uint8_t>(0x1C) = 1;
+        return;
+    }
+    const std::int32_t self = game.at<std::int32_t>(0x18C8);
+    const std::int32_t picked = host.listbox_selected_index_00a9c920(s.ptr(0xA8));
+    if (static_cast<const std::uint8_t*>(record)[9] != 0) {
+        host.session_request_select_player_007718f0(self, picked);
+        multi_game_lobby_on_player_row_activate_005d8700(s, host);
+        return;
+    }
+    const float now = host.global_object(0x00E188A8).at<float>(0x64C);
+    if (now > host.global_block(0x00E1959C).at<float>(static_cast<std::size_t>(picked) * 4)) {
+        host.session_swap_slot_request_00771990(self, picked);
+        host.global_block(0x00E19598).at<float>(0) =
+            static_cast<float>(host.global_object(0x00E188A8).at<float>(0x64C) + kLobbySwapRetrySeconds);
+        multi_game_lobby_on_player_row_activate_005d8700(s, host);
+    } else {
+        host.sound_request_singleton_004c1b90().at<std::uint8_t>(0x1C) = 1;
+    }
+}
+
+void multi_game_lobby_on_list_select_005da000(Raw s, void* widget, Seg15Host& host) {
+    const auto* const editor = static_cast<const std::uint8_t*>(s.ptr(0x228));
+    if (host.widget_is_visible_38(s.ptr(0x18)) && editor[0x85] != 0) return;
+    // When the focus is the chat box (+150h), notify (*[*00E198B4+54h]+8h)'s +0Ch.
+    auto leave_chat = [&] {
+        if (s.ptr(0x1C) != s.ptr(0x150)) return;
+        auto* const owner = static_cast<std::uint8_t*>(host.global_object(0x00E198B4).ptr(0x54));
+        host.object_virtual(Raw{owner + 8}, 0x0C);
+    };
+    const Raw w{static_cast<std::uint8_t*>(widget)};
+    if (host.widget_type_5c(widget) == 2) {
+        host.listbox_select_index_00a9c7c0(s.ptr(0xA8), w.at<std::int32_t>(0xD8));
+        leave_chat();
+        multi_game_lobby_set_focus_005d67e0(s, s.ptr(0xA4), host);
+        void* const row = host.listbox_row_00a9be00(s.ptr(0xA8), host.listbox_selected_index_00a9c920(s.ptr(0xA8)));
+        host.object_virtual_arg(Raw{s.p + 8}, 0x04, static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(row)));
+        return;
+    }
+    if (host.widget_type_5c(widget) == 3) return;
+    if (host.widget_type_5c(widget) != 0x12) return;
+    if (widget == s.ptr(0xA4)) {
+        leave_chat();
+        multi_game_lobby_set_focus_005d67e0(s, s.ptr(0xA4), host);
+    } else if (widget == s.ptr(0x20)) {
+        leave_chat();
+        multi_game_lobby_set_focus_005d67e0(s, s.ptr(0x20), host);
+        multi_game_lobby_apply_local_map_005d9f90(host);  // ECX = screen in the image
+    } else if (widget == s.ptr(0x8C)) {
+        leave_chat();
+        multi_game_lobby_set_focus_005d67e0(s, s.ptr(0x8C), host);
+        host.input_manager_update_00a92c40(0.0f);
+        multi_game_lobby_set_editable_005d5870(s, true, host);
+    } else if (widget == s.ptr(0x28)) {
+        leave_chat();
+        multi_game_lobby_set_focus_005d67e0(s, s.ptr(0x28), host);
+        const Raw game = host.global_object(0x00E188A8);
+        const Raw local_record{static_cast<std::uint8_t*>(game.ptr(0x18CC + game.at<std::int32_t>(0x18EC) * 4))};
+        auto* const library = static_cast<std::uint8_t*>(host.global_object(0x00E198AC).ptr(0x70));
+        Raw{library}.at<std::int32_t>(0x98) = local_record.at<std::int32_t>(0x28);
+        Raw{static_cast<std::uint8_t*>(host.global_object(0x00E198AC).ptr(0x70))}.at<std::int32_t>(0x94) = 8;
+        host.multi_menu_push_request_00688ad0(0x0B);  // tail jump with the argument replaced
+    }
+}
+
+void multi_game_lobby_confirm_leave_005da210(Raw s, Seg15Host& host) {
+    const auto* const editor = static_cast<const std::uint8_t*>(s.ptr(0x228));
+    if (host.widget_is_visible_38(s.ptr(0x18)) && editor[0x85] != 0) {
+        multi_game_lobby_set_editable_005d5870(s, false, host);
+        return;
+    }
+    multi_game_lobby_set_focus_005d67e0(s, s.ptr(0xA4), host);
+    const Raw game = host.global_object(0x00E188A8);
+    if (game.at<std::uint8_t>(0x218C) != 0) {
+        multi_game_lobby_leave_to_menu_005d8410(s, host);
+        return;
+    }
+    if (game.at<std::int32_t>(0x1FE4) != 1) {
+        host.menu_prompt_raise_00531b00(1, "FE.multi_lobby_clientleaveconfirm", 1, 0x005D98C0, 0,  // 00CF21D0
+                                        host.native_string_temp(""), 0.0f, 0, "", 1);
+        host.menu_prompt_focus_last_00530c20();
+        return;
+    }
+    const Raw players{static_cast<std::uint8_t*>(game.ptr(0x2078) != nullptr ? game.ptr(0x2078) : game.ptr(0x207C))};
+    if (players.at<std::int32_t>(0x10) > 1) {
+        host.menu_prompt_raise_00531b00(1, "FE.multi_lobby_serverleaveconfirm", 1, 0x005D9FE0, 0,  // 00CF21F4
+                                        host.native_string_temp(""), 0.0f, 0, "", 1);
+        host.menu_prompt_focus_last_00530c20();
+        return;
+    }
+    multi_game_lobby_leave_to_menu_005d8410(s, host);
+}
+
+void multi_game_lobby_apply_selected_map_005da530(Raw s, Seg15Host& host) {
+    if (s.at<std::int32_t>(0x2F0) != -1 && s.at<std::int32_t>(0x2F4) != -1) {
+        auto entry = [&] {
+            const Raw list = host.lobby_map_list_005d5160(s);
+            return Raw{static_cast<std::uint8_t*>(list.ptr(8)) + s.at<std::int32_t>(0x2F4) * 8};
+        };
+        const char* const text = static_cast<const char*>(entry().ptr(4));
+        host.game_set_command_line_text_004c8950(text != nullptr ? text : "");  // 00E19605 when null
+        const Raw name = entry();
+        if (name.p != host.global_block(0x00E195C4).p) host.native_string_copy_0041dd40(host.global_block(0x00E195C4), name);
+    }
+    host.game_select_scene_record_004c6890(host.global_block(0x00E19594).at<std::int32_t>(0));
+    host.game_effective_mode_004bca50();  // the argument of 005D9C50, unused there
+    const std::uint64_t mask = multi_game_lobby_map_mask_005d9c50(host);
+    s.at<std::uint32_t>(0x2C4) = static_cast<std::uint32_t>(mask >> 32);
+    s.at<std::uint32_t>(0x2C0) = static_cast<std::uint32_t>(mask);
+    host.global_object(0x00E188A8).at<std::uint32_t>(0x2060) = s.at<std::uint32_t>(0x2C8) | static_cast<std::uint32_t>(mask);
+    host.global_object(0x00E188A8).at<std::uint32_t>(0x2064) =
+        s.at<std::uint32_t>(0x2CC) | s.at<std::uint32_t>(0x2C4);
+    multi_game_lobby_apply_settings_005d62b0(host);
+    s.at<std::uint32_t>(0x10) = 1;
+    multi_game_lobby_confirm_leave_005da210(s, host);
+}
+
+bool multi_game_lobby_check_client_compatibility_005d71b0(Raw s, Seg15Host& host) {
+    Raw game = host.global_object(0x00E188A8);
+    if (game.at<std::int32_t>(0x18C8) < 0) return false;
+    const std::int32_t local = game.at<std::int32_t>(0x18EC);
+    if (local < 0 || local > 7) return false;
+    if (game.ptr(0x5FC) == nullptr || static_cast<const std::uint8_t*>(game.ptr(0x5FC))[0x914] == 0) return false;
+    if (game.at<std::int32_t>(0x1FE4) == 1) {
+        if (!multi_game_lobby_slots_meet_content_masks_005d6ba0(host)) {
+            host.menu_prompt_raise_00531b00(2, "globals.some_clients_incompatible", 2, 0, 0,  // 00CF20A8
+                                            host.native_string_temp(""), 0.0f, 0, "", 1);
+            return false;
+        }
+        if (host.global_object(0x00E188A8).at<std::int32_t>(0x1FE4) == 1) {
+            if (lobby_ready_to_start_005d5260(host)) {
+                session_dismiss_load_prompt_005d6cd0(host);  // ECX = screen in the image
+                s.at<std::uint8_t>(0x271) = 1;
+                const Raw online = host.global_object(0x00F8A2FC);
+                if (online.p != nullptr) online.at<std::uint8_t>(0x75) = 1;
+                host.session_collect_incompatible_clients_0076f360();
+                return true;
+            }
+        }
+        game = host.global_object(0x00E188A8);
+    }
+    if (game.at<std::int32_t>(0x1FE4) == 0 || game.at<std::uint8_t>(0x218C) != 0) return false;
+    if (game.at<std::int32_t>(0x1FE4) != 1 && static_cast<const std::uint8_t*>(game.ptr(0x207C))[0xC4] == 0) return false;
+    multi_game_lobby_refresh_local_ready_005d5790(s, host);
+    const Raw now = host.global_object(0x00E188A8);
+    const auto* const record = static_cast<const std::uint8_t*>(now.ptr(0x18CC + now.at<std::int32_t>(0x18EC) * 4));
+    host.session_request_player_ready_00771dd0(now.at<std::int32_t>(0x18C8), record[0x0C] == 0, 1);
+    return false;
+}
+
+void multi_game_lobby_on_focus_005d6060(Raw s, void* widget, bool focus, Seg15Host& host) {
+    if (host.widget_type_5c(widget) == 2) return;
+    if (host.widget_type_5c(widget) == 3) {
+        host.widget_set_float_4c(widget, focus ? kLobbyFocusDimAlpha : 1.0f);  // 00D7A24C
+        return;
+    }
+    for (std::size_t off : {0xA4u, 0x20u, 0x8Cu, 0x28u, 0x150u}) {
+        if (widget == s.ptr(off)) return;
+    }
+    auto apply = [&] {  // 005D6105
+        if (host.widget_type_5c(widget) == 6) {
+            host.widget_virtual_88(widget, focus ? 1 : 0, 0, 1.0f);
+        } else if (host.widget_type_5c(widget) == 0x12) {
+            host.widget_virtual_84(widget, focus ? 1 : 0);
+        }
+    };
+    if (widget == s.ptr(0x90)) {
+        if (s.at<std::uint8_t>(0x78) == 0) apply();
+        return;
+    }
+    if (widget == s.ptr(0x154)) {
+        if (s.at<std::uint8_t>(0x1A0) == 0) apply();
+        return;
+    }
+    if (multi_game_lobby_settings_open_005d5490(s, host)) {
+        if (widget == s.ptr(0x220) || widget == s.ptr(0x224)) apply();
+        return;
+    }
+    void* const first = s.ptr(0x144);
+    if (widget != first && widget != s.ptr(0x148) && widget != s.ptr(0x14C)) {
+        apply();
+        return;
+    }
+    if (focus) {
+        if (widget == first) {
+            host.widget_virtual_88(first, 1, 0, 1.0f);
+        } else {
+            host.widget_virtual_88(s.ptr(0x148), 1, 0, 1.0f);
+            host.widget_virtual_88(s.ptr(0x14C), 1, 0, 1.0f);
+        }
+        return;
+    }
+    // Unfocused: which side is lit follows byte [*00E198B4+54h]+8Ch.
+    const bool second_side = static_cast<const std::uint8_t*>(host.global_object(0x00E198B4).ptr(0x54))[0x8C] != 0;
+    host.widget_virtual_88(s.ptr(0x144), second_side ? 0 : 2, 0, 1.0f);
+    host.widget_virtual_88(s.ptr(0x148), second_side ? 2 : 0, 0, 1.0f);
+    host.widget_virtual_88(s.ptr(0x14C), second_side ? 2 : 0, 0, 1.0f);
 }
 
 void byte_sbo_uninit_fill_n_005443f0(std::uint8_t* dest, std::uint32_t count, const std::uint8_t* value,

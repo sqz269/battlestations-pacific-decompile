@@ -15,6 +15,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <string>
 #include <string_view>
 
 #include "bsp/frontend_menus.hpp"
@@ -1622,5 +1623,573 @@ struct HudOrderEnterHost : WidgetHost {
 };
 inline constexpr const char* kPermanentOrderHint = "ORDPERMANENT";
 void hud_order_screen_enter_005fad70(void* screen, HudOrderEnterHost& host);
+
+// ---------------------------------------------------------------------------
+// HudPauseScreen bodies (packet cc13-fe6, docs/CC13_FE_6.md)
+// ---------------------------------------------------------------------------
+//
+// HudPauseScreen layout these bodies use (screen offsets): +04h active byte,
+// +08h listbox listener, +10h hint page shown, +14h main page, +18h hint page,
+// +1Ch objectives panel, +2Ch hint list box, +30h / +34h primary / secondary
+// objective list boxes, +50h objective row template, +5Ch / +60h the
+// "felki_bal_Icon" / "felki_jobb_Icon" arrows, +9Ch hint scroller, +100h float,
+// +11Ch map<int, NativeString> hint row -> hint name (005FD220 find, value at
+// node+10h), +128h list<NativeString> of expanded hint names (head +12Ch), +134h
+// hint list top row, +138h hint selected row, +13Ch "Main_Listbox", the seven
+// rows +140h resume, +148h options, +14Ch points, +150h restart, +154h quit,
+// +158h exit, +15Ch tips, and +160h the last objective row.
+struct PauseScreenHost : WidgetHost {
+    virtual void* hud_interface_00e198c4() = 0;
+    virtual void* game_00e188a8() = 0;
+    virtual void* award_tracker_004e1ca0() = 0;
+    virtual void* command_bar_00e1930c() = 0;
+    virtual void frame_select_00518d60(const char* name) = 0;  // ECX = EDX = 0, stack 0
+    virtual void frame_select_default_004c9680() = 0;
+    virtual void hud_order_close_005f9520() = 0;
+    virtual void hud_ship_close_order_menu_0064a2f0() = 0;
+    virtual std::uint32_t find_child_by_name_00aa7e00(std::uint32_t parent, std::string_view name) = 0;
+    virtual void list_box_clear_items_00a9bf90(std::uint32_t list_box) = 0;
+    virtual std::uint32_t clone_subtree_00aab4c0(std::uint32_t widget, std::int32_t arg) = 0;
+    virtual void text_set_localised_cstring_00abbe50(std::uint32_t text, const char* key, std::int32_t arg) = 0;
+    virtual void text_set_localised_source_00abaed0(std::uint32_t text, const void* source, std::int32_t arg) = 0;
+    virtual void list_box_insert_row_00a9d750(std::uint32_t list_box, std::uint32_t row, std::int32_t a,
+        std::int32_t b) = 0;
+    virtual void widget_virtual_7c(std::uint32_t widget, bool value) = 0;  // widget vtable +7Ch(bool)
+    virtual void list_box_select_index_00a9c7c0(std::uint32_t list_box, std::int32_t index) = 0;
+    virtual void list_box_set_listener_00a9ac40(std::uint32_t list_box, void* listener) = 0;
+    virtual void list_box_virtual_80(std::uint32_t list_box, bool value) = 0;
+    virtual void list_box_reset_highlight_00a9cf30(std::uint32_t list_box, std::int32_t a, std::int32_t b) = 0;
+    virtual std::int32_t list_box_selected_index_00a9c920(std::uint32_t list_box) = 0;
+    virtual void list_box_rebuild_page_00a9d870(std::uint32_t list_box) = 0;
+    virtual void list_control_set_item_visible_00a9c380(std::uint32_t list_box, std::int32_t index,
+        bool visible) = 0;
+    virtual std::array<float, 3> widget_resolved_position_00aa6750(std::uint32_t widget) = 0;
+    virtual void widget_set_resolved_position_00aa8240(std::uint32_t widget, const std::array<float, 3>& position) = 0;
+    // 004B7DE0: in-order successor of a std::map node.
+    virtual void* tree_next_004b7de0(void* node) = 0;
+    virtual void scroller_update_00683820(void* scroller, std::int32_t arg) = 0;
+    virtual void update_hints_006037d0(void* screen) = 0;
+    virtual void build_hint_list_00601200(void* screen) = 0;
+    virtual bool input_was_pressed_004c43c0(std::int32_t action) = 0;  // ECX = [00E188A8]
+    virtual void show_page_005fd890(void* screen, bool ingame_page, bool list_page) = 0;
+    virtual void resume_005fd440(void* screen) = 0;
+    virtual void rebuild_command_bar_0054b530(const std::array<MainMenuCommandArgument, 5>& arguments) = 0;
+    virtual void command_bar_set_help_line_0054a0c0(const char* text) = 0;
+    virtual void profile_hints_00427190(std::int32_t hint) = 0;  // ECX = 004C1E90()
+    virtual void commit_visibility_004f83b0(void* screen) = 0;
+    virtual void screen_virtual_18(void* screen) = 0;
+    virtual void input_manager_update_00a92c40(float dt) = 0;  // ECX = 004BEC00()
+    // [00E198B8]; null until created.
+    virtual void* options_menu_00e198b8() = 0;
+    // operator new(4Ch) + 00689800 into 00E198B8 (null when the allocation
+    // fails), then its vtable +04h.
+    virtual void options_menu_create_00689800() = 0;
+    virtual void options_menu_virtual_08() = 0;
+    virtual void set_options_page_00e19650(std::int32_t page) = 0;
+    // 00531B00 on 00425D10() with (slot, message, kind, callback, 0, title "",
+    // timeout 0.0f, timeout result 0, countdown "", dismissible 1), RET 2Ch.
+    virtual void raise_prompt_00531b00(std::int32_t slot, const char* message, std::int32_t kind,
+        std::uint32_t callback) = 0;
+    virtual void focus_last_prompt_navigation_00530c20() = 0;  // ECX = 00425D10()
+    // 005FD220 map find on +11Ch: the hint name, or null at end().
+    virtual const NativeString* hint_name_at_row_005fd220(void* screen, std::int32_t row) = 0;
+    virtual bool equals_insensitive_00435c40(const NativeString& a, const NativeString& b) = 0;
+    // 005FE8B0: std::list::remove of every equal element (list +128h).
+    virtual void expanded_hints_remove_005fe8b0(void* screen, const NativeString& name) = 0;
+    // 004CE6F0 + 004CE780 + relink: push_back a copy onto list +128h.
+    virtual void expanded_hints_push_back(void* screen, const NativeString& name) = 0;
+};
+
+// 00603120 HudPause enter, slot +18h of 00CF3EF4, __fastcall(ECX = screen), RET.
+// Selects "ingame.paused"; closes the order screen ([[00E198C4]+64h] +81h or
+// +82h set: 005F9520) and the ship order menu ([[00E198C4]+78h] +156h or +157h:
+// 0064A2F0); clears [[00E198C4]+60h]+4. Binds +13Ch = "Main_Listbox" under
+// page +14h, +5Ch / +60h = "felki_bal_Icon" / "felki_jobb_Icon" under +13Ch,
+// hides both and +18h, clears +13Ch, hides its "MainListbox_Text" template and
+// clones seven rows of it in order resume, tips, points, options, restart, quit,
+// exit (keys 00E08C40..00E08C58). tips is greyed through +7Ch(tracker+9Ch == 0);
+// points through +7Ch(game byte +218Ch clear and game+1FE4h == 0). The list box
+// is enabled, row 00E19660 selected, listener screen+8, +80h(1), highlight
+// reset (1, 1). The arrows sit either side of the tips row:
+//   off = (float)((float)((float)(width+114h / 960.0) * 0.5) + 0.015f)
+//   left  = pos(tips) + (-off, -0.001f, -0.0), right = pos(tips) + (off, -0.001f, +0.0)
+// with every intermediate rounded to float (FSTP dword). The command bar byte
+// [00E1930C]+4 = 1; the objective list boxes +30h / +34h are cleared and refilled
+// from the local objective set ([game + 21A4h + [game+18ECh]*4] + 24h, a
+// std::list): each active objective (+1Ch == 0, 008DA130) of kind +18h 0 goes
+// to +30h and kind 1 to +34h while that box holds fewer than 3 rows (+104h), as
+// a clone of +50h (kept in +160h) with localised source objective+0Ch. Then the
+// objectives panel +1Ch is shown.
+inline constexpr std::array<const char*, 7> kPauseRowKeys{
+    "ingame.pause_resume", "ingame.pause_tips", "ingame.pause_points", "ingame.pause_options",
+    "ingame.pause_restart", "ingame.pause_quit", "ingame.pause_exit"};  // via 00E08C40..00E08C58
+inline constexpr std::array<std::uint16_t, 7> kPauseRowOffsets{0x140, 0x15C, 0x14C, 0x148, 0x150, 0x154, 0x158};
+inline constexpr std::string_view kFelkiBalIcon = "felki_bal_Icon";    // 00CF1DB8
+inline constexpr std::string_view kFelkiJobbIcon = "felki_jobb_Icon";  // 00CF1DA8
+inline constexpr double kPauseArrowWidthScale = 960.0;  // 00CEC380
+inline constexpr float kPauseArrowPad = 0.015f;         // 00CEE6C8 (float widened to double)
+inline constexpr float kPauseArrowDrop = 0.001f;        // 00D7A318 (float widened to double)
+void hud_pause_screen_enter_00603120(void* screen, std::int32_t page_00e19660, PauseScreenHost& host);
+
+// 00603CA0 HudPause update, slot +20h of 00CF3EF4, __thiscall(screen, dt), RET 4
+// (dt unread). Hint page shown (+10h): scroller +9Ch update(1) and 006037D0.
+// Otherwise both arrows are shown only when the award tracker's map +7Ch holds
+// an entry whose string list (node+14h, count +1Ch) is non-empty (the image
+// copy-constructs that list to read the count); a tracker with +84h == 0 hides
+// them. Row 1 (tips) is visible when (game+38h is null or its +60h != 1) and
+// tracker+9Ch != 0. Input 4Bh: hint page -> ShowPage(0, 0), else Resume and
+// 00E19660 = 0. Input 1 on the main page: the same Resume. Otherwise the command
+// bar: hint page (scroller update(1) first) {0,"",1} {0,"",1} {B3h navigate,1}
+// {A3h back,2} {0,"",1}; main page {A2h select,0} {0,"",1} {B3h,1} {A3h,2}
+// {0,"",1} and help line "". Then profile hints 0Fh.
+void hud_pause_screen_update_00603ca0(void* screen, std::int32_t& page_00e19660, PauseScreenHost& host);
+
+// 00604190 HudPause listbox activate, slot +04h of 00CF3EE0, __thiscall(listener
+// = screen+8, row, unused), RET 8.
+//   resume: 00E19660 = 0, Resume.
+//   points: 00E19660 = 2, screen+4 = 0; the points screen [[00E198C4]+E0h] gets
+//     +4 = +5 = 1, CommitVisibility, vtable +18h; input update 0.0.
+//   options: 00E19660 = 3, screen+4 = 0; create the options menu 00E198B8 if
+//     needed; 00E19650 = 0; its vtable +08h.
+//   restart / quit / exit: prompts (slot 4, 4, 6; YesNo) with callbacks
+//     005FD5B0 / 005FD610 / 005FC640, then FocusLastNavigation.
+//   tips: 00E19660 = 1, +100h = 0.0f, 00601200 BuildHintList, +10h = 1, +14h
+//     hidden, +18h shown, SelectDefault, list box +2Ch enabled, row 0, listener
+//     screen+8, +80h(1), arrows hidden.
+// Then, whenever the hint page is shown: +134h = list top [+2Ch]+164h, +138h =
+// selected row; the hint name of row top+sel (when mapped) is toggled in the
+// expanded list (removed when present, case-insensitive test; else appended),
+// the hint list rebuilt, the top restored, RebuildPage, the row reselected,
+// +80h(0).
+inline constexpr const char* kPauseRestartPrompt =
+    "globals.restartmission|.\n|FE_xbox.ingame_quitting|.\n|globals.areyousure";  // 00CF4158
+inline constexpr const char* kPauseQuitPrompt =
+    "globals.quit|.\n|FE_xbox.ingame_quitting|.\n|globals.areyousure";  // 00CF4114
+inline constexpr const char* kPauseExitPrompt = "globals.exitprogram|.\n|globals.areyousure";  // 00CF40E8
+void hud_pause_on_listbox_activate_00604190(void* listener, std::uint32_t row, std::int32_t& page_00e19660,
+    PauseScreenHost& host);
+
+// 00602280 HudPause register, __fastcall(ECX = screen), RET. Loads
+// "GUI_pause_single" (+14h), clears the award tracker's new-hint history
+// (00690CA0), sets 00E19660 = 0, loads "GUI_pause_tip" (+18h) and
+// "GUI_pause_objectives" (+1Ch), and makes 26 child lookups (title, info and
+// objectives groups; the .cpp lists them in image order). Between the bindings: +38h, +3Ch, +44h hidden; list box +2Ch gets
+// 00A9AC90(0, 0, 0), byte +78h = 0, 00AA6BC0(0, 0); +84h = the height of the
+// title slider's "back_Icon"; +88h..+90h = position of +80h; +24h, +7Ch, +74h,
+// +78h get 00AA6BC0(screen+0Ch, 0); +104h..+10Ch / +110h..+114h = position /
+// size of +40h; the embedded scroller +9Ch gets content +28h (00683790), +118h =
+// the info slider's "back_Icon" height, then 00683380(+7Ch, (float)(that height
+// - height of +7Ch), +74h, +78h); +10h = 0; list boxes +30h / +34h get
+// 00A9AC90(0, 0, 0); finally +1Ch is hidden.
+struct PauseRegisterHost : ScreenLifetimeHost {
+    virtual void award_tracker_clear_new_hint_history_00690ca0() = 0;  // ECX = 004E1CA0()
+    virtual void set_pause_page_00e19660(std::int32_t page) = 0;
+    virtual std::uint32_t find_child_by_name_00aa7e00(std::uint32_t parent, std::string_view name) = 0;
+    virtual void set_shown(std::uint32_t widget, bool shown) = 0;
+    virtual void list_box_set_layout_flags_00a9ac90(std::uint32_t list_box, std::int32_t a, std::int32_t b,
+        std::int32_t c) = 0;
+    virtual void widget_set_listener_fields_00aa6bc0(std::uint32_t widget, void* listener, std::int32_t arg) = 0;
+    virtual std::array<float, 2> widget_size_00aa6740(std::uint32_t widget) = 0;
+    virtual void scroller_attach_content_00683790(void* scroller, std::uint32_t content) = 0;
+    virtual void scroller_attach_scroll_bar_00683380(void* scroller, std::uint32_t thumb, float span,
+        std::uint32_t up, std::uint32_t down) = 0;
+};
+// 006037D0 HudPause UpdateHints, __fastcall(ECX = screen), RET. Runs while the
+// hint list box +2Ch has rows (+154h) and its current row's (00425E50)
+// "felkialtojel_Text" (exclamation mark, 00CF3F84) is shown (vtable +38h).
+// +134h = top (+164h), +138h = selected; for row = top + selected that is not
+// a hint title (005FD220 find on +11Ch misses), the nearest preceding title is
+// the map node with the largest key below row (ties take the later node). Its
+// name indexes the award tracker's line lists (+94h, 006002B0, case-insensitive)
+// and the (row - title)th line (1-based; "" when past the end) is marked read
+// (00690FB0(name, line)). The selected row's exclamation is hidden; when the
+// title row is on the page (title >= top) and the tracker's unread list for the
+// name (+7Ch) is empty, the title row's (00A9BE00(title - top)) exclamation is
+// hidden too.
+struct PauseHintsHost : WidgetHost {
+    virtual void* award_tracker_004e1ca0() = 0;
+    virtual std::uint32_t list_box_current_row_00425e50(std::uint32_t list_box) = 0;
+    virtual std::uint32_t list_box_row_00a9be00(std::uint32_t list_box, std::int32_t index) = 0;
+    virtual std::int32_t list_box_selected_index_00a9c920(std::uint32_t list_box) = 0;
+    virtual std::uint32_t find_child_by_name_00aa7e00(std::uint32_t parent, std::string_view name) = 0;
+    virtual bool widget_virtual_38(std::uint32_t widget) = 0;
+    virtual const NativeString* hint_name_at_row_005fd220(void* screen, std::int32_t row) = 0;
+    virtual void* tree_next_005fce00(void* node) = 0;
+    // 005FF5D0: std::map operator[] on +11Ch (inserts a missing key).
+    virtual const NativeString& hint_map_subscript_005ff5d0(void* screen, std::int32_t key) = 0;
+    // The (index)th line (1-based) of a copy of tracker+94h[name]; null past the end.
+    virtual const NativeString* tracker_hint_line(const NativeString& name, std::int32_t index) = 0;
+    // A null name or line stands for the image's empty local NativeString.
+    virtual void tracker_mark_hint_read_00690fb0(const NativeString* name, const NativeString* line) = 0;
+    virtual std::int32_t tracker_unread_count_7c(const NativeString* name) = 0;  // tracker+7Ch[name] +8h
+};
+inline constexpr std::string_view kHintExclamationText = "felkialtojel_Text";  // 00CF3F84
+void hud_pause_update_hints_006037d0(void* screen, PauseHintsHost& host);
+
+inline constexpr std::string_view kPauseSinglePage = "GUI_pause_single";          // 00CF40D4
+inline constexpr std::string_view kPauseTipPage = "GUI_pause_tip";                // 00CF40C4
+inline constexpr std::string_view kPauseObjectivesPage = "GUI_pause_objectives";  // 00CF402C
+void hud_pause_register_00602280(void* screen, PauseRegisterHost& host);
+
+// ---------------------------------------------------------------------------
+// HudObjectivesScreen bodies (packet cc13-fe6)
+// ---------------------------------------------------------------------------
+//
+// Screen offsets: +0Ch SetExpanded lock, +10h page, +14h "Open_Group", +18h
+// "obj_main_Icon", +1Ch "obj_text_top_Icon", +20h "obj_scale_Icon", +24h
+// "obj_text_bottom_Icon", +28h "SelectedObjective_Text", +2Ch / +30h
+// "PrimaryNumbers_Text" / "SecondaryNumbers_Text", +34h
+// "ObjectiveNumbers_Listbox", +38h "ObjectiveNumbersTemplate_Text", +3Ch
+// "KisPocset_Icon", +44h..+48h row widgets (vector), +54h..+58h objectives
+// (vector; objective +0Ch localised source, +1Ch state), +60h selected index,
+// +64h any active, +65h rows current, +68h / +6Ch selected / requested
+// objective, +70h expanded.
+struct HudObjectivesHost : WidgetHost {
+    virtual std::uint32_t find_child_by_name_00aa7e00(std::uint32_t parent, std::string_view name) = 0;
+    virtual void list_box_set_input_filter_00a9ac70(std::uint32_t list_box, std::uint32_t routine) = 0;
+    virtual void list_box_set_listener_00a9ac40(std::uint32_t list_box, void* listener) = 0;
+    virtual void set_expanded_005ed5d0(void* screen, bool expanded) = 0;
+    virtual void refresh_rows_005ee520(void* screen) = 0;
+    virtual bool input_was_pressed_004c43c0(std::int32_t action) = 0;  // ECX = [00E188A8]
+    // The vector 00E18D1C..00E18D20: its element count, 0 when unallocated.
+    virtual std::uint32_t vector_00e18d1c_count() = 0;
+    virtual void list_box_select_index_00a9c7c0(std::uint32_t list_box, std::uint32_t index) = 0;
+    virtual std::uint32_t list_box_selected_index_00a9c920(std::uint32_t list_box) = 0;
+    virtual std::uint32_t list_box_row_count_00a9ac50(std::uint32_t list_box) = 0;  // [00A9AC50()] + 8
+    virtual void text_set_localised_source_00abaed0(std::uint32_t text, const void* source, std::int32_t arg) = 0;
+    virtual void text_set_localised_cstring_00abbe50(std::uint32_t text, const char* key, std::int32_t arg) = 0;
+    virtual std::array<float, 3> widget_resolved_position_00aa6750(std::uint32_t widget) = 0;
+    virtual void widget_set_resolved_position_00aa8240(std::uint32_t widget, const std::array<float, 3>& position) = 0;
+    virtual std::array<float, 2> widget_size_00aa6740(std::uint32_t widget) = 0;
+    virtual void widget_set_size_58(std::uint32_t widget, const std::array<float, 2>& size) = 0;  // vtable +58h
+    virtual void widget_set_colour_50(std::uint32_t widget, const std::array<float, 4>& rgba) = 0;  // vtable +50h
+    // 006DBAC0: ECX = element, DL = enable (a register argument), stack (a, b,
+    // value), RET 0Ch.
+    virtual void apply_highlight_pulse_006dbac0(std::uint32_t element, bool enable, std::int32_t a, std::int32_t b,
+        float value) = 0;
+};
+
+// 005EEA00 HudObjectives enter, slot +18h of 00CF2D20, __fastcall(ECX = screen),
+// RET. Binds +14h "Open_Group" under +10h; +18h..+24h, +2Ch, +30h, +34h and
+// +28h under +14h; +38h "ObjectiveNumbersTemplate_Text" and +3Ch
+// "KisPocset_Icon" under +34h. The list box +34h gets +12Ch = 0.0, +130h =
+// 1000.0f (00CE3804), +134h = 0.0, input filter 00696540, listener screen+8.
+// Then +6Ch = +68h = 0, +70h = 0, SetExpanded(0), RefreshRows.
+void hud_objectives_screen_enter_005eea00(void* screen, HudObjectivesHost& host);
+
+// 005EEF60 HudObjectives update, slot +20h of 00CF2D20, __thiscall(screen, dt),
+// RET 4 (dt unread).
+//   A requested objective +6Ch: when it differs from +68h, +68h = it and +60h =
+//     the last index of it in +54h, then the list box selects +60h; +6Ch = 0.
+//     Without one: input 4Bh, or 00E18D1C empty, collapses (SetExpanded(0)).
+//   Input C8h toggles SetExpanded(list box +85h clear); +65h clear: RefreshRows.
+//   Expanded (+70h): with no active objective (+64h clear) the text +28h reads
+//   "ingame.objgui_noactive" and +3Ch is hidden. Otherwise input C9h cycles the
+//   selection ((sel + 1) % rows, unsigned); +60h = the selection; +28h shows the
+//   objective's source (set twice, as the image does); +3Ch sits at the row
+//   widget's position + (0.0, 0.0, -1.0) and is shown. Then, with P / (w, h)
+//   the position / size of +1Ch and S = (float)((float)(lineheight / 720.0) *
+//   (double)(uint)lines) of +28h (font [+108h] short +14h, lines +110h):
+//     +20h at (P.x + 0.001f, P.y + h, P.z + 0.0), size (its width, S)
+//     +24h at (P.x + w, P.y + (float)(2h + S), P.z + 0.0)
+//     +28h at (P.x + 0.02f, P.y + h, P.z - 10.0)
+//   Every row widget gets a colour by objective state: 1 (0, 0.45f, 0, 1),
+//   2 (0.75f, 0, 0, 1), else the static white at 00E1961C (guard 00E1962C bit 0).
+//   +14h shown = +70h; 006DBAC0 on +3Ch with DL = +70h, (0, 1, 1.0f).
+inline constexpr float kObjectivesTextDrop = 10.0f;     // 00CE3DC0 (double)
+inline constexpr double kObjectivesLineScale = 720.0;   // 00CEF1B8
+inline constexpr float kObjectivesTextIndent = 0.02f;   // 00D7A2F8 (float widened)
+inline constexpr float kObjectiveDoneGreen = 0.45f;     // 00CF2E4C
+inline constexpr float kObjectiveFailedRed = 0.75f;     // 00CEE07C
+inline constexpr const char* kNoActiveObjective = "ingame.objgui_noactive";  // 00CF2E50
+void hud_objectives_screen_update_005eef60(void* screen, HudObjectivesHost& host);
+
+// 005F9DD0 HudOrder update, slot +20h of 00CF3B7C, __thiscall(screen, dt), RET 4.
+// Runs only while +82h is set and [[00E198C4]+5Ch]+4 is clear. The page +08h's
+// colour C (vtable +54h) fades: step = dt, or with no order code (+88h == 0)
+// +70h is raised to at least 1.0 and step = (float)(dt * 2.0) (D8 C9 FMUL).
+// +70h = (float)(+70h + step); when it exceeds 0.5f, C.a = (float)(C.a -
+// 2.0 * step). Eight 004BEC00 calls whose results are discarded follow. C.a <=
+// 0 closes the screen (005F9520) and C.a = 1.0. C is written back through
+// 00AA85B0. The pulse +7Ch moves by step * 7.0 (up while +80h is set, else
+// down); above 0.99f +80h = 0, below 0.01f +80h = 1; without an order code +7Ch
+// = 0.5f and +80h = 1. The five widgets +44h..+54h get +44h's colour (vtable
+// +54h) with alpha +7Ch through vtable +50h.
+struct HudOrderUpdateHost {
+    virtual ~HudOrderUpdateHost() = default;
+    virtual void* hud_interface_00e198c4() = 0;
+    virtual std::array<float, 4> widget_colour_54(std::uint32_t widget) = 0;  // vtable +54h(out)
+    virtual void widget_set_colour_50(std::uint32_t widget, const std::array<float, 4>& rgba) = 0;
+    virtual void widget_set_colour_00aa85b0(std::uint32_t widget, const std::array<float, 4>& rgba) = 0;
+    virtual void input_manager_singleton_004bec00() = 0;
+    virtual void hud_order_close_005f9520(void* screen) = 0;
+};
+inline constexpr double kOrderFadeRate = 2.0;    // 00D7A308
+inline constexpr double kOrderPulseRate = 7.0;   // 00CED5D8
+inline constexpr float kOrderPulseHigh = 0.99f;  // 00CED5D0 (float widened)
+inline constexpr float kOrderPulseLow = 0.01f;   // 00D7A238
+void hud_order_screen_update_005f9dd0(void* screen, float dt, HudOrderUpdateHost& host);
+
+// 005EA2D0 MultiMainMenu update, slot +20h of 00CF2708, __thiscall(screen, dt),
+// RET 4. Inputs through 004D92B0 (edge or repeat, ECX = [00E188A8]):
+//   4Bh: 005E7900 refresh online state, nothing else.
+//   list +20h byte +77h clear: 4Dh sets it. Else list +24h +77h clear: 4Dh sets
+//   it. Else (both set): 4Ch steps column +E0h down, or at column 0 clears +77h
+//   of +24h when its vtable +38h is true (else of +20h), sets +E8h's uniform
+//   scale 1.0f (004FB9E0) and hides +D4h; 4Dh steps +E0h up to 2; 46h / 47h
+//   step row +E4h within [0, +10h - 1].
+//   Every accepted step: 005E9BE0 then [004C1B90()]+19h = 1.
+// Scroll velocity v = +F0h: v > 1e-5f scrolls the embedded scroller +6Ch toward
+// the end by (float)(2 * v * dt), v < -1e-5f toward the start by (float)(2 *
+// -v * dt); in both cases +F0h = (float)(v - 2 * (dt * v)). Scroller
+// update(1). Command bar: {A2h select, 0} when either list's +77h is clear, else
+// {0, "", 1}; then {B3h navigate,1} {0,"",1} {A3h back,2} {0,"",1}.
+struct MultiMainUpdateHost {
+    virtual ~MultiMainUpdateHost() = default;
+    virtual bool action_edge_or_repeat_004d92b0(std::int32_t action) = 0;
+    virtual void refresh_online_state_005e7900(void* screen) = 0;
+    virtual void update_session_list_005e9be0(void* screen) = 0;
+    virtual void sound_queue_set_flag_19() = 0;  // [004C1B90() + 19h] = 1
+    virtual bool widget_virtual_38(std::uint32_t widget) = 0;
+    virtual void widget_set_uniform_scale_004fb9e0(std::uint32_t widget, float scale) = 0;
+    virtual void set_shown(std::uint32_t widget, bool shown) = 0;
+    virtual void scroller_toward_end_00683700(void* scroller, float delta) = 0;
+    virtual void scroller_toward_start_00683680(void* scroller, float delta) = 0;
+    virtual void scroller_update_00683820(void* scroller, std::int32_t arg) = 0;
+    virtual void rebuild_command_bar_0054b530(const std::array<MainMenuCommandArgument, 5>& arguments) = 0;
+};
+inline constexpr float kMultiScrollDeadZone = 1e-5f;  // 00D7A310 / 00CF29AC (0x3727C5AC)
+void multi_main_screen_update_005ea2d0(void* screen, float dt, MultiMainUpdateHost& host);
+
+// 005E2320 LobbySettings option label, __fastcall(ECX = NativeString* result,
+// EDX = slot) -> result. Returned here as a std::string projection; the native
+// result is an 8-byte NativeString. The mission record is the [00E19594]th node
+// (004BE940) of the list at game+5F0h (count at +0), valid when the index is
+// below the count, the node exists and its byte +914h is set.
+//   slot 1: the record's name +920h, else "FE.unknown_mapname" (00CEF1D8).
+//   slot 0: game byte +218Ch clear: "<(char)game+2018h>/<(char)game+2017h>"
+//     ("/" 00CE7898). Set: effective game mode (004BCA50) <= 3 gives "2";
+//     otherwise the count of the eight player slots game+18CCh..+18E8h with
+//     ((+8 set and +9 clear) or +0Ah set).
+//   slot 0Dh: a copy of the NativeString 00E195BC.
+//   other slots, valid record: when the option-enabled byte for (slot,
+//     00E1955C[slot]) is clear, 005E21B0(ECX = slot) steps it. Then, if the
+//     registry's label map (00576B10()+10h) has a label at (slot, 0), the label
+//     at (slot, 00E1955C[slot]); else the integer (registry+1Ch) at that key.
+//     Invalid record: "-" (00CEED40).
+// 004260B0 / 004263B0 format a signed decimal; std::to_string stands in.
+struct LobbyLabelHost {
+    virtual ~LobbyLabelHost() = default;
+    virtual void* game_00e188a8() = 0;
+    virtual std::int32_t mission_index_00e19594() = 0;
+    virtual const void* list_nth_node_004be940(const void* list, std::int32_t index) = 0;
+    virtual std::int32_t stored_option_00e1955c(std::int32_t slot) = 0;
+    // 005E1990 + 005C6850 + 005C49C0: the option-enabled byte at (slot, option).
+    virtual bool option_enabled(std::int32_t slot, std::int32_t option) = 0;
+    virtual void step_option_005e21b0(std::int32_t slot) = 0;
+    virtual const char* option_label_00575e80(std::int32_t slot, std::int32_t option) = 0;  // registry +10h
+    virtual std::int32_t option_value_00575fd0(std::int32_t slot, std::int32_t option) = 0;  // registry +1Ch
+    virtual std::uint32_t effective_game_mode_004bca50() = 0;
+    virtual std::string string_00e195bc() = 0;
+    virtual std::string native_string(const void* native) = 0;  // NativeString -> text
+};
+std::string lobby_settings_option_label_005e2320(std::int32_t slot, LobbyLabelHost& host);
+
+// 005F54F0 OptionsScreen BuildMainList, __fastcall(ECX = screen), RET. +252h = 0;
+// command-bar help variant (00549620 on [00E1930C]) = game byte +61Fh. A pending
+// +78h is cleared and only pushes interface 0Eh (004CC460 on [00E198B8], (0Eh,
+// 0)). Otherwise: copy the live settings 00F88980 into the edit copy +D8h
+// (005F52C0); 00E19650 = 0; 00527CB0 on [[00E198B8]+44h] fills the bytes
+// +119h, +11Ah, +11Bh, +118h; list box +84h loses its listener and rows; title
+// "FE.opt_title_main" (in a mission 00518D60(0, 0, 0, title), else 005189B0).
+// Rows 0..6 (row 6 skipped in a mission): a clone of +8Ch named
+// "Elem_<n>_Text" (vtable +2Ch), data +D8h = n, inserted, shown, text
+// 00E08A48[n]; +7Ch(1) on row 5 when [00E198AC] and its +74h are set; row 6
+// +7Ch([00F8A304] null or its +8h == 0); row 4 +7Ch(+188h == 0). Then
+// highlight reset (1, 1), 005F0CD0, listener screen+8, select +A8h, +80h(1),
+// hide +A4h, +A0h, +88h, +254h, +258h, and 00A9CDF0(ECX = +84h, EDX = +84h,
+// stack +88h): its ECX is the kept list, EDX and the stack word the two lists to
+// clear, each skipped when equal to ECX.
+struct OptionsMainListHost : WidgetHost {
+    virtual void* game_00e188a8() = 0;
+    virtual void command_bar_set_help_variant_00549620(std::uint8_t variant) = 0;
+    virtual void push_interface_request_004cc460(std::int32_t interface_id, std::int32_t arg) = 0;
+    virtual void copy_settings_005f52c0(void* edit_copy) = 0;  // source 00F88980
+    virtual void set_options_page_00e19650(std::int32_t page) = 0;
+    // 00527CB0 on [[00E198B8] + 44h], RET 10h.
+    virtual void control_layout_button_flags_00527cb0(std::uint8_t* a, std::uint8_t* b, std::uint8_t* c,
+        std::uint8_t* d) = 0;
+    virtual void list_box_set_listener_00a9ac40(std::uint32_t list_box, void* listener) = 0;
+    virtual void list_box_clear_rows_00a9bec0(std::uint32_t list_box) = 0;
+    virtual void frame_select_00518d60(const char* name) = 0;  // ECX = EDX = 0, stack 0
+    virtual void frame_set_title_005189b0(const char* title) = 0;
+    virtual std::uint32_t clone_subtree_00aab4c0(std::uint32_t widget, std::int32_t arg) = 0;
+    virtual void widget_set_name_2c(std::uint32_t widget, const std::string& name) = 0;  // vtable +2Ch
+    virtual void list_box_insert_row_00a9d750(std::uint32_t list_box, std::uint32_t row, std::int32_t a,
+        std::int32_t b) = 0;
+    virtual void text_set_localised_cstring_00abbe50(std::uint32_t text, const char* key, std::int32_t arg) = 0;
+    virtual void widget_virtual_7c(std::uint32_t widget, bool value) = 0;
+    virtual void* briefing_screen_00e198ac() = 0;
+    virtual void* downloads_00f8a304() = 0;
+    virtual void list_box_reset_highlight_00a9cf30(std::uint32_t list_box, std::int32_t a, std::int32_t b) = 0;
+    virtual void refresh_help_line_005f0cd0(void* screen) = 0;
+    virtual void list_box_select_index_00a9c7c0(std::uint32_t list_box, std::int32_t index) = 0;
+    virtual void list_box_virtual_80(std::uint32_t list_box, bool value) = 0;
+    virtual void list_box_clear_other_two_00a9cdf0(std::uint32_t keep, std::uint32_t edx_list,
+        std::uint32_t stack_list) = 0;
+};
+void options_build_main_list_005f54f0(void* screen, OptionsMainListHost& host);
+
+// 005F7C40 OptionsScreen ActivateListRow, slot +04h of 00CF3960, __thiscall(
+// listener = screen+8, unused, row), RET 8. The whole routine; the page-0 arm
+// alone is also modelled by bsp::options_activate_main_row_005f7c40
+// (options_menu_screens.hpp). Screen offsets: +84h list box, +A8h main-list
+// data, +ACh top row, +D8h edit settings, +118h..+11Bh layout bytes, +150h /
+// +F6h video fields compared with 00F889F8 / 00F8899E, +250h defaults flag,
+// +252h DLC-changed flag, +25Ch in-mission copy, +260h transition timer.
+//   Ignored unless +260h == 0.0f exactly (UCOMISS, PF/ZF test).
+//   Page 0 (00E19650): +A8h = the selected data, +25Ch = game byte +61Fh; data
+//     0/1/2/6 build the game / audio / video / content page (005F58F0, 005F59F0,
+//     005F41E0, 005F3B50); 3 pushes interface 0Eh; 4 sends the layout bytes
+//     (+119h, +11Ah, +11Bh, +118h) to 00527C80 on [[00E198B8]+44h] and pushes
+//     0Dh; 5 needs 00585B40 and 00585810(CL = 0), then +25Ch = 0 and 005EFAB0.
+//     Afterwards, with +25Ch set, 00518D60(ECX = EDX = -1, 0, "").
+//   Row == the list box: index = selected + top. Page 1: 9 apply, 10 game
+//     defaults, 11 back. Page 4: 6 apply, 7 control defaults. Page 2: 4 apply, 5
+//     audio defaults, 6 back. Page 3: 0Dh video apply, 0Eh video defaults (two
+//     zero arguments), 0Fh back. Defaults: +250h = 1, reset on +D8h, 008D5B50.
+//     Back: 005F5E60.
+//   Any other row: pages 1, 2, 4 apply; page 3 video apply with
+//     XLiveOnResetDevice([00F8D394]+1A28h) when [00E198C4] is null; page 7 sets
+//     +252h then applies.
+//   Apply: with neither 00F88A30 nor +252h set, 005F65C0. Otherwise prompt
+//     slot 0 kind 1 callback 005F6FB0 "FE_xbox.xsm_dlcchanged" when +252h is
+//     set, else "FE_xbox.xsm_saveconfirm" when 00A3E510 on [00F8ABE8] reports
+//     a selected user, else 005F65C0. Every apply ends with +260h = 0.1f.
+//   Video apply: changed = (00F889F8 != +150h) || (00F8899E != byte +F6h);
+//     008D5B50 on +D8h; then 005F7050(changed).
+struct OptionsActivateHost : WidgetHost {
+    virtual void* game_00e188a8() = 0;
+    virtual void* hud_interface_00e198c4() = 0;
+    virtual std::int32_t options_page_00e19650() = 0;
+    virtual std::int32_t list_box_selected_data_00a9c990(std::uint32_t list_box) = 0;
+    virtual std::int32_t list_box_selected_index_00a9c920(std::uint32_t list_box) = 0;
+    virtual void build_page(std::uint32_t routine, void* screen) = 0;  // 005F58F0 / 005F59F0 / 005F41E0 / 005F3B50
+    virtual void push_interface_request_004cc460(std::int32_t interface_id, std::int32_t arg) = 0;
+    virtual void control_layout_set_payload_00527c80(std::uint8_t a, std::uint8_t b, std::uint8_t c,
+        std::uint8_t d) = 0;
+    virtual bool main_menu_connection_gate_00585b40() = 0;
+    virtual bool main_menu_account_gate_00585810(std::uint8_t cl) = 0;
+    virtual void options_reset_005efab0(void* screen) = 0;
+    virtual void frame_select_00518d60(std::int32_t ecx, std::int32_t edx, std::int32_t arg, const char* name) = 0;
+    virtual void settings_reset_defaults(std::uint32_t routine, void* settings) = 0;  // 008D41C0 / 008D4820 / 008D41F0
+    virtual void settings_reset_video_defaults_008d4520(void* settings, std::int32_t a, std::int32_t b) = 0;
+    virtual void settings_apply_all_008d5b50(void* settings) = 0;
+    virtual void return_to_list_005f5e60(void* screen) = 0;
+    virtual void apply_and_rebuild_005f65c0(void* screen) = 0;
+    virtual void confirm_changes_005f7050(void* screen, bool changed) = 0;
+    virtual void xlive_on_reset_device_00a4d46a() = 0;  // argument [00F8D394] + 1A28h
+    virtual bool settings_dirty_00f88a30() = 0;
+    virtual std::int32_t live_video_00f889f8() = 0;
+    virtual std::uint8_t live_video_00f8899e() = 0;
+    virtual bool xenon_has_selected_user_00a3e510() = 0;  // ECX = [00F8ABE8]
+    // 00531B00 on 00425D10() with (slot, message, kind, callback, 0, title "",
+    // timeout 0.0f, timeout result 0, countdown "", dismissible 1), RET 2Ch.
+    virtual void raise_prompt_00531b00(std::int32_t slot, const char* message, std::int32_t kind,
+        std::uint32_t callback) = 0;
+};
+inline constexpr const char* kOptionsDlcChangedPrompt = "FE_xbox.xsm_dlcchanged";  // 00CF3B28
+inline constexpr const char* kOptionsSaveConfirmPrompt = "FE_xbox.xsm_saveconfirm";
+inline constexpr float kOptionsTransitionTime = 0.1f;  // 00D7A2F0
+void options_activate_list_row_005f7c40(void* listener, std::uint32_t row, OptionsActivateHost& host);
+
+// 005E4490 MultiGameLobby HandleGuiEvent, slot of 00CF23B4, __thiscall(this =
+// lobby+0Ch, event widget), RET 4. Offsets below are this-relative (lobby =
+// this-0Ch); +10h focused widget, +14h / +1Ch / +80h / +98h focusable panels,
+// +24h / +C0h / +14Ch embedded scrollers, +9Ch "Players_Listbox", +144h chat
+// panel. Player slot records are game+18CCh[i] (+9 AI, +0Ah ready, +2Ch AI
+// skill, +80h/+84h XUID); the session object is game+1EF0h.
+//   Event kind 2 (vtable +5Ch): ignored when +0Ch's vtable +38h is true and
+//     [+21Ch]+85h is set; else +9Ch selects the event's row data (+D8h), the chat
+//     sub-object ([[00E198B4]+54h]+8, vtable +0Ch) is notified when +10h is the
+//     chat panel, and the lobby focuses +98h (005D67E0).
+//   Kind 3: event vtable +4Ch(1.0f); the command byte is [event+F0h] or 00E19608:
+//     A2h: settings open -> 005DA530; else by focus: +14h 005D9F90; +80h input
+//       update 0.0 and 005D5870(1); +1Ch: [[00E198AC]+70h] +98h = the local slot
+//       record's +28h, +94h = 8, request interface 0Bh (00688AD0 on [00E198B4]);
+//       +98h: the listener slot +04h of lobby+8 with 00A9BE00(+9Ch, selected).
+//     B7h: 005D9660(lobby, 0, 1).
+//     B8h: unless [00F8A2FC] vtable +198h and its +4Dh are both set: rebind +9Ch,
+//       then for the selected slot: empty / not ready and not standard mode
+//       (005D4A10) -> RequestSlotAiEnable(sel, 1) and skill 3; else skill by the
+//       AI kind +2Ch (1 or 3 -> 4, 4 -> 5); other kinds: unless standard mode,
+//       RequestSlotAiEnable(sel, 0).
+//     A3h: 005DA210 confirm leave.
+//     A7h: focus +98h and host (game+1FE4h == 1): an AI slot toggles
+//       RequestSlotAiEnable(sel, !ready); a human slot other than the local one
+//       (005D5130) asks to kick (005D8530). Focus +80h: 0051DCE0 on
+//       [[00E198AC]+64h] with 005D8650(local slot +28h), then interface 3.
+//     A5h: list box +9Ch active, a human slot: XShowGamerCardUI(
+//       00A3EAC0 on [00F8ABE8], +80h, +84h).
+//     B1h: 005D71B0.
+//   Other kinds, by widget: +98h, +14h, +80h, +1Ch: unless settings are open,
+//     notify chat when +10h is the chat panel and focus it. +144h: unless
+//     settings are open, with [00E198B4] and its chat +5 set and game +218Ch
+//     clear: focus, 005D11F0(2) chat mode, input context 1Eh level 0. +90h / +8Ch
+//     (focus +80h) and +130h / +12Ch, +B0h / +ACh: auto-scroll (00683300) of
+//     +24h, +14Ch, +C0h by 2 / 1 at 0.004f; +84h (focus +80h), +148h, +BCh:
+//     thumb drag (00683A40) of +24h, +14Ch, +C0h; +214h / +218h step the
+//     setting by -1 / +1 (005E1CF0); +138h / +13Ch / +140h set team-only 0 / 1
+//     (005D1000) and restyle the three (+88h(2 or 0, 0, 1.0f)), then return;
+//     anything else returns while settings are open.
+//   Tail (scroll, drag, step and unmatched widgets): kind 6 -> event
+//     +88h(2, 0, 1.0f); kind 12h -> event +84h(2).
+struct LobbyEventHost {
+    virtual ~LobbyEventHost() = default;
+    virtual void* game_00e188a8() = 0;
+    virtual std::int32_t widget_kind_5c(std::uint32_t widget) = 0;
+    virtual bool widget_virtual_38(std::uint32_t widget) = 0;
+    virtual void widget_virtual_4c(std::uint32_t widget, float value) = 0;
+    virtual void widget_virtual_84(std::uint32_t widget, std::int32_t value) = 0;
+    virtual void widget_virtual_88(std::uint32_t widget, std::int32_t a, std::int32_t b, float c) = 0;
+    virtual std::uint8_t default_command_00e19608() = 0;
+    virtual void list_box_select_index_00a9c7c0(std::uint32_t list_box, std::int32_t index) = 0;
+    virtual std::int32_t list_box_selected_index_00a9c920(std::uint32_t list_box) = 0;
+    virtual std::uint32_t list_box_row_00a9be00(std::uint32_t list_box, std::int32_t index) = 0;
+    virtual std::uint32_t find_child_by_name_00aa7e00(std::uint32_t parent, std::string_view name) = 0;
+    virtual void* multi_menu_00e198b4() = 0;
+    virtual void chat_notify_focus() = 0;  // [[00E198B4]+54h]+8, vtable +0Ch
+    virtual void lobby_set_focus_005d67e0(void* lobby, std::uint32_t widget) = 0;
+    virtual bool lobby_settings_open_005d5490(void* lobby) = 0;
+    virtual void lobby_apply_selected_map_005da530(void* lobby) = 0;
+    virtual void lobby_apply_local_map_005d9f90(void* lobby) = 0;
+    virtual void input_manager_update_00a92c40(float dt) = 0;
+    virtual void lobby_set_editable_005d5870(void* lobby, bool editable) = 0;
+    virtual void* briefing_screen_00e198ac() = 0;
+    virtual void push_request_interface_00688ad0(std::int32_t interface_id) = 0;
+    virtual void lobby_listener_activate_04(void* listener, std::uint32_t row) = 0;  // [lobby+8] vtable +04h
+    virtual void lobby_refresh_players_005d9660(void* lobby, std::int32_t a, std::int32_t b) = 0;
+    virtual bool online_virtual_198_00f8a2fc() = 0;
+    virtual std::uint8_t online_byte_4d_00f8a2fc() = 0;
+    virtual bool game_is_standard_mode_005d4a10(void* lobby) = 0;
+    virtual void session_request_slot_ai_enable_00771e80(std::int32_t slot, bool enable) = 0;  // ECX = game+1EF0h
+    virtual void session_set_slot_ai_skill_0076cc40(std::int32_t slot, std::int32_t level) = 0;  // ECX = game+1EF0h
+    virtual void lobby_confirm_leave_005da210(void* lobby) = 0;
+    virtual const void* game_local_slot_record_005d5130() = 0;
+    virtual void lobby_confirm_kick_005d8530() = 0;
+    virtual const void* mission_record_005d8650(std::int32_t id) = 0;
+    virtual void briefing_set_mission_data_0051dce0(void* briefing_64, const void* record) = 0;
+    virtual void show_gamer_card(std::uint32_t xuid_lo, std::uint32_t xuid_hi) = 0;  // 00A3EAC0 + XShowGamerCardUI
+    virtual void lobby_check_client_compatibility_005d71b0(void* lobby) = 0;
+    virtual void chat_set_mode_005d11f0(std::int32_t mode) = 0;      // ECX = [[00E198B4]+54h]
+    virtual void chat_set_team_only_005d1000(bool team_only) = 0;    // ECX = [[00E198B4]+54h]
+    virtual void input_set_context_level_00a933f0(std::int32_t index, std::int32_t level) = 0;
+    virtual void scroller_set_auto_scroll_00683300(void* scroller, std::int32_t direction, float speed,
+        std::int32_t arg) = 0;
+    virtual void scroller_begin_thumb_drag_00683a40(void* scroller) = 0;
+    virtual void lobby_step_setting_005e1cf0(void* lobby, std::int32_t step) = 0;
+};
+inline constexpr float kLobbyAutoScrollSpeed = 0.004f;  // 00CEC178
+void lobby_handle_gui_event_005e4490(void* self, std::uint32_t event, LobbyEventHost& host);
 
 }  // namespace bsp::cc13_fe1
