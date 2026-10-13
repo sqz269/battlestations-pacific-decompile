@@ -16835,6 +16835,10 @@ int GameUnitsHost::skill_level(std::size_t unit_index) const {
     return unit_index < host.slots.size() ? host.slots[unit_index]->pilot_skill_index : 1;
 }
 
+void GameUnitsHost::note_kill_cause_00926e02(std::size_t unit_index, int cause) {
+    impl_->note_kill_cause(unit_index, cause);
+}
+
 int GameUnitsHost::kill_cause_00926d90(std::size_t unit_index) const {
     const Impl& host = *impl_;
     return unit_index < host.kill_cause_by_unit.size() ? host.kill_cause_by_unit[unit_index] : 1;

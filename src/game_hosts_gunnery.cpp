@@ -79,6 +79,9 @@
 #include "bsp/plane_pose_commit.hpp"
 #include "bsp/shipyard_production.hpp"
 #include "bsp/vehicle_class.hpp"
+#include "bsp/flak_ver_cc13.hpp"
+#include "bsp/aa_pick_ver_cc13.hpp"
+#include "bsp/gameplay_seg53_cc13.hpp"
 
 namespace bsp::game {
 namespace {
@@ -309,6 +312,88 @@ constexpr bool kTorpedoSwimDepthHomingBound = true;
 //    the stored values. OFF: 1.0f.
 //    ON since the USN15 pair (GUNNERY_OPEN_ITEMS 211: ranges x0.75, gameplay identical).
 constexpr bool kReconMultiplierForwardBound = true;
+//  * kFlakSecondAmmoCadenceBound: packet cc9_g41_flak_d4 (docs/CC13_VER_16.md
+//    D4). 008FF200, the AAFlakBot's SetFireTarget, calls 0072D5B0(1, 0) for a
+//    kind-6 gun, so gun+3F8h = [desc+74h] + 1 * 48h, the device's Bullet[2]
+//    record, and every per-shot read goes through it: the reload U(+28h, +2Ch)
+//    (0072D55C..0072D579), the barrel delay +30h (00730A05), the Throw +4h
+//    (007302DF) and the throw seat's sub-type [[gun+3F8h]+34h]+8h (0073031D;
+//    Flak 10h -> the AAFlakBot row). The host read all four from Bullet[1].
+//    ON: a shot that dp_air_ammo routes to Bullet[2] takes Bullet[2]'s reload,
+//    barrel delay, Throw and sub-type. SUBSTITUTION, labelled: the mode is
+//    chosen per shot from the target (dp_air_ammo), not held from the last
+//    SetFireTarget; 0072D5B0's barrel pass only consumes rounds on a
+//    successful ammo ask and so leaves the timers. OFF: as before.
+constexpr bool kFlakSecondAmmoCadenceBound = false;
+//  * kFlakNegativeVerticalBound: packet cc9_g41_flak_d6 (docs/CC13_VER_16.md
+//    D6). 00903297..009032E9, after the AAFlakBot adds bot+5Ch: a negative
+//    vertical against a plane (IsKindOf(0Fh), 009032B3) is fired flat (0);
+//    against anything else, below -0.02f (00D7A320) it becomes
+//    v - (v + 0.02) * 0.5 (flak_bot_vertical_adjust_00903297). The host added
+//    the error and fired as solved. OFF: as before.
+constexpr bool kFlakNegativeVerticalBound = false;
+//  * kAaLeadDistanceGateBound: packet cc9_g41_flak_d3d1 (docs/CC13_VER_14.md
+//    D1, docs/CC13_VER_16.md D3). The AAGunnerBot's fire gate
+//    (00902FC0..00902FE2, slot < [proj+60h] * 0.9f) and the AAFlakBot's range
+//    gate (0090332C..00903344, [class+58h] < slot < [class+60h], both strict)
+//    read the slot 00901C20 writes as outDist (pushed at 009029FD / 00902A4F
+//    and 009031F4 / 0090319A): |lead point - muzzle|. The host measured to the
+//    target's current aim point. ON: both gates use the aim block's lead
+//    distance. The TailGunnerBot (a category-1 gun under a plane, no 00901C20
+//    lead) keeps its own measure. OFF: as before.
+constexpr bool kAaLeadDistanceGateBound = false;
+//  * kFlakFuseArmTimeBound: packet cc9_g41_flak_d5 (docs/CC13_VER_16.md D5).
+//    0070C0B0, the MFlakBullet finalise, stores +D8h = MinRange / V0
+//    (0070C0BC..0070C0C2; WeaponClassFinaliseResult::flak_fuse_time), and
+//    0070C3DA..0070C3E6 skips the proximity lock search unless the flight
+//    time is strictly greater. The host searched from the first step after
+//    launch. ON: the search waits for the fuse time. OFF: as before.
+constexpr bool kFlakFuseArmTimeBound = false;
+//  * kFlakErrorRerollBound: packet cc9_g41_flak_d2 (docs/CC13_VER_14.md D2).
+//    008FDBE0, the AAFlakBot's error roll, has three callers: 008FF055 in
+//    AttachBallisticClass (once), 008FF247 in SetFireTarget 008FF200 (each
+//    00727F10 re-send by the 2 s 00864FE0 assignment, for a non-null target
+//    and slot 8 or an AI-held slot), and 0090331B after a shot. The roll sets
+//    bot+64h to the clock (00F876A4), so it also covers the shots before it.
+//    The host rolled only after a shot from {0, 0, 0}, so a gun's first
+//    salvo had no error. ON: the attach roll (at the gun's first flak tick,
+//    labelled) and the re-send roll. OFF: as before.
+constexpr bool kFlakErrorRerollBound = false;
+//  * kAaSlotRangeOriginBound: packet cc9_g41_aa_pick_d2 (docs/CC13_VER_19.md D2,
+//    D1 folded in). 00729BC0's per-gun range gate (00729C35..00729C7A, then
+//    00729C8A JA: !(distance > [ammo+60h])) measures the gun entity's +FCh, the
+//    mount, against the target's +FCh, the pose origin; the director arms
+//    (008654E1 CALL 00427EB0, and piVar2[3Fh..41h]) measure +FCh too. The host
+//    measured class-Height-raised aim points for all three. ON: the gate uses
+//    gun_muzzle_point (the mount when known) to the target pose origin, and
+//    the arms use pose origins. Every category's gate moves, not only AA.
+//    OFF: as before.
+constexpr bool kAaSlotRangeOriginBound = false;
+//  * kDirectorLeaderFireTargetBound: packet cc9_g41_aa_pick_d3 (docs/CC13_VER_19.md
+//    D3). 00863640, the director-backed fire-target provider: when
+//    director->vtable[2Ch] (director+238h) is null, [director+34h] -> 007788D0
+//    gives the formation leader; if it answers IsKindOf(6) the provider returns
+//    [leader+738h]->vtable[2Ch](), the leader's own target. The host read only
+//    the unit's own row. ON: a unit with no fire target of its own takes its
+//    formation leader's row target. OFF: as before.
+constexpr bool kDirectorLeaderFireTargetBound = false;
+//  * kSubmarineCategoryGateBound: packet cc9_g41_aa_pick_d4 (docs/CC13_VER_19.md
+//    D4). 008636A0 installs 00D0D32C on an IsKindOf(8) unit (0086371E..00863743);
+//    its slot 4, 008627A0, opens category 7 when 008527E0 (y > band1 - 3) and
+//    categories 1..6 when 008527A0 (y > band0 - 3), and no other category. A
+//    refused gate skips the gather and the assignment (008651D1 JE 00865773),
+//    so the guns KEEP their target. The host answered true for every unit.
+//    ON: the submarine gate. OFF: as before.
+constexpr bool kSubmarineCategoryGateBound = false;
+//  * kKillFunnelCauseBound: packet cc9_g41_kill_cause (lead queue item 3).
+//    00926D90 stores its cause argument at +70h (00926E02; 7 is stored as 2),
+//    and the `Dead` / entityKilled / kill publishers read 00E0CF04[+70h]
+//    ("none", "harm", "soft", ...). Lua Kill(x, true) (008AC5C0) passes 2. The
+//    host's funnel dropped the cause, so the units host answered 1 ("harm")
+//    for every death but its own cause-4/5 kills. ON: the funnel records the
+//    normalised cause through GameUnitsHost::note_kill_cause_00926e02.
+//    OFF: as before.
+constexpr bool kKillFunnelCauseBound = false;
 //  * kTorpedoSwimThrustBound: packet cc9_torpedo_tube_turn,
 //    docs/TORPEDO_FRIENDLY_CROSSING.md section 6. 00857480, the swim advance,
 //    per step on a torpedo in the water: 00856BB0 -> 00857061 yaws the NOSE
@@ -1733,6 +1818,8 @@ struct GameGunneryHost::Impl {
     }
     // "MinRange", classDesc+58h (0070C030), per bullet class; 00729B90 reads it.
     std::map<int, float> bullet_min_range;
+    // kFlakFuseArmTimeBound: 0070C0B0's +D8h = MinRange / V0, by bullet class.
+    std::map<int, float> flak_fuse_time_by_class;
     unsigned long long aa_window_rejects{0};
     unsigned long long aa_kind6_gate_rejects{0};   // GUNNERY 184
     unsigned long long aa_armour_rejects{0};
@@ -2360,9 +2447,23 @@ struct GameGunneryHost::Impl {
         float muzzle_speed{0.0f};
         float max_range{0.0f};
         float min_range{0.0f};
+        // kFlakSecondAmmoCadenceBound: Bullet[2]'s +28h reload, +30h barrel
+        // delay, +4h Throw and its class's sub-type (+34h -> +8h).
+        float reload_time{0.0f};
+        float barrel_delay_time{0.0f};
+        float throw_amount{0.0f};
+        int sub_type{-1};
     };
     std::map<std::size_t, SecondAmmo> second_ammo_by_gun;
     unsigned long long dp_air_rounds{0};
+    unsigned long long dp_cadence_shots{0};   // kFlakSecondAmmoCadenceBound
+    unsigned long long flak_vertical_adjusts{0};   // kFlakNegativeVerticalBound
+    unsigned long long aa_lead_gate_moves{0};      // kAaLeadDistanceGateBound
+    unsigned long long flak_fuse_unarmed_steps{0}; // kFlakFuseArmTimeBound
+    unsigned long long aa_slot_origin_flips{0};    // kAaSlotRangeOriginBound
+    unsigned long long leader_fire_target_inherits{0}; // kDirectorLeaderFireTargetBound
+    unsigned long long submarine_category_gate_refusals{0}; // kSubmarineCategoryGateBound
+    unsigned long long kill_funnel_non_harm_causes{0};      // kKillFunnelCauseBound
     unsigned long long aa_negative_halvings{0};
     unsigned long long water_depth_kills{0};   // packet cc9_water_surface_law
     unsigned long long airfield_destroy_kills{0};  // packet cc9_airfield_destruction_rule
@@ -3008,8 +3109,34 @@ struct GameGunneryHost::Impl {
     struct AaFlakError {
         float h{0.0f}, v{0.0f}, dist{0.0f};
         bool fired{false};       // gun+474h moved past bot+64h since the last roll
+        bool attached{false};    // kFlakErrorRerollBound: the 008FF055 roll is done
     };
     std::map<std::size_t, AaFlakError> aa_flak_error_by_gun;
+    unsigned long long aa_flak_attach_rolls{0};   // kFlakErrorRerollBound, 008FF055
+    unsigned long long aa_flak_send_rolls{0};     // kFlakErrorRerollBound, 008FF247
+    // 008FDBE0: GoodRatio picks the row half, then AngleErr twice and DistErr,
+    // each with a random sign; bot+64h takes the clock, so a roll also covers
+    // every shot fired before it (fired = false).
+    void roll_aa_flak_error_008fdbe0(AaFlakError& fe, std::size_t g, int level) {
+        const float* row = kAaFlakErrorRows[level];
+        const bool good = draw(Draw::aa_flak_error, g, 0, 0.0f, 100.0f) < row[0] * 100.0f;
+        const float lo_a = good ? row[1] : row[2], hi_a = good ? row[2] : row[3];
+        const float lo_d = good ? row[4] : row[5], hi_d = good ? row[5] : row[6];
+        const auto sign = [&]() {
+            return draw(Draw::aa_flak_error, g, 1, 0.0f, 1.0f) < 0.5f ? -1.0f : 1.0f;
+        };
+        const float ah = draw(Draw::aa_flak_error, g, 0, lo_a, hi_a);
+        fe.h = sign() * ah * 3.14159265358979f / 180.0f;
+        const float av = draw(Draw::aa_flak_error, g, 0, lo_a, hi_a);
+        fe.v = sign() * av * 3.14159265358979f / 180.0f;
+        const float d = draw(Draw::aa_flak_error, g, 0, lo_d, hi_d);
+        fe.dist = sign() * d;
+        fe.fired = false;
+        ++aa_flak_rolls;
+        ++aa_flak_rolls_by_level[level];
+        aa_flak_angle_sum_deg += (ah + av) * 0.5;
+        aa_flak_dist_abs_sum += d;
+    }
     unsigned long long aa_gunner_rolls{0};
     unsigned long long aa_gunner_clamps{0};
     unsigned long long aa_gunner_error_ticks{0};
@@ -3505,9 +3632,10 @@ struct GameGunneryHost::Impl {
         return slot_ai_held_00927f10(slot);
     }
     float bullet_throw_magnitude_0073031d(const GameGunRow& gun, std::size_t owner,
-        int& seat_out) const {
+        int& seat_out, const SecondAmmo* mode1 = nullptr) const {
         seat_out = -1;
-        float magnitude = gun.throw_amount;                           // 007302DF
+        // kFlakSecondAmmoCadenceBound: mode 1 reads [gun+3F8h] = Bullet[2].
+        float magnitude = mode1 != nullptr ? mode1->throw_amount : gun.throw_amount;  // 007302DF
         const int f = gun.category;                                   // gunclass+80h
         if ((f == 1 || f == 5 || f == 6) && kTurnOffAaGunThrow) {     // 007302EA..00730317
             magnitude = 0.0f;
@@ -3520,7 +3648,8 @@ struct GameGunneryHost::Impl {
         if (plane && f == 0) {                                        // 00730348..0073038D
             if (role_ai_held_00521e70(owner, 1)) seat = kThrowPilot;  // [unit+0DF4h]
         } else {
-            const int sub = gun.bullet_sub_type;                      // [[gun+3F8h]+34h]+8h
+            const int sub = mode1 != nullptr ? mode1->sub_type
+                                             : gun.bullet_sub_type;   // [[gun+3F8h]+34h]+8h
             if (sub == 0x0A) {                                        // gun+39Ch, role 5
                 if (f == 7 && role_ai_held_00521e70(owner, 5)) seat = kThrowTorpedo;
             } else if (sub == 0x0B) {                                 // role 7, +3A4h else +3A0h
@@ -4060,6 +4189,11 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "            end\n"
         "            if type(b2) == 'table' then\n"
         "              f[q .. 'bullet2'] = num(b2.Bullet, 1) or -1\n"
+        "              local rt2 = b2.ReloadTime\n"
+        "              if type(rt2) == 'table' then rt2 = rt2[1] end\n"
+        "              f[q .. '2reload'] = num(rt2, 1000) or 0\n"
+        "              f[q .. '2bdelay'] = num(b2.BarrelDelayTime, 1000) or 0\n"
+        "              f[q .. '2throw'] = num(b2.Throw, 1000000) or 0\n"
         "              local BT2 = type(Bullets) == 'table' and Bullets\n"
         "                 or (type(BulletClass) == 'table' and BulletClass or nil)\n"
         "              local bc2 = BT2 and BT2[b2.Bullet] or nil\n"
@@ -4567,6 +4701,7 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                 // used to discard: +8h after the 006E9968 rewrite. 009FE270
                 // switches on it for the AI target-weight accuracy.
                 gun.bullet_sub_type = finalised.sub_type;
+                flak_fuse_time_by_class[gun.bullet_class] = finalised.flak_fuse_time;
                 if (finalised.engagement_range > 0.0f) {
                     gun.max_range = finalised.engagement_range;
                     ++summary.bullet_ranges_derived;
@@ -4609,7 +4744,13 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                     second.max_range = r2.engagement_range > 0.0f ? r2.engagement_range
                                                                   : fin2.range;
                     second.min_range = fin2.flak_min_range;
+                    second.reload_time = flat_scaled(type_id, make("2reload"), kMilliScale, 0.0f);
+                    second.barrel_delay_time = flat_scaled(type_id, make("2bdelay"),
+                        kMilliScale, 0.0f);
+                    second.throw_amount = flat_scaled(type_id, make("2throw"), kAngleScale, 0.0f);
+                    second.sub_type = r2.sub_type;
                     bullet_min_range[b2] = fin2.flak_min_range;
+                    flak_fuse_time_by_class[b2] = r2.flak_fuse_time;
                     second_ammo_by_gun[guns.size()] = second;
                     if (bullet(b2) == nullptr) {
                         GameBulletClassRow r;
@@ -5225,10 +5366,26 @@ public:
             return true;
         }
     }
-    bool category_gate_slot4(int) override {
+    bool category_gate_slot4(int category) override {
         // 008636A0 installs the default gate 00D0D31C on a unit that is not
         // class 8; its vtable[4h] is 00861BE0, `mov al,1`.
-        return true;
+        if (!kSubmarineCategoryGateBound || !owner_.units.unit_is_kind_of(unit_, 8)) return true;
+        // 0086371E..00863743: an IsKindOf(8) unit gets 00D0D32C, whose slot 4 is
+        // 008627A0: category 7 asks 008527E0, 1..6 ask 008527A0, others false.
+        float x = 0.0f, y = 0.0f, z = 0.0f;
+        owner_.units.unit_position_00fc(unit_, x, y, z);
+        float band0 = 0.0f, band1 = -20.0f;                   // 00E0B578 defaults
+        owner_.units.submarine_band_y(unit_, 0, band0);        // +1200h
+        owner_.units.submarine_band_y(unit_, 1, band1);        // +1204h
+        bsp::gameplay_seg53_cc13::SubmarineDepthFields depth;
+        depth.world_y_100 = y;
+        depth.bands_1200[0] = band0;
+        depth.bands_1200[1] = band1;
+        const bool open = bsp::aa_pick_submarine_category_gate_008627a0(category,
+            bsp::gameplay_seg53_cc13::submarine_is_above_deck_gun_depth_008527a0(depth),
+            bsp::submarine_is_shallow_008527e0(y, band1));
+        if (!open) ++owner_.submarine_category_gate_refusals;
+        return open;
     }
 
     bool sweep_suppressed() override { return state_.sweep_suppressed; }
@@ -5581,6 +5738,12 @@ public:
 
     std::array<float, 3> unit_world_position_00427eb0() override {
         float point[3];
+        if (kAaSlotRangeOriginBound) {
+            // 008654E1 CALL 00427EB0: the unit's +FCh, the pose origin.
+            float right[3], up[3], forward[3];
+            owner_.unit_pose(unit_, right, up, forward, point);
+            return {point[0], point[1], point[2]};
+        }
         owner_.unit_aim_point(unit_, point);
         return {point[0], point[1], point[2]};
     }
@@ -5640,7 +5803,15 @@ public:
     std::array<float, 3> entity_world_position(void* entity) override {
         const std::size_t other = unit_of(entity);
         float point[3] = {0.0f, 0.0f, 0.0f};
-        if (other < owner_.units.count()) owner_.unit_aim_point(other, point);
+        if (other < owner_.units.count()) {
+            if (kAaSlotRangeOriginBound) {
+                // The second director arm, piVar2[3Fh..41h]: the element's +FCh.
+                float right[3], up[3], forward[3];
+                owner_.unit_pose(other, right, up, forward, point);
+            } else {
+                owner_.unit_aim_point(other, point);
+            }
+        }
         return {point[0], point[1], point[2]};
     }
     float vector_length_0042b2f0(const std::array<float, 3>& v) override {
@@ -5682,7 +5853,24 @@ public:
                 theirs[2] - mine[2]};
             const GameGunneryHost::Impl::SecondAmmo* dp = owner_.dp_air_ammo(slot,
                 row.category, other);
-            in_range = length3(delta) <= (dp != nullptr ? dp->max_range : row.max_range);
+            float reach = length3(delta);
+            if (kAaSlotRangeOriginBound) {
+                // 00729C35..00729C7A: the gun entity's +FCh (the mount) against
+                // the target's +FCh (the pose origin, no Height).
+                float right[3], up[3], forward[3], origin[3];
+                owner_.unit_pose(unit_, right, up, forward, origin);
+                float tr[3], tu[3], tf[3], target_pos[3];
+                owner_.unit_pose(other, tr, tu, tf, target_pos);
+                float muzzle[3];
+                owner_.gun_muzzle_point(row, state_, right, up, forward, origin, muzzle);
+                const float m[3] = {target_pos[0] - muzzle[0], target_pos[1] - muzzle[1],
+                    target_pos[2] - muzzle[2]};
+                const float mount_reach = length3(m);
+                const float range = dp != nullptr ? dp->max_range : row.max_range;
+                if ((mount_reach <= range) != (reach <= range)) ++owner_.aa_slot_origin_flips;
+                reach = mount_reach;
+            }
+            in_range = reach <= (dp != nullptr ? dp->max_range : row.max_range);  // 00729C8A JA
         }
         in.slot_accepts_target = in_range;
         // Evaluated on every call so a run with the switch off still counts what
@@ -5937,6 +6125,20 @@ public:
         row.target_name = other < owner_.unit_state.size()
             ? owner_.unit_state[other].row.name : std::string();
         row.target_is_fire_target = is_fire_target;
+        if (kFlakErrorRerollBound && kAaFlakAimErrorBound && other < owner_.units.count()
+            && (row.category == 5
+                || (row.category == 6 && owner_.dp_air_ammo(slot, row.category, other) != nullptr))
+            && owner_.slot_ai_held_00927f10(row.seat_1ac)) {
+            // 008FF200 (vtable 00D18270, reached only from 00727F10): a non-null
+            // target with slot 8 or an AI-held slot rolls 008FDBE0 (008FF247).
+            // LABELLED: limited to the guns the host's flak tick serves.
+            int level = owner_.units.skill_level(unit_);
+            if (level < 0 || level > 5) level = 1;
+            GameGunneryHost::Impl::AaFlakError& fe = owner_.aa_flak_error_by_gun[slot];
+            fe.attached = true;
+            owner_.roll_aa_flak_error_008fdbe0(fe, slot, level);
+            ++owner_.aa_flak_send_rolls;
+        }
         if (kTailGunnerAimErrorBound && row.category == 1) {
             // 00727F13..00727F2D: +390h's vtable[38h], for TailGunnerBot 008FEA40,
             // which ends with bot+6Ch = -1.0 (00D7A260) whatever the target.
@@ -6713,6 +6915,27 @@ void GameGunneryHost::Impl::run_gunnery_pass(std::size_t index, float dt) {
                 // run queues no orders, so the faithful answer is "no command
                 // target" - which is what the native would return here.
             }
+            if (kDirectorLeaderFireTargetBound && state.fire_target == 0) {
+                // 0086365A..0086368B: director+238h null -> 007788D0, the
+                // formation leader [[unit+284h]+14h]; when it answers IsKindOf(6)
+                // the provider returns [leader+738h]->vtable[2Ch](), the
+                // leader's own director target (no further fallback).
+                const std::int32_t group = units.unit_formation_group_0284(index);
+                const std::size_t leader = group >= 0
+                    ? units.formation_leader_0014(group) : static_cast<std::size_t>(-1);
+                if (leader < units.count() && leader < rows.size()
+                    && units.unit_is_kind_of(leader, 6)
+                    && !rows[leader].fire_target.empty()) {
+                    for (std::size_t i = 0; i < units.count(); ++i) {
+                        const GameUnitRow* candidate = units.unit_row(i);
+                        if (candidate != nullptr
+                            && candidate->name == rows[leader].fire_target) {
+                            state.fire_target = i + 1;
+                        }
+                    }
+                    if (state.fire_target != 0) ++leader_fire_target_inherits;
+                }
+            }
         }
     }
     // Packet cc9_plane_forced_target_read: 008636A0's null provider on a plane
@@ -6958,6 +7181,8 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         // |bot+60h - raw heading| for the friendly-crossing gate below.
         std::array<float, 2> torpedo_lead_xz{{0.0f, 0.0f}};
         float torpedo_snap_radians = 0.0f;
+        // kAaLeadDistanceGateBound: |lead - muzzle|, 00901C20's outDist.
+        float lead_distance = -1.0f;
         if (have_target) {
             float theirs[3];
             if (kArtilleryAimPointBound && artillery_bot_aims(gun.category, target)
@@ -7183,6 +7408,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             const float delta[3] = {lead[0] - muzzle[0], lead[1] - muzzle[1],
                 lead[2] - muzzle[2]};
             const float distance = length3(delta);
+            lead_distance = distance;
             if (distance > 0.0f) {
                 const float unit_delta[3] = {delta[0] / distance, delta[1] / distance,
                     delta[2] / distance};
@@ -7326,28 +7552,24 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     // 00903280..00903293: the angles take bot+58h / bot+5Ch; the
                     // reroll after a shot is at the end of the tick, below.
                     AaFlakError& fe = aa_flak_error_by_gun[g];
+                    if (kFlakErrorRerollBound && !fe.attached) {
+                        // 008FF055 (AttachBallisticClass) rolls once at attach.
+                        // SUBSTITUTION, labelled: here at the gun's first flak tick.
+                        fe.attached = true;
+                        roll_aa_flak_error_008fdbe0(fe, g, aa_level);
+                        ++aa_flak_attach_rolls;
+                    }
                     want_horz += fe.h;
                     want_vert += fe.v;
+                    if (kFlakNegativeVerticalBound) {
+                        const float adjusted = bsp::flak_bot_vertical_adjust_00903297(want_vert,
+                            units.unit_is_kind_of(target, bsp::kUnitGunneryKindPlaneBase));
+                        if (adjusted != want_vert) ++flak_vertical_adjusts;
+                        want_vert = adjusted;
+                    }
                     if (fe.fired) {
                         fe.fired = false;
-                        const float* row = kAaFlakErrorRows[aa_level];
-                        const bool good = draw(Draw::aa_flak_error, g, 0, 0.0f, 100.0f)
-                            < row[0] * 100.0f;
-                        const float lo_a = good ? row[1] : row[2], hi_a = good ? row[2] : row[3];
-                        const float lo_d = good ? row[4] : row[5], hi_d = good ? row[5] : row[6];
-                        const auto sign = [&]() {
-                            return draw(Draw::aa_flak_error, g, 1, 0.0f, 1.0f) < 0.5f ? -1.0f : 1.0f;
-                        };
-                        const float ah = draw(Draw::aa_flak_error, g, 0, lo_a, hi_a);
-                        fe.h = sign() * ah * 3.14159265358979f / 180.0f;
-                        const float av = draw(Draw::aa_flak_error, g, 0, lo_a, hi_a);
-                        fe.v = sign() * av * 3.14159265358979f / 180.0f;
-                        const float d = draw(Draw::aa_flak_error, g, 0, lo_d, hi_d);
-                        fe.dist = sign() * d;
-                        ++aa_flak_rolls;
-                        ++aa_flak_rolls_by_level[aa_level];
-                        aa_flak_angle_sum_deg += (ah + av) * 0.5;
-                        aa_flak_dist_abs_sum += d;
+                        roll_aa_flak_error_008fdbe0(fe, g, aa_level);   // 0090331B
                     }
                 }
                 if (kAaGunnerErrorBound && gun.category == 1 && want_vert < 0.0f
@@ -7656,6 +7878,16 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 const float d[3] = {tp[0] - muzzle[0], tp[1] - muzzle[1], tp[2] - muzzle[2]};
                 distance = length3(d);
             }
+            // kAaLeadDistanceGateBound: 00902FC0 (AAGunnerBot) and 0090332C
+            // (AAFlakBot) read 00901C20's outDist, the LEAD distance.
+            const bool lead_gate = kAaLeadDistanceGateBound && have_target
+                && lead_distance >= 0.0f
+                && !(gun.category == 1
+                     && units.unit_is_kind_of(owner_unit, bsp::kUnitGunneryKindPlaneBase));
+            if (lead_gate) {
+                if (distance != lead_distance) ++aa_lead_gate_moves;
+                distance = lead_distance;
+            }
             const float dh = std::fabs(bsp::wrapped_angle_subtract_00438b10(gun.angles.horz,
                 want_horz));
             const float dv = std::fabs(bsp::wrapped_angle_subtract_00438b10(gun.angles.vert,
@@ -7962,8 +8194,12 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         const int barrel = bsp::next_ready_barrel_007298d0(gun.fire.barrel_timers.data(),
             gun.barrel_num, gun.next_fire_barrel);
         gun.next_fire_barrel = (barrel + 1) % std::max(1, gun.barrel_num);
+        // kFlakSecondAmmoCadenceBound: a mode-1 shot reads Bullet[2]'s record.
+        const SecondAmmo* mode1 = kFlakSecondAmmoCadenceBound && have_target
+            ? dp_air_ammo(g, gun.category, target) : nullptr;
+        if (mode1 != nullptr) ++dp_cadence_shots;
         if (barrel >= 0 && static_cast<std::size_t>(barrel) < gun.fire.barrel_timers.size()) {
-            float next_timer = gun.reload_time;
+            float next_timer = mode1 != nullptr ? mode1->reload_time : gun.reload_time;
             if constexpr (kTorpedoStockBound) {
                 if (gun.category == bsp::kUnitGunneryTorpedoCategory
                     && units.unit_is_kind_of(gun.unit_index, bsp::kUnitGunneryKindShipBase)
@@ -7973,7 +8209,8 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             }
             gun.fire.barrel_timers[static_cast<std::size_t>(barrel)] = next_timer;
         }
-        gun.fire.barrel_delay_time = gun.barrel_delay_time;
+        gun.fire.barrel_delay_time = mode1 != nullptr ? mode1->barrel_delay_time
+                                                      : gun.barrel_delay_time;   // 00730A05
         if (plane_gun) ++plane_gun_rounds;
         if (aa_trace_matches(state.row.name)) {
             float aim[3] = {0.0f, 0.0f, 0.0f};
@@ -8068,7 +8305,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         if (gun.shots == 1) {
             // DIAGNOSTIC, both sides: the throw terms this gun fires with.
             int seat = -1;
-            const float m = bullet_throw_magnitude_0073031d(gun, owner_unit, seat);
+            const float m = bullet_throw_magnitude_0073031d(gun, owner_unit, seat, mode1);
             log.notef("gunnery: throw first shot %s plat=%d cat=%d sub=%d throw_deg=%.3f "
                 "level=%d seat=%d magnitude_deg=%.3f (0073031D)", state.row.name.c_str(),
                 gun.platform_key, gun.category, gun.bullet_sub_type,
@@ -8078,7 +8315,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         if constexpr (kBulletThrowBound) {
             // Packet cc9_bullet_throw: 0073031D..0073075E.
             int seat = -1;
-            const float magnitude = bullet_throw_magnitude_0073031d(gun, owner_unit, seat);
+            const float magnitude = bullet_throw_magnitude_0073031d(gun, owner_unit, seat, mode1);
             ++throw_by_seat[seat >= 0 ? seat : kThrowSeatCount];
             if (!(magnitude > 0.0f)) {
                 ++throw_zero_shots;                                   // 00730525 JBE
@@ -9464,8 +9701,9 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
         // 006E6490 (the base tick and its direct-strike sweep above):
         //   0070C3B1: FlyTime (+54h) spent -> 0070C210(proj, 0), the silent
         //             expiry the host's life bound already models;
-        //   0070C3E2: armed once flight time > FlakFuseTime (+D8h; no reader
-        //             writes it, so 0 from 006E8320) and the scaled step > 0;
+        //   0070C3E2: armed once flight time > FlakFuseTime (+D8h, which
+        //             0070C0B0 writes as MinRange / V0; kFlakFuseArmTimeBound)
+        //             and the scaled step > 0;
         //   0070C41C: the step segment from the previous snapshot, its length L
         //             and unit direction; M the segment midpoint (0070C4A8);
         //   unlocked (byte +288h clear): walk the world entity list
@@ -9530,8 +9768,19 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
         }
         if constexpr (kFlakProximityBurstBound) {
             const GameBulletClassRow* const fc = bullet(shot.bullet_class);
+            // kFlakFuseArmTimeBound: 0070C3DA..0070C3E6 searches only once the
+            // flight time is strictly past +D8h = MinRange / V0.
+            float fuse_time = 0.0f;
+            if (kFlakFuseArmTimeBound) {
+                const auto ft = flak_fuse_time_by_class.find(shot.bullet_class);
+                if (ft != flak_fuse_time_by_class.end()) fuse_time = ft->second;
+                if (fc != nullptr && fc->type == "Flak" && fc->blast_range > 0.0f
+                    && shot.life > 0.0f && !(shot.life > fuse_time)) {
+                    ++flak_fuse_unarmed_steps;
+                }
+            }
             if (fc != nullptr && fc->type == "Flak" && fc->blast_range > 0.0f
-                && shot.life > 0.0f) {
+                && shot.life > 0.0f && shot.life > fuse_time) {
                 const float seg[3] = {shot.position[0] - from[0],
                     shot.position[1] - from[1], shot.position[2] - from[2]};
                 const float seg_len = length3(seg);
@@ -13518,9 +13767,15 @@ bool GameGunneryHost::director_allow_move_3d(std::size_t unit_index) const noexc
 
 void GameGunneryHost::kill_unit_00926d90(std::size_t unit_index, int cause) {
     if (unit_index >= impl_->unit_state.size()) return;
-    // Cause 1 is the only one a caller passes (007CE3A7); the funnel is the
-    // one a gunfire death takes, which is also cause 1 (0077D1A0 -> 00926C80).
-    (void)cause;
+    // The funnel is the one a gunfire death takes (cause 1, 0077D1A0 -> 00926C80).
+    // kKillFunnelCauseBound: 00926D90 returns on +5Fh, else stores the cause at
+    // +70h (00926E02, 7 stored as 2), which the `Dead`/entityKilled publishers
+    // read as 00E0CF04[cause]: Lua Kill(x, true) passes 2, "soft".
+    if (kKillFunnelCauseBound && !impl_->unit_state[unit_index].dead) {
+        const int stored = bsp::normalized_kill_cause_00926d90(cause);
+        impl_->units.note_kill_cause_00926e02(unit_index, stored);
+        if (stored != 1) ++impl_->kill_funnel_non_harm_causes;
+    }
     ++impl_->water_depth_kills;
     impl_->kill_unit(unit_index);
 }
@@ -14307,6 +14562,33 @@ void GameGunneryHost::report() {
             host.intercept_solves, kGunInterceptBound ? 1 : 0, host.dp_air_rounds,
             kDualPurposeSecondAmmoBound ? 1 : 0, host.aa_negative_halvings,
             kAaGunnerErrorBound ? 1 : 0);
+        host.log.notef("summary mission gunnery flak mode-1 cadence shots=%llu bound=%d "
+            "(008FF200 -> 0072D5B0(1), packet cc9_g41_flak_d4)", host.dp_cadence_shots,
+            kFlakSecondAmmoCadenceBound ? 1 : 0);
+        host.log.notef("summary mission gunnery flak negative vertical adjusts=%llu bound=%d "
+            "(00903297, packet cc9_g41_flak_d6)", host.flak_vertical_adjusts,
+            kFlakNegativeVerticalBound ? 1 : 0);
+        host.log.notef("summary mission gunnery aa lead distance gate moves=%llu bound=%d "
+            "(00902FC0 / 0090332C, packet cc9_g41_flak_d3d1)", host.aa_lead_gate_moves,
+            kAaLeadDistanceGateBound ? 1 : 0);
+        host.log.notef("summary mission gunnery flak fuse unarmed steps=%llu bound=%d "
+            "(0070C3DA, packet cc9_g41_flak_d5)", host.flak_fuse_unarmed_steps,
+            kFlakFuseArmTimeBound ? 1 : 0);
+        host.log.notef("summary mission gunnery flak error attach rolls=%llu send rolls=%llu "
+            "bound=%d (008FF055 / 008FF247, packet cc9_g41_flak_d2)", host.aa_flak_attach_rolls,
+            host.aa_flak_send_rolls, kFlakErrorRerollBound ? 1 : 0);
+        host.log.notef("summary mission gunnery slot range origin flips=%llu bound=%d "
+            "(00729C35, packet cc9_g41_aa_pick_d2)", host.aa_slot_origin_flips,
+            kAaSlotRangeOriginBound ? 1 : 0);
+        host.log.notef("summary mission gunnery director leader fire target inherits=%llu "
+            "bound=%d (00863640, packet cc9_g41_aa_pick_d3)", host.leader_fire_target_inherits,
+            kDirectorLeaderFireTargetBound ? 1 : 0);
+        host.log.notef("summary mission gunnery submarine category gate refusals=%llu "
+            "bound=%d (008627A0, packet cc9_g41_aa_pick_d4)", host.submarine_category_gate_refusals,
+            kSubmarineCategoryGateBound ? 1 : 0);
+        host.log.notef("summary mission gunnery kill funnel non-harm causes=%llu bound=%d "
+            "(00926E02, packet cc9_g41_kill_cause)", host.kill_funnel_non_harm_causes,
+            kKillFunnelCauseBound ? 1 : 0);
         host.log.notef("summary mission gunnery water depth kills=%llu (007CE3A7, packet "
             "cc9_water_surface_law)", host.water_depth_kills);
         host.log.notef("summary mission gunnery airfield sub-entity asks=%llu listed=%llu "

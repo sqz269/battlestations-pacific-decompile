@@ -630,6 +630,9 @@ public:
     // (4 for the retreat leave-map kill 007F3418), 1 (`harm`, every damage
     // death) otherwise.
     int kill_cause_00926d90(std::size_t unit_index) const;
+    // kKillFunnelCauseBound (game_hosts_gunnery.cpp): 00926D90 stores the cause
+    // it was called with at +70h (00926E02); the gunnery funnel records it here.
+    void note_kill_cause_00926e02(std::size_t unit_index, int cause);
 
     // Milestone 2m. 00836920's stage ladder over every unit's weapon director,
     // once per fixed simulation step: the pre-pass, the `stop` arm and the idle

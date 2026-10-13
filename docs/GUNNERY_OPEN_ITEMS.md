@@ -13660,3 +13660,180 @@ re-launch of the same log fails at once with an empty launch file. Check
 `Get-CimInstance Win32_Process -Filter "Name='pwsh.exe'"` for the waiting launcher before re-launching. Export
 dirs: `g40_tf` (turning ON), `g39_rk0` (fall ON), `g39_rk1` / `g40_sx1` (swim ON), `g39_rk2` (recon ON),
 `g39_lo` (mesh box ON); OFF snapshots `g40_tfoff`, `g40_tb0`, `g40_sw0`, `g40_sx0`, `g40_bm0`.
+
+## 216. Flak D4: a mode-1 shot reads Bullet[2]'s reload, barrel delay, Throw and seat: `kFlakSecondAmmoCadenceBound`, OFF (lead queue item 1; cc9-gunnery41, 2026-10-13)
+
+**Image** (docs/CC13_VER_16.md D4, re-read here at `008FF200` and `0072D5B0`). `008FF200`, the AAFlakBot's
+SetFireTarget, calls `0072D5B0(1, 0)` for a kind-6 gun (`[[bot+68h]+3F4h]+80h == 6`) when the role slot is 8 or
+AI-held, then rolls the error. `0072D5B0` sets `gun+3F8h = [desc+74h] + 1 * 48h`, so the reload draw
+U(+28h, +2Ch) (`0072D55C`-`0072D579`), the barrel delay +30h (`00730A05`), the Throw +4h (`007302DF`) and the
+seat's sub-type `[[gun+3F8h]+34h]+8h` (`0073031D`) all come from Bullet[2]. Its barrel pass (flag 0) asks each
+barrel for a round and, on success, only consumes it (`vtable[1F8h]`); the timers are written only on an empty
+magazine (`00CFDBF8`).
+
+**Host.** Bullet[2] (`SecondAmmo`) now also carries `2reload`, `2bdelay`, `2throw` and its class's sub-type. With
+the switch ON, a shot that `dp_air_ammo` routes to Bullet[2] (category 6 against a plane) takes those four;
+counter `dp_cadence_shots`, logged as `summary mission gunnery flak mode-1 cadence shots`. Labelled
+substitution: the mode is chosen per shot from the target, not held from the last SetFireTarget.
+
+**Predictions, written before any ON run.** OFF `dp_air_rounds`: USN12 1879, USN01 175, USN15 0.
+
+| row | prediction ON |
+| --- | --- |
+| USN15 s45_u15_l2 90000 | `shots=0`; pair_diff exit 0 or 1 |
+| USN12 s38_u12_p2 36000 | exit 3; DP flak rounds up about 1.5-1.7x (reload 3-6 s against 6-9 s); the 0.6 AAFlak seat replaces 0.9; plane losses up; win kept |
+| USN21 (ships44 `s46_u21_d`) 60000 | exit 3; `dp_air_rounds` about 1832 -> 3150 (cc13); DP kills up; strike releases down slightly |
+| USN01 p3_u1_z4 | exit 3 (175 DP rounds); small; win kept |
+
+## 217. Flak D6: a negative flak vertical against a plane is fired flat: `kFlakNegativeVerticalBound`, OFF (lead queue item 1; cc9-gunnery41, 2026-10-13)
+
+**Image** (docs/CC13_VER_16.md D6). `00903297`-`009032E9`, after the AAFlakBot adds bot+5Ch: v < 0 against a
+plane (`IsKindOf(0Fh)`, `009032B3`) becomes 0; against anything else, below -0.02f (`00D7A320`), it becomes
+v - (v + 0.02) * 0.5. cc13's model `bsp::flak_bot_vertical_adjust_00903297` (`src/flak_ver_cc13.cpp`).
+
+**Host.** Applied to `want_vert` right after the `fe.v` add, in the cat-5 / cat-6-against-a-plane flak block;
+counter `flak_vertical_adjusts`, logged as `summary mission gunnery flak negative vertical adjusts`. No RNG change.
+
+**Predictions, written before any ON run.**
+
+| row | prediction ON |
+| --- | --- |
+| USN15 | `adjusts=0`; exit 0 or 1 |
+| USN12 | `adjusts` > 0 (low torpedo legs); exit 3; flak hits on low planes up; win kept |
+| USN21 | `adjusts` > 0; exit 3; DP kills on low legs up (cc13: up to 2x per 5-inch round at 2000-2500 m) |
+
+## 218. Flak D3 + AA D1: the AA fire gates measure to the lead point: `kAaLeadDistanceGateBound`, OFF (lead queue item 1; cc9-gunnery41, 2026-10-13)
+
+**Image** (docs/CC13_VER_14.md D1, docs/CC13_VER_16.md D3). The AAGunnerBot gate `00902FC0`-`00902FE2`
+(slot < [proj+60h] * 0.9f) and the AAFlakBot range gate `0090332C`-`00903344` ([class+58h] < slot < [class+60h],
+strict, NaN fails) both read the slot `00901C20` writes as outDist: |lead point - muzzle|.
+
+**Host.** The aim block keeps its `|lead - muzzle|` as `lead_distance`; with the switch ON the AA test block
+gates the AAGunnerBot (cat 1 on a ship) and the AAFlakBot (cat 5, cat 6 against a plane) on it. The TailGunnerBot
+keeps its target-origin distance (it has no `00901C20` lead). Counter `aa_lead_gate_moves` (ticks where the two
+distances differ), logged as `summary mission gunnery aa lead distance gate`. No RNG change of its own.
+
+**Predictions, written before any ON run.**
+
+| row | prediction ON |
+| --- | --- |
+| USN15 | moves=0 (no air); exit 0 or 1 |
+| USN12 | exit 3; MG and flak open fire earlier inbound (about x(1 + vr/V0)), stop earlier outbound; cat-1 kills beyond 1404 m appear |
+| USN21 | exit 3; Yamato flak opens at about 3300-3550 m against 3150 m; releases down slightly |
+
+## 219. Flak D5: the proximity fuse arms after MinRange / V0: `kFlakFuseArmTimeBound`, OFF (lead queue item 1; cc9-gunnery41, 2026-10-13)
+
+**Image** (docs/CC13_VER_16.md D5). `0070C0B0` stores `+D8h = MinRange / V0` (`0070C0BC`-`0070C0C2`), already
+reconstructed as `WeaponClassFinaliseResult::flak_fuse_time`; `0070C3DA`-`0070C3E6` skips the lock search unless
+the flight time is strictly greater. `docs/FLAK_PROXIMITY_BURST.md` step 3 ("+D8h is 0") is wrong, as cc13 says.
+
+**Host.** `flak_fuse_time_by_class` is filled at both class loads (Bullet[1] and Bullet[2]); with the switch ON
+the `kFlakProximityBurstBound` search needs `shot.life > fuse_time`. Counter `flak_fuse_unarmed_steps`, logged as
+`summary mission gunnery flak fuse unarmed steps`. No RNG change of its own.
+
+**Predictions, written before any ON run.** Yamato shells arm at 1.11 s (1000 m), 5-inch at 0.25 s (200 m).
+
+| row | prediction ON |
+| --- | --- |
+| USN15 | steps=0; exit 0 or 1 |
+| USN12 | steps > 0; exit 3 only if a round locked inside its MinRange; small, slightly less lethal |
+| USN21 | steps > 0; small (every Yamato kill was at 1225 m or more); slightly fewer flak kills |
+
+## 220. Flak D2: the AAFlakBot error rolls at attach and on each SetFireTarget re-send: `kFlakErrorRerollBound`, OFF (lead queue item 1; cc9-gunnery41, 2026-10-13)
+
+**Image** (docs/CC13_VER_14.md D2, re-read at `008FF200` and `008FDBE0`). `008FDBE0` has three callers:
+`008FF055` (AttachBallisticClass, once), `008FF247` (SetFireTarget `008FF200`, reached only from `00727F10`, which
+the 2 s `00864FE0` assignment calls with the current target; it rolls for a non-null target when the gun's slot
+is 8 or AI-held) and `0090331B` (after a shot). cc13's open question is answered: `008FDBE0` ends with
+`bot+64h = [00F876A4]`, so a re-send roll also covers every shot fired before it.
+
+**Host.** The roll is one member, `roll_aa_flak_error_008fdbe0` (same draw order as before). ON: the attach roll
+runs at the gun's first flak tick (labelled substitution for mission load), and `set_bot_fire_target_00727f10`
+rolls for a cat-5 gun, or a cat-6 gun against a plane, on an AI-held slot (labelled: the image's kind-6 bot also
+rolls for a ship target). Counters `aa_flak_attach_rolls` / `aa_flak_send_rolls`, logged as `summary mission
+gunnery flak error attach rolls`. RNG: about 7 more stream-1 draws per roll.
+
+**Predictions, written before any ON run.**
+
+| row | prediction ON |
+| --- | --- |
+| USN15 | rolls 0; exit 0 or 1 |
+| USN12 | exit 3 (stream re-ordered); first salvos carry error, so slightly fewer flak hits early; win kept |
+| USN21 | exit 3; cc13: perfect first salvos were about 40-55 hits (5-7 % of flak damage), so about 2-4 fewer flak kills |
+
+## 221. AA pick D2 (+D1): the per-gun range gate measures mount to pose origin: `kAaSlotRangeOriginBound`, OFF (lead queue item 2; cc9-gunnery41, 2026-10-13)
+
+**Image** (docs/CC13_VER_19.md D2, D1). `00729BC0`'s gate (`00729C35`-`00729C7A`, `00729C8A` JA) measures the gun
+entity's `+FCh` (the mount) to the target's `+FCh`; the director arms (`008654E1` CALL `00427EB0`, and
+`piVar2[3Fh..41h]`) measure `+FCh` too. No class Height is added anywhere.
+
+**Host.** `gun_inputs` measured unit aim point to target aim point (both Height-raised, no mount);
+`unit_world_position_00427eb0` / `entity_world_position` returned aim points. ON: the gate measures
+`gun_muzzle_point` (the mount when known, else the aim point) to the target pose origin, and both arm hooks
+return pose origins. Counter `aa_slot_origin_flips` (asks whose answer differs), logged as `summary mission
+gunnery slot range origin flips`. The gate is every category's, so ship-to-ship gunnery moves too. The stale
+"+D8h has no writer" comment in the flak step is corrected.
+
+**Predictions, written before any ON run.**
+
+| row | prediction ON |
+| --- | --- |
+| USN15 | flips > 0 (surface gunnery at the range edge); exit 3; first-fire times move by seconds per mount; win kept |
+| USN12 | exit 3; AA first rounds seconds earlier (bow) or later (stern); win kept |
+| USN21 | exit 3; RNG-coupled per-plane fates, no attributable sign |
+
+## 222. AA pick D3: a unit with no fire target inherits its formation leader's: `kDirectorLeaderFireTargetBound`, OFF (lead queue item 2; cc9-gunnery41, 2026-10-13)
+
+**Image** (docs/CC13_VER_19.md D3, re-read at `00863640`). On a null `director->vtable[2Ch]` (director+238h) with
+`[director+34h]` set, `007788D0` gives the formation leader; if it answers `IsKindOf(6)` the provider returns
+`[leader+738h]->vtable[2Ch]()`. The leader's answer is its own director field: no second fallback.
+
+**Host.** In `run_gunnery_pass` after the row's own `fire_target`: when it is empty, `unit_formation_group_0284` /
+`formation_leader_0014` give the leader, and a ship leader's row `fire_target` is resolved by name. Planes are
+still nulled afterwards (`kPlaneNullFireTargetProviderBound`). Counter `leader_fire_target_inherits`, logged as
+`summary mission gunnery director leader fire target inherits`.
+
+**Predictions, written before any ON run.**
+
+| row | prediction ON |
+| --- | --- |
+| USN15 (formations fighting ships) | inherits > 0; exit 3; escorts' AA/flak guns try the leader's ship target first |
+| USN12 | inherits > 0 if a formation member lacks a target; exit 3 or 1 |
+| USN21 | small: carrier-vs-carrier strike ranges, the inherited ship fails 00863990's range test |
+
+## 223. AA pick D4: the submarine category gate: `kSubmarineCategoryGateBound`, OFF (lead queue item 2; cc9-gunnery41, 2026-10-13)
+
+**Image** (docs/CC13_VER_19.md D4). `008636A0` installs `00D0D32C` on an `IsKindOf(8)` unit; its slot 4, `008627A0`,
+opens category 7 when `008527E0` (y > band1 - 3), categories 1-6 when `008527A0` (y > band0 - 3), and nothing
+else. A refusal skips the gather and the assignment (`008651D1` JE `00865773`), so the guns keep their target.
+
+**Host.** `category_gate_slot4` answered true. ON: for an `IsKindOf(8)` unit it takes y from `unit_position_00fc`
+and bands 0/1 from `submarine_band_y`, then cc13's `aa_pick_submarine_category_gate_008627a0` with
+`submarine_is_above_deck_gun_depth_008527a0` and `submarine_is_shallow_008527e0`. The pass already keeps the
+targets on a refused gate. Counter `submarine_category_gate_refusals`, logged as `summary mission gunnery
+submarine category gate refusals`. Categories 8 and 9 (depth charges, ASW) now never re-pick on a submarine.
+
+**Predictions, written before any ON run.**
+
+| row | prediction ON |
+| --- | --- |
+| USN15 / USN12 | refusals > 0 only if a submarine is present; otherwise exit 0 or 1 |
+| USN21 (Dace, Darter) | refusals > 0 (categories 8/9 always, 1-6 while submerged); exit 3 if a submerged boat's pick moved |
+
+## 224. The kill funnel keeps its cause: `kKillFunnelCauseBound`, OFF (lead queue item 3; cc9-gunnery41, 2026-10-13)
+
+**Image.** `00926D90` returns on `+5Fh`, else stores its cause at `+70h` (`00926E02`; 7 is stored as 2), and the
+`Dead` (script orders), `entityKilled` and `kill` publishers read `00E0CF04[+70h]` = none, harm, soft, sell,
+exitzone, landed, editor. Lua `Kill(x, true)` (`008AC5C0`) passes 2 ("soft"); this installation's scripts make
+882 such calls (lead's count).
+
+**Host.** `GameGunneryHost::kill_unit_00926d90` dropped the cause, so `GameUnitsHost::kill_cause_00926d90` answered
+1 for every death but the units host's own cause-4/5 kills. ON: for a unit not yet dead the funnel records
+`normalized_kill_cause_00926d90(cause)` through the new `GameUnitsHost::note_kill_cause_00926e02` (shared
+units files, claimed for this one commit). Counter `kill_funnel_non_harm_causes`. Cause 2 also comes from the
+ship-AI funnel call (`game_hosts_ship_ai.cpp`, `kill_unit_00926d90(u, 2)`).
+
+**Predictions, written before any ON run.** Listeners filtered on "harm" stop firing for soft kills, and a
+`Dead` reason reads "soft". Rows whose scripts call `Kill(x, true)` mid-mission can move (exit 3); a script
+that counted kills by reason may branch differently. USN12/USN15/USN01: report the non-harm count; expect exit 0
+or 1 where no harm-filtered listener meets a soft kill.
