@@ -19,8 +19,11 @@ the nose up, but without the floor the aircraft stall and fall.
 - The host has neither the timer nor the floor. The planes bleed from 40 to 17-19 m/s at full
   up-elevator, stall, and hit the water.
 
-The fix is committed OFF as `kAvoidRepairSpeedFloorBound`, in `src/game_hosts_units.cpp`. Status:
-reconstructed and build-tested, **not game-validated**.
+The fix was committed OFF as `kAvoidRepairSpeedFloorBound` in 99ab5130e. **Lead note (2026-10-13):**
+that code was dropped before landing. cc9's physics6 V1 (`kPlaneSpeedFloorBound`) already arms the
+same 1.2 s timer in gunfire_repair_0099bf30's finish() and applies the same floor, so the "Fix"
+section below describes the duplicate that was not landed. The plane_flight.hpp:604 correction
+stands as a note for physics6.
 
 ## 1. The trajectory, from the logs
 
