@@ -269,14 +269,16 @@ constexpr bool kGunImmediateFireSlotBound = true;
 //    queues a second FireIfReady that the barrel delay refuses (the host's
 //    "one attempt stands for both"). The forced 008A7200 fire calls 00730160
 //    directly and does not clear. OFF: +4D4h holds until the latch drops.
-constexpr bool kTurningGunFireClearsRequestBound = false;
+//    ON since the pairs (GUNNERY_OPEN_ITEMS 208: clears=0, gameplay identical).
+constexpr bool kTurningGunFireClearsRequestBound = true;
 //  * kTorpedoMaxFallBreakupBound: packet cc9_g40_torpedo_fall. 008568E0's
 //    second break-up limit, 00856923..00856932: FLD [shot+0Ch] (the velocity's
 //    y; shot+8 is the vector 0042B2F0 measures for the first limit), FLD
 //    [classDesc+0ECh], FCHS, FCOMIP, JA: the round breaks up when
 //    vy < -sqrt(2 * MaxFall * 9.81) (00855AAE..00855AD3, 9.81 the double at
 //    00CF9058). The host applied only the MaxWaterHitVel limit. OFF: as before.
-constexpr bool kTorpedoMaxFallBreakupBound = false;
+//    ON since the pairs (GUNNERY_OPEN_ITEMS 209: breakups=0, gameplay identical).
+constexpr bool kTorpedoMaxFallBreakupBound = true;
 //  * kTorpedoSwimDepthHomingBound: packet cc9_g40_torpedo_swim (lead items 2b
 //    and 3; docs/CC13_GPR_53.md 1.2, 1.3, 1.6; docs/TORPEDO_TICK.md). The
 //    swimming torpedo runs the faithful 00857480 (torpedo_swim_00857480 with
@@ -1498,7 +1500,8 @@ struct GameGunneryHost::Impl {
     // Packet cc9_depth_charge_in_water (kDepthChargeInWaterBound).
     unsigned long long dc_launches{0}, dc_water_entries{0}, dc_breakups{0},
         dc_water_steps{0}, dc_contact_detonations{0}, dc_depth_detonations{0};
-    unsigned long long torpedo_fall_breakups{0};   // 00856932, kTorpedoMaxFallBreakupBound
+    unsigned long long torpedo_fall_breakups{0};
+    unsigned long long blast_shape_walks{0}, blast_shape_misses{0};   // blast_shape_entries   // 00856932, kTorpedoMaxFallBreakupBound
     void depth_charge_activate_006fd9b0(GameProjectileRow& shot, std::size_t gun_row);
     bool depth_charge_advance_006fcd20(GameProjectileRow& shot, float dt);
     // Packet cc9_player_weapon_group_fire (kPlayerWeaponGroupFireBound).
@@ -3311,6 +3314,8 @@ struct GameGunneryHost::Impl {
     // The burst centre's distance to unit i's blast box (kBlastMeshBoundsBound);
     // false when the unit has no box (zero Width or Length).
     bool blast_box_distance(std::size_t i, const float centre[3], float& distance);
+    bool blast_shape_entries(std::size_t i, const float centre[3], float range,
+                             std::vector<bsp::HitPartEntry>& out);
     const GameBulletClassRow* plane_crash_bullet(int id);
     struct PlaneCrashPrev {
         bool valid{false};
@@ -10567,6 +10572,11 @@ void GameGunneryHost::Impl::kamikaze_detonate_00819a20(std::size_t unit, std::si
             entry.kind = 0;
             entry.part_index = 0;
             entry.distance = distance;
+            std::vector<bsp::HitPartEntry> shapes;
+            if (kBlastMeshBoundsBound && blast_shape_entries(i, centre, kr.range_518, shapes)
+                && shapes.empty()) {
+                continue;   // 0098AAE0: inside the node box, no shape within the radius
+            }
             bsp::HitRecord blast;
             blast.hull_damage_base = 0.0f;
             blast.part_damage_base = kr.blast_514;
@@ -10576,8 +10586,8 @@ void GameGunneryHost::Impl::kamikaze_detonate_00819a20(std::size_t unit, std::si
             blast.hull_segment = kDirectHitHullSegment;
             blast.weapon_scale = 1.0f;   // shot 0: no weapon scale
             blast.owner_modifier = 1.0f;
-            blast.part_hits = &entry;
-            blast.part_hit_count = 1;
+            blast.part_hits = shapes.empty() ? &entry : shapes.data();
+            blast.part_hit_count = shapes.empty() ? 1 : static_cast<int>(shapes.size());
             ++kz_blast_records;
             if (i == unit) ++kz_self_records;
             const float before = unit_state[i].health;
@@ -10989,6 +10999,55 @@ bool GameGunneryHost::Impl::blast_box_distance(std::size_t i, const float centre
     return true;
 }
 
+// Packet cc9_g40_blast_shapes (kBlastMeshBoundsBound, GUNNERY 205/214): the
+// crash and kamikaze arms' measurement against the node's shapes, the same
+// 00723F80 -> 00723B70 element walk apply_impact_blast runs (root-box reject,
+// closest triangle, an entry within the radius). Returns false when the unit
+// has no element mesh, so the caller keeps its single box-distance entry.
+bool GameGunneryHost::Impl::blast_shape_entries(std::size_t i, const float centre[3],
+    float range, std::vector<bsp::HitPartEntry>& out) {
+    const ShipModelSlots* model = kBlastElementEntriesBound ? ship_mesh_of(i) : nullptr;
+    if (model == nullptr && kBlastElementEntriesBound && kPlaneBlastElementEntriesBound) {
+        model = plane_mesh_of(i, true);
+    }
+    if (model == nullptr) model = land_structure_mesh_of(i, true);
+    if (model == nullptr || model->element_ranges.empty()) return false;
+    float right[3], up[3], forward[3], origin[3];
+    unit_pose(i, right, up, forward, origin);
+    const float rel[3] = {centre[0] - origin[0], centre[1] - origin[1], centre[2] - origin[2]};
+    const float* axes[3] = {right, up, forward};
+    float local[3];
+    for (int a = 0; a < 3; ++a) local[a] = dot3(rel, axes[a]);
+    const float r2 = range * range;
+    for (const auto& er : model->element_ranges) {
+        if (er.count == 0) continue;
+        float box2 = 0.0f;
+        for (int a = 0; a < 3; ++a) {
+            const float d = local[a] < er.lo[a] ? er.lo[a] - local[a]
+                : (local[a] > er.hi[a] ? local[a] - er.hi[a] : 0.0f);
+            box2 += d * d;
+        }
+        if (box2 > r2) continue;                          // 00723B98
+        float best2 = r2;
+        bool any = false;
+        for (std::size_t t = er.first; t < er.first + er.count; ++t) {
+            const float d2 = point_triangle_distance2_0085df60(local,
+                model->element_tris[t * 3].data(), model->element_tris[t * 3 + 1].data(),
+                model->element_tris[t * 3 + 2].data());
+            if (d2 < best2) { best2 = d2; any = true; }   // 00723CFB strict
+        }
+        if (!any) continue;
+        bsp::HitPartEntry e;
+        e.kind = er.kind;
+        e.part_index = er.index;
+        e.distance = std::sqrt(best2);
+        out.push_back(e);
+    }
+    ++blast_shape_walks;
+    if (out.empty()) ++blast_shape_misses;
+    return true;
+}
+
 // 0084BC60 for the plane's crash shot: the class's blast (0084BAD0, the source
 // skipped at 0084BBF9), then the impact message 0CAh's Kill(1) (007BBA10).
 // LABELLED, as kamikaze_detonate_00819a20's blast arm: the hull-box distance
@@ -11018,6 +11077,11 @@ void GameGunneryHost::Impl::plane_crash_impact_0084bc60(std::size_t plane, std::
             entry.kind = 0;
             entry.part_index = 0;
             entry.distance = distance;
+            std::vector<bsp::HitPartEntry> shapes;
+            if (kBlastMeshBoundsBound && blast_shape_entries(i, centre, weapon.blast_range, shapes)
+                && shapes.empty()) {
+                continue;   // 0098AAE0: inside the node box, no shape within the radius
+            }
             bsp::HitRecord blast;
             blast.hull_damage_base = 0.0f;
             blast.part_damage_base = damage;
@@ -11027,8 +11091,8 @@ void GameGunneryHost::Impl::plane_crash_impact_0084bc60(std::size_t plane, std::
             blast.hull_segment = kDirectHitHullSegment;
             blast.weapon_scale = 1.0f;
             blast.owner_modifier = 1.0f;
-            blast.part_hits = &entry;
-            blast.part_hit_count = 1;
+            blast.part_hits = shapes.empty() ? &entry : shapes.data();
+            blast.part_hit_count = shapes.empty() ? 1 : static_cast<int>(shapes.size());
             ++pc_blast_records;
             const float before = unit_state[i].health;
             apply_gunless_blast_hit(plane, i, point, blast);
@@ -14409,6 +14473,9 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery blast mesh box uses=%llu bound=%d "
             "(0098AAE0 node AABB, GUNNERY 205)", host.blast_mesh_box_uses,
             kBlastMeshBoundsBound ? 1 : 0);
+        host.log.notef("summary mission gunnery blast crash/kamikaze shape walks=%llu "
+            "no_shape_in_range=%llu (00723F80 per element, GUNNERY 214)",
+            host.blast_shape_walks, host.blast_shape_misses);
         host.log.notef("summary mission gunnery aabb 0085cdb0 line_of_fire_tests=%llu "
             "narrowphase_box_hits=%llu bound=%d (0098B130/00929B80, packet cc9_aabb_0085cdb0)",
             host.line_of_fire_aabb_tests, host.narrowphase_box_0085cdb0, kAabb0085cdb0Bound ? 1 : 0);
