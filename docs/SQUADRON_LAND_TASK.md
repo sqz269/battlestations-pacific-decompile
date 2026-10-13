@@ -16203,3 +16203,34 @@ with its bomb back after 60 s.
 - **Prediction (both switches ON, PRCP01):** no `aimglide -> done` for an SBD while the Junyo lives; repeated `bomb drop` lines
   per Enterprise SBD about 60 s apart; the Junyo takes more bomb hits and dies earlier than 752 s. USN12 and JM08 have no
   device-reload SBD attack in the window (USN12 flag 0), so they stay identical for this part.
+
+### 5go.1 Measured: **ON**, both switches (cc9-lua56, 2026-10-13)
+
+Same tree. OFF is `8f8987755`'s build (both switches false; `59808c7b4` adds only the OFF-gated feed); ON is `59808c7b4` exported with
+both flips (`5F63480CBE53`). `BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`, 30200/30000 frames. Logs `local\l56_{off,on}_<row>.log`.
+
+| row | pair_diff | flag | reloads (ON) | note |
+| --- | --- | --- | --- | --- |
+| USN12 (s38_u12_p2, control) | identical | 0 | 0 | completes at 1534.87 s both sides |
+| PRCP01 (`l55_p01_c.txt`) | MOVED | 1 | 4 | OFF no end; **ON completes at 733.59 s** (`usn03.obj_mission_comp`, Zuiho) |
+| JM08 (`l51_j8_b3.txt`) | MOVED | 1 | many | fails both sides (1077.33 s OFF, 1037.39 s ON) |
+
+**PRCP01, the mechanism as predicted.**
+- OFF: three `aimglide -> done` (sqn05), the SBDs fly off (sqn05 ends 140 km away in 5gn's run); Junyo sunk at 752.04 s (sqn08).
+- ON: no `done`; six `aimglide -> goaway`. sqn05's racks re-arm at drop + 60.0 s (321.50, 328.84, 334.89 s) and sqn05 drops
+  again (bomb drops 4 and 5). One TBF rack re-arms at + 80.0 s (sqn06|.-2, 488.00 s); the other TBFs were shot down within
+  80 s of their drop. Junyo sunk at **428.47 s** (sqn06|.-3), Zuiho at **733.64 s** by Enterprise_sqn08, `luaUS03ZuihoKilled`,
+  `summary mission end: completed at 733.59 s`. The exec guard logged `refused a mission script's process launch: sus_prog.exe`.
+- Cost, from the death rows: the re-attacking SBDs stay over the Japanese AA and all of sqn05 dies (363.73-461.76 s), where OFF's
+  flew away. Deaths 41 -> 45; the ON side ends at 733 s, so later deaths are absent (Hornet, sqn07, sqn08 in OFF's list).
+- **Still `touchdowns=0`:** nothing here lands a squadron. Under device reload the image does not send a spent squadron home
+  (009F8160's gate), so a landing on PRCP01 needs the player's recall (`order <base> <slot> 2`, 006CCDA0 state 3, `kRecallLand`).
+
+**JM08** moves through the re-armed Japanese level bombers (`MainAirFieldEntity 01_sqn03`/`sqn20`, 16 rounds, ReloadTime 120 s) and
+dive bombers (`sqn19`, 30 s, no ReloadTime authored). It fails on both sides and is not a win row.
+
+**Rows without the flag are identical by construction:** the slice returns at the byte, and the dive feed then passes false, as
+before. Of the win rows (USN01, USN02, LOMP10, USN12, LOMP06, BSM01) none calls `SetDeviceReloadEnabled(true)` in this
+installation's scripts; usn_19_coralus (USN04/USN19) does, so USN04 will move.
+
+**Verdict: ON, both switches.**

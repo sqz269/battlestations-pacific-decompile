@@ -347,6 +347,78 @@ struct ControllerUpdateActions {
 ControllerUpdateActions controller_update_0071f290(ControllerUpdateState& s,
                                                    const ControllerUpdateInputs& in) noexcept;
 
+// 0071F600 __thiscall(director, char use_queue_head), RET 4, base director
+// vtable 00D09EC0 slot 78h: begin the override command (arg 0) or the queue
+// head (arg != 0).
+struct BeginCommandInputs {
+    bool use_queue_head = false;
+    // override arm
+    bool override_present = false;          // +188h
+    bool override_accepts = false;          // 0071D6D0(+188h, +18Ch)
+    bool override_target_resolves = false;
+    // queue-head arm
+    bool head_present = false;              // +54h
+    bool head_target_resolves = false;
+    bool head_target_kind_1c = false;       // resolved vtable[5Ch](1Ch)
+    int head_category = 0;                  // head vtable[0Ch]
+    bool head_target_same_endpoint = false; // resolved+54h == unit+54h
+    bool head_accepts_after_rewrite = false;// 0071D6D0 on the (possibly rewritten) head
+    bool head_target_has_entity_58 = false;
+    bool events_enabled_00f8a0c4 = false;
+};
+enum class MoveOnPathBuild { kNone, kFromSlotPath, kFromEntityPath };
+struct BeginCommandResult {
+    bool accepted = true;                   // AL (stays 1 when the command is absent)
+    bool stored_acceptance = false;         // the byte written to +44h / +4Ch
+    bool rewrote_head_to_moveto = false;    // 0071F67B: +54h = 00E08F68
+    MoveOnPathBuild path_build = MoveOnPathBuild::kNone;
+    // kFromSlotPath starts the cursor with the pair {followMode 1, startMode 5}.
+    bool report_start = false;              // 00984300 "start"
+    bool report_target = false;             // 00984800
+};
+BeginCommandResult begin_command_base_0071f600(const BeginCommandInputs& in,
+                                               std::uint32_t head_class_after_rewrite) noexcept;
+
+// The controller state that 00720450 copies.
+struct DirectorCopyState {
+    DirectorQueue queue{};
+    bool byte_3c = false;
+    bool byte_3d = false;
+    std::int32_t mode_30 = 0;
+    std::uint32_t field_16c = 0;      // the 1Ch block at +16Ch..+187h
+    CommandTarget target_170{};
+    CommandSlot override_188{};       // +188h class, +18Ch target
+    bool acceptance_44 = false;
+    bool override_acceptance_4c = false;
+    std::int32_t stage_48 = 0;
+    std::int32_t override_stage_50 = 0;
+};
+// 00720450 __thiscall(dst, const src*) RET 4: copy +3Ch/+3Dh, the +16Ch block
+// and mode +30h; clear the override (0071E610); copy the ten slots and their
+// paths (0071FD10). For an owner passing vtable[5Ch](6), a copied `land`
+// slot becomes `attackmove` on the unit nearest the land target's position
+// (0071DB90 over [GGame+19CCh]+16Ch; supplied as `nearest_to`), with the point
+// and +14h cleared and has_entity set only when a unit is found. Then the
+// override, both acceptance bytes and both stages are zeroed. The observer
+// pair bookkeeping (unregister/register) is not modelled.
+struct NearestUnitAnswer {
+    std::uint32_t entity = 0;
+    std::uint16_t entity_index_174 = 0;
+};
+void copy_state_from_00720450(DirectorCopyState& dst, const DirectorCopyState& src, bool owner_is_kind_6,
+                              const std::function<NearestUnitAnswer(const Vec3f&)>& nearest_to,
+                              const std::function<Vec3f(const CommandTarget&)>& target_position);
+
+// 0071E4C0 __thiscall(director, out{Vec3, bool valid}) RET 4: the queue head's
+// destination. A moveonpath head asks 007B1350 on (+1A4h path)+10h, the
+// follow-mode last point; with a null path the image passes ECX = 10h
+// (0071E4F2 MOV ECX,10h) - kNullPathCursor. Otherwise a head target with
+// neither entity (+58h) nor point (+59h) clears only the valid byte (+0Ch of
+// out, the point is left as it was); else BSP_TargetDescriptor_ResolvePosition
+// fills the point and valid = 1.
+enum class CurrentPathPointSource { kPathCursor, kNullPathCursor, kInvalid, kTargetPosition };
+CurrentPathPointSource current_path_point_0071e4c0(const DirectorQueue& q) noexcept;
+
 // 0071C4A0 __fastcall(obj): +10h = 1, +11h = 0.
 struct GunBotRetireBytes {
     bool b10 = false;
@@ -443,6 +515,32 @@ struct AddUserPathPlan {
 };
 AddUserPathPlan apply_add_user_path_point_007207c0(const DirectorQueue& q, bool needs_new_path,
                                                    bool can_push_moveonpath) noexcept;
+
+// 0071FDE0 __thiscall(path, const Vec3* point, char replace, uint slot) RET 0Ch:
+// add a user-path point. The world-bounds helpers are supplied:
+// - clip_points: 007B1EC0 BSP_Point3Vector_ClipToWorldBounds on the list;
+// - outside_map: 0071C4F0 BSP_Game_PointOutsideMapBounds on the point;
+// - clip_segment: 004BBDD0 BSP_Game_ClipSegmentToWorldBounds(from, to, out),
+//   answered as the two points the image then pushes (its `to` copy, then
+//   `out`); the argument roles of 004BBDD0 are not settled here;
+// - prune: BSP_Point3Vector_PruneFromIndex(cursor) on the list.
+struct AddPointInputs {
+    bool replace = false;
+    int cursor_18 = 0;                 // +18h of path(slot), or of path(0) when slot > 9 / null
+    std::optional<Vec3f> owner_position; // (+4h)->+34h unit pose, when there is one
+    std::int32_t session_mode = 0;     // [GGame+1FE4h]
+};
+struct AddPointResult {
+    bool rejected = false;             // more than 7 points past the cursor
+    bool issued_moveonpath = false;    // replace: owner vtable[60h](00E08F80, empty target)
+    bool sent_message_57 = false;      // unit vtable[13Ch](2,0), 0077C470(2,0), message 57h
+};
+AddPointResult director_path_add_point_0071fde0(
+    std::vector<Vec3f>& points, const Vec3f& point, const AddPointInputs& in,
+    const std::function<void(std::vector<Vec3f>&)>& clip_points,
+    const std::function<bool(const Vec3f&)>& outside_map,
+    const std::function<std::array<Vec3f, 2>(const Vec3f& from, const Vec3f& to)>& clip_segment,
+    const std::function<void(std::vector<Vec3f>&, int)>& prune);
 
 // 0071DB90 __fastcall(float pos[3]): the nearest unit of [GGame+19CCh]+16Ch's
 // list in x/z; the first unit is always taken, later ones only when strictly

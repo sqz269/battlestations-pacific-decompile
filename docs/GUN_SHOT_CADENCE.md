@@ -405,6 +405,12 @@ function at the slot bodies, so they were read from the disk bytes (`bsp.py disa
 - **The scan:** `D4 04 00 00` occurs in 70 places, and only these three are in gun code
   (`006FDCA8`, `006FDCF4`, `006FDF62`, all writes). The reader goes through the sub-object
   (`C4 01 00 00` at `0084C5DD`).
+- **Correction (cc9-gunnery40, from docs/CC13_GPR_52.md 1.1).** The scan missed a fourth writer and a
+  second clear: `0084C4EC` (`C6 86 D4 04 00 00 00`) in `0084C4E0`, which is slot `1DCh` (FireIfReady)
+  of both turning-gun vtables (`00CFBF58` dword `00CFC134`, class 24h; `00CFC190` dword `00CFC36C`,
+  class 27h). It calls `00727E30` and clears `+4D4h` when that fires. So a delayed request gets one
+  ungated shot, not a stream of them. Bound behind `kTurningGunFireClearsRequestBound`; see
+  docs/GUNNERY_OPEN_ITEMS.md section 208.
 
 **MSTGun** (`Single_Turning_Gun`, class `27h`, built by `006FE390`, primary vtable `00CFC190`,
 `+310h` vtable `00CFC14C`):

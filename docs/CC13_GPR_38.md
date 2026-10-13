@@ -158,6 +158,43 @@ The inputs are the latch state, each member's dkz state, its ordnance and target
   `luaRemoveDeadsFromTable(Mission.FinalTrgs)`.
 - I have not traced whether a landed Betty counts as dead.
 
+### 1.6 The two follow-up answers (cc13-gpr38b)
+
+These answers are static, with no run made.
+
+- **What `007F16D0` answers for class 32: land at site, Airfield3 on this map.**
+  - The null arm does not apply:
+    - class 32's `MinWaterSpd` is 22.222221 (`vehicleclasses.lua:18874`, this installation, mtime
+      2026-05-09);
+    - the Betty head is kind 10h, not 17h. The `007F1709` kamikaze null arm catches only the Ohka
+      spawns (`Betty*_kz*` resolve to null in g39_bb0).
+  - Squadron `+369h` is the scene property `ReloadEnabled`:
+    - `007F1FE0` writes it from the bag (`ReloadEnabled`, type 3) or from the spawn record +124h;
+    - the constructor `007F2D09` defaults it to 1 (`C6 86 69 03 00 00 01`);
+    - `us_osumi.scn`'s Betty rows (`PlaneSquadronGen`, template `Japan\AIR\Betty`) carry no
+      `ReloadEnabled`, so it stays 1, and the land arms are tried.
+  - `[00E17BF2]` stays 0, because `us_osumi.lua` never calls `SetDeviceReloadEnabled`. So the
+    latch and B5 gates pass.
+  - The home arm fails, because `HomeBase = ""`.
+  - The site arm `006C0840` keeps same-party airfields with a live owner (a kind-10h head needs
+    approach bit 20h) and takes the nearest by key. In g39_bb0, Japanese squadrons resolve
+    `land at site Airfield3` (line 37065 and following), and Airfield3 is still a live Japanese home
+    at 1644.08 s (line 365970).
+  - The answer would be `retreat` (border zone, then Kill(4) `exitzone`) only if no Japanese
+    airfield qualified.
+  - Host note: `issue_return_to_base_007f16d0` pins `in.has_deck_369 = true`
+    (`src/game_hosts_units.cpp:11837`). That is right for USNOS, but it should read
+    `ReloadEnabled`.
+- **A landed Betty counts as dead.**
+  - A plane that lands is stock-returned and killed with cause 5, `landed` (docs/SHIP_AI_OPEN_ITEMS.md
+    200.2). USNOS already shows three `KillReason=landed` at Airfield3.
+  - The squadron entity, which is what `Mission.FinalTrgs` holds, is killed by `007F3970` when its
+    member count reaches zero (`007F3A16` / `007F3A2A`, docs/ENTITY_DEAD_FLAG.md section 8). Its
+    cause is the last plane's cause. `luaRemoveDeadsFromTable` (`commandhelpers.lua:1593`) reads
+    only `.Dead`, so a fully landed squadron, or a mix of landed and shot-down planes, leaves the
+    table.
+  - Host caveat (cc9): the squadron-Dead switch does not model removal by landing (`007F3970` with
+    argument 1).
 ## 2. Segment 38 reference models
 
 Code: `include/bsp/gameplay_seg38_cc13.hpp`, `src/gameplay_seg38_cc13.cpp` (namespace
@@ -209,37 +246,40 @@ They are not native layouts and nothing is wired. Status of each: **reconstructe
 ## 3. Records, status and what is still open
 
 **Records.**
-- 81 `ledger add-function` records with source `src/gameplay_seg38_cc13.cpp`, status
+- 82 `ledger add-function` records with source `src/gameplay_seg38_cc13.cpp`, status
   `semantic_build_tested`, `abi_compatible: false`. Some records share a model:
   - the four 5Ah senders share one;
   - the two thunks `007213B0` and `007213C0` point at the routines they jump to;
   - `0071FC40` has the same body as `0071D270` and points at its model.
+  
+  `0071FDE0` has coverage `partial`; every other record is `complete`.
 - Two records point at the existing `radix_sort_records16_00722210`, as listed in section 2.3.
 - No Ghidra renames or comments were applied in this packet.
 
 **Build.** `./scripts/build.ps1` passes in the worktree, and both CTest suites pass.
 
+**Closed after the first report:**
+- **Host callbacks, not models.** A first pass listed `0071BA20`, `0071BE60`, `0071D810`,
+  `0071D9E0`, `0071BFF0`, `0071D2A0`, `0071D340`, `0071FC40`, `0071D880` and `0071EBF0` as
+  reconstructed elsewhere. They only appear there as host-interface calls, so they are now
+  modelled here and recorded. `00722210` is a real model (src/band_0067_cc13.cpp) and was left
+  alone.
+- **cc13-gpr38b** closed these:
+  - `0071F600` (`begin_command_base_0071f600`);
+  - `0071E4C0` (`current_path_point_0071e4c0`);
+  - `00720450` (`copy_state_from_00720450`, including the land-to-attackmove rewrite for kind-6
+    owners);
+  - `0071FDE0`, with coverage `partial` (`director_path_add_point_0071fde0`). The gate, the list
+    edits and the push order are the image's. The world-bounds helpers `007B1EC0`, `0071C4F0`,
+    `004BBDD0` and `BSP_Point3Vector_PruneFromIndex` are supplied callbacks. The argument roles of
+    `004BBDD0` are not settled.
+- **The two USNOS follow-ups** are answered in section 1.6.
+
 **Not modelled (open), with the reason:**
-- **Earlier "existing models" were host callbacks.** A first pass listed `0071BA20`, `0071BE60`,
-  `0071D810`, `0071D9E0`, `0071BFF0`, `0071D2A0`, `0071D340`, `0071FC40`, `0071D880` and
-  `0071EBF0` as reconstructed elsewhere. They only appear there as host-interface calls, so they
-  are now modelled here and recorded. `00722210` is a real model (src/band_0067_cc13.cpp) and was
-  left alone.
-- **`0071FDE0` AddPoint.** Its world-bounds clipping (`BSP_Point3Vector_ClipToWorldBounds`,
-  `BSP_Game_ClipSegmentToWorldBounds`) and the two pushes need those helpers' contracts first. The
-  gate is read: without replace, more than 7 points past the cursor are rejected; with replace the
-  list is erased first.
-- **`00720450` CopyStateFrom.** Long, with a land-to-attackmove rewrite for kind-6 owners that goes
-  through `0071DB90`.
-- **`0071F600` BeginCommandBase** and **`0071E4C0` CurrentPathPoint.** Docs exist
-  (docs/COMMAND_EXECUTION.md); not modelled here.
 - **`0071F9F0`, `0071FD10`, `0071FC70`.** Vector assign, path copy and path destructor: STL and
   ownership plumbing.
 - **Reference-count plumbing:** `0071EA60`, `0071F0E0`, `0071F110`, `0071F3B0`, `0071F460`,
   `0071F530`.
 - **Thin forwards and accessors:** `0071BFC0`, `0071C150`, `0071C1A0`, `0071C280` (noop),
   `0071C470`, `0071F150`, `00721030`, `00721CB0`, `00721CC0`.
-- **The USNOS question (section 1).** It is static. No game run was made, by the packet's terms.
-  Still open:
-  - which arm `007F16D0` answers for class 32;
-  - whether a landed Betty leaves `Mission.FinalTrgs`.
+- **USNOS is static evidence only.** No game run was made, by the packet's terms.
