@@ -2,7 +2,9 @@
 // addresses, ABI and evidence. Comments cite the instruction each statement stands for.
 #include "bsp/engine_seg49_64_78_cc13.hpp"
 
+#include <cmath>
 #include <cstdint>
+#include <cstdlib>
 #include <cstring>
 #include <utility>
 
@@ -1942,6 +1944,172 @@ void rain_emitter_step_00801400(RainModelFields& f, float dt, float camera_altit
     if (splash != nullptr) host.release(splash);
 }
 
+namespace {
+
+float descriptor_float(const RainModelParams& d, std::uint32_t offset)
+{
+    // Descriptor words are read as floats (FLD dword [EBX+offset]); +8h is words_08[0].
+    float value;
+    std::memcpy(&value, &d.words_08[(offset - 8u) / 4u], sizeof value);
+    return value;
+}
+
+// U(0, 2r) - 2r * 0.5 (00D7A280, a double): 2r is spilled to a float before both uses.
+float centred_draw(RainBuildHost& host, float r)
+{
+    const float two_r = r + r;
+    const float draw = host.random_uniform_00bd2f10_stream0(0.0f, two_r);
+    return static_cast<float>(static_cast<double>(draw) - static_cast<double>(two_r) * 0.5);
+}
+
+} // namespace
+
+RainModelRef rain_emitter_build_008023b0(const RainModelParams& descriptor, RainBuildHost& host)
+{
+    // 008023E6 / 00802427: the pool slot and its constructor; the name temporary is released.
+    RainModelRef model = host.allocate_rain_model_00800ec0("RainModel");
+    RainModelFields& f = *model.fields;   // no null test in the image (00802471 uses it)
+
+    // 00802478: 008019A0 copies the descriptor into +1C4h..+1F7h.
+    f.name_1c4 = descriptor.name;
+    for (std::uint32_t i = 0; i < 5; ++i) f.descriptor_1cc[i] = descriptor_float(descriptor, 8u + 4u * i);
+    for (std::uint32_t i = 0; i < 3; ++i) f.direction_1e0[i] = descriptor_float(descriptor, 0x1Cu + 4u * i);
+    f.drop_1ec = descriptor_float(descriptor, 0x28);
+    f.box_radius_1f0 = descriptor_float(descriptor, 0x2C);
+    f.color_1f4 = descriptor.words_08[10];
+
+    // 0080247D: CVTTSS2SI of +8h, then 00802170 resizes the +184h vector to it.
+    const std::int32_t count = static_cast<std::int32_t>(descriptor_float(descriptor, 0x08));
+    f.vector_188.resize(static_cast<std::size_t>(count));
+
+    // 008024A0..00802692: five stream-0 draws per column, in this order.
+    const float radius = descriptor_float(descriptor, 0x2C);
+    for (RainColumn& c : f.vector_188) {
+        const float h = host.random_uniform_00bd2f10_stream0(0.0f, descriptor_float(descriptor, 0x18));
+        c.height_10 = static_cast<float>(static_cast<double>(h) + descriptor_float(descriptor, 0x14));
+        const float w = host.random_uniform_00bd2f10_stream0(0.0f, descriptor_float(descriptor, 0x10));
+        c.width_0c = static_cast<float>(static_cast<double>(w) + descriptor_float(descriptor, 0x0C));
+        c.y_04 = centred_draw(host, radius);
+        c.x_00 = centred_draw(host, radius);
+        c.z_08 = centred_draw(host, radius);
+    }
+
+    // 00802697: bounding sphere (0, 0, 0) radius 300000.0 (00D08E2C).
+    const float sphere[4] = {0.0f, 0.0f, 0.0f, 300000.0f};
+    void* mesh = host.mesh_allocate_construct_00b73b60_bc();
+    host.generated_model_set_geometry_00b75170(model.object, 0, mesh, -1.0f, -1.0f);  // 00D7A260
+    host.geometry_set_bounds_00b72650(mesh, sphere);
+
+    // 0080272F..008027AD: the vertex format by name; the name temporary is released.
+    void* format = host.renderer_vertex_format_38("pf43ccuf42uf42uf43.mvfm");
+    const std::uint32_t quads = static_cast<std::uint32_t>(count);
+    host.store_vertex_count_00f87474(quads * 4u);         // 008027C7
+    host.store_drop_num_percent_00f87470(1.0f);           // 008027D9, 00D7A24C
+    void* vertices = host.renderer_vertex_buffer_5c(host.vertex_count_00f87474(), 1, format);
+    host.geometry_set_vertex_stream_00b73bb0(mesh, 0, vertices);
+    void* indices = host.renderer_index_buffer_60(quads * 6u, 1, 0x65);
+    host.geometry_set_index_stream_00b73b70(mesh, indices);
+
+    // 00802840: two triangles per quad, (b, b+1, b+2) and (b, b+2, b+3), b in 16 bits.
+    std::uint16_t* index = host.index_buffer_lock_0c(indices);
+    std::uint32_t base = 0;
+    for (std::int32_t i = 0; i < count; ++i, base += 4u) {
+        const std::uint16_t b = static_cast<std::uint16_t>(base);
+        const std::uint16_t quad[6] = {b, static_cast<std::uint16_t>(b + 1), static_cast<std::uint16_t>(b + 2),
+                                       b, static_cast<std::uint16_t>(b + 2), static_cast<std::uint16_t>(b + 3)};
+        for (std::uint16_t v : quad) *index++ = v;
+    }
+    host.index_buffer_unlock_10(indices);
+
+    float* vertex = host.vertex_buffer_lock_10(vertices);
+    // 00802894: the height scale is +18h + +14h; the drift speed is |direction| / 5.0 (00D7A370).
+    const float height_max = descriptor_float(descriptor, 0x18) + descriptor_float(descriptor, 0x14);
+    const float dx = descriptor_float(descriptor, 0x1C);
+    const float dy = descriptor_float(descriptor, 0x20);
+    const float dz = descriptor_float(descriptor, 0x24);
+    // Each square is spilled to a float; the first two are added on the x87 stack, then the third.
+    const float xx = dx * dx;
+    const float yy = dy * dy;
+    const float zz = dz * dz;
+    const float length_sq = static_cast<float>(static_cast<double>(xx) + yy + zz);
+    const float length = static_cast<float>(std::sqrt(static_cast<double>(length_sq)));  // 00BF7030
+    const float spread = static_cast<float>(static_cast<double>(length) / 5.0);
+    const float low = -0.0f - spread;                      // 00D7A208 SUBSS
+    // 00802916: texture coordinates of the four corners.
+    const float uv[4][2] = {{0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
+    for (std::int32_t i = 0; i < count; ++i) {
+        const RainColumn& c = f.vector_188[static_cast<std::size_t>(i)];
+        // 008029B0 / 008029D1: two stream-0 draws per column.
+        const float vx = static_cast<float>(static_cast<double>(host.random_uniform_00bd2f10_stream0(low, spread)) + dx);
+        const float vz = static_cast<float>(static_cast<double>(host.random_uniform_00bd2f10_stream0(low, spread)) + dz);
+        for (int corner = 0; corner < 4; ++corner, vertex += 11) {
+            vertex[0] = c.x_00;
+            vertex[1] = c.y_04;
+            vertex[2] = c.z_08;
+            std::memcpy(&vertex[3], &descriptor.words_08[10], sizeof(float));  // +30h, the colour
+            const float s = c.height_10 / height_max;      // FDIV, spilled to a float
+            vertex[8] = s * vx;
+            vertex[9] = dy * s;                            // D8 C9 at 00802A97: ST(0) = ST(0) * ST(1)
+            vertex[10] = s * vz;
+            vertex[4] = uv[corner][0];
+            vertex[5] = uv[corner][1];
+            vertex[6] = c.width_0c * uv[corner][0];
+            vertex[7] = c.height_10 * -uv[corner][1];      // FCHS then FMULP
+        }
+    }
+    host.vertex_buffer_unlock_14(vertices);
+    host.release(indices);
+    host.release(vertices);
+
+    // 00802BB5..00802E90: the material and its parameters; each name temporary is released.
+    void* material = host.material_create_00535320("rain.mshd");
+    host.material_register_float_00b18b20(material, "cLightningIntensity", host.lightning_intensity_010909b4());
+    host.material_register_float3_00b18ae0(material, "unitspeed", f.offset_1f8);
+    host.material_register_float_00b18b20(material, "time", &f.clock_210);
+    host.material_register_float3_00b18ae0(material, "box_center", f.position_204);
+    host.material_register_float_00b18b20(material, "box_radius", &f.box_radius_1f0);
+    if (!descriptor.name.empty()) {                        // CMP [EBX], 0; JBE
+        void* texture = host.renderer_texture_by_name_64(descriptor.name, 0);
+        host.material_set_texture_slot_00b189f0(material, 0, texture);
+        if (texture != nullptr) host.release(texture);
+    }
+
+    // 00802EC8..00803039: one draw section over the vertex stream.
+    void* section = host.draw_section_allocate_construct_00b85ee0();
+    void* declaration = host.renderer_vertex_declaration_40(format, 1);
+    host.draw_section_append_vertex_stream_00b85b80(section, host.geometry_vertex_stream_00b73260(mesh, 0));
+    host.draw_section_set_vertex_layout_00b86650(section, declaration);
+    host.release(declaration);
+    host.release(format);
+    host.draw_section_set_material_00b864c0(section, material);
+    if (material != nullptr) host.release(material);
+    host.geometry_append_draw_section_00b73c60(mesh, section);
+    // 00802FA8: +10h = trunc((([00F87474] >> 2) * [00F87470]) * 4.0) under a chop control word.
+    const std::uint32_t drawn_quads = host.vertex_count_00f87474() >> 2;
+    const double drawn = static_cast<double>(drawn_quads) * host.drop_num_percent_00f87470() * 4.0;
+    host.draw_section_store_words(section, 4, 0, static_cast<std::uint32_t>(static_cast<std::int64_t>(drawn)),
+                                  0, quads * 2u);
+    host.mesh_element_set_bounds_00b855b0(section, sphere);
+    host.mesh_clear_draw_section_owners_00b73c10(mesh);
+    host.geometry_append_draw_section_00b73c60(mesh, section);
+    host.release(section);
+    host.release(mesh);
+
+    // 0080303D: attach under [game+19ECh], zero +1A0h..+1A8h, copy the camera translation.
+    host.node_attach_root_00b6d890(model.object, host.scene_root_19ec());
+    f.vector_1a0[0] = f.vector_1a0[1] = f.vector_1a0[2] = 0.0f;
+    void* camera = host.camera_node_19fc();
+    host.node_refresh_world_if_stale(camera);
+    host.node_world_translation_120(camera, f.position_194);
+
+    // 008030A0..00803304: effect id 4Bh into +1ACh, "RainCloud" into +1B4h, "RainSplashes" into
+    // +1BCh, each acquired with flag 1.
+    assign_retained(host, f.refs_1ac[0], host.effect_acquire_00870cd0(0x4B, 1));
+    assign_retained(host, f.refs_1ac[2], host.effect_acquire_by_name_00871ba0("RainCloud", 1));
+    assign_retained(host, f.refs_1ac[4], host.effect_acquire_by_name_00871ba0("RainSplashes", 1));
+    return model;
+}
+
 
 void byte_list_record_assign_007fba30(ByteListRecord& record, std::uint32_t a, std::uint32_t b,
                                       std::uint32_t c, const std::uint8_t* bytes, std::int32_t count)
@@ -1952,6 +2120,366 @@ void byte_list_record_assign_007fba30(ByteListRecord& record, std::uint32_t a, s
     record.bytes_14.clear();                              // head relinked, size 0, nodes freed
     for (std::int32_t i = 0; i < count; ++i) record.bytes_14.push_back(bytes[i]);  // node + 007FA3A0
     record.count_2c = count;
+}
+
+
+// --- segment 49: content ids, checkpoint copy and the rank award (cc13-left3) ---------------------
+
+void collect_content_ids_007fb520(const ProfileUnlockState& profile, std::vector<std::int32_t>& out)
+{
+    const std::string prefix = "DL_Content_";
+    // Two copies of one loop: +70h through 00442190 (push_back), +7Ch with the push_back inlined
+    // (00441F30 when full).
+    for (const UnlockNameSet* set : {&profile.unlocks, &profile.pending_unlocks}) {
+        for (const std::string& name : *set) {
+            // 00469840 substring(0, 11), then length and __stricmp against the prefix.
+            if (!native_equals_insensitive(name.substr(0, prefix.size()), prefix)) continue;
+            // substring(11, size - 11); its buffer is null when empty -> 00F8745C ("").
+            const std::string rest = name.substr(prefix.size());
+            out.push_back(static_cast<std::int32_t>(std::atol(rest.c_str())));  // 00BF8417
+        }
+    }
+}
+
+ProfileCheckpointRecord checkpoint_get_copy_007fc490(ProfileCheckpointMapHost& host,
+                                                     const std::string& name)
+{
+    return host.checkpoint_find_or_insert_007fbed0(name);   // 007FBED0 (ECX = profile+94h), 00437490
+}
+
+void evaluate_rank_award_007fcd90(UnlockCounterMap& awards_a0,
+                                  const std::vector<std::pair<std::string, std::int32_t>>& record_6c,
+                                  bool keep_earned, RankAwardHost& host)
+{
+    // Both "RANK" tests are __stricmp on the C strings with no length test; the first treats an
+    // empty key as unequal (NEG/SBB), the second tests the buffer for null.
+    const auto is_rank = [](const std::string& key) {
+#if defined(_MSC_VER)
+        return !key.empty() && _stricmp(key.c_str(), "RANK") == 0;
+#else
+        return !key.empty() && strcasecmp(key.c_str(), "RANK") == 0;
+#endif
+    };
+    for (const auto& [key, value] : record_6c) {
+        const bool earned = host.badge_earned_0090c000(key);          // 007FCE73
+        if (!keep_earned && earned) {
+            awards_a0[key] += value;                                  // 005070C0, ADD [ESI], EDX
+            continue;
+        }
+        if (!is_rank(key) && !earned) {
+            awards_a0[key] = value;                                   // 007FCF94
+            continue;
+        }
+        if (is_rank(key) && value > awards_a0["RANK"]) {              // 007FD048 JLE
+            awards_a0["RANK"] = value;                                // 007FD0F8
+        }
+    }
+}
+
+
+// --- segment 78: the movie widget's loaded hook (cc13-left3) -------------------------------------
+
+void gui_movie_loaded_hook_00aae770(void* widget, void*& player_f0, bool flag_74,
+                                    std::uint32_t source_size_fc, std::uint8_t index_f4,
+                                    GuiMovieLoadedHookHost& host)
+{
+    host.deactivate_and_refresh_bounds_00aa7170(widget);
+    player_f0 = host.movie_player_00f8aefc_4(index_f4);              // 00AAE7A7, stored at +F0h
+    if (!flag_74 && !host.movie_player_virtual_44(player_f0)) {
+        void* model = host.generated_model_4c(widget);
+        void* mesh = host.mesh_allocate_construct_00b73b60_bc();
+        host.generated_model_set_geometry_00b75170(model, 0, mesh, -1.0f, -1.0f);  // 00D7A260
+        host.release(mesh);                                          // 00AAE81D
+        void* format = host.renderer_vertex_format_38("SimpleColor.mvfm");
+        void* vertices = host.renderer_vertex_buffer_5c(4, 1, format);
+        host.geometry_set_vertex_stream_00b73bb0(mesh, 0, vertices);
+        void* indices = host.renderer_index_buffer_60(6, 1, 0x65);
+        host.geometry_set_index_stream_00b73b70(mesh, indices);
+        std::uint16_t* index = host.index_buffer_lock_0c(indices, 6);
+        void* section = host.draw_section_create_00533fa0();
+        void* material = host.material_create_00535320("guidefault.mshd");
+        host.draw_section_store_words(section, 4, 0, 4, 0, 2);      // 00AAE91F..00AAE936
+        host.widget_virtual_58(widget);
+        // 00AAE948: colour bytes FFh x4; the buffer is locked for four vertices.
+        host.vertex_buffer_lock_10(vertices, 4);
+        const GuiQuadVertexColorLayout layout = host.vertex_color_layout(vertices);
+        for (std::uint32_t v = 0; v < 4; ++v) {
+            if (layout.packed_offset_34 >= 0) {
+                host.vertex_store_dword(vertices, v, layout.packed_offset_34, 0xFFFFFFFFu);
+            } else {
+                for (std::int32_t channel : layout.channel_offsets_38) {
+                    host.vertex_store_float(vertices, v, channel, 1.0f);   // 00D7A24C
+                }
+            }
+        }
+        host.vertex_buffer_unlock_14(vertices);
+        const std::uint16_t quad[6] = {0, 1, 2, 0, 2, 3};
+        for (int i = 0; i < 6; ++i) index[i] = quad[i];
+        host.index_buffer_unlock_10(indices);
+        host.draw_section_set_material_00b864c0(section, material);
+        host.release(material);
+        host.draw_section_rebuild_vertex_layout_00b865a0(section, mesh);
+        host.geometry_append_draw_section_00b73c60(mesh, section);
+        host.release(section);
+        host.widget_virtual_50(widget);
+        host.release(indices);
+        host.release(vertices);
+        // 00AAEB0F: [ESP+1Ch] was overwritten by the format at 00AAE863, so the last release is
+        // the format, not the mesh allocation slot first stored there.
+        host.release(format);
+    }
+    if (source_size_fc != 0) host.set_source_00aae320(widget, 1);   // CMP [ESI+FCh], 0
+}
+
+std::vector<std::string> gui_anim_icon_visit_child_paths_00ab4ce0(
+    const std::vector<GuiAnimIconFrame>& frames_f4, const std::string& prefix,
+    GuiAnimIconVisitHost& host)
+{
+    std::vector<std::string> dropped;
+    std::int32_t i = 0;
+    for (const GuiAnimIconFrame& frame : frames_f4) {   // 40h records
+        // 004261A0 / 004263B0 left to right; the result (ESP+20h) is only released.
+        dropped.push_back(prefix + "." + std::to_string(i) + ":" + frame.name_04 + "(" +
+                          host.texture_name_00b33e40(frame.texture_00) + ")");
+        ++i;
+    }
+    host.visit_child_paths_00aaa0f0(prefix);
+    return dropped;
+}
+
+
+// --- segment 78: frame-box layout and the text cursor (cc13-left3) -------------------------------
+// x87: every DC-form operand order below was read from the bytes (tools/x87_dc_form_scan.py);
+// spills to float are FSTP dword, sums kept on the stack are written as double arithmetic.
+
+namespace {
+
+bool ucomiss_equal(float a, float b)
+{
+    return a == b;   // LAHF; TEST AH,44h; JP/JNP: equal and ordered
+}
+
+// x87 FUCOMIP; LAHF; TEST AH,44h; JNP: the store is skipped only when the values are equal.
+bool fucomip_equal(double a, double b)
+{
+    return a == b;
+}
+
+} // namespace
+
+void gui_frame_box_set_icon_extent_00ac0970(void* widget, float w, float h, GuiLayoutHost& host)
+{
+    // COMISS 0, w; JBE: only w < 0 (ordered) is tested against -1.0.
+    const bool bad_w = (0.0f > w) && !ucomiss_equal(w, -1.0f);
+    const bool bad_h = (0.0f > h) && !ucomiss_equal(h, -1.0f);
+    if (bad_w || bad_h) {
+        host.widget_virtual_34(widget, 0);
+        return;
+    }
+    host.widget_virtual_34(widget, 1);
+    void* stream = host.widget_vertex_stream_a0(widget);
+    host.stream_lock_10(stream);
+    if (w > 0.0f) {                                         // COMISS w, [00D7A218] = 0.0
+        if (!fucomip_equal(w, host.stream_read_position_004768d0(stream, 1)[0])) {
+            for (std::uint32_t v : {1u, 3u}) {
+                const std::array<float, 3> p = host.stream_read_position_004768d0(stream, v);
+                const float xyz[3] = {w, p[1], p[2]};
+                host.stream_store_position(stream, v, xyz);
+            }
+        }
+    }
+    if (h > 0.0f) {
+        // The test reads vertex 2's y against h itself (spilled as a double), not 0.75 * h.
+        if (!fucomip_equal(static_cast<double>(h), host.stream_read_position_004768d0(stream, 2)[1])) {
+            const float y = 0.75f * h;                      // FLD [00E12FF0]; FMUL h; FSTP
+            for (std::uint32_t v : {2u, 3u}) {
+                const std::array<float, 3> p = host.stream_read_position_004768d0(stream, v);
+                const float xyz[3] = {p[0], y, p[2]};
+                host.stream_store_position(stream, v, xyz);
+            }
+        }
+    }
+    host.stream_unlock_14(stream);
+    void* model = host.widget_generated_model_4c(widget);
+    void* section = host.mesh_element_00b732c0(host.generated_model_geometry_00b74640(model, 0), 0);
+    host.draw_section_rebuild_vertex_layout_00b865a0(section, host.generated_model_geometry_00b74640(model, 0));
+}
+
+void gui_frame_box_place_border_icon_00ac0610(const GuiFrameBoxLayout& layout, void* source,
+                                              GuiLayoutHost& host)
+{
+    const std::array<float, 3> parent = host.widget_resolved_position_00aa6750(host.widget_parent_70(layout.icon_04));
+    const std::array<float, 3> at = host.widget_resolved_position_00aa6750(source);
+    const float dx = at[0] - parent[0];                     // FSUB, FSTP
+    const float dy = at[1] - parent[1];
+    host.widget_virtual_58(layout.icon_04, host.widget_size_00aa6740(source));
+    host.widget_virtual_30(layout.icon_04, source);
+    // DC C9 at 00AC067B: ST(1) = +10h * 0.5; then FSUBR from dy (likewise x with +0Ch).
+    const float y = static_cast<float>(static_cast<double>(dy) - static_cast<double>(layout.extra_10) * 0.5);
+    const float x = static_cast<float>(static_cast<double>(dx) - static_cast<double>(layout.extra_0c) * 0.5);
+    host.widget_set_local_xy_00aa7d00(layout.icon_04, x, y);
+}
+
+void gui_text_icon_pair_layout_00ac0bd0(const GuiFrameBoxLayout& layout, void* widget,
+                                        GuiLayoutHost& host)
+{
+    float h = host.widget_size_00aa6740(widget)[1] + layout.extra_10;
+    if (host.widget_virtual_5c(widget) == 3) {
+        h = static_cast<float>(static_cast<double>(host.text_normalized_height_00ab6bd0(widget)) + layout.extra_10);
+    }
+    const float extent = static_cast<float>(static_cast<double>(h) * 1.3333333730697632);  // 00CF5750
+    gui_frame_box_set_icon_extent_00ac0970(layout.icon_04, -1.0f, extent, host);
+    const double half = (static_cast<double>(host.widget_size_00aa6740(layout.icon_04)[1]) - h) * 0.5;
+    const double py = host.widget_local_position_00aa67f0(widget)[1];
+    const float y = static_cast<float>((py + half) - static_cast<double>(h) / 6.0);  // FSUBP ST(1)
+    host.widget_set_local_y_00aa78f0(layout.icon_04, y);
+}
+
+namespace {
+
+// The twelve steps both halves of 00AC10A0 repeat, over pieces UL U UR L R BL B BR. right and
+// bottom are kept as doubles (FSTP qword), every passed coordinate is spilled to a float.
+void lay_out_nine_slice(void* const (&p)[8], float ox, float oy, float sw, float sh, GuiLayoutHost& host)
+{
+    void* const ul = p[0];
+    void* const u = p[1];
+    void* const ur = p[2];
+    void* const l = p[3];
+    void* const r = p[4];
+    void* const bl = p[5];
+    void* const b = p[6];
+    void* const br = p[7];
+    const auto size = [&host](void* w) { return host.widget_size_00aa6740(w); };
+    const auto to_f = [](double v) { return static_cast<float>(v); };
+
+    host.widget_set_local_xy_00aa7d00(ul, ox, oy);
+    {
+        const double a = size(ur)[0];
+        gui_frame_box_set_icon_extent_00ac0970(u, to_f(sw - (size(ul)[0] + a)), -1.0f, host);
+    }
+    host.widget_set_local_xy_00aa7d00(u, to_f(static_cast<double>(ox) + size(ul)[0]), oy);
+    const double right = static_cast<double>(sw) + ox;
+    host.widget_set_local_xy_00aa7d00(ur, to_f(right - size(ur)[0]), oy);
+    {
+        const double bly = size(bl)[1];
+        gui_frame_box_set_icon_extent_00ac0970(l, -1.0f, to_f(static_cast<double>(sh) - (size(ul)[1] + bly)), host);
+    }
+    host.widget_set_local_xy_00aa7d00(l, ox, to_f(static_cast<double>(size(ul)[1]) + oy));
+    {
+        const double bry = size(br)[1];
+        gui_frame_box_set_icon_extent_00ac0970(r, -1.0f, to_f(static_cast<double>(sh) - (size(ur)[1] + bry)), host);
+    }
+    {
+        const std::array<float, 2> rs = size(r);
+        host.widget_set_local_xy_00aa7d00(r, to_f(right - rs[0]), to_f(static_cast<double>(size(ur)[1]) + oy));
+    }
+    const double bottom = static_cast<double>(sh) + oy;
+    host.widget_set_local_xy_00aa7d00(bl, ox, to_f(bottom - size(bl)[1]));
+    {
+        const double brx = size(br)[0];
+        gui_frame_box_set_icon_extent_00ac0970(b, to_f(sw - (size(bl)[0] + brx)), -1.0f, host);
+    }
+    {
+        const std::array<float, 2> bls = size(bl);
+        host.widget_set_local_xy_00aa7d00(b, to_f(static_cast<double>(bls[0]) + ox), to_f(bottom - size(b)[1]));
+    }
+    {
+        const std::array<float, 2> brs = size(br);
+        host.widget_set_local_xy_00aa7d00(br, to_f(right - brs[0]), to_f(bottom - size(br)[1]));
+    }
+}
+
+} // namespace
+
+void gui_frame_box_layout_border_icons_00ac10a0(const GuiFrameBoxLayout& layout, void* widget,
+                                                GuiLayoutHost& host)
+{
+    float size[2] = {0.0f, 0.0f};                           // [ESP+30h], [ESP+34h]
+    float offset[2] = {0.0f, 0.0f};                         // [ESP+14h], [ESP+18h]
+    const float padding[2] = {0.04f, 0.02f};                // 00CE3910, 00CE9BAC
+    host.measure_padded_relative_bounds_00ac06c0(widget, size, offset, padding, 0.0f);
+    lay_out_nine_slice(layout.pieces_14, offset[0], offset[1], size[0], size[1], host);
+    gui_frame_box_place_border_icon_00ac0610(layout, widget, host);   // second argument unused
+
+    if (host.widget_virtual_5c(widget) != 3) {
+        host.widget_virtual_34(layout.container_08, 0);
+        return;
+    }
+    const GuiFrameBoxBorderIconLayout border = host.border_icon_layout_00ab6cb0(widget);
+    host.widget_virtual_34(layout.container_08, border.flag_15c);
+    host.widget_virtual_58(layout.container_08, host.widget_size_00aa6740(layout.icon_04));
+    host.widget_virtual_30(layout.container_08, layout.icon_04);
+    // z offset 0.1 (00D7A2F0) when +160h is 0, else -0.1 (00CE3CB4); x and y pass through x87
+    // additions of 0.0 (DC C1 at 00AC1477).
+    const float dz = border.word_160 == 0 ? 0.1f : -0.1f;
+    const std::array<float, 3> at = host.widget_local_position_00aa67f0(layout.icon_04);
+    const float xyz[3] = {at[0] + 0.0f, 0.0f + at[1], at[2] + dz};
+    host.widget_set_local_position_00aa7dc0(layout.container_08, xyz);
+    if (border.flag_15c == 0) return;
+
+    // 00AC14BD: shift = (short)font+14h / 720.0 * (+164h as a float).
+    float scale;
+    std::memcpy(&scale, &border.word_164, sizeof scale);
+    const float shift = static_cast<float>(static_cast<double>(host.text_font_height_108(widget)) / 720.0 * scale);
+    const float ox = shift + offset[0];
+    const float oy = shift + offset[1];
+    static const char* const kNames[8] = {"UL_Icon", "U_Icon", "UR_Icon", "L_Icon",
+                                          "R_Icon",  "BL_Icon", "B_Icon", "BR_Icon"};
+    void* pieces[8];
+    for (int i = 0; i < 8; ++i) {
+        pieces[i] = host.widget_find_child_00aa7e00(layout.container_08, kNames[i], 1);
+    }
+    lay_out_nine_slice(pieces, ox, oy, size[0], size[1], host);
+    for (void* piece : pieces) host.widget_virtual_50(piece, border.rect_168);
+}
+
+void gui_text_position_cursor_00ab9240(void* text, GuiTextCursorFields& f, std::uint32_t index,
+                                       GuiTextCursorHost& host)
+{
+    host.ensure_cursor_model_00ab8910(text);
+    f.index_180 = index < f.length_ec ? index : f.length_ec;   // unsigned, JAE
+    float x = f.x_start_18c;
+    const float font_height = static_cast<float>(host.font_height_14(f.font_108));  // CVTSI2SS
+    const std::uint16_t* glyphs = f.glyphs_f0;
+    const std::uint16_t first = glyphs != nullptr ? glyphs[0] : host.empty_glyph_00f8be50();
+    // The glyph of the first character is selected before the loop; after it, EAX holds the
+    // glyph of the last character visited (index - 1), or this one when the index is 0.
+    GuiGlyphMetrics glyph = host.font_select_glyph_00ad4480(f.font_108, first);
+    for (std::uint32_t i = 0; i < f.index_180; ++i) {
+        const std::uint16_t ch = glyphs != nullptr ? glyphs[i] : host.empty_glyph_00f8be50();
+        glyph = host.font_select_glyph_00ad4480(f.font_108, ch);
+        x = static_cast<float>(static_cast<double>(glyph.advance_12) * f.advance_scale_1d8 + x);
+    }
+    f.x_190 = static_cast<float>(static_cast<double>(x) / 960.0);   // DC F9 at 00AB92FB
+    const double left = static_cast<double>(x) + glyph.bearing_10;
+    const float x0 = static_cast<float>(left);                       // FST [ESP+14h]
+    const double right = f.mode_17c == 1 ? left + glyph.width_14 : left + 2.0;  // 00D7A308
+    const float x1 = static_cast<float>(right);
+    // 00AB933B..00AB9399: (fh + 0) and ((fh + 1) - 1) on the x87 stack, then the divisions.
+    const float h = static_cast<float>((static_cast<double>(font_height) + 1.0) - 1.0);
+    const double v = host.vertical_scale_00e12fd4();
+    const float u0 = static_cast<float>(static_cast<double>(x0) / 960.0);
+    const float u1 = static_cast<float>(static_cast<double>(x1) / 960.0);
+    const float y0 = static_cast<float>((0.0 / 720.0) * v);
+    const float y1 = static_cast<float>((static_cast<double>(h) / 720.0) * v);
+
+    void* stream = host.cursor_vertex_stream(f.cursor_model_184);
+    host.stream_lock_10(stream);
+    const GuiQuadVertexColorLayout layout = host.vertex_color_layout(stream);
+    // Vertex order (x0, y1), (x0, y0), (x1, y1), (x1, y0); uv +28h = (0, 0); colour white.
+    const float corners[4][2] = {{u0, y1}, {u0, y0}, {u1, y1}, {u1, y0}};
+    const float uv[2] = {0.0f, 0.0f};
+    for (std::uint32_t vtx = 0; vtx < 4; ++vtx) {
+        const float xyz[3] = {corners[vtx][0], corners[vtx][1], 0.0f};
+        host.stream_store_position(stream, vtx, xyz);
+        host.stream_store_uv_28(stream, vtx, uv);
+        if (layout.packed_offset_34 >= 0) {
+            host.vertex_store_dword(stream, vtx, layout.packed_offset_34, 0xFFFFFFFFu);
+        } else {
+            for (std::int32_t channel : layout.channel_offsets_38) host.vertex_store_float(stream, vtx, channel, 1.0f);
+        }
+    }
+    host.stream_unlock_14(stream);
 }
 
 } // namespace bsp::cc13_seg49_64_78
