@@ -15746,3 +15746,196 @@ All with `BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`, 8000 frames.
   law's command altitude would normally hold a fighter well above that. The host's follow altitude after a
   target loss is the suspect: a **plane-lane altitude defect candidate**, not established. The crash itself is
   the image's rule once the plane is there.
+
+## 5gd. MOVEONPATH and the leg altitude manager, wired OFF (packet `cc9_lua53_moveonpath`, cc9-lua53, 2026-10-12)
+
+cc13's glue (docs/CC13_MOVEONPATH_TASK.md section 8, docs/CC13_LEG_ALTITUDE_MANAGER.md section 6) applied as written
+on main a89235172: two read-only accessors on the commands host (`path_cursor_point3`, `path_final_point_007b1350`),
+the plane install on `PilotMoveOnPath` in the script-orders host, the kind-6 task arm `009BD990` in the units host,
+and the process-wide leg registry `009BD400`/`009FC260`. Switches `kMoveOnPathTaskBound` and
+`kLegAltitudeManagerBound` in `include/bsp/pilot_order_bindings.hpp`, both OFF. cc13's labelled substitutions stand
+(slot +54h once at the install, the moveto follow body for wingmen, circle kept as a record; moveto/attackmove
+still record `009FD050` only, so moveonpath planes separate only against each other).
+
+**Predictions (cc13 section 5, written before the pairs).**
+- OFF: gameplay identical to main.
+- BSM01 (win row l50_b1_a), `kMoveOnPathTaskBound` ON: both P-40s take class `00E08F80` and fly their patrol
+  paths under PATH_FM_CIRCLE (no leg weight: `007B1350` answers invalid), at the point's y + altOffset or 200 less
+  travelAltOffset. They are in `Mission.JapFighterTrgGang`, so the Japanese fighters' chase and the AA numbers move.
+- JM06, ON: `PBY Catalina 01` flies its 12-point SIMPLE path once; within 3000 m of the last point the leg altitude
+  applies (with the manager ON, from the registry).
+
+### 5gd, the pairs (cc9-lua53, 2026-10-12)
+
+OFF = `local\l53_B0` (487cf8170), ON = `local\l53_M1` (both switches). `BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`.
+- **BSM01** (keeper orders `config/win_orders/bsm01_l50_b1_a.txt`, 30000 frames): both P-40s take the task
+  (`PilotMoveOnPath` PatrolPath1/2, mode 1 in the native table; `009BD990` 2220 ticks). pair_diff MOVED only in
+  the two P-40 death rows: same death times, altitude at death 221 -> 88 and 246 -> 95 (they now fly their
+  patrol paths low instead of holding their old task's altitude). Every other row, the unit table and the death
+  modes are identical. **The win holds:** EndMission at 767.94 s on both sides, guard line
+  ("refused a mission script's process launch: sus_prog.exe") logged on both.
+- **JM06** (9000 frames): `PBY Catalina 01` takes the task on its SIMPLE path (`009BD990` 4500 ticks); the leg
+  manager runs (`009FC000` 4500, `009FC260` 4499 calls). Gameplay identical: nothing reads `Mission.Catalina`.
+- **Verdict: mechanism matches the prediction; both switches flipped ON.** Open: the moveto/attackmove refresh
+  still records `009FD050` only, so the registry separates moveonpath planes only against each other.
+
+## 5ge. Handoff (cc9-lua53, 2026-10-12, at about 73% context)
+
+Tree `J:\PROG\battlestations-pacific-decompile-cc9-lua52` (branch `agent/cc9-lua52`); launcher `local\l53_lane.ps1`
+(rows u19/u17/u21/u18/u22/osx/j8/u01/u02/u12/j6/j5/l10/b1/smoke; `-Exe` an export); exports `local\l53_*`.
+No leases held after the commit that carries this section.
+
+**Done (all on main or in this commit):** packet 1 kamikaze impact (5gc: `2d59381e8`, `d2625de56`, `4ed685822`, flip
+`0cdef1968` with kKamikazeTaskBound, kDropKamikazeTaskBound, kPlaneCrashSweepBound and the lead's kLuaSetFailureBound
+ON); packet 3 MOVEONPATH + leg altitude manager (5gd: `487cf8170` OFF, flipped ON in this commit).
+
+**Open, in priority order:**
+1. **USNOS drop pair on a run that reaches the finale.** The drop switch is ON by the lead's verdict (K4: 22 Ohka
+   releases). ships45 is re-tuning USNOS; pair the drop on its best order file when the lead hands it over.
+2. **TroopTrans3's 0-damage c98** (5gc): the sweep hit its mesh but `plane_crash_impact_0084bc60`'s blast loop
+   reached no hull box. Check that unit's `hull_width/length` and the burst centre against its pose.
+3. **The 16 m storage crash** (5gc): a live fighter in dogfight follow after a target loss at 16 m over land. It is a
+   plane-lane altitude defect candidate: read the follow command altitude and whether terrain avoidance `0099F1C0`
+   is hosted on that path.
+4. **Rockets (queue 2), option (a) later:** the rocket task applies only to Tiny Tim (bullet 6 is the only rocket
+   with IgnitionDelay > 0 in this installation), so only USN22's AvengerTinyTim. The glue is CC13_ROCKET_TASK.md
+   section 7 and needs the has_rocket_ordnance feed in `src/game_hosts_script_orders.cpp` (kind 33h on a rack
+   whose bullet has IgnitionDelay > 0). The rocket flight law and spawn are gunnery38's contract.
+5. **Queue 4:** the HintSystem bindings (IsHintActive loops) and the event-channel audit (CC13_EVENT_CHANNELS.md).
+6. **For gunnery38 (reported to the lead):** `read_bullet_class_number` cannot read dotted keys, so the second-ammo
+   `Blast.BlastDamageMin/Max` reads near `src/game_hosts_gunnery.cpp` ~4470 always return 0.
+   `read_bullet_class_nested_number(id, "Blast", key, fallback)` exists now.
+
+## 5gf. The 16 m storage crash: a live plane on the water stays its squadron's leader (packet `cc9_lua54_follow_altitude`, cc9-lua54, 2026-10-12)
+
+**The chain, from `local\l53_K4_osx.log` (5gc).** `Enterprise_sqn01|.-3` was not flying a low follow of its own:
+- `plane #1.5`'s Betty squadron dropped on TroopTrans2 at 1409 m (129.20 s), went `goaway`, latched spent ordnance at
+  141.00 s and took the land task to **Airfield3 at (-8163.5, 3.2, -8844.6)**. Its planes descended on the approach:
+  `|.-4` died at 197 m (288.40 s), `|.-2` at 73 m (296.95 s), the head at **14 m** (320.20 s).
+- The Enterprise leader `Enterprise_sqn01` chased that head in dogfight aim down the approach. The aim law matches the
+  target's speed and height (`009A76E0`; terrain avoidance `0099F1C0` is the only floor, docs/DOGFIGHT_THROTTLE_RETAKE.md),
+  so it reached 4.9 m at 23 m/s with throttle 0 (surface probe, 313.55 s) and touched the water alive
+  (health 164.6: `plane water contact ... state 7 -> 6`, later `plane water powerlost ... dead=0`).
+- The host then left that plane alive in state 6 for the rest of the run, still `members[0]` of its squadron. The
+  wingman `|.-3` lost its own target ("target -> none (empty squadron)") and went aim -> follow, and the follow
+  state (`009C1FD0`) flies the station `007F23A0` hands it off **its leader, on the water** near Airfield3. Station
+  (seat local (60, 25, 70) in the formation log) keeps the wingman near the floating leader's height, 16 m over the airfield, where its wing point met
+  `Storage - Raktar03 01` (329.54 s, (-8161, 11, -8736), 108 m from the Airfield3 site).
+
+**What the image does at that contact.** `007CB7F0` (BSP_Plane_OnWaterContact, listing read whole to `007CB9C2`):
+- `007CB81A`-`007CB82B`: `BL = 1` when the class's MinWaterSpd `desc+198h` is zero.
+- `007CB82D`-`007CB838`: return when `007BC5B0` is false and `BL` is clear. Since packet `cc9_water_invincible_test`
+  the host answers `007BC5B0` from `unit+150h` (the invincibility float), so a live AI plane passes: the 5gc leader
+  did ("not ignored").
+- `007CB83E`-`007CB8A2`: the SA_OC award (scoring only).
+- `007CB8A7`-`007CB8CB`: with `BL` set, an up-axis `unit+E0h` above 0.8 (`00CE3D40`, double) skips to the tail.
+- `007CB8CD`-`007CB927`: in net modes other than 2 (`[00E188A8]+1FE4h`), **`vtable[194h]` (`007BBFA0`) with
+  `"powerlost"` (`00D059F8`)**. `007BBFA0` stores `unit+C10h = 1000.0` and routes message 66h; `007D0B80` takes the
+  powerlost arm (`unit+C39h = 1`) and its tail `007D12FC` sets `C3Ah` and calls `vtable[70h](1)`, the destroy
+  (docs/PLANE_DEATH_MODES.md step 4). **The plane is dead from the contact on** and `007BCAA0` removes it from its
+  squadron, so the next member leads.
+- `007CB92C`: the tail, 7/4/5 -> 6.
+- The state-6 arm's drown test raises the same effect at `007CBE02` (`007CBDD0`-`007CBE2B`, the same net-mode test).
+
+**The host** before this packet: `src/game_hosts_units.cpp` takes the gate and the tail (state 6) and counts the
+drown, but "powerlost" was a contract at both sites ("a live one would need 007BBFA0's death"). So every live plane
+that glides onto the water (a stalled chase, a low pull-out) became a floating, live squadron leader.
+
+**The binding** (`kPlaneWaterPowerLostBound`, OFF): at `007CB8DC` and `007CBE02`, for a plane the gunnery host has
+alive, kill it through `kill_unit_00926d90(unit, 1)` and mark it so the death-mode step takes **PowerLost without
+the `007CA8A0` draw** (the image calls `007BBFA0` directly; `007CA8A0` runs only from SetHealth). SUBSTITUTIONS,
+labelled: the destroy is the gunnery host's Kill funnel (as the depth kill `007CE3A7` already is), and the effect
+lands in the same step.
+
+**Predictions (written before the pairs).**
+- OFF: gameplay identical.
+- ON, USNOS 9000 (`s45_os_k` orders): the Enterprise leader dies at its water contact (~313.6 s, mode powerlost);
+  `|.-2` or `|.-3` leads; `|.-3` no longer flies a station off a floating leader, so the c99 storage crash at
+  329.54 s is gone (it may still die to Zao1's flak, which had it at 141.6). Every other live water contact in the
+  run (`plane water contact` lines with health left) becomes a death row with mode powerlost, so death counts rise
+  by those planes and AA shots at floating planes fall.
+- ON, USN12 (win row): the same rule for any live ditching; the win should hold. Read the `plane water contact`
+  lines before predicting a count.
+
+### 5gf, the pairs (cc9-lua54, 2026-10-12)
+
+Launcher `local\l54_lane.ps1` (row `os` = USNOS with `cc9-ships44\local\s45_os_k.txt`; `u12` now reads
+`config/win_orders/usn12_s38_u12_p2.txt`, the ships38 tree is gone). Exports `l54_W0` (e7f7a279d OFF), `l54_W1`
+(the switch ON). `BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`.
+- **First, the trace on main (`l54_T0_os`, 7000 frames, `BSP_PLANE_RATE_TRACE`).** On these orders the wingman's
+  crash moves to 332.74 s (`Multi Hangar 1`, (-8121, 10, -8804), 17 m) and it is **in aim**, not follow: its target
+  is the Betty `plane #1.5|.-2` on its Airfield3 approach (that Betty dies at 13 m, 333.99 s), and the aim law's
+  commanded height is the target's (5.3). So the low pass has two causes: (a) the aim law chasing a landing
+  bomber over its own airfield, which is the image's rule as read (no floor but `0099F1C0`'s terrain layer, which
+  holds no buildings); (b) in K4, the follow station off a leader floating on the water, which is the host defect.
+- **USNOS 9000, W0 vs W1:** pair_diff MOVED. Two live water contacts in W0 (`Enterprise_sqn01` and `|.-2`, both at
+  ~23 m/s after chasing the Betties down; `local\l54_live_water.py`) become powerlost deaths in W1 (330.64 s,
+  330.89 s; draw -1, c10 1000, no `007CA8A0` draw). In W0 the leader floated alive to the end of the run and `|.-2`
+  until 380.38 s, under ship fire: shots 16372 -> 11501 (Aki2 2653 -> 248, Aki1 1714 -> 196, Ada2 754 -> 42), and
+  those rounds' blasts had killed `Heavy AA 01` and `Heavy AA 03` (Aki1, 393 s and 405 s), which now survive.
+  Deaths 157 -> 156. The 332.74 s hangar crash stays (cause (a)); the prediction that it would go was wrong for
+  these orders, right for K4's chain.
+- **USN12 34000 (win row):** no live water contact in W0; gameplay identical; completes at 1534.87 s both ways,
+  the guard line ("refused a mission script's process launch: sus_prog.exe") logged on both.
+- **Verdict: the mechanism matches; flipped ON** (this commit). Open: (a) is faithful as read, so a fighter that
+  chases a landing bomber over its airfield can still meet a hangar.
+
+### 5gg. TroopTrans3's 0-damage Ohka (cc9-lua54, 2026-10-12, read only)
+
+`local\l53_K4_osx.log`: `Betty1|.-4_kz06` (c98, range 30) crossed TroopTrans3's mesh at (2505.8, **34.3**, 2165.3),
+`reached=0`. `plane_crash_impact_0084bc60` (`src/game_hosts_gunnery.cpp`) measures the burst against the hull box
+from the class row, and VehicleClass[234] ("US Troop Transport (Strafeable)", this installation's
+`vehicleclasses.lua`, 2026-05-09) has `Height = 5`, so the box's half-height is 2.5 m. A burst 34 m up (a mast or
+the upper works on the mesh) lies about 31 m above the box, past the 30 m range. **A host defect of the
+substitution, not of the sweep:** the image's gather (`00904470` -> `0098C630` -> `0098AAE0`) tests the sphere
+against the collision node's AABB (`node+13Ch`-`+150h`, the mesh bounds) and its shapes
+(docs/EXPLOSION_RADIAL_DAMAGE.md), and the struck node contains the burst. The shape set and the falloff distance
+are a labelled gap there, so the faithful distance is not established. Candidate (gunnery lane, routed to the
+lead): take the struck victim's vertical extent from the mesh bounds the sweep already queries, not the class
+`Height`. The same box serves the shells' blasts, so a mast hit by a shell loses its blast the same way.
+
+### 5gh. HintSystem (queue 3a, cc9-lua54, 2026-10-12, read only)
+
+`IsHintActive` (`008D2850`) is called by `usn_01_battle_of_eastern_solomons.lua` (865, 1750, 1773: hide the
+unit-switch, turbo and map hints) and by jm01/jm03/jm05/jm07/jm10 (`luaJM1IsHintActive` and siblings: the
+message queue holds dialogs and hints while a critical hint shows). None gates a phase, an objective or a win:
+the USN01 calls only hide hints, and the JM queues only order and delay dialog. `ShowHint` / `ShowHintForced`
+are unimplemented (`local\l53_B0_j6.log`), so no hint is ever active and the unimplemented `IsHintActive` returns no value (nil, `binding_trampoline` returns 0), which the JM
+wrappers read as "none". The image would delay queued dialogs while a critical hint shows; that is presentation
+timing, not flow. No binding made.
+
+### 5gi. The event-channel audit (queue 3b, cc9-lua54, 2026-10-12, read only)
+
+Census of `AddListener` in this installation's `scripts/missions` (`local\l54_listen_scan.py`; COTP and `ijn\JM`
+copies counted once below, training grounds and PRCP left out). "Host" is whether a run delivers the channel to
+Lua today: only `kill` (`009813A0`), `recon` (`00980E50`) and `hit` (`00988510`) have Lua dispatchers in
+`src/game_hosts_lua.cpp`. `command` (`00984300`) is reported by `GameCommandsHost::report_command_event_00984300`,
+but no `AddListener` fills `command_event_subscriptions`, so it never calls Lua.
+
+| channel | campaign subscribers (callback -> effect) | flow role |
+| --- | --- | --- |
+| `exitzone` | USN03 `luaUS03EnterpriseExits` -> **`MissionPhase = 5`**; USN01 `luaUS01CargoesExited`, `luaUS01BomberExited`; USN05/06/10 exits handled as the unit's death (`luaUS05USShipKilled`, `luaUSN06_SubmarineWasDestroyed`, `luaUSN10_IowaWasDestroyed`, `luaUSN10_EnterpriseWasDestroyed`); BSM09 `luaJapsEscaped` | **phase and fail paths** |
+| `hpEvent` | USN14 `luaUS14HQDamaged1` -> **`luaUS14CaptureCheck()`**; USN05/06/08 and USN14's convoy rows: dialogs | USN14 capture path; else dialog |
+| `shipLanded` | USN07 `luaUS07BoatsLanded` -> `Mission.Landed = 1` (never read again in usn_07); JM11/JM13 -> landing movie | presentation |
+| `entityKilled` | JM01 radio/Oklahoma -> dialog | dialog |
+| `generate` | JM08 PT/Mavis -> `PlayerCtrl` and spawn counters (a fallback `luaJM8CheckPlayerPTs` sets `PlayerCtrl` too); USN04 empty body; JM04 player spawn | player control |
+| `command` | JM06 `submove`, JM07 `fleet1move`/`atlantamove`, JM13 `junklistener`: filter `status = {"finish"}`; JM02 `BettyRetreat` (`command = {"retreat"}`, any status) | see below |
+| `ammoType` | USN01 retreat listeners, JM02 bomb timer | USN01 already wins |
+| `target`, `repair`, `Kill` | USN03 attack/vanguard, USN02/JM03 repair button (player input) | USN03 hidden objective |
+| `input`, `gui` | camera and tutorial input | player input |
+
+**The `command` "finish" filters can never match, in the image either.** The status the image posts at a path's
+end is `"finished"` (`009E5BBC PUSH 00D09FD8`, `00D09FD8` = "finished"; the moveto sibling and `00836D20` use the same
+literal), the binary holds no `"finish\0"` string, and the status filter is a string set: slot 0 of its vtable
+`00D1B73C` is `0097BC70`, a `BSP_NativeStringSet_Find` (`004C7F10`) over `BSP_NativeString_LessCaseInsensitive`
+(`00443D00`), so the test is a case-insensitive exact match. JM06's `Mission.PathEnd` (the AI subs' attack on the
+cargos), JM07's fleet path changes and JM13's junk traffic therefore never fire in the image, and the host's
+silence matches it. Only JM02's `BettyRetreat` (any status) would fire, which hands the Betty to the AI and plays a
+narrative.
+
+**Recommended bindings, in order:** (1) `exitzone` (`00982120`): USN03's phase 5 and the USN01/05/06/10 exit-as-
+death paths. Producers: `007C6C30` plane out-of-action countdown and `007F31A0` squadron left-map (both in
+`src/game_hosts_units.cpp`), `0081BEB0` and `00826D70` (unit virtuals, not hosted). (2) `hpEvent` (`00986B00`,
+threshold crossings of the subscription's `hp` on reason `damage`/`repair`, producer `00879070`
+ApplyDamage in the gunnery host): USN14's capture check. Neither is on a current win row. The Lua side
+(subscription parse plus the dispatcher) is this lane's; the producer hooks are gunnery/units edits to route.

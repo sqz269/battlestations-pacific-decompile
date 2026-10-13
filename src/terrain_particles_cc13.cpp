@@ -1,4 +1,5 @@
 #include "bsp/terrain_particles_cc13.hpp"
+#include "bsp/terrain_render.hpp"
 
 #include <intrin.h>
 
@@ -1905,4 +1906,472 @@ void height_field_destroy_00add1b0(void* field, TerrainHost& host, HeightFieldDe
     more.weak_link_destruct_00ae9930(field);
 }
 
+// ---------------------------------------------------------------------------
+// cc13-terrain2: ballistic extrema. Extended-precision chains are evaluated in double and
+// rounded at each FSTP float.
+
+namespace {
+float ballistic_extremum(const float* curve, const float* other, bool maximum) noexcept {
+    const float a = curve[7], b = curve[8], c = curve[9], d = curve[10], x0 = curve[0];
+    const float disc = static_cast<float>(static_cast<double>(b) * 4.0 * b - static_cast<double>(a) * 12.0 * c);
+    const bool fallback = 0.0f > disc || a == 0.0f;
+    if (!fallback) {
+        const float s = static_cast<float>(std::sqrt(static_cast<double>(disc)));
+        const double six_a = static_cast<double>(a) * 6.0;
+        const float t1 = static_cast<float>((static_cast<double>(s) - static_cast<double>(b) * 2.0) / six_a + x0);
+        const float t2 = static_cast<float>((static_cast<double>(b) * -2.0 - s) / six_a + x0);
+        for (const float t : {t1, t2}) {
+            if (!(t > x0) || !(other[0] > t)) continue;
+            const float u = static_cast<float>(static_cast<double>(t) - x0);
+            const double slope = six_a * u + static_cast<double>(b) * 2.0;
+            if (maximum ? !(0.0 > slope) : !(slope > 0.0)) continue;
+            return static_cast<float>(((static_cast<double>(a) * u + b) * u + c) * u + d);
+        }
+    }
+    const float y0 = curve[1], y1 = other[1];
+    if (maximum) return y0 > y1 ? y0 : y1;
+    return y1 > y0 ? y0 : y1;
+}
+} // namespace
+
+float ballistic_max_height_00afb7f0(const float* curve, const float* other) noexcept {
+    return ballistic_extremum(curve, other, true);
+}
+
+float ballistic_min_height_00afba40(const float* curve, const float* other) noexcept {
+    return ballistic_extremum(curve, other, false);
+}
+
+// ===========================================================================
+// cc13-left1: bodies left open by Pass 2. docs/CC13_LEFT_1.md.
+// ===========================================================================
+namespace {
+
+void left_release(void* object) {
+    auto* const count = reinterpret_cast<volatile long*>(at(object, 4));
+    if (_InterlockedDecrement(count) == 0) {
+        using Slot0 = void(__thiscall*)(void*);
+        reinterpret_cast<Slot0>(rd<void*>(rd<void*>(object, 0), 0))(object);
+    }
+}
+
+// The copy-construct schedule these bodies inline: zero the header; unless it is the source,
+// resize to the source length (keeping) and copy that many characters when nonzero.
+void left_copy_string(void* destination, const void* source, TerrainHost& host) {
+    wr<std::uint32_t>(destination, 0, 0);
+    wr<void*>(destination, 4, nullptr);
+    if (destination == source) return;
+    const std::uint32_t length = rd<std::uint32_t>(source, 0);
+    host.native_string_resize_0041dd40(destination, length);
+    if (length != 0) std::memcpy(rd<void*>(destination, 4), rd<const void*>(source, 4), rd<std::uint32_t>(destination, 0));
+}
+
+void left_release_string(void* header, TerrainHost& host) {
+    void* const chars = rd<void*>(header, 4);
+    if (chars != nullptr) host.return_string_block_00bd1510(chars, rd<std::uint32_t>(header, 0) + 1u);
+}
+
+// The inline 4-byte {data, count, capacity} teardown of the registry destructor.
+void left_teardown_dword_vector(void* vector, TerrainHost& host) {
+    std::int32_t capacity = rd<std::int32_t>(vector, 8);
+    if (capacity < 0 && capacity < 1) {
+        auto* const fresh = static_cast<std::uint32_t*>(host.operator_new(4));
+        const auto* const old = rd<std::uint32_t*>(vector, 0);
+        for (std::int32_t i = 0; i < rd<std::int32_t>(vector, 4); ++i) {
+            if (fresh + i != nullptr) fresh[i] = old[i];
+        }
+        host.free(rd<void*>(vector, 0));
+        wr<void*>(vector, 0, fresh);
+        wr<std::int32_t>(vector, 8, 1);
+    }
+    for (std::int32_t i = rd<std::int32_t>(vector, 4); i < 0; ++i) {
+        auto* const slot = rd<std::uint32_t*>(vector, 0) + i;
+        if (slot != nullptr) *slot = 0;
+    }
+    while (rd<std::int32_t>(vector, 4) > 0) wr<std::int32_t>(vector, 4, rd<std::int32_t>(vector, 4) - 1);
+    wr<std::int32_t>(vector, 4, 0);
+    host.free(rd<void*>(vector, 0));
+}
+
+}  // namespace
+
+void texture_atlas_unload_00aefa30(void* registry, const void* name, TerrainHost& host, TerrainLeftHost& left) {
+    auto** p = rd<void**>(registry, 4);
+    while (p != rd<void**>(registry, 4) + rd<std::int32_t>(registry, 8)) {
+        if (!left.atlas_split_name_matches_00aef3c0(name, *p)) {
+            ++p;
+            continue;
+        }
+        std::int32_t i = 0;
+        while (i < rd<std::int32_t>(registry, 0x14)) {
+            auto** const textures = rd<void**>(registry, 0x10);
+            void* const texture = textures[i];
+            if (texture == rd<void*>(*p, 8)) {
+                left_release(texture);
+                for (std::int32_t k = i; k < rd<std::int32_t>(registry, 0x14) - 1; ++k) {
+                    rd<void**>(registry, 0x10)[k] = rd<void**>(registry, 0x10)[k + 1];
+                }
+                wr<std::int32_t>(registry, 0x14, rd<std::int32_t>(registry, 0x14) - 1);
+            } else {
+                ++i;
+            }
+        }
+        void* const item = *p;
+        if (item != nullptr) {
+            texture_atlas_item_destruct_00aee220(item, host);
+            host.free(item);
+        }
+        void** const last = rd<void**>(registry, 4) + rd<std::int32_t>(registry, 8) - 1;
+        if (p != last) *p = *last;
+        wr<std::int32_t>(registry, 8, rd<std::int32_t>(registry, 8) - 1);
+    }
+}
+
+void texture_atlas_register_descriptor_00aef280(const void* name, void* vfs_0109ceec, void* manager_00f8c26c,
+    const char* empty_00f8c270, TerrainHost& host, TerrainLeftHost& left) {
+    void* const block = host.operator_new(0x1C);
+    void* const buffer = block != nullptr ? left.text_buffer_construct_00af5600(block) : nullptr;
+    alignas(4) std::uint8_t copy[8];
+    left_copy_string(copy, name, host);
+    const bool found = left.vfs_resolve_existing_name_00bdf4c0(vfs_0109ceec, copy);
+    const char* path = rd<const char*>(name, 4);
+    if (path == nullptr) path = empty_00f8c270;
+    if (!found) {
+        left.log_004254b0("Atlas file not found: %s", path);
+    } else {
+        left.text_buffer_load_file_00af5850(buffer, path);
+        left.texture_atlas_parse_buffer_00aeeaf0(manager_00f8c26c, buffer);
+    }
+    if (buffer != nullptr) {
+        left.text_buffer_destroy_00af5620(buffer);
+        host.free(buffer);
+    }
+    left_release_string(copy, host);
+}
+
+void texture_atlas_load_directory_00aeff40(void* directory, void* vfs_0109ceec, void* manager_00f8c26c,
+    const char* empty_00f8c270, TerrainHost& host, TerrainLeftHost& left) {
+    alignas(4) std::uint8_t extension[8] = {};
+    host.native_string_assign_0041dd40(extension, "ats", 3);  // resize(3, keep) + copy of length + 1
+    alignas(4) std::uint8_t list[0x0C] = {};
+    left.vfs_enumerate_resource_list_00886280(vfs_0109ceec, list, directory, extension, 1);
+    left_release_string(extension, host);
+    while (rd<std::uint32_t>(list, 8) != 0) {
+        alignas(4) std::uint8_t entry[8] = {};
+        void* const popped = left.pooled_string_list_pop_front_00557a90(list, entry);
+        texture_atlas_register_descriptor_00aef280(popped, vfs_0109ceec, manager_00f8c26c, empty_00f8c270, host, left);
+        left_release_string(entry, host);
+    }
+    left.pooled_string_list_clear_storage_004d05e0(list);
+    host.free(rd<void*>(list, 4));
+}
+
+void texture_atlas_registry_destruct_00aef090(void* registry, TerrainHost& host, TerrainLeftHost& left) {
+    wr<std::uint32_t>(registry, 0, 0x00CFEAE8u);
+    for (std::int32_t i = 0; i < rd<std::int32_t>(registry, 8); ++i) {
+        void* const item = rd<void**>(registry, 4)[i];
+        if (item != nullptr) {
+            texture_atlas_item_destruct_00aee220(item, host);
+            host.free(item);
+        }
+    }
+    for (std::int32_t i = 0; i < rd<std::int32_t>(registry, 0x14); ++i) left_release(rd<void**>(registry, 0x10)[i]);
+    left_teardown_dword_vector(at(registry, 0x10), host);
+    left_teardown_dword_vector(at(registry, 4), host);
+    left.singleton_holder_destruct_007375e0(registry);
+}
+
+namespace {
+
+void* left_geometry(void* model) { return rd<void*>(model, 0x180); }                       // 00B74640
+void* left_element(void* geometry, std::uint32_t i) { return rd<void**>(geometry, 0x54)[i]; }  // 00B732C0
+
+}  // namespace
+
+void foliage_group_manager_create_floating_particles_00af0f20(void* manager, void* particle_resources_00f8c280,
+    TerrainHost& host, TerrainLeftHost& left) {
+    wr<void*>(manager, 0x24, nullptr);
+    wr<std::uint32_t>(manager, 0x2C, 0x3F800000u);  // 00D7A24C 1.0f
+    alignas(4) std::uint8_t shader[8], geometry[8], name[8];
+    host.native_string_assign_literal_0041e870(shader, "ParticleFloating.mshd");
+    host.native_string_assign_literal_0041e870(geometry, "ParticleFloating.mvfm");
+    host.native_string_assign_literal_0041e870(name, "FloatingParticles");
+    wr<void*>(manager, 0x24, left.create_generated_model_00b4c700(name, geometry, shader, 4, 0, 0, 0));
+    left_release_string(name, host);
+    left_release_string(geometry, host);
+    left_release_string(shader, host);
+    void* const resources = rd<void*>(particle_resources_00f8c280, 0x24);  // 00AF1130
+    void* const texture = rd<std::int16_t>(resources, 0x34) > 0 ? rd<void*>(resources, 0x10) : nullptr;
+    void* const element = left_element(left_geometry(rd<void*>(manager, 0x24)), 0);
+    left.material_set_texture_slot_00b189f0(rd<void*>(element, 0x20), 0, texture);
+    void* const indices = left.particle_index_stream_00af10a0(particle_resources_00f8c280);
+    left.geometry_set_index_stream_00b73b70(left_geometry(rd<void*>(manager, 0x24)), indices);
+}
+
+void* bush_group_type_construct_00ae1e10(void* type, void* landscape, std::uint32_t name_a_length, void* name_a_data,
+    std::uint32_t name_b_length, void* name_b_data, void* owner, TerrainHost& host, TerrainLeftHost& left) {
+    for (std::uint32_t offset : {0x04u, 0x08u, 0x0Cu, 0x10u, 0x44u, 0x48u, 0x4Cu}) wr<std::uint32_t>(type, offset, 0);
+    left.initialize_critical_section(at(type, 0x54));
+    wr<std::uint32_t>(type, 0x6C, 0);
+    wr<void*>(type, 0, landscape);
+    wr<void*>(type, 0x1C, owner);
+    // The by-value headers are never the destination, so both copies run (the self test is moot).
+    host.native_string_resize_0041dd40(at(type, 4), name_a_length);
+    if (name_a_length != 0) std::memcpy(rd<void*>(type, 8), name_a_data, rd<std::uint32_t>(type, 4));
+    host.native_string_resize_0041dd40(at(type, 0x0C), name_b_length);
+    if (name_b_length != 0) std::memcpy(rd<void*>(type, 0x10), name_b_data, rd<std::uint32_t>(type, 0x0C));
+    wr<std::uint32_t>(type, 0x14, 0);
+    alignas(4) std::uint8_t label[8] = {};
+    host.native_string_assign_0041dd40(label, "BushGroup", 9);
+    wr<void*>(type, 0x20, left.scene_find_node_by_name_00b72270(rd<void*>(type, 0x1C), label, 0));
+    left_release_string(label, host);
+    wr<std::uint32_t>(type, 0x2C, 0);
+    wr<std::uint32_t>(type, 0x18, 0);
+    wr<std::uint32_t>(type, 0x50, 0);
+    if (name_a_data != nullptr) host.return_string_block_00bd1510(name_a_data, name_a_length + 1u);
+    if (name_b_data != nullptr) host.return_string_block_00bd1510(name_b_data, name_b_length + 1u);
+    return type;
+}
+
+std::int32_t bush_cell_cull_and_emit_lod_00ae1a10(void* cell, void* group, std::int32_t running,
+                                                 void* foliage_system_00f8c210, TerrainLeftHost& left) {
+    const TerrainVec3f centre{rd<float>(cell, 0), rd<float>(cell, 4), rd<float>(cell, 8)};
+    const TerrainVec3f extent{rd<float>(cell, 0x0C), rd<float>(cell, 0x10), rd<float>(cell, 0x14)};
+    std::vector<TerrainPlane> planes(rd<std::uint32_t>(group, 0));
+    if (!planes.empty()) std::memcpy(planes.data(), at(group, 4), planes.size() * sizeof(TerrainPlane));
+    const TerrainBoxVisibility visibility = terrain_box_classify_planes_00ae05e0(planes, centre, extent);
+    if (visibility == TerrainBoxVisibility::Outside) return running;
+    if (visibility != TerrainBoxVisibility::Inside && rd<std::uint32_t>(cell, 0x34) != 0) {
+        // Each child's result already contains the running value it was given (the image adds it).
+        std::int32_t sum = running;
+        for (std::uint32_t offset : {0x1Cu, 0x20u, 0x24u, 0x28u}) {
+            void* const child = rd<void*>(cell, offset);
+            if (child != nullptr) {
+                sum = static_cast<std::int32_t>(static_cast<std::uint32_t>(sum) + static_cast<std::uint32_t>(
+                    bush_cell_cull_and_emit_lod_00ae1a10(child, group, sum, foliage_system_00f8c210, left)));
+            }
+        }
+        return sum;
+    }
+    const std::uint32_t count = rd<std::uint32_t>(cell, 0x30) - rd<std::uint32_t>(cell, 0x2C) + 1u;
+    void* const section = left.draw_section_create_00533fa0();
+    const float d[3] = {f(static_cast<double>(centre.x) - rd<float>(group, 0x118)),
+                        f(static_cast<double>(centre.y) - rd<float>(group, 0x11C)),
+                        f(static_cast<double>(centre.z) - rd<float>(group, 0x120))};
+    const float distance = f(left.vector3_length_00419440(d));
+    const double threshold = left.foliage_system_scalar_0c_00ad5720(foliage_system_00f8c210);
+    const bool far_away = static_cast<double>(distance) > threshold;  // FCOMIP; JBE takes unordered
+    left.draw_section_set_material_00b864c0(section, rd<void*>(group, far_away ? 0x10C : 0x110));
+    wr<std::uint32_t>(section, 0x08, 4);
+    wr<std::uint32_t>(section, 0x0C, rd<std::uint32_t>(cell, 0x2C));
+    wr<std::uint32_t>(section, 0x14, rd<std::uint32_t>(cell, 0x2C));
+    wr<std::uint32_t>(section, 0x10, count);
+    wr<std::uint32_t>(section, 0x18, count / 3u);
+    wr<float>(section, 0x34, distance);
+    left.draw_section_append_vertex_stream_00b85b80(section, rd<void*>(group, 0x104));
+    left.draw_section_set_vertex_layout_00b86650(section, rd<void*>(group, 0x124));
+    left.mesh_append_draw_section_00b73c60(rd<void*>(group, 0x108), section);
+    left_release(section);
+    if (rd<std::uint8_t>(group, 0x114) != 0) left.foliage_cell_draw_box_00ae0a50(cell, 0xFFFFFFFFu, 0.0f);
+    return static_cast<std::int32_t>(static_cast<std::uint32_t>(running) + count);
+}
+
+namespace {
+
+std::uint32_t left_reload_bits(std::uint32_t bits) noexcept {  // FLD dword / FSTP dword
+    if ((bits & 0x7F800000u) == 0x7F800000u && (bits & 0x007FFFFFu) != 0u) bits |= 0x00400000u;
+    return bits;
+}
+
+bool left_view_keeps_far_plane(void* camera) {
+    const std::int32_t view = rd<std::int32_t>(camera, 0x198);
+    return view == 2 || view == 7;
+}
+
+}  // namespace
+
+void* bush_group_model_build_bush_object_00ae1fb0(void* type, void* camera, void* foliage_system_00f8c210,
+    TerrainHost& host, TerrainLeftHost& left) {
+    void* const slot = left.model_allocate_raw_slot_00b74eb0(0x184);
+    void* model = nullptr;
+    if (slot != nullptr) {
+        alignas(4) std::uint8_t name[8];
+        host.native_string_assign_literal_0041e870(name, "BushOjjekt");
+        model = left.generated_model_construct_00b75030(slot, name);
+        left_release_string(name, host);
+    }
+    float saved_far = 0.0f;
+    if (!left_view_keeps_far_plane(camera)) {
+        saved_far = rd<float>(camera, 0x1D8);
+        left.camera_set_far_plane_00b6fc10(camera, f(left.foliage_scalar_08_00ad5700(foliage_system_00f8c210)));
+    }
+    void* const mesh_slot = left.mesh_allocate_raw_slot_00b73b60(0xBC);
+    void* const mesh = mesh_slot != nullptr ? left.mesh_construct_00b73d70(mesh_slot) : nullptr;
+    const float minus_one = -1.0f;  // 00D7A260
+    left.generated_model_set_geometry_00b75170(model, 0, mesh, minus_one, minus_one);
+    left.mesh_set_vertex_stream_00b73bb0(mesh, 0, rd<void*>(type, 0x28));
+    host.mesh_clear_draw_section_owners_00b73c10(mesh);
+    alignas(4) std::uint8_t record[0x128] = {};
+    const std::int32_t planes = left.camera_plane_count_00b6fdd0(camera);
+    // The image has room for 16 planes before +104h and does not check; more would overwrite its frame.
+    if (planes > 16) throw std::length_error("bush cull record holds at most 16 camera planes");
+    wr<std::int32_t>(record, 0, planes);
+    void* const set = left.camera_plane_set_00b70710(camera);
+    for (std::int32_t i = 0; i < planes; ++i) {
+        const float* const plane = left.plane_set_get_plane_00b656f0(set, i);
+        std::uint32_t bits[4];
+        std::memcpy(bits, plane, sizeof bits);
+        for (std::uint32_t k = 0; k < 4; ++k) wr<std::uint32_t>(record, 4 + 16u * i + 4u * k, left_reload_bits(bits[k]));
+        wr<float>(record, 4 + 16u * i + 12u, f(static_cast<double>(rd<float>(record, 4 + 16u * i + 12u)) - 50.0));  // 00CE3938
+    }
+    wr<void*>(record, 0x104, rd<void*>(type, 0x28));
+    wr<void*>(record, 0x108, mesh);
+    wr<void*>(record, 0x10C, rd<void*>(type, 0x3C));
+    wr<void*>(record, 0x110, rd<void*>(type, 0x38));
+    wr<std::uint8_t>(record, 0x114, 0);
+    if ((rd<std::uint8_t>(camera, 0x5C) & 2u) == 0) left.node_refresh_world_matrix_00b6db70(camera);
+    wr<std::uint32_t>(record, 0x118, rd<std::uint32_t>(camera, 0x120));
+    wr<std::uint32_t>(record, 0x11C, rd<std::uint32_t>(camera, 0x124));
+    wr<std::uint32_t>(record, 0x120, rd<std::uint32_t>(camera, 0x128));
+    wr<void*>(record, 0x124, rd<void*>(type, 0x50));
+    wr<std::int32_t>(type, 0x34, bush_cell_cull_and_emit_lod_00ae1a10(rd<void*>(type, 0x18), record, 0,
+                                                                      foliage_system_00f8c210, left));
+    if (rd<std::uint8_t>(type, 0x40) == 0) host.mesh_clear_draw_section_owners_00b73c10(mesh);
+    if (mesh != nullptr) left_release(mesh);
+    void* const node = rd<void*>(type, 0x20);
+    if ((rd<std::uint8_t>(node, 0x5C) & 2u) == 0) left.node_refresh_world_matrix_00b6db70(node);
+    using SetTransform = void(__thiscall*)(void*, void*);
+    reinterpret_cast<SetTransform>(rd<void*>(rd<void*>(model, 0), 0x34))(model, at(node, 0xF0));
+    void* const section = at(type, 0x54);
+    left.enter_critical_section(section);
+    wr<std::int32_t>(type, 0x6C, rd<std::int32_t>(type, 0x6C) + 1);
+    if (rd<std::int32_t>(type, 0x48) == rd<std::int32_t>(type, 0x4C)) {
+        std::int32_t capacity = rd<std::int32_t>(type, 0x4C) * 2;
+        if (capacity <= 4) capacity = 4;
+        left.shadow_reserve_pointer_vector_00ae1440(at(type, 0x44), capacity);
+    }
+    void** const end = rd<void**>(type, 0x44) + rd<std::int32_t>(type, 0x48);
+    if (end != nullptr) *end = model;
+    wr<std::int32_t>(type, 0x48, rd<std::int32_t>(type, 0x48) + 1);
+    wr<std::int32_t>(type, 0x6C, rd<std::int32_t>(type, 0x6C) - 1);
+    left.leave_critical_section(section);
+    if (!left_view_keeps_far_plane(camera)) left.camera_set_far_plane_00b6fc10(camera, saved_far);
+    return model;
+}
+
+void height_field_dump_height_tga_00adc1c0(void* field, const void* file, TerrainHost& host, TerrainLeftHost& left) {
+    constexpr std::int32_t k = 32;  // 00D5D658
+    void* const block = host.operator_new(0x1C);
+    void* const image = block != nullptr
+        ? left.ram_image_construct_00befbb0(block, k * rd<std::int32_t>(field, 0x38) + 1, k * rd<std::int32_t>(field, 0x3C) + 1, 1, 0x32)
+        : nullptr;
+    const std::int32_t stride = rd<std::int32_t>(field, 0x38) * k + 1;
+    std::uint8_t* const data = left.ram_image_data_00befb60(image);
+    left.height_field_compute_range_00adbd00(field);
+    const auto clamp_low = [](float value) { return value > 0.0f ? value : 0.0f; };  // COMISS / JBE
+    const float range = f(static_cast<double>(rd<float>(field, 0x14)) - clamp_low(rd<float>(field, 0x10)));
+    for (std::uint32_t row = 0; row < rd<std::uint32_t>(field, 0x3C); ++row) {
+        for (std::uint32_t column = 0; column < rd<std::uint32_t>(field, 0x38); ++column) {
+            void* const tile = rd<void**>(field, 0x40)[rd<std::uint32_t>(field, 0x38) * row + column];
+            const auto pixel = [&](std::int32_t u, std::int32_t v) -> std::uint8_t& {
+                return data[k * static_cast<std::int32_t>(column) + (k * static_cast<std::int32_t>(row) + v) * stride + u];
+            };
+            if (tile == nullptr) {
+                for (std::int32_t v = 0; v < 0x21; ++v)
+                    for (std::int32_t u = 0; u < 0x21; ++u) pixel(u, v) = 0;
+                continue;
+            }
+            void* const samples = rd<void*>(tile, 0x1C);  // 00ADEA70
+            for (std::int32_t v = 0; v < 0x21; ++v) {
+                for (std::int32_t u = 0; u < 0x21; ++u) {
+                    float sample = 0.0f;
+                    using Sample = void(__thiscall*)(void*, float*, std::int32_t, std::int32_t);
+                    reinterpret_cast<Sample>(rd<void*>(rd<void*>(samples, 0), 8))(samples, &sample, u, v);
+                    if (!(sample > 0.0f)) sample = 0.0f;  // COMISS / JA keeps
+                    const float lo = clamp_low(rd<float>(field, 0x10));
+                    const float scaled = f((static_cast<double>(sample) - lo) / range * 255.0);  // 00CE4B48
+                    pixel(u, v) = static_cast<std::uint8_t>(static_cast<std::int32_t>(scaled));  // CVTTSS2SI
+                }
+            }
+        }
+    }
+    left.ram_image_save_tga_00bf0050(file, image);
+    left_release(image);
+}
+
+void height_field_stamp_byte_at_world_00adb6f0(void* field, float x, float z, float h, HeightFieldHost& fields) {
+    const float inv = f(1.0 / rd<float>(field, 0x1C));
+    std::int32_t i = static_cast<std::int32_t>(f(static_cast<double>(inv) * x));  // _ftol2 truncates
+    std::int32_t j = static_cast<std::int32_t>(f(static_cast<double>(inv) * z));
+    const std::int32_t wide = fields.slot10_samples_wide(field);
+    if (i <= 0) i = 0;
+    if (i >= wide) i = wide;
+    const std::int32_t deep = fields.slot14_samples_deep(field);
+    if (j <= 0) j = 0;
+    if (j >= deep) j = deep;
+    std::int32_t tx = 0, tz = 0, lx = 0, lz = 0;
+    fields.slot44_split_index(field, &tx, &tz, &lx, &lz, i, j);
+    void* const tile = rd<void**>(field, 0x40)[rd<std::int32_t>(field, 0x38) * tz + tx];
+    if (tile == nullptr) return;
+    const float height = h > 0.0f ? h : 0.0f;  // COMISS / JBE: NaN gives 0
+    const float hf = f(static_cast<double>(height) / 60.0 * 255.0);  // 00CE3D68, 00CE4B48
+    const float chosen = 255.0 > static_cast<double>(hf) ? hf : 255.0f;  // FCOMPI / JBE; 00CEDD44
+    const auto value = static_cast<std::uint8_t>(static_cast<std::int32_t>(chosen));  // CVTTSS2SI, low byte
+    void* const layer = rd<void*>(tile, 0x1C);  // 00ADEA70, re-read before each stamp in the image
+    byte_layer_stamp_max_00adb160(layer, lx, lz, value);
+    byte_layer_stamp_max_00adb160(rd<void*>(tile, 0x1C), lx + 1, lz, value);
+    byte_layer_stamp_max_00adb160(rd<void*>(tile, 0x1C), lx + 1, lz + 1, value);
+    byte_layer_stamp_max_00adb160(rd<void*>(tile, 0x1C), lx, lz + 1, value);
+}
+
+void* terrain_tile_grid_get_or_create_tile_00adb980(void* grid, std::int32_t x, std::int32_t y,
+    HeightFieldHost& fields, TerrainHost& host, BlockHost& blocks, TerrainLeftHost& left) {
+    void*& existing = rd<void**>(grid, 0x40)[rd<std::int32_t>(grid, 0x38) * y + x];
+    if (existing != nullptr) return existing;
+    void* const tile = fields.create_tile(grid, x, y);
+    void* const memory_a = host.operator_new(0x38);
+    void* const block_a = memory_a != nullptr ? terrain_block_construct(0x00AEDAC0, memory_a, 0x21, 0x21, host) : nullptr;
+    terrain_tile_set_block_00adf8b0(tile, block_a, host, blocks);
+    left_release(block_a);
+    void* const memory_b = host.operator_new(0x38);
+    void* const block_b = memory_b != nullptr ? terrain_block_construct(0x00AEDAC0, memory_b, 0x21, 0x21, host) : nullptr;
+    terrain_tile_set_second_block_00adf920(tile, block_b, host);
+    left_release(block_b);
+    const float g = rd<float>(grid, 0x18);
+    float low = 0.0f, high = 0.0f;
+    std::uint32_t low_bits = 0x501502F9u;  // 00CE4970 1.0e10f
+    std::memcpy(&low, &low_bits, 4);
+    using SetSample = void(__thiscall*)(void*, float, std::int32_t, std::int32_t);
+    for (std::int32_t j = 0; j < 0x21; ++j) {
+        for (std::int32_t i = 0; i < 0x21; ++i) {
+            reinterpret_cast<SetSample>(rd<void*>(rd<void*>(block_a, 0), 0x1C))(block_a, 0.0f, i, j);
+            if (!(0.0f > low)) low = 0.0f;   // COMISS 0, m / JA
+            high = low > 0.0f ? low : 0.0f;  // COMISS m, 0 / JBE
+            reinterpret_cast<SetSample>(rd<void*>(rd<void*>(block_b, 0), 0x1C))(block_b, 0.0f, i, j);
+        }
+    }
+    terrain_tile_refresh_height_range_00adeb00(tile, blocks);
+    using Slot = void(__thiscall*)(void*);
+    reinterpret_cast<Slot>(rd<void*>(rd<void*>(tile, 0), 8))(tile);
+    void* const model = rd<void*>(tile, 0x24);  // 00ADEAF0
+    const auto refresh = [&] {
+        if ((rd<std::uint8_t>(model, 0x5C) & 2u) == 0) fields.refresh_world_matrix_00b6db70(model);
+    };
+    refresh();
+    const float sx = rd<float>(model, 0xF0);
+    refresh();
+    const float sy = rd<float>(model, 0x104);
+    refresh();
+    const float sz = rd<float>(model, 0x118);
+    const TerrainVec3f box_min{f(0.0 / sx), f(static_cast<double>(low) / sy), f(0.0 / sz)};
+    const TerrainVec3f box_max{f(static_cast<double>(g) / sx), f(static_cast<double>(high) / sy), f(static_cast<double>(g) / sz)};
+    const TerrainSphere sphere = terrain_box_bounding_sphere_00ada600(box_min, box_max);
+    const float wider = sx > sy ? sx : sy;          // FCOMPI / JBE
+    const float widest = wider > sz ? wider : sz;   // FCOMPI / JA
+    float bounds[4] = {sphere.centre.x, sphere.centre.y, sphere.centre.z, f(static_cast<double>(rd<float>(grid, 0x18)) / widest)};
+    left.generated_model_set_local_bounds_00b74390(model, bounds);
+    reinterpret_cast<Slot>(rd<void*>(rd<void*>(model, 0), 0x48))(model);
+    rd<void**>(grid, 0x40)[rd<std::int32_t>(grid, 0x38) * y + x] = tile;
+    return tile;
+}
 } // namespace bsp::cc13_terrain

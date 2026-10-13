@@ -174,3 +174,31 @@ and is re-runnable; `tr1_left.py` lists what is open; `tr1_live.py` decompiles l
 shared exports are being regenerated; `tr1_x87.py` / `tr1_dis.py` read x87 from the bytes).
 Start with the two group initialisers (00AE2450 / 00AE5870): they are the spine of the foliage
 load path that 00AD9050 / 00AD91C0 now reach through `FoliageLoadHost`.
+
+## Pass 2 (cc13-terrain2)
+
+- **Bush model pool** (00AE07C0, 00AE12F0, 00AE13D0, 00AE15D0, 00AE16F0, 00AE17D0,
+  00AE1870): one more instance of the Mit slab pool engine shared with the GUI widget pools.
+  The traits are in `include/bsp/terrain_bush_pool_cc13.hpp` and the instance in
+  `src/native_material_pools.cpp`. Each member was compared with capstone against the GUI
+  Widget pool, with immediates masked. They are identical apart from these constants:
+  slot 18Ch, 8 slots, slab C74h, vtable 00D5D4FC, global 00F8C228, and the stride
+  division. The allocate stub is 00AE1A00, the CRT initializer 00CD77D0 and the exit stub
+  00CE0B60.
+- **Ballistic height extrema** (00AFB7F0 max, 00AFBA40 min): the x87 stack was traced by
+  hand from the listing, and the results are in `src/terrain_particles_cc13.cpp`.
+  - The curve is y = ((a u + b) u + c) u + d; its stationary points are the roots of
+    3a u^2 + 2b u + c, with disc = 4b^2 - 12ac.
+  - A root must lie strictly between x0 and other.x, and the sign test is 6a u + 2b.
+  - The fallback is the larger y (max) or the smaller y (min) of the two points; NaN
+    picks other.y in both.
+
+Still open: the group initialisers and type constructors, 00AE1A10, 00AE1FB0, the atlas
+group, 00AF0F20, 00AFDCF0 (needs its register arguments read from the listing), and the
+five terrain bodies.
+
+## Continued by cc13-left1
+
+docs/CC13_LEFT_1.md reconstructs 11 of the 17 left by Pass 2: the atlas group, `00AF0F20`,
+`00AE1E10`, `00AE1A10`, `00AE1FB0`, `00ADC1C0`, `00ADB6F0` and `00ADB980`. Still open: `00AFDCF0`,
+`00AE5160`, `00ADE0E0`, `00ADC930`, `00AE5870` and `00AE2450`.
