@@ -17,7 +17,10 @@
 #include <string>
 #include <vector>
 
+#include "bsp/gui_icon.hpp"
 #include "bsp/gui_lua_reader.hpp"
+#include "bsp/gui_widget.hpp"
+#include "bsp/gui_widgets_cc13.hpp"
 #include "bsp/options_hardware_cc13.hpp"
 
 namespace bsp::cc13_seg49_64_78 {
@@ -556,5 +559,239 @@ struct WarningManagerSaveHost {
 // 0096DD30, __thiscall(ECX = manager, writer), RET 4.
 void save_warning_manager_0096dd30(const WarningManagerArchiveView& view, EventArchiveWriter& writer,
                                    WarningManagerSaveHost& host);
+
+// ===================================================================================================
+// Segment 78: GUI widget leaves left over from cc13-gui1/gui2 (see bsp/gui_widgets_cc13.hpp).
+// ===================================================================================================
+
+using gui_widgets_cc13::GuiPropertyWriter;
+using gui_widgets_cc13::GuiTaggedValue;
+using gui_widgets_cc13::GuiTypeCounterHost;
+using gui_widgets_cc13::GuiTypeDescriptor;
+using gui_widgets_cc13::GuiDescribeHost;
+using gui_widgets_cc13::GuiIconStateHost;
+
+// Engine calls the segment-78 leaves make on raw widgets.
+struct GuiLeafHost {
+    virtual ~GuiLeafHost() = default;
+    virtual void invalid_parameter_00bf6713() = 0;
+    virtual void widget_virtual_7c(void* widget) = 0;
+    virtual void widget_virtual_8c(void* widget) = 0;       // Icon: 00AB10D0 rebuild current state
+    virtual void widget_virtual_50(void* widget, void* arg) = 0;
+    // 00AA7970 BSP_GuiWidget_SetSize, __thiscall(widget, const float size[2]).
+    virtual void widget_set_size_00aa7970(void* widget, const float (&size)[2]) = 0;
+    // 00AA7D00, __thiscall(widget, float x, float y): local X/Y, recompose and bounds.
+    virtual void widget_set_local_xy_00aa7d00(void* widget, float x, float y) = 0;
+    // [widget+4Ch] -> 00B74640(0) -> 00B73C10: drop the draw sections' owners.
+    virtual void clear_draw_section_owners_00b73c10(void* widget) = 0;
+    // [widget+4Ch] -> 00B74640(0), 00B72B20 count, 00B73260(0): null when there is no node,
+    // model or stream.
+    virtual void* first_vertex_stream(void* widget) = 0;
+    // The vertex stream of the widget's model: vtable +10h lock(a, b, c), +14h unlock, and the
+    // element writes at data +8h + i*stride(+0Ch) + offset (+10h positions, +28h UV0).
+    virtual void* vertex_stream_00b73260(void* widget) = 0;
+    virtual void stream_lock_10(void* stream, std::int32_t a, std::int32_t b, std::int32_t c) = 0;
+    virtual void stream_unlock_14(void* stream) = 0;
+    virtual void stream_write_position(void* stream, std::size_t vertex, float x, float y, float z) = 0;
+    virtual void stream_write_uv0(void* stream, std::size_t vertex, float u, float v) = 0;
+    // Text: 00AB8910 (ensure the cursor model), 00B6DA70 on the cursor node +184h, 00AB9240.
+    virtual void text_ensure_cursor_model_00ab8910(void* text) = 0;
+    virtual void node_set_visibility_00b6da70(void* node, float factor, std::int32_t flag) = 0;
+    virtual void text_position_cursor_00ab9240(void* text, std::uint32_t index) = 0;
+    // 00AB6D00, the glyph test 00AB6D30 forwards to.
+    virtual bool accepts_glyph_byte_00ab6d00(char c) = 0;
+    // 00AC5600 BSP_GuiScreen_ComposeScriptPath(out, name copy) as 00AC5770 calls it.
+    virtual void* compose_script_path_00ac5600(void* out, const std::string& name) = 0;
+    // 00AAA710, the base widget reader 00AAD560 starts with.
+    virtual void read_base_00aaa710(void* widget, gui_widgets_cc13::GuiPropertyReader& reader) = 0;
+};
+
+// Type-id initializers (see gui_widgets_cc13::gui_type_initialize): guard, name, parent Element
+// (00AA8200 on 00F8BC88), its two ids, then the counter. The *Return variants also return ECX.
+//   Icon      00AB3180 / 00AB31D0  guard 00F8BD9C  name 00D5C448 "cGuiIcon"
+//   Line      00AC2390 / 00AC23E0  guard 00F8BEF8  name 00D5C9DC "cGuiLine"
+//   Scrollbar 00AC8500 / 00AC8550  guard 00F8C000  name 00D5CD7C "cGuiScrollbar"
+struct GuiDepth3TypeInit {
+    std::uint32_t guard;
+    std::uint32_t name;
+};
+inline constexpr GuiDepth3TypeInit kGuiIconTypeInit{0x00F8BD9C, 0x00D5C448};
+inline constexpr GuiDepth3TypeInit kGuiLineTypeInit{0x00F8BEF8, 0x00D5C9DC};
+inline constexpr GuiDepth3TypeInit kGuiScrollbarTypeInit{0x00F8C000, 0x00D5CD7C};
+GuiTypeDescriptor<3>& gui_depth3_type_init(GuiTypeDescriptor<3>& target, std::uint8_t& guard,
+                                           const GuiDepth3TypeInit& init,
+                                           GuiTypeDescriptor<2>& element,
+                                           void (*initialize_element_00aa8200)(GuiTypeDescriptor<2>&),
+                                           GuiTypeCounterHost& host);
+
+// 00AB21C0 / 00AC31F0, __fastcall(ECX = singleton): clear the global (00F8BD98 / 00F8BF44) and
+// restore the singleton-base vtable 00CE3818.
+void gui_singleton_destruct(void*& global, std::uint32_t& vtable);
+
+// Icon state records (bsp::GuiIconState, 40h bytes).
+// 00AB3280: release the texture reference (+0h) and the name (+4h).
+void gui_icon_state_release_00ab3280(GuiIconState& state, GuiIconStateHost& host);
+// 00AB3A70: member-wise copy, then retain the copied texture.
+void gui_icon_state_copy_00ab3a70(GuiIconState& out, const GuiIconState& in, GuiIconStateHost& host);
+// 00AB3C10: member-wise assignment with NO reference traffic on the texture pointer.
+void gui_icon_state_assign_00ab3c10(GuiIconState& out, const GuiIconState& in);
+
+// 00AB1F60, __thiscall(icon, const float pivot[2]), RET 4: the widget's Pivot (+18h/+1Ch),
+// recompose (00AA7220), and when the current state (+ECh, MOVSX) is not -1 the state's Pivot
+// (+2Ch) too, then vtable +8Ch. The ledger calls it SetPosition; it sets the pivot.
+void gui_icon_set_pivot_00ab1f60(GuiWidgetTransform& widget, GuiIconWidget& icon,
+                                 const float (&pivot)[2], GuiWidgetTransformHost& transform,
+                                 GuiLeafHost& host);
+
+// 00AB4630, __thiscall(icon, const NativeString*), RET 4: ShaderName (+104h) assigned, the
+// draw sections' owners cleared, vtable +8Ch. The ledger calls it SetTexturePath.
+void gui_icon_set_shader_name_00ab4630(void* widget, GuiIconWidget& icon, const std::string& name,
+                                       GuiLeafHost& host);
+
+// The {data, count, capacity} array of 0Ch {NativeString name, word} elements the delayed-load
+// registry keeps (00F8BD98 +4h). `slots` has `capacity` elements.
+struct GuiNamedValue {
+    std::string name{};
+    std::uint32_t value{0};
+};
+struct GuiNamedValueArray {
+    std::vector<GuiNamedValue> slots{};
+    std::int32_t count{0};
+    std::int32_t capacity{0};
+};
+GuiNamedValue gui_named_value_copy_00ab4690(const GuiNamedValue& in);
+void gui_named_value_assign_00ab46e0(GuiNamedValue& out, const GuiNamedValue& in);
+void gui_named_value_array_reserve_00ab4720(GuiNamedValueArray& a, std::int32_t wanted);
+void gui_named_value_array_resize_00ab4850(GuiNamedValueArray& a, std::int32_t size);
+void gui_named_value_array_push_back_00ab4990(GuiNamedValueArray& a, const GuiNamedValue& v);
+void gui_named_value_array_swap_remove_00ab4a10(GuiNamedValueArray& a, std::int32_t index);
+void gui_named_value_array_destroy_00ab53b0(GuiNamedValueArray& a);
+
+// FrameBox +15Ch..+174h, read out by 00AB6CB0 __thiscall(framebox, out byte, out word, out word,
+// out float[4]), RET 10h.
+struct GuiFrameBoxBorderIconLayout {
+    std::uint8_t flag_15c{0};
+    std::uint32_t word_160{0};
+    std::uint32_t word_164{0};
+    float rect_168[4]{};
+};
+void gui_framebox_border_icon_layout_00ab6cb0(const GuiFrameBoxBorderIconLayout& in,
+                                              std::uint8_t& flag, std::uint32_t& a,
+                                              std::uint32_t& b, float (&rect)[4]);
+
+// 00AB6D30, __stdcall(char), RET 4. MOVSX then compares with A2h, A3h, A5h, A7h, AAh and B2h; a
+// sign-extended char never equals those, so every byte goes on to 00AB6D00.
+bool text_accepts_input_char_00ab6d30(char c, GuiLeafHost& host);
+
+// 00AB7290, __thiscall(text, state index, const float rgba[4]), RET 8: MISColors entry
+// +11Ch + 10h*index, then +118h (has-MISColors) = 1.
+struct GuiTextStateColors {
+    bool has_mis_colors_118{false};
+    float colors_11c[4][4]{};
+};
+void gui_text_set_state_color_00ab7290(GuiTextStateColors& text, std::int32_t index,
+                                       const float (&rgba)[4]);
+
+// 00AB95F0, __thiscall(text, mode), RET 4: +17Ch = mode, 00AB8910, the cursor node (+184h)
+// visibility = (mode != 2) as a float, and unless mode is 2: 00AB9240(+180h) then vtable +50h
+// with this+50h.
+struct GuiTextCursor {
+    std::int32_t mode_17c{0};
+    std::uint32_t index_180{0};
+    void* node_184{nullptr};
+};
+void gui_text_set_cursor_mode_00ab95f0(void* text, GuiTextCursor& cursor, std::int32_t mode,
+                                       GuiLeafHost& host);
+
+// 00AB10A0 (Icon) / 00ABE640 (Section), __fastcall(ECX = widget): the first vertex stream of
+// the widget's model, or null.
+void* gui_first_vertex_stream(void* widget, GuiLeafHost& host);
+
+// 00ABE670, __thiscall(section, const float size[2]), RET 4: 00AA7970 then vtable +7Ch.
+void gui_section_set_size_00abe670(void* section, const float (&size)[2], GuiLeafHost& host);
+
+// 00AC2F20, __thiscall(ticker, a, b), RET 8: +0Ch = a, +10h = b.
+struct GuiHudTickerRange {
+    std::uint32_t from_0c{0};
+    std::uint32_t to_10{0};
+};
+void hud_ticker_set_range_00ac2f20(GuiHudTickerRange& ticker, std::uint32_t from, std::uint32_t to);
+
+// 00AC3660, __fastcall(ECX = list): +4h = a new sentinel (00AC3xxx allocator), +8h = 0.
+struct GuiFontRegistryList {
+    void* head_04{nullptr};
+    std::uint32_t size_08{0};
+};
+void gui_font_registry_list_construct_00ac3660(GuiFontRegistryList& list, void* sentinel);
+
+// 00AC4AD0, __thiscall(writer, key pair, value, default), RET 10h: both values carry tag 1 (an
+// integer); the key/value pair is written unless 00BD5680 finds them equal. The ledger calls it
+// a bool property; the tag is the integer one.
+void gui_write_int_unless_default_00ac4ad0(GuiPropertyWriter& writer, const char* key,
+                                           std::int32_t value, std::int32_t fallback);
+
+// 00AC5770, __thiscall(layer, out), RET 4: copies the layer name (+100h) and returns
+// 00AC5600(out, copy).
+void* gui_layer_compose_script_path_00ac5770(const std::string& layer_name_100, void* out,
+                                             GuiLeafHost& host);
+
+// 00AC8EE0, __thiscall(scroll area, float x, float y), RET 8. Clamps each offset into
+// [-(content - size), 0] (+11Ch/+120h content, +20h/+24h size; the bound computed on the x87
+// stack and compared with FCOMI), stores them at +110h/+114h, moves the content widget [+118h]
+// through 00AA7D00 and calls this vtable +7Ch.
+struct GuiScrollAreaFields {
+    float size_20[2]{};
+    float offset_110[2]{};
+    void* content_118{nullptr};
+    float content_11c[2]{};
+};
+void gui_scroll_area_set_offset_00ac8ee0(void* area, GuiScrollAreaFields& f, float x, float y,
+                                         GuiLeafHost& host);
+
+// Movie widget (cGuiMovie, vtable 00D5C270) fields past the 0ECh base.
+struct GuiMovieFields {
+    std::uint32_t word_ec{0};
+    void* player_f0{nullptr};          // deleted through vtable +8h (1) by the destructor
+    bool unit_size_f4{false};          // ReadProperties: Size is exactly (1,1)
+    std::uint32_t word_f8{0};
+    std::string movie_name_fc{};       // "MovieName" (+FCh length, +100h data)
+    bool flag_104{false};
+    bool flag_105{false};
+    std::uint32_t word_108{0};
+    std::vector<std::uint8_t> vector_10c{};  // +110h..+118h, elements destroyed by 00AAF0E0
+    std::vector<std::uint8_t> vector_11c{};  // +124h..+12Ch, elements destroyed by 00AAF120
+};
+// 00AAFE20: base 00AA9xxx(10), vtable, and the stores above (+F4h/+104h/+105h zero).
+void gui_movie_construct_00aafe20(GuiMovieFields& f);
+// 00AAFFF0: base copy, then the same stores except that MovieName is copied from the source.
+void gui_movie_copy_construct_00aafff0(GuiMovieFields& f, const GuiMovieFields& source);
+// 00AAFEF0 destructor body: player deleted, both vectors freed, name released, base destroyed.
+void gui_movie_destroy_00aafef0(GuiMovieFields& f, void (*delete_player)(void*));
+// 00AAD560, __thiscall(movie, reader), RET 4: 00AAA710, "MovieName" (String, default "") into
+// +FCh, then +F4h = (Size == (1.0, 1.0)).
+void gui_movie_read_properties_00aad560(void* widget, const GuiWidgetTransform& transform,
+                                        GuiMovieFields& f,
+                                        gui_widgets_cc13::GuiPropertyReader& reader,
+                                        GuiLeafHost& host);
+// 00AACF10, __thiscall(movie, const float size[2]), RET 4: 00AA7970, then the four vertices of
+// the model's stream (lock 4,0,0): positions (0,0,0), (w,0,0), (w,0.75h,0), (0,0.75h,0) with
+// 0.75 from 00E12FCC and UV0 (0,0), (1,0), (1,1), (0,1); unlock.
+void gui_movie_set_size_00aacf10(void* widget, const GuiWidgetTransform& transform,
+                                 const float (&size)[2], GuiLeafHost& host);
+
+// 00ABF090, __thiscall(section, writer), RET 4: the base describer, then each unless default.
+struct GuiSectionFields {
+    std::string texture_ec{};          // +ECh length, +F0h data (empty literal 00F8BEF4)
+    float value_f4{0.0f};
+    float start_angle_f8{0.0f};
+    float texture_angle_fc{0.0f};
+    float u0_100{0.0f};
+    float u1_104{1.0f};
+    float rim_width_percent_108{0.5f};
+    bool clockwise_10c{true};
+    std::int32_t texture_mode_110{0};
+};
+void gui_section_describe_properties_00abf090(const void* section, const GuiSectionFields& f,
+                                              GuiPropertyWriter& writer, GuiDescribeHost& host);
 
 }  // namespace bsp::cc13_seg49_64_78

@@ -1130,4 +1130,364 @@ void save_warning_manager_0096dd30(const WarningManagerArchiveView& view, EventA
     writer.end_08();
 }
 
+
+// --- segment 78: GUI leaves -----------------------------------------------------------------------
+
+GuiTypeDescriptor<3>& gui_depth3_type_init(GuiTypeDescriptor<3>& target, std::uint8_t& guard,
+                                           const GuiDepth3TypeInit& init,
+                                           GuiTypeDescriptor<2>& element,
+                                           void (*initialize_element_00aa8200)(GuiTypeDescriptor<2>&),
+                                           GuiTypeCounterHost& host)
+{
+    // CMP byte [guard], 0; MOV byte [guard], 1; [ECX+0Ch] = name; 00AA8200(00F8BC88); the two
+    // Element ids into [ECX+4h]/[ECX+8h]; 006FAC20 counter +4h post-increment into [ECX].
+    gui_widgets_cc13::gui_type_initialize<3>(
+        target, guard, init.name, element.ids,
+        [&]() { initialize_element_00aa8200(element); }, host);
+    return target;
+}
+
+void gui_singleton_destruct(void*& global, std::uint32_t& vtable)
+{
+    global = nullptr;          // MOV [00F8BD98 / 00F8BF44], 0
+    vtable = 0x00CE3818;       // BSP_SingletonBase_ScalarDelete's vtable
+}
+
+void gui_icon_state_release_00ab3280(GuiIconState& state, GuiIconStateHost& host)
+{
+    if (state.texture != nullptr) {
+        host.release_texture(state.texture);   // InterlockedDecrement, slot 0 at zero
+        state.texture = nullptr;
+    }
+    state.texture_name.clear();                 // the name's block back to the sized pool
+}
+
+void gui_icon_state_copy_00ab3a70(GuiIconState& out, const GuiIconState& in, GuiIconStateHost& host)
+{
+    out = in;                                   // +0h, the string (0041DD40 + memcpy), +0Ch..+3Dh
+    if (out.texture != nullptr) host.retain_texture(out.texture);  // 00AB3B1D InterlockedIncrement
+}
+
+void gui_icon_state_assign_00ab3c10(GuiIconState& out, const GuiIconState& in)
+{
+    // `*param_1 = *param_2` on the texture word with no Interlocked call either way.
+    out.texture = in.texture;
+    if (&out != &in) out.texture_name = in.texture_name;
+    out.resolved_uv = in.resolved_uv;
+    out.authored_uv = in.authored_uv;
+    out.pivot_x = in.pivot_x;
+    out.pivot_y = in.pivot_y;
+    out.size = in.size;
+    out.load_pending = in.load_pending;
+    out.flag_3d = in.flag_3d;
+}
+
+void gui_icon_set_pivot_00ab1f60(GuiWidgetTransform& widget, GuiIconWidget& icon,
+                                 const float (&pivot)[2], GuiWidgetTransformHost& transform,
+                                 GuiLeafHost& host)
+{
+    widget.pivot_x = pivot[0];                  // FLD/FSTP [ESI+18h]
+    widget.pivot_y = pivot[1];                  // FLD/FSTP [ESI+1Ch]
+    recompose_local_transform(widget, transform);  // 00AA7220
+    if (static_cast<std::uint16_t>(icon.current_state) == 0xFFFF) return;  // CMP AX, FFFFh
+    // MOVSX index, then an unsigned compare against the 40h-element count.
+    const auto index = static_cast<std::uint32_t>(static_cast<std::int32_t>(icon.current_state));
+    if (index >= icon.states.size()) host.invalid_parameter_00bf6713();
+    GuiIconState& state = icon.states[index];
+    state.pivot_x = pivot[0];                   // +2Ch
+    state.pivot_y = pivot[1];                   // +30h
+    host.widget_virtual_8c(&widget);
+}
+
+void gui_icon_set_shader_name_00ab4630(void* widget, GuiIconWidget& icon, const std::string& name,
+                                       GuiLeafHost& host)
+{
+    if (&icon.shader_name != &name) icon.shader_name = name;  // 0041DD40 + memcpy at +104h/+108h
+    host.clear_draw_section_owners_00b73c10(widget);
+    host.widget_virtual_8c(widget);
+}
+
+GuiNamedValue gui_named_value_copy_00ab4690(const GuiNamedValue& in)
+{
+    GuiNamedValue out;
+    out.name = in.name;
+    out.value = in.value;
+    return out;
+}
+
+void gui_named_value_assign_00ab46e0(GuiNamedValue& out, const GuiNamedValue& in)
+{
+    if (&out != &in) out.name = in.name;
+    out.value = in.value;
+}
+
+void gui_named_value_array_reserve_00ab4720(GuiNamedValueArray& a, std::int32_t wanted)
+{
+    if (wanted < 1) wanted = 1;
+    if (a.capacity >= wanted) return;
+    // operator_new(wanted * 0Ch), copy-construct the live elements, release the old names,
+    // _free the old block.
+    std::vector<GuiNamedValue> block(static_cast<std::size_t>(wanted));
+    for (std::int32_t i = 0; i < a.count; ++i) {
+        block[static_cast<std::size_t>(i)] = gui_named_value_copy_00ab4690(a.slots[static_cast<std::size_t>(i)]);
+    }
+    a.slots = std::move(block);
+    a.capacity = wanted;
+}
+
+void gui_named_value_array_resize_00ab4850(GuiNamedValueArray& a, std::int32_t size)
+{
+    if (a.capacity < size) gui_named_value_array_reserve_00ab4720(a, size);
+    for (std::int32_t i = a.count; i < size; ++i) {
+        a.slots[static_cast<std::size_t>(i)] = GuiNamedValue{};  // three zero words
+    }
+    while (size < a.count) {
+        --a.count;
+        a.slots[static_cast<std::size_t>(a.count)].name.clear();  // name block released
+    }
+    a.count = size;
+}
+
+void gui_named_value_array_push_back_00ab4990(GuiNamedValueArray& a, const GuiNamedValue& v)
+{
+    if (a.count == a.capacity) {
+        std::int32_t grown = a.capacity * 2;
+        if (grown < 2) grown = 1;               // 0 -> 1, 1 -> 2
+        gui_named_value_array_reserve_00ab4720(a, grown);
+    }
+    a.slots[static_cast<std::size_t>(a.count)] = gui_named_value_copy_00ab4690(v);
+    ++a.count;
+}
+
+void gui_named_value_array_swap_remove_00ab4a10(GuiNamedValueArray& a, std::int32_t index)
+{
+    if (index == -1) return;
+    const auto last = static_cast<std::size_t>(a.count - 1);
+    if (index != a.count - 1) {
+        gui_named_value_assign_00ab46e0(a.slots[static_cast<std::size_t>(index)], a.slots[last]);
+    }
+    a.slots[last].name.clear();
+    --a.count;
+}
+
+void gui_named_value_array_destroy_00ab53b0(GuiNamedValueArray& a)
+{
+    gui_named_value_array_resize_00ab4850(a, 0);
+    a.slots.clear();                            // _free of the block (capacity is left)
+    a.slots.shrink_to_fit();
+}
+
+void gui_framebox_border_icon_layout_00ab6cb0(const GuiFrameBoxBorderIconLayout& in,
+                                              std::uint8_t& flag, std::uint32_t& a,
+                                              std::uint32_t& b, float (&rect)[4])
+{
+    flag = in.flag_15c;
+    a = in.word_160;
+    b = in.word_164;
+    for (int i = 0; i < 4; ++i) rect[i] = in.rect_168[i];
+}
+
+bool text_accepts_input_char_00ab6d30(char c, GuiLeafHost& host)
+{
+    // 00AB6D34 MOVSX EAX, DL: the six compares against A2h..B2h test a value in -128..127 and
+    // never match, so the rejection list is dead and the tail jump always runs.
+    const std::int32_t widened = static_cast<std::int32_t>(static_cast<signed char>(c));
+    switch (widened) {
+    case 0xA2: case 0xA3: case 0xA5: case 0xA7: case 0xAA: case 0xB2:
+        return false;                           // unreachable for a sign-extended byte
+    default:
+        return host.accepts_glyph_byte_00ab6d00(c);
+    }
+}
+
+void gui_text_set_state_color_00ab7290(GuiTextStateColors& text, std::int32_t index,
+                                       const float (&rgba)[4])
+{
+    for (int i = 0; i < 4; ++i) text.colors_11c[index][i] = rgba[i];  // no index check
+    text.has_mis_colors_118 = true;
+}
+
+void gui_text_set_cursor_mode_00ab95f0(void* text, GuiTextCursor& cursor, std::int32_t mode,
+                                       GuiLeafHost& host)
+{
+    cursor.mode_17c = mode;
+    host.text_ensure_cursor_model_00ab8910(text);
+    // SETNZ CL; CVTSI2SS: 1.0 unless the mode is 2; flag word 0.
+    host.node_set_visibility_00b6da70(cursor.node_184, cursor.mode_17c != 2 ? 1.0f : 0.0f, 0);
+    if (cursor.mode_17c == 2) return;
+    host.text_position_cursor_00ab9240(text, cursor.index_180);
+    host.widget_virtual_50(text, static_cast<std::uint8_t*>(text) + 0x50);
+}
+
+void* gui_first_vertex_stream(void* widget, GuiLeafHost& host)
+{
+    return host.first_vertex_stream(widget);
+}
+
+void gui_section_set_size_00abe670(void* section, const float (&size)[2], GuiLeafHost& host)
+{
+    host.widget_set_size_00aa7970(section, size);
+    host.widget_virtual_7c(section);
+}
+
+void hud_ticker_set_range_00ac2f20(GuiHudTickerRange& ticker, std::uint32_t from, std::uint32_t to)
+{
+    ticker.from_0c = from;
+    ticker.to_10 = to;
+}
+
+void gui_font_registry_list_construct_00ac3660(GuiFontRegistryList& list, void* sentinel)
+{
+    list.head_04 = sentinel;
+    list.size_08 = 0;
+}
+
+void gui_write_int_unless_default_00ac4ad0(GuiPropertyWriter& writer, const char* key,
+                                           std::int32_t value, std::int32_t fallback)
+{
+    GuiTaggedValue v{};
+    v.tag = static_cast<GuiValueTag>(1);
+    v.i = value;
+    GuiTaggedValue d{};
+    d.tag = static_cast<GuiValueTag>(1);
+    d.i = fallback;
+    if (writer.equals_00bd5680(v, d)) return;
+    writer.write(key, v);
+}
+
+void* gui_layer_compose_script_path_00ac5770(const std::string& layer_name_100, void* out,
+                                             GuiLeafHost& host)
+{
+    const std::string copy = layer_name_100;  // 0041DD40 + memcpy into a stack NativeString
+    return host.compose_script_path_00ac5600(out, copy);
+}
+
+void gui_scroll_area_set_offset_00ac8ee0(void* area, GuiScrollAreaFields& f, float x, float y,
+                                         GuiLeafHost& host)
+{
+    f.offset_110[0] = x;
+    f.offset_110[1] = y;
+    const float values[2] = {x, y};
+    for (int axis = 0; axis < 2; ++axis) {
+        if (values[axis] > 0.0f) {              // COMISS against 0; JBE to the clamp
+            f.offset_110[axis] = 0.0f;
+            continue;
+        }
+        // FLD content; FSUB size; FCHS; FCOMI with the argument; JBE keeps the argument. The
+        // difference of two floats is exact in double, as it is on the x87 stack here.
+        const double bound = -(static_cast<double>(f.content_11c[axis]) -
+                               static_cast<double>(f.size_20[axis]));
+        if (bound > static_cast<double>(values[axis])) {
+            f.offset_110[axis] = static_cast<float>(bound);  // FSTP float
+        }
+    }
+    host.widget_set_local_xy_00aa7d00(f.content_118, f.offset_110[0], f.offset_110[1]);
+    host.widget_virtual_7c(area);
+}
+
+void gui_movie_construct_00aafe20(GuiMovieFields& f)
+{
+    f = GuiMovieFields{};  // +ECh, +F0h, +F8h..+100h, +104h/+105h, +108h, both vectors zero
+}
+
+void gui_movie_copy_construct_00aafff0(GuiMovieFields& f, const GuiMovieFields& source)
+{
+    f = GuiMovieFields{};
+    f.movie_name_fc = source.movie_name_fc;     // the only field copied (+FCh)
+}
+
+void gui_movie_destroy_00aafef0(GuiMovieFields& f, void (*delete_player)(void*))
+{
+    if (f.player_f0 != nullptr) {
+        delete_player(f.player_f0);             // vtable +8h with 1
+        f.player_f0 = nullptr;
+    }
+    f.vector_11c.clear();
+    f.vector_11c.shrink_to_fit();
+    f.vector_10c.clear();
+    f.vector_10c.shrink_to_fit();
+    f.movie_name_fc.clear();
+}
+
+void gui_movie_read_properties_00aad560(void* widget, const GuiWidgetTransform& transform,
+                                        GuiMovieFields& f,
+                                        gui_widgets_cc13::GuiPropertyReader& reader,
+                                        GuiLeafHost& host)
+{
+    host.read_base_00aaa710(widget, reader);
+    GuiTaggedValue field{};
+    field.tag = GuiValueTag::String;
+    field.s = f.movie_name_fc.c_str();
+    GuiTaggedValue fallback{};
+    fallback.tag = GuiValueTag::String;
+    fallback.s = "";                            // 00CE3A0C
+    reader.read_with_default("MovieName", field, fallback);
+    if (field.s != nullptr) f.movie_name_fc = field.s;
+    f.unit_size_f4 = transform.size.width == 1.0f && transform.size.height == 1.0f;
+}
+
+void gui_movie_set_size_00aacf10(void* widget, const GuiWidgetTransform& transform,
+                                 const float (&size)[2], GuiLeafHost& host)
+{
+    host.widget_set_size_00aa7970(widget, size);
+    void* stream = host.vertex_stream_00b73260(widget);
+    host.stream_lock_10(stream, 4, 0, 0);
+    const float w = transform.size.width;       // +20h after the resize
+    const float h = 0.75f * transform.size.height;  // [00E12FCC] * +24h
+    host.stream_write_position(stream, 0, 0.0f, 0.0f, 0.0f);
+    host.stream_write_uv0(stream, 0, 0.0f, 0.0f);
+    host.stream_write_position(stream, 1, w, 0.0f, 0.0f);
+    host.stream_write_uv0(stream, 1, 1.0f, 0.0f);
+    host.stream_write_position(stream, 2, w, h, 0.0f);
+    host.stream_write_uv0(stream, 2, 1.0f, 1.0f);
+    host.stream_write_position(stream, 3, 0.0f, h, 0.0f);
+    host.stream_write_uv0(stream, 3, 0.0f, 1.0f);
+    host.stream_unlock_14(stream);
+}
+
+namespace {
+
+GuiTaggedValue float_tagged(float value)
+{
+    GuiTaggedValue v{};
+    v.tag = GuiValueTag::Float;
+    v.f[0] = value;
+    return v;
+}
+
+void write_float_unless(GuiPropertyWriter& writer, const char* key, float value, float fallback)
+{
+    const GuiTaggedValue v = float_tagged(value);
+    if (!writer.equals_00bd5680(v, float_tagged(fallback))) writer.write(key, v);
+}
+
+} // namespace
+
+void gui_section_describe_properties_00abf090(const void* section, const GuiSectionFields& f,
+                                              GuiPropertyWriter& writer, GuiDescribeHost& host)
+{
+    gui_widgets_cc13::gui_widget_describe_properties_00aaaed0(section, writer, host);
+    write_float_unless(writer, "Value", f.value_f4, 0.0f);
+    write_float_unless(writer, "StartAngle", f.start_angle_f8, 0.0f);
+    GuiTaggedValue texture{};
+    texture.tag = GuiValueTag::String;
+    texture.s = f.texture_ec.c_str();           // data +F0h, or 00F8BEF4 when null
+    GuiTaggedValue empty{};
+    empty.tag = GuiValueTag::String;
+    empty.s = "";                               // 00CE3A0C
+    if (!writer.equals_00bd5680(texture, empty)) writer.write("Texture", texture);
+    GuiTaggedValue clockwise{};
+    clockwise.tag = GuiValueTag::Bool;
+    clockwise.b = f.clockwise_10c;
+    GuiTaggedValue clockwise_default{};
+    clockwise_default.tag = GuiValueTag::Bool;
+    clockwise_default.b = true;
+    if (!writer.equals_00bd5680(clockwise, clockwise_default)) writer.write("ClockWise", clockwise);
+    write_float_unless(writer, "TextureAngle", f.texture_angle_fc, 0.0f);
+    write_float_unless(writer, "U0", f.u0_100, 0.0f);                  // 00D5C8A4
+    write_float_unless(writer, "U1", f.u1_104, 1.0f);                  // 00D5C8A0, 00D7A24C
+    write_float_unless(writer, "RimWidthPercent", f.rim_width_percent_108, 0.5f);  // 00CE3800
+    gui_write_int_unless_default_00ac4ad0(writer, "TextureMode", f.texture_mode_110, 0);
+}
+
 } // namespace bsp::cc13_seg49_64_78
