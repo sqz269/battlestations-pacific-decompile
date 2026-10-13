@@ -197,7 +197,18 @@ local ready 005D5790, editable 005D5870, setting row count 005D5930, apply setti
 (game+2020h and three broadcasts), auto-test setting 005D6350, selected player slot 005D63A0,
 content masks 005D6BA0, load prompt dismiss 005D6CD0, local map availability 005D8B30, leave /
 close prompt results 005D98C0 / 005D9FE0, local slot change 005D9D60, close game 005D9EF0, selected
-slot request 005D9F50, local map apply 005D9F90, two-vector record 005DAC60, map entry copy 005DAF10.
+slot request 005D9F50, local map apply 005D9F90, two-vector record 005DAC60, map entry copy 005DAF10,
+leave to menu 005D8410 (the PUSH EDI before 00688C70 is the delayed callee-save of EDI, not an
+argument), row objects delete 005D8A70, map entry destruct 005DACA0.
+
+## Verification
+
+`reports/cc13_fe4_calls.json` (built by `local/fe4_calls_report.py` from the disasm-raw dumps)
+lists the 704 direct call and tail-jump sites of the reconstructed bodies;
+`python tools/verify_report_calls.py reports/cc13_fe4_calls.json` checks every one against the live
+listing: 0 failed. Three sites were left out because they lie in unlisted code right after
+005299D0 and 0052E3B0 (00529A22, 0052E401, 0052E408; the second is a string release at 0052E3F0
+with no Ghidra function).
 
 Corrections:
 

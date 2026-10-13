@@ -317,6 +317,10 @@ struct Seg15Host : bsp::ingame_gui_cc13::HudScreenServices {
     virtual void multi_menu_push_request_00688ad0(std::int32_t id) = 0;
     // 00557BC0, ECX = dst, (src): checked native-string vector copy.
     virtual void checked_string_vector_copy_00557bc0(Raw dst, Raw src) = 0;
+    // 0054A0C0, ECX = *00E1930C (command bar), (const NativeString*): help line.
+    virtual void command_bar_set_help_line_0054a0c0(Raw text) = 0;
+    // 00688C70, ECX = *00E198B4: leave to the main multiplayer interface.
+    virtual void multi_menu_leave_to_main_00688c70() = 0;
     // Native string substring (count, data) of the first n characters.
     virtual void native_string_truncate(Raw string, std::uint32_t n) = 0;
 };
@@ -758,6 +762,12 @@ void multi_game_lobby_apply_local_map_005d9f90(Seg15Host& host);
 void two_vector_record_construct_005dac60(Raw record);
 // 005DAF10, __thiscall(dst, src), RET 4: id +0 and two checked string vectors (+4h, +14h).
 void lobby_map_entry_copy_005daf10(Raw dst, Raw src, Seg15Host& host);
+// 005D8410, __fastcall(screen).
+void multi_game_lobby_leave_to_menu_005d8410(Raw s, Seg15Host& host);
+// 005D8A70, __fastcall(screen): delete every row object (+234h vector), then erase all.
+void multi_game_lobby_delete_row_objects_005d8a70(Raw s, Seg15Host& host);
+// 005DACA0, __fastcall(entry): both string vectors (+14h, +4h) destroyed and freed.
+void lobby_map_entry_destruct_005daca0(Raw entry, Seg15Host& host);
 
 }  // namespace bsp::frontend_seg15_22_cc13
 

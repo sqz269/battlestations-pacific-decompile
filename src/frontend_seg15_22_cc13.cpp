@@ -2600,6 +2600,51 @@ void lobby_map_entry_copy_005daf10(Raw dst, Raw src, Seg15Host& host) {
     host.checked_string_vector_copy_00557bc0(Raw{dst.p + 0x14}, Raw{src.p + 0x14});
 }
 
+// 005D8410: empty help line, +270h = 0, leave to the main multiplayer
+// interface, clear the chat logs (*(*00E198B4 + 54h)), clear the lists +134h
+// and +B4h with their scrollers (+158h, +CCh: range 0.0, no content); outside
+// a dedicated session (game+218Ch clear) 00E19614 = 0. The PUSH EDI before
+// 00688C70 is the delayed save of EDI, not an argument.
+void multi_game_lobby_leave_to_menu_005d8410(Raw s, Seg15Host& host) {
+    host.command_bar_set_help_line_0054a0c0(host.native_string_temp(""));
+    s.at<std::uint8_t>(0x270) = 0;
+    host.multi_menu_leave_to_main_00688c70();
+    multi_chat_clear_logs_005cfb80(Raw{static_cast<std::uint8_t*>(host.global_object(kMultiMenuGlobal).ptr(0x54))}, host);
+    host.widget_clear_00aa83f0(s.ptr(0x134));
+    host.scroller_set_range_006834a0(Raw{s.p + 0x158}, 0.0f);
+    host.scroller_attach_content_00683790(Raw{s.p + 0x158}, nullptr);
+    host.widget_clear_00aa83f0(s.ptr(0xB4));
+    host.scroller_set_range_006834a0(Raw{s.p + 0xCC}, 0.0f);
+    host.scroller_attach_content_00683790(Raw{s.p + 0xCC}, nullptr);
+    if (host.global_object(kGameGlobal).at<std::uint8_t>(0x218C) == 0) host.global_block(0x00E19614).at<std::uint32_t>(0) = 0;
+}
+
+void multi_game_lobby_delete_row_objects_005d8a70(Raw s, Seg15Host& host) {
+    for (std::uint32_t i = 0;; ++i) {
+        auto* first = static_cast<std::uint8_t**>(s.ptr(0x234));
+        if (first == nullptr || i >= static_cast<std::uint32_t>(static_cast<std::uint8_t**>(s.ptr(0x238)) - first)) break;
+        if (first[i] != nullptr) {
+            host.object_delete_04(first[i]);
+            first[i] = nullptr;
+        }
+    }
+    // erase(begin, end): nothing is moved, end = begin.
+    if (s.ptr(0x234) != s.ptr(0x238)) s.ptr(0x238) = s.ptr(0x234);
+}
+
+void lobby_map_entry_destruct_005daca0(Raw entry, Seg15Host& host) {
+    for (std::size_t vec : {0x14u, 0x4u}) {
+        auto* first = static_cast<std::uint8_t*>(entry.ptr(vec + 4));
+        if (first != nullptr) {
+            for (auto* p = first; p != entry.ptr(vec + 8); p += 8) host.native_string_release(Raw{p});
+            host.free_00bf65ac(first);
+        }
+        entry.at<std::uint32_t>(vec + 4) = 0;
+        entry.at<std::uint32_t>(vec + 8) = 0;
+        entry.at<std::uint32_t>(vec + 0xC) = 0;
+    }
+}
+
 void byte_sbo_uninit_fill_n_005443f0(std::uint8_t* dest, std::uint32_t count, const std::uint8_t* value,
                                      Seg15Host& host) {
     for (; count != 0; --count, dest += 0x24) {
