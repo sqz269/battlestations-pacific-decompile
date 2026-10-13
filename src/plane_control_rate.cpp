@@ -77,7 +77,7 @@ float plane_control_axis_step_007da710(const PlaneRotationFactors& factors,
         // 20 deg pitch. The sign test is the same chain on each axis.
         if (floor_applies(delta, axis.current)) {
             const float deflection_floor =
-                rate_law_deflection_floor_007da710(image_floor_axis, axis.current, image_floor_sp);
+                gameplay_seg48_cc13::rate_law_deflection_floor_007da710(image_floor_axis, axis.current, image_floor_sp);
             if (deflection_floor >= 0.0f && !(rate > deflection_floor)) {
                 rate = deflection_floor;
             }
