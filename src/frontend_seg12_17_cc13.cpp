@@ -564,11 +564,14 @@ void tree_destroy_subtree(const TreeDestroySubtree& row, void* node, Fe3Template
         void* const left = raw(node).ptr(0);
         if (row.string_vector_value) {
             const Raw n = raw(node);
-            if (n.ptr(0x18) != nullptr) host.free_00bf65ac(n.ptr(0x18));
-            n.ptr(0x18) = nullptr;
-            n.ptr(0x1C) = nullptr;
-            n.ptr(0x20) = nullptr;
-            if (n.ptr(0x10) != nullptr) host.sized_pool_return_00bd1510(n.ptr(0x10), n.at<std::uint32_t>(0xC) + 1, 1);
+            if (row.pre_zero >= 0) n.at<std::uint32_t>(static_cast<std::size_t>(row.pre_zero)) = 0;
+            const std::size_t v = row.vector_offset;
+            if (n.ptr(v) != nullptr) host.free_00bf65ac(n.ptr(v));
+            n.ptr(v) = nullptr;
+            n.ptr(v + 4) = nullptr;
+            n.ptr(v + 8) = nullptr;
+            const std::size_t s = row.string_offset;
+            if (n.ptr(s + 4) != nullptr) host.sized_pool_return_00bd1510(n.ptr(s + 4), n.at<std::uint32_t>(s) + 1, 1);
         }
         host.free_00bf65ac(node);
         node = left;
@@ -1579,6 +1582,409 @@ void frame_collect_children_00518e00(Raw f, void* out, Fe3PageHost& host) {
     for (std::size_t off : slots) {
         if (f.ptr(off) != nullptr) host.push_page_slot_004d6790(out, &f.ptr(off));
     }
+}
+
+// --- batch D: control binding screen and input-settings trees -------------
+
+namespace {
+
+void copy_string_d(Raw to, Raw from, Fe3InputHost& host) {
+    to.at<std::uint32_t>(0) = 0;
+    to.ptr(4) = nullptr;
+    if (to.p == from.p) return;
+    host.native_string_resize_0041dd40(to.p, from.at<std::uint32_t>(0), 1);
+    if (from.at<std::uint32_t>(0) != 0) std::memcpy(to.ptr(4), from.ptr(4), to.at<std::uint32_t>(0));
+}
+
+void* load_named_page(const char* name, Fe3InputHost& host) {
+    std::uint8_t storage[8] = {};
+    const Raw temp = raw(storage);
+    host.native_string_resize_0041dd40(temp.p, static_cast<std::uint32_t>(std::strlen(name)), 1);
+    if (temp.ptr(4) != nullptr) std::memcpy(temp.ptr(4), name, temp.at<std::uint32_t>(0) + 1);
+    void* const page = host.gui_load_page_00aa5840(temp.p, 1, 0);
+    if (temp.ptr(4) != nullptr) host.sized_pool_return_00bd1510(temp.ptr(4), temp.at<std::uint32_t>(0) + 1, 1);
+    return page;
+}
+
+void clear_tree_at(Raw owner, std::size_t offset, Fe3InputHost& host) {
+    const Raw t = raw(owner.p + offset);
+    void* const head = t.ptr(4);
+    std::uint32_t result[2];
+    host.int_scalar_tree_erase_range_005572f0(t.p, result, raw(head).ptr(0), head);
+    host.free_00bf65ac(t.ptr(4));
+    t.ptr(4) = nullptr;
+    t.at<std::uint32_t>(8) = 0;
+}
+
+} // namespace
+
+void* tree_copy_subtree(const TreeCopySubtree& row, Raw t, void* node, void* parent, Fe3InputHost& host) {
+    void* const head = t.ptr(4);
+    if (raw(node).at<std::uint8_t>(row.is_nil_offset) != 0) return head;
+    void* const copy = host.tree_buy_node(row.buy_node, t.p, head, parent, head, raw(node).p + 0xC,
+        raw(node).at<std::uint8_t>(row.colour_offset));
+    raw(copy).ptr(0) = host.tree_copy_subtree(row.address, t.p, raw(node).ptr(0), copy);
+    raw(copy).ptr(8) = host.tree_copy_subtree(row.address, t.p, raw(node).ptr(8), copy);
+    return copy;
+}
+
+void* int_key_tree_buy_node_005550d0(void* left, void* parent, void* right, const std::uint32_t* value,
+    std::uint8_t colour, Fe3InputHost& host) {
+    void* const node = host.operator_new_00bf681b(0x14);
+    if (node == nullptr) return nullptr;
+    raw(node).ptr(0) = left;
+    raw(node).ptr(4) = parent;
+    raw(node).ptr(8) = right;
+    raw(node).at<std::uint32_t>(0xC) = *value;
+    raw(node).at<std::uint8_t>(0x10) = colour;
+    raw(node).at<std::uint8_t>(0x11) = 0;
+    return node;
+}
+
+void* int_scalar_map_buy_node_0055a290(void* left, void* parent, void* right, const void* value,
+    std::uint8_t colour, Fe3InputHost& host) {
+    void* const node = host.operator_new_00bf681b(0x20);
+    if (node == nullptr) return nullptr;
+    raw(node).ptr(0) = left;
+    raw(node).ptr(4) = parent;
+    raw(node).ptr(8) = right;
+    raw(node).at<std::uint32_t>(0xC) = raw(const_cast<void*>(value)).at<std::uint32_t>(0);
+    host.value_copy(0x00558570, raw(node).p + 0x10, static_cast<const std::uint8_t*>(value) + 4);
+    raw(node).at<std::uint8_t>(0x1C) = colour;
+    raw(node).at<std::uint8_t>(0x1D) = 0;
+    return node;
+}
+
+void int_scalar_tree_assign_00555b20(Raw m, Raw source, Fe3InputHost& host) {
+    void* const head = m.ptr(4);
+    raw(head).ptr(4) = host.tree_copy_subtree(0x005555B0, m.p, raw(source.ptr(4)).ptr(4), head);
+    m.at<std::uint32_t>(8) = source.at<std::uint32_t>(8);
+    void* const root = raw(m.ptr(4)).ptr(4);
+    if (raw(root).at<std::uint8_t>(0x15) != 0) {
+        raw(m.ptr(4)).ptr(0) = m.ptr(4);
+        raw(m.ptr(4)).ptr(8) = m.ptr(4);
+        return;
+    }
+    void* left = root;
+    while (raw(raw(left).ptr(0)).at<std::uint8_t>(0x15) == 0) left = raw(left).ptr(0);
+    raw(m.ptr(4)).ptr(0) = left;
+    void* right = raw(m.ptr(4)).ptr(4);
+    while (raw(raw(right).ptr(8)).at<std::uint8_t>(0x15) == 0) right = raw(right).ptr(8);
+    raw(m.ptr(4)).ptr(8) = right;
+}
+
+void int_scalar_tree_clear_at_4_00559610(Raw owner, Fe3InputHost& host) { clear_tree_at(owner, 4, host); }
+
+void int_tree_tree_destroy_subtree_0055af60(void* node, Fe3InputHost& host) {
+    while (raw(node).at<std::uint8_t>(0x1D) == 0) {
+        int_tree_tree_destroy_subtree_0055af60(raw(node).ptr(8), host);
+        void* const left = raw(node).ptr(0);
+        clear_tree_at(raw(node), 0x10, host);
+        host.free_00bf65ac(node);
+        node = left;
+    }
+}
+
+bool vector16_construct_n_00557250(Raw v, std::uint32_t n, Fe3InputHost& host) {
+    v.ptr(4) = nullptr;
+    v.ptr(8) = nullptr;
+    v.ptr(0xC) = nullptr;
+    if (n == 0) return false;
+    if (n > 0x0FFFFFFFu) host.vector_length_error_00556c90();
+    void* const storage = host.allocate_16_00553300(n);
+    v.ptr(0xC) = static_cast<std::uint8_t*>(storage) + n * 16;
+    v.ptr(4) = storage;
+    v.ptr(8) = storage;
+    return true;
+}
+
+void* string_dword_tail_copy(const StringDwordTailCopy& row, Raw to, Raw from, Fe3InputHost& host) {
+    copy_string_d(to, from, host);
+    to.at<std::uint32_t>(8) = from.at<std::uint32_t>(8);
+    host.value_copy(row.tail_copy, to.p + 0xC, from.p + 0xC);
+    return to.p;
+}
+
+void* string_sensitivity_pair_construct_005586b0(Raw to, Raw key, const std::uint8_t* value, Fe3InputHost& host) {
+    copy_string_d(to, key, host);
+    std::memcpy(to.p + 8, value, 4);
+    host.value_copy(0x00557590, to.p + 0xC, value + 4);
+    return to.p;
+}
+
+void* input_device_record_copy_0055b920(Raw to, Raw from, Fe3InputHost& host) {
+    for (const MemberCopy& m : kInputDeviceRecordMembers) host.value_copy(m.routine, to.p + m.offset, from.p + m.offset);
+    return to.p;
+}
+
+void* input_device_pair_construct_0055ba80(Raw pair, Raw key, const void* record, Fe3InputHost& host) {
+    copy_string_d(pair, key, host);
+    input_device_record_copy_0055b920(raw(pair.p + 8), raw(const_cast<void*>(record)), host);
+    return pair.p;
+}
+
+void* control_binding_construct_00555770(Raw s, Fe3InputHost& host) {
+    host.front_end_screen_construct_004f7180(s);
+    s.at<std::uint32_t>(8) = 0x00CEB0FC;
+    s.at<std::uint32_t>(0xC) = 0x00CEB110;
+    s.at<std::uint32_t>(0) = 0x00CEE524;
+    s.at<std::uint32_t>(8) = 0x00CEE510;
+    s.at<std::uint32_t>(0xC) = 0x00CEE4F0;
+    s.at<std::uint32_t>(0x3C) = 0;
+    s.at<std::uint32_t>(0x40) = 0;
+    s.at<std::uint32_t>(0x184) = 0;
+    s.at<std::uint32_t>(0x188) = 0;
+    host.gui_scroller_construct_00683610(s.p + 0x1A0);
+    s.at<std::uint8_t>(0xE4) = 0;
+    s.at<std::uint32_t>(0xE0) = 10;
+    return s.p;
+}
+
+void control_binding_destruct_00555820(Raw s, Fe3InputHost& host) {
+    s.at<std::uint32_t>(0) = 0x00CEE524;
+    s.at<std::uint32_t>(8) = 0x00CEE510;
+    s.at<std::uint32_t>(0xC) = 0x00CEE4F0;
+    host.gui_remove_page_00aa31f0(s.ptr(0x14));
+    host.gui_remove_page_00aa31f0(s.ptr(0x18));
+    if (s.ptr(0x188) != nullptr) host.sized_pool_return_00bd1510(s.ptr(0x188), s.at<std::uint32_t>(0x184) + 1, 1);
+    if (s.ptr(0x40) != nullptr) host.sized_pool_return_00bd1510(s.ptr(0x40), s.at<std::uint32_t>(0x3C) + 1, 1);
+    s.at<std::uint32_t>(8) = 0x00CEB0FC;
+    host.front_end_screen_destruct_004f71a0(s);
+}
+
+void control_binding_register_00555c60(Raw s, Fe3InputHost& host) {
+    host.front_end_screen_register_004f71d0(s);
+    s.ptr(0x14) = load_named_page("FE_controls_PC_listbox", host);  // 00CEE55C
+    s.ptr(0x18) = load_named_page("FE_controls_PC", host);          // 00CEE54C
+    for (std::size_t off = 0x16C; off <= 0x17C; off += 4) s.at<std::uint32_t>(off) = 0;
+    s.at<std::uint32_t>(0x180) = 1;
+    host.screen_virtual_14(s);
+}
+
+void leaderboards_listener_style_00560ff0(Raw l, void* w, std::uint8_t focused, Fe3InputHost& host) {
+    const std::uint32_t type = host.widget_type_5c(w);
+    if (type == 2) return;
+    if (host.widget_type_5c(w) == 3) {
+        host.widget_set_float_4c(w, focused != 0 ? 0.5f : 1.0f);  // 00CE3800 / 00D7A24C
+        return;
+    }
+    const bool style = w == l.ptr(0xA0) && l.at<std::uint8_t>(0x70) == 0;
+    if (!style) return;
+    if (host.widget_type_5c(w) == 6) {
+        host.widget_virtual_88(w, focused != 0 ? 1u : 0u, 0, 1.0f);
+    } else if (host.widget_type_5c(w) == 0x12) {
+        host.widget_virtual_84(w, focused != 0 ? 1u : 0u);
+    }
+}
+
+void hud_pilot_update_binocular_view_005191b0(float dt, Fe3InputHost& host) {
+    host.binoculars_update_view_0051f330(host.hud_root_00e198c4().ptr(0x4C), dt);
+    void* const plane = host.hud_root_00e198c4().ptr(0x68);
+    if (raw(plane).at<std::uint8_t>(5) != 0) host.plane_update_instruments_00609bd0(plane, dt, 0, 0);
+    const Raw root = host.hud_root_00e198c4();
+    host.screen_2e_set_view_centre_005454b0(root.ptr(0x50), 0.5f, 0.5f, raw(root.ptr(0x4C)).at<float>(0x38));
+}
+
+void hud_bomber_register_00519830(Raw s, Fe3InputHost& host) {
+    host.front_end_screen_register_004f71d0(s);
+    s.at<std::uint32_t>(0x20) = 0;
+    s.at<std::uint32_t>(0x1C) = 0;
+    s.at<std::uint32_t>(0x28) = 0;
+    s.ptr(0x2C) = load_named_page("GUI_bomber", host);  // 00CEC738
+}
+
+// --- batch D (continued): leaderboards ----------------------------------------
+
+namespace {
+
+void board_string(Raw to, Raw from, bool construct, Fe3BoardHost& host) {
+    if (construct) {
+        to.at<std::uint32_t>(0) = 0;
+        to.ptr(4) = nullptr;
+    }
+    if (to.p == from.p) return;
+    host.native_string_resize_0041dd40(to.p, from.at<std::uint32_t>(0), 1);
+    if (from.at<std::uint32_t>(0) != 0) std::memcpy(to.ptr(4), from.ptr(4), to.at<std::uint32_t>(0));
+}
+
+} // namespace
+
+void leaderboards_show_board_name_00561660(Raw s, Fe3BoardHost& host) {
+    void* const boards = s.ptr(0x94);
+    const std::int32_t index =
+        raw(boards).at<std::uint8_t>(0x85) != 0 ? host.listbox_selected_index_00a9c920(boards) : s.at<std::int32_t>(0xB8);
+    host.gui_text_set_localised_source_00abaed0(s.ptr(0x9C), host.board_row_00e19468(index).p + 0x14, 1);
+    s.at<float>(0x150) = 0.5f;  // 00CE3800
+    s.at<std::uint32_t>(0x154) = 1;
+}
+
+void leaderboard_row_destroy_005617c0(Raw row, Fe3BoardHost& host) {
+    for (std::size_t off : {0x14, 0x0C, 0x04}) {
+        if (row.ptr(off + 4) != nullptr) host.sized_pool_return_00bd1510(row.ptr(off + 4), row.at<std::uint32_t>(off) + 1, 1);
+    }
+}
+
+void* leaderboard_row_copy_00562490(Raw to, Raw from, bool construct, Fe3BoardHost& host) {
+    to.at<std::uint32_t>(0) = from.at<std::uint32_t>(0);
+    board_string(raw(to.p + 4), raw(from.p + 4), construct, host);
+    board_string(raw(to.p + 0xC), raw(from.p + 0xC), construct, host);
+    board_string(raw(to.p + 0x14), raw(from.p + 0x14), construct, host);
+    std::memcpy(to.p + 0x1C, from.p + 0x1C, 0x24);
+    return to.p;
+}
+
+void leaderboards_sync_selection_00561ad0(Raw s, std::uint8_t boards, Fe3BoardHost& host) {
+    if (s.at<std::uint32_t>(0x154) != 0) return;
+    if (boards != 0) {
+        if (raw(s.ptr(0x94)).at<std::uint8_t>(0x85) != 0) return;
+        s.at<std::int32_t>(0x148) = host.listbox_selected_index_00a9c920(s.ptr(0x11C));
+        host.listbox_clear_00a9cdc0(s.ptr(0x11C));
+        host.widget_set_focus_60(s.ptr(0x94), 1);
+        host.listbox_select_index_00a9c7c0(s.ptr(0x94), s.at<std::int32_t>(0xB8));
+    } else {
+        if (raw(s.ptr(0x11C)).at<std::uint8_t>(0x85) != 0) return;
+        s.at<std::int32_t>(0xB8) = host.listbox_selected_index_00a9c920(s.ptr(0x94));
+        host.listbox_clear_00a9cdc0(s.ptr(0x94));
+        host.widget_set_focus_60(s.ptr(0x11C), 1);
+        host.listbox_select_index_00a9c7c0(s.ptr(0x11C), s.at<std::int32_t>(0x148));
+    }
+    host.leaderboards_move_selection_00561860(s, s.p + 0xBC, s.at<std::uint32_t>(0x11C), s.at<std::uint32_t>(0x118), 1);
+    s.at<std::uint8_t>(0x8D) = boards;
+    s.at<std::uint8_t>(0x115) = boards == 0 ? 1 : 0;
+}
+
+void leaderboards_return_to_menu_005629a0(Raw s, Fe3BoardHost& host) {
+    host.please_wait_hide_00e19698();
+    host.set_menu_return_00e08874(0xB);
+    host.front_end_push_interface_request_004cc460(1, 0);
+    host.frame_set_selection_00518da0(0xC);
+    host.listbox_clear_rows_00a9bec0(s.ptr(0x94));
+    host.scroller_attach_content_00683790(s.p + 0x34, nullptr);
+    host.listbox_clear_rows_00a9bec0(s.ptr(0x11C));
+    host.scroller_attach_content_00683790(s.p + 0xBC, nullptr);
+}
+
+void leaderboards_destruct_00563440(Raw s, Fe3BoardHost& host) {
+    s.at<std::uint32_t>(0) = 0x00CEE9CC;
+    s.at<std::uint32_t>(8) = 0x00CEE9B8;
+    s.at<std::uint32_t>(0xC) = 0x00CEE998;
+    host.gui_remove_page_00aa31f0(s.ptr(0x30));
+    if (s.ptr(0x14) != nullptr) {
+        host.wide_string_range_destroy_004d0b80(s.ptr(0x14), s.ptr(0x18), s.p + 0x10, s.p);
+        host.free_00bf65ac(s.ptr(0x14));
+        s.ptr(0x14) = nullptr;
+        s.ptr(0x18) = nullptr;
+        s.ptr(0x1C) = nullptr;
+    }
+    s.at<std::uint32_t>(8) = 0x00CEB0FC;
+    host.front_end_screen_destruct_004f71a0(s);
+}
+
+void leaderboards_begin_read_005635f0(Raw s, Fe3BoardHost& host) {
+    if (s.at<std::uint8_t>(0x7C) != 0) host.scroller_end_thumb_drag_00683320(s.p + 0x34);
+    if (host.game_reading_7058()) return;
+    const Raw wait = host.please_wait_screen_00e19698();
+    wait.at<std::uint8_t>(4) = 1;
+    wait.at<std::uint8_t>(5) = 1;
+    host.front_end_commit_visibility_004f83b0(wait);
+    host.screen_virtual_18(wait);
+    host.please_wait_render_now_0060d570();
+    s.ptr(0x20) = host.wide_string_vector_erase_004d6ea0(s.p + 0x10);
+    s.at<std::uint32_t>(0x28) = s.at<std::uint32_t>(0x2C);
+    const std::int32_t mode = host.leaderboard_mode_00e19430();
+    const std::uint64_t xuid = mode == 2 ? host.xenon_active_xuid_00a3eb00() : 0;
+    // The original pushes EDX with only its low byte set to (mode == 1); for mode 2 the upper
+    // bytes are the XUID's high dword, otherwise they are whatever EDX held.
+    const std::uint32_t friends_word = (static_cast<std::uint32_t>(xuid >> 32) & 0xFFFFFF00u) | (mode == 1 ? 1u : 0u);
+    host.game_begin_leaderboard_read_004bc6d0(0, xuid, s.at<std::uint32_t>(0x20), s.at<std::uint32_t>(0x24), 0, friends_word);
+    s.at<float>(0x15C) = 0.0f;
+}
+
+// --- batch D (continued): leaderboard reads, HUD limbo ------------------------
+
+namespace {
+
+std::int32_t board_index(Raw s, Fe3ReadHost& host) {
+    void* const boards = s.ptr(0x94);
+    return raw(boards).at<std::uint8_t>(0x85) != 0 ? host.listbox_selected_index_00a9c920(boards) : s.at<std::int32_t>(0xB8);
+}
+
+} // namespace
+
+void leaderboards_reset_rows_00564e70(Raw s, Fe3ReadHost& host) {
+    s.at<std::uint32_t>(0x148) = 0;
+    host.listbox_set_listener_00a9ac40(s.ptr(0x11C), nullptr);
+    host.listbox_clear_rows_00a9bec0(s.ptr(0x11C));
+    host.gui_text_set_ellipsized_00abb000(s.ptr(0x138), host.board_row_00e19468(board_index(s, host)).p + 0xC, -1.0f, 1);
+    s.at<std::uint32_t>(0x24) = 0;
+    host.leaderboards_begin_read_005635f0(s, host.board_row_00e19468(board_index(s, host)).at<std::uint32_t>(0));
+    s.at<std::uint32_t>(0x154) = 2;
+}
+
+void leaderboards_on_read_complete_00564f60(Raw s, const void* results, Fe3ReadHost& host) {
+    if (s.at<std::uint8_t>(5) == 0) return;
+    const std::uint32_t board = host.board_row_00e19468(board_index(s, host)).at<std::uint32_t>(0);
+    if (s.at<std::uint32_t>(0x20) != board || s.at<std::uint32_t>(0x28) != s.at<std::uint32_t>(0x2C)) {
+        if (host.please_wait_screen_00e19698().at<std::uint8_t>(4) != 0) host.leaderboards_begin_read_005635f0(s, board);
+        return;
+    }
+    host.results_assign_00563760(s.p + 0x10, results);
+    host.leaderboards_fill_rows_00561eb0(s);
+    s.at<std::uint32_t>(0x154) = 0;
+    if (host.leaderboard_mode() == 2) {
+        const std::uint64_t xuid = host.xenon_active_xuid_00a3eb00();
+        const Raw r = raw(const_cast<void*>(results));
+        auto* begin = static_cast<std::uint8_t*>(r.ptr(4));
+        const std::uint32_t count = begin == nullptr ? 0 : static_cast<std::uint32_t>(static_cast<std::uint8_t*>(r.ptr(8)) - begin) / 0x60;
+        for (std::uint32_t i = 0; i < count; ++i) {
+            if (raw(begin + i * 0x60).at<std::uint64_t>(0x58) == xuid) break;  // the answer is not used
+        }
+    }
+    host.please_wait_screen_00e19698().at<std::uint8_t>(4) = 0;
+    if (s.at<std::uint8_t>(0x158) != 0) {
+        host.gui_set_enabled_00aa0e00(1);
+        host.gui_set_pointer_visible_00aa0e50(1);
+    }
+}
+
+void leaderboards_cycle_filter_005650c0(Raw s, Fe3ReadHost& host) {
+    const std::int32_t mode = (host.leaderboard_mode() + 1) % 3;
+    host.set_leaderboard_mode(mode);
+    std::uint8_t storage[8] = {};
+    const Raw temp = raw(storage);
+    host.native_string_assign_0041e870(temp.p, host.filter_name_00e086b4(mode));
+    host.gui_text_set_ellipsized_00abb000(s.ptr(0x134), temp.p, -1.0f, 1);  // [00D7A260]
+    if (temp.ptr(4) != nullptr) host.sized_pool_return_00bd1510(temp.ptr(4), temp.at<std::uint32_t>(0) + 1, 1);
+    s.at<std::uint32_t>(0x2C) = 1;
+    if (raw(s.ptr(0x11C)).at<std::uint8_t>(0x85) != 0) s.at<std::uint32_t>(0x164) = 1;
+    leaderboards_reset_rows_00564e70(s, host);
+}
+
+void hud_limbo_register_00565ee0(Raw s, Fe3ReadHost& host) {
+    host.front_end_screen_register_004f71d0(s);
+    std::uint8_t storage[8] = {};
+    const Raw temp = raw(storage);
+    const char* const name = "GUI_limbo";  // 00CEEBD4
+    host.native_string_resize_0041dd40(temp.p, 9, 1);
+    if (temp.ptr(4) != nullptr) std::memcpy(temp.ptr(4), name, 10);
+    s.ptr(8) = host.gui_load_page_00aa5840(temp.p, 1, 0);
+    if (temp.ptr(4) != nullptr) host.sized_pool_return_00bd1510(temp.ptr(4), temp.at<std::uint32_t>(0) + 1, 1);
+}
+
+void hud_limbo_set_state_00565fb0(Raw s, std::int32_t state, Fe3ReadHost& host) {
+    s.at<std::int32_t>(0x14) = state;
+    std::uint32_t offset = 0xD8;
+    switch (state) {
+    case 1: offset = 0xA8; break;
+    case 2: offset = 0xB8; break;
+    case 3: offset = 0xD0; break;
+    case 4: offset = 0xC0; break;
+    case 5: offset = 0xB0; break;
+    default: break;
+    }
+    const char* text = host.global_config_string(offset);
+    if (text == nullptr) text = host.empty_string_00e19476();
+    if (s.at<std::uint8_t>(5) != 0) host.gui_text_set_localised_00abbe50(s.ptr(0xC), text, 1);
 }
 
 } // namespace bsp::cc13_fe3

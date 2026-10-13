@@ -166,9 +166,9 @@ struct TreeClear {
     std::uint32_t address;
     std::uint32_t destroy_subtree;
 };
-inline constexpr std::array<TreeClear, 5> kTreeClear{{
+inline constexpr std::array<TreeClear, 6> kTreeClear{{
     {0x00558740, 0x00558310}, {0x00559400, 0x00558E60}, {0x00559430, 0x00558ED0}, {0x0055B030, 0x0055AF60},
-    {0x00558D50, 0x00558420},
+    {0x00558D50, 0x00558420}, {0x00555660, 0x00554F10},
 }};
 void tree_clear(const TreeClear& row, Raw tree, Fe3Host& host);
 // 0055AC60, __thiscall(this, a, b), RET 8: 0055A3A0(ECX = a, EDX = b; this, b).
@@ -373,8 +373,8 @@ struct StringTailCopy {
     std::uint32_t address;
     std::uint32_t tail_copy;
 };
-inline constexpr std::array<StringTailCopy, 4> kStringTailCopy{{
-    {0x00509830, 0x005071B0}, {0x0050A380, 0x0050A210}, {0x005577A0, 0x00557590}, {0x0055BA00, 0x0055B920},
+inline constexpr std::array<StringTailCopy, 5> kStringTailCopy{{
+    {0x00509830, 0x005071B0}, {0x0050A380, 0x0050A210}, {0x005577A0, 0x00557590}, {0x0055BA00, 0x0055B920}, {0x005584D0, 0x005578C0},
 }};
 void* string_tail_copy(const StringTailCopy& row, Raw to, Raw from, Fe3TemplateHost& host);
 // Tree node allocation, __thiscall(tree (unused), left, parent, right, const value*, BYTE colour),
@@ -386,9 +386,9 @@ struct TreeBuyNode {
     std::uint32_t value_copy;
     std::uint8_t colour_offset;
 };
-inline constexpr std::array<TreeBuyNode, 5> kTreeBuyNode{{
+inline constexpr std::array<TreeBuyNode, 6> kTreeBuyNode{{
     {0x0050D840, 0x6C, 0x0050A380, 0x68}, {0x00558DC0, 0x28, 0x005577A0, 0x24}, {0x005591E0, 0x2C, 0x00558280, 0x28},
-    {0x00559510, 0x28, 0x005584D0, 0x24}, {0x00559C90, 0x2C, 0x00558F80, 0x28},
+    {0x00559510, 0x28, 0x005584D0, 0x24}, {0x00559C90, 0x2C, 0x00558F80, 0x28}, {0x0055BB40, 0x9C, 0x0055BA00, 0x98},
 }};
 void* tree_buy_node(const TreeBuyNode& row, void* left, void* parent, void* right, const void* value,
     std::uint8_t colour, Fe3TemplateHost& host);
@@ -442,9 +442,14 @@ struct TreeDestroySubtree {
     std::uint32_t address;
     std::uint8_t is_nil_offset;
     bool string_vector_value;
+    std::uint8_t vector_offset;  // value teardown: vector freed and zeroed,
+    std::uint8_t string_offset;  // string returned to the pool,
+    std::int8_t pre_zero;        // and this dword zeroed first (-1: none)
 };
-inline constexpr std::array<TreeDestroySubtree, 3> kTreeDestroySubtree{{
-    {0x00554F10, 0x15, false}, {0x00558310, 0x25, true}, {0x00558E60, 0x25, true},
+inline constexpr std::array<TreeDestroySubtree, 5> kTreeDestroySubtree{{
+    {0x00554F10, 0x15, false, 0, 0, -1}, {0x00558310, 0x25, true, 0x18, 0x0C, -1},
+    {0x00558E60, 0x25, true, 0x18, 0x0C, -1}, {0x00558420, 0x29, true, 0x1C, 0x0C, 0x14},
+    {0x00558ED0, 0x29, true, 0x1C, 0x0C, -1},
 }};
 void tree_destroy_subtree(const TreeDestroySubtree& row, void* node, Fe3TemplateHost& host);
 // Case-insensitive lower bound, __thiscall(tree, const NativeString* key), RET 4, EAX = node:
@@ -454,7 +459,7 @@ struct TreeLowerBound {
     std::uint32_t address;
     std::uint8_t is_nil_offset;
 };
-inline constexpr std::array<TreeLowerBound, 2> kTreeLowerBound{{{0x005548C0, 0x25}, {0x00554920, 0x29}}};
+inline constexpr std::array<TreeLowerBound, 3> kTreeLowerBound{{{0x005548C0, 0x25}, {0x00554920, 0x29}, {0x00554980, 0x99}}};
 void* tree_lower_bound(const TreeLowerBound& row, Raw tree, Raw key, Fe3TemplateHost& host);
 // 005558F0, __thiscall(string, pos, count), RET 8: pos < length -> count clipped to the tail,
 // memmove the tail down, resize(length - count, 1).
@@ -935,5 +940,236 @@ void frame_get_title_position_00518820(float box[3], float title[3], Fe3PageHost
 // of each non-null current page: +0Ch + 4 * (13 * +160h + [00E18D84]), +4 * ([00E18D88] + 2 *
 // +160h + 44h), +4 * ([00E18D8C] + 2 * +160h + 4Eh).
 void frame_collect_children_00518e00(Raw frame, void* out, Fe3PageHost& host);
+
+// ---------------------------------------------------------------------------
+// Batch D: control binding screen, input-settings trees (continued), HUD pilot/bomber.
+// ---------------------------------------------------------------------------
+struct Fe3InputHost {
+    virtual ~Fe3InputHost() = default;
+    virtual void* operator_new_00bf681b(std::uint32_t bytes) = 0;
+    virtual void free_00bf65ac(void* block) = 0;
+    virtual void sized_pool_return_00bd1510(void* block, std::uint32_t bytes, std::uint32_t count) = 0;
+    virtual void native_string_resize_0041dd40(void* string, std::uint32_t length, std::uint32_t preserve) = 0;
+    virtual void* tree_buy_node(std::uint32_t routine, void* tree, void* left, void* parent, void* right,
+        const void* value, std::uint8_t colour) = 0;
+    virtual void* tree_copy_subtree(std::uint32_t routine, void* tree, void* node, void* parent) = 0;
+    virtual void value_copy(std::uint32_t routine, void* to, const void* from) = 0;
+    virtual void int_scalar_tree_erase_range_005572f0(void* tree, void* result, void* first_node, void* last_node) = 0;
+    virtual void vector_length_error_00556c90() = 0;
+    virtual void* allocate_16_00553300(std::uint32_t count) = 0;                        // ECX = count, EDX = 0
+    // Screens.
+    virtual void front_end_screen_construct_004f7180(Raw screen) = 0;
+    virtual void front_end_screen_destruct_004f71a0(Raw screen) = 0;
+    virtual void front_end_screen_register_004f71d0(Raw screen) = 0;
+    virtual void gui_scroller_construct_00683610(void* scroller) = 0;
+    virtual void gui_remove_page_00aa31f0(void* page) = 0;                              // ECX = 004C12B0()
+    virtual void* gui_load_page_00aa5840(const void* name, std::uint32_t one, std::uint32_t zero) = 0;  // ECX = 004C12B0()
+    virtual void screen_virtual_14(Raw screen) = 0;
+    virtual std::uint32_t widget_type_5c(void* widget) = 0;
+    virtual void widget_set_float_4c(void* widget, float value) = 0;
+    virtual void widget_virtual_84(void* widget, std::uint32_t focus) = 0;
+    virtual void widget_virtual_88(void* widget, std::uint32_t a, std::uint32_t b, float alpha) = 0;
+    // HUD root [00E198C4]: +4Ch binoculars, +50h screen 2Eh, +68h plane screen.
+    virtual Raw hud_root_00e198c4() = 0;
+    virtual void binoculars_update_view_0051f330(void* binoculars, float dt) = 0;
+    virtual void plane_update_instruments_00609bd0(void* plane, float dt, std::uint32_t a, std::uint32_t b) = 0;
+    virtual void screen_2e_set_view_centre_005454b0(void* screen, float x, float y, float z) = 0;
+};
+
+// Copy of a subtree, __thiscall(tree, node, parent), RET 8, EAX: a nil node gives the head;
+// otherwise a node from the row's buy-node routine (head, parent, head, &value, colour) whose
+// left and right are copied recursively.
+struct TreeCopySubtree {
+    std::uint32_t address;
+    std::uint32_t buy_node;
+    std::uint8_t is_nil_offset;
+    std::uint8_t colour_offset;
+};
+inline constexpr std::array<TreeCopySubtree, 4> kTreeCopySubtree{{
+    {0x00555410, 0x005550D0, 0x11, 0x10}, {0x005555B0, 0x00554F50, 0x15, 0x14},
+    {0x00559460, 0x005591E0, 0x29, 0x28}, {0x0055B060, 0x0055A290, 0x1D, 0x1C},
+}};
+void* tree_copy_subtree(const TreeCopySubtree& row, Raw tree, void* node, void* parent, Fe3InputHost& host);
+// 005550D0: 14h node, value dword inline at +0Ch, colour +10h, is-nil +11h (as 00554F50).
+void* int_key_tree_buy_node_005550d0(void* left, void* parent, void* right, const std::uint32_t* value,
+    std::uint8_t colour, Fe3InputHost& host);
+// 0055A290: 20h node; value {dword at +0Ch, a tree copy-constructed at +10h by 00558570 from
+// value +4h}; colour +1Ch, is-nil +1Dh. Returns 0 when operator new fails.
+void* int_scalar_map_buy_node_0055a290(void* left, void* parent, void* right, const void* value,
+    std::uint8_t colour, Fe3InputHost& host);
+// 00555B20, __thiscall(tree, const tree&), RET 4: as 0055B300 with 005555B0 and is-nil +15h.
+void int_scalar_tree_assign_00555b20(Raw tree, Raw source, Fe3InputHost& host);
+// 00559610, __fastcall(owner): the tree at owner +4h erases [head->left, head) through 005572F0,
+// frees its head, head and size = 0.
+void int_scalar_tree_clear_at_4_00559610(Raw owner, Fe3InputHost& host);
+// 0055AF60, __thiscall(tree, node), RET 4: subtree destruction (is-nil +1Dh) whose node value is
+// a tree at node +10h, cleared as 00559610 does before the node is freed.
+void int_tree_tree_destroy_subtree_0055af60(void* node, Fe3InputHost& host);
+// 00557250, __thiscall(vector, n), RET 4, AL: as 00557200 for 10h-byte elements (limit 0FFFFFFFh,
+// 00556C90, 00553300).
+bool vector16_construct_n_00557250(Raw vector, std::uint32_t n, Fe3InputHost& host);
+// String + dword + tail copy, __thiscall(to, from), RET 4: string +0h, dword +8h, the routine on
+// (+0Ch, from +0Ch). 005586B0 takes (const NativeString*, const {dword, tail}*), RET 8.
+struct StringDwordTailCopy {
+    std::uint32_t address;
+    std::uint32_t tail_copy;
+};
+inline constexpr std::array<StringDwordTailCopy, 2> kStringDwordTailCopy{{{0x00558280, 0x00557590}, {0x00558F80, 0x00557820}}};
+void* string_dword_tail_copy(const StringDwordTailCopy& row, Raw to, Raw from, Fe3InputHost& host);
+void* string_sensitivity_pair_construct_005586b0(Raw to, Raw key, const std::uint8_t* value, Fe3InputHost& host);
+// 0055B920, __thiscall(to, from), RET 4, EAX = to: ten members copy-constructed in order.
+struct MemberCopy {
+    std::uint8_t offset;
+    std::uint32_t routine;
+};
+inline constexpr std::array<MemberCopy, 10> kInputDeviceRecordMembers{{
+    {0x00, 0x00559F30}, {0x0C, 0x0055A770}, {0x18, 0x0055A800}, {0x24, 0x0049DEC0}, {0x30, 0x00557BC0},
+    {0x40, 0x00557BC0}, {0x50, 0x0055B400}, {0x5C, 0x0055B150}, {0x6C, 0x0055ABD0}, {0x78, 0x00557670},
+}};
+void* input_device_record_copy_0055b920(Raw to, Raw from, Fe3InputHost& host);
+// 0055BA80, __thiscall(pair, const NativeString*, const record*), RET 8: string +0h, then
+// 0055B920(+8h, record).
+void* input_device_pair_construct_0055ba80(Raw pair, Raw key, const void* record, Fe3InputHost& host);
+// 00555770 BSP_ControlBindingScreen_Construct, EAX: 004F7180; +8h/+0Ch = 00CEB0FC/00CEB110, then
+// vtables 00CEE524 / +8h 00CEE510 / +0Ch 00CEE4F0; strings +3Ch and +184h = {0, 0}; scroller
+// +1A0h; +0E4h = 0; +0E0h = 10.
+void* control_binding_construct_00555770(Raw screen, Fe3InputHost& host);
+// 00555820 Destruct: vtables as above; pages +14h, +18h removed; strings +184h, +3Ch to the pool;
+// +8h = 00CEB0FC; 004F71A0.
+void control_binding_destruct_00555820(Raw screen, Fe3InputHost& host);
+// 00555C60 Register: 004F71D0; pages "FE_controls_PC_listbox" (00CEE55C) -> +14h and
+// "FE_controls_PC" (00CEE54C) -> +18h through 00AA5840(name, 1, 0); +16Ch..+17Ch = 0; +180h = 1;
+// vtable +14h.
+void control_binding_register_00555c60(Raw screen, Fe3InputHost& host);
+// 00560FF0, listener (widget, BYTE focused), RET 8: type 2 -> nothing; type 3 -> vtable +4Ch(
+// focused ? 0.5 : 1.0). Otherwise only the widget at +0A0h while +70h is clear is styled (type 6:
+// vtable +88h(focused, 0, 1.0f); type 12h: vtable +84h(focused)). A second test of +124h/+0F8h
+// branches to the same instruction either way, so it has no effect.
+void leaderboards_listener_style_00560ff0(Raw listener, void* widget, std::uint8_t focused, Fe3InputHost& host);
+// 005191B0, __thiscall(screen, float dt), RET 4: binoculars 0051F330(dt); plane screen [+68h]
+// active (+5h) -> 00609BD0(dt, 0, 0); 005454B0 on [+50h] with (0.5, 0.5, binoculars +38h).
+void hud_pilot_update_binocular_view_005191b0(float dt, Fe3InputHost& host);
+// 00519830 BSP_HudBomberScreen_Register: 004F71D0; +20h = +1Ch = +28h = 0; page "GUI_bomber"
+// (00CEC738) -> +2Ch.
+void hud_bomber_register_00519830(Raw screen, Fe3InputHost& host);
+
+// ---------------------------------------------------------------------------
+// Batch D (continued): leaderboards screen. Rows are 40h bytes: +0h dword, strings +4h, +0Ch,
+// +14h, +1Ch dword, +20h..+3Fh eight dwords. List boxes: boards +94h (fallback index +0B8h),
+// entries +11Ch (+148h); scrollers +34h, +0BCh.
+// ---------------------------------------------------------------------------
+struct Fe3BoardHost {
+    virtual ~Fe3BoardHost() = default;
+    virtual void native_string_resize_0041dd40(void* string, std::uint32_t length, std::uint32_t preserve) = 0;
+    virtual void sized_pool_return_00bd1510(void* block, std::uint32_t bytes, std::uint32_t count) = 0;
+    virtual void free_00bf65ac(void* block) = 0;
+    virtual std::int32_t listbox_selected_index_00a9c920(void* listbox) = 0;
+    virtual void listbox_clear_00a9cdc0(void* listbox) = 0;
+    virtual void listbox_select_index_00a9c7c0(void* listbox, std::int32_t index) = 0;
+    virtual void listbox_clear_rows_00a9bec0(void* listbox) = 0;
+    virtual void widget_set_focus_60(void* widget, std::uint32_t focus) = 0;            // vtable +60h
+    virtual Raw board_row_00e19468(std::int32_t index) = 0;                             // 40h rows at [00E19468]
+    virtual void gui_text_set_localised_source_00abaed0(void* text, const void* source, std::uint32_t flag) = 0;
+    virtual void leaderboards_move_selection_00561860(Raw screen, void* scroller, std::uint32_t a, std::uint32_t b,
+        std::uint32_t flag) = 0;
+    virtual void please_wait_hide_00e19698() = 0;                                       // [[00E19698]]+4 = 0
+    virtual void set_menu_return_00e08874(std::uint32_t value) = 0;
+    virtual void front_end_push_interface_request_004cc460(std::uint32_t a, std::uint32_t b) = 0;  // ECX = [00E198AC]
+    virtual void frame_set_selection_00518da0(std::uint32_t selection) = 0;
+    virtual void scroller_attach_content_00683790(void* scroller, void* content) = 0;
+    virtual void scroller_end_thumb_drag_00683320(void* scroller) = 0;
+    virtual void gui_remove_page_00aa31f0(void* page) = 0;                              // ECX = 004C12B0()
+    virtual void wide_string_range_destroy_004d0b80(void* first, void* last, void* a, void* b) = 0;
+    virtual void front_end_screen_destruct_004f71a0(Raw screen) = 0;
+    virtual bool game_reading_7058() = 0;                                               // [00E188A8]+7058h != 0
+    virtual Raw please_wait_screen_00e19698() = 0;
+    virtual void front_end_commit_visibility_004f83b0(Raw screen) = 0;
+    virtual void screen_virtual_18(Raw screen) = 0;
+    virtual void please_wait_render_now_0060d570() = 0;
+    virtual void* wide_string_vector_erase_004d6ea0(void* vector) = 0;                  // erase all, returns begin
+    virtual std::int32_t leaderboard_mode_00e19430() = 0;
+    virtual std::uint64_t xenon_active_xuid_00a3eb00() = 0;
+    virtual void game_begin_leaderboard_read_004bc6d0(std::uint32_t zero, std::uint64_t xuid, std::uint32_t first,
+        std::uint32_t count, std::uint32_t zero2, std::uint32_t friends_word) = 0;     // ECX = [00E188A8]
+};
+
+// 00561660, __fastcall(screen): index = boards list box active (+85h) ? its selection : +0B8h; the
+// row's +14h string goes to text [+9Ch] (00ABAED0(source, 1)); +150h = 0.5, +154h = 1.
+void leaderboards_show_board_name_00561660(Raw screen, Fe3BoardHost& host);
+// 005617C0 row destroy: strings +14h, +0Ch, +4h to the pool. 00562490 / 005625A0 row copy
+// construct / assign, __thiscall(to, from), RET 4, EAX = to (the copy zeroes each string first).
+void leaderboard_row_destroy_005617c0(Raw row, Fe3BoardHost& host);
+void* leaderboard_row_copy_00562490(Raw to, Raw from, bool construct, Fe3BoardHost& host);
+// 00561AD0 SyncSelection, __thiscall(screen, BYTE boards), RET 4: nothing while +154h is set or
+// when the list box being left is active (+85h). boards: +148h = entries selection, entries
+// cleared, boards focused and selected at +0B8h; else the mirror (+0B8h = boards selection, boards
+// cleared, entries focused at +148h). Then 00561860(+0BCh, entries, +118h, 1); +8Dh = boards,
+// +115h = !boards.
+void leaderboards_sync_selection_00561ad0(Raw screen, std::uint8_t boards, Fe3BoardHost& host);
+// 005629A0 ReturnToMenu, __fastcall(screen): please-wait +4h = 0; [00E08874] = 0Bh; 004CC460(1,
+// 0); 00518DA0(0Ch); rows of both list boxes cleared and both scrollers detached.
+void leaderboards_return_to_menu_005629a0(Raw screen, Fe3BoardHost& host);
+// 00563440 BSP_LeaderboardsScreen_Destruct: vtables 00CEE9CC / 00CEE9B8 / 00CEE998; page +30h
+// removed; the wide string vector +10h destroyed (004D0B80), freed, zeroed; +8h = 00CEB0FC;
+// 004F71A0.
+void leaderboards_destruct_00563440(Raw screen, Fe3BoardHost& host);
+// 005635F0 (named SetLimboState; it starts a leaderboard read), __thiscall(screen, ignored),
+// RET 4: +7Ch -> 00683320(+34h). Unless a read is running (game +7058h): show the please-wait
+// screen (+4h = +5h = 1, 004F83B0, vtable +18h, 0060D570), empty the wide string vector +10h
+// (+20h = the returned begin), +28h = +2Ch, and 004BC6D0(0, XUID (mode 2 only, else 0), +20h,
+// +24h, 0, a dword whose low byte is mode == 1 and whose upper bytes are whatever EDX held); +15Ch
+// = 0.
+void leaderboards_begin_read_005635f0(Raw screen, Fe3BoardHost& host);
+
+// ---------------------------------------------------------------------------
+// Batch D (continued): leaderboard reads and the HUD limbo screen.
+// ---------------------------------------------------------------------------
+struct Fe3ReadHost {
+    virtual ~Fe3ReadHost() = default;
+    virtual void listbox_set_listener_00a9ac40(void* listbox, void* listener) = 0;
+    virtual void listbox_clear_rows_00a9bec0(void* listbox) = 0;
+    virtual std::int32_t listbox_selected_index_00a9c920(void* listbox) = 0;
+    virtual Raw board_row_00e19468(std::int32_t index) = 0;
+    virtual void gui_text_set_ellipsized_00abb000(void* text, const void* source, float width, std::uint32_t flag) = 0;
+    virtual void leaderboards_begin_read_005635f0(Raw screen, std::uint32_t board) = 0;
+    virtual void results_assign_00563760(void* vector, const void* results) = 0;
+    virtual void leaderboards_fill_rows_00561eb0(Raw screen) = 0;
+    virtual std::int32_t leaderboard_mode() = 0;                                        // [00E19430]
+    virtual void set_leaderboard_mode(std::int32_t mode) = 0;
+    virtual const char* filter_name_00e086b4(std::int32_t mode) = 0;
+    virtual std::uint64_t xenon_active_xuid_00a3eb00() = 0;
+    virtual Raw please_wait_screen_00e19698() = 0;
+    virtual void gui_set_enabled_00aa0e00(std::uint32_t value) = 0;                     // ECX = 004C12B0()
+    virtual void gui_set_pointer_visible_00aa0e50(std::uint32_t value) = 0;             // ECX = 004C12B0()
+    virtual void native_string_assign_0041e870(void* string, const char* text) = 0;
+    virtual void native_string_resize_0041dd40(void* string, std::uint32_t length, std::uint32_t preserve) = 0;
+    virtual void sized_pool_return_00bd1510(void* block, std::uint32_t bytes, std::uint32_t count) = 0;
+    virtual void* gui_load_page_00aa5840(const void* name, std::uint32_t one, std::uint32_t zero) = 0;
+    virtual void front_end_screen_register_004f71d0(Raw screen) = 0;
+    virtual const char* global_config_string(std::uint32_t offset) = 0;                 // [00432650()+offset+4]
+    virtual const char* empty_string_00e19476() = 0;
+    virtual void gui_text_set_localised_00abbe50(void* text, const char* key, std::uint32_t flag) = 0;
+};
+
+// 00564E70 ResetRows, __fastcall(screen): +148h = 0; the entries list box loses its listener and
+// rows; text [+138h] shows the board row's +0Ch string (00ABB000, width -1.0 = [00D7A260], 1);
+// +24h = 0; 005635F0(board row +0h); +154h = 2.
+void leaderboards_reset_rows_00564e70(Raw screen, Fe3ReadHost& host);
+// 00564F60 OnReadComplete, __thiscall(screen, const results*), RET 4: inactive (+5h) -> nothing.
+// The current board id == +20h and +28h == +2Ch: results into +10h (00563760), 00561EB0, +154h =
+// 0; mode 2 scans the 60h-byte results for the active XUID (+58h) and does nothing with the
+// answer; please-wait +4h = 0; +158h -> GUI enabled and pointer shown. Otherwise, while the
+// please-wait screen is up, 005635F0(board id) again.
+void leaderboards_on_read_complete_00564f60(Raw screen, const void* results, Fe3ReadHost& host);
+// 005650C0 CycleFilter, __fastcall(screen): mode = ([00E19430] + 1) % 3; text [+134h] = filter
+// name [00E086B4 + 4 * mode] through a temporary string; +2Ch = 1; entries active -> +164h = 1;
+// 00564E70.
+void leaderboards_cycle_filter_005650c0(Raw screen, Fe3ReadHost& host);
+// 00565EE0 BSP_HudLimboScreen_Register: 004F71D0; page "GUI_limbo" (00CEEBD4) -> +8h.
+void hud_limbo_register_00565ee0(Raw screen, Fe3ReadHost& host);
+// 00565FB0 BSP_HudLimboScreen_SetState, __thiscall(screen, state), RET 4: +14h = state; the
+// message is the global config string at +0A8h / +0B8h / +0D0h / +0C0h / +0B0h for states 1..5
+// (jump table 00566030), +0D8h otherwise ("" when null); shown on [+0Ch] while active (+5h).
+void hud_limbo_set_state_00565fb0(Raw screen, std::int32_t state, Fe3ReadHost& host);
 
 } // namespace bsp::cc13_fe3
