@@ -8,10 +8,12 @@
 // decompile and from bsp.py disasm-raw wherever ECX/EDX, stack cleanup or x87 mattered.
 // Build-tested only: not ABI-compatible, not game-validated.
 #include "bsp/ingame_gui_cc13.hpp"
+#include "bsp/main_menu_command_bar.hpp"
 
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <string>
 #include <string_view>
 
 namespace bsp::cc13_fe3 {
@@ -1215,5 +1217,328 @@ struct Fe6LeaderboardHost {
 };
 void leaderboards_move_selection_00561860(Raw screen, void* scroller, void* list_box, void* clip, bool no_scroll,
     Fe6LeaderboardHost& host);
+
+// ---------------------------------------------------------------------------
+// Packet cc13-fe8 additions (docs/CC13_FE_8.md): leaderboards.
+// Screen layout used here: listener +8h (list boxes), +0Ch (rows and widgets); result rows
+// vector +14h..+18h (60h bytes: +4h rank, +0Ch wide name, +10h value); first shown row +2Ch;
+// scrollers +34h / +0BCh (embedded); boards list box +94h, its row template +98h, clip +90h;
+// entries list box +11Ch, template +120h, clip +118h; total rows +14Ch; pending select +164h.
+// ---------------------------------------------------------------------------
+struct Fe8LeaderboardHost {
+    virtual ~Fe8LeaderboardHost() = default;
+    // Widget virtuals (ECX = widget).
+    virtual std::int32_t widget_type_5c(void* widget) = 0;                                   // vtable +5Ch
+    virtual void widget_set_alpha_4c(void* widget, float alpha) = 0;                         // vtable +4Ch
+    virtual void widget_set_highlight_88(void* widget, std::uint32_t state, std::uint32_t zero, float one) = 0;  // +88h
+    virtual void widget_set_highlight_84(void* widget, std::uint32_t state) = 0;              // vtable +84h
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;             // vtable +34h
+    virtual void widget_set_enabled_60(void* widget, std::uint32_t enabled) = 0;             // vtable +60h
+    // Scrollers (ECX = embedded scroller).
+    virtual void scroller_set_auto_scroll_00683300(void* scroller, std::uint32_t a, float speed, std::uint32_t b) = 0;
+    virtual void scroller_end_thumb_drag_00683320(void* scroller) = 0;
+    virtual void scroller_attach_content_00683790(void* scroller, void* content) = 0;
+    virtual void scroller_set_scroll_range_006834a0(void* scroller, float range) = 0;
+    virtual void scroller_set_widget_alphas_00683330(void* scroller, float a, float up, float down) = 0;
+    // Widgets and list boxes.
+    virtual void* widget_clone_subtree_00aab4c0(void* source, std::uint32_t zero) = 0;
+    virtual void* find_child_by_name_00aa7e00(void* parent, std::string_view name) = 0;     // (name, 1)
+    virtual void gui_text_set_ellipsized_00abb000(void* text, std::string_view source, float width,
+        std::uint32_t flag) = 0;
+    virtual void widget_set_listener_fields_00aa6bc0(void* widget, void* listener, std::uint32_t zero) = 0;
+    virtual void widget_set_hit_clip_from_00aa8f30(void* widget, void* clip, std::uint32_t zero) = 0;
+    virtual std::array<float, 2> widget_size_00aa6740(void* widget) = 0;
+    virtual void list_box_clear_rows_00a9bec0(void* list_box) = 0;
+    virtual void list_box_set_listener_00a9ac40(void* list_box, void* listener) = 0;
+    virtual void list_box_insert_row_00a9d750(void* list_box, void* row, std::uint32_t a, std::uint32_t b) = 0;
+    virtual void list_box_select_index_00a9c7c0(void* list_box, std::int32_t index) = 0;
+    virtual std::int32_t list_box_selected_index_00a9c920(void* list_box) = 0;
+    virtual void list_box_clear_00a9cdc0(void* list_box) = 0;
+    virtual void list_box_set_field124_00a9ceb0(void* list_box, float value, std::uint32_t zero) = 0;
+    // Leaderboard data and screen routines.
+    virtual Raw board_row_00e19468(std::uint32_t index) = 0;   // 40h rows at [00E19468], bounds-checked
+    virtual std::int32_t leaderboard_mode_00e19430() = 0;
+    virtual void leaderboards_show_board_name_00561660(Raw screen) = 0;
+    virtual void leaderboards_move_selection_00561860(Raw screen, void* scroller, void* list_box, void* clip,
+        bool no_scroll) = 0;
+};
+
+// 00561320 BSP_LeaderboardsWidgetListener_Current0C, __thiscall(listener = screen+0Ch, widget),
+// RET 4. Type 2: nothing. Type 3: vtable +4Ch(+0D4h byte ? 0.5f (00CE3800) : 1.0f (00D7A24C)).
+// Otherwise the boards widgets (listener +98h / +94h) stop the +34h scroller's auto-scroll
+// (00683300(0, 0.0f, 0)) and the boards thumb (+0A0h) ends its drag (00683320); the entries
+// widgets (+11Ch / +118h, thumb +124h) do the same on +0BCh. Then type 6 -> vtable +88h(+0D4h != 0,
+// 0, 1.0f) and type 12h -> vtable +84h(+0D4h != 0). Listener offsets are screen offsets - 0Ch.
+void leaderboards_listener_focus_00561320(Raw listener, void* widget, Fe8LeaderboardHost& host);
+
+// 00561BE0 (named RefreshFilterLabel; it builds the boards list), __fastcall(ECX = screen), RET.
+// With a boards list box (+94h): rows cleared, listener dropped, then 18 rows (i * 40h < 480h)
+// cloned from +98h, each "filter_Text" (00CEE938) child showing board row i's +4h string
+// (00ABB000, width -1.0f, 1), shown, listener +0Ch, clipped to +90h, +0D8h = 0, appended.
+// Scroller +34h: content 0, range = (float)((double)(h98 * 18.0 + 1/72.0) - h90) (both doubles
+// 00CEE930 / 00CEBDD0, the sum stored as a double). Row 0 selected, vtable +60h(1), +149h = 0,
+// listener +8h, 00A9CEB0(0.3875f, 0), +12Ch = 1/96 (00CEE924), +130h = 1/360 (00CEE600),
+// +134h = 0, +138h = 1, +14Ah = 0. Always: 00561660, +150h = 0, +154h = 1, +115h = 0.
+void leaderboards_build_board_list_00561be0(Raw screen, Fe8LeaderboardHost& host);
+
+// 00561EB0 BSP_LeaderboardsScreen_FillRows, __fastcall(ECX = screen), RET. Entries list box
+// (+11Ch) loses its listener; one row per 60h result (clone of +120h): "name_Text" = the wide
+// name at +0Ch narrowed by low bytes (00436630; L"" 00E19474 when null; flag 0), "rank_Text" =
+// +4h and "value_Text" = +10h as decimals (004260B0; flag 1), width -1.0f; shown, listener +0Ch,
+// clipped to +118h, +0D8h = 1, appended. Scroller +0BCh: range = (float)((double)(h120 * 1.005
+// * count) - h118), the product stored as a double (00CEE950, FIMUL by list +104h). Then
+// 00A9CDC0, +149h = 0, listener +8h, 00A9CEB0(5/12 (00CEE948), 0), +12Ch = 1/320 (00CEE944),
+// +130h = 1/360, +134h = 0, +138h = 1, +14Ah = 0. A pending select (+164h) clears +154h and,
+// when the entries list is inactive (+85h), moves focus there (boards selection to +0B8h, boards
+// cleared, entries focused and selected at +148h, 00561860(+0BCh, entries, +118h, 1), +8Dh = 0,
+// +115h = 1); +0B8h is then restored to its entry value, value 2 selects the last row, and +164h
+// = 0. Arrow alphas by mode [00E19430] through 00683330 on +0BCh: mode 0 -> (0, first(+2Ch) - 17
+// > 0 ? 1 : 0.25, first + 17 < total(+14Ch) ? 1 : 0.25); mode 1 -> all 1.0 when more than 17 rows,
+// else (0, 0.25, 0.25); mode 2 -> (0, 0.25, 0.25); other modes leave them.
+void leaderboards_fill_rows_00561eb0(Raw screen, Fe8LeaderboardHost& host);
+
+struct Fe8LeaderboardEnterHost : Fe8LeaderboardHost {
+    // 00518D60, ECX = 0, EDX = 0, stack (0, title NativeString), RET 8.
+    virtual void frame_select_00518d60(std::uint32_t ecx, std::uint32_t edx, std::uint32_t zero,
+        std::string_view title) = 0;
+    virtual void frame_set_flag_00518b90(std::uint32_t flag) = 0;                            // ECX = flag
+    virtual void command_bar_set_help_line_0054a0c0(std::string_view line) = 0;              // ECX = [00E1930C]
+    virtual void gui_text_set_localised_cstring_00abbe50(void* text, const char* key, std::uint32_t flag) = 0;
+    virtual const char* filter_name_00e086b4(std::int32_t mode) = 0;                         // [00E086B4 + mode*4]
+    virtual void leaderboards_build_board_list_00561be0(Raw screen) = 0;
+};
+
+// 00562750 BSP_LeaderboardsScreen_Enter, slot +18h of 00CEE9CC, __fastcall(ECX = screen), RET.
+// 00518D60(ECX 0, EDX 0; 0, "FE.main_leaderboards_title" (00CEE97C)); 00518B90(ECX 2); help line
+// "" (00CE3A0C) through 0054A0C0 on [00E1930C]. The title text [+13Ch] is re-set to a copy of its
+// own string (+0F4h/+0F8h): 00ABBE50("", 1) then 00ABB000(copy, -1.0f, 1). The filter text
+// [+134h] shows the [00E086B4 + mode*4] key (FE.lb_topplayers ...) through 00ABB000(-1.0f, 1).
+// +20h = 0; 00561BE0; +158h = +160h = +168h (bytes) = 0, +14Ch = +164h = +15Ch = 0, +2Ch = 1.
+void leaderboards_enter_00562750(Raw screen, Fe8LeaderboardEnterHost& host);
+
+// Lua access shared by the table loaders. Handles follow the image's LuaObject temporaries;
+// a handle is released (00B67700) by the host when the loader drops it.
+struct Fe8LuaHost {
+    virtual ~Fe8LuaHost() = default;
+    // Script owner: 00B66BD0 construct, 00B6A020 Open(4), 00B69D40 RunScriptWithOverrides(path,
+    // 0), 00B67980 GetGlobals (ECX = the owner), 00B669A0 Close.
+    virtual void* lua_owner_open_run_00b6a020(std::uint32_t libs, std::string_view script) = 0;
+    virtual void* lua_owner_globals_00b67980(void* owner) = 0;
+    virtual void lua_owner_close_00b669a0(void* owner) = 0;
+    virtual void* lua_get_by_name_00b67800(void* table, const char* name) = 0;
+    virtual void* lua_get_by_index_00b67720(void* table, std::int32_t index) = 0;
+    virtual bool lua_is_nil_00b65fb0(void* object) = 0;
+    virtual std::int32_t lua_get_integer_00b66290(void* object) = 0;
+    virtual const char* lua_get_string_00b662b0(void* object) = 0;                           // may be null
+    virtual void lua_release_00b67700(void* object) = 0;
+};
+
+// The leaderboard row loader's view of a 40h row: +0h ID, strings +4h Name, +0Ch ColumnName,
+// +14h TableDesc, +1Ch column count, +20h columns (the image stores Columns[j] at +1Ch + j*4).
+struct Fe8BoardRow {
+    std::int32_t id = 0;
+    std::string name;
+    std::string column_name;
+    std::string table_desc;
+    std::int32_t column_count = 0;
+    std::array<std::int32_t, 8> columns{};
+};
+struct Fe8BoardTableHost : Fe8LuaHost {
+    // The three dword vectors at 00E19434 + k*10h ({alloc, begin +4h, end +8h, capacity +0Ch}).
+    virtual void board_ids_clear_00e19434(std::int32_t k) = 0;
+    virtual void board_ids_push_00441f30(std::int32_t k, std::int32_t id) = 0;
+    // The 40h row vector at 00E19464: erase all (00562F80), push_back (005636D0).
+    virtual void board_rows_clear_00562f80() = 0;
+    virtual void board_rows_push_005636d0(const Fe8BoardRow& row) = 0;
+};
+
+// 005638F0 BSP_LeaderboardsScreen_ReadTable, no register or stack arguments, RET. Runs
+// "Scripts/datatables/Leaderboards.lua" (00CEEA38) in a private Lua owner opened with 4. The
+// three id vectors and the row vector are emptied. For k = 1..3, the integers of
+// Leaderboards.LB_UniqueID[k][1..] up to the first nil go to id vector k-1. For i = 1..18 a zeroed
+// row is pushed for every i; when Leaderboards.LBoards[i] is not nil it is filled from ID (00CE59B4),
+// Name (00CE8ED0), ColumnName, TableDesc (null strings -> empty) and Columns[1..] up to the first
+// nil (the count lands at +1Ch). The image does not bound the column index: more than eight
+// columns would write past the 40h row into the loader's other locals; this model stops at eight.
+void leaderboards_read_table_005638f0(Fe8BoardTableHost& host);
+
+struct Fe8LeaderboardRegisterHost {
+    virtual ~Fe8LeaderboardRegisterHost() = default;
+    virtual void front_end_screen_register_004f71d0(Raw screen) = 0;
+    virtual void* gui_load_page_00aa5840(std::string_view name, std::uint32_t one, std::uint32_t zero) = 0;  // ECX = 004C12B0()
+    virtual void leaderboards_read_table_005638f0() = 0;
+    virtual void* find_child_by_name_00aa7e00(void* parent, std::string_view name) = 0;     // (name, 1)
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;             // vtable +34h
+    virtual void widget_set_listener_fields_00aa6bc0(void* widget, void* listener, std::uint32_t zero) = 0;
+    virtual std::array<float, 2> widget_size_00aa6740(void* widget) = 0;
+    virtual void scroller_attach_content_00683790(void* scroller, void* content) = 0;
+    // 00683380, ECX = scroller, (thumb, span, up, down).
+    virtual void scroller_attach_scroll_bar_00683380(void* scroller, void* thumb, float span, void* up,
+        void* down) = 0;
+};
+
+// 00564220 BSP_LeaderboardsScreen_Register, slot +14h of 00CEE9CC, __fastcall(ECX = screen), RET.
+// 004F71D0; page "FE_leaderboards" (00CEEB10) -> +30h (00AA5840(name, 1, 0)); 005638F0; then the
+// lookups (00AA7E00, parent -> store): +30h "clipbox_Clipbox" -> +90h; +90h "filters_Listbox" ->
+// +94h; +94h "listbox_Group" -> +98h (hidden); +30h "info_Group" -> I; I "info_Text" -> +9Ch;
+// +30h "slider_Group" -> S; S "scroll_up_Icon" +0A0h, "scroll_down_Icon" +0A4h, "slider_FrameBox"
+// +0ACh, "back_Icon" +0A8h. The up/down/thumb get listener +0Ch; scroller +34h: content +94h, bar
+// (thumb +0ACh, span = (float)(h(+0A8h) - h(+0ACh)), up +0A0h, down +0A4h). +30h "data_Group" -> D;
+// D "filter_Text" -> +134h (listener +0Ch); D "clipbox_2_Clipbox" -> +118h; +118h "data_Listbox" ->
+// +11Ch; +11Ch "listbox_Group" -> +120h (hidden); D "data_misc_Group" -> M; M "value_Text" +138h,
+// "rank_Text" +13Ch; D "slider2_Group" -> S2; S2 "scroll_up2_Icon" +124h, "scroll_down2_Icon"
+// +128h, "slider2_FrameBox" +130h, "back_Icon" +12Ch; listener +0Ch on the three; scroller +0BCh:
+// content +11Ch, bar (+130h, h(+12Ch) - h(+130h), +124h, +128h). Finally +117h = 0, +20h = 0.
+// The span subtraction runs on x87 with the first height spilled as a double; float - float is
+// exact in double, so (float)((double)a - b) is used.
+void leaderboards_register_00564220(Raw screen, Fe8LeaderboardRegisterHost& host);
+
+struct Fe8LeaderboardInputHost : Fe8LeaderboardHost {
+    virtual void scroller_begin_thumb_drag_00683a40(void* scroller) = 0;
+    virtual void list_box_select_row_00a9c740(void* list_box, void* row) = 0;
+    virtual void leaderboards_sync_selection_00561ad0(Raw screen, std::uint8_t boards) = 0;
+    virtual void leaderboards_return_to_menu_005629a0(Raw screen) = 0;
+    virtual void leaderboards_cycle_filter_005650c0(Raw screen) = 0;
+    // 004BCD20: the checked operator[] of the result-row vector at screen +10h (60h rows; XUID at
+    // +58h/+5Ch).
+    virtual Raw result_row_004bcd20(Raw screen, std::int32_t index) = 0;
+    virtual std::uint32_t xenon_active_user_slot_00a3eac0() = 0;                             // ECX = [00F8ABE8]
+    virtual void xshow_gamer_card_ui_00a4d440(std::uint32_t user, std::uint64_t xuid) = 0;   // stdcall
+};
+
+// 00565190 BSP_LeaderboardsWidgetListener_Current04 (activate), __thiscall(listener = screen+0Ch,
+// widget), RET 4. Offsets below are screen offsets. +158h = 1. Type 2 (a list row): an entries row
+// (+0D8h != 0) first syncs to the entries (00561AD0(0)) while the boards list is active, then is
+// selected (00A9C740) in the entries list; a board row, while the entries list is active, +154h
+// is clear and the boards list inactive, moves focus back (+148h = entries selection, entries
+// cleared, boards vtable +60h(1) and selected at +0B8h, +8Dh = 1, +115h = 0) and is selected in the
+// boards list. Type 3: vtable +4Ch(1.0f); the filter text (+134h) and any icon whose label
+// (+0F0h, "" 00E19474 when null) starts with A7h cycle the filter (005650C0) unless +154h is set;
+// A5h shows the gamer card of the selected entry (while the entries list is active and has a
+// selection: XShowGamerCardUI(00A3EAC0(), row +58h)); A3h returns to the menu (005629A0). Other
+// types: boards widgets — +0A4h auto-scrolls +34h with (2, 0.004f, 1) and, when +154h is clear and
+// the boards list inactive, moves focus back as above; +0A0h (1, 0.004f, 1) then 00561AD0(1); the
+// thumb +0ACh begins a drag (00683A40) then 00561AD0(1). Entries widgets — +128h: mode != 0 ->
+// auto-scroll +0BCh (2, 0.004f, 1); mode 0 with the entries list active and first + 17 below the
+// total (+14Ch) -> first += 17, +154h = 1, +164h = 2, +168h = 1; otherwise +168h = 0. +124h: the
+// mirror (1, ...; first - 17 > 0 -> first -= 17, +164h = 1). Thumb +130h: drag. Finally type 6 ->
+// vtable +88h(2, 0, 1.0f), type 12h -> vtable +84h(2).
+void leaderboards_listener_activate_00565190(Raw listener, void* widget, Fe8LeaderboardInputHost& host);
+
+struct Fe8LeaderboardUpdateHost : Fe8LeaderboardInputHost {
+    virtual bool front_end_action_edge_004d92b0(std::uint32_t action) = 0;                   // ECX = [00E188A8]
+    virtual void scroller_update_00683820(void* scroller, std::uint32_t one) = 0;
+    virtual std::int32_t leaderboards_selected_board_00561300(Raw screen) = 0;
+    virtual void leaderboards_reset_rows_00564e70(Raw screen) = 0;
+    virtual void rebuild_command_bar_0054b530(const std::array<MainMenuCommandArgument, 5>& arguments) = 0;
+    virtual bool xenon_duplicate_sign_in_128() = 0;                                          // [00F8ABE8]+128h != 0
+    // 00531B00 on 00425D10() with (slot, message, kind, callback 0, 0, title "", 0.0f, 0, "", 1).
+    virtual void raise_prompt_00531b00(std::int32_t slot, const char* message, std::int32_t kind) = 0;
+    virtual bool main_menu_connection_gate_00585b40() = 0;
+    virtual bool main_menu_account_gate_00585810(std::uint8_t cl) = 0;
+    virtual std::int32_t game_complete_leaderboard_read_004dd7c0() = 0;                      // ECX = [00E188A8]
+    virtual void game_cancel_leaderboard_read_004bc7f0() = 0;                                // ECX = [00E188A8]
+    virtual Raw please_wait_screen_00e19698() = 0;
+};
+
+// 00565540 BSP_LeaderboardsScreen_Update, slot +20h, __thiscall(screen, float dt), RET 4.
+// Action 4Bh (004D92B0 on [00E188A8]) or +160h -> 005629A0 and return. Both scrollers update
+// (00683820(1)); a scrolling boards scroller (+7Ch byte or +54h) runs 00561860(+34h, boards, +90h,
+// 0) and re-shows the board name (00561660) when +0B8h changed; the entries scroller (+104h /
+// +0DCh) runs 00561860(+0BCh, entries, +118h, 0). Then the first of these actions that fires:
+// 4Dh: boards active with entry rows -> 00561AD0(0); 4Ch: entries active -> 00561AD0(1);
+// 50h: +154h clear -> 005650C0; 4Fh: entries active with a selection -> gamer card of that row;
+// 46h: entries active, first - 17 > 0, mode 0 and selection 0 -> first -= 17, +154h = +164h = 1,
+// +168h = 1, else +168h = 0; 47h: entries active, first + 17 < total, mode 0 and selection 10h ->
+// first += 17, +154h = 1, +164h = 2, +168h = 1, else +168h = 0. A pending page (+154h): a non-zero
+// timer +150h counts down by dt (float) and on going negative is zeroed with first = 1; with the
+// timer zero and +154h == 1, unless +168h, a first page (+20h) equal to the selected board row's id
+// (00561300, 00561510) clears +154h; otherwise 00564E70. +168h = 0. Command bar (0054B530 on
+// [00E1930C]): (A7h "FE.toggle_filter" 0, B3h "globals.navigate" 1, A5h "globals.showgamercard" 1
+// when the entries list is active with rows and a selection, else (0, "") 1, B2h
+// "globals.scroll_menu" 1 when it also has more than 17 rows, else (0, ""), A3h "globals.back" 2).
+// A duplicate sign-in ([00F8ABE8]+128h) raises "FE_pc.multi_liveerrorduplicate" (slot 2, kind 2)
+// and sets +160h; failing 00585B40 or 00585810(CL 0) also sets +160h. Otherwise with a read
+// running (+20h): result 80004005h or 8000FFFFh hides the please-wait screen (+4h = 0) and
+// 80004005h raises "FE.error_while_reading_leaderboard", cancels (004BC7F0) and clears +20h; then
+// +15Ch += dt (float) and, while the please-wait screen shows and it exceeds 30.0, raises
+// "FE.leaderboards_cantaccess", hides the please-wait screen, cancels and clears +20h.
+void leaderboards_update_00565540(Raw screen, float dt, Fe8LeaderboardUpdateHost& host);
+
+// ---------------------------------------------------------------------------
+// Packet cc13-fe8: control binding screen (segment 17). Screen offsets: +18h page-2 list box,
+// +20h settings list box, +34h conflict text, +160h page, +164h + page*4 per-page selection,
+// +16Ch input device index, +180h binding variant, +184h binding name (NativeString), +18Ch
+// "binding unknown", +190h binding text widget, +1A0h scroller (embedded; its +48h byte is
+// screen +1E8h and +20h is +1C0h), +218h clip, +21Ch / +220h first / last visible row, +224h row.
+// ---------------------------------------------------------------------------
+struct Fe8ControlBindingHost {
+    virtual ~Fe8ControlBindingHost() = default;
+    // 005547D0 input settings singleton; devices are 8-byte keys at +18h..+1Ch (checked index).
+    virtual Raw input_settings_005547d0() = 0;
+    // 0055C110, ECX = settings +8h: std::map<device key, entry>::operator[]; the entry is a tree
+    // whose head (end) is at +4h.
+    virtual void* input_device_map_index_0055c110(void* map, const void* key) = 0;
+    // 00555940, ECX = entry tree: find(name) -> the node (end() = the head).
+    virtual void* binding_tree_find_00555940(void* tree, std::string_view name) = 0;
+    // 006AAC50, ECX = settings: (key, name, variant, NativeString* conflict) -> AL.
+    virtual bool find_input_binding_conflict_006aac50(Raw settings, const void* key, std::string_view name,
+        std::uint32_t variant, std::string& conflict) = 0;
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;             // vtable +34h
+    virtual void widget_set_enabled_60(void* widget, std::uint32_t enabled) = 0;             // vtable +60h
+    virtual void gui_text_set_localised_source_00abaed0(void* text, std::string_view source, std::uint32_t flag) = 0;
+    virtual std::int32_t list_box_selected_index_00a9c920(void* list_box) = 0;
+    virtual void* list_box_current_row_00425e50(void* list_box) = 0;
+    virtual void* list_box_row_00a9be00(void* list_box, std::int32_t index) = 0;
+    virtual void list_box_select_index_silently_00a9c8f0(void* list_box, std::int32_t index) = 0;
+    virtual void* find_child_by_name_00aa7e00(void* parent, std::string_view name) = 0;     // (name, 1)
+    virtual std::array<float, 3> widget_resolved_position_00aa6750(void* widget) = 0;
+    virtual std::array<float, 2> widget_size_00aa6740(void* widget) = 0;
+    virtual void scroller_toward_start_00683680(void* scroller, float delta) = 0;
+    virtual void scroller_toward_end_00683700(void* scroller, float delta) = 0;
+    virtual void command_bar_set_help_line_0054a0c0(std::string_view line) = 0;              // ECX = [00E1930C]
+    // A NativeString copy: 0041DD40 Resize(length, 1), then memcpy of the characters.
+    virtual void native_string_copy_0041dd40(void* string, std::string_view text) = 0;
+    // Screen routines reconstructed below, routed through the host so callers can substitute.
+    virtual void control_binding_show_conflict_text_0055c200(Raw screen) = 0;
+    virtual void control_binding_refresh_selected_binding_0055c3b0(Raw screen) = 0;
+    virtual bool control_binding_scroll_to_selection_0055cec0(Raw screen, bool no_scroll) = 0;
+};
+
+// 0055C200 BSP_ControlBindingScreen_ShowConflictText, __fastcall(ECX = screen), RET. key = the
+// settings' device key [+16Ch]; entry = map[key] (0055C110); a binding name (+184h) found in the
+// entry (00555940) hides the conflict text (+34h vtable +34h(0)). Otherwise 006AAC50(key, +184h,
+// +180h, &conflict) decides; the text's vtable +34h gets that byte (the image pushes a dword
+// whose upper bytes are stale stack contents), and a conflict shows
+// "FE_pc.controls_conflict|.: |" (00CEE63C) + conflict through 00ABAED0(text, 1).
+void control_binding_show_conflict_text_0055c200(Raw screen, Fe8ControlBindingHost& host);
+
+// 0055C3B0 BSP_ControlBindingScreen_RefreshSelectedBinding, __fastcall(ECX = screen), RET. With a
+// selection in +20h: entry = map[key]; +184h = a copy of the current row's (00425E50) "main_Text"
+// (00E086A0 -> 00CEE4CC) string (+0F4h); +18Ch = the name is not in the entry. Unknown: +180h = 1
+// and +190h = the row's "main_Text"; known: +190h = "var_2_Text" when +180h else "var_1_Text"
+// (00E086A8 / 00E086A4). Then 0055C200.
+void control_binding_refresh_selected_binding_0055c3b0(Raw screen, Fe8ControlBindingHost& host);
+
+// 0055CEC0 BSP_ControlBindingScreen_ScrollToSelection, __thiscall(screen, BYTE no_scroll), RET 4,
+// AL. first (+21Ch) = the row count of +20h, last (+220h) = 0. Clip C = pos - size * anchor of
+// +218h (both components rounded to float). Each row is visible when its rounded top y is below
+// C.y and C.y + clip.h > row.y + row.h (both sums in x87 extended precision); a visible row
+// lowers first or else raises last; every row gets vtable +60h(visible). While the scroller is
+// idle (+1E8h byte and +1C0h clear) and no_scroll is false, a selection above first scrolls
+// +1A0h toward the start (00683680) and one below last toward the end (00683700), by the current
+// row's height, returning 1; otherwise 0. With the scroller moving or no_scroll set, a selection
+// above first snaps forward from first past rows whose +77h byte is set, one below last snaps
+// back from last the same way; the row is selected silently (00A9C8F0), 0055C3B0 runs, +224h =
+// the row, and 1 is returned; 0 when nothing moved or the row index is -1.
+bool control_binding_scroll_to_selection_0055cec0(Raw screen, bool no_scroll, Fe8ControlBindingHost& host);
+
+// 0055D180 BSP_ControlBindingScreen_OnListboxSelectionChanged, __thiscall(screen, row, list box),
+// RET 8. A null row does nothing. +164h + page*4 = the list's selection (00A9C920). Page 0: the
+// help line (0054A0C0 on [00E1930C]) is the row label (+0F4h) + "_help" (00CEE6BC; 004261A0
+// concatenation); page 1: "FE_pc.cs_loadcontrollerpreset_help" (00CEE698); page 2 with the list
+// +18h: 0055C3B0, list vtable +60h(1), then 0055CEC0(0) until it returns 0.
+void control_binding_on_selection_changed_0055d180(Raw screen, void* row, void* list_box,
+    Fe8ControlBindingHost& host);
 
 } // namespace bsp::cc13_fe3

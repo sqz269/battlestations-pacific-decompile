@@ -195,9 +195,9 @@ void remove_gui_highlight_006dc5a0(MarkerManagerState& markers, void* element,
         host.set_highlight_level(element, static_cast<float>(kHighlightResetScale * 0.0));
         markers.gui_highlights.erase(in_plain);
     }
-    // +38h: erase, then 006DBAC0(1, 0, 1.0f) on the element.
+    // +38h: erase, then 006DBAC0(DL = 0, 1, 0, 1.0f) on the element.
     if (erase_if_present(markers.recursive_gui_highlights, element)) {
-        host.apply_highlight_pulse_006dbac0(element, 1, 0, 1.0f);
+        host.apply_highlight_pulse_006dbac0(element, false, 1, 0, 1.0f);
     }
     // +44h, 006DC69D..006DC6D5: erase, then color alpha (fourth float) = 1.0.
     if (erase_if_present(markers.tinted_highlights, element)) {

@@ -3,6 +3,7 @@
 
 #include <cstdio>
 #include <cstring>
+#include <string>
 
 namespace bsp::cc13_fe3 {
 namespace {
@@ -2050,6 +2051,656 @@ void leaderboards_move_selection_00561860(Raw screen, void* scroller, void* list
     if (target == -1) return;
     host.list_box_select_index_silently_00a9c8f0(list_box, target);
     selected = target;
+}
+
+// --- packet cc13-fe8 -------------------------------------------------------
+namespace {
+
+// A NativeString {length +0h, data +4h}; a null data pointer reads as "".
+std::string_view native_view(Raw s, std::size_t off) noexcept {
+    const char* data = static_cast<const char*>(s.ptr(off + 4));
+    return data != nullptr ? std::string_view(data, s.at<std::uint32_t>(off)) : std::string_view();
+}
+
+// 00436630: a narrow string from the low byte of each UTF-16 unit.
+std::string narrow_low_bytes_00436630(const std::uint16_t* wide) {
+    std::string out;
+    for (; *wide != 0; ++wide) out.push_back(static_cast<char>(*wide & 0xFF));
+    return out;
+}
+
+constexpr float kTextWidthUnbounded = -1.0f;  // 00D7A260
+
+} // namespace
+
+void leaderboards_listener_focus_00561320(Raw listener, void* widget, Fe8LeaderboardHost& host) {
+    if (host.widget_type_5c(widget) == 2) return;
+    const bool focused = raw(widget).at<std::uint8_t>(0xD4) != 0;
+    if (host.widget_type_5c(widget) == 3) {
+        host.widget_set_alpha_4c(widget, focused ? 0.5f : 1.0f);  // 00CE3800 / 00D7A24C
+        return;
+    }
+    if (widget == listener.ptr(0x98) || widget == listener.ptr(0x94)) {
+        host.scroller_set_auto_scroll_00683300(listener.p + 0x28, 0, 0.0f, 0);
+    } else if (widget == listener.ptr(0xA0)) {
+        host.scroller_end_thumb_drag_00683320(listener.p + 0x28);
+    }
+    if (widget == listener.ptr(0x11C) || widget == listener.ptr(0x118)) {
+        host.scroller_set_auto_scroll_00683300(listener.p + 0xB0, 0, 0.0f, 0);
+    } else if (widget == listener.ptr(0x124)) {
+        host.scroller_end_thumb_drag_00683320(listener.p + 0xB0);
+    }
+    if (host.widget_type_5c(widget) == 6) {
+        host.widget_set_highlight_88(widget, focused ? 1u : 0u, 0, 1.0f);
+        return;
+    }
+    if (host.widget_type_5c(widget) == 0x12) host.widget_set_highlight_84(widget, focused ? 1u : 0u);
+}
+
+void leaderboards_build_board_list_00561be0(Raw screen, Fe8LeaderboardHost& host) {
+    void* const boards = screen.ptr(0x94);
+    if (boards != nullptr) {
+        host.list_box_clear_rows_00a9bec0(boards);
+        host.list_box_set_listener_00a9ac40(boards, nullptr);
+        for (std::uint32_t i = 0; i * 0x40 < 0x480; ++i) {
+            void* const row = host.widget_clone_subtree_00aab4c0(screen.ptr(0x98), 0);
+            void* const text = host.find_child_by_name_00aa7e00(row, "filter_Text");
+            host.gui_text_set_ellipsized_00abb000(text, native_view(host.board_row_00e19468(i), 4),
+                                                  kTextWidthUnbounded, 1);
+            host.widget_set_visible_34(row, 1);
+            host.widget_set_listener_fields_00aa6bc0(row, screen.p + 0x0C, 0);
+            host.widget_set_hit_clip_from_00aa8f30(row, screen.ptr(0x90), 0);
+            raw(row).at<std::uint32_t>(0xD8) = 0;
+            host.list_box_insert_row_00a9d750(boards, row, 0, 0);
+        }
+        void* const scroller = screen.p + 0x34;
+        host.scroller_attach_content_00683790(scroller, nullptr);
+        // 00CEE930 = 18.0, 00CEBDD0 = 1/72; the sum is stored as a double before the subtraction.
+        const double content = static_cast<double>(host.widget_size_00aa6740(screen.ptr(0x98))[1]) * 18.0 +
+                               0.013888888888888888;
+        host.scroller_set_scroll_range_006834a0(
+            scroller, static_cast<float>(content - host.widget_size_00aa6740(screen.ptr(0x90))[1]));
+        host.list_box_select_index_00a9c7c0(boards, 0);
+        host.widget_set_enabled_60(boards, 1);
+        raw(boards).at<std::uint8_t>(0x149) = 0;
+        host.list_box_set_listener_00a9ac40(boards, screen.p + 8);
+        host.list_box_set_field124_00a9ceb0(boards, 0.38749998807907104f, 0);  // 00CEE928
+        raw(boards).at<float>(0x12C) = 0.010416666977107525f;                  // 00CEE924
+        raw(boards).at<float>(0x130) = 0.0027777778450399637f;                 // 00CEE600
+        raw(boards).at<float>(0x134) = 0.0f;
+        raw(boards).at<std::uint8_t>(0x138) = 1;
+        raw(boards).at<std::uint8_t>(0x14A) = 0;
+    }
+    host.leaderboards_show_board_name_00561660(screen);
+    screen.at<std::uint32_t>(0x150) = 0;
+    screen.at<std::uint32_t>(0x154) = 1;
+    screen.at<std::uint8_t>(0x115) = 0;
+}
+
+void leaderboards_fill_rows_00561eb0(Raw screen, Fe8LeaderboardHost& host) {
+    void* const entries = screen.ptr(0x11C);
+    host.list_box_set_listener_00a9ac40(entries, nullptr);
+    const auto* const begin = static_cast<std::uint8_t*>(screen.ptr(0x14));
+    const auto* const end = static_cast<std::uint8_t*>(screen.ptr(0x18));
+    for (std::uint32_t i = 0; begin != nullptr && i < static_cast<std::uint32_t>((end - begin) / 0x60); ++i) {
+        const Raw result{const_cast<std::uint8_t*>(begin) + i * 0x60};
+        void* const row = host.widget_clone_subtree_00aab4c0(screen.ptr(0x120), 0);
+        static const std::uint16_t kEmptyWide[1] = {0};  // 00E19474
+        const auto* wide = static_cast<const std::uint16_t*>(result.ptr(0x0C));
+        host.gui_text_set_ellipsized_00abb000(host.find_child_by_name_00aa7e00(row, "name_Text"),
+                                              narrow_low_bytes_00436630(wide != nullptr ? wide : kEmptyWide),
+                                              kTextWidthUnbounded, 0);
+        host.gui_text_set_ellipsized_00abb000(host.find_child_by_name_00aa7e00(row, "rank_Text"),
+                                              std::to_string(result.at<std::int32_t>(4)), kTextWidthUnbounded, 1);
+        host.gui_text_set_ellipsized_00abb000(host.find_child_by_name_00aa7e00(row, "value_Text"),
+                                              std::to_string(result.at<std::int32_t>(0x10)), kTextWidthUnbounded, 1);
+        host.widget_set_visible_34(row, 1);
+        host.widget_set_listener_fields_00aa6bc0(row, screen.p + 0x0C, 0);
+        host.widget_set_hit_clip_from_00aa8f30(row, screen.ptr(0x118), 0);
+        raw(row).at<std::uint32_t>(0xD8) = 1;
+        host.list_box_insert_row_00a9d750(entries, row, 0, 0);
+    }
+    void* const scroller = screen.p + 0xBC;
+    host.scroller_attach_content_00683790(scroller, nullptr);
+    const std::int32_t count = raw(entries).at<std::int32_t>(0x104);
+    // FMUL by the double 1.005 (00CEE950), FIMUL by the row count, stored as a double.
+    const double content =
+        static_cast<double>(host.widget_size_00aa6740(screen.ptr(0x120))[1]) * 1.0049999952316284 * count;
+    host.scroller_set_scroll_range_006834a0(
+        scroller, static_cast<float>(content - host.widget_size_00aa6740(screen.ptr(0x118))[1]));
+    host.list_box_clear_00a9cdc0(entries);
+    raw(entries).at<std::uint8_t>(0x149) = 0;
+    host.list_box_set_listener_00a9ac40(entries, screen.p + 8);
+    host.list_box_set_field124_00a9ceb0(entries, 0.4166666567325592f, 0);  // 00CEE948
+    raw(entries).at<float>(0x12C) = 0.0031250000465661287f;                // 00CEE944
+    raw(entries).at<float>(0x130) = 0.0027777778450399637f;                // 00CEE600
+    raw(entries).at<float>(0x134) = 0.0f;
+    raw(entries).at<std::uint8_t>(0x138) = 1;
+    raw(entries).at<std::uint8_t>(0x14A) = 0;
+    if (screen.at<std::int32_t>(0x164) != 0) {
+        const std::int32_t saved_board = screen.at<std::int32_t>(0xB8);
+        screen.at<std::uint32_t>(0x154) = 0;
+        if (raw(entries).at<std::uint8_t>(0x85) == 0) {
+            screen.at<std::int32_t>(0xB8) = host.list_box_selected_index_00a9c920(screen.ptr(0x94));
+            host.list_box_clear_00a9cdc0(screen.ptr(0x94));
+            host.widget_set_enabled_60(entries, 1);
+            host.list_box_select_index_00a9c7c0(entries, screen.at<std::int32_t>(0x148));
+            host.leaderboards_move_selection_00561860(screen, scroller, entries, screen.ptr(0x118), true);
+            screen.at<std::uint8_t>(0x8D) = 0;
+            screen.at<std::uint8_t>(0x115) = 1;
+        }
+        const bool select_last = screen.at<std::int32_t>(0x164) == 2;
+        screen.at<std::int32_t>(0xB8) = saved_board;
+        if (select_last) host.list_box_select_index_00a9c7c0(entries, raw(entries).at<std::int32_t>(0x104) - 1);
+        screen.at<std::int32_t>(0x164) = 0;
+    }
+    constexpr float kDim = 0.25f;  // 00CE3868
+    switch (host.leaderboard_mode_00e19430()) {
+    case 0: {
+        const std::int32_t first = screen.at<std::int32_t>(0x2C);
+        const float down = first + 0x11 < screen.at<std::int32_t>(0x14C) ? 1.0f : kDim;
+        const float up = first - 0x11 > 0 ? 1.0f : kDim;
+        host.scroller_set_widget_alphas_00683330(scroller, 0.0f, up, down);
+        break;
+    }
+    case 1:
+        if (raw(entries).at<std::int32_t>(0x104) > 0x11) host.scroller_set_widget_alphas_00683330(scroller, 1.0f, 1.0f, 1.0f);
+        else host.scroller_set_widget_alphas_00683330(scroller, 0.0f, kDim, kDim);
+        break;
+    case 2:
+        host.scroller_set_widget_alphas_00683330(scroller, 0.0f, kDim, kDim);
+        break;
+    default:
+        break;
+    }
+}
+
+void leaderboards_enter_00562750(Raw screen, Fe8LeaderboardEnterHost& host) {
+    host.frame_select_00518d60(0, 0, 0, "FE.main_leaderboards_title");
+    host.frame_set_flag_00518b90(2);
+    host.command_bar_set_help_line_0054a0c0("");
+    void* const title = screen.ptr(0x13C);
+    const std::string copy(native_view(raw(title), 0xF4));
+    host.gui_text_set_localised_cstring_00abbe50(title, "", 1);
+    host.gui_text_set_ellipsized_00abb000(title, copy, kTextWidthUnbounded, 1);
+    host.gui_text_set_ellipsized_00abb000(screen.ptr(0x134), host.filter_name_00e086b4(host.leaderboard_mode_00e19430()),
+                                          kTextWidthUnbounded, 1);
+    screen.at<std::uint32_t>(0x20) = 0;
+    host.leaderboards_build_board_list_00561be0(screen);
+    screen.at<std::uint8_t>(0x158) = 0;
+    screen.at<std::uint8_t>(0x160) = 0;
+    screen.at<std::uint32_t>(0x14C) = 0;
+    screen.at<std::uint32_t>(0x164) = 0;
+    screen.at<std::uint8_t>(0x168) = 0;
+    screen.at<std::uint32_t>(0x15C) = 0;
+    screen.at<std::uint32_t>(0x2C) = 1;
+}
+
+namespace {
+
+std::string lua_string_or_empty(Fe8LuaHost& host, void* table, const char* name) {
+    void* const field = host.lua_get_by_name_00b67800(table, name);
+    const char* const text = host.lua_get_string_00b662b0(field);
+    std::string out = text != nullptr ? std::string(text) : std::string();
+    host.lua_release_00b67700(field);
+    return out;
+}
+
+bool lua_index_is_nil(Fe8LuaHost& host, void* table, std::int32_t index) {
+    void* const item = host.lua_get_by_index_00b67720(table, index);
+    const bool nil = host.lua_is_nil_00b65fb0(item);
+    host.lua_release_00b67700(item);
+    return nil;
+}
+
+} // namespace
+
+void leaderboards_read_table_005638f0(Fe8BoardTableHost& host) {
+    void* const owner = host.lua_owner_open_run_00b6a020(4, "Scripts/datatables/Leaderboards.lua");
+    for (std::int32_t k = 0; k < 3; ++k) host.board_ids_clear_00e19434(k);
+    host.board_rows_clear_00562f80();
+    void* const globals = host.lua_owner_globals_00b67980(owner);
+    void* const leaderboards = host.lua_get_by_name_00b67800(globals, "Leaderboards");
+    host.lua_release_00b67700(globals);
+    void* const unique_ids = host.lua_get_by_name_00b67800(leaderboards, "LB_UniqueID");
+    for (std::int32_t k = 0; k < 3; ++k) {
+        void* const ids = host.lua_get_by_index_00b67720(unique_ids, k + 1);
+        for (std::int32_t j = 1; !lua_index_is_nil(host, ids, j); ++j) {
+            void* const item = host.lua_get_by_index_00b67720(ids, j);
+            host.board_ids_push_00441f30(k, host.lua_get_integer_00b66290(item));
+            host.lua_release_00b67700(item);
+        }
+        host.lua_release_00b67700(ids);
+    }
+    void* const boards = host.lua_get_by_name_00b67800(leaderboards, "LBoards");
+    for (std::int32_t i = 1; i <= 0x12; ++i) {
+        Fe8BoardRow row;
+        if (!lua_index_is_nil(host, boards, i)) {
+            void* const entry = host.lua_get_by_index_00b67720(boards, i);
+            void* const id = host.lua_get_by_name_00b67800(entry, "ID");
+            row.id = host.lua_get_integer_00b66290(id);
+            host.lua_release_00b67700(id);
+            row.name = lua_string_or_empty(host, entry, "Name");
+            row.column_name = lua_string_or_empty(host, entry, "ColumnName");
+            row.table_desc = lua_string_or_empty(host, entry, "TableDesc");
+            void* const columns = host.lua_get_by_name_00b67800(entry, "Columns");
+            std::int32_t j = 1;
+            for (; !lua_index_is_nil(host, columns, j); ++j) {
+                void* const item = host.lua_get_by_index_00b67720(columns, j);
+                const std::int32_t value = host.lua_get_integer_00b66290(item);
+                host.lua_release_00b67700(item);
+                if (j <= static_cast<std::int32_t>(row.columns.size())) row.columns[j - 1] = value;
+            }
+            row.column_count = j - 1;
+            host.lua_release_00b67700(columns);
+            host.lua_release_00b67700(entry);
+        }
+        host.board_rows_push_005636d0(row);
+    }
+    host.lua_release_00b67700(boards);
+    host.lua_release_00b67700(unique_ids);
+    host.lua_release_00b67700(leaderboards);
+    host.lua_owner_close_00b669a0(owner);
+}
+
+void leaderboards_register_00564220(Raw screen, Fe8LeaderboardRegisterHost& host) {
+    host.front_end_screen_register_004f71d0(screen);
+    screen.ptr(0x30) = host.gui_load_page_00aa5840("FE_leaderboards", 1, 0);
+    host.leaderboards_read_table_005638f0();
+    const auto find = [&host](void* parent, std::string_view name) {
+        return host.find_child_by_name_00aa7e00(parent, name);
+    };
+    screen.ptr(0x90) = find(screen.ptr(0x30), "clipbox_Clipbox");
+    screen.ptr(0x94) = find(screen.ptr(0x90), "filters_Listbox");
+    screen.ptr(0x98) = find(screen.ptr(0x94), "listbox_Group");
+    host.widget_set_visible_34(screen.ptr(0x98), 0);
+    void* const info = find(screen.ptr(0x30), "info_Group");
+    screen.ptr(0x9C) = find(info, "info_Text");
+    void* const slider = find(screen.ptr(0x30), "slider_Group");
+    screen.ptr(0xA0) = find(slider, "scroll_up_Icon");
+    screen.ptr(0xA4) = find(slider, "scroll_down_Icon");
+    screen.ptr(0xAC) = find(slider, "slider_FrameBox");
+    screen.ptr(0xA8) = find(slider, "back_Icon");
+    void* const listener = screen.p + 0x0C;
+    host.widget_set_listener_fields_00aa6bc0(screen.ptr(0xA0), listener, 0);
+    host.widget_set_listener_fields_00aa6bc0(screen.ptr(0xA4), listener, 0);
+    host.widget_set_listener_fields_00aa6bc0(screen.ptr(0xAC), listener, 0);
+    host.scroller_attach_content_00683790(screen.p + 0x34, screen.ptr(0x94));
+    {
+        const double back = host.widget_size_00aa6740(screen.ptr(0xA8))[1];
+        const float span = static_cast<float>(back - host.widget_size_00aa6740(screen.ptr(0xAC))[1]);
+        host.scroller_attach_scroll_bar_00683380(screen.p + 0x34, screen.ptr(0xAC), span, screen.ptr(0xA0),
+                                                 screen.ptr(0xA4));
+    }
+    void* const data = find(screen.ptr(0x30), "data_Group");
+    screen.ptr(0x134) = find(data, "filter_Text");
+    host.widget_set_listener_fields_00aa6bc0(screen.ptr(0x134), listener, 0);
+    screen.ptr(0x118) = find(data, "clipbox_2_Clipbox");
+    screen.ptr(0x11C) = find(screen.ptr(0x118), "data_Listbox");
+    screen.ptr(0x120) = find(screen.ptr(0x11C), "listbox_Group");
+    host.widget_set_visible_34(screen.ptr(0x120), 0);
+    void* const misc = find(data, "data_misc_Group");
+    screen.ptr(0x138) = find(misc, "value_Text");
+    screen.ptr(0x13C) = find(misc, "rank_Text");
+    void* const slider2 = find(data, "slider2_Group");
+    screen.ptr(0x124) = find(slider2, "scroll_up2_Icon");
+    screen.ptr(0x128) = find(slider2, "scroll_down2_Icon");
+    screen.ptr(0x130) = find(slider2, "slider2_FrameBox");
+    screen.ptr(0x12C) = find(slider2, "back_Icon");
+    host.widget_set_listener_fields_00aa6bc0(screen.ptr(0x124), listener, 0);
+    host.widget_set_listener_fields_00aa6bc0(screen.ptr(0x128), listener, 0);
+    host.widget_set_listener_fields_00aa6bc0(screen.ptr(0x130), listener, 0);
+    host.scroller_attach_content_00683790(screen.p + 0xBC, screen.ptr(0x11C));
+    {
+        const double back = host.widget_size_00aa6740(screen.ptr(0x12C))[1];
+        const float span = static_cast<float>(back - host.widget_size_00aa6740(screen.ptr(0x130))[1]);
+        host.scroller_attach_scroll_bar_00683380(screen.p + 0xBC, screen.ptr(0x130), span, screen.ptr(0x124),
+                                                 screen.ptr(0x128));
+    }
+    screen.at<std::uint8_t>(0x117) = 0;
+    screen.at<std::uint32_t>(0x20) = 0;
+}
+
+namespace {
+
+constexpr float kLeaderboardAutoScrollSpeed = 0.004f;  // 00CEC178
+constexpr std::int32_t kLeaderboardPage = 0x11;
+
+// 00565211..0056524D / 0056538F..005653D1: focus back from the entries to the boards list.
+void leaderboards_focus_boards(Raw screen, Fe8LeaderboardInputHost& host) {
+    void* const entries = screen.ptr(0x11C);
+    screen.at<std::int32_t>(0x148) = host.list_box_selected_index_00a9c920(entries);
+    host.list_box_clear_00a9cdc0(entries);
+    host.widget_set_enabled_60(screen.ptr(0x94), 1);
+    host.list_box_select_index_00a9c7c0(screen.ptr(0x94), screen.at<std::int32_t>(0xB8));
+    screen.at<std::uint8_t>(0x8D) = 1;
+    screen.at<std::uint8_t>(0x115) = 0;
+}
+
+bool list_active(void* list_box) { return raw(list_box).at<std::uint8_t>(0x85) != 0; }
+
+// The first byte of a widget label (+0F0h data, "" at 00E19474 when null).
+std::uint8_t label_lead(void* widget) {
+    const auto* const text = static_cast<const std::uint8_t*>(raw(widget).ptr(0xF0));
+    return text != nullptr ? text[0] : 0;
+}
+
+void show_gamer_card(Raw screen, Fe8LeaderboardInputHost& host) {
+    const Raw row = host.result_row_004bcd20(screen, host.list_box_selected_index_00a9c920(screen.ptr(0x11C)));
+    host.xshow_gamer_card_ui_00a4d440(host.xenon_active_user_slot_00a3eac0(), row.at<std::uint64_t>(0x58));
+}
+
+} // namespace
+
+void leaderboards_listener_activate_00565190(Raw listener, void* widget, Fe8LeaderboardInputHost& host) {
+    const Raw screen{listener.p - 0x0C};
+    screen.at<std::uint8_t>(0x158) = 1;
+    if (host.widget_type_5c(widget) == 2) {
+        if (raw(widget).at<std::uint32_t>(0xD8) != 0) {
+            if (list_active(screen.ptr(0x94))) host.leaderboards_sync_selection_00561ad0(screen, 0);
+            host.list_box_select_row_00a9c740(screen.ptr(0x11C), widget);
+            return;
+        }
+        if (list_active(screen.ptr(0x11C)) && screen.at<std::int32_t>(0x154) == 0 && !list_active(screen.ptr(0x94))) {
+            leaderboards_focus_boards(screen, host);
+        }
+        host.list_box_select_row_00a9c740(screen.ptr(0x94), widget);
+        return;
+    }
+    if (host.widget_type_5c(widget) == 3) {
+        host.widget_set_alpha_4c(widget, 1.0f);
+        if (widget != screen.ptr(0x134) && label_lead(widget) != 0xA7) {
+            if (label_lead(widget) == 0xA5) {
+                if (!list_active(screen.ptr(0x11C))) return;
+                if (host.list_box_selected_index_00a9c920(screen.ptr(0x11C)) == -1) return;
+                show_gamer_card(screen, host);
+                return;
+            }
+            if (label_lead(widget) == 0xA3) host.leaderboards_return_to_menu_005629a0(screen);
+            return;
+        }
+        if (screen.at<std::int32_t>(0x154) != 0) return;
+        host.leaderboards_cycle_filter_005650c0(screen);
+        return;
+    }
+    void* const boards_scroller = screen.p + 0x34;
+    void* const entries_scroller = screen.p + 0xBC;
+    if (widget == screen.ptr(0xA4)) {
+        host.scroller_set_auto_scroll_00683300(boards_scroller, 2, kLeaderboardAutoScrollSpeed, 1);
+        if (screen.at<std::int32_t>(0x154) == 0 && !list_active(screen.ptr(0x94))) leaderboards_focus_boards(screen, host);
+    } else if (widget == screen.ptr(0xA0)) {
+        host.scroller_set_auto_scroll_00683300(boards_scroller, 1, kLeaderboardAutoScrollSpeed, 1);
+        host.leaderboards_sync_selection_00561ad0(screen, 1);
+    } else if (widget == screen.ptr(0xAC)) {
+        host.scroller_begin_thumb_drag_00683a40(boards_scroller);
+        host.leaderboards_sync_selection_00561ad0(screen, 1);
+    }
+    std::int32_t& first = screen.at<std::int32_t>(0x2C);
+    if (widget == screen.ptr(0x128)) {
+        if (host.leaderboard_mode_00e19430() != 0) {
+            host.scroller_set_auto_scroll_00683300(entries_scroller, 2, kLeaderboardAutoScrollSpeed, 1);
+        } else if (list_active(screen.ptr(0x11C)) && first + kLeaderboardPage < screen.at<std::int32_t>(0x14C)) {
+            first += kLeaderboardPage;
+            screen.at<std::int32_t>(0x154) = 1;
+            screen.at<std::int32_t>(0x164) = 2;
+            screen.at<std::uint8_t>(0x168) = 1;
+        } else {
+            screen.at<std::uint8_t>(0x168) = 0;
+        }
+    } else if (widget == screen.ptr(0x124)) {
+        if (host.leaderboard_mode_00e19430() != 0) {
+            host.scroller_set_auto_scroll_00683300(entries_scroller, 1, kLeaderboardAutoScrollSpeed, 1);
+        } else if (list_active(screen.ptr(0x11C)) && first - kLeaderboardPage > 0) {
+            first -= kLeaderboardPage;
+            screen.at<std::int32_t>(0x154) = 1;
+            screen.at<std::int32_t>(0x164) = 1;
+            screen.at<std::uint8_t>(0x168) = 1;
+        } else {
+            screen.at<std::uint8_t>(0x168) = 0;
+        }
+    } else if (widget == screen.ptr(0x130)) {
+        host.scroller_begin_thumb_drag_00683a40(entries_scroller);
+    }
+    if (host.widget_type_5c(widget) == 6) {
+        host.widget_set_highlight_88(widget, 2, 0, 1.0f);
+        return;
+    }
+    if (host.widget_type_5c(widget) == 0x12) host.widget_set_highlight_84(widget, 2);
+}
+
+void leaderboards_update_00565540(Raw screen, float dt, Fe8LeaderboardUpdateHost& host) {
+    if (host.front_end_action_edge_004d92b0(0x4B) || screen.at<std::uint8_t>(0x160) != 0) {
+        host.leaderboards_return_to_menu_005629a0(screen);
+        return;
+    }
+    void* const boards_scroller = screen.p + 0x34;
+    void* const entries_scroller = screen.p + 0xBC;
+    host.scroller_update_00683820(boards_scroller, 1);
+    host.scroller_update_00683820(entries_scroller, 1);
+    if (screen.at<std::uint8_t>(0x7C) != 0 || screen.at<std::int32_t>(0x54) != 0) {
+        const std::int32_t board = screen.at<std::int32_t>(0xB8);
+        host.leaderboards_move_selection_00561860(screen, boards_scroller, screen.ptr(0x94), screen.ptr(0x90), false);
+        if (screen.at<std::int32_t>(0xB8) != board) host.leaderboards_show_board_name_00561660(screen);
+    }
+    if (screen.at<std::uint8_t>(0x104) != 0 || screen.at<std::int32_t>(0xDC) != 0) {
+        host.leaderboards_move_selection_00561860(screen, entries_scroller, screen.ptr(0x11C), screen.ptr(0x118), false);
+    }
+    void* const entries = screen.ptr(0x11C);
+    std::int32_t& first = screen.at<std::int32_t>(0x2C);
+    if (host.front_end_action_edge_004d92b0(0x4D)) {
+        if (list_active(screen.ptr(0x94)) && raw(entries).at<std::int32_t>(0x104) > 0)
+            host.leaderboards_sync_selection_00561ad0(screen, 0);
+    } else if (host.front_end_action_edge_004d92b0(0x4C)) {
+        if (list_active(entries)) host.leaderboards_sync_selection_00561ad0(screen, 1);
+    } else if (host.front_end_action_edge_004d92b0(0x50)) {
+        if (screen.at<std::int32_t>(0x154) == 0) host.leaderboards_cycle_filter_005650c0(screen);
+    } else if (host.front_end_action_edge_004d92b0(0x4F)) {
+        if (list_active(entries) && host.list_box_selected_index_00a9c920(entries) != -1) show_gamer_card(screen, host);
+    } else if (host.front_end_action_edge_004d92b0(0x46)) {
+        bool paged = false;
+        if (list_active(entries) && first - kLeaderboardPage > 0 && host.leaderboard_mode_00e19430() == 0 &&
+            host.list_box_selected_index_00a9c920(entries) == 0) {
+            first -= kLeaderboardPage;
+            screen.at<std::int32_t>(0x154) = 1;
+            screen.at<std::int32_t>(0x164) = 1;
+            paged = true;
+        }
+        screen.at<std::uint8_t>(0x168) = paged ? 1 : 0;
+    } else if (host.front_end_action_edge_004d92b0(0x47)) {
+        bool paged = false;
+        if (list_active(entries) && first + kLeaderboardPage < screen.at<std::int32_t>(0x14C) &&
+            host.leaderboard_mode_00e19430() == 0 && host.list_box_selected_index_00a9c920(entries) == 0x10) {
+            first += kLeaderboardPage;
+            screen.at<std::int32_t>(0x154) = 1;
+            screen.at<std::int32_t>(0x164) = 2;
+            paged = true;
+        }
+        screen.at<std::uint8_t>(0x168) = paged ? 1 : 0;
+    }
+    const std::int32_t pending = screen.at<std::int32_t>(0x154);
+    if (pending != 0) {
+        float& timer = screen.at<float>(0x150);
+        if (!(timer == 0.0f)) {
+            timer = static_cast<float>(timer - dt);
+            if (timer < 0.0f) {
+                timer = 0.0f;
+                first = 1;
+            }
+        }
+        if (timer == 0.0f && pending == 1) {
+            if (screen.at<std::uint8_t>(0x168) == 0 &&
+                screen.at<std::int32_t>(0x20) ==
+                    host.board_row_00e19468(static_cast<std::uint32_t>(host.leaderboards_selected_board_00561300(screen)))
+                        .at<std::int32_t>(0)) {
+                screen.at<std::int32_t>(0x154) = 0;
+            } else {
+                host.leaderboards_reset_rows_00564e70(screen);
+            }
+        }
+    }
+    screen.at<std::uint8_t>(0x168) = 0;
+    const bool card = list_active(entries) && raw(entries).at<std::int32_t>(0x104) > 0 &&
+                      host.list_box_selected_index_00a9c920(entries) != -1;
+    const bool scroll = card && raw(entries).at<std::int32_t>(0x104) > kLeaderboardPage;
+    host.rebuild_command_bar_0054b530({{
+        {0xA7, "FE.toggle_filter", 0},
+        {0xB3, "globals.navigate", 1},
+        {static_cast<std::uint8_t>(card ? 0xA5 : 0), card ? "globals.showgamercard" : "", 1},
+        {static_cast<std::uint8_t>(scroll ? 0xB2 : 0), scroll ? "globals.scroll_menu" : "", 1},
+        {0xA3, "globals.back", 2},
+    }});
+    if (host.xenon_duplicate_sign_in_128()) {
+        host.raise_prompt_00531b00(2, "FE_pc.multi_liveerrorduplicate", 2);
+        screen.at<std::uint8_t>(0x160) = 1;
+        return;
+    }
+    if (!host.main_menu_connection_gate_00585b40() || !host.main_menu_account_gate_00585810(0)) {
+        screen.at<std::uint8_t>(0x160) = 1;
+        return;
+    }
+    if (screen.at<std::int32_t>(0x20) == 0) return;
+    const std::int32_t result = host.game_complete_leaderboard_read_004dd7c0();
+    constexpr std::int32_t kEFail = static_cast<std::int32_t>(0x80004005u);
+    constexpr std::int32_t kEUnexpected = static_cast<std::int32_t>(0x8000FFFFu);
+    if (result == kEFail || result == kEUnexpected) {
+        host.please_wait_screen_00e19698().at<std::uint8_t>(4) = 0;
+        if (result == kEFail) {
+            host.raise_prompt_00531b00(2, "FE.error_while_reading_leaderboard", 2);
+            host.game_cancel_leaderboard_read_004bc7f0();
+            screen.at<std::int32_t>(0x20) = 0;
+        }
+    }
+    float& wait = screen.at<float>(0x15C);
+    wait = static_cast<float>(wait + dt);
+    if (host.please_wait_screen_00e19698().at<std::uint8_t>(4) != 0 && static_cast<double>(wait) > 30.0) {  // 00CE7630
+        host.raise_prompt_00531b00(2, "FE.leaderboards_cantaccess", 2);
+        host.please_wait_screen_00e19698().at<std::uint8_t>(4) = 0;
+        host.game_cancel_leaderboard_read_004bc7f0();
+        screen.at<std::int32_t>(0x20) = 0;
+    }
+}
+
+namespace {
+
+// The settings' device key for the screen's device index (+16Ch), and its binding tree.
+const void* binding_device_key(Raw settings, Raw screen) {
+    return static_cast<std::uint8_t*>(settings.ptr(0x18)) + screen.at<std::uint32_t>(0x16C) * 8;
+}
+
+} // namespace
+
+void control_binding_show_conflict_text_0055c200(Raw screen, Fe8ControlBindingHost& host) {
+    const Raw settings = host.input_settings_005547d0();
+    const void* const key = binding_device_key(settings, screen);
+    void* const entry = host.input_device_map_index_0055c110(settings.p + 8, key);
+    void* const end = raw(entry).ptr(4);
+    const std::string_view name = native_view(screen, 0x184);
+    if (host.binding_tree_find_00555940(entry, name) != end) {
+        host.widget_set_visible_34(screen.ptr(0x34), 0);
+        return;
+    }
+    std::string conflict;
+    const bool found =
+        host.find_input_binding_conflict_006aac50(settings, key, name, screen.at<std::uint32_t>(0x180), conflict);
+    host.widget_set_visible_34(screen.ptr(0x34), found ? 1u : 0u);
+    if (found) {
+        host.gui_text_set_localised_source_00abaed0(screen.ptr(0x34),
+                                                    std::string("FE_pc.controls_conflict|.: |") + conflict, 1);
+    }
+}
+
+void control_binding_refresh_selected_binding_0055c3b0(Raw screen, Fe8ControlBindingHost& host) {
+    if (host.list_box_selected_index_00a9c920(screen.ptr(0x20)) < 0) return;
+    const Raw settings = host.input_settings_005547d0();
+    void* const entry = host.input_device_map_index_0055c110(settings.p + 8, binding_device_key(settings, screen));
+    void* const main_text = host.find_child_by_name_00aa7e00(host.list_box_current_row_00425e50(screen.ptr(0x20)),
+                                                             "main_Text");
+    // The image copies the text's NativeString (+0F4h) into +184h; the host owns the storage.
+    host.native_string_copy_0041dd40(screen.p + 0x184, native_view(raw(main_text), 0xF4));
+    void* const end = raw(entry).ptr(4);
+    const bool unknown = host.binding_tree_find_00555940(entry, native_view(screen, 0x184)) == end;
+    screen.at<std::uint8_t>(0x18C) = unknown ? 1 : 0;
+    void* const row = host.list_box_current_row_00425e50(screen.ptr(0x20));
+    if (unknown) {
+        screen.at<std::uint32_t>(0x180) = 1;
+        screen.ptr(0x190) = host.find_child_by_name_00aa7e00(row, "main_Text");
+    } else {
+        screen.ptr(0x190) =
+            host.find_child_by_name_00aa7e00(row, screen.at<std::uint32_t>(0x180) != 0 ? "var_2_Text" : "var_1_Text");
+    }
+    host.control_binding_show_conflict_text_0055c200(screen);
+}
+
+bool control_binding_scroll_to_selection_0055cec0(Raw screen, bool no_scroll, Fe8ControlBindingHost& host) {
+    void* const list = screen.ptr(0x20);
+    std::int32_t& first = screen.at<std::int32_t>(0x21C);
+    std::int32_t& last = screen.at<std::int32_t>(0x220);
+    const std::int32_t count = raw(list).at<std::int32_t>(0x104);
+    first = count;
+    last = 0;
+    void* const clip = screen.ptr(0x218);
+    const std::array<float, 3> clip_pos = host.widget_resolved_position_00aa6750(clip);
+    const std::array<float, 2> clip_size = host.widget_size_00aa6740(clip);
+    const float clip_y = static_cast<float>(clip_pos[1] - clip_size[1] * raw(clip).at<float>(0x1C));
+    for (std::int32_t i = 0; i < count; ++i) {
+        void* const row = host.list_box_row_00a9be00(list, i);
+        const std::array<float, 3> pos = host.widget_resolved_position_00aa6750(row);
+        const std::array<float, 2> size = host.widget_size_00aa6740(row);
+        const float row_y = static_cast<float>(pos[1] - size[1] * raw(row).at<float>(0x1C));
+        // Both sums stay in extended precision; double is exact for float + float.
+        const bool visible =
+            row_y > clip_y && static_cast<double>(clip_y) + clip_size[1] > static_cast<double>(row_y) + size[1];
+        if (visible) {
+            if (i < first) first = i;
+            else if (last < i) last = i;
+        }
+        host.widget_set_enabled_60(row, visible ? 1u : 0u);
+    }
+    void* const scroller = screen.p + 0x1A0;
+    if (screen.at<std::uint8_t>(0x1E8) == 0 && screen.at<std::int32_t>(0x1C0) == 0 && !no_scroll) {
+        if (host.list_box_selected_index_00a9c920(list) != -1 && host.list_box_selected_index_00a9c920(list) < first) {
+            host.scroller_toward_start_00683680(
+                scroller, host.widget_size_00aa6740(host.list_box_current_row_00425e50(list))[1]);
+            return true;
+        }
+        if (host.list_box_selected_index_00a9c920(list) == -1) return false;
+        if (host.list_box_selected_index_00a9c920(list) <= last) return false;
+        host.scroller_toward_end_00683700(scroller,
+                                          host.widget_size_00aa6740(host.list_box_current_row_00425e50(list))[1]);
+        return true;
+    }
+    std::int32_t target = 0;
+    if (host.list_box_selected_index_00a9c920(list) != -1 && host.list_box_selected_index_00a9c920(list) < first) {
+        target = first;
+        while (raw(host.list_box_row_00a9be00(list, target)).at<std::uint8_t>(0x77) != 0) ++target;
+    } else {
+        if (host.list_box_selected_index_00a9c920(list) == -1) return false;
+        target = last;
+        if (host.list_box_selected_index_00a9c920(list) <= target) return false;
+        while (raw(host.list_box_row_00a9be00(list, target)).at<std::uint8_t>(0x77) != 0) --target;
+    }
+    if (target == -1) return false;
+    host.list_box_select_index_silently_00a9c8f0(list, target);
+    host.control_binding_refresh_selected_binding_0055c3b0(screen);
+    screen.at<std::int32_t>(0x224) = target;
+    return true;
+}
+
+void control_binding_on_selection_changed_0055d180(Raw screen, void* row, void* list_box,
+                                                   Fe8ControlBindingHost& host) {
+    if (row == nullptr) return;
+    const std::int32_t page = screen.at<std::int32_t>(0x160);
+    screen.at<std::int32_t>(0x164 + page * 4) = host.list_box_selected_index_00a9c920(list_box);
+    if (page == 0) {
+        host.command_bar_set_help_line_0054a0c0(std::string(native_view(raw(row), 0xF4)) + "_help");
+    } else if (page == 1) {
+        host.command_bar_set_help_line_0054a0c0("FE_pc.cs_loadcontrollerpreset_help");
+    } else if (page == 2 && list_box == screen.ptr(0x18)) {
+        host.control_binding_refresh_selected_binding_0055c3b0(screen);
+        host.widget_set_enabled_60(list_box, 1);
+        while (host.control_binding_scroll_to_selection_0055cec0(screen, false)) {
+        }
+    }
 }
 
 } // namespace bsp::cc13_fe3
