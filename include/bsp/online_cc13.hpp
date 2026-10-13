@@ -816,4 +816,57 @@ std::int32_t matchmaking_begin_search20_00a4b2a0(void* matchmaking, std::uint64_
 // every mode left out. Contexts as in 00A4B2A0.
 std::int32_t matchmaking_begin_search_00a4b7f0(void* matchmaking, const std::uint64_t q[6],
     MatchmakingSearchGlobals& globals, MatchmakingSearchCalls& host, XLiveSearchCalls& search);
+
+// ---------------------------------------------------------------------------
+// Search and QoS polling
+// ---------------------------------------------------------------------------
+
+struct SearchPollCalls {
+    virtual ~SearchPollCalls() = default;
+    virtual std::uint32_t x_get_overlapped_extended_error(void* overlapped) = 0;     // 00A4D422
+    virtual std::uint32_t x_get_overlapped_result(void* overlapped, std::uint32_t* result,
+        std::uint32_t wait) = 0;                                                    // 00A4D42E
+    // XNetGetXnAddrPlatform (00A4D434)(const XNADDR*, DWORD* platform).
+    virtual std::uint32_t xnet_get_xnaddr_platform(const void* xnaddr, std::uint32_t* platform) = 0;
+    // XNetQosLookup (00A4D5FC)(count, xnaddr*[], xnkid*[], xnkey*[], 0, 0, 0,
+    // probes, bits per second, 0, 0, XNQOS** out).
+    virtual std::int32_t xnet_qos_lookup(std::uint32_t count, void* addresses, void* ids, void* keys,
+        std::uint32_t probes, std::uint32_t bits_per_second, void** qos) = 0;
+};
+
+// 00A49DF0 BSP_XLiveMatchmaking_PollSearch, __fastcall(ECX = matchmaking),
+// HRESULT. State +193Ch: 0 -> 0; 4 -> +1940h; 3 -> attach every completed
+// XNQOSINFO (bFlags & 1) to a result whose +F2h is still null, then with no
+// QoS lookups pending (XNQOS +4h) state 0Ch and +1940h, else 3E5h; 2 -> once
+// nothing is pending, results whose QoS lacks bFlags 2 (contacted) or has 4
+// (disabled) are removed (00A49920) and the rest get their info pointer,
+// state 0Ch, +1940h; still pending: 3E5h. State 1 (the search): pending
+// overlapped -> 0; an extended error -> XGetOverlappedResult, the error read
+// again, 8000FFFFh. Completion: state 4, and each XSESSION_SEARCHRESULT (5Ch)
+// in the +1960h buffer whose host XNADDR platform is not 1 becomes an F6h
+// record (below); +1808h = the kept count, the pointer arrays +180Ch/+1870h/
+// +18D4h are filled and XNetQosLookup(kept, ..., 8 probes, 64000 bps,
+// &+1938h) moves to state 3 on success. Returns 0.
+// Record (F6h): +0..+0Fh = 0, +10h = open + filled slots (public + private),
+// +14h = 0, +18h = open public, +1Ch = 0, +20h = wcscpy of any UNICODE (type
+// 4) property, unbounded; property values: 10000030h -> +42h and +5Ah,
+// 10000048h +46h, 10000047h +4Ah, 100000D9h +4Eh, 100000DAh +52h, D0 +62h,
+// D6 +66h, D3 +6Ah, D5 +6Eh AND +72h (both tests use D5), D1 +76h, D4 +7Ah,
+// CF +7Eh, CE +82h, D2 +86h, qwords 200000D7h +8Eh, 200000D8h +96h,
+// 200000DBh +9Eh; mode +5Eh = 4/6/5/7/0 for C9/CB/CA/CC/CD == 1 (later tests
+// win), never initialised first, and 0 is replaced by the D0 value; XNKID
+// +A6h, XNKEY +AEh, XNADDR +BEh, the four slot counts +E2h..+EEh, QoS info
+// pointer +F2h = 0. This is the session-side layout of 00A4A890 shifted by 6.
+std::int32_t matchmaking_poll_search_00a49df0(void* matchmaking, SearchPollCalls& x);
+
+// 00A4A4E0 BSP_XLiveHostQos_Poll, __fastcall(ECX = host QoS), HRESULT. The
+// same machine over the 76h-byte entries at +0 (count +78h, XNQOS +88h, state
+// +8Ch, result +90h, XOVERLAPPED +94h, search header pointer +B0h) with
+// these differences: completion states go to 4, not 0Ch; state 1 sets state 4
+// before copying, takes every result (no platform filter), copies XNKID +26h,
+// XNKEY +2Eh, XNADDR +3Eh, the slot counts +62h..+6Eh, clears +72h, and runs
+// XNetQosLookup with 0 probes (state 2 on success). The entry array has room
+// for one entry before the count at +78h, and the three pointer arrays
+// overlap (see 00A4A420), so a second result overwrites live fields.
+std::int32_t host_qos_poll_00a4a4e0(void* qos, SearchPollCalls& x);
 } // namespace bsp::online_cc13

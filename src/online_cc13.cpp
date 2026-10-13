@@ -953,4 +953,199 @@ std::int32_t matchmaking_begin_search_00a4b7f0(void* matchmaking, const std::uin
     write_field<std::uint32_t>(matchmaking, 0x193C, 1);
     return 0;
 }
+
+namespace {
+// The search/QoS state machine layout shared by 00A49DF0 and 00A4A4E0.
+struct PollLayout {
+    std::size_t state, result, count, qos, overlapped, stride, info_in_record;
+    std::uint32_t done_state;
+};
+
+std::byte* qos_info(const void* owner, const PollLayout& l, std::uint32_t index) {
+    return read_field<std::byte*>(owner, l.qos) + 8 + index * 0x18;
+}
+
+// State 3: attach completed XNQOSINFO entries (00A49E2A.., 00A4A51C..).
+std::int32_t poll_attach_completed(void* owner, const PollLayout& l) {
+    auto* const base = static_cast<std::byte*>(owner);
+    for (std::uint32_t i = 0; i < read_field<std::uint32_t>(owner, l.count); ++i) {
+        std::byte* const slot = base + i * l.stride + l.info_in_record;
+        if (read_field<void*>(slot, 0) == nullptr && (read_field<std::uint8_t>(qos_info(owner, l, i), 0) & 1) != 0)
+            write_field<void*>(slot, 0, qos_info(owner, l, i));
+    }
+    if (read_field<std::uint32_t>(read_field<void*>(owner, l.qos), 4) == 0) {
+        write_field<std::uint32_t>(owner, l.state, l.done_state);
+        return read_field<std::int32_t>(owner, l.result);
+    }
+    return static_cast<std::int32_t>(kErrorIoPending);
+}
+
+// State 2: drop entries that were not contacted or are disabled.
+template <class RemoveAt>
+std::int32_t poll_prune(void* owner, const PollLayout& l, RemoveAt remove_at) {
+    if (read_field<std::uint32_t>(read_field<void*>(owner, l.qos), 4) != 0)
+        return static_cast<std::int32_t>(kErrorIoPending);
+    auto* const base = static_cast<std::byte*>(owner);
+    std::uint32_t kept = 0;
+    const std::uint32_t count = read_field<std::uint32_t>(owner, l.count);
+    for (std::uint32_t i = 0; i < count; ++i) {
+        const std::uint8_t flags = read_field<std::uint8_t>(qos_info(owner, l, i), 0);
+        if ((flags & 2) == 0 || (flags & 4) != 0) {
+            remove_at(owner, kept);
+        } else {
+            write_field<void*>(base + kept * l.stride + l.info_in_record, 0, qos_info(owner, l, i));
+            ++kept;
+        }
+    }
+    write_field<std::uint32_t>(owner, l.state, l.done_state);
+    return read_field<std::int32_t>(owner, l.result);
+}
+
+// The overlapped-failure tail of state 1.
+std::int32_t poll_overlapped_failed(void* overlapped, SearchPollCalls& x) {
+    std::uint32_t ignored = 0;
+    x.x_get_overlapped_result(overlapped, &ignored, 0);
+    (void)x.x_get_overlapped_extended_error(overlapped);
+    return static_cast<std::int32_t>(0x8000FFFFu);
+}
+
+// XNKID, XNKEY, XNADDR and the slot counts of one XSESSION_SEARCHRESULT
+// (dwords 0-1, 0Bh-0Eh, 2-0Ah, 0Fh-12h) into a record whose XNKID is at
+// `id`; the key follows at id+8h, the address at id+18h, the counts at
+// id+3Ch, the QoS info pointer at id+4Ch.
+void copy_search_result(std::byte* id, const std::byte* result) {
+    std::memcpy(id, result, 8);
+    std::memcpy(id + 0x08, result + 0x2C, 16);
+    std::memcpy(id + 0x18, result + 0x08, 0x24);
+    std::memcpy(id + 0x3C, result + 0x3C, 16);
+}
+} // namespace
+
+std::int32_t matchmaking_poll_search_00a49df0(void* m, SearchPollCalls& x) {
+    static constexpr PollLayout l{0x193C, 0x1940, 0x1808, 0x1938, 0x1944, 0xF6, 0xF2, 0x0C};
+    const auto state = read_field<std::uint32_t>(m, l.state);
+    if (state == 0) return 0;
+    if (state == 4) return read_field<std::int32_t>(m, l.result);
+    if (state == 3) return poll_attach_completed(m, l);
+    if (state == 2) return poll_prune(m, l, [](void* o, std::uint32_t i) { matchmaking_remove_result_at_00a49920(o, i); });
+    auto* const base = static_cast<std::byte*>(m);
+    void* const overlapped = base + l.overlapped;
+    if (read_field<std::uint32_t>(m, l.overlapped) == kErrorIoPending) return 0;
+    if (x.x_get_overlapped_extended_error(overlapped) != 0) return poll_overlapped_failed(overlapped, x);
+    write_field<std::uint32_t>(m, l.state, 4);
+    const auto* const header = read_field<const std::byte*>(m, 0x1960);
+    const std::uint32_t total = read_field<std::uint32_t>(header, 0);
+    write_field<std::uint32_t>(m, l.count, total);
+    if (total == 0) return 0;
+    std::uint32_t kept = 0;
+    for (std::uint32_t i = 0; i < total; ++i) {
+        const std::byte* const result = read_field<const std::byte*>(read_field<const std::byte*>(m, 0x1960), 4) + i * 0x5C;
+        std::byte* const record = base + kept * l.stride;
+        std::uint32_t platform = 0;
+        x.xnet_get_xnaddr_platform(result + 8, &platform);
+        write_field<std::uint32_t>(record, 0xF2, 0);
+        if (platform == 1) continue;
+        copy_search_result(record + 0xA6, result);
+        const auto slot = [&](std::size_t dword) { return read_field<std::uint32_t>(result, dword * 4); };
+        write_field<std::uint32_t>(record, 0x10, slot(0x10) + slot(0x0F) + slot(0x12) + slot(0x11));
+        write_field<std::uint32_t>(record, 0x14, 0);
+        write_field<std::uint32_t>(record, 0x18, slot(0x0F));
+        write_field<std::uint32_t>(record, 0x1C, 0);
+        std::memset(record, 0, 0x10);
+        const std::uint32_t properties = slot(0x13);
+        const auto* const property_base = read_field<const std::byte*>(result, 0x54);
+        for (std::uint32_t p = 0; p < properties; ++p) {
+            const std::byte* const property = property_base + p * 0x18;
+            const auto id = read_field<std::uint32_t>(property, 0);
+            const auto value = read_field<std::uint32_t>(property, 0x10);
+            if (read_field<std::uint8_t>(property, 8) == 4) {
+                const auto* text = read_field<const std::byte*>(property, 0x14);
+                std::byte* out = record + 0x20;
+                std::uint16_t unit;
+                do {
+                    std::memcpy(&unit, text, 2);
+                    std::memcpy(out, &unit, 2);
+                    text += 2;
+                    out += 2;
+                } while (unit != 0);
+            }
+            switch (id) {
+            case 0x10000030: write_field<std::uint32_t>(record, 0x42, value); write_field<std::uint32_t>(record, 0x5A, value); break;
+            case 0x10000048: write_field<std::uint32_t>(record, 0x46, value); break;
+            case 0x10000047: write_field<std::uint32_t>(record, 0x4A, value); break;
+            case 0x200000D7: write_field<std::uint64_t>(record, 0x8E, read_field<std::uint64_t>(property, 0x10)); break;
+            case 0x100000D0: write_field<std::uint32_t>(record, 0x62, value); break;
+            case 0x100000D6: write_field<std::uint32_t>(record, 0x66, value); break;
+            case 0x100000D3: write_field<std::uint32_t>(record, 0x6A, value); break;
+            // 00A4A12E and 00A4A143 both test 100000D5h.
+            case 0x100000D5: write_field<std::uint32_t>(record, 0x6E, value); write_field<std::uint32_t>(record, 0x72, value); break;
+            case 0x100000D1: write_field<std::uint32_t>(record, 0x76, value); break;
+            case 0x100000D4: write_field<std::uint32_t>(record, 0x7A, value); break;
+            case 0x100000CF: write_field<std::uint32_t>(record, 0x7E, value); break;
+            case 0x100000CE: write_field<std::uint32_t>(record, 0x82, value); break;
+            case 0x100000D2: write_field<std::uint32_t>(record, 0x86, value); break;
+            case 0x100000C9: if (value == 1) write_field<std::uint32_t>(record, 0x5E, 4); break;
+            case 0x100000CB: if (value == 1) write_field<std::uint32_t>(record, 0x5E, 6); break;
+            case 0x100000CA: if (value == 1) write_field<std::uint32_t>(record, 0x5E, 5); break;
+            case 0x100000CC: if (value == 1) write_field<std::uint32_t>(record, 0x5E, 7); break;
+            case 0x100000CD: if (value == 1) write_field<std::uint32_t>(record, 0x5E, 0); break;
+            case 0x200000DB: write_field<std::uint64_t>(record, 0x9E, read_field<std::uint64_t>(property, 0x10)); break;
+            case 0x200000D8: write_field<std::uint64_t>(record, 0x96, read_field<std::uint64_t>(property, 0x10)); break;
+            case 0x100000D9: write_field<std::uint32_t>(record, 0x4E, value); break;
+            case 0x100000DA: write_field<std::uint32_t>(record, 0x52, value); break;
+            default: break;
+            }
+        }
+        if (read_field<std::uint32_t>(record, 0x5E) == 0) write_field<std::uint32_t>(record, 0x5E, read_field<std::uint32_t>(record, 0x62));
+        write_field<std::uint32_t>(record, 0xF2, 0);
+        write_field<std::byte*>(m, 0x180C + 4 * kept, record + 0xBE);
+        write_field<std::byte*>(m, 0x1870 + 4 * kept, record + 0xA6);
+        write_field<std::byte*>(m, 0x18D4 + 4 * kept, record + 0xAE);
+        ++kept;
+    }
+    if (kept < total) write_field<std::uint32_t>(m, l.count, kept);
+    if (kept != 0) {
+        void* qos = read_field<void*>(m, l.qos);
+        const std::int32_t error = x.xnet_qos_lookup(kept, base + 0x180C, base + 0x1870, base + 0x18D4, 8, 64000, &qos);
+        write_field<void*>(m, l.qos, qos);
+        if (error == 0) write_field<std::uint32_t>(m, l.state, 3);
+    }
+    return 0;
+}
+
+std::int32_t host_qos_poll_00a4a4e0(void* q, SearchPollCalls& x) {
+    static constexpr PollLayout l{0x8C, 0x90, 0x78, 0x88, 0x94, 0x76, 0x72, 4};
+    const auto state = read_field<std::uint32_t>(q, l.state);
+    if (state == 0) return 0;
+    if (state == 4) return read_field<std::int32_t>(q, l.result);
+    if (state == 3) return poll_attach_completed(q, l);
+    if (state == 2) return poll_prune(q, l, [](void* o, std::uint32_t i) { host_qos_remove_entry_at_00a49990(o, i); });
+    auto* const base = static_cast<std::byte*>(q);
+    void* const overlapped = base + l.overlapped;
+    if (read_field<std::uint32_t>(q, l.overlapped) == kErrorIoPending) return 0;
+    if (x.x_get_overlapped_extended_error(overlapped) != 0) return poll_overlapped_failed(overlapped, x);
+    write_field<std::uint32_t>(q, l.state, 4);
+    const auto* const header = read_field<const std::byte*>(q, 0xB0);
+    const std::uint32_t total = read_field<std::uint32_t>(header, 0);
+    write_field<std::uint32_t>(q, l.count, total);
+    // Entry i at +0 + i*76h; the stores follow 00A4A660..00A4A6E4 in order, so
+    // with two or more results later entries overwrite +78h onwards, as the
+    // image does.
+    for (std::uint32_t i = 0; i < total; ++i) {
+        const std::byte* const result = read_field<const std::byte*>(read_field<const std::byte*>(q, 0xB0), 4) + i * 0x5C;
+        std::byte* const entry = base + i * l.stride;
+        copy_search_result(entry + 0x26, result);
+        write_field<std::uint32_t>(entry, 0x72, 0);
+        write_field<std::byte*>(q, 0x7C + 4 * i, entry + 0x3E);
+        write_field<std::byte*>(q, 0x80 + 4 * i, entry + 0x26);
+        write_field<std::byte*>(q, 0x84 + 4 * i, entry + 0x2E);
+    }
+    if (total != 0) {
+        void* qos = read_field<void*>(q, l.qos);
+        const std::int32_t error = x.xnet_qos_lookup(total, base + 0x7C, base + 0x80, base + 0x84, 0, 64000, &qos);
+        write_field<void*>(q, l.qos, qos);
+        if (error == 0) write_field<std::uint32_t>(q, l.state, 2);
+    }
+    return 0;
+}
 } // namespace bsp::online_cc13
