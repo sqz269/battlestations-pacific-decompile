@@ -25,8 +25,8 @@ name, no reconstruction record and no tag (173 had no export; exported with
 * cc9's terrain host (`src/game_hosts_scene_contents.cpp`, `SceneTerrainHeightField` and the
   quadtree/segment walk) already reconstructs 18 of them without records. Their records are
   backfilled here (status `reconstructed_ledger_backfilled_from_source`); the code is
-  untouched. `00ADA240`, `00ADA420`, `00ADA890`, `00ADC6C0`, `00ADD290`, `00ADE500`,
-  `00ADE820`, `00ADFD70` and `00ADFEB0` are folded into cc9's loaders and walks without a
+  untouched. `00ADA240`, `00ADA420`, `00ADA890`, `00ADD290`, `00ADE500`, `00ADE820`,
+  `00ADFD70` and `00ADFEB0` are folded into cc9's loaders and walks without a
   separable function and keep no record.
 * `src/particle_emitters_cc13.cpp` (6) and `src/scene_renderer_cc13.cpp` (12, plus the ten
   std::sort helpers of the stats overlay) are backfilled the same way.
@@ -48,6 +48,13 @@ size, a vtable or a global named in the table.
 | 00ADF6B0 | `BSP_TerrainRenderBlock_Construct` | the 38h tile (vtable 00D5D418): +1Ch block, +20h second block, +24h node, +28h..+34h ref slots. |
 | 00ADF7E0 | `BSP_TerrainBlockU8_Destroy` | the destructor of that tile. |
 | 00ADB020 etc. | `TMPL_PointerArray_Clear_*` | the layout is the {width, height, cells} grid of 00AED690. |
+| 00AE0250 | `BSP_TerrainHeightField_WriteNodeChunk` | ECX is a tile: the NODE chunk writes tile +0Ch/+10h and the tile's block. |
+| 00AE0710 / 00AE2C80 | `BSP_TerrainRenderObject_SetFlag40/38` | bush / tree group enabled setters (+40h with mesh +2Ch; +38h with mesh +28h), the per-element calls of 00AD71C0. |
+| 00AE9B50 | `BSP_TerrainTileGrid_GetTileOrigin` | copies the tile's height range +14h/+18h (default -1000 / 1000). |
+| 00ADAC90 | `BSP_TerrainRenderObject_LoadFoliageDefault` | height field: +5Ch = foliage system, its +3Ch = field+0Ch, then 00AD92C0(field). |
+| 00AE22D0 | `BSP_BushGroupModel_RegisterDiffuseFactor` | ECX is a bush group (materials +3Ch, +38h). |
+| 00AED820 | `BSP_TerrainFloatLayer_GetQuantized8` | truncates (chop-mode FISTP), does not round. |
+| 00B1B980 | `BSP_LuaGlobals_GetField` | a float4 global with the default (1, 1, 1, 1). |
 
 The ledger names are left as they are; these rows are for the next naming pass.
 
@@ -94,10 +101,76 @@ atlas-loaded flags, `+A4h` ref-counted bush effect.
 * Tiles: 00ADF6B0 / 00ADF7E0 / 00ADF8B0 (SetBlock re-reads the range through block slot 0Ch:
   lo at the first pointer, hi at the second, 00ADF8F8..00ADF915).
 
+## Segment 82: the particle band and the renderer tail
+
+* RNG RULE. `00AF5A30` (variation factor: `1 + spread * (int32)draw * 2^-31`, doubles
+  00D5DA30 / 00D7A210), `00AF7F70` (fraction times x) and `00AF7FB0` (random sign: `-1` when
+  the fraction is below 0.5 or unordered) each make one image stream-0 draw (ECX = 0 before
+  00BD2FC0 / 00BD2F40). The draws are `ParticleHost` callbacks; nothing is wired into a game
+  host, so a host must route them to a presentation stream or keep them off. The backfilled
+  `random_int_inclusive_00b057c0` and `advance_texture_frame_00b0c8b0` (particle_emitters_cc13)
+  already take a `ParticleRandom` the same way.
+* Named pointer lists (14h: NativeString + pointer array) and their arrays: `00AFF290`'s miss
+  path builds a 14h temporary with operator new and 00AFEF30, pushes a copy (00AFF190) and
+  never destroys or frees the temporary (00AFF30C..00AFF37B), so the image leaks 14h plus the
+  copied name and value array per new name. The model keeps the leak.
+* `00B00950`: format 16h (X8R8G8B8) goes to 00B4C6D0 (alpha from non-black), not to the
+  premultiply routine the ledger mentions; FOURCC formats at or above 'DXT1' are skipped.
+* `00B0D720`: `1/w` stays in an x87 register (00B0D782 FLD1 / FDIVRP) and multiplies the
+  three components.
+* `00B1B980` reads a float4 global by name with the default (1, 1, 1, 1); the ledger name
+  (`BSP_LuaGlobals_GetField`) undersells it.
+* `00B199A0` returns AL = 1 for the two type ids at 00F8D428 / 00F8D42C; the "return
+  00F8D400" in the decompile is AL = 0 (low byte of that address).
+* `00B05400` is a bare `RET 4`.
+* The backfilled stats-overlay sort (`00B148E0` and its nine helpers) is library-equivalent:
+  `scene_renderer_cc13` sorts with std::sort and the image's comparator, so equal keys may
+  order differently.
+
+## Verification notes
+
+* Every x87 body (`00ADA0D0`, `00ADA720`, `00ADA810`, `00ADA990`, `00ADB550`, `00ADB620`,
+  `00AED730`, `00AED820`, `00AF5A30`, `00AF7F70`, `00AF7FB0`, `00AEA900`, `00B0D720`) was
+  read from capstone over the disk bytes; no DC-form FMUL occurs in them (the reg-reg forms
+  are FSUBP/FADDP/FMULP/FDIVRP, read with their operand order).
+* Argument counts come from the RET immediates (`local/tr1_ret.py`) and the push order at
+  the call sites quoted above.
+* Stack-slot provenance for 00AD9050, 00ADB550 and 00ADB620 was traced by hand from the
+  pushes (recorded in the comments of the header).
+* `tools/verify_report_calls.py` takes a JSON call report; this packet has none, so it was
+  not run. `scripts/build.ps1` passes at every commit.
+
 ## Open items
 
-See the handoff at the end.
+Not reconstructed (no record), in rough order of value:
+
+| Address | Ledger name | Why it is open |
+| --- | --- | --- |
+| 00AE2450 / 00AE5870 | BushGroup_Initialise / TreeGroup_Initialise | large stream readers that build vertex streams and generated models; need the vertex format and model calls mapped |
+| 00AE5160 / 00AE1E10 | TreeGroupType_Construct / BushGroupType_Construct | large constructors (material and texture setup) |
+| 00AE1A10 | BushCell_CullAndEmitLod | recursive cull with draw-section emission; terrain_render.hpp models its plane test only |
+| 00AE07C0, 00AE12F0, 00AE13D0, 00AE15D0, 00AE16F0, 00AE17D0, 00AE1870 | BushGroupModelPool_* | the Mit fixed-block pool family (18Ch elements, 8 per block); existing pool models (e.g. directional_light_pool) are per-class and own real CRITICAL_SECTIONs, so this wants the same treatment |
+| 00AE1FB0 | BushGroupModel_BuildBushObject | canonical model slot + generated model + far plane |
+| 00AEF280, 00AEFA30, 00AEFF40, 00AEF090 | atlas register / unload / load directory / registry destruct | VFS and atlas parse plumbing (texture_atlas.cpp reconstructs the parse 00AEEAF0) |
+| 00AF0F20 | FoliageGroupManager_CreateFloatingParticles | generated-model creation with ParticleFloating.mshd / .mvfm |
+| 00AFB7F0 / 00AFBA40 | ParticleBallistic_Max/MinHeight | long x87 bodies (sqrt solve); started at 00AFB7F0, not finished |
+| 00AFDCF0 | NativeParticleEmitter_UpdateTransform | matrix composition through four helpers |
+| 00ADB6F0, 00ADB980, 00ADC1C0, 00ADC930, 00ADE0E0 | height-field stamp, get-or-create tile, TGA dump, visibility-group builders | large terrain bodies with x87 |
+
+Folded into cc9's loaders without a separable reconstruction (no record by design):
+00ADA240, 00ADA420, 00ADA890, 00ADD290, 00ADE500, 00ADE820, 00ADFD70, 00ADFEB0.
 
 ## Handoff
 
-(in progress)
+Packet state at the final commit: 293 of the 327 targets have reconstruction records
+(247 new in `src/terrain_particles_cc13.cpp`, 46 backfilled for cc9's terrain host and for
+`particle_emitters_cc13` / `scene_renderer_cc13`); 26 bodies are open (table above) and 8
+are cc9-folded. Build passes. Ledger names were not changed; the corrections table lists the
+renames a naming pass should apply (00AD56C0, 00AD9AC0, 00AD97D0, 00AD9880, 00ADB160,
+00ADF6B0, 00ADF7E0, 00AE0250, 00AE0710, 00AE2C80, 00AE9B50, 00ADAC90, 00AE22D0, 00B1B980).
+
+To continue: the worker scripts are in this tree's `local/` (`tr1_rec.py` holds every record
+and is re-runnable; `tr1_left.py` lists what is open; `tr1_live.py` decompiles live when the
+shared exports are being regenerated; `tr1_x87.py` / `tr1_dis.py` read x87 from the bytes).
+Start with the two group initialisers (00AE2450 / 00AE5870): they are the spine of the foliage
+load path that 00AD9050 / 00AD91C0 now reach through `FoliageLoadHost`.
