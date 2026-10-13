@@ -16309,3 +16309,61 @@ and 38. The image keeps no such count.
 
 **Predictions.** USN12 (control): identical, it makes far fewer than 64 squadrons. USN21 (`s46_u21_f.txt`): exit 3, launches
 after about 860 s carry a squadron (`squadron=` non-zero) and the strikes continue until the decks' stock or slots run out.
+
+### 5gq.1 Measured: **ON** (cc9-lua56, 2026-10-13)
+
+Same tree: OFF `04c7ac88a`, ON `04c7ac88a` + flip. Logs `local\l56_b{0,1}_{osk,u12}.log`.
+- **USN12 (control): identical**, `torpedo_refused_class=0` (every torpedo bomber flies 00E08F18).
+- **USNOS (`usnos_s45_os_k.txt`, 200000 frames): MOVED; no completion on either side** (the row already fails to complete on main,
+  docs/WINS_TABLE.md). The mechanism held: `torpedo_refused_class=24` (Betty1-6, four each, all `00E08F30`), torpedo-task aircraft
+  60 -> 36; the spent-RTB summary goes `latches=35 ends=31 issues=31` -> `latches=38 ends=38 issues=38`. Betty2, Betty3 and Betty6
+  reach B5 within 0.1 s of the latch (1601.34, 1616.75, 1627.06 s) and 007F16D0 answers land at site Airfield2; Betty5 and Betty4
+  (1683.22, 1718.15 s) land at site Airfield1.
+- **Why USNOS still does not complete (open):**
+  - No Betty touches down (`touchdowns=0`): the returning Betties fly over the US screen and are shot down (Betty6's four by
+    Gear14 at 1654-1668 s); Betty deaths 16 -> 20.
+  - Betty1 never latches: its leader released at 1624.56 s, but 2 of the 24 Ohkas are never released (`releases=22`), so a member
+    still holds a rack round and 009F8160 does not latch. Which Betty1 wingman keeps its round, and why its drop-kamikaze task
+    never reaches release, is the next read.
+- **Verdict: ON.**
+
+### 5gr.1 Measured: **ON** (cc9-lua56, 2026-10-13)
+
+USN21 with `s46_u21_f.txt`, 80200/80000 frames, OFF `41aae9c67`, ON + flip; `local\l56_c{0,1}_u21f.log`. MOVED as predicted:
+launches with `squadron=0` 236 of 300 -> 0 of 261; aircraft on the torpedo task 91 -> 349, dive task 92 -> 419; deaths 197 -> 729;
+the Center force ends at 72% HP instead of 83% (target 60%); no completion on either side. Releases stay tiny (torpedo 4 -> 8,
+dive 0 -> 1): the strike-release gap is separate (5gs).
+The limit fires only at 64 squadrons, so a row that never logs `ceiling of this process is reached` is identical by construction:
+USN12, PRCP01 and JM08 f never reach it; **USNOS does** (`l56_b1_osk`), so USNOS moves with this flip. **Verdict: ON.**
+
+## 5gs. Handoff (cc9-lua56, 2026-10-13, at about 75% context)
+
+Tree `J:\PROG\battlestations-pacific-decompile-cc9-lua52` (branch `agent/cc9-lua52`); launcher `local\l56_lane.ps1` (adds rows
+`p01r`, `osk` = USNOS `usnos_s45_os_k` 200000, `u21f` = USN21 `s46_u21_f.txt` 80000). No leases held.
+
+**Landed this session (all ON):** `kRackDeviceReloadBound` + `kDiveBreakOffReloadFeedBound` (5go; PRCP01 now completes, its order
+file is `config/win_orders/prcp01_l55_p01_c.txt`), the recall check (5gp), `kDropKamikazeSpentRtbBound` (5gq),
+`kAirOpsSquadronCeilingRaisedBound` (5gr). JM08 f (`jm08_p6_j8_f.txt`, 110000) completes at 2141.01 s with reload ON
+(`local\l56_M_j8.log`).
+
+**Next, in the lead's order:**
+1. **Strike release (the main packet).** USN21 f with the ceiling raised (`local\l56_c1_u21f.log`): torpedo task 8 releases of 349
+   aircraft, dive task 1 of 419. Leads, none yet read in the image:
+   - **Torpedo, the engaged gate.** `summary mission torpedo task: ... blocked_engaged_009d3210=550181 ... engaged_refusals
+     no_target=0 member=399437`: most refusals of 009D3210 are the `member` arm (wingmen). Read 009D3210 against the host's
+     engaged inputs for a non-leader (which squadron field it reads, and whether the host feeds the leader's latch to members).
+     ships46's "0099AF53 count 0" is not the blocker (docs/TORPEDO_RELEASE_ORDERS.md; CONTROLLED_UNIT 2713).
+   - **Torpedo, the altitude.** `torpedo Essex_sqn06 glide census ... commanded=1450.0` until about 8 km, then `aim gates
+     min_alt` 300-700 m with pitch -0.42 rad; Essex_sqn06 died at 708 m to Musashi's cat-6 at 2121 m. PRCP01's TBFs aim at 12-16 m.
+     Find who sets 1450 (class CruisingAlt, `SquadronSetTravelAlt`, kSquadronTravelAltBound) and whether the attackrun descent
+     starts early enough in the image (docs/ATTACK_RUN_DESCENT.md).
+   - **Dive, "aimglide blocked at the ceiling"** (USN01 g, ConSBD3; `config/win_orders/usn01_p6_u1_g.txt`): the release gate's
+     ceiling `C + 50` with C = NewReleaseMul x approach+A8h (docs/AIMGLIDE_PITCH.md), A8h decayed by the +39Ch block
+     (`kDiveReleaseAltActivationOnlyBound`, OFF, cc13-audit13 A3, src/game_hosts_units.cpp ~4268). Check what +39Ch holds on
+     USN01 (a script `SquadronSetReleaseAlt`?) and whether A3's activation-only reading fixes it.
+2. **Loadout-1 arm (lead's (d)).** Under device reload 007EEC00 passes loadout 1 and an empty rack still answers its kind
+   (006E4060 arm 2); the host's live mask drops it. Bind behind OFF; pair PRCP01, JM08 f, JM06 m, USN12.
+3. **USNOS still stalls** (5gq.1): Betty1's two unreleased Ohkas (why its wingmen's drop-kamikaze never reaches release) and the
+   returning Betties shot down over the US screen. Also re-run USNOS on current main: the ceiling flip moves it.
+4. Lead items still queued: CC13_GPR_48 (007D99C0's carrier-deck parent term in forward speed; 007DB4D0's clamped arm rewriting
+   TurnRollLeader +260h), the Lua bindings (5gp item 4).

@@ -749,7 +749,7 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
     // a strike every 400 frames) it stopped all launches at 192 aircraft while the
     // decks still held stock (`squadron=0` from about 860 s). The image has no such
     // count. True: the net is 4096, far above any mission's pacing. False: 64.
-    constexpr bool kAirOpsSquadronCeilingRaisedBound = true;  // ON: host safety net, not an image rule; ESMP08 needs ~72 squadrons (cc9-physics6), 2026-10-13
+    constexpr bool kAirOpsSquadronCeilingRaisedBound = true;   // ON: SQUADRON_LAND_TASK 5gr.1; ESMP08 needs ~72 squadrons (cc9-physics6)
     constexpr std::size_t kSquadronCreateLimit = kAirOpsSquadronCeilingRaisedBound ? 4096 : 64;
     // Metres above the carrier's own origin. The native launches the plane off
     // the deck through the taxi and catapult paths; none of that is reconstructed

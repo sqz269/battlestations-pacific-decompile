@@ -6252,7 +6252,7 @@ struct GameUnitsHost::Impl {
     // its 009AE1B0. So a spent BettyOhka squadron reaches 0084E010's B5 and is
     // sent home. False: every plane with 2Bh ordnance and a target also gets a
     // torpedo task, whose break-off answers for the Betty.
-    static constexpr bool kDropKamikazeSpentRtbBound = false;
+    static constexpr bool kDropKamikazeSpentRtbBound = true;   // ON: SQUADRON_LAND_TASK 5gq.1
     // Packet cc9_lua45_rack_equipment_device (GUNNERY 144, SQUADRON_LAND_TASK 5ev).
     // True: (a) an absent RepeatTime reads as 006E0242's default, 00B66330 with
     // [00CE3D30] = 0.6f, at both rack readers; (b) a rack's device is the plane's

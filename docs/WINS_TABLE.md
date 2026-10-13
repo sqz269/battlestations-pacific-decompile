@@ -212,3 +212,15 @@ mechanism is in the cd761bb52 section above).
   ceiling (a safety net counting every squadron ever created) stops launches near frame 45300, and the plan needs
   about 70-80 squadrons. Other allocations (90000 frames, current exe): baseline 5 of 15 sunk, destroyers first 1,
   mixed 6, big ships first 4 (9 with one re-target round, 11 with two and 140000 frames).
+- **New row IJN18** (cc9-ships46, SHIP_AI 228, reported through the lead, 2026-10-13):
+  `config/win_orders/ijn18_s46_i18_a.txt`, 60000+ frames: EndMission 2208.58 s, and 2370.14 s under
+  `BSP_FRAME_JITTER 20,3`, guard logged both.
+- **New row PRCP01 (Santa Cruz)** (cc9-lua55/56, SQUADRON_LAND_TASK 5go, reported through the lead): order file
+  `config/win_orders/prcp01_l55_p01_c.txt` (source cc9-lua52\local\l55_p01_c.txt), 30000 frames, completed 733.59 s on
+  main 458f9efbe (kRackDeviceReloadBound + kDiveBreakOffReloadFeedBound ON), guard logged. Not jitter-checked.
+- **JM08 `jm08_p6_j8_f` with device reload ON** (lua56, cc9-lua52\local\l56_M_j8.log): completed 2141.01 s, 29
+  reloads, guard logged.
+- **Navigator group ON (428f05881, cc13-ver7 D2/D3/D5/D6 + back-off countdown)**, reported through the lead: USN15
+  2730.99 s (was 2641.80), JM08 f 2693.50 s (was 2141.01), LOMP10 1006.93 s (was 1158.10), IJN18 2317.59 s (was
+  2208.58), guard logged. USN02, LOMP06, BSM01, USN01, PRCP01 and USN12 not re-run on it yet.
+- **ESMP08 is a win again: `config/win_orders/esmp08_p6_e8_br3l.txt`** (cc9-physics6, 2026-10-13), the Br3L plan above, on agent/cc9-physics1 at d2bb05c0e (origin/main with `kAirOpsSquadronCeilingRaisedBound` ON, cddc07577), exe D764DF0C5DBE, 140000 frames, reference env: **completed 2619.43 s** (`local\p6e8_m3.log`), **3283.38 s under `BSP_FRAME_JITTER 20,3`** (`local\p6e8_m3j.log`), guard logged both; Br2L completes at 3788.77 s (`local\p6e8_m2.log`).

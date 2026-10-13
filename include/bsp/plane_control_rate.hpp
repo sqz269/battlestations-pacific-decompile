@@ -108,6 +108,16 @@ float plane_control_axis_step_007da710(const PlaneRotationFactors& factors,
                                        const PlaneControlAxisState& axis,
                                        bool floor_from_deflection,
                                        float step) noexcept;
+// The same with the image's per-axis crossing floor (docs/CC13_GPR_48.md 8.3 R1)
+// in place of `crossing_gain * |current|` when `floor_from_deflection` is set:
+// `image_floor_axis` 0 pitch, 1 yaw, 2 roll (no floor), `image_floor_sp` the
+// 007DAABD-007DAB36 stall factor. A negative axis keeps the four-argument form.
+float plane_control_axis_step_007da710(const PlaneRotationFactors& factors,
+                                       const PlaneControlAxisState& axis,
+                                       bool floor_from_deflection,
+                                       float step,
+                                       int image_floor_axis,
+                                       float image_floor_sp) noexcept;
 
 
 // ---------------------------------------------------------------------------
