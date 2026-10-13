@@ -9,6 +9,7 @@
 
 #include "bsp/band_0076_cc13.hpp"
 #include "bsp/cc13_camera_controllers.hpp"
+#include "bsp/multiplayer_session_cc13.hpp"
 #include "bsp/native_bit_cursor_read.hpp"
 
 #include <array>
@@ -926,5 +927,677 @@ struct CriticalSectionHost {
 };
 void mnetwork_lock_incoming_0076b320(TransportLock& lock_34, CriticalSectionHost& host);
 void mnetwork_lock_removals_0076b350(TransportLock& lock_24, CriticalSectionHost& host);
+
+// ===========================================================================
+// Packet cc13-cam3 (docs/CC13_CAM_3.md).
+
+// ---------------------------------------------------------------------------
+// The MovCam's per-frame pose, 0079C200: slot +4h of the +170h sub-object's
+// vtable 00D04B1C (.rdata 00D04B20; slot +8h is the fixed step 007A91A0, slot
+// +Ch the snapshot 00790460). ECX = camera+170h, stack dt, RET 4; every call
+// it makes on the camera passes ECX = sub-object - 170h. Offsets below are
+// from the camera (the listing's are 170h lower).
+//
+// Input latch (0079C211..0079C2F7): the edge test 004C43C0 (ECX = [00E188A8])
+// for actions 78h..7Bh is ORed into bytes +51Ch..+51Fh and for 82h, 83h, 81h
+// into +534h, +535h, +536h; the floats +520h..+530h take +24h of the input
+// records of actions 7Ch..80h ([[004BEC00()]+4] + action*30h). The bytes stay
+// set until the step consumes them. The action meanings are not identified.
+struct MovCamFrameInput {
+    std::array<bool, 4> edges_51c{};   // actions 78h, 79h, 7Ah, 7Bh
+    std::array<float, 5> axes_520{};   // actions 7Ch..80h, record +24h
+    std::array<bool, 3> edges_534{};   // actions 82h, 83h, 81h
+};
+struct MovCamFrameInputHost {
+    virtual ~MovCamFrameInputHost() = default;
+    virtual bool was_pressed_004c43c0(std::int32_t action) = 0;
+    virtual float record_value_24(std::int32_t action) = 0;
+};
+void movcam_latch_input_0079c200(MovCamFrameInput& in, MovCamFrameInputHost& host);
+
+// Between fixed steps the frame extrapolates from the snapshot 00790460 took
+// (+4E0h position, +4ECh theta, +4F0h rho, +4F4h zoom). The frame shows that
+// +3A0h and +3CCh/+3D0h are rates per second (position = snapshot + rate*dt,
+// and mode 5 writes them back as (now - snapshot)/dt); `MovCamMotion` and
+// `MovCamTurn` in cc13_camera_controllers.hpp call them position and angles.
+struct MovCamFrame {
+    std::uint32_t mode_384{0};
+    std::size_t entity_38c{0};         // mode 2 deck frame, mode 7 eye frame
+    std::size_t entity_390{0};         // mode 7 aim frame
+    Vec3 position_394{};
+    Vec3 velocity_3a0{};
+    float theta_3c4{0.0f};
+    float rho_3c8{0.0f};
+    std::array<float, 2> angle_rate_3cc{};
+    std::size_t follow_target_3e4{0};  // nonzero: 00795180 moves the angles
+    Mat4 matrix_420{};                 // mode 2 deck-local transform
+    float zoom_460{1.0f};
+    float path_t_468{0.0f};
+    float path_end_46c{0.0f};
+    bool has_knot_path_474{false};
+    Vec3 aim_point_4b8{};              // mode 7, in entity_390's frame when set
+    Vec3 eye_point_4c4{};              // mode 7, in entity_38c's frame when set
+    float top_speed_4d0_34{0.0f};      // [+4D0h]+34h, the path parameter's rate
+    Vec3 snapshot_position_4e0{};
+    float snapshot_theta_4ec{0.0f};
+    float snapshot_rho_4f0{0.0f};
+    float snapshot_zoom_4f4{1.0f};
+    float snapshot_path_t_4fc{0.0f};   // 00790460's copy of +468h
+    float zoom_rate_514{0.0f};
+    Mat4 matrix_74{};                  // the mover matrix (mode 2 writes it)
+    bool pose_valid_c8{false};
+    bool pose_valid_10c{false};
+};
+struct MovCamFrameHost {
+    virtual ~MovCamFrameHost() = default;
+    virtual void follow_00795180(MovCamFrame& c, float dt) = 0;
+    virtual void wrap_and_clamp_007904d0(MovCamFrame& c) = 0;
+    virtual void keep_above_ground_00790540(MovCamFrame& c) = 0;
+    virtual void apply_pose_00799750(MovCamFrame& c) = 0;
+    virtual void path_update_007972f0(MovCamFrame& c) = 0;
+    virtual void aim_at_point_00794070(MovCamFrame& c, const Vec3& point) = 0;
+    // 007B04C0 on the path [+464h] (ECX), stack (t, &position, &direction, 0).
+    virtual void sample_world_007b04c0(float t, Vec3& position, Vec3& direction) = 0;
+    // 00B6FBB0 on the camera node [+1BCh], stack fov.
+    virtual void set_field_of_view_00b6fbb0(float fov) = 0;
+    virtual Mat4 world_matrix_0042d7e0(std::size_t entity) = 0;
+    virtual Vec3 transform_point_00414d10(const Mat4& m, const Vec3& p) = 0;
+    virtual Mat4 rotation_y_negated_0042b490(float angle) = 0;
+    virtual Mat4 rotation_x_negated_0042b450(float angle) = 0;
+    virtual Mat4 multiply_00413920(const Mat4& left, const Mat4& right) = 0;
+    virtual void invalidate_children_0042ed50() = 0;   // the +48h/+44h walk
+    virtual void apply_shake_and_publish_004329d0(float dt) = 0;
+};
+// After the latch, by mode +384h:
+// - 0, 1, 3, 4, 6: position = snapshot + velocity*dt; angles = snapshot +
+//   rate*dt unless a follow target is set (then 00795180(dt)); 007904D0.
+// - 2 (deck): zoom +460h = ((dt*+514h) + 1.0) * +4F4h (double 00D7A210) clamped to
+//   [1.0, 21.0] (00D7A24C, 00D04B18); 00B6FBB0(00F889B4 / zoom); the angles
+//   as above, 007904D0; +74h = RotX'(theta) * RotY'(rho) * +420h * world(+38Ch)
+//   (0042B450 / 0042B490 negate internally), and it skips 00790540 / 00799750.
+// - 5 (path): t +468h = the snapshot +4FCh moved toward +46Ch at top
+//   speed*dt (float [[+4D0h]+34h]) but stopping 0.01
+//   (double 00D7A358) short (00415510 / 00415550); +468h is left alone when
+//   the snapshot equals +46Ch. Then
+//   007972F0 with a knot path, else 007B04C0(t) into +394h and 00794070 at
+//   position + direction. With dt > 1e-4 (double 00D7A268) the rates are
+//   rewritten as (now - snapshot) / dt.
+// - 7: +394h = +4C4h (through world(+38Ch) when set); aim at +4B8h (through
+//   world(+390h) when set). No 007904D0.
+// - other (8): nothing but the tail.
+// Modes 0..7 except 2 then run 00790540 and 00799750. Tail for every mode:
+// clear the pose bytes +C8h/+10Ch, 0042ED50 on every child, 004329D0(dt).
+void movcam_frame_0079c200(MovCamFrame& c, MovCamFrameInput& in, float dt, float base_fov_f889b4,
+                           MovCamFrameInputHost& input, MovCamFrameHost& host);
+
+// ---------------------------------------------------------------------------
+// MovCam lifetime. 0079F480 (ECX camera, RET; built by 005CC000): the base
+// 00432750, vtables 00D04B58 (+0), 00D04B3C (+10h), 00D04B34 (+24h),
+// 00D04B1C (+170h); the CameraRef at +3F0h (vtable 00D04660) zeroed; the
+// record array +47Ch..+484h and both callback NativeStrings (+49Ch, +4A4h)
+// empty; the interpolator list +4D4h gets its head from 00796770 (+4D8h,
+// size +4DCh = 0); mode, both targets, position, motion, angles and rates zero
+// and the snapshot equal to them; +3E4h, +464h, +474h = 0; +4D0h =
+// [[00E198C4]+98h], a limits block the camera shares, which the four resets
+// 005CB970, 005CB9C0, 005CAFB0, 005CAFC0 (ECX = that block) then restore;
+// bytes +538h/+4B4h, words +4ACh/+4B0h and floats +494h/+498h/+53Ch zero.
+struct MovCamOwned {
+    std::array<std::uint32_t, 4> vtables{};          // +0, +10h, +24h, +170h
+    std::uint32_t camera_ref_vtable_3f0{0};
+    cc13cam::CameraRef camera_ref_3f0{};             // its +14h..+24h at +404h..+414h
+    std::vector<std::uintptr_t> records_47c;         // path records, virtual-deleted by 0079C830
+    std::string callback_49c;
+    std::string callback_4a4;
+    std::uintptr_t args_4ac{0};                      // LuaVariant vectors, 0 = none
+    std::uintptr_t args_4b0{0};
+    bool flag_4b4{false};
+    std::uintptr_t limits_4d0{0};
+    std::uintptr_t list_head_4d8{0};
+    std::vector<std::uintptr_t> interpolators_4d4;   // node payloads (+8h of each node)
+    float field_494{0.0f};
+    float field_498{0.0f};
+    bool flag_538{false};
+    float field_53c{0.0f};
+};
+struct MovCamConstructHost {
+    virtual ~MovCamConstructHost() = default;
+    virtual void construct_base_00432750() = 0;
+    virtual std::uintptr_t buy_list_head_00796770() = 0;
+    virtual std::uintptr_t limits_block_e198c4_98() = 0;
+    virtual void reset_speed_limits_005cb970(std::uintptr_t limits) = 0;
+    virtual void reset_accel_time_005cb9c0(std::uintptr_t limits) = 0;
+    virtual void reset_deviation_factor_005cafb0(std::uintptr_t limits) = 0;
+    virtual void reset_overview_height_005cafc0(std::uintptr_t limits) = 0;
+};
+void movcam_construct_0079f480(MovCamFrame& frame, MovCamOwned& owned, MovCamConstructHost& host);
+
+// 0079D640 (fastcall camera; the deleting destructor 0079E2F0 calls it and
+// then _free when bit 0 of its argument is set): vtables back; _free each
+// interpolator payload; 0079C830 (knot path cleared, records virtual-deleted);
+// the argument vectors +4ACh then +4B0h (006B88E0 resize 0, _free the storage,
+// _free the vector); the list nodes and head (_free); the strings +4A4h then
+// +49Ch back to the sized pool (00419CC0 / 00BD1510, length+1); _free the
+// record storage; 00695870 on the CameraRef +3F0h; the base 0042A830.
+struct MovCamDestroyHost {
+    virtual ~MovCamDestroyHost() = default;
+    virtual void free_crt(std::uintptr_t p) = 0;
+    virtual void clear_path_records_0079c830() = 0;
+    virtual void free_args_vector(std::uintptr_t vec) = 0;   // 006B88E0(0), _free storage, _free vec
+    virtual void free_list_nodes_and_head(std::uintptr_t head) = 0;
+    virtual void destroy_camera_ref_00695870() = 0;           // ECX = camera+3F0h
+    virtual void destruct_base_0042a830() = 0;
+};
+void movcam_destruct_0079d640(MovCamOwned& owned, MovCamDestroyHost& host);
+
+// ---------------------------------------------------------------------------
+// Movie-camera keyframes (104h bytes, vtable 00D046E0) and tracks (84h, 00D04714).
+
+// 0079C910: ECX key, stack (x, y, z, entity), RET 10h. The base words +Ch..+14h
+// and +1Ch zero, byte +18h = 1, the curve vtable 00CE75CC at +8h, the name
+// +FCh/+100h empty, id +DAh = -1; +34h, +40h and +4Ch all = (x, y, z). The
+// keyframe SetEntity 00799D70 returns 0 when the entity is being destroyed
+// (+5Eh); then, for a non-null entity, its position +FCh (after 00414DB0 when
+// byte +C8h is clear) is added to all three vectors and the key keeps no
+// entity. +24h = (entity kept); zooms +C4h/+C8h and smoothing +CCh/+D0h =
+// 1.0 (00D7A24C); +D4h = 0.5 (00CE3800); up vectors +58h, +64h, +70h = (0, 1,
+// 0); +2Ch = 1; bytes +26h, +27h, +28h = 1; everything else listed zero. It
+// does not write +C0h (00799B00 stores -1.0 there).
+struct MovieKeyframeInit {
+    std::size_t entity_1c{0};
+    bool flag_18{false};
+    bool parent_attached_24{false};
+    bool linked_25{false};
+    bool wanderer_26{false};
+    bool has_position_27{false};
+    bool camera_28{false};
+    std::int32_t transform_2c{0};
+    bool then_none_30{false};
+    Vec3 local_34{};
+    Vec3 work_40{};
+    Vec3 eval_4c{};
+    Vec3 up_58{};
+    Vec3 work_up_64{};
+    Vec3 eval_up_70{};
+    bool flag_bc{false};
+    float zoom_c4{0.0f};
+    float zoom_c8{0.0f};
+    float smooth_cc{0.0f};
+    float smooth_d0{0.0f};
+    float nonlinear_d4{0.0f};
+    bool use_current_d8{false};
+    bool terrain_avoid_d9{false};
+    std::int16_t id_da{0};
+    bool flag_dc{false};
+    std::uintptr_t modifier_e4{0};
+    std::uintptr_t event_ec{0};
+    float start_f0{0.0f};
+    float blend_f4{0.0f};
+    std::int32_t state_f8{0};
+    std::uintptr_t partner_20{0};
+    std::string name_fc;
+};
+struct MovieKeyframeInitHost {
+    virtual ~MovieKeyframeInitHost() = default;
+    virtual bool set_entity_00799d70(MovieKeyframeInit& k, std::size_t entity) = 0;
+    virtual Vec3 entity_position_fc(std::size_t entity) = 0;  // 00414DB0 first when +C8h is clear
+};
+void movie_keyframe_construct_at_0079c910(MovieKeyframeInit& k, const Vec3& p, std::size_t entity,
+                                          MovieKeyframeInitHost& host);
+
+// 00799CA0: fastcall key. Vtable back; the modifier +E4h virtual-deleted
+// (slot 0, 1) and cleared; a partner +20h whose +20h points back has it
+// cleared; the event +ECh virtual-deleted and cleared; the entity +1Ch
+// unregistered (006952A0) and cleared; the name returned to the sized pool;
+// 004B7EF0 (the observer-link base).
+// 00799EA0: fastcall key. Entity unregistered and cleared; +24h = 0, +D8h = 1,
+// +F0h = +F4h = 0.
+struct MovieKeyframeLifetimeHost {
+    virtual ~MovieKeyframeLifetimeHost() = default;
+    virtual void delete_virtual(std::uintptr_t object) = 0;      // slot 0 with 1
+    virtual void unregister_006952a0(std::size_t entity, const void* key) = 0;
+    virtual MovieKeyframeInit* partner(std::uintptr_t partner_20) = 0;
+    virtual void destroy_base_004b7ef0() = 0;
+};
+void movie_keyframe_destruct_00799ca0(MovieKeyframeInit& k, std::uintptr_t self, MovieKeyframeLifetimeHost& host);
+void movie_keyframe_reset_00799ea0(MovieKeyframeInit& k, MovieKeyframeLifetimeHost& host);
+
+// 0079CFC0: ECX track, RET. Vtable 00D04714; list head from 007967E0 at +6Ch,
+// size +70h, the camera back-pointer +74h, +78h, +80h zero; byte +64h = 0.
+// 0079A190: fastcall track. Vtable back; +74h = 0; while the list is not
+// empty, the front key is virtual-deleted, its node unlinked and _freed and
+// the size decremented; then 00796800 frees the head.
+struct MovieTrackList {
+    std::uintptr_t head_6c{0};
+    std::vector<std::uintptr_t> keys;   // node payloads, front first
+    std::uintptr_t camera_74{0};
+    std::uint32_t field_78{0};
+    std::uint32_t field_80{0};
+    bool flag_64{false};
+};
+struct MovieTrackHost {
+    virtual ~MovieTrackHost() = default;
+    virtual std::uintptr_t buy_list_head_007967e0() = 0;
+    virtual void delete_virtual(std::uintptr_t key) = 0;
+    virtual void tidy_list_00796800(std::uintptr_t head) = 0;
+};
+void movie_track_construct_0079cfc0(MovieTrackList& t, MovieTrackHost& host);
+void movie_track_destruct_0079a190(MovieTrackList& t, MovieTrackHost& host);
+
+// 0079A260: fastcall movie camera (the 00D04750 class of 0079D020). Vtables
+// 00D04750/00D04738/00D04730/00D04718 back; then it reseeds RNG stream 1, not
+// stream 0: [01090AB0] slot +20h returns (counter, frequency) as two int64;
+// ms = f(f(counter / frequency) * 1000.0) (double 00CE47A0); 00BD2FD0 with
+// ECX = 1 and EDX = the truncated (FISTP under RC = 11b) low dword. Then the
+// tracks +498h and +414h (0079A190) and the base 0042A830.
+struct HudMovieCameraDestroyHost {
+    virtual ~HudMovieCameraDestroyHost() = default;
+    virtual std::array<std::int64_t, 2> clock_counter_frequency_slot20() = 0;
+    virtual void seed_stream_00bd2fd0(std::int32_t stream, std::uint32_t seed) = 0;
+    virtual void destruct_track_0079a190(bool camera_track_498) = 0;
+    virtual void destruct_base_0042a830() = 0;
+};
+void hud_movie_camera_destruct_0079a260(HudMovieCameraDestroyHost& host);
+
+// ---------------------------------------------------------------------------
+// 0079F9E0, the vehicle-camera window editor (ledger BSP_MovCam_DumpPositions;
+// fastcall camera, called once by the step 007A91A0). Inputs walk_h +504h and
+// walk_v +508h are classified against -0.5 (00CE69D0) and 0.5 (00CE3800):
+// horizontal below -> 1 (MaxHorzAngle), above -> 0 (MinHorzAngle); vertical
+// below -> 0 (MinVertAngle), above -> 1 (MaxVertAngle); otherwise -1. With
+// both active it returns at once. It builds
+//   name + "; mov.cam.pos.: [" + (index +388h)+1 + "]\n\t\t\t\t"
+// (name = [[target +38Ch]+538h]+54h) and, for the horizontal code when set,
+// else the vertical one, appends "[\"" + key + "\"] = " + "%f"(value) + ","
+// (value: rho +3C8h for horizontal, theta +3C4h for vertical, radians). The
+// text goes to 007996C0 (moviecamera.log) even when both are idle. Then the
+// class camera array (+538h -> +BCh) is grown to index+1 by 005CD640 when
+// index >= count, and the value is stored in element `index`: +4Ch (horz 1),
+// +48h (horz 0), +54h (vert 1), +50h (vert 0); 005CBA50 on [+4D0h] then shows
+// message 1, 3, 0 or 2 respectively. Both idle: no store, no message.
+struct VehicleCameraEditHost {
+    virtual ~VehicleCameraEditHost() = default;
+    virtual std::string class_name_54() = 0;                       // [[+38Ch]+538h]+54h
+    virtual std::vector<VehicleCameraElement>& class_cameras_bc() = 0;
+    virtual void grow_cameras_005cd640(std::size_t count) = 0;     // to `count` elements
+    virtual void append_log_007996c0(const std::string& text) = 0;
+    virtual void show_message_005cba50(std::int32_t kind) = 0;     // ECX = [+4D0h]
+};
+// Returns the text logged, empty when it returned early.
+std::string movcam_edit_vehicle_camera_window_0079f9e0(const MovCamInputs& in, std::int32_t index_388,
+                                                       float theta_3c4, float rho_3c8, VehicleCameraEditHost& host);
+
+// ---------------------------------------------------------------------------
+// 007906E0 (ledger BSP_Camera_DebugDrawOrbitSector): fastcall (ECX const
+// matrix*, EDX const float* point), stack (yaw_lo, yaw_hi, pitch_lo, pitch_hi,
+// element, const float colour[4]*), RET 18h; 007A01F0 passes a vehicle camera
+// element's windows (+48h..+54h), point +38h and the target world. Every
+// point is 007905B0(point, yaw, pitch, 4.0 (00CE3D34), matrix). It writes the
+// element (its NativeString name at +0) at the transformed point (004142E0,
+// 00861260), draws lines (0085F990, colour at both ends) from there to the
+// four corners, then, with yaw step s = f((hi - lo) * 0.125) (00D04380, the
+// DC-form FMUL at 0079099B) plus pi/4 (00CEDCD0, i.e. 2*pi/8) when hi < lo,
+// and the pitch step likewise, eight segments along each of the four window
+// edges, and a cross at the window centre (yaw lo + 4s with pitch lo + 3t ..
+// lo + 5t, then pitch lo + 4t with yaw lo + 3s .. lo + 5s; doubles 00D7A328,
+// 00D7A2B0, 00D7A370). Angles are f(k*step + lo), one rounding each.
+struct SectorDebugDrawHost {
+    virtual ~SectorDebugDrawHost() = default;
+    virtual void text_at_world_point_00861260(const Vec3& p, std::size_t element) = 0;
+    virtual void line_0085f990(const Vec3& p0, const Vec3& p1, const std::array<float, 4>& c0,
+                               const std::array<float, 4>& c1) = 0;
+};
+void camera_debug_draw_sector_007906e0(const Mat4& m, const Vec3& point, float yaw_lo, float yaw_hi, float pitch_lo,
+                                       float pitch_hi, std::size_t element, const std::array<float, 4>& colour,
+                                       OrbitPointHost& orbit, SectorDebugDrawHost& draw);
+
+// ---------------------------------------------------------------------------
+// Session mode changes, 0076FAD0 (BSP_Session_SetMode): ECX session, stack
+// mode, RET 4. Read from the listing (the transport deletes are slot-0 calls
+// with 1, and the singleton call at 0076FB53 takes no argument: the PUSH EBP
+// before it is the prologue's save, popped at 0076FE93).
+// - mode 0 with a world ([00E198C4] != 0): only byte +27Dh = 1 (deferred).
+// - same mode: nothing.
+// - otherwise +F8h = old mode, +274h = 0, +278h = -1.0 (00D7A260); slot +154h
+//   of [00F8A2FC]; 004C8900 on the game; game +608h = 1; then
+//   1 (host): peer rows reset 007868C0(1) (ECX session+8); delete the client
+//      transport +18Ch (slot 0 with the mode, 1) and the server transport
+//      +188h; route default 00E0AF1C = 1; 0060D570 (please-wait frame);
+//      00A42170 (ECX session, EDX &+188h, stack [00F1AF30], byte +16Ah, byte
+//      game +6A9h) creates the server; 0060D570; its state +9Ch = 3; the
+//      scene count 00F1AF2C = the records of [[00E198ACh]+5Ch]+24h (434h
+//      bytes each); each record's name (+24h, or the empty string 00F1B03C)
+//      goes through 004E1D70(name, 0, -1, 0) and a please-wait frame;
+//      004C6890(game +60Ch); 004BB160; game +1EE5h = 0; 00778590 (session+190h).
+//   2 (client): rows reset (0); delete +18Ch then +188h; +125h = FFh; route
+//      default 2; 00A41C70 (EDX &+18Ch, stack [00F1AF30], game +6A9h); +248h =
+//      2; 004BB160; game +1EE5h = 0; 00778590.
+//   0 (leave): rows reset (0); when the old mode was 2, with a client transport
+//      and a peer from 0076F8A0, it prints "--- sent MQuitMsg" (004254B0) and,
+//      when the transport state +9Ch is 7, sends message 19 (004B6050) through
+//      00783DC0 and flushes with 007848F0; [00E19698]+4 = 0 when set; with a
+//      game and a local slot (004B6BC0), that slot's word +10h = 1; route
+//      default 1; 0076F0E0 when the old mode was 2; +278h = 2.0 (00CE3958);
+//      bytes +128h/+12Ah/+12Bh and 00E17BF2 = 0; float 00E08178 = 1.0. The
+//      transports are not deleted here.
+//   then +F4h = mode, +270h = 0.0, and for mode 1 004BC890(game +618h, 0).
+struct SessionModeState {
+    std::int32_t mode_f4{0};
+    std::int32_t previous_f8{0};
+    std::uint8_t field_125{0};
+    bool flag_128{false};
+    bool flag_12a{false};
+    bool flag_12b{false};
+    bool server_option_16a{false};
+    std::uintptr_t server_188{0};
+    std::uintptr_t client_18c{0};
+    std::int32_t field_248{0};
+    float field_270{0.0f};
+    bool flag_274{false};
+    float timer_278{0.0f};
+    bool leave_pending_27d{false};
+};
+struct SessionModeHost {
+    virtual ~SessionModeHost() = default;
+    virtual bool world_present_e198c4() = 0;
+    virtual void singleton_f8a2fc_slot154() = 0;
+    virtual void clear_scene_records_004c8900() = 0;
+    virtual void set_game_608() = 0;
+    virtual void reset_peer_rows_007868c0(bool host) = 0;
+    virtual void delete_virtual(std::uintptr_t object) = 0;
+    virtual void set_route_default_e0af1c(std::int32_t value) = 0;
+    virtual void please_wait_frame_0060d570() = 0;
+    virtual std::uintptr_t create_server_00a42170(bool option_16a) = 0;  // the stack bytes come from globals
+    virtual std::uintptr_t create_client_00a41c70() = 0;
+    virtual std::int32_t transport_state_9c(std::uintptr_t transport) = 0;
+    virtual void set_transport_state_9c(std::uintptr_t transport, std::int32_t state) = 0;
+    virtual std::vector<std::string> scene_record_names() = 0;  // null names already ""
+    virtual void set_scene_count_f1af2c(std::int32_t count) = 0;
+    virtual void build_scene_record_004e1d70(const std::string& name) = 0;
+    virtual void select_scene_record_004c6890() = 0;             // game +60Ch
+    virtual void reset_participants_004bb160() = 0;
+    virtual void clear_game_1ee5() = 0;
+    virtual void reset_peer_pairs_00778590() = 0;
+    virtual std::uintptr_t client_peer_0076f8a0(std::uintptr_t transport) = 0;
+    virtual void debug_print_004254b0(const char* text) = 0;
+    virtual void send_quit_00783dc0(std::uintptr_t transport, std::uintptr_t peer) = 0;  // message 19 (004B6050)
+    virtual void flush_007848f0(std::uintptr_t transport) = 0;
+    virtual void clear_e19698_4() = 0;                           // when [00E19698] is set
+    virtual void mark_local_slot_left() = 0;                    // game present and 004B6BC0: slot word +10h = 1
+    virtual void refresh_from_online_session_0076f0e0() = 0;
+    virtual void clear_e17bf2() = 0;
+    virtual void set_e08178(float value) = 0;
+    virtual void set_game_mode_004bc890() = 0;                   // (game +618h, 0)
+};
+void session_set_mode_0076fad0(SessionModeState& s, std::int32_t mode, SessionModeHost& host);
+
+// ---------------------------------------------------------------------------
+// Peers joining and leaving (sole caller BSP_PeerManager_PumpMessageQueues).
+// [00F8A2FC] is the Live service object; its slots are named by offset. A
+// peer's player record is peer +8h: name chars at +0, xuid +28h/+2Ch, byte
+// +58h. The active transport is +188h (server) or else +18Ch (client).
+struct PeerPlayer {
+    std::string name_0;
+    std::uint64_t xuid_28{0};
+    bool flag_58{false};
+};
+struct LiveService {
+    virtual ~LiveService() = default;
+    virtual bool present_f8a2fc() = 0;
+    virtual void register_talker_slot158(std::uint64_t xuid, const std::string& name, bool flag) = 0;
+    virtual void unregister_talker_slotb0(std::uint64_t xuid) = 0;
+    virtual std::uint32_t mute_state_slot24(std::uint64_t xuid) = 0;
+    virtual void slot_ac(std::uint64_t xuid) = 0;
+    virtual bool slot_180() = 0;
+    virtual void slot_18c(bool flag) = 0;
+    virtual void slot_190(bool flag) = 0;
+    virtual void slot_15c(std::uint64_t xuid, const std::string& name) = 0;
+    virtual bool slot_19c() = 0;
+};
+
+// 00774AB0: ECX session, stack peer, RET 4. Appends the peer to the active
+// transport's list +Ch (0076EA10 node, 00773600 length check); in host mode
+// (+F4h == 1) 007864E0 adds its row. With the Live object and a selected user
+// (00A3E510 on [00F8ABE8]): slot 158h({xuid, name}, flag) for the record's
+// xuid, name and +58h byte, or, without a record, for the local player (game
+// +698h/+69Ch, name game +6A0h when its length is nonzero else +68Ch) with 0.
+// Then, reading the record again (the image faults here without one):
+// 00778620 adds the xuid to the mute table (ECX session+190h); 00771630
+// (session) sets it muted per slot 24h(xuid); slot ACh(xuid) when the xuid is
+// not the local one; slot 18Ch(+58h == 0) when slot 180h answers true.
+struct PeerAddedHost {
+    virtual ~PeerAddedHost() = default;
+    virtual void append_to_active_transport_list(std::uintptr_t peer) = 0;
+    virtual void add_peer_row_007864e0(std::uintptr_t peer) = 0;
+    virtual bool has_selected_user_00a3e510() = 0;
+    virtual PeerPlayer* player_record_8(std::uintptr_t peer) = 0;  // null when none
+    virtual std::uint64_t local_xuid_698() = 0;
+    virtual std::string local_name_6a0_or_68c() = 0;
+    virtual void mute_table_add_00778620(std::uint64_t xuid) = 0;
+    virtual void set_muted_00771630(std::uint64_t xuid, std::uint32_t muted) = 0;
+};
+// Returns false where the image would dereference a null record.
+bool session_on_peer_added_00774ab0(std::int32_t mode_f4, std::uintptr_t peer, PeerAddedHost& host, LiveService& live);
+
+// 00772EC0: ECX session, stack peer, RET 4. Host mode: 00786BE0 removes the
+// row. Queued messages (+24Ch, count +250h) whose sender +8h is the peer are
+// virtual-deleted (slot 0, 1) and removed. With the Live object and a peer:
+// for a record, slot B0h(xuid), 00778690 (mute table), and when slot 180h
+// answers, slot 190h(+58h == 0) and slot 15Ch({xuid, name}); then, unless game
+// +218Ch, when slot 19Ch answers and the peer's key record +D50h has +1Ch below
+// game +18C8h, "%x UnregisterKey remove peer" (byte +DBFh) and
+// XNetUnregisterKey(peer +DB8h). It prints "Remove Valid Peer!" (a peer) or
+// "Remove Empty Peer!" (none), asks [00F8ABDC] to disconnect the address
+// peer +D74h after 2.0 s (00A3BBB0; the image passes 0D74h for a null peer),
+// removes the peer from the active transport's list (0076F6F0) and
+// virtual-deletes it.
+struct PeerRemovedHost {
+    virtual ~PeerRemovedHost() = default;
+    virtual void remove_peer_row_00786be0(std::uintptr_t peer) = 0;
+    virtual std::uintptr_t message_sender_8(std::uintptr_t message) = 0;
+    virtual void delete_virtual(std::uintptr_t object) = 0;
+    virtual PeerPlayer* player_record_8(std::uintptr_t peer) = 0;
+    virtual void mute_table_remove_00778690(std::uint64_t xuid) = 0;
+    virtual bool game_218c() = 0;
+    // The key record +D50h: present and its +1Ch below game +18C8h.
+    virtual bool key_index_below_player_count(std::uintptr_t peer) = 0;
+    virtual std::uint8_t key_byte_dbf(std::uintptr_t peer) = 0;
+    virtual void xnet_unregister_key_00a4d488(std::uintptr_t peer) = 0;  // &peer+DB8h
+    virtual void debug_print_004254b0(const std::string& text) = 0;
+    virtual void request_disconnect_00a3bbb0(std::uintptr_t peer, float seconds) = 0;  // &peer+D74h
+    virtual void remove_from_active_transport_list_0076f6f0(std::uintptr_t peer) = 0;
+};
+void session_on_peer_removed_00772ec0(std::int32_t mode_f4, std::vector<std::uintptr_t>& messages_24c,
+                                      std::uintptr_t peer, PeerRemovedHost& host, LiveService& live);
+
+// ---------------------------------------------------------------------------
+// 00773860 (BSP_Session_SendGameSetupMessage): ECX session, RET. One stack
+// message 16h (0075B430, vtable 00D035CC, +4h = 1) is broadcast repeatedly
+// through the server transport [+188h] (00784790(msg, 0)). Kind +18h = 0..5:
+// one broadcast per element of the NativeString vectors at 00E196CC,
+// 00E196DC, 00E196EC, 00E19768, 00E19778, 00E19788 (8-byte elements, text +4h,
+// null -> ""), the text copied into the 256-byte payload +1Ch with no bound.
+// Kind 6, one broadcast: the payload holds, back to back, the bits of the
+// vector<bool>s at 00E196FC, 00E19710, 00E19724 (their size words; one byte
+// per bit) and the low bytes of the int vectors at 00E19738, 00E19748,
+// 00E19758; +11Ch..+130h hold the six counts. What the lists hold is not
+// identified here; the image writes past +11Bh when they are long, the
+// reconstruction stops at 256 bytes.
+struct GameSetupMessage {
+    std::int32_t kind_18{0};
+    std::array<std::uint8_t, 256> payload_1c{};
+    std::array<std::int32_t, 6> counts_11c{};
+};
+struct GameSetupLists {
+    std::array<std::vector<std::string>, 6> texts;      // kinds 0..5
+    std::array<std::vector<bool>, 3> flags;              // 00E196FC, 00E19710, 00E19724
+    std::array<std::vector<std::int32_t>, 3> values;     // 00E19738, 00E19748, 00E19758
+};
+struct GameSetupHost {
+    virtual ~GameSetupHost() = default;
+    virtual void broadcast_00784790(const GameSetupMessage& m) = 0;
+};
+void session_send_game_setup_00773860(const GameSetupLists& lists, GameSetupHost& host);
+
+// ---------------------------------------------------------------------------
+// 007702E0 (BSP_Session_HostRemovePeerPlayer): ECX session, stack peer, RET 4.
+// For the peer's player record (peer +D50h; +1Ch slot, +20h player index,
+// +58h name, +80h/+84h xuid): keep a copy of the name; 0076C840(slot, -1)
+// deselects the slot; 0076F2B0(player index) hands the units on; 0077E4C0 on
+// the record; message 06h (vtable 00D0305C, +18h = slot) broadcast through
+// [+188h]; 004D0FC0 on the game (record); peer +D50h = 0; when [00F8A2FC]
+// +4Dh is set, 00A4B180 on [00F8A2FC]+2098h removes the xuid; 0076DBE0 on
+// session+100h recounts the slots; in game states 0Dh, 0Ah and 10h (game
+// +5D4h) the name is copied back into game player [+18CCh + index*4] +58h;
+// MT_SERVERINFO (0076B670, the session bytes and 00786030's average peer
+// quality) is broadcast; "MMultiPlayer::ServerRemovePlayer: slot: %d/%d,
+// private: %d/%d, will: %d\n" (004254B0; +128h, +127h, +12Ah, +129h, +12Bh);
+// 005CF320 (ECX = EDX = 8) posts a system chat line with the name and "".
+struct HostRemovedPlayer {
+    std::int32_t slot_1c{0};
+    std::int32_t player_index_20{0};
+    std::string name_58;
+    std::uint64_t xuid_80{0};
+};
+struct SessionSlotCounts {
+    std::int8_t field_127{0};
+    std::int8_t field_128{0};
+    std::int8_t field_129{0};
+    std::int8_t field_12a{0};
+    std::int8_t field_12b{0};
+};
+struct HostRemovePlayerHost {
+    virtual ~HostRemovePlayerHost() = default;
+    virtual HostRemovedPlayer* player_record_d50(std::uintptr_t peer) = 0;  // null: the image faults
+    virtual void clear_player_record_d50(std::uintptr_t peer) = 0;
+    virtual void select_player_0076c840(std::int32_t slot, std::int32_t selection) = 0;
+    virtual void reassign_peer_units_0076f2b0(std::int32_t player_index) = 0;
+    virtual void record_0077e4c0(HostRemovedPlayer& record) = 0;
+    virtual void broadcast_remove_player_06(std::int32_t slot) = 0;
+    virtual void notify_player_left_004d0fc0(HostRemovedPlayer& record) = 0;
+    virtual bool live_session_4d() = 0;
+    virtual void live_remove_remote_player_00a4b180(std::uint64_t xuid) = 0;
+    virtual void recount_slots_0076dbe0() = 0;
+    virtual SessionSlotCounts slot_counts() = 0;
+    virtual std::int32_t game_state_5d4() = 0;
+    virtual void set_game_player_name(std::int32_t player_index, const std::string& name) = 0;
+    virtual void broadcast_server_info_0076b670() = 0;  // with 00786030's average quality
+    virtual void debug_print_004254b0(const std::string& text) = 0;
+    virtual void post_system_chat_line_005cf320(const std::string& name, const std::string& text) = 0;
+};
+// Returns false where the image would read a null player record.
+bool session_host_remove_peer_player_007702e0(std::uintptr_t peer, HostRemovePlayerHost& host);
+
+// ---------------------------------------------------------------------------
+// Peer rows tick, 007866B0 (BSP_GamePeerRows_Update): ECX rows (session+8h),
+// stack dt, RET 4; sole caller BSP_Session_FlushOutboundStep. Nothing while
+// +E0h is clear. dt = 0.1f (00D7A2F0) unless 0.1 (double 00D7A3A0) > dt. Then
+// each row whose peer's record (+D50h) names another index j (+1Ch) moves
+// there: into an empty row j by a copy and a reset of row i (peer, +4h, +8h,
+// +14h, +18h = 0, +10h = 0, quality +Ch = 1.0); onto a used row j by a swap,
+// after which the scan restarts at row 0 (two peers naming one index would
+// loop forever). 00786150(dt) runs on all eight rows. The timer +E4h -= dt
+// (float); while it stays above zero that is all. Otherwise +E4h = 0.2f
+// (00D042F8), +E8h = f(+E8h + 0.2) (double 00CE3D10), 007865D0 on rows 1..7,
+// and when +E8h >= 0.5f (00D042FC) it is cleared and, with a game, MT_CONNSTATE
+// (00786390 from the rows) goes to 0076A9F0 (ECX game+1EF0h, (msg, 0)).
+//
+// 00786390: ECX message, stack rows, RET 4. 0075B430(10h), vtable 00D02FD0,
+// +4h = 0, and per row i the floats +4h/+8h/+Ch at +18h + 0Ch*i.
+struct ConnStateMessage {
+    std::array<std::array<float, 3>, 8> rows_18{};
+};
+ConnStateMessage connstate_construct_00786390(const band0076_cc13::PeerRows& rows) noexcept;
+
+struct PeerRowsTickHost {
+    virtual ~PeerRowsTickHost() = default;
+    // The peer's record +D50h index +1Ch, or -1 without a record.
+    virtual std::int32_t record_index_1c(std::uint32_t peer) = 0;
+    virtual void send_probes_00786150(band0076_cc13::PeerRow& row, float dt) = 0;
+    virtual void update_quality_007865d0(band0076_cc13::PeerRow& row) = 0;
+    virtual bool game_present() = 0;
+    virtual void send_connstate_0076a9f0(const ConnStateMessage& m) = 0;
+};
+void peer_rows_tick_007866b0(band0076_cc13::PeerRows& rows, float dt, PeerRowsTickHost& host);
+
+// ---------------------------------------------------------------------------
+// The MultiScore net table message E0h (multiplayer_session_cc13.hpp, batch 3).
+// A key or value variant is {+0h kind (1 string, 0 number), +4h/+8h
+// NativeString, +Ch number}.
+
+// 00781430: ECX variant, stack const char*, RET 4. The string assigned
+// (0041E870 into a temporary, then copied), kind = 1; the number is kept.
+void net_table_key_set_string_00781430(mp_cc13::NetTableKey& key, const char* text);
+// 007814E0: ECX variant, stack int, RET 4. A held string goes back to the
+// sized pool and +4h/+8h are cleared; number = the argument, kind = 0.
+void net_table_key_set_integer_007814e0(mp_cc13::NetTableKey& key, std::uint32_t number);
+// 00781540: ECX variant, stack out NativeString*, RET 4, EAX = out: a copy of
+// the variant's string.
+std::string net_table_key_copy_name_00781540(const mp_cc13::NetTableKey& key);
+
+// 00781F60: ECX message, stack const entry list*, RET 4. 0075B430(E0h), word
+// +18h and byte +1Ah = 0, vtable 00D03824, a fresh list head at +20h
+// (006EDEA0, byte +31h = 1), +24h..+2Ch = 0, +4h = 1; then the argument's
+// entries are copied in (006EE960 erase, 00781890 tree copy) unless it is
+// the message's own list.
+struct NetTableSyncMessage {
+    std::vector<mp_cc13::NetTableEntry> entries;  // +20h list, count +24h
+    std::string text_28;                 // filled by the reader 00781910
+};
+NetTableSyncMessage net_table_sync_construct_00781f60(const std::vector<mp_cc13::NetTableEntry>& entries);
+
+// 00781590 (vtable +4h): ECX message, stack bit cursor, RET 4. 0075B480 (the
+// extended header), the count +24h in 5 bits (00429070), then per entry: bool
+// key is string (004290B0); the key's string copy (00781540, 00429AC0) or its
+// number in 32 bits; bool value is string; the value string (00429AC0) or
+// 004295C0(value, 0, 1, [00D7A248], 32). The list is walked with 006EDA20.
+struct NetTableWriteHost {
+    virtual ~NetTableWriteHost() = default;
+    virtual void write_extended_header_0075b480() = 0;
+    virtual void write_bits_00429070(std::uint32_t value, int bits) = 0;
+    virtual void write_bool_004290b0(bool value) = 0;
+    virtual void write_owned_string_00429ac0(const std::string& text) = 0;
+    virtual void write_numeric_float_004295c0(float value) = 0;  // (0, 1, [00D7A248], 32)
+};
+void net_table_sync_write_00781590(const NetTableSyncMessage& m, NetTableWriteHost& host);
+
+// ---------------------------------------------------------------------------
+// Small session helpers.
+
+// 0076C450 (vtable 00D039EC slot 0; ECX unused): stack (peer, value), RET 8.
+// The first of the eight game player records (game +748h, stride 118h) whose
+// +54h is the peer gets 007F7490(value) (ECX = that record).
+struct VoiceStampHost {
+    virtual ~VoiceStampHost() = default;
+    virtual std::uintptr_t player_record_peer_54(int index) = 0;
+    virtual void stamp_voice_time_007f7490(int index, std::uint32_t value) = 0;
+};
+void session_stamp_player_voice_time_0076c450(std::uintptr_t peer, std::uint32_t value, VoiceStampHost& host);
+
+// 0076C740 (vtable 00D039CC slot 0; ECX unused): stack (info, out int*), RET
+// 8. info +14h = [info +8h (peer)] +D50h; *out = 2 when info's slot Ch answers
+// true for 2 or else for 3, otherwise 0.
+struct HostInfoClassifyHost {
+    virtual ~HostInfoClassifyHost() = default;
+    virtual std::uintptr_t peer_record_d50() = 0;   // [info+8h]+D50h
+    virtual bool slot_c(std::int32_t kind) = 0;
+};
+std::int32_t session_host_info_classify_0076c740(std::uintptr_t& info_14, HostInfoClassifyHost& host);
+
+// 0076D220: 0091C650, then byte [00F8A2FC]+74h = 0.
+struct OnlineFlagHost {
+    virtual ~OnlineFlagHost() = default;
+    virtual void call_0091c650() = 0;
+    virtual void clear_live_74() = 0;
+};
+void session_reset_online_flag_0076d220(OnlineFlagHost& host);
+
+// 0076E7F0 (ledger BSP_WideString_FindSubstring; it is a prefix test): ECX
+// wide string {+0 length, +4 data}, stack (needle wide string*, pos), RET 8,
+// AL. False when the data pointer is null or pos > length; otherwise the
+// UTF-16 units from pos are compared with the needle's (null data -> the
+// empty 00F1B040) until either ends or they differ, and the result is
+// whether the needle ended. `data_present` stands for the non-null pointer.
+bool wide_string_matches_at_0076e7f0(const std::u16string& s, bool data_present, const std::u16string& needle,
+                                     std::uint32_t pos) noexcept;
 
 }  // namespace bsp::cc13cam2
