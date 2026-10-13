@@ -75,6 +75,18 @@ ending at a value >= 12. The unit's twelve typed device lists are at `+394h + k*
 | `00953250` | `unit_store_dummy_object_id_00953250` | Sets `+6B8h = id`. |
 | `00951F40` | `plane_set_visible_00951f40` | Does nothing without a `+4A4h` node. Visible: `00710AD0`, then `00B6DA70(node, 1.0, 0)`. Hidden: `00710B80`, then `00B6DA70(node, 0.0, 0)`. The ledger name `BSP_Plane_SetElevatorAttachment` does not match this body; `engine_seg56_cc13.cpp:1331` calls it `plane_set_visible`. |
 
+### 1.5b Submarine periscope, frozen hull, class registry, current player
+
+| address | model | what it does |
+| --- | --- | --- |
+| `009327F0` | `submarine_break_periscope_009327f0` | Sets `unit+122Ch = 2`, `+125Ch = 0.0`, `+1258h = clock [00F876A4]` and `+1254h = f(settings+4C4h + clock)`. |
+| `009373C0` | `submarine_break_periscope_009373c0` | Does nothing unless the controller holds the periscope shape `+394h`, which `00939E50` sets. With the shape, it hides `[unit+1214h]` (`00B6DA70(0.0, 0)`), runs the `009327F0` stores and calls `00C47FC0(2)` on the shape. Callers are `008132C0` (SetFailure "Periscope") and `009377E0`. The ledger name `ClearShapeCollisionBits` describes only the last call. |
+| `00937630` | `controller_apply_frozen_forces_00937630` | With `unit+1189h` clear it calls `009329C0(dt)`. With it set, it zeroes the body's linear and angular velocity (`00C37E50`, `00C37E20`) and calls `0080E170(0.0)`. It has no direct caller (a vtable slot). |
+| `0095B9E0` | `class_registry_release_cached_0095b9e0` | Grows the registry cache `+4h` to index+1, releases the entry and stores null. |
+| `0095BA30` | `class_registry_clear_0095ba30` | Resizes both registry vectors to 0. |
+| `0095BAB0` | `class_registry_party_row_clear_0095bab0` | Returns false unless the local player index is 0..7. Otherwise it grows the 3-byte party rows (`+4010h`) to index+1 and returns `rows[index][player+28h] == 0`. The ledger name `IsEnemyOfLocalParty` is not confirmed. The model rejects a party byte outside 0..2, which the image does not test. |
+| `00965810` | `unit_is_current_player_unit_00965810` | Returns false for null. A plane compares its `+9D4h` with `[00E188D8]`; any other unit compares itself. |
+
 ### 1.6 Math
 
 | address | model | what it does |
@@ -99,6 +111,10 @@ None of these models draws from `00BD2F10` on any stream.
 | `unit_add_launched_child_00957450` | none (the caller is `00821E80`'s message arm; no host arm found) | the child handle from the message; the slots `+53Ch`; `+638h` | none | none until the arm is bound |
 | class family tables, `is_kind_of` | `src/local_player_unit_lists.cpp:12` (ids only) and `src/vehicle_class.cpp` (descriptor rows) | none | none | none (the tables add the base constructor, `+6Ch` vtable and zeroed fields) |
 | `plane_class_create_unit`, `plane_unregister_from_world_lists`, `unit_set_vehicle_class_009553d0` | `src/unit_world_registration.cpp:55` (rows only) | the class pointer; the owner's lists | none | none |
+| `submarine_break_periscope_009373c0`, `_009327f0` | `src/submarine_model.cpp:285` (clock fields only); the SetFailure "Periscope" arm in `src/game_hosts_lua.cpp:6771` | the controller's periscope shape `+394h` (from `00939E50`), clock `[00F876A4]`, settings `+4C4h` PeriscopeRepairTime | none | ON: the mast node hides and the shape collision call runs; the state and timers are the same as the existing model's |
+| `controller_apply_frozen_forces_00937630` | none (no direct caller; a controller vtable slot) | `unit+1189h` | none | none until the slot is bound |
+| `class_registry_*` (`0095B9E0`, `0095BA30`, `0095BAB0`) | none | the registry singleton `00437F50`; the local player index `world+18ECh` and party byte `player+28h` | none | none until a caller is bound |
+| `unit_is_current_player_unit_00965810` | the host callbacks `is_player_controlled_00965810` (`src/options_hardware_cc13.cpp:236`, `src/warning_reports_cc13.cpp:162`) and `src/game_hosts_mission_frame.cpp:1750`, which does not model the plane `+9D4h` arm | the controlled unit `[00E188D8]`; IsKindOf(0Fh); the plane's `+9D4h` | none | ON: a plane whose `+9D4h` is the controlled unit counts as the player's |
 | `round_to_step_0093eee0`, `matrix44_not_equal_0093efc0` | none (sound-overlay debug draw) | | none | none |
 | `rotate_about_point_00952340` | `src/game_hosts_units.cpp:20381`, inside `df_predict_00954650`, which rotates in double. The model keeps the image's float stores of the difference and the result. | pivot, axis, point and angle from `00954650` | none | ON: float rounding of the predicted point moves by at most an ulp-scale amount per prediction |
 
@@ -108,7 +124,8 @@ None of these models draws from `00BD2F10` on any stream.
 | --- | --- | --- |
 | `0095E9A0` | `src/ship_ai_approach_update.cpp:1366` `ship_ai_torpedo_hits_to_sink_0095e9a0` | Every branch matched the listing. `+5Dh` and a null projectile return 0. `0 >= remaining` returns 0. The two max picks (FCOMIP then JBE, so a tie keeps the second). `00419010(lo, 1, hi, 0, armour)`, then the `> 0` test returning `[00D7A248]`. The excess uses `DE E1` (`ST1 = ST0 - ST1`, so `(lo+hi)/2 - armour`), and the final division uses `DE F9` (`remaining / (per_hit*frac)`). |
 | `00951FC0` | `src/game_hosts_gunnery.cpp:7917` (inline in the gun tick) | Matched. A non-negative value becomes `-v - 35.0`, otherwise `-0.0 - v`. When the result is above 80.0 it is reset to 0 (`TEST AH,44h` / `JNP`). NaN behaves the same in both. |
-| `009327F0` | `src/submarine_model.cpp:285` `submarine_break_periscope_009373c0` (the doc names `009327F0` its twin) | This is a fragment. The model covers `+125Ch = 0`, `+1258h = clock` and `+1254h = f(settings+4C4h + clock)`. The `+122Ch = 2` store is not part of that struct. |
+| `009327F0` | `src/submarine_model.cpp:285` `submarine_break_periscope_009373c0` (the doc names `009327F0` its twin) | This is a fragment. The model covers `+125Ch = 0`, `+1258h = clock` and `+1254h = f(settings+4C4h + clock)`. The `+122Ch = 2` store is not part of that struct. The full body is modelled in section 1.5b, which gives a second record. |
+| `00951220` | `include/bsp/scene_traffic_groups.hpp:78` `TrafficRecord` with `TrafficRecordDefaults` | This is a fragment. The defaults match the image: `new(4Ch)`, `0049F9B0`, `+4h/+8h = -1`, `+0Ch` and `+10h = 0`, `+14h = 1`, `+18h = 40.0`, `+1Ch = 10.0`, `+24h = 5.0`, `+28h..+30h = 0`, then the `00950FC0` push. |
 | `009512F0` | `src/scene_traffic_groups.cpp:231` `read_traffic_item` | Matched. The expect order is item, name, `{`, path, `=`, name. The lookup runs only on a non-empty name. Then come the optional `properties`, `0049CF80` and `}`. The creation order differs and is labelled in the source. |
 | `009514B0` | `src/scene_traffic_groups.cpp:286` `read_traffic_block` | Matched. `00951160` clears. The loop has the brace counter with `item` before `{`/`}`. The item path skips the consume. Then comes `[game+21D0h]` `004A5620`. |
 
@@ -129,12 +146,11 @@ None of these models draws from `00BD2F10` on any stream.
   `0093D250`, `0093D2D0`), the flag (`009574D0`, `0095DE00`), `0093AA90` (section failure effect slots) and
   `00959230` (display-name key).
 - **Unit controller and physics**: `0092E5B0` (a host exists at `src/game_hosts_units.cpp:9381`; it was not
-  checked), `0092F2E0`, `00935540`, `009373C0` (the twin of `009327F0`, plus the visibility and collision calls),
-  and `00937630`.
-- **Class registry and loading**: `0095B8D0` `0095B9E0` `0095BA30` `0095BAB0` `0095BB10` `0095C170` `0095C1C0`
+  checked), `0092F2E0`, `00935540`.
+- **Class registry and loading**: `0095B8D0` `0095BB10` `0095C170` `0095C1C0`
   `0095C640` (a source exists at `src/scene_traffic_groups.cpp:342`; it was not checked) `0095CA50` `0095CA70`
-  `0095DB40` `0095E5B0` `0095F1C0` `00963F90` `00964020` `009653B0` `00965480` `00965810` `00963310` `00963370`.
-- **Scene text writer and files**: `00950000`-`00950350`, `00951220`, `00951820`, `00951940`, `0093AC30`,
+  `0095DB40` `0095E5B0` `0095F1C0` `00963F90` `00964020` `009653B0` `00965480` `00963310` `00963370`.
+- **Scene text writer and files**: `00950000`-`00950350`, `00951820`, `00951940`, `0093AC30`,
   `0093AFF0`, `00946450`, `00957080`, `00946FC0`, `009555A0`.
 
 ## 5. Verification
@@ -150,7 +166,7 @@ None of these models draws from `00BD2F10` on any stream.
 
   `sc2_x87.py 0093EEE0 0093EF0C` gives `f(S8 * ftol(S4 / S8 + 0.5))`.
 - `tools/verify_report_calls.py local/gpr61_calls.json` checked 42 call rows (every direct call and tail jump
-  named in sections 1 and 3) and none failed.
+  named in sections 1 and 3) and none failed. `local/gpr61_calls2.json` checked 11 more rows (section 1.5b) and none failed.
 
 ## 6. Handoff
 

@@ -463,6 +463,80 @@ PlaneVisiblePlan plane_set_visible_00951f40(bool has_node_4a4, bool visible) noe
 }
 
 // ---------------------------------------------------------------------------
+// 5b. Submarine periscope break and the frozen-hull step
+// ---------------------------------------------------------------------------
+
+PeriscopeBreakPlan submarine_break_periscope_009327f0(float clock_f876a4,
+                                                      float periscope_repair_time_4c4) noexcept {
+    PeriscopeBreakPlan plan;
+    plan.acts = true;
+    plan.state_122c = 2;                                  // 009327F7
+    plan.clock_fast_125c = 0.0f;                          // 00932801
+    plan.clock_1258 = clock_f876a4;                       // 00932811
+    // 00932819..00932832: FLD clock, FSTP tmp, FLD [settings+4C4h], FADD tmp, FSTP.
+    plan.deadline_1254 = f32(static_cast<double>(periscope_repair_time_4c4) + clock_f876a4);
+    return plan;
+}
+
+PeriscopeBreakPlan submarine_break_periscope_009373c0(bool has_periscope_shape_394,
+                                                      float clock_f876a4,
+                                                      float periscope_repair_time_4c4) noexcept {
+    if (!has_periscope_shape_394) return PeriscopeBreakPlan{};   // 009373C4 CMP [EDI+394h], 0
+    PeriscopeBreakPlan plan =
+        submarine_break_periscope_009327f0(clock_f876a4, periscope_repair_time_4c4);
+    plan.hide_mast_node_1214 = true;                      // 009373DF 00B6DA70(0.0, 0)
+    plan.shape_collision_c47fc0_2 = true;                 // 00937430 00C47FC0(2)
+    return plan;
+}
+
+FrozenForcesPlan controller_apply_frozen_forces_00937630(std::uint8_t unit_byte_1189) noexcept {
+    FrozenForcesPlan plan;
+    if (unit_byte_1189 == 0) {                            // 0093763A CMP [EDI+1189h], 0
+        plan.hydro_forces_009329c0 = true;                // 0093764B
+        return plan;
+    }
+    plan.zero_body_velocities = true;                     // 00937675 / 00937697
+    plan.order_ring_param_0080e170_zero = true;           // 009376A4
+    return plan;
+}
+
+// ---------------------------------------------------------------------------
+// 5c. The vehicle-class registry
+// ---------------------------------------------------------------------------
+
+void class_registry_release_cached_0095b9e0(ClassRegistryModel& reg, std::int32_t index) {
+    if (index < 0) return;  // the image indexes without a lower bound check
+    const auto i = static_cast<std::size_t>(index);
+    if (i >= reg.cache_4.size()) reg.cache_4.resize(i + 1, nullptr);   // 0095B9F9
+    RefCountedClass*& cell = reg.cache_4[i];
+    if (cell != nullptr && --cell->refs_4 == 0) cell->destroyed = true;  // 0095BA0D / 0095BA1D
+    cell = nullptr;                                                      // 0095BA26
+}
+
+void class_registry_clear_0095ba30(ClassRegistryModel& reg) {
+    reg.cache_4.clear();          // 0095BA3C 00437BD0(0)
+    reg.party_rows_4010.clear();  // 0095BA4F 004359E0(0)
+}
+
+bool class_registry_party_row_clear_0095bab0(ClassRegistryModel& reg, std::int32_t index,
+                                             std::int32_t local_player_index,
+                                             std::int32_t player_party_28) {
+    if (local_player_index < 0 || local_player_index > 7) return false;  // 0095BAC0 / 0095BAC5
+    if (index < 0 || player_party_28 < 0 || player_party_28 > 2) return false;  // model guard
+    const auto i = static_cast<std::size_t>(index);
+    if (i >= reg.party_rows_4010.size()) reg.party_rows_4010.resize(i + 1);   // 0095BAE0
+    return reg.party_rows_4010[i][static_cast<std::size_t>(player_party_28)] == 0;  // 0095BB01
+}
+
+bool unit_is_current_player_unit_00965810(std::uintptr_t unit, bool is_plane,
+                                          std::uintptr_t plane_owner_9d4,
+                                          std::uintptr_t current_player_unit) noexcept {
+    if (unit == 0) return false;                          // 00965813
+    if (is_plane) return plane_owner_9d4 == current_player_unit;   // 00965828..00965837
+    return unit == current_player_unit;                   // 0096583B..00965844
+}
+
+// ---------------------------------------------------------------------------
 // 6. Math
 // ---------------------------------------------------------------------------
 

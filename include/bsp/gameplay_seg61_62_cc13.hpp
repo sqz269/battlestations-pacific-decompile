@@ -5,8 +5,10 @@
 // instance constructors), the ship repair task's setters and adders, the
 // InferiorFailure property and its session messages 7Dh/7Eh, the MT_ROLEOWNER
 // device walks, the unit skill level, the unit pose setters, the controlled-unit
-// audio flag, the launched-child slots, the vehicle-class reference swap and
-// three small math helpers. Packet cc13-gpr61; docs/CC13_GPR_61.md.
+// audio flag, the launched-child slots, the vehicle-class reference swap, the
+// submarine periscope break, the frozen-hull step, the class registry cache, the
+// current-player test and three small math helpers. Packet cc13-gpr61;
+// docs/CC13_GPR_61.md.
 //
 // These are semantic interfaces read from the disk bytes (Capstone disasm-raw;
 // x87 from the bytes with sc2_x87.py), not native layouts or ABI-compatible
@@ -352,6 +354,71 @@ struct PlaneVisiblePlan {
     float visibility{0.0f};
 };
 PlaneVisiblePlan plane_set_visible_00951f40(bool has_node_4a4, bool visible) noexcept;
+
+// ---------------------------------------------------------------------------
+// 5b. Submarine periscope break and the frozen-hull step (segment 61)
+// ---------------------------------------------------------------------------
+
+// 009373C0 `__thiscall(controller)` and its body twin 009327F0 `__thiscall(unit)`.
+// 009373C0 does nothing unless the controller kept a periscope shape at +394h
+// (00939E50). It then hides the mast node [unit+1214h] (00B6DA70(0.0, 0)), runs
+// the common stores, and calls 00C47FC0(2) on the shape. 009327F0 has only the
+// common stores: unit+122Ch = 2, +125Ch = 0.0, +1258h = clock [00F876A4],
+// +1254h = f(settings+4C4h + clock).
+struct PeriscopeBreakPlan {
+    bool acts{false};
+    bool hide_mast_node_1214{false};
+    std::int32_t state_122c{0};
+    float clock_fast_125c{0.0f};
+    float clock_1258{0.0f};
+    float deadline_1254{0.0f};
+    bool shape_collision_c47fc0_2{false};
+};
+PeriscopeBreakPlan submarine_break_periscope_009373c0(bool has_periscope_shape_394,
+                                                      float clock_f876a4,
+                                                      float periscope_repair_time_4c4) noexcept;
+PeriscopeBreakPlan submarine_break_periscope_009327f0(float clock_f876a4,
+                                                      float periscope_repair_time_4c4) noexcept;
+
+// 00937630 `__thiscall(controller, float dt)`, RET 4 (no direct caller; a
+// vtable slot). With the unit's byte +1189h clear it is 009329C0(dt), the hydro
+// forces. With it set the body's linear and angular velocities are set to zero
+// (00C37E50, 00C37E20 on [controller+2Ch]) and 0080E170(0.0) runs on the unit.
+struct FrozenForcesPlan {
+    bool hydro_forces_009329c0{false};
+    bool zero_body_velocities{false};
+    bool order_ring_param_0080e170_zero{false};
+};
+FrozenForcesPlan controller_apply_frozen_forces_00937630(std::uint8_t unit_byte_1189) noexcept;
+
+// ---------------------------------------------------------------------------
+// 5c. The vehicle-class registry (00437F50 singleton)
+// ---------------------------------------------------------------------------
+
+// The registry keeps a class cache (registry+4h, a vector of reference-counted
+// class pointers) and per-class party rows (registry+4010h, 3-byte elements).
+struct ClassRegistryModel {
+    std::vector<RefCountedClass*> cache_4;
+    std::vector<std::array<std::uint8_t, 3>> party_rows_4010;
+};
+// 0095B9E0 `__thiscall(index)`: grow the cache to index+1 (00437BD0) when
+// needed, release the entry (destroy at a zero count) and store null.
+void class_registry_release_cached_0095b9e0(ClassRegistryModel& reg, std::int32_t index);
+// 0095BA30: both vectors resized to 0 (00437BD0(0), 004359E0(0)).
+void class_registry_clear_0095ba30(ClassRegistryModel& reg);
+// 0095BAB0 `__thiscall(index)` -> bool: false unless the local player index
+// world+18ECh is 0..7; grows the party rows to index+1 (004359E0) and answers
+// party_rows[index][player+28h] == 0.
+bool class_registry_party_row_clear_0095bab0(ClassRegistryModel& reg, std::int32_t index,
+                                             std::int32_t local_player_index,
+                                             std::int32_t player_party_28);
+
+// 00965810 `__thiscall(unit)` -> bool: false for null; a plane (IsKindOf 0Fh)
+// compares its +9D4h with the current player unit [00E188D8], anything else
+// compares itself.
+bool unit_is_current_player_unit_00965810(std::uintptr_t unit, bool is_plane,
+                                          std::uintptr_t plane_owner_9d4,
+                                          std::uintptr_t current_player_unit) noexcept;
 
 // ---------------------------------------------------------------------------
 // 6. Math
