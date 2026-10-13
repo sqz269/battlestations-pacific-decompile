@@ -2285,5 +2285,40 @@ struct Fe9HintListHost {
 // entry. Finally paging 10h (00A9E230); the scroll thumb +80h gets (its width, +84h) for up to 16
 // rows, else (its width, (float)(16.0 / rows * +84h)) through vtable +58h, stored at +94h.
 void hud_pause_build_hint_list_00601200(void* screen, Fe9HintListHost& host);
+// ---------------------------------------------------------------------------
+// Packet cc13-fe11 (docs/CC13_FE_11.md): 005AB190 BSP_HudMapScreen_Register, range by range.
+// Field names follow bsp::MapScreenZoomState (include/bsp/map_screen_update_cc13.hpp).
+// ---------------------------------------------------------------------------
+struct Fe11HudMapRegisterHost {
+    virtual ~Fe11HudMapRegisterHost() = default;
+    virtual void frontend_screen_register_004f71d0(void* screen) = 0;
+    virtual void simple_3d_scene_init_0093ccc0(void* scene) = 0;                         // ECX = screen+8h
+    // World bounds of the game object [00E188A8]: +711Ch, +7124h, +7128h, +7130h.
+    virtual float world_bound(std::uint32_t offset) = 0;
+    // The image's per-level tables: 00E0CF40 extents (.data, rewritten here), 00E0CF50 crossfade,
+    // 00F89AE4 scales (BSS). Each points at four floats.
+    virtual float* map_zoom_extents_00e0cf40() = 0;
+    virtual const float* map_zoom_crossfade_00e0cf50() = 0;
+    virtual float* map_zoom_scales_00f89ae4() = 0;
+    // 00A8FD30, ECX = light, DL = 0 -> a referenced shadow owner; 00B7BDF0 sets it.
+    virtual void* directional_light_create_shadow_owner_00a8fd30(void* light) = 0;
+    virtual void directional_light_set_shadow_owner_00b7bdf0(void* light, void* owner) = 0;
+    virtual void ref_release(void* object) = 0;     // InterlockedDecrement(+4h) ([00CE2220]), vtable +0h at zero
+    virtual void* gui_load_page_00aa5840(std::string_view name, std::uint32_t a, std::uint32_t b) = 0;  // ECX = 004C12B0()
+};
+
+// 005AB190..005AB518, the set-up range of BSP_HudMapScreen_Register (__fastcall(ECX = screen), RET).
+// 004F71D0; 0093CCC0 on +8h; +84h = 1.0f, byte +88h = 0. X = (float)((float)(+7124h - +7130h) / 0.75 *
+// 1.1) and Y = (float)((float)(+7128h - +711Ch) * 1.1) (00CEC9D8 / 00CE3DF0); m = X when X > Y, else
+// Y. 8000.0 >= m (00CF0AA0): level 2, ext[2] = m. 25000.0f >= m (00CF0A98): level 1, ext[1] = m,
+// ext[2] = (float)(m * 0.4) (00CE65D0). Otherwise level 0, ext[0] = m, ext[1] = (float)(0.375 * m),
+// ext[2] = (float)(m * 0.166) (00CF0A90 / 00CF0A88). The level goes to +2Ch and +5FCh; extents not
+// named keep their .data values. scales[i] = (float)(crossfade[i] * ext[i] / ext[3]) for i < 3 and
+// scales[3] = (float)(crossfade[3] * ext[3] / ext[3]). +1Ch = (float)(level + 1.0); +30h = ext[level],
+// +34h = (float)(0.75 * ext[level]). The light +18h gets a fresh shadow owner (released after the
+// set). Pages "GUI_map" -> +8Ch, "GUI_classicons" -> +90h ((name, 1, 0)). The pan centre ((+7128h +
+// +711Ch) * 0.5, (+7130h + +7124h) * 0.5), each a float, goes to +54Ch/+550h, +554h/+558h and
+// +5E8h/+5ECh; +5ACh = 0, +40h = +41h = 0, +5B0h = +30h, +5B4h = +34h, +5D0h = 0, +5D4h = 1.0f.
+void hud_map_register_setup_005ab190(void* screen, Fe11HudMapRegisterHost& host);
 
 }  // namespace bsp::cc13_fe1

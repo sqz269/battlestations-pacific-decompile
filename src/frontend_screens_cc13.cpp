@@ -3181,5 +3181,65 @@ void hud_pause_build_hint_list_00601200(void* screen, Fe9HintListHost& host) {
     write_field(screen, 0x94, width);
     host.widget_set_size_58(thumb, {width, height});
 }
+// --- packet cc13-fe11: 005AB190 BSP_HudMapScreen_Register --------------------
+
+void hud_map_register_setup_005ab190(void* screen, Fe11HudMapRegisterHost& host) {
+    host.frontend_screen_register_004f71d0(screen);
+    host.simple_3d_scene_init_0093ccc0(at(screen, 0x08));
+    write_field<float>(screen, 0x84, 1.0f);
+    write_field<std::uint8_t>(screen, 0x88, 0);
+    const float width = static_cast<float>(static_cast<double>(host.world_bound(0x7124)) - host.world_bound(0x7130));
+    const float x = static_cast<float>(static_cast<double>(width) / 0.75 * 1.100000023841858);
+    const float depth = static_cast<float>(static_cast<double>(host.world_bound(0x7128)) - host.world_bound(0x711C));
+    const float y = static_cast<float>(static_cast<double>(depth) * 1.100000023841858);
+    const float m = x > y ? x : y;
+    float* const ext = host.map_zoom_extents_00e0cf40();
+    std::int32_t level;
+    if (8000.0 >= m) {  // FCOMIP + JB: an unordered m takes the larger levels
+        level = 2;
+        ext[2] = m;
+    } else if (25000.0f >= m) {
+        level = 1;
+        ext[1] = m;
+        ext[2] = static_cast<float>(static_cast<double>(m) * 0.4000000059604645);
+    } else {
+        level = 0;
+        ext[0] = m;
+        ext[1] = static_cast<float>(0.375 * m);
+        ext[2] = static_cast<float>(static_cast<double>(m) * 0.16599999368190765);
+    }
+    write_field<std::int32_t>(screen, 0x2C, level);
+    write_field<std::int32_t>(screen, 0x5FC, level);
+    const float* const crossfade = host.map_zoom_crossfade_00e0cf50();
+    float* const scales = host.map_zoom_scales_00f89ae4();
+    const double base = ext[3];
+    for (int i = 0; i < 3; ++i) scales[i] = static_cast<float>(static_cast<double>(crossfade[i]) * ext[i] / base);
+    scales[3] = static_cast<float>(static_cast<double>(crossfade[3]) * base / base);
+    write_field<float>(screen, 0x1C, static_cast<float>(static_cast<double>(level) + 1.0));
+    const float extent = ext[level];
+    write_field<float>(screen, 0x30, extent);
+    write_field<float>(screen, 0x34, static_cast<float>(0.75 * extent));
+    void* const light = read_field<void*>(screen, 0x18);
+    void* const owner = host.directional_light_create_shadow_owner_00a8fd30(light);
+    host.directional_light_set_shadow_owner_00b7bdf0(light, owner);
+    host.ref_release(owner);
+    write_field(screen, 0x8C, host.gui_load_page_00aa5840("GUI_map", 1, 0));
+    write_field(screen, 0x90, host.gui_load_page_00aa5840("GUI_classicons", 1, 0));
+    const float pan_x = static_cast<float>((static_cast<double>(host.world_bound(0x7128)) + host.world_bound(0x711C)) * 0.5);
+    const float pan_y = static_cast<float>((static_cast<double>(host.world_bound(0x7130)) + host.world_bound(0x7124)) * 0.5);
+    write_field<float>(screen, 0x54C, pan_x);
+    write_field<float>(screen, 0x550, pan_y);
+    write_field<float>(screen, 0x554, pan_x);
+    write_field<float>(screen, 0x558, read_field<float>(screen, 0x550));
+    write_field<float>(screen, 0x5AC, 0.0f);
+    write_field<std::uint8_t>(screen, 0x40, 0);
+    write_field<float>(screen, 0x5B0, read_field<float>(screen, 0x30));
+    write_field<std::uint8_t>(screen, 0x41, 0);
+    write_field<float>(screen, 0x5B4, read_field<float>(screen, 0x34));
+    write_field<float>(screen, 0x5E8, read_field<float>(screen, 0x54C));
+    write_field<float>(screen, 0x5EC, read_field<float>(screen, 0x550));
+    write_field<float>(screen, 0x5D0, 0.0f);
+    write_field<float>(screen, 0x5D4, 1.0f);
+}
 
 }  // namespace bsp::cc13_fe1
