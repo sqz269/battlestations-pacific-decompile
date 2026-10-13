@@ -2814,7 +2814,7 @@ struct GameUnitsHost::Impl {
     // Packet cc9_takeoff_own_site: 006C0840's own-site answers.
     unsigned long long takeoff_own_site_answers{0};
     // Packet cc9_base_launch_brake: 006C5B70's releases of block+38h.
-    unsigned long long base_launch_brake_releases{0}, base_launch_brake_gone{0};
+    unsigned long long base_launch_brake_releases{0}, base_launch_brake_gone{0}; unsigned long long base_launch_brake_attach_holds{0};  // cc13-fix7 B
     void release_launch_brake_006c5b70();
     void takeoff_prepare_enter_009cdd50(GameUnitSlot& p);
     void takeoff_slow_enter_009ce1d0(GameUnitSlot& p);
@@ -15577,6 +15577,13 @@ void GameUnitsHost::Impl::release_launch_brake_006c5b70() {
             if (r.squadron_unit == sq_unit) { rec = &r; break; }
         }
         if (rec == nullptr || rec->member_units.empty()) continue;
+        if constexpr (bsp::kBaseLaunchBrakeAttachGateBound) {
+            // 007ED740 `+3CCh > 0`: no member is attached before pass C's inside start.
+            if (rec->from_air_ops_launch && rec->bag_state < 2 && !rec->home_launch_408) {
+                ++base_launch_brake_attach_holds;
+                continue;
+            }
+        }
         std::size_t resolved = 0, live = 0;
         bool every = true;
         for (const std::size_t m : rec->member_units) {

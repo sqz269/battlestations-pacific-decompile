@@ -488,6 +488,19 @@ struct AirOpsSceneDeck {
 // ON: 5bj's pairs (every set brake released except the one the image's rule
 // holds behind 5bh's airfield hold; no launch queued; death rows re-timed only).
 inline constexpr bool kBaseLaunchBrakeBound = true;
+// Packet cc13-fix7 B (docs/CC13_VER_18.md section 3). 007ED740 answers
+// `+3CCh > 0` first, and a squadron fresh from 006C5050 has +3CCh = 0 (007F2D9D)
+// until its attach (007F4B60) at the next InitAll, so 006C5B70 in the same
+// 006CDC70 call holds the brake. The host's release saw the fused leader at
+// state 7 with the wings unresolved and released at once. True: an air-ops
+// squadron with bag State < 2 holds the brake until its pass C has run the
+// inside start (home_launch_408, 007F1C78), the host's stand-in for the attach.
+// LABELLED: requires kBaseLaunchChainBound and the pass-C hook
+// (kSquadronInitialCommandBound), both ON; with either off it would hold for
+// ever. A bare "any member is kPlaneSquadronNoUnit" test is not used: landed
+// and dead members are also written NoUnit (007F3970 compaction), which would
+// hold for ever. False: released as before.
+inline constexpr bool kBaseLaunchBrakeAttachGateBound = false;
 
 // The block mode 1 leaves behind. `slots` is block+4Ch with its count at
 // block+50h; `max_in_air_planes` is block+58h.
