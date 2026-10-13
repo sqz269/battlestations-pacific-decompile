@@ -65,3 +65,65 @@ the expected signatures:
 - `kCaptureNoTargetImageBound`: `capture_path_thinks` rises on missions without enemy CommandBuildings.
 - `kAiDuelEscortThinkBound`, `kAiRegroupingMoveTickBound`: no expected change in campaign missions.
 - `kMergeNewAttackCommandBound`: only `commands_replaced` moves.
+
+## cc13-fix2b: why `ai formation shape calls=0` on every campaign row
+
+Packet cc13-fix2b, static only (no game runs). Evidence: cc9's `lead_ai2_on_*` pair logs
+(`J:\PROG\battlestations-pacific-decompile-cc9\local\`, 2026-10-13 06:22-06:31, all six switches ON)
+and a rel32 / abs32 census of the PE on disk (`local\fix2b_rel32.py` in the cc13-fix2b tree).
+
+**Cause: no AI command ever ticks, because no AI group exists.** The hook is not on the wrong
+tick and no gate inside the tick is false. On all four rows the coordinator line reads
+`game_mode=8 compose=0 seeds=0 groups_created=0 ... tick_orders=0`, the load-gate line reads
+`created_at_load=0 groups_created=0`, and `ai parties ... commands=0`. The cautious-wedge pass
+(00A11690, the sibling hook) also shows `calls=0` on all four rows. `formation_shape_due` is set
+only inside `ai_command_tick_vt000c`, and that is never entered for a ship.
+
+**The image agrees: it never runs 00A11070 on these rows.** Census of the PE:
+
+- 00A11070 has exactly six references, all in AI command ticks: CALL 00A12350 (SELLING), JMP 00A12442
+  (IDLE), JMP 00A12538 (MOVETO), JMP 00A12A48 (REGROUPINGMOVE), CALL 00A12BE0 (MOVETOATTACK) and
+  CALL 00A15665 (PATROLTO). There is no abs32 reference.
+- Each of those six ticks is reachable only through its vtable slot. The only references are the
+  abs32 entries 00D229C4, 00D229EC, 00D22AC8, 00D22B20, 00D22B48 and 00D22BC8, so the ticks run only
+  on a command object owned by an AiGroup.
+- Those command vtables are referenced only by:
+  - the command constructors and clones (00A0FCF0..00A10890, 00A12C60);
+  - the group orders 00A2C2A0, 00A2C310, 00A2CCF0 and 00A185E0;
+  - BSP_AiGroup_Construct 00A2DFA0 (installs IDLE at 00A2E13D);
+  - BSP_AiPlanner_SellThink 00A22800;
+  - the debug overlay 00A31000;
+  - BSP_AiCommand_CreateFromLua 00A13340.
+- The ways to create a group, with the callers of 00A2DFA0:
+  - Coordinator-internal: 00A22920 split by class, 00A2E260 and the 00A2E6xx..00A2EAxx compose
+    sites. These run only under the coordinator 00A31730.
+  - Lua `AICreateGroup` 00A38A50 (00A38CCE). Its only reference is binding row 00E0C8BC.
+  - The spawn route 00A16EF0 (00A16F7B), called only from 00947A30, which is called from
+    BSP_SpawnRequest_CreateMembers (009487A1). It first tests the party brain `[00F8A89C + party*4]`
+    and creates nothing when the brain is null.
+- The brain slots are written only inside 00A182C0, the party think (00A183A7 / 00A183B5 /
+  00A183D0; the other four references 00A15955, 00A1642A, 00A16B23 and 00A16F31 read the slots).
+  The coordinator tick 00A32D50 is the only path into 00A182C0, and per docs/SHIP_AI_OPEN_ITEMS.md
+  section 150, the coordinator exists only for a hosted session (game+1FE4h = 1) or after a
+  developer command-line mode switch (game+61Ch).
+- Lua: across the `.lua` files of this installation, every `AI*(` call is to AISetTargetWeight
+  (430), AISetHintWeight (246), AISetSpawnSceneUnitsWeightMul (31) or AISetDefendResourcePercent
+  (24). No file calls `AICreateGroup`, `AISetCommand` or `AICreate`.
+
+So campaign ships are driven by script orders and the ship AI navigator, not by AI-planner
+commands. In the image, the formation pass is dead on every mission-tree launch, just as it is in
+the host. Answers to the packet's three hypotheses: (a) no, the ticks are right; (b) no
+in-tick gate is false; (c) yes, but in both the image and the host. Campaign groups never get an
+AI command object.
+
+**No reach fix.** None is needed and none would be faithful: wiring 00A11070 into the
+navigator or the Lua order path would add behaviour the image does not have. No source change.
+
+**Which missions should show calls > 0:** none of the 23 reference rows, nor any other mission-tree
+launch. Only a coordinator session would: a hosted multiplayer/skirmish game, or a launch with one
+of the developer mode switches (`siege`, `duel`, `escort`, `competitive`, `ic1..ic4`). Even then,
+the coordinator must survive the stage init's `SetGameMode(8, 0)`. The current harness has no such
+row, so a same-binary pair cannot exercise `kAiFormationShapeBound`. On campaign rows it is
+byte-identical whether ON or OFF. Leave it OFF, or flip it ON "by mechanism" with the other five.
+Either way it cannot move a reference row. The same holds for `kAiRegroupingMoveTickBound`,
+`kAiDuelEscortThinkBound` and the cautious-wedge census.
