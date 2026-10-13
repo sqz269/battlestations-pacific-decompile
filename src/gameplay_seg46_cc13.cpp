@@ -7,7 +7,8 @@
 
 #include "bsp/gameplay_seg46_cc13.hpp"
 
-#include "bsp/unit_rudder.hpp"  // clamped_interpolate_00419010
+#include "bsp/engine_seg4_6_9_cc13.hpp"  // point_segment_distance_0046ff70
+#include "bsp/unit_rudder.hpp"           // clamped_interpolate_00419010
 
 #include <cmath>
 
@@ -341,6 +342,101 @@ bool paratrooper_drop_target_006e541f(RackParatrooperTarget& rack, bool round_is
 
 void paratrooper_drop_clear_006e55e7(RackParatrooperTarget& rack, std::int32_t rounds_left_484) noexcept {
     if (rounds_left_484 <= 0) rack.set_4f8 = false;  // 006E55EE JLE -> 006E55FE
+}
+
+namespace {
+
+constexpr double kZeroDistanceSq_00ce3820 = 1e-10;  // qword
+constexpr float kFloatMax_00d7a248 = 3.40282347e+38f;
+
+// 007AED54-007AEDB6 / 007AEE08-007AEE6A: the difference stored per axis, the
+// squared sum stored to float, then 0 or f(sqrt).
+float point_distance_007aed10(const Vec3& q, const Vec3& p) noexcept {
+    const float dx = f32(static_cast<double>(q.x) - p.x);
+    const float dy = f32(static_cast<double>(q.y) - p.y);
+    const float dz = f32(static_cast<double>(q.z) - p.z);
+    const float sum = f32((static_cast<double>(dx) * dx + static_cast<double>(dy) * dy) +
+                          static_cast<double>(dz) * dz);
+    if (!(static_cast<double>(sum) > kZeroDistanceSq_00ce3820)) return 0.0f;  // FCOMI / JBE
+    return f32(std::sqrt(static_cast<double>(sum)));                         // 00BF7030
+}
+
+}  // namespace
+
+int nearest_point_index_007aed10(const Vec3* points, int count, const Vec3& pos, float* distance) {
+    int best_index = 0;
+    float best = point_distance_007aed10(pos, points[0]);
+    for (int i = 1; i < count; ++i) {
+        const float d = point_distance_007aed10(pos, points[i]);
+        if (best > d) {  // 007AEE78 FCOMPI(best, d), JBE skips
+            best = d;
+            best_index = i;
+        }
+    }
+    if (distance != nullptr) *distance = best;  // 007AEEA2-007AEEAE
+    return best_index;
+}
+
+Vec3 path_local_from_homogeneous_007b0900(const float h[4]) noexcept {
+    const float inv = f32(1.0 / static_cast<double>(h[3]));  // 007B09A8
+    return Vec3{f32(static_cast<double>(h[0]) * inv), f32(static_cast<double>(h[1]) * inv),
+                f32(static_cast<double>(inv) * h[2])};
+}
+
+int start_index_for_position_007b11f0(PathJoinSource& source, const Vec3& pos, bool forward) {
+    const int count = source.point_count();       // 007B11FE
+    const int nearest = source.nearest_index(pos);  // 007B120E
+    if (count < 2) return nearest;                 // 007B1210 JL
+    int candidate = 0;
+    if (forward) {
+        if (nearest >= count - 1) return nearest;  // 007B1227 JGE
+        candidate = nearest + 1;
+    } else {
+        if (nearest <= 0) return nearest;  // 007B1234 JLE
+        candidate = nearest - 1;
+    }
+    const Vec3 a = source.point(nearest);    // 007B124A
+    const Vec3 b = source.point(candidate);  // 007B1266
+    // 007B128A-007B12BE: d = p - a and e = b - a on (x, z), each stored.
+    const float dx = f32(static_cast<double>(pos.x) - a.x);
+    const float dz = f32(static_cast<double>(pos.z) - a.z);
+    const float ex = f32(static_cast<double>(b.x) - a.x);
+    const float ez = f32(static_cast<double>(b.z) - a.z);
+    const float rcp = source.reciprocal_length_00419260(ex, ez);  // 007B12C2, stored
+    const float ux = f32(static_cast<double>(ex) * rcp);
+    const float uz = f32(static_cast<double>(rcp) * ez);
+    const float s = f32(static_cast<double>(uz) * dz + static_cast<double>(ux) * dx);  // 007B12F9
+    return s > 0.0f ? candidate : nearest;  // 007B1303 FCOMPI(s, 0), JA keeps the candidate
+}
+
+Vec3 centroid_007ae6d0(const Vec3* points, int count) noexcept {
+    float sx = 0.0f, sy = 0.0f, sz = 0.0f;
+    for (int i = 0; i < count; ++i) {
+        sx = f32(static_cast<double>(points[i].x) + sx);
+        sy = f32(static_cast<double>(sy) + points[i].y);
+        sz = f32(static_cast<double>(points[i].z) + sz);
+    }
+    const float inv = f32(1.0 / static_cast<double>(count));  // 007AE782 FILD, FDIVR
+    return Vec3{f32(static_cast<double>(inv) * sx), f32(static_cast<double>(sy) * inv),
+                f32(static_cast<double>(inv) * sz)};
+}
+
+float distance_to_polyline_007ae7b0(const Vec3* points, int count, const Vec3& pos,
+                                    const std::function<float(const std::array<float, 3>&)>& length) {
+    const std::array<float, 3> p{pos.x, pos.y, pos.z};
+    if (count == 1) {
+        // 007AE7E4-007AE820: the single point's distance, returned unrounded in ST0.
+        return length({f32(static_cast<double>(pos.x) - points[0].x), f32(static_cast<double>(pos.y) - points[0].y),
+                       f32(static_cast<double>(pos.z) - points[0].z)});
+    }
+    float best = kFloatMax_00d7a248;
+    for (int i = 0; i < count - 1; ++i) {
+        const std::array<float, 3> a{points[i].x, points[i].y, points[i].z};
+        const std::array<float, 3> b{points[i + 1].x, points[i + 1].y, points[i + 1].z};
+        const float d = cc13_sys::point_segment_distance_0046ff70(p, a, b, length);  // 007AE8DE, stored
+        if (best > d) best = d;  // 007AE8EF FCOMPI(best, d), JBE skips
+    }
+    return best;
 }
 
 }  // namespace gameplay_seg46_cc13

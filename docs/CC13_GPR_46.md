@@ -105,6 +105,21 @@ Every kill uses cause 2 and is skipped in MP mode 2.
 So a stick of paratroopers lands along the bomber's velocity, spaced by toRepeatTime, with ±50 jitter on each
 of x and z.
 
+### 1.7 Path join and path geometry
+
+`include/bsp/ship_ai_path_cursor.hpp` labels two things as unread:
+- its `ship_ai_path_nearest_index_007b1100`, which is a planar hypothesis;
+- the tail of `007B11F0` (head only).
+
+This pass reads both.
+
+| address | model | what it does |
+| --- | --- | --- |
+| `007B1100` -> `007B0900` -> `007AED10` | `path_local_from_homogeneous_007b0900`, `nearest_point_index_007aed10` | `007B1100` is `007B0900(pos, 0)` on the source's path. `007B0900` transforms (pos, 1) by the path entity's inverse world matrix (`00B62D10`), then divides: `inv = f(1/w)`, `f(x*inv)`, `f(y*inv)`, `f(inv*z)`. `007AED10` is a **3-D** search. It stores the per-axis differences, stores the squared sum to float, counts a sum <= 1e-10 as 0 and otherwise takes `f(sqrt)`. The strictly smaller distance wins, so the first of equal points is kept. |
+| `007B11F0` | `start_index_for_position_007b11f0` | Read whole. RET 0Ch, and the float argument is never read. With fewer than two points, or the nearest already last (forward) or first (backward), it answers the nearest. Otherwise it takes `a` = the nearest point, `b` = its neighbour in the travel direction, and on (x, z) only: `d = f(p - a)`, `u = f(f(b - a) * 00419260(b - a))`. It answers the neighbour when `f(u.z*d.z + u.x*d.x) > 0`, that is when the position is already past `a` along the leg; otherwise the nearest. |
+| `007AE6D0` | `centroid_007ae6d0` | Float running sums, then `f(inv * sum)` with `inv = f(1/(double)count)`. |
+| `007AE7B0` | `distance_to_polyline_007ae7b0` | One point: `0042B2F0(pos - p0)`. Otherwise the minimum over the legs of `0046FF70(pos, p[i], p[i+1])` (reusing `cc13_sys::point_segment_distance_0046ff70`), starting from FLT_MAX. |
+
 ## 2. Adoption table (cc9 terms)
 
 | model | replaces (host file:line) | inputs and where the host gets them | RNG | OFF-switch prediction |
@@ -113,6 +128,9 @@ of x and z.
 | `construct_007ab8c0` | none (the host creates no MParatrooper round; `game_hosts_units.cpp:22656`) | SoldierGlobals (`soldier_traffic_cc13::load_soldier_globals_0084cb70`) | one **stream-1** draw per round created | ON: stream-1 consumers (`0074A9C8` landing ship, plane tasks) shift by one draw per paratrooper. |
 | `advance_in_air_007abb30`, `update_chute_and_target_007ab360`, `anim_clock_007ab0b0`, `step_landing_007ac000` | none; the round would be a new entity kind in the units host. The bomb step `006E1510` / `006E2220` would be the host's existing bomb flight. | class row `bulletclasses.lua` "Paratrooper" (SlowFactor*, CaptureDuration, Damage) and BombClass `+5Ch`; ground height and normal; avoid zones (`include/bsp/avoid_zone_boundary.hpp`); command-building side and `+368h`; MP mode | none | ON: rounds descend and steer to the jittered point. They land, or die on water or on a slope above `MaxParatrooperGradient`, then find the nearest enemy building or die. They damage the building at `(Damage - +368h)/s` and die after CaptureDuration. |
 | `land_and_spawn_soldier_007ab590`, `on_killed_007aae10` | `src/game_hosts_ship_ai.cpp:572` and `:12443` (arm 3, the paratrooper list `+7DCh`, "always empty in this process") | building handle; the class SoldierClass and SoldierAnim | `004B0F80` draws U(0, duration) on **stream 0** in the image (`004B102F`). This is presentation: route it to a keyed presentation stream or keep it OFF (RNG rule). | ON: capture arm 3 of the command-building step (`006F6760`) sees capturers, so capture progress and capture reports move. |
+
+| `nearest_point_index_007aed10`, `path_local_from_homogeneous_007b0900`, `start_index_for_position_007b11f0` | `src/game_hosts_commands.cpp:3142` (`ship_ai_path_nearest_index_007b1100`, the planar hypothesis, fed only x and z) and the `007B11F0` head at `:3132` | the path's points in the path entity's local frame and that entity's inverse world matrix (the authored path is a scene entity, `pathID`); the cursor's direction byte; `00419260` (`native_vector2_reciprocal_length_00419260`) | none | OFF: none. ON, two effects. First, the nearest index becomes 3-D in the path's local frame, so it moves only where the path points or the ship sit off y = 0 or the path entity is transformed. Second, the start index takes the next point in the travel direction whenever the unit is already past the nearest point along that leg, so a ship joining mid-leg stops turning back to the point behind it. Ships on move-on-path orders can therefore change course at the join; which missions move was not measured. |
+| `centroid_007ae6d0`, `distance_to_polyline_007ae7b0` | none found (their callers are the world wrappers `007B0650`/`007B0710`, reached through the path interface's vtable; no host caller was traced) | path points, query position, `0042B2F0` | none | none known until a caller is bound |
 
 The capture itself (`006F6760` adds `CapturePower` per capturer) is the ship-AI host's arm 3 and is not
 modelled here.
@@ -138,7 +156,8 @@ modelled here.
 ## 4. Ledger
 
 Function records (`config/reconstruction`): `007AB8C0`, `007ABA50`, `007AC530`, `007AB230`, `007ABB30`,
-`007AB360`, `007AB0B0`, `007AC000`, `007AB590`, `007AAE10`, `006E3F90`. Fragments: `006E541F`, `006E55E7`.
+`007AB360`, `007AB0B0`, `007AC000`, `007AB590`, `007AAE10`, `006E3F90`, `007AED10`, `007B0900` (partial: the
+divide), `007B11F0`, `007AE6D0`, `007AE7B0`. Fragments: `006E541F`, `006E55E7`.
 Names (`config/names`): `007AB0B0` `BSP_MParatrooper_AnimClock`, `007AB330` `BSP_MParatrooper_HandleMessage71`
 (neither has a Ghidra function).
 `006E3F90`/`006E541F`/`006E55E7` are outside segment 46. They are the rack branch cc9 asked for, read-only
@@ -155,5 +174,5 @@ there, and no other lease holds them.
 
   All three agree with the models. `006E3F90`-`006E5620` has no DC-form site.
 - `tools/verify_report_calls.py` passed 20 call-site rows (constructor RNG, drop RNG and `007AB230`,
-  `006E3F90`/`007BCCF0` at `007C0EC1`/`007C0EC9`, and the landing, steer and kill calls), with 0 failures. The
-  row file is `local/g46_calls.json`, which is not committed.
+  `006E3F90`/`007BCCF0` at `007C0EC1`/`007C0EC9`, and the landing, steer and kill calls), with 0 failures; six more rows cover the path pieces (`0046FF70`, `0042B2F0`, `00419260`, `007AED10`, `007B0900`, `00BF7030`), also with 0 failures. The
+  row files are `local/g46_calls.json` and `local/g46_calls2.json`, which are not committed.

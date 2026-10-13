@@ -43,7 +43,9 @@
 
 #include "bsp/soldier_traffic_cc13.hpp"
 
+#include <array>
 #include <cstdint>
+#include <functional>
 
 namespace bsp {
 namespace gameplay_seg46_cc13 {
@@ -245,6 +247,66 @@ void set_target_point_006e3f90(RackParatrooperTarget& rack, const Vec3& point,
 bool paratrooper_drop_target_006e541f(RackParatrooperTarget& rack, bool round_is_31h,
                                       float repeat_time_494, ParatrooperHost& host, Vec3& point);
 void paratrooper_drop_clear_006e55e7(RackParatrooperTarget& rack, std::int32_t rounds_left_484) noexcept;
+
+// ---------------------------------------------------------------------------
+// Path join and path geometry (the authored-path source 00D0534C and the
+// Point3PtrArray 00D053A4). These read what include/bsp/ship_ai_path_cursor.hpp
+// labels a hypothesis: its ship_ai_path_nearest_index_007b1100 is a planar
+// search, and its 007B11F0 is head-only.
+//
+// ADOPTION NOTE: would replace the planar search in
+// src/game_hosts_commands.cpp:3142 (GameCommandsHost's path join for
+// 007B1C50) and supply the unread 007B11F0 tail. Inputs: the path's points in
+// the path entity's local frame, the query position transformed by the path
+// entity's inverse world matrix (007B0900), and 00419260. No RNG. OFF-switch
+// prediction: a ship joining a path whose nearest point is not the 2-D nearest
+// (points or ship off y = 0) can pick another index; and with the tail, a join
+// in the travel direction starts one point later whenever the ship is already
+// past the nearest point along the leg, so ships stop doubling back to it.
+// ---------------------------------------------------------------------------
+
+// 007AED10 BSP_Point3PtrArray_NearestPointIndex, __thiscall(array)(pos*, float* out),
+// RET 8. 3-D distances; a squared sum stored to float and <= 1e-10 counts as 0,
+// else f(sqrt). The first point sums x, y, z; the loop sums y, x, z. Strictly
+// smaller wins (the first of equals). `distance` (may be null) gets the best.
+// Precondition, as in the image: at least one point (an empty array calls the
+// CRT invalid-parameter handler 00BF6713).
+int nearest_point_index_007aed10(const Vec3* points, int count, const Vec3& pos, float* distance);
+
+// 007B0900 BSP_ScenePath_NearestPointIndexWorld, the homogeneous divide applied
+// to `h` = 00B62D10(path entity's inverse world matrix, (pos, 1)):
+// inv = f(1 / w), then f(x * inv), f(y * inv), f(inv * z).
+Vec3 path_local_from_homogeneous_007b0900(const float h[4]) noexcept;
+
+// The path source's slots that 007B11F0 calls through its own vtable.
+struct PathJoinSource {
+    virtual ~PathJoinSource() = default;
+    virtual int point_count() = 0;                  // vslot +0Ch
+    virtual int nearest_index(const Vec3& pos) = 0;  // vslot +14h (007B1100 -> 007B0900 -> 007AED10)
+    virtual Vec3 point(int index) = 0;              // vslot +08h
+    virtual float reciprocal_length_00419260(float x, float z) = 0;
+};
+
+// 007B11F0 BSP_EntityPathSource_StartIndexForPosition, __thiscall(source)(pos*,
+// float unused, char forward), RET 0Ch, read whole. With fewer than two points,
+// or the nearest already at the end in the travel direction, the nearest. Else
+// the neighbour in the travel direction when the position lies strictly ahead of
+// the nearest point along the planar (x, z) leg toward that neighbour:
+// d = f(p - a), u = f(f(b - a) * rcp), s = f(u.z * d.z + u.x * d.x) > 0.
+// The float argument at [esp+3Ch] is never read.
+int start_index_for_position_007b11f0(PathJoinSource& source, const Vec3& pos, bool forward);
+
+// 007AE6D0 BSP_Point3PtrArray_Centroid, __thiscall(array)(out*), RET 4. Each
+// running sum is stored to float; inv = f(1 / (double)count); out = f(inv * sum).
+// An empty array divides by zero as the image does (inf * 0 = NaN).
+Vec3 centroid_007ae6d0(const Vec3* points, int count) noexcept;
+
+// 007AE7B0 BSP_Point3PtrArray_DistanceToPolyline, __thiscall(array)(pos*), RET 4,
+// ST0. One point: 0042B2F0(f(pos - p0)). Otherwise the minimum over the legs of
+// 0046FF70(ECX = pos, EDX = p[i], p[i+1]), each stored to float, from FLT_MAX
+// (00D7A248); no legs answers FLT_MAX. `length` is 0042B2F0.
+float distance_to_polyline_007ae7b0(const Vec3* points, int count, const Vec3& pos,
+                                    const std::function<float(const std::array<float, 3>&)>& length);
 
 }  // namespace gameplay_seg46_cc13
 }  // namespace bsp
