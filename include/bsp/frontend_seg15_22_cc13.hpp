@@ -380,6 +380,11 @@ struct Seg15Host : bsp::ingame_gui_cc13::HudScreenServices {
     // 004C8950(const char*) / 004C6890(int), ECX = *00E188A8.
     virtual void game_set_command_line_text_004c8950(const char* text) = 0;
     virtual void game_select_scene_record_004c6890(std::int32_t index) = 0;
+    // Session ([*00E188A8]+1EF0h): 0076F360 collect incompatible clients;
+    // 00771DD0(player, flag, 1) request player ready
+    // (multiplayer_session_cc13::request_player_ready_00771dd0 models it).
+    virtual void session_collect_incompatible_clients_0076f360() = 0;
+    virtual void session_request_player_ready_00771dd0(std::int32_t player, bool flag, std::int32_t c) = 0;
 };
 
 // MSVC 8 vector layout used by the screens: {allocator dword, first, last, end}.
@@ -890,6 +895,25 @@ void multi_game_lobby_confirm_leave_005da210(Raw s, Seg15Host& host);
 // record *00E19594, store the map mask (+2C0h/+2C4h, game+2060h/+2064h with
 // +2C8h/+2CCh), apply the settings, +10h = 1 and tail-call 005DA210.
 void multi_game_lobby_apply_selected_map_005da530(Raw s, Seg15Host& host);
+// 005D71B0 __fastcall(screen) -> AL: with a local player (game+18C8h >= 0,
+// slot game+18ECh in 0..7) and a loaded scene (game+5FCh, byte +914h): as host
+// (game+1FE4h == 1), when 005D6BA0 fails raise "globals.some_clients_incompatible"
+// (prompt slot 2, kind 2) and return 0; when 005D5260 says ready, dismiss the
+// load prompt (005D6CD0), byte +271h = 1, byte [*00F8A2FC]+75h = 1, collect the
+// incompatible clients (0076F360) and return 1. Otherwise (a session that is not
+// closing, and either host or a client whose [game+207Ch]+C4h is set) refresh
+// the local ready state (005D5790) and request ready for game+18C8h with flag
+// (local slot record +0Ch == 0); return 0.
+bool multi_game_lobby_check_client_compatibility_005d71b0(Raw s, Seg15Host& host);
+// 005D6060 __thiscall(ECX = screen+0Ch listener, widget, bool focus), RET 8:
+// widget type 3 gets alpha 0.5 / 1.0 (00CE3800 / 00D7A24C); the five buttons
+// (+A4h, +20h, +8Ch, +28h, +150h) are left alone; +90h and +154h only when
+// bytes +78h / +1A0h are clear; with the settings page open (005D5490) only
+// +220h and +224h; the three side widgets +144h / +148h / +14Ch switch
+// frames together; any other widget shows the focus through +88h(focus) for
+// type 6 or +84h(focus) for type 12h.
+inline constexpr float kLobbyFocusDimAlpha = 0.5f;  // 00CE3800
+void multi_game_lobby_on_focus_005d6060(Raw s, void* widget, bool focus, Seg15Host& host);
 
 }  // namespace bsp::frontend_seg15_22_cc13
 

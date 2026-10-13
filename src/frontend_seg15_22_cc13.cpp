@@ -2934,6 +2934,88 @@ void multi_game_lobby_apply_selected_map_005da530(Raw s, Seg15Host& host) {
     multi_game_lobby_confirm_leave_005da210(s, host);
 }
 
+bool multi_game_lobby_check_client_compatibility_005d71b0(Raw s, Seg15Host& host) {
+    Raw game = host.global_object(0x00E188A8);
+    if (game.at<std::int32_t>(0x18C8) < 0) return false;
+    const std::int32_t local = game.at<std::int32_t>(0x18EC);
+    if (local < 0 || local > 7) return false;
+    if (game.ptr(0x5FC) == nullptr || static_cast<const std::uint8_t*>(game.ptr(0x5FC))[0x914] == 0) return false;
+    if (game.at<std::int32_t>(0x1FE4) == 1) {
+        if (!multi_game_lobby_slots_meet_content_masks_005d6ba0(host)) {
+            host.menu_prompt_raise_00531b00(2, "globals.some_clients_incompatible", 2, 0, 0,  // 00CF20A8
+                                            host.native_string_temp(""), 0.0f, 0, "", 1);
+            return false;
+        }
+        if (host.global_object(0x00E188A8).at<std::int32_t>(0x1FE4) == 1) {
+            if (lobby_ready_to_start_005d5260(host)) {
+                session_dismiss_load_prompt_005d6cd0(host);  // ECX = screen in the image
+                s.at<std::uint8_t>(0x271) = 1;
+                const Raw online = host.global_object(0x00F8A2FC);
+                if (online.p != nullptr) online.at<std::uint8_t>(0x75) = 1;
+                host.session_collect_incompatible_clients_0076f360();
+                return true;
+            }
+        }
+        game = host.global_object(0x00E188A8);
+    }
+    if (game.at<std::int32_t>(0x1FE4) == 0 || game.at<std::uint8_t>(0x218C) != 0) return false;
+    if (game.at<std::int32_t>(0x1FE4) != 1 && static_cast<const std::uint8_t*>(game.ptr(0x207C))[0xC4] == 0) return false;
+    multi_game_lobby_refresh_local_ready_005d5790(s, host);
+    const Raw now = host.global_object(0x00E188A8);
+    const auto* const record = static_cast<const std::uint8_t*>(now.ptr(0x18CC + now.at<std::int32_t>(0x18EC) * 4));
+    host.session_request_player_ready_00771dd0(now.at<std::int32_t>(0x18C8), record[0x0C] == 0, 1);
+    return false;
+}
+
+void multi_game_lobby_on_focus_005d6060(Raw s, void* widget, bool focus, Seg15Host& host) {
+    if (host.widget_type_5c(widget) == 2) return;
+    if (host.widget_type_5c(widget) == 3) {
+        host.widget_set_float_4c(widget, focus ? kLobbyFocusDimAlpha : 1.0f);  // 00D7A24C
+        return;
+    }
+    for (std::size_t off : {0xA4u, 0x20u, 0x8Cu, 0x28u, 0x150u}) {
+        if (widget == s.ptr(off)) return;
+    }
+    auto apply = [&] {  // 005D6105
+        if (host.widget_type_5c(widget) == 6) {
+            host.widget_virtual_88(widget, focus ? 1 : 0, 0, 1.0f);
+        } else if (host.widget_type_5c(widget) == 0x12) {
+            host.widget_virtual_84(widget, focus ? 1 : 0);
+        }
+    };
+    if (widget == s.ptr(0x90)) {
+        if (s.at<std::uint8_t>(0x78) == 0) apply();
+        return;
+    }
+    if (widget == s.ptr(0x154)) {
+        if (s.at<std::uint8_t>(0x1A0) == 0) apply();
+        return;
+    }
+    if (multi_game_lobby_settings_open_005d5490(s, host)) {
+        if (widget == s.ptr(0x220) || widget == s.ptr(0x224)) apply();
+        return;
+    }
+    void* const first = s.ptr(0x144);
+    if (widget != first && widget != s.ptr(0x148) && widget != s.ptr(0x14C)) {
+        apply();
+        return;
+    }
+    if (focus) {
+        if (widget == first) {
+            host.widget_virtual_88(first, 1, 0, 1.0f);
+        } else {
+            host.widget_virtual_88(s.ptr(0x148), 1, 0, 1.0f);
+            host.widget_virtual_88(s.ptr(0x14C), 1, 0, 1.0f);
+        }
+        return;
+    }
+    // Unfocused: which side is lit follows byte [*00E198B4+54h]+8Ch.
+    const bool second_side = static_cast<const std::uint8_t*>(host.global_object(0x00E198B4).ptr(0x54))[0x8C] != 0;
+    host.widget_virtual_88(s.ptr(0x144), second_side ? 0 : 2, 0, 1.0f);
+    host.widget_virtual_88(s.ptr(0x148), second_side ? 2 : 0, 0, 1.0f);
+    host.widget_virtual_88(s.ptr(0x14C), second_side ? 2 : 0, 0, 1.0f);
+}
+
 void byte_sbo_uninit_fill_n_005443f0(std::uint8_t* dest, std::uint32_t count, const std::uint8_t* value,
                                      Seg15Host& host) {
     for (; count != 0; --count, dest += 0x24) {
