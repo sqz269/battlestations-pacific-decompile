@@ -542,6 +542,10 @@ int binding_trampoline(lua_State* state) {
     const bool unlimited_air_row = kSubmarineAirBound
         && dispatch_row.address == 0x00893c00u;
     const bool ready_row = dispatch_row.address == 0x00895d20u;
+    // Packet cc9_lua54_prcp01.
+    const bool simplified_row = kSimplifiedReconNativesBound
+        && (dispatch_row.address == 0x008b2320u || dispatch_row.address == 0x008b24a0u
+            || dispatch_row.address == 0x008b25f0u || dispatch_row.address == 0x008b2770u);
     const bool launch_row = dispatch_row.address == 0x0089e3c0u;
     // Packet cc8_lua_generate_object. It is handled here rather than routed to
     // the orders host because it needs both the units host, through that host,
@@ -589,6 +593,7 @@ int binding_trampoline(lua_State* state) {
         || truly_dead_row
         || attack_alt_row
         || ready_row
+        || simplified_row
         || launch_row || generate_row || spawn_new_row || scoring_play_time_row
         || spawn_id_requested_row || spawn_id_remove_row
         || in_border_zone_row
@@ -822,6 +827,9 @@ int binding_trampoline(lua_State* state) {
     if (kill_row) {
         if (!host->error_replay()) host->run_kill_008ac5c0(state, argc);
         return 0;
+    }
+    if (simplified_row && !host->error_replay()) {
+        return host->run_simplified_multiplier(state, argc, dispatch_row.address);
     }
     if (ready_row && !host->error_replay()) {
         return host->run_is_ready_to_send_planes_00895d20(state, argc);
@@ -2846,6 +2854,30 @@ int GameMissionLuaHost::run_is_ready_to_send_planes_00895d20(lua_State* state,
     }
     ::lua_pushboolean(state, ready ? 1 : 0);
     log_.implemented("MissionLuaNative::IsReadyToSendPlanes", "00895d20");
+    return 1;
+}
+
+// Packet cc9_lua54_prcp01. The setters read argument 1 through GetNumber
+// (008B2320 -> 008B243C) and push nothing; the getters push the stored float.
+int GameMissionLuaHost::run_simplified_multiplier(lua_State* state, int argument_count,
+                                                  std::uint32_t address) {
+    if (state == nullptr) return 0;
+    const bool sonar = address == 0x008b25f0u || address == 0x008b2770u;
+    float& value = sonar ? simplified_sonar_78_ : simplified_recon_74_;
+    if (address == 0x008b2320u || address == 0x008b25f0u) {
+        value = argument_count >= 1 ? static_cast<float>(::lua_tonumber(state, 1)) : 0.0f;
+        log_.notef("  %s %08x: +%s = %.3f", sonar ? "SetSimplifiedSonarMultiplier"
+            : "SetSimplifiedReconMultiplier", static_cast<unsigned>(address),
+            sonar ? "78h" : "74h", static_cast<double>(value));
+        log_.implemented(sonar ? "MissionLuaNative::SetSimplifiedSonarMultiplier"
+            : "MissionLuaNative::SetSimplifiedReconMultiplier",
+            sonar ? "008b25f0" : "008b2320");
+        return 0;
+    }
+    ::lua_pushnumber(state, static_cast<lua_Number>(value));
+    log_.implemented(sonar ? "MissionLuaNative::GetSimplifiedSonarMultiplier"
+        : "MissionLuaNative::GetSimplifiedReconMultiplier",
+        sonar ? "008b2770" : "008b24a0");
     return 1;
 }
 
