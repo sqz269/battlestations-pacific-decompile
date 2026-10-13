@@ -13265,3 +13265,5 @@ hit-rate rise.
    `build_guns` sites as gunnery38 prepared it. `local\g38_tier_census.py` re-run on this installation's
    arcade and realistic `bulletclasses.lua`: 32 and 26 Artillery classes, 0 change tier. Predicted
    gameplay-identical everywhere.
+   **Verdict: ON** (cc9-gunnery39). `df1343735` OFF (`local\g39_bk0_*`) against ON (`g39_bk1_*`), win orders:
+   USN12 completed 1534.87 s both, USN02 203.01 s both, gameplay identical, as the census predicts.
