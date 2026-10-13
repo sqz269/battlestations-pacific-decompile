@@ -28,6 +28,8 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/pilot_order_bindings.hpp"
 #include "bsp/plane_pose_commit.hpp"
 #include "bsp/plane_squadron_host.hpp"
+#include "bsp/script_orders_ver_cc13.hpp"
+#include "bsp/script_natives_fix5_cc13.hpp"   // packet cc13-fix5
 #include "bsp/plane_retreat_task.hpp"  // packet cc9_plane_retreat_task
 #include "bsp/kamikaze_task_host.hpp"   // packet cc9_lua52_kamikaze_wiring
 #include "bsp/camera_decomposition.hpp"  // packet cc9_lua_camera_state
@@ -119,6 +121,29 @@ inline constexpr bool kScriptedOrderNativesBound = true;
 // row. ON (section 56.1) on top of kCommandTargetKeepUnauthoredBound: the four
 // IJN01 tasks survive and fly toward AirField 02; death rows identical.
 inline constexpr bool kScriptedOrderNatives2Bound = true;
+// Packet cc13-ver12 (docs/CC13_VER_12.md section 1). True binds UnitFreeAttack
+// 008A67E0 and UnitFreeFire 008A6950, the release half of UnitHoldFire: the
+// same vt[114h] director route with the stance literal of 0071BF70 (2) or
+// 0071BF20 (1) in place of 0071BED0's 0. False leaves both unimplemented
+// records, as before, and every hold stays permanent.
+inline constexpr bool kLuaUnitFreeFireBound = false;
+// Packet cc13-ver12 (docs/CC13_VER_12.md section 2). True binds NavigatorStop
+// 008A7400: 0077D600(entity, stop 00E08F88, zeroed descriptor, 1) at 008A7569,
+// through entity_issue_command like the other navigator orders. False leaves
+// it an unimplemented record, as before.
+inline constexpr bool kLuaNavigatorStopBound = false;
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 7). True binds NavigatorCruise
+// 008A75C0: NavigatorStop's twin, 0077D600(entity, cruise 00E08F70, zeroed
+// descriptor, 1) at 008A7729 (bsp::navigator_cruise_order_008a75c0), through
+// entity_issue_command. False leaves it an unimplemented record, as before.
+inline constexpr bool kLuaNavigatorCruiseBound = true;  // ON: lead pair; PRCP01 completes 720.25 s ON (2026-10-13)
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 9). True binds PutFormationTo
+// 008AA260 (unit, pos[, shape[, heading]]), single player: with shape 1..3 and the
+// unit in a group, 0070EFD0(shape) on [unit+284h] (a record here: no host reshape
+// by shape), then vtable[118h](pos) and, with exactly four arguments,
+// vtable[11Ch](heading * pi / 180) - PutTo's placement (008193A0, the squadron's
+// member placement) and its heading record. False: unimplemented, as before.
+inline constexpr bool kLuaPutFormationToBound = true;  // ON: lead pair; PRCP01 completes 720.25 s ON (2026-10-13)
 inline constexpr bool kPilotLandNativeBound = true;
 constexpr bool kDisablePhysicsBound = true;
 constexpr bool kAddMatrixInterpolatorBound = true;
@@ -154,6 +179,15 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // kScriptedOrderNativesBound.
     {"UnitHoldFire", 0x008a6ac0u},
     {"NavigatorEnable", 0x008a7060u},
+    // Packet cc13-ver12: handled only with kLuaUnitFreeFireBound.
+    {"UnitFreeAttack", 0x008a67e0u},
+    {"UnitFreeFire", 0x008a6950u},
+    // Packet cc13-ver12: handled only with kLuaNavigatorStopBound.
+    {"NavigatorStop", 0x008a7400u},
+    // Packet cc13-fix5: handled only with kLuaNavigatorCruiseBound.
+    {"NavigatorCruise", 0x008a75c0u},
+    // Packet cc13-fix5: handled only with kLuaPutFormationToBound.
+    {"PutFormationTo", 0x008aa260u},
     // Packet cc9_scripted_order_natives part 2: SetShipMaxSpeed is handled only
     // with kScriptedOrderNatives2Bound, PilotLand only with kPilotLandNativeBound.
     {"SetShipMaxSpeed", 0x00890a10u},
@@ -398,6 +432,9 @@ const char* command_name_of(std::uint32_t object) noexcept {
     // Packet cc8_navigator_path. 00E08F80, the third object a navigator row
     // names; the constant is command_execution.hpp's, not a new one.
     if (object == bsp::kCommandMoveOnPath) return "moveonpath";
+    // Packet cc13-ver12: NavigatorStop's 00E08F88 (only issued with
+    // kLuaNavigatorStopBound).
+    if (object == bsp::kCommandStop) return "stop";
     return "";
 }
 
@@ -568,6 +605,13 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
         std::strcmp(binding->name, "NavigatorEnable") == 0) {
         return kScriptedOrderNativesBound;
     }
+    if (std::strcmp(binding->name, "UnitFreeAttack") == 0 ||
+        std::strcmp(binding->name, "UnitFreeFire") == 0) {
+        return kLuaUnitFreeFireBound;
+    }
+    if (std::strcmp(binding->name, "NavigatorStop") == 0) return kLuaNavigatorStopBound;
+    if (std::strcmp(binding->name, "NavigatorCruise") == 0) return kLuaNavigatorCruiseBound;
+    if (std::strcmp(binding->name, "PutFormationTo") == 0) return kLuaPutFormationToBound;
     if (std::strcmp(binding->name, "SetShipMaxSpeed") == 0) return kScriptedOrderNatives2Bound;
     if (std::strcmp(binding->name, "PilotLand") == 0) return kPilotLandNativeBound;
     if (std::strcmp(binding->name, "PilotRetreat") == 0) return bsp::kPlaneRetreatTaskBound;
@@ -705,7 +749,7 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
     // a strike every 400 frames) it stopped all launches at 192 aircraft while the
     // decks still held stock (`squadron=0` from about 860 s). The image has no such
     // count. True: the net is 4096, far above any mission's pacing. False: 64.
-    constexpr bool kAirOpsSquadronCeilingRaisedBound = true;  // ON: host safety net, not an image rule; ESMP08 needs ~72 squadrons (cc9-physics6), 2026-10-13
+    constexpr bool kAirOpsSquadronCeilingRaisedBound = true;   // ON: SQUADRON_LAND_TASK 5gr.1; ESMP08 needs ~72 squadrons (cc9-physics6)
     constexpr std::size_t kSquadronCreateLimit = kAirOpsSquadronCeilingRaisedBound ? 4096 : 64;
     // Metres above the carrier's own origin. The native launches the plane off
     // the deck through the taxi and catapult paths; none of that is reconstructed
@@ -1692,6 +1736,14 @@ PlayerAirOpsLaunchResult GameScriptOrdersHost::player_air_ops_launch(const std::
     // Packet cc9_player_launch_group: 00674801..0067482B hands 006C0F00
     // min(stock, screen+2B4h), and screen+2B4h is the constant 3 (0066EC0A). The
     // stock clamp is 006C0F00's own; this applies the screen's.
+    // Packet cc13-fix7 D1: 0067480E 006BF310(class) is 006BF230's total; a total
+    // of 0 or less leaves at 0067481B (JLE 00674B46) before 006C0F00 writes the
+    // slot. Reachable once 006CA640 consumes the stock (kAirOpsQueueConsumeStockBound).
+    if constexpr (bsp::kAirOpsQueueConsumeStockBound) {
+        if (bsp::air_ops_stock_available_006bf230(*deck,
+                static_cast<std::uint32_t>(vehicle_class), live.data()).total <= 0)
+            return refuse("no stock of the class (0067480E 006BF310, 0067481B)");
+    }
     int screen_count = count;
     if constexpr (bsp::kAirOpsPlayerLaunchGroupBound) {
         if (screen_count > bsp::kSupportManagerLaunchGroup) {
@@ -2477,6 +2529,74 @@ int GameScriptOrdersHost::run_unit_hold_fire(GameScriptOrderRow& row) {
     } else {
         log_.unimplemented("MissionLuaNative::UnitHoldFire director arm (0071DA50 5Ah)",
                            "0071bed0");
+    }
+    return 0;
+}
+
+// 008A67E0 `UnitFreeAttack(unit)` and 008A6950 `UnitFreeFire(unit)`, packet
+// cc13-ver12 (docs/CC13_VER_12.md section 1). Each has UnitHoldFire's shape:
+// argument 0 through 00888AA0, vt[114h], then the wrapper with its literal -
+// 0071BF70 PUSH 2 (0071BF7B) and 0071BF20 PUSH 1 (0071BF2B) - into the same
+// vt[24h]/vt[28h] predicates and 5Ah sub-kinds 0/1 0071BE80 sends. No result
+// is pushed. So the stance overwrites the row UnitHoldFire set, which is what
+// lets a held unit fire again. unit_weapons.cpp's lua_unit_free_fire_008a6950
+// is the same body over UnitWeaponHost, an interface this process does not
+// implement; this routes through the director store UnitHoldFire uses.
+int GameScriptOrdersHost::run_unit_free_fire(GameScriptOrderRow& row,
+                                             bsp::ScriptFireOrder order) {
+    resolve_plane_squadron_members();
+    void* unit = argument_ptr_field(0);
+    if (unit == nullptr) unit = entity_from_argument(0);
+    row.unit_index = index_of(unit);
+    row.unit = name_of(unit);
+    const int stance = bsp::script_fire_order_stance_0071be80(order);
+    const char* native = order == bsp::ScriptFireOrder::kFreeAttack ? "UnitFreeAttack"
+                                                                    : "UnitFreeFire";
+    bsp::PlaneSquadronHostRecord* squadron = row.unit_index < units_.count()
+        ? bsp::plane_squadron_registry().find_by_member_unit(row.unit_index) : nullptr;
+    if (squadron != nullptr) {
+        // 007ECFD0 +348h: 0084D910 (stance 1 or 2) and 0084D930 (0, 2 or 3).
+        SquadronPermissions after;
+        after.allow_fire = stance == 1 || stance == 2;
+        after.allow_move = stance == 0 || stance == 2 || stance == 3;
+        squadron_permissions_[squadron->name] = after;
+        log_.notef("  %s: squadron %s allowFire %d allowMove %d (+348h stance %d)", native,
+            squadron->name.c_str(), after.allow_fire ? 1 : 0, after.allow_move ? 1 : 0,
+            stance);
+    } else if (row.unit_index < units_.count() && units_.unit_is_kind_of(row.unit_index, 0x0f)) {
+        // As UnitHoldFire: 0047F180 answers null and the wrapper reads through it.
+        log_.notef("  %s: plane %s: vtable[114h] 0047F180 is null; the image faults in "
+            "the wrapper (recorded, nothing done)", native, row.unit.c_str());
+    } else if (row.unit_index < units_.count() && units_.unit_is_kind_of(row.unit_index, 6)
+               && units_.gunnery() != nullptr) {
+        units_.gunnery()->set_director_fire_stance_0071be80(row.unit_index, stance);
+        log_.implemented(order == bsp::ScriptFireOrder::kFreeAttack
+            ? "MissionLuaNative::UnitFreeAttack ship arm (0071BF70)"
+            : "MissionLuaNative::UnitFreeFire ship arm (0071BF20)",
+            order == bsp::ScriptFireOrder::kFreeAttack ? "0071bf70" : "0071bf20");
+    } else {
+        log_.unimplemented(order == bsp::ScriptFireOrder::kFreeAttack
+            ? "MissionLuaNative::UnitFreeAttack director arm (0071DA50 5Ah)"
+            : "MissionLuaNative::UnitFreeFire director arm (0071DA50 5Ah)",
+            order == bsp::ScriptFireOrder::kFreeAttack ? "0071bf70" : "0071bf20");
+    }
+    return 0;
+}
+
+// 008A7400 `NavigatorStop(unit)`, packet cc13-ver12 (docs/CC13_VER_12.md
+// section 2). Argument 0 through 00888AA0 (008A74FE), a descriptor that is zero
+// apart from the vector copied from 00F87574 (the zero vector), and
+// 0077D600(entity, stop 00E08F88, &descriptor, 1) at 008A7569. Nothing is
+// pushed. The image makes no null test; this skips a null entity, as the
+// navigator move bodies do.
+int GameScriptOrdersHost::run_navigator_stop(GameScriptOrderRow& row) {
+    void* entity = argument_entity(0);
+    row.unit_index = index_of(entity);
+    row.unit = name_of(entity);
+    static const float kZeroVector00f87574[3] = {0.0f, 0.0f, 0.0f};
+    const bsp::ScriptOrderIssue order = bsp::navigator_stop_order_008a7400(kZeroVector00f87574);
+    if (entity != nullptr) {
+        entity_issue_command(entity, order.command, order.target, order.flags);
     }
     return 0;
 }
@@ -3327,6 +3447,25 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         results = run_unit_set_fire_stance(row);
     } else if (std::strcmp(binding->name, "UnitHoldFire") == 0) {
         results = run_unit_hold_fire(row);
+    } else if (std::strcmp(binding->name, "UnitFreeAttack") == 0) {
+        results = run_unit_free_fire(row, bsp::ScriptFireOrder::kFreeAttack);
+    } else if (std::strcmp(binding->name, "UnitFreeFire") == 0) {
+        results = run_unit_free_fire(row, bsp::ScriptFireOrder::kFreeFire);
+    } else if (std::strcmp(binding->name, "NavigatorStop") == 0) {
+        results = run_navigator_stop(row);
+    } else if (std::strcmp(binding->name, "NavigatorCruise") == 0) {
+        // 008A75C0, packet cc13-fix5 (docs/CC13_FIX_5.md section 7): as
+        // run_navigator_stop with the cruise command; nothing is pushed.
+        void* entity = argument_entity(0);
+        row.unit_index = index_of(entity);
+        row.unit = name_of(entity);
+        static const float kZeroVector00f87574[3] = {0.0f, 0.0f, 0.0f};
+        const bsp::ScriptOrderIssue order =
+            bsp::navigator_cruise_order_008a75c0(kZeroVector00f87574);
+        if (entity != nullptr) {
+            entity_issue_command(entity, order.command, order.target, order.flags);
+        }
+        results = 0;
     } else if (std::strcmp(binding->name, "NavigatorEnable") == 0) {
         results = run_navigator_enable(row);
     } else if (std::strcmp(binding->name, "SetShipMaxSpeed") == 0) {
@@ -3527,9 +3666,13 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         const std::size_t index = index_of(entity);
         ++squadron_planes_calls_;
         lua_createtable(state_, 0, 0);
+        // Packet cc13-fix5: with kGetSquadronPlanesDepartedLeadBound, a dead lead
+        // still names its squadron (find_by_member_or_departed_unit).
         const bsp::PlaneSquadronHostRecord* record =
-            index < units_.count() ? bsp::plane_squadron_registry().find_by_member_unit(index)
-                                   : nullptr;
+            index >= units_.count() ? nullptr
+            : kGetSquadronPlanesDepartedLeadBound
+                ? bsp::plane_squadron_registry().find_by_member_or_departed_unit(index)
+                : bsp::plane_squadron_registry().find_by_member_unit(index);
         int slot = 0;
         if (record != nullptr) {
             for (const std::size_t member : record->member_units) {
@@ -3573,6 +3716,41 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             index < units_.count() ? name_of(entity).c_str() : "?",
             static_cast<double>(pos[0]), static_cast<double>(pos[1]),
             static_cast<double>(pos[2]), placed ? 1 : 0);
+        results = 0;
+    } else if (std::strcmp(binding->name, "PutFormationTo") == 0) {
+        // 008AA260, packet cc13-fix5 (docs/CC13_FIX_5.md section 9): argument 0
+        // through 00888D20 (the Ptr field), argument 1 as a Vector3; with exactly
+        // four arguments (008AA3CA) argument 3 * 00CE3D28 (pi as a float) /
+        // 00CE3D20 (180.0); with three or more (008AA41F) argument 2 as the shape,
+        // else -1. Single player ([game+1FE4h] == 0): 008AA4E0 0070EFD0(shape) on
+        // [unit+284h] when shape - 1 < 3 and the unit is grouped, then
+        // vtable[118h](pos) and vtable[11Ch](heading). No result.
+        void* entity = argument_ptr_field(0);
+        if (entity == nullptr) entity = entity_from_argument(0);
+        float pos[3] = {0.0f, 0.0f, 0.0f};
+        const bool have_pos = argument_vector3(1, pos);
+        const int shape = argument_count_ >= 3 ? argument_integer(2) : -1;
+        const std::size_t index = index_of(entity);
+        bool placed = false;
+        if (entity != nullptr && index < units_.count()) {
+            if (static_cast<unsigned>(shape - 1) < 3u && units_.unit_formation_group_0284(index) >= 0) {
+                log_.unimplemented("PutFormationTo::apply_formation_shape", "0070efd0");
+            }
+            if (have_pos) {
+                placed = units_.place_at_world_position_008193a0(index, pos);
+                // 007F2E8F: a squadron's vtable[118h] then places its members.
+                if (kSquadronPutToMembersBound && placed) {
+                    units_.place_squadron_members_007f2920(index);
+                }
+            }
+        }
+        if (argument_count_ == 4) {
+            log_.unimplemented("PutFormationTo::set_heading_vtable_011c", "008196b0");
+        }
+        log_.notef("  PutFormationTo: %s pos=(%.1f, %.1f, %.1f) shape=%d placed=%d (008AA260, "
+            "packet cc13-fix5)", index < units_.count() ? name_of(entity).c_str() : "?",
+            static_cast<double>(pos[0]), static_cast<double>(pos[1]),
+            static_cast<double>(pos[2]), shape, placed ? 1 : 0);
         results = 0;
     } else if (std::strcmp(binding->name, "Scoring_GetPlayerShotDown") == 0) {
         // 008BC9B0: slot = argument 0 as an integer, 0 when absent (not

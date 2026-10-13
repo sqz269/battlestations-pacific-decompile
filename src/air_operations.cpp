@@ -1,6 +1,7 @@
 // Airbase and carrier air operations. docs/AIR_OPERATIONS.md.
 // Addresses in comments are the native sites each rule was read from.
 #include "bsp/air_operations.hpp"
+#include "bsp/launch_ver_cc13.hpp"
 
 namespace bsp {
 
@@ -519,6 +520,10 @@ bool air_ops_slot_is_free_006c56d0(const AirOpsSlot& slot) noexcept {
 }
 
 void air_ops_launch_start_006c7490(AirOpsDeck& deck, int slot_index) noexcept {
+    air_ops_launch_start_006c7490(deck, slot_index, false);
+}
+
+void air_ops_launch_start_006c7490(AirOpsDeck& deck, int slot_index, bool flag) noexcept {
     if (slot_index < 0 || static_cast<std::size_t>(slot_index) >= deck.slots.size()) return;
     AirOpsSlot& slot = deck.slots[static_cast<std::size_t>(slot_index)];
     // 006C74C2: the requested count takes the assigned count, but only when the
@@ -558,7 +563,7 @@ void air_ops_launch_start_006c7490(AirOpsDeck& deck, int slot_index) noexcept {
     request.race = deck.owner_race;
     request.owner_player = deck.owner_player;
     request.home_base = deck.owner_name;
-    request.state = 1;                     // the flag argument is zero from 006CC690
+    request.state = flag ? 7 : 1;          // the flag argument, zero from 006CC690
     if constexpr (kAirOpsPlayerLaunchBound) {
         // Packet cc9_player_air_ops_launch. 006C5050's `AutoAttackTarget`: the
         // +174h of the object at slot+4Ch, written only when it is not null.
@@ -629,6 +634,9 @@ AirOpsLaunchResult air_ops_launch_squadron_006cc690(AirOpsDeck& deck,
         air_ops_launch_start_006c7490(deck, result.slot_index);
     } else {
         // 006CC72C: the stock goes back and 006CA640 queues instead.
+        if constexpr (kAirOpsBusyArmQueueLaunchBound) {
+            air_ops_launch_busy_arm_006cc690(deck, result.slot_index);  // 006CC71F, 006CC727
+        }
         result.queued = true;
     }
     return result;
@@ -958,7 +966,11 @@ int air_ops_slot_command_006ccda0(AirOpsDeck& deck, int slot_index, int order,
     // 006CCE95-006CCEAD: 006C4F70 on the slot, slot+50h, 006CA640.
     slot.order_target_4c = order == 3 ? target_plus_one : 0u;
     slot.order_player_50 = player;
-    air_ops_queue_slot_006ca640(deck, slot_index);
+    if constexpr (kAirOpsQueueConsumeStockBound) {
+        air_ops_queue_slot_consume_006ca640(deck, slot_index);   // with 006CA6D5 006C7D10
+    } else {
+        air_ops_queue_slot_006ca640(deck, slot_index);
+    }
     return 1;
 }
 

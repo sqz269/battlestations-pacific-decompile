@@ -64,6 +64,7 @@
 #include "bsp/torpedo_task_arm.hpp"
 #include "bsp/attack_commands.hpp"
 #include "bsp/strafe_task.hpp"
+#include "bsp/strike_approach_ver_cc13.hpp"  // packet cc9_l57_ctl_cruise_cap
 #include "bsp/kamikaze_task_cc13.hpp"   // packet cc9_lua52_kamikaze_wiring
 #include "bsp/kamikaze_task_host.hpp"
 
@@ -5397,6 +5398,51 @@ struct GameUnitsHost::Impl {
         return slots[unit].get();
     }
 
+    // Packet cc9_l57_ctl_cruise_cap (docs/CC13_VER_9.md finding 1, CC13_VER_11.md):
+    // 009FBA88-009FBABF caps 009FBA50's command at min(Ceiling - 50, ctl+394h)
+    // whenever [state+4]+0Ch, the squadron block from unit+9D4h, is non-null.
+    // ctl+394h by writer: the script block 0089F550 (sq_alt_394 while sq_alt_set),
+    // else the flight leader's task profile (009D4A70 tuning+430h, 009C8920
+    // tuning+4C0h; both leader-only, into the shared block), else the block init
+    // 007F2BE8 (tuning+53Ch). LABELLED: the leader's installed task stands for the
+    // profile that last wrote, and every plane is taken to have the block.
+    unsigned long long strike_ctl_cap_feeds{0};
+    void apply_strike_ctl_cruise_cap_009fba9b(std::size_t unit,
+                                              bsp::PlaneCruiseAltitudeInputs& cin) {
+        if constexpr (bsp::kStrikeCtlCruiseCapBound) {
+            const GameUnitSlot* sq = squadron_slot_of(unit);
+            if (sq == nullptr) return;
+            std::size_t leader = unit;
+            if (const bsp::PlaneSquadronHostRecord* r =
+                    bsp::plane_squadron_registry().find_by_member_unit(unit)) {
+                for (const std::size_t m : r->member_units) {
+                    if (m == bsp::kPlaneSquadronNoUnit || m >= slots.size()) continue;
+                    leader = m;   // +3D0h[0], 007B8AD0's flight leader
+                    break;
+                }
+            }
+            const GameUnitSlot& l = *slots[leader];
+            bsp::StrikeCtlCruiseInputs ctl;
+            ctl.script_alt_set = sq->sq_alt_set;
+            ctl.script_alt_394 = sq->sq_alt_394;
+            ctl.task = l.torpedo_task_installed ? bsp::StrikeCruiseTask::kTorpedo
+                : (l.dive_bomb_task_installed ? bsp::StrikeCruiseTask::kDiveBomb
+                                              : bsp::StrikeCruiseTask::kNone);
+            if (lua.plane_globals_loaded()) {
+                const bsp::GameTuningBlock& g = lua.plane_globals();
+                ctl.general_cruising_alt_53c = g.pilot_general_cruising_alt;
+                ctl.dive_cruising_alt_4c0 = g.pilot_dive_bomb_cruising_alt;
+                ctl.torpedo_cruising_alt_430 = g.pilot_torpedo_cruising_alt;
+            }
+            cin.has_squadron = true;                                 // 009FBA99 JE not taken
+            cin.squadron_limit = bsp::strike_ctl_cruising_alt_394(ctl);   // 009FBA9B
+            ++strike_ctl_cap_feeds;
+        } else {
+            (void)unit;
+            (void)cin;
+        }
+    }
+
     bool is_controlled(const GameUnitSlot& slot) const {
         return controlled_bound && controlled_index < slots.size()
             && slots[controlled_index].get() == &slot;
@@ -6252,7 +6298,7 @@ struct GameUnitsHost::Impl {
     // its 009AE1B0. So a spent BettyOhka squadron reaches 0084E010's B5 and is
     // sent home. False: every plane with 2Bh ordnance and a target also gets a
     // torpedo task, whose break-off answers for the Betty.
-    static constexpr bool kDropKamikazeSpentRtbBound = false;
+    static constexpr bool kDropKamikazeSpentRtbBound = true;   // ON: SQUADRON_LAND_TASK 5gq.1
     // Packet cc9_lua45_rack_equipment_device (GUNNERY 144, SQUADRON_LAND_TASK 5ev).
     // True: (a) an absent RepeatTime reads as 006E0242's default, 00B66330 with
     // [00CE3D30] = 0.6f, at both rack readers; (b) a rack's device is the plane's
@@ -11792,6 +11838,26 @@ void land_convoy_advance_and_place(GameUnitsHost::Impl& host, LandConvoyMotionSt
                                             c.world_pose_law_3c8, binding);
 }
 }  // namespace
+
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 6). 00741120 MOV byte [ECX+3A8h],0;
+// 00741130 MOV byte [ECX+3A8h],1; 00741140 MOV [ECX+368h],arg; RET 4.
+bool GameUnitsHost::set_land_convoy_stopped_3a8(const std::string& convoy, bool stopped) {
+    for (LandConvoyMotionState& c : impl_->land_convoys) {
+        if (c.name != convoy) continue;
+        c.formation.stopped = stopped;
+        return true;
+    }
+    return false;
+}
+
+bool GameUnitsHost::set_land_convoy_speed_368(const std::string& convoy, float speed) {
+    for (LandConvoyMotionState& c : impl_->land_convoys) {
+        if (c.name != convoy) continue;
+        c.formation.speed = speed;
+        return true;
+    }
+    return false;
+}
 
 void GameUnitsHost::land_convoy_step_waves(float step) {
     Impl& host = *impl_;
@@ -19009,8 +19075,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             cin.class_gain = static_cast<float>(
                                 std::tan(static_cast<double>(slot_.plane_drop_angle)));
                             // The squadron altitude limit squadron+394h, the
-                            // ctl+394h leg of 009FBA9B, is unmodelled.
+                            // ctl+394h leg of 009FBA9B (009D0A6F, ECX = state+4):
+                            // fed under kStrikeCtlCruiseCapBound.
                             cin.has_squadron = false;
+                            owner_.apply_strike_ctl_cruise_cap_009fba9b(slot_.process_index, cin);
                             if (owner_.lua.plane_globals_loaded()) {
                                 cin.ceiling = owner_.lua.plane_globals().dynamics_ceiling;
                             }
@@ -19407,11 +19475,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 //   fld dword ptr [ecx+394h]
                                 // with eax = goaway+4h = the approach, so the
                                 // base is approach+0Ch, and 009F9CE0 sets
-                                // approach+0Ch to unit+9D4h - THE PILOT CONTROL
-                                // BLOCK, the same block read_control_block()
-                                // above already models. The confusion is with
-                                // 009FBA9B's ceiling leg, which reads a
-                                // different object's +394h.
+                                // approach+0Ch to unit+9D4h, the block
+                                // read_control_block() above models. CORRECTED
+                                // by cc13-ver9/ver11: unit+9D4h is the SQUADRON
+                                // (007B97E0 MOV EAX,[ECX+9D4h]), and 009FBA9B's
+                                // ceiling leg reads this same +394h through
+                                // [state+4]+0Ch (kStrikeCtlCruiseCapBound).
                                 //
                                 // ctl+394h is the desired cruising altitude:
                                 // step 4 of every task's +54h cruise profile
@@ -24790,6 +24859,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         cin.class_gain = static_cast<float>(
                             std::tan(static_cast<double>(unit_.plane_drop_angle)));
                         cin.has_squadron = false;
+                        owner_.apply_strike_ctl_cruise_cap_009fba9b(unit_.process_index, cin);  // 009C1AFF dive moveto, ctl+394h
                         if (owner_.lua.plane_globals_loaded()) {
                             cin.ceiling = owner_.lua.plane_globals().dynamics_ceiling;
                         }
@@ -25015,6 +25085,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         cin.class_gain = static_cast<float>(
                             std::tan(static_cast<double>(unit_.plane_drop_angle)));
                         cin.has_squadron = false;
+                        owner_.apply_strike_ctl_cruise_cap_009fba9b(unit_.process_index, cin);  // 009C43D9 dive attackrun, ctl+394h
                         if (owner_.lua.plane_globals_loaded()) {
                             cin.ceiling = owner_.lua.plane_globals().dynamics_ceiling;
                         }
@@ -27826,6 +27897,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         cin.scale = t;
                         cin.class_gain = gain;
                         cin.has_squadron = false;
+                        owner_.apply_strike_ctl_cruise_cap_009fba9b(unit_.process_index, cin);  // 009C1AFF torpedo moveto, ctl+394h
                         if (owner_.lua.plane_globals_loaded()) {
                             cin.ceiling = owner_.lua.plane_globals().dynamics_ceiling;
                         }
@@ -37425,6 +37497,10 @@ void GameUnitsHost::report() {
             "y=%.1f", s->row.name.c_str(), static_cast<double>(s->sq_alt_394),
             s->sq_freeze_38d ? 1 : 0, s->sq_alt_set ? 1 : 0,
             static_cast<double>(s->sq_last_cruise), static_cast<double>(s->motion.position[1]));
+    }
+    if constexpr (bsp::kStrikeCtlCruiseCapBound) {
+        host.log.notef("summary strike ctl+394h cap feeds=%llu (009FBA9B, packet "
+            "cc9_l57_ctl_cruise_cap)", host.strike_ctl_cap_feeds);
     }
     if constexpr (kDiveProfileDrawBound) {
         if constexpr (kDepartedWingmanTaskBlockBound) {

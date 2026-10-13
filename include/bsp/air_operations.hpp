@@ -650,6 +650,12 @@ AirOpsSquadronFactory* air_ops_squadron_factory() noexcept;
 // observer pair to the new squadron. It does NOT write block+38h.
 // docs/AIROPS_LAUNCH_START.md.
 void air_ops_launch_start_006c7490(AirOpsDeck& deck, int slot_index) noexcept;
+// Packet cc13-fix5. 006C7490's second argument, the flag 006C74B9 pushes on to
+// 006C5050: set, the squadron's bag `State` is 7 instead of 1 (docs/
+// AIROPS_LAUNCH_START.md) and 006C5314's launch brake is skipped. 006CC690 passes
+// 0 (the overload above); the 83h receiver 006CA8E0 passes 1 for an immediate
+// LaunchAirBaseSlot.
+void air_ops_launch_start_006c7490(AirOpsDeck& deck, int slot_index, bool flag) noexcept;
 
 // 006C65B0 BSP_AirOps_ReleaseSquadronSlot, __thiscall(block, squadron). The far
 // end of the cycle the launch start opens. It walks every slot without an early
@@ -876,6 +882,24 @@ std::int32_t air_ops_fill_slot_006c0f00(AirOpsDeck& deck, int slot_index,
 // the timer at 0 (5.0 when slot+34h is set, which is cleared) and its index is
 // appended to block+14h. Returns true when it queued.
 bool air_ops_queue_slot_006ca640(AirOpsDeck& deck, int slot_index) noexcept;
+
+// Packet cc13-fix7 D1 (docs/CC13_VER_15.md section 4). True: 006CCDA0 queues
+// through bsp::air_ops_queue_slot_consume_006ca640, whose stock arm takes the
+// slot's count off the class stock (006CA6D5 -> 006C7D10) unless the slot is
+// already queued (006C48F0 unlinks it and it is re-appended, no consume). The
+// player launch then also refuses before 006C0F00 when the class stock is 0
+// (0067480E 006BF310, 0067481B JLE 00674B46), so an exhausted deck no longer
+// gets the class and a count of 0 written into the slot. False: the stock is
+// never consumed and 006C0F00 runs first (the 0 count is refused after it).
+inline constexpr bool kAirOpsQueueConsumeStockBound = false;
+
+// Packet cc13-fix7 D2. True: 006CC690 with block+38h set returns the count to
+// the stock (006CA770 at 006CC71F) and queues the slot (006CA640 at 006CC727)
+// through bsp::air_ops_launch_busy_arm_006cc690, so 006C64B0 launches it once
+// the brake clears. The queue arm consumes as the image's does, whatever
+// kAirOpsQueueConsumeStockBound says, so the stock nets to zero. False: the
+// slot is only reported `queued` and is never launched.
+inline constexpr bool kAirOpsBusyArmQueueLaunchBound = false;
 
 // 006CCDA0 BSP_AirOps_SlotCommand for the arms a player order reaches: a slot
 // with a class, in state 5 or 1, given order 1 (moveto) or 3 (attack target):

@@ -496,6 +496,14 @@ constexpr bool kCaptureAccessorsBound = true;
 // JM05 gameplay-identical (section 70.1).
 constexpr bool kCaptureGroupValueBound = true;
 
+// Packet cc13-ver13 (docs/CC13_VER_13.md D3). 00A24870's defender records come from
+// 00A07D40, which skips a list-2 entity whose +5Dh is set (00A07D73 CMP byte
+// [ESI+5Dh],0 / JNE): a ship is out from the row-15 flush of its kill step. The host
+// tested only +5Ch (unit_active), which a wreck keeps until KillDepth. True: the +5Dh
+// mirror (unit_flag_005d) is tested as well; the +5Ch test stays (LABELLED). False:
+// sinking wrecks near a capture target count as its defenders, as before.
+constexpr bool kCaptureDefenderDeadByteBound = true;  // ON: lead pair, five wins hold (2026-10-13)
+
 // Packet cc9_planner_group_target_value (rank 10), docs/SHIP_AI_OPEN_ITEMS.md
 // section 7. True: the planner's candidate base term is 00A0F970's group target
 // value, (AttackSumMul * attack sum + attack maxes sum) / ReferenceWeight over
@@ -4311,6 +4319,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             const std::size_t u = units.world_list_entry(2, i);
             if (u >= units.count()) continue;
             if (!units.unit_active(u)) continue;   // LABELLED: +5Dh read as the active row
+            // Packet cc13-ver13: 00A07D73 reads +5Dh itself, set at the kill step's
+            // flush, so a sinking wreck is no defender; +5Ch stays the row above.
+            if (kCaptureDefenderDeadByteBound && units.unit_flag_005d(u)) continue;
             if (units.unit_side_0054(u) != enemy_side) continue;
             float x = 0.0f, y = 0.0f, z = 0.0f;
             units.unit_position_00fc(u, x, y, z);

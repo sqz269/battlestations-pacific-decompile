@@ -289,7 +289,7 @@ inline constexpr bool kKillListenerDeadFirstBound = true;  // ON: lead pair (USN
 // (its bytes +C41h / +100Ah / +36Ah are not held here); the death time is the gunnery
 // host's death clock, not the flush's [00F876A4]; members that die on the same clock
 // are ordered by unit index. False: every death is dispatched, as before.
-inline constexpr bool kKillListenerHarmOnlyBound = false;
+inline constexpr bool kKillListenerHarmOnlyBound = true;  // ON: lead pair, six wins identical (2026-10-13)
 
 // Packet cc13-fix3 (docs/CC13_VER_8.md V5). The `exitzone` channel 00982120,
 // __thiscall(manager [00F8A0C4], entity, exited byte), RET 8. It replaces the entity with
@@ -316,7 +316,7 @@ inline constexpr bool kKillListenerHarmOnlyBound = false;
 // producer yet, and no subscription in this installation watches a plane with
 // exited = false. The HUD warning 00982120 builds for exited = 0 is not modelled.
 // False: exitzone subscriptions are stored and never fire, as before.
-inline constexpr bool kLuaExitZoneListenersBound = false;
+inline constexpr bool kLuaExitZoneListenersBound = true;  // ON: lead pair, six wins identical (2026-10-13)
 
 // Packet cc9_lua54_prcp01 (docs/SQUADRON_LAND_TASK.md 5gj): the four natives on the
 // config at [game+21C4h]. 008B2320 SetSimplifiedReconMultiplier stores Lua argument 1
@@ -379,6 +379,11 @@ inline constexpr bool kLuaSetShipSpeedBound = true;  // ON: pairs held (docs/LUA
 // +5Dh removed byte is clear is pushed as thisTable[id], anything else as nil.
 // True: route the row to run_unit_get_attack_target_008a6de0. False: unimplemented (nil).
 inline constexpr bool kLuaUnitGetAttackTargetBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
+// Packet cc13-fix6 (docs/CC13_VER_13.md, D1). The result test at 008A6F58 is
+// `CMP byte [EAX+5Dh],0 / JNE nil` on both arms; +5Dh is set at the end of the kill step,
+// while +5Ch (unit_active) stays set through the whole wreck descent. True: a resolved
+// target with GameUnitsHost::unit_flag_005d set answers nil. False: the unit_active test.
+inline constexpr bool kLuaAttackTargetDeadNilBound = false;
 
 // Packet cc9_squadron_set_speed (docs/LUA_BINDING_MISSION.md, "SquadronSetSpeed,
 // 0089F780"). SquadronSetSpeed(squadron, speed) calls member->vtable[3Ch](speed) for
@@ -566,6 +571,54 @@ inline constexpr bool kLuaSquadronSetReleaseAltBound = false;
 // (src/air_operations.cpp) over the deck registry and the gunnery host's kill.
 // False: the row stays unimplemented (PRCP01 keeps the extra squadrons flying).
 inline constexpr bool kLuaSquadronLandAndKillBound = false;
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 1). 008975B0
+// RemoveAllAirBasePlanes(base): 00888AA0 on argument 0, 006BCD20 with DL = 0, then
+// 006C8840 on the block (008976D1): every stock node through 006C7B10 (the stock
+// drops to zero and idle slots holding a stocked class are emptied), then the
+// list is emptied. No result. True: the row runs air_base_remove_all_stock_006c8840
+// (src/script_natives_fix5_cc13.cpp) on the entity's deck. False: unimplemented,
+// so the scene stock survives and a following AddAirBaseStock adds to it
+// (prcpjm08.lua:908, the Hosho).
+inline constexpr bool kLuaRemoveAllAirBasePlanesBound = true;  // ON: lead pair (JM08 identical, 2026-10-13)
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 3). 0089AC30 StartLanding2(unit):
+// 00888AA0 on argument 0, then vtable[238h]() and its answer pushed as an integer
+// (the 94h receiver's call, without the message): 0074A4C0 on an MLandingShip
+// (vtable 00CFFA30), 008206F0 on every other ship vtable. True: the row runs the
+// ship AI host's two models and pushes the answer. False: unimplemented, no
+// result (jm08.lua:653 then fails on tonumber(nil) < 0).
+inline constexpr bool kLuaStartLanding2Bound = true;  // ON: lead pair (JM08 identical, 2026-10-13)
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 4). 0089CFE0 GetSquadronPlane(squadron,
+// i): 00888AA0 on argument 0, argument 1 as an integer; when 0 <= i < [sq+3CCh] it
+// pushes thisTable[[sq+3D0h+4i]+174h] (i < 5 and the member non-null) or nil, and
+// pushes nothing for any other i. True: the row answers from the squadron registry
+// record (live members in order). False: unimplemented, no result.
+inline constexpr bool kLuaGetSquadronPlaneBound = true;  // ON: lead pair; PRCP01 completes 720.25 s ON (2026-10-13)
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 5). 0089A020 DisbandFormation(unit):
+// 00888AA0 on argument 0, then 0077CA60 on it (0089A138): with [unit+284h] set it
+// snapshots the group's members (+4F8h count, 0070D060), the leader (+14h) last and
+// skipped in the walk, and routes 77h with a null target (0077BD70's leave) to each
+// one still in a group. True: the row runs the units host's leave for every member
+// of the argument's group, the leader last. False: unimplemented.
+inline constexpr bool kLuaDisbandFormationBound = true;  // ON: lead pair; PRCP01 completes 720.25 s ON (2026-10-13)
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 6). The LandConvoy natives take
+// argument 0 through 00888D20 (the table's Ptr) and make one store on the convoy:
+// 00895570 LandConvoyStart -> 00741120 (+3A8h = 0), 008956E0 LandConvoyStop ->
+// 00741130 (+3A8h = 1), 00895850 LandConvoySetSpeed(convoy, speed) -> 00741140
+// (+368h = argument 1 through 00B66270). No result. True: the row makes the store
+// on the units host's bound convoy of that name, which 00743060's stopped gate and
+// speed already read. False: unimplemented.
+inline constexpr bool kLuaLandConvoyStartBound = true;  // ON: lead pair; PRCP01 completes 720.25 s ON (2026-10-13)
+inline constexpr bool kLuaLandConvoyStopBound = true;  // ON: lead pair; PRCP01 completes 720.25 s ON (2026-10-13)
+inline constexpr bool kLuaLandConvoySetSpeedBound = true;  // ON: lead pair; PRCP01 completes 720.25 s ON (2026-10-13)
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 8). 00896750 LaunchAirBaseSlot(base,
+// slot[, now]): the block (006BCD20), slot = argument 1 - 1, now = argument 2 only
+// with three arguments. A slot in state 2 does nothing. Otherwise: 83h {slot, now}
+// routed (00896964), slot+34h = 1 (00896972), 00874D00(CL=1), 006CDC70(0) on the
+// block, 00874D00(CL=1) again, and when slot+28h is set, thisTable[squadron+174h] is the
+// one result. 83h's receiver 006CA8E0 launches at once (006C7490 flag 1) or queues
+// (state 2, the launch list), and consumes the slot's stock either way (006C7D10).
+// True: the row runs that sequence on the entity's deck. False: unimplemented.
+inline constexpr bool kLuaLaunchAirBaseSlotBound = true;  // ON: lead pair; PRCP01 completes 720.25 s ON (2026-10-13)
 inline constexpr bool kLuaAddUntouchableUnitBound = true;   // ON on identity (LUA_BINDING_MISSION)
 // The +1D4h byte of units-host index `index`'s AI object, as AddUntouchableUnit
 // left it. False for every unit while kLuaAddUntouchableUnitBound is false.
@@ -1526,6 +1579,19 @@ public:
     int run_squadron_set_release_alt_008a24e0(lua_State* state, int argument_count);
     // Packet cc13-fix4, under kLuaSquadronLandAndKillBound.
     int run_squadron_land_and_kill_008a20e0(lua_State* state, int argument_count);
+    // Packet cc13-fix5, under kLuaRemoveAllAirBasePlanesBound.
+    int run_remove_all_air_base_planes_008975b0(lua_State* state, int argument_count);
+    // Packet cc13-fix5, under kLuaStartLanding2Bound.
+    int run_start_landing2_0089ac30(lua_State* state, int argument_count);
+    // Packet cc13-fix5, under kLuaGetSquadronPlaneBound.
+    int run_get_squadron_plane_0089cfe0(lua_State* state, int argument_count);
+    // Packet cc13-fix5, under kLuaDisbandFormationBound.
+    int run_disband_formation_0089a020(lua_State* state, int argument_count);
+    // Packet cc13-fix5: the LandConvoy natives (00895570, 008956E0, 00895850), each
+    // under its own switch. `address` selects the store.
+    int run_land_convoy_native(lua_State* state, int argument_count, std::uint32_t address);
+    // Packet cc13-fix5, under kLuaLaunchAirBaseSlotBound.
+    int run_launch_air_base_slot_00896750(lua_State* state, int argument_count);
     // Packet cc9_squadron_travel_alt, under kSquadronTravelAltBound.
     int run_squadron_set_travel_alt_0089f550(lua_State* state, int argument_count);
     // Packet cc9_squadron_attack_alt, under kSquadronAttackAltBound.
