@@ -194,7 +194,7 @@ Recorded with `bsp.py ledger add-function` (doc docs/CC13_VER_8.md):
 
 ## 7. The `exitzone` dispatcher (packet cc13-fix3)
 
-Sha: see the commit "Dispatch the exitzone channel behind kLuaExitZoneListenersBound, OFF" on
+Sha: 8ed7e5176 ("Dispatch the exitzone channel behind kLuaExitZoneListenersBound, OFF") on
 agent/cc13-fix3. Switch: `kLuaExitZoneListenersBound` (include/bsp/game_hosts_lua.hpp), **OFF**.
 Build-tested (scripts/build.ps1 with ctest); not game-validated, no runs made.
 
