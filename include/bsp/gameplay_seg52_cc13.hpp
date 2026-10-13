@@ -332,6 +332,64 @@ bool support_site_can_supply_class_0084d050(bool active_340,
     const std::vector<SupplyClassEntry>& entries, std::int32_t class_id,
     bool owner_present, float owner_health) noexcept;
 
+// 0084D560 (cc13-gprx), __thiscall(site, list* out, int team, bool flag) -> out,
+// RET 0Ch, body 0084D560-0084D7B0. Builds the classes the site offers:
+// - 00923810(1) is the site's owner (+3Ch). A present owner that is not live
+//   (+5Ch clear, or +5Dh/+60h/+5Eh set) gives an empty list (0084D5A2..0084D5CF).
+// - team 0 copies the AlliedList +328h, any other team the JapanList +31Ch.
+// - In a session (game+1FE4 != 0) with flag set, the local player's unit
+//   (game+18F0[game+18C8]) is read: its vtable[1Ch]() is the key (default 61h).
+// - With an adopting CommandBuilding (+344h), 006F4A00(46h) / 006F4A00(45h) ask
+//   whether any garrisoned shipyard / airfield reports "InferiorFailure" (the
+//   failure 00845AC0 and 006D40F0 raise once every hangar is lost).
+// - Each entry's class is 00964790(type, readRace = 1). A shipyard failure drops
+//   classes answering vtable[18h](6); an airfield failure drops those answering
+//   vtable[18h](0Fh) (0084D6C1..0084D71C). A kept class whose vtable[1Ch]()
+//   equals the key marks the list.
+// - A marked list gets {type = player unit +70h, count = -1, squad = 3} appended
+//   at the tail (0084D747..0084D78A; inserted before the head node).
+// The class kinds 6 and 0Fh are not named here (vehicle-class kind codes).
+struct SupplyClassView {
+    bool kind_6 = false;     // class vtable[18h](6)
+    bool kind_0f = false;    // class vtable[18h](0Fh)
+    std::int32_t key_1c = 0; // class vtable[1Ch]()
+};
+struct SupplyClassListInputs {
+    const SupportSiteConfig* site = nullptr;
+    std::int32_t team = 0;
+    bool flag = false;
+    bool owner_present = false;         // 00923810(1) != 0
+    EntityLiveBytes owner;              // read only when present
+    bool session = false;               // game+1FE4 != 0
+    bool player_unit_present = false;   // game+18F0[game+18C8] != 0
+    std::int32_t player_unit_key_1c = 0;
+    std::int32_t player_unit_class_70 = 0;
+    bool command_building_344 = false;
+    bool shipyard_failure_46 = false;   // 006F4A00(46h), read only with +344h
+    bool airfield_failure_45 = false;   // 006F4A00(45h), likewise
+    std::function<SupplyClassView(std::int32_t type)> class_of;  // 00964790(type, 1)
+};
+std::vector<SupportStockEntry> support_site_build_supply_class_list_0084d560(
+    const SupplyClassListInputs& in);
+
+// ---------------------------------------------------------------------------
+// Shipyard stock registration.
+
+// 008433C0 (cc13-gprx), __thiscall(ScenePropertyBag* ECX), bare RET, body
+// 008433C0-00843456. Reads "Party" first and takes its +0Ch with no null check
+// (008433D3). Then for every k in 1..20 (00843449 CMP EDI,14h / JLE; a missing
+// number does not stop the loop, unlike 0084D170's walk) a "Stock k" property
+// that is a bag (type 6, non-null) whose "Type" value is non-zero calls
+// 0095BA60(type, party) then [00E18680]->0046BE90(type).
+struct ShipyardStockRegistration {
+    std::int32_t stock_index = 0;
+    std::int32_t type = 0;
+    std::int32_t party = 0;
+};
+std::vector<ShipyardStockRegistration> shipyard_register_stock_008433c0(
+    std::int32_t party,
+    const std::function<std::optional<std::int32_t>(std::int32_t index)>& stock_type);
+
 // ---------------------------------------------------------------------------
 // Stationary props.
 
