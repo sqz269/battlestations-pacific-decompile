@@ -366,8 +366,20 @@ std::int32_t squadron_remove_plane_007f3970(std::uint32_t* planes, std::int32_t 
 // ---------------------------------------------------------------------------
 // The host: one virtual method per native call site
 // ---------------------------------------------------------------------------
-struct AirOperationsHost {
-    virtual ~AirOperationsHost() = default;
+// The two call sites 008A20E0 reaches, split out so a host that binds only that
+// native (packet cc13-fix4, kLuaSquadronLandAndKillBound in
+// bsp/game_hosts_lua.hpp) implements these two and nothing else.
+struct SquadronLandAndKillHost {
+    virtual ~SquadronLandAndKillHost() = default;
+    // 007F1BAD and 007F1BED -> 006C65B0: tell one air-operations block that a
+    // squadron is gone, for every carrier and airfield in the scene.
+    virtual void release_squadron_slot(std::uint32_t air_ops_block,
+                                       std::uint32_t squadron) = 0;
+    // 008A223F -> 00926D90 BSP_MissionEntity_Kill, reason 5.
+    virtual void kill_plane(std::uint32_t plane, std::int32_t reason) = 0;
+};
+
+struct AirOperationsHost : SquadronLandAndKillHost {
 
     // 006CA87E: build the stock-change session message from class and count.
     virtual std::uint32_t build_stock_message(std::uint32_t vehicle_class,
@@ -409,18 +421,13 @@ struct AirOperationsHost {
     // platforms. The walk selects devices that answer the class test with 25h,
     // which covers MBombPlatform 25h and MMultipleBombPlatform 26h.
     virtual void reload_plane_bomb_platforms(std::uint32_t plane) = 0;
-    // 007F1BAD and 007F1BED -> 006C65B0: tell one air-operations block that a
-    // squadron is gone, for every carrier and airfield in the scene.
-    virtual void release_squadron_slot(std::uint32_t air_ops_block,
-                                       std::uint32_t squadron) = 0;
-    // 008A223F -> 00926D90 BSP_MissionEntity_Kill, reason 5.
-    virtual void kill_plane(std::uint32_t plane, std::int32_t reason) = 0;
+    // release_squadron_slot and kill_plane: SquadronLandAndKillHost above.
 };
 
 // The two routines as sequences over the host.
 void plane_reload_bomb_platforms_0089f080(AirOperationsHost& host, const std::uint32_t* planes,
                                           std::int32_t plane_count, bool* out_dirty);
-void squadron_land_and_kill_008a20e0(AirOperationsHost& host, std::uint32_t squadron,
+void squadron_land_and_kill_008a20e0(SquadronLandAndKillHost& host, std::uint32_t squadron,
                                      const std::uint32_t* air_ops_blocks, int block_count,
                                      std::uint32_t* planes, std::int32_t* plane_count);
 
