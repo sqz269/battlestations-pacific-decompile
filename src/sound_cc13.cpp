@@ -8,12 +8,18 @@
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/sound_dialog_table.hpp"
 #include "bsp/sound_sample.hpp"
+#include "bsp/native_vfs_open_logging.hpp"
+#include "bsp/random_threads.hpp"
+#include "bsp/scene_graph2_cc13.hpp"
+#include "bsp/sound_stream_runtime.hpp"
+#include "bsp/water_weather_cc13.hpp"
 
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
 #include <windows.h>
 
 #include <cstring>
+#include <utility>
 
 namespace bsp::sound_cc13 {
 
@@ -826,4 +832,214 @@ void destroy_sound_sample_tree_raw(NativeSoundTree& tree, NativeStringStorage& s
     tree.head = nullptr;
     tree.size = 0;
 }
+
+// ---------------------------------------------------------------------------
+// cc13-left2: the Pass 3 open list (docs/CC13_LEFT_2.md).
+namespace {
+
+template <class T>
+T& l2_field(void* p, std::size_t offset) noexcept { return *reinterpret_cast<T*>(static_cast<unsigned char*>(p) + offset); }
+template <class T>
+const T& l2_field(const void* p, std::size_t offset) noexcept {
+    return *reinterpret_cast<const T*>(static_cast<const unsigned char*>(p) + offset);
+}
+
+}  // namespace
+
+void sound_tree_increment_raw_00a81ad0(NativeSoundTreeIterator& iterator, void (*invalid_iterator_00bf6713)()) {
+    if (iterator.owner == nullptr) invalid_iterator_00bf6713();
+    NativeSoundTreeNode* const node = iterator.node;
+    if (node->isnil != 0) {
+        invalid_iterator_00bf6713();  // JMP: the iterator is left as it is
+        return;
+    }
+    NativeSoundTreeNode* const right = node->right;
+    if (right->isnil == 0) {
+        NativeSoundTreeNode* x = right;
+        while (x->left->isnil == 0) x = x->left;
+        iterator.node = x;
+        return;
+    }
+    NativeSoundTreeNode* parent = node->parent;
+    while (parent->isnil == 0 && iterator.node == parent->right) {
+        iterator.node = parent;
+        parent = parent->parent;
+    }
+    iterator.node = parent;
+}
+
+void sound_tree_decrement_raw_00a81b80(NativeSoundTreeIterator& iterator, void (*invalid_iterator_00bf6713)()) {
+    if (iterator.owner == nullptr) invalid_iterator_00bf6713();
+    NativeSoundTreeNode* const node = iterator.node;
+    if (node->isnil != 0) {
+        iterator.node = node->right;
+        if (iterator.node->isnil != 0) invalid_iterator_00bf6713();
+        return;
+    }
+    NativeSoundTreeNode* const left = node->left;
+    if (left->isnil == 0) {
+        NativeSoundTreeNode* x = left;
+        while (x->right->isnil == 0) x = x->right;
+        iterator.node = x;
+        return;
+    }
+    NativeSoundTreeNode* parent = node->parent;
+    while (parent->isnil == 0 && iterator.node == parent->left) {
+        iterator.node = parent;
+        parent = parent->parent;
+    }
+    if (iterator.node->isnil != 0) {
+        invalid_iterator_00bf6713();
+        return;
+    }
+    iterator.node = parent;
+}
+
+NativeSoundTreeIterator* sound_tree_pre_increment_raw(NativeSoundTreeIterator& iterator, void (*invalid_iterator_00bf6713)()) {
+    sound_tree_increment_raw_00a81ad0(iterator, invalid_iterator_00bf6713);
+    return &iterator;
+}
+
+NativeSoundTreeIterator* sound_tree_pre_decrement_raw(NativeSoundTreeIterator& iterator, void (*invalid_iterator_00bf6713)()) {
+    sound_tree_decrement_raw_00a81b80(iterator, invalid_iterator_00bf6713);
+    return &iterator;
+}
+
+void* sound_tree_allocate_nodes_00a81d10(std::uint32_t count, void* (*operator_new_00bf681b)(std::size_t)) {
+    return cc13_scene2::allocate_tree_nodes_1c(count, [operator_new_00bf681b](std::size_t bytes) {
+        return operator_new_00bf681b(bytes);
+    });
+}
+
+void destroy_sound_array_via_resize(NativePointerArray& header, void (*resize)(NativePointerArray&, std::int32_t),
+                                    void (*free_00bf6989)(void*)) {
+    resize(header, 0);
+    free_00bf6989(header.data);
+}
+
+void sound_event_query_lock_destruct_00a89b10(void* lock, void*& published_00f8bbdc) {
+    l2_field<std::uint32_t>(lock, 0) = 0x00D5B478u;
+    critical_section_destroy_owned_0041cc80(l2_field<TrackedCriticalSection*>(lock, 4));
+    published_00f8bbdc = nullptr;
+    l2_field<std::uint32_t>(lock, 0) = 0x00CE3818u;
+}
+
+void sound_system_add_listener_preset_00a7fe60(void* system, const void* preset, const SoundListenerTableCalls& calls) {
+    void* const table = static_cast<unsigned char*>(system) + 0xA4;
+    calls.append_copy_00a7f9f0(table, preset);
+    const char* name = l2_field<const char*>(preset, 0x0C);
+    if (name == nullptr) name = "";  // 00F8BBE0
+    const std::uint32_t index = calls.find_index_or_zero_00a7ae00(table, name);
+    if (l2_field<std::uint32_t>(system, 0x10C) != index) {
+        l2_field<std::uint32_t>(system, 0x110) = l2_field<std::uint32_t>(system, 0x10C);
+        l2_field<std::uint32_t>(system, 0x10C) = index;
+        calls.select_by_name_00a7ae80(table, name);
+    }
+}
+
+void* sound_cache_record_construct_00a84280(void* record, const SoundCacheRecordCalls& calls) {
+    l2_field<std::uint32_t>(record, 0x00) = 0;
+    l2_field<char*>(record, 0x04) = nullptr;
+    l2_field<void*>(record, 0x0C) = calls.allocate_list_head_004c3020();
+    l2_field<std::uint32_t>(record, 0x10) = 0;
+    for (std::size_t offset : {0x24u, 0x20u, 0x1Cu, 0x18u, 0x14u}) l2_field<std::uint32_t>(record, offset) = 0;
+    return record;
+}
+
+void* sound_cache_record_copy_construct_00a843a0(void* record, const void* source, NativeStringStorage& strings,
+                                                 const SoundCacheRecordCalls& calls) {
+    l2_field<std::uint32_t>(record, 0x00) = 0;
+    l2_field<char*>(record, 0x04) = nullptr;
+    if (record != source) {
+        resize_native_string_header_0041dd40(record, strings, l2_field<std::uint32_t>(source, 0), true);
+        if (l2_field<std::uint32_t>(source, 0) != 0) {
+            std::memcpy(l2_field<char*>(record, 4), l2_field<char*>(source, 4), l2_field<std::uint32_t>(record, 0));
+        }
+    }
+    calls.copy_construct_list_004d48a0(static_cast<unsigned char*>(record) + 8,
+                                       static_cast<const unsigned char*>(source) + 8);
+    for (std::size_t offset = 0x14; offset <= 0x28; offset += 4) {
+        l2_field<std::uint32_t>(record, offset) = l2_field<std::uint32_t>(source, offset);
+    }
+    return record;
+}
+
+void sound_cache_records_pop_back_00a84380(NativePointerArray& header, const SoundCacheRecordCalls& calls) {
+    if (header.count == 0) return;
+    calls.destroy_record_00a842e0(reinterpret_cast<unsigned char*>(header.data) +
+                                  static_cast<std::uint32_t>(header.count) * 0x2Cu - 0x2Cu);
+    header.count = header.count - 1;
+}
+
+void sound_cache_records_reserve_00a84450(NativePointerArray& header, std::int32_t requested,
+                                          NativeStringStorage& strings, const SoundCacheRecordCalls& calls) {
+    if (requested < 0x40) requested = 0x40;
+    if (header.capacity >= requested) return;
+    auto* const fresh = static_cast<unsigned char*>(
+        calls.operator_new_00bf55be(static_cast<std::uint32_t>(requested) * 0x2Cu));
+    auto* const old = reinterpret_cast<unsigned char*>(header.data);
+    for (std::int32_t i = 0; i < header.count; ++i) {
+        unsigned char* const destination = fresh + static_cast<std::uint32_t>(i) * 0x2Cu;
+        if (destination != nullptr) {
+            sound_cache_record_copy_construct_00a843a0(destination, old + static_cast<std::uint32_t>(i) * 0x2Cu,
+                                                       strings, calls);
+        }
+    }
+    for (std::int32_t i = 0; i < header.count; ++i) {
+        calls.destroy_record_00a842e0(reinterpret_cast<unsigned char*>(header.data) + static_cast<std::uint32_t>(i) * 0x2Cu);
+    }
+    calls.free_00bf6989(header.data);
+    header.data = reinterpret_cast<std::uint32_t*>(fresh);
+    header.capacity = requested;
+}
+
+void sound_cache_records_erase_swap_last_00a84d20(NativePointerArray& header, void* const* where,
+                                                  const SoundCacheRecordCalls& calls) {
+    auto* const data = reinterpret_cast<unsigned char*>(header.data);
+    unsigned char* const last = data + static_cast<std::uint32_t>(header.count - 1) * 0x2Cu;
+    if (*where != last) calls.assign_record_00a84680(*where, last);
+    calls.destroy_record_00a842e0(reinterpret_cast<unsigned char*>(header.data) +
+                                  static_cast<std::uint32_t>(header.count) * 0x2Cu - 0x2Cu);
+    header.count = header.count - 1;
+}
+
+void sound_manager_debug_dump_entries_00a7ea30(void* manager, NativeStringStorage& strings,
+                                               const char* null_format_01090ab4) {
+    void** cursor = l2_field<void**>(manager, 0x8C);
+    void** const end = cursor + l2_field<std::int32_t>(manager, 0x90);
+    using ByteCall = std::uint8_t(__thiscall*)(void*);
+    using PointerCall = void*(__thiscall*)(void*);
+    using FloatCall = float(__thiscall*)(void*);
+    for (; cursor != end; ++cursor) {
+        void* const object = *cursor;
+        const auto slot = [object](std::size_t offset) { return l2_field<void*>(l2_field<void*>(object, 0), offset); };
+        const std::uint8_t over = l2_field<std::uint8_t>(object, 0x15);
+        const std::uint8_t a = reinterpret_cast<ByteCall>(slot(0x0C))(object);
+        const std::uint8_t b = l2_field<std::uint8_t>(*cursor, 0x50);
+        const std::uint8_t c = reinterpret_cast<ByteCall>(slot(0x14))(*cursor);
+        const std::uint8_t paused =
+            (l2_field<std::uint8_t>(*cursor, 0x1C) != 0 || l2_field<std::uint8_t>(l2_field<void*>(*cursor, 0x44), 0x0C) != 0)
+                ? 1 : 0;
+        alignas(4) unsigned char builder[0x18];
+        construct_native_log_builder_004264a0(builder, strings);  // inlined in the image
+        void* const name = static_cast<unsigned char*>(l2_field<void*>(object, 0x4C)) + 0x50;
+        const float play = reinterpret_cast<FloatCall>(slot(0x20))(object);
+        const std::int32_t tick = l2_field<std::int32_t>(object, 0x18);
+        void* const channel = reinterpret_cast<PointerCall>(slot(0x18))(object);
+        void* p = append_native_log_cstring_00bd1a60(builder, " cSoundObject:", strings);
+        p = append_native_log_header_00bd1a20(p, name, strings);
+        p = append_native_log_cstring_00bd1a60(p, " ch:", strings);
+        p = water_weather_cc13::w3_string_builder_append_pointer_00bd1e80(p, channel, strings);
+        const std::pair<const char*, std::int32_t> fields[] = {
+            {" over:", over}, {"/", a}, {" persistent:", b}, {" real:", c}, {" paused:", paused}, {" tick:", tick}};
+        for (const auto& [label, value] : fields) {
+            p = append_native_log_cstring_00bd1a60(p, label, strings);
+            p = append_native_log_int_00bd1bb0(p, value, strings, null_format_01090ab4);
+        }
+        p = append_native_log_cstring_00bd1a60(p, " play%:", strings);
+        water_weather_cc13::w3_string_builder_append_float_00bd1d90(p, play, strings, null_format_01090ab4);
+        destroy_native_log_builder_00425f80(builder, strings);
+    }
+}
+
 } // namespace bsp::sound_cc13
