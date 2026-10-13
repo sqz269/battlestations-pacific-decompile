@@ -13072,3 +13072,14 @@ fleet's flak kills it. Nine squadrons in AH (`local\g38_e8scan.py`). In the imag
 so a player squadron needs the order lines as well. The host's `attack_command_survives_retest` (`src/attack_commands.cpp`)
 has no caller; binding 009F8160 is a separate item. Re-plan in progress: `local\g38_e8_retarget.py <plan> <log> <out>`
 adds `order 1` + `order 3` lines at each such target death.
+
+**ESMP08 re-plan, first two iterations (AH binary, falloff ON).** `local\g38_ord_e8r1.txt` (`l46_e8_orders2` + 88 re-target
+lines from AH's log) and `local\g38_ord_e8r2.txt` (+59 from r1's log, following accepted `order 3` re-targets) both fail
+to complete in 90000 frames: r1 leaves Fanning, Grayson and Woodworth afloat, r2 Dunlap, Fanning, Grayson and Woodworth.
+The re-target recipe works (`order <c> <s> 1: answer 1` then `order 3 -> Cummings: answer 1`), and the loiter deaths are
+gone: strike-plane deaths after 1800 s above 1000 m go from 9 of 19 on AH to 0 of 13 on r2 (7 of them at or below
+300 m). Nothing large is left after about 1750 s; the late waves (hundreds of applied launches after frame 36000) do
+not sink the destroyers under full-damage flak, where AH-with-falloff-false needed only 4 late launches to finish them
+(Dunlap 1404.74, Grayson 2184.41, Woodworth 2356.57, Cummings 2590.55 s). So ESMP08 on main needs a different
+allocation (destroyers taken earlier, while the big ships still draw the flak), not only re-targets. The image does not
+re-target a player squadron itself (009F8470's party gate), so these lines are the plan's job.
