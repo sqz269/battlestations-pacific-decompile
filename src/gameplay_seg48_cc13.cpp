@@ -6,6 +6,7 @@
 #include "bsp/gameplay_seg48_cc13.hpp"
 
 #include "bsp/dive_bomb_task.hpp"  // dive_bomb_interpolate_clamped_00419010
+#include "bsp/plane_wanderer.hpp"   // plane_wanderer_random_direction_00439950
 #include "bsp/unit_motion.hpp"     // unit_step_towards_0042ac60
 
 #include <cmath>
@@ -331,13 +332,15 @@ EngineSoundCalls engine_sound_step_007de490(EngineSoundParams& sound, float dt) 
     if (!sound.has_sound_10) {
         return calls;
     }
-    const float step1 = sound.rate1_18 * dt;  // 007DE4B1
-    sound.p1_14 = bsp::unit_step_towards_0042ac60(sound.p1_14, sound.target1_1c, step1);
-    const float step2 = sound.rate2_24 * dt;  // 007DE4D9
-    sound.p2_20 = bsp::unit_step_towards_0042ac60(sound.p2_20, sound.target2_28, step2);
+    LerpValue& p = sound.pitch_14;
+    const float step1 = p.rate * dt;  // 007DE4B1
+    p.current = bsp::unit_step_towards_0042ac60(p.current, p.target, step1);
+    LerpValue& v = sound.volume_20;
+    const float step2 = v.rate * dt;  // 007DE4D9
+    v.current = bsp::unit_step_towards_0042ac60(v.current, v.target, step2);
     calls.called = true;
-    calls.slot10_value = sound.p1_14;  // 007DE4FE
-    calls.slot0c_value = sound.p2_20;  // 007DE50E
+    calls.pitch = p.current;   // 007DE4FE
+    calls.volume = v.current;  // 007DE50E
     return calls;
 }
 
@@ -430,7 +433,7 @@ ControlStateRecord flight_controller_write_record_007d8330(
     rec.angular_velocity_18 = ctl.angular_velocity_24;
     rec.dyn_b4_30 = ctl.dyn_b4;
     rec.dyn_c0_2c = ctl.dyn_c0;
-    rec.flag04_25 = ctl.flag_04;
+    rec.turbo_25 = ctl.turbo_04;
     rec.flag05_24 = ctl.flag_05;
     rec.f_ac_28 = ctl.f_ac;
     rec.body_space_26 = false;
@@ -449,7 +452,7 @@ void flight_controller_apply_record_007db1f0(FlightControllerFields& ctl,
     ctl.angular_velocity_24 = rec.angular_velocity_18;
     host.refresh_body_frame_007d9c10();
     host.update_rate_of_44_007d80c0(0.0f);
-    ctl.flag_04 = rec.flag04_25;
+    ctl.turbo_04 = rec.turbo_25;
     ctl.flag_05 = rec.flag05_24;
     ctl.f_ac = rec.f_ac_28;
     ctl.dyn_b4 = rec.dyn_b4_30;
@@ -496,9 +499,113 @@ void flight_controller_reset_motion_007db2c0(FlightControllerFields& ctl,
     }
 }
 
+SpeedTerms flight_controller_update_speed_terms_007d8020(const Vec3& world_velocity_18,
+                                                         const Vec3& body_velocity_3c,
+                                                         const Vec3& body_angular_48) noexcept {
+    SpeedTerms out;
+    const Vec3& v = world_velocity_18;
+    // 007D802D-007D803B: (y*y + x*x) + z*z, each step rounded to 24 bits.
+    const float yy_xx = v.y * v.y + v.x * v.x;
+    const float s2 = yy_xx + v.z * v.z;
+    float s = 0.0f;
+    if (static_cast<double>(s2) > 1e-10) {  // 00CE3820, FCOMI / JBE
+        s = std::sqrt(s2);                  // 00BF7030, FSTP float
+    }
+    out.airspeed_6c = s;
+    out.body_x_over_speed_70 = body_velocity_3c.x / s;  // DE FA
+    out.body_y_over_speed_74 = body_velocity_3c.y / s;  // D8 7E 40
+    out.neg_body_rate_y_a8 = -0.0f - body_angular_48.y;  // 00D7A208 SUBSS
+    out.body_rate_x_a4 = body_angular_48.x;
+    out.body_rate_z_a0 = body_angular_48.z;
+    return out;
+}
+
+bool flight_controller_set_flag_94_007d8180(bool& flag_94, bool force, bool has_game,
+                                            int game_mode_1fe4) noexcept {
+    if (force || (has_game && (game_mode_1fe4 == 0 || game_mode_1fe4 == 1))) {
+        flag_94 = true;  // 007D819F
+        return true;
+    }
+    return false;
+}
+
+void plane_dyn_begin_step_007d7c00(PlaneDynAccumulators& dyn, const Vec3& world_velocity,
+                                   const Vec3& body_velocity) noexcept {
+    dyn.world_velocity_4c = world_velocity;
+    dyn.body_velocity_64 = body_velocity;
+    dyn.accumulators_04.fill(Vec3{});
+    dyn.f_94 = 0.0f;  // 007D7D14 XORPS
+}
+
+FlightControllerDefaults flight_controller_construct_007d7ea0(float dead_meat_rotation_min,
+                                                              float dead_meat_rotation_max,
+                                                              const Rng& rng) {
+    FlightControllerDefaults out;
+    const float m = rng.uniform(1, dead_meat_rotation_min, dead_meat_rotation_max);  // 007D7F90
+    float d[3] = {0.0f, 0.0f, 0.0f};
+    bsp::plane_wanderer_random_direction_00439950(
+        d, [&rng](float lo, float hi) { return rng.uniform(1, lo, hi); });  // 007D7F9D
+    out.dead_meat_rotation_f0[0] = m * d[0];  // 007D7FBC FMUL [EAX]
+    out.dead_meat_rotation_f0[1] = d[1] * m;  // 007D7FAB
+    out.dead_meat_rotation_f0[2] = d[2] * m;  // 007D7FB6
+    out.dead_meat_rotation_f0[3] = 0.0f;      // 007D7FDA, EBX = 0
+    return out;
+}
+
+bool control_surface_step_007de2e0(ControlSurface& surface, float target, float node_ac,
+                                   float& angle_y) noexcept {
+    angle_y = 0.0f;
+    if (!not_equal(surface.deflection_0c, target) || !(node_ac > kZero)) {
+        return false;  // 007DE303 JNP / 007DE31B JBE
+    }
+    surface.deflection_0c =
+        bsp::unit_step_towards_0042ac60(surface.deflection_0c, target, 0.05f);  // 00CE7638
+    angle_y = -(surface.gain_8 * surface.deflection_0c);
+    return true;
+}
+
 void plane_dyn_set_ground_contact_up_007d7d70(GroundContactUp& dyn) noexcept {
     dyn.up_98 = Vec3{0.0f, kOne, 0.0f};
     dyn.contact_a4 = true;
+}
+
+
+// ---------------------------------------------------------------------------
+// 5. Archives and the timed flag.
+// ---------------------------------------------------------------------------
+
+ActuatorBlockArchive actuator_block_save_007deb70(const ActuatorAnimBlock& block) noexcept {
+    ActuatorBlockArchive a;
+    a.anim_frame = block.shown_time_7c;  // 007DEB8E
+    a.gears = ActuatorChannelArchive{block.channel_28.target_1, block.channel_28.value_4};
+    a.wings = ActuatorChannelArchive{block.channel_44.target_1, block.channel_44.value_4};
+    a.baydoor = ActuatorChannelArchive{block.channel_60.target_1, block.channel_60.value_4};
+    return a;
+}
+
+ActuatorAnimResult actuator_block_load_007dea60(ActuatorAnimBlock& block,
+                                                const ActuatorBlockArchive& archive,
+                                                float clock_f876a4) noexcept {
+    block.shown_time_7c = archive.anim_frame;
+    block.channel_28.target_1 = archive.gears.targst;
+    block.channel_28.value_4 = archive.gears.curst;
+    block.channel_44.target_1 = archive.wings.targst;
+    block.channel_44.value_4 = archive.wings.curst;
+    block.channel_60.target_1 = archive.baydoor.targst;
+    block.channel_60.value_4 = archive.baydoor.curst;
+    block.shown_time_7c = kMinusOne;  // 007DEB39, 00D7A260
+    return actuator_block_anim_007de9a0(block, clock_f876a4);  // 007DEB3D
+}
+
+void timed_flag_debounce_007eb4e0(TimedFlag& flag, bool now, float dt) noexcept {
+    if (now == flag.value) {
+        flag.timer = 0.0f;  // 007EB51D
+        return;
+    }
+    flag.timer = flag.timer + dt;  // 007EB4E8-007EB4F7
+    if (flag.timer > flag.time_out) {
+        flag.value = now;  // 007EB505
+    }
 }
 
 }  // namespace gameplay_seg48_cc13

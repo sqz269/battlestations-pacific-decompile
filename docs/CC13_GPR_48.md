@@ -140,6 +140,53 @@ with a non-empty damage-effect list. It is presentation drawn from the gameplay 
   `float(007C47F0() * 1.05)` (`00CF2510`) into `dyn+CCh`.
 - **`007D7D70`.** It sets `dyn+98h..A0h` to `(0, 1, 0)` and `dyn+A4h` to 1.
 
+### 1.5 More of the controller, the control surfaces and the archive keys
+
+- **`007D8020`, the speed terms.** This is the tail of `007D9C10` and `007D9C80`, which
+  `src/plane_angular_velocity.cpp` leaves out. It computes `s = sqrt((vy*vy + vx*vx) + vz*vz)` over the
+  world velocity, or 0 at or below `1e-10`, and stores:
+  - `+6Ch = s`;
+  - `+70h = +3Ch / s` and `+74h = +40h / s`, the body velocity's x and y over the speed. The divides
+    are `DE FA` (`FDIVP`) and `D8 7E 40` (`FDIVR`), read from the bytes;
+  - `+A8h = -0.0f - +4Ch`, `+A4h = +48h`, `+A0h = +50h`: the body angular velocity, reordered and with y
+    negated.
+- **`007D8180`.** It sets `ctl+94h` when its argument is set, or in game mode 0 or 1. `007DB2C0` clears
+  the byte.
+- **`007D7C00`.** It copies the world and body velocities into `dyn+4Ch`/`+64h` and zeroes the six
+  accumulators and `dyn+94h` (docs/PLANE_FREE_FLIGHT_PHYSICS.md).
+- **`007D7EA0`, the controller constructor.** Besides its defaults (`+90h = 99.0f`, `+98h = +9Ch = 1.0f`), it
+  draws the dying spin `ctl+F0h..F8h = U(DeadMeat RotationMin, RotationMax) * direction`. The direction
+  comes from `00439950`: `z = U(-1, 1)`, `phi = U(0, 2 pi)`. All three draws are on **stream 1**, once per
+  plane. docs/CC13_RNG_STREAM_CENSUS.md lists the first as NM, "not drawn".
+- **`007DE2E0`, a control surface.** It runs while the deflection differs from the target and the node's
+  `+ACh > 0`. It steps the deflection toward the target by a fixed `0.05` per call (`00CE7638`; no dt) and
+  rotates the node about y by `-(gain * deflection)`. The four signed axes it is handed are
+  `include/bsp/plane_advance_pose.hpp:141` (`ControlSurfaceDrive`).
+- **The archive keys** are original identifiers, written as strings into save games:
+
+  | owner | keys (offset) |
+  | --- | --- |
+  | actuator channel (`007DE880`/`007DE900`) | `targst` (`+1h`, byte), `curst` (`+4h`, float) |
+  | actuator block (`007DEA60`/`007DEB70`) | `animFrame` (`+7Ch`), `gears` (`+28h`), `wings` (`+44h`), `baydoor` (`+60h`) |
+  | flight controller (`007DB430`/`007D9B70`) | `V` (`+18h`), `Om` (`+24h`), `Turbo` (`+4h`, byte) |
+  | lerp value (`007E0740`/`007E07E0`) | `currentValue` `+0h`, `rate` `+4h`, `targetValue` `+8h` |
+  | lerp pair (`007E08B0`/`007E0960`) | `pitch` (`+14h`), `volume` (`+20h`); the sound is at `+10h` |
+  | timed flag (`007E0A10`/`007E0AB0`) | `timeOut` `+0h`, `value` `+4h` (byte), `timer` `+8h` |
+  | effects component (`007E0B80`/`007E0D20`) | `running` `+14h`, `flying` `+24h` (a timed flag), `RPM` `+30h`, `startStopTimer` `+40h`, `runningSound` `+48h`, `deadmeatSound` `+74h`, `windSound` `+A0h`, `fallSound` `+CCh`, `engines` |
+
+  These keys settle three readings:
+  - the actuator channels are the gear `+28h`, the wings `+44h` and the bay doors `+60h`, which matches
+    cc9's naming;
+  - `ctl+4h` is the turbo flag;
+  - the engine sound's two parameters are pitch (sound slot `+10h`) and volume (slot `+0Ch`).
+
+  The block loader reads `animFrame`, then overwrites `+7Ch` with -1.0 before re-running `007DE9A0`. The
+  saved value is therefore never used.
+- **The flying flag (`007EB4E0`, inside `007EB380`).** It debounces the plane's flying predicate
+  (`unit+72Ch` slot `+38h`). When the predicate equals `value`, the timer resets. Otherwise the timer
+  grows by dt, and `value` takes the new state once the timer exceeds `timeOut`. `timeOut` is GameTuning
+  `+6C0h`, set by `007EC5A0`.
+
 ## 2. Adoption table (cc9 terms)
 
 | model | replaces (host file:line) | inputs and where the host gets them | RNG | OFF-switch prediction |
@@ -151,6 +198,10 @@ with a non-empty damage-effect list. It is presentation drawn from the gameplay 
 | `damage_effect_switch_007e27b0` | none (`007C6820` is only partly hosted, `docs/TORPEDO_RELEASE_SPAWN.md`) | unit health (`00923BE0`), the class damage-effect list count `[unit+538h]+228h..22Ch`, dt | **stream 0**, `U(0, 1)` at `007E2862`, once per tick for 10 s after each change in a plane's damage | Bind it on a presentation stream (RNG rule). If bound on stream 0, every stream-0 consumer shifts from the first hit on a plane whose class has a damage-effect list. |
 | `flight_controller_write_record_007d8330`, `flight_controller_apply_record_007db1f0` | none (the multiplayer control-state message; no host sends it) | the controller and the dyn hold | none | none in single player |
 | `flight_controller_set_world_velocity_007d9ee0`, `flight_controller_reset_motion_007db2c0`, `plane_dyn_set_ground_contact_up_007d7d70` | the spawn seeding around `place_on_launch_spot_007c5f60` (`src/game_hosts_units.cpp:13696`) and `set_plane_forward_speed_007d9e80` (`:16380`) | the controller fields and `007C47F0` (the class level-flight speed) | none | OFF: none. ON: a spawned plane starts with zero body rates and its `dyn+CCh` = 1.05 x level speed. `dyn+CCh` has no host field; its reader was not traced. |
+| `flight_controller_construct_007d7ea0` | none (the host's controller has no dying spin; docs/CC13_RNG_STREAM_CENSUS.md row `007D7F90`, NM) | GameTuning DeadMeat RotationMin/Max (`00F87330`/`00F87334`, `include/bsp/game_tuning_singleton.hpp:192`) | **stream 1**, three draws per plane at construction (`007D7F90`, then `0043996D` and `0043998D` in `00439950`) | OFF: none. ON: each plane spawn shifts every later stream-1 consumer by 3 draws, before the effects component's `2 + count + rotors`. The spin `ctl+F0h` reaches nothing in the host until a dying-spin reader is bound. |
+| `flight_controller_update_speed_terms_007d8020` | the missing tail of `world_to_body_007d9c10` / `body_to_world_007d9c80` (`src/plane_angular_velocity.cpp:221`, `:228`) | the controller's world and body velocities and body angular velocity | none | OFF: none. ON: `ctl+6Ch`, `+70h`, `+74h` and `+A0h..A8h` get values. Their readers were not traced in this pass. |
+| `control_surface_step_007de2e0` | none (`include/bsp/plane_advance_pose.hpp:138` models the drive values only) | `ControlSurfaceDrive` per surface, the node's `+ACh` | none | presentation only |
+| `actuator_block_save_007deb70`, `actuator_block_load_007dea60`, `timed_flag_debounce_007eb4e0` | none (no save games; no effects component) | the actuator block; the flying predicate and GameTuning `+6C0h` | none | none in a mission run |
 
 ## 3. For cc9 (no host edits made)
 
@@ -188,15 +239,35 @@ Records for existing reconstructions, checked against the listing, with no host 
 - `007D9C10` and `007D9C80`, in `src/plane_angular_velocity.cpp` (partial: the tail `007D8020`);
 - `007D9E80`, a substitution.
 
+- batch 2: `007D8020`, `007D8180`, `007D7C00`, `007D7EA0` (partial: the dyn defaults), `007DE2E0` (partial:
+  the matrix), `007DEB70`, `007DEA60`; the fragment `007EB4E0` (the flying flag in `007EB380`); and
+  `007D80C0`, the existing `src/band_007a_cc13.cpp:128`, checked against the listing. Its record notes one
+  difference: that model subtracts and divides in double.
+
+Renames (`config/names`, applied to Ghidra with `tools/ghidra_annotate.py --apply`; the old evidence is kept
+in each record, and the prior annotations are in the tool's local JSON):
+
+| address | was | now |
+| --- | --- | --- |
+| `007DE9A0` | `BSP_ActuatorBlock_Step` | `BSP_ActuatorBlock_PushPartAnimFrame` (the step is `007DE3A0`) |
+| `007DE7E0` | `BSP_ActuatorChannel_ComputeBlend` | `BSP_ActuatorChannel_AnimTime` |
+| `007DE540` | `BSP_PlaneEngineList_StepAll` | `BSP_PlaneEngineList_SpinAll` (it calls slot `+14h`) |
+| `007DE580` | `BSP_PlaneEngineList_UpdateAll` | `BSP_PlaneEngineList_BlurBlendAll` |
+
+Evidence was appended to `007E27B0` (stream 0), `007D7EA0` (stream 1), `007D9B70` (`Turbo`), `007EBF10`
+(stream 1) and `007E23E0` (the burning byte).
+
 ## 5. Verification
 
 - `./scripts/build.ps1` passed in this tree: the build and ctest (2 of 2). No test was added.
-- `tools/verify_report_calls.py local/gpr48_calls.json` checked 24 call-site rows, with 0 failures. The
+- `tools/verify_report_calls.py local/gpr48_calls2.json` checked 31 call-site rows, with 0 failures. The
   rows cover:
   - the five stream draws (`007E2862`, `007E1CCF`, `007EC10F`, `007ECA23`, `007ECA41`) and the NextU32 at
     `007ECADD`;
   - the tail jump `007E1CE8`;
-  - the interpolate, step-towards and truncation calls of the models.
+  - the interpolate, step-towards and truncation calls of the models;
+  - the constructor's `007D7F90`/`007D7F9D`, the archive calls `007DEAC8`/`007DEBE6`/`007DEB3D`, and `007D8051`
+    (sqrt).
 
   The row file is not committed.
 - `tools/x87_dc_form_scan.py --range 007D7D70-007ECB20` finds 11 DC-form sites, in six functions. None

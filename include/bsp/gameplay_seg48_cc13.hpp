@@ -88,7 +88,8 @@ struct ActuatorAnimChannel {
     float stamp_18{-1.0f};     // the clock at the last step; < 0 means never
 };
 
-// 007DE7E0 BSP_ActuatorChannel_ComputeBlend, __fastcall(ECX = channel), result
+// 007DE7E0 BSP_ActuatorChannel_AnimTime (was ComputeBlend), __fastcall(ECX =
+// channel), result
 // in ST0. A moving channel with stamp_18 >= 0.0f (COMISS; a NaN stamp skips)
 // is extrapolated from its last step to the current clock:
 //   v = float(float(rate * (target ? 1 : -1) * float(clock - stamp)) + value)
@@ -98,10 +99,10 @@ float actuator_channel_anim_time_007de7e0(const ActuatorAnimChannel& channel,
                                           float clock_f876a4) noexcept;
 
 struct ActuatorAnimBlock {
-    ActuatorAnimChannel channel_28{};   // cc9's channel_b, the gear (007B8860)
-    ActuatorAnimChannel channel_44{};   // cc9's channel_a (PartAnims.Wings)
-    ActuatorAnimChannel channel_60{};   // cc9's channel_c, the ordnance bay
-    float shown_time_7c{0.0f};          // the last time pushed to the animation
+    ActuatorAnimChannel channel_28{};   // archive "gears"; cc9's channel_b
+    ActuatorAnimChannel channel_44{};   // archive "wings"; cc9's channel_a
+    ActuatorAnimChannel channel_60{};   // archive "baydoor"; cc9's channel_c
+    float shown_time_7c{0.0f};          // archive "animFrame"; the last time pushed
     bool owner_suppressed_5d{false};    // [block+1Ch]+5Dh; set: nothing runs
 };
 
@@ -112,7 +113,8 @@ struct ActuatorAnimResult {
                              // 0 when no channel was evaluated
 };
 
-// 007DE9A0 BSP_ActuatorBlock_Step, __fastcall(ECX = block), plain RET.
+// 007DE9A0 BSP_ActuatorBlock_PushPartAnimFrame (was BSP_ActuatorBlock_Step;
+// the step is 007DE3A0), __fastcall(ECX = block), plain RET.
 // Bytes 007DE9A0-007DEA5E. The pick, read from the jumps (each equality test is
 // LAHF / TEST AH,44h / JP, so a NaN counts as "not equal"):
 //   if +44h enabled and +48h != 1.0f      -> time of +44h
@@ -257,11 +259,10 @@ public:
 };
 
 // The list at unit+C98h (+8h data, +0Ch count), walked in index order.
-// 007DE540 BSP_PlaneEngineList_StepAll, __thiscall(list, float dt), RET 4:
-// slot +14h(dt) on each. (The name predates this reading: the slot it calls
-// is the spin, not the rpm step.)
+// 007DE540 BSP_PlaneEngineList_SpinAll (was StepAll), __thiscall(list, float
+// dt), RET 4: slot +14h(dt) on each, the spin.
 void engine_list_spin_all_007de540(const std::vector<PlaneEngineSlots*>& list, float dt);
-// 007DE580 BSP_PlaneEngineList_UpdateAll: slot +18h on each.
+// 007DE580 BSP_PlaneEngineList_BlurBlendAll (was UpdateAll): slot +18h on each.
 void engine_list_blur_all_007de580(const std::vector<PlaneEngineSlots*>& list);
 // 007DE5E0 BSP_PlaneEngineList_StopEngineAt, __thiscall(list, int i), RET 4:
 // slot +0Ch on list[i], unchecked.
@@ -305,25 +306,28 @@ bool engine_on_destroyed_007e23e0(PlaneEngineSlots& engine, bool plane_has_lua_s
 bool engine_list_destroy_at_007eb0b0(const std::vector<PlaneEngineSlots*>& list, int index,
                                      bool plane_has_lua_self_4a4);
 
-// 007DE490 BSP_PlaneEngineSound_StepParams, __thiscall(this, float dt), RET 4.
-// Runs only with a sound at +10h. Two rate-limited parameters:
-//   p1 = 0042AC60(p1 +14h, target +1Ch, float(rate +18h * dt));
-//   p2 = 0042AC60(p2 +20h, target +28h, float(rate +24h * dt));
-// then sound slot +10h(p1) and slot +0Ch(p2).
+// The sound element (the archive's lerp pair, 007E08B0/007E0960): one sound
+// at +10h and two rate-limited parameters, each a "lerp value" with the
+// archive keys "currentValue" +0h, "rate" +4h, "targetValue" +8h (007E0740).
+// The pair's keys name them: "pitch" at +14h and "volume" at +20h.
+struct LerpValue {
+    float current{0.0f};  // "currentValue"
+    float rate{0.0f};     // "rate", per second
+    float target{0.0f};   // "targetValue"
+};
 struct EngineSoundParams {
     bool has_sound_10{false};
-    float p1_14{0.0f};
-    float rate1_18{0.0f};
-    float target1_1c{0.0f};
-    float p2_20{0.0f};
-    float rate2_24{0.0f};
-    float target2_28{0.0f};
+    LerpValue pitch_14{};
+    LerpValue volume_20{};
 };
 struct EngineSoundCalls {
     bool called{false};
-    float slot10_value{0.0f};
-    float slot0c_value{0.0f};
+    float pitch{0.0f};    // sound slot +10h
+    float volume{0.0f};   // sound slot +0Ch
 };
+// 007DE490 BSP_PlaneEngineSound_StepParams, __thiscall(this, float dt), RET 4.
+// Runs only with a sound at +10h: pitch = 0042AC60(pitch, target, float(rate *
+// dt)), the same for the volume, then sound slot +10h(pitch), slot +0Ch(volume).
 EngineSoundCalls engine_sound_step_007de490(EngineSoundParams& sound, float dt) noexcept;
 
 // ---------------------------------------------------------------------------
@@ -377,7 +381,7 @@ DamageEffectStep damage_effect_switch_007e27b0(DamageEffectSwitch& self, float d
 // The controller fields these functions touch (ctl = unit+AB0h; finding 8 of
 // docs/CC13_GP_007A_007F.md). dyn_* fields live in the object at ctl+10h.
 struct FlightControllerFields {
-    bool flag_04{false};
+    bool turbo_04{false};   // archive "Turbo" (007D9B70)
     bool flag_05{false};
     bool motion_reset_14{false};
     Vec3 world_velocity_18{};
@@ -407,7 +411,7 @@ struct ControlStateRecord {
     Vec3 body_velocity_0c{};
     Vec3 angular_velocity_18{};
     bool flag05_24{false};
-    bool flag04_25{false};
+    bool turbo_25{false};
     bool body_space_26{false};   // apply: rebuild the velocity from +0Ch
     float f_ac_28{0.0f};
     float dyn_c0_2c{0.0f};
@@ -458,6 +462,81 @@ void flight_controller_set_world_velocity_007d9ee0(FlightControllerFields& ctl,
 void flight_controller_reset_motion_007db2c0(FlightControllerFields& ctl,
                                              const FlightControllerHost& host);
 
+// 007D8020 BSP_PlaneFlightController_UpdateSpeedTerms, __fastcall(ctl), the
+// tail of 007D9C10 and 007D9C80 (src/plane_angular_velocity.cpp leaves it
+// out). Bytes 007D8020-007D80B9, x87 traced:
+//   s2 = float((vy*vy + vx*vx) + vz*vz) over the world velocity +18h..+20h;
+//   s = s2 > 1e-10 (the double 00CE3820, FCOMI/JBE) ? float(sqrt(s2)) : 0;
+//   +6Ch = s; +70h = float(+3Ch / s) (DE FA, FDIVP); +74h = float(+40h / s)
+//   (D8 7E 40, FDIVR); +A8h = -0.0f - +4Ch (00D7A208); +A4h = +48h; +A0h = +50h.
+// With s == 0 the two quotients are the x87's masked divide-by-zero results.
+struct SpeedTerms {
+    float airspeed_6c{0.0f};
+    float body_x_over_speed_70{0.0f};
+    float body_y_over_speed_74{0.0f};
+    float body_rate_z_a0{0.0f};
+    float body_rate_x_a4{0.0f};
+    float neg_body_rate_y_a8{0.0f};
+};
+SpeedTerms flight_controller_update_speed_terms_007d8020(const Vec3& world_velocity_18,
+                                                         const Vec3& body_velocity_3c,
+                                                         const Vec3& body_angular_48) noexcept;
+
+// 007D8180 BSP_PlaneFlightController_SetGravityTerm94, __thiscall(ctl, bool
+// force), RET 4: ctl+94h = 1 when force, or when a game object exists and its
+// mode +1FE4h is 0 or 1 (single player or host). Otherwise nothing is written.
+// Returns whether the byte was set.
+bool flight_controller_set_flag_94_007d8180(bool& flag_94, bool force, bool has_game,
+                                            int game_mode_1fe4) noexcept;
+
+// 007D7C00 BSP_PlaneDynamics_BeginStep, __thiscall(dyn, const Vec3* world,
+// const Vec3* body), RET 8: dyn+4Ch = world, dyn+64h = body, the six
+// accumulators dyn+04h + 0Ch*k all zero (00F87574), dyn+94h = 0.
+struct PlaneDynAccumulators {
+    std::array<Vec3, 6> accumulators_04{};
+    Vec3 world_velocity_4c{};
+    Vec3 body_velocity_64{};
+    float f_94{0.0f};
+};
+void plane_dyn_begin_step_007d7c00(PlaneDynAccumulators& dyn, const Vec3& world_velocity,
+                                   const Vec3& body_velocity) noexcept;
+
+// 007D7EA0 BSP_PlaneFlightController_Construct, __thiscall(ctl, unit), RET 4.
+// The controller's own defaults: +4h, +5h, +14h = 0; +8Ch = 0; +90h = 99.0f
+// (00D059A0); +98h = +9Ch = 1.0f; +ACh = 0. Then the dying spin
+// (docs/CC13_RNG_STREAM_CENSUS.md lists it NM):
+//   m = U1(DeadMeat RotationMin [00F87330], RotationMax [00F87334]) (007D7F90);
+//   d = 00439950: z = U1(-1, 1), phi = U1(0, 2 pi), r = sqrt(1 - z^2),
+//       (r cos phi, r sin phi, z);
+//   +F0h = m * d.x, +F4h = d.y * m, +F8h = d.z * m, +FCh = 0.
+// Three STREAM-1 draws per plane controller. The 0D0h dyn sub-object's own
+// defaults are not modelled here.
+struct FlightControllerDefaults {
+    float f_8c{0.0f};
+    float f_90{99.0f};
+    float f_98{1.0f};
+    float f_9c{1.0f};
+    float f_ac{0.0f};
+    std::array<float, 4> dead_meat_rotation_f0{};
+};
+FlightControllerDefaults flight_controller_construct_007d7ea0(float dead_meat_rotation_min,
+                                                              float dead_meat_rotation_max,
+                                                              const Rng& rng);
+
+// 007DE2E0 BSP_PlaneControlSurface_StepDeflection, __thiscall(surface, float
+// target), RET 4. Only when +0Ch != target (FUCOMIP; NaN unequal) and the
+// node's +ACh > 0.0f (COMISS/JBE): +0Ch = 0042AC60(+0Ch, target, 0.05f
+// (00CE7638)), a fixed step per call with no dt. The node's local matrix
+// is RotationY(-(+8h * +0Ch)) combined by 00413920 with the rest matrix at +10h
+// and handed to the node's slot +38h; the matrix work is the caller's.
+// Returns whether it moved; `angle_y` is the rotation applied.
+struct ControlSurface {
+    float gain_8{0.0f};
+    float deflection_0c{0.0f};
+};
+bool control_surface_step_007de2e0(ControlSurface& surface, float target,
+                                   float node_ac, float& angle_y) noexcept;
+
 // 007D7D70 BSP_PlaneDyn_SetGroundContactUp, __fastcall(ECX = dyn): dyn+98h..A0h
 // = (0, 1, 0) and dyn+A4h byte = 1.
 struct GroundContactUp {
@@ -465,6 +544,64 @@ struct GroundContactUp {
     bool contact_a4{false};
 };
 void plane_dyn_set_ground_contact_up_007d7d70(GroundContactUp& dyn) noexcept;
+
+
+// ---------------------------------------------------------------------------
+// 5. Save-game archive keys (original identifiers) and the timed flag.
+// ---------------------------------------------------------------------------
+
+// The actuator archive. 007DE880/007DE900 per channel: "targst" (type 3, the
+// target byte +1h) and "curst" (type 2, the value +4h). 007DEA60/007DEB70 per
+// block: "animFrame" (+7Ch), then the channels under "gears" (+28h, 00D06B5C),
+// "wings" (+44h, 00D06B54) and "baydoor" (+60h, 00D06B4C). These keys settle
+// the channel names: +28h is the gear, +44h the wings, +60h the bay doors.
+struct ActuatorChannelArchive {
+    bool targst{false};
+    float curst{0.0f};
+};
+struct ActuatorBlockArchive {
+    float anim_frame{0.0f};
+    ActuatorChannelArchive gears{};
+    ActuatorChannelArchive wings{};
+    ActuatorChannelArchive baydoor{};
+};
+ActuatorBlockArchive actuator_block_save_007deb70(const ActuatorAnimBlock& block) noexcept;
+// 007DEA60: reads "animFrame" into +7Ch, the three channels' target and value,
+// then overwrites +7Ch with -1.0f (00D7A260) and runs 007DE9A0, so the saved
+// animFrame is never used and the animation is always re-pushed.
+ActuatorAnimResult actuator_block_load_007dea60(ActuatorAnimBlock& block,
+                                                const ActuatorBlockArchive& archive,
+                                                float clock_f876a4) noexcept;
+
+// The flight controller archive, 007D9B70 save / 007DB430 load: "V" (type 5,
+// the world velocity +18h, 00D06864), "Om" (type 5, the angular velocity
+// +24h, 00D06860) and "Turbo" (type 3, the byte +4h). Load then runs 007D9C10
+// and 007D9C80. So ctl+4h is the turbo flag.
+struct FlightControllerArchive {
+    Vec3 v{};
+    Vec3 om{};
+    bool turbo{false};
+};
+
+// The timed flag (007E0A10/007E0AB0): "timeOut" +0h, "value" +4h (byte),
+// "timer" +8h. The effects component keeps one at +24h under the key "flying"
+// and debounces the plane's flying predicate (unit+72Ch slot +38h) with it in
+// 007EB380 (007EB4E0-007EB505): equal resets the timer; otherwise timer =
+// float(timer + dt) and the value takes the new state once timer > timeOut
+// (FCOMIP / JBE; NaN keeps the old value).
+struct TimedFlag {
+    float time_out{0.0f};  // "timeOut"; 007EC5A0 seeds it from GameTuning +6C0h
+    bool value{false};     // "value"
+    float timer{0.0f};     // "timer"
+};
+void timed_flag_debounce_007eb4e0(TimedFlag& flag, bool now, float dt) noexcept;
+
+// The effects component's archive (007E0B80 load / 007E0D20 save), its keys and
+// offsets: "running" +14h (byte), "flying" +24h (TimedFlag), "RPM" +30h,
+// "startStopTimer" +40h, then four sound elements: "runningSound" +48h,
+// "deadmeatSound" +74h, "windSound" +A0h, "fallSound" +CCh (each a lerp pair,
+// 2Ch bytes), then "engines". Recorded here as the layout; the archive calls
+// themselves are not modelled.
 
 }  // namespace gameplay_seg48_cc13
 }  // namespace bsp
