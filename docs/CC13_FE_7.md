@@ -71,6 +71,8 @@ All in namespace `bsp::cc13_fe5` (`src/frontend_seg16_24_28_cc13.cpp`) unless ma
 | 005DA000 | seg15 `multi_game_lobby_on_list_select_005da000` | thiscall(screen+0Ch, widget), RET 4 |
 | 005DA210 | seg15 `multi_game_lobby_confirm_leave_005da210` | fastcall(screen) |
 | 005DA530 | seg15 `multi_game_lobby_apply_selected_map_005da530` | fastcall(screen) |
+| 005D71B0 | seg15 `multi_game_lobby_check_client_compatibility_005d71b0` | fastcall(screen) -> AL |
+| 005D6060 | seg15 `multi_game_lobby_on_focus_005d6060` | thiscall(screen+0Ch, widget, bool), RET 8 |
 
 Notes per function:
 
@@ -129,13 +131,13 @@ not committed). Names changed with `ledger add-name --replace` and `tools/ghidra
 
 ## Handoff (cc13-fe7, 2026-10-12)
 
-State: five commits on `agent/cc13-fe7`, 24 reconstruction records, five name records, build green.
+State: seven commits on `agent/cc13-fe7`, 26 reconstruction records, five name records, build green after the final `git merge origin/main`.
 Open:
 
 - 0060ABD0 (above): needs an ownership decision with cc9 before anyone models it.
 - fe4's remaining list (`docs/CC13_FE_4.md`, Handoff): the x87 HUD counter layouts 00529D70, 0052A100,
   0052A470, 0052A860, 0052BB10, relayout 00529A30, tick 0052B080, and the large bodies; the lobby routines of the
-  "ECX pass" list are done here.
+  "ECX pass" list and the lobby focus 005D6060 / compatibility 005D71B0 are done here; the lobby activate 005D5D50 and map preview 005D6E30 are not. cc13-fe8 holds 004F9D80..00568500 (fe4's counter layouts and the bodies in that band).
 - Host classes are not implemented anywhere (the models are build-tested only); `Fe5Host` gained about 90 methods
   and `Seg15Host` about 30 in this pass.
 - 00550BF0 keeps the name `STL_UninitCopy_00550bf0`; it is an uninitialized fill.
