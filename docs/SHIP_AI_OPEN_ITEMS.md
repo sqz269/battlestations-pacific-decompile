@@ -17388,3 +17388,34 @@ stall cause.
 3. **USN21** waits on the plane lane (228): each carrier's 32-aircraft cap and the torpedo/dive release rates.
 4. Other SURFACE OPERATION missions not yet tried: IJN07, IJN11, IJN12, IJN25, IJN37, BSM07 (idle: Houston sinks at
    384 s with no mission end), IJN13 (idle: both subs sunk by the convoy's four Mahans, `Game Over` at 549 s).
+
+## 231. JM06 re-planned for the dived-gun rule; submerged throttle and righting constants ON (cc9-ships47, 2026-10-13; lead item 1)
+
+Build: this branch at origin/main `f93663a57` (`kGunSubmergedArtilleryKindBound` ON, GUNNERY 206). JM06, 0.05 s,
+reference env, `--stop-after-end 40`, trajectories. Logs `local\s47_<prefix>_<row>.log`; pairs from
+`tools/pair_export.py --commit f93663a57`.
+
+**The pairs** (m, `config/win_orders/jm06_s46_j6_m.txt`, 100000 frames; OFF `s47_off_j6m`):
+- `kShipRightingImageConstantsBound` (cc13-ver3 R1, `s47_rgt_j6m`): **gameplay identical** (pair_diff exit 1; only
+  the known ship-avoidance refill and sector-scan noise). ON by mechanism: the image's 00D19628 / 00D05AA8 bytes.
+- `kShipSubmergedThrottleBound` (cc13-ver3 S1, `s47_thr_j6m`): moved, by the mechanism. The first movers are the
+  convoy kills of the dived AI boats PlayerSub 02/03 (Fletcher-class 08 69.95 -> 105.45 s): at step 1000 both run at
+  y = -12.9 with throttle 1.0 and forward speed 15.4255 OFF, 12.8649 ON, which is 15.4255 x 0.834 exactly. ON by
+  mechanism; the 0.834 stays a labelled substitution for settings+4B4h (`ship_motion.hpp`).
+Both are flipped ON in this commit.
+
+**Why m fails on main.** With the deck guns of a dived boat silent, Fletcher-class 04 and 05 live in both rows (m
+fired only at 02/03/04 after 60000; 05 died to the deck gun in k). In the ON row 02 and 03 die at 2266 / 2282 s,
+04 stops at (676, -502) and 05 at (899, -29); after the 66000 `takehelm` the sub rests at (1280, -767) heading -28,
+so 05 bears -27 (on the bow, 830 m) and 04 bears -66 (660 m).
+
+**n1** (`local\s47_j6gen.py`; m before 67000, then torpedoes at Fletcher-class 05 every 300 frames 67000-78000,
+`takehelm "PlayerSub 01" 0.3 676 -502 stop 600` at 78500, torpedoes at 04 every 300 frames 79500-110000;
+120000 frames). n2 (05/04 alternating from 67000) killed 05 at 3608 s only.
+| row | jitter | result |
+| --- | --- | --- |
+| `s47_b_n1` | none | 05 3413 s, 04 4095 s; `completed` at 4108.77 s |
+| `s47_cj3_n1` | 20,3 | 03/04 2141 s, 05 2416 s, 02 2654 s; `completed` at 2667.48 s |
+| `s47_cj5_n1` | 20,5 | 02 2238 s; 04 lives until the Yamato sinks it at 5888 s; `completed` at 5901.74 s (close to the 6000 s run) |
+Every completion logs `bsp: refused a mission script's process launch: sus_prog.exe` first. Order file
+`config/win_orders/jm06_s47_j6_n1.txt`; JM06, 120000 frames.
