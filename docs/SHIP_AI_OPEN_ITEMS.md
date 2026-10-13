@@ -17172,3 +17172,22 @@ with `--air` = `Missouri,` + b3's air list; m10 = `s45_splice.py m5 g10 24000`.
 
 No C-47 appears in either completing log (0 lines), so the C-47 waves CC13_WIN_READINESS expected were not
 reached; why `AirPatrol` empties (in the ON run only B-17 #2.1 has a death row) was not traced.
+
+## 224. The landing lane's second `FinishLanding` is always a duplicate (cc9-ships45, 2026-10-12; lead item 3a, a read)
+
+docs/CC13_SOLDIER_TRAFFIC.md section 5 item 3: the landing lane's tick `0049A410` calls
+`BSP_LandingShip_FinishLanding` `0074AD90` (at `0049A529`) when its progress `+84h` reaches `+190h`, which `0048C230`
+sets; the host models only the ramp caller `0074B2D9`. The two are the only calls (`local\s45_rel32.py 0074AD90`).
+
+**Verdict: no gameplay reach; not bound.** The lane only starts (`0048C230`, from `0049A42C`) once ship `+118Bh` is
+set. The disp-118Bh accesses in the image (`scan-bytes '8b 11 00 00'`, 7 hits) are `0047B8D2` (in
+`BSP_Unit_UsesSmallTurnRollLimit`), `0049A425` (the lane's read), `0074A2A8` (the save routine `0074A1F0`),
+`0074B17B`/`0074B18F` (the unload block of `BSP_LandingShip_Update` `0074AF50`), `0074BF0B` (InitAll's zero) and
+`0074C3B2` (the Lua property table `0074C280`). The one `.text` setter is `0074B18F`, and the same unload block calls
+`0074AD90` at `0074B2D9` in that frame (host: `landing_ship_ramp_unload_0074b109`, `publish_landing_unloads_0074ad90`).
+So the lane's call always comes later and finds `LandingFinished` and `+118Ch` already set; what it adds is a second
+`shipLanded` event (`00986820`, when `[00F8A0C4]` is set). The installation's only `shipLanded` listeners
+(`jm11.lua:2283`, `jm13.lua:2696`, 2024-07-13) call `RemoveListener` in their first callback, and `LandingFinished`
+is read only as a flag (`jm08.lua`, `jm11.lua`, `jm13.lua`, `usn_07_invasion_of_tarawa.lua`). A Lua write of the
+`gyorsPartraszallas` property (`0074C280`) could set `+118Bh` without the unload; no script of this installation
+names it (the 13 `partraszall` matches under `scripts\` are Hungarian comments and local tables).
