@@ -160,3 +160,46 @@ and 00B2BB90), so it is reconstructed here.
   strings in the range; the names follow their use.
 - The record words 1..3 passed by 00B264A0 to vt+40h: whether the callee reads them.
 - 00B51000's locked readback: whether another build reads the 1x1 luminance there.
+
+## Handoff (2026-10-12)
+
+The packet range is exhausted except 00B529A0. The two cc13-scene2 bodies (00B708E0
+screenshot tiles, 00B8DD60 flare geometry) were not started. Order of value: 00B529A0,
+then 00B8DD60 (its element layout is in `bsp/scene_graph2_cc13.hpp`), then 00B708E0.
+
+### 00B529A0 old film: map for the next pass
+
+`__thiscall(state, targets, const float* params, char extended, float a, float b)`;
+caller 00B156C0. The effect state keeps four post-effect children (each a 24h object
+built by 00B4E840 from "oldfilm_dust.mshd" with a quad count (material 00B4CBF0, quad count 00B4CC00), its material slot 0 bound
+to a texture), each with a 24h-record vertex list, and per-child timers. Layout by use:
+
+| Child | Slot | Rebuilt when | Count | Texture | Record list | Timers |
+| --- | --- | --- | --- | --- | --- | --- |
+| dust | +30h | params[3] (cached +20h) changes, built when > 0 | 2*round(params[3]*100) | +18h | +24h/+28h/+2Ch | +34h toggle, +38h |
+| hair/blob | +68h | always present | records at +44h (one inline 24h record) | | +44h..+64h | +6Ch |
+| lines | +88h | round(params[8]*10) + round(params[13]*1000) (cached +78h) changes | 2 * line count (+80h) | +70h | +7Ch/+80h/+84h, per-line state +8Ch/+90h/+94h (0Ch: active, kind byte, timer, amplitude) | per line |
+| flicker | +B0h | params[18] (cached +A0h) changes, built when > 0 | 2*round(params[18]*10) | +98h | +A4h/+A8h/+ACh | +B4h toggle, +B8h |
+
+Per frame: dt = clock [01090AB0]+04h minus the previous stamp +C8h (0 on the first frame)
+is subtracted from every timer (+38h, +6Ch, each line +4, +B8h, +C0h, +C4h); when the
+frame timer +C4h runs out it is re-armed with 1/params[0] and the children are refilled
+(dust: count = round(quads/2 * U(..,1) * U(range)) with two uniforms per quad, a random
+atlas column (`NextU32 % +1Ch`) and colour A0000000h or 70FFFFFFh; empty records fill the
+rest with the sentinel -2.0f (00CE7D7C)); lines: per line a state machine with a 1-in-3
+restart, U() widths/positions, colours from NextU32 bit fields, an FSIN wobble
+(U(..)*timer) scaled by amplitude/params[0]; flicker: two quads per draw. Finally
++0Ch/+10h/+14h get the global flicker and jitter values (params[22], params[23..25]) and
+each live child: 00B4D4C0 (populate its stream from its record list), 00B4E3D0
+(SetFrameTarget(targets)), 00B4DEF0 (submit).
+
+Aspect: colour surface 0 height/width doubled (fVar30), 2.0/a (fVar4), 0.5 - (0.5-b)/a
+(fVar31). Constants read so far: 00D7A308 2.0, 00D7A220 100.0, 00CE3DC0 10.0, 00CE47A0
+1000.0, 00D7A280 0.5, 00CE3978 2^32.
+
+RNG: every U(lo, hi) is 00BD2F10 BSP_Random_UniformFloatRange(NULL, lo, hi) and every integer
+draw 00BD2FC0 BSP_RandomThreads_NextU32, both on the shared gameplay stream 0. Per the cc9
+rule a model must take its draws from a caller-supplied presentation stream (or stay
+behind an OFF switch) and record that the image shares stream 0. The x87 expressions
+(the half-width terms, the FSIN wobble, the uint-to-float conversions with the 2^32
+fix-up) need a block-by-block trace with `local/r1/r1_x87.py` before transcription.
