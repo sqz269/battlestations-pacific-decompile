@@ -118,6 +118,12 @@ inline constexpr bool kCloseAttackSquadronHomeBound = false;
 // ai_should_route_cautiously_00a2c9f0, and the host's private 00BD2F10 LCG
 // draws only after both gates. False: the host draws for every order.
 inline constexpr bool kOrderAttackCautiousGatesBound = false;
+// The Capture planner's current-target distance, 00A2A5C0-00A2A5CE: FLD qword
+// [00CE3820] (BB BD D7 D9 DF 7C DB 3D, the double 1.0e-10), FLD float d^2,
+// FCOMI / JBE: sqrt only when d^2 > 1e-10, else 0 (docs/CC13_GPR_69.md 7.4
+// item 4). True: capture_plan_00a29fd0 compares with bsp::kAiTailLengthEpsilon
+// (1e-10). False: the host's literal 1e-11, as before.
+inline constexpr bool kCaptureCurrentTargetEpsilonBound = false;
 // Packet cc9_group_release_idle (docs/SHIP_AI_OPEN_ITEMS.md section 30). Every
 // ATTACK-family command registers its observer (+8h) on the target group
 // (00A10767, 00694A60), and all four observer vtables (00D22B64, 00D22BA4,

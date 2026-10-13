@@ -4195,7 +4195,10 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                 float mul = 1.0f;
                 if (e == gr.current) {
                     const double d2 = static_cast<double>(dz * dz + dx * dx);
-                    const float d = d2 <= 1.0e-11 ? 0.0f : static_cast<float>(std::sqrt(d2));
+                    // 00A2A5C0: [00CE3820] under kCaptureCurrentTargetEpsilonBound.
+                    const double epsilon =
+                        kCaptureCurrentTargetEpsilonBound ? bsp::kAiTailLengthEpsilon : 1.0e-11;
+                    const float d = d2 <= epsilon ? 0.0f : static_cast<float>(std::sqrt(d2));
                     mul = bsp::ai_tail_capture_attack_weight(d, t.act_dist_1, t.act_mul_1,
                                                              t.act_dist_2, t.act_mul_2);
                 }
