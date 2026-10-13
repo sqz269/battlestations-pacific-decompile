@@ -145,6 +145,28 @@ struct AiCloseAttackTickResult {
 // [00CEFF98], 00A14CC1-00A14D48); a member inside r gets nothing. Before: every
 // candidate-less member was sent at the centre itself.
 inline constexpr bool kCloseAttackFallbackOffsetBound = true;
+
+// 00A1444C MOVSS XMM0,[00CE4ADC] / 00A14464 MOVSS [ESP+10h],XMM0: each member's
+// best score starts at the float D01502F9h = -1.0e10, not 0. 00A149A8 FCOMIP /
+// JBE keeps "score > best", so an admitted candidate scoring 0 (beyond FarDist
+// +1FCh, or a zero-weight target-group member) still wins over "none" and the
+// member gets an order instead of the no-candidate arm. docs/CC13_GPR_69.md 7.2
+// item 8. OFF keeps the host's 0.0 seed.
+inline constexpr bool kCloseAttackBestSeedBound = false;
+inline constexpr float kCloseAttackBestSeed = -1.0e10f;          // [00CE4ADC]
+
+// 00A144DE-00A1464C (docs/CC13_GPR_69.md 7.2 item 6). When the member's current
+// target is on the enemy team (00A144EA [EBP+54h] == [ESP+48h], the
+// (group+5638h == 0) flip) and its +FCh pose lies OUTSIDE the collect radius of
+// the centre (00A14604 d^2 = dz^2 + dx^2 stored as a float; 00A14610 FCOMI /
+// JC skips when d^2 < r^2) but inside twice its square (00A14616 FADD ST0,ST0;
+// 00A14618 FCOMIP / JBE: 2 r^2 > d^2), the image pushes it onto the end of the
+// pass's candidate list (00A14633 004C2220 at [list+4], the tail), where it
+// stays for the members after it. So a current target out to sqrt(2) x the
+// collect radius stays a candidate. The 00A144D2 vtable[5Ch](2) test has no
+// host producer and is taken as true (every host candidate is a unit).
+// Labelled. OFF: the host's collected set only.
+inline constexpr bool kCloseAttackCurrentTargetRadiusBound = false;
 inline constexpr double kCloseFallbackRadiusPerMember = 160.0;   // [00D22C90]
 inline constexpr double kCloseFallbackRadiusFloor = 400.0;       // [00CE3D90]
 inline constexpr double kCloseFallbackOwnWeight = 0.4;           // [00CE65D0]

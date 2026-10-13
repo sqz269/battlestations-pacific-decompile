@@ -797,3 +797,75 @@ it only with kTorpedoSwimDepthHomingBound ON.
   existing logs only.
 - 006E4D50's remaining rack body.
 - 007BCC80's fall-time prediction, against item 1.
+
+### 8.5 cc13-ver2b: the three follow-ups
+
+Doc and records only. No runs; I read only existing logs.
+
+**(1) The flat dimensions equal the class row's for every submarine.** The host's `flat_scaled(...,
+"length"/"width"/"height", 1000)` (game_hosts_gunnery.cpp:4340) reads `VehicleClass[id].BSPGun`,
+which the host's own flatten Lua writes as `math.floor(row.Length * 1000 + 0.5)` from the same
+top-level row keys that class +A0h / +A4h / +A8h hold. I compared all 9 `Type = "Submarine"`
+rows of this installation's vehicleclasses.lua (2026-05-09). Kaiten 12 x 1.4 x 1.4, I400
+100 x 12 x 7, Gato / Cachalot / Type B (three rows) / Type VII 100 x 8 x 4, and the midget
+20 x 1.7 x 4 all give the same float both ways (`local/v2b_subdims.py`). So section 8.2 item 5's
+data-source difference has **no effect** on JM06. That leaves the depth-charge path with the
+gravity constant (item 2) and the single-player-irrelevant world-mode-2 skip.
+
+**(2) MaxFall would break up none of the logged torpedo drops.** `local/v2b_drops.py` read the
+`gunnery: torpedo drop N by U at H m, speed S m/s, bullet B` lines from 396 logs modified in
+the last 10 days, across all checkouts' `local\`. The host prints the first four drops of each
+run. That gives 254 distinct (mission, unit, height, speed, bullet) rows:
+
+| mission | drops | release height min / median / max | over the MaxFall 50 limit | over 60 |
+|---|---|---|---|---|
+| JM02 | 100 | 5 / 11 / 39 m | 0 | 0 |
+| JM08 | 112 | 12 / 14 / 36 m | 0 | 0 |
+| USN01 | 34 | 13 / 16 / 31 m | 0 | 0 |
+| USN21 | 8 | 11 / 19 / 23 m | 0 | 0 |
+
+The test used the image's entry speed `sqrt(9 + 2 g h)`, which includes 006E0A70's -3 m/s, from
+a level release. The highest release, 39 m, enters at 27.8 m/s, against a limit of 31.3 m/s.
+Only a plane already sinking at about 12 m/s or more at 39 m would cross the limit, and the
+logs do not carry the release vy. No log in that window shows a water-entry break-up of either
+kind. **Item 3 is therefore not observable in the current AI torpedo runs.** It would matter
+only for a player or script drop from above about 50 m.
+
+**(3) 007BCC80 matches the image release and makes item 1 an aiming bias.** 007BCC80,
+`__thiscall(plane, float h)`, RET 4, returns 0 when h <= 0, and otherwise:
+`vy = f(V.y - 3.0)` with V = the plane's vtable+34h world velocity, and
+`t = f(f(f(sqrt(f(vy^2 + 2h g))) + vy) / g)` with g = 9.81f.
+
+That is exactly the fall from the image's release velocity (006E0A70: V with 3 taken off y;
+no cone with t = 0). In the image, the predictor and the release agree. The host's
+`weapon_fall_time_007bcc80` (src/dive_bomb_task.cpp:251) has the right g and the -3. It differs
+in only two ways: it rounds once in double where the image rounds each x87 step at 24 bits, and
+it returns 0 for a NaN height, where the image computes. Neither matters. Its callers pass the
+plane's linear velocity y, as the image does.
+
+The host's **release** does not match its own predictor. It releases at `|w| * forward_plane`
+(item 1), so its bombs fall longer than predicted:
+- **Level release** (V.y = 0, nose level): `dt = (sqrt(2gh) - sqrt(9 + 2gh) + 3) / g`, which is
+  **0.302 s at 1000 m and 0.304 s at 3000 m**. At 100 m/s every level-bombed impact lands about
+  **30 m long** of the point the AI aimed at.
+- **Dive release:** with V.y / |V| = -0.87, the host's vy is about V.y - 2.3 m/s instead of
+  V.y - 3. The horizontal speed is about 1.3 m/s high, so a 5 s fall lands about 5-7 m long.
+
+Record: `weapon_fall_time_007bcc80` (007BCC80) was added as complete, checked against the bytes.
+
+Still open: 006E4D50's remaining rack body.
+
+### 8.6 Adoption notes for the release-velocity fixes (host file leased; not edited)
+
+Under the HOST FIX TERMS, `src/game_hosts_gunnery.cpp` is leased by cc9 (agent/cc9-gunnery36:
+cc9_g40_turning_fire and cc9_g40_torpedo_fall, checked 2026-10-13). So these notes are for cc9 to
+apply, and this pass made no edit to that file. Gravity (item 2) is left to cc9's gunnery40, and
+MaxFall (item 3) already has its own switch.
+
+| fix | replaces (host file:line) | inputs | RNG | OFF / ON prediction |
+|---|---|---|---|---|
+| `kBombReleaseVelocityFrameBound` | release_bomb_drop, game_hosts_gunnery.cpp:13772 (`velocity[i] = vmag * (dx*right[i] + dy*up[i] + forward[i])`) | call `bomb_release_velocity_006e0a70_006e1f00(rack, owner, D)` with rack = the plane pose as a 4x4 (rows right / up / forward / origin; the mount node is unread, as today), owner = {is_plane = true, speed = 0092D730, world velocity = unit_linear_velocity}, and D = (dx, dy, 1) from the existing draws. Use `result.velocity`. | unchanged: the same draws in the same order, because only the basis changes | OFF: as today. ON: the bomb leaves along the velocity frame (velocity minus 3 m/s), so level-bomb impacts move about **30 m short**, onto the AI's 007BCC80 aim point (8.5 (3)), and dive bombs about 5-7 m. Expect hit counts to change for level bombers (kind 10h) in the missions that have them (not enumerated here); nothing else moves. |
+| `kTorpedoReleaseVelocityBound` | release_ordnance_drop, game_hosts_gunnery.cpp:13557 (`velocity = forward * speed`) | the same model with D = (0, 0, 1), which leaves velocity = the plane's world velocity minus 3 m/s on y: the torpedo's vtable+190h is also 006E0A70, and its cone is t = 0 when Throw is 0 (check the bullet row's Throw; if Throw is non-zero, use the drawn D as bombs do) | none, unless Throw is non-zero | OFF: as today. ON: torpedoes reach the water about 0.1-0.3 s sooner and about 10-25 m shorter, entering about 3 m/s faster downward. The MaxFall margin at the logged 5-39 m release heights stays positive (8.5 (2)), so no new break-ups. Run lengths and hit timing shift slightly in JM02, JM08, USN01 and USN21. |
+
+Both models are in `src/gameplay_seg53_cc13.cpp` / `include/bsp/gameplay_seg53_cc13.hpp`
+(build-tested, not wired).
