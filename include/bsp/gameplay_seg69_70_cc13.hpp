@@ -407,14 +407,19 @@ bool ai_try_spawn_group_gate_00a25a30(float weight, std::size_t threat_records,
 // BSP_AiCommand_RetreatPickDirection, 00A156E0 BSP_AiCommand_Retreat_Tick.
 // ---------------------------------------------------------------------------
 
-class RetreatHost {
+class DangerHost {
 public:
-    virtual ~RetreatHost() = default;
+    virtual ~DangerHost() = default;
     // 00A010F0 __fastcall(point, team) -> ST0 (host:
     // AiCommandTickHost::tick_danger_cost_00a010f0).
     virtual float danger_cost(const float point[3], int team) = 0;
-    // The first member's +FCh (after 00414DB0), or 00F87574 when +5644h is 0.
+    // The first member's +FCh (after 00414DB0), or 00F87574 when +5644h is 0;
+    // 00A10C20 is the same read.
     virtual void leader_point(float out[3]) = 0;
+};
+
+class RetreatHost : public DangerHost {
+public:
     // 00A156E7 00A10DC0 (follower pass), 00A156EE 00A11690 (formation wedge),
     // 00A15742 00A13B60(0.75 [00CEE07C], leader point, 0, 0).
     virtual void retreat_prelude() = 0;
@@ -423,7 +428,7 @@ public:
 };
 
 // float(00A010F0(p, team) - 00A010F0(p, team == 0)) (FSUBR qword).
-float ai_net_danger_at_point_00a01230(const float point[3], int team, RetreatHost& host);
+float ai_net_danger_at_point_00a01230(const float point[3], int team, DangerHost& host);
 
 // The ring of 00A113D0 (750 [00D22C70] around the leader, pi/6 steps while
 // 2pi [00CE3828] > a, a stored as float: 13 samples) scored by 00A01230 with
@@ -436,6 +441,15 @@ std::optional<std::array<float, 3>> ai_retreat_pick_direction_00a11530(int team,
 // float(00A010F0(leader + d, team) - 8.0 [00CE3DB0]) > 00A010F0(leader - d, team)
 // (FCOMI/JBE), the first member is ordered to leader - d. Returns whether it was.
 bool ai_retreat_tick_00a156e0(std::uint32_t group_5638, RetreatHost& host);
+
+// 00A2C9F0 BSP_AiGroup_ShouldRouteCautiously, __thiscall(group)(point) RET 4,
+// the gate of 00A2CBD0's cautious arm: false for group+5638h >= 2 (signed JL)
+// and when float(tuning+1F0h)^2 > the planar d^2 from the leader to the point
+// (FCOMI/JA); otherwise 00A01230 at the midpoint (leader + point) * 0.5
+// (DC C9 / D8 C9 / FMUL m32) with team = (+5638h == 0), and true when
+// 0.0 < it (FCOMI/JB: a NaN answers true).
+bool ai_should_route_cautiously_00a2c9f0(std::int32_t group_5638, float tuning_1f0,
+                                         const float point[3], DangerHost& host);
 
 // ---------------------------------------------------------------------------
 // 00A07D40 BSP_Ai_CollectTeamEntityRecords, __fastcall(team, &records;

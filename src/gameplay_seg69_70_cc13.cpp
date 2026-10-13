@@ -536,7 +536,7 @@ bool ai_try_spawn_group_gate_00a25a30(float weight, std::size_t threat_records,
 // RETREAT: 00A01230 / 00A11530 / 00A156E0
 // ---------------------------------------------------------------------------
 
-float ai_net_danger_at_point_00a01230(const float point[3], int team, RetreatHost& host) {
+float ai_net_danger_at_point_00a01230(const float point[3], int team, DangerHost& host) {
     const float own = host.danger_cost(point, team);                    // 00A01239
     const float other = host.danger_cost(point, team == 0 ? 1 : 0);    // 00A01246 SETE
     return own - other;                                                 // 00A01250 FSUBR
@@ -586,6 +586,26 @@ bool ai_retreat_tick_00a156e0(std::uint32_t group_5638, RetreatHost& host) {
     const float target[3] = {c[0] - (*d)[0], c[1] - (*d)[1], c[2] - (*d)[2]};   // 00A158A7
     host.issue_move_first_member(target);                                       // 00A158F5
     return true;
+}
+
+bool ai_should_route_cautiously_00a2c9f0(std::int32_t group_5638, float tuning_1f0,
+                                         const float point[3], DangerHost& host) {
+    if (group_5638 >= 2) return false;                          // 00A2C9FD JL
+    const float r2 = tuning_1f0 * tuning_1f0;                   // 00A2CA23
+    float lead[3];
+    host.leader_point(lead);
+    const float dx = lead[0] - point[0];                        // 00A2CA62
+    const float dz = lead[2] - point[2];
+    const float d2 = dx * dx + dz * dz;                         // 00A2CA82
+    if (r2 > d2) return false;                                  // 00A2CA8E FCOMI/JA
+    host.leader_point(lead);                                    // 00A2CA9D 00A10C20
+    const float sx = point[0] + lead[0];
+    const float sy = lead[1] + point[1];
+    const float sz = lead[2] + point[2];
+    const float mid[3] = {sx * 0.5f, sy * 0.5f, 0.5f * sz};
+    const int team = (group_5638 == 0) ? 1 : 0;                 // 00A2CAAA SETE
+    const float v = ai_net_danger_at_point_00a01230(mid, team, host);   // 00A2CAED
+    return !(0.0f >= v);                                        // 00A2CAF5 FCOMI/JB
 }
 
 // ---------------------------------------------------------------------------

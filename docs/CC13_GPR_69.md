@@ -191,6 +191,12 @@ read it only to its first dispatch. After the follower pass `00A10DC0`, the form
 So the retreat heads away from the direction where `00A010F0(t)` most exceeds `00A010F0(!t)`, and
 only when that side is worse than the opposite one by more than 8.
 
+**`00A2C9F0`**, the other user of `00A01230`, is the gate of the cautious arm of `00A2CBD0` (the host's
+`ai_attack_arm_00a2cbd0` takes it as an input, src/ai_command_lifetime.cpp:64). It answers false for a
+group with `+5638h >= 2` and when the target is within `tuning+1F0h` of the leader; otherwise it
+scores the midpoint `(leader + target) * 0.5` with `00A01230` and answers `0.0 < v` (a NaN answers
+true).
+
 ### 1.5 Team entity collection (`00A07D40`, `00A24870`)
 
 `00A07D40(team, &records; filter, exclude_static)` walks the world list `+34h` and keeps an entity
@@ -238,6 +244,7 @@ are "present"/"AI-controlled" was not established beyond this use; the field nam
 | `ai_try_spawn_group_gate_00a25a30`, `ai_sort_spawn_sites_00a236f0`, `ai_choose_spawn_composition_00a23980`, `ai_match_final_weight_00a0d1d0`, `ai_class_pair_value_00a03900`, `ai_unit_list_min_speed_00a02180` | the Capture spawn arm, counted only (src/game_hosts_ai.cpp:4383 `spawn_due`, :4423) and the Defend arm; `quick_spawn_named_group` (src/game_hosts_ai.cpp:5465) for the mode planners | `0066E590`'s sites with their stock (`0084D560`), `00942130`, mode tuning `+50h..+54h`, `+100h..+10Ch`, `+230h..+238h`, the class-pair table, `00A0C650` both ways (host `compose_attack_value_00a0c650`), `00419010`, `0084CF80`; the request goes to `0094C830`, which ends at the SpawnNew queue the host drains | **stream 1**: one draw per candidate tried per round and one more per bought pick (`00A0D604`, `00A0DAB8`/`00A0DB21`) | OFF: none. ON: nothing changes on the reference rows (no authored stock, docs/SHIP_AI_OPEN_ITEMS.md 52.2). On `ijn_11_operation_to` and the three `ijn_02_force_z` copies, Capture and Defend thinks that pass the gates buy units and shift stream 1 |
 | `ai_init_party_think_schedule_00a163d0` | the `next_think.fill(0.0f)` in `create_00a32350` (src/game_hosts_ai.cpp:5865) | the float clock at creation | **stream 1**: 8 draws at controller creation | OFF: none. ON: every party's first think moves from 0 s to 3..5 s, and every later stream-1 consumer shifts by 8 draws |
 | `ai_retreat_tick_00a156e0`, `ai_retreat_pick_direction_00a11530`, `ai_net_danger_at_point_00a01230` | none: the RETREAT tick `00A156E0` is not bound (include/bsp/ai_command_tick.hpp:194) | the host's `tick_danger_cost_00a010f0` (src/game_hosts_ai.cpp:3078), the leader point, the prelude (`00A10DC0`, `ai_formation_wedge_00a11690`, `00A13B60`), `issue_to_member` | none | OFF: none. ON: a group under a RETREAT command (Lua `00A13340`, or `00A2BE70`, which is unreferenced) moves its leader 750 units away from the worst direction when that side's cost exceeds the opposite side's by 8 |
+| `ai_should_route_cautiously_00a2c9f0` (with the existing `ai_attack_arm_00a2cbd0`) | the unconditional draw in `order_attack` (src/game_hosts_ai.cpp:5772) | group `+5638h`, tuning `+1F0h`, the own leader, the target group's leader (`00A10C20(target)`), `00A010F0` | the arm's draw `00BD2F40` is **stream 1** (`00A2CC51 MOV ECX,1`) and happens only after both gates pass; the host draws its private LCG on every order | OFF: none. ON: a group led by a ship never takes CAUTIOUSATTACK; other groups take it only when the target is farther than `+1F0h` and the midpoint scores above 0, then with probability `1 - aggressive`; stream 1 shifts by one draw per such order |
 | `ai_collect_team_entities_00a07d40`, `ai_collect_threats_near_00a24870` | the labelled stand-in `capture_defenders_00a24870` (src/game_hosts_ai.cpp:4027) | the world list `+34h`, `+5Dh`, `+54h`, the kinds, tuning `+1A4h` | none | OFF: none. ON: the same set when the host's world list 2 is the image's `+34h` list and `unit_active` is `!+5Dh`; any difference shows as different capture group values |
 | `ai_capture_spawn_arm_00a2b477`, `ai_defend_spawn_arm_00a29be7`, `ai_planner_owned_resource_00a1c900` | the records `capture_spawn_arm_00a2b400` (src/game_hosts_ai.cpp:4424) and `defend_spawn_tail_00a29b8e` | `00946970` (queued requests), the Defend percent, `00942130`, the owned groups' `00A2C530`, the plan targets and defend records | none | OFF: none. ON: the same decision the host counts, plus the amount and the threats handed to `00A25A30`; nothing spawns without the chain above and authored stock |
 | `ai_group_resource_sum_00a2c530` | the constant `kCaptureGroupResource` (src/game_hosts_ai.cpp:3814) | `member+304h` | none | OFF: none. ON: none on this installation, where `+304h` is 0 for every member (the host's own finding); otherwise capture prices drop by the group resource |
@@ -256,6 +263,12 @@ No model draws from stream 0.
   delay per party are missing.
 - **`009FFE50`** answers false in the host for the whole multiplayer arm; the image tail-calls
   `004B5510` on the slot record. **`009FFC80`**: with no active party slot the image answers 1, not 0.
+- **`order_attack` (src/game_hosts_ai.cpp:5755) skips both gates of `00A2CBD0`.** The image
+  (`00A2CC2E..00A2CC65`) takes MOVETOATTACK without a draw when the group's first member is a ship
+  (vtable `+5Ch`(6)) or when `00A2C9F0(group)(00A10C20(target))` is false, and only then draws
+  `00BD2F40` on stream 1. The host draws its private LCG for every order and goes CAUTIOUSATTACK with
+  probability `1 - aggressive` even for ship groups. The pure arm `ai_attack_arm_00a2cbd0`
+  (src/ai_command_lifetime.cpp:62) already encodes the image's order; it is not called.
 - **The party records come from the slot flags** (`00A32DF0`, section 1.7), not from units' sides.
 - **The power-up use** is complete as a model; its binding still waits on a power-up manager
   (docs/SHIP_AI_OPEN_ITEMS.md section 5).
@@ -267,7 +280,7 @@ Function records (`config/reconstruction`), models in `src/gameplay_seg69_70_cc1
 - the think schedule: `00A163D0`;
 - the spawn chain: `00A02180`, `00A07C10`, `00A03900`, `00A0D1D0`, `00A236F0` (partial: tie order above
   32 sites), `00A23980` (partial: the mode 4+ arm), `00A25A30` (partial: the gate), `00A1C900`;
-- the retreat: `00A01230`, `00A11530`, `00A156E0` (partial: the prelude);
+- the retreat: `00A01230`, `00A11530`, `00A156E0` (partial: the prelude), and `00A2C9F0`;
 - the collection: `00A07D40`, `00A24870`;
 - helpers: `00A2C530`, `00A2E1E0`, `00A1A6D0`, `00A04530`;
 - the party slots: `00A32DF0` (partial: the entity name and `00923840`).
@@ -298,7 +311,9 @@ Records for existing reconstructions, each checked against the listing in this p
   target arm; the other arm installs a null command), `009FE200`, `009FFD80`, `009FFC80` (partial: the
   no-active-slot answer is the caller's), `00A11F80` and `00A12450` (`ai_command_can_merge`), `00A18480`,
   `00A1D110`, `00A1D140`, `00A1D170`, `00A1D1A0` (src/ai_planners.cpp `ai_planner_needs_replan_*`),
-  `00A2CB10` (`ai_group_command_is_engaged`; the radius squared is 10000.0 `[00CE3D64]`).
+  `00A2CB10` (`ai_group_command_is_engaged`; the radius squared is 10000.0 `[00CE3D64]`),
+  `00A2BE20` and `00A2C310` (src/game_hosts_ai.cpp:4817 and :4837, the DEFENDPOSITION and PATROLTO
+  installs).
 
 A duplicate was caught: `00A18480` and the mode planners' needs-replan slot were first modelled in
 this packet, then found in src/ai_planners.cpp; the duplicate code was deleted before commit of the
@@ -307,7 +322,7 @@ records that point at the existing functions.
 ## 5. Verification
 
 - `./scripts/build.ps1` passed in this tree: the build and ctest (2 of 2). No test was added.
-- `tools/verify_report_calls.py local/gpr69_calls.json` checked 66 call-site rows cited here (the power-up pass, the scorers, the spawn chain, the retreat tick, the collection), with 0 failures. The row file is not committed.
+- `tools/verify_report_calls.py local/gpr69_calls.json` checked 72 call-site rows cited here (the power-up pass, the scorers, the spawn chain, the retreat tick, the collection), with 0 failures. The row file is not committed.
 - `tools/x87_dc_form_scan.py --range 009FE130-00A371A0 --by-function` finds 12 DC-form sites in 10 functions. Two are in modelled functions, `00A115A0` (`00A11530`) and `00A17C82` (`00A179E0`); both were read from the bytes (`DC C9`). The `DE` pop forms of `00A0D1D0` and the `D8` forms of `00A1CA60` were read from the bytes as well.
 
 ## 6. Open and handoff
