@@ -191,3 +191,64 @@ Recorded with `bsp.py ledger add-function` (doc docs/CC13_VER_8.md):
   `007F31E6` when squadron +361h is clear and the game state is not 9. `007C6C30` fires
   `(plane, 0)` at `007C6D65` (the warning). The entity is boxed as `vtable[140h]()`, the
   squadron. Ships need `00826D70` hosted first.
+
+## 7. The `exitzone` dispatcher (packet cc13-fix3)
+
+Sha: see the commit "Dispatch the exitzone channel behind kLuaExitZoneListenersBound, OFF" on
+agent/cc13-fix3. Switch: `kLuaExitZoneListenersBound` (include/bsp/game_hosts_lua.hpp), **OFF**.
+Build-tested (scripts/build.ps1 with ctest); not game-validated, no runs made.
+
+Image, read for this packet (disk bytes and exports):
+- `00982120` (`BSP_WarningManager_DispatchExitZoneChannel`), `__thiscall(manager, entity,
+  exited byte)`, `RET 8`. The entity becomes `entity->vtable[140h]()`; the boxes are the word
+  `+174h` (vtable `00D1AF24`) and the byte (`00D1AF34`); Lua arguments (entity, boolean) through
+  `00884A90` and `00884A30`.
+- The plane's `vtable[140h]` is `007B97E0` `BSP_Plane_GetSquadron`, `MOV EAX,[ECX+9D4h]; RET`, in
+  all nine vtables that hold the plane's `vtable[ECh]` `007BBCF0` (`00D00070`, `00D00308`,
+  `00D05F20`, `00D06638`, `00D06920`, `00D0BA80`, `00D19D28`, `00D1A000`, `00D1A2D8`; each slot
+  `+140h` = `007B97E0`). So the entity
+  is the **squadron**, never the plane. A ship's is `0047F320`, itself (docs/CONTROLLED_UNIT.md).
+- Subscription vtable `00D1B69C`: Load `009726D0` (callback, `entity`, `exited` boolean set),
+  Save `0096E9F0`, Matches `00968710` (entity set `+0Ch`, then exited set `+1Ch`).
+- `007F31A0` `BSP_PlaneSquadron_OnPlaneLeftMap`: `007F31C6` state 9 skips everything;
+  `007F31CF` `CMP [ESI+361h],0` / `JNE` past `007F31E3 PUSH 1`, `007F31E5 PUSH EDI` (the plane,
+  argument 1), `007F31E6 CALL 00982120`. The leader arm's members are sent message 50h through
+  `0077C2A0` (`007F328F`), which queues locally (docs/CRUISE_COMMAND.md), so their own `007F31A0`
+  runs after the leader's has latched `+361h` (`007F32EA`) when survivors remain.
+- `007C6C30` `BSP_Plane_OutOfActionCountdown`: `007C6D62 PUSH 0`, `PUSH ESI`, `007C6D65 CALL
+  00982120`, the warning.
+
+Host: each units-host death of cause 4 (only `retreat_leave_map_007ee410` records it, both
+`note_kill_cause(..., 4)` sites) of a plane in a squadron record fires (squadron slot + 1, true),
+before `entityKilled` and `kill`. `note_exit_zone_00982120(unit, exited)` is the public hook for
+the ship producer (cc9 ships46: `00826D70`, `0081BEB0`; pass the ship's own index) and for the
+plane warning. Substitutions are labelled at the switch: next-frame evaluation; the `+361h`
+latch modelled as "only the deaths at the squadron's first exit clock fire" (later exits are
+counted as `latched`); the state-9 gate and the exited = 0 HUD warning not modelled. With the
+switch ON the summary prints `summary mission script exitzone listeners bound=1 events= latched=
+fires=`.
+
+### Prediction
+
+The 36 subscriptions in this installation (`AddListener("exitzone"`), by what they watch:
+
+| Watches | Subscriptions | With this switch |
+|---|---|---|
+| planes (squadrons) | COTP usn_01 `exitlistenerID` (`Mission.AlliedPlanes`, :2181, `luaUS01BomberExited`); COTP usn_06 and PRCPUS usn_06 / prcp_06 `Listener_HiddenPlaneExit` (`PlanesHidden`, the three E13A Jakes); escort10 `Listener_PlaneExitZone` (`JAPPlane`); ijn/usn_airtraining `PlayerExitListener` (`playerunit`) | live, when a watched squadron's plane leaves the map through the host's retreat leave-map arm |
+| ships | COTP usn_01 `CargoesExitID` (:1445, `Mission.Cargoes` = Cargo1..3); usn_03 Enterprise; usn_05 UsShips / FlagShip; usn_06 `USN_Sub`; usn_10 Iowa / Enterprise; usn_12 `listenerConvoyExited` (`ConvoyShips`); escort10 `JAPPT`; the five sea-training `PlayerExitListener`; BSM09 JapCVs, CHG4 AlliedCVs, CHG6 AlliedFleet (all three `exited = {false}`) | dormant until a ship producer calls the hook |
+
+**The USN01 and USN12 win rows are not these scripts.** Their logs load
+`Scripts/missions/USN\usn_1_marshall.lua` and `Scripts/missions/USN\usn_12_augusta.lua`
+(cc9-gunnery36 `g36_sb1on_usn01.log`, `g40_bm1_u12.log`), which subscribe no `exitzone` channel
+and read no `exitzone` KillReason; no file under scripts/missions/usn does. The branches named in
+V5 belong to the COTP-USN campaign (`usn_01_battle_of_eastern_solomons.lua`,
+`usn_12_indochina.lua`). So the switch cannot change USN01 or USN12, or any other win row
+(USN02, LOMP10, LOMP06, BSM01, USN15, ESMP08: no subscription in their scripts).
+
+The COTP branches, if those missions are run: `luaUS01CargoesExited` and `luaUS12ConvoyExited`
+watch ships and stay dormant; `luaUS01BomberExited` watches squadrons and becomes reachable
+after `luaUS01BombersMovie_end`, if an allied squadron then leaves the map (no PilotRetreat of
+allied planes follows that point in the script; the Japanese retreats at :688 are not watched).
+Existing logs: the only run of a COTP-USN script found (`g39_*_p8.log`, usn_12_Indochina) logs no
+`retreat leave map`; cause-4 deaths appear only in BSM01 and USNRM01 runs, whose scripts have no
+subscription. No change to any existing pair is predicted; RNG streams and order are untouched.

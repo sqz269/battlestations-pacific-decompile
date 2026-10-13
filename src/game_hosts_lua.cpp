@@ -3527,6 +3527,10 @@ void GameMissionLuaHost::run_spawn_queue_0094c490(float step_seconds) {
     if constexpr (kKillListenerDeadFirstBound) dispatch_hit_listeners_00988510();
     // Packet cc13-ver5: `entityKilled` before `kill`, as 0077D1A0 fires it inside the
     // destroy, before the flush that reaches 009813A0.
+    // Packet cc13-fix3: `exitzone` first of all, as 007F31E6 runs before 007F31A0's Kill(4).
+    if constexpr (kLuaExitZoneListenersBound) {
+        if (kLuaListenersBound) dispatch_exit_zone_listeners_00982120();
+    }
     if constexpr (kLuaEntityKilledListenersBound) {
         if (kLuaListenersBound) dispatch_entity_killed_listeners_00986480();
     }
@@ -5101,6 +5105,23 @@ int GameMissionLuaHost::run_add_listener_008c6760(lua_State* state, int argument
             }
             ::lua_pop(state, 1);
         }
+        if (kLuaExitZoneListenersBound && listener_key_equal(entry.channel, "exitzone")) {
+            // Packet cc13-fix3. 009726D0: callback, entity (+0Ch, 009721C0) and exited
+            // (+1Ch, a table of booleans).
+            listener_read_entity_set(state, 3, "entity", entry.entity_ids);
+            ::lua_getfield(state, 3, "exited");
+            if (::lua_type(state, -1) == LUA_TTABLE) {
+                const int values = ::lua_gettop(state);
+                ::lua_pushnil(state);
+                while (::lua_next(state, values) != 0) {
+                    if (::lua_type(state, -1) == LUA_TBOOLEAN) {
+                        entry.exited_values.push_back(::lua_toboolean(state, -1) != 0 ? 1 : 0);
+                    }
+                    ::lua_pop(state, 1);
+                }
+            }
+            ::lua_pop(state, 1);
+        }
     }
     for (ListenerEntry& existing : listeners_) {
         if (listener_key_equal(existing.channel, entry.channel)
@@ -5221,6 +5242,99 @@ void GameMissionLuaHost::dispatch_entity_killed_listeners_00986480() {
             if (kLuaListenerCallbackArgsBound) {
                 if (!push_resolved_entity_by_id(state_, victim)) lua_pushnil(state_);
                 ::lua_pushstring(state_, kReason);
+                pushed = 2;
+            }
+            if (::lua_pcall(state_, pushed, 0, 0) != 0) {
+                const char* message = lua_tolstring(state_, -1, nullptr);
+                note_error(message != nullptr ? message : std::string("(no message)"));
+            }
+            ::lua_settop(state_, top);
+        }
+    }
+}
+
+void GameMissionLuaHost::note_exit_zone_00982120(std::size_t unit, bool exited) {
+    if constexpr (kLuaExitZoneListenersBound) {
+        exit_zone_pending_.emplace_back(unit, exited);
+    } else {
+        static_cast<void>(unit);
+        static_cast<void>(exited);
+    }
+}
+
+// Packet cc13-fix3, under kLuaExitZoneListenersBound. 00982120's `exitzone` channel.
+// The plane producer is 007F31A0, whose 007F31E6 call fires (plane, 1) before the
+// plane's Kill(4) at 007F3418; the host records that kill as cause 4 (the units host's
+// retreat leave-map arm, note_kill_cause(..., 4)), so each such death is one event. The
+// entity is plane->vtable[140h]() = 007B97E0, plane+9D4h, the squadron (id = squadron
+// slot + 1). Other producers queue through note_exit_zone_00982120. 00968710 tests the
+// entity set (+0Ch), then the exited set (+1Ch); an empty set matches all.
+void GameMissionLuaHost::dispatch_exit_zone_listeners_00982120() {
+    if (units_hooks_ == nullptr || state_ == nullptr) return;
+    std::vector<std::pair<std::size_t, bool>> events;
+    events.swap(exit_zone_pending_);
+    const std::vector<std::pair<std::size_t, float>> deaths = units_hooks_->destroyed_units();
+    if (listener_exit_zone_seen_.size() < units_hooks_->count()) {
+        listener_exit_zone_seen_.resize(units_hooks_->count(), false);
+    }
+    for (const auto& death : deaths) {
+        const std::size_t unit = death.first;
+        if (unit >= listener_exit_zone_seen_.size() || listener_exit_zone_seen_[unit]) continue;
+        listener_exit_zone_seen_[unit] = true;
+        if (units_hooks_->kill_cause_00926d90(unit) != 4) continue;
+        const bsp::PlaneSquadronHostRecord* sq =
+            bsp::plane_squadron_registry().find_by_member_unit(unit);
+        if (sq == nullptr) continue;   // not a plane: 007F31A0 is the squadron's arm
+        const std::size_t entity = sq->squadron_unit != bsp::kPlaneSquadronNoUnit
+            ? sq->squadron_unit : unit;
+        // 007F31CF CMP [squadron+361h],0 / JNE past the call. SUBSTITUTION (labelled at
+        // the switch): only the deaths at the squadron's first exit clock fire.
+        const auto first = exit_zone_first_clock_.emplace(entity, death.second).first;
+        if (first->second != death.second) {
+            ++summary_.listener_exit_zone_latched;
+            continue;
+        }
+        events.emplace_back(entity, true);
+    }
+    for (const auto& event : events) {
+        ++summary_.listener_exit_zone_events;
+        const int victim = static_cast<int>(event.first + 1);
+        const int exited = event.second ? 1 : 0;
+        // 0097B8C0 collects every matching callback first, then 00887E50 calls each.
+        std::vector<std::string> callbacks;
+        for (const ListenerEntry& entry : listeners_) {
+            if (!listener_key_equal(entry.channel, "exitzone")) continue;
+            if (!entry.entity_ids.empty()
+                && std::find(entry.entity_ids.begin(), entry.entity_ids.end(), victim)
+                    == entry.entity_ids.end()) {
+                continue;
+            }
+            if (!entry.exited_values.empty()
+                && std::find(entry.exited_values.begin(), entry.exited_values.end(), exited)
+                    == entry.exited_values.end()) {
+                continue;
+            }
+            if (!entry.callback.empty()) callbacks.push_back(entry.callback);
+        }
+        const GameUnitRow* row = units_hooks_->unit_row(event.first);
+        log_.notef("  exitzone 00982120: entity \"%s\" exited=%d matches=%zu (packet cc13-fix3)",
+            row != nullptr ? row->name.c_str() : "?", exited, callbacks.size());
+        for (const std::string& name : callbacks) {
+            const int top = ::lua_gettop(state_);
+            lua_getfield(state_, LUA_GLOBALSINDEX, name.c_str());
+            if (!lua_isfunction(state_, -1)) {
+                ::lua_settop(state_, top);
+                continue;
+            }
+            ++summary_.listener_exit_zone_fires;
+            log_.notef("  exitzone listener 00982120: entity \"%s\" exited=%d -> %s() "
+                "(packet cc13-fix3)", row != nullptr ? row->name.c_str() : "?", exited,
+                name.c_str());
+            int pushed = 0;
+            if (kLuaListenerCallbackArgsBound) {
+                // 00884A90 the entity, 00884A30 the byte as a boolean.
+                if (!push_resolved_entity_by_id(state_, victim)) lua_pushnil(state_);
+                ::lua_pushboolean(state_, exited);
                 pushed = 2;
             }
             if (::lua_pcall(state_, pushed, 0, 0) != 0) {
@@ -8599,6 +8713,11 @@ void GameMissionLuaHost::report_mission_script_state() {
         log_.notef("summary mission script entityKilled listeners bound=1 deaths=%llu "
             "fires=%llu (00986480, packet cc13-ver5)", summary_.listener_entity_killed_deaths,
             summary_.listener_entity_killed_fires);
+    }
+    if constexpr (kLuaExitZoneListenersBound) {
+        log_.notef("summary mission script exitzone listeners bound=1 events=%llu latched=%llu "
+            "fires=%llu (00982120, packet cc13-fix3)", summary_.listener_exit_zone_events,
+            summary_.listener_exit_zone_latched, summary_.listener_exit_zone_fires);
     }
     if constexpr (kKillListenerDeadFirstBound) {
         log_.notef("summary mission script kill dead-first bound=1 published=%llu "

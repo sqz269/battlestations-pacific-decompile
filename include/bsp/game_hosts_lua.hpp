@@ -291,6 +291,33 @@ inline constexpr bool kKillListenerDeadFirstBound = false;
 // are ordered by unit index. False: every death is dispatched, as before.
 inline constexpr bool kKillListenerHarmOnlyBound = false;
 
+// Packet cc13-fix3 (docs/CC13_VER_8.md V5). The `exitzone` channel 00982120,
+// __thiscall(manager [00F8A0C4], entity, exited byte), RET 8. It replaces the entity with
+// entity->vtable[140h]() (a plane's is 007B97E0, MOV EAX,[ECX+9D4h]: its squadron; a ship's
+// is 0047F320, itself), boxes the entity's word +174h (00D1AF24) and the byte (00D1AF34),
+// and calls every subscription (vtable 00D1B69C, loader 009726D0: callback, `entity` +0Ch,
+// `exited` +1Ch, a boolean set) whose Matches 00968710 holds; each callback is called with
+// (entity, exited) through 00884A90 and 00884A30. Producers: 007F31A0 (the squadron's
+// plane-left-map arm, reached from 007EE410) fires (plane, 1) at 007F31E6 before its
+// Kill(4), only when squadron+361h is clear and the game state ([00E188A8], 004BCA50) is
+// not 9; 007C6C30 fires (plane, 0) at 007C6D65 (the leave warning); 0081BEB0 and 00826D70
+// are the ship out-of-map countdown, not hosted. This installation has 36 subscriptions;
+// the host never delivered one.
+// True: AddListener keeps the two sets, and each host plane death of cause 4 ("exitzone",
+// the units host's 007F31A0 Kill(4)) fires (squadron, true) once, before `entityKilled`
+// and `kill`, as 007F31E6 runs ahead of 007F3418. note_exit_zone_00982120 is the hook for
+// the ship producer (its entity is the ship) and for the plane warning.
+// SUBSTITUTIONS (labelled): the event is taken from the host's destroyed-unit rows on the
+// next mission frame, not inside 007F31A0; the +361h latch is not held by this host, so
+// only the first batch of a squadron's exits (the deaths at the clock of its first
+// cause-4 death: the arm's caller and the members its leader arm sends out) fires, and
+// later exits of the same squadron count as latched; the state-9 gate is not modelled
+// (the host never runs state 9 inside a mission); the warning (plane, 0) has no host
+// producer yet, and no subscription in this installation watches a plane with
+// exited = false. The HUD warning 00982120 builds for exited = 0 is not modelled.
+// False: exitzone subscriptions are stored and never fire, as before.
+inline constexpr bool kLuaExitZoneListenersBound = false;
+
 // Packet cc9_lua54_prcp01 (docs/SQUADRON_LAND_TASK.md 5gj): the four natives on the
 // config at [game+21C4h]. 008B2320 SetSimplifiedReconMultiplier stores Lua argument 1
 // at +74h (008B243C), 008B24A0 GetSimplifiedReconMultiplier pushes it (008B258A);
@@ -785,6 +812,9 @@ struct GameMissionLuaSummary {
     unsigned long long listener_kill_fires{0};
     unsigned long long listener_entity_killed_deaths{0};   // packet cc13-ver5
     unsigned long long listener_entity_killed_fires{0};
+    unsigned long long listener_exit_zone_events{0};      // packet cc13-fix3
+    unsigned long long listener_exit_zone_latched{0};
+    unsigned long long listener_exit_zone_fires{0};
     unsigned long long listener_kill_dead_first{0};          // packet cc13-ver5
     unsigned long long listener_kill_not_harm{0};            // packet cc13-ver8
     unsigned long long listener_kill_grace{0};               // packet cc13-ver8
@@ -1123,6 +1153,11 @@ public:
     const bsp::WorldMapBounds* world_border_bounds() const noexcept {
         return border_zones_loaded_ ? &border_bounds_ : nullptr;
     }
+    // Packet cc13-fix3, under kLuaExitZoneListenersBound: a producer's 00982120 call.
+    // `unit` is the units-host index of the entity after vtable[140h] (a ship is itself,
+    // a plane is its squadron); the event is dispatched on the next mission frame. A no-op
+    // while the switch is false.
+    void note_exit_zone_00982120(std::size_t unit, bool exited);
     // Stored +194,+1D4,+1D8,+214,+218 snapshot from the represented load.
     bool read_avoidance_tuning(std::array<float, 5>& values) const noexcept;
     // Packet cc9_ship_neighbour_list: the ShipAvoidance block settings+190h..+1D8h,
@@ -1421,6 +1456,7 @@ public:
     int run_is_listener_active_008c6bb0(lua_State* state, int argument_count);
     void dispatch_kill_listeners_009813a0();
     void dispatch_entity_killed_listeners_00986480();   // packet cc13-ver5
+    void dispatch_exit_zone_listeners_00982120();       // packet cc13-fix3
     void dispatch_recon_listeners_00980e50();
     void publish_recon_slot_tables_00806b10();
     void dispatch_hit_listeners_00988510();
@@ -1702,6 +1738,9 @@ private:
         // `entityKilled` (00972F00) under kLuaEntityKilledListenersBound: entity +0Ch
         // (009721C0, kept in entity_ids) and killReason +1Ch (00970FF0).
         std::vector<std::string> kill_reasons;
+        // `exitzone` (009726D0) under kLuaExitZoneListenersBound: entity +0Ch (in
+        // entity_ids) and exited +1Ch, a boolean set held as 0/1.
+        std::vector<int> exited_values;
     };
     std::vector<ListenerEntry> listeners_;
     // Packet cc9_get_closest_border_zone: world+711Ch..+7130h and world+7134h.
@@ -1713,6 +1752,11 @@ private:
     std::map<std::pair<std::size_t, std::size_t>, float> hit_rate_limit_;
     std::vector<bool> listener_death_seen_;
     std::vector<bool> listener_entity_killed_seen_;   // packet cc13-ver5
+    // Packet cc13-fix3: cause-4 deaths already taken, each squadron's first exit clock,
+    // and the producer events waiting for the next frame (entity unit, exited).
+    std::vector<bool> listener_exit_zone_seen_;
+    std::map<std::size_t, float> exit_zone_first_clock_;
+    std::vector<std::pair<std::size_t, bool>> exit_zone_pending_;
     // Packet cc13-ver8: the cause this host's Lua Kill (008AC5C0) passed, per unit; the
     // gunnery funnel does not keep it.
     std::map<std::size_t, int> lua_kill_cause_;
