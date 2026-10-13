@@ -15903,3 +15903,39 @@ the USN01 calls only hide hints, and the JM queues only order and delay dialog. 
 are unimplemented (`local\l53_B0_j6.log`), so no hint is ever active and the unimplemented `IsHintActive` returns no value (nil, `binding_trampoline` returns 0), which the JM
 wrappers read as "none". The image would delay queued dialogs while a critical hint shows; that is presentation
 timing, not flow. No binding made.
+
+### 5gi. The event-channel audit (queue 3b, cc9-lua54, 2026-10-12, read only)
+
+Census of `AddListener` in this installation's `scripts/missions` (`local\l54_listen_scan.py`; COTP and `ijn\JM`
+copies counted once below, training grounds and PRCP left out). "Host" is whether a run delivers the channel to
+Lua today: only `kill` (`009813A0`), `recon` (`00980E50`) and `hit` (`00988510`) have Lua dispatchers in
+`src/game_hosts_lua.cpp`. `command` (`00984300`) is reported by `GameCommandsHost::report_command_event_00984300`,
+but no `AddListener` fills `command_event_subscriptions`, so it never calls Lua.
+
+| channel | campaign subscribers (callback -> effect) | flow role |
+| --- | --- | --- |
+| `exitzone` | USN03 `luaUS03EnterpriseExits` -> **`MissionPhase = 5`**; USN01 `luaUS01CargoesExited`, `luaUS01BomberExited`; USN05/06/10 exits handled as the unit's death (`luaUS05USShipKilled`, `luaUSN06_SubmarineWasDestroyed`, `luaUSN10_IowaWasDestroyed`, `luaUSN10_EnterpriseWasDestroyed`); BSM09 `luaJapsEscaped` | **phase and fail paths** |
+| `hpEvent` | USN14 `luaUS14HQDamaged1` -> **`luaUS14CaptureCheck()`**; USN05/06/08 and USN14's convoy rows: dialogs | USN14 capture path; else dialog |
+| `shipLanded` | USN07 `luaUS07BoatsLanded` -> `Mission.Landed = 1` (never read again in usn_07); JM11/JM13 -> landing movie | presentation |
+| `entityKilled` | JM01 radio/Oklahoma -> dialog | dialog |
+| `generate` | JM08 PT/Mavis -> `PlayerCtrl` and spawn counters (a fallback `luaJM8CheckPlayerPTs` sets `PlayerCtrl` too); USN04 empty body; JM04 player spawn | player control |
+| `command` | JM06 `submove`, JM07 `fleet1move`/`atlantamove`, JM13 `junklistener`: filter `status = {"finish"}`; JM02 `BettyRetreat` (`command = {"retreat"}`, any status) | see below |
+| `ammoType` | USN01 retreat listeners, JM02 bomb timer | USN01 already wins |
+| `target`, `repair`, `Kill` | USN03 attack/vanguard, USN02/JM03 repair button (player input) | USN03 hidden objective |
+| `input`, `gui` | camera and tutorial input | player input |
+
+**The `command` "finish" filters can never match, in the image either.** The status the image posts at a path's
+end is `"finished"` (`009E5BBC PUSH 00D09FD8`, `00D09FD8` = "finished"; the moveto sibling and `00836D20` use the same
+literal), the binary holds no `"finish\0"` string, and the status filter is a string set: slot 0 of its vtable
+`00D1B73C` is `0097BC70`, a `BSP_NativeStringSet_Find` (`004C7F10`) over `BSP_NativeString_LessCaseInsensitive`
+(`00443D00`), so the test is a case-insensitive exact match. JM06's `Mission.PathEnd` (the AI subs' attack on the
+cargos), JM07's fleet path changes and JM13's junk traffic therefore never fire in the image, and the host's
+silence matches it. Only JM02's `BettyRetreat` (any status) would fire, which hands the Betty to the AI and plays a
+narrative.
+
+**Recommended bindings, in order:** (1) `exitzone` (`00982120`): USN03's phase 5 and the USN01/05/06/10 exit-as-
+death paths. Producers: `007C6C30` plane out-of-action countdown and `007F31A0` squadron left-map (both in
+`src/game_hosts_units.cpp`), `0081BEB0` and `00826D70` (unit virtuals, not hosted). (2) `hpEvent` (`00986B00`,
+threshold crossings of the subscription's `hp` on reason `damage`/`repair`, producer `00879070`
+ApplyDamage in the gunnery host): USN14's capture check. Neither is on a current win row. The Lua side
+(subscription parse plus the dispatcher) is this lane's; the producer hooks are gunnery/units edits to route.
