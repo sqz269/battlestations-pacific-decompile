@@ -952,4 +952,212 @@ struct DownloadEnumerationState {
 };
 void reset_content_enumeration_00994450(DownloadEnumerationState& state, XContentApi& api);
 
+// ===================================================================================================
+// Segment 11: scene-database presentation entities (camera paths, nav points, movie cameras, the
+// simple and periodic effects) and small helpers. Gameplay entities (LandingPoint, SpawnPoint,
+// LandConvoy, Stationary, Wreck, WaterMine, the unit creators) are left to cc9; see the doc.
+// ===================================================================================================
+
+// Routines the entity code calls. Entity offsets are the native ones (Win32): vtables at +0h, +10h,
+// +24h and +170h, the class id at +C4h, the world at +30h, the name string at +154h.
+class SceneEntityCalls {
+public:
+    virtual ~SceneEntityCalls() = default;
+    virtual NativeStringStorage& strings() = 0;
+    // 00BF55BE operator new + 00BF79F0 memset 0 of the same size; null when new failed.
+    virtual std::uint8_t* new_zeroed(std::size_t bytes) = 0;
+    // 006AF3D0 with ECX = [[00E188A8]+21D8h]: the 16-bit network id for a name (the by-value
+    // NativeString the caller builds with 0041E870 is consumed).
+    virtual std::uint16_t network_id_from_name_006af3d0(const char* name) = 0;
+    // 00928630, __thiscall(entity, 0, id): BSP_GameEntity_Construct.
+    virtual void construct_game_entity_00928630(std::uint8_t* entity, std::uint32_t id) = 0;
+    // 00875890, __thiscall(entity + 1E4h, entity, 0): the tick registration sub-object.
+    virtual void construct_tick_registration_00875890(std::uint8_t* tick, std::uint8_t* entity) = 0;
+    // 004E5850, __thiscall(entity, id): BSP_CameraPath_Construct, returns the entity.
+    virtual std::uint8_t* construct_camera_path_004e5850(std::uint8_t* entity, std::uint32_t id) = 0;
+    // Entity vtable +98h(parent, [[00E188A8]+19CCh], frame*): place in the world.
+    virtual void place_vslot98(std::uint8_t* entity, void* parent, void* frame) = 0;
+    // 004C1130 (frame job pool) +4h, vtable +10h: true while jobs defer hierarchy writes.
+    virtual bool frame_jobs_deferring() = 0;
+    // 004F03C0, __fastcall(ECX = properties, EDX = parent, frame): defer the hierarchy write.
+    virtual void defer_hierarchy_004f03c0(void* properties, void* parent, void* frame) = 0;
+    // 00928560 / 00928570: base register / unregister; 00484540 push_back and the erase of
+    // [world+390h] (the camera-path list, first node at +394h).
+    virtual void register_base_00928560(std::uint8_t* entity) = 0;
+    virtual void unregister_base_00928570(std::uint8_t* entity) = 0;
+    virtual void camera_path_list_push_back_00484540(std::uint8_t* world, std::uint8_t* entity) = 0;
+    virtual void camera_path_list_erase(std::uint8_t* world, void* node) = 0;
+    // References (+4h counts, slot 0 at zero).
+    virtual void release_reference(void* object) = 0;
+    // 00875490 (tick element destructor, ECX = entity + 1E4h or null) and 009287B0 (entity).
+    virtual void destroy_tick_element_00875490(std::uint8_t* tick) = 0;
+    virtual void destroy_game_entity_009287b0(std::uint8_t* entity) = 0;
+};
+
+// The name tail every creator shares (004E9A82..): resize entity+154h to strlen(name) WITHOUT
+// preserve (0041DD40 with 0), then copy exactly the length bytes when the buffer is not null.
+void store_entity_name(std::uint8_t* entity, const char* name, NativeStringStorage& strings);
+
+// 004E99B0 NavPoint (class 41h, vtables 00CE8550/8534/852C/8528), 004E9AE0 MovieCamPos (42h,
+// 00CE86D8/86C0/86B8/86B4) and 004E9C10 MovieCamLookat (43h, 00CE8860/8848/8840/883C):
+// __fastcall(ECX unused, EDX = name, parent, frame*, two unread words), RET 10h. new(1E4h) zeroed;
+// network id from the name; GameEntity construct; vtables and class id; place (vtable +98h); name.
+// A failed operator new leaves a null entity that the image then dereferences; this stops instead.
+struct FixedEntitySpec {
+    std::uint32_t size;
+    std::uint32_t class_id;
+    std::uint32_t vtable_00, vtable_10, vtable_24, vtable_170;
+};
+inline constexpr FixedEntitySpec kNavPointSpec{0x1E4, 0x41, 0x00ce8550, 0x00ce8534, 0x00ce852c, 0x00ce8528};
+inline constexpr FixedEntitySpec kMovieCamPosSpec{0x1E4, 0x42, 0x00ce86d8, 0x00ce86c0, 0x00ce86b8, 0x00ce86b4};
+inline constexpr FixedEntitySpec kMovieCamLookatSpec{0x1E4, 0x43, 0x00ce8860, 0x00ce8848, 0x00ce8840, 0x00ce883c};
+std::uint8_t* create_named_scene_entity_004e99b0(const FixedEntitySpec& spec, const char* name, void* parent,
+                                                 void* frame, SceneEntityCalls& calls);
+
+// 004EA760, CameraPath (class 4Ah, 210h): as above with 004E5850 as the constructor; the 40h-byte
+// frame is copied to a local and the copy's address is passed to vtable +98h.
+std::uint8_t* create_camera_path_004ea760(const char* name, void* parent, const void* frame,
+                                          SceneEntityCalls& calls);
+
+// 004E7EF0, __thiscall(ECX = entity, id), RET 4: SimpleEffect (class 5Bh): GameEntity construct,
+// vtables 00CE8BD0/8BB4/8BAC/8BA8, +1E4h/+1E8h = 0.
+std::uint8_t* construct_simple_effect_004e7ef0(std::uint8_t* entity, std::uint32_t id, SceneEntityCalls& calls);
+// 004E7F90, __thiscall(ECX = entity, id), RET 4: PeriodicEffect (class 5Ch): GameEntity construct,
+// tick registration at +1E4h, vtables 00CE8D68/8D4C/8D44/8D40, +1E4h vtable 00CE8D28, +220h/+224h 0.
+std::uint8_t* construct_periodic_effect_004e7f90(std::uint8_t* entity, std::uint32_t id, SceneEntityCalls& calls);
+// 004E8060, __fastcall(ECX = entity), RET: release +224h then +220h (zeroing both), the tick element
+// destructor (entity + 1E4h), the GameEntity destructor.
+void destruct_periodic_effect_004e8060(std::uint8_t* entity, SceneEntityCalls& calls);
+// 004F0DB0 (SimpleEffect, 1ECh) and 004F0EB0 (PeriodicEffect, 228h): __fastcall(ECX unused, EDX =
+// name, parent, frame*, properties), RET 10h. new zeroed; construct (id 0); place through vtable
+// +98h unless the frame jobs defer, in which case 004F03C0(properties, parent, frame); name.
+std::uint8_t* create_simple_effect_004f0db0(const char* name, void* parent, void* frame, void* properties,
+                                            SceneEntityCalls& calls);
+std::uint8_t* create_periodic_effect_004f0eb0(const char* name, void* parent, void* frame, void* properties,
+                                              SceneEntityCalls& calls);
+
+// 004E7E90 / 004E7EB0, CameraPath vtable +130h / +134h, __fastcall(ECX = entity), RET: base register
+// then push into [world+390h]; base unregister then erase the first node whose +8h is the entity
+// (walking +4h links from [world+394h]).
+void register_camera_path_004e7e90(std::uint8_t* entity, SceneEntityCalls& calls);
+void unregister_camera_path_004e7eb0(std::uint8_t* entity, SceneEntityCalls& calls);
+
+// 004E7DD0, __fastcall(ECX = array), RET: vtable 00CE8BA4, free +0Ch (00BF6989) when set and zero
+// it, zero +8h and +4h. 004E7E20, __fastcall(ECX = cell), RET: free *cell (unconditionally) and zero.
+class FreeCalls {
+public:
+    virtual ~FreeCalls() = default;
+    virtual void free_00bf6989(void* block) = 0;
+};
+void destruct_simple_array_004e7dd0(std::uint8_t* array, FreeCalls& calls);
+void free_owned_buffer_004e7e20(void** cell, FreeCalls& calls);
+
+// 004E95F0 / 004F16E0 / 004F2500: MOV EAX, imm32; RET: the class-name literals "LandingPoint",
+// "SpawnPoint" and "LandConvoy" (vtable slots, no static callers).
+const char* landing_point_class_name_004e95f0() noexcept;
+const char* spawn_point_class_name_004f16e0() noexcept;
+const char* land_convoy_class_name_004f2500() noexcept;
+
+// 004F2590 and its duplicate COMDAT 004F25B0, __thiscall(ECX = unit), RET, AL: 008DDF90 with ECX =
+// [game + 21A4h + [game + 18ECh] * 4] (the local player's SzurkeNyil set) and the unit. A query.
+class LocalObjectiveSet {
+public:
+    virtual ~LocalObjectiveSet() = default;
+    virtual bool contains_unit_008ddf90(const void* unit) = 0;
+};
+bool unit_is_local_player_objective_004f2590(const void* unit, LocalObjectiveSet& local_player_set);
+
+// 004F1740: MOV EAX, 6; RET (the base sensor category). 004F17F0: RET 8 (a two-argument no-op).
+std::int32_t sensor_category_unclassified_004f1740() noexcept;
+void stub_ret8_004f17f0(std::uint32_t, std::uint32_t) noexcept;
+
+// ===================================================================================================
+// Segment 11: front-end screens.
+// ===================================================================================================
+
+// The screen object as the base virtuals see it: vtable +0h; +4h wanted byte, +5h active byte.
+class FrontEndScreenObject {
+public:
+    virtual ~FrontEndScreenObject() = default;
+    virtual void update_20(float seconds) = 0;  // vtable +20h
+};
+// 004F71F0, __thiscall(ECX = screen, float), RET 4: tail call of the screen's vtable +20h.
+void update_front_end_screen_004f71f0(FrontEndScreenObject& screen, float seconds);
+// 004F75A0 (+18h enter, RET), 004F75B0 (+1Ch exit, RET), 004F75C0 (+20h update, RET 4), 004F75D0
+// (+24h collect children, RET 4): the empty base virtuals of vtable 00CEAE54.
+void base_screen_enter_004f75a0() noexcept;
+void base_screen_exit_004f75b0() noexcept;
+void base_screen_update_004f75c0(float) noexcept;
+void base_screen_collect_children_004f75d0(void*) noexcept;
+// 004F8940: RET, the movie-player profile slot +18h.
+void movie_player_vslot18_noop_004f8940() noexcept;
+
+// 004F7230, __fastcall(ECX = vector header), RET, AL: no storage, or (last - first) >> 2 == 0.
+bool pointer_vector_is_empty_004f7230(const NativeVectorHeader& vector) noexcept;
+
+// 004F8390, __fastcall(ECX = level, EDX = saved set), RET (tail JMP 004F7620): byte 00E18CDC = 1,
+// assign the saved set into the level vector at 00E18CE8 + level * 10h (004F81D0), then recompute
+// the requests. The byte is passed in.
+class ScreenSetCalls {
+public:
+    virtual ~ScreenSetCalls() = default;
+    virtual void assign_level_vector_004f81d0(std::int32_t level, const void* saved_set) = 0;
+    virtual void recompute_requests_004f7620() = 0;
+};
+void restore_level_set_004f8390(std::int32_t level, const void* saved_set, std::uint8_t& recompute_byte_e18cdc,
+                                ScreenSetCalls& calls);
+
+// 004F8B60, __thiscall(ECX = player, const NativeString* name), RET 4: name equals +FCh
+// case-insensitively (00435C40) AND the movie is playing (BSP_GuiMovie_IsPlaying).
+class MoviePlayerCalls {
+public:
+    virtual ~MoviePlayerCalls() = default;
+    virtual bool equals_insensitive_00435c40(const void* player_name_fc, const std::string& name) = 0;
+    virtual bool movie_is_playing() = 0;
+};
+bool movie_player_is_playing_named_004f8b60(const void* player_name_fc, const std::string& name,
+                                            MoviePlayerCalls& calls);
+
+// 004F8FA0, __fastcall(ECX = screen), RET: zero the 28h order dwords +138h..+1D4h.
+void reset_tactical_library_order_004f8fa0(std::uint8_t* screen) noexcept;
+// 004F90A0, __fastcall(ECX = flag), RET: +0h = +4h = 0, +8h = the event handle (BSP_Event_Create).
+struct SignalledFlag {
+    std::uint32_t word_00;
+    std::uint32_t word_04;
+    void* event_08;
+};
+SignalledFlag& construct_signalled_flag_004f90a0(SignalledFlag& flag, void* (*create_event)());
+// 004F90D0, __fastcall(ECX = out0, EDX = out1, out2), RET 4: the edge-or-repeat state of front-end
+// actions 46h, 47h and 4Ah.
+void read_navigation_actions_004f90d0(std::uint8_t& out0, std::uint8_t& out1, std::uint8_t& out2,
+                                      bool (*action_edge_or_repeat)(std::int32_t));
+// 004F91A0, listener slot 6 of 00CEB97C, __thiscall(ECX = screen, widget*, bool focused), RET 8.
+class GuiWidget {
+public:
+    virtual ~GuiWidget() = default;
+    virtual std::int32_t kind_5c() = 0;                         // vtable +5Ch
+    virtual void set_alpha_4c(float alpha) = 0;                 // vtable +4Ch
+    virtual std::int16_t state_94() = 0;                        // vtable +94h
+    virtual void set_highlight_84(bool on) = 0;                 // vtable +84h
+    virtual void set_focus_88(bool on, std::int32_t, float) = 0;  // vtable +88h
+};
+void tactical_library_on_focus_004f91a0(GuiWidget* const* rows_a_170, GuiWidget* const* rows_b_210,
+                                        GuiWidget* arrow_50c, GuiWidget* arrow_510, GuiWidget& widget,
+                                        bool focused);
+// 004F93A0, __fastcall(ECX = singleton), RET: clear the published word 00E18D4C, singleton-base
+// vtable 00CE3818.
+void destruct_tactical_library_singleton_004f93a0(std::uint32_t& vtable_00, void*& published_e18d4c) noexcept;
+// 004F9980 / 004F9A00, __fastcall(ECX = key, EDX = out int*, LuaObject table BY VALUE (14h)), RET
+// 14h: table[key] as an integer (00B67800 then BSP_LuaObject_GetInteger); both temporaries destroyed.
+class LuaFieldReader {
+public:
+    virtual ~LuaFieldReader() = default;
+    virtual std::int32_t integer_field(const char* key) = 0;
+};
+void read_lua_integer_field_004f9980(const char* key, std::int32_t& out, LuaFieldReader& table);
+// 004F9A80, __cdecl(char* dst, fmt, ...): _vsprintf_s(dst, 80h, fmt, args).
+int format_string128_004f9a80(char* dst, const char* format, ...);
+// 004F9AB0, __fastcall(ECX = const char*), RET: 'a'..'z' -> 'A'..'Z', else the (signed) byte.
+std::int32_t to_upper_ascii_004f9ab0(const char* c) noexcept;
+
 }  // namespace bsp::engine_seg11_35_66_cc13

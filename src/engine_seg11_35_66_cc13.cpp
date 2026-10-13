@@ -8,6 +8,7 @@
 #include <intrin.h>
 
 #include <cctype>
+#include <cstdarg>
 #include <cstdio>
 #include <cstring>
 #include <new>
@@ -1537,6 +1538,282 @@ void reset_content_enumeration_00994450(DownloadEnumerationState& state, XConten
         state.cursor_83c = 0;
     }
     api.close_handle(handle);
+}
+
+// ===================================================================================================
+// Segment 11: scene presentation entities and helpers.
+// ===================================================================================================
+
+namespace {
+
+template <typename T>
+T& field(std::uint8_t* base, std::size_t offset) {
+    return *reinterpret_cast<T*>(base + offset);
+}
+
+void stamp_entity(std::uint8_t* entity, const FixedEntitySpec& spec) {
+    field<std::uint32_t>(entity, 0x000) = spec.vtable_00;
+    field<std::uint32_t>(entity, 0x010) = spec.vtable_10;
+    field<std::uint32_t>(entity, 0x024) = spec.vtable_24;
+    field<std::uint32_t>(entity, 0x170) = spec.vtable_170;
+    field<std::uint32_t>(entity, 0x0C4) = spec.class_id;
+}
+
+}  // namespace
+
+void store_entity_name(std::uint8_t* entity, const char* name, NativeStringStorage& strings) {
+    auto& s = *reinterpret_cast<NativeString*>(entity + 0x154);
+    const std::uint32_t length = name != nullptr ? static_cast<std::uint32_t>(std::strlen(name)) : 0u;
+    s.resize_0041dd40(strings, length, false);
+    if (s.data() != nullptr) {
+        std::memcpy(s.data(), name, s.length());
+    }
+}
+
+std::uint8_t* create_named_scene_entity_004e99b0(const FixedEntitySpec& spec, const char* name, void* parent,
+                                                 void* frame, SceneEntityCalls& calls) {
+    std::uint8_t* entity = calls.new_zeroed(spec.size);
+    if (entity == nullptr) {
+        return nullptr;  // the image calls vtable +98h through the null pointer here
+    }
+    const std::uint16_t id = calls.network_id_from_name_006af3d0(name);
+    calls.construct_game_entity_00928630(entity, id);
+    stamp_entity(entity, spec);
+    calls.place_vslot98(entity, parent, frame);
+    store_entity_name(entity, name, calls.strings());
+    return entity;
+}
+
+std::uint8_t* create_camera_path_004ea760(const char* name, void* parent, const void* frame,
+                                          SceneEntityCalls& calls) {
+    std::uint8_t* entity = calls.new_zeroed(0x210);
+    if (entity == nullptr) {
+        return nullptr;
+    }
+    entity = calls.construct_camera_path_004e5850(entity, calls.network_id_from_name_006af3d0(name));
+    std::uint32_t local_frame[16];
+    std::memcpy(local_frame, frame, sizeof(local_frame));  // REP MOVSD 10h dwords at 004EA7E0
+    calls.place_vslot98(entity, parent, local_frame);
+    store_entity_name(entity, name, calls.strings());
+    return entity;
+}
+
+std::uint8_t* construct_simple_effect_004e7ef0(std::uint8_t* entity, std::uint32_t id, SceneEntityCalls& calls) {
+    calls.construct_game_entity_00928630(entity, id);
+    field<std::uint32_t>(entity, 0x000) = 0x00ce8bd0;
+    field<std::uint32_t>(entity, 0x010) = 0x00ce8bb4;
+    field<std::uint32_t>(entity, 0x024) = 0x00ce8bac;
+    field<std::uint32_t>(entity, 0x170) = 0x00ce8ba8;
+    field<std::uint32_t>(entity, 0x1E4) = 0;
+    field<std::uint32_t>(entity, 0x1E8) = 0;
+    field<std::uint32_t>(entity, 0x0C4) = 0x5B;
+    return entity;
+}
+
+std::uint8_t* construct_periodic_effect_004e7f90(std::uint8_t* entity, std::uint32_t id, SceneEntityCalls& calls) {
+    calls.construct_game_entity_00928630(entity, id);
+    calls.construct_tick_registration_00875890(entity + 0x1E4, entity);
+    field<std::uint32_t>(entity, 0x000) = 0x00ce8d68;
+    field<std::uint32_t>(entity, 0x010) = 0x00ce8d4c;
+    field<std::uint32_t>(entity, 0x024) = 0x00ce8d44;
+    field<std::uint32_t>(entity, 0x170) = 0x00ce8d40;
+    field<std::uint32_t>(entity, 0x1E4) = 0x00ce8d28;
+    field<std::uint32_t>(entity, 0x220) = 0;
+    field<std::uint32_t>(entity, 0x224) = 0;
+    field<std::uint32_t>(entity, 0x0C4) = 0x5C;
+    return entity;
+}
+
+void destruct_periodic_effect_004e8060(std::uint8_t* entity, SceneEntityCalls& calls) {
+    for (std::size_t offset : {std::size_t{0x224}, std::size_t{0x220}}) {
+        if (void* object = field<void*>(entity, offset)) {
+            calls.release_reference(object);
+            field<void*>(entity, offset) = nullptr;
+        }
+    }
+    calls.destroy_tick_element_00875490(entity != nullptr ? entity + 0x1E4 : nullptr);
+    calls.destroy_game_entity_009287b0(entity);
+}
+
+namespace {
+
+std::uint8_t* create_effect(std::uint32_t size, std::uint8_t* (*construct)(std::uint8_t*, std::uint32_t, SceneEntityCalls&),
+                            const char* name, void* parent, void* frame, void* properties, SceneEntityCalls& calls) {
+    std::uint8_t* entity = calls.new_zeroed(size);
+    if (entity == nullptr) {
+        return nullptr;  // the image continues with a null entity
+    }
+    entity = construct(entity, 0, calls);
+    if (!calls.frame_jobs_deferring()) {
+        calls.place_vslot98(entity, parent, frame);
+    } else {
+        calls.defer_hierarchy_004f03c0(properties, parent, frame);
+    }
+    store_entity_name(entity, name, calls.strings());
+    return entity;
+}
+
+}  // namespace
+
+std::uint8_t* create_simple_effect_004f0db0(const char* name, void* parent, void* frame, void* properties,
+                                            SceneEntityCalls& calls) {
+    return create_effect(0x1EC, construct_simple_effect_004e7ef0, name, parent, frame, properties, calls);
+}
+
+std::uint8_t* create_periodic_effect_004f0eb0(const char* name, void* parent, void* frame, void* properties,
+                                              SceneEntityCalls& calls) {
+    return create_effect(0x228, construct_periodic_effect_004e7f90, name, parent, frame, properties, calls);
+}
+
+void register_camera_path_004e7e90(std::uint8_t* entity, SceneEntityCalls& calls) {
+    calls.register_base_00928560(entity);
+    calls.camera_path_list_push_back_00484540(field<std::uint8_t*>(entity, 0x30), entity);
+}
+
+void unregister_camera_path_004e7eb0(std::uint8_t* entity, SceneEntityCalls& calls) {
+    calls.unregister_base_00928570(entity);
+    std::uint8_t* world = field<std::uint8_t*>(entity, 0x30);
+    for (auto* node = field<std::uint8_t*>(world, 0x394); node != nullptr; node = field<std::uint8_t*>(node, 4)) {
+        if (field<std::uint8_t*>(node, 8) == entity) {
+            calls.camera_path_list_erase(world, node);
+            return;
+        }
+    }
+}
+
+void destruct_simple_array_004e7dd0(std::uint8_t* array, FreeCalls& calls) {
+    field<std::uint32_t>(array, 0) = 0x00ce8ba4;
+    if (void* block = field<void*>(array, 0xC)) {
+        calls.free_00bf6989(block);
+        field<void*>(array, 0xC) = nullptr;
+    }
+    field<std::uint32_t>(array, 8) = 0;
+    field<std::uint32_t>(array, 4) = 0;
+}
+
+void free_owned_buffer_004e7e20(void** cell, FreeCalls& calls) {
+    calls.free_00bf6989(*cell);
+    *cell = nullptr;
+}
+
+const char* landing_point_class_name_004e95f0() noexcept { return "LandingPoint"; }
+const char* spawn_point_class_name_004f16e0() noexcept { return "SpawnPoint"; }
+const char* land_convoy_class_name_004f2500() noexcept { return "LandConvoy"; }
+
+bool unit_is_local_player_objective_004f2590(const void* unit, LocalObjectiveSet& local_player_set) {
+    return local_player_set.contains_unit_008ddf90(unit);
+}
+
+std::int32_t sensor_category_unclassified_004f1740() noexcept { return 6; }
+
+void stub_ret8_004f17f0(std::uint32_t, std::uint32_t) noexcept {}
+
+// ---------------------------------------------------------------------------------------------------
+// Front-end screens.
+
+void update_front_end_screen_004f71f0(FrontEndScreenObject& screen, float seconds) {
+    screen.update_20(seconds);
+}
+
+void base_screen_enter_004f75a0() noexcept {}
+void base_screen_exit_004f75b0() noexcept {}
+void base_screen_update_004f75c0(float) noexcept {}
+void base_screen_collect_children_004f75d0(void*) noexcept {}
+void movie_player_vslot18_noop_004f8940() noexcept {}
+
+bool pointer_vector_is_empty_004f7230(const NativeVectorHeader& vector) noexcept {
+    if (vector.first == nullptr) {
+        return true;
+    }
+    return ((vector.last - vector.first) >> 2) == 0;
+}
+
+void restore_level_set_004f8390(std::int32_t level, const void* saved_set, std::uint8_t& recompute_byte_e18cdc,
+                                ScreenSetCalls& calls) {
+    recompute_byte_e18cdc = 1;
+    calls.assign_level_vector_004f81d0(level, saved_set);
+    calls.recompute_requests_004f7620();
+}
+
+bool movie_player_is_playing_named_004f8b60(const void* player_name_fc, const std::string& name,
+                                            MoviePlayerCalls& calls) {
+    return calls.equals_insensitive_00435c40(player_name_fc, name) && calls.movie_is_playing();
+}
+
+void reset_tactical_library_order_004f8fa0(std::uint8_t* screen) noexcept {
+    std::memset(screen + 0x138, 0, 0x1D8 - 0x138);
+}
+
+SignalledFlag& construct_signalled_flag_004f90a0(SignalledFlag& flag, void* (*create_event)()) {
+    flag.word_00 = 0;
+    flag.word_04 = 0;
+    flag.event_08 = create_event();
+    return flag;
+}
+
+void read_navigation_actions_004f90d0(std::uint8_t& out0, std::uint8_t& out1, std::uint8_t& out2,
+                                      bool (*action_edge_or_repeat)(std::int32_t)) {
+    out0 = action_edge_or_repeat(0x46) ? 1 : 0;
+    out1 = action_edge_or_repeat(0x47) ? 1 : 0;
+    out2 = action_edge_or_repeat(0x4A) ? 1 : 0;
+}
+
+void tactical_library_on_focus_004f91a0(GuiWidget* const* rows_a_170, GuiWidget* const* rows_b_210,
+                                        GuiWidget* arrow_50c, GuiWidget* arrow_510, GuiWidget& widget,
+                                        bool focused) {
+    if (widget.kind_5c() == 3) {
+        widget.set_alpha_4c(focused ? 0.5f : 1.0f);  // 00CE3800 / 00D7A24C
+        return;
+    }
+    if (&widget == arrow_50c || &widget == arrow_510) {
+        if (widget.state_94() == 3) {
+            return;
+        }
+    } else {
+        for (int i = 0; i < 0x28; ++i) {
+            if (&widget == rows_a_170[i] || &widget == rows_b_210[i]) {
+                if (widget.kind_5c() != 6) {
+                    return;
+                }
+                if (widget.state_94() > 2) {
+                    return;
+                }
+                break;
+            }
+        }
+    }
+    if (widget.kind_5c() != 6) {
+        if (widget.kind_5c() == 0x12) {
+            widget.set_highlight_84(focused);
+        }
+        return;
+    }
+    widget.set_focus_88(focused, 0, 1.0f);
+}
+
+void destruct_tactical_library_singleton_004f93a0(std::uint32_t& vtable_00, void*& published_e18d4c) noexcept {
+    published_e18d4c = nullptr;
+    vtable_00 = 0x00ce3818;
+}
+
+void read_lua_integer_field_004f9980(const char* key, std::int32_t& out, LuaFieldReader& table) {
+    out = table.integer_field(key);
+}
+
+int format_string128_004f9a80(char* dst, const char* format, ...) {
+    va_list args;
+    va_start(args, format);
+    const int written = vsprintf_s(dst, 0x80, format, args);
+    va_end(args);
+    return written;
+}
+
+std::int32_t to_upper_ascii_004f9ab0(const char* c) noexcept {
+    const auto value = static_cast<signed char>(*c);
+    if (value > '`' && value < '{') {
+        return value - 0x20;
+    }
+    return value;
 }
 
 }  // namespace bsp::engine_seg11_35_66_cc13

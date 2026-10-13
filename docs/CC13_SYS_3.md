@@ -110,6 +110,54 @@ parameter defaults (`init_fish_school_params_00708b00`) were read from the image
 - The XLive stats records, the online-system create/destroy pair, and the content-package array
   template (18h records) are complete.
 
+## Segment 11
+
+- Presentation entities: NavPoint, MovieCamPos and MovieCamLookat share one creator body
+  (`create_named_scene_entity_004e99b0` with a `FixedEntitySpec`); CameraPath copies its 40h frame to a
+  local first; the SimpleEffect (5Bh) and PeriodicEffect (5Ch) creators defer the hierarchy write to
+  004F03C0 while the frame-job pool says so. Every creator ends with the same name tail: resize
+  entity+154h to strlen(name) without preserve, then copy exactly that many bytes.
+- Front end: the update trampoline 004F71F0, the four empty base virtuals of vtable 00CEAE54,
+  004F8390 (ECX is the LEVEL: the target vector is 00E18CE8 + level*10h; the ledger comment called the
+  argument unused), the tactical-library helpers and the small Lua / string helpers.
+
+## Backfilled records (existing reconstructions, checked)
+
+| address | existing code |
+|---|---|
+| 00994100, 00994110 | `src/network_online_cc13.cpp` (listing: CMP [ECX+60h],0/1; SETE AL) |
+| 00709AC0, 00709B60 | `src/band_0067_cc13.cpp` (listing checked: FSUB / FMUL-then-FADD with float temporaries) |
+| 0098DF90 | `src/band_0090_cc13.cpp` `recommend_detail_level` |
+| 004F7740 | `src/simulation_gate.cpp` |
+| 004F85D0, 004F8670, 004F87B0 | `src/frontend_screen_sets.cpp` `set_front_end_screen_set_level` (levels 2, 3, 5) |
+| 004F8830 | `src/frontend_states.cpp` `run_front_end_screen_pump` |
+| 004F05F0, 004F06C0, 004F0790, 004F0860, 004F0930, 004F0A00, 004F0FB0, 004F10B0 | `src/scene_unit_creators.cpp` `create_scene_unit_004f0520` with the class row |
+| 004E98E0 | `register_scene_unit_004e96d0` (the thunk is one JMP) |
+| 004E98F0, 004E9900, 004E9910 | same, **partial**: the 006BCF40 / 008433C0 tail calls are not modelled |
+| 004F2800 | `src/scene_entity_factory.cpp` class table, **partial** (data projection, no map inserts) |
+| 004F1D70 | `src/scene_record_side_blocks.cpp`, **partial** (the MultiPlay slot table only) |
+| 004EB5A0 | `src/scene_weather_cc13.cpp` `read_particle_set` |
+| 004F4840 (004F4430, 004F3810 partial) | `src/plane_follow_law.cpp` `circle_tangent_points_004f4840` (fused chain) |
+| 004F49F0 | `src/game_hosts_ship_ai.cpp` `segment_distance_2d_004f49f0` |
+| 004E9620, 004F2560 | `src/entity_class_ids.cpp` `entity_is_kind_of_inherited` (the model also requires the dynamic id to be registered) |
+
+## For cc9 (gameplay entities in segment 11, not reconstructed here)
+
+These create, register or tear down entities that the simulation acts on, so they stay with cc9:
+LandingPoint (004E9520, 004E9670, 004E9690, 004E9D40), SpawnPoint (004F1610, 004F1910, 004F1940,
+004F19A0, 004F1A60), LandConvoy (004F2410, 004F25D0, 004F2600, 004F2660, 004F2700), Stationary
+(004F0BE0), Wreck (004F0CC0), WaterMine (004E9F80), the stock lists (004EA080), the scene header copy
+(004E8BF0, reached from cc9's 004F1D70), Path (004EA650) and Landscape (004F11C0, 004F1390, 004F1400,
+004F1420, 004F1460; cc9 packet `cc9_scene_path_landscape` binds the Path and Landscape creators).
+The entity creators share the shape documented above (`store_entity_name`, vtable +98h placement), so a
+cc9 reconstruction can reuse `create_named_scene_entity_004e99b0` with a spec.
+
+## Not reconstructed: library code
+
+The 27 `std_*` functions in segment 66 (`00990740`-`009926A0`: basic_filebuf, ctype<char>, ios_base,
+use_facet, runtime_error, ...) are MSVC 2005 standard library instantiations. Their library names are
+kept and no record is written, as in docs/CC13_FILES_1.md.
+
 ## Records
 
 | group | reconstructed and recorded |
@@ -117,6 +165,8 @@ parameter defaults (`init_fish_school_params_00708b00`) were read from the image
 | segment 35 message manager | 36 |
 | segment 35 pools and fish/flag helpers | 35 |
 | segment 66 | 42 |
+| segment 11 (new) | 38 |
+| backfills | 31 |
 
 ## Handoff
 
