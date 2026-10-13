@@ -16075,3 +16075,25 @@ both switches ON `local\l55_G`. Reference env, `--stop-after-end 40`.
   `squadron retest: target Junyo dead` ends the leader's attack at launch. That hunk was sent to the lead (gunnery
   lane); it is identical while respawn is OFF, because duplicate names exist only with respawn ON.
 - **Flipped both ON** (wins identical; respawn is the image's 0046D930 behaviour, the harness rule is a player pick).
+
+## 5gm. PRCP01 after the Junyo: the checkpoint's GetCatapultStock (packet `cc9_lua55_catapult_stock`, cc9-lua55, 2026-10-13)
+
+With main 974089548 (gunnery39's live-name rule in the 0071EBF0 resolver) merged, `local\l55_R1_p01c.log` (60000
+frames, `l55_p01_c.txt`): the Avengers drop three torpedoes, later strikes follow, and **the Junyo is sunk at
+752.04 s** (`kill listener 009813a0: victim "Junyo" attacker "Enterprise_sqn08" -> luaUS03JunyoKilled()`). The
+movie ends, `Blackout(true, "luaUS03SaveCheckpoint1")` fires, and the callback fails:
+`blackout callback luaUS03SaveCheckpoint1 failed: commandhelpers.lua:16462: attempt to compare number with nil`.
+That line is `if GetCatapultStock(unit) > 0 then` in commandhelpers' `luaCheckpoint` ship branch (this
+installation's commandhelpers.lua, mtime 2024-10-29), and `GetCatapultStock` (`00892DE0`) was an UNIMPLEMENTED row
+that pushes nothing. `luaUS03BlackoutDelay` -> `luaUS03GotoPhase4` never runs: the mission stays at MissionPhase 666.
+Any mission whose checkpoint walks a ship hits the same error.
+
+**The binding** (`kLuaGetCatapultStockBound`, `include/bsp/game_hosts_lua.hpp`, OFF): vtable[5Ch](5), then
+max(unit+638h, 0), else 0. unit+638h is set at init from `[unit+538h]+C8h` (`0095E5B0`, the class
+`Catapult.LaunchStock`, docs/AIR_OPERATIONS.md) and is read here from the entity's `Class.Catapult.LaunchStock`.
+LABELLED: the catapult-launch decrement (`00957450`) and `SetCatapultStock` (`009539A0`) are not built.
+
+**Predictions.** OFF identical. PRCP01 ON: `luaUS03SaveCheckpoint1` completes, `usn03.timepasses`, phase 4 starts
+(the Zuiho group respawns, the reinforcement movie runs, `dlg_Cruisersinrange` -> `luaUS03Primary4Add`). Win rows:
+identical unless their scripts reach `luaCheckpoint` with a ship alive, in which case the post-checkpoint code
+that used to be cut short now runs.
