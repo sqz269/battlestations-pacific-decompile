@@ -13406,3 +13406,31 @@ reports `extra_sends=0`, and the census has no rapid-class gun with an artillery
 
 A moved pair would mean a rapid gun holds `+4D4h` across a step where `0072D130` does not send, which the
 OFF census says never happens on these rows.
+
+## 209. Dropped torpedo break-up: 008568E0's second limit, `kTorpedoMaxFallBreakupBound`, OFF (lead queue item 2; cc9-gunnery40, 2026-10-13)
+
+**Image.** `0085690C..0085691D`: `0042B2F0` measures the vector at shot `+8h` (the velocity, which `00856420` writes)
+and breaks up when its length exceeds classDesc `+0DCh` (MaxWaterHitVel). `00856923..00856932`: `FLD [ESI+0Ch]`,
+`FLD [ECX+0ECh]`, `FCHS`, `FCOMIP`, `JA`: it also breaks up when `vy < -classDesc[+0ECh]`. `+0ECh` is
+`sqrt(float(MaxFall * 2 * 9.81))` (`00855AAE..00855AD3`, `9.81` the double at `00CF9058`, sqrt `00BF7030`), and
+`00855A90` refuses a class whose `+0ECh` is not above 0. So shot `+0Ch` is the vertical velocity, not a depth field:
+the host comment at the water entry was wrong, as cc13-gpr53 said (docs/CC13_GPR_53.md section 2). The depth
+charge's `006FD660` path already applies the same pair.
+
+**Host.** Behind `kTorpedoMaxFallBreakupBound` the water entry adds `vy < -sqrt(2 * MaxFall * 9.81)` (computed
+in double and rounded to float as the image does) to the MaxWaterHitVel test; counter `torpedo_fall_breakups`
+(fall-only break-ups), logged as `summary mission gunnery torpedo fall breakups`. The addresses `008568E0` and
+`00852410` are under cc13-gpr53d's lease; this changes only the host.
+
+**Predictions, written before any ON run.** this installation's realistic bulletclasses.lua (2025-06-02) gives the
+torpedo rows MaxFall 50..100 (limit 31.3..44.3 m/s; two rows have 1400). The OFF torpedo traces in ESMP08
+(`local\g38_rt2on_we8.log`, 70 drops) cross the sea about 1.4 s after release with one step's fall of
+0.1..0.4 m, so `vy` is near -8 m/s, far inside the limit. LOMP10 has no aerial drops (ship tubes only).
+
+| row | prediction ON |
+| --- | --- |
+| USN01 p6_u1_g | `fall breakups=0`; pair_diff exit 0 or 1 |
+| LOMP10 p3_l10_b | `fall breakups=0`; exit 0 or 1 |
+| ESMP08 | `fall breakups=0`; exit 0 or 1 |
+
+A non-zero count would mean a drop from far above the authored release height (a plane hit or diving at release).

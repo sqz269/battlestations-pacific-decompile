@@ -270,6 +270,13 @@ constexpr bool kGunImmediateFireSlotBound = true;
 //    "one attempt stands for both"). The forced 008A7200 fire calls 00730160
 //    directly and does not clear. OFF: +4D4h holds until the latch drops.
 constexpr bool kTurningGunFireClearsRequestBound = false;
+//  * kTorpedoMaxFallBreakupBound: packet cc9_g40_torpedo_fall. 008568E0's
+//    second break-up limit, 00856923..00856932: FLD [shot+0Ch] (the velocity's
+//    y; shot+8 is the vector 0042B2F0 measures for the first limit), FLD
+//    [classDesc+0ECh], FCHS, FCOMIP, JA: the round breaks up when
+//    vy < -sqrt(2 * MaxFall * 9.81) (00855AAE..00855AD3, 9.81 the double at
+//    00CF9058). The host applied only the MaxWaterHitVel limit. OFF: as before.
+constexpr bool kTorpedoMaxFallBreakupBound = false;
 //  * kTorpedoSwimThrustBound: packet cc9_torpedo_tube_turn,
 //    docs/TORPEDO_FRIENDLY_CROSSING.md section 6. 00857480, the swim advance,
 //    per step on a torpedo in the water: 00856BB0 -> 00857061 yaws the NOSE
@@ -1464,6 +1471,7 @@ struct GameGunneryHost::Impl {
     // Packet cc9_depth_charge_in_water (kDepthChargeInWaterBound).
     unsigned long long dc_launches{0}, dc_water_entries{0}, dc_breakups{0},
         dc_water_steps{0}, dc_contact_detonations{0}, dc_depth_detonations{0};
+    unsigned long long torpedo_fall_breakups{0};   // 00856932, kTorpedoMaxFallBreakupBound
     void depth_charge_activate_006fd9b0(GameProjectileRow& shot, std::size_t gun_row);
     bool depth_charge_advance_006fcd20(GameProjectileRow& shot, float dt);
     // Packet cc9_player_weapon_group_fire (kPlayerWeaponGroupFireBound).
@@ -9439,11 +9447,14 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
             const GameBulletClassRow* const entry = bullet(shot.bullet_class);
             const float swim = entry != nullptr ? entry->swim_speed : 0.0f;
             // 008568E0's first limit: the round breaks up if it hits the sea
-            // faster than `MaxWaterHitVel` (classDesc+0DCh). This is why a
-            // torpedo bomber has to release low and slow. The second limit,
-            // `shot[+0Ch] < -classDesc[+0ECh]`, is the MaxFall-derived fall
-            // speed against the round's own depth field and is NOT applied
-            // here: this host has no such field on the shot.
+            // faster than `MaxWaterHitVel` (classDesc+0DCh; 0085690C..0085691D,
+            // the length of shot+8). This is why a torpedo bomber has to release
+            // low and slow. The second limit (00856923..00856932) is
+            // `shot[+0Ch] < -classDesc[+0ECh]`: shot+0Ch is the velocity's y
+            // (shot+8..+10h is the vector whose length the first limit takes),
+            // and +0ECh = sqrt(2 * MaxFall * 9.81) (00855AAE..00855AD3), so the
+            // round also breaks up falling faster than a MaxFall-metre drop.
+            // Applied behind kTorpedoMaxFallBreakupBound.
             // docs/TORPEDO_TICK.md, docs/TORPEDO_RELEASE_SPAWN.md.
             const float entry_velocity[3] = {shot.flight.velocity.x,
                 shot.flight.velocity.y, shot.flight.velocity.z};
@@ -9458,9 +9469,17 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
                     static_cast<double>(hit_limit),
                     static_cast<double>(entry_speed), shot.swimming ? 1 : 0);
             }
-            if (swim > 0.0f && !shot.swimming && hit_limit > 0.0f
-                && entry_speed > hit_limit) {
+            // kTorpedoMaxFallBreakupBound: 00856923..00856932, vy < -classDesc+ECh.
+            const float fall_limit = entry != nullptr && entry->max_fall > 0.0f
+                ? std::sqrt(static_cast<float>(entry->max_fall * 2.0 * 9.81)) : 0.0f;
+            const bool fall_breakup = kTorpedoMaxFallBreakupBound && fall_limit > 0.0f
+                && entry_velocity[1] < -fall_limit;
+            if (swim > 0.0f && !shot.swimming
+                && ((hit_limit > 0.0f && entry_speed > hit_limit) || fall_breakup)) {
                 ++summary.water_entry_breakups;
+                if (fall_breakup && !(hit_limit > 0.0f && entry_speed > hit_limit)) {
+                    ++torpedo_fall_breakups;
+                }
                 if (summary.water_entry_breakups <= 4) {
                     log.notef("gunnery: water entry broke the round up at %.1f m/s, "
                         "MaxWaterHitVel %.1f m/s (008568E0)",
@@ -13656,6 +13675,9 @@ void GameGunneryHost::report() {
             host.dc_breakups, host.dc_water_steps, host.dc_contact_detonations,
             host.dc_depth_detonations);
     }
+    host.log.notef("summary mission gunnery torpedo fall breakups bound=%d breakups=%llu "
+        "(008568E0 vy < -sqrt(2 * MaxFall * 9.81), packet cc9_g40_torpedo_fall)",
+        kTorpedoMaxFallBreakupBound ? 1 : 0, host.torpedo_fall_breakups);
     if constexpr (bsp::kShipyardProductionBound) {
         const auto& y = host.shipyard;
         host.log.notef("summary shipyard production: yards=%zu walks=%llu orders=%llu "
