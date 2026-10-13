@@ -429,4 +429,263 @@ void* heap_object_scalar_delete_00a4bdc0(void* self, std::uint8_t flags, XLiveCr
     if (flags & 1) host.free_00bf65ac(self);
     return self;
 }
+
+// ===========================================================================
+// Packet cc13-online2
+// ===========================================================================
+
+static_assert(sizeof(OnlinePlayerRecord) == 0x40);
+static_assert(offsetof(OnlinePlayerRecord, id) == 0x20);
+static_assert(offsetof(OnlinePlayerRecord, field_28) == 0x28);
+static_assert(offsetof(OnlinePlayerRecord, field_2c) == 0x2C);
+static_assert(offsetof(OnlinePlayerRecord, user_slot) == 0x30);
+static_assert(offsetof(OnlinePlayerRecord, field_34) == 0x34);
+static_assert(offsetof(OnlinePlayerRecord, flag_38) == 0x38);
+static_assert(offsetof(OnlinePlayerRecord, flag_3b) == 0x3B);
+static_assert(offsetof(SessionSearchRequest, use_host_qos) == 0x01);
+static_assert(offsetof(SessionSearchRequest, qos_arg_08) == 0x08);
+static_assert(offsetof(SessionSearchRequest, search20_arg_10) == 0x10);
+static_assert(offsetof(SessionSearchRequest, has_value_1c) == 0x18);
+static_assert(offsetof(SessionSearchRequest, value_1c) == 0x1C);
+static_assert(offsetof(SessionSearchRequest, has_value_24) == 0x20);
+static_assert(offsetof(SessionSearchRequest, value_30) == 0x30);
+
+namespace {
+
+// The defaults every builder stores (00A47130 00A4714F..00A47174, 00A47220
+// 00A4724C..00A47284, 00A47AA0 00A47AC3..00A47AE8): an empty string, +2Ch =
+// 0, +30h = 0, flags {0, 0, 1, 0}. The other fields keep whatever the
+// stack held.
+void init_record_defaults(OnlinePlayerRecord& r) noexcept {
+    r.name.capacity_18 = 15;
+    r.name.length_14 = 0;
+    r.name.buffer_04.inline_bytes[0] = '\0';
+    r.field_2c = 0;
+    r.user_slot = 0;
+    r.flag_38 = 0;
+    r.flag_39 = 0;
+    r.flag_3a = 1;
+    r.flag_3b = 0;
+}
+
+void assign_c_string(bsp::NativeLegacySboStringStorage& s, const char* text) {
+    bsp::native_legacy_sbo_string_assign_counted_00408720(s, text, static_cast<std::uint32_t>(std::strlen(text)));
+}
+
+// The A0h-record result vector at system +174h (first +178h, last +17Ch):
+// every record's object at +0 is deleted, then the whole range is erased
+// (00A46DEC..00A46ED7, 00A46F77..00A47010, 00A48389..00A4841C). The
+// checked-index calls to 00BF6713 cannot fire inside this loop.
+void clear_search_results(void* system, OnlineSystemCalls& host) {
+    const auto first = read_field<std::uintptr_t>(system, 0x178);
+    if (first != 0) {
+        const auto count = (read_field<std::uintptr_t>(system, 0x17C) - first) / 0xA0;
+        for (std::uintptr_t i = 0; i < count; ++i) {
+            const auto record = read_field<std::uintptr_t>(system, 0x178) + i * 0xA0;
+            if (void* object = *reinterpret_cast<void**>(record)) host.delete_result_object(object);
+        }
+    }
+    host.result_vector_erase_all_00573490(static_cast<std::byte*>(system) + 0x174);
+}
+
+} // namespace
+
+void add_local_player_record_00a47130(void* system, OnlineSystemCalls& host) {
+    OnlinePlayerRecord record;
+    init_record_defaults(record);
+    record.user_slot = host.active_user_slot_00a3eac0();
+    record.field_34 = 0;
+    assign_c_string(record.name, host.selected_username_00a3eae0());
+    record.id.xuid = host.active_xuid_00a3eb00();
+    host.player_list_push_back(static_cast<std::byte*>(system) + 0x100, record);
+    bsp::native_legacy_sbo_string_destroy_004072d0(record.name);
+}
+
+void add_lan_local_player_00a47220(void* system, std::uint8_t slot, OnlineSystemCalls& host) {
+    if (read_field<std::uint32_t>(system, 0x114) != 0) return;
+    OnlinePlayerRecord record;
+    init_record_defaults(record);
+    record.user_slot = slot;
+    const void* string = host.game_setup_string_6a0();
+    if (read_field<std::uint32_t>(string, 0) == 0) string = host.game_setup_string_68c();
+    const char* text = read_field<const char*>(string, 4);
+    assign_c_string(record.name, text != nullptr ? text : "");
+    record.flag_3a = 1;
+    std::uint8_t xnaddr[36];
+    while (host.xnet_get_title_xnaddr(xnaddr) == 0) {
+    }
+    std::memcpy(record.id.lan.enet, xnaddr + 0x0A, 6);
+    record.id.lan.user_slot = slot;
+    write_field<std::uint8_t>(system, 0x1D4C + slot, record.flag_3a);
+    host.player_list_push_back(static_cast<std::byte*>(system) + 0x10C, record);
+    bsp::native_legacy_sbo_string_destroy_004072d0(record.name);
+}
+
+bool reset_session_keep_local_player_00a47aa0(void* system, OnlineSystemCalls& host,
+    XLiveSearchCalls& search) {
+    leave_session_00a46d60(system, host, search);
+    OnlinePlayerRecord record;
+    init_record_defaults(record);
+    host.player_record_assign_006883b0(static_cast<std::byte*>(system) + 0x128, record);
+    bsp::native_legacy_sbo_string_destroy_004072d0(record.name);
+    add_local_player_record_00a47130(system, host);
+    return true;
+}
+
+void join_session_record_00a48330(void* system, const void* record, OnlineSystemCalls& host) {
+    void* screen = host.session_browser_screen();
+    if (screen == nullptr) return;
+    if (read_field<std::uint32_t>(host.singleton_player_list_80(), 8) == 0)
+        add_local_player_record_00a47130(system, host);
+    host.singleton_virtual_1a0(0);
+    host.singleton_virtual_d8(1);
+    clear_search_results(system, host);
+    host.result_vector_push_back_00575150(static_cast<std::byte*>(system) + 0x174, record);
+    host.browser_join_session_0057a9c0(host.session_browser_screen(), record, 1);
+    write_field<std::uint8_t>(system, 0x4C, 1);
+}
+
+void leave_session_00a46d60(void* system, OnlineSystemCalls& host, XLiveSearchCalls& search) {
+    auto* const base = static_cast<std::byte*>(system);
+    if (read_field<std::uint8_t>(system, 0xED) != 0) {
+        host.system_virtual_8c(system);
+        const auto matchmaking_state = read_field<std::uint32_t>(system, 0x1AC0);
+        if (matchmaking_state == 1 || matchmaking_state == 2) matchmaking_reset_00a4b250(base + 0x184, search);
+        if (read_field<std::uint8_t>(system, 0xEF) != 0) {
+            const auto qos_state = read_field<std::uint32_t>(system, 0x1B74);
+            if (qos_state == 1 || qos_state == 2) host_qos_cancel_00a4afd0(base + 0x1AE8, search);
+        }
+    }
+    const auto session_state = read_field<std::uint32_t>(system, 0x21F0);
+    if (session_state == 4 || session_state == 2) host.system_virtual_170(system, 0);
+    host.player_list_clear_00688780(base + 0x100);
+    host.player_list_clear_00688780(base + 0x10C);
+    clear_search_results(system, host);
+}
+
+bool begin_session_search_00a46f60(void* system, const SessionSearchRequest& request,
+    OnlineSystemCalls& host, XLiveQosHost& qos) {
+    if (read_field<std::uint8_t>(system, 0xED) != 0) return false;
+    auto* const base = static_cast<std::byte*>(system);
+    write_field<std::uint8_t>(system, 0xEE, 0);
+    clear_search_results(system, host);
+    const bool blocked = host.system_virtual_19c(system);
+    const bool allowed = host.system_virtual_40(system);
+    if (!allowed || blocked) {
+        host.game_1ef0_0076a6f0(system, 0, 0);
+        write_field<std::uint8_t>(system, 0xED, 1);
+        return true;
+    }
+    std::int32_t result;
+    if (request.use_host_qos != 0) {
+        write_field<std::uint8_t>(system, 0xEF, 1);
+        write_field<std::uint8_t>(system, 0xF0, 0);
+        result = host_qos_finish_if_complete_00a4a3d0(base + 0x1AE8, qos);
+    } else {
+        write_field<std::uint8_t>(system, 0xEF, 0);
+        if (request.search_by_id != 0) {
+            write_field<std::uint8_t>(system, 0xF0, 1);
+            result = host.matchmaking_begin_search20_00a4b2a0(base + 0x184, request.search20_arg_10,
+                request.search20_arg_14);
+        } else {
+            write_field<std::uint8_t>(system, 0xF0, 0);
+            constexpr std::uint64_t kAny = 0x7FFFFFFFFFFFFFFFull;
+            const std::uint64_t values[6] = {
+                request.value_30, request.value_2c, request.value_28,
+                request.has_value_24 != 0 ? request.value_24 : kAny,
+                request.has_value_1c != 0 ? request.value_1c : kAny,
+                kAny,
+            };
+            result = host.matchmaking_begin_search_00a4b7f0(base + 0x184, values);
+        }
+    }
+    if (result < 0) {
+        write_field<std::int32_t>(system, 0x1BD8, result);
+        write_field<std::uint8_t>(system, 0x1BD5, 0);
+        return false;
+    }
+    write_field<std::uint8_t>(system, 0xED, 1);
+    return true;
+}
+
+namespace {
+constexpr std::uint32_t kErrorIoPending = 0x3E5;
+
+// XNetQosListen(key +C7h, 0, 0, 0, XNET_QOS_LISTEN_RELEASE); shared by
+// 00A49C80 and the inlined copy in 00A4A790.
+std::int32_t release_qos_listen(void* session, XSessionLifetimeCalls& x) {
+    const std::int32_t error = x.xnet_qos_listen(static_cast<std::byte*>(session) + 0xC7, nullptr, 0, 0, 0x10);
+    if (error != 0) {
+        x.log("Warning: Failed to stop QoS listener, error 0x%08x\n", error);
+        return error;
+    }
+    write_field<std::uint32_t>(session, 0x130, 0);
+    return 0;
+}
+} // namespace
+
+std::int32_t session_stop_qos_listen_00a49c80(void* session, XSessionLifetimeCalls& x) {
+    if (read_field<std::uint32_t>(session, 0x130) == 0) return 0;
+    return release_qos_listen(session, x);
+}
+
+void session_terminate_xnet_00a4a790(void* session, XSessionLifetimeCalls& x) {
+    write_field<std::uint32_t>(session, 0x158, 0);
+    write_field<std::uint32_t>(session, 0x160, 0);
+    if (read_field<std::uint32_t>(session, 0x130) != 0) (void)release_qos_listen(session, x);
+    if (read_field<std::uint32_t>(session, 0x15C) != 0) {
+        std::uint8_t key[8];
+        std::memcpy(key, static_cast<std::byte*>(session) + 0xB8, 8);
+        x.log_key("%x%x%x%x%x%x%x%x UnregisterKey cNetworkConsole::TerminateXNet() ", key);
+        x.xnet_unregister_key(static_cast<std::byte*>(session) + 0xB8);
+        write_field<std::uint32_t>(session, 0x15C, 0);
+    }
+}
+
+void session_terminate_xnet_00a4b020(void* session, XSessionLifetimeCalls& x) {
+    session_terminate_xnet_00a4a790(session, x);
+}
+
+std::int32_t session_complete_delete_00a4af20(void* session, XSessionLifetimeCalls& x) {
+    if (read_field<std::uint32_t>(session, 0x110) == kErrorIoPending) return 0;
+    x.x_close_handle(read_field<void*>(session, 0x12C));
+    write_field<std::uint32_t>(session, 0x12C, 0xFFFFFFFFu);
+    const auto error = static_cast<std::int32_t>(
+        x.x_get_overlapped_extended_error(static_cast<std::byte*>(session) + 0x110));
+    if (error == 0) {
+        write_field<std::uint32_t>(session, 0x158, 0);
+        write_field<std::uint32_t>(session, 0x160, 0);
+    }
+    return error;
+}
+
+std::int32_t session_complete_create_00a4b030(void* session, XSessionLifetimeCalls& x,
+    XSessionCreateCalls& create) {
+    auto* const base = static_cast<std::byte*>(session);
+    void* const overlapped = base + 0x110;
+    if (read_field<std::uint32_t>(session, 0x110) == kErrorIoPending) return 0;
+    if (x.x_get_overlapped_extended_error(overlapped) != 0) {
+        std::uint32_t ignored = 0;
+        x.x_get_overlapped_result(overlapped, &ignored, 0);
+        (void)x.x_get_overlapped_extended_error(overlapped);
+        return static_cast<std::int32_t>(0x8000FFFFu);
+    }
+    std::memcpy(base + 0xB8, base + 0xC7, 8);   // XNKID
+    std::memcpy(base + 0xA8, base + 0xF3, 16);  // XNKEY
+    void* const setup = x.game_setup();
+    write_field<std::uint32_t>(setup, 0x2158, read_field<std::uint32_t>(session, 0x108));
+    write_field<std::uint32_t>(setup, 0x215C, read_field<std::uint32_t>(session, 0x10C));
+    write_field<std::uint32_t>(session, 0x158, 4);
+    const std::uint8_t* const title = x.qos_title_data();
+    std::size_t chars = 0;
+    while (read_field<std::uint16_t>(title + 2, chars * 2) != 0) ++chars;
+    const std::uint32_t flags = read_field<std::uint32_t>(session, 0x130) == 0 ? 5u : 4u;
+    const std::int32_t error = x.xnet_qos_listen(base + 0xC7, title + 1,
+        static_cast<std::uint32_t>(chars * 2), 0, flags);
+    if (error == 0) write_field<std::uint32_t>(session, 0x130, 1);
+    else x.log("Failed to start QoS listener, error 0x%08x\n", error);
+    create.join_local_player_00a4ae70(session);
+    if (read_field<std::uint32_t>(session, 0x160) != 0) return create.flag_restart_00a49a00(session);
+    return 0;
+}
 } // namespace bsp::online_cc13

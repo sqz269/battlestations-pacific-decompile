@@ -8,6 +8,8 @@
 // Every routine takes the native object as void* and reads native offsets.
 // XLive, XHV and CRT calls go through host interfaces. Build-tested only: not
 // ABI-compatible, not game-validated (online play was not exercised).
+#include "bsp/native_legacy_sbo_string.hpp"
+
 #include <cstdint>
 
 namespace bsp::online_cc13 {
@@ -402,4 +404,210 @@ std::int32_t host_qos_relink_and_lookup_00a4a420(void* qos, XNetQosLookupCalls& 
 // 00A4BDC0 BSP_HeapObject_ScalarDelete_00a4bdc0, __thiscall(this, flags), RET
 // 4, EAX = this: _free(this) when bit 0 is set; no destructor body.
 void* heap_object_scalar_delete_00a4bdc0(void* self, std::uint8_t flags, XLiveCrtHost& host);
+
+// ===========================================================================
+// Packet cc13-online2 (docs/CC13_ONLINE_2.md)
+// ===========================================================================
+
+// The online player record: the 40h-byte payload of the two std::list nodes
+// (48h with next/prev) in system +100h (Live players, head +104h, size
+// +108h) and +10Ch (LAN players, head +110h, size +114h), and the single
+// record at system +128h (the local player; 00A478D0 returns its address).
+// Layout from the stack frames of 00A47130 (base ESP+0Ch) and 00A47220 (base
+// ESP+34h), and from the copy constructor 00588640, which copies every field
+// below. The qword at +20h aligns the struct to 8, so +1Ch and +3Ch are
+// padding.
+struct OnlinePlayerRecord {
+    bsp::NativeLegacySboStringStorage name; // +00h gamertag / profile name
+    std::uint32_t pad_1c;                   // +1Ch
+    // +20h: the XUID for a Live player (00A3EB00); a LAN player stores the
+    // six abEnet bytes of its XNADDR at +20h..+25h and its user slot at +26h.
+    union Identity {
+        std::uint64_t xuid;
+        struct Lan {
+            std::uint8_t enet[6];
+            std::uint8_t user_slot;
+            std::uint8_t unused;
+        } lan;
+    } id;
+    std::uint32_t field_28;   // +28h copied; neither builder writes it
+    std::uint32_t field_2c;   // +2Ch zero in both builders
+    std::uint8_t user_slot;   // +30h
+    std::uint32_t field_34;   // +34h zero in 00A47130, untouched by 00A47220
+    std::uint8_t flag_38;     // +38h 0
+    std::uint8_t flag_39;     // +39h 0
+    std::uint8_t flag_3a;     // +3Ah 1 (00A47220 also copies it to system +1D4Ch[slot])
+    std::uint8_t flag_3b;     // +3Bh 0
+    std::uint32_t pad_3c;     // +3Ch
+};
+
+// Everything the cc13-online2 system routines call. Each method names the
+// native routine or import it stands for.
+struct OnlineSystemCalls {
+    virtual ~OnlineSystemCalls() = default;
+    // [00F8ABE8] XenonSystemManager 00A3EAC0 (AL), 00A3EAE0 (char*), 00A3EB00 (EDX:EAX).
+    virtual std::uint8_t active_user_slot_00a3eac0() = 0;
+    virtual const char* selected_username_00a3eae0() = 0;
+    virtual std::uint64_t active_xuid_00a3eb00() = 0;
+    // 00A45F70 (buy a 48h node {next, prev} and copy the record through
+    // 00588640), 00A450B0(1) (length check, size + 1), then head->prev and
+    // prev->next are linked: std::list::push_back on the list object.
+    virtual void player_list_push_back(void* list, const OnlinePlayerRecord& record) = 0;
+    // 00688780 STL_List_ClearStrings (ECX = list object).
+    virtual void player_list_clear_00688780(void* list) = 0;
+    // 006883B0 BSP_OnlinePlayerInfo_Assign (ECX = destination): record operator=.
+    virtual void player_record_assign_006883b0(void* destination, const OnlinePlayerRecord& source) = 0;
+    // [00E188A8] game setup: the native string {length, char*} at +6A0h, or +68Ch.
+    virtual const void* game_setup_string_6a0() = 0;
+    virtual const void* game_setup_string_68c() = 0;
+    // XNetGetTitleXnAddr (import thunk 00A4D4D0): XNET_GET_XNADDR_* flags; 0 = pending.
+    virtual std::uint32_t xnet_get_title_xnaddr(void* xnaddr_36_bytes) = 0;
+    // XLiveSystem virtual slots on ECX = system.
+    virtual void system_virtual_8c(void* system) = 0;
+    virtual void system_virtual_170(void* system, std::uint32_t argument) = 0;
+    virtual bool system_virtual_19c(void* system) = 0;
+    virtual bool system_virtual_40(void* system) = 0;
+    virtual const void* system_player_list_80(void* system) = 0;
+    // The same slots called on the singleton [00F8A2FC] instead of ECX.
+    virtual const void* singleton_player_list_80() = 0;
+    virtual void singleton_virtual_1a0(std::uint32_t argument) = 0;
+    virtual void singleton_virtual_d8(std::uint32_t argument) = 0;
+    // Session result A0h-record vector at system +174h: the object at a
+    // record's +0 is deleted through its vtable +0 with flags 1.
+    virtual void delete_result_object(void* object) = 0;
+    // 00573490 STL_Vector_EraseRange (ECX = vector, whole range).
+    virtual void result_vector_erase_all_00573490(void* vector) = 0;
+    // 00575150 STL_Vector_PushBack (ECX = vector, A0h record).
+    virtual void result_vector_push_back_00575150(void* vector, const void* record) = 0;
+    // [00E198B4]+4Ch, the multiplayer session browser screen, and its
+    // 0057A9C0 BSP_MultiSessionBrowserScreen_JoinSession(record, 1).
+    virtual void* session_browser_screen() = 0;
+    virtual void browser_join_session_0057a9c0(void* screen, const void* record, std::uint32_t argument) = 0;
+    // 0076A6F0 on ECX = [system +2210h] + 1EF0h with (0, 0).
+    virtual void game_1ef0_0076a6f0(void* system, std::uint32_t a, std::uint32_t b) = 0;
+    // 00A4B2A0 / 00A4B7F0 matchmaking searches (system +184h).
+    virtual std::int32_t matchmaking_begin_search20_00a4b2a0(void* matchmaking, std::uint32_t a,
+        std::uint32_t b) = 0;
+    virtual std::int32_t matchmaking_begin_search_00a4b7f0(void* matchmaking, const std::uint64_t values[6]) = 0;
+};
+
+// 00A47130 BSP_XLiveSystem_AddLocalPlayerRecord, __fastcall(ECX = system).
+// Record defaults (above) with user slot = 00A3EAC0, name = 00A3EAE0, XUID
+// = 00A3EB00, +34h = 0; push_back into the Live list +100h; the temporary's
+// string is released (cap >= 10h -> _free).
+void add_local_player_record_00a47130(void* system, OnlineSystemCalls& host);
+// 00A47220 BSP_XLiveSystem_AddLanLocalPlayer, __thiscall(system, BYTE slot),
+// RET 4. Only when the LAN list size +114h is 0: name = game setup string
+// +6A0h when its length is nonzero, else +68Ch (a null buffer reads as ""
+// 00F8AC01); XNetGetTitleXnAddr is retried until it stops returning 0
+// (pending); id = abEnet (XNADDR +0Ah..+0Fh) + slot; +3Ah (1) is copied to
+// system +1D4Ch[slot]; push_back into +10Ch.
+void add_lan_local_player_00a47220(void* system, std::uint8_t slot, OnlineSystemCalls& host);
+// 00A47AA0 BSP_XLiveSystem_ResetSessionKeepLocalPlayer, __fastcall, AL = 1:
+// 00A46D60; a default record (id left uninitialised) is assigned into +128h
+// through 006883B0; then 00A47130.
+bool reset_session_keep_local_player_00a47aa0(void* system, OnlineSystemCalls& host,
+    XLiveSearchCalls& search);
+// 00A48330 BSP_XLiveSystem_JoinSessionRecord (was EnsureLocalPlayerListed),
+// __thiscall(system, const A0h record*), RET 4. Only while the session
+// browser screen exists: an empty Live list gets 00A47130; singleton vtable
+// +1A0h(0) and +D8h(1); the result vector is cleared (objects deleted),
+// the record pushed, 0057A9C0(record, 1) on the screen, byte +4Ch = 1.
+void join_session_record_00a48330(void* system, const void* record, OnlineSystemCalls& host);
+// 00A46D60 BSP_XLiveSystem_LeaveSession, __fastcall. While searching (+EDh):
+// vtable +8Ch; matchmaking state +1AC0h in {1, 2} -> 00A4B250 (+184h); host
+// QoS in use (+EFh) with state +1B74h in {1, 2} -> 00A4AFD0 (+1AE8h). Then
+// session state +21F0h in {4, 2} -> vtable +170h(0); both player lists are
+// cleared; every result object is deleted and the results erased.
+void leave_session_00a46d60(void* system, OnlineSystemCalls& host, XLiveSearchCalls& search);
+
+// The search request 00A46F60 reads (layout from its listing 00A4703C..00A470E0).
+struct SessionSearchRequest {
+    std::uint8_t field_00;
+    std::uint8_t use_host_qos;     // +01h
+    std::uint8_t search_by_id;     // +02h
+    std::uint8_t pad_03[5];
+    std::uint32_t qos_arg_08;      // +08h \ forwarded to 00A4A3D0, which ignores them
+    std::uint32_t qos_arg_0c;      // +0Ch /
+    std::uint32_t search20_arg_10; // +10h \ forwarded to 00A4B2A0
+    std::uint32_t search20_arg_14; // +14h /
+    std::uint8_t has_value_1c;     // +18h
+    std::uint8_t pad_19[3];
+    std::uint32_t value_1c;        // +1Ch
+    std::uint8_t has_value_24;     // +20h
+    std::uint8_t pad_21[3];
+    std::uint32_t value_24;        // +24h
+    std::uint32_t value_28;        // +28h
+    std::uint32_t value_2c;        // +2Ch
+    std::uint32_t value_30;        // +30h
+};
+
+// 00A46F60 BSP_XLiveSystem_BeginSessionSearch, __thiscall(system, const
+// request*), RET 4, AL. Already searching (+EDh): AL = 0, nothing else.
+// Otherwise +EEh = 0 and the results are cleared. When vtable +40h is false
+// or vtable +19Ch true: 0076A6F0(0, 0) on the game, +EDh = 1, AL = 1.
+// Otherwise the request picks one of: host QoS (+EFh = 1, +F0h = 0,
+// 00A4A3D0), search by id (+EFh = 0, +F0h = 1, 00A4B2A0(+10h, +14h)), or
+// the filtered search (+EFh = +F0h = 0, 00A4B7F0 with six qwords: +30h,
+// +2Ch, +28h zero-extended, then +24h and +1Ch when their flags are set or
+// INT64_MAX (7FFFFFFF:FFFFFFFF) when not, and INT64_MAX). A negative HRESULT
+// is stored at +1BD8h with +1BD5h = 0 and AL = 0; success sets +EDh = 1, AL = 1.
+bool begin_session_search_00a46f60(void* system, const SessionSearchRequest& request,
+    OnlineSystemCalls& host, XLiveQosHost& qos);
+
+// XSession wrapper (system +2098h). Fields: +A8h..+B7h the key-exchange key
+// copy, +B8h the XNKID copy, +C7h an XSESSION_INFO (XNKID +C7h, XNADDR +CFh,
+// XNKEY +F3h; the odd offset is what the listing addresses), +108h nonce,
+// +110h XOVERLAPPED (status 3E5h = ERROR_IO_PENDING), +12Ch session handle,
+// +130h QoS listening, +158h state, +15Ch key registered, +160h restart flag.
+struct XSessionLifetimeCalls {
+    virtual ~XSessionLifetimeCalls() = default;
+    virtual std::int32_t xnet_qos_listen(const void* key, const void* data, std::uint32_t bytes,
+        std::uint32_t bits_per_second, std::uint32_t flags) = 0;               // 00A4D5F6
+    virtual std::int32_t xnet_unregister_key(const void* xnkid) = 0;         // XNetUnregisterKey
+    virtual std::uint32_t x_close_handle(void* handle) = 0;                  // 00A4D4A6
+    virtual std::uint32_t x_get_overlapped_extended_error(void* overlapped) = 0; // 00A4D422
+    virtual std::uint32_t x_get_overlapped_result(void* overlapped, std::uint32_t* result,
+        std::uint32_t wait) = 0;                                             // 00A4D42E
+    virtual void log(const char* format, std::int32_t value) = 0;            // 004254B0
+    // 004254B0 with the eight XNKID bytes.
+    virtual void log_key(const char* format, const std::uint8_t key[8]) = 0;
+    virtual void* game_setup() = 0;                                          // [00E188A8]
+    virtual const std::uint8_t* qos_title_data() = 0;                        // [00E0E3F0] (00D24A38)
+};
+
+// 00A49C80 BSP_XLiveSession_StopQosListen, __fastcall, HRESULT: when +130h is
+// set, XNetQosListen(+C7h, 0, 0, 0, 10h = RELEASE); failure logs "Warning:
+// Failed to stop QoS listener, error 0x%08x\n" and returns the error with
+// +130h kept; success clears +130h. Returns 0 otherwise.
+std::int32_t session_stop_qos_listen_00a49c80(void* session, XSessionLifetimeCalls& x);
+// 00A4A790 BSP_XLiveSession_TerminateXNet, __fastcall, and its JMP thunk
+// 00A4B020: +158h = +160h = 0; the QoS release as 00A49C80 (inlined, error
+// only logged); when +15Ch is set, log the XNKID (+B8h..+BFh) with "%x%x%x%x
+// %x%x%x%x UnregisterKey cNetworkConsole::TerminateXNet() ",
+// XNetUnregisterKey(+B8h) and +15Ch = 0.
+void session_terminate_xnet_00a4a790(void* session, XSessionLifetimeCalls& x);
+void session_terminate_xnet_00a4b020(void* session, XSessionLifetimeCalls& x);
+// 00A4AF20 BSP_XLiveSession_CompleteDelete, __fastcall, EAX: 0 while the
+// overlapped is pending; else XCloseHandle(+12Ch), +12Ch = -1, and the
+// overlapped extended error is returned; 0 also clears +158h and +160h.
+std::int32_t session_complete_delete_00a4af20(void* session, XSessionLifetimeCalls& x);
+// 00A49A00 BSP_XLiveSession_FlagRestart_Provisional (called, not in this
+// packet): state 1/2 -> +160h = 1, state 4 -> state 2, else 8000FFFFh.
+struct XSessionCreateCalls {
+    virtual ~XSessionCreateCalls() = default;
+    virtual std::int32_t join_local_player_00a4ae70(void* session) = 0;
+    virtual std::int32_t flag_restart_00a49a00(void* session) = 0;
+};
+// 00A4B030 BSP_XLiveSession_CompleteCreate, __fastcall, HRESULT. Pending: 0.
+// A nonzero extended error: XGetOverlappedResult(ovl, &dummy, FALSE), the
+// error is read again and discarded, return 8000FFFFh. Success: XNKID +C7h
+// -> +B8h, XNKEY +F3h -> +A8h, nonce +108h -> game setup +2158h, state 4,
+// XNetQosListen(+C7h, title data + 1, 2 * wcslen(title data + 2), 0, 4 or 5
+// when not yet listening): the data starts one byte before the wide string
+// L"Battlestations..." at 00D24A3A, so it is misaligned by a byte. Success
+// sets +130h = 1, failure logs "Failed to start QoS listener, error
+// 0x%08x\n". Then 00A4AE70; when +160h is set, return 00A49A00, else 0.
+std::int32_t session_complete_create_00a4b030(void* session, XSessionLifetimeCalls& x,
+    XSessionCreateCalls& create);
 } // namespace bsp::online_cc13
