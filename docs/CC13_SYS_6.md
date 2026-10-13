@@ -154,10 +154,34 @@ Gameplay-state code this packet did not touch (named, no record, no tag):
   ranges. Tagging needs a new evidence id in the shared `config/tags/evidence.json`, which is better
   done by one sweep than by a worker branch.
 
+## Continuation (packet cc13-sys6b)
+
+After the lead landed sys6, the same worker continued on the open cc13 items:
+
+- **Tags.** 76 of the 79 STL/template copies are tagged (`stl_shape` 28, `tmpl_shape` 48) with one new
+  evidence id, `sys6_shape`, in `config/tags/evidence.json`. The three thunks (`00804E00`, `0096C210`,
+  `00800B10`) are not tagged; `00800B10` got a record instead.
+- **Rain (14 records).** The model's constructor, destructor, scalar deleting destructor, parameter
+  assign and draw (`00802250`, `00801B70`, `00801DB0`, `008019A0`, `00800B20`), its `Mit_PoolAllocator`
+  with 532-byte slots and two per page (`00800450`, `00800C60`, `00800EC0`, `008007A0`, `00800B10`,
+  `00800E20`, `00800D90`) and the emitter step `00801400`. Constructing a rain model resets the global
+  drop fraction `[00F87470]` to 1.0.
+- **The rain draw is stream 1, not stream 0.** `00801400` calls `00BD2F10` with `ECX = 1`
+  (`00801439`), and `reports/cc13_rng_stream_census.json` lists site `0080144F` as stream 1. The
+  comment in `include/bsp/scene_weather_cc13.hpp` that says the emitter draws shared stream 0 is
+  wrong (not this packet's file). The reconstruction routes the draw through
+  `RainEmitterHost::random_uniform_00bd2f10_stream1`.
+- `00801400`'s sheet-effect velocity is 100 times the direction. The bytes `DC C9` at `008016D6` settle
+  the operand order; the listing text reads ambiguously.
+- `007FBA30` (byte-list record assign, the session browser filter) is reconstructed.
+
+Still open after sys6b: `008023B0` (rain emitter build, 543 lines), `007FB520`, `007FC490`,
+`007FCD90`, `00AAE770`, `00AB4CE0`, and the x87 layout bodies `00AB9240`, `00AC0610`, `00AC0970`,
+`00AC0BD0`, `00AC10A0`.
+
 ## Handoff
 
 Branch `agent/cc13-sys6`, merged with `origin/main` before the final build. The record tables used to
 write the ledger are the worker tree's `local/sys6_tab*.tsv` (address, C++ symbol, evidence, optional
 status) and `local/sys6_records.py`; `local/sys6_names.py` appends the reconstruction pointer to the
-naming ledger. A next pass should start with the rain model (`00802250`/`00801B70`, then `008019A0`),
-then `007FBA30` and `007FCD90`, and leave the x87 layout bodies for an x87-capable worker.
+naming ledger. A next pass should take `007FCD90` and `007FB520`, then `008023B0`, and leave the x87 layout bodies for an x87-capable worker.
