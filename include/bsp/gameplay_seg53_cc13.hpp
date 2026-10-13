@@ -352,6 +352,70 @@ struct TorpedoWakeResult {
 };
 TorpedoWakeResult torpedo_wake_step_008571f0(const TorpedoWakeInputs& in, const TorpedoWakeHost& host);
 
+// 00856BB0 homing block (00856BB0..00856F7F), the torpedo steering's first half.
+// Only "Torpedo Fido Homing Airplane" (bulletclasses.lua RealisticTable[4]
+// and its arcade twin in this installation) has HomingHorzTurnSpeed and
+// HomingVertTurnSpeed (0.5 each); JM06 is a submarine mission, so this is the
+// rule that steers aircraft-dropped Fidos at the player's boat.
+//
+// Countdown (+518h, interval +514h): dt < countdown (FCOMI, JB) -> countdown -=
+// dt, no scan; else countdown = countdown + (interval - dt) and a scan runs.
+// Scan (only with +3BCh set): the link +4FCh/+510h is cleared, then the list
+// [008053C0([+3BCh]+54h)]+DE8h is walked (node +8h -> record, record +4h ->
+// entity, next +4h); only entities answering IsKindOf(8) (submarines) count,
+// and the nearest by squared distance (004193E0, strict >) wins.
+// Turn (with a target): own pitch/yaw from the forward row (00521370), target
+// pitch/yaw from the normalised direction; +46Ch = target yaw. With
+// HomingVertTurnSpeed > 0, a submarine target and 00852820(target) false
+// (submerged): rotate about the right row (+74h) by clamp(wrap(own_pitch -
+// target_pitch), +/- HomingVertTurnSpeed * dt), then about the up row (+84h)
+// by clamp(-wrap(own_yaw - target_yaw), +/- HomingHorzTurnSpeed * dt), and
+// RETURN: the depth and heading controllers (00856F83..0085714E) are skipped.
+// Otherwise rotate about the right row by own_pitch and fall through.
+//
+// The second turn reads the YAW slots: 0085E880 returns with RET 8, so after
+// the first rotation ESP is back at E-30h, and 00856EE8 / 00856EF3 load E-20h
+// (target yaw) and E-1Ch (own yaw), not the pitch slots E-28h / E-24h. The
+// existing src/bomb_torpedo_tick.cpp torpedo_steer_00856bb0 feeds the pitch
+// error to both turns (its comment at 00856F51); see docs/CC13_GPR_53.md.
+struct TorpedoHomingCandidate {
+    bool is_submarine{false};   // entity vtable[5Ch](8)
+    Vec3 position{};
+};
+// Index of the candidate the scan keeps, or -1.
+int torpedo_homing_pick_target_00856c50(const Vec3& own_position,
+                                        const std::vector<TorpedoHomingCandidate>& list) noexcept;
+struct TorpedoHomingInputs {
+    float dt{0.0f};
+    float scan_interval_514{1.0f};
+    float scan_countdown_518{0.0f};
+    float homing_horz_turn_speed_f0{0.0f};
+    float homing_vert_turn_speed_f4{0.0f};
+    bool has_target{false};               // +510h after any scan
+    bool target_is_submarine{false};      // target vtable[5Ch](8)
+    bool target_above_depth_charge_depth{false};  // 00852820(target)
+    float own_pitch{0.0f};
+    float own_yaw{0.0f};
+    float target_pitch{0.0f};
+    float target_yaw{0.0f};
+};
+struct TorpedoHomingResult {
+    bool active{false};             // HomingHorzTurnSpeed > 0
+    bool scan{false};
+    float scan_countdown_518{0.0f};
+    bool steered{false};            // a target existed after the scan
+    float commanded_heading_46c{0.0f};
+    bool homed{false};              // both turns made; the caller returns
+    float right_axis_turn{0.0f};    // rotation about +74h (pitch turn, or own_pitch when not homed)
+    float up_axis_turn{0.0f};       // rotation about +84h (homed only)
+};
+// `wrap_subtract` is 00438B10 (BSP_Math_SubtractWrappedAngle(a, b)). The scan
+// itself (when `scan` comes back true) is the caller's: it decides has_target.
+TorpedoHomingResult torpedo_homing_countdown_00856bb0(const TorpedoHomingInputs& in) noexcept;
+TorpedoHomingResult torpedo_homing_turn_00856bb0(const TorpedoHomingInputs& in,
+                                                 TorpedoHomingResult after_countdown,
+                                                 const std::function<float(float, float)>& wrap_subtract);
+
 // 00855B90 (vtable 00D0C3E8 slot 68h, data ref 00D0C450) and 00855BB0: node
 // +464h shown / hidden through 00B6DA70(1.0 / 0.0, 0). 00855BD0 (no
 // reference in the image): the create message's target, net id +128h through
