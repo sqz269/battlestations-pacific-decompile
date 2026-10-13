@@ -7,6 +7,22 @@
 
 namespace bsp {
 
+ScriptOrderIssue navigator_cruise_order_008a75c0(const float zero_vector[3]) noexcept {
+    ScriptOrderIssue out;
+    out.command = 0x00E08F70u;   // 008A770F PUSH 0E08F70h, `cruise`
+    out.flags = 1;               // 008A76EC PUSH 1
+    // EBX = 0: 008A770A word +0h, 008A771A byte, 008A771E word +2h, 008A7716 dword +4h.
+    out.target.kind = 0;
+    out.target.position_valid = 0;
+    out.target.object_id = 0;
+    out.target.object = nullptr;
+    for (int lane = 0; lane < 3; ++lane) {
+        out.target.position[lane] = zero_vector[lane];  // 008A76D6..008A7701
+    }
+    out.target.trailing = 0.0f;  // 008A7707 XORPS, 008A7723 MOVSS
+    return out;
+}
+
 AirBaseRemoveStockResult air_base_remove_stock_006c7b10(
     AirOpsDeck& deck, std::uint32_t vehicle_class, std::int32_t count,
     const std::int32_t* launched_plane_counts,

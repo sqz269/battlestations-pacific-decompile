@@ -207,3 +207,21 @@ Elsewhere, `usn_12_indochina` (both copies) starts and stops its convoys and set
 run at the authored speed from load and never stop.
 
 RNG: none.
+
+## 7. NavigatorCruise 008A75C0
+
+Switch: `kLuaNavigatorCruiseBound` (src/game_hosts_script_orders.cpp). Model: `navigator_cruise_order_008a75c0`.
+
+This is NavigatorStop 008A7400's twin; cc13-ver12 bound that one. From the bytes:
+- 008A76BE: 00888AA0 on argument 0. There is no null test.
+- 008A76D6..008A7723: a descriptor that is zero apart from the vector copied from 00F87574..7C.
+- 008A7729: `0077D600(entity, cruise 00E08F70, &descriptor, 1)`, with `PUSH 1` at 008A76EC and `PUSH 0E08F70h` at
+  008A770F.
+- Nothing is pushed.
+
+The host issues it through `entity_issue_command`, as the other navigator orders do. The `cruise` command's receiver
+and the commanded-speed stages are already hosted (docs/CRUISE_COMMAND.md).
+
+**Prediction.** No WIN script calls it. There are 10 calls, in COTP `usn_02_battle_of_cape_esperance` and
+`usn_10_battle_of_capeengano` (both copies of each). Those ships drop their current order and cruise. RNG: none at the
+issue.

@@ -13,8 +13,17 @@
 #include <vector>
 
 #include "bsp/air_operations.hpp"
+#include "bsp/script_orders_ver_cc13.hpp"
 
 namespace bsp {
+
+// 008A75C0 `NavigatorCruise(unit)`. NavigatorStop's twin with the cruise command:
+// argument 0 through 00888AA0 (008A76BE; no null test), a descriptor with kind,
+// position_valid, id, object and +14h all zero and the vector copied from
+// 00F87574..7C (008A76D6-008A7723), and 0077D600(entity, cruise 00E08F70,
+// &descriptor, 1) at 008A7729 (PUSH 1 008A76EC, PUSH 0E08F70h 008A770F). Nothing
+// is pushed. `zero_vector` is the content of 00F87574 (all zero in the image).
+ScriptOrderIssue navigator_cruise_order_008a75c0(const float zero_vector[3]) noexcept;
 
 // ---------------------------------------------------------------------------
 // 006C7B10 BSP_AirOps_RemoveStockAndTrimSlots, __thiscall(block, class, count),

@@ -29,6 +29,7 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/plane_pose_commit.hpp"
 #include "bsp/plane_squadron_host.hpp"
 #include "bsp/script_orders_ver_cc13.hpp"
+#include "bsp/script_natives_fix5_cc13.hpp"   // packet cc13-fix5
 #include "bsp/plane_retreat_task.hpp"  // packet cc9_plane_retreat_task
 #include "bsp/kamikaze_task_host.hpp"   // packet cc9_lua52_kamikaze_wiring
 #include "bsp/camera_decomposition.hpp"  // packet cc9_lua_camera_state
@@ -131,6 +132,11 @@ inline constexpr bool kLuaUnitFreeFireBound = false;
 // through entity_issue_command like the other navigator orders. False leaves
 // it an unimplemented record, as before.
 inline constexpr bool kLuaNavigatorStopBound = false;
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 7). True binds NavigatorCruise
+// 008A75C0: NavigatorStop's twin, 0077D600(entity, cruise 00E08F70, zeroed
+// descriptor, 1) at 008A7729 (bsp::navigator_cruise_order_008a75c0), through
+// entity_issue_command. False leaves it an unimplemented record, as before.
+inline constexpr bool kLuaNavigatorCruiseBound = false;
 inline constexpr bool kPilotLandNativeBound = true;
 constexpr bool kDisablePhysicsBound = true;
 constexpr bool kAddMatrixInterpolatorBound = true;
@@ -171,6 +177,8 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     {"UnitFreeFire", 0x008a6950u},
     // Packet cc13-ver12: handled only with kLuaNavigatorStopBound.
     {"NavigatorStop", 0x008a7400u},
+    // Packet cc13-fix5: handled only with kLuaNavigatorCruiseBound.
+    {"NavigatorCruise", 0x008a75c0u},
     // Packet cc9_scripted_order_natives part 2: SetShipMaxSpeed is handled only
     // with kScriptedOrderNatives2Bound, PilotLand only with kPilotLandNativeBound.
     {"SetShipMaxSpeed", 0x00890a10u},
@@ -593,6 +601,7 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
         return kLuaUnitFreeFireBound;
     }
     if (std::strcmp(binding->name, "NavigatorStop") == 0) return kLuaNavigatorStopBound;
+    if (std::strcmp(binding->name, "NavigatorCruise") == 0) return kLuaNavigatorCruiseBound;
     if (std::strcmp(binding->name, "SetShipMaxSpeed") == 0) return kScriptedOrderNatives2Bound;
     if (std::strcmp(binding->name, "PilotLand") == 0) return kPilotLandNativeBound;
     if (std::strcmp(binding->name, "PilotRetreat") == 0) return bsp::kPlaneRetreatTaskBound;
@@ -3426,6 +3435,19 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         results = run_unit_free_fire(row, bsp::ScriptFireOrder::kFreeFire);
     } else if (std::strcmp(binding->name, "NavigatorStop") == 0) {
         results = run_navigator_stop(row);
+    } else if (std::strcmp(binding->name, "NavigatorCruise") == 0) {
+        // 008A75C0, packet cc13-fix5 (docs/CC13_FIX_5.md section 7): as
+        // run_navigator_stop with the cruise command; nothing is pushed.
+        void* entity = argument_entity(0);
+        row.unit_index = index_of(entity);
+        row.unit = name_of(entity);
+        static const float kZeroVector00f87574[3] = {0.0f, 0.0f, 0.0f};
+        const bsp::ScriptOrderIssue order =
+            bsp::navigator_cruise_order_008a75c0(kZeroVector00f87574);
+        if (entity != nullptr) {
+            entity_issue_command(entity, order.command, order.target, order.flags);
+        }
+        results = 0;
     } else if (std::strcmp(binding->name, "NavigatorEnable") == 0) {
         results = run_navigator_enable(row);
     } else if (std::strcmp(binding->name, "SetShipMaxSpeed") == 0) {
