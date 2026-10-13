@@ -49,7 +49,12 @@ inline float basis_row_dot(const float (&row)[3], const OceanVec3& w) noexcept {
 float ship_righting_rate_0092e9e1(float rate, float angle, float dt) noexcept {
     // 0092E9F2..0092EA1C: the gate. |angle| must clear the float threshold strictly.
     const float magnitude = listing_abs(angle);
-    if (!(magnitude > kShipMotionRightingThreshold)) {
+    // kShipRightingImageConstantsBound (cc13-ver3 R1) picks the image's 00D05AA8 / 00D19628.
+    const float threshold = kShipRightingImageConstantsBound ? kShipMotionRightingThresholdImage
+                                                             : kShipMotionRightingThreshold;
+    const double righting = kShipRightingImageConstantsBound ? kShipMotionRightingImage
+                                                             : kShipMotionRighting;
+    if (!(magnitude > threshold)) {
         return rate; // 0092EA1C JBE -> 0092EA73, the value is discarded unchanged
     }
 
@@ -64,7 +69,7 @@ float ship_righting_rate_0092e9e1(float rate, float angle, float dt) noexcept {
     // 0092EA49..0092EA57: FILD of that int, times the double at 00D19628, minus the
     // angle, and the difference is narrowed to float before it is used.
     const float error =
-        static_cast<float>(static_cast<double>(sign) * kShipMotionRighting - static_cast<double>(angle));
+        static_cast<float>(static_cast<double>(sign) * righting - static_cast<double>(angle));
 
     // 0092EA5B..0092EA6D: rate - error * (dt * 10.0), one narrowing at the end.
     const double gain = static_cast<double>(dt) * kShipMotionRightingGain;
