@@ -16435,3 +16435,28 @@ the guard logged:
   Enterprise_sqn11|.-2; OFF sinks Junyo at 747.79 s and never Zuiho). The keeper should re-check PRCP01 on main.
 The shift is chaotic downstream (timer chains feed launches), so the per-row deltas are not attributable one by one.
 **Verdict: ON** (faithful to 009294C7..009294E5; no win lost).
+
+## 5gw. Handoff (cc9-lua57, 2026-10-13, goal paused, at about 60% context)
+
+Tree `J:\PROG\battlestations-pacific-decompile-cc9-lua52` (branch `agent/cc9-lua52`); launcher `local\l57_lane.ps1` (rows `u21f`,
+`u01g`, `u12`, `l10w` = LOMP10 26000 frames, `u02w`, `p01w` = PRCP01 30000, `j8f` = JM08 f 110000, `u04` = USN04 9000). No
+leases held, no runs in flight.
+
+**Committed:** `9f2469b01` + `ffaa82ddc` kStrikeCtlCruiseCapBound ON (5gt, 5gt.1; USN01 g lost to the keeper);
+`779bb56b5` + `cc54331c4` kThinkDelayInWalkBound ON (5gv, 5gv.1; PRCP01 fails on main OFF, completes ON at 865.06 s).
+USNOS (packet 3): the Betty1|.-3 holdout is a faithful draw-dependent stall (startDist 3153.7 inside the leader's 3950-4055 m
+goAway/moveto oscillation); it needs a plan, not code (reported, accepted by the lead).
+
+**Prepared, NOT applied (src/game_hosts_units.cpp; each script asserts its anchors and was dry-run clean on 2026-10-13):**
+- `local\l57_wing_patch.py`: packet 2, torpedo wingmen. Feeds 009D49A0's 0099B6A0 fallthrough (has_squadron_2fc, unit+900h
+  == 7, then `release_ordnance_007bbba0`) and the five leader-block virtuals; switches are cc13's kTorpedoArmFallthroughReleaseBound
+  and kReleaseOrderLeaderBlockBound (both already OFF in their headers).
+- `local\l57_mts_patch.py`: packet 4, kSquadronMoveToSelfBound (0084E595 moveto-self).
+- `local\l57_dive_patch.py`: packet 5 findings 3 and 4, kInRangeDrawBound and kFlyAboveLeadDivisorBound.
+- `local\l57_mode_patch.py`: packet 6, kDiveAttackModeFedBound (feed slot.db_attack_mode_370 in place of the pinned 2).
+- `local\l57_doc_5gu.txt`: the predictions section for all four; append it to this doc before the first commit.
+
+**Next, in the lead's order:** merge origin/main, re-run the dry-runs (anchors may move), claim units.cpp once, apply the four
+patches as one commit per switch (all OFF), build, release, then pair (2+4) on USN21 f, PRCP01, USN12 and (5+6) on USN04,
+USN21 f, USN01 g, LOMP10, JM08 f; flip by verdict, lost wins to the keeper. Still queued: packet 5 finding 2 (the 0099AF53
+spend), packet 7's note_kill_cause_00926d90 forward and the squadron GetHpPercentage average (007EDC30).
