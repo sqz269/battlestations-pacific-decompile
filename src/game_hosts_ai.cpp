@@ -1921,7 +1921,20 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             if (g->members.empty()) continue;
             if (!bsp::ai_command_is_type(g->command.type, bsp::AiCommandType::Attack)) continue;
             if (g->command.target_group != static_cast<void*>(b)) continue;
-            g->command.target_group = a;
+            if constexpr (kMergeNewAttackCommandBound) {
+                // 00A2DC4E vt+4h: 7 -> new(20h) 00A10890, 8 -> new(2Ch) 00A109B0
+                // (+24h = 0, +28h = 4), 9 -> new(20h) 00A10AE0, each built on the
+                // absorber and installed by 00A2BD00 (00A2DCF5), which deletes
+                // the old object.
+                bsp::AiCommandObject c;
+                c.type = g->command.type;
+                c.owner_group = g;
+                c.target_group = a;
+                if (bsp::ai_command_install_deletes_previous(true)) ++summary.commands_replaced;
+                g->command = c;
+            } else {
+                g->command.target_group = a;
+            }
             ++summary.commands_retargeted;
         }
         for (const std::size_t unit : b->members) attach(a, unit);

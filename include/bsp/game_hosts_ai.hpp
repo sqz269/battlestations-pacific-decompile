@@ -144,6 +144,14 @@ inline constexpr bool kDefendThinkImageBound = false;
 // when any own active CommandBuilding exists, else slot 1, and the clock waits
 // for the first think with a target, as before.
 inline constexpr bool kCaptureNoTargetImageBound = false;
+// 00A2DB80 BSP_AiGroup_Merge, phase A (00A2DC14..00A2DCF5, docs/CC13_GPR_69.md
+// 7.10, packet cc13-fix2): a populated group whose command answers IsType(6)
+// and targets the absorbed group (+1Ch) gets a NEW command of the same class on
+// the absorber (7 MOVETOATTACK 00A10890, 8 CAUTIOUSATTACK 00A109B0, 9
+// CLOSEATTACK 00A10AE0) installed through 00A2BD00. True: the host installs a
+// fresh AiCommandObject (CAUTIOUSATTACK's +24h = 0, +28h = 4). False: the
+// existing command's target is rebound in place, as before.
+inline constexpr bool kMergeNewAttackCommandBound = false;
 // Packet cc9_group_release_idle (docs/SHIP_AI_OPEN_ITEMS.md section 30). Every
 // ATTACK-family command registers its observer (+8h) on the target group
 // (00A10767, 00694A60), and all four observer vtables (00D22B64, 00D22BA4,
