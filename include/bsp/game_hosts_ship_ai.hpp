@@ -94,6 +94,19 @@ inline constexpr bool kScriptFireTargetBound = true;
 // ON by the pairs of 2026-09-28 (docs/GUNNERY_OPEN_ITEMS.md section 15).
 inline constexpr bool kWeaponDirectorFireTargetBound = true;
 
+// Packet cc13-ver13 (docs/CC13_VER_13.md finding 2). 00835F60, the first call of the
+// ship director step 00836920, releases director+238h every step unless the target is
+// a nav point (41h) or a live hostile: +5Ch set, +5Dh/+60h/+5Eh clear, another side,
+// and a structure (1Ch) or not neutral (005457C0). The release is a routed 5Eh message
+// (null, force 1) that 00836240 stores at the next session pump. True: the host makes
+// that release, so a dead or sinking target, scripted (locked) or chosen, leaves the
+// director the step after the kill, and 009F5DA0 picks again. LABELLED: +60h is the
+// gunnery death funnel (unit_dead), the moment 00926C80 sets it; the step position is
+// the head of 0071F290's call, not 00836920's own row. False: a locked target stays
+// held until the unit row goes inactive (KillDepth), and an unlocked dead one until a
+// scan finds another, as before.
+inline constexpr bool kDirectorDeadFireTargetReleaseBound = false;
+
 // Packet cc9_torpedo_threat_first_node (docs/GUNNERY_OPEN_ITEMS.md sections 22-23).
 // 00814420 (ship vtable[1D4h], body 00814420-00814492) walks the world torpedo
 // list [world+220h] (count +21Ch) but never advances its node: 00814450 reads
