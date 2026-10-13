@@ -681,3 +681,16 @@ which has carrier launches):
   - Roll reversals lose their floor, and pitch and yaw lose theirs above 1.6 x StallSpd or a 20 deg pitch.
   - So turn reversals get slower and every plane path moves: verdict 3 on every row.
   - Torpedo and dive approach lines change, so the knife-edge wins (USN01) may be lost.
+
+**The pairs** (scratch exports of 9d9854241 with `local\p6_v1r1_apply.py`: OFF `local\p6_rf`, V1 only `p6_rfv`,
+R1 only `p6_rfr`; reference env; logs `local\p6rf_{off,v,r}_{u12,l10,u1}.log`; OFF against the tree build on USN01:
+gameplay identical):
+- V1: USN12 arms 1509, raises 0, gameplay identical (1524.96 s); LOMP10 arms 39, raises 0, identical (1006.93 s);
+  USN01 `usn01_p6_u1_g` arms 2693, raises 3408, gameplay moved, completed 1118.67 s both sides (83 deaths both).
+- R1: rate_floor_steps on every flight step; USN12 moved, completed 1524.96 s; LOMP10 moved, completed 977.48 s
+  (was 1006.93); USN01 g LOST (deaths 83 -> 57: ConTBD1's three torpedoes miss Convoy3, which ConTBD2 sinks first;
+  Convoy1 and Convoy6 survive).
+- As predicted on both. **Flipped ON, both** (cc9-physics6, 2026-10-13). USN01 is re-planned as
+  `config/win_orders/usn01_p6_u1_k6.txt` (ConTBD1 at Convoy6 at frame 3306). cc13-ver17 independently found V1 to be
+  the cause of USN04's Shoho/Zuiho/Yorktown climb-out crashes (planes under continuous band repair bleeding to
+  17-19 m/s); the USN04 pair with V1 is open (handoff).

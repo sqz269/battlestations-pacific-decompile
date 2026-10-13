@@ -19,6 +19,7 @@
 #include "bsp/game_hosts_scene_contents.hpp"  // packet cc9_submarine_seabed
 #include "bsp/airfield_taxi.hpp"                 // packet cc9_land_park_taxi
 #include "bsp/game_hosts_avoid_zones.hpp"
+#include "bsp/gameplay_seg48_cc13.hpp"
 #include "bsp/plane_flight.hpp"
 #include "bsp/plane_ground_ops.hpp"
 #include "bsp/plane_water_law.hpp"
@@ -926,6 +927,13 @@ struct GameUnitSlot {
     // direction as 007C07A0 normalised it, and its counters.
     float plane_dir_hold[3]{0.0f, 0.0f, 0.0f};
     float plane_dir_hold_seconds{0.0f};
+    // Packet cc9_plane_rate_floor (kPlaneSpeedFloorBound): dyn+C8h, the band-repair
+    // speed-floor timer (007D7A40 arms 1.2f, 007D81B0 counts it down and parks it
+    // at -1.0f outside free flight), and its counters.
+    float plane_speed_floor_timer_c8{0.0f};
+    unsigned long long speed_floor_arms{0};
+    unsigned long long speed_floor_raises{0};
+    unsigned long long rate_floor_steps{0};
     unsigned long long dir_hold_arms{0};
     unsigned long long dir_hold_blend_steps{0};
     float dir_hold_max_seconds{0.0f};
@@ -5649,6 +5657,22 @@ struct GameUnitsHost::Impl {
     // term 007D9AFC in the control authority. The launch arm 007C705C (0.8 s at
     // BeginFlying) is NOT bound. False: the arms are counted and the field stays 0.
     static constexpr bool kPlaneDirectionHoldBound = true;  // ON: 5o
+    // Packet cc9_plane_rate_floor, V1 (docs/CC13_GPR_48.md 8.3): 0099BF30 calls
+    // 007D7A40 (dyn+C8h = 1.2f, 00CE3814) when its band repair rewrites command[1]
+    // (0099C032) or command[0] (0099C0ED) and the +72Ch predicate holds (unit+900h
+    // == 7); 007D81B0 subtracts the step from a positive timer at the top of
+    // 007DB680 and parks it at -1.0f (00D7A260) outside free flight; 007D87C7-
+    // 007D87F1 then raises the body forward velocity dyn+6Ch to dyn+CCh while the
+    // timer is positive. dyn+CCh is float(007C47F0() * 1.05) (007DB2C0, double
+    // 00CF2510), taken here from bot_desired_speed_007c47f0 at the step rather than
+    // stored at spawn (SUBSTITUTION, labelled; the inputs are per class). False: no
+    // timer and no floor, as before. 0099B1B0, the other caller, has no reference.
+    static constexpr bool kPlaneSpeedFloorBound = true;  // ON: CC13_GPR_48 9
+    // Packet cc9_plane_rate_floor, R1: 007DA710's crossing floor per axis when
+    // 007DA380's byte is set: pitch (|w|*1.5)*sp, yaw |w|*sp, roll none, with sp =
+    // Interp(StallRangeMin,1,StallRangeMax,0, fwd/StallSpd) x Interp(StallOffPitch,
+    // 1,StallOnPitch,0, unit+C64h) (007DAABD-007DAB36). False: 1.5|w| on all three.
+    static constexpr bool kPlaneRateLawCrossingFloorBound = true;  // ON: CC13_GPR_48 9
     // Packet cc9_plane_ground_roll (docs/SQUADRON_LAND_TASK.md section 5q): the
     // ground-roll arm 007CBFA0 for unit+900h 4 and 5: the pilot pass (0099AE5F
     // admits 4..7), the probe 007C5AC0, and 007DCCF0: the core law in mode 1
@@ -7615,6 +7639,14 @@ struct GameUnitsHost::Impl {
             if (slot != v) {
                 slot = v < -1.0f ? -1.0f : (v > 1.0f ? 1.0f : v);
                 ++u.ga_repairs;
+                // 0099C011-0099C032 / 0099C0CC-0099C0ED: inside the changed arm,
+                // 007D7A40 when the +72Ch predicate holds (packet cc9_plane_rate_floor).
+                if constexpr (GameUnitsHost::Impl::kPlaneSpeedFloorBound) {
+                    if (free_flight) {
+                        u.plane_speed_floor_timer_c8 = bsp::gameplay_seg48_cc13::kRepairFloorSeconds_007d7a40;
+                        ++u.speed_floor_arms;
+                    }
+                }
             }
         };
         if (free_flight) {                                        // cmd[1], the bot+C8h set
@@ -17971,6 +18003,22 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             bsp::PlaneBodyVelocityStep vs =
                                 bsp::integrate_body_velocity_007d8611(
                                     vb, body.pair_1c, body.pair_04, acc.body_resist_40, step);
+                            if constexpr (GameUnitsHost::Impl::kPlaneSpeedFloorBound) {
+                                // 007D81CF-007D8216 at the top of 007DB680, then 007D87C7-
+                                // 007D87F1 on dyn+6Ch after the 0.01f deadband. Nothing
+                                // between the two reads or writes dyn+C8h.
+                                float& t = unit_.plane_speed_floor_timer_c8;
+                                t = bsp::tick_contact_timer_007d81b0(
+                                    t, step, unit_.plane_control_mode_900 == 7);
+                                const float floor_cc = bsp::gameplay_seg48_cc13::takeoff_floor_speed_007db2c0(
+                                    owner_.bot_desired_speed_007c47f0(unit_));
+                                const float vz = bsp::gameplay_seg48_cc13::takeoff_speed_floor_007d87c7(
+                                    vs.velocity[2], t, floor_cc);
+                                if (vz != vs.velocity[2]) {
+                                    vs.velocity[2] = vz;
+                                    ++unit_.speed_floor_raises;
+                                }
+                            }
                             // 007DB702-007DB73E: dyn+94h = WheelHeight - BFCh in mode 1
                             // (the depth below the wheels), the normal dyn+98h..A0h = (0, 1, 0).
                             const float pen = ground
@@ -33623,6 +33671,25 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // yaw target is 0 with outB, and its yaw rate decays at
                         // 0.6 rad/s^2 instead of keeping the accel-0 rate.
                         const bool floor_from_deflection = coupling;
+                        float floor_sp = 0.0f;
+                        if constexpr (GameUnitsHost::Impl::kPlaneRateLawCrossingFloorBound) {
+                            // 007DAABD-007DAB36: 007D99C0()/desc+184h (StallSpd) and
+                            // unit+C64h, tuning +22Ch..+238h.
+                            float rmin = 1.2f, rmax = 1.6f;
+                            float poff = -0.2617993950843811f, pon = 0.3490658402442932f;
+                            if (owner_.lua.plane_globals_loaded()) {
+                                const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                                rmin = g.dynamics_spd_multipliers_stall_range_min;
+                                rmax = g.dynamics_spd_multipliers_stall_range_max;
+                                poff = g.dynamics_spd_multipliers_stall_off_pitch;
+                                pon = g.dynamics_spd_multipliers_stall_on_pitch;
+                            }
+                            const float stall = unit_.plane_stall_spd > 0.0f
+                                ? unit_.plane_stall_spd : 17.5f;
+                            floor_sp = bsp::gameplay_seg48_cc13::rate_law_floor_factor_007da710(forward_speed, stall,
+                                unit_.plane_pitch_angle_c64, rmin, rmax, poff, pon);
+                            ++unit_.rate_floor_steps;
+                        }
                         for (int axis = 0; axis < 3; ++axis) {
                             bsp::PlaneControlAxisState in;
                             in.current = unit_.plane_body_angular[axis];
@@ -33630,7 +33697,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             in.accel = targets.accel[axis];
                             unit_.plane_body_angular[axis] =
                                 bsp::plane_control_axis_step_007da710(factors, in,
-                                    floor_from_deflection, step);
+                                    floor_from_deflection, step,
+                                    GameUnitsHost::Impl::kPlaneRateLawCrossingFloorBound ? axis : -1,
+                                    floor_sp);
                         }
                         // Packet cc9_plane_body_rate_check: a diagnostic only.
                         // BSP_PLANE_RATE_TRACE names one plane; each step prints
@@ -37553,6 +37622,20 @@ void GameUnitsHost::report() {
         host.log.notef("summary mission leader turn roll: uses=%d bound=%d (007B95E0, packet "
             "cc9_leader_turn_roll)", host.leader_turn_roll_uses,
             GameUnitsHost::Impl::kPlaneLeaderTurnRollBound ? 1 : 0);
+        {
+            unsigned long long arms = 0, raises = 0, rsteps = 0;
+            for (const auto& s : host.slots) {
+                if (!s) continue;
+                arms += s->speed_floor_arms;
+                raises += s->speed_floor_raises;
+                rsteps += s->rate_floor_steps;
+            }
+            host.log.notef("summary mission plane rate floor: speed_floor_arms=%llu "
+                "speed_floor_raises=%llu rate_floor_steps=%llu bound=%d/%d (007D7A40 / "
+                "007D87C7 / 007DA710, packet cc9_plane_rate_floor)", arms, raises, rsteps,
+                GameUnitsHost::Impl::kPlaneSpeedFloorBound ? 1 : 0,
+                GameUnitsHost::Impl::kPlaneRateLawCrossingFloorBound ? 1 : 0);
+        }
         host.log.notef("summary mission wing fold: classes=%llu extends=%llu retracts=%llu "
             "resets=%llu elevator_waits=%llu prep_holds=%llu run_holds=%llu bound=%d/%d "
             "(007EABC0 / 007CC18E / 006D06E8 / 009CDEED / 009CF2ED, packet cc9_wing_fold)",
