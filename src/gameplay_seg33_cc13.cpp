@@ -5,6 +5,8 @@
 
 #include <cmath>
 #include <cstddef>
+#include <iterator>
+#include <list>
 
 namespace bsp::gameplay_seg33_cc13 {
 namespace {
@@ -376,6 +378,37 @@ Seg33Vec3 projectile_extrapolate_position_006e2220(const Seg33Vec3& base,
     const float dy = velocity.y * t;
     const float dz = t * velocity.z;
     return Seg33Vec3{base.x + dx, base.y + dy, base.z + dz};  // FADD, FSTP float each
+}
+
+// ---------------------------------------------------------------------------------------------
+// Command classes
+// ---------------------------------------------------------------------------------------------
+
+int command_class_compare_006f7b30(int slot10_a, int slot10_b) noexcept {
+    return slot10_a - slot10_b;  // 006F7B46 SUB EDI,EAX
+}
+
+std::vector<std::size_t> command_menu_sort_006f7c20(const std::vector<int>& keys) {
+    std::list<std::size_t> nodes;
+    for (std::size_t i = 0; i < keys.size(); ++i) nodes.push_back(i);
+    if (nodes.size() < 2) {  // 006F7C27: head == tail
+        return std::vector<std::size_t>(nodes.begin(), nodes.end());
+    }
+    auto cursor = nodes.begin();
+    do {
+        auto best = cursor;
+        for (auto scan = std::next(cursor); scan != nodes.end(); ++scan) {
+            if (command_class_compare_006f7b30(keys[*best], keys[*scan]) == -1) best = scan;
+        }
+        if (best == cursor) {
+            ++cursor;  // 006F7CF8
+        } else {
+            nodes.splice(std::next(cursor), nodes, best);  // best relinked after the cursor
+            nodes.splice(nodes.end(), nodes, cursor);      // the cursor appended at the tail
+            cursor = std::next(best);
+        }
+    } while (cursor != std::prev(nodes.end()));
+    return std::vector<std::size_t>(nodes.begin(), nodes.end());
 }
 
 }  // namespace bsp::gameplay_seg33_cc13

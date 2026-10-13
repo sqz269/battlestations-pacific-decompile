@@ -39,6 +39,7 @@
 //    USN04 and USN13 never set the flag and should not move.
 
 #include <array>
+#include <cstddef>
 #include <cstdint>
 #include <optional>
 #include <vector>
@@ -255,6 +256,29 @@ float projectile_speed_006e7cd0(const Seg33Vec3& velocity) noexcept;
 // product and sum FSTP float. The pose invalidation of the child nodes is not modelled.
 Seg33Vec3 projectile_extrapolate_position_006e2220(const Seg33Vec3& base,
                                                    const Seg33Vec3& velocity, float t) noexcept;
+
+// ---------------------------------------------------------------------------------------------
+// Command classes (cc13-gpr33b): vtable slot +10h and the menu sort of 006F9110.
+// ---------------------------------------------------------------------------------------------
+// Slot +10h of the 26 command-class vtables (bsp::kEntityOrderCommandClasses in
+// bsp/entity_orders.hpp carries slots +4h/+8h/+0Ch). Every body is XOR EAX,EAX / RET except
+// closetoship's 006F8E80 (MOV EAX,1 / RET); stop, retreat and returntobase keep the base body
+// 006F7F50. Indexed by ordinal - 1 (registration order).
+inline constexpr int kCommandClassSlot10[26] = {
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  // settarget .. dogfight
+    0, 0, 0, 0, 0, 0, 0, 0, 0,              // follow .. land
+    1,                                      // closetoship (23)
+    0, 0, 0,                                // Leave, disband, tutorial
+};
+// 006F7B30, __fastcall(a /*ECX*/, b /*EDX*/): a->vtable[10h]() - b->vtable[10h]().
+int command_class_compare_006f7b30(int slot10_a, int slot10_b) noexcept;
+// 006F7C20, __thiscall(list, comparator), RET 4, called by 006F9110 with 006F7B30 on the
+// collected menu list. For each cursor from the head: scan the later nodes, replacing the best
+// (starting at the cursor) when compare(best, scan) == -1 (006F7C4A CMP EAX,-1 / CMOVE). When the
+// best is not the cursor, the best is moved to just after the cursor and the cursor to the tail;
+// the next cursor is the best's successor. Stops when the cursor is the tail. Returns the
+// resulting order as indices into `keys` (the slot +10h values of the collected list).
+std::vector<std::size_t> command_menu_sort_006f7c20(const std::vector<int>& keys);
 
 // ---------------------------------------------------------------------------------------------
 // Class fields read by 006E01C0 (BombPlatform, after the gun reader 007327B0) and 006E02C0
