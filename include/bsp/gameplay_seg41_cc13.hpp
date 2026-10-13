@@ -45,7 +45,8 @@
 //   host's dispatch, not drawn here.
 // - OFF-switch prediction: each model off changes nothing. On: see the doc's
 //   table; the largest are (a) convoy members with a positive convoy +364h stop
-//   taking their own hits (the lead member takes them), (b) a land fort section
+//   taking their own hits (the lead member takes them; in this installation only
+//   the two USN12 Train convoys author HP > 0), (b) a land fort section
 //   with a master hands the master 1e10 damage on death, and a fort whose
 //   +48h/+44h chain holds a live element does not die at health 0, (c) dead
 //   forts with a death-smoke definition draw one stream-0 value each.
@@ -68,7 +69,7 @@ struct Vec3 {
 //    (land_and_structures.hpp kLandGroupOwnerOffset).
 // ---------------------------------------------------------------------------
 struct ConvoyState {
-    float field_364{0.0f};            // > 0: hits pool on the lead member (meaning not named)
+    float field_364{0.0f};            // scene property "HP" (00743573; template 0.0); > 0: hits pool on the lead
     float speed_368{0.0f};            // 00741140; Lua "Speed" (007416F0)
     std::int32_t field_344{0};        // 00741160 (Lua native 008959F0)
     bool reentry_390{false};          // set around the lead member's AddDamage

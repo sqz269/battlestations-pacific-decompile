@@ -35,7 +35,14 @@ are the Lua property names that `007416F0` reads.
 
 So `+364h` selects the mode. Positive: every member's hit goes to the lead member, and the convoy dies with
 the lead. Zero: each member takes its own hits. Negative: no member takes damage at all; only `+3C0h`
-counts it. The writer of `+364h` was not traced (open question 3.1).
+counts it.
+
+`+364h` is the convoy's scene property `HP` (cc13-gpr41b): `00743450` reads it from the property bag at
+`00743552`..`00743573` (key `00CE6750` "HP"; an integer value goes through CVTSI2SS). The template
+`universe/library/landconvoy.props` defaults it to `F 0.0`. In this installation's scenes 31 LandConvoy
+entities exist. 29 do not author HP, so they use 0 (own damage). The two `Train` convoys of
+`usn_12_indochina.scn` author `HP = F 1.0`, so they pool. The host already loads the value as
+`SceneContentsRecord::convoy_hp` (`src/game_hosts_scene_contents.cpp:424`); it has no consumer.
 
 ### 1.2 Land fort and command building (MLandFort 1Bh `00CFF3F8`, MCommandBuilding 1Ch `00CFB028`)
 
@@ -169,7 +176,7 @@ The save section names the leak manager's fields: `"leak"` (`+18h`, one float pe
 
 | model | replaces (host file:line) | inputs and where the host gets them | RNG | OFF-switch prediction |
 | --- | --- | --- | --- | --- |
-| `add_damage_parent_aware_0074cd30`, `on_member_damaged_00742330`, `health_00742940`, `set_invincible_00741f20` | the single AddDamage in `ShipHit::add_damage`, `src/game_hosts_gunnery.cpp:9797`, applied to every victim. The host keeps the convoy only as a name (`game_hosts_units.cpp:11436`, `row.land_convoy_738`). | the member's convoy (the units host's `land_convoy_738`); the convoy's `+364h` (writer not traced, 3.1); the roster order (`build_land_convoy_roster_00743450`, `game_hosts_units.cpp:11402`); member health `+370h`; the clock | none | OFF: none. ON with `+364h > 0`: hits on any member land on the lead, and killing the lead kills the whole convoy. With `+364h == 0`: the same as now, plus `CollectedDamage`/`LastHit` for Lua. With `+364h < 0`: convoy members become unkillable by hits. Scripts that read `CollectedDamage` or `LastHit` (`007416F0`) see values. |
+| `add_damage_parent_aware_0074cd30`, `on_member_damaged_00742330`, `health_00742940`, `set_invincible_00741f20` | the single AddDamage in `ShipHit::add_damage`, `src/game_hosts_gunnery.cpp:9797`, applied to every victim. The host keeps the convoy only as a name (`game_hosts_units.cpp:11436`, `row.land_convoy_738`). | the member's convoy (the units host's `land_convoy_738`); the convoy's `+364h` = scene `HP`, already loaded as `convoy_hp` (`game_hosts_scene_contents.cpp:424`); the roster order (`build_land_convoy_roster_00743450`, `game_hosts_units.cpp:11402`); member health `+370h`; the clock | none | OFF: none. ON: in this installation only USN12's two `Train` convoys pool (`HP = 1.0`); every other convoy keeps its own damage. With `+364h > 0`: hits on any member land on the lead, and killing the lead kills the whole convoy. With `+364h == 0`: the same as now, plus `CollectedDamage`/`LastHit` for Lua. With `+364h < 0`: convoy members become unkillable by hits. Scripts that read `CollectedDamage` or `LastHit` (`007416F0`) see values. |
 | `die_00747400` | `GameGunneryHost::Impl::kill_unit`, `src/game_hosts_gunnery.cpp:11318`, which kills every unit at health 0. The command-building exception (`006F3270`) is already there; MLandFort's vtable[1A8h] is `00747400`. | `+71Ch` (`slot.parent_link_71c`, `game_hosts_units.cpp:1824`); `+50h` (not in the host; 3.2); the `+48h`/`+44h` chain's dead flags (the scene tree; 3.2) | none | OFF: none. ON: a land fort with a CommandBuilding parent (`+71Ch`) never dies; it raises InferiorFailure (message 7Dh, `+720h`) instead, as the airfield rule (`kAirfieldDestructionRuleBound`) already does. A fort whose chain holds a live element survives at 0 health. Kill counts and objective deaths for forts can drop. |
 | `on_destroyed_00747170` | the same `kill_unit` (`:11318`): its death effects and the master hand-off | master `+738h` (`00744A20` callers: the airfield and shipyard readers `006D5220`, `00849F70`); class `+164h` and the effect rows (`vehicle_class_fields.cpp`, `00749210`); the state `+70h`; the clock | none directly. The master's AddDamage(1e10) reaches the master's vtable[1ACh] (`007470B0` for a fort: one stream-1 roll and possibly stream-0 fire draws, which cc9 already hosts; `006F1F20` for a command building) | OFF: none. ON: a destroyed hangar or marker hands its airfield or shipyard 1e10 damage. The airfield's destruction rule (`006D40F0`, hosted) then decides whether the airfield dies. When the master is a land fort, the stream-1 roll and any fire draws shift later stream-1 and stream-0 consumers. |
 | `start_death_fire_007465e0`, `smoke_frame_00745f1e` | none. cc9's `src/game_hosts_ship_ai.cpp:12559` says "The +744h arm (00745F1E..) has no producer here"; `:12526` notes that `+744h` is set only by `007465E0` | class `+160h` (`SmokeFireEfx`), `+168h`/`+16Ch` (shared with the `+740h` fire, already in `CaptureBuilding`); the fire state `fire_740` / `fire_time_748` / `secondary_clock_750` | one **stream-0** `U(+168h, +16Ch)` per call when a smoke exists or the definition is present (`0074672B` / `0074679D`, ECX = 0). Gameplay: it sets `+748h`, which the frame update consumes. It goes through `LandFortHost::uniform` in image order. | OFF: none. ON: each land fort destroyed with SmokeFireChanceMul > 0 and a death-smoke definition takes one stream-0 draw at death, so every later stream-0 consumer shifts. A burning fort's fire (`+740h`) stops at death, so cc9's `+740h` arm and its secondary-explosion roll stop for that fort; the smoke then counts `+748h` down and `+750h` up until it ends. |
@@ -185,8 +192,7 @@ The save section names the leak manager's fields: `"leak"` (`+18h`, one float pe
 
 ## 3. Open questions
 
-1. **Convoy `+364h`.** Its writer was not traced, so which mode (pool, own, none) a given convoy uses is not
-   known. `00742940`'s positive arm and `0074CD30`'s equality test need that writer.
+1. **Convoy `+364h`**: resolved in cc13-gpr41b. It is the scene property `HP` (1.1).
 2. **`00747400`'s `+50h` and the chain.** `+50h` has no host meaning yet. The `+48h`/`+44h` chain is a scene
    link: the same walk in `0074AC30` invalidates poses. Whether it lists sections or children was not
    settled. The doc text in `LAND_AND_STRUCTURES.md` reads the condition the other way (1.2).
@@ -233,7 +239,7 @@ command filter, the landing ship ramp anchor and three small overrides, and the 
 are 23 model records and 14 host-pointer records.
 
 Left in segment 41, in order of gameplay reach:
-- **The writer of convoy `+364h`** (3.1). Without it the pooling mode of each convoy cannot be predicted.
+- The convoy `+364h` question is resolved (scene `HP`; only USN12's trains pool).
 - **The fort `+50h` flag and the meaning of the `+48h`/`+44h` chain** (3.2).
 - **The mothership tail** `00758090`-`00758E80` (air ops lane).
 - **The rest of the landing ship**: `0074BEC0` (InitAll) and `0074C280` (the save load). cc13-gpr41b covered
