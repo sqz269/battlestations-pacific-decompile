@@ -479,13 +479,13 @@ GridResolution quality_grid_resolution_00ba6bd0(bool simple_ocean_f9);
 struct WaterRingRecord {
     Float3 position_00;
     float a_0c{0.0f};
-    std::uint32_t b_10{0};
+    float b_10{0.0f};  // a float: 00B9CE96 FMUL dword [ring+10h]
     float duration_14{0.0f};
     float start_clock_18{0.0f};  // [01090494] at creation
     float rate_1c{0.0f};
     float rate_20{0.0f};
 };
-WaterRingRecord make_water_ring_00b9e3f0(const Float3& position, float a, std::uint32_t b,
+WaterRingRecord make_water_ring_00b9e3f0(const Float3& position, float a, float b,
                                          float duration, float ocean_clock);
 
 }  // namespace bsp::water_render

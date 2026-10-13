@@ -228,7 +228,14 @@ void cloud_build_geometry_00bc47d0(CloudClassGeometry& c, WeatherMath& math, Clo
 
 struct CloudInstanceState {
     Vec3 scroll{};                // +1B8 wind drift accumulated since home
-    float alpha{1.0f};            // +1C4 (00D7A24C)
+    // +1C4: the visibility multiplier the step reads (00BBEA2A FLD, times the distance fade,
+    // into 00B6DA70). Only the constructor writes it (1.0, 00D7A24C at 00BBE88F); earlier
+    // versions of this header called it alpha.
+    float visibility_1c4{1.0f};
+    // +1D8: the alpha SetAlpha (00BBE490) writes; the step registers its address as the
+    // material float "cAlpha" (00CF000C, 00BBED9E), so it reaches the shader, not the
+    // visibility. +1C8 is the scale SetScale writes (registered at 00BBED4F).
+    float alpha_1d8{1.0f};
     bool affected_by_wind{true};  // +1E8 (constructor default 1)
 };
 
