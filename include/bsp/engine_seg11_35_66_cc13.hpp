@@ -790,6 +790,31 @@ public:
 void render_flag_model_0070ac00(std::uint8_t* model, void* context, float lod, float alpha, std::uint32_t mask,
                                 FlagRenderCalls& calls);
 
+// 00708D20, __thiscall(ECX = model, school), RET 4: model +184h = school; a BCh mesh (00B73B60 +
+// 00B73D70); 00B75170(model, 0, mesh, -1, -1); the mesh bounds sphere (0, 0, 0, sqrt(hy^2 + hx^2 +
+// hz^2)) from the school half extents (00B72650); the vertex declaration "simplecolor.mvfm"
+// ([00F8D394] +38h); count*4 vertices (+5Ch(n, 1, decl)) and count*6 16-bit indices (+60h(n, 1,
+// 65h)) bound to the mesh; quads (b, b+1, b+2, b, b+2, b+3); per quad uv (0,1) (1,1) (1,0) (0,0) and
+// white; the "fish.mshd" effect, a 110h material with the school texture (school +58h) in slot 0;
+// a 60h draw section (primitive 4, vertex count count*4, primitive count count*2) with the bounds
+// (00B855B0), 00B865A0, 00B73C60; references dropped; 00B6D890(model, [game+19ECh]).
+class FishGeometryCalls : public FlagMaterialCalls, public VertexStreamCalls {
+public:
+    virtual void* new_mesh_00b73b60_00b73d70() = 0;
+    virtual void set_model_geometry_00b75170(std::uint8_t* model, void* mesh, float a, float b) = 0;
+    virtual void set_mesh_bounds_00b72650(void* mesh, const float sphere[4]) = 0;
+    virtual void* vertex_declaration_vslot38(const std::string& name) = 0;
+    virtual void* create_vertex_stream_vslot5c(std::int32_t count, std::int32_t flags, void* declaration) = 0;
+    virtual void* create_index_stream_vslot60(std::int32_t count, std::int32_t flags, std::int32_t format) = 0;
+    virtual std::uint16_t* lock_indices_vslot0c(void* stream) = 0;
+    virtual void unlock_indices_vslot10(void* stream) = 0;
+    virtual VertexStreamView lock_vertices_vslot10(void* stream) = 0;
+    virtual void set_section_bounds_00b855b0(void* section, const float sphere[4]) = 0;
+    virtual void propagate_root_registration_00b6d890(std::uint8_t* model, void* root_19ec) = 0;
+};
+void build_fish_geometry_00708d20(std::uint8_t* model, FishSchoolDescLayout& school, void* root_19ec,
+                                  FishGeometryCalls& calls);
+
 // The fish-school model (pool slot, vtable 00CFD3A8; owned object at +184h).
 class GeneratedModelCalls {
 public:
@@ -895,6 +920,41 @@ bool write_default_options_file_0098f430(const char* path, OptionsTextBuilder& b
 // Athlon(tm) 64" name multiplies it by 1.5 (x87, unsigned fix-up, chop rounding). A zero name size
 // returns false WITHOUT closing the key, as the image does.
 bool query_processor_info_00992180(HardwareInfoFields& info);
+
+// 00991EF0, __fastcall(ECX = info), RET: the Direct3D 9 survey (Direct3DCreate9(20h)).
+//   adapter 0 identifier: +B34h = sprintf("%d.%d.%d.%d", HIWORD(High), LOWORD(High), HIWORD(Low),
+//   LOWORD(Low)) of the driver version, +A34h = sprintf("%s", Description); +28h = the LAST GPU table
+//   row whose id equals DeviceId, else -1;
+//   every X8R8G8B8 (16h) mode of at least 640x480 that the list does not already hold
+//   (0098E0E0) is appended as {width, height} (00991C20);
+//   every multisample type 2..15 that CheckDeviceMultiSampleType(0, HAL, A8R8G8B8 (15h), fullscreen)
+//   accepts is appended to the vector at +10h;
+//   +24h = (PixelShaderVersion & FFFFh >= 200h) + 1, forced to 1 for the sixteen device ids
+//   301h..344h listed in the .cpp (the GeForce FX family ids); then Release.
+struct D3DAdapterSurvey {
+    std::uint32_t driver_version_low;
+    std::uint32_t driver_version_high;
+    std::string description;
+    std::uint32_t device_id;
+    std::vector<std::pair<std::uint32_t, std::uint32_t>> modes_x8r8g8b8;  // enumeration order
+    std::vector<bool> multisample_ok;   // index = type, 2..15 used
+    std::uint32_t pixel_shader_version;
+};
+class DisplayModeList {
+public:
+    virtual ~DisplayModeList() = default;
+    virtual bool contains_0098e0e0(std::uint32_t width, std::uint32_t height) = 0;
+    virtual void append_00991c20(std::uint32_t width, std::uint32_t height) = 0;
+    virtual void append_multisample_type(std::int32_t type) = 0;  // vector at +10h
+};
+struct DisplayDriverFields {
+    std::int32_t* shader_model_24;
+    std::int32_t* gpu_index_28;
+    char* description_a34;   // 100h
+    char* driver_b34;        // 100h
+};
+void query_display_driver_00991ef0(const D3DAdapterSurvey& survey, const GpuTableRow* table, DisplayDriverFields fields,
+                                   DisplayModeList& lists);
 
 // 00992640, __fastcall(ECX = info), RET: OS description (0098C9C0), GlobalMemoryStatus (MB at +2Ch),
 // processor info or the measured clock, the display driver query (00991EF0), then the sound probe:
@@ -1390,6 +1450,13 @@ struct SceneClassDescriptor {
 };
 void scene_class_map_register_004ee250(SceneClassMapLayout& map, const char* name, std::int32_t class_id,
                                        std::uint32_t create, std::uint32_t register_pass, SceneClassMapCalls& calls);
+
+// 004F3030, __thiscall(ECX = segment {x0, y0, x1, y1}, out[2], float t), RET 8: each product is
+// stored to a float first: out = (x0 (1 - t) + x1 t, y1 t + (1 - t) y0).
+void segment_lerp_004f3030(const float segment[4], float out[2], float t) noexcept;
+// 004F40C0, __stdcall(x1, y1, x2, y2, x3, y3), RET 18h, EAX: (y3 - y1)(x2 - x1) - (y2 - y1)(x3 - x1) > 0,
+// with the four differences stored to floats first.
+bool is_left_turn_004f40c0(float x1, float y1, float x2, float y2, float x3, float y3) noexcept;
 
 // 004F1740: MOV EAX, 6; RET (the base sensor category). 004F17F0: RET 8 (a two-argument no-op).
 std::int32_t sensor_category_unclassified_004f1740() noexcept;

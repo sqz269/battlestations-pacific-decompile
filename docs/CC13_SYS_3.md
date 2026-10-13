@@ -177,18 +177,55 @@ The 27 `std_*` functions in segment 66 (`00990740`-`009926A0`: basic_filebuf, ct
 use_facet, runtime_error, ...) are MSVC 2005 standard library instantiations. Their library names are
 kept and no record is written, as in docs/CC13_FILES_1.md.
 
+
+## Segment 35: flag cloth (presentation)
+
+From the listing: the wave step 0070AA70 clamps dt to 0.5, runs `1 - ftol(dt / -0.025)` midpoint steps,
+and draws the wind's x component from 00BD2F10 stream 0 (routed through `PresentationRandom`); the wind
+is `normalize(U(-0.01, 0.01), sin a, -cos a) * 100`. Forces (00709EF0) are the wind projected on each
+point normal, gravity +58h, velocity drag +54h and structural springs; the integration (0070A450)
+weights the force by the column, `(i % columns) / (columns - 1)`, so column 0 stays pinned. The vertex
+write (0070A710) emits a front and a back face with normals scaled by -0.5 and +0.5. The render
+(0070AC00) skips lod > 0.5 and fades the alpha linearly from lod 0.4 to 0.5.
+
+## Segment 66: Direct3D survey
+
+`query_display_driver_00991ef0` takes a host survey of adapter 0 (driver version, description, device
+id, X8R8G8B8 modes, multisample support, pixel shader version). Shader model is 2 for PS 2.0 and up,
+else 1, and forced to 1 for device ids 301h, 302h, 311h-314h, 320h-323h, 326h, 327h, 341h-344h (the
+GeForce FX family), from the sixteen-entry stack table at 009920CC.
+
 ## Records
 
-| group | reconstructed and recorded |
-|---|---|
-| segment 35 message manager | 36 |
-| segment 35 pools and fish/flag helpers | 35 |
-| segment 66 | 42 |
-| segment 11 (new) | 40 |
-| backfills | 31 |
-| segment 35 fish school (respawn, init, create) | 3 |
-| segment 66 download manager and stats (second batch) | 6 |
+Reconstruction ledger, packet `cc13-sys3`: **204 records**: 173 point at
+`src/engine_seg11_35_66_cc13.cpp`, 31 are backfills of existing code (7 of them `reconstructed_partial`).
+Three ledger names got appended evidence and their Ghidra comments were refreshed through
+`tools/ghidra_annotate.py --apply` (00703020, 009954E0, 004F8390); no name was changed.
+
+Call sites: `reports/cc13_sys3_calls.json` lists 63 host call rows; `tools/verify_report_calls.py`
+checked all 63 against the live listing, 0 failed.
+
+Index at the end: 59 of the 263 targets have no record: the 27 library functions, the 25 cc9 entities
+above, the four cc9-side geometry helpers below and three open items.
+
+## Open items
+
+- `00707B00` BSP_FishSchoolModel_UpdateCameraFade (BC0h bytes): the per-frame fish behaviour (camera
+  distance fade, steering toward the respawned target, per-fish update through cross products). Not
+  reconstructed; it needs a full listing pass for the x87 chains.
+- `0098C9C0` BSP_HardwareInfo_DescribeOsVersion (9A0h bytes): the MSDN "DisplaySystemVersion" sample
+  (GetVersionExA with OSVERSIONINFOEX, ProductOptions\ProductType, the Q246009 hotfix probe), strcat into
+  info +234h and the >= 5 major flag at +C34h. Mechanical but long; not reconstructed.
+- `00995690` BSP_DownloadManager_ScanContentFolder (vtable 00D1D7D8 slot 8): verifies each installed
+  package (XLiveContentVerifyInstalledPackage into record +12h), mounts `<path>\content`, scans for a
+  `.mpkg` and logs "Damaged content %s". Not reconstructed (register-spilled decompile, needs the listing).
+- Geometry helpers used by cc9's ship AI (`004F3090` rectangle separation, `004F3360` partition
+  parameters, `004F3DA0` triangle containment, `004F4880` segment clip): x87 stack-juggling bodies; left
+  for whoever owns the polygon-partition caller. `004F3030` and `004F40C0` are done.
 
 ## Handoff
 
-(Written at the end of the pass.)
+Done and committed on `agent/cc13-sys3`. Nothing is wired into a host. To continue: the open items
+above, in that order of value (the fish update is the only one with behaviour a viewer sees). The
+`PresentationRandom` callback is the hook for the RNG rule: a host that wires the fish or flag code
+must give it its own stream, not 00BD2F10 stream 0.

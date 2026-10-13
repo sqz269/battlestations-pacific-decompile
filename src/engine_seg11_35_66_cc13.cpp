@@ -1328,6 +1328,78 @@ void build_flag_material_0070b9d0(FlagClothLayout& cloth, std::uint32_t index_co
     calls.release_reference(section);
 }
 
+void build_fish_geometry_00708d20(std::uint8_t* model, FishSchoolDescLayout& school, void* root_19ec,
+                                  FishGeometryCalls& calls) {
+    *reinterpret_cast<FishSchoolDescLayout**>(model + 0x184) = &school;
+    void* mesh = calls.new_mesh_00b73b60_00b73d70();
+    calls.set_model_geometry_00b75170(model, mesh, -1.0f, -1.0f);  // 00D7A260 twice
+    const FishSchoolParams& p = school.params_04;
+    const float sq = (p.box_half_y_14 * p.box_half_y_14 + p.box_half_x_10 * p.box_half_x_10) +
+                     p.box_half_z_18 * p.box_half_z_18;
+    const float sphere[4] = {0.0f, 0.0f, 0.0f, static_cast<float>(std::sqrt(static_cast<double>(sq)))};
+    calls.set_mesh_bounds_00b72650(mesh, sphere);
+    void* declaration = calls.vertex_declaration_vslot38("simplecolor.mvfm");
+    const std::int32_t count = p.count_00;
+    void* vertices = calls.create_vertex_stream_vslot5c(count * 4, 1, declaration);
+    calls.set_vertex_stream_00b73bb0(mesh, 0, vertices);
+    void* indices = calls.create_index_stream_vslot60(count * 6, 1, 0x65);
+    calls.set_index_stream_00b73b70(mesh, indices);
+    std::uint16_t* index = calls.lock_indices_vslot0c(indices);
+    for (std::int32_t i = 0; i < count; ++i) {
+        const auto b = static_cast<std::uint16_t>(i * 4);
+        *index++ = b;
+        *index++ = static_cast<std::uint16_t>(b + 1);
+        *index++ = static_cast<std::uint16_t>(b + 2);
+        *index++ = b;
+        *index++ = static_cast<std::uint16_t>(b + 2);
+        *index++ = static_cast<std::uint16_t>(b + 3);
+    }
+    calls.unlock_indices_vslot10(indices);
+    const VertexStreamView v = calls.lock_vertices_vslot10(vertices);
+    static const float kUv[4][2] = {{0.0f, 1.0f}, {1.0f, 1.0f}, {1.0f, 0.0f}, {0.0f, 0.0f}};
+    for (std::int32_t vertex = 0; vertex < count * 4; ++vertex) {
+        auto* uv = reinterpret_cast<float*>(v.data_08 + v.stride_0c * vertex + v.uv_28);
+        uv[0] = kUv[vertex & 3][0];
+        uv[1] = kUv[vertex & 3][1];
+        std::uint8_t* row = v.data_08 + v.stride_0c * vertex;
+        if (v.colour_34 < 0) {
+            for (std::int32_t channel : {v.channel_38, v.channel_3c, v.channel_40, v.channel_44}) {
+                *reinterpret_cast<float*>(row + channel) = 1.0f;
+            }
+        } else {
+            *reinterpret_cast<std::uint32_t*>(row + v.colour_34) = 0xFFFFFFFFu;
+        }
+    }
+    calls.unlock_vslot14(vertices);
+    calls.release_reference(indices);
+    calls.release_reference(vertices);
+    calls.release_reference(declaration);
+    void* effect = calls.load_effect_vslot48("fish.mshd");
+    void* material = calls.new_material_00b18780_00b18900(effect);
+    calls.release_reference(effect);
+    if (p.texture_54.length() != 0) {
+        void* image = calls.load_texture_vslot64(p.texture_54);
+        calls.set_material_texture_00b189f0(material, 0, image);
+        calls.release_reference(image);
+    }
+    std::uint32_t* section = calls.new_draw_section_00b85ee0_00b857f0();
+    calls.set_section_material_00b864c0(section, material);
+    calls.release_reference(material);
+    if (section != nullptr) {
+        section[4] = static_cast<std::uint32_t>(count * 4);  // +10h
+        section[2] = 4;                                      // +8h
+        section[3] = 0;                                      // +0Ch
+        section[5] = 0;                                      // +14h
+        section[6] = static_cast<std::uint32_t>(count * 2);  // +18h
+    }
+    calls.set_section_bounds_00b855b0(section, sphere);
+    calls.rebuild_vertex_layout_00b865a0(section, mesh);
+    calls.append_section_00b73c60(mesh, section);
+    calls.release_reference(section);
+    calls.release_reference(mesh);
+    calls.propagate_root_registration_00b6d890(model, root_19ec);
+}
+
 void render_flag_model_0070ac00(std::uint8_t* model, void* context, float lod, float alpha, std::uint32_t mask,
                                 FlagRenderCalls& calls) {
     if (std::uint8_t* parent = *reinterpret_cast<std::uint8_t**>(model + 0x30)) {
@@ -1535,6 +1607,39 @@ bool query_processor_info_00992180(HardwareInfoFields& info) {
         info.cpu_mhz_30 = static_cast<std::uint32_t>(static_cast<std::uint64_t>(scaled));
     }
     return true;
+}
+
+void query_display_driver_00991ef0(const D3DAdapterSurvey& survey, const GpuTableRow* table, DisplayDriverFields fields,
+                                   DisplayModeList& lists) {
+    std::sprintf(fields.driver_b34, "%d.%d.%d.%d", survey.driver_version_high >> 16, survey.driver_version_high & 0xFFFF,
+                 survey.driver_version_low >> 16, survey.driver_version_low & 0xFFFF);
+    std::sprintf(fields.description_a34, "%s", survey.description.c_str());
+    *fields.gpu_index_28 = -1;
+    if (table[0].name != nullptr) {
+        for (std::int32_t i = 0; table[i].name != nullptr; ++i) {
+            if (table[i].device_id == survey.device_id) {
+                *fields.gpu_index_28 = i;  // no break: the last match wins
+            }
+        }
+    }
+    for (const auto& mode : survey.modes_x8r8g8b8) {
+        if (mode.first >= 0x280 && mode.second >= 0x1E0 && !lists.contains_0098e0e0(mode.first, mode.second)) {
+            lists.append_00991c20(mode.first, mode.second);
+        }
+    }
+    for (std::int32_t type = 2; type < 0x10; ++type) {
+        if (static_cast<std::size_t>(type) < survey.multisample_ok.size() && survey.multisample_ok[type]) {
+            lists.append_multisample_type(type);
+        }
+    }
+    *fields.shader_model_24 = ((survey.pixel_shader_version & 0xFFFF) >= 0x200 ? 1 : 0) + 1;
+    static const std::uint32_t kForcedModel1[16] = {0x301, 0x302, 0x311, 0x312, 0x313, 0x314, 0x320, 0x321,
+                                                    0x322, 0x323, 0x326, 0x327, 0x341, 0x342, 0x343, 0x344};
+    for (std::uint32_t id : kForcedModel1) {
+        if (survey.device_id == id) {
+            *fields.shader_model_24 = 1;
+        }
+    }
 }
 
 void collect_hardware_info_00992640(HardwareInfoFields& info, HardwareCollectCalls& calls) {
@@ -2240,6 +2345,24 @@ const char* land_convoy_class_name_004f2500() noexcept { return "LandConvoy"; }
 
 bool unit_is_local_player_objective_004f2590(const void* unit, LocalObjectiveSet& local_player_set) {
     return local_player_set.contains_unit_008ddf90(unit);
+}
+
+void segment_lerp_004f3030(const float segment[4], float out[2], float t) noexcept {
+    const float x1t = segment[2] * t;     // 004F3044
+    const float y1t = segment[3] * t;     // 004F304C
+    const float s = 1.0f - t;             // FLD1 / FSUBRP
+    const float x0s = segment[0] * s;     // 004F3064
+    const float y0s = s * segment[1];     // 004F306B
+    out[0] = x0s + x1t;
+    out[1] = y1t + y0s;
+}
+
+bool is_left_turn_004f40c0(float x1, float y1, float x2, float y2, float x3, float y3) noexcept {
+    const float dx21 = x2 - x1;
+    const float dy21 = y2 - y1;
+    const float dx31 = x3 - x1;
+    const float dy31 = y3 - y1;
+    return 0.0f < dy31 * dx21 - dy21 * dx31;
 }
 
 std::int32_t sensor_category_unclassified_004f1740() noexcept { return 6; }
