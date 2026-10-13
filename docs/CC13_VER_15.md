@@ -290,7 +290,7 @@ they are paired. They are build-tested, not game-run.
 | switch | divergence | call site | sha |
 |---|---|---|---|
 | `kAirOpsQueueConsumeStockBound` | D1 | `air_ops_slot_command_006ccda0` calls `air_ops_queue_slot_consume_006ca640` | 7c7e90a08 |
-| `kAirOpsBusyArmQueueLaunchBound` | D2 | the `else` arm of `air_ops_launch_squadron_006cc690` calls `air_ops_launch_busy_arm_006cc690` | D2SHA |
+| `kAirOpsBusyArmQueueLaunchBound` | D2 | the `else` arm of `air_ops_launch_squadron_006cc690` calls `air_ops_launch_busy_arm_006cc690` | 7faa8d8cb |
 
 - **One ConsumeStock.** launch_ver_cc13 had its own copy of 006C7D10, and cc13-fix5 had
   `air_base_consume_stock_006c7d10` (script_natives_fix5_cc13). The two differed only in what
