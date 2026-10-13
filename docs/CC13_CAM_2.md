@@ -227,3 +227,27 @@ without a record. In rough order of value:
    tags rather than records.
 
 Nothing is bound into a host, so no game run exercises this code; all of it is build-tested only.
+
+## 9. Follow-up packet cc13-cam2b
+
+Branch gent/cc13-cam2b.
+
+-  0797180 (BSP_MovCam_TurnTo) is now a Ghidra function, defined by
+  	ools/ghidra_define_function.py 00797180 00797222 under the write lock (record
+  eports/cc13_cam2b_defined_functions.json). The analyzer setting was not touched.
+- Tags (config/tags, action eviewed, no rename): 41 named container helpers as
+  stl_instantiation (evidence cc13cam2b_stl), 15 small named game helpers as game_code
+  (evidence cc13cam2b_game_named: the pooled NativeString releases, the Lua variant pair copies,
+  the three class-id tests, the seven modifier curve pair pushers, the atomic pointer append).
+- Reconstructed (build-tested only), 5 records:
+  -  0791360 /  07A2370: the keyframe bit-stream write and read on the native bit-cursor
+    codecs; the codec arguments (zero flag, signed flag, scale, bits) were checked at
+     0791377..00791393. The image passes each float through FLD/FSTP, so an sNaN would be
+    quieted; the source passes raw bits. The reader folds a parent that is being destroyed into
+    the local point and drops it, and returns before the modifier step for an unknown type.
+  -  079C040 /  078FD70: the Lua vector-table test and the xyz reader (missing components are
+    uninitialised stack in the image).
+  -  07866B0: the peer-rows update (row reordering by record slot with swap-and-rescan, probes on
+    all rows, the 0.2 s quality period on rows 1..7, MT_CONNSTATE at 0.5).
+
+Still open after cam2b: items 1 and 3 of section 8, less the functions above.
