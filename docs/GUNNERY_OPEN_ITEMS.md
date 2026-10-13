@@ -13307,6 +13307,19 @@ and falloff distance stay the 5gg gap. Counter: `summary mission gunnery blast m
 possibly deaths rise wherever bursts land high or near; USNOS: TroopTrans3's Ohka reaches it (`reached>=1`); USN12
 moves (gun-heavy) but should keep its completion.
 
+**205 verdict: stays OFF** (cc9-gunnery39). `def1f3496` OFF (`local\g39_bb0_*`) against ON (`g39_bb1_*`):
+- USN12 (`usn12_s38_u12_p2`): completed 1534.87 s both; spread moved (deaths 107 -> 108, damage +517).
+- USNOS (`usnos_s45_os_k`, 200000 frames): OFF runs out without an end (560 deaths; the row does not complete on main
+  anyway); ON **fails at 2119.54 s** ("Game Over", HQ1) with 276 deaths. The first big mover is `NH` (a Tilman-class
+  battleship, model box 40 x 29 x 282 m): ON it takes 36 blast hits for 15802 from Shimotsuke's category-6 guns at
+  3170 m from 504 s and dies at 1482.72 s, i.e. flak bursts aimed at planes over NH now fall inside the taller box.
+  `blast mesh box uses=2394425`. No Ohka reached a transport in this run, so 5gg's own case was not exercised.
+- Judgement: the gate is now the image's node AABB, but the host still takes the hull entry's DISTANCE from that box
+  (0 anywhere inside it), where the image takes the burst's distance from the node's shapes. For a ship with tall
+  upper works the box is mostly air, so the change over-applies blasts. Mechanism not matched; OFF, recorded.
+  Next step (open): admit by the mesh AABB but measure the hull entry against the shapes (the shell path already
+  walks the GeomMesh elements; the crash and kamikaze arms do not).
+
 ## 206. 005459B0 is a weapon-kind test: `kGunSubmergedArtilleryKindBound`, OFF (lead queue item 3, from cc13-fe5; cc9-gunnery39, 2026-10-13)
 
 `gun_aiming.hpp`'s `muzzle_blocked` was 00729A80's second submerged-fire predicate `005459B0`, which the host set false
