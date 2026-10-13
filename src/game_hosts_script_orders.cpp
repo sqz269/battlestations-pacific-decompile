@@ -768,14 +768,13 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
         return 0u;
     }
 
-    std::size_t owner = units_.count();
-    for (std::size_t index = 0; index < units_.count(); ++index) {
-        const GameUnitRow* row = units_.unit_row(index);
-        if (row != nullptr && row->name == home_base) {
-            owner = index;
-            break;
-        }
-    }
+    // kAirOpsOwnerByInstanceBound: the live instance, as 006C5050's block+7Ch is.
+    const std::size_t owner = bsp::air_ops_owner_row(units_.count(), home_base,
+        [&](std::size_t i) -> const std::string* {
+            const GameUnitRow* row = units_.unit_row(i);
+            return row != nullptr ? &row->name : nullptr;
+        },
+        [&](std::size_t i) { return units_.gunnery() != nullptr && units_.gunnery()->unit_dead(i); });
     if (owner >= units_.count()) {
         log_.notef("air ops squadron: `HomeBase` \"%s\" names no created instance, so "
             "006C5050's bag has no owner to read `Party` off and nothing is created",

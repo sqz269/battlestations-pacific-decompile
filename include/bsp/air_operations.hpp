@@ -901,6 +901,38 @@ inline constexpr bool kAirOpsQueueConsumeStockBound = false;
 // slot is only reported `queued` and is never launched.
 inline constexpr bool kAirOpsBusyArmQueueLaunchBound = false;
 
+// Packet cc13-fix7 A (docs/CC13_VER_18.md section 2). The image ties a deck to
+// one mother-ship instance: 007593D0 runs 006CADD0 per instance, LaunchSquadron
+// (0089E3C0) resolves its entity through 006BCD20 to that entity's own block,
+// and 006C5050 reads the owner only through block+7Ch. The host keys decks by
+// unit name and took the FIRST row with the name, so a carrier regenerated
+// under its old name (PRCP01 Junyo, Zuiho) stayed bound to the dead instance.
+// True (minimal form, LABELLED: not the image's per-instance rule): the LAST
+// row with the name that is not dead, else the first. False: the first.
+inline constexpr bool kAirOpsOwnerByInstanceBound = false;
+
+// The unit row a deck name (or a bag's `HomeBase`) resolves to, over `count`
+// rows. `name_of(i)` gives row i's name or nullptr; `dead(i)` is the host's
+// death test. Returns `count` when no row has the name.
+template <class NameOf, class Dead>
+std::size_t air_ops_owner_row(std::size_t count, const std::string& name, NameOf name_of,
+                              Dead dead) {
+    std::size_t first = count;
+    for (std::size_t i = 0; i < count; ++i) {
+        const std::string* n = name_of(i);
+        if (n == nullptr || *n != name) continue;
+        if (first == count) first = i;
+        if constexpr (!kAirOpsOwnerByInstanceBound) break;
+    }
+    if constexpr (kAirOpsOwnerByInstanceBound) {
+        for (std::size_t i = count; i-- > first;) {
+            const std::string* n = name_of(i);
+            if (n != nullptr && *n == name && !dead(i)) return i;
+        }
+    }
+    return first;
+}
+
 // 006CCDA0 BSP_AirOps_SlotCommand for the arms a player order reaches: a slot
 // with a class, in state 5 or 1, given order 1 (moveto) or 3 (attack target):
 // with `apply`, slot+4Ch = the target for order 3 (0 otherwise, 006C4F70),
