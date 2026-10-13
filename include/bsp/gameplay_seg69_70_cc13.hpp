@@ -887,5 +887,68 @@ public:
 OrderMoveChoice ai_order_cautious_move_00a2ccf0(std::uint32_t population_5644, const float point[3],
                                                 float ratio, OrderMoveHost& host);
 
+// ---------------------------------------------------------------------------
+// The Duel (00A25F70) and Escort (00A26210) thinks. The host runs the
+// Siege/Competitive arm (00A1CB80) for both (src/ai_planners.cpp
+// ai_mode_planner_tick); neither image body calls 00A1CB80 on its main path.
+// ---------------------------------------------------------------------------
+
+enum class ModeThinkAction {
+    SpawnGroup,        // 00A25B90 quick spawn ("[duel]" 00D23000 / "[escort]" 00D23008), then 00A16450(0.5)
+    Attack,            // 00A2CBD0(group)(target group, 1.0)
+    CautiousMove,      // 00A2CCF0(group)(point, 1.0)
+    PatrolTo,          // 00A2C310(group)(point)
+    ChooseAttackTarget,// 00A1CB80(planner)(group, 1.0, 0)
+    None,
+};
+
+struct ModeThinkResult {
+    ModeThinkAction action{ModeThinkAction::None};
+    const void* target{nullptr};
+    float point[3]{0.0f, 0.0f, 0.0f};
+};
+
+struct DuelThinkInputs {
+    std::uint32_t owned_groups_028{0};
+    float leader[3]{0.0f, 0.0f, 0.0f};          // 00A10C20(first owned group)
+    const void* nearest_enemy_group{nullptr};   // 00A1C960(leader, planner+34h)
+    float nearest_enemy_d2{0.0f};               // its out value, a squared distance
+    std::uint32_t own_team_group_count{0};      // [00F8AA50 + (planner+30h)*0Ch]
+    float own_centroid[3]{0.0f, 0.0f, 0.0f};    // 00A1CA60(planner+30h, 0)
+    float enemy_centroid[3]{0.0f, 0.0f, 0.0f};  // 00A1CA60(planner+34h, 0)
+};
+
+// No owned group: SpawnGroup. No enemy group: CautiousMove to the own centroid.
+// Attack when 16e6 [00D22FF8] > d2 (FCOMPI/JA) or the own team has one group or
+// fewer; otherwise CautiousMove to own * t + enemy * (1 - t), t =
+// 00419010(500 [00CE397C], 0, 2000 [00CFFD60], 1, 009FFC10(leader - own)), each
+// product and sum stored as a float. 00A2CCF0's ratio is 1.0, so it installs
+// MOVETO, but it still draws stream 1 when its gates pass.
+ModeThinkResult ai_duel_think_00a25f70(const DuelThinkInputs& in);
+
+struct EscortSetEntity {
+    const void* entity{nullptr};
+    float x_0fc{0.0f}, y_100{0.0f}, z_104{0.0f};
+    int team_054{0};
+    const void* group_16c{nullptr};
+};
+
+struct EscortThinkInputs {
+    std::uint32_t owned_groups_028{0};
+    float leader[3]{0.0f, 0.0f, 0.0f};       // the first owned group's first member +FCh (00F87574 when empty)
+    int own_team_030{0};
+    int enemy_team_034{1};
+    // The set [[00E188A8] + own*4 + 21A4h] + 18h in its tree order (008DA530).
+    std::vector<EscortSetEntity> set;
+    float enemy_centroid[3]{0.0f, 0.0f, 0.0f};   // 00A1CA60(planner+34h, 0)
+};
+
+// No owned group: SpawnGroup. An empty set: ChooseAttackTarget (00A1CB80 with
+// reset 0). Else the set entity nearest the leader (planar f(dz^2 + dx^2),
+// seed 1e10, strict) decides: own team -> PatrolTo f(f(e + c) * 0.5) per axis
+// (c the enemy centroid); enemy team -> Attack its +16Ch group, or PatrolTo
+// its +FCh when it has none; any other team -> None.
+ModeThinkResult ai_escort_think_00a26210(const EscortThinkInputs& in);
+
 }  // namespace gameplay_seg69_70_cc13
 }  // namespace bsp

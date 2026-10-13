@@ -500,3 +500,32 @@ Checked and matching: `00A02020` (the order bridge), `00A10EC0` (the auto-merge 
 three labelled ways: the host issues `returntobase` per plane where the image orders the squadron, it
 omits `00A11070`, and it records the per-member session message 51h. `00A04560` matches apart from the
 host's labelled spread and class query.
+
+### 7.8 The mode planners: Duel and Escort have their own bodies
+
+The host's `ai_mode_planner_tick` (src/ai_planners.cpp) runs `00A1CB80` on the first owned group for
+all four mode planners. That is right for Siege (`00A26510`) and Competitive (`00A265F0`, whose reset
+flag is a constant 0), but the Duel and Escort thinks do something else:
+
+- **Duel (`00A25F70`)**, model `ai_duel_think_00a25f70`: the nearest enemy group (`00A1C960`) is attacked
+  (`00A2CBD0`, aggressive 1.0) when it is within 4000 (`16e6 > d^2`) or the own team has one group;
+  otherwise the group moves (`00A2CCF0`, ratio 1.0) to a blend of the two team centroids,
+  `own * t + enemy * (1 - t)` with `t` rising from 0 at 500 to 1 at 2000 units between the leader and
+  the own centroid. With no enemy group it moves to the own centroid. `00A2CCF0` with ratio 1.0 always
+  installs MOVETO but still draws stream 1 when its gates pass.
+- **Escort (`00A26210`)**, model `ai_escort_think_00a26210`: the nearest entity of the team's objective
+  set (`[game + team*4 + 21A4h] + 18h`) decides: an own entity is escorted (PATROLTO to the midpoint of
+  it and the enemy centroid), an enemy entity is attacked through its AI group or patrolled to; only an
+  empty set falls back to `00A1CB80`.
+
+`00A1CB80` itself matches but for the product order (`((range * base) * own) * sticky` in the image),
+the host's near radius (9e6 in `near_radius_squared()`, 1e-10 in the image; no effect while
+`FreeAttack_NearDist` is 5000 or 9000) and the per-candidate target-list records it writes when reset.
+
+Also checked and matching: `00A22800` (the Sell think), `00A2E4C0` (the air split), `00A11B80` (the
+transport moves, spot-checked).
+
+**The constant at `00CE3820` is the double 1e-10** (`BB BD D7 D9 DF 7C DB 3D`). `kAiPlannerNearRadiusSquared`
+(include/bsp/ai_planners.hpp:218), `kAiTailLengthEpsilon` (include/bsp/ai_planner_tails.hpp:68) and the
+literal in `capture_plan_00a29fd0` (src/game_hosts_ai.cpp:4180) say 1e-11; include/bsp/gameplay_seg33_cc13.hpp
+already notes the same.

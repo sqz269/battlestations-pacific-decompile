@@ -1071,6 +1071,82 @@ OrderMoveChoice ai_order_cautious_move_00a2ccf0(std::uint32_t population_5644, c
     return draw > ratio ? OrderMoveChoice::CautiousMove : OrderMoveChoice::MoveTo;  // 00A2CD52 JBE
 }
 
+ModeThinkResult ai_duel_think_00a25f70(const DuelThinkInputs& in) {
+    ModeThinkResult out;
+    if (in.owned_groups_028 == 0u) {                                    // 00A25F8F
+        out.action = ModeThinkAction::SpawnGroup;
+        return out;
+    }
+    if (in.nearest_enemy_group == nullptr) {                            // 00A2607C -> 00A261D1
+        out.action = ModeThinkAction::CautiousMove;
+        for (int k = 0; k < 3; ++k) out.point[k] = in.own_centroid[k];
+        return out;
+    }
+    if (16000000.0f > in.nearest_enemy_d2 || in.own_team_group_count <= 1u) {  // 00A2608C / 00A26099
+        out.action = ModeThinkAction::Attack;
+        out.target = in.nearest_enemy_group;
+        return out;
+    }
+    const float v[2] = {in.leader[0] - in.own_centroid[0], in.leader[2] - in.own_centroid[2]};
+    const float d2 = v[1] * v[1] + v[0] * v[0];                         // 009FFC10
+    const float d = static_cast<double>(d2) > 1.0e-10
+                        ? static_cast<float>(std::sqrt(static_cast<double>(d2)))
+                        : 0.0f;
+    const float t = bsp::clamped_interpolate_00419010(500.0f, 0.0f, 2000.0f, 1.0f, d);
+    const float u = 1.0f - t;                                           // 00A2613F
+    out.action = ModeThinkAction::CautiousMove;
+    for (int k = 0; k < 3; ++k) {
+        const float e = in.enemy_centroid[k] * u;                       // 00A26153..00A26165
+        const float o = in.own_centroid[k] * t;                         // 00A2616F..00A26181
+        out.point[k] = o + e;                                           // 00A2618D..00A261A5
+    }
+    return out;
+}
+
+ModeThinkResult ai_escort_think_00a26210(const EscortThinkInputs& in) {
+    ModeThinkResult out;
+    if (in.owned_groups_028 == 0u) {                                    // 00A26235
+        out.action = ModeThinkAction::SpawnGroup;
+        return out;
+    }
+    if (in.set.empty()) {                                               // 00A262D3 -> 00A264EB
+        out.action = ModeThinkAction::ChooseAttackTarget;
+        return out;
+    }
+    const EscortSetEntity* nearest = nullptr;
+    float best = 1.0e10f;                                               // [00CE4970]
+    for (const EscortSetEntity& e : in.set) {                           // 00A26300..00A263D8
+        const float d2 = planar_d2(e.x_0fc, e.z_104, in.leader[0], in.leader[2]);
+        if (best > d2) {                                                // FCOMPI / JBE
+            best = d2;
+            nearest = &e;
+        }
+    }
+    if (nearest == nullptr) return out;   // the image reads [0+54h] here
+    if (nearest->team_054 == in.own_team_030) {                         // 00A263EB
+        out.action = ModeThinkAction::PatrolTo;
+        const float e[3] = {nearest->x_0fc, nearest->y_100, nearest->z_104};
+        for (int k = 0; k < 3; ++k) {
+            const float s = e[k] + in.enemy_centroid[k];                // 00A2641D..00A26442
+            out.point[k] = s * 0.5f;                                    // [00D7A280]
+        }
+        return out;
+    }
+    if (nearest->team_054 == in.enemy_team_034) {                       // 00A26482
+        if (nearest->group_16c != nullptr) {                            // 00A2648F
+            out.action = ModeThinkAction::Attack;
+            out.target = nearest->group_16c;
+            return out;
+        }
+        out.action = ModeThinkAction::PatrolTo;                         // 00A264C4..00A264D3
+        out.point[0] = nearest->x_0fc;
+        out.point[1] = nearest->y_100;
+        out.point[2] = nearest->z_104;
+        return out;
+    }
+    return out;
+}
+
 bool ai_defend_member_is_candidate_00a2def0(bool member_kind_1c, bool in_team_set) noexcept {
     return member_kind_1c || in_team_set;   // 00A2DF2F JNE / 00A2DF4A JE
 }
