@@ -30,9 +30,9 @@
 
 namespace bsp {
 
-// OFF: the host glue is a suggested diff in docs/CC13_ROCKET_HOMING.md section 6,
-// for the gunnery lane to land. Nothing in the host spawns a rocket yet.
-inline constexpr bool kRocketHomingBound = false;
+// ON by mechanism (GUNNERY 202, IJN23 pair): the gunnery host's rocket spawn fills the
+// homing block; the glue is docs/CC13_ROCKET_HOMING.md section 6 as landed.
+inline constexpr bool kRocketHomingBound = true;
 
 namespace rocket_homing {
 // The homing angle must be strictly positive (0080A272 COMISS, float).
