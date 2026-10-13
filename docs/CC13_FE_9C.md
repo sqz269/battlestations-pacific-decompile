@@ -24,3 +24,23 @@ from the PE on disk. Call rows: `reports/cc13_fe9c_calls.json` (verified with
   running the two autoload class scripts. The cube-face scale is `s * 1.5` stored back as a float and
   multiplied into each channel in extended precision (D8 C9 `fmul st(0), st(1)` confirmed from the
   bytes); face 3 has scale 0.5.
+- 00500A90 FillOrderOfBattleRow: 004FB090 is called and its result discarded; the unit count shows
+  as "x<n>" for n > 0 and " " otherwise; a count of -1 also disables the row (+77h) and sets the
+  list's byte +121h.
+
+## Handoff (cc13-fe9c, 2026-10-13)
+
+Five routines reconstructed and build-tested, with ledger records and verified call rows: 005021E0,
+0050A400, 0050AA10, 00504130, 00500A90. No Ghidra annotations. I stopped at about 65% context.
+
+Still open (in the order cc13-fe9's handoff gives them):
+
+- Segment 12/17: 004FF6F0 ShowDifficultySelect, 00503510 FrontEndPreview_Draw (x87), 00506660
+  BuildOrderOfBattleList (the caller of 00500A90), 0050E3C0 / 0050EF80 OpenEntryAsUnlocks /
+  OpenEntryAsOrderOfBattle (callers of 0050A400; the fourth stack argument they pass is unused),
+  00515050 UpdateTutorialMovie.
+- 005072C0 Preview_OnModelLoaded: see the structure notes in docs/CC13_FE_9.md.
+- 005AB190 HudMap register (fe1, 11 KB).
+
+Tools: this worktree's `local/` holds the fe8/fe9 tools re-pointed here (`fe9_asm.py`,
+`fe9_stackfill.py`, `fe9_fillgen.py`, `fe9_ledger.py`, `fe9_callrows.py`).

@@ -2542,4 +2542,27 @@ inline constexpr PreviewHdrParams kPreviewHdrParams{
     1.0f};
 void library_load_class_tables_00504130(Raw screen, Fe9cPreviewSceneHost& host);
 
+struct Fe9cOrderOfBattleRowHost {
+    virtual ~Fe9cOrderOfBattleRowHost() = default;
+    virtual void* library_find_entry_by_id_004fb090(Raw screen, std::int32_t id) = 0;      // result unused
+    virtual std::string vehicle_class_name_or_no_unlock_004fda50(Raw screen, std::int32_t id) = 0;
+    virtual void* widget_clone_subtree_00aab4c0(void* widget, void* parent) = 0;
+    virtual void* find_child_by_name_00aa7e00(void* parent, std::string_view name) = 0;     // (name, 1)
+    virtual void widget_set_name_2c(void* widget, std::string_view name) = 0;               // vtable +2Ch
+    virtual void gui_text_set_ellipsized_00abb000(void* text, std::string_view source, float width,
+        std::uint32_t flag) = 0;
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;
+    virtual void gui_text_set_localised_source_00abaed0(void* text, std::string_view source, std::uint32_t flag) = 0;
+    virtual void gui_text_set_localised_cstring_00abbe50(void* text, const char* source, std::uint32_t flag) = 0;
+    virtual void list_box_insert_row_00a9d750(void* list, void* row, std::uint32_t a, std::uint32_t b) = 0;
+};
+
+// 00500A90 BSP_TacticalLibraryScreen_FillOrderOfBattleRow, __thiscall(screen, index), RET 4. Record =
+// the 2Ch-byte row index of +460h..+464h (id +0h, count +8h). 004FB090(id) runs with its result unused;
+// a template +0ACh clone is named by the decimal index (vtable +2Ch), +77h = 0; "MenuItem_Text" gets
+// the class name (004FDA50), ellipsized at -1.0f, shown; "NumUnits_Text" is shown with "x" + count
+// for a positive count, else " " (00CE3A90). The row is appended to +0B8h; a count of -1 then marks
+// the row +77h, empties NumUnits_Text and sets byte +121h of the list +0B8h.
+void library_fill_order_of_battle_row_00500a90(Raw screen, std::int32_t index, Fe9cOrderOfBattleRowHost& host);
+
 } // namespace bsp::cc13_fe3

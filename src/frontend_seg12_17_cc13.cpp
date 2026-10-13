@@ -4739,4 +4739,27 @@ void library_load_class_tables_00504130(Raw screen, Fe9cPreviewSceneHost& host) 
     screen.at<std::uint32_t>(0x4B0) = 1;
 }
 
+void library_fill_order_of_battle_row_00500a90(Raw screen, std::int32_t index, Fe9cOrderOfBattleRowHost& host) {
+    const auto record = [&] { return Raw{static_cast<std::uint8_t*>(screen.ptr(0x460)) + index * 0x2C}; };
+    host.library_find_entry_by_id_004fb090(screen, record().at<std::int32_t>(0));
+    const std::string name = host.vehicle_class_name_or_no_unlock_004fda50(screen, record().at<std::int32_t>(0));
+    void* const row = host.widget_clone_subtree_00aab4c0(screen.ptr(0xAC), nullptr);
+    void* const label = host.find_child_by_name_00aa7e00(row, "MenuItem_Text");
+    host.widget_set_name_2c(row, std::to_string(index));
+    raw(row).at<std::uint8_t>(0x77) = 0;
+    host.gui_text_set_ellipsized_00abb000(label, name, -1.0f, 1);
+    host.widget_set_visible_34(label, 1);
+    void* const units = host.find_child_by_name_00aa7e00(row, "NumUnits_Text");
+    host.widget_set_visible_34(units, 1);
+    const std::int32_t count = record().at<std::int32_t>(8);
+    if (count > 0) host.gui_text_set_localised_source_00abaed0(units, "x" + std::to_string(count), 1);
+    else host.gui_text_set_localised_cstring_00abbe50(units, " ", 1);
+    host.list_box_insert_row_00a9d750(screen.ptr(0xB8), row, 0, 0);
+    if (record().at<std::int32_t>(8) == -1) {
+        raw(row).at<std::uint8_t>(0x77) = 1;
+        host.gui_text_set_localised_cstring_00abbe50(units, "", 1);
+        raw(screen.ptr(0xB8)).at<std::uint8_t>(0x121) = 1;
+    }
+}
+
 } // namespace bsp::cc13_fe3
