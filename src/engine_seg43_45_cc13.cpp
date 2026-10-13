@@ -278,10 +278,10 @@ void movcam_seed_from_mover_00794360(MovCamAngles& a, const Vec3& mover_position
 }
 
 void movcam_reset_motion_00794000(cc13cam::MovCamMotion& m, cc13cam::MovCamTurn& t, MovCamResetHost& host) {
-    m.velocity_3ac = {0.0f, 0.0f, 0.0f};
-    m.position_3a0 = {0.0f, 0.0f, 0.0f};
-    t.rate_3d4 = {0.0f, 0.0f};
-    t.angles_3cc = {0.0f, 0.0f};
+    m.acceleration_3ac = {0.0f, 0.0f, 0.0f};
+    m.velocity_3a0 = {0.0f, 0.0f, 0.0f};
+    t.turn_acceleration_3d4 = {0.0f, 0.0f};
+    t.rate_3cc = {0.0f, 0.0f};
     host.step_reset_slot_c();  // 0079406E, JMP [[+170h]+Ch]
 }
 
@@ -300,40 +300,40 @@ float movcam_set_zoom_0078e480(MovCamZoom& z, float zoom, float base_fov_f889b4)
 void movcam_integrate_007943d0(cc13cam::MovCamMotion& m, cc13cam::MovCamTurn& t,
                                const cc13cam::MovCamLimits& limits, const cc13cam::MovCamTurnLimits& turn,
                                float dt) noexcept {
-    auto& v = m.velocity_3ac;
+    auto& v = m.acceleration_3ac;
     if (limits.accel_4c < length3_yxz(v[0], v[1], v[2])) {  // 0079443A
         v = cc13cam::scale_to_length_00793730(v, limits.accel_4c);
     }
     for (int i = 0; i < 3; ++i) {
         const float step = static_cast<float>(static_cast<double>(v[i]) * dt);
-        m.position_3a0[i] = static_cast<float>(static_cast<double>(m.position_3a0[i]) + step);
+        m.velocity_3a0[i] = static_cast<float>(static_cast<double>(m.velocity_3a0[i]) + step);
     }
     Vec3 d{};
     for (int i = 0; i < 3; ++i) {
-        d[i] = static_cast<float>(static_cast<double>(m.position_3a0[i]) - m.previous_3b8[i]);
+        d[i] = static_cast<float>(static_cast<double>(m.velocity_3a0[i]) - m.reference_velocity_3b8[i]);
     }
     if (limits.top_speed_34 < length3_yxz(d[0], d[1], d[2])) {  // 00794537
         const Vec3 s = cc13cam::scale_to_length_00793730(d, limits.top_speed_34);
         for (int i = 0; i < 3; ++i) {
-            m.position_3a0[i] = static_cast<float>(static_cast<double>(s[i]) + m.previous_3b8[i]);
+            m.velocity_3a0[i] = static_cast<float>(static_cast<double>(s[i]) + m.reference_velocity_3b8[i]);
         }
     }
-    auto& r = t.rate_3d4;
+    auto& r = t.turn_acceleration_3d4;
     if (turn.accel_50 < length2_yx(r[0], r[1])) {  // 00794618
         r = cc13cam::scale_to_length_00793800(r, turn.accel_50);
     }
     for (int i = 0; i < 2; ++i) {
         const float step = static_cast<float>(static_cast<double>(r[i]) * dt);
-        t.angles_3cc[i] = static_cast<float>(static_cast<double>(t.angles_3cc[i]) + step);
+        t.rate_3cc[i] = static_cast<float>(static_cast<double>(t.rate_3cc[i]) + step);
     }
     std::array<float, 2> a{};
     for (int i = 0; i < 2; ++i) {
-        a[i] = static_cast<float>(static_cast<double>(t.angles_3cc[i]) - t.previous_3dc[i]);
+        a[i] = static_cast<float>(static_cast<double>(t.rate_3cc[i]) - t.reference_rate_3dc[i]);
     }
     if (turn.top_rate_38 < length2_yx(a[0], a[1])) {  // 007946DA
         const auto s = cc13cam::scale_to_length_00793800(a, turn.top_rate_38);
         for (int i = 0; i < 2; ++i) {
-            t.angles_3cc[i] = static_cast<float>(static_cast<double>(s[i]) + t.previous_3dc[i]);
+            t.rate_3cc[i] = static_cast<float>(static_cast<double>(s[i]) + t.reference_rate_3dc[i]);
         }
     }
 }
@@ -343,7 +343,7 @@ void movcam_steer_angles_braking_00794f70(cc13cam::MovCamTurn& t, const cc13cam:
                                           float length_00414c60_of_d) noexcept {
     std::array<float, 2> delta{};
     for (int i = 0; i < 2; ++i) {
-        delta[i] = static_cast<float>(static_cast<double>(t.angles_3cc[i]) - t.previous_3dc[i]);
+        delta[i] = static_cast<float>(static_cast<double>(t.rate_3cc[i]) - t.reference_rate_3dc[i]);
     }
     const float r = static_cast<float>(static_cast<double>(length2_yx(delta[0], delta[1])) / limits.accel_50);
     if (target != 0) {  // 00794FEB
@@ -368,7 +368,7 @@ void movcam_steer_angles_braking_00794f70(cc13cam::MovCamTurn& t, const cc13cam:
     const float len = static_cast<float>(static_cast<double>(limits.accel_50) * s);
     const auto add = cc13cam::scale_to_length_00793800(want, len);
     for (int i = 0; i < 2; ++i) {
-        t.rate_3d4[i] = static_cast<float>(static_cast<double>(add[i]) + t.rate_3d4[i]);
+        t.turn_acceleration_3d4[i] = static_cast<float>(static_cast<double>(add[i]) + t.turn_acceleration_3d4[i]);
     }
 }
 
@@ -1528,6 +1528,44 @@ void movie_keyframe_construct_at_0079c910(MovieKeyframeInit& k, const Vec3& p, s
     k.linked_25 = false;
     k.partner_20 = 0;
     k.flag_bc = false;
+    k.then_none_30 = false;
+    k.wanderer_26 = true;
+    k.smooth_d0 = 1.0f;
+    k.smooth_cc = 1.0f;
+    k.has_position_27 = true;
+    k.nonlinear_d4 = 0.5f;  // 00CE3800
+    k.camera_28 = true;
+    k.transform_2c = 1;
+}
+
+void movie_keyframe_construct_00799b00(MovieKeyframeInit& k) {
+    k.entity_1c = 0;
+    k.flag_18 = true;
+    k.name_fc.clear();
+    k.fov_divisor_c0 = -1.0f;  // 00D7A260
+    k.id_da = -1;
+    k.parent_attached_24 = false;
+    k.eval_4c = {0.0f, 0.0f, 0.0f};
+    k.work_40 = k.eval_4c;
+    k.local_34 = k.work_40;
+    k.zoom_c8 = 1.0f;  // 00D7A24C
+    k.zoom_c4 = 1.0f;
+    k.eval_up_70 = {0.0f, 1.0f, 0.0f};
+    k.work_up_64 = k.eval_up_70;
+    k.up_58 = k.work_up_64;
+    k.start_f0 = 0.0f;
+    k.blend_f4 = 0.0f;
+    k.flag_dc = false;
+    k.flag_e8 = false;
+    k.flag_bc = false;
+    k.field_4 = 0;
+    k.state_f8 = 0;
+    k.modifier_e4 = 0;
+    k.event_ec = 0;
+    k.use_current_d8 = false;
+    k.terrain_avoid_d9 = false;
+    k.linked_25 = false;
+    k.partner_20 = 0;
     k.then_none_30 = false;
     k.wanderer_26 = true;
     k.smooth_d0 = 1.0f;
