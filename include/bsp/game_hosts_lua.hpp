@@ -243,7 +243,7 @@ inline constexpr bool kLuaKillAttackerBound = true;
 // commandhelpers.lua's luaPutToRecon (line 16266, `dist * GetSimplifiedRecon...()`)
 // raises an arithmetic-on-nil error. LABELLED: a set value is not forwarded to the
 // gunnery host's recon detection (`simplified_recon_multiplier()` stays 1.0f).
-inline constexpr bool kSimplifiedReconNativesBound = false;
+inline constexpr bool kSimplifiedReconNativesBound = true;   // ON: SQUADRON_LAND_TASK 5gj
 
 // docs/CC13_AUDIT_LUA51_FLIPS.md item 1c. 00988510 boxes, and 0097B8C0 matches,
 // the target as hitEntity->vtable[140h]() kept only when it answers IsKindOf(2)
