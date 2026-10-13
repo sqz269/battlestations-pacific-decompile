@@ -2613,6 +2613,15 @@ void GameMissionLuaHost::note_error(const std::string& message) {
         summary_.first_error = message;
         summary_.first_error_phase = phase_;
     }
+    // Harness diagnostic, not image behaviour: the summary keeps only the first
+    // error, so a later error raised inside a listener or delayed callback was
+    // silent. Log each one, capped so a per-frame failure cannot flood the log.
+    static int logged = 0;
+    if (!message.empty() && logged < 50) {
+        ++logged;
+        log_.notef("lua error (%d of at most 50, phase %s): %s", logged,
+            phase_.c_str(), message.c_str());
+    }
 }
 
 void GameMissionLuaHost::attach_script_orders(GameScriptOrdersHost* orders) noexcept {
