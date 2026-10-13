@@ -172,6 +172,36 @@ struct Seg15Host : bsp::ingame_gui_cc13::HudScreenServices {
     // 005359A0 tree head / 00535720, 005356C0 list heads.
     virtual void* tree_buy_head_node_005359a0() = 0;
     virtual void* list_buy_head_node(std::uint32_t routine) = 0;
+    // Profiler object 00E18E80 (ECX): BE32B0 end record, BE3360 elapsed seconds
+    // (ST0), BE3300 reset, BE3260 begin (tail jump). 004C1DD0: the profiler
+    // instance; *(+20h) is a float array indexed by the counter id held in the
+    // named global (0109D014, 0109DB08, 0109DB14, 0109DB34).
+    virtual void profiler_record_end_00be32b0() = 0;
+    virtual float profiler_elapsed_seconds_00be3360() = 0;
+    virtual void profiler_record_reset_00be3300() = 0;
+    virtual void profiler_record_begin_00be3260() = 0;
+    virtual float profiler_counter_value(std::uint32_t id_global) = 0;
+    // 0053BCC0, ECX = frame stats: format the overlay lines (float rate).
+    virtual void frame_stats_format_lines_0053bcc0(Raw stats, float rate) = 0;
+    // 004134F0, ECX = destination matrix, (source): 4x4 copy.
+    virtual void matrix_copy_004134f0(void* dst, const void* src) = 0;
+    // 00867B10, ECX = point effect: stop its children.
+    virtual void point_effect_stop_children_00867b10(void* effect) = 0;
+    // 00871BA0, ECX = out handle, (&name, 1): acquire an effect by name; the
+    // returned handle carries one reference owned by the caller.
+    virtual void* effect_handle_acquire_00871ba0(std::string_view name) = 0;
+    // 0053DA70: free-camera effect list head; 0053F250, ECX = vector: tidy.
+    virtual void* list_buy_head_node_0053da70() = 0;
+    virtual void effect_vector_tidy_0053f250(Raw vec) = 0;
+    // 00695870, ECX = callback-owner sub-object.
+    virtual void callback_owner_destroy_00695870(Raw owner) = 0;
+    // A routine reached by tail jump with ECX = object and no further arguments.
+    virtual void tail_call(std::uint32_t routine, Raw object) = 0;
+    // 00ABBE50 with a C string pointer (the row's SBO buffer).
+    virtual void text_set_localised_cstr_00abbe50(void* text, const char* value) = 0;
+    // Widget +50h set colour (float rgba[4]); +60h set focus (bool).
+    // BSP_LegacySboString_AssignSubstring, ECX = dst string, (src, 0, npos).
+    virtual void legacy_string_assign_substring(Raw dst, Raw src) = 0;
 };
 
 // MSVC 8 vector layout used by the screens: {allocator dword, first, last, end}.
@@ -395,6 +425,86 @@ void hud_formation_collect_children_00538d20(Raw s, void* out, Seg15Host& host);
 // 00538D60, __thiscall(screen, map, member, float unused), RET 0Ch.
 void hud_formation_add_member_marker_00538d60(Raw s, void* map, std::uint32_t member, Seg15Host& host);
 Raw hud_formation_construct_00538e30(Raw s, Seg15Host& host);
+
+// ---------------------------------------------------------------------------
+// Frame statistics overlay (57h, vtable 00CEDA10) and its statistics object.
+// ---------------------------------------------------------------------------
+void record_zero_init_0053b9e0(Raw record);  // ten dwords
+Raw frame_stats_construct_0053ba10(Raw s, Seg15Host& host);
+void frame_stats_enter_0053ba70(Raw s);
+// 0053BAB0, cdecl(line, format, ...): _vsprintf_s into a 210h-byte line.
+int frame_stats_printf_0053bab0(char* line, const char* format, ...);
+void frame_stats_reset_accumulators_0053bb40(Raw stats);
+void frame_stats_destruct_0053c440(Raw s, Seg15Host& host);
+// 0053C510, __thiscall(stats), RET; ECX = *(game + 19C8h).
+void frame_stats_accumulate_0053c510(Raw stats, Seg15Host& host);
+void frame_stats_collect_children_0053d220(Raw s, void* out, Seg15Host& host);
+
+// ---------------------------------------------------------------------------
+// HUD free camera (2Bh, vtables 00CEDCA8 / observer 00CEDC90 at +8h).
+// Effect entry 34h (vtable 00CEDC60, point effect +2Ch); effect record 30h
+// (NativeString +1Ch, reference-counted handles +24h, +28h, +2Ch).
+// ---------------------------------------------------------------------------
+// 0053D2C0, observer slot (ECX = screen+8h, subject), RET 4.
+void free_camera_observer_released_0053d2c0(Raw observer, void* subject);
+// 0053D700, __fastcall(ECX = source): 00E192B0 = *source, 00E192A9 = 1.
+void free_camera_set_matrix_0053d700(const void* source, Seg15Host& host);
+void free_camera_effect_entry_construct_0053dc70(Raw entry, Seg15Host& host);
+void free_camera_effect_entry_destruct_0053dce0(Raw entry, Seg15Host& host);
+void free_camera_effect_record_destroy_0053df40(Raw record, Seg15Host& host);
+void free_camera_effect_entry_copy_0053e030(Raw dst, Raw src);
+// 0053E0E0, __fastcall(settings block at screen+60h).
+void free_camera_acquire_test_effects_0053e0e0(Raw block, Seg15Host& host);
+void free_camera_effect_record_copy_0053e300(Raw dst, Raw src, Seg15Host& host);
+void free_camera_effect_record_assign_0053e460(Raw dst, Raw src, Seg15Host& host);
+std::uint8_t* free_camera_effect_record_copy_backward_0053e6f0(std::uint8_t* first, std::uint8_t* last,
+                                                               std::uint8_t* dest_end, Seg15Host& host);
+void free_camera_effect_list_clear_0053e850(Raw list, Seg15Host& host);
+// 0053FF10, __thiscall(vector, iterator, where, count, const record*), RET 10h.
+void free_camera_effect_record_insert_n_0053ff10(Raw vec, std::uint8_t* where, std::uint32_t count, Raw value,
+                                                 Seg15Host& host);
+void free_camera_construct_effect_lists_005401f0(Raw block, Seg15Host& host);
+void free_camera_release_effects_00540260(Raw block, Seg15Host& host);
+void free_camera_destruct_005402d0(Raw s, Seg15Host& host);
+void free_camera_collect_children_00540380(Raw s, void* out, Seg15Host& host);
+Raw free_camera_construct_00540ba0(Raw s, Seg15Host& host);
+
+// ---------------------------------------------------------------------------
+// Debug text lists and the command bar (STL instances over small elements).
+// IntBool element: {int32, byte} in 8 bytes. ByteSbo element (24h): {byte,
+// MSVC 8 std::string at +4 (buffer +8, size +18h, capacity +1Ch), dword +20h}.
+// ---------------------------------------------------------------------------
+// 00542200 / 00542230, __fastcall(ECX first, EDX last, dest, 3 unused), RET 10h.
+std::uint8_t* int_bool_uninit_copy_00542200(const std::uint8_t* first, const std::uint8_t* last, std::uint8_t* dest);
+// 00542CB0 / 00542CE0, __fastcall(ECX dest, EDX count, const elem*, 3 unused), RET 10h.
+void int_bool_uninit_fill_n_00542cb0(std::uint8_t* dest, std::uint32_t count, const std::uint8_t* value);
+// 00542BB0 / 00542BE0, cdecl(first, last, const elem*): fill (8 bytes each).
+void pod8_fill_00542bb0(std::uint8_t* first, std::uint8_t* last, const std::uint8_t* value);
+// 00543050 / 005430A0, cdecl(first, last, dest_end) -> new dest start.
+std::uint8_t* pod8_copy_backward_00543050(const std::uint8_t* first, const std::uint8_t* last, std::uint8_t* dest_end);
+// 00543E90 / 005440E0, __thiscall(vector, iterator, where, count, const elem*), RET 10h.
+void int_bool_vector_insert_n_00543e90(Raw vec, std::uint8_t* where, std::uint32_t count, Raw value, Seg15Host& host);
+// 00542620, __fastcall(list): the rows (24h, vector +14h) get their text and the
+// colour by state (+48h inactive, +38h selected, +28h normal); page +8h shown.
+void debug_text_list_refresh_rows_00542620(Raw list, Seg15Host& host);
+// 00542D70 / 00542EE0 / 005439B0, __fastcall(list): action 46h tail-jumps to
+// the first routine, else action 47h to the second.
+void debug_text_list_poll_up_down(Raw list, std::uint32_t on_46, std::uint32_t on_47, Seg15Host& host);
+// 00543410, __thiscall(bar, index), RET 4: button colours and focus.
+void command_bar_set_button_00543410(Raw bar, std::uint32_t index, Seg15Host& host);
+// ByteSbo helpers.
+void byte_sbo_placement_copy_00543a60(std::uint8_t* slot, const std::uint8_t* src, Seg15Host& host);  // fastcall
+void byte_sbo_destroy_range_00543c20(std::uint8_t* first, std::uint8_t* last, Seg15Host& host);  // fastcall, RET 8
+std::uint8_t* byte_sbo_copy_00543ca0(const std::uint8_t* first, const std::uint8_t* last, std::uint8_t* dest,
+                                     Seg15Host& host);  // cdecl
+std::uint8_t* byte_sbo_copy_backward_00543cf0(const std::uint8_t* first, const std::uint8_t* last,
+                                              std::uint8_t* dest_end, Seg15Host& host);  // cdecl
+std::uint8_t* byte_sbo_uninit_copy_00543d40(const std::uint8_t* first, const std::uint8_t* last, std::uint8_t* dest,
+                                            Seg15Host& host);  // fastcall + dest, RET 10h
+void byte_sbo_fill_005443b0(std::uint8_t* first, std::uint8_t* last, const std::uint8_t* value,
+                            Seg15Host& host);  // cdecl
+void byte_sbo_uninit_fill_n_005443f0(std::uint8_t* dest, std::uint32_t count, const std::uint8_t* value,
+                                     Seg15Host& host);  // fastcall + value, RET 10h
 
 }  // namespace bsp::frontend_seg15_22_cc13
 

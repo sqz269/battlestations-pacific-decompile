@@ -118,10 +118,46 @@ z / h + 0.5)), collect 00538D20, member marker 00538D60, construct 00538E30.
 Correction: the menu_screens_2 note on 00538D60 calls the visibility call "decompile only"; the
 listing makes it (00B6DA70 on marker +128h with 0.0f, 0).
 
+### Frame statistics (57h)
+
+Record zero 0053B9E0, construct 0053BA10, enter 0053BA70 (min/max seeded with +/-FLT_MAX),
+printf 0053BAB0, accumulator reset 0053BB40, destruct 0053C440, collect 0053D220, and the per-frame
+accumulate 0053C510 (ECX = *(game + 19C8h)): mode +8h 1 averages four profiler counters
+(ids in 0109D014, 0109DB08, 0109DB14, 0109DB34) over 0.25 s windows, mode 2 counts frames over
+2.0 s windows, mode 3 reports 1 / elapsed each frame; the rate updates the min (+7Ch) and max
+(+80h) and goes to 0053BCC0 (host). The profiler record 00E18E80 is ended first and reset and
+restarted last (tail jump to 00BE3260).
+
+### Free camera (2Bh)
+
+Observer release 0053D2C0, matrix set 0053D700 (00E192B0, dirty byte 00E192A9), effect entry
+construct / destruct / copy 0053DC70 / 0053DCE0 / 0053E030, effect record destroy / copy / assign /
+copy-backward 0053DF40 / 0053E300 / 0053E460 / 0053E6F0, effect list clear 0053E850, record vector
+insert 0053FF10, test effects 0053E0E0 (5InchExplosionArmour +28h, 5InchBulletTracer +24h, then the
+settings 1000.0, 0, 0.1, 4.0, 300.0, 30.0), effect lists 005401F0 / 00540260, destruct 005402D0,
+collect 00540380, construct 00540BA0. Reference-counted handles are `{vtable, count +4}` released
+through slot 0 at zero.
+
+### Debug text lists, command bar, small STL instances
+
+Row refresh 00542620 (the ledger name says DeleteRows; the body sets each row's text and colour:
++48h for an inactive row, +38h for the selected one, else +28h), up/down pollers 00542D70 /
+00542EE0 / 005439B0 (one model, three pairs of tail-jump targets), command bar button 00543410
+(ButtonLamp_Icon looked up and unused; text {32, 32, 32, 1} disabled, {255, 255, 230, 1} enabled;
+focus when the index is the selection +14h). Element helpers: IntBool copy / fill 00542200 /
+00542230 / 00542CB0 / 00542CE0, POD8 fill / copy-backward 00542BB0 / 00542BE0 / 00543050 / 005430A0,
+IntBool vector insert 00543E90 / 005440E0, ByteSbo (24h, std::string at +4) helpers 00543A60 /
+00543C20 / 00543CA0 / 00543CF0 / 00543D40 / 005443B0 / 005443F0. The catch-and-rethrow paths of
+the uninitialised copies are not modelled.
+
 ## Backfilled
 
 - 00530970 menu prompt exit (`src/menu_screens_2.cpp`).
 
 ## For cc9
 
-(none yet)
+- 0053D230 `BSP_HudFreeCameraScreen_ForwardToUnit`, RET 0Ch, args vec3 by value: when the
+  controlled unit (*00E188D8) answers its vslot +5Ch(6) true, the vector's second component is
+  zeroed; then the unit's vslot +118h gets &vec. The free-camera update calls it on the mark action
+  with the camera position (src/menu_screens_2.cpp `mark_position_0053d230`), so it hands a world
+  point to the unit: an order path, not reconstructed here.

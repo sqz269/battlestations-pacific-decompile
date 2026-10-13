@@ -1210,4 +1210,519 @@ Raw hud_formation_construct_00538e30(Raw s, Seg15Host& host) {
     return s;
 }
 
+// ---------------------------------------------------------------------------
+// Frame statistics (57h)
+// ---------------------------------------------------------------------------
+
+// 0053B9E0, __fastcall(record): ten dwords zeroed (store order +0..+0Ch, +18h,
+// +1Ch, +10h, +14h, +20h, +24h).
+void record_zero_init_0053b9e0(Raw record) {
+    for (std::size_t off : {0x0u, 0x4u, 0x8u, 0xCu, 0x18u, 0x1Cu, 0x10u, 0x14u, 0x20u, 0x24u}) {
+        record.at<std::uint32_t>(off) = 0;
+    }
+}
+
+// 0053BA10: base, +8h and +78h cleared, vtable 00CEDA10, +68h..+74h cleared.
+Raw frame_stats_construct_0053ba10(Raw s, Seg15Host& host) {
+    host.front_end_screen_construct_004f7180(s);
+    s.at<std::uint32_t>(0x8) = 0;
+    s.at<std::uint32_t>(0x78) = 0;
+    s.at<std::uint32_t>(0x0) = 0x00CEDA10;
+    for (std::size_t off = 0x68; off <= 0x74; off += 4) s.at<std::uint32_t>(off) = 0;
+    return s;
+}
+
+// 0053BA70, slot +18h: the minimum (+7Ch) starts at FLT_MAX (00D7A248), the
+// maximum (+80h) at -FLT_MAX (00D7A244).
+void frame_stats_enter_0053ba70(Raw s) {
+    s.at<float>(0x7C) = 3.4028234663852886e+38f;
+    s.at<float>(0x80) = -3.4028234663852886e+38f;
+}
+
+int frame_stats_printf_0053bab0(char* line, const char* format, ...) {
+    va_list args;
+    va_start(args, format);
+    const int n = std::vsnprintf(line, 0x210, format, args);
+    va_end(args);
+    return n;
+}
+
+// 0053BB40: +4Ch..+90h zeroed (pairs, high dword first as in the image).
+void frame_stats_reset_accumulators_0053bb40(Raw stats) {
+    for (std::size_t off = 0x4C; off <= 0x90; off += 4) stats.at<std::uint32_t>(off) = 0;
+}
+
+void frame_stats_destruct_0053c440(Raw s, Seg15Host& host) {
+    s.at<std::uint32_t>(0x0) = 0x00CEDA10;
+    remove_page(s, 0xC, host);
+    host.front_end_screen_destruct_004f71a0(s);
+}
+
+// 0053C510: end the profiler record and take its elapsed seconds; when the
+// overlay is active (+5h) in mode +8h: 1 averages four profiler counters
+// over each 0.25 s window, 2 counts frames over each 2.0 s window, 3 reports
+// 1 / elapsed every frame. The rate updates the min (+7Ch) and max (+80h)
+// and goes to 0053BCC0. Then the record is reset and a new one begun.
+void frame_stats_accumulate_0053c510(Raw stats, Seg15Host& host) {
+    host.profiler_record_end_00be32b0();
+    const float elapsed = host.profiler_elapsed_seconds_00be3360();
+    const std::int32_t mode = stats.at<std::int32_t>(0x8);
+    auto min_max = [&](float rate) {
+        if (stats.at<float>(0x7C) > rate) stats.at<float>(0x7C) = rate;
+        if (rate > stats.at<float>(0x80)) stats.at<float>(0x80) = rate;
+    };
+    if (stats.at<std::uint8_t>(kActive) != 0 && mode != 0) {
+        if (mode == 1) {
+            stats.at<float>(0x68) = host.profiler_counter_value(0x0109D014) + stats.at<float>(0x68);
+            stats.at<float>(0x6C) = host.profiler_counter_value(0x0109DB08) + stats.at<float>(0x6C);
+            const float a = host.profiler_counter_value(0x0109DB34);
+            const float b = host.profiler_counter_value(0x0109DB14);
+            stats.at<std::int32_t>(0x78) += 1;
+            stats.at<float>(0x70) = a + b + stats.at<float>(0x70);
+            const float window = elapsed + stats.at<float>(0x74);
+            stats.at<float>(0x74) = window;
+            if (window > 0.25f) {
+                const float n = static_cast<float>(stats.at<std::int32_t>(0x78));
+                const float rate = n / window;
+                min_max(rate);
+                stats.at<float>(0x68) = stats.at<float>(0x68) / n;
+                stats.at<float>(0x6C) = stats.at<float>(0x6C) / n;
+                stats.at<float>(0x70) = stats.at<float>(0x70) / n;
+                host.frame_stats_format_lines_0053bcc0(stats, rate);
+                stats.at<float>(0x74) = 0.0f;
+                stats.at<std::int32_t>(0x78) = 0;
+                stats.at<float>(0x68) = 0.0f;
+                stats.at<float>(0x6C) = 0.0f;
+                stats.at<float>(0x70) = 0.0f;
+            }
+        } else if (mode == 2) {
+            stats.at<std::int32_t>(0x78) += 1;
+            const float window = elapsed + stats.at<float>(0x74);
+            stats.at<float>(0x74) = window;
+            if (window > 2.0f) {
+                const float rate = static_cast<float>(stats.at<std::int32_t>(0x78)) / window;  // FIDIVR
+                min_max(rate);
+                host.frame_stats_format_lines_0053bcc0(stats, rate);
+                stats.at<float>(0x74) = 0.0f;
+                stats.at<std::int32_t>(0x78) = 0;
+            }
+        } else if (mode == 3) {
+            host.frame_stats_format_lines_0053bcc0(stats, 1.0f / elapsed);
+        }
+    }
+    host.profiler_record_reset_00be3300();
+    host.profiler_record_begin_00be3260();
+}
+
+void frame_stats_collect_children_0053d220(Raw s, void* out, Seg15Host& host) {
+    host.push_page_slot_004d6790(out, reinterpret_cast<void**>(s.p + 0xC));
+}
+
+// ---------------------------------------------------------------------------
+// Free camera (2Bh)
+// ---------------------------------------------------------------------------
+
+namespace {
+// Reference-counted handle {vtable, count +4}: InterlockedIncrement /
+// InterlockedDecrement (00CE2220), slot 0 (no arguments) when the count drops
+// to zero.
+void ref_add(void* handle) {
+    if (handle) ++*reinterpret_cast<long*>(static_cast<std::uint8_t*>(handle) + 4);
+}
+void ref_release(void* handle, Seg15Host& host) {
+    if (handle && --*reinterpret_cast<long*>(static_cast<std::uint8_t*>(handle) + 4) == 0) {
+        host.object_virtual(Raw{static_cast<std::uint8_t*>(handle)}, 0x0);
+    }
+}
+void ref_assign(Raw dst, std::size_t off, void* value, Seg15Host& host) {
+    void* old = dst.ptr(off);
+    if (old == value) return;
+    dst.ptr(off) = value;
+    ref_add(value);
+    ref_release(old, host);
+}
+}  // namespace
+
+void free_camera_observer_released_0053d2c0(Raw observer, void* subject) {
+    if (subject == observer.ptr(0x1C)) observer.ptr(0x1C) = nullptr;
+}
+
+void free_camera_set_matrix_0053d700(const void* source, Seg15Host& host) {
+    host.matrix_copy_004134f0(host.global_block(0x00E192B0).p, source);
+    host.global_block(0x00E192A9).at<std::uint8_t>(0) = 1;
+}
+
+// 0053DC70: vtable 00CEDC60, +28h..+30h cleared, the three vec3s +4h, +10h,
+// +1Ch from the vec3 at 00F87574.
+void free_camera_effect_entry_construct_0053dc70(Raw entry, Seg15Host& host) {
+    entry.at<std::uint32_t>(0) = 0x00CEDC60;
+    entry.at<std::uint32_t>(0x28) = 0;
+    entry.at<std::uint32_t>(0x2C) = 0;
+    entry.at<std::uint32_t>(0x30) = 0;
+    Raw origin = host.global_block(0x00F87574);
+    for (std::size_t i = 0; i < 3; ++i) entry.at<std::uint32_t>(0x1C + i * 4) = origin.at<std::uint32_t>(i * 4);
+    for (std::size_t i = 0; i < 3; ++i) entry.at<std::uint32_t>(0x10 + i * 4) = entry.at<std::uint32_t>(0x1C + i * 4);
+    for (std::size_t i = 0; i < 3; ++i) entry.at<std::uint32_t>(0x4 + i * 4) = entry.at<std::uint32_t>(0x10 + i * 4);
+}
+
+// 0053DCE0: a live point effect (+2Ch) has its children stopped and byte +9
+// set, then its reference is released.
+void free_camera_effect_entry_destruct_0053dce0(Raw entry, Seg15Host& host) {
+    entry.at<std::uint32_t>(0) = 0x00CEDC60;
+    if (void* effect = entry.ptr(0x2C)) {
+        host.point_effect_stop_children_00867b10(effect);
+        static_cast<std::uint8_t*>(effect)[9] = 1;
+    }
+    if (entry.ptr(0x2C)) {
+        ref_release(entry.ptr(0x2C), host);
+        entry.ptr(0x2C) = nullptr;
+    }
+}
+
+// 0053DF40: release the handles +2Ch, +28h, +24h, then the string +1Ch.
+void free_camera_effect_record_destroy_0053df40(Raw record, Seg15Host& host) {
+    for (std::size_t off : {0x2Cu, 0x28u, 0x24u}) {
+        if (record.ptr(off)) {
+            ref_release(record.ptr(off), host);
+            record.ptr(off) = nullptr;
+        }
+    }
+    host.native_string_release(Raw{record.p + 0x1C});
+}
+
+void free_camera_effect_entry_copy_0053e030(Raw dst, Raw src) {
+    dst.at<std::uint32_t>(0) = 0x00CEDC60;
+    for (std::size_t off = 0x4; off <= 0x28; off += 4) dst.at<std::uint32_t>(off) = src.at<std::uint32_t>(off);
+    dst.ptr(0x2C) = nullptr;
+    if (void* h = src.ptr(0x2C)) {
+        dst.ptr(0x2C) = h;
+        ref_add(h);
+    }
+    dst.at<std::uint32_t>(0x30) = src.at<std::uint32_t>(0x30);
+}
+
+// 0053E0E0: 5InchExplosionArmour into +28h, 5InchBulletTracer into +24h, then
+// the settings +0h 1000.0, +4h 0, +8h 0.1, +0Ch 4.0, +10h 300.0, +14h 30.0,
+// +18h byte 0.
+void free_camera_acquire_test_effects_0053e0e0(Raw block, Seg15Host& host) {
+    void* explosion = host.effect_handle_acquire_00871ba0("5InchExplosionArmour");
+    ref_assign(block, 0x28, explosion, host);
+    ref_release(explosion, host);
+    void* tracer = host.effect_handle_acquire_00871ba0("5InchBulletTracer");
+    ref_assign(block, 0x24, tracer, host);
+    ref_release(tracer, host);
+    block.at<std::uint32_t>(0x4) = 0;
+    block.at<float>(0xC) = 4.0f;
+    block.at<float>(0x8) = 0.1f;
+    block.at<float>(0x0) = 1000.0f;
+    block.at<float>(0x10) = 300.0f;
+    block.at<std::uint8_t>(0x18) = 0;
+    block.at<float>(0x14) = 30.0f;
+}
+
+void free_camera_effect_record_copy_0053e300(Raw dst, Raw src, Seg15Host& host) {
+    for (std::size_t off = 0; off <= 0x14; off += 4) dst.at<std::uint32_t>(off) = src.at<std::uint32_t>(off);
+    dst.at<std::uint8_t>(0x18) = src.at<std::uint8_t>(0x18);
+    dst.at<std::uint32_t>(0x1C) = 0;
+    dst.at<std::uint32_t>(0x20) = 0;
+    if (dst.p != src.p) host.native_string_copy_0041dd40(Raw{dst.p + 0x1C}, Raw{src.p + 0x1C});
+    for (std::size_t off : {0x24u, 0x28u, 0x2Cu}) {
+        dst.ptr(off) = nullptr;
+        if (void* h = src.ptr(off)) {
+            dst.ptr(off) = h;
+            ref_add(h);
+        }
+    }
+}
+
+void free_camera_effect_record_assign_0053e460(Raw dst, Raw src, Seg15Host& host) {
+    for (std::size_t off = 0; off <= 0x14; off += 4) dst.at<std::uint32_t>(off) = src.at<std::uint32_t>(off);
+    dst.at<std::uint8_t>(0x18) = src.at<std::uint8_t>(0x18);
+    if (dst.p != src.p) host.native_string_copy_0041dd40(Raw{dst.p + 0x1C}, Raw{src.p + 0x1C});
+    for (std::size_t off : {0x24u, 0x28u, 0x2Cu}) ref_assign(dst, off, src.ptr(off), host);
+}
+
+// 0053E6F0, cdecl(first, last, dest_end) -> dest_end - (last - first).
+std::uint8_t* free_camera_effect_record_copy_backward_0053e6f0(std::uint8_t* first, std::uint8_t* last,
+                                                               std::uint8_t* dest_end, Seg15Host& host) {
+    while (last != first) {
+        last -= 0x30;
+        dest_end -= 0x30;
+        free_camera_effect_record_assign_0053e460(Raw{dest_end}, Raw{last}, host);
+    }
+    return dest_end;
+}
+
+// 0053E850: the effect-entry list (node {next, prev, entry}) emptied; each
+// entry destroyed (0053DCE0) and its node freed (00BF65AC).
+void free_camera_effect_list_clear_0053e850(Raw list, Seg15Host& host) {
+    Raw head{static_cast<std::uint8_t*>(list.ptr(4))};
+    auto* node = static_cast<std::uint8_t*>(head.ptr(0));
+    head.ptr(0) = head.p;
+    head.ptr(4) = head.p;
+    list.at<std::uint32_t>(8) = 0;
+    while (node != head.p) {
+        auto* next = static_cast<std::uint8_t*>(Raw{node}.ptr(0));
+        free_camera_effect_entry_destruct_0053dce0(Raw{node + 8}, host);
+        host.free_00bf65ac(node);
+        node = next;
+    }
+}
+
+namespace {
+constexpr VectorElementOps kEffectRecordOps{0x30, free_camera_effect_record_copy_0053e300,
+                                            free_camera_effect_record_assign_0053e460,
+                                            free_camera_effect_record_destroy_0053df40, 0x05555555};
+}  // namespace
+
+void free_camera_effect_record_insert_n_0053ff10(Raw vec, std::uint8_t* where, std::uint32_t count, Raw value,
+                                                 Seg15Host& host) {
+    vector_insert_n(vec, where, count, value, kEffectRecordOps, host);
+}
+
+// 005401F0, __fastcall(block at screen+64h): vector +4h emptied (+8h..+10h),
+// list head +18h, size +1Ch, +20h..+28h cleared.
+void free_camera_construct_effect_lists_005401f0(Raw block, Seg15Host& host) {
+    block.at<std::uint32_t>(0x8) = 0;
+    block.at<std::uint32_t>(0xC) = 0;
+    block.at<std::uint32_t>(0x10) = 0;
+    block.ptr(0x18) = host.list_buy_head_node_0053da70();
+    for (std::size_t off = 0x1C; off <= 0x28; off += 4) block.at<std::uint32_t>(off) = 0;
+}
+
+// 00540260: clear the list (+14h), free its head, tidy the vector (+4h).
+void free_camera_release_effects_00540260(Raw block, Seg15Host& host) {
+    Raw list{block.p + 0x14};
+    free_camera_effect_list_clear_0053e850(list, host);
+    host.free_00bf65ac(list.ptr(4));
+    list.ptr(4) = nullptr;
+    host.effect_vector_tidy_0053f250(Raw{block.p + 4});
+}
+
+// 005402D0: vtables, free the settings block (+60h), drop the page (+1Ch),
+// release the effects (+64h), the callback owner (+8h), then the base.
+void free_camera_destruct_005402d0(Raw s, Seg15Host& host) {
+    s.at<std::uint32_t>(0x0) = 0x00CEDCA8;
+    s.at<std::uint32_t>(0x8) = 0x00CEDC90;
+    host.free_00bf65ac(s.ptr(0x60));
+    remove_page(s, 0x1C, host);
+    free_camera_release_effects_00540260(Raw{s.p + 0x64}, host);
+    host.callback_owner_destroy_00695870(Raw{s.p + 0x8});
+    host.front_end_screen_destruct_004f71a0(s);
+}
+
+void free_camera_collect_children_00540380(Raw s, void* out, Seg15Host& host) {
+    host.push_page_slot_004d6790(out, reinterpret_cast<void**>(s.p + 0x1C));
+}
+
+// 00540BA0: base, callback owner at +8h (00CE3CD4, cleared), vtables, +24h
+// cleared, the 44h settings block (+60h, bytes +0 and +1Ch cleared), the
+// effect lists (+64h), speed +2Ch 500.0, +30h 1.7453293 (100 degrees),
+// +34h 111.5, +38h..+48h and +54h..+5Ch cleared.
+Raw free_camera_construct_00540ba0(Raw s, Seg15Host& host) {
+    host.front_end_screen_construct_004f7180(s);
+    s.at<std::uint32_t>(0x8) = 0x00CE3CD4;
+    s.at<std::uint32_t>(0xC) = 0;
+    s.at<std::uint32_t>(0x10) = 0;
+    s.at<std::uint32_t>(0x14) = 0;
+    s.at<std::uint8_t>(0x18) = 0;
+    s.at<std::uint32_t>(0x0) = 0x00CEDCA8;
+    s.at<std::uint32_t>(0x8) = 0x00CEDC90;
+    s.at<std::uint32_t>(0x24) = 0;
+    auto* block = static_cast<std::uint8_t*>(host.operator_new_00bf681b(0x44));
+    if (block) {
+        block[0] = 0;
+        block[0x1C] = 0;
+    }
+    s.ptr(0x60) = block;
+    free_camera_construct_effect_lists_005401f0(Raw{s.p + 0x64}, host);
+    s.at<float>(0x2C) = 500.0f;
+    s.at<float>(0x30) = 1.7453292608261108f;
+    s.at<float>(0x34) = 111.5f;
+    for (std::size_t off : {0x54u, 0x58u, 0x5Cu, 0x38u, 0x3Cu, 0x40u, 0x44u, 0x48u}) s.at<std::uint32_t>(off) = 0;
+    return s;
+}
+
+// ---------------------------------------------------------------------------
+// Debug text lists, command bar, small STL instances
+// ---------------------------------------------------------------------------
+
+std::uint8_t* int_bool_uninit_copy_00542200(const std::uint8_t* first, const std::uint8_t* last, std::uint8_t* dest) {
+    for (; first != last; first += 8, dest += 8) {
+        if (dest) {
+            std::memcpy(dest, first, 4);
+            dest[4] = first[4];
+        }
+    }
+    return dest;
+}
+
+void int_bool_uninit_fill_n_00542cb0(std::uint8_t* dest, std::uint32_t count, const std::uint8_t* value) {
+    for (; count != 0; --count, dest += 8) {
+        if (dest) {
+            std::memcpy(dest, value, 4);
+            dest[4] = value[4];
+        }
+    }
+}
+
+void pod8_fill_00542bb0(std::uint8_t* first, std::uint8_t* last, const std::uint8_t* value) {
+    for (; first != last; first += 8) std::memcpy(first, value, 8);
+}
+
+std::uint8_t* pod8_copy_backward_00543050(const std::uint8_t* first, const std::uint8_t* last, std::uint8_t* dest_end) {
+    while (last != first) {
+        last -= 8;
+        dest_end -= 8;
+        std::memcpy(dest_end, last, 8);
+    }
+    return dest_end;
+}
+
+namespace {
+void int_bool_copy(Raw dst, Raw src, Seg15Host&) {
+    dst.at<std::uint32_t>(0) = src.at<std::uint32_t>(0);
+    dst.at<std::uint8_t>(4) = src.at<std::uint8_t>(4);
+}
+void pod8_assign(Raw dst, Raw src, Seg15Host&) { std::memcpy(dst.p, src.p, 8); }
+void pod_destroy(Raw, Seg15Host&) {}
+constexpr VectorElementOps kIntBoolOps{8, int_bool_copy, pod8_assign, pod_destroy, 0x1FFFFFFF};
+}  // namespace
+
+void int_bool_vector_insert_n_00543e90(Raw vec, std::uint8_t* where, std::uint32_t count, Raw value, Seg15Host& host) {
+    vector_insert_n(vec, where, count, value, kIntBoolOps, host);
+}
+
+// The rows' std::string text is inline (buffer +8h) while the capacity (+1Ch)
+// is below 10h, else the pointer at +8h. The vector bound checks before each
+// access call 00BF6713 only for an index outside the vector (not modelled).
+void debug_text_list_refresh_rows_00542620(Raw list, Seg15Host& host) {
+    for (std::uint32_t i = 0;; ++i) {
+        auto* first = static_cast<std::uint8_t*>(list.ptr(0x14));
+        auto* last = static_cast<std::uint8_t*>(list.ptr(0x18));
+        if (first == nullptr || i >= static_cast<std::uint32_t>((last - first) / 0x24)) break;
+        Raw row{first + i * 0x24};
+        const char* text = row.at<std::uint32_t>(0x1C) < 0x10 ? reinterpret_cast<const char*>(row.p + 8)
+                                                              : static_cast<const char*>(row.ptr(8));
+        host.text_set_localised_cstr_00abbe50(row.ptr(0x20), text);
+        const float* colour;
+        if (row.at<std::uint8_t>(0) == 0) {
+            colour = &list.at<float>(0x48);
+        } else if (list.at<std::uint8_t>(0x24) != 0 && list.at<std::uint32_t>(0x20) == i) {
+            colour = &list.at<float>(0x38);
+        } else {
+            colour = &list.at<float>(0x28);
+        }
+        host.widget_set_colour_50(row.ptr(0x20), colour);
+    }
+    host.widget_set_visible_34(list.ptr(0x8), true);
+}
+
+// 00542D70 (00542300 / 00541AE0), 00542EE0 (00542890 / 005427E0), 005439B0
+// (00543690 / 00541B30).
+void debug_text_list_poll_up_down(Raw list, std::uint32_t on_46, std::uint32_t on_47, Seg15Host& host) {
+    const bool a47 = host.action_edge_or_repeat_004d92b0(0x47);
+    if (host.action_edge_or_repeat_004d92b0(0x46)) {
+        host.tail_call(on_46, list);
+    } else if (a47) {
+        host.tail_call(on_47, list);
+    }
+}
+
+// 00543410: buttons are IntBool elements {widget, enabled} in the vector at +8h.
+// ButtonLamp_Icon is looked up and not used; ButtonText_Text is coloured
+// {32, 32, 32, 1} when disabled, else {255, 255, 230, 1}, and an enabled button
+// is focused when it is the selection (+14h).
+void command_bar_set_button_00543410(Raw bar, std::uint32_t index, Seg15Host& host) {
+    Raw button{static_cast<std::uint8_t*>(bar.ptr(8)) + index * 8};
+    host.gui_find_child_00aa7e00(button.ptr(0), "ButtonLamp_Icon");
+    void* text = host.gui_find_child_00aa7e00(button.ptr(0), "ButtonText_Text");
+    if (button.at<std::uint8_t>(4) == 0) {
+        const float grey[4] = {32.0f, 32.0f, 32.0f, 1.0f};
+        host.widget_set_colour_50(text, grey);
+        return;
+    }
+    const float lit[4] = {255.0f, 255.0f, 230.0f, 1.0f};
+    host.widget_set_colour_50(text, lit);
+    host.widget_set_focus_60(button.ptr(0), index == bar.at<std::uint32_t>(0x14));
+}
+
+namespace {
+void sbo_reset(std::uint8_t* e) {
+    Raw r{e};
+    r.at<std::uint32_t>(0x1C) = 0xF;
+    r.at<std::uint32_t>(0x18) = 0;
+    r.at<std::uint8_t>(0x8) = 0;
+}
+void sbo_copy_fields(std::uint8_t* dst, const std::uint8_t* src, Seg15Host& host) {
+    dst[0] = src[0];
+    host.legacy_string_assign_substring(Raw{dst + 4}, Raw{const_cast<std::uint8_t*>(src) + 4});
+    std::memcpy(dst + 0x20, src + 0x20, 4);
+}
+}  // namespace
+
+// 00543A60, __fastcall(ECX slot, EDX src).
+void byte_sbo_placement_copy_00543a60(std::uint8_t* slot, const std::uint8_t* src, Seg15Host& host) {
+    if (!slot) return;
+    slot[0] = src[0];
+    sbo_reset(slot);
+    host.legacy_string_assign_substring(Raw{slot + 4}, Raw{const_cast<std::uint8_t*>(src) + 4});
+    std::memcpy(slot + 0x20, src + 0x20, 4);
+}
+
+// 00543C20: free a heap buffer (capacity above 0Fh), then reset to empty.
+void byte_sbo_destroy_range_00543c20(std::uint8_t* first, std::uint8_t* last, Seg15Host& host) {
+    for (; first != last; first += 0x24) {
+        Raw r{first};
+        if (r.at<std::uint32_t>(0x1C) > 0xF) host.free_00bf65ac(r.ptr(0x8));
+        sbo_reset(first);
+    }
+}
+
+std::uint8_t* byte_sbo_copy_00543ca0(const std::uint8_t* first, const std::uint8_t* last, std::uint8_t* dest,
+                                     Seg15Host& host) {
+    for (; first != last; first += 0x24, dest += 0x24) sbo_copy_fields(dest, first, host);
+    return dest;
+}
+
+std::uint8_t* byte_sbo_copy_backward_00543cf0(const std::uint8_t* first, const std::uint8_t* last,
+                                              std::uint8_t* dest_end, Seg15Host& host) {
+    while (last != first) {
+        last -= 0x24;
+        dest_end -= 0x24;
+        sbo_copy_fields(dest_end, last, host);
+    }
+    return dest_end;
+}
+
+// 00543D40: the catch handler (destroy what was built, rethrow) is not modelled.
+std::uint8_t* byte_sbo_uninit_copy_00543d40(const std::uint8_t* first, const std::uint8_t* last, std::uint8_t* dest,
+                                            Seg15Host& host) {
+    for (; first != last; first += 0x24, dest += 0x24) {
+        if (dest) {
+            dest[0] = first[0];
+            sbo_reset(dest);
+            host.legacy_string_assign_substring(Raw{dest + 4}, Raw{const_cast<std::uint8_t*>(first) + 4});
+            std::memcpy(dest + 0x20, first + 0x20, 4);
+        }
+    }
+    return dest;
+}
+
+void byte_sbo_fill_005443b0(std::uint8_t* first, std::uint8_t* last, const std::uint8_t* value, Seg15Host& host) {
+    for (; first != last; first += 0x24) sbo_copy_fields(first, value, host);
+}
+
+void byte_sbo_uninit_fill_n_005443f0(std::uint8_t* dest, std::uint32_t count, const std::uint8_t* value,
+                                     Seg15Host& host) {
+    for (; count != 0; --count, dest += 0x24) {
+        if (dest) {
+            dest[0] = value[0];
+            sbo_reset(dest);
+            host.legacy_string_assign_substring(Raw{dest + 4}, Raw{const_cast<std::uint8_t*>(value) + 4});
+            std::memcpy(dest + 0x20, value + 0x20, 4);
+        }
+    }
+}
+
 }  // namespace bsp::frontend_seg15_22_cc13
