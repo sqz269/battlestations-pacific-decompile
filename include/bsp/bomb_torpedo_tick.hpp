@@ -53,7 +53,7 @@ inline constexpr float kTorpedoHeadingUnset = 10000.0f;
 // cc13-gpr53c: 00856BB0's horizontal homing turn reads the yaw pair (target
 // yaw [E+10h], own yaw [E+14h], E = ESP at 00856E6C), not the pitch pair; see
 // torpedo_steer_00856bb0. OFF keeps the pitch-pair reading.
-inline constexpr bool kTorpedoHomingYawPairBound = false;
+inline constexpr bool kTorpedoHomingYawPairBound = true;  // ON: image-faithful (RET 8 stack evidence); not reachable from the live host yet
 
 // 00CEFF98, the factor 00855A90 folds into the cached torpedo range.
 inline constexpr float kTorpedoRangeFactor = 0.6f;
