@@ -20,6 +20,7 @@
 #include "bsp/airfield_taxi.hpp"                 // packet cc9_land_park_taxi
 #include "bsp/game_hosts_avoid_zones.hpp"
 #include "bsp/plane_flight.hpp"
+#include "bsp/gameplay_seg48_cc13.hpp"   // packet cc13-ver17, the 007D87C7 speed floor
 #include "bsp/plane_ground_ops.hpp"
 #include "bsp/plane_water_law.hpp"
 #include "bsp/plane_wanderer.hpp"
@@ -1998,6 +1999,11 @@ struct GameUnitSlot {
     int ga_flagged_ticks{0};
     int ga_repairs{0};
     int ga_exempt_ticks{0};
+    // Packet cc13-ver17: dyn+C8h, the repair speed-floor timer (007D7A40 sets
+    // 1.2f, 007D81B0 counts down), and the steps it floored the forward speed.
+    float plane_speed_floor_timer_c8{0.0f};
+    int speed_floor_resets{0};
+    int speed_floor_snaps{0};
     // Packet cc9_wing_achieved_speed, diagnostic: the last follow step's arm
     // (1 hold, 2 fly-to), station distance and the motion step it ran on.
     int fw_arm{0};
@@ -6110,6 +6116,17 @@ struct GameUnitsHost::Impl {
     // now fly terrain avoidance over the eastern block; no death, hit or release
     // moved, and USN02's ship rows are identical.
     static constexpr bool kAvoidZoneLayerSampleBound = true;
+    // Packet cc13-ver17 (docs/CC13_VER_17.md; cc13-ver1's V1, docs/CC13_GPR_48.md
+    // 8.3). The band repair 0099BF30, on changing the pitch command (0099C032)
+    // or the yaw command (0099C0ED) of a plane in free flight, calls 007D7A40
+    // (ECX = unit+AB0h), which sets dyn+C8h = 1.2f (00CE3814). 007D81B0, the
+    // core law's first call, counts it down and parks it at -1.0 outside free
+    // flight. While it is positive, 007D87C7-007D87F1 floors the body forward
+    // velocity dyn+6Ch at dyn+CCh = float(007C47F0 x 1.05) (007DB2C0). OFF: no
+    // timer and no floor, so a plane under a continuous terrain band repair
+    // (USN04's Shoho launches, under the .nav's 200-300 m cells) bleeds into
+    // the stall and falls.
+    static constexpr bool kAvoidRepairSpeedFloorBound = false;
     // Packet cc9_terrain_avoid_forward_speed (docs/SQUADRON_LAND_TASK.md 5da):
     // AvoidTerrain's unit vtable[204h] (0099F27E, 0099CC98) is ctl+7Ch, the body
     // forward speed 007D80C0 stores, where the host passed |v|. OFF: |v|.
@@ -7569,6 +7586,18 @@ struct GameUnitsHost::Impl {
             if (slot != v) {
                 slot = v < -1.0f ? -1.0f : (v > 1.0f ? 1.0f : v);
                 ++u.ga_repairs;
+                return true;
+            }
+            return false;
+        };
+        // 0099C02C / 0099C0E7: 007D7A40 on ctl when the command changed and
+        // the +72Ch predicate holds (re-asked after the store).
+        auto reset_floor_timer = [&]() {
+            if constexpr (kAvoidRepairSpeedFloorBound) {
+                if (free_flight) {
+                    u.plane_speed_floor_timer_c8 = 1.2f;          // 00CE3814
+                    ++u.speed_floor_resets;
+                }
             }
         };
         if (free_flight) {                                        // cmd[1], the bot+C8h set
@@ -7577,14 +7606,14 @@ struct GameUnitsHost::Impl {
                 const float ab = std::fabs(u.plane_bank_angle_c68);
                 v = ab <= 1.5707963705062866f ? 1.1f : -1.1f;      // [00CE3830], [00CE6448]/[00D06BB0]
             }
-            finish(c[bsp::kPilotCmdPitch], v);
+            if (finish(c[bsp::kPilotCmdPitch], v)) reset_floor_timer();   // 0099C032
         }
         {                                                         // cmd[0], the bot+0 set
             float v = c[bsp::kPilotCmdYaw];
             if (!ga_band_search_0099b940(u, 0, v)) {
                 v = u.plane_bank_angle_c68 <= 0.0f ? -1.1f : 1.1f;
             }
-            finish(c[bsp::kPilotCmdYaw], v);
+            if (finish(c[bsp::kPilotCmdYaw], v)) reset_floor_timer();     // 0099C0ED
         }
         if (free_flight) {                                        // cmd[2], the bot+190h set
             float v = c[bsp::kPilotCmdRoll];
@@ -7608,7 +7637,8 @@ struct GameUnitsHost::Impl {
                 c[bsp::kPilotCmdThrottle] = lim;
             }
         }
-        // 007D7A40 after a changed pitch or yaw: unread, not modelled.
+        // 007D7A40 after a changed pitch or yaw: reset_floor_timer above,
+        // under kAvoidRepairSpeedFloorBound.
     }
 
     // Packet cc9_moveto_target_speed (docs/PILOT_MOVETO_TASK.md, "The target-speed
@@ -17518,6 +17548,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                     }
                     void run_core_law_007db680(float step, bool ground) {
+                        if constexpr (GameUnitsHost::Impl::kAvoidRepairSpeedFloorBound) {
+                            // 007D81B0, the law's first call: dyn+C8h counts
+                            // down while positive and parks at -1.0 (00D7A260)
+                            // when the +72Ch predicate (free flight) is false.
+                            unit_.plane_speed_floor_timer_c8 = bsp::tick_contact_timer_007d81b0(
+                                unit_.plane_speed_floor_timer_c8, step,
+                                unit_.plane_control_mode_900 == 7);
+                        }
                         // The class field the law actually depends on. StallSpd
                         // is the only authored one; everything else is a
                         // PlaneGlobals default the mirror fills at load.
@@ -17925,6 +17963,22 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             bsp::PlaneBodyVelocityStep vs =
                                 bsp::integrate_body_velocity_007d8611(
                                     vb, body.pair_1c, body.pair_04, acc.body_resist_40, step);
+                            if constexpr (GameUnitsHost::Impl::kAvoidRepairSpeedFloorBound) {
+                                // 007D87C7-007D87F1, after the deadband: with
+                                // dyn+C8h > 0, dyn+6Ch = max(dyn+6Ch, dyn+CCh).
+                                // dyn+CCh is 007DB2C0's float(007C47F0 x 1.05),
+                                // stored at placement and spawn; formed here
+                                // from the same class and tuning (labelled).
+                                namespace s48 = bsp::gameplay_seg48_cc13;
+                                const float floor_cc = s48::takeoff_floor_speed_007db2c0(
+                                    owner_.bot_desired_speed_007c47f0(unit_));
+                                const float vz = s48::takeoff_speed_floor_007d87c7(
+                                    vs.velocity[2], unit_.plane_speed_floor_timer_c8, floor_cc);
+                                if (vz != vs.velocity[2]) {
+                                    vs.velocity[2] = vz;
+                                    ++unit_.speed_floor_snaps;
+                                }
+                            }
                             // 007DB702-007DB73E: dyn+94h = WheelHeight - BFCh in mode 1
                             // (the depth below the wheels), the normal dyn+98h..A0h = (0, 1, 0).
                             const float pen = ground
@@ -38321,6 +38375,14 @@ void GameUnitsHost::report() {
                                     sl->va_throttle_sets, sl->va_dive_ticks, sl->tr_ticks,
                                     sl->tr_bands, sl->tr_throttle_sets, sl->tr_dive_ticks,
                                     sl->tr_water_ticks, static_cast<double>(sl->tr_min_margin));
+                            }
+                            if constexpr (GameUnitsHost::Impl::kAvoidRepairSpeedFloorBound) {
+                                if (sl->speed_floor_resets > 0) {
+                                    host.log.notef("  repair speed floor %-20s resets=%d snaps=%d "
+                                        "(0099BF30 -> 007D7A40, 007D87C7; packet cc13-ver17)",
+                                        sl->row.name.c_str(), sl->speed_floor_resets,
+                                        sl->speed_floor_snaps);
+                                }
                             }
                         }
                         host.log.notef("summary mission vehicle avoidance plane_ticks=%lld "
