@@ -133,7 +133,7 @@ inline constexpr bool kLuaUnitFreeFireBound = false;
 // the new delay, first decremented on the next pass, and an entity registered this
 // pass sits on the pending list and is not decremented. False: every armed entity
 // loses one step after the walk, re-armed and new delays included.
-inline constexpr bool kThinkDelayInWalkBound = false;
+inline constexpr bool kThinkDelayInWalkBound = true;   // ON: SQUADRON_LAND_TASK 5gv.1
 // Packet cc13-ver12 (docs/CC13_VER_12.md section 2). True binds NavigatorStop
 // 008A7400: 0077D600(entity, stop 00E08F88, zeroed descriptor, 1) at 008A7569,
 // through entity_issue_command like the other navigator orders. False leaves

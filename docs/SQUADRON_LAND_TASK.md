@@ -16422,3 +16422,16 @@ and the clear 008985A6); after the walk each gets `before - step` unless its gen
 
 **Predictions.** Every timetable chain runs one step later per link: moved runs everywhere, mission timings shift by a few
 0.05 s steps per chain; no mechanism change in combat. USN02, PRCP01 and JM08 f must still complete.
+
+### 5gv.1 Measured: **ON** (cc9-lua57, 2026-10-13)
+
+Same tree: OFF `779bb56b5` (frozen at `local\l57_off2`), ON = `local\l57_cap1` re-exported with the flip; logs
+`local\l57_{d0,d1}_{u02w,p01w,j8f}.log`, reference env, `--stop-after-end 40`. Every row MOVED and every ON run completes with
+the guard logged:
+- USN02 (`usn02_s36_u2_p7.txt`): 203.01 -> 205.06 s.
+- JM08 f (`jm08_p6_j8_f.txt`, 110000 frames): 2318.84 -> 2254.77 s.
+- PRCP01 (`prcp01_l55_p01_c.txt`, 30000 frames): **OFF does not complete on current main** (no mission end in 1500 s; the
+  733.59 s win was on 458f9efbe); ON completes at 865.06 s (Junyo sunk at 575.18 s by Enterprise_sqn08, Zuiho at 865.11 s by
+  Enterprise_sqn11|.-2; OFF sinks Junyo at 747.79 s and never Zuiho). The keeper should re-check PRCP01 on main.
+The shift is chaotic downstream (timer chains feed launches), so the per-row deltas are not attributable one by one.
+**Verdict: ON** (faithful to 009294C7..009294E5; no win lost).
