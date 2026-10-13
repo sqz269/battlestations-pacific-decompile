@@ -566,6 +566,15 @@ inline constexpr bool kLuaSquadronSetReleaseAltBound = false;
 // (src/air_operations.cpp) over the deck registry and the gunnery host's kill.
 // False: the row stays unimplemented (PRCP01 keeps the extra squadrons flying).
 inline constexpr bool kLuaSquadronLandAndKillBound = false;
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 1). 008975B0
+// RemoveAllAirBasePlanes(base): 00888AA0 on argument 0, 006BCD20 with DL = 0, then
+// 006C8840 on the block (008976D1): every stock node through 006C7B10 (the stock
+// drops to zero and idle slots holding a stocked class are emptied), then the
+// list is emptied. No result. True: the row runs air_base_remove_all_stock_006c8840
+// (src/script_natives_fix5_cc13.cpp) on the entity's deck. False: unimplemented,
+// so the scene stock survives and a following AddAirBaseStock adds to it
+// (prcpjm08.lua:908, the Hosho).
+inline constexpr bool kLuaRemoveAllAirBasePlanesBound = false;
 inline constexpr bool kLuaAddUntouchableUnitBound = true;   // ON on identity (LUA_BINDING_MISSION)
 // The +1D4h byte of units-host index `index`'s AI object, as AddUntouchableUnit
 // left it. False for every unit while kLuaAddUntouchableUnitBound is false.
@@ -1526,6 +1535,8 @@ public:
     int run_squadron_set_release_alt_008a24e0(lua_State* state, int argument_count);
     // Packet cc13-fix4, under kLuaSquadronLandAndKillBound.
     int run_squadron_land_and_kill_008a20e0(lua_State* state, int argument_count);
+    // Packet cc13-fix5, under kLuaRemoveAllAirBasePlanesBound.
+    int run_remove_all_air_base_planes_008975b0(lua_State* state, int argument_count);
     // Packet cc9_squadron_travel_alt, under kSquadronTravelAltBound.
     int run_squadron_set_travel_alt_0089f550(lua_State* state, int argument_count);
     // Packet cc9_squadron_attack_alt, under kSquadronAttackAltBound.

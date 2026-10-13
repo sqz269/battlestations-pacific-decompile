@@ -60,6 +60,7 @@
 #include "bsp/recon_slot_lists.hpp"  // packet cc9_recon_publication
 #include "bsp/shipyard_production.hpp"  // packet cc9_lua_add_shipyard_stock
 #include "bsp/plane_retreat_task.hpp"   // packet cc13_natives1, 00489C40
+#include "bsp/script_natives_fix5_cc13.hpp"   // packet cc13-fix5
 #include "bsp/vfs_locale_runtime.hpp"
 #include "bsp/vfs_provider_manager.hpp"
 
@@ -520,6 +521,9 @@ int binding_trampoline(lua_State* state) {
     // Packet cc13-fix4.
     const bool land_and_kill_row = kLuaSquadronLandAndKillBound
         && dispatch_row.address == 0x008a20e0u;
+    // Packet cc13-fix5.
+    const bool remove_all_stock_row = kLuaRemoveAllAirBasePlanesBound
+        && dispatch_row.address == 0x008975b0u;
     // Packet cc9_squadron_attack_alt.
     const bool attack_alt_row = kSquadronAttackAltBound
         && dispatch_row.address == 0x008a22b0u;
@@ -595,6 +599,7 @@ int binding_trampoline(lua_State* state) {
         || sub_surface_row
         || force_gunner_row
         || slot_count_row || add_stock_row || shipyard_stock_row || device_reload_row
+        || remove_all_stock_row
         || unlimited_air_row
         || in_formation_row || leave_formation_row || travel_alt_row || border_zone_row
         || untouchable_row
@@ -716,6 +721,10 @@ int binding_trampoline(lua_State* state) {
     }
     if (add_stock_row) {
         if (!host->error_replay()) host->run_add_air_base_stock_00896a90(state, argc);
+        return 0;
+    }
+    if (remove_all_stock_row) {
+        if (!host->error_replay()) host->run_remove_all_air_base_planes_008975b0(state, argc);
         return 0;
     }
     if (shipyard_stock_row) {
@@ -6198,6 +6207,53 @@ int GameMissionLuaHost::run_add_air_base_stock_00896a90(lua_State* state, int ar
         "cc9_lua_add_air_base_stock)", id, class_id, added, result.entry_count,
         result.created_entry ? " (new entry)" : "");
     log_.implemented("MissionLuaNative::AddAirBaseStock", "00896a90");
+    return 0;
+}
+
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 1). 008975B0
+// RemoveAllAirBasePlanes(base), lua_CFunction, no result (008976DA 00B66400):
+// 008976AF 00888AA0 on argument 0, 008976CA 006BCD20 with DL = 0 (008976C6), and
+// 008976D1 006C8840 on the block; the sequence is air_base_remove_all_stock_006c8840
+// (src/script_natives_fix5_cc13.cpp).
+// SUBSTITUTIONS (labelled), as for AddAirBaseStock: the block is the deck registry's
+// entry for the entity, and an entity with no deck does nothing (the image calls
+// 006C8840 on a null block). The live counts 006BF230 subtracts for a launched slot
+// are the orders host's air_ops_squadron_plane_count, the reader the deck tick uses.
+// The slot clear's GUI notify (00696350), its slot message to the peers (006BD520,
+// 0077C7B0, no peer offline) and the stock notice (00984EB0) are records.
+int GameMissionLuaHost::run_remove_all_air_base_planes_008975b0(lua_State* state,
+    int argument_count) {
+    static_cast<void>(argument_count);
+    const int id = air_ops_entity_id(state);
+    bsp::AirOpsDeck* deck = id > 0 ? bsp::air_ops_decks().find_mutable_by_entity_id(id) : nullptr;
+    if (deck == nullptr) {
+        log_.notef("  RemoveAllAirBasePlanes 008975b0: entity id %d has no deck (packet "
+            "cc13-fix5)", id);
+        return 0;
+    }
+    std::vector<std::int32_t> live(deck->slots.size(), 0);
+    for (std::size_t i = 0; i < deck->slots.size(); ++i) {
+        const std::uint32_t squadron = deck->slots[i].launched_squadron;
+        if (squadron != 0u && script_orders_ != nullptr) {
+            live[i] = script_orders_->air_ops_squadron_plane_count(squadron);
+        }
+    }
+    std::string before;
+    for (const bsp::AirOpsStockEntry& e : deck->stock) {
+        char item[32];
+        std::snprintf(item, sizeof(item), " %u:%d", e.vehicle_class, e.count);
+        before += item;
+    }
+    const bsp::AirBaseRemoveAllStockResult result =
+        bsp::air_base_remove_all_stock_006c8840(*deck, live.data(), nullptr);
+    if (result.slots_cleared != 0u) {
+        log_.unimplemented("AirOps::slot_cleared_notify_and_message", "006bd520");
+    }
+    if (result.entries != 0u) log_.unimplemented("AirOps::stock_notice", "00984eb0");
+    log_.notef("  RemoveAllAirBasePlanes 008975b0: entity id %d stock [%s ] removed=%d "
+        "slots_cleared=%zu (packet cc13-fix5)", id, before.c_str(), result.planes_removed,
+        result.slots_cleared);
+    log_.implemented("MissionLuaNative::RemoveAllAirBasePlanes", "008975b0");
     return 0;
 }
 
