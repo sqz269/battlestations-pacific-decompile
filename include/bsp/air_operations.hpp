@@ -893,6 +893,14 @@ bool air_ops_queue_slot_006ca640(AirOpsDeck& deck, int slot_index) noexcept;
 // never consumed and 006C0F00 runs first (the 0 count is refused after it).
 inline constexpr bool kAirOpsQueueConsumeStockBound = false;
 
+// Packet cc13-fix7 D2. True: 006CC690 with block+38h set returns the count to
+// the stock (006CA770 at 006CC71F) and queues the slot (006CA640 at 006CC727)
+// through bsp::air_ops_launch_busy_arm_006cc690, so 006C64B0 launches it once
+// the brake clears. The queue arm consumes as the image's does, whatever
+// kAirOpsQueueConsumeStockBound says, so the stock nets to zero. False: the
+// slot is only reported `queued` and is never launched.
+inline constexpr bool kAirOpsBusyArmQueueLaunchBound = false;
+
 // 006CCDA0 BSP_AirOps_SlotCommand for the arms a player order reaches: a slot
 // with a class, in state 5 or 1, given order 1 (moveto) or 3 (attack target):
 // with `apply`, slot+4Ch = the target for order 3 (0 otherwise, 006C4F70),

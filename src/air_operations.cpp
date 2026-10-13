@@ -634,6 +634,9 @@ AirOpsLaunchResult air_ops_launch_squadron_006cc690(AirOpsDeck& deck,
         air_ops_launch_start_006c7490(deck, result.slot_index);
     } else {
         // 006CC72C: the stock goes back and 006CA640 queues instead.
+        if constexpr (kAirOpsBusyArmQueueLaunchBound) {
+            air_ops_launch_busy_arm_006cc690(deck, result.slot_index);  // 006CC71F, 006CC727
+        }
         result.queued = true;
     }
     return result;
