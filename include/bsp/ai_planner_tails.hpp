@@ -95,7 +95,7 @@ struct AiTailArrivalValueInputs {
 // returns 0.0 for a unit FASTER than 0.1 outside the capture radius, so only a unit at or
 // below 0.1 (or NaN) reaches the linear arm. The host's guard was the other way round
 // (docs/CC13_GPR_69.md 7.9). OFF keeps the host's inverted guard; ON follows the bytes.
-inline constexpr bool kAiArrivalSpeedGuardBound = false;
+inline constexpr bool kAiArrivalSpeedGuardBound = true;  // ON: lead AI pair (USN15/USN12/IJN18 wins identical, 2026-10-13)
 
 float ai_tail_unit_arrival_value(const AiTailArrivalValueInputs& in) noexcept;
 

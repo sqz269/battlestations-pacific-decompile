@@ -216,13 +216,27 @@ struct TorpedoArmInputs {
     TorpedoState current = TorpedoState::kNone;
     TorpedoEngagedInputs engaged;
     float arm_countdown_00ce3d34 = 0.0f;  // the value 009D49A0 stores
+    // Read only under kTorpedoArmFallthroughReleaseBound: 0099B6A0's two
+    // inputs. task+2FCh (the squadron) non-null, and (unit+72Ch)->vt[38h],
+    // 0074E210 BSP_PlaneControlMode_IsFreeFlight (unit+900h == 7).
+    bool has_squadron_2fc = false;
+    bool unit_free_flight_72c = false;
 };
 struct TorpedoArmResult {
     bool consumed = true;        // the return value; true spends one unit->+C58h
     bool armed = false;          // prepare->+98h was written
     float prepare_timer = 0.0f;  // the value written when armed
     bool fell_through_to_0099b6a0 = false;  // the base slot +24h ran instead
+    // 0099B6CD CALL 007BBBA0(unit): the base slot's bay release. Only set under
+    // kTorpedoArmFallthroughReleaseBound; the caller must then request the
+    // release (an adoption note for game_hosts_units.cpp).
+    bool release_007bbba0 = false;
 };
+
+// Packet cc13-ver6, finding 3a (docs/CC13_VER_6.md). 009D49DA is a tail JMP
+// into 0099B6A0, so the AL 0099AF9B tests is 0099B6A0's. OFF keeps the earlier
+// reading: `consumed = false`, no release.
+inline constexpr bool kTorpedoArmFallthroughReleaseBound = false;
 TorpedoArmResult torpedo_arm_drop_009d49a0(const TorpedoArmInputs& in) noexcept;
 
 // ---------------------------------------------------------------------------
