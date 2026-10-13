@@ -101,6 +101,21 @@ gamer card of the selected scoreboard row, A7h the player review (both on the mu
 Corrections from the listing: 00644AE0's decompile hides that every class-icon call is a tail
 jump with ECX = a constant or field (45h, +C4h, 10h, 11h, 13h, 14h); 0067C0E0 takes a float.
 
+### Third batch (observer objects, support-manager records)
+
+- Observer-reference objects (callback-owner base, observed pointer at +14h, +10h "set" byte):
+  destructors 00653400 (vtable 00CF64AC) / 006569A0 (00CF6494), copy constructors 00658710 /
+  006587C0, and 0065AFF0 joins the released handlers.
+- 0065BB00 unit-slot entry destructor (target observer +34h, MSVC string tidy at +14h).
+- 006626E0 observer/string record assign (legacy string +10h, observer member +34h).
+- 006683D0 string-vector holder destructor; 00669350 int + map record assign; 00660540
+  int/string/int record copy.
+- Support-manager slot record (58h, vtable 00CF6564): assign 0065CA50, copy 0065CAF0 (members
+  re-vtabled to 00CF6514 / 00CF652C after their copy constructors), "out" test 00658530 (+28h set,
+  state +2Ch 3 or 4).
+- 0065BE80 tracked unit target (member +208h, observed +21Ch); 0066FFA0 available-entries test
+  (effective game mode 8 only; cached in +479h against game+648h).
+
 ### Shared shapes
 
 - `observer_ref_set`: 0064B340, 00656DE0, 00656E20, 0064B610, 0064BB50 (the last two return the

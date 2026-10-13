@@ -1460,4 +1460,168 @@ void press_start_on_storage_complete_0067ca40(PressStartStorageHost& host) {
     host.title_skip_0068d8a0();
 }
 
+// ---------------------------------------------------------------------------
+// Batch 3: observer-reference objects and support-manager records
+// ---------------------------------------------------------------------------
+
+// 00653400 / 006569A0: restore the class vtable, unregister the observed
+// object (+14h) if any, then the callback-owner base (00695870, ECX = this).
+void observer_ref_destruct(Raw ref, std::uint32_t vtable, HudScreenHost& host) {
+    ref.at<std::uint32_t>(0x0) = vtable;
+    if (ref.ptr(0x14) != nullptr) host.observer_unregister_006952a0(ref.p, ref.ptr(0x14));
+    host.callback_owner_destroy_00695870(ref);
+}
+
+// 00658710 / 006587C0, __thiscall(ref, src), RET 4 -> EAX: clear +4h..+0Ch
+// and the +10h byte, install the vtable, copy the observed pointer, set +10h
+// and register when it is non-null.
+Raw observer_ref_copy_construct(Raw ref, Raw src, std::uint32_t vtable, HudScreenHost& host) {
+    ref.at<std::uint32_t>(0x4) = 0;
+    ref.at<std::uint32_t>(0x8) = 0;
+    ref.at<std::uint32_t>(0xC) = 0;
+    ref.at<std::uint8_t>(0x10) = 0;
+    ref.at<std::uint32_t>(0x0) = vtable;
+    ref.ptr(0x14) = src.ptr(0x14);
+    ref.at<std::uint8_t>(0x10) = 1;
+    if (ref.ptr(0x14) != nullptr) host.observer_register_00694a60(ref.p, ref.ptr(0x14));
+    return ref;
+}
+
+// 0065BB00: vtable 00CF6544, the target observer at +34h (0042BCA0), then the
+// MSVC string at +14h is tidied (heap buffer freed when the capacity +28h is
+// above 15; capacity 15, size +24h 0, first byte 0).
+inline constexpr std::uint32_t kUnitSlotEntryVtable = 0x00CF6544;
+void unit_slot_entry_destroy_0065bb00(Raw e, ScreenTeardownHost& host) {
+    e.at<std::uint32_t>(0x0) = kUnitSlotEntryVtable;
+    host.target_observer_destruct_0042bca0(Raw{e.p + 0x34});
+    if (e.at<std::uint32_t>(0x28) > 0xF) host.free_block(e.ptr(0x14));
+    e.at<std::uint32_t>(0x28) = 0xF;
+    e.at<std::uint32_t>(0x24) = 0;
+    e.at<std::uint8_t>(0x14) = 0;
+}
+
+// 006626E0, __thiscall(dst, src), RET 4 -> EAX: +4h..+0Ch, the legacy string at
+// +10h (00408120(src+10h, 0, -1), ECX = dst+10h), +2Ch, +30h, then the observer
+// member +34h re-pointed at src's +48h.
+Raw observer_string_record_assign_006626e0(Raw dst, Raw src, RecordAssignHost& host) {
+    dst.at<std::uint32_t>(0x4) = src.at<std::uint32_t>(0x4);
+    dst.at<std::uint32_t>(0x8) = src.at<std::uint32_t>(0x8);
+    dst.at<std::uint32_t>(0xC) = src.at<std::uint32_t>(0xC);
+    host.legacy_string_assign_00408120(Raw{dst.p + 0x10}, Raw{src.p + 0x10});
+    dst.at<std::uint32_t>(0x2C) = src.at<std::uint32_t>(0x2C);
+    dst.at<std::uint32_t>(0x30) = src.at<std::uint32_t>(0x30);
+    observer_ref_set(Raw{dst.p + 0x34}, src.ptr(0x48), host);
+    return dst;
+}
+
+// 006683D0: vtable 00CF69A8; the vector of 1Ch legacy strings at +0Ch (begin
+// +10h): destroy the range (004CE520, ECX begin, EDX end), free, zero.
+inline constexpr std::uint32_t kStringVectorHolderVtable = 0x00CF69A8;
+void string_vector_holder_destruct_006683d0(Raw h, RecordAssignHost& host) {
+    h.at<std::uint32_t>(0x0) = kStringVectorHolderVtable;
+    if (h.ptr(0x10) != nullptr) {
+        host.legacy_string_range_destroy_004ce520(h.ptr(0x10), h.ptr(0x14));
+        host.free_block(h.ptr(0x10));
+    }
+    h.ptr(0x10) = nullptr;
+    h.ptr(0x14) = nullptr;
+    h.ptr(0x18) = nullptr;
+}
+
+// 00669350, __thiscall(dst, src), RET 4 -> EAX: the int, then (dst != src) the
+// map at +4h is emptied (006641B0) and copied from src's (0065CE20).
+Raw int_map_record_assign_00669350(Raw dst, Raw src, RecordAssignHost& host) {
+    dst.at<std::uint32_t>(0x0) = src.at<std::uint32_t>(0x0);
+    if (dst.p + 4 != src.p + 4) {
+        host.tree_erase_all_006641b0(Raw{dst.p + 4});
+        host.tree_copy_0065ce20(Raw{dst.p + 4}, Raw{src.p + 4});
+    }
+    return dst;
+}
+
+// 00660540, __thiscall(dst, src), RET 4 -> EAX: int, native string, int.
+Raw int_string_int_record_copy_construct_00660540(Raw dst, Raw src, NativeStringHost& host) {
+    dst.at<std::uint32_t>(0x0) = src.at<std::uint32_t>(0x0);
+    construct_string(dst, 0x4, src, 0x4, host);
+    dst.at<std::uint32_t>(0xC) = src.at<std::uint32_t>(0xC);
+    return dst;
+}
+
+// 0065CA50, __thiscall(dst, src), RET 4 -> EAX: the support-manager slot
+// record: +4h..+10h, observer member +14h (observed +28h), +2Ch, +30h, the
+// +34h byte, observer member +38h (observed +4Ch), +50h, +54h.
+Raw slot_record_assign_0065ca50(Raw dst, Raw src, HudScreenHost& host) {
+    for (std::size_t off : {0x4u, 0x8u, 0xCu, 0x10u}) dst.at<std::uint32_t>(off) = src.at<std::uint32_t>(off);
+    observer_ref_set(Raw{dst.p + 0x14}, src.ptr(0x28), host);
+    dst.at<std::uint32_t>(0x2C) = src.at<std::uint32_t>(0x2C);
+    dst.at<std::uint32_t>(0x30) = src.at<std::uint32_t>(0x30);
+    dst.at<std::uint8_t>(0x34) = src.at<std::uint8_t>(0x34);
+    observer_ref_set(Raw{dst.p + 0x38}, src.ptr(0x4C), host);
+    dst.at<std::uint32_t>(0x50) = src.at<std::uint32_t>(0x50);
+    dst.at<std::uint32_t>(0x54) = src.at<std::uint32_t>(0x54);
+    return dst;
+}
+
+// 0065CAF0, copy constructor: vtable 00CF6564, the two observer members
+// copy-constructed (00658710 at +14h, 006587C0 at +38h) and then given the
+// record's own member vtables (00CF6514, 00CF652C).
+inline constexpr std::uint32_t kSlotRecordVtable = 0x00CF6564;
+inline constexpr std::uint32_t kSlotRecordMember14Vtable = 0x00CF6514;
+inline constexpr std::uint32_t kSlotRecordMember38Vtable = 0x00CF652C;
+inline constexpr std::uint32_t kObserverRefVtableA = 0x00CF6494;  // 00658710 / 006569A0
+inline constexpr std::uint32_t kObserverRefVtableB = 0x00CF64AC;  // 006587C0 / 00653400
+Raw slot_record_copy_construct_0065caf0(Raw dst, Raw src, HudScreenHost& host) {
+    dst.at<std::uint32_t>(0x0) = kSlotRecordVtable;
+    for (std::size_t off : {0x4u, 0x8u, 0xCu, 0x10u}) dst.at<std::uint32_t>(off) = src.at<std::uint32_t>(off);
+    observer_ref_copy_construct(Raw{dst.p + 0x14}, Raw{src.p + 0x14}, kObserverRefVtableA, host);
+    dst.at<std::uint32_t>(0x14) = kSlotRecordMember14Vtable;
+    dst.at<std::uint32_t>(0x2C) = src.at<std::uint32_t>(0x2C);
+    dst.at<std::uint32_t>(0x30) = src.at<std::uint32_t>(0x30);
+    dst.at<std::uint8_t>(0x34) = src.at<std::uint8_t>(0x34);
+    observer_ref_copy_construct(Raw{dst.p + 0x38}, Raw{src.p + 0x38}, kObserverRefVtableB, host);
+    dst.at<std::uint32_t>(0x38) = kSlotRecordMember38Vtable;
+    dst.at<std::uint32_t>(0x50) = src.at<std::uint32_t>(0x50);
+    dst.at<std::uint32_t>(0x54) = src.at<std::uint32_t>(0x54);
+    return dst;
+}
+
+// 00658530, __fastcall(record) -> AL: launched and out (+28h set, +2Ch 3 or 4).
+bool slot_record_is_out_00658530(Raw r) noexcept {
+    if (r.ptr(0x28) == nullptr) return false;
+    const std::int32_t state = r.at<std::int32_t>(0x2C);
+    return state == 3 || state == 4;
+}
+
+// 0065BE80, __thiscall(screen, unit), RET 4: track the unit's target (vtable
+// +140h) when the unit is kind 2, through the member +208h (observed +21Ch);
+// otherwise drop the tracking.
+void support_manager_set_tracked_unit_target_0065be80(Raw s, void* unit, TrackedTargetHost& host) {
+    if (unit == nullptr || !host.unit_is_kind_5c(unit, 2)) {
+        if (s.ptr(0x21C) != nullptr) {
+            host.observer_unregister_006952a0(s.p + 0x208, s.ptr(0x21C));
+            s.ptr(0x21C) = nullptr;
+        }
+        return;
+    }
+    observer_ref_set(Raw{s.p + 0x208}, host.unit_target_140(unit), host);
+}
+
+// 0066FFA0, __fastcall(screen) -> AL: outside effective game mode 8 always
+// true. In mode 8 the answer is cached in +479h and recomputed when the game
+// counter +648h moves past +47Ch: 0066FB00, 00668770 when +34Ch is clear, the
+// cursor sync 0065A2B0; true unless both +34Ch and +1F4h are clear.
+bool support_manager_has_available_entries_0066ffa0(Raw s, SupportEntriesHost& host) {
+    if (host.game_effective_mode_004bca50() != 8) return true;
+    const std::int32_t counter = host.game_counter_648();
+    if (s.at<std::int32_t>(0x47C) != counter) {
+        s.at<std::int32_t>(0x47C) = counter;
+        host.support_refresh_0066fb00(s);
+        if (s.at<std::uint32_t>(0x34C) == 0) host.support_rebuild_00668770(s);
+        host.support_sync_cursor_0065a2b0(s);
+        s.at<std::uint8_t>(0x479) = (s.at<std::uint32_t>(0x34C) == 0 && s.at<std::uint32_t>(0x1F4) == 0) ? 0 : 1;
+        return s.at<std::uint8_t>(0x479) != 0;
+    }
+    return s.at<std::uint8_t>(0x479) != 0;
+}
+
 } // namespace bsp::ingame_gui_cc13

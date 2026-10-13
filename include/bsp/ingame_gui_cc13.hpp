@@ -385,8 +385,8 @@ inline constexpr std::array<std::uint32_t, 5> kObserverRefSetters{
 Raw observer_ref_set(Raw ref, void* observed, HudScreenHost& host);
 // 0064B590 / 0065AFA0 / 0065B040 / 0065B090: __thiscall(ref, released), RET 4.
 // released->vtable[+4h]() yields the object; if it is +14h, clear and unregister.
-inline constexpr std::array<std::uint32_t, 4> kObserverRefReleased{
-    0x0064B590, 0x0065AFA0, 0x0065B040, 0x0065B090};
+inline constexpr std::array<std::uint32_t, 5> kObserverRefReleased{
+    0x0064B590, 0x0065AFA0, 0x0065AFF0, 0x0065B040, 0x0065B090};
 struct ObserverReleaseHost {
     virtual ~ObserverReleaseHost() = default;
     virtual void* released_object_04(void* notifier) = 0;
@@ -621,6 +621,43 @@ void periscope_attach_unit_00650210(Raw s, HudScreenHost& host);
 void periscope_detach_unit_006506e0(Raw s, HudScreenHost& host);
 void periscope_enter_00650750(Raw s, HudScreenHost& host);
 void unit_view_bind_unit_and_reset_00651760(Raw s, void* unit, HudScreenHost& host);
+
+// ---------------------------------------------------------------------------
+// Batch 3: observer-reference objects and support-manager records.
+// ---------------------------------------------------------------------------
+// 00653400 (vtable 00CF64AC) / 006569A0 (00CF6494).
+void observer_ref_destruct(Raw ref, std::uint32_t vtable, HudScreenHost& host);
+// 00658710 (00CF6494) / 006587C0 (00CF64AC).
+Raw observer_ref_copy_construct(Raw ref, Raw src, std::uint32_t vtable, HudScreenHost& host);
+void unit_slot_entry_destroy_0065bb00(Raw e, ScreenTeardownHost& host);
+struct RecordAssignHost : HudScreenHost {
+    virtual void legacy_string_assign_00408120(Raw dst, Raw src) = 0;   // ECX = dst, (src, 0, -1)
+    virtual void legacy_string_range_destroy_004ce520(void* first, void* last) = 0;
+    virtual void free_block(void* block) = 0;                           // 00BF65AC
+    virtual void tree_erase_all_006641b0(Raw tree) = 0;
+    virtual void tree_copy_0065ce20(Raw dst_tree, Raw src_tree) = 0;
+};
+Raw observer_string_record_assign_006626e0(Raw dst, Raw src, RecordAssignHost& host);
+void string_vector_holder_destruct_006683d0(Raw h, RecordAssignHost& host);
+Raw int_map_record_assign_00669350(Raw dst, Raw src, RecordAssignHost& host);
+Raw int_string_int_record_copy_construct_00660540(Raw dst, Raw src, NativeStringHost& host);
+Raw slot_record_assign_0065ca50(Raw dst, Raw src, HudScreenHost& host);
+Raw slot_record_copy_construct_0065caf0(Raw dst, Raw src, HudScreenHost& host);
+bool slot_record_is_out_00658530(Raw r) noexcept;
+struct TrackedTargetHost : HudScreenHost {
+    virtual bool unit_is_kind_5c(void* unit, int kind) = 0;
+    virtual void* unit_target_140(void* unit) = 0;   // vtable +140h
+};
+void support_manager_set_tracked_unit_target_0065be80(Raw s, void* unit, TrackedTargetHost& host);
+struct SupportEntriesHost {
+    virtual ~SupportEntriesHost() = default;
+    virtual std::int32_t game_effective_mode_004bca50() = 0;
+    virtual std::int32_t game_counter_648() = 0;      // *(00E188A8)+648h
+    virtual void support_refresh_0066fb00(Raw screen) = 0;
+    virtual void support_rebuild_00668770(Raw screen) = 0;
+    virtual void support_sync_cursor_0065a2b0(Raw screen) = 0;
+};
+bool support_manager_has_available_entries_0066ffa0(Raw s, SupportEntriesHost& host);
 
 void rewards_release_sound_handles_0061ec00(Raw s, RewardsScreenHost& host);
 bool rewards_selected_entry_flagged_0061d8b0(Raw s, RewardsScreenHost& host);
