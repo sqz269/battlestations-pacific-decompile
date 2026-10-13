@@ -25,7 +25,7 @@
 //   008522C0. No RNG. OFF prediction: unchanged. ON: a torpedo a submarine
 //   fires (0072C970 path, Function 7) runs at the predicted depth instead of
 //   the -2.5 default (00D0C314); JM06 submarine torpedo runs change depth, and
-//   a run deeper than -5 can pass under surface hulls (00855F00 mode 2).
+//   with it the 00855F00 mode-2 threshold (y below 2 * swimdepth).
 // - 008522C0 submarine_catapult_needs_surface: replaces the `catapult = false`
 //   substitutions at src/game_hosts_script_orders.cpp:3500 and
 //   src/game_hosts_units.cpp:9529. Inputs: unit+1279h and the hull's child
