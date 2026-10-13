@@ -171,7 +171,39 @@ Address 0089CC50 is leased to cc13-fix5, so it has no ledger record here.
 
 ## Adoption notes
 
-ADOPTION
+Two fixes were applied in this packet, while it held the lease on game_hosts_script_orders.cpp after cc9-lua52 released it.
+Both switches are OFF. With a switch OFF, `handles()` answers false and the native stays an unimplemented record, so the run
+is byte-identical.
+
+- **9ad5a9bbf `kLuaUnitFreeFireBound`** binds UnitFreeAttack and UnitFreeFire through `run_unit_free_fire`, using
+  UnitHoldFire's route with stance 2 or stance 1. It does not bind unit_weapons.cpp's `lua_unit_free_fire_008a6950`,
+  because that function runs over `UnitWeaponHost` and no game host implements that interface.
+- **fce82e529 `kLuaNavigatorStopBound`** binds NavigatorStop through `run_navigator_stop`, which calls
+  `entity_issue_command(entity, kCommandStop, zeroed descriptor, 1)`.
+
+The predictions are in the commit messages and are summarised here:
+
+- **PRCP01.** At 1447-1448, the own ships lose +3Dh. They stop picking their own targets and stop firing torpedoes; guns
+  still fire at targets set by script or command.
+- **PRCP01.** At 1918, the Hornet halts when the Hornet-kill objective starts.
+- **Hold->free.** The PRCPUS usn_02_battle_of_cape_esperance pair lets the Japanese ships fire again after
+  UnitFreeAttack.
+
+Adoption notes for files this packet does not own:
+
+- **game_hosts_gunnery.cpp (cc9 gunnery lane).** `set_director_fire_stance_0071be80` should release the director fire target
+  (+238h) when the stance forbids fire (00836210 at 0083621B-00836230).
+- **game_hosts_script_orders.cpp `run_pilot_set_target`.** Gate on `units_.unit_alive_and_visible(unit)` before argument 1
+  is read, and on the target object after the chooser, as `bsp::pilot_set_target_issues_008a4c90` models it.
+- **game_hosts_script_orders.cpp:3531, GetSquadronPlanes.** Use `find_by_member_or_departed_unit`. The address is leased
+  to cc13-fix5.
+- **Unhosted natives.** These have the same shape as NavigatorStop and should get their own switches:
+  - NavigatorCruise: `cruise` 00E08F70, a zeroed descriptor and flags 1, at 008A7729.
+  - DisbandFormation 0077CA60: a 77h message to every member.
+  - LandConvoyStart, LandConvoyStop and LandConvoySetSpeed: 00741120/00741130 write [convoy+3A8h], and 00741140 writes
+    [+368h]. The host already models both fields.
+  - RemoveAllAirBasePlanes: 006C8840.
+  - StartLanding2: vt[238h]; the result is pushed.
 
 ## Ledger
 
@@ -182,4 +214,29 @@ Each checked native has a reconstruction record named `ver12_check_<Native>`, po
 
 ## Handoff
 
-HANDOFF
+Status:
+
+- The table is checked against the bytes. The two fixes are build-tested and ctest passes; nothing is game-validated.
+- The three helper reports that the table draws on, labelled v12a, v12b and v12c, were read-only. They were spot-checked
+  against these bytes:
+  - 008A4DA8-008A4EAC;
+  - 008A74DD-008A7569;
+  - 0071BED0-0071BF7D;
+  - 0071D560/0071D580;
+  - 0084D910/0084D930.
+
+Not done:
+
+- The receivers below the natives were not traced. These are:
+  - the 5Bh path route against the host's 0077D600 flags-0 route;
+  - 006CC690;
+  - 0081F8B0;
+  - 007F1C00.
+- PutFormationTo's body past the call shape was not read.
+- NavigatorCruise, DisbandFormation, LandConvoy*, RemoveAllAirBasePlanes and StartLanding2 are still unhosted.
+
+Next steps:
+
+- cc9 pairs PRCP01 and PRCPUS usn_02 with each switch ON.
+- The next packet should host NavigatorCruise and DisbandFormation, which are the cheapest. After them, RemoveAllAirBasePlanes,
+  which is called on the JM08 and PRCP01 rows.
