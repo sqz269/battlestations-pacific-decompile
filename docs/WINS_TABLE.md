@@ -176,3 +176,9 @@ mechanism is in the cd761bb52 section above).
   (a, and a+airfield c): HQ destroyed 1706.84 s; airfield at Grayson only to frame 14000 (b, 72000 frames): 10 of
   11 landing ships, no end.
 - **JM08 `jm08_p6_j8_f` holds under `BSP_FRAME_JITTER 20,3`** (cc9-physics6, `local\p6j8_fj.log`, same exe): completed 2697.31 s, guard logged. Variant d (Grayson only to frame 14000, 110000 frames): USTroopTransport 01 survives, no end. Not a knife-edge on this evidence.
+- **Reference AI times on current main** (gunnery39, reported through the lead, 2026-10-13): USN02 203.01 s,
+  LOMP06 535.24 s, USN12 1534.87 s, LOMP10 1158.10 s, USN15 2641.80 s.
+- **BSM01 `l50_b1_a`: plan casualty, not a defect** (gunnery39, df1343735): the loss needs both
+  `kPlaneCrashSweepBound` and `kLandStructureMeshHitTestBound`; crashing planes hit Pearl's buildings on their meshes
+  from 133 s, the battle shifts, and HenryPT never rams MiniSub (the win's phase-3 end was at 437.77 s). Re-plan
+  queued with cc9-physics6, base `config/win_orders/bsm01_l50_b1_a.txt`.

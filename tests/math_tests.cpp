@@ -1237,6 +1237,9 @@ int main() {
             "the short name is cut at the second underscore, before the extension test");
         check(bsp::derive_scene_short_name("universe/scenes/midway.scn", false) == "midway",
             "a name with no second underscore keeps its stem and loses .scn");
+        check(bsp::derive_scene_short_name("universe/Scenes/missions/USN/usn_2_java.scn")
+                == (bsp::kSceneShortNameModeSuffixBound ? "usn_2SOLO" : "usn_2"),
+            "the campaign stand-in appends the 00E08240 suffix SOLO when the switch is ON");
     }
 
     {
