@@ -5,6 +5,7 @@
 // x87 intermediate rounds like a float. Build-tested only.
 
 #include "bsp/gameplay_seg53_cc13.hpp"
+#include "bsp/plane_pose_commit.hpp"
 
 #include <cmath>
 
@@ -755,6 +756,695 @@ void water_mine_on_killed_0085f7a0(const WaterMineClassFields& cls, std::int32_t
     if (host.base_on_killed) {
         host.base_on_killed();
     }
+}
+
+// ---------------------------------------------------------------------------
+// MSubmarine lifecycle (cc13-gpr53d)
+// ---------------------------------------------------------------------------
+
+SubmarineConstructDefaults submarine_construct_defaults_00852f10() noexcept {
+    // 00852F6D..00852FA0, in listing order: +1228h = 0, +127Ch = 1.0f,
+    // +1280h/+1281h/+1235h = 0, +1238h = 0, +C4h = 8, +1274h = 0.0f.
+    return SubmarineConstructDefaults{};
+}
+
+SubmarineCreateInstanceResult submarine_create_instance_008531a0(std::int32_t flag,
+                                                                 const SubmarineCreateInstanceHost& host) {
+    SubmarineCreateInstanceResult result;
+    void* const block = host.allocate ? host.allocate(kSubmarineInstanceSize) : nullptr;
+    if (host.zero) {
+        host.zero(block, kSubmarineInstanceSize);   // 008531CE, on the raw return
+    }
+    if (block != nullptr && host.construct) {
+        result.unit = host.construct(block, flag);  // 008531ED
+    }
+    if (result.unit == nullptr) {
+        // 008531F6 XOR ESI,ESI falls through to 00853203 and 0085320C.
+        result.null_unit_dereferenced = true;
+        return result;
+    }
+    if (host.set_vehicle_class) {
+        host.set_vehicle_class(result.unit);        // 00853203
+    }
+    if (host.store_descriptor_354) {
+        host.store_descriptor_354(result.unit);     // 0085320C
+    }
+    return result;
+}
+
+std::vector<StateSinkEmit> submarine_describe_state_00852d30(const SubmarineSavedState& s) {
+    using Op = StateSinkEmit::Op;
+    auto open = [](const char* key) {
+        StateSinkEmit e;
+        e.op = Op::open_table;
+        e.key = key;
+        return e;
+    };
+    auto close = [] {
+        StateSinkEmit e;
+        e.op = Op::close_table;
+        return e;
+    };
+    auto real = [](const char* key, float v) {
+        StateSinkEmit e;
+        e.key = key;
+        e.type = StateSinkType::real;
+        e.real = v;
+        return e;
+    };
+    auto boolean = [](const char* key, bool v) {
+        StateSinkEmit e;
+        e.key = key;
+        e.type = StateSinkType::boolean;
+        e.boolean = v;
+        return e;
+    };
+    auto integer = [](const char* key, std::int32_t v) {
+        StateSinkEmit e;
+        e.key = key;
+        e.type = StateSinkType::integer;
+        e.integer = v;
+        return e;
+    };
+    // Keys: 00D0BF28, 00D0BF1C, 00D0BF18, 00D0BF10, 00D0BF00, then 00D0BEF4.. .
+    return {
+        open("_submarine"),
+        open("airSupply"),
+        real("air", s.air_127c),
+        boolean("needAir", s.need_air_1281),
+        boolean("unlimitedAir", s.unlimited_air_1280),
+        close(),
+        integer("depthLevel", s.depth_level_1268),
+        integer("periscopeState", s.periscope_state_122c),
+        real("periscopeY", s.periscope_y_1230),
+        boolean("periscopeOut", s.periscope_out_1234),
+        real("sullyesztoEro", s.submerge_force_1270),
+        close(),
+    };
+}
+
+namespace {
+
+void register_in_world_lists(const WorldListRegistration& row, const WorldListRegisterHost& host) {
+    if (host.register_in_parent_entity_list) {
+        host.register_in_parent_entity_list();
+    }
+    for (const std::uint32_t offset : row.list_offsets) {
+        if (host.push_back) {
+            host.push_back(offset);
+        }
+    }
+}
+
+int detach_from_class_world_list(const void* entity, const std::vector<const void*>& payloads,
+                                 const WorldListDetachHost& host) {
+    if (host.base_detach) {
+        host.base_detach();
+    }
+    // CMP [node+8],ESI / JE erase; next = [node+4] until null.
+    for (std::size_t i = 0; i < payloads.size(); ++i) {
+        if (payloads[i] != entity) continue;
+        if (host.erase_node) {
+            host.erase_node(i);
+        }
+        return static_cast<int>(i);
+    }
+    return -1;
+}
+
+}  // namespace
+
+void torpedo_register_in_world_lists_00856360(const WorldListRegisterHost& host) {
+    register_in_world_lists(kTorpedoRegistration_00856360, host);   // 00856363..0085638D
+}
+
+void water_mine_register_in_world_lists_0085f270(const WorldListRegisterHost& host) {
+    register_in_world_lists(kWaterMineRegistration_0085f270, host); // 0085F273..0085F29D
+}
+
+std::vector<StateSinkEmit> torpedo_write_state_00855d30(const TorpedoSavedState& s) {
+    auto field = [](const char* key, float v) {
+        StateSinkEmit e;
+        e.key = key;
+        e.type = StateSinkType::real;
+        e.real = v;
+        return e;
+    };
+    StateSinkEmit open;
+    open.op = StateSinkEmit::Op::open_table;
+    open.key = "_torpedo";
+    StateSinkEmit close;
+    close.op = StateSinkEmit::Op::close_table;
+    return {
+        open,
+        field("heading", s.heading_46c),
+        field("swimdepth", s.swim_depth_47c),
+        field("accel", s.accel_470),
+        field("dragfront", s.drag_front_474),
+        field("dragside", s.drag_side_478),
+        field("swimdepth", s.swim_depth_47c),   // 00855E58: the repeat
+        field("depthsmoothrate", s.depth_smooth_rate_480),
+        field("waverate", s.wave_rate_484),
+        close,
+    };
+}
+
+WaterMineCreateResult water_mine_create_0085f310(float class_v0_50, std::uint32_t arg2,
+                                                 const Vec3& position, const Vec3& direction,
+                                                 const TorpedoCreateHost& host) {
+    WaterMineCreateResult r;
+    r.arg2_54 = arg2;
+    if (host.attach_identity_pose) {
+        host.attach_identity_pose();                // 0085F408
+    }
+    // 0085F410..0085F43A: V0 stored as a float, then dir.x*V0, dir.y*V0, V0*dir.z.
+    const float v0 = class_v0_50;
+    r.velocity_318.x = direction.x * v0;
+    r.velocity_318.y = direction.y * v0;
+    r.velocity_318.z = v0 * direction.z;
+    r.forward_94 = direction;
+    if (host.orthonormalise_pose) {
+        host.orthonormalise_pose();                 // 0085F46D -> 0085DC80
+    }
+    r.position_a4 = position;
+    if (host.invalidate_child_poses) {
+        host.invalidate_child_poses();              // 0085F4D2 -> 0042ED50
+    }
+    return r;
+}
+
+float update_effect_light_instance_008738b0(EffectLightInstanceState& s, float def_duration_20,
+                                            float def_intensity_24, float dt,
+                                            const EffectLightUpdateHost& host) {
+    if (!s.has_light_1c) return 0.0f;
+    if (host.point_node_world_position && host.set_light_position) {
+        host.set_light_position(host.point_node_world_position());
+    }
+    if (host.link_if_unlinked) {
+        host.link_if_unlinked();
+    }
+    // 00873924..0087393C: each step stored as a float.
+    const float ratio = s.remaining_20 / def_duration_20;
+    const float intensity = ratio * def_intensity_24;
+    constexpr float kMinIntensity = 0.01f;              // 00D7A238
+    const float written = intensity > kMinIntensity ? intensity : kMinIntensity;
+    if (host.set_intensity_1f8) {
+        host.set_intensity_1f8(written);
+    }
+    // 00873968..00873985: FLDZ; FCOMPI; JBE keeps the value.
+    const float left = s.remaining_20 - dt;
+    s.remaining_20 = 0.0f > left ? 0.0f : left;
+    return written;
+}
+
+std::int32_t waterdrops_spawn_count_00873100(float distance, float fade_distance_34,
+                                             std::int32_t count_44) noexcept {
+    float x = distance - fade_distance_34;
+    if (!(x > 0.0f)) x = 0.0f;                          // 00873200 JBE
+    float f = x / fade_distance_34;
+    if (0.0f > f) {
+        f = 0.0f;                                       // 0087322A, not taken on NaN
+    } else if (f > 1.0f) {
+        f = 1.0f;                                       // 00873246 COMISS / JBE
+    }
+    const float g = 1.0f - f;
+    // FILD is exact; the 2^32 FADD rounds at 24-bit precision. One rounding for
+    // the FMUL (double product is exact for |count| < 2^29).
+    double c = static_cast<double>(count_44);
+    if (count_44 < 0) c = static_cast<double>(static_cast<float>(c + 4294967296.0));
+    const float p = static_cast<float>(c * static_cast<double>(g));
+    // FISTP qword, truncating; an out-of-range or NaN value stores the integer
+    // indefinite 8000000000000000h, whose low dword is 0.
+    if (!(p > -9.2e18f && p < 9.2e18f)) return 0;
+    const auto wide = static_cast<std::int64_t>(p);
+    return static_cast<std::int32_t>(static_cast<std::uint32_t>(static_cast<std::uint64_t>(wide)));
+}
+
+void update_effect_waterdrops_instance_00873100(EffectWaterdropsState& s,
+                                                const WaterdropsDefinitionFields& def, float dt,
+                                                const WaterdropsUpdateHost& host) {
+    if (!(host.enabled_f889fc && host.enabled_f889fc())) {
+        s.pending_20 = false;                           // 00873112
+    }
+    if (s.pending_20) {
+        const Vec3 reference = host.reference_node_position ? host.reference_node_position() : Vec3{};
+        const Vec3 point = host.point_node_position ? host.point_node_position() : Vec3{};
+        const Vec3 d{point.x - reference.x, point.y - reference.y, point.z - reference.z};
+        const float len = host.length ? host.length(d) : 0.0f;
+        const std::int32_t count = waterdrops_spawn_count_00873100(len, def.fade_distance_34, def.count_44);
+        if (count != 0 && host.create_and_spawn) {
+            s.drops_1c = host.create_and_spawn(def, count);
+        }
+        s.pending_20 = false;                           // 0087335F
+    }
+    if (s.drops_1c == 0) return;
+    Vec3 camera{};
+    if (host.camera_position && !host.camera_position(camera)) {
+        camera = Vec3{};                                // 008733BA, null camera node
+    }
+    if (host.update) {
+        host.update(s.drops_1c, camera, dt);
+    }
+}
+
+bool update_effect_thunderstorm_instance_00873c80(const EffectThunderStormState& s, float dt,
+                                                  const ThunderStormUpdateHost& host) {
+    if (s.has_atlas_1c && host.update_atlas_1c) {
+        host.update_atlas_1c(dt);                       // 00873CA9
+    }
+    if (!s.has_storm_20) return false;
+    Vec3 strike{};
+    if (!(host.update_storm && host.update_storm(dt, strike))) return false;
+    // 00873CDC..00873D61: identity, translation row = strike.
+    const float matrix[16] = {1.0f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f, 0.0f, 0.0f,
+                              0.0f, 0.0f, 1.0f, 0.0f,  strike.x, strike.y, strike.z, 1.0f};
+    const std::uintptr_t effect = host.spawn_strike ? host.spawn_strike(matrix) : 0;
+    if (effect != 0) {
+        if (host.mark_finished) {
+            host.mark_finished(effect);                 // 00873DAE
+        }
+        if (host.release_reference) {
+            host.release_reference(effect);             // 00873DC0
+        }
+    }
+    return true;
+}
+
+namespace {
+
+void write_effect_prefix(NativeRegisteredEffectPrefixStorage& prefix, void* definition,
+                         PointEffectInstanceStorage* point) noexcept {
+    prefix.table_00 = 0x00ceb130;
+    prefix.references_04.store(1, std::memory_order_relaxed);
+    prefix.secondary_table_08 = 0x00d0c8c0;
+    prefix.active_0c = 1;
+    prefix.borrowed_10 = point;
+    prefix.borrowed_14 = definition;
+}
+
+}  // namespace
+
+void construct_effect_flare_instance_00873010(effects_cc13::EffectNodeInstanceStorage& instance,
+                                              void* definition, PointEffectInstanceStorage* point) noexcept {
+    write_effect_prefix(instance.prefix, definition, point);
+    instance.prefix.table_00 = 0x00d0dc60;
+    instance.prefix.secondary_table_08 = 0x00d0dc5c;
+    instance.prefix.type_18 = 5;
+    instance.payload_1c = nullptr;
+}
+
+void construct_effect_waterdrops_instance_00873090(effects_cc13::EffectNodeInstanceStorage& instance,
+                                                   void* definition, PointEffectInstanceStorage* point) noexcept {
+    write_effect_prefix(instance.prefix, definition, point);
+    instance.suppressed_20 = 1;                                       // 008730B3
+    instance.prefix.type_18 = 0;
+    instance.prefix.table_00 = 0x00d0dbb8;
+    instance.prefix.secondary_table_08 = 0x00d0dbb4;
+    instance.payload_1c = nullptr;
+}
+
+void construct_effect_splash_instance_008739a0(effects_cc13::EffectSplashInstanceStorage& instance,
+                                               void* definition, float def_20, float def_24, float def_28,
+                                               PointEffectInstanceStorage* point,
+                                               const EffectSplashConstructHost& host) {
+    write_effect_prefix(instance.prefix, definition, point);
+    instance.prefix.type_18 = 0;
+    instance.prefix.table_00 = 0x00d0dc28;
+    instance.prefix.secondary_table_08 = 0x00d0dc24;
+    instance.ring_1c = nullptr;
+    const Vec3 pos = host.point_node_world_position ? host.point_node_world_position() : Vec3{};
+    if (host.add_water_ring) {
+        instance.ring_1c = host.add_water_ring(pos, def_20, def_24, def_28);  // 00873A6E
+    }
+}
+
+void construct_effect_thunderstorm_instance_00873eb0(EffectThunderStormInstanceStorage& instance,
+                                                     void* definition, bool def_storm_54,
+                                                     PointEffectInstanceStorage* point,
+                                                     const EffectThunderStormConstructHost& host) {
+    write_effect_prefix(instance.prefix, definition, point);
+    instance.prefix.type_18 = 0;
+    instance.prefix.table_00 = 0x00d0ddd0;
+    instance.prefix.secondary_table_08 = 0x00d0ddcc;
+    if (host.load_atlas) {
+        host.load_atlas();                                            // 00873F51
+    }
+    instance.sky_effect_1c = host.create_sky_effect ? host.create_sky_effect() : 0;  // 00873F8F
+    instance.storm_20 = 0;
+    if (def_storm_54 && host.create_storm) {
+        instance.storm_20 = host.create_storm();                      // 00873F9E / 00873FC0
+    }
+}
+
+void destruct_effect_thunderstorm_instance_00873ff0(EffectThunderStormInstanceStorage& instance,
+                                                    const EffectThunderStormDestructHost& host) {
+    if (instance.storm_20 != 0) {
+        if (host.destroy_and_free_storm) {
+            host.destroy_and_free_storm(instance.storm_20);           // 00874032 / 00874038
+        }
+        instance.storm_20 = 0;
+    }
+    if (host.unload_atlas) {
+        host.unload_atlas();
+    }
+}
+
+void destruct_effect_waterdrops_instance_00872c10(effects_cc13::EffectNodeInstanceStorage& instance,
+                                                  effects_cc13::EffectInstanceServices& services) {
+    effects_cc13::stop_effect_waterdrops_instance_00872bf0(instance, services);
+}
+
+void destruct_effect_light_instance_00872cb0(effects_cc13::EffectNodeInstanceStorage& instance,
+                                             effects_cc13::EffectInstanceServices& services) {
+    effects_cc13::stop_effect_light_instance_00872d30(instance, services);
+}
+
+void destruct_effect_splash_instance_00872d60(const effects_cc13::EffectSplashInstanceStorage& instance,
+                                              const EffectSplashDestructHost& host) {
+    if (!(host.ocean_present && host.ocean_present())) return;        // 00872D90
+    if (instance.ring_1c == nullptr) return;                          // 00872DA4
+    if (host.remove_water_ring) {
+        host.remove_water_ring(instance.ring_1c);                     // 00872DB5
+    }
+}
+
+void effect_handle_request_stop_00866b70(EffectHandleFlags& h) noexcept {
+    h.finish_when_done_09 = false;
+    if (h.active_08) h.stop_requested_0a = true;
+}
+
+bool point_effect_retire_child_008679d0(std::vector<PointEffectChildSlot>& entries_0c,
+                                        std::vector<std::uintptr_t>& pending_18, std::uintptr_t child,
+                                        const PointEffectRetireHost& host) {
+    bool found = false;
+    for (PointEffectChildSlot& slot : entries_0c) {
+        if (slot.child != child) continue;
+        if (slot.active_0c) {
+            slot.active_0c = false;
+            if (host.stop_child) {
+                host.stop_child(slot.child);
+            }
+        }
+        pending_18.push_back(slot.child);
+        if (host.retain && slot.child != 0) {
+            host.retain(slot.child);
+        }
+        if (slot.child != 0 && host.release) {
+            host.release(slot.child);
+        }
+        slot.child = 0;
+        found = true;
+        break;
+    }
+    if (child != 0 && host.release) {
+        host.release(child);                                          // the by-value argument
+    }
+    return found;
+}
+
+bool effect_sound_any_sample_flag15_00869e10(const std::vector<EffectSoundSampleView>& samples) noexcept {
+    for (const EffectSoundSampleView& s : samples) {
+        if (s.flag_15) return true;                                   // 00869E2C
+    }
+    return false;
+}
+
+bool effect_sound_admit_at_position_0086a740(bool always_2c, float distance,
+                                             const std::vector<EffectSoundSampleView>& samples) noexcept {
+    if (always_2c) return true;                                       // 0086A74A
+    for (const EffectSoundSampleView& s : samples) {
+        if (s.resource_word08) return true;                           // 0086A7CE
+        if (s.flag_15) return true;                                   // 0086A7DB
+        const float limit = s.use_max_distance_20
+            ? s.max_distance_10
+            : static_cast<float>(static_cast<double>(s.distance_0c) * 128.0);  // 0086A7EF
+        if (limit > distance) return true;                            // 0086A801 JA
+    }
+    return false;
+}
+
+void world_atmosphere_apply_preset_00865900(RainDescriptorFields& d, const WeatherPresetBlock& preset,
+                                            const WorldAtmospherePresetHost& host) {
+    if (d.emitter_38 != 0) {
+        if (host.release_node) {
+            host.release_node(d.emitter_38);                          // 00865911
+        }
+        d.emitter_38 = 0;
+    }
+    if (preset.is_rain_60) {
+        d.speed_20 = preset.speed_68;
+        d.drop_count_0c = static_cast<float>(preset.drop_count_64); // 0086593C CVTSI2SS
+        d.min_length_18 = preset.min_length_78;
+        d.length_span_1c = preset.max_length_7c - preset.min_length_78;
+        d.colour_34 = preset.colour_74;
+        d.emitter_38 = host.build_rain_emitter ? host.build_rain_emitter() : 0;  // 0086595B
+    }
+    if (!(host.camera_present && host.camera_present())) return;
+    if (host.set_fog_scalar) {
+        host.set_fog_scalar(0x68, preset.fog_d0);                    // 00B84D00
+        host.set_fog_scalar(0x78, preset.fog_dc);                    // 00B84D40
+        host.set_fog_scalar(0x6c, preset.fog_d4);                    // 00B84D10
+        host.set_fog_scalar(0x70, preset.fog_d8);                    // 00B84D20
+        host.set_fog_scalar(0x74, preset.fog_e0);                    // 00B84D30
+    }
+    if (host.set_fog_colour) {
+        host.set_fog_colour(preset.fog_colour_80);
+    }
+    if (host.set_directional_colour) {
+        for (int i = 0; i < 4; ++i) {
+            host.set_directional_colour(i, preset.directional_colours_90[i]);
+        }
+    }
+    if (host.set_camera_clear_colour) {
+        host.set_camera_clear_colour(preset.fog_colour_80);
+    }
+    if (host.set_cloud_wind) {
+        host.set_cloud_wind(preset.cloud_wind_25c);
+    }
+}
+
+bool rain_descriptor_update_00865ab0(const RainDescriptorFields& d, const RainDescriptorUpdateHost& host) {
+    if (d.emitter_38 == 0) return false;
+    const Vec3 camera = host.camera_position ? host.camera_position() : Vec3{};
+    const float dt = host.frame_dt_21f0 ? host.frame_dt_21f0() : 0.0f;
+    if (host.emitter_step) {
+        host.emitter_step(dt, camera);                                // 00865B3B
+    }
+    return true;
+}
+
+Vec3 rotate_vector_about_axis_0085c3f0(const Vec3& v, const Vec3& axis, float angle) noexcept {
+    const float d = (axis.y * v.y + axis.x * v.x) + axis.z * v.z;     // 0085C422..0085C450
+    const Vec3 p{axis.x * d, axis.y * d, d * axis.z};                // 0085C466..0085C478
+    const Vec3 r{v.x - p.x, v.y - p.y, v.z - p.z};                    // 0085C484..0085C498
+    const float rr = (r.y * r.y + r.x * r.x) + r.z * r.z;             // 0085C49C..0085C4B8
+    constexpr float kEpsilon = 1e-4f;                                 // 00D7A268 (double)1e-4f
+    if (kEpsilon > rr) return v;                                      // 0085C4CA JBE not taken
+    // 004F9B30: c = a x r.
+    const Vec3 c{axis.y * r.z - axis.z * r.y, axis.z * r.x - axis.x * r.z,
+                 axis.x * r.y - axis.y * r.x};
+    const float s = static_cast<float>(std::sin(static_cast<double>(angle)));  // 0085C511 FSIN
+    const Vec3 cs{c.x * s, c.y * s, s * c.z};
+    const float k = static_cast<float>(std::cos(static_cast<double>(angle)));  // 0085C53F FCOS
+    const Vec3 rk{r.x * k, r.y * k, k * r.z};
+    const Vec3 sum{rk.x + p.x, rk.y + p.y, rk.z + p.z};               // 0085C569..0085C589
+    return Vec3{sum.x + cs.x, sum.y + cs.y, sum.z + cs.z};            // 0085C58D..0085C5AD
+}
+
+void rotate_basis_about_axis_0085e880(float out[16], const float in[16], const Vec3& axis,
+                                      float angle) {
+    const Vec3 row2 = rotate_vector_about_axis_0085c3f0(Vec3{in[8], in[9], in[10]}, axis, angle);
+    out[8] = row2.x;
+    out[9] = row2.y;
+    out[10] = row2.z;
+    const Vec3 row1 = rotate_vector_about_axis_0085c3f0(Vec3{in[4], in[5], in[6]}, axis, angle);
+    out[4] = row1.x;
+    out[5] = row1.y;
+    out[6] = row1.z;
+    orthonormalize_pose_matrix_0085dc80(out);                         // 0085E8B5
+}
+
+void rotate_about_axis_through_point_0085e8c0(float out[16], const float in[16], const Vec3& pivot,
+                                              const Vec3& axis, float angle) {
+    rotate_basis_about_axis_0085e880(out, in, axis, angle);          // 0085E8DE..0085E8F9
+    const Vec3 t{in[12] - pivot.x, in[13] - pivot.y, in[14] - pivot.z};  // 0085E8FE..0085E924
+    const Vec3 r = rotate_vector_about_axis_0085c3f0(t, axis, angle);    // 0085E930
+    out[12] = pivot.x + r.x;
+    out[13] = pivot.y + r.y;
+    out[14] = pivot.z + r.z;
+}
+
+namespace {
+
+// 00419440 (not in this segment): f(sqrt((f(x*x) + f(y*y)) + f(z*z))), the
+// CRT sqrt 00BF7030 at 24-bit precision.
+float length_00419440(const float* v) noexcept {
+    const float s = (v[0] * v[0] + v[1] * v[1]) + v[2] * v[2];
+    return std::sqrt(s);
+}
+
+void normalise_row(float* row) noexcept {
+    const float len = length_00419440(row);
+    const float inv = len > 0.0f ? 1.0f / len : 0.0f;
+    row[0] = row[0] * inv;
+    row[1] = row[1] * inv;
+    row[2] = row[2] * inv;
+}
+
+// rows by index: a is normalised first, b is made orthogonal to it, and
+// c = p x q.
+void orthonormalize_rows(float m[16], int a, int b, int c, int p, int q) noexcept {
+    float* const ra = m + a * 4;
+    float* const rb = m + b * 4;
+    normalise_row(ra);
+    const float d = (ra[1] * rb[1] + ra[0] * rb[0]) + ra[2] * rb[2];
+    const float px = ra[0] * d;
+    const float py = ra[1] * d;
+    const float pz = d * ra[2];
+    rb[0] = rb[0] - px;
+    rb[1] = rb[1] - py;
+    rb[2] = rb[2] - pz;
+    normalise_row(rb);
+    const float* const u = m + p * 4;
+    const float* const w = m + q * 4;
+    const float cx = u[1] * w[2] - u[2] * w[1];
+    const float cy = u[2] * w[0] - u[0] * w[2];
+    const float cz = u[0] * w[1] - u[1] * w[0];
+    float* const rc = m + c * 4;
+    rc[0] = cx;
+    rc[1] = cy;
+    rc[2] = cz;
+    normalise_row(rc);
+}
+
+}  // namespace
+
+void orthonormalize_from_row_x_0085d3d0(float m[16]) noexcept {
+    orthonormalize_rows(m, 0, 1, 2, 0, 1);
+}
+
+void orthonormalize_from_row_z_0085d770(float m[16]) noexcept {
+    orthonormalize_rows(m, 2, 0, 1, 2, 0);
+}
+
+void orthonormalize_from_row_y_then_x_0085d920(float m[16]) noexcept {
+    orthonormalize_rows(m, 1, 0, 2, 0, 1);
+}
+
+void orthonormalize_from_row_y_then_z_0085dad0(float m[16]) noexcept {
+    orthonormalize_rows(m, 1, 2, 0, 1, 2);
+}
+
+void water_mine_arm_0085f1e0(WaterMineArmState& s, const WaterMineArmHost& host) {
+    s.armed_46c = true;
+    s.armed_part_468 = host.construct_part ? host.construct_part(s.model_464) : 0;
+    if (host.propagate_root_registration) {
+        host.propagate_root_registration();
+    }
+}
+
+std::uintptr_t water_mine_model_pointer_0085ea50(const WaterMineArmState& s) noexcept {
+    return s.armed_46c ? s.armed_part_468 : 0;
+}
+
+void water_mine_release_sub_objects_0085f120(WaterMineArmState& s, const WaterMineReleaseHost& host) {
+    if (s.armed_part_468 != 0) {
+        s.model_464 = 0;                            // 0085F12C, before the delete
+        if (host.delete_part) {
+            host.delete_part(s.armed_part_468);
+        }
+        s.armed_part_468 = 0;
+    }
+    if (host.base_release) {
+        host.base_release();                        // 0085F156 JMP 006E1860
+    }
+}
+
+int submarine_detach_from_world_lists_008530e0(const void* unit,
+                                               const std::vector<const void*>& class_list_payloads,
+                                               const WorldListDetachHost& host) {
+    return detach_from_class_world_list(unit, class_list_payloads, host);  // 008530E3, list +78h
+}
+
+int torpedo_detach_from_world_lists_008563a0(const void* torpedo,
+                                             const std::vector<const void*>& class_list_payloads,
+                                             const WorldListDetachHost& host) {
+    return detach_from_class_world_list(torpedo, class_list_payloads, host);  // 008563A3, list +21Ch
+}
+
+int torpedo_boat_detach_from_world_lists_00857f00(const void* unit,
+                                                  const std::vector<const void*>& class_list_payloads,
+                                                  const WorldListDetachHost& host) {
+    return detach_from_class_world_list(unit, class_list_payloads, host);  // 00857F03, list +C0h
+}
+
+int water_mine_detach_from_world_lists_0085f2b0(const void* mine,
+                                                const std::vector<const void*>& class_list_payloads,
+                                                const WorldListDetachHost& host) {
+    return detach_from_class_world_list(mine, class_list_payloads, host);  // 0085F2B3, list +288h
+}
+
+void submarine_destruct_00853110(SubmarineLifecycleSlots& slots, const SubmarineDestructHost& host) {
+    // 0085312E..00853156; +1224h is left alone.
+    if (slots.periscope_effect_1228 != 0) {
+        if (host.release_reference) {
+            host.release_reference(slots.periscope_effect_1228);
+        }
+        slots.periscope_effect_1228 = 0;
+    }
+    if (host.destruct_vehicle_base) {
+        host.destruct_vehicle_base();               // 0085316A
+    }
+}
+
+void submarine_on_killed_release_periscope_00853590(SubmarineLifecycleSlots& slots,
+                                                    const SubmarineOnKilledHost& host) {
+    const std::uintptr_t effect = slots.periscope_effect_1228;
+    if (effect != 0) {
+        if (host.stop_effect_children) {
+            host.stop_effect_children(effect);
+        }
+        if (host.mark_effect_finished) {
+            host.mark_effect_finished(effect);
+        }
+        if (host.release_reference) {
+            host.release_reference(effect);
+        }
+        slots.periscope_effect_1228 = 0;
+    }
+    const std::uintptr_t debris = slots.periscope_debris_1224;
+    if (debris != 0) {
+        if (slots.debris_name_has_storage && host.return_name_storage) {
+            host.return_name_storage(debris);       // 008535F7..00853608
+        }
+        slots.debris_name_has_storage = false;
+        if (host.free_debris) {
+            host.free_debris(debris);               // 0085360E
+        }
+        slots.periscope_debris_1224 = 0;
+    }
+    if (host.base_on_killed) {
+        host.base_on_killed();                      // 00853624 JMP 00819880
+    }
+}
+
+std::string periscope_debris_init_008533e0(PeriscopeDebris& d, const PeriscopeDebrisInitHost& host) {
+    // The 00F87574 zero vector into +14h..+28h, then state +10h = 0.
+    d.velocity_14 = Vec3{};
+    d.angular_velocity_20 = Vec3{};
+    d.state_10 = 0;
+    std::string name = kPeriscopeDebrisNamePrefix;
+    if (host.owner_name) {
+        name += host.owner_name();
+    }
+    if (!(host.node_world_matrix_current && host.node_world_matrix_current()) &&
+        host.refresh_node_world_matrix) {
+        host.refresh_node_world_matrix();
+    }
+    if (host.copy_node_world_matrix) {
+        host.copy_node_world_matrix();
+    }
+    return name;
 }
 
 }  // namespace gameplay_seg53_cc13

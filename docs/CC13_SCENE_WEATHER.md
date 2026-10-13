@@ -251,9 +251,12 @@ descriptor singleton 00F875C0 other than 00865AB0.
 **For cc9 (RNG, not a consumer).** In the image, the rain these fields enable draws from the
 shared generator. When IsRain is set, 00865900 creates the rain emitter at descriptor+38h.
 `BSP_RainDescriptor_Update` 00865AB0 then runs from `BSP_Game_OnMove` every frame, and
-`BSP_RainEmitter_SpawnStep` 00801400 draws 00BD2F10 (stream 0) at least once per call (already
-listed in `docs/CC13_RNG_STREAM_CENSUS.md`). On rainy missions the image's stream-0 sequence
-therefore contains rain draws that a host without rain lacks. This installation has 18 scenes
+`BSP_RainEmitter_SpawnStep` 00801400 draws 00BD2F10 with ECX = 1 (stream 1, not stream 0;
+00801439, census site 0080144F; corrected 2026-10-13 per cc13-sys6b/gpr53d) at least once per call (already
+listed in `docs/CC13_RNG_STREAM_CENSUS.md`). The rain build 008023B0, by contrast, draws stream 0
+(all seven calls set ECX = 0; docs/CC13_LEFT_3.md). On rainy missions the image's stream-0
+sequence therefore contains the rain build's draws, and its stream-1 sequence the per-frame spawn
+draws, that a host without rain lacks. This installation has 18 scenes
 with `IsRain = B true` (the survey below), among them ijn_04_coral_sea,
 ijn_08_defend_guadalcanal, ijn_10_sydney, usn_02_battle_of_cape_esperance, ijn_16_aleutians,
 usn_19_coralus, usn_8_cape and 07_Komandorski. Per the RNG rule, if the host ever wires rain, it

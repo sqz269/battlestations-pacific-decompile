@@ -36,6 +36,7 @@
 #include <cstdint>
 #include <functional>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace bsp {
@@ -419,6 +420,123 @@ bool class_registry_party_row_clear_0095bab0(ClassRegistryModel& reg, std::int32
 bool unit_is_current_player_unit_00965810(std::uintptr_t unit, bool is_plane,
                                           std::uintptr_t plane_owner_9d4,
                                           std::uintptr_t current_player_unit) noexcept;
+
+// --- class registry loaders (cc13-gprx) ------------------------------------------
+
+// 00964020, no caller, no vtable dword (an unreferenced eager preload), __cdecl(),
+// bare RET, AL = 1 when every entry was built, 0 on the first unknown type
+// (00964727..00964785). For each pair of the global "VehicleClass" table
+// (IterateFirst/Next) it reads value."Type" and picks the row below in this order:
+// Destroyer, Cruiser, Cargo, BattleShip are tested with __stricmp (00BF7FBF) on
+// the raw string and only when it is non-null (00964142 JE 009642C5); the rest
+// with 00425850 (case-insensitive) on the native string. A match allocates the
+// object, runs the constructor, sets class+70h = the integer key (00964638) and
+// calls class->vtable[8](value) (00964642, the class's own Lua reader), then puts
+// it into the registry cache 00437F50()+4h at that key: the cache grows to key+1
+// (00437BD0), a previous entry is released (InterlockedDecrement, destroyed
+// through vtable[0] at zero) and replaced (00964644..00964689).
+// The four ship arms inline 00963380 plus the two vtable stores; the rest call the
+// descriptor constructor of kClassDescriptorCtors. "LandFort" builds the bare
+// 00749180 base (size 180h), not a descriptor of that table. LandingShip,
+// SmallReconPlane, LargeReconPlane and DummyTargetVehicle have no arm, so a
+// table holding one stops the preload.
+enum class PreloadAlloc : std::uint8_t {
+    crt_new_memset,   // 00BF55BE(size) then 00BF79F0(p, 0, size)
+    pool_00470b80,    // 00470B80(ECX = size)
+};
+struct ClassPreloadRow {
+    const char* type;           // the "Type" string
+    std::uint32_t size;
+    PreloadAlloc alloc;
+    std::uint32_t ctor;         // the constructor called (00963380 for the inlined ship arms)
+    std::uint32_t vtable;       // the inlined vtable store, or 0 when the ctor stores it
+    std::uint32_t vtable_6c;
+    bool raw_stricmp;           // tested on the raw string before the native compare chain
+};
+extern const std::array<ClassPreloadRow, 18> kClassPreloadRows;
+// The first row whose type matches, in the image's compare order; null when none.
+const ClassPreloadRow* class_preload_row_00964020(const char* type) noexcept;
+struct ClassPreloadEntry {
+    std::int32_t key = 0;       // the integer table key (class+70h, registry index)
+    std::string type;
+};
+struct ClassPreloadResult {
+    bool completed = false;     // AL
+    std::vector<std::pair<std::int32_t, const ClassPreloadRow*>> built;  // key, row, in order
+};
+ClassPreloadResult class_preload_00964020(const std::vector<ClassPreloadEntry>& table);
+
+// 009653B0, __fastcall(ECX = index) -> class or null, RET 0, body 009653B0-00965466.
+// Callers 00A06840 and 00A072D0. Answers 00964790(index, readRace = 1)
+// (0096544C MOV DL,1) when VehicleClass[index] is a table, else null.
+std::uintptr_t class_get_or_create_from_lua_index_009653b0(std::int32_t index,
+    bool entry_is_table,
+    const std::function<std::uintptr_t(std::int32_t, bool)>& get_or_create_00964790);
+
+// 00965480, __fastcall(ECX = NativeString* name) -> class or null, RET 0. Caller
+// 00487470. A lookup by name, not a list walk (the earlier ledger text):
+// 1. each non-null registry cache entry 00437F50()+4h[0..+8h) in index order whose
+//    name +54h matches is returned at once;
+// 2. otherwise each pair of the global "VehicleClass" table with an integer key and
+//    a table value whose "Name" (00CE8ED0) is a string that matches resolves through
+//    00964790(key, readRace = 1) (0096562A MOV DL,1) and is returned;
+// 3. else null.
+// The match (both phases): a null name data matches a null or empty class name; a
+// non-null name data against a null class name matches only when the name's length
+// word (+0h) is 0; otherwise __stricmp.
+bool class_name_matches_00965480(const char* name_data, std::int32_t name_length,
+                                 const char* class_name) noexcept;
+struct LuaClassNameEntry {
+    bool key_is_integer = false;
+    std::int32_t key = 0;
+    bool value_is_table = false;
+    bool name_is_string = false;
+    const char* name = nullptr;
+};
+struct ClassByNameResult {
+    std::uintptr_t cls = 0;
+    bool from_cache = false;
+    std::int32_t key = -1;      // the table key resolved in phase 2
+};
+ClassByNameResult class_find_by_name_00965480(const char* name_data, std::int32_t name_length,
+    const std::vector<std::pair<std::uintptr_t, const char*>>& cache_with_names,
+    const std::vector<LuaClassNameEntry>& vehicle_class_table,
+    const std::function<std::uintptr_t(std::int32_t, bool)>& get_or_create_00964790);
+
+// --- section failure effect (cc13-gprx) ------------------------------------------
+
+// 0093AA90, __thiscall(RepairTask* = unit+A20h, uint section, int key_b, bool on),
+// RET 0Ch, body 0093AA90-0093AC1A; the 9Bh MT_SHIP_SECTIONFAILUREEFX arm at
+// 00822023. The task's slot vector is +8h..+0Ch (one effect pointer per section,
+// the vector object at +4h); +0h is the unit.
+// - Either way an index at or past the vector end calls 00BF6713 (the CRT invalid
+//   parameter report; it does not return).
+// - off: a held effect gets 00867B10 (stop its children), its +9h byte = 1, and the
+//   slot is released to null (00484620); an empty slot does nothing.
+// - on: with the slot empty, 008782A0(unit, section, key_b) finds the damage
+//   section (an element of unit+348h with +4h == section and +8h == key_b); when it
+//   and its record are non-null, its effect name +24h is set and the unit has a
+//   scene node +4A4h, a point effect is created on that node from the record +18h
+//   (008689C0, flags 1, 0, 0) and stored in the slot (0080E620, 004845D0).
+//   A held effect is kept.
+// Presentation: no gameplay state is written.
+enum class SectionFailureEffectAction : std::uint8_t {
+    invalid_index,   // 00BF6713
+    none,
+    stop_and_release,
+    create,
+};
+struct SectionFailureEffectInputs {
+    bool on = false;
+    std::uint32_t section = 0;
+    std::size_t slot_count = 0;
+    bool slot_held = false;          // slots[section] != 0
+    bool section_found = false;      // 008782A0 != 0 and its record != 0
+    bool section_effect_name = false;  // record +24h != 0
+    bool unit_node_4a4 = false;
+};
+SectionFailureEffectAction repair_set_section_failure_effect_0093aa90(
+    const SectionFailureEffectInputs& in) noexcept;
 
 // ---------------------------------------------------------------------------
 // 6. Math
