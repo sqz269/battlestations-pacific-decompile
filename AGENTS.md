@@ -88,7 +88,8 @@
   untracked). Write multi-line commit messages to a file and use `git commit -F <file>`.
   Exports are shared through `tools/workspace.py` (the main checkout's `exports/bsp`); never create
   a junction or symlink to them inside a worktree, and remove worktrees only with
-  `python tools/bsp.py worktree remove <name>` (git's own remove/clean traverse reparse points).
+  `python tools/bsp.py worktree remove <name>`, or in bulk with `python tools/bsp.py worktree gc`
+  (dry run unless `--apply`); git's own remove/clean and `Remove-Item -Recurse` traverse reparse points.
 - Integrate into `main` as each packet closes, not at the end of a run. Merge the worker branch into
   your own branch, then merge your branch into `main` and push `main`. Your own long-lived branch is
   a staging area, never the destination, and pushing it to `origin` is not integration. Never carry

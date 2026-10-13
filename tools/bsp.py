@@ -33,6 +33,7 @@ import branch_sync  # noqa: E402
 import coordination  # noqa: E402
 import ledger  # noqa: E402
 import workspace  # noqa: E402
+import worktree_gc  # noqa: E402
 
 ROOT = ledger.ROOT
 DB = ROOT / 'local/bsp_index.sqlite'
@@ -201,15 +202,20 @@ def build_index(args):
         print('index is fresh')
         return
     DB.parent.mkdir(parents=True, exist_ok=True)
-    if DB.exists():
-        DB.unlink()
-    db = sqlite3.connect(DB)
-    db.executescript(SCHEMA)
     functions_path = EXPORTS / 'functions.json'
     if not functions_path.exists():
-        sys.exit('No exports/bsp/functions.json; run tools/ghidra_export.py snapshot first')
+        # keep the old index: an empty one makes every later lookup and re-export see nothing
+        sys.exit(f'No {functions_path}; the shared exports look wiped. Run: python tools/bsp.py exports restore')
+    previous_exported = index_exported_count()
+    building = DB.with_name(f'{DB.stem}.{os.getpid()}.building')
+    building.unlink(missing_ok=True)
+    db = sqlite3.connect(building)
+    db.executescript(SCHEMA)
     functions = json.loads(functions_path.read_text(encoding='utf-8'))
     exported = {p.name for p in (EXPORTS / 'functions').glob('*') if (p / 'decompiled.c').exists()}
+    if previous_exported and len(exported) < previous_exported // 2:
+        print(f'WARNING: only {len(exported)} exported functions on disk, the last index saw {previous_exported}; '
+              'the shared exports may have been emptied. Run: python tools/bsp.py exports check')
     rows = {}
     for f in functions:
         if f.get('isExternal'):
@@ -272,7 +278,34 @@ def build_index(args):
     db.commit()
     counts = {t: db.execute(f'SELECT COUNT(*) FROM {t}').fetchone()[0]
               for t in ('functions', 'calls', 'datarefs', 'segments', 'docs', 'doc_addresses')}
+    db.close()
+    # publish atomically; a reader holding the old file open (WinError 32) only delays the swap
+    for attempt in range(20):
+        try:
+            os.replace(building, DB)
+            break
+        except PermissionError:
+            if attempt == 19:
+                sys.exit(f'index built at {building} but {DB} is held open by another process; '
+                         'close it and rerun (the old index is untouched)')
+            import time
+            time.sleep(0.5)
     print(f'built {DB.relative_to(ROOT).as_posix()}: {counts}')
+
+
+def index_exported_count():
+    """Exported-function count recorded by the current index, or 0 when there is none."""
+    if not DB.exists():
+        return 0
+    db = None
+    try:
+        db = sqlite3.connect(f'file:{DB.as_posix()}?mode=ro', uri=True)
+        return db.execute('SELECT COUNT(*) FROM functions WHERE exported=1').fetchone()[0]
+    except sqlite3.Error:
+        return 0
+    finally:
+        if db is not None:
+            db.close()
 
 
 # ---------------------------------------------------------------- index queries
@@ -1069,36 +1102,36 @@ def worktree_cmd(args):
         print(git('worktree', 'list'))
         return
     main = workspace.main_root()
+    if args.worktree_command == 'gc':
+        sys.exit(worktree_gc.gc(args))
     if args.worktree_command == 'remove':
+        # Never `git worktree remove` / `git clean` / Remove-Item: they follow junctions into the
+        # shared exports. worktree_gc deletes with a walker that detaches reparse points instead.
         path = (main.parent / f'{main.name}-{args.name}').resolve()
-        link = path / 'exports'
-        # Older worktrees carried a junction to the shared exports; git would traverse it and
-        # empty the target, so detach the reparse point first (rmdir removes only the link).
-        if link.exists() and link.is_dir():
-            probe = subprocess.run(['cmd', '/c', 'fsutil', 'reparsepoint', 'query', str(link)], capture_output=True, text=True)
-            if probe.returncode == 0:
-                subprocess.run(['cmd', '/c', 'rmdir', str(link)], capture_output=True, text=True)
-                print(f'detached exports junction in {path}')
-        if not path.exists():
-            # already gone (an earlier remove kept only the branch): prune the stale entry and go on
-            subprocess.run(['git', 'worktree', 'prune'], cwd=main, capture_output=True, text=True)
-            print(f'{path} is already gone; pruned stale worktree entries')
-            run = subprocess.CompletedProcess(args=[], returncode=0, stdout='', stderr='')
-        else:
-            run = subprocess.run(['git', 'worktree', 'remove', '--force', str(path)], cwd=main, capture_output=True, text=True)
-            print((run.stdout + run.stderr).strip() or f'removed {path}')
-        if args.delete_branch and run.returncode == 0:
-            # -d refuses an unmerged branch; the worktree is gone but the commits stay reachable.
-            deletion = subprocess.run(['git', 'branch', '-d', f'agent/{args.name}'], cwd=main, capture_output=True, text=True)
-            print((deletion.stdout + deletion.stderr).strip())
-            if deletion.returncode:
-                print(f'branch agent/{args.name} kept: merge it first, or delete it deliberately with git branch -D')
+        tree = next((t for t in worktree_gc.worktrees()
+                     if os.path.normcase(str(t['path'].resolve())) == os.path.normcase(str(path))), None)
+        if tree is None and not path.exists():
+            worktree_gc.git('worktree', 'prune')
+            print(f'{path} is not a worktree and does not exist; pruned stale entries')
+            return
+        if tree is None:
+            sys.exit(f'{path} exists but is not a linked worktree of this repository; not touching it')
+        dirty = worktree_gc.dirty_summary(path)
+        if dirty and not args.force:
+            sys.exit(f'{path} has uncommitted work ({dirty}); commit it, or pass --force to discard it')
+        try:
+            worktree_gc.remove_tree(path, tree['branch'], args.delete_branch, archive=True)
+        except worktree_gc.ExportsLoss as error:
+            sys.exit(f'STOP: {error}')
         return
     name = args.name
     branch = f'agent/{name}'
     path = (main.parent / f'{main.name}-{name}').resolve()
     if path.exists():
         sys.exit(f'{path} already exists')
+    if args.base == 'origin/main':
+        # the shared checkout's local main is often behind (or carries another lead's unpushed work)
+        subprocess.run(['git', 'fetch', '-q', 'origin', 'main'], cwd=main, capture_output=True, text=True)
     run = subprocess.run(['git', 'worktree', 'add', str(path), '-b', branch, args.base], cwd=main, capture_output=True, text=True)
     if run.returncode:
         sys.exit((run.stdout + run.stderr).strip())
@@ -1138,13 +1171,21 @@ local/output/ and prints the path. --full or BSP_OUTPUT_BUDGET=0 lifts the cap.
   lease claim --packet <id> --from-packet | --addresses A B --files P [--ttl H]
   lease release [--packet <id>] | lease list [-v] | lease check <addr|path> | lease lock-status
   packets list|ready|done <id>|depend <id> --on <ids>
-  worktree add <name> [--packet P] | worktree remove <name> | worktree list
+  worktree add <name> [--packet P] [--base origin/main] | worktree remove <name> [--force] [--delete-branch]
+  worktree gc [--apply] [--idle-hours 12] [--merged-only] [--match TEXT] [--delete-merged-branches]
+      the ONLY sanctioned way to delete trees: never git worktree remove / git clean / Remove-Item -Recurse
+  worktree list   |   exports check | exports restore (hours: snapshot + index + re-decompile, resumable)
   ledger add-name <addr> <name> --evidence T [--replace|--append-evidence]
   ledger add-function|add-fragment --json '{...}' [--replace]   |   ledger migrate
 
 Rules that cost money when broken: one representation at a time (pseudocode or assembly, not both);
 batch independent reads into one shell call; never re-read a path already in this context.
 """
+
+
+def exports_cmd(args):
+    import exports_restore
+    sys.exit(exports_restore.check() if args.exports_command == 'check' else exports_restore.restore())
 
 
 def cheatsheet(args):
@@ -1271,10 +1312,21 @@ def main():
     q = pk.add_parser('depend'); q.add_argument('id'); q.add_argument('--on', nargs='+', required=True)
     p.set_defaults(func=packets_cmd)
     p = sub.add_parser('worktree', help='one git worktree per harness agent, sharing exports'); wt = p.add_subparsers(dest='worktree_command', required=True)
-    q = wt.add_parser('add'); q.add_argument('name'); q.add_argument('--base', default='main'); q.add_argument('--packet')
-    q = wt.add_parser('remove', help='safe removal: detaches any exports junction before git worktree remove'); q.add_argument('name'); q.add_argument('--delete-branch', action='store_true')
+    q = wt.add_parser('add'); q.add_argument('name'); q.add_argument('--base', default='origin/main'); q.add_argument('--packet')
+    q = wt.add_parser('remove', help='safe removal: archives local inputs, detaches reparse points, checks the shared exports')
+    q.add_argument('name'); q.add_argument('--delete-branch', action='store_true', help='only when merged into origin/main')
+    q.add_argument('--force', action='store_true', help='discard uncommitted work')
+    q = wt.add_parser('gc', help='bulk-remove idle, clean, unleased worktrees (dry run unless --apply)')
+    q.add_argument('--apply', action='store_true'); q.add_argument('--idle-hours', type=float, default=12.0)
+    q.add_argument('--merged-only', action='store_true', help='also require the branch to be merged into origin/main')
+    q.add_argument('--delete-merged-branches', action='store_true'); q.add_argument('--no-archive', action='store_true')
+    q.add_argument('--match', nargs='*', help='only trees whose name contains one of these')
+    q.add_argument('--limit', type=int, default=400)
     wt.add_parser('list')
     p.set_defaults(func=worktree_cmd)
+    p = sub.add_parser('exports', help='check or rebuild the shared exports after a loss')
+    p.add_argument('exports_command', choices=['check', 'restore'])
+    p.set_defaults(func=exports_cmd)
     p = sub.add_parser('ledger'); ls = p.add_subparsers(dest='ledger_command', required=True)
     q = ls.add_parser('migrate'); q.add_argument('--keep-legacy', action='store_true')
     q = ls.add_parser('add-name'); q.add_argument('address'); q.add_argument('name'); q.add_argument('--evidence', required=True)
