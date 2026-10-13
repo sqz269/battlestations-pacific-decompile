@@ -2321,4 +2321,88 @@ struct Fe11HudMapRegisterHost {
 // +5E8h/+5ECh; +5ACh = 0, +40h = +41h = 0, +5B0h = +30h, +5B4h = +34h, +5D0h = 0, +5D4h = 1.0f.
 void hud_map_register_setup_005ab190(void* screen, Fe11HudMapRegisterHost& host);
 
+struct Fe11HudMapObjectsHost {
+    virtual ~Fe11HudMapObjectsHost() = default;
+    // [[00E188A8]+19CCh]+34Ch: singly linked list (next +4h, object +8h).
+    virtual void* map_object_list_head() = 0;
+    // 004C1400() then 00B80D70(&name): a referenced resource for the NativeString at `name`.
+    virtual void* resource_load_default_factory_00b80d70(const void* name) = 0;
+    virtual void* resource_instantiate_08(void* resource, std::int32_t flags, float scale) = 0;  // vtable +8h
+    virtual void node_propagate_root_registration_00b6d890(void* node, void* scene) = 0;
+    virtual void* node_virtual_10(void* node, std::int32_t a, std::int32_t b) = 0;             // vtable +10h
+    virtual void entity_pose_refresh_world_00414db0(void* pose) = 0;
+    // 00413920, ECX = left, (out, right).
+    virtual std::array<float, 16> matrix_multiply_00413920(const float* left, const float* right) = 0;
+    virtual void node_set_world_matrix_34(void* node, const float* matrix) = 0;              // vtable +34h
+    // Push onto a dword vector object (inline fast path, 00505D50 on growth).
+    virtual void dword_vector_push(void* vector, void* value) = 0;
+    // 0093D2D0, ECX = map scene (screen+8h), (node, flag).
+    virtual void map_scene_setup_ocean_materials_0093d2d0(void* scene, void* node, std::int32_t flag) = 0;
+    virtual const char* node_name_00b6d800(void* node) = 0;                                  // header +4h, may be null
+    virtual void debug_print_004254b0(const char* format, const char* text) = 0;            // empty body
+    virtual void node_set_parent_00b6e680(void* node, void* parent) = 0;
+    virtual void ref_release(void* object) = 0;
+    // 005357E0 / 00537B80 and the link stores: push_back on the list object at screen+498h.
+    virtual void list_push_back_498(void* list, void* value) = 0;
+};
+
+// 005AB519..005AB7C5 of BSP_HudMapScreen_Register: for each terrain object E of the list
+// [[00E188A8]+19CCh]+34Ch, the resource named by E+424h (00B80D70) is instantiated (vtable +8h(6,
+// 1.0f)); its root (instance +0Ch) is registered with the scene +0Ch and r = root vtable +10h(6, 0).
+// E's world matrix +0CCh is rebuilt when byte +0C8h is clear (00414DB0 on the parent pose +3Ch, then
+// E+74h * parent+0CCh (00413920), or E+74h alone; +0C8h = 1, +10Ch = 0) and set on the root (vtable
+// +34h). The root joins +510h, 0093D2D0 runs for (root, 1) and (r, 0), r's children are logged
+// ("Terrain child %s" 00CF0A68, empty body), r joins +500h and is parented under the root, the resource
+// reference is dropped and the instance is appended to the list +498h.
+void hud_map_register_objects_005ab519(void* screen, Fe11HudMapObjectsHost& host);
+
+// One 0093DE10 call of the map register: (mode, rgba, effect, y_offset, width, height, alpha_ref).
+enum class Fe11QuadSize : std::uint8_t { Padded, Extent, World };  // +6000, screen +30h/+34h, bare span
+struct Fe11MapQuad {
+    std::int32_t mode;
+    std::array<float, 4> rgba;
+    std::string_view effect;
+    float y_offset;
+    Fe11QuadSize size;
+    std::int32_t alpha_ref;
+};
+// 005AB8FD..005AC366 in call order (constants: y offsets 00CE3980 .. 00CED780, colours 00CE69C8,
+// 00CF0A2C, 00CE54A0, 00CF0A18..00CF0A00, 00CE81A0, 00D7A2F0, 00CE74F8).
+inline constexpr std::array<Fe11MapQuad, 14> kHudMapQuads{{
+    {0x00, {1.0f, 1.0f, 1.0f, 1.0f}, "map_texturednonormal_ocean.mshd", -500.0f, Fe11QuadSize::Padded, 300},
+    {0x0C, {1.0f, 1.0f, 1.0f, 1.0f}, "map_ocean_shadow.mshd", 1.0f, Fe11QuadSize::Padded, 300},
+    {0x01, {0.0f, 0.0f, 0.0f, 0.300000012f}, "guialphastencildiff.mshd", 1000.0f, Fe11QuadSize::Padded, 2},
+    {0x02, {1.0f, 1.0f, 1.0f, 0.0599999987f}, "guialphamul.mshd", 1010.0f, Fe11QuadSize::Padded, 3},
+    {0x03, {0.0f, 0.0f, 0.0f, 0.200000003f}, "guialphamul.mshd", 1020.0f, Fe11QuadSize::Padded, 5},
+    {0x04, {1.0f, 1.0f, 1.0f, 0.0599999987f}, "guialphamul.mshd", 1030.0f, Fe11QuadSize::Padded, 7},
+    {0x05, {1.0f, 1.0f, 1.0f, 0.0f}, "guialphamul.mshd", 1040.0f, Fe11QuadSize::Padded, 9},
+    {0x06, {0.39199999f, 0.921000004f, 0.509000003f, 0.159999996f}, "guialphamul.mshd", 1050.0f,
+        Fe11QuadSize::Padded, 11},
+    {0x07, {0.192000002f, 0.662f, 0.257999986f, 0.100000001f}, "guialphamul.mshd", 1060.0f, Fe11QuadSize::Padded,
+        13},
+    {0x0D, {1.0f, 1.0f, 1.0f, 1.0f}, "map_texturednonormal_bordergrid.mshd", 1420.0f, Fe11QuadSize::Padded, 300},
+    {0x0E, {1.0f, 1.0f, 1.0f, 1.0f}, "guialphamulborder.mshd", 1400.0f, Fe11QuadSize::Padded, 0},
+    {0x0F, {1.0f, 1.0f, 1.0f, 1.0f}, "guialphamuldarken.mshd", 1410.0f, Fe11QuadSize::Padded, 0},
+    {0x10, {1.0f, 1.0f, 1.0f, 0.800000012f}, "guialphawrite.mshd", 2980.0f, Fe11QuadSize::Extent, 0},
+    {0x11, {1.0f, 1.0f, 1.0f, 1.0f}, "guialphawrite.mshd", 2990.0f, Fe11QuadSize::World, 1},
+}};
+
+struct Fe11HudMapQuadsHost {
+    virtual ~Fe11HudMapQuadsHost() = default;
+    virtual float world_bound(std::uint32_t offset) = 0;                                    // [00E188A8]+offset
+    // 0093DE10, ECX = map scene (screen+8h) -> the quad's generated model.
+    virtual void* map_scene_build_quad_0093de10(void* scene, const Fe11MapQuad& quad, float width, float height) = 0;
+    // 00B74640(0, 0) -> 00B732C0 -> +20h material; 00B18B00(name, const float* value) on it.
+    virtual void* generated_model_material(void* model) = 0;
+    virtual void material_register_float2_00b18b00(void* material, std::string_view name, const float* value) = 0;
+};
+
+// 005AB7C5..005AC390 of BSP_HudMapScreen_Register: +55Ch/+560h = the world spans dx = (float)(+7128h -
+// +711Ch), dz = (float)(+7124h - +7130h); +564h/+568h = -0.0 - the centre ((float)((+7128h + +711Ch) *
+// 0.5), (float)((+7130h + +7124h) * 0.5)). The fourteen kHudMapQuads are built on the scene +8h with
+// width/height (float)(dx + 6000.0), (float)(dz + 6000.0) (00CF0A60), or +30h/+34h, or dx/dz. The
+// bordergrid (0Dh) and border (0Eh) quads' materials get "cLength" -> &+55Ch and "cOffset" -> &+564h.
+// Then the two 61h-dword arrays +130h and +2B4h are cleared.
+void hud_map_register_quads_005ab7c5(void* screen, Fe11HudMapQuadsHost& host);
+
 }  // namespace bsp::cc13_fe1

@@ -3242,4 +3242,76 @@ void hud_map_register_setup_005ab190(void* screen, Fe11HudMapRegisterHost& host)
     write_field<float>(screen, 0x5D4, 1.0f);
 }
 
+void hud_map_register_objects_005ab519(void* screen, Fe11HudMapObjectsHost& host) {
+    for (void* link = host.map_object_list_head(); link != nullptr; link = read_field<void*>(link, 4)) {
+        void* const object = read_field<void*>(link, 8);
+        void* const resource = host.resource_load_default_factory_00b80d70(at(object, 0x424));
+        void* const instance = host.resource_instantiate_08(resource, 6, 1.0f);
+        void* const root = read_field<void*>(instance, 0x0C);
+        host.node_propagate_root_registration_00b6d890(root, read_field<void*>(screen, 0x0C));
+        void* const inner = host.node_virtual_10(root, 6, 0);
+        if (read_field<std::uint8_t>(object, 0xC8) == 0) {
+            void* const parent = read_field<void*>(object, 0x3C);
+            if (parent != nullptr) host.entity_pose_refresh_world_00414db0(parent);
+            std::array<float, 16> world{};
+            if (read_field<void*>(object, 0x3C) != nullptr) {
+                world = host.matrix_multiply_00413920(reinterpret_cast<const float*>(at(object, 0x74)),
+                    reinterpret_cast<const float*>(at(read_field<void*>(object, 0x3C), 0xCC)));
+            } else {
+                std::memcpy(world.data(), at(object, 0x74), sizeof world);
+            }
+            std::memcpy(at(object, 0xCC), world.data(), sizeof world);
+            write_field<std::uint8_t>(object, 0xC8, 1);
+            write_field<std::uint8_t>(object, 0x10C, 0);
+        }
+        host.node_set_world_matrix_34(root, reinterpret_cast<const float*>(at(object, 0xCC)));
+        host.dword_vector_push(at(screen, 0x510), root);
+        host.map_scene_setup_ocean_materials_0093d2d0(at(screen, 0x08), root, 1);
+        host.map_scene_setup_ocean_materials_0093d2d0(at(screen, 0x08), inner, 0);
+        for (void* child = read_field<void*>(inner, 0x34); child != nullptr; child = read_field<void*>(child, 0x3C)) {
+            const char* const name = host.node_name_00b6d800(child);
+            host.debug_print_004254b0("Terrain child %s", name != nullptr ? name : "");  // 00CF0A68, "" 00E1952D
+        }
+        host.dword_vector_push(at(screen, 0x500), inner);
+        host.node_set_parent_00b6e680(inner, root);
+        host.ref_release(resource);
+        host.list_push_back_498(at(screen, 0x498), instance);
+    }
+}
+
+void hud_map_register_quads_005ab7c5(void* screen, Fe11HudMapQuadsHost& host) {
+    const float dx = static_cast<float>(static_cast<double>(host.world_bound(0x7128)) - host.world_bound(0x711C));
+    const float dz = static_cast<float>(static_cast<double>(host.world_bound(0x7124)) - host.world_bound(0x7130));
+    write_field<float>(screen, 0x55C, dx);
+    write_field<float>(screen, 0x560, dz);
+    const float cx = static_cast<float>((static_cast<double>(host.world_bound(0x7128)) + host.world_bound(0x711C)) * 0.5);
+    write_field<float>(screen, 0x564, -0.0f - cx);
+    const float cz = static_cast<float>(0.5 * (static_cast<double>(host.world_bound(0x7130)) + host.world_bound(0x7124)));
+    write_field<float>(screen, 0x568, -0.0f - cz);
+    const float padded_w = static_cast<float>(static_cast<double>(dx) + 6000.0);
+    const float padded_h = static_cast<float>(static_cast<double>(dz) + 6000.0);
+    for (const Fe11MapQuad& quad : kHudMapQuads) {
+        float w = padded_w;
+        float h = padded_h;
+        if (quad.size == Fe11QuadSize::Extent) {
+            w = read_field<float>(screen, 0x30);
+            h = read_field<float>(screen, 0x34);
+        } else if (quad.size == Fe11QuadSize::World) {
+            w = dx;
+            h = dz;
+        }
+        void* const model = host.map_scene_build_quad_0093de10(at(screen, 0x08), quad, w, h);
+        if (quad.mode == 0x0D || quad.mode == 0x0E) {
+            host.material_register_float2_00b18b00(host.generated_model_material(model), "cLength",
+                reinterpret_cast<const float*>(at(screen, 0x55C)));
+            host.material_register_float2_00b18b00(host.generated_model_material(model), "cOffset",
+                reinterpret_cast<const float*>(at(screen, 0x564)));
+        }
+    }
+    for (std::size_t i = 0; i < 0x61; ++i) {
+        write_field<std::int32_t>(screen, 0x130 + i * 4, 0);
+        write_field<std::int32_t>(screen, 0x2B4 + i * 4, 0);
+    }
+}
+
 }  // namespace bsp::cc13_fe1
