@@ -11,6 +11,7 @@
 #include "bsp/native_legacy_sbo_string.hpp"
 
 #include <cstdint>
+#include <string>
 
 namespace bsp::online_cc13 {
 
@@ -610,4 +611,209 @@ struct XSessionCreateCalls {
 // 0x%08x\n". Then 00A4AE70; when +160h is set, return 00A49A00, else 0.
 std::int32_t session_complete_create_00a4b030(void* session, XSessionLifetimeCalls& x,
     XSessionCreateCalls& create);
+
+// ---------------------------------------------------------------------------
+// Voice initialisation
+// ---------------------------------------------------------------------------
+
+// XHV_INIT_PARAMS as 00A493C0 builds it on the stack (ESP+28h..+4Ch).
+struct XhvInitParams {
+    std::uint32_t max_remote_talkers;        // 10h
+    std::uint32_t max_local_talkers;         // 1
+    const std::uint32_t* local_modes;        // {2 voice chat, 1 loopback}
+    std::uint32_t local_mode_count;          // 2
+    const std::uint32_t* remote_modes;       // {2}
+    std::uint32_t remote_mode_count;         // 1
+    std::uint32_t custom_vad;                // 0
+    std::uint32_t relax_privileges;          // 0
+    void* microphone_callback;               // 0
+    void* focus_window;                      // 00BEC230([0109CF04])
+};
+
+struct VoiceInitCalls {
+    virtual ~VoiceInitCalls() = default;
+    // [00F8ABE8] 00A3E510 (AL), 00A3EAD0 (sign-in state), 00A3EB30(BYTE* out) (AL).
+    virtual bool has_selected_user_00a3e510() = 0;
+    virtual std::int32_t signin_state_00a3ead0() = 0;
+    virtual bool communication_privilege_00a3eb30(std::uint8_t* out) = 0;
+    virtual void* focus_window_00bec230() = 0;
+    virtual std::int32_t xhv_create_engine(const XhvInitParams& params, void** engine) = 0; // 00A4D5F0
+    virtual std::uint32_t get_tick_count() = 0;
+    virtual void* xnotify_create_listener(std::uint64_t areas) = 0;
+    virtual void* operator_new_00bf55be(std::uint32_t bytes) = 0;
+    virtual void shutdown_00a49270(void* voice) = 0;
+};
+
+// 00A493C0 BSP_XLiveVoice_Initialize, __fastcall(ECX = voice), HRESULT. No
+// selected user: 0. Sign-in state 2 (Live): 0 when 00A3EB30 fails (its
+// output byte is not read). Then +84h, +C4h, +108h, +4h, +0h = 0 and
+// XHVCreateEngine(params, 0, &engine +78h); a failure HRESULT is returned
+// as is. Success: +70h = GetTickCount(); XNotifyCreateListener(1 =
+// XNOTIFY_SYSTEM) -> +10Ch; a valid listener gets the 380h-byte talker array
+// (16 x 38h) at +80h, +74h = 0, +104h = 1 and, when Xenon slot state(0) is
+// nonzero, +4h = IsHeadsetPresent +34h(0) with +0h = 1; return 0. A null or
+// INVALID_HANDLE_VALUE listener, or a failed allocation, runs 00A49270 and
+// returns E_OUTOFMEMORY (8007000Eh).
+std::int32_t voice_initialize_00a493c0(void* voice, VoiceInitCalls& host, XenonSystemCalls& xenon,
+    Xhv2EngineCalls& xhv);
+
+// ---------------------------------------------------------------------------
+// Session creation and user properties (ECX = session, system +2098h)
+// ---------------------------------------------------------------------------
+
+// 00A4A890 BSP_XLiveSession_SetUserProperties, __thiscall(session, const
+// DWORD settings[0Eh], int p3, int p4, int64 p5 (two dwords), int p7, int
+// p8, BYTE force), RET 20h. Each XUserSetProperty(active user, id, size, &v)
+// runs when its value differs from the stored copy or `force` is set:
+//   mode block (stored +58h vs settings[2]): 100000CDh = (old mode <= 3),
+//     100000C9h = (old == 4), 100000CAh (5), 100000CBh (6), 100000CCh (7).
+//     The values come from the OLD +58h; settings are stored only at the end,
+//     so the mode properties lag one call behind (listing 00A4A8A6..00A4A96C).
+//   10000048h p3 (+44h), 10000047h p4 (+40h), 100000D9h p7 (+48h), 100000DAh
+//   p8 (+4Ch), 200000DBh qword +A0h (vs +98h), 200000D8h qword +B8h (the
+//   XNKID, vs +90h), 200000D7h p5 (vs +88h), then settings[3..0Ch] vs
+//   +5Ch..+80h with ids D0, D6, D3, D5, D5, D1, D4, CF, CE, D2 (all 1000xxxxh).
+//   Settings[6] and [7] both publish 100000D5h (00A4AAF8, 00A4AB18), so [7]
+//   overwrites [6].
+// Afterwards +44h = p3, +40h = p4, +4Ch = p8, +48h = p7, +50h..+87h =
+// settings, +90h = +B8h, +98h = +A0h (qwords), +88h = p5.
+struct SessionPropertyCalls {
+    virtual ~SessionPropertyCalls() = default;
+    virtual std::uint32_t active_user_slot_00a3eac0() = 0;
+    virtual void xuser_set_property(std::uint32_t user, std::uint32_t id, std::uint32_t bytes, const void* value) = 0;
+};
+void session_set_user_properties_00a4a890(void* session, const std::uint32_t settings[14], std::int32_t p3,
+    std::int32_t p4, std::uint64_t p5, std::int32_t p7, std::int32_t p8, bool force, SessionPropertyCalls& host);
+
+struct SessionCreateCalls {
+    virtual ~SessionCreateCalls() = default;
+    virtual std::uint32_t active_user_slot_00a3eac0() = 0;
+    virtual void xuser_set_context(std::uint32_t user, std::uint32_t id, std::uint32_t value) = 0; // 00A4D3F2
+    virtual void xuser_set_property(std::uint32_t user, std::uint32_t id, std::uint32_t bytes, const void* value) = 0;
+    // XSessionCreate (00A4D524)(flags, user, public slots, private slots,
+    // &nonce, &session info, overlapped, &handle).
+    virtual std::uint32_t xsession_create(std::uint32_t flags, std::uint32_t user, std::uint32_t public_slots,
+        std::uint32_t private_slots, void* nonce, void* info, void* overlapped, void* handle) = 0;
+    virtual void log(const char* text) = 0;                // 004254B0
+    virtual std::uint8_t system_byte_4d() = 0;             // [00F8A2FC] + 4Dh
+    virtual const void* xenon_system() = 0;                // [00F8ABE8] (+358h, +35Ch)
+    virtual const void* game_setup() = 0;                  // [00E188A8]
+};
+// 00A4AC40 BSP_XLiveSession_Create, __fastcall, EAX = 0 always. A nonzero
+// state +158h is cleared with +160h; the XOVERLAPPED +110h..+12Bh is zeroed;
+// XUserSetContext(user, 800Bh, 0); with system +4Dh set: flags 43Fh and
+// context 800Ah = 0, else flags 42Fh and 800Ah = 1; log "CSession::Create()
+// -- >  XSessionCreate"; XSessionCreate(flags, user, +34h, +3Ch, &+108h,
+// &+C7h, &+110h, &+12Ch); the 10000030h property from setup +5FCh +1098h
+// when +5FCh is set (00A4A850 inlined); 00A4A890(setup +2020h, (char) setup
+// +201Ch, (char) +201Dh, qword setup +2060h, max(xenon +358h, setup +73Ch),
+// max(xenon +35Ch, setup +740h), force = 1) (unsigned maxima). Only
+// ERROR_IO_PENDING sets +C4h..+C6h = 0 and state 1; any other result leaves
+// the state alone.
+std::uint32_t session_create_00a4ac40(void* session, SessionCreateCalls& host, SessionPropertyCalls& properties);
+
+// 00A4BB00 BSP_XLiveSessionInfo_FillFromGameSetup, __thiscall(session, const
+// block*), RET 4. The block is game setup +1FF0h in the callers that pass
+// it (its +2Ch/+2Dh/+30h/+70h line up with the setup +201Ch/+201Dh/+2020h/
+// +2060h that 00A4AC40 reads). Name: the C string at +0 widened (004C5E60),
+// cut to 16 characters when longer (00770E50 + 004C5E20) and copied with its
+// terminator to +0. Then +28h = (int64)(char)+27h, +30h = c28 - c2A, +34h =
+// c2A - c28 - c29 + c27, +38h = c2A, +3Ch = c29 - c2A (chars sign-extended),
+// +88h = qword +70h, +40h = (char)+2Dh, +44h = (char)+2Ch, +48h = qword
+// +78h, +A0h = qword +80h, +50h..+87h = the 0Eh dwords at +30h.
+struct SessionInfoCalls {
+    virtual ~SessionInfoCalls() = default;
+    // 004C5E60: the native wide string built from a C string (UTF-16 units).
+    virtual std::u16string widen_004c5e60(const char* text) = 0;
+};
+void session_info_fill_from_game_setup_00a4bb00(void* session, const void* block, SessionInfoCalls& host);
+
+// ---------------------------------------------------------------------------
+// Matchmaking search (ECX = matchmaking, system +184h)
+// ---------------------------------------------------------------------------
+
+// XUSER_DATA / XUSER_PROPERTY / XUSER_CONTEXT as the image lays them out.
+struct XUserData {
+    std::uint8_t type;      // 1 = int32, 2 = int64
+    std::uint8_t pad[7];
+    std::int64_t value;     // +8h
+};
+struct XUserProperty {
+    std::uint32_t id;
+    std::uint32_t pad;
+    XUserData data;         // +8h
+};
+struct XUserContext {
+    std::uint32_t id;
+    std::uint32_t value;
+};
+// The search arguments BeginSearch20 and BeginSearch fill in, BSS 00F8AC08..
+// 00F8ACF7, followed by the query table 00F8ACF8..00F8AEE7 (31 rows of 10h:
+// a pooled native string {length, char*} then the query id). The image fills
+// the table at static initialisation; the C++ takes it from the host.
+struct MatchmakingSearchGlobals {
+    XUserContext contexts20[2];   // 00F8AC08
+    std::uint8_t gap_18[8];
+    XUserProperty property20;     // 00F8AC20
+    XUserContext contexts[2];     // 00F8AC38
+    std::uint8_t gap_48[8];
+    XUserProperty properties[7];  // 00F8AC50
+    struct QueryRow {
+        std::uint32_t key_length;
+        const char* key;
+        std::uint32_t query_id;
+        std::uint32_t pad;
+    } query_table[31];            // 00F8ACF8
+};
+
+struct MatchmakingSearchCalls {
+    virtual ~MatchmakingSearchCalls() = default;
+    virtual std::uint32_t active_user_slot_00a3eac0() = 0;
+    // XSessionSearchEx (00A4D608)(procedure, user, results, users, property
+    // count, context count, properties, contexts, DWORD* bytes, results, overlapped).
+    virtual std::uint32_t xsession_search_ex(std::uint32_t procedure, std::uint32_t user, std::uint32_t results,
+        std::uint16_t users, std::uint16_t property_count, std::uint16_t context_count,
+        const XUserProperty* properties, const XUserContext* contexts, std::uint32_t* bytes,
+        void* buffer, void* overlapped) = 0;
+    virtual void* operator_new_00bf55be(std::uint32_t bytes) = 0;
+    virtual void log(const char* format, const char* text) = 0; // 004254B0
+    virtual void log_text(const char* text) = 0;                // 004254B0, no argument
+    virtual std::uint8_t system_byte_4d() = 0;                  // [00F8A2FC] + 4Dh
+    virtual const char* query_name_00f8aefc() = 0;              // [00F8AEFC]
+};
+
+// 00A4B490 BSP_XLiveMatchmaking_SelectQueryId, __stdcall(uint64 mode mask),
+// RET 8, EAX. Mode letters: 80h C (competitive), 10h D (duel), 20h E
+// (escort), 40h S (siege), any of 0Fh I (island capture). Mask 0: 0. One
+// letter: C 3, D 1, E 2, S 4, I 5. Two to four letters: the letters in the
+// order C D E S I form a pooled string, and the first table row 5..30 whose
+// key starts with it (0043E9A0 is a prefix test) gives the id; no row: 0.
+// All five letters: 0.
+std::uint32_t matchmaking_select_query_id_00a4b490(std::uint64_t mask, const MatchmakingSearchGlobals& globals);
+
+// 00A4B2A0 BSP_XLiveMatchmaking_BeginSearch20, __thiscall(matchmaking, uint64
+// session id), RET 8, HRESULT. Logs "MatchMaking Query ID %s" with
+// [00F8AEFC] (or ""). A busy state +193Ch runs 00A4AF70 and resets it (the
+// re-test that follows can never fail). XOVERLAPPED +1944h zeroed; procedure
+// 20h, 19h results, 1 user: a size probe (null buffer) must return
+// ERROR_INSUFFICIENT_BUFFER (7Ah) with a nonzero size, the buffer goes to
+// +1960h, then property 200000D8h (int64) = the id and contexts {800Ah,
+// system +4Dh == 0} {800Bh, 0}; ERROR_IO_PENDING sets state 1 and returns
+// 0. Every other path returns 8000FFFFh (a buffer already bought stays at
+// +1960h).
+std::int32_t matchmaking_begin_search20_00a4b2a0(void* matchmaking, std::uint64_t session_id,
+    MatchmakingSearchGlobals& globals, MatchmakingSearchCalls& host, XLiveSearchCalls& search);
+
+// 00A4B7F0 BSP_XLiveMatchmaking_BeginSearch, __thiscall(matchmaking, six
+// uint64), RET 30h, HRESULT. Only q0 (the mode mask), the low dword of q1
+// and the low dword of q2 are read; q3..q5 are ignored. Procedure = 00A4B490
+// (q0); log "MatchMaking Query ID %s" with that table row's key. Same
+// cancel / probe / allocate sequence as 00A4B2A0, then properties 10000047h
+// = q2 and 10000048h = q1 (int32), and for each mode a 0 property (C
+// 100000CCh, D C9h, E CAh, S CBh, I CDh, each logged "MatchMaking Query Set
+// Mode ...") when (mode bit set) == single, where single = (id in 1..5): a
+// single-mode procedure adds no mode property, a combined one adds a 0 for
+// every mode left out. Contexts as in 00A4B2A0.
+std::int32_t matchmaking_begin_search_00a4b7f0(void* matchmaking, const std::uint64_t q[6],
+    MatchmakingSearchGlobals& globals, MatchmakingSearchCalls& host, XLiveSearchCalls& search);
 } // namespace bsp::online_cc13

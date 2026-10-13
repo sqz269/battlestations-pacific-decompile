@@ -1,8 +1,10 @@
 // XLive online system reconstructions, packet cc13-gui2 (docs/CC13_GUI_2.md, Part B).
 #include "bsp/online_cc13.hpp"
 
+#include <algorithm>
 #include <cstddef>
 #include <cstring>
+#include <string>
 #include <initializer_list>
 
 namespace bsp::online_cc13 {
@@ -686,6 +688,269 @@ std::int32_t session_complete_create_00a4b030(void* session, XSessionLifetimeCal
     else x.log("Failed to start QoS listener, error 0x%08x\n", error);
     create.join_local_player_00a4ae70(session);
     if (read_field<std::uint32_t>(session, 0x160) != 0) return create.flag_restart_00a49a00(session);
+    return 0;
+}
+
+std::int32_t voice_initialize_00a493c0(void* voice, VoiceInitCalls& host, XenonSystemCalls& xenon,
+    Xhv2EngineCalls& xhv) {
+    if (!host.has_selected_user_00a3e510()) return 0;
+    if (host.signin_state_00a3ead0() == 2) {
+        std::uint8_t privilege = 0;
+        if (!host.communication_privilege_00a3eb30(&privilege)) return 0;
+    }
+    static constexpr std::uint32_t kLocalModes[2] = {2, 1};
+    static constexpr std::uint32_t kRemoteModes[1] = {2};
+    write_field<std::uint32_t>(voice, 0x84, 0);
+    write_field<std::uint32_t>(voice, 0xC4, 0);
+    write_field<std::uint32_t>(voice, 0x108, 0);
+    write_field<std::uint32_t>(voice, 0x4, 0);
+    write_field<std::uint32_t>(voice, 0x0, 0);
+    const XhvInitParams params{0x10, 1, kLocalModes, 2, kRemoteModes, 1, 0, 0, nullptr,
+        host.focus_window_00bec230()};
+    void* engine = read_field<void*>(voice, 0x78);
+    const std::int32_t created = host.xhv_create_engine(params, &engine);
+    write_field<void*>(voice, 0x78, engine);
+    if (created < 0) return created;
+    write_field<std::uint32_t>(voice, 0x70, host.get_tick_count());
+    void* const listener = host.xnotify_create_listener(1);
+    write_field<void*>(voice, 0x10C, listener);
+    if (listener != nullptr && listener != reinterpret_cast<void*>(static_cast<std::intptr_t>(-1))) {
+        void* const talkers = host.operator_new_00bf55be(0x380);
+        write_field<void*>(voice, 0x80, talkers);
+        if (talkers != nullptr) {
+            write_field<std::uint32_t>(voice, 0x74, 0);
+            write_field<std::uint32_t>(voice, 0x104, 1);
+            if (xenon.slot_state_8c(0) != 0) {
+                write_field<std::uint32_t>(voice, 0x4, xhv.is_headset_present_34(engine, 0));
+                write_field<std::uint32_t>(voice, 0x0, 1);
+            }
+            return 0;
+        }
+    }
+    host.shutdown_00a49270(voice);
+    return static_cast<std::int32_t>(0x8007000Eu);
+}
+
+void session_set_user_properties_00a4a890(void* session, const std::uint32_t settings[14], std::int32_t p3,
+    std::int32_t p4, std::uint64_t p5, std::int32_t p7, std::int32_t p8, bool force, SessionPropertyCalls& host) {
+    const std::uint32_t user = host.active_user_slot_00a3eac0();
+    const std::uint32_t one = 1;
+    const std::uint32_t zero = 0;
+    auto flag = [&](bool on) -> const void* { return on ? &one : &zero; };
+    const auto mode = read_field<std::uint32_t>(session, 0x58);
+    if (mode != settings[2] || force) {
+        host.xuser_set_property(user, 0x100000CD, 4, flag(mode <= 3));
+        host.xuser_set_property(user, 0x100000C9, 4, flag(read_field<std::uint32_t>(session, 0x58) == 4));
+        host.xuser_set_property(user, 0x100000CA, 4, flag(read_field<std::uint32_t>(session, 0x58) == 5));
+        host.xuser_set_property(user, 0x100000CB, 4, flag(read_field<std::uint32_t>(session, 0x58) == 6));
+        host.xuser_set_property(user, 0x100000CC, 4, flag(read_field<std::uint32_t>(session, 0x58) == 7));
+    }
+    if (p3 != read_field<std::int32_t>(session, 0x44) || force) host.xuser_set_property(user, 0x10000048, 4, &p3);
+    if (p4 != read_field<std::int32_t>(session, 0x40) || force) host.xuser_set_property(user, 0x10000047, 4, &p4);
+    if (p7 != read_field<std::int32_t>(session, 0x48) || force) host.xuser_set_property(user, 0x100000D9, 4, &p7);
+    if (p8 != read_field<std::int32_t>(session, 0x4C) || force) host.xuser_set_property(user, 0x100000DA, 4, &p8);
+    auto* const base = static_cast<std::byte*>(session);
+    if (read_field<std::uint64_t>(session, 0x98) != read_field<std::uint64_t>(session, 0xA0) || force)
+        host.xuser_set_property(user, 0x200000DB, 8, base + 0xA0);
+    if (read_field<std::uint64_t>(session, 0x90) != read_field<std::uint64_t>(session, 0xB8) || force)
+        host.xuser_set_property(user, 0x200000D8, 8, base + 0xB8);
+    if (read_field<std::uint64_t>(session, 0x88) != p5 || force) host.xuser_set_property(user, 0x200000D7, 8, &p5);
+    static constexpr std::uint32_t kSettingIds[10] = {
+        0x100000D0, 0x100000D6, 0x100000D3, 0x100000D5, 0x100000D5,
+        0x100000D1, 0x100000D4, 0x100000CF, 0x100000CE, 0x100000D2,
+    };
+    for (std::size_t i = 0; i < 10; ++i) {
+        if (read_field<std::uint32_t>(session, 0x5C + 4 * i) != settings[3 + i] || force)
+            host.xuser_set_property(user, kSettingIds[i], 4, &settings[3 + i]);
+    }
+    write_field<std::int32_t>(session, 0x44, p3);
+    write_field<std::int32_t>(session, 0x40, p4);
+    write_field<std::int32_t>(session, 0x4C, p8);
+    write_field<std::int32_t>(session, 0x48, p7);
+    std::memcpy(base + 0x50, settings, 14 * 4);
+    write_field<std::uint64_t>(session, 0x90, read_field<std::uint64_t>(session, 0xB8));
+    write_field<std::uint64_t>(session, 0x98, read_field<std::uint64_t>(session, 0xA0));
+    write_field<std::uint64_t>(session, 0x88, p5);
+}
+
+std::uint32_t session_create_00a4ac40(void* session, SessionCreateCalls& host, SessionPropertyCalls& properties) {
+    auto* const base = static_cast<std::byte*>(session);
+    if (read_field<std::uint32_t>(session, 0x158) != 0) {
+        write_field<std::uint32_t>(session, 0x158, 0);
+        write_field<std::uint32_t>(session, 0x160, 0);
+    }
+    std::memset(base + 0x110, 0, 0x1C);
+    host.xuser_set_context(host.active_user_slot_00a3eac0(), 0x800B, 0);
+    const bool flag_4d = host.system_byte_4d() != 0;
+    const std::uint32_t flags = flag_4d ? 0x43Fu : 0x42Fu;
+    host.xuser_set_context(host.active_user_slot_00a3eac0(), 0x800A, flag_4d ? 0u : 1u);
+    host.log("CSession::Create()  -- >  XSessionCreate");
+    const std::uint32_t result = host.xsession_create(flags, host.active_user_slot_00a3eac0(),
+        read_field<std::uint32_t>(session, 0x34), read_field<std::uint32_t>(session, 0x3C), base + 0x108,
+        base + 0xC7, base + 0x110, base + 0x12C);
+    const void* const setup = host.game_setup();
+    if (const auto* block = read_field<const std::byte*>(setup, 0x5FC))
+        host.xuser_set_property(host.active_user_slot_00a3eac0(), 0x10000030, 4, block + 0x1098);
+    const void* const xenon = host.xenon_system();
+    const auto p7 = (std::max)(read_field<std::uint32_t>(xenon, 0x358), read_field<std::uint32_t>(setup, 0x73C));
+    const auto p8 = (std::max)(read_field<std::uint32_t>(xenon, 0x35C), read_field<std::uint32_t>(setup, 0x740));
+    std::uint32_t settings[14];
+    std::memcpy(settings, static_cast<const std::byte*>(setup) + 0x2020, sizeof(settings));
+    session_set_user_properties_00a4a890(session, settings, read_field<std::int8_t>(setup, 0x201C),
+        read_field<std::int8_t>(setup, 0x201D), read_field<std::uint64_t>(setup, 0x2060),
+        static_cast<std::int32_t>(p7), static_cast<std::int32_t>(p8), true, properties);
+    if (result == kErrorIoPending) {
+        write_field<std::uint8_t>(session, 0xC4, 0);
+        write_field<std::uint8_t>(session, 0xC5, 0);
+        write_field<std::uint8_t>(session, 0xC6, 0);
+        write_field<std::uint32_t>(session, 0x158, 1);
+    }
+    return 0;
+}
+
+void session_info_fill_from_game_setup_00a4bb00(void* session, const void* block, SessionInfoCalls& host) {
+    std::u16string name = host.widen_004c5e60(static_cast<const char*>(block));
+    if (name.size() > 0x10) name = name.substr(0, 0x10);
+    auto* const base = static_cast<std::byte*>(session);
+    std::memcpy(base, name.c_str(), (name.size() + 1) * sizeof(char16_t));
+    auto c = [&](std::size_t offset) { return static_cast<std::int32_t>(read_field<std::int8_t>(block, offset)); };
+    write_field<std::int64_t>(session, 0x28, c(0x27));
+    write_field<std::int32_t>(session, 0x30, c(0x28) - c(0x2A));
+    write_field<std::int32_t>(session, 0x34, c(0x2A) - c(0x28) - c(0x29) + c(0x27));
+    write_field<std::int32_t>(session, 0x38, c(0x2A));
+    write_field<std::int32_t>(session, 0x3C, c(0x29) - c(0x2A));
+    write_field<std::uint64_t>(session, 0x88, read_field<std::uint64_t>(block, 0x70));
+    write_field<std::int32_t>(session, 0x40, c(0x2D));
+    write_field<std::int32_t>(session, 0x44, c(0x2C));
+    write_field<std::uint64_t>(session, 0x48, read_field<std::uint64_t>(block, 0x78));
+    write_field<std::uint64_t>(session, 0xA0, read_field<std::uint64_t>(block, 0x80));
+    std::memcpy(base + 0x50, static_cast<const std::byte*>(block) + 0x30, 14 * 4);
+}
+
+std::uint32_t matchmaking_select_query_id_00a4b490(std::uint64_t mask, const MatchmakingSearchGlobals& globals) {
+    if (mask == 0) return 0;
+    const bool c = (mask & 0x80) != 0;
+    const bool d = (mask & 0x10) != 0;
+    const bool e = (mask & 0x20) != 0;
+    const bool s = (mask & 0x40) != 0;
+    const bool i = (mask & 0x0F) != 0;
+    const int count = int{i} + int{s} + int{e} + int{d} + int{c};
+    if (count == 1) {
+        if (c) return 3;
+        if (d) return 1;
+        if (e) return 2;
+        if (s) return 4;
+        if (i) return 5;
+        return 0;
+    }
+    if (static_cast<unsigned>(count - 2) >= 3) return 0;
+    // The pooled string built through BSP_NativeString_Assign/Append; its
+    // storage goes back to the pool (00419CC0/00BD1510) on every exit.
+    std::string key;
+    if (c) key += 'C';
+    if (d) key += 'D';
+    if (e) key += 'E';
+    if (s) key += 'S';
+    if (i) key += 'I';
+    for (std::size_t row = 5; row < 31; ++row) {
+        const auto& r = globals.query_table[row];
+        // 0043E9A0(row key, composed, 0): a non-null key that starts with the
+        // composed string.
+        if (r.key != nullptr && std::strncmp(r.key, key.c_str(), key.size()) == 0) return r.query_id;
+    }
+    return 0;
+}
+
+namespace {
+// Shared head of 00A4B2A0 and 00A4B7F0: cancel a running search, zero the
+// XOVERLAPPED +1944h, probe the result size and buy the buffer at +1960h.
+bool prepare_search(void* m, std::uint32_t procedure, std::uint32_t& bytes, MatchmakingSearchCalls& host,
+    XLiveSearchCalls& search) {
+    auto* const base = static_cast<std::byte*>(m);
+    if (read_field<std::uint32_t>(m, 0x193C) != 0) {
+        matchmaking_cancel_search_00a4af70(m, search);
+        write_field<std::uint32_t>(m, 0x193C, 0);
+    }
+    std::memset(base + 0x1944, 0, 0x1C);
+    bytes = 0;
+    const std::uint32_t probe = host.xsession_search_ex(procedure, host.active_user_slot_00a3eac0(), 0x19, 1, 0, 0,
+        nullptr, nullptr, &bytes, nullptr, base + 0x1944);
+    if (probe != 0x7A || bytes == 0) return false;
+    void* const buffer = host.operator_new_00bf55be(bytes);
+    write_field<void*>(m, 0x1960, buffer);
+    return buffer != nullptr;
+}
+
+void fill_search_contexts(XUserContext (&contexts)[2], MatchmakingSearchCalls& host) {
+    contexts[0] = {0x800A, host.system_byte_4d() == 0 ? 1u : 0u};
+    contexts[1] = {0x800B, 0};
+}
+
+void set_int32_property(XUserProperty& p, std::uint32_t id, std::int32_t value) {
+    p.id = id;
+    p.data.type = 1;
+    // Only the low dword is stored (MOV dword at +10h); the union's high
+    // dword keeps its previous contents.
+    std::memcpy(&p.data.value, &value, 4);
+}
+} // namespace
+
+std::int32_t matchmaking_begin_search20_00a4b2a0(void* matchmaking, std::uint64_t session_id,
+    MatchmakingSearchGlobals& globals, MatchmakingSearchCalls& host, XLiveSearchCalls& search) {
+    const char* name = host.query_name_00f8aefc();
+    host.log("MatchMaking Query ID %s", name != nullptr ? name : "");
+    std::uint32_t bytes = 0;
+    if (!prepare_search(matchmaking, 0x20, bytes, host, search)) return static_cast<std::int32_t>(0x8000FFFFu);
+    globals.property20.id = 0x200000D8;
+    globals.property20.data.type = 2;
+    globals.property20.data.value = static_cast<std::int64_t>(session_id);
+    fill_search_contexts(globals.contexts20, host);
+    auto* const base = static_cast<std::byte*>(matchmaking);
+    const std::uint32_t result = host.xsession_search_ex(0x20, host.active_user_slot_00a3eac0(), 0x19, 1, 1, 2,
+        &globals.property20, globals.contexts20, &bytes, read_field<void*>(matchmaking, 0x1960), base + 0x1944);
+    if (result != kErrorIoPending) return static_cast<std::int32_t>(0x8000FFFFu);
+    write_field<std::uint32_t>(matchmaking, 0x193C, 1);
+    return 0;
+}
+
+std::int32_t matchmaking_begin_search_00a4b7f0(void* matchmaking, const std::uint64_t q[6],
+    MatchmakingSearchGlobals& globals, MatchmakingSearchCalls& host, XLiveSearchCalls& search) {
+    const std::uint64_t mask = q[0];
+    const std::uint32_t procedure = matchmaking_select_query_id_00a4b490(mask, globals);
+    // 00A4B80E..00A4B823: row [procedure] of the query table, key buffer.
+    const char* key = procedure < 31 ? globals.query_table[procedure].key : nullptr;
+    host.log("MatchMaking Query ID %s", key != nullptr ? key : "");
+    std::uint32_t bytes = 0;
+    if (!prepare_search(matchmaking, procedure, bytes, host, search)) return static_cast<std::int32_t>(0x8000FFFFu);
+    const std::uint64_t single = procedure - 1u <= 4u ? 1u : 0u;
+    set_int32_property(globals.properties[0], 0x10000047, static_cast<std::int32_t>(q[2]));
+    set_int32_property(globals.properties[1], 0x10000048, static_cast<std::int32_t>(q[1]));
+    std::uint32_t count = 2;
+    struct ModeProperty { std::uint64_t bits; std::uint32_t id; const char* text; };
+    static constexpr ModeProperty kModes[5] = {
+        {0x80, 0x100000CC, "MatchMaking Query Set Mode COMPETITIVE"},
+        {0x10, 0x100000C9, "MatchMaking Query Set Mode DUEL"},
+        {0x20, 0x100000CA, "MatchMaking Query Set Mode ESCORT"},
+        {0x40, 0x100000CB, "MatchMaking Query Set Mode SIEGE"},
+        {0x0F, 0x100000CD, "MatchMaking Query Set Mode IC"},
+    };
+    for (const auto& mode : kModes) {
+        // C/D/E/S compare the masked bit itself (0 or the bit) with `single`;
+        // I compares (any of 0Fh) as 0/1. Either way only "bit clear and not
+        // single" matches.
+        const std::uint64_t tested = mode.bits == 0x0F ? ((mask & 0x0F) != 0 ? 1u : 0u) : (mask & mode.bits);
+        if (tested != single) continue;
+        set_int32_property(globals.properties[count], mode.id, static_cast<std::int32_t>(single));
+        ++count;
+        host.log_text(mode.text);
+    }
+    fill_search_contexts(globals.contexts, host);
+    auto* const base = static_cast<std::byte*>(matchmaking);
+    const std::uint32_t result = host.xsession_search_ex(procedure, host.active_user_slot_00a3eac0(), 0x19, 1,
+        static_cast<std::uint16_t>(count), 2, globals.properties, globals.contexts, &bytes,
+        read_field<void*>(matchmaking, 0x1960), base + 0x1944);
+    if (result != kErrorIoPending) return static_cast<std::int32_t>(0x8000FFFFu);
+    write_field<std::uint32_t>(matchmaking, 0x193C, 1);
     return 0;
 }
 } // namespace bsp::online_cc13
