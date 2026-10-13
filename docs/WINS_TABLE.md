@@ -139,8 +139,4 @@ mechanism is in the cd761bb52 section above).
 - **cc9-physics4's flips, checked on their pairs:** `kPlaneWaterSurfaceLawBound` (25d13aa63) and
   `kGunAimDegreePrecisionBound` (f435022e8) leave USN01 (1014.63 s) and USN12 (1539.83 s) at identical times;
   ESMP08 is unchanged (lost).
-- **USN12 lost on 8b0e7bfce** (origin/main fetched about 17:00 local + cc9-physics4's commits; local\p4l_off_u12.log):
-  no completion, 113 deaths, Montpelier (the controlled ship) dies, 212 units against 200 and 7805 shots against
-  17125 in the 1539.83 s win on 67e99782c (local\p4a_on_u12.log). The +12 units (a `bruh #22.1` squadron among them)
-  point at a main-side change between the two merges. Unconfirmed: a one-run check with the wreck removal OFF
-  died at renderer init (session moved to the console, 18:05 local).
+- **Retracted: "USN12 lost on 8b0e7bfce".** That run (local\p4l_off_u12.log) logged `helm orders refused: cannot open` its order file: cc9-ships38 had been removed minutes before. USN12 ran with no orders; it says nothing about main.
