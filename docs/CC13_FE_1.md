@@ -176,3 +176,43 @@ main menu 005E7160/005E73A0/005EA2D0), the options rows (005F7C40, 005F54F0, 005
 Tooling (worker tree `local/`, not committed): `fe1_dec.py` (cached live decompile), `fe1_asmf.py`
 (compact listing; it hides only prologue pushes and epilogue pops, an earlier version hid argument
 pushes too), `fe1_calls.py`, `fe1_records.py` (all records, lease-checked upsert), `fe1_callreport.py`.
+# Second packet: cc13-fe1b (screen bodies)
+
+Branch agent/cc13-fe1b, same files. 11 records (277 cc13-fe1 records in all), build passes,
+`reports/cc13_fe1_calls.json` 302 rows, 0 failed. Nothing run in `bsp_game`; Ghidra not modified.
+
+Reconstructed, build-tested:
+
+| Address | C++ | What |
+|---|---|---|
+| 005E73A0 | `multi_main_on_listbox_selection_changed_005e73a0` | help line from 00E08980 / 00E0896C for the focused list |
+| 005E7160 | `multi_main_on_listbox_activate_005e7160` | quick match: host / mode select / friends; ranked list: ranked or player title, list swap |
+| 005FDB50 | `hud_pause_on_press_005fdb50` | pause press: A2h activates the list row, A3h resumes; scroller thumb and arrows |
+| 005ED450 | `mode_selector_on_press_005ed450` | mode selector press: accept / back / tabs, option steps, auto-scroll 0.004 |
+| 005EBC90 | `mode_selector_on_listbox_selection_changed_005ebc90` | mode texts from 00E089BC / 00E0898C, help 00E089A4, scroll range |
+| 005BC920 | `hud_narrative_update_005bc920` | panel visibility, then the five per-frame steps on [game+21F0h] |
+| 005FD890 | `hud_pause_show_page_005fd890` | pause page / list page switch, row list teardown, frame title |
+| 005F5BD0 | `options_screen_enter_005f5bd0` | options enter: settings copy, front-end vs in-game list box, page builder |
+| 005FAD70 | `hud_order_screen_enter_005fad70` | order panel: ORDPERMANENT hint, ship vs squadron widget sets |
+| 00594290 | `mission_score_record_destroy_members_00594290` | bounds checked: a 5-byte JMP 00593570; Ghidra shows the target's body |
+| 0059AA40 | (record only) `piecewise_lerp4_0059aa40` in `src/ng2_cc13.cpp` | backfilled after comparing the listing |
+
+Pitfalls: the press handlers pass the integer state 2 to widget +88h/+84h (the focus styling passes
+the bool), so `PressHost` carries integer-state methods. 005E7160 reads the help line for the quick
+table from the *ranked* list box after the swap, as the image does. 005BC920 ignores its stack argument
+and steps with the game's frame time.
+
+## For cc9
+
+- 00592640 `BSP_MainMenu_OnPlayMissionPromptResult` is left to cc9: on result 1 it sets screen+5Ch,
+  copies the profile checkpoint for the selected mission (game+6ACh), resets both 800h-entry vehicle
+  class index maps of the class registry (+10h and +2010h) to the identity, writes the one remapped
+  pair, then plays the selected mission. Those maps are what `src/game_hosts_lua.cpp` models
+  (registry+2010h); the 00592AD0 thunk that calls it is reconstructed here.
+
+## Handoff (cc13-fe1b)
+
+Remaining by value: HudPause enter/update/activate (00603120, 00603CA0, 00604190), HudObjectives
+enter/update (005EEA00, 005EEF60; x87), HudOrder update 005F9DD0 (x87), multi main update 005EA2D0,
+options ActivateListRow 005F7C40 and BuildMainList 005F54F0, lobby 005E4490 / 005E2320, and the large
+registers (005AB190, 005BB130, 00602280).

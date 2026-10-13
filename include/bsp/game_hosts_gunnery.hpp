@@ -82,6 +82,7 @@
 #include "bsp/gun_platform_arc.hpp"
 #include "bsp/gunnery_tables.hpp"
 #include "bsp/projectile_impact.hpp"
+#include "bsp/rocket_homing_cc13.hpp"
 #include "bsp/unit_gunnery_pass.hpp"
 
 namespace bsp {
@@ -145,6 +146,10 @@ struct GameBulletClassRow {
     // "HeadingTurn", classDesc+0E8h, degrees per second: 00857061's turn rate
     // toward the commanded heading. Packet cc9_usn02_sameside_torpedoes.
     float heading_turn{0.0f};
+    // Packet cc13-homing1: the MRocket class fields 0080A000 reads.
+    float ignition_delay{0.0f};       // "IgnitionDelay", classDesc+E0h
+    float rocket_vmax{0.0f};          // "VMax", classDesc+D8h
+    float rocket_acceleration{0.0f};  // "Acceleration", classDesc+DCh
 };
 
 // One authored `DeviceClass` row, as the gun needs it.
@@ -564,6 +569,11 @@ struct GameProjectileRow {
     // keeps neither flag nor point on the round.
     bool is_bomb{false};
     float predicted_impact[3]{};
+    // Packet cc13-homing1: a rocket record's motion state (0080A000) and its
+    // homing block (0080AA20). docs/CC13_ROCKET_HOMING.md.
+    bool is_rocket{false};
+    bsp::RocketFlight rocket{};
+    bsp::RocketClassParams rocket_class{};
     // Packet cc8_dive_aim item 2. The aimdive summary's `tf=` is LAST-SAMPLED -
     // it is read after the aircraft has left the dive, so it is not the fall
     // time that was in force when the round left. These four are sampled AT THE
@@ -682,6 +692,12 @@ struct GameGunneryUnitRow {
 };
 
 struct GameGunnerySummary {
+    // Packet cc13-homing1 (kRocketHomingBound): rocket launches and 0080A000.
+    unsigned long long rocket_launches{0};
+    unsigned long long rocket_guided_launches{0};
+    unsigned long long rocket_ignitions{0};
+    unsigned long long rocket_homing_steps{0};
+    unsigned long long rocket_homing_lock_lost{0};
     std::size_t units_with_guns{0};
     std::size_t guns{0};
     std::size_t passes_attached{0};
@@ -1018,6 +1034,17 @@ public:
                            float release_fall_time, int skill_row = -1);
     // True when 006E4D50's scatter draws are taken (kBombDropScatterBound).
     static bool bomb_drop_scatter_bound() noexcept;
+    // Packet cc13-homing1: spawn one rocket from the unit's Rocket-type gun row
+    // (the one firing `bullet_class` when it is >= 0) and, under
+    // kRocketHomingBound only, fill its homing block as 0080AA20 does. The
+    // caller's own switch gates the call (kOpportunisticRocketBound).
+    // `target_plus_one` 0 or a target failing IsKindOf(5) leaves it unguided.
+    // SUBSTITUTION, labelled: the launch geometry (the rack's mount and the
+    // platform release vtable 00CFE308 are unread): the plane's origin and
+    // rows, at the plane's forward speed, like release_ordnance_drop.
+    bool release_rocket_0080aa20(std::size_t unit_index, std::size_t target_plus_one,
+                                 const float body_point[3], float homing_angle,
+                                 int bullet_class = -1);
     const std::vector<GameGunneryUnitRow>& unit_rows() const noexcept;
     // Packet cc9_water_surface_law. The gunnery host owns every death, so the
     // units host asks it two things for an aircraft in the water:
