@@ -15,6 +15,7 @@
 #include <cstdint>
 #include <string>
 #include <string_view>
+#include <vector>
 
 namespace bsp::cc13_fe3 {
 
@@ -1952,5 +1953,210 @@ struct Fe8ControlEventHost {
 // +204h / +200h auto-scroll +1A0h (2 / 1, 0.004f, 1), +20Ch begins a drag; then type 6 -> vtable
 // +88h(2, 0, 1.0f), type 12h -> vtable +84h(2).
 void control_binding_handle_gui_event_00560bf0(Raw listener, void* widget, Fe8ControlEventHost& host);
+
+// ---------------------------------------------------------------------------
+// Packet cc13-fe9 (docs/CC13_FE_9.md): control binding bodies left open by cc13-fe8.
+// ---------------------------------------------------------------------------
+struct Fe9ControlRowsHost {
+    virtual ~Fe9ControlRowsHost() = default;
+    virtual Raw input_settings_005547d0() = 0;
+    virtual void* input_device_map_index_0055c110(void* map, const void* key) = 0;
+    // 005548C0, ECX = entry tree: the case-insensitive lower bound (kTreeLowerBound row 0).
+    virtual void* binding_tree_lower_bound_005548c0(void* tree, std::string_view name) = 0;
+    virtual void* find_child_by_name_00aa7e00(void* parent, std::string_view name, std::uint32_t recurse) = 0;
+    // 006A9850, ECX = settings: (NativeString* out, key, name, variant) -> the slot's key text.
+    virtual std::string input_binding_slot_text_006a9850(Raw settings, const void* key, std::string_view name,
+        std::uint32_t variant) = 0;
+    // 006AAC50 with a null conflict output.
+    virtual bool input_binding_has_conflict_006aac50(Raw settings, const void* key, std::string_view name,
+        std::uint32_t variant) = 0;
+    virtual void gui_text_set_localised_source_00abaed0(void* text, std::string_view source, std::uint32_t flag) = 0;
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;             // vtable +34h
+    virtual void widget_set_local_x_00aa78d0(void* widget, float x) = 0;                   // thiscall, RET 4
+    virtual void control_binding_show_conflict_text_0055c200(Raw screen) = 0;
+};
+
+// 0055C5A0 BSP_ControlBindingScreen_UpdateBindingRowText, __fastcall(ECX = screen), RET. entry =
+// map[device key] (0055C110 on settings +8h, key = settings +18h + [+16Ch]*8, checked index). Walks
+// the std::list of rows at settings list +20h (+14Ch, head pointer +150h, row at node +8h). A row
+// without a "main_Text" child (00AA7E00 recurse 0) is skipped; otherwise its main_Text (recurse 1)
+// NativeString (+0F4h) is the binding name. When the entry holds the name (lower bound 005548C0,
+// then !(name < node), with an empty name below any non-empty node key and _stricmp otherwise):
+// var_1_Text / var_2_Text get 006A9850(key, name, 0 / 1) through 00ABAED0(text, 1); for slot 0 then
+// 1, conflict_N_Group (00E086AC / 00E086B0) gets vtable +34h(006AAC50(key, name, slot, null)) (the
+// image pushes a dword whose upper bytes are stale) and, on a conflict, its "Left_Text" (00CEE65C)
+// child moves to x = -(float)(var_N_Text +114h / 960.0) (00CEC380; FDIV by the double, FSTP to a
+// float, FCHS). Ends with 0055C200. The checked-iterator reports (00BF6713) are not modelled.
+void control_binding_update_binding_row_text_0055c5a0(Raw screen, Fe9ControlRowsHost& host);
+
+struct Fe9ControlListHost : Fe9ControlRowsHost {
+    virtual void list_box_set_listener_00a9ac40(void* list, void* listener) = 0;
+    virtual void list_box_clear_rows_00a9bec0(void* list) = 0;
+    virtual void list_box_insert_row_00a9d750(void* list, void* row, std::uint32_t a, std::uint32_t b) = 0;
+    virtual void list_box_select_index_00a9c7c0(void* list, std::int32_t index) = 0;
+    virtual void* list_box_row_00a9be00(void* list, std::int32_t index) = 0;
+    virtual void* widget_clone_subtree_00aab4c0(void* widget, std::uint32_t flag) = 0;
+    virtual void widget_set_listener_fields_00aa6bc0(void* widget, void* listener, std::uint32_t flag) = 0;
+    virtual void widget_set_hit_clip_rect_00aa8f30(void* widget, void* clip, std::uint32_t flag) = 0;
+    virtual void widget_set_enabled_60(void* widget, std::uint32_t enabled) = 0;           // vtable +60h
+    virtual void widget_virtual_80(void* widget, std::uint32_t value) = 0;                 // vtable +80h
+    virtual void gui_text_set_localised_cstring_00abbe50(void* text, const char* source, std::uint32_t flag) = 0;
+    // 0055A9A0, ECX = entry +18h: map<NativeString, setting>::operator[]; the setting's kind is +0h.
+    virtual std::int32_t* setting_map_index_0055a9a0(void* map, std::string_view name) = 0;
+    // 00444BE0, ECX = entry +24h: map<NativeString, float>::operator[].
+    virtual float* setting_value_map_index_00444be0(void* map, std::string_view name) = 0;
+    // 005F3750 BSP_ControlBindingScreen_SetSliderRow, __fastcall(ECX = row, EDX = position).
+    virtual void control_set_slider_row_005f3750(void* row, std::int32_t position) = 0;
+    virtual void control_binding_refresh_selected_binding_0055c3b0(Raw screen) = 0;
+    virtual void scroller_attach_content_00683790(void* scroller, void* content) = 0;
+    virtual void scroller_set_scroll_range_006834a0(void* scroller, float range) = 0;
+    virtual std::array<float, 3> widget_resolved_position_00aa6750(void* widget) = 0;
+    virtual std::array<float, 2> widget_size_00aa6740(void* widget) = 0;
+};
+
+// 0055D380 BSP_ControlBindingScreen_BuildSettingsList, __fastcall(ECX = screen), RET. The list +20h
+// loses its listener (00A9AC40(0)), is disabled (vtable +60h(0)) and cleared (00A9BEC0). entry =
+// map[device key]. Bindings: for each name i of the entry's vector +34h (8-byte NativeStrings) a
+// clone of template +28h is shown, gets the widget listener (screen+0Ch, 00AA6BC0), row id i |
+// FFFF0000h at +0D8h and the clip +218h (00AA8F30). Its main_Text shows the name when the entry's
+// tree holds it (the 005548C0 lookup of 0055C5A0) and "^" + name otherwise. Unknown names mark the
+// row +77h; known ones clear main_Text +78h, fill var_1_Text / var_2_Text from 006A9850(slot 0 / 1)
+// (each also +78h = 1, the widget listener, id i | FE000000h / i | FF000000h) and show
+// conflict_N_Group per 006AAC50(slot, null), whose "Right_Text" (00CEE730) moves to x =
+// (float)((float)(var_N_Text +114h / 960.0) + 1/96.0) (00CEC380, 00CEE728). Each row is appended
+// (00A9D750(row, 0, 0)). Settings (the vector +44h, when not empty): a spacer (template +28h, +77h)
+// and the "^FE_pc.cs_invert" (00CEE710) header (+77h, +78h = 0); kind (0055A9A0 on entry +18h) 3
+// or 4 gets a template +30h row: main_Text = the name, var_Text = "FE.opt_normal" when the value
+// (00444BE0 on entry +24h) is above 0.0f (00D7A218, COMISS) else "FE.opt_inverted". With at least one
+// such row a second spacer and header follow; the "^FE_pc.controls_sensitivities" (00CEE6F0) label
+// lands on that header, or on the invert header when there were none. Every other kind gets a
+// template +2Ch slider row whose "dodgeListboxAutoControl_Group" +0D8h is the row index, slider
+// position 005F3750(-1 - (int)(value * -4.0)). Rows built from +30h / +2Ch carry id = the list's row
+// count | FFFF0000h. Then selection min(+174h, count - 1) (00A9C7C0), vtable +80h(1), the list
+// listener (screen+8h), vtable +60h(1), list +77h = 0, page 2 -> 0055C3B0. The scroller +1A0h is
+// detached (00683790(0)) and gets the range ((float)(last.y - first.y) + first.h + 0.015 (00CEE6C8))
+// rounded to float, minus the clip's height, rounded to float. The second 0055A9A0 call of each
+// settings row (result discarded) and the checked-iterator reports are not modelled.
+void control_binding_build_settings_list_0055d380(Raw screen, Fe9ControlListHost& host);
+
+struct Fe9ControlPageHost : Fe9ControlListHost, Fe8LuaHost {
+    virtual void input_manager_update_00a92c40(float dt) = 0;                                // ECX = 004BEC00()
+    virtual bool input_flag_61f() = 0;                                                       // byte [00E188A8]+61Fh
+    virtual bool flag_00e19428() = 0;                                                        // byte [00E19428]
+    virtual std::uint8_t flag_00f88a30() = 0;                                                // byte [00F88A30]
+    // 004BA6D0 on [00F8BBF4]: (class, index) -> the device or null.
+    virtual void* input_backend_device_004ba6d0(std::int32_t device_class, std::int32_t index) = 0;
+    // 006A9EA0, ECX = settings: does any binding of the device (key) use slot kind 2.
+    virtual bool input_device_has_kind2_binding_006a9ea0(Raw settings, const void* key) = 0;
+    virtual void widget_virtual_7c(void* widget, std::uint32_t value) = 0;                  // vtable +7Ch
+    virtual void widget_virtual_84(void* widget, std::uint32_t value) = 0;                  // vtable +84h
+    virtual void widget_set_size_58(void* widget, std::array<float, 2> size) = 0;           // vtable +58h
+    virtual void rebuild_command_bar_0054b530(const std::array<MainMenuCommandArgument, 5>& arguments) = 0;
+    // 00531B00 on 00425D10(): (slot, message, kind, callback, 0, title "", 0.0f, 0, "", 1).
+    virtual void raise_prompt_00531b00(std::int32_t slot, const char* message, std::int32_t kind,
+        std::uint32_t callback) = 0;
+    virtual void command_bar_set_help_line_0054a0c0(std::string_view line) = 0;              // ECX = [00E1930C]
+    // 00518D60: ECX, EDX, one stack word and the title NativeString, RET 8.
+    virtual void frame_select_00518d60(std::int32_t ecx, std::int32_t edx, std::uint32_t stack_word,
+        std::string_view title) = 0;
+    virtual void list_box_reset_highlight_00a9cf30(void* list, std::uint32_t a, std::uint32_t b) = 0;
+    virtual void gui_text_set_ellipsized_00abb000(void* text, std::string_view source, float width,
+        std::uint32_t flag) = 0;
+    // 00BDD990 on [0109CEEC]: (directory, extension, 0, list*) -> the matching resource names; the
+    // image pops them front first (00557A90).
+    virtual std::vector<std::string> vfs_enumerate_resources_00bdd990(std::string_view directory,
+        std::string_view extension, std::uint32_t flag) = 0;
+    // [0109CEEC] vtable +4(path, 2) -> stream or null; stream vtable +18h is-open, +24h read(buffer,
+    // length, &count), +4h(1) deleting destructor.
+    virtual void* vfs_open_04(std::string_view path, std::uint32_t mode) = 0;
+    virtual bool stream_is_open_18(void* stream) = 0;
+    virtual void stream_read_24(void* stream, void* buffer, std::uint32_t length) = 0;
+    virtual void stream_delete_04(void* stream) = 0;
+    virtual void control_binding_build_settings_list_0055d380(Raw screen) = 0;
+};
+
+// 0055E3A0 BSP_ControlBindingScreen_RefreshPage, __thiscall(screen, page), RET 4. 00A92C40(0.0f),
+// +195h = 1, +198h = 0.5f (00CE3800), [+214h] vtable +84h([00E188A8]+61Fh != 0). Command bar per
+// page: 2 -> (0,"",1)(0,"",1)(B3h navigate,1)(0,"",1)(A3h back,2); 3 -> five (0,"",1); others ->
+// (A2h select,0)(0,"",1)(B3h,1)(0,"",1)(A3h,2). Page 2 with [00E19428] clear, no class-2 device
+// (004BA6D0(2, 0)) and a device binding of kind 2 (006A9EA0) raises "FE_pc.cs_touchcontroller"
+// (slot 3, kind 3), sets +168h = 4 and returns. +214h is shown on pages 2/3 and hidden otherwise.
+// Moving between pages 2 and 3 keeps the settings list; +168h = page; both lists are hidden and
+// disabled, the help line cleared, and without the 2/3 move list +20h loses its listener. +34h
+// hidden. Page 0: frame (6, 0, 0, "^FE_pc.controls_categories"), the device list (+1Ch) gets the
+// "FE_pc.controls_general" header, one row per device key (settings +18h; vtable +7Ch([00F88A30])),
+// and "FE_pc.controls_loadpreset" (+0D8h = 1); shown, 00A9CF30(1, 1), +19Ch = 0, and with
+// [00E188A8]+61Fh frame (0, 0, 0, the categories title) again. Page 1: frame (6, 0, 0,
+// "^FE_pc.controls_loadpreset"), one row per string of the input settings' Lua global
+// ControlPresetsOrder[1..] (settings +78h), then up to 10 (7 with +61Fh) list rows from the
+// "Presets" / ".preset" resources: the name loses its first 8 characters and its first ".preset",
+// must be non-empty and [0-9A-Za-z ] only, and the file (VFS vtable +4(path, 2)) must start with
+// "CONTROL_PRESET\x01" (00CEE75C, 15 bytes read into a zeroed 40h buffer); the row is sized
+// (0.3645833f (00CEE758), its height) and ellipsized at -1.0f (00D7A260). Pages 0, 1 and any
+// other page end with: the device list selects +16Ch + page*4, enabled, +77h = 0, list listener,
+// vtable +80h(1), +1FCh hidden. Page 2: map[key] (result unused), frame (6, 0, 0, "^" + key)
+// unless +61Fh, 0055D380 unless kept (kept: enabled, +77h = 0, listener), list +20h and +1FCh
+// shown. Page 3: frame (6, 0, 0, "^FE_pc.controls_adjust") unless +61Fh, list +20h disabled with
+// +77h = 1, then shown and enabled, +1FCh shown. All paths but the prompt end with the device
+// list's listener (screen+8h) and list +20h byte +14Ah = 0. A null Lua string (strlen on null in
+// the image) is read as "".
+void control_binding_refresh_page_0055e3a0(Raw screen, std::int32_t page, Fe9ControlPageHost& host);
+
+struct Fe9ControlPresetHost : Fe8LuaHost {
+    virtual Raw input_settings_005547d0() = 0;
+    virtual void* list_box_current_row_00425e50(void* list_box) = 0;
+    // A fresh 00B66BD0 owner, 00B6A020 Open(libs), 00B69D40 RunScriptWithOverrides(path, flag).
+    virtual void* lua_owner_open_run_flagged(std::uint32_t libs, std::string_view script, std::uint32_t flag) = 0;
+    virtual void* lua_get_by_native_string_00b68100(void* table, std::string_view key) = 0;
+    // 006ABA50 on the input settings with a 004425C0 LuaReader over a 00B66FA0 copy of the
+    // object; the reader is destroyed afterwards (00441A20).
+    virtual void input_settings_read_keyboard_archive_006aba50(void* lua_object) = 0;
+    virtual void control_binding_refresh_page_0055e3a0(Raw screen, std::int32_t page) = 0;
+};
+
+// 0055F710 BSP_ControlBindingScreen_LoadSelectedPreset, __fastcall(ECX = screen), RET. With +38h
+// set (a built-in preset): the input settings' Lua globals (owner +78h) ControlPresets (00CEE820)
+// [the device list's (+1Ch) current row text +0F4h] is read through 006ABA50 (no nil check).
+// Otherwise a fresh Lua owner, opened with 1, runs the path +3Ch (flag 1); its global Preset
+// (00CEE818) is read the same way unless nil, and the owner is closed. Then 0055E3A0(0).
+void control_binding_load_selected_preset_0055f710(Raw screen, Fe9ControlPresetHost& host);
+
+struct Fe9ControlListenerHost {
+    virtual ~Fe9ControlListenerHost() = default;
+    virtual std::int32_t list_box_selected_index_00a9c920(void* list_box) = 0;
+    virtual Raw input_settings_005547d0() = 0;
+    virtual void set_options_page_00e19650(std::int32_t page) = 0;
+    virtual void front_end_mark_field_40() = 0;                                              // [[00E198B8]+40h]+78h = 1
+    virtual void front_end_push_interface_request_004cc460(std::uint32_t a, std::uint32_t b) = 0;  // ECX = [00E198B8]
+    virtual bool input_flag_61f() = 0;                                                       // byte [00E188A8]+61Fh
+    virtual void frame_select_00518d60(std::int32_t ecx, std::int32_t edx, std::uint32_t stack_word,
+        std::string_view title) = 0;
+    virtual bool input_config_load_suppressed_00f88a30() = 0;                                // byte [00F88A30]
+    virtual void input_configuration_load_00698a10() = 0;                                    // ECX = [00E188A8]+3Ch
+    virtual void control_binding_refresh_page_0055e3a0(Raw screen, std::int32_t page) = 0;
+    virtual void input_settings_006aa1c0(Raw settings) = 0;                                  // ECX = settings
+    virtual void frame_select_default_004c9680() = 0;
+    virtual void control_binding_open_virtual_keyboard_00553bf0(Raw screen) = 0;
+    virtual void raise_prompt_00531b00(std::int32_t slot, const char* message, std::int32_t kind,
+        std::uint32_t callback) = 0;
+    virtual void prompt_focus_last_navigation_00530c20() = 0;                                // ECX = 00425D10()
+    virtual void native_string_assign_cstring_0041e350(void* string, const char* text) = 0;
+    virtual bool vfs_exists_08(std::string_view path) = 0;                                   // [0109CEEC] vtable +8
+};
+
+// 0055FCA0 BSP_ControlBindingScreen_ListboxListener04, slot +4h of the list listener at screen+8h,
+// __thiscall(listener, row, list box), RET 8 (screen offsets below). +16Ch + page(+168h)*4 = the
+// list's selection. Page 0 (n device keys): selection 0 sets [00E19650] = 4, [[00E198B8]+40h]+78h,
+// pushes interface request (0Ch, 0), with +61Fh frames (-1, -1, 0, "FE.opt_title_main"), reloads the
+// input configuration unless [00F88A30], and clears +16Ch..+17Ch; 1..n chooses device sel - 1 (+16Ch),
+// +174h = 0, +180h = 1, 0055E3A0(2), 006AA1C0 on the settings, then 004C9680 when +61Fh; n + 3
+// pushes (0Ch, 0) and reloads / clears as above; otherwise the row's +0D8h 1 -> 0055E3A0(1), 2 ->
+// 00553BF0. Page 1: a row text (+0F4h) equal to "FE.opt_cancel" (00449AF0, case-insensitive) ->
+// 0055E3A0(0); selection 0 sets +38h and raises "FE_pc.cs_loadpreset_confirm" (slot 0, kind 1,
+// callback 0055F9E0), then 00530C20; a positive selection clears +38h, sets +3Ch =
+// sprintf_s("Presets/%s.preset", text) (buffer 100h) and, when the VFS has it (vtable +8), raises the
+// same prompt; a negative one -> 0055E3A0(0). Other pages: only the selection store.
+void control_binding_list_listener_activate_0055fca0(Raw listener, void* row, void* list_box,
+    Fe9ControlListenerHost& host);
 
 } // namespace bsp::cc13_fe3
