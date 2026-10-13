@@ -289,6 +289,18 @@ struct PathJoinSource {
     virtual float reciprocal_length_00419260(float x, float z) = 0;
 };
 
+// 007ADA60 BSP_PathSource_NearestIndex, __thiscall(source)(pos*), RET 4: the
+// nearest-index slot +14h of the base (00D052DC), SIMPLE (00D05318, built by
+// 007B2250 on the kind-0 moveonpath arm) and owned-points (00D05440) sources.
+// IMAGE QUIRK, read from the bytes: the loop's point fetch passes the constant
+// 1 (007ADAD5 PUSH 1), not the loop index, so only points 0 and 1 are ever
+// compared. The answer is -1 with no points (007ADB86), 0 when point 1 is not
+// strictly nearer than point 0 (or there is one point), else 1. Point 0's
+// distance is 0042B2F0(f(pos - p0)) stored to float (`length`); point 1's is
+// the inline 1e-10 / sqrt form shared with 007AED10.
+int simple_source_nearest_index_007ada60(PathJoinSource& source, const Vec3& pos,
+                                         const std::function<float(const std::array<float, 3>&)>& length);
+
 // 007B11F0 BSP_EntityPathSource_StartIndexForPosition, __thiscall(source)(pos*,
 // float unused, char forward), RET 0Ch, read whole. With fewer than two points,
 // or the nearest already at the end in the travel direction, the nearest. Else
@@ -297,6 +309,24 @@ struct PathJoinSource {
 // d = f(p - a), u = f(f(b - a) * rcp), s = f(u.z * d.z + u.x * d.x) > 0.
 // The float argument at [esp+3Ch] is never read.
 int start_index_for_position_007b11f0(PathJoinSource& source, const Vec3& pos, bool forward);
+
+// 007B15F0 BSP_ScenePath_DropPointsOntoLandscape, __fastcall(path component).
+// Only when the path entity's parent (+3Ch) answers IsKindOf(44h) (Landscape).
+// Per point: world = divide(00B62D10(entity +CCh world matrix, (p, 1))) on x and
+// z only; y = f(0087FA50(landscape, x, z)) (the forward height); local =
+// divide(00B62D10(entity +110h inverse matrix, (x, y, z, 1))); then vslot +4h
+// (index, &local) stores it. Afterwards, with the byte +18h clear, 007AF150
+// derives the knots (`derive_knots` returns that decision).
+struct LandscapeDropHost {
+    virtual ~LandscapeDropHost() = default;
+    virtual bool parent_is_landscape() = 0;
+    virtual void to_world_h(const Vec3& local, float out[4]) = 0;     // 00B62D10, +CCh
+    virtual float forward_height_at(float x, float z) = 0;            // 0087FA50
+    virtual void to_local_h(const Vec3& world, float out[4]) = 0;     // 00B62D10, +110h
+    virtual void set_point(int index, const Vec3& local) = 0;         // vslot +4h
+};
+bool drop_points_onto_landscape_007b15f0(const std::vector<Vec3>& points, bool knots_fixed_18,
+                                         LandscapeDropHost& host);
 
 // 007AE6D0 BSP_Point3PtrArray_Centroid, __thiscall(array)(out*), RET 4. Each
 // running sum is stored to float; inv = f(1 / (double)count); out = f(inv * sum).
