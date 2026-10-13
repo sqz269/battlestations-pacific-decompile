@@ -174,14 +174,14 @@ std::uint32_t voice_is_local_talking_00a49220(void* voice, Xhv2EngineCalls& xhv)
 }
 
 void voice_register_active_local_talker_00a492d0(void* voice, Xhv2EngineCalls& xhv, XenonSystemCalls& xenon) {
-    static constexpr std::uint32_t kLocalModes[1] = {0};  // 00D24A34 (contents not read here)
-    static constexpr std::uint32_t kRemoteModes[1] = {0}; // 00D24A30 (contents not read here)
+    static constexpr std::uint32_t kVoiceChatMode[1] = {2}; // 00D24A34
+    static constexpr std::uint32_t kLoopbackMode[1] = {1};  // 00D24A30
     write_field<std::uint32_t>(voice, 0x114, read_field<std::uint32_t>(voice, 0x118));
     write_field<std::uint32_t>(voice, 0x118, xenon.active_user_slot());
     void* const engine = read_field<void*>(voice, 0x78);
     if (read_field<std::uint32_t>(voice, 0x108) == 0) xhv.register_local_talker_20(engine, 0);
-    xhv.start_local_processing_0c(read_field<void*>(voice, 0x78), 0, kLocalModes, 1);
-    xhv.start_remote_processing_10(read_field<void*>(voice, 0x78), 0, kRemoteModes, 1);
+    xhv.start_local_processing_0c(read_field<void*>(voice, 0x78), 0, kVoiceChatMode, 1);
+    xhv.stop_local_processing_10(read_field<void*>(voice, 0x78), 0, kLoopbackMode, 1);
     write_field<std::uint32_t>(voice, 0x108, 1);
     write_field<std::uint16_t>(voice, 0x6C, 0);
 }
@@ -200,7 +200,7 @@ std::uint32_t voice_update_00a49530(void* voice, Xhv2EngineCalls& xhv, XenonSyst
         write_field<std::uint32_t>(voice, 0x0, 0);
         return 1;
     }
-    const std::uint32_t flags = xhv.data_ready_flags_34(read_field<void*>(voice, 0x78), 0);
+    const std::uint32_t flags = xhv.is_headset_present_34(read_field<void*>(voice, 0x78), 0);
     if (flags != read_field<std::uint32_t>(voice, 0x4)) {
         write_field<std::uint32_t>(voice, 0x4, flags);
         write_field<std::uint32_t>(voice, 0x0, 1);
@@ -336,5 +336,97 @@ void* player_list_copy_construct_00a474e0(void* list, const void* source, Player
 void publish_user_property_10000030_00a4a850(UserPropertyCalls& host, XenonSystemCalls& xenon) {
     if (void* const setup = host.game_setup_5fc())
         host.xuser_set_property(xenon.active_user_slot(), 0x10000030, 4, at(setup, 0x1098));
+}
+void voice_apply_mute_list_00a48f60(void* voice, Xhv2EngineCalls& xhv, VoiceTalkerCalls& host) {
+    std::uint64_t xuids[16]{};
+    std::uint32_t count = 0x10;   // [ESP+10h]
+    std::uint32_t muted = 0;      // [ESP+14h], uninitialized in the image
+    xhv.get_remote_talkers_30(read_field<void*>(voice, 0x78), &count, xuids);
+    for (std::uint32_t user = 0; user < 1; ++user) {
+        if (read_field<std::uint32_t>(voice, 0x108 + 4 * user) == 0) continue;
+        for (std::uint32_t i = 0; i < count; ++i) {
+            host.xuser_mute_list_query(user, xuids[i], &muted);
+            xhv.set_playback_priority_48(read_field<void*>(voice, 0x78), xuids[i], user,
+                muted != 0 ? -1 : 0);
+        }
+    }
+}
+
+std::int32_t voice_add_remote_talker_00a495e0(void* voice, std::uint64_t xuid, Xhv2EngineCalls& xhv) {
+    auto* const talkers = read_field<std::byte*>(voice, 0x80);
+    const auto count = read_field<std::uint32_t>(voice, 0x7C);
+    for (std::uint32_t i = 0; i < count; ++i)
+        if (read_field<std::uint64_t>(talkers + i * 0x38, 0) == xuid) return 0;
+    const std::int32_t hr = xhv.register_remote_talker_28(read_field<void*>(voice, 0x78), xuid);
+    if (hr < 0) return hr;
+    static constexpr std::uint32_t kVoiceChatMode[1] = {2}; // 00D24A34
+    xhv.start_remote_processing_14(read_field<void*>(voice, 0x78), xuid, kVoiceChatMode, 1);
+    std::byte* const record = read_field<std::byte*>(voice, 0x80) + read_field<std::uint32_t>(voice, 0x7C) * 0x38;
+    write_field<std::uint64_t>(record, 0x00, xuid);
+    write_field<std::int32_t>(record, 0x18, 0);
+    write_field<std::int32_t>(record, 0x28, 0);
+    write_field<std::int32_t>(record, 0x08, -1);
+    write_field<std::uint32_t>(voice, 0x7C, read_field<std::uint32_t>(voice, 0x7C) + 1);
+    return 0;
+}
+
+std::uint32_t voice_is_remote_talking_00a49840(void* voice, std::uint64_t xuid, std::uint32_t slot,
+    Xhv2EngineCalls& xhv, VoiceTalkerCalls& host) {
+    if (read_field<std::uint32_t>(voice, 0x84 + 4 * slot) == 0) return 0;
+    std::uint32_t talking = xhv.is_remote_talking_3c(read_field<void*>(voice, 0x78), xuid);
+    const std::uint32_t headset = xhv.is_headset_present_34(read_field<void*>(voice, 0x78), slot);
+    if (talking == 0) return 0;
+    std::uint32_t index = 0;
+    if (host.find_remote_talker_00a49340(voice, xuid, &index) < 0) return 0;
+    const std::byte* const record = read_field<const std::byte*>(voice, 0x80) + index * 0x38;
+    if (read_field<std::int32_t>(record, 0x18 + 4 * slot) != 0 || read_field<std::int32_t>(record, 0x28 + 4 * slot) != 0
+        || read_field<std::int32_t>(record, 0x08 + 4 * slot) == -1)
+        talking = 0;
+    if (headset == 0 && read_field<std::uint32_t>(voice, 0xC4 + 4 * slot) == 0) talking = 0;
+    return talking;
+}
+namespace {
+struct QosLayout {
+    std::size_t state, qos, count, stride, addresses, ids, keys, address_in_record;
+};
+std::int32_t relink_and_lookup(void* owner, const QosLayout& l, XNetQosLookupCalls& x) {
+    if (read_field<std::uint32_t>(owner, l.state) != 4) return static_cast<std::int32_t>(0x8000FFFFu);
+    if (void* const qos = read_field<void*>(owner, l.qos)) {
+        x.xnet_qos_release(qos);
+        write_field<void*>(owner, l.qos, nullptr);
+    }
+    const auto count = read_field<std::uint32_t>(owner, l.count);
+    if (count == 0) return 0;
+    auto* const base = static_cast<std::byte*>(owner);
+    for (std::uint32_t i = 0; i < count; ++i) {
+        std::byte* const address = base + i * l.stride + l.address_in_record;
+        write_field<std::uint32_t>(address, 0x34, 0);
+        write_field<void*>(owner, l.ids + 4 * i, address - 0x18);
+        write_field<void*>(owner, l.addresses + 4 * i, address);
+        write_field<void*>(owner, l.keys + 4 * i, address - 0x10);
+    }
+    void* qos = nullptr;
+    const std::int32_t error = x.xnet_qos_lookup(count, reinterpret_cast<const void* const*>(base + l.addresses),
+        reinterpret_cast<const void* const*>(base + l.ids), reinterpret_cast<const void* const*>(base + l.keys),
+        8, 64000, &qos);
+    write_field<void*>(owner, l.qos, qos);
+    if (error != 0) return static_cast<std::int32_t>(0x80004005u);
+    write_field<std::uint32_t>(owner, l.state, 3);
+    return 0;
+}
+} // namespace
+
+std::int32_t matchmaking_relink_and_lookup_00a49d20(void* m, XNetQosLookupCalls& x) {
+    return relink_and_lookup(m, {0x193C, 0x1938, 0x1808, 0xF6, 0x180C, 0x1870, 0x18D4, 0xBE}, x);
+}
+
+std::int32_t host_qos_relink_and_lookup_00a4a420(void* q, XNetQosLookupCalls& x) {
+    // Order of the three stores per entry follows 00A4A47A..00A4A482: ids, addresses, keys.
+    return relink_and_lookup(q, {0x8C, 0x88, 0x78, 0x76, 0x7C, 0x80, 0x84, 0x3E}, x);
+}
+
+void* heap_object_scalar_delete_00a4bdc0(void* self, std::uint8_t flags, XLiveCrtHost& host) {
+    if (flags & 1) host.free_00bf65ac(self);
+    return self;
 }
 } // namespace bsp::online_cc13

@@ -159,11 +159,18 @@ struct Xhv2EngineCalls {
     virtual ~Xhv2EngineCalls() = default;
     virtual std::int32_t start_local_processing_0c(void* engine, std::uint32_t user,
         const void* modes, std::uint32_t count) = 0;                                   // +0Ch
-    virtual std::int32_t start_remote_processing_10(void* engine, std::uint32_t user,
+    virtual std::int32_t stop_local_processing_10(void* engine, std::uint32_t user,
         const void* modes, std::uint32_t count) = 0;                                   // +10h
     virtual std::int32_t register_local_talker_20(void* engine, std::uint32_t user) = 0; // +20h
+    virtual std::int32_t start_remote_processing_14(void* engine, std::uint64_t xuid,
+        const void* modes, std::uint32_t count) = 0;                                   // +14h
+    virtual std::int32_t register_remote_talker_28(void* engine, std::uint64_t xuid) = 0; // +28h(xuid, 0, 0, 0)
+    virtual std::int32_t get_remote_talkers_30(void* engine, std::uint32_t* count, std::uint64_t* xuids) = 0; // +30h
+    virtual std::uint32_t is_remote_talking_3c(void* engine, std::uint64_t xuid) = 0;    // +3Ch
+    virtual std::int32_t set_playback_priority_48(void* engine, std::uint64_t xuid, std::uint32_t user,
+        std::int32_t priority) = 0;                                                    // +48h
     virtual std::uint32_t is_local_talking_38(void* engine, std::uint32_t user) = 0;      // +38h
-    virtual std::uint32_t data_ready_flags_34(void* engine, std::uint32_t arg) = 0;       // +34h
+    virtual std::uint32_t is_headset_present_34(void* engine, std::uint32_t arg) = 0;       // +34h
     virtual std::int32_t get_local_chat_data_44(void* engine, std::uint32_t user, void* data,
         std::uint32_t* bytes, std::uint32_t* packets) = 0;                             // +44h
     virtual std::int32_t submit_incoming_chat_data_4c(void* engine, std::uint64_t xuid,
@@ -196,8 +203,10 @@ struct XenonSystemCalls {
 
 // 00A492D0 BSP_XLiveVoice_RegisterActiveLocalTalker, __fastcall: +114h = old
 // +118h, +118h = active user slot; unless +108h is set, engine +20h(0); then
-// engine +0Ch(0, 00D24A34, 1) and +10h(0, 00D24A30, 1) (one processing-mode
-// dword each), +108h = 1, word +6Ch = 0. Both engine calls pass user 0, not
+// StartLocalProcessingModes +0Ch(0, {2 = voice chat, 00D24A34}, 1) and
+// StopLocalProcessingModes +10h(0, {1 = loopback, 00D24A30}, 1), +108h = 1,
+// word +6Ch = 0. (Method names from the IXHV2Engine vtable order, which the
+// sweepA1 slots +24h/+2Ch/+48h already match.) Both engine calls pass user 0, not
 // the slot just stored.
 void voice_register_active_local_talker_00a492d0(void* voice, Xhv2EngineCalls& xhv, XenonSystemCalls& xenon);
 
@@ -215,8 +224,8 @@ struct VoiceUpdateCalls {
 // at exactly 14h (20) 00A492D0 runs; the counter increments either way. A
 // notification with id 11h (XN_SYS_MUTELISTCHANGED) reapplies the mute list
 // and calls the system's vtable +28h. When the Xenon slot state is 0, +4h and
-// +0h are cleared; otherwise engine +34h(0) is compared with +4h and, when it
-// changed, stored there with +0h = 1.
+// +0h are cleared; otherwise IsHeadsetPresent +34h(0) is compared with +4h and,
+// when it changed, stored there with +0h = 1 (a headset-changed flag).
 std::uint32_t voice_update_00a49530(void* voice, Xhv2EngineCalls& xhv, XenonSystemCalls& xenon,
     VoiceUpdateCalls& host);
 
@@ -329,4 +338,68 @@ struct UserPropertyCalls {
     virtual void xuser_set_property(std::uint32_t user, std::uint32_t id, std::uint32_t bytes, const void* value) = 0;
 };
 void publish_user_property_10000030_00a4a850(UserPropertyCalls& host, XenonSystemCalls& xenon);
+struct VoiceTalkerCalls {
+    virtual ~VoiceTalkerCalls() = default;
+    // XUserMuteListQuery(user, xuid, BOOL* muted) (import thunk 00A4D5E4).
+    virtual std::int32_t xuser_mute_list_query(std::uint32_t user, std::uint64_t xuid, std::uint32_t* muted) = 0;
+    // 00A49340 (bsp::xlive_cc13::find_remote_talker_00a49340): HRESULT, index out.
+    virtual std::int32_t find_remote_talker_00a49340(void* voice, std::uint64_t xuid, std::uint32_t* index) = 0;
+};
+
+// 00A48F60 BSP_XLiveVoice_ApplyMuteListToRemoteTalkers, __fastcall. Engine
+// GetRemoteTalkers +30h(&count = 10h, xuids[16]); for user slot 0 only (the
+// loop bound is 1) and only when +108h is set: for each talker,
+// XUserMuteListQuery(0, xuid, &muted) and SetPlaybackPriority +48h(xuid, 0,
+// muted ? -1 : 0). The query's return value is ignored, so a failed query
+// applies whatever `muted` held from the previous talker (or the count word
+// the first time: the slot [ESP+14h] is shared with the initial count 10h).
+void voice_apply_mute_list_00a48f60(void* voice, Xhv2EngineCalls& xhv, VoiceTalkerCalls& host);
+
+// 00A495E0 BSP_XLiveVoice_AddRemoteTalker, __thiscall(voice, xuid lo, hi),
+// RET 8, HRESULT. A talker already in the 38h-byte array (+80h, count +7Ch)
+// returns 0. Otherwise RegisterRemoteTalker +28h(xuid, 0, 0, 0); on success
+// StartRemoteProcessingModes +14h(xuid, {2}, 1) and the record at index count
+// gets xuid, priority[0] = -1, mute_list[0] = game_mute[0] = 0, count + 1. No
+// capacity test against the 16 records 00A493C0 allocates.
+std::int32_t voice_add_remote_talker_00a495e0(void* voice, std::uint64_t xuid, Xhv2EngineCalls& xhv);
+
+// 00A49840 BSP_XLiveVoice_IsRemoteTalking, __thiscall(voice, xuid lo, hi,
+// slot), RET 0Ch, EAX. 0 unless the slot's local talker is registered
+// (+84h[slot]). talking = IsRemoteTalking +3Ch(xuid); headset =
+// IsHeadsetPresent +34h(slot), always called. When talking: a talker missing
+// from the array returns 0; either mute word set or priority -1 clears it;
+// and no headset with mute-all (+C4h[slot]) clear also clears it.
+std::uint32_t voice_is_remote_talking_00a49840(void* voice, std::uint64_t xuid, std::uint32_t slot,
+    Xhv2EngineCalls& xhv, VoiceTalkerCalls& host);
+struct XNetQosLookupCalls {
+    virtual ~XNetQosLookupCalls() = default;
+    virtual std::int32_t xnet_qos_release(void* qos) = 0;
+    // XNetQosLookup(count, xnaddr*[], xnkid*[], xnkey*[], 0, 0, 0, probes,
+    // bits per second, flags, event, XNQOS** out).
+    virtual std::int32_t xnet_qos_lookup(std::uint32_t count, const void* const* addresses,
+        const void* const* ids, const void* const* keys, std::uint32_t probes,
+        std::uint32_t bits_per_second, void** qos) = 0;
+};
+
+// 00A49D20 BSP_XLiveMatchmaking_ReleaseQosAndRelinkResults, __fastcall,
+// HRESULT. Only in state 4 (otherwise 8000FFFFh): release QoS +1938h; for
+// each of the +1808h results (F6h bytes each) clear its dword +F2h and point
+// the three pointer arrays at it: +180Ch[i] = result+BEh (XNADDR), +1870h[i]
+// = result+A6h (XNKID), +18D4h[i] = result+AEh (XNKEY) (each array is 19h
+// entries); then XNetQosLookup(count, ..., 8 probes, 64000 bps) into +1938h.
+// Failure returns E_FAIL; success sets state 3. No results: return 0 and the
+// state stays 4.
+std::int32_t matchmaking_relink_and_lookup_00a49d20(void* matchmaking, XNetQosLookupCalls& x);
+// 00A4A420 BSP_XLiveHostQos_ReleaseAndRelinkEntries, __fastcall, HRESULT: the
+// same over the 76h-byte entries (count +78h, QoS +88h, state +8Ch; pointers
+// entry+3Eh, +26h, +2Eh; flag dword +72h). Its three arrays at +7Ch, +80h,
+// +84h are ONE dword apart, so with two or more entries each iteration
+// overwrites the previous iteration's XNKID/XNKEY slots (listing 00A4A470..
+// 00A4A48E: [EAX-4], [EAX], [EAX+4] with EAX += 4). Correct only for a single
+// entry.
+std::int32_t host_qos_relink_and_lookup_00a4a420(void* qos, XNetQosLookupCalls& x);
+
+// 00A4BDC0 BSP_HeapObject_ScalarDelete_00a4bdc0, __thiscall(this, flags), RET
+// 4, EAX = this: _free(this) when bit 0 is set; no destructor body.
+void* heap_object_scalar_delete_00a4bdc0(void* self, std::uint8_t flags, XLiveCrtHost& host);
 } // namespace bsp::online_cc13

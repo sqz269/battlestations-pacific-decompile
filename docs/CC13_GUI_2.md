@@ -114,3 +114,84 @@ value literal "Left"). The other rows match the image.
   texture's vtable slot 0 at count zero was not read.
 - `tools/verify_report_calls.py` checks JSON call-row reports; this packet has none, so it was
   not applicable.
+
+## Part B: segment 72, online (00A46B80-00A625D0)
+
+At the start 146 functions in the range had a ledger name but no record and no tag. Grepping first
+showed that 15 of them already had code from cc13-sweepA1 (`src/network_online_cc13.cpp`, documented
+in docs/CC13_BAND_00A1_00A4.md) but no reconstruction record. Those records were added, with
+00A47900 re-checked against the listing.
+
+New code is in `include/bsp/online_cc13.hpp` and `src/online_cc13.cpp` (namespace
+`bsp::online_cc13`, registered in cmake/startup.cmake). All of it is reconstructed and build-tested,
+and none of it is game-validated. 69 records:
+
+- **XLiveSystem slots (31).** Field getters (+ECh, +EDh, +124h, +128h, +8Ch, +1BD5h, +1BDCh,
+  +1D28h, +1D40h), constant and no-op slots, the 00A47A60/00A47A80 twins, and 00A48E90.
+- **System (2).** 00A46EE0 shutdown and 00A46F30.
+- **Constructors (4).** Voice 00A48F10, session 00A499D0, matchmaking 00A49CF0, host QoS 00A4A380.
+- **Voice (9).** 00A49000 GetLocalChatData, 00A49040 SubmitIncomingChatData, 00A49220,
+  00A492D0, 00A49530 update, 00A48F60 mute list, 00A495E0 add talker, 00A49840 remote talking,
+  00A493A0 destroy. The XHV2 vtable slots are named from the IXHV2Engine method order, which
+  sweepA1's +24h/+2Ch/+48h already match: +0Ch StartLocalProcessingModes, +10h Stop..., +14h
+  StartRemoteProcessingModes, +20h RegisterLocalTalker, +28h RegisterRemoteTalker, +30h
+  GetRemoteTalkers, +34h IsHeadsetPresent, +38h IsLocalTalking, +3Ch IsRemoteTalking, +44h
+  GetLocalChatData, +4Ch SubmitIncomingChatData. The mode arrays are 00D24A34 = {2} (voice chat)
+  and 00D24A30 = {1} (loopback).
+- **XSession (6).** Arbitration register, join and leave for local and remote players, remove
+  remote player, and QoS listen.
+- **Matchmaking and host QoS (12).** Remove-at, cancel, reset (with its JMP thunk 00A4B460),
+  the byte-identical 00A4B410 cancel copy, release/finish, and the two relink-and-lookup routines.
+- **Helpers (5).** Player-list construct and copy, _free-and-clear, pooled-string release, the
+  00A4BDC0 scalar delete, and 00A4A850 XUserSetProperty.
+
+**Rename.** 00A474E0 was `BSP_XLiveSystem_InsertSortedPlayer`. It is now
+`STL_PlayerList_CopyConstruct_00a474e0`: it buys a sentinel, zeroes the size and inserts the whole
+source range through 00A46800. Nothing in it sorts.
+
+### Part B findings
+
+1. **Host QoS pointer arrays overlap.** 00A4A420 writes the XNADDR, XNKID and XNKEY pointer arrays
+   at +7Ch, +80h and +84h. They are one dword apart and the index steps by 4, so with two or more
+   entries each iteration overwrites the previous one's XNKID and XNKEY slots. The matchmaking
+   twin 00A49D20 spaces its arrays 19h entries apart. In practice the host QoS list is probably
+   a single entry.
+2. **00A495E0 has no capacity check** against the 16 talker records that 00A493C0 allocates.
+3. **00A46EE0 returns false** when online was never started, even though BL = 1 is loaded first.
+4. **00A48F60 ignores XUserMuteListQuery's result.** After a failure it applies the previous
+   talker's `muted` value, or uninitialized stack for the first talker. It handles user slot 0
+   only.
+5. **00A49000 never reads its second argument.** It returns the engine's written byte count, or 0.
+
+### Part B not done (in order of value)
+
+- **System routines with player records:** 00A46D60 LeaveSession, 00A46F60 BeginSessionSearch,
+  00A47130, 00A47220, 00A47350, 00A47AA0, 00A48330, 00A47B80. The player record is 3Ch+ bytes:
+  an MSVC9 std::string at +0, an XUID/XNADDR union at +20h, the user slot at +30h, and flag bytes
+  at +38h..+3Bh with +3Ah = 1. The layout comes from the stack frames of 00A47130 and 00A47220 and
+  still needs a struct.
+- **Large routines:** 00A488D0 Update (5C0h), 00A48450 RefreshHostQosUi (480h), 00A49DF0
+  PollSearch (590h), 00A4A4E0 host QoS Poll, 00A4A890 SetUserProperties, 00A4AC40 Create,
+  00A4B2A0 / 00A4B7F0 BeginSearch, 00A4B490 SelectQueryId, 00A4BB00 FillFromGameSetup,
+  00A493C0 voice Initialize. The decompiler loses register arguments in several of them (00A48F60
+  and 00A49840 needed the listing), so check each XLive call's argument count in the listing.
+- **Movie decoder bases** (00A4C470..00A4D2F0, about 30 small vtordisp thunks, nops and
+  constructors). Check src/movie_decoder.cpp first: it mentions 00A4C770, 00A4C8B0, 00A4C920,
+  00A4D040 and 00A4D0F0.
+- **The TELEMETRY_iostdnet and CreateNamedPipeW entries** (00A500E0..00A607EE) are library code.
+  They should be tagged rather than reconstructed.
+
+## Handoff
+
+- Shas: see the final report. The branch is `agent/cc13-gui2`. origin/main was merged before the
+  last build.
+- Records: Part A 19; Part B 69 new plus 15 sweepA1 back-records. Names: 13 new (the defined
+  functions) and 1 replaced (00A474E0).
+- Ghidra: 13 functions defined with names, and their exports refreshed. During Part B the shared
+  exports directory (`exports/bsp` in the main checkout) disappeared; this was reported to the
+  lead. Later reads used live `bsp.py ghidra decompile`. The 00A474E0 rename is in the ledger
+  only, so apply it with `tools/ghidra_annotate.py --apply --addresses 00a474e0`.
+- Scripts are in this worktree's `local/` with the prefix `gui2_`: `gui2_lst.py` (compact listing
+  with string annotation), `gui2_raw.py` (one-line raw disassembly), `gui2_dec.py` (compact live
+  decompile), `gui2_img.py` (strings and dwords from the PE), `gui2_grepaddr.py` (find existing
+  code for a target list), and `gui2_b*.txt` with `gui1_mk.py` / `gui1_rec.py` (record batches).
