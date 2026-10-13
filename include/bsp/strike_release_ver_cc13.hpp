@@ -15,14 +15,13 @@
 // (007D776B), and that vtable's slot 38h (00D065E8) is 0074E210. An airborne AI
 // aircraft is in mode 7, so the gate is NOT a player-control test.
 
+#include "bsp/torpedo_release_orders.hpp"
 #include "bsp/torpedo_task_arm.hpp"
 
 namespace bsp {
 
-// 007EEFDB PUSH 1: the count the leader block hands each other member.
-inline constexpr int kLeaderBlockOrderCount_007eefdb = 1;
-// 007EEFB4 CMP EAX,8: unit+1B0h == 8 is "no party slot", and the block skips.
-inline constexpr int kNoPartySlot_007eefb4 = 8;
+// kLeaderBlockOrderCount_007eefdb and kNoPartySlot_007eefb4 live in
+// torpedo_release_orders.hpp beside the host binding of the same block.
 
 // ---------------------------------------------------------------------------
 // 0099B6A0 BSP_BotTask_RequestOrdnanceReleaseBase, task vtable slot +24h in the

@@ -129,6 +129,15 @@ TorpedoArmResult torpedo_arm_drop_009d49a0(const TorpedoArmInputs& in) noexcept 
         // 009D49B6: falls through to the base slot +24h, 0099B6A0.
         out.fell_through_to_0099b6a0 = true;
         out.consumed = false;  // the base's return decides; unread, taken as 0
+        if constexpr (kTorpedoArmFallthroughReleaseBound) {
+            // 0099B6A3 CMP [ESI+2FCh],0 / JNE: no squadron answers AL = 0.
+            // Otherwise 0099B6C5 JE skips only the 0099B6CD CALL 007BBBA0, and
+            // 0099B6D2 MOV AL,1 runs either way.
+            if (in.has_squadron_2fc) {
+                out.release_007bbba0 = in.unit_free_flight_72c;
+                out.consumed = true;
+            }
+        }
         return out;
     }
     out.consumed = true;

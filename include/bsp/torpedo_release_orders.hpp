@@ -177,6 +177,11 @@ ReleaseOrderSpendResult release_order_spend_0099af53(
 // ---------------------------------------------------------------------------
 // The host. One method per native call site on the issue path.
 // ---------------------------------------------------------------------------
+// 007EEFB4 CMP EAX,8: unit+1B0h == 8 is "no party slot".
+inline constexpr int kNoPartySlot_007eefb4 = 8;
+// 007EEFDB PUSH 1: the count the leader block requests for each other member.
+inline constexpr int kLeaderBlockOrderCount_007eefdb = 1;
+
 struct TorpedoReleaseOrderHost {
     TorpedoReleaseOrderHost() = default;
     virtual ~TorpedoReleaseOrderHost() = default;
@@ -200,13 +205,36 @@ struct TorpedoReleaseOrderHost {
     virtual ReleaseOrderSetInputs read_set_inputs(int index, int requested) = 0;
     // 007BCBFD / 007BCC09: the store itself.
     virtual void write_release_order_count(int index, int count) = 0;
+
+    // Read only under kReleaseOrderLeaderBlockBound (007EEF96-007EEFEE). Not
+    // pure, so an existing host compiles unchanged; the defaults answer "no
+    // issuing unit", which skips the block.
+    // 007EEF96 EBP != 0 and 007EEF9C 007B8AD0: the issuing unit leads its flight.
+    virtual bool issuer_is_flight_leader_007eef9c() { return false; }
+    // 007EEFA5 ctl+370h, the attack mode.
+    virtual int attack_mode_370() { return 2; }
+    // 007EEFAE unit+1B0h, the party slot; 8 is none (007EEFB4).
+    virtual int issuer_party_slot_1b0() { return kNoPartySlot_007eefb4; }
+    // 007EEFBC 00927F10(unit+1B0h). The name BSP_PartySlot_IsAiHeld is a
+    // HYPOTHESIS: the function returns byte +9 of the slot record at
+    // [00E188A8]+18CCh+slot*4, and what that byte means was not read.
+    virtual bool party_slot_byte_9_00927f10(int /*slot*/) { return true; }
+    // 007EEFD7 CMP ECX,EBP: the controlled unit at `index` is the issuer.
+    virtual bool controlled_unit_is_issuer(int /*index*/) { return true; }
 };
+
+// Packet cc13-ver6, finding 3b (docs/CC13_VER_6.md). 007EEF50 JBE lands on
+// 007EEF96, the leader block, not on the return, so the block runs whether or
+// not the 999 loop did. OFF keeps the early return.
+inline constexpr bool kReleaseOrderLeaderBlockBound = false;
 
 struct ReleaseOrderIssueResult {
     bool walk_found_device = false;
     bool gate_passed = false;
     int units_raised = 0;
     int units_zeroed = 0;
+    bool leader_block_ran = false;  // 007EEFC5 reached
+    int leader_block_raised = 0;    // members given 1 by 007EEFDD
 };
 
 // 007C0D90 -> 007EEF30 -> 007BCBE0, the whole issue path as one sequence.
