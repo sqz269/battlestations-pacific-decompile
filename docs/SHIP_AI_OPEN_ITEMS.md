@@ -17132,3 +17132,43 @@ rel32 in `.text` and every absolute dword in every section; positive control: it
   string argument: it re-textures a render decal. No script of this installation calls `SetShallowWater` (454
   `.lua` files under `scripts\`; control: 40 of them call `SetWeather` or `SetDayTime`); the 223 `.scn` files
   that contain the string are the scene's `ShallowWater` block, which landscape pass A already reads.
+
+## 223. JM08 completes: variant m10 (cc9-ships45, 2026-10-12; lead item 2, phase 2)
+
+Build: this branch (gameplay as main `1de67cfb9`, `kLandStructureMeshHitTestBound` OFF); JM08, 0.05 s, reference
+env. Order files come from cc9-lua51's generator (copied as `local\s45_j8gen.py`; it regenerates `l51_j8_b3.txt`
+byte for byte, copied as `local\s45_j8_b3.txt`) and `local\s45_splice.py` (orders of file A before frame F, of
+file B from F). Logs `local\s45_j8*_<v>.log`.
+
+**What the script needs** (this installation's `scripts\missions\COTP-IJN\jm08.lua`, 2024-07-13,
+`luaJM8CheckObjectives`): fail when the CommandBuilding (`Headquarter 01`) is no longer Japanese; phase 1 -> 2
+when every `USNLsts` and `USNCargos` ship is dead (`TransportsDestroyed`, then `luaJM8Checkpoint1`); phase 2
+completes when `NoMoreAirSpawn` and `AirPatrol` is empty, and fails if the stocks run out while it is not.
+
+**Why b3 fails on this base** (220): Missouri and Helena shell the HQ from about 855 s, before phase 2.
+
+| v | change | outcome (36000/72000 frames) |
+| --- | --- | --- |
+| m1, m2 | Missouri, Helena first in the airfield and Hosho lists (m2: and the ship/boat lists) | Missouri <- Gyoraitei #Y2 at 362 s; the HQ holds, but only 3-5 of 11 landing ships die by 1500 s |
+| m3, m4 | m1/m2 before frame 7400, b3 after | Isokaze/Fubuki die about 700 s; 5 landing ships by 1800 s |
+| m5 | b3 with Missouri first in the airfield list before frame 7400 only | Missouri 362 s; 9 of 11 by 1690 s; LST 02/03 never die (3600 s, no end) |
+| m6 | b3 with Missouri first in the Hosho list before 7400 only | HQ destroyed 1090.64 s |
+| m7 | m5 before frame 24000, then the LSTs first in every list | all 11 dead by 1933 s, phase 2 at 1949 s; HQ destroyed 2191.81 s by the B-17s |
+| m8 / m9 | m7 before frame 38000, then the airfield launches only at `B-17 #2.1-2.4` every 100 / 200 frames | **complete** 2319.79 s (B-17s die 2064-2241 s); with `kLandStructureMeshHitTestBound` ON or jitter `20,3`: LST 01/LSM 02 survive, no end |
+| **m10** | m5 before frame 24000; then the airfield and Hosho lists are the B-17s first and the landing ships after (LST 03, 02, 01, LSM 02, 01, the transports), every 200 frames, to 72000 | **complete** |
+
+**m10, the win** (`local\s45_j8_m10.log`, 72000 frames): Missouri dies at 362 s, the last landing ship
+(USTroopTransport 01) at 2262 s, phase 2 fades in at 2277.65 s, the fighters sink B-17 #2.1-2.4 at 2405-2474 s, and
+`mission end: MissionStatus at 2645.96 s status=completed text="Mission Completed - Guadalacanal is safe from
+invasion!"`, with `bsp: refused a mission script's process launch: sus_prog.exe` logged before it. The same file
+also completes on the `kLandStructureMeshHitTestBound` ON export (`local\s45_j8lsmon_m10.log`: 3062.46 s, guard
+line present), so it survives the 220 flip. With frame jitter `20,3` it fails in phase 2 (HQ destroyed 2281.20 s,
+no B-17 down), so the phase-2 interception is the knife-edge. Order file
+`J:\PROG\battlestations-pacific-decompile-cc9-ships44\local\s45_j8_m10.txt`; JM08, 72000 frames.
+Regenerate: g10 = `s45_j8gen.py <g10> --ships C --boats C --end 72000 --air-until 72000 --air-every 200 --air-order
+900 --hosho B,C --air B,C --period 800` with B = `B-17 #2.1,B-17 #2.2,B-17 #2.3,B-17 #2.4` and C = `LST 03,LST 02,LST
+01,LSM 02,LSM 01,USTroopTransport 01..06`; m5 = `s45_splice.py g5 s45_j8_b3.txt 7400` where g5 is b3's command line
+with `--air` = `Missouri,` + b3's air list; m10 = `s45_splice.py m5 g10 24000`.
+
+No C-47 appears in either completing log (0 lines), so the C-47 waves CC13_WIN_READINESS expected were not
+reached; why `AirPatrol` empties (in the ON run only B-17 #2.1 has a death row) was not traced.
