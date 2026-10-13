@@ -23,6 +23,26 @@ The WIN rows (docs/WINS_TABLE.md) load these scripts in this installation:
 
 USN01 is ConTBD1's mission, so it is `usn_1_marshall.lua`, not `COTP-USN/usn_01_battle_of_eastern_solomons.lua`.
 
+### Summary
+
+All switches are OFF. Every one is predicted identical on every WIN row except the first, which changes JM08.
+
+| Native | Switch | Commit | WIN-row prediction (ON) | RNG |
+|---|---|---|---|---|
+| RemoveAllAirBasePlanes 008975B0 | `kLuaRemoveAllAirBasePlanesBound` | c10d45670 | JM08: Hosho stock 31/22/28 -> 21/12/18 (classes 150/158/162); idle slots holding scene classes are emptied and refilled. Others identical | none |
+| GetSquadronPlanes 0089CC50 (departed lead) | `kGetSquadronPlanesDepartedLeadBound` | 2fb19064b | identical | none |
+| StartLanding2 0089AC30 | `kLuaStartLanding2Bound` | 8e5b53440 | identical | one ship_ai_draw per landing begun (jm05/07/08 only) |
+| GetSquadronPlane 0089CFE0 | `kLuaGetSquadronPlaneBound` | 05d00f6b6 | identical | none |
+| DisbandFormation 0089A020 | `kLuaDisbandFormationBound` | c6e34c0cf | identical | none |
+| LandConvoyStart 00895570 | `kLuaLandConvoyStartBound` | 6b3c9ed46 | identical | none |
+| LandConvoyStop 008956E0 | `kLuaLandConvoyStopBound` | cab98ea03 | identical | none |
+| LandConvoySetSpeed 00895850 | `kLuaLandConvoySetSpeedBound` | 63f763b6a | identical | none |
+| NavigatorCruise 008A75C0 | `kLuaNavigatorCruiseBound` | 3bcf46fdd | identical | none |
+| LaunchAirBaseSlot 00896750 | `kLuaLaunchAirBaseSlotBound` | 334a53c1a | identical | squadron factory and extra steps (non-WIN missions only) |
+| PutFormationTo 008AA260 | `kLuaPutFormationToBound` | aa29043d2 | identical | none |
+
+Section 10 lists the natives that were not hosted, each with an adoption note.
+
 A comment-aware grep of those files for every native in this packet (local/fix5_wingrep.py) finds one direct call:
 `RemoveAllAirBasePlanes(Mission.Hosho)` at prcpjm08.lua:908.
 
@@ -304,3 +324,55 @@ shape.
 
 **Prediction.** No WIN script calls it. There are 12 calls: COTP usn_02/03/06 (both copies), prcp_06 and jm07. Those
 units jump to the scripted point, where today they stay put. RNG: none.
+
+## 10. Not hosted here: adoption notes
+
+None of these is called by any WIN script, directly or through a reachable commandhelpers path (section 0). Each one
+needs state that only the units or gunnery host keeps, so it is left to that host's owner.
+
+1. **SquadronSetTravelSpeed 008A0630** (`squadron, speed[, force]`).
+   - Bytes: argument 1 through 00B66270; argument 2 through 00B66250 only when 00B663F0 counts exactly 3.
+   - Then four stores: 008A07E2 +388h = [00CE3800] (0.5), 008A07F0 +38Fh = force, 008A07FA +3A0h = speed,
+     008A0802 +3ACh = 1. No result.
+   - It is the fourth member of the timer / force / value / lock quadruples that SetTravelAlt (+380h, +38Dh, +394h,
+     +3A9h), SetAttackAlt (+37Ch, +38Ch, +398h, +3AAh) and SetReleaseAlt (+384h, +38Eh, +39Ch, +3ABh) fill.
+   - The units host keeps the alt quadruples (`sq_timer_expiry_380` ... `sq_lock_3a9`). It has no +3A0h store: every
+     reader computes +3A0h as class TravelSpeed x NewTravelSpeedMul (src/game_hosts_units.cpp, near 7678 and 8061).
+   - ADOPTION: add `set_squadron_travel_speed_008a0630(index, speed, force)` beside
+     `set_squadron_travel_alt_0089f550`. Have the +3A0h readers honour the +3ACh lock and +388h timer the same way the
+     alt readers honour +3A9h / +380h.
+   - Calls: COTP usn_01 1225/1412, PRCPUS usn_12_indochina 1166.
+2. **SquadronSetHomeBase 0089E220** (`squadron, base`).
+   - Bytes: both arguments through 00888AA0, then `007F1C00(base, 0)` with ECX = the squadron (SetHomeAirBase:
+     +404h = base, and the squadron is queued on the base). No result.
+   - The units host applies 007F1C00 only in pass C, from the scene key (`set_squadron_scene_home_base`).
+   - ADOPTION: a runtime `set_squadron_home_base_007f1c00(squadron_index, base, flag)` doing the same +404h store and
+     queueing for a live squadron.
+   - Calls: COTP usn_01 2102, and commandhelpers' checkpoint restore (`luaCheckpointSpawned`).
+3. **SquadronEnableGunfireAvoidance 008A01B0** (`squadron, on`).
+   - Bytes: argument 1 through 00B66250, then +3A4h |= 4 when on, else &= 0FBh (the 008A0310 store). No result.
+   - The units host treats the squadron's +3A4h mask as the constructor's 0FFh (src/game_hosts_units.cpp near 7410:
+     "Only the SquadronEnable*Avoidance bindings change it").
+   - ADOPTION: carry the mask on the squadron and AND bit 4 into the 009A18BA gunfire-avoidance test.
+4. **ReloadTorpedoes 008C3CE0** (`unit`).
+   - Bytes: it walks the device list at +48h (next +44h). Each device that answers IsKindOf(20h) and whose class+80h
+     is 7 has every barrel 0..[+448h) reset by `BSP_Gun_SetBarrelReloadTimer(barrel, 0, 0)`. No result.
+   - ADOPTION: a gunnery-host `reload_torpedo_barrels_now(unit)`.
+   - Calls: only the commandhelpers cheat keys and the automatic-reloader cheat.
+5. **PlaneReloadBombPlatforms 0089F080**.
+   - Its model is `plane_reload_bomb_platforms_0089f080` (src/air_operations.cpp:216).
+   - It needs `AirOperationsHost::reload_plane_bomb_platforms` (007C1D80) on the payload state, which no host
+     implements.
+   - Calls: only the commandhelpers cheat keys and the shipyard manager's think.
+
+## Ledger and Ghidra
+
+- 006C8840 `BSP_AirOps_RemoveAllStock` (was FUN_006c8840): added to the ledger and renamed in Ghidra through
+  tools/ghidra_annotate.py. The prior values are in local/ghidra-annotations-20261013T144012Z.json.
+- Every other address here already had a ledger name.
+
+## Handoff
+
+- The summary table's eleven switches are build-tested OFF and not game-run.
+- cc9 pairs and flips them. JM08 is the only WIN row expected to move.
+- Section 10's five natives need accessors in the cc9 lanes. Each adoption note names the one it needs.
