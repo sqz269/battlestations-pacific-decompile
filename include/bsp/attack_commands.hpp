@@ -234,6 +234,17 @@ bool attack_command_survives_retest(int category,
                                     bool target_present,
                                     bool still_applies) noexcept;
 
+// Packet cc9-gunnery38 (docs/GUNNERY_OPEN_ITEMS.md 199). 009F8470 runs 009F8160 on
+// the squadron's auto-target object (ECX = ESI at 009F8482) every tick. For the
+// seven ordnance classes, while the squadron can still drop (007ED790), a target
+// that is gone or no longer applies sets that object's +3Dh (009F8412); 009F7C90
+// then ends the command (009F7D01, 007EE720, 009F7D3A 0071E430 terminal 1).
+// 007EE720 asks each member's head task vtable[20h], which is 007B40F0 (MOV AL,1)
+// for the torpedo (00D213E8) and dive-bomb (00D20E38) tasks. True: the units host
+// runs that retest per squadron and ends a dead target's command. False: the
+// command keeps its dead target, as before.
+inline constexpr bool kSquadronDeadTargetRetestBound = false;
+
 // 00811F50, the six-class suppression predicate. The previous packet recorded
 // this address as a name table; it is not one. It answers whether the unit's
 // current command blocks the caller's action.

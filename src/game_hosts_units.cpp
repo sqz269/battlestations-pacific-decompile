@@ -2554,6 +2554,7 @@ struct GameUnitsHost::Impl {
     struct SpentOrdnanceRtb {
         bool latch_3c{false};
         bool ended{false};
+        std::size_t retest_target{0};   // the +3Dh latch's target (009F8412), 0 = clear
         bool issued{false};
         float latch_at{-1.0f}, ended_at{-1.0f}, issued_at{-1.0f};
         std::uint32_t command{0};
@@ -2561,6 +2562,7 @@ struct GameUnitsHost::Impl {
     };
     std::map<std::string, SpentOrdnanceRtb> spent_rtb;
     unsigned long long spent_rtb_latches{0}, spent_rtb_ends{0}, spent_rtb_issues{0};
+    unsigned long long retest_dead_targets{0}, retest_ends{0};   // kSquadronDeadTargetRetestBound
     void note_kill_cause(std::size_t unit, int cause) {
         if (kill_cause_by_unit.size() <= unit) kill_cause_by_unit.resize(unit + 1, 1);
         kill_cause_by_unit[unit] = cause;
@@ -14957,6 +14959,33 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
                 h.log.notef("spent ordnance: squadron \"%s\" latched (command %08X, %zu live) "
                     "at %.2f s (009F8205, packet cc9_squadron_spent_ordnance_rtb)",
                     sq.name.c_str(), command, alive.size(), static_cast<double>(now));
+            }
+        }
+        // Packet cc9-gunnery38 (bsp::kSquadronDeadTargetRetestBound): 009F8160's
+        // ordnance arm with ordnance left (009F81E5..009F8212: 007ED790 true, +3Dh
+        // clear, the resolved target absent or failing 007EE8F0 -> 009F8412) and
+        // 009F7C90's +3Dh arm (009F7D01..009F7D45; 007EE720 true for the torpedo and
+        // dive tasks). LABELLED: the target is the leader's resolved command
+        // target and only its death is tested (007EE8F0 is not re-asked, a null
+        // target is not taken as gone); depthcharge's 009F81C6 branch and
+        // 009F7D1D's kind-1Ch moveto re-issue are not modelled.
+        if (bsp::kSquadronDeadTargetRetestBound && !st.latch_3c
+                && bsp::spent_ordnance_command_class_009f8160(command)
+                && command != bsp::kAttackCmdDepthCharge) {
+            const std::size_t t = h.slots[leader]->command_target_plus_one;
+            bool any = false;
+            for (const std::size_t m : alive) {
+                if (plane_holds_rack_round_007b9140(m)) { any = true; break; }
+            }
+            if (any && t != 0 && t != st.retest_target && gun->unit_dead(t - 1)) {
+                st.retest_target = t;
+                ++h.retest_dead_targets;
+                const GameCommandCompletion done = end_command_0071e430(leader, command, true);
+                if (done.ran) ++h.retest_ends;
+                h.log.notef("squadron retest: \"%s\" target %s dead at %.2f s, command %08X "
+                    "ended (%s, stage %d) (009F8412 / 009F7D3A, cc9-gunnery38)", sq.name.c_str(),
+                    h.slots[t - 1]->row.name.c_str(), static_cast<double>(now), command,
+                    done.arm.empty() ? "-" : done.arm.c_str(), done.stage_after);
             }
         }
         // 009F7C90 (009F7CE0-009F7CFC): every member's task breaks off.
@@ -35579,6 +35608,9 @@ void GameUnitsHost::report() {
                 "issues=%llu (009F8160 / 009F7C90 / 0084E010, packet "
                 "cc9_squadron_spent_ordnance_rtb)", bsp::kSquadronSpentOrdnanceRtbBound ? 1 : 0,
                 host.spent_rtb_latches, host.spent_rtb_ends, host.spent_rtb_issues);
+            host.log.notef("summary mission squadron retest bound=%d dead_targets=%llu ends=%llu "
+                "(009F8160 / 009F7C90, cc9-gunnery38)", bsp::kSquadronDeadTargetRetestBound ? 1 : 0,
+                host.retest_dead_targets, host.retest_ends);
             for (const auto& e : host.spent_rtb) {
                 if (!e.second.latch_3c) continue;
                 host.log.notef("  spent %-24s command=%08X latched=%.2f ended=%.2f issued=%.2f "
