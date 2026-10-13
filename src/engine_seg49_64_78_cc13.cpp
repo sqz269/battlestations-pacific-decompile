@@ -1490,4 +1490,129 @@ void gui_section_describe_properties_00abf090(const void* section, const GuiSect
     gui_write_int_unless_default_00ac4ad0(writer, "TextureMode", f.texture_mode_110, 0);
 }
 
+
+// --- segment 49: profile, unlocks and nose art ---------------------------------------------------
+
+namespace {
+
+// The inlined NativeString equality the profile walks use: equal lengths, then both empty or
+// __stricmp == 0.
+bool native_equals_insensitive(const std::string& a, const std::string& b)
+{
+    if (a.size() != b.size()) return false;
+    if (a.empty()) return true;
+#if defined(_MSC_VER)
+    return _stricmp(a.c_str(), b.c_str()) == 0;
+#else
+    return strcasecmp(a.c_str(), b.c_str()) == 0;
+#endif
+}
+
+} // namespace
+
+bool has_unseen_unlock_007f93f0(const ProfileUnlockState& profile)
+{
+    // For each pending name (+7Ch, head +80h): lower_bound in +70h (004C2140) plus the
+    // __stricmp test; the first one missing returns true.
+    for (const std::string& name : profile.pending_unlocks) {
+        if (profile.unlocks.find(name) == profile.unlocks.end()) return true;
+    }
+    return false;
+}
+
+bool stored_hint_list_contains_007f8e00(const std::vector<std::string>& hints_08,
+                                        const std::string& name)
+{
+    // Each node's string is first copied to a stack NativeString, compared, then released.
+    for (const std::string& hint : hints_08) {
+        const std::string copy = hint;
+        if (native_equals_insensitive(copy, name)) return true;
+    }
+    return false;
+}
+
+void stored_hint_list_push_back_007fae20(std::vector<std::string>& hints_08, const std::string& name)
+{
+    hints_08.push_back(name);  // node copy (005FE8B0 / alias-node allocate), size + 1, link at end
+}
+
+bool checkpoint_vehicle_class_valid_007fc370(ProfileCheckpointHost& host, const std::string& key)
+{
+    if (!host.checkpoint_contains_007f8980(key)) return false;     // +94h map, end = +98h
+    const std::int32_t vehicle_class = host.checkpoint_vehicle_class_8(key);  // operator[] +8h
+    if (vehicle_class == -1) return true;
+    return host.lua_vehicle_class_entry_is_table(vehicle_class);   // globals.VehicleClass[n]
+}
+
+void mission_progress_ptr_reset_007fd870(void*& progress, ProfileCheckpointHost& host)
+{
+    if (progress == nullptr) return;
+    host.mission_progress_destroy(progress);  // BSP_MissionProgress_Destroy on the block
+    host.free_00bf65ac(progress);
+    progress = nullptr;
+}
+
+ScoringBonusRecord construct_profile_bonus_record_007f8b40(std::string a, std::string b,
+                                                           std::string c, std::int32_t value)
+{
+    // Three NativeStrings by value (consumed: their blocks go back to the pool) and an int.
+    ScoringBonusRecord record;
+    record.text_00 = std::move(a);
+    record.text_08 = std::move(b);
+    record.text_10 = std::move(c);
+    record.value_18 = value;
+    return record;
+}
+
+void grant_bonus_text_007fcbc0(std::vector<std::string>& granted_ac,
+                               std::vector<ScoringBonusRecord>& records_bc,
+                               const std::string& key, const std::string& text_a,
+                               const std::string& text_b, const std::string& text_c)
+{
+    for (const std::string& granted : granted_ac) {
+        if (native_equals_insensitive(granted, key)) return;  // the walk stops on the next pass
+    }
+    granted_ac.push_back(key);                                // 00450540 on +ACh
+    // 007F8B40(text_a, text_b, text_c, 0): EBX was zeroed at 007FCC90.
+    records_bc.push_back(construct_profile_bonus_record_007f8b40(text_a, text_b, text_c, 0));
+}
+
+std::string nose_art_texture_path_007f9cb0(std::int32_t index, ProfileCheckpointHost& host)
+{
+    // "NoseArt." + decimal index (004263B0) + ".Texture", resolved from the globals
+    // (00B67980, 00B68D70).
+    const std::string path = "NoseArt." + std::to_string(index) + ".Texture";
+    std::string value;
+    if (!host.lua_resolve_string(path, value)) return std::string();  // not a string -> ""
+    return "models/Textures/noseart/" + value;
+}
+
+void nose_art_load_textures_007fa2d0(void* (&textures_104)[3], ProfileCheckpointHost& host)
+{
+    for (std::int32_t i = 0; i < 3; ++i) {
+        if (textures_104[i] != nullptr) {
+            host.release_texture(textures_104[i]);            // InterlockedDecrement, slot 0
+            textures_104[i] = nullptr;
+        }
+        const std::string path = nose_art_texture_path_007f9cb0(i, host);  // 007F9F70
+        if (!path.empty()) textures_104[i] = host.load_texture_00f8d394_64(path);
+    }
+}
+
+void send_nose_art_selection_007f8690(const std::uint32_t (&record)[3], ProfileCheckpointHost& host)
+{
+    // Message E3h (base 0075B430, vtable 00D02FA8) carrying the three words and [game+18C8h].
+    NoseArtSelectionMessage message{};
+    for (int i = 0; i < 3; ++i) message.words[i] = record[i];
+    message.slot = host.local_slot_18c8();
+    if (host.session_mode_1fe4() == 1) {
+        // The server applies it to its own player record (game+748h + slot*118h, 007F81C0)
+        // and hands the message to 0076A9F0 on game+1EF0h with 0.
+        host.apply_nose_art_007f81c0(message);
+        host.session_dispatch_0076a9f0(message);
+    } else {
+        host.session_send_to_server_00770af0(message);       // game+1EF0h
+    }
+}
+
 } // namespace bsp::cc13_seg49_64_78

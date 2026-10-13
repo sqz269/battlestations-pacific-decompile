@@ -22,6 +22,8 @@
 #include "bsp/gui_widget.hpp"
 #include "bsp/gui_widgets_cc13.hpp"
 #include "bsp/options_hardware_cc13.hpp"
+#include "bsp/profile_unlock.hpp"
+#include "bsp/scoring_bodies.hpp"
 
 namespace bsp::cc13_seg49_64_78 {
 
@@ -793,5 +795,69 @@ struct GuiSectionFields {
 };
 void gui_section_describe_properties_00abf090(const void* section, const GuiSectionFields& f,
                                               GuiPropertyWriter& writer, GuiDescribeHost& host);
+
+// ===================================================================================================
+// Segment 49: the profile (game+650h), unlocks, bonus texts and nose art.
+// ===================================================================================================
+
+// The nose-art selection message (type E3h): the record's three words and the sender slot.
+struct NoseArtSelectionMessage {
+    std::uint32_t words[3]{};
+    std::uint32_t slot{0};       // [game+18C8h]
+};
+
+struct ProfileCheckpointHost {
+    virtual ~ProfileCheckpointHost() = default;
+    // The checkpoint map at profile+94h: 007F8980 find (end = +98h) and 007F8xxx operator[]
+    // reading the record's +8h vehicle class.
+    virtual bool checkpoint_contains_007f8980(const std::string& key) = 0;
+    virtual std::int32_t checkpoint_vehicle_class_8(const std::string& key) = 0;
+    // globals["VehicleClass"][n] through 00B67980 / 00B67800 / 00B67720, then lua_type == table.
+    virtual bool lua_vehicle_class_entry_is_table(std::int32_t vehicle_class) = 0;
+    // A dotted path from the globals (00B68D70); false when the object is not a string.
+    virtual bool lua_resolve_string(const std::string& dotted_path, std::string& out) = 0;
+    virtual void mission_progress_destroy(void* progress) = 0;
+    virtual void free_00bf65ac(void* block) = 0;
+    virtual void release_texture(void* texture) = 0;
+    // [00F8D394] vtable +64h (path, 0): the texture manager's load.
+    virtual void* load_texture_00f8d394_64(const std::string& path) = 0;
+    virtual std::uint32_t local_slot_18c8() = 0;
+    virtual std::int32_t session_mode_1fe4() = 0;
+    virtual void apply_nose_art_007f81c0(const NoseArtSelectionMessage& message) = 0;
+    virtual void session_dispatch_0076a9f0(const NoseArtSelectionMessage& message) = 0;
+    virtual void session_send_to_server_00770af0(const NoseArtSelectionMessage& message) = 0;
+};
+
+// 007F93F0, __fastcall(ECX = profile): true when a name of the pending set (+7Ch) is missing
+// from the unlock set (+70h).
+bool has_unseen_unlock_007f93f0(const ProfileUnlockState& profile);
+// 007F8E00, __thiscall(ECX = profile, const NativeString*), RET 4: the stored-hint list at
+// +08h (head +0Ch) holds the name (equal length, then __stricmp).
+bool stored_hint_list_contains_007f8e00(const std::vector<std::string>& hints_08,
+                                        const std::string& name);
+// 007FAE20, __thiscall(ECX = profile+8h list, const NativeString*), RET 4: push_back.
+void stored_hint_list_push_back_007fae20(std::vector<std::string>& hints_08, const std::string& name);
+// 007FC370, __thiscall(ECX = profile, key), RET 4: false when the checkpoint is unknown; true
+// when its vehicle class is -1; else whether globals.VehicleClass[class] is a table.
+bool checkpoint_vehicle_class_valid_007fc370(ProfileCheckpointHost& host, const std::string& key);
+// 007FD870, __fastcall(ECX = &profile+64h): destroy and free the mission-progress block.
+void mission_progress_ptr_reset_007fd870(void*& progress, ProfileCheckpointHost& host);
+// 007F8B40, __thiscall(record, NativeString a, b, c by value, int), RET 1Ch.
+ScoringBonusRecord construct_profile_bonus_record_007f8b40(std::string a, std::string b,
+                                                           std::string c, std::int32_t value);
+// 007FCBC0, __fastcall(ECX = profile, EDX unused, key*, a*, b*, c*), RET 10h: unless the key is
+// already in +ACh (equal length then __stricmp), append it and push the record {a, b, c, 0} onto
+// +BCh.
+void grant_bonus_text_007fcbc0(std::vector<std::string>& granted_ac,
+                               std::vector<ScoringBonusRecord>& records_bc,
+                               const std::string& key, const std::string& text_a,
+                               const std::string& text_b, const std::string& text_c);
+// 007F9CB0 / 007F9F70 (which returns its out argument), (out, index): the texture path of nose
+// art `index`, or "".
+std::string nose_art_texture_path_007f9cb0(std::int32_t index, ProfileCheckpointHost& host);
+// 007FA2D0, __fastcall(ECX = owner): the three textures at +104h..+10Ch released and reloaded.
+void nose_art_load_textures_007fa2d0(void* (&textures_104)[3], ProfileCheckpointHost& host);
+// 007F8690, __cdecl(const uint32 record[3]): message E3h, applied locally on the server or sent.
+void send_nose_art_selection_007f8690(const std::uint32_t (&record)[3], ProfileCheckpointHost& host);
 
 }  // namespace bsp::cc13_seg49_64_78
