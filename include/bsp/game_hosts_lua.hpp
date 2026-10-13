@@ -254,6 +254,22 @@ inline constexpr bool kLuaKillAttackerBound = true;
 // False: entityKilled subscriptions are stored and never fire, as before.
 inline constexpr bool kLuaEntityKilledListenersBound = false;
 
+// Packet cc13-ver5 (docs/CC13_VER_5.md D2). In the image a victim's `Dead` is written
+// before its `kill` channel fires: 00959450 calls 00878990 -> 0077D270 -> 00929B60 ->
+// 00929800 (Dead, KillReason) at 0095945B, and 009813A0 (the kill channel) only at
+// 00959507, in the same row-15 flush. The host evaluates `kill` in the world tick's spawn
+// drain and publishes `Dead` afterwards in run_script_timers, so a kill callback that
+// reads the victim's .Dead, or luaRemoveDeadsFromTable over a table holding it, without
+// setting it itself sees it alive. 55 kill callbacks in this installation do (USN02's
+// convoy hidden objective, ESMP01's luaJPCVSunk failure, USN03's Zuiho, LOMP05's
+// Vanguard, ...); on the last victim of a set the objective or failure never triggers.
+// True: before a victim's kill callbacks run, its self table gets Dead = true and
+// KillReason (the host's recorded cause), as 00929800 does (the later publisher writes
+// the same values again); and the `hit` channel is evaluated before `kill`, as the image
+// fires it inside the hit (0077CE60 -> 00988510) ahead of the flush, so a hit callback
+// on the lethal hit still sees the victim alive. False: as before.
+inline constexpr bool kKillListenerDeadFirstBound = false;
+
 // Packet cc9_lua54_prcp01 (docs/SQUADRON_LAND_TASK.md 5gj): the four natives on the
 // config at [game+21C4h]. 008B2320 SetSimplifiedReconMultiplier stores Lua argument 1
 // at +74h (008B243C), 008B24A0 GetSimplifiedReconMultiplier pushes it (008B258A);
@@ -748,6 +764,7 @@ struct GameMissionLuaSummary {
     unsigned long long listener_kill_fires{0};
     unsigned long long listener_entity_killed_deaths{0};   // packet cc13-ver5
     unsigned long long listener_entity_killed_fires{0};
+    unsigned long long listener_kill_dead_first{0};          // packet cc13-ver5
     unsigned long long listener_attacker_filtered{0};
     unsigned long long listener_recon_changes{0};
     unsigned long long listener_recon_fires{0};
