@@ -1,6 +1,7 @@
 // Airbase and carrier air operations. docs/AIR_OPERATIONS.md.
 // Addresses in comments are the native sites each rule was read from.
 #include "bsp/air_operations.hpp"
+#include "bsp/launch_ver_cc13.hpp"
 
 namespace bsp {
 
@@ -962,7 +963,11 @@ int air_ops_slot_command_006ccda0(AirOpsDeck& deck, int slot_index, int order,
     // 006CCE95-006CCEAD: 006C4F70 on the slot, slot+50h, 006CA640.
     slot.order_target_4c = order == 3 ? target_plus_one : 0u;
     slot.order_player_50 = player;
-    air_ops_queue_slot_006ca640(deck, slot_index);
+    if constexpr (kAirOpsQueueConsumeStockBound) {
+        air_ops_queue_slot_consume_006ca640(deck, slot_index);   // with 006CA6D5 006C7D10
+    } else {
+        air_ops_queue_slot_006ca640(deck, slot_index);
+    }
     return 1;
 }
 

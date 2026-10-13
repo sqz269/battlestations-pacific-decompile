@@ -9,18 +9,6 @@
 
 namespace bsp {
 
-std::int32_t air_ops_consume_stock_006c7d10(std::vector<AirOpsStockEntry>& stock,
-                                            std::uint32_t vehicle_class,
-                                            std::int32_t count) noexcept {
-    for (AirOpsStockEntry& entry : stock) {           // 006C7D40-006C7D4F
-        if (entry.vehicle_class != vehicle_class) continue;
-        const std::int32_t take = entry.count < count ? entry.count : count;  // 006C7D88 JL
-        entry.count -= take;                           // 006C7D8E SUB [ESI+0Ch],EAX
-        return take;
-    }
-    return -1;                                         // 006C7D6C JE 006C7DD9
-}
-
 namespace {
 AirOpsQueueConsumeResult queue_slot(AirOpsDeck& deck, int slot_index) noexcept {
     AirOpsQueueConsumeResult out;
@@ -38,8 +26,8 @@ AirOpsQueueConsumeResult queue_slot(AirOpsDeck& deck, int slot_index) noexcept {
     auto& queue = deck.launch_queue;
     const bool present = std::find(queue.begin(), queue.end(), slot_index) != queue.end();
     if (!present) {
-        out.consumed = air_ops_consume_stock_006c7d10(deck.stock, slot.vehicle_class,
-                                                      slot.assigned_count);  // 006CA6D5
+        out.stock_left = air_base_consume_stock_006c7d10(deck, slot.vehicle_class,
+                                                         slot.assigned_count);  // 006CA6D5
     } else {
         queue.erase(std::remove(queue.begin(), queue.end(), slot_index), queue.end());  // 006C48F0
         out.requeued = true;

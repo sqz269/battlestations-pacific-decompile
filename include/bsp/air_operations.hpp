@@ -883,6 +883,16 @@ std::int32_t air_ops_fill_slot_006c0f00(AirOpsDeck& deck, int slot_index,
 // appended to block+14h. Returns true when it queued.
 bool air_ops_queue_slot_006ca640(AirOpsDeck& deck, int slot_index) noexcept;
 
+// Packet cc13-fix7 D1 (docs/CC13_VER_15.md section 4). True: 006CCDA0 queues
+// through bsp::air_ops_queue_slot_consume_006ca640, whose stock arm takes the
+// slot's count off the class stock (006CA6D5 -> 006C7D10) unless the slot is
+// already queued (006C48F0 unlinks it and it is re-appended, no consume). The
+// player launch then also refuses before 006C0F00 when the class stock is 0
+// (0067480E 006BF310, 0067481B JLE 00674B46), so an exhausted deck no longer
+// gets the class and a count of 0 written into the slot. False: the stock is
+// never consumed and 006C0F00 runs first (the 0 count is refused after it).
+inline constexpr bool kAirOpsQueueConsumeStockBound = false;
+
 // 006CCDA0 BSP_AirOps_SlotCommand for the arms a player order reaches: a slot
 // with a class, in state 5 or 1, given order 1 (moveto) or 3 (attack target):
 // with `apply`, slot+4Ch = the target for order 3 (0 otherwise, 006C4F70),
