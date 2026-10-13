@@ -4,29 +4,11 @@
 
 namespace bsp {
 
-bool unit_death_reports_kill_00959450(int cause_70, float clock, bool world_active,
-                                      bool controller_veto) noexcept {
-    // 00959468 COMISS / JBE: report only when clock > 1.0f; NaN fails as well.
-    if (!(clock > 1.0f)) return false;
-    if (cause_70 != 1) return false;     // 00959475
-    if (!world_active) return false;     // 0095948A
-    return !controller_veto;             // 009594FC TEST AL,AL / JNE 0095950C
-}
-
 bool squadron_death_reports_kill_007f3b10(int cause_70, bool world_active,
                                           bool controller_veto) noexcept {
     if (cause_70 != 1) return false;     // 007F3B19
     if (!world_active) return false;     // 007F3B2A
     return !controller_veto;             // 007F3B46 CMP [ESI+36Ah],0 / JNE 007F3B5B
-}
-
-bool think_timed_arm_00929460(bool armed_1dc, float& delay_1e0, float step) noexcept {
-    // 009294B4..009294C5: the armed delay must be above zero, else the untimed arm.
-    if (!armed_1dc || !(delay_1e0 > 0.0f)) return false;
-    // 009294C7..009294D7: FSUB, FSTP to a float, FST into +1E0h.
-    delay_1e0 = delay_1e0 - step;
-    // 009294DD FLDZ / FCOMIP ST(1) / JB 00929534: waits while 0 < remaining.
-    return !(0.0f < delay_1e0) && delay_1e0 == delay_1e0;
 }
 
 float squadron_average_health_007edc30(const float* member_health_00923be0,

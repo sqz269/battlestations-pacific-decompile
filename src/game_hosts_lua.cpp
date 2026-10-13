@@ -41,6 +41,7 @@
 #include "bsp/mission_lobby_settings.hpp"
 #include "bsp/mission_lua_bindings.hpp"
 #include "bsp/mission_lua_machine.hpp"
+#include "bsp/mission_result.hpp"     // packet cc13-ver8, unit_death_00959450
 #include "bsp/mission_ver_cc13.hpp"   // packet cc13-ver8
 #include "bsp/mission_scene_load.hpp"
 #include "bsp/ship_ai_path_turn_ramp.hpp"
@@ -5288,9 +5289,16 @@ void GameMissionLuaHost::dispatch_kill_listeners_009813a0() {
             }
             // The world's active byte is set throughout a mission here, and the veto is
             // not modelled (labelled in kKillListenerHarmOnlyBound).
-            const bool reported = squadron_slot
-                ? bsp::squadron_death_reports_kill_007f3b10(cause, true, false)
-                : bsp::unit_death_reports_kill_00959450(cause, death.second, true, false);
+            bool reported = false;
+            if (squadron_slot) {
+                reported = bsp::squadron_death_reports_kill_007f3b10(cause, true, false);
+            } else {
+                bsp::UnitDeathInputs in;
+                in.mission_clock = death.second;
+                in.unit_party_70 = cause;   // +70h is the kill cause (00926E02)
+                in.world_gate_4ac = true;
+                reported = bsp::unit_death_00959450(in).reports_kill;
+            }
             if (!reported) {
                 if (cause != 1) {
                     ++summary_.listener_kill_not_harm;
