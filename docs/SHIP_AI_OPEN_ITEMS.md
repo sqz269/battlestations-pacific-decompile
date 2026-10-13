@@ -17327,3 +17327,64 @@ not in the readiness doc). Phase 1: the selected unit (Zao, `SetSelectedUnit(Mis
 | `s46_f_i18al` (a, 100000 frames) | none | `mission end: EndMission at 2208.58 s`, `refused a mission script's process launch: sus_prog.exe`, `Scoring_SetMissionCompleted` called once |
 | `s46_f_i18aj` (a, 60000 frames) | 20,3 | `mission end: EndMission at 2370.14 s`, guard line present |
   The win is EndMission, as for BSM01 and USN15. The player does one thing; the reinforcements do the fighting.
+
+## 229. USNOS k stalls on idle Betties; re-tune status (cc9-ships46, 2026-10-13; lead item 1)
+
+Build: this branch at `7cf1f9893` (run `s46_a_osk`), then with origin/main `a35f4093c` merged (the a-variants).
+USNOS, 200000 frames, reference env, `--stop-after-end 40`; logs `local\s46_a_osk.log`, `local\s46_b_<v>.log`.
+
+**Why k stalls (no Lua error).** `s46_a_osk` repeats `local\s45_rc_osk.log` exactly: no `lua error` line, both
+Hakus, Yamato and Musashi die, three bases captured, and `HideScoreDisplay(4, 0)` never comes. `Mission.FinalTrgs`
+is not only the six ships: `luaFuntime` (`us_osumi.lua` about line 1806) appends the six GenerateObject'd Betty
+squadrons (`table.insert(Mission.FinalTrgs, unit)` for Betty1-6), so line 1181 needs every Betty dead too. Since the
+drop-kamikaze task is hosted (`cc9_lua52_kamikaze_wiring`), the Betties release their Ohkas at 1615-1700 s instead of
+being shot down near the fleet at about 1550 s (as in the `1de67cfb9` win, `local\s45_v_osk.log`). After the drop
+they end in `stop director idle tail` and fly straight on: at tick 173200 Betty1's formation pairwise distances are
+165-402 km. Betty2/3/5/6 are shot down by 7160 s; all four planes of Betty1 (target Gear18) and Betty4 (target
+TroopTrans5) live, so FinalTrgs never empties. **Open plane-lane question:** is the straight flight after the drop
+task's goAway faithful for a carrier-less GenerateObject'd Betty? If the image patrols or returns, the stall is a host
+defect and k would complete again.
+
+**Re-tune attempts** (orders hunt the Betties with Midway's F2Gs, class 810; Takao1 is sunk by DM1 at 1654 s in every
+row, so the four Midway Takao1 strikes are not needed):
+| v | change to k | Betty planes left alive |
+| --- | --- | --- |
+| a1 | Midway at Betty1/Betty4 at 29600/29620, plus repeats at members 31000-44000 | Betty6 (all four) |
+| a2 | repeats only | Betty5, Betty6 |
+| a3 | launches at all six squadrons every 500 frames 31000-50000 | Betty5, Betty6 |
+| a4 | a1, then `attack Midway_sqn31/32 Betty6/Betty5` | Betty6: `attack` on a plane is refused (`005FAB05: not a ship`) |
+| a5 | a1, then single Midway/Enterprise launches at Betty6 every 3000 frames | Betty6 |
+| **a6** | the four Midway Takao1 launches dropped; Midway at Betty1/4/6/5 at 29600-29660 (`local\s46_os_a6.txt`) | **Betty5\|.-2 and Betty5\|.-3 only** |
+Mechanics learnt: a launch re-queued onto the same slot replaces the queued one and still drains stock (a3); Midway
+stops creating squadrons (`air ops queued launch ... squadron=0`) once four of its squadrons are airborne, and a hunter
+squadron does not land or retarget after its target dies, so each carrier gives at most four hunts. In a6 Midway_sqn34
+(at Betty5) loses two planes to the Betties' gunners, kills Betty5 and Betty5|.-4 (1914, 1936 s) and stops.
+Under jitter 20,3 the k battle already fails before the Betties matter (a3j: TroopTrans6 dies, `Game Over` at 2159 s;
+a6j: TroopTrans6 dies at 2036 s, `Game Over` at 2084.86 s), so USNOS is not jitter-safe on this main either way.
+
+## 230. Handoff (cc9-ships46, 2026-10-13)
+
+Branch `agent/cc9-ships44`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-ships44` (origin/main `a35f4093c`
+merged). Leases `cc9_s46_wins`, `cc9_s46_wins2` released. Tools in `local\`: `s46_rows.ps1` (launcher, as s45's),
+`s46_j6gen.py` (JM06 m), `s46_u21gen.py`/`gen2`/`gen3` (USN21 phase 1 and strikes), `s46_i08gen.py` (IJN08),
+`s45_osedit.py` for USNOS derivations; `s44_pos.py` / `s44_peek.ps1` from the predecessors (a running log can no
+longer be opened for shared reading, so peek after the run).
+
+**Done:** 227 JM06 m (jitter-safe for seed 3; `config/win_orders/jm06_s46_j6_m.txt`, 24a0169dd); 228 IJN18 a (win,
+also under jitter; `config/win_orders/ijn18_s46_i18_a.txt`, 04a9e9150) and USN21's phase-1 recipe; 229 the USNOS
+stall cause.
+
+**Open, in order:**
+1. **USNOS:** from a6, two planes of Betty5 are the last FinalTrgs. Next tries: launch a fifth hunt from Enterprise
+   once one of its slots frees (its 810 launches are refused `no such slot` at 1400-2400 s), or aim Midway's fourth
+   launch at `Betty5|.-2` after Betty5 dies; or wait for the plane lane's verdict on the post-drop flight (229).
+2. **IJN08** (`ijn_8_north_sol.lua`, 2024-07-13; SURFACE OPERATION): phase 1 completes by itself (the subs sink the
+   six Cargo by 575 s). Phase 2 needs all eight `Installations` dead (US_Airfield_01-03, Jap_Airfield, US_Shipyard_01-03,
+   `Shipyard Entity CB3`) and the HQ at (-1804, 8280) captured (party Japanese). Variant a (`local\s46_i08_a.txt`:
+   Kongo/Haruna/Aoba/Furutaka `attack` the installations in rotation every 2000 frames) killed Jap_Airfield 732 s,
+   US_Shipyard_02 2015 s, US_Shipyard_01 2523 s in 4000 s; Maru1 died at 2021 s, and `select Maru1` is refused
+   (`0064A057..0064A079: the four byte filters fail`), so the capture needs another route (check how the script lands
+   troops: `JapTrans`, `luaAirfieldManager` on captured fields).
+3. **USN21** waits on the plane lane (228): each carrier's 32-aircraft cap and the torpedo/dive release rates.
+4. Other SURFACE OPERATION missions not yet tried: IJN07, IJN11, IJN12, IJN25, IJN37, BSM07 (idle: Houston sinks at
+   384 s with no mission end), IJN13 (idle: both subs sunk by the convoy's four Mahans, `Game Over` at 549 s).
