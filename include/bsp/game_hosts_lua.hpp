@@ -579,14 +579,14 @@ inline constexpr bool kLuaSquadronLandAndKillBound = false;
 // (src/script_natives_fix5_cc13.cpp) on the entity's deck. False: unimplemented,
 // so the scene stock survives and a following AddAirBaseStock adds to it
 // (prcpjm08.lua:908, the Hosho).
-inline constexpr bool kLuaRemoveAllAirBasePlanesBound = false;
+inline constexpr bool kLuaRemoveAllAirBasePlanesBound = true;  // ON: lead pair (JM08 identical, 2026-10-13)
 // Packet cc13-fix5 (docs/CC13_FIX_5.md section 3). 0089AC30 StartLanding2(unit):
 // 00888AA0 on argument 0, then vtable[238h]() and its answer pushed as an integer
 // (the 94h receiver's call, without the message): 0074A4C0 on an MLandingShip
 // (vtable 00CFFA30), 008206F0 on every other ship vtable. True: the row runs the
 // ship AI host's two models and pushes the answer. False: unimplemented, no
 // result (jm08.lua:653 then fails on tonumber(nil) < 0).
-inline constexpr bool kLuaStartLanding2Bound = false;
+inline constexpr bool kLuaStartLanding2Bound = true;  // ON: lead pair (JM08 identical, 2026-10-13)
 // Packet cc13-fix5 (docs/CC13_FIX_5.md section 4). 0089CFE0 GetSquadronPlane(squadron,
 // i): 00888AA0 on argument 0, argument 1 as an integer; when 0 <= i < [sq+3CCh] it
 // pushes thisTable[[sq+3D0h+4i]+174h] (i < 5 and the member non-null) or nil, and
