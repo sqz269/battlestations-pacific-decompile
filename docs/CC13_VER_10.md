@@ -188,3 +188,38 @@ The callers:
 - The touchdown geometry and the landing sequencer (`006CD240`) were not re-read. Both have their own cc9 pairs
   (SQUADRON_LAND_TASK 5c, 5ag), and carrier recovery is measured end to end in 5gp.
 - `+228h`'s readers were not traced.
+
+## 7. D2 wired: `SquadronLandAndKill` (`008A20E0`), packet cc13-fix4
+
+- **Commit** `53377c98e`, switch `kLuaSquadronLandAndKillBound` (`include/bsp/game_hosts_lua.hpp`), committed **OFF**. The
+  row is not handled while it is off, so the native stays `UNIMPLEMENTED` and nothing changes byte for byte.
+- **Binding.** `GameMissionLuaHost::run_squadron_land_and_kill_008a20e0` (`src/game_hosts_lua.cpp`) runs the existing model
+  `squadron_land_and_kill_008a20e0` (`src/air_operations.cpp`) rather than a second copy. The model now takes the narrow
+  `SquadronLandAndKillHost` (its two call sites, `release_squadron_slot` and `kill_plane`), which `AirOperationsHost` derives
+  from, so no unrelated virtual had to be stubbed.
+  - `007F1B70` -> `006C65B0` runs on every deck in the registry with the squadron's slot handle (`squadron_unit + 1`, the
+    entity id, the same value the stock return passes at `007F1D4E`), **before** the kills, in the image's order.
+  - Each live member, last to first (at most five readable, `008A2232`), is killed through the gunnery host with cause 5,
+    skipping a member already dead (`00926D90`'s `+5Fh` return).
+  - `kKillListenerHarmOnlyBound` (cc13-ver8): the cause 5 is recorded in `lua_kill_cause_`, so once that switch is on
+    these deaths do not report `kill` (`007F3B19 CMP [unit+70h],1`). With it off they report as every Lua Kill does today.
+  - `007F3970`'s removal and the squadron Kill (`007F3A2A`) are the units host's existing paths: the death sweep
+    (`007BCAA0 -> 007F3970`) removes each dead member on the next motion step, and the fused squadron slot's `Dead` is held
+    until the record's live count is 0.
+- **Adoption note (cc9, `src/game_hosts_units.cpp`, leased to cc9-lua52).** The published `KillReason` of these planes
+  will be `harm`, not `landed`. The gunnery kill ignores its cause, and the units host's `note_kill_cause` (`:2625`) is
+  private to its `Impl`. **Missing:** a public `GameUnitsHost::note_kill_cause_00926d90(std::size_t unit, int cause)` that
+  forwards to `Impl::note_kill_cause`; the binding's `kill_plane` should then call it with 5 before the gunnery kill, as
+  the stock return does at `:14259`. No script in this installation was found to read the KillReason of a PRCP01
+  Enterprise squadron, so this is presentation/scoring only.
+- **Prediction when ON.** On PRCP01 order files with three or more Enterprise squadrons up when `luaUS03EndReconMovie`
+  runs (`usn_03_battle_of_santa_cruz.lua:1189`), the extras are deleted at that call: their planes go `Dead` (KillReason
+  `harm` until the adoption note lands, `landed` after), the squadron goes `Dead` once its last plane is swept, and its
+  launch slot drops to cooldown (state 1, 5.0 s), so the deck can launch again. Today those squadrons keep attacking.
+  This may explain part of cc9's SQUADRON_LAND_TASK 5gp item 3. The campaign copy of the same script,
+  `COTP-USN/usn_03_battle_of_santa_cruz.lua:1189`, makes the identical call, so the campaign mission that loads that file changes
+  the same way; no other `.lua` in this installation calls the native.
+- **RNG.** The binding draws nothing. The deleted planes stop their per-tick draws and the freed slot can launch earlier,
+  so on PRCP01 every draw after the call (shared stream `00BD2F10` and the per-unit streams) can shift. Pair PRCP01 runs
+  only option-on against option-off from the call onwards.
+- **Status.** Reconstructed (model) and wired; build-tested; not game-validated (no run, by rule).
