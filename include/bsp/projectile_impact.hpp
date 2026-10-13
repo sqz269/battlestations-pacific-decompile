@@ -24,7 +24,15 @@ namespace bsp {
 // ---------------------------------------------------------------------------
 
 // 00CF9058, a double. Read by 006E65C0 (FMUL QWORD), 006E7670 and 006E8430.
-inline constexpr double kProjectileGravity = 9.8103800773621;
+// Its bytes are 00 00 00 60 B8 9E 23 40 = 9.8100004196166992, the double of
+// 9.81f (docs/CC13_GPR_53.md 8.2 item 2, docs/GUN_GRAVITY_ARC.md); the host
+// value 9.8103800773621 is not in the image. True: every user of this constant
+// (projectile_impact.cpp, projectile_kinds.cpp, bomb_torpedo_tick.cpp's kGravity)
+// takes the image's value. False: the host's value, as before.
+inline constexpr bool kProjectileGravityImageBound = false;
+inline constexpr double kProjectileGravityImage = 9.8100004196166992;   // 00CF9058
+inline constexpr double kProjectileGravity =
+    kProjectileGravityImageBound ? kProjectileGravityImage : 9.8103800773621;
 
 // 00D7A280, a double, the half in the s = v*t - 0.5*g*t^2 term at 006E7714.
 inline constexpr double kProjectileHalf = 0.5;

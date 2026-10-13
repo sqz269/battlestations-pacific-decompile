@@ -199,6 +199,20 @@ std::uint32_t ai_bullet_type_accuracy_offset_009fe270(int sub_type,
                                                       AiAccuracyTargetGroup group,
                                                       bool& resolved) noexcept;
 
+// 009FE277-009FE286: before the dispatch the routine calls the target's
+// vtable[+1Ch] (its class id, the head of its kind chain). Two arms test it:
+// DepthCharge 0Bh (009FE44A CMP EAX,8 / JNE 009FE6BB) answers +148h only for
+// class 8 (Submarine), Paratroopers 0Fh (009FE465 CMP EAX,1Ch / JNE 009FE6BB)
+// answers +14Ch only for class 1Ch (CommandBuilding); any other target takes the
+// reject arm. Both ids are leaves of every kind chain (docs/ATTACK_GATE_TAILS.md),
+// so IsKindOf(8) / IsKindOf(1Ch) equals the exact id. Answers false when the
+// pair is rejected; every other sub-type passes. docs/CC13_GPR_69.md 7.6.
+bool ai_bullet_type_class_gate_009fe270(int sub_type, bool target_is_class_8,
+                                        bool target_is_class_1c) noexcept;
+// True: the host's 009FE270 users apply the gate above. False: DepthCharge and
+// Paratroopers answer unconditionally, as before.
+inline constexpr bool kAiBulletClassGateBound = false;
+
 const AiTuningAuthoredRow* ai_tuning_authored_row(AiTuningMode mode) noexcept;
 
 // An AiTuningLuaReader over the rows above.

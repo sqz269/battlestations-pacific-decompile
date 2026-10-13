@@ -19,6 +19,7 @@
 #include <vector>
 
 #include "bsp/ai_command_lifetime.hpp"
+#include "bsp/gameplay_seg69_70_cc13.hpp"
 #include "bsp/attack_commands.hpp"
 #include "bsp/ai_command_object.hpp"
 #include "bsp/ai_close_attack_tick.hpp"
@@ -628,6 +629,16 @@ public:
         : facts_(facts), tuning_(tuning), block_(block), group_(std::move(group)),
           kind_(std::move(kind)), class_id_(std::move(class_id)) {}
 
+    // kAiBulletClassGateBound: 009FE270's target vtable[+1Ch] tests, through
+    // the unit's own kind test. Passes everything while the switch is off or
+    // no kind test was bound.
+    bool class_gate(int sub_type, const void* target) const {
+        if (!bsp::kAiBulletClassGateBound || !kind_) return true;
+        const std::size_t t = index_of(target);
+        return bsp::ai_bullet_type_class_gate_009fe270(sub_type, kind_(t, 0x08),
+                                                       kind_(t, 0x1C));
+    }
+
     // 00A03B90 and 00A079B0, the memo map at 00F8A734. A memo only caches, so
     // skipping it changes no answer; the census counts the queries instead.
     bool memo_lookup(const bsp::AiTargetWeightKey&, float&) override { return false; }
@@ -717,6 +728,7 @@ public:
     float barrel_accuracy(const void* subsystem, int barrel, const void* target) override {
         const GameAiWeaponFacts::Barrel* b = barrel_at(subsystem, barrel);
         if (b == nullptr || !b->accuracy_resolved || !group_) return 0.0f;
+        if (!class_gate(b->bullet_sub_type, target)) return 0.0f;
         bool resolved = false;
         const std::uint32_t offset = bsp::ai_bullet_type_accuracy_offset_009fe270(
             b->bullet_sub_type, group_(index_of(target)), resolved);
@@ -808,6 +820,7 @@ public:
     // 009FE270 by sub-type, the lookup barrel_accuracy makes for a barrel.
     float bullet_accuracy(const void*, int sub_type, const void* target) override {
         if (!group_) return 0.0f;
+        if (!class_gate(sub_type, target)) return 0.0f;
         bool resolved = false;
         const std::uint32_t offset = bsp::ai_bullet_type_accuracy_offset_009fe270(
             sub_type, group_(index_of(target)), resolved);
@@ -2203,7 +2216,12 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         return tick_member_is_plane_squadron(member);
     }
     bool close_member_squadron_excluded(void* member) override {
-        return tick_squadron_excluded_007eda90(member);
+        if (tick_squadron_excluded_007eda90(member)) return true;   // 00A14413 JE
+        // 00A1441B: 009FFEB0 runs only on the squadron arm (00A143F5).
+        if (kCloseAttackSquadronHomeBound && tick_member_is_plane_squadron(member)) {
+            return tick_squadron_excluded_009ffeb0(member);
+        }
+        return false;
     }
     // 00A143ED PUSH 18h, 00A14402 PUSH 17h, 00A1440C the +C24h byte, 00A14413
     // JE, then the other arm's 00A14427 PUSH 6 and 00A1443D vtable[+2Ch]. One
@@ -4177,7 +4195,10 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                 float mul = 1.0f;
                 if (e == gr.current) {
                     const double d2 = static_cast<double>(dz * dz + dx * dx);
-                    const float d = d2 <= 1.0e-11 ? 0.0f : static_cast<float>(std::sqrt(d2));
+                    // 00A2A5C0: [00CE3820] under kCaptureCurrentTargetEpsilonBound.
+                    const double epsilon =
+                        kCaptureCurrentTargetEpsilonBound ? bsp::kAiTailLengthEpsilon : 1.0e-11;
+                    const float d = d2 <= epsilon ? 0.0f : static_cast<float>(std::sqrt(d2));
                     mul = bsp::ai_tail_capture_attack_weight(d, t.act_dist_1, t.act_mul_1,
                                                              t.act_dist_2, t.act_mul_2);
                 }
@@ -5769,7 +5790,36 @@ void GameAiCoordinatorHost::Impl::order_attack(void* group, void* target, float 
     }
     // A higher aggressive ratio makes CAUTIOUSATTACK less likely, because
     // 00BD2F40's uniform draw is compared against it.
-    const bool cautious = random_00bd2f10(0.0f, 1.0f) > aggressive;
+    bool cautious = false;
+    if (kOrderAttackCautiousGatesBound) {
+        // 00A2CC2E: the first member's vtable[5Ch](6).
+        const bool leader_ship = tick_member_is_ship_base(handle(g->members.front()));
+        bool gate = false;
+        if (!leader_ship) {
+            // 00A2CC40 00A10C20(target), then 00A2CC48 00A2C9F0(group)(point).
+            struct Danger final : bsp::gameplay_seg69_70_cc13::DangerHost {
+                Impl& self;
+                void* group;
+                Danger(Impl& s, void* gr) : self(s), group(gr) {}
+                float danger_cost(const float point[3], int team) override {
+                    return self.tick_danger_cost_00a010f0(point, team);
+                }
+                void leader_point(float out[3]) override {
+                    self.tick_leader_point(group, out);
+                }
+            } danger(*this, group);
+            float target_point[3] = {0.0f, 0.0f, 0.0f};
+            tick_leader_point(target, target_point);
+            gate = bsp::gameplay_seg69_70_cc13::ai_should_route_cautiously_00a2c9f0(
+                g->team, tuning.at(bsp::kAiTuningCautionMoveDist), target_point, danger);
+        }
+        // 00A2CC51: the draw happens only when both gates pass.
+        const float draw = (!leader_ship && gate) ? random_00bd2f10(0.0f, 1.0f) : 0.0f;
+        cautious = bsp::ai_attack_arm_00a2cbd0(leader_ship, gate, draw, aggressive) ==
+                   bsp::AiAttackArmChoice::CautiousAttack;
+    } else {
+        cautious = random_00bd2f10(0.0f, 1.0f) > aggressive;
+    }
     // 00A2BD00: the outgoing command is destroyed through its vtable[+0h] with
     // flag 1 and the new pointer is stored at group+564Ch.
     if (bsp::ai_command_install_deletes_previous(true)) ++summary.commands_replaced;
