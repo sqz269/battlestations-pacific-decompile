@@ -517,6 +517,9 @@ int binding_trampoline(lua_State* state) {
     // Packet cc13_natives1.
     const bool release_alt_row = kLuaSquadronSetReleaseAltBound
         && dispatch_row.address == 0x008a24e0u;
+    // Packet cc13-fix4.
+    const bool land_and_kill_row = kLuaSquadronLandAndKillBound
+        && dispatch_row.address == 0x008a20e0u;
     // Packet cc9_squadron_attack_alt.
     const bool attack_alt_row = kSquadronAttackAltBound
         && dispatch_row.address == 0x008a22b0u;
@@ -603,7 +606,7 @@ int binding_trampoline(lua_State* state) {
         || spawn_id_requested_row || spawn_id_remove_row
         || in_border_zone_row
         || select_unit_row || movie_add_row || force_select_row
-        || release_alt_row
+        || release_alt_row || land_and_kill_row
         || (orders != nullptr && GameScriptOrdersHost::handles(dispatch_row.name));
     // The replay of a failed named call, which the executable makes only to
     // recover the error message, must not count a second time.
@@ -737,6 +740,10 @@ int binding_trampoline(lua_State* state) {
     }
     if (release_alt_row) {
         if (!host->error_replay()) host->run_squadron_set_release_alt_008a24e0(state, argc);
+        return 0;
+    }
+    if (land_and_kill_row) {
+        if (!host->error_replay()) host->run_squadron_land_and_kill_008a20e0(state, argc);
         return 0;
     }
     if (in_formation_row && !host->error_replay()) {
@@ -6462,6 +6469,94 @@ int GameMissionLuaHost::run_squadron_set_release_alt_008a24e0(lua_State* state,
         "cc13_natives1)", row != nullptr ? row->name.c_str() : "?",
         static_cast<double>(altitude), force ? 1 : 0, stored ? 1 : 0);
     log_.implemented("MissionLuaNative::SquadronSetReleaseAlt", "008a24e0");
+    return 0;
+}
+
+// Packet cc13-fix4 (docs/CC13_VER_10.md section 4). 008A20E0
+// SquadronLandAndKill(squadron), lua_CFunction, no result (008A2254 00B66400).
+// 008A21C8 00888AA0 on argument 0 and the class test 18h (PlaneSquadronGen);
+// 008A220F 007F1B70 frees the launching slot on every carrier and airfield; from
+// +3CCh - 1 down to 0, 008A223F 00926D90(plane, 5) then 008A2249 007F3970(plane,
+// 1). The sequence is squadron_land_and_kill_008a20e0 (src/air_operations.cpp).
+// SUBSTITUTIONS (labelled):
+// - the plane handle is units-host index + 1 and the +3D0h array is the registry
+//   record's live members in order; the squadron handle is squadron_unit + 1, the
+//   value the deck slots hold (as the stock return 007F1D4E passes it);
+// - the block handle is the deck registry index (every carrier and airfield);
+// - 007F3970's own removal and its squadron Kill (007F3A2A) are not run here: the
+//   units host's death sweep (007BCAA0 -> 007F3970, kill sweep of the next motion
+//   step) removes each dead member, and the fused squadron slot's Dead is held
+//   until the record's live count is 0, the host's stand-in for 007F3A2A;
+// - the gunnery host's kill ignores the cause, so the published KillReason is
+//   not "landed" (5): the units host keeps the cause and has no public writer
+//   (adoption note in docs/CC13_VER_10.md section 7);
+// - a non-squadron argument (the image dereferences null) and a squadron with no
+//   record do nothing.
+int GameMissionLuaHost::run_squadron_land_and_kill_008a20e0(lua_State* state,
+    int argument_count) {
+    static_cast<void>(argument_count);
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    if (units == nullptr || units->gunnery() == nullptr || id <= 0
+        || static_cast<std::size_t>(id) > units->count()) {
+        log_.notef("  SquadronLandAndKill 008a20e0: entity id %d has no units-host slot (packet "
+            "cc13-fix4)", id);
+        return 0;
+    }
+    const std::size_t index = static_cast<std::size_t>(id - 1);
+    const bsp::PlaneSquadronHostRecord* record = nullptr;
+    for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+        if (r.squadron_unit != bsp::kPlaneSquadronNoUnit && r.squadron_unit == index) {
+            record = &r;
+            break;
+        }
+    }
+    if (record == nullptr) {
+        log_.notef("  SquadronLandAndKill 008a20e0: entity id %d is not a squadron (packet "
+            "cc13-fix4)", id);
+        return 0;
+    }
+    std::vector<std::uint32_t> planes;
+    for (std::size_t member : record->member_units) {
+        if (member != bsp::kPlaneSquadronNoUnit) planes.push_back(static_cast<std::uint32_t>(member + 1));
+    }
+    bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();
+    std::vector<std::uint32_t> blocks;
+    for (std::size_t d = 0; d < decks.size(); ++d) blocks.push_back(static_cast<std::uint32_t>(d));
+
+    struct Host final : bsp::SquadronLandAndKillHost {
+        Host(bsp::AirOpsDeckRegistry& d, GameGunneryHost& g, std::map<std::size_t, int>& causes)
+            : decks(d), gunnery(g), lua_kill_cause(causes) {}
+        void release_squadron_slot(std::uint32_t block, std::uint32_t squadron) override {
+            bsp::AirOpsDeck* deck = decks.mutable_at(block);
+            if (deck != nullptr) released += bsp::air_ops_release_squadron_slot_006c65b0(*deck, squadron);
+        }
+        void kill_plane(std::uint32_t plane, std::int32_t reason) override {
+            if (plane == 0u) return;
+            const std::size_t unit = plane - 1u;
+            // 00926D90 returns when +5Fh is already set.
+            if (gunnery.unit_dead(unit)) return;
+            // 007F3B19 CMP [unit+70h],1: a cause-5 death does not report `kill`.
+            if constexpr (kKillListenerHarmOnlyBound) lua_kill_cause[unit] = reason;  // cc13-ver8
+            gunnery.kill_unit_00926d90(unit, reason);
+            ++killed;
+        }
+        bsp::AirOpsDeckRegistry& decks;
+        GameGunneryHost& gunnery;
+        std::map<std::size_t, int>& lua_kill_cause;
+        std::size_t released{0};
+        std::size_t killed{0};
+    } host(decks, *units->gunnery(), lua_kill_cause_);
+
+    const std::string name = record->name;
+    std::int32_t plane_count = static_cast<std::int32_t>(planes.size());
+    bsp::squadron_land_and_kill_008a20e0(host,
+        static_cast<std::uint32_t>(record->squadron_unit + 1u), blocks.data(),
+        static_cast<int>(blocks.size()), planes.data(), &plane_count);
+    log_.notef("  SquadronLandAndKill 008a20e0: squadron %s planes=%zu killed=%zu "
+        "slots_released=%zu (packet cc13-fix4)", name.c_str(), planes.size(), host.killed,
+        host.released);
+    log_.implemented("MissionLuaNative::SquadronLandAndKill", "008a20e0");
     return 0;
 }
 
