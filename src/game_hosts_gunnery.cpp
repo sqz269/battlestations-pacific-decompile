@@ -398,7 +398,8 @@ constexpr bool kSubmarineCategoryGateBound = false;
 //    for every death but its own cause-4/5 kills. ON: the funnel records the
 //    normalised cause through GameUnitsHost::note_kill_cause_00926e02.
 //    OFF: as before.
-constexpr bool kKillFunnelCauseBound = false;
+//    ON since the pairs (GUNNERY_OPEN_ITEMS 226: USN01 21 non-harm causes, identical).
+constexpr bool kKillFunnelCauseBound = true;
 //  * kTorpedoSwimThrustBound: packet cc9_torpedo_tube_turn,
 //    docs/TORPEDO_FRIENDLY_CROSSING.md section 6. 00857480, the swim advance,
 //    per step on a torpedo in the water: 00856BB0 -> 00857061 yaws the NOSE

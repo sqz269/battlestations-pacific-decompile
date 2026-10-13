@@ -13877,3 +13877,34 @@ the surfaced player boat, `ShowHint("IJN12_Fido")`) is only in `scripts/missions
 `ijn/JM/jm12.lua` (2024-07-13). `scripts/datatables/missiontree.lua` (2025-06-02) maps the Hawaii-2 mission
 (menu id `JM14`) to `prcpijn_12_havaii_2.scn`. Its `prcpjm12.lua` has no Fido block, and menu `JM12` loads the
 Fiji invasion. No menu id reaches the Fido script, and the harness has no scene override.
+
+## 226. Round 2: the win set with the five flips, the USN01 bisect, kill cause (cc9-gunnery41, 2026-10-13)
+
+**Win set.** Base `863d505be` with every new switch OFF (`local\g39_rk2`) against `1120ac370` with the five flips ON
+(`local\g40_bm0`, `kKillFunnelCauseBound` OFF). Same orders and frames as the reference rows:
+
+| row | base | five flips ON |
+| --- | --- | --- |
+| USN01 p3_u1_z4 26000 | completed 1079.03 s | **none (lost)** |
+| USN02 s36_u2_p7 | completed 198.06 s | completed 198.06 s |
+| USN12 s38_u12_p2 | completed 1500.19 s | completed 1500.19 s |
+| LOMP10 p3_l10_b | completed 1244.64 s | completed 1530.87 s |
+| LOMP06 l50_l6_q6 | completed 369.98 s | completed 369.98 s |
+| BSM01 l50_b1_a | EndMission 767.94 s | EndMission 767.94 s |
+| USN15 s45_u15_l2 | EndMission 2790.45 s (OFF `863d505be`) | not run combined |
+
+**USN01 bisect** (each switch alone at `863d505be`): D6, D5 and D2 keep the win (1079.03, 1079.03 and 1103.80 s).
+**D4 and D3+D1 each lose it.** In both, deaths fall 90 -> 87: `Nell4|.-2` and `Nell3|.-3` survive. On the base
+Enterprise's fighters (`Enterprise_sqn01|.-2`, `_sqn03|.-2`, cat 0) kill them at 1006 s and 1074 s, and
+`Enterprise_sqn01` itself dies only on the base. The win depends on fighters catching the last Nells: a
+knife-edge, not a mechanism failure. Both switches stay ON by mechanism. **USN01 goes to the keeper
+(cc9-physics7) for re-planning.**
+
+**Kill cause (224).** OFF `1120ac370` against ON (`local\g40_tf`): USN12 identical (non-harm causes 0), USN01
+identical with 21 non-harm causes (the soft kills reach no harm-filtered listener). **ON.**
+
+**Other OFF switches, USN15/USN21.** Slot origin (221) USN15: moved, EndMission at 1145.44 s, earlier than OFF's
+2790.45 s. Leader fallback (222) USN15: **fails** at 1774.71 s; USN21 identical. Submarine gate (223) USN21: moved
+(deaths 716 -> 751); `refusals=0` on USN12. All five VER_19/flak extras together (`g39_rk0`) on USN15 fail at
+1095.89 s. 221 and 222 stay OFF. USN21 logs `refusals=748` (Dace/Darter), so the gate is exercised. 223 stays OFF until the win set runs
+with it.
