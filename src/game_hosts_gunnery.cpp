@@ -4542,6 +4542,15 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                     gun.bullet_class, "MaxFall", 0.0f);
                 b.heading_turn = lua.read_bullet_class_number(
                     gun.bullet_class, "HeadingTurn", 0.0f);
+                {
+                    // Packet cc13-homing1: classDesc+E0h/+D8h/+DCh for 0080A000. Read
+                    // for every class; only a released rocket uses them.
+                    b.ignition_delay = lua.read_bullet_class_number(
+                        gun.bullet_class, "IgnitionDelay", 0.0f);
+                    b.rocket_vmax = lua.read_bullet_class_number(gun.bullet_class, "VMax", 0.0f);
+                    b.rocket_acceleration = lua.read_bullet_class_number(
+                        gun.bullet_class, "Acceleration", 0.0f);
+                }
                 b.damage_min = flat_scaled(type_id, make("dmin"), kMilliScale, 0.0f);
                 b.damage_max = flat_scaled(type_id, make("dmax"), kMilliScale, 0.0f);
                 b.water_damage = flat_scaled(type_id, make("wdmg"), kMilliScale, 0.0f);
@@ -8912,6 +8921,46 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
                 }
             }
         }
+        if (shot.is_rocket) {
+            // Packet cc13-homing1: 0080A000, MRocket's vtable+19Ch, replaces the air
+            // advance (gravity is its own; the round is flagged NoGravity at spawn).
+            // Only release_rocket_0080aa20 sets is_rocket, so this runs only when a
+            // caller's own switch released one. The ignition and thrust law always
+            // runs for such a rocket; the homing block is filled only under
+            // kRocketHomingBound (cc9-gunnery39, GUNNERY 202).
+            bsp::RocketHomingTargetView view;
+            const bsp::RocketHomingTargetView* target = nullptr;
+            const std::size_t t1 = shot.rocket.homing.target_plus_one;
+            if (t1 != 0 && t1 - 1 < unit_state.size()
+                && (unit_state[t1 - 1].dead || unit_state[t1 - 1].health <= 0.0f)) {
+                // 004C2D90: the observer callback nulls +47Ch (loss of lock).
+                // LABELLED: the host stands death for the notice.
+                shot.rocket.homing.target_plus_one = 0;
+                ++summary.rocket_homing_lock_lost;
+            } else if (t1 != 0) {
+                float r[3], u[3], f[3], o[3];
+                unit_pose(t1 - 1, r, u, f, o);
+                view.world = {r[0], r[1], r[2], 0.0f, u[0], u[1], u[2], 0.0f,
+                              f[0], f[1], f[2], 0.0f, o[0], o[1], o[2], 1.0f};
+                // vtable[34h]: the linear velocity. 0092D730 as the drops use,
+                // because GameUnitRow::forward_speed is zero for a plane.
+                const float speed = units.unit_forward_speed_0092d730(t1 - 1);
+                view.velocity = {f[0] * speed, f[1] * speed, f[2] * speed};
+                target = &view;
+            }
+            shot.rocket.velocity = {shot.flight.velocity.x, shot.flight.velocity.y,
+                                    shot.flight.velocity.z};
+            shot.rocket.pose[12] = shot.position[0];
+            shot.rocket.pose[13] = shot.position[1];
+            shot.rocket.pose[14] = shot.position[2];
+            const bsp::RocketAirStepResult step =
+                bsp::rocket_air_step_0080a000(shot.rocket, shot.rocket_class, target, dt);
+            shot.flight.velocity = bsp::TickPoint3{shot.rocket.velocity[0],
+                shot.rocket.velocity[1], shot.rocket.velocity[2]};
+            if (step.ignited_this_step) ++summary.rocket_ignitions;
+            if (step.homing == bsp::RocketHomingExit::kSteered) ++summary.rocket_homing_steps;
+            done("Rocket::air_step_0080a000", 0x0080a000u);
+        }
         const float from[3] = {shot.position[0], shot.position[1], shot.position[2]};
         shot.flight = bsp::projectile_flight_step(shot.flight, dt);
         if (kBombDropDriftBound && shot.is_bomb && !shot.flight.class_disables_gravity
@@ -13110,6 +13159,59 @@ const GameGunnerySummary& GameGunneryHost::summary() const noexcept {
     return impl_->summary;
 }
 
+bool GameGunneryHost::release_rocket_0080aa20(std::size_t unit_index,
+                                              std::size_t target_plus_one,
+                                              const float body_point[3], float homing_angle,
+                                              int bullet_class) {
+    Impl& h = *impl_;
+    const GameGunRow* chosen = nullptr;
+    for (const GameGunRow& gun : h.guns) {
+        if (gun.unit_index != unit_index) continue;
+        if (bullet_class >= 0 && gun.bullet_class != bullet_class) continue;
+        const GameBulletClassRow* round = h.bullet(gun.bullet_class);
+        if (round == nullptr || round->type != "Rocket") continue;
+        chosen = &gun;
+        break;
+    }
+    if (chosen == nullptr) return false;
+    const GameBulletClassRow* round = h.bullet(chosen->bullet_class);
+    float right[3], up[3], forward[3], origin[3];
+    h.unit_pose(unit_index, right, up, forward, origin);
+    const float speed = h.units.unit_forward_speed_0092d730(unit_index);
+
+    GameProjectileRow shot;
+    shot.gun_row = static_cast<std::size_t>(chosen - h.guns.data());
+    shot.owner_unit = unit_index + 1;
+    shot.owner_side = h.units.unit_side_0054(unit_index);
+    shot.bullet_class = chosen->bullet_class;
+    shot.alive = true;
+    for (int i = 0; i < 3; ++i) shot.position[i] = origin[i];
+    shot.flight.velocity = bsp::TickPoint3{forward[0] * speed, forward[1] * speed,
+                                           forward[2] * speed};
+    shot.flight.snapshot_current = bsp::TickPoint3{origin[0], origin[1], origin[2]};
+    shot.flight.local_position = shot.flight.snapshot_current;
+    shot.flight.mode = bsp::ProjectileMotionMode::kBallistic;
+    shot.flight.class_disables_gravity = true;   // 0080A000 owns the rocket's gravity
+    shot.is_rocket = true;
+    shot.rocket_class = {round->ignition_delay, round->rocket_vmax, round->rocket_acceleration};
+    shot.rocket.pose = {right[0], right[1], right[2], 0.0f, up[0], up[1], up[2], 0.0f,
+                        forward[0], forward[1], forward[2], 0.0f,
+                        origin[0], origin[1], origin[2], 1.0f};
+    const bool kind_5 = target_plus_one != 0
+        && h.units.unit_is_kind_of(target_plus_one - 1, 0x05);
+    // The block is filled only under kRocketHomingBound; OFF, the rocket flies
+    // its ignition and thrust law unguided (the constructor's zeroed +47Ch).
+    if (bsp::kRocketHomingBound) {
+        bsp::rocket_set_homing_target_0080aa20(shot.rocket.homing, target_plus_one, kind_5,
+            {body_point[0], body_point[1], body_point[2]}, homing_angle);
+    }
+    h.shots.push_back(shot);
+    ++h.summary.projectiles;
+    ++h.summary.rocket_launches;
+    if (shot.rocket.homing.target_plus_one != 0) ++h.summary.rocket_guided_launches;
+    return true;
+}
+
 bool GameGunneryHost::release_ordnance_drop(std::size_t unit_index) {
     Impl& h = *impl_;
     // The unit's torpedo-capable gun rows. `swim_speed > 0` is the same test the
@@ -13744,6 +13846,10 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery torpedo_drop drops=%llu refusals=%llu "
             "water_entry_breakups=%llu",
             s.torpedo_drops, s.torpedo_drop_refusals, s.water_entry_breakups);
+        host.log.notef("summary mission gunnery rocket launches=%llu guided=%llu ignitions=%llu "
+            "homing_steps=%llu lock_lost=%llu homing_bound=%d (0080AA20/0080A000, GUNNERY 202)",
+            s.rocket_launches, s.rocket_guided_launches, s.rocket_ignitions,
+            s.rocket_homing_steps, s.rocket_homing_lock_lost, bsp::kRocketHomingBound ? 1 : 0);
         host.log.notef("summary mission gunnery ballistics aa_direct_aims=%llu "
             "artillery_arc_aims=%llu aim_error_rerolls=%llu no_gravity_shots=%llu "
             "switches arc=%d nograv=%d aimerr=%d (packet cc9_gun_ballistics)",
