@@ -1018,5 +1018,57 @@ struct EffectThunderStormState {
 bool update_effect_thunderstorm_instance_00873c80(const EffectThunderStormState& s, float dt,
                                                   const ThunderStormUpdateHost& host);
 
+// ===========================================================================
+// Rotation helpers used by the torpedo homing (00856BB0) and the periscope
+// debris step (00852970). Gameplay x87 at 24-bit precision: every product
+// and sum below rounds like a float, in the listing's order.
+// ===========================================================================
+
+// 0085C3F0, __fastcall(out ECX, const v EDX, const axis* [ESP+4], float
+// angle [ESP+8]), RET 8; 7 callers (00730160 BSP_Gun_Fire among them).
+// Rodrigues about a unit axis a:
+//   d = (a.y*v.y + a.x*v.x) + a.z*v.z;  p = d*a;  r = v - p
+//   rr = (r.y*r.y + r.x*r.x) + r.z*r.z
+//   if (double)1e-4f (00D7A268) > rr: out = v   (FCOMPI/JBE; a NaN rotates)
+//   else c = a x r (004F9B30), s = f(FSIN angle), k = f(FCOS angle),
+//        out = ((r*k) + p) + c*s, each component stored as a float.
+// FSIN/FCOS are taken here as double sin/cos rounded to float, which can
+// differ from the x87 result in the last bit.
+Vec3 rotate_vector_about_axis_0085c3f0(const Vec3& v, const Vec3& axis, float angle) noexcept;
+
+// 0085E880, __fastcall(out ECX, const in EDX, const axis* [ESP+4], float
+// angle [ESP+8]), RET 8: out row 2 (+20h) = 0085C3F0(in row 2), then out row
+// 1 (+10h) = 0085C3F0(in row 1), then 0085DC80(out)
+// (orthonormalize_pose_matrix_0085dc80, src/plane_pose_commit.cpp). Out rows
+// 0 and 3 are not written before 0085DC80. `out` may alias `in`.
+void rotate_basis_about_axis_0085e880(float out[16], const float in[16], const Vec3& axis,
+                                      float angle);
+
+// 0085E8C0, __fastcall(out ECX, const in EDX, const pivot* [ESP+4], const
+// axis* [ESP+8], float angle [ESP+0Ch]), RET 0Ch; sole caller 0042D610. The
+// 0085E880 steps (rows 2 and 1, then 0085DC80), then t = in row 3 - pivot
+// (each a float), t' = 0085C3F0(t), out row 3 = pivot + t' (pivot first in
+// each FADD). Out may alias in: row 3 is read after 0085DC80, which never
+// writes it.
+void rotate_about_axis_through_point_0085e8c0(float out[16], const float in[16], const Vec3& pivot,
+                                              const Vec3& axis, float angle);
+
+// 0085D3D0 / 0085D770 / 0085D920 / 0085DAD0, __fastcall(float m[16] ECX),
+// plain RET, in place on rows 0..2 (elements 0..2, 4..6, 8..10; the fourth
+// column and row 3 are never addressed). One shape in all four:
+//   normalise A; d = (A.y*B.y + A.x*B.x) + A.z*B.z; B -= A*d; normalise B;
+//   C = cross(P, Q) (004F9B30); normalise C.
+// normalise: L = 00419440 length (f(sqrt((f(x*x) + f(y*y)) + f(z*z))));
+// inv = L > 0 ? f(1 / L) : 0 (FLDZ / FCOMI / JBE, FLD1 / FDIVRP DE F1; a NaN
+// length gives 0); each component times inv, stored as a float.
+//   0085D3D0  A row 0, B row 1, C row 2 = row0 x row1   (1 caller, 0085E4D0)
+//   0085D770  A row 2, B row 0, C row 1 = row2 x row0   (1 caller, 007DF4F0)
+//   0085D920  A row 1, B row 0, C row 2 = row0 x row1   (no caller)
+//   0085DAD0  A row 1, B row 2, C row 0 = row1 x row2   (20 callers)
+void orthonormalize_from_row_x_0085d3d0(float m[16]) noexcept;
+void orthonormalize_from_row_z_0085d770(float m[16]) noexcept;
+void orthonormalize_from_row_y_then_x_0085d920(float m[16]) noexcept;
+void orthonormalize_from_row_y_then_z_0085dad0(float m[16]) noexcept;
+
 }  // namespace gameplay_seg53_cc13
 }  // namespace bsp

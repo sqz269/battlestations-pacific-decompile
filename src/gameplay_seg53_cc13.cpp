@@ -5,6 +5,7 @@
 // x87 intermediate rounds like a float. Build-tested only.
 
 #include "bsp/gameplay_seg53_cc13.hpp"
+#include "bsp/plane_pose_commit.hpp"
 
 #include <cmath>
 
@@ -1027,6 +1028,108 @@ bool update_effect_thunderstorm_instance_00873c80(const EffectThunderStormState&
         }
     }
     return true;
+}
+
+Vec3 rotate_vector_about_axis_0085c3f0(const Vec3& v, const Vec3& axis, float angle) noexcept {
+    const float d = (axis.y * v.y + axis.x * v.x) + axis.z * v.z;     // 0085C422..0085C450
+    const Vec3 p{axis.x * d, axis.y * d, d * axis.z};                // 0085C466..0085C478
+    const Vec3 r{v.x - p.x, v.y - p.y, v.z - p.z};                    // 0085C484..0085C498
+    const float rr = (r.y * r.y + r.x * r.x) + r.z * r.z;             // 0085C49C..0085C4B8
+    constexpr float kEpsilon = 1e-4f;                                 // 00D7A268 (double)1e-4f
+    if (kEpsilon > rr) return v;                                      // 0085C4CA JBE not taken
+    // 004F9B30: c = a x r.
+    const Vec3 c{axis.y * r.z - axis.z * r.y, axis.z * r.x - axis.x * r.z,
+                 axis.x * r.y - axis.y * r.x};
+    const float s = static_cast<float>(std::sin(static_cast<double>(angle)));  // 0085C511 FSIN
+    const Vec3 cs{c.x * s, c.y * s, s * c.z};
+    const float k = static_cast<float>(std::cos(static_cast<double>(angle)));  // 0085C53F FCOS
+    const Vec3 rk{r.x * k, r.y * k, k * r.z};
+    const Vec3 sum{rk.x + p.x, rk.y + p.y, rk.z + p.z};               // 0085C569..0085C589
+    return Vec3{sum.x + cs.x, sum.y + cs.y, sum.z + cs.z};            // 0085C58D..0085C5AD
+}
+
+void rotate_basis_about_axis_0085e880(float out[16], const float in[16], const Vec3& axis,
+                                      float angle) {
+    const Vec3 row2 = rotate_vector_about_axis_0085c3f0(Vec3{in[8], in[9], in[10]}, axis, angle);
+    out[8] = row2.x;
+    out[9] = row2.y;
+    out[10] = row2.z;
+    const Vec3 row1 = rotate_vector_about_axis_0085c3f0(Vec3{in[4], in[5], in[6]}, axis, angle);
+    out[4] = row1.x;
+    out[5] = row1.y;
+    out[6] = row1.z;
+    orthonormalize_pose_matrix_0085dc80(out);                         // 0085E8B5
+}
+
+void rotate_about_axis_through_point_0085e8c0(float out[16], const float in[16], const Vec3& pivot,
+                                              const Vec3& axis, float angle) {
+    rotate_basis_about_axis_0085e880(out, in, axis, angle);          // 0085E8DE..0085E8F9
+    const Vec3 t{in[12] - pivot.x, in[13] - pivot.y, in[14] - pivot.z};  // 0085E8FE..0085E924
+    const Vec3 r = rotate_vector_about_axis_0085c3f0(t, axis, angle);    // 0085E930
+    out[12] = pivot.x + r.x;
+    out[13] = pivot.y + r.y;
+    out[14] = pivot.z + r.z;
+}
+
+namespace {
+
+// 00419440 (not in this segment): f(sqrt((f(x*x) + f(y*y)) + f(z*z))), the
+// CRT sqrt 00BF7030 at 24-bit precision.
+float length_00419440(const float* v) noexcept {
+    const float s = (v[0] * v[0] + v[1] * v[1]) + v[2] * v[2];
+    return std::sqrt(s);
+}
+
+void normalise_row(float* row) noexcept {
+    const float len = length_00419440(row);
+    const float inv = len > 0.0f ? 1.0f / len : 0.0f;
+    row[0] = row[0] * inv;
+    row[1] = row[1] * inv;
+    row[2] = row[2] * inv;
+}
+
+// rows by index: a is normalised first, b is made orthogonal to it, and
+// c = p x q.
+void orthonormalize_rows(float m[16], int a, int b, int c, int p, int q) noexcept {
+    float* const ra = m + a * 4;
+    float* const rb = m + b * 4;
+    normalise_row(ra);
+    const float d = (ra[1] * rb[1] + ra[0] * rb[0]) + ra[2] * rb[2];
+    const float px = ra[0] * d;
+    const float py = ra[1] * d;
+    const float pz = d * ra[2];
+    rb[0] = rb[0] - px;
+    rb[1] = rb[1] - py;
+    rb[2] = rb[2] - pz;
+    normalise_row(rb);
+    const float* const u = m + p * 4;
+    const float* const w = m + q * 4;
+    const float cx = u[1] * w[2] - u[2] * w[1];
+    const float cy = u[2] * w[0] - u[0] * w[2];
+    const float cz = u[0] * w[1] - u[1] * w[0];
+    float* const rc = m + c * 4;
+    rc[0] = cx;
+    rc[1] = cy;
+    rc[2] = cz;
+    normalise_row(rc);
+}
+
+}  // namespace
+
+void orthonormalize_from_row_x_0085d3d0(float m[16]) noexcept {
+    orthonormalize_rows(m, 0, 1, 2, 0, 1);
+}
+
+void orthonormalize_from_row_z_0085d770(float m[16]) noexcept {
+    orthonormalize_rows(m, 2, 0, 1, 2, 0);
+}
+
+void orthonormalize_from_row_y_then_x_0085d920(float m[16]) noexcept {
+    orthonormalize_rows(m, 1, 0, 2, 0, 1);
+}
+
+void orthonormalize_from_row_y_then_z_0085dad0(float m[16]) noexcept {
+    orthonormalize_rows(m, 1, 2, 0, 1, 2);
 }
 
 void water_mine_arm_0085f1e0(WaterMineArmState& s, const WaterMineArmHost& host) {

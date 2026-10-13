@@ -245,8 +245,9 @@ Still open, in priority order:
 3. `segment_box_hit_0085cdb0` (src/hit_narrowphase.cpp) has no record. It needs a check
    against the listing before a pointer record is added.
 4. (Done in section 7: 00853590, 008533E0, 00853110, 008530E0, 00852D30.)
-5. Math helpers 0085C0F0..0085E8C0 (rotate about axis, orthonormalise variants, ellipsoid
-   and sphere-triangle tests). Torpedo homing and debris use 0085E880 / 0085C3F0.
+5. Math helpers: 0085C3F0, 0085E880, 0085E8C0 and the four orthonormalise variants are done
+   (section 7.5). Still open: the ellipsoid test 0085C5D0, the sphere-triangle distance
+   0085DF60 and the two copy wrappers 0085C0F0 / 0085C220 (no callers).
 
 Functions in the segment that still have no reconstruction record (named, not reconstructed),
 grouped by name prefix:
@@ -427,3 +428,28 @@ nothing to model. The adjustor thunks 00853010..00853040 and the scalar deleting
    00857780 reads. Section 1.6's note on the misnamed "Serialize" is now complete.
 4. Both create functions (008531A0, 0085F310) run the memset on the raw `operator new` result
    and dereference a null object when the allocation fails. That is the image's behaviour.
+
+### 7.5 Rotation and orthonormalisation helpers
+
+The torpedo homing (00856BB0) and debris step (00852970) models take these as host callbacks.
+They now have models of their own:
+
+| address | model | what it does |
+|---|---|---|
+| `0085C3F0` | `rotate_vector_about_axis_0085c3f0` | Rodrigues about a unit axis. `d = (a.y*v.y + a.x*v.x) + a.z*v.z`, `p = d*a`, `r = v - p`; when `rr = (r.y^2 + r.x^2) + r.z^2` is below (double)1e-4f (00D7A268) it returns v unchanged (a NaN rotates). Otherwise `((r*cos) + p) + (a x r)*sin` (004F9B30 cross), each component a float. 7 callers, including 00730160 `BSP_Gun_Fire`. |
+| `0085E880` | `rotate_basis_about_axis_0085e880` | Rotates rows 2 and then 1, then runs 0085DC80 (calls the existing `orthonormalize_pose_matrix_0085dc80`). |
+| `0085E8C0` | `rotate_about_axis_through_point_0085e8c0` | 0085E880, plus row 3 = pivot + R(row 3 - pivot). |
+| `0085D3D0` / `0085D770` / `0085D920` / `0085DAD0` | `orthonormalize_from_row_*` | One shape: normalise A, take A's component out of B, normalise B, C = cross, normalise C. The rows are (0, 1, 2 = 0x1), (2, 0, 1 = 2x0), (1, 0, 2 = 0x1) and (1, 2, 0 = 1x2). normalise uses `inv = L > 0 ? 1/L : 0` (FCOMI/JBE; a NaN length gives 0), and 00419440 is `sqrt((x*x + y*y) + z*z)`. |
+
+Uncertainty: FSIN/FCOS are modelled as double `sin`/`cos` rounded to float. That can differ from
+the x87 result in the last bit, but no other step can, given 24-bit precision. The x87 operand
+forms were read from the bytes: 0085DAF3 `DE F1` (1/L) and the cross 004F9B30 (x = a.y*b.z - a.z*b.y).
+
+Adoption: these are pure functions with no RNG. They replace the `rotate_about_axis_0085c3f0`
+callback in src/gameplay_seg61_62_cc13.cpp:562 and the `orthonormalize_0085dad0` host callback in
+src/engine_seg43_45_cc13.cpp:47, and they back this file's homing and debris callbacks.
+Prediction with the switch OFF: unchanged. ON: identical results except the last-bit FSIN/FCOS
+case.
+
+Verification for this pass: `scripts/build.ps1` passes. `tools/verify_report_calls.py
+local/g53d_calls.json` checked 94 call rows with 0 failures. No tests were added and there were no game runs.
