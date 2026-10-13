@@ -974,6 +974,75 @@ VoiceMessage voice_message_construct_00774dc0(const VoicePacket& p) {
     return m;
 }
 
+void session_loading_begin_0076c190(std::int32_t mode_f4, bool& flag_4, bool& loading_27c, SessionSendHost& host) {
+    if (mode_f4 == 1) {
+        SessionMessageOut m = session_message(0x0E, 0x00D0300Cu);
+        m.put32(0x18, 0);
+        host.broadcast_except_00784790(m);
+        host.flush_peer_buffers_007848f0();
+    }
+    flag_4 = false;
+    loading_27c = true;
+}
+
+void session_loading_end_0076c230(std::int32_t mode_f4, bool& loading_27c, SessionSendHost& host) {
+    if (mode_f4 == 1) {
+        SessionMessageOut m = session_message(0x0E, 0x00D0300Cu);
+        m.put32(0x18, 1);
+        host.broadcast_except_00784790(m);
+    }
+    loading_27c = false;
+}
+
+void session_kick_player_peer_0076c790(const SessionPlayerRecord& record, SessionSendHost& host) {
+    host.kick_peer_00784b10(record.peer_50, 1);
+}
+
+void session_send_to_player_slot_00772330(std::int32_t mode_f4, std::int32_t message_slot_1c, int local_slot_18ec,
+                                          const std::array<SessionPlayerRecord, 8>& records, std::uintptr_t message,
+                                          SessionSendHost& host) {
+    if (mode_f4 != 1 && mode_f4 != 0) return;
+    if (message_slot_1c == local_slot_18ec) {
+        host.apply_counter_record_0052cf60(message);
+        return;
+    }
+    const std::uintptr_t peer = records[static_cast<std::size_t>(message_slot_1c)].peer_50;
+    if (peer != 0) host.send_to_peer_00770b50(peer, message);
+}
+
+void session_send_to_remote_player_00772af0(std::int32_t game_session_1fe4, const SessionPlayerRecord& record,
+                                            std::uintptr_t message, SessionSendHost& host) {
+    if (game_session_1fe4 == 2) return;
+    if (record.peer_50 != 0 && record.remote_8) host.send_to_peer_00770b50(record.peer_50, message);
+}
+
+void session_broadcast_queued_0076c500(std::vector<std::uintptr_t>& outbound_25c, SessionSendHost& host) {
+    for (const std::uintptr_t m : outbound_25c) {
+        host.broadcast_message_00784830(m);
+        if (m != 0) host.scalar_delete(m);
+    }
+    outbound_25c.clear();  // +260h = 0
+}
+
+SessionMessageOut session_broadcast_music_level_0076d280(std::uint32_t level, SessionSendHost& host) {
+    SessionMessageOut m = session_message(0x2A, 0x00D0319Cu);
+    m.put32(0x18, level);
+    host.broadcast_except_00784790(m);
+    return m;
+}
+
+void session_host_relay_to_team_00770bd0(std::int32_t mode_f4, const std::array<SessionPlayerRecord, 8>& records,
+                                         int record_count_988, std::uint32_t team, std::uintptr_t message,
+                                         std::uintptr_t except_peer, SessionSendHost& host) {
+    if (mode_f4 != 1) return;
+    for (int i = 0; i < record_count_988; ++i) {
+        const SessionPlayerRecord& r = records[static_cast<std::size_t>(i)];
+        if (r.peer_50 != except_peer && !r.local_9 && r.team_28 == team && r.peer_50 != 0) {
+            host.send_to_peer_00770b50(r.peer_50, message);
+        }
+    }
+}
+
 float peer_rows_quality_00786010(const band0076_cc13::PeerRows& rows, int index) noexcept {
     return rows.rows[index].quality;
 }

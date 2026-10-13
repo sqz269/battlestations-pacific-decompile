@@ -825,6 +825,56 @@ float session_update_start_gate_007713a0(std::int32_t mode_f4, bool has_game, st
                                          int local_index_18ec, float dt, StartGateHost& host);
 
 // ---------------------------------------------------------------------------
+// Session sends. Player records: game+18CCh[8], +8 remote byte, +9 local
+// byte, +28h team, +50h peer.
+struct SessionPlayerRecord {
+    bool remote_8{false};
+    bool local_9{false};
+    std::uint32_t team_28{0};
+    std::uintptr_t peer_50{0};
+};
+struct SessionSendHost {
+    virtual ~SessionSendHost() = default;
+    virtual void broadcast_except_00784790(const SessionMessageOut& m) = 0;     // [session+188h]
+    virtual void flush_peer_buffers_007848f0() = 0;
+    virtual void send_to_peer_00770b50(std::uintptr_t peer, std::uintptr_t message) = 0;
+    virtual void kick_peer_00784b10(std::uintptr_t peer, int flag) = 0;          // ECX [session+188h]
+    virtual void apply_counter_record_0052cf60(std::uintptr_t message) = 0;
+    virtual void broadcast_message_00784830(std::uintptr_t message) = 0;
+    virtual void scalar_delete(std::uintptr_t message) = 0;
+};
+// 0076C190: fastcall session. Host (+F4h == 1): MT_LOADINGINFO (0Eh, class 14,
+// vtable 00D0300C, +18h = 0) broadcast, then 007848F0; every mode: +4 = 0,
+// +27Ch = 1.
+void session_loading_begin_0076c190(std::int32_t mode_f4, bool& flag_4, bool& loading_27c, SessionSendHost& host);
+// 0076C230: as above with +18h = 1, no flush; +27Ch = 0.
+void session_loading_end_0076c230(std::int32_t mode_f4, bool& loading_27c, SessionSendHost& host);
+// 0076C790: ECX session, stack record, RET 4: 00784B10(record peer +50h, 1).
+void session_kick_player_peer_0076c790(const SessionPlayerRecord& record, SessionSendHost& host);
+// 00772330: ECX session, stack message, RET 4. In modes 0 and 1: a message
+// addressed (+1Ch) to the local slot (game+18ECh) goes to 0052CF60, any other
+// to that record's peer when it has one (00770B50).
+void session_send_to_player_slot_00772330(std::int32_t mode_f4, std::int32_t message_slot_1c, int local_slot_18ec,
+                                          const std::array<SessionPlayerRecord, 8>& records, std::uintptr_t message,
+                                          SessionSendHost& host);
+// 00772AF0: cdecl (message, record). Unless a client (game +1FE4h == 2): to the
+// record's peer when it has one and is remote (+8).
+void session_send_to_remote_player_00772af0(std::int32_t game_session_1fe4, const SessionPlayerRecord& record,
+                                            std::uintptr_t message, SessionSendHost& host);
+// 0076C500: fastcall session. Every message of the outbound array +25Ch
+// (count +260h) goes out through 00784830 and is deleted; count = 0.
+void session_broadcast_queued_0076c500(std::vector<std::uintptr_t>& outbound_25c, SessionSendHost& host);
+// 0076D280: ECX session, stack level, RET 4: MT_MUSICCONTROL_SETLEVEL (2Ah,
+// vtable 00D0319C, +18h level), broadcast.
+SessionMessageOut session_broadcast_music_level_0076d280(std::uint32_t level, SessionSendHost& host);
+// 00770BD0: ECX session, stack (team, message, except peer), RET 0Ch. Host
+// only: every record of the first [[game+5FCh]+988h] with that team, a peer
+// other than `except`, and not local.
+void session_host_relay_to_team_00770bd0(std::int32_t mode_f4, const std::array<SessionPlayerRecord, 8>& records,
+                                         int record_count_988, std::uint32_t team, std::uintptr_t message,
+                                         std::uintptr_t except_peer, SessionSendHost& host);
+
+// ---------------------------------------------------------------------------
 // Peer rows (band0076_cc13::PeerRows at session+8h) and the MNetwork client.
 
 // 00786010: ECX rows, stack index, RET 4: rows[index].quality in ST0.
