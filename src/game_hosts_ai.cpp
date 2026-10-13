@@ -629,6 +629,16 @@ public:
         : facts_(facts), tuning_(tuning), block_(block), group_(std::move(group)),
           kind_(std::move(kind)), class_id_(std::move(class_id)) {}
 
+    // kAiBulletClassGateBound: 009FE270's target vtable[+1Ch] tests, through
+    // the unit's own kind test. Passes everything while the switch is off or
+    // no kind test was bound.
+    bool class_gate(int sub_type, const void* target) const {
+        if (!bsp::kAiBulletClassGateBound || !kind_) return true;
+        const std::size_t t = index_of(target);
+        return bsp::ai_bullet_type_class_gate_009fe270(sub_type, kind_(t, 0x08),
+                                                       kind_(t, 0x1C));
+    }
+
     // 00A03B90 and 00A079B0, the memo map at 00F8A734. A memo only caches, so
     // skipping it changes no answer; the census counts the queries instead.
     bool memo_lookup(const bsp::AiTargetWeightKey&, float&) override { return false; }
@@ -718,6 +728,7 @@ public:
     float barrel_accuracy(const void* subsystem, int barrel, const void* target) override {
         const GameAiWeaponFacts::Barrel* b = barrel_at(subsystem, barrel);
         if (b == nullptr || !b->accuracy_resolved || !group_) return 0.0f;
+        if (!class_gate(b->bullet_sub_type, target)) return 0.0f;
         bool resolved = false;
         const std::uint32_t offset = bsp::ai_bullet_type_accuracy_offset_009fe270(
             b->bullet_sub_type, group_(index_of(target)), resolved);
@@ -809,6 +820,7 @@ public:
     // 009FE270 by sub-type, the lookup barrel_accuracy makes for a barrel.
     float bullet_accuracy(const void*, int sub_type, const void* target) override {
         if (!group_) return 0.0f;
+        if (!class_gate(sub_type, target)) return 0.0f;
         bool resolved = false;
         const std::uint32_t offset = bsp::ai_bullet_type_accuracy_offset_009fe270(
             sub_type, group_(index_of(target)), resolved);

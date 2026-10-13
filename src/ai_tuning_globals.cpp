@@ -266,6 +266,13 @@ std::uint32_t ai_bullet_type_accuracy_offset_009fe270(int sub_type,
     }
 }
 
+bool ai_bullet_type_class_gate_009fe270(int sub_type, bool target_is_class_8,
+                                        bool target_is_class_1c) noexcept {
+    if (sub_type == 0x0B) return target_is_class_8;    // 009FE44A CMP EAX,8
+    if (sub_type == 0x0F) return target_is_class_1c;   // 009FE465 CMP EAX,1Ch
+    return true;
+}
+
 const AiTuningAuthoredRow* ai_tuning_authored_row(AiTuningMode mode) noexcept {
     if (!mode_in_range(mode)) return nullptr;
     return &kAuthored[static_cast<std::size_t>(static_cast<int>(mode))];
