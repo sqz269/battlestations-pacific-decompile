@@ -15684,3 +15684,124 @@ through the gunless blast path (box distance, no element gather, no attribution:
   is in state 4/5 until it lifts off), `unit+61h`, the player-plane skip, `unit+9E0h`'s drop of entity/plane hits
   (the pilot control-state byte, not carried), and the 0.75 folded-wing scale. The OFF census on USN19 1500
   (`local\l53_S1_u19.log`): 195312 plane steps, 585936 segments, no unit hit (no kamikaze task OFF).
+
+### 5gc, the pairs (cc9-lua53, 2026-10-12)
+
+Launcher `local\l53_lane.ps1`. Exports: `l53_M0` (1de67cfb9, before the sweep), `l53_A0` (2d59381e8 OFF), `l53_K1`
+(2d59381e8, kz + sweep), `l53_A1` (d2625de56 OFF, origin/main c58e1858c merged), `l53_K2` (d2625de56, kz + sweep).
+All with `BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`, 8000 frames.
+
+- **OFF census is gameplay-neutral:** USN19 `l53_M0` vs `l53_A0`: pair_diff "GAMEPLAY: identical".
+- **The launch cooldown (d2625de56).** The first USN18 census (`l53_A0_u18`) had 18 c99 hits; 10 were planes
+  "hitting" their own carrier at launch (Yorktown, Randolph, Enterprise, Saratoga, t=268-288 s, y -0.8..14): the
+  host plane is in state 7 on its deck, where the image holds the sweep with `007C5F60`'s 3.0 s `+9DCh`. The
+  stand-in arms 3.0 s on the first free-flight step; after it (`l53_C1_u18`) those 10 are gone.
+- **USN18 A1 vs K2:** no kamikaze reaches the sweep in 8000 frames (the OkhaGang follows the phase-1 movie). Two
+  c99 impacts, both a fighter (`plane #1.1`) meeting `B29_3` at 1447 m (t=82.3 and 84.6 s; 254 and 168 dealt).
+  The image has these mid-air contacts too (plane meshes in the same sweep); kept as faithful. pair_diff moved
+  through them: deaths 82 = 82, hit records 2857 -> 2688, damage 76.1k -> 73.7k.
+- **USN19 A1 vs K2 (kz + sweep):** 30 impacts, all c21. 26 on hulls: Bunker Hill 6, USTroopTransport 06 4,
+  Enterprise 3, Intrepid 3, USTroopTransport 07 3, Astoria 2, USTroopTransport 02 2, 04 2, 05 1; 4 kamikaze vs
+  kamikaze of other squadrons converging in moveto (the host's flight has no separation; the image's sweep would
+  take the same contact). Each hull impact deals 140-1190 after armour; no ship sinks in 8000 frames.
+  pair_diff: deaths 172 -> 191 (the extra rows are kamikaze planes dying on impact instead of to AA or the
+  water), hull hits 497 -> 1301, damage 54.4k -> 79.8k, shots 23.7k -> 18.5k (planes that strike no longer
+  draw fire), same-squadron exemptions 5.
+- **Mechanism matches the prediction** (task flies, planes strike their targets and die, the class-21 blast lands).
+  The count (26 hull strikes) sits just under lua52's 29 passes within 50 m: some of those passes cross above
+  the hull mesh.
+- **USNOS osx A1 vs K3 (kz + sweep + drop):** the drop task installs on all 24 Betty carriers and runs moveto/follow/
+  done/goaway, but never reaches attackrun: releases 0, rounds 0, spawned 0. That matches lua52's K4 run, so the
+  drop half is still unexercised and `kDropKamikazeTaskBound` stays OFF (open: why the Bettys go `done` without an
+  attackrun). The sweep took one impact: `Enterprise_sqn01|.-3` (c99, alt 16 m, t=329.54 s) flew into
+  `Storage - Raktar03 01` and destroyed it (237.9 dealt across 2 records). That is the first divergence: every
+  earlier death row is identical. The run then cascades: deaths 425 -> 321, and the mission fails at 1629.01 s
+  instead of 2164.14 s ("Game Over" both ways; USNOS is not a win row). Bullet 99 behaves as predicted for a low
+  strafing or bombing pass over a structure.
+- **The drop rack (4ed685822).** K3 installed the drop task on all 24 Bettys with `rack=-1`:
+  `rack_bullet_class_per_rack` holds `read_device_bullet_class_id`'s descriptor kind (2Fh), not the bullet id, so
+  `dkz_find_rack`'s `Bullets[kind].Type` lookup never matched and `has_ordnance` stayed 0. Fixed: match kind 2Fh,
+  keep the `Bullet[1].Bullet` id per rack for the release's KamikazePlaneClass/OpenAfterTime reads, and seed the
+  rack rounds at install.
+- **USNOS osx A1 vs K4 (kz + sweep + drop, 4ed685822):** the drop half runs. 18 attackruns, 22 releases, 22 Ohkas
+  (class 156) spawned 3.0 s after release, and all 22 install the kamikaze task and aim, lock and boost. 4 c98
+  impacts: `NH` twice (3685 and 2649 dealt), `TroopTrans6` (927, sunk) and `TroopTrans3` (the blast reached no
+  hull box: 0 dealt; open). The c99 storage crash at 329.54 s is the same first divergence as K3. Deaths 425 -> 327,
+  and the mission fails at 1624.06 s against 2164.14 s OFF (Game Over both ways).
+- **Win rows, A1 vs K2 (kz + sweep):** USN12 34000 gameplay identical (completes at 1539.83 s, guard line logged
+  on both sides); USN01 14000 identical; USN02 has no plane in free flight (the sweep is unexercised).
+- **Verdict: the mechanism matches on all three switches.** The kamikaze task strikes and dies with its crash
+  class, the drop carriers release Ohkas that strike with class 98, and the crash class of ordinary planes (99)
+  acts on mid-air and low-pass contacts as the image's sweep would.
+- **Flipped (lead's verdict, 2026-10-12):** `kKamikazeTaskBound`, `kDropKamikazeTaskBound` and `kPlaneCrashSweepBound`
+  ON, faithful by mechanism, with `kLuaSetFailureBound` ON in the same commit (n1, GUNNERY 197-199, cc9-gunnery38).
+- **Open: TroopTrans3's 0-damage c98** (K4, 1545.88 s). The sweep hit its mesh, but the blast loop reached no unit:
+  the hull-box distance from the burst centre exceeded 30 m, or the transport's box extents are zero. Not read.
+- **Open: the 16 m storage crash.** `Enterprise_sqn01|.-3` is an F6F-class fighter (type 810) in the dogfight task.
+  It launched from Enterprise at 71.75 s, killed `plane #1.6` at 294.40 s, then lost its target ("target -> none
+  (empty squadron)") and went aim -> follow. It took two Zao1 flak blasts (health 221 -> 141.6) and was still alive
+  in free flight (state 7) at 16 m over land when its wing point (point 2) crossed `Storage - Raktar03 01` at
+  (-8161, 11, -8736). So no torpedo run, dive pull-out or take-off is involved: a live fighter following at 16 m
+  over a land structure. The image's terrain avoidance (`0099F1C0` `BSP_PilotBot_AvoidTerrain`) and the follow
+  law's command altitude would normally hold a fighter well above that. The host's follow altitude after a
+  target loss is the suspect: a **plane-lane altitude defect candidate**, not established. The crash itself is
+  the image's rule once the plane is there.
+
+## 5gd. MOVEONPATH and the leg altitude manager, wired OFF (packet `cc9_lua53_moveonpath`, cc9-lua53, 2026-10-12)
+
+cc13's glue (docs/CC13_MOVEONPATH_TASK.md section 8, docs/CC13_LEG_ALTITUDE_MANAGER.md section 6) applied as written
+on main a89235172: two read-only accessors on the commands host (`path_cursor_point3`, `path_final_point_007b1350`),
+the plane install on `PilotMoveOnPath` in the script-orders host, the kind-6 task arm `009BD990` in the units host,
+and the process-wide leg registry `009BD400`/`009FC260`. Switches `kMoveOnPathTaskBound` and
+`kLegAltitudeManagerBound` in `include/bsp/pilot_order_bindings.hpp`, both OFF. cc13's labelled substitutions stand
+(slot +54h once at the install, the moveto follow body for wingmen, circle kept as a record; moveto/attackmove
+still record `009FD050` only, so moveonpath planes separate only against each other).
+
+**Predictions (cc13 section 5, written before the pairs).**
+- OFF: gameplay identical to main.
+- BSM01 (win row l50_b1_a), `kMoveOnPathTaskBound` ON: both P-40s take class `00E08F80` and fly their patrol
+  paths under PATH_FM_CIRCLE (no leg weight: `007B1350` answers invalid), at the point's y + altOffset or 200 less
+  travelAltOffset. They are in `Mission.JapFighterTrgGang`, so the Japanese fighters' chase and the AA numbers move.
+- JM06, ON: `PBY Catalina 01` flies its 12-point SIMPLE path once; within 3000 m of the last point the leg altitude
+  applies (with the manager ON, from the registry).
+
+### 5gd, the pairs (cc9-lua53, 2026-10-12)
+
+OFF = `local\l53_B0` (487cf8170), ON = `local\l53_M1` (both switches). `BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`.
+- **BSM01** (keeper orders `config/win_orders/bsm01_l50_b1_a.txt`, 30000 frames): both P-40s take the task
+  (`PilotMoveOnPath` PatrolPath1/2, mode 1 in the native table; `009BD990` 2220 ticks). pair_diff MOVED only in
+  the two P-40 death rows: same death times, altitude at death 221 -> 88 and 246 -> 95 (they now fly their
+  patrol paths low instead of holding their old task's altitude). Every other row, the unit table and the death
+  modes are identical. **The win holds:** EndMission at 767.94 s on both sides, guard line
+  ("refused a mission script's process launch: sus_prog.exe") logged on both.
+- **JM06** (9000 frames): `PBY Catalina 01` takes the task on its SIMPLE path (`009BD990` 4500 ticks); the leg
+  manager runs (`009FC000` 4500, `009FC260` 4499 calls). Gameplay identical: nothing reads `Mission.Catalina`.
+- **Verdict: mechanism matches the prediction; both switches flipped ON.** Open: the moveto/attackmove refresh
+  still records `009FD050` only, so the registry separates moveonpath planes only against each other.
+
+## 5ge. Handoff (cc9-lua53, 2026-10-12, at about 73% context)
+
+Tree `J:\PROG\battlestations-pacific-decompile-cc9-lua52` (branch `agent/cc9-lua52`); launcher `local\l53_lane.ps1`
+(rows u19/u17/u21/u18/u22/osx/j8/u01/u02/u12/j6/j5/l10/b1/smoke; `-Exe` an export); exports `local\l53_*`.
+No leases held after the commit that carries this section.
+
+**Done (all on main or in this commit):** packet 1 kamikaze impact (5gc: `2d59381e8`, `d2625de56`, `4ed685822`, flip
+`0cdef1968` with kKamikazeTaskBound, kDropKamikazeTaskBound, kPlaneCrashSweepBound and the lead's kLuaSetFailureBound
+ON); packet 3 MOVEONPATH + leg altitude manager (5gd: `487cf8170` OFF, flipped ON in this commit).
+
+**Open, in priority order:**
+1. **USNOS drop pair on a run that reaches the finale.** The drop switch is ON by the lead's verdict (K4: 22 Ohka
+   releases). ships45 is re-tuning USNOS; pair the drop on its best order file when the lead hands it over.
+2. **TroopTrans3's 0-damage c98** (5gc): the sweep hit its mesh but `plane_crash_impact_0084bc60`'s blast loop
+   reached no hull box. Check that unit's `hull_width/length` and the burst centre against its pose.
+3. **The 16 m storage crash** (5gc): a live fighter in dogfight follow after a target loss at 16 m over land. It is a
+   plane-lane altitude defect candidate: read the follow command altitude and whether terrain avoidance `0099F1C0`
+   is hosted on that path.
+4. **Rockets (queue 2), option (a) later:** the rocket task applies only to Tiny Tim (bullet 6 is the only rocket
+   with IgnitionDelay > 0 in this installation), so only USN22's AvengerTinyTim. The glue is CC13_ROCKET_TASK.md
+   section 7 and needs the has_rocket_ordnance feed in `src/game_hosts_script_orders.cpp` (kind 33h on a rack
+   whose bullet has IgnitionDelay > 0). The rocket flight law and spawn are gunnery38's contract.
+5. **Queue 4:** the HintSystem bindings (IsHintActive loops) and the event-channel audit (CC13_EVENT_CHANNELS.md).
+6. **For gunnery38 (reported to the lead):** `read_bullet_class_number` cannot read dotted keys, so the second-ammo
+   `Blast.BlastDamageMin/Max` reads near `src/game_hosts_gunnery.cpp` ~4470 always return 0.
+   `read_bullet_class_nested_number(id, "Blast", key, fallback)` exists now.

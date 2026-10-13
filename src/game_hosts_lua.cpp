@@ -7017,6 +7017,42 @@ float GameMissionLuaHost::read_vehicle_class_nested_number(int index, const char
     return value;
 }
 
+bool GameMissionLuaHost::read_vehicle_class_part_anim(int index, const char* key,
+    float& first, float& second, float& third, bool& has_third) {
+    first = 0.0f;
+    second = 0.0f;
+    third = 0.0f;
+    has_third = false;
+    if (state_ == nullptr || index < 0 || key == nullptr) return false;
+    const int top = ::lua_gettop(state_);
+    bool present = false;
+    ::lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
+    if (::lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_pushinteger(state_, index);
+        ::lua_gettable(state_, -2);
+        if (::lua_type(state_, -1) == LUA_TTABLE) {
+            ::lua_getfield(state_, -1, "PartAnims");
+            if (::lua_type(state_, -1) == LUA_TTABLE) {
+                ::lua_getfield(state_, -1, key);
+                if (::lua_type(state_, -1) == LUA_TTABLE) {
+                    present = true;
+                    float* const slots[3] = {&first, &second, &third};
+                    for (int i = 0; i < 3; ++i) {
+                        ::lua_rawgeti(state_, -1, i + 1);
+                        if (::lua_type(state_, -1) == LUA_TNUMBER) {
+                            *slots[i] = static_cast<float>(::lua_tonumber(state_, -1));
+                            if (i == 2) has_third = true;
+                        }
+                        ::lua_pop(state_, 1);
+                    }
+                }
+            }
+        }
+    }
+    ::lua_settop(state_, top);
+    return present;
+}
+
 float GameMissionLuaHost::read_vehicle_class_number(int index, const char* key,
     float fallback) {
     // The same plain `VehicleClass[index][key]` lookup as

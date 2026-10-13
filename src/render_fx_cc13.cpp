@@ -2,6 +2,7 @@
 
 #include "bsp/post_effects_cc13.hpp"
 
+#include <cmath>
 #include <cstring>
 #include <new>
 #include <string>
@@ -1706,5 +1707,337 @@ void shader_constant_rows_push_back_00b57fd0(RawArray& rows, const std::uint8_t*
     if (rows.count == rows.capacity) reserve_00b576f0(rows, apply_capacity_rule(CapacityRule::kDoubleMinOne, rows.capacity));
     copy_row_00b57680(rows.data + static_cast<std::size_t>(rows.count) * kConstantRowSize, row);
     ++rows.count;
+}
+// ---------------------------------------------------------------------------
+// 00B529A0 old film. x87 expressions are evaluated in double and rounded to float at
+// every FSTP float of the listing (f()); uniforms are kept as the double ST0 value the
+// image multiplies before rounding.
+
+namespace {
+constexpr float kSentinel = -2.0f;  // 00CE7D7C
+float f(double v) { return static_cast<float>(v); }
+float rdf(const std::uint8_t* base, std::size_t offset) noexcept {
+    float v;
+    std::memcpy(&v, base + offset, 4);
+    return v;
+}
+void wrf(std::uint8_t* base, std::size_t offset, float v) noexcept { std::memcpy(base + offset, &v, 4); }
+// FILD of a dword the image treats as unsigned (FADD 2^32 when the sign bit is set).
+double uint_to_double(std::uint32_t v) noexcept { return static_cast<double>(v); }
+// FISTP with RC = 11b (truncation), low dword.
+std::int32_t trunc_low(double v) noexcept { return static_cast<std::int32_t>(static_cast<std::int64_t>(v)); }
+
+struct Record24 { float x0, y0, x1, y1, u0, v0, u1, v1; std::uint32_t colour; };
+static_assert(sizeof(Record24) == 0x24);
+constexpr Record24 kSentinelRecord = {kSentinel, kSentinel, kSentinel, kSentinel, 0, 0, 0, 0, 0};
+
+void push_record(RawArray& list, const Record24& r, OldFilmHost& host) {
+    if (list.count == list.capacity) host.reserve_records_00b51fc0(list, apply_capacity_rule(CapacityRule::kDoubleMinOne, list.capacity));
+    std::memcpy(list.data + static_cast<std::size_t>(list.count) * sizeof(Record24), &r, sizeof r);
+    ++list.count;
+}
+Record24* record_at(RawArray& list, std::uint32_t i) noexcept {
+    return reinterpret_cast<Record24*>(list.data + static_cast<std::size_t>(i) * sizeof(Record24));
+}
+// Rebuild one child when its cached parameter changes (dust +20h/+30h, flicker +A0h/+B0h).
+void rebuild_child(std::uint8_t* state, std::size_t cache, std::size_t child, std::size_t texture,
+    float value, double scale, OldFilmHost& host) {
+    wrf(state, cache, value);
+    if (void* old = rdptr(state, child)) {
+        host.release(old);
+        wrptr(state, child, nullptr);
+    }
+    if (rdf(state, cache) > 0.0f) {
+        const std::int32_t count = trunc_low(static_cast<double>(rdf(state, cache)) * scale);
+        wrptr(state, child, host.create_child_00b4e840(static_cast<std::uint32_t>(count + count)));
+        host.child_set_texture_slot0(rdptr(state, child), rdptr(state, texture));
+    }
+    wrf(state, 0xC4, 0.0f);
+}
+// A toggled timer (+34h/+38h, +B4h/+B8h, +BCh/+C0h): when it has run out the toggle flips
+// and the timer is re-armed with U(0.5, 1.5) * (toggle ? on : off).
+void toggle_timer(std::uint8_t* state, std::size_t toggle, std::size_t timer, float on, float off, OldFilmHost& host) {
+    if (!(0.0f >= rdf(state, timer))) return;
+    state[toggle] = state[toggle] == 0 ? 1 : 0;
+    const float scale = state[toggle] ? on : off;
+    wrf(state, timer, f(host.uniform_00bd2f10(0.5f, 1.5f) * scale));
+}
+// The random atlas column of the lines: NextU32 % (columns - 1) + 1, then
+// u0 = (col - 0.25) / columns, u1 = (col + 0.75) / columns.
+void line_column(Record24& r, std::uint32_t columns, OldFilmHost& host) {
+    const std::uint32_t col = host.next_u32_00bd2fc0() % (columns - 1) + 1;
+    const float colf = f(uint_to_double(col));
+    r.u0 = f((colf - 0.25) / uint_to_double(columns));
+    r.u1 = f((colf + 0.75) / uint_to_double(columns));
+}
+} // namespace
+
+void old_film_render_00b529a0(std::uint8_t* state, void* targets, const float* p, bool extended,
+    float a, float b, OldFilmHost& host) {
+    void* surface = host.targets_color_surface_00b1f6d0(targets, 0);
+    const float k_a = f(2.0 / a);                                            // 00D7A308
+    const double height = uint_to_double(host.surface_height_vt20(surface));
+    const float aspect2 = f(2.0 * (height / uint_to_double(host.surface_width_vt1c(surface))));
+    const float bb = f(0.5 - (0.5 - b) / a);                                 // 00D7A280
+
+    // Child rebuilds.
+    if (rdf(state, 0x20) != p[3]) rebuild_child(state, 0x20, 0x30, 0x18, p[3], 100.0, host);   // 00D7A220
+    const std::int32_t n1 = trunc_low(static_cast<double>(p[8]) * 10.0);                      // 00CE3DC0
+    const std::int32_t n2 = trunc_low(static_cast<double>(p[13]) * 1000.0);                   // 00CE47A0
+    RawArray& lines = array_at_offset(state, 0x7C);
+    RawArray& line_states = array_at_offset(state, 0x8C);
+    if (static_cast<std::int32_t>(rd32(state, 0x78)) != n1 + n2) {
+        wr32(state, 0x78, static_cast<std::uint32_t>(n1 + n2));
+        if (void* old = rdptr(state, 0x88)) {
+            host.release(old);
+            wrptr(state, 0x88, nullptr);
+        }
+        if (rd32(state, 0x78) != 0) {
+            lines.count = 0;
+            line_states.count = 0;
+            // The pushed record is an uninitialised stack buffer in the image and the state's
+            // bytes 1..3 / word +08h are stale stack words; every one of them is overwritten
+            // by the update below before anything reads it (the rebuild zeroes +C4h, so the
+            // update runs in this same call when the clock does not go backwards).
+            const Record24 scratch{};
+            for (std::uint32_t i = 0; i < rd32(state, 0x78); ++i) {
+                push_record(lines, scratch, host);
+                std::uint8_t line_state[12] = {};
+                line_state[0] = static_cast<std::uint8_t>(host.next_u32_00bd2fc0() & 1);
+                if (line_states.count == line_states.capacity)
+                    host.reserve_line_states_00b52040(line_states, apply_capacity_rule(CapacityRule::kDoubleMinOne, line_states.capacity));
+                std::memcpy(line_states.data + static_cast<std::size_t>(line_states.count) * 12, line_state, 12);
+                ++line_states.count;
+            }
+            for (std::int32_t j = 0; j < n1; ++j) push_record(lines, scratch, host);
+            wrptr(state, 0x88, host.create_child_00b4e840(static_cast<std::uint32_t>(lines.count) * 2));
+            host.child_set_texture_slot0(rdptr(state, 0x88), rdptr(state, 0x70));
+        }
+        wrf(state, 0xC4, 0.0f);
+    }
+    if (rdf(state, 0xA0) != p[18]) rebuild_child(state, 0xA0, 0xB0, 0x98, p[18], 10.0, host);
+
+    // Timers.
+    const float now = host.clock_now_01090ab0();
+    const float dt = rdf(state, 0xC8) > 0.0f ? f(static_cast<double>(now) - rdf(state, 0xC8)) : 0.0f;
+    wrf(state, 0xC8, now);
+    wrf(state, 0x38, f(static_cast<double>(rdf(state, 0x38)) - dt));
+    wrf(state, 0x6C, f(static_cast<double>(rdf(state, 0x6C)) - dt));
+    for (std::uint32_t i = 0; i < rd32(state, 0x78); ++i) {
+        std::uint8_t* ls = line_states.data + i * 12;
+        wrf(ls, 4, f(static_cast<double>(rdf(ls, 4)) - dt));
+    }
+    wrf(state, 0xB8, f(static_cast<double>(rdf(state, 0xB8)) - dt));
+    wrf(state, 0xC0, f(static_cast<double>(rdf(state, 0xC0)) - dt));
+    wrf(state, 0xC4, f(static_cast<double>(rdf(state, 0xC4)) - dt));
+
+    if (0.0f >= rdf(state, 0xC4)) {
+        const float inv_rate = f(1.0 / p[0]);
+        wrf(state, 0xC4, f(static_cast<double>(rdf(state, 0xC4)) + inv_rate));
+        if (!(0.0f < rdf(state, 0xC4))) wrf(state, 0xC4, 0.0f);
+
+        // Dust (+30h child, +24h records).
+        if (void* dust = rdptr(state, 0x30)) {
+            toggle_timer(state, 0x34, 0x38, p[2], p[1], host);
+            const bool on = state[0x34] != 0;
+            float density = f(host.uniform_00bd2f10(on ? 0.7f : 0.2f, on ? 1.3f : 0.3f));
+            if (!extended) density = f(density * 0.20000000298023224);      // double 00CE3D10
+            density = f(host.uniform_00bd2f10(0.2f, 1.0f) * density);
+            RawArray& records = array_at_offset(state, 0x24);
+            records.count = 0;
+            const float w4 = f(static_cast<double>(p[4]) * aspect2);
+            const float h4 = f(static_cast<double>(p[4]) * k_a);
+            const std::uint32_t half = host.child_quad_count_00b4cc00(dust) >> 1;
+            const std::uint32_t n = static_cast<std::uint32_t>(trunc_low(static_cast<double>(static_cast<std::int32_t>(half)) * density));
+            if (n != 0) {
+                const float x_lo = f(-1.0 - w4);                             // double 00D7A250
+                const float y_hi = f(h4 + 1.0);                              // double 00D7A210
+                for (std::uint32_t k = 0; k < n; ++k) {
+                    Record24 r{};
+                    const float x = f(host.uniform_00bd2f10(x_lo, 1.0f));
+                    const float y = f(host.uniform_00bd2f10(-1.0f, y_hi));
+                    const std::uint32_t columns = rd32(state, 0x1C);
+                    const float colf = f(uint_to_double(host.next_u32_00bd2fc0() % columns));
+                    r.x0 = x;
+                    r.y0 = y;
+                    r.x1 = f(host.uniform_00bd2f10(0.3f, 1.7f) * w4 + x);
+                    r.y1 = f(static_cast<double>(y) - host.uniform_00bd2f10(0.3f, 1.7f) * h4);
+                    const double cols = static_cast<double>(f(uint_to_double(columns)));
+                    r.v0 = 0.0f;
+                    r.v1 = 1.0f;
+                    r.u0 = f(colf / cols);
+                    r.u1 = f(static_cast<double>(f(colf + 1.0)) / cols);
+                    r.colour = (host.next_u32_00bd2fc0() & 1) ? 0x70FFFFFFu : 0xA0000000u;
+                    push_record(records, r, host);
+                }
+            }
+            for (std::uint32_t k = n; k < half; ++k) push_record(records, kSentinelRecord, host);
+        }
+
+        // Hair (+44h inline record, +68h child).
+        if (p[5] > 0.0f && 0.0f >= rdf(state, 0x6C)) {
+            wrf(state, 0x6C, f(host.uniform_00bd2f10(0.3f, 1.7f) * p[5]));
+            const float size = f(host.uniform_00bd2f10(p[6], p[7]));
+            const float w = f(host.uniform_00bd2f10(0.5f, 1.5f) * size * aspect2);
+            const float hgt = f(host.uniform_00bd2f10(0.5f, 1.5f) * size * k_a);
+            const float x0 = f(host.uniform_00bd2f10(f(-1.0 - w), 1.0f));
+            const float y_hi = f((1.0 - bb) + hgt);
+            const float y0 = f(host.uniform_00bd2f10(f(static_cast<double>(bb) - 1.0), y_hi));
+            const std::uint32_t columns = rd32(state, 0x40);
+            const float colf = f(uint_to_double(host.next_u32_00bd2fc0() % columns));
+            const double cols = static_cast<double>(f(uint_to_double(columns)));
+            const Record24 hair = {x0, y0, f(static_cast<double>(x0) + w), f(static_cast<double>(y0) - hgt),
+                f(colf / cols), 0.0f, f(static_cast<double>(f(colf + 1.0)) / cols), 1.0f, 0xFF000000u};
+            std::memcpy(state + 0x44, &hair, sizeof hair);
+        } else {
+            wr32(state, 0x64, 0);
+        }
+
+        // Lines (+7Ch records, +8Ch states {active, flag, timer, amplitude}, +88h child).
+        const std::uint32_t line_count = rd32(state, 0x78);
+        const std::uint32_t columns = rd32(state, 0x74);
+        for (std::uint32_t i = 0; i < line_count; ++i) {
+            Record24& r = *record_at(lines, i);
+            std::uint8_t* ls = line_states.data + i * 12;
+            const bool short_line = static_cast<std::int32_t>(i) < n2;      // SETL against [ESP+60h] = n2
+            if (0.0f >= rdf(ls, 4)) {
+                const bool was_active = ls[0] != 0;
+                ls[1] = 0;
+                ls[0] = was_active ? 0 : 1;
+                bool activate = ls[0] != 0;
+                if (!extended && activate && host.next_u32_00bd2fc0() % 3 != 0) {
+                    ls[0] = 0;
+                    activate = false;
+                }
+                if (activate) {
+                    const float scale = short_line ? p[14] : p[9];
+                    const float wl = f(host.uniform_00bd2f10(0.7f, 1.3f) * aspect2 * scale);
+                    const float x = f(host.uniform_00bd2f10(f(-1.0 - wl), 1.0f));
+                    r.x0 = x;
+                    r.y0 = 1.0f;
+                    r.y1 = -1.0f;
+                    r.x1 = f(static_cast<double>(x) + wl);
+                    float amplitude_scale;
+                    if (short_line) {
+                        const float length = f(host.uniform_00bd2f10(0.1f, 0.3f));
+                        const float v0 = f(host.uniform_00bd2f10(0.0f, f(1.0 - length)));
+                        r.v0 = v0;
+                        r.v1 = f(static_cast<double>(v0) + length);
+                        const std::uint32_t modulus = extended ? 9u : 7u;
+                        r.colour = ((host.next_u32_00bd2fc0() % modulus + 1) << 24) | 0x00FFFFFFu;
+                        amplitude_scale = p[15];
+                    } else {
+                        r.v0 = 0.0f;
+                        r.v1 = 1.0f;
+                        if ((host.next_u32_00bd2fc0() & 3) == 0) {
+                            r.colour = (((host.next_u32_00bd2fc0() & 0x3F) + 0x40) << 24) | 0x00FFFFFFu;
+                        } else {
+                            const bool flag = (host.next_u32_00bd2fc0() & 3) == 0;
+                            ls[1] = flag ? 1 : 0;
+                            r.colour = flag ? 0x4000FF40u : 0xFF000000u;
+                        }
+                        amplitude_scale = p[10];
+                    }
+                    wrf(ls, 8, f(host.uniform_00bd2f10(-1.0f, 1.0f) * amplitude_scale));
+                } else {
+                    r = kSentinelRecord;
+                }
+                wrf(ls, 4, f(host.uniform_00bd2f10(p[11], p[12])));
+            }
+            if (ls[0] != 0) {
+                const float phase = f(host.uniform_00bd2f10(10.0f, 20.0f) * rdf(ls, 4));
+                const float wave = f(std::sin(static_cast<double>(phase)));   // FSIN
+                const float wobble = f((static_cast<double>(wave) + 1.0) * (static_cast<double>(rdf(ls, 8)) * inv_rate));
+                const std::uint32_t col = host.next_u32_00bd2fc0() % (columns - 1) + 1;
+                const float colf = f(uint_to_double(col));
+                r.x0 = f(static_cast<double>(wobble) + r.x0);
+                r.x1 = f(static_cast<double>(wobble) + r.x1);
+                r.u0 = f((colf - 0.25) / uint_to_double(columns));
+                r.u1 = f((colf + 0.75) / uint_to_double(columns));
+            }
+        }
+        // Twins of the long lines (states n2..n2+n1-1), at records line_count + j.
+        for (std::int32_t j = 0; j < n1; ++j) {
+            const std::uint32_t source = static_cast<std::uint32_t>(j - n1) + line_count;
+            Record24& twin = *record_at(lines, line_count + static_cast<std::uint32_t>(j));
+            if (line_states.data[source * 12 + 1] == 0) {
+                twin = kSentinelRecord;
+                continue;
+            }
+            twin = *record_at(lines, source);
+            const float x1 = twin.x1;
+            const float x0 = twin.x0;
+            const float half_width = f((static_cast<double>(x1) - x0) * 0.5);
+            twin.x0 = f(static_cast<double>(x0) - half_width);
+            twin.x1 = f(static_cast<double>(x1) - half_width);
+            line_column(twin, columns, host);
+            twin.colour = 0xFF000000u;
+        }
+
+        // Flicker (+B0h child, +A4h records), extended mode only.
+        if (extended && rdptr(state, 0xB0)) {
+            toggle_timer(state, 0xB4, 0xB8, p[17], p[16], host);
+            if (state[0xB4] != 0) {
+                RawArray& records = array_at_offset(state, 0xA4);
+                records.count = 0;
+                const std::uint32_t half = host.child_quad_count_00b4cc00(rdptr(state, 0xB0)) >> 1;
+                std::uint32_t n = static_cast<std::uint32_t>(trunc_low(host.uniform_00bd2f10(0.2f, 1.0f) * static_cast<std::int32_t>(half)));
+                if (n == 0) n = 1;
+                const double one_minus_bb = 1.0 - bb;
+                const float y_lo = f(static_cast<double>(bb) - 1.0);
+                for (std::uint32_t k = 0; k < n; ++k) {
+                    const float size = f(host.uniform_00bd2f10(p[19], p[20]));
+                    const float w = f(host.uniform_00bd2f10(0.8f, 1.2f) * size * aspect2);
+                    const float hgt = f(host.uniform_00bd2f10(0.8f, 1.2f) * size * k_a);
+                    const float x0 = f(host.uniform_00bd2f10(f(-1.0 - w), 1.0f));
+                    const float y0 = f(host.uniform_00bd2f10(y_lo, f(hgt + one_minus_bb)));
+                    const std::uint32_t fcolumns = rd32(state, 0x9C);
+                    const float colf = f(uint_to_double(host.next_u32_00bd2fc0() % fcolumns));
+                    const double cols = static_cast<double>(f(uint_to_double(fcolumns)));
+                    Record24 r = {x0, y0, f(static_cast<double>(x0) + w), f(static_cast<double>(y0) - hgt),
+                        f(colf / cols), 0.0f, f(static_cast<double>(f(colf + 1.0)) / cols), 1.0f, 0};
+                    const std::uint32_t tint = (host.next_u32_00bd2fc0() & 3) ? 0u : 0x00473E1Au;
+                    r.colour = ((host.next_u32_00bd2fc0() % 0x60 + 0x50) << 24) | tint;
+                    push_record(records, r, host);
+                }
+                for (std::uint32_t k = n; k < half; ++k) push_record(records, kSentinelRecord, host);
+            }
+        }
+
+        // Frame-wide values read by the shader: +08h, +0Ch, +10h jitter, +14h shake.
+        wrf(state, 0x08, f(host.uniform_00bd2f10(0.0f, 1.0f)));
+        wrf(state, 0x0C, f(host.uniform_00bd2f10(0.0f, 1.0f)));
+        const float weight = extended ? 1.0f : 0.2f;
+        wrf(state, 0x10, f(host.uniform_00bd2f10(f(1.0 - static_cast<double>(p[22]) * weight), 1.0f)));
+        wrf(state, 0x14, 0.0f);
+        if (extended && p[23] > 0.0f) {
+            toggle_timer(state, 0xBC, 0xC0, p[25], p[24], host);
+            if (state[0xBC] != 0) wrf(state, 0x14, f(host.uniform_00bd2f10(-0.5f, 0.5f) * p[23] * k_a));
+        }
+    }
+
+    // Draws.
+    if (void* dust = rdptr(state, 0x30)) {
+        host.child_populate_00b4d4c0(dust, array_at_offset(state, 0x24).data);
+        host.child_set_frame_target_00b4e3d0(dust, targets);
+        host.child_submit_00b4def0(dust);
+    }
+    if (rd32(state, 0x64) != 0) {
+        void* hair = rdptr(state, 0x68);
+        host.child_populate_00b4d4c0(hair, state + 0x44);
+        host.child_set_frame_target_00b4e3d0(hair, targets);
+        host.child_submit_00b4def0(hair);
+    }
+    if (void* child = rdptr(state, 0x88)) {
+        host.child_populate_00b4d4c0(child, lines.data);
+        host.child_set_frame_target_00b4e3d0(child, targets);
+        host.child_submit_00b4def0(child);
+    }
+    if (extended && rdptr(state, 0xB0) && state[0xB4] != 0) {
+        void* child = rdptr(state, 0xB0);
+        host.child_populate_00b4d4c0(child, array_at_offset(state, 0xA4).data);
+        host.child_set_frame_target_00b4e3d0(child, targets);
+        host.child_submit_00b4def0(child);
+    }
 }
 } // namespace bsp::cc13_render1
