@@ -124,6 +124,42 @@ auto submarine_navigation_group_at_depth_00852ff0(const SubmarineDepthFields& un
     return class_group_at_depth(unit.depth_level_1268);
 }
 
+// 00853E10, submarine vtable 00D0BF34 slot F0h (00D0C024), __thiscall(unit),
+// RET 0. Not a serializer: after the ship's 0081F980 it LOADS state.
+// - creation kind 3 (+C0h, saved game): the "_submarine" table (009238A0):
+//   airSupply.{air +127Ch, needAir +1281h, unlimitedAir +1280h}, depthLevel
+//   +1268h, periscopeState +122Ch, periscopeY +1230h, periscopeOut +1234h,
+//   sullyesztoEro +1270h.
+// - creation kind 1 (scene spawn): property "AutoAttackTarget" (integer >= 0)
+//   -> IssueCommand(attackmove 00E08F78, target 00465080(00521E30(id), 0.0), 1).
+// - off a network client, with DummyObjectID +6B8h >= 0 only (the host and
+//   0095CDBE leave -1 on ordinary units): r = U(0, 1) on STREAM 1 (008540EA,
+//   ECX = 1); heading' = 00438AA0(vtable[50h](), 0.5 > r ? -0.3 : +0.3);
+//   dir = 007BA2E0(heading') * 250; IssueCommand(moveto 00E08F68, point
+//   (x + dir.x, band1 +1204h, z + dir.z), 1).
+// - finally unit+1279h = some child answers IsKindOf(28h) (the flag 008522C0
+//   gates on).
+struct SubmarineActivateInputs {
+    std::int32_t creation_kind{0};
+    std::int32_t auto_attack_target{-1};   // kind 1 property, -1 when absent
+    bool network_client{false};
+    std::int32_t dummy_object_id_6b8{-1};
+    float heading{0.0f};                   // vtable[50h]()
+    Vec3 world_position{};                 // +FCh..+104h
+    float band1_1204{0.0f};
+    bool has_catapult_child{false};
+};
+struct SubmarineActivateHost {
+    std::function<void()> read_saved_submarine_table;            // kind 3
+    std::function<void(std::int32_t target_id)> issue_attackmove; // kind 1
+    std::function<float(int stream, float lo, float hi)> uniform; // 00BD2F10
+    std::function<float(float, float)> add_wrapped_angle;         // 00438AA0
+    std::function<Vec3(float heading)> heading_to_direction_xz;   // 007BA2E0
+    std::function<void(const Vec3& point)> issue_moveto;
+};
+// Returns unit+1279h.
+bool submarine_activate_00853e10(const SubmarineActivateInputs& in, const SubmarineActivateHost& host);
+
 // 00852B50 / 00852B70 (no Ghidra function; INT3-padded leaves after
 // 00852970): the one-step depth commands. Shallower: depthLevel > 0 ->
 // 008528B0(depthLevel - 1). Deeper: depthLevel < 3 -> 008528B0(depthLevel + 1).
@@ -313,11 +349,144 @@ void torpedo_create_message_apply_00857160(
     const TorpedoCreateMessage& msg, TorpedoState& state,
     const std::function<std::uint32_t(std::uint16_t)>& entity_by_net_id);
 
+// 008571F0, entity vtable 00D0C3E8 slot DCh (data ref 00D0C4C4), __thiscall
+// (this, float dt), RET 4: the wake ("bubor") emitter step. Presentation: no
+// RNG, and nothing it writes is read by the round's motion. +498h += dt
+// always. Then, only while the shot's water mode (vtable[2Ch], 00855F00) is
+// non-zero and the emitter +334h exists: the emitter is placed at the bubble
+// point in world space, its +54h takes the speed (vtable[38h]), its +68h..+70h
+// the forward row and +2Ch = 0. For a class with HomingVertTurnSpeed (+F4h) > 0
+// only: below 2 * swimdepth every type-4 child is retired (00866E60 /
+// 008679D0 loop); otherwise, with no type-4 child, 00867B10 then 00866B70.
+// It is not homing guidance: HomingVertTurnSpeed only selects this branch.
+enum class TorpedoWakeAction {
+    None,              // air, or no emitter
+    Placed,            // emitter placed; no homing branch
+    RetireType4,       // homing class, y < 2 * swimdepth
+    StopEmitter,       // homing class, shallower, no type-4 child: 00867B10, 00866B70
+    KeepType4,         // homing class, shallower, a type-4 child exists
+};
+struct TorpedoWakeInputs {
+    float dt{0.0f};
+    float run_time_498{0.0f};
+    bool water_mode_nonzero{false};
+    bool has_emitter_334{false};
+    float homing_vert_turn_speed_f4{0.0f};
+    float world_y_100{0.0f};
+    float swim_depth_47c{-2.5f};
+    bool has_type4_child{false};
+};
+struct TorpedoWakeHost {
+    std::function<void()> place_emitter;      // 004142E0(+33Ch, pose) then 004842C0
+    std::function<float()> speed;             // vtable[38h]
+    std::function<void(float)> set_emitter_rate;     // emitter+54h
+    std::function<void()> set_emitter_direction;     // emitter+68h..+70h = pose +ECh..+F4h, +2Ch = 0
+};
+struct TorpedoWakeResult {
+    float run_time_498{0.0f};
+    TorpedoWakeAction action{TorpedoWakeAction::None};
+};
+TorpedoWakeResult torpedo_wake_step_008571f0(const TorpedoWakeInputs& in, const TorpedoWakeHost& host);
+
+// 00856BB0 homing block (00856BB0..00856F7F), the torpedo steering's first half.
+// Only "Torpedo Fido Homing Airplane" (bulletclasses.lua RealisticTable[4]
+// and its arcade twin in this installation) has HomingHorzTurnSpeed and
+// HomingVertTurnSpeed (0.5 each); JM06 is a submarine mission, so this is the
+// rule that steers aircraft-dropped Fidos at the player's boat.
+//
+// Countdown (+518h, interval +514h): dt < countdown (FCOMI, JB) -> countdown -=
+// dt, no scan; else countdown = countdown + (interval - dt) and a scan runs.
+// Scan (only with +3BCh set): the link +4FCh/+510h is cleared, then the list
+// [008053C0([+3BCh]+54h)]+DE8h is walked (node +8h -> record, record +4h ->
+// entity, next +4h); only entities answering IsKindOf(8) (submarines) count,
+// and the nearest by squared distance (004193E0, strict >) wins.
+// Turn (with a target): own pitch/yaw from the forward row (00521370), target
+// pitch/yaw from the normalised direction; +46Ch = target yaw. With
+// HomingVertTurnSpeed > 0, a submarine target and 00852820(target) false
+// (submerged): rotate about the right row (+74h) by clamp(wrap(own_pitch -
+// target_pitch), +/- HomingVertTurnSpeed * dt), then about the up row (+84h)
+// by clamp(-wrap(own_yaw - target_yaw), +/- HomingHorzTurnSpeed * dt), and
+// RETURN: the depth and heading controllers (00856F83..0085714E) are skipped.
+// Otherwise rotate about the right row by own_pitch and fall through.
+//
+// The second turn reads the YAW slots: 0085E880 returns with RET 8, so after
+// the first rotation ESP is back at E-30h, and 00856EE8 / 00856EF3 load E-20h
+// (target yaw) and E-1Ch (own yaw), not the pitch slots E-28h / E-24h. The
+// existing src/bomb_torpedo_tick.cpp torpedo_steer_00856bb0 feeds the pitch
+// error to both turns (its comment at 00856F51); see docs/CC13_GPR_53.md.
+struct TorpedoHomingCandidate {
+    bool is_submarine{false};   // entity vtable[5Ch](8)
+    Vec3 position{};
+};
+// Index of the candidate the scan keeps, or -1.
+int torpedo_homing_pick_target_00856c50(const Vec3& own_position,
+                                        const std::vector<TorpedoHomingCandidate>& list) noexcept;
+struct TorpedoHomingInputs {
+    float dt{0.0f};
+    float scan_interval_514{1.0f};
+    float scan_countdown_518{0.0f};
+    float homing_horz_turn_speed_f0{0.0f};
+    float homing_vert_turn_speed_f4{0.0f};
+    bool has_target{false};               // +510h after any scan
+    bool target_is_submarine{false};      // target vtable[5Ch](8)
+    bool target_above_depth_charge_depth{false};  // 00852820(target)
+    float own_pitch{0.0f};
+    float own_yaw{0.0f};
+    float target_pitch{0.0f};
+    float target_yaw{0.0f};
+};
+struct TorpedoHomingResult {
+    bool active{false};             // HomingHorzTurnSpeed > 0
+    bool scan{false};
+    float scan_countdown_518{0.0f};
+    bool steered{false};            // a target existed after the scan
+    float commanded_heading_46c{0.0f};
+    bool homed{false};              // both turns made; the caller returns
+    float right_axis_turn{0.0f};    // rotation about +74h (pitch turn, or own_pitch when not homed)
+    float up_axis_turn{0.0f};       // rotation about +84h (homed only)
+};
+// `wrap_subtract` is 00438B10 (BSP_Math_SubtractWrappedAngle(a, b)). The scan
+// itself (when `scan` comes back true) is the caller's: it decides has_target.
+TorpedoHomingResult torpedo_homing_countdown_00856bb0(const TorpedoHomingInputs& in) noexcept;
+TorpedoHomingResult torpedo_homing_turn_00856bb0(const TorpedoHomingInputs& in,
+                                                 TorpedoHomingResult after_countdown,
+                                                 const std::function<float(float, float)>& wrap_subtract);
+
+// 00855B90 (vtable 00D0C3E8 slot 68h, data ref 00D0C450) and 00855BB0: node
+// +464h shown / hidden through 00B6DA70(1.0 / 0.0, 0). 00855BD0 (no
+// reference in the image): the create message's target, net id +128h through
+// the 00F89A0C / 00F89A60 tables, 0 for id 0 (the same lookup 00857160 inlines).
+
 // 00855B30, __thiscall(this, float dt), RET 4: 006E2220 extrapolation, then,
 // with a propeller node at +4A0h, the node matrix is cached at +4A4h and its
 // basis turned about the axis +4C4h by dt * 26.1799 rad (1500 deg/s).
 // Presentation only; the returned angle is what 0085E880 receives.
 float torpedo_propeller_angle_00855b30(float dt) noexcept;
+
+// 00857C80, the torpedo boat's vtable slot A0h (SEntityInit) override: the
+// unit init 00822C20, then, when world+19D0h is set, 0071DD30(director
+// [+738h], [director+1CCh] & ~4); then +1188h = class+808h "TurboTime"
+// (00857F40 reads it) and +118Ch = 0. Returns the two fields; the director
+// message is the caller's.
+struct TorpedoBoatTurboState {
+    float turbo_time_1188{0.0f};
+    bool turbo_flag_118c{false};
+    bool send_director_flags{false};
+    std::uint32_t director_flags{0};
+};
+TorpedoBoatTurboState torpedo_boat_sentity_init_00857c80(float class_turbo_time_808,
+                                                         bool world_flag_19d0,
+                                                         std::uint32_t director_flags_1cc) noexcept;
+
+// 00852300 / 00852350 (HUD helpers; callers 0064DD30, 005A6AD0, 0064AE20):
+// over the unit's children (+48h, next +44h), count those answering
+// vtable[5Ch](25h); 00852300 also needs vtable[210h](2Dh, 0) true.
+struct UnitChildDevice {
+    bool is_kind_25{false};
+    bool answers_210_2d{false};
+};
+int unit_count_devices25_ready_00852300(const std::vector<UnitChildDevice>& children) noexcept;
+int unit_count_bomb_platform_children_00852350(const std::vector<UnitChildDevice>& children) noexcept;
 
 // 00857D40, __thiscall(boat), RET -> EAX: vtable[38h]() (the body speed)
 // > 3.0 (00CE3854; FCOMPI, JBE).
@@ -338,6 +507,11 @@ struct WaterMineClassFields {
     float blast_damage_min_b4{0.0f};  // "Blast.BlastDamageMin"
     float blast_damage_max_b8{0.0f};  // "Blast.BlastDamageMax"
 };
+
+// 0085EA40 (the water mine's sensor-category slot): MOV EAX, 4; RET. The mine
+// is always category 4 (underwater, the value 00852B90 gives a submarine
+// between periscope and deep depth).
+constexpr int water_mine_sensor_category_0085ea40() noexcept { return 4; }
 
 // 0085F500, __thiscall(class, LuaObject* row), RET 4, after the bomb reader
 // 006E1BE0. The first two keys use 00B66270 (no default argument), the
