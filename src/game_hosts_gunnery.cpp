@@ -297,6 +297,13 @@ constexpr bool kTorpedoMaxFallBreakupBound = false;
 //    state); the +74h matrix starts from the entry velocity's direction; the
 //    wake tail and the 008E6430 modifiers (1) are not modelled. OFF: as before.
 constexpr bool kTorpedoSwimDepthHomingBound = false;
+//  * kReconMultiplierForwardBound: packet cc9_g40_recon_mult. The recon pass
+//    reads [game+21C4h]+74h (SimplifiedReconMultiplier) into 00804947's range
+//    scale and +78h (SimplifiedSonarMultiplier) into the submerged scale
+//    008049A3. The Lua host stores what 008B2320 / 008B25F0 set
+//    (kSimplifiedReconNativesBound) but the gunnery host answered 1.0f. ON:
+//    the stored values. OFF: 1.0f.
+constexpr bool kReconMultiplierForwardBound = false;
 //  * kTorpedoSwimThrustBound: packet cc9_torpedo_tube_turn,
 //    docs/TORPEDO_FRIENDLY_CROSSING.md section 6. 00857480, the swim advance,
 //    per step on a torpedo in the water: 00856BB0 -> 00857061 yaws the NOSE
@@ -6403,10 +6410,14 @@ public:
 
     float simplified_recon_multiplier() override {
         // [game+21C4h]+74h, 1.0f from 00444D20 unless a mission script called
-        // 008B24A0. Neither USN01 nor USN02 does.
-        return 1.0f;
+        // SetSimplifiedReconMultiplier (008B2320 stores it at 008B243C).
+        // kReconMultiplierForwardBound: the Lua host's stored value; OFF, 1.0f.
+        return kReconMultiplierForwardBound ? owner_.lua.simplified_recon_multiplier() : 1.0f;
     }
-    float simplified_sonar_multiplier() override { return 1.0f; }
+    float simplified_sonar_multiplier() override {
+        // [game+21C4h]+78h (008B25F0 stores it at 008B270C).
+        return kReconMultiplierForwardBound ? owner_.lua.simplified_sonar_multiplier() : 1.0f;
+    }
 
     int network_role() override {
         // [00E188A8]+1FE4h. This process runs the single originating session,

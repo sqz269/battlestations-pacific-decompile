@@ -242,7 +242,8 @@ inline constexpr bool kLuaKillAttackerBound = true;
 // the getters. False: the rows are unimplemented and the getters push nothing, so
 // commandhelpers.lua's luaPutToRecon (line 16266, `dist * GetSimplifiedRecon...()`)
 // raises an arithmetic-on-nil error. LABELLED: a set value is not forwarded to the
-// gunnery host's recon detection (`simplified_recon_multiplier()` stays 1.0f).
+// gunnery host's recon detection (`simplified_recon_multiplier()` stays 1.0f) unless
+// the gunnery host's kReconMultiplierForwardBound is ON (packet cc9_g40_recon_mult).
 inline constexpr bool kSimplifiedReconNativesBound = true;   // ON: SQUADRON_LAND_TASK 5gj
 
 // Packet cc9_lua55_genobj (docs/SQUADRON_LAND_TASK.md 5gl). GenerateObject 00944FD0 ->
@@ -1442,6 +1443,10 @@ public:
                                   std::uint32_t address);
     float simplified_recon_74_{1.0f};
     float simplified_sonar_78_{1.0f};
+    // Read-only views of [game+21C4h]+74h / +78h for the gunnery host's recon pass
+    // (packet cc9_g40_recon_mult).
+    float simplified_recon_multiplier() const { return simplified_recon_74_; }
+    float simplified_sonar_multiplier() const { return simplified_sonar_78_; }
     int run_launch_squadron_0089e3c0(lua_State* state, int argument_count);
     // 00944FD0 GenerateObject. Instantiates one of the entities the scene pass
     // held back at 0046D3C5, by name, and pushes its `thisTable` slot the way the

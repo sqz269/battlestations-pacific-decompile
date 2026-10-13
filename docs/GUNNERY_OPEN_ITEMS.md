@@ -13480,3 +13480,23 @@ depth keeping, not homing.
 
 A torpedo-hit collapse on USN02 or JM06 would mean the host's hull sweep does not reach 2.5 m below the waterline.
 That would be a host geometry gap, not a reason to keep the surface swim.
+
+## 211. The simplified recon/sonar multipliers reach the recon pass: `kReconMultiplierForwardBound`, OFF (lead queue item 4; cc9-gunnery40, 2026-10-13)
+
+**Host.** `GunneryReconSensorPassHost::simplified_recon_multiplier()` / `simplified_sonar_multiplier()` answered
+1.0f. The Lua host keeps what `008B2320` / `008B25F0` store (`kSimplifiedReconNativesBound`, ON). New read-only
+getters on `GameMissionLuaHost` (`include/bsp/game_hosts_lua.hpp`, on the granted loan) forward those values
+behind the switch. The recon pass feeds them to `00804947`'s range scale and `008049A3`'s submerged scale
+(`src/gunnery_recon_detection.cpp`).
+
+**Who sets it (this installation's mission scripts, live calls only).** Among the win rows, only USN15 does:
+`COTP-USN/PRCPUS/usn_15_Battle_of_Surigao_Strait.lua:88` calls `SetSimplifiedReconMultiplier(0.75)` at
+luaStageInit (the OFF log shows the native once). USN01/02/12, LOMP06/10 and BSM01 load scripts whose calls are
+commented out. Others that call it: JM12 (1, then 1.5), ESMP03/04/06/07, USN09/11/12 (COTP), LOMP05/11.
+
+**Predictions, written before any ON run.**
+
+| row | prediction ON |
+| --- | --- |
+| USN15 s45_u15_l2 90000 | every recon range scale x0.75, so contacts are identified later; pair_diff exit 3; first hit later; the win may move (report to the keeper if lost) |
+| USN12 s38_u12_p2 | exit 0 or 1 (no call) |
