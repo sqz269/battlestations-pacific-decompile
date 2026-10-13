@@ -13594,3 +13594,21 @@ ON (`local\g39_lo`):
   goes unlogged.
 - Mechanism not shown to match; the switch stays OFF with 214's arms in place. Next step: log every blast record
   that `blast_box_distance` admits under the mesh box (unit, arm, distance, entries) on USNOS ON up to 1482 s.
+
+**210 verdict: ON by mechanism, with a spread miss (cc9-gunnery40).** OFF `3bed008bc` (`local\g40_sw0`) against ON
+(`g39_rk1`), plus a census re-pair at `4cd9ce03a` (`local\g40_sx0` / `g40_sx1`) that adds
+`summary mission gunnery torpedo swim entity impacts`:
+
+| row | OFF | ON |
+| --- | --- | --- |
+| USN02 s36_u2_p7 | completed; deaths 12; 27 swims, **6 entity impacts**, 3 torpedo kills | completed ~5 s earlier; deaths 10; 30 swims, `mean_y=-2.51`, **4 impacts**, 1 torpedo kill |
+| JM06 s46_j6_m 60000 | no end in 3000 s (as ON); deaths 19 | no end; deaths 23; 54 swims, `mean_y=-5.43` (sub launches rise from depth at the 5 m/s clamp) |
+| JM12 (no orders) 30000 | no end; no drops | no end; 86 swims, `mean_y=-3.82`; no drops, so `scans=0` |
+| ESMP08 90000 | no end; deaths 902; 39 drops | no end; deaths 904; 39 drops, `mean_y=-2.50` |
+
+`sub_vs_sub=0` on every row. The depth controller holds swimdepth + surface as predicted, and rounds at -2.5 m
+still strike hulls (4 entity impacts on USN02). The impacts fell from 6 to 4, which misses the +-25% band I
+predicted. On counts this small it reads as spread: the launches differ (27 against 30 swims) and the targets
+move differently. The homing half (Fido) is not exercised: no row drops a Fido (JM12 needs the Avenger sent at a
+surfaced player boat). It is gated on the class homing speeds, which only Fido sets. Flipped ON. Fido homing
+should be checked when a JM12 row exists.

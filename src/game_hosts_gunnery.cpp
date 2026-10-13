@@ -298,7 +298,9 @@ constexpr bool kTorpedoMaxFallBreakupBound = true;
 //    counted, not modelled (the unit host does not export the boat's dive
 //    state); the +74h matrix starts from the entry velocity's direction; the
 //    wake tail and the 008E6430 modifiers (1) are not modelled. OFF: as before.
-constexpr bool kTorpedoSwimDepthHomingBound = false;
+//    ON since the pairs (GUNNERY_OPEN_ITEMS 210: depth keeping matched, wins kept;
+//    the homing half is not exercised by any row).
+constexpr bool kTorpedoSwimDepthHomingBound = true;
 //  * kReconMultiplierForwardBound: packet cc9_g40_recon_mult. The recon pass
 //    reads [game+21C4h]+74h (SimplifiedReconMultiplier) into 00804947's range
 //    scale and +78h (SimplifiedSonarMultiplier) into the submerged scale
