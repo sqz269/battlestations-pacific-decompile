@@ -124,6 +124,16 @@ inline constexpr bool kOrderAttackCautiousGatesBound = false;
 // item 4). True: capture_plan_00a29fd0 compares with bsp::kAiTailLengthEpsilon
 // (1e-10). False: the host's literal 1e-11, as before.
 inline constexpr bool kCaptureCurrentTargetEpsilonBound = false;
+// The Defend think 00A28A60 (docs/CC13_GPR_69.md 7.3, packet cc13-fix2). Pass A
+// calls 00A2DEF0(team = planner+30h) per owned group: a member is a candidate
+// when vt+5Ch(1Ch) answers (00A2DF2B) OR 008DDF90 finds it in
+// [[00E188A8] + team*4 + 21A4h] (00A2DF3B / 00A2DF43). The records are then
+// sorted by 00A28300 (00A290F5): with 32 or fewer, the insertion pass 00A25750
+// puts x before y when 0 < x+4h and y+8h < x+8h. True: both, through the cc13
+// models ai_defend_member_is_candidate_00a2def0 / ai_defend_sort_records_00a28300
+// (above 32 records the build order stays, labelled). False: kind 1Ch only and
+// build order, as before.
+inline constexpr bool kDefendThinkImageBound = false;
 // Packet cc9_group_release_idle (docs/SHIP_AI_OPEN_ITEMS.md section 30). Every
 // ATTACK-family command registers its observer (+8h) on the target group
 // (00A10767, 00694A60), and all four observer vtables (00D22B64, 00D22BA4,

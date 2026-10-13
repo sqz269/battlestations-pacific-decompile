@@ -4734,10 +4734,30 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // Pass A.
         std::vector<std::size_t> candidates;
         std::vector<DefendRecord> records;
+        // kDefendThinkImageBound: 00A2DEF0's second arm, the team's objective set
+        // [[00E188A8] + (planner+30h)*4 + 21A4h]. LABELLED: a squadron member is
+        // not tested (the host's record scorer reads units only).
+        std::vector<std::size_t> team_set;
+        if constexpr (kDefendThinkImageBound) {
+            if (side >= 0 && static_cast<std::size_t>(side) < GameObjectiveSets::kSlotCount) {
+                team_set = game_objective_sets().units_in_slot(side);
+            }
+        }
         for (Group* g : p.owned) {
             if (g == nullptr || g->destroyed) continue;
             for (const std::size_t unit : g->members) {
-                if (is_squadron(unit) || !units.unit_is_kind_of(unit, 0x1C)) continue;
+                if (is_squadron(unit)) continue;
+                if constexpr (kDefendThinkImageBound) {
+                    const bool kind_1c = units.unit_is_kind_of(unit, 0x1C);   // 00A2DF2B
+                    const bool in_set = !kind_1c &&                          // 00A2DF43
+                        std::find(team_set.begin(), team_set.end(), unit) != team_set.end();
+                    if (!bsp::gameplay_seg69_70_cc13::ai_defend_member_is_candidate_00a2def0(
+                            kind_1c, in_set)) {
+                        continue;
+                    }
+                } else {
+                    if (!units.unit_is_kind_of(unit, 0x1C)) continue;
+                }
                 candidates.push_back(unit);
                 DefendRecord r = defend_score_00a243d0(unit, side);
                 if (0.0f < r.enemy_value) records.push_back(r);
@@ -4773,6 +4793,25 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         if (records.empty()) {
             done("AiPlanners::defend_think_00a28a60", 0x00a28a60u);
             return true;
+        }
+        if constexpr (kDefendThinkImageBound) {
+            // 00A290F5 00A28300: the records' order for the anchor search and
+            // the spawn tail. Above 32 records the build order stays (LABELLED).
+            std::vector<bsp::gameplay_seg69_70_cc13::DefendRecordKey> keys;
+            keys.reserve(records.size());
+            for (const DefendRecord& r : records) {
+                bsp::gameplay_seg69_70_cc13::DefendRecordKey k;
+                k.threat_004 = r.threat;
+                k.weight_008 = r.weight;
+                keys.push_back(k);
+            }
+            if (const auto order =
+                    bsp::gameplay_seg69_70_cc13::ai_defend_sort_records_00a28300(keys)) {
+                std::vector<DefendRecord> sorted;
+                sorted.reserve(records.size());
+                for (const std::size_t i : *order) sorted.push_back(records[i]);
+                records.swap(sorted);
+            }
         }
         ++defend_record_thinks;
         defend_records_seen += records.size();
