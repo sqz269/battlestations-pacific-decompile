@@ -283,3 +283,12 @@ Tools: `local/fe2_records.py` (records), `local/fe2_calls.py` (call report), `lo
 (page/find extraction; run with `--str` and check for two string pushes before one find),
 `local/fe2_dec.py` / `local/fe2_asmf.py` (batch decompile and listing). They live in the worktree's
 `local/` and are not committed.
+
+## Update (cc13-fe10, 2026-10-13)
+
+cc13-fe10 (`docs/CC13_FE_10.md`) tagged the 63 STL instantiations (`stl_shape`, evidence
+`cc13fe10_stl`), defined the code listed under "Call sites" (six bodies: 0061F5E0, 00637590,
+006375A0, 00646ED0, 0064A380, 0064A3C0; plus 00662690 found after the support-manager exit) and
+reconstructed the rewards speech / selection / unlocks / rank page, several marker, HUD-root
+ticker and support-manager routines, the invite acceptance, two unit-library listeners and the
+torpedo-boat camera bind. Its Handoff section lists what is still open.

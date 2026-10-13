@@ -2919,6 +2919,127 @@ void support_manager_step_scroll_collapse_00662690(Raw s, float dt, Fe10GuiHost&
     support_manager_layout_scroll_rows_006619e0(s, host);
 }
 
+bool game_accept_pending_invite_0067d6e0(Fe10GuiHost& host) {
+    void*& pending = host.global_block(kPendingInviteGlobal).ptr(0);
+    if (pending == nullptr) return false;
+    const std::int32_t slot = host.xenon_find_slot_for_invitee_00a3e470();
+    const Raw input = host.global_object(0x00F8BBF4);
+    auto* const first = static_cast<void**>(input.ptr(0xB4 + 4));
+    const bool has_device = first != nullptr && static_cast<void**>(input.ptr(0xB4 + 8)) != first && first[0] != nullptr;
+    if (!has_device || host.input_device_slot_34(first[0]) != slot) {
+        if (has_device) host.rebind_primary_input_0067c970();
+        host.input_activate_device_slot_00a91620(2, slot);
+    }
+    alignas(4) std::uint8_t storage[0x98] = {};
+    const Raw record{storage};
+    host.session_record_construct_00571e50(record);
+    record.at<std::uint8_t>(4) = 0xFF;
+    // The image writes the fields without checking the allocation.
+    const Raw info{static_cast<std::uint8_t*>(host.operator_new_00bf681b(0x88))};
+    if (info.p) info.at<std::uint32_t>(0) = kSessionInfoVtable;
+    const Raw invite{static_cast<std::uint8_t*>(pending)};
+    std::memcpy(info.p + 0x0C, invite.p + 0x40, 0x10);
+    info.at<std::uint32_t>(4) = invite.at<std::uint32_t>(0x14);
+    info.at<std::uint32_t>(8) = invite.at<std::uint32_t>(0x18);
+    std::memcpy(info.p + 0x1C, invite.p + 0x1C, 9 * 4);
+    record.ptr(0) = info.p;
+    host.wide_string_assign_n_0067d5a0(Raw{record.p + 8}, kSessionRecordName, 7);
+    host.online_service_join_6c(record);
+    pending = nullptr;
+    if (record.at<std::uint32_t>(0x20) >= 8) host.free_00bf65ac(record.ptr(0xC));
+    return true;
+}
+
+void unit_library_on_listbox_activate_00680520(Raw listener, void* /*widget*/, void* listbox, Fe10GuiHost& host) {
+    const Raw screen{listener.p - 0x64};
+    const std::int32_t row = host.listbox_selected_index_00a9c920(listbox);
+    if (listener.at<std::int32_t>(0x84) != 1) {
+        if (row == 0 || row == 1) {
+            host.unit_library_toggle_description_0067e9a0(screen);
+        } else if (row == 2) {
+            host.main_front_end_push_interface_004cc460(1, 0);
+        }
+        return;
+    }
+    if (row == 0) {
+        void* const panel = listener.ptr(0x18);
+        host.widget_set_visible_34(panel, !host.widget_is_visible_38(panel));
+    } else if (row == 1) {
+        host.unit_library_reset_selection_0067e580(screen);
+    }
+}
+
+void unit_library_toggle_description_0067e9a0(Raw s, Fe10GuiHost& host) {
+    s.at<std::int32_t>(0xE8) = 1;
+    auto* const head = static_cast<std::uint8_t*>(Raw{static_cast<std::uint8_t*>(s.ptr(0x6C))}.ptr(0x68));
+    for (auto* node = static_cast<std::uint8_t*>(Raw{head}.ptr(0)); node != head;
+         node = static_cast<std::uint8_t*>(Raw{node}.ptr(0))) {
+        host.widget_set_visible_34(Raw{node}.ptr(8), false);
+    }
+    host.widget_set_visible_34(s.ptr(0x78), true);
+    host.widget_set_visible_34(s.ptr(0x7C), true);
+    host.widget_set_visible_34(s.ptr(0x70), false);
+    void* const listbox = s.ptr(0x74);
+    host.widget_set_focus_60(listbox, true);
+    host.listbox_select_index_00a9c7c0(listbox, 0);
+    host.widget_virtual_80(listbox, 1);
+    host.listbox_set_listener_00a9ac40(listbox, s.p + 0x64);
+    host.movie_player_stop_004f8ac0();
+    host.gui_movie_stop_00aac870(s.ptr(0x94));
+    if (void* const panel = host.global_block(0x00E198BC).ptr(0)) static_cast<std::uint8_t*>(panel)[0x48] = 0;
+    host.widget_set_visible_34(s.ptr(0x7C), !host.widget_is_visible_38(s.ptr(0x7C)));
+    const MainMenuCommandArgument commands[5] = {{0xA2, "FE.unitlib_toggledesc", 1}, {0x00, "", 1}, {0x00, "", 1},
+                                                 {0xA3, "globals.back", 2}, {0x00, "", 1}};
+    host.command_bar_rebuild_0054b530(commands);
+    host.command_bar_set_help_line_0054a0c0("");
+}
+
+void torpedo_boat_view_bind_unit_camera_0067c1a0(Raw s, void* unit, Fe10GuiHost& host) {
+    host.weapon_group_release_005470c0();
+    if (s.ptr(0x24) != nullptr) host.unit_send_role_transfer_0077c470(s.ptr(0x24), 0x1FE, 0);
+    if (s.ptr(0x24) != nullptr && host.observer_is_registered_00694af0(s.p + 8, s.ptr(0x24))) {
+        host.observer_unregister_006952a0(s.p + 8, s.ptr(0x24));
+    }
+    s.ptr(0x24) = unit;
+    if (s.ptr(0x2C) != nullptr) {
+        host.binoculars_reset_0051e8e0();
+    }
+    if (s.ptr(0x2C) == nullptr) {
+        void* const block = host.operator_new_00bf55be(0x404);
+        std::memset(block, 0, 0x404);
+        void* const camera = block ? host.ship_captain_camera_construct_0064b650(block) : nullptr;
+        s.ptr(0x2C) = camera;
+        const float identity[16] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+        host.camera_attach_00923870(camera, 0, host.global_object(0x00E188A8).ptr(0x19CC), identity);
+        Raw{static_cast<std::uint8_t*>(s.ptr(0x2C))}.at<float>(0x3EC) = -kTorpedoBoatPitchLimit;  // 00CEC574
+        Raw{static_cast<std::uint8_t*>(s.ptr(0x2C))}.at<float>(0x3F0) = kTorpedoBoatPitchLimit;
+        host.observer_register_00694a60(s.p + 8, s.ptr(0x2C));
+    }
+    const Raw camera{static_cast<std::uint8_t*>(s.ptr(0x2C))};
+    const bool retarget = camera.ptr(0x3AC) != s.ptr(0x24);
+    host.camera_mover_set_target_00432e60(camera.p, s.ptr(0x24), 0);
+    if (retarget) {
+        const Raw u{static_cast<std::uint8_t*>(s.ptr(0x24))};
+        const float offset = static_cast<float>(Raw{static_cast<std::uint8_t*>(u.ptr(0x538))}.at<float>(0xA0) * 0.75);  // 00CEC9D8
+        if (camera.at<std::int32_t>(0x3E8) == 0) {
+            camera.at<float>(0x384) = 0.0f;
+            camera.at<float>(0x388) = 0.0f;
+            camera.at<float>(0x38C) = offset;
+            camera.at<float>(0x398) = offset;
+            camera.at<float>(0x394) = offset;
+            camera.at<float>(0x390) = offset;
+        }
+        camera.at<float>(0xA8) = static_cast<float>(u.at<float>(0xA8) + 5.0);  // 00D7A370
+    }
+    host.game_set_camera_mover_004bc410(s.ptr(0x2C));
+    host.binoculars_bind_unit_0051e730(s.ptr(0x2C));
+    host.weapon_group_bind_unit_00549260(s.ptr(0x24), s.ptr(0x2C));
+    if (s.ptr(0x24) != nullptr) {
+        if (!host.observer_is_registered_00694af0(s.p + 8, s.ptr(0x24))) host.observer_register_00694a60(s.p + 8, s.ptr(0x24));
+        s.at<float>(0x1C) = Raw{static_cast<std::uint8_t*>(s.ptr(0x24))}.at<float>(0x980);
+    }
+}
+
 void hud_root_advance_award_ticker_00648060(Raw s, Fe10GuiHost& host) {
     const Raw queue{s.p + 0xAC};
     const Raw front{static_cast<std::uint8_t*>(queue.ptr(4))};

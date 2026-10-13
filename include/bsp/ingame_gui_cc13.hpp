@@ -1034,6 +1034,44 @@ struct Fe10GuiHost : RewardsLayoutHost {
     virtual void counters_relayout_00529a30() = 0;
     // 00BF65AC: _free of a list node.
     virtual void free_00bf65ac(void* block) = 0;
+    // Invite acceptance: 00A3E470, ECX = *00F8ABE8: the profile slot of the
+    // invitee; 0067C970 rebind the primary input; 00A91620(2, slot), ECX =
+    // *00F8BBF4: activate a device slot; device vtable +34h -> its slot;
+    // 00571E50, ECX = record: session record construct; 00BF681B operator
+    // new; *00F8A2FC vtable +6Ch(record): join the session.
+    virtual std::int32_t xenon_find_slot_for_invitee_00a3e470() = 0;
+    virtual void rebind_primary_input_0067c970() = 0;
+    virtual void input_activate_device_slot_00a91620(std::int32_t kind, std::int32_t slot) = 0;
+    virtual std::int32_t input_device_slot_34(void* device) = 0;
+    virtual void session_record_construct_00571e50(Raw record) = 0;
+    virtual void* operator_new_00bf681b(std::size_t bytes) = 0;
+    virtual void online_service_join_6c(Raw record) = 0;
+    // Unit library (ECX = screen): 0067E9A0 toggle description, 0067E580 reset
+    // selection; 004CC460(id, arg), ECX = *00E198AC: push an interface request.
+    virtual void unit_library_toggle_description_0067e9a0(Raw screen) = 0;
+    virtual void unit_library_reset_selection_0067e580(Raw screen) = 0;
+    virtual void main_front_end_push_interface_004cc460(std::int32_t id, std::int32_t arg) = 0;
+    virtual std::int32_t listbox_selected_index_00a9c920(void* listbox) = 0;
+    virtual bool widget_is_visible_38(void* widget) = 0;
+    // 004F8AC0, ECX = *00E18D48: stop the front-end movie; 00AAC870, ECX = GUI
+    // movie widget: stop; 00A9C7C0(row), ECX = listbox: select; 0054A0C0, ECX =
+    // *00E1930C: the help line.
+    virtual void movie_player_stop_004f8ac0() = 0;
+    virtual void gui_movie_stop_00aac870(void* movie) = 0;
+    virtual void listbox_select_index_00a9c7c0(void* listbox, std::int32_t row) = 0;
+    virtual void command_bar_set_help_line_0054a0c0(std::string_view text) = 0;
+    virtual void widget_virtual_80(void* widget, std::int32_t value) = 0;
+    // Camera binding: 00BF55BE operator new; 0064B650, ECX = block: the
+    // ShipCaptain camera constructor (404h bytes, zeroed first); 00923870(0,
+    // scene, const matrix*), ECX = camera; 00432E60(unit, 0), ECX = camera:
+    // target and mode; 004BC410(camera), ECX = *00E188A8: the camera mover;
+    // 0051E730(camera), ECX = [*00E198C4+4Ch]: binoculars bind.
+    virtual void* operator_new_00bf55be(std::size_t bytes) = 0;
+    virtual void* ship_captain_camera_construct_0064b650(void* block) = 0;
+    virtual void camera_attach_00923870(void* camera, std::int32_t a, void* scene, const float matrix[16]) = 0;
+    virtual void camera_mover_set_target_00432e60(void* camera, void* unit, std::int32_t mode) = 0;
+    virtual void game_set_camera_mover_004bc410(void* camera) = 0;
+    virtual void binoculars_bind_unit_0051e730(void* camera) = 0;
 };
 
 // Functions defined in Ghidra by this pass (no reference in the image):
@@ -1177,6 +1215,48 @@ void support_manager_exit_00662470(Raw s, Fe10GuiHost& host);
 // by this pass, unreferenced): when +2E0h is not exactly 0 it steps down by
 // dt, clamps at 0, and the rows are re-laid out.
 void support_manager_step_scroll_collapse_00662690(Raw s, float dt, Fe10GuiHost& host);
+
+// 0067D6E0 __cdecl() -> AL: accept the pending invite *00E19880 (0 when
+// none). The invitee's profile slot becomes the active input device slot
+// (00A91620(2, slot), after 0067C970 unless the first device of
+// [*00F8BBF4+B4h] already reports that slot); a session record (00571E50,
+// byte +4 = FFh, wide string +8h = L"Session") carries a new 88h-byte info
+// object (vtable 00CEED04: +4h/+8h from invite +14h/+18h, +0Ch..+18h from
+// +40h..+4Ch, +1Ch..+3Fh from +1Ch..+3Fh) into the online service's join
+// (vtable +6Ch); the invite is cleared and 1 returned.
+inline constexpr std::uint32_t kPendingInviteGlobal = 0x00E19880;
+inline constexpr std::uint32_t kSessionInfoVtable = 0x00CEED04;
+inline constexpr std::uint16_t kSessionRecordName[8] = {u'S', u'e', u's', u's', u'i', u'o', u'n', 0};  // 00CF6DEC
+bool game_accept_pending_invite_0067d6e0(Fe10GuiHost& host);
+
+// 00680520 __thiscall(ECX = unit library screen+64h listener, widget, listbox),
+// RET 8: listbox activation. Outside mode 1 (+E8h of the screen): rows 0/1
+// toggle the description, row 2 pushes interface request (1, 0) on the main
+// front end (tail jump to 004CC460). In mode 1: row 0 flips the visibility of
+// the screen's +7Ch, row 1 resets the selection.
+void unit_library_on_listbox_activate_00680520(Raw listener, void* widget, void* listbox, Fe10GuiHost& host);
+
+// 0067E9A0 __thiscall(ECX = unit library screen): switch to the description
+// view (+E8h = 1). The rows of the list [+6Ch]+64h hide their widget (+8h);
+// +78h and +7Ch show, +70h hides; the listbox +74h gets focus, row 0, +80h(1)
+// and the listener +64h; the front-end movie and the GUI movie +94h stop;
+// [*00E198BC]+48h clears; +7Ch flips its visibility; command bar
+// "FE.unitlib_toggledesc" A2h / back A3h (placement 2); empty help line.
+void unit_library_toggle_description_0067e9a0(Raw s, Fe10GuiHost& host);
+
+// 0067C1A0 __thiscall(ECX = torpedo-boat view screen, unit), RET 4: release
+// the weapon group and, for the old unit +24h, its roles (0077C470(1FEh, 0),
+// cc9's routine through the host) and its observer pair; +24h = unit. The
+// ShipCaptain camera +2Ch is created on first use (404h zeroed bytes,
+// identity matrix into 00923870(0, game+19CCh), pitch limits -1.553343 /
+// 1.553343 at +3ECh / +3F0h, observer pair) or else the binoculars reset.
+// When the camera's target changes, its offsets come from the unit
+// ([+538h]+A0h * 0.75 into +38Ch..+398h, +384h/+388h zeroed, only when +3E8h
+// is 0) and +A8h = unit +A8h + 5. Then the game camera mover, binoculars and
+// weapon group bind it; the unit's observer pair is registered and +1Ch =
+// unit +980h.
+inline constexpr float kTorpedoBoatPitchLimit = 1.5533430576324463f;  // 00CEC400 (00CEC574 negative)
+void torpedo_boat_view_bind_unit_camera_0067c1a0(Raw s, void* unit, Fe10GuiHost& host);
 
 // 00648060 __thiscall(ECX = HUD root screen): show the front award of the
 // queue +ACh (pairs {text, icon path}): the icon path gets "fe/" replaced by
