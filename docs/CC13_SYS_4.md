@@ -163,11 +163,31 @@ push_back; Ghidra's decompile drops the `size++` at `00467F91`), the cloud parti
 - `004D0140` drains the award tracker's hint deque and frees the map, and `004C8310` reserves a
   vector of counted references (it adds a reference for each copy and releases the old elements).
 
+## Packet cc13-sys4b (continuation)
+
+- `004CD7F0` takes a third argument, `u8 append_mode` (RET 4). The existing host
+  `derive_scene_short_name` (`src/mission_scene_load.cpp`) covers the body only up to
+  `004CDB22`. The tail at `004CDB27..004CDBC1` appends a game-mode suffix from `00E08240`:
+  IC1 IC2 IC3 IC4 Du Esc SiE Com SOLO SOLO. The index uses the rule shared with `004C0170`:
+  mode `+614h` when `+61Ch` is set or `+1FE4h != 0`, otherwise `+614h` when it is 8 or 9, else
+  8. The mission-load and scene-contents callers push 1. `derive_scene_short_name_004cd7f0` wraps
+  the old host and adds the suffix; the old host is unchanged, and the lead has been told.
+- `004C0170` publishes Live presence. Whenever 3 s pass, `XUserSetContext(8001h, 5)` runs outside
+  a session or the menu. In a session there are four `XUserSetContextEx` calls (contexts 0, 1,
+  0Fh, 8001h), made when the xuid, record id or mode index changes, the dirty byte `+22DCh` is
+  set, or 3 s pass.
+- `004BC580` and `004BC6D0` are the leaderboard reads. The friends read repeats
+  `XUserReadStats` synchronously (NULL overlapped) after an `ERROR_INSUFFICIENT_BUFFER` probe.
+  The rank/xuid read enumerates asynchronously into `+7054h` and never closes its enumerator.
+- `00468050` (renamed `BSP_PodPointerArray_Resize`) ends with `size = n` at `00468098`. Ghidra's
+  decompile drops that store, just as it drops the `size++` in `00467F60`. `004C9870` resizes four
+  such arrays to 0 and frees their data.
+- `004CEC00` now has a name and a record.
 ## Evidence method
 
 Live `bsp.py ghidra decompile`, `disasm-raw` for every listed body, constants from the PE
 (`local/sys4_consts.py`). Call-site rows: `reports/cc13_sys4_calls.json`
-(`tools/verify_report_calls.py`: 82 rows, 0 failed).
+(`tools/verify_report_calls.py`: 100 rows, 0 failed).
 
 ## Handoff
 

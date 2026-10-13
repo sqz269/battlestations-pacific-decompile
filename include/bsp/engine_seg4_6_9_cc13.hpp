@@ -478,6 +478,19 @@ struct PodPointerArray {
     std::int32_t size{0};
     std::int32_t capacity{0};
 };
+// 00468050 (unnamed in Ghidra; BSP_PodPointerArray_Resize here),
+// __thiscall(ECX = array, n), RET 4: 004674F0 reserves n when capacity < n;
+// slots size..n-1 are zeroed when their address is non-null, the size counts
+// down to n while it is above it, and 00468098 stores size = n (Ghidra's
+// decompile drops that store).
+void pod_pointer_array_resize_00468050(PodPointerArray& array, std::int32_t n,
+                                       const std::function<void(PodPointerArray&, std::int32_t)>& reserve_004674f0);
+// 004C9870, __fastcall(ECX = set), RET, under an EH frame: for the arrays at
+// +28h, +1Ch, +10h and +4 in that order, 00468050(0) then operator delete
+// (00BF6989) of the data.
+void sound_record_set_destruct_004c9870(std::array<PodPointerArray*, 4> arrays_28_1c_10_04,
+                                        const std::function<void(PodPointerArray&, std::int32_t)>& reserve_004674f0,
+                                        const std::function<void(void*)>& free_block);
 void pod_pointer_array_push_back_00467f60(PodPointerArray& array, std::uint32_t value,
                                           const std::function<void(PodPointerArray&, std::int32_t)>& reserve_004674f0);
 
@@ -581,6 +594,73 @@ bool game_clip_segment_to_world_bounds_004bbdd0(
     const WorldBoundsXZ& box, const std::array<float, 3>& start, std::array<float, 3>& end,
     std::array<float, 3>& out,
     const std::function<std::array<float, 3>(const std::array<float, 3>&)>& normalize_00419510);
+
+// 004CD7F0, __fastcall(ECX = out NativeString, EDX = path NativeString, u8
+// append_mode at [ESP+4]), RET 4, EAX = out. The body up to 004CDB22 is
+// bsp::derive_scene_short_name (src/mission_scene_load.cpp; backslashes to
+// '/', text after the last '/', cut at the second '_', ".scn" dropped). That
+// host omits the tail 004CDB27..004CDBC1: when append_mode is non-zero (the
+// mission load, scene-contents and scene-record callers push 1) a suffix from
+// the table 00E08240 is appended. The table is IC1 IC2 IC3 IC4 Du Esc SiE Com
+// SOLO SOLO. The index comes from the game ([00E188A8]): mode +614h when the
+// byte +61Ch is set or +1FE4h != 0, otherwise +614h when it is 8 or 9, else
+// 8. The index is not range-checked.
+struct ShortNameModeFields {
+    std::uint8_t byte_61c;
+    std::int32_t mode_614;
+    std::int32_t field_1fe4;
+};
+inline constexpr std::array<const char*, 10> kSceneModeSuffixes_00e08240{
+    "IC1", "IC2", "IC3", "IC4", "Du", "Esc", "SiE", "Com", "SOLO", "SOLO"};
+std::int32_t scene_mode_suffix_index_004cdb32(const ShortNameModeFields& game);
+std::string derive_scene_short_name_004cd7f0(const std::string& path, bool append_mode, const ShortNameModeFields& game);
+
+// 004C0170, __thiscall(ECX = game), RET: Live presence. Only with a selected
+// user (00A3E510). t = f(ticks / frequency) from the frame clock [01090AB0]
+// vtable +20h. The first call (flag 00E082E8) seeds the stamp 00E18B30, and
+// t - stamp > 3.0 (00D7A2B0) sets `force` and restamps. `hosted` = [00E198B4]
+// set, state +5D4h == 8, 00687860(14h, 0) on it true and the byte +218Ch
+// clear. Outside state 0Dh without `hosted`, or with no scene record block
+// (+5FCh), the call only does XUserSetContext(slot, 8001h, 5) when `force`
+// is set. Otherwise `force` also takes the byte +22DCh (then cleared), a new
+// xuid (00A3EB00 against 00E18B28/2C) or a new record id (block+1098h
+// against 00E18B24). With `force`, or a mode index (the 004CDB32 rule)
+// different from 00E18B20, it publishes four XUserSetContextEx calls:
+//   context 0      = by campaign kind 004BFFA0: 1->3, 2->4, 3->5, 4->(+218Ch ? 2 :
+//                    state 8 and the 00687860 test ? 6 : 1), else 1;
+//   context 1      = 0 for kind 1 or 2, else the record id;
+//   context 0Fh    = mode bucket: 0..3->0, 4->1, 5->2, 6->3, 7->4, else 0;
+//   context 8001h  = (+1FE4h != 0) + 2;
+// then stores the xuid, record id and mode index.
+struct PresenceGameFields {
+    std::int32_t state_5d4;
+    bool has_record_block_5fc;
+    std::int32_t record_id_1098;  // [+5FCh]+1098h
+    std::uint8_t* presence_dirty_22dc;
+    ShortNameModeFields mode;     // +61Ch, +614h, +1FE4h of [00E188A8]
+    std::uint8_t byte_218c;       // of [00E188A8]
+};
+struct PresenceState {
+    std::uint8_t first_00e082e8{1};
+    float stamp_00e18b30{0.0f};
+    std::int32_t mode_index_00e18b20{0};
+    std::int32_t record_id_00e18b24{0};
+    std::uint64_t xuid_00e18b28{0};
+};
+struct PresenceHost {
+    virtual ~PresenceHost() = default;
+    virtual bool has_selected_user_00a3e510() = 0;
+    virtual void frame_clock_vslot_20(std::int64_t& ticks, std::int64_t& frequency) = 0;
+    virtual bool has_object_00e198b4() = 0;
+    virtual bool object_00e198b4_test_00687860(std::int32_t a, std::int32_t b) = 0;
+    virtual std::int32_t mission_campaign_kind_004bffa0() = 0;
+    virtual std::uint64_t active_xuid_00a3eb00() = 0;
+    virtual std::uint32_t active_user_slot_00a3eac0() = 0;
+    virtual void x_user_set_context(std::uint32_t slot, std::uint32_t context, std::uint32_t value) = 0;
+    virtual void x_user_set_context_ex(std::uint32_t slot, std::uint32_t context, std::uint32_t value,
+                                       void* overlapped) = 0;
+};
+void game_update_presence_context_004c0170(const PresenceGameFields& game, PresenceState& state, PresenceHost& host);
 
 // 004BCB40, __thiscall(ECX = {u32 length, char* data}, needle, int start),
 // RET 8: -1 for null data or needle; a negative start becomes 0, a start
@@ -958,7 +1038,21 @@ struct GameLiveHost {
     virtual void close_handle(void* handle) = 0;
     virtual void x_cancel_overlapped(void* overlapped) = 0;
     virtual void free_block(void* block) = 0; // _free
-};
+    virtual void* operator_new(std::uint32_t bytes) = 0; // 00BF55BE
+    virtual std::uint64_t active_xuid_00a3eb00() = 0;
+    // XUSER_STATS_SPEC {view id, column count, column ids}; only the first
+    // column id is used by these callers.
+    virtual std::uint32_t x_user_read_stats(std::uint32_t title_id, std::uint32_t xuid_count, const std::uint64_t* xuids,
+                                            std::uint32_t spec_count, const std::uint32_t spec[3],
+                                            std::uint32_t* results_size, void* results, void* overlapped) = 0;
+    virtual std::uint32_t x_user_create_stats_enumerator_by_rank(std::uint32_t title_id, std::uint32_t rank_start,
+                                                                 std::uint32_t rows, std::uint32_t spec_count,
+                                                                 const std::uint32_t spec[3], std::uint32_t* size,
+                                                                 void** handle) = 0;
+    virtual std::uint32_t x_user_create_stats_enumerator_by_xuid(std::uint32_t title_id, std::uint64_t xuid,
+                                                                 std::uint32_t rows, std::uint32_t spec_count,
+                                                                 const std::uint32_t spec[3], std::uint32_t* size,
+                                                                 void** handle) = 0;};
 // 004BC4E0, __fastcall(ECX = game), RET: with a selected user,
 // XUserSetContext(slot, 8001h (presence), 4); byte game+22DCh = 1 always.
 void game_set_presence_context_004bc4e0(std::uint8_t& presence_set_22dc, GameLiveHost& host);
@@ -970,7 +1064,30 @@ void game_create_friends_enumerator_004bc520(void* friends_buffer_22de, std::uin
                                              GameLiveHost& host);
 // 004BC7F0, __fastcall(ECX = game), RET: XCancelOverlapped(game+7038h),
 // _free and clear the buffer at +7054h, zero +7058h.
-void game_cancel_leaderboard_read_004bc7f0(void* overlapped_7038, void*& buffer_7054, std::uint32_t& field_7058,
+// 004BC580, __thiscall(ECX = game, view, unused, unused), RET 0Ch: _free
+// the result buffer +7054h, +7058h = 2, then the xuid list: each friend's
+// xuid (game+22DEh, stride 0C4h, +7034h entries) and the active xuid last.
+// XUserReadStats(0, n + 1, xuids, 1, {view, 1 column, column 0}, &size,
+// null, null); on 7Ah (ERROR_INSUFFICIENT_BUFFER) a size-byte buffer goes to
+// +7054h, the overlapped block +7038h..+7050h is zeroed, and the read is
+// repeated into the buffer with a NULL overlapped pointer (synchronous).
+struct LeaderboardFields {
+    std::uint8_t* friends_22de;
+    std::uint32_t* friends_count_7034;
+    std::array<std::uint32_t, 7>* overlapped_7038;
+    void** buffer_7054;
+    std::uint32_t* state_7058;
+};
+void game_begin_friends_leaderboard_read_004bc580(const LeaderboardFields& game, std::uint32_t view, GameLiveHost& host);
+// 004BC6D0, __thiscall(ECX = game, rank_start, xuid_low, xuid_high, view,
+// unused, unused, u8 friends), RET 1Ch. With `friends`: 004BC520, then
+// 004BC580(view, arg5, arg6). Otherwise: _free +7054h; with rank_start != 0
+// XUserCreateStatsEnumeratorByRank(0, rank_start, 17, 1, {view, 0 columns}),
+// else ByXuid(0, xuid, 17, ...) (results ignored); then a size-byte buffer
+// at +7054h, the overlapped block zeroed, XEnumerate(handle, buffer, size,
+// null, +7038h) asynchronously, +7058h = 2. The enumerator handle is not closed.
+void game_begin_leaderboard_read_004bc6d0(const LeaderboardFields& game, std::uint32_t rank_start, std::uint64_t xuid,
+                                          std::uint32_t view, bool friends, GameLiveHost& host);void game_cancel_leaderboard_read_004bc7f0(void* overlapped_7038, void*& buffer_7054, std::uint32_t& field_7058,
                                            GameLiveHost& host);
 
 // 004BB3E0, __fastcall(ECX = game), RET: the eight lobby slot records at
