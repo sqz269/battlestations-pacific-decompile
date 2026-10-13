@@ -2433,7 +2433,7 @@ void unit_library_update_00681ba0(Raw screen, float /*dt*/, Fe5Host& host) {
             host.lua_release_00b67700(mesh);
         }
     }
-    host.unit_library_load_unit_model_00680db0(screen);
+    unit_library_load_unit_model_00680db0(screen, host);
     screen.at<std::int32_t>(0xE4) = 0;
     host.lua_release_00b67700(entry);
     host.lua_release_00b67700(classes);
@@ -3019,6 +3019,172 @@ void plane_screen_load_layout_00606c60(Raw screen, Fe5Host& host) {
         void* const parent = w.parent == 0 ? screen.ptr(0xB4) : screen.ptr(w.parent);
         screen.ptr(w.offset) = host.gui_find_child_00aa7e00(parent, w.name);
     }
+}
+
+void unit_library_load_unit_model_00680db0(Raw screen, Fe5Host& host) {
+    host.unit_library_release_model_parts_0067ed30(screen);
+    // 004263B0 appends the decimal class index to the prefix (00CF70CC).
+    host.file_block_begin("GIUnitLib::ShowSelectedVehicle_" + std::to_string(screen.at<std::int32_t>(0x130)));
+    void* globals = host.lua_globals_00b67980();
+    void* const classes = host.lua_get_by_name_00b67800(globals, "VehicleClass");  // 00CE5880
+    host.lua_release_00b67700(globals);
+    globals = host.lua_globals_00b67980();
+    void* const devices = host.lua_get_by_name_00b67800(globals, "DeviceClass");  // 00CE44BC
+    host.lua_release_00b67700(globals);
+    void* const entry = host.lua_get_by_index_00b67720(classes, screen.at<std::int32_t>(0x130));
+    {
+        void* const mesh = host.lua_get_by_name_00b67800(entry, "Mesh");  // 00CE5FD0
+        screen.ptr(0x108) = host.resource_load_with_game_factory_007188a0(host.lua_get_string_00b662b0(mesh));
+        host.lua_release_00b67700(mesh);
+    }
+    const Raw hull_part = host.unit_part_instance_new_007135c0(screen.ptr(0x108));
+    screen.ptr(0x10C) = hull_part.p;
+    const Raw hull_node{static_cast<std::uint8_t*>(Raw{static_cast<std::uint8_t*>(hull_part.ptr(0x160))}.ptr(0x0C))};
+    host.node_propagate_root_registration_00b6d890(hull_node, screen.ptr(0x0C));
+    const float identity[16] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};  // 00D7A24C = 1.0
+    host.node_set_matrix_34(hull_node, identity);
+    host.model_groups_select_visible_00710bb0(Raw{static_cast<std::uint8_t*>(screen.ptr(0x10C))}, 0);
+
+    void* const platforms = host.lua_get_by_name_00b67800(entry, "Platforms");  // 00CEB734
+    if (host.lua_is_table_00b661b0(platforms)) {
+        void* const key = host.lua_nil_00b65f50();
+        void* const value = host.lua_nil_00b65f50();
+        host.lua_iterate_first_00b67080(platforms, key, value);
+        while (!host.lua_iterate_ended_00b66420(platforms, key)) {
+            if (host.lua_is_integer_00b66a60(key)) {
+                // Gun[1] must be an integer (00681182..0068127C).
+                bool bad = true;
+                void* const gun = host.lua_get_by_name_00b67800(value, "Gun");  // 00CEB730
+                if (host.lua_is_table_00b661b0(gun)) {
+                    void* const gun2 = host.lua_get_by_name_00b67800(value, "Gun");
+                    void* const first = host.lua_get_by_index_00b67720(gun2, 1);
+                    bad = !host.lua_is_integer_00b66a60(first);
+                    host.lua_release_00b67700(first);
+                    host.lua_release_00b67700(gun2);
+                }
+                host.lua_release_00b67700(gun);
+                if (!bad) {
+                    void* const gun3 = host.lua_get_by_name_00b67800(value, "Gun");
+                    void* const first = host.lua_get_by_index_00b67720(gun3, 1);
+                    const std::int32_t device = host.lua_get_integer_00b66290(first);
+                    host.lua_release_00b67700(first);
+                    host.lua_release_00b67700(gun3);
+                    void* const row = host.lua_get_by_index_00b67720(devices, device);
+                    void* const mesh = host.lua_get_by_name_00b67800(row, "Mesh");
+                    const bool has_mesh = host.lua_is_string_00b660a0(mesh);
+                    host.lua_release_00b67700(mesh);
+                    host.lua_release_00b67700(row);
+                    if (has_mesh) {
+                        const Raw group{static_cast<std::uint8_t*>(host.resource_find_last_named_point_group_00718000(
+                            screen.ptr(0x108), "slot", host.lua_get_integer_00b66290(key)))};  // 00CEB728
+                        const Raw points{group.p == nullptr ? nullptr : group.p + 0x44};
+                        const auto point_count = [&] {
+                            return (static_cast<const std::uint8_t*>(points.ptr(8)) - static_cast<const std::uint8_t*>(points.ptr(4))) / 0x0C;
+                        };
+                        if (group.p != nullptr && points.ptr(4) != nullptr && point_count() > 2) {
+                            float basis[16] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+                            const float* p0 = host.point_vector_at_004803a0(points, 0);
+                            basis[12] = p0[0];
+                            basis[13] = p0[1];
+                            basis[14] = p0[2];
+                            auto diff = [&](std::int32_t to, float out[3]) {  // FLD, FSUB, FSTP per component
+                                const float* const a = host.point_vector_at_004803a0(points, 0);
+                                const float* const b = host.point_vector_at_004803a0(points, to);
+                                out[0] = b[0] - a[0];
+                                out[1] = b[1] - a[1];
+                                out[2] = b[2] - a[2];
+                            };
+                            diff(2, &basis[8]);
+                            float side[3];
+                            float ahead[3];
+                            diff(1, side);
+                            diff(2, ahead);
+                            float up[3];
+                            host.vector_cross_004fa230(up, ahead, side);
+                            basis[4] = up[0];
+                            basis[5] = up[1];
+                            basis[6] = up[2];
+                            host.matrix_orthonormalize_basis_rows_0085dc80(basis);
+                            float yaw = 0.0f;
+                            float pitch = 0.0f;
+                            void* const rest_probe = host.lua_get_by_name_00b67800(value, "RestAngles");  // 00CEB71C
+                            const bool has_rest = host.lua_is_table_00b661b0(rest_probe);
+                            host.lua_release_00b67700(rest_probe);
+                            if (has_rest) {
+                                void* const rest = host.lua_get_by_name_00b67800(value, "RestAngles");
+                                float pair[2];
+                                const float* const angles = host.lua_get_vector2_00b679f0(rest, pair);
+                                yaw = angles[0];
+                                pitch = angles[1];
+                                host.lua_release_00b67700(rest);
+                            } else {
+                                bool has_window = false;
+                                void* const windows = host.lua_get_by_name_00b67800(value, "Windows");  // 00CEB714
+                                if (host.lua_is_table_00b661b0(windows)) {
+                                    void* const windows2 = host.lua_get_by_name_00b67800(value, "Windows");
+                                    void* const window = host.lua_get_by_index_00b67720(windows2, 1);
+                                    has_window = host.lua_is_table_00b661b0(window);
+                                    host.lua_release_00b67700(window);
+                                    host.lua_release_00b67700(windows2);
+                                }
+                                host.lua_release_00b67700(windows);
+                                if (has_window) {
+                                    void* const windows3 = host.lua_get_by_name_00b67800(value, "Windows");
+                                    void* const window = host.lua_get_by_index_00b67720(windows3, 1);
+                                    host.lua_release_00b67700(windows3);
+                                    auto mean = [&](const char* low_key, const char* high_key) {
+                                        void* const low = host.lua_get_by_name_00b67800(window, low_key);
+                                        void* const high = host.lua_get_by_name_00b67800(window, high_key);
+                                        const double high_value = host.lua_get_number_00b66270(high);
+                                        const double sum = host.lua_get_number_00b66270(low) + high_value;
+                                        const float result = static_cast<float>(sum * 0.5);  // 00D7A280
+                                        host.lua_release_00b67700(high);
+                                        host.lua_release_00b67700(low);
+                                        return result;
+                                    };
+                                    yaw = mean("MinHorzAngle", "MaxHorzAngle");    // 00CEB704 / 00CEB6F4
+                                    pitch = mean("MinVertAngle", "MaxVertAngle");  // 00CEB6E4 / 00CEB6D4
+                                    host.lua_release_00b67700(window);
+                                }
+                            }
+                            void* const device_row = host.lua_get_by_index_00b67720(devices, device);
+                            void* const device_mesh = host.lua_get_by_name_00b67800(device_row, "Mesh");
+                            void* const model =
+                                host.resource_load_with_game_factory_007188a0(host.lua_get_string_00b662b0(device_mesh));
+                            host.lua_release_00b67700(device_mesh);
+                            host.lua_release_00b67700(device_row);
+                            const Raw part = host.unit_part_instance_new_007135c0(model);
+                            const Raw part_node{static_cast<std::uint8_t*>(Raw{static_cast<std::uint8_t*>(part.ptr(0x160))}.ptr(0x0C))};
+                            host.node_propagate_root_registration_00b6d890(part_node, screen.ptr(0x0C));
+                            host.node_set_parent_00b6e680(part_node, hull_node.p);
+                            float rotation[16];
+                            float placed[16];
+                            const float* const turn = host.matrix_rotation_y_negated_0042b490(rotation, yaw);
+                            host.matrix_multiply_00413920(turn, basis, placed);
+                            host.node_set_matrix_38(part_node, placed);
+                            void* const barrel = host.model_find_note_node_0071ad50(part.ptr(0x160), "barrel");  // 00CF70C4
+                            if (barrel != nullptr) {
+                                float elevation[16];
+                                host.node_set_matrix_38(Raw{static_cast<std::uint8_t*>(barrel)},
+                                                        host.matrix_rotation_x_negated_0042b450(elevation, pitch));
+                            }
+                            host.model_groups_select_visible_00710bb0(part, 0);
+                            host.unit_library_model_vector_push_00680cc0(Raw{screen.p + 0x110}, model);
+                            host.unit_library_part_vector_push_00680d30(Raw{screen.p + 0x120}, part.p);
+                        }
+                    }
+                }
+            }
+            host.lua_iterate_next_00b67190(platforms, key, value);
+        }
+        host.lua_release_00b67700(value);
+        host.lua_release_00b67700(key);
+    }
+    host.lua_release_00b67700(platforms);
+    host.lua_release_00b67700(entry);
+    host.lua_release_00b67700(devices);
+    host.lua_release_00b67700(classes);
+    host.file_block_end();
 }
 // @impl-end
 

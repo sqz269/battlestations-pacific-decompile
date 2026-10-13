@@ -565,9 +565,6 @@ struct Fe5Host {
     // 0067E580, ECX = unit library screen (reconstructed with another host as
     // ingame_gui_cc13::unit_library_reset_selection_0067e580).
     virtual void unit_library_reset_selection_0067e580(Raw screen) = 0;
-    // 00680DB0, ECX = unit library screen: load the selected class's model
-    // (not reconstructed here).
-    virtual void unit_library_load_unit_model_00680db0(Raw screen) = 0;
     // 0054EEF0(ECX = count, EDX = 0) -> storage for count 1Ch-byte shots;
     // 00550B50 throws length_error ("vector<T> too long").
     virtual std::uint8_t* idle_camera_shot_allocate_0054eef0(std::size_t count) = 0;
@@ -655,6 +652,54 @@ struct Fe5Host {
     // 0064A540(top, bottom, left, right), ECX = quad fade (screen+16Ch): bind
     // the four edge-flash icons.
     virtual void quad_fade_bind_0064a540(Raw fade, void* top, void* bottom, void* left, void* right) = 0;
+    // More Lua object routines (handles as above): 00B66A60 IsInteger,
+    // 00B66290 GetInteger, 00B662B0 GetString, 00B66270 GetNumber (ST0),
+    // 00B679F0 GetVector2(&out) -> &out, 00B67080 / 00B67190 iterate first /
+    // next (ECX = table, &key, &value), 00B66420 iteration ended (ECX = table,
+    // &key).
+    virtual bool lua_is_integer_00b66a60(void* object) = 0;
+    virtual std::int32_t lua_get_integer_00b66290(void* object) = 0;
+    virtual const char* lua_get_string_00b662b0(void* object) = 0;
+    virtual double lua_get_number_00b66270(void* object) = 0;
+    virtual const float* lua_get_vector2_00b679f0(void* object, float out[2]) = 0;
+    virtual void lua_iterate_first_00b67080(void* table, void* key, void* value) = 0;
+    virtual void lua_iterate_next_00b67190(void* table, void* key, void* value) = 0;
+    virtual bool lua_iterate_ended_00b66420(void* table, void* key) = 0;
+    // 0067ED30, ECX = unit library screen: release the model parts
+    // (ingame_gui_cc13::unit_library_release_model_parts_0067ed30).
+    virtual void unit_library_release_model_parts_0067ed30(Raw screen) = 0;
+    // 007188A0, ECX = &native string: load a model resource by name.
+    virtual void* resource_load_with_game_factory_007188a0(std::string_view name) = 0;
+    // operator new(1ACh); when it succeeded 007135C0(0, model+8h(0, 1.0f)),
+    // ECX = block: a unit part instance; null when the allocation failed.
+    virtual Raw unit_part_instance_new_007135c0(void* model) = 0;
+    // 00B6D890(root), ECX = node; 00B6E680(parent), ECX = node.
+    virtual void node_propagate_root_registration_00b6d890(Raw node, void* root) = 0;
+    virtual void node_set_parent_00b6e680(Raw node, void* parent) = 0;
+    // Node virtual +34h(const float matrix[16]).
+    virtual void node_set_matrix_34(Raw node, const float matrix[16]) = 0;
+    // 00710BB0(group), ECX = part instance: select the visible model group.
+    virtual void model_groups_select_visible_00710bb0(Raw part, std::int32_t group) = 0;
+    // 0071AD50(name), ECX = [part+160h] -> note node or null.
+    virtual void* model_find_note_node_0071ad50(void* model, std::string_view name) = 0;
+    // 0042B490 / 0042B450(angle), ECX = out matrix -> out: rotation about Y /
+    // X by -angle.
+    virtual const float* matrix_rotation_y_negated_0042b490(float out[16], float angle) = 0;
+    virtual const float* matrix_rotation_x_negated_0042b450(float out[16], float angle) = 0;
+    // 00718000(const std::string& name, index), ECX = model -> the last named
+    // point group or null.
+    virtual void* resource_find_last_named_point_group_00718000(void* model, std::string_view name,
+                                                                std::int32_t index) = 0;
+    // 004803A0(index), ECX = point vector (group+44h) -> &point (0Ch bytes).
+    virtual const float* point_vector_at_004803a0(Raw vector, std::int32_t index) = 0;
+    // 004FA230(const vec* stack_arg), ECX = out, EDX = first operand: cross.
+    virtual void vector_cross_004fa230(float out[3], const float* edx_operand, const float* stack_operand) = 0;
+    // 0085DC80, ECX = matrix: orthonormalize the basis rows.
+    virtual void matrix_orthonormalize_basis_rows_0085dc80(float matrix[16]) = 0;
+    // 00680CC0 / 00680D30(const T*), ECX = screen+110h / +120h: push_back of
+    // the model and part vectors.
+    virtual void unit_library_model_vector_push_00680cc0(Raw vector, void* model) = 0;
+    virtual void unit_library_part_vector_push_00680d30(Raw vector, void* part) = 0;
     // @host-end
 };
 
@@ -1803,6 +1848,20 @@ inline constexpr std::array<PlaneHudWidget, 15> kPlaneHudWidgets{{
     {0x110, 0xD8, "payload_type_Icon"}}};
 inline constexpr double kCrossF2Scale = 0.5;  // 00D7A280
 void plane_screen_load_layout_00606c60(Raw screen, Fe5Host& host);
+// 00680DB0 __fastcall(ECX = unit library screen), plain RET: release the
+// model parts (0067ED30); open the file block "GIUnitLib::ShowSelectedVehicle_"
+// + class index (+130h); VehicleClass[+130h].Mesh loads the hull model
+// (+108h) and its part instance (+10Ch, identity +34h matrix, group 0). For
+// each integer-keyed entry of the class's Platforms table whose Gun[1] is an
+// integer device index with a string DeviceClass[i].Mesh: the hull's last
+// point group "slot" + key with more than two points gives the mount basis
+// (row3 = p0, row2 = p2 - p0, row1 = cross(p2 - p0, p1 - p0), then
+// orthonormalized); the rest angles come from RestAngles (a vector2) or else
+// from Windows[1] (mean of Min/Max Horz and Vert angles, x87 sum * 0.5, one
+// float store); the device model gets a part instance parented to the hull
+// part with RotY(-yaw) * basis and its "barrel" note node RotX(-pitch);
+// model and part are appended to +110h / +120h.
+void unit_library_load_unit_model_00680db0(Raw screen, Fe5Host& host);
 // @decl-end
 
 }  // namespace bsp::cc13_fe5
