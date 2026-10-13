@@ -468,6 +468,55 @@ struct Fe5Host {
     virtual bool bit_flag_set_test_0048f930(Raw flags, std::uint32_t flag) = 0;
     // 0064A4F0, ECX = screen+16Ch: the widget quad-fade constructor.
     virtual void widget_quad_fade_construct_0064a4f0(Raw fade) = 0;
+    // 006BCD20, ECX = the slot's +28h object: its air-ops block.
+    virtual void* air_ops_block_006bcd20(Raw object) = 0;
+    // 00432750, ECX = camera: the camera-mover base constructor.
+    virtual void camera_mover_construct_base_00432750(Raw camera) = 0;
+    // 00B0CFC0(&a, &b, &c), ECX = *00F8D39C: read the render transition.
+    virtual void render_get_transition_00b0cfc0(float& a, float& b, float& c) = 0;
+    // 0042AA00(0, 0, 0), ECX = the cockpit camera (+98h).
+    virtual void cockpit_camera_reset_0042aa00(Raw camera) = 0;
+    // 0042C940(float yaw), ECX = camera mover: orbit the target from a yaw.
+    virtual void camera_orbit_target_from_yaw_0042c940(Raw camera, float yaw) = 0;
+    // The function-local static of 00545750: the colour 00E192F4..00E19300
+    // and its guard dword 00E19304 (bit 0), returned as one 14h-byte block.
+    virtual Raw static_colour_block_00e192f4() = 0;
+    // 00AA8B80(index), ECX = widget: drop a timed entry.
+    virtual void widget_delete_timed_entry_00aa8b80(void* widget, int index) = 0;
+    // 005471B0(count), ECX = array: resize a reference-counted pointer array.
+    virtual void refptr_array_resize_005471b0(Raw array, std::int32_t count) = 0;
+    // 00548410(forward, 0), ECX = screen 2Eh: cc9's group step
+    // (src/hud_weapon_group_screen.cpp weapon_group_cycle_00548410).
+    virtual void weapon_group_step_00548410(Raw screen, int forward) = 0;
+    // 00545B30(group), ECX = screen 2Eh (cc9's weapon_group_any_available_00545b30).
+    virtual bool weapon_group_any_available_00545b30(Raw screen, std::int32_t group) = 0;
+    // Manager globals: *00E198AC main menu, *00E198B4 multiplayer menu,
+    // *00E198B8 session browser, *00E198C4 in-game interface (null when absent).
+    virtual Raw manager_global(std::uint32_t address) = 0;
+    // Widget +5Ch() -> EAX: the widget kind; +84h(1): press.
+    virtual std::int32_t widget_kind_5c(void* widget) = 0;
+    virtual void widget_press_84(void* widget, int flag) = 0;
+    // A listener sub-object's virtual (ECX = listener, (widget)).
+    virtual void listener_forward(Raw listener, std::uint16_t slot, void* widget) = 0;
+    // A listener sub-object's virtual (ECX = listener, (widget, flag)).
+    virtual void listener_forward2(Raw listener, std::uint16_t slot, void* widget, std::uint32_t flag) = 0;
+    // 0054AA70(c), ECX = string: BSP_NativeString_AppendByte.
+    virtual void native_string_append_byte(Raw string, std::uint8_t value) = 0;
+    // 00A3EAC0, ECX = *00F8ABE8: the selected user's index.
+    virtual std::uint32_t xenon_selected_user_index_00a3eac0() = 0;
+    // 00A4D43A: XShowKeyboardUI(user, flags, default, title, description,
+    // result, result_chars, overlapped) (an XLive import thunk).
+    virtual void x_show_keyboard_ui_00a4d43a(std::uint32_t user, std::uint32_t flags, const void* default_text,
+                                              const void* title, const void* description, void* result,
+                                              std::uint32_t result_chars, void* overlapped) = 0;
+    // The scroller (src/frontend_screen_animation.cpp): 00683300(0, 0, 0)
+    // and the thumb-drag end 00683320, ECX = the scroller.
+    virtual void scroller_set_auto_scroll_00683300(Raw scroller, int direction, float step, bool override_input) = 0;
+    virtual void scroller_end_thumb_drag(Raw scroller) = 0;
+    // Widget +88h(bool, 0, 1.0) on a kind-6 widget.
+    virtual void widget_set_state_88(void* widget, bool on, int flag, float alpha) = 0;
+    // Tree-iterator increments: 00552770, 00552D40, 00552E20 (ECX = iterator).
+    virtual void tree_iterator_increment(Raw iterator, std::uint32_t routine) = 0;
     // @host-end
 };
 
@@ -766,13 +815,15 @@ struct SmallHudScreenShape {
     bool observer_link_1c;                     // +1Ch link: vtable 00CE75CC, +2Ch = 1
     std::string_view role;
 };
-inline constexpr std::array<SmallHudScreenShape, 6> kSmallHudScreens{{
+inline constexpr std::array<SmallHudScreenShape, 8> kSmallHudScreens{{
     {0x0068A2D0, 0x0068A330, 0x00CF7938, 0x00CF7920, {0x34, 0x4C, 0x50, 0x40, 0x44, 0x54}, {0x48}, false, "screen 24h"},
     {0x0068A3B0, 0x0068A420, 0x00CF7978, 0x00CF7960, {0x1C, 0x20, 0x24, 0x28, 0x34}, {0x30}, false, "screen 46h"},
     {0x0068A4A0, 0x0068A4F0, 0x00CF79B8, 0x00CF79A0, {0x1C, 0x20}, {}, false, "screen 2Fh"},
     {0x0068A570, 0, 0x00CEC590, 0x00CEC578, {}, {}, false, "bomber view screen"},
     {0x0068A5A0, 0x0068A5F0, 0x00CF79F8, 0x00CF79E0, {}, {}, false, "binoculars overlay 4Ah"},
     {0x0068A8A0, 0x0068A910, 0x00CF7A38, 0x00CF7A20, {}, {}, true, "common overlay 27h"},
+    {0x0060CAA0, 0, 0x00CF48C8, 0x00CF48B0, {0x1C, 0x20, 0x24}, {}, false, "screen 40h (destructor 0060C650 rewrites the vtables)"},
+    {0x0060CAE0, 0, 0x00CF4A7C, 0x00CF4A64, {0x1C, 0x20, 0x24}, {}, false, "plane spawn screen 41h"},
 }};
 // __thiscall(screen) -> EAX.
 void* small_hud_screen_construct(const SmallHudScreenShape& shape, Raw screen, Fe5Host& host);
@@ -1128,6 +1179,257 @@ void plane_screen_collect_children_00608ef0(Raw screen, void* out, Fe5Host& host
 // is active (+5h), rebuild the widgets, clear the two quad records' +18h
 // bytes (+108h, +10Ch) and refresh the payload icon.
 void plane_screen_set_plane_00609390(Raw screen, void* plane, Fe5Host& host);
+
+// 0060C620 __thiscall(camera, object), RET 4: null +374h or +378h when it
+// holds the object (the plane-spawn camera's observer slot).
+void plane_spawn_camera_on_object_released_0060c620(Raw camera, const void* object) noexcept;
+// 0060C650 __thiscall(screen): vtables 00CF48C8 / 00CF48B0, callback owner
+// +8h, front-end base (screen 40h).
+void hud_screen40_destruct_0060c650(Raw screen, Fe5Host& host);
+// 0060C6C0 __thiscall(screen): with a plane at +20h, observe it (screen+8h);
+// when the screen's +28h virtual returns an object, observe that too and keep
+// its air-ops block (006BCD20) in +24h.
+void hud_plane_slot_register_observers_0060c6c0(Raw screen, Fe5Host& host);
+// 0060C700 / 0060C780 __thiscall(screen): stop observing +20h, (+24h)->+7Ch
+// and +1Ch, nulling each (byte-identical bodies).
+void hud_plane_slot_unregister_observers(Raw screen, Fe5Host& host);
+// 0060C930 __thiscall(camera) -> EAX: camera-mover base, then vtables
+// 00CF4930 (+0h), 00CF4914 (+10h), 00CF490C (+24h), 00CF48F4 (+170h).
+void* plane_spawn_camera_construct_0060c930(Raw camera, Fe5Host& host);
+
+// 00608C30 __thiscall(screen) (plane effects enter): clear +104h, update the
+// fov, pick the camera (cockpit/chase, then 00608B60), +7Ch = -1.0
+// (00D7A260), zero the 40h bytes at +1Ch and +5Ch, copy the scene view's
+// +1C4h into +80h/+84h when game+19FCh exists, save the render transition into
+// +88h..+90h and apply the tuning default (+D8h, +DCh, +E0h, 0, 0, 0).
+inline constexpr float kPlaneEffectsUnsetTime = -1.0f;  // 00D7A260
+void plane_effects_enter_00608c30(Raw screen, Fe5Host& host);
+// 00608D50 __thiscall(screen, plane), RET 4: clear +104h, release the old
+// view, stop observing the old plane, store the new one (+B8h), select the
+// camera, +A8h = 0, update the fov, apply the view mode, clear +9Ch and reset
+// the cockpit camera (+98h), zero the chase camera's +3E4h/+3E8h, clear
+// +BCh/+BDh, +108h = input manager table +1EB4h, byte +10Ch = 1.
+void plane_screen_bind_plane_00608d50(Raw screen, void* plane, Fe5Host& host);
+
+// ---------------------------------------------------------------------------
+// Segment 16: the weapon-group HUD screen 2Eh (src/hud_weapon_group_screen.cpp
+// and src/mission_camera.cpp hold cc9's update/bind/layout models).
+// ---------------------------------------------------------------------------
+// 00545270 __thiscall(screen): orbit camera +20h from yaw 0.0 (when set).
+void weapon_group_reset_orbit_camera_00545270(Raw screen, Fe5Host& host);
+// 005452B0 __thiscall(screen, float yaw), RET 4: orbit camera +2Ch (when set).
+void weapon_group_orbit_camera_005452b0(Raw screen, float yaw, Fe5Host& host);
+// 005452F0 __thiscall(screen): hide the 5x5 slot widgets at +5Ch (null slots
+// skipped) and the four widgets +C0h..+CCh.
+void weapon_group_hide_slot_widgets_005452f0(Raw screen, Fe5Host& host);
+// 005454B0 __thiscall(screen 2Eh, float x, float y, float z), RET 0Ch: store
+// +48h..+50h; unless game byte +19C4h is set, centre the markers view at (x, y).
+void screen2e_set_view_centre_005454b0(Raw screen, float x, float y, float z, Fe5Host& host);
+// 00545550 / 00545600 __thiscall(entry): entry vtable (00CEDD70 / 00CEDD88),
+// stop observing +14h (ECX = +14h, EDX = entry) when set, then the callback
+// owner destructor on the entry itself.
+void weapon_group_entry_destruct(Raw entry, std::uint32_t vtable, Fe5Host& host);
+inline constexpr std::uint32_t kWeaponGroupEntryAVtable = 0x00CEDD70;
+inline constexpr std::uint32_t kWeaponGroupEntryBVtable = 0x00CEDD88;
+
+// 00545750 __cdecl() -> EAX = 00E192F4: the lazily built colour (1, 0, 0, 1).
+const float* static_colour_red_00545750(Fe5Host& host);
+// 005459B0 __thiscall(gun) -> AL: the weapon kind [[gun+3F4h]+80h] is 2, 3,
+// 4 or 6. 005459E0 -> AL: kind 5 or 6. Pure reads of gun data; cc9's
+// src/game_hosts_gunnery.cpp and include/bsp/gun_aiming.hpp use them (the
+// latter calls 005459B0's answer "muzzle_blocked"; see the doc).
+bool gun_is_artillery_kind_005459b0(Raw gun) noexcept;
+bool gun_is_torpedo_class_launcher_005459e0(Raw gun) noexcept;
+// 00545AC0 __thiscall(screen): +D4h = 0, +1Ch = 1, hide the two widget
+// arrays +E4h and +F0h over +E8h entries, then the slot widgets.
+void weapon_group_resume_00545ac0(Raw screen, Fe5Host& host);
+// 00545C20 __thiscall(array {data, count}, const entry*), RET 4 -> EAX: the
+// index of the first 18h-byte entry whose +14h matches, else -1.
+std::int32_t entry_array_index_of_target_00545c20(Raw array, Raw entry) noexcept;
+
+// The engine's pointer array {data +0h, count +4h, capacity +8h} and the
+// 18h-byte observer-handle array (entry: vtable +0h, callback owner +4h..+0Ch,
+// byte +10h, observed +14h).
+// 00545CB0 / 00545D10 __thiscall(array, int capacity), RET 4: at least 1;
+// grow only (copy, _free the old block). Byte-identical bodies.
+void ptr_array_reserve(Raw array, std::int32_t capacity, Fe5Host& host);
+// 00545ED0 / 00545F10 __thiscall(array, const void** value), RET 4: grow to
+// twice the capacity (at least 1) when full, then append.
+void ptr_array_push_back(Raw array, void* value, Fe5Host& host);
+// 00545FE0 / 00546030 __thiscall(array, int count), RET 4: reserve, zero the
+// new slots, set the count.
+void ptr_array_resize(Raw array, std::int32_t count, Fe5Host& host);
+// 005465B0 / 005465D0 __thiscall(array): resize to 0, _free the block.
+void ptr_array_destroy(Raw array, Fe5Host& host);
+// 00545F50 __thiscall(handle, const handle* other), RET 4 -> EAX: clear the
+// callback-owner words, vtable 00CEDD88, copy other+14h, byte +10h = 1,
+// observe it (ECX = observed, EDX = handle) when non-null.
+void* observer_handle_copy_construct_00545f50(Raw handle, Raw other, Fe5Host& host);
+// 005460A0 __thiscall(handle, observed), RET 4 -> EAX: the same from a
+// pointer. 00546310 then rewrites the vtable to 00CEDDA0 (entry C).
+void* weapon_group_entry_construct_005460a0(Raw handle, void* observed, Fe5Host& host);
+void* weapon_group_entry_c_construct_00546310(Raw handle, void* observed, Fe5Host& host);
+inline constexpr std::uint32_t kWeaponGroupEntryCVtable = 0x00CEDDA0;
+// 00546100 __thiscall(handle, observed), RET 4: re-point +14h (unregister the
+// old, register the new). 00546330 / 00546570 do the same and return EAX =
+// handle.
+void* observer_handle_set_target(Raw handle, void* observed, Fe5Host& host);
+// 005461B0 / 00546200 / 00546250 / 00546280 __thiscall(handle, notifier*),
+// RET 4: when the notifier's +4h virtual returns +14h, clear +14h and
+// unregister (byte-identical bodies).
+void observer_handle_on_released(Raw handle, Raw notifier, Fe5Host& host);
+// 00546370 __thiscall(array, int capacity), RET 4: grow the 18h-byte entry
+// array (copy-construct as entry C, destroy the old entries with +0h(0),
+// _free the old block).
+void entry_array_reserve_00546370(Raw array, std::int32_t capacity, Fe5Host& host);
+// 00546730 __thiscall(array, const entry* value), RET 4: append a copy.
+void entry_array_append_00546730(Raw array, Raw value, Fe5Host& host);
+// 005467B0 __thiscall(array, int count), RET 4: default-construct new
+// entries as entry C (+14h = 0, byte +10h = 1), destroy the surplus with
+// +0h(0) from the back, set the count.
+void entry_array_resize_005467b0(Raw array, std::int32_t count, Fe5Host& host);
+
+// 005464E0 __thiscall(screen 2Eh): for each of the +E8h entries delete the
+// +E4h object (+4h(1)) and, for the +F0h widget, drop timed entry 2 then
+// delete it; resize both pointer arrays to 0.
+void screen2e_clear_timed_entries_005464e0(Raw screen, Fe5Host& host);
+// 005472B0 __thiscall(array): entry-array resize to 0, _free the block.
+void entry_array_destroy_005472b0(Raw array, Fe5Host& host);
+// 005472D0 __thiscall(array, int index), RET 4 -> EAX: grow the reference
+// pointer array to index + 1 when needed and return &data[index].
+void** refptr_array_at_grow_005472d0(Raw array, std::int32_t index, Fe5Host& host);
+// 005472F0 __thiscall(screen) -> EAX: screen 2Eh (vtables 00CEDF34 /
+// 00CEDF1C): front-end base, callback owner, the entry array +20h..+28h, the
+// entry-A handle at +2Ch (vtable 00CEDDB8, byte +3Ch = 1), +40h = 0 and the
+// pointer arrays +E4h..+F8h zeroed.
+inline constexpr std::uint32_t kScreen2EVtable = 0x00CEDF34;
+inline constexpr std::uint32_t kScreen2ESecondaryVtable = 0x00CEDF1C;
+void* screen2e_construct_005472f0(Raw screen, Fe5Host& host);
+// 00547390 __thiscall(screen): vtables, remove the pages +DCh and +58h,
+// destroy the pointer arrays +F0h and +E4h, the entry-A handle +2Ch, the entry
+// array +20h, the callback owner, the front-end base.
+void screen2e_destruct_00547390(Raw screen, Fe5Host& host);
+// 005482D0 __thiscall(screen, vector* out), RET 4: pushes &+DCh, &+58h.
+void screen2e_collect_children_005482d0(Raw screen, void* out, Fe5Host& host);
+// 00549200 __thiscall(ECX = screen+8h, object, event, unused), RET 0Ch: on
+// event 5 for an object held by an entry, step to the next group (cc9's
+// 00548410(1, 0)) unless the current group +44h is set and still available.
+void weapon_group_on_observed_event_00549200(Raw listener, const void* object, std::int32_t event, Fe5Host& host);
+
+// 005468B0 __thiscall(screen 2Eh) (vtable +10h): front-end register, load
+// "GUI_cross_gunstate" into +DCh and "GUI_cross_ship" into +58h, clear bytes
+// +100h and +1Ch, the layout virtual (+14h), byte +D6h = 0, hide the slot
+// widgets, bytes +108h/+109h = 0, byte +E0h = 1, +104h = 0.
+void screen2e_register_005468b0(Raw screen, Fe5Host& host);
+
+// ---------------------------------------------------------------------------
+// The main-menu command-bar listener (segment 16): 00549A80 (vtable slot
+// +04h) and 00549C30 (+0Ch) route a widget event to the first active screen
+// (+4h byte) of each manager. Both first redirect a kind-12h widget: when it
+// is one of the five buttons at listener+7Ch, press it (+84h(1)) and route its
+// partner at listener+2Ch instead.
+// ---------------------------------------------------------------------------
+struct RouteSlot {
+    std::uint16_t screen;    // manager offset of the screen pointer
+    std::uint16_t listener;  // offset of the listener sub-object in that screen
+};
+struct RouteGroup {
+    std::uint32_t manager;
+    std::array<RouteSlot, 5> slots;
+    std::uint8_t count;
+    bool first_slot_ends_routing;  // the first slot's hit jumps to the final call and returns
+};
+// 00549A80 (slot +04h). The session browser's +40h hit shares the final call
+// with the interface group and returns from there (00549BA4 JNE 00549C1A), so
+// the interface is not offered the event.
+inline constexpr std::array<RouteGroup, 4> kCommandRoute04{{
+    {0x00E198AC, {{{0x58, 0x40}, {0x70, 0x68}, {0x6C, 0x0C}, {0x60, 0x0C}, {0x68, 0x08}}}, 5, false},
+    {0x00E198B4, {{{0x40, 0x0C}, {0x44, 0x0C}, {0x48, 0x0C}, {0x4C, 0x0C}}}, 4, false},
+    {0x00E198B8, {{{0x40, 0x0C}, {0x48, 0x0C}, {0x44, 0x0C}}}, 3, true},
+    {0x00E198C4, {{{0xE4, 0x0C}, {0xE0, 0x0C}, {0xD8, 0x0C}}}, 3, false},
+}};
+// 00549C30 (slot +0Ch): the multiplayer menu offers only +40h, +44h, +48h.
+inline constexpr std::array<RouteGroup, 4> kCommandRoute0C{{
+    {0x00E198AC, {{{0x58, 0x40}, {0x70, 0x68}, {0x6C, 0x0C}, {0x60, 0x0C}, {0x68, 0x08}}}, 5, false},
+    {0x00E198B4, {{{0x40, 0x0C}, {0x44, 0x0C}, {0x48, 0x0C}}}, 3, false},
+    {0x00E198B8, {{{0x40, 0x0C}, {0x48, 0x0C}, {0x44, 0x0C}}}, 3, true},
+    {0x00E198C4, {{{0xE4, 0x0C}, {0xE0, 0x0C}, {0xD8, 0x0C}}}, 3, false},
+}};
+// __thiscall(listener, widget), RET 4.
+void command_bar_route(const std::array<RouteGroup, 4>& route, std::uint16_t slot, Raw listener, void* widget,
+                       Fe5Host& host);
+// 00549DD0 __thiscall(listener, widget, flag), RET 8 (slot +18h, hover):
+// a kind-12h widget either releases all five buttons (+84h(0)) when flag is
+// clear, or, when it is one of them, highlights it (+84h(2)) and routes its
+// partner. Every group then offers (widget, flag) to its first active screen;
+// no group ends the routing.
+inline constexpr std::array<RouteGroup, 4> kCommandRoute18{{
+    {0x00E198AC, {{{0x58, 0x40}, {0x70, 0x68}, {0x6C, 0x0C}, {0x60, 0x0C}, {0x68, 0x08}}}, 5, false},
+    {0x00E198B4, {{{0x40, 0x0C}, {0x44, 0x0C}, {0x48, 0x0C}, {0x4C, 0x0C}}}, 4, false},
+    {0x00E198B8, {{{0x40, 0x0C}, {0x48, 0x0C}, {0x44, 0x0C}}}, 3, false},
+    {0x00E198C4, {{{0xE4, 0x0C}, {0xE0, 0x0C}, {0xD8, 0x0C}}}, 3, false},
+}};
+void command_owner_on_widget_hover_00549dd0(Raw listener, void* widget, std::uint32_t flag, Fe5Host& host);
+
+// 0054AC10 __thiscall(const string* self, string* out, char c), RET 8 ->
+// EAX out: out = self + c.
+void native_string_concat_char_0054ac10(Raw self, Raw out, std::uint8_t c, Fe5Host& host);
+
+// The idle-camera screen 2Ch (vtables 00CEE408 / 00CEE3F0).
+// 0054EC90 __thiscall(screen): vtables, callback owner +8h, front-end base.
+void idle_camera_screen_destruct_0054ec90(Raw screen, Fe5Host& host);
+// 0054F8C0 __thiscall(screen) -> EAX: front-end base, callback owner, +1Ch = 0.
+void* idle_camera_screen_construct_0054f8c0(Raw screen, Fe5Host& host);
+
+// An idle-camera shot (1Ch bytes): dwords +0h, +4h, native strings +8h and
+// +10h, byte +18h.
+// 00550390 __thiscall(shot): release the two strings (+10h first).
+void idle_camera_shot_destroy_00550390(Raw shot, Fe5Host& host);
+// 005506C0 __thiscall(dst, const shot* src), RET 4 -> EAX dst: assign.
+void* idle_camera_shot_assign_005506c0(Raw dst, Raw src, Fe5Host& host);
+// 005507E0 __thiscall(dst, const shot* src), RET 4 -> EAX dst: copy-construct.
+void* idle_camera_shot_copy_construct_005507e0(Raw dst, Raw src, Fe5Host& host);
+// 00550740 / 005508A0 __cdecl(first, last, dest) -> EAX dest end: assign
+// forward (the second computes the end from the element count first).
+std::uint8_t* idle_camera_shot_copy(std::uint8_t* first, std::uint8_t* last, std::uint8_t* dest, Fe5Host& host);
+// 00550930 __cdecl(first, last, dest_end) -> EAX dest_end - (last - first):
+// assign backward.
+std::uint8_t* idle_camera_shot_copy_backward_00550930(std::uint8_t* first, std::uint8_t* last, std::uint8_t* dest_end,
+                                                      Fe5Host& host);
+// 00550990 register call (ECX = dest, EDX = src): copy-construct when dest
+// is not null.
+void idle_camera_shot_placement_copy_00550990(std::uint8_t* dest, Raw src, Fe5Host& host);
+// 00550E10 __stdcall(first, last), RET 8: destroy each shot.
+void idle_camera_shot_destroy_range_00550e10(std::uint8_t* first, std::uint8_t* last, Fe5Host& host);
+// 00550EF0 __thiscall(vector): destroy [first, last), _free, zero the triple.
+void idle_camera_shot_vector_tidy_00550ef0(Raw vector, Fe5Host& host);
+
+// ---------------------------------------------------------------------------
+// The control-binding screen (segment 16 tail).
+// ---------------------------------------------------------------------------
+// 00551BC0 __thiscall(screen, widget, bool hover), RET 8: ignored in mode 3
+// (+15Ch) and for widgets of kind 10h or 2. Kind 3: alpha 0.5 (00CE3800)
+// while hovered, else 1.0. Unless the widget is the thumb (+200h) while
+// dragging (+1DCh): kind 6 gets +88h(hover, 0, 1.0), kind 12h +84h(hover).
+void control_binding_on_widget_hover_00551bc0(Raw screen, void* widget, bool hover, Fe5Host& host);
+// 005539E0 __thiscall(screen, widget), RET 4: the release twin; the state is
+// the widget's own byte +D4h; the arrows (+1F8h, +1F4h) stop the auto scroll
+// of the scroller at +194h (00683300(0, 0, 0)); the thumb (+200h) ends the
+// drag (00683320); then the kind-6 / kind-12h refresh as for hover.
+void control_binding_on_widget_released_005539e0(Raw screen, void* widget, Fe5Host& host);
+// 00553BF0 __thiscall(screen): open the Xbox virtual keyboard for a text
+// entry: user = the selected user (00A3EAC0) or 0, empty default at +E6h,
+// result buffer +60h (80h bytes zeroed, 30h characters), overlapped +44h
+// (seven dwords zeroed); then +E4h = 1. The ledger name "ResetSelection" does
+// not fit the body (see the doc).
+void control_binding_open_keyboard_00553bf0(Raw screen, Fe5Host& host);
+// 00552C50 / 00552C70 __thiscall(node) -> EAX: the rightmost (+8h) /
+// leftmost (+0h) node below it (nil byte +99h).
+void* input_device_tree_max_00552c50(Raw node) noexcept;
+void* input_device_tree_min_00552c70(Raw node) noexcept;
+// 00553FA0 / 00554380 / 005543A0 __thiscall(iterator) -> EAX iterator: one
+// increment routine each (00552770, 00552D40, 00552E20).
+void* tree_iterator_pre_increment_via(Raw iterator, std::uint32_t routine, Fe5Host& host);
 // @decl-end
 
 }  // namespace bsp::cc13_fe5
