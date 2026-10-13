@@ -1279,10 +1279,10 @@ int lua_remove_temp_added_stuff(LuaArgs& args, AmbientHost& host)
 int lua_set_tip_effect(LuaArgs& args, EngineEffectHost& host)
 {
     void* entity = args.entity_at(0);
-    for (int i = 0; i < host.plane_engine_count_3cc(entity); ++i) {
-        void* engine = i < kPlaneEngineSlots ? host.plane_engine_3d0(entity, i) : nullptr;
+    for (int i = 0; i < host.squadron_member_count_3cc(entity); ++i) {
+        void* plane = i < kSquadronMemberSlots ? host.squadron_member_3d0(entity, i) : nullptr;
         const bool on = args.get_boolean(1);
-        host.plane_update_engine_effects(engine, on ? 1.0f : 0.0f); // CVTSI2SS of the byte
+        host.plane_update_engine_effects(plane, on ? 1.0f : 0.0f); // CVTSI2SS of the byte
     }
     return 0;
 }
@@ -1320,6 +1320,27 @@ int lua_effect(LuaArgs& args, EffectPointerResults& results, EffectSpawnHost& ho
     }
     results.push_pointer_table(effect);
     return 1;
+}
+int lua_set_visibility(LuaArgs& args, VisibilityHost& host)
+{
+    const bool visible = args.get_boolean(1);
+    void* object = host.lua_table_entity_ptr(args, 0);
+    if (host.object_vcall_5c(object, kObjectKindSquadron)) {
+        for (int i = 0; i < host.squadron_member_count_3cc(object); ++i) {
+            void* plane = i < kSquadronMemberSlots ? host.squadron_member_3d0(object, i) : nullptr;
+            host.plane_set_visible_00951f40(plane, visible); // 008A154D
+        }
+    } else if (host.object_vcall_5c(object, kObjectKindPlane)) {
+        host.plane_set_visible_00951f40(object, visible); // 008A1578
+    }
+    return 0;
+}
+
+int lua_fake_ping(LuaArgs& args, MapPingHost& host)
+{
+    const int type = args.get_integer(0); // ESI
+    host.map_ping_add_local(type, args.read_vector3(1));
+    return 0;
 }
 // ---------------------------------------------------------------------------
 // Read-only queries
@@ -1393,6 +1414,88 @@ int lua_get_bounding(LuaArgs& args, LuaResults& results, QueryHost& host)
     return 2;
 }
 // ---------------------------------------------------------------------------
+// Variant-argument bindings (cc13-sys5b)
+// ---------------------------------------------------------------------------
+
+int lua_mission_narrative_post(std::uint32_t entry_point, LuaArgs& args, NarrativeHost& host)
+{
+    const std::string text = args.get_string(0); // variant 0, +8h, passed as the pointer
+    std::string callback;
+    if (args.count() > 1) {
+        callback = args.get_string(1); // variant 1's string copied into a local
+    }
+    const int extras_from = args.count() > 2 ? 2 : -1; // CMP [count],3 / JL skips the vector
+    host.narrative_post(entry_point, text, callback, args, extras_from);
+    return 0;
+}
+
+int lua_message(LuaArgs& args, NarrativeHost& host)
+{
+    void* entity = args.entity_at(0);
+    host.entity_publish_lua_message(entity, args, 1);
+    return 0;
+}
+int lua_debug_trap(LuaArgs& args, DebugTrapHost& host)
+{
+    const std::string traceback = host.call_named_results_text(kDebugTrapFunction); // 008C843E
+    if (args.count() != 0) {
+        host.log_format_string(args.get_string(0)); // 008C84B4, the script text is the format
+    }
+    host.log_format_string(traceback);
+    return 0;
+}
+int lua_override_message(LuaArgs& args, OverrideMessageHost& host)
+{
+    std::vector<std::string> lines;
+    if (args.count() > 0) {
+        if (args.is_string(0)) {
+            lines.push_back(args.get_string(0));
+        } else {
+            lines = host.table_entry_strings(args, 0); // no table test: any non-string iterates
+        }
+    }
+    void* first = args.count() > 1 ? args.entity_at(1) : nullptr;
+    void* second = args.count() > 2 ? args.entity_at(2) : nullptr;
+    host.warning_report_string_list(lines, first, second);
+    return 0;
+}
+HackInputPress make_hack_input_press(float duration, const std::string& name, float delay,
+    float clock) noexcept
+{
+    HackInputPress press;
+    press.duration_00 = duration;           // 008C89DF
+    press.start_time_04 = clock + delay;    // 008C89E3 FLD 00F876A4, FADD
+    press.name_08 = name;
+    press.flag_10 = false;                  // byte +10h = 0
+    return press;
+}
+
+void hack_input_queue_press(int input, float duration, const std::string& name, float delay,
+    HackInputHost& host)
+{
+    host.queue_press(input, make_hack_input_press(duration, name, delay,
+        host.clock_seconds_00f876a4()));
+}
+
+int lua_hack_press_input(LuaArgs& args, HackInputHost& host)
+{
+    const int input = args.get_integer(0);
+    float duration = 1.0f;
+    if (args.count() > 1) {
+        duration = narrow(args.get_number(1));
+    }
+    std::string name;
+    if (args.count() > 2) {
+        name = args.get_string(2);
+    }
+    float delay = 0.0f;
+    if (args.count() > 3) {
+        delay = narrow(args.get_number(3));
+    }
+    hack_input_queue_press(input, duration, name, delay, host);
+    return 0;
+}
+// ---------------------------------------------------------------------------
 // Small accessors and value types
 // ---------------------------------------------------------------------------
 
@@ -1410,6 +1513,50 @@ bool scene_token_is_int(const std::string& token)
     return i < token.size() && std::isdigit(static_cast<unsigned char>(token[i])) != 0;
 }
 
+namespace {
+
+bool equal_ci(const std::string& a, const std::string& b) noexcept
+{
+    if (a.size() != b.size()) {
+        return false;
+    }
+    for (std::size_t i = 0; i < a.size(); ++i) {
+        if (std::tolower(static_cast<unsigned char>(a[i]))
+            != std::tolower(static_cast<unsigned char>(b[i]))) {
+            return false;
+        }
+    }
+    return true;
+}
+
+} // namespace
+
+float scene_convert_by_unit_token(float value, const std::string& unit,
+    const std::vector<UnitConversionRow>& rows, UnitTokenizerHost& host)
+{
+    host.peek_token();
+    if (host.end_flag_80a() || host.current_token_empty_and_byte4_clear()) {
+        return value;
+    }
+    if (equal_ci(host.peek_token(), unit)) {
+        host.consume_token();
+        return value;
+    }
+    for (const UnitConversionRow& row : rows) {
+        if (equal_ci(host.peek_token(), row.source) && equal_ci(unit, row.target)) {
+            host.retain_current_token_405();
+            return row.reciprocal ? narrow(static_cast<double>(row.factor) / value)
+                                  : narrow(static_cast<double>(row.factor) * value);
+        }
+        if (equal_ci(host.peek_token(), row.target) && equal_ci(unit, row.source)) {
+            host.consume_token();
+            // x87 keeps 1 / value in extended precision before the second divide; double here.
+            return row.reciprocal ? narrow((1.0 / value) / row.factor)
+                                  : narrow(static_cast<double>(value) / row.factor);
+        }
+    }
+    return value;
+}
 std::int32_t objective_entry_field_28(const std::uint8_t* entry) noexcept
 {
     std::int32_t value = 0;
@@ -1424,6 +1571,11 @@ bool world_has_entity_set0(const std::uint8_t* world) noexcept
     return value != 0;
 }
 
+void nav_point_sentity_init(void* nav_point, NavPointInitHost& host)
+{
+    host.entity_inherit_race_and_activate(nav_point); // 008DA103
+    host.entity_set_dword_58(nav_point, 0);           // 008DA108
+}
 ObjectiveSessionMessageHeader objective_session_message_header() noexcept
 {
     ObjectiveSessionMessageHeader header;
@@ -1511,6 +1663,27 @@ std::uint32_t objective_entry_select_entity_or_pos_key(PropertyKeySink& sink)
     return 0;
 }
 
+void map_ping_entry_describe_properties(const MapPingEntryView& entry, PropertyWriter& sink)
+{
+    sink.set_string("ID", entry.id_08);        // 00CE59B4
+    sink.set_string("text", entry.text_10);    // 00CF1010
+    sink.set_bool("quiet", entry.quiet_14);    // 00D16048, value tag 3
+    sink.set_int("type", entry.type_18);       // 00CE4AD0, value tag 1
+    sink.set_int("state", entry.state_1c);     // 00CE7324
+    sink.open_name("positions");               // 00D1603C, vtable+4
+    int index = 0;
+    for (const MapPingPosition& position : entry.positions_20) {
+        sink.open_index(index);                // key tag 1
+        if (position.entity != nullptr) {
+            sink.set_entity("entity", position.entity); // 00CE5818, value tag 4
+        } else {
+            sink.set_vector("pos", position.pos);       // 00CF8FA4, value tag 5
+        }
+        sink.close();                          // vtable+8
+        ++index;
+    }
+    sink.close();
+}
 void* gui_find_widget_by_dotted_path(const std::string& path, GuiTreeHost& host)
 {
     // `split` stands for the strcspn test: an empty rest or no '.' gives npos.

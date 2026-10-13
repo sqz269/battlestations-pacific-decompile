@@ -17,12 +17,12 @@ game-validated.
 | MovCam frame `0079C200` (input latch, per-mode extrapolation) | yes | yes | yes | no |
 | MovCam constructor/destructor, keyframe ConstructAt/Destruct/Reset, track ctor/dtor, movie-camera dtor (8) | yes | yes | yes | no |
 | Vehicle-camera window editor `0079F9E0`, sector debug draw `007906E0` | yes | yes | yes | no |
-| Session: SetMode, peer added/removed, game setup, host remove player, peer rows tick, CONNSTATE (7) | yes | yes | yes | no |
+| Session: SetMode, peer added/removed, game setup, host remove player, MT_CONNSTATE builder (6) | yes | yes | yes | no |
 | NetTable variant and E0h message helpers (5), small session helpers (4) | yes | yes | yes | no |
 
-Ledger: 27 function records (status `reconstructed_build_tested`, source
+Ledger: 26 function records (status `reconstructed_build_tested`, source
 `src/engine_seg43_45_cc13.cpp`) and 3 renames. Call-site rows: `reports/cc13_cam3_calls.json`
-(97 rows, 0 failed under `tools/verify_report_calls.py`).
+(93 rows, 0 failed under `tools/verify_report_calls.py`).
 
 ## 1. `0079C200` is the MovCam's per-frame extrapolation, not another camera class
 
@@ -105,10 +105,11 @@ reads as the starting parameter.
 - **`007702E0`, host removes a player.** In order: deselect, unit hand-over (`0076F2B0`, cc9's),
   MT_REMOVEPLAYER, `004D0FC0`, Live removal, recount, MT_SERVERINFO, the debug line and the system
   chat line.
-- **`007866B0` / `00786390`.** The rows tick (`band0076_cc13::PeerRows`). Each row moves to its
-  peer's record index, by a swap and a rescan when the target row is taken; two peers claiming one
-  index would loop forever. Then the probes run, and on the 0.2 s period the quality update, with
-  MT_CONNSTATE every 0.5.
+- **`00786390`, the MT_CONNSTATE builder.** It copies `+4h/+8h/+Ch` of each of the eight peer
+  rows. Its caller, the rows tick `007866B0`, was reconstructed in parallel by cc13-cam2b
+  (`peer_rows_update_007866b0`, `CC13_CAM_2.md` section 9), so this pass's duplicate of it was
+  dropped at the merge. Both readings have the swap-and-rescan. One thing to note from this pass: two
+  peers claiming the same index would make that rescan loop forever.
 - **NetTable.** `00781430` / `007814E0` / `00781540` handle the key variants. `00781F60` builds
   message E0h and `00781590` writes it, in the wire order the batch-3 notes of
   `multiplayer_session_cc13.hpp` give.
