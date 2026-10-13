@@ -124,6 +124,42 @@ auto submarine_navigation_group_at_depth_00852ff0(const SubmarineDepthFields& un
     return class_group_at_depth(unit.depth_level_1268);
 }
 
+// 00853E10, submarine vtable 00D0BF34 slot F0h (00D0C024), __thiscall(unit),
+// RET 0. Not a serializer: after the ship's 0081F980 it LOADS state.
+// - creation kind 3 (+C0h, saved game): the "_submarine" table (009238A0):
+//   airSupply.{air +127Ch, needAir +1281h, unlimitedAir +1280h}, depthLevel
+//   +1268h, periscopeState +122Ch, periscopeY +1230h, periscopeOut +1234h,
+//   sullyesztoEro +1270h.
+// - creation kind 1 (scene spawn): property "AutoAttackTarget" (integer >= 0)
+//   -> IssueCommand(attackmove 00E08F78, target 00465080(00521E30(id), 0.0), 1).
+// - off a network client, with DummyObjectID +6B8h >= 0 only (the host and
+//   0095CDBE leave -1 on ordinary units): r = U(0, 1) on STREAM 1 (008540EA,
+//   ECX = 1); heading' = 00438AA0(vtable[50h](), 0.5 > r ? -0.3 : +0.3);
+//   dir = 007BA2E0(heading') * 250; IssueCommand(moveto 00E08F68, point
+//   (x + dir.x, band1 +1204h, z + dir.z), 1).
+// - finally unit+1279h = some child answers IsKindOf(28h) (the flag 008522C0
+//   gates on).
+struct SubmarineActivateInputs {
+    std::int32_t creation_kind{0};
+    std::int32_t auto_attack_target{-1};   // kind 1 property, -1 when absent
+    bool network_client{false};
+    std::int32_t dummy_object_id_6b8{-1};
+    float heading{0.0f};                   // vtable[50h]()
+    Vec3 world_position{};                 // +FCh..+104h
+    float band1_1204{0.0f};
+    bool has_catapult_child{false};
+};
+struct SubmarineActivateHost {
+    std::function<void()> read_saved_submarine_table;            // kind 3
+    std::function<void(std::int32_t target_id)> issue_attackmove; // kind 1
+    std::function<float(int stream, float lo, float hi)> uniform; // 00BD2F10
+    std::function<float(float, float)> add_wrapped_angle;         // 00438AA0
+    std::function<Vec3(float heading)> heading_to_direction_xz;   // 007BA2E0
+    std::function<void(const Vec3& point)> issue_moveto;
+};
+// Returns unit+1279h.
+bool submarine_activate_00853e10(const SubmarineActivateInputs& in, const SubmarineActivateHost& host);
+
 // 00852B50 / 00852B70 (no Ghidra function; INT3-padded leaves after
 // 00852970): the one-step depth commands. Shallower: depthLevel > 0 ->
 // 008528B0(depthLevel - 1). Deeper: depthLevel < 3 -> 008528B0(depthLevel + 1).
@@ -426,6 +462,31 @@ TorpedoHomingResult torpedo_homing_turn_00856bb0(const TorpedoHomingInputs& in,
 // basis turned about the axis +4C4h by dt * 26.1799 rad (1500 deg/s).
 // Presentation only; the returned angle is what 0085E880 receives.
 float torpedo_propeller_angle_00855b30(float dt) noexcept;
+
+// 00857C80, the torpedo boat's vtable slot A0h (SEntityInit) override: the
+// unit init 00822C20, then, when world+19D0h is set, 0071DD30(director
+// [+738h], [director+1CCh] & ~4); then +1188h = class+808h "TurboTime"
+// (00857F40 reads it) and +118Ch = 0. Returns the two fields; the director
+// message is the caller's.
+struct TorpedoBoatTurboState {
+    float turbo_time_1188{0.0f};
+    bool turbo_flag_118c{false};
+    bool send_director_flags{false};
+    std::uint32_t director_flags{0};
+};
+TorpedoBoatTurboState torpedo_boat_sentity_init_00857c80(float class_turbo_time_808,
+                                                         bool world_flag_19d0,
+                                                         std::uint32_t director_flags_1cc) noexcept;
+
+// 00852300 / 00852350 (HUD helpers; callers 0064DD30, 005A6AD0, 0064AE20):
+// over the unit's children (+48h, next +44h), count those answering
+// vtable[5Ch](25h); 00852300 also needs vtable[210h](2Dh, 0) true.
+struct UnitChildDevice {
+    bool is_kind_25{false};
+    bool answers_210_2d{false};
+};
+int unit_count_devices25_ready_00852300(const std::vector<UnitChildDevice>& children) noexcept;
+int unit_count_bomb_platform_children_00852350(const std::vector<UnitChildDevice>& children) noexcept;
 
 // 00857D40, __thiscall(boat), RET -> EAX: vtable[38h]() (the body speed)
 // > 3.0 (00CE3854; FCOMPI, JBE).

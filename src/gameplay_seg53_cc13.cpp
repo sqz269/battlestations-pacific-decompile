@@ -174,6 +174,27 @@ bool submarine_is_above_depth_charge_depth_00852820(const SubmarineDepthFields& 
     return unit.world_y_100 > limit;
 }
 
+// 00853E2D..0085420A. 00CE3800 (0.5), 00D06888 (-0.3), 00CE69C8 (+0.3),
+// 00CF8850 (double 250.0). The y component of the direction is not scaled or
+// used: the point's y is band 1 (00854168..00854190).
+bool submarine_activate_00853e10(const SubmarineActivateInputs& in, const SubmarineActivateHost& host) {
+    if (in.creation_kind == 3) {
+        host.read_saved_submarine_table();
+    } else if (in.creation_kind == 1 && in.auto_attack_target >= 0) {
+        host.issue_attackmove(in.auto_attack_target);
+    }
+    if (!in.network_client && in.dummy_object_id_6b8 >= 0) {
+        const float r = host.uniform(1, 0.0f, 1.0f);
+        const float delta = 0.5f > r ? -0.30000001192092896f : 0.30000001192092896f;
+        const float heading = host.add_wrapped_angle(in.heading, delta);
+        const Vec3 dir = host.heading_to_direction_xz(heading);
+        const float ox = dir.x * 250.0f;
+        const float oz = 250.0f * dir.z;
+        host.issue_moveto(Vec3{ox + in.world_position.x, in.band1_1204, in.world_position.z + oz});
+    }
+    return in.has_catapult_child;
+}
+
 std::int32_t submarine_depth_step_shallower_00852b50(std::int32_t depth_level_1268) noexcept {
     return depth_level_1268 > 0 ? depth_level_1268 - 1 : -1;  // 00852B58 JLE
 }
@@ -546,6 +567,42 @@ TorpedoHomingResult torpedo_homing_turn_00856bb0(const TorpedoHomingInputs& in,
 // 00855B59..00855B7D: FLD dt, FMUL qword 00D0C318, FSTP float.
 float torpedo_propeller_angle_00855b30(float dt) noexcept {
     return static_cast<float>(dt * kPropellerRate);
+}
+
+// 00857C83..00857CBE.
+TorpedoBoatTurboState torpedo_boat_sentity_init_00857c80(float class_turbo_time_808,
+                                                         bool world_flag_19d0,
+                                                         std::uint32_t director_flags_1cc) noexcept {
+    TorpedoBoatTurboState s;
+    if (world_flag_19d0) {
+        s.send_director_flags = true;
+        s.director_flags = director_flags_1cc & 0xFFFFFFFBu;
+    }
+    s.turbo_time_1188 = class_turbo_time_808;
+    s.turbo_flag_118c = false;
+    return s;
+}
+
+// 00852310..0085233B: both tests must answer AL != 0.
+int unit_count_devices25_ready_00852300(const std::vector<UnitChildDevice>& children) noexcept {
+    int n = 0;
+    for (const UnitChildDevice& c : children) {
+        if (c.is_kind_25 && c.answers_210_2d) {
+            ++n;
+        }
+    }
+    return n;
+}
+
+// 00852360..00852377.
+int unit_count_bomb_platform_children_00852350(const std::vector<UnitChildDevice>& children) noexcept {
+    int n = 0;
+    for (const UnitChildDevice& c : children) {
+        if (c.is_kind_25) {
+            ++n;
+        }
+    }
+    return n;
 }
 
 bool torpedo_boat_is_body_speed_above_3_00857d40(float body_speed) noexcept {
