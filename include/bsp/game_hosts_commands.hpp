@@ -440,6 +440,10 @@ public:
     // cursor->vtable[4h](&out, leg); leg < 0 is the sentinel both 009E5A50 and
     // 00836C89 pass, which stands for the cursor's own index.
     bool path_cursor_point(std::size_t unit_index, int leg, float& x, float& z) const;
+    // Packet cc13-moveonpath1: the same point with its height (009BD4D0 reads all
+    // three), and 007B1350's last point of a PATH_FM_SIMPLE (cursor+0Ch == 1) path.
+    bool path_cursor_point3(std::size_t unit_index, float out[3]) const;
+    bool path_final_point_007b1350(std::size_t unit_index, float out[3]) const;
 
     // 00836BF0-00836D66, the director step's `moveonpath` arm. `unit_radius` is
     // unit+9C8h and `turn_radius` is 0082E850 on the unit's class; the arm takes

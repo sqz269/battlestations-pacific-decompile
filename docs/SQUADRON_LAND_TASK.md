@@ -15746,3 +15746,21 @@ All with `BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`, 8000 frames.
   law's command altitude would normally hold a fighter well above that. The host's follow altitude after a
   target loss is the suspect: a **plane-lane altitude defect candidate**, not established. The crash itself is
   the image's rule once the plane is there.
+
+## 5gd. MOVEONPATH and the leg altitude manager, wired OFF (packet `cc9_lua53_moveonpath`, cc9-lua53, 2026-10-12)
+
+cc13's glue (docs/CC13_MOVEONPATH_TASK.md section 8, docs/CC13_LEG_ALTITUDE_MANAGER.md section 6) applied as written
+on main a89235172: two read-only accessors on the commands host (`path_cursor_point3`, `path_final_point_007b1350`),
+the plane install on `PilotMoveOnPath` in the script-orders host, the kind-6 task arm `009BD990` in the units host,
+and the process-wide leg registry `009BD400`/`009FC260`. Switches `kMoveOnPathTaskBound` and
+`kLegAltitudeManagerBound` in `include/bsp/pilot_order_bindings.hpp`, both OFF. cc13's labelled substitutions stand
+(slot +54h once at the install, the moveto follow body for wingmen, circle kept as a record; moveto/attackmove
+still record `009FD050` only, so moveonpath planes separate only against each other).
+
+**Predictions (cc13 section 5, written before the pairs).**
+- OFF: gameplay identical to main.
+- BSM01 (win row l50_b1_a), `kMoveOnPathTaskBound` ON: both P-40s take class `00E08F80` and fly their patrol
+  paths under PATH_FM_CIRCLE (no leg weight: `007B1350` answers invalid), at the point's y + altOffset or 200 less
+  travelAltOffset. They are in `Mission.JapFighterTrgGang`, so the Japanese fighters' chase and the AA numbers move.
+- JM06, ON: `PBY Catalina 01` flies its 12-point SIMPLE path once; within 3000 m of the last point the leg altitude
+  applies (with the manager ON, from the registry).

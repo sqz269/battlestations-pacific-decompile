@@ -63,6 +63,16 @@ inline constexpr bool kMoveToFollowBound = true;
 // part 4 pairs (docs/PILOT_MOVETO_TASK.md). OFF: the
 // arrived leader's state stays the named record BotStateMoveToCircle::steer.
 inline constexpr bool kMoveToCircleSteerBound = true;
+// Packet cc13-moveonpath1 (docs/CC13_MOVEONPATH_TASK.md): 0099A170's `moveonpath`
+// arm (0099A24A -> 009BDBB0 -> 009BCE50) for a plane, and the kind-6 task's arm
+// 009BD990 (src/moveonpath_task_cc13.cpp). Committed OFF: the plane keeps the
+// task it already had while its director holds the path command.
+inline constexpr bool kMoveOnPathTaskBound = false;
+// Packet cc13-legmgr1 (docs/CC13_LEG_ALTITUDE_MANAGER.md): the converging-leg
+// manager 009BD400 (009FC000 / 009FC1C0 / 009FC260) behind the moveonpath task's
+// leg calls. Committed OFF: registration and release stay records and the
+// altitude is the steer point's own height.
+inline constexpr bool kLegAltitudeManagerBound = false;
 // 008A44EF. `retreat`.
 inline constexpr std::uint32_t kPilotOrderClassRetreat = 0x00E08F90u;
 // 008A4900. `land`, SCENE_COMMAND_TYPES row 22.
