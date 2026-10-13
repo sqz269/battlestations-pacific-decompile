@@ -16044,3 +16044,18 @@ Zuiho unit 8, Kumano unit 9), and GenerateObject re-creates each under the same 
 **Predictions.** OFF identical. ON: identical on every row whose target names are unique (all current win files,
 unless a file names a re-created template, in which case a refused line becomes applied); PRCP01 with
 `local\l55_p01_c.txt`: the Junyo and Zuiho launches are applied once each exists.
+
+**The real phase-3 defect (cc9-lua55, after the first pair).** With the harness switch ON the Junyo launches were
+still refused: there is ONE Junyo row. `luaEngineMovieInit` (script line 4) generates the Junyo and Zuiho groups for
+the intro, phase 0 kills every Japanese ship (`Kill(unit, true)`, line 599-601; the 3.05 s deaths), and
+`luaUS03GotoPhase3` (line 1135) and `luaUS03GotoPhase4` (line 1244) generate them again. 0046D930 instantiates on every
+call (its only gate, 0046C550 BSP_SceneEntity_ShouldGenerate, is the MultiType/game-mode predicate, not an
+already-created test), but this host answers a repeat call with the earlier entity (a recorded deviation against
+duplicated carriers), so the script's Junyo was the dead intro instance: the `kill` listener can never fire and
+phase 3 can never end. `kGenerateObjectRespawnsDeadBound` (`include/bsp/game_hosts_lua.hpp`, OFF): a repeat call
+whose earlier instance is `Dead` in its thisTable slot makes a new entity; a live earlier instance keeps the
+deviation. It needs `kHarnessTargetPrefersLiveBound` for the order file to reach the new row.
+
+**Predictions.** OFF identical. ON: PRCP01 logs `the earlier instance (id 6) is Dead, so a new one is made` for
+Junyo, Kuroshio and Hayashio at phase 3 (and the Zuiho group at phase 4), the Junyo launches are applied, and the
+Junyo can be sunk. Win rows: identical unless a script regenerates a killed object (none known).
