@@ -1551,4 +1551,103 @@ int format_string128_004f9a80(char* dst, const char* format, ...);
 // 004F9AB0, __fastcall(ECX = const char*), RET: 'a'..'z' -> 'A'..'Z', else the (signed) byte.
 std::int32_t to_upper_ascii_004f9ab0(const char* c) noexcept;
 
+// 0098C9C0, __fastcall(ECX = info), AL: the OS description (the MSDN "DisplaySystemVersion"
+// sample with Vista strings). +C34h and +234h[0] are cleared; GetVersionExA with an
+// OSVERSIONINFOEX (9Ch), retried as OSVERSIONINFO (94h); false when both fail. +C34h = 1 for
+// major >= 5. Platform 0 "Microsoft Win32s"; platform 1 (major 4) 95 (+"OSR2 " when
+// szCSDVersion[1] is 'C' or 'B'), 98 (+"SE " for 'A'), Me; platform 2 the NT names, then either
+// the product-type / suite branch (EX) or the ProductOptions\ProductType registry branch, the
+// service pack "%s (Build %d)", and for NT 4 "Service Pack 6" the Q246009 hotfix probe. Every
+// text is appended (inline strcat) to the string at +234h. The registry branch's failures return
+// false; every other path returns true.
+struct OsVersionInfoEx {
+    std::uint32_t major_04{0};
+    std::uint32_t minor_08{0};
+    std::uint32_t build_0c{0};
+    std::uint32_t platform_10{0};
+    std::string csd_version_14{};
+    std::uint16_t suite_mask_98{0};
+    std::uint8_t product_type_9a{0};
+};
+class OsVersionCalls {
+public:
+    virtual ~OsVersionCalls() = default;
+    // GetVersionExA with the size word (9Ch, then 94h); false when the call fails.
+    virtual bool get_version_ex(std::uint32_t size, OsVersionInfoEx& info) = 0;
+    // RegOpenKeyExA(HKEY_LOCAL_MACHINE, path, 0, KEY_QUERY_VALUE): true on ERROR_SUCCESS.
+    virtual bool reg_open_hklm(const char* path) = 0;
+    // RegQueryValueExA on the open key into an 80-byte buffer; false on failure; cbData returned.
+    virtual bool reg_query_string(const char* name, std::string& value, std::uint32_t& length) = 0;
+    virtual void reg_close() = 0;   // RegCloseKey on the key slot [ESP+10h]
+};
+bool describe_os_version_0098c9c0(std::string& description_234, bool& nt5_or_later_c34, OsVersionCalls& calls);
+
+// 00995690, __fastcall(ECX = download manager), RET; vtable 00D1D7D8 slot 8: rescans the installed
+// content packages. The two string vectors +20h (folders) and +2Ch (package names) are emptied
+// (00427110); for each of the +8h packages (XCONTENT_DATA at +38h + i*20h, record +4h + i*18h):
+// XLiveContentVerifyInstalledPackage sets record +12h (non-zero HRESULT), and a record with +10h
+// set and +11h clear has its folder (XLiveContentGetPath, low bytes, + "\content") mounted
+// (00BE1890 with "." -10, 1, -1), listed (vtable +14h), and the listing walked from the last entry:
+// each name is logged "%d    %s"; the first whose ".mpkg" index equals size - 5 gives record +8h =
+// name.substr(size - 12, 7) and is mounted itself (00BE1890(name, ".", -10, 0, -1)), ending the
+// walk. With a package name 00BDEF80(&record+8h); otherwise "Damaged content %s", +12h = 1, the
+// unmount 00BE0750(compose(compose(path)), ".") and 00BDD020(&record+8h). Then +11h = +10h && !+12h,
+// and either (folder, name) or ("", "") is pushed onto +20h/+2Ch. Finally byte +1Ch = 0.
+// A string-based view of ContentPackageRecord (+0h name, +8h path) for the scan.
+struct ContentScanRecord {           // 18h
+    std::string title_00{};          // +4h is its buffer, logged
+    std::string package_08{};
+    bool listed_10{false};
+    bool mounted_11{false};
+    bool damaged_12{false};
+};
+class ContentScanCalls {
+public:
+    virtual ~ContentScanCalls() = default;
+    virtual std::uint32_t verify_installed_package(std::size_t index) = 0;   // HRESULT, 0 = verified
+    // Both XLiveContentGetPath calls (size probe, then the 100h-wchar buffer when the probe returns
+    // 8007007Ah with a size up to 100h) and 00436630's low-byte conversion of that buffer. When
+    // the probe does not take that path the image converts an unset stack buffer.
+    virtual std::string content_path_low_bytes(std::size_t index) = 0;
+    virtual std::string compose_path_00994770(const std::string& path) = 0;
+    virtual void* vfs_mount_00be1890(const std::string& path, const std::string& name, std::int32_t a,
+                                     std::uint32_t b, std::int32_t c) = 0;
+    virtual std::vector<std::string> directory_list_14(void* directory, const std::string& pattern,
+                                                       const std::string& extension, std::uint32_t flag) = 0;
+    virtual void log_004254b0(const std::string& line) = 0;
+    virtual void vfs_unmount_00be0750(const std::string& path, const std::string& name) = 0;
+    virtual void vfs_package_found_00bdef80(const std::string& package) = 0;
+    virtual void vfs_package_missing_00bdd020(const std::string& package) = 0;
+};
+void download_manager_scan_content_00995690(std::vector<ContentScanRecord>& records,
+                                            std::vector<std::string>& folders_20,
+                                            std::vector<std::string>& names_2c, bool& busy_1c,
+                                            ContentScanCalls& calls);
+
+// 00707B00, __thiscall(ECX = school, float dt), RET 4 (no reference found; a vtable slot of the
+// fish model is the likely caller). Main thread, 24-bit x87 precision: float arithmetic.
+//   dt == 0 (UCOMISS, ordered equal) returns at once. No game, no camera [game+19FCh], a camera
+//   above the water (+124h > 0) or a squared camera distance to the school's first fish (through
+//   the model +78h matrix +F0h, 00414D10) above 90000 (00CFD404) sets the model's visibility to
+//   0.0 (00B6DA70). Otherwise visibility 1.0; the timer +68h -= dt and 007077B0 respawns at <= 0;
+//   k = min(1, +44h * dt) (00415510); fish 0 steers: dir += k * (+6Ch - dir), normalize, pos +=
+//   (+24h * dt) * dir (0042AEB0); basis A = (0, 1, 0) x dir, B = dir x A (004F9B30), both
+//   normalized. Each other fish i steers toward fish0.pos + o.z dir + o.x A + o.y B (o = positions
+//   +60h [i]): u = (target - pos) / (|target - pos| + 0.005) (00419440), dir += k (u - dir),
+//   normalize; speed += k (min(+3Ch + (+40h - +3Ch) * L / 5, +40h) - speed); pos += speed dt dir.
+class FishUpdateCalls {
+public:
+    virtual ~FishUpdateCalls() = default;
+    virtual void* camera_node_19fc() = 0;               // null when [00E188A8] or the camera is null
+    virtual void node_refresh_world_if_stale(void* node) = 0;   // byte +5Ch bit 1 clear -> 00B6DB70
+    virtual std::array<float, 3> node_translation_120(void* node) = 0;
+    virtual std::array<float, 3> transform_point_00414d10(void* model, const float* point) = 0;  // model +F0h
+    virtual void set_visibility_factor_00b6da70(void* model, float factor, std::uint32_t flag) = 0;
+    virtual float min_float_00415510(float a, float b) = 0;
+    virtual float length_00419440(const float* v) = 0;
+    virtual std::array<float, 3> cross_004f9b30(const float* a, const float* b) = 0;
+};
+void update_fish_school_00707b00(FishSchoolDescLayout& school, float dt, FishUpdateCalls& calls,
+                                 PresentationRandom& random, VectorNormalizer& normalizer);
+
 }  // namespace bsp::engine_seg11_35_66_cc13

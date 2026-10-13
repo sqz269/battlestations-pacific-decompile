@@ -1,9 +1,17 @@
 #include "bsp/terrain_particles_cc13.hpp"
 #include "bsp/terrain_render.hpp"
+#include "bsp/camera_affine.hpp"
+#include "bsp/camera_multiply.hpp"
+#include "bsp/camera_projection.hpp"
+#include "bsp/native_physical_file_date.hpp"
+#include "bsp/native_pooled_string_substring.hpp"
+#include "bsp/native_string.hpp"
 
 #include <intrin.h>
 
 #include <algorithm>
+#include <array>
+#include <utility>
 #include <cmath>
 #include <new>
 #include <stdexcept>
@@ -2374,4 +2382,395 @@ void* terrain_tile_grid_get_or_create_tile_00adb980(void* grid, std::int32_t x, 
     rd<void**>(grid, 0x40)[rd<std::int32_t>(grid, 0x38) * y + x] = tile;
     return tile;
 }
+
+// ===========================================================================
+// cc13-left2: bodies left open by cc13-left1. docs/CC13_LEFT_2.md.
+// ===========================================================================
+namespace {
+
+void l2_release(void* object) {
+    auto* const count = reinterpret_cast<volatile long*>(at(object, 4));
+    if (_InterlockedDecrement(count) == 0) {
+        using Slot0 = void(__thiscall*)(void*);
+        reinterpret_cast<Slot0>(rd<void*>(rd<void*>(object, 0), 0))(object);
+    }
+}
+
+template <typename R, typename... A>
+R l2_vcall(void* object, std::uint32_t slot, A... args) {
+    using Fn = R(__thiscall*)(void*, A...);
+    return reinterpret_cast<Fn>(rd<void*>(rd<void*>(object, 0), slot))(object, args...);
+}
+
+// A pooled temporary built by 0041E870 and released (length + 1) at scope end.
+class L2Temporary {
+public:
+    L2Temporary(const char* text, TerrainHost& host) : host_(host) { host_.native_string_assign_literal_0041e870(header_, text); }
+    ~L2Temporary() {
+        if (header_[1] != 0) host_.return_string_block_00bd1510(reinterpret_cast<void*>(header_[1]), header_[0] + 1u);
+    }
+    L2Temporary(const L2Temporary&) = delete;
+    L2Temporary& operator=(const L2Temporary&) = delete;
+    void* get() noexcept { return header_; }
+
+private:
+    TerrainHost& host_;
+    std::uint32_t header_[2]{};
+};
+
+// The inlined copy of a string header into another unless they are the same (resize keeping, then copy
+// the source length when nonzero).
+void l2_copy_into(void* destination, const void* source, TerrainHost& host) {
+    if (destination == source) return;
+    const std::uint32_t length = rd<std::uint32_t>(source, 0);
+    host.native_string_resize_0041dd40(destination, length);
+    if (rd<std::uint32_t>(source, 0) != 0) {
+        std::memcpy(rd<void*>(destination, 4), rd<const void*>(source, 4), rd<std::uint32_t>(destination, 0));
+    }
+}
+
+using L2Vec3 = std::array<float, 3>;
+const CameraMatrix& l2_matrix(const void* p) { return *static_cast<const CameraMatrix*>(p); }
+
+void* l2_refreshed_node(void* node, TerrainLeftHost& left) {
+    if ((rd<std::uint8_t>(node, 0x5C) & 2u) == 0) left.node_refresh_world_matrix_00b6db70(node);
+    return node;
+}
+
+void* l2_geometry(void* model) { return rd<void*>(model, 0x180); }  // 00B74640, its argument unused
+void* l2_element(void* geometry, std::uint32_t i) { return rd<void**>(geometry, 0x54)[i]; }  // 00B732C0
+
+}  // namespace
+
+void particle_emitter_draw_debug_axes_00afdcf0(void* emitter, TerrainHost& host, TerrainLeft2Host& left) {
+    if (rd<std::uint8_t>(rd<void*>(emitter, 0xA0), 0x7C) == 0) return;
+    void* node = rd<void*>(emitter, 0xA4);
+    L2Vec3 origin;
+    if (rd<std::uint8_t>(node, 0x1B0) != 0) {
+        l2_refreshed_node(node, left);
+        transform_point_004142e0(*static_cast<const L2Vec3*>(emitter), l2_matrix(at(node, 0xF0)), origin);
+    } else {
+        origin = *static_cast<const L2Vec3*>(emitter);
+    }
+    const L2Vec3 unit_x{1.0f, 0.0f, 0.0f}, unit_y{0.0f, 1.0f, 0.0f}, unit_z{0.0f, 0.0f, 1.0f};
+    CameraMatrix m;
+    node = rd<void*>(emitter, 0xA4);
+    if (rd<std::uint8_t>(node, 0x1B0) != 0) {
+        l2_refreshed_node(node, left);
+        CameraMatrix product;
+        multiply_camera_matrices_00413920(product, l2_matrix(left.particle_record_matrix_00afda80(emitter)),
+                                          l2_matrix(at(node, 0xF0)));
+        copy_camera_matrix_004134f0(m, product);
+    } else {
+        copy_camera_matrix_004134f0(m, l2_matrix(left.particle_record_matrix_00afda80(emitter)));
+    }
+    const auto axis = [&m](const L2Vec3& unit) {
+        L2Vec3 p;
+        transform_point_004142e0(unit, m, p);
+        return L2Vec3{f(static_cast<double>(p[0]) - m[12]), f(static_cast<double>(p[1]) - m[13]),
+                      f(static_cast<double>(p[2]) - m[14])};
+    };
+    const L2Vec3 ax = axis(unit_x);
+    const L2Vec3 ay = axis(unit_y);
+    const L2Vec3 az = axis(unit_z);
+    void* const device = host.read_global(0x00F8D394);
+    const auto line = [&](const L2Vec3& direction, std::uint32_t argb) {
+        L2Vec3 from = origin;
+        L2Vec3 to{f(static_cast<double>(direction[0]) + from[0]), f(static_cast<double>(direction[1]) + from[1]),
+                  f(static_cast<double>(direction[2]) + from[2])};
+        l2_vcall<void>(device, 0xB4, from.data(), to.data(), argb, argb);
+    };
+    line(ax, 0xFFFF0000u);
+    line(az, 0xFF0000FFu);
+    line(ay, 0xFF00FF00u);
+}
+
+void* tree_group_type_construct_00ae5160(void* type, const void* name, TerrainHost& host, TerrainLeft2Host& left) {
+    wr<void*>(type, 0x00, nullptr);
+    wr<void*>(type, 0x04, nullptr);
+    wr<float>(type, 0x18, -1.0e10f);  // 00CE4ADC
+    wr<float>(type, 0x1C, 1.0e10f);   // 00CE4970
+    for (std::uint32_t offset : {0x28u, 0x2Cu, 0x30u, 0x34u, 0x38u, 0x3Cu}) wr<std::uint32_t>(type, offset, 0);
+    l2_copy_into(at(type, 0x38), name, host);
+    void* const resource = left.resource_manager_load_00b80d70(left.resource_manager_singleton_004c1400(), name);
+    wr<void*>(type, 0x00, resource);
+    void* const instance = l2_vcall<void*>(resource, 0x08, 0u, 1.0f);
+    wr<void*>(type, 0x04, instance);
+    left.generated_model_finder_visit_00ae2cb0(type, rd<void*>(instance, 0x0C));
+    const auto geometry = [type]() { return l2_geometry(rd<void*>(type, 0x08)); };
+    if (rd<std::uint32_t>(geometry(), 0x50) != 0) {
+        wr<std::uint32_t>(type, 0x20, rd<std::uint32_t>(at(geometry(), 0x10), 0x08));  // 00B732B0(0)
+        wr<std::uint32_t>(type, 0x24, rd<std::uint32_t>(at(geometry(), 0x10), 0x0C));
+    } else {
+        wr<std::uint32_t>(type, 0x20, 0);
+        wr<std::uint32_t>(type, 0x24, rd<std::uint32_t>(geometry(), 0x58) - 1u);  // 00B72B40
+    }
+    void* const material = rd<void*>(l2_element(geometry(), rd<std::uint32_t>(type, 0x20)), 0x20);
+    void* const texture = rd<std::int16_t>(material, 0x34) > 0 ? rd<void*>(material, 0x10) : nullptr;
+    l2_copy_into(at(type, 0x30), static_cast<std::uint8_t*>(texture) + 8, host);  // 00B33E40
+    void* const effect = rd<void*>(rd<void*>(l2_element(geometry(), rd<std::uint32_t>(type, 0x20)), 0x20), 0x7C);
+    l2_copy_into(at(type, 0x28), at(effect, 0xB8), host);  // 00B172D0
+    wr<std::uint32_t>(type, 0x0C, 0);
+    wr<std::uint32_t>(type, 0x10, 0);
+    for (std::uint32_t i = rd<std::uint32_t>(type, 0x20); i <= rd<std::uint32_t>(type, 0x24); ++i) {
+        wr<std::uint32_t>(type, 0x0C, rd<std::uint32_t>(type, 0x0C) + rd<std::uint32_t>(l2_element(geometry(), i), 0x10));
+        wr<std::uint32_t>(type, 0x10, rd<std::uint32_t>(type, 0x10) + rd<std::uint32_t>(l2_element(geometry(), i), 0x18));
+    }
+    left.geometry_compute_bounds_00b732d0(geometry());
+    void* const bounds = at(geometry(), 0x98);  // 00B726A0
+    wr<float>(type, 0x14, f(static_cast<double>(rd<float>(bounds, 0x10)) - rd<float>(bounds, 0x04)));
+    wr<void*>(type, 0x40, left.material_create_for_effect_name_00535320(at(type, 0x28)));
+    const char* const texture_name = rd<const char*>(type, 0x34) != nullptr ? rd<const char*>(type, 0x34) : "";
+    void* loaded;
+    {
+        L2Temporary temporary(texture_name, host);
+        loaded = l2_vcall<void*>(host.read_global(0x00F8D394), 0x64, temporary.get(), 0u);
+    }
+    left.material_set_texture_slot_00b189f0(rd<void*>(type, 0x40), 0, loaded);
+    wr<void*>(type, 0x44, nullptr);
+    if (loaded != nullptr) l2_release(loaded);
+    return type;
+}
+
+void tree_group_initialise_00ae5870(void* group, void* stream, std::uint32_t count, TerrainHost& host,
+                                    TerrainLeft2Host& left) {
+    wr<std::uint8_t>(group, 0x38, 1);
+    wr<std::uint32_t>(group, 0x08, count);
+    void* const device = host.read_global(0x00F8D394);
+    void* declaration;
+    {
+        L2Temporary file("ccuf44uf43.mvfm", host);
+        declaration = l2_vcall<void*>(device, 0x38, file.get());
+    }
+    wr<void*>(group, 0x1C, l2_vcall<void*>(device, 0x5C, count, 1u, declaration));
+    void* const data = l2_vcall<void*>(rd<void*>(group, 0x1C), 0x10, count, 0u, 0u);
+    l2_vcall<void>(stream, 0x24, data, count << 5, 0u);
+    l2_vcall<void>(rd<void*>(group, 0x1C), 0x14);
+    void* const instance_declaration = l2_vcall<void*>(rd<void*>(group, 0x20), 0x24);
+    if (rd<void*>(group, 0x18) == nullptr) {
+        void* model = nullptr;
+        if (void* const slot = left.model_allocate_raw_slot_00b74eb0(0x184)) {
+            L2Temporary temporary("TreeGroup", host);
+            model = left.generated_model_construct_00b75030(slot, temporary.get());
+        }
+        wr<void*>(group, 0x18, model);
+        wr<std::uint32_t>(model, 0x138, rd<std::uint32_t>(model, 0x138) & ~3u);
+        left.node_set_parent_00b6e680(rd<void*>(group, 0x18), l2_vcall<void*>(rd<void*>(group, 0x00), 0x40));
+        left.node_propagate_root_00b6d890(rd<void*>(group, 0x18),
+                                          rd<void*>(l2_vcall<void*>(rd<void*>(group, 0x00), 0x40), 0xA4));
+        void* const slot = left.mesh_allocate_raw_slot_00b73b60(0xBC);
+        void* const mesh = slot != nullptr ? left.mesh_construct_00b73d70(slot) : nullptr;
+        wr<void*>(group, 0x28, mesh);
+        left.generated_model_set_geometry_00b75170(rd<void*>(group, 0x18), 0, mesh, -1.0f, -1.0f);  // 00D7A260
+        const std::uint32_t kind = rd<std::uint32_t>(group, 0x0C);
+        const char* const effects[] = {"instanced.mshd", "coral.mshd", "seaweed.mshd"};
+        if (kind <= 2) {
+            L2Temporary temporary(effects[kind], host);
+            wr<void*>(group, 0x34, left.material_create_for_effect_name_00535320(temporary.get()));
+        }
+        struct {
+            void* declarations[4];
+            std::uint32_t count;
+        } list{{instance_declaration, declaration, nullptr, nullptr}, 2};  // [2..3] stack garbage in the image
+        wr<void*>(group, 0x24, l2_vcall<void*>(device, 0x40, &list));
+        wr<std::uint32_t>(rd<void*>(group, 0x20), 0x54, 0x40000000u);
+        wr<std::uint32_t>(rd<void*>(group, 0x1C), 0x54, 0x80000000u);
+        left.mesh_set_vertex_stream_00b73bb0(rd<void*>(group, 0x28), 0, rd<void*>(group, 0x20));
+        left.mesh_set_vertex_stream_00b73bb0(rd<void*>(group, 0x28), 1, rd<void*>(group, 0x1C));
+        left.geometry_set_index_stream_00b73b70(rd<void*>(group, 0x28),
+                                                rd<void*>(l2_geometry(rd<void*>(rd<void*>(group, 0x04), 0x08)), 0x60));
+        void* const type_material = rd<void*>(rd<void*>(group, 0x04), 0x40);
+        left.material_set_texture_slot_00b189f0(rd<void*>(group, 0x34), 0,
+            rd<std::int16_t>(type_material, 0x34) > 0 ? rd<void*>(type_material, 0x10) : nullptr);
+    }
+    float box[6];
+    l2_vcall<void>(rd<void*>(group, 0x00), 0x0C, box);
+    const float max_z = box[5];
+    const float node_z1 = rd<float>(l2_refreshed_node(l2_vcall<void*>(rd<void*>(group, 0x00), 0x40), left), 0x128);
+    const float max_x = box[3];
+    const float node_x1 = rd<float>(l2_refreshed_node(l2_vcall<void*>(rd<void*>(group, 0x00), 0x40), left), 0x120);
+    const float min_z = box[2];
+    const float node_z2 = rd<float>(l2_refreshed_node(l2_vcall<void*>(rd<void*>(group, 0x00), 0x40), left), 0x128);
+    const float min_x = box[0];
+    const float node_x2 = rd<float>(l2_refreshed_node(l2_vcall<void*>(rd<void*>(group, 0x00), 0x40), left), 0x120);
+    const float rect[4] = {f(static_cast<double>(min_x) - node_x2), f(static_cast<double>(min_z) - node_z2),
+                           f(static_cast<double>(max_x) - node_x1), f(static_cast<double>(max_z) - node_z1)};
+    void* const block = host.operator_new(0x58);  // 00BF681B
+    wr<void*>(group, 0x10, block != nullptr ? left.tree_visibility_construct_00ae5550(block, stream, rect) : nullptr);
+    if (declaration != nullptr) l2_release(declaration);
+}
+
+void terrain_visibility_group_build_flat_00ade0e0(void* group, const void* name, HeightFieldHost& fields,
+    TerrainHost& host, BlockHost& blocks, TerrainLeft2Host& left, const TerrainLeft2NodeCalls& nodes) {
+    wr<std::uint32_t>(group, 0x28, 0);
+    l2_copy_into(at(group, 0x54), name, host);
+    void* node = nullptr;
+    if (void* const slot = nodes.node_allocate_raw_slot_00b6ed70(0x174)) {
+        L2Temporary temporary("Terrain Visibility Group", host);
+        node = nodes.node_construct_00b6f5a0(slot, temporary.get());
+    }
+    wr<void*>(group, 0x2C, node);
+    left.node_propagate_root_00b6d890(rd<void*>(group, 0x2C), rd<void*>(group, 0x0C));
+    grid_resize(0x00ADACF0, at(group, 0x38), 4, 4, nullptr, host);
+    for (std::int32_t y = 0; y < 4; ++y) {
+        for (std::int32_t x = 0; x < 4; ++x) {
+            void* const tile = fields.create_tile(group, x, y);
+            void* const memory_a = host.operator_new(0x38);
+            void* const block_a =
+                memory_a != nullptr ? terrain_block_construct(0x00AEDAC0, memory_a, 0x21, 0x21, host) : nullptr;
+            terrain_tile_set_block_00adf8b0(tile, block_a, host, blocks);
+            l2_release(block_a);
+            void* const memory_b = host.operator_new(0x38);
+            void* const block_b =
+                memory_b != nullptr ? terrain_block_construct(0x00AEDAC0, memory_b, 0x21, 0x21, host) : nullptr;
+            terrain_tile_set_second_block_00adf920(tile, block_b, host);
+            l2_release(block_b);
+            const float g = rd<float>(group, 0x18);
+            float low = 1.0e10f;  // 00CE4970
+            float high = 0.0f;
+            using SetSample = void(__thiscall*)(void*, float, std::int32_t, std::int32_t);
+            for (std::int32_t j = 0; j < 0x21; ++j) {
+                for (std::int32_t i = 0; i < 0x21; ++i) {
+                    reinterpret_cast<SetSample>(rd<void*>(rd<void*>(block_a, 0), 0x1C))(block_a, 0.0f, i, j);
+                    if (!(0.0f > low)) low = 0.0f;   // COMISS 0, m / JA
+                    high = low > 0.0f ? low : 0.0f;  // COMISS m, 0 / JBE
+                }
+            }
+            terrain_tile_refresh_height_range_00adeb00(tile, blocks);
+            l2_vcall<void>(tile, 0x08);
+            void* const model = rd<void*>(tile, 0x24);  // 00ADEAF0
+            const float sx = rd<float>(l2_refreshed_node(model, left), 0xF0);
+            const float sy = rd<float>(l2_refreshed_node(model, left), 0x104);
+            const float sz = rd<float>(l2_refreshed_node(model, left), 0x118);
+            const TerrainVec3f box_min{f(0.0 / sx), f(static_cast<double>(low) / sy), f(0.0 / sz)};
+            const TerrainVec3f box_max{f(static_cast<double>(g) / sx), f(static_cast<double>(high) / sy),
+                                       f(static_cast<double>(g) / sz)};
+            const TerrainSphere sphere = terrain_box_bounding_sphere_00ada600(box_min, box_max);
+            const float wider = sx > sy ? sx : sy;         // FCOMPI / JBE
+            const float widest = wider > sz ? wider : sz;  // FCOMPI / JA
+            float bounds[4] = {sphere.centre.x, sphere.centre.y, sphere.centre.z,
+                               f(static_cast<double>(rd<float>(group, 0x18)) / widest)};
+            left.generated_model_set_local_bounds_00b74390(model, bounds);
+            l2_vcall<void*>(model, 0x48);  // its 16-byte result is copied to dead locals
+            rd<void**>(group, 0x40)[rd<std::int32_t>(group, 0x38) * y + x] = tile;
+        }
+    }
+}
+
+void bush_group_initialise_00ae2450(void* group, void* stream, std::uint32_t count, void* name_a,
+    void* name_b, NativeStringStorage& strings, TerrainHost& host, TerrainLeft2Host& left,
+    const TerrainLeft2BushCalls& bush) {
+    struct Header {
+        std::uint32_t length;
+        char* data;
+    };
+    const auto release = [&strings](Header& h) {
+        if (h.data != nullptr) strings.release(h.data, h.length + 1u);
+    };
+    const auto literal = [&strings](Header& h, const char* text) {
+        h = {0, nullptr};
+        resize_native_string_header_0041dd40(&h, strings, static_cast<std::uint32_t>(std::strlen(text)), true);
+        if (h.data != nullptr) std::memcpy(h.data, text, h.length + 1u);
+    };
+    const auto assign = [&strings](void* destination, const void* source) {
+        if (destination == source) return;
+        resize_native_string_header_0041dd40(destination, strings, rd<std::uint32_t>(source, 0), true);
+        if (rd<std::uint32_t>(source, 0) != 0) {
+            std::memcpy(rd<char*>(destination, 4), rd<const char*>(source, 4), rd<std::uint32_t>(destination, 0));
+        }
+    };
+    wr<std::uint8_t>(group, 0x40, 1);
+    wr<std::uint32_t>(group, 0x14, count);
+    assign(at(group, 0x04), name_a);
+    assign(at(group, 0x0C), name_b);
+    Header normal_a{}, normal_b{};
+    {
+        Header suffix{}, stem{};
+        literal(suffix, "_normal.tga");
+        construct_native_string_substring_00469840(at(group, 0x04), &stem, 0, rd<std::uint32_t>(group, 0x04) - 4u, strings);
+        concatenate_native_string_headers_004261a0(&stem, &normal_a, &suffix, strings);
+        release(stem);
+        release(suffix);
+    }
+    {
+        Header suffix{}, stem{};
+        literal(suffix, "_normal.tga");
+        construct_native_string_substring_00469840(at(group, 0x0C), &stem, 0, rd<std::uint32_t>(group, 0x0C) - 4u, strings);
+        concatenate_native_string_headers_004261a0(&stem, &normal_b, &suffix, strings);
+        release(stem);
+        release(suffix);
+    }
+    void* const device = host.read_global(0x00F8D394);
+    void* declaration;
+    {
+        Header file{};
+        literal(file, "pf44nss2uf42uf44cc.mvfm");
+        declaration = l2_vcall<void*>(device, 0x38, &file);
+        release(file);
+    }
+    wr<void*>(group, 0x28, l2_vcall<void*>(device, 0x5C, count * 6u, 1u, declaration));
+    void* const data = l2_vcall<void*>(rd<void*>(group, 0x28), 0x10, count * 6u, 0u, 0u);
+    l2_vcall<void>(stream, 0x24, data, count * 0x120u, 0u);
+    l2_vcall<void>(rd<void*>(group, 0x28), 0x14);
+    struct {
+        void* declarations[4];
+        std::uint32_t count;
+    } list{{declaration, nullptr, nullptr, nullptr}, 1};  // [1..3] stack garbage in the image
+    wr<void*>(group, 0x50, l2_vcall<void*>(device, 0x40, &list));
+    if (declaration != nullptr) l2_release(declaration);
+    if (rd<void*>(group, 0x20) == nullptr) {
+        void* model = nullptr;
+        if (void* const slot = bush.bush_model_pool_allocate_00ae1870(reinterpret_cast<void*>(0x00F8C228))) {
+            Header name{};
+            literal(name, "BushGroup");
+            model = left.generated_model_construct_00b75030(slot, &name);
+            wr<std::uint32_t>(model, 0, 0x00D5D4A0u);
+            release(name);
+        }
+        wr<void*>(group, 0x20, model);
+        wr<std::uint32_t>(model, 0x138, rd<std::uint32_t>(model, 0x138) & ~3u);
+        left.node_set_parent_00b6e680(rd<void*>(group, 0x20), l2_vcall<void*>(rd<void*>(group, 0x00), 0x40));
+        left.node_propagate_root_00b6d890(rd<void*>(group, 0x20),
+                                          rd<void*>(l2_vcall<void*>(rd<void*>(group, 0x00), 0x40), 0xA4));
+        wr<void*>(rd<void*>(group, 0x20), 0x184, group);
+        for (const auto& [offset, effect] : {std::pair<std::uint32_t, const char*>{0x3C, "bush_lores.mshd"},
+                                             std::pair<std::uint32_t, const char*>{0x38, "bush.mshd"}}) {
+            Header name{};
+            literal(name, effect);
+            wr<void*>(group, offset, left.material_create_for_effect_name_00535320(&name));
+            release(name);
+        }
+        void* const registry = host.read_global(0x00F8C26C);
+        const auto text = [](const char* p) { return p != nullptr ? p : ""; };  // 00F8C224
+        bush.atlas_find_item_00aefb20(registry, text(rd<const char*>(group, 0x10)));
+        bush.atlas_find_item_00aefb20(registry, text(rd<const char*>(group, 0x08)));
+        bush.atlas_find_item_00aefb20(registry, text(normal_b.data));
+        bush.atlas_find_item_00aefb20(registry, text(normal_a.data));
+        void* const foliage = host.read_global(0x00F8C210);
+        left.material_set_texture_slot_00b189f0(rd<void*>(group, 0x3C), 0, bush.bush_texture_00ad57d0(foliage));
+        left.material_set_texture_slot_00b189f0(rd<void*>(group, 0x3C), 1, bush.bush_normal_texture_00ad57e0(foliage));
+        left.material_set_texture_slot_00b189f0(rd<void*>(group, 0x3C), 2,
+                                                bush.shadow_map_texture_00b0d140(host.read_global(0x00F8D39C)));
+        left.material_set_texture_slot_00b189f0(rd<void*>(group, 0x38), 0, bush.bush_texture_00ad57d0(foliage));
+        left.material_set_texture_slot_00b189f0(rd<void*>(group, 0x38), 1, bush.bush_normal_texture_00ad57e0(foliage));
+    }
+    float box[6];
+    l2_vcall<void>(rd<void*>(group, 0x00), 0x0C, box);
+    float centre[3], half[3];
+    for (int i = 0; i < 3; ++i) {
+        centre[i] = f(static_cast<double>(f(static_cast<double>(box[i]) + box[i + 3])) * 0.5);  // 00D7A280
+        half[i] = f(static_cast<double>(f(static_cast<double>(box[i + 3]) - box[i])) * 0.5);
+    }
+    void* node = nullptr;
+    if (void* const block = host.operator_new(0x38)) {  // 00BF681B
+        const float y = rd<float>(l2_refreshed_node(l2_vcall<void*>(rd<void*>(group, 0x00), 0x40), left), 0x124);
+        node = bush.bush_quad_node_read_00ae0f10(block, stream, centre, half, y);
+    }
+    wr<void*>(group, 0x18, node);
+    release(normal_b);
+    release(normal_a);
+    release(*static_cast<Header*>(name_a));  // the by-value arguments, owned by the callee (RET 18h)
+    release(*static_cast<Header*>(name_b));
+}
+
 } // namespace bsp::cc13_terrain

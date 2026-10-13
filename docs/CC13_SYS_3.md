@@ -223,6 +223,9 @@ above, the four cc9-side geometry helpers below and three open items.
   parameters, `004F3DA0` triangle containment, `004F4880` segment clip): x87 stack-juggling bodies; left
   for whoever owns the polygon-partition caller. `004F3030` and `004F40C0` are done.
 
+Packet cc13-left3 (`docs/CC13_LEFT_3.md`, section 3) has since reconstructed `00707B00`, `0098C9C0`
+and `00995690`. The geometry helpers above remain with their owner.
+
 ## Handoff
 
 Done and committed on `agent/cc13-sys3`. Nothing is wired into a host. To continue: the open items
