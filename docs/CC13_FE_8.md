@@ -69,6 +69,7 @@ by `tools/verify_report_calls.py` (0 failed).
 | 004FE310 | `library_entry_assign_004fe310` | thiscall(to, const from), RET 4, EAX = to | 6Ch entry copy-assign |
 | 00503250 | `library_refresh_unlock_rows_00503250` | thiscall(screen, class id), RET 4 | |
 | 004FD500 | `library_find_entry_for_side_004fd500` | thiscall(library, ref*, dword[4]), RET 8, AL | ledger name CountAvailableMapsForSide |
+| 00511BF0 | `library_select_order_of_battle_side_00511bf0` | thiscall(screen, side), RET 4 | x87 +438h and scroll range; jump table 00511F10 |
 
 ### Leaderboards
 
@@ -173,6 +174,10 @@ by `tools/verify_report_calls.py` (0 failed).
   value.
 - 004FD500 (ledger `CountAvailableMapsForSide`) is a lookup returning AL; its no-match EAX carries
   the entry count in the upper bytes.
+- 00511BF0: +438h is FILD + FADD qword 0.003 rounded once to float (the model adds in double, which
+  holds the int exactly; the only difference is double against extended rounding of the sum). The
+  scroll range adds the x87 text height (00AB6BD0 returns in ST0) to the float `extra`, spills the sum
+  as a double, subtracts h(+5ACh) and rounds to float.
 
 ## For cc9
 

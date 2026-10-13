@@ -3237,4 +3237,40 @@ bool library_find_entry_for_side_004fd500(Raw library, Raw out_object, std::uint
     return false;
 }
 
+void library_select_order_of_battle_side_00511bf0(Raw screen, std::uint32_t side, Fe8OrderOfBattleSideHost& host) {
+    const std::int32_t value = screen.at<std::int32_t>(0x138 + side * 4);
+    screen.at<std::int32_t>(0x434) = value;
+    // FILD then FADD qword 0.003 (00CEBE08) on x87; double carries the int exactly.
+    screen.at<float>(0x438) = static_cast<float>(static_cast<long double>(value) + 0.003000000026077032L);
+    screen.at<std::int32_t>(0x558) = -1;
+    screen.at<std::int32_t>(0x55C) = -1;
+    const std::int32_t kind = screen.at<std::int32_t>(0x94);
+    if (kind == 5) {
+        const Raw record{static_cast<std::uint8_t*>(screen.ptr(0x460)) + side * 0x2C};
+        const auto* const ids = static_cast<const std::int32_t*>(record.ptr(0x1C));
+        const bool has_ids = ids != nullptr && static_cast<const std::int32_t*>(record.ptr(0x20)) != ids;
+        if (has_ids && screen.at<std::int32_t>(0x434) != 0) screen.at<std::int32_t>(0x134) = ids[screen.at<std::int32_t>(0x434) - 1];
+        else screen.at<std::int32_t>(0x134) = record.at<std::int32_t>(0);
+        host.library_show_order_of_battle_page_004fff20(screen);
+        if (host.native_string_equals_insensitive_00425850(record.p + 0x10, "change"))
+            host.command_bar_set_help_line_0054a0c0("FE.oob_changeable_help");
+        else if (host.native_string_equals_insensitive_00425850(record.p + 0x10, "fixed"))
+            host.command_bar_set_help_line_0054a0c0("FE.oob_fixed_help");
+        else
+            host.command_bar_set_help_line_0054a0c0(native_view(record, 0x10));
+    }
+    const float extra = kind == 4 ? static_cast<float>(0.013888888888888888) : 0.0f;  // 00CEBDD0
+    if (side != screen.at<std::uint32_t>(0x3C0) && kind >= 0 && kind <= 8 && kind != 7) {
+        static constexpr std::size_t kSources[9] = {0x3D4, 0x3E4, 0x3F4, 0x3C4, 0x404, 0x3F4, 0x3F4, 0, 0x414};
+        screen.at<std::uint32_t>(0x3C0) = side;
+        host.library_filter_entries_0050d900(screen, screen.p + kSources[kind], screen.p + 0x444);
+    }
+    host.library_refresh_entry_detail_00510c20(screen);
+    void* const scroller = screen.p + 0xCC;
+    host.scroller_attach_content_00683790(scroller, nullptr);
+    const double content = static_cast<double>(host.text_normalized_height_00ab6bd0(screen.ptr(0xA8)) + extra);
+    host.scroller_set_scroll_range_006834a0(scroller,
+                                            static_cast<float>(content - host.widget_size_00aa6740(screen.ptr(0x5AC))[1]));
+}
+
 } // namespace bsp::cc13_fe3

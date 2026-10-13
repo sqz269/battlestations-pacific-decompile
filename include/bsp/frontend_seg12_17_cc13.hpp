@@ -1852,4 +1852,28 @@ struct Fe8LibraryLookupHost : Fe8EntryAssignHost {
 bool library_find_entry_for_side_004fd500(Raw library, Raw out_object, std::uint32_t out_data[4],
     Fe8LibraryLookupHost& host);
 
+struct Fe8OrderOfBattleSideHost {
+    virtual ~Fe8OrderOfBattleSideHost() = default;
+    virtual void library_show_order_of_battle_page_004fff20(Raw screen) = 0;
+    virtual bool native_string_equals_insensitive_00425850(const void* string, const char* text) = 0;  // ECX = string
+    virtual void command_bar_set_help_line_0054a0c0(std::string_view line) = 0;              // ECX = [00E1930C]
+    virtual void library_filter_entries_0050d900(Raw screen, void* source, void* out) = 0;
+    virtual void library_refresh_entry_detail_00510c20(Raw screen) = 0;
+    virtual void scroller_attach_content_00683790(void* scroller, void* content) = 0;
+    virtual long double text_normalized_height_00ab6bd0(void* text) = 0;                     // x87 return
+    virtual std::array<float, 2> widget_size_00aa6740(void* widget) = 0;
+    virtual void scroller_set_scroll_range_006834a0(void* scroller, float range) = 0;
+};
+
+// 00511BF0 BSP_TacticalLibraryScreen_SelectOrderOfBattleSide, __thiscall(screen, side), RET 4.
+// +434h = +138h[side]; +438h = (float)(+434h + 0.003) (FILD, FADD qword 00CEBE08); +558h = +55Ch =
+// -1. Kind 5: +134h = record[side] (+460h, 2Ch) ids[+434h - 1] (00418140) when that record has ids
+// and +434h != 0, else the record's first dword; 004FFF20; the help line is "FE.oob_changeable_help"
+// / "FE.oob_fixed_help" when the record's +10h string is "change" / "fixed" (case-insensitive,
+// 00425850), else that string itself. extra = (float)(1/72) for kind 4, else 0. A new side (!=
+// +3C0h) for kinds 0..6 and 8 stores +3C0h and filters (0050D900) into +444h from +3D4h, +3E4h,
+// +3F4h, +3C4h, +404h, +3F4h, +3F4h, +414h (jump table 00511F10). Then 00510C20, scroller +0CCh
+// content 0, and range = (float)((double)(text height(+0A8h) + extra) - h(+5ACh)).
+void library_select_order_of_battle_side_00511bf0(Raw screen, std::uint32_t side, Fe8OrderOfBattleSideHost& host);
+
 } // namespace bsp::cc13_fe3
