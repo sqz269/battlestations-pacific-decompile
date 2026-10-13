@@ -939,6 +939,15 @@ public:
     float read_vehicle_class_nested_number(int index, const char* key,
         const char* nested_key, float fallback);
 
+    // `VehicleClass[index].PartAnims[key]`, the three-element record 007D381A /
+    // 007D3990 / 007D3B06 fold into class+5C8h / +5D8h / +5E8h. True when the
+    // sub-table exists (the record's present flag, e.g. class+5E4h for Wings).
+    // `first`/`second` are elements [1]/[2] (0.0f when not numbers); `third` is
+    // element [3] and `has_third` says whether it was a number, in which case it
+    // replaces |[1] - [2]| as the duration. Packet cc9_wing_fold (cc9-physics5).
+    bool read_vehicle_class_part_anim(int index, const char* key, float& first,
+        float& second, float& third, bool& has_third);
+
     // `Bullets[index][key]` from the live Lua state - the bullet class table that
     // Scripts/datatables/autoload/bulletclasses.lua publishes. Used for the
     // fields the flattened per-platform BSPGun table does not carry, notably

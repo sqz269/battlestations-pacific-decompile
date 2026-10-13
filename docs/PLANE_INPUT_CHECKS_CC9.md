@@ -86,3 +86,43 @@ re-plan, as for gunnery38's O1).
   The binding needs `VehicleClass[i].PartAnims.Wings[1..3]` from the live state (lua lane), then a per-plane channel C
   value stepped in the plane's fixed step with the target rule above, and the elevator check `value == 0.0` when the
   class has Wings.
+
+## (a), the binding (cc9-physics5, 2026-10-13): `kPlaneWingFoldElevatorBound` and `kPlaneWingSpreadTakeoffBound`, OFF
+
+**Census.** A rel32 scan of the image (`local\p5_rel32_scan.py`) finds exactly the seven calls the Ghidra xrefs
+list: `007B8D40` from `006D06E8`; `007B8D10` from `009CDEED` and `009CF2ED`; `007B8DC0` from `009CF2F8` and
+`0099AE52`; `007B8DA0` from `007CC18E`; `007B8DE0` from `006FC15E`. The inline writers of `+45h` are `007C11E0`
+and `007CBFA0`'s two extend blocks (`007CBFD2`, `007CC195`). `0099AE52` is the player-held pilot's and is not bound.
+
+**The site's hold test.** `007CC16C`-`007CC186` call `(+BF4h)->+4h->+3Ch` `vtable[38h]`. The carrier elevator site's
+vtable is `00CF8A58` (slot +4h `006D0600`; constructors `006CFAF0`, `006D0470`); its slot +38h is `006CFFC0`:
+`20.0f` (`00CE3930`) `> 006CFE90` (the nose's x/z distance to the lift), `FCOMI`/`JBE` so a NaN is false. The airfield
+launch site's vtable `00CF89F8` has `006CEBF0` there: `XOR AL,AL; RET 4`, never held. So wings fold only on a
+carrier deck, within 20 m of the lift.
+
+**The takeoff consumers.** `009CDEED` (`BSP_TakeoffStatePrepare_Step`): wings not at 1.0 jump to `009CE106` and return
+before the prepare clock `+1Ch` advances. `009CF2ED` (`BSP_TakeoffStateTakeoff_Step`): wings not at 1.0 extend
+(`009CF2F8`) and join the not-aligned path `009CF2FD`; the aligned arm (`009CF34C`) runs only with the wings at 1.0.
+
+**The block step order** (`007DE3A0`, raw listing): `+44h` steps every call, `+28h` only when `+44h` is disabled or at 1.0,
+`+60h` only when `+28h` is disabled or at 0.0. `src/torpedo_release_spawn.cpp` guards each channel by its own
+value; with the gear (`+28h`) never enabled in this host the two orders step the same channels. Routed to the lead.
+
+**Binding** (`src/game_hosts_units.cpp`, packet `cc9_wing_fold`). `kPlaneWingFoldElevatorBound`: channel `+44h` (the
+host's `channel_a`) enabled per class from `VehicleClass[i].PartAnims.Wings` (`read_vehicle_class_part_anim`, rate
+1/duration, value 0); a 007C11E0 stand-in sets the target on each `+900h` change (state 4..7 spread; the first state
+seen sets the value at once, as the spawn chooser's argument 1 does); the ground roll extends off the deck and folds
+on a held carrier deck; the elevator carry zeroes it; the elevator takes a landed plane only at value 0.0.
+`kPlaneWingSpreadTakeoffBound` (needs the first): the prepare hold and the run's extend and aligned gate.
+SUBSTITUTIONS, labelled: the notify is detected once per fixed step before the block step rather than at the 19
+call sites; every plane is taken as having an animated model; a carrier deck whose elevator this host has not built
+answers not-held. Summary line: `summary mission wing fold`.
+
+**Predictions, before the pair** (carrier-heavy: USN01 `p3_u1_z4`, LOMP10 `p3_l10_b`). OFF: `classes=0`, every count
+0. ON (elevator half): `classes` = the Wings-class planes spawned (Avenger, Helldiver, Wildcat, Kate, Tenzan,
+Vindicator, Ryusei in this installation); retracts about one per carrier landing; `elevator_waits` non-zero, each
+landed Wings plane reaching the lift up to its 2.5-4.0 s fold later than OFF; `resets` near 0 (the carry only counts a
+value that was not already 0.0, and the elevator takes only folded planes). Recovery and restrike times move by seconds, so verdict 3; the wins should
+hold unless a restrike's timing matters. ON (takeoff half, on top): `prep_holds` non-zero only for a plane whose
+wings are below 1.0 at prepare (a relaunched plane after the carry's reset spreads over its duration first), so
+relaunches move later by up to 4 s; deck spawns in state 6/7 start at 1.0 and never hold.

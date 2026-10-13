@@ -21,6 +21,8 @@
 #include <string_view>
 #include <vector>
 
+#include "bsp/engine_services_cc13.hpp"
+
 // ================================================================================================
 // Part a: 00B999F0-00BA2FFF
 // ================================================================================================
@@ -1514,5 +1516,118 @@ W1D_Mat4 lightning_matrix_multiply_w1d(const W1D_Mat4& left, const W1D_Mat4& rig
 // (+0F0h); the result goes to the node's vtable +34h. Native draws roll = Uniform(0, 2*pi)
 // (float 00CE3D9C) from 00BD2F10 stream 0; the model takes it as input.
 W1D_Mat4 scene_node_random_roll_world_00bc7c10(const W1D_Mat4& source_world, float roll) noexcept;
+
+}  // namespace bsp::water_weather_cc13
+
+// ================================================================================================
+// Part e (cc13-water2b, docs/CC13_WATER_2B.md): container plumbing and small shells left by
+// cc13-water1, modelled on the ACTUAL native storage ({data, count, capacity} arrays, intrusive
+// reference slots, eight-byte strings) and read from the capstone listing, because the live Ghidra
+// decompile drops memory stores in these bodies (2026-10-13). Allocation is the
+// singleton_lifetime_allocate/free boundary; strings go through NativeStringStorage. Bodies that
+// are byte-identical to engine_services_cc13 shapes call those. Build-tested only.
+// ================================================================================================
+namespace bsp::water_weather_cc13 {
+
+using W2_Array = engine_services_cc13::NativeArrayHeader;
+// How an element is copied when an array grows or appends: DWORD moves, or FLD/FSTP per float
+// (which quiets a signalling NaN).
+enum class W2_Copy { dwords, floats };
+// A reserve routine of a specific vector, bound by the caller when this file does not reconstruct it.
+using W2_Reserve = void (*)(W2_Array&, std::int32_t);
+using W2_Resize = void (*)(W2_Array&, std::int32_t);
+
+// POD vector reserve, __thiscall(ECX array, int n) RET 4: n is raised to 1; when capacity < n,
+// operator new(n * size) (00BF55BE), copy count elements (each destination tested for null), free the
+// old data (00BF6989), store data and capacity.
+// 4 bytes: 00B9D1E0 BSP_OceanPtrVector_Reserve, 00B9D3F0 BSP_OceanDwordVector_Reserve,
+//          00BC3180 BSP_CloudPuffPtrVector_Reserve; 8 bytes: 00B9D240 BSP_OceanPairVector_Reserve,
+//          00BC8070 BSP_LightningStrandVector_Reserve; 1 byte: 00B9D2B0 BSP_OceanByteVector_Reserve;
+//          16 bytes as floats: 00BC31E0 BSP_CloudSphereVector_Reserve.
+void w2_pod_reserve(W2_Array& array, std::int32_t requested, std::uint32_t element_size, W2_Copy copy);
+// Resize, __thiscall(ECX array, int n) RET 4: reserve when n > capacity, zero the new elements
+// (each address tested), count down to n, store n.
+// 00B9D310 (4, via 00B9D1E0), 00B9E040 (4, via 00B9D3F0), 00BC3270 (4, via 00BC3180),
+// 00B9D360 (8, via 00B9D240), 00B9DF80 (1, via 00B9D2B0).
+void w2_pod_resize(W2_Array& array, std::int32_t count, std::uint32_t element_size, W2_Copy copy);
+// Push back, __thiscall(ECX array, const element*) RET 4: when full, reserve max(capacity * 2, 1); copy
+// the element to data + count * size unless that address is null; count++.
+// 00B9DE90 (4), 00BC3DE0 (4), 00B9DF40 (8), 00BC8210 (8), 00B9D3B0 (1), 00BC3E20 (16 as floats).
+void w2_pod_push_back(W2_Array& array, const void* element, std::uint32_t element_size, W2_Copy copy);
+// 00B9DFD0 BSP_OceanPtrVector_PushBack_0073eac0: the 4-byte push with the reserve 0073EAC0 (bound).
+void w2_push_back_dword_via_00b9dfd0(W2_Array& array, const std::uint32_t* value, W2_Reserve reserve_0073eac0);
+// Destroy, __fastcall(ECX array): resize to 0, free data. 00B9E560 (00B9D310), 00B9E580 (00B9D360),
+// 00B9E6D0 (00B9E040), 00BC4600 (00BC3270) use the POD resize above.
+void w2_pod_destroy(W2_Array& array, std::uint32_t element_size);
+// The same over a resize this file does not reconstruct (bound by the caller): 00BA13C0 (00B9EF20),
+// 00BA13E0 (00B9EFA0), 00BAFBE0 (00BAF070), 00BB4DC0 (00BB47A0), 00BBD7D0 (00BBD170), 00BBD860 (00BBD1D0),
+// 00BBD930 (00BBD640).
+void w2_destroy_via(W2_Array& array, W2_Resize resize);
+// 00B9E5D0 BSP_OceanByteVector_Assign, __thiscall(ECX, const array*) RET 4, EAX this: resize 0, reserve
+// the source count, then append each source byte with the push growth rule.
+W2_Array& w2_byte_vector_assign_00b9e5d0(W2_Array& self, const W2_Array& source);
+// Inline clear, __fastcall(ECX array): when capacity < 0 call reserve(0) (unreachable for a valid
+// array); count down to 0; count = 0; the Destroy forms then free data (00BF6989).
+// Clear: 00BAFBA0 (00BAEFB0), 00BAFCA0 (00BAF450), 00BBF600 (00BBF390), 00BC1950 (00BC1860), 00BC3E80
+// (00BC31E0), 00BC8280 (00BC7FA0), 00BC82C0 (00BC8070). Destroy: 00BB0240 (00BAEFB0), 00BB0280 (00BAF450),
+// 00BBF690 (00BBF390), 00BC1EF0 (00BC1860), 00BC4620 (00BC31E0), 00BC8300 (00BC7FA0), 00BC8340 (00BC8070).
+void w2_clear_counting_down(W2_Array& array, W2_Reserve reserve, bool free_data);
+// 00BB0590 BSP_CoastPointVector_Delete, __fastcall(ECX slot): when *slot is non-null, the Destroy above
+// on it, then free the object (00BF6989).
+void w2_coast_point_vector_delete_00bb0590(W2_Array** slot, W2_Reserve reserve);
+// 00B9D460 / 00B9E090 BSP_OceanVector_FreeStorage_*, __fastcall(ECX): free +8h when non-null and clear
+// it; +4h = 0; +0h = 0.
+void w2_free_storage_at_8(void* object) noexcept;
+// 00BC6CA0 BSP_PointerArray_Grow_00bc6ca0: capacity * 2 + 2 growth (the 00BF2EE0 body).
+void w2_pointer_array_grow_00bc6ca0(W2_Array& array);
+
+// Reference slots (count at +4h; vtable slot 0 at zero).
+// 00B9A760, 00B9A780, 00BA2AB0, 00BA2AD0 BSP_OceanVector_FreeData_*: free (00BF65AC) and clear when non-null.
+void w2_free_data(void** slot) noexcept;
+// 00B9D6C0 (EAX slot) and 00BA2DA0, 00BA2DD0, 00BA2E00, 00BA2E30: release and clear when non-null.
+void** w2_ref_release_return_self_00b9d6c0(void** slot);
+void w2_ref_release(void** slot);
+// 00BA2B10 BSP_RefHandle_AddRef_00ba2b10, __fastcall(ECX slot) -> EAX slot: InterlockedIncrement(+4h).
+void** w2_ref_add_00ba2b10(void** slot);
+// 00BA2D20, 00BA2D60, 00BB0B90, 00BB8E90, __thiscall(ECX slot, object) RET 4, EAX slot: release and clear
+// the old object, store the new one without adding a reference.
+void** w2_ref_assign(void** slot, void* object);
+// 00B9AB40 BSP_NodeHandle_Release_00b9ab40, __fastcall(ECX slot): when *slot is non-null, the bound
+// unlink-and-release routine (BSP_Node_UnlinkAndRelease) on it.
+void w2_node_handle_release_00b9ab40(void** slot, void (*unlink_and_release)(void* node));
+
+// Strings and archive records.
+// 00BB9030, 00BBA890, 00BBABF0 BSP_NativeString_ReleaseStorage_*: release the string at +0h (0041DD20).
+void w2_release_string(void* header, NativeStringStorage& strings) noexcept;
+// 00BB5CD0 / 00BB5E50 BSP_ArchiveNameRecord_Destroy_*: free +18h when non-null; +18h..+20h = 0; release
+// the string at +0h. (00BB5CD0 is __fastcall ECX; 00BB5E50 takes the record on the stack.)
+void w2_archive_name_record_destroy(void* record, NativeStringStorage& strings) noexcept;
+// 00BB64A0 BSP_NativeString_CopyConstruct_00bb64a0, __thiscall(ECX, const string*) RET 4 -> EAX: string
+// copy, then +8h..+10h = 0.
+void* w2_name_record_copy_construct_00bb64a0(void* record, const NativeString& name, NativeStringStorage& strings);
+// 00BBA8F0 BSP_ArchiveEntryRecord_Construct, __thiscall(ECX, string*, a, b, BYTE, c) RET 14h -> EAX:
+// string copy, +8h = a, +0Ch = b, +10h BYTE, +14h = c. 00BBA950 CopyConstruct copies those fields.
+void* w2_archive_entry_record_construct_00bba8f0(void* record, const NativeString& name, std::uint32_t a,
+    std::uint32_t b, std::uint8_t flag, std::uint32_t c, NativeStringStorage& strings);
+void* w2_archive_entry_record_copy_00bba950(void* record, const void* source, NativeStringStorage& strings);
+
+// Streams.
+// 00BB8530 BSP_StreamBuffer_ReadWhole, __thiscall(ECX buffer, stream, size) RET 8 -> EAX: +0h = operator
+// new(size); stream vtable +24h (data, size, &buffer+4h); +8h = +0h.
+void* w2_stream_buffer_read_whole_00bb8530(void* buffer, void* stream, std::uint32_t size);
+// 00BB8570 BSP_StreamBuffer_Destruct and 00BBBD20 BSP_MemoryBlock_Free, __fastcall(ECX): free(+0h).
+void w2_free_first_word(void* object) noexcept;
+// 00BB9100 BSP_MemoryStream_CreateFromBacking_00bb9100, __fastcall(ECX backing) -> EAX: operator new(14h)
+// (00BF681B); ref-counted base 00CEB130 count 1, +8h..+10h = 0, vtable 00D64328 (a null allocation is
+// still dereferenced below); release a previous +8h (none); +8h = backing with an added reference;
+// +10h = backing +8h; +0Ch = backing +0Ch + backing +8h.
+void* w2_memory_stream_create_00bb9100(void* backing);
+
+// 30h-byte float records (lightning segments).
+// 00BC7F00 BSP_Record30_Copy, __thiscall(ECX, const record*) RET 4 -> EAX: 12 floats by FLD/FSTP.
+void* w2_record30_copy_00bc7f00(void* destination, const void* source) noexcept;
+// 00BC81D0 BSP_Record30Array_RemoveSwapLast, __thiscall(ECX array, int index) RET 4: index -1 does
+// nothing; otherwise copy the last record over index unless it is the last, then count--.
+void w2_record30_remove_swap_last_00bc81d0(W2_Array& array, std::int32_t index) noexcept;
 
 }  // namespace bsp::water_weather_cc13
