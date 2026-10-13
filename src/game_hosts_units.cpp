@@ -11793,6 +11793,26 @@ void land_convoy_advance_and_place(GameUnitsHost::Impl& host, LandConvoyMotionSt
 }
 }  // namespace
 
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 6). 00741120 MOV byte [ECX+3A8h],0;
+// 00741130 MOV byte [ECX+3A8h],1; 00741140 MOV [ECX+368h],arg; RET 4.
+bool GameUnitsHost::set_land_convoy_stopped_3a8(const std::string& convoy, bool stopped) {
+    for (LandConvoyMotionState& c : impl_->land_convoys) {
+        if (c.name != convoy) continue;
+        c.formation.stopped = stopped;
+        return true;
+    }
+    return false;
+}
+
+bool GameUnitsHost::set_land_convoy_speed_368(const std::string& convoy, float speed) {
+    for (LandConvoyMotionState& c : impl_->land_convoys) {
+        if (c.name != convoy) continue;
+        c.formation.speed = speed;
+        return true;
+    }
+    return false;
+}
+
 void GameUnitsHost::land_convoy_step_waves(float step) {
     Impl& host = *impl_;
     for (LandConvoyMotionState& c : host.land_convoys) {

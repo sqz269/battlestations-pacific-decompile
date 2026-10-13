@@ -595,6 +595,14 @@ inline constexpr bool kLuaGetSquadronPlaneBound = false;
 // one still in a group. True: the row runs the units host's leave for every member
 // of the argument's group, the leader last. False: unimplemented.
 inline constexpr bool kLuaDisbandFormationBound = false;
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 6). The LandConvoy natives take
+// argument 0 through 00888D20 (the table's Ptr) and make one store on the convoy:
+// 00895570 LandConvoyStart -> 00741120 (+3A8h = 0), 008956E0 LandConvoyStop ->
+// 00741130 (+3A8h = 1), 00895850 LandConvoySetSpeed(convoy, speed) -> 00741140
+// (+368h = argument 1 through 00B66270). No result. True: the row makes the store
+// on the units host's bound convoy of that name, which 00743060's stopped gate and
+// speed already read. False: unimplemented.
+inline constexpr bool kLuaLandConvoyStartBound = false;
 inline constexpr bool kLuaAddUntouchableUnitBound = true;   // ON on identity (LUA_BINDING_MISSION)
 // The +1D4h byte of units-host index `index`'s AI object, as AddUntouchableUnit
 // left it. False for every unit while kLuaAddUntouchableUnitBound is false.
@@ -1563,6 +1571,9 @@ public:
     int run_get_squadron_plane_0089cfe0(lua_State* state, int argument_count);
     // Packet cc13-fix5, under kLuaDisbandFormationBound.
     int run_disband_formation_0089a020(lua_State* state, int argument_count);
+    // Packet cc13-fix5: the LandConvoy natives (00895570, 008956E0, 00895850), each
+    // under its own switch. `address` selects the store.
+    int run_land_convoy_native(lua_State* state, int argument_count, std::uint32_t address);
     // Packet cc9_squadron_travel_alt, under kSquadronTravelAltBound.
     int run_squadron_set_travel_alt_0089f550(lua_State* state, int argument_count);
     // Packet cc9_squadron_attack_alt, under kSquadronAttackAltBound.

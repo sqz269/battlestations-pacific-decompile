@@ -530,6 +530,7 @@ int binding_trampoline(lua_State* state) {
         && dispatch_row.address == 0x0089cfe0u;
     const bool disband_row = kLuaDisbandFormationBound
         && dispatch_row.address == 0x0089a020u;
+    const bool land_convoy_row = kLuaLandConvoyStartBound && dispatch_row.address == 0x00895570u;
     // Packet cc9_squadron_attack_alt.
     const bool attack_alt_row = kSquadronAttackAltBound
         && dispatch_row.address == 0x008a22b0u;
@@ -606,6 +607,7 @@ int binding_trampoline(lua_State* state) {
         || force_gunner_row
         || slot_count_row || add_stock_row || shipyard_stock_row || device_reload_row
         || remove_all_stock_row || start_landing2_row || squadron_plane_row || disband_row
+        || land_convoy_row
         || unlimited_air_row
         || in_formation_row || leave_formation_row || travel_alt_row || border_zone_row
         || untouchable_row
@@ -741,6 +743,10 @@ int binding_trampoline(lua_State* state) {
     }
     if (disband_row) {
         if (!host->error_replay()) host->run_disband_formation_0089a020(state, argc);
+        return 0;
+    }
+    if (land_convoy_row) {
+        if (!host->error_replay()) host->run_land_convoy_native(state, argc, dispatch_row.address);
         return 0;
     }
     if (shipyard_stock_row) {
@@ -6390,6 +6396,52 @@ int GameMissionLuaHost::run_disband_formation_0089a020(lua_State* state, int arg
         "0077BD70, packet cc13-fix5)", row != nullptr ? row->name.c_str() : "?",
         static_cast<int>(group), left);
     log_.implemented("MissionLuaNative::DisbandFormation", "0089a020");
+    return 0;
+}
+
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 6). The LandConvoy natives, lua_CFunction,
+// no result: argument 0 through 00888D20 (0089566F, 008957DF, 0089594F), then
+// 00895688 00741120 (+3A8h = 0, Start), 008957F8 00741130 (+3A8h = 1, Stop), or
+// 00895980 00B66270 on argument 1 and 008959A3 00741140 (+368h = speed, SetSpeed).
+// SUBSTITUTIONS (labelled): the convoy is the units host's bound motion state named
+// like the argument (its `Name` field, else the scene marker's name for its `ID`);
+// an argument that names no bound convoy stores nothing (the image writes through
+// whatever pointer Ptr holds).
+int GameMissionLuaHost::run_land_convoy_native(lua_State* state, int argument_count,
+    std::uint32_t address) {
+    std::string name;
+    if (::lua_type(state, 1) == LUA_TTABLE) {
+        lua_getfield(state, 1, "Name");
+        if (const char* text = ::lua_tostring(state, -1)) name = text;
+        ::lua_settop(state, ::lua_gettop(state) - 1);
+    }
+    const int id = air_ops_entity_id(state);
+    if (name.empty() && id > 0) {
+        if (const PendingEntity* node = find_pending(id)) name = node->name;
+    }
+    bool stored = false;
+    const char* what = "?";
+    float speed = 0.0f;
+    if (units_hooks_ != nullptr && !name.empty()) {
+        if (address == 0x00895570u) {
+            what = "Start";
+            stored = units_hooks_->set_land_convoy_stopped_3a8(name, false);
+        } else if (address == 0x008956e0u) {
+            what = "Stop";
+            stored = units_hooks_->set_land_convoy_stopped_3a8(name, true);
+        } else if (address == 0x00895850u) {
+            what = "SetSpeed";
+            speed = argument_count >= 2 ? static_cast<float>(::lua_tonumber(state, 2)) : 0.0f;
+            stored = units_hooks_->set_land_convoy_speed_368(name, speed);
+        }
+    }
+    log_.notef("  LandConvoy%s %08x: \"%s\" (id %d) speed=%.2f stored=%d (packet cc13-fix5)",
+        what, address, name.c_str(), id, static_cast<double>(speed), stored ? 1 : 0);
+    if (address == 0x00895570u) log_.implemented("MissionLuaNative::LandConvoyStart", "00895570");
+    if (address == 0x008956e0u) log_.implemented("MissionLuaNative::LandConvoyStop", "008956e0");
+    if (address == 0x00895850u) {
+        log_.implemented("MissionLuaNative::LandConvoySetSpeed", "00895850");
+    }
     return 0;
 }
 

@@ -173,3 +173,37 @@ substitutions are labelled, as in `run_leave_formation_00899eb0`:
 **Prediction.** No WIN script calls it. There are 30 calls in 17 files: COTP usn_03/04/06, jm03/05/10 and three
 multiplayer maps. Those groups break up at the scripted moment instead of sailing on in formation. RNG: none in the
 leave itself.
+
+## 6. LandConvoyStart / LandConvoyStop / LandConvoySetSpeed (00895570 / 008956E0 / 00895850)
+
+Switches: `kLuaLandConvoyStartBound`, `kLuaLandConvoyStopBound`, `kLuaLandConvoySetSpeedBound`. Each has its own
+commit.
+
+Each native takes argument 0 through 00888D20 (the table's `Ptr`, at 0089566F / 008957DF / 0089594F) and makes one
+store on the convoy:
+- Start: 00895688 calls 00741120, `MOV byte [ECX+3A8h],0`.
+- Stop: 008957F8 calls 00741130, `MOV byte [ECX+3A8h],1`.
+- SetSpeed: 00895980 reads argument 1 through 00B66270, then 008959A3 calls 00741140, `MOV [ECX+368h],arg`.
+
+None has a result.
+
+The units host already moves bound convoys (`kLandConvoyMovementBound`, ON). Its 00743060 model gates on
+`formation.stopped` (+3A8h) and advances by `formation.speed` (+368h).
+
+The new units-host accessors make the store on the bound convoy of that name:
+- `GameUnitsHost::set_land_convoy_stopped_3a8`
+- `GameUnitsHost::set_land_convoy_speed_368`
+
+src/game_hosts_units.cpp was unleased when they were added, under lease cc13-fix5-units. They are pure stores, called
+only from these rows.
+
+LABELLED substitution: the convoy is resolved by the argument table's `Name`, else by the scene marker's name for its
+`ID`.
+
+**Prediction.** No WIN script calls them. `usn_12_augusta.lua` has none; the `usn_12_indochina` copies are not the
+USN12 row. The commandhelpers convoy helpers are not reached from any WIN script.
+
+Elsewhere, `usn_12_indochina` (both copies) starts and stops its convoys and sets their speed as scripted. Today they
+run at the authored speed from load and never stop.
+
+RNG: none.
