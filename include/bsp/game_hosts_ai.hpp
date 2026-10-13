@@ -152,6 +152,13 @@ inline constexpr bool kCaptureNoTargetImageBound = false;
 // fresh AiCommandObject (CAUTIOUSATTACK's +24h = 0, +28h = 4). False: the
 // existing command's target is rebound in place, as before.
 inline constexpr bool kMergeNewAttackCommandBound = false;
+// The Duel (00A25F70) and Escort (00A26210) planner thinks (docs/CC13_GPR_69.md
+// 7.8, packet cc13-fix2). The host ran the Siege/Competitive arm 00A1CB80 for
+// both. True: the cc13 models ai_duel_think_00a25f70 / ai_escort_think_00a26210
+// decide, with 00A1C960, 00A1CA60 (+00A2C4C0), 00A2CCF0 (+00A2C150, 00A2C9F0)
+// and 00A2C310 on the host; 00A2CCF0's stream-1 draw goes to the host's private
+// LCG. False: 00A1CB80 for both, as before.
+inline constexpr bool kAiDuelEscortThinkBound = false;
 // Packet cc9_group_release_idle (docs/SHIP_AI_OPEN_ITEMS.md section 30). Every
 // ATTACK-family command registers its observer (+8h) on the target group
 // (00A10767, 00694A60), and all four observer vtables (00D22B64, 00D22BA4,

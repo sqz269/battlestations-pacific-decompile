@@ -20,6 +20,7 @@
 
 #include "bsp/ai_command_lifetime.hpp"
 #include "bsp/gameplay_seg69_70_cc13.hpp"
+#include "bsp/band_009f_cc13.hpp"
 #include "bsp/attack_commands.hpp"
 #include "bsp/ai_command_object.hpp"
 #include "bsp/ai_close_attack_tick.hpp"
@@ -3740,6 +3741,18 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                 }
             }
         }
+        if constexpr (kAiDuelEscortThinkBound) {
+            if (p->kind == bsp::AiPlannerKind::Duel) {
+                duel_think_00a25f70(*p);
+                ticking_planner = nullptr;
+                return;
+            }
+            if (p->kind == bsp::AiPlannerKind::Escort) {
+                escort_think_00a26210(*p);
+                ticking_planner = nullptr;
+                return;
+            }
+        }
         bsp::ai_mode_planner_tick(*this, in);
         ticking_planner = nullptr;
         record("AiPlanners::planner_tick", 0x00a26510u);
@@ -3767,6 +3780,193 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         }
         done("AiPlanners::attack_think_00a1cf90", 0x00a1cf90u);
     }
+    // ---- Packet cc13-fix2 (kAiDuelEscortThinkBound): the Duel 00A25F70 and
+    // Escort 00A26210 thinks through the cc13 models (docs/CC13_GPR_69.md 7.8).
+    // 00A2C4C0 BSP_AiGroup_TotalLeaderWeight: the members' 009FFD70 weights
+    // summed in float.
+    float group_total_leader_weight_00a2c4c0(const Group* g) {
+        float sum = 0.0f;
+        for (const std::size_t m : g->members) sum = sum + unit_class_weight(m);
+        return sum;
+    }
+    // 00A1CA60 over by_team[team].
+    std::array<float, 3> team_centroid_00a1ca60(int team) {
+        std::vector<bsp::band009f::AiWeightedLeader> leaders;
+        if (team >= 0 && team < static_cast<int>(by_team.size())) {
+            for (Group* g : by_team[static_cast<std::size_t>(team)]) {
+                bsp::band009f::AiWeightedLeader w;
+                w.has_members = g != nullptr && !g->members.empty();
+                if (w.has_members) {
+                    tick_leader_point(g, w.position.data());
+                    w.weight = group_total_leader_weight_00a2c4c0(g);
+                }
+                leaders.push_back(w);
+            }
+        }
+        return bsp::band009f::ai_team_weighted_centroid_00a1ca60(leaders);
+    }
+    // 00A2C310(group)(point): kept when 00A2C230 answers (PATROLTO within 1.0),
+    // else a new PATROLTO (new(14h)) installed through 00A2BD00.
+    void issue_patrol_point_00a2c310(Group* g, const float point[3]) {
+        if (bsp::band009f::ai_group_command_targets_point(g->command.type, bsp::AiCommandType::PatrolTo,
+                                                g->command.target_position, point)) {
+            return;
+        }
+        if (bsp::ai_command_install_deletes_previous(true)) ++summary.commands_replaced;
+        bsp::AiCommandObject c;
+        c.type = bsp::AiCommandType::PatrolTo;
+        c.owner_group = g;
+        for (int k = 0; k < 3; ++k) c.target_position[k] = point[k];
+        g->command = c;
+        ++mode_think_patrols;
+    }
+    // 00A2CCF0(group)(point, ratio) through ai_order_cautious_move_00a2ccf0. The
+    // image's stream-1 draw (00A2CD47 MOV ECX,1 / CALL 00BD2F40) goes to the host's
+    // private LCG random_00bd2f10, as order_attack's does.
+    void order_cautious_move_00a2ccf0(Group* g, const float point[3], float ratio) {
+        struct MoveHost final : bsp::gameplay_seg69_70_cc13::OrderMoveHost {
+            Impl& self;
+            Group* g;
+            MoveHost(Impl& s, Group* gr) : self(s), g(gr) {}
+            bool already_moving_to_00a2c150(const float pt[3]) override {
+                return bsp::band009f::ai_group_command_targets_point(g->command.type, bsp::AiCommandType::Move,
+                                                           g->command.target_position, pt);
+            }
+            bool leader_is_ship() override {
+                return self.tick_member_is_ship_base(self.handle(g->members.front()));
+            }
+            bool should_route_cautiously_00a2c9f0(const float pt[3]) override {
+                struct Danger final : bsp::gameplay_seg69_70_cc13::DangerHost {
+                    Impl& self;
+                    void* group;
+                    Danger(Impl& s, void* gr) : self(s), group(gr) {}
+                    float danger_cost(const float p[3], int team) override {
+                        return self.tick_danger_cost_00a010f0(p, team);
+                    }
+                    void leader_point(float out[3]) override {
+                        self.tick_leader_point(group, out);
+                    }
+                } danger(self, g);
+                return bsp::gameplay_seg69_70_cc13::ai_should_route_cautiously_00a2c9f0(
+                    g->team, self.tuning.at(bsp::kAiTuningCautionMoveDist), pt, danger);
+            }
+            float uniform01_stream1() override {
+                ++self.mode_think_draws;
+                return self.random_00bd2f10(0.0f, 1.0f);
+            }
+        } host(*this, g);
+        const bsp::gameplay_seg69_70_cc13::OrderMoveChoice choice =
+            bsp::gameplay_seg69_70_cc13::ai_order_cautious_move_00a2ccf0(
+                static_cast<std::uint32_t>(g->members.size()), point, ratio, host);
+        using Choice = bsp::gameplay_seg69_70_cc13::OrderMoveChoice;
+        if (choice != Choice::MoveTo && choice != Choice::CautiousMove) return;
+        // 00A2CDA3..00A2CDB7: the previous +564Ch is deleted, the new one stored.
+        if (bsp::ai_command_install_deletes_previous(true)) ++summary.commands_replaced;
+        bsp::AiCommandObject c;
+        c.type = choice == Choice::CautiousMove ? bsp::AiCommandType::CautiousMove
+                                                : bsp::AiCommandType::MoveTo;
+        c.owner_group = g;
+        for (int k = 0; k < 3; ++k) c.target_position[k] = point[k];
+        g->command = c;
+        ++mode_think_moves;
+    }
+    void mode_think_apply(Planner& p, Group* g, const bsp::gameplay_seg69_70_cc13::ModeThinkResult& r) {
+        using Action = bsp::gameplay_seg69_70_cc13::ModeThinkAction;
+        const int own = current_team;
+        switch (r.action) {
+        case Action::SpawnGroup: {
+            const char* tag = bsp::ai_planner_spawn_tag(p.kind);
+            if (tag != nullptr) quick_spawn_named_group(tag);
+            publish_spawn_bias(bsp::kAiPlannerSpawnBias);
+            break;
+        }
+        case Action::Attack:
+            order_attack(g, const_cast<void*>(r.target), 1.0f);
+            break;
+        case Action::CautiousMove:
+            order_cautious_move_00a2ccf0(g, r.point, 1.0f);
+            break;
+        case Action::PatrolTo:
+            issue_patrol_point_00a2c310(g, r.point);
+            break;
+        case Action::ChooseAttackTarget:
+            bsp::ai_planner_choose_attack_target(*this, g, own, bsp::ai_enemy_team_index(own),
+                                                 1.0f, false);
+            break;
+        case Action::None:
+            break;
+        }
+    }
+    void duel_think_00a25f70(Planner& p) {
+        ++mode_thinks;
+        const int own = current_team;
+        const int enemy = bsp::ai_enemy_team_index(own);
+        Group* g = p.owned.empty() ? nullptr : p.owned.front();
+        bsp::gameplay_seg69_70_cc13::DuelThinkInputs in;
+        in.owned_groups_028 = static_cast<std::uint32_t>(p.owned.size());
+        if (g != nullptr) {
+            tick_leader_point(g, in.leader);
+            // 00A1C960(leader, planner+34h) over the enemy team's list.
+            std::vector<bsp::band009f::AiGroupLeader> leaders;
+            std::vector<Group*> enemy_groups;
+            if (enemy >= 0 && enemy < static_cast<int>(by_team.size())) {
+                for (Group* e : by_team[static_cast<std::size_t>(enemy)]) {
+                    bsp::band009f::AiGroupLeader l;
+                    l.has_members = e != nullptr && !e->members.empty();
+                    if (l.has_members) tick_leader_point(e, l.position.data());
+                    leaders.push_back(l);
+                    enemy_groups.push_back(e);
+                }
+            }
+            const bsp::band009f::AiNearestGroup nearest = bsp::band009f::ai_nearest_group_00a1c960(leaders, in.leader);
+            in.nearest_enemy_group = nearest.index ? enemy_groups[*nearest.index] : nullptr;
+            in.nearest_enemy_d2 = nearest.distance_squared;
+            in.own_team_group_count = enemy_team_group_count(own);
+            const std::array<float, 3> oc = team_centroid_00a1ca60(own);
+            const std::array<float, 3> ec = team_centroid_00a1ca60(enemy);
+            for (int k = 0; k < 3; ++k) {
+                in.own_centroid[k] = oc[static_cast<std::size_t>(k)];
+                in.enemy_centroid[k] = ec[static_cast<std::size_t>(k)];
+            }
+        }
+        mode_think_apply(p, g, bsp::gameplay_seg69_70_cc13::ai_duel_think_00a25f70(in));
+        done("AiPlanners::duel_think_00a25f70", 0x00a25f70u);
+    }
+    void escort_think_00a26210(Planner& p) {
+        ++mode_thinks;
+        const int own = current_team;
+        const int enemy = bsp::ai_enemy_team_index(own);
+        Group* g = p.owned.empty() ? nullptr : p.owned.front();
+        bsp::gameplay_seg69_70_cc13::EscortThinkInputs in;
+        in.owned_groups_028 = static_cast<std::uint32_t>(p.owned.size());
+        in.own_team_030 = own;
+        in.enemy_team_034 = enemy;
+        if (g != nullptr) {
+            tick_leader_point(g, in.leader);
+            // [[00E188A8] + own*4 + 21A4h] + 18h. LABELLED: the host set's order
+            // stands in for the 008DA530 tree order.
+            if (own >= 0 && static_cast<std::size_t>(own) < GameObjectiveSets::kSlotCount) {
+                for (const std::size_t e : game_objective_sets().units_in_slot(own)) {
+                    if (e >= units.count()) continue;
+                    bsp::gameplay_seg69_70_cc13::EscortSetEntity s;
+                    s.entity = handle(e);
+                    units.unit_position_00fc(e, s.x_0fc, s.y_100, s.z_104);
+                    s.team_054 = units.unit_side_0054(e);
+                    s.group_16c = e < group_of_unit.size() ? group_of_unit[e] : nullptr;
+                    in.set.push_back(s);
+                }
+            }
+            const std::array<float, 3> ec = team_centroid_00a1ca60(enemy);
+            for (int k = 0; k < 3; ++k) in.enemy_centroid[k] = ec[static_cast<std::size_t>(k)];
+        }
+        mode_think_apply(p, g, bsp::gameplay_seg69_70_cc13::ai_escort_think_00a26210(in));
+        done("AiPlanners::escort_think_00a26210", 0x00a26210u);
+    }
+    unsigned long long mode_thinks{0};
+    unsigned long long mode_think_moves{0};
+    unsigned long long mode_think_patrols{0};
+    unsigned long long mode_think_draws{0};
+
     // 00A29FD0, the Capture think. Its targets are list 28 (world+19CCh -> +16Ch,
     // the CommandBuilding list, docs/UNIT_WORLD_REGISTRATION.md) entities not on
     // the planner's side (00A2A13B CMP [e+54h],[planner+30h]). The assignment
