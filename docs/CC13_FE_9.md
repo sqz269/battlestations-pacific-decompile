@@ -85,3 +85,45 @@ case-insensitive tree (head +4h) of binding names with a name vector +34h, a set
   rows take the language text (language 0 / 1 from `[[00E188A8]+18CCh+[+18ECh]*4]+28h`), else the
   record's default, else the sub-hint key. Only top-level rows get an index-map entry; sub rows still
   advance the index.
+## For cc9
+
+Nothing in this pass changes gameplay state. 00510C20 runs a tutorial entry's `LuaCommand` through the
+game's Lua machine (006B8AD0) when the library shows it; a host that wires the tutorial page in will
+execute authored Lua, which is the lead's call to enable.
+
+## Handoff (cc13-fe9, 2026-10-12)
+
+Twenty-three routines reconstructed and build-tested, with ledger records (all
+`reconstructed_build_tested`, behaviour models, not ABI-compatible, not game-validated) and 1515
+verified call rows in `reports/cc13_fe9_calls.json`. No Ghidra renames or comments.
+
+- Control binding: 0055C5A0, 0055D380, 0055E3A0, 0055F710, 0055FCA0.
+- Tactical library: 004FE870, 0050B8E0, 0050BF00, 0050C300, 0050C760, 0050CE70, 0050FDB0, 00510C20,
+  00502480, and the view accessors 004FA890, 004FA8F0, 004FA960, 004FA9C0, 004FAA00.
+- Session browser: 005684D0.
+- fe1: 005BB130 (HUD narrative register), 00601200 (pause hint list).
+
+Still open:
+
+- **005072C0 Preview_OnModelLoaded (7.9 KB).** Read but not modelled. Structure from the decompile:
+  hides `fizika_00..19` descendants except `ep_fizika` nodes and every `hajobelso` child (visibility 0,
+  scale vtable +2Ch with [00CE4BC8]); collects `rotor`, `rotor0..3` notes into the preview object's dword
+  vector (+424h, storage +428h..+430h; 00505D50 on growth, "+Rotor %d=0x%x" log) and hides the `rotor_still*` /
+  `rotor_still_dam*` notes; ship classification by VehicleClass/DeviceClass type strings (Cargo,
+  Destroyer, TorpedoBoat, LandingShip, Submarine, ...) into byte +4CCh, view distances from
+  `UnitlibViewDistance`, `water` nodes hidden for submarines, `szarny letorik` nodes hidden, then the
+  `Platforms` / `RestAngles` / `Windows` turret setup with point-group bases (BSP_Vector3f_Cross,
+  BSP_Matrix_OrthonormalizeBasisRows). Needs the listing for ECX at nearly every call.
+- **005AB190 HudMap register (11 KB)**, fe1: not started.
+- From cc13-fe8's list, still open in segments 12/17: 004FF6F0 ShowDifficultySelect, 00500A90
+  FillOrderOfBattleRow, 005021E0 LoadDownloadableClasses, 00503510 FrontEndPreview_Draw, 00504130
+  LoadClassTables, 00506660 BuildOrderOfBattleList, 0050A400 ReadVehicleClassRow, 0050AA10
+  Preview_LoadVehicleModel, 0050E3C0 / 0050EF80 OpenEntryAs*, 00515050 UpdateTutorialMovie.
+
+Tools (this worktree's `local/`, not committed): the fe8 tools re-pointed at this tree, plus
+`fe9_asm.py` (folds the inlined NativeString construction / memcpy / pool-free sequences and names
+call targets), `fe9_stackfill.py` (symbolic pass over stack stores, callee stack purges from each
+callee's `RET n` via capstone; `--trace` lists every store into the block found at the
+`--base-call` constructor), `fe9_fillgen.py` (turns a trace into C++ write tables) and
+`fe9_ledger.py` / `fe9_callrows.py`. `fe9_asm.py` drops conditional-jump context around the folded
+sequences; read flag-dependent branches from the raw dump.
