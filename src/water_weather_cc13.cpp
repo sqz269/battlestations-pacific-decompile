@@ -4,10 +4,15 @@
 #include <intrin.h>
 #include <new>
 
+#include "bsp/allocator_list.hpp"
+#include "bsp/native_resource_cache_leaves.hpp"
+#include "bsp/random_threads.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <cmath>
+#include <cstdio>
 #include <cstring>
 #include <limits>
+#include <stdexcept>
 
 // ================================================================================================
 // Part a: 00B999F0-00BA2FFF
@@ -2946,6 +2951,513 @@ void w2_record30_remove_swap_last_00bc81d0(W2_Array& array, std::int32_t index) 
                                   w2_bytes(array.data) + static_cast<std::uint32_t>(array.count) * 0x30u - 0x30u);
     }
     array.count = w2_add32(array.count, -1);
+}
+
+}  // namespace bsp::water_weather_cc13
+
+// ================================================================================================
+// Part f (cc13-left1): bodies left open by Part e. docs/CC13_LEFT_1.md.
+// ================================================================================================
+namespace bsp::water_weather_cc13 {
+namespace {
+
+unsigned char* w3_bytes(void* p) noexcept { return static_cast<unsigned char*>(p); }
+const unsigned char* w3_bytes(const void* p) noexcept { return static_cast<const unsigned char*>(p); }
+template<class T> T& w3_field(void* p, std::size_t offset) noexcept { return *reinterpret_cast<T*>(w3_bytes(p) + offset); }
+template<class T> const T& w3_field(const void* p, std::size_t offset) noexcept {
+    return *reinterpret_cast<const T*>(w3_bytes(p) + offset);
+}
+
+std::int32_t w3_add32(std::int32_t n, std::int32_t k) noexcept {
+    return static_cast<std::int32_t>(static_cast<std::uint32_t>(n) + static_cast<std::uint32_t>(k));
+}
+
+void* w3_new(std::size_t bytes) { return singleton_lifetime_allocate({SingletonAllocationKind::object, bytes, bytes}); }
+
+W2_Array& w3_mask(void* region) noexcept { return w3_field<W2_Array>(region, 4); }
+
+void w3_copy_region_tail(void* self, const void* source) noexcept {
+    for (std::size_t offset = 0x10; offset < 0x30; offset += 4) {
+        w3_field<std::uint32_t>(self, offset) = w3_field<std::uint32_t>(source, offset);
+    }
+}
+
+}  // namespace
+
+void w3_cell_grid_resize_00b9d490(void* grid, std::int32_t width, std::int32_t height) {
+    const std::uint64_t wide = static_cast<std::uint64_t>(static_cast<std::uint32_t>(width * height)) * 0x18u;
+    const std::uint32_t bytes = (wide >> 32) != 0 ? 0xFFFFFFFFu : static_cast<std::uint32_t>(wide);
+    auto* const fresh = static_cast<unsigned char*>(w3_new(bytes));
+    const std::int32_t old_width = w3_field<std::int32_t>(grid, 0);
+    const std::int32_t columns = old_width < width ? old_width : width;
+    const std::int32_t rows = w3_field<std::int32_t>(grid, 4) < height ? w3_field<std::int32_t>(grid, 4) : height;
+    auto* const old = static_cast<unsigned char*>(w3_field<void*>(grid, 8));
+    for (std::int32_t row = 0; row < rows; ++row) {
+        for (std::int32_t column = 0; column < columns; ++column) {
+            std::memcpy(fresh + static_cast<std::uint32_t>(row * width + column) * 0x18u,
+                        old + static_cast<std::uint32_t>(old_width * row + column) * 0x18u, 0x18);
+        }
+    }
+    if (old != nullptr) {
+        singleton_lifetime_free(old);
+        w3_field<void*>(grid, 8) = nullptr;
+    }
+    w3_field<std::int32_t>(grid, 0) = width;
+    w3_field<std::int32_t>(grid, 4) = height;
+    w3_field<void*>(grid, 8) = fresh;
+}
+
+void* w3_cell_grid_assign_00b9e0c0(void* self, const void* source) {
+    if (self == source) return self;
+    void*& data = w3_field<void*>(self, 8);
+    if (data != nullptr) {
+        singleton_lifetime_free(data);
+        data = nullptr;
+    }
+    w3_field<std::int32_t>(self, 0) = 0;
+    w3_field<std::int32_t>(self, 4) = 0;
+    w3_cell_grid_resize_00b9d490(self, w3_field<std::int32_t>(source, 0), w3_field<std::int32_t>(source, 4));
+    const std::int32_t width = w3_field<std::int32_t>(self, 0);
+    const std::int32_t source_width = w3_field<std::int32_t>(source, 0);
+    for (std::int32_t row = 0; row < w3_field<std::int32_t>(self, 4); ++row) {
+        for (std::int32_t column = 0; column < width; ++column) {
+            std::memcpy(w3_bytes(data) + static_cast<std::uint32_t>(width * row + column) * 0x18u,
+                        w3_bytes(w3_field<void*>(source, 8)) + static_cast<std::uint32_t>(source_width * row + column) * 0x18u,
+                        0x18);
+        }
+    }
+    return self;
+}
+
+void w3_grid_vector_reserve_00b9e7a0(W2_Array& array, std::int32_t requested) {
+    if (requested < 1) requested = 1;
+    if (array.capacity >= requested) return;
+    auto* const fresh = static_cast<unsigned char*>(w3_new(static_cast<std::uint32_t>(requested) * 0x0Cu));
+    for (std::int32_t i = 0; i < array.count; ++i) {
+        unsigned char* const grid = fresh + static_cast<std::uint32_t>(i) * 0x0Cu;
+        if (grid != nullptr) {
+            std::memset(grid, 0, 0x0C);
+            w3_cell_grid_assign_00b9e0c0(grid, w3_bytes(array.data) + static_cast<std::uint32_t>(i) * 0x0Cu);
+        }
+    }
+    for (std::int32_t i = 0; i < array.count; ++i) {
+        w2_free_storage_at_8(w3_bytes(array.data) + static_cast<std::uint32_t>(i) * 0x0Cu);
+    }
+    singleton_lifetime_free(array.data);
+    array.data = fresh;
+    array.capacity = requested;
+}
+
+void w3_grid_vector_resize_00b9ef20(W2_Array& array, std::int32_t count) {
+    if (array.capacity < count) w3_grid_vector_reserve_00b9e7a0(array, count);
+    for (std::int32_t i = array.count; i < count; ++i) {
+        unsigned char* const grid = w3_bytes(array.data) + static_cast<std::uint32_t>(i) * 0x0Cu;
+        if (grid != nullptr) std::memset(grid, 0, 0x0C);
+    }
+    while (count < array.count) {
+        array.count = w3_add32(array.count, -1);
+        w2_free_storage_at_8(w3_bytes(array.data) + static_cast<std::uint32_t>(array.count) * 0x0Cu);
+    }
+    array.count = count;
+}
+
+void w3_coverage_region_destroy_mask_00b9e6b0(void* region) { w2_pod_destroy(w3_mask(region), 1); }
+
+void* w3_coverage_region_assign_00b9e6f0(void* self, const void* source) {
+    w3_field<std::uint32_t>(self, 0) = w3_field<std::uint32_t>(source, 0);
+    w2_byte_vector_assign_00b9e5d0(w3_mask(self), w3_field<W2_Array>(source, 4));
+    w3_copy_region_tail(self, source);
+    return self;
+}
+
+void* w3_coverage_region_copy_construct_00b9ed40(void* self, const void* source) {
+    w3_field<std::uint32_t>(self, 0) = w3_field<std::uint32_t>(source, 0);
+    w3_mask(self) = W2_Array{nullptr, 0, 0};
+    w2_byte_vector_assign_00b9e5d0(w3_mask(self), w3_field<W2_Array>(source, 4));
+    w3_copy_region_tail(self, source);
+    return self;
+}
+
+void w3_coverage_region_vector_reserve_00b9eda0(W2_Array& array, std::int32_t requested) {
+    if (requested < 1) requested = 1;
+    if (array.capacity >= requested) return;
+    auto* const fresh = static_cast<unsigned char*>(w3_new(static_cast<std::uint32_t>(requested) * 0x30u));
+    for (std::int32_t i = 0; i < array.count; ++i) {
+        unsigned char* const region = fresh + static_cast<std::uint32_t>(i) * 0x30u;
+        if (region != nullptr) {
+            w3_coverage_region_copy_construct_00b9ed40(region, w3_bytes(array.data) + static_cast<std::uint32_t>(i) * 0x30u);
+        }
+    }
+    for (std::int32_t i = 0; i < array.count; ++i) {
+        w3_coverage_region_destroy_mask_00b9e6b0(w3_bytes(array.data) + static_cast<std::uint32_t>(i) * 0x30u);
+    }
+    singleton_lifetime_free(array.data);
+    array.data = fresh;
+    array.capacity = requested;
+}
+
+void w3_coverage_region_vector_resize_00b9efa0(W2_Array& array, std::int32_t count) {
+    if (array.capacity < count) w3_coverage_region_vector_reserve_00b9eda0(array, count);
+    for (std::int32_t i = array.count; i < count; ++i) {
+        unsigned char* const region = w3_bytes(array.data) + static_cast<std::uint32_t>(i) * 0x30u;
+        if (region != nullptr) std::memset(region, 0, 0x10);
+    }
+    while (count < array.count) {
+        array.count = w3_add32(array.count, -1);
+        w3_coverage_region_destroy_mask_00b9e6b0(w3_bytes(array.data) + static_cast<std::uint32_t>(array.count) * 0x30u);
+    }
+    array.count = count;
+}
+
+void w3_coverage_region_vector_push_back_00b9fff0(W2_Array& array, const void* region) {
+    if (array.count == array.capacity) {
+        std::int32_t capacity = w3_add32(array.capacity, array.capacity);
+        if (capacity < 2) capacity = 1;
+        w3_coverage_region_vector_reserve_00b9eda0(array, capacity);
+    }
+    unsigned char* const slot = w3_bytes(array.data) + static_cast<std::uint32_t>(array.count) * 0x30u;
+    if (slot != nullptr) w3_coverage_region_copy_construct_00b9ed40(slot, region);
+    array.count = w3_add32(array.count, 1);
+}
+
+void w3_coverage_region_vector_erase_at_00b9ece0(W2_Array& array, std::int32_t index) {
+    if (index == -1) return;
+    unsigned char* const last = w3_bytes(array.data) + static_cast<std::uint32_t>(array.count) * 0x30u - 0x30u;
+    if (index != array.count - 1) {
+        w3_coverage_region_assign_00b9e6f0(w3_bytes(array.data) + static_cast<std::uint32_t>(index) * 0x30u, last);
+    }
+    w3_coverage_region_destroy_mask_00b9e6b0(last);
+    array.count = w3_add32(array.count, -1);
+}
+
+void w3_lightning_segment_vector_reserve_00bc7fa0(W2_Array& array, std::int32_t requested) {
+    w2_pod_reserve(array, requested, 0x30, W2_Copy::floats);
+}
+
+void w3_lightning_segment_vector_append_00bc8150(W2_Array& array, const void* segment) {
+    w2_pod_push_back(array, segment, 0x30, W2_Copy::floats);
+}
+
+namespace {
+
+struct W3_Header {
+    std::uint32_t length;
+    char* data;
+};
+
+// The pooled temporary schedule shared by 00BD1BB0 / 00BD1D90 / 00BD1E80 / 00BD26B0: build the
+// temporary (resize preserving, copy length + 1), append it when nonempty, release length + 1 bytes.
+void* w3_append_text(void* builder, const char* text, NativeStringStorage& strings) {
+    W3_Header temporary{0, nullptr};
+    resize_native_string_header_0041dd40(&temporary, strings, static_cast<std::uint32_t>(std::strlen(text)), true);
+    char* const data = temporary.data;
+    const std::uint32_t length = temporary.length;
+    if (data != nullptr) std::memcpy(data, text, length + 1u);
+    if (length != 0) {
+        const std::uint32_t previous = w3_field<std::uint32_t>(builder, 0);
+        resize_native_string_header_0041dd40(builder, strings, length + previous, true);
+        std::memcpy(w3_field<char*>(builder, 4) + previous, data, length);
+    }
+    if (data != nullptr) strings.release(data, length + 1u);
+    return builder;
+}
+
+void w3_check_formatted(int length, std::size_t capacity) {
+    if (length < 0 || static_cast<std::size_t>(length) >= capacity) {
+        throw std::length_error("Native builder format exceeds its 64-byte temporary domain");
+    }
+}
+
+}  // namespace
+
+void w3_game_allocator_destroy_00bd15d0(void* allocator, volatile std::uint32_t& small_returns_disabled_01090aa4,
+                                        void* volatile& published_01090aac) noexcept {
+    auto* const section = reinterpret_cast<CRITICAL_SECTION*>(w3_bytes(allocator) + 0xB89A98u);
+    auto& depth = *reinterpret_cast<volatile std::uint32_t*>(w3_bytes(allocator) + 0xB89AB0u);
+    w3_field<std::uint32_t>(allocator, 0) = 0x00D68204u;
+    small_returns_disabled_01090aa4 = 1;
+    while (static_cast<std::int32_t>(depth) > 0) {
+        depth = depth - 1u;
+        LeaveCriticalSection(section);
+    }
+    DeleteCriticalSection(section);
+    published_01090aac = nullptr;
+    w3_field<std::uint32_t>(allocator, 0) = 0x00CE3818u;
+}
+
+TrackedCriticalSection* w3_counted_critical_section_create_00bd1890() { return critical_section_create_00bd1860(); }
+
+void w3_event_destroy_00bd18f0(void* event) noexcept {
+    w3_field<std::uint32_t>(event, 0) = 0x00D6821Cu;
+    CloseHandle(w3_field<HANDLE>(event, 4));
+    w3_field<std::uint32_t>(event, 0) = 0x00D68208u;
+}
+
+void* w3_string_builder_append_char_00bd1b10(void* builder, char c, NativeStringStorage& strings) {
+    char* const block = strings.allocate(2);
+    block[1] = 0;
+    block[0] = c;
+    const std::uint32_t previous = w3_field<std::uint32_t>(builder, 0);
+    resize_native_string_header_0041dd40(builder, strings, previous + 1u, true);
+    w3_field<char*>(builder, 4)[previous] = block[0];
+    strings.release(block, 2);
+    return builder;
+}
+
+void* w3_string_builder_append_float_00bd1d90(void* builder, float value, NativeStringStorage& strings,
+                                              const char* null_format_01090ab4) {
+    const char* format = w3_field<const char*>(builder, 0x14);
+    if (format == nullptr) format = null_format_01090ab4;
+    char buffer[64];
+    w3_check_formatted(std::snprintf(buffer, sizeof buffer, format, static_cast<double>(value)), sizeof buffer);
+    return w3_append_text(builder, buffer, strings);
+}
+
+void* w3_string_builder_append_pointer_00bd1e80(void* builder, const void* value, NativeStringStorage& strings) {
+    char buffer[64];
+    w3_check_formatted(std::snprintf(buffer, sizeof buffer, "0x%p", value), sizeof buffer);
+    return w3_append_text(builder, buffer, strings);
+}
+
+void* w3_error_reporter_singleton_00bd2180(void*& published_0109dbdc, SingletonLifetimeDomain& domain,
+                                           engine_services_cc13::EngineServiceCalls& calls) {
+    if (published_0109dbdc == nullptr) {
+        SystemSingletonCriticalSection* const section = domain.get_manager_00415350()->system_owner().section_10;
+        if (section != nullptr) {
+            singleton_enter_critical_section(*section);
+            ++section->recursion_18;
+        }
+        if (published_0109dbdc == nullptr) {
+            void* const raw = w3_new(0x18);
+            published_0109dbdc = raw != nullptr ? engine_services_cc13::error_reporter_construct_00bf2c40(raw, calls)
+                                                : nullptr;
+            domain.get_manager_00415350()->register_object(published_0109dbdc);
+        }
+        if (section != nullptr) {
+            --section->recursion_18;
+            singleton_leave_critical_section(*section);
+        }
+    }
+    return published_0109dbdc;
+}
+
+void* w3_native_string_copy_construct_into_00bd2390(const void* source, void* destination,
+                                                    NativeStringStorage& strings) {
+    w3_field<std::uint32_t>(destination, 0) = 0;
+    w3_field<char*>(destination, 4) = nullptr;
+    if (destination != source) {
+        resize_native_string_header_0041dd40(destination, strings, w3_field<std::uint32_t>(source, 0), true);
+        if (w3_field<std::uint32_t>(source, 0) != 0) {
+            std::memcpy(w3_field<char*>(destination, 4), w3_field<char*>(source, 4), w3_field<std::uint32_t>(destination, 0));
+        }
+    }
+    return destination;
+}
+
+void* w3_log_message_append_cstring_00bd26b0(void* message, const char* text, NativeStringStorage& strings) {
+    w3_append_text(w3_bytes(message) + 0x20, text, strings);
+    return message;
+}
+
+void* w3_deleting_destructor(void* object, std::uint32_t flags, std::uint32_t vtable, W3_Body body, W3_Body dispose) {
+    if (vtable != 0) w3_field<std::uint32_t>(object, 0) = vtable;
+    if (body != nullptr) body(object);
+    if ((flags & 1u) != 0) dispose(object);
+    return object;
+}
+
+void* w3_adjustor_thunk_minus4(void* secondary, std::uint32_t flags, void* (*target)(void* object, std::uint32_t flags)) {
+    return target(w3_bytes(secondary) - 4, flags);
+}
+
+void* w3_cloud_instance_type_info_thunk_00bbe7c0(void* object, W3_Body init_type_info_00bbe770) {
+    init_type_info_00bbe770(object);
+    return object;
+}
+
+void w3_delete_slot_if_set(void** slot) {
+    void* const object = *slot;
+    if (object != nullptr) {
+        using Delete = void*(__thiscall*)(void*, std::uint32_t);
+        reinterpret_cast<Delete>(w3_field<void*>(w3_field<void*>(object, 0), 0))(object, 1);
+        *slot = nullptr;
+    }
+}
+
+void* w3_ref_counted_base_construct_00bc7b60(void* object) noexcept {
+    w3_field<std::uint32_t>(object, 0) = 0x00CEB130u;
+    w3_field<std::uint32_t>(object, 4) = 1;
+    w3_field<std::uint32_t>(object, 0) = 0x00D649DCu;
+    return object;
+}
+
+void* w3_caustics_texture_source_construct_00bbc670(void* object) noexcept {
+    construct_native_texture_source_00c30470(object);
+    w3_field<std::uint32_t>(object, 0) = 0x00D64478u;
+    return object;
+}
+
+void* w3_shore_wave_texture_source_construct_00bbc7c0(void* object) noexcept {
+    construct_native_texture_source_00c30470(object);
+    w3_field<std::uint32_t>(object, 0) = 0x00D644B4u;
+    return object;
+}
+
+void* w3_waterdrops_pooled_construct_00bc2160(void* object, W3_Body waterdrops_construct_00bc2030) {
+    waterdrops_construct_00bc2030(object);
+    w3_field<std::uint32_t>(object, 0) = 0x00D647D0u;
+    return object;
+}
+
+namespace {
+
+void* w3_construct_named_model(void* object, const char* name, NativeStringStorage& strings,
+                               W3_ConstructGeneratedModel construct_00b75030, std::uint32_t vtable) {
+    W3_Header temporary{0, nullptr};
+    resize_native_string_header_0041dd40(&temporary, strings, static_cast<std::uint32_t>(std::strlen(name)), true);
+    if (temporary.data != nullptr) std::memcpy(temporary.data, name, temporary.length + 1u);
+    construct_00b75030(object, &temporary);
+    if (temporary.data != nullptr) strings.release(temporary.data, temporary.length + 1u);
+    w3_field<std::uint32_t>(object, 0) = vtable;
+    return object;
+}
+
+}  // namespace
+
+void* w3_cloud_plane_model_construct_base_00bc7db0(void* object, NativeStringStorage& strings,
+                                                  W3_ConstructGeneratedModel construct_00b75030) {
+    return w3_construct_named_model(object, "cloudplane", strings, construct_00b75030, 0x00D649E8u);
+}
+
+void* w3_lightning_model_construct_base_00bc93e0(void* object, NativeStringStorage& strings,
+                                                W3_ConstructGeneratedModel construct_00b75030) {
+    w3_construct_named_model(object, "Lightning", strings, construct_00b75030, 0x00D64A50u);
+    for (std::size_t offset = 0x188; offset <= 0x1B4; offset += 4) w3_field<std::uint32_t>(object, offset) = 0;
+    return object;
+}
+
+void* w3_memory_stream_cast_00bb8690(void* stream, void* memory_file_type_0109dba0) {
+    if (stream == nullptr) return nullptr;
+    using IsKindOf = bool(__thiscall*)(void*, void*);
+    const bool kind = reinterpret_cast<IsKindOf>(w3_field<void*>(w3_field<void*>(stream, 0), 0x0C))(
+        stream, memory_file_type_0109dba0);
+    return kind ? stream : nullptr;
+}
+
+void* w3_mpkg_provider_open_entry_00bb8e70(void* provider, const void* name, std::uint32_t flags,
+    void* (*open_named_entry_00bb8d60)(void* state, const void* name, std::uint32_t flags)) {
+    return open_named_entry_00bb8d60(w3_field<void*>(provider, 0x14), name, flags);
+}
+
+void* w3_mpak_directory_make_member_iterator_00bb5330(void* out, const void* name, void* container, void* first,
+    void* end, void* (*find_member_00bb4f40)(void* first, void* end, const void* name)) {
+    w3_field<void*>(out, 4) = find_member_00bb4f40(first, end, name);
+    w3_field<void*>(out, 0) = container;
+    return out;
+}
+
+void w3_tracer_curve_destroy_records_00baca80(W2_Array& records, W2_Resize resize_00bac5e0) {
+    w2_destroy_via(records, resize_00bac5e0);
+}
+
+void w3_model_pool_construct(W3_ModelPoolStorage& pool, AllocatorListDomain& list_00e188b4, std::uint32_t vtable) {
+    list_00e188b4.prepend_base_element(*reinterpret_cast<AllocatorListElement*>(&pool));
+    pool.native_vtable_00 = vtable;
+    InitializeCriticalSection(reinterpret_cast<CRITICAL_SECTION*>(pool.critical_section_0c));
+    pool.recursion_24 = 0;
+    pool.blocks_28 = nullptr;
+    pool.block_count_2c = 0;
+    pool.table_capacity_30 = 0;
+    pool.first_free_34 = 0xFFFFFFFFu;
+    if (pool.table_capacity_30 < 0x20) {
+        pool.table_capacity_30 = 0x20;
+        auto** const table = static_cast<std::byte**>(w3_new(0x80));
+        for (std::uint32_t i = 0; i < pool.block_count_2c; ++i) {
+            if (table + i != nullptr) table[i] = pool.blocks_28[i];
+        }
+        if (pool.blocks_28 != nullptr) singleton_lifetime_free(pool.blocks_28);
+        pool.blocks_28 = table;
+    }
+}
+
+void w3_model_pool_destroy(W3_ModelPoolStorage& pool, AllocatorListDomain& list_00e188b4, std::uint32_t vtable) noexcept {
+    pool.native_vtable_00 = vtable;
+    for (std::uint32_t i = 0; i < pool.block_count_2c; ++i) singleton_lifetime_free(pool.blocks_28[i]);
+    if (pool.blocks_28 != nullptr) singleton_lifetime_free(pool.blocks_28);
+    auto* const section = reinterpret_cast<CRITICAL_SECTION*>(pool.critical_section_0c);
+    while (pool.recursion_24 > 0) {
+        pool.recursion_24 = w3_add32(pool.recursion_24, -1);
+        LeaveCriticalSection(section);
+    }
+    DeleteCriticalSection(section);
+    list_00e188b4.unlink_base_element_00403970(*reinterpret_cast<AllocatorListElement*>(&pool));
+}
+
+void w3_model_pool_free_thunk(void* object, void* pool, void (*pool_free)(void* pool, void* object)) {
+    pool_free(pool, object);
+}
+
+namespace {
+
+void w3_reserve_strands(W2_Array& array, std::int32_t n) { w2_pod_reserve(array, n, 8, W2_Copy::dwords); }
+void w3_reserve_segments(W2_Array& array, std::int32_t n) { w2_pod_reserve(array, n, 0x30, W2_Copy::floats); }
+void w3_reserve_spheres(W2_Array& array, std::int32_t n) { w2_pod_reserve(array, n, 0x10, W2_Copy::floats); }
+void w3_reserve_dwords(W2_Array& array, std::int32_t n) { w2_pod_reserve(array, n, 4, W2_Copy::dwords); }
+
+void w3_release_field(void* object, std::size_t offset) { w2_ref_release(&w3_field<void*>(object, offset)); }
+
+}  // namespace
+
+void w3_lightning_model_destruct_body_00bc8380(void* model, W3_Body model_destroy_00b750c0) {
+    w3_field<std::uint32_t>(model, 0) = 0x00D64A50u;
+    w2_clear_counting_down(w3_field<W2_Array>(model, 0x1AC), &w3_reserve_strands, true);
+    w2_clear_counting_down(w3_field<W2_Array>(model, 0x1A0), &w3_reserve_segments, true);
+    w2_clear_counting_down(w3_field<W2_Array>(model, 0x194), &w3_reserve_strands, true);
+    w2_clear_counting_down(w3_field<W2_Array>(model, 0x188), &w3_reserve_segments, true);
+    model_destroy_00b750c0(model);
+}
+
+void w3_cloud_class_destruct_body_00bc4660(void* cloud_class, NativeStringStorage& strings,
+                                          W3_Body destroy_base_00bd30f0) {
+    w3_field<std::uint32_t>(cloud_class, 0) = 0x00D64860u;
+    W2_Array& puffs = w3_field<W2_Array>(cloud_class, 0x1C);
+    for (std::int32_t i = 0; i < puffs.count; ++i) w2_ref_release(static_cast<void**>(puffs.data) + i);
+    w3_release_field(cloud_class, 0x68);
+    destroy_native_string_header_0041dd20(w3_bytes(cloud_class) + 0x60, strings);
+    w2_clear_counting_down(w3_field<W2_Array>(cloud_class, 0x30), &w3_reserve_spheres, true);
+    w2_pod_resize(puffs, 0, 4, W2_Copy::dwords);
+    singleton_lifetime_free(puffs.data);
+    destroy_native_string_header_0041dd20(w3_bytes(cloud_class) + 0x0C, strings);
+    destroy_base_00bd30f0(cloud_class);
+}
+
+void* w3_cloud_class_construct_00bc4a60(void* cloud_class, std::uint32_t manager_18, std::uint32_t value_14,
+    const void* name, const void* texture, std::uint32_t owner_08, NativeStringStorage& strings,
+    W3_Body load_00bc47d0) {
+    w3_field<std::uint32_t>(cloud_class, 0) = 0x00CEB130u;
+    w3_field<std::uint32_t>(cloud_class, 4) = 1;
+    w3_field<std::uint32_t>(cloud_class, 0) = 0x00D64860u;
+    w3_field<std::uint32_t>(cloud_class, 8) = owner_08;
+    w3_native_string_copy_construct_into_00bd2390(name, w3_bytes(cloud_class) + 0x0C, strings);
+    w3_field<std::uint32_t>(cloud_class, 0x14) = value_14;
+    w3_field<std::uint32_t>(cloud_class, 0x18) = manager_18;
+    w3_field<W2_Array>(cloud_class, 0x1C) = W2_Array{nullptr, 0, 0};
+    w3_field<W2_Array>(cloud_class, 0x30) = W2_Array{nullptr, 0, 0};
+    w3_native_string_copy_construct_into_00bd2390(texture, w3_bytes(cloud_class) + 0x60, strings);
+    w3_field<std::uint8_t>(cloud_class, 0x28) = 0;
+    w3_field<std::uint8_t>(cloud_class, 0x40) = 0;
+    load_00bc47d0(cloud_class);
+    return cloud_class;
+}
+
+void w3_sky_box_destruct_body_00bbf6d0(void* sky_box, W3_Body destroy_base_00bd30f0) {
+    w3_field<std::uint32_t>(sky_box, 0) = 0x00D64618u;
+    for (std::size_t layer = 0; layer < 3; ++layer) w3_release_field(sky_box, 0x84 + layer * 0x54);
+    w3_release_field(sky_box, 8);
+    w3_release_field(sky_box, 0x10);
+    w2_clear_counting_down(w3_field<W2_Array>(sky_box, 0x24), &w3_reserve_dwords, true);
+    w2_clear_counting_down(w3_field<W2_Array>(sky_box, 0x18), &w3_reserve_dwords, true);
+    destroy_base_00bd30f0(sky_box);
 }
 
 }  // namespace bsp::water_weather_cc13
