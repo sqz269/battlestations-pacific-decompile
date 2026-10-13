@@ -1019,6 +1019,137 @@ bool update_effect_thunderstorm_instance_00873c80(const EffectThunderStormState&
                                                   const ThunderStormUpdateHost& host);
 
 // ===========================================================================
+// Point effect handle and child retirement, under the effect manager lock
+// (00866440()+4: EnterCriticalSection, depth counter at CS+18h ++ / --).
+// ===========================================================================
+
+// The three handle bytes 00866B70 touches; 00865FE0 (effects_cc13) treats a
+// set +0Ah as "not finished".
+struct EffectHandleFlags {
+    bool active_08{false};
+    bool finish_when_done_09{false};
+    bool stop_requested_0a{false};
+};
+// 00866B70, __fastcall(handle), RET 0: +9 = 0, and +0Ah = 1 when +8 is set.
+void effect_handle_request_stop_00866b70(EffectHandleFlags& h) noexcept;
+
+// 008679D0, __thiscall(point, child ref by value), RET 4; sole caller
+// 00857160 (call site 008573ED). Searches the entry array +0Ch (count +10h)
+// for the child. Found: a child whose byte +0Ch is set gets it cleared and
+// its vtable+30h (stop) called; the slot is appended to the pending array
+// +18h (00867320, which retains), the slot's reference is released and the
+// slot nulled IN PLACE (the array keeps its count). Either way the by-value
+// argument reference is released after the lock is left. Returns found.
+struct PointEffectChildSlot {
+    std::uintptr_t child{0};
+    bool active_0c{false};
+};
+struct PointEffectRetireHost {
+    std::function<void(std::uintptr_t child)> stop_child;   // child vtable+30h
+    std::function<void(std::uintptr_t child)> retain;       // 00867320 publish/retain
+    std::function<void(std::uintptr_t child)> release;      // InterlockedDecrement +4h, vtable[0] at zero
+};
+bool point_effect_retire_child_008679d0(std::vector<PointEffectChildSlot>& entries_0c,
+                                        std::vector<std::uintptr_t>& pending_18, std::uintptr_t child,
+                                        const PointEffectRetireHost& host);
+
+// ===========================================================================
+// Sound effect component (vtable 00D0DA18; samples at +20h, count +24h)
+// ===========================================================================
+
+// One sample's view through 00A818D0 / 00A81860 (its options record).
+struct EffectSoundSampleView {
+    bool resource_word08{false};   // 00A818D0 (BSP_SoundSample_HasResourceWord08_Provisional)
+    bool flag_15{false};           // options +15h
+    bool use_max_distance_20{false};  // options +20h
+    float distance_0c{0.0f};       // options +0Ch, times 128.0
+    float max_distance_10{0.0f};   // options +10h
+};
+// 00869E10, slot 0Ch, __thiscall(component), RET 0: true when any sample's
+// options +15h byte is set (walk +20h[+24h], 00A81860).
+bool effect_sound_any_sample_flag15_00869e10(const std::vector<EffectSoundSampleView>& samples) noexcept;
+// 0086FA80, slot 10h: MOV EAX,2.
+constexpr int effect_sound_category_0086fa80() noexcept { return 2; }
+// 0086A740, slot 1Ch, __thiscall(component, const pos*, node), RET 8. Byte
+// +2Ch set -> true. Otherwise distance = 0042B2F0(pos - node world position)
+// (node refreshed first; each difference a float), then per sample in order:
+// 00A818D0 true -> true; options +15h -> true; limit = options +20h ?
+// options +10h : f(options +0Ch * 128.0 (00CEF258)); limit > distance
+// (FCOMPI/JA, so a NaN does not admit) -> true. No sample admits -> false.
+bool effect_sound_admit_at_position_0086a740(bool always_2c, float distance,
+                                             const std::vector<EffectSoundSampleView>& samples) noexcept;
+
+// ===========================================================================
+// Weather: the rain descriptor singleton 00F875C0 (docs/CC13_SCENE_WEATHER.md)
+// ===========================================================================
+
+// The descriptor fields 00865900 writes. +4h is the RainModelParams block
+// 008023B0 builds from (src/engine_seg49_64_78_cc13.cpp).
+struct RainDescriptorFields {
+    float drop_count_0c{0.0f};
+    float min_length_18{0.0f};
+    float length_span_1c{0.0f};
+    Vec3 speed_20{};
+    std::uint32_t colour_34{0};
+    std::uintptr_t emitter_38{0};
+};
+// The scene weather block 00865900 reads (pointer from 004DF890).
+struct WeatherPresetBlock {
+    bool is_rain_60{false};
+    std::int32_t drop_count_64{0};
+    Vec3 speed_68{};
+    std::uint32_t colour_74{0};
+    float min_length_78{0.0f};
+    float max_length_7c{0.0f};
+    float fog_colour_80[4]{};
+    float directional_colours_90[4][4]{};
+    float fog_d0{0.0f};
+    float fog_d4{0.0f};
+    float fog_d8{0.0f};
+    float fog_dc{0.0f};
+    float fog_e0{0.0f};
+    std::uint8_t cloud_wind_25c{0};
+};
+
+// 00865900, __thiscall(descriptor, const preset*), RET 4, sole caller
+// BSP_Game_ConstructWorld. An emitter at +38h is released (00B6DFA0) and
+// cleared. With IsRain (+60h): +20h..+28h = speed +68h..+70h, +0Ch =
+// CVTSI2SS +64h, +18h = +78h, +1Ch = float(+7Ch - +78h) (FSUB), +34h =
+// +74h, then +38h = 008023B0(descriptor+4h). With the game object and its
+// camera ([[00E188A8]+19FCh]): system fog setters 00B84D00(+D0h),
+// 00B84D40(+DCh), 00B84D10(+D4h), 00B84D20(+D8h), 00B84D30(+E0h) in that
+// order, 00B84C40(+80h colour), 00B84FA0(+90h + 10h*i, i) for i = 0..3, the
+// camera clear colour 00B6FE50(camera, 004FB850(+80h) ARGB), then the cloud
+// manager's wind switch 00BBDDF0 / 00BBCE60 with byte +25Ch. No RNG here;
+// the emitter's per-frame draws are 00801400's (stream 1, see 00865AB0).
+struct WorldAtmospherePresetHost {
+    std::function<void(std::uintptr_t node)> release_node;            // 00B6DFA0
+    std::function<std::uintptr_t()> build_rain_emitter;              // 008023B0(descriptor+4h)
+    std::function<bool()> camera_present;                            // game and [+19FCh] non-null
+    std::function<void(int setter, float value)> set_fog_scalar;     // setter = 0x68/0x78/0x6c/0x70/0x74
+    std::function<void(const float (&rgba)[4])> set_fog_colour;      // 00B84C40
+    std::function<void(int index, const float (&rgba)[4])> set_directional_colour;  // 00B84FA0
+    std::function<void(const float (&rgba)[4])> set_camera_clear_colour;  // 004FB850 + 00B6FE50
+    std::function<void(std::uint8_t enabled)> set_cloud_wind;        // 00BBDDF0 + 00BBCE60
+};
+void world_atmosphere_apply_preset_00865900(RainDescriptorFields& d, const WeatherPresetBlock& preset,
+                                            const WorldAtmospherePresetHost& host);
+
+// 00865AB0, __thiscall on the descriptor, RET 0, every frame from
+// BSP_Game_OnMove (004E5309). With an emitter at +38h: the camera node
+// [[00E188A8]+19FCh] is refreshed (00B6DB70 when +5Ch bit 1 is clear) and
+// 00801400(emitter; f([[00E188A8]+21F0h]), &camera position (+120h..+128h),
+// camera+110h) runs; rain_emitter_step_00801400 (src/engine_seg49_64_78_cc13.cpp)
+// models that step. Its draw is on STREAM 1 (00801439 MOV ECX,1;
+// docs/CC13_RNG_STREAM_CENSUS.md), not stream 0. Returns whether it stepped.
+struct RainDescriptorUpdateHost {
+    std::function<Vec3()> camera_position;                           // refreshed node +120h..+128h
+    std::function<float()> frame_dt_21f0;                            // [[00E188A8]+21F0h]
+    std::function<void(float dt, const Vec3& camera)> emitter_step;  // 00801400
+};
+bool rain_descriptor_update_00865ab0(const RainDescriptorFields& d, const RainDescriptorUpdateHost& host);
+
+// ===========================================================================
 // Rotation helpers used by the torpedo homing (00856BB0) and the periscope
 // debris step (00852970). Gameplay x87 at 24-bit precision: every product
 // and sum below rounds like a float, in the listing's order.

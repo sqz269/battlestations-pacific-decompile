@@ -414,7 +414,7 @@ nothing to model. The adjustor thunks 00853010..00853040 and the scalar deleting
 | list register/detach | `world_lists_unlink_unit_00928f24` at src/game_hosts_units.cpp:3044 erases the first matching node of every list, which is the same set for these leaves | the class list payloads | none | none: same unlink set |
 | `00853110` / `00853590` / `008533E0` | nothing (the host has no periscope debris or periscope effect) | effect and debris pointers, the owner name, the periscope node | none | presentation only; ON adds the debris piece and the effect release on a kill |
 | `0085F1E0` / `0085EA50` / `0085F120` / `0085F310` | nothing (the host has no water mine; src/game_hosts_ai.cpp:6538 lists only the name) | the mine's model +464h, the class V0, spawn position and direction | none (the mine's draws are in 0085EBC0 and 0085F7A0, section 2) | none until mines are bound |
-| `008738B0` / `00873100` / `00873C80` | nothing (the effect components are built by src/gameplay_effect_components.cpp but not ticked) | the instance fields, the definition rows (`WaterdropCount` etc., src/gameplay_effect_scalar_components.cpp), node positions, the weather renderer 00BC1xxx | none in these bodies. The storm's strike timing lives in 00BC0510 (outside this segment, not checked) | presentation only; nothing in a gameplay pair moves |
+| `008738B0` / `00873100` / `00873C80` | nothing (the effect components are built by src/gameplay_effect_components.cpp but not ticked) | the instance fields, the definition rows (`WaterdropCount` etc., src/gameplay_effect_scalar_components.cpp), node positions, the weather renderer 00BC1xxx | none in these bodies. The storm's strike timing lives in 00BC0510, whose lightning draw 00BC05A9 is on stream 1 (docs/CC13_RNG_STREAM_CENSUS.md) | presentation only; nothing in a gameplay pair moves |
 
 ### 7.4 Findings
 
@@ -453,3 +453,29 @@ case.
 
 Verification for this pass: `scripts/build.ps1` passes. `tools/verify_report_calls.py
 local/g53d_calls.json` checked 94 call rows with 0 failures. No tests were added and there were no game runs.
+
+### 7.6 Weather, point-effect handle and sound component
+
+| address | model | what it does |
+|---|---|---|
+| `00865900` | `world_atmosphere_apply_preset_00865900` | Releases the old rain emitter. With IsRain it copies speed, drop count (CVTSI2SS), min length, length span (max - min) and colour into the rain descriptor and builds the emitter (008023B0). With a camera it runs the five fog scalar setters in listing order (+D0h, +DCh, +D4h, +D8h, +E0h), the fog colour, the four directional colours, the camera clear colour and the cloud wind switch. |
+| `00865AB0` | `rain_descriptor_update_00865ab0` | Every frame from BSP_Game_OnMove: with an emitter, 00801400(frame dt [game+21F0h], camera position). |
+| `00866B70` | `effect_handle_request_stop_00866b70` | Under the effect manager lock: +9 = 0, and +0Ah = 1 when +8 is set. |
+| `008679D0` | `point_effect_retire_child_008679d0` | Under the lock: finds the child, stops it when active (vtable+30h), appends it to the pending array +18h (00867320 retains), releases the slot and nulls it **in place**, then releases the by-value argument. 00865FE0's "all slots null" test depends on that in-place null. |
+| `00869E10` | `effect_sound_any_sample_flag15_00869e10` | Whether any sample's options byte +15h is set. |
+| `0086A740` | `effect_sound_admit_at_position_0086a740` | +2Ch admits. Otherwise each sample admits on 00A818D0, options +15h, or `limit > distance`, with `limit = +20h ? +10h : +0Ch * 128`. |
+| `0086FA80` | `effect_sound_category_0086fa80` | 2. |
+
+RNG: none in these bodies. **Correction for docs/CC13_SCENE_WEATHER.md** (not this packet's
+file): it says the rain spawn step 00801400 draws 00BD2F10 on stream 0. The bytes say stream 1
+(`00801439 MOV ECX,1`, call at 0080144F, no ECX write in between). docs/CC13_RNG_STREAM_CENSUS.md
+and `rain_emitter_step_00801400` (src/engine_seg49_64_78_cc13.cpp) already say stream 1, so rain
+does not shift the gameplay stream-0 sequence.
+
+Adoption: presentation only. 00865AB0 replaces the `update_rain_descriptor_00865ab0` record-only
+stub in src/game_hosts_mission_frame.cpp:1483 (cc9's file; not edited) and would drive the
+existing `rain_emitter_step_00801400`. Inputs: the frame dt at game+21F0h and the camera node.
+Prediction with the switch OFF: unchanged. ON: rain on the 18 IsRain scenes, with stream-1 draws
+(presentation) and no stream-0 shift.
+
+`verify_report_calls` over the pass's call rows: 113 checked, 0 failed.

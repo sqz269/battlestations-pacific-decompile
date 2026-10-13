@@ -1030,6 +1030,111 @@ bool update_effect_thunderstorm_instance_00873c80(const EffectThunderStormState&
     return true;
 }
 
+void effect_handle_request_stop_00866b70(EffectHandleFlags& h) noexcept {
+    h.finish_when_done_09 = false;
+    if (h.active_08) h.stop_requested_0a = true;
+}
+
+bool point_effect_retire_child_008679d0(std::vector<PointEffectChildSlot>& entries_0c,
+                                        std::vector<std::uintptr_t>& pending_18, std::uintptr_t child,
+                                        const PointEffectRetireHost& host) {
+    bool found = false;
+    for (PointEffectChildSlot& slot : entries_0c) {
+        if (slot.child != child) continue;
+        if (slot.active_0c) {
+            slot.active_0c = false;
+            if (host.stop_child) {
+                host.stop_child(slot.child);
+            }
+        }
+        pending_18.push_back(slot.child);
+        if (host.retain && slot.child != 0) {
+            host.retain(slot.child);
+        }
+        if (slot.child != 0 && host.release) {
+            host.release(slot.child);
+        }
+        slot.child = 0;
+        found = true;
+        break;
+    }
+    if (child != 0 && host.release) {
+        host.release(child);                                          // the by-value argument
+    }
+    return found;
+}
+
+bool effect_sound_any_sample_flag15_00869e10(const std::vector<EffectSoundSampleView>& samples) noexcept {
+    for (const EffectSoundSampleView& s : samples) {
+        if (s.flag_15) return true;                                   // 00869E2C
+    }
+    return false;
+}
+
+bool effect_sound_admit_at_position_0086a740(bool always_2c, float distance,
+                                             const std::vector<EffectSoundSampleView>& samples) noexcept {
+    if (always_2c) return true;                                       // 0086A74A
+    for (const EffectSoundSampleView& s : samples) {
+        if (s.resource_word08) return true;                           // 0086A7CE
+        if (s.flag_15) return true;                                   // 0086A7DB
+        const float limit = s.use_max_distance_20
+            ? s.max_distance_10
+            : static_cast<float>(static_cast<double>(s.distance_0c) * 128.0);  // 0086A7EF
+        if (limit > distance) return true;                            // 0086A801 JA
+    }
+    return false;
+}
+
+void world_atmosphere_apply_preset_00865900(RainDescriptorFields& d, const WeatherPresetBlock& preset,
+                                            const WorldAtmospherePresetHost& host) {
+    if (d.emitter_38 != 0) {
+        if (host.release_node) {
+            host.release_node(d.emitter_38);                          // 00865911
+        }
+        d.emitter_38 = 0;
+    }
+    if (preset.is_rain_60) {
+        d.speed_20 = preset.speed_68;
+        d.drop_count_0c = static_cast<float>(preset.drop_count_64); // 0086593C CVTSI2SS
+        d.min_length_18 = preset.min_length_78;
+        d.length_span_1c = preset.max_length_7c - preset.min_length_78;
+        d.colour_34 = preset.colour_74;
+        d.emitter_38 = host.build_rain_emitter ? host.build_rain_emitter() : 0;  // 0086595B
+    }
+    if (!(host.camera_present && host.camera_present())) return;
+    if (host.set_fog_scalar) {
+        host.set_fog_scalar(0x68, preset.fog_d0);                    // 00B84D00
+        host.set_fog_scalar(0x78, preset.fog_dc);                    // 00B84D40
+        host.set_fog_scalar(0x6c, preset.fog_d4);                    // 00B84D10
+        host.set_fog_scalar(0x70, preset.fog_d8);                    // 00B84D20
+        host.set_fog_scalar(0x74, preset.fog_e0);                    // 00B84D30
+    }
+    if (host.set_fog_colour) {
+        host.set_fog_colour(preset.fog_colour_80);
+    }
+    if (host.set_directional_colour) {
+        for (int i = 0; i < 4; ++i) {
+            host.set_directional_colour(i, preset.directional_colours_90[i]);
+        }
+    }
+    if (host.set_camera_clear_colour) {
+        host.set_camera_clear_colour(preset.fog_colour_80);
+    }
+    if (host.set_cloud_wind) {
+        host.set_cloud_wind(preset.cloud_wind_25c);
+    }
+}
+
+bool rain_descriptor_update_00865ab0(const RainDescriptorFields& d, const RainDescriptorUpdateHost& host) {
+    if (d.emitter_38 == 0) return false;
+    const Vec3 camera = host.camera_position ? host.camera_position() : Vec3{};
+    const float dt = host.frame_dt_21f0 ? host.frame_dt_21f0() : 0.0f;
+    if (host.emitter_step) {
+        host.emitter_step(dt, camera);                                // 00865B3B
+    }
+    return true;
+}
+
 Vec3 rotate_vector_about_axis_0085c3f0(const Vec3& v, const Vec3& axis, float angle) noexcept {
     const float d = (axis.y * v.y + axis.x * v.x) + axis.z * v.z;     // 0085C422..0085C450
     const Vec3 p{axis.x * d, axis.y * d, d * axis.z};                // 0085C466..0085C478
