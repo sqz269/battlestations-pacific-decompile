@@ -4365,4 +4365,219 @@ void library_refresh_entry_detail_00510c20(Raw screen, Fe9LibraryDetailHost& hos
     }
 }
 
+void session_browser_build_create_options_005684d0(Raw screen, Fe9SessionCreateHost& host) {
+    void* const label = screen.ptr(0x94);
+    void* const value = screen.ptr(0xA4);
+    const float step = screen.at<float>(0x260);
+    const float y0 = host.widget_resolved_position_00aa6750(label)[1];
+    const float x = host.widget_resolved_position_00aa6750(label)[0];
+    const float z = host.widget_resolved_position_00aa6750(label)[2];
+    float y = y0;
+    const auto clone = [&](void* from, std::size_t store) {
+        screen.ptr(store) = host.widget_clone_subtree_00aab4c0(from, screen.ptr(0x124));
+        return screen.ptr(store);
+    };
+    const auto place = [&](std::size_t store) { host.widget_set_resolved_position_00aa8240(screen.ptr(store), {x, y, z}); };
+
+    clone(label, 0xC0);
+    place(0xC0);
+    host.gui_text_set_localised_cstring_00abbe50(screen.ptr(0xC0), "FE.multi_createrankmin", 1);
+    host.widget_set_visible_34(screen.ptr(0xC0), 1);
+    y = step + y;
+    clone(value, 0xDC);
+    place(0xDC);
+    clone(label, 0xC4);
+    place(0xC4);
+    host.gui_text_set_localised_cstring_00abbe50(screen.ptr(0xC4), "-", 1);
+    host.widget_set_visible_34(screen.ptr(0xDC), 0);
+    host.widget_set_visible_34(screen.ptr(0xC4), 1);
+    y = step + y;
+    clone(label, 0xC8);
+    place(0xC8);
+    host.gui_text_set_localised_cstring_00abbe50(screen.ptr(0xC8), "FE.multi_createrankmax", 1);
+    host.widget_set_visible_34(screen.ptr(0xC8), 1);
+    y = step + y;
+    clone(value, 0xE0);
+    clone(label, 0xCC);
+    place(0xE0);
+    place(0xCC);
+    host.gui_text_set_localised_cstring_00abbe50(screen.ptr(0xCC), "-", 1);
+    host.widget_set_visible_34(screen.ptr(0xE0), 0);
+    host.widget_set_visible_34(screen.ptr(0xCC), 1);
+    y = step + y;
+    clone(label, 0xD4);
+    place(0xD4);
+    host.gui_text_set_localised_cstring_00abbe50(screen.ptr(0xD4), "FE.multi_createdroprate", 1);
+    host.widget_set_visible_34(screen.ptr(0xD4), host.online_system_virtual_198());
+    y = step + y;
+    clone(value, 0xE4);
+    clone(label, 0xD8);
+    place(0xE4);
+    place(0xD8);
+    host.gui_text_set_localised_cstring_00abbe50(screen.ptr(0xD8), "-", 1);
+    host.widget_set_visible_34(screen.ptr(0xE4), 0);
+    host.widget_set_visible_34(screen.ptr(0xD8), host.online_system_virtual_198());
+    host.scroller_set_scroll_range_006834a0(screen.p + 0x188, static_cast<float>(static_cast<double>(y) - 0.5009999871253967));
+}
+namespace {
+
+// 00502728..00502950, the stores before the fog setters.
+constexpr PreviewEnvironmentWrite kPreviewEnvironmentFog[] = {
+    {0x0D4, 300.0f},  // 00CE3AE8
+    {0x0D8, 10000.0f},  // 00CE3D64
+    {0x0DC, 0.0f},
+    {0x0E0, 20.0f},  // 00CE3930
+    {0x080, 0.247099996f},  // 00CEB53C
+    {0x084, 0.37650001f},  // 00CEB538
+    {0x1B0, 0.5f},  // 00CE3800
+    {0x088, 0.545099974f},  // 00CEB534
+    {0x08C, 1.0f},  // 00D7A24C
+    {0x094, 0.101000004f},  // 00CEB52C
+    {0x090, 0.0715000033f},  // 00CEB530
+    {0x098, 0.122699998f},  // 00CEB528
+    {0x09C, 1.0f},  // 00D7A24C
+    {0x0A0, 0.235300004f},  // 00CEB524
+    {0x0A4, 0.239199996f},  // 00CE77F0
+    {0x0A8, 0.188199997f},  // 00CEB520
+    {0x0AC, 1.0f},  // 00D7A24C
+    {0x0B0, 0.0689999983f},  // 00CEB51C
+    {0x0D0, 1.0f},  // 00D7A24C
+    {0x0B4, 0.0877000019f},  // 00CEB518
+    {0x0B8, 0.0988000035f},  // 00CEB514
+    {0x0BC, 1.0f},  // 00D7A24C
+    {0x0C0, 0.0353000015f},  // 00CEB510
+    {0x0C4, 0.0588000007f},  // 00CEB50C
+    {0x0C8, 0.101999998f},  // 00CEB508
+    {0x0CC, 1.0f},  // 00D7A24C
+};
+
+// 00502A3C..00503001, the stores after them (the image's order, duplicates included).
+constexpr PreviewEnvironmentWrite kPreviewEnvironmentBlock[] = {
+    {0x260, 500.0f},  // 00CE397C
+    {0x264, 250.0f},  // 00CE77B0
+    {0x270, 1.0f},  // 00D7A24C
+    {0x274, 1.0f},  // 00D7A24C
+    {0x268, 20.0f},  // 00CE3930
+    {0x278, 1.0f},  // 00D7A24C
+    {0x010, 100.0f},  // 00CE3D08
+    {0x018, 100.0f},  // 00CE3D08
+    {0x014, 0.0199999996f},  // 00CE9BAC
+    {0x000, 1.0f},  // 00D7A24C
+    {0x004, 1.0f},  // 00D7A24C
+    {0x008, 0.0f},
+    {0x154, 0.317600012f},  // 00CEB4EC
+    {0x158, 0.317600012f},  // 00CEB4EC
+    {0x15C, 0.317600012f},  // 00CEB4EC
+    {0x1A0, 1.0f},  // 00D7A24C
+    {0x1A4, 1.0f},  // 00D7A24C
+    {0x1A8, 1.0f},  // 00D7A24C
+    {0x144, 0.5f},  // 00CE3800
+    {0x150, 0.5f},  // 00CE3800
+    {0x164, 0.509800017f},  // 00CEB4E8
+    {0x148, 0.00999999978f},  // 00D7A238
+    {0x168, 0.57249999f},  // 00CEB4E4
+    {0x14C, 5.0f},  // 00CE3850
+    {0x16C, 0.600000024f},  // 00CE3D30
+    {0x174, 0.196099997f},  // 00CEB4E0
+    {0x178, 0.239199996f},  // 00CE77F0
+    {0x17C, 0.262699991f},  // 00CEB4DC
+    {0x104, 850.0f},  // 00CEB4D8
+    {0x108, 50.0f},  // 00CEB4D4
+    {0x10C, -200.0f},  // 00CE77E4
+    {0x110, -190.0f},  // 00CEB4D0
+    {0x114, 20.0f},  // 00CE3930
+    {0x118, 0.0666999966f},  // 00CEB4CC
+    {0x11C, 0.0863000005f},  // 00CEB4C8
+    {0x120, 0.117600001f},  // 00CEB4C4
+    {0x124, 0.699999988f},  // 00CE3E18
+    {0x1B0, 0.5f},  // 00CE3800
+    {0x1B4, 2.0f},  // 00CE3958
+    {0x1B8, 10.0f},  // 00CE38B8
+    {0x1BC, 50.0f},  // 00CEB4D4
+    {0x1C0, 2.29999995f},  // 00CEB4C0
+    {0x1C4, 70.0f},  // 00CE77B4
+    {0x1C8, 20.0f},  // 00CE3930
+    {0x1E4, 0.0f},
+    {0x1E8, 0.0f},
+    {0x1EC, 0.627499998f},  // 00CEB4BC
+    {0x1D4, 0.200000003f},  // 00CE54A0
+    {0x114, 0.200000003f},  // 00CE54A0
+    {0x0DC, 0.0f},
+    {0x0E0, 0.0f},
+    {0x0E4, -120.0f},  // 00CE77F8
+    {0x04C, 0.400000006f},  // 00CE7804
+    {0x054, 25.0f},  // 00CE89CC
+    {0x104, 850.0f},  // 00CEB4D8
+    {0x058, 1.29999995f},  // 00CEB4B4
+    {0x108, 0.5f},  // 00CE3800
+    {0x02C, 0.300000012f},  // 00CE69C8
+    {0x1CC, 12.0f},  // 00CEB4B8
+    {0x10C, -200.0f},  // 00CE77E4
+    {0x030, 100.0f},  // 00CE3D08
+    {0x1D0, 1.5f},  // 00CE380C
+    {0x110, -190.0f},  // 00CEB4D0
+    {0x034, 0.600000024f},  // 00CE3D30
+    {0x1D8, 2.0f},  // 00CE3958
+    {0x1DC, 2.0f},  // 00CE3958
+    {0x0D4, 500.0f},  // 00CE397C
+    {0x038, 60.0f},  // 00CEB4B0
+    {0x1E0, 1.0f},  // 00D7A24C
+    {0x22C, 1.0f},  // 00D7A24C
+    {0x230, 1.0f},  // 00D7A24C
+    {0x0D0, 1.0f},  // 00D7A24C
+    {0x0D8, 10000.0f},  // 00CE3D64
+    {0x050, 1.0f},  // 00D7A24C
+    {0x05C, 1.0f},  // 00D7A24C
+    {0x03C, 3.0f},  // 00CE3854
+    {0x040, 1.0f},  // 00D7A24C
+};
+
+} // namespace
+
+void library_preview_setup_environment_00502480(Raw screen, Fe9PreviewEnvironmentHost& host) {
+    if (screen.ptr(0x4B8) != nullptr) return;
+    void* const ocean_storage = host.operator_new_00bf681b(0xB8);
+    screen.ptr(0x4B8) =
+        ocean_storage != nullptr ? host.ocean_environment_construct_0078daa0(ocean_storage, screen.ptr(0x0C), 0) : nullptr;
+    alignas(8) std::uint8_t storage[kPreviewEnvironmentBlockSize];
+    const Raw block{storage};
+    host.scene_environment_block_construct_004cb420(block.p);
+    host.native_string_assign(block.p + 0x208, "hdr_RCS_usn_04_Defend_G.dds");
+    host.native_string_assign(block.p + 0x210, "hdr_RCS_usn_04_Defend_G_ocean.dds");
+    for (const std::size_t off : {0x218u, 0x234u, 0x23Cu, 0x244u, 0x24Cu, 0x254u}) host.native_string_assign(block.p + off, "white.tga");
+    host.world_parameter_set_string_00b1b830("ReflectionCubeMap", block.p + 0x208);
+    host.world_parameter_set_string_00b1b830("StaticShadowTexture", block.p + 0x254);
+    for (const PreviewEnvironmentWrite& w : kPreviewEnvironmentFog) block.at<float>(w.offset) = w.value;
+
+    void* const camera = screen.ptr(0x10);
+    const auto fog = [&]() { return raw(camera).ptr(0x184); };
+    host.fog_set_color_00b84c40(fog(), &block.at<float>(0x80));
+    for (std::uint32_t i = 0; i < 4; ++i) host.fog_set_directional_color_00b84fa0(fog(), &block.at<float>(0x90 + i * 0x10), i);
+    host.camera_set_clear_color_00b6fe50(camera, host.colour_float_rgba_to_argb_004fb850(&block.at<float>(0x80)));
+    host.fog_set_scalar_68_00b84d00(fog(), block.at<float>(0xD0));
+    host.fog_set_scalar_6c_00b84d10(fog(), block.at<float>(0xD4));
+    host.fog_set_scalar_70_00b84d20(fog(), block.at<float>(0xD8));
+    host.fog_set_scalar_78_00b84d40(fog(), block.at<float>(0xDC));
+    host.fog_set_scalar_74_00b84d30(fog(), block.at<float>(0xE0));
+
+    host.native_string_assign(block.p + 0x280, "oceannormalmap04.tga");
+    host.native_string_assign(block.p + 0x1C, "white.tga");
+    host.native_string_assign(block.p + 0x24, "white.tga");
+    block.at<std::uint8_t>(0x0C) = 0;
+    for (const PreviewEnvironmentWrite& w : kPreviewEnvironmentBlock) block.at<float>(w.offset) = w.value;
+    host.native_string_assign(block.p + 0x44, "");
+    for (const std::size_t rgb : {0x154u, 0x1A0u, 0x164u, 0x174u, 0x118u, 0x1E4u}) host.linearize_rgb_004e5c00(&block.at<float>(rgb));
+    host.ocean_environment_apply_0078c9b0(screen.ptr(0x4B8), block.p);
+
+    const std::string sky = host.flag_00f88a0c() ? "HDR_sky_069" : "sky_069";
+    void* const atmosphere_storage = host.operator_new_00bf681b(0x40);
+    screen.ptr(0x4BC) = atmosphere_storage != nullptr
+                            ? host.atmosphere_construct_00bbdff0(atmosphere_storage, screen.ptr(0x0C), sky)
+                            : nullptr;
+    host.sky_box_set_rotation_degrees_00bbf1a0(host.atmosphere_get_sky_box_00bbddb0(screen.ptr(0x4BC)), 70.0f);
+    host.sky_box_set_luminance_00bbf200(host.atmosphere_get_sky_box_00bbddb0(screen.ptr(0x4BC)), 0.800000011920929f);
+    host.resource_manager_virtual_120();
+    host.scene_environment_block_destruct_004c6520(block.p);
+}
+
 } // namespace bsp::cc13_fe3

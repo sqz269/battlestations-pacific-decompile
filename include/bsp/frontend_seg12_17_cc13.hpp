@@ -2328,4 +2328,88 @@ struct Fe9LibraryDetailHost {
 // something else; NAME + sep + description; 7: nothing.
 void library_refresh_entry_detail_00510c20(Raw screen, Fe9LibraryDetailHost& host);
 
+// The preview scene's environment block: a 288h-byte stack record built by 004CB420 and destroyed
+// by 004C6520; fog colour +80h, directional fog colours +90h..+CCh, fog scalars +0D0h..+0E4h (see
+// scene_weather_cc13.hpp for the authored names), NativeStrings +1Ch, +24h, +44h, +208h, +210h,
+// +218h, +234h, +23Ch, +244h, +24Ch, +254h and +280h.
+inline constexpr std::size_t kPreviewEnvironmentBlockSize = 0x288;
+struct PreviewEnvironmentWrite {
+    std::uint16_t offset;
+    float value;
+};
+
+struct Fe9PreviewEnvironmentHost {
+    virtual ~Fe9PreviewEnvironmentHost() = default;
+    virtual void* operator_new_00bf681b(std::uint32_t bytes) = 0;
+    // 0078DAA0 BSP_OceanEnvironment_Construct, __thiscall(storage, ocean source, 0), EAX = storage.
+    virtual void* ocean_environment_construct_0078daa0(void* storage, void* source, std::uint32_t zero) = 0;
+    virtual void scene_environment_block_construct_004cb420(void* block) = 0;
+    virtual void scene_environment_block_destruct_004c6520(void* block) = 0;
+    virtual void native_string_assign(void* string, std::string_view text) = 0;
+    // 00B1B830 on [00F8D434]: (const NativeString* name, const NativeString* value).
+    virtual void world_parameter_set_string_00b1b830(std::string_view name, const void* value) = 0;
+    // Fog owner = [screen+10h]+184h.
+    virtual void fog_set_color_00b84c40(void* fog, const float* rgba) = 0;
+    virtual void fog_set_directional_color_00b84fa0(void* fog, const float* rgba, std::uint32_t index) = 0;
+    virtual void fog_set_scalar_68_00b84d00(void* fog, float value) = 0;
+    virtual void fog_set_scalar_6c_00b84d10(void* fog, float value) = 0;
+    virtual void fog_set_scalar_70_00b84d20(void* fog, float value) = 0;
+    virtual void fog_set_scalar_74_00b84d30(void* fog, float value) = 0;
+    virtual void fog_set_scalar_78_00b84d40(void* fog, float value) = 0;
+    // 004FB850, __thiscall(out dword, const float rgba[4]): the ARGB word.
+    virtual std::uint32_t colour_float_rgba_to_argb_004fb850(const float* rgba) = 0;
+    virtual void camera_set_clear_color_00b6fe50(void* camera, std::uint32_t argb) = 0;
+    virtual void linearize_rgb_004e5c00(float* rgb) = 0;                                     // scene_weather_cc13
+    // 0078C9B0, ECX = the ocean environment: applies the block.
+    virtual void ocean_environment_apply_0078c9b0(void* ocean, void* block) = 0;
+    virtual bool flag_00f88a0c() = 0;                                                        // byte [00F88A0C]
+    // 00BBDFF0 BSP_Atmosphere_Construct, __thiscall(storage, ocean source, const NativeString* sky).
+    virtual void* atmosphere_construct_00bbdff0(void* storage, void* source, std::string_view sky) = 0;
+    virtual void* atmosphere_get_sky_box_00bbddb0(void* atmosphere) = 0;
+    virtual void sky_box_set_rotation_degrees_00bbf1a0(void* sky_box, float degrees) = 0;
+    virtual void sky_box_set_luminance_00bbf200(void* sky_box, float luminance) = 0;
+    virtual void resource_manager_virtual_120() = 0;                                         // [00F8D394] vtable +120h
+};
+
+// 00502480 BSP_TacticalLibraryPreview_SetupEnvironment, __fastcall(ECX = screen), RET. Only when
+// +4B8h is null: +4B8h = a new B8h ocean environment (0078DAA0(+0Ch, 0); null when the allocation
+// fails). A default block (004CB420) gets the strings "hdr_RCS_usn_04_Defend_G.dds" +208h,
+// "hdr_RCS_usn_04_Defend_G_ocean.dds" +210h and "white.tga" at +218h, +234h, +23Ch, +244h, +24Ch,
+// +254h (resize with preserve 0, then the characters); world parameters ReflectionCubeMap = +208h and
+// StaticShadowTexture = +254h; the first constant table (kPreviewEnvironmentFog); fog colour +80h,
+// directional colours +90h + i*10h (i < 4), the camera's (+10h) clear colour from +80h (004FB850),
+// fog scalars 68h/6Ch/70h/78h/74h from +0D0h/+0D4h/+0D8h/+0DCh/+0E0h; the second table
+// (kPreviewEnvironmentBlock), strings +280h "oceannormalmap04.tga", +1Ch and +24h "white.tga", byte
+// +0Ch = 0, +44h emptied; 004E5C00 on the triples +154h, +1A0h, +164h, +174h, +118h, +1E4h (none is
+// written again afterwards); 0078C9B0(+4B8h, block). The sky is "sky_069" (00CEB4A8), "HDR_sky_069"
+// with [00F88A0C]; +4BCh = a new 40h atmosphere (00BBDFF0(+0Ch, sky); null when the allocation fails)
+// whose sky box turns to 70.0f (00CE77B4) and gets luminance 0.8f (00CE74F8); then [00F8D394] vtable
+// +120h and the block's destructor. The tables were taken from the listing by a symbolic pass over the
+// stack stores (local/fe9_stackfill.py); they keep the image's store order, duplicates included.
+void library_preview_setup_environment_00502480(Raw screen, Fe9PreviewEnvironmentHost& host);
+
+// ---------------------------------------------------------------------------
+// Packet cc13-fe9: session browser.
+// ---------------------------------------------------------------------------
+struct Fe9SessionCreateHost {
+    virtual ~Fe9SessionCreateHost() = default;
+    virtual std::array<float, 3> widget_resolved_position_00aa6750(void* widget) = 0;
+    virtual void widget_set_resolved_position_00aa8240(void* widget, const std::array<float, 3>& position) = 0;
+    virtual void* widget_clone_subtree_00aab4c0(void* widget, void* parent) = 0;
+    virtual void gui_text_set_localised_cstring_00abbe50(void* text, const char* source, std::uint32_t flag) = 0;
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;
+    virtual std::uint32_t online_system_virtual_198() = 0;                                   // [00F8A2FC] vtable +198h
+    virtual void scroller_set_scroll_range_006834a0(void* scroller, float range) = 0;
+};
+
+// 005684D0 BSP_MultiSessionBrowserScreen_BuildCreateOptions, __fastcall(ECX = screen), RET. From the
+// label template +94h's resolved position (x, y, z) and the row step +260h, clones (parent +124h) go
+// to that position with y advancing by the step after each row ((float)(step + y)): +0C0h
+// "FE.multi_createrankmin" (shown); +0DCh (value template +0A4h, hidden) and +0C4h "-" (shown);
+// +0C8h "FE.multi_createrankmax" (shown); +0E0h (+0A4h, hidden) and +0CCh "-" (shown); +0D4h
+// "FE.multi_createdroprate" and, one row on, +0E4h (+0A4h, hidden) and +0D8h "-", both labels shown
+// per [00F8A2FC] vtable +198h(). The scroller +188h range is (float)(y - 0.501) (00CEED08) with y the
+// row after the last.
+void session_browser_build_create_options_005684d0(Raw screen, Fe9SessionCreateHost& host);
+
 } // namespace bsp::cc13_fe3

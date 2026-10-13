@@ -57,4 +57,17 @@ case-insensitive tree (head +4h) of binding names with a name vector +34h, a set
 - 00510C20 drives the three-card carousel and the detail text. Tutorials run their `LuaCommand`
   through 006B8AD0 and log the result through the empty 004254B0 (Hungarian format strings at
   00CEBD60 / 00CEBD34); their description takes the `_pc` key when `[00F88A30]` is clear and the key
-  localises to something other than itself.
+  localises to something other than itself.- 00502480 fills a 288h-byte stack environment block (004CB420 / 004C6520) with constants and hands it
+  to the ocean environment (0078C9B0). The two constant tables in the source were produced by a
+  symbolic pass over the stack stores (`local/fe9_stackfill.py` with callee stack purges read from
+  each callee's `RET n`, then `local/fe9_fillgen.py`); a write trace confirmed that none of the six
+  triples passed to 004E5C00 is stored again after its call, so the model applies the tables and then
+  the six linearisations. The fog scalars are passed while +0D4h is still 300.0 and +0E0h still 20.0;
+  the block later holds 500.0 and 0.0 there. The sky is `HDR_sky_069` when `[00F88A0C]` is set.
+
+## Session browser
+
+- 005684D0 clones the create-session option rows (rank min, rank max, drop rate, each followed by a
+  hidden value widget and a "-" label) one row step (+260h) apart from the label template's position;
+  the drop-rate rows' visibility comes from `[00F8A2FC]` vtable +198h. The scroll range is
+  `(float)(y - 0.501)` with y the row after the last.
