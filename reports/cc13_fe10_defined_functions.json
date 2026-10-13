@@ -260,6 +260,63 @@
     "program": "battlestationspacific.exe",
     "message": "Program saved successfully"
    }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00662690",
+    "end_address": "006626d8"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00662690",
+    "end_address": "006626d7",
+    "bytes_disassembled": 72,
+    "message": "Successfully disassembled 72 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00662690",
+    "disassemble_first": false,
+    "name": "BSP_HudSupportManagerScreen_StepScrollCollapse_00662690"
+   },
+   "result": {
+    "success": true,
+    "address": "00662690",
+    "function_name": "BSP_HudSupportManagerScreen_StepScrollCollapse_00662690",
+    "entry_point": "00662690",
+    "body_size": 72,
+    "message": "Function created successfully at 00662690",
+    "warnings": [
+     "Function name 'BSP_HudSupportManagerScreen_StepScrollCollapse_00662690' \u2014 main part 'HudSupportManagerScreen_StepScrollCollapse_00662690' is not PascalCase. Expected: HudsupportmanagerscreenStepscrollcollapse00662690",
+     "Function name 'BSP_HudSupportManagerScreen_StepScrollCollapse_00662690' \u2014 main part 'HudSupportManagerScreen_StepScrollCollapse_00662690' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_HudSupportManagerScreen_StepScrollCollapse_00662690' does not start with a recognized verb. First word 'Hud' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00662690",
+   "end": "006626d8",
+   "name": "BSP_HudSupportManagerScreen_StepScrollCollapse_00662690",
+   "after": "Function: BSP_HudSupportManagerScreen_StepScrollCollapse_00662690 at 00662690\nSignature: undefined BSP_HudSupportManagerScreen_StepScrollCollapse_00662690(void)\nEntry: 00662690\nBody: 00662690 - 006626d7"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
   }
  ]
 }
