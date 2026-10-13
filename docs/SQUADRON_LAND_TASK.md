@@ -16018,3 +16018,29 @@ Philippine Sea"). Paratroopers stopped by the lead (JM05's Dakotas are PilotMove
    The lead logged the countdown as a ships-lane item; the `exitzone` Lua dispatcher is this lane's
    (5gi has the channel contract; the status/filter strings are case-insensitive exact sets).
 4. Write the winning order file to `config/win_orders/`.
+
+## 5gl. PRCP01 phase 3: the Junyo strike and the duplicate-name target (packet `cc9_lua55_prcp01`, cc9-lua55, 2026-10-12)
+
+**The strikers exist.** `luaUS03GotoPhase3` (script line 1131) runs `AddAirBaseStock(Enterprise, 108, 30)` and
+`(113, 30)` (lines 1152-1153; logged `AddAirBaseStock 00896a90: entity id 1 class 108 +30 -> 30`, mission frame
+~1082) and `SetAirBaseSlotCount(Enterprise, 4)`. The 113x0/108x0 seen in 5gk is the stage-init stock. Phase 3 has no
+fail timer: `Mission.Timer = GameTime() + 1200` (line 1192) is never read in phase 3; the 20 minutes are
+`luaDelay(luaUS03SpawnEnterpriseKillers, 1200)` (line 1174) and `luaUS03JunyoAngry` at 600 s (Junyo ELITE, 8 slots).
+`dlg_HornetStrike` belongs to the phase-1 fake divebombers (line 1092), not to phase 3. Phase 3 fails only if the
+Enterprise dies or is out of planes for two thinks.
+
+**The win is the Zuiho.** `luaUS03ZuihoKilled` (line 1553, the `kill` listener added by
+`luaUS03EndReinforcementMovie`) sets EndMission and calls `luaMissionCompletedNew`. The Vanguard recon ->
+EscapePath -> `exitzone` chain (phase 5) is the Enterprise's retreat, not the win.
+
+**The harness defect.** The stage init kills the scene templates (`entity dead: unit=5 "Junyo" died=3.05 s`, also
+Zuiho unit 8, Kumano unit 9), and GenerateObject re-creates each under the same name (`"Junyo" ... -> id 6`). The
+`launch` line resolved the target name to the FIRST row, the dead template, so every Junyo launch was refused
+(`the target fails 0043F080`, `local\l55_A0_p01b.log`, 22 lines). `kHarnessTargetPrefersLiveBound`
+(`include/bsp/game_hosts_script_orders.hpp`, OFF) makes `harness_target_row` take the first row by name that passes
+`unit_alive_and_visible` (else the first, as before); used by `player_air_ops_launch`, `player_air_ops_order` and
+(routed hunk) the `launch` branch of `game_hosts_mission_frame.cpp`. HARNESS only: the player picks live markers.
+
+**Predictions.** OFF identical. ON: identical on every row whose target names are unique (all current win files,
+unless a file names a re-created template, in which case a refused line becomes applied); PRCP01 with
+`local\l55_p01_c.txt`: the Junyo and Zuiho launches are applied once each exists.

@@ -1629,6 +1629,18 @@ int (*g_class_default_arm_reader)(int vehicle_class) = nullptr;
 // kPlayerLaunchScreenCursorBound retired: the cursor key's state-5 path (0067A565) is not the targeted launch (docs/SHIP_AI_OPEN_ITEMS.md 212).
 }  // namespace
 
+std::size_t harness_target_row(const GameUnitsHost& units, const std::string& name) {
+    std::size_t first = units.count();
+    for (std::size_t k = 0; k < units.count(); ++k) {
+        const GameUnitRow* row = units.unit_row(k);
+        if (row == nullptr || row->name != name) continue;
+        if (first == units.count()) first = k;
+        if constexpr (!kHarnessTargetPrefersLiveBound) break;
+        if (units.unit_alive_and_visible(k)) return k;
+    }
+    return first;
+}
+
 void script_orders_set_class_default_arm_reader(int (*reader)(int vehicle_class)) {
     g_class_default_arm_reader = reader;
 }
@@ -1651,11 +1663,7 @@ PlayerAirOpsLaunchResult GameScriptOrdersHost::player_air_ops_launch(const std::
         if (registry.name_at(i) == base) { deck = registry.mutable_at(i); break; }
     }
     if (deck == nullptr) return refuse("no air-ops deck for that base");
-    std::size_t target_index = units_.count();
-    for (std::size_t k = 0; k < units_.count(); ++k) {
-        const GameUnitRow* row = units_.unit_row(k);
-        if (row != nullptr && row->name == target) { target_index = k; break; }
-    }
+    const std::size_t target_index = harness_target_row(units_, target);
     // 006CCDD3: order 3 with no target answers 0 and does nothing.
     if (target_index >= units_.count()) return refuse("no unit by the target name");
     int slot = slot_number - 1;
@@ -1741,10 +1749,7 @@ PlayerAirOpsOrderResult GameScriptOrdersHost::player_air_ops_order(const std::st
     bsp::AirOpsSlot& s = deck->slots[static_cast<std::size_t>(slot)];
     std::size_t target_index = units_.count();
     if (!target.empty()) {
-        for (std::size_t k = 0; k < units_.count(); ++k) {
-            const GameUnitRow* row = units_.unit_row(k);
-            if (row != nullptr && row->name == target) { target_index = k; break; }
-        }
+        target_index = harness_target_row(units_, target);
         if (target_index >= units_.count()) return refuse("no unit by the target name");
         // LABELLED (cc9-lua46): the screen offers only targets that pass the marker
         // gate 0043F080 (006431A8), as the launch line's harness gate; a file can then
