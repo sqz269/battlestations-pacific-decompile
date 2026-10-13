@@ -1,0 +1,9 @@
+200 moveto HenryPT 2580 -1650
+1200 moveto HenryPT 2580 -1650
+5500 select HenryPT
+# cc9-physics6 b1 a: l50_b1_a with the last leg at frame 7000 instead of 7250 (HenryPT now reaches (1915,-3084) earlier and on 7250 stalled at (1624,-3170) from 395 s)
+5510 takehelm HenryPT 1.0 2234 -2203
+5960 takehelm HenryPT 1.0 1890 -2863
+6600 takehelm HenryPT 1.0 1915 -3084
+# l50 a: last leg only after reaching (1915,-3084)
+7000 takehelm HenryPT 0.6 1072 -3017

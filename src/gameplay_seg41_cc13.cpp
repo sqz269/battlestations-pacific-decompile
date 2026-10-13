@@ -10,6 +10,7 @@
 #include "bsp/gameplay_seg41_cc13.hpp"
 
 #include "bsp/entity_identity.hpp"  // compare_insensitive_00438e10
+#include "bsp/native_string_compare.hpp"  // equal_native_string_header_00425850
 
 #include <cstring>
 
@@ -177,7 +178,7 @@ void start_death_fire_007465e0(FortTimers& t, const FortClassRow& cls, LandFortH
         if (!(t.time_748 > d)) t.time_748 = d;
         return;
     }
-    if (!cls.death_smoke_definition_160) return;                 // 00746681
+    if (!cls.smoke_fire_efx_160) return;                 // 00746681
     t.smoke_744 = host.create_death_smoke_effect();              // 007466D0..007466E0
     // 0074672B: the draw happens whether or not the effect came back.
     t.time_748 = host.uniform(0, cls.fire_duration_min_168, cls.fire_duration_max_16c);
@@ -218,6 +219,41 @@ void on_destroyed_00747170(const FortDestroyInput& in, FortDestroyHost& host) {
     host.base_on_destroyed_00959450();                             // 007473E3
 }
 
+// 00744BE0-00744C3D.
+FortMessageRoute handle_message_00744be0(std::uint8_t kind_10, bool flag_28) {
+    if (kind_10 == 0x4B) return FortMessageRoute::base_forced_true_4b;   // 00744BE8, 00744C36
+    if (kind_10 != 0xD1) return FortMessageRoute::base;                  // 00744BF9 JMP
+    return flag_28 ? FortMessageRoute::state_effect_208                  // 00744C0C
+                   : FortMessageRoute::damage_effect_20c;                // 00744C1E
+}
+
+// 00746B90: the compare order and results read from the bytes (each branch
+// returns its constant at once).
+std::int32_t unit_type_from_name_00746b90(const char* name, std::int32_t default_type) {
+    struct Row {
+        const char* name;
+        std::int32_t type;
+    };
+    static constexpr Row kRows[] = {
+        {"Destroyer", 0x07},   {"Cruiser", 0x0A},     {"LandingShip", 0x0C},
+        {"Cargo", 0x0B},       {"BattleShip", 0x0D},  {"Submarine", 0x08},
+        {"TorpedoBoat", 0x0E}, {"MotherShip", 0x09},  {"ReconPlane", 0x14},
+        {"Fighter", 0x13},     {"DiveBomber", 0x12},  {"TorpedoBomber", 0x11},
+        {"Kamikaze", 0x17},    {"Bomber", 0x10},      {"AirField", 0x45},
+        {"Shipyard", 0x46},    {"LandVehicle", 0x19}, {"LandFort", 0x1B},
+    };
+    if (name == nullptr) return default_type;  // BSP_LuaObject_IsNil
+    // The native string 0041E870 assigns at 00746BCD: length +0, data +4.
+    struct Header {
+        std::uint32_t length;
+        const char* data;
+    } header{static_cast<std::uint32_t>(std::strlen(name)), name};
+    for (const Row& r : kRows) {
+        if (equal_native_string_header_00425850(&header, r.name)) return r.type;
+    }
+    return default_type;
+}
+
 // ---------------------------------------------------------------------------
 // 3. MLandingShip
 // ---------------------------------------------------------------------------
@@ -254,6 +290,38 @@ bool small_and_moving_0074bbd0(float class_length_a0, float speed) {
 
 bool slot240_00749810(bool on_pad_1200, bool base_008128e0) {
     return on_pad_1200 ? false : base_008128e0;
+}
+
+// 0074B570-0074B68B.
+bool handle_message_0074b570(std::uint8_t kind_10, std::uint16_t pad_handle_1c,
+                             std::uint16_t building_handle_1e, LandingShipMessageHost& host) {
+    if (kind_10 == 0xA5) {                                   // CMP byte, -5Bh
+        host.set_role_available_0077f360(0x1FF, 8);           // vtable[148h](1FFh, 8)
+        host.begin_landing_0074a990(pad_handle_1c, building_handle_1e);
+        host.hud_landing_prompt_if_selected();
+        return true;
+    }
+    if (kind_10 != 0xA6) return host.base_handle_message_00821e80();
+    host.lower_ramp_0074a420();
+    return true;
+}
+
+// 0074B0B0-0074B104.
+bool capture_ship_warning_gate_0074b0b0(bool ramp_open_1188, bool on_pad_1200,
+                                        bool slot240_00749810, bool has_weapon_command_174,
+                                        bool weapon_command_slot8) {
+    if (ramp_open_1188 || on_pad_1200) return false;      // 0074B0B7, 0074B0C0
+    if (!slot240_00749810) return false;                   // 0074B0CC vtable[240h]
+    if (!has_weapon_command_174) return false;             // 0074B0DC vtable[174h] = 0080E1B0
+    return !weapon_command_slot8;                          // 0074B0F5 its vtable[8h]
+}
+
+// 0074B44B-0074B4D6: FLD +48h; FSUB +44h; FMUL +11A4h; FADD +44h; FSTP into
+// +44h; then SUBSS -0.0 [00D7A208] - turn.
+float ramp_node_step_0074b44b(RampNodeTurn& node, float ramp_turn_11a4) {
+    node.turn_44 = f32((static_cast<double>(node.target_48) - node.turn_44) * ramp_turn_11a4
+                       + node.turn_44);
+    return -0.0f - node.turn_44;
 }
 
 // ---------------------------------------------------------------------------
@@ -296,6 +364,24 @@ SquadOrdnanceCheck squad_ordnance_check_007504f0(bool squadron_present_30,
                                                  bool any_can_drop_007ed790) {
     if (!squadron_present_30) return SquadOrdnanceCheck::target_gone;  // 007504FA vtable[10h]
     return any_can_drop_007ed790 ? SquadOrdnanceCheck::wait : SquadOrdnanceCheck::fire;
+}
+
+// ---------------------------------------------------------------------------
+// 5. The ship leak manager
+// ---------------------------------------------------------------------------
+
+void clear_all_zones_0074e830(LeakManagerZones& z) {
+    for (float& w : z.water_1c) w = 0.0f;  // 0074E836.. memset +1Ch
+    for (float& l : z.leak_18) l = 0.0f;   // 0074E849.. memset +18h
+}
+
+// 0074E860-0074E8E3: four floats per pass while at least four remain, then one
+// at a time (FLD/FSTP pairs; the same values).
+bool load_zone_array_0074e860(LeakManagerZones& z, std::int32_t count, const float* src) {
+    if (count <= 0) return true;
+    if (static_cast<std::size_t>(count) > z.leak_18.size()) return false;
+    for (std::int32_t i = 0; i < count; ++i) z.leak_18[static_cast<std::size_t>(i)] = src[i];
+    return true;
 }
 
 }  // namespace gameplay_seg41_cc13
