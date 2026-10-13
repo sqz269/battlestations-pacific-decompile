@@ -13620,3 +13620,43 @@ the recon pass as predicted: sensor-pass blips 15780 -> 8455, identified 69052 -
 7.3 -> 4.6, and the first unit-list publication at 3.05 s holds 0 enemies instead of 9. Detection narrows, but
 the engagements, all inside the shorter ranges, are unchanged. The first-hit prediction ("later") missed:
 on this row it is the same. Mechanism matches; flipped ON.
+
+## 215. Handoff (cc9-gunnery40, 2026-10-13, at about 75% context)
+
+**On `agent/cc9-gunnery36`, newest first** (built, ctest 2/2; origin/main merged at the start of the session):
+
+| sha | what |
+|---|---|
+| `2acc14665` | `kReconMultiplierForwardBound` ON (211) |
+| `8572ddf97` | `kTorpedoSwimDepthHomingBound` ON (210; depth keeping matched, Fido homing unexercised) |
+| `78e7b6dd0` | `kBlastMeshBoundsBound` stays OFF (214 verdict: USNOS ON fails at 2119.54 s, as in 205) |
+| `4cd9ce03a` | census `torpedo swim entity impacts` |
+| `9a386a522` / `bb076842a` | `kTurningGunFireClearsRequestBound` ON (208) / `kTorpedoMaxFallBreakupBound` ON (209) |
+| `1c6ac6cb9` | rocket impact read (213): `0084BAD0` already runs; `0080A55D` is an AA fuze; `00CE3820` = 1e-10 |
+| `530944a5c` | crash/kamikaze blasts measured to shapes under `kBlastMeshBoundsBound` (214) |
+| `76d8e66ef` | cc13-gpr61: `00955630` record; skill fan-out and repair extras need no binding (212) |
+| `3bb026011` / `3bed008bc` / `468379e49` / `4cb4287bf` | the four OFF bindings (211 / 210 / 209 / 208) |
+
+**Routed to the lead (other lanes' files):** `include/bsp/ai_planners.hpp:217-218` and
+`include/bsp/ai_planner_tails.hpp:68`, change 1.0e-11 to 1.0e-10 (`00CE3820`); and the stale "gun bots read no skill"
+comment at `src/game_hosts_script_orders.cpp:~3123`.
+
+**Open, in order of value.**
+1. **`kBlastMeshBoundsBound`** (214): USNOS ON fails deterministically at 2119.54 s, and NH dies at 1482.72 s to
+   Shimotsuke category 6 (`c6=36, 15802`). Only a few hundred points of that show as `impact blast ... on NH`
+   lines. Log every record `blast_box_distance` admits under the mesh box on USNOS ON up to 1482 s and find the
+   unlogged arm.
+2. **0072C970's sub-vs-sub depth** (210): `sub_vs_sub` was 0 on every row run. If a row shows non-zero, export
+   the boat's dive state (`SubmarineDepthFields`/`SubmarineDiveRates`, `gameplay_seg53_cc13.hpp`) from the units
+   host and call `submarine_predict_depth_after_00852410` at the torpedo spawn (`shot.swim_depth`).
+3. **Fido homing** (210): no row drops a Fido. A JM12 order file that surfaces the player boat and draws the
+   Avenger would exercise `torpedo_steer_00856bb0`'s homing branch (`scans`/`binds`/`target_steps` counters).
+4. **`0080A55D`** AA proximity fuze (213), from `0080A5DA`; only for R4M / 4.7'' AA salvos.
+
+**Tools** (this tree's `local\`): `g36_queue.ps1` as before. Job lists `g40_*.jobs` were built in PowerShell. Never
+name a loop variable `$r` next to a `$R` path: PowerShell variables are case-insensitive, and that corrupted
+`g40_tb.jobs`/`g40_q2.jobs`. A queued run that waits for a launcher slot keeps its `.launch.txt` open, so a manual
+re-launch of the same log fails at once with an empty launch file. Check
+`Get-CimInstance Win32_Process -Filter "Name='pwsh.exe'"` for the waiting launcher before re-launching. Export
+dirs: `g40_tf` (turning ON), `g39_rk0` (fall ON), `g39_rk1` / `g40_sx1` (swim ON), `g39_rk2` (recon ON),
+`g39_lo` (mesh box ON); OFF snapshots `g40_tfoff`, `g40_tb0`, `g40_sw0`, `g40_sx0`, `g40_bm0`.
