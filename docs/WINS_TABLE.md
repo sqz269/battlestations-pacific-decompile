@@ -190,3 +190,14 @@ mechanism is in the cd761bb52 section above).
   z = -3150 and stalled at (1624,-3170) from 395 s with throttle 0.5 and no speed until it died at 1519.8 s
   (`local\p6b1_base.log`). Variant b (waypoint 6600 at z -2990 instead of -3084): MiniSub survives.
 - **BSM01 `bsm01_p6_b1_a` checks** (cc9-physics6): on 8c0dc221a (exe 751CFE0BE15A, warning walk ON) EndMission 752.94 s again (`local\p6b1_a2.log`); with `BSP_FRAME_JITTER 20,3` EndMission 764.94 s, MiniSub at 436.17 s, guard logged (`local\p6b1_aj.log`).
+- **JM06 row is now `config/win_orders/jm06_s46_j6_m.txt`** (cc9-ships46, SHIP_AI 227, reported through the lead, 2026-10-13): completes at 2880.63 s, and at 3421.16 s under `BSP_FRAME_JITTER 20,3` (seed 3), guard logged both times. `jm06_s45_j6_k` (kept) fails under jitter.
+- **USN01 re-planned (cc9-physics6, 2026-10-13): `config/win_orders/usn01_p6_u1_g.txt`**, replaces `usn01_p5_u1_e`
+  (kept). Tree agent/cc9-physics1 at the merge of origin/main 09a095e45's base (gunnery39's verdict 72e64feac in),
+  exe 629B244E3C28, 26000 frames, reference env, `--stop-after-end 40`: **completed 1197.94 s**, guard logged
+  (`local\p6u1_g.log`). Plan e plus `3700 select ConSBD3` / `3701 target ConSBD3 Convoy2` (both applied) after
+  the retest ends ConSBD3's command on Convoy5's death (183.76 s). ConSBD3 still releases nothing (every aimglide
+  blocked at the ceiling); the kills are Convoy5/3/4 to torpedoes by 189 s and Convoy2/1/6 to Northampton at 888,
+  920 and 941 s, as on 3eac809d6. Plan e on the same exe: no completion (`local\p6u1_e.log`, Convoy2 and Convoy6
+  survive); ConSBD3 at Convoy6 (h): no completion. **Knife-edge:** with `BSP_FRAME_JITTER 20,3` it fails (Convoy1 and
+  Convoy6 survive, `local\p6u1_gj.log`), like e. Northampton and SaltLakeCity cannot be ordered directly:
+  `select Northampton` is refused by 00645060 (`local\p6u1_i.log`).
