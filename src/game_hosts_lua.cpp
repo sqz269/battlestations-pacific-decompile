@@ -5892,7 +5892,8 @@ int GameMissionLuaHost::run_set_ship_speed_00890d30(lua_State* state, int argume
 // The result: non-null with +5Dh clear (008A6F58) -> thisTable[tostring(+174h)], else nil.
 // SUBSTITUTIONS (labelled): "ship director" is a units-host slot with a ship AI row, and
 // director+238h is that row's fire target, which the ship AI host holds by name; +5Dh
-// clear is GameUnitsHost::unit_active; an entity with no units-host slot answers nil.
+// clear is GameUnitsHost::unit_active (unit_flag_005d under kLuaAttackTargetDeadNilBound);
+// an entity with no units-host slot answers nil.
 int GameMissionLuaHost::run_unit_get_attack_target_008a6de0(lua_State* state,
                                                            int argument_count) {
     (void)argument_count;
@@ -5942,7 +5943,10 @@ int GameMissionLuaHost::run_unit_get_attack_target_008a6de0(lua_State* state,
     }
     const GameUnitRow* self = units->unit_row(index);
     const GameUnitRow* hit = target_plus_one != 0 ? units->unit_row(target_plus_one - 1) : nullptr;
-    const bool live = target_plus_one != 0 && units->unit_active(target_plus_one - 1);
+    // kLuaAttackTargetDeadNilBound: the image's test is +5Dh clear (008A6F58), not +5Ch.
+    const bool live = target_plus_one != 0 &&
+        (kLuaAttackTargetDeadNilBound ? !units->unit_flag_005d(target_plus_one - 1)
+                                      : units->unit_active(target_plus_one - 1));
     if (live && push_resolved_entity_by_id(state, static_cast<int>(target_plus_one))) {
         ++summary_.attack_target_pushed;
     } else {

@@ -379,6 +379,11 @@ inline constexpr bool kLuaSetShipSpeedBound = true;  // ON: pairs held (docs/LUA
 // +5Dh removed byte is clear is pushed as thisTable[id], anything else as nil.
 // True: route the row to run_unit_get_attack_target_008a6de0. False: unimplemented (nil).
 inline constexpr bool kLuaUnitGetAttackTargetBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
+// Packet cc13-fix6 (docs/CC13_VER_13.md, D1). The result test at 008A6F58 is
+// `CMP byte [EAX+5Dh],0 / JNE nil` on both arms; +5Dh is set at the end of the kill step,
+// while +5Ch (unit_active) stays set through the whole wreck descent. True: a resolved
+// target with GameUnitsHost::unit_flag_005d set answers nil. False: the unit_active test.
+inline constexpr bool kLuaAttackTargetDeadNilBound = false;
 
 // Packet cc9_squadron_set_speed (docs/LUA_BINDING_MISSION.md, "SquadronSetSpeed,
 // 0089F780"). SquadronSetSpeed(squadron, speed) calls member->vtable[3Ch](speed) for
