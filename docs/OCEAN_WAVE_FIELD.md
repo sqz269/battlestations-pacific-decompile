@@ -780,3 +780,58 @@ Open, in order:
 4. WINS_TABLE rows pending ships45's re-check: USNOS `usnos_s45_os_k`, JM08 `jm08_s45_j8_m10`.
 5. `local\p4_runs.ps1`'s USN12 rows quote `'$root\config\...'` in single quotes, so the path is literal: that is why
    cc9-physics4's USN12 runs had no orders. Use p5_runs.ps1.
+
+
+## 25. cc9-physics6 handoff (sea/physics lane + WINS KEEPER), 2026-10-13
+
+Tree J:\PROG\battlestations-pacific-decompile-cc9-physics1 (agent/cc9-physics1). Launcher `local\p5_runs.ps1 -Rows
+"<log>|<exe>|<MISSION>|<mission frames>|<orders or empty>|<jitter or empty>"`, wait `local\p5_wait.ps1`. Pass every
+order file as an ABSOLUTE path. Run slots are 6 since f585ddfd3. New helpers in local\:
+- `p6_prepend.py`: first targets for a carrier's launch groups in a frame window.
+- `p6_e8_alloc.py`: ESMP08 slot target re-ordering.
+- `p6_e8_extend.py`: repeats the ESMP08 600-frame launch cycle.
+- `p6_e8_retarget.py`: copy of g38_e8_retarget.py.
+- `p6_e8sum.py` / `p6_e8time.py`: ESMP08 deaths and launches per 300 s.
+- `p6_j8gen.py` / `p6_splice.py`: ships45's JM08 generator; the splice at 24000 reproduces m10.
+- `p6_j8sum.py`: JM08 landing-ship timeline.
+- `p6_u1_ships.py`: ship attack orders. The USN01 cruisers cannot be selected.
+- `p6_ctrl.py`: samples the controlled-unit trace.
+- `p6_firstdiff.py`: first differing filtered line between two logs.
+- `p6_v1r1_build.ps1`: export + patch + build for a scratch pair.
+
+Done:
+- Flips:
+  - Wing fold ON (ae34e5462).
+  - kSceneShortNameModeSuffixBound ON (398a3056b, a0b684a37).
+  - kMissionWarningReportWalkAllBound ON (8c0dc221a; no host caller yet).
+  - V1 kPlaneSpeedFloorBound and R1 kPlaneRateLawCrossingFloorBound ON (57fce131f, CC13_GPR_48 9).
+- Wins re-planned:
+  - JM08 `jm08_p6_j8_f` (c7358a3d2).
+  - BSM01 `bsm01_p6_b1_a` (8c0dc221a).
+  - USN01 `usn01_p6_u1_g` (ac09d074d), then `usn01_p6_u1_k6` for R1.
+  - ESMP08 `esmp08_p6_e8_br3l` (0993442ed; it needed kAirOpsSquadronCeilingRaisedBound).
+
+Open, in order:
+1. **USN04 climb-out crash with V1.** cc13-ver14/ver17 report Shoho/Zuiho/Yorktown script launches flying into the
+   sea 16-26 s after lift-off, and ver17 traces it to V1 (planes under continuous band repair bleed to 17-19 m/s).
+   - My pair here does not reproduce the setting: USN04 with no order file, 12000 frames. OFF is
+     `local\p6_rfv` EC73A09F1208 (V1 OFF), ON is the tree at 57fce131f (`local\p6v_{off,on}_u4.log`).
+   - That run launches only four US squadrons (Lexington/Yorktown-class01) and no Japanese script launches. 19
+     plane water contacts on both sides, all scene squadrons. `speed_floor_arms` 1980, raises 299, gameplay moved.
+   - Next: get ver14's exact run (frames, order file, build) from the lead, then pair it.
+2. **USN01 `k6` is a knife-edge.** It fails under jitter 20,3 and 20,7. The torpedo budget has no margin (GUNNERY
+   / WINS_TABLE notes); ConSBD3 never releases, because every aimglide is blocked at the ceiling. Before
+   re-planning further, ask whether lua56's dive work fixes that, since it would add six bombs.
+3. **The rest of the plane-flight packet**, each behind OFF on src/game_hosts_units.cpp (shared: claim, apply,
+   build, commit, release at once):
+   - D2: bank yaw 007DA080-007DA117, `bank_yaw_angle_007da0ae`.
+   - D4: wave 1 pose before wave 3 physics.
+   - D5: thrust scale unit+0CC8h x 008E6430(6).
+   - R2: yaw gain BC4h placement.
+   - C1: wreck forward drag 007DBC77, model `dead_meat_forward_drag_007dbc77`.
+   - R4: crippled roll/spin.
+   - The deck/runway clamp 007DA2B1-007DA338 and the boost arm.
+   - P1 is DROPPED (cc13-ver15: the host equals the image).
+   - Pair each on USN12, LOMP10 and a carrier win (USN01 k6, JM08 f, ESMP08 br3l).
+4. **WINS_TABLE**: re-run USN02, LOMP06, BSM01, USN15, IJN18, JM06 and JM08 f on the next main (the navigator group,
+   V1/R1 and the ship flips since moved times).

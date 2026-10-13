@@ -1,0 +1,16 @@
+# cc9-physics6 USN01 k6: usn01_p6_u1_g with 3306 target ConTBD1 Convoy6 instead of Convoy3 (with R1 ON ConTBD2 sinks Convoy3 first). Completed 514.80 s on 57fce131f; fails with BSP_FRAME_JITTER 20,3 and 20,7.
+2400 release ScoutDauntless on Convoy1 within 20 until 2700
+2720 target ScoutDauntless Convoy1
+2900 target ConTBD1 Convoy2
+2904 select ConTBD3
+2905 target ConTBD3 Convoy5
+3305 select ConTBD1
+3306 target ConTBD1 Convoy6
+3412 select ConTBD2
+3413 target ConTBD2 Convoy4
+3495 select ConTBD3
+3496 target ConTBD3 Convoy6
+3690 select ConTBD1
+3691 target ConTBD1 Convoy1
+3700 select ConSBD3
+3701 target ConSBD3 Convoy2
