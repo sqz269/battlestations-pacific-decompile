@@ -16,12 +16,12 @@ namespace bsp {
 // True: a plane whose order is class 00E08F50 (kamikaze, kind 0Ch) runs the
 // kamikaze task's arm 009AF510 each think, next to the strafe arm. False: the
 // order installs nothing and the plane flies the reseeded plan, as before.
-inline constexpr bool kKamikazeTaskBound = false;
+inline constexpr bool kKamikazeTaskBound = true;  // ON: USN19 pairs, mechanism matches (docs/SQUADRON_LAND_TASK.md 5gc)
 // True: a plane ordered with class 00E08F30 (dropkamikaze, kind 5) runs the
 // drop task's arm 009AE8A0, and each release (007BBBA0) launches a
 // DummyKamikazePlane round that 006FEC00 turns into the class-156/370 unit.
 // False: no arm, no round, as before.
-inline constexpr bool kDropKamikazeTaskBound = false;
+inline constexpr bool kDropKamikazeTaskBound = true;  // ON: USNOS K4, 22 Ohka releases (docs/SQUADRON_LAND_TASK.md 5gc)
 
 // ---------------------------------------------------------------------------
 // 006FEC00 BSP_DummyKamikazePlane_TickSpawnKamikaze (body 006FEC00-006FEF07,

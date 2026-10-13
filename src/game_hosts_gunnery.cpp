@@ -1002,7 +1002,7 @@ constexpr bool kPlaneMeshHitTestBound = true;
 //    as for the plane: every triangle of every mesh in the file, and the record
 //    keeps 0Ah / -1. The blast distance stays the class box. OFF: the class box.
 //    Packet cc13_jm08_aa_truck_hq_damage.
-constexpr bool kLandStructureMeshHitTestBound = false;
+constexpr bool kLandStructureMeshHitTestBound = true;  // ON: JM08 b3 pair, mechanism matches (SHIP_AI 220, cc9-ships45)
 //  * kLandStructureBlastElementEntriesBound: a burst's distance to a LAND
 //    STRUCTURE is taken per GeomMesh element, as kPlaneBlastElementEntriesBound
 //    does for a plane (the image's sphere test is 0070F720 -> 00723F80 on the
