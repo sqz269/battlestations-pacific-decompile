@@ -8,6 +8,7 @@
 #include <intrin.h>
 
 #include <cctype>
+#include <cmath>
 #include <cstdarg>
 #include <cstdio>
 #include <cstring>
@@ -1021,6 +1022,107 @@ void destruct_fish_school_desc_00708ab0(FishSchoolDescLayout& desc, PoolMemory& 
     desc.params_04.texture_54.release_to(strings);
 }
 
+void respawn_fish_007077b0(FishSchoolDescLayout& school, PresentationRandom& random, VectorNormalizer& normalizer) {
+    const FishSchoolParams& p = school.params_04;
+    const std::int32_t count = p.count_00;
+    // 007077B7..007077DD: U(+50h, +54h) times (count - 1) by FIMUL, then __ftol (truncation).
+    const std::int32_t n = static_cast<std::int32_t>(random.uniform_00bd2f10(p.respawn_min_4c, p.respawn_max_50) *
+                                                     static_cast<float>(count - 1));
+    const std::int32_t start = static_cast<std::int32_t>(random.uniform_00bd2f10(1.0f, static_cast<float>(count - n)));
+    auto* positions = static_cast<float*>(school.positions_60);
+    float saved[3];
+    std::memcpy(saved, positions + start * 3, sizeof(saved));
+    std::memmove(positions + start * 3, positions + (start + 1) * 3, static_cast<std::size_t>(n * 3 - 3) * 4);
+    std::memcpy(positions + (start + n - 1) * 3, saved, sizeof(saved));
+    auto* state = reinterpret_cast<float*>(school.state_68);
+    state[0] = random.uniform_00bd2f10(p.speed_min_44, p.speed_max_48);  // +68h from +48h/+4Ch
+    const float* fish0 = static_cast<const float*>(school.fish_64);
+    const float half[3] = {p.box_half_x_10, p.box_half_y_14, p.box_half_z_18};  // +14h/+18h/+1Ch
+    bool inside = true;
+    for (int axis = 0; axis < 3 && inside; ++axis) {
+        if (-half[axis] > fish0[axis] || fish0[axis] > half[axis]) {
+            inside = false;
+        }
+    }
+    float* direction = state + 1;  // +6Ch
+    if (inside) {
+        direction[0] = random.uniform_00bd2f10(-1.0f, 1.0f);  // 00D7A260
+        direction[1] = 0.0f;
+        direction[2] = random.uniform_00bd2f10(-1.0f, 1.0f);
+    } else {
+        direction[0] = -0.0f - fish0[0];
+        direction[1] = -0.0f - fish0[1];
+        direction[2] = -0.0f - fish0[2];
+    }
+    normalizer.normalize_0042b260(direction);
+}
+
+void init_fish_school_00709310(FishSchoolDescLayout& school, const FishSchoolParams& params, PresentationRandom& random,
+                               FishSchoolInitCalls& calls, NativeStringStorage& strings) {
+    assign_fish_school_params_00708c60(school.params_04, params, strings);
+    const FishSchoolParams& p = school.params_04;
+    const auto count = static_cast<std::uint32_t>(p.count_00);
+    school.fish_64 = calls.new_saturating_00bf55be(count, 0x28);
+    school.positions_60 = calls.new_saturating_00bf55be(count, 0x0C);
+    auto* state = reinterpret_cast<float*>(school.state_68);
+    state[1] = 0.0f;  // +6Ch
+    state[2] = 0.0f;  // +70h
+    state[3] = 1.0f;  // +74h
+    auto* fish = static_cast<float*>(school.fish_64);
+    auto* positions = static_cast<float*>(school.positions_60);
+    constexpr double kPi = 3.1415927410125732;  // double 00CE3D28
+    for (std::int32_t i = 0; i < p.count_00; ++i) {
+        const float fi = static_cast<float>(i);
+        auto angle = [&] { return static_cast<float>(static_cast<double>(fi / static_cast<float>(p.count_00)) * kPi); };
+        const float sx = static_cast<float>(std::sin(angle()));
+        const float x = (p.radius_x_04 * sx) * random.uniform_00bd2f10(-0.5f, 0.5f);  // 00CE69D0 / 00CE3800
+        const float sy = static_cast<float>(std::sin(angle()));
+        const float y = (p.radius_y_08 * sy) * random.uniform_00bd2f10(-0.5f, 0.5f);
+        const float cz = static_cast<float>(std::cos(angle()));
+        const float z = static_cast<float>(static_cast<float>((cz - 1.0) * p.radius_z_0c) * 0.5);
+        float* entry = fish + i * 10;  // 28h bytes
+        entry[0] = x;
+        entry[1] = y;
+        entry[2] = z;
+        positions[i * 3 + 0] = entry[0];
+        positions[i * 3 + 1] = entry[1];
+        positions[i * 3 + 2] = entry[2];
+        entry[3] = 0.0f;
+        entry[4] = 0.0f;
+        entry[5] = 1.0f;
+        entry[6] = entry[3];
+        entry[7] = entry[4];
+        entry[8] = entry[5];
+        entry[9] = p.word_38;
+        fish[9] = static_cast<float>((p.word_3c + p.word_38) * 0.5);
+    }
+    fish[9] = static_cast<float>((p.word_3c + p.word_38) * 0.5);  // 00709538, also for count 0
+    school.model_78 = calls.allocate_fish_model();
+    calls.build_geometry_00708d20();
+    calls.model_vslot30(school.model_78, reinterpret_cast<std::uint8_t*>(&school) + 0x20);
+}
+
+FishSchoolDescLayout* create_fish_school_00709620(std::int32_t kind, const float position[3], PresentationRandom& random,
+                                                  FishSchoolCreateCalls& calls, NativeStringStorage& strings) {
+    FishSchoolParams params{};
+    init_fish_school_params_00708b00(params, strings);
+    params.word_1c = position[0];
+    params.word_20 = position[1];
+    params.word_24 = position[2];
+    static const char* const kTextures[5] = {"Fish_01.tga", "Fish_02.tga", "Fish_03.tga", "Fish_04.tga", "Fish_05.tga"};
+    if (kind >= 1 && kind <= 5) {
+        assign_native(params.texture_54, strings, kTextures[kind - 1]);  // 0041E350
+    }
+    FishSchoolDescLayout* school = calls.new_school_00bf681b();
+    if (school != nullptr) {
+        new (school) FishSchoolDescLayout{};
+        construct_fish_school_desc_00708be0(*school, strings);
+        init_fish_school_00709310(*school, params, random, calls, strings);
+    }
+    params.texture_54.release_to(strings);
+    return school;
+}
+
 void destruct_fish_school_model_00707570(std::uint8_t* model, GeneratedModelCalls& calls) {
     *reinterpret_cast<std::uint32_t*>(model) = 0x00cfd3a8;
     if (void* owned = *reinterpret_cast<void**>(model + 0x184)) {
@@ -1384,6 +1486,62 @@ void destruct_xlive_stats_block_00994180(XLiveStatsBlockLayout& b, StatsBlockTea
     t.reset_std_string(b.name_0c);
 }
 
+void fill_stats_from_game_00993220(std::vector<XLiveStatRecord>& records, std::uint8_t& ready_74,
+                                   StatsGameView& game) {
+    const std::int32_t mode = game.effective_game_mode();
+    for (XLiveStatRecord& record : records) {
+        for (std::size_t slot = 0; slot < 8; ++slot) {
+            const StatsPlayerSlot player = game.player_slot(slot);
+            if (!player.present || player.flag_09 || record.key_00 != player.key_80 || record.key_04 != player.key_84) {
+                continue;
+            }
+            // Null-aware case-insensitive name compare (00993318..0099337C).
+            int cmp;
+            if (record.name_08.length() == 0) {
+                cmp = player.name_58.empty() ? 0 : -1;
+            } else if (player.name_58.empty()) {
+                cmp = 1;
+            } else {
+                cmp = _stricmp(record.name_08.data(), player.name_58.c_str());
+            }
+            if (cmp != 0) {
+                continue;
+            }
+            std::uint32_t badges = 0;
+            for (const std::string& key : game.side_badge_keys(slot)) {
+                if (game.badge_earned_0090c000(key)) {
+                    ++badges;
+                }
+            }
+            record.values_18[12] = game.side_word_174(slot);  // +48h
+            record.values_18[11] = game.side_word_118(slot);  // +44h
+            record.values_18[5] = static_cast<std::uint32_t>(mode);  // +2Ch
+            record.values_18[10] = badges;                    // +40h
+        }
+    }
+    ready_74 = 1;
+}
+
+void reset_stats_values_00994310(std::vector<XLiveStatRecord>& records, std::uint8_t& ready_74, StatsGameView& game,
+                                 NativeStringStorage& strings) {
+    for (XLiveStatRecord& record : records) {
+        record.name_08.release_to(strings);
+    }
+    records.clear();
+    for (std::size_t slot = 0; slot < 8; ++slot) {
+        const StatsPlayerSlot player = game.player_slot(slot);
+        if (!player.present || player.flag_09) {
+            continue;
+        }
+        NativeString name;
+        assign_native(name, strings, player.name_58);
+        XLiveStatRecord record{};
+        construct_stat_field_00993140(record, player.key_80, player.key_84, std::move(name), player.word_28, strings);
+        records.push_back(std::move(record));
+    }
+    ready_74 = 0;
+}
+
 // ===================================================================================================
 // Segment 66: downloadable content.
 // ===================================================================================================
@@ -1540,6 +1698,118 @@ void reset_content_enumeration_00994450(DownloadEnumerationState& state, XConten
     api.close_handle(handle);
 }
 
+namespace {
+
+// The per-row display-name read shared by 00994B10 and 00994F40: a size query that must answer
+// 8007007Ah with at most 100h characters, then the read, then the low-byte narrowing into the
+// record's name. False leaves the record untouched.
+bool read_content_name(const std::uint8_t* row, ContentPackageRecord& record, DownloadManagerCalls& calls) {
+    std::uint32_t size = 0;
+    if (calls.content_display_name(row, nullptr, size) != static_cast<std::int32_t>(0x8007007Au) || size > 0x100) {
+        return false;
+    }
+    wchar_t buffer[0x101] = {};
+    calls.content_display_name(row, buffer, size);
+    assign_native(record.name_00, calls.strings(), calls.narrow_low_bytes_00436630(buffer));
+    return true;
+}
+
+}  // namespace
+
+bool enumerate_new_content_00994b10(DownloadManagerFields& manager, DownloadManagerCalls& calls,
+                                    ContentArrayMemory& memory) {
+    static_cast<void>(memory);
+    if (!calls.has_selected_user_00a3e510()) {
+        return false;
+    }
+    bool appended = false;
+    reset_content_enumeration_00994450(*manager.enumeration, calls);
+    const ContentPackageArray& active = manager.list->active_04;
+    for (std::uint32_t i = 0; i < manager.enumeration->count_838; ++i) {
+        ContentPackageRecord record{};
+        record.index_14 = -1;
+        if (read_content_name(manager.enumeration->buffer_38 + i * 0x20, record, calls)) {
+            std::int32_t found = -1;
+            for (std::int32_t j = 0; j < active.count && found == -1; ++j) {
+                if (calls.matches_at_offset_0043e9a0(active.data[j].name_00, record.name_00)) {
+                    found = j;
+                }
+            }
+            if (found == -1) {
+                calls.append_new_content_name_004cdc20(record.name_00);
+                appended = true;
+            }
+        }
+        destruct_content_record_009946d0(record, calls.strings());
+    }
+    return appended;
+}
+
+void refresh_content_licenses_00994f40(DownloadManagerFields& manager, DownloadManagerCalls& calls,
+                                       ContentArrayMemory& memory) {
+    if (!calls.has_selected_user_00a3e510()) {
+        return;
+    }
+    NativeStringStorage& strings = calls.strings();
+    ContentPackageArray& active = manager.list->active_04;
+    ContentPackageArray& pending = manager.list->pending_10;
+    assign_content_array_00994dc0(pending, active, memory, strings);
+    resize_content_array_00994a80(active, 0, memory, strings);
+    for (std::uint32_t i = 0; i < manager.enumeration->count_838; ++i) {
+        ContentPackageRecord record{};
+        record.index_14 = -1;
+        if (read_content_name(manager.enumeration->buffer_38 + i * 0x20, record, calls)) {
+            std::int32_t found = -1;
+            for (std::int32_t j = 0; j < pending.count && found == -1; ++j) {
+                if (calls.matches_at_offset_0043e9a0(pending.data[j].name_00, record.name_00)) {
+                    found = j;
+                }
+            }
+            push_back_content_array_00994a00(active, found != -1 ? pending.data[found] : record, memory, strings);
+        }
+        destruct_content_record_009946d0(record, strings);
+    }
+    resize_content_array_00994a80(pending, 0, memory, strings);
+}
+
+void collect_mounted_content_paths_009954e0(DownloadManagerFields& manager, void* list, DownloadManagerCalls& calls) {
+    const ContentPackageArray& active = manager.list->active_04;
+    for (std::int32_t i = 0; i < active.count; ++i) {
+        const NativeString& directory = manager.directories_20->data[i];
+        if (directory.length() != 0 && active.data[i].flags_10[1] != 0) {
+            calls.list_append(list, active.data[i].path_08);
+        }
+    }
+}
+
+void destruct_download_manager_00995150(std::uint32_t& vtable_00, DownloadManagerFields& manager,
+                                        DownloadManagerCalls& calls) {
+    vtable_00 = 0x00d1d7d8;
+    for (std::int32_t i = 0; i < manager.directories_20->count; ++i) {
+        const std::string directory = text_of(manager.directories_20->data[i]);
+        const std::string package = text_of(manager.packages_2c->data[i]);
+        if (directory.empty()) {
+            continue;
+        }
+        calls.log_004254b0("Unmount active content (dir: %s)(mpkg: %s)", directory.c_str(), package.c_str());
+        calls.unmount_00be0750(content_path_compose_00994770(directory), ".");
+        if (!package.empty()) {
+            calls.unmount_00be0750(package, ".");
+        }
+    }
+    const ContentPackageArray& active = manager.list->active_04;
+    for (std::int32_t j = 0; j < active.count; ++j) {
+        if (active.data[j].flags_10[1] != 0) {
+            const char* path = active.data[j].path_08.data();
+            calls.log_004254b0("Remove active content package (%s)", path != nullptr ? path : "", nullptr);
+            calls.remove_content_package_00bdd020(active.data[j].path_08);
+        }
+    }
+    calls.destroy_string_array(*manager.packages_2c);
+    calls.destroy_string_array(*manager.directories_20);
+    calls.destruct_content_list_00994e10();
+}
+
 // ===================================================================================================
 // Segment 11: scene presentation entities and helpers.
 // ===================================================================================================
@@ -1694,6 +1964,46 @@ void destruct_simple_array_004e7dd0(std::uint8_t* array, FreeCalls& calls) {
 void free_owned_buffer_004e7e20(void** cell, FreeCalls& calls) {
     calls.free_00bf6989(*cell);
     *cell = nullptr;
+}
+
+std::uint32_t scene_class_map_insert_004ee1a0(SceneClassMapLayout& map, const NativeString& key, void* value,
+                                              SceneClassMapCalls& calls) {
+    std::uint32_t bucket = 0;
+    if (SceneClassMapNode* hit = calls.find_node_00468fb0(key, bucket)) {
+        if (hit->value != nullptr) {
+            calls.free_00bf65ac(hit->value);
+            hit->value = nullptr;
+        }
+        hit->value = value;
+        return map.count_04;
+    }
+    void* storage = calls.allocate_node_004e7c00();
+    if (storage == nullptr) {
+        return map.count_04;  // the image writes through the null node
+    }
+    auto* node = new (storage) SceneClassMapNode{};
+    if (&node->key != &key) {
+        node->key.copy_from_00be0a30_fragment(calls.strings(), key);
+    }
+    node->value = value;
+    node->next = map.buckets_08[bucket];
+    map.buckets_08[bucket] = node;
+    ++map.count_04;
+    return map.count_04;
+}
+
+void scene_class_map_register_004ee250(SceneClassMapLayout& map, const char* name, std::int32_t class_id,
+                                       std::uint32_t create, std::uint32_t register_pass, SceneClassMapCalls& calls) {
+    auto* descriptor = static_cast<SceneClassDescriptor*>(calls.new_descriptor_00bf55be());
+    if (descriptor != nullptr) {
+        descriptor->class_id = class_id;
+        descriptor->create = create;
+        descriptor->register_pass = register_pass;
+    }
+    NativeString key;
+    key.assign_0041e870(calls.strings(), name);
+    scene_class_map_insert_004ee1a0(map, key, descriptor, calls);
+    key.release_to(calls.strings());
 }
 
 const char* landing_point_class_name_004e95f0() noexcept { return "LandingPoint"; }

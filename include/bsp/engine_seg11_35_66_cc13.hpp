@@ -606,6 +606,62 @@ FishSchoolDescLayout& construct_fish_school_desc_00708be0(FishSchoolDescLayout& 
 // +60h array alone is not freed); release the texture string.
 void destruct_fish_school_desc_00708ab0(FishSchoolDescLayout& desc, PoolMemory& memory, NativeStringStorage& strings);
 
+// Presentation draws. The image calls 00BD2F10 with ECX = 0, the SHARED gameplay stream 0; a host
+// must give these their own stream (or keep the caller off) so same-binary gameplay pairs do not
+// shift (cc9 RNG rule).
+class PresentationRandom {
+public:
+    virtual ~PresentationRandom() = default;
+    virtual float uniform_00bd2f10(float lo, float hi) = 0;
+};
+// 0042B260 (BSP_Geometry_NormalizeVectorWithFloor), __thiscall(ECX = vec3), as a host call.
+class VectorNormalizer {
+public:
+    virtual ~VectorNormalizer() = default;
+    virtual void normalize_0042b260(float* v) = 0;
+};
+
+// 007077B0, __fastcall(ECX = school), RET (tail JMP 0042B260): respawn a run of fish.
+//   n = ftol(U([+50h], [+54h]) * (count - 1)); start = ftol(U(1, count - n));
+//   rotate positions[start .. start+n) left by one (memmove of n-1 entries, 0Ch stride at +60h);
+//   +68h = U([+48h], [+4Ch]);
+//   fish 0 (+64h) inside the half-extent box (+14h/+18h/+1Ch, both bounds inclusive): direction
+//   (+6Ch) = (U(-1, 1), 0, U(-1, 1)); outside: direction = -fish0 (SSE -0.0 minus); normalize.
+// The x87 products run at the main thread's 24-bit precision; float arithmetic models them.
+void respawn_fish_007077b0(FishSchoolDescLayout& school, PresentationRandom& random, VectorNormalizer& normalizer);
+
+// 00709310, __thiscall(ECX = school, const params*), RET 4: copy the params (00708C60); allocate
+// count * 28h fish (+64h) and count * 0Ch positions (+60h) with the overflow-saturating size;
+// direction (+6Ch) = (0, 0, 1); per fish i, t = float(i / count * pi):
+//   x = (rx * sin t) * U(-0.5, 0.5), y = (ry * sin t) * U(-0.5, 0.5), z = ((cos t - 1) * rz) * 0.5,
+//   velocity +0Ch = (0, 0, 1), its copy at +18h, the per-fish value +24h = params +38h;
+//   fish 0's +24h is then (params +3Ch + params +38h) * 0.5 (rewritten every iteration and once more).
+// Then a model slot from the static fish pool, named "FishSchool" (00B75030, vtable 00CFD3A8, +184h
+// = 0) into +78h (null when the pool returned null), BuildGeometry (00708D20) and the model's vtable
+// +30h(school + 20h). Draws go through PresentationRandom (the image: stream 0).
+class FishSchoolInitCalls {
+public:
+    virtual ~FishSchoolInitCalls() = default;
+    virtual void* new_saturating_00bf55be(std::uint32_t count, std::uint32_t element_size) = 0;
+    virtual void* allocate_fish_model() = 0;  // 00708920 on 00E19ACC + 00B75030("FishSchool") + vtable
+    virtual void build_geometry_00708d20() = 0;
+    virtual void model_vslot30(void* model, std::uint8_t* school_plus_20) = 0;
+};
+void init_fish_school_00709310(FishSchoolDescLayout& school, const FishSchoolParams& params, PresentationRandom& random,
+                               FishSchoolInitCalls& calls, NativeStringStorage& strings);
+
+// 00709620, __fastcall(ECX = kind, EDX = const float[3]), RET: default params, the three floats into
+// params +1Ch..+24h, texture "Fish_0<kind>.tga" for kinds 1..5 (0041E350; other kinds keep ""), a
+// new 7Ch school (vtable 00CFD414, default params, +60h/+64h/+78h = 0), Init with the params, then
+// release the params texture. The school pointer is not kept by this routine. A failed operator new
+// reaches Init with a null school in the image; this stops.
+class FishSchoolCreateCalls : public FishSchoolInitCalls {
+public:
+    virtual FishSchoolDescLayout* new_school_00bf681b() = 0;  // raw 7Ch storage or null
+};
+FishSchoolDescLayout* create_fish_school_00709620(std::int32_t kind, const float position[3], PresentationRandom& random,
+                                                  FishSchoolCreateCalls& calls, NativeStringStorage& strings);
+
 // The fish-school model (pool slot, vtable 00CFD3A8; owned object at +184h).
 class GeneratedModelCalls {
 public:
@@ -847,6 +903,40 @@ public:
 };
 void destruct_xlive_stats_block_00994180(XLiveStatsBlockLayout& block, StatsBlockTeardown& teardown);
 
+// The game-side inputs of 00993220 / 00994310: the eight player slots game+18CCh..+18E8h and the
+// per-side score blocks [game+21A0h]+70h + slot*284h. Read-only.
+struct StatsPlayerSlot {
+    bool present;                 // slot pointer not null
+    bool flag_09;                 // player byte +9 (set: skipped)
+    std::uint32_t key_80;
+    std::uint32_t key_84;
+    std::string name_58;          // the char array at +58h
+    std::uint32_t word_28;
+};
+class StatsGameView {
+public:
+    virtual ~StatsGameView() = default;
+    virtual StatsPlayerSlot player_slot(std::size_t slot) = 0;  // slot 0..7
+    virtual std::int32_t effective_game_mode() = 0;           // BSP_Game_GetEffectiveGameMode
+    // Score block of the slot: the keys of its set at +4h (in tree order), +118h and +174h.
+    virtual std::vector<std::string> side_badge_keys(std::size_t slot) = 0;
+    virtual std::uint32_t side_word_118(std::size_t slot) = 0;
+    virtual std::uint32_t side_word_174(std::size_t slot) = 0;
+    // 0090C000 with ECX = [game+21A0h] and the key by value.
+    virtual bool badge_earned_0090c000(const std::string& key) = 0;
+};
+// 00993220, __fastcall(ECX = stats block), RET: for every stat record and every player slot that is
+// present, not flagged and has the record's two keys and (null-aware, case-insensitive) name: count
+// the earned badges of that slot's score block and store values +48h = side+174h, +44h = side+118h,
+// +2Ch = the effective game mode, +40h = the badge count. Then +74h = 1.
+void fill_stats_from_game_00993220(std::vector<XLiveStatRecord>& records, std::uint8_t& ready_74,
+                                   StatsGameView& game);
+// 00994310, __fastcall(ECX = stats block), RET: erase every record (00993B70), then for every present
+// and unflagged player slot push construct(key80, key84, name58, word28) (00993140 / 00994240);
+// +74h = 0.
+void reset_stats_values_00994310(std::vector<XLiveStatRecord>& records, std::uint8_t& ready_74, StatsGameView& game,
+                                 NativeStringStorage& strings);
+
 // ===================================================================================================
 // Segment 66: the downloadable-content manager (base vtable 00D1D758, list 00D1D75C, manager
 // 00D1D7D8).
@@ -951,6 +1041,72 @@ struct DownloadEnumerationState {
     std::uint32_t word_840;
 };
 void reset_content_enumeration_00994450(DownloadEnumerationState& state, XContentApi& api);
+
+// The manager (vtable 00D1D7D8) fields the remaining routines use: the content list base, the two
+// parallel NativeString arrays of mounted directories (+20h data, +24h count) and package names
+// (+2Ch data), and the enumeration state.
+struct NativeStringArray {
+    NativeString* data;
+    std::int32_t count;
+    std::int32_t capacity;
+};
+struct DownloadManagerFields {
+    ContentPackageListLayout* list;   // +0h..+1Bh
+    NativeStringArray* directories_20;
+    NativeStringArray* packages_2c;
+    DownloadEnumerationState* enumeration;
+};
+class DownloadManagerCalls : public XContentApi {
+public:
+    virtual NativeStringStorage& strings() = 0;
+    // 00A3E510 with ECX = [00F8ABE8]: a Xenon user is selected.
+    virtual bool has_selected_user_00a3e510() = 0;
+    // XLiveContentGetDisplayName(0, data, buffer, size*): the HRESULT. A null buffer queries the size.
+    virtual std::int32_t content_display_name(const std::uint8_t* content_data, wchar_t* buffer,
+                                              std::uint32_t& size) = 0;
+    // 00436630: a NativeString from the low bytes of a wide string.
+    virtual std::string narrow_low_bytes_00436630(const wchar_t* text) = 0;
+    // 0043E9A0, __thiscall(ECX = string, other*, 0): the match at offset 0.
+    virtual bool matches_at_offset_0043e9a0(const NativeString& string, const NativeString& other) = 0;
+    // 004CDC20 with ECX = 00F88A24: append a new content name to that global string vector.
+    virtual void append_new_content_name_004cdc20(const NativeString& name) = 0;
+    // 004254B0 logging; 00BE0750 / 00BDD020 on the file store [0109CEEC].
+    virtual void log_004254b0(const char* format, const char* a, const char* b) = 0;
+    virtual void unmount_00be0750(const std::string& path, const std::string& prefix) = 0;
+    virtual void remove_content_package_00bdd020(const NativeString& path) = 0;
+    // 00427110 resize(0) of a NativeString array, then 00BF6989 free of its data.
+    virtual void destroy_string_array(NativeStringArray& array) = 0;
+    virtual void destruct_content_list_00994e10() = 0;
+    // The std::list<NativeString> append 009954E0 performs (node copy + count + link at the end).
+    virtual void list_append(void* list, const NativeString& value) = 0;
+};
+
+// 00994B10, manager vtable slot 6, __fastcall(ECX = manager), RET, AL: without a selected user
+// returns its (false) result. Otherwise re-enumerates (the 00994450 body inline) and, for each
+// XCONTENT_DATA row (20h stride from +38h) whose display name fits 100h wide characters, appends
+// the name to the new-content vector (004CDC20) when no active record matches it; returns true when
+// at least one name was appended.
+bool enumerate_new_content_00994b10(DownloadManagerFields& manager, DownloadManagerCalls& calls,
+                                    ContentArrayMemory& memory);
+
+// 00994F40, manager vtable slot 9, __fastcall(ECX = manager), RET: with a selected user, pending =
+// active (00994DC0), active.resize(0); each row whose display name resolves is pushed to active as
+// the matching pending record (by name) or as the fresh record (index -1); pending.resize(0).
+void refresh_content_licenses_00994f40(DownloadManagerFields& manager, DownloadManagerCalls& calls,
+                                       ContentArrayMemory& memory);
+
+// 009954E0, manager vtable slot 10, __thiscall(ECX = manager, list*), RET 4: for every directory
+// entry i with a non-empty name whose active record i has flag byte +11h set, append that record's
+// path (+8h) to the list. (The ledger name BSP_DownloadManager_UnmountPackage is kept; the body only
+// collects.)
+void collect_mounted_content_paths_009954e0(DownloadManagerFields& manager, void* list, DownloadManagerCalls& calls);
+
+// 00995150, __fastcall(ECX = manager), RET: vtable 00D1D7D8; for each mounted directory log
+// "Unmount active content (dir: %s)(mpkg: %s)" and unmount dir + "\" and (when set) the package
+// with the prefix "."; for each active record with flag +11h log "Remove active content package
+// (%s)" (00F8A308 for a null path) and remove its path; destroy both string arrays; list destructor.
+void destruct_download_manager_00995150(std::uint32_t& vtable_00, DownloadManagerFields& manager,
+                                        DownloadManagerCalls& calls);
 
 // ===================================================================================================
 // Segment 11: scene-database presentation entities (camera paths, nav points, movie cameras, the
@@ -1066,6 +1222,46 @@ public:
     virtual bool contains_unit_008ddf90(const void* unit) = 0;
 };
 bool unit_is_local_player_objective_004f2590(const void* unit, LocalObjectiveSet& local_player_set);
+
+// The scene class map at scene database +34h: +4h count, +8h 40h bucket heads. Node 10h (from the
+// 14h-byte node pool 00E18514): key NativeString +0h, value +8h, next +0Ch.
+struct SceneClassMapNode {
+    NativeString key;
+    void* value;
+    SceneClassMapNode* next;
+};
+struct SceneClassMapLayout {
+    std::uint32_t word_00;
+    std::uint32_t count_04;
+    SceneClassMapNode* buckets_08[0x40];
+};
+class SceneClassMapCalls {
+public:
+    virtual ~SceneClassMapCalls() = default;
+    virtual NativeStringStorage& strings() = 0;
+    // 00468FB0, __thiscall(map, key*, out bucket*): the node for the key (case-insensitive), or null;
+    // the bucket index is written either way.
+    virtual SceneClassMapNode* find_node_00468fb0(const NativeString& key, std::uint32_t& bucket) = 0;
+    // 004E7C00 on the pool 00E18514: raw node storage, or null.
+    virtual void* allocate_node_004e7c00() = 0;
+    virtual void free_00bf65ac(void* block) = 0;
+    virtual void* new_descriptor_00bf55be() = 0;  // operator new(0Ch), may return null
+};
+// 004EE1A0, __thiscall(ECX = map, const NativeString* key, void* value), RET 8, returns the count: a
+// hit frees the old value (when set) and stores the new one; a miss links a new node at the head
+// of its bucket and bumps the count. A null pool node is dereferenced by the image; this stops.
+std::uint32_t scene_class_map_insert_004ee1a0(SceneClassMapLayout& map, const NativeString& key, void* value,
+                                              SceneClassMapCalls& calls);
+// 004EE250, __thiscall(ECX = map, const char* name, int class id, create, register), RET 10h:
+// operator new(0Ch) descriptor {id, create, register} (null when new failed), the name as a
+// NativeString (0041E870), insert, release the name.
+struct SceneClassDescriptor {
+    std::int32_t class_id;
+    std::uint32_t create;
+    std::uint32_t register_pass;
+};
+void scene_class_map_register_004ee250(SceneClassMapLayout& map, const char* name, std::int32_t class_id,
+                                       std::uint32_t create, std::uint32_t register_pass, SceneClassMapCalls& calls);
 
 // 004F1740: MOV EAX, 6; RET (the base sensor category). 004F17F0: RET 8 (a two-argument no-op).
 std::int32_t sensor_category_unclassified_004f1740() noexcept;

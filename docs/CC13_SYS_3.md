@@ -109,6 +109,25 @@ parameter defaults (`init_fish_school_params_00708b00`) were read from the image
   letter; 409h otherwise.
 - The XLive stats records, the online-system create/destroy pair, and the content-package array
   template (18h records) are complete.
+- Download manager (vtable 00D1D7D8), from the listing: slot 6 `enumerate_new_content_00994b10`
+  appends the display names of installed packages that match no active record to the global
+  string vector at 00F88A24 (004CDC20) and returns whether it appended any; slot 9
+  `refresh_content_licenses_00994f40` rebuilds the active records from the enumeration, reusing the
+  previous record of the same name; slot 10 (ledger `BSP_DownloadManager_UnmountPackage`) only
+  collects the paths of the mounted packages into a list; the destructor logs and unmounts
+  (`Unmount active content (dir: %s)(mpkg: %s)`, `Remove active content package (%s)`).
+- Stats: 00993220 and 00994310 read the eight player slots (game +18CCh..) and the per-side score
+  blocks ([game+21A0h]+70h + slot*284h) through a read-only `StatsGameView`.
+
+## Segment 35: fish schools (presentation)
+
+`respawn_fish_007077b0`, `init_fish_school_00709310` and `create_fish_school_00709620` were taken from
+the listing. All four 00BD2F10 draws are presentation draws on the shared stream 0 in the image; the
+reconstruction routes them through `PresentationRandom` so a host can give them their own stream. The
+x87 arithmetic runs on the main thread at 24-bit precision (docs/CC13_FPU_PRECISION.md), so float
+arithmetic is the closer model; the angle uses the double pi at 00CE3D28 and the placement is
+`x = rx sin t U(-0.5, 0.5)`, `y = ry sin t U(-0.5, 0.5)`, `z = (cos t - 1) rz / 2` with
+`t = i / count * pi`.
 
 ## Segment 11
 
@@ -165,8 +184,10 @@ kept and no record is written, as in docs/CC13_FILES_1.md.
 | segment 35 message manager | 36 |
 | segment 35 pools and fish/flag helpers | 35 |
 | segment 66 | 42 |
-| segment 11 (new) | 38 |
+| segment 11 (new) | 40 |
 | backfills | 31 |
+| segment 35 fish school (respawn, init, create) | 3 |
+| segment 66 download manager and stats (second batch) | 6 |
 
 ## Handoff
 
