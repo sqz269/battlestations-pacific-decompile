@@ -257,12 +257,12 @@ mechanism is in the cd761bb52 section above).
   - ESMP08: the kill rate halves from the first big-ship deaths on (Washington 846 -> 1812 s, Iowa 1265 -> 2096 s).
     Re-plan after the plane-flight flips (CC13_GPR_48 10).
 - **The four plane-flight switches ON together** (cc9-physics7, scratch `local\p7_all` = ad68156b1 plus D2, R2, D4 and
-  D1 ON, exe 24B400E520EF; docs/CC13_GPR_48.md 10; logs `local\p7a1_<row>.log`). This is NOT on main yet; the switches
-  are planned for one commit at the resume. Results: USN02 203.01 s, LOMP06 372.83 s, USN12 1534.87 s, LOMP10 985.08 s,
+  D1 ON, exe 24B400E520EF; docs/CC13_GPR_48.md 10; logs `local\p7a1_<row>.log`). The four switches are committed ON by
+  cc9-physics7 in the commit that adds this note. Results: USN02 203.01 s, LOMP06 372.83 s, USN12 1534.87 s, LOMP10 985.08 s,
   USN15 EndMission 2730.99 s, BSM01 EndMission 761.94 s, JM08 f 1603.74 s, JM06 n1 2697.46 s, IJN18 EndMission
   2124.35 s, PRCP01 586.53 s, guard logged on all. **USN01 k6 lost** (Convoy1 survives). ESMP08 was stopped at the
   pause, before it ended.
   - USN01 re-plan for that build: **`config/win_orders/usn01_p7_u1_a.txt`**, which is k6 with `3413 target ConTBD2
-    Convoy1` (Convoy4 now dies first). It completes at 366.33 s (`local\p7u1_a.log`). The jitter checks were stopped
-    at the pause and have not been run.
+    Convoy1` (Convoy4 now dies first). It completes at 366.33 s (`local\p7u1_a.log`). Jitter status (20,3 and 20,7): pending; the
+    checks were stopped at the pause.
   - Variants b-f (ConSBD3 or ConSBD1/2 at Convoy1, ConTBD1's retarget at 3600) did not complete.

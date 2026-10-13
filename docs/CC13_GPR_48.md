@@ -793,3 +793,8 @@ ship-heavy rows finish sooner.
 - USN01 k6: lifts 926 (21.3 m), moved, 1118.67 s both.
 - JM08 f: lifts 29970 (988 m, about 3.3 cm each), moved, 2318.84 -> 2118.19 s.
 - No win lost. Guard logged on all.
+
+**Flipped ON, all four** (cc9-physics7, 2026-10-13, approved by the lead): kPlaneBankYawBound, kPlaneYawGainRawBound,
+kPlanePoseFirstBound and kPlaneDeckClampBound, in one units.cpp commit. The tree build is the same patch as the
+scratch `local\p7_all`. The win set on that build is in WINS_TABLE. USN01 is re-planned as `usn01_p7_u1_a`, and
+ESMP08 is pending (handoff OCEAN_WAVE_FIELD 26).
