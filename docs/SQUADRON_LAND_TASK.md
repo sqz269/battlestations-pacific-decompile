@@ -16390,3 +16390,21 @@ Summary line: `summary strike ctl+394h cap feeds=N`.
   item 2); dive releases +1-3. Deaths on the attackrun leg shift (lower, faster TBMs against different AA categories).
 - USN01 g (`usn01_p6_u1_g.txt`): MOVED if its SBDs dive (cap 1300); the "aimglide blocked at the ceiling" lead may ease.
 - LOMP10 and USN12: MOVED wherever a dive or torpedo strike flies; the win must hold.
+
+### 5gt.1 Measured: **ON** (cc9-lua57, 2026-10-13)
+
+Same tree: OFF `9f2469b01` (exe 946E85A55724, frozen at `local\l57_off`), ON = `local\l57_cap1` (pair_export flip). Logs
+`local\l57_{a0,c1}_{u21f,u01g,u12,l10w}.log`, reference env, `--stop-after-end 40`.
+- **USN21 f (mechanism held, spread partly missed): MOVED.** The torpedo glide census commands 1450.0 on all 3123 OFF rows and
+  500.0 on all 3035 ON rows; the dive `009FBA50 terms` clamp reads 1300. Dive releases 4 -> 14 (of 372 / 396), above the +1-3
+  predicted. Torpedo releases 6 -> 3 and drops 25 -> 21, against the predicted rise: aircraft reaching aim 240 -> 220 of 332 / 354,
+  and the gate stays 009D3210 (`member` 388137 -> 388638, `range` 146543 -> 140062), so the release is not altitude-limited; that is
+  item 2. Deaths 698 -> 728, no completion either side.
+- **USN01 g (`usn01_p6_u1_g.txt`, 26000 frames): LOST.** OFF completes at 1118.67 s; ON runs out the 1300 s. ON's torpedo strike is
+  better: Convoy6, 3, 4, 5 and 2 die to ConTBD torpedoes by 217.01 s (OFF: three by 189.01 s, then Northampton's guns sink
+  Convoy2/1/6 at 894-939 s). ConSBD3 flies into the water at 540.29 s (alt 21, no killer). Convoy1 survives to the end, and
+  Northampton never engages it (the shore kills at 584/594 s match). The plan needs a re-plan on ON; that goes to the keeper.
+- **USN12 (`usn12_s38_u12_p2.txt`): holds**, 1524.96 -> 1534.87 s, torpedo releases 4 -> 2 of 100, guard logged.
+- **LOMP10 (`lomp10_p3_l10_b.txt`, now 26000 frames; 20000 ends at 1000 s, before the 1006.93 s win): holds**, 1006.93 -> 978.43 s,
+  dive releases 43 -> 71, guard logged.
+- **Verdict: ON** (the mechanism matches the bytes exactly; one spread miss recorded; USN01 g to the keeper).
