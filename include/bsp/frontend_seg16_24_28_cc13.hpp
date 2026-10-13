@@ -652,6 +652,9 @@ struct Fe5Host {
     virtual double random_uniform_00bd2f10(int stream, float lo, float hi) = 0;
     // 0042C450(amount), ECX = [*00E188A8+1ED4h].
     virtual void scene_apply_0042c450(void* scene, float amount) = 0;
+    // 0064A540(top, bottom, left, right), ECX = quad fade (screen+16Ch): bind
+    // the four edge-flash icons.
+    virtual void quad_fade_bind_0064a540(Raw fade, void* top, void* bottom, void* left, void* right) = 0;
     // @host-end
 };
 
@@ -1751,6 +1754,55 @@ inline constexpr double kTorpedoMarkerPad = 0.014999999664723873;     // 00CEE6C
 inline constexpr double kShakeHalf = 0.5;                             // 00D7A280
 void plane_screen_update_instruments_00609bd0(Raw screen, float dt, bool ordnance_view, bool aim_view,
                                               Fe5Host& host);
+// 00606C60 __fastcall(ECX = plane HUD screen 3Eh), plain RET (vtable +14h):
+// the layout binder. Page "GUI_cross_all" into +0Ch; when it loaded:
+// "cross_tilt_Icon" into +88h; for each reticle row i (kPlaneReticleRows,
+// jump table 00607BB0) find the row group in +0Ch, then the five cross icons
+// of the row into +10h + i*14h + j*4 (zeroed first; kPlaneReticleSlots, with
+// the rows that skip a slot), and when the row's F icon exists place its
+// child "cross_F2_Icon" at half the F icon's size (z 0; the pointer is not
+// kept); "payload_template_Icon" (+8Ch) and "payload_template_Section"
+// (+90h), both hidden. Then page "GUI_plane_effects" into +B8h with
+// AttackRun_Text (+BCh), RepairZone_Text (+11Ch) and, when VillanasFelso_Icon
+// exists, the four edge-flash icons bound to the quad fade +16Ch (0064A540);
+// page "GUI_plane" into +B4h with kPlaneHudWidgets (the parent is the page
+// unless the row names a widget offset).
+inline constexpr std::array<std::string_view, 6> kPlaneReticleRows{{
+    "plane_AA_Group", "plane_rocket_Group", "plane_bomb_Group", "plane_torpedo_Group", "plane_parat_Group",
+    "plane_DC_Group"}};  // 00CF47E0, 00CF47CC, 00CF47B8, 00CF47A4, 00CF4780, 00CF4794
+struct PlaneReticleSlot {
+    std::string_view name;
+    std::uint8_t skip_rows;  // bit i set: row i has no such icon
+};
+inline constexpr std::array<PlaneReticleSlot, 5> kPlaneReticleSlots{{
+    {"cross__Icon", 0x00},                                    // 00CEDE80
+    {"cross_F_Icon", (1u << 2) | (1u << 4)},                  // 00CEDE70
+    {"cross_H_Icon", (1u << 4)},                              // 00CEDE60
+    {"cross_HF_Icon", (1u << 3) | (1u << 4) | (1u << 5)},     // 00CEDE50
+    {"cross_L_Icon", (1u << 2) | (1u << 4) | (1u << 5)}}};    // 00CEDE40
+struct PlaneHudWidget {
+    std::uint16_t offset;
+    std::uint16_t parent;  // 0: the page +B4h, else the screen offset of the parent
+    std::string_view name;
+};
+inline constexpr std::array<PlaneHudWidget, 15> kPlaneHudWidgets{{
+    {0xC8, 0, "plane_stick_Icon"},
+    {0xD4, 0, "turbo_Group"},
+    {0xDC, 0xD4, "plane_turbo_arrow_Icon"},
+    {0xE0, 0xD4, "plane_turbo_warning_Icon"},
+    {0xE4, 0, "plane_arrow_blue_Icon"},
+    {0xE8, 0, "plane_arrow_red_Icon"},
+    {0xEC, 0, "plane_warning_Icon"},
+    {0xF4, 0, "ship_speed_num1_Icon"},
+    {0xF8, 0, "ship_speed_num2_Icon"},
+    {0xFC, 0, "ship_speed_num3_Icon"},
+    {0xC4, 0, "muhorizont_Model"},
+    {0xD8, 0, "plane_payload_Group"},
+    {0x100, 0xD8, "ship_payload_1_Icon"},
+    {0x104, 0xD8, "ship_payload_2_Icon"},
+    {0x110, 0xD8, "payload_type_Icon"}}};
+inline constexpr double kCrossF2Scale = 0.5;  // 00D7A280
+void plane_screen_load_layout_00606c60(Raw screen, Fe5Host& host);
 // @decl-end
 
 }  // namespace bsp::cc13_fe5

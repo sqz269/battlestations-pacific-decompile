@@ -2976,6 +2976,50 @@ void plane_screen_update_instruments_00609bd0(Raw screen, float dt, bool ordnanc
     const Raw last = plane();
     host.widget_set_visible_34(screen.ptr(0x11C), last.p != nullptr && last.at<std::int32_t>(0xC30) != 0);
 }
+
+void plane_screen_load_layout_00606c60(Raw screen, Fe5Host& host) {
+    screen.ptr(0x0C) = host.gui_load_page_00aa5840("GUI_cross_all");  // 00CF4800
+    if (screen.ptr(0x0C) != nullptr) {
+        screen.ptr(0x88) = host.gui_find_child_00aa7e00(screen.ptr(0x0C), "cross_tilt_Icon");  // 00CF47F0
+        for (std::size_t row = 0; row < kPlaneReticleRows.size(); ++row) {
+            void* const group = host.gui_find_child_00aa7e00(screen.ptr(0x0C), kPlaneReticleRows[row]);
+            for (std::size_t slot = 0; slot < kPlaneReticleSlots.size(); ++slot) {
+                void*& cell = screen.ptr(0x10 + row * 0x14 + slot * 4);
+                cell = nullptr;
+                if ((kPlaneReticleSlots[slot].skip_rows >> row) & 1) continue;
+                cell = host.gui_find_child_00aa7e00(group, kPlaneReticleSlots[slot].name);
+            }
+            void* const f_icon = screen.ptr(0x14 + row * 0x14);
+            if (f_icon != nullptr) {
+                void* const f2 = host.gui_find_child_00aa7e00(f_icon, "cross_F2_Icon");  // 00CEDE30
+                const float* const size = host.widget_size_00aa6740(f_icon);
+                const float w = size[0];
+                const float h = size[1];
+                const float pos[3] = {static_cast<float>(w * kCrossF2Scale), static_cast<float>(kCrossF2Scale * h), 0.0f};
+                host.widget_set_local_position_00aa7dc0(f2, pos);
+            }
+        }
+        screen.ptr(0x8C) = host.gui_find_child_00aa7e00(screen.ptr(0x0C), "payload_template_Icon");     // 00CF4768
+        host.widget_set_visible_34(screen.ptr(0x8C), false);
+        screen.ptr(0x90) = host.gui_find_child_00aa7e00(screen.ptr(0x0C), "payload_template_Section");  // 00CF474C
+        host.widget_set_visible_34(screen.ptr(0x90), false);
+    }
+    screen.ptr(0xB8) = host.gui_load_page_00aa5840("GUI_plane_effects");  // 00CF4738
+    screen.ptr(0xBC) = host.gui_find_child_00aa7e00(screen.ptr(0xB8), "AttackRun_Text");    // 00CF4728
+    screen.ptr(0x11C) = host.gui_find_child_00aa7e00(screen.ptr(0xB8), "RepairZone_Text");  // 00CF4718
+    void* const top = host.gui_find_child_00aa7e00(screen.ptr(0xB8), "VillanasFelso_Icon");  // 00CF4704
+    if (top != nullptr) {
+        void* const bottom = host.gui_find_child_00aa7e00(screen.ptr(0xB8), "VillanasAlso_Icon");  // 00CF46F0
+        void* const left = host.gui_find_child_00aa7e00(screen.ptr(0xB8), "VillanasBal_Icon");     // 00CF46DC
+        void* const right = host.gui_find_child_00aa7e00(screen.ptr(0xB8), "VillanasJobb_Icon");   // 00CF46C8
+        host.quad_fade_bind_0064a540(Raw{screen.p + 0x16C}, top, bottom, left, right);
+    }
+    screen.ptr(0xB4) = host.gui_load_page_00aa5840("GUI_plane");  // 00CF46BC
+    for (const PlaneHudWidget& w : kPlaneHudWidgets) {
+        void* const parent = w.parent == 0 ? screen.ptr(0xB4) : screen.ptr(w.parent);
+        screen.ptr(w.offset) = host.gui_find_child_00aa7e00(parent, w.name);
+    }
+}
 // @impl-end
 
 }  // namespace bsp::cc13_fe5
