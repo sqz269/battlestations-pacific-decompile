@@ -63,6 +63,9 @@ struct TerrainHost {
     // Image globals (no global is modelled here; the host owns them).
     virtual void* read_global(std::uint32_t address) = 0;
     virtual void write_global(std::uint32_t address, void* value) = 0;
+    virtual std::uint32_t read_global_u32(std::uint32_t address) = 0;
+    virtual std::uint8_t read_global_u8(std::uint32_t address) = 0;
+    virtual void write_global_u8(std::uint32_t address, std::uint8_t value) = 0;
 
     // Named image routines.
     virtual void node_unlink_and_release_00b6d8f0(void* node) = 0;                   // BSP_Node_UnlinkAndRelease
@@ -522,5 +525,259 @@ struct HeightFieldDestroyHost {
     virtual void weak_link_destruct_00ae9930(void* object) = 0;
 };
 void height_field_destroy_00add1b0(void* field, TerrainHost& host, HeightFieldDestroyHost& more);
+
+// ---------------------------------------------------------------------------
+// Lazy singletons (double-checked under the lifetime lock with the depth counter):
+//   00ADC7B0 [0109DBB4]: operator new(4), vtable 00D5D2D8, registers the object.
+//   00AF0990 [00F8C278]: operator new(8), +04 = 00D5D7E8 then 00D5D7F0, +00 = 00D5D7F4;
+//   registers object+4 (null when new failed). Both return the global.
+// ---------------------------------------------------------------------------
+void* lazy_singleton_get(std::uint32_t address, TerrainHost& host);
+
+// ---------------------------------------------------------------------------
+// Segment 82: the particle band.
+// ---------------------------------------------------------------------------
+struct ParticleHost {
+    virtual ~ParticleHost() = default;
+    // RNG RULE: both draws are image stream 0 (ECX = 0), shared with gameplay. A host that
+    // wires these bodies in must route them to a presentation stream or keep them off.
+    virtual std::uint32_t draw_u32_stream0_00bd2fc0() = 0;      // BSP_RandomThreads_NextU32
+    virtual float draw_fraction_stream0_00bd2f40() = 0;         // DrawUnsignedFraction -> ST0
+    // BSP_CriticalSection_Create (allocated, initialised); LeaveCriticalSection /
+    // DeleteCriticalSection on the image section.
+    virtual void* critical_section_create() = 0;
+    virtual void critical_section_leave(void* cs) = 0;
+    virtual void critical_section_delete(void* cs) = 0;
+    // BSP_ParticleParameter_DisposePayload / _ReturnPoolSlot (ECX = parameter).
+    virtual void particle_parameter_dispose_payload(void* parameter) = 0;
+    virtual void particle_parameter_return_pool_slot(void* parameter) = 0;
+    // 00AF3F50 BSP_ParticleDefinition_CopyBounds(ECX = definition, out) -> bounds;
+    // 00B74390 BSP_GeneratedModel_SetLocalBounds(ECX = model, bounds).
+    virtual void* particle_definition_copy_bounds_00af3f50(void* definition, void* out) = 0;
+    virtual void generated_model_set_local_bounds_00b74390(void* model, void* bounds) = 0;
+    // BSP_NativeParticleModel_BuildFrameGeometry (ECX = model).
+    virtual void particle_model_build_frame_geometry(void* model) = 0;
+    // The vertex stride of the model's geometry vertex stream 0: 00B74640 GetGeometry(0),
+    // BSP_Geometry_GetVertexStream(.., 0), stream vtable +24h -> descriptor, descriptor +CCh.
+    virtual std::int32_t particle_model_vertex_stride(void* model) = 0;
+    // 00B74F90 BSP_TypeInfo_Initialize3dObject (ECX = the type-info global 01090034);
+    // 006FAC20 BSP_TypeId_GetCounterSingleton (counter at +04).
+    virtual void type_info_initialize_3d_object_00b74f90(std::uint32_t type_info_global) = 0;
+    virtual void* type_id_counter_singleton() = 0;
+};
+
+// 00AF19B0 BSP_ParticleSystem_CreateLock (static initialiser, __fastcall, returns ECX):
+// [00F8C284] = BSP_CriticalSection_Create().
+void particle_system_create_lock_00af19b0(TerrainHost& host, ParticleHost& particles);
+// 00AF2650 BSP_ParticleSystem_DestroyLock (atexit): when [00F8C284]: leave while the depth
+// counter (cs+18h) is positive (decrementing first), DeleteCriticalSection, _free; then the
+// global is cleared.
+void particle_system_destroy_lock_00af2650(TerrainHost& host, ParticleHost& particles);
+// 00AF55B0 BSP_ByteBuffer_Reset, __thiscall(buffer, size), RET 4 -> AL: +08 = size, +18h = 0,
+// +00 = 0, frees +14h when set (not cleared), +14h = operator new(size); returns +14h != 0.
+bool byte_buffer_reset_00af55b0(void* buffer, std::uint32_t size, TerrainHost& host);
+// 00AF5A30 BSP_Random_VariationFactor, __thiscall(ECX ignored, float spread), RET 4 -> ST0:
+// spread == 0 (UCOMISS; NaN computes) -> 1.0; else f((int32)draw_u32 * spread * 2^-31 + 1.0)
+// (FILD of the draw, doubles 00D5DA30 / 00D7A210). One stream-0 draw.
+float random_variation_factor_00af5a30(float spread, ParticleHost& particles);
+// 00AF7F70 BSP_Random_FractionTimes, (float x) on the stack, RET 4 -> ST0: x == 0 -> 0.0;
+// else f(fraction * x). One stream-0 draw.
+float random_fraction_times_00af7f70(float x, ParticleHost& particles);
+// 00AF7FB0 BSP_ParticleEmitter_RandomSign, __fastcall(emitter) -> ST0: byte +29h clear ->
+// 1.0; else one stream-0 fraction: r >= 0.5 -> 1.0, otherwise (and unordered) -1.0.
+float particle_emitter_random_sign_00af7fb0(const void* emitter, ParticleHost& particles);
+// 00AFB790 / 00AFB7C0 BSP_ParticleRange_SetA/B, __thiscall(range, a, b), RET 8: +08/+0Ch or
+// +10h/+14h.
+void particle_range_set(std::uint32_t address, void* range, std::uint32_t a, std::uint32_t b);
+// 00AF5B70 BSP_NativeParticleModel_RefreshBounds, __thiscall(model): bounds of the definition
+// +18Ch (00AF3F50 into a 10h local) handed to 00B74390.
+void particle_model_refresh_bounds_00af5b70(void* model, ParticleHost& particles);
+// 00AF0520 BSP_FoliageGroupManager_RebuildParticleFrame (no arguments): BuildFrameGeometry on
+// [[00F8C274] + 1Ch].
+void foliage_group_manager_rebuild_particle_frame_00af0520(TerrainHost& host, ParticleHost& particles);
+// 00AF0540, __thiscall(model, count), RET 4: when +24h and +28h are set, +28h += stride *
+// count.
+void particle_model_advance_vertex_cursor_00af0540(void* model, std::int32_t count, ParticleHost& particles);
+// 00AF1B90 / 00AF5D80 pointer-array grow (capacity = 2 * capacity + 2, stored first; copy;
+// free the old buffer when set): the bsp::cc13_scene2 "Grow" shape.
+void pointer_array_grow(std::uint32_t address, PtrArray& a);
+// 00AF6B90 BSP_TypeInfo_InitializeMwParticleSystem, __fastcall(type info): once (guard
+// byte 00F8D2CC): +10h = "MwParticleSystem", 3d-object type init, +04..+0Ch = the dwords
+// at 01090034..0109003C, +00 = the next type id (counter +04 post-increment). 00AF7490 calls
+// it and returns ECX.
+void type_info_initialize_mw_particle_system_00af6b90(void* type_info, TerrainHost& host, ParticleHost& particles);
+void* type_info_construct_mw_particle_system_00af7490(void* type_info, TerrainHost& host, ParticleHost& particles);
+// 00AF81C0, __thiscall(parameter, flags), RET 4 -> parameter: dispose payload; return the
+// pool slot when bit 0 is set. 00AF8400, __fastcall(slot): when *slot: dispose, return the
+// slot, *slot = 0.
+void* particle_parameter_scalar_deleting_dtor_00af81c0(void* parameter, std::uint8_t flags, ParticleHost& particles);
+void particle_parameter_ptr_delete_00af8400(void** slot, ParticleHost& particles);
+// 00AF12A0 BSP_ParticleShaderSet_Destroy, __fastcall(set): vtable 00D5D844; +04 released
+// without a null test and not cleared; then +18h, +08, +0Ch, +10h, +14h, +1Ch, +20h, +24h,
+// +28h, +2Ch released and cleared; base 00AF11E0.
+void particle_shader_set_destroy_00af12a0(void* set, TerrainHost& host);
+
+// 2Ch-byte parameter keys {data, count, capacity} of the parameter builder.
+// 00AFBE90 BSP_ParticleParameterBuilder_PushKey, __thiscall(keys, const key*), RET 4: when
+// full, ReserveKeys(2 * capacity) (no minimum: a zero capacity asks for 0); append 11 dwords.
+// 00AFC1D0 BSP_ParticleParameterBuilder_AssignKeys, __thiscall(keys, const keys*), RET 4 ->
+// keys: _free(data), zero the header, ReserveKeys(source count), then the PushKey loop.
+using KeyReserve = std::function<void(NativeArray<std::uint8_t>&, std::int32_t)>;  // data/count/cap over 2Ch keys
+void particle_keys_push_00afbe90(void* keys, const void* key, const KeyReserve& reserve);
+void* particle_keys_assign_00afc1d0(void* keys, const void* source, const KeyReserve& reserve, TerrainHost& host);
+// MSVC vector deleting destructors, __thiscall(object, flags), RET 4: flags & 2 -> the
+// element destructor over the count at object-4 (eh vector destructor iterator), _free of
+// object-4 when flags & 1, returns object-4; otherwise (00AFCE80 only) the element destructor
+// on the object, then _free when flags & 1. 00AFCE30: 1-byte elements, element destructor
+// BSP_NativeParticleArrayByte_Destroy; its scalar path skips the destructor. 00AFCE80: 108h
+// elements, BSP_ParticleTemporary_Destroy. 00B04AB0: 8-byte elements,
+// BSP_NativeParticleEmitterRow_Destroy.
+void* vector_deleting_destructor(std::uint32_t address, void* object, std::uint8_t flags,
+    const std::function<void(void*)>& element_destructor, TerrainHost& host);
+// 00AFD820 BSP_NativeParticleEmitterSet_UpdateTransforms, __thiscall(set, argument), RET 4:
+// for i < +14h: 00AFDCF0(argument) with ECX = +0Ch + byte(+04)[i] * 108h.
+void particle_emitter_set_update_transforms_00afd820(void* set, std::uint32_t argument,
+    const std::function<void(void* emitter, std::uint32_t argument)>& update_00afdcf0);
+// 00AFEBE0 pointer-array push back growing to capacity + 1 (minimum 1) through 00AFEB60,
+// __thiscall(array, const T*), RET 4.
+void pointer_array_push_back_plus_one_00afebe0(PtrArray& a, void* value);
+// 00AFECE0, __thiscall(array, const array*), RET 4 -> array: resize 0 (00AFEC20), reserve
+// the source count, then the 00AFEBE0 push loop.
+PtrArray& pointer_array_assign_00afece0(PtrArray& a, const PtrArray& source);
+
+// Named pointer lists, 14h bytes {NativeString name +00/+04, pointer array +08..+10}, and
+// their arrays {data, count, capacity}; these live in image memory (TerrainHost).
+// 00AFEE90 destroy (__fastcall): the value array resized to 0 twice (00AFEC20), its data
+// freed, the name released.
+void named_pointer_list_destroy_00afee90(void* list, TerrainHost& host);
+// 00AFEF30, __thiscall(list, NativeString name by value, value), RET 0Ch: zero the five
+// words, copy the name, append value (00AFEBE0 growth), release the by-value name.
+void* named_pointer_list_construct_00afef30(void* list, void* name, void* value, TerrainHost& host);
+// 00AFF010, __thiscall(list, const list*), RET 4: copy the name, zero the array, 00AFECE0.
+void* named_pointer_list_copy_00aff010(void* list, const void* source, TerrainHost& host);
+// 00AFF0B0 reserve (n clamped to 1; when capacity < n: operator new(n * 14h), copy-construct
+// each element into the new block, destroy each old one, free, data = new, capacity = n);
+// 00AFF190 push back (capacity + 1, minimum 1; copy-construct at the end); 00AFF210 resize
+// (reserve, zero new elements, destroy from the top down to n, count = n); 00AFF420 /
+// 00AFF450 destroy (resize 0 then free data). All __thiscall on the array.
+void named_list_array_reserve_00aff0b0(void* array, std::int32_t n, TerrainHost& host);
+void named_list_array_push_back_00aff190(void* array, const void* list, TerrainHost& host);
+void named_list_array_resize_00aff210(void* array, std::int32_t n, TerrainHost& host);
+void named_list_array_destroy(std::uint32_t address, void* array, TerrainHost& host);
+// 00AFF290 BSP_NamedPointerListArray_AddUnderName, __thiscall(array, NativeString name by
+// value, value), RET 0Ch: the first list whose name matches (equal length, __stricmp; empty
+// equals empty) gets value appended (capacity + 1 growth); otherwise operator new(14h) is
+// constructed by 00AFEF30(name copy, value) and pushed by copy (00AFF190). The 14h temporary
+// is never destroyed or freed (00AFF30C..00AFF37B: no 00AFEE90 or _free follows): the image
+// leaks it with its name and value array. The by-value name is released on both paths.
+void named_list_array_add_under_name_00aff290(void* array, void* name, void* value, TerrainHost& host);
+// 00AFF8C0 BSP_ParticleEmitter_Destruct, __fastcall(emitter): vtable 00D5DCB4; container +10h
+// deleted through its vtable +04(1) and cleared; definition +0Ch released; refcounted base.
+void particle_emitter_destruct_00aff8c0(void* emitter, TerrainHost& host, BlockHost& blocks);
+// 00B04DF0, __thiscall(array, uint n), RET 4: frees data when set, data = operator new(n *
+// 6Ch) (overflow -> FFFFFFFFh), count (+04) = n. The old contents are not kept.
+void array_reallocate_6c_00b04df0(void* array, std::uint32_t n, TerrainHost& host);
+// 00B0A710, __thiscall(array, const array*), RET 4: count = 0; grow to the source count as
+// 00B0A440 (copying nothing since count is 0); count = source count; copy the dwords.
+void dword_array_assign_00b0a710(NativeArray<std::uint32_t>& a, const NativeArray<std::uint32_t>& source,
+    TerrainHost& host);
+
+// ---------------------------------------------------------------------------
+// Segment 82 tail: textures, lights, tracer resources, render batches and small records.
+// ---------------------------------------------------------------------------
+struct RenderMiscHost {
+    virtual ~RenderMiscHost() = default;
+    virtual std::int32_t texture_format_00b33e60(void* texture) = 0;        // D3DFORMAT or FOURCC
+    virtual void texture_premultiply_alpha_00b4c6a0(void* texture) = 0;     // level 0
+    virtual void texture_alpha_from_non_black_00b4c6d0(void* texture) = 0;  // level 0
+    // 00B62D10 BSP_Vector4f_Transform(ECX = in[4], out[4], matrix) -> out.
+    virtual const float* vector4_transform_00b62d10(const float in[4], float out[4], const void* matrix) = 0;
+    // Batch lists: list vtable +0Ch(index), +08h(index, camera); 00B1BF40 camera of a command.
+    virtual void batch_list_slot0c(void* list, std::int32_t index) = 0;
+    virtual void batch_list_slot08(void* list, std::int32_t index, void* camera) = 0;
+    virtual void* render_command_camera_00b1bf40(void* command) = 0;
+    // 004C1130 BSP_FrameJobPool_GetSingleton; BSP_RenderBatchPreparationJob_GetSingleton;
+    // pool+4 vtable +04h(job, list).
+    virtual void* frame_job_pool_004c1130() = 0;
+    virtual void* render_batch_preparation_job() = 0;
+    virtual void job_queue_submit(void* queue, void* job, void* list) = 0;
+    // 12Ch material records: 00B13070 copy-construct, 00B13180 assign, 00B10740 destroy.
+    virtual void material_record_copy_00b13070(void* dst, const void* src) = 0;
+    virtual void material_record_assign_00b13180(void* dst, const void* src) = 0;
+    virtual void material_record_destroy_00b10740(void* record) = 0;
+    // The stats filter vector at service+69Ch: BSP_SceneRenderer_FindStatsFilterName returns
+    // a checked iterator whose element address equals [service+6A4h] (last) when absent;
+    // 00589690 erase at that element, 00450540 append.
+    virtual std::uint32_t stats_filter_find(void* service, const void* name) = 0;
+    virtual void stats_filter_erase_00589690(void* service, std::uint32_t element) = 0;
+    virtual void stats_filter_append_00450540(void* service, const void* name) = 0;
+    // 00B17E10 BSP_Material_RegisterParameter(ECX = material, name, source, words, matrix).
+    virtual void* material_register_parameter_00b17e10(void* material, const void* name, const void* source,
+        std::int32_t words, std::int32_t matrix) = 0;
+    // BSP_ReturnNative88BytePoolSlot(object).
+    virtual void return_88_byte_pool_slot(void* object) = 0;
+    // BSP_ResourceRegistryTree_IncrementIterator / BSP_ResourceRegistry_IteratorDecrement
+    // (ECX = iterator).
+    virtual void registry_iterator_increment(void* iterator) = 0;
+    virtual void registry_iterator_decrement(void* iterator) = 0;
+    // Lua objects are host handles: 00B67980 BSP_LuaStateOwner_GetGlobals(ECX = owner, out);
+    // 00B68100 BSP_LuaObject_GetByNativeString(ECX = table, out, name); 00B661B0 IsTable;
+    // 00B67C40 GetFloat4(out); 00B67700 destructor.
+    virtual void* lua_get_globals_00b67980(void* owner) = 0;
+    virtual void* lua_get_by_name_00b68100(void* table, const void* name) = 0;
+    virtual bool lua_is_table_00b661b0(void* object) = 0;
+    virtual void lua_get_float4_00b67c40(void* object, float out[4]) = 0;
+    virtual void lua_object_destruct_00b67700(void* object) = 0;
+};
+
+// 00B00950 BSP_Texture_PremultiplyAlphaIfUncompressed, __thiscall(texture): format above
+// 'DXT1' (31545844h, signed compare) or equal to it -> nothing; 15h (A8R8G8B8) -> 00B4C6A0;
+// 16h (X8R8G8B8) -> 00B4C6D0 (alpha from non-black, not premultiply); others nothing.
+void texture_premultiply_alpha_if_uncompressed_00b00950(void* texture, RenderMiscHost& render);
+// 00B094E0 BSP_Light_SetPosition, __thiscall(light, const float xyz[3]), RET 4: +1ECh..+1F4h.
+void light_set_position_00b094e0(void* light, const float xyz[3]);
+// 00B0A420, __fastcall(object): [00F8D38C] = 0, vtable 00CE3818 (the tail of 00B0ACA0).
+// 00B0ACA0 BSP_NativeParticleTracerResources_Destruct, __fastcall(object): vtable 00D5E074,
+// releases +08 then +04, then that tail.
+void tracer_resources_destruct_singleton_base_00b0a420(void* object, TerrainHost& host);
+void tracer_resources_destruct_00b0aca0(void* object, TerrainHost& host);
+// 00B0D720 BSP_Vector3f_TransformProjective, __fastcall(ECX = float v[3] in/out, EDX =
+// matrix): (x, y, z, 1) through 00B62D10; inv = 1/w (x87, not rounded); v = f(x * inv) ...
+void vector3_transform_projective_00b0d720(float v[3], const void* matrix, RenderMiscHost& render);
+// 00B0E970 BSP_SceneRenderer_RunBatchList, __thiscall(command, index), RET 4: list =
+// command[+0Ch + 4 * index]; list slot0C(index); list (re-read) slot08(index, camera).
+void scene_renderer_run_batch_list_00b0e970(void* command, std::int32_t index, RenderMiscHost& render);
+// 00B10700 BSP_RenderBatchJobs_Submit, __thiscall(owner, index), RET 4: list+08 = index;
+// pool = 004C1130(); pool+4 vtable +04h(preparation job, list).
+void render_batch_jobs_submit_00b10700(void* owner, std::int32_t index, RenderMiscHost& render);
+// 00B13350 BSP_MaterialRecord_Swap, __fastcall(a, b): tmp = copy(a); a = b; b = tmp; destroy
+// tmp (a 12Ch local).
+void material_record_swap_00b13350(void* a, void* b, RenderMiscHost& render);
+// 00B171C0 BSP_SceneRenderer_ToggleStatsFilterName, __thiscall(service, const NativeString*
+// name), RET 4: erase the name when present, else append it.
+void scene_renderer_toggle_stats_filter_name_00b171c0(void* service, const void* name, RenderMiscHost& render);
+// 00B18AC0 BSP_Material_RegisterFloat4ArrayParameter, __thiscall(material, name, source,
+// int count), RET 0Ch: 00B17E10(name, source, count * 4, 0).
+void* material_register_float4_array_00b18ac0(void* material, const void* name, const void* source,
+    std::int32_t count, RenderMiscHost& render);
+// 00B191D0 BSP_NamedRecord88_ScalarDeletingDestructor, __thiscall(record, flags), RET 4 ->
+// record: name string +00/+04 released; flags & 1 -> 88-byte pool slot returned.
+void* named_record88_scalar_deleting_dtor_00b191d0(void* record, std::uint8_t flags, TerrainHost& host,
+    RenderMiscHost& render);
+// 00B199A0 BSP_SceneTypeInfo_IsKindOf_00f8d428, (type id) on the stack, RET 4 -> AL: id is
+// one of the two dwords at 00F8D428 / 00F8D42C (the cShaderDataSource type ids).
+bool scene_type_info_is_kind_of_00b199a0(std::uint32_t id, TerrainHost& host);
+// Iterator thunks, __fastcall(iterator) -> EAX = iterator: 00B19AF0 / 00B19BF0 increment,
+// 00B1ABE0 / 00B1ABF0 decrement.
+void* registry_iterator_step(std::uint32_t address, void* iterator, RenderMiscHost& render);
+// 00B1AC00 BSP_NamedValue_Construct, __thiscall(record, const NativeString* name, const
+// uint* value), RET 8; 00B1AC50 copy, __thiscall(record, const record*), RET 4: name copy,
+// +08 = value.
+void* named_value_construct_00b1ac00(void* record, const void* name, const std::uint32_t* value, TerrainHost& host);
+void* named_value_copy_00b1ac50(void* record, const void* source, TerrainHost& host);
+// 00B1B980 (ledger: BSP_LuaGlobals_GetField), __thiscall(owner, float out[4], const
+// NativeString* name), RET 8 -> out: globals[name] as a float4 when it is a table, else
+// (1, 1, 1, 1) (00D7A24C).
+float* lua_global_float4_00b1b980(void* owner, float out[4], const void* name, RenderMiscHost& render);
 
 } // namespace bsp::cc13_terrain

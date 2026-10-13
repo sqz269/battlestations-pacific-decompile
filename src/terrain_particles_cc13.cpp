@@ -1010,6 +1010,468 @@ void tile_list_release_00adc8e0(void* owner, TerrainHost& host, BlockHost& block
     wr<std::uint8_t>(owner, 0x50, 0);
 }
 
+void* lazy_singleton_get(std::uint32_t address, TerrainHost& host) {
+    std::uint32_t global = 0, size = 0;
+    if (address == 0x00ADC7B0) {
+        global = 0x0109DBB4;
+        size = 4;
+    } else if (address == 0x00AF0990) {
+        global = 0x00F8C278;
+        size = 8;
+    } else {
+        throw std::invalid_argument("not a lazy singleton getter");
+    }
+    if (host.read_global(global) == nullptr) {
+        host.lifetime_lock(true);
+        if (host.read_global(global) == nullptr) {
+            void* object = host.operator_new(size);
+            host.write_global(global, object);
+            void* registered = object;
+            if (object != nullptr) {
+                if (size == 4) {
+                    wr<std::uint32_t>(object, 0, 0x00D5D2D8);
+                } else {
+                    wr<std::uint32_t>(object, 4, 0x00D5D7E8);
+                    wr<std::uint32_t>(object, 0, 0x00D5D7F4);
+                    wr<std::uint32_t>(object, 4, 0x00D5D7F0);
+                    registered = at(object, 4);
+                }
+            }
+            host.lifetime_register_00bd0c30(size == 4 ? host.read_global(global) : registered);
+        }
+        host.lifetime_unlock(true);
+    }
+    return host.read_global(global);
+}
+
+void particle_system_create_lock_00af19b0(TerrainHost& host, ParticleHost& particles) {
+    host.write_global(0x00F8C284, particles.critical_section_create());
+}
+
+void particle_system_destroy_lock_00af2650(TerrainHost& host, ParticleHost& particles) {
+    if (void* cs = host.read_global(0x00F8C284)) {
+        while (rd<std::int32_t>(cs, 0x18) > 0) {
+            wr<std::int32_t>(cs, 0x18, rd<std::int32_t>(cs, 0x18) - 1);
+            particles.critical_section_leave(cs);
+        }
+        particles.critical_section_delete(cs);
+        host.free(cs);
+    }
+    host.write_global(0x00F8C284, nullptr);
+}
+
+bool byte_buffer_reset_00af55b0(void* buffer, std::uint32_t size, TerrainHost& host) {
+    wr<std::uint32_t>(buffer, 8, size);
+    wr<std::uint32_t>(buffer, 0x18, 0);
+    wr<std::uint32_t>(buffer, 0, 0);
+    if (void* old = rd<void*>(buffer, 0x14)) host.free(old);
+    void* fresh = host.operator_new(rd<std::uint32_t>(buffer, 8));
+    wr<void*>(buffer, 0x14, fresh);
+    return fresh != nullptr;
+}
+
+float random_variation_factor_00af5a30(float spread, ParticleHost& particles) {
+    if (spread == 0.0f) return 1.0f;
+    const auto draw = static_cast<std::int32_t>(particles.draw_u32_stream0_00bd2fc0());
+    return f(static_cast<double>(draw) * spread * 4.656612873077393e-10 + 1.0);
+}
+
+float random_fraction_times_00af7f70(float x, ParticleHost& particles) {
+    if (x == 0.0f) return 0.0f;
+    return f(static_cast<double>(particles.draw_fraction_stream0_00bd2f40()) * x);
+}
+
+float particle_emitter_random_sign_00af7fb0(const void* emitter, ParticleHost& particles) {
+    if (rd<std::uint8_t>(emitter, 0x29) == 0) return 1.0f;
+    return particles.draw_fraction_stream0_00bd2f40() >= 0.5f ? 1.0f : -1.0f;
+}
+
+void particle_range_set(std::uint32_t address, void* range, std::uint32_t a, std::uint32_t b) {
+    std::uint32_t off = 0;
+    if (address == 0x00AFB790) off = 8;
+    else if (address == 0x00AFB7C0) off = 0x10;
+    else throw std::invalid_argument("not a particle range setter");
+    wr<std::uint32_t>(range, off, a);
+    wr<std::uint32_t>(range, off + 4, b);
+}
+
+void particle_model_refresh_bounds_00af5b70(void* model, ParticleHost& particles) {
+    std::uint8_t local[0x10] = {};
+    void* bounds = particles.particle_definition_copy_bounds_00af3f50(rd<void*>(model, 0x18C), local);
+    particles.generated_model_set_local_bounds_00b74390(model, bounds);
+}
+
+void foliage_group_manager_rebuild_particle_frame_00af0520(TerrainHost& host, ParticleHost& particles) {
+    particles.particle_model_build_frame_geometry(rd<void*>(host.read_global(0x00F8C274), 0x1C));
+}
+
+void particle_model_advance_vertex_cursor_00af0540(void* model, std::int32_t count, ParticleHost& particles) {
+    if (rd<std::uint32_t>(model, 0x24) == 0 || rd<std::uint32_t>(model, 0x28) == 0) return;
+    wr<std::int32_t>(model, 0x28, rd<std::int32_t>(model, 0x28) + particles.particle_model_vertex_stride(model) * count);
+}
+
+void pointer_array_grow(std::uint32_t address, PtrArray& a) {
+    if (address != 0x00AF1B90 && address != 0x00AF5D80) throw std::invalid_argument("not a grow routine");
+    bsp::cc13_scene2::array_grow_double_plus_two(a);
+}
+
+void type_info_initialize_mw_particle_system_00af6b90(void* type_info, TerrainHost& host, ParticleHost& particles) {
+    if (host.read_global_u8(0x00F8D2CC) != 0) return;
+    host.write_global_u8(0x00F8D2CC, 1);
+    wr<const char*>(type_info, 0x10, "MwParticleSystem");  // 00D5DA3C
+    particles.type_info_initialize_3d_object_00b74f90(0x01090034);
+    wr<std::uint32_t>(type_info, 4, host.read_global_u32(0x01090034));
+    wr<std::uint32_t>(type_info, 8, host.read_global_u32(0x01090038));
+    wr<std::uint32_t>(type_info, 0xC, host.read_global_u32(0x0109003C));
+    void* counter = particles.type_id_counter_singleton();
+    const std::uint32_t id = rd<std::uint32_t>(counter, 4);
+    wr<std::uint32_t>(counter, 4, id + 1);
+    wr<std::uint32_t>(type_info, 0, id);
+}
+
+void* type_info_construct_mw_particle_system_00af7490(void* type_info, TerrainHost& host, ParticleHost& particles) {
+    type_info_initialize_mw_particle_system_00af6b90(type_info, host, particles);
+    return type_info;
+}
+
+void* particle_parameter_scalar_deleting_dtor_00af81c0(void* parameter, std::uint8_t flags, ParticleHost& particles) {
+    particles.particle_parameter_dispose_payload(parameter);
+    if (flags & 1) particles.particle_parameter_return_pool_slot(parameter);
+    return parameter;
+}
+
+void particle_parameter_ptr_delete_00af8400(void** slot, ParticleHost& particles) {
+    void* parameter = *slot;
+    if (parameter == nullptr) return;
+    particles.particle_parameter_dispose_payload(parameter);
+    particles.particle_parameter_return_pool_slot(parameter);
+    *slot = nullptr;
+}
+
+void particle_shader_set_destroy_00af12a0(void* set, TerrainHost& host) {
+    wr<std::uint32_t>(set, 0, 0x00D5D844);
+    void* first = rd<void*>(set, 4);
+    if (_InterlockedDecrement(reinterpret_cast<volatile long*>(at(first, 4))) == 0) host.call_virtual(first, 0);
+    for (std::uint32_t off : {0x18u, 0x08u, 0x0Cu, 0x10u, 0x14u, 0x1Cu, 0x20u, 0x24u, 0x28u, 0x2Cu})
+        release_ref_slot(reinterpret_cast<void**>(at(set, off)), host);
+    destroy_singleton_base(set, kSingletonBases[3], host);
+}
+
+void particle_keys_push_00afbe90(void* keys, const void* key, const KeyReserve& reserve) {
+    auto& a = *static_cast<NativeArray<std::uint8_t>*>(keys);
+    if (a.count == a.capacity) reserve(a, a.capacity * 2);
+    std::memcpy(a.data + a.count * 0x2C, key, 0x2C);
+    ++a.count;
+}
+
+void* particle_keys_assign_00afc1d0(void* keys, const void* source, const KeyReserve& reserve, TerrainHost& host) {
+    auto& a = *static_cast<NativeArray<std::uint8_t>*>(keys);
+    const auto& s = *static_cast<const NativeArray<std::uint8_t>*>(source);
+    host.free(a.data);
+    a.data = nullptr;
+    a.count = 0;
+    a.capacity = 0;
+    reserve(a, s.count);
+    for (std::int32_t i = 0; i < s.count; ++i) particle_keys_push_00afbe90(keys, s.data + i * 0x2C, reserve);
+    return keys;
+}
+
+void* vector_deleting_destructor(std::uint32_t address, void* object, std::uint8_t flags,
+    const std::function<void(void*)>& element_destructor, TerrainHost& host) {
+    std::uint32_t size = 0;
+    bool scalar_destructs = true;
+    switch (address) {
+    case 0x00AFCE30: size = 1; scalar_destructs = false; break;
+    case 0x00AFCE80: size = 0x108; break;
+    case 0x00B04AB0: size = 8; break;
+    default: throw std::invalid_argument("not a vector deleting destructor");
+    }
+    if (flags & 2) {
+        std::uint8_t* base = static_cast<std::uint8_t*>(object) - 4;
+        const std::uint32_t count = rd<std::uint32_t>(base, 0);
+        for (std::uint32_t i = count; i-- > 0;) element_destructor(static_cast<std::uint8_t*>(object) + i * size);
+        if (flags & 1) host.free(base);
+        return base;
+    }
+    if (scalar_destructs) element_destructor(object);
+    if (flags & 1) host.free(object);
+    return object;
+}
+
+void particle_emitter_set_update_transforms_00afd820(void* set, std::uint32_t argument,
+    const std::function<void(void* emitter, std::uint32_t argument)>& update_00afdcf0) {
+    for (std::int32_t i = 0; i < rd<std::int32_t>(set, 0x14); ++i) {
+        const std::uint8_t index = rd<const std::uint8_t*>(set, 4)[i];
+        update_00afdcf0(rd<std::uint8_t*>(set, 0xC) + index * 0x108u, argument);
+    }
+}
+
+void pointer_array_push_back_plus_one_00afebe0(PtrArray& a, void* value) {
+    if (a.count == a.capacity) {
+        std::int32_t n = a.capacity + 1;
+        if (n < 2) n = 1;
+        bsp::cc13_scene2::array_reserve_min_one(a, n);
+    }
+    a.data[a.count++] = value;
+}
+
+PtrArray& pointer_array_assign_00afece0(PtrArray& a, const PtrArray& source) {
+    pointer_array_resize(0x00AFEC20, a, 0);
+    bsp::cc13_scene2::array_reserve_min_one(a, source.count);
+    for (std::int32_t i = 0; i < source.count; ++i) pointer_array_push_back_plus_one_00afebe0(a, source.data[i]);
+    return a;
+}
+
+namespace {
+// The image-memory pointer array {data, count, capacity} of a named list (+08).
+void list_values_reserve(void* arr, std::int32_t n, TerrainHost& host) {  // 00AFEB60 over image memory
+    if (n < 1) n = 1;
+    if (rd<std::int32_t>(arr, 8) >= n) return;
+    auto* fresh = static_cast<std::uint32_t*>(host.operator_new(static_cast<std::uint32_t>(n) * 4));
+    for (std::int32_t i = 0; i < rd<std::int32_t>(arr, 4); ++i) fresh[i] = rd<std::uint32_t*>(arr, 0)[i];
+    host.free(rd<void*>(arr, 0));
+    wr<void*>(arr, 0, fresh);
+    wr<std::int32_t>(arr, 8, n);
+}
+
+void list_values_push(void* arr, std::uint32_t value, TerrainHost& host) {  // 00AFEBE0 shape
+    if (rd<std::int32_t>(arr, 4) == rd<std::int32_t>(arr, 8)) {
+        std::int32_t n = rd<std::int32_t>(arr, 8) + 1;
+        if (n < 2) n = 1;
+        list_values_reserve(arr, n, host);
+    }
+    rd<std::uint32_t*>(arr, 0)[rd<std::int32_t>(arr, 4)] = value;
+    wr<std::int32_t>(arr, 4, rd<std::int32_t>(arr, 4) + 1);
+}
+}  // namespace
+
+void named_pointer_list_destroy_00afee90(void* list, TerrainHost& host) {
+    wr<std::int32_t>(list, 0xC, 0);  // 00AFEC20(0) twice: shrinking only sets the count
+    host.free(rd<void*>(list, 8));
+    release_native_string(list, host);
+}
+
+void* named_pointer_list_construct_00afef30(void* list, void* name, void* value, TerrainHost& host) {
+    for (std::uint32_t off = 0; off < 0x14; off += 4) wr<std::uint32_t>(list, off, 0);
+    if (list != name) host.native_string_assign_0041dd40(list, rd<const void*>(name, 4), rd<std::uint32_t>(name, 0));
+    list_values_push(at(list, 8), static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(value)), host);
+    release_native_string(name, host);
+    return list;
+}
+
+void* named_pointer_list_copy_00aff010(void* list, const void* source, TerrainHost& host) {
+    wr<std::uint32_t>(list, 0, 0);
+    wr<std::uint32_t>(list, 4, 0);
+    if (list != source) host.native_string_assign_0041dd40(list, rd<const void*>(source, 4), rd<std::uint32_t>(source, 0));
+    for (std::uint32_t off = 8; off < 0x14; off += 4) wr<std::uint32_t>(list, off, 0);
+    // 00AFECE0: resize 0, reserve the source count, push each value.
+    const void* src = at(const_cast<void*>(source), 8);
+    wr<std::int32_t>(list, 0xC, 0);
+    list_values_reserve(at(list, 8), rd<std::int32_t>(src, 4), host);
+    for (std::int32_t i = 0; i < rd<std::int32_t>(src, 4); ++i)
+        list_values_push(at(list, 8), rd<const std::uint32_t*>(src, 0)[i], host);
+    return list;
+}
+
+void named_list_array_reserve_00aff0b0(void* array, std::int32_t n, TerrainHost& host) {
+    if (n < 1) n = 1;
+    if (rd<std::int32_t>(array, 8) >= n) return;
+    auto* fresh = static_cast<std::uint8_t*>(host.operator_new(static_cast<std::uint32_t>(n) * 0x14));
+    auto* old = rd<std::uint8_t*>(array, 0);
+    const std::int32_t count = rd<std::int32_t>(array, 4);
+    for (std::int32_t i = 0; i < count; ++i) named_pointer_list_copy_00aff010(fresh + i * 0x14, old + i * 0x14, host);
+    for (std::int32_t i = 0; i < count; ++i) named_pointer_list_destroy_00afee90(old + i * 0x14, host);
+    host.free(old);
+    wr<void*>(array, 0, fresh);
+    wr<std::int32_t>(array, 8, n);
+}
+
+void named_list_array_push_back_00aff190(void* array, const void* list, TerrainHost& host) {
+    if (rd<std::int32_t>(array, 4) == rd<std::int32_t>(array, 8)) {
+        std::int32_t n = rd<std::int32_t>(array, 8) + 1;
+        if (n < 2) n = 1;
+        named_list_array_reserve_00aff0b0(array, n, host);
+    }
+    named_pointer_list_copy_00aff010(rd<std::uint8_t*>(array, 0) + rd<std::int32_t>(array, 4) * 0x14, list, host);
+    wr<std::int32_t>(array, 4, rd<std::int32_t>(array, 4) + 1);
+}
+
+void named_list_array_resize_00aff210(void* array, std::int32_t n, TerrainHost& host) {
+    if (rd<std::int32_t>(array, 8) < n) named_list_array_reserve_00aff0b0(array, n, host);
+    for (std::int32_t i = rd<std::int32_t>(array, 4); i < n; ++i)
+        std::memset(rd<std::uint8_t*>(array, 0) + i * 0x14, 0, 0x14);
+    while (n < rd<std::int32_t>(array, 4)) {
+        wr<std::int32_t>(array, 4, rd<std::int32_t>(array, 4) - 1);
+        named_pointer_list_destroy_00afee90(rd<std::uint8_t*>(array, 0) + rd<std::int32_t>(array, 4) * 0x14, host);
+    }
+    wr<std::int32_t>(array, 4, n);
+}
+
+void named_list_array_destroy(std::uint32_t address, void* array, TerrainHost& host) {
+    if (address != 0x00AFF420 && address != 0x00AFF450) throw std::invalid_argument("not a named-list array destroy");
+    named_list_array_resize_00aff210(array, 0, host);
+    host.free(rd<void*>(array, 0));
+}
+
+void named_list_array_add_under_name_00aff290(void* array, void* name, void* value, TerrainHost& host) {
+    bool found = false;
+    for (std::int32_t i = 0; i < rd<std::int32_t>(array, 4); ++i) {
+        std::uint8_t* list = rd<std::uint8_t*>(array, 0) + i * 0x14;
+        if (!names_equal(list, name, host)) continue;
+        list_values_push(list + 8, static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(value)), host);
+        found = true;
+        break;
+    }
+    if (!found) {
+        void* temporary = host.operator_new(0x14);
+        if (temporary != nullptr) {
+            NativeStr copy{0, nullptr};
+            host.native_string_assign_0041dd40(&copy, rd<const void*>(name, 4), rd<std::uint32_t>(name, 0));
+            named_pointer_list_construct_00afef30(temporary, &copy, value, host);
+        }
+        named_list_array_push_back_00aff190(array, temporary, host);  // the temporary leaks, as in the image
+    }
+    release_native_string(name, host);
+}
+
+void particle_emitter_destruct_00aff8c0(void* emitter, TerrainHost& host, BlockHost& blocks) {
+    wr<std::uint32_t>(emitter, 0, 0x00D5DCB4);
+    if (void* container = rd<void*>(emitter, 0x10)) {
+        host.call_virtual_u32(container, 4, 1);
+        wr<std::uint32_t>(emitter, 0x10, 0);
+    }
+    release_ref_slot(reinterpret_cast<void**>(at(emitter, 0xC)), host);
+    blocks.ref_counted_destroy_base(emitter);
+}
+
+void array_reallocate_6c_00b04df0(void* array, std::uint32_t n, TerrainHost& host) {
+    if (void* old = rd<void*>(array, 0)) host.free(old);
+    const std::uint64_t bytes = static_cast<std::uint64_t>(n) * 0x6C;
+    void* fresh = host.operator_new(bytes >> 32 ? 0xFFFFFFFFu : static_cast<std::uint32_t>(bytes));
+    wr<std::uint32_t>(array, 4, n);
+    wr<void*>(array, 0, fresh);
+}
+
+void dword_array_assign_00b0a710(NativeArray<std::uint32_t>& a, const NativeArray<std::uint32_t>& source,
+    TerrainHost& host) {
+    a.count = 0;
+    dword_array_reserve_00b0a440(a, static_cast<std::uint32_t>(source.count), host);
+    a.count = source.count;
+    for (std::uint32_t i = 0; i < static_cast<std::uint32_t>(source.count); ++i) a.data[i] = source.data[i];
+}
+
+void texture_premultiply_alpha_if_uncompressed_00b00950(void* texture, RenderMiscHost& render) {
+    const std::int32_t format = render.texture_format_00b33e60(texture);
+    if (format >= 0x31545844) return;
+    if (format == 0x15) render.texture_premultiply_alpha_00b4c6a0(texture);
+    else if (format == 0x16) render.texture_alpha_from_non_black_00b4c6d0(texture);
+}
+
+void light_set_position_00b094e0(void* light, const float xyz[3]) {
+    wr<float>(light, 0x1EC, xyz[0]);
+    wr<float>(light, 0x1F0, xyz[1]);
+    wr<float>(light, 0x1F4, xyz[2]);
+}
+
+void tracer_resources_destruct_singleton_base_00b0a420(void* object, TerrainHost& host) {
+    host.write_global(0x00F8D38C, nullptr);
+    wr<std::uint32_t>(object, 0, kSingletonBaseVTable);
+}
+
+void tracer_resources_destruct_00b0aca0(void* object, TerrainHost& host) {
+    wr<std::uint32_t>(object, 0, 0x00D5E074);
+    release_ref_slot(reinterpret_cast<void**>(at(object, 8)), host);
+    release_ref_slot(reinterpret_cast<void**>(at(object, 4)), host);
+    tracer_resources_destruct_singleton_base_00b0a420(object, host);
+}
+
+void vector3_transform_projective_00b0d720(float v[3], const void* matrix, RenderMiscHost& render) {
+    const float in[4] = {v[0], v[1], v[2], 1.0f};
+    float out[4];
+    const float* r = render.vector4_transform_00b62d10(in, out, matrix);
+    const float x = r[0], y = r[1], z = r[2], w = r[3];
+    const double inv = 1.0 / w;
+    v[0] = f(x * inv);
+    v[1] = f(y * inv);
+    v[2] = f(inv * z);
+}
+
+void scene_renderer_run_batch_list_00b0e970(void* command, std::int32_t index, RenderMiscHost& render) {
+    render.batch_list_slot0c(rd<void*>(command, 0xC + 4 * index), index);
+    void* list = rd<void*>(command, 0xC + 4 * index);
+    render.batch_list_slot08(list, index, render.render_command_camera_00b1bf40(command));
+}
+
+void render_batch_jobs_submit_00b10700(void* owner, std::int32_t index, RenderMiscHost& render) {
+    wr<std::int32_t>(rd<void*>(owner, 0xC + 4 * index), 8, index);
+    void* pool = render.frame_job_pool_004c1130();
+    void* list = rd<void*>(owner, 0xC + 4 * index);
+    render.job_queue_submit(rd<void*>(pool, 4), render.render_batch_preparation_job(), list);
+}
+
+void material_record_swap_00b13350(void* a, void* b, RenderMiscHost& render) {
+    alignas(4) std::uint8_t tmp[0x12C];
+    render.material_record_copy_00b13070(tmp, a);
+    render.material_record_assign_00b13180(a, b);
+    render.material_record_assign_00b13180(b, tmp);
+    render.material_record_destroy_00b10740(tmp);
+}
+
+void scene_renderer_toggle_stats_filter_name_00b171c0(void* service, const void* name, RenderMiscHost& render) {
+    const std::uint32_t element = render.stats_filter_find(service, name);
+    if (element != rd<std::uint32_t>(service, 0x6A4)) render.stats_filter_erase_00589690(service, element);
+    else render.stats_filter_append_00450540(service, name);
+}
+
+void* material_register_float4_array_00b18ac0(void* material, const void* name, const void* source,
+    std::int32_t count, RenderMiscHost& render) {
+    return render.material_register_parameter_00b17e10(material, name, source, count * 4, 0);
+}
+
+void* named_record88_scalar_deleting_dtor_00b191d0(void* record, std::uint8_t flags, TerrainHost& host,
+    RenderMiscHost& render) {
+    release_native_string(record, host);
+    if (flags & 1) render.return_88_byte_pool_slot(record);
+    return record;
+}
+
+bool scene_type_info_is_kind_of_00b199a0(std::uint32_t id, TerrainHost& host) {
+    return host.read_global_u32(0x00F8D428) == id || host.read_global_u32(0x00F8D42C) == id;
+}
+
+void* registry_iterator_step(std::uint32_t address, void* iterator, RenderMiscHost& render) {
+    if (address == 0x00B19AF0 || address == 0x00B19BF0) render.registry_iterator_increment(iterator);
+    else if (address == 0x00B1ABE0 || address == 0x00B1ABF0) render.registry_iterator_decrement(iterator);
+    else throw std::invalid_argument("not a registry iterator thunk");
+    return iterator;
+}
+
+void* named_value_construct_00b1ac00(void* record, const void* name, const std::uint32_t* value, TerrainHost& host) {
+    wr<std::uint32_t>(record, 0, 0);
+    wr<std::uint32_t>(record, 4, 0);
+    if (record != name) host.native_string_assign_0041dd40(record, rd<const void*>(name, 4), rd<std::uint32_t>(name, 0));
+    wr<std::uint32_t>(record, 8, *value);
+    return record;
+}
+
+void* named_value_copy_00b1ac50(void* record, const void* source, TerrainHost& host) {
+    named_value_construct_00b1ac00(record, source, static_cast<const std::uint32_t*>(source) + 2, host);
+    return record;
+}
+
+float* lua_global_float4_00b1b980(void* owner, float out[4], const void* name, RenderMiscHost& render) {
+    void* globals = render.lua_get_globals_00b67980(owner);
+    void* field = render.lua_get_by_name_00b68100(globals, name);
+    render.lua_object_destruct_00b67700(globals);
+    if (render.lua_is_table_00b661b0(field)) {
+        render.lua_get_float4_00b67c40(field, out);
+    } else {
+        out[0] = out[1] = out[2] = out[3] = 1.0f;
+    }
+    render.lua_object_destruct_00b67700(field);
+    return out;
+}
+
 void height_field_destroy_00add1b0(void* field, TerrainHost& host, HeightFieldDestroyHost& more) {
     wr<std::uint32_t>(field, 0, 0x00D5D350);
     landscape_release_tiles_00adbf80(field, host);
