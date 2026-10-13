@@ -54,6 +54,7 @@
 #include "bsp/ship_ai_layer_selection.hpp"
 #include "bsp/ship_ai_formation.hpp"
 #include "bsp/ship_ai_free_bearing.hpp"
+#include "bsp/gameplay_seg52_cc13.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/recon_sensor_pass.hpp"
 #include "bsp/gamepad_force_events.hpp"
@@ -1677,6 +1678,34 @@ struct GameShipAiHost::Impl {
             ++fire_target_store_changes;
         }
         done("WeaponDirector::store_fire_target", 0x00836240u);
+    }
+    // Packet cc13-ver13 (kDirectorDeadFireTargetReleaseBound): 00835F60's test on
+    // director+238h; true queues its 5Eh release for the next session pump.
+    std::vector<std::size_t> pending_fire_target_releases;
+    unsigned long long dead_fire_target_releases{0};
+    unsigned long long dead_fire_target_release_locked{0};
+    bool director_releases_fire_target(std::size_t owner, const Controller& ctl) const {
+        if (ctl.fire_target == 0) return false;                       // 00835F86
+        const std::size_t t = static_cast<std::size_t>(ctl.fire_target) - 1;
+        if (t >= units.count()) return true;   // 00521EA0 resolves nothing: not live
+        bsp::gameplay_seg52_cc13::FireTargetView f;
+        f.present = true;
+        f.is_kind_41 = units.unit_is_kind_of(t, 0x41);
+        bsp::SceneNodeFlags flags;
+        if (units.unit_scene_node_flags(t, flags)) {
+            f.live.b5c = flags.active;
+            f.live.dead_5d = flags.torn_down;
+            f.live.b5e = flags.destroyed;
+        } else {
+            f.live.b5c = units.unit_active(t);
+            f.live.dead_5d = units.unit_flag_005d(t);
+        }
+        bool pending = false;
+        f.live.b60 = (units.unit_pending_destroy_0060(t, pending) && pending)
+            || unit_dead(t);   // LABELLED: the gunnery death is 00926C80's +60h moment
+        f.party_54 = units.unit_side_0054(t);
+        f.is_kind_1c = units.unit_is_kind_of(t, 0x1c);
+        return bsp::gameplay_seg52_cc13::director_release_fire_target_00835f60(f, units.unit_side_0054(owner));
     }
     unsigned long long script_fire_target_releases{0};
     unsigned long long autotarget_recon_scans{0};       // cc9_autotarget_recon_candidates
@@ -12064,6 +12093,18 @@ void GameShipAiHost::controller_step(float seconds) {
     // world entity tick runs the controllers (packet cc9_pass_side_message).
     if (kShipPassSideMessageBound) host.deliver_pass_side_messages();
     if constexpr (kWeaponDirectorFireTargetBound) {
+        // Packet cc13-ver13: last step's 00835F60 releases, 5Eh (null, force 1).
+        // LABELLED order: ahead of the command paths' messages of the same pump.
+        if constexpr (kDirectorDeadFireTargetReleaseBound) {
+            for (const std::size_t u : host.pending_fire_target_releases) {
+                if (u >= host.controllers.size() || u >= host.rows.size()) continue;
+                if (host.controllers[u].fire_target_locked) ++host.dead_fire_target_release_locked;
+                host.store_fire_target(host.controllers[u], host.rows[u], 0, true);
+                ++host.dead_fire_target_releases;
+                host.done("WeaponDirector::release_invalid_fire_target", 0x00835f60u);
+            }
+            host.pending_fire_target_releases.clear();
+        }
         // The routed 5Eh messages of the command paths' 00835860 calls.
         for (const GameFireTargetRequest& r : host.units.commands().take_fire_target_requests()) {
             if (r.unit >= host.controllers.size() || r.unit >= host.rows.size()) continue;
@@ -12133,6 +12174,12 @@ void GameShipAiHost::controller_step(float seconds) {
         // director's vtable 00D21B48, whose +4h is 009F5DA0. So the think's
         // position in the frame is recovered here rather than supplied, and
         // arm 3 is the hold countdown 0071DF70 tests.
+        // Packet cc13-ver13: 00835F60 heads the director step 00836920; its 5Eh
+        // release is delivered at the next pump (above).
+        if constexpr (kDirectorDeadFireTargetReleaseBound) {
+            if (host.director_releases_fire_target(index, ctl))
+                host.pending_fire_target_releases.push_back(index);
+        }
         bsp::CommandControllerUpdateState state{};
         // Arm 1's session predicate. The session object is this process's own
         // (docs/GAME_EXECUTABLE.md milestone 2l: 0077C2A0's routing and the
@@ -13677,6 +13724,10 @@ void GameShipAiHost::report() {
         "cc9_weapon_director_fire_target)", kWeaponDirectorFireTargetBound ? 1 : 0,
         host.command_fire_target_requests, host.fire_target_store_refusals,
         host.fire_target_store_changes);
+    host.log.notef("summary mission ship ai dead fire target release bound=%d releases=%llu "
+        "locked=%llu (00835F60 -> 5Eh -> 00836240, packet cc13-ver13)",
+        kDirectorDeadFireTargetReleaseBound ? 1 : 0, host.dead_fire_target_releases,
+        host.dead_fire_target_release_locked);
     host.log.notef("summary mission ship ai marker goals bound=%d resolves=%llu (00521EA0 / "
         "009DBCC0 on a NavPoint, packet cc9_prcp03_phase_progress)",
         kShipAiMarkerTargetBound ? 1 : 0, host.summary.marker_goal_resolves);
