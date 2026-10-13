@@ -317,6 +317,63 @@
     "program": "battlestationspacific.exe",
     "message": "Program saved successfully"
    }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00541120",
+    "end_address": "0054112d"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00541120",
+    "end_address": "0054112c",
+    "bytes_disassembled": 13,
+    "message": "Successfully disassembled 13 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00541120",
+    "disassemble_first": false,
+    "name": "BSP_PointerFlagPair_Init_00541120"
+   },
+   "result": {
+    "success": true,
+    "address": "00541120",
+    "function_name": "BSP_PointerFlagPair_Init_00541120",
+    "entry_point": "00541120",
+    "body_size": 13,
+    "message": "Function created successfully at 00541120",
+    "warnings": [
+     "Function name 'BSP_PointerFlagPair_Init_00541120' \u2014 main part 'PointerFlagPair_Init_00541120' is not PascalCase. Expected: PointerflagpairInit00541120",
+     "Function name 'BSP_PointerFlagPair_Init_00541120' \u2014 main part 'PointerFlagPair_Init_00541120' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_PointerFlagPair_Init_00541120' does not start with a recognized verb. First word 'Pointer' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00541120",
+   "end": "0054112d",
+   "name": "BSP_PointerFlagPair_Init_00541120",
+   "after": "Function: BSP_PointerFlagPair_Init_00541120 at 00541120\nSignature: undefined BSP_PointerFlagPair_Init_00541120(void)\nEntry: 00541120\nBody: 00541120 - 0054112c"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
   }
  ]
 }

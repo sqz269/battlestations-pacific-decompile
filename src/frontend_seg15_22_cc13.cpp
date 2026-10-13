@@ -3382,4 +3382,208 @@ void multi_chat_load_layout_005d14d0(Raw s, Fe10Host& host) {
     host.sound_request_singleton_004c1b90().at<std::uint8_t>(0x1A) = 1;
 }
 
+void* fingerprint_payload_get_singleton_0053bc00(Fe10Host& host) {
+    void*& instance = host.global_block(kFingerprintPayloadGlobal).ptr(0);
+    if (instance != nullptr) return instance;
+    const Raw manager = host.singleton_lifetime_manager_00415350();
+    auto* const lock = static_cast<std::uint8_t*>(manager.ptr(0x10));
+    if (lock) {
+        host.critical_section_enter(lock);
+        ++Raw{lock}.at<std::int32_t>(0x18);
+    }
+    if (instance == nullptr) {
+        void* const block = host.operator_new_00bf681b(0x204);
+        instance = block ? host.fingerprint_payload_construct_00be9760(block) : nullptr;
+        host.singleton_lifetime_register_00bd0c30(host.singleton_lifetime_manager_00415350(), instance);
+    }
+    if (lock) {
+        --Raw{lock}.at<std::int32_t>(0x18);
+        host.critical_section_leave(lock);
+    }
+    return instance;
+}
+
+void free_camera_bind_settings_00540d50(Raw block, Fe10Host& host) {
+    const Raw settings = host.game_settings_00424c40();
+    alignas(4) std::uint8_t storage[0x30] = {};
+    const Raw record{storage};
+    auto* const first = static_cast<std::uint8_t*>(settings.ptr(0x740));
+    const std::uint32_t count =
+        first ? static_cast<std::uint32_t>((static_cast<std::uint8_t*>(settings.ptr(0x744)) - first) / 0x30) : 0;
+    for (std::uint32_t i = 0; i < count; ++i) {
+        const Raw src{first + i * 0x30};
+        record.at<float>(0x10) = src.at<float>(0x1C);
+        record.at<float>(0x14) = src.at<float>(0x20);
+        host.handle_assign(Raw{record.p + 0x24}, src.ptr(0x24));
+        host.handle_assign(Raw{record.p + 0x28}, src.ptr(0x28));
+        host.handle_assign(Raw{record.p + 0x2C}, src.ptr(0x2C));
+        record.at<float>(0x04) = src.at<float>(0x0C);
+        record.at<float>(0x0C) = src.at<float>(0x18);
+        record.at<float>(0x08) = src.at<float>(0x14);
+        record.at<std::uint8_t>(0x18) = src.at<std::uint8_t>(0x10);
+        record.at<float>(0x00) = src.at<float>(0x08);
+        host.native_string_copy_0041dd40(Raw{record.p + 0x1C}, src);
+        host.free_camera_effect_vector_push_back_00540ca0(Raw{block.p + 4}, record);
+    }
+    if (count == 0) {
+        host.free_camera_acquire_test_effects_0053e0e0(record);
+        host.free_camera_effect_vector_push_back_00540ca0(Raw{block.p + 4}, record);
+    }
+    host.free_camera_effect_record_destroy_0053df40(record);
+}
+
+void hud_formation_destruct_00538a80(Raw s, Fe10Host& host) {
+    s.at<std::uint32_t>(0x00) = 0x00CED6FC;
+    s.at<std::uint32_t>(0x08) = 0x00CED6F8;
+    s.at<std::uint32_t>(0x64) = 0x00CED6E0;
+    s.at<std::uint32_t>(0x78) = 0x00CED6CC;
+    for (std::size_t off : {0x98u, 0xA4u, 0x9Cu, 0xA0u, 0xA8u}) remove_page(s, off, host);
+    // std::list of refcounted handles at +1A0h (head +1A4h, size +1A8h).
+    auto clear_list = [&](std::size_t head_off, std::size_t size_off) {
+        auto* const head = static_cast<std::uint8_t*>(s.ptr(head_off));
+        auto* node = static_cast<std::uint8_t*>(Raw{head}.ptr(0));
+        Raw{head}.ptr(0) = head;
+        Raw{head}.ptr(4) = head;
+        s.at<std::uint32_t>(size_off) = 0;
+        while (node != head) {
+            auto* const next = static_cast<std::uint8_t*>(Raw{node}.ptr(0));
+            host.free_00bf65ac(node);
+            node = next;
+        }
+        host.free_00bf65ac(head);
+        s.ptr(head_off) = nullptr;
+    };
+    {
+        auto* const head = static_cast<std::uint8_t*>(s.ptr(0x1A4));
+        for (auto* node = static_cast<std::uint8_t*>(Raw{head}.ptr(0)); node != head;
+             node = static_cast<std::uint8_t*>(Raw{node}.ptr(0))) {
+            host.refcounted_release(Raw{node}.ptr(8));
+        }
+    }
+    clear_list(0x1A4, 0x1A8);
+    clear_list(0x198, 0x19C);
+    if (s.ptr(0x12C) != nullptr) host.free_00bf65ac(s.ptr(0x12C));
+    s.ptr(0x12C) = nullptr;
+    s.ptr(0x130) = nullptr;
+    s.ptr(0x134) = nullptr;
+    for (std::size_t tree : {0x11Cu, 0x110u}) {
+        host.tree_erase_all(0x00538360, Raw{s.p + tree});  // erase(begin(), end())
+        host.free_00bf65ac(s.ptr(tree + 4));
+        s.ptr(tree + 4) = nullptr;
+        s.at<std::uint32_t>(tree + 8) = 0;
+    }
+    s.at<std::uint32_t>(0x78) = kListboxListenerBaseVtable;
+    host.callback_owner_destroy_00695870(Raw{s.p + 0x64});
+    host.simple_3d_scene_destroy_0093cc80(Raw{s.p + 8});
+    host.front_end_screen_destruct_004f71a0(s);
+}
+
+void hud_counters_apply_counter_record_0052cf60(Raw s, Raw r, Fe10Host& host) {
+    const std::int32_t kind = r.at<std::int32_t>(0x20);
+    if (kind == 1) {
+        if (r.at<std::uint8_t>(0x24) != 0) {
+            hud_counters_remove_entry_widget_0052cf00(s, r.at<std::int32_t>(0x18), host);
+            return;
+        }
+        const std::string a = host.native_string_value(Raw{r.p + 0x28});
+        const std::string b = host.native_string_value(Raw{r.p + 0x30});
+        if (r.at<std::uint8_t>(0x25) != 0) {
+            hud_counters_show_score_pair_0052cac0(s, r.at<std::int32_t>(0x18), a, b, r.at<std::uint32_t>(0x38),
+                                                  r.at<std::uint32_t>(0x3C), host);
+        } else {
+            hud_counters_show_score_0052c990(s, r.at<std::int32_t>(0x18), a, b, host);
+        }
+        return;
+    }
+    if (kind != 0) return;
+    if (r.at<std::uint8_t>(0x24) != 0) {
+        hud_counters_remove_counter_a_0052ab40(s, host);
+        return;
+    }
+    alignas(4) std::uint8_t storage[0xC] = {};
+    const Raw units{storage};
+    const auto* const ids = static_cast<const std::uint16_t*>(r.ptr(0x40));
+    for (std::int32_t i = 0; i < r.at<std::int32_t>(0x44); ++i) {
+        const std::int32_t id = ids[i];
+        auto registry = [&](std::uint32_t base_global, std::uint32_t table_global) {
+            const std::int32_t index = id - host.global_block(base_global).at<std::int32_t>(0);
+            auto* const table = static_cast<std::uint8_t*>(host.global_block(table_global).ptr(0));
+            return Raw{table + index * 0x10}.ptr(0xC);
+        };
+        void* const unit = id < host.global_block(0x00F89A10).at<std::int32_t>(0) ? registry(0x00F89A0C, 0x00F89A54)
+                                                                                  : registry(0x00F89A60, 0x00F89AA8);
+        if (size_of(units) == capacity_of(units)) {
+            ptr_array_reserve_00529700(units, capacity_of(units) * 2 > 1 ? capacity_of(units) * 2 : 1, host);  // image instance 00529760
+        }
+        auto* const slot = reinterpret_cast<void**>(data_of(units)) + size_of(units);
+        if (slot) *slot = unit;
+        ++size_of(units);
+    }
+    hud_counters_show_unit_hp_0052bfa0(s, static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(units.p)),
+                                       host.native_string_value(Raw{r.p + 0x4C}), host);
+    ptr_array_resize_005297c0(units, 0, host);
+    host.free_00bf6989(units.ptr(0));
+}
+
+void hud_counters_relayout_00529a30(Raw s, Fe10Host& host) {
+    const Raw entries{s.p + 0x20};
+    auto entry = [&](std::int32_t i) { return Raw{static_cast<std::uint8_t**>(entries.ptr(0))[i]}; };
+    auto kept = [&](std::int32_t i) {
+        const Raw e = entry(i);
+        if (host.widget_is_visible_38(e.ptr(0))) return true;
+        for (std::size_t off : {0xA5u, 0xA6u, 0xA8u, 0xA7u, 0xA9u}) {
+            if (e.at<std::uint8_t>(off) != 0) return true;
+        }
+        return false;
+    };
+    for (std::int32_t i = 0; i < s.at<std::int32_t>(0x24);) {
+        if (!kept(i)) {
+            ptr_array_erase_at_00529620(entries, i);
+            continue;
+        }
+        host.widget_local_position_00aa67f0(entry(i).ptr(8));  // result unused in the image
+        ++i;
+    }
+    bool parked = false;
+    if (s.at<std::int32_t>(0x24) != 0) {
+        float first[3];
+        host.widget_resolved_position_00aa6750(entry(0).ptr(0), first);
+        parked = kCounterWrapBelow > first[0];
+    }
+    const bool wide = host.global_object(kDisplayModeGlobal).at<std::uint8_t>(0x0D) != 0;
+    float x;
+    if (static_cast<const std::uint8_t*>(host.global_object(kInterfaceGlobal).ptr(0xC0))[4] == 0 &&
+        !host.support_manager_mode_006529e0(Raw{static_cast<std::uint8_t*>(host.global_object(kInterfaceGlobal).ptr(0xBC))})) {
+        x = wide ? -kCounterRowStart : kCounterRowStart;
+    } else {
+        x = wide ? kCounterRowStartManagerWide : kCounterRowStartManager;
+    }
+    for (std::int32_t i = 0; i < s.at<std::int32_t>(0x24); ++i) {
+        if (!kept(i)) continue;
+        float pos[3];
+        host.widget_resolved_position_00aa6750(entry(i).ptr(0), pos);
+        pos[0] = x;
+        host.widget_set_resolved_position_00aa8240(entry(i).ptr(0), pos);
+        const float* const size = host.widget_size_00aa6740(entry(i).ptr(0x2C));
+        x = static_cast<float>((size[0] + kCounterRowGap) + x);
+        if (parked) {
+            pos[0] = static_cast<float>(pos[0] - kCounterWrapAdd);
+            host.widget_set_resolved_position_00aa8240(entry(i).ptr(0), pos);
+        }
+    }
+    hud_counters_update_occlusion_00529810(s, host);
+}
+
+void free_camera_register_00540fe0(Raw s, Fe10Host& host) {
+    host.front_end_screen_register_004f71d0(s);
+    const Raw block{s.p + 0x64};
+    block.at<float>(0x24) = 0.0f;
+    block.at<std::int32_t>(0x20) = 0;
+    block.at<float>(0x28) = 0.0f;
+    free_camera_bind_settings_00540d50(block, host);
+    s.ptr(0x1C) = host.gui_load_page_00aa5840("GUI_freecam");
+    s.ptr(0x20) = host.gui_find_child_00aa7e00(s.ptr(0x1C), "weapon_Text");
+    host.widget_set_visible_34(s.ptr(0x20), false);
+}
+
 }  // namespace bsp::frontend_seg15_22_cc13

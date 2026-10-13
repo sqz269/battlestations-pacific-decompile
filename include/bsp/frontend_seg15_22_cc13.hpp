@@ -972,6 +972,30 @@ struct Fe10Host : Seg15Host {
     virtual void widget_set_size_58(void* widget, const float xy[2]) = 0;
     // 00AAB4C0(parent), ECX = template widget: clone under a parent.
     virtual void* widget_clone_under_00aab4c0(void* template_widget, void* parent) = 0;
+    // Singleton lifetime: 00415350 the manager (critical section at +10h,
+    // users +18h; EnterCriticalSection 00CE2218 / LeaveCriticalSection
+    // 00CE2210), 00BD0C30(object), ECX = manager: register for teardown.
+    virtual Raw singleton_lifetime_manager_00415350() = 0;
+    virtual void critical_section_enter(void* section) = 0;
+    virtual void critical_section_leave(void* section) = 0;
+    virtual void singleton_lifetime_register_00bd0c30(Raw manager, void* object) = 0;
+    // 00BE9760, ECX = block: the fingerprint payload constructor (204h bytes).
+    virtual void* fingerprint_payload_construct_00be9760(void* block) = 0;
+    // 00424C40: the game settings singleton (free-camera effect records:
+    // vector +740h..+744h, 30h bytes each).
+    virtual Raw game_settings_00424c40() = 0;
+    // Store a refcounted handle into slot: InterlockedIncrement (00CE221C) the
+    // new one, InterlockedDecrement (00CE2220) the old one and its vtable +0 at
+    // zero.
+    virtual void handle_assign(Raw slot, void* handle) = 0;
+    // Free-camera effect records: 00540CA0(const record*), ECX = vector:
+    // push_back; 0053E0E0, ECX = record: the built-in test effects; 0053DF40,
+    // ECX = record: destroy.
+    virtual void free_camera_effect_vector_push_back_00540ca0(Raw vector, Raw record) = 0;
+    virtual void free_camera_acquire_test_effects_0053e0e0(Raw record) = 0;
+    virtual void free_camera_effect_record_destroy_0053df40(Raw record) = 0;
+    // 0093CC80, ECX = screen+8h: the simple 3D scene sub-object destructor.
+    virtual void simple_3d_scene_destroy_0093cc80(Raw scene) = 0;
 };
 
 // Widget focus byte (+D4h) the lobby listeners read.
@@ -1086,6 +1110,56 @@ bool multi_chat_rebuild_message_rows_005d0c60(Raw s, void* row_template, void* l
 // (screen+8h) inactive on +5Ch, +60h hidden, mode label refreshed, and the
 // sound request byte +1Ah set.
 void multi_chat_load_layout_005d14d0(Raw s, Fe10Host& host);
+
+// 0053BC00 __cdecl() -> the fingerprint payload singleton (*0109DB78),
+// created under the lifetime manager's lock (double-checked: 204h bytes,
+// 00BE9760) and registered for teardown (00BD0C30).
+inline constexpr std::uint32_t kFingerprintPayloadGlobal = 0x0109DB78;
+void* fingerprint_payload_get_singleton_0053bc00(Fe10Host& host);
+
+// 00540D50 __thiscall(ECX = free-camera settings block, screen+64h): one
+// effect record per game-settings record (+740h, 30h bytes): floats from
+// +8h, +0Ch, +14h, +18h, +1Ch, +20h, the byte +10h, the name +0h and the
+// three refcounted handles +24h, +28h, +2Ch, pushed into the vector +4h; with
+// no settings records the built-in test effects (0053E0E0) are pushed.
+void free_camera_bind_settings_00540d50(Raw block, Fe10Host& host);
+
+// 00540FE0 __thiscall(ECX = free-camera screen): register. Base register;
+// block +64h: +88h = 0.0, +84h = 0, +8Ch = 0.0, then 00540D50; page
+// "GUI_freecam" into +1Ch, its hidden "weapon_Text" into +20h.
+void free_camera_register_00540fe0(Raw s, Fe10Host& host);
+
+// 00538A80 __thiscall(ECX = HUD formation screen): destructor body. Vtables
+// 00CED6FC / 00CED6F8 (+8h) / 00CED6E0 (+64h) / 00CED6CC (+78h); the pages
+// +98h, +A4h, +9Ch, +A0h, +A8h removed; the handles of the list +1A0h (node
+// +8h) released and the list freed with its head; the list +198h freed; the
+// vector +12Ch..+134h freed; the trees +11Ch and +110h erased (00538360 over
+// [begin, end)) and their heads freed; +78h back to the listener base
+// 00CEB0FC; the callback owner +64h, the scene +8h and the base destroyed.
+void hud_formation_destruct_00538a80(Raw s, Fe10Host& host);
+
+// 0052CF60 __thiscall(ECX = HUD counters screen, const record* r), RET 4:
+// apply a counter record by its kind +20h. Kind 1: remove (+24h) the entry
+// +18h, or show it as a score pair (+25h: strings +28h / +30h, values +38h /
+// +3Ch) or a score. Kind 0: remove counter A (+24h), or gather the units of
+// the id words +40h[0..+44h) from the two object registries (id below
+// *00F89A10: *00F89A54 at (id - *00F89A0C) * 10h + 0Ch, else *00F89AA8 at
+// (id - *00F89A60) * 10h + 0Ch) into a pointer array and show their hit
+// points with the text +4Ch (0052BFA0), then free the array.
+void hud_counters_apply_counter_record_0052cf60(Raw s, Raw r, Fe10Host& host);
+
+// 00529A30 __thiscall(ECX = HUD counters screen): re-lay the counters out.
+// Entries (pointer array +20h) whose widget +0 is hidden (vtable +38h) and
+// whose bytes +A5h..+A9h are all clear are erased; the row starts at x =
+// 0.07 (-0.07 wide) or, with [*00E198C4+C0h]+4 set or the support manager in
+// its mode (006529E0), 0.385 (0.23 wide); each kept entry's widget goes to x
+// and x += size(+2Ch).w + 0.0305; when the first entry sat left of -900 the
+// entries are parked 1000 further left again; tail jump to 00529810.
+inline constexpr double kCounterRowGap = 0.030500000342726707;  // 00CED060
+inline constexpr float kCounterRowStart = 0.07000000029802322f;         // 00CED070 (00CED074 wide: -)
+inline constexpr float kCounterRowStartManager = 0.38499999046325684f;  // 00CED068
+inline constexpr float kCounterRowStartManagerWide = 0.23000000417232513f;  // 00CED06C
+void hud_counters_relayout_00529a30(Raw s, Fe10Host& host);
 
 }  // namespace bsp::frontend_seg15_22_cc13
 
