@@ -1,0 +1,186 @@
+# CC13 GPR 69: segments 69 and 70 reference models (AI party brain, commands, planners)
+
+Packet `cc13-gpr69` (cc13 lineage, Claude). Segment 69 is `009FE130`-`00A16030` (command types, the
+vs-table, enemy and neutral weights, vehicle classes, targets). Segment 70 is `00A16050`-`00A371A0`
+(the coordinator, capture, strategic gain, recon ratio, objectives). cc9 approved this
+reference-model pass on these terms:
+- new `*_cc13` files only: `src/gameplay_seg69_70_cc13.cpp` and
+  `include/bsp/gameplay_seg69_70_cc13.hpp`, registered by one line in `cmake/startup.cmake`;
+- ledger records;
+- no host edit, no wiring, no game run.
+
+The naming pass for this band is docs/CC13_GP_009F_00A3.md (cc13-gp9f). This packet read the bodies.
+
+Method. Each comparison, constant and float rounding below was read from the disk bytes with
+Capstone `disasm-raw`, the x87 register forms from the opcode bytes (`local/gpr69_pe.py`, not
+committed). The models are **reconstructed and build-tested**. None is ABI-compatible, wired or
+game-validated. Gameplay runs at 24-bit x87 precision (docs/CC13_FPU_PRECISION.md), so the models
+compute in float where the image rounds to float.
+
+## 1. Models
+
+### 1.1 The AI party's power-up use (`00A179E0`, with `00A046C0`, `00A04860`, `00A04910`, `00A0F680`)
+
+docs/SHIP_AI_OPEN_ITEMS.md section 5 established the arm structure of `00A179E0` and left the
+operands and the six callees unread. This pass reads them all. Ghidra's body stops at `00A17D55`
+(the checked-iterator call `00BF6713` is marked non-returning); the model is read from
+`disasm-raw 00A179E0 --length 1974`.
+
+**The pairs (`00A17A34..00A17D1B`).** For each group of the own team list (`00F8AA48 + team*0Ch`,
+team = brain+24h), then each group of the enemy list (`(team == 0)*0Ch`), in list order:
+- both populations `+5644h` are non-zero, and the own group's party `+5634h` equals brain+20h;
+- the planar squared distance between the first members (`+FCh`, `+104h`) is at most 9,000,000
+  (`[00D22CB8]`, 3000 units; FCOMI/JA, so NaN passes);
+- the own strength (`00A2C4C0`, the sum of leader weights) is at least 15.0 (`[00CF3F20]`);
+- neither strength is below half the other (`[00D7A280]` = 0.5; bytes `DC C9` then `D8 CA`);
+- the pair's weight is `enemy strength / max(250000 [00D22CB4], d2)` (`00415550`, then `FDIVR`).
+
+With no pair, nothing is used, even a party-wide or team-wide power-up.
+
+**The choice (`00A17D5A..00A180A8`).** For each ready entry (`008EA0C0`, empty unless the byte
+`00E0C978` is set), with the class `[entry+4]`:
+
+| class `+8h` | scope `+84h` | candidates | score |
+| --- | --- | --- | --- |
+| 1 (air support) | 1 | the first member of each pair's own group, when `008E35F0` accepts it | `00A0F680(enemy group, class) * weight` |
+| 1 | 2 | the first accepted member of each pair's enemy group | the same |
+| 2 (multipliers) | 1 or 2 | every accepted member of each pair's own (1) or enemy (2) group | `00A046C0(member, class) * weight` |
+| 2 | 4 | none (target 0) | `00A04860(party, class)` |
+| 2 | 5 | none (target 0) | `00A04910(team, class)` |
+| other | | none | 0.0 |
+
+Every comparison is a strict `>` (`FCOMI` then `JBE`), so the first of equal scores wins and a NaN
+never does. The overall seed is 0.0. The winner is used once per party think:
+`008EADA0(ECX = [00F88C30], entry, party, target)` at `00A180C9`.
+
+**`00A0F680`, the air-support score.** The class carries two flight blocks; the group's `+5638h`
+picks `class+0Ch` (non-zero) or `class+44h` (zero). One 20h-byte value record is built:
+`{[block+20h], 0.0, 0.0, 0, [block+1Ch], 009FDF30(class id), U(tuning+50h, tuning+54h), 0}`. The
+spread is drawn on **stream 1** (`00A0F737`), where `00A04560`'s entity records use the deterministic
+`00419010(..., entity mod 79)` (src/game_hosts_ai.cpp `group_value_spread`). The score is
+`00A0C650(that record, 00A07E40(group), 0, -1.0, 0, 0, 1.0)`, the host's
+`compose_attack_value_00a0c650`.
+
+**`00A046C0`, a multiplier power-up's value on one unit.** Over the sixteen multipliers `m` at
+`class+8Ch`, skipping `m == 1.0f` exactly: the term is `1 - m` for scope 2 and `m - 1` otherwise,
+then by index (jump table `00A04820`):
+
+| index | rule |
+| --- | --- |
+| 1 | doubled |
+| 2 | 0 when health (`00923BE0`) > 0.9999 (`[00D04680]`) |
+| 3 | `(1 - health) * term` (`DE E1`) |
+| 4, 5 | 0 for a class `00828EC0` accepts (torpedo-proof small craft) |
+| 7 | negated (`-0.0 - term`) |
+| 10 | 0 unless a ship (kind 6) with class `+804h > 0` |
+| 11 | 0 unless kind `1Ch` |
+| 0, 6, 8, 9, 12..15 | the term as is |
+
+The value is `float(00A04240(unit) * 009FDF30([unit+C4h])) * sum`.
+
+**`00A04860` / `00A04910`.** Both walk the world list `[[00E188A8]+19CCh]+34h` and sum `00A046C0`
+over the units `008E35F0` accepts. The side version keeps units whose derived party equals the
+argument (side `+180h`: 8 gives -1; 0..7 is the party; anything else gives -1 in a multiplayer session
+(`game+1FE4h`) and otherwise 4 or 0 by whether `+54h` differs from the local slot's team), then scales
+by 0.25. The team version keeps `+54h == team` and scales by 0.125.
+
+### 1.2 The planner spawn (`00A25A30` -> `00A236F0`, `00A23980` -> `00A0D1D0`, `00A03900`, `00A02180`)
+
+docs/SHIP_AI_OPEN_ITEMS.md sections 47 and 51-52 established the route and closed it for the reference
+rows (no authored stock). Section 52.3 left `00A0D1D0` and `00A236F0` unread. This pass reads them.
+
+**`00A25A30`** returns 0 when `weight < 0.5` (`COMISS`/`JBE`: a NaN weight continues), when the threat
+records are empty, or when `0066E590` returns no site. Otherwise it sorts the sites
+(`00A236F0`, from `pos`, or from `00F87574` when `pos` is null) and returns `00A23980`'s answer.
+Arguments, from the pushes: `(pos, weight, &records, tag, flag)`; `00A23980` receives
+`(pos, &sorted, weight, &records, tag, flag)`.
+
+**`00A236F0`** flattens the list of lists, keys each site by `(site+FCh - x)^2 + (site+104h - z)^2`
+(float) and runs MSVC `std::sort` (`00A1FE30`; insertion sort `00A1C790` at 32 entries or fewer,
+comparing `+4h` with a strict `>`). The order is ascending distance.
+
+**`00A23980`** (the effective game mode `<= 3` arm). For each sorted site:
+1. the classes are `0084D560(site)(&list, brain+24h, 0)`, each name resolved by
+   `00964790 VehicleClass_GetOrCreate(name, 1)`;
+2. the budget is `00942130(brain+20h)`;
+3. `00A0D1D0(classes, budget, weight, site pos, 0, flag, -1.0)` composes the force (below);
+4. a non-empty composition is weighted 1.0 when there is one site; otherwise
+   `00419010(t+100h, t+10Ch, t+104h, t+108h, dist / speed) * score`, where speed is
+   `00A07C10` over the composition, dist is `sqrt(d2)` only when `d2 > 1e-10` (`[00CE3820]`), and a
+   null `pos` uses `t+100h` in place of the ratio;
+5. the best weight above -1e10 (`[00CE4ADC]`, strict) keeps its composition (`00A21D90`).
+
+With a best site it builds the class list, the record `+10h` values (class `+134h`) and
+`0084CF80(site, class)` squad sizes, and calls
+`0094C830([00F89B3C])(party, &classes, site, [slot[party]]+2Ch, &values, &squads, 0, tag)`.
+The `vt[18h](0Fh)` / `(14h)` 1-or-3 value written first into the squad slot is dead: `0084CF80`
+overwrites it. Note that the last argument is the **tag** (`00A23980` arg 5), not the flag; the
+flag only reaches `00A0D1D0`, where it allows mixing planes and surface units.
+
+**`00A0D1D0`, the greedy composition.** `__fastcall(ECX = composition, EDX = threat records;
+classes, budget, target, pos, byte5, flag, arg7)`, `RET 1Ch`. Rounds run while `target > spent`
+(gate `target > 0`):
+1. Each class is tried unless (once restricted) `cost + spent > budget`, or (unless `flag`) its
+   plane-ness differs from the first pick's. Cost is the int `class+124h` (100.0 `[00CE3D08]` in
+   modes 4 and up).
+2. A temporary record `{class, pos.x, pos.z, 1, class+134h, 009FDF30(id), U(+50h, +54h) stream 1, 0}`
+   is appended (with `arg7 >= 0` the position is zero and the byte 0).
+3. `total = 00A0C650(comp, threats, 1, arg7, buf, byte5, f) + sum_i 00A03900(comp[i], candidate)`.
+4. With `total > 0`: `c = t+234h * total - t+238h * 00A0C650(threats, comp, 0, 100.0, 0, 0, 1.0)`.
+   In modes 0..3 with `spent > 0.1`, `c` is blended:
+   `c*(1-k) + (k*c) * spent/(cost+spent)`, `k = clamp(t+230h, 0, 1)`.
+5. The best candidate must beat the round threshold strictly. The threshold starts at 0.001
+   (modes 0..3) or -1e8, and after each accepted pick it is that pick's **total**, not its final
+   weight.
+6. A pick that would overrun the budget (modes 0..3) ends the composition when
+   `spent > 0.75 * target`, else turns the budget filter on for later rounds; an affordable pick is
+   bought: `spent += cost`, and its record is rebuilt with a **second** stream-1 draw.
+The first pick fixes the plane-ness filter even when it was not bought. The return value is the last
+bought pick's total.
+
+**`00A03900`.** In modes 0..2 (`009FFC80`), the pair bonus is the first 0Ch row of the tuning
+singleton's table (`+FA8h + mode*10h`) whose ids equal (earlier class, candidate class); else 0.
+
+**`00A02180` and `00A07C10` return the minimum speed.** The ledger names say maximum
+(`BSP_UnitList_MaxSpeed`, `BSP_AiGroupRecords_MaxSpeed`), but the seed is 1e10 (`[00CE4970]`) and a
+value replaces it unless it is greater. So the spawn weight divides by the slowest class's speed.
+
+### 1.3 The party think schedule (`00A163D0`)
+
+The controller constructor (`00A31730`, from `00A32350 BSP_AiController_Create`) initialises the
+eight party slots: `+0h` = 0, attack and aggressive ratios = 0.5, the brain pointer = 0, and the
+next think time = `[00F876A4] + U(3.0, 5.0)` on **stream 1**, one draw per slot in slot order.
+The host's `GameAiCoordinatorHost::create_00a32350` (src/game_hosts_ai.cpp:5865) fills the next think
+times with 0.0 and draws nothing.
+
+## 2. Adoption table (cc9 terms)
+
+| model | replaces (host file:line) | inputs and where the host gets them | RNG | OFF-switch prediction |
+| --- | --- | --- | --- | --- |
+| `ai_party_brain_engagement_pass_00a179e0` (+ `ai_powerup_*`, `ai_candidate_attack_value_00a0f680`) | `AiParties::party_brain_plan_tail` (src/game_hosts_ai.cpp:5078), a record | the party's ready power-up entries (no manager in this process: `PowerUps::pre_pass`/`post_pass` are records); the team group lists, populations, parties, first-member poses, `00A2C4C0` strengths; the class `+8h`/`+84h`/`+8Ch`; unit health, kinds, class `+804h`, `00A04240`, `009FDF30`; `008E35F0` | **stream 1**: one `U(t+50h, t+54h)` per `00A0F680` call (`00A0F737`), per entry, per pair, only after `008E35F0` accepts | OFF: none. ON with a power-up manager: an AI party with an engagement pair fires its best ready power-up each think. Air-support entries shift stream 1 by one draw per accepted pair, every think, even when nothing is fired |
+| `ai_try_spawn_group_gate_00a25a30`, `ai_sort_spawn_sites_00a236f0`, `ai_choose_spawn_composition_00a23980`, `ai_match_final_weight_00a0d1d0`, `ai_class_pair_value_00a03900`, `ai_unit_list_min_speed_00a02180` | the Capture spawn arm, counted only (src/game_hosts_ai.cpp:4383 `spawn_due`, :4423) and the Defend arm; `quick_spawn_named_group` (src/game_hosts_ai.cpp:5465) for the mode planners | `0066E590`'s sites with their stock (`0084D560`), `00942130`, mode tuning `+50h..+54h`, `+100h..+10Ch`, `+230h..+238h`, the class-pair table, `00A0C650` both ways (host `compose_attack_value_00a0c650`), `00419010`, `0084CF80`; the request goes to `0094C830`, which ends at the SpawnNew queue the host drains | **stream 1**: one draw per candidate tried per round and one more per bought pick (`00A0D604`, `00A0DAB8`/`00A0DB21`) | OFF: none. ON: nothing changes on the reference rows (no authored stock, docs/SHIP_AI_OPEN_ITEMS.md 52.2). On `ijn_11_operation_to` and the three `ijn_02_force_z` copies, Capture and Defend thinks that pass the gates buy units and shift stream 1 |
+| `ai_init_party_think_schedule_00a163d0` | the `next_think.fill(0.0f)` in `create_00a32350` (src/game_hosts_ai.cpp:5865) | the float clock at creation | **stream 1**: 8 draws at controller creation | OFF: none. ON: every party's first think moves from 0 s to 3..5 s, and every later stream-1 consumer shifts by 8 draws |
+
+No model draws from stream 0.
+
+## 3. For cc9 (no host edits made)
+
+- **`00A02180` / `00A07C10` are minimums.** Rename candidates `BSP_UnitList_MinSpeed`,
+  `BSP_AiGroupRecords_MinSpeed` (section 4).
+- **`00A23980`'s request carries the tag, not the flag** (section 1.2).
+- **The host never seeds the think schedule** (section 1.3).
+
+## 4. Ledger
+
+Function records (`config/reconstruction`), models in `src/gameplay_seg69_70_cc13.cpp`:
+`00A046C0`, `00A04860`, `00A04910`, `00A0F680`, `00A179E0`, `00A163D0`, `00A02180`, `00A07C10`,
+`00A03900`, `00A0D1D0`, `00A236F0` (partial), `00A23980` (partial: the mode 4+ arm), `00A25A30`
+(partial: the gate).
+
+## 5. Verification
+
+- `./scripts/build.ps1` passed in this tree: the build and ctest (2 of 2). No test was added.
+
+## 6. Open and handoff
+
+(in progress)

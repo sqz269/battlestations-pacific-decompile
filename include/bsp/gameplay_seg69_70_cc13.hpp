@@ -1,0 +1,405 @@
+#pragma once
+
+// Segments 69 (009FE130-00A16030) and 70 (00A16050-00A371A0) reference models:
+// the AI party brain, its commands and planners. Packet cc13-gpr69;
+// docs/CC13_GPR_69.md, docs/CC13_GP_009F_00A3.md (the naming pass).
+//
+// These are semantic interfaces read from the disk bytes (Capstone disasm-raw,
+// x87 read from the opcode bytes) and the Ghidra pseudocode, not native layouts
+// or ABI-compatible replacements. Field names are hypotheses; the "_NNN" suffix
+// is the native byte offset. Every engine service the image calls is a host
+// callback, so nothing here invents a global or stubs a call. Gameplay runs at
+// 24-bit x87 precision (docs/CC13_FPU_PRECISION.md), so the models compute in
+// float where the image rounds to float. Build-tested only; not wired, not
+// game-run. cc9 owns every host these would sit in.
+//
+// ADOPTION NOTE (cc9 terms; the full table is in docs/CC13_GPR_69.md section 2):
+// - Power-up use (00A179E0 and its scorers 00A046C0, 00A04860, 00A04910,
+//   00A0F680). Replaces the record-only stub AiParties::party_brain_plan_tail
+//   (src/game_hosts_ai.cpp:5078). Inputs: the party's ready power-up entries
+//   (008EA0C0, empty unless the byte 00E0C978 is set), the own and enemy team
+//   group lists (00F8AA48 + team*0Ch), each group's population +5644h, party
+//   +5634h, first-member pose (+FCh/+104h), strength 00A2C4C0, and the
+//   power-up class (+8h kind, +84h scope, +8Ch sixteen multipliers). RNG: every
+//   00A0F680 call draws ONE stream-1 uniform U(tuning+50h, tuning+54h)
+//   (00A0F737), in the image's order: per entry, per pair, only after the scope
+//   test accepts. No stream-0 draw. OFF: nothing changes. ON (with a power-up
+//   manager bound): an AI party that holds a ready power-up and has at least one
+//   engagement pair fires its best one each think (008EADA0), and every
+//   air-support entry shifts stream 1 by one draw per accepted pair.
+// - Further models are listed in the doc's adoption table.
+
+#include <array>
+#include <cstdint>
+#include <optional>
+#include <vector>
+
+namespace bsp {
+namespace gameplay_seg69_70_cc13 {
+
+// ---------------------------------------------------------------------------
+// The power-up class fields the AI reads (docs/GAMEPLAY_MODIFIERS.md).
+// ---------------------------------------------------------------------------
+
+inline constexpr int kPowerupMultiplierCount = 16;
+
+struct PowerupClassView {
+    const void* id{nullptr};      // the class object, handed back to callbacks
+    int kind_008{0};              // 1: air support (a flight); 2: multipliers
+    int scope_084{0};             // 1 own units, 2 enemy units, 4 party, 5 team
+    std::array<float, kPowerupMultiplierCount> multipliers_08c{};  // 1.0 = none
+};
+
+// ---------------------------------------------------------------------------
+// 00A046C0 BSP_AiPowerup_ScoreForUnit, __fastcall(unit, class) -> float (ST0).
+// ---------------------------------------------------------------------------
+
+// The unit queries 00A046C0 makes. All are side-effect-free reads; the image
+// evaluates each only in its own case, the model takes them eagerly.
+struct PowerupUnitInputs {
+    float health{1.0f};               // 00923BE0(unit), cases 2 and 3
+    bool torpedo_proof_small{false};  // 00828EC0([unit+538h]), cases 4 and 5
+    bool is_kind_06{false};           // vtable+5Ch(6), case 10
+    float class_804{0.0f};            // [unit+538h]+804h, case 10 (ships only)
+    bool is_kind_1c{false};           // vtable+5Ch(1Ch), case 11
+    float hint_multiplier{1.0f};      // 00A04240(unit)
+    float class_weight{1.0f};         // 009FDF30([unit+C4h])
+};
+
+// One multiplier's term before the case rule: 1 - m when scope is 2 (enemy
+// units), m - 1 otherwise; m == 1.0f exactly contributes nothing (LAHF/TEST
+// AH,44h/JNP, so a NaN multiplier is processed).
+float ai_powerup_multiplier_term_00a046c0(const PowerupClassView& cls, int index,
+                                          const PowerupUnitInputs& unit) noexcept;
+float ai_powerup_score_for_unit_00a046c0(const PowerupClassView& cls,
+                                         const PowerupUnitInputs& unit) noexcept;
+
+// ---------------------------------------------------------------------------
+// 00A04860 BSP_AiPowerup_ScoreForSide / 00A04910 BSP_AiPowerup_ScoreForTeam.
+// Both walk the world list [[00E188A8]+19CCh]+34h (node +4 next, +8 unit).
+// ---------------------------------------------------------------------------
+
+struct PowerupWorldUnit {
+    const void* unit{nullptr};
+    int side_180{0};   // unit+180h
+    int team_054{0};   // unit+54h
+};
+
+// The party 00A04893..00A048C8 derives inline: side 8 -> -1; side <= 7
+// (unsigned) -> side; otherwise -1 on a multiplayer session (game+1FE4h != 0)
+// and else 4 when unit+54h differs from the local player's team
+// ([game+18CCh + 4*[game+18ECh]]+28h), 0 when it matches.
+int ai_unit_party_00a04893(int side_180, int team_054, std::uint32_t game_1fe4,
+                           int local_player_team) noexcept;
+
+class PowerupScoreHost {
+public:
+    virtual ~PowerupScoreHost() = default;
+    // 008E35F0 BSP_PowerupClass_ScopeAcceptsUnit(unit, class).
+    virtual bool scope_accepts(const void* unit, const PowerupClassView& cls) = 0;
+    // 00A046C0 for that unit (ai_powerup_score_for_unit_00a046c0 over the
+    // unit's queries).
+    virtual float unit_score(const void* unit, const PowerupClassView& cls) = 0;
+    // 00A0F680 BSP_AiPartyBrain_CandidateAttackValue(enemy group, class); draws
+    // stream 1 once (see ai_candidate_attack_value_00a0f680).
+    virtual float candidate_attack_value(const void* enemy_group, const PowerupClassView& cls) = 0;
+};
+
+// sum over units whose derived party == party and the scope accepts, * 0.25
+// ([00D7A348]); the sum and the product are rounded to float.
+float ai_powerup_score_for_side_00a04860(int party, const PowerupClassView& cls,
+                                         const std::vector<PowerupWorldUnit>& world,
+                                         std::uint32_t game_1fe4, int local_player_team,
+                                         PowerupScoreHost& host);
+// sum over units with unit+54h == team and the scope accepts, * 0.125 ([00D04380]).
+float ai_powerup_score_for_team_00a04910(int team, const PowerupClassView& cls,
+                                         const std::vector<PowerupWorldUnit>& world,
+                                         PowerupScoreHost& host);
+
+// ---------------------------------------------------------------------------
+// 00A0F680 BSP_AiPartyBrain_CandidateAttackValue, __fastcall(group, class).
+// ---------------------------------------------------------------------------
+
+// The flight block the class carries for this group: class+0Ch when the
+// group's +5638h is non-zero, class+44h when it is zero (00A0F6A7 SETZ, *38h).
+struct CandidateAttackBlock {
+    const void* class_object_020{nullptr};   // block+20h: vtable+1Ch gives the class id
+    std::uint32_t dword_01c{0};              // block+1Ch, copied to record+10h
+};
+
+// The one attacker record 00A0F6EF..00A0F73C builds (20h bytes, the layout of
+// 00A04560's records: src/game_hosts_ai.cpp GroupValueRecord).
+struct AiValueRecord {
+    const void* object_000{nullptr};   // block+20h
+    float x_004{0.0f};                 // 0.0
+    float z_008{0.0f};                 // 0.0
+    bool byte_00c{false};              // 0
+    std::uint32_t dword_010{0};        // block+1Ch
+    float weight_014{0.0f};            // 009FDF30(class id); no 00A04240 factor
+    float spread_018{0.0f};            // U(tuning+50h, tuning+54h) on STREAM 1
+    std::uint32_t dword_01c{0};        // 0 (00A04560 keeps its third-party byte here)
+};
+
+class CandidateAttackHost {
+public:
+    virtual ~CandidateAttackHost() = default;
+    // [[block+20h]]+1Ch() then 009FDF30 BSP_Ai_ClassWeightForClassId.
+    virtual float class_weight(const void* class_object) = 0;
+    // 00A371A0 BSP_Ai_ActiveModeTuning +50h / +54h (ValueRandomMul [1], [2]).
+    virtual float tuning_spread_lo_050() = 0;
+    virtual float tuning_spread_hi_054() = 0;
+    // 00BD2F10 BSP_Random_UniformFloatRange(stream, lo, hi); stream is 1 here.
+    virtual float uniform(int stream, float lo, float hi) = 0;
+    // 00A07E40(group, &defenders, 0) then 00A0C650(&{record}, &defenders, 0,
+    // -1.0 [00D7A260], 0, 0, 1.0) (host: compose_attack_value_00a0c650).
+    virtual float compose_against_group(const AiValueRecord& attacker,
+                                        const void* group) = 0;
+};
+
+AiValueRecord ai_candidate_attack_record_00a0f680(const CandidateAttackBlock& block,
+                                                          CandidateAttackHost& host);
+float ai_candidate_attack_value_00a0f680(std::uint32_t group_5638,
+                                         const CandidateAttackBlock& block_00c,
+                                         const CandidateAttackBlock& block_044,
+                                         const void* group, CandidateAttackHost& host);
+
+// ---------------------------------------------------------------------------
+// 00A179E0 BSP_AiPartyBrain_EngagementPass, __fastcall(brain): power-up use.
+// ---------------------------------------------------------------------------
+
+struct EngagementGroup {
+    const void* id{nullptr};
+    std::uint32_t population_5644{0};
+    int party_5634{0};
+    float leader_x{0.0f};          // first member +FCh (after 00414DB0 refresh)
+    float leader_z{0.0f};          // first member +104h
+    float strength{0.0f};          // 00A2C4C0 BSP_AiGroup_TotalLeaderWeight
+    std::vector<const void*> members;   // the +563Ch list, in order
+};
+
+// The 1Ch-byte pair record 00A17880 appends.
+struct EngagementPair {
+    const EngagementGroup* own{nullptr};     // +0h
+    const EngagementGroup* enemy{nullptr};   // +4h
+    float dist2_00c{0.0f};                   // +0Ch, planar squared distance
+    float own_strength_010{0.0f};            // +10h
+    float enemy_strength_014{0.0f};          // +14h
+    float weight_018{0.0f};                  // +18h, enemy strength / max(500^2, d^2)
+};
+
+// 00A17A34..00A17D1B. own_team is the snapshot of 00F8AA48 + brain+24h * 0Ch,
+// enemy_team that of (brain+24h == 0) * 0Ch, both in list order (own-major).
+std::vector<EngagementPair> ai_engagement_pairs_00a179e0(
+    int party, const std::vector<EngagementGroup>& own_team,
+    const std::vector<EngagementGroup>& enemy_team);
+
+struct PowerupReadyEntry {
+    const void* entry{nullptr};   // the vector element handed to 008EADA0
+    PowerupClassView cls;         // [entry+4]
+};
+
+struct PowerupUseDecision {
+    const void* entry{nullptr};
+    const void* target{nullptr};   // a unit, or null for scopes 4 and 5
+    float score{0.0f};
+};
+
+// 00A17D5A..00A180A8: the choice; nullopt when no entry scores above 0.0.
+// party is brain+20h, team brain+24h. Callbacks run in image order.
+std::optional<PowerupUseDecision> ai_powerup_choose_00a179e0(
+    int party, int team, const std::vector<PowerupReadyEntry>& entries,
+    const std::vector<EngagementPair>& pairs, const std::vector<PowerupWorldUnit>& world,
+    std::uint32_t game_1fe4, int local_player_team, PowerupScoreHost& host);
+
+// The whole pass: empty entries or no pair -> nullopt (00A17A3A, 00A17D41); the
+// caller fires 008EADA0(manager [00F88C30], entry, party, target) on a result.
+std::optional<PowerupUseDecision> ai_party_brain_engagement_pass_00a179e0(
+    int party, int team, const std::vector<PowerupReadyEntry>& entries,
+    const std::vector<EngagementGroup>& own_team, const std::vector<EngagementGroup>& enemy_team,
+    const std::vector<PowerupWorldUnit>& world, std::uint32_t game_1fe4, int local_player_team,
+    PowerupScoreHost& host);
+
+// ---------------------------------------------------------------------------
+// 00A163D0 BSP_Ai_InitPartyThinkSchedule (from the controller constructor
+// 00A31730, which 00A32350 BSP_AiController_Create calls).
+// ---------------------------------------------------------------------------
+
+struct PartyThinkSlotInit {
+    bool ai_enabled_000{false};       // 00F8A8C8 + p*1Ch, +0h = 0
+    float attack_ratio_004{0.5f};     // +4h = 0.5 [00CE3800]
+    float aggressive_ratio_008{0.5f}; // +8h = 0.5
+    float next_think{0.0f};           // 00F8A87C + p*4 = now + U(3, 5)
+    const void* brain{nullptr};       // 00F8A89C + p*4 = 0
+};
+
+class ThinkScheduleRng {
+public:
+    virtual ~ThinkScheduleRng() = default;
+    // 00BD2F10(stream, lo, hi).
+    virtual float uniform(int stream, float lo, float hi) = 0;
+};
+
+// Eight slots in party order; each draws U(3.0 [00CE3854], 5.0 [00CE3850]) on
+// STREAM 1 and adds the float clock [00F876A4] (re-read per slot; constant
+// within the call).
+std::array<PartyThinkSlotInit, 8> ai_init_party_think_schedule_00a163d0(float now,
+                                                                        ThinkScheduleRng& rng);
+
+// ---------------------------------------------------------------------------
+// Speeds: 00A02180 (named BSP_UnitList_MaxSpeed) and 00A07C10 (named
+// BSP_AiGroupRecords_MaxSpeed) return the MINIMUM: the seed is 1e10 [00CE4970]
+// and a value replaces it unless it is greater (FCOMI/JA, so NaN replaces).
+// ---------------------------------------------------------------------------
+
+struct SpeedClassView {
+    bool is_kind_06{false};   // vtable+18h(6): a ship class
+    float speed_500{0.0f};    // +500h
+    bool is_kind_0f{false};   // vtable+18h(0Fh): a plane class
+    float speed_188{0.0f};    // +188h
+};
+float ai_class_speed_00a02180(const SpeedClassView& c) noexcept;   // 0 for neither kind
+float ai_unit_list_min_speed_00a02180(const std::vector<SpeedClassView>& list) noexcept;
+
+// ---------------------------------------------------------------------------
+// 00A03900 BSP_AiTuning_FindClassPairRow, __fastcall(class a, class b).
+// ---------------------------------------------------------------------------
+
+// The 0Ch-byte rows of [004C1C50() + mode*10h + FACh .. +FB0h].
+struct ClassPairRow {
+    std::uint32_t class_id_a{0};
+    std::uint32_t class_id_b{0};
+    float value{0.0f};
+};
+// mode_index is 009FFC80; above 2 the answer is 0.0. The first row with a == the
+// first class's id and b == the second's (vtable+1Ch) gives the value; else 0.0.
+float ai_class_pair_value_00a03900(int mode_index, const std::vector<ClassPairRow>& rows_of_mode,
+                                   std::uint32_t class_id_a, std::uint32_t class_id_b) noexcept;
+
+// ---------------------------------------------------------------------------
+// 00A0D1D0 BSP_AiGroup_MatchFinalWeight: the greedy force composition.
+// __fastcall(ECX = composition out, EDX = threat records, classes, budget,
+// target, pos, byte5, flag, arg7), RET 1Ch, returns ST0.
+// ---------------------------------------------------------------------------
+
+struct SpawnClassView {
+    const void* id{nullptr};
+    std::uint32_t class_id{0};   // vtable+1Ch
+    int cost_124{0};             // +124h (an int: FILD / CVTSI2SS)
+    std::uint32_t dword_134{0};  // +134h, copied to record+10h
+    bool is_plane{false};        // vtable+18h(0Fh)
+    SpeedClassView speed;        // for 00A07C10 over a composition
+};
+
+class SpawnCompositionHost {
+public:
+    virtual ~SpawnCompositionHost() = default;
+    // 009FDF30 BSP_Ai_ClassWeightForClassId.
+    virtual float class_weight(std::uint32_t class_id) = 0;
+    // 00A371A0 BSP_Ai_ActiveModeTuning fields.
+    virtual float tuning_050() = 0;
+    virtual float tuning_054() = 0;
+    virtual float tuning_100() = 0;
+    virtual float tuning_104() = 0;
+    virtual float tuning_108() = 0;
+    virtual float tuning_10c() = 0;
+    virtual float tuning_230() = 0;
+    virtual float tuning_234() = 0;
+    virtual float tuning_238() = 0;
+    // 00BD2F10(stream, lo, hi); stream 1 here.
+    virtual float uniform(int stream, float lo, float hi) = 0;
+    // 00A0C650(ECX = composition, EDX = threats, 1, arg7, debug buffer, byte5,
+    // factor): the composition attacking the threats.
+    virtual float compose_against_threats(const std::vector<AiValueRecord>& composition,
+                                          float arg7, bool byte5, float factor) = 0;
+    // 00A0C650(ECX = threats, EDX = composition, 0, 100.0 [00CE3D08], 0, 0, 1.0):
+    // the threats attacking the composition.
+    virtual float compose_threats_against(const std::vector<AiValueRecord>& composition) = 0;
+    // 00A03900 over the two classes (ai_class_pair_value_00a03900).
+    virtual float class_pair_value(const SpawnClassView& a, const SpawnClassView& b) = 0;
+};
+
+struct MatchFinalWeightInputs {
+    bool mode_le_3{true};        // 004BCA50() <= 3 (SETBE)
+    float budget{0.0f};          // stack arg 2: 00942130(party)
+    float target{0.0f};          // stack arg 3: the cost to buy
+    float pos_x{0.0f};           // stack arg 4 -> +0h
+    float pos_z{0.0f};           //             -> +8h
+    bool byte5{false};           // stack arg 5 (0 from 00A23980)
+    float factor_e0e35c{1.0f};   // [00E0E35C] (1.0 on disk) when byte5, else 1.0
+    bool allow_mixed{false};     // stack arg 6: skips the plane/surface match
+    float arg7{-1.0f};           // stack arg 7 (-1.0 from 00A23980)
+};
+
+struct MatchFinalWeightResult {
+    std::vector<AiValueRecord> composition;   // ECX's vector, appended in pick order
+    float value{0.0f};                        // the last accepted pick's total
+};
+
+MatchFinalWeightResult ai_match_final_weight_00a0d1d0(const std::vector<SpawnClassView>& classes,
+                                                      const MatchFinalWeightInputs& in,
+                                                      SpawnCompositionHost& host);
+
+// ---------------------------------------------------------------------------
+// 00A236F0 BSP_AiPlanner_SortSpawnPointsByDistance and 00A23980
+// BSP_AiPlanner_ChooseSpawnComposition, 00A25A30 BSP_AiPlanner_TrySpawnGroup.
+// ---------------------------------------------------------------------------
+
+struct SpawnSiteRef {
+    const void* id{nullptr};
+    float x_0fc{0.0f};   // world pose after the 00414DB0-style refresh
+    float z_104{0.0f};
+};
+
+// 0066E590's list of lists (per command building, its adopted sites), walked in
+// order, flattened and ordered by planar squared distance from (x, z). The image
+// uses std::sort (introsort, insertion sort at <= 32 entries); ties keep list
+// order only on that small path. This model uses the insertion sort throughout,
+// which matches the image for distinct distances and up to 32 entries.
+std::vector<const SpawnSiteRef*> ai_sort_spawn_sites_00a236f0(
+    const std::vector<std::vector<SpawnSiteRef>>& lists, float x, float z);
+
+struct SpawnSite {
+    const SpawnSiteRef* ref{nullptr};
+    std::vector<SpawnClassView> classes;   // 0084D560(site)(&list, brain+24h, 0) then
+                                           // 00964790 GetOrCreate(name, 1) per entry
+};
+
+class SpawnChoiceHost : public SpawnCompositionHost {
+public:
+    // 00942130(brain+20h), read per site.
+    virtual float budget() = 0;
+    // 004BCA50, read per site; the arm for modes >= 4 (00A07D40, 00A06260) is
+    // not modelled: it is the host's answer.
+    virtual std::uint32_t effective_game_mode() = 0;
+    // In that arm the image multiplies by [ESP+34h], which there still holds the
+    // last GetOrCreate pointer's bits; the host supplies both the records and the score.
+    virtual MatchFinalWeightResult mode4_composition(const SpawnSite& site, float budget) = 0;
+    // 00419010 BSP_Math_InterpolateClamped(x0, y0, x1, y1, x).
+    virtual float interpolate_clamped(float x0, float y0, float x1, float y1, float x) = 0;
+    // 0084CF80 BSP_SupportSite_SquadSizeForClass(site, class).
+    virtual std::uint32_t squad_size(const SpawnSiteRef& site, const void* class_object) = 0;
+};
+
+struct SpawnRequest {
+    const SpawnSiteRef* site{nullptr};
+    std::vector<const void*> classes;      // record+0h
+    std::vector<std::uint32_t> values;     // record+10h (class+134h)
+    std::vector<std::uint32_t> squads;     // 0084CF80 (overwrites the dead 1/3 kind)
+    std::vector<AiValueRecord> composition;
+    float weight{0.0f};
+};
+
+// nullopt: no site produced a composition (the image returns 0). Otherwise the
+// caller sends 0094C830(ECX [00F89B3C], party, &classes, site, [slot[party]]+2Ch,
+// &values, &squads, 0, flag) and the image returns 1.
+std::optional<SpawnRequest> ai_choose_spawn_composition_00a23980(
+    const float* pos_xz /* nullable: arg 1 */, const std::vector<SpawnSite>& sorted_sites,
+    float weight, bool allow_mixed, SpawnChoiceHost& host);
+
+// 00A25A30: false when weight < 0.5 [00CE3800] (COMISS/JBE: NaN continues), when
+// the threat records are empty, or when 0066E590 yields no site.
+bool ai_try_spawn_group_gate_00a25a30(float weight, std::size_t threat_records,
+                                      std::size_t sources) noexcept;
+
+}  // namespace gameplay_seg69_70_cc13
+}  // namespace bsp
