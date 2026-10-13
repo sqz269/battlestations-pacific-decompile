@@ -930,4 +930,204 @@ WarningEventRecord construct_warning_event_record_0096dc00(std::string name)
     return record;
 }
 
+
+// --- reports -------------------------------------------------------------------------------------
+
+bool warning_report_gate(WarningReportHost& host)
+{
+    if (host.suppressed_d0()) return false;              // CMP byte [manager+D0h], 0
+    const std::int32_t slot = host.local_player_slot_18ec();
+    if (slot < 0 || slot > 7) return false;              // JL / JG 7
+    return host.clock_00f876a4() > 4.0f;                 // COMISS [00CE3D34]; JBE out
+}
+
+void report_confirm_00977ba0(WarningReportHost& host, void* entity, std::uint32_t arg)
+{
+    host.lock_24();
+    if (warning_report_gate(host) && host.entity_byte(entity, 0x5C) &&
+        !host.entity_byte(entity, 0x5D) && !host.entity_byte(entity, 0x60) &&
+        !host.entity_byte(entity, 0x5E) && !host.entity_disabled_0077edf0(entity) &&
+        host.entity_side_54(entity) == host.local_side_28()) {
+        host.report_009763e0(host.new_confirm_warning_00975540(entity, arg));  // 84h block
+    }
+    host.unlock_24();
+}
+
+void report_new_unit_00977cd0(WarningReportHost& host, std::int32_t slot)
+{
+    host.lock_24();
+    if (warning_report_gate(host) && slot == host.local_player_slot_18ec()) {
+        host.report_009763e0(host.new_new_unit_warning_009756a0());              // 6Ch block
+    }
+    host.unlock_24();
+}
+
+void report_powerup_009789a0(WarningReportHost& host, std::int32_t slot, const std::string* name)
+{
+    host.lock_24();
+    if (warning_report_gate(host) && slot == host.local_player_slot_18ec()) {
+        host.report_009763e0(host.new_powerup_warning_009758e0(name));           // 6Ch block
+    }
+    host.unlock_24();
+}
+
+void report_string_list_00979670(WarningReportHost& host, const std::vector<std::string>& strings,
+                                 void* shortcut, void* ambient)
+{
+    if (!warning_report_gate(host)) return;
+    host.set_byte_104();
+    if (strings.empty()) return;                          // (end - begin) >> 3 == 0
+    host.report_009763e0(host.new_string_list_warning_009795b0(strings, shortcut, ambient));
+}
+
+void session_hit_feedback_0096f090(WarningHitFeedbackState& state, float clock,
+                                   const HitFeedbackMessage& message, WarningTextHost& text)
+{
+    // 0096F094/0096F098 MOVZX the two bytes over the stack arguments, then JMP 0096EF60.
+    report_hit_feedback_0096ef60(state, clock, message.damaging_18 != 0, message.friendly_19 != 0,
+                                 text);
+}
+
+// --- the variant table ---------------------------------------------------------------------------
+
+namespace {
+
+std::int32_t use_count_of(const WarningVariantTable& table, const std::string& name)
+{
+    // 004BF370 lower_bound, then the __stricmp test (00BF7FBF); end -> 0, else the node's int.
+    const auto it = table.use_count_144.find(name);
+    return it == table.use_count_144.end() ? 0 : it->second;
+}
+
+} // namespace
+
+std::size_t pick_message_variant_00979b50(WarningVariantTable& table,
+                                          const std::vector<std::string>& variants,
+                                          WarningVariantHost& host)
+{
+    std::size_t picked = 0;
+    if (variants.size() == 1) {
+        picked = 0;                                       // the only element, no draw
+    } else {
+        std::int32_t best_count = 0x7FFFFFFF;
+        std::int32_t ties = 0;
+        float best_time = -1.0e10f;                       // 00CE4ADC
+        for (std::size_t i = 0; i < variants.size(); ++i) {
+            const std::int32_t count = use_count_of(table, variants[i]);
+            if (count < best_count) {                     // 00979C70 JLE
+                ties = 1;
+                best_count = count;
+                // A new lowest count with uses takes its time unconditionally; with no uses the
+                // previous best_time is kept.
+                if (count > 0) best_time = table.last_use_150[variants[i]];   // 00444BE0 inserts
+            } else if (count == best_count) {
+                ++ties;
+                if (count > 0) {
+                    const float time = table.last_use_150[variants[i]];
+                    if (time > best_time) best_time = time;                  // FCOMIP; JBE skip
+                }
+            }
+        }
+        // With several tied variants that have been used, one fewer slot is drawn, so the
+        // last of them in vector order is never picked.
+        const std::int32_t adjust = (ties < 2 || best_count < 1) ? 0 : -1;
+        const std::uint32_t divisor = static_cast<std::uint32_t>(ties + adjust);
+        if (divisor == 0) host.divide_error();
+        std::uint32_t draw = host.random_word_00bd2fc0_stream1() % divisor;  // 00979D11, DIV
+        std::size_t chosen = static_cast<std::size_t>(-1);  // [ESP+28h] = FFFFFFFFh
+        for (std::size_t i = 0; i < variants.size(); ++i) {
+            const std::int32_t count = use_count_of(table, variants[i]);
+            if (count != best_count) continue;
+            if (ties != 1 && count != 0) {
+                const float time = table.last_use_150[variants[i]];
+                if (best_time < time) continue;           // FCOMIP; JC skip (NaN qualifies)
+            }
+            if (static_cast<std::int32_t>(draw) < 1) {
+                chosen = i;
+                break;
+            }
+            --draw;
+        }
+        if (chosen >= variants.size()) host.invalid_parameter_00bf6713();
+        picked = chosen;
+    }
+    // 005070C0 operator[] increments the use count; 00444BE0 operator[] stores the clock.
+    ++table.use_count_144[variants[picked]];
+    table.last_use_150[variants[picked]] = host.clock_00f876a4();
+    return picked;
+}
+
+// --- the manager archive -------------------------------------------------------------------------
+
+void save_warning_manager_0096dd30(const WarningManagerArchiveView& view, EventArchiveWriter& writer,
+                                   WarningManagerSaveHost& host)
+{
+    writer.write_0c(name_key("disableAll"), bool_value(view.disable_all));
+    writer.begin_04(name_key("disableEntity"));
+    std::int32_t index = 0;
+    for (const auto& [entity, disabled] : view.disable_entity) {
+        if (!disabled) continue;                          // node +10h byte
+        GuiLuaVariant value{};
+        value.tag = static_cast<std::int32_t>(GuiLuaFieldType::Handle);
+        value.value.pointer = entity;                     // node +0Ch
+        writer.write_0c(index_key(index), value);
+        ++index;
+    }
+    writer.end_08();
+    writer.begin_04(name_key("waitingQueue"));
+    index = 0;
+    for (void* payload : view.waiting_queue) {
+        writer.begin_04(index_key(index));
+        host.save_payload_slot2(payload, writer);
+        writer.end_08();
+        ++index;
+    }
+    writer.end_08();
+    writer.begin_04(name_key("disableList"));
+    index = 0;
+    for (void* payload : view.disable_list) {
+        writer.begin_04(index_key(index));
+        host.save_payload_slot2(payload, writer);
+        writer.end_08();
+        ++index;
+    }
+    writer.end_08();
+    writer.begin_04(name_key("luaListeners"));
+    for (const WarningListenerChannel& channel : view.listeners) {
+        writer.begin_04(name_key(channel.name.c_str()));  // data, or 00F8A0C8 when null
+        for (const auto& [callback, subscription] : channel.subscriptions) {
+            writer.begin_04(name_key(callback.c_str()));
+            host.save_subscription_slot2(subscription, writer);
+            writer.end_08();
+        }
+        writer.end_08();
+    }
+    writer.end_08();
+    writer.begin_04(name_key("useCount"));
+    if (view.variants != nullptr) {
+        for (const auto& [name, count] : view.variants->use_count_144) {
+            writer.write_0c(name_key(name.c_str()), int_value(count));
+        }
+    }
+    writer.end_08();
+    writer.begin_04(name_key("lastUse"));
+    if (view.variants != nullptr) {
+        for (const auto& [name, time] : view.variants->last_use_150) {
+            writer.write_0c(name_key(name.c_str()), float_value(time));
+        }
+    }
+    writer.end_08();
+    writer.begin_04(name_key("shipNoiseInfo"));
+    for (const ShipNoiseArchiveRow& row : view.ship_noise) {
+        writer.begin_04(index_key(row.ship_id_174));      // {1, word [ship+174h]}
+        writer.write_0c(name_key("collisionSoundDisableTime"),
+                        float_value(row.collision_sound_disable_time));
+        if (row.effect != nullptr) {
+            writer.write_0c(name_key("airRaidSoundExpires"), float_value(row.air_raid_sound_expires));
+        }
+        writer.end_08();
+    }
+    writer.end_08();
+}
+
 } // namespace bsp::cc13_seg49_64_78

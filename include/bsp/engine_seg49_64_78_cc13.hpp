@@ -12,11 +12,13 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <map>
 #include <set>
 #include <string>
 #include <vector>
 
 #include "bsp/gui_lua_reader.hpp"
+#include "bsp/options_hardware_cc13.hpp"
 
 namespace bsp::cc13_seg49_64_78 {
 
@@ -452,5 +454,107 @@ struct WarningEventRecord {
     std::string name{};
 };
 WarningEventRecord construct_warning_event_record_0096dc00(std::string name);
+
+// --- reports ---------------------------------------------------------------------------------------
+
+// The gate the report entry points share: manager+D0h clear (not suppressed), the local player
+// slot [game+18ECh] in 0..7, and the clock [00F876A4] above 4.0 (00CE3D34, COMISS/JBE).
+struct WarningReportHost : WarningManagerHost {
+    virtual bool suppressed_d0() = 0;
+    virtual std::int32_t local_player_slot_18ec() = 0;
+    virtual float clock_00f876a4() = 0;
+    virtual std::int32_t local_side_28() = 0;
+    // 0077EDF0: operator[] of the manager's entity -> byte map at +D4h (inserts a zero byte).
+    virtual bool entity_disabled_0077edf0(void* entity) = 0;
+    // Entity bytes the confirm report tests: +5Ch live, +5Dh, +5Eh, +60h, and the side +54h.
+    virtual bool entity_byte(void* entity, std::uint32_t offset) = 0;
+    virtual std::int32_t entity_side_54(void* entity) = 0;
+    // operator_new + constructor; null when the allocation fails (Report then gets null).
+    virtual WarningObject* new_confirm_warning_00975540(void* entity, std::uint32_t arg) = 0;
+    virtual WarningObject* new_new_unit_warning_009756a0() = 0;
+    virtual WarningObject* new_powerup_warning_009758e0(const std::string* name) = 0;
+    virtual WarningObject* new_string_list_warning_009795b0(const std::vector<std::string>& strings,
+                                                            void* shortcut, void* ambient) = 0;
+    virtual void report_009763e0(WarningObject* warning) = 0;
+    virtual void set_byte_104() = 0;  // manager+104h = 1
+};
+
+bool warning_report_gate(WarningReportHost& host);
+// 00977BA0, __thiscall(ECX = manager, entity, arg), RET 8. Under the +24h lock.
+void report_confirm_00977ba0(WarningReportHost& host, void* entity, std::uint32_t arg);
+// 00977CD0, __thiscall(ECX = manager, slot), RET 4. Under the lock; slot must be the local one.
+void report_new_unit_00977cd0(WarningReportHost& host, std::int32_t slot);
+// 009789A0, __thiscall(ECX = manager, slot, unused, const NativeString* name), RET 0Ch.
+void report_powerup_009789a0(WarningReportHost& host, std::int32_t slot, const std::string* name);
+// 00979670, __thiscall(ECX = manager, strings, shortcut, ambient), RET 0Ch. No lock; sets +104h
+// once the gate passes, and builds nothing for an empty vector.
+void report_string_list_00979670(WarningReportHost& host, const std::vector<std::string>& strings,
+                                 void* shortcut, void* ambient);
+
+// 0096F090, the session handler: __thiscall(ECX = manager, message), RET 8 by tail jump. The
+// message bytes +18h (damaging) and +19h (friendly) replace the stack arguments of 0096EF60.
+struct HitFeedbackMessage {
+    std::uint8_t damaging_18{0};
+    std::uint8_t friendly_19{0};
+};
+void session_hit_feedback_0096f090(WarningHitFeedbackState& state, float clock,
+                                   const HitFeedbackMessage& message, WarningTextHost& text);
+
+// --- the variant table (manager +144h use counts, +150h last use times) ----------------------------
+
+struct WarningVariantTable {
+    std::map<std::string, std::int32_t, StricmpLess> use_count_144{};
+    std::map<std::string, float, StricmpLess> last_use_150{};
+};
+
+struct WarningVariantHost {
+    virtual ~WarningVariantHost() = default;
+    // 00BD2FC0 with ECX = 1: a raw word of the thread generator's stream 1 (not the gameplay
+    // stream 0 of 00BD2F10). A presentation draw; the host chooses its source.
+    virtual std::uint32_t random_word_00bd2fc0_stream1() = 0;
+    virtual float clock_00f876a4() = 0;
+    virtual void invalid_parameter_00bf6713() = 0;
+    virtual void divide_error() = 0;  // DIV by zero at 00979D1A (an empty variant list)
+};
+
+// 00979B50, __thiscall(ECX = table owner, const std::vector<NativeString>* variants), RET 4.
+// Returns the index of the variant picked (the native returns its address).
+std::size_t pick_message_variant_00979b50(WarningVariantTable& table,
+                                          const std::vector<std::string>& variants,
+                                          WarningVariantHost& host);
+
+// --- the manager archive ---------------------------------------------------------------------------
+
+struct ShipNoiseArchiveRow {
+    std::uint16_t ship_id_174{0};          // the key's entity word +174h
+    float collision_sound_disable_time{0.0f};  // record +0h (node +10h)
+    float air_raid_sound_expires{0.0f};        // record +4h (node +14h)
+    void* effect{nullptr};                     // record +8h (node +18h)
+};
+
+struct WarningListenerChannel {
+    std::string name{};                                       // map +F8h key
+    std::vector<std::pair<std::string, void*>> subscriptions; // inner map: callback -> object
+};
+
+struct WarningManagerArchiveView {
+    bool disable_all{false};                                  // +D0h
+    std::vector<std::pair<void*, bool>> disable_entity{};     // map +D4h, in tree order
+    std::vector<void*> waiting_queue{};                       // list +E4h payloads
+    std::vector<void*> disable_list{};                        // list +F0h payloads
+    std::vector<WarningListenerChannel> listeners{};          // map +F8h
+    const WarningVariantTable* variants{nullptr};             // +144h / +150h
+    std::vector<ShipNoiseArchiveRow> ship_noise{};            // map +184h
+};
+
+struct WarningManagerSaveHost {
+    virtual ~WarningManagerSaveHost() = default;
+    virtual void save_payload_slot2(void* payload, EventArchiveWriter& writer) = 0;      // +8h
+    virtual void save_subscription_slot2(void* subscription, EventArchiveWriter& writer) = 0;
+};
+
+// 0096DD30, __thiscall(ECX = manager, writer), RET 4.
+void save_warning_manager_0096dd30(const WarningManagerArchiveView& view, EventArchiveWriter& writer,
+                                   WarningManagerSaveHost& host);
 
 }  // namespace bsp::cc13_seg49_64_78
