@@ -13612,3 +13612,11 @@ predicted. On counts this small it reads as spread: the launches differ (27 agai
 move differently. The homing half (Fido) is not exercised: no row drops a Fido (JM12 needs the Avenger sent at a
 surfaced player boat). It is gated on the class homing speeds, which only Fido sets. Flipped ON. Fido homing
 should be checked when a JM12 row exists.
+
+**211 verdict: ON (cc9-gunnery40).** USN15 OFF (`local\g40_tf0_u15.log`, the `4cb4287bf` OFF build; the switch adds
+no OFF behaviour) against ON (`g39_rk2`, `local\g40_rm1_u15.log`): pair_diff exit 1, gameplay identical. Both runs
+end at 2641.80 s, first hit 447.41 s in both, and the exec guard's refusal is logged. The 0.75 multiplier reaches
+the recon pass as predicted: sensor-pass blips 15780 -> 8455, identified 69052 -> 62016, mean enemy triple
+7.3 -> 4.6, and the first unit-list publication at 3.05 s holds 0 enemies instead of 9. Detection narrows, but
+the engagements, all inside the shorter ranges, are unchanged. The first-hit prediction ("later") missed:
+on this row it is the same. Mechanism matches; flipped ON.

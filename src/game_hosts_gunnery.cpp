@@ -307,7 +307,8 @@ constexpr bool kTorpedoSwimDepthHomingBound = true;
 //    008049A3. The Lua host stores what 008B2320 / 008B25F0 set
 //    (kSimplifiedReconNativesBound) but the gunnery host answered 1.0f. ON:
 //    the stored values. OFF: 1.0f.
-constexpr bool kReconMultiplierForwardBound = false;
+//    ON since the USN15 pair (GUNNERY_OPEN_ITEMS 211: ranges x0.75, gameplay identical).
+constexpr bool kReconMultiplierForwardBound = true;
 //  * kTorpedoSwimThrustBound: packet cc9_torpedo_tube_turn,
 //    docs/TORPEDO_FRIENDLY_CROSSING.md section 6. 00857480, the swim advance,
 //    per step on a torpedo in the water: 00856BB0 -> 00857061 yaws the NOSE
