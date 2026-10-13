@@ -592,14 +592,14 @@ inline constexpr bool kLuaStartLanding2Bound = true;  // ON: lead pair (JM08 ide
 // pushes thisTable[[sq+3D0h+4i]+174h] (i < 5 and the member non-null) or nil, and
 // pushes nothing for any other i. True: the row answers from the squadron registry
 // record (live members in order). False: unimplemented, no result.
-inline constexpr bool kLuaGetSquadronPlaneBound = false;
+inline constexpr bool kLuaGetSquadronPlaneBound = true;  // ON: lead pair; PRCP01 completes 720.25 s ON (2026-10-13)
 // Packet cc13-fix5 (docs/CC13_FIX_5.md section 5). 0089A020 DisbandFormation(unit):
 // 00888AA0 on argument 0, then 0077CA60 on it (0089A138): with [unit+284h] set it
 // snapshots the group's members (+4F8h count, 0070D060), the leader (+14h) last and
 // skipped in the walk, and routes 77h with a null target (0077BD70's leave) to each
 // one still in a group. True: the row runs the units host's leave for every member
 // of the argument's group, the leader last. False: unimplemented.
-inline constexpr bool kLuaDisbandFormationBound = false;
+inline constexpr bool kLuaDisbandFormationBound = true;  // ON: lead pair; PRCP01 completes 720.25 s ON (2026-10-13)
 // Packet cc13-fix5 (docs/CC13_FIX_5.md section 6). The LandConvoy natives take
 // argument 0 through 00888D20 (the table's Ptr) and make one store on the convoy:
 // 00895570 LandConvoyStart -> 00741120 (+3A8h = 0), 008956E0 LandConvoyStop ->
@@ -607,9 +607,9 @@ inline constexpr bool kLuaDisbandFormationBound = false;
 // (+368h = argument 1 through 00B66270). No result. True: the row makes the store
 // on the units host's bound convoy of that name, which 00743060's stopped gate and
 // speed already read. False: unimplemented.
-inline constexpr bool kLuaLandConvoyStartBound = false;
-inline constexpr bool kLuaLandConvoyStopBound = false;
-inline constexpr bool kLuaLandConvoySetSpeedBound = false;
+inline constexpr bool kLuaLandConvoyStartBound = true;  // ON: lead pair; PRCP01 completes 720.25 s ON (2026-10-13)
+inline constexpr bool kLuaLandConvoyStopBound = true;  // ON: lead pair; PRCP01 completes 720.25 s ON (2026-10-13)
+inline constexpr bool kLuaLandConvoySetSpeedBound = true;  // ON: lead pair; PRCP01 completes 720.25 s ON (2026-10-13)
 // Packet cc13-fix5 (docs/CC13_FIX_5.md section 8). 00896750 LaunchAirBaseSlot(base,
 // slot[, now]): the block (006BCD20), slot = argument 1 - 1, now = argument 2 only
 // with three arguments. A slot in state 2 does nothing. Otherwise: 83h {slot, now}
@@ -618,7 +618,7 @@ inline constexpr bool kLuaLandConvoySetSpeedBound = false;
 // one result. 83h's receiver 006CA8E0 launches at once (006C7490 flag 1) or queues
 // (state 2, the launch list), and consumes the slot's stock either way (006C7D10).
 // True: the row runs that sequence on the entity's deck. False: unimplemented.
-inline constexpr bool kLuaLaunchAirBaseSlotBound = false;
+inline constexpr bool kLuaLaunchAirBaseSlotBound = true;  // ON: lead pair; PRCP01 completes 720.25 s ON (2026-10-13)
 inline constexpr bool kLuaAddUntouchableUnitBound = true;   // ON on identity (LUA_BINDING_MISSION)
 // The +1D4h byte of units-host index `index`'s AI object, as AddUntouchableUnit
 // left it. False for every unit while kLuaAddUntouchableUnitBound is false.

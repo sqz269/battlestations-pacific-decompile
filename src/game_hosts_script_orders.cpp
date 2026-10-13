@@ -136,14 +136,14 @@ inline constexpr bool kLuaNavigatorStopBound = false;
 // 008A75C0: NavigatorStop's twin, 0077D600(entity, cruise 00E08F70, zeroed
 // descriptor, 1) at 008A7729 (bsp::navigator_cruise_order_008a75c0), through
 // entity_issue_command. False leaves it an unimplemented record, as before.
-inline constexpr bool kLuaNavigatorCruiseBound = false;
+inline constexpr bool kLuaNavigatorCruiseBound = true;  // ON: lead pair; PRCP01 completes 720.25 s ON (2026-10-13)
 // Packet cc13-fix5 (docs/CC13_FIX_5.md section 9). True binds PutFormationTo
 // 008AA260 (unit, pos[, shape[, heading]]), single player: with shape 1..3 and the
 // unit in a group, 0070EFD0(shape) on [unit+284h] (a record here: no host reshape
 // by shape), then vtable[118h](pos) and, with exactly four arguments,
 // vtable[11Ch](heading * pi / 180) - PutTo's placement (008193A0, the squadron's
 // member placement) and its heading record. False: unimplemented, as before.
-inline constexpr bool kLuaPutFormationToBound = false;
+inline constexpr bool kLuaPutFormationToBound = true;  // ON: lead pair; PRCP01 completes 720.25 s ON (2026-10-13)
 inline constexpr bool kPilotLandNativeBound = true;
 constexpr bool kDisablePhysicsBound = true;
 constexpr bool kAddMatrixInterpolatorBound = true;
