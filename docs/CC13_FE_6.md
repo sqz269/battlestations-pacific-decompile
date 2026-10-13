@@ -1,0 +1,102 @@
+# cc13-fe6: large frontend screen bodies
+
+Packet cc13-fe6 (cc13 lineage, Claude). Reconstruction pass over the screen bodies the
+cc13-fe1b handoff (docs/CC13_FE_1.md) left open. Code: `src/frontend_screens_cc13.cpp`,
+`include/bsp/frontend_screens_cc13.hpp`, namespace `bsp::cc13_fe1`.
+
+Status vocabulary: every routine below is **reconstructed and build-tested**. None is
+ABI-compatible (the native `__thiscall`/`__fastcall` register conventions are documented, not
+reproduced), fixture-tested or game-validated. Names are hypotheses carried over from the
+ledger; no Ghidra renames were made in this pass.
+
+Evidence: live `bsp.py ghidra decompile` per routine, then `bsp.py disasm-raw` over the whole body
+for every call's ECX/EDX and stack arguments, RET sizes, and x87 sequences. x87 register forms
+were checked from the bytes (`ghidra bytes`), not from listing text.
+
+## Routines
+
+| Address | C++ | Native ABI | Notes |
+|---|---|---|---|
+| 00603120 | `hud_pause_screen_enter_00603120` | fastcall(ECX screen), RET | seven pause rows, arrow placement, objective lists |
+| 00603CA0 | `hud_pause_screen_update_00603ca0` | thiscall(screen, dt), RET 4 | dt unread |
+| 00604190 | `hud_pause_on_listbox_activate_00604190` | thiscall(listener = screen+8, row, unused), RET 8 | |
+| 005EEA00 | `hud_objectives_screen_enter_005eea00` | fastcall(ECX screen), RET | eleven bindings |
+| 005EEF60 | `hud_objectives_screen_update_005eef60` | thiscall(screen, dt), RET 4 | x87 layout; dt unread |
+| 005F9DD0 | `hud_order_screen_update_005f9dd0` | thiscall(screen, float dt), RET 4 | x87 fade and pulse |
+| 005EA2D0 | `multi_main_screen_update_005ea2d0` | thiscall(screen, float dt), RET 4 | x87 scroll velocity |
+| 005E2320 | `lobby_settings_option_label_005e2320` | fastcall(ECX NativeString* result, EDX slot) -> result | std::string projection |
+
+### HudPause (00603120 / 00603CA0 / 00604190)
+
+- The seven rows are clones of the list box's `MainListbox_Text` template in the order resume,
+  tips, points, options, restart, quit, exit, with keys read through the pointer table
+  00E08C40..00E08C58 (`ingame.pause_*`, strings checked from the image). They are stored at
+  +140h, +15Ch, +14Ch, +148h, +150h, +154h, +158h. The activate handler compares its row against
+  `listener+138h..+154h`, which are the same slots, because the listener is screen+8.
+- Arrow offset (006035EE..00603629): `off = (float)((float)((float)(w / 960.0) * 0.5) + 0.015f)`,
+  where w is the tips row's +114h. 960.0 is the double at 00CEC380, and 0.015f is the
+  float-widened double at 00CEE6C8. Every step ends in FSTP dword, so each intermediate is
+  rounded to float. The left arrow goes at `pos - (off, 0.001f, 0.0)` and the right arrow at
+  `pos + (off, -0.001f, +0.0)`. Stack slots were traced by hand from ESP.
+- The objective lists come from `[game + 21A4h + [game+18ECh]*4] + 24h`, a std::list. The image's
+  008DA180 is `LEA EAX, [ECX+24h]`. The active test 008DA130 reuses
+  `cc13_band0085::objective_is_active_008da130`. Kind 0 fills +30h and kind 1 fills +34h; each box
+  stops at 3 rows (+104h).
+- Update: the arrows show only when an entry of the award tracker's std::map at +7Ch has a
+  non-empty string list (node+14h, count +8h of that list). The image copy-constructs the list
+  (004D48A0) only to read the count. The reconstruction reads the count in place and walks the
+  tree through the host (004B7DE0).
+- Activate: restart, quit and exit raise prompts with slots 4, 4 and 6, kind 1 (YesNo),
+  callbacks 005FD5B0, 005FD610 and 005FC640, title "", timeout 0.0, countdown "" and dismissible
+  1. The argument order was read from the pushes at 006042C6..0060430E. The tail toggles the
+  selected hint's name in the expanded-hint list at +128h: it is removed through 005FE8B0, a
+  std::list remove, when present and appended otherwise. The hint list is then rebuilt and the
+  top row and selection restored.
+- 006037D0 (`BSP_HudPauseScreen_UpdateHints`) and 00601200 (`BuildHintList`) stay behind the
+  host. Both are open below.
+
+### HudObjectives (005EEA00 / 005EEF60)
+
+- Bindings were extracted mechanically, as literal, ECX parent and store. The list box gets
+  +12Ch = 0.0, +130h = 1000.0f and +134h = 0.0, input filter 00696540, and listener screen+8.
+- Layout block 005EF162..005EF2A0, traced from ESP with P/(w, h) the position and size of +1Ch:
+  scale icon +20h at (P.x+0.001f, P.y+h, P.z), sized (its width, S); bottom icon +24h at
+  (P.x+w, P.y+(float)(2h+S), P.z); text +28h at (P.x+0.02f, P.y+h, P.z-10.0). Here
+  S = (float)((float)(lineheight/720.0) * (uint)lines). The line count is FILDed with the
+  2^32 fix-up, so it is unsigned. The KisPocset marker sits at the selected row's position plus
+  (0, 0, -1.0).
+- Row colours by objective state: 1 is (0, 0.45f, 0, 1), 2 is (0.75f, 0, 0, 1), and anything
+  else is a function-static white at 00E1961C (guard 00E1962C bit 0).
+- **ABI note:** 006DBAC0 `BSP_GuiElement_ApplyHighlightPulse` takes **DL** as a register argument.
+  It is the enable flag, and its first instructions are `MOV BL, DL; TEST BL, BL`. 005EF442 loads
+  `DL = [screen+70h]` just before the call. `include/bsp/marker_manager_cc13.hpp:76` models only
+  the three stack arguments.
+
+### HudOrder update (005F9DD0)
+
+- 005F9E36 is `D8 C9`, so `step = dt * 2.0` without an order code. 005F9E62 is `DE C9`, so the
+  alpha decrement is `2.0 * step`. The fade timer is +70h, and alpha is reduced only once it
+  exceeds 0.5f. Eight 004BEC00 singleton calls with discarded results sit between the fade and
+  the close test; the host keeps them.
+- Pulse +7Ch: steps of step*7.0 (00CED5D8), turning at 0.99f (00CED5D0, float widened) and
+  0.01f (00D7A238). Without an order code it is pinned at 0.5f, rising.
+
+### MultiMainMenu update (005EA2D0)
+
+- The scroller at +6Ch is embedded (`LEA ECX, [ESI+6Ch]`), not a pointer. The velocity +F0h has a
+  dead zone of +-1e-5f (0x3727C5AC / 0xB727C5AC). The step is (float)(2*v*dt), and the decay is
+  `v - 2*(dt*v)`, with 005EA4AC `D8 C9`.
+
+### LobbySettings option label (005E2320)
+
+- This was already described in docs/MISSION_LOBBY_SETTINGS.md and left unimplemented in
+  `MissionLua::lobby_settings_option_label` (src/game_hosts_lua.cpp, cc9's file). The
+  reconstruction returns a std::string. Slot 0's players-ready count is used only when the game
+  byte +218Ch is set and the effective mode (004BCA50) is above 3; otherwise it is "2".
+
+## For cc9
+
+- `lobby_settings_option_label_005e2320` is available for `MissionLua::lobby_settings_option_label`
+  (src/game_hosts_lua.cpp) if the lane wants it. It calls 005E21B0 StepOption as a side effect
+  when the stored option is disabled.
+- The 006DBAC0 DL argument above affects `marker_manager_cc13.hpp`'s host signature.

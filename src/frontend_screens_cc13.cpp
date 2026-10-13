@@ -1,5 +1,6 @@
 // Frontend and HUD menu screen reconstructions, packet cc13-fe1 (docs/CC13_FE_1.md).
 #include "bsp/frontend_screens_cc13.hpp"
+#include "bsp/band_0085_cc13.hpp"
 #include "bsp/options_menu_screens.hpp"
 
 #include <cstdio>
@@ -2072,5 +2073,514 @@ void hud_order_screen_enter_005fad70(void* screen, HudOrderEnterHost& host) {
         host.set_shown(widget_at(screen, 0x34), true);
         host.set_shown(widget_at(screen, 0x30), false);
     }
+}
+
+// ---------------------------------------------------------------------------
+// HudPauseScreen bodies (packet cc13-fe6)
+// ---------------------------------------------------------------------------
+
+void hud_pause_screen_enter_00603120(void* screen, std::int32_t page_00e19660, PauseScreenHost& host) {
+    host.frame_select_00518d60(kPausedFrame);
+    void* hud = host.hud_interface_00e198c4();
+    void* order = read_field<void*>(hud, 0x64);
+    if (read_field<std::uint8_t>(order, 0x81) != 0 || read_field<std::uint8_t>(order, 0x82) != 0)
+        host.hud_order_close_005f9520();
+    void* ship = read_field<void*>(hud, 0x78);
+    if (read_field<std::uint8_t>(ship, 0x156) != 0 || read_field<std::uint8_t>(ship, 0x157) != 0)
+        host.hud_ship_close_order_menu_0064a2f0();
+    write_field<std::uint8_t>(read_field<void*>(hud, 0x60), 0x4, 0);
+
+    write_field(screen, 0x13C, host.find_child_by_name_00aa7e00(widget_at(screen, 0x14), kMainListboxName));
+    write_field(screen, 0x5C, host.find_child_by_name_00aa7e00(widget_at(screen, 0x13C), kFelkiBalIcon));
+    write_field(screen, 0x60, host.find_child_by_name_00aa7e00(widget_at(screen, 0x13C), kFelkiJobbIcon));
+    host.set_shown(widget_at(screen, 0x5C), false);
+    host.set_shown(widget_at(screen, 0x60), false);
+    host.set_shown(widget_at(screen, 0x18), false);
+    host.list_box_clear_items_00a9bf90(widget_at(screen, 0x13C));
+    const std::uint32_t row_template =
+        host.find_child_by_name_00aa7e00(widget_at(screen, 0x13C), kMainListboxTextName);
+    host.set_shown(row_template, false);
+
+    void* tracker = nullptr;
+    void* game = host.game_00e188a8();
+    for (std::size_t i = 0; i < kPauseRowOffsets.size(); ++i) {
+        const std::uint32_t row = host.clone_subtree_00aab4c0(row_template, 0);
+        write_field(screen, kPauseRowOffsets[i], row);
+        host.text_set_localised_cstring_00abbe50(row, kPauseRowKeys[i], 1);
+        if (kPauseRowOffsets[i] == 0x15C) {
+            // The singleton is fetched after the text is set.
+            tracker = host.award_tracker_004e1ca0();
+            host.widget_virtual_7c(row, read_field<std::int32_t>(tracker, 0x9C) == 0);
+        } else if (kPauseRowOffsets[i] == 0x14C) {
+            host.widget_virtual_7c(row,
+                read_field<std::uint8_t>(game, 0x218C) == 0 && read_field<std::int32_t>(game, 0x1FE4) == 0);
+        }
+        host.list_box_insert_row_00a9d750(widget_at(screen, 0x13C), row, 0, 0);
+    }
+    const std::uint32_t list_box = widget_at(screen, 0x13C);
+    host.set_enabled(list_box, true);
+    host.list_box_select_index_00a9c7c0(list_box, page_00e19660);
+    host.list_box_set_listener_00a9ac40(list_box, at(screen, 0x8));
+    host.list_box_virtual_80(list_box, true);
+    host.list_box_reset_highlight_00a9cf30(list_box, 1, 1);
+
+    // FSTP dword after each step: the x87 intermediates round to float.
+    const std::uint32_t tips = widget_at(screen, 0x15C);
+    float offset = static_cast<float>(static_cast<double>(read_field<float>(reinterpret_cast<void*>(
+                                          static_cast<std::uintptr_t>(tips)), 0x114)) / kPauseArrowWidthScale);
+    offset = static_cast<float>(static_cast<double>(offset) * 0.5);
+    offset = static_cast<float>(static_cast<double>(offset) + static_cast<double>(kPauseArrowPad));
+    std::array<float, 3> position = host.widget_resolved_position_00aa6750(tips);
+    host.widget_set_resolved_position_00aa8240(widget_at(screen, 0x5C),
+        {position[0] - offset, static_cast<float>(static_cast<double>(position[1]) - kPauseArrowDrop),
+            static_cast<float>(static_cast<double>(position[2]) - 0.0)});
+    position = host.widget_resolved_position_00aa6750(tips);
+    host.widget_set_resolved_position_00aa8240(widget_at(screen, 0x60),
+        {position[0] + offset, static_cast<float>(static_cast<double>(position[1]) - kPauseArrowDrop),
+            static_cast<float>(static_cast<double>(position[2]) + 0.0)});
+
+    write_field<std::uint8_t>(host.command_bar_00e1930c(), 0x4, 1);
+    host.list_box_clear_items_00a9bf90(widget_at(screen, 0x30));
+    host.list_box_clear_items_00a9bf90(widget_at(screen, 0x34));
+    void* set = read_field<void*>(game, 0x21A4 + 4 * static_cast<std::size_t>(read_field<std::int32_t>(game, 0x18EC)));
+    void* sentinel = read_field<void*>(at(set, 0x24), 0x4);
+    for (void* node = read_field<void*>(sentinel, 0x0); node != sentinel; node = read_field<void*>(node, 0x0)) {
+        void* objective = read_field<void*>(node, 0x8);
+        if (!cc13_band0085::objective_is_active_008da130(read_field<std::int32_t>(objective, 0x1C))) continue;
+        const std::int32_t kind = read_field<std::int32_t>(objective, 0x18);
+        std::uint32_t target = 0;
+        if (kind == 0 && read_field<std::int32_t>(reinterpret_cast<void*>(static_cast<std::uintptr_t>(
+                             widget_at(screen, 0x30))), 0x104) < 3)
+            target = widget_at(screen, 0x30);
+        else if (kind == 1 && read_field<std::int32_t>(reinterpret_cast<void*>(static_cast<std::uintptr_t>(
+                                  widget_at(screen, 0x34))), 0x104) < 3)
+            target = widget_at(screen, 0x34);
+        if (target == 0) continue;
+        const std::uint32_t row = host.clone_subtree_00aab4c0(widget_at(screen, 0x50), 0);
+        write_field(screen, 0x160, row);
+        host.text_set_localised_source_00abaed0(row, at(objective, 0xC), 1);
+        host.list_box_insert_row_00a9d750(target, row, 0, 0);
+    }
+    host.set_shown(widget_at(screen, 0x1C), true);
+}
+
+void hud_pause_screen_update_00603ca0(void* screen, std::int32_t& page_00e19660, PauseScreenHost& host) {
+    const bool hint_page = read_field<std::uint8_t>(screen, 0x10) != 0;
+    if (hint_page) {
+        host.scroller_update_00683820(read_field<void*>(screen, 0x9C), 1);
+        host.update_hints_006037d0(screen);
+    } else if (read_field<std::int32_t>(host.award_tracker_004e1ca0(), 0x84) == 0) {
+        host.set_shown(widget_at(screen, 0x5C), false);
+        host.set_shown(widget_at(screen, 0x60), false);
+    } else {
+        // The award tracker's std::map at +7Ch (head +80h): any entry whose string
+        // list value (node+14h, count at +8h of the list) is non-empty.
+        void* head = read_field<void*>(host.award_tracker_004e1ca0(), 0x80);
+        bool any = false;
+        for (void* node = read_field<void*>(head, 0x0);
+             node != read_field<void*>(host.award_tracker_004e1ca0(), 0x80); node = host.tree_next_004b7de0(node)) {
+            if (read_field<std::int32_t>(node, 0x14 + 0x8) != 0) {
+                any = true;
+                break;
+            }
+        }
+        host.set_shown(widget_at(screen, 0x5C), any);
+        host.set_shown(widget_at(screen, 0x60), any);
+    }
+    void* game = host.game_00e188a8();
+    void* mode = read_field<void*>(game, 0x38);
+    const bool tips_visible = (mode == nullptr || read_field<std::int32_t>(mode, 0x60) != 1) &&
+                              read_field<std::int32_t>(host.award_tracker_004e1ca0(), 0x9C) != 0;
+    host.list_control_set_item_visible_00a9c380(widget_at(screen, 0x13C), 1, tips_visible);
+
+    if (host.input_was_pressed_004c43c0(0x4B)) {
+        if (read_field<std::uint8_t>(screen, 0x10) != 0) {
+            host.show_page_005fd890(screen, false, false);
+            return;
+        }
+        host.resume_005fd440(screen);
+        page_00e19660 = 0;
+        return;
+    }
+    if (host.input_was_pressed_004c43c0(1)) {
+        if (read_field<std::uint8_t>(screen, 0x10) == 0) {
+            host.resume_005fd440(screen);
+            page_00e19660 = 0;
+        }
+        return;
+    }
+    if (read_field<std::uint8_t>(screen, 0x10) != 0) {
+        host.scroller_update_00683820(read_field<void*>(screen, 0x9C), 1);
+        host.rebuild_command_bar_0054b530({{{0x00, "", 1}, {0x00, "", 1}, {0xB3, "globals.navigate", 1},
+            {0xA3, "globals.back", 2}, {0x00, "", 1}}});
+    } else {
+        host.rebuild_command_bar_0054b530({{{0xA2, "globals.select", 0}, {0x00, "", 1},
+            {0xB3, "globals.navigate", 1}, {0xA3, "globals.back", 2}, {0x00, "", 1}}});
+        host.command_bar_set_help_line_0054a0c0("");
+    }
+    host.profile_hints_00427190(0x0F);
+}
+
+void hud_pause_on_listbox_activate_00604190(void* listener, std::uint32_t row, std::int32_t& page_00e19660,
+    PauseScreenHost& host) {
+    std::byte* screen = static_cast<std::byte*>(listener) - 0x8;
+    if (row == widget_at(screen, 0x140)) {
+        page_00e19660 = 0;
+        host.resume_005fd440(screen);
+    } else if (row == widget_at(screen, 0x14C)) {
+        page_00e19660 = 2;
+        write_field<std::uint8_t>(screen, 0x4, 0);
+        void* points = read_field<void*>(host.hud_interface_00e198c4(), 0xE0);
+        write_field<std::uint8_t>(points, 0x4, 1);
+        write_field<std::uint8_t>(points, 0x5, 1);
+        host.commit_visibility_004f83b0(points);
+        host.screen_virtual_18(points);
+        host.input_manager_update_00a92c40(0.0f);
+    } else if (row == widget_at(screen, 0x148)) {
+        page_00e19660 = 3;
+        write_field<std::uint8_t>(screen, 0x4, 0);
+        if (host.options_menu_00e198b8() == nullptr) host.options_menu_create_00689800();
+        host.set_options_page_00e19650(0);
+        host.options_menu_virtual_08();
+    } else if (row == widget_at(screen, 0x150)) {
+        host.raise_prompt_00531b00(4, kPauseRestartPrompt, 1, 0x005FD5B0u);
+        host.focus_last_prompt_navigation_00530c20();
+    } else if (row == widget_at(screen, 0x15C)) {
+        page_00e19660 = 1;
+        write_field(screen, 0x100, 0.0f);
+        host.build_hint_list_00601200(screen);
+        write_field<std::uint8_t>(screen, 0x10, 1);
+        host.set_shown(widget_at(screen, 0x14), false);
+        host.set_shown(widget_at(screen, 0x18), true);
+        host.frame_select_default_004c9680();
+        host.set_enabled(widget_at(screen, 0x2C), true);
+        host.list_box_select_index_00a9c7c0(widget_at(screen, 0x2C), 0);
+        host.list_box_set_listener_00a9ac40(widget_at(screen, 0x2C), listener);
+        host.list_box_virtual_80(widget_at(screen, 0x2C), true);
+        host.set_shown(widget_at(screen, 0x5C), false);
+        host.set_shown(widget_at(screen, 0x60), false);
+    } else if (row == widget_at(screen, 0x154)) {
+        host.raise_prompt_00531b00(4, kPauseQuitPrompt, 1, 0x005FD610u);
+        host.focus_last_prompt_navigation_00530c20();
+    } else if (row == widget_at(screen, 0x158)) {
+        host.raise_prompt_00531b00(6, kPauseExitPrompt, 1, 0x005FC640u);
+        host.focus_last_prompt_navigation_00530c20();
+    }
+
+    if (read_field<std::uint8_t>(screen, 0x10) == 0) return;
+    const std::uint32_t list_box = widget_at(screen, 0x2C);
+    write_field(screen, 0x134,
+        read_field<std::int32_t>(reinterpret_cast<void*>(static_cast<std::uintptr_t>(list_box)), 0x164));
+    write_field(screen, 0x138, host.list_box_selected_index_00a9c920(list_box));
+    const std::int32_t hint_row = read_field<std::int32_t>(screen, 0x134) + read_field<std::int32_t>(screen, 0x138);
+    const NativeString* mapped = host.hint_name_at_row_005fd220(screen, hint_row);
+    if (mapped == nullptr) return;
+    // The image compares against a 00426060 copy of the mapped name (released at
+    // exit); the copy has no other effect, so the mapped value is compared here.
+    const NativeString& name = *mapped;
+    bool expanded = false;
+    void* sentinel = read_field<void*>(screen, 0x12C);
+    for (void* node = read_field<void*>(sentinel, 0x0); node != sentinel; node = read_field<void*>(node, 0x0)) {
+        if (host.equals_insensitive_00435c40(*reinterpret_cast<const NativeString*>(at(node, 0x8)), name)) {
+            expanded = true;
+            break;
+        }
+    }
+    if (expanded)
+        host.expanded_hints_remove_005fe8b0(screen, *host.hint_name_at_row_005fd220(screen, hint_row));
+    else
+        host.expanded_hints_push_back(screen, *host.hint_name_at_row_005fd220(screen, hint_row));
+    host.build_hint_list_00601200(screen);
+    write_field(reinterpret_cast<void*>(static_cast<std::uintptr_t>(widget_at(screen, 0x2C))), 0x164,
+        read_field<std::int32_t>(screen, 0x134));
+    host.list_box_rebuild_page_00a9d870(widget_at(screen, 0x2C));
+    host.list_box_select_index_00a9c7c0(widget_at(screen, 0x2C), read_field<std::int32_t>(screen, 0x138));
+    host.list_box_virtual_80(widget_at(screen, 0x2C), false);
+}
+
+// ---------------------------------------------------------------------------
+// HudObjectivesScreen bodies (packet cc13-fe6)
+// ---------------------------------------------------------------------------
+
+namespace {
+void* native_widget(std::uint32_t widget) noexcept {
+    return reinterpret_cast<void*>(static_cast<std::uintptr_t>(widget));
+}
+}  // namespace
+
+void hud_objectives_screen_enter_005eea00(void* screen, HudObjectivesHost& host) {
+    struct Bind {
+        std::uint16_t parent;
+        std::uint16_t store;
+        std::string_view name;
+    };
+    static constexpr std::array<Bind, 11> kBinds{{
+        {0x10, 0x14, "Open_Group"},                     // 00CF2E40
+        {0x14, 0x18, "obj_main_Icon"},                  // 00CF2E30
+        {0x14, 0x1C, "obj_text_top_Icon"},              // 00CF2E1C
+        {0x14, 0x20, "obj_scale_Icon"},                 // 00CF2E0C
+        {0x14, 0x24, "obj_text_bottom_Icon"},           // 00CF2DF4
+        {0x14, 0x2C, "PrimaryNumbers_Text"},            // 00CF2DE0
+        {0x14, 0x30, "SecondaryNumbers_Text"},          // 00CF2DC8
+        {0x14, 0x34, "ObjectiveNumbers_Listbox"},       // 00CF2DAC
+        {0x34, 0x38, "ObjectiveNumbersTemplate_Text"},  // 00CF2D8C
+        {0x34, 0x3C, "KisPocset_Icon"},                 // 00CF2D7C
+        {0x14, 0x28, "SelectedObjective_Text"},         // 00CF2D64
+    }};
+    for (const Bind& bind : kBinds) {
+        write_field(screen, bind.store, host.find_child_by_name_00aa7e00(widget_at(screen, bind.parent), bind.name));
+        if (bind.store == 0x34) {
+            void* list_box = native_widget(widget_at(screen, 0x34));
+            write_field(list_box, 0x12C, 0.0f);
+            write_field(list_box, 0x130, 1000.0f);  // 00CE3804
+            write_field(list_box, 0x134, 0.0f);
+            host.list_box_set_input_filter_00a9ac70(widget_at(screen, 0x34), 0x00696540u);
+            host.list_box_set_listener_00a9ac40(widget_at(screen, 0x34), at(screen, 0x8));
+        }
+    }
+    write_field<std::uint32_t>(screen, 0x6C, 0);
+    write_field<std::uint32_t>(screen, 0x68, 0);
+    write_field<std::uint8_t>(screen, 0x70, 0);
+    host.set_expanded_005ed5d0(screen, false);
+    host.refresh_rows_005ee520(screen);
+}
+
+void hud_objectives_screen_update_005eef60(void* screen, HudObjectivesHost& host) {
+    const std::uint32_t list_box = widget_at(screen, 0x34);
+    const auto objectives_count = [&] {
+        void* begin = read_field<void*>(screen, 0x54);
+        if (begin == nullptr) return std::uint32_t{0};
+        return static_cast<std::uint32_t>(
+            (read_field<std::uintptr_t>(screen, 0x58) - reinterpret_cast<std::uintptr_t>(begin)) / 4);
+    };
+    const auto objective = [&](std::uint32_t index) {
+        return read_field<void*>(read_field<void*>(screen, 0x54), 4 * static_cast<std::size_t>(index));
+    };
+    const auto row_widget = [&](std::uint32_t index) {
+        return read_field<std::uint32_t>(read_field<void*>(screen, 0x44), 4 * static_cast<std::size_t>(index));
+    };
+
+    void* requested = read_field<void*>(screen, 0x6C);
+    if (requested != nullptr) {
+        if (read_field<void*>(screen, 0x68) != requested) {
+            write_field(screen, 0x68, requested);
+            for (std::uint32_t i = 0; i < objectives_count(); ++i)
+                if (objective(i) == read_field<void*>(screen, 0x68)) write_field(screen, 0x60, i);
+            host.list_box_select_index_00a9c7c0(list_box, read_field<std::uint32_t>(screen, 0x60));
+        }
+        write_field<std::uint32_t>(screen, 0x6C, 0);
+    } else if (host.input_was_pressed_004c43c0(0x4B) || host.vector_00e18d1c_count() == 0) {
+        host.set_expanded_005ed5d0(screen, false);
+    }
+    if (host.input_was_pressed_004c43c0(0xC8))
+        host.set_expanded_005ed5d0(screen, read_field<std::uint8_t>(native_widget(widget_at(screen, 0x34)), 0x85) == 0);
+    if (read_field<std::uint8_t>(screen, 0x65) == 0) host.refresh_rows_005ee520(screen);
+
+    if (read_field<std::uint8_t>(screen, 0x70) != 0) {
+        bool marker_shown = false;
+        if (read_field<std::uint8_t>(screen, 0x64) == 0) {
+            host.text_set_localised_cstring_00abbe50(widget_at(screen, 0x28), kNoActiveObjective, 1);
+        } else {
+            if (host.input_was_pressed_004c43c0(0xC9)) {
+                const std::uint32_t rows = host.list_box_row_count_00a9ac50(widget_at(screen, 0x34));
+                host.list_box_select_index_00a9c7c0(widget_at(screen, 0x34),
+                    (host.list_box_selected_index_00a9c920(widget_at(screen, 0x34)) + 1u) % rows);
+            }
+            write_field(screen, 0x60, host.list_box_selected_index_00a9c920(widget_at(screen, 0x34)));
+            const std::uint32_t selected = read_field<std::uint32_t>(screen, 0x60);
+            host.text_set_localised_source_00abaed0(widget_at(screen, 0x28), at(objective(selected), 0xC), 1);
+            host.text_set_localised_source_00abaed0(widget_at(screen, 0x28),
+                at(objective(read_field<std::uint32_t>(screen, 0x60)), 0xC), 1);
+            const std::array<float, 3> row =
+                host.widget_resolved_position_00aa6750(row_widget(read_field<std::uint32_t>(screen, 0x60)));
+            host.widget_set_resolved_position_00aa8240(widget_at(screen, 0x3C),
+                {static_cast<float>(0.0 + row[0]), static_cast<float>(row[1] + 0.0),
+                    static_cast<float>(row[2] - 1.0)});
+            marker_shown = true;
+        }
+        host.set_shown(widget_at(screen, 0x3C), marker_shown);
+
+        const std::array<float, 3> top = host.widget_resolved_position_00aa6750(widget_at(screen, 0x1C));
+        const std::array<float, 2> top_size = host.widget_size_00aa6740(widget_at(screen, 0x1C));
+        const float w = top_size[0];
+        const float h = top_size[1];
+        host.widget_set_resolved_position_00aa8240(widget_at(screen, 0x20),
+            {static_cast<float>(top[0] + static_cast<double>(kPauseArrowDrop)), top[1] + h,
+                static_cast<float>(top[2] + 0.0)});
+        void* text = native_widget(widget_at(screen, 0x28));
+        const float line_scale = static_cast<float>(
+            static_cast<double>(read_field<std::int16_t>(read_field<void*>(text, 0x108), 0x14)) / kObjectivesLineScale);
+        // FILD of the dword plus 2^32 when negative: the line count is unsigned.
+        const float scale_height = static_cast<float>(
+            static_cast<double>(line_scale) * static_cast<double>(read_field<std::uint32_t>(text, 0x110)));
+        host.widget_set_size_58(widget_at(screen, 0x20),
+            {host.widget_size_00aa6740(widget_at(screen, 0x20))[0], scale_height});
+        const float span = static_cast<float>(static_cast<double>(h) + static_cast<double>(h) +
+                                              static_cast<double>(scale_height));
+        host.widget_set_resolved_position_00aa8240(widget_at(screen, 0x24),
+            {top[0] + w, span + top[1], static_cast<float>(top[2] + 0.0)});
+        host.widget_set_resolved_position_00aa8240(widget_at(screen, 0x28),
+            {static_cast<float>(top[0] + static_cast<double>(kObjectivesTextIndent)), top[1] + h,
+                static_cast<float>(top[2] - static_cast<double>(kObjectivesTextDrop))});
+    }
+
+    // Function-local static colour 00E1961C..00E19628, guard 00E1962C bit 0.
+    static const std::array<float, 4> kWhite{1.0f, 1.0f, 1.0f, 1.0f};
+    for (std::uint32_t i = 0; i < objectives_count(); ++i) {
+        const std::int32_t state = read_field<std::int32_t>(objective(i), 0x1C);
+        std::array<float, 4> colour = kWhite;
+        if (state == 1)
+            colour = {0.0f, kObjectiveDoneGreen, 0.0f, 1.0f};
+        else if (state == 2)
+            colour = {kObjectiveFailedRed, 0.0f, 0.0f, 1.0f};
+        host.widget_set_colour_50(row_widget(i), colour);
+    }
+    host.set_shown(widget_at(screen, 0x14), read_field<std::uint8_t>(screen, 0x70) != 0);
+    host.apply_highlight_pulse_006dbac0(widget_at(screen, 0x3C), read_field<std::uint8_t>(screen, 0x70) != 0, 0, 1,
+        1.0f);
+}
+
+void hud_order_screen_update_005f9dd0(void* screen, float dt, HudOrderUpdateHost& host) {
+    if (read_field<std::uint8_t>(screen, 0x82) == 0) return;
+    if (read_field<std::uint8_t>(read_field<void*>(host.hud_interface_00e198c4(), 0x5C), 0x4) != 0) return;
+    std::array<float, 4> colour = host.widget_colour_54(widget_at(screen, 0x8));
+    const bool no_order = read_field<std::int32_t>(screen, 0x88) == 0;
+    float step = dt;
+    if (no_order) {
+        if (1.0f > read_field<float>(screen, 0x70)) write_field(screen, 0x70, 1.0f);
+        step = static_cast<float>(static_cast<double>(dt) * kOrderFadeRate);
+    }
+    const float fade = static_cast<float>(read_field<float>(screen, 0x70) + static_cast<double>(step));
+    write_field(screen, 0x70, fade);
+    if (fade > 0.5f)
+        colour[3] = static_cast<float>(static_cast<double>(colour[3]) - kOrderFadeRate * static_cast<double>(step));
+    for (int i = 0; i < 8; ++i) host.input_manager_singleton_004bec00();
+    if (colour[3] <= 0.0f) {
+        host.hud_order_close_005f9520(screen);
+        colour[3] = 1.0f;
+    }
+    host.widget_set_colour_00aa85b0(widget_at(screen, 0x8), colour);
+
+    const double delta = static_cast<double>(step) * kOrderPulseRate;
+    const float pulse = read_field<std::uint8_t>(screen, 0x80) != 0
+                            ? static_cast<float>(delta + read_field<float>(screen, 0x7C))
+                            : static_cast<float>(read_field<float>(screen, 0x7C) - delta);
+    write_field(screen, 0x7C, pulse);
+    if (static_cast<double>(pulse) > static_cast<double>(kOrderPulseHigh)) write_field<std::uint8_t>(screen, 0x80, 0);
+    if (kOrderPulseLow > pulse) write_field<std::uint8_t>(screen, 0x80, 1);
+    if (read_field<std::int32_t>(screen, 0x88) == 0) {  // re-read by the image
+        write_field(screen, 0x7C, 0.5f);
+        write_field<std::uint8_t>(screen, 0x80, 1);
+    }
+    std::array<float, 4> pulse_colour = host.widget_colour_54(widget_at(screen, 0x44));
+    pulse_colour[3] = read_field<float>(screen, 0x7C);
+    for (std::size_t offset = 0x44; offset <= 0x54; offset += 4) host.widget_set_colour_50(widget_at(screen, offset), pulse_colour);
+}
+
+void multi_main_screen_update_005ea2d0(void* screen, float dt, MultiMainUpdateHost& host) {
+    void* list20 = native_widget(widget_at(screen, 0x20));
+    void* list24 = native_widget(widget_at(screen, 0x24));
+    bool stepped = false;
+    if (host.action_edge_or_repeat_004d92b0(0x4B)) {
+        host.refresh_online_state_005e7900(screen);
+    } else if (read_field<std::uint8_t>(list20, 0x77) == 0) {
+        if (host.action_edge_or_repeat_004d92b0(0x4D)) {
+            write_field<std::uint8_t>(list20, 0x77, 1);
+            stepped = true;
+        }
+    } else if (read_field<std::uint8_t>(list24, 0x77) == 0) {
+        if (host.action_edge_or_repeat_004d92b0(0x4D)) {
+            write_field<std::uint8_t>(list24, 0x77, 1);
+            stepped = true;
+        }
+    } else if (host.action_edge_or_repeat_004d92b0(0x4C)) {
+        const std::int32_t column = read_field<std::int32_t>(screen, 0xE0);
+        if (column != 0) {
+            write_field(screen, 0xE0, column - 1);
+            stepped = true;
+        } else {
+            void* list = host.widget_virtual_38(widget_at(screen, 0x24)) ? list24 : list20;
+            write_field<std::uint8_t>(list, 0x77, 0);
+            host.widget_set_uniform_scale_004fb9e0(widget_at(screen, 0xE8), 1.0f);
+            host.set_shown(widget_at(screen, 0xD4), false);
+        }
+    } else if (host.action_edge_or_repeat_004d92b0(0x4D)) {
+        const std::int32_t column = read_field<std::int32_t>(screen, 0xE0);
+        if (column != 2) {
+            write_field(screen, 0xE0, column + 1);
+            stepped = true;
+        }
+    } else if (host.action_edge_or_repeat_004d92b0(0x46)) {
+        const std::int32_t row = read_field<std::int32_t>(screen, 0xE4);
+        if (row != 0) {
+            write_field(screen, 0xE4, row - 1);
+            stepped = true;
+        }
+    } else if (host.action_edge_or_repeat_004d92b0(0x47)) {
+        const std::int32_t row = read_field<std::int32_t>(screen, 0xE4);
+        if (row != read_field<std::int32_t>(screen, 0x10) - 1) {
+            write_field(screen, 0xE4, row + 1);
+            stepped = true;
+        }
+    }
+    if (stepped) {
+        host.update_session_list_005e9be0(screen);
+        host.sound_queue_set_flag_19();
+    }
+
+    // x87: the products are exact in extended precision; one rounding per FSTP.
+    const float velocity = read_field<float>(screen, 0xF0);
+    if (velocity > kMultiScrollDeadZone || -kMultiScrollDeadZone > velocity) {
+        if (velocity > kMultiScrollDeadZone)
+            host.scroller_toward_end_00683700(at(screen, 0x6C),
+                static_cast<float>(2.0 * (static_cast<double>(velocity) * dt)));
+        else
+            host.scroller_toward_start_00683680(at(screen, 0x6C),
+                static_cast<float>(2.0 * (-static_cast<double>(velocity) * dt)));
+        const double v = read_field<float>(screen, 0xF0);
+        write_field(screen, 0xF0, static_cast<float>(v - 2.0 * (static_cast<double>(dt) * v)));
+    }
+    host.scroller_update_00683820(at(screen, 0x6C), 1);
+    const bool selectable = read_field<std::uint8_t>(list24, 0x77) == 0 || read_field<std::uint8_t>(list20, 0x77) == 0;
+    host.rebuild_command_bar_0054b530({{selectable ? MainMenuCommandArgument{0xA2, "globals.select", 0}
+                                                   : MainMenuCommandArgument{0x00, "", 1},
+        {0xB3, "globals.navigate", 1}, {0x00, "", 1}, {0xA3, "globals.back", 2}, {0x00, "", 1}}});
+}
+
+std::string lobby_settings_option_label_005e2320(std::int32_t slot, LobbyLabelHost& host) {
+    void* game = host.game_00e188a8();
+    const auto record = [&]() -> const void* {
+        const std::int32_t index = host.mission_index_00e19594();
+        const void* list = at(game, 0x5F0);
+        if (read_field<std::int32_t>(list, 0x0) <= index) return nullptr;
+        if (host.list_nth_node_004be940(list, index) == nullptr) return nullptr;
+        if (read_field<std::uint8_t>(host.list_nth_node_004be940(list, index), 0x914) == 0) return nullptr;
+        return host.list_nth_node_004be940(list, index);
+    };
+    if (slot == 1) {
+        const void* node = record();
+        return node != nullptr ? host.native_string(at(node, 0x920)) : std::string("FE.unknown_mapname");
+    }
+    if (slot == 0) {
+        if (read_field<std::uint8_t>(game, 0x218C) == 0) {
+            return std::to_string(static_cast<int>(read_field<std::int8_t>(game, 0x2018))) + "/" +
+                   std::to_string(static_cast<int>(read_field<std::int8_t>(game, 0x2017)));
+        }
+        if (host.effective_game_mode_004bca50() <= 3) return std::to_string(2);
+        int active = 0;
+        for (std::size_t i = 0; i < 8; ++i) {
+            const void* player = read_field<void*>(game, 0x18CC + 4 * i);
+            if ((read_field<std::uint8_t>(player, 0x8) != 0 && read_field<std::uint8_t>(player, 0x9) == 0) ||
+                read_field<std::uint8_t>(player, 0xA) != 0)
+                ++active;
+        }
+        return std::to_string(active);
+    }
+    if (slot == 0x0D) return host.string_00e195bc();
+    if (record() == nullptr) return "-";
+    if (!host.option_enabled(slot, host.stored_option_00e1955c(slot))) host.step_option_005e21b0(slot);
+    if (host.option_label_00575e80(slot, 0) != nullptr)
+        return host.option_label_00575e80(slot, host.stored_option_00e1955c(slot));
+    return std::to_string(host.option_value_00575fd0(slot, host.stored_option_00e1955c(slot)));
 }
 }  // namespace bsp::cc13_fe1
