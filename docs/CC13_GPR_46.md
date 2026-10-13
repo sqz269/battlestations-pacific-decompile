@@ -139,21 +139,49 @@ modelled here.
 
 ## 3. Open questions
 
-- **`flying` (`+458h`).** The only native writes are the constructor's clear (`007AB980`) and the network
-  create (`006E1A35`, from message `+11Ch`). `BSP_BombProjectile_Activate` (`006E2E10`) binds it as the script
-  property `{3, &+458h}` / `{0, "flying"}` under `"_bulletBase"` (`006E30D8`-`006E30F7`, `BSP_LuaReader_ReadField`
-  `00BD6830`). Byte scans for stores (`C6 ?? 58 04 00 00 01`, `88 ?? 58 04 00 00` and their SIB forms,
-  `C7`/`66 89`/`0F 9x`) found no other writer.
-  - Without `flying`, `007AB360` holds the round in "fall" and never calls `+19Ch`, and `007AC000` never
-    lands it.
-  - It is not settled whether a rack-dropped round reaches `flying = 1` through that property read. A
-    host bind must answer that before a JM05 prediction is trusted.
+- **`flying` (`+458h`): SETTLED (cc13-gpr46b).** The drop itself sets it. The setter is
+  `006E1FA3 MOV byte ptr [EBP+148h], 1` in `006E1F00` (`BSP_BombRack_DropCone`), where EBP = round+310h
+  (`006E1F05`/`006E1F0E`). The path to it, all read from bytes:
+  1. `006E4D50` walks the rack's children to the first that answers IsKindOf(2Ah). The paratrooper (31h ->
+     2Ah) qualifies (`006E4EC0`-`006E4EE3`).
+  2. `006E520B` calls the round's `vslot +108h`. In the paratrooper vtable `00D05060` that slot is `006E27C0`
+     `BSP_BombProjectile_BulletBlock`, which answers round+310h.
+  3. `006E529C` calls that sub-object's `vslot +34h`. In the paratrooper's +310h vtable `00D04FF0`, slot +34h
+     (`00D05024`) is `006E1F00`.
+
+  So every rack drop, the paratrooper drop included, detaches the round, sets its release velocity and sets
+  `flying = 1`. `006E1F00` also stores the water byte `+354h`: 1 when the round is above the water height,
+  else 0.
+
+  The earlier search missed this because it scanned disp32 `458h`. The store goes through the +310h
+  sub-object as disp `148h`; this is the vacuous-scan trap.
+
+  The other two writers stay as recorded:
+  - `006E1A35`, the network create, copies message `+11Ch`;
+  - `006E2E10` restores `flying` from a saved game. `006E3047`-`006E30F7` run only when `[+C0h]+4 == 3`, and
+    read `SEntity_GetSavedEntityLuaData` -> `"_bomb"` -> `"_bulletBase"` -> `"flying"`.
+
+  No mission Lua in this installation names `flying` or `_bulletBase` (a grep of `scripts\`, which also
+  found nothing in `jm05`). A JM05 bind can therefore set `flying_458 = true` at the host's rack drop.
 - `class+5Ch` is the BombClass step scale (CC13_FLAK_FLYTIME_BURST.md); its Lua key was not read here.
 - `007AB590`'s soldier attach (`vslot +98h` with `+3Ch`/`+30h` and an identity matrix) and the chute hide are
   scene work, left to the host.
 - `00BF9940` is read as `acos` from its use only (as in CC13_SOLDIER_TRAFFIC.md).
 - The x87 keeps 80-bit intermediates. The models carry them in double, so a last-bit difference against the
   image is possible.
+
+### 3.1 JM05's paratroopers (this installation's `scripts\missions\ijn\JM\jm05.lua`)
+
+`luaJM5SpawnParatroopers` (`jm05.lua:3288`) spawns an allied group at `USNSpawn 01`, y = 600:
+- type 136 "C47 Dakota", WingCount 3, `Equipment` 1;
+- type 135 "Warhawk", WingCount 3.
+
+`luaJM5ParatroopersSpawned` (`:3338`) gives the `LevelBomber` member `PilotMoveTo(v, Mission.Airfields[1])`,
+not an attack order, and sends the fighter after it.
+
+How the drop gets there was not traced in this pass. It is the bot's decision, through the level-bomb
+command and the paratrooper option in the AI target weights (`ai_target_weights.cpp` `00A08A23`), and then
+the release `007C0D90` -> `006E3F90`. `jm05.lua:2733` counts the Dakota squads, not the rounds.
 
 ## 4. Ledger
 
@@ -196,4 +224,4 @@ functions with names but no record. None of them is gameplay-critical:
   means the cursor's own), `007ADD50` (`vtable[8](007ADCC0())`), `007B1320`
   (`vtable[4](out, 007ADCC0())`) and `007AE060`.
 
-Open question to settle before binding the paratrooper: how a rack-dropped round gets `flying` (section 3).
+The `flying` question is settled in section 3 (cc13-gpr46b): the rack drop sets it.

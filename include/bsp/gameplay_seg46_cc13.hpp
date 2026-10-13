@@ -38,8 +38,9 @@
 //   nearest enemy command building, damage it and add CapturePower to its capture
 //   while CaptureDuration runs. Stream-0 consumers after the first drop shift (two
 //   draws per round), and stream-1 consumers shift by one draw per round created.
-//   Only rounds whose script property "flying" is set steer, open or land (see
-//   the doc's open questions).
+//   Only rounds with +458h "flying" set steer, open or land; the rack drop sets
+//   it (006E1FA3 in 006E1F00, reached from 006E529C), so the host sets
+//   flying_458 = true when it drops the round.
 
 #include "bsp/soldier_traffic_cc13.hpp"
 
@@ -83,7 +84,7 @@ struct ParatrooperState {
     std::uint16_t net_id_174{0};     // seeds the avoid-zone radius (007ABC41)
     Vec3 landing_pose_a4{};          // (x, ground, z) at touchdown (007AC211-007AC22A)
     Vec3 velocity_318{};
-    bool flying_458{false};          // script property "flying" ({3,&+458h}, 006E30D8)
+    bool flying_458{false};          // set by the drop 006E1FA3; also saved/restored as "flying" (006E30D8)
     float open_altitude_468{0.0f};
     float chute_46c{0.0f};           // 0 closed, 1 open
     bool landed_470{false};
