@@ -19,6 +19,8 @@
 #include <string_view>
 #include <utility>
 
+#include "bsp/main_menu_command_bar.hpp"
+
 namespace bsp::ingame_gui_cc13 {
 
 static_assert(sizeof(void*) == 4, "the in-game GUI objects are modelled in their Win32 layout");
@@ -876,6 +878,437 @@ void rewards_widget_release_0061d770(Raw listener, void* widget, RewardsScreenHo
 void rewards_widget_press_0062b3b0(Raw listener, void* widget, RewardsScreenHost& host);
 void rewards_exit_00621720(Raw s, RewardsScreenHost& host);
 void rewards_continue_0062b110(Raw s, RewardsScreenHost& host);
+
+// ---------------------------------------------------------------------------
+// cc13-fe10 additions (docs/CC13_FE_10.md).
+// ---------------------------------------------------------------------------
+struct Fe10GuiHost : RewardsLayoutHost {
+    // Static storage of the image at that address (a block, not a pointer cell).
+    virtual Raw global_block(std::uint32_t address) = 0;
+    // Sound: 00A83FD0, ECX = *00F8BBE8, (&out, const NativeString*): a sample
+    // handle by name (one reference owned by the caller); ECX = *00F8BBD8:
+    // 00A7ACF0(const NativeString*) class by name, 00A7B0A0(&name, 1) type by
+    // name, 00A7E490(&out, owner, class, type) a tracked sound (one reference).
+    virtual void* sound_sample_acquire_00a83fd0(Raw name) = 0;
+    virtual void* sound_find_class_00a7acf0(std::string_view name) = 0;
+    virtual void* sound_find_type_00a7b0a0(std::string_view name) = 0;
+    virtual void* sound_create_tracked_00a7e490(void* owner, void* sound_class, void* sound_type) = 0;
+    // The rewards routines this pass reaches by call: 0061D8B0 (reconstructed
+    // as rewards_selected_entry_flagged_0061d8b0) and 0061D710, ECX = screen,
+    // the selected entry's XUID (EDX:EAX).
+    virtual bool rewards_selected_entry_flagged_0061d8b0(Raw screen) = 0;
+    virtual std::uint64_t rewards_selected_entry_xuid_0061d710(Raw screen) = 0;
+    // 00A3EB00, ECX = *00F8ABE8: the active profile's XUID.
+    virtual std::uint64_t xenon_active_xuid_00a3eb00() = 0;
+    // 0054B530, ECX = *00E1930C: the command bar from five triples.
+    virtual void command_bar_rebuild_0054b530(const MainMenuCommandArgument (&arguments)[5]) = 0;
+    // Lua objects are 14h-byte image objects the caller owns (storage passed
+    // in): 00B65F50 construct, 00B67700 destruct, 00B67690 assign (ECX = dst),
+    // 00B67980(&out), ECX = *00E188A8 + 1A0Ch: the globals table; 00B67800
+    // (&out, name), ECX = table: a field; predicates 00B661B0 table, 00B66000
+    // boolean, 00B65FB0 nil, 00B660A0 string; getters 00B66250 boolean,
+    // 00B66290 integer, 00B662B0 string; 00B67080 / 00B67190 iterate first /
+    // next (ECX = table, &key, &value), 00B66420 ended (ECX = table, &key).
+    virtual void lua_construct_00b65f50(void* object) = 0;
+    virtual void lua_destruct_00b67700(void* object) = 0;
+    virtual void lua_assign_00b67690(void* dst, void* src) = 0;
+    virtual void lua_globals_00b67980(void* out) = 0;
+    virtual void lua_get_by_name_00b67800(void* table, void* out, const char* name) = 0;
+    virtual bool lua_is_table_00b661b0(void* object) = 0;
+    virtual bool lua_is_boolean_00b66000(void* object) = 0;
+    virtual bool lua_is_nil_00b65fb0(void* object) = 0;
+    virtual bool lua_is_string_00b660a0(void* object) = 0;
+    virtual bool lua_get_boolean_00b66250(void* object) = 0;
+    virtual std::int32_t lua_get_integer_00b66290(void* object) = 0;
+    virtual const char* lua_get_string_00b662b0(void* object) = 0;
+    virtual void lua_iterate_first_00b67080(void* table, void* key, void* value) = 0;
+    virtual void lua_iterate_next_00b67190(void* table, void* key, void* value) = 0;
+    virtual bool lua_iterate_ended_00b66420(void* table, void* key) = 0;
+    // Native strings: 0041E870 assign a C string, 00426060 copy-construct,
+    // 004FB1F0 upper-case in place (ASCII), 0041E350 assign a C string (ECX =
+    // dst), the pool release of the buffer.
+    virtual void native_string_assign_cstr_0041e870(Raw dst, const char* text) = 0;
+    virtual void native_string_copy_construct_00426060(Raw dst, Raw src) = 0;
+    virtual void native_string_upper_ascii_004fb1f0(Raw string) = 0;
+    virtual void native_string_assign_cstr_0041e350(Raw dst, const char* text) = 0;
+    virtual void native_string_release(Raw string) = 0;
+    // 0061C960(index), ECX = vector of 10h-byte records: checked operator[].
+    virtual Raw record10_vector_at_0061c960(Raw vector, std::int32_t index) = 0;
+    // 00ABAED0(const NativeString*, flag), ECX = text.
+    virtual void text_set_localised_source_native_00abaed0(void* text, Raw source, bool flag) = 0;
+    // 00ABBE50(const char*, 1), ECX = text.
+    virtual void text_set_localised_cstr_00abbe50(void* text, const char* key) = 0;
+    // 004FB150(id, widget), ECX = [*00E198AC+70h] (the tactical library's icon atlas).
+    virtual void icon_atlas_apply_004fb150(std::int32_t id, void* widget) = 0;
+    // 006278D0(const record*), ECX = vector of 10h-byte records: push_back.
+    virtual void record10_vector_push_back_006278d0(Raw vector, Raw record) = 0;
+    // 00574050, ECX = *00E188A8 + 650h: the rank setting (AL).
+    virtual std::uint8_t session_filter_rank_setting_00574050() = 0;
+    // Widget vtable +88h(state, 0, 1.0f).
+    virtual void widget_virtual_88(void* widget, std::int32_t state, std::int32_t b, float c) = 0;
+    // 0041DD40(dst, src.count, 1) then _memcpy of dst.count bytes when src.count != 0.
+    virtual void native_string_resize_copy_0041dd40(Raw dst, Raw src) = 0;
+    // 00AA7D00(x, y), ECX = widget: local x/y and bounds.
+    virtual void widget_set_local_xy_00aa7d00(void* widget, float x, float y) = 0;
+    // Units and poses: 00414DB0, ECX = entity: refresh the world pose (when byte
+    // +C8h is clear); unit vtable +5Ch(kind) kind test; 00852860, ECX = unit:
+    // below a third of its altitude band; 004B4B00: the controlled vehicle;
+    // 00927F30(role), ECX = unit: local player role; 00804350(range), ECX =
+    // observer, EDX = target: sensors detect.
+    virtual void entity_refresh_world_00414db0(void* entity) = 0;
+    virtual bool unit_has_kind_5c(void* unit, std::int32_t kind) = 0;
+    virtual bool entity_below_altitude_third_00852860(void* unit) = 0;
+    virtual void* game_controlled_vehicle_004b4b00() = 0;
+    virtual bool unit_is_local_player_role_00927f30(void* unit, std::int32_t role) = 0;
+    virtual bool unit_sensors_detect_00804350(void* observer, void* target, std::int32_t range) = 0;
+    // 0042B2F0, ECX = vec3: length (ST0).
+    virtual double vector_length_0042b2f0(const float v[3]) = 0;
+    // 0043A660(mode, flag), ECX = &world, EDX = &screen out.
+    virtual void camera_project_0043a660(const float world[3], float out[3], std::int32_t mode, std::int32_t flag) = 0;
+    // 00B6DB70, ECX = transform: refresh the world matrix (bit 2 of +5Ch clear).
+    virtual void transform_refresh_world_00b6db70(void* transform) = 0;
+    // _CIatan2 (00BF701A) on (ST1, ST0).
+    virtual double crt_atan2_00bf701a(double st1, double st0) = 0;
+    // Markers screen routines (ECX = screen): 0063ABD0(unit) already marked,
+    // 006430C0(unit, a, b, c) add a unit marker; 00638E50 (ECX = &world, EDX =
+    // &screen) project and clip -> AL; 005220C0(unit), ECX = [*00E198C4+CCh].
+    virtual bool markers_contains_unit_0063abd0(Raw screen, void* unit) = 0;
+    virtual void markers_add_unit_marker_006430c0(Raw screen, void* unit, std::int32_t a, std::int32_t b, std::int32_t c) = 0;
+    virtual bool marker_project_and_clip_00638e50(const float world[3], float out[3]) = 0;
+    virtual bool interface_cc_accepts_unit_005220c0(void* unit) = 0;
+    // 0063FFC0(n, value), ECX = pointer vector: resize.
+    virtual void pointer_vector_resize_0063ffc0(Raw vector, std::uint32_t n, void* value) = 0;
+    // 005AAAF0(src), ECX = dst list: std::list<int> operator=; 00665D20(first,
+    // last, tag), ECX = dst list: assign the checked-iterator range [begin, end)
+    // of src (each iterator is the pair {container, node}).
+    virtual void int_list_assign_005aaaf0(Raw dst, Raw src) = 0;
+    virtual void int_list_assign_range_00665d20(Raw dst, Raw src) = 0;
+    // 0067D5A0(text, count), ECX = wide string: assign count characters.
+    virtual void wide_string_assign_n_0067d5a0(Raw dst, const std::uint16_t* text, std::uint32_t count) = 0;
+    // 00638B90, ECX = &x, EDX = &y: clamp a marker position to the screen margins.
+    virtual void marker_clamp_to_margins_00638b90(float& x, float& y) = 0;
+    // Widget vtable +44h(float): rotation.
+    virtual void widget_set_rotation_44(void* widget, float angle) = 0;
+    // Widget vtable +58h(const vec2*): size.
+    virtual void widget_set_size_58(void* widget, const float size[2]) = 0;
+    // Entity vtable +18h -> its transform; transform vtable +4Ch(&box) ->
+    // the local bounds {min xyz, max xyz}; 004142E0(&out, matrix), ECX = point:
+    // affine transform (returns &out).
+    virtual void* entity_transform_18(void* entity) = 0;
+    virtual void transform_local_bounds_4c(void* transform, float box[6]) = 0;
+    virtual const float* vector_transform_affine_004142e0(const float point[3], float out[3], const void* matrix) = 0;
+    // Award table *00E19900: 006B9FD0 / 006B9F70(&out, const NativeString* key)
+    // copy the record's +00h / +14h string (the out string is the caller's).
+    virtual void award_table_text_006b9fd0(Raw out, Raw key) = 0;
+    virtual void award_table_icon_006b9f70(Raw out, Raw key) = 0;
+    // String-pair vector (10h elements): 00648A20 push_back(const pair*),
+    // 00647CA0 erase(begin) (ECX = vector, (&out iterator, first iterator));
+    // 00645FC0, ECX = pair: destroy both strings.
+    virtual void string_pair_vector_push_back_00648a20(Raw vector, Raw pair) = 0;
+    virtual void string_pair_vector_erase_front_00647ca0(Raw vector) = 0;
+    virtual void string_pair_destroy_00645fc0(Raw pair) = 0;
+    // 004CAD40(search, replacement, count), ECX = native string.
+    virtual void string_replace_substrings_004cad40(Raw target, std::string_view search, std::string_view replacement,
+                                                    std::uint32_t count) = 0;
+    // 00AB44B0(state, const NativeString* name, const float uv[4]), ECX = widget.
+    virtual void gui_set_state_texture_00ab44b0(void* widget, std::int32_t state, Raw name, const float uv[4]) = 0;
+    // 00AA8B00(index), ECX = widget -> timed entry; 00AC2F20(a, b), ECX = entry.
+    virtual Raw widget_timed_entry_00aa8b00(void* widget, std::int32_t index) = 0;
+    virtual void ticker_set_range_00ac2f20(Raw entry, float a, float b) = 0;
+    // 00436630(const wchar16*), ECX = out native string: narrow by low bytes.
+    virtual void native_string_from_wide_00436630(Raw out, const std::uint16_t* text) = 0;
+    // 00AA7DC0(const vec3*), ECX = widget: local position and bounds.
+    virtual void widget_set_local_position_00aa7dc0(void* widget, const float xyz[3]) = 0;
+    // 0065E870(widget, alpha), ECX = support-manager screen.
+    virtual void support_set_large_icon_alpha_0065e870(Raw screen, void* widget, float alpha) = 0;
+    // Support-manager exit helpers: 0054E610, ECX = [*00E198C4+A8h] (hints
+    // dismiss); 0065ABB0 / 0065FAA0, ECX = screen (clear loadout icons, close
+    // sound); 005BCA30(1), ECX = [*00E198C4+58h]; 0068AB80(0, 0), ECX =
+    // *00E198C4; 00529060 then 00529A30 (tail jump), ECX = [*00E198C4+C8h].
+    virtual void hints_dismiss_0054e610() = 0;
+    virtual void support_clear_loadout_icons_0065abb0(Raw screen) = 0;
+    virtual void support_play_close_sound_0065faa0(Raw screen) = 0;
+    virtual void hud_panel_set_visible3_005bca30(std::int32_t value) = 0;
+    virtual void interface_collapse_overlays_0068ab80(std::int32_t a, std::int32_t b) = 0;
+    virtual void counters_restore_hidden_a5_00529060() = 0;
+    virtual void counters_relayout_00529a30() = 0;
+    // 00BF65AC: _free of a list node.
+    virtual void free_00bf65ac(void* block) = 0;
+    // Invite acceptance: 00A3E470, ECX = *00F8ABE8: the profile slot of the
+    // invitee; 0067C970 rebind the primary input; 00A91620(2, slot), ECX =
+    // *00F8BBF4: activate a device slot; device vtable +34h -> its slot;
+    // 00571E50, ECX = record: session record construct; 00BF681B operator
+    // new; *00F8A2FC vtable +6Ch(record): join the session.
+    virtual std::int32_t xenon_find_slot_for_invitee_00a3e470() = 0;
+    virtual void rebind_primary_input_0067c970() = 0;
+    virtual void input_activate_device_slot_00a91620(std::int32_t kind, std::int32_t slot) = 0;
+    virtual std::int32_t input_device_slot_34(void* device) = 0;
+    virtual void session_record_construct_00571e50(Raw record) = 0;
+    virtual void* operator_new_00bf681b(std::size_t bytes) = 0;
+    virtual void online_service_join_6c(Raw record) = 0;
+    // Unit library (ECX = screen): 0067E9A0 toggle description, 0067E580 reset
+    // selection; 004CC460(id, arg), ECX = *00E198AC: push an interface request.
+    virtual void unit_library_toggle_description_0067e9a0(Raw screen) = 0;
+    virtual void unit_library_reset_selection_0067e580(Raw screen) = 0;
+    virtual void main_front_end_push_interface_004cc460(std::int32_t id, std::int32_t arg) = 0;
+    virtual std::int32_t listbox_selected_index_00a9c920(void* listbox) = 0;
+    virtual bool widget_is_visible_38(void* widget) = 0;
+    // 004F8AC0, ECX = *00E18D48: stop the front-end movie; 00AAC870, ECX = GUI
+    // movie widget: stop; 00A9C7C0(row), ECX = listbox: select; 0054A0C0, ECX =
+    // *00E1930C: the help line.
+    virtual void movie_player_stop_004f8ac0() = 0;
+    virtual void gui_movie_stop_00aac870(void* movie) = 0;
+    virtual void listbox_select_index_00a9c7c0(void* listbox, std::int32_t row) = 0;
+    virtual void command_bar_set_help_line_0054a0c0(std::string_view text) = 0;
+    virtual void widget_virtual_80(void* widget, std::int32_t value) = 0;
+    // Camera binding: 00BF55BE operator new; 0064B650, ECX = block: the
+    // ShipCaptain camera constructor (404h bytes, zeroed first); 00923870(0,
+    // scene, const matrix*), ECX = camera; 00432E60(unit, 0), ECX = camera:
+    // target and mode; 004BC410(camera), ECX = *00E188A8: the camera mover;
+    // 0051E730(camera), ECX = [*00E198C4+4Ch]: binoculars bind.
+    virtual void* operator_new_00bf55be(std::size_t bytes) = 0;
+    virtual void* ship_captain_camera_construct_0064b650(void* block) = 0;
+    virtual void camera_attach_00923870(void* camera, std::int32_t a, void* scene, const float matrix[16]) = 0;
+    virtual void camera_mover_set_target_00432e60(void* camera, void* unit, std::int32_t mode) = 0;
+    virtual void game_set_camera_mover_004bc410(void* camera) = 0;
+    virtual void binoculars_bind_unit_0051e730(void* camera) = 0;
+};
+
+// Functions defined in Ghidra by this pass (no reference in the image):
+// 0061F5E0 __thiscall(dst, const record* src), RET 4 -> dst: the rewards 10h
+// record assign (byte +0, dword +4, native string +8 copied unless the same).
+Raw rewards_record10_assign_0061f5e0(Raw dst, Raw src, Fe10GuiHost& host);
+// 00637590 __thiscall(holder): (holder+4) vtable +34h(0).
+void hud_widget_holder_hide_00637590(Raw holder, Fe10GuiHost& host);
+// 006375A0 __thiscall(holder, float x, float y, const float* colour, const
+// NativeString* key), RET 10h: 00AA7D00(x, y), +50h(colour), 00ABAED0(key, 0),
+// +34h(1) on holder+4.
+void hud_widget_holder_show_at_006375a0(Raw holder, float x, float y, const float* colour, Raw key, Fe10GuiHost& host);
+// 0064A380 __thiscall(screen): weapon-group bind of +1Ch / +20h, then the
+// observer pair (+8h on +1Ch) registered when it is not.
+void hud_slot46_bind_weapon_group_unit_0064a380(Raw s, Fe10GuiHost& host);
+// 0064A3C0 __thiscall(screen): weapon-group release, then role transfer 1FEh /
+// take 0 on +1Ch when set (0077C470, cc9's routine, through the host).
+void hud_slot46_release_weapon_group_0064a3c0(Raw s, Fe10GuiHost& host);
+
+// 006434E0 __thiscall(ECX = markers screen, unit, b), RET 8: a squadron/group
+// member's marker. Skipped when already marked; the unit's position (pose
+// refreshed) has its y zeroed for a kind-8 unit below a third of its altitude
+// band while the camera (*00E188A8+1ED4h) is above the water; then it must
+// project on screen (00638E50), be detected by the screen's unit +24h within
+// range 5 and pass 005220C0 before 006430C0(unit, 0, b, 0).
+void markers_add_group_member_marker_006434e0(Raw s, void* unit, std::int32_t b, Fe10GuiHost& host);
+
+// 006394B0 __thiscall(ECX = markers screen): the screen heading +2Ch. The
+// camera transform *(*00E188A8+19FCh) (refreshed when bit 2 of +5Ch is clear)
+// gives A = position (+120h..) + 10 * forward (+110h..) and B = A + (0, 1, 0);
+// both are projected (0043A660(2, 0)) and, when the screen delta's squared
+// length exceeds 0.001, +2Ch = atan2(ST1 = dx, ST0 = dy) - pi/2 (the double of
+// the float pi/2). Read from the bytes (sc2_x87.py): FMUL ST1,ST0 is DC C9.
+inline constexpr double kHeadingProbeDistance = 10.0;     // 00CE3DC0
+inline constexpr double kHeadingProbeUp = 1.0;            // 00D7A210
+inline constexpr double kHeadingMinLengthSq = 0.0010000000474974513;  // 00D7A318
+inline constexpr double kHeadingQuarterTurn = 1.5707963705062866;     // 00CE3830
+void markers_update_screen_heading_006394b0(Raw s, Fe10GuiHost& host);
+
+// 00639810 __stdcall(unit) (ECX not read), RET 4 -> AL: the unit is inside the
+// controlled vehicle's display range. d = |unit - *00E188D8| (0042B2F0); a
+// vehicle or unit of kind 0Fh, a unit of kind 18h, or local roles 3 / 2
+// compare d*d (float) against vehicle +49Ch; role 5 compares d against +44Ch,
+// anything else against +490h (strictly greater wins).
+bool hud_marker_is_within_display_range_00639810(void* unit, Fe10GuiHost& host);
+
+// 00640620 __thiscall(ECX = markers screen): hide the pooled markers from the
+// used counts on (+7Ch over +50h entries, +80h over +60h, +84h over +70h),
+// delete the +A0h.. tail of the pointer vector +90h (vtable +0(1)), resize it
+// to +A0h and zero the three counts.
+void markers_reset_marker_pools_00640620(Raw s, Fe10GuiHost& host);
+
+// 00668540 / 006697A0 __thiscall(dst, const record* src), RET 4 -> dst: the
+// {int, std::list<int>, int} record assign (the first through list
+// operator=, the second through the range assign unless the lists alias).
+Raw int_list_int_record_assign_00668540(Raw dst, Raw src, Fe10GuiHost& host);
+Raw int_list_int_record_assign_006697a0(Raw dst, Raw src, Fe10GuiHost& host);
+
+// 0067D6B0 __thiscall(wide string, const wchar16* text), RET 4: assign the
+// zero-terminated text (0067D5A0(text, length)).
+void wide_string_assign_z_0067d6b0(Raw dst, const std::uint16_t* text, Fe10GuiHost& host);
+
+// 00639230 __thiscall(ECX = colour icon set, float x, float y, float angle,
+// const record* marker, void** unit_slot, bool offscreen, void* selected),
+// RET 1Ch: hide the five icons (+4h, +8h, +0Ch, +14h, +10h), pick one by the
+// marker kind +18h (0: +4h, 1: +8h, 3..5: +0Ch; none otherwise) or, for a unit
+// whose team +54h is the local slot record's +28h, +10h (team 0) / +14h; show
+// it rotated by angle - pi/2 at the clamped (00638B90) position with size
+// (0.053124, 0.116667) for the selected unit, (0.035416, 0.077778) otherwise,
+// (0.020833, 0.027778) offscreen; colour (1, 1, 1, 1) or, offscreen,
+// alpha = *00F88A00 + 0.5; frame 2 offscreen, 1 otherwise.
+inline constexpr float kColourIconSelectedSize[2] = {0.05312399938702583f, 0.1166669949889183f};   // 00CF5774/70
+inline constexpr float kColourIconSize[2] = {0.035415999591350555f, 0.07777799665927887f};          // 00CF576C/68
+inline constexpr float kColourIconOffscreenSize[2] = {0.020833000540733337f, 0.02777799963951111f}; // 00CF5764/60
+inline constexpr std::uint32_t kMarkerPulseGlobal = 0x00F88A00;
+// 006395E0 __thiscall(ECX unused, vec3 by value (unused), entity, float*
+// min_x, float* min_y, float* max_x, float* max_y), RET 20h: the screen
+// bounds of the entity's box. The outputs start at FLT_MAX / -FLT_MAX
+// (00D7A248 / 00D7A244); the corners are built in the order (x0|x1, y0|y1,
+// z0|z1) with z fastest, and only the first SEVEN are transformed (+F0h of the
+// refreshed transform), projected (00638E50, result ignored) and folded in:
+// the loop counter starts at 7 in the image.
+void markers_project_part_bounds_006395e0(void* entity, float* min_x, float* min_y, float* max_x, float* max_y,
+                                          Fe10GuiHost& host);
+
+// 006567D0 __thiscall(ECX = support-manager screen): lay out the frame +1C8h
+// around the widget +1C0h (shown): top-left = local position - anchor (+18h,
+// +1Ch) * size, minus 0.6 * the frame's border (+10Ch, +114h), z - 1; size =
+// widget size + 0.6 * (left + right) borders (+10Ch/+110h, +114h/+118h);
+// then the widget +1B0h at (+1B4h - 0.035, +1B8h - 0.025, +1BCh). Traced
+// from the bytes (sc2_x87.py); every constant is a double.
+inline constexpr double kGuiScreenWidth = 960.0;  // 00CEC380
+inline constexpr double kSupportFrameBorderScale = 0.6000000238418579;  // 00CEFF98
+void support_manager_layout_widget_1c0_006567d0(Raw s, Fe10GuiHost& host);
+
+// 0065BBC0 __thiscall(ECX = support-manager screen): the name label +170h.
+// w = (float)(+114h / 960); when w is exactly 0 the text is re-applied from
+// its wide source (+F0h, or the empty wide string 00E19834) to force a
+// measure; when w >= the remembered +74h, the box +18Ch gets size (w + 0.21,
+// +198h) and +74h = w; unless game+620h is set the label goes to
+// (+19Ch + (((box width - +194h) - w) + 0.018) * 0.5 + 0.0035, +1A0h, +1A4h);
+// then shown.
+void support_manager_layout_name_label_0065bbc0(Raw s, Fe10GuiHost& host);
+
+// 0065A2B0 __thiscall(ECX = support-manager screen): wrap the cursor index
+// +308h into list A (+1ECh, size +1F4h; iterator +300h/+304h) and walk the
+// iterator there; then wrap it into list B (+344h, size +34Ch; iterator
+// +350h/+354h), show every B node's widget (+18h), walk to the index and
+// give that node's widget frame 0 (+88h(0, 0, 1.0)) and z = +2D0h at its
+// resolved x/y. The checked-iterator asserts are not modelled.
+void support_manager_sync_cursor_iterators_0065a2b0(Raw s, Fe10GuiHost& host);
+
+// 006619E0 __thiscall(ECX = support-manager screen): rotate the scroll rows.
+// y = (n + 1 + +2E0h) * +2A8h for n = +2D8h; rows n..3 rotate the left icon
+// (+ACh + 4i) by +2A4h + y and the right (+BCh + 4i) by -+2A4h - y, y += +2A8h.
+// The large icon +B8h gets alpha 1 - +2E0h (0065E870); the selected radial
+// icon (+DCh + 4 * +324h) too unless its alpha is exactly 1; when +2E0h is
+// exactly 0 the bytes +2C1h, +2DCh, +2DDh clear, +FCh shows and that icon's
+// alpha returns to 1.
+void support_manager_layout_scroll_rows_006619e0(Raw s, Fe10GuiHost& host);
+
+// 0065AC30 __thiscall(ECX = support-manager screen) -> count or -1: the stock
+// of the selection for the unit of the cursor node (+304h, unit +8h). Kind
+// 45h / 9 units search the list at +72Ch / +1188h (head +44h; node +8h id,
+// +0Ch count) for id +2A0h; kind 46h units search the 20h-byte records of
+// the vector +770h (+4h id, +8h count) for id +3A4h.
+std::int32_t support_manager_selected_stock_count_0065ac30(Raw s, Fe10GuiHost& host);
+
+// 00662470 __thiscall(ECX = support-manager screen): exit. Resets the label
+// width +74h, hides [[*00E198C4+C4h]+64h], dismisses the hints, deletes the
+// open sub-menus (+148h when +2C1h, +13Ch when +2C0h) and re-shows their
+// buttons, collapses the scroll (+2E0h = 0, rows re-laid out, once more when
+// +2DCh), hides the selected radial icon, frees the list +2E8h, clears the
+// loadout icons, resets the box +18Ch to +194h, shows +190h, hides +170h,
+// +CCh..+D8h, +1B0h and +78h; with a controlled unit whose slot record +19h
+// and game+19C4h are clear the panel 005BCA30(1) returns; then overlays
+// collapse, the close sound plays and the counters are restored and re-laid
+// out (tail jump to 00529A30).
+void support_manager_exit_00662470(Raw s, Fe10GuiHost& host);
+// 00662690 __thiscall(ECX = support-manager screen, float dt), RET 4 (defined
+// by this pass, unreferenced): when +2E0h is not exactly 0 it steps down by
+// dt, clamps at 0, and the rows are re-laid out.
+void support_manager_step_scroll_collapse_00662690(Raw s, float dt, Fe10GuiHost& host);
+
+// 0067D6E0 __cdecl() -> AL: accept the pending invite *00E19880 (0 when
+// none). The invitee's profile slot becomes the active input device slot
+// (00A91620(2, slot), after 0067C970 unless the first device of
+// [*00F8BBF4+B4h] already reports that slot); a session record (00571E50,
+// byte +4 = FFh, wide string +8h = L"Session") carries a new 88h-byte info
+// object (vtable 00CEED04: +4h/+8h from invite +14h/+18h, +0Ch..+18h from
+// +40h..+4Ch, +1Ch..+3Fh from +1Ch..+3Fh) into the online service's join
+// (vtable +6Ch); the invite is cleared and 1 returned.
+inline constexpr std::uint32_t kPendingInviteGlobal = 0x00E19880;
+inline constexpr std::uint32_t kSessionInfoVtable = 0x00CEED04;
+inline constexpr std::uint16_t kSessionRecordName[8] = {u'S', u'e', u's', u's', u'i', u'o', u'n', 0};  // 00CF6DEC
+bool game_accept_pending_invite_0067d6e0(Fe10GuiHost& host);
+
+// 00680520 __thiscall(ECX = unit library screen+64h listener, widget, listbox),
+// RET 8: listbox activation. Outside mode 1 (+E8h of the screen): rows 0/1
+// toggle the description, row 2 pushes interface request (1, 0) on the main
+// front end (tail jump to 004CC460). In mode 1: row 0 flips the visibility of
+// the screen's +7Ch, row 1 resets the selection.
+void unit_library_on_listbox_activate_00680520(Raw listener, void* widget, void* listbox, Fe10GuiHost& host);
+
+// 0067E9A0 __thiscall(ECX = unit library screen): switch to the description
+// view (+E8h = 1). The rows of the list [+6Ch]+64h hide their widget (+8h);
+// +78h and +7Ch show, +70h hides; the listbox +74h gets focus, row 0, +80h(1)
+// and the listener +64h; the front-end movie and the GUI movie +94h stop;
+// [*00E198BC]+48h clears; +7Ch flips its visibility; command bar
+// "FE.unitlib_toggledesc" A2h / back A3h (placement 2); empty help line.
+void unit_library_toggle_description_0067e9a0(Raw s, Fe10GuiHost& host);
+
+// 0067C1A0 __thiscall(ECX = torpedo-boat view screen, unit), RET 4: release
+// the weapon group and, for the old unit +24h, its roles (0077C470(1FEh, 0),
+// cc9's routine through the host) and its observer pair; +24h = unit. The
+// ShipCaptain camera +2Ch is created on first use (404h zeroed bytes,
+// identity matrix into 00923870(0, game+19CCh), pitch limits -1.553343 /
+// 1.553343 at +3ECh / +3F0h, observer pair) or else the binoculars reset.
+// When the camera's target changes, its offsets come from the unit
+// ([+538h]+A0h * 0.75 into +38Ch..+398h, +384h/+388h zeroed, only when +3E8h
+// is 0) and +A8h = unit +A8h + 5. Then the game camera mover, binoculars and
+// weapon group bind it; the unit's observer pair is registered and +1Ch =
+// unit +980h.
+inline constexpr float kTorpedoBoatPitchLimit = 1.5533430576324463f;  // 00CEC400 (00CEC574 negative)
+void torpedo_boat_view_bind_unit_camera_0067c1a0(Raw s, void* unit, Fe10GuiHost& host);
+
+// 00648060 __thiscall(ECX = HUD root screen): show the front award of the
+// queue +ACh (pairs {text, icon path}): the icon path gets "fe/" replaced by
+// "gui/" (004CAD40, all occurrences), icon +5Ch state 0 texture with uv
+// (0, 0, 1, 1), text +60h the localised text; the front is erased; both
+// widgets alpha 1.0 and a timed entry 0 with range (0, 1) and +4h = 5.0.
+inline constexpr float kAwardTickerSeconds = 5.0f;  // 00CE3850
+void hud_root_advance_award_ticker_00648060(Raw s, Fe10GuiHost& host);
+// 00648AB0 __thiscall(ECX = HUD root screen, NativeString key by value), RET 8:
+// queue the award's text (006B9FD0) and icon (006B9F70) as a pair into +ACh;
+// the key is freed by the callee.
+void hud_root_queue_award_ticker_00648ab0(Raw s, Raw key, Fe10GuiHost& host);
+
+void hud_colour_icon_set_show_for_kind_00639230(Raw set, float x, float y, float angle, Raw marker, void** unit_slot,
+                                                bool offscreen, void* selected, Fe10GuiHost& host);
+
+// 0061F9D0 __thiscall(ECX = rewards screen, const NativeString* sample), RET 4:
+// the debrief speech. The sample handle is acquired by name into +10h
+// (refcounted); the sound class "GUITestSpeech" is looked up once (guard bit 0
+// of 00E196B4, cached in 00E196B0); a tracked sound of that class and type
+// "Normal" on the owner [*00E198AC+60h]+10h is stored refcounted into
+// [*00E198AC+60h]+14h.
+inline constexpr std::uint32_t kTestSpeechGuard = 0x00E196B4;
+inline constexpr std::uint32_t kTestSpeechClass = 0x00E196B0;
+void rewards_play_test_speech_0061f9d0(Raw s, Raw sample, Fe10GuiHost& host);
+
+// 00621870 __thiscall(ECX = screen+8h listener, listbox, widget), RET 8: when
+// the widget is the score listbox (+D4h) on page 1 (+58h), rebuild the command
+// bar: continue A2h at placement 0, navigate B3h when +1Dh is set, then for a
+// flagged entry review A7h ("globals.playerreview", not for the local
+// profile's own XUID) and gamercard A5h at placement 2.
+void rewards_on_listbox_selection_changed_00621870(Raw listener, void* listbox, void* widget, Fe10GuiHost& host);
+
+// 00622360 __thiscall(ECX = rewards screen, const NativeString* id, bool
+// count_only), RET 8 -> count: walk the Lua table VehicleClass; every table
+// entry with Unlock == true and a string UnlockID that contains id
+// (both upper-cased, strstr) counts; unless count_only the vector +238h
+// (10h-byte records) gets, at index size - count, the key (+4h) and the
+// entry's Name (+8h).
+std::int32_t rewards_collect_vehicle_unlocks_00622360(Raw s, Raw id, bool count_only, Fe10GuiHost& host);
+
+// 0062A970 __thiscall(ECX = rewards screen): the rank / unlock pop-up of the
+// group +25Ch (shown). "A_Text" visibility follows byte 00F88A30, "B_Text"
+// reads "globals.continue" (00F88A30 set) or "FE_pc.init_enter". With the
+// unlock vector +23Ch..+240h headed by a record whose byte +0 is set:
+// "info_Text" = "FE.scoring_unlock_text", "rank_Icon" hidden, "rank_Text" =
+// the record's name (+8h), "unit_Icon" shown with the atlas icon of id +4h,
+// and the record is appended to +248h. Otherwise "FE.scoring_rank_text",
+// "rank_Icon" frame max(rank setting - 1, 0) through +88h, "rank_Text" the key
+// 00E08E00[frame] (FE.playerrank_01..), "unit_Icon" hidden.
+inline constexpr std::uint32_t kPlayerRankKeys = 0x00E08E00;
+void rewards_fill_rank_page_0062a970(Raw s, Fe10GuiHost& host);
 
 } // namespace bsp::ingame_gui_cc13
 

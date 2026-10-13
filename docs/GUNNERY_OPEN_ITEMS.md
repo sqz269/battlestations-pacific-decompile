@@ -13265,3 +13265,26 @@ hit-rate rise.
    `build_guns` sites as gunnery38 prepared it. `local\g38_tier_census.py` re-run on this installation's
    arcade and realistic `bulletclasses.lua`: 32 and 26 Artillery classes, 0 change tier. Predicted
    gameplay-identical everywhere.
+   **Verdict: ON** (cc9-gunnery39). `df1343735` OFF (`local\g39_bk0_*`) against ON (`g39_bk1_*`), win orders:
+   USN12 completed 1534.87 s both, USN02 203.01 s both, gameplay identical, as the census predicts.
+
+## 204. USN01 plan e and the dead-target retest (lead priority; cc9-gunnery39, 2026-10-13)
+
+Exports of `648d1436d` (origin/main merged), `config/win_orders/usn01_p5_u1_e.txt`, 26000 frames, reference form:
+main as is (`local\g39_u1main_u1e.log`) not completed; `kSquadronDeadTargetRetestBound` OFF (`g39_u1rtoff`)
+**completed 1183.08 s** with the guard (the keeper's 3eac809d6 time exactly); MOVEONPATH + leg manager OFF
+(`g39_u1mopoff`) and `kPlaneWaterPowerLostBound` OFF (`g39_u1wploff`) not completed. So the retest is the switch.
+
+**Mechanism.** The run has one retest: `squadron retest: "ConSBD3" target Convoy5 dead at 183.76 s` (ConSBD3 has no
+order line; its target is the scene's). OFF, ConSBD3|.-4 still drops on the dead Convoy5 at 184.61 s (`val bomb
+request ... t=184.61`, `aim exit ... -> done`); ON the command ends and the aim exits to `follow`. The battle then
+diverges (ConTBD1's two planes die to Convoy2 instead of Convoy1, ConTBD2/3 die 70-170 s earlier) and Convoy2 and
+Convoy6 survive. **Scope:** the retest touches only plane-squadron records (`plane_squadron_registry`) and their
+members' command rows and resolved target; no ship command or ship gunnery target is reached. In the image
+`009F8160`/`009F7C90` run from `009F8470`, the tick of the `+38h` object of every squadron's `+348h` block (vtable
+`00D21C00`, slot 4, driven by `0071F290`; SQUADRON_LAND_TASK 5dy step 1), for player squadrons as well; only
+`009F8470`'s own re-target is party-gated, and it is not bound. ConSBD3 is a US (player-party) squadron, so after the
+end it idles, as the host does.
+
+**Verdict:** faithful; USN01 `p5_u1_e` is a plan casualty (it relied on a wasted bomb run on a dead ship). Keeper
+re-plans. The retest stays ON.

@@ -2411,4 +2411,689 @@ Raw session_message_scalar_delete(Raw m, std::uint8_t flags, SessionMessageHost&
     return m;
 }
 
+// ---------------------------------------------------------------------------
+// cc13-fe10 additions (docs/CC13_FE_10.md): read from the live decompile and
+// disasm-raw.
+// ---------------------------------------------------------------------------
+void rewards_play_test_speech_0061f9d0(Raw s, Raw sample, Fe10GuiHost& host) {
+    host.handle_assign_acquired(Raw{s.p + 0x10}, host.sound_sample_acquire_00a83fd0(sample));
+    std::uint32_t& guard = host.global_block(kTestSpeechGuard).at<std::uint32_t>(0);
+    if ((guard & 1) == 0) {
+        guard |= 1;
+        host.global_block(kTestSpeechClass).ptr(0) = host.sound_find_class_00a7acf0("GUITestSpeech");
+    }
+    const Raw speech{static_cast<std::uint8_t*>(host.global_object(0x00E198AC).ptr(0x60))};
+    void* const sound_type = host.sound_find_type_00a7b0a0("Normal");
+    void* const sound = host.sound_create_tracked_00a7e490(speech.ptr(0x10), host.global_block(kTestSpeechClass).ptr(0),
+                                                          sound_type);
+    host.handle_assign_acquired(Raw{speech.p + 0x14}, sound);
+}
+
+void rewards_on_listbox_selection_changed_00621870(Raw listener, void* /*listbox*/, void* widget, Fe10GuiHost& host) {
+    const bool navigate = listener.at<std::uint8_t>(0x15) != 0;
+    const std::uint8_t nav_command = navigate ? 0xB3 : 0x00;
+    const std::string_view nav_label = navigate ? "globals.navigate" : "";
+    if (widget != listener.ptr(0xCC) || listener.at<std::int32_t>(0x50) != 1) return;
+    const Raw screen{listener.p - 8};
+    if (!host.rewards_selected_entry_flagged_0061d8b0(screen)) {
+        const MainMenuCommandArgument commands[5] = {{0xA2, "globals.continue", 0}, {nav_command, nav_label, 1},
+                                                     {0x00, "", 1}, {0x00, "", 1}, {0x00, "", 1}};
+        host.command_bar_rebuild_0054b530(commands);
+        return;
+    }
+    const bool own = host.rewards_selected_entry_xuid_0061d710(screen) == host.xenon_active_xuid_00a3eb00();
+    const MainMenuCommandArgument commands[5] = {
+        {0xA2, "globals.continue", 0}, {nav_command, nav_label, 1},
+        own ? MainMenuCommandArgument{0x00, "", 1} : MainMenuCommandArgument{0xA7, "globals.playerreview", 1},
+        {0xA5, "globals.showgamercard", 2}, {0x00, "", 1}};
+    host.command_bar_rebuild_0054b530(commands);
+}
+
+std::int32_t rewards_collect_vehicle_unlocks_00622360(Raw s, Raw id, bool count_only, Fe10GuiHost& host) {
+    alignas(4) std::uint8_t globals[0x14], vehicles[0x14], key[0x14], value[0x14], name[0x14];
+    host.lua_globals_00b67980(globals);
+    host.lua_get_by_name_00b67800(globals, vehicles, "VehicleClass");
+    host.lua_destruct_00b67700(globals);
+    host.lua_construct_00b65f50(key);
+    host.lua_construct_00b65f50(value);
+    host.lua_construct_00b65f50(name);
+    std::int32_t count = 0;
+    host.lua_iterate_first_00b67080(vehicles, key, value);
+    while (!host.lua_iterate_ended_00b66420(vehicles, value)) {
+        if (host.lua_is_table_00b661b0(value)) {
+            alignas(4) std::uint8_t unlock[0x14];
+            host.lua_get_by_name_00b67800(value, unlock, "Unlock");
+            if (host.lua_is_boolean_00b66000(unlock) && host.lua_get_boolean_00b66250(unlock)) {
+                alignas(4) std::uint8_t unlock_id[0x14];
+                host.lua_get_by_name_00b67800(value, unlock_id, "UnlockID");
+                if (!host.lua_is_nil_00b65fb0(unlock_id) && host.lua_is_string_00b660a0(unlock_id)) {
+                    alignas(4) std::uint8_t haystack[8] = {}, needle[8] = {};
+                    host.native_string_assign_cstr_0041e870(Raw{haystack}, host.lua_get_string_00b662b0(unlock_id));
+                    host.native_string_upper_ascii_004fb1f0(Raw{haystack});
+                    host.native_string_copy_construct_00426060(Raw{needle}, id);
+                    host.native_string_upper_ascii_004fb1f0(Raw{needle});
+                    const char* const h = Raw{haystack}.at<const char*>(4);
+                    const char* const n = Raw{needle}.at<const char*>(4);
+                    if (h != nullptr && n != nullptr && std::strstr(h, n) != nullptr) {
+                        alignas(4) std::uint8_t field[0x14];
+                        host.lua_get_by_name_00b67800(value, field, "Name");
+                        host.lua_assign_00b67690(name, field);
+                        host.lua_destruct_00b67700(field);
+                        const std::int32_t index = host.lua_get_integer_00b66290(key);
+                        ++count;
+                        if (!count_only) {
+                            const Raw records{s.p + 0x238};
+                            auto size = [&] {
+                                auto* const first = static_cast<std::uint8_t*>(records.ptr(4));
+                                return first ? static_cast<std::int32_t>((static_cast<std::uint8_t*>(records.ptr(8)) - first) / 0x10) : 0;
+                            };
+                            host.record10_vector_at_0061c960(records, size() - count).at<std::int32_t>(4) = index;
+                            const char* const text = host.lua_get_string_00b662b0(name);
+                            host.native_string_assign_cstr_0041e350(
+                                Raw{host.record10_vector_at_0061c960(records, size() - count).p + 8}, text);
+                        }
+                    }
+                    host.native_string_release(Raw{needle});
+                    host.native_string_release(Raw{haystack});
+                }
+                host.lua_destruct_00b67700(unlock_id);
+            }
+            host.lua_destruct_00b67700(unlock);
+        }
+        host.lua_iterate_next_00b67190(vehicles, key, value);
+    }
+    host.lua_destruct_00b67700(name);
+    host.lua_destruct_00b67700(value);
+    host.lua_destruct_00b67700(key);
+    host.lua_destruct_00b67700(vehicles);
+    return count;
+}
+
+void rewards_fill_rank_page_0062a970(Raw s, Fe10GuiHost& host) {
+    void* const group = s.ptr(0x25C);
+    host.widget_set_visible_34(group, true);
+    const bool pc_prompt = host.global_block(0x00F88A30).at<std::uint8_t>(0) != 0;
+    host.widget_set_visible_34(host.gui_find_child_00aa7e00(group, "A_Text"), pc_prompt);
+    host.text_set_localised_cstr_00abbe50(host.gui_find_child_00aa7e00(group, "B_Text"),
+                                          pc_prompt ? "globals.continue" : "FE_pc.init_enter");
+    const Raw first{static_cast<std::uint8_t*>(s.ptr(0x23C))};
+    if (first.at<std::uint8_t>(0) != 0) {
+        host.text_set_localised_cstr_00abbe50(host.gui_find_child_00aa7e00(group, "info_Text"), "FE.scoring_unlock_text");
+        host.widget_set_visible_34(host.gui_find_child_00aa7e00(group, "rank_Icon"), false);
+        host.text_set_localised_source_native_00abaed0(host.gui_find_child_00aa7e00(group, "rank_Text"),
+                                                       Raw{first.p + 8}, true);
+        host.widget_set_visible_34(host.gui_find_child_00aa7e00(group, "unit_Icon"), true);
+        host.icon_atlas_apply_004fb150(first.at<std::int32_t>(4), host.gui_find_child_00aa7e00(group, "unit_Icon"));
+        host.record10_vector_push_back_006278d0(Raw{s.p + 0x248}, Raw{static_cast<std::uint8_t*>(s.ptr(0x23C))});
+        return;
+    }
+    host.text_set_localised_cstr_00abbe50(host.gui_find_child_00aa7e00(group, "info_Text"), "FE.scoring_rank_text");
+    host.widget_set_visible_34(host.gui_find_child_00aa7e00(group, "rank_Icon"), true);
+    const std::int32_t rank = static_cast<std::int32_t>(host.session_filter_rank_setting_00574050()) - 1;
+    const std::int32_t frame = rank > 0 ? rank : 0;
+    host.widget_virtual_88(host.gui_find_child_00aa7e00(group, "rank_Icon"), frame, 0, 1.0f);
+    host.text_set_localised_cstr_00abbe50(host.gui_find_child_00aa7e00(group, "rank_Text"),
+                                          host.global_block(kPlayerRankKeys + frame * 4).at<const char*>(0));
+    host.widget_set_visible_34(host.gui_find_child_00aa7e00(group, "unit_Icon"), false);
+}
+
+Raw rewards_record10_assign_0061f5e0(Raw dst, Raw src, Fe10GuiHost& host) {
+    dst.at<std::uint8_t>(0) = src.at<std::uint8_t>(0);
+    dst.at<std::uint32_t>(4) = src.at<std::uint32_t>(4);
+    if (dst.p + 8 != src.p + 8) host.native_string_resize_copy_0041dd40(Raw{dst.p + 8}, Raw{src.p + 8});
+    return dst;
+}
+
+void hud_widget_holder_hide_00637590(Raw holder, Fe10GuiHost& host) {
+    host.widget_set_visible_34(holder.ptr(4), false);
+}
+
+void hud_widget_holder_show_at_006375a0(Raw holder, float x, float y, const float* colour, Raw key, Fe10GuiHost& host) {
+    host.widget_set_local_xy_00aa7d00(holder.ptr(4), x, y);
+    host.widget_set_colour_50(holder.ptr(4), colour);
+    host.text_set_localised_source_native_00abaed0(holder.ptr(4), key, false);
+    host.widget_set_visible_34(holder.ptr(4), true);
+}
+
+void hud_slot46_bind_weapon_group_unit_0064a380(Raw s, Fe10GuiHost& host) {
+    host.weapon_group_bind_unit_00549260(s.ptr(0x1C), s.ptr(0x20));
+    void* const unit = s.ptr(0x1C);
+    if (unit == nullptr) return;
+    if (!host.observer_is_registered_00694af0(s.p + 8, unit)) host.observer_register_00694a60(s.p + 8, unit);
+}
+
+void hud_slot46_release_weapon_group_0064a3c0(Raw s, Fe10GuiHost& host) {
+    host.weapon_group_release_005470c0();
+    if (s.ptr(0x1C) != nullptr) host.unit_send_role_transfer_0077c470(s.ptr(0x1C), 0x1FE, 0);
+}
+
+namespace {
+// The pose-refresh idiom: 00414DB0 when byte +C8h is clear.
+void refresh_pose(void* entity, Fe10GuiHost& host) {
+    if (static_cast<const std::uint8_t*>(entity)[0xC8] == 0) host.entity_refresh_world_00414db0(entity);
+}
+const float* world_position(void* entity) {
+    return reinterpret_cast<const float*>(static_cast<const std::uint8_t*>(entity) + 0xFC);
+}
+}  // namespace
+
+void markers_add_group_member_marker_006434e0(Raw s, void* unit, std::int32_t b, Fe10GuiHost& host) {
+    if (host.markers_contains_unit_0063abd0(s, unit)) return;
+    refresh_pose(unit, host);
+    float pos[3] = {world_position(unit)[0], world_position(unit)[1], world_position(unit)[2]};
+    if (host.unit_has_kind_5c(unit, 8) && host.entity_below_altitude_third_00852860(unit)) {
+        void* const camera = host.global_object(0x00E188A8).ptr(0x1ED4);
+        refresh_pose(camera, host);
+        if (world_position(camera)[1] > 0.0f) pos[1] = 0.0f;
+    }
+    float screen[3];
+    if (!host.marker_project_and_clip_00638e50(pos, screen)) return;
+    if (!host.unit_sensors_detect_00804350(s.ptr(0x24), unit, 5)) return;
+    if (!host.interface_cc_accepts_unit_005220c0(unit)) return;
+    host.markers_add_unit_marker_006430c0(s, unit, 0, b, 0);
+}
+
+void markers_update_screen_heading_006394b0(Raw s, Fe10GuiHost& host) {
+    auto* const t = static_cast<std::uint8_t*>(host.global_object(0x00E188A8).ptr(0x19FC));
+    if ((t[0x5C] & 2) == 0) host.transform_refresh_world_00b6db70(t);
+    const Raw m{t};
+    const float fx = static_cast<float>(m.at<float>(0x110) * kHeadingProbeDistance);
+    const float fy = static_cast<float>(m.at<float>(0x114) * kHeadingProbeDistance);
+    const float fz = static_cast<float>(kHeadingProbeDistance * m.at<float>(0x118));
+    const float ay = m.at<float>(0x124) + fy;
+    const float az = m.at<float>(0x128) + fz;
+    const float ax = m.at<float>(0x120) + fx;
+    const float a[3] = {ax, ay, az};
+    const float b[3] = {ax + 0.0f, static_cast<float>(ay + kHeadingProbeUp), 0.0f + az};
+    float sa[3], sb[3];
+    host.camera_project_0043a660(a, sa, 2, 0);
+    host.camera_project_0043a660(b, sb, 2, 0);
+    const float dx = sb[0] - sa[0];
+    const float dy = sb[1] - sa[1];
+    const double length_sq = static_cast<double>(dx) * dx + static_cast<double>(dy) * dy;
+    if (!(length_sq > kHeadingMinLengthSq)) return;
+    const float angle = static_cast<float>(host.crt_atan2_00bf701a(dx, dy));
+    s.at<float>(0x2C) = static_cast<float>(angle - kHeadingQuarterTurn);
+}
+
+bool hud_marker_is_within_display_range_00639810(void* unit, Fe10GuiHost& host) {
+    if (host.game_controlled_vehicle_004b4b00() == nullptr || unit == nullptr) return false;
+    void* const me = host.global_object(0x00E188D8).p;
+    refresh_pose(me, host);
+    refresh_pose(unit, host);
+    const float delta[3] = {world_position(unit)[0] - world_position(me)[0], world_position(unit)[1] - world_position(me)[1],
+                            world_position(unit)[2] - world_position(me)[2]};
+    const float d = static_cast<float>(host.vector_length_0042b2f0(delta));
+    void* const vehicle = host.game_controlled_vehicle_004b4b00();
+    if (vehicle == nullptr) return false;
+    const Raw v{static_cast<std::uint8_t*>(vehicle)};
+    if (host.unit_has_kind_5c(vehicle, 0x0F) || host.unit_has_kind_5c(unit, 0x0F) || host.unit_has_kind_5c(unit, 0x18) ||
+        host.unit_is_local_player_role_00927f30(vehicle, 3) || host.unit_is_local_player_role_00927f30(vehicle, 2)) {
+        const float d2 = d * d;
+        return v.at<float>(0x49C) > d2;
+    }
+    if (host.unit_is_local_player_role_00927f30(vehicle, 5)) return v.at<float>(0x44C) > d;
+    return v.at<float>(0x490) > d;
+}
+
+void markers_reset_marker_pools_00640620(Raw s, Fe10GuiHost& host) {
+    auto count = [&](std::size_t off) -> std::uint32_t {
+        auto* const first = static_cast<std::uint8_t*>(s.ptr(off));
+        return first ? static_cast<std::uint32_t>((static_cast<std::uint8_t*>(s.ptr(off + 4)) - first) / 4) : 0;
+    };
+    auto at = [&](std::size_t off, std::uint32_t i) { return static_cast<void**>(s.ptr(off))[i]; };
+    for (std::uint32_t i = s.at<std::uint32_t>(0x7C); i < count(0x50); ++i) {
+        hud_marker_entry_hide_all_006374b0(Raw{static_cast<std::uint8_t*>(at(0x50, i))}, host);
+    }
+    for (std::uint32_t i = s.at<std::uint32_t>(0x80); i < count(0x60); ++i) {
+        const Raw entry{static_cast<std::uint8_t*>(at(0x60, i))};
+        for (std::size_t off : {0x4u, 0x8u, 0xCu, 0x14u, 0x10u}) host.widget_set_visible_34(entry.ptr(off), false);
+    }
+    for (std::uint32_t i = s.at<std::uint32_t>(0x84); i < count(0x70); ++i) {
+        host.widget_set_visible_34(Raw{static_cast<std::uint8_t*>(at(0x70, i))}.ptr(4), false);
+    }
+    const Raw owned{s.p + 0x90};
+    for (std::uint32_t i = s.at<std::uint32_t>(0xA0); i < count(0x94); ++i) {
+        void*& slot = static_cast<void**>(owned.ptr(4))[i];
+        if (slot != nullptr) {
+            host.object_delete_04(slot);  // vtable +0(1): scalar deleting destructor
+            slot = nullptr;
+        }
+    }
+    host.pointer_vector_resize_0063ffc0(owned, s.at<std::uint32_t>(0xA0), nullptr);
+    s.at<std::uint32_t>(0x7C) = 0;
+    s.at<std::uint32_t>(0x80) = 0;
+    s.at<std::uint32_t>(0x84) = 0;
+}
+
+Raw int_list_int_record_assign_00668540(Raw dst, Raw src, Fe10GuiHost& host) {
+    dst.at<std::int32_t>(0) = src.at<std::int32_t>(0);
+    host.int_list_assign_005aaaf0(Raw{dst.p + 4}, Raw{src.p + 4});
+    dst.at<std::int32_t>(0x10) = src.at<std::int32_t>(0x10);
+    return dst;
+}
+
+Raw int_list_int_record_assign_006697a0(Raw dst, Raw src, Fe10GuiHost& host) {
+    dst.at<std::int32_t>(0) = src.at<std::int32_t>(0);
+    if (dst.p + 4 != src.p + 4) host.int_list_assign_range_00665d20(Raw{dst.p + 4}, Raw{src.p + 4});
+    dst.at<std::int32_t>(0x10) = src.at<std::int32_t>(0x10);
+    return dst;
+}
+
+void wide_string_assign_z_0067d6b0(Raw dst, const std::uint16_t* text, Fe10GuiHost& host) {
+    std::uint32_t n = 0;
+    while (text[n] != 0) ++n;
+    host.wide_string_assign_n_0067d5a0(dst, text, n);
+}
+
+void hud_colour_icon_set_show_for_kind_00639230(Raw set, float x, float y, float angle, Raw marker, void** unit_slot,
+                                                bool offscreen, void* selected, Fe10GuiHost& host) {
+    angle = static_cast<float>(angle - kHeadingQuarterTurn);  // 00CE3830
+    host.marker_clamp_to_margins_00638b90(x, y);
+    for (std::size_t off : {0x4u, 0x8u, 0xCu, 0x14u, 0x10u}) host.widget_set_visible_34(set.ptr(off), false);
+    void* icon = nullptr;
+    switch (marker.at<std::int32_t>(0x18)) {
+    case 0: icon = set.ptr(0x4); break;
+    case 1: icon = set.ptr(0x8); break;
+    case 3:
+    case 4:
+    case 5: icon = set.ptr(0xC); break;
+    default: break;
+    }
+    if (void* const unit = *unit_slot) {
+        const Raw game = host.global_object(0x00E188A8);
+        const auto* const local = static_cast<const std::uint8_t*>(game.ptr(0x18CC + game.at<std::int32_t>(0x18EC) * 4));
+        const std::int32_t team = Raw{static_cast<std::uint8_t*>(unit)}.at<std::int32_t>(0x54);
+        if (team == *reinterpret_cast<const std::int32_t*>(local + 0x28)) icon = set.ptr(team == 0 ? 0x10 : 0x14);
+    }
+    host.widget_set_visible_34(icon, true);
+    host.widget_set_rotation_44(icon, angle);
+    float alpha = 1.0f;
+    if (!offscreen) {
+        host.widget_set_size_58(icon, (*unit_slot != nullptr && *unit_slot == selected) ? kColourIconSelectedSize
+                                                                                         : kColourIconSize);
+    } else {
+        host.widget_set_size_58(icon, kColourIconOffscreenSize);
+        alpha = static_cast<float>(host.global_block(kMarkerPulseGlobal).at<float>(0) + 0.5);  // 00D7A280
+    }
+    const float colour[4] = {1.0f, 1.0f, 1.0f, alpha};
+    host.widget_set_colour_50(icon, colour);
+    host.widget_set_local_xy_00aa7d00(icon, x, y);
+    host.widget_virtual_88(icon, offscreen ? 2 : 1, 0, 1.0f);
+}
+
+void support_manager_layout_widget_1c0_006567d0(Raw s, Fe10GuiHost& host) {
+    void* const widget = s.ptr(0x1C0);
+    const Raw frame{static_cast<std::uint8_t*>(s.ptr(0x1C8))};
+    host.widget_set_visible_34(widget, true);
+    const float* const size = host.widget_vector_00aa6740(widget);
+    const float sw = size[0], sh = size[1];
+    const float* const pos = host.widget_vector_00aa67f0(widget);
+    const Raw w{static_cast<std::uint8_t*>(widget)};
+    const float left = pos[0] - static_cast<float>(w.at<float>(0x18) * sw);
+    const float top = pos[1] - static_cast<float>(w.at<float>(0x1C) * sh);
+    const double k = kSupportFrameBorderScale;
+    const float frame_pos[3] = {static_cast<float>(left - frame.at<float>(0x10C) * k),
+                                static_cast<float>(top - k * frame.at<float>(0x114)),
+                                static_cast<float>(pos[2] - 1.0)};
+    host.widget_set_local_position_00aa7dc0(frame.p, frame_pos);
+    const float h = host.widget_vector_00aa6740(widget)[1];
+    const float* const size2 = host.widget_vector_00aa6740(widget);
+    const float frame_size[2] = {
+        static_cast<float>((frame.at<float>(0x10C) * k + size2[0]) + frame.at<float>(0x110) * k),
+        static_cast<float>((frame.at<float>(0x114) * k + h) + k * frame.at<float>(0x118))};
+    host.widget_set_size_58(frame.p, frame_size);
+    const float marker[3] = {static_cast<float>(s.at<float>(0x1B4) - 0.03500000014901161),
+                             static_cast<float>(s.at<float>(0x1B8) - 0.02500000037252903),
+                             static_cast<float>(s.at<float>(0x1BC) + 0.0)};
+    host.widget_set_resolved_position_00aa8240(s.ptr(0x1B0), marker);
+}
+
+void support_manager_layout_name_label_0065bbc0(Raw s, Fe10GuiHost& host) {
+    void* const text = s.ptr(0x170);
+    const Raw t{static_cast<std::uint8_t*>(text)};
+    if (static_cast<float>(t.at<float>(0x114) / kGuiScreenWidth) == 0.0f) {
+        const auto* const wide = static_cast<const std::uint16_t*>(t.ptr(0xF0));
+        alignas(4) std::uint8_t name[8] = {};
+        host.native_string_from_wide_00436630(
+            Raw{name}, wide ? wide : reinterpret_cast<const std::uint16_t*>(host.global_block(0x00E19834).p));
+        host.text_set_localised_cstr_00abbe50(text, "");
+        host.text_set_localised_source_native_00abaed0(text, Raw{name}, true);
+        host.native_string_release(Raw{name});
+    }
+    const float width = static_cast<float>(t.at<float>(0x114) / kGuiScreenWidth);
+    if (!(width < s.at<float>(0x74))) {
+        const float box[2] = {static_cast<float>(width + 0.20999999344348907), s.at<float>(0x198)};  // 00CF6558
+        host.widget_set_size_58(s.ptr(0x18C), box);
+        s.at<float>(0x74) = static_cast<float>(t.at<float>(0x114) / kGuiScreenWidth);
+    }
+    const float box_width = host.widget_vector_00aa6740(s.ptr(0x18C))[0];
+    if (host.global_object(0x00E188A8).at<std::uint8_t>(0x620) != 0) {
+        host.widget_set_visible_34(text, true);
+        return;
+    }
+    const float w = static_cast<float>(t.at<float>(0x114) / kGuiScreenWidth);
+    const float offset = static_cast<float>(
+        ((static_cast<double>(box_width) - s.at<float>(0x194) - w) + 0.018) * 0.5 + 0.0035000001080334187);  // 00CF6550/48
+    const float label[3] = {s.at<float>(0x19C) + offset, s.at<float>(0x1A0) + 0.0f, 0.0f + s.at<float>(0x1A4)};
+    host.widget_set_resolved_position_00aa8240(text, label);
+    host.widget_set_visible_34(text, true);
+}
+
+void support_manager_sync_cursor_iterators_0065a2b0(Raw s, Fe10GuiHost& host) {
+    auto walk = [&](std::size_t list, std::size_t size, std::size_t iter) -> bool {
+        const std::uint32_t n = s.at<std::uint32_t>(size);
+        if (n == 0) return false;
+        s.at<std::uint32_t>(0x308) = s.at<std::uint32_t>(0x308) % n;
+        s.ptr(iter) = s.p + list;
+        s.ptr(iter + 4) = Raw{static_cast<std::uint8_t*>(s.ptr(list + 4))}.ptr(0);  // head->next
+        return true;
+    };
+    auto advance = [&](std::size_t iter) {
+        for (std::int32_t i = 0; i < s.at<std::int32_t>(0x308); ++i) {
+            s.ptr(iter + 4) = Raw{static_cast<std::uint8_t*>(s.ptr(iter + 4))}.ptr(0);
+        }
+    };
+    if (walk(0x1EC, 0x1F4, 0x300)) advance(0x300);
+    if (!walk(0x344, 0x34C, 0x350)) return;
+    auto* const head = static_cast<std::uint8_t*>(s.ptr(0x348));
+    for (auto* node = static_cast<std::uint8_t*>(Raw{head}.ptr(0)); node != head;
+         node = static_cast<std::uint8_t*>(Raw{node}.ptr(0))) {
+        host.widget_set_visible_34(Raw{node}.ptr(0x18), true);
+    }
+    advance(0x350);
+    void* const widget = Raw{static_cast<std::uint8_t*>(s.ptr(0x354))}.ptr(0x18);
+    host.widget_virtual_88(widget, 0, 0, 1.0f);
+    float pos[3];
+    host.widget_resolved_position_00aa6750(widget, pos);
+    const float placed[3] = {pos[0], pos[1], s.at<float>(0x2D0)};
+    host.widget_set_resolved_position_00aa8240(Raw{static_cast<std::uint8_t*>(s.ptr(0x354))}.ptr(0x18), placed);
+}
+
+void support_manager_layout_scroll_rows_006619e0(Raw s, Fe10GuiHost& host) {
+    const std::int32_t n = s.at<std::int32_t>(0x2D8);
+    float y = static_cast<float>((static_cast<double>(n + 1) + s.at<float>(0x2E0)) * s.at<float>(0x2A8));
+    for (std::int32_t i = n; i < 4; ++i) {
+        host.widget_set_rotation_44(s.ptr(0xAC + i * 4), s.at<float>(0x2A4) + y);
+        host.widget_set_rotation_44(s.ptr(0xBC + i * 4), -s.at<float>(0x2A4) - y);
+        y = y + s.at<float>(0x2A8);
+    }
+    host.support_set_large_icon_alpha_0065e870(s, s.ptr(0xB8), 1.0f - s.at<float>(0x2E0));
+    void* const icon = s.ptr(0xDC + s.at<std::int32_t>(0x324) * 4);
+    float colour[4];
+    host.widget_get_colour_54(icon, colour);
+    if (colour[3] != 1.0f) host.widget_set_float_4c(s.ptr(0xDC + s.at<std::int32_t>(0x324) * 4), 1.0f - s.at<float>(0x2E0));
+    if (s.at<float>(0x2E0) != 0.0f) return;
+    s.at<std::uint8_t>(0x2C1) = 0;
+    s.at<std::uint8_t>(0x2DC) = 0;
+    s.at<std::uint8_t>(0x2DD) = 0;
+    host.widget_set_visible_34(s.ptr(0xFC), true);
+    host.widget_set_float_4c(s.ptr(0xDC + s.at<std::int32_t>(0x324) * 4), 1.0f);
+}
+
+std::int32_t support_manager_selected_stock_count_0065ac30(Raw s, Fe10GuiHost& host) {
+    auto unit = [&]() -> void* { return Raw{static_cast<std::uint8_t*>(s.ptr(0x304))}.ptr(8); };
+    if (host.unit_has_kind_5c(unit(), 0x45) || host.unit_has_kind_5c(unit(), 9)) {
+        std::uint8_t* block = nullptr;
+        if (host.unit_has_kind_5c(unit(), 0x45)) {
+            if (unit()) block = static_cast<std::uint8_t*>(unit()) + 0x72C;
+        } else if (unit()) {
+            block = static_cast<std::uint8_t*>(unit()) + 0x1188;
+        }
+        auto* const head = static_cast<std::uint8_t*>(Raw{block}.ptr(0x44));
+        for (auto* node = static_cast<std::uint8_t*>(Raw{head}.ptr(0)); node != head;
+             node = static_cast<std::uint8_t*>(Raw{node}.ptr(0))) {
+            if (Raw{node}.at<std::int32_t>(8) == s.at<std::int32_t>(0x2A0)) return Raw{node}.at<std::int32_t>(0xC);
+        }
+        return -1;
+    }
+    if (!host.unit_has_kind_5c(unit(), 0x46)) return -1;
+    const Raw records{static_cast<std::uint8_t*>(unit()) + 0x770};
+    auto* const first = static_cast<std::uint8_t*>(records.ptr(4));
+    if (first == nullptr) return -1;
+    const std::uint32_t count = static_cast<std::uint32_t>((static_cast<std::uint8_t*>(records.ptr(8)) - first) / 0x20);
+    for (std::uint32_t i = 0; i < count; ++i) {
+        const Raw record{first + i * 0x20};
+        if (record.at<std::int32_t>(4) == s.at<std::int32_t>(0x3A4)) return record.at<std::int32_t>(8);
+    }
+    return -1;
+}
+
+void support_manager_exit_00662470(Raw s, Fe10GuiHost& host) {
+    s.at<float>(0x74) = 0.0f;
+    host.widget_set_visible_34(host.interface_object(0xC4).ptr(0x64), false);
+    host.hints_dismiss_0054e610();
+    if (s.at<std::uint8_t>(0x2C1) != 0) {
+        if (s.ptr(0x148) != nullptr) host.object_delete_04(s.ptr(0x148));
+        s.at<std::uint8_t>(0x2C1) = 0;
+        host.widget_set_visible_34(s.ptr(0xF8), true);
+        host.widget_set_visible_34(s.ptr(0xFC), true);
+    }
+    if (s.at<std::uint8_t>(0x2C0) != 0) {
+        if (s.ptr(0x13C) != nullptr) host.object_delete_04(s.ptr(0x13C));
+        s.at<std::uint8_t>(0x2C0) = 0;
+        host.widget_set_visible_34(s.ptr(0x100), true);
+        host.widget_set_visible_34(s.ptr(0x104), true);
+    }
+    if (s.at<std::uint8_t>(0x2DC) != 0) {
+        s.at<float>(0x2E0) = 0.0f;
+        support_manager_layout_scroll_rows_006619e0(s, host);
+    }
+    s.at<float>(0x2E0) = 0.0f;
+    support_manager_layout_scroll_rows_006619e0(s, host);
+    host.widget_set_visible_34(s.ptr(0xDC + s.at<std::int32_t>(0x324) * 4), false);
+    auto* const head = static_cast<std::uint8_t*>(s.ptr(0x2E8));
+    auto* node = static_cast<std::uint8_t*>(Raw{head}.ptr(0));
+    Raw{head}.ptr(0) = head;
+    Raw{head}.ptr(4) = head;
+    s.at<std::uint32_t>(0x2EC) = 0;
+    while (node != head) {
+        auto* const next = static_cast<std::uint8_t*>(Raw{node}.ptr(0));
+        host.free_00bf65ac(node);
+        node = next;
+    }
+    host.support_clear_loadout_icons_0065abb0(s);
+    host.widget_set_size_58(s.ptr(0x18C), reinterpret_cast<const float*>(s.p + 0x194));
+    host.widget_set_visible_34(s.ptr(0x190), true);
+    host.widget_set_visible_34(s.ptr(0x170), false);
+    for (std::size_t off = 0xCC; off < 0xDC; off += 4) host.widget_set_visible_34(s.ptr(off), false);
+    host.widget_set_visible_34(s.ptr(0x1B0), false);
+    host.widget_set_visible_34(s.ptr(0x78), false);
+    if (host.global_object(0x00E188D8).p != nullptr) {
+        const Raw game = host.global_object(0x00E188A8);
+        const auto* const local = static_cast<const std::uint8_t*>(game.ptr(0x18CC + game.at<std::int32_t>(0x18EC) * 4));
+        if (local[0x19] == 0 && game.at<std::uint8_t>(0x19C4) == 0) host.hud_panel_set_visible3_005bca30(1);
+    }
+    host.interface_collapse_overlays_0068ab80(0, 0);
+    host.support_play_close_sound_0065faa0(s);
+    host.counters_restore_hidden_a5_00529060();
+    host.counters_relayout_00529a30();
+}
+
+void support_manager_step_scroll_collapse_00662690(Raw s, float dt, Fe10GuiHost& host) {
+    const float phase = s.at<float>(0x2E0);
+    if (phase == 0.0f) return;
+    const float next = phase - dt;
+    s.at<float>(0x2E0) = next;
+    if (0.0f > next) s.at<float>(0x2E0) = 0.0f;
+    support_manager_layout_scroll_rows_006619e0(s, host);
+}
+
+bool game_accept_pending_invite_0067d6e0(Fe10GuiHost& host) {
+    void*& pending = host.global_block(kPendingInviteGlobal).ptr(0);
+    if (pending == nullptr) return false;
+    const std::int32_t slot = host.xenon_find_slot_for_invitee_00a3e470();
+    const Raw input = host.global_object(0x00F8BBF4);
+    auto* const first = static_cast<void**>(input.ptr(0xB4 + 4));
+    const bool has_device = first != nullptr && static_cast<void**>(input.ptr(0xB4 + 8)) != first && first[0] != nullptr;
+    if (!has_device || host.input_device_slot_34(first[0]) != slot) {
+        if (has_device) host.rebind_primary_input_0067c970();
+        host.input_activate_device_slot_00a91620(2, slot);
+    }
+    alignas(4) std::uint8_t storage[0x98] = {};
+    const Raw record{storage};
+    host.session_record_construct_00571e50(record);
+    record.at<std::uint8_t>(4) = 0xFF;
+    // The image writes the fields without checking the allocation.
+    const Raw info{static_cast<std::uint8_t*>(host.operator_new_00bf681b(0x88))};
+    if (info.p) info.at<std::uint32_t>(0) = kSessionInfoVtable;
+    const Raw invite{static_cast<std::uint8_t*>(pending)};
+    std::memcpy(info.p + 0x0C, invite.p + 0x40, 0x10);
+    info.at<std::uint32_t>(4) = invite.at<std::uint32_t>(0x14);
+    info.at<std::uint32_t>(8) = invite.at<std::uint32_t>(0x18);
+    std::memcpy(info.p + 0x1C, invite.p + 0x1C, 9 * 4);
+    record.ptr(0) = info.p;
+    host.wide_string_assign_n_0067d5a0(Raw{record.p + 8}, kSessionRecordName, 7);
+    host.online_service_join_6c(record);
+    pending = nullptr;
+    if (record.at<std::uint32_t>(0x20) >= 8) host.free_00bf65ac(record.ptr(0xC));
+    return true;
+}
+
+void unit_library_on_listbox_activate_00680520(Raw listener, void* /*widget*/, void* listbox, Fe10GuiHost& host) {
+    const Raw screen{listener.p - 0x64};
+    const std::int32_t row = host.listbox_selected_index_00a9c920(listbox);
+    if (listener.at<std::int32_t>(0x84) != 1) {
+        if (row == 0 || row == 1) {
+            host.unit_library_toggle_description_0067e9a0(screen);
+        } else if (row == 2) {
+            host.main_front_end_push_interface_004cc460(1, 0);
+        }
+        return;
+    }
+    if (row == 0) {
+        void* const panel = listener.ptr(0x18);
+        host.widget_set_visible_34(panel, !host.widget_is_visible_38(panel));
+    } else if (row == 1) {
+        host.unit_library_reset_selection_0067e580(screen);
+    }
+}
+
+void unit_library_toggle_description_0067e9a0(Raw s, Fe10GuiHost& host) {
+    s.at<std::int32_t>(0xE8) = 1;
+    auto* const head = static_cast<std::uint8_t*>(Raw{static_cast<std::uint8_t*>(s.ptr(0x6C))}.ptr(0x68));
+    for (auto* node = static_cast<std::uint8_t*>(Raw{head}.ptr(0)); node != head;
+         node = static_cast<std::uint8_t*>(Raw{node}.ptr(0))) {
+        host.widget_set_visible_34(Raw{node}.ptr(8), false);
+    }
+    host.widget_set_visible_34(s.ptr(0x78), true);
+    host.widget_set_visible_34(s.ptr(0x7C), true);
+    host.widget_set_visible_34(s.ptr(0x70), false);
+    void* const listbox = s.ptr(0x74);
+    host.widget_set_focus_60(listbox, true);
+    host.listbox_select_index_00a9c7c0(listbox, 0);
+    host.widget_virtual_80(listbox, 1);
+    host.listbox_set_listener_00a9ac40(listbox, s.p + 0x64);
+    host.movie_player_stop_004f8ac0();
+    host.gui_movie_stop_00aac870(s.ptr(0x94));
+    if (void* const panel = host.global_block(0x00E198BC).ptr(0)) static_cast<std::uint8_t*>(panel)[0x48] = 0;
+    host.widget_set_visible_34(s.ptr(0x7C), !host.widget_is_visible_38(s.ptr(0x7C)));
+    const MainMenuCommandArgument commands[5] = {{0xA2, "FE.unitlib_toggledesc", 1}, {0x00, "", 1}, {0x00, "", 1},
+                                                 {0xA3, "globals.back", 2}, {0x00, "", 1}};
+    host.command_bar_rebuild_0054b530(commands);
+    host.command_bar_set_help_line_0054a0c0("");
+}
+
+void torpedo_boat_view_bind_unit_camera_0067c1a0(Raw s, void* unit, Fe10GuiHost& host) {
+    host.weapon_group_release_005470c0();
+    if (s.ptr(0x24) != nullptr) host.unit_send_role_transfer_0077c470(s.ptr(0x24), 0x1FE, 0);
+    if (s.ptr(0x24) != nullptr && host.observer_is_registered_00694af0(s.p + 8, s.ptr(0x24))) {
+        host.observer_unregister_006952a0(s.p + 8, s.ptr(0x24));
+    }
+    s.ptr(0x24) = unit;
+    if (s.ptr(0x2C) != nullptr) {
+        host.binoculars_reset_0051e8e0();
+    }
+    if (s.ptr(0x2C) == nullptr) {
+        void* const block = host.operator_new_00bf55be(0x404);
+        std::memset(block, 0, 0x404);
+        void* const camera = block ? host.ship_captain_camera_construct_0064b650(block) : nullptr;
+        s.ptr(0x2C) = camera;
+        const float identity[16] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+        host.camera_attach_00923870(camera, 0, host.global_object(0x00E188A8).ptr(0x19CC), identity);
+        Raw{static_cast<std::uint8_t*>(s.ptr(0x2C))}.at<float>(0x3EC) = -kTorpedoBoatPitchLimit;  // 00CEC574
+        Raw{static_cast<std::uint8_t*>(s.ptr(0x2C))}.at<float>(0x3F0) = kTorpedoBoatPitchLimit;
+        host.observer_register_00694a60(s.p + 8, s.ptr(0x2C));
+    }
+    const Raw camera{static_cast<std::uint8_t*>(s.ptr(0x2C))};
+    const bool retarget = camera.ptr(0x3AC) != s.ptr(0x24);
+    host.camera_mover_set_target_00432e60(camera.p, s.ptr(0x24), 0);
+    if (retarget) {
+        const Raw u{static_cast<std::uint8_t*>(s.ptr(0x24))};
+        const float offset = static_cast<float>(Raw{static_cast<std::uint8_t*>(u.ptr(0x538))}.at<float>(0xA0) * 0.75);  // 00CEC9D8
+        if (camera.at<std::int32_t>(0x3E8) == 0) {
+            camera.at<float>(0x384) = 0.0f;
+            camera.at<float>(0x388) = 0.0f;
+            camera.at<float>(0x38C) = offset;
+            camera.at<float>(0x398) = offset;
+            camera.at<float>(0x394) = offset;
+            camera.at<float>(0x390) = offset;
+        }
+        camera.at<float>(0xA8) = static_cast<float>(u.at<float>(0xA8) + 5.0);  // 00D7A370
+    }
+    host.game_set_camera_mover_004bc410(s.ptr(0x2C));
+    host.binoculars_bind_unit_0051e730(s.ptr(0x2C));
+    host.weapon_group_bind_unit_00549260(s.ptr(0x24), s.ptr(0x2C));
+    if (s.ptr(0x24) != nullptr) {
+        if (!host.observer_is_registered_00694af0(s.p + 8, s.ptr(0x24))) host.observer_register_00694a60(s.p + 8, s.ptr(0x24));
+        s.at<float>(0x1C) = Raw{static_cast<std::uint8_t*>(s.ptr(0x24))}.at<float>(0x980);
+    }
+}
+
+void hud_root_advance_award_ticker_00648060(Raw s, Fe10GuiHost& host) {
+    const Raw queue{s.p + 0xAC};
+    const Raw front{static_cast<std::uint8_t*>(queue.ptr(4))};
+    host.string_replace_substrings_004cad40(Raw{front.p + 8}, "fe/", "gui/", 0x7FFFFFFF);
+    const float uv[4] = {0.0f, 0.0f, 1.0f, 1.0f};
+    host.gui_set_state_texture_00ab44b0(s.ptr(0x5C), 0, Raw{front.p + 8}, uv);
+    host.text_set_localised_source_native_00abaed0(s.ptr(0x60), front, true);
+    host.string_pair_vector_erase_front_00647ca0(queue);
+    for (std::size_t off : {0x5Cu, 0x60u}) {
+        host.widget_set_float_4c(s.ptr(off), 1.0f);
+        const Raw entry = host.widget_timed_entry_00aa8b00(s.ptr(off), 0);
+        host.ticker_set_range_00ac2f20(entry, 0.0f, 1.0f);
+        entry.at<float>(4) = kAwardTickerSeconds;
+    }
+}
+
+void hud_root_queue_award_ticker_00648ab0(Raw s, Raw key, Fe10GuiHost& host) {
+    alignas(4) std::uint8_t pair[0x10] = {};
+    alignas(4) std::uint8_t text[8] = {}, icon[8] = {};
+    host.award_table_text_006b9fd0(Raw{text}, key);
+    host.native_string_resize_copy_0041dd40(Raw{pair}, Raw{text});
+    host.native_string_release(Raw{text});
+    host.award_table_icon_006b9f70(Raw{icon}, key);
+    host.native_string_resize_copy_0041dd40(Raw{pair + 8}, Raw{icon});
+    host.native_string_release(Raw{icon});
+    host.string_pair_vector_push_back_00648a20(Raw{s.p + 0xAC}, Raw{pair});
+    host.string_pair_destroy_00645fc0(Raw{pair});
+    host.native_string_release(key);
+}
+
+void markers_project_part_bounds_006395e0(void* entity, float* min_x, float* min_y, float* max_x, float* max_y,
+                                          Fe10GuiHost& host) {
+    float box[6];
+    host.transform_local_bounds_4c(host.entity_transform_18(entity), box);
+    float corners[8][3];
+    for (int i = 0; i < 8; ++i) {
+        corners[i][0] = box[(i & 4) ? 3 : 0];
+        corners[i][1] = box[(i & 2) ? 4 : 1];
+        corners[i][2] = box[(i & 1) ? 5 : 2];
+    }
+    *min_x = *min_y = 3.4028234663852886e38f;   // 00D7A248
+    *max_x = *max_y = -3.4028234663852886e38f;  // 00D7A244
+    for (int i = 0; i < 7; ++i) {  // seven, as the image counts
+        auto* const t = static_cast<std::uint8_t*>(host.entity_transform_18(entity));
+        if ((t[0x5C] & 2) == 0) host.transform_refresh_world_00b6db70(t);
+        float world[3];
+        const float* const p = host.vector_transform_affine_004142e0(corners[i], world, t + 0xF0);
+        float screen[3];
+        host.marker_project_and_clip_00638e50(p, screen);
+        *max_x = *max_x > screen[0] ? *max_x : screen[0];
+        *max_y = *max_y > screen[1] ? *max_y : screen[1];
+        *min_x = screen[0] > *min_x ? *min_x : screen[0];
+        *min_y = screen[1] > *min_y ? *min_y : screen[1];
+    }
+}
+
 } // namespace bsp::ingame_gui_cc13
