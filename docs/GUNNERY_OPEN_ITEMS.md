@@ -13288,3 +13288,21 @@ end it idles, as the host does.
 
 **Verdict:** faithful; USN01 `p5_u1_e` is a plan casualty (it relied on a wasted bomb run on a dead ship). Keeper
 re-plans. The retest stays ON.
+
+## 205. The blast gather's box from the mesh bounds: `kBlastMeshBoundsBound`, OFF (lead queue item 3, from lua54's SQUADRON_LAND_TASK 5gg; cc9-gunnery39, 2026-10-13)
+
+The three blast gathers (`apply_impact_blast` for shells, 0084BAD0; `plane_crash_impact_0084bc60`; the kamikaze arm of
+`kamikaze_detonate_00819a20`) measured the burst against the class Width x Height x Length box about the unit origin.
+The image's gather (`00904470` -> `0098C630` -> `0098AAE0`) tests the sphere against the collision node's AABB, the
+mesh bounds (docs/EXPLOSION_RADIAL_DAMAGE.md). With VehicleClass[234]'s `Height = 5` a burst on TroopTrans3's upper
+works at y = 34.3 lay ~31 m above the box, past the Ohka's 30 m range (`reached=0`).
+
+`Impl::blast_box_distance` now serves all three. True: the model BoundingBox (`ship_model_slots(type).box`, the
+box the line-of-fire AABB test already uses, centre offset included) when the class model reads; else, and OFF,
+the class box. The shell gather's element walk is unchanged (it only runs for units the box admits).
+LABELLED: the node AABB is the model BoundingBox in the unit's pose frame, as at `0098B130`; the gather's shape set
+and falloff distance stay the 5gg gap. Counter: `summary mission gunnery blast mesh box uses=`.
+
+**Predictions.** OFF identical. ON: more units admitted (tall superstructures, masts), so blast hits, damage and
+possibly deaths rise wherever bursts land high or near; USNOS: TroopTrans3's Ohka reaches it (`reached>=1`); USN12
+moves (gun-heavy) but should keep its completion.
