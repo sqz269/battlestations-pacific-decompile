@@ -1,0 +1,61 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00797180",
+    "end_address": "00797222"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00797180",
+    "end_address": "00797221",
+    "bytes_disassembled": 162,
+    "message": "Successfully disassembled 162 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00797180",
+    "disassemble_first": false,
+    "name": "BSP_MovCam_TurnTo"
+   },
+   "result": {
+    "success": true,
+    "address": "00797180",
+    "function_name": "BSP_MovCam_TurnTo",
+    "entry_point": "00797180",
+    "body_size": 162,
+    "message": "Function created successfully at 00797180",
+    "warnings": [
+     "Function name 'BSP_MovCam_TurnTo' \u2014 main part 'MovCam_TurnTo' is not PascalCase. Expected: MovcamTurnto",
+     "Function name 'BSP_MovCam_TurnTo' \u2014 main part 'MovCam_TurnTo' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MovCam_TurnTo' does not start with a recognized verb. First word 'Mov' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00797180",
+   "end": "00797222",
+   "name": "BSP_MovCam_TurnTo",
+   "after": "Function: BSP_MovCam_TurnTo at 00797180\nSignature: undefined BSP_MovCam_TurnTo(void)\nEntry: 00797180\nBody: 00797180 - 00797221"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
