@@ -766,7 +766,7 @@ std::int32_t scene_mode_suffix_index_004cdb32(const ShortNameModeFields& game) {
 }
 
 std::string derive_scene_short_name_004cd7f0(const std::string& path, bool append_mode, const ShortNameModeFields& game) {
-    std::string name = derive_scene_short_name(path);                             // 004CD80B..004CDB22
+    std::string name = derive_scene_short_name(path, false);                             // 004CD80B..004CDB22
     if (!append_mode) return name;                                                // 004CDB27
     const std::int32_t index = scene_mode_suffix_index_004cdb32(game);
     if (index < 0 || index >= static_cast<std::int32_t>(kSceneModeSuffixes_00e08240.size()))
