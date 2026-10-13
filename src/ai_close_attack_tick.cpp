@@ -1,6 +1,7 @@
 #include "bsp/ai_close_attack_tick.hpp"
 
 #include <cmath>
+#include <vector>
 
 namespace bsp {
 
@@ -85,6 +86,11 @@ AiCloseAttackTickResult ai_close_attack_tick_00a13b60(AiCloseAttackTickHost& hos
     const float sticky_mul = host.close_tuning_field(kAiTuningCloseAttackExistingTargetMul);
     const int own_team = host.close_own_team(group);
 
+    // kCloseAttackCurrentTargetRadiusBound: the entries 00A14633 appends to
+    // the pass's list, in order; they persist for the later members.
+    std::vector<void*> appended;
+    const int enemy_team = own_team == 0 ? 1 : 0;   // 00A13BAE SETZ
+
     const std::size_t member_count = host.close_member_count(group);
     for (std::size_t i = 0; i < member_count; ++i) {
         void* member = host.close_member_at(group, i);
@@ -100,22 +106,44 @@ AiCloseAttackTickResult ai_close_attack_tick_00a13b60(AiCloseAttackTickHost& hos
         float member_position[3] = {0.0f, 0.0f, 0.0f};
         if (!host.close_member_position(member, member_position)) continue;
         void* existing = host.close_member_current_target(member);
+        if (kCloseAttackCurrentTargetRadiusBound && existing != nullptr &&
+            host.close_candidate_team(existing) == enemy_team) {
+            float target_position[3] = {0.0f, 0.0f, 0.0f};
+            if (host.close_candidate_position(existing, target_position)) {
+                // 00A145CF-00A14604: float differences, the sum stored as a float.
+                const float dx = target_position[0] - centre[0];
+                const float dz = target_position[2] - centre[2];
+                const float d2 = static_cast<float>(static_cast<double>(dz) * dz +
+                                                    static_cast<double>(dx) * dx);
+                if (!(d2 < collect_squared) &&                                   // 00A14612 JC
+                    static_cast<double>(collect_squared) * 2.0 > d2) {          // 00A1461C JBE
+                    appended.push_back(existing);
+                }
+            }
+        }
 
         void* chosen = nullptr;
         // 00A1444C: the 00CE4ADC seed. OFF: 0.0, which every positive score beats.
         float best = kCloseAttackBestSeedBound ? kCloseAttackBestSeed : 0.0f;
         const std::size_t candidate_count = host.close_candidate_count();
-        for (std::size_t c = 0; c < candidate_count; ++c) {
-            void* candidate = host.close_candidate_at(c);
+        for (std::size_t c = 0; c < candidate_count + appended.size(); ++c) {
+            const bool collected = c < candidate_count;
+            void* candidate = collected ? host.close_candidate_at(c)
+                                        : appended[c - candidate_count];
             if (candidate == nullptr || candidate == member) continue;
-            if (host.close_candidate_team(candidate) == own_team) continue;
-            if (!host.close_candidate_alive(candidate)) continue;
             float candidate_position[3] = {0.0f, 0.0f, 0.0f};
-            if (!host.close_candidate_position(candidate, candidate_position)) continue;
-            // 00A13BE6's collection walk keeps only what is inside the squared
-            // collect radius of the centre the caller passed.
-            const float from_centre = planar_distance(centre, candidate_position);
-            if (from_centre * from_centre > collect_squared) continue;
+            if (collected) {
+                if (host.close_candidate_team(candidate) == own_team) continue;
+                if (!host.close_candidate_alive(candidate)) continue;
+                if (!host.close_candidate_position(candidate, candidate_position)) continue;
+                // 00A13BE6's collection walk keeps only what is inside the squared
+                // collect radius of the centre the caller passed.
+                const float from_centre = planar_distance(centre, candidate_position);
+                if (from_centre * from_centre > collect_squared) continue;
+            } else if (!host.close_candidate_position(candidate, candidate_position)) {
+                // An appended entry meets only the scoring loop's own tests.
+                continue;
+            }
 
             AiCloseAttackScoreInputs in;
             in.target_weight = host.close_target_weight(member, candidate);
