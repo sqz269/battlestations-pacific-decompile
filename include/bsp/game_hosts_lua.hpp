@@ -252,7 +252,7 @@ inline constexpr bool kLuaKillAttackerBound = true;
 // evaluated on the next mission frame as `kill` is, not inside the hit; a squadron
 // slot's death waits for its last plane, as the `kill` dispatcher does.
 // False: entityKilled subscriptions are stored and never fire, as before.
-inline constexpr bool kLuaEntityKilledListenersBound = false;
+inline constexpr bool kLuaEntityKilledListenersBound = true;  // ON: lead pair (USN02/PRCP01/LOMP06 wins identical, 2026-10-13)
 
 // Packet cc13-ver5 (docs/CC13_VER_5.md D2). In the image a victim's `Dead` is written
 // before its `kill` channel fires: 00959450 calls 00878990 -> 0077D270 -> 00929B60 ->
@@ -268,7 +268,28 @@ inline constexpr bool kLuaEntityKilledListenersBound = false;
 // the same values again); and the `hit` channel is evaluated before `kill`, as the image
 // fires it inside the hit (0077CE60 -> 00988510) ahead of the flush, so a hit callback
 // on the lethal hit still sees the victim alive. False: as before.
-inline constexpr bool kKillListenerDeadFirstBound = false;
+inline constexpr bool kKillListenerDeadFirstBound = true;  // ON: lead pair (USN02/PRCP01/LOMP06 wins identical, 2026-10-13)
+
+// Packet cc13-ver8 (docs/CC13_VER_8.md V1). The image reaches the `kill` channel 009813A0
+// from two places only, and both require cause 1 ("harm"):
+//  - 00959450 (planes through 007BCAA0, ships through 00824B60, 00747170, 0074DB70):
+//    00959460 COMISS clock [00F876A4] against [00D7A24C] = 1.0f, JBE past the report;
+//    00959475 CMP [EDI+70h],1 / JNE past it; 0095948A world+4ACh; 009594C4..009594FE the
+//    controller veto; then 00959507 CALL 009813A0.
+//  - 007F3B10 (the squadron): 007F3B19 CMP [ESI+70h],1 / JNE past it, world+4ACh, the
+//    veto (+35Ch kind 17h with +36Ah); then 007F3B56 CALL 009813A0. No clock gate.
+// The host fires `kill` for every destroyed row: planes that land (cause 5) or leave the
+// map (cause 4), a squadron whose last plane landed or left, and Lua Kill(x, true)
+// (cause 2, 008AC6DF..008AC71B) all run kill callbacks the image never runs.
+// True: a death is dispatched only when its cause is 1 and, unless it is a squadron
+// slot, its time is above 1.0 s. The cause is the units host's recorded cause, or the
+// cause of this host's own Lua Kill (the gunnery funnel drops it); a fused squadron
+// slot takes the cause of its last member to die, as 007F3A2A kills the squadron with
+// the last plane's +70h. SUBSTITUTIONS (labelled): the controller veto is not modelled
+// (its bytes +C41h / +100Ah / +36Ah are not held here); the death time is the gunnery
+// host's death clock, not the flush's [00F876A4]; members that die on the same clock
+// are ordered by unit index. False: every death is dispatched, as before.
+inline constexpr bool kKillListenerHarmOnlyBound = false;
 
 // Packet cc9_lua54_prcp01 (docs/SQUADRON_LAND_TASK.md 5gj): the four natives on the
 // config at [game+21C4h]. 008B2320 SetSimplifiedReconMultiplier stores Lua argument 1
@@ -765,6 +786,8 @@ struct GameMissionLuaSummary {
     unsigned long long listener_entity_killed_deaths{0};   // packet cc13-ver5
     unsigned long long listener_entity_killed_fires{0};
     unsigned long long listener_kill_dead_first{0};          // packet cc13-ver5
+    unsigned long long listener_kill_not_harm{0};            // packet cc13-ver8
+    unsigned long long listener_kill_grace{0};               // packet cc13-ver8
     unsigned long long listener_attacker_filtered{0};
     unsigned long long listener_recon_changes{0};
     unsigned long long listener_recon_fires{0};
@@ -1690,6 +1713,9 @@ private:
     std::map<std::pair<std::size_t, std::size_t>, float> hit_rate_limit_;
     std::vector<bool> listener_death_seen_;
     std::vector<bool> listener_entity_killed_seen_;   // packet cc13-ver5
+    // Packet cc13-ver8: the cause this host's Lua Kill (008AC5C0) passed, per unit; the
+    // gunnery funnel does not keep it.
+    std::map<std::size_t, int> lua_kill_cause_;
     // Packet cc9_lua_recon_listeners: the last level per unit and party, and the
     // recon pass generation they were taken at.
     std::vector<int> recon_listener_levels_;

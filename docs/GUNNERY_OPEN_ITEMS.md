@@ -13540,3 +13540,41 @@ commented out. Others that call it: JM12 (1, then 1.5), ESMP03/04/06/07, USN09/1
 - **`00CE3820` is the double 1.0e-10** (bytes `BB BD D7 D9 DF 7C DB 3D`). `include/bsp/ai_planners.hpp:218`
   (`kAiPlannerNearRadiusSquared`) and `include/bsp/ai_planner_tails.hpp:68` (`kAiTailLengthEpsilon`) say 1.0e-11.
   Both are other lanes' files; the exact edits went to the lead. Both are coincidence floors, so no row should move.
+
+## 214. The blast gather measured to the node's shapes on all three arms: `kBlastMeshBoundsBound` re-bound (lead queue item 5; cc9-gunnery40, 2026-10-13)
+
+**205's diagnosis, rechecked.** The shell/flak arm (`apply_impact_blast`) already measures against the shapes:
+with `kBlastElementEntriesBound` ON, each admitted unit with an element mesh gets the `00723F80 -> 00723B70`
+walk, and a unit with no entry inside the radius gets no record. The mesh box only widens the admission. In 205's
+USNOS ON log (`local\g39_bb1_os.log`) every blast line on NH carries `entries=2..4` with shape distances. The blast
+damage NH took is small: bullet 23 18 x 11.1 and bullet 9 7 x 0 ON, against bullet 23 6 x 11.1 and bullet 67
+4 x 14388.8 OFF. NH's ON death therefore came from the run diverging, not from flak bursts measured against the
+box. The box distance was only ever used by the arms that have no element walk: the plane crash
+(`plane_crash_impact_0084bc60`) and the kamikaze blast (`kamikaze_detonate_00819a20`).
+
+**Change.** `Impl::blast_shape_entries` is the shell arm's element walk as a member: the unit's ship mesh, else its
+plane mesh, else its land-structure mesh; centre in the node frame; per element the root-box reject and the
+closest triangle; an entry when it is within the radius. Under `kBlastMeshBoundsBound` the crash and kamikaze arms
+first admit by the mesh box as before, then use the shape entries as the record's parts. When the unit has a mesh
+and no shape is in range, it gets no record (0098AAE0). A unit without a mesh keeps the single box-distance
+entry. Counters: `summary mission gunnery blast crash/kamikaze shape walks=`. OFF is unchanged.
+
+**Predictions, written before any ON run.**
+
+| row | prediction ON |
+| --- | --- |
+| USN12 s38_u12_p2 | completes as OFF (1534.87 s); the spread moves (more flak admissions on tall ships, as in 205); exit 3 |
+| USNOS s45_os_k 200000 | kamikaze and crash blasts reach a unit only within range of its shapes: `no_shape_in_range` > 0 on high bursts; an Ohka striking TroopTrans3's upper works (5gg's case) now reaches it; whether the row fails as 205's ON run did is open (205's failure was divergence, not a blast mechanism) |
+
+**209 verdict: ON (cc9-gunnery40).** OFF `468379e49` as built (`local\g40_tb0`), against ON (`g39_rk0`):
+- USN01 p6_u1_g 26000: pair_diff exit 1 (gameplay identical), `fall breakups=0`, completed (exec guard refusals logged).
+- LOMP10 p3_l10_b 32000: exit 1, `breakups=0`, completed.
+- ESMP08 90000 (ON `local\g40_tc1_e8.log`): 39 drops, `breakups=0`, `water_entry_breakups=0`. The fall test is the
+  only path the switch adds, and it never fired, so the OFF partner was not run.
+As predicted on all three rows. Mechanism matches the image, so the switch is flipped ON.
+
+**208 verdict: ON (cc9-gunnery40).** OFF `4cb4287bf` as built (`local\g40_tfoff`), against ON (`local\g40_tf`):
+USN12 s38_u12_p2, USN15 s45_u15_l2 and LOMP06 l50_l6_q6 each give pair_diff exit 1 (gameplay identical) with
+`clears=0`. Every completion is unchanged and the exec guard's refusal is logged. As predicted: on these rows no
+rapid-class gun holds `+4D4h` through a step in which `0072D130` does not send. LOMP06's `009E2B99` raises do not
+reach a shot that the clear would change. The mechanism matches the image, so the switch is flipped ON.

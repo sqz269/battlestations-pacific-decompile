@@ -41,6 +41,8 @@
 #include "bsp/mission_lobby_settings.hpp"
 #include "bsp/mission_lua_bindings.hpp"
 #include "bsp/mission_lua_machine.hpp"
+#include "bsp/mission_result.hpp"     // packet cc13-ver8, unit_death_00959450
+#include "bsp/mission_ver_cc13.hpp"   // packet cc13-ver8
 #include "bsp/mission_scene_load.hpp"
 #include "bsp/ship_ai_path_turn_ramp.hpp"
 #include "bsp/ship_ai_settings_block.hpp"
@@ -5256,6 +5258,56 @@ void GameMissionLuaHost::dispatch_kill_listeners_009813a0() {
         }
         if (squadron_alive) continue;
         listener_death_seen_[unit] = true;
+        if constexpr (kKillListenerHarmOnlyBound) {
+            // Packet cc13-ver8: 00959475 / 007F3B19 CMP [unit+70h],1 / JNE past 009813A0,
+            // and 00959460..0095946F the 1.0f clock gate (unit path only).
+            auto cause_of = [&](std::size_t u) {
+                const auto it = lua_kill_cause_.find(u);
+                return it != lua_kill_cause_.end() ? it->second
+                                                   : units_hooks_->kill_cause_00926d90(u);
+            };
+            int cause = cause_of(unit);
+            bool squadron_slot = false;
+            for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+                if (r.squadron_unit == bsp::kPlaneSquadronNoUnit || r.squadron_unit != unit) continue;
+                // 007F3A2A: the squadron is killed with its last plane's +70h.
+                squadron_slot = true;
+                float last_time = death.second;
+                std::size_t last = unit;
+                for (const std::size_t m : r.member_units) {
+                    for (const auto& other : deaths) {
+                        if (other.first != m) continue;
+                        if (other.second > last_time || (other.second == last_time && m > last)) {
+                            last_time = other.second;
+                            last = m;
+                        }
+                        break;
+                    }
+                }
+                cause = cause_of(last);
+                break;
+            }
+            // The world's active byte is set throughout a mission here, and the veto is
+            // not modelled (labelled in kKillListenerHarmOnlyBound).
+            bool reported = false;
+            if (squadron_slot) {
+                reported = bsp::squadron_death_reports_kill_007f3b10(cause, true, false);
+            } else {
+                bsp::UnitDeathInputs in;
+                in.mission_clock = death.second;
+                in.unit_party_70 = cause;   // +70h is the kill cause (00926E02)
+                in.world_gate_4ac = true;
+                reported = bsp::unit_death_00959450(in).reports_kill;
+            }
+            if (!reported) {
+                if (cause != 1) {
+                    ++summary_.listener_kill_not_harm;
+                } else {
+                    ++summary_.listener_kill_grace;
+                }
+                continue;
+            }
+        }
         ++summary_.listener_kill_deaths;
         const int victim = static_cast<int>(unit + 1);
         if constexpr (kKillListenerDeadFirstBound) {
@@ -7080,6 +7132,7 @@ int GameMissionLuaHost::run_kill_008ac5c0(lua_State* state, int argument_count) 
         // SUBSTITUTION (labelled): the gunnery host's funnel is the host's one
         // death path. It ignores the cause (1 or 2 lands in the image's +70h)
         // and counts the call in its water-depth census.
+        if constexpr (kKillListenerHarmOnlyBound) lua_kill_cause_[unit] = cause;  // cc13-ver8
         gunnery.kill_unit_00926d90(unit, cause);
         ++summary_.kill_units;
     }
@@ -8550,6 +8603,11 @@ void GameMissionLuaHost::report_mission_script_state() {
     if constexpr (kKillListenerDeadFirstBound) {
         log_.notef("summary mission script kill dead-first bound=1 published=%llu "
             "(0095945B before 00959507, packet cc13-ver5)", summary_.listener_kill_dead_first);
+    }
+    if constexpr (kKillListenerHarmOnlyBound) {
+        log_.notef("summary mission script kill harm-only bound=1 not_harm=%llu grace=%llu "
+            "(00959475 / 007F3B19 cause 1, 00959460 clock > 1.0, packet cc13-ver8)",
+            summary_.listener_kill_not_harm, summary_.listener_kill_grace);
     }
     log_.notef("summary mission script hit listeners bound=%d events=%llu fires=%llu "
         "unmodelled=%llu (00988510, packet cc9_lua_hit_listeners)", kLuaHitListenersBound ? 1 : 0,

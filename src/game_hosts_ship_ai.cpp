@@ -565,6 +565,41 @@ inline constexpr bool kShipAiArmFinalAreaKeyBound = true;
 // ON (2026-09-28): seven rows move through the escape requests, three identical; USN12
 // spread miss recorded (docs/SHIP_AI_OPEN_ITEMS.md section 20).
 inline constexpr bool kShipAiClearanceOutcomeWiringBound = true;
+// Packet cc13-ver7 (docs/CC13_VER_7.md section 3, D2). True: a sector 009EB660
+// marks blocked by a neighbour keeps that neighbour as sector+24h (blk+82Ch,
+// 009EBEDB), so 009F3F80's back-off arm (009F4738..009F47EE) can arm the astern
+// latch blk+380h and add to the stall blk+384h, with the neighbour's own speed
+// (0092D730 at 009F47B8 and 009D8BC1). False: the blocker stays null, as it
+// always was, and 009F47A7 is unreachable. Flip it together with
+// bsp::kShipAiObstacleBackoffCountdownBound: without the countdown an armed
+// latch never expires and the ship stays in the astern-only window.
+inline constexpr bool kShipAiSectorBlockerBound = false;
+// The record 009F3F80 and 009D8B90 read through sector+24h, filled from the live
+// node when the drive runs. `record` must stay the first member: the obstacle
+// binding maps the record back to its unit.
+struct ShipAiSectorBlockerRecord {
+    bsp::ShipAiNeighbourRecord record{};
+    bsp::ShipAiNeighbourOwner owner{};
+    std::size_t unit{0};
+};
+static_assert(std::is_standard_layout_v<ShipAiSectorBlockerRecord>);
+// Packet cc13-ver7 (docs/CC13_VER_7.md, D3). True: blk+328h, the navigation turn
+// lead, is zeroed at the top of every 009ED6B0 tick (009ED708), so the arm
+// tail's setback allowance (009EEAFE, 32Ch * |328h|) is zero on a tick whose
+// lead did not apply. False: the last applied lead persists, as it always did.
+inline constexpr bool kShipAiTurnLeadResetBound = false;
+// Packet cc13-ver7 (docs/CC13_VER_7.md, D5). True: 009EF910's way-clear timer
+// and the block's -1.0f "direction change" mark share blk+374h, as in the image,
+// so a latch or escape flip forces the clearance (blk+37Ch, +370h) to refresh
+// on the next call. False: two separate host fields, as before, and the refresh
+// waits out NearbyShip_WayClearCheckTime (0.25 in this installation).
+inline constexpr bool kShipAiClearanceTimerSharedBound = false;
+// Packet cc13-ver7 (docs/CC13_VER_7.md, D6). True: a direction change zeroes the
+// stall accumulator blk+384h that 009F3F80 reads (009F489E, 009F49D9, 009F4A2B),
+// as the image's six direction-change stores do. False: the zeroes go to a field
+// nothing reads, as before. The stall only grows in the back-off arm, so this
+// has no reach unless kShipAiSectorBlockerBound is on too.
+inline constexpr bool kShipAiStallSharedBound = false;
 // Packet cc9_command_building_capture_bind (docs/SHIP_AI_OPEN_ITEMS.md sections 80
 // and 81). True: a CommandBuilding (kind 1Ch) whose health reaches 0 is neutralized
 // (006F3270 -> 006F2940 -> 006F4D10 slot 9) instead of killed; a neutral building
@@ -1306,6 +1341,9 @@ struct GameShipAiHost::Impl {
         return true;
     }
     unsigned long long hull_geometry_updates{};
+    // Packet cc13-ver7: sectors given a live blocker, and stored nodes no longer
+    // in the neighbour list when 009F3F80 runs.
+    unsigned long long sector_blocker_binds{}, sector_blocker_stale{};
     unsigned long long avoidance_queries{}, avoidance_refills{}, avoidance_clears{};
     unsigned long long avoidance_role_reads{}, avoidance_role_unavailable{};
     std::int32_t session_mode{};
@@ -1405,6 +1443,13 @@ struct GameShipAiHost::Impl {
         // 009EF230's own round robin at blk+0A18h: a 0..3 counter that refreshes
         // three of the twelve sectors per frame.
         int sector_refresh_cursor_0a18{0};
+        // Packet cc13-ver7 (kShipAiSectorBlockerBound): sector+24h, the node
+        // 009EBEDB stores for a neighbour-blocked sector, and the record view of
+        // it 009F3F80 reads (node+14h owner, +44h/+48h, +54h/+58h, +68h, +88h).
+        std::array<bsp::ShipAiObstacleNode*, bsp::kShipAiObstacleSectorCount>
+            sector_blocker_node{};
+        std::array<ShipAiSectorBlockerRecord, bsp::kShipAiObstacleSectorCount>
+            sector_blocker_record{};
         // Two blk fields include/bsp/ship_ai_states.hpp does not declare and
         // this packet does not add to it, because that header belongs to
         // another packet. blk+3A6h is the second half of the station-keeping
@@ -8006,6 +8051,13 @@ public:
                 ctl.obstacle.sector[static_cast<std::size_t>(sector)].blocked
                     = result.blocked;
                 ctl.obstacle.sector[static_cast<std::size_t>(sector)].blocker = nullptr;
+                // 009EBEDB: sector+24h = blk+608h[blocking]. The record view is
+                // built when 009F3F80 reads it (drive_order_ring_009f3f80).
+                ctl.sector_blocker_node[static_cast<std::size_t>(sector)] =
+                    (kShipAiSectorBlockerBound && result.blocking_node >= 0
+                     && static_cast<std::size_t>(result.blocking_node) < ctl.neighbours.size())
+                        ? ctl.neighbours[static_cast<std::size_t>(result.blocking_node)]
+                        : nullptr;
             }
             sector += 2;
         }
@@ -8051,11 +8103,17 @@ public:
         ++calls_;
         return rudder;
     }
-    float neighbour_body_axis_speed_0092d730(const bsp::ShipAiNeighbourRecord&) override {
-        // 009F47B8 and 009D8BC1. Unreachable here: the blocked-sector arm needs
-        // a sector with a blocker, and 009EB660's scan finds none.
-        owner_.record("ShipAiObstacle::neighbour_body_axis_speed", 0x009f47b8u);
-        return 0.0f;
+    float neighbour_body_axis_speed_0092d730(const bsp::ShipAiNeighbourRecord& r) override {
+        // 009F47B8 and 009D8BC1, 0092D730 on [owner+1018h]. Reachable only with
+        // kShipAiSectorBlockerBound (packet cc13-ver7): with it false no sector
+        // has a blocker. The record is the first member of the blocker storage.
+        if (!kShipAiSectorBlockerBound) {
+            owner_.record("ShipAiObstacle::neighbour_body_axis_speed", 0x009f47b8u);
+            return 0.0f;
+        }
+        const auto& blocker = reinterpret_cast<const ShipAiSectorBlockerRecord&>(r);
+        owner_.done("ShipAiObstacle::neighbour_body_axis_speed", 0x009f47b8u);
+        return owner_.units.unit_forward_speed_0092d730(blocker.unit);
     }
 
     void set_direction(bsp::ShipAiThrottleDirection direction) noexcept {
@@ -10484,6 +10542,15 @@ public:
         } else {
             owner_.record("ShipAi::escape_byte_reset_36c", 0x009ed788u);
         }
+        // Packet cc13-ver7 (D3): 009ED708 MOVSS [ESI+328h],XMM0(0) in the same
+        // unconditional span. 009EE9D8 rewrites the turn lead only when it
+        // applies, and the arm tail reads it at 009EEAFE in the same tick.
+        if (kShipAiTurnLeadResetBound) {
+            ctl_.nav.turn_lead_328 = 0.0f;
+            owner_.done("ShipAi::turn_lead_reset_328", 0x009ed708u);
+        } else {
+            owner_.record("ShipAi::turn_lead_reset_328", 0x009ed708u);
+        }
         // Packet cc9_ship_ai_reset_span_304_338 (section 67): 009ED78F MOV
         // [ESI+304h],ECX(0) and 009ED795 MOV byte [ESI+338h],CL(0) in the same
         // span. The navigation arm rewrites both (009EE765, 009EE783); the
@@ -10753,8 +10820,18 @@ public:
         ctl_.clearance.avoidance_enabled_3f4 = ctl_.avoidance.flag_3fc;
         ctl_.clearance.static_zone_present_a3c = ctl_.avoid_search->list(0).head != nullptr;
         ClearanceBinding clearance(owner_, index_);
+        // Packet cc13-ver7 (D5): blk+374h is one field. The -1.0f stores the
+        // block names direction_value_374 (009D526F, 009ED867, 009ED8B5,
+        // 009EDB8B, 009F4B16, 009F4B7B) are writes to this refresh timer, and
+        // 009EF91D..009EF956 are its only reads.
+        if (kShipAiClearanceTimerSharedBound) {
+            ctl_.clearance.refresh_timer_374 = ctl_.blk.direction_value_374;
+        }
         bsp::ship_ai_refresh_turn_clearance_009ef910(ctl_.clearance, geometry, settings,
                                                      seconds, clearance);
+        if (kShipAiClearanceTimerSharedBound) {
+            ctl_.blk.direction_value_374 = ctl_.clearance.refresh_timer_374;
+        }
         owner_.done("ShipAi::refresh_turn_clearance_009ef910", 0x009ef910u);
         if (ctl_.clearance.outcome_370 == bsp::ShipAiClearanceOutcome::HeadingErrorLarge) {
             ++owner_.summary.clearance_heading_error_large;
@@ -11503,6 +11580,49 @@ void GameShipAiHost::Impl::drive_order_ring_009f3f80(std::size_t index, Controll
         const std::int32_t fg = units.unit_formation_group_0284(index);
         row.formation_role = fg < 0 ? "none"
             : (units.formation_leader_0014(fg) == index ? "leader" : "follower");
+    }
+    // Packet cc13-ver7: sector+24h as 009F4662 reads it. The image follows the
+    // stored node pointer, so the record is filled from the node as it is now;
+    // 009EBEF7 raised the node's lifetime when it blocked, and a node that has
+    // since left the list is read as no blocker.
+    // Packet cc13-ver7 (D6): blk+384h is one float. The direction-change zeroes
+    // (009D5277, 009ED86F, 009ED8AD, 009EDB73 and the arm tail's copies) land in
+    // ShipAiControlBlock::direction_counter_384, the stall 009F47EE accumulates
+    // in ShipAiObstacleState::stall_time_384. A non-zero mark left here after
+    // the previous drive shows whether any of those writers ran since.
+    if (kShipAiStallSharedBound) {
+        if (ctl.blk.direction_counter_384 == 0) {
+            ctl.obstacle.stall_time_384 = 0.0f;
+            done("ShipAiObstacle::stall_reset_on_latch_384", 0x009ed86fu);
+        }
+        ctl.blk.direction_counter_384 = 1;
+    }
+    if (kShipAiSectorBlockerBound) {
+        for (std::size_t s = 0; s < ctl.sector_blocker_node.size(); ++s) {
+            bsp::ShipAiObstacleNode* node = ctl.sector_blocker_node[s];
+            ctl.obstacle.sector[s].blocker = nullptr;
+            if (node == nullptr) continue;
+            if (std::find(ctl.neighbours.begin(), ctl.neighbours.end(), node)
+                == ctl.neighbours.end()) {
+                ctl.sector_blocker_node[s] = nullptr;
+                ++sector_blocker_stale;
+                continue;
+            }
+            ShipAiSectorBlockerRecord& b = ctl.sector_blocker_record[s];
+            b.unit = NeighbourList::store(*node).unit;
+            b.owner.gone_5e = node->owner_gone_5e;                            // 009F474D
+            b.owner.avoidance_184 = units.unit_player_controlled_0184(b.unit); // 009F4768
+            b.record.owner = node->owner != nullptr ? &b.owner : nullptr;      // 009F4740
+            b.record.x = node->avoid_box_x;                                    // +44h
+            b.record.z = node->avoid_box_z;                                    // +48h
+            b.record.forward_x = node->corner_forward_x;                       // +54h
+            b.record.forward_z = node->corner_forward_z;                       // +58h
+            b.record.disabled_68 = node->no_pose_68;                           // +68h
+            b.record.pass_side_88 = node->pass_side_88;                        // 009F475B
+            ctl.obstacle.sector[s].blocker = &b.record;
+            ++sector_blocker_binds;
+        }
+        done("ShipAiObstacle::sector_blocker_82c", 0x009ebedbu);
     }
     ObstacleBinding obstacle(*this, index);
     obstacle.set_direction(ctl.blk.direction);
@@ -14102,6 +14222,10 @@ void GameShipAiHost::report() {
             "expiries=%llu bound=%d (009F3F89..009F3FE3, packet cc9_ship_ai_backoff_countdown)",
             host.summary.backoff_held_steps, held_units, host.summary.backoff_expiries,
             bsp::kShipAiObstacleBackoffCountdownBound ? 1 : 0);
+        host.log.notef("summary mission ship ai sector blocker binds=%llu stale=%llu bound=%d "
+            "(009EBEDB sector+24h read at 009F4662, packet cc13-ver7)",
+            host.sector_blocker_binds, host.sector_blocker_stale,
+            kShipAiSectorBlockerBound ? 1 : 0);
         for (std::size_t index = 0; index < host.controllers.size() && index < host.rows.size();
              ++index) {
             const auto& c = host.controllers[index];
