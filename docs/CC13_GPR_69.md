@@ -327,4 +327,24 @@ records that point at the existing functions.
 
 ## 6. Open and handoff
 
-(in progress)
+Counts. The band held 301 functions with a name but no record and no tag at the start (index rebuilt
+after `git merge origin/main`). This packet added 117 records citing this doc: 27 models in
+`src/gameplay_seg69_70_cc13.cpp` (two of them fragments) and 90 listing-checked records for existing
+reconstructions. 187 of the 301 remain without a record:
+
+| kind | count | note |
+| --- | --- | --- |
+| EH funclets (`Catch_All@`, `Unwind@`) | 21 | no record needed |
+| debug writers and describers (`*Debug*`, `*Describe*`) | 31 | unreferenced or presentation; docs/CC13_GP_009F_00A3.md lists them |
+| reconstructed in the hosts but not checked here | 96 | the big ones first: `00A0C650`, `00A13B60`, `00A14DD0`, `00A28A60`, `00A29FD0`, `00A1E250`, `00A243D0`, `00A250A0`, `00A1A7A0`, `00A2E4C0`, `00A2DB80`, `00A02020`, `00A04560` |
+| no caller in the index and no reconstruction | 26 | unreferenced predicates (`009FE130`, `009FE170`, `009FE1B0`, `009FFE00`, `009FFF20`), destructor bodies, `00A2BE70`, `00A2C2A0`, `00A185E0`, `00A22920`, controller arrays |
+| others | 13 | `00A08020`/`00A08420` (the mode planners' quick-spawn records, stream-1 jitter), `00A31C20`/`00A31C90` (multiplayer party messages), `00A12580`, `00A13080`, `00A2BD50`, constructors |
+
+Next, by value:
+1. **cc9 decisions** (section 3): the `order_attack` gates and stream-1 draw, the party-slot election,
+   the think-schedule seed. Each is one host call into an existing model.
+2. **Check the large host reconstructions** listed above against the listing and record them; they are
+   cc9's code, so any divergence goes to cc9 as a note, not an edit.
+3. **`00A08020`/`00A08420`**, only if a mode planner (modes 4..7) is ever run.
+
+Not done: no Ghidra comment beyond the four renames; no game run (cc9's terms).
