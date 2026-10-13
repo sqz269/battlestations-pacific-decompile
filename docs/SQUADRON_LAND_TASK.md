@@ -16097,3 +16097,54 @@ LABELLED: the catapult-launch decrement (`00957450`) and `SetCatapultStock` (`00
 (the Zuiho group respawns, the reinforcement movie runs, `dlg_Cruisersinrange` -> `luaUS03Primary4Add`). Win rows:
 identical unless their scripts reach `luaCheckpoint` with a ship alive, in which case the post-checkpoint code
 that used to be cut short now runs.
+
+### 5gm, the pairs (cc9-lua55, 2026-10-13)
+
+Exports `local\l55_O2` (bbbb78388 OFF) and `local\l55_C` (ON). Census over every cc9 tree's logs of the last two
+days: only JM06 and PRCP01 reach `GetCatapultStock` (one call each); USN12, JM08 and the other win rows never call it.
+- **USN12 34000:** GAMEPLAY identical, completed 1534.87 s both, refusal logged.
+- **PRCP01 `l55_p01_c.txt` 90000 (ON):** the checkpoint walks the six US ships (each answers 0; the Fletchers have
+  no catapult), `luaUS03SaveCheckpoint1 ran`, `usn03.timepasses` at 767 s, the Zuiho kill listener is added and
+  `luaUS03Primary4Add` runs: **phase 4 reached**. Only one Zuiho strike launched (frame 15640); every later launch
+  was refused `no such slot` (no Enterprise slot in state 1 or 5). The Hornet sank at 1431 s and the Northampton at
+  1714 s, and the **Enterprise was sunk at 2429.90 s**: failed `usn03.obj_p2_fail`, MissionPhase 4.
+- **Flipped ON.** JM06 (not a win row) gains the same checkpoint completion; its owners should expect it.
+
+## 5gn. Handoff (cc9-lua55, 2026-10-13, at about 65% context)
+
+Tree `J:\PROG\battlestations-pacific-decompile-cc9-lua52` (branch `agent/cc9-lua52`); launcher `local\l55_lane.ps1`
+(the l54 rows plus `p01b`, `p01c`, `p01e`; `-Exe` takes a run copy such as `local\l55_R2\build\win32\Release\bsp_game.exe`,
+so the tree can be rebuilt while a run is going). Leases released.
+
+**Landed this session (all ON):** `kHarnessTargetPrefersLiveBound` (f77125d87/fa67842f1, 5gl),
+`kGenerateObjectRespawnsDeadBound` (c696e9051, 5gl), the 0071EBF0 live-name rule (gunnery39, 974089548),
+`kLuaGetCatapultStockBound` (bbbb78388/1106fb12a, 5gm). Win rows paired: USN12 and JM08 identical.
+
+**PRCP01 state.** `local\l55_p01_c.txt` sinks the Junyo at 752 s (`local\l55_C1_p01c.log`, 90000 frames on
+1106fb12a's code), the checkpoint completes, and phase 4 starts at about 767 s. The win is the Zuiho's `kill`
+(`luaUS03ZuihoKilled`, usn_03:1553). Phase 4 then fails when the Enterprise is sunk:
+- `l55_C1_p01c` (order file c): sunk at 2429.90 s by the Chikuma group (`killer=Isuzu`, horizontal 119 m;
+  `NavigatorAttackMove(ChikumaGrp[1], SouthDakota)` brings it through). One Zuiho strike launched (frame 15640),
+  then `no such slot` for the rest of the run.
+- `l55_E1_p01e` (order file e, the same plus `order Enterprise <slot> 3 Zuiho` every 500 frames from 15400): every
+  `order` is refused (006CCDA0 answers 2 in slot state 3, airborne), and the Enterprise was sunk at 936.49 s by a
+  Kate (`killer=Kate1|.-3`). The Junyo also died earlier in this run (line 87365), although the file differs from c
+  only after frame 15400. Not explained; check that before trusting a comparison between c and e.
+
+**Why the slots run out.** Slots free only when the squadron in them dies: in c, slot 3 was reused five times as
+each Avenger squadron was shot down. Slots 1 and 2 (the Wildcat CAP, `Enterprise_sqn01/02`) and slot 4 (the Dauntlesses,
+`Enterprise_sqn05`, launched at frame 1620) are never freed. No squadron lands (`summary plane touchdown ...
+touchdowns=0` for every Enterprise squadron). The squadrons can't be retargeted in the air (state 3 refuses order 3).
+
+**Next steps (suggested order):**
+1. Why `Enterprise_sqn05` (Dauntlesses, dive task) never releases on the Junyo or frees its slot: read its dive-task
+   lines in `l55_C1_p01c.log`. A plane lane item, or the spent-ordnance RTB with no landing path.
+2. Free slots for the Zuiho: either the land/rearm cycle (RTB, touchdown, slot back to state 1/5) or a player
+   tactic. The Wildcat CAP in slots 1 and 2 is what kept the Enterprise alive through phase 3 in c, so do not sacrifice it.
+3. Keep the Enterprise alive in phase 4: move it away from the Chikuma group's attack-move (a `moveto` or
+   `takehelm` line; Primary4Add leaves the Enterprise AI-helmed with PCF_TARGET only, so check the harness line
+   is honoured), or let the Vanguard recon -> EscapePath -> exitzone (phase 5) take it out of the map. That needs
+   the out-of-map countdown 00826D70 -> 00811F50 -> 00811E80 -> 0081BEB0 and the exitzone Lua dispatcher (5gi).
+   In phase 5 the mission only fails when `Mission.USUnits` is empty, and the Zuiho kill still wins.
+4. Unbound on this path: `RemoveAllAirBasePlanes` 008975B0 (Primary4Add calls it twice before restocking),
+   `DisbandFormation` 0089A020, `Effect` 008A9730, `GetProperty "TorpedoStock"`, `SetCatapultStock` 00892C30.
