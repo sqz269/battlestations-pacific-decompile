@@ -233,11 +233,31 @@ and 0064A394..0064A3DF (after 0064A360). Not defined in this pass.
   DeviceClasses.lua). The HDR block's field order follows the decompile's stack layout and the
   motion-blur block the listing; both are host data, not checked against the renderer.
 
+## Eighth batch (cc13-fe2b): session messages
+
+kSessionMessageClasses describes the seven classes: type, accepted base types of IsType (46h,
+plus 49h for all but A0h), vtable, constructor shape and the payload fields Write/Read serialise
+after the extended header (0075B480 / 0075B4C0):
+
+| Type | Payload | Routines |
+|---|---|---|
+| A0h (160) | signed 4 bits +1Ch | 0064A770, 0064A7A0, 0064A7C0, 0064A7E0, 0064ADE0 |
+| 94h (148) | none here (+1Ch byte cleared) | 0064A820, 0064A850, 0064AE00 |
+| A1h (161) | bool +1Ch, bool +20h | 00650310, 00650360, 00650390, 006503C0, 00650430 |
+| 82h (130) | bool +1Ch, 6 bits +20h, 3 bits +24h, optional 12-bit word +28h, 4 bits +2Ch (read only) | 006562F0, 006563A0, 00656420 |
+| A7h..A9h (167..169) | bool +1Ch, 2 bits +20h, bool +24h | 006564C0..006567B0, constructors 00656570 (A8h) / 00656670 (A9h) |
+
+All seven scalar deleting destructors restore the root vtable 00CE4974 and free on flag bit 0.
+They sit beside the native session-message series (docs/NATIVE_SESSION_MESSAGE_BASE_R177.md) but
+do not use its types; a later integration could fold them into that series.
+
 ## Handoff (cc13-fe2, 2026-10-12)
 
 237 records (220 reconstructed in `src/ingame_gui_cc13.cpp`, 17 backfills), build-tested, call
 report 632 rows / 0 failed. Ghidra was not written (the functions already carry reviewed names;
 no new names were introduced, so no annotation batch was needed).
+
+Update (cc13-fe2b): 0061FBE0, 00629D10, 0064BB90, 0067F080 and the session-message classes are now done (271 records in all); strike them from the lists below.
 
 Remaining reconstruction candidates in the two segments (ledger name, no record, no tag), by area:
 

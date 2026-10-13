@@ -2302,4 +2302,109 @@ void unit_library_register_0067f080(Raw s, UnitLibraryRegisterHost& host) {
     s.at<std::uint32_t>(0x130) = 1;
 }
 
+// ---------------------------------------------------------------------------
+// fe2b: session messages of segments 26/27
+// ---------------------------------------------------------------------------
+
+const SessionMessageClass* find_session_message_class(std::uint8_t type) noexcept {
+    for (const SessionMessageClass& c : kSessionMessageClasses) {
+        if (c.type == type) return &c;
+    }
+    return nullptr;
+}
+
+// IsType: the class's own type or one of its accepted base types.
+bool session_message_is_type(const SessionMessageClass& c, std::int32_t type) noexcept {
+    if (type == c.type) return true;
+    for (std::uint8_t i = 0; i < c.base_count; ++i) {
+        if (type == c.bases[i]) return true;
+    }
+    return false;
+}
+
+// Constructor: 0075B430(type), clear the +18h word and +1Ah byte, store the
+// arguments, +4h = 1, then the class vtable.
+Raw session_message_construct(const SessionMessageClass& c, Raw m, std::uint32_t arg0, std::uint8_t arg1,
+    SessionMessageHost& host) {
+    host.construct_base_0075b430(m, c.type);
+    m.at<std::uint16_t>(0x18) = 0;
+    m.at<std::uint8_t>(0x1A) = 0;
+    switch (c.ctor) {
+    case SessionCtorShape::Dword1C:
+        m.at<std::uint32_t>(0x1C) = arg0;
+        break;
+    case SessionCtorShape::Clear1C:
+        m.at<std::uint8_t>(0x1C) = 0;
+        break;
+    case SessionCtorShape::Clear1CByte20:
+        m.at<std::uint8_t>(0x1C) = 0;
+        m.at<std::uint8_t>(0x20) = static_cast<std::uint8_t>(arg0);
+        break;
+    case SessionCtorShape::Clear1CDword20Byte24:
+        m.at<std::uint8_t>(0x1C) = 0;
+        m.at<std::uint32_t>(0x20) = arg0;
+        break;
+    case SessionCtorShape::None:
+        break;
+    }
+    m.at<std::uint32_t>(0x4) = 1;
+    m.at<std::uint32_t>(0x0) = c.vtable;
+    if (c.ctor == SessionCtorShape::Clear1CDword20Byte24) m.at<std::uint8_t>(0x24) = arg1;
+    return m;
+}
+
+// Write / Read: the extended header (0075B480 / 0075B4C0), then the fields in
+// order.
+void session_message_write(const SessionMessageClass& c, Raw m, void* cursor, SessionMessageHost& host) {
+    host.write_header_0075b480(m, cursor);
+    for (std::uint8_t i = 0; i < c.field_count; ++i) {
+        const SessionField& f = c.fields[i];
+        switch (f.kind) {
+        case SessionFieldKind::Bool: host.write_bool_004290b0(cursor, m.at<std::uint8_t>(f.offset)); break;
+        case SessionFieldKind::Signed: host.write_signed_00429090(cursor, m.at<std::int32_t>(f.offset), f.bits); break;
+        case SessionFieldKind::Unsigned: host.write_unsigned_00429070(cursor, m.at<std::uint32_t>(f.offset), f.bits); break;
+        }
+    }
+}
+
+void session_message_read(const SessionMessageClass& c, Raw m, void* cursor, SessionMessageHost& host) {
+    host.read_header_0075b4c0(m, cursor);
+    for (std::uint8_t i = 0; i < c.field_count; ++i) {
+        const SessionField& f = c.fields[i];
+        switch (f.kind) {
+        case SessionFieldKind::Bool: host.read_bool_00428d70(cursor, m.at<std::uint8_t>(f.offset)); break;
+        case SessionFieldKind::Signed: host.read_signed_00428d30(cursor, m.at<std::int32_t>(f.offset), f.bits); break;
+        case SessionFieldKind::Unsigned: host.read_unsigned_00428d10(cursor, m.at<std::uint32_t>(f.offset), f.bits); break;
+        }
+    }
+}
+
+// 006563A0, message 82h read: header, bool +1Ch, 6 bits +20h, 3 bits +24h, a
+// presence bit for the 12-bit word +28h (0 when absent), 4 bits into +2Ch
+// (through a local).
+void session_message130_read_006563a0(Raw m, void* cursor, SessionMessageHost& host) {
+    host.read_header_0075b4c0(m, cursor);
+    host.read_bool_00428d70(cursor, m.at<std::uint8_t>(0x1C));
+    host.read_unsigned_00428d10(cursor, m.at<std::uint32_t>(0x20), 6);
+    host.read_unsigned_00428d10(cursor, m.at<std::uint32_t>(0x24), 3);
+    std::uint8_t present = 0;
+    host.read_bool_00428d70(cursor, present);
+    if (present == 0) {
+        m.at<std::uint16_t>(0x28) = 0;
+    } else {
+        host.read_word_bits_00428e30(cursor, m.at<std::uint16_t>(0x28), 12);
+    }
+    std::uint32_t last = 0;
+    host.read_unsigned_00428d10(cursor, last, 4);
+    m.at<std::uint32_t>(0x2C) = last;
+}
+
+// Scalar deleting destructors (identical): the root vtable 00CE4974, freed
+// when bit 0 of the flag is set; returns the message.
+Raw session_message_scalar_delete(Raw m, std::uint8_t flags, SessionMessageHost& host) {
+    m.at<std::uint32_t>(0x0) = kSessionMessageRootVtable;
+    if ((flags & 1) != 0) host.free_block(m.p);
+    return m;
+}
+
 } // namespace bsp::ingame_gui_cc13

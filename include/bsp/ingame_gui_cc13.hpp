@@ -792,6 +792,77 @@ struct UnitLibraryRegisterHost : HudScreenHost {
 };
 void unit_library_register_0067f080(Raw s, UnitLibraryRegisterHost& host);
 
+// ---------------------------------------------------------------------------
+// fe2b: session-message classes in segments 26/27 (types 82h, 94h, A0h, A1h,
+// A7h..A9h). Layout of the shared base: vtable +0h, +4h = 1, +18h word, +1Ah
+// byte; the payload starts at +1Ch.
+// ---------------------------------------------------------------------------
+inline constexpr std::uint32_t kSessionMessageRootVtable = 0x00CE4974;
+enum class SessionFieldKind : std::uint8_t { Bool, Signed, Unsigned };
+struct SessionField {
+    std::uint8_t offset;
+    SessionFieldKind kind;
+    std::uint8_t bits;  // Signed / Unsigned
+};
+enum class SessionCtorShape : std::uint8_t {
+    None,                 // no constructor in these segments
+    Dword1C,              // (int) into +1Ch
+    Clear1C,              // +1Ch byte 0
+    Clear1CByte20,        // +1Ch byte 0, (byte) into +20h
+    Clear1CDword20Byte24  // +1Ch byte 0, (int) into +20h, (byte) into +24h after the vtable store
+};
+struct SessionMessageClass {
+    std::uint8_t type;
+    std::array<std::uint8_t, 2> bases;  // accepted base types of IsType
+    std::uint8_t base_count;
+    std::uint32_t vtable;
+    SessionCtorShape ctor;
+    std::uint32_t construct, is_type, write, read, scalar_delete;  // 0 = not in these segments
+    std::array<SessionField, 3> fields;
+    std::uint8_t field_count;
+};
+inline constexpr std::array<SessionMessageClass, 7> kSessionMessageClasses{{
+    {0xA0, {0x46, 0}, 1, 0x00CF5C38, SessionCtorShape::Dword1C, 0x0064A770, 0x0064A7A0, 0x0064A7C0, 0x0064A7E0, 0x0064ADE0,
+     {{{0x1C, SessionFieldKind::Signed, 4}}}, 1},
+    {0x94, {0x49, 0x46}, 2, 0x00CF5C4C, SessionCtorShape::Clear1C, 0x0064A820, 0x0064A850, 0, 0, 0x0064AE00, {}, 0},
+    {0xA1, {0x49, 0x46}, 2, 0x00CF61FC, SessionCtorShape::Clear1CByte20, 0x00650310, 0x00650360, 0x00650390, 0x006503C0, 0x00650430,
+     {{{0x1C, SessionFieldKind::Bool, 0}, {0x20, SessionFieldKind::Bool, 0}}}, 2},
+    {0x82, {0x49, 0x46}, 2, 0, SessionCtorShape::None, 0, 0x006562F0, 0, 0x006563A0, 0x00656420, {}, 0},
+    {0xA7, {0x49, 0x46}, 2, 0, SessionCtorShape::None, 0, 0x006564C0, 0x006564F0, 0x00656530, 0x00656770,
+     {{{0x1C, SessionFieldKind::Bool, 0}, {0x20, SessionFieldKind::Unsigned, 2}, {0x24, SessionFieldKind::Bool, 0}}}, 3},
+    {0xA8, {0x49, 0x46}, 2, 0x00CF64EC, SessionCtorShape::Clear1CDword20Byte24, 0x00656570, 0x006565C0, 0x006565F0, 0x00656630, 0x00656790,
+     {{{0x1C, SessionFieldKind::Bool, 0}, {0x20, SessionFieldKind::Unsigned, 2}, {0x24, SessionFieldKind::Bool, 0}}}, 3},
+    {0xA9, {0x49, 0x46}, 2, 0x00CF6500, SessionCtorShape::Clear1CDword20Byte24, 0x00656670, 0x006566C0, 0x006566F0, 0x00656730, 0x006567B0,
+     {{{0x1C, SessionFieldKind::Bool, 0}, {0x20, SessionFieldKind::Unsigned, 2}, {0x24, SessionFieldKind::Bool, 0}}}, 3},
+}};
+struct SessionMessageHost {
+    virtual ~SessionMessageHost() = default;
+    virtual void construct_base_0075b430(Raw message, std::uint8_t type) = 0;
+    virtual void write_header_0075b480(Raw message, void* cursor) = 0;
+    virtual void read_header_0075b4c0(Raw message, void* cursor) = 0;
+    // Bit cursor, ECX = cursor.
+    virtual void write_bool_004290b0(void* cursor, std::uint8_t value) = 0;
+    virtual void write_signed_00429090(void* cursor, std::int32_t value, int bits) = 0;
+    virtual void write_unsigned_00429070(void* cursor, std::uint32_t value, int bits) = 0;
+    virtual void read_bool_00428d70(void* cursor, std::uint8_t& out) = 0;
+    virtual void read_signed_00428d30(void* cursor, std::int32_t& out, int bits) = 0;
+    virtual void read_unsigned_00428d10(void* cursor, std::uint32_t& out, int bits) = 0;
+    virtual void read_word_bits_00428e30(void* cursor, std::uint16_t& out, int bits) = 0;
+    virtual void free_block(void* block) = 0;
+};
+const SessionMessageClass* find_session_message_class(std::uint8_t type) noexcept;
+// IsType, __stdcall(int type), RET 4 (no ECX use).
+bool session_message_is_type(const SessionMessageClass& c, std::int32_t type) noexcept;
+// Constructors: __thiscall(msg[, arg0[, arg1]]) -> EAX msg.
+Raw session_message_construct(const SessionMessageClass& c, Raw m, std::uint32_t arg0, std::uint8_t arg1,
+    SessionMessageHost& host);
+// Write / Read: __thiscall(msg, cursor), RET 4.
+void session_message_write(const SessionMessageClass& c, Raw m, void* cursor, SessionMessageHost& host);
+void session_message_read(const SessionMessageClass& c, Raw m, void* cursor, SessionMessageHost& host);
+void session_message130_read_006563a0(Raw m, void* cursor, SessionMessageHost& host);
+// Scalar deleting destructors: __thiscall(msg, flags), RET 4 -> EAX msg.
+Raw session_message_scalar_delete(Raw m, std::uint8_t flags, SessionMessageHost& host);
+
 void rewards_release_sound_handles_0061ec00(Raw s, RewardsScreenHost& host);
 bool rewards_selected_entry_flagged_0061d8b0(Raw s, RewardsScreenHost& host);
 void rewards_play_and_remove_file_00622e00(void* file, RewardsScreenHost& host);
