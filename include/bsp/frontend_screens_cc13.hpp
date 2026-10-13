@@ -2191,5 +2191,40 @@ struct LobbyEventHost {
 };
 inline constexpr float kLobbyAutoScrollSpeed = 0.004f;  // 00CEC178
 void lobby_handle_gui_event_005e4490(void* self, std::uint32_t event, LobbyEventHost& host);
+// ---------------------------------------------------------------------------
+// Packet cc13-fe9 (docs/CC13_FE_9.md)
+// ---------------------------------------------------------------------------
+struct Fe9NarrativeRegisterHost {
+    virtual ~Fe9NarrativeRegisterHost() = default;
+    virtual void frontend_screen_register_004f71d0(void* screen) = 0;
+    virtual void* gui_load_page_00aa5840(std::string_view name, std::uint32_t a, std::uint32_t b) = 0;  // ECX = 004C12B0()
+    virtual void* find_child_by_name_00aa7e00(void* parent, std::string_view name) = 0;  // (name, 1)
+    virtual void voice_slot_stop_007026f0(void* slot) = 0;
+    // Widget vtable +54h(out): a pointer to the text's 16-byte colour.
+    virtual const std::array<float, 4>* text_colour_54(void* text) = 0;
+    // The message-box vector +90h (34h-byte elements): erase(begin, end) (005B8E10), then resize(1,
+    // a local element) (005BA6D0); returns the last element.
+    virtual void* message_boxes_reset_to_one(void* vector) = 0;
+    // A fresh Lua owner (00B66BD0), Open(libs), RunScriptWithOverrides(path, flag); globals reads.
+    virtual void* lua_owner_open_run(std::uint32_t libs, std::string_view script, std::uint32_t flag) = 0;
+    virtual double lua_global_number(void* owner, const char* name) = 0;  // GetGlobals, GetByName, GetNumber
+    virtual void lua_owner_close_00b669a0(void* owner) = 0;
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;
+};
+
+// 005BB130 BSP_HudNarrativeScreen_Register, __fastcall(ECX = screen), RET. 004F71D0; page
+// "GUI_blackout" (00AA5840(name, 1, 0)) -> +20h; its "Warnings_Group" -> "MessageBoxTemplate_Group"
+// -> +2Ch; voice slot +8h stopped (007026F0), +60h = 0; page "GUI_subtitle" -> +28h,
+// "textbox_main_Group" -> +30h with "textbox_main_Text" +34h and +38h (the same child twice),
+// "textbox_main_FrameBox" +3Ch, "textbox_main_Icon" +40h; +44h..+50h = the colour from +34h vtable
+// +54h. The message-box vector +90h is reset to one element: +0h = +30h, +4h frame box, +8h text,
+// +0Ch = 0.0f, +10h..+1Ch = the colour, byte +20h = 1, +24h = +28h = 0, +2Ch = 0.0f, +30h = -1. A
+// Lua owner (Open(1)) runs "Scripts/datatables/DialogGlobals.lua" (flag 0): +78h = DialogFadeTime,
+// +88h = 0.0f, +84h = -1, +7Ch = TempCharWait, +80h = TempWaitBase (each FSTP to a float), +8Ch =
+// 0.0f, +70h = -1, +74h = 0. +20h "Blackout_Icon" -> +0BCh; page "GUI_narrative" -> +24h,
+// "MissionInfoTitle_Group" -> +0ACh with "textbox_obj_Text" +0B0h and "textbox_obj_FrameBox" +0B4h;
+// +0D8h = 1.0f, +0D4h = 0.0f, +0DCh = 8.0f (00CE3918), +0C8h = +0C4h = +0C0h = 0.0f; +0BCh hidden;
+// byte +4h = 1; the owner closed.
+void hud_narrative_register_005bb130(void* screen, Fe9NarrativeRegisterHost& host);
 
 }  // namespace bsp::cc13_fe1

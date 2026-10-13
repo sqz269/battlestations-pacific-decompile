@@ -3013,4 +3013,64 @@ void lobby_handle_gui_event_005e4490(void* self, std::uint32_t event, LobbyEvent
     else if (host.widget_kind_5c(event) == 0x12)
         host.widget_virtual_84(event, 2);
 }
+
+// ---------------------------------------------------------------------------
+// Packet cc13-fe9 (docs/CC13_FE_9.md)
+// ---------------------------------------------------------------------------
+
+void hud_narrative_register_005bb130(void* screen, Fe9NarrativeRegisterHost& host) {
+    const auto ptr = [screen](std::size_t offset) { return read_field<void*>(screen, offset); };
+    const auto find = [&host](void* parent, std::string_view name) { return host.find_child_by_name_00aa7e00(parent, name); };
+    host.frontend_screen_register_004f71d0(screen);
+    write_field(screen, 0x20, host.gui_load_page_00aa5840("GUI_blackout", 1, 0));
+    void* const warnings = find(ptr(0x20), "Warnings_Group");
+    write_field(screen, 0x2C, find(warnings, "MessageBoxTemplate_Group"));
+    host.voice_slot_stop_007026f0(at(screen, 0x08));
+    write_field<std::uint8_t>(screen, 0x60, 0);
+    write_field(screen, 0x28, host.gui_load_page_00aa5840("GUI_subtitle", 1, 0));
+    write_field(screen, 0x30, find(ptr(0x28), "textbox_main_Group"));
+    write_field(screen, 0x34, find(ptr(0x30), "textbox_main_Text"));
+    write_field(screen, 0x38, find(ptr(0x30), "textbox_main_Text"));
+    write_field(screen, 0x3C, find(ptr(0x30), "textbox_main_FrameBox"));
+    write_field(screen, 0x40, find(ptr(0x30), "textbox_main_Icon"));
+    const std::array<float, 4> colour = *host.text_colour_54(ptr(0x34));
+    write_field(screen, 0x44, colour);
+
+    void* const box = host.message_boxes_reset_to_one(at(screen, 0x90));
+    write_field(box, 0x00, ptr(0x30));
+    write_field(box, 0x04, find(ptr(0x30), "textbox_main_FrameBox"));
+    write_field(box, 0x08, find(ptr(0x30), "textbox_main_Text"));
+    write_field(box, 0x10, read_field<std::array<float, 4>>(screen, 0x44));
+    write_field(box, 0x0C, 0.0f);
+    write_field<std::uint8_t>(box, 0x20, 1);
+    write_field<std::int32_t>(box, 0x24, 0);
+    write_field<std::int32_t>(box, 0x28, 0);
+    write_field(box, 0x2C, 0.0f);
+    write_field<std::int32_t>(box, 0x30, -1);
+
+    void* const owner = host.lua_owner_open_run(1, "Scripts/datatables/DialogGlobals.lua", 0);
+    write_field(screen, 0x78, static_cast<float>(host.lua_global_number(owner, "DialogFadeTime")));
+    write_field(screen, 0x88, 0.0f);
+    write_field<std::int32_t>(screen, 0x84, -1);
+    write_field(screen, 0x7C, static_cast<float>(host.lua_global_number(owner, "TempCharWait")));
+    write_field(screen, 0x80, static_cast<float>(host.lua_global_number(owner, "TempWaitBase")));
+    write_field(screen, 0x8C, 0.0f);
+    write_field<std::int32_t>(screen, 0x70, -1);
+    write_field<std::int32_t>(screen, 0x74, 0);
+    write_field(screen, 0xBC, find(ptr(0x20), "Blackout_Icon"));
+    write_field(screen, 0x24, host.gui_load_page_00aa5840("GUI_narrative", 1, 0));
+    write_field(screen, 0xAC, find(ptr(0x24), "MissionInfoTitle_Group"));
+    write_field(screen, 0xB0, find(ptr(0xAC), "textbox_obj_Text"));
+    write_field(screen, 0xB4, find(ptr(0xAC), "textbox_obj_FrameBox"));
+    write_field(screen, 0xD8, 1.0f);
+    write_field(screen, 0xD4, 0.0f);
+    write_field(screen, 0xDC, 8.0f);  // 00CE3918
+    write_field(screen, 0xC8, 0.0f);
+    write_field(screen, 0xC4, 0.0f);
+    write_field(screen, 0xC0, 0.0f);
+    host.widget_set_visible_34(ptr(0xBC), 0);
+    write_field<std::uint8_t>(screen, 0x04, 1);
+    host.lua_owner_close_00b669a0(owner);
+}
+
 }  // namespace bsp::cc13_fe1

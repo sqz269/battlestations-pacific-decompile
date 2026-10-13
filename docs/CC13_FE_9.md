@@ -71,3 +71,10 @@ case-insensitive tree (head +4h) of binding names with a name vector +34h, a set
   hidden value widget and a "-" label) one row step (+260h) apart from the label template's position;
   the drop-rate rows' visibility comes from `[00F8A2FC]` vtable +198h. The scroll range is
   `(float)(y - 0.501)` with y the row after the last.
+## fe1 registers (src/frontend_screens_cc13.cpp)
+
+- 005BB130 (HUD narrative register) binds the blackout, subtitle and narrative pages, looks
+  `textbox_main_Text` up twice (+34h and +38h hold the same child), copies the subtitle text's colour
+  (vtable +54h) into +44h and into the single message-box element it leaves in the vector +90h, and
+  reads DialogFadeTime, TempCharWait and TempWaitBase from `Scripts/datatables/DialogGlobals.lua` in a
+  private Lua owner opened with 1.
