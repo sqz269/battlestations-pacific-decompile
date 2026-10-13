@@ -16408,3 +16408,30 @@ Same tree: OFF `9f2469b01` (exe 946E85A55724, frozen at `local\l57_off`), ON = `
 - **LOMP10 (`lomp10_p3_l10_b.txt`, now 26000 frames; 20000 ends at 1000 s, before the 1006.93 s win): holds**, 1006.93 -> 978.43 s,
   dive releases 43 -> 71, guard logged.
 - **Verdict: ON** (the mechanism matches the bytes exactly; one spread miss recorded; USN01 g to the keeper).
+
+## 5gv. luaDelay/SetWait decremented inside the walk (packet `cc9_l57_think_delay`, cc9-lua57, 2026-10-13)
+
+docs/CC13_VER_8.md V3. 00929460 stores `delay - step` into +1E0h (009294C7..009294D7) for each walked entity on the timed branch,
+then calls the think (009294E5); a SetWait (008982C9) inside the think writes the new delay, first decremented on the next pass;
+an entity registered during the walk is on the pending list and not decremented. The host decremented every armed entity after
+the walk, re-armed and new delays included, so each timetable link fired one pass (0.05 s) early.
+
+**The switch (`kThinkDelayInWalkBound`, src/game_hosts_script_orders.cpp, committed OFF).** True: the live nodes on the timed
+branch are recorded with their pre-walk delay and an arm generation (`GameScriptEntity::delay_generation`, bumped by SetWait
+and the clear 008985A6); after the walk each gets `before - step` unless its generation changed.
+
+**Predictions.** Every timetable chain runs one step later per link: moved runs everywhere, mission timings shift by a few
+0.05 s steps per chain; no mechanism change in combat. USN02, PRCP01 and JM08 f must still complete.
+
+### 5gv.1 Measured: **ON** (cc9-lua57, 2026-10-13)
+
+Same tree: OFF `779bb56b5` (frozen at `local\l57_off2`), ON = `local\l57_cap1` re-exported with the flip; logs
+`local\l57_{d0,d1}_{u02w,p01w,j8f}.log`, reference env, `--stop-after-end 40`. Every row MOVED and every ON run completes with
+the guard logged:
+- USN02 (`usn02_s36_u2_p7.txt`): 203.01 -> 205.06 s.
+- JM08 f (`jm08_p6_j8_f.txt`, 110000 frames): 2318.84 -> 2254.77 s.
+- PRCP01 (`prcp01_l55_p01_c.txt`, 30000 frames): **OFF does not complete on current main** (no mission end in 1500 s; the
+  733.59 s win was on 458f9efbe); ON completes at 865.06 s (Junyo sunk at 575.18 s by Enterprise_sqn08, Zuiho at 865.11 s by
+  Enterprise_sqn11|.-2; OFF sinks Junyo at 747.79 s and never Zuiho). The keeper should re-check PRCP01 on main.
+The shift is chaotic downstream (timer chains feed launches), so the per-row deltas are not attributable one by one.
+**Verdict: ON** (faithful to 009294C7..009294E5; no win lost).

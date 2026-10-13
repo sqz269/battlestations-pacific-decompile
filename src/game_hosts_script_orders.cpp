@@ -127,6 +127,13 @@ inline constexpr bool kScriptedOrderNatives2Bound = true;
 // 0071BF20 (1) in place of 0071BED0's 0. False leaves both unimplemented
 // records, as before, and every hold stays permanent.
 inline constexpr bool kLuaUnitFreeFireBound = false;
+// Packet cc9_l57_think_delay (docs/CC13_VER_8.md V3): 00929460 stores delay - step
+// into +1E0h at 009294C7..009294D7 for each walked entity on the timed branch, and
+// only then 009294E5 calls the think; a SetWait (008982C9) inside that think writes
+// the new delay, first decremented on the next pass, and an entity registered this
+// pass sits on the pending list and is not decremented. False: every armed entity
+// loses one step after the walk, re-armed and new delays included.
+inline constexpr bool kThinkDelayInWalkBound = true;   // ON: SQUADRON_LAND_TASK 5gv.1
 // Packet cc13-ver12 (docs/CC13_VER_12.md section 2). True binds NavigatorStop
 // 008A7400: 0077D600(entity, stop 00E08F88, zeroed descriptor, 1) at 008A7569,
 // through entity_issue_command like the other navigator orders. False leaves
@@ -4587,6 +4594,7 @@ void GameScriptOrdersHost::entity_arm_think_delay_008982c9(void* entity, float s
     }
     script->delay_seconds = seconds;
     script->delay_armed = true;
+    ++script->delay_generation;
     ++timers_.waits_armed;
 }
 
@@ -4598,6 +4606,7 @@ void GameScriptOrdersHost::entity_clear_think_name_008985a6(void* entity) {
     }
     script->think_name.clear();
     script->delay_armed = false;
+    ++script->delay_generation;
     ++timers_.clears;
 }
 
@@ -5527,6 +5536,27 @@ void GameScriptOrdersHost::run_script_think_pass(float step) {
         row.delay_seconds = script.delay_seconds;
         fields.push_back(row);
     }
+    // kThinkDelayInWalkBound: the live nodes the walk will take on the timed
+    // branch, with their delay and arm generation before the walk.
+    struct WalkedDelay {
+        std::uint32_t id;
+        float before;
+        std::uint32_t generation;
+    };
+    std::vector<WalkedDelay> walked;
+    if constexpr (kThinkDelayInWalkBound) {
+        for (const bsp::EntityThinkNode& node : think_live_.nodes) {
+            for (std::size_t i = 0; i < fields.size(); ++i) {
+                if (fields[i].entity != node.entity) continue;
+                const bsp::EntityThinkBranch b = bsp::entity_think_branch(fields[i], step, 0.0f);
+                if (b == bsp::EntityThinkBranch::TimedFire || b == bsp::EntityThinkBranch::TimedWait) {
+                    walked.push_back({node.entity, fields[i].delay_seconds,
+                                      script_entities_[i].delay_generation});
+                }
+                break;
+            }
+        }
+    }
     in_think_walk_ = true;
     const bsp::EntityThinkRunSummary run = bsp::run_entity_think_list_00929460(step,
         think_countdown_, think_live_, think_pending_, fields, *this);
@@ -5538,11 +5568,27 @@ void GameScriptOrdersHost::run_script_think_pass(float step) {
     think_erase_after_walk_.clear();
     // 009294C7-009294D7 updates +1E0h in place and never re-arms the flag; the
     // rule's own helpers own both, so the entity records follow them here.
-    for (GameScriptEntity& script : script_entities_) {
-        if (!script.delay_armed) continue;
-        if (script.delay_seconds <= 0.0f) continue;
-        script.delay_seconds = bsp::entity_think_delay_after_step(script.delay_seconds,
-            step);
+    if constexpr (kThinkDelayInWalkBound) {
+        // 009294C7..009294D7 wrote before - step ahead of the think; a think that
+        // re-armed (SetWait) or cleared the delay overwrote it, so keep that value.
+        for (const WalkedDelay& w : walked) {
+            for (GameScriptEntity& script : script_entities_) {
+                if (script.id != w.id) continue;
+                if (script.delay_generation == w.generation) {
+                    script.delay_seconds = bsp::entity_think_delay_after_step(w.before, step);
+                } else {
+                    ++timers_.delays_rearmed_in_walk;
+                }
+                break;
+            }
+        }
+    } else {
+        for (GameScriptEntity& script : script_entities_) {
+            if (!script.delay_armed) continue;
+            if (script.delay_seconds <= 0.0f) continue;
+            script.delay_seconds = bsp::entity_think_delay_after_step(script.delay_seconds,
+                step);
+        }
     }
     ++timers_.passes;
     timers_.timed_fires += run.thinks_run;
