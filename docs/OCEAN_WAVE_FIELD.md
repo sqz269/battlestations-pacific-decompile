@@ -725,3 +725,27 @@ The state-6 arm `007CBA50` -> `007DCDD0` is read whole and bound: `kPlaneWaterSu
 `25d13aa63` (docs/WATER_SURFACE_LAW.md sections 10-12). `007DC426`-`007DC64A` is read. USN01 and ESMP08
 pairs are gameplay identical; only the wrecks move. `0078D6C0` (the menu burst's water crossing) stays
 unbound: not gameplay.
+
+## 23. cc9-physics4 handoff (sea/physics lane + WINS KEEPER), 2026-10-13 01:18 UTC
+
+(GUNNERY_OPEN_ITEMS.md was leased by gunnery38, so the handoff lives here.) Tree
+J:\PROG\battlestations-pacific-decompile-cc9-physics1 (branch agent/cc9-physics1), merged with origin/main. Run launcher
+local\p4_runs.ps1 (sets ga, arc, wr, lt, u1z4; -Seq runs one pair at a time; orders from config/win_orders). Edit
+scripts local\p4_*.py.
+
+Done and flipped ON: kPlaneWaterSurfaceLawBound (25d13aa63), kPlaneWreckDepthRemovalBound (0ea291d35),
+kGunAimDegreePrecisionBound (f435022e8), kGunArcFloatPrecisionBound (67e99782c). Docs: WATER_SURFACE_LAW 10-13,
+X87_CONTROL_WORD (the host precision policy and the spots), DYN_LCP_IMPULSE_MATH / DYN_CONTACT_SOLVER corrections,
+PLANE_INPUT_CHECKS_CC9.md. Win order files in config/win_orders (3bde171d1).
+
+Open, in order:
+1. **USN01 re-plan** on main once the lead confirms n1 and lua53's kamikaze+sweep flip have landed (gunnery38's O1,
+   avoid-pick and gun-burst are on main at bc4f4022a). First divergences in GUNNERY 198-199: Convoy5 survives (n1),
+   Convoy1/6 (gun-burst/O1), phase 3 escort (avoid-pick). Method: WINS_TABLE keeper notes (retarget mid-strike).
+2. **kPlaneLeaderTurnRollBound** (8b0e7bfce, OFF): faithful, loses USN01 p3_u1_z4 (deaths 90 -> 68); the lead decides
+   flip + re-plan. Its USN12 half was invalid (no order file): re-pair USN12 + LOMP10 from config/win_orders.
+3. **Channel C (the wing fold) at the elevator:** read whole (PLANE_INPUT_CHECKS_CC9.md (a)); the binding needs a Lua
+   accessor for VehicleClass[i].PartAnims.Wings[1..3] (lua lane), then a per-plane value stepped in the fixed step and
+   the elevator test value == 0.0 for the ten Wings classes.
+4. Census row 1 skipped by the lead's ruling; the sea bands' raw-ownership leftovers are teardown helpers only.
+5. One launch died at renderer init with the session on the console (18:05 local): check query session first.
