@@ -39,6 +39,7 @@
 //    USN04 and USN13 never set the flag and should not move.
 
 #include <array>
+#include <cstddef>
 #include <cstdint>
 #include <optional>
 #include <vector>
@@ -255,6 +256,100 @@ float projectile_speed_006e7cd0(const Seg33Vec3& velocity) noexcept;
 // product and sum FSTP float. The pose invalidation of the child nodes is not modelled.
 Seg33Vec3 projectile_extrapolate_position_006e2220(const Seg33Vec3& base,
                                                    const Seg33Vec3& velocity, float t) noexcept;
+
+// ---------------------------------------------------------------------------------------------
+// Command classes (cc13-gpr33b): vtable slot +10h and the menu sort of 006F9110.
+// ---------------------------------------------------------------------------------------------
+// Slot +10h of the 26 command-class vtables (bsp::kEntityOrderCommandClasses in
+// bsp/entity_orders.hpp carries slots +4h/+8h/+0Ch). Every body is XOR EAX,EAX / RET except
+// closetoship's 006F8E80 (MOV EAX,1 / RET); stop, retreat and returntobase keep the base body
+// 006F7F50. Indexed by ordinal - 1 (registration order).
+inline constexpr int kCommandClassSlot10[26] = {
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  // settarget .. dogfight
+    0, 0, 0, 0, 0, 0, 0, 0, 0,              // follow .. land
+    1,                                      // closetoship (23)
+    0, 0, 0,                                // Leave, disband, tutorial
+};
+// 006F7B30, __fastcall(a /*ECX*/, b /*EDX*/): a->vtable[10h]() - b->vtable[10h]().
+int command_class_compare_006f7b30(int slot10_a, int slot10_b) noexcept;
+// 006F7C20, __thiscall(list, comparator), RET 4, called by 006F9110 with 006F7B30 on the
+// collected menu list. For each cursor from the head: scan the later nodes, replacing the best
+// (starting at the cursor) when compare(best, scan) == -1 (006F7C4A CMP EAX,-1 / CMOVE). When the
+// best is not the cursor, the best is moved to just after the cursor and the cursor to the tail;
+// the next cursor is the best's successor. Stops when the cursor is the tail. Returns the
+// resulting order as indices into `keys` (the slot +10h values of the collected list).
+std::vector<std::size_t> command_menu_sort_006f7c20(const std::vector<int>& keys);
+
+// ---------------------------------------------------------------------------------------------
+// Catapult launch timeline (MCatapult, class 28h, vtable 00CFAAB8), cc13-gpr33b.
+// 006ED1C0 is slot +8h of the tick-element table 00CFAA70 (ESI = catapult+310h). Offsets below
+// are on the catapult record. The field names +480h..+490h are the debug dump's (006EC140,
+// bsp/air_operations.hpp CatapultInstanceOffsets); the rest are hypotheses.
+// ADOPTION: no host launches from a catapult (GetLastCatapulted answers -1,
+// src/game_hosts_lua.cpp:6197). Inputs: the global tick [00F876B0], the launch heading 006ED000
+// (gun-arc geometry, not modelled), the class's +88h/+8Ch/+DCh/+E4h, the reload timer
+// [catapult+414h]. RNG: none. OFF prediction: a ship that launches a floatplane would hold it 1 s,
+// turn to the launch heading until 2 s, raise to the launch pitch and, from `turn_time`, ramp the
+// launch speed 10 + 70 (t - turn_time) m/s, releasing the plane at turn_time + 0.5 s (about 45 m/s
+// along its forward axis), then return to rest after turn_time + 1 s.
+// ---------------------------------------------------------------------------------------------
+inline constexpr float kCatapultSecondsPerTick = 0.05f;     // 00D0DE84
+inline constexpr double kCatapultTurnSlack = 1.0;           // 00D7A210
+inline constexpr float kCatapultTurnClampLo = 1.0f;         // 00D7A24C
+inline constexpr float kCatapultTurnClampHi = 4.0f;         // 00CE3D34
+inline constexpr double kCatapultTurnExtra = 1.5;           // 00CE3D78
+inline constexpr float kCatapultHoldEnd = 1.0f;             // 00D7A24C, 006ED426
+inline constexpr float kCatapultRotateEnd = 2.0f;           // 00CE3958, 006ED462
+inline constexpr double kCatapultReleaseAfterTurn = 0.5;    // 00D7A280, 006ED4B0
+inline constexpr double kCatapultSpeedGain = 70.0;          // 00CFACE0, 006ED50E
+inline constexpr double kCatapultSpeedBase = 10.0;          // 00CE3DC0, 006ED514
+inline constexpr float kCatapultSpeedAfterRelease = -4.0f;  // 00CF1430, 006ED5FE
+
+struct CatapultLaunchState {
+    int ammo_480{0};                 // "ammo"
+    bool start_launch_488{false};    // "startLaunch"
+    bool added_launched_489{false};  // VEHICLE_ADD_LAUNCHED sent
+    int launch_tick_490{-1};         // "launchTick", -1 idle
+    bool has_plane_4a8{false};       // the launched plane (observer pair at +494h, entity +4A8h)
+    float yaw_4ac{0.0f};             // current angles (+4ACh, +4B0h)
+    float pitch_4b0{0.0f};
+    float yaw_target_4c4{0.0f};      // targets the turn step 006EBD90 follows
+    float pitch_target_4c8{0.0f};
+    float field_4cc{0.0f};           // set to class+E4h while holding; the end test reads it
+    float launch_speed_4d4{0.0f};
+};
+struct CatapultClassView {
+    float yaw_rate_88{0.0f};
+    float pitch_rate_8c{0.0f};
+    float launch_pitch_dc{0.0f};
+    float rest_e4{0.0f};
+};
+// 006ED1C0-006ED261, the head after BSP_Gun_FixedStepTick: with startLaunch and dt > 0,
+// can_fire (vtable[1D0h](1), 006EBD30) routes the fire message ADh (returns true); otherwise a
+// disabled catapult (+3B8h) or ammo below 1 clears startLaunch.
+bool catapult_fire_head_006ed1c0(CatapultLaunchState& s, float dt, bool can_fire,
+                                 bool disabled_3b8) noexcept;
+// 006ED2C1-006ED3B6: the turn time, clamp(max(|launch_pitch|/pitch_rate + 1, |yaw_delta|/yaw_rate),
+// 1, 4) + 1.5; a non-positive rate gives 0 for its term.
+float catapult_turn_time_006ed2c1(const CatapultClassView& cls, float yaw_delta) noexcept;
+struct CatapultTickEvents {
+    bool route_add_launched{false};  // VEHICLE_ADD_LAUNCHED (006EB9C0) routed (7, 0)
+    bool takeoff{false};             // plane velocity set along its forward axis, PLANE_TAKEOFF(1)
+    float takeoff_speed{0.0f};       // the +4D4h value used for it
+    bool ended{false};               // launchTick back to -1
+    float elapsed{0.0f};
+    float turn_time{0.0f};
+};
+// 006ED261-006ED675, with launchTick >= 0. launch_heading is 006ED000's answer; the wrapped
+// subtraction and addition are 00438B10 / 00438AA0 (bsp/unit_rudder.hpp).
+CatapultTickEvents catapult_launch_timeline_006ed261(CatapultLaunchState& s,
+                                                     const CatapultClassView& cls,
+                                                     int global_tick, float launch_heading,
+                                                     float reload_timer_414, bool plane_has_body,
+                                                     SessionMode mode) noexcept;
+
+// 006F5960 (command building): IMUL of the int capture range +7A0h by itself (32-bit wrap), FILD.
+float command_building_capture_range_squared_006f5960(std::int32_t capture_range_7a0) noexcept;
 
 // ---------------------------------------------------------------------------------------------
 // Class fields read by 006E01C0 (BombPlatform, after the gun reader 007327B0) and 006E02C0
