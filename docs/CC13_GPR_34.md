@@ -180,7 +180,8 @@ target vehicle's create, activate, serializer and HitOnTheFly. `006FF6E0` is a o
 
 ## 5. Verification
 
-- `./scripts/build.ps1` result: see section 6.
+- `./scripts/build.ps1` passed in this tree before and after merging `origin/main` (the build plus ctest,
+  2 of 2). No test was added: the models are host-callback reference code, and cc9 binds them OFF.
 - `tools/x87_dc_form_scan.py --forms dc,de`:
   - `00700660`: `007006D6 fsubp st(1)` (vy - dt*g) and `00700723 fmulp st(2)`;
   - `00700770`: `007007EC fsubrp st(2)` (5 - hp), `007007EE fdivp st(1)` (/5) and `00700820 fsubrp st(1)`
