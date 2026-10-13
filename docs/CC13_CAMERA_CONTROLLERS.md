@@ -411,6 +411,10 @@ acceleration, `+50h` turn acceleration (both per 0.05 s, 00D0DE84), `+54h` targe
   scaled to `top * min(|d|, max) / max`; the change from the current per-step motion
   (`+3A0h - +3B8h`, or `+3CCh - +3DCh` for the angles) is limited to `accel * 0.05`, scaled by
   `min(|change| / (accel*0.05), 1)` (squared on request) and added to `+3ACh` / `+3D4h`.
+  Correction (cc13-cam3b, `docs/CC13_CAM_3.md`): `+3A0h` and `+3CCh` are the velocity and the
+  angular rates (per second), `+3ACh` / `+3D4h` the accelerations built per step, and `+3B8h` /
+  `+3DCh` reference values the step sets from the target's motion; the source fields are renamed
+  accordingly.
   00793730 / 00793800 do the scaling (zero below 1e-6).
 - 00794D60 with a target, and 00794F70, arm a follow cone: `+3E4h` target, `+3E8h` tolerance,
   `+3ECh` growth 0.875. 00795180 `FollowTarget` grows the cone by `(growth-1)` per 0.05 s of

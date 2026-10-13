@@ -54,9 +54,9 @@ cam2 had already named, and the snapshot that `00790460` writes. Renamed
 
 **Correction to `cc13_camera_controllers.hpp`.** The extrapolation shows that `+3A0h` is a velocity
 and `+3CCh/+3D0h` are angular rates, both per second. `MovCamMotion::position_3a0` and
-`MovCamTurn::angles_3cc` name them as a position and angles. That file was left unedited. Its
-`PathCamera::parameter_shift_4fc` is likewise `00790460`'s snapshot of `+468h`, which `0079C200`
-reads as the starting parameter.
+`MovCamTurn::angles_3cc` named them as a position and angles. Likewise, `PathCamera::parameter_shift_4fc`
+is `00790460`'s snapshot of `+468h`, which `0079C200` reads as the starting parameter. The
+follow-up packet cam3b renamed these fields (section 8).
 
 ## 2. Lifetimes
 
@@ -149,3 +149,47 @@ Still open, in order of value:
    candidates.
 
 Build: `scripts/build.ps1` passes. No game runs were made.
+
+## 8. Follow-up packet cc13-cam3b
+
+- **Field renames in `cc13_camera_controllers.hpp`**, with their use sites in `src/cc13_camera_controllers.cpp` and
+  `src/engine_seg43_45_cc13.cpp` updated:
+
+  | Old name | New name |
+  | --- | --- |
+  | `MovCamMotion::position_3a0` | `velocity_3a0` |
+  | `velocity_3ac` | `acceleration_3ac` |
+  | `previous_3b8` | `reference_velocity_3b8` |
+  | `MovCamTurn::angles_3cc` | `rate_3cc` |
+  | `rate_3d4` | `turn_acceleration_3d4` |
+  | `previous_3dc` | `reference_rate_3dc` |
+  | `PathCamera::parameter_shift_4fc` | `snapshot_parameter_4fc` |
+
+  The comments now give the evidence:
+  - `+3B8h` is written only by the step, at `007A96D3..007A96EC`. Its value comes from slot `+34h`
+    of the target `+38Ch`. It is zero in deck mode, in targeted sub-mode >= 2, or when game `+634h`
+    is set.
+  - `+3DCh` is written only at `007A98A1`.
+  - `007972F0` shifts the snapshot `+4FCh` along with the parameter, so the frame extrapolation stays
+    continuous.
+
+  `docs/CC13_CAMERA_CONTROLLERS.md` section 13 has a correction note. Behaviour is unchanged; this is
+  only renaming.
+- **`0079D830` is now a Ghidra function.** It was created by
+  `tools/ghidra_define_function.py 0079d830 0079d83b` under the write lock (record
+  `reports/cc13_cam3b_defined_functions.json`). The analyzer setting was not touched. It is
+  `SUB ECX,170h; JMP 0079E2F0`, the `+170h` sub-object's deleting-destructor adjustor. It has the
+  ledger name `CG_adjustor_thunk_0079d830` and the tag `cg_adjustor_thunk` (evidence `st1_adjustor`).
+- **`00799B00`.** The keyframe default constructor is reconstructed as `movie_keyframe_construct_00799b00`.
+  It sets `+C0h = -1.0`, `+E8h = 0` and `+4h = 0`, which `0079C910` leaves unwritten. Its unregister
+  test on `+1Ch` comes right after storing 0 there, so it never fires.
+- **STL candidates.** Every `STL_*`-style row in segments 43 and 45 now carries a tag (cam2b's 56
+  plus earlier sweeps). The only untagged library-named row is `00778840 ~SubAllocator`, an FID
+  library name reached only from two unwind funclets, which was left alone.
+- **The latched inputs (handoff item 2), partly.** The step `007A91A0` first copies the latch block
+  `+51Ch..+537h` into `+500h..+51Bh` and clears the edge bytes:
+  - Actions `82h`/`83h` (copied to `+518h`/`+519h`) call `007A84D0(1)`.
+  - Action `7Bh` (copied to `+503h`) calls `BSP_MovCam_StepDeckWalk` `007A8DA0`, in modes 1/2 once
+    the timer `+494h` has run out (the timer is set back to 1.0). This looks like "next deck point".
+
+  The other actions still need the rest of the step.

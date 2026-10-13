@@ -278,3 +278,11 @@ Corrections:
   outcome request, left to cc9.
 - The in-game movie screens and movie-camera spectate pair listed under the movie camera debug
   screen (ownership: in-game movie wiring).
+
+## Update (cc13-fe10, 2026-10-13)
+
+cc13-fe10 (`docs/CC13_FE_10.md`) took this list further: 005D5D50, 005D6E30, 005D9660 (renamed
+StepSelectedSlotAi), 005D92B0, the pause rows / enter / update 005D39A0 / 005D3B40 / 005D3F20, the
+chat row format / rebuild / layout 005D09A0 / 005D0C60 / 005D14D0, the relayout 00529A30, the
+record apply 0052CF60, the formation destruct 00538A80, 0053BC00, and the free-camera bind /
+register 00540D50 / 00540FE0 are reconstructed. Its Handoff section lists what is still open.

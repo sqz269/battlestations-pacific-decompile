@@ -69,10 +69,10 @@ inline constexpr const char* kGvSpaceInitBlock = "GvSpace_Init"; // 00CE7E94
 // when it is 8 or 9, else 8. The numbered-block caller (004DFF07..004E0E56)
 // and LoadSceneContents (004D4E74) push 1. EngineMovie_Stop (0045F7EF)
 // pushes a register value (cc9's lane). The tail stays OFF behind
-// kSceneShortNameModeSuffixBound until a paired run confirms it. ON, a campaign
+// kSceneShortNameModeSuffixBound (ON since the USN02/USN12 pairs). ON, a campaign
 // scene such as usn_2_java.scn becomes "usn_2SOLO", so its blocks become
 // 1_usn_2SOLO, 3_usn_2SOLO, 4_usn_2SOLO, 5_usn_2SOLO and 6_usn_2SOLO.
-inline constexpr bool kSceneShortNameModeSuffixBound = false;
+inline constexpr bool kSceneShortNameModeSuffixBound = true;
 inline constexpr std::array<const char*, 10> kSceneShortNameModeSuffixes{
     "IC1", "IC2", "IC3", "IC4", "Du", "Esc", "SiE", "Com", "SOLO", "SOLO"}; // 00E08240
 struct SceneShortNameGameMode {

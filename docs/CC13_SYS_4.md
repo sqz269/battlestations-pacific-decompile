@@ -242,3 +242,9 @@ argument and the suffix tail, behind `kSceneShortNameModeSuffixBound = false` (c
   "usn_2_java" and "SOLO" elsewhere. The block names are therefore not loose file names; they are
   most likely labels for the named VFS/memory blocks. Whether the suffixed names matter needs the
   00BE0A30 block handling or a paired run.
+- **Paired and flipped ON** (cc9-physics6, 2026-10-13; tree agent/cc9-physics1 at origin/main 974089548, OFF = tree
+  build 6C400EF57F47, ON = `local\p6_sfx` 0A5104A2F49D; reference env; logs cc9-physics1 `local\p6sfx_{off,on}_{u2,u12}.log`):
+  USN02 `usn02_s36_u2_p7` 4400 frames: gameplay identical, completed 203.01 s both, guard logged; short name
+  "usn_2" -> "usn_2SOLO", blocks 1_usn_2SOLO .. 6_usn_2SOLO. USN12 `usn12_s38_u12_p2` 6000 frames: gameplay
+  identical; "usn_12" -> "usn_12SOLO". As predicted (enter_file_block 00BE0A30 is unimplemented). The two
+  reconstructed_math checks of the truncation now pass append_mode 0.
