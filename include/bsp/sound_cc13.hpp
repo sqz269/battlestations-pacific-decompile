@@ -11,9 +11,11 @@
 // src/sound_sample.cpp. Storage passed in must belong to that domain. Original C++ EH and SEH are not
 // claimed; nothing here is wired into a game host. Names are hypotheses, not recovered symbols.
 
+#include <array>
 #include <cstdint>
 
 #include "bsp/native_input_action_records.hpp"
+#include "bsp/native_string.hpp"
 #include "bsp/native_input_binding_storage.hpp"
 
 namespace bsp::sound_cc13 {
@@ -171,6 +173,76 @@ void destroy_native_input_actions_00a93d80(void* header, NativeInputActionRecord
 // 00A93D60 BSP_InputActionMap_ClearVectors, __fastcall(ECX map): 00A93C10(map+4h, 0), then
 // 0086A430(map+10h, 0).
 void clear_input_action_map_vectors_00a93d60(void* map, NativeInputActionRecordsContext& context);
+
+// --- String-bearing records (cc13-sound2) ---
+// Each record starts with the native 8-byte pooled string header {uint32 length +0h, char* data +4h}. A copy
+// zeroes the header, and unless dst == src resizes it to the source length with preserve (0041DD40) and, for
+// a non-zero source length, copies the CURRENT destination length of bytes with the overlap-tolerant
+// memcpy 00BF7680. String storage is the explicit NativeStringStorage boundary of bsp/native_string.hpp.
+
+// Named values {string, DWORD +8h}, 0Ch bytes. __thiscall, EAX dst.
+// 00A82FF0: (ECX dst, string* name, DWORD* value), RET 8; 00A83040 and 00A83090: (ECX dst, record* src), RET 4.
+void* copy_named_value_00a82ff0(void* dst, const void* name, const std::uint32_t* value, NativeStringStorage& strings);
+void* copy_named_value_00a83040(void* dst, const void* src, NativeStringStorage& strings);
+void* copy_named_value_00a83090(void* dst, const void* src, NativeStringStorage& strings);
+
+// Configured sound types {string, sample-pointer array +8h}, 14h bytes, and configured channel groups
+// {string, DWORD +8h, effect-pointer array +0Ch}, 18h bytes, over native {data, count, capacity} headers.
+// 00A7FB50 BSP_SoundConfiguredType_CopyConstruct / 00A7D880 BSP_SoundConfiguredGroup_CopyConstruct,
+// __thiscall(ECX dst, src), RET 4, EAX dst: the string copy, the DWORD (groups), a zeroed array header, then
+// 00A7BAA0 / 00A7B7C0. EH state 0 covers the array assign: the string is destroyed if it throws.
+void* copy_sound_configured_type_00a7fb50(void* dst, const void* src, NativeStringStorage& strings);
+void* copy_sound_configured_group_00a7d880(void* dst, const void* src, NativeStringStorage& strings);
+// 00A7C6C0 / 00A7BFE0 over raw storage, ECX record, RET: destroy the inner array (resize 0 through 00A7B3D0
+// / 00A7A930, then free its data), then release the name through 0041DD20. The same addresses have C++
+// projection records in src/sound_configuration_shutdown.cpp; these are the raw-storage forms the reserves
+// below need.
+void destroy_sound_configured_type_raw_00a7c6c0(void* record, NativeStringStorage& strings);
+void destroy_sound_configured_group_raw_00a7bfe0(void* record, NativeStringStorage& strings);
+// 00A7FBD0 BSP_SoundConfiguredTypes_Reserve (minimum 1) and 00A7F160 BSP_SoundConfiguredGroups_Reserve
+// (minimum 16), __thiscall(ECX header, int), RET 4: when the capacity is below, operator new, copy-construct
+// each record forward, destroy each old record forward, free the old array, store data and capacity. A
+// throwing copy leaks the new array (the EH map's placement delete is a no-op).
+void reserve_sound_configured_types_00a7fbd0(NativePointerArray& header, std::int32_t requested, NativeStringStorage& strings);
+void reserve_sound_configured_groups_00a7f160(NativePointerArray& header, std::int32_t requested, NativeStringStorage& strings);
+// 00A7FEB0 BSP_SoundConfiguredTypes_Append, __thiscall(ECX header, const type*), RET 4: when full, reserve
+// capacity * 2 (at least 1); copy-construct at the end; count + 1 after the copy returns.
+void append_sound_configured_type_00a7feb0(NativePointerArray& header, const void* type, NativeStringStorage& strings);
+// 00A7FAF0 BSP_SoundConfiguredGroups_AppendDefault, __fastcall(ECX header) -> EAX new record: when full,
+// reserve capacity + 16 (at least 16); zero the six DWORDs of the new 18h record; count + 1.
+void* append_default_sound_configured_group_00a7faf0(NativePointerArray& header, NativeStringStorage& strings);
+// 00A7F110 BSP_SoundConfiguredGroups_PopBack, __fastcall(ECX header): when count != 0, destroy the last
+// record (00A7BFE0) and count - 1.
+void pop_back_sound_configured_group_00a7f110(NativePointerArray& header, NativeStringStorage& strings);
+
+// 00A7FCC0 (types) and 00A7F240 (groups) over raw storage, __thiscall(ECX header, int count), RET 4: reserve
+// (00A7FBD0 / 00A7F160) when count exceeds the capacity, zero the new records, then while count < current:
+// current - 1 and destroy that record (00A7C6C0 / 00A7BFE0); finally store count. The same addresses keep
+// their shrink-only fragment records in src/sound_configuration_shutdown.cpp.
+void resize_sound_configured_types_raw_00a7fcc0(NativePointerArray& header, std::int32_t count, NativeStringStorage& strings);
+void resize_sound_configured_groups_raw_00a7f240(NativePointerArray& header, std::int32_t count, NativeStringStorage& strings);
+// 00A81460 BSP_SoundConfiguredTypes_Destroy and 00A7FF30 BSP_SoundConfiguredGroups_Destroy, __fastcall(ECX
+// header): resize 0 then free(data).
+void destroy_sound_configured_types_00a81460(NativePointerArray& header, NativeStringStorage& strings);
+void destroy_sound_configured_groups_00a7ff30(NativePointerArray& header, NativeStringStorage& strings);
+
+// 00A86FB0 BSP_DialogChannelRecords_Append, __thiscall(ECX header, const record*), RET 4: when full, reserve
+// capacity * 2 (at least 1) through 00A78DC0; copy the 14h record through 00A77EF0; count + 1.
+void append_dialog_channel_record_00a86fb0(void* header, const void* record, NativeStringStorage& strings,
+                                           const std::array<std::uint32_t, 4>& format_counts);
+// 00A93900 BSP_NativeInputBindingVector_CopyConstruct, __thiscall(ECX dst, const header* src), RET 4, EAX dst:
+// zero the header, then 00A937E0.
+void* copy_construct_input_binding_vector_00a93900(void* dst, const void* src,
+                                                   const NativeInputBindingStorageContext& context);
+
+// Sound-name tree nodes carry a pooled string {length +0Ch, data +10h} as their value.
+// 00A88400 STL_SoundSampleTree_EraseSubtree, __thiscall(ECX tree, node*), RET 4: walk left spine; for each
+// node erase its right subtree recursively, release its string (length + 1 bytes through the pool) and free
+// the node (00BF65AC); stop at the nil head.
+void erase_sound_name_subtree_00a88400(NativeSoundTree& tree, NativeSoundTreeNode* node, NativeStringStorage& strings);
+// 00A88460 STL_SoundSampleTree_Clear, __fastcall(ECX tree): erase from the root, then head->parent = head,
+// size = 0, head->left = head, head->right = head.
+void clear_sound_name_tree_00a88460(NativeSoundTree& tree, NativeStringStorage& strings);
 
 // Trivial bodies, from the bytes:
 // 00A7BE70 BSP_SoundInstance_DefaultSetParameter: RET 8. 00A7BE80 BSP_SoundInstance_DefaultSlot34NoOp:

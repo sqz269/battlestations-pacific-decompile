@@ -384,3 +384,8 @@ world. The host already removes an exploded plane that way (`plane_death_removed
 so the binding sets that flag for a dead state-6 plane below -30 m (the 30.0f fallback, as at the state-7
 gate) at the head of the arm. Predictions: gameplay identical (the wreck was already dead and credited);
 `plane wreck depth kill` lines ON only, one per sinking wreck; no -40 km summary rows.
+
+**The pair** (OFF = tree build at `67e99782c`, ON = its flip; `local\p4r_{off,on}_e8.log`): ESMP08 no end on both
+sides (lost, as on main), gameplay identical (803 deaths, 10815 hits, 908 units). All 310 wrecks log `plane wreck
+depth kill` and leave the world; the plane fixed step falls from 19.38M to 6.69M calls, near its level before the
+water law, since sunk wrecks stop stepping. **Flipped ON.**
