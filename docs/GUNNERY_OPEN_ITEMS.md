@@ -13500,3 +13500,23 @@ commented out. Others that call it: JM12 (1, then 1.5), ESMP03/04/06/07, USN09/1
 | --- | --- |
 | USN15 s45_u15_l2 90000 | every recon range scale x0.75, so contacts are identified later; pair_diff exit 3; first hit later; the win may move (report to the keeper if lost) |
 | USN12 s38_u12_p2 | exit 0 or 1 (no call) |
+
+## 212. cc13-gpr61 adoptions: skill fan-out, repair adders, the 00955630 record (lead queue item 6; cc9-gunnery40, 2026-10-13)
+
+- **`009565A0` -> gun `vtable[1C4h](level)`: already the host's behaviour, no binding.** `009565A0..009565F5`:
+  unless the unit's dead byte `+5Dh` is set (`[ESI-32Fh]`, ESI = unit+38Ch), it stores the level at unit+390h, calls
+  `[unit+6DCh]->vtable[18h](level)`, and walks the `+48h/+44h` children calling `vtable[1C4h](level)` on every
+  `IsKindOf(20h)` device. Slot `1C4h` of both turning-gun vtables (`00CFC11C`, `00CFC354`) is `00727E70`
+  (`BSP_Gun_SetBotSkill`), which calls each of the six bot slots' `vtable[18h]` = `0072BC80`, `bot+34h = level`. The
+  gunnery host has no per-bot copy: every bot reads `units.skill_level(owner)` (`pilot_skill_index`) when it runs,
+  and `SetSkillLevel` writes that index (`set_skill_level_007b8ae0`, `kSkillLevelBound`). So the fan-out is already
+  in effect. One comment is stale: `src/game_hosts_script_orders.cpp:~3123` says "the gun bots read no skill here".
+  It is the Lua lane's file, so the lead routes the fix. Unmodelled residue: the weapon director's
+  `vtable[18h](level)` (`+6DCh`).
+- **`0093A470` / `0093A4F0` extras: no host consumer, no binding.** The adders also keep `+3Ch` (fire total) and
+  `+40h` (water copy), and they clear `+44h`. In the image, `+44h` is the "already reported repaired" latch that
+  `0093CA20` reads at `0093CA98` and sets at `0093CADC` before it tail-calls `00914100` (`0093CAF1`). The host stubs
+  that notice (`repair_completed_notify` -> `unreached("00914100")`). So clearing `+44h` has nothing to re-arm, and
+  `+3Ch`/`+40h` have no reader. The bookkeeping is recorded here, not bound.
+- **`00955630` ledger record** added (`config/reconstruction/00950000.jsonl`): body `00955630..00955822` exclusive
+  (`0095581F RET 10h`, `INT3` at `00955822`, `disasm-raw`), rule in `src/gun_gravity_arc.cpp`.
