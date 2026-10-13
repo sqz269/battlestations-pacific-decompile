@@ -2397,3 +2397,51 @@ void* w4_water_tracer_resource_initialize_00badc70(void* resource, const std::ui
     const W4_TracerCalls& tracer);
 
 }  // namespace bsp::water_weather_cc13
+
+namespace bsp::water_weather_cc13 {
+
+// 00BA1400 BSP_OceanWaveFieldBase_Construct, __thiscall(ECX field, world) RET 4 -> EAX. Caller 00BA6C40.
+// Listing read in full (temporaries tracked by stack slot). Engine routines beyond W4_EngineCalls:
+struct W4_WaveFieldBaseCalls {
+    W3_Body weak_owner_construct_00925490;                                        // ECX field +4h
+    std::uint8_t (*check_vertex_texture_format_00b20190)(void* device, std::uint32_t format);  // RET 4 -> AL
+    void* (*scene_construct_00b724e0)(void* block, const void* name);              // 24h block, RET 4
+    void (*create_floating_particles_00af0f20)(void* manager);                     // ECX [00F8C274]
+    void* (*fog_owner_construct_00b84e50)(void* block);                            // 94h block
+    void (*camera_set_fog_owner_00b71940)(void* camera, void* fog);                // RET 4
+    void* (*scene_resource_construct_00b83c50)(void* block, const void* name);     // 3Ch block, RET 4
+    void (*scene_set_resource_00b723f0)(void* scene, void* resource);              // RET 4
+    void* (*scene_lighting_owner_00b72110)(void* scene);
+    void* (*directional_light_allocate_00b7bd40)(std::uint32_t size);              // ECX 1ECh
+    void* (*directional_light_construct_00b7c6b0)(void* slot, const void* name);   // RET 4
+    void* (*light_shadow_owner_00b7aab0)(void* light);
+    void (*light_set_shadow_owner_00b7bdf0)(void* light, void* owner);             // RET 4
+    void (*material_register_matrix_00b18b40)(void* material, const void* name, void* value);  // RET 8
+    void (*invalid_iterator_00bf6713)();
+};
+// Fields, in listing order: vtables 00D63928, weak owner (+4h), 00D63B5C / 00D63B54 (+4h); +14h = 0, BYTE +84h
+// = 0, +0A0h..+0ACh, +0BCh..+0C8h, BYTE +0CCh, +0D0h, +0E4h, +0E8h, +0F0h, +0F4h = 0, BYTE +0F8h = 1, +114h =
+// 20.0f, +118h = 0.5f, +11Ch..+124h, +12Ch, +130h, +27Ch..+288h, +2ACh..+2BCh, +498h..+4A0h, +4E4h, +4E8h,
+// +4F0h, +4F8h..+504h, +5F4h..+604h, +60Ch..+628h = 0; BYTE +10h = 00B20190(device, 71h); +66Ch = 5000.0f,
+// +670h..+678h = 0; +0D4h = 0.5f, +20h = 1.0f, +0D8h = 0.05f, +34h..+40h = 1.0f, +0E0h = +0DCh = 0.
+// +14h = scene "FloatingObjectScene"; floating particles (00AF0F20 on [00F8C274]) rooted under it. Cameras
+// "WaterReflection" (+0C8h, frame targets +604h) and "WaterRefraction" (+0D0h, +608h): clear flags 7, a
+// viewport of 200h x 200h and a system fog owner, each released (no null test). +0B0h = 300.0f, +0B4h =
+// 0.0033333334f, +0B8h = 1.4f, +24h = 0.0f; world into +0C0h (reference swap); +278h = +274h = 0; model
+// "OceanSurface" (+11Ch) rooted under the world; +28Ch = +294h = +29Ch = +2A4h = 0, +290h = +298h = +2A0h =
+// 1.0f, +2A8h = 3.0f. +4A0h = 00B4C700("ShadowRender", "position.mvfm", "oceanshadow_vsampler.mshd" when
+// BYTE +10h else "oceanshadow.mshd", 4, 3, 1, 0), rooted under +14h, with "cStaticShot_Size_OffsetX_OffsetY"
+// (float4 array +66Ch, 1) and "cCameraViewMat" (matrix +67Ch) on its first element's material, and its
+// vertex stream 0 written with the triangle {0, 0, 50000; 50000, 0, -50000; -50000, 0, -50000}. Scene
+// resource "AllLights" (3Ch) set on +14h and released when non-null. +600h = directional light "TheSun"
+// (1ECh pool slot) with the shadow owner of the first light of the world's lighting owner (list +1Ch; an
+// empty list reports 00BF6713); +600h and +4A0h vtable +50h(lighting owner of +14h, 1). +120h = "OceanFoam"
+// ("position.mvfm", "oceanfoam.mshd", 4, 3, 1, 0) with the same triangle; +504h = "Splashes"
+// ("pf43nf43uf44.mvfm", "oceansplash.mshd", 4, 0, 0, 0); +4E4h = scene "EmptyReflection"; +104h..+110h =
+// -1.0e10f; "OceanVelAndDepth" ("position.mvfm", "ocean_vel_and_depth.mshd", 4, 3, 1, 0) is rooted under the
+// world and given the triangle but not stored.
+void* w4_ocean_wave_field_base_construct_00ba1400(void* field, void* world, void* device_00f8d394,
+    void* floating_particles_00f8c274, NativeStringStorage& strings, W4_EngineCalls& calls,
+    const W4_WaveFieldBaseCalls& base);
+
+}  // namespace bsp::water_weather_cc13

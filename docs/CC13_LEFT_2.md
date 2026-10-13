@@ -87,3 +87,7 @@ The new image calls are in `TerrainLeft2Host` (and `TerrainLeft2NodeCalls` for t
   `00A84D20`. The record destroy and assign (`00A842E0`, `00A84680`) and the alias-list helpers
   (`004C3020`, `004D48A0`) have projected or pool-typed reconstructions elsewhere, so they are bound.
 - `00A7EA30`, the debug dump: it builds one line per sound object and throws it away.
+- `00BA1400` wave field base constructor. Its many pooled temporaries were matched to their stack
+  slots, which settles the `00B4C700` operands: ECX the model name, EDX the geometry file and the first
+  stack word the shader. The "OceanVelAndDepth" model it creates is rooted under the world and given
+  the ocean triangle but never stored in a field.

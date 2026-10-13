@@ -4949,3 +4949,182 @@ void* w4_water_tracer_resource_initialize_00badc70(void* resource, const std::ui
 }
 
 }  // namespace bsp::water_weather_cc13
+
+namespace bsp::water_weather_cc13 {
+namespace {
+
+// The 9-float triangle written into a generated model's vertex stream 0 (00D0C5F8 50000.0f, 00D63AB8
+// -50000.0f), through the stream's lock (+10h with 0, 0, 0) and unlock (+14h).
+void w4_write_ocean_triangle(void* model) {
+    void* const geometry = w3_field<void*>(model, 0x180);         // 00B74640
+    void* const stream = w3_field<void*>(geometry, 0x64);         // 00B73260(0)
+    auto* const v = w3_vcall<float*>(stream, 0x10, 0u, 0u, 0u);
+    v[2] = 50000.0f;
+    v[0] = 0.0f;
+    v[1] = 0.0f;
+    v[3] = 50000.0f;
+    v[4] = 0.0f;
+    v[5] = -50000.0f;
+    v[6] = -50000.0f;
+    v[7] = 0.0f;
+    v[8] = -50000.0f;
+    w3_vcall<void>(stream, 0x14);
+}
+
+// 00B4C700 with three pooled temporaries (name in ECX, geometry in EDX, shader on the stack).
+void* w4_create_generated_model(const char* name, const char* geometry, const char* shader, std::uint32_t a,
+                                std::uint32_t b, std::uint32_t c, std::uint32_t d, NativeStringStorage& strings,
+                                W3_EngineCalls& calls) {
+    W3_Temporary shader_name(shader, strings);
+    W3_Temporary geometry_name(geometry, strings);
+    W3_Temporary model_name(name, strings);
+    return calls.create_generated_model_00b4c700(model_name.get(), geometry_name.get(), shader_name.get(), a, b, c, d);
+}
+
+// Camera with clear flags 7, a 200h x 200h viewport and a system fog owner; frame targets into `targets`.
+void w4_make_water_camera(void* field, std::size_t camera_offset, std::size_t targets_offset, const char* name,
+                          NativeStringStorage& strings, W4_EngineCalls& calls, const W4_WaveFieldBaseCalls& base) {
+    void* camera = nullptr;
+    if (void* const slot = calls.camera_allocate_raw_slot_00b71930(0x458)) {
+        W3_Temporary temporary(name, strings);
+        camera = calls.camera_construct_00b71a80(slot, temporary.get());
+    }
+    w3_field<void*>(field, camera_offset) = camera;
+    calls.camera_set_clear_flags_00b6fe10(w3_field<void*>(field, camera_offset), 7);
+    void* const targets = w3_new(0x40);
+    w3_field<void*>(field, targets_offset) = targets != nullptr ? calls.frame_targets_construct_00b1fbb0(targets) : nullptr;
+    void* const viewport_block = w3_new(0x34);
+    void* const viewport = viewport_block != nullptr ? calls.viewport_construct_00b1f850(viewport_block) : nullptr;
+    calls.camera_set_viewport_00b71990(w3_field<void*>(field, camera_offset), viewport);
+    const std::uint32_t size[2] = {0x200, 0x200};
+    calls.viewport_set_dimensions_00b1f940(viewport, size);
+    w2_release_object(viewport);
+    void* const fog_block = w3_new(0x94);
+    void* const fog = fog_block != nullptr ? base.fog_owner_construct_00b84e50(fog_block) : nullptr;
+    base.camera_set_fog_owner_00b71940(w3_field<void*>(field, camera_offset), fog);
+    w2_release_object(fog);
+}
+
+}  // namespace
+
+void* w4_ocean_wave_field_base_construct_00ba1400(void* field, void* world, void* device_00f8d394,
+    void* floating_particles_00f8c274, NativeStringStorage& strings, W4_EngineCalls& calls,
+    const W4_WaveFieldBaseCalls& base) {
+    w3_field<std::uint32_t>(field, 0) = 0x00D63928u;
+    base.weak_owner_construct_00925490(w3_bytes(field) + 4);
+    w3_field<std::uint32_t>(field, 0) = 0x00D63B5Cu;
+    w3_field<std::uint32_t>(field, 4) = 0x00D63B54u;
+    w3_field<std::uint32_t>(field, 0x14) = 0;
+    w3_field<std::uint8_t>(field, 0x84) = 0;
+    for (std::size_t o : {0xA0u, 0xA4u, 0xA8u, 0xACu}) w3_field<std::uint32_t>(field, o) = 0;
+    w3_field<float>(field, 0x114) = 20.0f;  // 00CE3930
+    for (std::size_t o : {0xBCu, 0xC0u, 0xC4u, 0xC8u}) w3_field<std::uint32_t>(field, o) = 0;
+    w3_field<std::uint8_t>(field, 0xCC) = 0;
+    for (std::size_t o : {0xD0u, 0xE4u, 0xE8u, 0xF0u, 0xF4u}) w3_field<std::uint32_t>(field, o) = 0;
+    w3_field<std::uint8_t>(field, 0xF8) = 1;
+    w3_field<float>(field, 0x118) = 0.5f;  // 00CE3800
+    for (std::size_t o : {0x11Cu, 0x120u, 0x124u, 0x12Cu, 0x130u, 0x27Cu, 0x280u, 0x284u, 0x288u, 0x2ACu, 0x2B0u,
+                          0x2B4u, 0x2B8u, 0x2BCu, 0x498u, 0x49Cu, 0x4A0u, 0x4E4u, 0x4E8u, 0x4F0u, 0x4F8u, 0x4FCu,
+                          0x500u, 0x504u, 0x5F4u, 0x5F8u, 0x5FCu, 0x600u, 0x604u, 0x60Cu, 0x610u, 0x614u, 0x618u,
+                          0x61Cu, 0x620u, 0x624u, 0x628u}) {
+        w3_field<std::uint32_t>(field, o) = 0;
+    }
+    w3_field<std::uint8_t>(field, 0x10) = base.check_vertex_texture_format_00b20190(device_00f8d394, 0x71);
+    w3_field<float>(field, 0x66C) = 5000.0f;  // 00D1AF84
+    w3_field<float>(field, 0x670) = 0.0f;
+    w3_field<float>(field, 0x674) = 0.0f;
+    w3_field<float>(field, 0x678) = 0.0f;
+    w3_field<float>(field, 0xD4) = 0.5f;
+    w3_field<float>(field, 0x20) = 1.0f;
+    w3_field<float>(field, 0xD8) = 0.0500000007f;  // 00CE7638
+    for (std::size_t o : {0x34u, 0x38u, 0x3Cu, 0x40u}) w3_field<float>(field, o) = 1.0f;
+    w3_field<std::uint32_t>(field, 0xE0) = 0;
+    w3_field<std::uint32_t>(field, 0xDC) = 0;
+    const auto make_scene = [&](const char* name) -> void* {
+        void* const block = w3_new(0x24);
+        if (block == nullptr) return nullptr;
+        W3_Temporary temporary(name, strings);
+        return base.scene_construct_00b724e0(block, temporary.get());
+    };
+    w3_field<void*>(field, 0x14) = make_scene("FloatingObjectScene");
+    base.create_floating_particles_00af0f20(floating_particles_00f8c274);
+    calls.node_propagate_root_00b6d890(w3_field<void*>(floating_particles_00f8c274, 0x24), w3_field<void*>(field, 0x14));
+    w4_make_water_camera(field, 0xC8, 0x604, "WaterReflection", strings, calls, base);
+    w4_make_water_camera(field, 0xD0, 0x608, "WaterRefraction", strings, calls, base);
+    w3_field<float>(field, 0xB0) = 300.0f;          // 00CE3AE8
+    w3_field<float>(field, 0xB4) = 0.00333333341f;  // 00D63B1C
+    w3_field<float>(field, 0xB8) = 1.39999998f;     // 00D06874
+    w3_field<float>(field, 0x24) = 0.0f;
+    void* const old_world = w3_field<void*>(field, 0xC0);
+    if (old_world != world) {
+        w3_field<void*>(field, 0xC0) = world;
+        if (world != nullptr) _InterlockedIncrement(reinterpret_cast<volatile long*>(w3_bytes(world) + 4));
+        if (old_world != nullptr) w2_release_object(old_world);
+    }
+    w3_field<std::uint32_t>(field, 0x278) = 0;
+    w3_field<std::uint32_t>(field, 0x274) = 0;
+    w3_field<void*>(field, 0x11C) = w4_make_model("OceanSurface", strings, calls);
+    calls.node_propagate_root_00b6d890(w3_field<void*>(field, 0x11C), w3_field<void*>(field, 0xC0));
+    w3_field<float>(field, 0x28C) = 0.0f;
+    w3_field<float>(field, 0x294) = 0.0f;
+    w3_field<float>(field, 0x290) = 1.0f;
+    w3_field<float>(field, 0x298) = 1.0f;
+    w3_field<float>(field, 0x29C) = 0.0f;
+    w3_field<float>(field, 0x2A4) = 0.0f;
+    w3_field<float>(field, 0x2A0) = 1.0f;
+    w3_field<float>(field, 0x2A8) = 3.0f;  // 00D63924
+    w3_field<void*>(field, 0x4A0) = w4_create_generated_model(
+        "ShadowRender", "position.mvfm",
+        w3_field<std::uint8_t>(field, 0x10) != 0 ? "oceanshadow_vsampler.mshd" : "oceanshadow.mshd", 4, 3, 1, 0,
+        strings, calls);
+    calls.node_propagate_root_00b6d890(w3_field<void*>(field, 0x4A0), w3_field<void*>(field, 0x14));
+    const auto shadow_material = [field]() {
+        return w3_field<void*>(w3_field<void**>(w3_field<void*>(w3_field<void*>(field, 0x4A0), 0x180), 0x54)[0], 0x20);
+    };
+    {
+        W3_Temporary name("cStaticShot_Size_OffsetX_OffsetY", strings);
+        calls.material_register_float4_array_00b18ac0(shadow_material(), name.get(), w3_bytes(field) + 0x66C, 1);
+    }
+    {
+        W3_Temporary name("cCameraViewMat", strings);
+        base.material_register_matrix_00b18b40(shadow_material(), name.get(), w3_bytes(field) + 0x67C);
+    }
+    w4_write_ocean_triangle(w3_field<void*>(field, 0x4A0));
+    void* resource = nullptr;
+    if (void* const block = w3_new(0x3C)) {
+        W3_Temporary name("AllLights", strings);
+        resource = base.scene_resource_construct_00b83c50(block, name.get());
+    }
+    base.scene_set_resource_00b723f0(w3_field<void*>(field, 0x14), resource);
+    if (resource != nullptr) w2_release_object(resource);
+    void* const lighting = base.scene_lighting_owner_00b72110(w3_field<void*>(field, 0xC0));
+    void* const head = w3_field<void*>(lighting, 0x1C);
+    void* const first = w3_field<void*>(head, 0);
+    if (first == head) base.invalid_iterator_00bf6713();
+    void* const sun_source = w3_field<void*>(first, 8);
+    void* sun = nullptr;
+    if (void* const slot = base.directional_light_allocate_00b7bd40(0x1EC)) {
+        W3_Temporary name("TheSun", strings);
+        sun = base.directional_light_construct_00b7c6b0(slot, name.get());
+    }
+    w3_field<void*>(field, 0x600) = sun;
+    base.light_set_shadow_owner_00b7bdf0(w3_field<void*>(field, 0x600), base.light_shadow_owner_00b7aab0(sun_source));
+    for (std::size_t o : {0x600u, 0x4A0u}) {
+        void* const object = w3_field<void*>(field, o);
+        w3_vcall<void>(object, 0x50, base.scene_lighting_owner_00b72110(w3_field<void*>(field, 0x14)), 1u);
+    }
+    w3_field<void*>(field, 0x120) =
+        w4_create_generated_model("OceanFoam", "position.mvfm", "oceanfoam.mshd", 4, 3, 1, 0, strings, calls);
+    w4_write_ocean_triangle(w3_field<void*>(field, 0x120));
+    w3_field<void*>(field, 0x504) =
+        w4_create_generated_model("Splashes", "pf43nf43uf44.mvfm", "oceansplash.mshd", 4, 0, 0, 0, strings, calls);
+    w3_field<void*>(field, 0x4E4) = make_scene("EmptyReflection");
+    for (std::size_t o : {0x104u, 0x108u, 0x10Cu, 0x110u}) w3_field<float>(field, o) = -1.0e10f;  // 00CE4ADC
+    void* const velocity = w4_create_generated_model("OceanVelAndDepth", "position.mvfm", "ocean_vel_and_depth.mshd", 4,
+                                                     3, 1, 0, strings, calls);
+    calls.node_propagate_root_00b6d890(velocity, world);
+    w4_write_ocean_triangle(velocity);
+    return field;
+}
+
+}  // namespace bsp::water_weather_cc13
