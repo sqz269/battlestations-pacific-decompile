@@ -311,4 +311,83 @@ NativeSoundTreeIterator erase_sound_tree_range_00a88490(NativeSoundTree& tree, N
 // [head->left, head) through 00A88490 (always the whole-tree path, so neither callback is
 // reached), free the head, then head = 0 and size = 0.
 void destroy_sound_sample_tree_raw(NativeSoundTree& tree, NativeStringStorage& strings);
+
+// ---------------------------------------------------------------------------
+// cc13-left2: the Pass 3 open list (docs/CC13_LEFT_2.md). Raw forms over the native headers, read
+// from the live decompile and the full listings. Build-tested only.
+
+// 00A81AD0 STL_SoundSampleTree_IncrementCheckedIterator, __fastcall(ECX iterator): a null owner reports
+// 00BF6713 and continues; at the head it tail-jumps to 00BF6713 and the iterator is unchanged; else the
+// leftmost node of the right subtree, or the first ancestor reached from a left child (the climb stops at
+// the head). Node isnil byte +19h.
+void sound_tree_increment_raw_00a81ad0(NativeSoundTreeIterator& iterator, void (*invalid_iterator_00bf6713)());
+// 00A81B80 STL_SoundSampleTree_DecrementCheckedIterator, __fastcall(ECX iterator): a null owner reports;
+// at the head the node becomes head->right (the maximum) and a head result reports; else the rightmost
+// node of the left subtree, or the climb through left-child links, where a head result reports instead of
+// being stored (listing 00A81BF5).
+void sound_tree_decrement_raw_00a81b80(NativeSoundTreeIterator& iterator, void (*invalid_iterator_00bf6713)());
+// 00A82360 / 00A82810 pre-increment and 00A823C0 / 00A82870 pre-decrement, __fastcall(ECX iterator) -> EAX
+// iterator: the two routines above, returning the iterator.
+NativeSoundTreeIterator* sound_tree_pre_increment_raw(NativeSoundTreeIterator& iterator, void (*invalid_iterator_00bf6713)());
+NativeSoundTreeIterator* sound_tree_pre_decrement_raw(NativeSoundTreeIterator& iterator, void (*invalid_iterator_00bf6713)());
+// 00A81D10 STL_SoundSampleTree_AllocateNodes, __fastcall(ECX count, EDX hint unused) -> EAX: a byte twin of
+// the scene-graph node allocator 00B76450 (local/l2_twin.py: only the rel32 to 00BF681B, 00BF6340 and
+// 00BF6885 differ in encoding, all to the same targets); allocate_tree_nodes_1c.
+void* sound_tree_allocate_nodes_00a81d10(std::uint32_t count, void* (*operator_new_00bf681b)(std::size_t));
+
+// 00A7F0D0 BSP_SoundEntryArray_Destroy / 00A7FAD0 BSP_SoundListenerTable_Destroy, __fastcall(ECX header):
+// resize to 0 through 00A7C1C0 / 00A7D910 (bound), then free(data) (00BF6989).
+void destroy_sound_array_via_resize(NativePointerArray& header, void (*resize)(NativePointerArray&, std::int32_t),
+                                    void (*free_00bf6989)(void*));
+// 00A89B10 BSP_SoundEventQueryLock_Destruct, __fastcall(ECX lock): vtable 00D5B478; 0041CC80 on the owned
+// section +4h; the publication 00F8BBDC = 0; base vtable 00CE3818.
+void sound_event_query_lock_destruct_00a89b10(void* lock, void*& published_00f8bbdc);
+// 00A7FE60 BSP_SoundSystem_AddListenerPreset, __thiscall(ECX system, const preset*) RET 4: append a copy to
+// the listener table +0A4h (00A7F9F0); name = preset +0Ch data, or "" (00F8BBE0, loader zero-fill) when
+// null; index = 00A7AE00(table, name); when +10Ch differs: +110h = old +10Ch, +10Ch = index, then
+// 00A7AE80(table, name).
+struct SoundListenerTableCalls {
+    void (*append_copy_00a7f9f0)(void* table, const void* preset);
+    std::uint32_t (*find_index_or_zero_00a7ae00)(void* table, const char* name);
+    void (*select_by_name_00a7ae80)(void* table, const char* name);
+};
+void sound_system_add_listener_preset_00a7fe60(void* system, const void* preset, const SoundListenerTableCalls& calls);
+
+// Resource cache records (2Ch): +0h name, +8h alias list {allocator, head, size}, +14h..+24h five
+// metadata DWORDs, +28h resource. The list and record routines with projected models elsewhere are bound.
+struct SoundCacheRecordCalls {
+    void* (*allocate_list_head_004c3020)();
+    void (*copy_construct_list_004d48a0)(void* destination, const void* source);   // ECX destination
+    void (*destroy_record_00a842e0)(void* record);                                  // ECX record
+    void (*assign_record_00a84680)(void* destination, const void* source);          // ECX destination
+    void* (*operator_new_00bf55be)(std::size_t);
+    void (*free_00bf6989)(void*);
+};
+// 00A84280 (snapshot name ConstructLists; it is the default constructor), __fastcall(ECX record) -> EAX:
+// name {0, 0}; list head = 004C3020(), size 0; +14h..+24h = 0 (+28h untouched).
+void* sound_cache_record_construct_00a84280(void* record, const SoundCacheRecordCalls& calls);
+// 00A843A0 copy-construct, __thiscall(ECX record, const record*) RET 4 -> EAX: name {0, 0} then copied
+// unless the same; list 004D48A0(+8h, source +8h); +14h..+28h copied.
+void* sound_cache_record_copy_construct_00a843a0(void* record, const void* source, NativeStringStorage& strings,
+                                                 const SoundCacheRecordCalls& calls);
+// 00A84380 pop back, __fastcall(ECX header): when count != 0 destroy the last record (00A842E0), count--.
+void sound_cache_records_pop_back_00a84380(NativePointerArray& header, const SoundCacheRecordCalls& calls);
+// 00A84450 reserve, __thiscall(ECX header, n) RET 4: n raised to 64; when capacity < n: operator new(n * 2Ch)
+// (no overflow saturation), copy-construct each live record (null destinations skipped), destroy each old
+// record, free the old block, store data and capacity.
+void sound_cache_records_reserve_00a84450(NativePointerArray& header, std::int32_t requested,
+                                          NativeStringStorage& strings, const SoundCacheRecordCalls& calls);
+// 00A84D20 erase-swap-last, __thiscall(ECX header, record** where) RET 4: when *where is not the last
+// record, assign the last over it (00A84680); destroy the last (00A842E0); count--.
+void sound_cache_records_erase_swap_last_00a84d20(NativePointerArray& header, void* const* where,
+                                                  const SoundCacheRecordCalls& calls);
+
+// 00A7EA30 BSP_SoundManager_DebugDumpEntries_Provisional, __fastcall(ECX manager). No reference in the image.
+// For each object in the pointer array +8Ch (count +90h): over = BYTE +15h, a = vtable +0Ch(), b = BYTE
+// +50h, c = vtable +14h(), paused = BYTE +1Ch or BYTE [[+44h] +0Ch]; a log builder built inline (the 004264A0
+// shape) gets " cSoundObject:" [+4Ch] +50h " ch:" vtable +18h() (as a pointer) " over:" over "/" a
+// " persistent:" b " real:" c " paused:" paused " tick:" +18h " play%:" vtable +20h() (float) and is
+// destroyed (00425F80): there is no output sink. Virtual call order: +0Ch, +14h, +20h, +18h.
+void sound_manager_debug_dump_entries_00a7ea30(void* manager, NativeStringStorage& strings,
+                                               const char* null_format_01090ab4);
 } // namespace bsp::sound_cc13
