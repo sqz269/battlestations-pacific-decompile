@@ -1933,4 +1933,112 @@ struct LobbyLabelHost {
 };
 std::string lobby_settings_option_label_005e2320(std::int32_t slot, LobbyLabelHost& host);
 
+// 005F54F0 OptionsScreen BuildMainList, __fastcall(ECX = screen), RET. +252h = 0;
+// command-bar help variant (00549620 on [00E1930C]) = game byte +61Fh. A pending
+// +78h is cleared and only pushes interface 0Eh (004CC460 on [00E198B8], (0Eh,
+// 0)). Otherwise: copy the live settings 00F88980 into the edit copy +D8h
+// (005F52C0); 00E19650 = 0; 00527CB0 on [[00E198B8]+44h] fills the bytes
+// +119h, +11Ah, +11Bh, +118h; list box +84h loses its listener and rows; title
+// "FE.opt_title_main" (in a mission 00518D60(0, 0, 0, title), else 005189B0).
+// Rows 0..6 (row 6 skipped in a mission): a clone of +8Ch named
+// "Elem_<n>_Text" (vtable +2Ch), data +D8h = n, inserted, shown, text
+// 00E08A48[n]; +7Ch(1) on row 5 when [00E198AC] and its +74h are set; row 6
+// +7Ch([00F8A304] null or its +8h == 0); row 4 +7Ch(+188h == 0). Then
+// highlight reset (1, 1), 005F0CD0, listener screen+8, select +A8h, +80h(1),
+// hide +A4h, +A0h, +88h, +254h, +258h, and 00A9CDF0(ECX = +84h, EDX = +84h,
+// stack +88h): its ECX is the kept list, EDX and the stack word the two lists to
+// clear, each skipped when equal to ECX.
+struct OptionsMainListHost : WidgetHost {
+    virtual void* game_00e188a8() = 0;
+    virtual void command_bar_set_help_variant_00549620(std::uint8_t variant) = 0;
+    virtual void push_interface_request_004cc460(std::int32_t interface_id, std::int32_t arg) = 0;
+    virtual void copy_settings_005f52c0(void* edit_copy) = 0;  // source 00F88980
+    virtual void set_options_page_00e19650(std::int32_t page) = 0;
+    // 00527CB0 on [[00E198B8] + 44h], RET 10h.
+    virtual void control_layout_button_flags_00527cb0(std::uint8_t* a, std::uint8_t* b, std::uint8_t* c,
+        std::uint8_t* d) = 0;
+    virtual void list_box_set_listener_00a9ac40(std::uint32_t list_box, void* listener) = 0;
+    virtual void list_box_clear_rows_00a9bec0(std::uint32_t list_box) = 0;
+    virtual void frame_select_00518d60(const char* name) = 0;  // ECX = EDX = 0, stack 0
+    virtual void frame_set_title_005189b0(const char* title) = 0;
+    virtual std::uint32_t clone_subtree_00aab4c0(std::uint32_t widget, std::int32_t arg) = 0;
+    virtual void widget_set_name_2c(std::uint32_t widget, const std::string& name) = 0;  // vtable +2Ch
+    virtual void list_box_insert_row_00a9d750(std::uint32_t list_box, std::uint32_t row, std::int32_t a,
+        std::int32_t b) = 0;
+    virtual void text_set_localised_cstring_00abbe50(std::uint32_t text, const char* key, std::int32_t arg) = 0;
+    virtual void widget_virtual_7c(std::uint32_t widget, bool value) = 0;
+    virtual void* briefing_screen_00e198ac() = 0;
+    virtual void* downloads_00f8a304() = 0;
+    virtual void list_box_reset_highlight_00a9cf30(std::uint32_t list_box, std::int32_t a, std::int32_t b) = 0;
+    virtual void refresh_help_line_005f0cd0(void* screen) = 0;
+    virtual void list_box_select_index_00a9c7c0(std::uint32_t list_box, std::int32_t index) = 0;
+    virtual void list_box_virtual_80(std::uint32_t list_box, bool value) = 0;
+    virtual void list_box_clear_other_two_00a9cdf0(std::uint32_t keep, std::uint32_t edx_list,
+        std::uint32_t stack_list) = 0;
+};
+void options_build_main_list_005f54f0(void* screen, OptionsMainListHost& host);
+
+// 005F7C40 OptionsScreen ActivateListRow, slot +04h of 00CF3960, __thiscall(
+// listener = screen+8, unused, row), RET 8. The whole routine; the page-0 arm
+// alone is also modelled by bsp::options_activate_main_row_005f7c40
+// (options_menu_screens.hpp). Screen offsets: +84h list box, +A8h main-list
+// data, +ACh top row, +D8h edit settings, +118h..+11Bh layout bytes, +150h /
+// +F6h video fields compared with 00F889F8 / 00F8899E, +250h defaults flag,
+// +252h DLC-changed flag, +25Ch in-mission copy, +260h transition timer.
+//   Ignored unless +260h == 0.0f exactly (UCOMISS, PF/ZF test).
+//   Page 0 (00E19650): +A8h = the selected data, +25Ch = game byte +61Fh; data
+//     0/1/2/6 build the game / audio / video / content page (005F58F0, 005F59F0,
+//     005F41E0, 005F3B50); 3 pushes interface 0Eh; 4 sends the layout bytes
+//     (+119h, +11Ah, +11Bh, +118h) to 00527C80 on [[00E198B8]+44h] and pushes
+//     0Dh; 5 needs 00585B40 and 00585810(CL = 0), then +25Ch = 0 and 005EFAB0.
+//     Afterwards, with +25Ch set, 00518D60(ECX = EDX = -1, 0, "").
+//   Row == the list box: index = selected + top. Page 1: 9 apply, 10 game
+//     defaults, 11 back. Page 4: 6 apply, 7 control defaults. Page 2: 4 apply, 5
+//     audio defaults, 6 back. Page 3: 0Dh video apply, 0Eh video defaults (two
+//     zero arguments), 0Fh back. Defaults: +250h = 1, reset on +D8h, 008D5B50.
+//     Back: 005F5E60.
+//   Any other row: pages 1, 2, 4 apply; page 3 video apply with
+//     XLiveOnResetDevice([00F8D394]+1A28h) when [00E198C4] is null; page 7 sets
+//     +252h then applies.
+//   Apply: with neither 00F88A30 nor +252h set, 005F65C0. Otherwise prompt
+//     slot 0 kind 1 callback 005F6FB0 "FE_xbox.xsm_dlcchanged" when +252h is
+//     set, else "FE_xbox.xsm_saveconfirm" when 00A3E510 on [00F8ABE8] reports
+//     a selected user, else 005F65C0. Every apply ends with +260h = 0.1f.
+//   Video apply: changed = (00F889F8 != +150h) || (00F8899E != byte +F6h);
+//     008D5B50 on +D8h; then 005F7050(changed).
+struct OptionsActivateHost : WidgetHost {
+    virtual void* game_00e188a8() = 0;
+    virtual void* hud_interface_00e198c4() = 0;
+    virtual std::int32_t options_page_00e19650() = 0;
+    virtual std::int32_t list_box_selected_data_00a9c990(std::uint32_t list_box) = 0;
+    virtual std::int32_t list_box_selected_index_00a9c920(std::uint32_t list_box) = 0;
+    virtual void build_page(std::uint32_t routine, void* screen) = 0;  // 005F58F0 / 005F59F0 / 005F41E0 / 005F3B50
+    virtual void push_interface_request_004cc460(std::int32_t interface_id, std::int32_t arg) = 0;
+    virtual void control_layout_set_payload_00527c80(std::uint8_t a, std::uint8_t b, std::uint8_t c,
+        std::uint8_t d) = 0;
+    virtual bool main_menu_connection_gate_00585b40() = 0;
+    virtual bool main_menu_account_gate_00585810(std::uint8_t cl) = 0;
+    virtual void options_reset_005efab0(void* screen) = 0;
+    virtual void frame_select_00518d60(std::int32_t ecx, std::int32_t edx, std::int32_t arg, const char* name) = 0;
+    virtual void settings_reset_defaults(std::uint32_t routine, void* settings) = 0;  // 008D41C0 / 008D4820 / 008D41F0
+    virtual void settings_reset_video_defaults_008d4520(void* settings, std::int32_t a, std::int32_t b) = 0;
+    virtual void settings_apply_all_008d5b50(void* settings) = 0;
+    virtual void return_to_list_005f5e60(void* screen) = 0;
+    virtual void apply_and_rebuild_005f65c0(void* screen) = 0;
+    virtual void confirm_changes_005f7050(void* screen, bool changed) = 0;
+    virtual void xlive_on_reset_device_00a4d46a() = 0;  // argument [00F8D394] + 1A28h
+    virtual bool settings_dirty_00f88a30() = 0;
+    virtual std::int32_t live_video_00f889f8() = 0;
+    virtual std::uint8_t live_video_00f8899e() = 0;
+    virtual bool xenon_has_selected_user_00a3e510() = 0;  // ECX = [00F8ABE8]
+    // 00531B00 on 00425D10() with (slot, message, kind, callback, 0, title "",
+    // timeout 0.0f, timeout result 0, countdown "", dismissible 1), RET 2Ch.
+    virtual void raise_prompt_00531b00(std::int32_t slot, const char* message, std::int32_t kind,
+        std::uint32_t callback) = 0;
+};
+inline constexpr const char* kOptionsDlcChangedPrompt = "FE_xbox.xsm_dlcchanged";  // 00CF3B28
+inline constexpr const char* kOptionsSaveConfirmPrompt = "FE_xbox.xsm_saveconfirm";
+inline constexpr float kOptionsTransitionTime = 0.1f;  // 00D7A2F0
+void options_activate_list_row_005f7c40(void* listener, std::uint32_t row, OptionsActivateHost& host);
+
 }  // namespace bsp::cc13_fe1

@@ -25,6 +25,23 @@ were checked from the bytes (`ghidra bytes`), not from listing text.
 | 005F9DD0 | `hud_order_screen_update_005f9dd0` | thiscall(screen, float dt), RET 4 | x87 fade and pulse |
 | 005EA2D0 | `multi_main_screen_update_005ea2d0` | thiscall(screen, float dt), RET 4 | x87 scroll velocity |
 | 005E2320 | `lobby_settings_option_label_005e2320` | fastcall(ECX NativeString* result, EDX slot) -> result | std::string projection |
+| 005F54F0 | `options_build_main_list_005f54f0` | fastcall(ECX screen), RET | seven rows "Elem_<n>_Text" |
+| 005F7C40 | `options_activate_list_row_005f7c40` | thiscall(listener = screen+8, unused, row), RET 8 | whole routine, 881 instructions |
+
+### Options (005F54F0 / 005F7C40)
+
+- BuildMainList: 00A9CDF0 `BSP_GuiListbox_ClearOtherTwo` takes **EDX** as a register argument.
+  Its body starts `MOV ESI, ECX; CMP EDX, ESI`. The call is (ECX keep, EDX list, stack list),
+  and each list is skipped when it equals ECX. Here EDX = ECX = +84h, so only +88h is cleared.
+- ActivateListRow: the earlier `bsp::options_activate_main_row_005f7c40`
+  (options_menu_screens.hpp) models only the page-0 arm. The new routine covers the page 1-4
+  and 7 apply/defaults/back rows and the second (non-list) row path. The routine moves ESI
+  inside the body: it is the listener at entry, `add esi, -8` (screen) on the apply paths, and
+  `add esi, 0D0h` (screen+D8h, the edit settings) on the defaults paths. The offsets were
+  re-based per path. The dirty flag is screen+252h, the flag BuildMainList clears. 00585810 is
+  called with `CL = 0` (`XOR CL, CL` at 005F7D3B). The transition timer +260h gates entry on
+  exactly 0.0f (UCOMISS + `TEST AH, 44h; JP`), and every apply path sets it to 0.1f
+  (00D7A2F0).
 
 ### HudPause (00603120 / 00603CA0 / 00604190)
 
