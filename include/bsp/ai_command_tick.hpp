@@ -212,7 +212,7 @@ inline constexpr bool kAiFormationShapeBound = false;
 // (00A12A3A) and JMP 00A11070 (00A12A48). True: the tick runs through the cc13
 // model ai_regrouping_move_tick_00a126c0. False: REGROUPINGMOVE does nothing,
 // as before.
-inline constexpr bool kAiRegroupingMoveTickBound = false;
+inline constexpr bool kAiRegroupingMoveTickBound = true;  // ON: lead pair (USN15/USN12/LOMP10/IJN18 wins identical, 2026-10-13)
 
 // 00A14E54..00A1500D: the waypoint offset is leader->target turned by
 // 0042B490(00CE3C64 = pi/2), i.e. BSP_Matrix_BuildRotationY(-0.0 - pi/2), and

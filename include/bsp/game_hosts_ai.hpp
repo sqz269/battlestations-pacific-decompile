@@ -133,7 +133,7 @@ inline constexpr bool kCaptureCurrentTargetEpsilonBound = true;  // ON: lead AI 
 // models ai_defend_member_is_candidate_00a2def0 / ai_defend_sort_records_00a28300
 // (above 32 records the build order stays, labelled). False: kind 1Ch only and
 // build order, as before.
-inline constexpr bool kDefendThinkImageBound = false;
+inline constexpr bool kDefendThinkImageBound = true;  // ON: lead pair (USN15/USN12/LOMP10/IJN18 wins identical, 2026-10-13)
 // The Capture think 00A29FD0 with no enemy CommandBuilding (docs/CC13_GPR_69.md
 // 7.4 items 1 and 3, packet cc13-fix2). The image has no separate no-target
 // body: the clock prologue 00A29FFA..00A2A0C1 (+40h, +38h, +3Ch) runs on every
@@ -143,7 +143,7 @@ inline constexpr bool kDefendThinkImageBound = false;
 // branch runs capture_target_path_00a29fd0. False: every group goes to slot 2
 // when any own active CommandBuilding exists, else slot 1, and the clock waits
 // for the first think with a target, as before.
-inline constexpr bool kCaptureNoTargetImageBound = false;
+inline constexpr bool kCaptureNoTargetImageBound = true;  // ON: lead pair (USN15/USN12/LOMP10/IJN18 wins identical, 2026-10-13)
 // 00A2DB80 BSP_AiGroup_Merge, phase A (00A2DC14..00A2DCF5, docs/CC13_GPR_69.md
 // 7.10, packet cc13-fix2): a populated group whose command answers IsType(6)
 // and targets the absorbed group (+1Ch) gets a NEW command of the same class on
@@ -151,14 +151,14 @@ inline constexpr bool kCaptureNoTargetImageBound = false;
 // CLOSEATTACK 00A10AE0) installed through 00A2BD00. True: the host installs a
 // fresh AiCommandObject (CAUTIOUSATTACK's +24h = 0, +28h = 4). False: the
 // existing command's target is rebound in place, as before.
-inline constexpr bool kMergeNewAttackCommandBound = false;
+inline constexpr bool kMergeNewAttackCommandBound = true;  // ON: lead pair (USN15/USN12/LOMP10/IJN18 wins identical, 2026-10-13)
 // The Duel (00A25F70) and Escort (00A26210) planner thinks (docs/CC13_GPR_69.md
 // 7.8, packet cc13-fix2). The host ran the Siege/Competitive arm 00A1CB80 for
 // both. True: the cc13 models ai_duel_think_00a25f70 / ai_escort_think_00a26210
 // decide, with 00A1C960, 00A1CA60 (+00A2C4C0), 00A2CCF0 (+00A2C150, 00A2C9F0)
 // and 00A2C310 on the host; 00A2CCF0's stream-1 draw goes to the host's private
 // LCG. False: 00A1CB80 for both, as before.
-inline constexpr bool kAiDuelEscortThinkBound = false;
+inline constexpr bool kAiDuelEscortThinkBound = true;  // ON: lead pair (USN15/USN12/LOMP10/IJN18 wins identical, 2026-10-13)
 // Packet cc9_group_release_idle (docs/SHIP_AI_OPEN_ITEMS.md section 30). Every
 // ATTACK-family command registers its observer (+8h) on the target group
 // (00A10767, 00694A60), and all four observer vtables (00D22B64, 00D22BA4,
