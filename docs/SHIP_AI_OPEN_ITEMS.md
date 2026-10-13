@@ -17279,3 +17279,51 @@ changes, so m without jitter is k.
 
 m hardens one seed only. The fixed 66000 heading is aimed at seed 3's stop point for 04; another seed that strands an
 escort elsewhere may need its own turn.
+
+## 228. USN21 phase 2 is blocked by strike behaviour; IJN18 completes with one order (cc9-ships46, 2026-10-13; lead item 3)
+
+Build: this branch with origin/main `a35f4093c` merged. Reference env, 0.05 s, `--stop-after-end 40`; logs
+`local\s46_e_u21<v>.log` and `local\s46_f_i18<v>.log`, with trajectories.
+
+**USN21** (Sibuyan Sea, `scripts\missions\USN\usn_sibuyan.lua`, mtime 2024-10-29; menu id USN21 maps to
+`USN/usn_sibuyan.scn` in this installation's `missiontree.lua`). Chosen from docs/CC13_WIN_READINESS.md 2.11.
+- **Phase 1 works.** Idle (`s46_e_u21idle`, 40000 frames): Darter and Dace sail north at 10 m/s past the Centre
+  Force (heading 135, 10 m/s); Dace is shot by Haruna at 537 s; nothing else happens. The player's `torpedo ... at`
+  fires only from the bow or stern tubes (`player torpedo tube` snaps at 0 or -179.4 deg), and a `takehelm` works
+  only on the controlled unit (one at a time; a stop radius larger than the current distance stops it at once).
+  Variant b (`local\s46_u21_b.txt`): `attack Darter Atago` and `attack Dace Maya` at frames 900/930 (repeated every
+  1000). The sub AI steers and fires: **Atago dies at 154.10 s, Maya at 239.71 s**, then `luaMoveToPh2` kills both
+  subs and the Jake (243.61 s) and phase 2 starts at 262.41 s (`Center force HP: 86%`). Variant c (b plus two bow
+  salvos) also passes, later (Maya 264 s, Atago 370 s).
+- **Phase 2 stalls.** The objective is HP-weighted: `luaGetAvgHP` (`usn_sibuyan.lua:1156`) sums
+  `GetHpPercentage(unit) * unit.Class.HP` over `Mission.CenterForce`, dead ships counting 0; the target is 60%.
+  Every ship except Atago and Maya is floored at 10% (Musashi and Myoko 33%) until phase 3. Three strike plans from
+  the six carriers (stock `26x40, 113x40, 38x40`; 113 is the dive bomber, 38 the torpedo bomber):
+  | v | launches | HP at the end |
+  | --- | --- | --- |
+  | d | classes 38 and 113 from each carrier every 400 frames, rotating all 28 ships | 79% from 826 s on |
+  | e | the same at the 17 destroyers and light cruisers | 79% from 841 s on |
+  | f | the same every 3000 frames at the battleships first (Yamato, Musashi, Nagato, Kongo, Haruna, then cruisers) | 83% from 821 s on |
+  In all three exactly 192 aircraft spawn (32 per carrier) and every later launch is queued with `squadron=0`
+  (`air ops queued launch ... squadron=0`), so the strikes end at about 860 s. Of the aircraft that do fly, the
+  torpedo task releases 0-4 (`summary mission torpedo task: aircraft=43..91 releases=0..4`, the release-order count
+  at `0099AF53` is 0) and the dive task 0-20 of 92-128 (`bombs_spawned=0`); the rest are shot down. The harness
+  `release` verb (SCRIPTED_HELM 14) drives only the controlled dive-bomber leader, one bomb per line, which cannot
+  carry a 26-point HP-weighted drop. USN21 is parked until the plane lane's launch stock and strike release work;
+  USN04 and USN13 depend on the same strikes.
+
+**IJN18** (`scripts\missions\ijn\ijn_18_solomons.lua`, mtime 2024-10-29; a SURFACE OPERATION in `missiontree.lua`,
+not in the readiness doc). Phase 1: the selected unit (Zao, `SetSelectedUnit(Mission.JapShips[1])`) within 2000 m of
+`PhaseOneGoTo`; phase 2: within 1500 m of `PhaseTwoGoTo` or a 540 s `Countdown`; phase 3: every `Mission.USNShips`
+(the Montana group: Montana, Bogue1-4, DM1-2, Pepsi1-2, Gear7-12, plus the surviving first US wave) dead, then
+`luaStartDialog("END")` and the completion through `Scoring_SetMissionCompleted`.
+- Idle (`s46_f_i18idle`, 40000 frames): Zao sails north away from the point (6.89 km -> 14.18 km); no phase change.
+- **a** (`config/win_orders/ijn18_s46_i18_a.txt`): `890 select Zao`, `900 moveto Zao PhaseOneGoTo` (the harness
+  resolves the marker to (-1500, 2500)). Zao arrives (1.93 km at 326.74 s), phase 2's countdown starts at
+  334.79 s, the countdown callback `luaPh2FadeOut` runs at 874.81 s and `luaMoveToPh3` after its blackout, and the Japanese reinforcements (the Shinano group, AI-driven) sink
+  the whole US force: Montana 1856.54 s, Bogue1-4 1906-1989 s, the last, Pepsi2, at 2204.98 s.
+| row | jitter | result |
+| --- | --- | --- |
+| `s46_f_i18al` (a, 100000 frames) | none | `mission end: EndMission at 2208.58 s`, `refused a mission script's process launch: sus_prog.exe`, `Scoring_SetMissionCompleted` called once |
+| `s46_f_i18aj` (a, 60000 frames) | 20,3 | `mission end: EndMission at 2370.14 s`, guard line present |
+  The win is EndMission, as for BSM01 and USN15. The player does one thing; the reinforcements do the fighting.

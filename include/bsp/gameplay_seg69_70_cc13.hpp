@@ -603,5 +603,367 @@ PartyInitResult ai_controller_init_party_slots_00a32df0(std::uint32_t effective_
                                                          std::array<PlayerSlotFlags, 8>& slots,
                                                          bool game_61c) noexcept;
 
+// ===========================================================================
+// Packet cc13-gpr69b (docs/CC13_GPR_69.md section 7).
+// ===========================================================================
+
+// ---------------------------------------------------------------------------
+// 00A0C330 BSP_AiEntityRecord_PairBaseValue, 00A0C3C0
+// BSP_AiEntityRecord_PairAttackValue and 00A0C650 BSP_AiGroup_ComposeAttackValue
+// with every argument. The host's compose_attack_value_00a0c650 /
+// group_value_pair_00a0c3c0 (src/game_hosts_ai.cpp:5375, :5229) are the
+// specialisation (0, -1.0, no debug, 0, 1.0); 00A23980 also calls
+// (1, arg7, debug, byte5, factor) and (0, 100.0, 0, 0, 1.0).
+// ---------------------------------------------------------------------------
+
+class ComposeAttackHost {
+public:
+    virtual ~ComposeAttackHost() = default;
+    // 00A08460(ECX = a+0h, EDX = a+10h, t+0h, t+1Ch) -> ST0.
+    virtual float target_weight_00a08460(const AiValueRecord& attacker,
+                                         const AiValueRecord& target) = 0;
+    // [a+0h] vtable+18h(code): 6 ship class, 0Fh plane class, 1Ch (00A0C35B).
+    virtual bool class_is_kind(const AiValueRecord& record, int code) = 0;
+    // [a+0h]+500h for a ship class, +188h for a plane class (the FDIV operands).
+    virtual float class_speed_500(const AiValueRecord& record) = 0;
+    virtual float class_speed_188(const AiValueRecord& record) = 0;
+    // 00A371A0 BSP_Ai_ActiveModeTuning + offset.
+    virtual float tuning(std::uint32_t offset) = 0;
+    // 00A07C10 over the attacker list (ai_unit_list_min_speed_00a02180 over the
+    // records' classes); only its product with tuning +22Ch is read.
+    virtual float records_min_speed_00a07c10(const std::vector<AiValueRecord>& attackers) = 0;
+    // 00419010(x0, y0, x1, y1, x) (bsp::clamped_interpolate_00419010).
+    virtual float interpolate_00419010(float x0, float y0, float x1, float y1, float x) = 0;
+};
+
+// 00A0C330 (ECX = attacker, EDX = target, debug, rnd flag), RET 8:
+// w = 00A08460; w = 0 when a+1Ch != 0 and the class answers 1Ch; then
+// f(f(rnd * w) * t+14h) with rnd = f(a+18h * t+18h) when the flag is set, else 1.0.
+float ai_pair_base_value_00a0c330(const AiValueRecord& attacker, const AiValueRecord& target,
+                                  bool rnd_flag, ComposeAttackHost& host);
+
+// 00A0C3C0 (ECX = attacker, EDX = target, arg1 (unread), distance, debug, rnd
+// flag), RET 10h. A negative distance is replaced by 00414C60 over the pose
+// delta when both +0Ch bytes are set, else by 0. A ship class (6, tried first)
+// uses +D8h and 00419010(+DCh, +E8h, +E0h, +E4h, time) over class +500h; a plane
+// class (0Fh) +ECh and 00419010(+F0h, +FCh, +F4h, +F8h, time) over +188h. The
+// multiplier applies only while (distance - arrive) > 0 (FCOMI/JBE, NaN skips).
+float ai_pair_attack_value_00a0c3c0(const AiValueRecord& attacker, const AiValueRecord& target,
+                                    float distance, bool rnd_flag, ComposeAttackHost& host);
+
+struct ComposeAttackArgs {
+    bool penalties{false};     // arg1 (byte): 0 zeroes the three penalties (00A0CE71)
+    float distance{-1.0f};     // arg2, passed to every 00A0C3C0
+    bool byte5{false};         // arg4: every attacker but the last scores with rnd 0
+    float factor{1.0f};        // arg5: those pairs x factor, or x 0.001 [00D7A23C] when
+                               // 0.001 [00D7A318] > factor (FCOMPI/JBE: NaN is kept)
+};
+
+struct ComposeAttackTerms {
+    float attack_sum{0.0f};           // every pair, attacker-major
+    float attack_maxes_sum{0.0f};     // each attacker's best (start 0.0)
+    float base{0.0f};                 // f((+218h * sum + maxes) / +214h)
+    float speed_bonus{0.0f};          // min(+22Ch * 00A07C10, +228h * base); JBE keeps a NaN
+    int attackers_without_target{0};  // attacker best <= 0
+    int targets_unattacked{0};        // target best <= 0
+    int repeat_pairs{0};              // i < j with a[i]+0h == a[j]+0h
+    float result{0.0f};
+};
+
+// 00A0C650 __fastcall(ECX = attackers, EDX = targets, arg1..arg5), RET 14h.
+// result = f(speed + base) - ((+220h*unattacked + +21Ch*idle) + +224h*repeat),
+// clamped to 0 when 0 > result (NaN passes).
+ComposeAttackTerms ai_compose_attack_value_00a0c650(const std::vector<AiValueRecord>& attackers,
+                                                    const std::vector<AiValueRecord>& targets,
+                                                    const ComposeAttackArgs& args,
+                                                    ComposeAttackHost& host);
+
+// ---------------------------------------------------------------------------
+// 00A13B60 BSP_AiCommand_CloseAttackTargetPass, __thiscall(command)(float
+// radius, const float* centre, AiGroup* target_group, int), RET 10h; AL is the
+// "a member found a candidate" byte [ESP+1Bh]. The host's reconstruction is
+// src/ai_close_attack_tick.cpp:71; section 7.2 of the doc lists where it
+// differs from this listing-read model.
+// ---------------------------------------------------------------------------
+
+// One entity of the five world-registry lists [[00E188A8]+19CCh] + 1Ch + id*0Ch
+// the collection walks, in this order: id 6 (+64h, ships), id 24 (+13Ch, plane
+// squadrons), id 45h (+358h), id 46h (+364h), id 1Bh (+160h). Poses are the
+// refreshed world pose (00414DB0 / the 00413920 copy into +CCh..+108h).
+struct CloseAttackEntity {
+    const void* id{nullptr};
+    int list_slot{0};          // 0..4 in the walk order above
+    bool byte_05c{false};      // must be set
+    bool byte_05d{false};      // must be clear
+    bool byte_05e{false};      // must be clear
+    bool byte_060{false};      // must be clear
+    int team_054{0};
+    float x_0fc{0.0f};
+    float z_104{0.0f};
+};
+
+struct CloseAttackMember {
+    const void* id{nullptr};
+    bool squadron_18{false};          // vtable+5Ch(18h)
+    bool leader_kind_17{false};       // [+3D0h] vtable+5Ch(17h) (no null test inline)
+    bool leader_byte_c24{false};      // [+3D0h]+C24h
+    bool ship_06{false};              // vtable+5Ch(6)
+    bool lands_troops_538_2c{false};  // [+538h] vtable+2Ch
+    float pos[3]{0.0f, 0.0f, 0.0f};   // +FCh, +100h, +104h
+    // vtable+114h -> 0071EB60 -> the resolved instance, kept only when it
+    // answers vtable+5Ch(2) and its +54h is the enemy team (00A144C8..00A144F1).
+    const CloseAttackEntity* current_target{nullptr};
+    bool current_target_kind_2{false};
+};
+
+class CloseAttackPassHost {
+public:
+    virtual ~CloseAttackPassHost() = default;
+    // 009FFEB0 BSP_AiCommand_SendEmptySquadronHome (may issue the squadron's
+    // return order itself); true skips the member.
+    virtual bool send_empty_squadron_home_009ffeb0(const void* squadron) = 0;
+    // 00A0F810(ECX = member, EDX = candidate) -> ST0.
+    virtual float candidate_weight_00a0f810(const void* member, const void* candidate) = 0;
+    // 00A2C720(target_group, candidate); asked only with a target group.
+    virtual bool target_group_contains_00a2c720(const void* candidate) = 0;
+    virtual float tuning(std::uint32_t offset) = 0;   // 00A371A0 + offset
+    virtual float interpolate_00419010(float x0, float y0, float x1, float y1, float x) = 0;
+    // 0077D600(member, class, {kind 1, candidate +174h}, 1); class 00E08F78
+    // (attackmove) for a ship, 00E08EF8 (settarget) otherwise.
+    virtual void issue_order_0077d600(const void* member, std::uint32_t command_class,
+                                      const void* target) = 0;
+    // 00A02020(member, point).
+    virtual void issue_moveto_00a02020(const void* member, const float point[3]) = 0;
+};
+
+struct CloseAttackPassResult {
+    bool candidate_found{false};
+    std::vector<const void*> candidates;   // the list after the pass (with appended targets)
+};
+
+// group_team_5638 is [command+4]+5638h; population_5644 [command+4]+5644h.
+CloseAttackPassResult ai_close_attack_pass_00a13b60(
+    int group_team_5638, int population_5644, float radius, const float centre[3],
+    bool has_target_group, const std::vector<CloseAttackEntity>& world_lists,
+    const std::vector<CloseAttackMember>& members, CloseAttackPassHost& host);
+
+// ---------------------------------------------------------------------------
+// The Defend think 00A28A60: its candidate test and its record sort.
+// ---------------------------------------------------------------------------
+
+// 00A2DEF0 BSP_AiGroup_CollectMembersInWorldSet(ECX = group; team, list),
+// RET 8: a member is a defend candidate when it answers vtable+5Ch(1Ch) OR
+// 008DDF90 finds it in the set [[00E188A8] + team*4 + 21A4h] (team is the
+// planner's +30h). The host's pass A keeps only the first arm.
+bool ai_defend_member_is_candidate_00a2def0(bool member_kind_1c, bool in_team_set) noexcept;
+
+// The 34h-byte record 00A28A60 builds: +0h entity, +4h..+1Ch 00A243D0's out[0..6]
+// (+4h the threat T, +8h the weight gain*T, +10h the enemy value b), +30h the
+// remaining requirement. Only +4h and +8h order the records.
+struct DefendRecordKey {
+    const void* entity{nullptr};
+    float threat_004{0.0f};
+    float weight_008{0.0f};
+};
+
+// 00A28300 STL_IntroSortLoop52 over the records with the predicate the
+// insertion pass 00A25750 inlines: x goes before y when 0.0 < x+4h (COMISS
+// against the double [00D7A218], JBE) and y+8h < x+8h (FCOMPI, JBE). With 32 or
+// fewer records (00A28320 CMP EAX,20h / JLE) only the insertion pass runs; that
+// is what this returns, as the new order of the input indices. More than 32
+// records take the partition and heap paths (00A26CD0, 00A256B0), which were not
+// read: nullopt.
+std::optional<std::vector<std::size_t>> ai_defend_sort_records_00a28300(
+    const std::vector<DefendRecordKey>& records);
+
+// ---------------------------------------------------------------------------
+// The Capture think 00A29FD0: its clock prologue and its assignment score.
+// ---------------------------------------------------------------------------
+
+struct CapturePlannerClock {
+    float age_038{0.0f};           // planner +38h
+    float since_spawn_03c{0.0f};   // planner +3Ch
+    float last_clock_040{-1.0f};   // planner +40h
+};
+
+// 00A29FF7..00A2A0C1, run at the top of EVERY Capture think, with or without a
+// target: dt = now - +40h when +40h >= 0 (COMISS/JB), 0 when that is negative
+// (FCOMPI/JA); +40h = now; +38h += dt; +3Ch += dt. The spawn gate is
+// +3Ch > 00419010(0.0, +1C0h, +1C8h, +1C4h, +38h) (FCOMPI/JA). Returns the gate.
+bool ai_capture_planner_clock_00a29fd0(CapturePlannerClock& clock, float now,
+                                       float tuning_1c0, float tuning_1c4, float tuning_1c8);
+
+// 00A2AC11..00A2AC3E: f(+1BCh * s + d((1 - +1BCh) * w)), each x87 step at the
+// 24-bit precision the game runs (docs/CC13_FPU_PRECISION.md); s is the target's
+// 00A1E250 total (rec+4h), w the group's weight for it (> 0 only, 00A2AC02).
+float ai_capture_assignment_score_00a2ac11(float k_1bc, float target_total, float group_weight) noexcept;
+
+// ---------------------------------------------------------------------------
+// 00A11070 BSP_AiCommand_FormationShapePass, __thiscall(command), the tail of
+// the MOVETO, MOVETOATTACK, PATROLTO and IDLE ticks. Not in the host (its
+// IDLE arm records it, src/game_hosts_ai.cpp:2185).
+// ---------------------------------------------------------------------------
+
+// The static slot table 00F8A7B0..00F8A86F, 24 (x, z) pairs filled once under
+// bit 0 of [00F8A870] (00A110FE..00A112B1).
+inline constexpr int kFormationShapeSlots = 24;
+extern const std::array<std::array<float, 2>, kFormationShapeSlots> kFormationShapeTable00f8a7b0;
+
+struct FormationShapeFollower {
+    const void* member{nullptr};
+    bool ship_06{false};          // vtable+5Ch(6)
+    bool has_record{false};       // 0070D080(formation, member) != 0
+};
+
+struct FormationShapeSlot {
+    const void* member{nullptr};
+    float record_010{0.0f};       // f(-x * spacing)
+    float record_020{0.0f};       // f(-z * spacing)
+    int slot{0};
+};
+
+struct FormationShapeResult {
+    bool ran{false};              // leader is a ship and leader+284h is set
+    std::vector<FormationShapeSlot> slots;
+};
+
+// Gate: the first member answers vtable+5Ch(6) and its +284h formation is set.
+// Then 0070EFD0(formation, 0); spacing = tuning +210h; every later member that
+// is a ship and has a 0070D080 record takes the next table slot (the leader is
+// skipped, a member without a record does not consume a slot); finally
+// 0077A080 / 0077C880 build and broadcast FORMATION_SET. The image reads past
+// the table from the 25th slot on (the guard dword, then .data beyond); the
+// model stops at 24 and says so in `slots.size()`.
+FormationShapeResult ai_formation_shape_00a11070(bool leader_ship_06, bool leader_has_formation_284,
+                                                 float tuning_210,
+                                                 const std::vector<FormationShapeFollower>& followers);
+
+// ---------------------------------------------------------------------------
+// 00A126C0 BSP_AiCommand_RegroupingMove_Tick, __thiscall(command) (vt+0Ch of
+// REGROUPINGMOVE). Not in the host (include/bsp/ai_command_tick.hpp names it).
+// ---------------------------------------------------------------------------
+
+struct RegroupingMoveResult {
+    bool regrouping{false};        // a follower is beyond AutoMerge_LeaveDist
+    float point[3]{0.0f, 0.0f, 0.0f};   // what 00A02020 gets for the first member
+};
+
+// members: every +563Ch member's refreshed +FCh/+100h/+104h, the leader first.
+// With a population of 1 or less (00A126CA JBE), or when no follower lies at
+// f(dz^2 + dx^2) > f(+20Ch^2) from the leader (FCOMPI/JA), the point is the
+// command's +8h destination. Otherwise it is f(f(dest + f(f(c/n) * 3.0)) * 0.25)
+// per axis, c the sum of every member's pose (the leader too) seeded with
+// origin_00f87574 and n the FILD count ([00D7A2B0] 3.0, [00D7A348] 0.25). Both
+// arms then run 00A10DC0 and tail-jump to 00A11070.
+RegroupingMoveResult ai_regrouping_move_tick_00a126c0(
+    const std::vector<std::array<float, 3>>& members, const float destination[3],
+    float tuning_20c, const float origin_00f87574[3]);
+
+// ---------------------------------------------------------------------------
+// 00A2CCF0 BSP_AiGroup_OrderCautiousMove, __thiscall(group)(point, ratio),
+// RET 8; its only caller is the Duel think 00A25F70. The move twin of 00A2CBD0.
+// ---------------------------------------------------------------------------
+
+enum class OrderMoveChoice { None, Kept, MoveTo, CautiousMove };
+
+class OrderMoveHost {
+public:
+    virtual ~OrderMoveHost() = default;
+    // 00A2C150(group)(point): the group already holds a move to this point.
+    virtual bool already_moving_to_00a2c150(const float point[3]) = 0;
+    // The first member's vtable+5Ch(6).
+    virtual bool leader_is_ship() = 0;
+    // 00A2C9F0(group)(point) (ai_should_route_cautiously_00a2c9f0).
+    virtual bool should_route_cautiously_00a2c9f0(const float point[3]) = 0;
+    // 00BD2F40 with ECX = 1: a stream-1 uniform in [0, 1).
+    virtual float uniform01_stream1() = 0;
+};
+
+// Empty group (+5644h == 0): None. 00A2C150 true: Kept. A ship leader, or
+// 00A2C9F0 false: MoveTo (new(14h), vtable 00D22ABC) without a draw. Otherwise
+// one stream-1 draw; CautiousMove (00A102D0) when draw > ratio (FCOMPI/JBE),
+// else MoveTo. Both arms delete the previous +564Ch command (vtable+0(1)) and
+// store the new one there (00A2CDA3..00A2CDB7).
+OrderMoveChoice ai_order_cautious_move_00a2ccf0(std::uint32_t population_5644, const float point[3],
+                                                float ratio, OrderMoveHost& host);
+
+// ---------------------------------------------------------------------------
+// The Duel (00A25F70) and Escort (00A26210) thinks. The host runs the
+// Siege/Competitive arm (00A1CB80) for both (src/ai_planners.cpp
+// ai_mode_planner_tick); neither image body calls 00A1CB80 on its main path.
+// ---------------------------------------------------------------------------
+
+enum class ModeThinkAction {
+    SpawnGroup,        // 00A25B90 quick spawn ("[duel]" 00D23000 / "[escort]" 00D23008), then 00A16450(0.5)
+    Attack,            // 00A2CBD0(group)(target group, 1.0)
+    CautiousMove,      // 00A2CCF0(group)(point, 1.0)
+    PatrolTo,          // 00A2C310(group)(point)
+    ChooseAttackTarget,// 00A1CB80(planner)(group, 1.0, 0)
+    None,
+};
+
+struct ModeThinkResult {
+    ModeThinkAction action{ModeThinkAction::None};
+    const void* target{nullptr};
+    float point[3]{0.0f, 0.0f, 0.0f};
+};
+
+struct DuelThinkInputs {
+    std::uint32_t owned_groups_028{0};
+    float leader[3]{0.0f, 0.0f, 0.0f};          // 00A10C20(first owned group)
+    const void* nearest_enemy_group{nullptr};   // 00A1C960(leader, planner+34h)
+    float nearest_enemy_d2{0.0f};               // its out value, a squared distance
+    std::uint32_t own_team_group_count{0};      // [00F8AA50 + (planner+30h)*0Ch]
+    float own_centroid[3]{0.0f, 0.0f, 0.0f};    // 00A1CA60(planner+30h, 0)
+    float enemy_centroid[3]{0.0f, 0.0f, 0.0f};  // 00A1CA60(planner+34h, 0)
+};
+
+// No owned group: SpawnGroup. No enemy group: CautiousMove to the own centroid.
+// Attack when 16e6 [00D22FF8] > d2 (FCOMPI/JA) or the own team has one group or
+// fewer; otherwise CautiousMove to own * t + enemy * (1 - t), t =
+// 00419010(500 [00CE397C], 0, 2000 [00CFFD60], 1, 009FFC10(leader - own)), each
+// product and sum stored as a float. 00A2CCF0's ratio is 1.0, so it installs
+// MOVETO, but it still draws stream 1 when its gates pass.
+ModeThinkResult ai_duel_think_00a25f70(const DuelThinkInputs& in);
+
+struct EscortSetEntity {
+    const void* entity{nullptr};
+    float x_0fc{0.0f}, y_100{0.0f}, z_104{0.0f};
+    int team_054{0};
+    const void* group_16c{nullptr};
+};
+
+struct EscortThinkInputs {
+    std::uint32_t owned_groups_028{0};
+    float leader[3]{0.0f, 0.0f, 0.0f};       // the first owned group's first member +FCh (00F87574 when empty)
+    int own_team_030{0};
+    int enemy_team_034{1};
+    // The set [[00E188A8] + own*4 + 21A4h] + 18h in its tree order (008DA530).
+    std::vector<EscortSetEntity> set;
+    float enemy_centroid[3]{0.0f, 0.0f, 0.0f};   // 00A1CA60(planner+34h, 0)
+};
+
+// No owned group: SpawnGroup. An empty set: ChooseAttackTarget (00A1CB80 with
+// reset 0). Else the set entity nearest the leader (planar f(dz^2 + dx^2),
+// seed 1e10, strict) decides: own team -> PatrolTo f(f(e + c) * 0.5) per axis
+// (c the enemy centroid); enemy team -> Attack its +16Ch group, or PatrolTo
+// its +FCh when it has none; any other team -> None.
+ModeThinkResult ai_escort_think_00a26210(const EscortThinkInputs& in);
+
+// ---------------------------------------------------------------------------
+// 00A03760 BSP_AiCapture_UnitArrivalValue, __fastcall(ECX = unit, EDX = target).
+// ---------------------------------------------------------------------------
+
+// w = 00A03510(unit); d = 009FFC10(unit pose - target pose); R = (float) FILD
+// target+7A0h. d <= R (FCOMPI/JBE): w. Otherwise speed = class+500h (ship, 6) or
+// squadron class+188h (18h) or 0, and the guard at 00A0383C is FCOMI speed vs
+// 0.1 [00D7A3A0] / JA to the 0.0 return: a unit FASTER than 0.1 scores 0 outside
+// R. Only speed <= 0.1 (or NaN) reaches time = (d - R) / speed (DE F1),
+// limit = max(+198h, 1.0) (FCOMI/JBE), and f((1 - time / limit) * w) when
+// time < limit (JB), else 0. The bytes (DD 05 A0A3D700 ... DB F1 DD D9 77 54)
+// were read from the PE.
+float ai_unit_arrival_value_00a03760(float capture_weight_00a03510, float distance_009ffc10,
+                                     int target_7a0, float speed, float tuning_198) noexcept;
+
 }  // namespace gameplay_seg69_70_cc13
 }  // namespace bsp
