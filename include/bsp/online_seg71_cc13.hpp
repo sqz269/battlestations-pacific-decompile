@@ -1121,4 +1121,185 @@ void server_destruct_00a3dcf0(void* server, ServerCalls& host);
 void server_handle_packet_00a3e000(void* server, void* source, std::int32_t type, std::uint32_t a, std::uint32_t b,
     ServerCalls& host);
 
+// ---------------------------------------------------------------------------
+// XLiveSystem voice, friends and stats (ECX = system [00F8A2FC], vtable
+// 00D24878). std::list objects here are {head node, size} at the offsets
+// given (node +0h next, +4h prev, +8h value): friends +0E0h (XUIDs), players
+// +100h / +10Ch / +168h, four lists at +1F40h and four at +2068h (each 0Ch).
+// Other fields: +48h stats key, +0E8h friends refresh timer, +0ECh started,
+// +1BE0h {XUID, voice packet vector +1BE8h (begin +1BECh, end +1BF0h)},
+// +1BF8h a 10-byte staging packet, +1C24h voice object (its first dword is
+// "talking changed", +1C28h talking), +1D28h voice active, +1D44h, +1D48h
+// voice send timer, +1D4Ch per-slot flags, +2098h session, +2210h game.
+// ---------------------------------------------------------------------------
+
+struct XLiveVoiceCalls {
+    virtual ~XLiveVoiceCalls() = default;
+    virtual void session_set_user_properties_00a4a890(void* session, const std::uint32_t args[7]) = 0;
+    virtual void session_remove_remote_player_00a4b180(void* session, const std::uint64_t* xuid) = 0;
+    virtual void free_00bf65ac(void* block) = 0;
+    virtual void invalid_parameter_00bf6713() = 0;
+    virtual void* list_allocate_node_004c3700(void* list, void* next, void* prev, const void* value) = 0;
+    virtual void list_grow_count_004ce990(void* list, std::uint32_t count) = 0;
+    virtual void list_remove_00a45e70(void* list_168, const std::uint64_t* xuid) = 0;
+    virtual void list_remove_00a443e0(void* list_dc, const std::uint64_t* xuid) = 0;
+    virtual void player_list_clear_00688780(void* list_10c) = 0;
+    virtual void memset_00bf79f0(void* out, std::int32_t value, std::uint32_t bytes) = 0;
+    virtual bool xenon_has_selected_user_00a3e510() = 0;
+    virtual std::int32_t xenon_sign_in_state_00a3ead0() = 0;
+    virtual std::uint32_t xenon_active_user_slot_00a3eac0() = 0;
+    virtual std::uint64_t xenon_active_xuid_00a3eb00() = 0;
+    virtual std::uint32_t xuser_set_context(std::uint32_t user, std::uint32_t context, std::uint32_t value) = 0; // 00A4D3F2
+    virtual std::uint32_t xsession_create(std::uint32_t flags, std::uint32_t user, std::uint32_t public_slots,
+        std::uint32_t private_slots, void* nonce, void* session_info, void* overlapped, void** handle) = 0;   // 00A4D524
+    virtual std::uint32_t xsession_join_local(void* session, std::uint32_t count, const std::uint32_t* users,
+        const std::uint32_t* private_slots, void* overlapped) = 0;                                            // 00A4D52A
+    virtual std::uint32_t xsession_start(void* session, std::uint32_t flags, void* overlapped) = 0;            // 00A4D50C
+    virtual std::uint32_t xsession_end(void* session, void* overlapped) = 0;                                  // 00A4D512
+    virtual std::uint32_t xsession_delete(void* session, void* overlapped) = 0;                               // 00A4D51E
+    virtual std::int32_t xuser_are_users_friends(std::uint32_t user, const std::uint64_t* xuids, std::uint32_t count,
+        std::int32_t* results, void* overlapped) = 0;                                                         // 00A4D47C
+    // [00E19434]: three {?, begin, end} vectors of stats keys (10h apart).
+    virtual const std::int32_t* stats_category_keys(std::int32_t category, std::uint32_t* count) = 0;
+    virtual void* game_21a0_plus_4() = 0;                                     // [[00E188A8]+21A0h]+4
+    virtual void stats_lookup_00920690(std::int32_t key, std::uint32_t* a, std::uint32_t* b) = 0; // ECX = [game+6B4h]
+    virtual void write_session_stats_004c04c0(void* session, std::uint64_t xuid, std::int32_t key, std::int32_t minus_one,
+        std::uint32_t zero1, std::uint32_t field_74, std::uint32_t players, std::uint32_t zero2, std::uint32_t a,
+        std::uint32_t b, std::uint32_t score) = 0;                            // ECX = [00E188A8]
+    virtual bool system_virtual_40(void* system) = 0;
+    virtual void* system_virtual_80(void* system) = 0;                        // a player list
+    virtual bool system_virtual_198(void* system) = 0;
+    virtual bool system_virtual_19c(void* system) = 0;
+    virtual void system_virtual_ec(void* system, std::uint32_t argument) = 0;
+    virtual void voice_shutdown_00a49270(void* voice) = 0;
+    virtual void voice_initialize_00a493c0(void* voice) = 0;
+    virtual void voice_update_00a49530(void* voice) = 0;
+    virtual std::int32_t voice_is_local_talking_00a49220(void* voice) = 0;
+    virtual std::int16_t voice_get_local_chat_data_00a49000(void* voice, void* buffer, std::uint32_t bytes,
+        std::int32_t* packets) = 0;
+    virtual void voice_add_remote_talker_00a495e0(void* voice, std::uint32_t xuid_lo, std::uint32_t xuid_hi) = 0;
+    virtual void voice_set_talker_00a49710(void* voice, std::uint32_t xuid_lo, std::uint32_t xuid_hi, std::uint32_t slot,
+        std::uint32_t value) = 0;
+    virtual void voice_set_talker_flag_00a497e0(void* voice, std::uint32_t xuid_lo, std::uint32_t xuid_hi,
+        std::uint32_t slot, std::uint32_t value) = 0;
+    virtual void voice_vector_push_back_00a45da0(void* vector_1be8, const void* packet) = 0;
+    virtual void voice_vector_resize_0042a380(void* vector_1be8, std::uint32_t size, const void* value12) = 0;
+    virtual void transport_send_voice_00774e30(void* transport, const void* block_1be0, std::uint32_t zero) = 0;
+    virtual void transport_broadcast_0076a9f0(void* transport, void* message, std::uint32_t zero) = 0;
+    virtual void transport_send_first_peer_00770af0(void* transport, void* message) = 0;
+    virtual void* voice_change_message_00a42fb0(void* message, std::uint32_t xuid_lo, std::uint32_t xuid_hi,
+        std::uint8_t talking) = 0;
+    virtual bool voice_gate_00e198b4() = 0;                                   // [00E198B4] != 0
+    virtual bool voice_gate_00687860() = 0;                                   // 00687860(ECX = [00E198B4]; 14h, 0)
+    virtual std::uint32_t game_slot_18ec() = 0;                               // [00E188A8]+18ECh
+    virtual void* game_player_18cc(std::uint32_t slot) = 0;                   // [00E188A8]+18CCh+4*slot
+    virtual bool game_has_server_2078() = 0;                                  // [00E188A8]+2078h != 0
+    virtual void client_remove_remote_player_00a39f00(const std::uint64_t* xuid) = 0; // ECX = [game+207Ch]+0C8h
+};
+
+// 00A429E0 BSP_XLiveSystem_SetSessionUserProperties, __thiscall(system,
+// seven dwords), RET 1Ch: 00A4A890(ECX = +2098h; the seven, 0).
+void set_session_user_properties_00a429e0(void* system, const std::uint32_t args[7], XLiveVoiceCalls& host);
+// 00A43AF0 BSP_XLiveSystem_CreateStatsSession, __fastcall. Needs a selected
+// user (00A3E510) and a positive key +48h found in one of the three stats key
+// vectors at 00E19434 (the LAST category containing it wins). Then:
+// XUserSetContext(slot, 800Ah, 1); XSessionCreate(706h, slot, 4, 2, &nonce,
+// &info, null, &handle) synchronously; a non-null handle -> XSessionJoinLocal(
+// handle, 1, &slot, &1, null), XSessionStart(handle, 0, null), 00920690(key,
+// &a, &b), 004C04C0(handle, active XUID, key, -1, 0, [g+4]+74h, [g+4]+1E8h ?
+// 2 : 1, 0, a, b, max([g+4]+1E0h, 0)) with g = [00E188A8]+21A0h, then
+// XSessionEnd and XSessionDelete. The handle is never closed (no XCloseHandle).
+// 706h reads as presence + stats + invites/presence-join/join-in-progress
+// disabled in the SDK's flag set (provisional).
+void create_stats_session_00a43af0(void* system, XLiveVoiceCalls& host);
+// 00A43FA0 BSP_XLiveSystem_ClearFriendsList, __fastcall: frees every node of
+// the friends list (head +0E0h), size +0E4h = 0, timer +0E8h = 0.
+void clear_friends_list_00a43fa0(void* system, XLiveVoiceCalls& host);
+// 00A44230 / 00A46620 (vtable +0D8h / +0D4h), __thiscall(system, BYTE
+// reset), RET 4. reset: voice active -> 00A49270; (00A46620 only: clear the
+// player list +10Ch through 00688780); empty the lists at +1F40h and set
+// +1D4Ch[i] = 1 for 16 (00A44230) or 4 (00A46620) entries. Then voice not
+// active -> 00A3E510 (result unused) and 00A493C0; +1D44h -> vtable +0ECh(0).
+// The 16-entry variant reaches +1F70h..+1FFFh and +1D50h..+1D5Bh, which the
+// 4-entry one leaves alone; that twelve more lists live there is not shown.
+void reset_voice16_00a44230(void* system, std::uint8_t reset, XLiveVoiceCalls& host);
+void reset_voice_00a46620(void* system, std::uint8_t reset, XLiveVoiceCalls& host);
+// 00A44490 BSP_XLiveSystem_Startup, __thiscall(system, game), RET 4, AL = 1:
+// 00A43FA0; +2210h = game; +1BD5h = 0; memset(+9Ch, 0, 40h); +2060h = +205Ch
+// = 0; the four lists at +2068h emptied; +0ECh = 1.
+bool startup_00a44490(void* system, void* game, XLiveVoiceCalls& host);
+// 00A44540 BSP_XLiveSystem_AddRemoteTalker, __thiscall(system, XUID lo, hi),
+// RET 8. Voice active: 00A495E0(voice; xuid); then TWICE over the player list
+// (vtable +40h ? +100h : +10Ch): slot = node +38h; +1D4Ch[slot] set ->
+// 00A49710(voice; xuid, slot, slot), else 00A497E0(voice; xuid, slot, 1).
+// The second pass repeats the first.
+void add_remote_talker_00a44540(void* system, std::uint32_t xuid_lo, std::uint32_t xuid_hi, XLiveVoiceCalls& host);
+// 00A45C20 BSP_XLiveSystem_AddFriend, __thiscall(system, XUID by value), RET
+// 8: push_back into the friends list (004C3700, 004CE990 on +0DCh).
+void add_friend_00a45c20(void* system, std::uint64_t xuid, XLiveVoiceCalls& host);
+// 00A45C60 BSP_XLiveSystem_RefreshFriends, __fastcall: 00A43FA0; with a
+// selected user in sign-in state 2, every XUID of the list +168h for which
+// XUserAreUsersFriends(slot, &xuid, 1, &r, null) succeeds with r != 0 is
+// pushed onto the friends list, then +0E8h = 0. (00A43FA0 has already zeroed
+// +0E8h, so the second store only matters to the timer's other writers.)
+void refresh_friends_00a45c60(void* system, XLiveVoiceCalls& host);
+// 00A46270 BSP_XLiveSystem_RemovePlayer, __thiscall(system, const XUID*),
+// RET 4: 00A45E70(+168h, xuid), 00A443E0(+0DCh, copy). Not LAN (vtable
+// +19Ch false): no server ([00E188A8]+2078h == 0) -> 00A39F00(ECX =
+// [game+207Ch]+0C8h, &copy), even for our own XUID; with a server, a remote
+// non-zero XUID -> 00A4B180(+2098h, &copy).
+void remove_player_00a46270(void* system, const std::uint64_t* xuid, XLiveVoiceCalls& host);
+// 00A46330 BSP_XLiveSystem_SendLocalVoice, __fastcall, EAX = 0. Not LAN,
+// +1D4Ch[active slot] set and 00A49220 != 0: 00A49000(voice; buffer, 190h,
+// &packets); a non-zero AX walks the 10-byte packets (do-while, so a zero
+// count would wrap): each is staged at +1BF8h and pushed onto +1BE8h; at 20
+// or more queued, +1BE0h = the first player of vtable +80h's list (node
+// +28h, an XUID; an empty list trips _invalid_parameter_noinfo), 00774E30(
+// [+2210h]+1EF0h; +1BE0h, 0), the vector is resized to 0 and +1D48h = 0.
+std::uint32_t send_local_voice_00a46330(void* system, XLiveVoiceCalls& host);
+// 00A46480 BSP_XLiveSystem_UpdateFriendsAndVoice, __thiscall(system, float
+// dt), RET 4. +0E8h += dt; above 5.0 ([00CE3850], strict) -> 00A45C60.
+// 00A49530(voice). Gate: [00E198B4] set and (game +5D4h == 0Dh or
+// 00687860(14h, 0)). With the gate, a game slot below 8 that holds a player:
+// +1D48h += dt, 00A46330, and when "talking changed" (+1C24h) and vtable
+// +198h: a VoiceChange message (00A42FB0 with the active XUID and +1C28h !=
+// 0) goes to everyone (0076A9F0, host: game +1FE4h == 1) or to the first
+// secondary peer (00770AF0); +1C24h = 0 and the slot player's +89h =
+// talking.
+void update_friends_and_voice_00a46480(void* system, float dt, XLiveVoiceCalls& host);
+
+// ---------------------------------------------------------------------------
+// Helpers left open by cc13-online2 (online_cc13.hpp SessionRecordCalls and
+// the stats list of 00A47B80 WriteSessionStats). Record: A0h bytes, +0h, +4h byte, +8h a
+// std::wstring (buffer +0Ch, length +1Ch, capacity +20h), +28h..+3Ch,
+// +48h/+49h bytes, +4Ch settings[0Eh], +88h..+9Ch properties.
+// ---------------------------------------------------------------------------
+
+struct SessionHelperCalls {
+    virtual ~SessionHelperCalls() = default;
+    virtual void wstring_clear_0056f280(void* string) = 0;                    // erase(begin, end), checked
+    virtual void message_base_construct_0075b430(void* message, std::uint32_t type) = 0;
+    virtual void* list_head_node_004c1f50(void* list) = 0;
+    virtual void* list_allocate_node_004c6090(void* list, void* next, void* prev, const void* value_38) = 0;
+    virtual void list_grow_count_004cf800(void* list, std::uint32_t count) = 0;
+    virtual void invalid_parameter_00bf6713() = 0;
+};
+
+// 005707A0 BSP_SessionRecord_Reset, __fastcall(ECX = record): +4h = FFh;
+// 0056F280(+8h); +0h, +28h..+3Ch, +88h..+9Ch and +4Ch..+7Ch = 0; +48h = 1,
+// +49h = 14h. +40h, +44h, +4Ah, +4Bh and settings[0Ch..0Dh] (+80h, +84h) are
+// left as they were, so a reused record keeps them.
+void session_record_reset_005707a0(void* record, SessionHelperCalls& host);
+// 00571E50 BSP_SessionRecord_Construct, __fastcall, EAX = record: the empty
+// wstring (+20h capacity 7, +1Ch length 0, +0Ch L'\0'), then 005707A0 (its SEH
+// frame covers the string).
+void* session_record_construct_00571e50(void* record, SessionHelperCalls& host);
+// 00A46150 BSP_StatsListMessage_Construct, __thiscall(message, const list*),
+// RET 4, EAX = message: 0075B430(message, 0E4h), +4h = 1, vtable 00CE7608, an
+// empty std::list at +1Ch (head +20h from 004C1F50, size +24h = 0), +18h = 3
+// (the "owns list" byte the inline destructor tests), then every 38h-byte
+// value of the source list is appended (004C6090, 004CF800), each step
+// validated through _invalid_parameter_noinfo.
+void* stats_list_message_construct_00a46150(void* message, const void* source_list, SessionHelperCalls& host);
+
 } // namespace bsp::online_seg71_cc13

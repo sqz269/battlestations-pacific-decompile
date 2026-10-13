@@ -1629,4 +1629,270 @@ void server_handle_packet_00a3e000(void* s, void* source, std::int32_t type, std
     host.wide_string_destruct_00436430(&text);
 }
 
+// ---------------------------------------------------------------------------
+// Packet cc13-online4: XLiveSystem voice, friends and stats
+// ---------------------------------------------------------------------------
+
+namespace {
+
+// Empty the std::list whose head pointer is stored at `head_at` (inlined
+// clear(): relink the head to itself, size 0, then free the old nodes).
+void clear_list(void* s, std::size_t head_at, XLiveVoiceCalls& host) {
+    void* const head = read_field<void*>(s, head_at);
+    void* node = read_field<void*>(head, 0);
+    write_field(head, 0, head);
+    write_field(read_field<void*>(s, head_at), 4, read_field<void*>(s, head_at));
+    write_field<std::uint32_t>(s, head_at + 4, 0);
+    while (node != read_field<void*>(s, head_at)) {
+        void* const next = read_field<void*>(node, 0);
+        host.free_00bf65ac(node);
+        node = next;
+    }
+}
+
+void push_back_friend(void* s, std::uint64_t xuid, XLiveVoiceCalls& host) {
+    void* const head = read_field<void*>(s, 0xE0);
+    void* const node = host.list_allocate_node_004c3700(at(s, 0xDC), head, read_field<void*>(head, 4), &xuid);
+    host.list_grow_count_004ce990(at(s, 0xDC), 1);
+    write_field(head, 4, node);
+    write_field(read_field<void*>(node, 4), 0, node);
+}
+
+void reset_voice_lists(void* s, std::uint8_t reset, std::uint32_t lists, bool clear_players, XLiveVoiceCalls& host) {
+    if (reset != 0) {
+        if (voice_active(s)) host.voice_shutdown_00a49270(at(s, 0x1C24));
+        if (clear_players) host.player_list_clear_00688780(at(s, 0x10C));
+        for (std::uint32_t i = 0; i < lists; ++i) {
+            clear_list(s, 0x1F40 + i * 0xC, host);
+            write_field<std::uint8_t>(s, 0x1D4C + i, 1);
+        }
+    }
+    if (!voice_active(s)) {
+        host.xenon_has_selected_user_00a3e510();
+        host.voice_initialize_00a493c0(at(s, 0x1C24));
+    }
+    if (read_field<std::uint32_t>(s, 0x1D44) != 0) host.system_virtual_ec(s, 0);
+}
+
+} // namespace
+
+void set_session_user_properties_00a429e0(void* s, const std::uint32_t args[7], XLiveVoiceCalls& host) {
+    host.session_set_user_properties_00a4a890(at(s, 0x2098), args);
+}
+
+void create_stats_session_00a43af0(void* s, XLiveVoiceCalls& host) {
+    if (!host.xenon_has_selected_user_00a3e510()) return;
+    void* const g = host.game_21a0_plus_4();
+    const std::int32_t key = read_field<std::int32_t>(s, 0x48);
+    if (key <= 0) return;
+    std::int32_t category = -1;
+    for (std::int32_t c = 0; c < 3; ++c) {
+        std::uint32_t count = 0;
+        const std::int32_t* keys = host.stats_category_keys(c, &count);
+        for (std::uint32_t i = 0; keys != nullptr && i < count; ++i) {
+            if (keys[i] == key) category = c;
+        }
+    }
+    if (category == -1) return;
+    const std::int32_t raw_score = read_field<std::int32_t>(g, 0x1E0);
+    const std::uint32_t score = raw_score <= 0 ? 0u : static_cast<std::uint32_t>(raw_score);
+    host.xuser_set_context(host.xenon_active_user_slot_00a3eac0(), 0x800A, 1);
+    std::uint8_t nonce[8];
+    std::uint8_t info[0x3C];
+    void* handle = nullptr;
+    host.xsession_create(0x706, host.xenon_active_user_slot_00a3eac0(), 4, 2, nonce, info, nullptr, &handle);
+    if (handle == nullptr) return;
+    const std::uint32_t slot = host.xenon_active_user_slot_00a3eac0();
+    const std::uint32_t private_slot = 1;
+    const std::uint32_t players = read_field<std::uint32_t>(g, 0x1E8) != 0 ? 2u : 1u;
+    host.xsession_join_local(handle, 1, &slot, &private_slot, nullptr);
+    host.xsession_start(handle, 0, nullptr);
+    std::uint32_t a = 0;
+    std::uint32_t b = 0;
+    host.stats_lookup_00920690(key, &a, &b);
+    host.write_session_stats_004c04c0(handle, host.xenon_active_xuid_00a3eb00(), key, -1, 0,
+        read_field<std::uint32_t>(g, 0x74), players, 0, a, b, score);
+    host.xsession_end(handle, nullptr);
+    host.xsession_delete(handle, nullptr);
+}
+
+void clear_friends_list_00a43fa0(void* s, XLiveVoiceCalls& host) {
+    clear_list(s, 0xE0, host);
+    write_field<std::uint32_t>(s, 0xE8, 0);
+}
+
+void reset_voice16_00a44230(void* s, std::uint8_t reset, XLiveVoiceCalls& host) {
+    reset_voice_lists(s, reset, 16, false, host);
+}
+void reset_voice_00a46620(void* s, std::uint8_t reset, XLiveVoiceCalls& host) {
+    reset_voice_lists(s, reset, 4, true, host);
+}
+
+bool startup_00a44490(void* s, void* game, XLiveVoiceCalls& host) {
+    clear_friends_list_00a43fa0(s, host);
+    write_field(s, 0x2210, game);
+    write_field<std::uint8_t>(s, 0x1BD5, 0);
+    host.memset_00bf79f0(at(s, 0x9C), 0, 0x40);
+    write_field<std::uint32_t>(s, 0x2060, 0);
+    write_field<std::uint32_t>(s, 0x205C, 0);
+    for (std::uint32_t i = 0; i < 4; ++i) clear_list(s, 0x2068 + i * 0xC, host);
+    write_field<std::uint8_t>(s, 0xEC, 1);
+    return true;
+}
+
+void add_remote_talker_00a44540(void* s, std::uint32_t lo, std::uint32_t hi, XLiveVoiceCalls& host) {
+    if (!voice_active(s)) return;
+    void* const voice = at(s, 0x1C24);
+    host.voice_add_remote_talker_00a495e0(voice, lo, hi);
+    for (std::int32_t pass = 0; pass < 2; ++pass) {
+        const std::size_t list = host.system_virtual_40(s) ? 0x100 : 0x10C;
+        void* const head = read_field<void*>(s, list + 4);
+        for (void* node = read_field<void*>(head, 0); node != head; node = read_field<void*>(node, 0)) {
+            const std::uint32_t slot = read_field<std::uint8_t>(node, 0x38);
+            if (read_field<std::uint8_t>(s, 0x1D4C + slot) != 0) {
+                host.voice_set_talker_00a49710(voice, lo, hi, slot, slot);
+            } else {
+                host.voice_set_talker_flag_00a497e0(voice, lo, hi, slot, 1);
+            }
+        }
+    }
+}
+
+void add_friend_00a45c20(void* s, std::uint64_t xuid, XLiveVoiceCalls& host) { push_back_friend(s, xuid, host); }
+
+void refresh_friends_00a45c60(void* s, XLiveVoiceCalls& host) {
+    clear_friends_list_00a43fa0(s, host);
+    void* const head = read_field<void*>(s, 0x16C);
+    if (!host.xenon_has_selected_user_00a3e510() || host.xenon_sign_in_state_00a3ead0() != 2) return;
+    const std::uint32_t slot = host.xenon_active_user_slot_00a3eac0();
+    for (void* node = read_field<void*>(head, 0); node != head; node = read_field<void*>(node, 0)) {
+        const std::uint64_t xuid = read_field<std::uint64_t>(node, 8);
+        std::int32_t friends = 0;
+        if (host.xuser_are_users_friends(slot, &xuid, 1, &friends, nullptr) >= 0 && friends != 0) {
+            push_back_friend(s, xuid, host);
+        }
+    }
+    write_field<std::uint32_t>(s, 0xE8, 0);
+}
+
+void remove_player_00a46270(void* s, const std::uint64_t* xuid, XLiveVoiceCalls& host) {
+    host.list_remove_00a45e70(at(s, 0x168), xuid);
+    const std::uint64_t copy = *xuid;
+    host.list_remove_00a443e0(at(s, 0xDC), &copy);
+    if (host.system_virtual_19c(s)) return;
+    const bool self = host.xenon_active_xuid_00a3eb00() == copy || copy == 0;
+    if (!host.game_has_server_2078()) {
+        host.client_remove_remote_player_00a39f00(&copy);
+    } else if (!self) {
+        host.session_remove_remote_player_00a4b180(at(s, 0x2098), &copy);
+    }
+}
+
+std::uint32_t send_local_voice_00a46330(void* s, XLiveVoiceCalls& host) {
+    if (host.system_virtual_19c(s)) return 0;
+    if (read_field<std::uint8_t>(s, 0x1D4C + host.xenon_active_user_slot_00a3eac0()) == 0) return 0;
+    void* const voice = at(s, 0x1C24);
+    if (host.voice_is_local_talking_00a49220(voice) == 0) return 0;
+    std::uint8_t buffer[0x190];
+    std::int32_t packets = 0;
+    if (host.voice_get_local_chat_data_00a49000(voice, buffer, 0x190, &packets) == 0) return 0;
+    const std::uint8_t* packet = buffer;
+    do {
+        std::memcpy(at(s, 0x1BF8), packet, 10);
+        host.voice_vector_push_back_00a45da0(at(s, 0x1BE8), at(s, 0x1BF8));
+        const auto begin = read_field<std::uintptr_t>(s, 0x1BEC);
+        if (begin != 0 && (read_field<std::uintptr_t>(s, 0x1BF0) - begin) / 10 >= 20) {
+            void* const list = host.system_virtual_80(s);
+            void* const head = read_field<void*>(list, 4);
+            void* const first = read_field<void*>(head, 0);
+            if (first == head) host.invalid_parameter_00bf6713();
+            std::memcpy(at(s, 0x1BE0), at(first, 0x28), 8);
+            host.transport_send_voice_00774e30(at(read_field<void*>(s, 0x2210), 0x1EF0), at(s, 0x1BE0), 0);
+            const std::uint8_t zero[12] = {};
+            host.voice_vector_resize_0042a380(at(s, 0x1BE8), 0, zero);
+            write_field(s, 0x1D48, 0.0f);
+        }
+        packet += 10;
+    } while (--packets != 0);
+    return 0;
+}
+
+void update_friends_and_voice_00a46480(void* s, float dt, XLiveVoiceCalls& host) {
+    const float timer = dt + read_field<float>(s, 0xE8);
+    write_field(s, 0xE8, timer);
+    if (timer > 5.0f) refresh_friends_00a45c60(s, host);  // [00CE3850]
+    void* const voice = at(s, 0x1C24);
+    host.voice_update_00a49530(voice);
+    void* const game = read_field<void*>(s, 0x2210);
+    const bool gate = host.voice_gate_00e198b4() && (read_field<std::int32_t>(game, 0x5D4) == 0xD || host.voice_gate_00687860());
+    const std::uint32_t slot = host.game_slot_18ec();
+    if (slot > 7 || host.game_player_18cc(slot) == nullptr || !gate) return;
+    write_field(s, 0x1D48, read_field<float>(s, 0x1D48) + dt);
+    send_local_voice_00a46330(s, host);
+    if (read_field<std::uint32_t>(voice, 0) == 0 || !host.system_virtual_198(s)) return;
+    std::uint8_t message[0x40];  // stack storage for the 00A42FB0 message
+    const std::uint8_t talking = read_field<std::uint32_t>(s, 0x1C28) != 0 ? 1 : 0;
+    const std::uint64_t xuid = host.xenon_active_xuid_00a3eb00();
+    void* const built = host.voice_change_message_00a42fb0(message, static_cast<std::uint32_t>(xuid),
+        static_cast<std::uint32_t>(xuid >> 32), talking);
+    if (read_field<std::int32_t>(read_field<void*>(s, 0x2210), 0x1FE4) == 1) {
+        host.transport_broadcast_0076a9f0(at(read_field<void*>(s, 0x2210), 0x1EF0), built, 0);
+    } else {
+        host.transport_send_first_peer_00770af0(at(read_field<void*>(s, 0x2210), 0x1EF0), built);
+    }
+    write_field<std::uint32_t>(voice, 0, 0);
+    void* const g = read_field<void*>(s, 0x2210);
+    void* const player = read_field<void*>(g, 0x18CC + 4 * read_field<std::uint32_t>(g, 0x18EC));
+    write_field<std::uint8_t>(player, 0x89, read_field<std::uint32_t>(s, 0x1C28) != 0 ? 1 : 0);
+}
+
+// ---------------------------------------------------------------------------
+// Packet cc13-online4: session record and stats message helpers
+// ---------------------------------------------------------------------------
+
+void session_record_reset_005707a0(void* r, SessionHelperCalls& host) {
+    write_field<std::uint8_t>(r, 4, 0xFF);
+    host.wstring_clear_0056f280(at(r, 8));
+    for (std::size_t off : {0x00, 0x30, 0x34, 0x28, 0x2C, 0x38, 0x3C, 0x88, 0x8C, 0x94, 0x90}) {
+        write_field<std::uint32_t>(r, off, 0);
+    }
+    write_field<std::uint8_t>(r, 0x48, 1);
+    write_field<std::uint8_t>(r, 0x49, 0x14);
+    write_field<std::uint32_t>(r, 0x98, 0);
+    write_field<std::uint32_t>(r, 0x9C, 0);
+    for (std::size_t off = 0x4C; off <= 0x7C; off += 4) write_field<std::uint32_t>(r, off, 0);
+}
+
+void* session_record_construct_00571e50(void* r, SessionHelperCalls& host) {
+    write_field<std::uint32_t>(r, 0x20, 7);
+    write_field<std::uint32_t>(r, 0x1C, 0);
+    write_field<std::uint16_t>(r, 0x0C, 0);
+    session_record_reset_005707a0(r, host);
+    return r;
+}
+
+void* stats_list_message_construct_00a46150(void* m, const void* source, SessionHelperCalls& host) {
+    host.message_base_construct_0075b430(m, 0xE4);
+    write_field<std::uint32_t>(m, 4, 1);
+    write_field<std::uint32_t>(m, 0, 0x00CE7608);  // vtable address in the image
+    write_field(m, 0x20, host.list_head_node_004c1f50(at(m, 0x1C)));
+    write_field<std::uint32_t>(m, 0x24, 0);
+    write_field<std::uint8_t>(m, 0x18, 3);
+    void* const source_head = read_field<void*>(source, 4);
+    for (void* node = read_field<void*>(source_head, 0);;) {
+        if (source == nullptr) host.invalid_parameter_00bf6713();
+        if (node == read_field<void*>(source, 4)) break;
+        if (source == nullptr) host.invalid_parameter_00bf6713();
+        if (node == read_field<void*>(source, 4)) host.invalid_parameter_00bf6713();
+        void* const head = read_field<void*>(m, 0x20);
+        void* const added = host.list_allocate_node_004c6090(at(m, 0x1C), head, read_field<void*>(head, 4), at(node, 8));
+        host.list_grow_count_004cf800(at(m, 0x1C), 1);
+        write_field(head, 4, added);
+        write_field(read_field<void*>(added, 4), 0, added);
+        if (node == read_field<void*>(source, 4)) host.invalid_parameter_00bf6713();
+        node = read_field<void*>(node, 0);
+    }
+    return m;
+}
+
 } // namespace bsp::online_seg71_cc13
