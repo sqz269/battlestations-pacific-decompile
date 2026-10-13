@@ -341,5 +341,76 @@ std::optional<DebrisSpec> debris_spec_007caad0(bool record_found, const Vec3& no
                                                const Vec3& plane_velocity,
                                                const Vec3& record_14, const Rng& rng);
 
+// ---------------------------------------------------------------------------
+// 7. Control factors: plane vtable [1A0h] 007BBDC0 (set, RET 0Ch) and [1A4h]
+//    007BBF10 (get, RET 0Ch); neither has a Ghidra function. Their callers are
+//    the Lua natives SetControlFactor / GetControlFactor (0088EB50, 0088EDC0).
+//    The ship pair is gameplay_seg50_cc13 (008131E0 / 00813250).
+// ---------------------------------------------------------------------------
+
+// The block unit+BCCh..BE4h. 007B97F0 BSP_Plane_RestoreFullHealth sets all
+// seven to 1.0f (00D7A24C). 007CAF10 subtracts BCCh, BD0h and BD4h from its
+// three latched control magnitudes (007CB226, 007CB27A, 007CB2B1; host:
+// effective_control_007caf10, src/pilot_controls.cpp:130).
+struct PlaneControlFactors {
+    float roll_bcc{1.0f};
+    float pitch_bd0{1.0f};
+    float power_mean_bd4{1.0f};                   // 007B8140's mean, +8h
+    float engine_power_bd8[4]{1.0f, 1.0f, 1.0f, 1.0f};  // +0Ch + index*4
+};
+
+struct ControlFactorHost {
+    std::function<void(std::int32_t index)> stop_engine_at;  // 007DE5E0(unit+C98h)
+    // 0077C7B0 BSP_SessionOwner_BroadcastMessage(msg, 0): kind C9h
+    // (PLANE_CONTROLFACTOR, vtable 00D02E20) carrying the seven floats.
+    std::function<void(const PlaneControlFactors&)> broadcast;
+};
+
+// "roll" (__stricmp on the pointer), "pitch", "power" (00425850); any other
+// name answers false with no write and no message. "power" stores the engine's
+// value and recomputes the mean of the first engine_count_140 entries
+// ([unit+538h]+140h; float sum in index order, FIDIV by the count), then stops
+// that engine when 0.0f >= value (COMISS/JB, so a NaN does not stop it). The
+// image writes index unchecked; the model ignores an index outside 0..3, which
+// in the image lands past BE4h.
+bool set_control_factor_007bbdc0(PlaneControlFactors& f, const char* name, std::int32_t index,
+                                 float value, std::int32_t engine_count_140,
+                                 const ControlFactorHost& host);
+// "roll" (__stricmp), "Pitch", "Power" (unchecked index, BD8h + index*4).
+bool get_control_factor_007bbf10(const PlaneControlFactors& f, const char* name,
+                                 std::int32_t index, float& out);
+
+// 007B97F0 BSP_Plane_RestoreFullHealth: 00878340 (the unit's own restore),
+// the seven factors = 1.0f, the three values 007CAF10 writes at BE8h..BF0h =
+// 0.0f, then a tail jump to 007DE630 (the engine list's ResetAll, whose rotor
+// Resets draw stream 1: gameplay_seg48_cc13).
+struct RestoreFullHealthHost {
+    std::function<void()> unit_restore;       // 00878340
+    std::function<void()> engines_reset_all;  // 007DE630(unit+C98h)
+};
+void restore_full_health_007b97f0(PlaneControlFactors& f, float (&limits_be8)[3],
+                                  const RestoreFullHealthHost& host);
+
+// ---------------------------------------------------------------------------
+// 8. The dead branch of 007CC2F0 BSP_Plane_FreeFlightArm (007CC375-007CC41F).
+// ---------------------------------------------------------------------------
+
+// A live plane (unit+5Dh clear), or any plane in session mode 2 with the game
+// object [00E188A8] set, takes the live branch (007CC431: the landing-site
+// probe, the carrier touch message C5h and the water contact 007CB7F0, all
+// outside this model). A dead plane whose splash latch unit+911h is clear and
+// whose y unit+100h is below 3.0f (00CE3854, COMISS/JBE: a NaN y does not
+// splash) raises "splash" through vtable +194h (007BBFA0, args 0), then sets
+// the latch.
+enum class FreeFlightTail : int { LiveBranch, DeadSplash, Nothing };
+struct FreeFlightTailInputs {
+    bool dead_5d{false};
+    bool has_game_e188a8{true};
+    int session_mode_1fe4{0};
+    bool splashed_911{false};
+    float pos_y_100{0.0f};
+};
+FreeFlightTail free_flight_tail_007cc2f0(FreeFlightTailInputs& in) noexcept;
+
 }  // namespace gameplay_seg47_cc13
 }  // namespace bsp

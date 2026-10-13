@@ -289,5 +289,67 @@ std::optional<DebrisSpec> debris_spec_007caad0(bool record_found, const Vec3& no
     return d;
 }
 
+// 007BBDC0-007BBF07.
+bool set_control_factor_007bbdc0(PlaneControlFactors& f, const char* name, std::int32_t index,
+                                 float value, std::int32_t engine_count_140,
+                                 const ControlFactorHost& host) {
+    if (name != nullptr && iequals(name, "roll")) {
+        f.roll_bcc = value;  // 007BBE07
+    } else if (name != nullptr && iequals(name, "pitch")) {
+        f.pitch_bd0 = value;  // 007BBE27
+    } else if (name != nullptr && iequals(name, "power")) {
+        if (index < 0 || index > 3) return false;  // model limit, see the header
+        // 007B8140: store, then a float running sum (FADD/FSTP per element).
+        f.engine_power_bd8[index] = value;
+        float sum = 0.0f;
+        for (std::int32_t i = 0; i < engine_count_140 && i < 4; ++i)
+            sum = sum + f.engine_power_bd8[i];
+        f.power_mean_bd4 = sum / static_cast<float>(engine_count_140);  // 007B81D8 FIDIV
+        if (!(0.0f < value)) {
+            if (value == value) host.stop_engine_at(index);  // 007BBE6D COMISS/JB
+        }
+    } else {
+        return false;  // 007BBEF4, AL = 0
+    }
+    host.broadcast(f);  // 007BBE80-007BBED8
+    return true;
+}
+
+// 007BBF10-007BBF98.
+bool get_control_factor_007bbf10(const PlaneControlFactors& f, const char* name,
+                                 std::int32_t index, float& out) {
+    if (name == nullptr) return false;
+    if (iequals(name, "roll")) {
+        out = f.roll_bcc;
+    } else if (iequals(name, "Pitch")) {
+        out = f.pitch_bd0;
+    } else if (iequals(name, "Power")) {
+        if (index < 0 || index > 3) return false;  // model limit
+        out = f.engine_power_bd8[index];
+    } else {
+        return false;
+    }
+    return true;
+}
+
+// 007B97F0-007B985A.
+void restore_full_health_007b97f0(PlaneControlFactors& f, float (&limits_be8)[3],
+                                  const RestoreFullHealthHost& host) {
+    host.unit_restore();
+    f = PlaneControlFactors{};  // BCCh..BE4h = 1.0f (00D7A24C)
+    limits_be8[0] = limits_be8[1] = limits_be8[2] = 0.0f;
+    host.engines_reset_all();
+}
+
+// 007CC375-007CC41F.
+FreeFlightTail free_flight_tail_007cc2f0(FreeFlightTailInputs& in) noexcept {
+    if (!in.dead_5d || (in.has_game_e188a8 && in.session_mode_1fe4 == 2))
+        return FreeFlightTail::LiveBranch;
+    if (in.splashed_911) return FreeFlightTail::Nothing;
+    if (!(3.0f > in.pos_y_100)) return FreeFlightTail::Nothing;  // 007CC3BA
+    in.splashed_911 = true;  // 007CC418, after the vtable +194h call
+    return FreeFlightTail::DeadSplash;
+}
+
 }  // namespace gameplay_seg47_cc13
 }  // namespace bsp
