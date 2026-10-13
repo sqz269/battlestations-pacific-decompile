@@ -1871,4 +1871,101 @@ void* w3_cloud_class_construct_00bc4a60(void* cloud_class, std::uint32_t manager
 // 4-byte vectors at +24h then +18h (the inline 4-byte reserve-to-1 when capacity < 0); base 00BD30F0.
 void w3_sky_box_destruct_body_00bbf6d0(void* sky_box, W3_Body destroy_base_00bd30f0);
 
+// Release-sequence destructors. Each body below is a fixed list of steps over the object's fields,
+// run in listing order; the step kinds are the inline idioms of these destructors:
+//   ref           release (InterlockedDecrement +4h, slot 0 at zero) and clear when non-null
+//   node          when non-null BSP_Node_UnlinkAndRelease 00B6DFA0 (ECX node), then clear
+//   node_keep     the same without the clear
+//   node_always   00B6DFA0 without a null test or clear
+//   free_clear    when non-null free (00BF6989) and clear;  free_only: free without the clear
+//   string        release the eight-byte string (0041DD20 shape: length + 1 bytes)
+//   destroy_via   resize(0) then free the data of a {data, count, capacity} header
+//   clear_vector  w2_clear_counting_down (reserve(0) when capacity < 0, count down, free)
+//   owner_null    BSP_Material_SetParameterOwner 00B18A40(ECX field, 0, 0)
+//   parent_null   BSP_Node_SetParent 00B6E680(ECX field, 0)
+// A resize or reserve this file does not reconstruct is supplied in W3_ReleaseCalls.
+struct W3_ReleaseCalls {
+    W3_Body node_unlink_and_release_00b6dfa0;
+    void (*node_set_parent_00b6e680)(void* node, void* parent);
+    void (*material_set_parameter_owner_00b18a40)(void* material, void* a, void* b);
+    W2_Resize bound_resize;    // the one external resize a body uses (named per body)
+    W2_Reserve bound_reserve;  // the one external reserve a body uses (named per body)
+    W3_Body base_destructor;   // the final base call (named per body)
+    NativeStringStorage* strings;
+};
+// 00BA24B0 BSP_OceanWaveFieldBase_Destruct, __fastcall(ECX): vtables 00D63B5C / 00D63B54 (+4h); 34 field
+// steps; vectors +620h (00B9EFA0), +614h (00B9D360), +5F4h (bound 0059FCE0), +4F8h (00B9D310), +2B0h
+// (00B9EF20), +27Ch (00B9E040); strings +0A8h, +0A0h; base BSP_WeakOwner_Destroy 00925540.
+void w3_ocean_wave_field_base_destruct_00ba24b0(void* field, const W3_ReleaseCalls& calls);
+// 00BA2E60 BSP_OceanBeams_Destruct: vtable 00D63B88; base 00925540.
+void w3_ocean_beams_destruct_00ba2e60(void* beams, const W3_ReleaseCalls& calls);
+// 00BA42A0 BSP_OceanWaterParticles_Destruct: vtable 00D63BB4; base 00925540.
+void w3_ocean_water_particles_destruct_00ba42a0(void* particles, const W3_ReleaseCalls& calls);
+// 00BA71C0 BSP_OceanHeightGenerator_Destruct: vtable 00D63E34; 30 field steps; base 00BD30F0.
+void w3_ocean_height_generator_destruct_00ba71c0(void* generator, const W3_ReleaseCalls& calls);
+// 00BAC8A0 BSP_WaterTracerResource_Destruct: vtable 00D63F94; vectors +24h, +18h over bound 00468050;
+// base 00BD30F0.
+void w3_water_tracer_resource_destruct_00bac8a0(void* resource, const W3_ReleaseCalls& calls);
+// 00BAE170 BSP_WaterSprayResource_Destruct: vtable 00D64094; +0Ch, +8h; base 00BD30F0.
+void w3_water_spray_resource_destruct_00bae170(void* resource, const W3_ReleaseCalls& calls);
+// 00BAE210 BSP_WaterSprayObject_Destruct: vtable 00D6409C; SetParent(+8h, 0); unlink +8h (no test);
+// +0Ch; base 00BD30F0.
+void w3_water_spray_object_destruct_00bae210(void* object, const W3_ReleaseCalls& calls);
+// 00BB03D0 BSP_Coastline_Destruct: vtable 00D640DC; vector +14h over bound 00BAF070, vector +8h clear
+// over bound reserve 00BAEFB0; base 00BD30F0.
+void w3_coastline_destruct_00bb03d0(void* coastline, const W3_ReleaseCalls& calls);
+// 00BB0C90 BSP_CoastMesh_Destruct: vtable 00D640E4; base 00925540.
+void w3_coast_mesh_destruct_00bb0c90(void* mesh, const W3_ReleaseCalls& calls);
+// 00BBB660 BSP_MsarProvider_Destroy, __fastcall(ECX): vtable 00D643C4; release +14h; when the entry
+// vector's begin (+1Ch) is non-null: destroy [begin, end +20h) (00BBB020: ECX first, EDX last, stack
+// &vector +18h, tag) and operator delete (00BF65AC) the block; +1Ch..+24h = 0; BSP_FileProviderBase_Destroy
+// 00BB5380.
+void w3_msar_provider_destroy_00bbb660(void* provider, const W3_ReleaseCalls& calls,
+    void (*destroy_range_00bbb020)(void* first, void* last, void* vector));
+
+// Beams and water particles constructors. Each builds a default scene-record texture layer in its
+// 0A4h-byte frame, copies the settings out of it and releases the record's string (+8h length,
+// +0Ch data).
+struct W3_SettingsCalls {
+    W3_Body weak_owner_construct_00925490;         // ECX object
+    W3_Body construct_default_layer;               // 004C63E0 (beams) / 004C62A0 (particles), ECX record
+    void (*assign_settings)(void* object, const void* record);  // 0078D9F0 / 0078D940, ECX object, RET 4
+    NativeStringStorage* strings;
+};
+// 00BA3A60 BSP_OceanBeams_Construct, __thiscall(ECX, ref* a, ref* b) RET 8 -> EAX: weak owner; vtable
+// 00D63B88; +0Ch = *a, +10h = *b (each with an added reference); +20h..+28h, +34h, +38h, +0E4h, +0E8h,
+// +14h = 0; the (null) +24h and +20h release-and-clear; settings; +0F0h = 0.0f.
+void* w3_ocean_beams_construct_00ba3a60(void* beams, void* const* a, void* const* b, const W3_SettingsCalls& calls);
+// 00BA43B0 BSP_OceanWaterParticles_Construct, __thiscall(ECX, ref* a) RET 4 -> EAX: weak owner; vtable
+// 00D63BB4; +0Ch = *a (added reference); +14h..+1Ch, +28h, +2Ch, +10h = 0; the (null) +18h and +14h
+// release-and-clear; settings; +0C0h = 0.0f.
+void* w3_ocean_water_particles_construct_00ba43b0(void* particles, void* const* a, const W3_SettingsCalls& calls);
+// 00BBB5B0 BSP_MsarProvider_Construct, __thiscall(ECX, name) RET 4 -> EAX: BSP_FileProviderBase_Construct
+// 00BB5590 (ECX this, name); vtable 00D643C4; +1Ch..+24h = 0; +14h = file system 0109CEEC vtable +4h (ECX fs,
+// this +8h, 2), the backing stream.
+void* w3_msar_provider_construct_00bbb5b0(void* provider, void* name, void* file_system_0109ceec,
+    void (*file_provider_base_construct)(void* provider, void* name));
+
+// Factories: allocate, then construct when the allocation is non-null (EAX 0 otherwise).
+// 00BA6FB0 BSP_OceanWaveField_Create, __fastcall(ECX world, EDX flat byte) -> EAX: operator new(6BCh)
+// (00BF681B), BSP_OceanWaveField_Construct 00BA6C40(obj, world, flat).
+void* w3_ocean_wave_field_create_00ba6fb0(void* world, std::uint32_t flat,
+    void* (*construct_00ba6c40)(void* field, void* world, std::uint32_t flat));
+// 00BB3C60 BSP_OceanHeightGenerator_Create, __fastcall(ECX a, EDX b, c, d) RET 8 -> EAX: operator new(118h),
+// BSP_OceanHeightGenerator_ConstructDerived 00BB3AB0(obj, a, b, c, d).
+void* w3_ocean_height_generator_create_00bb3c60(void* a, void* b, void* c, void* d,
+    void* (*construct_00bb3ab0)(void* generator, void* a, void* b, void* c, void* d));
+// Application vtable 00CFEAB0 factories (ECX application unused):
+//   00BC02E0 +1Ch, RET 8: pool 010909F4 allocate (00BC54E0), BSP_CloudRenderModel_Construct 00BC54F0(slot, a, b).
+//   00BC0440 +28h, RET 8: pool 01090A68 allocate (00BC7450), BSP_LightningModel_Construct 00BC7460(slot, a, b).
+void* w3_application_create_pooled2(void* (*pool_allocate)(), void* a, void* b,
+    void* (*construct)(void* slot, void* a, void* b));
+//   00BC0350 +20h, RET 10h: pool 01090A2C allocate (00BC6050), BSP_CloudPlaneModel_Construct 00BC6060(slot, a, b, c, d).
+void* w3_application_create_cloud_plane_model_00bc0350(void* a, void* b, void* c, void* d, void* (*pool_allocate_00bc6050)(),
+    void* (*construct_00bc6060)(void* slot, void* a, void* b, void* c, void* d));
+//   00BC03C0 +24h, RET 10h: operator new(38h), 00BC6430(obj, a, b, float c, float d); the two floats are
+//   re-stored through FLD/FSTP on the way.
+void* w3_application_create_cloud_puff_00bc03c0(void* a, void* b, float c, float d,
+    void* (*construct_00bc6430)(void* object, void* a, void* b, float c, float d));
+
 }  // namespace bsp::water_weather_cc13

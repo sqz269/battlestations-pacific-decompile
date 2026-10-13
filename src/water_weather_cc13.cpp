@@ -3460,4 +3460,246 @@ void w3_sky_box_destruct_body_00bbf6d0(void* sky_box, W3_Body destroy_base_00bd3
     destroy_base_00bd30f0(sky_box);
 }
 
+namespace {
+
+enum class W3_Kind : std::uint8_t {
+    ref, node, node_keep, node_always, free_clear, free_only, string, destroy_via, clear_vector, owner_null, parent_null
+};
+struct W3_Step {
+    W3_Kind kind;
+    std::uint16_t offset;
+    W2_Resize resize = nullptr;    // destroy_via: null selects calls.bound_resize
+    W2_Reserve reserve = nullptr;  // clear_vector: null selects calls.bound_reserve
+};
+
+void w3_resize_ptr4(W2_Array& a, std::int32_t n) { w2_pod_resize(a, n, 4, W2_Copy::dwords); }
+void w3_resize_pair8(W2_Array& a, std::int32_t n) { w2_pod_resize(a, n, 8, W2_Copy::dwords); }
+
+template<std::size_t N>
+void w3_run_steps(void* object, const W3_Step (&steps)[N], const W3_ReleaseCalls& calls) {
+    for (const W3_Step& step : steps) {
+        void*& field = w3_field<void*>(object, step.offset);
+        switch (step.kind) {
+        case W3_Kind::ref: w2_ref_release(&field); break;
+        case W3_Kind::node:
+            if (field != nullptr) {
+                calls.node_unlink_and_release_00b6dfa0(field);
+                field = nullptr;
+            }
+            break;
+        case W3_Kind::node_keep:
+            if (field != nullptr) calls.node_unlink_and_release_00b6dfa0(field);
+            break;
+        case W3_Kind::node_always: calls.node_unlink_and_release_00b6dfa0(field); break;
+        case W3_Kind::free_clear:
+            if (field != nullptr) {
+                singleton_lifetime_free(field);
+                field = nullptr;
+            }
+            break;
+        case W3_Kind::free_only:
+            if (field != nullptr) singleton_lifetime_free(field);
+            break;
+        case W3_Kind::string: destroy_native_string_header_0041dd20(&field, *calls.strings); break;
+        case W3_Kind::destroy_via:
+            w2_destroy_via(w3_field<W2_Array>(object, step.offset), step.resize != nullptr ? step.resize : calls.bound_resize);
+            break;
+        case W3_Kind::clear_vector:
+            w2_clear_counting_down(w3_field<W2_Array>(object, step.offset),
+                                   step.reserve != nullptr ? step.reserve : calls.bound_reserve, true);
+            break;
+        case W3_Kind::owner_null: calls.material_set_parameter_owner_00b18a40(field, nullptr, nullptr); break;
+        case W3_Kind::parent_null: calls.node_set_parent_00b6e680(field, nullptr); break;
+        }
+    }
+}
+
+using K = W3_Kind;
+
+const W3_Step kWaveFieldBase_00ba24b0[] = {
+    {K::ref, 0x610}, {K::ref, 0xBC}, {K::node, 0x600}, {K::node, 0x504}, {K::node, 0x4A0}, {K::ref, 0x4E8},
+    {K::ref, 0x4F0}, {K::ref, 0x604}, {K::ref, 0x608}, {K::ref, 0x60C}, {K::node, 0x49C}, {K::ref, 0xF0},
+    {K::node, 0x11C}, {K::node, 0x120}, {K::ref, 0xC0}, {K::owner_null, 0x12C}, {K::owner_null, 0x130},
+    {K::ref, 0x12C}, {K::ref, 0x130}, {K::ref, 0x124}, {K::ref, 0x128}, {K::ref, 0x274}, {K::ref, 0x278},
+    {K::node, 0xC8}, {K::node, 0xD0}, {K::ref, 0x4E4}, {K::ref, 0x2AC}, {K::ref, 0x2BC}, {K::ref, 0x288},
+    {K::ref, 0x498}, {K::ref, 0xE4}, {K::ref, 0xE8}, {K::ref, 0x14},
+    {K::destroy_via, 0x620, &w3_coverage_region_vector_resize_00b9efa0}, {K::destroy_via, 0x614, &w3_resize_pair8},
+    {K::destroy_via, 0x5F4}, {K::destroy_via, 0x4F8, &w3_resize_ptr4},
+    {K::destroy_via, 0x2B0, &w3_grid_vector_resize_00b9ef20}, {K::destroy_via, 0x27C, &w3_resize_ptr4},
+    {K::string, 0xA8}, {K::string, 0xA0},
+};
+const W3_Step kBeams_00ba2e60[] = {
+    {K::ref, 0x1C}, {K::ref, 0x18}, {K::free_clear, 0xE8}, {K::free_clear, 0xE4}, {K::node_keep, 0x14},
+    {K::ref, 0x28}, {K::string, 0x34}, {K::ref, 0x24}, {K::ref, 0x20}, {K::ref, 0x10}, {K::ref, 0x0C},
+};
+const W3_Step kWaterParticles_00ba42a0[] = {
+    {K::node_keep, 0x10}, {K::ref, 0x1C}, {K::string, 0x28}, {K::ref, 0x18}, {K::ref, 0x14}, {K::ref, 0x0C},
+};
+const W3_Step kHeightGenerator_00ba71c0[] = {
+    {K::ref, 0x40}, {K::ref, 0x5C}, {K::ref, 0x2C}, {K::ref, 0x18}, {K::node, 0x20}, {K::ref, 0x1C},
+    {K::node, 0x24}, {K::ref, 0x58}, {K::node, 0x50}, {K::ref, 0x4C}, {K::node, 0x54}, {K::ref, 0x28},
+    {K::ref, 0x3C}, {K::ref, 0x64}, {K::ref, 0x60}, {K::node, 0x38}, {K::ref, 0x30}, {K::node, 0x34},
+    {K::ref, 0x78}, {K::ref, 0x7C}, {K::ref, 0x70}, {K::ref, 0x74}, {K::ref, 0x48}, {K::ref, 0x44},
+    {K::ref, 0x14}, {K::ref, 0x10}, {K::node, 0x0C}, {K::ref, 0x08}, {K::ref, 0x68}, {K::ref, 0x6C},
+};
+const W3_Step kTracerResource_00bac8a0[] = {
+    {K::ref, 0x14}, {K::ref, 0x0C}, {K::destroy_via, 0x24}, {K::destroy_via, 0x18},
+};
+const W3_Step kSprayResource_00bae170[] = {{K::ref, 0x0C}, {K::ref, 0x08}};
+const W3_Step kSprayObject_00bae210[] = {{K::parent_null, 0x08}, {K::node_always, 0x08}, {K::ref, 0x0C}};
+const W3_Step kCoastline_00bb03d0[] = {
+    {K::node, 0x28}, {K::ref, 0x20}, {K::ref, 0x24}, {K::string, 0xD4}, {K::string, 0xCC},
+    {K::destroy_via, 0x14}, {K::clear_vector, 0x08},
+};
+const W3_Step kCoastMesh_00bb0c90[] = {
+    {K::free_only, 0x44}, {K::free_only, 0x3C}, {K::string, 0x78}, {K::string, 0x70}, {K::string, 0x68},
+    {K::ref, 0x20}, {K::ref, 0x1C}, {K::ref, 0x18}, {K::ref, 0x14}, {K::ref, 0x10}, {K::ref, 0x0C},
+};
+
+template<std::size_t N>
+void w3_release_body(void* object, std::uint32_t vtable, const W3_Step (&steps)[N], const W3_ReleaseCalls& calls) {
+    w3_field<std::uint32_t>(object, 0) = vtable;
+    w3_run_steps(object, steps, calls);
+    calls.base_destructor(object);
+}
+
+}  // namespace
+
+void w3_ocean_wave_field_base_destruct_00ba24b0(void* field, const W3_ReleaseCalls& calls) {
+    w3_field<std::uint32_t>(field, 0) = 0x00D63B5Cu;
+    w3_field<std::uint32_t>(field, 4) = 0x00D63B54u;
+    w3_run_steps(field, kWaveFieldBase_00ba24b0, calls);
+    calls.base_destructor(field);
+}
+void w3_ocean_beams_destruct_00ba2e60(void* beams, const W3_ReleaseCalls& calls) {
+    w3_release_body(beams, 0x00D63B88u, kBeams_00ba2e60, calls);
+}
+void w3_ocean_water_particles_destruct_00ba42a0(void* particles, const W3_ReleaseCalls& calls) {
+    w3_release_body(particles, 0x00D63BB4u, kWaterParticles_00ba42a0, calls);
+}
+void w3_ocean_height_generator_destruct_00ba71c0(void* generator, const W3_ReleaseCalls& calls) {
+    w3_release_body(generator, 0x00D63E34u, kHeightGenerator_00ba71c0, calls);
+}
+void w3_water_tracer_resource_destruct_00bac8a0(void* resource, const W3_ReleaseCalls& calls) {
+    w3_release_body(resource, 0x00D63F94u, kTracerResource_00bac8a0, calls);
+}
+void w3_water_spray_resource_destruct_00bae170(void* resource, const W3_ReleaseCalls& calls) {
+    w3_release_body(resource, 0x00D64094u, kSprayResource_00bae170, calls);
+}
+void w3_water_spray_object_destruct_00bae210(void* object, const W3_ReleaseCalls& calls) {
+    w3_release_body(object, 0x00D6409Cu, kSprayObject_00bae210, calls);
+}
+void w3_coastline_destruct_00bb03d0(void* coastline, const W3_ReleaseCalls& calls) {
+    w3_release_body(coastline, 0x00D640DCu, kCoastline_00bb03d0, calls);
+}
+void w3_coast_mesh_destruct_00bb0c90(void* mesh, const W3_ReleaseCalls& calls) {
+    w3_release_body(mesh, 0x00D640E4u, kCoastMesh_00bb0c90, calls);
+}
+
+void w3_msar_provider_destroy_00bbb660(void* provider, const W3_ReleaseCalls& calls,
+    void (*destroy_range_00bbb020)(void* first, void* last, void* vector)) {
+    w3_field<std::uint32_t>(provider, 0) = 0x00D643C4u;
+    w2_ref_release(&w3_field<void*>(provider, 0x14));
+    void* const begin = w3_field<void*>(provider, 0x1C);
+    if (begin != nullptr) {
+        destroy_range_00bbb020(begin, w3_field<void*>(provider, 0x20), w3_bytes(provider) + 0x18);
+        singleton_lifetime_free(w3_field<void*>(provider, 0x1C));
+    }
+    w3_field<void*>(provider, 0x1C) = nullptr;
+    w3_field<void*>(provider, 0x20) = nullptr;
+    w3_field<void*>(provider, 0x24) = nullptr;
+    calls.base_destructor(provider);
+}
+
+namespace {
+
+void w3_store_added_ref(void* object, std::size_t offset, void* const* source) {
+    void* const value = *source;
+    w3_field<void*>(object, offset) = value;
+    if (value != nullptr) _InterlockedIncrement(reinterpret_cast<volatile long*>(w3_bytes(value) + 4));
+}
+
+void w3_apply_default_settings(void* object, std::size_t float_offset, const W3_SettingsCalls& calls) {
+    alignas(4) unsigned char record[0xA0];  // inside the native 0A4h frame
+    calls.construct_default_layer(record);
+    calls.assign_settings(object, record);
+    w3_field<float>(object, float_offset) = 0.0f;
+    destroy_native_string_header_0041dd20(record + 8, *calls.strings);
+}
+
+}  // namespace
+
+void* w3_ocean_beams_construct_00ba3a60(void* beams, void* const* a, void* const* b, const W3_SettingsCalls& calls) {
+    calls.weak_owner_construct_00925490(beams);
+    w3_field<std::uint32_t>(beams, 0) = 0x00D63B88u;
+    w3_store_added_ref(beams, 0x0C, a);
+    w3_store_added_ref(beams, 0x10, b);
+    for (std::size_t offset : {0x20u, 0x24u, 0x28u, 0x34u, 0x38u, 0xE4u, 0xE8u, 0x14u}) w3_field<void*>(beams, offset) = nullptr;
+    w2_ref_release(&w3_field<void*>(beams, 0x24));
+    w3_field<void*>(beams, 0x24) = nullptr;
+    w2_ref_release(&w3_field<void*>(beams, 0x20));
+    w3_field<void*>(beams, 0x20) = nullptr;
+    w3_apply_default_settings(beams, 0xF0, calls);
+    return beams;
+}
+
+void* w3_ocean_water_particles_construct_00ba43b0(void* particles, void* const* a, const W3_SettingsCalls& calls) {
+    calls.weak_owner_construct_00925490(particles);
+    w3_field<std::uint32_t>(particles, 0) = 0x00D63BB4u;
+    w3_store_added_ref(particles, 0x0C, a);
+    for (std::size_t offset : {0x14u, 0x18u, 0x1Cu, 0x28u, 0x2Cu, 0x10u}) w3_field<void*>(particles, offset) = nullptr;
+    w2_ref_release(&w3_field<void*>(particles, 0x18));
+    w3_field<void*>(particles, 0x18) = nullptr;
+    w2_ref_release(&w3_field<void*>(particles, 0x14));
+    w3_field<void*>(particles, 0x14) = nullptr;
+    w3_apply_default_settings(particles, 0xC0, calls);
+    return particles;
+}
+
+void* w3_msar_provider_construct_00bbb5b0(void* provider, void* name, void* file_system_0109ceec,
+    void (*file_provider_base_construct)(void* provider, void* name)) {
+    file_provider_base_construct(provider, name);
+    w3_field<std::uint32_t>(provider, 0) = 0x00D643C4u;
+    w3_field<void*>(provider, 0x1C) = nullptr;
+    w3_field<void*>(provider, 0x20) = nullptr;
+    w3_field<void*>(provider, 0x24) = nullptr;
+    using Open = void*(__thiscall*)(void*, void*, std::uint32_t);
+    w3_field<void*>(provider, 0x14) = reinterpret_cast<Open>(w3_field<void*>(w3_field<void*>(file_system_0109ceec, 0), 4))(
+        file_system_0109ceec, w3_bytes(provider) + 8, 2);
+    return provider;
+}
+
+void* w3_ocean_wave_field_create_00ba6fb0(void* world, std::uint32_t flat,
+    void* (*construct_00ba6c40)(void* field, void* world, std::uint32_t flat)) {
+    void* const raw = w3_new(0x6BC);
+    return raw != nullptr ? construct_00ba6c40(raw, world, flat) : nullptr;
+}
+
+void* w3_ocean_height_generator_create_00bb3c60(void* a, void* b, void* c, void* d,
+    void* (*construct_00bb3ab0)(void* generator, void* a, void* b, void* c, void* d)) {
+    void* const raw = w3_new(0x118);
+    return raw != nullptr ? construct_00bb3ab0(raw, a, b, c, d) : nullptr;
+}
+
+void* w3_application_create_pooled2(void* (*pool_allocate)(), void* a, void* b,
+    void* (*construct)(void* slot, void* a, void* b)) {
+    void* const slot = pool_allocate();
+    return slot != nullptr ? construct(slot, a, b) : nullptr;
+}
+
+void* w3_application_create_cloud_plane_model_00bc0350(void* a, void* b, void* c, void* d, void* (*pool_allocate_00bc6050)(),
+    void* (*construct_00bc6060)(void* slot, void* a, void* b, void* c, void* d)) {
+    void* const slot = pool_allocate_00bc6050();
+    return slot != nullptr ? construct_00bc6060(slot, a, b, c, d) : nullptr;
+}
+
+void* w3_application_create_cloud_puff_00bc03c0(void* a, void* b, float c, float d,
+    void* (*construct_00bc6430)(void* object, void* a, void* b, float c, float d)) {
+    void* const raw = w3_new(0x38);
+    if (raw == nullptr) return nullptr;
+    const float stored_c = static_cast<float>(static_cast<double>(c));
+    const float stored_d = static_cast<float>(static_cast<double>(d));
+    return construct_00bc6430(raw, a, b, stored_c, stored_d);
+}
+
 }  // namespace bsp::water_weather_cc13
