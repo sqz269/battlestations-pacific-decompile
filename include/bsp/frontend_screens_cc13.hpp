@@ -1420,4 +1420,207 @@ void mission_tree_read_int_vector_005c4ad0(std::uint32_t key_kind, std::uint32_t
 // (k = 0..19) zeroed.
 void mission_side_block_construct_005c4be0(void* block) noexcept;
 
+// 00594290: JMP 00593570 (MissionScoreRecord_Destruct), the target of the unwind
+// funclet at 00C70F20. The Ghidra body shown under this name is the target's.
+void mission_score_record_destroy_members_00594290(void* record, MissionScoreHost& host);
+
+// ---------------------------------------------------------------------------
+// Multiplayer main menu list handlers (packet cc13-fe1b)
+// ---------------------------------------------------------------------------
+
+// ECX is the screen's listener sub-object (screen+8); its +18h is the ranked /
+// player list box and +1Ch the quick-match list box (screen+20h / +24h).
+struct MultiMainListHost : WidgetHost {
+    virtual std::int32_t list_box_selected_data_00a9c990(std::uint32_t list_box) = 0;
+    virtual std::int32_t list_box_selected_index_00a9c920(std::uint32_t list_box) = 0;
+    // The help-text tables: 00E08980 (quick match) and 00E0896C (ranked / player).
+    virtual const char* help_text(std::uint32_t table, std::int32_t index) = 0;
+    // 0054A0C0 on [00E1930C], with a pooled native string built by 0041E870.
+    virtual void command_bar_set_help_line_0054a0c0(const char* text) = 0;
+    virtual void start_hosting_005e6f00(void* screen) = 0;
+    virtual void open_friends_005e6c70(void* screen) = 0;
+    virtual void push_request_interface_00688ad0(std::int32_t interface_id) = 0;
+    virtual void set_online_ranked_4d(bool ranked) = 0;  // [[00F8A2FC] + 4Dh]
+    virtual void frame_set_title_005189b0(const char* title) = 0;
+    virtual void set_buttons_visible_005e6b10(void* screen, bool shown) = 0;
+    virtual void input_update_zero() = 0;  // 00A92C40(0.0f)
+};
+inline constexpr std::uint32_t kQuickHelpTable = 0x00E08980u;   // "FE.multi_quick_help", ...
+inline constexpr std::uint32_t kRankedHelpTable = 0x00E0896Cu;  // "FE.multi_ranked_help", ...
+inline constexpr const char* kRankedTitle = "FE.multi_ranked_title";  // 00CF2748
+inline constexpr const char* kPlayerTitle = "FE.multi_player_title";  // 00CF2730
+// 005E73A0 selection changed, __thiscall(listener, unused, list_box), RET 8: for
+// the quick list (+1Ch) or the ranked list (+18h), when that list's byte +85h is
+// set: enable it (+60h(1)) and show the help line of its selected row from the
+// matching table.
+void multi_main_on_listbox_selection_changed_005e73a0(void* listener, std::uint32_t list_box,
+    MultiMainListHost& host);
+// 005E7160 activate, __thiscall(listener, unused, list_box), RET 8. The selected
+// row's data picks the action. Quick list (+1Ch): +ECh (listener) = the selected
+// index; data 0 starts hosting, 1 clears 00E08701 / 00E08700, sets 00E19610 = 2
+// and requests interface 10h, 2 opens the friends list. Ranked list (+18h): data
+// 0 sets the online ranked byte and the ranked title, then shows the buttons;
+// data 1 clears it, sets the player title and hides them; any other data skips
+// to the swap. The swap: ranked list disabled, hidden, +77h = 1; quick list
+// enabled, shown, +77h = 0; the help line of the ranked list's selected row from
+// the quick table (as the image does); input update 0.0.
+struct MultiMainHostingFlags {
+    std::uint8_t* e08700;
+    std::uint8_t* e08701;
+    std::int32_t* e19610;
+};
+void multi_main_on_listbox_activate_005e7160(void* listener, std::uint32_t list_box,
+    const MultiMainHostingFlags& flags, MultiMainListHost& host);
+
+// Widget press handlers, widget-listener slot +0Ch, __thiscall(listener =
+// screen+0Ch, widget), RET 4. Text widgets (type 3) act on their first glyph:
+// A2h is "accept", A3h "back" (+F0h text, or an empty string when null).
+// Buttons (6) and toggles (12h) end with +88h(2, 0, 1.0f) / +84h(2).
+struct PressHost : WidgetHost {
+    // The list-box listener sub-object at listener-4 (screen+8), its vtable +04h
+    // (the activate slot) with (row value, list box).
+    virtual void list_listener_activate_04(void* list_listener, std::uint32_t value, std::uint32_t list_box) = 0;
+    virtual std::uint32_t list_box_value_00425e50(std::uint32_t list_box) = 0;
+    virtual void scroller_begin_thumb_drag_00683a40(void* scroller) = 0;
+    virtual void scroller_scroll_toward_end_00683700(void* scroller, float speed) = 0;
+    virtual void scroller_scroll_toward_start_00683680(void* scroller, float speed) = 0;
+    virtual void scroller_set_auto_scroll_00683300(void* scroller, std::int32_t a, float speed, std::int32_t b) = 0;
+    virtual void hud_pause_resume_005fd440(void* screen) = 0;
+    virtual void mode_selector_refresh_map_list_005ec250(void* screen) = 0;
+    virtual void mode_selector_go_back_005eca90(void* screen) = 0;
+    virtual void mode_selector_step_option_005ecba0(void* screen, std::int32_t delta) = 0;
+    virtual void list_box_select_index_00a9c7c0(std::uint32_t list_box, std::int32_t index) = 0;
+    // +88h / +84h with the integer state (2 = pressed; the focus styling passes 0/1).
+    virtual void set_frame_state_88(std::uint32_t widget, std::int32_t state, std::int32_t mode, float weight) = 0;
+    virtual void set_toggle_state_84(std::uint32_t widget, std::int32_t state) = 0;
+};
+// 005FDB50 HudPause: text widgets get +4Ch(1.0); A2h activates the current row of
+// the list box (listener+130h) through the list listener; B7h/B8h do nothing;
+// A3h clears 00E19660 and resumes. Other widgets: the scroll thumb (+70h)
+// starts a drag, the arrows +6Ch / +68h scroll the scroller (+90h) toward the
+// end / start at 0.5; then the press styling.
+void hud_pause_on_press_005fdb50(void* listener, std::uint32_t widget, std::int32_t& page_00e19660,
+    const char* empty_00e19688, PressHost& host);
+// 005ED450 MultiModeSelector: A2h refreshes the map list in custom mode (+D4h)
+// or activates through the list listener with (widget, [listener+14h]); A3h goes
+// back; any other text widget equal to one of the four tabs +B4h..+C0h selects
+// that index in the list box +9Ch. Other widgets in custom mode: +A4h / +A8h
+// step the option by -1 / +1 (anything else returns without styling); outside
+// it: +28h / +24h auto-scroll the scroller (+30h) with (2 / 1, 0.004f, 1), +90h
+// starts a thumb drag; then the press styling.
+inline constexpr float kModeSelectorAutoScrollSpeed = 0.004f;  // 00CEC178
+void mode_selector_on_press_005ed450(void* listener, std::uint32_t widget, const char* empty_00e19618,
+    PressHost& host);
+
+// 005EBC90 MultiModeSelector selection changed, __thiscall(this, unused,
+// list_box), RET 8 (offsets relative to ECX). The server list (+A0h) is ignored.
+// 00E19614 = the selected index; help line from table 00E089A4[index]; for an
+// index up to 5: title text +20h = 00E089BC[index] and description +24h =
+// 00E0898C[index] (localised, arg 1), the mode icon +1Ch gets +88h(index & FFFFh,
+// 0, 1.0f), the scroller at +34h re-attaches (00683790(0)) and gets the range
+// height(+24h) * 1.5 + height(+20h) - size(+90h).y (x87, formed in double here).
+struct ModeSelectorTextHost : WidgetHost {
+    virtual std::int32_t list_box_selected_index_00a9c920(std::uint32_t list_box) = 0;
+    virtual const char* table_string(std::uint32_t table, std::int32_t index) = 0;
+    virtual void command_bar_set_help_line_0054a0c0(const char* text) = 0;
+    virtual void text_set_localised_cstring_00abbe50(std::uint32_t text, const char* key, std::int32_t arg) = 0;
+    virtual void set_frame_state_88(std::uint32_t widget, std::int32_t state, std::int32_t mode, float weight) = 0;
+    virtual void scroller_attach_content_00683790(void* scroller, std::uint32_t content) = 0;
+    virtual float widget_size_y_00aa6740(std::uint32_t widget) = 0;
+    virtual float text_normalized_height_00ab6bd0(std::uint32_t text) = 0;
+    virtual void scroller_set_scroll_range_006834a0(void* scroller, float range) = 0;
+};
+void mode_selector_on_listbox_selection_changed_005ebc90(void* self, std::uint32_t list_box,
+    std::int32_t& index_00e19614, ModeSelectorTextHost& host);
+
+// 005BC920 HudNarrative update, __thiscall(screen, float unused), RET 4. The
+// panel shows while +54h > 0 or the narrative ([game+21E4h]) has +34h or +24h
+// set: +34h, +38h, +3Ch, +40h get +34h(shown); hidden, the texts +34h and +38h
+// are emptied (00CE3A0C). Then, with the game's frame time [game+21F0h] above
+// zero: 005BBF10, 005BC640 (screen), 00735100 (narrative [game+21E8h]),
+// 005B9800, 005B8C30 (screen), each with that time. The stack argument is not read.
+struct NarrativeUpdateHost : WidgetHost {
+    virtual std::int32_t narrative_34() = 0;   // [[game + 21E4h] + 34h]
+    virtual std::int32_t narrative_24() = 0;   // [[game + 21E4h] + 24h]
+    virtual float game_frame_time_21f0() = 0;  // [game + 21F0h]
+    virtual void text_set_localised_cstring_00abbe50(std::uint32_t text, const char* key, std::int32_t arg) = 0;
+    virtual void step(std::uint32_t routine, void* object, float dt) = 0;
+    virtual void* mission_narrative_21e8() = 0;  // [game + 21E8h]
+};
+void hud_narrative_update_005bc920(void* screen, NarrativeUpdateHost& host);
+
+// 005FD890 HudPause ShowPage, __thiscall(screen, ingame_page, list_page), RET 8.
+// The "page" widget is the in-game interface's [[00E198C4]+E4h]+10h when
+// ingame_page is set, else screen+14h.
+//   list_page set: hide that widget, show +18h, SelectDefault, enable list box
+//     +2Ch, select row 0, listener screen+8, list box vtable +80h(1). Returns
+//     without touching +10h.
+//   list_page clear: show the widget, hide +18h, clear the list box rows, delete
+//     every row object of the list +64h (node+08h through +04h(1)) and free the
+//     nodes; unless (ingame_page and [[00E198C4]+E4h]+1Ch is set), select the
+//     frame "ingame.paused" (00CF1DE4) or, for an in-game page while the game
+//     byte +218Ch is clear, "ingame.pause_multi_title" (00CF1DC8) through
+//     00518D60(0, 0, 0, name); then +10h = 0.
+struct PauseShowPageHost : WidgetHost {
+    virtual std::uint32_t ingame_page_widget() = 0;  // [[00E198C4] + E4h] + 10h
+    virtual bool ingame_page_locked_1c() = 0;        // [[00E198C4] + E4h] + 1Ch
+    virtual bool game_byte_218c() = 0;
+    virtual void frame_select_default_004c9680() = 0;
+    virtual void frame_select_00518d60(const char* name) = 0;
+    virtual void list_box_clear_rows_00a9bec0(std::uint32_t list_box) = 0;
+    virtual void list_box_select_index_00a9c7c0(std::uint32_t list_box, std::int32_t index) = 0;
+    virtual void list_box_set_listener_00a9ac40(std::uint32_t list_box, void* listener) = 0;
+    virtual void list_box_virtual_80(std::uint32_t list_box, bool value) = 0;
+    virtual void invalid_iterator_00bf6713() = 0;
+    virtual void delete_owned(void* object) = 0;  // vtable +04h(1)
+    virtual void free_block(void* block) = 0;
+};
+inline constexpr const char* kPausedFrame = "ingame.paused";                   // 00CF1DE4
+inline constexpr const char* kPauseMultiTitleFrame = "ingame.pause_multi_title";  // 00CF1DC8
+void hud_pause_show_page_005fd890(void* screen, bool ingame_page, bool list_page, PauseShowPageHost& host);
+
+// 005F5BD0 OptionsScreen enter (ECX = screen). Unless the byte +25Ch is set,
+// select frame "FE.opt_title_main" (00CEE884) with 00518D60(ECX = 6, EDX = 0, 0,
+// name). Copy the live settings 00F88980 into the edit copy (005F52C0 on +D8h).
+// The list box +84h is the "Main_Listbox" (00CEB334) child of page +7Ch in the
+// front end ([game+61Fh] clear) and "Ingame_Main_Listbox" (00CEE830) in a
+// mission; the other one is hidden. +8Ch = its "MainListbox_Text" (00CEC040)
+// child; the list box is shown and enabled. The page in 00E19650 picks the
+// builder (1 game, 4 control, else the main list). +260h = 0.1f, +251h = 0,
+// then [00F8BBF4] vtable +0Ch.
+struct OptionsEnterHost : WidgetHost {
+    virtual void frame_select_00518d60(std::int32_t ecx, std::int32_t edx, std::int32_t arg, const char* name) = 0;
+    virtual void copy_settings_005f52c0(void* edit_copy, const void* settings_00f88980) = 0;
+    virtual bool game_in_mission_61f() = 0;
+    virtual std::uint32_t find_child_by_name_00aa7e00(std::uint32_t parent, std::string_view name) = 0;
+    virtual void build_page(std::uint32_t routine, void* screen) = 0;  // 005F58F0 / 005F40F0 / 005F54F0
+    virtual void input_devices_virtual_0c() = 0;                       // [00F8BBF4] vtable +0Ch
+    virtual const void* live_settings_00f88980() = 0;
+};
+inline constexpr const char* kOptionsMainTitle = "FE.opt_title_main";
+inline constexpr std::string_view kMainListboxName = "Main_Listbox";
+inline constexpr std::string_view kIngameMainListboxName = "Ingame_Main_Listbox";
+inline constexpr std::string_view kMainListboxTextName = "MainListbox_Text";
+void options_screen_enter_005f5bd0(void* screen, std::int32_t page_00e19650, OptionsEnterHost& host);
+
+// 005FAD70 HudOrderScreen enter (ECX = screen). Hide +44h..+50h, show +54h.
+// When the order code +84h is ECh: +74h = 0.0, +78h = 1, +7Ch = 0.0, +80h = 1,
+// and the award tracker triggers hint "ORDPERMANENT" (00CF3CA4, arg 0) unless it
+// is already the active hint (00449AF0 case-insensitive compare of the copied
+// active name). Then by the controlled unit [00E188D8]:
+//   kind 6: +83h = (unit[+738h] vtable +50h == 1); +10h shown when +83h is clear,
+//     +0Ch when set; +18h shown, +14h hidden; +2Ch (when unit+284h is non-zero)
+//     or +28h shown; +1Ch shown.
+//   kind 18h (squadron): the same test on unit[+348h]; +10h / +0Ch as above;
+//     +18h hidden, +14h, +1Ch, +34h shown, +30h hidden.
+struct HudOrderEnterHost : WidgetHost {
+    virtual std::uint32_t controlled_unit() = 0;  // [00E188D8]
+    virtual bool is_kind(std::uint32_t unit, std::int32_t kind) = 0;
+    virtual std::int32_t order_mode(std::uint32_t component) = 0;  // component vtable +50h
+    virtual bool active_hint_is(const char* name) = 0;  // 0068E5B0 copy + 00449AF0
+    virtual void trigger_hint_00690fd0(const char* name, std::int32_t arg) = 0;
+};
+inline constexpr const char* kPermanentOrderHint = "ORDPERMANENT";
+void hud_order_screen_enter_005fad70(void* screen, HudOrderEnterHost& host);
+
 }  // namespace bsp::cc13_fe1

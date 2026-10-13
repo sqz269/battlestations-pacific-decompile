@@ -255,6 +255,16 @@ water, so `0080A000` is its entire motion model.
   step still inside `IgnitionDelay`, and `post = dt - pre` the slice after it. The motor lights
   (`record+494h = 1`, then `shot->vtable[+3Ch]()`, which is `00809F20` for the rocket against
   `006E1CD0` for every other kind) when `min(record+490h, post)` is non-zero, or when `pre` is zero.
+  - Which table (cc9-gunnery39, 2026-10-13, checking CC13_GP_006B_0070's question). The call at
+    `0080A0FE` is `[[record+310h]+3Ch]`: the vtable of the interface EMBEDDED at `record+310h`, not the
+    shot's primary table. `0080AB8D` (`BSP_RocketProjectile_Construct`) stores `00D09078` there, whose
+    `+3Ch` (`00D090B4`) is `00809F20`; `006E26CF` (`BSP_BombProjectile_Construct`, `EDI = ESI+310h` from
+    `006E2699`) stores `00CF95E0`, whose `+3Ch` (`00CF961C`) is `006E1CD0`. `006E6C20` is `+3Ch` of a
+    different table, `00CF93B0` (stored by `006E22EF` in `BSP_ProjectileShotBase_Construct`), the on-spawn
+    slot PROJECTILE_KINDS.md cites at `006E86CD`. Both sentences are right for their own table; the one
+    above stands. `006E1CD0` does have table references (`00CF961C`, `00CFBA4C`, `00CFC664`, `00CFC8DC`,
+    `00CFCB14`, `00CFCFE4`, `00D0502C`, Ghidra xrefs), contrary to CC13_GP_006B_0070. The host runs neither:
+    the ignition notice is effects only (`rocket_homing_cc13.hpp`), and no host path dispatches `+3Ch`.
 - `0080A100` `record+490h = pre + record+490h - min(record+490h, post)`.
 - `0080A124` `v.y -= 9.81 * pre` and then `v.y += 9.81 * min(record+490h, post)`. The class's
   `NoGravity` flag is **not** consulted on this path. The second term cancels gravity again over the

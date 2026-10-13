@@ -1819,4 +1819,258 @@ void mission_side_block_construct_005c4be0(void* block) noexcept {
     for (std::size_t k = 0; k < 20; ++k)
         for (std::size_t word = 0; word < 3; ++word) write_field<std::uint32_t>(block, 0x18 + 0x10 * k + 4 * word, 0);
 }
+void mission_score_record_destroy_members_00594290(void* record, MissionScoreHost& host) {
+    host.record_destruct_00593570(record);
+}
+
+// ---------------------------------------------------------------------------
+// Multiplayer main menu list handlers (packet cc13-fe1b)
+// ---------------------------------------------------------------------------
+
+namespace {
+void show_list_help(std::uint32_t list_box, std::uint32_t table, MultiMainListHost& host) {
+    host.command_bar_set_help_line_0054a0c0(host.help_text(table, host.list_box_selected_data_00a9c990(list_box)));
+}
+std::uint8_t list_byte(std::uint32_t list_box, std::size_t offset) {
+    return read_field<std::uint8_t>(reinterpret_cast<const void*>(static_cast<std::uintptr_t>(list_box)), offset);
+}
+void set_list_byte(std::uint32_t list_box, std::size_t offset, std::uint8_t value) {
+    write_field(reinterpret_cast<void*>(static_cast<std::uintptr_t>(list_box)), offset, value);
+}
+}  // namespace
+
+void multi_main_on_listbox_selection_changed_005e73a0(void* listener, std::uint32_t list_box,
+    MultiMainListHost& host) {
+    std::uint32_t table;
+    if (list_box == widget_at(listener, 0x1C) && list_byte(list_box, 0x85) != 0) table = kQuickHelpTable;
+    else if (list_box == widget_at(listener, 0x18) && list_byte(list_box, 0x85) != 0) table = kRankedHelpTable;
+    else return;
+    host.set_enabled(list_box, true);
+    show_list_help(list_box, table, host);
+}
+
+void multi_main_on_listbox_activate_005e7160(void* listener, std::uint32_t list_box,
+    const MultiMainHostingFlags& flags, MultiMainListHost& host) {
+    const std::int32_t data = host.list_box_selected_data_00a9c990(list_box);
+    void* screen = at(listener, 0) - 8;
+    if (list_box == widget_at(listener, 0x1C)) {
+        write_field(listener, 0xEC, host.list_box_selected_index_00a9c920(list_box));
+        if (data == 0) {
+            host.start_hosting_005e6f00(screen);
+        } else if (data == 1) {
+            *flags.e08701 = 0;
+            *flags.e08700 = 0;
+            *flags.e19610 = 2;
+            host.push_request_interface_00688ad0(0x10);
+        } else if (data == 2) {
+            host.open_friends_005e6c70(screen);
+        }
+        return;
+    }
+    if (list_box != widget_at(listener, 0x18)) return;
+    if (data == 0 || data == 1) {
+        host.set_online_ranked_4d(data == 0);
+        host.frame_set_title_005189b0(data == 0 ? kRankedTitle : kPlayerTitle);
+        host.set_buttons_visible_005e6b10(screen, data == 0);
+    }
+    const std::uint32_t ranked = widget_at(listener, 0x18);
+    host.set_enabled(ranked, false);
+    host.set_shown(ranked, false);
+    set_list_byte(ranked, 0x77, 1);
+    const std::uint32_t quick = widget_at(listener, 0x1C);
+    host.set_enabled(quick, true);
+    host.set_shown(quick, true);
+    set_list_byte(quick, 0x77, 0);
+    show_list_help(list_box, kQuickHelpTable, host);  // 005E7312: ECX = the activated (ranked) list
+    host.input_update_zero();
+}
+namespace {
+std::uint8_t first_glyph(std::uint32_t widget, const char* empty) {
+    const char* text = read_field<const char*>(reinterpret_cast<const void*>(static_cast<std::uintptr_t>(widget)), 0xF0);
+    return static_cast<std::uint8_t>(*(text != nullptr ? text : empty));
+}
+void press_style(std::uint32_t widget, PressHost& host) {
+    if (host.type(widget) == 6) {
+        host.set_frame_state_88(widget, 2, 0, 1.0f);
+        return;
+    }
+    if (host.type(widget) == 0x12) host.set_toggle_state_84(widget, 2);
+}
+}  // namespace
+
+void hud_pause_on_press_005fdb50(void* listener, std::uint32_t widget, std::int32_t& page_00e19660,
+    const char* empty_00e19688, PressHost& host) {
+    if (host.type(widget) == 3) {
+        host.set_scale(widget, 1.0f);
+        const std::uint8_t glyph = first_glyph(widget, empty_00e19688);
+        if (glyph == 0xA2) {
+            const std::uint32_t list_box = widget_at(listener, 0x130);
+            host.list_listener_activate_04(at(listener, 0) - 4, host.list_box_value_00425e50(list_box), list_box);
+            return;
+        }
+        if (glyph == 0xB7 || glyph == 0xB8 || glyph != 0xA3) return;
+        page_00e19660 = 0;
+        host.hud_pause_resume_005fd440(at(listener, 0) - 0xC);
+        return;
+    }
+    if (widget == widget_at(listener, 0x70)) host.scroller_begin_thumb_drag_00683a40(at(listener, 0x90));
+    else if (widget == widget_at(listener, 0x6C)) host.scroller_scroll_toward_end_00683700(at(listener, 0x90), 0.5f);
+    else if (widget == widget_at(listener, 0x68)) host.scroller_scroll_toward_start_00683680(at(listener, 0x90), 0.5f);
+    press_style(widget, host);
+}
+
+void mode_selector_on_press_005ed450(void* listener, std::uint32_t widget, const char* empty_00e19618,
+    PressHost& host) {
+    void* screen = at(listener, 0) - 0xC;
+    if (host.type(widget) == 3) {
+        const std::uint8_t glyph = first_glyph(widget, empty_00e19618);
+        if (glyph == 0xA2) {
+            if (read_field<std::uint8_t>(listener, 0xD4) != 0) host.mode_selector_refresh_map_list_005ec250(screen);
+            else host.list_listener_activate_04(at(listener, 0) - 4, widget, widget_at(listener, 0x14));
+            return;
+        }
+        if (glyph == 0xA3) {
+            host.mode_selector_go_back_005eca90(screen);
+            return;
+        }
+        for (std::int32_t k = 0; k < 4; ++k)
+            if (widget == widget_at(listener, 0xB4u + k * 4u))
+                host.list_box_select_index_00a9c7c0(widget_at(listener, 0x9C), k);
+        return;
+    }
+    if (read_field<std::uint8_t>(listener, 0xD4) != 0) {
+        if (widget == widget_at(listener, 0xA4)) host.mode_selector_step_option_005ecba0(screen, -1);
+        else if (widget == widget_at(listener, 0xA8)) host.mode_selector_step_option_005ecba0(screen, 1);
+        else return;
+    } else if (widget == widget_at(listener, 0x28)) {
+        host.scroller_set_auto_scroll_00683300(at(listener, 0x30), 2, kModeSelectorAutoScrollSpeed, 1);
+    } else if (widget == widget_at(listener, 0x24)) {
+        host.scroller_set_auto_scroll_00683300(at(listener, 0x30), 1, kModeSelectorAutoScrollSpeed, 1);
+    } else if (widget == widget_at(listener, 0x90)) {
+        host.scroller_begin_thumb_drag_00683a40(at(listener, 0x30));
+    }
+    press_style(widget, host);
+}
+void mode_selector_on_listbox_selection_changed_005ebc90(void* self, std::uint32_t list_box,
+    std::int32_t& index_00e19614, ModeSelectorTextHost& host) {
+    if (list_box == widget_at(self, 0xA0)) return;
+    index_00e19614 = host.list_box_selected_index_00a9c920(list_box);
+    host.command_bar_set_help_line_0054a0c0(host.table_string(0x00E089A4u, index_00e19614));
+    if (index_00e19614 > 5) return;
+    host.text_set_localised_cstring_00abbe50(widget_at(self, 0x20), host.table_string(0x00E089BCu, index_00e19614), 1);
+    host.text_set_localised_cstring_00abbe50(widget_at(self, 0x24), host.table_string(0x00E0898Cu, index_00e19614), 1);
+    host.set_frame_state_88(widget_at(self, 0x1C), index_00e19614 & 0xFFFF, 0, 1.0f);  // MOVZX word
+    host.scroller_attach_content_00683790(at(self, 0x34), 0);
+    const float size_y = host.widget_size_y_00aa6740(widget_at(self, 0x90));
+    const double description = static_cast<double>(host.text_normalized_height_00ab6bd0(widget_at(self, 0x24))) * 1.5;
+    const double title = host.text_normalized_height_00ab6bd0(widget_at(self, 0x20));
+    host.scroller_set_scroll_range_006834a0(at(self, 0x34), static_cast<float>(title + description - size_y));
+}
+
+void hud_narrative_update_005bc920(void* screen, NarrativeUpdateHost& host) {
+    const bool shown = read_field<std::int32_t>(screen, 0x54) > 0 || host.narrative_34() != 0 || host.narrative_24() != 0;
+    for (std::size_t offset : {0x34u, 0x38u, 0x3Cu, 0x40u}) host.set_shown(widget_at(screen, offset), shown);
+    if (!shown) {
+        host.text_set_localised_cstring_00abbe50(widget_at(screen, 0x34), "", 1);  // 00CE3A0C
+        host.text_set_localised_cstring_00abbe50(widget_at(screen, 0x38), "", 1);
+    }
+    const float dt = host.game_frame_time_21f0();
+    if (0.0f >= dt) return;  // COMISS/JAE; NaN runs the steps
+    host.step(0x005BBF10u, screen, dt);
+    host.step(0x005BC640u, screen, dt);
+    host.step(0x00735100u, host.mission_narrative_21e8(), dt);
+    host.step(0x005B9800u, screen, dt);
+    host.step(0x005B8C30u, screen, dt);
+}
+void hud_pause_show_page_005fd890(void* screen, bool ingame_page, bool list_page, PauseShowPageHost& host) {
+    const std::uint32_t page = ingame_page ? host.ingame_page_widget() : widget_at(screen, 0x14);
+    const std::uint32_t list_box = widget_at(screen, 0x2C);
+    if (list_page) {
+        host.set_shown(page, false);
+        host.set_shown(widget_at(screen, 0x18), true);
+        host.frame_select_default_004c9680();
+        host.set_enabled(list_box, true);
+        host.list_box_select_index_00a9c7c0(widget_at(screen, 0x2C), 0);
+        host.list_box_set_listener_00a9ac40(widget_at(screen, 0x2C), at(screen, 0x8));
+        host.list_box_virtual_80(widget_at(screen, 0x2C), true);
+        return;
+    }
+    host.set_shown(page, true);
+    host.set_shown(widget_at(screen, 0x18), false);
+    host.list_box_clear_rows_00a9bec0(widget_at(screen, 0x2C));
+    // The row list at +64h (sentinel +68h, size +6Ch): delete each row object,
+    // then unlink everything and free the nodes.
+    void* list = at(screen, 0x64);
+    for (void* node = read_field<void*>(read_field<void*>(list, 0x4), 0x0); node != read_field<void*>(list, 0x4);
+         node = read_field<void*>(node, 0x0)) {
+        if (void* row = read_field<void*>(node, 0x8)) host.delete_owned(row);
+    }
+    void* sentinel = read_field<void*>(list, 0x4);
+    void* node = read_field<void*>(sentinel, 0x0);
+    write_field(sentinel, 0x0, sentinel);
+    write_field(sentinel, 0x4, sentinel);
+    write_field<std::uint32_t>(list, 0x8, 0);
+    while (node != read_field<void*>(list, 0x4)) {
+        void* next = read_field<void*>(node, 0x0);
+        host.free_block(node);
+        node = next;
+    }
+    if (ingame_page) {
+        if (!host.ingame_page_locked_1c())
+            host.frame_select_00518d60(host.game_byte_218c() ? kPausedFrame : kPauseMultiTitleFrame);
+    } else {
+        host.frame_select_00518d60(kPausedFrame);
+    }
+    write_field<std::uint8_t>(screen, 0x10, 0);
+}
+void options_screen_enter_005f5bd0(void* screen, std::int32_t page_00e19650, OptionsEnterHost& host) {
+    if (read_field<std::uint8_t>(screen, 0x25C) == 0) host.frame_select_00518d60(6, 0, 0, kOptionsMainTitle);
+    host.copy_settings_005f52c0(at(screen, 0xD8), host.live_settings_00f88980());
+    const std::uint32_t page = widget_at(screen, 0x7C);
+    const bool in_mission = host.game_in_mission_61f();
+    write_field(screen, 0x84, host.find_child_by_name_00aa7e00(page, in_mission ? kIngameMainListboxName : kMainListboxName));
+    host.set_shown(host.find_child_by_name_00aa7e00(widget_at(screen, 0x7C), in_mission ? kMainListboxName : kIngameMainListboxName), false);
+    write_field(screen, 0x8C, host.find_child_by_name_00aa7e00(widget_at(screen, 0x84), kMainListboxTextName));
+    host.set_shown(widget_at(screen, 0x84), true);
+    host.set_enabled(widget_at(screen, 0x84), true);
+    if (page_00e19650 == 1) host.build_page(0x005F58F0u, screen);
+    else if (page_00e19650 == 4) host.build_page(0x005F40F0u, screen);
+    else host.build_page(0x005F54F0u, screen);
+    write_field(screen, 0x260, 0.1f);  // 00D7A2F0
+    write_field<std::uint8_t>(screen, 0x251, 0);
+    host.input_devices_virtual_0c();
+}
+void hud_order_screen_enter_005fad70(void* screen, HudOrderEnterHost& host) {
+    for (std::size_t offset : {0x44u, 0x48u, 0x4Cu, 0x50u}) host.set_shown(widget_at(screen, offset), false);
+    host.set_shown(widget_at(screen, 0x54), true);
+    if (read_field<std::int32_t>(screen, 0x84) == 0xEC) {
+        write_field(screen, 0x74, 0.0f);
+        write_field<std::uint8_t>(screen, 0x78, 1);
+        write_field(screen, 0x7C, 0.0f);
+        write_field<std::uint8_t>(screen, 0x80, 1);
+        if (!host.active_hint_is(kPermanentOrderHint)) host.trigger_hint_00690fd0(kPermanentOrderHint, 0);
+    }
+    const std::uint32_t unit = host.controlled_unit();
+    const void* u = reinterpret_cast<const void*>(static_cast<std::uintptr_t>(unit));
+    auto set_mode = [&](std::size_t component) {
+        const bool single = host.order_mode(read_field<std::uint32_t>(u, component)) == 1;
+        write_field<std::uint8_t>(screen, 0x83, single ? 1 : 0);
+        host.set_shown(widget_at(screen, 0x10), !single);
+        host.set_shown(widget_at(screen, 0x0C), single);
+    };
+    if (host.is_kind(unit, 6)) {
+        set_mode(0x738);
+        host.set_shown(widget_at(screen, 0x18), true);
+        host.set_shown(widget_at(screen, 0x14), false);
+        host.set_shown(widget_at(screen, read_field<std::uint32_t>(u, 0x284) != 0 ? 0x2Cu : 0x28u), true);
+        host.set_shown(widget_at(screen, 0x1C), true);
+    } else if (host.is_kind(host.controlled_unit(), 0x18)) {
+        set_mode(0x348);
+        host.set_shown(widget_at(screen, 0x18), false);
+        host.set_shown(widget_at(screen, 0x14), true);
+        host.set_shown(widget_at(screen, 0x1C), true);
+        host.set_shown(widget_at(screen, 0x34), true);
+        host.set_shown(widget_at(screen, 0x30), false);
+    }
+}
 }  // namespace bsp::cc13_fe1
