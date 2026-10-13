@@ -1987,4 +1987,69 @@ void hud_limbo_set_state_00565fb0(Raw s, std::int32_t state, Fe3ReadHost& host) 
     if (s.at<std::uint8_t>(5) != 0) host.gui_text_set_localised_00abbe50(s.ptr(0xC), text, 1);
 }
 
+// --- packet cc13-fe6 additions ----------------------------------------------
+
+void hud_limbo_enter_00566080(Raw screen, Fe6LimboHost& host) {
+    screen.ptr(0x0C) = host.find_child_by_name_00aa7e00(screen.ptr(0x08), "Message_Text");
+    screen.ptr(0x10) = host.find_child_by_name_00aa7e00(screen.ptr(0x08), "Continue_Text");
+    host.widget_set_visible_34(screen.ptr(0x10), 0);
+    host.hud_limbo_set_state_00565fb0(screen, screen.at<std::int32_t>(0x14));
+    screen.at<float>(0x18) = kLimboContinueDelay;
+    host.gamepad_force_clear_all_channels_00a95cb0();
+}
+
+void leaderboards_move_selection_00561860(Raw screen, void* scroller, void* list_box, void* clip, bool no_scroll,
+    Fe6LeaderboardHost& host) {
+    const bool board = list_box == screen.ptr(0x94);
+    std::int32_t& first = screen.at<std::int32_t>(board ? 0xB0 : 0x140);
+    std::int32_t& last = screen.at<std::int32_t>(board ? 0xB4 : 0x144);
+    std::int32_t& selected = screen.at<std::int32_t>(board ? 0xB8 : 0x148);
+    const Raw list{static_cast<std::uint8_t*>(list_box)};
+    const Raw clip_raw{static_cast<std::uint8_t*>(clip)};
+    first = list.at<std::int32_t>(0x104);
+    last = 0;
+    const std::array<float, 3> clip_pos = host.widget_resolved_position_00aa6750(clip);
+    const std::array<float, 2> clip_size = host.widget_size_00aa6740(clip);
+    const float clip_y = static_cast<float>(clip_pos[1] - clip_size[1] * clip_raw.at<float>(0x1C));
+    for (std::int32_t i = 0; i < list.at<std::int32_t>(0x104); ++i) {
+        void* row = host.list_box_row_00a9be00(list_box, i);
+        const Raw row_raw{static_cast<std::uint8_t*>(row)};
+        const std::array<float, 3> pos = host.widget_resolved_position_00aa6750(row);
+        const std::array<float, 2> size = host.widget_size_00aa6740(row);
+        const float row_y = static_cast<float>(pos[1] - size[1] * row_raw.at<float>(0x1C));
+        // The two sums stay in extended precision; double is exact for float + float.
+        const bool visible = row_y > clip_y && static_cast<double>(clip_y) + clip_size[1] >
+                                                   static_cast<double>(row_y) + size[1];
+        if (visible) {
+            if (i < first) first = i;
+            else if (last < i) last = i;
+        }
+        host.widget_set_enabled_60(row, visible ? 1u : 0u);
+    }
+    const Raw scroll{static_cast<std::uint8_t*>(scroller)};
+    if (scroll.at<std::uint8_t>(0x48) == 0 && scroll.at<std::int32_t>(0x20) == 0 && !no_scroll) {
+        if (host.list_box_selected_index_00a9c920(list_box) != -1 && host.list_box_selected_index_00a9c920(list_box) < first) {
+            host.scroller_toward_start_00683680(scroller,
+                host.widget_size_00aa6740(host.list_box_current_row_00425e50(list_box))[1]);
+            return;
+        }
+        if (host.list_box_selected_index_00a9c920(list_box) == -1) return;
+        if (host.list_box_selected_index_00a9c920(list_box) > last)
+            host.scroller_toward_end_00683700(scroller,
+                host.widget_size_00aa6740(host.list_box_current_row_00425e50(list_box))[1]);
+        return;
+    }
+    std::int32_t target = 0;
+    if (host.list_box_selected_index_00a9c920(list_box) != -1 && host.list_box_selected_index_00a9c920(list_box) < first) {
+        target = first;
+    } else {
+        if (host.list_box_selected_index_00a9c920(list_box) == -1) return;
+        target = last;
+        if (host.list_box_selected_index_00a9c920(list_box) <= target) return;
+    }
+    if (target == -1) return;
+    host.list_box_select_index_silently_00a9c8f0(list_box, target);
+    selected = target;
+}
+
 } // namespace bsp::cc13_fe3

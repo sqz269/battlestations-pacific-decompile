@@ -140,6 +140,19 @@ were checked from the bytes (`ghidra bytes`), not from listing text.
   reconstruction returns a std::string. Slot 0's players-ready count is used only when the game
   byte +218Ch is set and the effective mode (004BCA50) is above 3; otherwise it is "2".
 
+### cc13-fe3 list (src/frontend_seg12_17_cc13.cpp, namespace bsp::cc13_fe3)
+
+| Address | C++ | Native ABI | Notes |
+|---|---|---|---|
+| 00566080 | `hud_limbo_enter_00566080` | fastcall(ECX screen), RET | timer +18h = 6.0f (00CE6630) |
+| 00561860 | `leaderboards_move_selection_00561860` | thiscall(screen, scroller, list box, clip, bool), RET 10h | x87 visibility test |
+
+- 00561860: the routine overwrites its own argument slot `[ESP0+8]` with `&last` (00561888) and
+  keeps `&selected` in a local, so the later `[esp+48h]` reads are the pointer, not the list
+  box. Stack offsets were traced across the `push edi` / `pop edi` pair. Only the y components
+  enter the visibility test. The x top-left values are computed and then discarded.
+  The `+104h` row count is the initial "first".
+
 ## For cc9
 
 - `lobby_settings_option_label_005e2320` is available for `MissionLua::lobby_settings_option_label`
@@ -150,3 +163,20 @@ were checked from the bytes (`ghidra bytes`), not from listing text.
   `BSP_Session_RequestSlotAiEnable` and 0076CC40 `BSP_Session_SetSlotAiSkillLevel`, both with
   ECX = game+1EF0h. It also writes the briefing record `[[00E198AC]+70h]` +94h/+98h. These are
   pre-mission session settings; any host wiring of them is the gameplay lane's decision.
+
+## Handoff (cc13-fe6, 2026-10-12)
+
+Fourteen routines reconstructed and build-tested (no Ghidra renames this pass). Still open:
+
+- **fe1 list:** 00601200 BuildHintList (about 4 KB, std::map/std::list heavy; host method in
+  `PauseScreenHost`), 005AB190 HudMap register (11 KB; take it range by range with
+  `local/fe6_binds.py`-style binding extraction), and 005BB130 HudNarrative register.
+- **fe3 list:** everything in the docs/CC13_FE_3.md handoff except 00566080 and 00561860. That
+  includes 005630F0 InsertN, a plain `vector::_Insert_n` instantiation over 40h-byte rows,
+  left as a template.
+- **Tools** (in this worktree's `local/`, not committed):
+  - `fe6_calls.py`: per-call ECX/EDX and push summary from a `disasm-raw` dump.
+  - `fe6_binds.py`: FindChildByName literal / parent / store extraction, with strings read from
+    the PE.
+  - `fe6_callrows.py`: builds the verify_report_calls rows. Note that `fe6_calls.py` follows
+    linear flow, so check the ECX of any call reached by a jump into a shared tail by hand.
