@@ -67,12 +67,12 @@ inline constexpr bool kMoveToCircleSteerBound = true;
 // arm (0099A24A -> 009BDBB0 -> 009BCE50) for a plane, and the kind-6 task's arm
 // 009BD990 (src/moveonpath_task_cc13.cpp). Committed OFF: the plane keeps the
 // task it already had while its director holds the path command.
-inline constexpr bool kMoveOnPathTaskBound = false;
+inline constexpr bool kMoveOnPathTaskBound = true;  // ON: BSM01/JM06 pairs (docs/SQUADRON_LAND_TASK.md 5gd)
 // Packet cc13-legmgr1 (docs/CC13_LEG_ALTITUDE_MANAGER.md): the converging-leg
 // manager 009BD400 (009FC000 / 009FC1C0 / 009FC260) behind the moveonpath task's
 // leg calls. Committed OFF: registration and release stay records and the
 // altitude is the steer point's own height.
-inline constexpr bool kLegAltitudeManagerBound = false;
+inline constexpr bool kLegAltitudeManagerBound = true;  // ON: JM06 pair, gameplay identical (5gd)
 // 008A44EF. `retreat`.
 inline constexpr std::uint32_t kPilotOrderClassRetreat = 0x00E08F90u;
 // 008A4900. `land`, SCENE_COMMAND_TYPES row 22.
