@@ -13837,3 +13837,43 @@ ship-AI funnel call (`game_hosts_ship_ai.cpp`, `kill_unit_00926d90(u, 2)`).
 `Dead` reason reads "soft". Rows whose scripts call `Kill(x, true)` mid-mission can move (exit 3); a script
 that counted kills by reason may branch differently. USN12/USN15/USN01: report the non-harm count; expect exit 0
 or 1 where no harm-filtered listener meets a soft kill.
+
+## 225. Verdicts for 216-223 (cc9-gunnery41, 2026-10-13)
+
+OFF `863d505be` as built (`local\g40_bm0`) against one export per switch at the same commit: D4 `g40_tf`, D6 `g40_tb0`,
+D3+D1 `g40_sw0`, D5 `g40_sx0`, D2 `g40_sx1`, slot origin `g39_rk1`, leader `g39_rk2`, submarine gate `g39_lo`.
+The export dirs are reused for incremental builds, so their names do not match the switches they carry.
+Rows: USN12 `s38_u12_p2` 36000, USN21 (ships44's `s46_u21_d`, copied to `local\g41_u21_d.txt`) 60000, USN15
+`s45_u15_l2` 90000. Logs are `local\g41_<tag>_<row>.log`. OFF USN12 completes at 1500.19 s, and the exec guard's
+`sus_prog.exe` refusal is logged. USN21 has no end in 3000 s in any run.
+
+| switch | USN12 | USN21 | verdict |
+| --- | --- | --- | --- |
+| D4 `kFlakSecondAmmoCadenceBound` (216) | exit 3, completes 1500.19 s; `shots=2043` mode-1, seat flak 0 -> 2043; DP rounds 2069 -> 2043 (US Bullet[2] reloads equal Bullet[1]) | DP rounds 8782 -> 11702 (x1.33; cc13 predicted ~x1.7); deaths 716 -> 754 | mechanism matches, the US-row rate prediction missed; **ON** |
+| D6 `kFlakNegativeVerticalBound` (217) | identical (`adjusts=668` change no hit); missed "exit 3" | `adjusts=5751`; shots +4 %; deaths +29 | **ON** |
+| D3+D1 `kAaLeadDistanceGateBound` (218) | exit 3, completes; shots 17034 -> 18777 | shots +20 %; releases 3 -> 9 torpedo, 25 -> 32 dive (RNG-coupled; "releases down" missed) | mechanism matches; **ON** |
+| D5 `kFlakFuseArmTimeBound` (219) | identical | `unarmed steps=76620`; deaths +25 | **ON** |
+| D2 `kFlakErrorRerollBound` (220) | identical (`send rolls=2848`, the USN12 rows roll zero ranges) | `send rolls=23027`; torpedo releases 3 -> 14 (RNG-coupled) | **ON** |
+| VER_19 D2 `kAaSlotRangeOriginBound` (221) | **LOST**: Montpelier dies at 1142.09 s to `bruh #5.1` (cat 10, from 741 s); `flips=325` only, AA intercept solves 206k -> 141k after the divergence | moved, small | stays **OFF**; lost win to the keeper |
+| VER_19 D3 `kDirectorLeaderFireTargetBound` (222) | **LOST, broken**: `inherits=47441`; at 538-551 s Agano/Naganami/Hatsukaze torpedoes (cat 7, 4-5 km) sink Charles, Cleveland, Spence and Montpelier; no planes ever spawn (deaths 97 -> 10) | see below | stays **OFF** (mechanism suspect, below) |
+| VER_19 D4 `kSubmarineCategoryGateBound` (223) | identical (`refusals=0`) | see below | see below |
+
+**Leader fallback.** cc13's D3 reads the fallback for AA, but the provider feeds every category's step 8.7 arm,
+so a torpedo category tries the leader's target first. In the host every Japanese formation member gets its
+leader's target (47441 inherits) and fires torpedoes at 4-5 km. In the image, members whose own AutoTarget
+think (`009F5DA0` -> `00835860`) sets `director+238h` never reach the fallback. So the inheritance count depends
+on how often the ships lane's AutoTarget leaves a member's row empty. Before this switch can be judged, find out
+whether the host's AutoTarget writes members' rows the way the image does.
+
+**Blast mesh (215 open item 1, lead queue item 4).** The "unlogged blast arm" premise is refuted from 214's own logs
+(`local\g40_bm0_os.log` OFF, `g40_bm1_os.log` ON). On USNOS, every `impact blast ... on NH` line sums to 199.8
+damage in 25 blasts ON, against 14455.4 in 10 blasts OFF over the whole OFF run. NH's 15802 category-6 damage ON
+(36 hits from 504 s) is therefore Shimotsuke's direct fire after the battles diverged, not blast damage. OFF never
+loses NH. The switch stays OFF on the earlier verdict. Next step: compare the OFF and ON death rows before 504 s
+to find the first moved engagement.
+
+**Fido homing (lead queue item 5) is blocked in this installation.** The `IJN12_Fido` trigger (Avenger sent at
+the surfaced player boat, `ShowHint("IJN12_Fido")`) is only in `scripts/missions/COTP-IJN/jm12.lua` and
+`ijn/JM/jm12.lua` (2024-07-13). `scripts/datatables/missiontree.lua` (2025-06-02) maps the Hawaii-2 mission
+(menu id `JM14`) to `prcpijn_12_havaii_2.scn`. Its `prcpjm12.lua` has no Fido block, and menu `JM12` loads the
+Fiji invasion. No menu id reaches the Fido script, and the harness has no scene override.
