@@ -77,4 +77,11 @@ case-insensitive tree (head +4h) of binding names with a name vector +34h, a set
   `textbox_main_Text` up twice (+34h and +38h hold the same child), copies the subtitle text's colour
   (vtable +54h) into +44h and into the single message-box element it leaves in the vector +90h, and
   reads DialogFadeTime, TempCharWait and TempWaitBase from `Scripts/datatables/DialogGlobals.lua` in a
-  private Lua owner opened with 1.
+  private Lua owner opened with 1.- 00601200 (pause-screen hint list) walks the award tracker's hint history, which is a map keyed by
+  hint name (head at tracker +98h, iterated with 004B7DE0), not a list. Each hint gets a row; a key
+  containing `AAAAAA` anywhere is shown from position 6 on. The exclamation mark
+  (`felkialtojel_Text`) marks hints present with a non-zero count in the tracker's new-hint map +7Ch,
+  and, for expanded hints (screen list +128h), the sub-hints found in that hint's new-hint list. Sub-hint
+  rows take the language text (language 0 / 1 from `[[00E188A8]+18CCh+[+18ECh]*4]+28h`), else the
+  record's default, else the sub-hint key. Only top-level rows get an index-map entry; sub rows still
+  advance the index.
