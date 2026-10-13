@@ -617,5 +617,75 @@ void timed_flag_debounce_007eb4e0(TimedFlag& flag, bool now, float dt) noexcept;
 // 2Ch bytes), then "engines". Recorded here as the layout; the archive calls
 // themselves are not modelled.
 
+// ---- cc13-gpr48b: 007D9360, the climb-angle trial integration -------------
+//
+// 007D9360 __fastcall(ECX Vec3* body_velocity_out, EDX class descriptor,
+// float angle, float probe_speed, float dt, int count), RET 10h (callee-cleared
+// stack args). The predicate of 007D98F0's climb-angle bisection, which calls it
+// as (angle, probeSpeed, 0.04f, 10). Read from the disk bytes 007D9360-007D9892
+// (x87 checked; the three DC-form sites 007D954D, 007D9555, 007D9663 are
+// st(1) = st(1) op st(0)).
+//
+// Setup: pose = transpose-inverse (0085DEA0) of RotationX(-0.0f - angle)
+// (00B64640); body velocity = (0, 0, probe_speed); world velocity = the pose
+// applied to it (0042D0D0 with 0). The pose operations and the integrator are
+// host callbacks; the per-step force accumulation is modelled.
+//
+// Per step, into a fresh 007D7C00 dynamics record (vtable 00D06844):
+//  speed s = sqrt((vy^2 + vx^2) + vz^2) of the WORLD velocity when the float sum
+//    exceeds 1e-10 (00CE3820, double), else 0; ratio r = s / class+184h.
+//  thrust T = class+164h; climbing (angle < 0): T *= ((k - 1) * sin(b) + 1) with
+//    k = [00F87404] and b = InterpolateClamped([00F87408], 0, [00F8740C], pi/2,
+//    -0.0f - angle) stored as a float before FSIN; then T < 0 -> 0, T > 100.0
+//    (double 00D7A220) -> 100.0f; dyn+24h += T.
+//  pitch term p = |vz_body| >= 1.0f ? -vy_body / vz_body : 0 (|z| as -0.0f - z
+//    when z <= 0); q = r / [00F8732C] (LevelFlight); m = (q < 1 ? q*q : 1) * (p + 1)
+//    stored as a float, clamped to [-2.0f, 2.0f];
+//    dyn+20h += float(k2 * m) * 9.81 and dyn+2Ch -= k2 * 9.81, with k2 =
+//    [00F873FC] (AccelCheatMul) and 9.81 the double 00CF9058.
+//  drag d = 007D9140(s, 1.0f, angle, 0, 0); |v| recomputed from the saved squares;
+//    u = v * (|v| > 0 ? 1/|v| : 0) per component (floats); dyn+10h..18h += d * u.
+//  aero a = 007D92B0(r); dyn+04h += a * float(-vx_body * class+174h);
+//    dyn+08h += a * float(-vy_body * class+170h).
+//  then 007D8470(dt, pose, ...) integrates; body velocity <- dyn+64h..6Ch and
+//    world velocity <- dyn+4Ch..54h.
+struct TrialClass {
+    float speed_ref_184 = 1.0f;
+    float thrust_164 = 0.0f;
+    float aero_x_174 = 0.0f;
+    float aero_y_170 = 0.0f;
+};
+struct TrialGlobals {
+    float climb_blend_x0_f87408 = 0.0f;
+    float climb_blend_x1_f8740c = 0.0f;
+    float climb_thrust_k_f87404 = 1.0f;
+    float level_flight_f8732c = 1.0f;     // Dynamics/SpdMultipliers/LevelFlight
+    float accel_cheat_mul_f873fc = 1.0f;  // Dynamics/AccelCheatMul
+};
+// The fields of the 007D7C00 record this routine writes, by native offset.
+struct TrialDynamics {
+    float aero_04 = 0.0f, aero_08 = 0.0f;
+    Vec3 drag_10{};
+    float lift_20 = 0.0f;
+    float thrust_24 = 0.0f;
+    float gravity_2c = 0.0f;
+};
+struct TrialCallbacks {
+    std::function<Vec3(const Vec3& body)> body_to_world;          // 0042D0D0 on the trial pose
+    std::function<float(float, float, float, float, float)> interpolate_clamped_00419010;
+    std::function<float(float speed, float one, float angle)> drag_007d9140;
+    std::function<float(float ratio)> aero_007d92b0;
+    // 007D7C00 seeds the record from (world, body); 007D8470 integrates it by
+    // dt and answers the new body and world velocities.
+    std::function<void(TrialDynamics&, Vec3& body, Vec3& world, float dt)> integrate_007d8470;
+};
+// One step's force accumulation, exposed so a caller can check it alone.
+TrialDynamics trial_step_forces_007d9360(const Vec3& body, const Vec3& world, float angle,
+                                         const TrialClass& cls, const TrialGlobals& g,
+                                         const TrialCallbacks& cb);
+// The whole routine: the body velocity left after `count` steps.
+Vec3 trial_integrate_at_climb_angle_007d9360(float angle, float probe_speed, float dt, int count,
+                                             const TrialClass& cls, const TrialGlobals& g,
+                                             const TrialCallbacks& cb);
 }  // namespace gameplay_seg48_cc13
 }  // namespace bsp
