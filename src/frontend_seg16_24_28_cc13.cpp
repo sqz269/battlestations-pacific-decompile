@@ -390,45 +390,60 @@ void string_list_clear_00688780(Raw list, Fe5Host& host) {
     }
 }
 
-void dword_vector_insert_n_00688470(Raw vector, std::uint32_t* where, std::size_t count,
-                                    std::uint32_t value, Fe5Host& host) {
-    auto first = [&] { return static_cast<std::uint32_t*>(vector.ptr(4)); };
-    auto last = [&] { return static_cast<std::uint32_t*>(vector.ptr(8)); };
-    const std::size_t capacity = first() ? static_cast<std::size_t>(static_cast<std::uint32_t*>(vector.ptr(0x0C)) - first()) : 0;
+namespace {
+// std::vector<T>::_Insert_n of 00688470 / 0054B080 (T = uint32_t) and
+// 0054AED0 (T = uint8_t): max_size is FFFFFFFFh / sizeof(T).
+template <class T>
+void stl_vector_insert_n(Raw vector, T* where, std::size_t count, T value, Fe5Host& host) {
+    constexpr std::size_t kMax = 0xFFFFFFFFu / sizeof(T);
+    auto first = [&] { return static_cast<T*>(vector.ptr(4)); };
+    auto last = [&] { return static_cast<T*>(vector.ptr(8)); };
+    const std::size_t capacity = first() ? static_cast<std::size_t>(static_cast<T*>(vector.ptr(0x0C)) - first()) : 0;
     if (count == 0) return;
     const std::size_t size = first() ? static_cast<std::size_t>(last() - first()) : 0;
-    // 0x3FFFFFFF - size < count throws length_error (00688310); not modelled.
+    // kMax - size < count throws length_error (00688310 / 0054AD60); not modelled.
     if (capacity < size + count) {
-        std::size_t grown = (0x3FFFFFFFu - (capacity >> 1) < capacity) ? 0 : capacity + (capacity >> 1);
+        std::size_t grown = (kMax - (capacity >> 1) < capacity) ? 0 : capacity + (capacity >> 1);
         if (grown < size + count) grown = size + count;
-        auto* const block = static_cast<std::uint32_t*>(host.stl_allocate_dwords(grown));
-        std::uint32_t* out = block;
-        for (std::uint32_t* p = first(); p != where; ++p) *out++ = *p;
+        auto* const block = static_cast<T*>(host.stl_allocate_bytes(grown * sizeof(T)));
+        T* out = block;
+        for (T* p = first(); p != where; ++p) *out++ = *p;
         for (std::size_t i = 0; i < count; ++i) *out++ = value;
-        for (std::uint32_t* p = where; p != last(); ++p) *out++ = *p;
+        for (T* p = where; p != last(); ++p) *out++ = *p;
         if (first() != nullptr) host.crt_free(first());
         vector.ptr(0x0C) = block + grown;
         vector.ptr(8) = block + size + count;
         vector.ptr(4) = block;
         return;
     }
-    std::uint32_t* const end = last();
+    T* const end = last();
     if (static_cast<std::size_t>(end - where) < count) {
         // Tail shorter than the insertion: move the tail past the new block,
         // fill the gap beyond the old end, then fill [where, old end).
-        std::uint32_t* out = where + count;
-        for (std::uint32_t* p = where; p != end; ++p) *out++ = *p;
-        for (std::uint32_t* p = end; p != where + count; ++p) *p = value;
+        T* out = where + count;
+        for (T* p = where; p != end; ++p) *out++ = *p;
+        for (T* p = end; p != where + count; ++p) *p = value;
         vector.ptr(8) = end + count;
-        for (std::uint32_t* p = where; p != end; ++p) *p = value;
+        for (T* p = where; p != end; ++p) *p = value;
         return;
     }
-    std::uint32_t* const split = end - count;
-    std::uint32_t* out = end;
-    for (std::uint32_t* p = split; p != end; ++p) *out++ = *p;
+    T* const split = end - count;
+    T* out = end;
+    for (T* p = split; p != end; ++p) *out++ = *p;
     vector.ptr(8) = out;
-    for (std::uint32_t *s = split, *d = end; s != where;) *--d = *--s;
-    for (std::uint32_t* p = where; p != where + count; ++p) *p = value;
+    for (T *s = split, *d = end; s != where;) *--d = *--s;
+    for (T* p = where; p != where + count; ++p) *p = value;
+}
+}  // namespace
+
+void dword_vector_insert_n_00688470(Raw vector, std::uint32_t* where, std::size_t count,
+                                    std::uint32_t value, Fe5Host& host) {
+    stl_vector_insert_n<std::uint32_t>(vector, where, count, value, host);
+}
+
+void byte_vector_insert_n_0054aed0(Raw vector, std::uint8_t* where, std::size_t count, std::uint8_t value,
+                                   Fe5Host& host) {
+    stl_vector_insert_n<std::uint8_t>(vector, where, count, value, host);
 }
 
 void* multi_menu_construct_006887e0(Raw menu, Fe5Host& host) {
@@ -2087,6 +2102,185 @@ void* input_device_tree_min_00552c70(Raw node) noexcept {
 void* tree_iterator_pre_increment_via(Raw iterator, std::uint32_t routine, Fe5Host& host) {
     host.tree_iterator_increment(iterator, routine);
     return iterator.p;
+}
+
+void native_string_deque_grow_map_0068e8a0(Raw deque, std::uint32_t count, Fe5Host& host) {
+    std::uint32_t map_size = deque.at<std::uint32_t>(8);
+    // 0FFFFFFFh - map size < count throws (0068E7E0); not modelled.
+    std::uint32_t increment = map_size >> 1;
+    if (increment < 8) increment = 8;
+    if (count < increment && map_size <= 0x0FFFFFFFu - increment) count = increment;
+    const std::uint32_t front_block = deque.at<std::uint32_t>(0x0C) >> 1;
+    auto* const old_map = static_cast<void**>(deque.ptr(4));
+    auto* const new_map = static_cast<void**>(host.operator_new(static_cast<std::size_t>(map_size + count) * 4));
+    void** out = new_map + front_block;
+    for (std::uint32_t i = front_block; i < map_size; ++i) *out++ = old_map[i];
+    if (front_block <= count) {
+        for (std::uint32_t i = 0; i < front_block; ++i) *out++ = old_map[i];
+        for (std::uint32_t i = front_block; i < count; ++i) *out++ = nullptr;
+        for (std::uint32_t i = 0; i < front_block; ++i) new_map[i] = nullptr;
+    } else {
+        for (std::uint32_t i = 0; i < count; ++i) *out++ = old_map[i];
+        void** low = new_map;
+        for (std::uint32_t i = count; i < front_block; ++i) *low++ = old_map[i];
+        for (std::uint32_t i = 0; i < count; ++i) *low++ = nullptr;
+    }
+    if (old_map != nullptr) host.crt_free(old_map);
+    deque.at<std::uint32_t>(8) = map_size + count;
+    deque.ptr(4) = new_map;
+}
+
+void native_string_deque_push_back_0068eb90(Raw deque, Raw value, Fe5Host& host) {
+    const std::uint32_t next = deque.at<std::uint32_t>(0x0C) + deque.at<std::uint32_t>(0x10);
+    if ((next & 1) == 0 && deque.at<std::uint32_t>(8) <= (deque.at<std::uint32_t>(0x10) + 2) >> 1) {
+        native_string_deque_grow_map_0068e8a0(deque, 1, host);
+    }
+    std::uint32_t block = (deque.at<std::uint32_t>(0x0C) + deque.at<std::uint32_t>(0x10)) >> 1;
+    if (deque.at<std::uint32_t>(8) <= block) block -= deque.at<std::uint32_t>(8);
+    void** const map = static_cast<void**>(deque.ptr(4));
+    if (map[block] == nullptr) map[block] = host.operator_new(0x10);
+    const std::uint32_t slot = (deque.at<std::uint32_t>(0x0C) + deque.at<std::uint32_t>(0x10)) & 1;
+    host.native_string_construct_copy_0044bcb0(Raw{static_cast<std::uint8_t*>(map[block]) + slot * 8}, value);
+    ++deque.at<std::uint32_t>(0x10);
+}
+
+void plane_screen_exit_006088f0(Raw screen, Fe5Host& host) {
+    for (std::size_t off : {0x150u, 0x154u}) {
+        if (screen.ptr(off) != nullptr) {
+            host.crt_free(screen.ptr(off));
+            screen.ptr(off) = nullptr;
+        }
+    }
+    owned_vector_delete_006088a0(Raw{screen.p + 0x108}, host);
+    owned_vector_delete_006088a0(Raw{screen.p + 0x10C}, host);
+    host.widget_set_local_y_00aa78f0(screen.ptr(0xC8), screen.at<float>(0x114));
+    const Raw effect{static_cast<std::uint8_t*>(screen.ptr(0x15C))};
+    if (effect.p != nullptr) {
+        host.point_effect_stop_children_00867b10(effect);
+        effect.at<std::uint8_t>(9) = 1;
+        refcounted_ptr_release_00605600(Raw{screen.p + 0x15C}, host);
+        screen.ptr(0x15C) = nullptr;
+    }
+    host.widget_set_visible_34(screen.ptr(0xB8), false);
+    host.widget_set_visible_34(screen.ptr(0x0C), false);
+    screen.at<std::uint8_t>(8) = 0;
+    for (std::size_t first : {0x98u, 0xA8u}) {
+        auto** const begin = static_cast<void**>(screen.ptr(first));
+        auto** const end = static_cast<void**>(screen.ptr(first + 4));
+        for (void** p = begin; begin != nullptr && p != end; ++p) {
+            if (*p == nullptr) continue;
+            host.object_virtual_int(Raw{static_cast<std::uint8_t*>(*p)}, 0x04, 1);
+            *p = nullptr;
+        }
+        screen.ptr(first + 4) = screen.ptr(first);
+    }
+}
+
+void plane_screen_enter_006093d0(Raw screen, Fe5Host& host) {
+    screen.ptr(0x108) = host.hud_widget_set_new_0043dff0(screen.at<std::uint32_t>(0xF4), screen.at<std::uint32_t>(0xF8),
+                                                         screen.at<std::uint32_t>(0xFC));
+    auto make_needle = [&](std::size_t slot, std::size_t widget, float maximum) {
+        auto* const block = static_cast<std::uint8_t*>(host.operator_new(0x20));
+        if (block != nullptr) {
+            const Raw n{block};
+            n.at<float>(8) = kNeedleCentreX;
+            n.ptr(4) = screen.ptr(widget);
+            n.at<float>(0x0C) = kNeedleCentreY;
+        }
+        screen.ptr(slot) = block;
+        const Raw n{block};
+        n.at<float>(0x1C) = 0.0f;
+        n.at<float>(0x10) = kNeedleOffset;
+        n.at<float>(0x18) = maximum;
+        n.at<float>(0x14) = kNeedleSpan;
+        n.at<float>(0x00) = kPlaneEffectsUnsetTime;  // -1.0 (00D7A260)
+        gauge_needle_set_value_00605410(n, 0.0f, host);
+    };
+    make_needle(0x150, 0xE4, host.game_tuning_0042e740().at<float>(0x684));
+    make_needle(0x154, 0xE8, kNeedleSecondMaximum);
+    host.widget_set_visible_34(screen.ptr(0xB8), true);
+    host.widget_set_visible_34(screen.ptr(0x0C), true);
+    screen.ptr(0x10C) = host.hud_widget_set_new_0043df90(screen.at<std::uint32_t>(0x100), screen.at<std::uint32_t>(0x104));
+    const Raw plane{static_cast<std::uint8_t*>(screen.ptr(0x168))};
+    const float gauge = Raw{static_cast<std::uint8_t*>(plane.ptr(0x538))}.at<float>(0x600);
+    if (gauge == 0.0f) {
+        host.widget_set_visible_34(screen.ptr(0xD4), false);
+        screen.at<float>(0x138) = plane.at<float>(0xE84);
+    } else {
+        host.widget_set_visible_34(screen.ptr(0xD4), true);
+    }
+    host.widget_set_visible_34(screen.ptr(0xE0), false);
+    screen.at<std::uint8_t>(8) = 1;
+    plane_screen_update_payload_icon_00605380(screen, host);
+    host.plane_screen_rebuild_widgets_00608f30(screen);
+    screen.at<std::uint8_t>(0x190) = 1;
+}
+
+void warning_screen_show_second_text_00682990(Raw screen, Raw text, const float* rgba, std::uint32_t frame,
+                                              Fe5Host& host) {
+    void* const group = screen.ptr(kWarnSecondGroup);
+    host.widget_set_colour_50(host.gui_find_child_00aa7e00(group, "second_Text"), rgba);
+    host.text_set_localised_source_00abaed0(host.gui_find_child_00aa7e00(group, "second_Text"), text);
+    host.widget_set_frame_88(host.gui_find_child_00aa7e00(group, "second_1_Icon"), static_cast<std::int32_t>(frame), 0, 1.0f);
+    host.widget_set_frame_88(host.gui_find_child_00aa7e00(group, "second_2_Icon"), static_cast<std::int32_t>(frame), 0, 1.0f);
+    host.widget_set_visible_34(screen.ptr(kWarnSecondGroup), true);
+}
+
+void warning_screen_set_warning2_text_00682bd0(Raw screen, Raw text, Fe5Host& host) {
+    host.text_set_localised_source_00abaed0(host.gui_find_child_00aa7e00(screen.ptr(kWarnThirdGroup), "warning_2_text"),
+                                            text);
+    host.native_string_release(text);
+}
+
+void control_binding_position_marker_00553b00(Raw screen, void* widget, Fe5Host& host) {
+    void* const marker = screen.ptr(0x210);
+    if (widget == nullptr) {
+        host.widget_set_visible_34(marker, false);
+        return;
+    }
+    float pos[3];
+    host.widget_resolved_position_00aa6750(widget, pos);
+    const float* const size = host.widget_size_00aa6740(widget);
+    const float w = size[0];
+    const float h = static_cast<float>(static_cast<double>(size[1]) + kMarkerHeightPad);
+    const Raw wr{static_cast<std::uint8_t*>(widget)};
+    const float fx = wr.at<float>(0x18);
+    const float fy = wr.at<float>(0x1C);
+    const float x = static_cast<float>(static_cast<double>(pos[0]) - static_cast<double>(w) * fx);
+    const float y = static_cast<float>(static_cast<double>(pos[1]) - static_cast<double>(fy) * h);
+    const float placed[3] = {x + 0.0f, 0.0f + y, static_cast<float>(static_cast<double>(pos[2]) + kMarkerDepthBias)};
+    host.widget_set_resolved_position_00aa8240(marker, placed);
+    const float marker_size[2] = {w, h};
+    host.widget_set_size_58(marker, marker_size);
+    host.widget_set_visible_34(marker, true);
+}
+
+void plane_effects_register_00607be0(Raw screen, Fe5Host& host) {
+    host.front_end_screen_register_004f71d0(screen);
+    for (std::size_t off : {0x94u, 0x98u}) {
+        if (screen.ptr(off) == nullptr) continue;
+        host.object_virtual_int(Raw{static_cast<std::uint8_t*>(screen.ptr(off))}, 0x00, 1);
+        screen.ptr(off) = nullptr;
+    }
+    screen.at<float>(0xCC) = 0.0f;
+    const Raw observer{screen.p + 0xD0};
+    if (observer.ptr(0x14) != nullptr) {
+        host.observer_unregister_006952a0(observer.ptr(0x14), observer.p);
+        observer.ptr(0x14) = nullptr;
+    }
+    screen.ptr(0xB8) = nullptr;
+    screen.at<std::uint32_t>(0xFC) = 0;
+    auto swap_in = [&](std::size_t off, void* acquired) {
+        void* const old = screen.ptr(off);
+        if (old != acquired) {
+            screen.ptr(off) = acquired;
+            if (acquired != nullptr) host.sound_handle_add_ref(acquired);
+            if (old != nullptr) host.refcounted_release(old);
+        }
+        if (acquired != nullptr) host.refcounted_release(acquired);
+    };
+    for (const auto& [off, name] : kPlaneEffectHandles) swap_in(off, host.effect_handle_acquire_00871ba0(name));
+    swap_in(0x78, host.effect_handle_acquire_id_00870cd0(kPlaneEffectHandleId78));
 }
 // @impl-end
 

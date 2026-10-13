@@ -25,6 +25,7 @@
 #include <cstdint>
 #include <string>
 #include <string_view>
+#include <utility>
 
 namespace bsp::cc13_fe5 {
 
@@ -220,8 +221,8 @@ struct Fe5Host {
     // 00408120 BSP_LegacySboString_AssignSubstring(src, 0, npos), ECX = dst.
     virtual void legacy_sbo_string_assign_whole(Raw dst, Raw src) = 0;
     // Raw allocation for the STL vectors (operator new through the allocator
-    // helpers, e.g. 006876D0), count of 4-byte elements.
-    virtual void* stl_allocate_dwords(std::size_t count) = 0;
+    // helpers, e.g. 006876D0; BSP_LegacySboString_AllocateBytes for bytes).
+    virtual void* stl_allocate_bytes(std::size_t bytes) = 0;
     // 00688830, ECX = the request vector (manager+58h), (const int* value).
     virtual void dword_vector_push_back_00688830(Raw vector, std::int32_t value) = 0;
     // 004CC460, ECX = manager, (interface, 0): push an interface request.
@@ -517,6 +518,27 @@ struct Fe5Host {
     virtual void widget_set_state_88(void* widget, bool on, int flag, float alpha) = 0;
     // Tree-iterator increments: 00552770, 00552D40, 00552E20 (ECX = iterator).
     virtual void tree_iterator_increment(Raw iterator, std::uint32_t routine) = 0;
+    // 0044BCB0, ECX = the slot, EDX = src: copy-construct a native string.
+    virtual void native_string_construct_copy_0044bcb0(Raw slot, Raw src) = 0;
+    // 00AA78F0(float y), ECX = widget: set the local y.
+    virtual void widget_set_local_y_00aa78f0(void* widget, float y) = 0;
+    // operator new(1Ch) then 0043DFF0(a, b, c) / 0043DF90(a, b), ECX = the
+    // block: the two HUD widget-set records (null when the allocation failed).
+    virtual void* hud_widget_set_new_0043dff0(std::uint32_t a, std::uint32_t b, std::uint32_t c) = 0;
+    virtual void* hud_widget_set_new_0043df90(std::uint32_t a, std::uint32_t b) = 0;
+    // 00ABAED0(const string* source, 1), ECX = text widget: set the localised
+    // source from a native string.
+    virtual void text_set_localised_source_00abaed0(void* text, Raw source) = 0;
+    // 00AA6750(&out) / 00AA6740 -> size pair / 00AA8240(const xyz*), ECX =
+    // widget: resolved position, size, set resolved position.
+    virtual void widget_resolved_position_00aa6750(void* widget, float xyz[3]) = 0;
+    virtual const float* widget_size_00aa6740(void* widget) = 0;
+    virtual void widget_set_resolved_position_00aa8240(void* widget, const float xyz[3]) = 0;
+    // Widget +58h(const float size[2]): set size.
+    virtual void widget_set_size_58(void* widget, const float size[2]) = 0;
+    // 00870CD0(&out, 1) with EDX = effect id: acquire an effect handle by id
+    // (one reference for the caller).
+    virtual void* effect_handle_acquire_id_00870cd0(std::uint32_t id) = 0;
     // @host-end
 };
 
@@ -688,6 +710,12 @@ void string_list_clear_00688780(Raw list, Fe5Host& host);
 // + capacity/2 (0 when that overflows 3FFFFFFFh), at least size + count.
 void dword_vector_insert_n_00688470(Raw vector, std::uint32_t* where, std::size_t count,
                                     std::uint32_t value, Fe5Host& host);
+// 0054B080 is the same body for another std::vector<uint32_t> (identical
+// listing up to call targets). 0054AED0 __thiscall(vector, iterator* out,
+// uint8_t* where, size_t count, const uint8_t* value), RET 10h: the byte
+// version (max size FFFFFFFFh).
+void byte_vector_insert_n_0054aed0(Raw vector, std::uint8_t* where, std::size_t count, std::uint8_t value,
+                                   Fe5Host& host);
 // 006887E0 __thiscall(menu) -> EAX: base construct, vtable 00CF7820,
 // +5Ch..+64h = 0 (the request vector).
 inline constexpr std::uint32_t kMultiMenuVtable = 0x00CF7820;
@@ -1430,6 +1458,65 @@ void* input_device_tree_min_00552c70(Raw node) noexcept;
 // 00553FA0 / 00554380 / 005543A0 __thiscall(iterator) -> EAX iterator: one
 // increment routine each (00552770, 00552D40, 00552E20).
 void* tree_iterator_pre_increment_via(Raw iterator, std::uint32_t routine, Fe5Host& host);
+// 0068E8A0 __thiscall(deque, size_t count), RET 4: std::deque::_Growmap for
+// the 2-strings-per-block deque (map +4h, map size +8h, offset +0Ch). The
+// growth is max(count, max(map size / 2, 8)) when that fits under 0FFFFFFFh;
+// the live block pointers keep their slot index (blocks before the front
+// block are rotated past the old end when they fit), the rest are zeroed.
+void native_string_deque_grow_map_0068e8a0(Raw deque, std::uint32_t count, Fe5Host& host);
+// 0068EB90 __thiscall(deque, const string* value), RET 4: push_back
+// (grow the map by one when the next slot opens a block and the map is full,
+// allocate the 10h-byte block on demand, copy-construct the string).
+void native_string_deque_push_back_0068eb90(Raw deque, Raw value, Fe5Host& host);
+// 006088F0 __thiscall(screen) (plane HUD exit): _free +150h/+154h; free the
+// two owned vectors +108h/+10Ch (006088A0's shape, inlined); restore widget
+// +C8h's local y from +114h; stop and drop the point effect +15Ch; hide +B8h
+// and +0Ch; byte +8h = 0; delete every element of the vectors +98h and +A8h
+// (+4h(1)) and clear both (erase(begin, end)).
+void plane_screen_exit_006088f0(Raw screen, Fe5Host& host);
+// 006093D0 __thiscall(screen) (plane HUD enter, vtable +18h): build the
+// widget set +108h from +F4h..+FCh, two 20h-byte gauge needles (+150h on
+// widget +E4h with maximum tuning +684h, +154h on widget +E8h with maximum
+// 50.0; both scale -1.0, +8h 768.0, +0Ch 644.0, offset 1.6406096, span
+// 2.9670596, value 0, then SetValue(0)), show +B8h and +0Ch, build the widget
+// set +10Ch from +100h/+104h, hide widget +D4h and copy plane +E84h into +138h
+// when ((plane+538h)+600h) == 0.0 (UCOMISS, so NaN shows it), else show it;
+// hide +E0h, byte +8h = 1, the payload icon, rebuild the widgets, byte +190h = 1.
+inline constexpr float kNeedleCentreX = 768.0f;        // 00CF4864
+inline constexpr float kNeedleCentreY = 644.0f;        // 00CF4860
+inline constexpr float kNeedleOffset = 1.640609622001648f;   // 00CF485C
+inline constexpr float kNeedleSpan = 2.96705961227417f;      // 00CF4858
+inline constexpr float kNeedleSecondMaximum = 50.0f;   // 00CF41D8
+void plane_screen_enter_006093d0(Raw screen, Fe5Host& host);
+// 00682990 __thiscall(screen, const string* text, const float* rgba, frame),
+// RET 0Ch (read from the listing; the decompile loses the stack arguments):
+// under second_Group (+60h): second_Text gets the colour (+50h) and the
+// localised source, second_1_Icon and second_2_Icon get +88h(frame, 0, 1.0);
+// then second_Group is shown.
+void warning_screen_show_second_text_00682990(Raw screen, Raw text, const float* rgba, std::uint32_t frame,
+                                              Fe5Host& host);
+// 00682BD0 __thiscall(screen, string by value), RET 8: warning_2_text under
+// third_Group (+64h) takes the string as its localised source; the argument
+// string is released.
+void warning_screen_set_warning2_text_00682bd0(Raw screen, Raw text, Fe5Host& host);
+// 00553B00 __thiscall(screen, widget), RET 4: with a widget, size the
+// marker (+210h) to (w, h + 1/360) (00CEE4E8) and place it at the widget's
+// resolved position minus (w * [widget+18h], (h + 1/360) * [widget+1Ch]),
+// z + 0.01 (00D7A358), then show it; with null, hide the marker (tail jump).
+inline constexpr double kMarkerHeightPad = 0.002777777777777778;  // 00CEE4E8
+inline constexpr double kMarkerDepthBias = 0.009999999776482582;  // 00D7A358
+void control_binding_position_marker_00553b00(Raw screen, void* widget, Fe5Host& host);
+// 00607BE0 __thiscall(screen) (plane effects register, vtable +10h):
+// front-end register; delete the cameras +94h and +98h (+0h(1)) and null
+// them; +CCh = 0.0; stop observing through the observer at +D0h (its +14h)
+// and clear it; +B8h = +FCh = 0; acquire the effect handles "Planewindsmoke"
+// (00CF4838) into +60h, "warning heartbeat only" (00CF4820) into +68h,
+// "Turbo_Effect" (00CF4810) into +74h and effect id 153h into +78h, each a
+// reference-counted swap that releases the temporary.
+inline constexpr std::array<std::pair<std::uint16_t, std::string_view>, 3> kPlaneEffectHandles{{
+    {0x60, "Planewindsmoke"}, {0x68, "warning heartbeat only"}, {0x74, "Turbo_Effect"}}};
+inline constexpr std::uint32_t kPlaneEffectHandleId78 = 0x153;
+void plane_effects_register_00607be0(Raw screen, Fe5Host& host);
 // @decl-end
 
 }  // namespace bsp::cc13_fe5
