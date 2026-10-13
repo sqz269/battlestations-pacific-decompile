@@ -258,6 +258,18 @@ constexpr bool kGunAimErrorBound = true;
 //    step, as the host already does for 0072D130's send.
 //    ON since the pairs (docs/GUN_SHOT_CADENCE.md 10.6).
 constexpr bool kGunImmediateFireSlotBound = true;
+//  * kTurningGunFireClearsRequestBound: packet cc9_g40_turning_fire, from
+//    docs/CC13_GPR_52.md 1.1. Slot 1DCh (FireIfReady) of both turning-gun
+//    vtables (00CFBF58 dword 00CFC134, class 24h; 00CFC190 dword 00CFC36C,
+//    class 27h) is 0084C4E0, not 00727E30: it calls 00727E30 and, on a shot,
+//    stores gun+4D4h = 0 (0084C4EC). So a delayed request (006FDF60) yields
+//    one ungated 0ADh shot; after it the gun fires only through 0072D130's
+//    gates. The 0ADh delivery order does not matter here: an immediate
+//    delivery clears +4D4h before 0084C5DB reads it, and a deferred one
+//    queues a second FireIfReady that the barrel delay refuses (the host's
+//    "one attempt stands for both"). The forced 008A7200 fire calls 00730160
+//    directly and does not clear. OFF: +4D4h holds until the latch drops.
+constexpr bool kTurningGunFireClearsRequestBound = false;
 //  * kTorpedoSwimThrustBound: packet cc9_torpedo_tube_turn,
 //    docs/TORPEDO_FRIENDLY_CROSSING.md section 6. 00857480, the swim advance,
 //    per step on a torpedo in the water: 00856BB0 -> 00857061 yaws the NOSE
@@ -1802,6 +1814,7 @@ struct GameGunneryHost::Impl {
     unsigned long long immediate_slot_calls{0};
     unsigned long long immediate_extra_sends{0};
     unsigned long long immediate_flag_drops{0};
+    unsigned long long immediate_fire_clears{0};   // 0084C4EC
     unsigned long long salvo_drops{0};
     unsigned long long salvo_ignored_false{0};
     unsigned long long immediate_guns_rapid{0};
@@ -7868,6 +7881,12 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             ++summary.can_fire_refusals;
             continue;
         }
+        if (kTurningGunFireClearsRequestBound && can_fire && sent
+            && (turning == kTurningClassRapid || turning == kTurningClassSingle)
+            && immediate_fire_by_gun[g].immediate_4d4) {
+            immediate_fire_by_gun[g].immediate_4d4 = false;   // 0084C4EC
+            ++immediate_fire_clears;
+        }
 
         // 00730160 BSP_Gun_Fire: the next ready barrel, one projectile, then
         // the two timers.
@@ -13917,6 +13936,9 @@ void GameGunneryHost::report() {
                 single_other, host.immediate_arms, host.immediate_slot_calls,
                 host.immediate_extra_sends, host.immediate_flag_drops, host.salvo_drops,
                 host.salvo_ignored_false, host.immediate_guns_rapid, host.immediate_guns_single);
+            host.log.notef("summary mission gunnery turning fire clears request bound=%d "
+                "clears=%llu (0084C4E0 / 0084C4EC, packet cc9_g40_turning_fire)",
+                kTurningGunFireClearsRequestBound ? 1 : 0, host.immediate_fire_clears);
             host.log.notef("summary mission gunnery aa bot fire tests bound=%d gunner=%llu "
                 "flak=%llu tail=%llu (00902920 / 009030C0 / 008FFA20 + 008FEF40, packet "
                 "cc9_aa_bot_fire_tests)", kAaBotFireTestsBound ? 1 : 0, host.aa_test_gunner,

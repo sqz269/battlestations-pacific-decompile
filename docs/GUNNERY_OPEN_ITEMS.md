@@ -13373,3 +13373,36 @@ gun while submerged (USN06, JM06), perhaps a sinking ship's guns. Elsewhere iden
 one-switch-OFF exports into `local\g39_lo`, exe copies per name), `g39_extract_diff.py`, `g39_doc_move2.py`,
 `g39_rocket_devices.py`; `g38_ends.py` and `g36_queue.ps1` as before. Export dirs `g39_rk0/1/2`, `g39_lo` are
 reusable (incremental `pair_export --out`).
+
+## 208. The turning guns' FireIfReady clears the delayed request: `kTurningGunFireClearsRequestBound`, OFF (lead queue item 1, from cc13-gpr52; cc9-gunnery40, 2026-10-13)
+
+**Image.** Slot `1DCh` of both turning-gun vtables is `0084C4E0` (dwords `00CFC134` in `00CFBF58`, class 24h, and
+`00CFC36C` in `00CFC190`, class 27h; read with `ghidra xrefs 0084C4E0`, the only two references). The listing
+`0084C4E0..0084C4FA`: `ESI = ECX`; `CALL 00727E30`; on AL != 0, `MOV byte [ESI+4D4h], 0` (`0084C4EC`) and return 1;
+else return 0. So the FireIfReady that `0072D860` (the `0ADh` arm) calls on these classes drops the delayed-fire
+request when it fires. `0084C5B0` (`0084C5D4` calls `0072D130`, then `0084C5DB` tests `[ESI+1C4h]`, ESI the `+310h`
+sub-object, so gun `+4D4h`) is reached from vtable `00CFBF18` and from `006FE0DB` in the MSTGun tick. Thiscall,
+`ECX` = gun; returns AL.
+
+**Host.** `immediate_4d4` (`src/game_hosts_gunnery.cpp`, the turning block) is set by `006FDF60` (rapid class,
+artillery bot step 15 or `009E2B99`) and dropped only by `006FDC90` when the latch comes back clear. With the switch
+ON, a FireIfReady that fires (`can_fire` after a send) on a turning gun clears it (`0084C4EC`); counter
+`immediate_fire_clears`, logged as `summary mission gunnery turning fire clears request`. The forced
+`008A7200` fire calls `00730160` directly and does not clear. The `0ADh` delivery order cc13 left open does not
+change the outcome: immediate delivery clears `+4D4h` before `0084C5DB` reads it; deferred delivery queues a
+second FireIfReady that the barrel delay refuses, as the host already assumes ("one attempt stands for both").
+Labelled: a gun with zero barrel delay would fire twice in the deferred order.
+docs/GUN_SHOT_CADENCE.md 10.1 carries the correction (the `D4 04 00 00` scan missed `0084C4EC`).
+
+**Predictions, written before any ON run.** Every OFF log in this tree (123 logs, every win row, JM06, LOMP06)
+reports `extra_sends=0`, and the census has no rapid-class gun with an artillery-bot category (`rapid=0/N`). The
+`+4D4h` hold only reaches a shot through `0084C5B0`'s extra send, so:
+
+| row | prediction ON |
+| --- | --- |
+| USN12 s38_u12_p2 36000 | pair_diff exit 0 or 1 (gameplay identical); `clears` small or 0; win kept |
+| USN15 s45_u15_l2 90000 | exit 0 or 1; win kept |
+| LOMP06 l50_l6_q6 16000 (`009E2B99` raises, 164 calls) | exit 0 or 1; `clears` > 0 only if a raised gun is rapid class |
+
+A moved pair would mean a rapid gun holds `+4D4h` across a step where `0072D130` does not send, which the
+OFF census says never happens on these rows.
