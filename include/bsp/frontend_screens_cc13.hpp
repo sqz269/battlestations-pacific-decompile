@@ -2405,4 +2405,87 @@ struct Fe11HudMapQuadsHost {
 // Then the two 61h-dword arrays +130h and +2B4h are cleared.
 void hud_map_register_quads_005ab7c5(void* screen, Fe11HudMapQuadsHost& host);
 
+struct Fe11MapResource {
+    std::uint32_t offset;
+    std::string_view path;
+};
+// 005AC3DA..005AD56B: map unit and icon models (00B80D70 on 004C1400()), in load order. Before the
+// coastal gun the dwords +438h..+44Ch are zeroed (+438h keeps 0), before the command buildings
+// +450h..+460h (+460h keeps 0).
+inline constexpr std::array<Fe11MapResource, 37> kHudMapModels{{
+    {0x164, "models/gui/map/units/battleshipmap.MMOD"},
+    {0x158, "models/gui/map/units/cruisermap.MMOD"},
+    {0x14C, "models/gui/map/units/destroyermap.MMOD"},
+    {0x2D0, "models/gui/map/units/destroyermap_low.MMOD"},
+    {0x154, "models/gui/map/units/carriermap.MMOD"},
+    {0x2D8, "models/gui/map/units/carriermap_low.MMOD"},
+    {0x15C, "models/gui/map/units/biglandingmap.MMOD"},
+    {0x160, "models/gui/map/units/landingmap.MMOD"},
+    {0x168, "models/gui/map/units/ptboatmap.MMOD"},
+    {0x150, "models/gui/map/units/submarinemap.MMOD"},
+    {0x17C, "models/gui/map/units/fightermap.MMOD"},
+    {0x300, "models/gui/map/units/fightermap_low.MMOD"},
+    {0x178, "models/gui/map/units/divebombermap.MMOD"},
+    {0x2FC, "models/gui/map/units/fightermap_low.MMOD"},
+    {0x174, "models/gui/map/units/fightermap.MMOD"},
+    {0x2F8, "models/gui/map/units/fightermap_low.MMOD"},
+    {0x170, "models/gui/map/units/bombermap.MMOD"},
+    {0x184, "models/gui/map/units/reconmap.MMOD"},
+    {0x188, "models/gui/map/units/reconmap.MMOD"},
+    {0x18C, "models/gui/map/units/Ohkamap.MMOD"},
+    {0x244, "models/gui/map/units/airfieldmap.MMOD"},
+    {0x248, "models/gui/map/units/shipyardmap.MMOD"},
+    {0x1DC, "models/gui/map/units/torpedomap.MMOD"},
+    {0x200, "models/gui/map/units/waterminemap.MMOD"},
+    {0x43C, "models/gui/map/units/coastalgunmap.MMOD"},
+    {0x440, "models/gui/map/units/aagunmap.MMOD"},
+    {0x444, "models/gui/map/units/fortressmap.MMOD"},
+    {0x448, "models/gui/map/units/bunkermap.MMOD"},
+    {0x44C, "models/gui/map/units/radarmap.MMOD"},
+    {0x450, "models/gui/map/units/commanbuildingmap.MMOD"},
+    {0x454, "models/gui/map/units/commanbuildingmap2.MMOD"},
+    {0x458, "models/gui/map/units/commanbuildingmap3.MMOD"},
+    {0x45C, "models/gui/map/units/commanbuildingmap3.MMOD"},
+    {0x464, "models/gui/map/units/paramap.MMOD"},
+    {0x5A0, "models/gui/map/icons/map_arrow_leader.MMOD"},
+    {0x5A4, "models/gui/map/icons/map_obj_primary.MMOD"},
+    {0x5A8, "models/gui/map/icons/map_obj_secondary.MMOD"},
+}};
+// 005AD5EB..005ADCC1: textures through [00F8D394] vtable +64h(&name, 0).
+inline constexpr std::array<Fe11MapResource, 15> kHudMapTextures{{
+    {0x468, "models/gui/map/units/shipmap_us.dds"},
+    {0x46C, "models/gui/map/units/shipmap_jap.dds"},
+    {0x470, "models/gui/map/units/shipmap_neutral.dds"},
+    {0x474, "models/gui/map/units/planemap_us.dds"},
+    {0x478, "models/gui/map/units/planemap_jap.dds"},
+    {0x47C, "models/gui/map/units/planemap_neutral.dds"},
+    {0x480, "models/gui/map/units/buildingsmap_us.dds"},
+    {0x484, "models/gui/map/units/buildingsmap_jap.dds"},
+    {0x488, "models/gui/map/units/buildingsmap_neutral.dds"},
+    {0x48C, "models/gui/map/units/bulletmap_us.dds"},
+    {0x490, "models/gui/map/units/bulletmap_jap.dds"},
+    {0x494, "models/gui/map/units/bulletmap_neutral.dds"},
+    {0x4A4, "models/gui/map/units/mapparticle_bowwave_00.dds"},
+    {0x4A8, "models/gui/map/units/mapparticle_bowwave_01.dds"},
+    {0x4AC, "models/gui/map/units/mapparticle_bowwave_02.dds"},
+}};
+
+struct Fe11HudMapResourcesHost {
+    virtual ~Fe11HudMapResourcesHost() = default;
+    virtual void* resource_load_default_factory_00b80d70(std::string_view path) = 0;       // on 004C1400()
+    virtual void* texture_manager_load_64(std::string_view path, std::uint32_t flags) = 0; // [00F8D394] vtable +64h
+    virtual float global_config_2bc() = 0;                                                  // [00432650()+2BCh]
+    virtual const float* map_zoom_scales_00f89ae4() = 0;
+};
+
+// 005AC390..005ADD9C, the last range of BSP_HudMapScreen_Register: kHudMapModels and kHudMapTextures
+// into their fields (with the two zeroing runs), +128h = 0, +12Ch = 0.0f, the dword vector +0F0h is
+// emptied (erase(begin, end) through _memmove_s of an empty tail: end = begin), and s =
+// (float)(scales[+2Ch] * GlobalConfig+2BCh) goes to +5BCh and +5DCh.
+void hud_map_register_resources_005ac390(void* screen, Fe11HudMapResourcesHost& host);
+
+// The whole of 005AB190 BSP_HudMapScreen_Register, __fastcall(ECX = screen), RET: the four ranges in order.
+struct Fe11HudMapHost : Fe11HudMapRegisterHost, Fe11HudMapObjectsHost, Fe11HudMapQuadsHost, Fe11HudMapResourcesHost {};
+void hud_map_register_005ab190(void* screen, Fe11HudMapHost& host);
+
 }  // namespace bsp::cc13_fe1

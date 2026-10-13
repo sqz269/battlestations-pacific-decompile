@@ -3314,4 +3314,31 @@ void hud_map_register_quads_005ab7c5(void* screen, Fe11HudMapQuadsHost& host) {
     }
 }
 
+void hud_map_register_resources_005ac390(void* screen, Fe11HudMapResourcesHost& host) {
+    for (const Fe11MapResource& model : kHudMapModels) {
+        if (model.offset == 0x43C)
+            for (std::uint32_t off = 0x438; off <= 0x44C; off += 4) write_field<std::int32_t>(screen, off, 0);
+        if (model.offset == 0x450)
+            for (std::uint32_t off = 0x450; off <= 0x460; off += 4) write_field<std::int32_t>(screen, off, 0);
+        write_field(screen, model.offset, host.resource_load_default_factory_00b80d70(model.path));
+    }
+    for (const Fe11MapResource& texture : kHudMapTextures)
+        write_field(screen, texture.offset, host.texture_manager_load_64(texture.path, 0));
+    write_field<std::int32_t>(screen, 0x128, 0);
+    write_field<float>(screen, 0x12C, 0.0f);
+    write_field(screen, 0xF8, read_field<void*>(screen, 0xF4));
+    const float config = host.global_config_2bc();  // 00432650 runs before the table read
+    const float scale = static_cast<float>(
+        static_cast<double>(host.map_zoom_scales_00f89ae4()[read_field<std::int32_t>(screen, 0x2C)]) * config);
+    write_field<float>(screen, 0x5BC, scale);
+    write_field<float>(screen, 0x5DC, scale);
+}
+
+void hud_map_register_005ab190(void* screen, Fe11HudMapHost& host) {
+    hud_map_register_setup_005ab190(screen, static_cast<Fe11HudMapRegisterHost&>(host));
+    hud_map_register_objects_005ab519(screen, static_cast<Fe11HudMapObjectsHost&>(host));
+    hud_map_register_quads_005ab7c5(screen, static_cast<Fe11HudMapQuadsHost&>(host));
+    hud_map_register_resources_005ac390(screen, static_cast<Fe11HudMapResourcesHost&>(host));
+}
+
 }  // namespace bsp::cc13_fe1
