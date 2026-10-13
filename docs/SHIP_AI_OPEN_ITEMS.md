@@ -17038,3 +17038,33 @@ Run it as `USN15`, 90000 frames, 0.05 s.
 
 Player torpedoes did not help (n, p): every `torpedo` order re-selects, and 44 of 96 tube snaps fail outside the
 tube window, as in 214's variant i.
+
+## 220. JM08 pair of `kLandStructureMeshHitTestBound` (cc9-ships45, 2026-10-12; lead item 2)
+
+The switch is cc13's diff (docs/CC13_JM08_AA_TRUCK_HQ_DAMAGE.md section 5), on main OFF since `57b3684ba`
+(`src/game_hosts_gunnery.cpp:1004`, the gunnery lane's file): a shell's direct-hit test against a land structure
+uses its model's GeomMesh, as the image does (`00724510 -> 00723AA0`), instead of the class box.
+
+Pair: OFF = this tree's build at `ac9652105` (gameplay as main `1de67cfb9`), ON = `pair_export --flip
+kLandStructureMeshHitTestBound=true` (`local\s45_lsm_on`); JM08 with cc9-lua51's `l51_j8_b3.txt`, 30000 frames,
+0.05 s, reference env; logs `local\s45_lsm{off,on}_j8.log`, diff `local\s45_lsm_diff.txt`. Diagnostic pair with
+cc9-lua48's `l48_diag_hq.py` hit lines (exports `local\s45_dg_{off,on}`, not for commit; census
+`local\s45_hqdmg.py`, a copy of `l48_hqdmg.py`): logs `local\s45_dg{off,on}_j8.log`.
+
+- `pair_diff`: exit 3. The rows part at 10 s (gunnery step 200: hits 11 -> 15) on the first shells into land
+  structures (watchtowers, bunkers, houses), as the changed silhouettes predict; deaths 236 -> 221, hit records
+  6521 -> 7313, AA line-of-fire queries 6041 -> 5447 (blocked 601 -> 466). Both sides still fail with "The HQ has been
+  destroyed!" (OFF 1098.25 s, ON 1108.71 s).
+- **The truck-05 self-damage is not on this base.** The HQ census: ON, 264 hits from 17.5 s, AA truck 05 four
+  blast hits (17.5-66.4 s) for 0 hp, trucks 03/04 73 hp; the HQ is shelled down by the US side from 885 s
+  (Missouri 6705 hp, Helena 3030, Gleaves/Bristol/Macomb 2192). OFF (the diagnostic run crashed in the
+  diagnostic hit line at mission frame 19666, `c0000005` reading 0, so its census stops at 979.68 s): truck 05 one
+  blast hit at 37.5 s for 0 hp, Missouri 3894 hp from 854.86 s. So on `1de67cfb9` the b3 timeline is gone: the HQ
+  falls to Missouri's and Helena's bombardment before phase 2, not to truck 05 and the B-17s (5fx's
+  1256-1270 s). cc13's 960-985 s truck-05 lines are absent on both sides.
+- Mechanism check: the ON run moves only through land-structure hit volumes (first divergence 10 s on building
+  hits, no change in the first hit at 5.25 s); no mechanism failure.
+- **Verdict: ON** (recommended; routed to the lead because the file is the gunnery lane's). The ON arm is the
+  image's mesh test; the expected truck-05 effect could not be shown on this base because the self-damage no
+  longer happens on either side. The blast-distance residual (`kLandStructureBlastElementEntriesBound`) stays as
+  it is.
