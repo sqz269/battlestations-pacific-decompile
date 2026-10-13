@@ -16326,3 +16326,12 @@ Same tree: OFF `04c7ac88a`, ON `04c7ac88a` + flip. Logs `local\l56_b{0,1}_{osk,u
     still holds a rack round and 009F8160 does not latch. Which Betty1 wingman keeps its round, and why its drop-kamikaze task
     never reaches release, is the next read.
 - **Verdict: ON.**
+
+### 5gr.1 Measured: **ON** (cc9-lua56, 2026-10-13)
+
+USN21 with `s46_u21_f.txt`, 80200/80000 frames, OFF `41aae9c67`, ON + flip; `local\l56_c{0,1}_u21f.log`. MOVED as predicted:
+launches with `squadron=0` 236 of 300 -> 0 of 261; aircraft on the torpedo task 91 -> 349, dive task 92 -> 419; deaths 197 -> 729;
+the Center force ends at 72% HP instead of 83% (target 60%); no completion on either side. Releases stay tiny (torpedo 4 -> 8,
+dive 0 -> 1): the strike-release gap is separate (5gs).
+The limit fires only at 64 squadrons, so a row that never logs `ceiling of this process is reached` is identical by construction:
+USN12, PRCP01 and JM08 f never reach it; **USNOS does** (`l56_b1_osk`), so USNOS moves with this flip. **Verdict: ON.**
