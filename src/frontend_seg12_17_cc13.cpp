@@ -3161,4 +3161,80 @@ void bomber_view_ensure_camera_005198f0(Raw screen, Fe8BomberCameraHost& host) {
     host.binoculars_reset_0051e8e0(host.binoculars_screen_00e198c4_4c());
 }
 
+namespace {
+
+void entry_assign_reference(Raw to, Raw from, std::size_t off, Fe8EntryAssignHost& host) {
+    void* const incoming = from.ptr(off);
+    void* const old = to.ptr(off);
+    if (old == incoming) return;
+    to.ptr(off) = incoming;
+    if (incoming != nullptr) host.interlocked_increment_00ce221c(&raw(incoming).at<long>(4));
+    if (old != nullptr && host.interlocked_decrement_00ce2220(&raw(old).at<long>(4)) == 0) host.object_virtual_0(old);
+}
+
+void entry_assign_string(Raw to, Raw from, std::size_t off, Fe8EntryAssignHost& host) {
+    if (to.p + off == from.p + off) return;
+    const std::uint32_t length = from.at<std::uint32_t>(off);
+    host.native_string_resize_0041dd40(to.p + off, length, 1);
+    if (length != 0) std::memcpy(to.ptr(off + 4), from.ptr(off + 4), to.at<std::uint32_t>(off));
+}
+
+} // namespace
+
+void* library_entry_assign_004fe310(Raw to, Raw from, Fe8EntryAssignHost& host) {
+    entry_assign_reference(to, from, 0x00, host);
+    for (const std::size_t off : {0x04u, 0x08u, 0x0Cu, 0x10u}) to.at<std::uint32_t>(off) = from.at<std::uint32_t>(off);
+    entry_assign_reference(to, from, 0x14, host);
+    for (const std::size_t off : {0x18u, 0x1Cu, 0x20u, 0x24u}) to.at<std::uint32_t>(off) = from.at<std::uint32_t>(off);
+    for (const std::size_t off : {0x28u, 0x30u, 0x38u}) entry_assign_string(to, from, off, host);
+    to.at<std::uint32_t>(0x40) = from.at<std::uint32_t>(0x40);
+    for (const std::size_t off : {0x44u, 0x45u, 0x46u}) to.at<std::uint8_t>(off) = from.at<std::uint8_t>(off);
+    to.at<std::uint32_t>(0x48) = from.at<std::uint32_t>(0x48);
+    for (const std::size_t off : {0x4Cu, 0x54u, 0x5Cu, 0x64u}) entry_assign_string(to, from, off, host);
+    return to.p;
+}
+
+void library_refresh_unlock_rows_00503250(Raw screen, std::int32_t class_id, Fe8UnlockRowsHost& host) {
+    // The image keeps the record pointer in a stack local across rows (uninitialised before the
+    // first kind-5/6 row); the model carries it the same way and stops on a row that would read
+    // the uninitialised value.
+    const std::int32_t* record = nullptr;
+    void* const list = screen.ptr(0xB8);
+    for (std::int32_t i = 0; i < raw(list).at<std::int32_t>(0x104); ++i) {
+        void* const row = host.list_box_row_00a9be00(list, i);
+        const char* const text = static_cast<const char*>(host.widget_name_28(row).ptr(4));
+        const std::int32_t index = host.atol_00bf8417(text != nullptr ? text : "");
+        if (index == -1 || index == 99999) continue;
+        const std::int32_t kind = screen.at<std::int32_t>(0x94);
+        if (kind == 5) record = reinterpret_cast<const std::int32_t*>(static_cast<std::uint8_t*>(screen.ptr(0x460)) + index * 0x2C);
+        else if (kind == 6) record = reinterpret_cast<const std::int32_t*>(static_cast<std::uint8_t*>(screen.ptr(0x470)) + index * 0x2C);
+        const bool current = row == host.list_box_current_item_00a9ca00(list);
+        if (!current && record == nullptr) return;
+        const std::int32_t id = current ? class_id : *record;
+        host.library_find_entry_by_id_004fb090(screen, id);
+        std::string label = screen.at<std::int32_t>(0x94) == 6 && id == -1 ? std::string("FE.unitlib_nounlock")
+                                                                             : host.vehicle_class_name_or_no_unlock_004fda50(id);
+        if (screen.at<std::int32_t>(0x94) == 5 && record != nullptr && id != *record) label = "|.* |" + label;
+        host.gui_text_set_ellipsized_00abb000(host.find_child_by_name_00aa7e00(row, "MenuItem_Text"), label,
+                                              kTextWidthUnbounded, 1);
+    }
+}
+
+bool library_find_entry_for_side_004fd500(Raw library, Raw out_object, std::uint32_t out_data[4],
+                                          Fe8LibraryLookupHost& host) {
+    const Raw game = host.game();
+    const Raw slot{static_cast<std::uint8_t*>(game.ptr(0x18CC + game.at<std::uint32_t>(0x18EC) * 4))};
+    const std::int32_t wanted = slot.at<std::int32_t>(0x28) == 0 ? game.at<std::int32_t>(0x734) : game.at<std::int32_t>(0x730);
+    auto* const begin = static_cast<std::uint8_t*>(library.ptr(0x418));
+    auto* const end = static_cast<std::uint8_t*>(library.ptr(0x41C));
+    for (std::uint32_t i = 0; begin != nullptr && i < static_cast<std::uint32_t>((end - begin) / 0x6C); ++i) {
+        const Raw entry{begin + i * 0x6C};
+        if (entry.at<std::int32_t>(0x48) != wanted) continue;
+        entry_assign_reference(out_object, entry, 0, host);
+        for (int k = 0; k < 4; ++k) out_data[k] = entry.at<std::uint32_t>(4 + k * 4);
+        return true;
+    }
+    return false;
+}
+
 } // namespace bsp::cc13_fe3

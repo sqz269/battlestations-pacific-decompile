@@ -1806,4 +1806,50 @@ struct Fe8BomberCameraHost : Fe8InGame23Host {
 // 0051E730(binoculars; camera) and 0051E8E0(binoculars) on [[00E198C4]+4Ch].
 void bomber_view_ensure_camera_005198f0(Raw screen, Fe8BomberCameraHost& host);
 
+struct Fe8EntryAssignHost {
+    virtual ~Fe8EntryAssignHost() = default;
+    virtual long interlocked_increment_00ce221c(long* value) = 0;                            // import
+    virtual long interlocked_decrement_00ce2220(long* value) = 0;                            // import
+    virtual void object_virtual_0(void* object) = 0;                                         // ECX = object, vtable +0
+    virtual void native_string_resize_0041dd40(void* string, std::uint32_t length, std::uint32_t preserve) = 0;
+};
+
+// 004FE310 BSP_TacticalLibraryEntry_Assign, __thiscall(to, const from), RET 4, EAX = to. A 6Ch
+// library entry: intrusive references at +0h and +14h (count at +4h of the target; the old target
+// is released through its vtable +0 when the count reaches 0, the new one is retained first);
+// dwords +4h..+10h, +18h..+24h, +40h, +48h; bytes +44h, +45h, +46h (+47h is not copied); strings
+// +28h, +30h, +38h, +4Ch, +54h, +5Ch, +64h (each, unless aliased: 0041DD40(length, 1), then the
+// characters copied when the source is non-empty).
+void* library_entry_assign_004fe310(Raw to, Raw from, Fe8EntryAssignHost& host);
+
+struct Fe8UnlockRowsHost : Fe8LibraryListHost {
+    virtual void* list_box_row_00a9be00(void* list_box, std::int32_t index) = 0;
+    virtual void* list_box_current_item_00a9ca00(void* list_box) = 0;
+    virtual Raw widget_name_28(void* widget) = 0;                                            // vtable +28h
+    virtual std::int32_t atol_00bf8417(const char* text) = 0;
+    virtual void* library_find_entry_by_id_004fb090(Raw screen, std::int32_t id) = 0;       // ECX = screen
+};
+
+// 00503250 BSP_TacticalLibraryScreen_RefreshUnlockRows, __thiscall(screen, class id), RET 4. For each
+// row of +0B8h: index = atol(row name); -1 and 99999 skip the row. rec = the 2Ch record at index of
+// +460h (kind +94h == 5) or +470h (kind 6); other kinds keep the previous row's rec (the local is
+// not reset, and is uninitialised for the first row). id = the class id for the current item
+// (00A9CA00), else rec's first dword. 004FB090(id) runs with its result unused. Label: kind 6 with
+// id -1 -> "FE.unitlib_nounlock", else 004FDA50(id); kind 5 with id != rec's id prefixes "|.* |"
+// (00CEB580, 0043C130). The row's "MenuItem_Text" shows it through 00ABB000(-1.0f, 1).
+void library_refresh_unlock_rows_00503250(Raw screen, std::int32_t class_id, Fe8UnlockRowsHost& host);
+
+struct Fe8LibraryLookupHost : Fe8EntryAssignHost {
+    virtual Raw game() = 0;                                                                  // [00E188A8]
+};
+
+// 004FD500 (named CountAvailableMapsForSide; it is a lookup), __thiscall(library, ref* out_object,
+// dword out_data[4]), RET 8, AL. wanted = game +734h when the active slot record ([game + 18CCh +
+// [game+18ECh]*4]) has +28h == 0, else game +730h. The first 6Ch entry of +418h..+41Ch whose +48h
+// equals wanted is copied out: its +0h reference into *out_object (retain new, release old as in
+// 004FE310) and its +4h..+10h into out_data; AL = 1. No match: AL = 0 (the upper EAX bytes hold
+// the entry count).
+bool library_find_entry_for_side_004fd500(Raw library, Raw out_object, std::uint32_t out_data[4],
+    Fe8LibraryLookupHost& host);
+
 } // namespace bsp::cc13_fe3

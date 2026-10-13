@@ -66,6 +66,9 @@ by `tools/verify_report_calls.py` (0 failed).
 | 00517300 | `library_handle_gui_event_00517300` | thiscall(listener = screen+68h, widget), RET 4 | jump table 00517600 |
 | 005178F0 | `in_game_screen23_bind_unit_005178f0` | thiscall(screen, unit), RET 4 | airfield camera |
 | 005198F0 | `bomber_view_ensure_camera_005198f0` | fastcall(ECX screen), RET | ship camera, binoculars |
+| 004FE310 | `library_entry_assign_004fe310` | thiscall(to, const from), RET 4, EAX = to | 6Ch entry copy-assign |
+| 00503250 | `library_refresh_unlock_rows_00503250` | thiscall(screen, class id), RET 4 | |
+| 004FD500 | `library_find_entry_for_side_004fd500` | thiscall(library, ref*, dword[4]), RET 8, AL | ledger name CountAvailableMapsForSide |
 
 ### Leaderboards
 
@@ -161,6 +164,15 @@ by `tools/verify_report_calls.py` (0 failed).
   the listing shows ECX = the new camera on the normal path.
 - 005178F0 calls `BSP_UnitInstance_SendRoleTransfer` (0077C470, role 1FEh) on the previous unit;
   that is gameplay state reached from an in-game screen (see For cc9).
+- 004FE310 releases the old intrusive reference through vtable +0 (ECX = the object, no stack
+  argument) when InterlockedDecrement (import 00CE2220) reaches 0; the new one is retained first
+  (00CE221C). Byte +47h is padding and is not copied.
+- 00503250 keeps its record pointer in a stack local that is neither reset per row nor initialised
+  before the first kind-5/6 row; for other view kinds a non-current row reads the previous row's
+  record (or garbage for the first). The model stops at a row that would read the uninitialised
+  value.
+- 004FD500 (ledger `CountAvailableMapsForSide`) is a lookup returning AL; its no-match EAX carries
+  the entry count in the upper bytes.
 
 ## For cc9
 
