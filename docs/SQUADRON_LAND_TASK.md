@@ -15805,3 +15805,54 @@ ON); packet 3 MOVEONPATH + leg altitude manager (5gd: `487cf8170` OFF, flipped O
 6. **For gunnery38 (reported to the lead):** `read_bullet_class_number` cannot read dotted keys, so the second-ammo
    `Blast.BlastDamageMin/Max` reads near `src/game_hosts_gunnery.cpp` ~4470 always return 0.
    `read_bullet_class_nested_number(id, "Blast", key, fallback)` exists now.
+
+## 5gf. The 16 m storage crash: a live plane on the water stays its squadron's leader (packet `cc9_lua54_follow_altitude`, cc9-lua54, 2026-10-12)
+
+**The chain, from `local\l53_K4_osx.log` (5gc).** `Enterprise_sqn01|.-3` was not flying a low follow of its own:
+- `plane #1.5`'s Betty squadron dropped on TroopTrans2 at 1409 m (129.20 s), went `goaway`, latched spent ordnance at
+  141.00 s and took the land task to **Airfield3 at (-8163.5, 3.2, -8844.6)**. Its planes descended on the approach:
+  `|.-4` died at 197 m (288.40 s), `|.-2` at 73 m (296.95 s), the head at **14 m** (320.20 s).
+- The Enterprise leader `Enterprise_sqn01` chased that head in dogfight aim down the approach. The aim law matches the
+  target's speed and height (`009A76E0`; terrain avoidance `0099F1C0` is the only floor, docs/DOGFIGHT_THROTTLE_RETAKE.md),
+  so it reached 4.9 m at 23 m/s with throttle 0 (surface probe, 313.55 s) and touched the water alive
+  (health 164.6: `plane water contact ... state 7 -> 6`, later `plane water powerlost ... dead=0`).
+- The host then left that plane alive in state 6 for the rest of the run, still `members[0]` of its squadron. The
+  wingman `|.-3` lost its own target ("target -> none (empty squadron)") and went aim -> follow, and the follow
+  state (`009C1FD0`) flies the station `007F23A0` hands it off **its leader, on the water** near Airfield3. Station
+  height about leader + 25 m puts the wingman at ~16 m over the airfield, where its wing point met
+  `Storage - Raktar03 01` (329.54 s, (-8161, 11, -8736), 120 m from the Airfield3 site).
+
+**What the image does at that contact.** `007CB7F0` (BSP_Plane_OnWaterContact, listing read whole to `007CB9C2`):
+- `007CB81A`-`007CB82B`: `BL = 1` when the class's MinWaterSpd `desc+198h` is zero.
+- `007CB82D`-`007CB838`: return when `007BC5B0` is false and `BL` is clear. Since packet `cc9_water_invincible_test`
+  the host answers `007BC5B0` from `unit+150h` (the invincibility float), so a live AI plane passes: the 5gc leader
+  did ("not ignored").
+- `007CB83E`-`007CB8A2`: the SA_OC award (scoring only).
+- `007CB8A7`-`007CB8CB`: with `BL` set, an up-axis `unit+E0h` above 0.8 (`00CE3D40`, double) skips to the tail.
+- `007CB8CD`-`007CB927`: in net modes other than 2 (`[00E188A8]+1FE4h`), **`vtable[194h]` (`007BBFA0`) with
+  `"powerlost"` (`00D059F8`)**. `007BBFA0` stores `unit+C10h = 1000.0` and routes message 66h; `007D0B80` takes the
+  powerlost arm (`unit+C39h = 1`) and its tail `007D12FC` sets `C3Ah` and calls `vtable[70h](1)`, the destroy
+  (docs/PLANE_DEATH_MODES.md step 4). **The plane is dead from the contact on** and `007BCAA0` removes it from its
+  squadron, so the next member leads.
+- `007CB92C`: the tail, 7/4/5 -> 6.
+- The state-6 arm's drown test raises the same effect at `007CBE02` (`007CBDD0`-`007CBE2B`, the same net-mode test).
+
+**The host** before this packet: `src/game_hosts_units.cpp` takes the gate and the tail (state 6) and counts the
+drown, but "powerlost" was a contract at both sites ("a live one would need 007BBFA0's death"). So every live plane
+that glides onto the water (a stalled chase, a low pull-out) became a floating, live squadron leader.
+
+**The binding** (`kPlaneWaterPowerLostBound`, OFF): at `007CB8DC` and `007CBE02`, for a plane the gunnery host has
+alive, kill it through `kill_unit_00926d90(unit, 1)` and mark it so the death-mode step takes **PowerLost without
+the `007CA8A0` draw** (the image calls `007BBFA0` directly; `007CA8A0` runs only from SetHealth). SUBSTITUTIONS,
+labelled: the destroy is the gunnery host's Kill funnel (as the depth kill `007CE3A7` already is), and the effect
+lands in the same step.
+
+**Predictions (written before the pairs).**
+- OFF: gameplay identical.
+- ON, USNOS 9000 (`s45_os_k` orders): the Enterprise leader dies at its water contact (~313.6 s, mode powerlost);
+  `|.-2` or `|.-3` leads; `|.-3` no longer flies a station off a floating leader, so the c99 storage crash at
+  329.54 s is gone (it may still die to Zao1's flak, which had it at 141.6). Every other live water contact in the
+  run (`plane water contact` lines with health left) becomes a death row with mode powerlost, so death counts rise
+  by those planes and AA shots at floating planes fall.
+- ON, USN12 (win row): the same rule for any live ditching; the win should hold. Read the `plane water contact`
+  lines before predicting a count.
