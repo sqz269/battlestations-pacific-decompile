@@ -16295,3 +16295,17 @@ From cc13-gpr38/38b (docs/CC13_GPR_38.md 1.1-1.6), read against the host.
   `spent ordnance ... B5` within a step or so of the latch, 007F16D0 answers land at site Airfield3, the Betties land there
   (`KillReason` landed), the squadron entities go Dead and leave `Mission.FinalTrgs`. If the objective at us_osumi.lua:1181 was
   waiting only on them, the mission completes.
+
+## 5gr. The 64-squadron ceiling (packet `cc9_lua56_squadron_ceiling`, cc9-lua56, 2026-10-13)
+
+The lead's strike-release item (a), from ships46's USN21 plans: "each carrier spawns only 32 planes, then launches queue with
+`squadron=0`". That is **this host's own cap, not the authored stock**. `cc9-ships44\local\s46_e_u21f.log` line 173771:
+`air ops squadron: the 64-squadron ceiling of this process is reached; further launches leave slot+28h zero. It is a safety
+net, not a native rule`. `kSquadronCreateLimit` (src/game_hosts_script_orders.cpp) counts every squadron the process ever made,
+dead or alive; 64 squadrons x 3 = 192 aircraft = 32 per carrier on USN21's six decks, whose stock is 40 each of classes 26, 113
+and 38. The image keeps no such count.
+
+**The switch (`kAirOpsSquadronCeilingRaisedBound`, committed OFF).** True: the net is 4096.
+
+**Predictions.** USN12 (control): identical, it makes far fewer than 64 squadrons. USN21 (`s46_u21_f.txt`): exit 3, launches
+after about 860 s carry a squadron (`squadron=` non-zero) and the strikes continue until the decks' stock or slots run out.
