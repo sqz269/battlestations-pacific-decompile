@@ -3,7 +3,9 @@
 // bodies mark where a step was read.
 #include "bsp/engine_seg43_45_cc13.hpp"
 
+#include "bsp/band_0076_cc13.hpp"
 #include "bsp/camera_decomposition.hpp"
+#include "bsp/unit_rudder.hpp"
 #include "bsp/native_bit_cursor_write.hpp"
 #include "bsp/ship_ai_bearing_rating.hpp"
 
@@ -354,6 +356,125 @@ void movcam_turn_to_00797180(MovCamLook& c, const void* observer_10, float theta
     }
 }
 
+Vec3 camera_orbit_point_007905b0(const Vec3& centre, float a, float b, float dist, const Mat4& m,
+                                 OrbitPointHost& host) {
+    const Mat4 ry = host.rotation_y_00b646e0(-0.0f - a);  // 007905D8
+    const Mat4 rx = host.rotation_x_00b64640(-0.0f - b);  // 00790609
+    const Vec3 axis = host.axis_f87598();
+    const Vec3 v{static_cast<float>(static_cast<double>(axis[0]) * dist),
+                 static_cast<float>(static_cast<double>(axis[1]) * dist),
+                 static_cast<float>(static_cast<double>(dist) * axis[2])};  // 00790642..00790658
+    const Vec3 r = host.transform_004142e0(v, host.multiply_00413920(rx, ry));
+    const Vec3 p{static_cast<float>(static_cast<double>(centre[0]) + r[0]),
+                 static_cast<float>(static_cast<double>(centre[1]) + r[1]),
+                 static_cast<float>(static_cast<double>(centre[2]) + r[2])};
+    return host.transform_004142e0(p, m);
+}
+
+void movcam_debug_draw_vehicle_cameras_007a01f0(VehicleCameraDrawHost& host) {
+    auto mod2 = [](int v) { return v % 2; };  // the 80000001h idiom: signed remainder
+    for (std::size_t i = 0; i < host.camera_count(); ++i) {
+        const int n = static_cast<int>(i);
+        const float half = 0.5f;  // 00D7A280 as float
+        const std::array<float, 4> colour{
+            static_cast<float>(mod2(n / 4)) * half + half, static_cast<float>(mod2(n / 2)) * half + half,
+            static_cast<float>(mod2(n)) * half + half, 1.0f};
+        host.refresh_target_pose_00414db0();  // when +C8h is clear
+        host.draw_sector_007906e0(i, colour);
+    }
+}
+
+std::array<float, 2> movcam_vehicle_camera_pose_0079f710(std::vector<VehicleCameraElement>* cameras, int index,
+                                                         const Mat4& target_world_cc, const Vec3& entity_position_fc,
+                                                         bool* inside, VehicleCameraPoseHost& host) {
+    if (cameras == nullptr || static_cast<int>(cameras->size()) < index) return {0.0f, 0.0f};  // 0079F749 JL
+    if (static_cast<int>(cameras->size()) <= index) cameras->resize(static_cast<std::size_t>(index) + 1);  // 005CD640
+    const VehicleCameraElement& e = (*cameras)[static_cast<std::size_t>(index)];
+    const Mat4 m = host.multiply_00413920(e.local_8, target_world_cc);  // 0079F7A1
+    Vec3 d{};
+    for (int i = 0; i < 3; ++i) {
+        d[static_cast<std::size_t>(i)] =
+            static_cast<float>(static_cast<double>(entity_position_fc[static_cast<std::size_t>(i)]) - m[12 + i]);
+    }
+    const Vec3 forward{target_world_cc[8], target_world_cc[9], target_world_cc[10]};  // +ECh
+    const std::array<float, 2> delta = cc13cam::camera_direction_delta_00794750(d, forward);
+    constexpr float kPi = 3.14159274f;  // 00D7A264
+    const float centre_yaw = static_cast<float>((static_cast<double>(e.yaw_lo_48) + e.yaw_hi_4c) * 0.5 +
+                                                (!(e.yaw_hi_4c > e.yaw_lo_48) ? kPi : 0.0f));
+    const float centre_pitch = static_cast<float>(0.5 * (static_cast<double>(e.pitch_lo_50) + e.pitch_hi_54) +
+                                                  (!(e.pitch_hi_54 > e.pitch_lo_50) ? kPi : 0.0f));
+    if (inside != nullptr) {
+        const band0076_cc13::AngleWindows w{e.yaw_lo_48, e.yaw_hi_4c, e.pitch_lo_50, e.pitch_hi_54};
+        *inside = band0076_cc13::movcam_angle_windows_contain_0078e2b0(w, delta[1], delta[0]);  // 0079F944
+    }
+    const float r_yaw = wrapped_angle_subtract_00438b10(delta[1], centre_yaw);      // 0079F95D
+    const float r_pitch = wrapped_angle_subtract_00438b10(delta[0], centre_pitch);  // 0079F98B
+    return {std::fabs(r_pitch), std::fabs(r_yaw)};
+}
+
+bool movcam_has_vehicle_camera_pose_007a0dd0(std::vector<VehicleCameraElement>* cameras, int index,
+                                             const Mat4& target_world_cc, const Vec3& entity_position_fc,
+                                             VehicleCameraPoseHost& host) {
+    bool inside = false;
+    movcam_vehicle_camera_pose_0079f710(cameras, index, target_world_cc, entity_position_fc, &inside, host);
+    return inside;
+}
+
+void movcam_approach_0078faf0(std::array<float, 3>& state, float dt) noexcept {
+    const float current = state[0];
+    const float target = state[1];
+    const float d = static_cast<float>(static_cast<double>(target) - current);  // 0078FB0E
+    const float x = d > 0.0f ? d : -0.0f - d;
+    const float step = static_cast<float>(static_cast<double>(x) * dt * 1.399999976158142);  // 0078FB48
+    float next;
+    if (target < current) {  // 0078FB50 JB
+        next = static_cast<float>(static_cast<double>(current) - step);
+        if (target > next) next = target;  // 0078FB9E
+    } else {
+        next = static_cast<float>(static_cast<double>(current) + step);
+        if (next > target) next = target;  // 0078FB6B
+    }
+    state[0] = next;
+    state[2] = static_cast<float>(static_cast<double>(dt) * next + state[2]);
+}
+
+// ---------------------------------------------------------------------------
+// MovCam pose publication
+
+namespace {
+Mat4 translation(const Vec3& p) {
+    return {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, p[0], p[1], p[2], 1.0f};
+}
+void publish_pose(MovCamPose& p, const Mat4& rx, const Mat4& ry, const Vec3& position, MovCamPoseHost& host) {
+    const Mat4 r = host.multiply_00413920(rx, ry);
+    p.matrix_74 = host.multiply_00413920(r, translation(position));
+    p.pose_valid_c8 = false;
+    p.pose_valid_10c = false;
+    host.invalidate_children_0042ed50();
+    host.push_pose_slot34(p.matrix_74);
+}
+}  // namespace
+
+void movcam_apply_pose_00799750(MovCamPose& p, const MovCamAngles& a, MovCamPoseHost& host) {
+    const Mat4 ry = host.rotation_y_00b646e0(-0.0f - a.rho_3c8);  // 007997CD
+    const Mat4 rx = host.rotation_x_00b64640(-0.0f - a.theta_3c4);
+    publish_pose(p, rx, ry, a.position_394, host);
+}
+
+void movcam_set_pos_rot_zoom_007998c0(MovCamPose& p, const Vec3& position, float pitch_degrees, float yaw_degrees,
+                                      MovCamPoseHost& host) {
+    p.mode_384 = 8;
+    p.matrix_420 = translation({0.0f, 0.0f, 0.0f});
+    host.set_shake_0042c4c0({0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f});
+    constexpr double k = 0.01745329238474369;  // 00D046D8
+    const float pitch = static_cast<float>(static_cast<double>(pitch_degrees) * k);  // 00799999 DC C9, FXCH, FSTP
+    const float yaw = static_cast<float>(k * yaw_degrees);                          // 007999AB
+    const Mat4 ry = host.rotation_y_00b646e0(yaw);
+    const Mat4 rx = host.rotation_x_00b64640(pitch);
+    publish_pose(p, rx, ry, position, host);
+    host.reset_motion_00794000();
+}
+
 // ---------------------------------------------------------------------------
 // MovCam callbacks
 
@@ -537,6 +658,63 @@ void keyframe_event_destruct_00799fd0(cc13cam::KeyframeEvent& e, KeyframeEventDe
     e.function_4.shrink_to_fit();
 }
 
+// ---------------------------------------------------------------------------
+// Keyframe linking
+
+void movie_key_set_fixed_position_00795bd0(MovieKeyLinks& k, const Vec3& p, MovieKeyHost& host) {
+    if (k.modifier_e4 != 0) return;
+    k.work_40 = p;
+    k.local_34 = k.work_40;
+    host.evaluate_position_00795650(k);
+}
+
+void movie_key_link_partner_007a0e00(MovieKeyLinks& k, MovieKeyLinks* partner, MovieKeyHost& host) {
+    k.linked_25 = true;
+    k.field_d0 = 0;
+    k.field_cc = 0;
+    if (partner != nullptr) {
+        k.camera_28 = false;
+        k.partner_20 = partner;
+        partner->partner_20 = &k;
+        return;
+    }
+    k.camera_28 = true;
+    k.modifier_e4 = host.new_default_modifier_007a06d0();
+}
+
+namespace {
+void append_and_pair(MovieKeyLinks& k, MovieKeyHost& host) {
+    host.append_007a0770(k.camera_28, k);
+    host.pair_00798080(!k.camera_28, k);
+}
+}  // namespace
+
+void movie_key_shift_start_007a2d30(MovieKeyLinks& k, float dt, MovieKeyHost& host) {
+    const float start = static_cast<float>(static_cast<double>(dt) + k.start_f0);  // 007A2D42
+    k.start_f0 = start;
+    if (0.0f > start) k.start_f0 = 0.0f;
+    append_and_pair(k, host);
+}
+
+void movie_camera_insert_key_007a2cd0(MovieKeyLinks& k, MovieKeyHost& host) {
+    append_and_pair(k, host);
+    if (host.session_present_1fe4()) host.broadcast_new_add_position_0076d6d0(k);
+}
+
+void movie_camera_add_key_pair_007a2bb0(std::uintptr_t source, std::uint32_t& next_id_3c0, MovieKeyHost& host) {
+    if (source == 0) return;
+    MovieKeyLinks* camera_key = host.construct_at_0079c910(source);
+    movie_key_link_partner_007a0e00(*camera_key, nullptr, host);
+    host.append_007a0770(true, *camera_key);
+    MovieKeyLinks* look_key = host.construct_at_0079c910(source);
+    movie_key_link_partner_007a0e00(*look_key, camera_key, host);
+    host.append_007a0770(false, *look_key);
+    const auto id = static_cast<std::int16_t>(next_id_3c0);  // 007A2C9A, the low word
+    look_key->id_da = id;
+    camera_key->id_da = id;
+    next_id_3c0 += 1;
+}
+
 void movie_camera_stop_0078e8e0(bool& running_391, float& fov_410, MovieCameraStopHost& host) {
     host.inherit_race_and_activate_0042a910();
     running_391 = false;
@@ -705,6 +883,48 @@ VoiceMessage voice_message_construct_00774dc0(const VoicePacket& p) {
     m.xuid_18 = p.xuid;
     m.data = p.data;  // 00774150
     return m;
+}
+
+float peer_rows_quality_00786010(const band0076_cc13::PeerRows& rows, int index) noexcept {
+    return rows.rows[index].quality;
+}
+
+void peer_row_update_quality_007865d0(band0076_cc13::PeerRow& row, PeerQualityHost& host) {
+    if (row.peer == 0) return;
+    const float latency = host.transport_latency_c(row.peer);  // 007865FE FSTP
+    const float pending = static_cast<float>(host.transport_pending_10(row.peer));  // CVTSI2SS
+    const float a = host.interpolate_clamped_00419010(8.0f, 0.0f, 16.0f, 1.0f, pending);
+    const float b = host.interpolate_clamped_00419010(0.15f, 0.0f, 0.6f, 1.0f, latency);
+    host.smoothed_triplet_update_007862c0(row, b, a);  // 00786697, ECX = row+4
+}
+
+void mnetwork_client_open_00782880(std::uint32_t& state_9c, MNetworkClientHost& host) {
+    host.open_slot28();
+    state_9c = 2;
+}
+
+void mnetwork_client_disconnect_007828c0(std::uint32_t& state_9c, MNetworkClientHost& host) {
+    host.disconnect_slot48();
+    state_9c = 2;
+}
+
+void mnetwork_client_end_lan_search_007828a0(MNetworkClientHost& host) { host.end_lan_search_slot30(); }
+
+void mnetwork_client_connect_007828b0(MNetworkClientHost& host) { host.connect_slot40(); }
+
+void mnetwork_client_clear_and_search_00785330(std::uint32_t a, std::uint32_t b, MNetworkClientHost& host) {
+    host.clear_hosts_00785170();
+    host.begin_lan_search_slot2c(a, b);
+}
+
+void mnetwork_lock_incoming_0076b320(TransportLock& lock_34, CriticalSectionHost& host) {
+    host.enter_critical_section(lock_34.critical_section);
+    lock_34.depth_18 += 1;
+}
+
+void mnetwork_lock_removals_0076b350(TransportLock& lock_24, CriticalSectionHost& host) {
+    host.enter_critical_section(lock_24.critical_section);
+    lock_24.depth_18 += 1;
 }
 
 bool start_gate_tick_0076b400(std::int16_t& start_10) noexcept {

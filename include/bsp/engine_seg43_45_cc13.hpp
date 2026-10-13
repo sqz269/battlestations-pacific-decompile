@@ -7,6 +7,7 @@
 // chains are written in double with a float cast at each native FSTP (exact
 // at 53-bit precision control when the products of two floats are exact).
 
+#include "bsp/band_0076_cc13.hpp"
 #include "bsp/cc13_camera_controllers.hpp"
 #include "bsp/native_bit_cursor_read.hpp"
 
@@ -248,6 +249,109 @@ void movcam_turn_by_00797230(MovCamLook& c, const void* observer_10, float d_the
 void movcam_turn_to_00797180(MovCamLook& c, const void* observer_10, float theta, float rho, bool instant,
                              float time, MovCamLookHost& host);
 
+// 007905B0: fastcall (ECX out, EDX const float* centre), stack (a, b, dist,
+// const matrix*), RET 10h, EAX out. p = (dist * axis 00F87598..A0) through
+// 00413920(RotX(-0.0 - b), RotY(-0.0 - a)), plus the centre, then through
+// the matrix (004142E0 both times).
+struct OrbitPointHost {
+    virtual ~OrbitPointHost() = default;
+    virtual Mat4 rotation_x_00b64640(float angle) = 0;
+    virtual Mat4 rotation_y_00b646e0(float angle) = 0;
+    virtual Mat4 multiply_00413920(const Mat4& left, const Mat4& right) = 0;
+    virtual Vec3 transform_004142e0(const Vec3& point, const Mat4& m) = 0;
+    virtual Vec3 axis_f87598() = 0;  // zero-fill, written at run time
+};
+Vec3 camera_orbit_point_007905b0(const Vec3& centre, float a, float b, float dist, const Mat4& m,
+                                 OrbitPointHost& host);
+
+// 007A01F0 (ledger "UpdateDeckPosition"; it is a debug draw): fastcall
+// camera. For every element i of the main target's (+38Ch) class vehicle
+// camera array (+538h -> +BCh, 5Ch bytes) it draws 007906E0 with ECX = the
+// target world +CCh, EDX = element+38h, stack (+48h, +4Ch, +50h, +54h,
+// element, &colour), colour = (((i/4)%2)*0.5+0.5, ((i/2)%2)*0.5+0.5,
+// (i%2)*0.5+0.5, 1.0) (00D7A280, 00D7A24C).
+struct VehicleCameraDrawHost {
+    virtual ~VehicleCameraDrawHost() = default;
+    virtual std::size_t camera_count() = 0;   // 0 without a target or an array
+    virtual void refresh_target_pose_00414db0() = 0;
+    virtual void draw_sector_007906e0(std::size_t element, const std::array<float, 4>& colour) = 0;
+};
+void movcam_debug_draw_vehicle_cameras_007a01f0(VehicleCameraDrawHost& host);
+
+// The vehicle camera array of a unit class (+538h -> +BCh): 5Ch-byte
+// elements, NativeString name +0, a local matrix +8h, point +38h, yaw window
+// +48h/+4Ch and pitch window +50h/+54h.
+struct VehicleCameraElement {
+    Mat4 local_8{};
+    float yaw_lo_48{0.0f};
+    float yaw_hi_4c{0.0f};
+    float pitch_lo_50{0.0f};
+    float pitch_hi_54{0.0f};
+};
+// 0079F710: ECX camera, stack (out float[2], entity, index, bool* inside),
+// RET 10h. Without the main target +38Ch, its array, or with count < index:
+// out = (0, 0). (index == count passes, and 005CD640 grows the array to
+// index+1 first.) P = row 3 of 00413920(element +8h, target world +CCh);
+// delta = 00794750(entity position +FCh - P, target forward row +ECh);
+// centre_yaw = f((lo+hi)*0.5 + (hi <= lo ? pi : 0)) (00D7A280, 00D7A264),
+// centre_pitch likewise; inside = 0078E2B0(windows, delta[1], delta[0]);
+// out = (|00438B10(delta[0], centre_pitch)|, |00438B10(delta[1], centre_yaw)|).
+struct VehicleCameraPoseHost {
+    virtual ~VehicleCameraPoseHost() = default;
+    virtual Mat4 multiply_00413920(const Mat4& left, const Mat4& right) = 0;
+};
+std::array<float, 2> movcam_vehicle_camera_pose_0079f710(std::vector<VehicleCameraElement>* cameras, int index,
+                                                         const Mat4& target_world_cc, const Vec3& entity_position_fc,
+                                                         bool* inside, VehicleCameraPoseHost& host);
+// 007A0DD0: (index, entity) -> the `inside` result of 0079F710 into a scratch
+// (ECX camera passed through; RET 8; returns AL).
+bool movcam_has_vehicle_camera_pose_007a0dd0(std::vector<VehicleCameraElement>* cameras, int index,
+                                             const Mat4& target_world_cc, const Vec3& entity_position_fc,
+                                             VehicleCameraPoseHost& host);
+
+// 0078FAF0: ECX state {+0 current, +4 target, +8 accumulator}, stack dt, RET
+// 4 (the movie camera's +51Ch ground-offset state). x = |target - current|
+// (f(target - current), or -0.0 minus it when not > 0); step = f(x*dt*1.4)
+// (00D045F0, one rounding); current moves toward target by step without
+// passing it; accumulator = f(dt*current + accumulator). No angle wrap
+// despite the ledger name.
+void movcam_approach_0078faf0(std::array<float, 3>& state, float dt) noexcept;
+
+// ---------------------------------------------------------------------------
+// MovCam pose publication. Both builders compose M = (RotX * RotY) * T with
+// 00413920 (ECX left, stack out/right, row-major left*right), T the identity
+// with the position in row 3; M goes to the mover matrix +74h, the pose bytes
+// +C8h/+10Ch are cleared, 0042ED50 runs on every child node (+48h, next +44h)
+// and the camera node [+1BCh] slot +34h receives +74h.
+struct MovCamPoseHost {
+    virtual ~MovCamPoseHost() = default;
+    virtual Mat4 rotation_x_00b64640(float angle) = 0;
+    virtual Mat4 rotation_y_00b646e0(float angle) = 0;
+    virtual Mat4 multiply_00413920(const Mat4& left, const Mat4& right) = 0;
+    virtual void invalidate_children_0042ed50() = 0;              // the +48h/+44h walk
+    virtual void push_pose_slot34(const Mat4& matrix_74) = 0;     // [[+1BCh]]+34h
+    // 0042C4C0(a, b, c, d, e, f) on the mover, RET 18h.
+    virtual void set_shake_0042c4c0(const std::array<float, 6>& v) = 0;
+    virtual void reset_motion_00794000() = 0;
+};
+struct MovCamPose {
+    Mat4 matrix_74{};
+    bool pose_valid_c8{false};
+    bool pose_valid_10c{false};
+    Mat4 matrix_420{};
+    std::uint32_t mode_384{0};
+};
+// 00799750: fastcall camera. RotY(-0.0 - rho), RotX(-0.0 - theta) (SUBSS from
+// 00D7A208), position +394h.
+void movcam_apply_pose_00799750(MovCamPose& p, const MovCamAngles& a, MovCamPoseHost& host);
+// 007998C0: ECX camera, stack (x, y, z, pitch degrees, yaw degrees), RET 14h.
+// Mode +384h = 8; +420h = identity; 0042C4C0(0, 0, 0, 1, 1, 1); RotY(f(k*yaw)),
+// RotX(f(pitch*k)) with k = 0.01745329238474369 (double 00D046D8; the pitch
+// product comes from the DC-form FMUL at 00799999 and an FXCH); then the
+// publication and 00794000.
+void movcam_set_pos_rot_zoom_007998c0(MovCamPose& p, const Vec3& position, float pitch_degrees, float yaw_degrees,
+                                      MovCamPoseHost& host);
+
 // ---------------------------------------------------------------------------
 // MovCam arrival callbacks and the secondary target. The callback names are
 // NativeStrings (+0 length) at +49Ch and +4A4h; the argument vectors (a
@@ -376,6 +480,51 @@ struct KeyframeEventDestroyHost {
     virtual void target_observer_destruct_0042bca0(std::size_t entity, const void* observer) = 0;
 };
 void keyframe_event_destruct_00799fd0(cc13cam::KeyframeEvent& e, KeyframeEventDestroyHost& host);
+
+// ---------------------------------------------------------------------------
+// Keyframe linking and insertion (104h-byte keys; camera tracks +414h
+// look-at, +498h camera; 007A0770 append, 00798080 pair).
+struct MovieKeyLinks {
+    MovieKeyLinks* partner_20{nullptr};
+    bool linked_25{false};
+    bool camera_28{true};
+    Vec3 local_34{};
+    Vec3 work_40{};
+    std::uint32_t field_cc{0};
+    std::uint32_t field_d0{0};
+    std::int16_t id_da{-1};
+    std::uintptr_t modifier_e4{0};
+    float start_f0{0.0f};
+};
+struct MovieKeyHost {
+    virtual ~MovieKeyHost() = default;
+    virtual void evaluate_position_00795650(MovieKeyLinks& k) = 0;
+    virtual std::uintptr_t new_default_modifier_007a06d0() = 0;  // operator new(7Ch), 007A06D0(0); 0 on failure
+    virtual void append_007a0770(bool camera_track_498, MovieKeyLinks& k) = 0;
+    virtual void pair_00798080(bool camera_track_498, MovieKeyLinks& k) = 0;
+    virtual MovieKeyLinks* construct_at_0079c910(std::uintptr_t source) = 0;  // operator new(104h); null on failure
+    virtual bool session_present_1fe4() = 0;                                    // [00E188A8]+1FE4h
+    virtual void broadcast_new_add_position_0076d6d0(MovieKeyLinks& k) = 0;      // ECX game+1EF0h
+};
+// 00795BD0: ECX key, stack const float*, RET 4. Only without a modifier
+// (+E4h): +40h and +34h = p, then 00795650.
+void movie_key_set_fixed_position_00795bd0(MovieKeyLinks& k, const Vec3& p, MovieKeyHost& host);
+// 007A0E00: ECX key, stack partner, RET 4. +25h = 1, +CCh = +D0h = 0; a partner
+// links both +20h and makes this a look-at key (+28h = 0); without one the key
+// is a camera key (+28h = 1) and gets a new 7Ch-byte default modifier at +E4h.
+void movie_key_link_partner_007a0e00(MovieKeyLinks& k, MovieKeyLinks* partner, MovieKeyHost& host);
+// 007A2D30: ECX camera, stack (key, dt), RET 8. start = f(dt + start), 0 when
+// negative; a camera key is appended to +498h and paired in +414h, a look-at
+// key the other way round.
+void movie_key_shift_start_007a2d30(MovieKeyLinks& k, float dt, MovieKeyHost& host);
+// 007A2CD0: ECX camera, stack key, RET 4. Append and pair as 007A2D30, then,
+// with a session (game +1FE4h), 0076D6D0 broadcasts the key.
+void movie_camera_insert_key_007a2cd0(MovieKeyLinks& k, MovieKeyHost& host);
+// 007A2BB0: ECX camera, stack source, RET 4. With a source: a camera key
+// (0079C910, 007A0E00 with no partner) appended to +498h, then a look-at key
+// linked to it appended to +414h; both get the id word +3C0h, which then
+// increments.
+void movie_camera_add_key_pair_007a2bb0(std::uintptr_t source, std::uint32_t& next_id_3c0, MovieKeyHost& host);
 
 // 0078E8E0: fastcall camera. 0042A910 (ECX camera), then +391h = 0 and the
 // field of view +410h = 0.6981317 (00CE7D20).
@@ -587,5 +736,58 @@ struct StartGateHost {
 };
 float session_update_start_gate_007713a0(std::int32_t mode_f4, bool has_game, std::array<StartGateRecord, 8>* records,
                                          int local_index_18ec, float dt, StartGateHost& host);
+
+// ---------------------------------------------------------------------------
+// Peer rows (band0076_cc13::PeerRows at session+8h) and the MNetwork client.
+
+// 00786010: ECX rows, stack index, RET 4: rows[index].quality in ST0.
+float peer_rows_quality_00786010(const band0076_cc13::PeerRows& rows, int index) noexcept;
+// 007865D0: fastcall row. With a peer: the active transport (game +2078h,
+// else +207Ch) gives latency = slot +Ch(peer) (ST0, float-spilled) and
+// pending = slot +10h(peer) (int -> float); a = 00419010(8, 0, 16, 1,
+// pending), b = 00419010(0.15, 0, 0.6, 1, latency) (00CE3918, 00CE6454,
+// 00CE7818, 00CE3D30); 007862C0(row+4, b, a) smooths +4..+Ch.
+struct PeerQualityHost {
+    virtual ~PeerQualityHost() = default;
+    virtual float transport_latency_c(std::uint32_t peer) = 0;
+    virtual std::int32_t transport_pending_10(std::uint32_t peer) = 0;
+    virtual float interpolate_clamped_00419010(float x0, float y0, float x1, float y1, float x) = 0;
+    virtual void smoothed_triplet_update_007862c0(band0076_cc13::PeerRow& row, float first, float second) = 0;
+};
+void peer_row_update_quality_007865d0(band0076_cc13::PeerRow& row, PeerQualityHost& host);
+
+// MNetwork client virtuals: +28h open, +2Ch begin LAN search (a, b), +30h end
+// LAN search, +40h connect to the server, +48h disconnect; +9Ch the state.
+struct MNetworkClientHost {
+    virtual ~MNetworkClientHost() = default;
+    virtual void open_slot28() = 0;
+    virtual void begin_lan_search_slot2c(std::uint32_t a, std::uint32_t b) = 0;
+    virtual void end_lan_search_slot30() = 0;
+    virtual void connect_slot40() = 0;
+    virtual void disconnect_slot48() = 0;
+    virtual void clear_hosts_00785170() = 0;
+};
+// 00782880 / 007828C0: fastcall client; slot +28h / +48h, then +9Ch = 2.
+void mnetwork_client_open_00782880(std::uint32_t& state_9c, MNetworkClientHost& host);
+void mnetwork_client_disconnect_007828c0(std::uint32_t& state_9c, MNetworkClientHost& host);
+// 007828A0 / 007828B0: tail jumps to slots +30h / +40h.
+void mnetwork_client_end_lan_search_007828a0(MNetworkClientHost& host);
+void mnetwork_client_connect_007828b0(MNetworkClientHost& host);
+// 00785330: ECX client, stack (a, b), RET 8: 00785170, then slot +2Ch(a, b).
+void mnetwork_client_clear_and_search_00785330(std::uint32_t a, std::uint32_t b, MNetworkClientHost& host);
+
+// 0076B320 / 0076B350: fastcall transport. EnterCriticalSection (import
+// 00CE2218) on the lock at +34h / +24h, lock depth +18h += 1; EAX = the
+// guarded list at transport +28h / +18h.
+struct TransportLock {
+    std::uintptr_t critical_section{0};
+    std::int32_t depth_18{0};
+};
+struct CriticalSectionHost {
+    virtual ~CriticalSectionHost() = default;
+    virtual void enter_critical_section(std::uintptr_t cs) = 0;
+};
+void mnetwork_lock_incoming_0076b320(TransportLock& lock_34, CriticalSectionHost& host);
+void mnetwork_lock_removals_0076b350(TransportLock& lock_24, CriticalSectionHost& host);
 
 }  // namespace bsp::cc13cam2
