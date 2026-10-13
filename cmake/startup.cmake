@@ -69,6 +69,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/avoid_zone_segment
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/bot_task_states.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/dyn_profile_scopes.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/dyn_world_factory.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/flak_ver_cc13.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_input_settings_runtime.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_data_bootstrap.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_dyn_process.cpp)
