@@ -214,11 +214,50 @@ and 0064A394..0064A3DF (after 0064A360). Not defined in this pass.
 - STL instantiations over plain ints and rows (heap/sort helpers 0061D5C0..00626320, list/tree
   helpers 00659AA0..0066B2F0): library code; no record added.
 
+## Seventh batch (cc13-fe2b): the four large binders
+
+- 0061FBE0 rewards bind layout. The six page groups of FE_scoring are found by the names held in
+  the char* cells 00E08C70..00E08C84 (single_page1, multi_page1, objectives_page, detail_page,
+  multiscore_page, awards_page; read through the host because the cells live in .data); this is
+  why the first extraction mispaired them. Every arrow, scroll icon and thumb gets the widget
+  listener at +0Ch (00AA6BC0(+0Ch, 0)). Each of the three scroll panes (+68h, +128h, +19Ch) binds
+  its move group (00683790) and calls 00683380(thumb, back_y - thumb_y, up, down). The pop-up's
+  A_Text gets the key glyph of action A2h (00531030, 00531130, 00AB80C0, 00ABAED0); the listener
+  argument of 00531130 is the +0Ch value saved at 0061FC8F (uncertain).
+- 00629D10 rewards register: FE_scoring page, bind, and the global title-key vector 00E196BC
+  refilled with the six FE.scoring_* keys.
+- 0064BB90 ship-status register: effect handles 1..4 (00870CD0 with EDX = id), state reset, the
+  unit observation dropped, environment_unavailable.fsb into +1Ch.
+- 0067F080 unit library register: UnitLibGui page and the preview scene (light (1, 2, 0)/sqrt 5,
+  diffuse 0.6, ambient 0.2, motion blur and HDR blocks, shadow owner, VehicleClasses.lua and
+  DeviceClasses.lua). The HDR block's field order follows the decompile's stack layout and the
+  motion-blur block the listing; both are host data, not checked against the renderer.
+
+## Eighth batch (cc13-fe2b): session messages
+
+kSessionMessageClasses describes the seven classes: type, accepted base types of IsType (46h,
+plus 49h for all but A0h), vtable, constructor shape and the payload fields Write/Read serialise
+after the extended header (0075B480 / 0075B4C0):
+
+| Type | Payload | Routines |
+|---|---|---|
+| A0h (160) | signed 4 bits +1Ch | 0064A770, 0064A7A0, 0064A7C0, 0064A7E0, 0064ADE0 |
+| 94h (148) | none here (+1Ch byte cleared) | 0064A820, 0064A850, 0064AE00 |
+| A1h (161) | bool +1Ch, bool +20h | 00650310, 00650360, 00650390, 006503C0, 00650430 |
+| 82h (130) | bool +1Ch, 6 bits +20h, 3 bits +24h, optional 12-bit word +28h, 4 bits +2Ch (read only) | 006562F0, 006563A0, 00656420 |
+| A7h..A9h (167..169) | bool +1Ch, 2 bits +20h, bool +24h | 006564C0..006567B0, constructors 00656570 (A8h) / 00656670 (A9h) |
+
+All seven scalar deleting destructors restore the root vtable 00CE4974 and free on flag bit 0.
+They sit beside the native session-message series (docs/NATIVE_SESSION_MESSAGE_BASE_R177.md) but
+do not use its types; a later integration could fold them into that series.
+
 ## Handoff (cc13-fe2, 2026-10-12)
 
 237 records (220 reconstructed in `src/ingame_gui_cc13.cpp`, 17 backfills), build-tested, call
 report 632 rows / 0 failed. Ghidra was not written (the functions already carry reviewed names;
 no new names were introduced, so no annotation batch was needed).
+
+Update (cc13-fe2b): 0061FBE0, 00629D10, 0064BB90, 0067F080 and the session-message classes are now done (271 records in all); strike them from the lists below.
 
 Remaining reconstruction candidates in the two segments (ledger name, no record, no tag), by area:
 

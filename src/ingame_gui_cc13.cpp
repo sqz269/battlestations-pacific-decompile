@@ -2058,4 +2058,353 @@ int support_manager_record_icon_frame_00658620(Raw s, Raw record, IconFrameHost&
     return host.unit_has_kind_18(unit, 0x11) ? 0x13 : 0x11;
 }
 
+// ---------------------------------------------------------------------------
+// fe2b: rewards bind layout 0061FBE0
+// ---------------------------------------------------------------------------
+
+namespace {
+// Scroller set-up shared by the three scroll panes of 0061FBE0: bind the pane's
+// move group (00683790), then 00683380(thumb, track, up, down) with track =
+// back icon y - thumb y (00AA6740 -> +4h; the back y is held as a double and the
+// difference is rounded once to float).
+void rewards_setup_scroller(Raw s, std::size_t block, void* move_group, void* back, std::size_t up,
+    std::size_t down, std::size_t thumb, RewardsLayoutHost& host) {
+    host.scroller_bind_00683790(Raw{s.p + block}, move_group);
+    const double back_y = host.widget_vector_00aa6740(back)[1];
+    const float track = static_cast<float>(back_y - static_cast<double>(host.widget_vector_00aa6740(s.ptr(thumb))[1]));
+    host.scroller_setup_00683380(Raw{s.p + block}, s.ptr(thumb), track, s.ptr(up), s.ptr(down));
+}
+void rewards_listen(Raw s, std::size_t widget, RewardsLayoutHost& host) {
+    host.widget_set_listener_00aa6bc0(s.ptr(widget), s.p + 0xC, 0);
+}
+} // namespace
+
+// 0061FBE0, rewards bind layout (+14h), ECX = screen. The six page groups of
+// FE_scoring (+20h) are found by the names the char* cells 00E08C70..00E08C84
+// hold (single_page1, multi_page1, objectives_page, detail_page,
+// multiscore_page, awards_page _Group in this installation's image); every
+// arrow, scroll icon and thumb gets the widget listener at +0Ch (00AA6BC0(+0Ch,
+// 0)). The three scroll panes are the debriefing (+68h), detail (+128h) and
+// awards (+19Ch) blocks. The tail labels pop_Group's A_Text with the key of
+// action A2h (00531030 / 004C5E60 / 00531130, then 00AB80C0 and 00ABAED0).
+void rewards_bind_layout_0061fbe0(Raw s, RewardsLayoutHost& host) {
+    for (std::size_t off = 0x40; off <= 0x54; off += 4) s.ptr(off) = nullptr;
+    find(s, 0x5C, 0x20, "prev_page_Icon", host);
+    rewards_listen(s, 0x5C, host);
+    find(s, 0x60, 0x20, "next_page_Icon", host);
+    rewards_listen(s, 0x60, host);
+
+    // Debriefing page.
+    s.ptr(0x40) = host.gui_find_child_00aa7e00(s.ptr(0x20), host.global_cstr(0x00E08C70));
+    void* slider = host.gui_find_child_00aa7e00(s.ptr(0x40), "slider_Group");
+    s.ptr(0xC4) = host.gui_find_child_00aa7e00(slider, "scroll_up_Icon");
+    rewards_listen(s, 0xC4, host);
+    s.ptr(0xC8) = host.gui_find_child_00aa7e00(slider, "scroll_down_Icon");
+    rewards_listen(s, 0xC8, host);
+    s.ptr(0xCC) = host.gui_find_child_00aa7e00(slider, "slider_FrameBox");
+    rewards_listen(s, 0xCC, host);
+    void* back = host.gui_find_child_00aa7e00(slider, "back_Icon");
+    void* clip = host.gui_find_child_00aa7e00(s.ptr(0x40), "debriefing_Clipbox");
+    s.at<float>(0xD0) = host.widget_vector_00aa6740(clip)[1];
+    void* move = host.gui_find_child_00aa7e00(clip, "move_Group");
+    rewards_setup_scroller(s, 0x68, move, back, 0xC4, 0xC8, 0xCC, host);
+
+    // Multiplayer page.
+    s.ptr(0x44) = host.gui_find_child_00aa7e00(s.ptr(0x20), host.global_cstr(0x00E08C74));
+    find(s, 0xD4, 0x44, "players_Listbox", host);
+    find(s, 0xD8, 0xD4, "template_Group", host);
+    show(s, 0xD8, false, host);
+
+    // Objectives page.
+    s.ptr(0x48) = host.gui_find_child_00aa7e00(s.ptr(0x20), host.global_cstr(0x00E08C78));
+    find(s, 0xDC, 0x48, "obj_template_Group", host);
+    show(s, 0xDC, false, host);
+    find(s, 0xE0, 0x48, "primary_FrameBox", host);
+    find(s, 0xE4, 0x48, "secondary_FrameBox", host);
+    find(s, 0xE8, 0x48, "hidden_FrameBox", host);
+    find(s, 0xEC, 0x48, "primary_header_Text", host);
+    find(s, 0xF0, 0x48, "secondary_header_Text", host);
+    find(s, 0xF4, 0x48, "hidden_header_Text", host);
+
+    // Detail page.
+    s.ptr(0x4C) = host.gui_find_child_00aa7e00(s.ptr(0x20), host.global_cstr(0x00E08C7C));
+    find(s, 0x108, 0x4C, "clipbox_Clipbox", host);
+    find(s, 0x10C, 0x108, "header_template_Group", host);
+    find(s, 0x110, 0x108, "key_template_Group", host);
+    find(s, 0x114, 0x108, "value_template_Group", host);
+    find(s, 0x118, 0x108, "move_Group", host);
+    show(s, 0x10C, false, host);
+    show(s, 0x110, false, host);
+    show(s, 0x114, false, host);
+    show(s, 0x118, true, host);
+    slider = host.gui_find_child_00aa7e00(s.ptr(0x4C), "slider_Group");
+    back = host.gui_find_child_00aa7e00(slider, "back_Icon");
+    s.ptr(0x120) = host.gui_find_child_00aa7e00(slider, "scroll_down_Icon");
+    rewards_listen(s, 0x120, host);
+    s.ptr(0x11C) = host.gui_find_child_00aa7e00(slider, "scroll_up_Icon");
+    rewards_listen(s, 0x11C, host);
+    s.ptr(0x124) = host.gui_find_child_00aa7e00(slider, "slider_FrameBox");
+    rewards_listen(s, 0x124, host);
+    rewards_setup_scroller(s, 0x128, s.ptr(0x118), back, 0x11C, 0x120, 0x124, host);
+
+    // Awards page.
+    s.ptr(0x54) = host.gui_find_child_00aa7e00(s.ptr(0x20), host.global_cstr(0x00E08C84));
+    find(s, 0x184, 0x54, "awards_Clipbox", host);
+    find(s, 0x188, 0x184, "move_Group", host);
+    find(s, 0x18C, 0x188, "template_Group", host);
+    show(s, 0x188, true, host);
+    show(s, 0x18C, false, host);
+    slider = host.gui_find_child_00aa7e00(s.ptr(0x54), "slider_Group");
+    back = host.gui_find_child_00aa7e00(slider, "back_Icon");
+    s.ptr(0x194) = host.gui_find_child_00aa7e00(slider, "scroll_down_Icon");
+    rewards_listen(s, 0x194, host);
+    s.ptr(0x190) = host.gui_find_child_00aa7e00(slider, "scroll_up_Icon");
+    rewards_listen(s, 0x190, host);
+    s.ptr(0x198) = host.gui_find_child_00aa7e00(slider, "slider_FrameBox");
+    rewards_listen(s, 0x198, host);
+    rewards_setup_scroller(s, 0x19C, s.ptr(0x188), back, 0x190, 0x194, 0x198, host);
+
+    // Multiplayer score page.
+    s.ptr(0x50) = host.gui_find_child_00aa7e00(s.ptr(0x20), host.global_cstr(0x00E08C80));
+    find(s, 0x208, 0x50, "rank_Icon", host);
+    find(s, 0x1F8, 0x50, "player_Group", host);
+    find(s, 0x1FC, 0x1F8, "multiscore_var_Text", host);
+    find(s, 0x200, 0x1F8, "playername_var_Text", host);
+    find(s, 0x204, 0x1F8, "rank_var_Text", host);
+    find(s, 0x20C, 0x1F8, "rank_prog_Icon", host);
+    find(s, 0x210, 0x1F8, "rank_prog_new_Icon", host);
+    find(s, 0x214, 0x1F8, "rankgraf_FrameBox", host);
+
+    // The rank-up pop-up and its A button label.
+    find(s, 0x25C, 0x20, "pop_Group", host);
+    void* text = host.gui_find_child_00aa7e00(s.ptr(0x25C), "A_Text");
+    host.text_set_key_glyph_00531130(text, host.action_key_name_00531030(0xA2), s.p + 0xC);
+    host.widget_set_listener_00aa6bc0(text, nullptr, 0);
+    host.text_refresh_00ab80c0(text);
+    host.text_set_localised_source_00abaed0(text, host.action_key_name_00531030(0xA2), true);
+}
+
+// 00629D10, rewards register: base register, page FE_scoring into +20h, the
+// bind virtual (+14h, 0061FBE0), then the global vector of page-title keys at
+// 00E196BC (begin 00E196C0, end 00E196C4) is emptied (004954F0) and refilled
+// in page order (00450540); +3Ch byte cleared.
+inline constexpr std::uint32_t kRewardsPageTitleVector = 0x00E196BC;
+inline constexpr std::array<std::string_view, 6> kRewardsPageTitleKeys{
+    "FE.scoring_single_page1", "FE.scoring_multi_page1", "FE.scoring_objectives",
+    "FE.scoring_detailed_score", "FE.scoring_rank", "FE.scoring_awards"};
+void rewards_register_00629d10(Raw s, RewardsRegisterHost& host) {
+    host.front_end_screen_register_004f71d0(s);
+    s.ptr(0x20) = host.gui_load_page_00aa5840("FE_scoring");
+    host.screen_virtual_14(s);
+    host.string_vector_clear_004954f0(kRewardsPageTitleVector);
+    for (std::string_view key : kRewardsPageTitleKeys) host.string_vector_append_00450540(kRewardsPageTitleVector, key);
+    s.at<std::uint8_t>(0x3C) = 0;
+}
+
+// 0064BB90, ship-status register (45h): base register; effect handles 1..4
+// (00870CD0, ECX = &out, EDX = id, (1)) assigned refcounted into +0Ch..+18h;
+// +44h = -1.0f and +124h..+12Ch = 0.0f; the layout virtual (+14h, 0064C0F0);
+// the relation icon's resolved position into +24h..+2Ch; +40h hidden and the
+// four damage highlights (+D8h..+E4h) shown; the screen state reset (the unit
+// observation through member +170h / observed +184h is dropped); the
+// "environment/environment_unavailable.fsb" sample (*00F8BBE8 cache) into +1Ch.
+void ship_status_register_0064bb90(Raw s, ShipStatusRegisterHost& host) {
+    host.front_end_screen_register_004f71d0(s);
+    for (int id = 1; id <= 4; ++id) {
+        host.handle_assign_acquired(Raw{s.p + 0x8 + static_cast<std::size_t>(id) * 4}, host.effect_acquire_00870cd0(id));
+    }
+    s.at<float>(0x44) = -1.0f;  // 00D7A260
+    s.at<float>(0x128) = 0.0f;
+    s.at<float>(0x12C) = 0.0f;
+    s.at<float>(0x124) = 0.0f;
+    host.screen_virtual_14(s);
+    float pos[3];
+    host.widget_resolved_position_00aa6750(s.ptr(0xF8), pos);
+    s.at<float>(0x24) = pos[0];
+    s.at<float>(0x28) = pos[1];
+    s.at<float>(0x2C) = pos[2];
+    show(s, 0x40, false, host);
+    for (std::size_t off = 0xD8; off <= 0xE4; off += 4) show(s, off, true, host);
+    s.at<std::uint32_t>(0x100) = 0;
+    s.at<std::uint8_t>(0x155) = 0;
+    s.at<std::uint8_t>(0x156) = 0;
+    s.at<std::uint8_t>(0x157) = 0;
+    s.at<std::uint32_t>(0x158) = 0;
+    s.at<std::uint32_t>(0x14C) = 0;
+    s.at<std::int32_t>(0x150) = -1;
+    s.at<std::uint8_t>(0x144) = 1;
+    if (s.ptr(0x184) != nullptr) {
+        host.observer_unregister_006952a0(s.p + 0x170, s.ptr(0x184));
+        s.ptr(0x184) = nullptr;
+    }
+    s.at<float>(0x160) = -1.0f;
+    s.at<std::uint8_t>(0x8) = 0;
+    s.at<std::uint8_t>(0x105) = 0;
+    s.at<std::uint8_t>(0x106) = 0;
+    s.at<std::uint8_t>(0x107) = 0;
+    s.at<std::uint8_t>(0x104) = 0;
+    s.at<std::uint8_t>(0x119) = 0;
+    s.at<std::uint32_t>(0x30) = 0;
+    host.handle_assign_acquired(Raw{s.p + 0x1C}, host.sound_sample_acquire_by_name("environment/environment_unavailable.fsb"));
+}
+
+// 0067F080, unit library register (05h): page UnitLibGui into +6Ch, the
+// selection state cleared (+E4h = 1), then the preview scene is set up: scene
+// init (0093CCC0), camera render mode 0 and clear flags 7 on the camera +10h
+// (00B6FDF0 / 00B6FE10); the first directional light of the scene's lighting
+// owner (+0Ch, 00B72110 -> +1Ch list) points along (1, 2, 0) / sqrt(5) (the
+// squared length is formed as 0*0 + 5.0 and rounded to float before 00BF7030;
+// 0 when not positive) with base diffuse (0.6, 0.6, 0.6, 1.0) (004B62E0);
+// ambient (0.2, 0.2, 0.2, 1.0) (00B7AF20); *00F8BBF0 slot +4h(byte 00F88A04);
+// render resources (00B107F0 on *00F8D39C with 00F88A0C, 00F88A0D,
+// 00F889D8); motion blur {0, 0, 100, 600, 100, 0, 0, 0} (00B0EA20); HDR
+// {0.6, 4, 0.5, 0.04, 0, 0.5, 3, 3, 10, byte 0, 1.0} (00B0E9B0); a shadow owner
+// for the light (00A8FD30 / 00B7BDF0, temporary reference dropped); +108h and
+// +10Ch cleared; VehicleClasses.lua and DeviceClasses.lua run (00B69D40);
+// +130h = 1.
+inline constexpr float kUnitLibraryMotionBlur[8] = {0.0f, 0.0f, 100.0f, 600.0f, 100.0f, 0.0f, 0.0f, 0.0f};
+struct UnitLibraryHdr {
+    float values[9];
+    std::uint8_t flag;
+    float scale;
+};
+inline constexpr UnitLibraryHdr kUnitLibraryHdr{{0.6f, 4.0f, 0.5f, 0.04f, 0.0f, 0.5f, 3.0f, 3.0f, 10.0f}, 0, 1.0f};
+void unit_library_register_0067f080(Raw s, UnitLibraryRegisterHost& host) {
+    host.front_end_screen_register_004f71d0(s);
+    page(s, 0x6C, "UnitLibGui", host);
+    for (std::size_t off = 0xEC; off <= 0x100; off += 4) s.at<std::uint32_t>(off) = 0;
+    s.at<std::uint8_t>(0x104) = 0;
+    s.at<std::uint32_t>(0xE4) = 1;
+    host.simple3d_scene_init_0093ccc0(Raw{s.p + 0x8});
+    host.camera_set_render_mode_00b6fdf0(s.ptr(0x10), 0);
+    host.camera_set_clear_flags_00b6fe10(s.ptr(0x10), 7);
+    void* light = host.scene_first_directional_light(s.ptr(0xC));
+    const float squared = static_cast<float>(static_cast<double>(0.0f * 0.0f) + 5.0);  // 00D7A370
+    const float length = static_cast<float>(std::sqrt(static_cast<double>(squared)));
+    const float inv = length > 0.0f ? 1.0f / length : 0.0f;
+    Raw l{static_cast<std::uint8_t*>(light)};
+    l.at<float>(0x1E0) = inv;
+    l.at<float>(0x1E4) = inv + inv;
+    l.at<float>(0x1E8) = static_cast<float>(static_cast<double>(inv) * 0.0);  // 00D7A258
+    const float diffuse[4] = {0.6f, 0.6f, 0.6f, 1.0f};
+    host.light_set_base_diffuse_004b62e0(light, diffuse);
+    const float ambient[4] = {0.2f, 0.2f, 0.2f, 1.0f};
+    host.scene_set_ambient_00b7af20(s.ptr(0xC), ambient);
+    host.render_flag_hook_f8bbf0_04();
+    host.render_resources_init_00b107f0();
+    host.scene_renderer_set_motion_blur_00b0ea20(kUnitLibraryMotionBlur);
+    host.scene_renderer_set_hdr_00b0e9b0(kUnitLibraryHdr);
+    host.light_attach_new_shadow_owner(light);
+    s.ptr(0x108) = nullptr;
+    s.ptr(0x10C) = nullptr;
+    host.lua_run_script_00b69d40("SCRIPTS/datatables/autoload/VehicleClasses.lua");
+    host.lua_run_script_00b69d40("SCRIPTS/datatables/autoload/DeviceClasses.lua");
+    s.at<std::uint32_t>(0x130) = 1;
+}
+
+// ---------------------------------------------------------------------------
+// fe2b: session messages of segments 26/27
+// ---------------------------------------------------------------------------
+
+const SessionMessageClass* find_session_message_class(std::uint8_t type) noexcept {
+    for (const SessionMessageClass& c : kSessionMessageClasses) {
+        if (c.type == type) return &c;
+    }
+    return nullptr;
+}
+
+// IsType: the class's own type or one of its accepted base types.
+bool session_message_is_type(const SessionMessageClass& c, std::int32_t type) noexcept {
+    if (type == c.type) return true;
+    for (std::uint8_t i = 0; i < c.base_count; ++i) {
+        if (type == c.bases[i]) return true;
+    }
+    return false;
+}
+
+// Constructor: 0075B430(type), clear the +18h word and +1Ah byte, store the
+// arguments, +4h = 1, then the class vtable.
+Raw session_message_construct(const SessionMessageClass& c, Raw m, std::uint32_t arg0, std::uint8_t arg1,
+    SessionMessageHost& host) {
+    host.construct_base_0075b430(m, c.type);
+    m.at<std::uint16_t>(0x18) = 0;
+    m.at<std::uint8_t>(0x1A) = 0;
+    switch (c.ctor) {
+    case SessionCtorShape::Dword1C:
+        m.at<std::uint32_t>(0x1C) = arg0;
+        break;
+    case SessionCtorShape::Clear1C:
+        m.at<std::uint8_t>(0x1C) = 0;
+        break;
+    case SessionCtorShape::Clear1CByte20:
+        m.at<std::uint8_t>(0x1C) = 0;
+        m.at<std::uint8_t>(0x20) = static_cast<std::uint8_t>(arg0);
+        break;
+    case SessionCtorShape::Clear1CDword20Byte24:
+        m.at<std::uint8_t>(0x1C) = 0;
+        m.at<std::uint32_t>(0x20) = arg0;
+        break;
+    case SessionCtorShape::None:
+        break;
+    }
+    m.at<std::uint32_t>(0x4) = 1;
+    m.at<std::uint32_t>(0x0) = c.vtable;
+    if (c.ctor == SessionCtorShape::Clear1CDword20Byte24) m.at<std::uint8_t>(0x24) = arg1;
+    return m;
+}
+
+// Write / Read: the extended header (0075B480 / 0075B4C0), then the fields in
+// order.
+void session_message_write(const SessionMessageClass& c, Raw m, void* cursor, SessionMessageHost& host) {
+    host.write_header_0075b480(m, cursor);
+    for (std::uint8_t i = 0; i < c.field_count; ++i) {
+        const SessionField& f = c.fields[i];
+        switch (f.kind) {
+        case SessionFieldKind::Bool: host.write_bool_004290b0(cursor, m.at<std::uint8_t>(f.offset)); break;
+        case SessionFieldKind::Signed: host.write_signed_00429090(cursor, m.at<std::int32_t>(f.offset), f.bits); break;
+        case SessionFieldKind::Unsigned: host.write_unsigned_00429070(cursor, m.at<std::uint32_t>(f.offset), f.bits); break;
+        }
+    }
+}
+
+void session_message_read(const SessionMessageClass& c, Raw m, void* cursor, SessionMessageHost& host) {
+    host.read_header_0075b4c0(m, cursor);
+    for (std::uint8_t i = 0; i < c.field_count; ++i) {
+        const SessionField& f = c.fields[i];
+        switch (f.kind) {
+        case SessionFieldKind::Bool: host.read_bool_00428d70(cursor, m.at<std::uint8_t>(f.offset)); break;
+        case SessionFieldKind::Signed: host.read_signed_00428d30(cursor, m.at<std::int32_t>(f.offset), f.bits); break;
+        case SessionFieldKind::Unsigned: host.read_unsigned_00428d10(cursor, m.at<std::uint32_t>(f.offset), f.bits); break;
+        }
+    }
+}
+
+// 006563A0, message 82h read: header, bool +1Ch, 6 bits +20h, 3 bits +24h, a
+// presence bit for the 12-bit word +28h (0 when absent), 4 bits into +2Ch
+// (through a local).
+void session_message130_read_006563a0(Raw m, void* cursor, SessionMessageHost& host) {
+    host.read_header_0075b4c0(m, cursor);
+    host.read_bool_00428d70(cursor, m.at<std::uint8_t>(0x1C));
+    host.read_unsigned_00428d10(cursor, m.at<std::uint32_t>(0x20), 6);
+    host.read_unsigned_00428d10(cursor, m.at<std::uint32_t>(0x24), 3);
+    std::uint8_t present = 0;
+    host.read_bool_00428d70(cursor, present);
+    if (present == 0) {
+        m.at<std::uint16_t>(0x28) = 0;
+    } else {
+        host.read_word_bits_00428e30(cursor, m.at<std::uint16_t>(0x28), 12);
+    }
+    std::uint32_t last = 0;
+    host.read_unsigned_00428d10(cursor, last, 4);
+    m.at<std::uint32_t>(0x2C) = last;
+}
+
+// Scalar deleting destructors (identical): the root vtable 00CE4974, freed
+// when bit 0 of the flag is set; returns the message.
+Raw session_message_scalar_delete(Raw m, std::uint8_t flags, SessionMessageHost& host) {
+    m.at<std::uint32_t>(0x0) = kSessionMessageRootVtable;
+    if ((flags & 1) != 0) host.free_block(m.p);
+    return m;
+}
+
 } // namespace bsp::ingame_gui_cc13
