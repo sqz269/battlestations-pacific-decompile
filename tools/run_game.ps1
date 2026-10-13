@@ -25,6 +25,10 @@
 # 3 KB, a bsp_game window titled "Error"), stop both bsp_game processes and
 # delete the lock file yourself; this script never kills a process, because
 # the live one may be another agent's run.
+#
+# Each run also writes <log>.manifest.json (arguments, BSP_* environment, exe hash and build
+# commit) and copies its file-valued arguments to <log>.inputs\; tools/run_replay.py <manifest>
+# prints or launches the same run from those copies.
 [CmdletBinding(PositionalBinding=$false)]
 param(
     [string]$Exe = 'build\win32\Release\bsp_game.exe',
@@ -119,13 +123,83 @@ while ($slot -lt 0) {
 $tag = "slot$slot"
 $core = $Cores[$slot]
 "slot=$slot tag=$tag core=$core log=$logFull"
+
+# Run manifest (packet cc13-tool1): <log>.manifest.json records the arguments, the BSP_*
+# environment, the executable's hash and build commit, and the host commit; every argument
+# whose value is an existing file (--helm-orders and the like) is copied to <log>.inputs\ so
+# the run can be replayed after the tree that held it is gone (tools/run_replay.py). A
+# manifest failure only warns: it never stops the run.
+function Get-GitState([string]$dir) {
+    $ErrorActionPreference = 'Continue'
+    $state = [ordered]@{ root = $null; head = $null; dirty = $null }
+    $probe = $dir
+    while ($probe -and -not (Test-Path (Join-Path $probe '.git'))) { $probe = Split-Path $probe -Parent }
+    if (-not $probe) { return $state }
+    $state.root = $probe
+    $state.head = (& git -C $probe rev-parse HEAD 2>$null | Select-Object -First 1)
+    $state.dirty = [bool](& git -C $probe status --porcelain --untracked-files=no 2>$null | Select-Object -First 1)
+    $state
+}
+function Write-RunManifest($manifest) {
+    try {
+        [System.IO.File]::WriteAllText("$logFull.manifest.json", ($manifest | ConvertTo-Json -Depth 6))
+    } catch { Write-Warning "run manifest not written: $_" }
+}
+$manifest = $null
+function New-RunManifest([string[]]$runArgs) {
+    $exeItem = Get-Item $Exe
+    $inputDir = "$logFull.inputs"
+    $inputs = @()
+    for ($i = 0; $i -lt $runArgs.Count; $i++) {
+        $opt = $runArgs[$i]; $value = $null; $index = $i
+        if ($opt -match '^(--[^=]+)=(.+)$') { $opt = $Matches[1]; $value = $Matches[2] }
+        elseif ($opt -like '--*' -and $i + 1 -lt $runArgs.Count) { $value = $runArgs[$i + 1]; $index = $i + 1 }
+        # --log is this run's output and may still hold an older run's log.
+        if (-not $value -or $opt -eq '--log' -or -not (Test-Path -LiteralPath $value -PathType Leaf)) { continue }
+        $source = (Resolve-Path -LiteralPath $value).Path
+        if (-not (Test-Path $inputDir)) { New-Item -ItemType Directory -Path $inputDir | Out-Null }
+        $name = Split-Path $source -Leaf
+        $same = @($inputs | Where-Object { $_.source -eq $source })
+        if ($same) { $name = $same[0].archived }
+        else {
+            if (@($inputs | Where-Object { $_.archived -eq $name })) { $name = "$index.$name" }
+            Copy-Item -LiteralPath $source -Destination (Join-Path $inputDir $name) -Force
+        }
+        $inputs += [ordered]@{ option = $opt; arg_index = $index; value = $value; source = $source
+            archived = $name; sha256 = (Get-FileHash -LiteralPath $source -Algorithm SHA256).Hash.ToLower() }
+    }
+    $envBsp = [ordered]@{}
+    Get-ChildItem env: | Where-Object { $_.Name -like 'BSP_*' } | Sort-Object Name | ForEach-Object { $envBsp[$_.Name] = $_.Value }
+    [ordered]@{
+        started_utc = (Get-Date).ToUniversalTime().ToString('o')
+        cwd = (Get-Location).Path
+        owner = $owner; slot = $slot; instance_tag = $tag; affinity_core = $core
+        log = $logFull
+        launcher = @{ exe = $Exe; game_root = $GameRoot; xlive_dll = $XLiveDll; game_args = @($GameArgs) }
+        arguments = @($runArgs)
+        env = $envBsp
+        exe = [ordered]@{ path = $exeItem.FullName; size = $exeItem.Length
+            mtime_utc = $exeItem.LastWriteTimeUtc.ToString('o')
+            sha256 = (Get-FileHash -LiteralPath $exeItem.FullName -Algorithm SHA256).Hash.ToLower()
+            build_checkout = (Get-GitState $exeItem.DirectoryName) }
+        host = (Get-GitState (Get-Location).Path)
+        inputs = @($inputs)
+        exit_code = $null; finished_utc = $null
+    }
+}
 try {
     $logDir = Split-Path $Log -Parent
     if ($logDir -and -not (Test-Path $logDir)) { New-Item -ItemType Directory -Path $logDir | Out-Null }
     $arguments = @('--game-root', $GameRoot, '--xlive-dll', $XLiveDll, '--log', $Log, '--instance-tag', $tag, '--affinity-core', "$core") + $GameArgs
+    try { $manifest = New-RunManifest $arguments; Write-RunManifest $manifest }
+    catch { Write-Warning "run manifest not written: $_" }
     & $Exe @arguments 2>&1 | Select-Object -Last 1
     $code = $LASTEXITCODE
     "EXITCODE=$code"
+    if ($manifest) {
+        $manifest.exit_code = $code; $manifest.finished_utc = (Get-Date).ToUniversalTime().ToString('o')
+        Write-RunManifest $manifest
+    }
     # The parent can return while its native-data child is still tearing down
     # (a lost D3D device at shutdown has been seen), and a survivor blocks the
     # next launch through the single-instance mutex. Wait for this run's own
