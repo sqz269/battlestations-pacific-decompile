@@ -749,3 +749,34 @@ Open, in order:
    the elevator test value == 0.0 for the ten Wings classes.
 4. Census row 1 skipped by the lead's ruling; the sea bands' raw-ownership leftovers are teardown helpers only.
 5. One launch died at renderer init with the session on the console (18:05 local): check query session first.
+
+## 24. cc9-physics5 handoff (sea/physics lane + WINS KEEPER), 2026-10-13
+
+Tree J:\PROG\battlestations-pacific-decompile-cc9-physics1 (agent/cc9-physics1). Launcher `local\p5_runs.ps1 -Rows
+"<log>|<exe>|<MISSION>|<mission frames>|<orders or empty>|<jitter or empty>"` (one Start-Process per row; logs
+`local\<log>.log`), wait `local\p5_wait.ps1 -Names a,b -Need n` (a log is done when it is no longer locked), USN01 one-screen
+summary `local\p5_u1sum.ps1`, plan variants `local\p5_mkplan.py <name> "<frame> <order>" ...` (inserts into z4),
+rel32 census `local\p5_rel32_scan.py <targets>`.
+
+Done: kPlaneLeaderTurnRollBound ON (53c3f2814); `read_vehicle_class_part_anim` (7066f75f4); the wing fold
+`kPlaneWingFoldElevatorBound` / `kPlaneWingSpreadTakeoffBound` (24086a71d, OFF; docs/PLANE_INPUT_CHECKS_CC9.md);
+`kActuatorBlockStepOrderBound` ON (1f83f2ffa, c01d9516e, e97058a57); USN01 plan e (1db9b4dd7, won on 3eac809d6).
+
+Open, in order:
+1. **USN01 re-plan again** on current main: plan e loses on 64675c644 (WINS_TABLE). Plan d (= e + the Wildcat
+   launches) loses too. Start from `p5so_on_u1e.log`: Convoy2 and Convoy6 survive. Check whether the dead-target
+   retest ends ConTBD1's/ConTBD3's command after their first kill (`squadron retest:` lines) and re-target those
+   squadrons with `select`/`target` lines just after each kill, as plan d did for ConTBD1 -> Convoy3.
+2. **Wing fold pair: not decided.** On top of the step order (builds `local\p5_wf` elevator-only, `local\p5_wt`
+   both, at c01d9516e) every pair so far is gameplay-identical: USN01 d/e (no Wings plane reaches phase 3 on the
+   current main), LOMP10 (no Wings class), ESMP08 without orders (510 Wings planes, no carrier deck ops). The only
+   row with carrier launches of Wings classes is ESMP08 WITH orders (Avengers/Helldivers/Kates/Jills from carriers):
+   pair both switches there, combined with item 3. Expect `prep_holds` > 0 and launches later by up to the class
+   duration (2.5-4.0 s); `retracts`/`elevator_waits` only if a Wings plane lands on a carrier.
+3. **ESMP08 re-plan** (lead's queue): base orders cc9-gunnery36\local\g38_ord_e8.txt (r1/r2), generator
+   cc9-gunnery36\local\g38_e8_retarget.py (re-target slots whose target sinks), allocation to sink Fanning, Grayson,
+   Woodworth and Dunlap before ~1750 s while the big ships draw the flak (GUNNERY 196-199). Commit the winner to
+   config/win_orders/.
+4. WINS_TABLE rows pending ships45's re-check: USNOS `usnos_s45_os_k`, JM08 `jm08_s45_j8_m10`.
+5. `local\p4_runs.ps1`'s USN12 rows quote `'$root\config\...'` in single quotes, so the path is literal: that is why
+   cc9-physics4's USN12 runs had no orders. Use p5_runs.ps1.
