@@ -421,6 +421,23 @@ Vec3 centroid_007ae6d0(const Vec3* points, int count) noexcept {
                 f32(static_cast<double>(inv) * sz)};
 }
 
+void erase_points_outside_world_007b1ec0(std::vector<Vec3>& points, const WorldBounds711c* bounds) {
+    if (bounds == nullptr) return;  // 007B1ECD: no game object
+    int count = static_cast<int>(points.size());
+    for (int i = 0; i < count; ++i) {
+        const float x = points[static_cast<std::size_t>(i)].x;
+        const float z = points[static_cast<std::size_t>(i)].z;
+        // 007B1F3F-007B1F78: each test is a strict compare, so NaN keeps the point.
+        const bool outside = bounds->x_min_711c > x || x > bounds->x_max_7128 ||
+                             z > bounds->z_max_7124 || bounds->z_min_7130 > z;
+        if (outside) {
+            points.erase(points.begin() + i);  // 0071F3E0
+            i = -1;                            // 007B1F88 OR ESI, -1: restart
+            count = static_cast<int>(points.size());
+        }
+    }
+}
+
 float distance_to_polyline_007ae7b0(const Vec3* points, int count, const Vec3& pos,
                                     const std::function<float(const std::array<float, 3>&)>& length) {
     const std::array<float, 3> p{pos.x, pos.y, pos.z};

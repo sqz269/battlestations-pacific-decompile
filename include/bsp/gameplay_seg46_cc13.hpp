@@ -46,6 +46,7 @@
 #include <array>
 #include <cstdint>
 #include <functional>
+#include <vector>
 
 namespace bsp {
 namespace gameplay_seg46_cc13 {
@@ -305,6 +306,19 @@ Vec3 centroid_007ae6d0(const Vec3* points, int count) noexcept;
 // ST0. One point: 0042B2F0(f(pos - p0)). Otherwise the minimum over the legs of
 // 0046FF70(ECX = pos, EDX = p[i], p[i+1]), each stored to float, from FLT_MAX
 // (00D7A248); no legs answers FLT_MAX. `length` is 0042B2F0.
+// 007B1EC0 BSP_Point3Vector_ClipToWorldBounds (the ledger's "clip" is an erase),
+// __fastcall(ECX = vector<float[3]>), read whole. With a game object, every point
+// with x < [game+711Ch], x > [game+7128h], z > [game+7124h] or z < [game+7130h]
+// is erased (0071F3E0) and the walk restarts at index 0; an unordered coordinate
+// keeps its point. Caller 0071FDE0 BSP_DirectorPathObject_AddPoint.
+struct WorldBounds711c {
+    float x_min_711c{0.0f};
+    float z_max_7124{0.0f};
+    float x_max_7128{0.0f};
+    float z_min_7130{0.0f};
+};
+void erase_points_outside_world_007b1ec0(std::vector<Vec3>& points, const WorldBounds711c* bounds);
+
 float distance_to_polyline_007ae7b0(const Vec3* points, int count, const Vec3& pos,
                                     const std::function<float(const std::array<float, 3>&)>& length);
 

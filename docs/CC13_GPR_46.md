@@ -119,6 +119,7 @@ This pass reads both.
 | `007B11F0` | `start_index_for_position_007b11f0` | Read whole. RET 0Ch, and the float argument is never read. With fewer than two points, or the nearest already last (forward) or first (backward), it answers the nearest. Otherwise it takes `a` = the nearest point, `b` = its neighbour in the travel direction, and on (x, z) only: `d = f(p - a)`, `u = f(f(b - a) * 00419260(b - a))`. It answers the neighbour when `f(u.z*d.z + u.x*d.x) > 0`, that is when the position is already past `a` along the leg; otherwise the nearest. |
 | `007AE6D0` | `centroid_007ae6d0` | Float running sums, then `f(inv * sum)` with `inv = f(1/(double)count)`. |
 | `007AE7B0` | `distance_to_polyline_007ae7b0` | One point: `0042B2F0(pos - p0)`. Otherwise the minimum over the legs of `0046FF70(pos, p[i], p[i+1])` (reusing `cc13_sys::point_segment_distance_0046ff70`), starting from FLT_MAX. |
+| `007B1EC0` | `erase_points_outside_world_007b1ec0` | Read whole. The ledger calls it a clip, but it **erases**. Each point with `x < [game+711Ch]`, `x > [+7128h]`, `z > [+7124h]` or `z < [+7130h]` is removed through `0071F3E0`, and the walk then restarts at index 0. The compares are strict, so a NaN coordinate keeps its point. The caller is `0071FDE0` `BSP_DirectorPathObject_AddPoint`. |
 
 ## 2. Adoption table (cc9 terms)
 
@@ -131,6 +132,7 @@ This pass reads both.
 
 | `nearest_point_index_007aed10`, `path_local_from_homogeneous_007b0900`, `start_index_for_position_007b11f0` | `src/game_hosts_commands.cpp:3142` (`ship_ai_path_nearest_index_007b1100`, the planar hypothesis, fed only x and z) and the `007B11F0` head at `:3132` | the path's points in the path entity's local frame and that entity's inverse world matrix (the authored path is a scene entity, `pathID`); the cursor's direction byte; `00419260` (`native_vector2_reciprocal_length_00419260`) | none | OFF: none. ON, two effects. First, the nearest index becomes 3-D in the path's local frame, so it moves only where the path points or the ship sit off y = 0 or the path entity is transformed. Second, the start index takes the next point in the travel direction whenever the unit is already past the nearest point along that leg, so a ship joining mid-leg stops turning back to the point behind it. Ships on move-on-path orders can therefore change course at the join; which missions move was not measured. |
 | `centroid_007ae6d0`, `distance_to_polyline_007ae7b0` | none found (their callers are the world wrappers `007B0650`/`007B0710`, reached through the path interface's vtable; no host caller was traced) | path points, query position, `0042B2F0` | none | none known until a caller is bound |
+| `erase_points_outside_world_007b1ec0` | none (the host has no `0071FDE0` DirectorPathObject AddPoint) | the point vector and the map box `[game+711Ch..+7130h]` (as in `band_007a_cc13`'s `007EF8F0`) | none | ON: script-added path points outside the map box are dropped rather than kept |
 
 The capture itself (`006F6760` adds `CapturePower` per capturer) is the ship-AI host's arm 3 and is not
 modelled here.
@@ -157,7 +159,7 @@ modelled here.
 
 Function records (`config/reconstruction`): `007AB8C0`, `007ABA50`, `007AC530`, `007AB230`, `007ABB30`,
 `007AB360`, `007AB0B0`, `007AC000`, `007AB590`, `007AAE10`, `006E3F90`, `007AED10`, `007B0900` (partial: the
-divide), `007B11F0`, `007AE6D0`, `007AE7B0`. Fragments: `006E541F`, `006E55E7`.
+divide), `007B11F0`, `007AE6D0`, `007AE7B0`, `007B1EC0`. Fragments: `006E541F`, `006E55E7`.
 Names (`config/names`): `007AB0B0` `BSP_MParatrooper_AnimClock`, `007AB330` `BSP_MParatrooper_HandleMessage71`
 (neither has a Ghidra function).
 `006E3F90`/`006E541F`/`006E55E7` are outside segment 46. They are the rack branch cc9 asked for, read-only
@@ -176,3 +178,22 @@ there, and no other lease holds them.
 - `tools/verify_report_calls.py` passed 20 call-site rows (constructor RNG, drop RNG and `007AB230`,
   `006E3F90`/`007BCCF0` at `007C0EC1`/`007C0EC9`, and the landing, steer and kill calls), with 0 failures; six more rows cover the path pieces (`0046FF70`, `0042B2F0`, `00419260`, `007AED10`, `007B0900`, `00BF7030`), also with 0 failures. The
   row files are `local/g46_calls.json` and `local/g46_calls2.json`, which are not committed.
+
+## 6. Handoff
+
+The cc9 priorities are done: the JM05 paratrooper entity and the level-bomb paratrooper branch. The path join
+was also done, because it closes an unread hypothesis in the ship-AI path code. Segment 46 still has about 60
+functions with names but no record. None of them is gameplay-critical:
+- **Movie camera (`007A49A0`-`007AADD0`).** These are presentation. The camera lanes (cc13-cam*) own them;
+  `BSP_MovCam_*` such as `007A49A0` draw on stream 0 per docs/CC13_BAND_0079_007F.md 3.2.
+- **Path networking and archives.** `007AD5C0`-`007AD7A0` (MT_PATH_SET/ADD/INSERT/DELETE),
+  `007B0B00`-`007B0D30`, `007B0F00`, `007B1120`/`007B1170`, `007B2C00`, and the PATH_CREATE message `007B0BF0`/`007B2950`.
+- **Path-source plumbing.** `007B19B0`/`007B1BF0`/`007B1D90` (refcounted source handles), the constructors
+  `007B28C0`/`007B28F0`/`007B2AB0`, and `007B1B10`.
+- **Lua float readers** `007AAE50`-`007AAFD0`, and the paratrooper class reader `007AC780`. Its field table is
+  in CC13_SOLDIER_TRAFFIC.md 10.1 and was not re-read here.
+- **Small path-cursor accessors.** `007ADB90` PointAtIndex (it answers zero without a path, and a negative index
+  means the cursor's own), `007ADD50` (`vtable[8](007ADCC0())`), `007B1320`
+  (`vtable[4](out, 007ADCC0())`) and `007AE060`.
+
+Open question to settle before binding the paratrooper: how a rack-dropped round gets `flying` (section 3).
