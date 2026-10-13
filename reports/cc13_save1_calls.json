@@ -1,0 +1,31 @@
+{
+  "packet": "cc13-save1",
+  "doc": "docs/CC13_SAVE_1.md",
+  "steps": [
+    {"function": "0042d680", "address": "0042d6bf", "native": "00414db0", "note": "pose refresh after the velocity call"},
+    {"function": "006af420", "address": "006af457", "native": "0058b520", "note": "erase the name tree"},
+    {"function": "006af420", "address": "006af697", "native": "005070c0", "note": "map[name] for a new name"},
+    {"function": "006af420", "address": "006af6a8", "native": "00bf8417", "note": "atol(key text)"},
+    {"function": "006af420", "address": "006af6b9", "native": "005070c0", "note": "map[name] = -1 for a repeated name"},
+    {"function": "006afb00", "address": "006afcaf", "native": "00623170", "note": "sort the integer keys"},
+    {"function": "006afb00", "address": "006afd4f", "native": "004322d0", "note": "push_back of the constant 0 entity pointer"},
+    {"function": "006afb00", "address": "006afd89", "native": "006af780", "note": "restore one entity (argument is always NULL)"},
+    {"function": "006afb00", "address": "006afdab", "native": "0058b520", "note": "clear the name map"},
+    {"function": "006af780", "address": "006af7aa", "native": "009238a0", "note": "entity saved-data LuaObject (ECX = NULL entity when reached from 006AFB00)"},
+    {"function": "006af780", "address": "006af81c", "native": "00bd6830", "note": "read localFrame (type 7)"},
+    {"function": "006ad470", "address": "006ad48d", "native": "00951820", "note": "cont0 into 00F89A08"},
+    {"function": "006ad470", "address": "006ad4b1", "native": "00951820", "note": "cont1 into 00F89A08+54h"},
+    {"function": "006b5960", "address": "006b59e5", "native": "006ad470", "note": "entIDcont"},
+    {"function": "006b5960", "address": "006b5a1a", "native": "004b4a20", "note": "_game"},
+    {"function": "006b5960", "address": "006b5a56", "native": "00916a00", "note": "scoring"},
+    {"function": "006b5960", "address": "006b5a85", "native": "00874640", "note": "mission clock reset with 0.0"},
+    {"function": "006b5960", "address": "006b5ac8", "native": "00647300", "note": "spectated unit when actUnitID is non-null"},
+    {"function": "006b5960", "address": "006b5acd", "native": "006b3dd0", "note": "register global functions"},
+    {"function": "006b5960", "address": "006b5ad2", "native": "006b23e0", "note": "restore pass"},
+    {"function": "006b5960", "address": "006b5ad7", "native": "006b17b0", "note": "registry singleton"},
+    {"function": "006b5960", "address": "006b5aea", "native": "005fe9e0", "note": "registry clear"},
+    {"function": "006b5960", "address": "006b5b5d", "native": "00b67350", "note": "_savedata = nil"},
+    {"function": "006b5960", "address": "006b5bb0", "native": "006b8ad0", "note": "collectgarbage(\"collect\") when enabled"},
+    {"function": "006b8ad0", "address": "006b8afd", "native": "006b89f0", "note": "run string as a chunk"}
+  ]
+}
