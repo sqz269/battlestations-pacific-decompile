@@ -259,16 +259,11 @@ grouped by name prefix:
 | `CG` | 56 | 00851F20, 00853010, 00853020, 00853030, 00853040, 00853380, 008533A0, 00856230, 00856250, 00856340, 00857D80, 00857D90, 00857DA0, 00857DB0, 00857E00, 00858150, 00858220, 008586E0, 0085EAE0, 0085EB00, 0085EB60, 00861BA0, 00862630, 00862750, 008627F0, 00863100, 00864660, 00864FD0, 00865CB0, 00866090, 00866280, 00866300, 00867060, 00869CF0, 0086A400, 0086B710, 0086B850, 0086B9A0, 0086BED0, 0086C240, 0086CD10, 0086CF10, 0086CF70, 0086D080, 0086E5A0, 0086E870, 0086FD70, 0086FF00, 008716E0, 00872280, 00873060, 008730E0, 00873420, 00873890, 00873A90, 00873E90 |
 | `BSP_ShipClass` | 1 | 00852200 |
 | `BSP_UnitInstance` | 2 | 00852210, 00857C20 |
-| `BSP_SubmarineUnit` | 5 | 00852D30, 00852F10, 008530E0, 00853110, 00853590 |
 | `TRIV` | 10 | 00852FB0, 00852FC0, 008561D0, 008561E0, 008561F0, 00856200, 00856210, 00858170, 0085EA30, 0086B980 |
-| `BSP_VehicleClassSubmarine` | 1 | 008531A0 |
-| `BSP_SubmarinePeriscopeDebris` | 1 | 008533E0 |
-| `BSP_TorpedoProjectile` | 8 | 008559D0, 00855B00, 00855BB0, 00855D30, 00855F50, 008562A0, 00856360, 008563A0 |
+| `BSP_TorpedoProjectile` | 4 | 008559D0, 00855B00, 00855BB0, 00855F50 |
 | `BSP_ObserverLink14` | 1 | 00855FE0 |
 | `Unwind@00856220` | 1 | 00856220 |
 | `Unwind@00856240` | 1 | 00856240 |
-| `BSP_MTorpedo` | 1 | 00856260 |
-| `BSP_TorpedoBoat` | 2 | 00857CD0, 00857F00 |
 | `BSP_TorpedoBoatClass` | 2 | 00857D60, 00857E20 |
 | `BSP_TraceLineEffectInstance` | 4 | 008580A0, 008583A0, 00858530, 008585D0 |
 | `BSP_NodeHandle` | 2 | 008580C0, 008658C0 |
@@ -285,14 +280,11 @@ grouped by name prefix:
 | `FUN` | 1 | 00859950 |
 | `BSP_Gun` | 2 | 0085A9A0, 0085B7D0 |
 | `BSP_ReconCategory` | 2 | 0085BCE0, 0085BD50 |
-| `BSP_Matrix` | 9 | 0085C0F0, 0085C220, 0085D3D0, 0085D770, 0085D920, 0085DAD0, 0085E4D0, 0085E880, 0085E8C0 |
-| `BSP_Vector3f` | 1 | 0085C3F0 |
+| `BSP_Matrix` | 3 | 0085C0F0, 0085C220, 0085E4D0 |
 | `BSP_Ellipsoid` | 1 | 0085C5D0 |
 | `BSP_Geometry` | 2 | 0085CDB0, 0085DF60 |
-| `BSP_WaterMine` | 7 | 0085E9C0, 0085EA50, 0085EAC0, 0085F120, 0085F1E0, 0085F270, 0085F2B0 |
-| `BSP_MWaterMine` | 1 | 0085EB20 |
+| `BSP_WaterMine` | 1 | 0085EAC0 |
 | `BSP_WaterMineShot` | 1 | 0085F1A0 |
-| `BSP_WaterMineClass` | 1 | 0085F310 |
 | `BSP_DebugDraw` | 13 | 0085F990, 0085FB30, 0085FB70, 0085FFF0, 00860030, 00860140, 008605C0, 00860710, 008608B0, 00860AD0, 00860BB0, 00860BE0, 00861260 |
 | `TMPL_Pair8` | 1 | 00861920 |
 | `BSP_UnitGunneryDirectorBridge` | 7 | 00861970, 00861980, 00861990, 008619A0, 008619B0, 008619C0, 008624C0 |
@@ -310,16 +302,14 @@ grouped by name prefix:
 | `BSP_UnitGunneryTarget` | 1 | 00863640 |
 | `Unwind@00864500` | 1 | 00864500 |
 | `BSP_UnitGunneryVisibility` | 3 | 00864680, 00864BA0, 00864D90 |
-| `BSP_WorldAtmosphere` | 2 | 008658E0, 00865900 |
-| `BSP_RainDescriptor` | 3 | 00865AB0, 00865B80, 00865CF0 |
+| `BSP_WorldAtmosphere` | 1 | 008658E0 |
+| `BSP_RainDescriptor` | 2 | 00865B80, 00865CF0 |
 | `BSP_OwnedObject` | 1 | 00865E30 |
 | `BSP_NativePointerVector` | 3 | 00865E90, 008661B0, 00866690 |
-| `BSP_PointEffect` | 2 | 00865FE0, 008679D0 |
 | `BSP_RefPtr` | 11 | 00866730, 00866970, 00866C30, 0086AC50, 0086AC80, 0086ACB0, 0086ACE0, 0086AFC0, 0086B080, 0086B750, 00873AB0 |
 | `BSP_EffectDeletionLock` | 1 | 00866760 |
 | `BSP_EffectManager` | 2 | 008669A0, 008674A0 |
-| `BSP_EffectHandle` | 1 | 00866B70 |
-| `BSP_EffectSound` | 4 | 00868D00, 00869E10, 0086A740, 0086FA80 |
+| `BSP_EffectSound` | 1 | 00868D00 |
 | `BSP_EffectFlare` | 2 | 00869300, 0086BDB0 |
 | `BSP_EffectThunderStorm` | 5 | 00869370, 0086F3B0, 0086FB40, 0086FBC0, 0086FC20 |
 | `BSP_EffectWaterdrops` | 2 | 008693E0, 0086BDF0 |
@@ -346,14 +336,8 @@ grouped by name prefix:
 | `BSP_GameplayEffect` | 1 | 00871A90 |
 | `BSP_RegisteredModelEffect` | 2 | 00871FF0, 00872770 |
 | `BSP_RegisteredType4Effect` | 1 | 00872080 |
-| `BSP_EffectFlareInstance` | 4 | 008720A0, 008720D0, 008720F0, 00873010 |
-| `BSP_EffectThunderStormInstance` | 5 | 00872100, 00872110, 00873C80, 00873EB0, 00873FF0 |
-| `BSP_EffectWaterdropsInstance` | 5 | 00872120, 00872BF0, 00872C10, 00873090, 00873100 |
 | `BSP_EffectNode` | 1 | 008721A0 |
-| `BSP_EffectSplashInstance` | 5 | 008721C0, 00872D60, 00872DF0, 00872E30, 008739A0 |
 | `BSP_NodeRef` | 3 | 00872220, 00872240, 00872260 |
-| `BSP_EffectSoundInstance` | 10 | 00872630, 00872650, 00872670, 00872690, 008726C0, 00872720, 00872F40, 00872FB0, 00873AE0, 00873DE0 |
-| `BSP_EffectLightInstance` | 3 | 00872CB0, 00872D30, 008738B0 |
 | `BSP_LightningStormOwner` | 1 | 00872E80 |
 
 ## 7. Pass cc13-gpr53d
@@ -503,3 +487,31 @@ Findings: the thunderstorm destructor does not release its sky effect +1Ch, and 
 constructor dereferences the ocean without the null test that its destructor makes. Both models
 keep the image's behaviour. RNG: none. Adoption: presentation only, nothing to replace in the host
 (the host does not tick effect instances). `verify_report_calls`: 127 rows, 0 failed.
+
+### 7.8 Handoff (cc13-gpr53d)
+
+Totals for this pass: 20 effects_cc13 records (section 7.1) plus 49 segment-53 records: 45
+models in this packet's files, the two trivial thunderstorm slots 00872100 and 00872110, and
+2 checked host rows (00856260, 0085EB20). All are build-tested; none is wired, fixture-tested or
+game-validated. Section 6's open table now lists 337 addresses.
+
+Open, in value order:
+
+1. `BSP_EffectTraceLine_ReadLua` 00858700 reads Width (x0.5), WidthSpeed, WidthSpeedEnd,
+   MaxSegmentNum (default 10), MinSegmentLength (1.0), SegmentLifeTime (1.0), OuterColor,
+   AnimOnOff, AnimLoop, AnimStartFrame, AnimEndFrame (defaults to start), AnimPlaySpeed and
+   TextureName (frame list, "cloud_snake.dds" fallback). The decompiler shows negative offsets
+   from ECX, so the field base has to be taken from the listing before a model is written.
+   After that: the trace-line instance Update 008585D0, the destructor 00858530 and
+   CreateInstance 00859240.
+2. The water tracer reader 0086D180 and its curves 0086C120 (presentation).
+3. The light instance constructor 008740E0, at the segment end address (not leased here).
+4. Small wrappers: 00855B00, 008559D0 / 0085EAC0, 00855BB0, 00855F50, 0085F1A0, 00857C20 /
+   00852210 (motion controller variants, docs/UNIT_CONTROLLER_UPDATE.md), the per-kind
+   CreateInstance functions (00868D00, 00869300..008695B0), 0085C0F0 / 0085C220 (no callers),
+   and 0085C5D0 (no reference at all; refscan positive control 0085DC80 gave 70 hits).
+5. The gunnery lane (0085xxxx-00864xxx turning gun, gunnery AI, director bridge and target
+   records) and 0085DF60 / 0085CDB0, both already in cc9's gunnery host, were not touched.
+6. Notes for other owners: docs/CC13_SCENE_WEATHER.md says the rain step draws on stream 0;
+   the bytes say stream 1 (section 7.6). 0072C970's ledger name and the submarine_model
+   "save schema" comments are as section 3 lists.

@@ -1053,6 +1053,11 @@ void construct_effect_splash_instance_008739a0(effects_cc13::EffectSplashInstanc
                                                PointEffectInstanceStorage* point,
                                                const EffectSplashConstructHost& host);
 
+// 00872100, thunderstorm slot 13 (primary +30h, Stop): a bare RET.
+inline void stop_effect_thunderstorm_instance_00872100() noexcept {}
+// 00872110, thunderstorm slot 3 (primary +08h, IsComplete): XOR AL,AL; RET.
+constexpr bool effect_thunderstorm_instance_is_complete_00872110() noexcept { return false; }
+
 // The thunderstorm instance (24h): +1Ch the sky effect, +20h the storm (54h).
 struct EffectThunderStormInstanceStorage {
     NativeRegisteredEffectPrefixStorage prefix;   // type_18 = 0
