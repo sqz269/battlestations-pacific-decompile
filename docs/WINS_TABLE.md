@@ -140,3 +140,4 @@ mechanism is in the cd761bb52 section above).
   `kGunAimDegreePrecisionBound` (f435022e8) leave USN01 (1014.63 s) and USN12 (1539.83 s) at identical times;
   ESMP08 is unchanged (lost).
 - **Retracted: "USN12 lost on 8b0e7bfce".** That run (local\p4l_off_u12.log) logged `helm orders refused: cannot open` its order file: cc9-ships38 had been removed minutes before. USN12 ran with no orders; it says nothing about main.
+- **kPlaneLeaderTurnRollBound flipped ON** (cc9-physics5, 2026-10-13, ruling (a)): faithful, loses USN01 `p3_u1_z4` (deaths 90 -> 68 on the 8b0e7bfce pair). USN01 stays a win row pending the re-plan on current main; until then treat `p3_u1_z4` as expected to fail.

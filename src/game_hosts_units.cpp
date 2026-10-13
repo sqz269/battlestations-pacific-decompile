@@ -5504,7 +5504,7 @@ struct GameUnitsHost::Impl {
     // Packet cc9_leader_turn_roll: 0099DF8B-0099DFAA picks TurnRollLeader (class+260h)
     // when 007B95E0 says the plane leads a squadron with active wingmen, else
     // TurnRoll (+25Ch). False: TurnRoll for every aircraft.
-    static constexpr bool kPlaneLeaderTurnRollBound = false;
+    static constexpr bool kPlaneLeaderTurnRollBound = true;  // ON by ruling (a): faithful; USN01 re-plan
     // Packet cc9_plane_touchdown (docs/SQUADRON_LAND_TASK.md section 5k): the
     // free-flight arm's site probe 007C5AC0 (006C0840 with its key, 007B8E80,
     // 006BC530 into plane+BF8h/+BFCh), the touchdown test 007CC440-007CC4CA and
