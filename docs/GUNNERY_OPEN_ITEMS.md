@@ -13800,3 +13800,22 @@ still nulled afterwards (`kPlaneNullFireTargetProviderBound`). Counter `leader_f
 | USN15 (formations fighting ships) | inherits > 0; exit 3; escorts' AA/flak guns try the leader's ship target first |
 | USN12 | inherits > 0 if a formation member lacks a target; exit 3 or 1 |
 | USN21 | small: carrier-vs-carrier strike ranges, the inherited ship fails 00863990's range test |
+
+## 223. AA pick D4: the submarine category gate: `kSubmarineCategoryGateBound`, OFF (lead queue item 2; cc9-gunnery41, 2026-10-13)
+
+**Image** (docs/CC13_VER_19.md D4). `008636A0` installs `00D0D32C` on an `IsKindOf(8)` unit; its slot 4, `008627A0`,
+opens category 7 when `008527E0` (y > band1 - 3), categories 1-6 when `008527A0` (y > band0 - 3), and nothing
+else. A refusal skips the gather and the assignment (`008651D1` JE `00865773`), so the guns keep their target.
+
+**Host.** `category_gate_slot4` answered true. ON: for an `IsKindOf(8)` unit it takes y from `unit_position_00fc`
+and bands 0/1 from `submarine_band_y`, then cc13's `aa_pick_submarine_category_gate_008627a0` with
+`submarine_is_above_deck_gun_depth_008527a0` and `submarine_is_shallow_008527e0`. The pass already keeps the
+targets on a refused gate. Counter `submarine_category_gate_refusals`, logged as `summary mission gunnery
+submarine category gate refusals`. Categories 8 and 9 (depth charges, ASW) now never re-pick on a submarine.
+
+**Predictions, written before any ON run.**
+
+| row | prediction ON |
+| --- | --- |
+| USN15 / USN12 | refusals > 0 only if a submarine is present; otherwise exit 0 or 1 |
+| USN21 (Dace, Darter) | refusals > 0 (categories 8/9 always, 1-6 while submerged); exit 3 if a submerged boat's pick moved |

@@ -80,6 +80,8 @@
 #include "bsp/shipyard_production.hpp"
 #include "bsp/vehicle_class.hpp"
 #include "bsp/flak_ver_cc13.hpp"
+#include "bsp/aa_pick_ver_cc13.hpp"
+#include "bsp/gameplay_seg53_cc13.hpp"
 
 namespace bsp::game {
 namespace {
@@ -375,6 +377,14 @@ constexpr bool kAaSlotRangeOriginBound = false;
 //    the unit's own row. ON: a unit with no fire target of its own takes its
 //    formation leader's row target. OFF: as before.
 constexpr bool kDirectorLeaderFireTargetBound = false;
+//  * kSubmarineCategoryGateBound: packet cc9_g41_aa_pick_d4 (docs/CC13_VER_19.md
+//    D4). 008636A0 installs 00D0D32C on an IsKindOf(8) unit (0086371E..00863743);
+//    its slot 4, 008627A0, opens category 7 when 008527E0 (y > band1 - 3) and
+//    categories 1..6 when 008527A0 (y > band0 - 3), and no other category. A
+//    refused gate skips the gather and the assignment (008651D1 JE 00865773),
+//    so the guns KEEP their target. The host answered true for every unit.
+//    ON: the submarine gate. OFF: as before.
+constexpr bool kSubmarineCategoryGateBound = false;
 //  * kTorpedoSwimThrustBound: packet cc9_torpedo_tube_turn,
 //    docs/TORPEDO_FRIENDLY_CROSSING.md section 6. 00857480, the swim advance,
 //    per step on a torpedo in the water: 00856BB0 -> 00857061 yaws the NOSE
@@ -2443,6 +2453,7 @@ struct GameGunneryHost::Impl {
     unsigned long long flak_fuse_unarmed_steps{0}; // kFlakFuseArmTimeBound
     unsigned long long aa_slot_origin_flips{0};    // kAaSlotRangeOriginBound
     unsigned long long leader_fire_target_inherits{0}; // kDirectorLeaderFireTargetBound
+    unsigned long long submarine_category_gate_refusals{0}; // kSubmarineCategoryGateBound
     unsigned long long aa_negative_halvings{0};
     unsigned long long water_depth_kills{0};   // packet cc9_water_surface_law
     unsigned long long airfield_destroy_kills{0};  // packet cc9_airfield_destruction_rule
@@ -5345,10 +5356,26 @@ public:
             return true;
         }
     }
-    bool category_gate_slot4(int) override {
+    bool category_gate_slot4(int category) override {
         // 008636A0 installs the default gate 00D0D31C on a unit that is not
         // class 8; its vtable[4h] is 00861BE0, `mov al,1`.
-        return true;
+        if (!kSubmarineCategoryGateBound || !owner_.units.unit_is_kind_of(unit_, 8)) return true;
+        // 0086371E..00863743: an IsKindOf(8) unit gets 00D0D32C, whose slot 4 is
+        // 008627A0: category 7 asks 008527E0, 1..6 ask 008527A0, others false.
+        float x = 0.0f, y = 0.0f, z = 0.0f;
+        owner_.units.unit_position_00fc(unit_, x, y, z);
+        float band0 = 0.0f, band1 = -20.0f;                   // 00E0B578 defaults
+        owner_.units.submarine_band_y(unit_, 0, band0);        // +1200h
+        owner_.units.submarine_band_y(unit_, 1, band1);        // +1204h
+        bsp::gameplay_seg53_cc13::SubmarineDepthFields depth;
+        depth.world_y_100 = y;
+        depth.bands_1200[0] = band0;
+        depth.bands_1200[1] = band1;
+        const bool open = bsp::aa_pick_submarine_category_gate_008627a0(category,
+            bsp::gameplay_seg53_cc13::submarine_is_above_deck_gun_depth_008527a0(depth),
+            bsp::submarine_is_shallow_008527e0(y, band1));
+        if (!open) ++owner_.submarine_category_gate_refusals;
+        return open;
     }
 
     bool sweep_suppressed() override { return state_.sweep_suppressed; }
@@ -14540,6 +14567,9 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery director leader fire target inherits=%llu "
             "bound=%d (00863640, packet cc9_g41_aa_pick_d3)", host.leader_fire_target_inherits,
             kDirectorLeaderFireTargetBound ? 1 : 0);
+        host.log.notef("summary mission gunnery submarine category gate refusals=%llu "
+            "bound=%d (008627A0, packet cc9_g41_aa_pick_d4)", host.submarine_category_gate_refusals,
+            kSubmarineCategoryGateBound ? 1 : 0);
         host.log.notef("summary mission gunnery water depth kills=%llu (007CE3A7, packet "
             "cc9_water_surface_law)", host.water_depth_kills);
         host.log.notef("summary mission gunnery airfield sub-entity asks=%llu listed=%llu "
