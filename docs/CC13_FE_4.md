@@ -150,6 +150,43 @@ IntBool vector insert 00543E90 / 005440E0, ByteSbo (24h, std::string at +4) help
 00543C20 / 00543CA0 / 00543CF0 / 00543D40 / 005443B0 / 005443F0. The catch-and-rethrow paths of
 the uninitialised copies are not modelled.
 
+### Segment 22: movie camera debug screen (36h)
+
+Vehicle camera array accessor 005CD820, destruct 005CE4D0 (two trees erased through 005CE340 /
+005CD710), collect 005CE5D0, construct 005CE610. The movie screens proper (005CD9C0, 005CDB00,
+005CDC50, 005CDD70, 005CDF30, 005CDF40) and the movie-camera spectate pair (005CD0F0, 005CD160) are
+the in-game movie wiring cc9 owns; they were not touched.
+
+### Multiplayer chat (15h)
+
+Wide-string append / concat 005CF090 / 005CF570, line destroy / copy 005CF0F0 / 005CF180 /
+005CF460 / 005CF4F0, node buy 005CFA40 / 005CFAE0, register 005CF260 (_Chat +3Ch), system chat
+lines 005CF320 (session mode 1 only; 00772170 with an empty sender and ids -1) and 005CF3D0 (loss:
+side 0 -> channel 9, side 1 -> 10, kind 5), clear logs 005CFB80, construct 005CFDA0, destroy
+005CFE60, exit 005CFF40, collect 005D0020, label 005D07E0 (prefix = player name + ": "), send
+005D0B10 (channel 8, or 9/10 by the local slot record in a mission or team chat; an invalid slot
+only raises sound request +1Ch), team flag 005D1000, mode 005D11F0.
+
+Correction: 005D1020 (input clamp to 3Ch characters) and 005D10F0 (submit) are slots of the text
+listener 00CF19C0 at screen+8h, not of the primary vtable; their offsets are listener-relative
+(input string screen+20h, cursor screen+28h).
+
+### Multiplayer error (1Dh)
+
+Exit 005D1F90, focus dim 005D1FB0, dismiss 005D2010 (pops interface 1Bh; unless signed in with a
+selected user in sign-in state 2: states 10h (in a mission), pop to 0Fh, states 9 and 4), update
+005D2240, activate 005D2310 (widget listener at screen+0Ch), buttons 005D23E0 (listbox listener at
+screen+8h), register 005D2440, message 005D24F0 (codes 1..7 and the join detail 00E08898: full,
+public full, DLC failure with the marketplace, rank, session off), error code 005D2E70, collect
+005D2F60. The marketplace opens through XShowMarketplaceUI for the active user slot.
+
+### Multiplayer pause (19h)
+
+Prompt results 005D3410 (pop the request and end the scene) / 005D3430 (quit flag 00E1AE75), typed
+focus dims 005D3440 / 005D35A0 (types 3, 6, 12h), selection store 005D34E0 (00E19550), construct
+005D3540, destroy 005D3710, activate 005D3790 (A2h activates the listbox selection, A3h resumes),
+register 005D38A0 (GUI_pause_multi), exit 005D3960, collect 005D3990.
+
 ## Backfilled
 
 - 00530970 menu prompt exit (`src/menu_screens_2.cpp`).
@@ -161,3 +198,8 @@ the uninitialised copies are not modelled.
   zeroed; then the unit's vslot +118h gets &vec. The free-camera update calls it on the mark action
   with the camera position (src/menu_screens_2.cpp `mark_position_0053d230`), so it hands a world
   point to the unit: an order path, not reconstructed here.
+- 005D36B0 `BSP_PromptResult_Surrender`, __fastcall(ECX result): on 1,
+  BSP_Session_RequestPlayerSurrender(*(game + 18C8h), 1) then BSP_Game_TogglePauseMenu. A match
+  outcome request, left to cc9.
+- The in-game movie screens and movie-camera spectate pair listed under the movie camera debug
+  screen (ownership: in-game movie wiring).

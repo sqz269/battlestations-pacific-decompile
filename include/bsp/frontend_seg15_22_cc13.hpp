@@ -202,6 +202,82 @@ struct Seg15Host : bsp::ingame_gui_cc13::HudScreenServices {
     // Widget +50h set colour (float rgba[4]); +60h set focus (bool).
     // BSP_LegacySboString_AssignSubstring, ECX = dst string, (src, 0, npos).
     virtual void legacy_string_assign_substring(Raw dst, Raw src) = 0;
+    // --- segment 22 ---
+    // Tree erase-all instances (ECX = tree {alloc, head, size}): 005CE340, 005CD710.
+    virtual void tree_erase_all(std::uint32_t routine, Raw tree) = 0;
+    virtual void* tree_buy_head_node(std::uint32_t routine) = 0;  // 005CC2E0 / 005CC330
+    // BSP_VehicleCameraArray_Resize, ECX = array, (n).
+    virtual void vehicle_camera_array_resize(Raw array, std::int32_t n) = 0;
+    // 004C8DD0, ECX = dst wide string, (src): copy-construct.
+    virtual void wide_string_copy_construct_004c8dd0(Raw dst, Raw src) = 0;
+    // 00772170, ECX = *00E188A8 + 1EF0h: (const NativeString* sender, channel,
+    // kind, const NativeString* a, const NativeString* b, id0, id1).
+    virtual void session_send_chat_00772170(Raw sender, std::int32_t channel, std::int32_t kind, Raw a, Raw b,
+                                            std::int32_t id0, std::int32_t id1) = 0;
+    // A native string holding "" for the duration of a call (0041E870 from 00CE3A0C).
+    virtual Raw native_string_temp(std::string_view value) = 0;
+    // 00AA83F0, ECX = widget (clears a chat list widget).
+    virtual void widget_clear_00aa83f0(void* widget) = 0;
+    // 00A97260 / 00A97140, ECX = screen+8h: text-listener base construct / destroy.
+    virtual void text_listener_construct_00a97260(Raw listener) = 0;
+    virtual void text_listener_destroy_00a97140(Raw listener) = 0;
+    // 005CEE20 / 005CEE40 chat list heads; 005CF910 / 005CF950 list clears
+    // (ECX = list {alloc, head, size}).
+    virtual void* chat_list_buy_head(std::uint32_t routine) = 0;
+    virtual void chat_list_clear(std::uint32_t routine, Raw list) = 0;
+    // 004D6480, ECX = *00E188A8, (const vector<int>* screen ids, bool park).
+    virtual void gui_park_screens_004d6480(const std::int32_t* ids, std::size_t count, bool park) = 0;
+    // 00A966E0, ECX = screen+8h, (bool active, text widget).
+    virtual void text_editor_set_active_00a966e0(Raw listener, bool active, void* text) = 0;
+    // 006882A0, ECX = *00E198B4: close the pause interface.
+    virtual void multi_menu_close_pause_006882a0() = 0;
+    // 004261A0, ECX = a, (out, b): native string concatenation.
+    virtual void native_string_concat_004261a0(Raw a, Raw out, Raw b) = 0;
+    // 0067D940, ECX = text, EDX = prefix, (cursor block, value): fit the input on one line.
+    virtual void text_fit_range_one_line_0067d940(void* text, Raw prefix, Raw cursor_block, std::uint32_t value) = 0;
+    // 00432650: the global config; colours live at +208h.. (10h apart).
+    virtual Raw global_config_00432650() = 0;
+    // 00AB95F0, ECX = text, (bool): cursor mode.
+    virtual void text_set_cursor_mode_00ab95f0(void* text, bool mode) = 0;
+    // Pool return of a wide string's block ((count + 1) * 2 bytes).
+    virtual void wide_string_release(Raw string) = 0;
+    // 0076FAD0, ECX = *00E188A8 + 1EF0h: session mode.
+    virtual void session_set_mode_0076fad0(std::int32_t mode) = 0;
+    // *00F8A2FC (the online service) virtual: +14h signed in, +198h session off.
+    virtual bool online_service_virtual(std::uint16_t slot) = 0;
+    // *00F8ABE8 (the Xenon system manager): 00A3E510 has selected user,
+    // 00A3EAD0 sign-in state, 00A3EAC0(0, 0, 0, -1) active user slot.
+    virtual bool xenon_has_selected_user_00a3e510() = 0;
+    virtual std::int32_t xenon_sign_in_state_00a3ead0() = 0;
+    virtual std::int32_t xenon_active_user_slot_00a3eac0() = 0;
+    // 00A4D446 XShowMarketplaceUI(user slot, 0, 0, 0) (the import).
+    virtual void x_show_marketplace_ui_00a4d446(std::int32_t user) = 0;
+    // 004D7920, ECX = *00E188A8: request a game state.
+    virtual void game_request_state_004d7920(std::int32_t state) = 0;
+    // ECX = *00E198B4: 006881F0 pop the request, 00688B20 pop up to an interface;
+    // *(*00E198B4 + 20h) is the current interface.
+    virtual void multi_menu_pop_request_006881f0() = 0;
+    virtual void multi_menu_pop_up_to_00688b20(std::int32_t id) = 0;
+    // Widget +40h update(float seconds).
+    virtual void widget_update_40(void* widget, float seconds) = 0;
+    // 005D20A0, ECX = error screen: lay the buttons out (not reconstructed: x87).
+    virtual void multi_error_layout_buttons_005d20a0(Raw screen) = 0;
+    // 00AB6AB0, ECX = text, (const WideString*): submit UTF-16 text.
+    virtual void text_submit_utf16_00ab6ab0(void* text, Raw wide) = 0;
+    // 004D7970, ECX = *00E188A8: end the scene; 004DB030: toggle the pause menu.
+    virtual void game_end_scene_004d7970(std::int32_t how) = 0;
+    virtual void game_toggle_pause_menu_004db030() = 0;
+    // Widget +84h (bool) / +88h (int, int, float) state virtuals of types 12h / 6.
+    virtual void widget_virtual_84(void* widget, std::int32_t value) = 0;
+    virtual void widget_virtual_88(void* widget, std::int32_t value, std::int32_t b, float c) = 0;
+    // 00425E50, cdecl(object) -> value.
+    virtual std::uint32_t call_00425e50(void* object) = 0;
+    // 005FD890, ECX = *(interface + D8h), (page, show).
+    virtual void pause_screen_show_page_005fd890(std::int32_t page, std::int32_t show) = 0;
+    // 004C9680: select the default front-end frame (tail jump).
+    virtual void front_end_frame_select_default_004c9680() = 0;
+    // Native string substring (count, data) of the first n characters.
+    virtual void native_string_truncate(Raw string, std::uint32_t n) = 0;
 };
 
 // MSVC 8 vector layout used by the screens: {allocator dword, first, last, end}.
@@ -505,6 +581,88 @@ void byte_sbo_fill_005443b0(std::uint8_t* first, std::uint8_t* last, const std::
                             Seg15Host& host);  // cdecl
 void byte_sbo_uninit_fill_n_005443f0(std::uint8_t* dest, std::uint32_t count, const std::uint8_t* value,
                                      Seg15Host& host);  // fastcall + value, RET 10h
+
+// ===========================================================================
+// Segment 22
+// ===========================================================================
+// 005CD820, __thiscall(array {data, size}, i), RET 4: grow to i + 1, &data[i] (5Ch each).
+std::uint8_t* vehicle_camera_array_at_005cd820(Raw array, std::int32_t index, Seg15Host& host);
+// Movie camera debug screen (36h, vtables 00CF1968 / 00CF1950 at +8h).
+void movie_camera_debug_destruct_005ce4d0(Raw s, Seg15Host& host);
+void movie_camera_debug_collect_children_005ce5d0(Raw s, void* out, Seg15Host& host);
+Raw movie_camera_debug_construct_005ce610(Raw s, Seg15Host& host);
+
+// Multiplayer chat screen (15h, vtables 00CF1998 / text listener 00CF19C0 at +8h).
+// Overlay line (18h): {dword, WideString +4, NativeString +0Ch, dword +14h};
+// history line (14h): {WideString, NativeString +8h, dword +10h}. Lists at
+// +68h (overlay), +74h and +80h (history), each {alloc, head, size}.
+void wide_string_append_005cf090(Raw dst, Raw src, Seg15Host& host);  // __thiscall, RET 4
+void chat_overlay_line_destroy_005cf0f0(Raw line, Seg15Host& host);
+void chat_history_line_destroy_005cf180(Raw line, Seg15Host& host);
+void multi_chat_register_005cf260(Raw s, Seg15Host& host);
+// 005CF320, __fastcall(ECX channel, EDX kind, const NativeString* a, const NativeString* b), RET 8.
+void session_post_system_chat_line_005cf320(std::int32_t channel, std::int32_t kind, Raw a, Raw b, Seg15Host& host);
+// 005CF3D0, __fastcall(ECX side, EDX unused, a, b), RET 8: side 0 -> (9, 5), side 1 -> (10, 5).
+void warning_manager_post_loss_chat_line_005cf3d0(std::int32_t side, Raw a, Raw b, Seg15Host& host);
+void chat_overlay_line_copy_005cf460(Raw dst, Raw src, Seg15Host& host);
+void chat_history_line_copy_005cf4f0(Raw dst, Raw src, Seg15Host& host);
+// 005CF570, __thiscall(a, out, b), RET 8 -> EAX out: out = a + b.
+Raw wide_string_concat_005cf570(Raw a, Raw out, Raw b, Seg15Host& host);
+// 005CFA40 / 005CFAE0, (next, prev, const line*), RET 0Ch: new node (20h / 1Ch).
+std::uint8_t* chat_overlay_list_buy_node_005cfa40(void* next, void* prev, Raw line, Seg15Host& host);
+std::uint8_t* chat_history_list_buy_node_005cfae0(void* next, void* prev, Raw line, Seg15Host& host);
+void multi_chat_clear_logs_005cfb80(Raw s, Seg15Host& host);
+Raw multi_chat_construct_005cfda0(Raw s, Seg15Host& host);
+void multi_chat_destroy_005cfe60(Raw s, Seg15Host& host);
+void multi_chat_exit_005cff40(Raw s, Seg15Host& host);
+void multi_chat_collect_children_005d0020(Raw s, void* out, Seg15Host& host);
+void multi_chat_refresh_mode_label_005d07e0(Raw s, Seg15Host& host);
+void multi_chat_send_current_line_005d0b10(Raw s, Seg15Host& host);
+// 005D1000, __thiscall(screen, bool), RET 4.
+void multi_chat_set_team_only_005d1000(Raw s, bool team_only, Seg15Host& host);
+// 005D1020 / 005D10F0 / 005D14B0: text-listener slots (ECX = screen+8h).
+void multi_chat_clamp_input_length_005d1020(Raw listener, Seg15Host& host);
+void multi_chat_submit_input_005d10f0(Raw listener, Seg15Host& host);
+void multi_chat_on_open_request_005d14b0(Raw listener, Seg15Host& host);
+// 005D11F0, __thiscall(screen, mode), RET 4 (1 lobby, 2 typing, 3 in mission, 4 overlay).
+void multi_chat_set_chat_mode_005d11f0(Raw s, std::int32_t mode, Seg15Host& host);
+
+// Multiplayer error screen (1Dh, vtables 00CF1BF4 / listener 00CF1BC0 at +8h).
+// +10h page _MultiError, +14h / +18h texts, +20h..+28h buttons, +50h buttons
+// mode, +54h error code; 00E08898 is the join-failure detail.
+void multi_error_exit_005d1f90(Raw s, Seg15Host& host);
+// 005D1FB0 / 005D3440 (and 005D35A0's shape), __thiscall(listener, widget, bool), RET 8.
+void listener_focus_text_dim_005d1fb0(void* widget, bool flag, Seg15Host& host);
+void multi_error_dismiss_005d2010(Seg15Host& host);
+// 005D2240, __thiscall(screen, float), RET 4.
+void multi_error_update_005d2240(Raw s, float seconds, Seg15Host& host);
+// 005D2310 / 005D23E0: listener slots (ECX = screen+8h).
+void multi_error_on_activate_005d2310(Raw listener, void* widget, Seg15Host& host);
+void multi_error_on_button_005d23e0(Raw listener, void* button, Seg15Host& host);
+void multi_error_register_005d2440(Raw s, Seg15Host& host);
+void multi_error_show_message_005d24f0(Raw s, Seg15Host& host);
+// 005D2E70, __thiscall(screen, code), RET 4.
+void multi_error_set_error_code_005d2e70(Raw s, std::int32_t code, Seg15Host& host);
+void multi_error_collect_children_005d2f60(Raw s, void* out, Seg15Host& host);
+
+// Multiplayer pause screen (19h, vtables 00CF1D70 / 00CF1D5C at +8h / 00CF1D3C at +Ch).
+// Prompt callbacks, __fastcall(ECX result): 005D3410 leave (pop the request,
+// end the scene), 005D3430 quit flag 00E1AE75.
+void prompt_result_leave_multi_menu_005d3410(std::int32_t result, Seg15Host& host);
+void prompt_result_set_quit_flag_005d3430(std::int32_t result, Seg15Host& host);
+// 005D3440 (RET 8) / 005D35A0 (RET 4, flag from widget byte +D4h): types 3
+// (alpha), 6 (+88h(flag, 0, 1.0f)) and 12h (+84h(flag)).
+void listener_focus_dim_typed_005d3440(void* widget, bool flag, Seg15Host& host);
+void listener_refresh_dim_typed_005d35a0(void* widget, Seg15Host& host);
+// 005D34E0, listener slot (unused, listbox), RET 8: 00E19550 = selected index.
+void pause_multi_store_selection_005d34e0(void* listbox, Seg15Host& host);
+Raw pause_multi_construct_005d3540(Raw s, Seg15Host& host);
+void pause_multi_destroy_005d3710(Raw s, Seg15Host& host);
+// 005D3790, widget listener at screen+0Ch, RET 4.
+void pause_multi_on_activate_005d3790(Raw listener, void* widget, Seg15Host& host);
+void pause_multi_register_005d38a0(Raw s, Seg15Host& host);
+void pause_multi_exit_005d3960(Raw s, Seg15Host& host);
+void pause_multi_collect_children_005d3990(Raw s, void* out, Seg15Host& host);
 
 }  // namespace bsp::frontend_seg15_22_cc13
 

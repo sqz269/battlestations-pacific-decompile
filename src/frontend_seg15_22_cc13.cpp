@@ -1713,6 +1713,593 @@ void byte_sbo_fill_005443b0(std::uint8_t* first, std::uint8_t* last, const std::
     for (; first != last; first += 0x24) sbo_copy_fields(first, value, host);
 }
 
+// ===========================================================================
+// Segment 22
+// ===========================================================================
+
+std::uint8_t* vehicle_camera_array_at_005cd820(Raw array, std::int32_t index, Seg15Host& host) {
+    if (array.at<std::int32_t>(4) <= index) host.vehicle_camera_array_resize(array, index + 1);
+    return static_cast<std::uint8_t*>(array.ptr(0)) + index * 0x5C;
+}
+
+// 005CE4D0: vtables, page +1Ch, the two trees (+70h through 005CE340, +64h
+// through 005CD710: erase all, free the head, clear head and size), the
+// callback owner (+8h), then the base.
+void movie_camera_debug_destruct_005ce4d0(Raw s, Seg15Host& host) {
+    s.at<std::uint32_t>(0x0) = 0x00CF1968;
+    s.at<std::uint32_t>(0x8) = 0x00CF1950;
+    remove_page(s, 0x1C, host);
+    host.tree_erase_all(0x005CE340, Raw{s.p + 0x70});
+    host.free_00bf65ac(s.ptr(0x74));
+    s.at<std::uint32_t>(0x74) = 0;
+    s.at<std::uint32_t>(0x78) = 0;
+    host.tree_erase_all(0x005CD710, Raw{s.p + 0x64});
+    host.free_00bf65ac(s.ptr(0x68));
+    s.at<std::uint32_t>(0x68) = 0;
+    s.at<std::uint32_t>(0x6C) = 0;
+    host.callback_owner_destroy_00695870(Raw{s.p + 0x8});
+    host.front_end_screen_destruct_004f71a0(s);
+}
+
+void movie_camera_debug_collect_children_005ce5d0(Raw s, void* out, Seg15Host& host) {
+    host.push_page_slot_004d6790(out, reinterpret_cast<void**>(s.p + 0x1C));
+}
+
+// 005CE610: base, callback owner at +8h, vtables, the two tree heads (+68h
+// nil byte +15h, +74h nil byte +21h), sizes, +30h cleared.
+Raw movie_camera_debug_construct_005ce610(Raw s, Seg15Host& host) {
+    host.front_end_screen_construct_004f7180(s);
+    s.at<std::uint32_t>(0x8) = 0x00CE3CD4;
+    s.at<std::uint32_t>(0xC) = 0;
+    s.at<std::uint32_t>(0x10) = 0;
+    s.at<std::uint32_t>(0x14) = 0;
+    s.at<std::uint8_t>(0x18) = 0;
+    s.at<std::uint32_t>(0x0) = 0x00CF1968;
+    s.at<std::uint32_t>(0x8) = 0x00CF1950;
+    struct HeadSpec { std::size_t off; std::uint32_t routine; std::size_t nil; };
+    for (const HeadSpec& h : {HeadSpec{0x68, 0x005CC2E0, 0x15}, HeadSpec{0x74, 0x005CC330, 0x21}}) {
+        Raw head{static_cast<std::uint8_t*>(host.tree_buy_head_node(h.routine))};
+        s.ptr(h.off) = head.p;
+        head.at<std::uint8_t>(h.nil) = 1;
+        head.ptr(4) = head.p;
+        head.ptr(0) = head.p;
+        head.ptr(8) = head.p;
+        s.at<std::uint32_t>(h.off + 4) = 0;
+    }
+    s.at<std::uint32_t>(0x30) = 0;
+    return s;
+}
+
+// 005CF090: append src's UTF-16 characters (no terminator handling beyond the resize).
+void wide_string_append_005cf090(Raw dst, Raw src, Seg15Host& host) {
+    const std::uint32_t n = src.at<std::uint32_t>(0);
+    if (n == 0) return;
+    const std::uint32_t old = dst.at<std::uint32_t>(0);
+    host.wide_string_resize_004c53e0(dst, n + old);
+    std::memcpy(static_cast<std::uint16_t*>(dst.ptr(4)) + old, src.ptr(4), n * 2);
+}
+
+// 005CF0F0: the native string +0Ch, then the wide string +4h ((count + 1) * 2 bytes).
+void chat_overlay_line_destroy_005cf0f0(Raw line, Seg15Host& host) {
+    host.native_string_release(Raw{line.p + 0xC});
+    host.wide_string_release(Raw{line.p + 0x4});
+}
+
+// 005CF180: the native string +8h, then the wide string +0h.
+void chat_history_line_destroy_005cf180(Raw line, Seg15Host& host) {
+    host.native_string_release(Raw{line.p + 0x8});
+    host.wide_string_release(Raw{line.p + 0x0});
+}
+
+// 005CF260, slot +10h: page _Chat into +3Ch, +8Ch and +8Dh cleared, then the
+// screen's slot +14h.
+void multi_chat_register_005cf260(Raw s, Seg15Host& host) {
+    host.front_end_screen_register_004f71d0(s);
+    s.ptr(0x3C) = host.gui_load_page_00aa5840("_Chat");
+    s.at<std::uint8_t>(0x8C) = 0;
+    s.at<std::uint8_t>(0x8D) = 0;
+    host.object_virtual(s, 0x14);
+}
+
+// 005CF320: only in a session of mode 1 (*(game + 1FE4h)): an empty sender,
+// the arguments and ids -1, -1.
+void session_post_system_chat_line_005cf320(std::int32_t channel, std::int32_t kind, Raw a, Raw b, Seg15Host& host) {
+    if (host.global_object(kGameGlobal).at<std::int32_t>(0x1FE4) != 1) return;
+    host.session_send_chat_00772170(host.native_string_temp(""), channel, kind, a, b, -1, -1);
+}
+
+void warning_manager_post_loss_chat_line_005cf3d0(std::int32_t side, Raw a, Raw b, Seg15Host& host) {
+    if (side == 0) session_post_system_chat_line_005cf320(9, 5, a, b, host);
+    else if (side == 1) session_post_system_chat_line_005cf320(10, 5, a, b, host);
+}
+
+void chat_overlay_line_copy_005cf460(Raw dst, Raw src, Seg15Host& host) {
+    dst.at<std::uint32_t>(0) = src.at<std::uint32_t>(0);
+    host.wide_string_copy_construct_004c8dd0(Raw{dst.p + 4}, Raw{src.p + 4});
+    dst.at<std::uint32_t>(0xC) = 0;
+    dst.at<std::uint32_t>(0x10) = 0;
+    if (dst.p != src.p) host.native_string_copy_0041dd40(Raw{dst.p + 0xC}, Raw{src.p + 0xC});
+    dst.at<std::uint32_t>(0x14) = src.at<std::uint32_t>(0x14);
+}
+
+void chat_history_line_copy_005cf4f0(Raw dst, Raw src, Seg15Host& host) {
+    host.wide_string_copy_construct_004c8dd0(dst, src);
+    dst.at<std::uint32_t>(0x8) = 0;
+    dst.at<std::uint32_t>(0xC) = 0;
+    if (dst.p != src.p) host.native_string_copy_0041dd40(Raw{dst.p + 0x8}, Raw{src.p + 0x8});
+    dst.at<std::uint32_t>(0x10) = src.at<std::uint32_t>(0x10);
+}
+
+Raw wide_string_concat_005cf570(Raw a, Raw out, Raw b, Seg15Host& host) {
+    host.wide_string_copy_construct_004c8dd0(out, a);
+    wide_string_append_005cf090(out, b, host);
+    return out;
+}
+
+namespace {
+std::uint8_t* chat_buy_node(std::size_t bytes, void* next, void* prev, Raw line,
+                            void (*copy)(Raw, Raw, Seg15Host&), Seg15Host& host) {
+    auto* node = static_cast<std::uint8_t*>(host.operator_new_00bf55be(bytes));
+    if (node) {
+        Raw{node}.ptr(0) = next;
+        Raw{node}.ptr(4) = prev;
+        copy(Raw{node + 8}, line, host);
+    }
+    return node;
+}
+}  // namespace
+
+std::uint8_t* chat_overlay_list_buy_node_005cfa40(void* next, void* prev, Raw line, Seg15Host& host) {
+    return chat_buy_node(0x20, next, prev, line, chat_overlay_line_copy_005cf460, host);
+}
+
+std::uint8_t* chat_history_list_buy_node_005cfae0(void* next, void* prev, Raw line, Seg15Host& host) {
+    return chat_buy_node(0x1C, next, prev, line, chat_history_line_copy_005cf4f0, host);
+}
+
+// 005CFB80: the three list widgets (+44h..+4Ch) through 00AA83F0, then the
+// overlay list and both history lists emptied (lines destroyed, nodes freed),
+// and +8Dh set.
+void multi_chat_clear_logs_005cfb80(Raw s, Seg15Host& host) {
+    for (std::size_t off : {0x44u, 0x48u, 0x4Cu}) host.widget_clear_00aa83f0(s.ptr(off));
+    struct ListSpec { std::size_t off; void (*destroy)(Raw, Seg15Host&); };
+    for (const ListSpec& l : {ListSpec{0x68, chat_overlay_line_destroy_005cf0f0},
+                              ListSpec{0x74, chat_history_line_destroy_005cf180},
+                              ListSpec{0x80, chat_history_line_destroy_005cf180}}) {
+        Raw head{static_cast<std::uint8_t*>(s.ptr(l.off + 4))};
+        auto* node = static_cast<std::uint8_t*>(head.ptr(0));
+        head.ptr(0) = head.p;
+        head.ptr(4) = head.p;
+        s.at<std::uint32_t>(l.off + 8) = 0;
+        while (node != head.p) {
+            auto* next = static_cast<std::uint8_t*>(Raw{node}.ptr(0));
+            l.destroy(Raw{node + 8}, host);
+            host.free_00bf65ac(node);
+            node = next;
+        }
+    }
+    s.at<std::uint8_t>(0x8D) = 1;
+}
+
+// 005CFDA0: base, text-listener base at +8h, vtables 00CF19C0 / 00CF1998,
+// list heads +6Ch (005CEE20), +78h and +84h (005CEE40) with sizes cleared.
+Raw multi_chat_construct_005cfda0(Raw s, Seg15Host& host) {
+    host.front_end_screen_construct_004f7180(s);
+    host.text_listener_construct_00a97260(Raw{s.p + 0x8});
+    s.at<std::uint32_t>(0x8) = 0x00CF19C0;
+    s.at<std::uint32_t>(0x0) = 0x00CF1998;
+    s.ptr(0x6C) = host.chat_list_buy_head(0x005CEE20);
+    s.at<std::uint32_t>(0x70) = 0;
+    s.ptr(0x78) = host.chat_list_buy_head(0x005CEE40);
+    s.at<std::uint32_t>(0x7C) = 0;
+    s.ptr(0x84) = host.chat_list_buy_head(0x005CEE40);
+    s.at<std::uint32_t>(0x88) = 0;
+    return s;
+}
+
+// 005CFE60: vtables, page +3Ch, the lists +80h, +74h (005CF950) and +68h
+// (005CF910) cleared with their heads freed, the text listener, the base.
+void multi_chat_destroy_005cfe60(Raw s, Seg15Host& host) {
+    s.at<std::uint32_t>(0x0) = 0x00CF1998;
+    s.at<std::uint32_t>(0x8) = 0x00CF19C0;
+    remove_page(s, 0x3C, host);
+    for (std::size_t off : {0x80u, 0x74u}) {
+        host.chat_list_clear(0x005CF950, Raw{s.p + off});
+        host.free_00bf65ac(s.ptr(off + 4));
+        s.ptr(off + 4) = nullptr;
+    }
+    host.chat_list_clear(0x005CF910, Raw{s.p + 0x68});
+    host.free_00bf65ac(s.ptr(0x6C));
+    s.ptr(0x6C) = nullptr;
+    host.text_listener_destroy_00a97140(Raw{s.p + 0x8});
+    host.front_end_screen_destruct_004f71a0(s);
+}
+
+void multi_chat_exit_005cff40(Raw s, Seg15Host& host) {
+    multi_chat_clear_logs_005cfb80(s, host);
+    s.at<std::uint8_t>(0x8D) = 0;
+}
+
+void multi_chat_collect_children_005d0020(Raw s, void* out, Seg15Host& host) {
+    host.push_page_slot_004d6790(out, reinterpret_cast<void**>(s.p + 0x3C));
+}
+
+// 005D07E0: prefix = the player name (game +6A0h, or +68Ch when empty) + ": "
+// (00CF1A80); both the input text (+5Ch) and the channel text (+60h) are
+// fitted (0067D940 with screen+20h and +28h), coloured from the config
+// (+218h for the input, +208h or +218h by the team flag +8Ch for the channel)
+// and get the cursor mode (*00E12F34 == 0).
+void multi_chat_refresh_mode_label_005d07e0(Raw s, Seg15Host& host) {
+    Raw game = host.global_object(kGameGlobal);
+    Raw name{game.p + (game.at<std::uint32_t>(0x6A0) != 0 ? 0x6A0 : 0x68C)};
+    Raw prefix = host.native_string_temp("");
+    host.native_string_concat_004261a0(name, prefix, host.native_string_temp(": "));
+    const bool cursor_mode = host.global_block(0x00E12F34).at<std::uint8_t>(0) == 0;
+    host.text_fit_range_one_line_0067d940(s.ptr(0x5C), prefix, Raw{s.p + 0x20}, s.at<std::uint32_t>(0x28));
+    host.widget_set_colour_50(s.ptr(0x5C), &host.global_config_00432650().at<float>(0x218));
+    host.text_set_cursor_mode_00ab95f0(s.ptr(0x5C), cursor_mode);
+    host.text_fit_range_one_line_0067d940(s.ptr(0x60), prefix, Raw{s.p + 0x20}, s.at<std::uint32_t>(0x28));
+    const std::size_t colour = 0x208 + (s.at<std::uint8_t>(0x8C) != 0 ? 0x10 : 0);
+    host.widget_set_colour_50(s.ptr(0x60), &host.global_config_00432650().at<float>(colour));
+    host.text_set_cursor_mode_00ab95f0(s.ptr(0x60), host.global_block(0x00E12F34).at<std::uint8_t>(0) == 0);
+}
+
+// 005D0B10: channel 8 (all) in the lobby without the team flag; in a mission
+// or with the team flag the local slot (game +18ECh) must be 0..7 (else the
+// sound request +1Ch is raised and nothing is sent) and the channel is 9 or 10
+// by the slot record's +28h. The line (+20h) is sent with the player name and
+// the record's ids (+80h, +84h), then cleared with the cursor (+28h).
+void multi_chat_send_current_line_005d0b10(Raw s, Seg15Host& host) {
+    Raw game = host.global_object(kGameGlobal);
+    std::int32_t channel = 8;
+    if (host.global_object(kInterfaceGlobal).p != nullptr || s.at<std::uint8_t>(0x8C) != 0) {
+        const std::int32_t slot = game.at<std::int32_t>(0x18EC);
+        if (slot < 0 || slot > 7) {
+            host.sound_request_singleton_004c1b90().at<std::uint8_t>(0x1C) = 1;
+            return;
+        }
+        Raw rec{static_cast<std::uint8_t*>(game.ptr(0x18CC + slot * 4))};
+        channel = (rec.at<std::uint32_t>(0x28) != 0 ? 1 : 0) + 9;
+    }
+    Raw rec{static_cast<std::uint8_t*>(game.ptr(0x18CC + game.at<std::int32_t>(0x18EC) * 4))};
+    Raw name{game.p + (game.at<std::uint32_t>(0x6A0) != 0 ? 0x6A0 : 0x68C)};
+    host.session_send_chat_00772170(name, channel, 0, Raw{s.p + 0x20}, host.native_string_temp(""),
+                                    rec.at<std::int32_t>(0x80), rec.at<std::int32_t>(0x84));
+    host.native_string_truncate(Raw{s.p + 0x20}, 0);
+    s.at<std::uint32_t>(0x28) = 0;
+    multi_chat_refresh_mode_label_005d07e0(s, host);
+}
+
+void multi_chat_set_team_only_005d1000(Raw s, bool team_only, Seg15Host& host) {
+    s.at<std::uint8_t>(0x8C) = team_only ? 1 : 0;
+    multi_chat_refresh_mode_label_005d07e0(s, host);
+    host.sound_request_singleton_004c1b90().at<std::uint8_t>(0x1A) = 1;
+}
+
+// 005D1020: an input longer than 3Ch characters is cut to 3Ch and the cursor
+// clamped to it; the label is refreshed in every case.
+void multi_chat_clamp_input_length_005d1020(Raw listener, Seg15Host& host) {
+    Raw screen{listener.p - 8};
+    if (screen.at<std::uint32_t>(0x20) > 0x3C) {
+        host.native_string_truncate(Raw{screen.p + 0x20}, 0x3C);
+        if (screen.at<std::int32_t>(0x28) >= 0x3D) screen.at<std::int32_t>(0x28) = 0x3C;
+    }
+    multi_chat_refresh_mode_label_005d07e0(screen, host);
+}
+
+// 005D10F0: a non-empty input (case-insensitive compare against "") is sent
+// (tail jump to 005D0B10 with ECX = screen).
+void multi_chat_submit_input_005d10f0(Raw listener, Seg15Host& host) {
+    Raw screen{listener.p - 8};
+    if (screen.at<std::uint32_t>(0x20) != 0) multi_chat_send_current_line_005d0b10(screen, host);
+}
+
+void multi_chat_on_open_request_005d14b0(Raw listener, Seg15Host& host) {
+    multi_chat_set_chat_mode_005d11f0(Raw{listener.p - 8},
+                                      host.global_object(kInterfaceGlobal).p != nullptr ? 3 : 1, host);
+}
+
+// 005D11F0: entering or leaving mode 4 parks / unparks the screens 28h, 55h,
+// 57h, 5Dh, 15h (004D6480). The three list widgets follow the mode (+44h mode
+// 4, +48h mode 3, +4Ch modes 1 and 2); modes 3 and 4 set +8Dh; modes 2 and 4
+// open the text editor (+64h = 1, closing the multiplayer pause interface when
+// it is up in a mission), refresh the label and show the input (+60h);
+// otherwise the editor closes and +60h is hidden.
+void multi_chat_set_chat_mode_005d11f0(Raw s, std::int32_t mode, Seg15Host& host) {
+    const std::int32_t old = s.at<std::int32_t>(0x40);
+    if (old == mode) return;
+    static constexpr std::int32_t kParked[5] = {0x28, 0x55, 0x57, 0x5D, 0x15};
+    if (old == 4) host.gui_park_screens_004d6480(kParked, 5, false);
+    else if (mode == 4) host.gui_park_screens_004d6480(kParked, 5, true);
+    s.at<std::int32_t>(0x40) = mode;
+    host.widget_set_visible_34(s.ptr(0x44), mode == 4);
+    host.widget_set_visible_34(s.ptr(0x48), mode == 3);
+    host.widget_set_visible_34(s.ptr(0x4C), mode == 2 || mode == 1);
+    if (mode == 4 || mode == 3) s.at<std::uint8_t>(0x8D) = 1;
+    if (mode == 2 || mode == 4) {
+        s.at<std::uint8_t>(0x64) = 1;
+        if (host.global_object(kInterfaceGlobal).p != nullptr
+            && host.global_object(kMultiMenuGlobal).at<std::uint8_t>(0x3C) != 0) {
+            host.multi_menu_close_pause_006882a0();
+        }
+        host.text_editor_set_active_00a966e0(Raw{s.p + 0x8}, true, s.ptr(0x5C));
+        multi_chat_refresh_mode_label_005d07e0(s, host);
+        host.widget_set_visible_34(s.ptr(0x60), true);
+    } else {
+        s.at<std::uint8_t>(0x64) = 0;
+        host.text_editor_set_active_00a966e0(Raw{s.p + 0x8}, false, s.ptr(0x5C));
+        host.widget_set_visible_34(s.ptr(0x60), false);
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Multiplayer error screen (1Dh)
+// ---------------------------------------------------------------------------
+
+// 005D1F90, slot +1Ch: code +54h = 0, join detail 00E08898 = 1.
+void multi_error_exit_005d1f90(Raw s, Seg15Host& host) {
+    s.at<std::int32_t>(0x54) = 0;
+    host.global_block(0x00E08898).at<std::int32_t>(0) = 1;
+}
+
+void listener_focus_text_dim_005d1fb0(void* widget, bool flag, Seg15Host& host) {
+    if (host.widget_type_5c(widget) != 3) return;
+    host.widget_set_float_4c(widget, flag ? 0.5f : 1.0f);
+}
+
+// 005D2010: pop every error interface (1Bh) off the multiplayer menu; unless
+// the online service is signed in with a selected user in sign-in state 2,
+// request state 10h (in a mission), pop up to interface 0Fh and request
+// states 9 then 4.
+void multi_error_dismiss_005d2010(Seg15Host& host) {
+    while (host.global_object(kMultiMenuGlobal).at<std::int32_t>(0x20) == 0x1B) host.multi_menu_pop_request_006881f0();
+    if (host.online_service_virtual(0x14) && host.xenon_has_selected_user_00a3e510()
+        && host.xenon_sign_in_state_00a3ead0() == 2) {
+        return;
+    }
+    if (host.global_object(kInterfaceGlobal).p != nullptr) host.game_request_state_004d7920(0x10);
+    host.multi_menu_pop_up_to_00688b20(0xF);
+    host.game_request_state_004d7920(9);
+    host.game_request_state_004d7920(4);
+}
+
+namespace {
+void error_leave(Seg15Host& host) {
+    multi_error_dismiss_005d2010(host);
+    host.session_set_mode_0076fad0(0);
+}
+bool marketplace_case(std::int32_t code, Seg15Host& host) {
+    return code == 4 && host.global_block(0x00E08898).at<std::int32_t>(0) == 4;
+}
+}  // namespace
+
+// 005D2240: back (4Bh) leaves; in buttons mode 1 accept (4Ah) opens the
+// marketplace for the DLC failure (code 4, detail 4) or leaves; the three
+// buttons are updated with the frame time.
+void multi_error_update_005d2240(Raw s, float seconds, Seg15Host& host) {
+    if (host.action_edge_or_repeat_004d92b0(0x4B)) error_leave(host);
+    if (s.at<std::int32_t>(0x50) == 1 && host.action_edge_or_repeat_004d92b0(0x4A)) {
+        if (marketplace_case(s.at<std::int32_t>(0x54), host)) {
+            host.x_show_marketplace_ui_00a4d446(host.xenon_active_user_slot_00a3eac0());
+        } else {
+            error_leave(host);
+        }
+    }
+    for (std::size_t off : {0x20u, 0x24u, 0x28u}) host.widget_update_40(s.ptr(off), seconds);
+}
+
+// 005D2310, widget listener at screen+0Ch, RET 4: a type-3 widget gets alpha
+// 1.0; its name starting A2h opens the marketplace in the DLC case or leaves,
+// A3h leaves.
+void multi_error_on_activate_005d2310(Raw listener, void* widget, Seg15Host& host) {
+    if (host.widget_type_5c(widget) != 3) return;
+    host.widget_set_float_4c(widget, 1.0f);
+    const auto* name = *reinterpret_cast<const std::uint8_t* const*>(static_cast<std::uint8_t*>(widget) + 0xF0);
+    const std::uint8_t first = name ? name[0] : 0;  // 00E19538 is ""
+    Raw screen{listener.p - 0xC};
+    if (first == 0xA2) {
+        if (marketplace_case(screen.at<std::int32_t>(0x54), host)) {
+            host.x_show_marketplace_ui_00a4d446(host.xenon_active_user_slot_00a3eac0());
+            return;
+        }
+        error_leave(host);
+    } else if (first == 0xA3) {
+        error_leave(host);
+    }
+}
+
+// 005D23E0, listbox listener at screen+8h, RET 8: button +20h opens the
+// marketplace in the DLC case; +24h / +28h leave.
+void multi_error_on_button_005d23e0(Raw listener, void* button, Seg15Host& host) {
+    Raw screen{listener.p - 8};
+    if (button == screen.ptr(0x20)) {
+        if (marketplace_case(screen.at<std::int32_t>(0x54), host)) {
+            host.x_show_marketplace_ui_00a4d446(host.xenon_active_user_slot_00a3eac0());
+        }
+    } else if (button == screen.ptr(0x24) || button == screen.ptr(0x28)) {
+        error_leave(host);
+    }
+}
+
+// 005D2440: page _MultiError into +10h, code +54h = 0.
+void multi_error_register_005d2440(Raw s, Seg15Host& host) {
+    host.front_end_screen_register_004f71d0(s);
+    s.ptr(0x10) = host.gui_load_page_00aa5840("_MultiError");
+    s.at<std::int32_t>(0x54) = 0;
+}
+
+// 005D24F0: the message (+14h) and the second line (+18h) by code; codes 1, 6
+// and 7 also drop the session mode to 0. Any other code only re-lays out.
+void multi_error_show_message_005d24f0(Raw s, Seg15Host& host) {
+    void* text = s.ptr(0x14);
+    void* line2 = s.ptr(0x18);
+    const char* key = nullptr;
+    switch (s.at<std::int32_t>(0x54)) {
+        case 1: host.session_set_mode_0076fad0(0); key = "FE_pc.multi_liveerror"; break;
+        case 6: host.session_set_mode_0076fad0(0); key = "FE_pc.multi_liveerrorduplicate"; break;
+        case 7:
+            host.session_set_mode_0076fad0(0);
+            key = host.global_object(kGameGlobal).at<std::int32_t>(0x1FE4) == 1 ? "FE.multi_terminated"
+                                                                                : "ingame.multi_gameclosed_xbox";
+            break;
+        case 2: key = "FE.multi_conlost"; break;
+        case 3: key = "ingame.multi_kicked"; break;
+        case 5: key = "FE.multi_cablelost_live"; break;
+        case 4: {
+            const std::int32_t detail = host.global_block(0x00E08898).at<std::int32_t>(0);
+            if (detail == 2) key = "FE.multi_connerr_full";
+            else if (detail == 3) key = "FE.multi_connerr_publicfull";
+            else if (detail == 5) key = "FE.multi_connerr_ranknotfit";
+            else if (detail == 4) {
+                // "" (0), the DLC key, then the text's wide string (+ECh) with the
+                // wide string at 00E1953C appended, submitted back.
+                host.text_set_localised_00abbe50(text, "");
+                host.text_set_localised_00abbe50(text, "FE.multi_connerr_dlcfail|.");
+                std::uint8_t joined[8] = {};
+                wide_string_concat_005cf570(Raw{static_cast<std::uint8_t*>(text) + 0xEC}, Raw{joined},
+                                            host.global_block(0x00E1953C), host);
+                host.text_submit_utf16_00ab6ab0(text, Raw{joined});
+                host.wide_string_release(Raw{joined});
+                host.text_set_localised_00abbe50(line2, "");
+                host.multi_error_layout_buttons_005d20a0(s);
+                return;
+            } else if (!host.online_service_virtual(0x198)) {
+                key = "FE.multi_connerr";
+            } else {
+                host.text_set_localised_00abbe50(text, "");
+                host.text_set_localised_00abbe50(line2, "");  // flag 0 in the image
+                host.text_set_localised_00abbe50(line2, "FE.multi_sessoff");
+                host.multi_error_layout_buttons_005d20a0(s);
+                return;
+            }
+            break;
+        }
+        default:
+            host.multi_error_layout_buttons_005d20a0(s);
+            return;
+    }
+    host.text_set_localised_00abbe50(text, key);
+    host.text_set_localised_00abbe50(line2, "");
+    host.multi_error_layout_buttons_005d20a0(s);
+}
+
+// 005D2E70: a signed-out online service forces code 5; code 1 clears +58h; an
+// active screen re-shows the message.
+void multi_error_set_error_code_005d2e70(Raw s, std::int32_t code, Seg15Host& host) {
+    const std::int32_t applied = host.online_service_virtual(0x14) ? code : 5;
+    s.at<std::int32_t>(0x54) = applied;
+    if (applied == 1) s.at<std::uint32_t>(0x58) = 0;
+    if (s.at<std::uint8_t>(kActive) != 0) multi_error_show_message_005d24f0(s, host);
+}
+
+void multi_error_collect_children_005d2f60(Raw s, void* out, Seg15Host& host) {
+    host.push_page_slot_004d6790(out, reinterpret_cast<void**>(s.p + 0x10));
+}
+
+// ---------------------------------------------------------------------------
+// Multiplayer pause screen (19h)
+// ---------------------------------------------------------------------------
+
+void prompt_result_leave_multi_menu_005d3410(std::int32_t result, Seg15Host& host) {
+    if (result != 1) return;
+    host.multi_menu_pop_request_006881f0();
+    host.game_end_scene_004d7970(1);
+}
+
+void prompt_result_set_quit_flag_005d3430(std::int32_t result, Seg15Host& host) {
+    if (result == 1) host.global_block(0x00E1AE75).at<std::uint8_t>(0) = 1;
+}
+
+namespace {
+void typed_dim(void* widget, bool flag, Seg15Host& host) {
+    if (host.widget_type_5c(widget) == 3) {
+        host.widget_set_float_4c(widget, flag ? 0.5f : 1.0f);
+        return;
+    }
+    if (host.widget_type_5c(widget) == 6) {
+        host.widget_virtual_88(widget, flag ? 1 : 0, 0, 1.0f);
+        return;
+    }
+    if (host.widget_type_5c(widget) == 0x12) host.widget_virtual_84(widget, flag ? 1 : 0);
+}
+}  // namespace
+
+void listener_focus_dim_typed_005d3440(void* widget, bool flag, Seg15Host& host) { typed_dim(widget, flag, host); }
+
+void listener_refresh_dim_typed_005d35a0(void* widget, Seg15Host& host) {
+    typed_dim(widget, static_cast<std::uint8_t*>(widget)[0xD4] != 0, host);
+}
+
+void pause_multi_store_selection_005d34e0(void* listbox, Seg15Host& host) {
+    host.global_block(0x00E19550).at<std::int32_t>(0) = host.listbox_selected_index_00a9c920(listbox);
+}
+
+// 005D3540: base, listener bases, vtables 00CF1D70 / 00CF1D5C / 00CF1D3C, +24h cleared.
+Raw pause_multi_construct_005d3540(Raw s, Seg15Host& host) {
+    host.front_end_screen_construct_004f7180(s);
+    s.at<std::uint32_t>(0x8) = kListboxListenerBaseVtable;
+    s.at<std::uint32_t>(0xC) = kWidgetListenerBaseVtable;
+    s.at<std::uint32_t>(0x0) = 0x00CF1D70;
+    s.at<std::uint32_t>(0x8) = 0x00CF1D5C;
+    s.at<std::uint32_t>(0xC) = 0x00CF1D3C;
+    s.at<std::uint32_t>(0x24) = 0;
+    return s;
+}
+
+// 005D3710: vtables, page +10h, stored selection 00E19550 = 0, listener base, base.
+void pause_multi_destroy_005d3710(Raw s, Seg15Host& host) {
+    s.at<std::uint32_t>(0x0) = 0x00CF1D70;
+    s.at<std::uint32_t>(0x8) = 0x00CF1D5C;
+    s.at<std::uint32_t>(0xC) = 0x00CF1D3C;
+    remove_page(s, 0x10, host);
+    host.global_block(0x00E19550).at<std::int32_t>(0) = 0;
+    s.at<std::uint32_t>(0x8) = kListboxListenerBaseVtable;
+    host.front_end_screen_destruct_004f71a0(s);
+}
+
+// 005D3790: a type-3 widget gets alpha 1.0; a name starting A2h activates the
+// listbox selection through the listbox listener (+8h) slot +4h with
+// 00425E50(listbox +20h); A3h resumes (toggle pause); B7h and B8h do nothing.
+// Types 6 and 12h get +88h(2, 0, 1.0f) / +84h(2).
+void pause_multi_on_activate_005d3790(Raw listener, void* widget, Seg15Host& host) {
+    if (host.widget_type_5c(widget) == 3) {
+        host.widget_set_float_4c(widget, 1.0f);
+        const auto* name = *reinterpret_cast<const std::uint8_t* const*>(static_cast<std::uint8_t*>(widget) + 0xF0);
+        const std::uint8_t first = name ? name[0] : 0;  // 00E19554 is ""
+        if (first == 0xA2) {
+            Raw listbox_listener{listener.p - 4};
+            host.object_virtual_arg(listbox_listener, 0x4, host.call_00425e50(listener.ptr(0x14)));
+        } else if (first == 0xA3) {  // the B7h / B8h tests branch to the same exit
+            host.game_toggle_pause_menu_004db030();
+        }
+        return;
+    }
+    if (host.widget_type_5c(widget) == 6) {
+        host.widget_virtual_88(widget, 2, 0, 1.0f);
+        return;
+    }
+    if (host.widget_type_5c(widget) == 0x12) host.widget_virtual_84(widget, 2);
+}
+
+// 005D38A0: page GUI_pause_multi into +10h.
+void pause_multi_register_005d38a0(Raw s, Seg15Host& host) {
+    host.front_end_screen_register_004f71d0(s);
+    s.ptr(0x10) = host.gui_load_page_00aa5840("GUI_pause_multi");
+}
+
+// 005D3960: +1Ch = 1; when the pause screen (*(interface + D8h)) has +10h set,
+// show its page (0, 1); then select the default frame (tail jump 004C9680).
+void pause_multi_exit_005d3960(Raw s, Seg15Host& host) {
+    s.at<std::uint8_t>(0x1C) = 1;
+    Raw pause{static_cast<std::uint8_t*>(host.global_object(kInterfaceGlobal).ptr(0xD8))};
+    if (pause.at<std::uint8_t>(0x10) != 0) host.pause_screen_show_page_005fd890(0, 1);
+    host.front_end_frame_select_default_004c9680();
+}
+
+void pause_multi_collect_children_005d3990(Raw s, void* out, Seg15Host& host) {
+    host.push_page_slot_004d6790(out, reinterpret_cast<void**>(s.p + 0x10));
+}
+
 void byte_sbo_uninit_fill_n_005443f0(std::uint8_t* dest, std::uint32_t count, const std::uint8_t* value,
                                      Seg15Host& host) {
     for (; count != 0; --count, dest += 0x24) {
