@@ -934,6 +934,554 @@ void unit_doing_icon_bind_0068dde0(Raw icon, void* widget, Fe5Host& host) {
 void gui_find_icon_child_0068df60(void* parent, const char* name, void** out, Fe5Host& host) {
     *out = host.gui_find_child_00aa7e00(parent, std::string(name) + "_Icon");
 }
+// ---------------------------------------------------------------------------
+// Award tracker hint queue
+// ---------------------------------------------------------------------------
+void award_tracker_finish_active_hint_0068e420(Raw tracker, Fe5Host& host) {
+    host.native_string_resize_0041dd40(Raw{tracker.p + 0x60}, 0, 0);
+}
+
+std::string award_tracker_copy_active_hint_name_0068e5b0(Raw tracker, Fe5Host& host) {
+    return host.native_string_read(Raw{tracker.p + 0x60});
+}
+
+bool native_name_equal(const std::string& a, const std::string& b) noexcept {
+    if (a.size() != b.size()) return false;
+    if (a.empty()) return true;
+    for (std::size_t i = 0; i < a.size(); ++i) {
+        const auto lower = [](char c) { return (c >= 'A' && c <= 'Z') ? static_cast<char>(c - 'A' + 'a') : c; };
+        if (lower(a[i]) != lower(b[i])) return false;
+    }
+    return true;
+}
+
+bool award_tracker_has_hint_been_shown_0068e600(Raw tracker, const std::string& name, Fe5Host& host) {
+    if (host.award_stored_hint_contains_007f8e00(name)) return true;
+    void* const head = tracker.ptr(0x4C);
+    for (void* node = *static_cast<void**>(head); node != head; node = *static_cast<void**>(node)) {
+        if (native_name_equal(host.native_string_read(Raw{static_cast<std::uint8_t*>(node) + 8}), name)) return true;
+    }
+    return false;
+}
+
+void native_string_deque_pop_front_0068e780(Raw deque, Fe5Host& host) {
+    if (deque.at<std::uint32_t>(0x10) == 0) return;
+    const std::uint32_t offset = deque.at<std::uint32_t>(0x0C);
+    auto* const block = static_cast<std::uint8_t*>(static_cast<void**>(deque.ptr(4))[offset >> 1]);
+    host.native_string_release(Raw{block + (offset & 1) * 8});
+    deque.at<std::uint32_t>(0x0C) = offset + 1;
+    if (deque.at<std::uint32_t>(8) * 2 <= deque.at<std::uint32_t>(0x0C)) deque.at<std::uint32_t>(0x0C) = 0;
+    if (--deque.at<std::uint32_t>(0x10) == 0) deque.at<std::uint32_t>(0x0C) = 0;
+}
+
+void alias_list_insert_copy_0068e850(Raw list, const void* value, Fe5Host& host) {
+    host.alias_list_push_back_copy(list, value);
+}
+
+void award_tracker_clear_hint_queue_0068ea00(Raw tracker, Fe5Host& host) {
+    host.pooled_string_list_clear_004d05e0(Raw{tracker.p + 0x48});
+    while (tracker.at<std::uint32_t>(0x78) != 0) native_string_deque_pop_front_0068e780(Raw{tracker.p + 0x68}, host);
+}
+
+void award_tracker_touch_recent_hint_0068ea70(Raw tracker, Raw name, Fe5Host& host) {
+    const Raw list{tracker.p + 0x54};
+    void* const head = tracker.ptr(0x58);
+    const std::string wanted = host.native_string_read(name);
+    void* node = *static_cast<void**>(head);
+    for (; node != head; node = *static_cast<void**>(node)) {
+        if (native_name_equal(host.native_string_read(Raw{static_cast<std::uint8_t*>(node) + 8}), wanted)) break;
+    }
+    if (node != head) host.alias_list_erase_node(list, node);
+    host.alias_list_push_back_copy(list, name.p);
+    host.native_string_release(name);
+}
+
+bool award_tracker_is_active_hint_blocking_00690b00(Raw tracker, Raw name, Fe5Host& host) {
+    if (name.at<std::uint32_t>(0) == 0) return false;
+    return host.award_hint_definition_005ffb20(Raw{tracker.p + 0x30}, host.native_string_read(name)).at<std::uint8_t>(0x114) != 0;
+}
+
+void award_tracker_hint_map_pair_00690fb0(Raw tracker, std::uint32_t key, std::uint32_t value, Fe5Host& host) {
+    host.award_hint_map_assign_00690fb0(Raw{tracker.p + 0x7C}, key, value);
+}
+
+void award_tracker_trigger_forced_hint_00692fb0(Raw tracker, std::uint32_t name, Fe5Host& host) {
+    tracker.at<std::uint8_t>(4) = 1;
+    host.award_tracker_trigger_hint_forced_00690fd0(tracker, name, 1);
+}
+// ---------------------------------------------------------------------------
+// Engine dword vector
+// ---------------------------------------------------------------------------
+namespace {
+std::uint32_t* dword_data(Raw v) { return static_cast<std::uint32_t*>(v.ptr(0)); }
+
+// The reallocation block shared by 00693990, 00693FD0 and 00694060.
+void reallocate_dwords(Raw v, std::uint32_t capacity, Fe5Host& host) {
+    v.at<std::uint32_t>(8) = capacity;
+    auto* const block = static_cast<std::uint32_t*>(host.operator_new(static_cast<std::size_t>(capacity) * 4));
+    for (std::uint32_t i = 0; i < v.at<std::uint32_t>(4); ++i) {
+        if (block + i != nullptr) block[i] = dword_data(v)[i];
+    }
+    if (v.ptr(0) != nullptr) host.crt_free(v.ptr(0));
+    v.ptr(0) = block;
+}
+}  // namespace
+
+void* native_dword_vector_copy_construct_006938d0(Raw dst, Raw src, Fe5Host& host) {
+    const std::uint32_t size = src.at<std::uint32_t>(4);
+    if (size == 0) {
+        dst.ptr(0) = nullptr;
+        dst.at<std::uint32_t>(8) = 0;
+        dst.at<std::uint32_t>(4) = 0;
+        return dst.p;
+    }
+    dst.at<std::uint32_t>(8) = size;
+    dst.ptr(0) = host.operator_new(static_cast<std::size_t>(size) * 4);
+    dst.at<std::uint32_t>(4) = dst.at<std::uint32_t>(8);
+    for (std::uint32_t i = 0; i < dst.at<std::uint32_t>(4); ++i) {
+        if (dword_data(dst) + i != nullptr) dword_data(dst)[i] = dword_data(src)[i];
+    }
+    return dst.p;
+}
+
+void native_dword_vector_grow_00693990(Raw vector, Fe5Host& host) {
+    reallocate_dwords(vector, vector.at<std::uint32_t>(8) * 2 + 2, host);
+}
+
+void native_dword_vector_resize_00693fd0(Raw vector, std::uint32_t size, Fe5Host& host) {
+    if (vector.at<std::uint32_t>(4) < size) {
+        if (vector.at<std::uint32_t>(8) < size) reallocate_dwords(vector, size, host);
+        for (std::uint32_t i = vector.at<std::uint32_t>(4); i < size; ++i) {
+            if (dword_data(vector) + i != nullptr) dword_data(vector)[i] = 0;
+        }
+    }
+    vector.at<std::uint32_t>(4) = size;
+}
+
+void native_dword_vector_assign_00694060(Raw dst, Raw src, Fe5Host& host) {
+    if (dst.at<std::uint32_t>(4) != 0) dst.at<std::uint32_t>(4) = 0;
+    if (dst.at<std::uint32_t>(8) < src.at<std::uint32_t>(4)) reallocate_dwords(dst, src.at<std::uint32_t>(4), host);
+    dst.at<std::uint32_t>(4) = src.at<std::uint32_t>(4);
+    for (std::uint32_t i = 0; i < src.at<std::uint32_t>(4); ++i) {
+        if (dword_data(dst) + i != nullptr) dword_data(dst)[i] = dword_data(src)[i];
+    }
+}
+// ---------------------------------------------------------------------------
+// Observer bookkeeping
+// ---------------------------------------------------------------------------
+namespace {
+struct ObserverLockScope {
+    Fe5Host& host;
+    void* cs;
+    explicit ObserverLockScope(Fe5Host& h)
+        : host(h), cs(Raw{static_cast<std::uint8_t*>(h.observer_lock_00694280())}.ptr(4)) {
+        if (cs != nullptr) {
+            host.critical_section_enter(cs);
+            ++Raw{static_cast<std::uint8_t*>(cs)}.at<std::int32_t>(0x18);
+        }
+    }
+    ~ObserverLockScope() {
+        if (cs != nullptr) {
+            --Raw{static_cast<std::uint8_t*>(cs)}.at<std::int32_t>(0x18);
+            host.critical_section_leave(cs);
+        }
+    }
+    ObserverLockScope(const ObserverLockScope&) = delete;
+    ObserverLockScope& operator=(const ObserverLockScope&) = delete;
+};
+}  // namespace
+
+void* observer_singleton_scalar_delete_00694250(Raw owner, std::uint8_t flags, Fe5Host& host) {
+    host.set_observer_singleton_00e198e0(nullptr);
+    owner.at<std::uint32_t>(0) = kSingletonBaseVtable;
+    if (flags & 1) host.crt_free(owner.p);
+    return owner.p;
+}
+
+std::uint32_t observer_find_pair_value_locked_00694b90(void* observed, void* observer, Fe5Host& host) {
+    ObserverLockScope lock(host);
+    const Raw pair = host.observer_find_pair_006949d0(observed, observer);
+    return pair.p != nullptr ? pair.at<std::uint32_t>(0x0C) : 0;
+}
+
+void observer_lock_owner_destruct_00694e70(Raw owner, Fe5Host& host) {
+    owner.at<std::uint32_t>(0) = kObserverLockOwnerVtable;
+    host.critical_section_destroy_owned_0041cc80(Raw{owner.p + 4});
+    host.set_observer_singleton_00e198e0(nullptr);
+    owner.at<std::uint32_t>(0) = kSingletonBaseVtable;
+}
+
+std::uint32_t observer_ref_get_target_locked(Raw ref, Fe5Host& host) {
+    ObserverLockScope lock(host);
+    return ref.at<std::uint32_t>(8);
+}
+
+void observer_pair_destroy_00695000(Raw pair, Fe5Host& host) {
+    host.observer_edge_array_erase_00694f60(Raw{static_cast<std::uint8_t*>(pair.ptr(4)) + 4}, pair.p);
+    host.observer_edge_array_erase_00694f60(Raw{static_cast<std::uint8_t*>(pair.ptr(8)) + 4}, pair.p);
+    host.object_virtual_int(pair, 0x00, 1);
+}
+
+void observer_pair_release_00695030(Raw pair, Fe5Host& host) {
+    if (--pair.at<std::int32_t>(0x0C) == 0) observer_pair_destroy_00695000(pair, host);
+}
+
+void* move_dwords_00695230(const void* first, const void* last, void* dest, Fe5Host& host) {
+    const std::ptrdiff_t count = (static_cast<const std::uint8_t*>(last) - static_cast<const std::uint8_t*>(first)) >> 2;
+    const std::size_t bytes = static_cast<std::size_t>(count) * 4;
+    if (count != 0) host.crt_memmove_s(dest, bytes, first, bytes);
+    return static_cast<std::uint8_t*>(dest) + bytes;
+}
+
+void observer_unregister_if_registered_006956a0(void* observed, void* observer, Fe5Host& host) {
+    ObserverLockScope lock(host);
+    if (host.observer_is_registered_00694af0(observed, observer)) host.observer_unregister_006952a0(observed, observer);
+}
+
+void callback_owner_detach_all_if_bound_00695830(Raw owner, Fe5Host& host) {
+    void* bound = nullptr;
+    {
+        ObserverLockScope lock(host);
+        bound = owner.ptr(8);
+    }
+    if (bound != nullptr) host.callback_owner_detach_all_00695530(owner);
+}
+
+void observer_purge_locked_00695e40(Fe5Host& host) {
+    ObserverLockScope lock(host);
+    host.observer_purge_00695c50(0x100);
+}
+// ---------------------------------------------------------------------------
+// Segment 24 plane screens
+// ---------------------------------------------------------------------------
+void game_submit_main_scene_render_0068a0d0(Fe5Host& host) {
+    const Raw game = host.game_00e188a8();
+    host.game_update_view_0078cff0(game.ptr(0x19FC), host.real_clock_00f876a4());
+    host.scene_renderer_submit_00b101c0(game.ptr(0x19EC), game.ptr(0x19FC));
+    host.game_after_render_submit_004c7e60();
+}
+
+void plane_effects_set_visible_00604bc0(Raw screen, bool visible, Fe5Host& host) {
+    host.widget_set_visible_34(screen.ptr(0xB4), visible);
+    host.widget_set_visible_34(screen.ptr(0xB8), visible);
+    host.widget_set_visible_34(screen.ptr(0x0C), visible);
+}
+
+void plane_screen_hide_indicator_grid_00604c20(Raw screen, Fe5Host& host) {
+    if (screen.ptr(0x88) != nullptr) host.widget_set_visible_34(screen.ptr(0x88), false);
+    for (std::size_t i = 0; i < 6 * 5; ++i) {
+        void* const w = screen.ptr(0x10 + 4 * i);
+        if (w != nullptr) host.widget_set_visible_34(w, false);
+    }
+}
+
+void plane_screen_release_plane_view_00604df0(Raw screen, Fe5Host& host) {
+    screen.at<std::uint8_t>(0x104) = 0;
+    if (screen.ptr(0xB8) == nullptr) return;
+    const Raw plane{static_cast<std::uint8_t*>(screen.ptr(0xB8))};
+    const Raw iface = host.ingame_interface_00e198c4();
+    if (iface.p != nullptr && ingame_interface_screen_8c_shown_0068a120(iface)) {
+        host.unit_send_role_transfer_0077c470(plane, 0x1FF, 0);
+        host.unit_send_role_transfer_0077c470(plane, 1, 1);
+    } else {
+        host.unit_send_role_transfer_0077c470(plane, 0x1FE, 0);
+    }
+    host.object_virtual(plane, 0x1C8);
+    host.game_set_camera_near_plane_004b4940(kPlaneReleaseNearPlane);
+}
+
+void plane_screen_on_object_released(Raw screen, const void* object) noexcept {
+    for (std::size_t off : {0xB0u, 0x8Cu, 0x90u}) {
+        if (screen.ptr(off) == object) {
+            screen.ptr(off) = nullptr;
+            return;
+        }
+    }
+}
+
+std::uint32_t plane_screen_cockpit_view_flag_00604f30(Raw screen, Fe5Host& host) {
+    const Raw plane{static_cast<std::uint8_t*>(screen.ptr(0xB8))};
+    if (plane.p == nullptr || host.unit_is_kind_5c(plane, 0x10) || host.unit_is_kind_5c(plane, 0x16)) return 0;
+    return screen.at<std::uint32_t>(0xFC);
+}
+
+void owned_buffer_free_00604fc0(Raw cell, Fe5Host& host) {
+    if (cell.ptr(0) == nullptr) return;
+    host.crt_free(cell.ptr(0));
+    cell.ptr(0) = nullptr;
+}
+
+void owned_object_delete(Raw cell, Fe5Host& host) {
+    if (cell.ptr(0) == nullptr) return;
+    host.object_virtual_int(Raw{static_cast<std::uint8_t*>(cell.ptr(0))}, 0x00, 1);
+    cell.ptr(0) = nullptr;
+}
+
+void plane_screen_update_payload_icon_00605380(Raw screen, Fe5Host& host) {
+    const std::int32_t frame = host.plane_screen_payload_frame_00604c80(screen);
+    const bool shown = frame != -1;
+    if (shown) {
+        host.widget_set_frame_88(screen.ptr(0x110), frame, 0, 1.0f);
+    }
+    host.widget_set_visible_34(screen.ptr(0x100), shown);
+    host.widget_set_visible_34(screen.ptr(0x104), shown);
+    host.widget_set_visible_34(screen.ptr(0x110), shown);
+}
+
+void gauge_needle_set_value_00605410(Raw needle, float value, Fe5Host& host) {
+    const float maximum = needle.at<float>(0x18);
+    const float clamped = (maximum > value) ? value : maximum;
+    needle.at<float>(0x1C) = clamped;
+    const float angle = static_cast<float>(static_cast<double>(clamped) / needle.at<float>(0x18) *
+                                               needle.at<float>(0x00) * needle.at<float>(0x14) +
+                                           needle.at<float>(0x10));
+    float a = static_cast<float>(host.crt_fmod_00bf857a(angle, kNeedleTwoPi));
+    if (!(-kNeedlePi < static_cast<double>(a))) {
+        a = static_cast<float>(static_cast<double>(a) + kNeedleTwoPi);
+    } else if (static_cast<double>(a) > kNeedlePi) {
+        a = static_cast<float>(static_cast<double>(a) - kNeedleTwoPi);
+    }
+    host.widget_set_rotation_44(needle.ptr(4), a);
+}
+
+void refcounted_ptr_release_00605600(Raw cell, Fe5Host& host) {
+    if (cell.ptr(0) == nullptr) return;
+    host.refcounted_release(cell.ptr(0));
+    cell.ptr(0) = nullptr;
+}
+
+void plane_effects_exit_00605cc0(Raw screen, Fe5Host& host) {
+    screen.at<std::uint8_t>(0x104) = 0;
+    screen.at<std::uint32_t>(0xFC) = 0;
+    plane_screen_release_plane_view_00604df0(screen, host);
+    for (std::size_t off : {0xE8u, 0xECu}) {
+        const Raw flash{static_cast<std::uint8_t*>(screen.ptr(off))};
+        flash.at<std::uint8_t>(0) = 0;
+        flash.at<std::uint32_t>(8) = 0;
+        flash.at<std::uint32_t>(0x0C) = 0;
+        flash.at<std::uint32_t>(0x10) = 0;
+        flash.at<std::uint32_t>(4) = 0;
+    }
+    host.game_set_view_fov_004dc940(1.0f, 2);
+    if (screen.ptr(0xB8) != nullptr) host.object_virtual(Raw{static_cast<std::uint8_t*>(screen.ptr(0xB8))}, 0x1C8);
+    host.game_set_camera_near_plane_004b4940(kPlaneReleaseNearPlane);
+    for (std::size_t off : {0x64u, 0x6Cu, 0x70u}) {
+        const Raw effect{static_cast<std::uint8_t*>(screen.ptr(off))};
+        if (effect.p == nullptr) continue;
+        host.point_effect_stop_children_00867b10(effect);
+        effect.at<std::uint8_t>(9) = 1;
+        refcounted_ptr_release_00605600(Raw{screen.p + off}, host);
+        screen.ptr(off) = nullptr;
+    }
+    host.render_set_transition_00b0d6a0(screen.at<float>(0x88), screen.at<float>(0x8C), screen.at<float>(0x90),
+                                        0.0f, 0.0f, 0.0f);
+}
+
+void plane_screen_ensure_chase_camera_00605e50(Raw screen, Fe5Host& host) {
+    if (screen.ptr(0x94) == nullptr) {
+        const Raw camera = host.plane_chase_camera_new_00605130();
+        screen.ptr(0x94) = camera.p;
+        const float identity[16] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};  // 00D7A24C = 1.0
+        host.camera_add_to_scene_00923870(camera, host.game_00e188a8().ptr(0x19CC), identity);
+        host.observer_register_00694a60(screen.ptr(0x94), screen.p + 8);
+    }
+    const Raw camera{static_cast<std::uint8_t*>(screen.ptr(0x94))};
+    host.camera_set_target_0042aaf0(camera, screen.ptr(0xB8));
+    host.game_set_camera_mover_004bc410(camera.p);
+    host.camera_virtual_dc(camera, 0.0f);
+    screen.at<std::uint32_t>(0x98) = 0;
+    if (screen.ptr(0xB8) != nullptr) host.object_virtual(Raw{static_cast<std::uint8_t*>(screen.ptr(0xB8))}, 0x1C8);
+    host.game_set_camera_near_plane_004b4940(kPlaneReleaseNearPlane);
+}
+
+void* unit_as_kind_or_null(void* unit, int kind, Fe5Host& host) {
+    if (unit == nullptr) return nullptr;
+    return host.unit_is_kind_5c(Raw{static_cast<std::uint8_t*>(unit)}, kind) ? unit : nullptr;
+}
+
+bool input_action_enabled_00606250(std::int32_t action, Fe5Host& host) {
+    const auto* table = static_cast<const std::uint8_t*>(host.input_manager_004bec00().ptr(4));
+    return table[action * 0x30 + 1] != 0;
+}
+
+void plane_effects_destruct_00606040(Raw screen, Fe5Host& host) {
+    screen.at<std::uint32_t>(0) = kPlaneEffectsVtable;
+    screen.at<std::uint32_t>(8) = kPlaneEffectsSecondaryVtable;
+    for (std::size_t off : {0x64u, 0x6Cu, 0x70u}) {
+        const Raw effect{static_cast<std::uint8_t*>(screen.ptr(off))};
+        if (effect.p == nullptr) continue;
+        host.point_effect_stop_children_00867b10(effect);
+        effect.at<std::uint8_t>(9) = 1;
+    }
+    host.crt_free(screen.ptr(0xE8));
+    host.crt_free(screen.ptr(0xEC));
+    host.target_observer_destruct_0042bca0(Raw{screen.p + 0xD0});
+    for (std::size_t off = 0x78; off >= 0x60; off -= 4) refcounted_ptr_release_00605600(Raw{screen.p + off}, host);
+    host.callback_owner_destroy_00695870(Raw{screen.p + 8});
+    host.front_end_screen_destruct_004f71a0(screen);
+}
+
+void* plane_effects_construct_00606470(Raw screen, Fe5Host& host) {
+    host.front_end_screen_construct_004f7180(screen);
+    screen.at<std::uint32_t>(0x08) = kCallbackOwnerBaseVtable;
+    screen.at<std::uint32_t>(0x0C) = 0;
+    screen.at<std::uint32_t>(0x10) = 0;
+    screen.at<std::uint32_t>(0x14) = 0;
+    screen.at<std::uint8_t>(0x18) = 0;
+    screen.at<std::uint32_t>(0x00) = kPlaneEffectsVtable;
+    screen.at<std::uint32_t>(0x08) = kPlaneEffectsSecondaryVtable;
+    for (std::size_t off = 0x60; off <= 0x78; off += 4) screen.at<std::uint32_t>(off) = 0;
+    screen.at<std::uint32_t>(0x94) = 0;
+    screen.at<std::uint32_t>(0x98) = 0;
+    screen.at<std::uint32_t>(0xB8) = 0;
+    screen.at<std::uint8_t>(0xBD) = 0;
+    screen.at<std::uint32_t>(0xC4) = 0;
+    screen.at<std::uint32_t>(0xC8) = 0;
+    screen.at<std::uint32_t>(0xD4) = 0;
+    screen.at<std::uint32_t>(0xD8) = 0;
+    screen.at<std::uint32_t>(0xDC) = 0;
+    screen.at<std::uint32_t>(0xE4) = 0;
+    screen.at<std::uint8_t>(0xE0) = 1;
+    screen.at<std::uint32_t>(0xD0) = kObserverBaseVtable;
+    for (std::size_t off : {0xE8u, 0xECu}) {
+        auto* const flash = static_cast<std::uint8_t*>(host.operator_new(0x14));
+        if (flash != nullptr) {
+            const Raw f{flash};
+            f.at<std::uint8_t>(0) = 0;
+            f.at<std::uint32_t>(8) = 0;
+            f.at<std::uint32_t>(0x0C) = 0;
+            f.at<std::uint32_t>(0x10) = 0;
+            f.at<std::uint32_t>(4) = 0;
+        }
+        screen.ptr(off) = flash;
+    }
+    screen.at<std::uint8_t>(0x104) = 0;
+    screen.at<std::uint8_t>(0x10C) = 0;
+    screen.at<std::uint32_t>(0x108) = 0;
+    return screen.p;
+}
+
+void plane_screen_update_view_fov_006068a0(Raw screen, Fe5Host& host) {
+    const Raw plane{static_cast<std::uint8_t*>(screen.ptr(0xB8))};
+    if (plane.p != nullptr && !host.unit_is_kind_5c(plane, 0x10) && !host.unit_is_kind_5c(plane, 0x16) &&
+        screen.at<std::uint32_t>(0xFC) != 0) {
+        screen.at<float>(0x100) = host.game_tuning_0042e740().at<float>(0x84);
+    } else {
+        screen.at<float>(0x100) = 1.0f;  // 00D7A24C
+    }
+    host.game_set_view_fov_004dc940(screen.at<float>(0x100), 2);
+}
+
+void stl_vector_tidy_00606920(Raw vector, Fe5Host& host) {
+    if (vector.ptr(4) != nullptr) host.crt_free(vector.ptr(4));
+    vector.ptr(4) = nullptr;
+    vector.ptr(8) = nullptr;
+    vector.ptr(0x0C) = nullptr;
+}
+
+void plane_screen_destruct_00606950(Raw screen, Fe5Host& host) {
+    screen.at<std::uint32_t>(0) = kPlaneScreenVtable;
+    host.gui_remove_and_destroy_page_00aa31f0(screen.ptr(0x0C));
+    host.gui_remove_and_destroy_page_00aa31f0(screen.ptr(0xB8));
+    host.gui_remove_and_destroy_page_00aa31f0(screen.ptr(0xB4));
+    refcounted_ptr_release_00605600(Raw{screen.p + 0x15C}, host);
+    refcounted_ptr_release_00605600(Raw{screen.p + 0x158}, host);
+    for (std::size_t first : {0xA8u, 0x98u}) {
+        if (screen.ptr(first) != nullptr) host.crt_free(screen.ptr(first));
+        screen.ptr(first) = nullptr;
+        screen.ptr(first + 4) = nullptr;
+        screen.ptr(first + 8) = nullptr;
+    }
+    host.front_end_screen_destruct_004f71a0(screen);
+}
+
+void plane_screen_register_00606a90(Raw screen, Fe5Host& host) {
+    host.front_end_screen_register_004f71d0(screen);
+    screen.at<std::uint8_t>(0x120) = 0;
+    screen.at<std::uint32_t>(0x124) = 0;
+    screen.at<std::uint8_t>(0x128) = 0;
+    screen.at<std::uint32_t>(0x12C) = 0;
+    void* const acquired = host.effect_handle_acquire_00871ba0(kPlaneRumbleEffect);
+    void* const old = screen.ptr(0x158);
+    if (old != acquired) {
+        screen.ptr(0x158) = acquired;
+        if (acquired != nullptr) host.sound_handle_add_ref(acquired);
+        if (old != nullptr) host.refcounted_release(old);
+    }
+    if (acquired != nullptr) host.refcounted_release(acquired);
+    refcounted_ptr_release_00605600(Raw{screen.p + 0x15C}, host);
+    screen.ptr(0x15C) = nullptr;
+    screen.at<std::uint8_t>(0x160) = 0;
+    screen.at<float>(0x164) = 0.0f;
+    host.object_virtual(screen, 0x14);
+    const float* const position = host.widget_local_position_00aa67f0(screen.ptr(0xC8));
+    screen.at<float>(0x13C) = 0.0f;
+    screen.at<float>(0x134) = 0.0f;
+    screen.at<float>(0x114) = static_cast<float>(static_cast<double>(position[1]) + kPlaneScreenLineOffset);
+    screen.at<std::uint8_t>(0x08) = 0;
+    screen.at<std::uint8_t>(0x140) = 0;
+    screen.at<std::uint8_t>(0x130) = 0;
+    screen.at<float>(0x138) = 1.0f;  // 00D7A24C
+    host.widget_set_alpha_4c(screen.ptr(0xE0), 0.0f);
+}
+
+void plane_screen_apply_view_mode_00608280(Raw screen, Fe5Host& host) {
+    const Raw plane{static_cast<std::uint8_t*>(screen.ptr(0xB8))};
+    if (plane.p != nullptr && !host.unit_is_kind_5c(plane, 0x10) && !host.unit_is_kind_5c(plane, 0x16) &&
+        screen.at<std::uint32_t>(0xFC) != 0) {
+        host.plane_screen_ensure_cockpit_camera_00607f60(screen);
+        return;
+    }
+    plane_screen_ensure_chase_camera_00605e50(screen, host);
+}
+
+void owned_vector_delete_006088a0(Raw cell, Fe5Host& host) {
+    if (cell.ptr(0) == nullptr) return;
+    const Raw vector{static_cast<std::uint8_t*>(cell.ptr(0))};
+    stl_vector_tidy_00606920(vector, host);
+    host.crt_free(vector.p);
+    cell.ptr(0) = nullptr;
+}
+
+void plane_screen_select_camera_00608b60(Raw screen, Fe5Host& host) {
+    screen.at<std::uint8_t>(0x104) = 0;
+    screen.at<std::uint32_t>(0xFC) = 0;
+    plane_screen_apply_view_mode_00608280(screen, host);
+    if (screen.ptr(0xB8) == nullptr) return;
+    if (!host.observer_is_registered_00694af0(screen.ptr(0xB8), screen.p + 8)) {
+        host.observer_register_00694a60(screen.ptr(0xB8), screen.p + 8);
+    }
+    host.markers_screen_set_view_centre_00637620(0.5f, 0.5f);
+}
+
+bool bit_flag_set_test_flag_00608c00(Raw object, std::uint32_t flag, Fe5Host& host) {
+    return host.bit_flag_set_test_0048f930(Raw{object.p + 0xC4}, flag);
+}
+
+void* plane_screen_construct_00608e60(Raw screen, Fe5Host& host) {
+    host.front_end_screen_construct_004f7180(screen);
+    screen.at<std::uint32_t>(0) = kPlaneScreenVtable;
+    for (std::size_t off : {0x98u, 0x9Cu, 0xA0u, 0xA8u, 0xACu, 0xB0u, 0x158u, 0x15Cu}) screen.at<std::uint32_t>(off) = 0;
+    host.widget_quad_fade_construct_0064a4f0(Raw{screen.p + 0x16C});
+    screen.at<std::uint32_t>(0x10C) = 0;
+    screen.at<std::uint32_t>(0x108) = 0;
+    return screen.p;
+}
+
+void plane_screen_collect_children_00608ef0(Raw screen, void* out, Fe5Host& host) {
+    host.push_page_slot_004d6790(out, &screen.ptr(0xB4));
+    host.push_page_slot_004d6790(out, &screen.ptr(0x0C));
+    host.push_page_slot_004d6790(out, &screen.ptr(0xB8));
+}
+
+void plane_screen_set_plane_00609390(Raw screen, void* plane, Fe5Host& host) {
+    screen.ptr(0x168) = plane;
+    if (screen.at<std::uint8_t>(5) == 0) return;
+    host.plane_screen_rebuild_widgets_00608f30(screen);
+    static_cast<std::uint8_t*>(screen.ptr(0x108))[0x18] = 0;
+    static_cast<std::uint8_t*>(screen.ptr(0x10C))[0x18] = 0;
+    plane_screen_update_payload_icon_00605380(screen, host);
+}
 // @impl-end
 
 }  // namespace bsp::cc13_fe5

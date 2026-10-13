@@ -363,6 +363,111 @@ struct Fe5Host {
     // unregister, ECX = the observed object, EDX = the observer member.
     virtual void observer_register_00694a60(void* observed, void* observer_member) = 0;
     virtual void observer_unregister_006952a0(void* observed, void* observer_member) = 0;
+    // Native pooled strings {count +0h, data +4h} (src/native_string.hpp):
+    // 0041DD40(size, flag) resize, the pool release of the data block, and
+    // read/assign helpers standing for the resize + memcpy pairs.
+    virtual void native_string_resize_0041dd40(Raw string, std::size_t size, int flag) = 0;
+    virtual void native_string_release(Raw string) = 0;
+    virtual std::string native_string_read(Raw string) = 0;
+    virtual void native_string_assign(Raw string, std::string_view value) = 0;
+    // 007F8E00(name), ECX = *00E188A8 + 650h: the profile's stored-hint set.
+    virtual bool award_stored_hint_contains_007f8e00(const std::string& name) = 0;
+    // 005FFB20(name), ECX = tracker+30h: the hint definition (+114h blocking byte).
+    virtual Raw award_hint_definition_005ffb20(Raw definitions, const std::string& name) = 0;
+    // 006002B0(key) on tracker+7Ch (case-insensitive string map) then
+    // 005FE8B0(value), ECX = the mapped entry.
+    virtual void award_hint_map_assign_00690fb0(Raw map, std::uint32_t key, std::uint32_t value) = 0;
+    // 00690FD0(name, forced): BSP_AwardTracker_TriggerHint, ECX = tracker.
+    virtual void award_tracker_trigger_hint_forced_00690fd0(Raw tracker, std::uint32_t name, int forced) = 0;
+    // 004D05E0, ECX = tracker+48h: clear the pooled string list.
+    virtual void pooled_string_list_clear_004d05e0(Raw list) = 0;
+    // List nodes of the recent-hint list (+54h, head +58h): erase one node
+    // (BSP_RenderAliasList_EraseNode) and push a copy at the end (the
+    // allocate-copy node, count grow, link before the head).
+    virtual void alias_list_erase_node(Raw list, void* node) = 0;
+    virtual void alias_list_push_back_copy(Raw list, const void* value) = 0;
+    // operator new (00BF6A5B family) for the engine's own dword vectors.
+    virtual void* operator_new(std::size_t bytes) = 0;
+    // The observer lock: 00694280 returns the lock owner (singleton
+    // 00E198E0), whose +4h is a CRITICAL_SECTION* (nesting count at +18h).
+    virtual void* observer_lock_00694280() = 0;
+    // 006949D0, ECX = observed, EDX = observer -> the pair record or null.
+    virtual Raw observer_find_pair_006949d0(void* observed, void* observer) = 0;
+    // 00694AF0 is-registered (ECX = observed, EDX = observer) -> AL.
+    virtual bool observer_is_registered_00694af0(void* observed, void* observer) = 0;
+    // 00694F60, ECX = an object's edge array (object+4h), EDX = pair: erase.
+    virtual void observer_edge_array_erase_00694f60(Raw edges, void* pair) = 0;
+    // 00695530, ECX = callback owner: detach every callback.
+    virtual void callback_owner_detach_all_00695530(Raw owner) = 0;
+    // 00695C50(100h), ECX = *00E198E4: purge.
+    virtual void observer_purge_00695c50(int budget) = 0;
+    // 0041CC80, ECX = lock owner+4h: destroy the owned critical section.
+    virtual void critical_section_destroy_owned_0041cc80(Raw cell) = 0;
+    // The singleton global 00E198E0.
+    virtual void set_observer_singleton_00e198e0(void* value) = 0;
+    // memmove_s(dst, n, src, n).
+    virtual void crt_memmove_s(void* dst, std::size_t dst_size, const void* src, std::size_t count) = 0;
+    // 0078CFF0(view, float clock), ECX = game+19F0h; 00B101C0(scene, view),
+    // ECX = *00F8D39C; 004C7E60, ECX = *00E188A8 (tail jump).
+    virtual void game_update_view_0078cff0(void* view, float clock) = 0;
+    virtual void scene_renderer_submit_00b101c0(void* scene, void* view) = 0;
+    virtual void game_after_render_submit_004c7e60() = 0;
+    virtual Raw game_00e188a8() = 0;
+    // 0077C470 BSP_UnitInstance_SendRoleTransfer, ECX = unit, (mask, take): a
+    // cc9 gameplay routine (docs/SCRIPTED_HELM.md).
+    virtual void unit_send_role_transfer_0077c470(Raw unit, std::uint32_t mask, int take) = 0;
+    // 004B4940(float), ECX = *00E188A8: set the camera near plane.
+    virtual void game_set_camera_near_plane_004b4940(float near_plane) = 0;
+    // *00F876A4: the real-time clock (float seconds).
+    virtual float real_clock_00f876a4() = 0;
+    // 00604C80, ECX = plane screen -> EAX: the payload icon frame, -1 for none.
+    virtual std::int32_t plane_screen_payload_frame_00604c80(Raw screen) = 0;
+    // Widget +88h(frame, 0, alpha) with an integer frame index.
+    virtual void widget_set_frame_88(void* widget, std::int32_t frame, int flag, float alpha) = 0;
+    // Drop one reference: InterlockedDecrement(object+4h), at zero the
+    // object's vtable slot 0 (no argument).
+    virtual void refcounted_release(void* object) = 0;
+    // Widget +44h(float): set rotation.
+    virtual void widget_set_rotation_44(void* widget, float radians) = 0;
+    // 00BF857A, the x87 fmod helper: fmod(x, y) at extended precision.
+    virtual double crt_fmod_00bf857a(double x, double y) = 0;
+    // 004DC940(fov, flag), ECX = *00E188A8: BSP_Game_SetViewFov.
+    virtual void game_set_view_fov_004dc940(float fov, int flag) = 0;
+    // 00867B10, ECX = point effect: stop its children (then the caller sets
+    // byte +9h = 1 and drops its reference).
+    virtual void point_effect_stop_children_00867b10(Raw effect) = 0;
+    // 00B0D6A0(a, b, c, x, y, z), ECX = *00F8D39C (floats by value).
+    virtual void render_set_transition_00b0d6a0(float a, float b, float c, float x, float y, float z) = 0;
+    // operator new(3FCh) + memset 0 + 00605130 (the plane chase camera
+    // constructor); null when the allocation failed.
+    virtual Raw plane_chase_camera_new_00605130() = 0;
+    // 00923870(0, scene, const float matrix[16]), ECX = camera.
+    virtual void camera_add_to_scene_00923870(Raw camera, void* scene, const float matrix[16]) = 0;
+    // 0042AAF0(target), ECX = camera; 004BC410(camera), ECX = *00E188A8.
+    virtual void camera_set_target_0042aaf0(Raw camera, void* target) = 0;
+    virtual void game_set_camera_mover_004bc410(void* camera) = 0;
+    // Camera virtual +DCh(float).
+    virtual void camera_virtual_dc(Raw camera, float value) = 0;
+    // 004BEC00: the input manager (+4h: action table of 30h-byte rows).
+    virtual Raw input_manager_004bec00() = 0;
+    // 0042E740: the game tuning block (float +84h: the cockpit fov).
+    virtual Raw game_tuning_0042e740() = 0;
+    // 00871BA0(&out, name, 1): acquire an effect handle by name (one reference
+    // for the caller in out).
+    virtual void* effect_handle_acquire_00871ba0(std::string_view name) = 0;
+    // 00AA67F0, ECX = widget -> local position (x, y, z).
+    virtual const float* widget_local_position_00aa67f0(void* widget) = 0;
+    // Plane-screen routines reached through the host where they are not
+    // reconstructed here: 00607F60 ensure cockpit camera, 00608F30 rebuild
+    // widgets, ECX = screen.
+    virtual void plane_screen_ensure_cockpit_camera_00607f60(Raw screen) = 0;
+    virtual void plane_screen_rebuild_widgets_00608f30(Raw screen) = 0;
+    // 00637620(x, y), ECX = (*00E198C4)+48h (the markers screen).
+    virtual void markers_screen_set_view_centre_00637620(float x, float y) = 0;
+    // 0048F930(&tmp, flag) on object+C4h, then 0048F230 on the result -> AL.
+    virtual bool bit_flag_set_test_0048f930(Raw flags, std::uint32_t flag) = 0;
+    // 0064A4F0, ECX = screen+16Ch: the widget quad-fade constructor.
+    virtual void widget_quad_fade_construct_0064a4f0(Raw fade) = 0;
     // @host-end
 };
 
@@ -792,6 +897,237 @@ void unit_doing_icon_set_unit_0068daa0(Raw icon, void* unit, Fe5Host& host);
 // 0068DAD0 __thiscall(icon, value), RET 4: unregister the observed unit when
 // set, then +1Ch = value, +18h = 0.
 void unit_doing_icon_clear_unit_0068dad0(Raw icon, std::uint32_t value, Fe5Host& host);
+
+// ---------------------------------------------------------------------------
+// The award tracker's hint queue (src/gui_screens_3.cpp drives it): stored
+// list +48h (head +4Ch), recent list +54h (head +58h), active hint name +60h,
+// pending deque of native strings +68h (map +6Ch, map size +70h, offset +74h,
+// size +78h; two 8-byte strings per block), definitions map +30h, alias map
+// +7Ch.
+// ---------------------------------------------------------------------------
+// 0068E420 __thiscall(tracker): resize the active name to 0 (flag 0) and copy
+// the empty string 00CE3A0C into it.
+void award_tracker_finish_active_hint_0068e420(Raw tracker, Fe5Host& host);
+// 0068E5B0 __thiscall(tracker, string* out), RET 4 -> EAX out: copy the
+// active name into a fresh string.
+std::string award_tracker_copy_active_hint_name_0068e5b0(Raw tracker, Fe5Host& host);
+// 0068E600 __thiscall(tracker, const string* name), RET 4 -> AL: the stored
+// set, else a case-insensitive walk of the list at +48h (equal sizes, and
+// both empty or _stricmp == 0).
+bool award_tracker_has_hint_been_shown_0068e600(Raw tracker, const std::string& name, Fe5Host& host);
+// Size-then-_stricmp equality used by 0068E600 and 0068EA70.
+bool native_name_equal(const std::string& a, const std::string& b) noexcept;
+// 0068E780 __thiscall(deque): pop the front native string (release its
+// block, advance the offset modulo 2 * map size, size - 1, offset 0 when empty).
+void native_string_deque_pop_front_0068e780(Raw deque, Fe5Host& host);
+// 0068E850 __thiscall(list, const value*), RET 4: push a copy at the end.
+void alias_list_insert_copy_0068e850(Raw list, const void* value, Fe5Host& host);
+// 0068EA00 __thiscall(tracker): clear the stored list, then pop every pending
+// hint (the pop is inlined from 0068E780 on tracker+68h).
+void award_tracker_clear_hint_queue_0068ea00(Raw tracker, Fe5Host& host);
+// 0068EA70 __thiscall(tracker, string name by value), RET 8: erase the first
+// recent-list node equal to name, push name at the end, release the argument.
+void award_tracker_touch_recent_hint_0068ea70(Raw tracker, Raw name, Fe5Host& host);
+// 00690B00 __thiscall(tracker, const string* name), RET 4 -> AL: an empty
+// name is not blocking; else the definition's +114h byte.
+bool award_tracker_is_active_hint_blocking_00690b00(Raw tracker, Raw name, Fe5Host& host);
+// 00690FB0 __thiscall(tracker, key, value), RET 8.
+void award_tracker_hint_map_pair_00690fb0(Raw tracker, std::uint32_t key, std::uint32_t value, Fe5Host& host);
+// 00692FB0 __thiscall(tracker, name), RET 4: +4h = 1, then 00690FD0(name, 1).
+void award_tracker_trigger_forced_hint_00692fb0(Raw tracker, std::uint32_t name, Fe5Host& host);
+
+// ---------------------------------------------------------------------------
+// The engine's dword vector {data +0h, size +4h, capacity +8h} (not the STL
+// one). Every element store is guarded by a null test on the slot address,
+// as in the image (operator new never returns a block at address 0 here, so
+// the guard only matters for a zero-length allocation).
+// ---------------------------------------------------------------------------
+// 006938D0 __thiscall(dst, const vector* src), RET 4 -> EAX dst.
+void* native_dword_vector_copy_construct_006938d0(Raw dst, Raw src, Fe5Host& host);
+// 00693990 __thiscall(vector): capacity = 2 * capacity + 2, move the elements.
+void native_dword_vector_grow_00693990(Raw vector, Fe5Host& host);
+// 00693FD0 __thiscall(vector, uint32_t size), RET 4: grow to exactly `size`
+// when needed, zero the new tail, set the size (also when shrinking).
+void native_dword_vector_resize_00693fd0(Raw vector, std::uint32_t size, Fe5Host& host);
+// 00694060 __thiscall(dst, const vector* src), RET 4: assign. The size is
+// zeroed before the reallocation, so the copy loop of the old elements never
+// runs; capacity becomes the source size when it was smaller.
+void native_dword_vector_assign_00694060(Raw dst, Raw src, Fe5Host& host);
+
+// ---------------------------------------------------------------------------
+// Observer bookkeeping (pair record: vtable +0h, observed +4h, observer +8h,
+// registration count +0Ch). Every locked routine takes the lock owner's
+// critical section (EnterCriticalSection then ++[cs+18h]; --[cs+18h] then
+// LeaveCriticalSection), skipping both when the owner has none.
+// ---------------------------------------------------------------------------
+inline constexpr std::uint32_t kSingletonBaseVtable = 0x00CE3818;
+inline constexpr std::uint32_t kObserverLockOwnerVtable = 0x00CF7E70;
+// 00694250 __thiscall(owner, flags), RET 4 -> EAX: clear 00E198E0, base
+// vtable 00CE3818, _free when bit 0.
+void* observer_singleton_scalar_delete_00694250(Raw owner, std::uint8_t flags, Fe5Host& host);
+// 00694B90 register call (ECX = observed, EDX = observer) -> EAX: the pair's
+// registration count (+0Ch) under the lock, 0 when there is no pair.
+std::uint32_t observer_find_pair_value_locked_00694b90(void* observed, void* observer, Fe5Host& host);
+// 00694E70 __thiscall(owner): vtable 00CF7E70, destroy the owned critical
+// section (+4h), clear 00E198E0, base vtable.
+void observer_lock_owner_destruct_00694e70(Raw owner, Fe5Host& host);
+// 00694EE0 / 00694F20 __thiscall(ref) -> EAX: +8h read under the lock
+// (byte-identical bodies).
+std::uint32_t observer_ref_get_target_locked(Raw ref, Fe5Host& host);
+// 00695000 __thiscall(pair): erase the pair from both objects' edge arrays and
+// delete it (+0h(1)). 00695030 does the same once its count drops to zero.
+void observer_pair_destroy_00695000(Raw pair, Fe5Host& host);
+void observer_pair_release_00695030(Raw pair, Fe5Host& host);
+// 00695230 __cdecl(first, last, dest) -> EAX dest + bytes: memmove_s of the
+// dword range.
+void* move_dwords_00695230(const void* first, const void* last, void* dest, Fe5Host& host);
+// 006956A0 register call (ECX = observed, EDX = observer): unregister under
+// the lock when registered.
+void observer_unregister_if_registered_006956a0(void* observed, void* observer, Fe5Host& host);
+// 00695830 __thiscall(owner): read +8h under the lock, then tail-jump to
+// 00695530 when it was non-null.
+void callback_owner_detach_all_if_bound_00695830(Raw owner, Fe5Host& host);
+// 00695E40 __cdecl(): 00695C50(100h) under the lock.
+void observer_purge_locked_00695e40(Fe5Host& host);
+
+// 0068A0D0 __cdecl(): update game+19F0h with (+19FCh, real clock *00F876A4),
+// submit the main scene (+19ECh, +19FCh) to the scene renderer, then
+// tail-jump to 004C7E60 on the game.
+void game_submit_main_scene_render_0068a0d0(Fe5Host& host);
+
+// ---------------------------------------------------------------------------
+// Segment 24: plane HUD (3Eh, vtable 00CF4544), plane effects (3Fh, vtable
+// 00CF43AC) and plane spawn (41h, vtable 00CF4A7C) screens.
+// ---------------------------------------------------------------------------
+// 00604BC0 __thiscall(screen, bool visible), RET 4: +B4h, +B8h, +0Ch.
+void plane_effects_set_visible_00604bc0(Raw screen, bool visible, Fe5Host& host);
+// 00604C20 __thiscall(screen): hide +88h and the 6x5 indicator grid at +10h
+// (null slots skipped).
+void plane_screen_hide_indicator_grid_00604c20(Raw screen, Fe5Host& host);
+// 00604DF0 __thiscall(screen): clear +104h; with a plane (+B8h): release its
+// role mask (1FEh, take 0), or, when the interface's screen 8Ch is shown,
+// 1FFh/0 then 1/1; the plane's +1C8h virtual; near plane 1.5 (00CE380C).
+// The role transfers are cc9's gameplay messages (listed in the doc).
+inline constexpr float kPlaneReleaseNearPlane = 1.5f;  // 00CE380C
+void plane_screen_release_plane_view_00604df0(Raw screen, Fe5Host& host);
+// 00604E70 / 00604EC0 __thiscall(screen, object), RET 4: null the first of
+// +B0h, +8Ch, +90h that holds the object (byte-identical bodies).
+void plane_screen_on_object_released(Raw screen, const void* object) noexcept;
+// 00604F30 __thiscall(screen) -> EAX: 0 without a plane or when it is of kind
+// 10h or 16h, else +FCh.
+std::uint32_t plane_screen_cockpit_view_flag_00604f30(Raw screen, Fe5Host& host);
+// 00604FC0 __thiscall(cell): _free(*cell) and null it when set.
+void owned_buffer_free_00604fc0(Raw cell, Fe5Host& host);
+// 00604FE0 / 00605000 __thiscall(cell): delete *cell (+0h(1)) and null it
+// when set (byte-identical bodies).
+void owned_object_delete(Raw cell, Fe5Host& host);
+
+// 00605270 / 006052B0 / 006052E0 / 00605300 / 00605320: session message C4h
+// (the plane bomb-fire message sent by 006082D0), the fe2b model of
+// include/bsp/ingame_gui_cc13.hpp with this row: base 0075B430(C4h), +18h
+// word 0, +1Ah byte 0, +1Ch byte 0, +4h = 1, vtable 00CF4378; IsType accepts
+// C4h, 49h and 46h; the payload is one bool at +1Ch. Its read passes ECX =
+// cursor+4h to 00428D70 (as does fe2's 006503C0; the shared model's
+// read_bool host call stands for that).
+inline constexpr ingame_gui_cc13::SessionMessageClass kSessionMessageC4{
+    0xC4, {0x49, 0x46}, 2, 0x00CF4378, ingame_gui_cc13::SessionCtorShape::Clear1C,
+    0x00605270, 0x006052B0, 0x006052E0, 0x00605300, 0x00605320,
+    {{{0x1C, ingame_gui_cc13::SessionFieldKind::Bool, 0}}}, 1};
+
+// 00605380 __thiscall(screen): payload frame from 00604C80; a frame other
+// than -1 goes to +110h (+88h(frame, 0, 1.0)) and shows +100h, +104h, +110h,
+// else all three are hidden.
+void plane_screen_update_payload_icon_00605380(Raw screen, Fe5Host& host);
+// 00605410 __thiscall(needle, float v), RET 4. Needle: scale +0h, widget +4h,
+// offset +10h, span +14h, maximum +18h, value +1Ch. value = max > v ? v : max
+// (FCOMIP/JBE: a NaN v takes the maximum); angle = float(value / max * scale
+// * span + offset) wrapped by fmod(angle, 2*pi) (00CE3828) and folded into
+// (-pi, pi] (-pi from 00CE3D18 adds 2*pi when -pi >= a or unordered; above pi
+// (00CE3D28) subtracts 2*pi); the widget's +44h gets the result.
+inline constexpr double kNeedlePi = 3.1415927410125732;        // 00CE3D28 / -00CE3D18
+inline constexpr double kNeedleTwoPi = 6.2831854820251465;     // 00CE3828
+void gauge_needle_set_value_00605410(Raw needle, float value, Fe5Host& host);
+// 00605600 __thiscall(cell): drop one reference of *cell (InterlockedDecrement
+// of +4h, delete through vtable slot 0 at zero) and null it.
+void refcounted_ptr_release_00605600(Raw cell, Fe5Host& host);
+
+// 00605CC0 __thiscall(screen) (plane effects exit): clear +104h and +FCh,
+// release the plane view (00604DF0), clear the two flash records +E8h/+ECh
+// (byte +0h, dwords +4h..+10h), fov 1.0 flag 2, the plane's +1C8h virtual,
+// near plane 1.5, stop and drop the point effects +64h, +6Ch, +70h (byte
+// +9h = 1 first), and restore the render transition (+88h, +8Ch, +90h, 0, 0, 0).
+void plane_effects_exit_00605cc0(Raw screen, Fe5Host& host);
+// 00605E50 __thiscall(screen): create the chase camera at +94h once (3FCh
+// zeroed block, 00605130, added to the scene list game+19CCh with an
+// identity matrix, observed through screen+8h), then target the plane
+// (+B8h), make it the camera mover, its +DCh(0.0), +98h = 0, the plane's
+// +1C8h virtual, near plane 1.5.
+void plane_screen_ensure_chase_camera_00605e50(Raw screen, Fe5Host& host);
+// 00606000 / 00606020 __thiscall(unit) -> EAX: the unit when it is of kind
+// 25h / 26h, else null.
+void* unit_as_kind_or_null(void* unit, int kind, Fe5Host& host);
+// 00606250 __stdcall(int action), RET 4 -> AL: byte +1h of the input
+// manager's action row.
+bool input_action_enabled_00606250(std::int32_t action, Fe5Host& host);
+
+inline constexpr std::uint32_t kPlaneEffectsVtable = 0x00CF43AC;
+inline constexpr std::uint32_t kPlaneEffectsSecondaryVtable = 0x00CF4394;
+// 00606040 __thiscall(screen): vtables back; stop the children of the point
+// effects +64h, +6Ch, +70h (byte +9h = 1, no release yet); _free the flash
+// records +E8h/+ECh; destroy the observer at +D0h; drop the references
+// +78h, +74h, +70h, +6Ch, +68h, +64h, +60h in that order; callback owner +8h;
+// front-end base.
+void plane_effects_destruct_00606040(Raw screen, Fe5Host& host);
+// 00606470 __thiscall(screen) -> EAX: front-end base, callback owner, the
+// reference slots +60h..+78h, +94h, +98h, +B8h = 0, byte +BDh = 0, +C4h,
+// +C8h = 0, the observer at +CCh (vtable at +D0h), two zeroed 14h-byte flash
+// records at +E8h/+ECh, bytes +104h, +10Ch = 0, +108h = 0.
+void* plane_effects_construct_00606470(Raw screen, Fe5Host& host);
+// 006068A0 __thiscall(screen): +100h = tuning +84h when a plane of neither
+// kind 10h nor 16h is in cockpit view (+FCh), else 1.0; fov(+100h, 2).
+void plane_screen_update_view_fov_006068a0(Raw screen, Fe5Host& host);
+// 00606920 __thiscall(vector): _free(first) when set, first/last/end = 0.
+void stl_vector_tidy_00606920(Raw vector, Fe5Host& host);
+
+// The plane HUD screen 3Eh (vtable 00CF4544).
+inline constexpr std::uint32_t kPlaneScreenVtable = 0x00CF4544;
+inline constexpr std::string_view kPlaneRumbleEffect = "PlaneRumble";
+inline constexpr double kPlaneScreenLineOffset = 0.006944444444444444;  // 00CF4570 (1/144)
+// 00606950 __thiscall(screen): vtable; remove the pages +0Ch, +B8h, +B4h;
+// drop +15Ch then +158h; free the vectors +A8h and +98h; front-end base.
+void plane_screen_destruct_00606950(Raw screen, Fe5Host& host);
+// 00606A90 __thiscall(screen) (vtable +10h): front-end register; clear
+// +120h..+12Ch; acquire "PlaneRumble" into +158h (reference-counted swap);
+// drop +15Ch; byte +160h = 0, +164h = 0.0; the layout virtual (+14h);
+// +114h = float(local y of widget +C8h + 1/144); +134h = +13Ch = 0.0, bytes
+// +8h, +130h, +140h = 0, +138h = 1.0; widget +E0h alpha 0.0. The decompile
+// misplaces the +13Ch store as +13Ch = param[4Fh]; the listing stores
+// floats at +13Ch and +134h (SSE).
+void plane_screen_register_00606a90(Raw screen, Fe5Host& host);
+
+// 00608280 __thiscall(screen): cockpit camera when a plane of neither kind
+// 10h nor 16h is in cockpit view (+FCh), else the chase camera.
+void plane_screen_apply_view_mode_00608280(Raw screen, Fe5Host& host);
+// 006088A0 __thiscall(cell): free an owned STL vector object (its first
+// +4h, then the 10h block) and null the cell.
+void owned_vector_delete_006088a0(Raw cell, Fe5Host& host);
+// 00608B60 __thiscall(screen): clear +104h and +FCh first, so the camera test
+// always falls to the chase camera; with a plane, observe it through
+// screen+8h (once) and centre the markers view at (0.5, 0.5) (00CE3800).
+void plane_screen_select_camera_00608b60(Raw screen, Fe5Host& host);
+// 00608C00 __thiscall(object, flag), RET 4 -> AL: test a flag in the bit set
+// at +C4h.
+bool bit_flag_set_test_flag_00608c00(Raw object, std::uint32_t flag, Fe5Host& host);
+// 00608E60 __thiscall(screen) -> EAX: front-end base, vtable 00CF4544, the
+// vectors +98h and +A8h and the references +158h/+15Ch zeroed, the quad
+// fade at +16Ch, +10Ch = +108h = 0.
+void* plane_screen_construct_00608e60(Raw screen, Fe5Host& host);
+// 00608EF0 __thiscall(screen, vector* out), RET 4: pushes &+B4h, &+0Ch, &+B8h.
+void plane_screen_collect_children_00608ef0(Raw screen, void* out, Fe5Host& host);
+// 00609390 __thiscall(screen, plane), RET 4: +168h = plane; when the screen
+// is active (+5h), rebuild the widgets, clear the two quad records' +18h
+// bytes (+108h, +10Ch) and refresh the payload icon.
+void plane_screen_set_plane_00609390(Raw screen, void* plane, Fe5Host& host);
 // @decl-end
 
 }  // namespace bsp::cc13_fe5
