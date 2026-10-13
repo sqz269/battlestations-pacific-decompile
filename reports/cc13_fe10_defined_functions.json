@@ -1,0 +1,265 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0061f5e0",
+    "end_address": "0061f629"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0061f5e0",
+    "end_address": "0061f628",
+    "bytes_disassembled": 73,
+    "message": "Successfully disassembled 73 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0061f5e0",
+    "disassemble_first": false,
+    "name": "BSP_RewardsRecord10_Assign"
+   },
+   "result": {
+    "success": true,
+    "address": "0061f5e0",
+    "function_name": "BSP_RewardsRecord10_Assign",
+    "entry_point": "0061f5e0",
+    "body_size": 73,
+    "message": "Function created successfully at 0061f5e0",
+    "warnings": [
+     "Function name 'BSP_RewardsRecord10_Assign' \u2014 main part 'RewardsRecord10_Assign' is not PascalCase. Expected: Rewardsrecord10Assign",
+     "Function name 'BSP_RewardsRecord10_Assign' \u2014 main part 'RewardsRecord10_Assign' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_RewardsRecord10_Assign' does not start with a recognized verb. First word 'Rewards' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "0061f5e0",
+   "end": "0061f629",
+   "name": "BSP_RewardsRecord10_Assign",
+   "after": "Function: BSP_RewardsRecord10_Assign at 0061f5e0\nSignature: undefined BSP_RewardsRecord10_Assign(void)\nEntry: 0061f5e0\nBody: 0061f5e0 - 0061f628"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00637590",
+    "end_address": "0063759d"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00637590",
+    "end_address": "0063759c",
+    "bytes_disassembled": 13,
+    "message": "Successfully disassembled 13 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00637590",
+    "disassemble_first": false,
+    "name": "BSP_HudWidgetHolder_Hide_00637590"
+   },
+   "result": {
+    "success": true,
+    "address": "00637590",
+    "function_name": "BSP_HudWidgetHolder_Hide_00637590",
+    "entry_point": "00637590",
+    "body_size": 13,
+    "message": "Function created successfully at 00637590",
+    "warnings": [
+     "Function name 'BSP_HudWidgetHolder_Hide_00637590' \u2014 main part 'HudWidgetHolder_Hide_00637590' is not PascalCase. Expected: HudwidgetholderHide00637590",
+     "Function name 'BSP_HudWidgetHolder_Hide_00637590' \u2014 main part 'HudWidgetHolder_Hide_00637590' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_HudWidgetHolder_Hide_00637590' does not start with a recognized verb. First word 'Hud' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00637590",
+   "end": "0063759d",
+   "name": "BSP_HudWidgetHolder_Hide_00637590",
+   "after": "Function: BSP_HudWidgetHolder_Hide_00637590 at 00637590\nSignature: undefined BSP_HudWidgetHolder_Hide_00637590(void)\nEntry: 00637590\nBody: 00637590 - 0063759c"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006375a0",
+    "end_address": "006375eb"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006375a0",
+    "end_address": "006375ea",
+    "bytes_disassembled": 75,
+    "message": "Successfully disassembled 75 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006375a0",
+    "disassemble_first": false,
+    "name": "BSP_HudWidgetHolder_ShowAt_006375A0"
+   },
+   "result": {
+    "success": true,
+    "address": "006375a0",
+    "function_name": "BSP_HudWidgetHolder_ShowAt_006375A0",
+    "entry_point": "006375a0",
+    "body_size": 75,
+    "message": "Function created successfully at 006375a0",
+    "warnings": [
+     "Function name 'BSP_HudWidgetHolder_ShowAt_006375A0' \u2014 main part 'HudWidgetHolder_ShowAt_006375A0' is not PascalCase. Expected: HudwidgetholderShowat006375a0",
+     "Function name 'BSP_HudWidgetHolder_ShowAt_006375A0' \u2014 main part 'HudWidgetHolder_ShowAt_006375A0' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_HudWidgetHolder_ShowAt_006375A0' does not start with a recognized verb. First word 'Hud' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "006375a0",
+   "end": "006375eb",
+   "name": "BSP_HudWidgetHolder_ShowAt_006375A0",
+   "after": "Function: BSP_HudWidgetHolder_ShowAt_006375A0 at 006375a0\nSignature: undefined BSP_HudWidgetHolder_ShowAt_006375A0(void)\nEntry: 006375a0\nBody: 006375a0 - 006375ea"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00646ed0",
+    "end_address": "00646f19"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00646ed0",
+    "end_address": "00646f18",
+    "bytes_disassembled": 73,
+    "message": "Successfully disassembled 73 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00646ed0",
+    "disassemble_first": false,
+    "name": "STL_TagDispatch_NativeStringPair_00646ED0"
+   },
+   "result": {
+    "success": true,
+    "address": "00646ed0",
+    "function_name": "STL_TagDispatch_NativeStringPair_00646ED0",
+    "entry_point": "00646ed0",
+    "body_size": 73,
+    "message": "Function created successfully at 00646ed0",
+    "warnings": [
+     "Function name 'STL_TagDispatch_NativeStringPair_00646ED0' \u2014 main part 'TagDispatch_NativeStringPair_00646ED0' is not PascalCase. Expected: TagdispatchNativestringpair00646ed0",
+     "Function name 'STL_TagDispatch_NativeStringPair_00646ED0' \u2014 main part 'TagDispatch_NativeStringPair_00646ED0' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00646ed0",
+   "end": "00646f19",
+   "name": "STL_TagDispatch_NativeStringPair_00646ED0",
+   "after": "Function: STL_TagDispatch_NativeStringPair_00646ED0 at 00646ed0\nSignature: undefined STL_TagDispatch_NativeStringPair_00646ED0(void)\nEntry: 00646ed0\nBody: 00646ed0 - 00646f18"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0064a380",
+    "end_address": "0064a3be"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0064a380",
+    "end_address": "0064a3bd",
+    "bytes_disassembled": 62,
+    "message": "Successfully disassembled 62 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0064a380",
+    "disassemble_first": false,
+    "name": "BSP_HudScreenSlot46_BindWeaponGroupUnit_0064A380"
+   },
+   "result": {
+    "success": true,
+    "address": "0064a380",
+    "function_name": "BSP_HudScreenSlot46_BindWeaponGroupUnit_0064A380",
+    "entry_point": "0064a380",
+    "body_size": 62,
+    "message": "Function created successfully at 0064a380",
+    "warnings": [
+     "Function name 'BSP_HudScreenSlot46_BindWeaponGroupUnit_0064A380' \u2014 main part 'HudScreenSlot46_BindWeaponGroupUnit_0064A380' is not PascalCase. Expected: Hudscreenslot46Bindweapongroupunit0064a380",
+     "Function name 'BSP_HudScreenSlot46_BindWeaponGroupUnit_0064A380' \u2014 main part 'HudScreenSlot46_BindWeaponGroupUnit_0064A380' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_HudScreenSlot46_BindWeaponGroupUnit_0064A380' does not start with a recognized verb. First word 'Hud' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "0064a380",
+   "end": "0064a3be",
+   "name": "BSP_HudScreenSlot46_BindWeaponGroupUnit_0064A380",
+   "after": "Function: BSP_HudScreenSlot46_BindWeaponGroupUnit_0064A380 at 0064a380\nSignature: undefined BSP_HudScreenSlot46_BindWeaponGroupUnit_0064A380(void)\nEntry: 0064a380\nBody: 0064a380 - 0064a3bd"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0064a3c0",
+    "end_address": "0064a3e5"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0064a3c0",
+    "end_address": "0064a3e4",
+    "bytes_disassembled": 37,
+    "message": "Successfully disassembled 37 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0064a3c0",
+    "disassemble_first": false,
+    "name": "BSP_HudScreenSlot46_ReleaseWeaponGroup_0064A3C0"
+   },
+   "result": {
+    "success": true,
+    "address": "0064a3c0",
+    "function_name": "BSP_HudScreenSlot46_ReleaseWeaponGroup_0064A3C0",
+    "entry_point": "0064a3c0",
+    "body_size": 37,
+    "message": "Function created successfully at 0064a3c0",
+    "warnings": [
+     "Function name 'BSP_HudScreenSlot46_ReleaseWeaponGroup_0064A3C0' \u2014 main part 'HudScreenSlot46_ReleaseWeaponGroup_0064A3C0' is not PascalCase. Expected: Hudscreenslot46Releaseweapongroup0064a3c0",
+     "Function name 'BSP_HudScreenSlot46_ReleaseWeaponGroup_0064A3C0' \u2014 main part 'HudScreenSlot46_ReleaseWeaponGroup_0064A3C0' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_HudScreenSlot46_ReleaseWeaponGroup_0064A3C0' does not start with a recognized verb. First word 'Hud' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "0064a3c0",
+   "end": "0064a3e5",
+   "name": "BSP_HudScreenSlot46_ReleaseWeaponGroup_0064A3C0",
+   "after": "Function: BSP_HudScreenSlot46_ReleaseWeaponGroup_0064A3C0 at 0064a3c0\nSignature: undefined BSP_HudScreenSlot46_ReleaseWeaponGroup_0064A3C0(void)\nEntry: 0064a3c0\nBody: 0064a3c0 - 0064a3e4"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

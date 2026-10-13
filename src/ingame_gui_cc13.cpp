@@ -2411,4 +2411,160 @@ Raw session_message_scalar_delete(Raw m, std::uint8_t flags, SessionMessageHost&
     return m;
 }
 
+// ---------------------------------------------------------------------------
+// cc13-fe10 additions (docs/CC13_FE_10.md): read from the live decompile and
+// disasm-raw.
+// ---------------------------------------------------------------------------
+void rewards_play_test_speech_0061f9d0(Raw s, Raw sample, Fe10GuiHost& host) {
+    host.handle_assign_acquired(Raw{s.p + 0x10}, host.sound_sample_acquire_00a83fd0(sample));
+    std::uint32_t& guard = host.global_block(kTestSpeechGuard).at<std::uint32_t>(0);
+    if ((guard & 1) == 0) {
+        guard |= 1;
+        host.global_block(kTestSpeechClass).ptr(0) = host.sound_find_class_00a7acf0("GUITestSpeech");
+    }
+    const Raw speech{static_cast<std::uint8_t*>(host.global_object(0x00E198AC).ptr(0x60))};
+    void* const sound_type = host.sound_find_type_00a7b0a0("Normal");
+    void* const sound = host.sound_create_tracked_00a7e490(speech.ptr(0x10), host.global_block(kTestSpeechClass).ptr(0),
+                                                          sound_type);
+    host.handle_assign_acquired(Raw{speech.p + 0x14}, sound);
+}
+
+void rewards_on_listbox_selection_changed_00621870(Raw listener, void* /*listbox*/, void* widget, Fe10GuiHost& host) {
+    const bool navigate = listener.at<std::uint8_t>(0x15) != 0;
+    const std::uint8_t nav_command = navigate ? 0xB3 : 0x00;
+    const std::string_view nav_label = navigate ? "globals.navigate" : "";
+    if (widget != listener.ptr(0xCC) || listener.at<std::int32_t>(0x50) != 1) return;
+    const Raw screen{listener.p - 8};
+    if (!host.rewards_selected_entry_flagged_0061d8b0(screen)) {
+        const MainMenuCommandArgument commands[5] = {{0xA2, "globals.continue", 0}, {nav_command, nav_label, 1},
+                                                     {0x00, "", 1}, {0x00, "", 1}, {0x00, "", 1}};
+        host.command_bar_rebuild_0054b530(commands);
+        return;
+    }
+    const bool own = host.rewards_selected_entry_xuid_0061d710(screen) == host.xenon_active_xuid_00a3eb00();
+    const MainMenuCommandArgument commands[5] = {
+        {0xA2, "globals.continue", 0}, {nav_command, nav_label, 1},
+        own ? MainMenuCommandArgument{0x00, "", 1} : MainMenuCommandArgument{0xA7, "globals.playerreview", 1},
+        {0xA5, "globals.showgamercard", 2}, {0x00, "", 1}};
+    host.command_bar_rebuild_0054b530(commands);
+}
+
+std::int32_t rewards_collect_vehicle_unlocks_00622360(Raw s, Raw id, bool count_only, Fe10GuiHost& host) {
+    alignas(4) std::uint8_t globals[0x14], vehicles[0x14], key[0x14], value[0x14], name[0x14];
+    host.lua_globals_00b67980(globals);
+    host.lua_get_by_name_00b67800(globals, vehicles, "VehicleClass");
+    host.lua_destruct_00b67700(globals);
+    host.lua_construct_00b65f50(key);
+    host.lua_construct_00b65f50(value);
+    host.lua_construct_00b65f50(name);
+    std::int32_t count = 0;
+    host.lua_iterate_first_00b67080(vehicles, key, value);
+    while (!host.lua_iterate_ended_00b66420(vehicles, value)) {
+        if (host.lua_is_table_00b661b0(value)) {
+            alignas(4) std::uint8_t unlock[0x14];
+            host.lua_get_by_name_00b67800(value, unlock, "Unlock");
+            if (host.lua_is_boolean_00b66000(unlock) && host.lua_get_boolean_00b66250(unlock)) {
+                alignas(4) std::uint8_t unlock_id[0x14];
+                host.lua_get_by_name_00b67800(value, unlock_id, "UnlockID");
+                if (!host.lua_is_nil_00b65fb0(unlock_id) && host.lua_is_string_00b660a0(unlock_id)) {
+                    alignas(4) std::uint8_t haystack[8] = {}, needle[8] = {};
+                    host.native_string_assign_cstr_0041e870(Raw{haystack}, host.lua_get_string_00b662b0(unlock_id));
+                    host.native_string_upper_ascii_004fb1f0(Raw{haystack});
+                    host.native_string_copy_construct_00426060(Raw{needle}, id);
+                    host.native_string_upper_ascii_004fb1f0(Raw{needle});
+                    const char* const h = Raw{haystack}.at<const char*>(4);
+                    const char* const n = Raw{needle}.at<const char*>(4);
+                    if (h != nullptr && n != nullptr && std::strstr(h, n) != nullptr) {
+                        alignas(4) std::uint8_t field[0x14];
+                        host.lua_get_by_name_00b67800(value, field, "Name");
+                        host.lua_assign_00b67690(name, field);
+                        host.lua_destruct_00b67700(field);
+                        const std::int32_t index = host.lua_get_integer_00b66290(key);
+                        ++count;
+                        if (!count_only) {
+                            const Raw records{s.p + 0x238};
+                            auto size = [&] {
+                                auto* const first = static_cast<std::uint8_t*>(records.ptr(4));
+                                return first ? static_cast<std::int32_t>((static_cast<std::uint8_t*>(records.ptr(8)) - first) / 0x10) : 0;
+                            };
+                            host.record10_vector_at_0061c960(records, size() - count).at<std::int32_t>(4) = index;
+                            const char* const text = host.lua_get_string_00b662b0(name);
+                            host.native_string_assign_cstr_0041e350(
+                                Raw{host.record10_vector_at_0061c960(records, size() - count).p + 8}, text);
+                        }
+                    }
+                    host.native_string_release(Raw{needle});
+                    host.native_string_release(Raw{haystack});
+                }
+                host.lua_destruct_00b67700(unlock_id);
+            }
+            host.lua_destruct_00b67700(unlock);
+        }
+        host.lua_iterate_next_00b67190(vehicles, key, value);
+    }
+    host.lua_destruct_00b67700(name);
+    host.lua_destruct_00b67700(value);
+    host.lua_destruct_00b67700(key);
+    host.lua_destruct_00b67700(vehicles);
+    return count;
+}
+
+void rewards_fill_rank_page_0062a970(Raw s, Fe10GuiHost& host) {
+    void* const group = s.ptr(0x25C);
+    host.widget_set_visible_34(group, true);
+    const bool pc_prompt = host.global_block(0x00F88A30).at<std::uint8_t>(0) != 0;
+    host.widget_set_visible_34(host.gui_find_child_00aa7e00(group, "A_Text"), pc_prompt);
+    host.text_set_localised_cstr_00abbe50(host.gui_find_child_00aa7e00(group, "B_Text"),
+                                          pc_prompt ? "globals.continue" : "FE_pc.init_enter");
+    const Raw first{static_cast<std::uint8_t*>(s.ptr(0x23C))};
+    if (first.at<std::uint8_t>(0) != 0) {
+        host.text_set_localised_cstr_00abbe50(host.gui_find_child_00aa7e00(group, "info_Text"), "FE.scoring_unlock_text");
+        host.widget_set_visible_34(host.gui_find_child_00aa7e00(group, "rank_Icon"), false);
+        host.text_set_localised_source_native_00abaed0(host.gui_find_child_00aa7e00(group, "rank_Text"),
+                                                       Raw{first.p + 8}, true);
+        host.widget_set_visible_34(host.gui_find_child_00aa7e00(group, "unit_Icon"), true);
+        host.icon_atlas_apply_004fb150(first.at<std::int32_t>(4), host.gui_find_child_00aa7e00(group, "unit_Icon"));
+        host.record10_vector_push_back_006278d0(Raw{s.p + 0x248}, Raw{static_cast<std::uint8_t*>(s.ptr(0x23C))});
+        return;
+    }
+    host.text_set_localised_cstr_00abbe50(host.gui_find_child_00aa7e00(group, "info_Text"), "FE.scoring_rank_text");
+    host.widget_set_visible_34(host.gui_find_child_00aa7e00(group, "rank_Icon"), true);
+    const std::int32_t rank = static_cast<std::int32_t>(host.session_filter_rank_setting_00574050()) - 1;
+    const std::int32_t frame = rank > 0 ? rank : 0;
+    host.widget_virtual_88(host.gui_find_child_00aa7e00(group, "rank_Icon"), frame, 0, 1.0f);
+    host.text_set_localised_cstr_00abbe50(host.gui_find_child_00aa7e00(group, "rank_Text"),
+                                          host.global_block(kPlayerRankKeys + frame * 4).at<const char*>(0));
+    host.widget_set_visible_34(host.gui_find_child_00aa7e00(group, "unit_Icon"), false);
+}
+
+Raw rewards_record10_assign_0061f5e0(Raw dst, Raw src, Fe10GuiHost& host) {
+    dst.at<std::uint8_t>(0) = src.at<std::uint8_t>(0);
+    dst.at<std::uint32_t>(4) = src.at<std::uint32_t>(4);
+    if (dst.p + 8 != src.p + 8) host.native_string_resize_copy_0041dd40(Raw{dst.p + 8}, Raw{src.p + 8});
+    return dst;
+}
+
+void hud_widget_holder_hide_00637590(Raw holder, Fe10GuiHost& host) {
+    host.widget_set_visible_34(holder.ptr(4), false);
+}
+
+void hud_widget_holder_show_at_006375a0(Raw holder, float x, float y, const float* colour, Raw key, Fe10GuiHost& host) {
+    host.widget_set_local_xy_00aa7d00(holder.ptr(4), x, y);
+    host.widget_set_colour_50(holder.ptr(4), colour);
+    host.text_set_localised_source_native_00abaed0(holder.ptr(4), key, false);
+    host.widget_set_visible_34(holder.ptr(4), true);
+}
+
+void hud_slot46_bind_weapon_group_unit_0064a380(Raw s, Fe10GuiHost& host) {
+    host.weapon_group_bind_unit_00549260(s.ptr(0x1C), s.ptr(0x20));
+    void* const unit = s.ptr(0x1C);
+    if (unit == nullptr) return;
+    if (!host.observer_is_registered_00694af0(s.p + 8, unit)) host.observer_register_00694a60(s.p + 8, unit);
+}
+
+void hud_slot46_release_weapon_group_0064a3c0(Raw s, Fe10GuiHost& host) {
+    host.weapon_group_release_005470c0();
+    if (s.ptr(0x1C) != nullptr) host.unit_send_role_transfer_0077c470(s.ptr(0x1C), 0x1FE, 0);
+}
+
 } // namespace bsp::ingame_gui_cc13

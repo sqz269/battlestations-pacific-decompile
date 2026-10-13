@@ -19,6 +19,8 @@
 #include <string_view>
 #include <utility>
 
+#include "bsp/main_menu_command_bar.hpp"
+
 namespace bsp::ingame_gui_cc13 {
 
 static_assert(sizeof(void*) == 4, "the in-game GUI objects are modelled in their Win32 layout");
@@ -876,6 +878,133 @@ void rewards_widget_release_0061d770(Raw listener, void* widget, RewardsScreenHo
 void rewards_widget_press_0062b3b0(Raw listener, void* widget, RewardsScreenHost& host);
 void rewards_exit_00621720(Raw s, RewardsScreenHost& host);
 void rewards_continue_0062b110(Raw s, RewardsScreenHost& host);
+
+// ---------------------------------------------------------------------------
+// cc13-fe10 additions (docs/CC13_FE_10.md).
+// ---------------------------------------------------------------------------
+struct Fe10GuiHost : RewardsLayoutHost {
+    // Static storage of the image at that address (a block, not a pointer cell).
+    virtual Raw global_block(std::uint32_t address) = 0;
+    // Sound: 00A83FD0, ECX = *00F8BBE8, (&out, const NativeString*): a sample
+    // handle by name (one reference owned by the caller); ECX = *00F8BBD8:
+    // 00A7ACF0(const NativeString*) class by name, 00A7B0A0(&name, 1) type by
+    // name, 00A7E490(&out, owner, class, type) a tracked sound (one reference).
+    virtual void* sound_sample_acquire_00a83fd0(Raw name) = 0;
+    virtual void* sound_find_class_00a7acf0(std::string_view name) = 0;
+    virtual void* sound_find_type_00a7b0a0(std::string_view name) = 0;
+    virtual void* sound_create_tracked_00a7e490(void* owner, void* sound_class, void* sound_type) = 0;
+    // The rewards routines this pass reaches by call: 0061D8B0 (reconstructed
+    // as rewards_selected_entry_flagged_0061d8b0) and 0061D710, ECX = screen,
+    // the selected entry's XUID (EDX:EAX).
+    virtual bool rewards_selected_entry_flagged_0061d8b0(Raw screen) = 0;
+    virtual std::uint64_t rewards_selected_entry_xuid_0061d710(Raw screen) = 0;
+    // 00A3EB00, ECX = *00F8ABE8: the active profile's XUID.
+    virtual std::uint64_t xenon_active_xuid_00a3eb00() = 0;
+    // 0054B530, ECX = *00E1930C: the command bar from five triples.
+    virtual void command_bar_rebuild_0054b530(const MainMenuCommandArgument (&arguments)[5]) = 0;
+    // Lua objects are 14h-byte image objects the caller owns (storage passed
+    // in): 00B65F50 construct, 00B67700 destruct, 00B67690 assign (ECX = dst),
+    // 00B67980(&out), ECX = *00E188A8 + 1A0Ch: the globals table; 00B67800
+    // (&out, name), ECX = table: a field; predicates 00B661B0 table, 00B66000
+    // boolean, 00B65FB0 nil, 00B660A0 string; getters 00B66250 boolean,
+    // 00B66290 integer, 00B662B0 string; 00B67080 / 00B67190 iterate first /
+    // next (ECX = table, &key, &value), 00B66420 ended (ECX = table, &key).
+    virtual void lua_construct_00b65f50(void* object) = 0;
+    virtual void lua_destruct_00b67700(void* object) = 0;
+    virtual void lua_assign_00b67690(void* dst, void* src) = 0;
+    virtual void lua_globals_00b67980(void* out) = 0;
+    virtual void lua_get_by_name_00b67800(void* table, void* out, const char* name) = 0;
+    virtual bool lua_is_table_00b661b0(void* object) = 0;
+    virtual bool lua_is_boolean_00b66000(void* object) = 0;
+    virtual bool lua_is_nil_00b65fb0(void* object) = 0;
+    virtual bool lua_is_string_00b660a0(void* object) = 0;
+    virtual bool lua_get_boolean_00b66250(void* object) = 0;
+    virtual std::int32_t lua_get_integer_00b66290(void* object) = 0;
+    virtual const char* lua_get_string_00b662b0(void* object) = 0;
+    virtual void lua_iterate_first_00b67080(void* table, void* key, void* value) = 0;
+    virtual void lua_iterate_next_00b67190(void* table, void* key, void* value) = 0;
+    virtual bool lua_iterate_ended_00b66420(void* table, void* key) = 0;
+    // Native strings: 0041E870 assign a C string, 00426060 copy-construct,
+    // 004FB1F0 upper-case in place (ASCII), 0041E350 assign a C string (ECX =
+    // dst), the pool release of the buffer.
+    virtual void native_string_assign_cstr_0041e870(Raw dst, const char* text) = 0;
+    virtual void native_string_copy_construct_00426060(Raw dst, Raw src) = 0;
+    virtual void native_string_upper_ascii_004fb1f0(Raw string) = 0;
+    virtual void native_string_assign_cstr_0041e350(Raw dst, const char* text) = 0;
+    virtual void native_string_release(Raw string) = 0;
+    // 0061C960(index), ECX = vector of 10h-byte records: checked operator[].
+    virtual Raw record10_vector_at_0061c960(Raw vector, std::int32_t index) = 0;
+    // 00ABAED0(const NativeString*, flag), ECX = text.
+    virtual void text_set_localised_source_native_00abaed0(void* text, Raw source, bool flag) = 0;
+    // 00ABBE50(const char*, 1), ECX = text.
+    virtual void text_set_localised_cstr_00abbe50(void* text, const char* key) = 0;
+    // 004FB150(id, widget), ECX = [*00E198AC+70h] (the tactical library's icon atlas).
+    virtual void icon_atlas_apply_004fb150(std::int32_t id, void* widget) = 0;
+    // 006278D0(const record*), ECX = vector of 10h-byte records: push_back.
+    virtual void record10_vector_push_back_006278d0(Raw vector, Raw record) = 0;
+    // 00574050, ECX = *00E188A8 + 650h: the rank setting (AL).
+    virtual std::uint8_t session_filter_rank_setting_00574050() = 0;
+    // Widget vtable +88h(state, 0, 1.0f).
+    virtual void widget_virtual_88(void* widget, std::int32_t state, std::int32_t b, float c) = 0;
+    // 0041DD40(dst, src.count, 1) then _memcpy of dst.count bytes when src.count != 0.
+    virtual void native_string_resize_copy_0041dd40(Raw dst, Raw src) = 0;
+    // 00AA7D00(x, y), ECX = widget: local x/y and bounds.
+    virtual void widget_set_local_xy_00aa7d00(void* widget, float x, float y) = 0;
+};
+
+// Functions defined in Ghidra by this pass (no reference in the image):
+// 0061F5E0 __thiscall(dst, const record* src), RET 4 -> dst: the rewards 10h
+// record assign (byte +0, dword +4, native string +8 copied unless the same).
+Raw rewards_record10_assign_0061f5e0(Raw dst, Raw src, Fe10GuiHost& host);
+// 00637590 __thiscall(holder): (holder+4) vtable +34h(0).
+void hud_widget_holder_hide_00637590(Raw holder, Fe10GuiHost& host);
+// 006375A0 __thiscall(holder, float x, float y, const float* colour, const
+// NativeString* key), RET 10h: 00AA7D00(x, y), +50h(colour), 00ABAED0(key, 0),
+// +34h(1) on holder+4.
+void hud_widget_holder_show_at_006375a0(Raw holder, float x, float y, const float* colour, Raw key, Fe10GuiHost& host);
+// 0064A380 __thiscall(screen): weapon-group bind of +1Ch / +20h, then the
+// observer pair (+8h on +1Ch) registered when it is not.
+void hud_slot46_bind_weapon_group_unit_0064a380(Raw s, Fe10GuiHost& host);
+// 0064A3C0 __thiscall(screen): weapon-group release, then role transfer 1FEh /
+// take 0 on +1Ch when set (0077C470, cc9's routine, through the host).
+void hud_slot46_release_weapon_group_0064a3c0(Raw s, Fe10GuiHost& host);
+
+// 0061F9D0 __thiscall(ECX = rewards screen, const NativeString* sample), RET 4:
+// the debrief speech. The sample handle is acquired by name into +10h
+// (refcounted); the sound class "GUITestSpeech" is looked up once (guard bit 0
+// of 00E196B4, cached in 00E196B0); a tracked sound of that class and type
+// "Normal" on the owner [*00E198AC+60h]+10h is stored refcounted into
+// [*00E198AC+60h]+14h.
+inline constexpr std::uint32_t kTestSpeechGuard = 0x00E196B4;
+inline constexpr std::uint32_t kTestSpeechClass = 0x00E196B0;
+void rewards_play_test_speech_0061f9d0(Raw s, Raw sample, Fe10GuiHost& host);
+
+// 00621870 __thiscall(ECX = screen+8h listener, listbox, widget), RET 8: when
+// the widget is the score listbox (+D4h) on page 1 (+58h), rebuild the command
+// bar: continue A2h at placement 0, navigate B3h when +1Dh is set, then for a
+// flagged entry review A7h ("globals.playerreview", not for the local
+// profile's own XUID) and gamercard A5h at placement 2.
+void rewards_on_listbox_selection_changed_00621870(Raw listener, void* listbox, void* widget, Fe10GuiHost& host);
+
+// 00622360 __thiscall(ECX = rewards screen, const NativeString* id, bool
+// count_only), RET 8 -> count: walk the Lua table VehicleClass; every table
+// entry with Unlock == true and a string UnlockID that contains id
+// (both upper-cased, strstr) counts; unless count_only the vector +238h
+// (10h-byte records) gets, at index size - count, the key (+4h) and the
+// entry's Name (+8h).
+std::int32_t rewards_collect_vehicle_unlocks_00622360(Raw s, Raw id, bool count_only, Fe10GuiHost& host);
+
+// 0062A970 __thiscall(ECX = rewards screen): the rank / unlock pop-up of the
+// group +25Ch (shown). "A_Text" visibility follows byte 00F88A30, "B_Text"
+// reads "globals.continue" (00F88A30 set) or "FE_pc.init_enter". With the
+// unlock vector +23Ch..+240h headed by a record whose byte +0 is set:
+// "info_Text" = "FE.scoring_unlock_text", "rank_Icon" hidden, "rank_Text" =
+// the record's name (+8h), "unit_Icon" shown with the atlas icon of id +4h,
+// and the record is appended to +248h. Otherwise "FE.scoring_rank_text",
+// "rank_Icon" frame max(rank setting - 1, 0) through +88h, "rank_Text" the key
+// 00E08E00[frame] (FE.playerrank_01..), "unit_Icon" hidden.
+inline constexpr std::uint32_t kPlayerRankKeys = 0x00E08E00;
+void rewards_fill_rank_page_0062a970(Raw s, Fe10GuiHost& host);
 
 } // namespace bsp::ingame_gui_cc13
 
