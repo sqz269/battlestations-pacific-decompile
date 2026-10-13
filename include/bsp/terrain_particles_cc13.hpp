@@ -1212,4 +1212,79 @@ void height_field_stamp_byte_at_world_00adb6f0(void* field, float x, float z, fl
 // return the tile.
 void* terrain_tile_grid_get_or_create_tile_00adb980(void* grid, std::int32_t x, std::int32_t y,
     HeightFieldHost& fields, TerrainHost& host, BlockHost& blocks, TerrainLeftHost& left);
+// ===========================================================================
+// cc13-left2: bodies left open by cc13-left1. docs/CC13_LEFT_2.md. Read from the live decompile and
+// the full listing (stack slots tracked with local/l2_esp.py; x87 forms checked against bytes).
+// ===========================================================================
+struct TerrainLeft2Host : TerrainLeftHost {
+    // 00AFDA80 BSP_NativeParticleRecord_GetMatrix (ECX emitter) -> EAX const float[16].
+    virtual const float* particle_record_matrix_00afda80(void* emitter) = 0;
+    // 00B6E680 BSP_Node_SetParent (ECX node, parent) RET 4; 00B6D890 BSP_Node_PropagateRootRegistration
+    // (ECX node, root) RET 4.
+    virtual void node_set_parent_00b6e680(void* node, void* parent) = 0;
+    virtual void node_propagate_root_00b6d890(void* node, void* root) = 0;
+    // 00535320 BSP_Material_CreateForEffectName (ECX const string*) -> EAX.
+    virtual void* material_create_for_effect_name_00535320(const void* name) = 0;
+    // 004C1400 BSP_ResourceManager_GetSingleton -> EAX; 00B80D70 BSP_NativeResourceManager_LoadDefaultFactory
+    // (ECX manager, const string* name) RET 4 -> EAX.
+    virtual void* resource_manager_singleton_004c1400() = 0;
+    virtual void* resource_manager_load_00b80d70(void* manager, const void* name) = 0;
+    // 00AE2CB0 BSP_GeneratedModelFinder_Visit (ECX tree type, node) RET 4; 00B732D0
+    // BSP_TreeGroupType_ComputeBounds_Provisional (ECX geometry).
+    virtual void generated_model_finder_visit_00ae2cb0(void* type, void* node) = 0;
+    virtual void geometry_compute_bounds_00b732d0(void* geometry) = 0;
+    // 00AE5550 (ECX 58h block, stream, const float rect[4]) RET 8 -> EAX: the tree group's visibility
+    // object built from the stream (not reconstructed here).
+    virtual void* tree_visibility_construct_00ae5550(void* block, void* stream, const float* rect) = 0;
+};
+
+// 00AFDCF0 BSP_NativeParticleEmitter_UpdateTransform (the name is the snapshot's; the body draws debug
+// axes), __thiscall(ECX emitter, unused DWORD) RET 4. Only when BYTE [[emitter +0A0h] +7Ch] is set. With
+// node = emitter +0A4h: origin = 004142E0(emitter +0h, node world +0F0h) when BYTE node +1B0h is set (the
+// world refreshed by 00B6DB70 unless node +5Ch bit 1), else emitter +0h..+8h. M = 00413920(00AFDA80(emitter),
+// node world) under the same test, else 00AFDA80(emitter), copied (004134F0). Each unit axis X, Y, Z is
+// transformed by M (004142E0) less M's translation (+30h..+38h); device (00F8D394) vtable +0B4h(from,
+// to, colour, colour) RET 10h then draws origin -> origin + axis for X in FFFF0000h, Z in FF0000FFh and Y in
+// FF00FF00h, in that order. The x87 differences and sums are each stored as a float (listing 00AFDE16..00AFDFE5).
+void particle_emitter_draw_debug_axes_00afdcf0(void* emitter, TerrainHost& host, TerrainLeft2Host& left);
+
+// 00AE5160 BSP_TreeGroupType_Construct, __thiscall(ECX type, const string* name) RET 4 -> EAX. Caller
+// 00AD7030. +0h = +4h = 0; +18h = -1.0e10f (00CE4ADC), +1Ch = 1.0e10f; strings +28h, +30h zeroed, +38h =
+// copy of name; +0h = 00B80D70(004C1400(), name); +4h = (+0h) vtable +8h(0, 1.0f); 00AE2CB0(type, +4h
+// +0Ch) (sets the model +8h). With geometry = [model +180h] (00B74640, re-read every use): when
+// [geometry +50h] is set, +20h / +24h = the first slot's (geometry +10h) +8h / +0Ch, else 0 and
+// [geometry +58h] - 1. +30h = the name (+8h) of element(+20h) +20h's first texture ([+10h] when WORD +34h > 0,
+// else a null texture, whose name address is 8); +28h = the effect name (+0B8h) of that element's
+// material +7Ch; +0Ch / +10h sum elements +20h..+24h's +10h / +18h; 00B732D0(geometry); +14h = float of
+// bounds +10h - bounds +4h (geometry +98h); +40h = 00535320(+28h); texture = device +64h(+30h text or ""
+// (00F8C260, loader zero-fill), 0) in slot 0 of +40h; +44h = 0; texture released when non-null.
+void* tree_group_type_construct_00ae5160(void* type, const void* name, TerrainHost& host, TerrainLeft2Host& left);
+
+// 00AE5870 BSP_TreeGroup_Initialise, __thiscall(ECX group, stream, count) RET 8. BYTE +38h = 1; +8h =
+// count; declaration "ccuf44uf43.mvfm" (device +38h); +1Ch = device +5Ch(count, 1, decl), locked (+10h
+// with count, 0, 0), filled by stream vtable +24h(data, count * 20h, 0) and unlocked; d = (+20h) vtable
+// +24h(). When +18h is null: model "TreeGroup" at +18h (+138h &= ~3), parent = (+0h) vtable +40h(),
+// root = that node's +0A4h; a mesh at +28h with geometry (0, mesh, -1.0f, -1.0f); +34h = material
+// "instanced.mshd" / "coral.mshd" / "seaweed.mshd" for kind (+0Ch) 0 / 1 / 2 (none otherwise); +24h =
+// device +40h({d, decl, count 2}); stream flags +20h +54h = 40000000h, +1Ch +54h = 80000000h; mesh
+// streams 0 = +20h, 1 = +1Ch; index stream = [type +8h]'s geometry +60h; slot 0 of +34h = the type
+// material's (+4h +40h) first texture when WORD +34h > 0, else null. Then the owner's box (vtable +0Ch)
+// less the owner node's world translation (vtable +40h, refreshed unless +5Ch bit 1, read four times:
+// +128h, +120h, +128h, +120h) gives {min.x, min.z, max.x, max.z}; +10h = 00AE5550(new 58h, stream, rect)
+// (null when the allocation fails); the declaration released when non-null.
+void tree_group_initialise_00ae5870(void* group, void* stream, std::uint32_t count, TerrainHost& host,
+                                    TerrainLeft2Host& left);
+// 00ADE0E0 BSP_TerrainVisibilityGroup_BuildFlat, __thiscall(ECX group, const string* name) RET 4. No caller
+// or data reference. +28h = 0; name copied into +54h unless the same; +2Ch = node "Terrain Visibility Group"
+// (00B6ED70 slot of 174h, 00B6F5A0), its root +0Ch (00B6D890); grid +38h resized to 4 x 4 (00ADACF0); then
+// for y, x in 0..3 the 00ADB980 tile body without the existing-tile test, except that only the first
+// block's samples are set (one vtable +1Ch(0.0f, i, j) per sample; listing 00ADE2E2..00ADE323): tile =
+// [00F8C218] vtable +4h(group, x, y), stored at +40h[+38h * y + x] after its bounds. The box quotients are
+// the same x87 sequence (DE F2 / DE FA / DE FB / DE F3 / DE F2 checked against bytes).
+struct TerrainLeft2NodeCalls {
+    void* (*node_allocate_raw_slot_00b6ed70)(std::uint32_t size);           // ECX size
+    void* (*node_construct_00b6f5a0)(void* slot, const void* name);          // RET 4
+};
+void terrain_visibility_group_build_flat_00ade0e0(void* group, const void* name, HeightFieldHost& fields,
+    TerrainHost& host, BlockHost& blocks, TerrainLeft2Host& left, const TerrainLeft2NodeCalls& nodes);
 } // namespace bsp::cc13_terrain

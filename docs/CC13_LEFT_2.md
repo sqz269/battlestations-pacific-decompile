@@ -55,3 +55,32 @@ listing passes it the text in ECX.
 - `00BADC70` tracer initialise and `00BAD150` skinned tracer mesh. The static builder `00BACBD0` and the
   vertex writer `00BAA0F0` are bound (their reconstructions are semantic models only). `00BFA910` is
   `_CIlog` (FLDLN2/FYL2X); `00BFEEEC` is taken as `_CIexp` from its use on k*log(x).
+
+## Terrain: end of `terrain_particles_cc13.*`
+
+The new image calls are in `TerrainLeft2Host` (and `TerrainLeft2NodeCalls` for the node pair).
+
+- `00AFDCF0` is not a transform update: it draws the emitter's debug axes. Its stack slots were tracked
+  through every push (`local/l2_esp.py`): X in `FFFF0000h`, then Z in `FF0000FFh`, then Y in
+  `FF00FF00h`, each from the origin to origin + (M * unit - M.translation), through device vtable
+  `+0B4h`. It runs only when BYTE `[[emitter +0A0h] +7Ch]` is set.
+- `00AE5160` tree type constructor. The texture name falls back to the empty string at `00F8C260`
+  (loader zero-fill). A material with no textures (WORD `+34h` <= 0) yields a null texture whose name
+  address is 8, which the image dereferences.
+- `00AE5870` tree group initialiser. The instance vertex buffer is read straight from the stream;
+  the visibility object `00AE5550` gets the owner's box less the owner node's world translation.
+- `00ADE0E0` flat visibility group. It is the `00ADB980` tile body run for a 4 x 4 grid, except that
+  only the first height block's samples are set.
+
+## Sound: the Pass 3 list in `sound_cc13.*`
+
+- Native-node iterator steps `00A81AD0` (increment) and `00A81B80` (decrement), and the four
+  wrappers `00A82360`, `00A82810`, `00A823C0`, `00A82870`.
+- `00A81D10` is a byte twin of the scene-graph node allocator `00B76450`.
+- `00A7F0D0` and `00A7FAD0` (resize to 0, then free), `00A89B10` (query lock destructor) and
+  `00A7FE60` (listener preset).
+- Resource cache records (2Ch): default constructor `00A84280` (the snapshot's `ConstructLists` is a
+  misnomer), copy constructor `00A843A0`, pop back `00A84380`, reserve `00A84450` and erase-swap-last
+  `00A84D20`. The record destroy and assign (`00A842E0`, `00A84680`) and the alias-list helpers
+  (`004C3020`, `004D48A0`) have projected or pool-typed reconstructions elsewhere, so they are bound.
+- `00A7EA30`, the debug dump: it builds one line per sound object and throws it away.
