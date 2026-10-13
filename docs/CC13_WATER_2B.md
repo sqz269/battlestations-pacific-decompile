@@ -92,3 +92,8 @@ Branch `agent/cc13-water2b`. The next steps, in order:
 2. The lightning segment reserve and append.
 3. The shells.
 4. The D3D builders.
+
+### Continued by cc13-left1
+
+docs/CC13_LEFT_1.md (Part f) reconstructs 88 of the 99 listed here. Eleven are still open, and its
+Handoff section lists them: four plumbing bodies on the STL map, six builders and `00BAE2E0`.
