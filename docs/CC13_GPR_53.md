@@ -88,7 +88,7 @@ Host pointers, checked against the listing:
 | `0085EBC0` | `water_mine_activate_0085ebc0` | Runs 006E2E10 and sets weapon scale 0.25 in the air. Off a client, scales the velocity by **U(1-r, 1+r) on stream 1** (0085EC48, ECX = 1 at 0085EC26). Then shot `vtable[34h]`, and clears armed +46Ch and marker +468h. |
 | `0085ECD0` | `water_mine_step_0085ecd0` | Drag is `v * (-9.81 / DiveSpeed)`; the vertical spring is `-0.25 * ((y - FloatingDepth) - 0.25 * waterHeight)`. Off a client, an unarmed mine below `FloatingDepth + 1` whose `speed^2 < 1/16` sends MT_WATERMINE_ARM (B5h). An armed mine detonates (00926D90(1)) on a ship (world+60h list, 150 m prefilter) whose half-extents box, grown by TriggerRadius, contains it. It also detonates on a depth charge (world+228h list, the list 006FD190 registers) inside TriggerRadius. |
 | `0085F160` | `water_mine_hit_detonates_0085f160` | An armed mine hit by anything that is not a water mine detonates. |
-| `0085F2F0` | `water_mine_message_arms_0085f2f0` | B5h -> 0085F1E0 (armed = 1, a 1ACh marker at +468h). Partial: the marker is not modelled. |
+| `0085F2F0` | `water_mine_message_arms_0085f2f0` | B5h -> 0085F1E0 (armed = 1, a 1ACh part instance at +468h), modelled by `water_mine_arm_0085f1e0` (section 7.2). |
 | `0085F6D0` | `water_mine_enter_water_0085f6d0` | Runs SetWeaponScale(1.0), then 006E6450 and the splash. There is no break-up test. |
 | `0085F7A0` | `water_mine_on_killed_0085f7a0` | For kill cause +70h == 1 only: the damage is **U(BlastDamageMin, BlastDamageMax) on stream 1** (0085F7D5), applied with radial damage 0084BAD0 and ExplWaterEfx at the water surface. Then 0077D270 runs. |
 
@@ -244,8 +244,7 @@ Still open, in priority order:
    00864880 and 00864D90 draw from the RNG.
 3. `segment_box_hit_0085cdb0` (src/hit_narrowphase.cpp) has no record. It needs a check
    against the listing before a pointer record is added.
-4. 00853590 (periscope effects release on kill), 008533E0 (debris init), 00853110 / 008530E0
-   (destructor, list detach), 00852D30 (DescribeState).
+4. (Done in section 7: 00853590, 008533E0, 00853110, 008530E0, 00852D30.)
 5. Math helpers 0085C0F0..0085E8C0 (rotate about axis, orthonormalise variants, ellipsoid
    and sphere-triangle tests). Torpedo homing and debris use 0085E880 / 0085C3F0.
 
@@ -355,3 +354,76 @@ grouped by name prefix:
 | `BSP_EffectSoundInstance` | 10 | 00872630, 00872650, 00872670, 00872690, 008726C0, 00872720, 00872F40, 00872FB0, 00873AE0, 00873DE0 |
 | `BSP_EffectLightInstance` | 3 | 00872CB0, 00872D30, 008738B0 |
 | `BSP_LightningStormOwner` | 1 | 00872E80 |
+
+## 7. Pass cc13-gpr53d
+
+Same terms as cc13-gpr53/53b: models in `src/gameplay_seg53_cc13.cpp` and
+`include/bsp/gameplay_seg53_cc13.hpp` only, nothing wired, no host edits, no game runs. Every
+model below is **reconstructed and build-tested**; none is fixture-tested, ABI-compatible or
+game-validated. Each was read from the disk bytes (`bsp.py disasm-raw`), with the x87 operand
+forms checked against the raw opcode bytes.
+
+### 7.1 Torpedo homing and the effects records
+
+- The second homing turn of 00856BB0 is fixed in the host model behind
+  `kTorpedoHomingYawPairBound` (853396a79, ON since 6e7850ad1); sections 1.6, 2 and 3 and the
+  header now say so.
+- The 20 models in src/effects_cc13.cpp got `add-function` records after each was checked
+  against the bytes: 00873AE0, 00872630, 00872650, 00872670, 00872690, 008726C0, 00872720,
+  00872F40, 00872FB0, 00873DE0, 008721C0, 00872DF0, 00872E30, 008720F0, 008720A0, 008720D0,
+  00872120, 00872BF0, 00872D30 and 00865FE0. No discrepancy was found. The x87 forms: 008726FA
+  `DE EA` FSUBP ST(2) gives `hi - lo`, 00873C55 `DE E9` FSUBP ST(1) gives `u - 2s * 0.5`.
+
+### 7.2 Models
+
+| address | model | what it does |
+|---|---|---|
+| `00852F10` | `submarine_construct_defaults_00852f10`, `kSubmarineVptrs_00852f10` | After 0081ED40(flag): eight vptrs, then +1228h = 0, air +127Ch = 1.0f, unlimitedAir/needAir/+1235h = 0, +1238h = 0, class id +C4h = 8, +1274h = 0.0f. |
+| `008531A0` | `submarine_create_instance_008531a0` | new(1288h), memset of the raw pointer, 00852F10, 009553D0(descriptor), +354h = descriptor. A failed allocation is dereferenced (no guard). |
+| `00852D30` | `submarine_describe_state_00852d30` | The "_submarine" save table 00853E10 reads back: `airSupply{air, needAir, unlimitedAir}`, depthLevel, periscopeState, periscopeY, periscopeOut, sullyesztoEro. Keys and tagged values pass by value; sink +4h opens a table, +0Ch writes a field, +8h closes it. |
+| `00855D30` | `torpedo_write_state_00855d30` | The "_torpedo" table 00857780 reads back. It writes **swimdepth twice** (00855D8C and 00855E58). |
+| `00856360` / `0085F270` | `torpedo_register_in_world_lists_00856360`, `water_mine_register_in_world_lists_0085f270` | 00928560, then push_back on world lists +30h, +210h and +21Ch (torpedo) or +288h (water mine). |
+| `008530E0` / `008563A0` / `00857F00` / `0085F2B0` | `*_detach_from_world_lists_*` | Base detach (006DFFC0 for ships, 006E29C0 for the bomb family), then the first node whose payload is the entity in the class list (+78h submarine, +21Ch torpedo, +C0h torpedo boat, +288h water mine) is erased. |
+| `00853110` | `submarine_destruct_00853110` | Releases the periscope effect +1228h, then the vehicle base 0081F3A0. |
+| `00853590` | `submarine_on_killed_release_periscope_00853590` | Stops the periscope effect's children, flags it finished (+9), releases it; frees the debris piece +1224h and its name; tail 00819880. |
+| `008533E0` | `periscope_debris_init_008533e0` | Zero velocity/angular velocity (00F87574), state 0, name `"PeriszkopSullyesztoDolog:" + owner name`, matrix copied from the periscope node. |
+| `008562A0` | `kTorpedoDestructSteps_008562a0`, `kTorpedoVptrs_008562a0` | Vptrs, members +4FCh (0042BCA0) and +4E4h (004B7EF0), base 006E2A20. |
+| `0085E9C0` / `00857CD0` | `kWaterMineVptrs_0085e9c0`, `kTorpedoBoatVptrs_00857cd0` | Base constructor, vptr table, class id 34h / 0Eh. Nothing else is written. |
+| `0085F310` | `water_mine_create_0085f310` | The 00856420 pattern without launch params: velocity = dir * V0, forward row = dir, position, children invalidated. |
+| `0085F1E0` | `water_mine_arm_0085f1e0` | armed = 1; a 1ACh part instance (007135C0) of the mine's model +464h into +468h; root registration 00B6D890. This completes the marker that 0085F2F0 left partial. |
+| `0085EA50` / `0085F120` | `water_mine_model_pointer_0085ea50`, `water_mine_release_sub_objects_0085f120` | The armed part when armed, else null. Release clears +464h **before** deleting the part, then 006E1860. |
+| `008738B0` | `update_effect_light_instance_008738b0` | Light position, link, intensity `max((t / duration) * peak, 0.01)`, `t -= dt` floored at 0. |
+| `00873100` | `update_effect_waterdrops_instance_00873100`, `waterdrops_spawn_count_00873100` | Once: count = trunc(WaterdropCount * (1 - clamp((dist - Fade) / Fade, 0, 1))); a non-zero count creates and spawns the drops with the ten setters. Each tick: 00BC12F0(reference node, camera position, dt). |
+| `00873C80` | `update_effect_thunderstorm_instance_00873c80` | Atlas tick; on a storm strike, a fire-and-forget point effect at the strike position from the world's strike definition (+19E0h). |
+
+Checked host rows: 00856260 and 0085EB20 (the class tests) match src/entity_class_ids.cpp rows
+2Bh and 34h exactly (CMP chain 2Bh/34h, 2Ah, 2, 1, 0, then [ECX+C4h]).
+
+Not modelled: the base effect slot defaults 00858170..00858210 are bare `RET 4` / `RET 8` /
+`RET` / `XOR AL,AL` leaves. Their bodies say nothing about the slots' meaning, so there is
+nothing to model. The adjustor thunks 00853010..00853040 and the scalar deleting destructors
+00853380 / 008533A0 are compiler-generated.
+
+### 7.3 Adoption notes
+
+| model | replaces (host file:line) | inputs | RNG | OFF-switch prediction |
+|---|---|---|---|---|
+| `00852F10` / `008531A0` | nothing; the host builds submarines in its own unit row | flag, class descriptor | none | none |
+| `00852D30` / `00855D30` writers | nothing (no host save writer; 00853E10 and 00857780 are the readers) | the submarine fields; the torpedo's seven floats | none | none until saved games are written |
+| list register/detach | `world_lists_unlink_unit_00928f24` at src/game_hosts_units.cpp:3044 erases the first matching node of every list, which is the same set for these leaves | the class list payloads | none | none: same unlink set |
+| `00853110` / `00853590` / `008533E0` | nothing (the host has no periscope debris or periscope effect) | effect and debris pointers, the owner name, the periscope node | none | presentation only; ON adds the debris piece and the effect release on a kill |
+| `0085F1E0` / `0085EA50` / `0085F120` / `0085F310` | nothing (the host has no water mine; src/game_hosts_ai.cpp:6538 lists only the name) | the mine's model +464h, the class V0, spawn position and direction | none (the mine's draws are in 0085EBC0 and 0085F7A0, section 2) | none until mines are bound |
+| `008738B0` / `00873100` / `00873C80` | nothing (the effect components are built by src/gameplay_effect_components.cpp but not ticked) | the instance fields, the definition rows (`WaterdropCount` etc., src/gameplay_effect_scalar_components.cpp), node positions, the weather renderer 00BC1xxx | none in these bodies. The storm's strike timing lives in 00BC0510 (outside this segment, not checked) | presentation only; nothing in a gameplay pair moves |
+
+### 7.4 Findings
+
+1. **The submarine destructor does not free the periscope debris.** Only 00853590 (on kill)
+   frees +1224h. A scan for disp32 1224h finds only 00853590, 00853630 and 00854650, so a
+   submarine removed without being killed (mission end, for example) leaks the 6Ch piece and
+   its name. The model keeps this.
+2. **The torpedo state writer writes swimdepth twice.** This is harmless to the reader.
+3. **00852D30 and 00853E10 are the two sides of one schema.** 00852D30 writes the eight
+   "_submarine" fields that 00853E10 reads; 00855D30 writes the "_torpedo" fields that
+   00857780 reads. Section 1.6's note on the misnamed "Serialize" is now complete.
+4. Both create functions (008531A0, 0085F310) run the memset on the raw `operator new` result
+   and dereference a null object when the allocation fails. That is the image's behaviour.

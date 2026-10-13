@@ -46,8 +46,10 @@
 //   -sqrt(2 g MaxFall)) break up on water entry, which JM06 air-dropped
 //   torpedoes may hit when released high.
 
+#include <cstddef>
 #include <cstdint>
 #include <functional>
+#include <string>
 #include <vector>
 
 namespace bsp {
@@ -539,8 +541,9 @@ bool water_mine_enter_water_0085f6d0(const WaterMineClassFields& cls, bool in_wa
                                      const WaterMineEnterWaterHost& host);
 
 // 0085F2F0 / 0085F1E0: a message of type B5h (MT_WATERMINE_ARM) arms the mine:
-// +46Ch = 1 and a 1ACh marker object (007135C0(mine, +464h)) is stored at
-// +468h and attached under world+19ECh (00B6D890). Other types go to 006E09F0.
+// +46Ch = 1 and a 1ACh part instance (007135C0(mine, +464h)) is stored at
+// +468h and attached under world+19ECh (00B6D890); water_mine_arm_0085f1e0
+// below models that body. Other types go to 006E09F0.
 // Returns true when the message is the arm message (AL = 1).
 inline bool water_mine_message_arms_0085f2f0(std::uint8_t message_type_10) noexcept {
     return message_type_10 == 0xB5;
@@ -609,6 +612,411 @@ struct WaterMineKilledHost {
 };
 void water_mine_on_killed_0085f7a0(const WaterMineClassFields& cls, std::int32_t kill_cause_70,
                                    const WaterMineKilledHost& host);
+
+// ===========================================================================
+// MSubmarine lifecycle (cc13-gpr53d): create, construct, state writer, world
+// list detach, on-killed effect release, destructor; periscope debris init.
+// No RNG anywhere in this group.
+// ===========================================================================
+
+// 00852F10, __thiscall(instance, int flag), RET 4. After the five-level base
+// 0081ED40(flag) it writes the eight submarine vptrs (table below; the leaf
+// has no vptr rewrite of its own in 00853110) and these leaf defaults. Every
+// other leaf field is zero from 008531A0's memset.
+struct LeafVptrStore {
+    std::uint32_t offset;
+    std::uint32_t table;
+};
+inline constexpr LeafVptrStore kSubmarineVptrs_00852f10[8] = {
+    {0x000, 0x00d0bf80}, {0x010, 0x00d0bf68}, {0x024, 0x00d0bf60}, {0x170, 0x00d0bf5c},
+    {0x1e4, 0x00d0bf54}, {0x310, 0x00d0bf3c}, {0x38c, 0x00d0bf38}, {0x72c, 0x00d0bf34},
+};
+struct SubmarineConstructDefaults {
+    std::uintptr_t periscope_effect_1228{0};
+    float air_127c{1.0f};                    // MOVSS from 00D7A24C (1.0f)
+    bool unlimited_air_1280{false};
+    bool need_air_1281{false};
+    bool periscope_auto_raise_1235{false};
+    std::int32_t scan_step_1238{0};
+    std::int32_t class_id_c4{8};             // 00852F96
+    float submerge_force_aux_1274{0.0f};     // XORPS, 00852FA0
+};
+SubmarineConstructDefaults submarine_construct_defaults_00852f10() noexcept;
+
+// 008531A0, class descriptor vtable 00D1AE38 slot 28h, __thiscall(descriptor,
+// int flag), RET 4: operator new(1288h) (00BF55BE), memset of the RAW return
+// (00BF79F0, before the null test), 00852F10(flag) when non-null, then
+// 009553D0(descriptor) with ECX = the unit and unit+354h = descriptor. A
+// failed allocation reaches 009553D0 and the +354h store with a null unit
+// (no guard in the image); the model reports that case instead of crashing.
+struct SubmarineCreateInstanceHost {
+    std::function<void*(std::uint32_t size)> allocate;           // 00BF55BE
+    std::function<void(void* block, std::uint32_t size)> zero;    // 00BF79F0
+    std::function<void*(void* block, std::int32_t flag)> construct; // 00852F10
+    std::function<void(void* unit)> set_vehicle_class;           // 009553D0(descriptor)
+    std::function<void(void* unit)> store_descriptor_354;
+};
+inline constexpr std::uint32_t kSubmarineInstanceSize = 0x1288;
+struct SubmarineCreateInstanceResult {
+    void* unit{nullptr};
+    bool null_unit_dereferenced{false};      // the image would fault here
+};
+SubmarineCreateInstanceResult submarine_create_instance_008531a0(std::int32_t flag,
+                                                                 const SubmarineCreateInstanceHost& host);
+
+// 00852D30, submarine vtable 00D0BF80 slot A8h, __thiscall(unit, sink), RET 4.
+// After the ship writer 00818340(sink) it emits the "_submarine" table that
+// 00853E10 reads back on a saved-game load (creation kind 3). Every key and
+// value is an 8-byte struct passed by value: key {0 (string), const char*},
+// value {type, payload} with type 0 string, 1 int, 2 float, 3 bool (a byte).
+// Sink vtable +4h(key) opens a table, +0Ch(key, value) writes a field, +8h()
+// closes the table. Emit order (00852D3F..00852F0A):
+//   open "_submarine"; open "airSupply"; "air" float +127Ch; "needAir" bool
+//   +1281h; "unlimitedAir" bool +1280h; close; "depthLevel" int +1268h;
+//   "periscopeState" int +122Ch; "periscopeY" float +1230h; "periscopeOut"
+//   bool +1234h; "sullyesztoEro" float +1270h; close.
+enum class StateSinkType : std::int32_t { string = 0, integer = 1, real = 2, boolean = 3 };
+struct StateSinkEmit {
+    enum class Op : std::uint8_t { open_table, field, close_table };
+    Op op{Op::field};
+    const char* key{nullptr};                // nullptr for close_table
+    StateSinkType type{StateSinkType::integer};
+    std::int32_t integer{0};
+    float real{0.0f};
+    bool boolean{false};
+};
+struct SubmarineSavedState {
+    float air_127c{1.0f};
+    bool need_air_1281{false};
+    bool unlimited_air_1280{false};
+    std::int32_t depth_level_1268{0};
+    std::int32_t periscope_state_122c{0};
+    float periscope_y_1230{0.0f};
+    bool periscope_out_1234{false};
+    float submerge_force_1270{0.0f};         // "sullyesztoEro"
+};
+// The submarine's own emits; the caller runs the ship writer 00818340 first.
+std::vector<StateSinkEmit> submarine_describe_state_00852d30(const SubmarineSavedState& s);
+
+// World-list registration and detach, slots 130h / 134h of the leaf vtables
+// (__fastcall(entity), RET 0). Registration: the parent-entity list
+// (00928560), then 00484540 push_back of the entity on each world list at
+// [entity+30h]+offset in order. Detach: the base detach, then the class list
+// at [entity+30h]+offset (head at offset+4h; node next +4h, payload +8h) is
+// walked and the FIRST node whose payload is the entity is erased with
+// 004837D0. The detach returns that node's index, or -1 when there is none.
+// The submarine's and torpedo boat's registrars (00853090, 00857EB0) are in
+// src/unit_world_registration.cpp.
+struct WorldListRegistration {
+    std::uint32_t function;
+    std::uint32_t list_offsets[3];
+};
+inline constexpr WorldListRegistration kTorpedoRegistration_00856360{0x00856360, {0x030, 0x210, 0x21c}};
+inline constexpr WorldListRegistration kWaterMineRegistration_0085f270{0x0085f270, {0x030, 0x210, 0x288}};
+struct WorldListRegisterHost {
+    std::function<void()> register_in_parent_entity_list;        // 00928560
+    std::function<void(std::uint32_t list_offset)> push_back;     // 00484540
+};
+void torpedo_register_in_world_lists_00856360(const WorldListRegisterHost& host);
+void water_mine_register_in_world_lists_0085f270(const WorldListRegisterHost& host);
+
+struct ClassWorldListDetach {
+    std::uint32_t function;
+    std::uint32_t base_detach;   // 006DFFC0 for the ship family, 006E29C0 for the bomb family
+    std::uint32_t list_offset;
+};
+inline constexpr ClassWorldListDetach kSubmarineDetach_008530e0{0x008530e0, 0x006dffc0, 0x078};
+inline constexpr ClassWorldListDetach kTorpedoDetach_008563a0{0x008563a0, 0x006e29c0, 0x21c};
+inline constexpr ClassWorldListDetach kTorpedoBoatDetach_00857f00{0x00857f00, 0x006dffc0, 0x0c0};
+inline constexpr ClassWorldListDetach kWaterMineDetach_0085f2b0{0x0085f2b0, 0x006e29c0, 0x288};
+struct WorldListDetachHost {
+    std::function<void()> base_detach;                            // row's base_detach
+    std::function<void(std::size_t node_index)> erase_node;       // 004837D0
+};
+int submarine_detach_from_world_lists_008530e0(const void* unit,
+                                               const std::vector<const void*>& class_list_payloads,
+                                               const WorldListDetachHost& host);
+int torpedo_detach_from_world_lists_008563a0(const void* torpedo,
+                                             const std::vector<const void*>& class_list_payloads,
+                                             const WorldListDetachHost& host);
+int torpedo_boat_detach_from_world_lists_00857f00(const void* unit,
+                                                  const std::vector<const void*>& class_list_payloads,
+                                                  const WorldListDetachHost& host);
+int water_mine_detach_from_world_lists_0085f2b0(const void* mine,
+                                                const std::vector<const void*>& class_list_payloads,
+                                                const WorldListDetachHost& host);
+
+// The periscope effect at +1228h is reference counted (count at +4h,
+// InterlockedDecrement 00CE2220, vtable[0] destroys at zero).
+struct SubmarineLifecycleSlots {
+    std::uintptr_t periscope_effect_1228{0};
+    std::uintptr_t periscope_debris_1224{0}; // the 6Ch PeriszkopSullyesztoDolog piece
+    bool debris_name_has_storage{false};     // debris+0Ch (string data) non-null
+};
+
+// 00853110, __thiscall(unit), RET 0, sole caller the scalar deleting dtor
+// 00853380 (adjustor thunks 00853010/20/30/40 for the +24h/+72Ch/+310h/+10h
+// subobjects). Releases +1228h and clears it, then runs the vehicle base
+// 0081F3A0 (bsp/unit_destructor_levels.hpp). It does NOT free the debris
+// +1224h: only 00853590 does (scan of disp32 1224h: 00853590, 00853630,
+// 00854650 only), so a submarine destroyed without being killed leaks it.
+struct SubmarineDestructHost {
+    std::function<void(std::uintptr_t effect)> release_reference; // refs at +4h
+    std::function<void()> destruct_vehicle_base;                  // 0081F3A0
+};
+void submarine_destruct_00853110(SubmarineLifecycleSlots& slots, const SubmarineDestructHost& host);
+
+// 00853590, submarine vtable 00D0BF34 slot D0h, __fastcall(unit). With an
+// effect at +1228h: 00867B10 stops its children, byte effect+9 = 1, the
+// reference is released and +1228h cleared. With debris at +1224h: its name
+// string's block (data +0Ch, size +8h + 1) goes back to the sized pool
+// (00419CC0 / 00BD1510) when non-null, the 6Ch piece is freed (_free) and
+// +1224h cleared. Then tail JMP 00819880 (the ship family's on-killed).
+// Presentation only.
+struct SubmarineOnKilledHost {
+    std::function<void(std::uintptr_t effect)> stop_effect_children;  // 00867B10
+    std::function<void(std::uintptr_t effect)> mark_effect_finished;  // byte +9 = 1
+    std::function<void(std::uintptr_t effect)> release_reference;
+    std::function<void(std::uintptr_t debris)> return_name_storage;   // 00419CC0 + 00BD1510
+    std::function<void(std::uintptr_t debris)> free_debris;           // _free 00BF65AC
+    std::function<void()> base_on_killed;                             // 00819880
+};
+void submarine_on_killed_release_periscope_00853590(SubmarineLifecycleSlots& slots,
+                                                    const SubmarineOnKilledHost& host);
+
+// 008533E0, __thiscall(debris, node), RET 4, sole caller SEntityInit 00853630
+// (00853CE6) right after operator new(6Ch) set +0h = the submarine and
+// cleared the name (+8h/+0Ch). Layout: +0h owner, +4h node (the "periszkop"
+// node +1214h), +8h name string, +10h state, +14h velocity, +20h angular
+// velocity, +2Ch 4x4 matrix. Velocity and angular velocity copy the zero
+// vector 00F87574 (no literal-address writer), state = 0, name =
+// "PeriszkopSullyesztoDolog:" + [owner] vtable[10h]() (004261A0 concat), then
+// the node's world matrix (00B6DB70 when node+5Ch bit 1 is clear) is copied
+// from node+F0h (004134F0). Presentation only.
+struct PeriscopeDebrisInitHost {
+    std::function<std::string()> owner_name;        // [owner] vtable[10h]
+    std::function<bool()> node_world_matrix_current; // node+5Ch bit 1
+    std::function<void()> refresh_node_world_matrix; // 00B6DB70
+    std::function<void()> copy_node_world_matrix;    // 004134F0(node+F0h) -> +2Ch
+};
+inline constexpr char kPeriscopeDebrisNamePrefix[] = "PeriszkopSullyesztoDolog:";
+inline constexpr std::uint32_t kPeriscopeDebrisSize = 0x6c;
+// Returns the name at +8h.
+std::string periscope_debris_init_008533e0(PeriscopeDebris& d, const PeriscopeDebrisInitHost& host);
+
+// ===========================================================================
+// MTorpedo / MWaterMine lifecycle (cc13-gpr53d). No RNG in this group.
+// ===========================================================================
+
+// 00855D30, torpedo vtable 00D0C3E8 slot A8h, __thiscall(torpedo, sink),
+// RET 4: after the bomb writer 006E0F40(sink), the "_torpedo" table (key
+// 00D0C350) that 00857780 reads back on creation kind 3. Every value is type
+// 2 (float), MOVSS from the field. "swimdepth" (00CFE74C) is written TWICE,
+// at 00855D8C and again at 00855E58; the second write repeats +47Ch.
+//   open "_torpedo"; heading +46Ch; swimdepth +47Ch; accel +470h; dragfront
+//   +474h; dragside +478h; swimdepth +47Ch; depthsmoothrate +480h; waverate
+//   +484h; close.
+struct TorpedoSavedState {
+    float heading_46c{0.0f};
+    float accel_470{0.0f};
+    float drag_front_474{0.0f};
+    float drag_side_478{0.0f};
+    float swim_depth_47c{-2.5f};
+    float depth_smooth_rate_480{0.0f};
+    float wave_rate_484{0.0f};
+};
+// The torpedo's own emits; the caller runs the bomb writer 006E0F40 first.
+std::vector<StateSinkEmit> torpedo_write_state_00855d30(const TorpedoSavedState& s);
+
+// 008562A0, __thiscall(torpedo), RET 0, sole caller the scalar deleting dtor
+// 00856340. Step order: the seven torpedo vptrs (table below), the member at
+// +4FCh (0042BCA0), the member at +4E4h (004B7EF0), then the bomb base
+// 006E2A20. The constructor 00856050 writes the same seven.
+inline constexpr LeafVptrStore kTorpedoVptrs_008562a0[7] = {
+    {0x000, 0x00d0c3e8}, {0x010, 0x00d0c3cc}, {0x024, 0x00d0c3c4}, {0x170, 0x00d0c3c0},
+    {0x1e4, 0x00d0c3b8}, {0x310, 0x00d0c378}, {0x3e4, 0x00d0c35c},
+};
+enum class TorpedoDestructStep : std::uint8_t {
+    rewrite_vptrs,             // 008562BD..008562EF
+    destruct_member_4fc,       // 00856307 -> 0042BCA0
+    destruct_member_4e4,       // 00856317 -> 004B7EF0
+    destruct_bomb_base,        // 00856326 -> 006E2A20
+};
+inline constexpr TorpedoDestructStep kTorpedoDestructSteps_008562a0[4] = {
+    TorpedoDestructStep::rewrite_vptrs, TorpedoDestructStep::destruct_member_4fc,
+    TorpedoDestructStep::destruct_member_4e4, TorpedoDestructStep::destruct_bomb_base,
+};
+
+// 0085E9C0, __thiscall(mine, flag), RET 4: the bomb base 006E2670(flag), the
+// seven water-mine vptrs, then class id +C4h = 34h (MWaterMine). The image
+// writes no other field here.
+inline constexpr LeafVptrStore kWaterMineVptrs_0085e9c0[7] = {
+    {0x000, 0x00d0d130}, {0x010, 0x00d0d114}, {0x024, 0x00d0d10c}, {0x170, 0x00d0d108},
+    {0x1e4, 0x00d0d100}, {0x310, 0x00d0d0c0}, {0x3e4, 0x00d0d0a8},
+};
+inline constexpr std::int32_t kWaterMineClassId_0085e9c0 = 0x34;
+
+// 00857CD0, __thiscall(boat, flag), RET 4: the five-level base 0081ED40(flag),
+// the eight torpedo-boat vptrs, then class id +C4h = 0Eh (MTorpedoBoat).
+// 00857E20 (vehicle class vtable 00D1AE74 slot 2Ch) is the 008531A0 pattern
+// with operator new(1190h) and this constructor.
+inline constexpr LeafVptrStore kTorpedoBoatVptrs_00857cd0[8] = {
+    {0x000, 0x00d0c648}, {0x010, 0x00d0c630}, {0x024, 0x00d0c628}, {0x170, 0x00d0c624},
+    {0x1e4, 0x00d0c61c}, {0x310, 0x00d0c604}, {0x38c, 0x00d0c600}, {0x72c, 0x00d0c5fc},
+};
+inline constexpr std::int32_t kTorpedoBoatClassId_00857cd0 = 0x0e;
+inline constexpr std::uint32_t kTorpedoBoatInstanceSize_00857e20 = 0x1190;
+
+// 0085F310, water-mine class vtable 00CFA59C slot 20h, __thiscall(class, a1..a7),
+// RET 1Ch; only a1..a4 are read. The 00856420 pattern without launch params:
+// operator new(470h), memset of the raw return, 0085E9C0(a1) when non-null
+// (a null mine is dereferenced at 0085F379; no guard), mine+54h = a2,
+// mine+314h = class, vtable[98h](0, [[00E188A8]+19CCh], identity), then
+// velocity +318h = (dir.x * V0, dir.y * V0, V0 * dir.z) with V0 = float
+// class+50h (each product stored as a float), forward row +94h = dir (a4),
+// 0085DC80, position a3 into +A4h, shot+60h and shot+6Ch, bytes +C8h and
+// +10Ch = 0, and 0042ED50 on every child of +48h (next +44h). Returns the
+// shot interface +310h. No RNG (the activate 0085EBC0 draws later).
+struct WaterMineCreateResult {
+    Vec3 velocity_318{};
+    Vec3 forward_94{};
+    Vec3 position_a4{};      // also shot+60h and shot+6Ch
+    std::uint32_t arg2_54{0};
+};
+WaterMineCreateResult water_mine_create_0085f310(float class_v0_50, std::uint32_t arg2,
+                                                 const Vec3& position, const Vec3& direction,
+                                                 const TorpedoCreateHost& host);
+
+// The armed part of a water mine: +464h the mine's node/model, +468h the 1ACh
+// part instance built on arming, +46Ch armed.
+struct WaterMineArmState {
+    std::uintptr_t model_464{0};
+    std::uintptr_t armed_part_468{0};
+    bool armed_46c{false};
+};
+// 0085F1E0, __fastcall(mine), reached from the B5h (MT_WATERMINE_ARM) message
+// handler 0085F2F0: armed = 1 (0085F1FE), then operator new(1ACh) (00BF681B)
+// and the part construct 007135C0(mine, [+464h]) into +468h (0085F230; null
+// when the allocation fails), then 00B6D890, the root registration of node
+// [[00E188A8]+19ECh].
+struct WaterMineArmHost {
+    std::function<std::uintptr_t(std::uintptr_t model)> construct_part;  // new(1ACh) + construct
+    std::function<void()> propagate_root_registration;                   // [[00E188A8]+19ECh]
+};
+void water_mine_arm_0085f1e0(WaterMineArmState& s, const WaterMineArmHost& host);
+// 0085EA50, slot B0h: the armed part when armed, else null.
+std::uintptr_t water_mine_model_pointer_0085ea50(const WaterMineArmState& s) noexcept;
+// 0085F120, slot 84h: with a part at +468h, +464h = 0 FIRST, then the part's
+// vtable+4(1) (deleting destructor) and +468h = 0; then tail JMP 006E1860
+// (the bomb family's release). The armed flag is left set.
+struct WaterMineReleaseHost {
+    std::function<void(std::uintptr_t part)> delete_part;   // vtable+4(1)
+    std::function<void()> base_release;                     // 006E1860
+};
+void water_mine_release_sub_objects_0085f120(WaterMineArmState& s, const WaterMineReleaseHost& host);
+
+// ===========================================================================
+// Effect-instance Update bodies (slot 11, primary +28h, __thiscall(instance,
+// float dt, node reference), RET 8), the three docs/CC13_EFFECTS.md left
+// open. Presentation only; none of them draws from any RNG. Instance layout
+// as src/effects_cc13.cpp: +10h the point effect (its node at +110h), +14h
+// the definition, +1Ch the payload, +20h the per-kind field.
+// ===========================================================================
+
+// 008738B0, light (vtable 00D0DBEC). With a light at +1Ch: the point node's
+// world position (00B6DB70 when node+5Ch bit 1 is clear; +120h..+128h) goes
+// to light vtable+30h, 00B7B090([[00E188A8]+19ECh]) links it if unlinked,
+// then light+1F8h = max(float(float(+20h / def+20h) * def+24h), 0.01f
+// (00D7A238)); the FCOMPI/JBE also takes 0.01 when the product is NaN. Then
+// +20h = float(+20h - dt), and 0 when that is below 0 (a NaN stays). The
+// node-reference argument is not read.
+struct EffectLightUpdateHost {
+    std::function<Vec3()> point_node_world_position;
+    std::function<void(const Vec3&)> set_light_position;   // light vtable+30h
+    std::function<void()> link_if_unlinked;                // 00B7B090
+    std::function<void(float)> set_intensity_1f8;
+};
+struct EffectLightInstanceState {
+    bool has_light_1c{false};
+    float remaining_20{0.0f};
+};
+// Returns the intensity written to light+1F8h, or 0 with no light.
+float update_effect_light_instance_008738b0(EffectLightInstanceState& s, float def_duration_20,
+                                            float def_intensity_24, float dt,
+                                            const EffectLightUpdateHost& host);
+
+// 00873100, waterdrops (vtable 00D0DBB4). Byte 00F889FC clear forces the
+// pending flag +20h to 0. While pending: d = point node pos - reference node
+// pos (both refreshed first; each component a float), len = 00419440(d),
+// x = len - FadeDistance (def+34h), 0 when not above 0 (FSUBP DE EA, JBE),
+// f = x / FadeDistance (FDIVRP DE F2) clamped to [0, 1] (FCOMPI/JBE then
+// COMISS/JBE: a NaN passes both), g = float(1 - f) (FSUBRP DE E1), count =
+// FILD def+44h (+2^32 as a float, 00CE3978, when negative), FMUL g, then
+// FISTP qword under RC = truncate (OR 0C00h); the low dword is the count.
+// A non-zero count creates the drops (00BC2D00) into +1Ch and runs, in order:
+// size range (def+28h, +2Ch) 00BC1160, life range (+20h, +24h) 00BC1180,
+// gravity +30h 00BC11B0, texture +48h 00BC1990, count 00BC11A0, sticky
+// percent +3Ch 00BC11D0, bytes +40h 00BC11F0, +41h 00BC1200, +42h 00BC1210,
+// +43h 00BC1220, then spawn 00BC1A20([[00E188A8]+19ECh], [..+19FCh]). The
+// old +1Ch is overwritten without a release. Pending = 0 either way. Then,
+// with drops at +1Ch: 00BC12F0(reference node, camera pos, dt), the camera
+// position from node 00E188DC (+120h..+128h, refreshed) or zero when null.
+struct WaterdropsDefinitionFields {
+    float life_min_20{0.0f};
+    float life_max_24{0.0f};
+    float size_min_28{0.0f};
+    float size_max_2c{0.0f};
+    float gravity_30{0.0f};
+    float fade_distance_34{0.0f};
+    float sticky_percent_3c{0.0f};
+    bool apply_at_bottom_only_40{false};
+    bool start_top_off_screen_41{false};
+    bool apply_at_top_only_42{false};
+    bool no_camera_move_43{false};
+    std::int32_t count_44{0};
+    std::uint32_t texture_48{0};
+};
+// The spawn count arithmetic alone (0087317D..00873293).
+std::int32_t waterdrops_spawn_count_00873100(float distance, float fade_distance_34,
+                                             std::int32_t count_44) noexcept;
+struct WaterdropsUpdateHost {
+    std::function<bool()> enabled_f889fc;
+    std::function<Vec3()> point_node_position;
+    std::function<Vec3()> reference_node_position;
+    std::function<float(const Vec3&)> length;                       // 00419440
+    // 00BC2D00, the ten setters and 00BC1A20 in the order above.
+    std::function<std::uintptr_t(const WaterdropsDefinitionFields&, std::int32_t count)> create_and_spawn;
+    std::function<bool(Vec3& position)> camera_position;            // node 00E188DC, false when null
+    std::function<void(std::uintptr_t drops, const Vec3& camera, float dt)> update;  // 00BC12F0
+};
+struct EffectWaterdropsState {
+    std::uintptr_t drops_1c{0};
+    bool pending_20{true};      // the constructor 00873090 sets it
+};
+void update_effect_waterdrops_instance_00873100(EffectWaterdropsState& s,
+                                                const WaterdropsDefinitionFields& def, float dt,
+                                                const WaterdropsUpdateHost& host);
+
+// 00873C80, thunderstorm (vtable 00D0DDCC). With +1Ch: its vtable+5Ch
+// ([[00E188A8]+19FCh], dt). With the storm +20h: 00BC0510([..+19FCh], dt,
+// &strike) returns AL; on a strike a point effect is created by 00868420 from
+// the identity matrix whose translation row is the strike position (root
+// [..+19ECh], definition [..+19E0h] with its count incremented, options 0, 0);
+// a non-null result gets byte +9 = 1 (finish when done) and the local
+// reference is released. Returns whether it struck.
+struct ThunderStormUpdateHost {
+    std::function<void(float dt)> update_atlas_1c;                         // vtable+5Ch
+    std::function<bool(float dt, Vec3& strike)> update_storm;              // 00BC0510
+    std::function<std::uintptr_t(const float (&matrix)[16])> spawn_strike; // 00868420
+    std::function<void(std::uintptr_t effect)> mark_finished;              // byte +9 = 1
+    std::function<void(std::uintptr_t effect)> release_reference;
+};
+struct EffectThunderStormState {
+    bool has_atlas_1c{false};
+    bool has_storm_20{false};
+};
+bool update_effect_thunderstorm_instance_00873c80(const EffectThunderStormState& s, float dt,
+                                                  const ThunderStormUpdateHost& host);
 
 }  // namespace gameplay_seg53_cc13
 }  // namespace bsp
