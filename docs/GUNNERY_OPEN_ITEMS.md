@@ -13331,3 +13331,12 @@ category through `gun_artillery_kind_005459b0` behind the switch. `00728A90` sta
 
 **Predictions.** OFF identical. ON moves only rows where an artillery gun's muzzle goes below y = 0: a submarine's deck
 gun while submerged (USN06, JM06), perhaps a sinking ship's guns. Elsewhere identical.
+
+**206 verdict: ON, by mechanism** (cc9-gunnery39). `12e3c2eeb` OFF (`local\g39_mz0_*`) against ON (`g39_mz1_*`):
+- JM06 (`jm06_s45_j6_k`, 92000 frames): OFF completed 2880.63 s; ON **not completed** (deaths 22 -> 19). OFF,
+  Fletcher-class 05 dies to PlayerSub 01's category-2 deck gun (gun 101) at 357 m and Fletcher 02/04 to its blast;
+  ON the deck guns of a submerged boat stay silent (Narwhal-class Submarine 01: shots 76 -> 0; PlayerSub 01 dealt
+  20904 -> 13266). That is the image's 00729A80 rule (muzzle under [00D7A24C] = 1.0 m and an artillery kind), so
+  the plan relied on a host defect: the keeper re-plans JM06.
+- USN06 (18000 frames, idle): moved (deaths 81 -> 80); the first movers are Japanese PT boats' guns from 8 s, whose
+  low muzzles dip under 1.0 m with the hull. Same rule.

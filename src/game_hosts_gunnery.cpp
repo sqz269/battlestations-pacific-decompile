@@ -667,7 +667,7 @@ constexpr bool kBlastMeshBoundsBound = false;
 //    whether the weapon kind [[gun+3F4h]+80h] is 2, 3, 4 or 6, so an artillery gun
 //    whose muzzle is below the waterline (00729B2F) cannot fire. The host's kind is
 //    the gun category, as for the torpedo test. False: the answer stays false.
-constexpr bool kGunSubmergedArtilleryKindBound = false;
+constexpr bool kGunSubmergedArtilleryKindBound = true;   // ON by mechanism: GUNNERY 206
 inline bool gun_artillery_kind_005459b0(int kind) noexcept {
     return kGunSubmergedArtilleryKindBound
         && (kind == 2 || kind == 3 || kind == 4 || kind == 6);
