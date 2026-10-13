@@ -17,6 +17,7 @@
 // the native camera store is a 24h-byte heap block held by value in an MSVC
 // std::multimap node, and the camera and scene are engine objects this packet
 // only names.
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <string>
@@ -131,7 +132,49 @@ struct GuiOrthoVolume {
 };
 inline constexpr GuiOrthoVolume kGuiOrthoVolume{};
 
-// The look-at 00AA3E00 builds for 00B63F10. The eye sits half a back-buffer
+// 00AA2020 BSP_Camera_SetGuiOrthoProjection, __thiscall(ECX = camera, left,
+// right, bottom, top, near, far), RET 18h (cc13-gui2, docs/CC13_GUI_2.md).
+// base = platform (0109CF04) byte +0Dh ? 1.7777778f (00D5BD9C) : 1.3333334f
+// (00D5BD98); sx = float(base / 1.3333333730697632) (the double 00CF5750,
+// FDIVR D8 F9 at 00AA2056), sy = float(base / platform+10h). The side planes
+// are multiplied and stored as floats (each product goes through [ESP+7Ch]),
+// then 00B62A10 builds the off-centre matrix (left*sx, right*sx, bottom*sy,
+// top*sy, near, far) that 00B6FD60 installs. Finally the device (texture
+// manager 00F8D394 vtable +30h) size pair at +0Ch/+10h goes to 00B6FDE0 and its
+// result's 00B1F940. The two divisions run in the x87 at the process
+// precision-control setting; this C++ rounds a double quotient to float, which
+// can differ in the last bit only under double rounding.
+struct GuiOrthoProjectionHost {
+    virtual ~GuiOrthoProjectionHost() = default;
+    virtual bool platform_widescreen_0d() = 0;   // [0109CF04] + 0Dh
+    virtual float platform_aspect_10() = 0;      // [0109CF04] + 10h
+    virtual void* ortho_off_center_00b62a10(float left, float right, float bottom, float top,
+        float near_plane, float far_plane) = 0;  // returns the stack matrix
+    virtual void set_projection_00b6fd60(const void* camera, void* matrix) = 0;
+    virtual std::array<std::uint32_t, 2> device_size_00f8d394_30() = 0; // device +0Ch/+10h
+    virtual void* camera_viewport_00b6fde0(const void* camera, const std::array<std::uint32_t, 2>& size) = 0;
+    virtual void viewport_set_dimensions_00b1f940(void* viewport) = 0;
+};
+void set_gui_ortho_projection_00aa2020(const void* camera, const GuiOrthoVolume& volume,
+    GuiOrthoProjectionHost& host);
+
+// 00AA4040 BSP_RenderMode_PrepareAndStartWorker, __thiscall(manager,
+// descriptor, callback, context, rate), RET 10h (cc13-gui2). The render command
+// queue (004C11F0) goes to mode 1 (00B1C460), the descriptor's scene (+ECh)
+// and camera ((+F0h)->+18h) are submitted through 00AA3E00, the queue goes to
+// mode 2, and 00B1C4A0 starts the worker with (callback, context, rate).
+// Callers: 0057CB60 loading screen (rate 19h), 0060D6E0 please-wait screen.
+struct GuiRenderWorkerHost {
+    virtual ~GuiRenderWorkerHost() = default;
+    virtual void queue_set_mode_00b1c460(std::uint32_t mode) = 0;
+    virtual const void* descriptor_scene_ec(const void* descriptor) = 0;
+    virtual const void* descriptor_camera_f0_18(const void* descriptor) = 0;
+    // 00AA3E00 (submit_gui_pass_00aa3e00) on the manager.
+    virtual void submit_gui_pass_00aa3e00(const void* scene, const void* camera) = 0;
+    virtual void queue_start_worker_00b1c4a0(void* callback, void* context, std::uint32_t rate) = 0;
+};
+void prepare_and_start_render_worker_00aa4040(const void* descriptor, void* callback, void* context,
+    std::uint32_t rate, GuiRenderWorkerHost& host);// The look-at 00AA3E00 builds for 00B63F10. The eye sits half a back-buffer
 // pixel past the centre of the unit volume, which is the Direct3D 9 half-texel
 // correction for pixel-exact 2D.
 struct GuiCameraPlacement {
@@ -173,10 +216,10 @@ struct GuiSnapshotChild {
 };
 
 // 00AA5A00, __fastcall(ECX = out vector, EDX = widget), RET 0. `children` is the
-// widget's +68h list in list order; the result is the sorted snapshot. std::sort
-// is not stable, so two children whose names compare equal have an unspecified
-// relative order; below the 32-element insertion-sort threshold of 00AA4E00 the
-// observed order is the list order.
+// widget's +68h list in list order; the result is the sorted snapshot, ordered
+// by the image's VS2008 introsort (msvc9_sort in gui_widgets_cc13.hpp, _Ideal =
+// count), so children whose names compare equal permute as in the image. Below
+// 32 elements that is the stable insertion sort (list order kept).
 std::vector<GuiSnapshotChild> collect_sorted_children_00aa5a00(
     const std::vector<GuiSnapshotChild>& children);
 

@@ -1,4 +1,5 @@
 #include "bsp/gui_render_order.hpp"
+#include "bsp/gui_widgets_cc13.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
 #include <algorithm>
@@ -132,13 +133,46 @@ std::vector<GuiSnapshotChild> collect_sorted_children_00aa5a00(
     const std::vector<GuiSnapshotChild>& children)
 {
     std::vector<GuiSnapshotChild> snapshot(children);
-    std::sort(snapshot.begin(), snapshot.end(),
-        [](const GuiSnapshotChild& lhs, const GuiSnapshotChild& rhs) noexcept {
-            return widget_name_less_00aa2c80(lhs.name, rhs.name);
-        });
+    // 00AA5AF7..00AA5AFD: PUSH predicate byte; PUSH count (_Ideal); ECX = begin,
+    // EDX = end; CALL 00AA4E00. The image's
+    // introsort (msvc9_sort) is not std::sort; using it reproduces the order of
+    // equal names. Swapping a {widget, name} pair permutes exactly as swapping
+    // the image's widget pointers, since the name is a function of the widget.
+    auto pred = [](const GuiSnapshotChild& lhs, const GuiSnapshotChild& rhs) noexcept {
+        return widget_name_less_00aa2c80(lhs.name, rhs.name);
+    };
+    if (!snapshot.empty()) {
+        GuiSnapshotChild* const first = snapshot.data();
+        GuiSnapshotChild* const last = first + snapshot.size();
+        gui_widgets_cc13::msvc9_sort::sort(first, last, last - first, pred);
+    }
     return snapshot;
 }
 
+void set_gui_ortho_projection_00aa2020(const void* camera, const GuiOrthoVolume& volume,
+    GuiOrthoProjectionHost& host)
+{
+    const float base = host.platform_widescreen_0d() ? 1.7777778F : 1.3333334F; // 00D5BD9C / 00D5BD98
+    const float sx = static_cast<float>(static_cast<double>(base) / 1.3333333730697632); // 00CF5750
+    const float sy = static_cast<float>(static_cast<double>(base) / host.platform_aspect_10());
+    const float top = sy * volume.top;
+    const float bottom = sy * volume.bottom;
+    const float right = sx * volume.right;
+    const float left = sx * volume.left;
+    void* const matrix = host.ortho_off_center_00b62a10(
+        left, right, bottom, top, volume.near_plane, volume.far_plane);
+    host.set_projection_00b6fd60(camera, matrix);
+    const std::array<std::uint32_t, 2> size = host.device_size_00f8d394_30();
+    host.viewport_set_dimensions_00b1f940(host.camera_viewport_00b6fde0(camera, size));
+}
+void prepare_and_start_render_worker_00aa4040(const void* descriptor, void* callback, void* context,
+    std::uint32_t rate, GuiRenderWorkerHost& host)
+{
+    host.queue_set_mode_00b1c460(1);
+    host.submit_gui_pass_00aa3e00(host.descriptor_scene_ec(descriptor), host.descriptor_camera_f0_18(descriptor));
+    host.queue_set_mode_00b1c460(2);
+    host.queue_start_worker_00b1c4a0(callback, context, rate);
+}
 void submit_gui_pass_00aa3e00(
     const void* scene, const void* camera, GuiRenderOrderHost& host)
 {
