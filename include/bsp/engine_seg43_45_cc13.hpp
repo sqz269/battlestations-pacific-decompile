@@ -264,9 +264,9 @@ struct MovCamZoom {
 };
 float movcam_set_zoom_0078e480(MovCamZoom& z, float zoom, float base_fov_f889b4) noexcept;  // returns the FOV
 
-// 007943D0: ECX camera, stack dt, RET 4. The velocity +3ACh is clamped to
-// [+4D0h]+4Ch, the position +3A0h advanced by f(v*dt) and then kept within
-// [+4D0h]+34h of +3B8h; the angles +3CCh likewise with the rate +3D4h clamped
+// 007943D0: ECX camera, stack dt, RET 4. The acceleration +3ACh is clamped to
+// [+4D0h]+4Ch, the velocity +3A0h advanced by f(a*dt) and then kept within
+// [+4D0h]+34h of the reference velocity +3B8h; the rates +3CCh likewise with +3D4h clamped
 // to +50h and the step to +38h. Each length is sqrt of the float-spilled sum
 // (y*y + x*x) + z*z, zero unless above 1e-10 (00CE3820); 00793730 / 00793800
 // do the rescaling.
@@ -274,10 +274,10 @@ void movcam_integrate_007943d0(cc13cam::MovCamMotion& m, cc13cam::MovCamTurn& t,
                                const cc13cam::MovCamLimits& limits, const cc13cam::MovCamTurnLimits& turn,
                                float dt) noexcept;
 
-// 00794F70: ECX camera, stack (d.x, d.y, target), RET 0Ch. r = |angles -
-// previous| / [+4D0h]+50h; a non-null target arms the follow cone (+3E8h =
+// 00794F70: ECX camera, stack (d.x, d.y, target), RET 0Ch. r = |rate -
+// reference rate| / [+4D0h]+50h; a non-null target arms the follow cone (+3E8h =
 // 00414C60(d) on a fresh target else the minimum, +3ECh = 0.9 (00CE3860),
-// +3E4h = target); the wanted turn is d - 0.5*r*(angles - previous), its
+// +3E4h = target); the wanted turn is d - 0.5*r*(rate - reference rate), its
 // length times 1000 capped at 2.0 scales +50h, and 00793800's result is added
 // to +3D4h.
 void movcam_steer_angles_braking_00794f70(cc13cam::MovCamTurn& t, const cc13cam::MovCamTurnLimits& limits,
@@ -1063,7 +1063,7 @@ void movcam_latch_input_0079c200(MovCamFrameInput& in, MovCamFrameInputHost& hos
 // (+4E0h position, +4ECh theta, +4F0h rho, +4F4h zoom). The frame shows that
 // +3A0h and +3CCh/+3D0h are rates per second (position = snapshot + rate*dt,
 // and mode 5 writes them back as (now - snapshot)/dt); `MovCamMotion` and
-// `MovCamTurn` in cc13_camera_controllers.hpp call them position and angles.
+// `MovCamTurn` in cc13_camera_controllers.hpp now name them so (cc13-cam3b).
 struct MovCamFrame {
     std::uint32_t mode_384{0};
     std::size_t entity_38c{0};         // mode 2 deck frame, mode 7 eye frame
@@ -1207,6 +1207,7 @@ void movcam_destruct_0079d640(MovCamOwned& owned, MovCamDestroyHost& host);
 // 0); +2Ch = 1; bytes +26h, +27h, +28h = 1; everything else listed zero. It
 // does not write +C0h (00799B00 stores -1.0 there).
 struct MovieKeyframeInit {
+    std::uint32_t field_4{0};
     std::size_t entity_1c{0};
     bool flag_18{false};
     bool parent_attached_24{false};
@@ -1223,6 +1224,7 @@ struct MovieKeyframeInit {
     Vec3 work_up_64{};
     Vec3 eval_up_70{};
     bool flag_bc{false};
+    float fov_divisor_c0{0.0f};
     float zoom_c4{0.0f};
     float zoom_c8{0.0f};
     float smooth_cc{0.0f};
@@ -1233,6 +1235,7 @@ struct MovieKeyframeInit {
     std::int16_t id_da{0};
     bool flag_dc{false};
     std::uintptr_t modifier_e4{0};
+    bool flag_e8{false};
     std::uintptr_t event_ec{0};
     float start_f0{0.0f};
     float blend_f4{0.0f};
@@ -1247,6 +1250,12 @@ struct MovieKeyframeInitHost {
 };
 void movie_keyframe_construct_at_0079c910(MovieKeyframeInit& k, const Vec3& p, std::size_t entity,
                                           MovieKeyframeInitHost& host);
+// 00799B00: fastcall key, RET (the default constructor; cc9's hud_movie_camera.hpp
+// models its result as MovieKeyframe). As 0079C910 with no position and no
+// entity (all three vectors zero, +24h = 0), plus +C0h = -1.0 (00D7A260), byte
+// +E8h = 0 and +4h = 0, which 0079C910 leaves unwritten. Its test of +1Ch right
+// after storing 0 there (unregister when set) can never fire.
+void movie_keyframe_construct_00799b00(MovieKeyframeInit& k);
 
 // 00799CA0: fastcall key. Vtable back; the modifier +E4h virtual-deleted
 // (slot 0, 1) and cleared; a partner +20h whose +20h points back has it

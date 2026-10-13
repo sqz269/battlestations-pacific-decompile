@@ -649,8 +649,8 @@ void unwrap_pair(float& a, float& b) {
 }  // namespace
 
 // 007972F0. Re-anchors the control points, keeps the parameter at the same
-// fraction of its segment when the knots are re-derived (the move accumulates
-// in +4FCh), clamps it to 0.01 before the last knot, samples the +464h path
+// fraction of its segment when the knots are re-derived (the snapshot +4FCh
+// moves with it), clamps it to 0.01 before the last knot, samples the +464h path
 // for the position and aims along its direction, then blends +4D0h's value and
 // the records' theta/rho across each record's blend window with 0078FCF0.
 void path_camera_update_007972f0(PathCamera& c, PathCameraHost& h) {
@@ -667,7 +667,7 @@ void path_camera_update_007972f0(PathCamera& c, PathCameraHost& h) {
     const double next = h.knot_time_007b05e0(seg + 1);
     const double scaled = (next - h.knot_time_007b05e0(seg)) * u;
     const float moved = static_cast<float>(h.knot_time_007b05e0(seg) + scaled);
-    c.parameter_shift_4fc = static_cast<float>((static_cast<double>(moved) - c.parameter_468) + c.parameter_shift_4fc);
+    c.snapshot_parameter_4fc = static_cast<float>((static_cast<double>(moved) - c.parameter_468) + c.snapshot_parameter_4fc);
     c.parameter_468 = moved;
 
     const int count = static_cast<int>(c.records.size());
@@ -861,7 +861,7 @@ void movcam_steer_00794b80(MovCamMotion& m, const MovCamLimits& limits, const st
     const std::array<float, 3> want = scale_to_length_00793730(dir, want_len);
     std::array<float, 3> diff{};
     for (int i = 0; i < 3; ++i) {
-        const float cur = m.position_3a0[i] - m.previous_3b8[i];                // FSTP
+        const float cur = m.velocity_3a0[i] - m.reference_velocity_3b8[i];                // FSTP
         diff[i] = want[i] - cur;                                                // FSTP
     }
     const float accel = limits.accel_4c * 0.05f;                                // 00D0DE84, FSTP
@@ -869,7 +869,7 @@ void movcam_steer_00794b80(MovCamMotion& m, const MovCamLimits& limits, const st
     if (f > 1.0f) f = 1.0f;
     if (square) f = f * f;
     const std::array<float, 3> step = scale_to_length_00793730(diff, limits.accel_4c * f);
-    for (int i = 0; i < 3; ++i) m.velocity_3ac[i] = m.velocity_3ac[i] + step[i];
+    for (int i = 0; i < 3; ++i) m.acceleration_3ac[i] = m.acceleration_3ac[i] + step[i];
 }
 
 void movcam_keep_above_ground_00790540(std::array<float, 3>& p, bool has_ground, float ground) noexcept {
@@ -900,7 +900,7 @@ void movcam_turn_00794d60(MovCamTurn& t, const MovCamTurnLimits& limits, const s
     const std::array<float, 2> want = scale_to_length_00793800(d, want_len);
     std::array<float, 2> diff{};
     for (int i = 0; i < 2; ++i) {
-        const float cur = t.angles_3cc[i] - t.previous_3dc[i];
+        const float cur = t.rate_3cc[i] - t.reference_rate_3dc[i];
         diff[i] = want[i] - cur;
     }
     const float accel = 0.05f * limits.accel_50;
@@ -915,8 +915,8 @@ void movcam_turn_00794d60(MovCamTurn& t, const MovCamTurnLimits& limits, const s
         t.target_3e4 = target;
     }
     const std::array<float, 2> step = scale_to_length_00793800(diff, f * limits.accel_50);
-    t.rate_3d4[0] = t.rate_3d4[0] + step[0];
-    t.rate_3d4[1] = step[1] + t.rate_3d4[1];
+    t.turn_acceleration_3d4[0] = t.turn_acceleration_3d4[0] + step[0];
+    t.turn_acceleration_3d4[1] = step[1] + t.turn_acceleration_3d4[1];
 }
 
 }  // namespace bsp::cc13cam

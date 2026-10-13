@@ -339,7 +339,10 @@ struct PathCamera {
     float rho_3c8{0.0f};
     float parameter_468{0.0f};
     float end_46c{0.0f};
-    float parameter_shift_4fc{0.0f};     // accumulates every re-timing of the parameter
+    // 00790460's snapshot of +468h (the frame 0079C200 starts from it); the
+    // re-timing below shifts it with the parameter so the extrapolation stays
+    // continuous. Named parameter_shift before cc13-cam3b.
+    float snapshot_parameter_4fc{0.0f};
     float node_value_4d0_34{0.0f};
     std::vector<PathCameraRecord> records;
 };
@@ -479,17 +482,22 @@ void movcam_interpolator_init_007900b0(MovCamInterpolator& r, const std::string&
 
 // MovCam motion. [camera+4D0h] is the speed-limit block the luaMW_MovCam_Set*
 // bindings edit: +34h top speed, +4Ch acceleration (per 0.05 s), +54h the
-// target-lead scale. Camera +3A0h is the position, +3B8h the previous one,
-// +3ACh the velocity being built this step.
+// target-lead scale. Camera +3A0h is the velocity (per second: the frame
+// 0079C200 extrapolates position = snapshot + velocity*dt, and mode 5 writes it
+// back as (now - snapshot)/dt), +3ACh the acceleration built this step, and
+// +3B8h the reference velocity the speed cap is measured against: the step
+// 007A91A0 sets it from the target's slot +34h vector (007A96D3..007A96EC), or
+// zero in deck mode, targeted sub-mode >= 2 or with game +634h set. (cc13-cam3b;
+// these were named position / velocity / previous before.)
 struct MovCamLimits {
     float top_speed_34{0.0f};
     float accel_4c{0.0f};
     float lead_scale_54{0.0f};
 };
 struct MovCamMotion {
-    std::array<float, 3> position_3a0{};
-    std::array<float, 3> velocity_3ac{};
-    std::array<float, 3> previous_3b8{};
+    std::array<float, 3> velocity_3a0{};
+    std::array<float, 3> acceleration_3ac{};
+    std::array<float, 3> reference_velocity_3b8{};
 };
 
 // 00793730: ECX out, EDX v, stack length, RET 4. v scaled to `length`; zero
@@ -498,7 +506,7 @@ std::array<float, 3> scale_to_length_00793730(const std::array<float, 3>& v, flo
 
 // 00794B80: ECX camera, stack (dir.xyz, max, square byte), RET 14h. The wanted
 // velocity is dir scaled to top_speed * min(|dir|, max) / max; the step toward
-// it from (position - previous) is at most accel * 0.05 (00D0DE84) long,
+// it from (velocity - reference velocity) is at most accel * 0.05 (00D0DE84) long,
 // scaled by min(|difference| / (accel*0.05), 1), squared when `square`, and is
 // added to +3ACh.
 void movcam_steer_00794b80(MovCamMotion& m, const MovCamLimits& limits, const std::array<float, 3>& dir,
@@ -509,16 +517,19 @@ void movcam_steer_00794b80(MovCamMotion& m, const MovCamLimits& limits, const st
 void movcam_keep_above_ground_00790540(std::array<float, 3>& position_394, bool has_ground, float ground) noexcept;
 
 // Angular counterparts: [camera+4D0h] +38h top turn rate, +50h turn
-// acceleration; camera +3CCh/+3D0h the angles, +3DCh/+3E0h the previous ones,
-// +3D4h/+3D8h the turn being built this step.
+// acceleration; camera +3CCh/+3D0h the angular rates (per second; 0079C200
+// extrapolates theta/rho with them), +3D4h/+3D8h the turn acceleration built
+// this step, +3DCh/+3E0h the reference rates (written by the step at
+// 007A98A1 from the target's motion, else zero). Named angles / turn /
+// previous before cc13-cam3b.
 struct MovCamTurnLimits {
     float top_rate_38{0.0f};
     float accel_50{0.0f};
 };
 struct MovCamTurn {
-    std::array<float, 2> angles_3cc{};
-    std::array<float, 2> rate_3d4{};
-    std::array<float, 2> previous_3dc{};
+    std::array<float, 2> rate_3cc{};
+    std::array<float, 2> turn_acceleration_3d4{};
+    std::array<float, 2> reference_rate_3dc{};
     std::size_t target_3e4{0};
     float tolerance_3e8{0.0f};
     float growth_3ec{1.0f};
