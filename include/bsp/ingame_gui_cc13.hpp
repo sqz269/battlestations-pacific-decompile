@@ -17,6 +17,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <string_view>
+#include <utility>
 
 namespace bsp::ingame_gui_cc13 {
 
@@ -703,6 +704,26 @@ void gui_text_set_source_range_0067d870(void* text, Raw prefix, Raw src, std::in
     std::int32_t first, std::int32_t last, TextRangeHost& host);
 void gui_text_fit_range_to_one_line_0067d940(void* text, Raw prefix, Raw src, std::int32_t cursor_base,
     TextRangeHost& host);
+
+// ---------------------------------------------------------------------------
+// Batch 5: layout binders.
+// ---------------------------------------------------------------------------
+struct LayoutHost : HudScreenHost {
+    // 00871BA0(&out, name, 1): an effect handle by name (refcount owned by the caller).
+    virtual void* effect_acquire_by_name_00871ba0(std::string_view name) = 0;
+    // Store a refcounted handle: InterlockedIncrement the new one, decrement the
+    // old one (slot 0 at zero), then drop the caller's temporary reference.
+    virtual void handle_assign_acquired(Raw slot, void* handle) = 0;
+    virtual void widget_resolved_position_00aa6750(void* widget, float out[3]) = 0;
+    virtual void widget_set_resolved_position_00aa8240(void* widget, const float pos[3]) = 0;
+    virtual const float* widget_vector_00aa67f0(void* widget) = 0;
+    virtual void widget_set_scale_00aa86b0(void* widget, float x, float y) = 0;
+    virtual void support_rebind_slots_0065d220(Raw screen) = 0;
+};
+void periscope_register_00650e00(Raw s, LayoutHost& host);
+void hud_root_load_layout_006463e0(Raw s, LayoutHost& host);
+void ship_status_load_layout_0064c0f0(Raw s, LayoutHost& host);
+void support_manager_load_layout_0065daa0(Raw s, LayoutHost& host);
 
 void rewards_release_sound_handles_0061ec00(Raw s, RewardsScreenHost& host);
 bool rewards_selected_entry_flagged_0061d8b0(Raw s, RewardsScreenHost& host);

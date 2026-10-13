@@ -7,6 +7,7 @@
 
 #include <cmath>
 #include <cstring>
+#include <utility>
 
 namespace bsp::ingame_gui_cc13 {
 
@@ -1790,6 +1791,174 @@ void gui_text_fit_range_to_one_line_0067d940(void* text, Raw prefix, Raw src, st
     if (host.text_line_count_110(text) > 1) {
         gui_text_set_source_range_0067d870(text, prefix, src, cursor_base, first, last - 1, host);
     }
+}
+
+// ---------------------------------------------------------------------------
+// Batch 5: layout binders (page loads and named-child finds, in image order)
+// ---------------------------------------------------------------------------
+
+namespace {
+void page(Raw s, std::size_t store, std::string_view name, HudScreenHost& host) {
+    s.ptr(store) = host.gui_load_page_00aa5840(name);
+}
+void find(Raw s, std::size_t store, std::size_t parent, std::string_view name, HudScreenHost& host) {
+    s.ptr(store) = host.gui_find_child_00aa7e00(s.ptr(parent), name);
+}
+void show(Raw s, std::size_t widget, bool visible, HudScreenHost& host) {
+    host.widget_set_visible_34(s.ptr(widget), visible);
+}
+} // namespace
+
+// 00650E00, periscope register: base register; +24h, +2Ch = 0, +60h = -1.0f,
+// +1Ch byte 0; page "GUI_periscope" into +6Ch; the layout virtual (+14h,
+// 00651230); four effect handles by name (00871BA0) assigned refcounted into
+// +30h, +38h, +3Ch, +4Ch; +64h = 1.0f and the bytes +68h..+6Ah cleared.
+inline constexpr std::array<std::pair<std::uint16_t, std::string_view>, 4> kPeriscopeEffects{{
+    {0x30, "Warning Dive DIVE Dive"}, {0x38, "Lvl3Water"}, {0x3C, "PeriscopeEmerge"}, {0x4C, "PeriscopeDrops"}}};
+void periscope_register_00650e00(Raw s, LayoutHost& host) {
+    host.front_end_screen_register_004f71d0(s);
+    s.ptr(0x24) = nullptr;
+    s.ptr(0x2C) = nullptr;
+    s.at<float>(0x60) = -1.0f;  // 00D7A260
+    s.at<std::uint8_t>(0x1C) = 0;
+    page(s, 0x6C, "GUI_periscope", host);
+    host.screen_virtual_14(s);
+    for (const auto& [off, name] : kPeriscopeEffects) host.handle_assign_acquired(Raw{s.p + off}, host.effect_acquire_by_name_00871ba0(name));
+    s.at<float>(0x64) = 1.0f;
+    s.at<std::uint8_t>(0x68) = 0;
+    s.at<std::uint8_t>(0x69) = 0;
+    s.at<std::uint8_t>(0x6A) = 0;
+}
+
+// 006463E0, HUD root layout (+14h): the powerup templates, the unit panel and
+// the selector. unit_name_Text has its byte +FCh cleared and is nudged by
+// (+0.006, -0.005, +0.0) from its resolved position (doubles of those floats,
+// 00CEC390 / 00CEC8F8 / 00D7A258).
+void hud_root_load_layout_006463e0(Raw s, LayoutHost& host) {
+    page(s, 0xF8, "GUI_powerups", host);
+    find(s, 0xFC, 0xF8, "puptemplate_Icon", host);
+    show(s, 0xFC, false, host);
+    find(s, 0x100, 0xF8, "circletemplate_Section", host);
+    show(s, 0x100, false, host);
+    page(s, 0x2C, "GUI_unit", host);
+    find(s, 0x34, 0x2C, "unit_name_Text", host);
+    Raw{static_cast<std::uint8_t*>(s.ptr(0x34))}.at<std::uint8_t>(0xFC) = 0;
+    float pos[3];
+    host.widget_resolved_position_00aa6750(s.ptr(0x34), pos);
+    const float moved[3] = {
+        static_cast<float>(static_cast<double>(pos[0]) + static_cast<double>(0.006f)),
+        static_cast<float>(static_cast<double>(pos[1]) - static_cast<double>(0.005f)),
+        static_cast<float>(static_cast<double>(pos[2]) + 0.0)};
+    host.widget_set_resolved_position_00aa8240(s.ptr(0x34), moved);
+    find(s, 0x64, 0x2C, "FlagJP_Icon", host);
+    find(s, 0x68, 0x2C, "FlagUS_Icon", host);
+    find(s, 0x50, 0x2C, "unit_payload_Icon", host);
+    find(s, 0x7C, 0x2C, "unit_HP_damage_Icon", host);
+    find(s, 0x80, 0x2C, "unit_HP_healthy_Icon", host);
+    find(s, 0x84, 0x2C, "unit_command_Icon", host);
+    page(s, 0x28, "GUI_selector", host);
+    show(s, 0x28, false, host);
+    find(s, 0x30, 0x28, "Units_Group", host);
+    find(s, 0x40, 0x30, "ClosedUnitHUD_Group", host);
+    find(s, 0x5C, 0x40, "Medal_Icon", host);
+    find(s, 0x60, 0x40, "Medal_Text", host);
+    find(s, 0x3C, 0x28, "WeaponInfo_Text", host);
+    show(s, 0x40, true, host);
+}
+
+// 0064C0F0, ship-status layout (+14h): GUI_ship, GUI_repair, GUI_ship_effects
+// and GUI_ship_damage. The stick's resolved y (00AA67F0 -> +4h) is kept in
+// +138h; the four highlight icons (+D8h..+E4h) are shown with their colour's
+// alpha set to 0 (vtable +54h read, +50h write); the four "Villanas" (Hungarian:
+// flash) edge icons of GUI_ship_effects go to +18Ch..+198h and are hidden.
+inline constexpr std::array<std::pair<std::uint16_t, std::string_view>, 10> kShipStatusShipIcons{{
+    {0x50, "ship_dir_Icon"}, {0x60, "ship_speed_num1_Icon"}, {0x64, "ship_speed_num2_Icon"},
+    {0x68, "ship_recon_num1_Icon"}, {0x6C, "ship_recon_num2_Icon"}, {0x70, "ship_torpedo_num1_Icon"},
+    {0x74, "ship_torpedo_num2_Icon"}, {0xF8, "ship_relation_Icon"}, {0x54, "ship_recon_Icon"},
+    {0x58, "ship_torpedo_Icon"}}};
+inline constexpr std::array<std::pair<std::uint16_t, std::string_view>, 12> kShipStatusRepairIcons{{
+    {0x90, "repair_hl_west_Icon"}, {0x94, "repair_hl_east_Icon"}, {0x98, "repair_hl_north_Icon"},
+    {0x9C, "repair_hl_south_Icon"}, {0xA4, "repair_ikons_periscope_Icon"}, {0xA8, "repair_ikons_engine_Icon"},
+    {0xAC, "repair_warning_west_Icon"}, {0xB0, "repair_warning_east_Icon"}, {0xB4, "repair_warning_north_Icon"},
+    {0xB8, "repair_warning_south_Icon"}, {0xA0, "repair_hl_middle_Icon"}, {0xC0, "repair_Text"}}};
+inline constexpr std::array<std::pair<std::uint16_t, std::string_view>, 9> kShipStatusDamageIcons{{
+    {0xCC, "Icon_1_Icon"}, {0xD0, "Icon_2_Icon"}, {0xC4, "Icon_3_Icon"}, {0xC8, "Icon_4_Icon"},
+    {0xD4, "Icon_5_Icon"}, {0xD8, "Hl_1_Icon"}, {0xDC, "Hl_2_Icon"}, {0xE0, "Hl_3_Icon"}, {0xE4, "Hl_4_Icon"}}};
+inline constexpr std::array<std::pair<std::uint16_t, std::string_view>, 4> kShipStatusCircles{{
+    {0xE8, "circle_1_Section"}, {0xEC, "circle_2_Section"}, {0xF0, "circle_3_Section"}, {0xF4, "circle_4_Section"}}};
+inline constexpr std::array<std::pair<std::uint16_t, std::string_view>, 4> kShipStatusFlashes{{
+    {0x18C, "VillanasFelso_Icon"}, {0x190, "VillanasAlso_Icon"}, {0x194, "VillanasBal_Icon"}, {0x198, "VillanasJobb_Icon"}}};
+void ship_status_load_layout_0064c0f0(Raw s, LayoutHost& host) {
+    page(s, 0x34, "GUI_ship", host);
+    find(s, 0x48, 0x34, "ship_stick_Icon", host);
+    s.at<float>(0x138) = host.widget_vector_00aa67f0(s.ptr(0x48))[1];
+    for (const auto& [off, name] : kShipStatusShipIcons) find(s, off, 0x34, name, host);
+    page(s, 0x38, "GUI_repair", host);
+    for (const auto& [off, name] : kShipStatusRepairIcons) find(s, off, 0x38, name, host);
+    page(s, 0x3C, "GUI_ship_effects", host);
+    page(s, 0x40, "GUI_ship_damage", host);
+    show(s, 0x40, true, host);
+    for (const auto& [off, name] : kShipStatusDamageIcons) find(s, off, 0x40, name, host);
+    for (std::size_t off = 0xD8; off <= 0xE4; off += 4) {
+        show(s, off, true, host);
+        float rgba[4];
+        host.widget_get_colour_54(s.ptr(off), rgba);
+        rgba[3] = 0.0f;
+        host.widget_set_colour_50(s.ptr(off), rgba);
+    }
+    for (const auto& [off, name] : kShipStatusCircles) find(s, off, 0x40, name, host);
+    // The four finds run first and the stores follow together (0064D52B..0064D53D).
+    void* flashes[4];
+    for (std::size_t i = 0; i < 4; ++i) flashes[i] = host.gui_find_child_00aa7e00(s.ptr(0x3C), kShipStatusFlashes[i].second);
+    for (std::size_t i = 0; i < 4; ++i) s.ptr(kShipStatusFlashes[i].first) = flashes[i];
+    for (const auto& [off, name] : kShipStatusFlashes) show(s, off, false, host);
+}
+
+// 0065DAA0, support-manager layout (+14h): the radial menu of the page at +78h
+// and the info panel. pum_info_Text is found inside sm_close_Group (the two
+// names are prepared before both calls); circle_large_Group gets the scale
+// (1.0001, 1.0001) (00CF6634, 00AA86B0) and the slots are rebound (0065D220)
+// before the info panel loads; map_Group's resolved position is kept in
+// +1B4h..+1BCh. Hungarian names: nagykep = big picture, piros = red,
+// vilagos = light, sotet = dark, keret = frame.
+void support_manager_load_layout_0065daa0(Raw s, LayoutHost& host) {
+    void* close_group = host.gui_find_child_00aa7e00(s.ptr(0x78), "sm_close_Group");
+    s.ptr(0x178) = host.gui_find_child_00aa7e00(close_group, "pum_info_Text");
+    find(s, 0x12C, 0x78, "circle_full_Section", host);
+    find(s, 0x130, 0x78, "circle_left_Section", host);
+    find(s, 0x134, 0x78, "circle_right_Section", host);
+    find(s, 0xEC, 0x78, "center_Group", host);
+    find(s, 0x1CC, 0xEC, "nagykep_Icon", host);
+    find(s, 0xF0, 0xEC, "without_pload_Group", host);
+    find(s, 0xF4, 0xEC, "pload_Group", host);
+    find(s, 0x158, 0xF4, "icon_L_Icon", host);
+    find(s, 0xF8, 0x78, "up_1_Icon", host);
+    find(s, 0xFC, 0x78, "up_4_Icon", host);
+    find(s, 0x100, 0x78, "up_2_Icon", host);
+    find(s, 0x104, 0x78, "up_3_Icon", host);
+    find(s, 0x138, 0x78, "circle_large_Group", host);
+    host.widget_set_scale_00aa86b0(s.ptr(0x138), 1.0001f, 1.0001f);
+    host.support_rebind_slots_0065d220(s);
+    page(s, 0x16C, "GUI_support_infopanel", host);
+    show(s, 0x16C, false, host);
+    find(s, 0x170, 0x16C, "unit_name_Text", host);
+    find(s, 0x1A8, 0x16C, "resource_Text", host);
+    find(s, 0x180, 0x16C, "piros_Icon", host);
+    find(s, 0x184, 0x16C, "vilagos_Icon", host);
+    find(s, 0x188, 0x16C, "sotet_Icon", host);
+    find(s, 0x18C, 0x16C, "keret_FrameBox", host);
+    find(s, 0x190, 0x16C, "support_Icon", host);
+    find(s, 0x1B0, 0x78, "map_Group", host);
+    float pos[3];
+    host.widget_resolved_position_00aa6750(s.ptr(0x1B0), pos);
+    s.at<float>(0x1B4) = pos[0];
+    s.at<float>(0x1B8) = pos[1];
+    s.at<float>(0x1BC) = pos[2];
+    find(s, 0x1C0, 0x1B0, "minimap_map_Icon", host);
+    find(s, 0x1D8, 0x1C0, "SpawnThing_Icon", host);
+    find(s, 0x128, 0x1C0, "Unit_Icon", host);
+    find(s, 0x1C8, 0x1B0, "minimap_FrameBox", host);
+    find(s, 0x1C4, 0x1B0, "powerup_tip_FrameBox", host);
 }
 
 } // namespace bsp::ingame_gui_cc13

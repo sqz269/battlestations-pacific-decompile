@@ -128,6 +128,24 @@ jump with ECX = a constant or field (45h, +C4h, 10h, 11h, 13h, 14h); 0067C0E0 ta
   line (+110h line count), starting from min(cursor_base + 8, count). The decompile's argument
   list for both is right only once EDX is read as the prefix.
 
+### Fifth batch (layout binders)
+
+The page loads and child finds were extracted with `local/fe2_bind.py` (capstone over the disk
+image: string pushes, 00AA5840 / 00AA7E00 calls, the ECX source of each find and the store that
+follows), and every store the script could not pair was read from disasm-raw.
+
+| Routine | Pages and notable extras |
+|---|---|
+| 00650E00 periscope register | GUI_periscope (+6Ch); effect handles "Warning Dive DIVE Dive" (+30h), "Lvl3Water" (+38h), "PeriscopeEmerge" (+3Ch), "PeriscopeDrops" (+4Ch) through 00871BA0, stored refcounted |
+| 006463E0 HUD root layout | GUI_powerups (+F8h, templates hidden), GUI_unit (+2Ch; unit_name_Text nudged by (+0.006, -0.005)), GUI_selector (+28h, hidden; ClosedUnitHUD_Group +40h shown) |
+| 0064C0F0 ship-status layout | GUI_ship (+34h; stick y kept in +138h), GUI_repair (+38h), GUI_ship_effects (+3Ch; four "Villanas" flash icons, finds first and stores together at 0064D52B..0064D53D, then hidden), GUI_ship_damage (+40h, shown; Hl_1..4 alpha 0) |
+| 0065DAA0 support-manager layout | radial menu of the page at +78h (pum_info_Text inside sm_close_Group: both names are built before the two calls), circle_large_Group scale (1.0001, 1.0001), slot rebind 0065D220, GUI_support_infopanel (+16Ch, hidden), map_Group position into +1B4h..+1BCh |
+
+Left for a later pass: 0061FBE0 (rewards bind, 58 finds plus scroller set-ups; several group
+names are not pushed as immediates, so the script mispairs them), 0064BB90 (ship-status register:
+four samples through 00870CD0 and more), 0067F080 (unit library register: 3D scene set-up),
+00629D10 (rewards register: page names through 00450540).
+
 ### Shared shapes
 
 - `observer_ref_set`: 0064B340, 00656DE0, 00656E20, 0064B610, 0064BB50 (the last two return the
