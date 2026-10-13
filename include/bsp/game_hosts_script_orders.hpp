@@ -463,7 +463,7 @@ inline constexpr bool kGetSquadronPlanesBound = true;   // ON: SQUADRON_LAND_TAS
 // empty while the squadron still flies. True: the lookup is
 // find_by_member_or_departed_unit, the squadron the unit belongs to OR left at its
 // death. False: find_by_member_unit, as before.
-inline constexpr bool kGetSquadronPlanesDepartedLeadBound = false;
+inline constexpr bool kGetSquadronPlanesDepartedLeadBound = true;  // ON: lead pair (JM08 identical, 2026-10-13)
 
 // Packet cc9_lua_countdown (docs/SQUADRON_LAND_TASK.md 5dr). True: the three
 // countdown natives run on the countdown object at [game+21E8h] (constructed by

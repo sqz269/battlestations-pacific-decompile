@@ -108,5 +108,7 @@ the step; no consumer waits for the sinking pose, and none tests health directly
 - Reconstructed and build-tested: `squadron_land_target_latches_009f8295`. Host switches D2 and D3:
   build-tested, OFF, not game-validated.
 - `./scripts/build.ps1` passed (2/2 tests) after each commit.
-- Open: D1 needs the cc13-fix4 lease to clear (or cc9 adoption); D5 needs the host land task traced
+- D1 applied by cc13-fix6 behind `kLuaAttackTargetDeadNilBound` (OFF; game_hosts_lua.hpp) at
+  8ca58876b (2026-10-13); OFF is byte-identical; build-tested (ctest 2/2), not game-validated.
+- Open: D5 needs the host land task traced
   before a fix; `00927C90`'s table at `+188h` is unread.

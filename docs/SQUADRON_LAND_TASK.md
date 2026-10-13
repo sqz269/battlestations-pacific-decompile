@@ -16367,3 +16367,26 @@ file is `config/win_orders/prcp01_l55_p01_c.txt`), the recall check (5gp), `kDro
    returning Betties shot down over the US screen. Also re-run USNOS on current main: the ceiling flip moves it.
 4. Lead items still queued: CC13_GPR_48 (007D99C0's carrier-deck parent term in forward speed; 007DB4D0's clamped arm rewriting
    TurnRollLeader +260h), the Lua bindings (5gp item 4).
+
+## 5gt. The run-in altitude cap ctl+394h (packet `cc9_l57_ctl_cruise_cap`, cc9-lua57, 2026-10-13)
+
+docs/CC13_VER_9.md finding 1 (model `src/strike_approach_ver_cc13.cpp`, scope docs/CC13_VER_11.md): 009FBA88-009FBABF caps
+009FBA50's command at min(Ceiling - 50, ctl+394h) whenever `[state+4]+0Ch` (unit+9D4h, the squadron) is non-null. The host
+passed `has_squadron = false`, so its cap was 1450 (Ceiling 1500 - 50).
+
+**The switch (`bsp::kStrikeCtlCruiseCapBound`, include/bsp/strike_approach_ver_cc13.hpp, committed OFF).** True:
+`apply_strike_ctl_cruise_cap_009fba9b` feeds `has_squadron = true` and `squadron_limit` = the script value (`sq_alt_394` while
+`sq_alt_set`, 0089F550), else the flight leader's task CruisingAlt (torpedo tuning+430h = 500, 009D4A70; dive tuning+4C0h = 1300,
+009C8920), else General/CruisingAlt (tuning+53Ch = 1000, 007F2BE8), at the four strike sites the lead named: torpedo attackrun
+(009D0A6F), dive moveto and torpedo moveto (009C1AFF), dive attackrun (009C43D9). LABELLED: the leader's installed task stands
+for the profile that last wrote; every plane is taken to have the block. The dogfight, land and strafe/level-bomb moveto seams
+(the other three `has_squadron = false` sites) stay unfed: their +394h comes from other profiles (009AAF30, 009B3C60, ...).
+Summary line: `summary strike ctl+394h cap feeds=N`.
+
+**Predictions.**
+- USN21 f (`s46_u21_f.txt`): MOVED. Torpedo moveto `commanded` 1450 -> 500 in the glide census; TBMs level near 500 m at
+  about 72 m/s instead of climbing at 37-50 m/s, so they reach attackrun sooner and lower. Dive moveto/attackrun capped at 1300
+  instead of 1450: flyabove entries near 1300 (not 1357-1392). Torpedo releases up (still gated by the 009D3210 member refusals,
+  item 2); dive releases +1-3. Deaths on the attackrun leg shift (lower, faster TBMs against different AA categories).
+- USN01 g (`usn01_p6_u1_g.txt`): MOVED if its SBDs dive (cap 1300); the "aimglide blocked at the ceiling" lead may ease.
+- LOMP10 and USN12: MOVED wherever a dive or torpedo strike flies; the win must hold.

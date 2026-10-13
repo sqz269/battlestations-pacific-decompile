@@ -105,7 +105,7 @@ inline constexpr bool kWeaponDirectorFireTargetBound = true;
 // the head of 0071F290's call, not 00836920's own row. False: a locked target stays
 // held until the unit row goes inactive (KillDepth), and an unlocked dead one until a
 // scan finds another, as before.
-inline constexpr bool kDirectorDeadFireTargetReleaseBound = false;
+inline constexpr bool kDirectorDeadFireTargetReleaseBound = true;  // ON: lead pair, five wins hold (2026-10-13)
 
 // Packet cc9_torpedo_threat_first_node (docs/GUNNERY_OPEN_ITEMS.md sections 22-23).
 // 00814420 (ship vtable[1D4h], body 00814420-00814492) walks the world torpedo

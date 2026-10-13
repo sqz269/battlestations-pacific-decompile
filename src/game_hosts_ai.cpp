@@ -502,7 +502,7 @@ constexpr bool kCaptureGroupValueBound = true;
 // tested only +5Ch (unit_active), which a wreck keeps until KillDepth. True: the +5Dh
 // mirror (unit_flag_005d) is tested as well; the +5Ch test stays (LABELLED). False:
 // sinking wrecks near a capture target count as its defenders, as before.
-constexpr bool kCaptureDefenderDeadByteBound = false;
+constexpr bool kCaptureDefenderDeadByteBound = true;  // ON: lead pair, five wins hold (2026-10-13)
 
 // Packet cc9_planner_group_target_value (rank 10), docs/SHIP_AI_OPEN_ITEMS.md
 // section 7. True: the planner's candidate base term is 00A0F970's group target
