@@ -2644,7 +2644,8 @@ struct GameUnitsHost::Impl {
     // counts down; past Retreat.ExitDist or below zero 00811E80 routes MT_UNITEXITED and
     // the ship's handler 0081BEB0 kills it with reason 4 ("exitzone"). True: the host
     // runs it for every live ship. False: no ship ever leaves the map, as before.
-    static constexpr bool kShipOutOfMapExitBound = false;
+    // ON by mechanism (cc9-ships47, SHIP_AI 232): wins identical, the JM06 probe exits.
+    static constexpr bool kShipOutOfMapExitBound = true;
     unsigned long long ship_exit_calls{0}, ship_exit_counting{0}, ship_exit_warnings{0},
         ship_exit_kills{0};
     void note_kill_cause(std::size_t unit, int cause) {
