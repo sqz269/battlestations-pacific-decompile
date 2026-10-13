@@ -235,7 +235,7 @@ bool gun_can_fire_00729a80(const GunFireGateInputs& in, bool check_reload) noexc
     // The muzzle must be at or above the waterline, or both submerged-fire tests
     // must answer no.
     const bool above_water = in.muzzle_world_y >= kGunMuzzleWaterlineY;
-    if (!above_water && (in.muzzle_submerged || in.muzzle_blocked)) {
+    if (!above_water && (in.muzzle_submerged || in.artillery_kind_005459b0)) {
         return false;
     }
     // The only path that answers true: some barrel is out of reload.

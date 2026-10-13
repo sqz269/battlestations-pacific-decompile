@@ -662,6 +662,16 @@ constexpr bool kAabb0085cdb0Bound = true;
 //    box about the origin, so a burst on a mast or the upper works (34 m up on a
 //    Height-5 transport) lies past a 30 m range.
 constexpr bool kBlastMeshBoundsBound = false;
+//  * kGunSubmergedArtilleryKindBound (cc9-gunnery39, GUNNERY 206; cc13-fe5's note).
+//    00729A80's second submerged-fire test 005459B0 (005459B0-005459D8) answers
+//    whether the weapon kind [[gun+3F4h]+80h] is 2, 3, 4 or 6, so an artillery gun
+//    whose muzzle is below the waterline (00729B2F) cannot fire. The host's kind is
+//    the gun category, as for the torpedo test. False: the answer stays false.
+constexpr bool kGunSubmergedArtilleryKindBound = false;
+inline bool gun_artillery_kind_005459b0(int kind) noexcept {
+    return kGunSubmergedArtilleryKindBound
+        && (kind == 2 || kind == 3 || kind == 4 || kind == 6);
+}
 //  * kArtilleryAimPointBound: the ArtilleryGunnerBot (006DF520, sub-types 2, 3,
 //    4, 9, and 6 against a non-plane) aims at a point ON its ship target, not
 //    at the target origin raised by the class Height. Step 4: when bot+B4h
@@ -7842,7 +7852,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         gate.weapon_type_id = gun.category;
         gate.muzzle_world_y = muzzle[1];
         gate.muzzle_submerged = false;
-        gate.muzzle_blocked = false;
+        gate.artillery_kind_005459b0 = gun_artillery_kind_005459b0(gun.category);
         gate.barrel_count = gun.barrel_num;
         gate.reload_timers = gun.fire.barrel_timers.data();
         const bool can_fire = bsp::gun_can_fire_turning_0085a830(inhibited, arcs,
@@ -11764,7 +11774,7 @@ bool GameGunneryHost::Impl::torpedo_tube_can_fire_1d0(std::size_t g) {
     gate.weapon_type_id = gun.category;
     gate.muzzle_world_y = muzzle[1];
     gate.muzzle_submerged = false;
-    gate.muzzle_blocked = false;
+    gate.artillery_kind_005459b0 = gun_artillery_kind_005459b0(gun.category);
     gate.barrel_count = gun.barrel_num;
     gate.reload_timers = gun.fire.barrel_timers.data();
     const bsp::GunPlatformArcs arcs{gun.arcs.data(), gun.arcs.size()};

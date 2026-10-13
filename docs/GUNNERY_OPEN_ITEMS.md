@@ -13306,3 +13306,15 @@ and falloff distance stay the 5gg gap. Counter: `summary mission gunnery blast m
 **Predictions.** OFF identical. ON: more units admitted (tall superstructures, masts), so blast hits, damage and
 possibly deaths rise wherever bursts land high or near; USNOS: TroopTrans3's Ohka reaches it (`reached>=1`); USN12
 moves (gun-heavy) but should keep its completion.
+
+## 206. 005459B0 is a weapon-kind test: `kGunSubmergedArtilleryKindBound`, OFF (lead queue item 3, from cc13-fe5; cc9-gunnery39, 2026-10-13)
+
+`gun_aiming.hpp`'s `muzzle_blocked` was 00729A80's second submerged-fire predicate `005459B0`, which the host set false
+at both gate sites. The listing (`005459B0..005459D8`): `EAX = [[ECX+3F4h]+80h]`; 2, 3, 4 or 6 -> 1, else 0. Called
+at `00729B4A` only after the muzzle's world y failed `>= [00D7A24C]` (`00729B2F`) and `00728A90` answered no. So an
+artillery-kind gun (light/medium/heavy artillery, light artillery flak, in the category numbering the host's torpedo
+test already uses) cannot fire with its muzzle under water. Renamed `artillery_kind_005459b0`, fed from the gun
+category through `gun_artillery_kind_005459b0` behind the switch. `00728A90` stays false (not read here).
+
+**Predictions.** OFF identical. ON moves only rows where an artillery gun's muzzle goes below y = 0: a submarine's deck
+gun while submerged (USN06, JM06), perhaps a sinking ship's guns. Elsewhere identical.
