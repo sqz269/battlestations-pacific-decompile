@@ -1,0 +1,26 @@
+{
+  "packet": "cc13-ver3",
+  "doc": "docs/CC13_VER_3.md",
+  "steps": [
+    {"address": "00826985", "native": "0078cf20", "function": "00825f20", "what": "keel-point wave height"},
+    {"address": "00826a21", "native": "008e6430", "function": "00825f20", "what": "gameplay scale (category 4)"},
+    {"address": "00826aab", "native": "0080fc30", "function": "00825f20", "what": "boost reference speed"},
+    {"address": "00826b29", "native": "0092d300", "function": "00825f20", "what": "axial speed"},
+    {"address": "00826b54", "native": "0092e8c0", "function": "00825f20", "what": "steering"},
+    {"address": "00826b6a", "native": "0092be80", "function": "00825f20", "what": "controller update (RET 4 stub)"},
+    {"address": "0092e8ef", "native": "0042ac60", "function": "0092e8c0", "what": "rudder slew"},
+    {"address": "0092e950", "native": "00811890", "function": "0092e8c0", "what": "yaw rate from smoothed rudder"},
+    {"address": "0092e966", "native": "00825de0", "function": "0092e8c0", "what": "avoidance turn assist"},
+    {"address": "0092e9e9", "native": "0042cf10", "function": "0092e8c0", "what": "asin of row2.y"},
+    {"address": "0092d444", "native": "00825ec0", "function": "0092d300", "what": "retardation (boosted)"},
+    {"address": "008118e3", "native": "0092d730", "function": "00811890", "what": "body-axis speed"},
+    {"address": "008118f8", "native": "0082ecb0", "function": "00811890", "what": "class yaw-rate curve"},
+    {"address": "0082ece8", "native": "0082e890", "function": "0082ecb0", "what": "rudder denominator"},
+    {"address": "00937496", "native": "0080fc30", "function": "00937440", "what": "reference speed"},
+    {"address": "00937613", "native": "00c35330", "function": "00937440", "what": "add torque"},
+    {"address": "00937622", "native": "009329c0", "function": "00937440", "what": "hydrodynamics"},
+    {"address": "00834f12", "native": "0042ac60", "function": "00834e90", "what": "steering-angle slew"},
+    {"address": "0081fe95", "native": "00815520", "function": "0081f980", "what": "helm record read (unit+9A0h)"},
+    {"address": "00939f2f", "native": "00d196f0+vtable00", "function": "00939f20", "what": "variant C vptr store (slot 0 = 00937440)"}
+  ]
+}
