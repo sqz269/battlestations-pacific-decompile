@@ -216,4 +216,15 @@ Names added (`config/names/`, no model): see section 5.
 - `007C4DD0` (engine effects, 1136 lines), `007C3700` (bow wave), `007CC580` (OnKilled, effect
   teardown) and `007CBA50`'s other arms are presentation and were not modelled.
 - `0049A760`/`00498F80` (the `C4Ch` marker service on `[00E188A8]+21D0h`) is unread.
-- `007BA450`, `007BAD00` and `007BBA10` stay raw (see docs/CC13_GP_007A_007F.md).
+- `007BA450`, `007BAD00` and `007BBA10` stay raw (see docs/CC13_GP_007A_007F.md). `007BA450` is a
+  float min/max helper (`FCOMI` over three float pointers), outside the damage scope.
+- Ghidra has no functions at `007BBDC0` and `007BBF10` (section 1.7); creating them, then applying
+  their ledger names, needs the write lock.
+- The live branch of `007CC2F0` (landing probe, the `C5h` touch message) belongs to the carrier-landing
+  chain and was left to cc9's lua56.
+- How `00447510` consumes `007CAAD0`'s jittered matrix copy, and the meaning of record `+14h..+1Ch`.
+
+Handoff: every model is in `src/gameplay_seg47_cc13.cpp` with its listing range; the adoption table in
+section 2 is the integration checklist. Tree-local helpers (not committed): `local/g47_rd.py` (PE
+constants), `local/g47_list.py` (the unrecorded-function list for the segment), `local/g47_calls.json`
+(the verifier input).
