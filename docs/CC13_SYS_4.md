@@ -13,7 +13,7 @@ game-validated; the hosts take field values and callbacks where the image works 
 | x87 geometry `0046F550..00470150` (7) | yes | yes | yes | no |
 | `004656D0` particle-effect movie action run | yes | yes | yes | no |
 | Segment-9 helpers (20 + 35) | yes | yes | yes | no |
-| Segment-4/6 helpers, matrices, `004702E0` (23) | yes | yes | yes | no |
+| Segment-4/6 helpers, matrices, `004702E0` (23 + 12) | yes | yes | yes | no |
 
 ## Singleton getters
 
@@ -140,8 +140,19 @@ unsigned `JA`), `004BDF50` (apply pending size through vtable `+10h`), `004BEA10
   `0044CCE0` is the E1 message destructor (the constructor `0044C970` builds through stream
   objects and is still open).
 
+## Segment 6, fourth batch (12)
+
+`00470B80` (operator new then memset, with no null test), `00470BA0` (copies the static vector at
+`00F87574`), and `00472540`. The last one calls vtable `+D8h` with the stack unchanged, so the
+callee sees the caller's return address where an argument would be; the host calls the slot with
+no arguments. Also in this batch: `0047BEC0` (observer link base), `00475E60` (recursive flag OR
+over `+34h`/`+3Ch`), `00467B50` and `004683B0` (intrusive list erase and clear), `00467F60` (POD
+push_back; Ghidra's decompile drops the `size++` at `00467F91`), the cloud particle array
+`00476E40`/`00476EE0`/`00477020` (`00477020` frees the data, so it is a tidy, not a clear), and
+`00477110` (cloud class destructor).
+
 ## Evidence method
 
 Live `bsp.py ghidra decompile`, `disasm-raw` for every listed body, constants from the PE
 (`local/sys4_consts.py`). Call-site rows: `reports/cc13_sys4_calls.json`
-(`tools/verify_report_calls.py`: 74 rows, 0 failed).
+(`tools/verify_report_calls.py`: 81 rows, 0 failed).

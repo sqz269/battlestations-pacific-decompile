@@ -454,6 +454,113 @@ void matrix_build_from_euler_yxz_0047c2a0(Matrix4& out, const std::array<float, 
     out = host.multiply_00413920(zx, ry);                                         // 0047C2E4
 }
 
+void* memory_alloc_zeroed_00470b80(std::uint32_t size, const std::function<void*(std::uint32_t)>& operator_new_00bf55be) {
+    void* block = operator_new_00bf55be(size);                                    // 00470B85
+    std::memset(block, 0, size);                                                  // 00470B90, no null test
+    return block;
+}
+
+void class_entity37_velocity_00470ba0(std::array<float, 3>& out, const std::array<float, 3>& static_00f87574) {
+    out = static_00f87574;
+}
+
+void scene_object_forward_slot_d8_00472540(void* object, const std::function<void(void*)>& vslot_d8) {
+    vslot_d8(object);
+}
+
+void observer_link_destroy_base_0047bec0(ObserverSlotFields& link,
+                                         const std::function<void(void*, void*)>& unregister_006952a0,
+                                         const std::function<void(void*)>& destroy_callback_owner_00695870) {
+    link.vtable = 0x00CE6430;                                                     // 0047BEDD
+    if (link.subject_14 != nullptr) unregister_006952a0(link.subject_14, &link);  // 0047BEF4
+    destroy_callback_owner_00695870(&link);                                       // 0047BF03
+}
+
+void node_or_flags_recursive_00475e60(void* node, std::uint32_t mask) {
+    auto* bytes = static_cast<unsigned char*>(node);
+    void* child = nullptr;
+    std::memcpy(&child, bytes + 0x34, sizeof child);
+    std::uint32_t flags = 0;
+    std::memcpy(&flags, bytes + 0x48, sizeof flags);
+    flags |= mask;
+    std::memcpy(bytes + 0x48, &flags, sizeof flags);
+    while (child != nullptr) {
+        node_or_flags_recursive_00475e60(child, mask);
+        std::memcpy(&child, static_cast<unsigned char*>(child) + 0x3C, sizeof child);
+    }
+}
+
+RawListNode* raw_list_erase_node_00467b50(std::int32_t& count, RawListNode*& head, RawListNode* node,
+                                          const std::function<void(void*)>& free_00bf65ac) {
+    if (node->prev == nullptr) head = node->next;
+    else node->prev->next = node->next;
+    RawListNode* next = node->next;
+    if (next != nullptr) next->prev = node->prev;
+    --count;
+    free_00bf65ac(node);
+    return next;
+}
+
+void raw_list_clear_storage_004683b0(std::int32_t& count, RawListNode*& head, RawListNode*& tail,
+                                     const std::function<void(void*)>& free_00bf65ac) {
+    while (count != 0) {
+        RawListNode* node = head;
+        if (node->prev == nullptr) head = node->next;
+        else node->prev->next = node->next;
+        if (node->next == nullptr) tail = node->prev;
+        else node->next->prev = node->prev;
+        --count;
+        free_00bf65ac(node);
+    }
+}
+
+void pod_pointer_array_push_back_00467f60(PodPointerArray& array, std::uint32_t value,
+                                          const std::function<void(PodPointerArray&, std::int32_t)>& reserve_004674f0) {
+    if (array.size == array.capacity) {
+        std::int32_t grown = array.capacity * 2;
+        if (!(grown > 1)) grown = 1;                                              // 00467F6D CMP; JG
+        reserve_004674f0(array, grown);
+    }
+    const std::uintptr_t slot = reinterpret_cast<std::uintptr_t>(array.data) + static_cast<std::uintptr_t>(array.size) * 4;
+    if (slot != 0) *reinterpret_cast<std::uint32_t*>(slot) = value;               // 00467F85
+    ++array.size;                                                                 // 00467F91
+}
+
+void cloud_particle_array_push_back_00476e40(CloudParticleArray& array, const std::array<std::uint32_t, 8>& element,
+                                             const CloudParticleReserve& reserve_00476550) {
+    if (array.size == array.capacity) {
+        std::int32_t grown = array.capacity * 2;
+        if (!(grown > 1)) grown = 1;
+        reserve_00476550(array, grown);
+    }
+    const std::uintptr_t slot =
+        reinterpret_cast<std::uintptr_t>(array.data) + static_cast<std::uintptr_t>(array.size) * 0x20;
+    if (slot != 0) *reinterpret_cast<std::array<std::uint32_t, 8>*>(slot) = element;
+    ++array.size;                                                                 // 00476E99
+}
+
+void cloud_particle_array_clear_00476ee0(CloudParticleArray& array, const CloudParticleReserve& reserve_00476550) {
+    if (array.capacity < 0) reserve_00476550(array, 0);
+    while (array.size > 0) --array.size;
+    array.size = 0;
+}
+
+void cloud_particle_array_tidy_00477020(CloudParticleArray& array, const CloudParticleReserve& reserve_00476550,
+                                        const std::function<void(void*)>& free_block) {
+    cloud_particle_array_clear_00476ee0(array, reserve_00476550);                 // 0047702B..0047704C
+    free_block(array.data);                                                       // 00477053
+}
+
+void cloud_class_destruct_00477110(
+    std::uint32_t& vtable, const void* cloud_class,
+    const std::function<void(void*, std::uint32_t, std::int32_t)>& pool_return_00bd1510,
+    const std::function<void(const void*)>& named_class_base_destroy_00489e80) {
+    vtable = 0x00CE5FB4;
+    static constexpr PooledStringReleaseRow kRow{0x00477110, "__fastcall(ECX class), RET", {{{0x2C, 0x30, 1}}}, 1};
+    release_pooled_strings(kRow, cloud_class, pool_return_00bd1510);
+    named_class_base_destroy_00489e80(cloud_class);
+}
+
 // ---------------------------------------------------------------------------
 // Packet cc13-sys4: segment-4 render settings and the system error box.
 // ---------------------------------------------------------------------------

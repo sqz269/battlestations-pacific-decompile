@@ -427,6 +427,88 @@ struct EulerRotationHost {
 };
 void matrix_build_from_euler_yxz_0047c2a0(Matrix4& out, const std::array<float, 3>& angles, EulerRotationHost& host);
 
+// 00470B80, __fastcall(ECX = size), RET, EAX = block: operator new
+// (00BF55BE) then memset(block, 0, size) (00BF79F0) with no null test.
+void* memory_alloc_zeroed_00470b80(std::uint32_t size, const std::function<void*(std::uint32_t)>& operator_new_00bf55be);
+
+// 00470BA0, __thiscall(ECX unused, float out[3]), RET 4: out = the three
+// floats at 00F87574/78/7C (a static vector).
+void class_entity37_velocity_00470ba0(std::array<float, 3>& out, const std::array<float, 3>& static_00f87574);
+
+// 00472530 and 00473E30: a bare JMP 0048DBD0 (the shared SEntity init base).
+// 00472540, __thiscall(ECX = object, arg), RET 4: CALL [vtable+0D8h] with
+// ECX = object and the stack as it is (the callee sees the caller's return
+// address where an argument would be), then RET 4. Modelled as the slot
+// called with no arguments; `arg` is not forwarded.
+void scene_object_forward_slot_d8_00472540(void* object, const std::function<void(void*)>& vslot_d8);
+
+// 0047BEC0 (body-identical to 004B7EF0 and 0042BCA0), __fastcall(ECX =
+// link), RET, under an EH frame: vtable 00CE6430; when +14h is set, 006952A0
+// (ECX = subject, EDX = link); then 00695870 (ECX = link).
+struct ObserverSlotFields;
+void observer_link_destroy_base_0047bec0(ObserverSlotFields& link,
+                                         const std::function<void(void* subject, void* observer)>& unregister_006952a0,
+                                         const std::function<void(void* link)>& destroy_callback_owner_00695870);
+
+// 00475E60, __thiscall(ECX = node, u32 mask), RET 4: node+48h |= mask, then
+// the same on every child (first child +34h, next sibling +3Ch), depth first.
+void node_or_flags_recursive_00475e60(void* node, std::uint32_t mask);
+
+// Intrusive list nodes {prev +0, next +4, payload ...} freed with _free.
+struct RawListNode {
+    RawListNode* prev;
+    RawListNode* next;
+};
+// 00467B50 (body-identical to 004837D0 and 00928030), __thiscall(ECX = list
+// {count, head}, node), RET 4, EAX = the next node or 0: unlink (head = next
+// when there is no prev), count--, _free. No tail is kept.
+RawListNode* raw_list_erase_node_00467b50(std::int32_t& count, RawListNode*& head, RawListNode* node,
+                                          const std::function<void(void*)>& free_00bf65ac);
+// 004683B0 and the thunk 00468790 (body-identical to 004C2CE0 and 004BF8E0),
+// __fastcall(ECX = list {count, head, tail}), RET: while count != 0, unlink
+// the head (tail = prev when it was last), count--, _free.
+void raw_list_clear_storage_004683b0(std::int32_t& count, RawListNode*& head, RawListNode*& tail,
+                                     const std::function<void(void*)>& free_00bf65ac);
+
+// 00467F60, __thiscall(ECX = array {data, size, capacity}, const u32* value),
+// RET 4: when size == capacity, 004674F0 reserves max(capacity*2, 1) (JG 1);
+// the value is stored when the slot address is non-null, and size++ always.
+struct PodPointerArray {
+    std::uint32_t* data{nullptr};
+    std::int32_t size{0};
+    std::int32_t capacity{0};
+};
+void pod_pointer_array_push_back_00467f60(PodPointerArray& array, std::uint32_t value,
+                                          const std::function<void(PodPointerArray&, std::int32_t)>& reserve_004674f0);
+
+// Cloud particle arrays {data, size, capacity} of 20h-byte elements; 00476550
+// reserves (ECX = array, count).
+struct CloudParticleArray {
+    std::array<std::uint32_t, 8>* data{nullptr};
+    std::int32_t size{0};
+    std::int32_t capacity{0};
+};
+using CloudParticleReserve = std::function<void(CloudParticleArray&, std::int32_t)>;
+// 00476E40, __thiscall(ECX = array, const element*), RET 4: grow to
+// max(capacity*2, 1) when full, copy the eight dwords when the slot address is
+// non-null, size++.
+void cloud_particle_array_push_back_00476e40(CloudParticleArray& array, const std::array<std::uint32_t, 8>& element,
+                                             const CloudParticleReserve& reserve_00476550);
+// 00476EE0, __fastcall(ECX = array), RET: 00476550(0) when capacity < 0, the
+// size counted down to 0 (the elements are trivial), size = 0.
+// 00477020, __fastcall(ECX = array), RET: the same, then _free (00BF6989) of
+// the data; the data pointer is left as it was.
+void cloud_particle_array_clear_00476ee0(CloudParticleArray& array, const CloudParticleReserve& reserve_00476550);
+void cloud_particle_array_tidy_00477020(CloudParticleArray& array, const CloudParticleReserve& reserve_00476550,
+                                        const std::function<void(void*)>& free_block);
+
+// 00477110, __fastcall(ECX = class), RET, under an EH frame: vtable 00CE5FB4,
+// the string at +2Ch/+30h back to the pool, then 00489E80 (named class base).
+void cloud_class_destruct_00477110(
+    std::uint32_t& vtable, const void* cloud_class,
+    const std::function<void(void* data, std::uint32_t bytes, std::int32_t count)>& pool_return_00bd1510,
+    const std::function<void(const void* cloud_class)>& named_class_base_destroy_00489e80);
+
 // ---------------------------------------------------------------------------
 // Packet cc13-sys4: segment-4 render settings and the system error box.
 // ---------------------------------------------------------------------------
