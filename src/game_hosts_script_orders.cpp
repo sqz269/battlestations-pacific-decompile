@@ -126,6 +126,11 @@ inline constexpr bool kScriptedOrderNatives2Bound = true;
 // 0071BF20 (1) in place of 0071BED0's 0. False leaves both unimplemented
 // records, as before, and every hold stays permanent.
 inline constexpr bool kLuaUnitFreeFireBound = false;
+// Packet cc13-ver12 (docs/CC13_VER_12.md section 2). True binds NavigatorStop
+// 008A7400: 0077D600(entity, stop 00E08F88, zeroed descriptor, 1) at 008A7569,
+// through entity_issue_command like the other navigator orders. False leaves
+// it an unimplemented record, as before.
+inline constexpr bool kLuaNavigatorStopBound = false;
 inline constexpr bool kPilotLandNativeBound = true;
 constexpr bool kDisablePhysicsBound = true;
 constexpr bool kAddMatrixInterpolatorBound = true;
@@ -164,6 +169,8 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // Packet cc13-ver12: handled only with kLuaUnitFreeFireBound.
     {"UnitFreeAttack", 0x008a67e0u},
     {"UnitFreeFire", 0x008a6950u},
+    // Packet cc13-ver12: handled only with kLuaNavigatorStopBound.
+    {"NavigatorStop", 0x008a7400u},
     // Packet cc9_scripted_order_natives part 2: SetShipMaxSpeed is handled only
     // with kScriptedOrderNatives2Bound, PilotLand only with kPilotLandNativeBound.
     {"SetShipMaxSpeed", 0x00890a10u},
@@ -408,6 +415,9 @@ const char* command_name_of(std::uint32_t object) noexcept {
     // Packet cc8_navigator_path. 00E08F80, the third object a navigator row
     // names; the constant is command_execution.hpp's, not a new one.
     if (object == bsp::kCommandMoveOnPath) return "moveonpath";
+    // Packet cc13-ver12: NavigatorStop's 00E08F88 (only issued with
+    // kLuaNavigatorStopBound).
+    if (object == bsp::kCommandStop) return "stop";
     return "";
 }
 
@@ -582,6 +592,7 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
         std::strcmp(binding->name, "UnitFreeFire") == 0) {
         return kLuaUnitFreeFireBound;
     }
+    if (std::strcmp(binding->name, "NavigatorStop") == 0) return kLuaNavigatorStopBound;
     if (std::strcmp(binding->name, "SetShipMaxSpeed") == 0) return kScriptedOrderNatives2Bound;
     if (std::strcmp(binding->name, "PilotLand") == 0) return kPilotLandNativeBound;
     if (std::strcmp(binding->name, "PilotRetreat") == 0) return bsp::kPlaneRetreatTaskBound;
@@ -2545,6 +2556,24 @@ int GameScriptOrdersHost::run_unit_free_fire(GameScriptOrderRow& row,
     return 0;
 }
 
+// 008A7400 `NavigatorStop(unit)`, packet cc13-ver12 (docs/CC13_VER_12.md
+// section 2). Argument 0 through 00888AA0 (008A74FE), a descriptor that is zero
+// apart from the vector copied from 00F87574 (the zero vector), and
+// 0077D600(entity, stop 00E08F88, &descriptor, 1) at 008A7569. Nothing is
+// pushed. The image makes no null test; this skips a null entity, as the
+// navigator move bodies do.
+int GameScriptOrdersHost::run_navigator_stop(GameScriptOrderRow& row) {
+    void* entity = argument_entity(0);
+    row.unit_index = index_of(entity);
+    row.unit = name_of(entity);
+    static const float kZeroVector00f87574[3] = {0.0f, 0.0f, 0.0f};
+    const bsp::ScriptOrderIssue order = bsp::navigator_stop_order_008a7400(kZeroVector00f87574);
+    if (entity != nullptr) {
+        entity_issue_command(entity, order.command, order.target, order.flags);
+    }
+    return 0;
+}
+
 // 008A47B0 `PilotLand(unit, site)`, packet cc9_scripted_order_natives part 2.
 // Argument 0 through 00888AA0, argument 1 through ReadCommandTarget, then
 // 0077D600(entity, land 00E08FA0, target, 1) at 008A4907. The receiving bots'
@@ -3395,6 +3424,8 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         results = run_unit_free_fire(row, bsp::ScriptFireOrder::kFreeAttack);
     } else if (std::strcmp(binding->name, "UnitFreeFire") == 0) {
         results = run_unit_free_fire(row, bsp::ScriptFireOrder::kFreeFire);
+    } else if (std::strcmp(binding->name, "NavigatorStop") == 0) {
+        results = run_navigator_stop(row);
     } else if (std::strcmp(binding->name, "NavigatorEnable") == 0) {
         results = run_navigator_enable(row);
     } else if (std::strcmp(binding->name, "SetShipMaxSpeed") == 0) {
