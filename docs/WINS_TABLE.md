@@ -234,4 +234,35 @@ mechanism is in the cd761bb52 section above).
   120000 frames: 4108.77 s, 2667.48 s under jitter 20,3, 5901.74 s under 20,5 (tight), guard logged, on main with
   kShipSubmergedThrottleBound and kShipRightingImageConstantsBound ON.
 - **PRCP01 is a win again** (reported through the lead): `prcp01_l55_p01_c` completes at 720.25 s on main 2c0421b51
-  with cc13-fix5's eight natives ON, guard logged.
+  with cc13-fix5's eight natives ON, guard logged.- **Re-time on main ad68156b1** (cc9-physics7, 2026-10-13). Export `local\p7_m`, exe C277B01AE8BE, reference env,
+  `--stop-after-end 40`, logs `local\p7w1_<row>.log` (launcher `local\p7_wins.ps1`, summary `local\p7_keep.py w1`):
+
+  | Row | Frames | Result | Guard |
+  |---|---|---|---|
+  | USN02 `s36_u2_p7` | 16000 | completed 203.01 s | yes |
+  | LOMP06 `l50_l6_q6` | 16000 | completed 372.83 s (was 535.24) | yes |
+  | USN12 `s38_u12_p2` | 36000 | completed 1534.87 s | yes |
+  | LOMP10 `p3_l10_b` | 36000 | completed 1244.64 s (977.48 on V1/R1) | yes |
+  | USN15 `s45_u15_l2` | 90000 | EndMission 2730.99 s | yes |
+  | USN01 `p6_u1_k6` | 26000 | completed 1118.67 s (was 514.80; Northampton's gunfire finishes it, not the strike) | yes |
+  | BSM01 `p6_b1_a` | 40000 | EndMission 764.94 s | yes |
+  | JM08 `p6_j8_f` | 110000 | completed 2318.84 s | yes |
+  | JM06 `s47_j6_n1` | 120000 | completed 2733.49 s | yes |
+  | IJN18 `s46_i18_a` | 64000 | EndMission 2193.71 s | yes |
+  | PRCP01 `l55_p01_c` | 30000 | **no end** | - |
+  | ESMP08 `p6_e8_br3l` | 140000 | **no end**: Cummings survives; the other 14 die by 6475 s (in the win, all 15 by 2615 s) | - |
+
+  - PRCP01: cc9-lua52's `l57_d0_p01w.log` has the same size as this run, and its `l57_d1` (lua57's think-delay fix)
+    completes at 865.06 s; the lead reports that fix is now on main, so PRCP01 is a win again there (not re-run here).
+  - ESMP08: the kill rate halves from the first big-ship deaths on (Washington 846 -> 1812 s, Iowa 1265 -> 2096 s).
+    Re-plan after the plane-flight flips (CC13_GPR_48 10).
+- **The four plane-flight switches ON together** (cc9-physics7, scratch `local\p7_all` = ad68156b1 plus D2, R2, D4 and
+  D1 ON, exe 24B400E520EF; docs/CC13_GPR_48.md 10; logs `local\p7a1_<row>.log`). This is NOT on main yet; the switches
+  are planned for one commit at the resume. Results: USN02 203.01 s, LOMP06 372.83 s, USN12 1534.87 s, LOMP10 985.08 s,
+  USN15 EndMission 2730.99 s, BSM01 EndMission 761.94 s, JM08 f 1603.74 s, JM06 n1 2697.46 s, IJN18 EndMission
+  2124.35 s, PRCP01 586.53 s, guard logged on all. **USN01 k6 lost** (Convoy1 survives). ESMP08 was stopped at the
+  pause, before it ended.
+  - USN01 re-plan for that build: **`config/win_orders/usn01_p7_u1_a.txt`**, which is k6 with `3413 target ConTBD2
+    Convoy1` (Convoy4 now dies first). It completes at 366.33 s (`local\p7u1_a.log`). The jitter checks were stopped
+    at the pause and have not been run.
+  - Variants b-f (ConSBD3 or ConSBD1/2 at Convoy1, ConTBD1's retarget at 3600) did not complete.
