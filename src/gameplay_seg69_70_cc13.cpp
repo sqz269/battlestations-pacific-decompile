@@ -3,6 +3,7 @@
 // disk bytes; the instruction addresses are cited where they decide behaviour.
 
 #include "bsp/gameplay_seg69_70_cc13.hpp"
+#include "bsp/band_009f_cc13.hpp"
 
 #include <cmath>
 
@@ -529,6 +530,96 @@ bool ai_try_spawn_group_gate_00a25a30(float weight, std::size_t threat_records,
     if (threat_records == 0) return false;                      // 00A25A7B, 00A25A89
     if (sources == 0) return false;                             // 00A25ABB
     return true;
+}
+
+// ---------------------------------------------------------------------------
+// RETREAT: 00A01230 / 00A11530 / 00A156E0
+// ---------------------------------------------------------------------------
+
+float ai_net_danger_at_point_00a01230(const float point[3], int team, RetreatHost& host) {
+    const float own = host.danger_cost(point, team);                    // 00A01239
+    const float other = host.danger_cost(point, team == 0 ? 1 : 0);    // 00A01246 SETE
+    return own - other;                                                 // 00A01250 FSUBR
+}
+
+std::optional<std::array<float, 3>> ai_retreat_pick_direction_00a11530(int team, RetreatHost& host) {
+    constexpr double kRadius = 750.0;                    // [00D22C70]
+    constexpr double kStep = 0.5235987901687622;         // [00CEC730]
+    constexpr double kEnd = 6.2831854820251465;          // [00CE3828]
+    const float y = static_cast<float>(0.0 * kRadius);   // 00A11533..00A1154B
+    float best = -10000000000.0f;                        // [00CE4ADC]
+    std::optional<std::array<float, 3>> out;
+    float a = 0.0f;
+    do {
+        const float c = static_cast<float>(std::cos(static_cast<double>(a)));   // 00A11574 FCOS
+        const float s = static_cast<float>(std::sin(static_cast<double>(a)));   // 00A11586 FSIN
+        // 00A115A0 DC C9 (FMUL ST1,ST0): x = 750 sin a; z = 750 cos a.
+        const float dx = static_cast<float>(kRadius * s);
+        const float dz = static_cast<float>(kRadius * c);
+        float centre[3];
+        host.leader_point(centre);                       // read again every sample
+        const float p[3] = {centre[0] + dx, centre[1] + y, centre[2] + dz};
+        const float v = ai_net_danger_at_point_00a01230(p, team, host);   // 00A11619
+        if (v > best) {                                  // 00A1162A FCOMI/JBE
+            out = std::array<float, 3>{dx, y, dz};
+            best = v;
+        }
+        a = static_cast<float>(static_cast<double>(a) + kStep);           // 00A11660
+    } while (kEnd > static_cast<double>(a));                              // 00A11674 JA
+    return out;
+}
+
+bool ai_retreat_tick_00a156e0(std::uint32_t group_5638, RetreatHost& host) {
+    host.retreat_prelude();
+    const int team = (group_5638 == 0u) ? 1 : 0;        // 00A15759 SETE
+    const std::optional<std::array<float, 3>> d = ai_retreat_pick_direction_00a11530(team, host);
+    if (!d) return false;   // LABELLED: the image reads its uninitialised out here
+    float c[3];
+    host.leader_point(c);
+    const float ahead[3] = {c[0] + (*d)[0], c[1] + (*d)[1], c[2] + (*d)[2]};    // 00A1579E
+    host.leader_point(c);
+    const float behind[3] = {c[0] - (*d)[0], c[1] - (*d)[1], c[2] - (*d)[2]};   // 00A1580B
+    const float ahead_cost = host.danger_cost(ahead, team) - 8.0f;              // 00A15846 [00CE3DB0]
+    const float behind_cost = host.danger_cost(behind, team);                   // 00A15856
+    if (!(ahead_cost > behind_cost)) return false;                              // 00A15864 JBE
+    host.leader_point(c);
+    const float target[3] = {c[0] - (*d)[0], c[1] - (*d)[1], c[2] - (*d)[2]};   // 00A158A7
+    host.issue_move_first_member(target);                                       // 00A158F5
+    return true;
+}
+
+// ---------------------------------------------------------------------------
+// 00A07D40 / 00A24870
+// ---------------------------------------------------------------------------
+
+std::vector<const TeamEntityView*> ai_collect_team_entities_00a07d40(
+    int team, const std::vector<TeamEntityView>& world, const std::array<float, 3>* sphere_centre,
+    float sphere_radius_squared, bool exclude_static) {
+    std::vector<const TeamEntityView*> out;
+    for (const TeamEntityView& e : world) {
+        if (e.byte_05d) continue;                                       // 00A07D73
+        if (e.team_054 != team) continue;                               // 00A07D81
+        if (sphere_centre != nullptr) {                                 // 00A07D8A
+            band009f::AiSphereFilter f;
+            f.centre = *sphere_centre;
+            f.radius_squared = sphere_radius_squared;
+            if (band009f::ai_point_outside_sphere_00a1a660(f, e.pos.data())) continue;   // 00A07DAC
+        }
+        if (!e.kind_06 && !e.kind_18 && !e.kind_1b) continue;           // 00A07DB2..00A07DDD
+        if (exclude_static && (e.kind_1b || e.kind_45 || e.kind_46)) continue;   // 00A07DDF
+        out.push_back(&e);                                              // 00A07E1B, 00A07E23
+    }
+    return out;
+}
+
+std::vector<const TeamEntityView*> ai_collect_threats_near_00a24870(
+    int planner_team_034, const TeamEntityView& entity, float tuning_1a4,
+    const std::vector<TeamEntityView>& world) {
+    const float r2 = tuning_1a4 * tuning_1a4;                          // 00A248AE, 00A248C0
+    std::vector<const TeamEntityView*> out =
+        ai_collect_team_entities_00a07d40(planner_team_034, world, &entity.pos, r2, false);
+    if (out.empty()) out.push_back(&entity);                            // 00A248FD
+    return out;
 }
 
 }  // namespace gameplay_seg69_70_cc13

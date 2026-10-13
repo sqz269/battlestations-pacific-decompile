@@ -401,5 +401,74 @@ std::optional<SpawnRequest> ai_choose_spawn_composition_00a23980(
 bool ai_try_spawn_group_gate_00a25a30(float weight, std::size_t threat_records,
                                       std::size_t sources) noexcept;
 
+// ---------------------------------------------------------------------------
+// The RETREAT command: 00A01230 BSP_Ai_NetDangerAtPoint, 00A11530
+// BSP_AiCommand_RetreatPickDirection, 00A156E0 BSP_AiCommand_Retreat_Tick.
+// ---------------------------------------------------------------------------
+
+class RetreatHost {
+public:
+    virtual ~RetreatHost() = default;
+    // 00A010F0 __fastcall(point, team) -> ST0 (host:
+    // AiCommandTickHost::tick_danger_cost_00a010f0).
+    virtual float danger_cost(const float point[3], int team) = 0;
+    // The first member's +FCh (after 00414DB0), or 00F87574 when +5644h is 0.
+    virtual void leader_point(float out[3]) = 0;
+    // 00A156E7 00A10DC0 (follower pass), 00A156EE 00A11690 (formation wedge),
+    // 00A15742 00A13B60(0.75 [00CEE07C], leader point, 0, 0).
+    virtual void retreat_prelude() = 0;
+    // 00A158F5 00A02020(ECX = the first member of +563Ch, EDX = &point).
+    virtual void issue_move_first_member(const float point[3]) = 0;
+};
+
+// float(00A010F0(p, team) - 00A010F0(p, team == 0)) (FSUBR qword).
+float ai_net_danger_at_point_00a01230(const float point[3], int team, RetreatHost& host);
+
+// The ring of 00A113D0 (750 [00D22C70] around the leader, pi/6 steps while
+// 2pi [00CE3828] > a, a stored as float: 13 samples) scored by 00A01230 with
+// team = (group+5638h == 0); the strict best above -1e10 [00CE4ADC]. nullopt
+// when no sample beats the seed: the image then leaves the caller's out
+// unwritten (uninitialised stack in 00A156E0).
+std::optional<std::array<float, 3>> ai_retreat_pick_direction_00a11530(int team, RetreatHost& host);
+
+// 00A156E0 after its prelude: d = 00A11530; when
+// float(00A010F0(leader + d, team) - 8.0 [00CE3DB0]) > 00A010F0(leader - d, team)
+// (FCOMI/JBE), the first member is ordered to leader - d. Returns whether it was.
+bool ai_retreat_tick_00a156e0(std::uint32_t group_5638, RetreatHost& host);
+
+// ---------------------------------------------------------------------------
+// 00A07D40 BSP_Ai_CollectTeamEntityRecords, __fastcall(team, &records;
+// exclude filter, exclude_static), RET 8; and its caller 00A24870
+// BSP_AiPlanner_CollectThreatRecordsNear, __thiscall(planner)(entity, &records).
+// ---------------------------------------------------------------------------
+
+struct TeamEntityView {
+    const void* id{nullptr};
+    bool byte_05d{false};          // +5Dh: set -> skipped
+    int team_054{0};               // +54h
+    std::array<float, 3> pos{};    // +FCh..+104h (after 00414DB0)
+    bool kind_06{false};           // vtable+5Ch(6), ships
+    bool kind_18{false};           // (18h)
+    bool kind_1b{false};           // (1Bh), forts
+    bool kind_45{false};           // (45h), airfields
+    bool kind_46{false};           // (46h), shipyards
+};
+
+// The world list [[00E188A8]+19CCh]+34h in order. An entity is kept when +5Dh
+// is clear, +54h == team, the filter (vtable slot 0 on &pos; null skips the
+// test) answers false, it is kind 6, 18h or 1Bh, and, with exclude_static,
+// not kind 1Bh, 45h or 46h. Each kept entity becomes 00A04560(entity, 1).
+std::vector<const TeamEntityView*> ai_collect_team_entities_00a07d40(
+    int team, const std::vector<TeamEntityView>& world, const std::array<float, 3>* sphere_centre,
+    float sphere_radius_squared, bool exclude_static);
+
+// 00A24870: the filter is vtable 00D22CC0 (slot 0 = 00A1A660, outside the
+// sphere) centred on the entity with r^2 = float(tuning+1A4h squared); team is
+// planner+34h; exclude_static 0. With nothing collected, the entity itself is
+// the one record (00A248FD).
+std::vector<const TeamEntityView*> ai_collect_threats_near_00a24870(
+    int planner_team_034, const TeamEntityView& entity, float tuning_1a4,
+    const std::vector<TeamEntityView>& world);
+
 }  // namespace gameplay_seg69_70_cc13
 }  // namespace bsp

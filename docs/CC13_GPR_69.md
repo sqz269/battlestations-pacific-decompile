@@ -153,6 +153,33 @@ next think time = `[00F876A4] + U(3.0, 5.0)` on **stream 1**, one draw per slot 
 The host's `GameAiCoordinatorHost::create_00a32350` (src/game_hosts_ai.cpp:5865) fills the next think
 times with 0.0 and draws nothing.
 
+### 1.4 The RETREAT command's tick (`00A156E0`, `00A11530`, `00A01230`)
+
+include/bsp/ai_command_tick.hpp:194 records that the RETREAT tick is not bound in the host; the host
+read it only to its first dispatch. After the follower pass `00A10DC0`, the formation wedge
+`00A11690` and `00A13B60(0.75 [00CEE07C], leader, 0, 0)`:
+1. **`00A11530`** samples the same ring as `00A113D0` (750 units around the leader, pi/6 steps
+   accumulated as float while `2pi > a`: 13 samples; `DC C9` makes x = 750 sin a, z = 750 cos a).
+   Each sample is scored by **`00A01230`**, `float(00A010F0(p, t) - 00A010F0(p, t == 0))`, with
+   t = `(group+5638h == 0)`. The strict best above -1e10 gives the direction d. When no sample
+   beats the seed the image leaves its out vector unwritten (the caller's stack); the model returns
+   none and the tick does nothing.
+2. `ahead = leader + d`, `behind = leader - d`. When
+   `float(00A010F0(ahead, t) - 8.0 [00CE3DB0]) > 00A010F0(behind, t)` (`FCOMI`/`JBE`), the group's
+   first member is ordered to `behind` through `00A02020` (the host's `issue_to_member` path).
+
+So the retreat heads away from the direction where `00A010F0(t)` most exceeds `00A010F0(!t)`, and
+only when that side is worse than the opposite one by more than 8.
+
+### 1.5 Team entity collection (`00A07D40`, `00A24870`)
+
+`00A07D40(team, &records; filter, exclude_static)` walks the world list `+34h` and keeps an entity
+whose `+5Dh` is clear and `+54h` is the team, which the filter does not exclude (vtable slot 0 on
+the entity's position), which is kind 6, 18h or 1Bh, and (with `exclude_static`) not kind 1Bh, 45h
+or 46h. `00A24870` uses the sphere filter of vtable `00D22CC0` (slot 0 = `00A1A660`) centred on the
+target with `r^2 = float(tuning+1A4h squared)`, team = planner+34h, and falls back to the target's own
+record. The host's labelled stand-in `capture_defenders_00a24870` (src/game_hosts_ai.cpp:4027)
+matches these rules except that it reads `+5Dh` through `unit_active` and walks its world list 2.
 ## 2. Adoption table (cc9 terms)
 
 | model | replaces (host file:line) | inputs and where the host gets them | RNG | OFF-switch prediction |
@@ -161,8 +188,10 @@ times with 0.0 and draws nothing.
 | `ai_try_spawn_group_gate_00a25a30`, `ai_sort_spawn_sites_00a236f0`, `ai_choose_spawn_composition_00a23980`, `ai_match_final_weight_00a0d1d0`, `ai_class_pair_value_00a03900`, `ai_unit_list_min_speed_00a02180` | the Capture spawn arm, counted only (src/game_hosts_ai.cpp:4383 `spawn_due`, :4423) and the Defend arm; `quick_spawn_named_group` (src/game_hosts_ai.cpp:5465) for the mode planners | `0066E590`'s sites with their stock (`0084D560`), `00942130`, mode tuning `+50h..+54h`, `+100h..+10Ch`, `+230h..+238h`, the class-pair table, `00A0C650` both ways (host `compose_attack_value_00a0c650`), `00419010`, `0084CF80`; the request goes to `0094C830`, which ends at the SpawnNew queue the host drains | **stream 1**: one draw per candidate tried per round and one more per bought pick (`00A0D604`, `00A0DAB8`/`00A0DB21`) | OFF: none. ON: nothing changes on the reference rows (no authored stock, docs/SHIP_AI_OPEN_ITEMS.md 52.2). On `ijn_11_operation_to` and the three `ijn_02_force_z` copies, Capture and Defend thinks that pass the gates buy units and shift stream 1 |
 | `ai_init_party_think_schedule_00a163d0` | the `next_think.fill(0.0f)` in `create_00a32350` (src/game_hosts_ai.cpp:5865) | the float clock at creation | **stream 1**: 8 draws at controller creation | OFF: none. ON: every party's first think moves from 0 s to 3..5 s, and every later stream-1 consumer shifts by 8 draws |
 
-No model draws from stream 0.
+| `ai_retreat_tick_00a156e0`, `ai_retreat_pick_direction_00a11530`, `ai_net_danger_at_point_00a01230` | none: the RETREAT tick `00A156E0` is not bound (include/bsp/ai_command_tick.hpp:194) | the host's `tick_danger_cost_00a010f0` (src/game_hosts_ai.cpp:3078), the leader point, the prelude (`00A10DC0`, `ai_formation_wedge_00a11690`, `00A13B60`), `issue_to_member` | none | OFF: none. ON: a group under a RETREAT command (Lua `00A13340` or `00A2BE70`, which is unreferenced) moves its leader 750 units away from the worst direction when that side's cost exceeds the opposite side's by 8 |
+| `ai_collect_team_entities_00a07d40`, `ai_collect_threats_near_00a24870` | the labelled stand-in `capture_defenders_00a24870` (src/game_hosts_ai.cpp:4027) | the world list `+34h`, `+5Dh`, `+54h`, the kinds, tuning `+1A4h` | none | OFF: none. ON: the same set when the host's world list 2 is the image's `+34h` list and `unit_active` is `!+5Dh`; any difference shows as different capture group values |
 
+No model draws from stream 0.
 ## 3. For cc9 (no host edits made)
 
 - **`00A02180` / `00A07C10` are minimums.** Rename candidates `BSP_UnitList_MinSpeed`,
@@ -175,11 +204,17 @@ No model draws from stream 0.
 Function records (`config/reconstruction`), models in `src/gameplay_seg69_70_cc13.cpp`:
 `00A046C0`, `00A04860`, `00A04910`, `00A0F680`, `00A179E0`, `00A163D0`, `00A02180`, `00A07C10`,
 `00A03900`, `00A0D1D0`, `00A236F0` (partial), `00A23980` (partial: the mode 4+ arm), `00A25A30`
-(partial: the gate).
+(partial: the gate);  0A01230,  0A11530,  0A156E0 (partial: the prelude),  0A07D40,  0A24870.
+
+Records for existing reconstructions, each checked against the listing in this pass (local/gpr69_dis.py, local/gpr69_clonecheck.py):
+- the AI command GetType slots (12, to the AiCommandType enum in include/bsp/ai_planners.hpp) and IsType slots (15, to i_command_is_type in src/ai_planners.cpp);
+- in src/band_009f_cc13.cpp (cc13-gp9f's models): the twelve CloneForGroup slots (partial: the type only), the planner IsType and GetName slots (16),  0A2C0A0,  0A2C0D0,  0A2C100,  0A16450,  0A15950,  0A1A660,  0A2C150,  0A2C1C0,  0A2C230,  09FEC40,  0A1C960,  0A1CA60 (the D8 C9, DE FA, D8 F1, D8 7F forms read from the bytes),  0A2B8F0,  0A2B950,  0A2BCC0,  0A2C3D0 (the model divides by the list size where the image divides by +5644h).
 
 ## 5. Verification
 
 - `./scripts/build.ps1` passed in this tree: the build and ctest (2 of 2). No test was added.
+- `tools/verify_report_calls.py local/gpr69_calls.json` checked 58 call-site rows cited here (the power-up pass, the scorers, the spawn chain, the retreat tick, the collection), with 0 failures. The row file is not committed.
+- `tools/x87_dc_form_scan.py --range 009FE130-00A371A0 --by-function` finds 12 DC-form sites in 10 functions. Two are in modelled functions, `00A115A0` (`00A11530`) and `00A17C82` (`00A179E0`); both were read from the bytes (`DC C9`). The `DE` pop forms of `00A0D1D0` and the `D8` forms of `00A1CA60` were read from the bytes as well.
 
 ## 6. Open and handoff
 
