@@ -744,6 +744,54 @@ struct IconFrameHost {
 int hud_unit_icon_frame_00652ba0(Raw slot, IconFrameHost& host);
 int support_manager_record_icon_frame_00658620(Raw s, Raw record, IconFrameHost& host);
 
+// ---------------------------------------------------------------------------
+// fe2b: the four large layout binders.
+// ---------------------------------------------------------------------------
+struct RewardsLayoutHost : LayoutHost {
+    // *(cell): a char* the image keeps in .data (the page-group names).
+    virtual const char* global_cstr(std::uint32_t cell) = 0;
+    virtual const float* widget_vector_00aa6740(void* widget) = 0;
+    virtual void scroller_bind_00683790(Raw block, void* move_group) = 0;          // ECX = block
+    virtual void scroller_setup_00683380(Raw block, void* thumb, float track, void* up, void* down) = 0;
+    virtual void widget_set_listener_00aa6bc0(void* widget, void* listener, int flag) = 0;  // ECX = widget
+    // 00531030(&tmp, action): the key name of an action ("" at 00E196AA when empty).
+    virtual std::string_view action_key_name_00531030(int action) = 0;
+    // 004C5E60 widens the key; 00531130(ECX = text, &wide, listener, text).
+    virtual void text_set_key_glyph_00531130(void* text, std::string_view key, void* listener) = 0;
+    virtual void text_refresh_00ab80c0(void* text) = 0;
+    virtual void text_set_localised_source_00abaed0(void* text, std::string_view source, bool flag) = 0;
+};
+void rewards_bind_layout_0061fbe0(Raw s, RewardsLayoutHost& host);
+struct RewardsRegisterHost : HudScreenHost {
+    // The checked vector of native strings at `vector` (a global): erase all / push_back.
+    virtual void string_vector_clear_004954f0(std::uint32_t vector) = 0;
+    virtual void string_vector_append_00450540(std::uint32_t vector, std::string_view value) = 0;
+};
+void rewards_register_00629d10(Raw s, RewardsRegisterHost& host);
+struct ShipStatusRegisterHost : LayoutHost {
+    virtual void* effect_acquire_00870cd0(int id) = 0;   // ECX = &out, EDX = id, (1)
+    // The sound-sample cache *00F8BBE8 (SoundSampleCache_AcquireByName).
+    virtual void* sound_sample_acquire_by_name(std::string_view name) = 0;
+};
+void ship_status_register_0064bb90(Raw s, ShipStatusRegisterHost& host);
+struct UnitLibraryHdr;
+struct UnitLibraryRegisterHost : HudScreenHost {
+    virtual void simple3d_scene_init_0093ccc0(Raw scene) = 0;
+    virtual void camera_set_render_mode_00b6fdf0(void* camera, int mode) = 0;
+    virtual void camera_set_clear_flags_00b6fe10(void* camera, int flags) = 0;
+    // 00B72110 on the scene, its +1Ch light list, first node +8h.
+    virtual void* scene_first_directional_light(void* scene) = 0;
+    virtual void light_set_base_diffuse_004b62e0(void* light, const float rgba[4]) = 0;
+    virtual void scene_set_ambient_00b7af20(void* scene, const float rgba[4]) = 0;  // ECX = lighting owner +10h
+    virtual void render_flag_hook_f8bbf0_04() = 0;          // (*00F8BBF0)[+4h](byte 00F88A04)
+    virtual void render_resources_init_00b107f0() = 0;      // ECX = *00F8D39C, (00F88A0C, 00F88A0D, 00F889D8)
+    virtual void scene_renderer_set_motion_blur_00b0ea20(const float params[8]) = 0;
+    virtual void scene_renderer_set_hdr_00b0e9b0(const UnitLibraryHdr& params) = 0;
+    virtual void light_attach_new_shadow_owner(void* light) = 0;   // 00A8FD30, 00B7BDF0, drop the temporary
+    virtual void lua_run_script_00b69d40(std::string_view path) = 0;
+};
+void unit_library_register_0067f080(Raw s, UnitLibraryRegisterHost& host);
+
 void rewards_release_sound_handles_0061ec00(Raw s, RewardsScreenHost& host);
 bool rewards_selected_entry_flagged_0061d8b0(Raw s, RewardsScreenHost& host);
 void rewards_play_and_remove_file_00622e00(void* file, RewardsScreenHost& host);

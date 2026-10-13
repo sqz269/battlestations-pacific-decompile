@@ -214,6 +214,25 @@ and 0064A394..0064A3DF (after 0064A360). Not defined in this pass.
 - STL instantiations over plain ints and rows (heap/sort helpers 0061D5C0..00626320, list/tree
   helpers 00659AA0..0066B2F0): library code; no record added.
 
+## Seventh batch (cc13-fe2b): the four large binders
+
+- 0061FBE0 rewards bind layout. The six page groups of FE_scoring are found by the names held in
+  the char* cells 00E08C70..00E08C84 (single_page1, multi_page1, objectives_page, detail_page,
+  multiscore_page, awards_page; read through the host because the cells live in .data); this is
+  why the first extraction mispaired them. Every arrow, scroll icon and thumb gets the widget
+  listener at +0Ch (00AA6BC0(+0Ch, 0)). Each of the three scroll panes (+68h, +128h, +19Ch) binds
+  its move group (00683790) and calls 00683380(thumb, back_y - thumb_y, up, down). The pop-up's
+  A_Text gets the key glyph of action A2h (00531030, 00531130, 00AB80C0, 00ABAED0); the listener
+  argument of 00531130 is the +0Ch value saved at 0061FC8F (uncertain).
+- 00629D10 rewards register: FE_scoring page, bind, and the global title-key vector 00E196BC
+  refilled with the six FE.scoring_* keys.
+- 0064BB90 ship-status register: effect handles 1..4 (00870CD0 with EDX = id), state reset, the
+  unit observation dropped, environment_unavailable.fsb into +1Ch.
+- 0067F080 unit library register: UnitLibGui page and the preview scene (light (1, 2, 0)/sqrt 5,
+  diffuse 0.6, ambient 0.2, motion blur and HDR blocks, shadow owner, VehicleClasses.lua and
+  DeviceClasses.lua). The HDR block's field order follows the decompile's stack layout and the
+  motion-blur block the listing; both are host data, not checked against the renderer.
+
 ## Handoff (cc13-fe2, 2026-10-12)
 
 237 records (220 reconstructed in `src/ingame_gui_cc13.cpp`, 17 backfills), build-tested, call
