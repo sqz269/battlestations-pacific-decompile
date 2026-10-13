@@ -427,6 +427,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/scene_property_bag
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/ship_ai_nav_circle_tangent.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/sound_resource_cleanup.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/sound_resource_runtime.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/strike_release_ver_cc13.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/torpedo_approach_update.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/torpedo_release_orders.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/torpedo_task_arm.cpp)
