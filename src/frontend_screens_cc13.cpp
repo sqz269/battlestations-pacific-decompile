@@ -2,6 +2,7 @@
 #include "bsp/frontend_screens_cc13.hpp"
 #include "bsp/options_menu_screens.hpp"
 
+#include <cstdio>
 #include <cstring>
 #include <initializer_list>
 
@@ -1105,4 +1106,489 @@ void hud_map_set_unit_highlight_005aaad0(void* screen, std::uint32_t unit, std::
     *host.map_subscript_005a7af0(at(screen, 0x600), unit) = value;
 }
 
+// ---------------------------------------------------------------------------
+// Native string records (batch 2)
+// ---------------------------------------------------------------------------
+
+void* string_record_assign(void* dst, const void* src, int strings, NativeStringStorage& storage) {
+    for (int i = 0; i < strings; ++i)
+        copy_native_string_header_00be0a30_fragment(at(dst, i * 8u), storage, at(src, i * 8u));
+    return dst;
+}
+
+void* string_record_copy(void* dst, const void* src, int strings, NativeStringStorage& storage) {
+    for (int i = 0; i < strings; ++i) string_copy_header(at(dst, i * 8u), at(src, i * 8u), storage);
+    return dst;
+}
+
+void option_row_destruct_005efdc0(void* row, NativeStringStorage& storage) noexcept {
+    destroy_native_string_header_0041dd20(at(row, 0x8), storage);
+    destroy_native_string_header_0041dd20(at(row, 0x0), storage);
+}
+
+void* option_row_construct_005effa0(void* row, std::uint32_t a_length, const char* a_data,
+    std::uint32_t b_length, const char* b_data, NativeStringStorage& storage) {
+    // The by-value arguments are native headers on the stack; model them as locals.
+    struct Header { std::uint32_t length; const char* data; };
+    Header a{a_length, a_data};
+    Header b{b_length, b_data};
+    for (std::size_t offset : {0x0u, 0x4u, 0x8u, 0xCu}) write_field<std::uint32_t>(row, offset, 0);
+    copy_native_string_header_00be0a30_fragment(at(row, 0x0), storage, &a);
+    copy_native_string_header_00be0a30_fragment(at(row, 0x8), storage, &b);
+    destroy_native_string_header_0041dd20(&a, storage);
+    destroy_native_string_header_0041dd20(&b, storage);
+    return row;
+}
+
+void* id_name_pair_construct_005fdca0(void* pair, const std::uint32_t* key, const void* name,
+    NativeStringStorage& storage) {
+    write_field(pair, 0x0, *key);
+    string_copy_header(at(pair, 0x4), name, storage);
+    return pair;
+}
+
+void* string_then_subobject(std::uint32_t routine, void* dst, const void* src_string, const void* arg,
+    NativeStringStorage& storage, SubObjectHost& host) {
+    string_copy_header(dst, src_string, storage);
+    host.construct(routine, at(dst, 0x8), arg);
+    return dst;
+}
+
+void* mission_score_pair_construct_005943d0(void* dst, const void* name, const void* record,
+    NativeStringStorage& storage, MissionScoreHost& host) {
+    string_copy_header(dst, name, storage);
+    host.record_assign_00593ca0(at(dst, 0x8), record);
+    write_field(dst, 0x28C, read_field<std::uint32_t>(record, 0x284));
+    return dst;
+}
+
+void* mission_score_pair_copy_00594340(void* dst, const void* src, NativeStringStorage& storage,
+    MissionScoreHost& host) {
+    string_copy_header(dst, src, storage);
+    host.record_assign_00593ca0(at(dst, 0x8), at(src, 0x8));
+    write_field(dst, 0x28C, read_field<std::uint32_t>(src, 0x28C));
+    return dst;
+}
+
+void mission_score_pair_destroy_005942a0(void* pair, NativeStringStorage& storage, MissionScoreHost& host) {
+    host.record_destruct_00593570(at(pair, 0x8));
+    destroy_native_string_header_0041dd20(pair, storage);
+}
+
+void native_string_array_remove_swap_last_005f1930(void* array, std::int32_t index, NativeStringStorage& storage) {
+    if (index == -1) return;
+    const std::int32_t count = read_field<std::int32_t>(array, 0x4);
+    std::byte* data = read_field<std::byte*>(array, 0x0);
+    if (index != count - 1)
+        copy_native_string_header_00be0a30_fragment(data + index * 8, storage, data + (count - 1) * 8);
+    // 005F197B re-reads data and count after the copy.
+    data = read_field<std::byte*>(array, 0x0);
+    destroy_native_string_header_0041dd20(data + (read_field<std::int32_t>(array, 0x4) - 1) * 8, storage);
+    write_field(array, 0x4, read_field<std::int32_t>(array, 0x4) - 1);
+}
+
+void* native_string_from_unsigned_005f1750(void* out, std::uint32_t value, NativeStringStorage& storage) {
+    write_field<std::uint32_t>(out, 0x0, 0);
+    write_field<std::uint32_t>(out, 0x4, 0);
+    char buffer[64];
+    std::snprintf(buffer, sizeof buffer, "%u", value);
+    struct Header { std::uint32_t length; char* data; } temp{0, nullptr};
+    resize_native_string_header_0041dd40(&temp, storage, static_cast<std::uint32_t>(std::strlen(buffer)), true);
+    if (temp.data != nullptr) std::memcpy(temp.data, buffer, temp.length + 1u);
+    copy_native_string_header_00be0a30_fragment(out, storage, &temp);
+    destroy_native_string_header_0041dd20(&temp, storage);
+    return out;
+}
+
+void native_string_vector_erase_00589690(void* vector, std::uint32_t* out_iter, std::uint32_t iter_container,
+    void* where, NativeStringRangeHost& host) {
+    host.assign_range_0048da50(at(where, 0x8), read_field<void*>(vector, 0x8), where);
+    std::byte* last = read_field<std::byte*>(vector, 0x8);
+    host.destroy_range_00432050(last - 8, last);
+    write_field(vector, 0x8, read_field<std::byte*>(vector, 0x8) - 8);
+    out_iter[1] = static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(where));
+    out_iter[0] = iter_container;
+}
+
+void* string_int_tree_copy_subtree_0058bd40(void* tree, const void* node, void* parent, TreeCopyHost& host) {
+    void* result = read_field<void*>(tree, 0x4);
+    if (read_field<std::uint8_t>(node, 0x19) == 0) {
+        void* head = result;
+        void* copy = host.allocate_node_00504bd0(tree, head, parent, head, at(node, 0xC),
+            read_field<std::uint8_t>(node, 0x18));
+        if (read_field<std::uint8_t>(result, 0x19) != 0) result = copy;
+        write_field(copy, 0x0, string_int_tree_copy_subtree_0058bd40(tree, read_field<const void*>(node, 0x0), copy, host));
+        write_field(copy, 0x8, string_int_tree_copy_subtree_0058bd40(tree, read_field<const void*>(node, 0x8), copy, host));
+    }
+    return result;
+}
+
+void vector_tidy_destroy(void* vector, std::size_t element_size, void (*destroy)(void*, void*), void* context,
+    ContainerHost& host) {
+    std::byte* first = read_field<std::byte*>(vector, 0x4);
+    if (first == nullptr) return;
+    for (std::byte* p = first; p != read_field<std::byte*>(vector, 0x8); p += element_size) destroy(context, p);
+    host.free_block(read_field<void*>(vector, 0x4));
+    for (std::size_t offset : {0x4u, 0x8u, 0xCu}) write_field<std::uint32_t>(vector, offset, 0);
+}
+
+void debug_text_list_destruct_00590250(void* list, DebugTextListHost& host) {
+    write_field<std::uint32_t>(list, 0x0, 0x00CEFC00u);
+    host.clear_00544a70(list);
+    if (void* first = read_field<void*>(list, 0x14)) {
+        host.destroy_range_00543c20(first, read_field<void*>(list, 0x18), list);
+        host.free_block(read_field<void*>(list, 0x14));
+    }
+    for (std::size_t offset : {0x14u, 0x18u, 0x1Cu}) write_field<std::uint32_t>(list, offset, 0);
+}
+
+void voice_observer_destruct_005b8070(void* observer, VoiceObserverHost& host) {
+    host.observer_link_destroy_base_004b7ef0(at(observer, 0x18));
+    host.voice_slot_destroy_005b7fc0(observer);
+}
+// ---------------------------------------------------------------------------
+// HUD map arithmetic and lookups (batch 2)
+// ---------------------------------------------------------------------------
+
+void hud_map_animate_zoom_0059ab10(void* screen, float dt) noexcept {
+    const bool closing = read_field<std::uint8_t>(screen, 0x88) != 0;
+    const double step = static_cast<double>(dt) * 1.5;  // FMUL qword 00CE3D78
+    const double zoom = read_field<float>(screen, 0x84);
+    write_field(screen, 0x84, static_cast<float>(closing ? step + zoom : zoom - step));
+    if (!closing && 0.0f > read_field<float>(screen, 0x84)) write_field(screen, 0x84, 0.0f);
+    if (closing && read_field<float>(screen, 0x84) > 1.0f) write_field(screen, 0x84, 1.0f);
+    if (!closing && read_field<float>(screen, 0x84) == 0.0f) write_field<std::uint8_t>(screen, 0x88, 1);
+    if (read_field<std::uint8_t>(screen, 0x88) != 0 && read_field<float>(screen, 0x84) == 1.0f)
+        write_field<std::uint8_t>(screen, 0x88, 0);
+}
+
+float hud_map_zoom_scale_for_mode_0059abc0(const void* screen) noexcept {
+    double factor;
+    switch (read_field<std::uint32_t>(screen, 0x2C)) {
+    case 0: factor = 0.800000011920929; break;   // 00CE3D40
+    case 1: factor = 0.699999988079071; break;   // 00CEFFA0
+    case 2: factor = 0.6000000238418579; break;  // 00CEFF98
+    default: factor = 0.5; break;                // 00D7A280 (case 3 and above 3)
+    }
+    return static_cast<float>(read_field<float>(screen, 0x5BC) * factor);
+}
+
+void game_world_bounds_center_0059c920(const void* game, float* out) noexcept {
+    const float sx = read_field<float>(game, 0x7128) + read_field<float>(game, 0x711C);
+    const float sy = read_field<float>(game, 0x712C) + read_field<float>(game, 0x7120);
+    const float sz = read_field<float>(game, 0x7130) + read_field<float>(game, 0x7124);
+    out[0] = static_cast<float>(sx * 0.5);
+    out[1] = static_cast<float>(sy * 0.5);
+    out[2] = static_cast<float>(0.5 * sz);
+}
+
+bool world_point_beyond_map_margin_0059c9b0(const void* game, const float* p, float margin) noexcept {
+    // x87 forms each bound in 80-bit; double holds min-margin exactly unless the
+    // exponents differ by more than 29.
+    const double m = margin;
+    if (read_field<float>(game, 0x711C) - m > p[0]) return true;
+    if (p[0] > read_field<float>(game, 0x7128) + m) return true;
+    if (p[2] > read_field<float>(game, 0x7124) + m) return true;
+    if (read_field<float>(game, 0x7130) - m > p[2]) return true;
+    return false;
+}
+
+bool hud_map_is_point_inside_map_area_0059d410(const float* p, bool wide_layout) noexcept {
+    const double x = p[0];
+    if (wide_layout) {
+        if (!(x > -0.10000000894069672)) return false;  // 00CEFFD8
+        if (!(1.1f > p[0])) return false;               // 00CE6448 (COMISS)
+    } else {
+        if (!(x > 0.060416667411724724)) return false;  // 00CEFFD0
+        if (!(0.9395833214124044 > x)) return false;    // 00CEFFC8
+    }
+    const double y = p[1];
+    return y > 0.05000000074505806 && 0.949999988079071 > y;  // 00D7A270, 00CEFFB0
+}
+
+std::int32_t hud_map_classify_offscreen_edge_0059a910(const void* classifier, const float* p, EdgeReferenceHost& host) {
+    void* view = read_field<void*>(classifier, 0x4);
+    const double x = p[0];
+    const double y = p[1];
+    if (static_cast<double>(host.reference_point_c4(view)[0]) < x) {  // JBE not taken
+        return static_cast<double>(host.reference_point_c4(view)[2]) > y ? 0 : 2;
+    }
+    return static_cast<double>(host.reference_point_c4(view)[2]) > y ? 1 : 3;
+}
+
+void hud_map_icon_start_blink_005a21e0(void* icon, float now_00f876a4, BlinkHost& host) {
+    write_field<std::uint32_t>(icon, 0x118, 5);
+    write_field(icon, 0x110, static_cast<float>(now_00f876a4 + 0.0));  // FADD qword 00D7A258 = 0.0
+    write_field(icon, 0x114, now_00f876a4);
+    write_field(icon, 0x108, read_field<float>(icon, 0x100));
+    write_field(icon, 0x10C, read_field<float>(icon, 0x104));
+    write_field(icon, 0xF8, 0.0f);
+    write_field(icon, 0xFC, 0.0f);
+    host.release_widgets_005a1c60(icon, 0);
+}
+
+const float* static_white_0059adc0(std::uint32_t& guard_00e19528, float* colour_00e19518) noexcept {
+    if ((guard_00e19528 & 1) == 0) {
+        guard_00e19528 |= 1;
+        for (int i = 0; i < 4; ++i) colour_00e19518[i] = 1.0f;  // 00D7A24C
+    }
+    return colour_00e19518;
+}
+
+bool award_hint_is_active_005b5d50(const void* hint) noexcept {
+    // UCOMISS + LAHF/TEST 44h/JNP: equal-and-ordered is false; NaN is true.
+    const float v = read_field<float>(hint, 0xC0);
+    return !(v == 0.0f);
+}
+
+namespace {
+void* find_unit_icon_node(void* screen, std::uint32_t unit, UnitIconMapHost& host) {
+    void* map = at(screen, 0x4F4);
+    const std::array<void*, 2> it = host.lower_bound_pair_005a1800(map, unit);
+    void* end = read_field<void*>(map, 0x4);
+    if (it[0] == nullptr || it[0] != map) host.invalid_iterator_00bf6713();
+    if (it[1] == end) return nullptr;
+    if (it[0] == nullptr) host.invalid_iterator_00bf6713();
+    if (it[1] == read_field<void*>(it[0], 0x4)) host.invalid_iterator_00bf6713();
+    return it[1];
+}
+}  // namespace
+
+void* hud_map_find_unit_icon_005a22d0(void* screen, std::uint32_t unit, UnitIconMapHost& host) {
+    void* node = find_unit_icon_node(screen, unit, host);
+    return node == nullptr ? nullptr : read_field<void*>(node, 0x10);
+}
+
+void hud_map_refresh_unit_icon_texture_005a31a0(void* screen, std::uint32_t unit, UnitIconMapHost& host) {
+    if (read_field<std::uint8_t>(screen, 0x5) == 0) return;
+    if (void* node = find_unit_icon_node(screen, unit, host))
+        host.refresh_side_texture_0059d2a0(read_field<void*>(node, 0x10));
+}
+
+void hud_minimap_icon_map_find_005be110(void* map, void** out_iter, const std::uint32_t* key) noexcept {
+    void* head = read_field<void*>(map, 0x4);
+    void* bound = head;
+    void* node = read_field<void*>(head, 0x4);
+    while (read_field<std::uint8_t>(node, 0x15) == 0) {
+        if (read_field<std::uint32_t>(node, 0xC) < *key) {
+            node = read_field<void*>(node, 0x8);
+        } else {
+            bound = node;
+            node = read_field<void*>(node, 0x0);
+        }
+    }
+    out_iter[0] = map;
+    out_iter[1] = (bound == head || *key < read_field<std::uint32_t>(bound, 0xC)) ? head : bound;
+}
+// ---------------------------------------------------------------------------
+// Multiplayer mode selector and lobby settings (batch 2)
+// ---------------------------------------------------------------------------
+
+namespace {
+void route_mode_selector_listeners(void* screen, bool custom, ModeSelectorHost& host) {
+    void* plain = custom ? nullptr : screen;
+    host.set_listener_fields_00aa6bc0(widget_at(screen, 0x20), plain ? at(plain, 0xC) : nullptr, 0);
+    host.list_box_set_listener_00a9ac40(widget_at(screen, 0x20), plain ? at(plain, 0x8) : nullptr);
+    void* custom_owner = custom ? screen : nullptr;
+    host.set_listener_fields_00aa6bc0(widget_at(screen, 0xA8), custom_owner ? at(custom_owner, 0xC) : nullptr, 0);
+    host.list_box_set_listener_00a9ac40(widget_at(screen, 0xA8), custom_owner ? at(custom_owner, 0x8) : nullptr);
+}
+}  // namespace
+
+void mode_selector_set_custom_mode_005ec4c0(void* screen, bool custom, ModeSelectorHost& host) {
+    host.set_shown(widget_at(screen, 0x1C), custom);
+    write_field<std::uint8_t>(screen, 0xE0, custom ? 1 : 0);
+    host.set_enabled(widget_at(screen, 0xA8), custom);
+    host.set_enabled(widget_at(screen, 0x20), !custom);
+    route_mode_selector_listeners(screen, custom, host);
+    if (custom) {
+        host.set_shown(widget_at(screen, 0xA8), true);
+        write_field<std::uint8_t>(reinterpret_cast<void*>(static_cast<std::uintptr_t>(widget_at(screen, 0xA8))), 0x77, 0);
+        host.list_box_select_index_00a9c7c0(widget_at(screen, 0xA8), 0);
+        host.refresh_server_info_005ebdd0(screen);
+    }
+    host.input_update_zero();
+}
+
+void mode_selector_go_back_005eca90(void* screen, std::int32_t& index_00e19614, ModeSelectorHost& host) {
+    if (read_field<std::uint8_t>(screen, 0xE0) != 0) {
+        if (read_field<std::int32_t>(screen, 0xF8) != 3) return;
+        host.set_shown(widget_at(screen, 0x1C), false);
+        write_field<std::uint8_t>(screen, 0xE0, 0);
+        host.set_enabled(widget_at(screen, 0xA8), false);
+        host.set_enabled(widget_at(screen, 0x20), true);
+        route_mode_selector_listeners(screen, false, host);
+        host.input_update_zero();
+        return;
+    }
+    if (host.game_byte_218c()) {
+        host.clear_game_byte_218c();
+        host.multi_main_refresh_online_state_005e7900();
+    } else {
+        host.pop_request_interface_006881f0();
+    }
+    index_00e19614 = 0;
+}
+
+void mode_selector_on_list_select_005ec990(void* listener, std::uint32_t list_box, std::int32_t mode_00e19610,
+    std::int32_t& index_00e19614, ModeSelectorHost& host) {
+    if (host.multi_menu_current_interface_20() != 0x10) return;
+    index_00e19614 = host.list_box_selected_index_00a9c920(list_box);
+    if (index_00e19614 > 5) return;
+    if (mode_00e19610 == 0) {
+        host.session_set_mode_host_00770e40();
+        host.push_request_interface_00688ad0(0x14);
+    } else if (mode_00e19610 == 1) {
+        mode_selector_set_custom_mode_005ec4c0(at(listener, 0) - 8, true, host);
+    } else if (mode_00e19610 == 2) {
+        host.session_set_mode_0076fad0(2);
+        host.push_request_interface_00688ad0(0x1A);
+    }
+    const std::uint32_t row = static_cast<std::uint32_t>(index_00e19614);
+    const std::int32_t mode = row <= 5 ? kModeSelectorRowModes[row] : 0;  // JA: unsigned
+    write_field(at(listener, 0) - 8, 0xEC, host.list_box_selected_index_00a9c920(list_box));
+    host.mode_selector_set_mode_005d5660(mode);
+    host.mode_selector_apply_005662f0(mode);
+}
+
+void mode_selector_listener_current18_005eaac0(const void* listener, std::uint32_t widget, bool focused,
+    const char* empty_00e19618, WidgetHost& host) {
+    const void* w = reinterpret_cast<const void*>(static_cast<std::uintptr_t>(widget));
+    if (host.type(widget) == 3) {
+        const char* text = read_field<const char*>(w, 0xF0);
+        if (text == nullptr) text = empty_00e19618;
+        const auto c = static_cast<std::uint8_t>(*text);
+        if (c != 0xA2 && c != 0xA3) return;
+        host.set_scale(widget, focused ? kFocusedScale : kUnfocusedScale);
+        return;
+    }
+    if (read_field<std::uint8_t>(listener, 0xD4) != 0) {
+        if (widget != widget_at(listener, 0xA4) && widget != widget_at(listener, 0xA8)) return;
+    } else if (widget == widget_at(listener, 0x90) && read_field<std::uint8_t>(listener, 0x78) != 0) {
+        return;
+    }
+    if (host.type(widget) == 6) {
+        host.set_frame_highlight(widget, focused, 0, 1.0f);
+        return;
+    }
+    if (host.type(widget) == 0x12) host.set_toggle_highlight(widget, focused);
+}
+
+void lobby_check_settings_changed_005e50d0(void* screen, std::uint32_t* settings_00e1955c, LobbySettingsHost& host) {
+    for (int i = 0; i < 14; ++i) {
+        if (settings_00e1955c[i] != read_field<std::uint32_t>(screen, 0x18u + i * 4u)) {
+            host.session_request_player_ready_00771dd0(0, 1);
+            break;
+        }
+    }
+    // 00E19560..00E1956C are settings[1..4] against +1Ch..+28h.
+    bool changed = false;
+    for (int i = 1; i <= 4; ++i) changed = changed || settings_00e1955c[i] != read_field<std::uint32_t>(screen, 0x18u + i * 4u);
+    if (changed && host.menus_present() && host.multi_menu_query_00687860(0xB, 0)) host.tactical_library_leave_00515bc0();
+    for (int i = 0; i < 14; ++i) settings_00e1955c[i] = read_field<std::uint32_t>(screen, 0x18u + i * 4u);
+    // 0059518D: CMOVBE on an unsigned compare with 3.
+    const std::uint32_t mode = settings_00e1955c[2] <= 3 ? settings_00e1955c[3] : settings_00e1955c[2];
+    host.game_set_game_mode_004bc890(mode, 0);
+    if (void* lobby = host.lobby_screen_if_visible()) {
+        write_field<std::uint32_t>(lobby, 0x10, 1);
+        host.refresh_setting_rows_005e3580(lobby);
+    }
+}
+
+void lobby_step_map_index_005e1bf0(void* screen, std::int32_t delta, std::int32_t count_00f1af2c,
+    std::uint32_t& map_00e19594, std::uint32_t mode_00e19564, LobbySettingsHost& host) {
+    std::int32_t index = static_cast<std::int32_t>(map_00e19594);
+    if (count_00f1af2c > 0) {
+        for (std::int32_t tries = 0; tries < count_00f1af2c; ++tries) {
+            index = (count_00f1af2c + index + delta) % count_00f1af2c;
+            if (static_cast<std::uint32_t>(index) >= static_cast<std::uint32_t>(host.mission_record_count()))
+                host.invalid_iterator_00bf6713();
+            void* record = host.mission_record(index);
+            void* table = read_field<std::uint8_t>(record, 0x424) != 0 ? at(record, 0x428)
+                                                                        : at(host.option_registry_00576b10(), 0x28);
+            if (host.mode_available(table, 2, mode_00e19564) == 1) break;
+        }
+        if (static_cast<std::uint32_t>(index) != map_00e19594) map_00e19594 = static_cast<std::uint32_t>(index);
+    }
+    if (delta != 0) write_field<std::uint32_t>(screen, 0x27C, 0);
+}
+// ---------------------------------------------------------------------------
+// Main-menu async completions (batch 2)
+// ---------------------------------------------------------------------------
+
+void main_menu_finish_async_text_request_00590a00(void* screen, MainMenuAsyncHost& host, LegacyStringHost& strings) {
+    if (void* online = host.online()) {
+        alignas(8) std::byte local[0x40]{};
+        legacy_sbo_record_copy_00588640(local, host.online_status_record_3c(online), strings);
+        if (read_field<std::uint8_t>(local, 0x3B) != 0) {
+            host.online_virtual_38(host.online());
+            write_field<std::uint8_t>(screen, 0x500, 1);
+        }
+        if (read_field<std::uint32_t>(local, 0x18) >= 0x10) host.free_block(read_field<void*>(local, 0x4));
+    }
+    host.build_top_level_page_00584ae0(screen, 0);
+}
+
+void main_menu_on_profile_loaded_00590d80(MainMenuAsyncHost& host, LegacyStringHost& strings,
+    NativeStringStorage& storage) {
+    if (host.lua_reader_pending_count() != 0) {
+        main_menu_finish_async_text_request_00590a00(host.main_menu_screen(), host, strings);
+        return;
+    }
+    host.settings_apply_all_008d5b50();
+    host.build_top_level_page_00584ae0(host.main_menu_screen(), 1);
+    alignas(4) std::byte id[8];
+    profile_copy_mission_id_00586150(host.profile_650(), id, storage);
+    host.mission_tree_select_by_id_005c35d0(host.mission_tree(), id);
+    destroy_native_string_header_0041dd20(id, storage);
+}
+
+void main_menu_on_play_mission_prompt_result_thunk_00592ad0(std::int32_t result, MainMenuAsyncHost& host) {
+    host.on_play_mission_prompt_result_00592640(host.main_menu_screen(), result);
+}
+// ---------------------------------------------------------------------------
+// Options and pause helpers (batch 2)
+// ---------------------------------------------------------------------------
+
+void options_find_auto_control_group_005f0390(std::uint32_t parent, void* listener, OptionsWidgetHost& host) {
+    host.set_listener_fields_00aa6bc0(host.find_child_by_name_00aa7e00(parent, kAutoControlGroupName), listener, 0);
+}
+
+void options_set_row_var_text_005f0730(void* screen, std::int32_t row, const void* source, OptionsWidgetHost& host) {
+    const std::uint32_t row_widget = host.list_box_row_00a9be00(widget_at(screen, 0x88), row);
+    host.text_set_localised_source_00abaed0(host.find_child_by_name_00aa7e00(row_widget, kRowVarTextName), source, 1);
+}
+
+void options_on_slider_event_005f4c10(void* listener, std::uint32_t widget, OptionsWidgetHost& host) {
+    if (host.input_devices_empty()) host.invalid_iterator_00bf6713();
+    if (host.widget_type_5c(widget) != 2) return;
+    const void* w = reinterpret_cast<const void*>(static_cast<std::uintptr_t>(widget));
+    if (read_field<std::int32_t>(w, 0xD8) == 1) return;
+    const std::int32_t value = host.slider_value_from_row_005f2290(widget);
+    if (value == 0) return;
+    host.list_box_select_row_00a9c740(widget_at(listener, 0x7C), read_field<std::int32_t>(w, 0x70));
+    host.adjust_focused_value_005f42d0(at(listener, 0) - 0xC, value);
+}
+
+void hud_pause_run_lua_command_005fd360(std::uint32_t length, char* data, LuaCommandHost& host,
+    NativeStringStorage& storage) {
+    if (length != 0) {
+        const char* text = data != nullptr ? data : "";  // 00E19684
+        const bool failed = host.lua_run_string_006b8ad0(text) != 0;
+        host.log_004254b0(failed ? kLuaCommandFailed : kLuaCommandRan, text);
+    }
+    struct Header { std::uint32_t length; char* data; } by_value{length, data};
+    destroy_native_string_header_0041dd20(&by_value, storage);
+}
+
+void lua_globals_ensure_reader_005f60f0(LuaCommandHost& host) {
+    if (host.lua_reader_pending_count() != 0) return;
+    host.read_keyboard_archive_from_globals();
+    if (void* buffer = host.owner_buffer_30()) {
+        host.free_00bf6989(buffer);
+        host.clear_owner_buffer_30();
+    }
+    host.lua_state_owner_close_00b65e80();
+    host.lua_reader_destroy_00441a20();
+}
 }  // namespace bsp::cc13_fe1

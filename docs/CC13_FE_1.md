@@ -15,7 +15,7 @@ cc13-ng2 plate comments. Names are hypotheses, not recovered symbols.
 
 | Level | What |
 | --- | --- |
-| Reconstruction records added | see the per-batch counts below (first batch 204) |
+| Reconstruction records added | 252 so far (batch 1: 204, batch 2: 48) |
 | Reconstructed, build-tested | every record with source `src/frontend_screens_cc13.cpp`; `./scripts/build.ps1` passes (2/2 tests) |
 | Backfilled record for existing source | 005BD550 `hud_minimap_screen_enter` (`src/hud_screens.cpp:718`), checked against the listing |
 | Fixture-tested / ABI-compatible / game-validated | none. New C++ interfaces over raw native storage and host objects; no native adapter; nothing wired into `bsp_game`; no game run |
@@ -97,6 +97,29 @@ HUD: pause resume/open/prompts/exit (005FD440, 005FF0D0, 005FD610, 005FD5B0, 005
 
 Multiplayer: 005E4F90, 005E6B60, 005EA7F0, 005EA960, 005E6F00 (start hosting), 005E5AE0, 005E1990.
 
+## What was reconstructed (batch 2)
+
+Native string records: two- and three-string records (005EFE80, 005F19E0, 005FD6F0, 005FD790), option
+row destruct/construct (005EFDC0, 005EFFA0, by-value string arguments destroyed by the callee),
+005FDCA0, string-then-sub-object constructors (005FE370, 005FE430, 005FF330, 005FF4D0), mission score
+pairs (005943D0, 00594340, 005942A0), 005F1930, 005F1750, the NativeString vector erase 00589690, the
+string-int tree copy 0058BD40, the element-destroying vector tidy thunks (005E0AC0, 005F6210), 00590250,
+005B8070.
+
+HUD map arithmetic: zoom animation and scale (0059AB10, 0059ABC0), world box centre and margin test
+(0059C920, 0059C9B0), the map-area test 0059D410 and the off-screen edge code 0059A910 (x87 compare
+order and NaN routes read from the listing), 005A21E0, 0059ADC0, 005B5D50, the unit icon map lookups
+(005A22D0, 005A31A0) and the minimap icon map find 005BE110.
+
+Multiplayer: mode selector custom mode, back, list select (row-to-mode table 005ECA6C) and focus
+listener (005EC4C0, 005ECA90, 005EC990, 005EAAC0); lobby settings change check and map stepping
+(005E50D0, 005E1BF0).
+
+Main menu: async text completion 00590A00, profile loaded 00590D80, prompt thunk 00592AD0.
+
+Options and pause: 005F0390, 005F0730, slider listener 005F4C10, the pause Lua console command 005FD360
+(log formats in the original Hungarian, read from the image), 005F60F0.
+
 ## Uncertainty
 
 - Field meanings in comments (focus byte +D4h, "active" list box, pending order bytes) follow the
@@ -104,5 +127,10 @@ Multiplayer: 005E4F90, 005E6B60, 005EA7F0, 005EA960, 005E6F00 (start hosting), 0
 - `widget type` values 2/3/6/12h are compared, not interpreted; the type names in the WidgetHost
   comment are guesses from the widgets the screens bind.
 - 005808B0 forms `+558h + 0.0` with x87 FADD; the C++ adds 0.0f in float, which is exact.
+- 0059AB10 and 0059C9B0 keep x87 80-bit intermediates; the C++ uses double. 0059AB10 can differ in the
+  last float bit by double rounding; 0059C9B0's bounds are exact in double unless the operands'
+  exponents differ by more than 29.
+- The checked-iterator calls to 00BF6713 (005A22D0, 005E1BF0, 005F4C10) are modelled as host calls; in
+  the image they report an invalid parameter and do not return normally.
 - 0059AA40 `BSP_Math_PiecewiseLerp4` is reconstructed in `src/ng2_cc13.cpp` by cc13-ng2 without a
   record; it is left to that packet.

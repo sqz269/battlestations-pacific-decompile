@@ -907,4 +907,373 @@ void hud_map_clear_speaking_icon_005a4860(void* screen, MapIconHost& host);
 // 005AAAD0 SetUnitHighlight, __thiscall(screen, unit, value), RET 8: map at +600h.
 void hud_map_set_unit_highlight_005aaad0(void* screen, std::uint32_t unit, std::uint8_t value, MapIconHost& host);
 
+// ---------------------------------------------------------------------------
+// Native string records (batch 2)
+// ---------------------------------------------------------------------------
+
+// Records made of consecutive 8-byte native strings, optionally followed by a
+// sub-object the routine hands to another constructor.
+//   005EFE80 OptionRow assign (two strings, no header reset; RET 4).
+//   005F19E0 OptionValue copy (two strings).
+//   005FD6F0 HintDefinition assign (three strings, no header reset).
+//   005FD790 HintDefinition copy (three strings).
+// Assign forms run the 00BE0A30 fragment on each string; copy forms zero each
+// header first.
+void* string_record_assign(void* dst, const void* src, int strings, NativeStringStorage& storage);
+void* string_record_copy(void* dst, const void* src, int strings, NativeStringStorage& storage);
+inline void* option_row_assign_005efe80(void* d, const void* s, NativeStringStorage& st) { return string_record_assign(d, s, 2, st); }
+inline void* option_value_copy_005f19e0(void* d, const void* s, NativeStringStorage& st) { return string_record_copy(d, s, 2, st); }
+inline void* hint_definition_assign_005fd6f0(void* d, const void* s, NativeStringStorage& st) { return string_record_assign(d, s, 3, st); }
+inline void* hint_definition_copy_005fd790(void* d, const void* s, NativeStringStorage& st) { return string_record_copy(d, s, 3, st); }
+
+// 005EFDC0 OptionRow destruct: destroy the string at +08h, then +00h.
+void option_row_destruct_005efdc0(void* row, NativeStringStorage& storage) noexcept;
+
+// 005EFFA0 OptionRow construct, __thiscall(row, NativeString a, NativeString b),
+// RET 10h: both strings arrive by value (two dwords each); they are copied into
+// +00h and +08h and the callee then destroys its by-value copies (data a, then b).
+void* option_row_construct_005effa0(void* row, std::uint32_t a_length, const char* a_data,
+    std::uint32_t b_length, const char* b_data, NativeStringStorage& storage);
+
+// 005FDCA0, __thiscall(pair, const uint32* key, const NativeString* name), RET 8:
+// +00h = *key, then the name copied into +04h.
+void* id_name_pair_construct_005fdca0(void* pair, const std::uint32_t* key, const void* name,
+    NativeStringStorage& storage);
+
+// String followed by a sub-object at +08h, __thiscall(dst, src_string, arg), RET 8
+// (005FE370, 005FF330) or __thiscall(dst, src), RET 4 with arg = src+08h
+// (005FE430, 005FF4D0). The sub-object constructor is 005FE010 for the first pair
+// and BSP_PooledStringList_CopyConstruct 004D48A0 for the second (ECX = dst+08h).
+struct SubObjectHost {
+    virtual ~SubObjectHost() = default;
+    virtual void construct(std::uint32_t routine, void* dst, const void* arg) = 0;
+};
+void* string_then_subobject(std::uint32_t routine, void* dst, const void* src_string, const void* arg,
+    NativeStringStorage& storage, SubObjectHost& host);
+inline void* named_value_construct_005fe370(void* d, const void* s, const void* a, NativeStringStorage& st, SubObjectHost& h) { return string_then_subobject(0x005FE010u, d, s, a, st, h); }
+inline void* string_record_copy_005fe430(void* d, const void* s, NativeStringStorage& st, SubObjectHost& h) { return string_then_subobject(0x005FE010u, d, s, static_cast<const std::byte*>(s) + 8, st, h); }
+inline void* string_map_ci_node_value_construct_005ff330(void* d, const void* s, const void* a, NativeStringStorage& st, SubObjectHost& h) { return string_then_subobject(0x004D48A0u, d, s, a, st, h); }
+inline void* string_record_copy_005ff4d0(void* d, const void* s, NativeStringStorage& st, SubObjectHost& h) { return string_then_subobject(0x004D48A0u, d, s, static_cast<const std::byte*>(s) + 8, st, h); }
+
+// Mission score pairs {+00h name, +08h MissionScoreRecord (284h bytes), +28Ch dword}.
+//   005943D0 construct(dst, name, record), RET 8: name copied, 00593CA0 assign
+//            (ECX = dst+08h) from the record, +28Ch = record+284h.
+//   00594340 copy(dst, src), RET 4: the same with src+08h and src+28Ch.
+//   005942A0 destroy: 00593570 on +08h, then the name.
+struct MissionScoreHost {
+    virtual ~MissionScoreHost() = default;
+    virtual void record_assign_00593ca0(void* dst_record, const void* src_record) = 0;
+    virtual void record_destruct_00593570(void* record) = 0;
+};
+void* mission_score_pair_construct_005943d0(void* dst, const void* name, const void* record,
+    NativeStringStorage& storage, MissionScoreHost& host);
+void* mission_score_pair_copy_00594340(void* dst, const void* src, NativeStringStorage& storage,
+    MissionScoreHost& host);
+void mission_score_pair_destroy_005942a0(void* pair, NativeStringStorage& storage, MissionScoreHost& host);
+
+// 005F1930: array {+00h data, +04h count} of 8-byte native strings,
+// __thiscall(array, index), RET 4. Index -1 does nothing. Unless the index is the
+// last element, assign the last string over it (resize + copy); then destroy the
+// last string and decrement the count.
+void native_string_array_remove_swap_last_005f1930(void* array, std::int32_t index, NativeStringStorage& storage);
+
+// 005F1750: out = decimal text of an unsigned value, __thiscall(out, value), RET 4:
+// sprintf("%u") into a 64-byte buffer, a temporary native string, then copied
+// into the zeroed out header and the temporary destroyed.
+void* native_string_from_unsigned_005f1750(void* out, std::uint32_t value, NativeStringStorage& storage);
+
+// 00589690 vector<NativeString>::erase(where), __thiscall(vector, out_iter,
+// iter_container, iter_ptr), RET 0Ch: copy [where+1, last) down (0048DA50),
+// destroy the last element (00432050), last -= 8, out = {container, where}.
+struct NativeStringRangeHost {
+    virtual ~NativeStringRangeHost() = default;
+    virtual void assign_range_0048da50(void* first, void* last, void* dest) = 0;
+    virtual void destroy_range_00432050(void* first, void* last) = 0;
+};
+void native_string_vector_erase_00589690(void* vector, std::uint32_t* out_iter, std::uint32_t iter_container,
+    void* where, NativeStringRangeHost& host);
+
+// 0058BD40 tree _Copy(source_node, parent), __thiscall(tree, node, parent), RET 8,
+// recursive. A nil source (byte +19h) returns the head. Otherwise a node from
+// 00504BD0(head, parent, head, &value(+0Ch), colour(+18h)) whose left and right
+// are the copies of the source's children; returns the new node.
+struct TreeCopyHost {
+    virtual ~TreeCopyHost() = default;
+    virtual void* allocate_node_00504bd0(void* tree, void* left, void* parent, void* right, const void* value,
+        std::uint8_t colour) = 0;
+};
+void* string_int_tree_copy_subtree_0058bd40(void* tree, const void* node, void* parent, TreeCopyHost& host);
+
+// Element-destroying vector tidy (005E0AC0 jumps here at 005E0A40 for 24h-byte
+// lobby map entries; 005F6210 at 005F5F80 for 10h-byte option rows): destroy each
+// element of [+04h, +08h), free +04h and zero +04h..+0Ch, only when +04h is set.
+void vector_tidy_destroy(void* vector, std::size_t element_size, void (*destroy)(void*, void*), void* context,
+    ContainerHost& host);
+
+// 00590250 DebugTextList destruct: vtable 00CEFC00, 00544A70 on the list, then
+// the byte-SBO pair vector at +10h: when +14h is set, 00543C20 over [+14h, +18h),
+// _free(+14h); zero +14h..+1Ch.
+struct DebugTextListHost {
+    virtual ~DebugTextListHost() = default;
+    virtual void clear_00544a70(void* list) = 0;
+    virtual void destroy_range_00543c20(void* first, void* last, void* allocator) = 0;
+    virtual void free_block(void* block) = 0;
+};
+void debug_text_list_destruct_00590250(void* list, DebugTextListHost& host);
+
+// 005B8070 voice observer destruct: 004B7EF0 on +18h, then 005B7FC0 on the object.
+struct VoiceObserverHost {
+    virtual ~VoiceObserverHost() = default;
+    virtual void observer_link_destroy_base_004b7ef0(void* link) = 0;
+    virtual void voice_slot_destroy_005b7fc0(void* slot) = 0;
+};
+void voice_observer_destruct_005b8070(void* observer, VoiceObserverHost& host);
+
+// ---------------------------------------------------------------------------
+// HUD map arithmetic and lookups (batch 2)
+// ---------------------------------------------------------------------------
+
+// 0059AB10 AnimateZoom, __thiscall(screen, float dt), RET 4. The direction byte
+// +88h is read once (AL) for the update and the clamps:
+//   zoom(+84h) = closing ? zoom + dt*1.5 : zoom - dt*1.5   (1.5 = double 00CE3D78)
+//   opening and zoom < 0 -> 0;  closing and zoom > 1.0 -> 1.0
+//   opening and zoom == 0 -> +88h = 1;  then (re-read) +88h set and zoom == 1.0 -> +88h = 0
+// x87: dt*1.5 and the add run in 80-bit and round once to float; the C++ forms
+// them in double (dt*1.5 is exact there), so only the add can differ, by double
+// rounding, in the last float bit.
+void hud_map_animate_zoom_0059ab10(void* screen, float dt) noexcept;
+// 0059ABC0: +5BCh times the per-mode factor of +2Ch (0: 0.8, 1: 0.7, 2: 0.6,
+// other: 0.5; doubles 00CE3D40, 00CEFFA0, 00CEFF98, 00D7A280, each the double of
+// a float), rounded to float (FSTP/FLD). The product is exact in double.
+float hud_map_zoom_scale_for_mode_0059abc0(const void* screen) noexcept;
+// 0059C920 (unreferenced): out = (min + max) * 0.5 of the game's world box
+// (+711Ch..+7124h, +7128h..+7130h); each sum is rounded to float before the
+// multiply, as the native stores it.
+void game_world_bounds_center_0059c920(const void* game, float* out) noexcept;
+// 0059C9B0, __thiscall(game, const float* p, float margin), RET 8: true when p
+// is beyond the world box by more than margin on x or z.
+bool world_point_beyond_map_margin_0059c9b0(const void* game, const float* p, float margin) noexcept;
+// 0059D410, __stdcall(const float* p), RET 4: inside the map area. Wide layout
+// ([0109CF04] + 0Dh set): -0.1 < x < 1.1; otherwise 0.0604166674 < x <
+// 0.939583321; and in both 0.05 < y < 0.95 (all comparisons strict; NaN outside).
+bool hud_map_is_point_inside_map_area_0059d410(const float* p, bool wide_layout) noexcept;
+// 0059A910, __thiscall(classifier, const float* p), RET 4: the off-screen edge
+// code from the reference point (vtable +C4h of +04h, re-fetched for each test):
+// x not above ref.x -> (ref.z > p.y ? 1 : 3); otherwise (ref.z > p.y ? 0 : 2).
+// Comparisons are in double; NaN takes the "not above" branches.
+struct EdgeReferenceHost {
+    virtual ~EdgeReferenceHost() = default;
+    virtual const float* reference_point_c4(void* object) = 0;
+};
+std::int32_t hud_map_classify_offscreen_edge_0059a910(const void* classifier, const float* p, EdgeReferenceHost& host);
+// 005A21E0 StartBlink: +118h = 5, +110h = now + 0.0 (double 00D7A258), +114h =
+// now ([00F876A4]), +108h/+10Ch = +100h/+104h, +F8h = +FCh = 0, then
+// 005A1C60(0) (ReleaseWidgets).
+struct BlinkHost {
+    virtual ~BlinkHost() = default;
+    virtual void release_widgets_005a1c60(void* icon, std::int32_t arg) = 0;
+};
+void hud_map_icon_start_blink_005a21e0(void* icon, float now_00f876a4, BlinkHost& host);
+// 0059ADC0: the lazily initialised colour (1, 1, 1, 1) at 00E19518, guard bit 1
+// of 00E19528.
+const float* static_white_0059adc0(std::uint32_t& guard_00e19528, float* colour_00e19518) noexcept;
+// 005B5D50: award hint active when +C0h != 0.0 (00D7A218).
+bool award_hint_is_active_005b5d50(const void* hint) noexcept;
+
+// Unit icon map at screen+4F4h (std::map<unit, icon*>; value at node+10h).
+// 005A22D0 FindUnitIcon, __thiscall(screen, unit), RET 4: 005A1800 lower-bound
+// pair; the checked-iterator tests call 00BF6713 on a foreign container; the
+// node's value when it is not end(), else null.
+// 005A31A0, same lookup when the byte +05h is set, then RefreshSideTexture on
+// the found icon.
+struct UnitIconMapHost {
+    virtual ~UnitIconMapHost() = default;
+    // Returns {container, node}.
+    virtual std::array<void*, 2> lower_bound_pair_005a1800(void* map, std::uint32_t unit) = 0;
+    virtual void invalid_iterator_00bf6713() = 0;
+    virtual void refresh_side_texture_0059d2a0(void* icon) = 0;
+};
+void* hud_map_find_unit_icon_005a22d0(void* screen, std::uint32_t unit, UnitIconMapHost& host);
+void hud_map_refresh_unit_icon_texture_005a31a0(void* screen, std::uint32_t unit, UnitIconMapHost& host);
+// 005BE110 minimap icon map find, __thiscall(map, out_iter, const uint32* key),
+// RET 8: lower bound down from the root (key at +0Ch, nil byte +15h), then
+// end() when the bound is the head or the key is below the bound's key.
+void hud_minimap_icon_map_find_005be110(void* map, void** out_iter, const std::uint32_t* key) noexcept;
+
+// ---------------------------------------------------------------------------
+// Multiplayer mode selector and lobby settings (batch 2)
+// ---------------------------------------------------------------------------
+
+struct ModeSelectorHost : WidgetHost {
+    virtual void set_listener_fields_00aa6bc0(std::uint32_t widget, void* listener, std::uint32_t arg) = 0;
+    virtual void list_box_set_listener_00a9ac40(std::uint32_t list_box, void* listener) = 0;
+    virtual void list_box_select_index_00a9c7c0(std::uint32_t list_box, std::int32_t index) = 0;
+    virtual std::int32_t list_box_selected_index_00a9c920(std::uint32_t list_box) = 0;
+    virtual void refresh_server_info_005ebdd0(void* screen) = 0;
+    // 00A92C40(0.0f) on the 004BEC00 input manager.
+    virtual void input_update_zero() = 0;
+    virtual std::int32_t multi_menu_current_interface_20() = 0;  // [[00E198B4] + 20h]
+    virtual void session_set_mode_host_00770e40() = 0;           // ECX = game+1EF0h
+    virtual void session_set_mode_0076fad0(std::int32_t mode) = 0;
+    virtual void push_request_interface_00688ad0(std::int32_t interface_id) = 0;
+    virtual void pop_request_interface_006881f0() = 0;
+    virtual void mode_selector_set_mode_005d5660(std::int32_t mode) = 0;  // ECX = mode
+    virtual void mode_selector_apply_005662f0(std::int32_t mode) = 0;     // ECX = mode
+    virtual bool game_byte_218c() = 0;
+    virtual void clear_game_byte_218c() = 0;
+    virtual void multi_main_refresh_online_state_005e7900() = 0;  // ECX = [[00E198B4] + 40h]
+};
+// 005EC4C0 SetCustomMode, __thiscall(screen, custom), RET 4: +1Ch +34h(custom),
+// +E0h = custom, +A8h +60h(custom), +20h +60h(!custom); the listener pair
+// (screen+0Ch for 00AA6BC0, screen+8 for 00A9AC40) goes to +20h when not custom
+// and to +A8h when custom, the other list box getting null; when custom: +A8h
+// shown, +77h = 0, row 0 selected, RefreshServerInfo. Then 00A92C40(0.0f).
+void mode_selector_set_custom_mode_005ec4c0(void* screen, bool custom, ModeSelectorHost& host);
+// 005ECA90 GoBack: in custom mode (+E0h) and only when +F8h == 3, leave it the
+// same way (hide +1Ch, +E0h = 0, enables, listeners back on +20h, input update);
+// outside custom mode clear the game byte +218Ch and refresh the online state
+// when it was set, else pop the request interface; both then 00E19614 = 0.
+void mode_selector_go_back_005eca90(void* screen, std::int32_t& index_00e19614, ModeSelectorHost& host);
+// 005EC990 list selection, __thiscall(listener = screen+8, list_box), RET 8. Only
+// on interface 10h. 00E19614 = selected index; above 5 returns. By 00E19610:
+// 0 -> SetModeHost and request interface 14h; 1 -> SetCustomMode(1); 2 ->
+// session mode 2 and request 1Ah. Then the row maps to a mode
+// {0:5, 1:6, 2:7, 3:4, 4:3, 5:-1} (any other: 0), +ECh = the selected index
+// again, and 005D5660 / 005662F0 with that mode.
+inline constexpr std::array<std::int32_t, 6> kModeSelectorRowModes{5, 6, 7, 4, 3, -1};  // table 005ECA6C
+void mode_selector_on_list_select_005ec990(void* listener, std::uint32_t list_box, std::int32_t mode_00e19610,
+    std::int32_t& index_00e19614, ModeSelectorHost& host);
+// 005EAAC0 listener +18h, __thiscall(listener, widget, focused), RET 8. Type 3:
+// only text widgets whose first byte (+F0h text, or the empty 00E19618) is A2h or
+// A3h (the arrow glyphs) get the 0.5/1.0 scale. Otherwise, with +D4h set only
+// the widgets +A4h and +A8h pass; with it clear, +90h passes only while +78h is
+// clear; passing widgets get the type 6 / 12h styling.
+void mode_selector_listener_current18_005eaac0(const void* listener, std::uint32_t widget, bool focused,
+    const char* empty_00e19618, WidgetHost& host);
+
+// Lobby settings: the 14 dwords at 00E1955C..00E19590 mirror screen+18h..+4Ch.
+struct LobbySettingsHost {
+    virtual ~LobbySettingsHost() = default;
+    virtual void session_request_player_ready_00771dd0(std::int32_t a, std::int32_t b) = 0;  // ([game+18C8h], 0, 1)
+    virtual bool menus_present() = 0;                    // 00E198AC and 00E198B4 non-null
+    virtual bool multi_menu_query_00687860(std::int32_t a, std::int32_t b) = 0;
+    virtual void tactical_library_leave_00515bc0() = 0;  // ECX = [00E198AC + 70h]
+    virtual void game_set_game_mode_004bc890(std::uint32_t mode, std::int32_t arg) = 0;
+    virtual void* lobby_screen_if_visible() = 0;         // [[00E198B4] + 48h] when its byte +05h is set
+    virtual void refresh_setting_rows_005e3580(void* screen) = 0;
+    // StepMapIndex: mission records (434h bytes) under [[00E198AC]+5Ch]+24h.
+    virtual std::int32_t mission_record_count() = 0;
+    virtual void invalid_iterator_00bf6713() = 0;
+    virtual void* mission_record(std::int32_t index) = 0;
+    virtual void* option_registry_00576b10() = 0;
+    // 005C6850 table[2] then 005C49C0 [mode]: the availability byte.
+    virtual std::uint8_t mode_available(void* option_table, std::int32_t key, std::uint32_t mode) = 0;
+};
+// 005E50D0 CheckSettingsChanged (ECX = screen).
+void lobby_check_settings_changed_005e50d0(void* screen, std::uint32_t* settings_00e1955c, LobbySettingsHost& host);
+// 005E1BF0 StepMapIndex, __thiscall(screen, delta), RET 4. With count =
+// [00F1AF2C] > 0: up to count tries of index = (count + index + delta) % count
+// (signed), stopping at the first map whose option table (record+428h when
+// record+424h is set, else the registry's +28h) has byte [2][mode 00E19564] == 1;
+// a changed index is stored to 00E19594. A non-zero delta clears +27Ch.
+void lobby_step_map_index_005e1bf0(void* screen, std::int32_t delta, std::int32_t count_00f1af2c,
+    std::uint32_t& map_00e19594, std::uint32_t mode_00e19564, LobbySettingsHost& host);
+
+// ---------------------------------------------------------------------------
+// Main-menu async completions (batch 2)
+// ---------------------------------------------------------------------------
+
+struct MainMenuAsyncHost {
+    virtual ~MainMenuAsyncHost() = default;
+    virtual void* online() = 0;  // [00F8A2FC], may be null
+    // Online vtable +3Ch: the 3Ch-byte status record copied by 00588640.
+    virtual const void* online_status_record_3c(void* online) = 0;
+    virtual void online_virtual_38(void* online) = 0;
+    virtual void build_top_level_page_00584ae0(void* screen, std::int32_t arg) = 0;
+    virtual std::uint32_t lua_reader_pending_count() = 0;  // [[0109CECC] + 8]
+    virtual void settings_apply_all_008d5b50() = 0;
+    virtual void* main_menu_screen() = 0;   // [00E198AC + 58h]
+    virtual void* mission_tree() = 0;       // [00E198AC + 5Ch]
+    virtual void* profile_650() = 0;        // [00E188A8] + 650h
+    virtual void mission_tree_select_by_id_005c35d0(void* tree, const void* id) = 0;
+    virtual void on_play_mission_prompt_result_00592640(void* screen, std::int32_t result) = 0;
+    virtual void free_block(void* block) = 0;
+};
+// 00590A00 FinishAsyncTextRequest, __thiscall(screen, unused), RET 4: with an
+// online object, copy its status record into a local (00588640); when the
+// record's byte +3Bh is set, online vtable +38h and screen+500h = 1; the local's
+// legacy string is freed when its capacity (+18h) is 10h or more. Then
+// BuildTopLevelPage(0) on the screen.
+void main_menu_finish_async_text_request_00590a00(void* screen, MainMenuAsyncHost& host, LegacyStringHost& strings);
+// 00590D80 profile-loaded callback: with nothing pending in the Lua reader,
+// ApplyAll, BuildTopLevelPage(1), and select the profile's mission id (copied
+// from profile+650h+68h through 00586150) in the mission tree; otherwise
+// FinishAsyncTextRequest(1) on the menu screen.
+void main_menu_on_profile_loaded_00590d80(MainMenuAsyncHost& host, LegacyStringHost& strings,
+    NativeStringStorage& storage);
+// 00592AD0 prompt thunk, ECX = result: 00592640(result) on the menu screen.
+void main_menu_on_play_mission_prompt_result_thunk_00592ad0(std::int32_t result, MainMenuAsyncHost& host);
+
+// ---------------------------------------------------------------------------
+// Options and pause helpers (batch 2)
+// ---------------------------------------------------------------------------
+
+struct OptionsWidgetHost {
+    virtual ~OptionsWidgetHost() = default;
+    // BSP_GuiWidget_FindChildByName 00AA7E00(name, 1), ECX = parent.
+    virtual std::uint32_t find_child_by_name_00aa7e00(std::uint32_t parent, std::string_view name) = 0;
+    virtual void set_listener_fields_00aa6bc0(std::uint32_t widget, void* listener, std::uint32_t arg) = 0;
+    virtual std::uint32_t list_box_row_00a9be00(std::uint32_t list_box, std::int32_t row) = 0;
+    virtual void text_set_localised_source_00abaed0(std::uint32_t text, const void* source, std::int32_t arg) = 0;
+    // Slider events.
+    virtual void invalid_iterator_00bf6713() = 0;
+    virtual bool input_devices_empty() = 0;  // [00F8BBF4 + 94h] null or empty
+    virtual std::int32_t widget_type_5c(std::uint32_t widget) = 0;
+    virtual std::int32_t slider_value_from_row_005f2290(std::uint32_t widget) = 0;
+    virtual void list_box_select_row_00a9c740(std::uint32_t list_box, std::int32_t row) = 0;
+    virtual void adjust_focused_value_005f42d0(void* screen, std::int32_t value) = 0;
+};
+// 005F0390: ECX = parent, EDX = listener: the child "dodgeListboxAutoControl_Group"
+// (00CEE6D0) gets 00AA6BC0(listener, 0). The pooled name is released afterwards.
+inline constexpr std::string_view kAutoControlGroupName = "dodgeListboxAutoControl_Group";
+void options_find_auto_control_group_005f0390(std::uint32_t parent, void* listener, OptionsWidgetHost& host);
+// 005F0730, __thiscall(screen, row, source), RET 8: the "var_Text" (00CEE66C)
+// child of row `row` of the list box +88h gets the localised source (arg 1).
+inline constexpr std::string_view kRowVarTextName = "var_Text";
+void options_set_row_var_text_005f0730(void* screen, std::int32_t row, const void* source, OptionsWidgetHost& host);
+// 005F4C10 slider listener (ECX = screen+0Ch), __thiscall(listener, widget), RET 4:
+// the checked front() of the input-device vector at [00F8BBF4]+94h calls 00BF6713
+// when it is empty; a slider (type 2) whose +D8h is not 1 and whose row gives a
+// non-zero value selects its row (+70h) in the list box (listener+7Ch) and
+// adjusts the focused value on the screen.
+void options_on_slider_event_005f4c10(void* listener, std::uint32_t widget, OptionsWidgetHost& host);
+
+struct LuaCommandHost {
+    virtual ~LuaCommandHost() = default;
+    // BSP_LuaMachine_RunString 006B8AD0(text, 0, 0, 2), ECX = [[game + 1A08h] + 4].
+    virtual std::int32_t lua_run_string_006b8ad0(const char* text) = 0;
+    // 004254B0(format, text): the debug log.
+    virtual void log_004254b0(const char* format, const char* text) = 0;
+    // 005F60F0: the reader set-up and teardown around the keyboard archive.
+    virtual std::uint32_t lua_reader_pending_count() = 0;  // [[0109CECC] + 8]
+    virtual void read_keyboard_archive_from_globals() = 0;  // 00B67980, 004425C0, 005547D0/006ABA50
+    virtual void* owner_buffer_30() = 0;                    // [[0109CECC] + 30h]
+    virtual void clear_owner_buffer_30() = 0;
+    virtual void free_00bf6989(void* block) = 0;
+    virtual void lua_state_owner_close_00b65e80() = 0;      // ECX = [0109CECC] + 38h
+    virtual void lua_reader_destroy_00441a20() = 0;
+};
+// 005FD360, __stdcall(NativeString command) by value (8 bytes), RET 8:
+// with a non-empty command run it (null data runs the empty string 00E19684)
+// and log success (00CF3E40) or failure (00CF3E78) in the original Hungarian;
+// then release the by-value string.
+inline constexpr const char* kLuaCommandRan = "%s lua parancs vegrehajtva az ingame pausemenuben.";
+inline constexpr const char* kLuaCommandFailed = "Nem sikerult vegrehajtani a: %s lua parancsot az ingame pausemenuben.";
+void hud_pause_run_lua_command_005fd360(std::uint32_t length, char* data, LuaCommandHost& host,
+    NativeStringStorage& storage);
+// 005F60F0: only with nothing pending in the Lua reader: read the keyboard
+// archive through a reader over the globals, free and clear the owner's +30h
+// buffer, close the state owner, destroy the reader.
+void lua_globals_ensure_reader_005f60f0(LuaCommandHost& host);
+
 }  // namespace bsp::cc13_fe1
