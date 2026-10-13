@@ -129,6 +129,93 @@ struct PathRecordReleaseHost : CameraEntityHost {
 void path_record_on_released_00796f40(PathRecordEntities& r, std::size_t entity, PathRecordReleaseHost& host);
 
 // ---------------------------------------------------------------------------
+// Keyframe modifier slots (cc13cam modifier classes; docs/CC13_CAMERA_CONTROLLERS.md).
+
+// 0078E780: ECX modifier, stack owner, RET 4: +4h = owner (the shared base slot).
+void modifier_set_owner_0078e780(cc13cam::ModifierKeyframe*& owner_4, cc13cam::ModifierKeyframe* owner) noexcept;
+// Type ids (slot +30h): 0078E800 orbit input 1, 0079DC30 goaround 2,
+// 0079DCF0 gamecamera 3.
+int modifier_type_id_0078e800() noexcept;
+int modifier_type_id_0079dc30() noexcept;
+int modifier_type_id_0079dcf0() noexcept;
+// 0079DD00: fastcall gamecamera modifier: EAX = +8h.
+std::size_t gamecamera_camera_0079dd00(const cc13cam::GameCameraModifier& m) noexcept;
+// 0078E870: ECX gamecamera modifier, stack dt, RET 4. With a camera (+8h):
+// slot +4 of its +170h step sub-object with dt.
+struct GameCameraSlotHost {
+    virtual ~GameCameraSlotHost() = default;
+    virtual void step_slot4(std::size_t camera, float dt) = 0;               // ECX camera+170h
+    virtual void pick_camera_0079cbd0(cc13cam::GameCameraModifier& m) = 0;   // builds +8h
+    virtual void camera_slot124(std::size_t camera, std::uintptr_t node) = 0;
+    virtual void kill_camera_00926d90(std::size_t camera, int flag) = 0;      // ECX camera
+    virtual void target_observer_destruct_0042bca0(std::size_t target) = 0;  // the +38h observer
+};
+void gamecamera_track_tick_0078e870(const cc13cam::GameCameraModifier& m, float dt, GameCameraSlotHost& host);
+// 0079CF80: ECX modifier, stack (owner camera, second), RET 8. +Ch = 0;
+// 0079CBD0; with a camera and a non-zero owner+3B8h: camera slot +124h(that).
+void gamecamera_begin_0079cf80(cc13cam::GameCameraModifier& m, std::uintptr_t owner_node_3b8, GameCameraSlotHost& host);
+// 0079DC40: fastcall. Camera +8h -> 00926D90(1), cleared; the two entity
+// observer vectors (0079D2D0), the +38h observer (0042BCA0), the two curves
+// (+1Ch, +2Ch data) freed; base vtable 00D04414.
+void gamecamera_destruct_0079dc40(cc13cam::GameCameraModifier& m, GameCameraSlotHost& host);
+// 0079DB90: fastcall. Frees the five curve vectors (+58h, +48h, +38h, +28h,
+// +18h); base vtable 00D04414.
+void goaround_destruct_0079db90(cc13cam::GoAroundModifier& m) noexcept;
+
+// Deletes an owned object through its scalar deleting destructor (slot 0, 1).
+struct OwnedObjectHost {
+    virtual ~OwnedObjectHost() = default;
+    virtual void scalar_delete(std::uintptr_t object) = 0;
+};
+
+// ---------------------------------------------------------------------------
+// Small movie-camera helpers.
+
+// 007996C0: cdecl (NativeString by value: length, data). fopen("moviecamera.log",
+// "at"); "********\n" once per process (byte 00F871BA); the text (the empty
+// buffer 00F871BB when data is null) and "\n" (00CE4390); fclose; the string
+// storage goes back to the sized pool.
+struct LogFileHost {
+    virtual ~LogFileHost() = default;
+    virtual std::uintptr_t fopen_bf838e(const char* name, const char* mode) = 0;
+    virtual void fwrite_bfb08b(const void* data, std::size_t size, std::uintptr_t file) = 0;
+    virtual void fclose_bf8081(std::uintptr_t file) = 0;
+};
+void movie_camera_log_append_007996c0(const std::string& text, bool& banner_written_f871ba, LogFileHost& host);
+// 0079F6D0: ECX camera, the 007900B0 record by value (18h bytes), RET 18h:
+// push_back on the interpolator list [+4D8h] (00796930, length check 0079DE40).
+void movcam_add_interpolator_0079f6d0(std::vector<cc13cam::MovCamInterpolator>& list_4d8,
+                                      const cc13cam::MovCamInterpolator& record);
+// 0078E540: ECX keyframe, stack event, RET 4. A different event replaces
+// +ECh; the old one is deleted (slot 0 with 1).
+void movie_key_set_event_0078e540(std::uintptr_t& event_ec, std::uintptr_t event, OwnedObjectHost& host);
+// 00796BD0: ECX observer, stack const observer*, RET 4, EAX observer. Base
+// vtable 00CE3C8C, +4h..+Ch zero, +14h = source +14h, +10h = 1, registered
+// when the entity is set. Callers then install vtable 00CE3CF0.
+struct EntityObserverBase {
+    bool active_10{false};
+    std::size_t entity_14{0};
+};
+void entity_observer_copy_base_00796bd0(EntityObserverBase& o, const EntityObserverBase& src, ObserverHost& host);
+
+// ---------------------------------------------------------------------------
+// Ocean environment settings records (A0h bytes: two words, a NativeString at
+// +8h, four words +10h..+1Ch, then 32 words +20h..+9Fh).
+struct OceanEffectSettings {
+    std::array<std::uint32_t, 2> head{};
+    std::string name_8;
+    std::array<std::uint32_t, 4> words_10{};
+    std::array<std::uint32_t, 32> table_20{};
+};
+// 0078D940 (water particles, at object +20h) and 0078D9F0 (beams, at object
+// +2Ch): ECX object, stack const record*, RET 4. Member-wise copy; the string
+// assignment is skipped only for self-assignment.
+void ocean_settings_assign_0078d940(OceanEffectSettings& dst, const OceanEffectSettings& src);
+// 0078E510: fastcall environment. Deletes the +E4h member (slot 0 with 1)
+// and clears it.
+void ocean_environment_delete_member_0078e510(std::uintptr_t& member_e4, OwnedObjectHost& host);
+
+// ---------------------------------------------------------------------------
 // MovCam (vtable 00D04B58, constructor 0079F480). Fields by image offset.
 struct MovCamAngles {
     Vec3 position_394{};

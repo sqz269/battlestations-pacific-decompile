@@ -161,6 +161,95 @@ void path_record_on_released_00796f40(PathRecordEntities& r, std::size_t entity,
 }
 
 // ---------------------------------------------------------------------------
+// Keyframe modifier slots
+
+void modifier_set_owner_0078e780(cc13cam::ModifierKeyframe*& owner_4, cc13cam::ModifierKeyframe* owner) noexcept {
+    owner_4 = owner;
+}
+int modifier_type_id_0078e800() noexcept { return 1; }
+int modifier_type_id_0079dc30() noexcept { return 2; }
+int modifier_type_id_0079dcf0() noexcept { return 3; }
+
+std::size_t gamecamera_camera_0079dd00(const cc13cam::GameCameraModifier& m) noexcept { return m.camera_8; }
+
+void gamecamera_track_tick_0078e870(const cc13cam::GameCameraModifier& m, float dt, GameCameraSlotHost& host) {
+    if (m.camera_8 != 0) host.step_slot4(m.camera_8, dt);
+}
+
+void gamecamera_begin_0079cf80(cc13cam::GameCameraModifier& m, std::uintptr_t owner_node_3b8, GameCameraSlotHost& host) {
+    m.last_time_c = 0.0f;  // 0079CF86
+    host.pick_camera_0079cbd0(m);
+    if (m.camera_8 != 0 && owner_node_3b8 != 0) host.camera_slot124(m.camera_8, owner_node_3b8);
+}
+
+void gamecamera_destruct_0079dc40(cc13cam::GameCameraModifier& m, GameCameraSlotHost& host) {
+    if (m.camera_8 != 0) {
+        host.kill_camera_00926d90(m.camera_8, 1);
+        m.camera_8 = 0;
+    }
+    m.rho_entities_68.clear();
+    m.theta_entities_58.clear();
+    host.target_observer_destruct_0042bca0(m.target_4c);
+    m.rho_28 = cc13cam::ModifierCurve{};
+    m.theta_18 = cc13cam::ModifierCurve{};
+}
+
+void goaround_destruct_0079db90(cc13cam::GoAroundModifier& m) noexcept {
+    m.patterntime_54 = cc13cam::ModifierCurve{};
+    m.zoom_44 = cc13cam::ModifierCurve{};
+    m.rho_34 = cc13cam::ModifierCurve{};
+    m.theta_24 = cc13cam::ModifierCurve{};
+    m.radius_14 = cc13cam::ModifierCurve{};
+}
+
+// ---------------------------------------------------------------------------
+// Small movie-camera helpers
+
+void movie_camera_log_append_007996c0(const std::string& text, bool& banner_written_f871ba, LogFileHost& host) {
+    const std::uintptr_t file = host.fopen_bf838e("moviecamera.log", "at");
+    if (!banner_written_f871ba) {
+        host.fwrite_bfb08b("********\n", 9, file);
+        banner_written_f871ba = true;
+    }
+    host.fwrite_bfb08b(text.data(), text.size(), file);
+    host.fwrite_bfb08b("\n", 1, file);  // 00CE4390
+    host.fclose_bf8081(file);
+}
+
+void movcam_add_interpolator_0079f6d0(std::vector<cc13cam::MovCamInterpolator>& list_4d8,
+                                      const cc13cam::MovCamInterpolator& record) {
+    list_4d8.push_back(record);
+}
+
+void movie_key_set_event_0078e540(std::uintptr_t& event_ec, std::uintptr_t event, OwnedObjectHost& host) {
+    if (event_ec == event) return;
+    if (event_ec != 0) host.scalar_delete(event_ec);
+    event_ec = event;
+}
+
+void entity_observer_copy_base_00796bd0(EntityObserverBase& o, const EntityObserverBase& src, ObserverHost& host) {
+    o.entity_14 = src.entity_14;
+    o.active_10 = true;
+    if (o.entity_14 != 0) host.register_00694a60(o.entity_14, &o);
+}
+
+// ---------------------------------------------------------------------------
+// Ocean environment settings
+
+void ocean_settings_assign_0078d940(OceanEffectSettings& dst, const OceanEffectSettings& src) {
+    dst.head = src.head;
+    if (&dst.name_8 != &src.name_8) dst.name_8 = src.name_8;
+    dst.words_10 = src.words_10;
+    dst.table_20 = src.table_20;  // four 8-word blocks in the image loop
+}
+
+void ocean_environment_delete_member_0078e510(std::uintptr_t& member_e4, OwnedObjectHost& host) {
+    if (member_e4 == 0) return;
+    host.scalar_delete(member_e4);
+    member_e4 = 0;
+}
+
+// ---------------------------------------------------------------------------
 // MovCam
 
 void movcam_wrap_and_clamp_007904d0(MovCamAngles& a) noexcept {
