@@ -168,7 +168,8 @@ Recorded with `bsp.py ledger add-function` (doc docs/CC13_VER_8.md):
 
 ## 5. Status and open items
 
-- Build: `scripts/build.ps1` passes, with ctest 2/2, on agent/cc13-ver8.
+- Build: `scripts/build.ps1` passes, with ctest 2/2, on agent/cc13-ver8 after merging
+  origin/main (14cc2453f).
 - Switch: `kKillListenerHarmOnlyBound` OFF. When it is flipped, pair it with `kKillListenerDeadFirstBound`
   (cc13-ver5 D2), because both change what a kill callback sees.
 - Open:
@@ -178,3 +179,15 @@ Recorded with `bsp.py ledger add-function` (doc docs/CC13_VER_8.md):
     own unit is vetoed).
   - The convoy entity's own `kill` (image: never; host: when its slot dies).
   - T1's reorder.
+
+## 6. Handoff
+
+- Shas on agent/cc13-ver8: bf698267a (models), 80dd2a3f2 (V1 switch), 63e0f4185 (reuse of
+  `unit_death_00959450`), 1c5b03284 (this doc and the records), 14cc2453f (origin/main merge).
+- To flip V1: set `kKillListenerHarmOnlyBound` true and pair it with the OFF build. Read the new
+  `summary mission script kill harm-only` line (`not_harm`, `grace`). PRCP01 is the first row
+  with a predicted change (`luaUS03HintReinforcement` stops firing on a landed squadron).
+- Next work: the `exitzone` dispatcher (V5). Planes: `007F31A0` fires `exitzone(plane, 1)` at
+  `007F31E6` when squadron +361h is clear and the game state is not 9. `007C6C30` fires
+  `(plane, 0)` at `007C6D65` (the warning). The entity is boxed as `vtable[140h]()`, the
+  squadron. Ships need `00826D70` hosted first.
