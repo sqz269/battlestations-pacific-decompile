@@ -201,3 +201,14 @@ mechanism is in the cd761bb52 section above).
   survive); ConSBD3 at Convoy6 (h): no completion. **Knife-edge:** with `BSP_FRAME_JITTER 20,3` it fails (Convoy1 and
   Convoy6 survive, `local\p6u1_gj.log`), like e. Northampton and SaltLakeCity cannot be ordered directly:
   `select Northampton` is refused by 00645060 (`local\p6u1_i.log`).
+- **ESMP08 re-plan (cc9-physics6, 2026-10-13), pending the host squadron cap.** Plan `local\p6_e8_Br3L.txt` in the
+  cc9-physics1 tree (4.5 MB; not committed until it completes on main): g38_ord_e8's launch lines without its order
+  lines, every slot's target list re-ordered big ships first (South Dakota, Washington, Iowa, then Mobile, Santa Fe,
+  San Diego, Salt Lake City, then the destroyers; `local\p6_e8_alloc.py`), the 600-frame launch cycle extended to
+  140000 frames (`local\p6_e8_extend.py`), and three rounds of `g38_e8_retarget.py` re-targets. On a scratch export
+  of 09a095e45 with `kSquadronCreateLimit` 64 -> 512 (src/game_hosts_script_orders.cpp, exe 5A90E0943AE7), 140000
+  frames, reference env: **completed 2619.43 s**, guard logged (`local\p6e8_Br3Lc.log`), and **3283.38 s under
+  `BSP_FRAME_JITTER 20,3`** (`local\p6e8_Br3Lcj.log`). On the current exe it cannot complete: the host's 64-squadron
+  ceiling (a safety net counting every squadron ever created) stops launches near frame 45300, and the plan needs
+  about 70-80 squadrons. Other allocations (90000 frames, current exe): baseline 5 of 15 sunk, destroyers first 1,
+  mixed 6, big ships first 4 (9 with one re-target round, 11 with two and 140000 frames).

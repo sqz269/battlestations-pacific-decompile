@@ -32,6 +32,13 @@
 //   009D4A70   torpedo profile step 4: tuning+430h, Pilot/Torpedo/CruisingAlt
 //              (500 in planeglobals.lua:611)
 //   0089F550   the Lua squadron cruise block (the host's sq_alt_394/sq_alt_set)
+// SCOPE (packet cc13-ver11, docs/CC13_VER_11.md): the block is the SQUADRON.
+// 007B97E0 BSP_Plane_GetSquadron is `MOV EAX,[ECX+9D4h] / RET`, and 007F2BD0
+// initialises it from the squadron constructor 007F2C60 (ECX = squadron+37Ch).
+// Both profile writers are leader-only (009C8931 / 009D4A82 CALL 007B8AD0, then
+// JE past the write) and write into that shared block, so every member reads the
+// flight leader's value: pass the LEADER's task kind for a wingman. A wingman
+// reads the init value only before the leader's first profile tick.
 // UNCERTAINTY: which write is live on a given think depends on the profile
 // cadence (docs/CC13_TASK_PROFILE_CADENCE.md) and the +380h/+38Dh/+3A9h gates.
 // The model takes the script value when one is set, else the task's profile

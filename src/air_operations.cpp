@@ -224,7 +224,7 @@ void plane_reload_bomb_platforms_0089f080(AirOperationsHost& host, const std::ui
     }
 }
 
-void squadron_land_and_kill_008a20e0(AirOperationsHost& host, std::uint32_t squadron,
+void squadron_land_and_kill_008a20e0(SquadronLandAndKillHost& host, std::uint32_t squadron,
                                      const std::uint32_t* air_ops_blocks, int block_count,
                                      std::uint32_t* planes, std::int32_t* plane_count) {
     // 008A220F -> 007F1B70: every carrier and airfield in the scene is told the

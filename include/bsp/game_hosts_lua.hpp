@@ -558,6 +558,14 @@ bool lua_device_reload_enabled_00e17bf2() noexcept;
 // countdown and lock allow, and 009C7A80 reads it into the dive altitude. True:
 // route the row to the units host's third block. False: unimplemented.
 inline constexpr bool kLuaSquadronSetReleaseAltBound = false;
+// Packet cc13-fix4 (docs/CC13_VER_10.md section 4, divergence D2). 008A20E0
+// SquadronLandAndKill(squadron): 007F1B70 frees the launch slot on every carrier
+// and airfield (008A220F), then from the last plane down Kill(plane, 5 "landed")
+// (008A223F) and 007F3970(plane, 1) (008A2249); the last removal kills the
+// squadron (007F3A2A). True: the row runs squadron_land_and_kill_008a20e0
+// (src/air_operations.cpp) over the deck registry and the gunnery host's kill.
+// False: the row stays unimplemented (PRCP01 keeps the extra squadrons flying).
+inline constexpr bool kLuaSquadronLandAndKillBound = false;
 inline constexpr bool kLuaAddUntouchableUnitBound = true;   // ON on identity (LUA_BINDING_MISSION)
 // The +1D4h byte of units-host index `index`'s AI object, as AddUntouchableUnit
 // left it. False for every unit while kLuaAddUntouchableUnitBound is false.
@@ -1516,6 +1524,8 @@ public:
     int run_leave_formation_00899eb0(lua_State* state, int argument_count);
     // Packet cc13_natives1, under kLuaSquadronSetReleaseAltBound.
     int run_squadron_set_release_alt_008a24e0(lua_State* state, int argument_count);
+    // Packet cc13-fix4, under kLuaSquadronLandAndKillBound.
+    int run_squadron_land_and_kill_008a20e0(lua_State* state, int argument_count);
     // Packet cc9_squadron_travel_alt, under kSquadronTravelAltBound.
     int run_squadron_set_travel_alt_0089f550(lua_State* state, int argument_count);
     // Packet cc9_squadron_attack_alt, under kSquadronAttackAltBound.
