@@ -617,5 +617,75 @@ void timed_flag_debounce_007eb4e0(TimedFlag& flag, bool now, float dt) noexcept 
     }
 }
 
+// ---- cc13-gpr48b: 007D9360 --------------------------------------------------
+
+TrialDynamics trial_step_forces_007d9360(const Vec3& body, const Vec3& world, float angle,
+                                         const TrialClass& cls, const TrialGlobals& g,
+                                         const TrialCallbacks& cb) {
+    TrialDynamics d;
+    // 007D9408..007D945B: the squares are kept (as doubles at 24-bit precision)
+    // for the second magnitude at 007D96B0.
+    const float x2 = world.x * world.x;
+    const float y2 = world.y * world.y;
+    const float z2 = world.z * world.z;
+    const float s2 = (y2 + x2) + z2;
+    const float speed = (static_cast<double>(s2) > 1e-10)       // 00CE3820
+        ? static_cast<float>(std::sqrt(static_cast<double>(s2))) : 0.0f;
+    const float ratio = speed / cls.speed_ref_184;               // 007D946D, stored
+    // 007D94F1..007D9592: thrust.
+    float thrust = cls.thrust_164;
+    if (0.0f > angle) {
+        const float b = cb.interpolate_clamped_00419010(g.climb_blend_x0_f87408, 0.0f,
+            g.climb_blend_x1_f8740c, 1.57079637f /* 00CE3C64 */, -0.0f - angle);
+        const float s = static_cast<float>(std::sin(static_cast<double>(b)));
+        thrust = thrust * ((g.climb_thrust_k_f87404 - 1.0f) * s + 1.0f);
+    }
+    float tc;
+    if (0.0f > thrust) tc = 0.0f;
+    else tc = (static_cast<double>(thrust) > 100.0) ? 100.0f : thrust;  // 00D7A220 / 00CE3D08
+    d.thrust_24 += tc;
+    // 007D959C..007D95DE: the pitch term from the BODY velocity.
+    float az = body.z;
+    if (!(az > 0.0f)) az = -0.0f - az;
+    const float p = (1.0f > az) ? 0.0f : (-body.y) / body.z;
+    // 007D95E2..007D9720.
+    const float q = ratio / g.level_flight_f8732c;
+    const float base = (1.0f > q) ? q * q : 1.0f;
+    const float m = base * (p + 1.0f);
+    float c;
+    if (-2.0f > m) c = -2.0f;                  // 00CE7D7C
+    else c = (m > 2.0f) ? 2.0f : m;            // 00CE3958
+    const double gravity = 9.8100004196167;    // 00CF9058
+    const float kc = g.accel_cheat_mul_f873fc * c;
+    d.lift_20 = static_cast<float>(d.lift_20 + static_cast<double>(kc) * gravity);
+    d.gravity_2c = static_cast<float>(d.gravity_2c - static_cast<double>(g.accel_cheat_mul_f873fc) * gravity);
+    // 007D968B..007D97A8: drag along the world velocity.
+    const float drag = cb.drag_007d9140(speed, 1.0f, angle);
+    const float mag = static_cast<float>(std::sqrt(static_cast<double>((x2 + y2) + z2)));
+    const float inv = (mag > 0.0f) ? 1.0f / mag : 0.0f;
+    const Vec3 u{inv * world.x, world.y * inv, inv * world.z};
+    d.drag_10.x += drag * u.x;
+    d.drag_10.y += drag * u.y;
+    d.drag_10.z += drag * u.z;
+    // 007D97AF..007D9817: the aero terms.
+    const float tx = -body.x * cls.aero_x_174;
+    const float ty = -body.y * cls.aero_y_170;
+    const float a = cb.aero_007d92b0(ratio);
+    d.aero_04 += a * tx;
+    d.aero_08 += a * ty;
+    return d;
+}
+
+Vec3 trial_integrate_at_climb_angle_007d9360(float angle, float probe_speed, float dt, int count,
+                                             const TrialClass& cls, const TrialGlobals& g,
+                                             const TrialCallbacks& cb) {
+    Vec3 body{0.0f, 0.0f, probe_speed};          // 007D93DC..007D93F1
+    Vec3 world = cb.body_to_world(body);         // 007D93F6
+    for (int i = 0; i < count; ++i) {            // 007D9400 JLE, 007D9829 SUB EBX,1
+        TrialDynamics d = trial_step_forces_007d9360(body, world, angle, cls, g, cb);
+        cb.integrate_007d8470(d, body, world, dt);
+    }
+    return body;
+}
 }  // namespace gameplay_seg48_cc13
 }  // namespace bsp

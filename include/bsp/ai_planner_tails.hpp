@@ -65,7 +65,7 @@ inline constexpr float kAiTailEnemyHalfWeight = 0.5F;        // 00D7A280, a doub
 inline constexpr float kAiTailDistanceReference = 1000.0F;   // 00CE3804 and 00CE47A0
 inline constexpr float kAiTailNoUnitDistance = 1.0e10F;      // seed 0x501502F9 at 00A1E3D5
 inline constexpr float kAiTailMinArrivalSpeed = 0.1F;        // 00D7A3A0, a double
-inline constexpr double kAiTailLengthEpsilon = 1.0e-11;      // 00CE3820
+inline constexpr double kAiTailLengthEpsilon = 1.0e-10;      // 00CE3820
 inline constexpr int kAiTailTeamCount = 3;                   // the [ESP+34h] array is three wide
 
 // ---------------------------------------------------------------------------

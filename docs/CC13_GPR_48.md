@@ -319,3 +319,105 @@ Not done in this packet, by priority:
 
 The scripts are in this tree's `local/gpr48_*.py`: the function list, the grep and definition finders, the
 record writers and the doc edits. They are not committed.
+
+## 7. gpr48b: listing verification of the host flight functions (cc13-gpr48b)
+
+This was a verification pass over cc9's flight reconstructions, plus one new model. I made no host edits, no
+wiring and no runs. Every check below is against the disk bytes (Capstone listing), with the x87 stack
+tracked by hand. `tools/x87_dc_form_scan.py` finds DC-form sites in `007D9360` (`007D954D`, `007D9555`,
+`007D9663`) and `007DB680` (`007DC2AE`, `007DC7E1`); each was read as `st(1) op= st(0)`.
+
+### 7.1 Results
+
+| function | host | verdict |
+| --- | --- | --- |
+| `007D8230` | `translate_only_007d8230` (src/plane_advance_pose.cpp:308) | **matches.** The order is `f(f(unit+810h*t) + f(pos + f(t*ctl+18h)))` |
+| `007D9F60` | `rotate_and_translate_007d9f60` (:334) | **the model matches**, except for the attached clamp (D1). The running host differs (D2-D4) |
+| `007D9050` | inline, src/game_hosts_units.cpp:17550-17580 | **partial.** The body matches. The boost arm and the call-site scale are missing (D5) |
+| `007D9140` | inline, src/game_hosts_units.cpp:17587-17632 | **partial.** The formula and the two call-site ramps match. The body's rounding order was not re-read |
+| `007DB680` | `accumulate_free_flight_007db680` (src/plane_flight.cpp:319) | **partial.** `007DB744-007DBBDF` matches (D6). The rest was not re-read |
+| `007D9360` | not hosted (the host substitutes `007D98F0`'s predicate) | **modelled** in `gameplay_seg48_cc13.*` as `trial_integrate_at_climb_angle_007d9360` |
+
+**Not done:** `007D8470` (3 KB), `007DA710`, `007DA380` and `007D9CE0`. Their host stand-ins are
+`fold_world_into_body_007d8470` and `integrate_body_velocity_007d8611` (plane_flight.cpp:404-472),
+src/plane_control_rate.cpp, and the inlines in game_hosts_units.cpp. None of them was re-read, and
+they have no new records.
+
+### 7.2 Divergences, with predicted effects
+
+- **D1, `007DA2B1-007DA338`, the deck/runway clamp, is not modelled.** The host sets
+  `attached_branch_unmodelled` (src/plane_advance_pose.cpp:388-392). What the image does:
+  - the clamp runs only when ctl+FCh == 1, unit+BF4h is set and there is a parent (unit+3Ch);
+  - it asks `006BC530` for the runway height h;
+  - it computes `d = float(h - (desc+1FCh + 0.01))`, where 0.01 is the double `00D7A358`
+    (`3F847AE140000000`);
+  - when `0 > d` it lifts y by `-d` and calls `007D7D70` on ctl+10h.
+  
+  Effect: in the image, a plane on a deck or runway is held at desc+1FCh above the surface every
+  step, and the ground-contact flag is set.
+- **D2, `007DA080-007DA117`, the bank yaw, is missing from the running host.** The host
+  (game_hosts_units.cpp:33203-33206) says "the bank-yaw ... is not carried". What the image does:
+  - every wave-1 pose step yaws by `-sin(bank)*cos(pitch)*desc+1C8h*Interp(3.0, 0, 5.0, 1, ctl+7Ch)*difficulty*t`;
+  - the result is committed by slot +0Ch, so it persists (docs/TICK_ELEMENT_OVERRIDES.md: wave 1 runs
+    +4h with 0.05f, then commits).
+  
+  Effect: in the image, a banked aircraft whose ctl+7Ch is at least 5 gets an extra yaw rate in
+  proportion to desc+1C8h and sin(bank). The term ramps in between 3 and 5. I did not establish its sign
+  relative to the turn. Without it, the host's banked-flight heading drifts from the image's. A bound version should call `bank_yaw_angle_007da0ae` from the running path.
+- **D3, the rotation argument form.** The image passes `w = omega*t` with the factor 1.0f (`FLD1` at
+  `007D9FDC`). The running host passes `(omega, step)` (game_hosts_units.cpp:33270). The math is equal,
+  but the rotation angle rounds differently (`|omega*t|` against `|omega|*t`): last-ulp drift only.
+- **D4, the order within a step.** The image runs the +4h pose slot (`007D9F60`: rotate, bank yaw,
+  level, translate with ctl+18h and unit+810h) in wave 1, before the +8h physics in wave 3. The running
+  host integrates its velocity first and then moves the pose with the new velocity
+  (game_hosts_units.cpp:18025-18056).
+  
+  Effect: the host's position and attitude run one fixed step (50 ms) ahead of the image for the same
+  velocity history. Each step uses v(n+1) where the image uses v(n). That is about one step of travel,
+  roughly 5-10 m at cruise.
+- **D5, the thrust call site (`007DB7B9-007DB7FF`).**
+  - The image scales `007D9050` by `unit+0CC8h` and then by `008E6430(6, unit)` (or 1.0f). The product
+    order is `f(f(thr*CC8h)*mod)`.
+  - The host takes both as 1.0 (game_hosts_units.cpp:17542-17549). It also skips the boost arm,
+    ctl+5h x desc+604h (`007D9050`).
+  
+  Effect: where unit+CC8h is not 1 (an engine-damage or power scale) or modifier 6 applies, image thrust
+  differs. Damaged planes keep full thrust in the host.
+- **D6, the drag gate constant.** `007DBA67` compares the float speed squared with the **double**
+  1e-10 (`00CE3820`). The host compares it with `1.0e-10f` (plane_flight.cpp:341). Those differ
+  only for a speed squared in `(1e-10, 1.0000000134e-10]`. Effect: none in practice.
+
+### 7.3 The `007D9360` model
+
+`trial_step_forces_007d9360` / `trial_integrate_at_climb_angle_007d9360`
+(include/bsp/gameplay_seg48_cc13.hpp). The header gives the per-step formula.
+
+How it differs from the core law, which it otherwise mirrors:
+- the thrust is `desc+164h` at full throttle;
+- the angle-of-attack threshold is **1.0f** (`00D7A24C`), not 0.1;
+- the drag is taken as `v * (1/|v|)` and gets no backward x5;
+- there is no lift-ramp cap and no extra gravity.
+
+The pose ops, `007D7C00`/`007D8470`, `007D9140`, `007D92B0` and `00419010` are host callbacks.
+
+**Adoption.**
+- It would replace the host's substituted predicate for the `007D98F0` bisection, which calls it as
+  `(angle, probeSpeed, 0.04f, 10)`.
+- It draws no RNG.
+- OFF: nothing changes.
+- ON: the max-climb angle comes from a 10-step x 0.04 s trial of the real force law, not the
+  substitute.
+
+**Status.** Build-tested (`./scripts/build.ps1`, CTest 2 of 2). RET 10h is confirmed (`C2 10 00` at
+`007D9890`).
+
+### 7.4 Ledger
+
+| address | record | status |
+| --- | --- | --- |
+| `007D9360` | model | `semantic_build_tested`, complete |
+| `007D8230` | pointer | `reconstructed_listing_checked` |
+| `007D9F60` | pointer | partial |
+| `007D9050` | pointer | partial |
+| `007D9140` | pointer | partial |
+| `007DB680` | pointer | partial |

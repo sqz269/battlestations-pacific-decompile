@@ -146,6 +146,11 @@ struct GameBulletClassRow {
     // "HeadingTurn", classDesc+0E8h, degrees per second: 00857061's turn rate
     // toward the commanded heading. Packet cc9_usn02_sameside_torpedoes.
     float heading_turn{0.0f};
+    // "HomingHorzTurnSpeed" / "HomingVertTurnSpeed", classDesc+0F0h / +0F4h
+    // (008566B0, default 0): 00856BB0's homing turn rates, rad/s. Only this
+    // installation's "Torpedo Fido Homing Airplane" sets them (0.5 each).
+    float homing_horz_turn_speed{0.0f};
+    float homing_vert_turn_speed{0.0f};
     // Packet cc13-homing1: the MRocket class fields 0080A000 reads.
     float ignition_delay{0.0f};       // "IgnitionDelay", classDesc+E0h
     float rocket_vmax{0.0f};          // "VMax", classDesc+D8h
@@ -507,6 +512,10 @@ struct GameProjectileRow {
     // 007311B0 carries as `heading`; 10000 (00D0C310) means none, and the steer
     // then holds the heading it swims on. Packet cc9_usn02_sameside_torpedoes.
     float commanded_heading{10000.0f};
+    // record+47Ch "swimdepth": 00856050's -2.5 (00D0C314), or launch params +8h
+    // (0072C970's 00852410 prediction for a submarine firing at a submarine).
+    // Read only under kTorpedoSwimDepthHomingBound.
+    float swim_depth{-2.5f};
     // Packet cc8_torpedo_closest_approach. Tracked only while swimming: the
     // smallest horizontal distance this round reached to any unit of another
     // side, and when. Centre to centre - this host has no oriented hull box for

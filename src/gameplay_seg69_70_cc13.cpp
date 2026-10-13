@@ -4,6 +4,7 @@
 
 #include "bsp/gameplay_seg69_70_cc13.hpp"
 #include "bsp/band_009f_cc13.hpp"
+#include "bsp/unit_rudder.hpp"
 
 #include <cmath>
 
@@ -769,6 +770,423 @@ PartyInitResult ai_controller_init_party_slots_00a32df0(std::uint32_t effective_
     }
     if (game_61c) out.ai_enabled[0] = true;                             // 00A32F80
     return out;
+}
+
+// ---------------------------------------------------------------------------
+// 00A0C330 / 00A0C3C0 / 00A0C650 (packet cc13-gpr69b)
+// ---------------------------------------------------------------------------
+
+float ai_pair_base_value_00a0c330(const AiValueRecord& attacker, const AiValueRecord& target,
+                                  bool rnd_flag, ComposeAttackHost& host) {
+    float w = host.target_weight_00a08460(attacker, target);           // 00A0C345
+    if (attacker.dword_01c != 0 && host.class_is_kind(attacker, 0x1C)) // 00A0C34E..00A0C361
+        w = 0.0f;
+    const float rnd = rnd_flag ? attacker.spread_018 * target.spread_018 : 1.0f;  // 00A0C373 / FLD1
+    const float rw = rnd * w;                                           // 00A0C38B
+    return rw * target.weight_014;                                      // 00A0C38F, FSTP float
+}
+
+namespace {
+
+// 00414C60 BSP_Vector2f_LengthWithCutoff: sqrt of f(dx^2 + dz^2) when that is
+// above 1e-10 [00CE3820] (FCOMI/JBE), else 0.
+float length_00414c60(float dx, float dz) {
+    const float d2 = dz * dz + dx * dx;
+    if (!(static_cast<double>(d2) > 1.0e-10)) return 0.0f;
+    return static_cast<float>(std::sqrt(static_cast<double>(d2)));
+}
+
+}  // namespace
+
+float ai_pair_attack_value_00a0c3c0(const AiValueRecord& attacker, const AiValueRecord& target,
+                                    float distance, bool rnd_flag, ComposeAttackHost& host) {
+    const float base = ai_pair_base_value_00a0c330(attacker, target, rnd_flag, host);  // 00A0C3D4
+    bool ship = false;
+    if (host.class_is_kind(attacker, 6)) {                              // 00A0C3F5
+        ship = true;
+    } else if (!host.class_is_kind(attacker, 0x0F)) {                   // 00A0C51D
+        return base;                                                    // 00A0C63C
+    }
+    // 00A0C40A COMISS 0, d / JBE: only a negative distance is replaced.
+    if (0.0f > distance) {
+        distance = attacker.byte_00c && target.byte_00c
+                       ? length_00414c60(attacker.x_004 - target.x_004,
+                                         attacker.z_008 - target.z_008)
+                       : 0.0f;
+    }
+    // FLD arrive / FSUBR qword(distance) / FSTP float.
+    const float arrive = host.tuning(ship ? 0xD8u : 0xECu);
+    const float beyond = static_cast<float>(static_cast<double>(distance) - arrive);
+    if (!(beyond > 0.0f)) return base;                                  // FCOMI/JBE -> 00A0C63A
+    const float time = beyond / (ship ? host.class_speed_500(attacker)
+                                      : host.class_speed_188(attacker));
+    const float mul = ship
+        ? host.interpolate_00419010(host.tuning(0xDC), host.tuning(0xE8), host.tuning(0xE0),
+                                    host.tuning(0xE4), time)
+        : host.interpolate_00419010(host.tuning(0xF0), host.tuning(0xFC), host.tuning(0xF4),
+                                    host.tuning(0xF8), time);
+    return mul * base;                                                  // 00A0C4F0 / 00A0C618
+}
+
+ComposeAttackTerms ai_compose_attack_value_00a0c650(const std::vector<AiValueRecord>& attackers,
+                                                    const std::vector<AiValueRecord>& targets,
+                                                    const ComposeAttackArgs& args,
+                                                    ComposeAttackHost& host) {
+    ComposeAttackTerms t;
+    const int na = static_cast<int>(attackers.size());
+    const int nt = static_cast<int>(targets.size());
+    std::vector<float> attacker_best(attackers.size(), 0.0f);   // 004A8F10 with FLDZ
+    std::vector<float> target_best(targets.size(), 0.0f);
+    for (int i = 0; i < na; ++i) {
+        for (int j = 0; j < nt; ++j) {
+            // 00A0C7AE: rnd flag = !byte5 || i == last attacker.
+            const bool rnd = !args.byte5 || i == na - 1;
+            float v = ai_pair_attack_value_00a0c3c0(attackers[i], targets[j], args.distance,
+                                                    rnd, host);
+            if (!rnd) {                                                 // 00A0C840
+                const float f = 0.001f > args.factor ? 0.001f : args.factor;
+                v = f * v;                                              // 00A0C86A
+            }
+            t.attack_sum = v + t.attack_sum;                            // 00A0C87C
+            if (v > attacker_best[i]) attacker_best[i] = v;             // FCOMPI/JBE
+            if (v > target_best[j]) target_best[j] = v;
+        }
+    }
+    for (const float b : attacker_best) {                               // 00A0CC82..00A0CCA1
+        t.attack_maxes_sum = b + t.attack_maxes_sum;
+        if (!(0.0f < b) && !std::isnan(b)) ++t.attackers_without_target;  // COMISS/JB
+    }
+    for (const float b : target_best)                                   // 00A0CCEA..00A0CCF3
+        if (!(0.0f < b) && !std::isnan(b)) ++t.targets_unattacked;
+    for (std::size_t i = 0; i < attackers.size(); ++i)                  // 00A0CD27..00A0CDBB
+        for (std::size_t j = i + 1; j < attackers.size(); ++j)
+            if (attackers[i].object_000 == attackers[j].object_000) ++t.repeat_pairs;
+    const float ref = host.tuning(0x214);
+    t.base = (host.tuning(0x218) * t.attack_sum + t.attack_maxes_sum) / ref;  // 00A0CDD5..E7
+    float idle = host.tuning(0x21C) * static_cast<float>(t.attackers_without_target);  // FIMUL
+    float unattacked = host.tuning(0x220) * static_cast<float>(t.targets_unattacked);
+    float repeat = host.tuning(0x224) * static_cast<float>(t.repeat_pairs);
+    const float speed = host.tuning(0x22C) * host.records_min_speed_00a07c10(attackers);
+    const float cap = host.tuning(0x228) * t.base;
+    t.speed_bonus = speed > cap ? cap : speed;                          // 00A0CE5D FCOMI/JBE
+    if (!args.penalties) idle = unattacked = repeat = 0.0f;            // 00A0CE71
+    const float sb = t.speed_bonus + t.base;                            // 00A0D09D
+    t.result = sb - ((unattacked + idle) + repeat);                     // 00A0D0BD
+    if (0.0f > t.result) t.result = 0.0f;                               // 00A0D0CB
+    return t;
+}
+
+// ---------------------------------------------------------------------------
+// 00A13B60 (packet cc13-gpr69b)
+// ---------------------------------------------------------------------------
+
+namespace {
+
+// FLD dx / FLD dz / FMUL ST0,ST0 / FLD ST1 / FMULP ST2 / FADDP / FSTP float.
+float planar_d2(float ax, float az, float bx, float bz) {
+    const float dx = ax - bx;
+    const float dz = az - bz;
+    return dz * dz + dx * dx;
+}
+
+}  // namespace
+
+CloseAttackPassResult ai_close_attack_pass_00a13b60(
+    int group_team_5638, int population_5644, float radius, const float centre[3],
+    bool has_target_group, const std::vector<CloseAttackEntity>& world_lists,
+    const std::vector<CloseAttackMember>& members, CloseAttackPassHost& host) {
+    CloseAttackPassResult out;
+    const float collect = host.tuning(0x1F4) * radius;                  // 00A13B8A..00A13BB1
+    const float r2 = collect * collect;                                 // 00A13BBD
+    const int own = group_team_5638;
+    const int enemy = group_team_5638 == 0 ? 1 : 0;                     // 00A13BAE SETE
+    std::vector<const CloseAttackEntity*> list;
+    for (const CloseAttackEntity& e : world_lists) {                    // 00A13BDA..00A1437F
+        if (!e.byte_05c || e.byte_05d || e.byte_060 || e.byte_05e) continue;
+        if (e.list_slot < 2) {
+            if (e.team_054 != enemy) continue;                          // ids 6 and 24
+        } else if (e.team_054 != enemy && e.team_054 == own) {
+            continue;                                                   // 45h, 46h, 1Bh
+        }
+        // FCOMPI r2 vs d2 / JBE: kept only when d2 < r2.
+        if (!(r2 > planar_d2(e.x_0fc, e.z_104, centre[0], centre[2]))) continue;
+        list.push_back(&e);
+    }
+    for (const CloseAttackMember& m : members) {
+        if (m.squadron_18) {                                            // 00A143ED
+            if (m.leader_kind_17 && !m.leader_byte_c24) continue;       // 00A14413
+            if (host.send_empty_squadron_home_009ffeb0(m.id)) continue; // 00A1441B, 00A14444
+        } else {
+            if (!m.ship_06) continue;                                   // 00A1442F
+            if (m.lands_troops_538_2c) continue;                        // 00A14444
+        }
+        float best = -10000000000.0f;                                   // [00CE4ADC]
+        const CloseAttackEntity* chosen = nullptr;
+        const CloseAttackEntity* existing =
+            m.current_target != nullptr && m.current_target_kind_2 &&
+                    m.current_target->team_054 == enemy
+                ? m.current_target
+                : nullptr;
+        if (existing != nullptr) {
+            // 00A14604..00A1464C: outside r but inside 2 r^2 joins the list.
+            const float d2 = planar_d2(existing->x_0fc, existing->z_104, centre[0], centre[2]);
+            if (!(d2 < r2) && r2 + r2 > d2) list.push_back(existing);
+        }
+        for (const CloseAttackEntity* c : list) {                       // 00A14662..00A149DA
+            const bool in_group = has_target_group && host.target_group_contains_00a2c720(c->id);
+            const float w = host.candidate_weight_00a0f810(m.id, c->id);
+            if (!(0.0f < w) && !in_group) continue;                     // 00A146D3 / 00A146D9
+            const float d2 = planar_d2(m.pos[0], m.pos[2], c->x_0fc, c->z_104);  // 00A148CD
+            const float d = static_cast<double>(d2) > 1.0e-10
+                                ? static_cast<float>(std::sqrt(static_cast<double>(d2)))
+                                : 0.0f;
+            const float range = host.interpolate_00419010(host.tuning(0x1F8), 1.0f,
+                                                          host.tuning(0x1FC), 0.0f, d);
+            const float rw = range * w;                                 // 00A14942
+            const float g = in_group ? host.tuning(0x204) : 1.0f;       // 00A1494C
+            const float s = c == existing ? host.tuning(0x200) : 1.0f;  // 00A14965
+            const float score = (s * g) * rw;                           // 00A14990..00A1499C
+            if (score > best) {                                         // FCOMPI / JBE
+                best = score;
+                chosen = c;
+            }
+        }
+        if (chosen != nullptr) {
+            out.candidate_found = true;                                 // 00A149F3
+            host.issue_order_0077d600(m.id, m.ship_06 ? 0x00E08F78u : 0x00E08EF8u, chosen->id);
+            continue;
+        }
+        // 00A14A78..00A14D48: no candidate.
+        float r = static_cast<float>(population_5644) * 160.0f;         // FILD, FMUL [00D22C90]
+        if (400.0f > r) r = 400.0f;                                     // [00CE3D90] / [00CFD710]
+        const float fr2 = r * r;
+        const float d2 = planar_d2(m.pos[0], m.pos[2], centre[0], centre[2]);  // 00A14BD3
+        if (!(d2 > fr2)) continue;                                      // 00A14BE3
+        float point[3];
+        for (int k = 0; k < 3; ++k) {
+            const float own_part = m.pos[k] * 0.4f;                     // [00CE65D0], FSTP float
+            const float centre_part = centre[k] * 0.6f;                 // [00CEFF98], FSTP float
+            point[k] = centre_part + own_part;                          // 00A14D1B..00A14D41
+        }
+        host.issue_moveto_00a02020(m.id, point);
+    }
+    for (const CloseAttackEntity* c : list) out.candidates.push_back(c->id);
+    return out;
+}
+
+// ---------------------------------------------------------------------------
+// 00A2DEF0 / 00A28300 (packet cc13-gpr69b)
+// ---------------------------------------------------------------------------
+
+bool ai_capture_planner_clock_00a29fd0(CapturePlannerClock& clock, float now,
+                                       float tuning_1c0, float tuning_1c4, float tuning_1c8) {
+    float dt = 0.0f;
+    if (!(clock.last_clock_040 < 0.0f)) {                                // 00A2A020 JB
+        const float d = now - clock.last_clock_040;                     // 00A2A02A
+        if (!(0.0f > d)) dt = d;                                        // 00A2A038 JA keeps 0
+    }
+    clock.last_clock_040 = now;                                         // 00A2A04E
+    clock.age_038 = clock.age_038 + dt;                                 // 00A2A061
+    clock.since_spawn_03c = clock.since_spawn_03c + dt;                 // 00A2A06B
+    const float delay = bsp::clamped_interpolate_00419010(0.0f, tuning_1c0, tuning_1c8,
+                                                          tuning_1c4, clock.age_038);
+    return clock.since_spawn_03c > delay;                               // 00A2A0BB FCOMPI/JA
+}
+
+float ai_capture_assignment_score_00a2ac11(float k_1bc, float target_total,
+                                           float group_weight) noexcept {
+    const float one_minus_k = 1.0f - k_1bc;                             // FLD1 / FSUBRP
+    const float wterm = one_minus_k * group_weight;                     // FMUL, FSTP qword
+    const float sterm = k_1bc * target_total;                           // 00A2AC33
+    return sterm + wterm;                                               // FADD qword, FSTP float
+}
+
+// 00A11110..00A112B1: xmm0 = -1.0 [00D7A260], xmm1 = 1.0 [00D7A24C],
+// xmm2 = -2.0 [00CE7D7C], xmm3 = 2.0 [00CE3958], xmm4 = 0.
+const std::array<std::array<float, 2>, kFormationShapeSlots> kFormationShapeTable00f8a7b0{{
+    {-1.0f, 0.0f}, {1.0f, 0.0f}, {0.0f, 1.0f}, {-1.0f, 1.0f}, {1.0f, 1.0f}, {0.0f, -1.0f},
+    {-1.0f, -1.0f}, {1.0f, -1.0f}, {-2.0f, 0.0f}, {2.0f, 0.0f}, {-2.0f, 1.0f}, {2.0f, 1.0f},
+    {-2.0f, -1.0f}, {2.0f, -1.0f}, {0.0f, 2.0f}, {-1.0f, 2.0f}, {1.0f, 2.0f}, {-2.0f, 2.0f},
+    {2.0f, 2.0f}, {0.0f, -2.0f}, {-1.0f, -2.0f}, {1.0f, -2.0f}, {-2.0f, -2.0f}, {2.0f, -2.0f},
+}};
+
+FormationShapeResult ai_formation_shape_00a11070(bool leader_ship_06, bool leader_has_formation_284,
+                                                 float tuning_210,
+                                                 const std::vector<FormationShapeFollower>& followers) {
+    FormationShapeResult out;
+    if (!leader_ship_06 || !leader_has_formation_284) return out;      // 00A110B2 / 00A110DF
+    out.ran = true;
+    int slot = 0;
+    for (const FormationShapeFollower& f : followers) {                 // 00A112DF..00A1136B
+        if (!f.ship_06 || !f.has_record) continue;                      // 00A11321 / 00A1133C
+        if (slot >= kFormationShapeSlots) break;                        // image: reads past the table
+        FormationShapeSlot s;
+        s.member = f.member;
+        s.slot = slot;
+        s.record_010 = -kFormationShapeTable00f8a7b0[slot][0] * tuning_210;  // FCHS, FMULP
+        s.record_020 = -kFormationShapeTable00f8a7b0[slot][1] * tuning_210;
+        out.slots.push_back(s);
+        ++slot;                                                         // ADD EBP,8
+    }
+    return out;
+}
+
+RegroupingMoveResult ai_regrouping_move_tick_00a126c0(
+    const std::vector<std::array<float, 3>>& members, const float destination[3],
+    float tuning_20c, const float origin_00f87574[3]) {
+    RegroupingMoveResult out;
+    for (int k = 0; k < 3; ++k) out.point[k] = destination[k];          // 00A127EA LEA EDX,[EBP+8]
+    if (members.size() <= 1u) return out;                               // 00A126D3
+    const float r2 = tuning_20c * tuning_20c;                           // 00A12740
+    const std::array<float, 3>& lead = members.front();
+    bool straggler = false;
+    for (std::size_t i = 1; i < members.size() && !straggler; ++i) {    // 00A1274A..00A127CC
+        straggler = planar_d2(members[i][0], members[i][2], lead[0], lead[2]) > r2;  // JA
+    }
+    if (!straggler) return out;
+    out.regrouping = true;
+    float c[3] = {origin_00f87574[0], origin_00f87574[1], origin_00f87574[2]};  // 00A127F2
+    int n = 0;
+    for (const std::array<float, 3>& m : members) {                     // 00A12840..00A1297C
+        ++n;
+        for (int k = 0; k < 3; ++k) c[k] = c[k] + m[k];
+    }
+    const float nf = static_cast<float>(n);                             // 00A12981 FILD
+    for (int k = 0; k < 3; ++k) {
+        const float mean = c[k] / nf;                                   // 00A1299F..00A129B1
+        const float scaled = mean * 3.0f;                               // [00D7A2B0]
+        const float sum = destination[k] + scaled;                      // 00A129E0..00A129F6
+        out.point[k] = sum * 0.25f;                                     // [00D7A348]
+    }
+    return out;
+}
+
+OrderMoveChoice ai_order_cautious_move_00a2ccf0(std::uint32_t population_5644, const float point[3],
+                                                float ratio, OrderMoveHost& host) {
+    if (population_5644 == 0u) return OrderMoveChoice::None;           // 00A2CCFA
+    if (host.already_moving_to_00a2c150(point)) return OrderMoveChoice::Kept;  // 00A2CD0D
+    if (host.leader_is_ship()) return OrderMoveChoice::MoveTo;          // 00A2CD34
+    if (!host.should_route_cautiously_00a2c9f0(point)) return OrderMoveChoice::MoveTo;  // 00A2CD40
+    const float draw = host.uniform01_stream1();                        // 00A2CD47
+    return draw > ratio ? OrderMoveChoice::CautiousMove : OrderMoveChoice::MoveTo;  // 00A2CD52 JBE
+}
+
+ModeThinkResult ai_duel_think_00a25f70(const DuelThinkInputs& in) {
+    ModeThinkResult out;
+    if (in.owned_groups_028 == 0u) {                                    // 00A25F8F
+        out.action = ModeThinkAction::SpawnGroup;
+        return out;
+    }
+    if (in.nearest_enemy_group == nullptr) {                            // 00A2607C -> 00A261D1
+        out.action = ModeThinkAction::CautiousMove;
+        for (int k = 0; k < 3; ++k) out.point[k] = in.own_centroid[k];
+        return out;
+    }
+    if (16000000.0f > in.nearest_enemy_d2 || in.own_team_group_count <= 1u) {  // 00A2608C / 00A26099
+        out.action = ModeThinkAction::Attack;
+        out.target = in.nearest_enemy_group;
+        return out;
+    }
+    const float v[2] = {in.leader[0] - in.own_centroid[0], in.leader[2] - in.own_centroid[2]};
+    const float d2 = v[1] * v[1] + v[0] * v[0];                         // 009FFC10
+    const float d = static_cast<double>(d2) > 1.0e-10
+                        ? static_cast<float>(std::sqrt(static_cast<double>(d2)))
+                        : 0.0f;
+    const float t = bsp::clamped_interpolate_00419010(500.0f, 0.0f, 2000.0f, 1.0f, d);
+    const float u = 1.0f - t;                                           // 00A2613F
+    out.action = ModeThinkAction::CautiousMove;
+    for (int k = 0; k < 3; ++k) {
+        const float e = in.enemy_centroid[k] * u;                       // 00A26153..00A26165
+        const float o = in.own_centroid[k] * t;                         // 00A2616F..00A26181
+        out.point[k] = o + e;                                           // 00A2618D..00A261A5
+    }
+    return out;
+}
+
+ModeThinkResult ai_escort_think_00a26210(const EscortThinkInputs& in) {
+    ModeThinkResult out;
+    if (in.owned_groups_028 == 0u) {                                    // 00A26235
+        out.action = ModeThinkAction::SpawnGroup;
+        return out;
+    }
+    if (in.set.empty()) {                                               // 00A262D3 -> 00A264EB
+        out.action = ModeThinkAction::ChooseAttackTarget;
+        return out;
+    }
+    const EscortSetEntity* nearest = nullptr;
+    float best = 1.0e10f;                                               // [00CE4970]
+    for (const EscortSetEntity& e : in.set) {                           // 00A26300..00A263D8
+        const float d2 = planar_d2(e.x_0fc, e.z_104, in.leader[0], in.leader[2]);
+        if (best > d2) {                                                // FCOMPI / JBE
+            best = d2;
+            nearest = &e;
+        }
+    }
+    if (nearest == nullptr) return out;   // the image reads [0+54h] here
+    if (nearest->team_054 == in.own_team_030) {                         // 00A263EB
+        out.action = ModeThinkAction::PatrolTo;
+        const float e[3] = {nearest->x_0fc, nearest->y_100, nearest->z_104};
+        for (int k = 0; k < 3; ++k) {
+            const float s = e[k] + in.enemy_centroid[k];                // 00A2641D..00A26442
+            out.point[k] = s * 0.5f;                                    // [00D7A280]
+        }
+        return out;
+    }
+    if (nearest->team_054 == in.enemy_team_034) {                       // 00A26482
+        if (nearest->group_16c != nullptr) {                            // 00A2648F
+            out.action = ModeThinkAction::Attack;
+            out.target = nearest->group_16c;
+            return out;
+        }
+        out.action = ModeThinkAction::PatrolTo;                         // 00A264C4..00A264D3
+        out.point[0] = nearest->x_0fc;
+        out.point[1] = nearest->y_100;
+        out.point[2] = nearest->z_104;
+        return out;
+    }
+    return out;
+}
+
+float ai_unit_arrival_value_00a03760(float capture_weight_00a03510, float distance_009ffc10,
+                                     int target_7a0, float speed, float tuning_198) noexcept {
+    const float r = static_cast<float>(target_7a0);                     // 00A037CF FILD, FSTP float
+    if (!(distance_009ffc10 > r)) return capture_weight_00a03510;       // 00A037E5 JBE
+    if (static_cast<double>(speed) > 0.10000000149011612) return 0.0f; // 00A03840 JA -> 00A03896
+    const float time = (distance_009ffc10 - r) / speed;                 // 00A03846 FSUB, DE F1
+    const float limit = 1.0f > tuning_198 ? 1.0f : tuning_198;          // 00A0386A FCOMI/JBE
+    if (time >= limit) return 0.0f;                                     // 00A03890 JB (NaN computes)
+    return (1.0f - time / limit) * capture_weight_00a03510;             // DE F1, DE E9, FMUL
+}
+
+bool ai_defend_member_is_candidate_00a2def0(bool member_kind_1c, bool in_team_set) noexcept {
+    return member_kind_1c || in_team_set;   // 00A2DF2F JNE / 00A2DF4A JE
+}
+
+std::optional<std::vector<std::size_t>> ai_defend_sort_records_00a28300(
+    const std::vector<DefendRecordKey>& records) {
+    if (records.size() > 32u) return std::nullopt;   // 00A28320
+    auto before = [&records](std::size_t x, std::size_t y) {
+        return 0.0f < records[x].threat_004 && records[y].weight_008 < records[x].weight_008;
+    };
+    std::vector<std::size_t> order(records.size());
+    for (std::size_t i = 0; i < order.size(); ++i) order[i] = i;
+    // 00A25750: each element either goes to the front (copy_backward 00A233F0)
+    // or is shifted back while it goes before its predecessor.
+    for (std::size_t i = 1; i < order.size(); ++i) {
+        const std::size_t v = order[i];
+        if (before(v, order[0])) {
+            for (std::size_t k = i; k > 0; --k) order[k] = order[k - 1];
+            order[0] = v;
+            continue;
+        }
+        std::size_t j = i;
+        while (before(v, order[j - 1])) {
+            order[j] = order[j - 1];
+            --j;
+        }
+        order[j] = v;
+    }
+    return order;
 }
 
 }  // namespace gameplay_seg69_70_cc13

@@ -214,8 +214,8 @@ inline constexpr float kAiPlannerDefaultWeightFactor = 1.0F;   // 00D7A24C
 // or below it is never chosen even when it is the only one.
 inline constexpr float kAiPlannerScoreFloor = -999999.0F;      // 00D22CC4
 // The near radius the range factor collapses to zero inside: 00CE3820 is the
-// double 1.0e-11, so only coincident groups take that arm.
-inline constexpr double kAiPlannerNearRadiusSquared = 1.0e-11; // 00CE3820
+// double 1.0e-10 (bytes BB BD D7 D9 DF 7C DB 3D), so only coincident groups take that arm.
+inline constexpr double kAiPlannerNearRadiusSquared = 1.0e-10; // 00CE3820
 
 struct AiTargetScoreInputs {
     float base{0.0F};

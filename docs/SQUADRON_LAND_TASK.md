@@ -16234,3 +16234,36 @@ before. Of the win rows (USN01, USN02, LOMP10, USN12, LOMP06, BSM01) none calls 
 installation's scripts; usn_19_coralus (USN04/USN19) does, so USN04 will move.
 
 **Verdict: ON, both switches.**
+
+## 5gp. PRCP01: the player's recall lands a squadron; queue items 2-4 (cc9-lua56, 2026-10-13)
+
+**The recall, exercised.** `local\l56_p01_r.txt` is `l55_p01_c.txt` plus `6000 order Enterprise 4 2` (the Dauntless slot,
+squadron 36, `Enterprise_sqn05`). Run on `458f9efbe` (both 5go switches ON), 16200/16000 frames, `local\l56_R_p01r.log`:
+- `helm order applied: ... order Enterprise slot 4 order 2: answer 1, state after 4, 1 plane(s)` (006CCDA0 state 3, order 2:
+  `land` at the carrier, slot state 4). Only the leader was alive.
+- `plane touchdown: unit=Enterprise_sqn05 t=480.01` on the deck, `carrier elevator Enterprise: stows Enterprise_sqn05 at
+  496.65 s`, `stock return ... back into Enterprise's stock ... slots returned 1` (007CC8B0 -> 007F1CA0 -> Kill 5), the
+  landing-queue record erased, and slot 4 launches a new squadron (squadron 70) after it.
+- The mission still completes (779.33 s, Zuiho by `Enterprise_sqn08|.-2`).
+- So carrier recovery runs end to end on PRCP01 when the player recalls. The diagnostic death table writes a row for the stowed
+  plane with the last damager as `killer` (Hayashio); that row is the Kill(5) stock return, not a combat death (diagnostic text
+  only; no kill listener names it).
+
+**Item 2, `order` to an airborne squadron (006CCDA0, read).** State 3 answers 2 to order 3 unless the squadron is holding at a
+moveto (006BC5E0: its current command is moveto and it is within class+268h x [00CEC160] of the point). The player's retarget
+of a squadron in the air is therefore two orders, `order <base> <slot> 1` (moveto at its own position, 006CD02A) then
+`order <base> <slot> 3 <target>` (SetTarget 00E08EF8), or `select`/`target` on the squadron (docs/SCRIPTED_HELM.md 12).
+Order 2 in state 3 is the recall above. The host's `air_ops_held_slot_order_006ccda0` already matches the image.
+
+**Item 3, the early Junyo kill in `l55_p01_e.txt`.** File e has no `600 launch Enterprise 1 101 3 Enterprise` line (and none of
+c's pre-15400 Zuiho lines, which are refused before the Zuiho is generated). With one Wildcat CAP fewer, slot 1 was free for an
+Avenger strike, which sank the Junyo at 581 s (`Enterprise_sqn06|.-3`), and the Enterprise, with half its CAP, was sunk at
+936.49 s by a Kate. Not a host divergence.
+
+**Item 4, the UNIMPLEMENTED natives.** ESMP08 (`p6e8_base`) and USNOS (`g39_bb0_os`) list only presentation natives
+(`IsGUIActive`, `PrepareClass`, `BlackBars`, `EnableInput`, `DisplayUnitHP`). PRCP01's gameplay ones are
+`ForceFireDepthCharge` (244 calls, usn_03:593, `Mission.Puffin` every tick: 0089B9D0 runs `vtable[1F0h]` when the entity is
+`IsKindOf(24h)` and `[+3F4h]+80h == 8`), `NavigatorStop` (67, usn_03:1869-1918, each followed by a `NavigatorMoveOnPath`),
+`RemoveAllAirBasePlanes` (2), `PutFormationTo`/`PutRelTo` (2 each), `DisbandFormation`, `AddProximityTrigger` (1, in a
+commented block's sibling), `TrulyDead` (2), `IsInvincible` (4), `IsUnitUntouchable` (1). PRCP01 now completes without them,
+so none is win-critical; ForceFireDepthCharge is the one with per-tick reach.
