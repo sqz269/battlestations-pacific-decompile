@@ -541,16 +541,6 @@ std::optional<PlannerSpawnCall> ai_defend_spawn_arm_00a29be7(
 // member+304h over the +563Ch list, in order (FLD/FADD/FSTP float).
 float ai_group_resource_sum_00a2c530(const std::vector<float>& member_304) noexcept;
 
-// 00A18480 BSP_AiPlanner_TakeReplanFlag: returns planner+2Ch and clears it.
-bool ai_planner_take_replan_flag_00a18480(bool& replan_02c) noexcept;
-
-// 00A1D110 / 00A1D140 / 00A1D170, the Duel, Escort and Siege needs-replan slot
-// (vtable +30h): takes and clears +2Ch; with owned groups (+28h, unsigned) it
-// answers true when the first owned group's command is not engaged (00A2CB10)
-// and the old flag otherwise; with none, the old flag.
-bool ai_mode_planner_needs_replan_00a1d110(bool& replan_02c, std::uint32_t owned_028,
-                                           bool first_owned_engaged) noexcept;
-
 // 00A2E1E0 BSP_AiGroup_CountUnitTypes, __thiscall(group)(map&) RET 4: for each
 // member, map[member+170h vtable slot 0 ()] += 009FE060(member) (00625900 is the
 // map's operator[]).

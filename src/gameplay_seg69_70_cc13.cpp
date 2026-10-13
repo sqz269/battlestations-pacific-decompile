@@ -692,20 +692,6 @@ float ai_group_resource_sum_00a2c530(const std::vector<float>& member_304) noexc
     return sum;
 }
 
-bool ai_planner_take_replan_flag_00a18480(bool& replan_02c) noexcept {
-    const bool old = replan_02c;   // MOV AL,[ECX+2Ch]
-    replan_02c = false;
-    return old;
-}
-
-bool ai_mode_planner_needs_replan_00a1d110(bool& replan_02c, std::uint32_t owned_028,
-                                           bool first_owned_engaged) noexcept {
-    const bool old = replan_02c;
-    replan_02c = false;
-    if (owned_028 == 0u) return old;              // CMP [ECX+28h],0 / JBE
-    return first_owned_engaged ? old : true;      // 00A2CB10, TEST AL / MOV AL,1 / JE
-}
-
 void ai_group_count_unit_types_00a2e1e0(const std::vector<CountedMember>& members,
                                         std::vector<std::pair<std::uint32_t, int>>& map_in_out) {
     for (const CountedMember& m : members) {

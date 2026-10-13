@@ -141,9 +141,10 @@ bought pick's total.
 **`00A03900`.** In modes 0..2 (`009FFC80`), the pair bonus is the first 0Ch row of the tuning
 singleton's table (`+FA8h + mode*10h`) whose ids equal (earlier class, candidate class); else 0.
 
-**`00A02180` and `00A07C10` return the minimum speed.** The ledger names say maximum
+**`00A02180` and `00A07C10` return the minimum speed.** The ledger names said maximum
 (`BSP_UnitList_MaxSpeed`, `BSP_AiGroupRecords_MaxSpeed`), but the seed is 1e10 (`[00CE4970]`) and a
-value replaces it unless it is greater. So the spawn weight divides by the slowest class's speed.
+value replaces it unless it is greater. So the spawn weight divides by the slowest class's speed. They
+are renamed (section 4).
 
 **The two planner arms that call `00A25A30`** (the host records both: src/game_hosts_ai.cpp
 `capture_spawn_arm_00a2b400` and `defend_spawn_tail_00a29b8e`).
@@ -199,18 +200,20 @@ or 46h. `00A24870` uses the sphere filter of vtable `00D22CC0` (slot 0 = `00A1A6
 target with `r^2 = float(tuning+1A4h squared)`, team = planner+34h, and falls back to the target's own
 record. The host's labelled stand-in `capture_defenders_00a24870` (src/game_hosts_ai.cpp:4027)
 matches these rules except that it reads `+5Dh` through `unit_active` and walks its world list 2.
+
 ### 1.6 Small group and planner helpers
 
 - **`00A2C530`**, the group resource: the float sum of `member+304h`. The host substitutes the
   constant 0 (src/game_hosts_ai.cpp:3814, `kCaptureGroupResource`), on the stated ground that the
   field is 0 on this installation; the model is the image's rule for when it is not.
-- **`00A18480`** takes and clears the planner's replan byte `+2Ch`; **`00A1D110`, `00A1D140`,
-  `00A1D170`** (Duel, Escort, Siege, vtable `+30h`, byte-identical) take it too, and with owned
-  groups answer true when the first owned group's command is not engaged (`00A2CB10`).
+- `00A18480` and `00A1D110`/`00A1D140`/`00A1D170`/`00A1D1A0` (the planners' needs-replan slot) were
+  first modelled here and then found already reconstructed in src/ai_planners.cpp
+  (`ai_planner_needs_replan_base`/`_mode`); the duplicate was deleted and the records point there.
 - **`00A2E1E0`** counts unit types for the Lua group info: `map[member+170h key] += 009FE060(member)`.
 - **`00A1A6D0`**, from the script group creator `00A16EF0`: a group with a groupable combatant
   (`00A2C5A0`) patrols to the entity, any other defends its position.
 - **`00A04530`**: `float(00A04240(unit) * 009FDF30([unit+C4h]))`, the factor `00A046C0` also applies.
+
 ## 2. Adoption table (cc9 terms)
 
 | model | replaces (host file:line) | inputs and where the host gets them | RNG | OFF-switch prediction |
@@ -218,47 +221,69 @@ matches these rules except that it reads `+5Dh` through `unit_active` and walks 
 | `ai_party_brain_engagement_pass_00a179e0` (+ `ai_powerup_*`, `ai_candidate_attack_value_00a0f680`) | `AiParties::party_brain_plan_tail` (src/game_hosts_ai.cpp:5078), a record | the party's ready power-up entries (no manager in this process: `PowerUps::pre_pass`/`post_pass` are records); the team group lists, populations, parties, first-member poses, `00A2C4C0` strengths; the class `+8h`/`+84h`/`+8Ch`; unit health, kinds, class `+804h`, `00A04240`, `009FDF30`; `008E35F0` | **stream 1**: one `U(t+50h, t+54h)` per `00A0F680` call (`00A0F737`), per entry, per pair, only after `008E35F0` accepts | OFF: none. ON with a power-up manager: an AI party with an engagement pair fires its best ready power-up each think. Air-support entries shift stream 1 by one draw per accepted pair, every think, even when nothing is fired |
 | `ai_try_spawn_group_gate_00a25a30`, `ai_sort_spawn_sites_00a236f0`, `ai_choose_spawn_composition_00a23980`, `ai_match_final_weight_00a0d1d0`, `ai_class_pair_value_00a03900`, `ai_unit_list_min_speed_00a02180` | the Capture spawn arm, counted only (src/game_hosts_ai.cpp:4383 `spawn_due`, :4423) and the Defend arm; `quick_spawn_named_group` (src/game_hosts_ai.cpp:5465) for the mode planners | `0066E590`'s sites with their stock (`0084D560`), `00942130`, mode tuning `+50h..+54h`, `+100h..+10Ch`, `+230h..+238h`, the class-pair table, `00A0C650` both ways (host `compose_attack_value_00a0c650`), `00419010`, `0084CF80`; the request goes to `0094C830`, which ends at the SpawnNew queue the host drains | **stream 1**: one draw per candidate tried per round and one more per bought pick (`00A0D604`, `00A0DAB8`/`00A0DB21`) | OFF: none. ON: nothing changes on the reference rows (no authored stock, docs/SHIP_AI_OPEN_ITEMS.md 52.2). On `ijn_11_operation_to` and the three `ijn_02_force_z` copies, Capture and Defend thinks that pass the gates buy units and shift stream 1 |
 | `ai_init_party_think_schedule_00a163d0` | the `next_think.fill(0.0f)` in `create_00a32350` (src/game_hosts_ai.cpp:5865) | the float clock at creation | **stream 1**: 8 draws at controller creation | OFF: none. ON: every party's first think moves from 0 s to 3..5 s, and every later stream-1 consumer shifts by 8 draws |
-
-| `ai_retreat_tick_00a156e0`, `ai_retreat_pick_direction_00a11530`, `ai_net_danger_at_point_00a01230` | none: the RETREAT tick `00A156E0` is not bound (include/bsp/ai_command_tick.hpp:194) | the host's `tick_danger_cost_00a010f0` (src/game_hosts_ai.cpp:3078), the leader point, the prelude (`00A10DC0`, `ai_formation_wedge_00a11690`, `00A13B60`), `issue_to_member` | none | OFF: none. ON: a group under a RETREAT command (Lua `00A13340` or `00A2BE70`, which is unreferenced) moves its leader 750 units away from the worst direction when that side's cost exceeds the opposite side's by 8 |
+| `ai_retreat_tick_00a156e0`, `ai_retreat_pick_direction_00a11530`, `ai_net_danger_at_point_00a01230` | none: the RETREAT tick `00A156E0` is not bound (include/bsp/ai_command_tick.hpp:194) | the host's `tick_danger_cost_00a010f0` (src/game_hosts_ai.cpp:3078), the leader point, the prelude (`00A10DC0`, `ai_formation_wedge_00a11690`, `00A13B60`), `issue_to_member` | none | OFF: none. ON: a group under a RETREAT command (Lua `00A13340`, or `00A2BE70`, which is unreferenced) moves its leader 750 units away from the worst direction when that side's cost exceeds the opposite side's by 8 |
 | `ai_collect_team_entities_00a07d40`, `ai_collect_threats_near_00a24870` | the labelled stand-in `capture_defenders_00a24870` (src/game_hosts_ai.cpp:4027) | the world list `+34h`, `+5Dh`, `+54h`, the kinds, tuning `+1A4h` | none | OFF: none. ON: the same set when the host's world list 2 is the image's `+34h` list and `unit_active` is `!+5Dh`; any difference shows as different capture group values |
+| `ai_capture_spawn_arm_00a2b477`, `ai_defend_spawn_arm_00a29be7`, `ai_planner_owned_resource_00a1c900` | the records `capture_spawn_arm_00a2b400` (src/game_hosts_ai.cpp:4424) and `defend_spawn_tail_00a29b8e` | `00946970` (queued requests), the Defend percent, `00942130`, the owned groups' `00A2C530`, the plan targets and defend records | none | OFF: none. ON: the same decision the host counts, plus the amount and the threats handed to `00A25A30`; nothing spawns without the chain above and authored stock |
+| `ai_group_resource_sum_00a2c530` | the constant `kCaptureGroupResource` (src/game_hosts_ai.cpp:3814) | `member+304h` | none | OFF: none. ON: none on this installation, where `+304h` is 0 for every member (the host's own finding); otherwise capture prices drop by the group resource |
+| `ai_group_count_unit_types_00a2e1e0`, `ai_order_defend_group_00a1a6d0`, `ai_hinted_class_weight_00a04530` | none (the Lua group info, the script creator's order) | member `+170h`, `009FE060`; `00A2C5A0`; `00A04240`, `009FDF30` | none | OFF: none. ON: neither the Lua info nor the script order is bound |
 
 No model draws from stream 0.
-| i_capture_spawn_arm_00a2b477, i_defend_spawn_arm_00a29be7, i_planner_owned_resource_00a1c900 | the records capture_spawn_arm_00a2b400 (src/game_hosts_ai.cpp:4424) and defend_spawn_tail_00a29b8e |  0946970 (queued requests), the Defend percent,  0942130, the owned groups'  0A2C530, the plan targets / defend records | none | OFF: none. ON: the same decision the host counts, plus the amount and the threats handed to  0A25A30; nothing spawns without the chain above and authored stock |
-
-| i_group_resource_sum_00a2c530 | the constant kCaptureGroupResource (src/game_hosts_ai.cpp:3814) | member+304h | none | OFF: none. ON: none on this installation, where +304h is 0 for every member (the host's own finding); otherwise capture prices drop by the group resource |
-| i_planner_take_replan_flag_00a18480, i_mode_planner_needs_replan_00a1d110, i_group_count_unit_types_00a2e1e0, i_order_defend_group_00a1a6d0, i_hinted_class_weight_00a04530 | none (mode planners, Lua info, the script creator's order) | planner +28h/+2Ch,  0A2CB10; member +170h,  09FE060;  0A2C5A0 | none | OFF: none. ON: single-player rows run none of the mode planners; the Lua info and the script order are not bound |
 
 ## 3. For cc9 (no host edits made)
 
-- **`00A02180` / `00A07C10` are minimums.** Rename candidates `BSP_UnitList_MinSpeed`,
-  `BSP_AiGroupRecords_MinSpeed` (section 4).
+- **`00A02180` / `00A07C10` / `00A07FB0` are minimums,** renamed (section 4). The only other reader,
+  the speed bonus of `00A0C650`, is multiplied by tuning `+22Ch`, which every table authors 0
+  (src/game_hosts_ai.cpp:5397), so no host behaviour depends on it today.
 - **`00A23980`'s request carries the tag, not the flag** (section 1.2).
-- **The host never seeds the think schedule** (section 1.3).
+- **The host never seeds the think schedule** (section 1.3): 8 stream-1 draws and a 3..5 s first-think
+  delay per party are missing.
+- **`009FFE50`** answers false in the host for the whole multiplayer arm; the image tail-calls
+  `004B5510` on the slot record. **`009FFC80`**: with no active party slot the image answers 1, not 0.
+- **The power-up use** is complete as a model; its binding still waits on a power-up manager
+  (docs/SHIP_AI_OPEN_ITEMS.md section 5).
 
 ## 4. Ledger
 
 Function records (`config/reconstruction`), models in `src/gameplay_seg69_70_cc13.cpp`:
-`00A046C0`, `00A04860`, `00A04910`, `00A0F680`, `00A179E0`, `00A163D0`, `00A02180`, `00A07C10`,
-`00A03900`, `00A0D1D0`, `00A236F0` (partial), `00A23980` (partial: the mode 4+ arm), `00A25A30`
-(partial: the gate);  0A01230,  0A11530,  0A156E0 (partial: the prelude),  0A07D40,  0A24870.
+- the power-up use: `00A179E0`, `00A046C0`, `00A04860`, `00A04910`, `00A0F680`;
+- the think schedule: `00A163D0`;
+- the spawn chain: `00A02180`, `00A07C10`, `00A03900`, `00A0D1D0`, `00A236F0` (partial: tie order above
+  32 sites), `00A23980` (partial: the mode 4+ arm), `00A25A30` (partial: the gate), `00A1C900`;
+- the retreat: `00A01230`, `00A11530`, `00A156E0` (partial: the prelude);
+- the collection: `00A07D40`, `00A24870`;
+- helpers: `00A2C530`, `00A2E1E0`, `00A1A6D0`, `00A04530`.
 
-Fragments:  0A2B477 (in  0A29FD0, to  0A2B7A6) and  0A29BE7 (in  0A28A60, to  0A29E2A). Function  0A1C900.
+Fragments: `00A2B477` (in `00A29FD0`, to `00A2B7A6`) and `00A29BE7` (in `00A28A60`, to `00A29E2A`).
 
-Renames (config/names, applied with 	ools/ghidra_annotate.py --apply; prior annotations in that tool's local JSON):
+Renames (`config/names`, applied with `tools/ghidra_annotate.py --apply`; the prior annotations are in
+that tool's local JSON, and each new evidence names the old value):
 
 | address | was | now |
 | --- | --- | --- |
-|  0A02180 | BSP_UnitList_MaxSpeed | BSP_UnitList_MinSpeed |
-|  0A07C10 | BSP_AiGroupRecords_MaxSpeed | BSP_AiGroupRecords_MinSpeed |
-|  0A07FB0 | BSP_AiGroup_MaxSpeed | BSP_AiGroup_MinSpeed |
-|  0A1C900 | STL_inst_00a1c900 (tag) | BSP_AiPlanner_OwnedResourceSum |
+| `00A02180` | `BSP_UnitList_MaxSpeed` | `BSP_UnitList_MinSpeed` |
+| `00A07C10` | `BSP_AiGroupRecords_MaxSpeed` | `BSP_AiGroupRecords_MinSpeed` |
+| `00A07FB0` | `BSP_AiGroup_MaxSpeed` | `BSP_AiGroup_MinSpeed` |
+| `00A1C900` | `STL_inst_00a1c900` (tag only) | `BSP_AiPlanner_OwnedResourceSum` |
 
-Batch 5:  0A2C530,  0A18480,  0A1D110,  0A1D140,  0A1D170,  0A2E1E0,  0A1A6D0,  0A04530.
+Records for existing reconstructions, each checked against the listing in this pass
+(`local/gpr69_dis.py`, `local/gpr69_clonecheck.py`, not committed):
+- the AI command GetType slots (12, to the `AiCommandType` enum in include/bsp/ai_planners.hpp) and
+  IsType slots (15, to `ai_command_is_type` in src/ai_planners.cpp);
+- in src/band_009f_cc13.cpp (cc13-gp9f's models): the twelve CloneForGroup slots (partial: the type
+  only), the planner IsType and GetName slots (16), `00A2C0A0`, `00A2C0D0`, `00A2C100`, `00A16450`,
+  `00A15950`, `00A1A660`, `00A2C150`, `00A2C1C0`, `00A2C230`, `009FEC40`, `00A1C960`, `00A1CA60` (the
+  `D8 C9`, `DE FA`, `D8 F1`, `D8 7F` forms read from the bytes), `00A2B8F0`, `00A2B950`, `00A2BCC0`,
+  `00A2C3D0` (the model divides by the list size where the image divides by `+5644h`);
+- in the host and its rule files: `00A113D0` (src/ai_command_tick.cpp:526), `00A18510`, `00A18520`,
+  `009FFE50` (partial: the multiplayer arm), `00A10040` (partial: src/game_hosts_ai.cpp:1620 models the
+  target arm; the other arm installs a null command), `009FE200`, `009FFD80`, `009FFC80` (partial: the
+  no-active-slot answer is the caller's), `00A11F80` and `00A12450` (`ai_command_can_merge`), `00A18480`,
+  `00A1D110`, `00A1D140`, `00A1D170`, `00A1D1A0` (src/ai_planners.cpp `ai_planner_needs_replan_*`),
+  `00A2CB10` (`ai_group_command_is_engaged`; the radius squared is 10000.0 `[00CE3D64]`).
 
-Records for existing reconstructions, each checked against the listing in this pass (local/gpr69_dis.py, local/gpr69_clonecheck.py):
-- the AI command GetType slots (12, to the AiCommandType enum in include/bsp/ai_planners.hpp) and IsType slots (15, to i_command_is_type in src/ai_planners.cpp);
-- in src/band_009f_cc13.cpp (cc13-gp9f's models): the twelve CloneForGroup slots (partial: the type only), the planner IsType and GetName slots (16),  0A2C0A0,  0A2C0D0,  0A2C100,  0A16450,  0A15950,  0A1A660,  0A2C150,  0A2C1C0,  0A2C230,  09FEC40,  0A1C960,  0A1CA60 (the D8 C9, DE FA, D8 F1, D8 7F forms read from the bytes),  0A2B8F0,  0A2B950,  0A2BCC0,  0A2C3D0 (the model divides by the list size where the image divides by +5644h).
-- in the host and its rule files:  0A113D0 (src/ai_command_tick.cpp:526),  0A18510,  0A18520,  09FFE50 (partial: the multiplayer arm tail-calls  04B5510 where the host answers false; src/ai_group_think.cpp),  0A10040 (partial: src/game_hosts_ai.cpp:1620 models the target arm; the other arm installs a null command).
+A duplicate was caught: `00A18480` and the mode planners' needs-replan slot were first modelled in
+this packet, then found in src/ai_planners.cpp; the duplicate code was deleted before commit of the
+records that point at the existing functions.
 
 ## 5. Verification
 
