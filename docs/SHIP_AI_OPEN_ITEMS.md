@@ -17106,3 +17106,29 @@ Complete!"`, with `bsp: refused a mission script's process launch: sus_prog.exe`
 `26100:moveto TroopTrans6 2000 4200`, `37400:moveto TroopTrans6 -2100 3300`, the four 28000-28300 attacks and the
 six 40500-42700 attacks above. One transport carries all three captures, so the row is a knife-edge on
 TroopTrans6 (it survives to the end here); not checked with frame jitter (each full run takes over an hour of wall time with the shared slots).
+
+## 222. The shallow-water functions do not reach ship navigation (cc9-ships45, 2026-10-12; lead item 4, a read)
+
+docs/CC13_LEFTOVERS_1.md section 4 left `00880080`, `00880420`, `00880250` (avoid-zone byte-grid code, called from
+`00423640`) and `00880220` (under `BSP_LuaBinding_SetShallowWater` `008C4B50`) for cc9. Question: does ship
+navigation depend on them? **No; nothing to model.**
+
+Evidence (disk bytes of this installation's `battlestationspacific.exe`; `local\s45_rel32.py` scans every E8/E9
+rel32 in `.text` and every absolute dword in every section; positive control: it finds the one call to
+`00880420` and the binding-table row of `008C4B50`):
+- `00880420`: one call, `004237A6`; `00880250`: one call, `004236F2`; both inside `00423640` (body
+  `00423640`.., preceded by `RET` at `0042363D` and `INT3` padding, so a real function start).
+- `00880080`: called only from `00880420` (`00880544`, `008805CD`). Its one other dword match, `00D7EF14`, lies
+  in the load config's SafeSEH handler table (`00D7CD50`, 7240 entries; the load-config words before the `RSDS`
+  record at `00D7A3E8` name the table and the count 1C48h), whose entries are RVAs: that dword is RVA 880080h, VA
+  `00C80080`, an EH handler stub (`MOV EAX,00DAD720; JMP 00BF6B43`), not a reference to `00880080`.
+- `00423640`: **no reference at all** (no rel32 call or jump, no absolute dword, and `ghidra xrefs` finds none).
+  Its segment's keywords (`mpakscenes`, `terraingrid`, `avoidzone`) suggest offline avoid-zone building; the
+  label is a hypothesis. So the byte-grid flood never runs in the shipped image, and the ship AI's avoid zones
+  come only from the scene (`BSP_AvoidZoneManager_GroupForLayerOrBelow` `004120D0` has 25 other callers, all
+  outside this code).
+- `00880220` (`RET 4`): if `[ECX+42Ch]` (the landscape's `ShallowWater` decal, docs/SCENE_CONTENTS_HOSTS.md,
+  landscape pass A) is set, it calls the ocean `[[[00E188A8]+19F0h]+A8h]` vtable+20h with that decal and the
+  string argument: it re-textures a render decal. No script of this installation calls `SetShallowWater` (454
+  `.lua` files under `scripts\`; control: 40 of them call `SetWeather` or `SetDayTime`); the 223 `.scn` files
+  that contain the string are the scene's `ShallowWater` block, which landscape pass A already reads.
