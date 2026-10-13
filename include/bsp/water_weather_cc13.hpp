@@ -2020,6 +2020,22 @@ public:
     virtual void generated_model_set_geometry_00b75170(void* model, std::uint32_t a, void* mesh, float x, float y) = 0;
     virtual void node_set_parent_00b6e680(void* node, void* parent) = 0;                               // RET 4
     virtual void generated_model_set_local_bounds_00b74390(void* model, const float* bounds) = 0;      // RET 4
+    // Cameras and viewports.
+    virtual void* camera_allocate_raw_slot_00b71930(std::uint32_t size) = 0;  // ECX size
+    virtual void* camera_construct_00b71a80(void* slot, const void* name) = 0;                         // RET 4
+    virtual void camera_set_clear_flags_00b6fe10(void* camera, std::uint32_t flags) = 0;               // RET 4
+    virtual void camera_set_clear_color_00b6fe50(void* camera, std::uint32_t argb) = 0;                // RET 4
+    virtual void* viewport_construct_00b1f850(void* block) = 0;
+    virtual void camera_set_viewport_00b71990(void* camera, void* viewport) = 0;                       // RET 4
+    virtual void viewport_set_dimensions_00b1f940(void* viewport, const std::uint32_t* size) = 0;      // RET 4
+    virtual void* material_create_for_effect_name_00535320(const void* name) = 0;  // ECX name -> EAX
+    virtual void* particle_index_stream_00af10a0(void* resources) = 0;             // ECX resources -> EAX
+    virtual void mesh_set_bounds_00b72650(void* mesh, const float* bounds) = 0;    // RET 4
+    virtual void scene_node_set_visibility_factor_00b6da70(void* node, float factor, std::uint32_t b) = 0;  // RET 8
+    virtual void draw_section_append_vertex_stream_00b85b80(void* section, void* stream) = 0;              // RET 4
+    // Wave field pieces this part does not reconstruct.
+    virtual const std::uint32_t* wave_field_reflection_target_size_00b9a3b0(void* field, std::uint32_t* out) = 0;
+    virtual void wave_field_initialize_render_resources_00ba5610(void* field) = 0;
 };
 // Further device and texture slots used below: device +38h declaration* (const string* file); device
 // +5Ch vertex buffer* (count, 1, declaration); texture +30h surface* (level, 0); surface +1Ch width,
@@ -2071,6 +2087,49 @@ void* w3_water_spray_object_construct_00bae900(void* object, void* parent, const
 // references; +18h..+20h, +68h..+7Ch = 0 (the null +20h/+1Ch/+18h release-and-clear); the tuning DWORDs
 // below, copied from .rdata; strings "foamwave.dds" +70h, "foamcoast.dds" +78h, "coast1.dat" +68h (resize
 // WITHOUT preserve, copy exactly length bytes); +0D8h = +120h = 0.
+// 00BA6C40 BSP_OceanWaveField_Construct, __thiscall(ECX, world, BYTE flat) RET 8 -> EAX: base 00BA1400
+// (this, world); BYTE +0F9h = flat; vtables 00D63E10 / 00D63E08 (+4h); reflection targets (00B9DC20) with
+// format 71h when BYTE 00F8D398 is set, else 15h, at the 00B9A3B0 size; 00BA5610; +498h = device
+// +88h(400h, 400h, 1, 15h, 10h); camera "OceanShadowRenderCamera" (458h slot) at +49Ch, clear flags 7,
+// clear colour 0, a new viewport (34h) sized {texture +3Ch width, +40h height} of +498h and released
+// (no null test); depth = device +94h(width, height, 4Bh, 0, 0.0f, 1); frame targets +60Ch (new) with
+// the +498h level-0 surface and that depth; then the existing +604h / +608h get the surfaces of
+// +0E4h / +0E8h with the depth +288h. Each surface is released without a null test, the depth with one.
+void* w3_ocean_wave_field_construct_00ba6c40(void* field, void* world, std::uint8_t flat,
+    const volatile std::uint8_t& hdr_00f8d398, void* device_00f8d394, NativeStringStorage& strings,
+    W3_EngineCalls& calls, void* (*base_construct_00ba1400)(void* field, void* world));
+// 00BC2D50 BSP_Waterdrops_BuildGeometry, __fastcall(ECX waterdrops): a mesh (0BCh slot); declaration
+// "simplecolor.mvfm" (device +38h); vertex buffer device +5Ch(4 * [+190h], 1000h, declaration) as stream 0;
+// one draw section {+8h 4, rest 0} with material 00535320("waterdrops.mshd") textured from +1C8h (slot 0);
+// the shared index stream 00AF10A0 of the particle resources object at 00F8C280; geometry on the model
+// (0, -1.0f, -1.0f); bounds {0, 0, 0, 1.0e10f (00CE4970)} on the mesh (00B72650) and the model (00B74390).
+// Declaration, buffer, material, section and mesh are released without null tests.
+void w3_waterdrops_build_geometry_00bc2d50(void* waterdrops, void* particle_resources_00f8c280,
+    void* device_00f8d394, NativeStringStorage& strings, W3_EngineCalls& calls);
+// 00BC54F0 BSP_CloudRenderModel_Construct, __thiscall(ECX slot, parent, const cloud class*) RET 8 -> EAX:
+// cloud instance 00BBE7D0; +184h = class; vtable 00D64878; the shared image block at 01090904..010909AF:
+// sixteen 1.0f DWORDs at 01090970..010909AC (listing order below), 01090908 = 0.5f, 01090904 = 3.0f
+// (00CE3854); +1C8h = +1D8h = 1.0f; parent (00B6E680); a mesh (0BCh) with declaration "cloud.mvfm",
+// vertex buffer +1A8h = device +5Ch(4 * class +20h, 1, declaration) as stream 0 (one reference
+// dropped, pointer kept), index buffer device +60h(6 * class +20h, 1, 65h); a draw section {4, 0,
+// 4n, 0, 2n} with a clone (00B18B60, 110h slot) of the class material +68h; geometry (0, -1.0f, -1.0f);
+// bounds {0, 0, 0, class +2Ch through FLD/FSTP}; tail: BYTE +188h = 0, +198h..+1A0h = 0.0f,
+// +18Ch..+194h = 99999.0f (00D119AC), BYTE +1A4h = BYTE +1B4h = 0.
+void* w3_cloud_render_model_construct_00bc54f0(void* model, void* parent, void* cloud_class,
+    std::uint32_t* image_01090904, void* device_00f8d394, NativeStringStorage& strings, W3_EngineCalls& calls,
+    W3_Body cloud_instance_construct_00bbe7d0, void* (*material_clone_construct_00b18b60)(void* slot, void* source));
+// 00BC6060 BSP_CloudPlaneModel_Construct, __thiscall(ECX slot, owner, parent, const string* effect, const
+// string* texture) RET 10h -> EAX: base 00BC7DB0; vtable 00D648E0; +184h = +188h = 0.0f; parent; visibility
+// (0.0f, 0); material 00535320(effect) with texture device +64h(texture, 0) in slot 0 and parameter owner
+// `owner`; a mesh with geometry (0, -1.0f, -1.0f) and bounds {0, 0, 0, 1.0e10f}; a 4-vertex buffer
+// (declaration "cloud.mvfm", device +5Ch(4, 1, decl)) appended to a draw section {4, 0, 4, 0, 2} with the
+// material; the buffer is filled with a unit quad {x, y, 0, FFFFFFFFh, 10x, 10y, u, v} (constants 1.0f,
+// -1.0f, 10.0f 00CE38B8, -10.0f 00CE6848); a 6-index buffer device +60h(6, 1, 65h) with {0, 1, 2, 2, 3, 0}
+// (Ghidra's body ends at 00BC63AB; the tail was read from the PE). Every object is released without a
+// null test.
+void* w3_cloud_plane_model_construct_00bc6060(void* model, void* owner, void* parent, const void* effect,
+    const void* texture, void* device_00f8d394, NativeStringStorage& strings, W3_EngineCalls& calls,
+    W3_ConstructGeneratedModel construct_00b75030);
 void* w3_coast_mesh_construct_00bb0e30(void* mesh, void* const* a, void* const* b, void* const* c,
                                        NativeStringStorage& strings, W3_Body weak_owner_construct_00925490);
 void* w3_ocean_height_generator_construct_derived_00bb3ab0(void* generator, void* owner, std::int32_t width,

@@ -3921,6 +3921,230 @@ void w3_assign_literal_no_preserve(void* header, const char* text, NativeStringS
 
 }  // namespace
 
+namespace {
+
+void w3_attach_surface(void* targets_holder, std::size_t targets_offset, void* surface, void* depth, W3_EngineCalls& calls) {
+    calls.frame_targets_set_color_00b1fab0(w3_field<void*>(targets_holder, targets_offset), 0, surface);
+    calls.frame_targets_set_depth_00b1fb00(w3_field<void*>(targets_holder, targets_offset), depth);
+    w2_release_object(surface);
+}
+
+}  // namespace
+
+void* w3_ocean_wave_field_construct_00ba6c40(void* field, void* world, std::uint8_t flat,
+    const volatile std::uint8_t& hdr_00f8d398, void* device_00f8d394, NativeStringStorage& strings,
+    W3_EngineCalls& calls, void* (*base_construct_00ba1400)(void* field, void* world)) {
+    base_construct_00ba1400(field, world);
+    w3_field<std::uint8_t>(field, 0xF9) = flat;
+    w3_field<std::uint32_t>(field, 0) = 0x00D63E10u;
+    w3_field<std::uint32_t>(field, 4) = 0x00D63E08u;
+    const std::uint32_t format = hdr_00f8d398 != 0 ? 0x71u : 0x15u;  // NEG/SBB/AND 5Ch/ADD 15h
+    std::uint32_t size_out[2]{};
+    const std::uint32_t* const size = calls.wave_field_reflection_target_size_00b9a3b0(field, size_out);
+    w3_ocean_wave_field_create_reflection_targets_00b9dc20(field, format, size, device_00f8d394);
+    calls.wave_field_initialize_render_resources_00ba5610(field);
+    w3_field<void*>(field, 0x498) = w3_vcall<void*>(device_00f8d394, 0x88, 0x400u, 0x400u, 1u, 0x15u, 0x10u);
+    void* const camera_slot = calls.camera_allocate_raw_slot_00b71930(0x458);
+    if (camera_slot != nullptr) {
+        W3_Temporary name("OceanShadowRenderCamera", strings);
+        w3_field<void*>(field, 0x49C) = calls.camera_construct_00b71a80(camera_slot, name.get());
+    } else {
+        w3_field<void*>(field, 0x49C) = nullptr;
+    }
+    calls.camera_set_clear_flags_00b6fe10(w3_field<void*>(field, 0x49C), 7);
+    calls.camera_set_clear_color_00b6fe50(w3_field<void*>(field, 0x49C), 0);
+    void* const viewport_block = w3_new(0x34);
+    void* const viewport = viewport_block != nullptr ? calls.viewport_construct_00b1f850(viewport_block) : nullptr;
+    calls.camera_set_viewport_00b71990(w3_field<void*>(field, 0x49C), viewport);
+    const std::uint32_t texture_height = w3_vcall<std::uint32_t>(w3_field<void*>(field, 0x498), 0x40);
+    const std::uint32_t texture_width = w3_vcall<std::uint32_t>(w3_field<void*>(field, 0x498), 0x3C);
+    const std::uint32_t dimensions[2] = {texture_width, texture_height};
+    calls.viewport_set_dimensions_00b1f940(viewport, dimensions);
+    w2_release_object(viewport);
+    void* const texture = w3_field<void*>(field, 0x498);
+    const std::uint32_t depth_height = w3_vcall<std::uint32_t>(texture, 0x40);
+    const std::uint32_t depth_width = w3_vcall<std::uint32_t>(texture, 0x3C);
+    void* const depth = w3_vcall<void*>(device_00f8d394, 0x94, depth_width, depth_height, 0x4Bu, 0u, 0.0f, 1u);
+    void* const targets_block = w3_new(0x40);
+    w3_field<void*>(field, 0x60C) = targets_block != nullptr ? calls.frame_targets_construct_00b1fbb0(targets_block) : nullptr;
+    w3_attach_surface(field, 0x60C, w3_vcall<void*>(w3_field<void*>(field, 0x498), 0x30, 0u, 0u), depth, calls);
+    if (depth != nullptr) w2_release_object(depth);
+    w3_attach_surface(field, 0x604, w3_vcall<void*>(w3_field<void*>(field, 0xE4), 0x30, 0u, 0u),
+                      w3_field<void*>(field, 0x288), calls);
+    w3_attach_surface(field, 0x608, w3_vcall<void*>(w3_field<void*>(field, 0xE8), 0x30, 0u, 0u),
+                      w3_field<void*>(field, 0x288), calls);
+    return field;
+}
+
+void w3_waterdrops_build_geometry_00bc2d50(void* waterdrops, void* particle_resources_00f8c280,
+    void* device_00f8d394, NativeStringStorage& strings, W3_EngineCalls& calls) {
+    void* const mesh_slot = calls.mesh_allocate_raw_slot_00b73b60(0xBC);
+    void* const mesh = mesh_slot != nullptr ? calls.mesh_construct_00b73d70(mesh_slot) : nullptr;
+    void* declaration;
+    {
+        W3_Temporary file("simplecolor.mvfm", strings);
+        declaration = w3_vcall<void*>(device_00f8d394, 0x38, file.get());
+    }
+    const std::uint32_t vertices = w3_field<std::uint32_t>(waterdrops, 0x190) * 4u;
+    void* const buffer = w3_vcall<void*>(device_00f8d394, 0x5C, vertices, 0x1000u, declaration);
+    w2_release_object(declaration);
+    calls.mesh_set_vertex_stream_00b73bb0(mesh, 0, buffer);
+    w2_release_object(buffer);
+    void* const section = calls.draw_section_create_00533fa0();
+    w3_field<std::uint32_t>(section, 0x08) = 4;
+    for (std::size_t offset : {0x0Cu, 0x10u, 0x14u, 0x18u}) w3_field<std::uint32_t>(section, offset) = 0;
+    void* material;
+    {
+        W3_Temporary effect("waterdrops.mshd", strings);
+        material = calls.material_create_for_effect_name_00535320(effect.get());
+    }
+    calls.material_set_texture_slot_00b189f0(material, 0, w3_field<void*>(waterdrops, 0x1C8));
+    calls.draw_section_set_material_00b864c0(section, material);
+    w2_release_object(material);
+    calls.draw_section_rebuild_layout_00b865a0(section, mesh);
+    calls.mesh_append_draw_section_00b73c60(mesh, section);
+    w2_release_object(section);
+    calls.mesh_set_index_stream_00b73b70(mesh, calls.particle_index_stream_00af10a0(particle_resources_00f8c280));
+    const float minus_one = -1.0f;  // 00D7A260
+    calls.generated_model_set_geometry_00b75170(waterdrops, 0, mesh, minus_one, minus_one);
+    float bounds[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+    const std::uint32_t far_bits = 0x501502F9u;  // 00CE4970, 1.0e10f
+    std::memcpy(&bounds[3], &far_bits, 4);
+    calls.mesh_set_bounds_00b72650(mesh, bounds);
+    calls.generated_model_set_local_bounds_00b74390(waterdrops, bounds);
+    w2_release_object(mesh);
+}
+
+void* w3_cloud_render_model_construct_00bc54f0(void* model, void* parent, void* cloud_class,
+    std::uint32_t* image_01090904, void* device_00f8d394, NativeStringStorage& strings, W3_EngineCalls& calls,
+    W3_Body cloud_instance_construct_00bbe7d0, void* (*material_clone_construct_00b18b60)(void* slot, void* source)) {
+    cloud_instance_construct_00bbe7d0(model);
+    w3_field<void*>(model, 0x184) = cloud_class;
+    w3_field<std::uint32_t>(model, 0) = 0x00D64878u;
+    const auto global = [image_01090904](std::uint32_t address) -> std::uint32_t& {
+        return image_01090904[(address - 0x01090904u) / 4u];
+    };
+    for (std::uint32_t address : {0x01090970u, 0x01090974u, 0x0109097Cu, 0x01090978u, 0x01090980u, 0x01090988u,
+                                  0x01090984u, 0x0109098Cu, 0x01090994u, 0x01090990u, 0x01090998u, 0x010909A0u,
+                                  0x0109099Cu, 0x010909A4u}) {
+        global(address) = 0x3F800000u;  // 00D7A24C 1.0f
+    }
+    global(0x01090908u) = 0x3F000000u;  // 00CE3800 0.5f
+    global(0x010909ACu) = 0x3F800000u;
+    global(0x010909A8u) = 0x3F800000u;
+    global(0x01090904u) = 0x40400000u;  // 00CE3854 3.0f
+    w3_field<float>(model, 0x1C8) = 1.0f;
+    w3_field<float>(model, 0x1D8) = 1.0f;
+    calls.node_set_parent_00b6e680(model, parent);
+    void* const mesh_slot = calls.mesh_allocate_raw_slot_00b73b60(0xBC);
+    void* const mesh = mesh_slot != nullptr ? calls.mesh_construct_00b73d70(mesh_slot) : nullptr;
+    void* declaration;
+    {
+        W3_Temporary file("cloud.mvfm", strings);
+        declaration = w3_vcall<void*>(device_00f8d394, 0x38, file.get());
+    }
+    const std::uint32_t puffs = w3_field<std::uint32_t>(cloud_class, 0x20);  // 00BC3100
+    w3_field<void*>(model, 0x1A8) = w3_vcall<void*>(device_00f8d394, 0x5C, puffs * 4u, 1u, declaration);
+    w2_release_object(declaration);
+    calls.mesh_set_vertex_stream_00b73bb0(mesh, 0, w3_field<void*>(model, 0x1A8));
+    w2_release_object(w3_field<void*>(model, 0x1A8));
+    void* const indices = w3_vcall<void*>(device_00f8d394, 0x60, w3_field<std::uint32_t>(cloud_class, 0x20) * 6u, 1u, 0x65u);
+    calls.mesh_set_index_stream_00b73b70(mesh, indices);
+    w2_release_object(indices);
+    void* const section = calls.draw_section_create_00533fa0();
+    w3_field<std::uint32_t>(section, 0x08) = 4;
+    w3_field<std::uint32_t>(section, 0x0C) = 0;
+    w3_field<std::uint32_t>(section, 0x10) = w3_field<std::uint32_t>(cloud_class, 0x20) * 4u;
+    w3_field<std::uint32_t>(section, 0x14) = 0;
+    w3_field<std::uint32_t>(section, 0x18) = w3_field<std::uint32_t>(cloud_class, 0x20) * 2u;
+    void* const material_slot = calls.material_allocate_raw_slot_00b18780(0x110);
+    void* const material = material_slot != nullptr
+        ? material_clone_construct_00b18b60(material_slot, w3_field<void*>(cloud_class, 0x68)) : nullptr;  // 00BC3080
+    calls.draw_section_set_material_00b864c0(section, material);
+    w2_release_object(material);
+    calls.draw_section_rebuild_layout_00b865a0(section, mesh);
+    calls.mesh_append_draw_section_00b73c60(mesh, section);
+    w2_release_object(section);
+    const float minus_one = -1.0f;  // 00D7A260
+    calls.generated_model_set_geometry_00b75170(model, 0, mesh, minus_one, minus_one);
+    float bounds[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+    const std::uint32_t radius_bits = w2_x87_reload_bits(w3_field<std::uint32_t>(cloud_class, 0x2C));  // 00BC3010 FLD, FSTP
+    std::memcpy(&bounds[3], &radius_bits, 4);
+    calls.mesh_set_bounds_00b72650(mesh, bounds);
+    calls.generated_model_set_local_bounds_00b74390(model, bounds);
+    w2_release_object(mesh);
+    w3_field<std::uint8_t>(model, 0x188) = 0;
+    for (std::size_t offset : {0x198u, 0x19Cu, 0x1A0u}) w3_field<float>(model, offset) = 0.0f;
+    for (std::size_t offset : {0x18Cu, 0x190u, 0x194u}) w3_field<std::uint32_t>(model, offset) = 0x47C34F80u;  // 99999.0f
+    w3_field<std::uint8_t>(model, 0x1A4) = 0;
+    w3_field<std::uint8_t>(model, 0x1B4) = 0;
+    return model;
+}
+
+void* w3_cloud_plane_model_construct_00bc6060(void* model, void* owner, void* parent, const void* effect,
+    const void* texture, void* device_00f8d394, NativeStringStorage& strings, W3_EngineCalls& calls,
+    W3_ConstructGeneratedModel construct_00b75030) {
+    w3_cloud_plane_model_construct_base_00bc7db0(model, strings, construct_00b75030);
+    w3_field<std::uint32_t>(model, 0) = 0x00D648E0u;
+    w3_field<float>(model, 0x184) = 0.0f;
+    w3_field<float>(model, 0x188) = 0.0f;
+    calls.node_set_parent_00b6e680(model, parent);
+    calls.scene_node_set_visibility_factor_00b6da70(model, 0.0f, 0);
+    void* const material = calls.material_create_for_effect_name_00535320(effect);
+    void* const loaded = w3_vcall<void*>(device_00f8d394, 0x64, texture, 0u);
+    calls.material_set_texture_slot_00b189f0(material, 0, loaded);
+    w2_release_object(loaded);
+    calls.material_set_parameter_owner_00b18a40(material, owner, nullptr);
+    void* const mesh_slot = calls.mesh_allocate_raw_slot_00b73b60(0xBC);
+    void* const mesh = mesh_slot != nullptr ? calls.mesh_construct_00b73d70(mesh_slot) : nullptr;
+    const float minus_one = -1.0f;  // 00D7A260
+    calls.generated_model_set_geometry_00b75170(model, 0, mesh, minus_one, minus_one);
+    float bounds[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+    const std::uint32_t far_bits = 0x501502F9u;  // 00CE4970, 1.0e10f
+    std::memcpy(&bounds[3], &far_bits, 4);
+    calls.mesh_set_bounds_00b72650(mesh, bounds);
+    calls.generated_model_set_local_bounds_00b74390(model, bounds);
+    void* declaration;
+    {
+        W3_Temporary file("cloud.mvfm", strings);
+        declaration = w3_vcall<void*>(device_00f8d394, 0x38, file.get());
+    }
+    void* const vertices = w3_vcall<void*>(device_00f8d394, 0x5C, 4u, 1u, declaration);
+    w2_release_object(declaration);
+    void* const section = calls.draw_section_create_00533fa0();
+    w3_field<std::uint32_t>(section, 0x0C) = 0;
+    w3_field<std::uint32_t>(section, 0x14) = 0;
+    w3_field<std::uint32_t>(section, 0x08) = 4;
+    w3_field<std::uint32_t>(section, 0x10) = 4;
+    w3_field<std::uint32_t>(section, 0x18) = 2;
+    calls.draw_section_set_material_00b864c0(section, material);
+    calls.draw_section_append_vertex_stream_00b85b80(section, vertices);
+    calls.draw_section_rebuild_layout_00b865a0(section, mesh);
+    calls.mesh_append_draw_section_00b73c60(mesh, section);
+    w2_release_object(section);
+    w2_release_object(material);
+    auto* const v = w3_vcall<std::uint32_t*>(vertices, 0x10, 0u, 0u, 0u);
+    constexpr std::uint32_t one = 0x3F800000u, minus = 0xBF800000u, ten = 0x41200000u, minus_ten = 0xC1200000u;
+    const std::uint32_t quad[32] = {
+        minus, one,   0, 0xFFFFFFFFu, minus_ten, ten,       0,   0,
+        one,   one,   0, 0xFFFFFFFFu, ten,       ten,       one, 0,
+        one,   minus, 0, 0xFFFFFFFFu, ten,       minus_ten, one, one,
+        minus, minus, 0, 0xFFFFFFFFu, minus_ten, minus_ten, 0,   one,
+    };
+    std::memcpy(v, quad, sizeof quad);
+    w3_vcall<void>(vertices, 0x14);
+    w2_release_object(vertices);
+    void* const index_buffer = w3_vcall<void*>(device_00f8d394, 0x60, 6u, 1u, 0x65u);
+    calls.mesh_set_index_stream_00b73b70(mesh, index_buffer);
+    auto* const indices = w3_vcall<std::uint16_t*>(index_buffer, 0x0C, 0u, 0u, 0u);
+    const std::uint16_t order[6] = {0, 1, 2, 2, 3, 0};
+    std::memcpy(indices, order, sizeof order);
+    w3_vcall<void>(index_buffer, 0x10);
+    w2_release_object(index_buffer);
+    w2_release_object(mesh);
+    return model;
+}
+
 void* w3_coast_mesh_construct_00bb0e30(void* mesh, void* const* a, void* const* b, void* const* c,
                                        NativeStringStorage& strings, W3_Body weak_owner_construct_00925490) {
     weak_owner_construct_00925490(mesh);
