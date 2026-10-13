@@ -78,6 +78,30 @@ then refills it from the new stock, so the Hosho launches the same classes with 
 
 Every other WIN row is unaffected. RNG: neither the native nor its callees draw, so no stream changes.
 
+## 2. GetSquadronPlanes 0089CC50: the departed lead
+
+Switch: `kGetSquadronPlanesDepartedLeadBound` (include/bsp/game_hosts_script_orders.hpp). The native itself is hosted
+at src/game_hosts_script_orders.cpp under `kGetSquadronPlanesBound` (ON).
+
+The image reads the squadron object that the argument's table holds. It walks +3D0h up to +3CCh, and that object
+outlives its lead plane.
+
+The host resolves the argument through the unit it names, the wing-0 plane. When that plane dies, 007F3970's host
+(`remove_member_unit_007f3970`) moves it from `member_units` to `departed_units`. `find_by_member_unit` then answers
+null, so the table comes back empty while the squadron still flies.
+
+ON, the lookup is `find_by_member_or_departed_unit`.
+
+**Prediction.** No WIN script calls GetSquadronPlanes. Its one helper, `luaGetSquadronPlaneNum`, is reached only from
+`luaCountUnits`, which nothing calls. So the switch is identical on every WIN row.
+
+Elsewhere it changes the result only after a lead dies:
+- usn_01 (COTP) line 1080 is inside a comment block.
+- usn_12_indochina lines 881 and 1013.
+- bsm_04 lines 1717 and 1720 are the intro movie, where no plane has died yet.
+
+RNG: none.
+
 ## 3. StartLanding2 0089AC30
 
 Switch: `kLuaStartLanding2Bound`.
