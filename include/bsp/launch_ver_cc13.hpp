@@ -7,10 +7,9 @@
 // layouts or ABI-compatible replacements. Build-tested only; not wired, not
 // game-run.
 //
-// ADOPTION NOTE (cc9 terms). src/air_operations.cpp and
-// include/bsp/air_operations.hpp were leased to cc13-fix5 when this packet ran,
-// so the divergences below are not fixed in the host; these models are what the
-// owner adopts.
+// ADOPTED by cc13-fix7 behind kAirOpsQueueConsumeStockBound (006CA640's stock
+// arm) and kAirOpsBusyArmQueueLaunchBound (006CC690's busy arm), both OFF until
+// paired; include/bsp/air_operations.hpp.
 // - Replaces: bsp::air_ops_queue_slot_006ca640 (src/air_operations.cpp:932),
 //   whose 006C7D10 call is skipped ("not read"), and the busy arm of
 //   bsp::air_ops_launch_squadron_006cc690 (src/air_operations.cpp:630-633),
@@ -24,33 +23,23 @@
 //   class 166: 3 sorties of 3 against stock 9, where the host flew 7; USN21:
 //   about 13 sorties per carrier class against 40, where the host flew 16-25).
 //   PRCP01 stays inside its stock. No RNG draw.
-// - Switch: the adopter puts it behind its own OFF `k...Bound`.
-
 #include "bsp/air_operations.hpp"
+#include "bsp/script_natives_fix5_cc13.hpp"
 
 #include <cstdint>
 #include <vector>
 
 namespace bsp {
 
-// 006C7D10 BSP_AirOps_ConsumeStock, __thiscall(block, class, count), RET 8.
-// 006C7D40-006C7D4F walks the stock list at block+40h for the node whose +8h is
-// the class; 006C7D81-006C7D8E: entry.count -= min(entry.count, count) (JL takes
-// the entry when it is the smaller). It then builds the STOCKITEM message
-// (006BD9E0, class and the new count) and routes it through owner block+7Ch
-// (0077C7B0), and on every path updates the party's statistics with 006BF100's
-// category total (00984EB0 on 00F8A0C4). The message and the statistics call
-// are host callbacks the model does not make. Returns the amount taken, or -1
-// when the class has no stock entry (the image then only runs the statistics
-// call).
-std::int32_t air_ops_consume_stock_006c7d10(std::vector<AirOpsStockEntry>& stock,
-                                            std::uint32_t vehicle_class,
-                                            std::int32_t count) noexcept;
+// 006C7D10 BSP_AirOps_ConsumeStock is bsp::air_base_consume_stock_006c7d10
+// (include/bsp/script_natives_fix5_cc13.hpp); cc13-fix7 removed this file's copy
+// so there is one implementation. Its return is a host convention: the image
+// leaves 00984EB0's EAX at 006C7E0E, and no caller reads it.
 
 struct AirOpsQueueConsumeResult {
     bool queued{false};
     bool requeued{false};        // the slot was already in the queue: unlinked and re-appended
-    std::int32_t consumed{-2};   // -2: no consume call; otherwise 006C7D10's answer
+    std::int32_t stock_left{-2}; // -2: no consume call; -1: no stock node; else the node's count after
 };
 
 // 006CA640 BSP_AirOps_QueueSlot, __thiscall(block, slot), with the stock arm.

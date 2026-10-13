@@ -1736,6 +1736,14 @@ PlayerAirOpsLaunchResult GameScriptOrdersHost::player_air_ops_launch(const std::
     // Packet cc9_player_launch_group: 00674801..0067482B hands 006C0F00
     // min(stock, screen+2B4h), and screen+2B4h is the constant 3 (0066EC0A). The
     // stock clamp is 006C0F00's own; this applies the screen's.
+    // Packet cc13-fix7 D1: 0067480E 006BF310(class) is 006BF230's total; a total
+    // of 0 or less leaves at 0067481B (JLE 00674B46) before 006C0F00 writes the
+    // slot. Reachable once 006CA640 consumes the stock (kAirOpsQueueConsumeStockBound).
+    if constexpr (bsp::kAirOpsQueueConsumeStockBound) {
+        if (bsp::air_ops_stock_available_006bf230(*deck,
+                static_cast<std::uint32_t>(vehicle_class), live.data()).total <= 0)
+            return refuse("no stock of the class (0067480E 006BF310, 0067481B)");
+    }
     int screen_count = count;
     if constexpr (bsp::kAirOpsPlayerLaunchGroupBound) {
         if (screen_count > bsp::kSupportManagerLaunchGroup) {

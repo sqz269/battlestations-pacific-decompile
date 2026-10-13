@@ -281,3 +281,30 @@ This packet is done. Every timing item on the launch side was verified. D1 and D
 the holder of `src/air_operations.cpp` (cc13-fix5 at the time of writing) to adopt them. The
 correction to P1 in section 3 should be copied into docs/CC13_GPR_48.md section 8.3 by that
 document's owner.
+
+## 7. Adoption (cc13-fix7)
+
+Both fixes are in the host behind their own switches, both OFF and unchanged byte for byte until
+they are paired. They are build-tested, not game-run.
+
+| switch | divergence | call site | sha |
+|---|---|---|---|
+| `kAirOpsQueueConsumeStockBound` | D1 | `air_ops_slot_command_006ccda0` calls `air_ops_queue_slot_consume_006ca640` | 7c7e90a08 |
+| `kAirOpsBusyArmQueueLaunchBound` | D2 | the `else` arm of `air_ops_launch_squadron_006cc690` calls `air_ops_launch_busy_arm_006cc690` | 7faa8d8cb |
+
+- **One ConsumeStock.** launch_ver_cc13 had its own copy of 006C7D10, and cc13-fix5 had
+  `air_base_consume_stock_006c7d10` (script_natives_fix5_cc13). The two differed only in what
+  they returned: the amount taken against the node's count afterwards. The image returns
+  neither. It leaves 00984EB0's EAX at 006C7E0E, and no caller reads it. The launch_ver copy is
+  deleted, so the model now calls fix5's. The result field is renamed `stock_left`.
+- **A 0-count player launch.** In the image, 00673A10 calls 006BF310(class) at 0067480E. That
+  returns 006BF230's total. When the total is 0 or less, 0067481B JLE 00674B46 leaves before
+  006C0F00, so the slot is never written. The host ran 006C0F00 first and refused only once it
+  returned 0 (game_hosts_script_orders.cpp). By then a count of 0, and the class when it
+  differed, had already been written into the idle slot, which 006BF230 and 006BD3F0 both read.
+  Under D1's switch the host now refuses before the fill, as the image does. Without consume,
+  the total only reaches 0 for a class the base never stocked.
+- **Open, separate from D1 and not changed here.** When the class has stock but 006BD460's plane
+  room clamps the count to 0, the image goes on to route 82h with a count of 0 (0067484D
+  onwards; it does not test the count). The host refuses at "006C0F00 left the slot empty". What
+  a 0-plane launch does in 006C7490 was not traced.
