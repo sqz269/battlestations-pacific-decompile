@@ -687,5 +687,80 @@ TrialDynamics trial_step_forces_007d9360(const Vec3& body, const Vec3& world, fl
 Vec3 trial_integrate_at_climb_angle_007d9360(float angle, float probe_speed, float dt, int count,
                                              const TrialClass& cls, const TrialGlobals& g,
                                              const TrialCallbacks& cb);
+
+// ---- cc13-ver1: the pieces of the flight step the hosts do not carry -------
+//
+// docs/CC13_GPR_48.md section 8. Each is a fragment of a function whose other
+// parts the host already runs (src/plane_flight.cpp, src/plane_control_rate.cpp,
+// src/game_hosts_units.cpp); none is wired. Read from the disk bytes; x87 at
+// 24-bit precision, so a float expression here rounds where the image does.
+
+// 007D87C7-007D87F1 (inside 007D8470): while the timer dyn+C8h is above zero,
+// the body forward velocity dyn+6Ch is raised to dyn+CCh. COMISS/JBE on the
+// timer (a NaN timer skips), then FCOMIP floor vs vz / JBE: equality keeps vz.
+// The timer is armed to 1.2f (00CE3814) by 007D7A40, which 0099BF30 calls when
+// its band repair rewrites command[1] (0099C032) or command[0] (0099C0ED) of a
+// plane whose +72Ch predicate holds; 007D81B0 counts it down. The floor is
+// float(007C47F0() * 1.05) (double 00CF2510, a widened float), stored by 007DB2C0.
+float takeoff_speed_floor_007d87c7(float body_vz, float timer_c8, float floor_cc);
+float takeoff_floor_speed_007db2c0(float level_flight_speed_007c47f0);
+inline constexpr float kRepairFloorSeconds_007d7a40 = 1.2f;  // 00CE3814
+
+// 007DA710's crossing floor, per axis. The image builds one factor
+//   sp = Interp(StallRangeMin [00F8730C], 1, StallRangeMax [00F87310], 0,
+//               float(007D99C0() / desc+184h))
+//      * Interp(StallOffPitch [00F87314], 1, StallOnPitch [00F87318], 0, unit+C64h)
+// (007DAABD-007DAB36) and, when 007DA380's byte is set and the sign test of
+// 007DABEA passes, floors the rate at
+//   pitch (ctl+48h, 007DAC1C-007DAC26): (|current| * 1.5 (double 00CE3D78)) * sp
+//   yaw   (ctl+4Ch, 007DADA4-007DADA8): |current| * sp
+//   roll  (ctl+50h, 007DAEC7-007DAF00): no deflection floor at all
+// The flat 0.6f floor (byte clear) is the same on all three axes.
+float rate_law_floor_factor_007da710(float forward_speed, float desc_184, float pitch_c64,
+                                     float stall_range_min, float stall_range_max,
+                                     float stall_off_pitch, float stall_on_pitch);
+// axis: 0 pitch, 1 yaw, 2 roll. Returns the deflection floor, or a negative
+// value when the axis has none (roll).
+float rate_law_deflection_floor_007da710(int axis, float current, float sp);
+
+// 007DBC77-007DBD34 (inside 007DB680), reached only from the drag path (world
+// speed above 0.001f), where XMM0 still holds the 1.0f of 007DBB8D:
+//   gate: ctl+94h set and unit+C3Ch > 1.0f
+//   dyn+0Ch = float(dyn+0Ch - float(float(Interp(-8, 10, -1, 1, unit+100h) * fwd)
+//                                   * 00415510(1.0f, unit+C3Ch - 1.0)))
+// 00415510 returns the smaller of its two floats (ties: the second). fwd is
+// 007D99C0. Returns the new dyn+0Ch.
+float dead_meat_forward_drag_007dbc77(float dyn_0c, bool ctl_94, float lost_drag_timer_c3c,
+                                      float altitude_100, float forward_speed);
+
+// 007DC743-007DC80B (the core law's commit tail): ctl+30h..38h, a low-passed
+// world velocity. step < 0.25f (00CE3868, JB so a NaN step also filters):
+//   out = ((0.25 - step) * prev + step * v) * 4.0     (00D7A348, 00D7A328, doubles)
+// else out = v. 007DC7E1 is the DC-form FMUL ST(1),ST(0).
+Vec3 velocity_lowpass_007dc762(const Vec3& prev_30, const Vec3& world_velocity_18, float step);
+
+// 007D9CE0 __thiscall(ctl, Entity* new_parent), RET 4: moves ctl+18h (the
+// velocity) and ctl+24h between parent frames when unit+3Ch changes. Nothing
+// happens when the new parent is the current one.
+//  old parent: refresh its pose when its +C8h byte is clear (00414DB0); ctl+18h
+//    = rotate(ctl+18h, old+CCh) + old->vtable[34h]() (0042D0D0 with 0, then the
+//    add); ctl+24h = rotate(ctl+24h, old+CCh), no velocity term.
+//  new parent: ctl+18h -= new->vtable[34h](); then both vectors are rotated by
+//    new+110h, the inverse built by B63D50 when new+10Ch is clear.
+//  ctl+30h = ctl+18h.
+struct ReparentCallbacks {
+    std::function<Vec3(const Vec3&)> old_parent_to_world;   // 0042D0D0, old+CCh
+    std::function<Vec3()> old_parent_velocity;              // old->vtable[34h]
+    std::function<Vec3(const Vec3&)> world_to_new_parent;   // 0042D0D0, new+110h
+    std::function<Vec3()> new_parent_velocity;              // new->vtable[34h]
+};
+struct ReparentVelocity {
+    Vec3 velocity_18{};
+    Vec3 vector_24{};
+    Vec3 previous_30{};
+};
+ReparentVelocity reparent_velocity_007d9ce0(const ReparentVelocity& in, bool same_parent,
+                                            bool has_old_parent, bool has_new_parent,
+                                            const ReparentCallbacks& cb);
 }  // namespace gameplay_seg48_cc13
 }  // namespace bsp

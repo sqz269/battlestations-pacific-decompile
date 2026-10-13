@@ -421,3 +421,224 @@ The pose ops, `007D7C00`/`007D8470`, `007D9140`, `007D92B0` and `00419010` are h
 | `007D9050` | pointer | partial |
 | `007D9140` | pointer | partial |
 | `007DB680` | pointer | partial |
+
+## 8. ver1: byte verification of the rest of the flight step (cc13-ver1)
+
+This is a verification pass, approved by cc9. I made no host edits, no wiring and no runs. Every check
+below was made against the disk bytes (`bsp.py disasm-raw`, and `sc2_x87.py` for the long blocks).
+The x87 stack was tracked by hand, and the pop forms were read from the opcode bytes
+(`DE E1`, `DE E2`, `DE E9`, `DE FA`, `DE F9`). `tools/x87_dc_form_scan.py --range 007D8470-007DD000`
+finds three DC-form sites in these targets:
+- `007DA417`, in `007DA380`'s water arm, which is out of scope;
+- `007DC2AE`, in the water arm of `007DB680`, out of scope;
+- `007DC7E1`, the ctl+30h low-pass. It reads as `st(1) = st(1) * st(0)`, so each sum is multiplied by 4.0.
+
+Gameplay runs at 24-bit precision. So the only rounding that can differ is association order, and a
+double product that the image rounds twice where the host rounds once. I mark those cases "last ulp".
+
+### 8.1 Results
+
+| function | host | verdict |
+| --- | --- | --- |
+| `007D8470` | `fold_world_into_body_007d8470`, `integrate_body_velocity_007d8611`, `blend_direction_hold_007d88cb` (src/plane_flight.cpp:404-584), and the `kFlightIntegratorBound` inline (src/game_hosts_units.cpp:17858-18030) | **partial.** The arithmetic matches. Two blocks are missing (V1, V2) |
+| `007DA710` | `plane_control_targets_007da710`, `plane_control_axis_step_007da710` (src/plane_control_rate.cpp), `control_step_007da710` (game_hosts_units.cpp:33356) | **partial.** The targets and the polynomial match. The crossing floor diverges (R1), and so does the use of BC4h (R2) |
+| `007DA380` | inline in `control_step_007da710` | **matches** for modes 0 and 1. The water arm was not checked |
+| `007D9CE0` | inline at game_hosts_units.cpp:14081 and :14495, translation only | **modelled** in `gameplay_seg48_cc13` as `reparent_velocity_007d9ce0`. The host differs (P1) |
+| `007D9140` body | inline at game_hosts_units.cpp:17587-17632 | **formula matches**, with a different product association (last ulp) |
+| `007DB680`, `007DBBDF` to the end | `accumulate_free_flight_007db680` (src/plane_flight.cpp:319-400), and the ground band at game_hosts_units.cpp:17660-17755 | **partial.** The roll-drag extra, the damping, the ceiling and the ground band match. Two blocks are missing (C1, C2) |
+
+### 8.2 What matches
+
+**`007D8470`:**
+- **The folds:** dyn+28h into dyn+1Ch, and dyn+10h into dyn+04h, then the 0.001f deadband.
+- **The per-axis step (`007D8611`-`007D874B`):**
+  - `w = a*t + v`;
+  - `q = |r40|` by the `-0.0f - x` idiom;
+  - for `w >= 0`: `max(0, (min(b, 0) + w) - q*t)`;
+  - for `w < 0`: `min(0, (max(b, 0) + w) + q*t)`;
+  - every compare direction was checked, including equality.
+- **The 0.01f deadband.** Equality keeps the value.
+- **The hold blend (`007D88CB`-`007D8C5E`):**
+  - every three-term sum is `(x2+y2)+z2`;
+  - `1 - C0h` comes from `DE E1`;
+  - the blend is `s*d + (1-s)*vhat`, then `(b*inv)*speed`.
+- **The world rotation (`007D8C6B`):** `(vx*m0 + vy*m4) + vz*m8` through unit+74h.
+- **The +C4h sink (`007D8CE9`-`007D8E1B`):**
+  - world vy >= -0.001f (`00D05E10`);
+  - the speed squared is gated against the double 1e-10;
+  - the speed must exceed 3.0f (`00CE3854`);
+  - `vy - sp*0.1`, where 0.1 is the double `00D7A3A0` (the float 0.1 widened);
+  - then `00419510` (`v * (1/|v|)`), times the speed, the 0.01f deadband, and the rotation back.
+- **The contact projection (`007D8E28`-`007D8F16`).** It is the host's projection with n = (0, 1, 0).
+- **The acceleration:** `(v - dyn+70h) / t`.
+
+The core law reseeds dyn+64h from ctl+3Ch every step (`007D9C10` then `007D7C00`). So the host
+recomputing the body velocity from the world velocity is faithful.
+
+**`007DA710`:**
+- **The roll target:** `((RollSpd*f1)*bank)*roll`. In state 6, `bank = Interp(0, 1, 0.10471976, -0.1, |C68h|)`.
+- **The pitch target:** `((PitchSpd*f1)*BB4h)`, times desc+1D8h when negative.
+- **The yaw target:** `(YawSpd*BB0h)*BC4h*f2`, and the BC4h relax by `0.5*t` toward 1.
+- **The slide:** `((1B8h*YawSpd)*sin(bank))*cos(pitch)`.
+- **The accels.**
+- **The polynomial:** `((A*d)*d + B*|d|) + C`, times |accel|. Pitch builds it as `(A*d)*d` (`007DABC4`-`007DABC8`), not `(d*d)*A`.
+- **The sign step and the three-way clamp.**
+- **The flat 0.6f floor.**
+
+**`007DA380`, mode 1:**
+- `r = max(YawSpd*RunwayYawTurnSpdMul, 0.87266/YawSpd)`;
+- r is halved for a landed 10h/16h class;
+- `blend = Interp(+2A8h, r, +2ACh, 1, v)`;
+- a and b are taken over 3.6;
+- the output is `c * blend`.
+
+The image reads tuning +2A8h and +2ACh where the host reads one field. Both hold
+`RunwayYawTurnSpdLimit/1` in this build (docs/GAME_TUNING_SINGLETON.md:541), so the values are equal.
+
+**`007DB680`:**
+- **The roll-drag extra (`007DBBE2`-`007DBC5C`):**
+  - the gate is ctl+98h > 1.0f;
+  - the extra is `(n_i*d)*(98h - 1)`;
+  - the middle component is `d*0.0`.
+- **The damping (`007DBD37`-`007DBE0A`):**
+  - desc+174h applies to vx and +170h to vy;
+  - the bound is `Interp(0.5, 1, 20, 100, unit+908h)`.
+- **The ceiling (`007DBE2E`-`007DBEA2`).**
+- **The ground band (`007DBEB3`-`007DC200`):**
+  - the brake `1E0h * max(airbrake, 0.6 - thr*26)`;
+  - the friction `Interp(StallSpd*F87374, F87370, StallSpd*F87378, 0, speed) * (clamp*surface)`;
+  - the sum `(rf + brake) + dyn48`;
+  - the wire, and `|2vx|`.
+
+### 8.3 Divergences, with predicted effects
+
+- **V1, the dyn+C8h speed floor, is absent (`007D87C7`-`007D87F1`).**
+  - Host: game_hosts_units.cpp:17872 integrates with no floor. plane_flight.hpp:604 calls the floor "not in
+    free flight", and game_hosts_units.cpp:7584 leaves `007D7A40` unmodelled.
+  - Image: `if (dyn+C8h > 0 && dyn+CCh > vz) vz = dyn+CCh`.
+    - The floor dyn+CCh is `float(LevelFlightSpeed * 1.05)` (`007DB2C0`), which is 1.05 x 1.8 x StallSpd,
+      about 1.89 x StallSpd.
+    - The timer is set to 1.2f (`00CE3814`) by `007D7A40`. `0099BF30` calls `007D7A40` whenever its band
+      repair rewrites the pitch command (`0099C032`) or command[0] (`0099C0ED`) of a plane whose +72Ch
+      predicate holds, which is free flight.
+    - `007D81B0` counts the timer down.
+  - Host: no floor.
+  - Effect:
+    - In the image, a bot plane whose command band is repaired cannot fly slower than about 1.89 x StallSpd
+      for 1.2 s afterwards. The forward body speed is snapped up to that value in one step.
+    - At cruise (usually above that speed) nothing changes.
+    - It matters in slow flight: climbs, dive pull-outs, the terrain and ceiling bands, and slow
+      approaches. In the image those planes cannot sit near the stall while their commands are being
+      repaired. In the host they can.
+- **V2, the third fold and its deadband, are absent (`007D84C2`-`007D84FF`, `007D85A8`-`007D85E7`).**
+  - Host: plane_flight.cpp:436-470 folds two pairs only, and game_hosts_units.cpp:17872 passes
+    `acc.body_resist_40` raw.
+  - Image: `dyn+40h += R*dyn+34h`, and each component under 0.001f is zeroed.
+  - Effect: dyn+34h is zero in modes 0 and 1, so only the deadband differs. A ground-band friction, brake
+    or lateral term under 0.001 acts in the host and not in the image. That is under 5e-5 m/s per step:
+    negligible.
+- **V3, the sink rounding (`007D8D6D`-`007D8D75`).**
+  - Host: game_hosts_units.cpp:17985 computes `b1 - sp*0.1` in double and rounds once.
+  - Image: under 24-bit precision it rounds `sp*0.1` and then the difference.
+  - Effect: last ulp, landing and takeoff rolls only.
+- **V4, dyn+A4h is not carried.** `007D7D70` sets it (for example the deck clamp, D1). The image then
+  zeroes vy at `|vz| < 1e-5` and projects onto the normal in the next integrate, even with dyn+94h = 0.
+  The host keys both on `pen > 0`. The effect belongs with D1.
+- **R1, the rate-law crossing floor (`007DAABD`-`007DAB36`, `007DAC08`-`007DAC40`, `007DAD90`-`007DADBC`, `007DAEC7`-`007DAF00`).**
+  - Image. When 007DA380's byte is set (free flight) and the sign test passes:
+    - pitch: `rate >= (|w|*1.5)*sp`;
+    - yaw: `rate >= |w|*sp`, with no 1.5;
+    - roll: no deflection floor at all;
+    - here `sp = Interp(StallRangeMin 1.2, 1, StallRangeMax 1.6, 0, fwd/StallSpd) * Interp(StallOffPitch -15deg, 1, StallOnPitch 20deg, 0, pitch)`.
+  - Host: plane_control_rate.cpp:67, called from game_hosts_units.cpp:33511, uses `rate >= 1.5*|w|` on all
+    three axes.
+  - Effect: in the image, sp is 0 above 1.6 x StallSpd or above a 20 deg pitch, so a cruising plane gets
+    no crossing floor on any axis. Its stick reversals follow the polynomial alone. In the host every
+    reversal is at least 1.5|w| per second on every axis.
+    - That makes the host's reversals faster wherever `(0.5 d^2 + 1.5|d| + 0.1)*|accel| < 1.5|w|`:
+      low-accel classes, and roll on every class.
+    - So bots roll out of a bank and reverse yaw more briskly than the image. It shows in turn-reversal
+      timing in dogfights and on the torpedo and dive approach lines.
+    - Near the stall the host's yaw floor is 1.5/sp times the image's.
+    - The size depends on the class accels, and I have not measured it.
+- **R2, BC4h, the yaw gain.**
+  - Host: game_hosts_units.cpp:33486 sets `target_yaw = -(yaw_raw*f2 - slide) * g` and builds the coupling
+    from `yaw_raw` without g (plane_control_rate.cpp:150).
+  - Image: `yaw_raw = (YawSpd*BB0h)*BC4h` (`007DA926`-`007DA94B`) feeds both
+    `target_yaw = -(yaw_raw*f2 - slide)` and `roll += (yaw_raw*f1)*1B4h`.
+  - Effect: only while the terrain arm holds g away from 1.
+    - The host scales the slide term by g, which the image does not.
+    - The host leaves g out of the yaw-to-roll coupling. With g = 2 the host's coordinated-turn roll is
+      half the image's.
+- **R3, the coupling association.** The image forms `(yaw_raw*f1)*1B4h`. The host
+  (plane_control_rate.cpp:150) forms `(1B4h*f1)*yaw_raw`. Last ulp.
+- **R4, the DeadMeat roll terms (`007DA7E4`-`007DA8D5`), are not modelled.** The host already labels this.
+  The roll ramp is `Interp(0, 1, RollMulTime, RollMul, C3Ch)`, and the spin term uses C36h/C37h.
+  Effect: crippled planes do not spiral down in the host.
+- **C1, the wreck drag (`007DBC77`-`007DBD34`), is not hosted.**
+  - Image: when ctl+94h is set and unit+C3Ch > 1.0f (XMM0 still holds the 1.0f from `007DBB8D`):
+    `dyn+0Ch -= Interp(-8, 10, -1, 1, alt) * fwd * min(1, C3Ch - 1)`.
+    - `00415510` (`BSP_Math_MinFloatByRef`) returns the smaller of its two floats.
+    - It is reached only from the drag path, where the speed is above 0.001.
+  - Host: absent. plane_flight.cpp:367 goes straight from the drag to the damping. The host also feeds
+    ctl+94h only in water mode (game_hosts_units.cpp:17536).
+  - Effect: in the image, a dying plane with ctl+94h set loses forward speed with a time constant of
+    about 1 s in the air. Below 1 m depth the rate rises to ten times that. Wrecks stop sliding on the
+    water. In the host they coast.
+  - The in-air producer of ctl+94h, `007CE1D9` (inside the free-flight arm `007CE040`, a loop that
+    compares a `004142E0` result with -1.0), is unread.
+- **C2, the ctl+30h low-pass (`007DC743`-`007DC80B`), is not carried.** When `t < 0.25`, the image sets
+  `ctl+30h = ((0.25 - t)*prev + t*v)*4`, which is `0.8*prev + 0.2*v` at 50 ms. The host has no field
+  for it (game_hosts_units.cpp:16455). I did not trace who reads it.
+- **P1, `007D9CE0`.**
+  - Host: game_hosts_units.cpp:14081/14495 adds and subtracts the parent's velocity in world axes.
+  - Image: it rotates ctl+18h and ctl+24h through the parent's matrices (old+CCh, then new+110h) and copies
+    ctl+30h.
+  - Effect: a parented plane's relative velocity rotates with a turning carrier in the image, and not in
+    the host. Over a deck run of about 10 s on a carrier turning at 1-2 deg/s, the heading of the
+    relative velocity differs by 10-20 deg. A non-turning parent gives the same result.
+- **D-9140, rounding order (last ulp).**
+  - Image: `((-sgn*v)*v) * ((K*coef)*B)` (`007D928D`-`007D9295`), with `coef = (Accel/Max)/Max` (`007C4990`
+    `DE FA`, `DE F9`).
+  - Host: `((((-sgn*v)*v)*K)*coef)*B` with `coef = Accel/(Max*Max)`.
+  - The ground-band brake `0.6 - thr*26` rounds twice in the image (`007DBEBB`) and once in the host.
+
+### 8.4 Models (`include/bsp/gameplay_seg48_cc13.hpp`)
+
+These cover the pieces above that the host has no reconstruction for. None is wired.
+
+| model | covers |
+| --- | --- |
+| `takeoff_speed_floor_007d87c7`, `takeoff_floor_speed_007db2c0`, `kRepairFloorSeconds_007d7a40` | V1 |
+| `rate_law_floor_factor_007da710`, `rate_law_deflection_floor_007da710` | R1 |
+| `dead_meat_forward_drag_007dbc77` | C1 |
+| `velocity_lowpass_007dc762` | C2 |
+| `reparent_velocity_007d9ce0` | P1, the whole function |
+
+**Adoption.**
+- R1 replaces the `floor_from_deflection` arm of `plane_control_axis_step_007da710`. It needs the forward
+  speed, StallSpd, the pitch, and tuning +22Ch..+238h.
+- V1 is a step in the integrate inline, after the 0.01 deadband. It also needs `007D7A40` at the host's
+  band-repair site, game_hosts_units.cpp:7584.
+- None of the models draws RNG.
+
+**Status.** Build-tested (`./scripts/build.ps1`). Not game-run.
+
+### 8.5 Ledger
+
+| address | record | status |
+| --- | --- | --- |
+| `007D8470` | pointer `fold_world_into_body_007d8470` | partial, listing-checked |
+| `007DA710` | pointer `plane_control_axis_step_007da710` | partial, listing-checked |
+| `007DA380` | pointer, the inline | partial: modes 0 and 1 match, the water arm is unchecked |
+| `007D9CE0` | model `reparent_velocity_007d9ce0` | `semantic_build_tested`, complete |
+| `007D9140` | pointer, replaced, with gpr48b's evidence kept | partial: the formula matches, the order differs in the last ulp |
+| `007DB680` | pointer, replaced, with gpr48b's evidence kept | partial: C1 and C2 |
+| `007D87C7`, `007DAABD`, `007DBC77`, `007DC743` | fragments (the models) | `semantic_build_tested` |
+
+### 8.6 Open
+
+- **The in-air producer of ctl+94h, `007CE1D9`.** It decides whether C1 touches airborne wrecks.
+- **The readers of ctl+30h (C2).**
+- **The class accel magnitudes (desc+1BCh/1C0h/1C4h).** They are needed to size R1.
+- **The water arms.** `007DA380` mode 2 and `007DB680` `007DC205`+ were excluded by the packet.
