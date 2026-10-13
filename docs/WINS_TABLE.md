@@ -182,3 +182,10 @@ mechanism is in the cd761bb52 section above).
   `kPlaneCrashSweepBound` and `kLandStructureMeshHitTestBound`; crashing planes hit Pearl's buildings on their meshes
   from 133 s, the battle shifts, and HenryPT never rams MiniSub (the win's phase-3 end was at 437.77 s). Re-plan
   queued with cc9-physics6, base `config/win_orders/bsm01_l50_b1_a.txt`.
+- **BSM01 re-planned (cc9-physics6, 2026-10-13): `config/win_orders/bsm01_p6_b1_a.txt`**, replaces `bsm01_l50_b1_a`
+  (kept). Tree agent/cc9-physics1 at the merge of origin/main 6846c0620, exe A351D9B2F093, 40000 frames, reference env,
+  `--stop-after-end 40`: **EndMission 752.94 s**, guard logged, MiniSub sunk by HenryPT's depth charge at 424.07 s
+  (`local\p6b1_a.log`). Only change: the last takehelm leg at frame 7000 instead of 7250. On current main HenryPT is
+  further south by frame 7000 than in the win (1921,-2955 vs 2027,-2687); with the leg at 7250 it turned west at
+  z = -3150 and stalled at (1624,-3170) from 395 s with throttle 0.5 and no speed until it died at 1519.8 s
+  (`local\p6b1_base.log`). Variant b (waypoint 6600 at z -2990 instead of -3084): MiniSub survives.

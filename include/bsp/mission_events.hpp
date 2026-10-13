@@ -256,8 +256,8 @@ struct WarningReportResult {
 // several entries and still queue the incoming warning. True: report_walk does
 // that. False (default): the earlier projection, which returns after the first
 // retirement (outcome RetiredExpired) and drops the incoming warning.
-// Packet cc13-sys6b, docs/CC13_SYS_6.md.
-inline constexpr bool kMissionWarningReportWalkAllBound = false;
+// Packet cc13-sys6b, docs/CC13_SYS_6.md. ON since the USN12 pair (cc9-physics6).
+inline constexpr bool kMissionWarningReportWalkAllBound = true;
 
 // 009763e0, __thiscall(this, Warning*). Walks the pending queue then the applied
 // queue; the first expired entry is retired and the call returns, and the first
