@@ -3,8 +3,12 @@
 // ABI. Reconstructed and build-tested only: nothing here is wired into a host.
 #include "bsp/gameplay_seg33_cc13.hpp"
 
+#include "bsp/unit_rudder.hpp"
+
 #include <cmath>
 #include <cstddef>
+#include <iterator>
+#include <list>
 
 namespace bsp::gameplay_seg33_cc13 {
 namespace {
@@ -376,6 +380,136 @@ Seg33Vec3 projectile_extrapolate_position_006e2220(const Seg33Vec3& base,
     const float dy = velocity.y * t;
     const float dz = t * velocity.z;
     return Seg33Vec3{base.x + dx, base.y + dy, base.z + dz};  // FADD, FSTP float each
+}
+
+// ---------------------------------------------------------------------------------------------
+// Catapult launch timeline
+// ---------------------------------------------------------------------------------------------
+
+bool catapult_fire_head_006ed1c0(CatapultLaunchState& s, float dt, bool can_fire,
+                                 bool disabled_3b8) noexcept {
+    if (!s.start_launch_488 || !(dt > 0.0f)) return false;
+    if (can_fire) return true;  // ADh routed (1, 0)
+    if (disabled_3b8 || s.ammo_480 < 1) s.start_launch_488 = false;  // 006ED24B-006ED25B
+    return false;
+}
+
+float catapult_turn_time_006ed2c1(const CatapultClassView& cls, float yaw_delta) noexcept {
+    // 006ED2D3 FLDZ; with pitch rate > 0, |launch pitch| / rate (FDIV float), FSTP float.
+    float pitch_term = 0.0f;
+    if (cls.pitch_rate_8c > 0.0f) {
+        pitch_term = static_cast<float>(static_cast<double>(std::fabs(cls.launch_pitch_dc)) /
+                                        cls.pitch_rate_8c);
+    }
+    const float pitch_time = static_cast<float>(pitch_term + kCatapultTurnSlack);  // 006ED32A
+    float yaw_time = 0.0f;  // the FLDZ left on the stack
+    if (cls.yaw_rate_88 > 0.0f) {
+        yaw_time = static_cast<float>(static_cast<double>(std::fabs(yaw_delta)) / cls.yaw_rate_88);
+    }
+    float m = (yaw_time > pitch_time) ? yaw_time : pitch_time;  // FCOMIP / JBE 006ED363
+    if (kCatapultTurnClampLo > m) {
+        m = kCatapultTurnClampLo;  // COMISS / JBE 006ED37E
+    } else if (m > kCatapultTurnClampHi) {
+        m = kCatapultTurnClampHi;
+    }
+    return static_cast<float>(m + kCatapultTurnExtra);  // 006ED3B0 FADD double, FSTP float
+}
+
+CatapultTickEvents catapult_launch_timeline_006ed261(CatapultLaunchState& s,
+                                                     const CatapultClassView& cls,
+                                                     int global_tick, float launch_heading,
+                                                     float reload_timer_414, bool plane_has_body,
+                                                     SessionMode mode) noexcept {
+    CatapultTickEvents ev;
+    if (s.launch_tick_490 < 0) return ev;  // 006ED269
+    s.start_launch_488 = false;
+    // 006ED281 FILD (tick - launchTick), FMUL float 0.05, FSTP float.
+    const float t = static_cast<float>(static_cast<double>(global_tick - s.launch_tick_490) *
+                                       kCatapultSecondsPerTick);
+    const float h = launch_heading;
+    const float yaw_delta = wrapped_angle_subtract_00438b10(h, s.yaw_4ac);
+    const float turn = catapult_turn_time_006ed2c1(cls, yaw_delta);
+    ev.elapsed = t;
+    ev.turn_time = turn;
+    if (t > kCatapultHoldEnd && s.has_plane_4a8 && !s.added_launched_489 &&
+        (mode == SessionMode::Local || mode == SessionMode::Host)) {
+        s.added_launched_489 = true;  // 006ED3E8
+        ev.route_add_launched = true;
+    }
+    if (kCatapultHoldEnd > t) {  // hold at rest
+        s.yaw_target_4c4 = s.yaw_4ac;
+        s.pitch_target_4c8 = s.pitch_4b0;
+        s.launch_speed_4d4 = 0.0f;
+        s.field_4cc = cls.rest_e4;
+    } else if (kCatapultRotateEnd > t) {  // turn to the launch heading
+        s.pitch_target_4c8 = s.pitch_4b0;
+        s.yaw_target_4c4 = h;
+        s.field_4cc = cls.rest_e4;
+        s.launch_speed_4d4 = 0.0f;
+    } else if (static_cast<double>(turn) + kCatapultReleaseAfterTurn > t) {  // FCOMIP / JBE 006ED4BA
+        s.yaw_target_4c4 = h;
+        s.pitch_target_4c8 = wrapped_angle_add_00438aa0(s.pitch_4b0, cls.launch_pitch_dc);
+        if (t > turn) {  // FCOMI / JBE 006ED506
+            s.launch_speed_4d4 = static_cast<float>(
+                (static_cast<double>(t) - turn) * kCatapultSpeedGain + kCatapultSpeedBase);
+        }
+    } else {  // release
+        if (s.has_plane_4a8 && plane_has_body) {
+            ev.takeoff = true;
+            ev.takeoff_speed = s.launch_speed_4d4;  // (0, 0, speed) through the plane's frame
+            s.has_plane_4a8 = false;                // 006ED5EF observer unregister, +4A8h = 0
+        }
+        s.launch_speed_4d4 = kCatapultSpeedAfterRelease;
+        if (t > static_cast<double>(turn) + kCatapultTurnSlack) {  // 006ED61A
+            s.yaw_target_4c4 = s.yaw_4ac;
+            s.pitch_target_4c8 = s.pitch_4b0;
+        }
+    }
+    // 006ED63E-006ED66D: COMISS 0,[timer] / JC and FCOMIP class+E4h, +4CCh / JC.
+    if (reload_timer_414 <= 0.0f && cls.rest_e4 >= s.field_4cc) {
+        s.launch_tick_490 = -1;
+        s.added_launched_489 = false;
+        s.launch_speed_4d4 = 0.0f;
+        ev.ended = true;
+    }
+    return ev;
+}
+
+float command_building_capture_range_squared_006f5960(std::int32_t capture_range_7a0) noexcept {
+    const std::uint32_t r = static_cast<std::uint32_t>(capture_range_7a0);
+    const std::int32_t sq = static_cast<std::int32_t>(r * r);  // IMUL ECX,EAX wraps
+    return static_cast<float>(sq);                              // FILD, returned in ST0
+}
+
+// ---------------------------------------------------------------------------------------------
+// Command classes
+// ---------------------------------------------------------------------------------------------
+
+int command_class_compare_006f7b30(int slot10_a, int slot10_b) noexcept {
+    return slot10_a - slot10_b;  // 006F7B46 SUB EDI,EAX
+}
+
+std::vector<std::size_t> command_menu_sort_006f7c20(const std::vector<int>& keys) {
+    std::list<std::size_t> nodes;
+    for (std::size_t i = 0; i < keys.size(); ++i) nodes.push_back(i);
+    if (nodes.size() < 2) {  // 006F7C27: head == tail
+        return std::vector<std::size_t>(nodes.begin(), nodes.end());
+    }
+    auto cursor = nodes.begin();
+    do {
+        auto best = cursor;
+        for (auto scan = std::next(cursor); scan != nodes.end(); ++scan) {
+            if (command_class_compare_006f7b30(keys[*best], keys[*scan]) == -1) best = scan;
+        }
+        if (best == cursor) {
+            ++cursor;  // 006F7CF8
+        } else {
+            nodes.splice(std::next(cursor), nodes, best);  // best relinked after the cursor
+            nodes.splice(nodes.end(), nodes, cursor);      // the cursor appended at the tail
+            cursor = std::next(best);
+        }
+    } while (cursor != std::prev(nodes.end()));
+    return std::vector<std::size_t>(nodes.begin(), nodes.end());
 }
 
 }  // namespace bsp::gameplay_seg33_cc13
