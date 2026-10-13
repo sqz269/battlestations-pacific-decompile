@@ -337,3 +337,31 @@ wired and not game-validated.
   repair zone `00825450` and the sinking block. This packet did not check it.
 - **The heel magnitude for T1.** Measuring it needs the hull inertia (`00C5C940`), which the host
   marks unread.
+
+## 6. Host fixes and adoption notes (HOST FIX TERMS, 2026-10-13)
+
+Applied behind OFF switches in files no cc9 lease covered (each built, ctest passed):
+
+| divergence | switch | file | commit |
+| --- | --- | --- | --- |
+| R1, righting constants | `kShipRightingImageConstantsBound` | include/bsp/ship_motion.hpp, src/ship_motion.cpp | `126c138c7` |
+| S1, submerged throttle scale | `kShipSubmergedThrottleBound` (installed 0.834 as a labelled constant) | include/bsp/ship_motion.hpp, src/ship_motion.cpp | `9f68f389b` |
+
+Adoption notes only. All three sit in src/game_hosts_units.cpp, leased to `agent/cc9-lua52` when
+I checked:
+- **B1.** In the class-row block (now near :15806), fill `motion_class.boost_capacity`,
+  `boost_speed_scale` and `boost_refill_time` from the TorpedoBoat row's TurboTime,
+  TurboStrength and TurboRechargingTime. When a key is missing, use the defaults from
+  `torpedo_boat_turbo_class_00857f40`. Then seed `motion.boost_reserve` from TurboTime
+  (`torpedo_boat_sentity_init_00857c80`).
+  - Rows with TurboRechargingTime = 0 divide by zero at `00826AD6`, as the image does.
+- **T1 and T2.** In `ShipMotionBinding::run_force_model` (near :9578), call the torque only
+  when the unit is a TorpedoBoat. Those are the units built with controller variant C,
+  `00857C20`. Pass `settings+588h` (`physics_tboat_nyomatek_szorzo`, 1500 here).
+  - Every other surface ship goes straight to `run_hydrodynamics_00937622`.
+  - Check the body's inverse inertia before predicting any heel.
+  - `tboat_rudder_torque_00937440` has the image's grouping.
+- **S1 follow-up.** Pass the loaded settings+4B4h into the gate and drop the installed
+  constant.
+- **D1.** Near :34321, pass `result.dt_scaled` as `tin.dt`. This is latent while unit+340h is
+  0.
