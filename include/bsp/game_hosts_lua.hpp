@@ -582,6 +582,12 @@ inline constexpr bool kLuaRemoveAllAirBasePlanesBound = false;
 // ship AI host's two models and pushes the answer. False: unimplemented, no
 // result (jm08.lua:653 then fails on tonumber(nil) < 0).
 inline constexpr bool kLuaStartLanding2Bound = false;
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 4). 0089CFE0 GetSquadronPlane(squadron,
+// i): 00888AA0 on argument 0, argument 1 as an integer; when 0 <= i < [sq+3CCh] it
+// pushes thisTable[[sq+3D0h+4i]+174h] (i < 5 and the member non-null) or nil, and
+// pushes nothing for any other i. True: the row answers from the squadron registry
+// record (live members in order). False: unimplemented, no result.
+inline constexpr bool kLuaGetSquadronPlaneBound = false;
 inline constexpr bool kLuaAddUntouchableUnitBound = true;   // ON on identity (LUA_BINDING_MISSION)
 // The +1D4h byte of units-host index `index`'s AI object, as AddUntouchableUnit
 // left it. False for every unit while kLuaAddUntouchableUnitBound is false.
@@ -1546,6 +1552,8 @@ public:
     int run_remove_all_air_base_planes_008975b0(lua_State* state, int argument_count);
     // Packet cc13-fix5, under kLuaStartLanding2Bound.
     int run_start_landing2_0089ac30(lua_State* state, int argument_count);
+    // Packet cc13-fix5, under kLuaGetSquadronPlaneBound.
+    int run_get_squadron_plane_0089cfe0(lua_State* state, int argument_count);
     // Packet cc9_squadron_travel_alt, under kSquadronTravelAltBound.
     int run_squadron_set_travel_alt_0089f550(lua_State* state, int argument_count);
     // Packet cc9_squadron_attack_alt, under kSquadronAttackAltBound.

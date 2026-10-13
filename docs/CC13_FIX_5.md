@@ -131,3 +131,20 @@ and cargo transports begin their landings on the script's schedule.
 RNG: each landing begun, and each landing craft launched, takes one `ship_ai_draw(0, 0.75)` through the host's
 gunnery draws. That is 0074A990's landing-time draw, which shares the 00BD2F10 stream as the existing 94h path does.
 Only the JM05, JM07 and JM08 (ijn and COTP-IJN copies) scripts draw more. No WIN row does.
+
+## 4. GetSquadronPlane 0089CFE0
+
+Switch: `kLuaGetSquadronPlaneBound`.
+
+The image body, from disk bytes:
+- 00888AA0 on argument 0 (EDI).
+- 0089D111: 00B66290, argument 1 as an integer (ESI).
+- 0089D128 `JL` and 0089D130 `CMP [EDI+3CCh]` / `JGE`: for any other i, nothing is pushed.
+- 0089D13C `CMP ESI,5` / `JGE`, or a null `[EDI+ESI*4+3D0h]`: nil is pushed.
+- Otherwise `thisTable[member+174h]` is pushed.
+
+The host answers from the registry record. Its live members, in order, stand in for +3D0h/+3CCh. The record is found
+by `find_by_member_or_departed_unit`, for the reason given in section 2 (labelled).
+
+**Prediction.** No WIN script calls it. COTP usn_01:802 reads `GetPayloads(GetSquadronPlane(SelectedBomber, 0))`; it
+is not a WIN row. RNG: none.

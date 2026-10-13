@@ -526,6 +526,8 @@ int binding_trampoline(lua_State* state) {
         && dispatch_row.address == 0x008975b0u;
     const bool start_landing2_row = kLuaStartLanding2Bound
         && dispatch_row.address == 0x0089ac30u;
+    const bool squadron_plane_row = kLuaGetSquadronPlaneBound
+        && dispatch_row.address == 0x0089cfe0u;
     // Packet cc9_squadron_attack_alt.
     const bool attack_alt_row = kSquadronAttackAltBound
         && dispatch_row.address == 0x008a22b0u;
@@ -601,7 +603,7 @@ int binding_trampoline(lua_State* state) {
         || sub_surface_row
         || force_gunner_row
         || slot_count_row || add_stock_row || shipyard_stock_row || device_reload_row
-        || remove_all_stock_row || start_landing2_row
+        || remove_all_stock_row || start_landing2_row || squadron_plane_row
         || unlimited_air_row
         || in_formation_row || leave_formation_row || travel_alt_row || border_zone_row
         || untouchable_row
@@ -731,6 +733,9 @@ int binding_trampoline(lua_State* state) {
     }
     if (start_landing2_row && !host->error_replay()) {
         return host->run_start_landing2_0089ac30(state, argc);
+    }
+    if (squadron_plane_row && !host->error_replay()) {
+        return host->run_get_squadron_plane_0089cfe0(state, argc);
     }
     if (shipyard_stock_row) {
         if (!host->error_replay()) host->run_add_shipyard_stock_00896cc0(state, argc);
@@ -6296,6 +6301,49 @@ int GameMissionLuaHost::run_start_landing2_0089ac30(lua_State* state, int argume
         path, answer);
     log_.implemented("MissionLuaNative::StartLanding2", "0089ac30");
     return 1;
+}
+
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 4). 0089CFE0 GetSquadronPlane(squadron, i),
+// lua_CFunction: 00888AA0 on argument 0 (EDI), 0089D111 00B66290 argument 1 as an
+// integer (ESI); 0089D128 JL and 0089D130 CMP [EDI+3CCh] JGE skip to the result count
+// with nothing pushed; 0089D13C CMP ESI,5 JGE and a null [EDI+ESI*4+3D0h] push nil;
+// else thisTable[member+174h] is pushed. Results: 0 or 1.
+// SUBSTITUTIONS (labelled): the squadron is the registry record whose members hold the
+// argument's unit, or held it when it died (find_by_member_or_departed_unit, the
+// object the image keeps after its lead dies); +3D0h/+3CCh are its live members in
+// order; a member's +174h is its unit index plus one, the `thisTable` key. An argument
+// with no record pushes nothing (the image reads a non-squadron's +3CCh).
+int GameMissionLuaHost::run_get_squadron_plane_0089cfe0(lua_State* state, int argument_count) {
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    const int i = argument_count >= 2 ? static_cast<int>(::lua_tonumber(state, 2)) : 0;
+    if (script_orders_ != nullptr) script_orders_->resolve_plane_squadron_members();
+    const bsp::PlaneSquadronHostRecord* record = nullptr;
+    if (units != nullptr && id > 0 && static_cast<std::size_t>(id) <= units->count()) {
+        record = bsp::plane_squadron_registry().find_by_member_or_departed_unit(
+            static_cast<std::size_t>(id - 1));
+    }
+    std::vector<std::size_t> live;
+    if (record != nullptr) {
+        for (const std::size_t member : record->member_units) {
+            if (member != bsp::kPlaneSquadronNoUnit && member < units->count()) live.push_back(member);
+        }
+    }
+    int results = 0;
+    const char* answer = "nothing";
+    if (record != nullptr && i >= 0 && i < static_cast<int>(live.size())) {
+        results = 1;
+        answer = "nil";
+        if (i >= 5 || !push_resolved_entity_by_id(state, static_cast<int>(live[i]) + 1)) {
+            ::lua_pushnil(state);
+        } else {
+            answer = "plane";
+        }
+    }
+    log_.notef("  GetSquadronPlane 0089cfe0: entity id %d index %d of %zu -> %s (packet "
+        "cc13-fix5)", id, i, live.size(), answer);
+    log_.implemented("MissionLuaNative::GetSquadronPlane", "0089cfe0");
+    return results;
 }
 
 // Packet cc9_lua_add_shipyard_stock (docs/SQUADRON_LAND_TASK.md 5ej). 00896CC0
