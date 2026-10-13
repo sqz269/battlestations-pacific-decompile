@@ -542,4 +542,398 @@ const float* gui_colour_static_red_00568220(Fe3ScreenHost& host);
 // 00568330 / 00568380 scalar deleting destructors: vtable 00CEED00, bit 0 frees.
 void* ceed00_scalar_delete(Raw object, std::uint8_t flags, Fe3ScreenHost& host);
 
+// ---------------------------------------------------------------------------
+// Batch C: tactical library screen helpers. Library entry vectors hold 6Ch-byte entries; the
+// screen's carousel/order state lives on the library screen [[00E198AC]+70h]. Checked-index
+// calls to 00BF6713 that cannot fire on an in-range index are not modelled.
+// ---------------------------------------------------------------------------
+struct Fe3LibraryHost {
+    virtual ~Fe3LibraryHost() = default;
+    // Lua (00B65F50 construct, 00B67700 destruct, 00B67980 globals of [00E188A8]+1A0Ch, 00B67800
+    // by name, 00B67720 by index, 00B66000 is-boolean, 00B66250 boolean). The handle model keeps
+    // the call order; handles are released in reverse.
+    virtual void* lua_globals_00b67980() = 0;
+    virtual void* lua_get_by_name_00b67800(void* table, const char* name) = 0;
+    virtual void* lua_get_by_index_00b67720(void* table, std::int32_t index) = 0;
+    virtual bool lua_is_boolean_00b66000(void* object) = 0;
+    virtual bool lua_get_boolean_00b66250(void* object) = 0;
+    virtual void lua_release_00b67700(void* object) = 0;
+    // Session messages: 0075B430 base constructor (type), then sent through game +1EF0h.
+    virtual void session_message_base_0075b430(void* message, std::uint32_t type) = 0;
+    virtual void session_send_first_peer_00770af0(void* message) = 0;
+    virtual void session_receive_unlock_0076cb30(void* message) = 0;
+    virtual Raw game() = 0;                                                             // [00E188A8]
+    virtual bool profile_unlock_satisfied_007fc4c0(const void* string) = 0;             // ECX = game +650h
+    virtual std::int32_t stricmp_00bf7fbf(const char* a, const char* b) = 0;
+    virtual void sized_pool_return_00bd1510(void* block, std::uint32_t bytes, std::uint32_t count) = 0;
+    virtual std::uint32_t widget_type_5c(void* widget) = 0;                             // vtable +5Ch
+    virtual std::int16_t widget_state_94(void* widget) = 0;                             // vtable +94h
+    virtual void widget_set_float_4c(void* widget, float value) = 0;                    // vtable +4Ch
+    virtual void widget_virtual_84(void* widget, std::uint32_t focus) = 0;              // vtable +84h
+    virtual void widget_virtual_88(void* widget, std::uint32_t a, std::uint32_t b, float alpha) = 0;
+    virtual void scroller_end_thumb_drag_00683320(void* scroller) = 0;
+    virtual void scroller_set_auto_scroll_00683300(void* scroller, std::uint32_t a, float speed, std::uint32_t b) = 0;
+    // Library screen and its list box.
+    virtual Raw library_screen() = 0;                                                   // [[00E198AC]+70h]
+    virtual void library_reset_order_state_004f8fa0(Raw screen) = 0;
+    virtual void* listbox_selected_item_00a9ca00(void* listbox) = 0;
+    virtual void* listbox_item_00a9be00(void* listbox, std::uint32_t index) = 0;
+    virtual void* item_virtual_28(void* item) = 0;
+    virtual const char* empty_string_00e18d78() = 0;
+    virtual std::int32_t atol_00bf8417(const char* text) = 0;
+};
+
+// 004FA230, __thiscall(out, b) with EDX = a, RET 4, EAX = out: out = 004F9B30 cross(a, b) (x87:
+// products in extended precision; the C++ uses double, exact for the products).
+void* vector3_assign_cross_004fa230(float* out, const float* a, const float* b) noexcept;
+// 004FAB40 BSP_VehicleClassLua_IsHeavyCruiser, slot(index), RET 4, AL:
+// globals.VehicleClass[index].HeavyCruiser is a boolean equal to 1.
+bool vehicle_class_is_heavy_cruiser_004fab40(std::int32_t index, Fe3LibraryHost& host);
+// 004FADC0 BSP_Session_SendPlayerUnlockUnit, __thiscall(screen, unit, extra), RET 8: a type-0DDh
+// (221) message on the stack: +18h = game +18C8h, +1Ch = unit, +4h = 1, vtable 00CEB138; mode 2
+// (game +1FE4h) sends it to the first secondary peer (00770AF0), otherwise it is received
+// locally (0076CB30). Then screen +454h = unit, +458h = extra.
+void library_send_player_unlock_unit_004fadc0(Raw screen, std::int32_t unit, std::int32_t extra,
+    Fe3LibraryHost& host);
+// 004FAE70, __thiscall(screen, id), RET 4, AL: an academy entry (+408h vector) with +40h == id
+// and +44h set.
+bool library_academy_entry_ready_004fae70(Raw screen, std::int32_t id) noexcept;
+// 004FAC50, __fastcall(screen): each +3C8h entry's +45h ("locked") = its unlock string (+30h)
+// is non-empty (data non-null and not "") and 007FC4C0 does not report it satisfied.
+void library_build_entry_locks_004fac50(Raw screen, Fe3LibraryHost& host);
+// 004FAF40 BSP_TacticalLibraryScreen_OnWidgetRefresh, listener (ECX = screen +68h;
+// offsets below are listener-relative: scroller +64h = screen +0CCh, arrays = screen +1D8h/+278h,
+// matching 0050B2D0) (widget), RET 4.
+// Type 3: alpha 0.5 when focused (+0D4h) else 1.0 through vtable +4Ch. Otherwise:
+//  - widgets +554h/+550h: 00683300(screen +64h; 0, 0.0f, 0), forced; +558h: 00683320, forced;
+//  - +50Ch/+510h: styled when vtable +94h != 3, else only when forced;
+//  - the 40-entry arrays +170h/+210h: a type-6 widget with vtable +94h < 3 is styled, any other
+//    member only when forced; a widget in none of these is styled.
+// Styling: type 6 -> vtable +88h(focused, 0, 1.0f); type 12h -> vtable +84h(focused).
+void library_on_widget_refresh_004faf40(Raw screen, void* widget, Fe3LibraryHost& host);
+// 004FB090 / 004FBF70, __thiscall(library, key), RET 4, EAX = entry or 0: by id (+3F8h entries,
+// +48h) / by name (+3E8h entries, string +28h: equal length and, when non-empty, _stricmp == 0).
+void* library_find_entry_by_id_004fb090(Raw library, std::int32_t id) noexcept;
+void* library_find_entry_by_name_004fbf70(Raw library, Raw name, Fe3LibraryHost& host);
+// 004FBE90 BSP_TacticalLibraryScreen_SetMapsAvailable, __thiscall(screen, BYTE check), RET 4:
+// unless `check` is set and +454h appears in the first +470h record's dword list (+1Ch..+20h),
+// 004FADC0(screen, -1, 0).
+void library_set_maps_available_004fbe90(Raw screen, std::uint8_t check, Fe3LibraryHost& host);
+// 004FC7A0 StepForward (__fastcall(ECX = carousel)): index (+0h) below count - 1 of its +14h..
+// +18h entries -> index += 1, then the StepBack tail (004FC720).
+void library_carousel_step_forward_004fc7a0(Raw carousel, Fe3LibraryHost& host);
+// 004FC8C0 SelectInitialEntry (ECX unused): wanted = list item id != 0 ? game +730h : +734h; the
+// first library entry (+448h) with +48h == wanted becomes +434h and +438h = float(i) + 0.004
+// ([00CEB160], a double); none -> nothing.
+void library_select_initial_entry_004fc8c0(Fe3LibraryHost& host);
+// 004FC9D0 IsEntryUnlocked, __fastcall(screen), AL: entry = +448h[+434h]; +46h clear -> 0.
+// Else +4B0h = entry +48h, the list item id is read (only bounds-checked against +470h), and
+// 004FADC0(screen, first +470h record's list[+434h], +138h); AL = 1. The id never selects the
+// record.
+bool library_is_entry_unlocked_004fc9d0(Raw screen, Fe3LibraryHost& host);
+// 004FCB30 FindRowById, __thiscall(screen, id), RET 4, EAX: the first row i < count(+460h, 2Ch
+// records) whose list item (00A9BE00(+0B8h, i)) id equals `id`; else -1.
+std::int32_t library_find_row_by_id_004fcb30(Raw screen, std::int32_t id, Fe3LibraryHost& host);
+// 004FCEE0, __fastcall(string): data -> length + 1 bytes back to the sized pool.
+void native_string_release_004fcee0(Raw string, Fe3LibraryHost& host);
+
+// ---------------------------------------------------------------------------
+// Batch C (continued): library entries and the preview model.
+// ---------------------------------------------------------------------------
+struct Fe3EntryHost {
+    virtual ~Fe3EntryHost() = default;
+    virtual void sized_pool_return_00bd1510(void* block, std::uint32_t bytes, std::uint32_t count) = 0;
+    virtual std::int32_t interlocked_decrement(void* count) = 0;                        // [00CE2220]
+    virtual void interlocked_increment(void* count) = 0;                                // [00CE221C]
+    virtual void ref_counted_destroy(void* object) = 0;                                 // vtable +0, ECX only
+    virtual void object_delete_04(void* object) = 0;                                    // vtable +4h(1)
+    virtual void matrix_copy_004134f0(void* to, const float from[16]) = 0;
+    virtual void ref_counted_destroy_base_00bd30f0(void* object) = 0;
+};
+
+// 004FCFC0 BSP_TacticalLibraryPreviewModel_Construct, EAX = model: vtable 00CEB130 then
+// 00CEB168; +4h = 1; +8h..+14h = 0; +18h = 2; identity matrix into +20h (004134F0); +1Ch = 0.
+void* library_preview_model_construct_004fcfc0(Raw model, Fe3EntryHost& host);
+// 004FD080 BSP_TacticalLibraryPreviewModel_Destruct: vtable 00CEB168; release the ref-counted
+// +10h; delete +14h (vtable +4h(1)); string {+8h, +0Ch} to the pool; 00BD30F0.
+void library_preview_model_destruct_004fd080(Raw model, Fe3EntryHost& host);
+// 004FD1D0 BSP_TacticalLibraryEntry_Destruct: the strings at +64h, +5Ch, +54h, +4Ch, +38h, +30h,
+// +28h (in that order) to the pool; release +14h and +0h.
+void library_entry_destruct_004fd1d0(Raw entry, Fe3EntryHost& host);
+// 004FD3A0 (named CountAvailableMaps; it is a lookup), __thiscall(library, ref* out_object,
+// out[16]), RET 8, AL: the +3F8h entry whose +48h equals +454h -> *out_object = entry +0h
+// (ref-counted assign: the new one AddRef'd, the old Released) and out = entry +4h..+13h.
+bool library_find_current_entry_004fd3a0(Raw library, void** out_object, std::uint8_t out[16], Fe3EntryHost& host);
+
+// ---------------------------------------------------------------------------
+// Batch C (continued): VehicleClass Lua readers. A native string output is resized with
+// preserve 0 (0041DD40) and the bytes copied without the terminator.
+// ---------------------------------------------------------------------------
+struct Fe3LuaHost {
+    virtual ~Fe3LuaHost() = default;
+    virtual void* lua_globals_00b67980() = 0;                                           // of [00E188A8]+1A0Ch
+    virtual void* lua_get_by_name_00b67800(void* table, const char* name) = 0;
+    virtual void* lua_get_by_index_00b67720(void* table, std::int32_t index) = 0;
+    virtual const char* lua_get_string_00b662b0(void* object) = 0;
+    // 00B685C0: a native string from the object, or the default when it is not a string.
+    virtual void lua_string_or_default_00b685c0(void* object, const char* fallback, void* out_string) = 0;
+    virtual void lua_release_00b67700(void* object) = 0;
+    virtual void native_string_resize_0041dd40(void* string, std::uint32_t length, std::uint32_t preserve) = 0;
+    virtual void sized_pool_return_00bd1510(void* block, std::uint32_t bytes, std::uint32_t count) = 0;
+};
+
+// 004FD7C0 GetType / 004FDA50 GetNameOrNoUnlock, slot(index, NativeString* out), RET 8:
+// out = globals.VehicleClass[index].Type / .Name. 004FDA50 with index -1 answers
+// "FE.unitlib_nounlock" (00CEB184) without Lua.
+void vehicle_class_get_type_004fd7c0(std::int32_t index, Raw out, Fe3LuaHost& host);
+void vehicle_class_get_name_or_no_unlock_004fda50(std::int32_t index, Raw out, Fe3LuaHost& host);
+// 004FD8D0 GetUnlockDlcMinimum, slot(index, out), RET 8: -1 -> "0" (00CE43BC); else
+// .UnlockDLCMinimum through 00B685C0 with default "0" into a temporary string, copied to out
+// (self-copy skipped) and the temporary returned to the pool.
+void vehicle_class_get_unlock_dlc_minimum_004fd8d0(std::int32_t index, Raw out, Fe3LuaHost& host);
+// 004FDF20, 004FDFD0, 004FE080, 004FE130 (byte-identical but for addresses), __fastcall(ECX =
+// field name, EDX = NativeString* out) with a LuaObject (14h bytes) by value, RET 14h: out =
+// object[name] as a string; the by-value object is destroyed by the callee. 004FE1E0: the same
+// with ECX = const int* index (object[*index]).
+void lua_object_read_string_field(const char* name, Raw out, void* object_by_value, Fe3LuaHost& host);
+void lua_object_read_string_by_index_004fe1e0(const std::int32_t* index, Raw out, void* object_by_value,
+    Fe3LuaHost& host);
+
+// ---------------------------------------------------------------------------
+// Batch C (continued): library movie, loading worker, ref-pointer arrays.
+// ---------------------------------------------------------------------------
+struct Fe3WorkerHost {
+    virtual ~Fe3WorkerHost() = default;
+    virtual void movie_player_stop_004f8ac0() = 0;                                      // ECX = [00E18D48]
+    virtual const char* global_string_00e18d78() = 0;
+    virtual void native_string_resize_0041dd40(void* string, std::uint32_t length, std::uint32_t preserve) = 0;
+    virtual void native_string_assign_0041e870(void* string, const char* text) = 0;
+    virtual void sized_pool_return_00bd1510(void* block, std::uint32_t bytes, std::uint32_t count) = 0;
+    virtual void sound_stream_start_00a867b0(const void* name) = 0;                     // ECX = [[00E198AC]+50h]
+    virtual void sound_stream_fade_in_00a85c20() = 0;                                   // ECX = [[00E198AC]+50h]
+    virtual void event_virtual_08(void* event) = 0;                                     // vtable +8h (wait)
+    virtual void event_virtual_0c(void* event) = 0;                                     // vtable +0Ch (signal)
+    virtual void* resource_load_007188a0(const void* name) = 0;                         // ECX = name string
+    virtual void* operator_new_00bf55be(std::uint32_t bytes) = 0;
+    virtual void free_00bf6989(void* block) = 0;
+    virtual void interlocked_increment(void* count) = 0;
+    virtual std::int32_t interlocked_decrement(void* count) = 0;
+    virtual void ref_counted_destroy(void* object) = 0;                                 // vtable +0, ECX only
+    virtual void library_entry_assign_004fe310(void* to, const void* from) = 0;
+    virtual void* lua_get_by_index_00b67720(void* table, std::int32_t index) = 0;
+    virtual bool lua_is_nil_00b65fb0(void* object) = 0;
+    virtual const char* lua_get_string_00b662b0(void* object) = 0;
+    virtual void lua_release_00b67700(void* object) = 0;
+};
+
+// 004FE7A0 BSP_TacticalLibrary_StopMovie: 004F8AC0; a temporary copy of the string at 00E18D78
+// (resize(strlen, 1), copy with the terminator) starts the menu sound stream (00A867B0), the
+// temporary goes back to the pool, then 00A85C20 fades it in.
+void library_stop_movie_004fe7a0(Fe3WorkerHost& host);
+// 00501510 BSP_LoadingQueue_WorkerMain, thread procedure __stdcall(queue +4h), RET 4, EAX = 1.
+// event = [+8h] (queue +0Ch): wait (vtable +8h); until the stop flag ([+0h]) is set: the request
+// [[+4h]+8h] gets +0Ch = 007188A0(copy of its +0h/+4h name, or ""), then signal (vtable +0Ch)
+// and wait again.
+std::uint32_t loading_queue_worker_main_00501510(Raw state, Fe3WorkerHost& host);
+// 005017A0 TMPL_RefPtrArray_Reserve, __thiscall(array {data, size, capacity}, n), RET 4: n < 1
+// -> 1; capacity >= n -> nothing; else a new block (00BF55BE, n * 4) gets AddRef'd copies, the old
+// elements are Released and zeroed, the old block freed (00BF6989), data = new, capacity = n.
+void ref_ptr_array_reserve_005017a0(Raw array, std::int32_t n, Fe3WorkerHost& host);
+// 00501D10, __fastcall(ECX = const int* index, EDX = NativeString* out) with a LuaObject (14h)
+// by value and a const NativeString* fallback, RET 18h: field = object[*index]; nil -> out =
+// fallback, else out = a temporary built from the string (0041E870), then pooled.
+void library_read_lua_string_field_00501d10(const std::int32_t* index, Raw out, void* object_by_value,
+    Raw fallback, Fe3WorkerHost& host);
+// 00501E10 copy of 6Ch library entries (cdecl(first, last, dest), EAX = dest + count) via 004FE310.
+void* library_entry_copy_00501e10(std::uint8_t* first, std::uint8_t* last, std::uint8_t* dest, Fe3WorkerHost& host);
+
+// ---------------------------------------------------------------------------
+// Batch C (continued): ref-pointer resize, 2Ch records, dword vectors.
+// ---------------------------------------------------------------------------
+struct Fe3VectorHost {
+    virtual ~Fe3VectorHost() = default;
+    virtual void ref_ptr_array_reserve_005017a0(void* array, std::int32_t n) = 0;
+    virtual std::int32_t interlocked_decrement(void* count) = 0;
+    virtual void ref_counted_destroy(void* object) = 0;
+    virtual void free_00bf65ac(void* block) = 0;
+    virtual void sized_pool_return_00bd1510(void* block, std::uint32_t bytes, std::uint32_t count) = 0;
+    virtual void vector_length_error_00504f10() = 0;
+    virtual void* allocate_dwords_004f9ad0(std::uint32_t count) = 0;                    // ECX = count, EDX = 0
+    virtual void native_string_resize_0041dd40(void* string, std::uint32_t length, std::uint32_t preserve) = 0;
+    virtual void dword_vector_copy_construct_004f6210(void* to, const void* from) = 0;
+    virtual void* listbox_selected_item_00a9ca00(void* listbox) = 0;
+    virtual void* item_virtual_28(void* item) = 0;
+    virtual const char* empty_string_00e18d78() = 0;
+    virtual std::int32_t atol_00bf8417(const char* text) = 0;
+    virtual void library_refresh_unlock_rows_00503250(Raw screen, std::uint32_t entry_id) = 0;
+};
+
+// 00504960 TMPL_RefPtrArray_Resize, __thiscall(array, n), RET 4: n > capacity -> 005017A0; new
+// slots from size to n are nulled; while n < size the last element is Released and zeroed; size
+// = n.
+void ref_ptr_array_resize_00504960(Raw array, std::int32_t n, Fe3VectorHost& host);
+// 00504C60 ShowCurrentEntry, __fastcall(screen): +4B0h = (+448h entry [+434h]) +48h; the list
+// item id is read (only bounds-checked against +470h); 00503250(screen, +4B0h); +134h = +4B0h.
+void library_show_current_entry_00504c60(Raw screen, Fe3VectorHost& host);
+// 005052B0, ECX = first, EDX = last, two unused stack words, RET 8: per 2Ch record free the
+// vector +1Ch (zeroing +1Ch..+24h) and return the string +10h to the pool.
+void record_2c_destroy_range_005052b0(std::uint8_t* first, std::uint8_t* last, Fe3VectorHost& host);
+// 00505750, as 00557200 with 00504F10 and 004F9AD0.
+bool dword_vector_construct_n_00505750(Raw vector, std::uint32_t n, Fe3VectorHost& host);
+// 00505CC0, __fastcall(record): +10h, +14h, +1Ch..+28h = 0; +0Dh = 1 (+0h..+0Ch untouched).
+void record_2c_clear_storage_00505cc0(Raw record) noexcept;
+// 00505F10 copy construct, __thiscall(to, from), RET 4, EAX = to: as 00506140 but the string is
+// zeroed first and the vector +18h is copy-constructed (004F6210).
+void* record_2c_copy_construct_00505f10(Raw to, Raw from, Fe3VectorHost& host);
+
+// ---------------------------------------------------------------------------
+// Batch C (continued): the GIAchievements loading queue. Queue: +0h vtable, +0Ch worker/event,
+// +10h job pointer vector {data, size +14h}, +1Ch thread. Job: +0h state (0 request file, 1
+// waiting for the file store, 2 file ready, 3 loading), +4h cancelled, +8h work item list, +0Ch
+// work count, +14h file name, +1Ch completion callback.
+// ---------------------------------------------------------------------------
+struct Fe3QueueHost {
+    virtual ~Fe3QueueHost() = default;
+    virtual void loading_queue_retire_front_00506bf0(Raw queue) = 0;
+    virtual bool vfs_flag_78() = 0;                                                     // byte [0109CEEC]+78h
+    // 004FC150 factory, 00BE80B0 GetOrCreate(name, 00504850), 00BE7CD0 RequestFile.
+    virtual bool file_store_request_file(const void* name) = 0;
+    virtual void loading_job_ensure_file_block_00504790(Raw job) = 0;
+    virtual void loading_queue_start_work_00501620(Raw queue, Raw job) = 0;
+    virtual bool worker_virtual_10(void* worker) = 0;                                   // vtable +10h, busy
+    virtual void release_native_resource_slot_00483850(void* slot) = 0;
+    virtual void call_completion(void* callback, std::uint32_t a, std::uint32_t b) = 0;
+    virtual void loading_work_items_erase_00501670(void* list, std::uint32_t argument) = 0;
+    virtual void loading_queue_stop_and_wait_005092e0(Raw queue) = 0;
+    virtual void loading_job_pointers_resize_004fb4b0(void* vector, std::uint32_t size) = 0;
+    virtual void free_00bf6989(void* block) = 0;
+    virtual void object_delete(void* object) = 0;                                       // vtable +0(1)
+    virtual void clear_queue_singleton_00e18d4c() = 0;
+};
+
+// 00509190 BSP_LoadingQueue_Update, __fastcall(queue). With jobs: a cancelled front job in state 0
+// or 2 is retired first. Then by the front job's state:
+//  0: request its file through the file store; with [0109CEEC]+78h set, success -> state 1 and
+//     failure marks it cancelled; otherwise state = success ? 1 : 2.
+//  2: 00504790, state 3, 00501620.
+//  3: worker busy (vtable +10h) -> nothing. Cancelled -> release [job +8h]+0Ch and retire every
+//     job. Else the callback (+1Ch) runs with (item +0Ch, item +8h) of the first work item,
+//     00501670 erases it, and the job is retired when no work is left or restarted (00501620).
+void loading_queue_update_00509190(Raw queue, Fe3QueueHost& host);
+// 00509FD0 BSP_LoadingQueue_Destroy: vtable 00CEB198; 005092E0; jobs resize(0) and free; the
+// worker +0Ch deleted (vtable +0(1)); [00E18D4C] = 0; vtable 00CE3818.
+void loading_queue_destroy_00509fd0(Raw queue, Fe3QueueHost& host);
+
+// ---------------------------------------------------------------------------
+// Batch C (continued): award records, DLC list, order-of-battle view.
+// ---------------------------------------------------------------------------
+struct Fe3AwardHost {
+    virtual ~Fe3AwardHost() = default;
+    virtual void native_string_resize_0041dd40(void* string, std::uint32_t length, std::uint32_t preserve) = 0;
+    virtual void sized_pool_return_00bd1510(void* block, std::uint32_t bytes, std::uint32_t count) = 0;
+    virtual void string_vector_pair_copy_00509830(void* to, const void* from) = 0;
+    virtual void dword_vector_copy_construct_004f6210(void* to, const void* from) = 0;
+    virtual void award_record_copy_construct_0050a210(void* to, const void* from) = 0;
+    virtual void string_vector_clear_004954f0(void* vector) = 0;                        // erase [begin, end)
+    virtual void string_vector_append_00450540(void* vector, const void* string) = 0;
+    virtual void library_open_entry_as_unlocks_0050e3c0(Raw screen, std::uint32_t a, std::uint32_t b,
+        std::uint32_t one) = 0;
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;        // vtable +34h
+    virtual void library_refresh_entry_detail_00510c20(Raw screen) = 0;
+    virtual void library_toggle_view_00511b40(Raw screen) = 0;
+    virtual void library_show_order_of_battle_page_004fff20(Raw screen) = 0;
+    virtual void library_build_order_of_battle_list_00506660(Raw screen) = 0;
+    virtual void library_reset_vehicle_class_order_00506510(Raw screen) = 0;            // cc9 (class registry)
+    virtual void loading_queue_stop_and_wait_005092e0() = 0;                            // ECX = 004FDE20()
+};
+
+// 0050A210 BSP_AwardRecord_CopyConstruct, __thiscall(to, from), RET 4, EAX = to: strings +0h,
+// +0Ch, +14h, +1Ch (each zeroed, then copied unless self), +8h, +24h byte, 00509830(+28h), +3Ch,
+// +40h, 004F6210(+44h).
+void* award_record_copy_construct_0050a210(Raw to, Raw from, Fe3AwardHost& host);
+// 0050AE60, __thiscall(pair, const NativeString*, const record*), RET 8: string +0h, then
+// 0050A210(+8h, record).
+void* award_table_construct_pair_0050ae60(Raw pair, Raw key, const void* record, Fe3AwardHost& host);
+// 0050A820 BSP_TacticalLibrary_ReceiveDlcList, __thiscall(screen, packet), RET 4: the string
+// vector +47Ch is emptied; each of the 255 WORDs from packet +18h that is non-zero adds
+// sprintf_s("DLC_%2d") (00CEB9F0, 1Eh buffer).
+void library_receive_dlc_list_0050a820(Raw screen, const std::uint8_t* packet, Fe3AwardHost& host);
+// 0050FD10, __thiscall(screen, a, b), RET 8, AL: 0050E3C0(a, b, 1); then the first +470h record
+// holds more than one dword in its +18h list.
+bool library_is_map_unlocked_0050fd10(Raw screen, std::uint32_t a, std::uint32_t b, Fe3AwardHost& host);
+// 00514FB0 OpenOrderOfBattleView, __fastcall(screen): [+4FCh] and [+0A8h] shown, [+0C4h] hidden;
+// [+0C4h]+77h = 1, [+0B8h]+77h = 0, [+0B8h] shown; 00510C20; +94h = 5, +98h = 99; +90h == 1 ->
+// 00511B40; 004FFF20; 00506660; 00506510; tail 005092E0 on 004FDE20().
+void library_open_order_of_battle_view_00514fb0(Raw screen, Fe3AwardHost& host);
+
+// ---------------------------------------------------------------------------
+// Batch C (continued): library exit, front-end frame placement.
+// ---------------------------------------------------------------------------
+struct Fe3FrameHost {
+    virtual ~Fe3FrameHost() = default;
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;        // vtable +34h
+    virtual void object_delete_04(void* object) = 0;                                    // vtable +4h(1)
+    virtual void loading_queue_stop_and_wait_005092e0() = 0;                            // ECX = 004FDE20()
+    virtual void library_preview_clear_rotors_0050a950(Raw screen) = 0;
+    virtual void scroller_attach_content_00683790(void* scroller, void* content) = 0;
+    virtual void renderer_set_optional_sync_00b33aa0(std::uint32_t value) = 0;          // ECX = [00F8D394]
+    virtual const float* widget_local_position_00aa67f0(void* widget) = 0;
+    virtual const float* widget_size_00aa6740(void* widget) = 0;
+    virtual void widget_set_local_position_00aa7dc0(void* widget, const float xyz[3]) = 0;
+    virtual void gui_text_set_localised_00abbe50(void* text, const char* key, std::uint32_t flag) = 0;
+    virtual const char* rank_name_00e08e00(std::int32_t rank) = 0;                      // [00E08E00 + 4 * rank]
+    virtual void widget_virtual_88(void* widget, std::int32_t frame, std::int32_t zero, float alpha) = 0;
+};
+
+// 0050B2D0 BSP_TacticalLibraryScreen_Exit, __fastcall(screen): hide [+540h..+554h] (non-null);
+// delete +508h, +50Ch, +510h and the two 40-entry arrays +1D8h / +278h (vtable +4h(1), zeroed);
+// +51Ch..+524h = 0; +9Ch = 0, +0A0h = 2; 005092E0; 0050A950; +4B0h = +4B4h = -1; 00683790(
+// scroller +0CCh, 0); 00B33AA0(0).
+void library_exit_0050b2d0(Raw screen, Fe3FrameHost& host);
+// 00517B00, __fastcall(ECX = a, EDX = b, BYTE b_is_anchor), RET 4. Anchor b: a goes to b.x -
+// float(b +114h / 960) - 0.003 (b's y, z). Otherwise b goes to a.x + float(a +114h / 960) +
+// 0.003. 960.0 and 0.003 are the doubles 00CEC380 / 00CEBE08; x87 keeps the sum in extended
+// precision until the float store (the C++ uses double).
+void frame_offset_widget_x_00517b00(void* a, void* b, std::uint8_t b_is_anchor, Fe3FrameHost& host);
+// 00517BA0, __fastcall(ECX = badge, EDX = icon, text, rank), RET 8: r = clamp(rank - 1, 0, 13h);
+// text = rank name r (00E08E00); icon vtable +88h(r, 0, 1.0f); with x = text.x - float(text +114h
+// / 960): icon.x = x - icon width - 0.003, then badge.x = x - 2 * icon width - 0.006 (00CEC390);
+// y and z from the text.
+void set_player_rank_widget_00517ba0(void* badge, void* icon, void* text, std::int32_t rank, Fe3FrameHost& host);
+
+// ---------------------------------------------------------------------------
+// Batch C (continued): front-end frame pages. Page tables: +0Ch [13][5] (5 entries 34h apart
+// per row), +110h and +138h [2][5] (5 entries 8 apart per row). Selection globals 00E18D84,
+// 00E18D88, 00E18D8C; the frame's own index is +160h.
+// ---------------------------------------------------------------------------
+struct Fe3PageHost {
+    virtual ~Fe3PageHost() = default;
+    virtual void gui_remove_page_00aa31f0(void* page) = 0;                              // ECX = 004C12B0()
+    virtual void clear_frame_singleton_00e18d80() = 0;
+    virtual void front_end_screen_destruct_004f71a0(Raw screen) = 0;
+    virtual Raw frame_get_or_create_004c1ac0() = 0;
+    virtual std::int32_t frame_selection(std::uint32_t global) = 0;                     // [00E18D84/88/8C]
+    virtual void* gui_find_child_00aa7e00(void* parent, const void* name, std::uint32_t one) = 0;
+    virtual void native_string_resize_0041dd40(void* string, std::uint32_t length, std::uint32_t preserve) = 0;
+    virtual void sized_pool_return_00bd1510(void* block, std::uint32_t bytes, std::uint32_t count) = 0;
+    virtual const float* widget_local_position_00aa67f0(void* widget) = 0;
+    virtual void widget_set_local_position_00aa7dc0(void* widget, const float xyz[3]) = 0;
+    virtual void push_page_slot_004d6790(void* vector, void** slot) = 0;
+};
+
+// 00517D90 BSP_FrontEndFrame_Destruct: vtables 00CEC39C / +8h 00CEC398; every non-null page of
+// the three tables is removed (004C12B0 / 00AA31F0); [00E18D80] = 0; +8h = 00CE3818; 004F71A0.
+void frame_destruct_00517d90(Raw frame, Fe3PageHost& host);
+// 005186B0 SetTitlePosition, __fastcall(ECX = box position, EDX = title position): on the
+// current title page (frame [+138h table] at [00E18D8C] + 2 * frame +160h) the children
+// "title_Text" (00CEC3D8) and "szarnyas_FrameBox" (00CEC3C4) are found through temporary
+// strings; the box takes ECX's vector, the title EDX's (00AA7DC0). 00518820 GetTitlePosition
+// (ECX = box out, EDX = title out) copies them back (00AA67F0).
+void frame_set_title_position_005186b0(const float box[3], const float title[3], Fe3PageHost& host);
+void frame_get_title_position_00518820(float box[3], float title[3], Fe3PageHost& host);
+// 00518E00 BSP_FrontEndFrame_CollectChildren, __thiscall(frame, out), RET 4: pushes the address
+// of each non-null current page: +0Ch + 4 * (13 * +160h + [00E18D84]), +4 * ([00E18D88] + 2 *
+// +160h + 44h), +4 * ([00E18D8C] + 2 * +160h + 4Eh).
+void frame_collect_children_00518e00(Raw frame, void* out, Fe3PageHost& host);
+
 } // namespace bsp::cc13_fe3
