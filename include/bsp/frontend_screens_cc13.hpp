@@ -2285,5 +2285,207 @@ struct Fe9HintListHost {
 // entry. Finally paging 10h (00A9E230); the scroll thumb +80h gets (its width, +84h) for up to 16
 // rows, else (its width, (float)(16.0 / rows * +84h)) through vtable +58h, stored at +94h.
 void hud_pause_build_hint_list_00601200(void* screen, Fe9HintListHost& host);
+// ---------------------------------------------------------------------------
+// Packet cc13-fe11 (docs/CC13_FE_11.md): 005AB190 BSP_HudMapScreen_Register, range by range.
+// Field names follow bsp::MapScreenZoomState (include/bsp/map_screen_update_cc13.hpp).
+// ---------------------------------------------------------------------------
+struct Fe11HudMapRegisterHost {
+    virtual ~Fe11HudMapRegisterHost() = default;
+    virtual void frontend_screen_register_004f71d0(void* screen) = 0;
+    virtual void simple_3d_scene_init_0093ccc0(void* scene) = 0;                         // ECX = screen+8h
+    // World bounds of the game object [00E188A8]: +711Ch, +7124h, +7128h, +7130h.
+    virtual float world_bound(std::uint32_t offset) = 0;
+    // The image's per-level tables: 00E0CF40 extents (.data, rewritten here), 00E0CF50 crossfade,
+    // 00F89AE4 scales (BSS). Each points at four floats.
+    virtual float* map_zoom_extents_00e0cf40() = 0;
+    virtual const float* map_zoom_crossfade_00e0cf50() = 0;
+    virtual float* map_zoom_scales_00f89ae4() = 0;
+    // 00A8FD30, ECX = light, DL = 0 -> a referenced shadow owner; 00B7BDF0 sets it.
+    virtual void* directional_light_create_shadow_owner_00a8fd30(void* light) = 0;
+    virtual void directional_light_set_shadow_owner_00b7bdf0(void* light, void* owner) = 0;
+    virtual void ref_release(void* object) = 0;     // InterlockedDecrement(+4h) ([00CE2220]), vtable +0h at zero
+    virtual void* gui_load_page_00aa5840(std::string_view name, std::uint32_t a, std::uint32_t b) = 0;  // ECX = 004C12B0()
+};
+
+// 005AB190..005AB518, the set-up range of BSP_HudMapScreen_Register (__fastcall(ECX = screen), RET).
+// 004F71D0; 0093CCC0 on +8h; +84h = 1.0f, byte +88h = 0. X = (float)((float)(+7124h - +7130h) / 0.75 *
+// 1.1) and Y = (float)((float)(+7128h - +711Ch) * 1.1) (00CEC9D8 / 00CE3DF0); m = X when X > Y, else
+// Y. 8000.0 >= m (00CF0AA0): level 2, ext[2] = m. 25000.0f >= m (00CF0A98): level 1, ext[1] = m,
+// ext[2] = (float)(m * 0.4) (00CE65D0). Otherwise level 0, ext[0] = m, ext[1] = (float)(0.375 * m),
+// ext[2] = (float)(m * 0.166) (00CF0A90 / 00CF0A88). The level goes to +2Ch and +5FCh; extents not
+// named keep their .data values. scales[i] = (float)(crossfade[i] * ext[i] / ext[3]) for i < 3 and
+// scales[3] = (float)(crossfade[3] * ext[3] / ext[3]). +1Ch = (float)(level + 1.0); +30h = ext[level],
+// +34h = (float)(0.75 * ext[level]). The light +18h gets a fresh shadow owner (released after the
+// set). Pages "GUI_map" -> +8Ch, "GUI_classicons" -> +90h ((name, 1, 0)). The pan centre ((+7128h +
+// +711Ch) * 0.5, (+7130h + +7124h) * 0.5), each a float, goes to +54Ch/+550h, +554h/+558h and
+// +5E8h/+5ECh; +5ACh = 0, +40h = +41h = 0, +5B0h = +30h, +5B4h = +34h, +5D0h = 0, +5D4h = 1.0f.
+void hud_map_register_setup_005ab190(void* screen, Fe11HudMapRegisterHost& host);
+
+struct Fe11HudMapObjectsHost {
+    virtual ~Fe11HudMapObjectsHost() = default;
+    // [[00E188A8]+19CCh]+34Ch: singly linked list (next +4h, object +8h).
+    virtual void* map_object_list_head() = 0;
+    // 004C1400() then 00B80D70(&name): a referenced resource for the NativeString at `name`.
+    virtual void* resource_load_default_factory_00b80d70(const void* name) = 0;
+    virtual void* resource_instantiate_08(void* resource, std::int32_t flags, float scale) = 0;  // vtable +8h
+    virtual void node_propagate_root_registration_00b6d890(void* node, void* scene) = 0;
+    virtual void* node_virtual_10(void* node, std::int32_t a, std::int32_t b) = 0;             // vtable +10h
+    virtual void entity_pose_refresh_world_00414db0(void* pose) = 0;
+    // 00413920, ECX = left, (out, right).
+    virtual std::array<float, 16> matrix_multiply_00413920(const float* left, const float* right) = 0;
+    virtual void node_set_world_matrix_34(void* node, const float* matrix) = 0;              // vtable +34h
+    // Push onto a dword vector object (inline fast path, 00505D50 on growth).
+    virtual void dword_vector_push(void* vector, void* value) = 0;
+    // 0093D2D0, ECX = map scene (screen+8h), (node, flag).
+    virtual void map_scene_setup_ocean_materials_0093d2d0(void* scene, void* node, std::int32_t flag) = 0;
+    virtual const char* node_name_00b6d800(void* node) = 0;                                  // header +4h, may be null
+    virtual void debug_print_004254b0(const char* format, const char* text) = 0;            // empty body
+    virtual void node_set_parent_00b6e680(void* node, void* parent) = 0;
+    virtual void ref_release(void* object) = 0;
+    // 005357E0 / 00537B80 and the link stores: push_back on the list object at screen+498h.
+    virtual void list_push_back_498(void* list, void* value) = 0;
+};
+
+// 005AB519..005AB7C5 of BSP_HudMapScreen_Register: for each terrain object E of the list
+// [[00E188A8]+19CCh]+34Ch, the resource named by E+424h (00B80D70) is instantiated (vtable +8h(6,
+// 1.0f)); its root (instance +0Ch) is registered with the scene +0Ch and r = root vtable +10h(6, 0).
+// E's world matrix +0CCh is rebuilt when byte +0C8h is clear (00414DB0 on the parent pose +3Ch, then
+// E+74h * parent+0CCh (00413920), or E+74h alone; +0C8h = 1, +10Ch = 0) and set on the root (vtable
+// +34h). The root joins +510h, 0093D2D0 runs for (root, 1) and (r, 0), r's children are logged
+// ("Terrain child %s" 00CF0A68, empty body), r joins +500h and is parented under the root, the resource
+// reference is dropped and the instance is appended to the list +498h.
+void hud_map_register_objects_005ab519(void* screen, Fe11HudMapObjectsHost& host);
+
+// One 0093DE10 call of the map register: (mode, rgba, effect, y_offset, width, height, alpha_ref).
+enum class Fe11QuadSize : std::uint8_t { Padded, Extent, World };  // +6000, screen +30h/+34h, bare span
+struct Fe11MapQuad {
+    std::int32_t mode;
+    std::array<float, 4> rgba;
+    std::string_view effect;
+    float y_offset;
+    Fe11QuadSize size;
+    std::int32_t alpha_ref;
+};
+// 005AB8FD..005AC366 in call order (constants: y offsets 00CE3980 .. 00CED780, colours 00CE69C8,
+// 00CF0A2C, 00CE54A0, 00CF0A18..00CF0A00, 00CE81A0, 00D7A2F0, 00CE74F8).
+inline constexpr std::array<Fe11MapQuad, 14> kHudMapQuads{{
+    {0x00, {1.0f, 1.0f, 1.0f, 1.0f}, "map_texturednonormal_ocean.mshd", -500.0f, Fe11QuadSize::Padded, 300},
+    {0x0C, {1.0f, 1.0f, 1.0f, 1.0f}, "map_ocean_shadow.mshd", 1.0f, Fe11QuadSize::Padded, 300},
+    {0x01, {0.0f, 0.0f, 0.0f, 0.300000012f}, "guialphastencildiff.mshd", 1000.0f, Fe11QuadSize::Padded, 2},
+    {0x02, {1.0f, 1.0f, 1.0f, 0.0599999987f}, "guialphamul.mshd", 1010.0f, Fe11QuadSize::Padded, 3},
+    {0x03, {0.0f, 0.0f, 0.0f, 0.200000003f}, "guialphamul.mshd", 1020.0f, Fe11QuadSize::Padded, 5},
+    {0x04, {1.0f, 1.0f, 1.0f, 0.0599999987f}, "guialphamul.mshd", 1030.0f, Fe11QuadSize::Padded, 7},
+    {0x05, {1.0f, 1.0f, 1.0f, 0.0f}, "guialphamul.mshd", 1040.0f, Fe11QuadSize::Padded, 9},
+    {0x06, {0.39199999f, 0.921000004f, 0.509000003f, 0.159999996f}, "guialphamul.mshd", 1050.0f,
+        Fe11QuadSize::Padded, 11},
+    {0x07, {0.192000002f, 0.662f, 0.257999986f, 0.100000001f}, "guialphamul.mshd", 1060.0f, Fe11QuadSize::Padded,
+        13},
+    {0x0D, {1.0f, 1.0f, 1.0f, 1.0f}, "map_texturednonormal_bordergrid.mshd", 1420.0f, Fe11QuadSize::Padded, 300},
+    {0x0E, {1.0f, 1.0f, 1.0f, 1.0f}, "guialphamulborder.mshd", 1400.0f, Fe11QuadSize::Padded, 0},
+    {0x0F, {1.0f, 1.0f, 1.0f, 1.0f}, "guialphamuldarken.mshd", 1410.0f, Fe11QuadSize::Padded, 0},
+    {0x10, {1.0f, 1.0f, 1.0f, 0.800000012f}, "guialphawrite.mshd", 2980.0f, Fe11QuadSize::Extent, 0},
+    {0x11, {1.0f, 1.0f, 1.0f, 1.0f}, "guialphawrite.mshd", 2990.0f, Fe11QuadSize::World, 1},
+}};
+
+struct Fe11HudMapQuadsHost {
+    virtual ~Fe11HudMapQuadsHost() = default;
+    virtual float world_bound(std::uint32_t offset) = 0;                                    // [00E188A8]+offset
+    // 0093DE10, ECX = map scene (screen+8h) -> the quad's generated model.
+    virtual void* map_scene_build_quad_0093de10(void* scene, const Fe11MapQuad& quad, float width, float height) = 0;
+    // 00B74640(0, 0) -> 00B732C0 -> +20h material; 00B18B00(name, const float* value) on it.
+    virtual void* generated_model_material(void* model) = 0;
+    virtual void material_register_float2_00b18b00(void* material, std::string_view name, const float* value) = 0;
+};
+
+// 005AB7C5..005AC390 of BSP_HudMapScreen_Register: +55Ch/+560h = the world spans dx = (float)(+7128h -
+// +711Ch), dz = (float)(+7124h - +7130h); +564h/+568h = -0.0 - the centre ((float)((+7128h + +711Ch) *
+// 0.5), (float)((+7130h + +7124h) * 0.5)). The fourteen kHudMapQuads are built on the scene +8h with
+// width/height (float)(dx + 6000.0), (float)(dz + 6000.0) (00CF0A60), or +30h/+34h, or dx/dz. The
+// bordergrid (0Dh) and border (0Eh) quads' materials get "cLength" -> &+55Ch and "cOffset" -> &+564h.
+// Then the two 61h-dword arrays +130h and +2B4h are cleared.
+void hud_map_register_quads_005ab7c5(void* screen, Fe11HudMapQuadsHost& host);
+
+struct Fe11MapResource {
+    std::uint32_t offset;
+    std::string_view path;
+};
+// 005AC3DA..005AD56B: map unit and icon models (00B80D70 on 004C1400()), in load order. Before the
+// coastal gun the dwords +438h..+44Ch are zeroed (+438h keeps 0), before the command buildings
+// +450h..+460h (+460h keeps 0).
+inline constexpr std::array<Fe11MapResource, 37> kHudMapModels{{
+    {0x164, "models/gui/map/units/battleshipmap.MMOD"},
+    {0x158, "models/gui/map/units/cruisermap.MMOD"},
+    {0x14C, "models/gui/map/units/destroyermap.MMOD"},
+    {0x2D0, "models/gui/map/units/destroyermap_low.MMOD"},
+    {0x154, "models/gui/map/units/carriermap.MMOD"},
+    {0x2D8, "models/gui/map/units/carriermap_low.MMOD"},
+    {0x15C, "models/gui/map/units/biglandingmap.MMOD"},
+    {0x160, "models/gui/map/units/landingmap.MMOD"},
+    {0x168, "models/gui/map/units/ptboatmap.MMOD"},
+    {0x150, "models/gui/map/units/submarinemap.MMOD"},
+    {0x17C, "models/gui/map/units/fightermap.MMOD"},
+    {0x300, "models/gui/map/units/fightermap_low.MMOD"},
+    {0x178, "models/gui/map/units/divebombermap.MMOD"},
+    {0x2FC, "models/gui/map/units/fightermap_low.MMOD"},
+    {0x174, "models/gui/map/units/fightermap.MMOD"},
+    {0x2F8, "models/gui/map/units/fightermap_low.MMOD"},
+    {0x170, "models/gui/map/units/bombermap.MMOD"},
+    {0x184, "models/gui/map/units/reconmap.MMOD"},
+    {0x188, "models/gui/map/units/reconmap.MMOD"},
+    {0x18C, "models/gui/map/units/Ohkamap.MMOD"},
+    {0x244, "models/gui/map/units/airfieldmap.MMOD"},
+    {0x248, "models/gui/map/units/shipyardmap.MMOD"},
+    {0x1DC, "models/gui/map/units/torpedomap.MMOD"},
+    {0x200, "models/gui/map/units/waterminemap.MMOD"},
+    {0x43C, "models/gui/map/units/coastalgunmap.MMOD"},
+    {0x440, "models/gui/map/units/aagunmap.MMOD"},
+    {0x444, "models/gui/map/units/fortressmap.MMOD"},
+    {0x448, "models/gui/map/units/bunkermap.MMOD"},
+    {0x44C, "models/gui/map/units/radarmap.MMOD"},
+    {0x450, "models/gui/map/units/commanbuildingmap.MMOD"},
+    {0x454, "models/gui/map/units/commanbuildingmap2.MMOD"},
+    {0x458, "models/gui/map/units/commanbuildingmap3.MMOD"},
+    {0x45C, "models/gui/map/units/commanbuildingmap3.MMOD"},
+    {0x464, "models/gui/map/units/paramap.MMOD"},
+    {0x5A0, "models/gui/map/icons/map_arrow_leader.MMOD"},
+    {0x5A4, "models/gui/map/icons/map_obj_primary.MMOD"},
+    {0x5A8, "models/gui/map/icons/map_obj_secondary.MMOD"},
+}};
+// 005AD5EB..005ADCC1: textures through [00F8D394] vtable +64h(&name, 0).
+inline constexpr std::array<Fe11MapResource, 15> kHudMapTextures{{
+    {0x468, "models/gui/map/units/shipmap_us.dds"},
+    {0x46C, "models/gui/map/units/shipmap_jap.dds"},
+    {0x470, "models/gui/map/units/shipmap_neutral.dds"},
+    {0x474, "models/gui/map/units/planemap_us.dds"},
+    {0x478, "models/gui/map/units/planemap_jap.dds"},
+    {0x47C, "models/gui/map/units/planemap_neutral.dds"},
+    {0x480, "models/gui/map/units/buildingsmap_us.dds"},
+    {0x484, "models/gui/map/units/buildingsmap_jap.dds"},
+    {0x488, "models/gui/map/units/buildingsmap_neutral.dds"},
+    {0x48C, "models/gui/map/units/bulletmap_us.dds"},
+    {0x490, "models/gui/map/units/bulletmap_jap.dds"},
+    {0x494, "models/gui/map/units/bulletmap_neutral.dds"},
+    {0x4A4, "models/gui/map/units/mapparticle_bowwave_00.dds"},
+    {0x4A8, "models/gui/map/units/mapparticle_bowwave_01.dds"},
+    {0x4AC, "models/gui/map/units/mapparticle_bowwave_02.dds"},
+}};
+
+struct Fe11HudMapResourcesHost {
+    virtual ~Fe11HudMapResourcesHost() = default;
+    virtual void* resource_load_default_factory_00b80d70(std::string_view path) = 0;       // on 004C1400()
+    virtual void* texture_manager_load_64(std::string_view path, std::uint32_t flags) = 0; // [00F8D394] vtable +64h
+    virtual float global_config_2bc() = 0;                                                  // [00432650()+2BCh]
+    virtual const float* map_zoom_scales_00f89ae4() = 0;
+};
+
+// 005AC390..005ADD9C, the last range of BSP_HudMapScreen_Register: kHudMapModels and kHudMapTextures
+// into their fields (with the two zeroing runs), +128h = 0, +12Ch = 0.0f, the dword vector +0F0h is
+// emptied (erase(begin, end) through _memmove_s of an empty tail: end = begin), and s =
+// (float)(scales[+2Ch] * GlobalConfig+2BCh) goes to +5BCh and +5DCh.
+void hud_map_register_resources_005ac390(void* screen, Fe11HudMapResourcesHost& host);
+
+// The whole of 005AB190 BSP_HudMapScreen_Register, __fastcall(ECX = screen), RET: the four ranges in order.
+struct Fe11HudMapHost : Fe11HudMapRegisterHost, Fe11HudMapObjectsHost, Fe11HudMapQuadsHost, Fe11HudMapResourcesHost {};
+void hud_map_register_005ab190(void* screen, Fe11HudMapHost& host);
 
 }  // namespace bsp::cc13_fe1

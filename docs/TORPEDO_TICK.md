@@ -195,16 +195,19 @@ container is a contract.**
   1 is the hull's up axis, and the function returns from `0085713F` without running either
   controller below.
 
-  **Both calls read the same two arguments.** Taking `E` as `ESP` at `00856E6C`, the first pushes
-  `[E+0Ch]` and `[E+8h]`; `0085E880` is `RET 8`, so `ESP` is `E-8` at `00856EE8` and the second
-  pushes `[E-8+1Ch] = [E+0Ch]` and `[E-8+10h] = [E+8h]`. Those two slots are the `EDX` outputs of
-  the two `00521370` calls, the hull's own pitch at `[E+0Ch]` (`00856D9B` computes `ESP+10h` after
-  one push) and the target's pitch at `[E+8h]` (`00856E0C` computes `ESP+0Ch` after one push). The
-  yaw outputs live at `[E+14h]` and `[E+10h]` and neither is read here. So the horizontal homing
-  turn is driven by the **pitch** error, not by a bearing error. The reading is provisional only in
-  what it means, not in what the listing says: it is reproduced as read in
-  `src/bomb_torpedo_tick.cpp`, and the practical effect is small, because `record+46Ch` already
-  carries the target bearing into the heading controller on every step the homing turn is skipped.
+  **The two calls read different slots (corrected by cc13-gpr53c, 2026-10-13).** Take `E` as `ESP`
+  at `00856E6C`. The first call loads `[E+8h]` (target pitch) into its second argument, then
+  `SUB ESP,8` and `[E-8+14h] = [E+0Ch]` (own pitch) into its first. `00438B10` is itself `RET 8`
+  (`00438B4C`), so `ESP` is back at `E` after it. The `PUSH ECX` / `PUSH EDI` for `0085E880` are
+  popped by its `RET 8`, so `ESP` is still `E` at `00856EE8`. That instruction loads `[E+10h]`, and
+  after `SUB ESP,8`, `00856EF3` loads `[E-8+1Ch] = [E+14h]`. Those two slots are the `00521370`
+  yaw outputs: the target's yaw at `[E+10h]` (its address is taken at `00856E07`; `00856E25` copies it to `+46Ch`)
+  and the hull's own yaw at `[E+14h]` (its address is taken at `00856D90`). So the horizontal homing turn is
+  `clamp(-wrap(ownYaw - targetYaw), +/-HomingHorzTurnSpeed * dt)` about the up row: a bearing
+  turn. The earlier reading here ("both calls read `[E+0Ch]` and `[E+8h]`", ESP taken as `E-8` at
+  `00856EE8`) dropped `00438B10`'s own `RET 8`. `src/bomb_torpedo_tick.cpp` keeps that reading
+  behind `kTorpedoHomingYawPairBound = false` and uses the yaw pair when the switch is on.
+  docs/CC13_GPR_53.md section 1.6.
 
 ### Depth keeping
 

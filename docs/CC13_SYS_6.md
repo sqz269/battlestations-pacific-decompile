@@ -94,6 +94,13 @@ does the same through `0096C220`. So one Report call can retire several entries 
 incoming warning. The file is not this packet's; the record carries the defect and the owner should fix
 the projection.
 
+**Bound and flipped ON** (cc13 39a0f04ef bound it OFF as `kMissionWarningReportWalkAllBound`; pair and flip
+cc9-physics6, 2026-10-13): USN12 `usn12_s38_u12_p2`, 36000 frames, reference env, OFF = tree build A351D9B2F093, ON =
+export with the switch (cc9-physics1 `local\p6wr_{off,on}_u12.log`): gameplay identical, completed 1534.87 s both
+sides, guard logged. The pair cannot exercise the walk: `report_warning_009763e0` has no caller in the game host
+(`git grep` finds only its declaration and definition), so the run says only that the switch is inert today. Flipped
+ON as the image's control flow; the first host caller will exercise it.
+
 ### Segment 78: GUI
 
 - Three ledger names were wrong and are replaced (ledger and Ghidra): `00AB1F60` sets the Pivot
@@ -177,7 +184,8 @@ After the lead landed sys6, the same worker continued on the open cc13 items:
 
 Still open after sys6b: `008023B0` (rain emitter build, 543 lines), `007FB520`, `007FC490`,
 `007FCD90`, `00AAE770`, `00AB4CE0`, and the x87 layout bodies `00AB9240`, `00AC0610`, `00AC0970`,
-`00AC0BD0`, `00AC10A0`.
+`00AC0BD0`, `00AC10A0`. Packet cc13-left3 reconstructed all of these later
+(`docs/CC13_LEFT_3.md`, section 1).
 
 ## Handoff
 

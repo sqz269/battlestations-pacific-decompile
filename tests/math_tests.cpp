@@ -1230,12 +1230,16 @@ int main() {
         // 004cd7f0 keys every numbered VFS block of the mission load, and the
         // order of its two tail steps is the part that is easy to get wrong:
         // the truncation happens at the SECOND underscore, and only a name that
-        // survives it still carries the ".scn" the last step drops.
-        check(bsp::derive_scene_short_name("universe\\scenes\\pearl_harbor_01.scn")
+        // survives it still carries the ".scn" the last step drops. append_mode
+        // 0 leaves out the game-mode suffix (kSceneShortNameModeSuffixBound).
+        check(bsp::derive_scene_short_name("universe\\scenes\\pearl_harbor_01.scn", false)
                 == "pearl_harbor",
             "the short name is cut at the second underscore, before the extension test");
-        check(bsp::derive_scene_short_name("universe/scenes/midway.scn") == "midway",
+        check(bsp::derive_scene_short_name("universe/scenes/midway.scn", false) == "midway",
             "a name with no second underscore keeps its stem and loses .scn");
+        check(bsp::derive_scene_short_name("universe/Scenes/missions/USN/usn_2_java.scn")
+                == (bsp::kSceneShortNameModeSuffixBound ? "usn_2SOLO" : "usn_2"),
+            "the campaign stand-in appends the 00E08240 suffix SOLO when the switch is ON");
     }
 
     {

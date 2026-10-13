@@ -175,3 +175,29 @@ mechanism is in the cd761bb52 section above).
   finishes the landing ships by 2590 s, then the B-17 interception completes at 2974 s. Variants: Hosho at Grayson
   (a, and a+airfield c): HQ destroyed 1706.84 s; airfield at Grayson only to frame 14000 (b, 72000 frames): 10 of
   11 landing ships, no end.
+- **JM08 `jm08_p6_j8_f` holds under `BSP_FRAME_JITTER 20,3`** (cc9-physics6, `local\p6j8_fj.log`, same exe): completed 2697.31 s, guard logged. Variant d (Grayson only to frame 14000, 110000 frames): USTroopTransport 01 survives, no end. Not a knife-edge on this evidence.
+- **Reference AI times on current main** (gunnery39, reported through the lead, 2026-10-13): USN02 203.01 s,
+  LOMP06 535.24 s, USN12 1534.87 s, LOMP10 1158.10 s, USN15 2641.80 s.
+- **BSM01 `l50_b1_a`: plan casualty, not a defect** (gunnery39, df1343735): the loss needs both
+  `kPlaneCrashSweepBound` and `kLandStructureMeshHitTestBound`; crashing planes hit Pearl's buildings on their meshes
+  from 133 s, the battle shifts, and HenryPT never rams MiniSub (the win's phase-3 end was at 437.77 s). Re-plan
+  queued with cc9-physics6, base `config/win_orders/bsm01_l50_b1_a.txt`.
+- **BSM01 re-planned (cc9-physics6, 2026-10-13): `config/win_orders/bsm01_p6_b1_a.txt`**, replaces `bsm01_l50_b1_a`
+  (kept). Tree agent/cc9-physics1 at the merge of origin/main 6846c0620, exe A351D9B2F093, 40000 frames, reference env,
+  `--stop-after-end 40`: **EndMission 752.94 s**, guard logged, MiniSub sunk by HenryPT's depth charge at 424.07 s
+  (`local\p6b1_a.log`). Only change: the last takehelm leg at frame 7000 instead of 7250. On current main HenryPT is
+  further south by frame 7000 than in the win (1921,-2955 vs 2027,-2687); with the leg at 7250 it turned west at
+  z = -3150 and stalled at (1624,-3170) from 395 s with throttle 0.5 and no speed until it died at 1519.8 s
+  (`local\p6b1_base.log`). Variant b (waypoint 6600 at z -2990 instead of -3084): MiniSub survives.
+- **BSM01 `bsm01_p6_b1_a` checks** (cc9-physics6): on 8c0dc221a (exe 751CFE0BE15A, warning walk ON) EndMission 752.94 s again (`local\p6b1_a2.log`); with `BSP_FRAME_JITTER 20,3` EndMission 764.94 s, MiniSub at 436.17 s, guard logged (`local\p6b1_aj.log`).
+- **JM06 row is now `config/win_orders/jm06_s46_j6_m.txt`** (cc9-ships46, SHIP_AI 227, reported through the lead, 2026-10-13): completes at 2880.63 s, and at 3421.16 s under `BSP_FRAME_JITTER 20,3` (seed 3), guard logged both times. `jm06_s45_j6_k` (kept) fails under jitter.
+- **USN01 re-planned (cc9-physics6, 2026-10-13): `config/win_orders/usn01_p6_u1_g.txt`**, replaces `usn01_p5_u1_e`
+  (kept). Tree agent/cc9-physics1 at the merge of origin/main 09a095e45's base (gunnery39's verdict 72e64feac in),
+  exe 629B244E3C28, 26000 frames, reference env, `--stop-after-end 40`: **completed 1197.94 s**, guard logged
+  (`local\p6u1_g.log`). Plan e plus `3700 select ConSBD3` / `3701 target ConSBD3 Convoy2` (both applied) after
+  the retest ends ConSBD3's command on Convoy5's death (183.76 s). ConSBD3 still releases nothing (every aimglide
+  blocked at the ceiling); the kills are Convoy5/3/4 to torpedoes by 189 s and Convoy2/1/6 to Northampton at 888,
+  920 and 941 s, as on 3eac809d6. Plan e on the same exe: no completion (`local\p6u1_e.log`, Convoy2 and Convoy6
+  survive); ConSBD3 at Convoy6 (h): no completion. **Knife-edge:** with `BSP_FRAME_JITTER 20,3` it fails (Convoy1 and
+  Convoy6 survive, `local\p6u1_gj.log`), like e. Northampton and SaltLakeCity cannot be ordered directly:
+  `select Northampton` is refused by 00645060 (`local\p6u1_i.log`).

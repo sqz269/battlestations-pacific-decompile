@@ -1390,4 +1390,282 @@ void record14_clear_004c7f80(Record14& record) {
     record.field_0c = record.field_10 = 0.0f;
 }
 
+// ---------------------------------------------------------------------------
+// Packet cc13-left3 (docs/CC13_LEFT_3.md).
+// ---------------------------------------------------------------------------
+
+void session_message_e1_construct_0044c970(SessionMessageE1& message, const std::string& name,
+                                           LuaRef table, std::int32_t value, DialogScriptLuaHost& host)
+{
+    host.construct_base_0075b430(0xE1);
+    message.word_04 = 1;
+    message.name_18 = name;                                   // skipped when the same object
+    message.value_20 = value;
+    message.script_24.clear();
+    // 0044CA08..0044CA74: a string builder (00426500), 00BD1A60/00BD1A20 appends, then the
+    // result appended to +24h.
+    message.script_24 += std::string("Dialogues = { [\"") + name + "\"]={[\"sequence\"]={";
+    if (host.is_table_00b661b0(table)) {
+        // 0044CA9E..0044CAC1: the by-value table becomes table["sequence"].
+        host.assign_00b67690(table, host.get_by_name_00b67800(table, "sequence"));
+        LuaRef key = 0;
+        LuaRef entry = 0;
+        host.iterate_first_00b67080(table, key, entry);
+        while (!host.is_unbound_00b66420(key)) {
+            if (host.is_table_00b661b0(entry)) {
+                const LuaRef text = host.get_by_name_00b67800(entry, "message");
+                if (!host.is_nil_00b65fb0(text)) {
+                    message.script_24 += "{ [\"message\"]= \"" + host.get_string_00b662b0(text) + "\",},";
+                }
+            }
+            host.iterate_next_00b67190(table, key, entry);
+        }
+    }
+    message.script_24 += "},},};";                            // 0044CC1C, six characters
+}
+
+namespace {
+
+void begin_scene_once(GameFrameHost& host)
+{
+    // [game+34h] == 0 and 00B1BF90 on the render queue == 0: [00F8D394] vtable +0Ch, then 1.
+    std::uint32_t& begun = host.scene_begun_34();
+    if (begun == 0 && host.render_queue_retention_00b1bf90() == 0) {
+        host.renderer_begin_0c();
+        begun = 1;
+    }
+}
+
+} // namespace
+
+void game_pump_front_end_frame_004cac30(GameFrameHost& host)
+{
+    host.front_end_screens_pump_004f8830(0.0f);
+    host.gui_manager_update_00aa4f80(host.gui_manager_004c12b0(), 0.0f, 0);
+    begin_scene_once(host);
+    host.game_render_004ca440();
+    host.game_finish_render_frame_004ca1f0();
+}
+
+bool game_render_foliage_and_shadows_004ccbd0(GameFrameHost& host)
+{
+    void* rig = host.camera_rig_a8();
+    void* view = host.camera_rig_view(rig, host.camera_rig_alternate_cc(rig));
+    host.foliage_build_visible_set_00af0c50(host.camera_node_19fc(), view);
+    host.foliage_frame_counter_increment_20();
+    begin_scene_once(host);
+    host.shadow_driver_virtual_0c(0.0f);
+    host.shadow_driver_virtual_04();
+    host.shadow_map_update_from_camera_00a8f3b0(host.light_shadow_map_owner_00b7aab0(host.camera_node_19fc()));
+    host.submit_main_scene_0068a0d0();
+    host.game_finish_render_frame_004ca1f0();
+    return true;                                              // MOV AL, 1
+}
+
+// Offset, width, bits; resolved by local/l3_envblock.py from the live decompile.
+const std::array<EnvironmentBlockStore, 118> kEnvironmentBlockDefaults_004cb420{{
+    {0x00C, 1, 0x00000000u}, {0x01C, 4, 0x00000000u}, {0x020, 4, 0x00000000u},
+    {0x024, 4, 0x00000000u}, {0x028, 4, 0x00000000u}, {0x02C, 4, 0x3F19999Au},
+    {0x030, 4, 0x42C80000u}, {0x034, 4, 0x3F800000u}, {0x044, 4, 0x00000000u},
+    {0x048, 4, 0x00000000u}, {0x04C, 4, 0x3F000000u}, {0x050, 4, 0x42800000u},
+    {0x054, 4, 0x42A00000u}, {0x058, 4, 0x3D23D70Au}, {0x05C, 4, 0x3F800000u},
+    {0x060, 1, 0x00000000u}, {0x064, 4, 0x00000578u}, {0x068, 4, 0x40C00000u},
+    {0x06C, 4, 0xC1400000u}, {0x070, 4, 0x40400000u}, {0x074, 4, 0x80D0D0FFu},
+    {0x078, 4, 0x3E19999Au}, {0x07C, 4, 0x3F866666u}, {0x080, 4, 0x3F24DD2Fu},
+    {0x084, 4, 0x3F23D70Au}, {0x088, 4, 0x3F2AC083u}, {0x08C, 4, 0x00000000u},
+    {0x090, 4, 0x3ECCCCCDu}, {0x094, 4, 0x3ECCCCCDu}, {0x098, 4, 0x3ECCCCCDu},
+    {0x09C, 4, 0x00000000u}, {0x0A0, 4, 0x3ECCCCCDu}, {0x0A4, 4, 0x3ECCCCCDu},
+    {0x0A8, 4, 0x3ECCCCCDu}, {0x0AC, 4, 0x00000000u}, {0x0B0, 4, 0x3ECCCCCDu},
+    {0x0B4, 4, 0x3ECCCCCDu}, {0x0B8, 4, 0x3ECCCCCDu}, {0x0BC, 4, 0x00000000u},
+    {0x0C0, 4, 0x3ECCCCCDu}, {0x0C4, 4, 0x3ECCCCCDu}, {0x0C8, 4, 0x3ECCCCCDu},
+    {0x0CC, 4, 0x00000000u}, {0x0D0, 4, 0x3F333333u}, {0x0D4, 4, 0x42C80000u},
+    {0x0D8, 4, 0x45EA6000u}, {0x0DC, 4, 0x3F333333u}, {0x0E0, 4, 0x43480000u},
+    {0x0E4, 4, 0xC2F00000u}, {0x0E8, 4, 0x46EA6000u}, {0x0EC, 4, 0x46EA6000u},
+    {0x0F0, 4, 0x46EA6000u}, {0x0F4, 4, 0x46EA6000u}, {0x0F8, 4, 0x46EA6000u},
+    {0x0FC, 4, 0x46EA6000u}, {0x100, 1, 0x00000001u}, {0x104, 4, 0x44480000u},
+    {0x108, 4, 0x3F7851ECu}, {0x10C, 4, 0xC3480000u}, {0x110, 4, 0xC30C0000u},
+    {0x114, 4, 0x3F7EB852u}, {0x118, 4, 0x3E5CE076u}, {0x11C, 4, 0x3E74F0D8u},
+    {0x120, 4, 0x3E04816Fu}, {0x124, 4, 0x3F800000u}, {0x128, 4, 0x3E99999Au},
+    {0x12C, 4, 0x3F24DD2Fu}, {0x130, 4, 0x3F23D70Au}, {0x134, 4, 0x3F5DF3B6u},
+    {0x138, 4, 0x00000000u}, {0x140, 4, 0x00000000u}, {0x164, 4, 0x3E051EB8u},
+    {0x168, 4, 0x3E8F5C29u}, {0x16C, 4, 0x3E9EB852u}, {0x170, 4, 0x3F800000u},
+    {0x174, 4, 0x3E051EB8u}, {0x178, 4, 0x3E8F5C29u}, {0x17C, 4, 0x3E9EB852u},
+    {0x180, 4, 0x3F800000u}, {0x184, 4, 0x3E051EB8u}, {0x188, 4, 0x3E8F5C29u},
+    {0x18C, 4, 0x3E9EB852u}, {0x190, 4, 0x3F800000u}, {0x194, 4, 0x42A00000u},
+    {0x198, 4, 0x3E4CCCCDu}, {0x19C, 4, 0x42A00000u}, {0x1E4, 4, 0x3F800000u},
+    {0x1E8, 4, 0x3F800000u}, {0x1EC, 4, 0x3F800000u}, {0x1F0, 4, 0x3F800000u},
+    {0x1F4, 4, 0x3F666666u}, {0x1F8, 4, 0x41200000u}, {0x1FC, 4, 0x428C0000u},
+    {0x200, 4, 0x437A0000u}, {0x204, 4, 0x43960000u}, {0x20C, 4, 0x00000000u},
+    {0x210, 4, 0x00000000u}, {0x214, 4, 0x00000000u}, {0x218, 4, 0x00000000u},
+    {0x21C, 4, 0x00000000u}, {0x220, 4, 0x00000000u}, {0x224, 4, 0x41200000u},
+    {0x228, 4, 0x447A0000u}, {0x22C, 4, 0x3F800000u}, {0x230, 4, 0x3F800000u},
+    {0x234, 4, 0x00000000u}, {0x238, 4, 0x00000000u}, {0x23C, 4, 0x00000000u},
+    {0x240, 4, 0x00000000u}, {0x244, 4, 0x00000000u}, {0x248, 4, 0x00000000u},
+    {0x24C, 4, 0x00000000u}, {0x250, 4, 0x00000000u}, {0x254, 4, 0x00000000u},
+    {0x258, 4, 0x00000000u}, {0x25C, 1, 0x00000001u}, {0x280, 4, 0x00000000u},
+    {0x284, 4, 0x00000000u},
+}};
+
+const std::array<EnvironmentGlobalStore, 85> kEnvironmentGlobalDefaults_004cb420{{
+    {0x00E18804u, 0x00000000u}, {0x00E18808u, 0x3E4CCCCDu}, {0x00E1880Cu, 0x3E4CCCCDu},
+    {0x00E18810u, 0x3E4CCCCDu}, {0x00E18814u, 0x3E4CCCCDu}, {0x00E18818u, 0x3E4CCCCDu},
+    {0x00E1881Cu, 0x3E4CCCCDu}, {0x00E18820u, 0x3E4CCCCDu}, {0x00E18824u, 0x3E4CCCCDu},
+    {0x00E18828u, 0x3E4CCCCDu}, {0x00E1882Cu, 0x3E4CCCCDu}, {0x00E18830u, 0x3E4CCCCDu},
+    {0x00E18834u, 0x3E4CCCCDu}, {0x00E18838u, 0x3E4CCCCDu}, {0x00E1883Cu, 0x3E4CCCCDu},
+    {0x00E18840u, 0x3E4CCCCDu}, {0x00E18844u, 0x3E4CCCCDu}, {0x00E18848u, 0x3E4CCCCDu},
+    {0x00E1884Cu, 0x3E4CCCCDu}, {0x00E18850u, 0x3E4CCCCDu}, {0x00E18854u, 0x3E4CCCCDu},
+    {0x00E18858u, 0x3E4CCCCDu}, {0x00E1885Cu, 0x3E4CCCCDu}, {0x00E18860u, 0x3E4CCCCDu},
+    {0x00E18864u, 0x3E4CCCCDu}, {0x00E18868u, 0x3E4CCCCDu}, {0x00E1886Cu, 0x3E4CCCCDu},
+    {0x00E18870u, 0x3E4CCCCDu}, {0x00E18874u, 0x3E4CCCCDu}, {0x00E18878u, 0x3E4CCCCDu},
+    {0x00E1887Cu, 0x3E4CCCCDu}, {0x00E18880u, 0x3E4CCCCDu}, {0x00E18884u, 0x3E4CCCCDu},
+    {0x00E18888u, 0x3E4CCCCDu}, {0x00E1888Cu, 0x3E4CCCCDu}, {0x00E18890u, 0x3E4CCCCDu},
+    {0x00E18894u, 0x3E4CCCCDu}, {0x00E18898u, 0x3E4CCCCDu}, {0x00E1889Cu, 0x3E4CCCCDu},
+    {0x00E188A0u, 0x3E4CCCCDu}, {0x00E188A4u, 0x3E4CCCCDu}, {0x00E188E0u, 0x3E99999Au},
+    {0x00E188E4u, 0x3C23D70Au}, {0x00E188E8u, 0x3E99999Au}, {0x00E188ECu, 0x3DCCCCCDu},
+    {0x00E188F0u, 0x3E19999Au}, {0x00E188F4u, 0x3E19999Au}, {0x00E188F8u, 0x3B03126Fu},
+    {0x00E188FCu, 0x3D4CCCCDu}, {0x00E18900u, 0x3CA3D70Au}, {0x00E18904u, 0x3D4CCCCDu},
+    {0x00E18908u, 0x3F800000u}, {0x00E1890Cu, 0x3F800000u}, {0x00E18910u, 0x3F800000u},
+    {0x00E18914u, 0x3F800000u}, {0x00E18918u, 0x3F800000u}, {0x00E1891Cu, 0x447A0000u},
+    {0x00E18920u, 0x00000000u}, {0x00E18924u, 0x00000000u}, {0x00E18928u, 0x40600000u},
+    {0x00E1892Cu, 0x41F00000u}, {0x00E18930u, 0x48127C00u}, {0x00E18934u, 0x3F4CCCCDu},
+    {0x00E18938u, 0x40C00000u}, {0x00E1893Cu, 0x3F800000u}, {0x00E18940u, 0x40400000u},
+    {0x00E18944u, 0x40C00000u}, {0x00E18948u, 0x3F800000u}, {0x00E1894Cu, 0x3F333333u},
+    {0x00E18950u, 0x40000000u}, {0x00E18954u, 0x40800000u}, {0x00E18958u, 0x3CF5C28Fu},
+    {0x00E1895Cu, 0x40000000u}, {0x00E18960u, 0x00000000u}, {0x00E18964u, 0x00000000u},
+    {0x00E18968u, 0x00000000u}, {0x00E1896Cu, 0x3F800000u}, {0x00E18970u, 0x00000000u},
+    {0x00E18974u, 0x00000000u}, {0x00E18978u, 0x00000000u}, {0x00E1897Cu, 0x3F800000u},
+    {0x00E18980u, 0x00000000u}, {0x00E18984u, 0x00000000u}, {0x00E18988u, 0x00000000u},
+    {0x00E1898Cu, 0x3F800000u},
+}};
+
+void scene_environment_block_construct_004cb420(EnvironmentBlockImage& block, EnvironmentGlobalsHost& host)
+{
+    for (const EnvironmentBlockStore& s : kEnvironmentBlockDefaults_004cb420) {
+        std::memcpy(&block.bytes[s.offset], &s.bits, s.width);
+    }
+    // The NativeString fields, in the image's order: +13Ch "CausticsDayLight", then "white.tga"
+    // into +208h, +210h, +218h, +234h, +23Ch, +244h, +24Ch, +254h and the global 00E18990.
+    block.strings.clear();
+    block.strings.emplace_back(0x13C, "CausticsDayLight");
+    for (std::uint16_t offset : std::initializer_list<std::uint16_t>{0x208, 0x210, 0x218, 0x234, 0x23C, 0x244, 0x24C, 0x254}) {
+        block.strings.emplace_back(offset, "white.tga");
+    }
+    host.assign_string_00e18990("white.tga");
+    for (const EnvironmentGlobalStore& g : kEnvironmentGlobalDefaults_004cb420) {
+        host.store_dword(g.address, g.bits);
+    }
+}
+
+void game_leave_session_004cccc0(LeaveSessionHost& host)
+{
+    if (host.session_mode_1fe4() != 0) host.session_set_mode_0076fad0(0);
+    // `where` is a global address, or a game offset below 10000h.
+    host.delete_slot(0x00E18678, 0x0);
+    host.delete_slot(0x00E1867C, 0x0);
+    host.class_registry_clear_globals_004a9ac0();
+    host.delete_slot(0x19C8, 0xC);
+    host.award_registry_destroy_00e19900();
+    host.delete_slot(0x00E18DB0, 0xC);
+    host.delete_slot(0x00E19698, 0xC);
+    host.delete_slot(0x00E1930C, 0xC);
+    host.delete_slot(0x21A0, 0x0);
+    host.delete_slot(0x21D8, 0x0);
+    host.free_record_7188();
+    host.singleton_00f87440_destroy_004c0e40();
+    host.singleton_00f8753c_destroy_004c0ef0();
+    host.clear_byte_719c();
+    host.singleton_lifetime_unregister_00f8a304();
+    host.allocation_report_00be3fd0("After GGame::deinit");
+}
+
+void game_save_next_screenshot_004cd450(std::int32_t& counter_1940, ScreenshotHost& host)
+{
+    std::string path;
+    do {
+        ++counter_1940;
+        // "c:\screenshot_" (14 characters), 004CACA0 appends the decimal counter, then ".png".
+        path = "c:\\screenshot_" + std::to_string(counter_1940) + ".png";
+    } while (host.file_exists_fopen_rb(path));
+    host.renderer_save_screenshot_110(path);
+}
+
+void scene_ensure_default_lighting_004c9ec0(DefaultLightingHost& host)
+{
+    void* owner = host.scene_lighting_owner_00b72110();
+    if (owner == nullptr) {
+        owner = host.scene_resource_create_all_lights();
+        host.scene_set_resource_00b723f0(owner);
+        host.release(owner);                                  // the scene keeps its reference
+    }
+    if (host.ambient_light_19f4() == nullptr) host.ambient_light_19f4() = host.ambient_light_create_00b7c290();
+    host.owner_set_ambient_00b825d0(owner, host.ambient_light_19f4());
+    if (host.directional_light_19f8() == nullptr) {
+        host.directional_light_19f8() = host.directional_light_create_00b7c6b0("TestDirectionalLight");
+    }
+    const float identity[16] = {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+                                0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    host.light_virtual_38(host.directional_light_19f8(), identity);
+    host.lighting_apply_004bacd0(host.ambient_light_19f4(), host.directional_light_19f8(),
+                                 host.lighting_configuration_5fc());
+    host.light_virtual_50(host.directional_light_19f8(), owner, 1);
+}
+
+void anim_entity_sentity_init_00471080(float& length_18c, float& phase_190, AnimEntityInitHost& host)
+{
+    host.sentity_init_base_0048dbd0();
+    length_18c = host.animation_length_00b6dc90(0);            // FSTP, then FLD, FST +18Ch
+    // 004710B0: XOR ECX, ECX -> stream 0; U(0, length).
+    phase_190 = host.random_uniform_00bd2f10_stream0(0.0f, length_18c);
+}
+
+void vehicle_visual_entity_sentity_init_00479bd0(float& field_18c, AnimEntityInitHost& host)
+{
+    host.sentity_init_base_0048dbd0();
+    field_18c = 0.0f;
+}
+
+void scene_name_hash_iterator_begin_00466bb0(SceneNameHashIterator& it)
+{
+    const SceneNameHashTable& t = *it.table_00;
+    if (t.count_04 == 0) {
+        it.node_04 = nullptr;
+        return;
+    }
+    it.bucket_08 = 0;
+    if (t.buckets_08[0] == nullptr) {
+        // The test comes before the increment, so the scan can stop at index 40h.
+        while (it.bucket_08 < 0x40) {
+            ++it.bucket_08;
+            if (t.buckets_08[it.bucket_08] != nullptr) break;
+        }
+    }
+    it.node_04 = t.buckets_08[it.bucket_08];
+}
+
+bool scene_name_hash_iterator_next_00466c00(SceneNameHashIterator& it)
+{
+    if (it.node_04 == nullptr) return false;
+    if (it.node_04->next_0c != nullptr) {
+        it.node_04 = it.node_04->next_0c;
+        return true;
+    }
+    const SceneNameHashTable& t = *it.table_00;
+    ++it.bucket_08;
+    while (it.bucket_08 < 0x40 && t.buckets_08[it.bucket_08] == nullptr) ++it.bucket_08;
+    it.node_04 = it.bucket_08 < 0x40 ? t.buckets_08[it.bucket_08] : nullptr;
+    return it.node_04 != nullptr;
+}
+
+void scene_property_value_construct_vector3_00467c80(ScenePropertyVector3Value& value, const float* xyz, float w)
+{
+    // Word +0h = 0, byte +1h = 1, the vector, +4h = 0, byte +0h = 0, word +2h = 0, +14h = w.
+    value.byte_00 = 0;
+    value.byte_01 = 1;
+    for (int i = 0; i < 3; ++i) value.xyz_08[i] = xyz[i];
+    value.word_04 = 0;
+    value.word_02 = 0;
+    value.w_14 = w;
+}
+
+
 } // namespace bsp::cc13_sys
