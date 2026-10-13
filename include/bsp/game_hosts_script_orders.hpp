@@ -184,7 +184,7 @@ inline constexpr bool kFillPathPointsBound = true;
 // 3.05 s; the generated "Junyo", object id 6). True: the name resolves to the
 // first row that passes the marker gate 0043F080 (the player can only pick a
 // live, shown marker), else to the first row as before. False: the first row.
-inline constexpr bool kHarnessTargetPrefersLiveBound = false;
+inline constexpr bool kHarnessTargetPrefersLiveBound = true;   // ON: SQUADRON_LAND_TASK 5gl
 
 // Packet cc9_bsm01_think_natives (docs/LUA_BINDING_MISSION.md,
 // "Scoring_GetPlayerShotDown and PutTo"). True: Scoring_GetPlayerShotDown

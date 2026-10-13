@@ -1,4 +1,5 @@
 #pragma once
+#include <array>
 #include <cstdint>
 #include <string>
 #include <vector>
@@ -59,7 +60,34 @@ inline constexpr const char* kGvSpaceInitBlock = "GvSpace_Init"; // 00CE7E94
 // the text after the last '/', truncate at the SECOND '_' when there is one, then
 // drop a trailing ".scn" (case-insensitive). Both of the last two steps always
 // run; the ".scn" strip is a no-op once the underscore truncation has fired.
-std::string derive_scene_short_name(const std::string& scene_path);
+//
+// The native is __fastcall(ECX out, EDX path, u8 append_mode at [ESP+4]), RET
+// 4. When append_mode is non-zero, the tail 004CDB27..004CDBC1 appends a
+// game-mode suffix from the table 00E08240 (IC1 IC2 IC3 IC4 Du Esc SiE Com
+// SOLO SOLO). The index is the 004BCA50 rule, inlined at 004CDB32 on
+// [00E188A8]: +614h when the byte +61Ch is set or +1FE4h != 0, otherwise +614h
+// when it is 8 or 9, else 8. The numbered-block caller (004DFF07..004E0E56)
+// and LoadSceneContents (004D4E74) push 1. EngineMovie_Stop (0045F7EF)
+// pushes a register value (cc9's lane). The tail stays OFF behind
+// kSceneShortNameModeSuffixBound until a paired run confirms it. ON, a campaign
+// scene such as usn_2_java.scn becomes "usn_2SOLO", so its blocks become
+// 1_usn_2SOLO, 3_usn_2SOLO, 4_usn_2SOLO, 5_usn_2SOLO and 6_usn_2SOLO.
+inline constexpr bool kSceneShortNameModeSuffixBound = false;
+inline constexpr std::array<const char*, 10> kSceneShortNameModeSuffixes{
+    "IC1", "IC2", "IC3", "IC4", "Du", "Esc", "SiE", "Com", "SOLO", "SOLO"}; // 00E08240
+struct SceneShortNameGameMode {
+    int raw_mode_614;
+    bool mode_forced_61c;
+    bool multiplayer_1fe4;
+};
+// STAND-IN, not read from a game object: single-player campaign, raw mode 8,
+// not forced, no session. The 004BCA50 index is then 8, which gives the suffix
+// "SOLO". Hosts that hold the real fields pass them instead.
+inline constexpr SceneShortNameGameMode kSceneShortNameCampaignStandIn{8, false, false};
+int scene_short_name_mode_index(const SceneShortNameGameMode& mode) noexcept;
+// `append_mode` defaults to the value the native callers above push (1).
+std::string derive_scene_short_name(const std::string& scene_path, bool append_mode = true,
+                                    const SceneShortNameGameMode& mode = kSceneShortNameCampaignStandIn);
 
 // 008860b0. The mission script name held in the record table is resolved to
 // "Scripts/missions/" + name + ".lua" and handed to 00885fb0 with 1.

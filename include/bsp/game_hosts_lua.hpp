@@ -252,7 +252,7 @@ inline constexpr bool kSimplifiedReconNativesBound = true;   // ON: SQUADRON_LAN
 // and phases 3 and 4 generate them again (usn_03:1135, 1244), which here answered the
 // dead entity. True: a repeat call whose earlier instance is Dead (its thisTable slot)
 // makes a new entity; a live earlier instance keeps the deviation. False: as before.
-inline constexpr bool kGenerateObjectRespawnsDeadBound = false;
+inline constexpr bool kGenerateObjectRespawnsDeadBound = true;   // ON: SQUADRON_LAND_TASK 5gl
 
 // docs/CC13_AUDIT_LUA51_FLIPS.md item 1c. 00988510 boxes, and 0097B8C0 matches,
 // the target as hitEntity->vtable[140h]() kept only when it answers IsKindOf(2)

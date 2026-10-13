@@ -218,3 +218,27 @@ Still open in the three segments (not taken; owners in brackets where known):
 - Thunks and catch funclets (`004BD350`, `004C4590`, `004C8070`, `004C8B70`, `004C8BF0`,
   `004C9A60`, `00453570`, `00468790`, `Catch_All@...`) were not tagged.
 - Precision: every x87 host assumes 53-bit precision control.
+
+## Host fix: the 004CD7F0 mode suffix (cc13-scenesuffix)
+
+`derive_scene_short_name` (`src/mission_scene_load.cpp`) now has the native's `append_mode`
+argument and the suffix tail, behind `kSceneShortNameModeSuffixBound = false` (committed OFF).
+- `append_mode` defaults to 1, which is what the numbered-block and LoadSceneContents callers push.
+  The existing callers therefore take the native behaviour without edits once the switch is ON.
+  `derive_scene_short_name_004cd7f0` passes 0 and appends the suffix itself.
+- The mode index follows the 004BCA50 rule. The host has no game object at these call sites, so
+  the default is the labelled stand-in `kSceneShortNameCampaignStandIn` (raw mode 8, not forced, no
+  session, giving index 8 and the suffix "SOLO"). `GameSceneContentsHost` already holds the real
+  game+614h/+61Ch/+1FE4h inputs and could pass them.
+- Effect ON for a campaign mission: in USN02 (`usn_2_java.scn`) the short name becomes "usn_2SOLO",
+  so the numbered blocks become 1_usn_2SOLO, 3_usn_2SOLO, 4_usn_2SOLO, 5_usn_2SOLO and 6_usn_2SOLO.
+  The last finale run (`usn_final_battle.scn`) would get 1_usn_finalSOLO and so on. The
+  scene-contents block name is derived from the suffixed name too.
+- Log check (no new runs): `local\cc7_v2_USN02.log` (main checkout) and
+  `cc9-gunnery36\local\g39_rk2_fin.log` list the unsuffixed blocks. Every `enter_file_block`
+  (00BE0A30) there is UNIMPLEMENTED, and no line reports a missing block, so the logs cannot show
+  whether the suffixed names would be found. A byte scan of the loose install files (excluding
+  textures and audio) finds neither "1_usn_2" nor "usn_2SOLO", although it does find
+  "usn_2_java" and "SOLO" elsewhere. The block names are therefore not loose file names; they are
+  most likely labels for the named VFS/memory blocks. Whether the suffixed names matter needs the
+  00BE0A30 block handling or a paired run.
