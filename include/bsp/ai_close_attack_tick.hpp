@@ -152,7 +152,7 @@ inline constexpr bool kCloseAttackFallbackOffsetBound = true;
 // +1FCh, or a zero-weight target-group member) still wins over "none" and the
 // member gets an order instead of the no-candidate arm. docs/CC13_GPR_69.md 7.2
 // item 8. OFF keeps the host's 0.0 seed.
-inline constexpr bool kCloseAttackBestSeedBound = false;
+inline constexpr bool kCloseAttackBestSeedBound = true;  // ON: lead AI pair (USN15/USN12/IJN18 wins identical, 2026-10-13)
 inline constexpr float kCloseAttackBestSeed = -1.0e10f;          // [00CE4ADC]
 
 // 00A144DE-00A1464C (docs/CC13_GPR_69.md 7.2 item 6). When the member's current
@@ -166,7 +166,7 @@ inline constexpr float kCloseAttackBestSeed = -1.0e10f;          // [00CE4ADC]
 // collect radius stays a candidate. The 00A144D2 vtable[5Ch](2) test has no
 // host producer and is taken as true (every host candidate is a unit).
 // Labelled. OFF: the host's collected set only.
-inline constexpr bool kCloseAttackCurrentTargetRadiusBound = false;
+inline constexpr bool kCloseAttackCurrentTargetRadiusBound = true;  // ON: lead AI pair (USN15/USN12/IJN18 wins identical, 2026-10-13)
 inline constexpr double kCloseFallbackRadiusPerMember = 160.0;   // [00D22C90]
 inline constexpr double kCloseFallbackRadiusFloor = 400.0;       // [00CE3D90]
 inline constexpr double kCloseFallbackOwnWeight = 0.4;           // [00CE65D0]

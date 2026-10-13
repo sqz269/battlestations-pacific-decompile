@@ -4,6 +4,8 @@
 
 #include "bsp/torpedo_release_orders.hpp"
 
+#include "bsp/strike_release_ver_cc13.hpp"
+
 namespace bsp {
 
 PilotAttackMode pilot_attack_mode_raise_007ed430(PilotAttackMode current,
@@ -140,9 +142,10 @@ ReleaseOrderIssueResult torpedo_issue_release_orders_007c0d90(
 
     const ReleaseOrderIssueInputs gate = host.read_issue_inputs();
     out.gate_passed = release_orders_should_issue_007eef30(gate);
-    if (!out.gate_passed) return out;
+    // 007EEF50 JBE and 007EEF5A JLE both land on 007EEF96, the leader block.
+    if (!out.gate_passed && !kReleaseOrderLeaderBlockBound) return out;
 
-    const int count = host.controlled_unit_count();
+    const int count = out.gate_passed ? host.controlled_unit_count() : 0;
     for (int i = 0; i < count; ++i) {
         const bool issue = release_order_issue_to_unit_007eef78(
             gate.force_flag_378, host.unit_lacks_follow_target_007b8ad0(i));
@@ -155,6 +158,28 @@ ReleaseOrderIssueResult torpedo_issue_release_orders_007c0d90(
             ++out.units_raised;
         } else {
             ++out.units_zeroed;
+        }
+    }
+    if constexpr (kReleaseOrderLeaderBlockBound) {
+        // 007EEF96-007EEFC3, the leader block's four guards.
+        LeaderBlockInputs lb;
+        lb.unit_present = true;   // EBP is the 007C0F00 PUSH EBP unit
+        lb.unit_is_flight_leader = host.issuer_is_flight_leader_007eef9c();
+        lb.attack_mode_370 = host.attack_mode_370();
+        lb.party_slot_1b0 = host.issuer_party_slot_1b0();
+        lb.party_slot_ai_held = lb.party_slot_1b0 != kNoPartySlot_007eefb4 &&
+                                host.party_slot_byte_9_00927f10(lb.party_slot_1b0);
+        if (release_orders_leader_block_007eef96(lb)) {
+            out.leader_block_ran = true;
+            // 007EEFC5-007EEFEE: every ctl+3D0h member but the issuer, 007BCBE0(1).
+            const int members = host.controlled_unit_count();
+            for (int i = 0; i < members; ++i) {
+                if (host.controlled_unit_is_issuer(i)) continue;   // 007EEFD9 JE
+                const int written = release_order_count_007bcbe0(
+                    host.read_set_inputs(i, kLeaderBlockOrderCount_007eefdb));
+                host.write_release_order_count(i, written);
+                if (written > 0) ++out.leader_block_raised;
+            }
         }
     }
     return out;
