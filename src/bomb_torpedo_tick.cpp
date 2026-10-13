@@ -368,12 +368,20 @@ bool torpedo_steer_00856bb0(TorpedoSwimState& state,
                 // 00856ED3: the pitch turn, about the hull's own right axis.
                 host.rotate_about_right(torpedo_homing_turn(own_pitch, target_pitch,
                                                             swim_class.homing_vert_turn_speed, dt));
-                // 00856F51: the second turn is about the up axis, but the
-                // listing feeds it the negated pitch error, not a yaw error.
-                // Both 00438B10 calls read the same two stack slots, E+0Ch and
-                // E+8h. See docs/TORPEDO_TICK.md; this is reproduced as read.
-                host.rotate_about_up(-torpedo_homing_turn(own_pitch, target_pitch,
-                                                          swim_class.homing_horz_turn_speed, dt));
+                // 00856EE8..00856F51: the second turn, about the up axis, is
+                // -wrap(own_yaw - target_yaw) clamped to HomingHorzTurnSpeed*dt.
+                // 00438B10 and 0085E880 are both RET 8, so ESP is back at the
+                // 00856E6C value E when 00856EE8 loads [E+10h] (target yaw) and
+                // 00856EF3 loads [E+14h] (own yaw). Off, the earlier reading
+                // (the pitch pair for both turns) stays. docs/TORPEDO_TICK.md,
+                // docs/CC13_GPR_53.md 1.6.
+                if constexpr (kTorpedoHomingYawPairBound) {
+                    host.rotate_about_up(-torpedo_homing_turn(own_yaw, target_yaw,
+                                                              swim_class.homing_horz_turn_speed, dt));
+                } else {
+                    host.rotate_about_up(-torpedo_homing_turn(own_pitch, target_pitch,
+                                                              swim_class.homing_horz_turn_speed, dt));
+                }
                 homed = true;
             } else {
                 // 00856F6C: the fallback rotates by the hull's own pitch, which
