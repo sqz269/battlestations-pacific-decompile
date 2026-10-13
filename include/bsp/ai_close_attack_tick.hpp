@@ -145,6 +145,15 @@ struct AiCloseAttackTickResult {
 // [00CEFF98], 00A14CC1-00A14D48); a member inside r gets nothing. Before: every
 // candidate-less member was sent at the centre itself.
 inline constexpr bool kCloseAttackFallbackOffsetBound = true;
+
+// 00A1444C MOVSS XMM0,[00CE4ADC] / 00A14464 MOVSS [ESP+10h],XMM0: each member's
+// best score starts at the float D01502F9h = -1.0e10, not 0. 00A149A8 FCOMIP /
+// JBE keeps "score > best", so an admitted candidate scoring 0 (beyond FarDist
+// +1FCh, or a zero-weight target-group member) still wins over "none" and the
+// member gets an order instead of the no-candidate arm. docs/CC13_GPR_69.md 7.2
+// item 8. OFF keeps the host's 0.0 seed.
+inline constexpr bool kCloseAttackBestSeedBound = false;
+inline constexpr float kCloseAttackBestSeed = -1.0e10f;          // [00CE4ADC]
 inline constexpr double kCloseFallbackRadiusPerMember = 160.0;   // [00D22C90]
 inline constexpr double kCloseFallbackRadiusFloor = 400.0;       // [00CE3D90]
 inline constexpr double kCloseFallbackOwnWeight = 0.4;           // [00CE65D0]

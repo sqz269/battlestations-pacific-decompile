@@ -102,7 +102,8 @@ AiCloseAttackTickResult ai_close_attack_tick_00a13b60(AiCloseAttackTickHost& hos
         void* existing = host.close_member_current_target(member);
 
         void* chosen = nullptr;
-        float best = 0.0f;  // the 00CE4ADC seed, which every positive score beats
+        // 00A1444C: the 00CE4ADC seed. OFF: 0.0, which every positive score beats.
+        float best = kCloseAttackBestSeedBound ? kCloseAttackBestSeed : 0.0f;
         const std::size_t candidate_count = host.close_candidate_count();
         for (std::size_t c = 0; c < candidate_count; ++c) {
             void* candidate = host.close_candidate_at(c);
