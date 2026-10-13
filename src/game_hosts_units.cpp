@@ -572,8 +572,11 @@ struct GameUnitSlot {
     // Packet cc13-oprocket1: task+38Ch, 009FD0E0, behind bsp::kOpportunisticRocketBound.
     bsp::OpportunisticRocketState orx{};
     int orx_owner{0};   // 1 dogfight, 2 strafe: whose Stop clears it
-    // Per rack: 0 not a rocket, 1 small non-AA, 2 small AA, 3 IgnitionDelay > 0.
-    std::vector<int> rack_rocket_kind_per_rack;
+    // The rocket platforms 007C1EB0 walks, single (BombPlatform) AND multiple
+    // (MultiBombPlatform: every Corsair, Raiden, Shinden and Kikka rocket set),
+    // in BSPGun order; the per-rack vectors above hold single racks only.
+    // Kind: 1 small non-AA, 2 small AA, 3 IgnitionDelay > 0 (cc9-gunnery39).
+    std::vector<int> orx_rack_kind, orx_rack_bullet, orx_rack_ammo;
     unsigned long long orx_decisions{0}, orx_salvos{0}, orx_releases{0};
     // The 0080AA20 request held for the release (cc9-gunnery39, GUNNERY 202).
     std::size_t orx_pending_rack_plus_one{0}, orx_pending_target_plus_one{0};
@@ -20593,16 +20596,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             const GameUnitSlot* t = target();
                             return t != nullptr && df_slot_live(*t);
                         }
-                        // The host's rocket is a rack index: attached while it has rounds.
+                        // The host's rocket is a rocket-platform index (orx_rack_*):
+                        // attached while the platform has rounds. SUBSTITUTION, labelled:
+                        // the image's rocket is one child record of the platform.
                         bool rocket_attached_00923810(std::size_t rack_plus_one) override {
                             const std::size_t i = rack_plus_one - 1;
-                            return i < a.unit_.rack_ammo_per_rack.size() &&
-                                   a.unit_.rack_ammo_per_rack[i] > 0;
+                            return i < a.unit_.orx_rack_ammo.size() &&
+                                   a.unit_.orx_rack_ammo[i] > 0;
                         }
-                        // 007C1EB0(plane, 1, anti_air): the first small rocket rack whose
-                        // AntiAir matches ([00F874FD] = 0 after scene load).
+                        // 007C1EB0(plane, 1, anti_air): the first small rocket platform
+                        // whose AntiAir matches ([00F874FD] = 0 after scene load).
                         std::size_t find_aim_rocket_007c1eb0(bool anti_air) override {
-                            const auto& kinds = a.unit_.rack_rocket_kind_per_rack;
+                            const auto& kinds = a.unit_.orx_rack_kind;
                             for (std::size_t i = 0; i < kinds.size(); ++i) {
                                 if (kinds[i] == (anti_air ? 2 : 1) && rocket_attached_00923810(i + 1))
                                     return i + 1;
@@ -20665,15 +20670,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             const std::size_t r1 = a.unit_.orx_pending_rack_plus_one;
                             a.unit_.orx_pending_rack_plus_one = 0;
                             a.owner_.done("Unit::request_ordnance_release_007bbba0", 0x007bbba0u);
-                            if (r1 == 0 || r1 - 1 >= a.unit_.rack_ammo_per_rack.size()
-                                || a.unit_.rack_ammo_per_rack[r1 - 1] <= 0
+                            if (r1 == 0 || r1 - 1 >= a.unit_.orx_rack_ammo.size()
+                                || a.unit_.orx_rack_ammo[r1 - 1] <= 0
                                 || a.owner_.gunnery == nullptr) {
                                 ++a.unit_.orx_spawn_refused;
                                 return;
                             }
                             const std::size_t index = a.owner_.index_of_slot(a.unit_);
-                            const int bullet = r1 - 1 < a.unit_.rack_bullet_id_per_rack.size()
-                                ? a.unit_.rack_bullet_id_per_rack[r1 - 1] : -1;
+                            const int bullet = a.unit_.orx_rack_bullet[r1 - 1];
                             const float point[3] = {a.unit_.orx_pending_point[0],
                                                     a.unit_.orx_pending_point[1],
                                                     a.unit_.orx_pending_point[2]};
@@ -20684,8 +20688,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 ++a.unit_.orx_spawn_refused;
                                 return;
                             }
-                            --a.unit_.rack_ammo_per_rack[r1 - 1];
-                            --a.unit_.rack_ammo;
+                            // LABELLED: a single rocket rack's rounds are not shared with
+                            // rack_ammo_per_rack (no other host path fires a rocket rack).
+                            --a.unit_.orx_rack_ammo[r1 - 1];
                             ++a.unit_.orx_spawned;
                             if (a.unit_.orx_spawned <= 2) {
                                 a.owner_.log.notef("opportunistic rocket: unit=%s rack=%zu bullet=%d "
@@ -20693,7 +20698,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     a.unit_.row.name.c_str(), r1 - 1, bullet,
                                     a.unit_.orx_pending_target_plus_one,
                                     static_cast<double>(a.unit_.orx_pending_angle),
-                                    a.unit_.rack_ammo_per_rack[r1 - 1],
+                                    a.unit_.orx_rack_ammo[r1 - 1],
                                     a.owner_.summary.simulated_seconds);
                             }
                         }
@@ -20713,6 +20718,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const bsp::OpportunisticRocketTickResult r =
                             bsp::opportunistic_rocket_tick_009fd0e0(unit_.orx, host, host, dt);
                         if (r.decided) ++unit_.orx_decisions;
+                        if (r.decided && unit_.orx_decisions <= 2) {
+                            owner_.log.notef("opportunistic rocket decision: unit=%s target=%zu plane=%d "
+                                "armed=%d evaluated=%d gate=%d rocket_platforms=%zu t=%.2f (009FD0E0)",
+                                unit_.row.name.c_str(), unit_.orx.target_plus_one_38,
+                                unit_.orx.target_is_plane_3c ? 1 : 0, r.armed ? 1 : 0,
+                                r.evaluated ? 1 : 0, static_cast<int>(r.gate),
+                                unit_.orx_rack_kind.size(),
+                                static_cast<double>(owner_.summary.simulated_seconds));
+                        }
                         if (r.armed) ++unit_.orx_salvos;
                         if (r.released) ++unit_.orx_releases;
                         owner_.done("PilotBot::opportunistic_rocket_tick", 0x009fd0e0u);
@@ -26816,14 +26830,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     owner_.read_device_bullet_class_id(dev));
                                 unit_.rack_bullet_id_per_rack.push_back(
                                     owner_.read_device_bullet_id(dev));
-                                unit_.rack_rocket_kind_per_rack.push_back(
-                                    owner_.read_device_rocket_kind(dev));
                                 // 006E0242 00B66330 default [00CE3D30] = 0.6f.
                                 unit_.rack_repeat_per_rack.push_back(
                                     owner_.lua.read_device_class_number(dev, "RepeatTime",
                                         owner_.rack_repeat_default()));
                             } else if (type == "MultiBombPlatform") {
                                 ++unit_.rack_multi_count;
+                            }
+                            if constexpr (bsp::kOpportunisticRocketBound) {
+                                // Packet cc13-oprocket1 (cc9-gunnery39): every rocket
+                                // platform, with its own authored rounds.
+                                const int rk = (type == "BombPlatform" || type == "MultiBombPlatform")
+                                    ? owner_.read_device_rocket_kind(dev) : 0;
+                                if (rk > 0) {
+                                    unit_.orx_rack_kind.push_back(rk);
+                                    unit_.orx_rack_bullet.push_back(owner_.read_device_bullet_id(dev));
+                                    unit_.orx_rack_ammo.push_back(
+                                        owner_.rack_equipment_ammo(unit_, type_id, pkey));
+                                }
                             }
                         }
                         if constexpr (GameUnitsHost::Impl::kRackUnequippedEmptyBound &&

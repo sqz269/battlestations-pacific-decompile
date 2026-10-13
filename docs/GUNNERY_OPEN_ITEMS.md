@@ -13242,3 +13242,11 @@ hit-rate rise.
    `build_guns` sites as gunnery38 prepared it. `local\g38_tier_census.py` re-run on this installation's
    arcade and realistic `bulletclasses.lua`: 32 and 26 Artillery classes, 0 change tier. Predicted
    gameplay-identical everywhere.
+- **Correction after the first pairs** (USN13/JM08/USN19 identical, 0 launches): every rocket set but the singles
+  (devices 59/60 HVAR/R4M, 22/416 Tiny Tim) is a `MultiBombPlatform` (125 Raiden/Shinden R4M, 126 Kikka R4M, 127
+  Corsair HVAR, 128 Avenger HVAR, 149 Mustang, 262 Hellcat; `local\g39_rocket_devices.py` over this installation's
+  arcade deviceclasses.lua), and the host's per-rack vectors hold single racks only, so cc13's per-rack kind list
+  never found one. The tick now walks its own list, `orx_rack_kind/bullet/ammo`, filled in the census for both
+  platform types (under the switch only), each with its own authored rounds (`rack_equipment_ammo`). LABELLED: the
+  image's rocket is one child record of the platform; the host keeps a count. USN13, JM08 and USN19 had no rocket
+  gun row in 450/1800/900 s; IJN14 and IJN23 do (bullet 8 / 11 on category 10), so the pairs move there.
