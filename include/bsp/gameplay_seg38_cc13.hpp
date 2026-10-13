@@ -105,6 +105,34 @@ struct DirectorQueue {
 // all are full). Not a separate image function.
 int first_empty_slot(const DirectorQueue& q) noexcept;
 
+// 0071BE60 __fastcall(director): the filled slot count, i.e. first_empty_slot.
+int filled_slot_count_0071be60(const DirectorQueue& q) noexcept;
+
+// 0071BFF0 __thiscall(director, uint i), RET 4: path(i)+10h, falling back to
+// slot 0's path when i > 9 or path(i) is null (slot 0's own path is not
+// checked: a null slot-0 path yields address 10h). Returns the slot used.
+int command_path_cursor_slot_0071bff0(const DirectorQueue& q, unsigned index) noexcept;
+
+// 0071EBF0 __fastcall(director): the target record a director is acting on.
+// Mode 1: the newest filled slot (scanning down from the last) whose category
+// is 1 or 2; mode 2: the override target (+18Ch); otherwise, or when no slot
+// qualifies, the neutral static record 00E19BB4 (a zero target, lazily
+// initialised under bit 0 of 00E19BCC).
+enum class NewestTargetSource { kSlot, kOverride, kNeutral };
+struct NewestTarget {
+    NewestTargetSource source = NewestTargetSource::kNeutral;
+    int slot = -1;
+};
+NewestTarget newest_command_target_0071ebf0(const DirectorQueue& q, std::int32_t mode_30) noexcept;
+
+// 0071BA20 __thiscall(node, vector* out, const char* prefix), RET 8: out is
+// cleared, then every 8-byte child entry of the node's +80h..+84h vector that
+// BSP_ModelNoteNameEquals_Predicate accepts contributes its +4h dword, in
+// order. The predicate is supplied.
+std::vector<std::uint32_t> collect_children_by_prefix_0071ba20(
+    const std::vector<std::array<std::uint32_t, 2>>& entries,
+    const std::function<bool(const std::array<std::uint32_t, 2>&)>& accepts);
+
 // 0071BDE0 __thiscall(director, uint i), RET 4: slot i's path object when the
 // slot is moveonpath and the path's vtable[4]() holds; else null. Returns the
 // slot index whose path is answered, or -1.
@@ -210,6 +238,29 @@ RoutedDirectorMessage clearcmd_construct_0071c730(std::uint8_t field_20, std::ui
 RoutedDirectorMessage set_cur_path_index_message_0071cdd0(std::uint32_t index) noexcept;
 // 0071D3E0: message 5Fh (session message 95) with a zero point and +2Ch = 0.
 RoutedDirectorMessage clear_user_path_point_message_0071d3e0() noexcept;
+// 0071D880: CLEARCMD with +20h = 1 and slot +24h = FFFFFFFFh (all slots).
+RoutedDirectorMessage clear_commands_message_0071d880() noexcept;
+// 0071D340 cdecl(const Vec3*): message 5Fh carrying the point at +20h..+28h
+// and +2Ch = 1 (0071D3E0 sends the same type with a zero point and +2Ch = 0).
+struct UserPathPointMessage {
+    std::uint8_t type = 0x5F;
+    Vec3f point{};
+    std::uint32_t add_2c = 0;
+};
+UserPathPointMessage add_user_path_point_message_0071d340(const Vec3f& point) noexcept;
+
+// 0071D810 / 0071D9E0 __thiscall(director, int stage), RET 4: raise the
+// primary (+48h) or override (+50h) stage; never lowers. Reaching 2 routes a
+// CLEARCMD (0071C730) with +20h = 1 (primary) or 0 (override), +24h = 0,
+// unless the session mode [GGame+1FE4h] is 2. Returns the message when sent.
+std::optional<RoutedDirectorMessage> raise_command_stage_0071d810(std::int32_t& stage_48, std::int32_t stage,
+                                                                  std::int32_t session_mode) noexcept;
+std::optional<RoutedDirectorMessage> raise_override_stage_0071d9e0(std::int32_t& stage_50, std::int32_t stage,
+                                                                   std::int32_t session_mode) noexcept;
+
+// 0071D2A0 __fastcall(follower): attached (0071D270's test) -> vtable[14h](),
+// else -1. The virtual's answer is supplied.
+int path_follower_remaining_or_minus_one_0071d2a0(bool attached, int vt14_answer) noexcept;
 
 // 0071D980 __thiscall(director, cls, target), RET 8: a SetCommand message is
 // built and routed only while the override delay +40h is below zero.

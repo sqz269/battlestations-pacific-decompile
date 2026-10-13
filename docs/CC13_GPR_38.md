@@ -209,25 +209,22 @@ They are not native layouts and nothing is wired. Status of each: **reconstructe
 ## 3. Records, status and what is still open
 
 **Records.**
-- 71 `ledger add-function` records with source `src/gameplay_seg38_cc13.cpp`, status
-  `semantic_build_tested`, `abi_compatible: false`. The four 5Ah senders share one model, and the
-  two thunks `007213B0` and `007213C0` point at the routines they jump to.
+- 81 `ledger add-function` records with source `src/gameplay_seg38_cc13.cpp`, status
+  `semantic_build_tested`, `abi_compatible: false`. Some records share a model:
+  - the four 5Ah senders share one;
+  - the two thunks `007213B0` and `007213C0` point at the routines they jump to;
+  - `0071FC40` has the same body as `0071D270` and points at its model.
 - Two records point at the existing `radix_sort_records16_00722210`, as listed in section 2.3.
 - No Ghidra renames or comments were applied in this packet.
 
 **Build.** `./scripts/build.ps1` passes in the worktree, and both CTest suites pass.
 
 **Not modelled (open), with the reason:**
-- **Existing models elsewhere, not re-checked here.** I did not add records for these:
-  - `0071BA20` (`model_collect_children_by_prefix_0071ba20`, src/frontend_seg12_17_cc13.cpp);
-  - `0071BE60`, `0071D810`, `0071D9E0` (src/unit_commanded_speed.cpp);
-  - `0071BFF0` (src/ship_ai_state_steps.cpp);
-  - `0071D2A0`, `0071D340`, `0071FC40` (src/ai_command_tick.cpp);
-  - `0071D880` (src/entity_command_arms.cpp);
-  - `0071EBF0` (src/unit_gunnery_pass.cpp);
-  - `00722210` (src/band_0067_cc13.cpp).
-  
-  A follow-up should check each against the bytes and record it.
+- **Earlier "existing models" were host callbacks.** A first pass listed `0071BA20`, `0071BE60`,
+  `0071D810`, `0071D9E0`, `0071BFF0`, `0071D2A0`, `0071D340`, `0071FC40`, `0071D880` and
+  `0071EBF0` as reconstructed elsewhere. They only appear there as host-interface calls, so they
+  are now modelled here and recorded. `00722210` is a real model (src/band_0067_cc13.cpp) and was
+  left alone.
 - **`0071FDE0` AddPoint.** Its world-bounds clipping (`BSP_Point3Vector_ClipToWorldBounds`,
   `BSP_Game_ClipSegmentToWorldBounds`) and the two pushes need those helpers' contracts first. The
   gate is read: without replace, more than 7 points past the cursor are rejected; with replace the
