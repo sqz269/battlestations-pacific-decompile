@@ -110,6 +110,30 @@ void camera_mover_matrix_0042def0(std::uint32_t field_1bc, std::uint32_t field_3
     write_identity(out);
 }
 
+Vec3f camera_mover_velocity_0042c040(const Vec3f& velocity_at_1b0) {
+    return velocity_at_1b0;
+}
+
+void copy_matrix_0042c560(const float source[16], float out[16]) {
+    std::copy(source, source + 16, out);
+}
+
+void cockpit_chase_matrix_0042cc00(const float pose_at_74[16], float chase_at_2b8[16], float out[16]) {
+    std::copy(pose_at_74, pose_at_74 + 16, chase_at_2b8); // 0042CC0E CALL 004134F0
+    std::copy(chase_at_2b8, chase_at_2b8 + 16, out);      // 0042CC1E REP MOVSD
+}
+
+void camera_node_world_matrix_0042da30(bool has_node, bool node_world_valid,
+                                       const std::function<void()>& refresh_node,
+                                       const float node_world_at_f0[16], float out[16]) {
+    if (has_node) {
+        if (!node_world_valid) refresh_node(); // 0042DA3F..0042DA47
+        std::copy(node_world_at_f0, node_world_at_f0 + 16, out);
+        return;
+    }
+    write_identity(out);
+}
+
 void destroy_cstring_key_00439000(OwnedCStringKey& key, const std::function<void(void*)>& free_block) {
     // 00439000: CMP byte [ECX+4],0; JZ ret; PUSH [ECX]; CALL _free. The key
     // fields are left as they were.

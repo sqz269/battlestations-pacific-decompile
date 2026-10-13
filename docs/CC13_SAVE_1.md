@@ -1,6 +1,6 @@
 # CC13 save, profile and settings reconstruction pass (segments 2 and 29)
 
-Addresses: 0042b860, 0042b9e0, 0042ba00, 0042d680, 0042d770, 0042def0, 0042e960, 00437bd0, 00439000,
+Addresses: 0042b860, 0042b9e0, 0042ba00, 0042c040, 0042c560, 0042cbe0, 0042cc00, 0042da30, 0042d680, 0042d770, 0042def0, 0042e960, 00437bd0, 00439000,
 006ad470, 006af420, 006af780, 006af870, 006afb00, 006afe80, 006afec0, 006b5960
 
 Packet cc13-save1, lineage cc13. Ranges: segment 2 (`0042A920..0043E840`) and segment 29
@@ -17,9 +17,9 @@ reconstruction record nor a tag. They split as follows.
 | Group | Count | Action |
 | --- | --- | --- |
 | cc13-settings1 reconstructions without records (pickler, checkpoints, text dumpers, binding text, preset writer) | 48 | records backfilled after a RET-size check against the export listing |
-| New reconstructions in `src/save_settings_cc13.cpp` | 16 | reconstructed, build-tested, recorded |
+| New reconstructions in `src/save_settings_cc13.cpp` | 21 | reconstructed, build-tested, recorded |
 | Named `STL_*` template instantiations of the input-settings maps (segment 29) | 78 | tagged `stl_shape` (ledger only; library code) |
-| Camera movers, HUD gauges, cc9-lane entity slots, `LuaMachine` helpers, air operations, plus `006AF780` (documented only) | 64 | left to their owners (below) |
+| Camera movers, HUD gauges, cc9-lane entity slots, `LuaMachine` helpers, air operations, plus `006AF780` (documented only) | 59 | left to their owners (below) |
 
 The packet's string anchors (`BSP_Chk_Save`, `__unlockTo`, `__unlockName`, `__unlockFrom`,
 `__playTime`) all resolve to functions already reconstructed in `src/profile_checkpoint.cpp` and
@@ -32,7 +32,7 @@ the reviewed kind); it was not touched.
 | Item | Exported | Reconstructed | Build-tested | Validated |
 | --- | --- | --- | --- | --- |
 | Entity-interface slots `0042B860`, `0042B9E0`, `0042BA00`, `0042D680`, `0042D770`, `0042E960` | yes | `src/save_settings_cc13.cpp` | yes | no |
-| Camera mover matrix slot `0042DEF0`, key destructor `00439000`, cache resize `00437BD0` | yes | `src/save_settings_cc13.cpp` | yes | no |
+| Camera mover slots `0042DEF0`, `0042C040`, `0042C560`, `0042CBE0`, `0042CC00`, `0042DA30`, key destructor `00439000`, cache resize `00437BD0` | yes | `src/save_settings_cc13.cpp` | yes | no |
 | Entity name map `006AFE80` / `006AF870` / `006AFEC0` / `006AF420` | yes | `MissionEntityNameMap` | yes | no |
 | `006AFB00` restore entities, `006AD470` registry read, `006B5960` load tail | yes | `src/save_settings_cc13.cpp` (hooks for native reads) | yes | no |
 | `006AF780` single-entity restore | yes | documented only | n/a | no |
@@ -61,6 +61,11 @@ the fields as values because the entity layout is owned by other lanes.
 - `0042E960`, `ECX` entity: `+158h` when `+15Ch` is zero, else `+160h`; null becomes `""` (`00E1767D`).
 - `0042DEF0` (camera mover vtable `+120h`): copies `+2F8h` when `+1BCh` and `+3ACh` are both
   nonzero, otherwise the identity.
+- Camera copy slots (all `RET 4`): `0042C040` copies `+1B0h..+1B8h`; `0042C560` and `0042CBE0` copy
+  16 dwords from `+2B8h` / `+3E8h` with `REP MOVSD`; `0042CC00` first copies the pose `+74h` into
+  `+2B8h` through `004134F0` (`FLD`/`FSTP` per float, which quietens a signalling NaN) and then copies
+  `+2B8h` out; `0042DA30` takes the node at `+1BCh`, refreshes it through `00B6DB70` when bit 1 of
+  byte `node+5Ch` is clear, and copies `node+F0h`, or writes the identity without a node.
 - `00439000`: `_free(data)` only when the owns byte at `+4` is set.
 - `00437BD0` (`docs/VEHICLE_CLASS_DESCRIPTORS.md`): grow through `00436530` and null-fill; shrink pops
   from the end, releasing each non-null descriptor (`InterlockedDecrement(desc+4)`, vtable slot 0 at
@@ -170,9 +175,8 @@ They are the `std::_Tree`, `std::vector` and `std::pair` bodies of the input-set
   (`0042D5A0`, `0042DCD0`, `0042F0C0`, `0042F650`, `00432E60`, `00432ED0`). The scoring read
   `00916A00` and the spectated-unit setter called by `006B5960` are gameplay state; the host only
   calls hooks. No mission scoring that changes gameplay state lives in these ranges.
-- cc13 camera lanes: `0042A920`, `0042C040`, `0042C4C0`, `0042C560`, `0042C610`, `0042CBE0`,
-  `0042CC00`, `0042CEA0`, `0042DA30`, `0042EB90`, `004329D0`, `00435410` (named and cited in
-  `include/bsp/segment2_camera_cc13.hpp`; none of the five copy slots surveyed has a host body yet).
+- cc13 camera lanes: `0042A920`, `0042C4C0`, `0042C610`, `0042CEA0`, `0042EB90`, `004329D0`,
+  `00435410` (named and cited in `include/bsp/segment2_camera_cc13.hpp` and the camera hosts).
 - HUD: `004396F0`, `00439820`, `0043A290`, `0043A660`, `0043ABA0`, `0043B370`, `0042BA40`
   (implemented or cited in the HUD hosts).
 - `TickElement` stubs `0042BB70..0042BBB0` (`src/tick_element_overrides.cpp`) and `0042E740`
@@ -203,14 +207,12 @@ Live `bsp.py ghidra decompile` and `ghidra disasm` for every new routine; `disas
 
 ## Handoff
 
-Done: 16 new reconstructions, 48 backfilled records, 78 tags, two Ghidra evidence updates.
+Done: 21 new reconstructions, 48 backfilled records, 78 tags, two Ghidra evidence updates.
 
 Open:
 
 1. `006AF8B0` (the unnamed load body ahead of `006AF420`) still has no Ghidra function; reading it
    would complete the load side.
-2. The five camera copy slots (`0042C040`, `0042C560`, `0042CBE0`, `0042CC00`, `0042DA30`) are
-   trivial and unreconstructed; they belong with `src/segment2_camera_cc13.cpp`.
-3. `006A9A40` and `006AAC50` (binding rebinding and conflict text) remain surveyed only
-   (`docs/CC13_PROFILE_SAVE.md`, open item 1).
-4. Whether anything can reach `006B5960` at run time; the null-entity finding suggests not.
+2. `006A9A40` and `006AAC50`, open item 1 of `docs/CC13_PROFILE_SAVE.md`, are already reconstructed
+   in `src/input_rebind.cpp` (`docs/CC13_SCENE_BROWSER.md`); nothing is left there.
+3. Whether anything can reach `006B5960` at run time; the null-entity finding suggests not.

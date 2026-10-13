@@ -68,6 +68,24 @@ const char* entity_name_0042e960(const char* name_at_158, std::uint32_t selector
 void camera_mover_matrix_0042def0(std::uint32_t field_1bc, std::uint32_t field_3ac,
                                   const float matrix_at_2f8[16], float out[16]);
 
+// Camera mover copy slots, all __thiscall(mover, out*), RET 4.
+// 0042C040 (slot 34h): copies +1B0h..+1B8h (the mover velocity).
+Vec3f camera_mover_velocity_0042c040(const Vec3f& velocity_at_1b0);
+// 0042C560 (slot 114h, source +2B8h) and 0042CBE0 (cockpit slot 120h, source
+// +3E8h): REP MOVSD of 16 dwords, so the bits are copied unchanged.
+void copy_matrix_0042c560(const float source[16], float out[16]);
+// 0042CC00 (cockpit slot 114h): 004134F0 (ECX = mover+2B8h, [ESP+4] =
+// mover+74h) copies the pose into the chase matrix with FLD/FSTP per float,
+// then REP MOVSD copies +2B8h out. The x87 copy quietens a signalling NaN;
+// the host copies values, which on SSE2 builds keeps the bits.
+void cockpit_chase_matrix_0042cc00(const float pose_at_74[16], float chase_at_2b8[16], float out[16]);
+// 0042DA30 (slot 120h): node = +1BCh. With a node, B6DB70 (ECX = node)
+// refreshes it when bit 1 of byte node+5Ch is clear, then node+F0h is copied;
+// without one the identity (00D7A24C) is written.
+void camera_node_world_matrix_0042da30(bool has_node, bool node_world_valid,
+                                       const std::function<void()>& refresh_node,
+                                       const float node_world_at_f0[16], float out[16]);
+
 // 00439000, __fastcall(ECX key), RET: an 8-byte {char* data; bool owns} key;
 // _free(data) only when the owns byte at +4 is set. The host passes the
 // deallocator because the native one is the CRT heap.
