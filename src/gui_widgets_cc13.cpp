@@ -1243,4 +1243,335 @@ void* gui_model_copy_construct_00accf70(void* self, const void* source, GuiModel
     return self;
 }
 
+// ===========================================================================
+// Packet cc13-gui2 (docs/CC13_GUI_2.md)
+// ===========================================================================
+
+namespace {
+GuiTaggedValue integer_value(std::int32_t value) noexcept {
+    GuiTaggedValue v;
+    v.tag = kGuiValueTagInt;
+    v.i = value;
+    return v;
+}
+constexpr char kMovieEmpty[] = ""; // 00F8BD94
+constexpr char kTextEmpty[] = "";  // 00F8BE4C
+constexpr char kCurveEmpty[] = ""; // 00F8BEA4
+constexpr char kLiteralEmpty[] = ""; // 00CE3A0C
+} // namespace
+
+void gui_movie_describe_properties_00aad9a0(const void* m, GuiPropertyWriter& writer, GuiDescribeHost& host) {
+    gui_widget_describe_properties_00aaaed0(m, writer, host);
+    write_unless_default(writer, "MovieName", string(native_c_str(m, 0xFC, kMovieEmpty)), string(kLiteralEmpty));
+}
+
+void gui_text_describe_properties_00ab7b60(const void* t, GuiPropertyWriter& writer, GuiDescribeHost& host) {
+    gui_widget_describe_properties_00aaaed0(t, writer, host);
+    writer.write("Font", string(native_c_str(t, 0x1C8, kTextEmpty)));
+    write_unless_default(writer, "FontScale", floats(GuiValueTag::Float, t, 0x1D8, 1), constant(GuiValueTag::Float, 1));
+    write_unless_default(writer, "Multiline", boolean(read_field<std::uint8_t>(t, 0xFC) != 0), boolean(true));
+    write_unless_default(writer, "DistanceBetweenLines", floats(GuiValueTag::Float, t, 0x10C, 1),
+        constant(GuiValueTag::Float, 0));
+    write_unless_default(writer, "DefaultText", string(native_c_str(t, 0xF4, kTextEmpty)), string(kLiteralEmpty));
+    if (read_field<std::uint32_t>(t, 0x1C0) != 0)
+        write_unless_default(writer, "ShaderName", string(native_c_str(t, 0x1C0, kTextEmpty)), string(kLiteralEmpty));
+    const char* align = "Left"; // 00CE92E4
+    switch (read_field<std::int32_t>(t, 0x100)) {
+    case 2: align = "Right"; break;     // 00CE92DC
+    case 1: align = "Center"; break;    // 00D5C67C
+    case 3: align = "Justified"; break; // 00D5C670
+    default: break;
+    }
+    writer.write("Align", string(align));
+    const char* vertical = "Top"; // 00CE92D8
+    switch (read_field<std::int32_t>(t, 0x104)) {
+    case 2: vertical = "Bottom"; break; // 00CE92D0
+    case 1: vertical = "Center"; break;
+    default: break;
+    }
+    writer.write("VerticalAlign", string(vertical));
+    if (read_field<std::uint8_t>(t, 0x118) != 0) {
+        writer.open_table("MISColors");
+        writer.write("Normal", floats(GuiValueTag::Color, t, 0x11C, 4));
+        writer.write("Focus", floats(GuiValueTag::Color, t, 0x12C, 4));
+        writer.write("Selected", floats(GuiValueTag::Color, t, 0x13C, 4));
+        writer.write("Disabled", floats(GuiValueTag::Color, t, 0x14C, 4));
+        writer.close_table();
+    }
+    const std::int32_t default_shadow = read_field<std::int32_t>(t, 0x1D0);
+    write_unless_default(writer, "DefaultShadow", integer_value(default_shadow), integer_value(-1));
+    if (read_field<std::int32_t>(t, 0x1D0) != -1) return;
+    write_unless_default(writer, "Shadowed", boolean(read_field<std::uint8_t>(t, 0x15C) != 0), boolean(false));
+    if (read_field<std::uint8_t>(t, 0x15C) == 0) return;
+    write_unless_default(writer, "ShadowColor", floats(GuiValueTag::Color, t, 0x168, 4),
+        constant(GuiValueTag::Color, 0, 0, 0, 0.75f)); // 00E12FD8
+    writer.write("ShadowPos", string("Behind")); // both arms of the +160h test
+    write_unless_default(writer, "ShadowOffset", floats(GuiValueTag::Float, t, 0x164, 1),
+        constant(GuiValueTag::Float, 0.05f)); // 00D5C5C0
+}
+
+void gui_curve_describe_properties_00abc7a0(const void* c, GuiPropertyWriter& writer, GuiDescribeHost& host) {
+    gui_widget_describe_properties_00aaaed0(c, writer, host);
+    const auto* first = read_field<const float*>(c, 0x134);
+    const auto* last = read_field<const float*>(c, 0x138);
+    const std::size_t count = first != nullptr ? static_cast<std::size_t>(last - first) / 2 : 0;
+    if (count != 0) {
+        writer.open_table("PosArray");
+        const auto* widths = read_field<const float*>(c, 0xF8);
+        for (std::size_t i = 0; i < count; ++i) {
+            const GuiTaggedValue point = constant(GuiValueTag::Vec3, first[2 * i], first[2 * i + 1], widths[i]);
+            writer.write_index(static_cast<std::int32_t>(i + 1), point);
+        }
+        writer.close_table();
+    }
+    writer.write("Texture", string(native_c_str(c, 0x104, kCurveEmpty)));
+}
+
+namespace {
+// The inlined intrusive-pointer assignment of 00AB3840 / 00AB3B30.
+void assign_state_texture(GuiIconState& state, void* texture, GuiIconStateHost& host) {
+    void* const old = state.texture;
+    if (old == texture) return;
+    state.texture = texture;
+    if (texture != nullptr) host.retain_texture(texture);
+    if (old != nullptr) host.release_texture(old);
+}
+} // namespace
+
+void gui_icon_rebuild_current_state_00ab10d0(GuiIconWidget& icon, GuiIconStateHost& host) {
+    host.rebuild_virtual_80(icon, static_cast<std::int32_t>(static_cast<std::uint16_t>(icon.current_state)));
+}
+
+void gui_icon_apply_delayed_texture_00ab3840(GuiIconWidget& icon, const std::string& name, void* texture,
+    GuiIconStateHost& host) {
+    for (std::size_t i = 0; i < icon.states.size(); ++i) {
+        GuiIconState& state = icon.states[i];
+        if (state.texture_name.size() != name.size()) continue;
+        if (!name.empty() && _stricmp(state.texture_name.c_str(), name.c_str()) != 0) continue;
+        assign_state_texture(state, texture, host);
+        if (state.size.width == 0.0f && state.size.height == 0.0f)
+            state.size = host.native_size_00ab17b0(state.texture, state.resolved_uv);
+        state.load_pending = false;
+        state.flag_3d = true;
+        if (static_cast<std::int32_t>(i) == icon.current_state)
+            host.rebuild_virtual_80(icon, static_cast<std::int32_t>(i));
+    }
+}
+
+void gui_icon_state_set_delayed_placeholder_00ab3b30(GuiIconState& state, GuiIconStateHost& host) {
+    state.load_pending = true;
+    state.flag_3d = false;
+    const std::string name(kGuiIconDelayedPlaceholder);
+    assign_state_texture(state, host.load_texture_00f8d394_64(name), host);
+}
+
+void gui_icon_set_state_texture_00ab44b0(GuiIconWidget& icon, std::uint32_t index, const std::string& name,
+    const GuiUvRect& uv, GuiIconStateHost& host) {
+    GuiIconState& state = icon.states.at(index); // 00BF6713 on a bad index
+    if (&state.texture_name != &name) state.texture_name = name;
+    state.authored_uv = uv;
+    if (icon.delayed_texture_load) return;
+    GuiUvRect resolved{0.0f, 0.0f, 1.0f, 1.0f};
+    GuiWidgetSize unused_size{}; // uninitialized in the image
+    void* const texture = host.resolve_texture_00aa2660(name, resolved, unused_size, 1.0f);
+    host.set_state_texture_00ab2690(icon, index, texture, resolved);
+    host.release_texture(texture);
+}
+
+std::int32_t gui_icon_add_state_00ab64c0(GuiIconWidget& icon, const GuiWidgetTransform& base, void* texture,
+    const GuiUvRect& uv, GuiIconStateHost& host) {
+    GuiIconState record;
+    record.resolved_uv = GuiUvRect{0.0f, 0.0f, 1.0f, 1.0f};
+    record.authored_uv = GuiUvRect{0.0f, 0.0f, 1.0f, 1.0f};
+    record.pivot_x = base.pivot_x;
+    record.pivot_y = base.pivot_y;
+    record.size = base.size;
+    if (texture != nullptr) {
+        host.retain_texture(texture);
+        record.texture = texture;
+        record.texture_name = host.texture_name_00b33e40(texture);
+    }
+    gui_icon_set_resolved_uv_00ab1680(record, uv);
+    // 00AB63A0 -> 00AB5400 -> record copy 00AB3A70, which retains the texture.
+    icon.states.push_back(record);
+    if (record.texture != nullptr) host.retain_texture(record.texture);
+    const auto count = static_cast<std::int32_t>(icon.states.size());
+    // 00AB3280 releases the stack record's reference.
+    if (record.texture != nullptr) host.release_texture(record.texture);
+    return count - 1;
+}
+void gui_curve_create_geometry_00abcc70(void* c, GuiGeometryHost& host) {
+    if (read_field<std::uint8_t>(c, 0x74) == 0) {
+        void* const scene = read_field<void*>(c, 0x4C);
+        void* const mesh = host.new_mesh_object_00b73b60();
+        host.set_geometry_00b75170(scene, 0, mesh, -1.0f, -1.0f); // 00D7A260
+        void* const material = host.create_material_00535320("guidefault.mshd"); // 00D5C25C
+        write_field<void*>(c, 0x12C, material);
+        auto* const bytes = static_cast<std::byte*>(c);
+        host.register_float_00b18b20(material, "cOverbrightFactor", reinterpret_cast<float*>(bytes + 0x94));
+        host.register_float4_00b18aa0(material, "cLowColor", reinterpret_cast<float*>(bytes + 0xA4));
+        host.register_float4_00b18aa0(material, "cHighColor", reinterpret_cast<float*>(bytes + 0xB4));
+        host.register_float_00b18b20(read_field<void*>(c, 0x12C), "cBlendFactor", reinterpret_cast<float*>(bytes + 0xC4));
+        host.set_parameter_owner_00b18a40(read_field<void*>(c, 0x12C), c, 1);
+        host.register_clip_parameters_00aa9f10(c, read_field<void*>(c, 0x12C));
+        host.release_object(mesh);
+    }
+    const float origin[3] = {0.0f, 0.0f, 0.0f};
+    host.set_local_position_00aa7dc0(c, origin);
+}
+
+void gui_line_create_geometry_00ac2430(void* l, GuiGeometryHost& host) {
+    void* const scene = read_field<void*>(l, 0x4C);
+    void* const mesh = host.new_mesh_object_00b73b60();
+    host.set_geometry_00b75170(scene, 0, mesh, -1.0f, -1.0f);
+    host.release_object(mesh);
+    void* const format = host.vertex_format_00f8d394_38("SimpleColor.mvfm"); // 00CF0078
+    void* const vertices = host.vertex_buffer_00f8d394_5c(4, 1, format);
+    host.mesh_set_vertex_stream_00b73bb0(mesh, 0, vertices);
+    void* const indices = host.index_buffer_00f8d394_60(8, 1, 0x65);
+    host.mesh_set_index_stream_00b73b70(mesh, indices);
+    void* const section = host.create_draw_section_00533fa0();
+    void* const material = host.create_material_00535320("guidefault.mshd");
+    host.section_set_dwords(section, 2, 0, 0);
+    host.section_set_material_00b864c0(section, material);
+    host.release_object(material);
+    host.section_rebuild_layout_00b865a0(section, mesh);
+    host.mesh_append_section_00b73c60(mesh, section);
+    host.material_set_texture_00b189f0(material, 0, host.gui_manager_texture_28());
+    host.release_object(indices);
+    host.release_object(vertices);
+    host.release_object(format);
+    host.release_object(section);
+}
+void gui_model_setup_material_constants_00acc8a0(void* m, void* node, GuiModelLoadHost& host) {
+    auto* const bytes = static_cast<std::byte*>(m);
+    if (host.is_generated_model(node)) {
+        for (std::uint32_t g = 0; g < host.geometry_count_00b74650(node); ++g) {
+            void* const mesh = host.geometry_00b74640(node, g);
+            for (std::uint32_t s = 0; s < host.section_count_00b72b40(mesh); ++s) {
+                void* const section = host.section_00b732c0(mesh, s);
+                host.set_effect_priority_00b172e0(host.material_effect(host.section_material(section)), 0);
+                host.register_float_00b18b20(host.section_material(section), "cOverbrightFactor",
+                    reinterpret_cast<float*>(bytes + 0x94));
+                host.register_float4_00b18aa0(host.section_material(section), "cLowColor",
+                    reinterpret_cast<float*>(bytes + 0xA4));
+                host.register_float4_00b18aa0(host.section_material(section), "cHighColor",
+                    reinterpret_cast<float*>(bytes + 0xB4));
+                host.register_float_00b18b20(host.section_material(section), "cBlendFactor",
+                    reinterpret_cast<float*>(bytes + 0xC4));
+                host.register_clip_parameters_00aa9f10(m, host.section_material(section));
+            }
+        }
+    }
+    for (void* child = host.first_child(node); child != nullptr; child = host.next_sibling(child))
+        gui_model_setup_material_constants_00acc8a0(m, child, host);
+}
+
+bool gui_model_load_resource_00accb90(void* m, const std::string& name, GuiModelLoadHost& host) {
+    if (void* const old = read_field<void*>(m, 0xF0)) {
+        host.release_object(old);
+        write_field<void*>(m, 0xF0, nullptr);
+    }
+    write_field<void*>(m, 0xEC, nullptr);
+    host.assign_string(m, 0x10C, name);
+    // The comparison against "" (00CE3A0C) reduces to "name is not empty".
+    if (!name.empty()) {
+        if (void* const resource = host.load_resource_00b80d70(name)) {
+            void* const instance = host.instantiate_resource_08(resource, 6, 1.0f);
+            write_field<void*>(m, 0xF0, instance);
+            host.release_object(resource);
+            void* const root = host.instance_root(instance);
+            write_field<void*>(m, 0xEC, root);
+            if (root != nullptr) {
+                host.set_parent_00b6e680(root, read_field<void*>(m, 0x4C));
+                gui_model_setup_material_constants_00acc8a0(m, read_field<void*>(m, 0x4C), host);
+            }
+        }
+    }
+    return read_field<void*>(m, 0xEC) != nullptr;
+}
+
+void gui_model_load_model_00acccf0(void* m, const std::string& name, const std::string& texture_override,
+    GuiModelLoadHost& host) {
+    gui_model_load_resource_00accb90(m, name, host);
+    host.assign_string(m, 0x114, texture_override);
+    auto* const bytes = static_cast<std::byte*>(m);
+    host.set_transform_vectors_00acbec0(m, reinterpret_cast<float*>(bytes + 0xF4),
+        reinterpret_cast<float*>(bytes + 0x100));
+    if (texture_override.empty()) return;
+    void* const root = read_field<void*>(m, 0xEC); // not null-tested
+    void* const target = host.is_generated_model(root) ? root : host.first_child(root);
+    for (std::uint32_t s = 0; s < host.section_count_00b72b40(host.geometry_00b74640(target, 0)); ++s) {
+        void* const section = host.section_00b732c0(host.geometry_00b74640(target, 0), s);
+        void* const material = host.section_material(section);
+        void* const texture = host.load_texture_00f8d394_64(texture_override);
+        host.material_set_texture_00b189f0(material, 0, texture);
+        host.register_clip_parameters_00aa9f10(m, material);
+        host.release_object(texture);
+    }
+}
+void* gui_listbox_copy_construct_00aa5b40(void* self, const void* source, GuiListboxCopyHost& host,
+    msvc9_containers::ListCopyHost& lists) {
+    const auto copy = [&](std::size_t from, std::size_t to_inclusive) {
+        std::memcpy(static_cast<std::byte*>(self) + from, static_cast<const std::byte*>(source) + from,
+            to_inclusive - from + 1);
+    };
+    host.copy_widget_base_00aa9520(self, source);
+    write_field<std::uint32_t>(self, 0, kGuiListboxVtable);
+    copy(0xEC, 0xFB);  // dword +ECh, floats +F0h..+F8h
+    msvc9_containers::list_copy_construct_00aa57c0(static_cast<std::byte*>(self) + 0xFC, static_cast<const std::byte*>(source) + 0xFC,
+        lists);
+    copy(0x108, 0x11B); // dwords
+    copy(0x11C, 0x121); // bytes
+    copy(0x124, 0x137); // floats
+    copy(0x138, 0x138);
+    copy(0x13C, 0x13F);
+    copy(0x140, 0x141);
+    copy(0x144, 0x147);
+    copy(0x148, 0x14A);
+    msvc9_containers::list_copy_construct_00aa57c0(static_cast<std::byte*>(self) + 0x14C,
+        static_cast<const std::byte*>(source) + 0x14C, lists);
+    copy(0x158, 0x16B); // dwords +158h..+164h, float +168h
+    host.copy_string_vector_00557bc0(static_cast<std::byte*>(self) + 0x16C,
+        static_cast<const std::byte*>(source) + 0x16C);
+    return self;
+}
+void* gui_nine_slice_construct_00ac0c90(void* self, void* widget, const float (&size)[2], GuiNineSliceHost& host) {
+    write_field<float>(self, 0x0C, size[0]);
+    write_field<float>(self, 0x10, size[1]);
+    write_field<std::uint32_t>(self, 0, kGuiNineSliceBaseVtable);
+    write_field<void*>(self, 0x04, widget);
+    void* const clone = host.clone_subtree_00aab4c0(widget, 0);
+    write_field<void*>(self, 0x08, clone);
+    host.clone_virtual_34(clone, 0);
+    write_field<std::uint32_t>(self, 0, kGuiNineSliceVtable);
+    static constexpr const char* kSlices[8] = {
+        "UL_Icon", "U_Icon", "UR_Icon", "L_Icon", "R_Icon", "BL_Icon", "B_Icon", "BR_Icon"};
+    for (std::size_t i = 0; i < 8; ++i)
+        write_field<void*>(self, 0x14 + 4 * i, host.find_child_00aa7e00(widget, kSlices[i], 1));
+    return self;
+}
+
+void gui_preload_lua_assets_00ac6be0(void* textures, void* models, void* sounds, const void* table,
+    GuiLuaPreloadHost& host) {
+    GuiLuaPreloadHost::Entry entry;
+    for (bool more = host.first_00b67080(table, entry); more; more = host.next_00b67190(table, entry)) {
+        if (entry.value_is_table) {
+            gui_preload_lua_assets_00ac6be0(textures, models, sounds, entry.value_table, host);
+            continue;
+        }
+        if (!entry.key_is_string || !entry.value_is_string) continue;
+        if (entry.key == "Texture") {
+            void* const texture = host.resolve_texture_00aa2660(entry.value, 0.0f);
+            host.push_texture_00ac6b50(textures, texture);
+            if (texture != nullptr) host.release_object(texture);
+        } else if (entry.key == "ModelName") {
+            void* const model = host.load_resource_00b80d70(entry.value);
+            host.push_model_00ac6ac0(models, model);
+            if (model != nullptr) host.release_object(model);
+        } else if (entry.key == "SoundEfx") {
+            host.push_sound_from_cache_00a83fd0(sounds, entry.value);
+        }
+    }
+}
 } // namespace bsp::gui_widgets_cc13
