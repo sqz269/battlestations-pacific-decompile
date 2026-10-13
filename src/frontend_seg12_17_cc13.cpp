@@ -3,6 +3,7 @@
 #include "bsp/frontend_menus.hpp"
 
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <string>
 
@@ -4578,6 +4579,187 @@ void library_preview_setup_environment_00502480(Raw screen, Fe9PreviewEnvironmen
     host.sky_box_set_luminance_00bbf200(host.atmosphere_get_sky_box_00bbddb0(screen.ptr(0x4BC)), 0.800000011920929f);
     host.resource_manager_virtual_120();
     host.scene_environment_block_destruct_004c6520(block.p);
+}
+
+// --- packet cc13-fe9c ------------------------------------------------------
+
+void library_load_downloadable_classes_005021e0(Raw screen, Fe9cLibraryDlcHost& host) {
+    void* const globals = host.lua_owner_globals_00b67980(host.game_lua_owner_1a0c());
+    void* const classes = host.lua_get_by_name_00b67800(globals, "VehicleClass");
+    host.lua_release_00b67700(globals);
+    for (std::uint32_t i = 0;; ++i) {
+        const auto* first = static_cast<std::uint8_t*>(screen.ptr(0x3F8));
+        if (first == nullptr || i >= static_cast<std::uint32_t>((static_cast<std::uint8_t*>(screen.ptr(0x3FC)) - first) / 0x6C)) break;
+        const Raw entry{const_cast<std::uint8_t*>(first) + i * 0x6C};
+        std::string dlc = host.vehicle_class_unlock_dlc_minimum_004fd8d0(screen, entry.at<std::int32_t>(0x48));
+        // 004CAD40 with an empty replacement resumes at the removal point.
+        for (std::size_t at = dlc.find("DL_Content_"); at != std::string::npos; at = dlc.find("DL_Content_", at))
+            dlc.erase(at, 11);
+        const std::uint32_t shift = static_cast<std::uint32_t>(std::atol(dlc.c_str()) - 1) & 0xFF;  // CL of __allshl
+        const std::uint64_t mask = shift >= 64 ? 0 : (std::uint64_t{1} << shift);
+        // The image re-reads the entry pointer after the call.
+        Raw{static_cast<std::uint8_t*>(screen.ptr(0x3F8)) + i * 0x6C}.at<std::uint8_t>(0x46) =
+            (host.owned_dlc_mask_2060() & mask) == mask ? 1 : 0;
+    }
+    host.lua_release_00b67700(classes);
+}
+
+void library_read_vehicle_class_rows_0050a400(void* class_ids, void* types, void* flags, Fe9cVehicleRowHost& host) {
+    void* const globals = host.lua_owner_globals_00b67980(host.game_lua_owner_1a0c());
+    void* const classes = host.lua_get_by_name_00b67800(globals, "VehicleClass");
+    host.lua_release_00b67700(globals);
+    void* const key = host.lua_new_object_00b65f50();
+    void* const value = host.lua_new_object_00b65f50();
+    host.lua_iterate_first_00b67080(classes, key, value);
+    while (!host.lua_is_unbound_00b66420(key)) {
+        if (host.lua_is_table_00b661b0(value)) {
+            void* const unlock = host.lua_get_by_name_00b67800(value, "Unlock");
+            if (host.lua_is_boolean_00b66000(unlock) && host.lua_get_boolean_00b66250(unlock)) {
+                void* const id = host.lua_get_by_name_00b67800(value, "UnlockID");
+                bool open = true;
+                if (!host.lua_is_nil_00b65fb0(id)) {
+                    if (!host.lua_is_string_00b660a0(id)) {
+                        open = false;
+                    } else {
+                        const char* const text = host.lua_get_string_00b662b0(id);
+                        const std::string name = text != nullptr ? text : "";
+                        if (!name.empty()) open = host.profile_is_unlock_satisfied_007fc4c0(name);
+                    }
+                }
+                if (open) {
+                    void* const race_probe = host.lua_get_by_name_00b67800(value, "Race");
+                    const bool has_race = !host.lua_is_nil_00b65fb0(race_probe);
+                    host.lua_release_00b67700(race_probe);
+                    if (has_race) {
+                        void* const race_object = host.lua_get_by_name_00b67800(value, "Race");
+                        const std::int32_t race = host.lua_get_integer_00b66290(race_object);
+                        host.lua_release_00b67700(race_object);
+                        if (race > 0) {
+                            host.int_vector_push_back_00442190(class_ids, host.lua_get_integer_00b66290(key));
+                            void* const type = host.lua_get_by_name_00b67800(value, "Type");
+                            const char* const type_text = host.lua_get_string_00b662b0(type);
+                            const std::string type_name = type_text != nullptr ? type_text : "";
+                            host.lua_release_00b67700(type);
+                            host.string_vector_append_00450540(types, type_name);
+                            host.int_vector_push_back_00442190(flags, race == 1 || race == 4 ? 1 : 0);
+                        }
+                    }
+                }
+                host.lua_release_00b67700(id);
+            }
+            host.lua_release_00b67700(unlock);
+        }
+        host.lua_iterate_next_00b67190(classes, key, value);
+    }
+    host.lua_release_00b67700(value);
+    host.lua_release_00b67700(key);
+    host.lua_release_00b67700(classes);
+}
+
+void library_preview_load_vehicle_model_0050aa10(Raw screen, Fe9cPreviewLoadHost& host) {
+    if (screen.at<std::int32_t>(0x4B4) == screen.at<std::int32_t>(0x4B0)) return;
+    host.library_preview_clear_rotors_0050a950(screen);
+    const std::int32_t class_id = screen.at<std::int32_t>(0x4B0);
+    screen.at<std::int32_t>(0x4B4) = class_id;
+    if (class_id == -1) return;
+    host.debug_print_004254b0("+ShowSelectedVehicle", 0);
+    std::string pack = "mpak/Class_own_" + std::to_string(class_id) + ".mpak";
+    if (!host.vfs_resolve_existing_00bdf4c0(pack)) {
+        pack = "mpak/Class_" + std::to_string(class_id) + ".mpak";
+        if (!host.vfs_resolve_existing_00bdf4c0(pack)) {
+            host.debug_print_004254b0("ERROR:MPAK files not found for class %d!!!", class_id);
+            pack = "giachievement_model_load_temp";
+        }
+    }
+    host.debug_print_004254b0("+pak search over", 0);
+    host.loading_queue_enqueue_005055c0(pack);
+    host.loading_queue_set_last_callback(0x00509FB0);
+    void* const globals = host.lua_owner_globals_00b67980(host.game_lua_owner_1a0c());
+    void* const classes = host.lua_get_by_name_00b67800(globals, "VehicleClass");
+    host.lua_release_00b67700(globals);
+    void* const row = host.lua_get_by_index_00b67720(classes, class_id);
+    void* const storage = host.operator_new_00bf681b(0x60);
+    void* const model = storage != nullptr ? host.library_preview_model_construct_004fcfc0(storage) : nullptr;
+    void* const mesh = host.lua_get_by_name_00b67800(row, "Mesh");
+    host.native_string_assign_cstring_0041e350(raw(model).p + 8, host.lua_get_string_00b662b0(mesh));
+    host.lua_release_00b67700(mesh);
+    raw(model).at<std::uint32_t>(0x18) = 0;
+    raw(model).at<std::int32_t>(0x1C) = class_id;
+    host.loading_queue_submit_00504d20(raw(model).p + 8, model);
+    host.lua_release_00b67700(row);
+    host.lua_release_00b67700(classes);
+}
+
+void library_load_class_tables_00504130(Raw screen, Fe9cPreviewSceneHost& host) {
+    host.simple_3d_scene_init_0093ccc0(screen.p + 8);
+    void* const camera = screen.ptr(0x10);
+    host.camera_set_render_mode_and_mask_00b6fdf0(camera, 0);
+    host.camera_set_clear_flags_00b6fe10(camera, 7);
+    void* const lights = raw(host.scene_lighting_owner_00b72110(screen.ptr(0x0C))).ptr(0x1C);
+    const Raw light = raw(raw(raw(lights).ptr(0)).ptr(8));
+    const std::array<float, 3> direction =
+        host.lighting_direction_from_angles_004b4d80(0.4363323152065277f, 4.363323211669922f);  // 00CEB664 / 00CEB668
+    for (int i = 0; i < 3; ++i) light.at<float>(0x1E0 + i * 4) = direction[i];
+    const auto diffuse = [&host] {
+        std::array<float, 4> colour{1.0f, 0.800000011920929f, 0.6157000064849854f, 1.0f};  // 00CE74F8, 00CEB660
+        if (host.flag_00f88a0c()) host.linearize_rgb_004e5c00(colour.data());
+        return colour;
+    };
+    const std::array<float, 4> base = diffuse();
+    host.light_set_base_diffuse_004b62e0(light.p, base.data());
+    const std::array<float, 4> stored = diffuse();
+    for (int i = 0; i < 4; ++i) light.at<float>(0x1C4 + i * 4) = stored[i];
+    host.light_set_diffuse_scale_00b7af90(light.p, 4.0f);     // 00CE3D34
+    host.light_set_specular_scale_00b7b010(light.p, 35.0f);  // 00CE4D90
+
+    void* const ambient = raw(host.scene_lighting_owner_00b72110(screen.ptr(0x0C))).ptr(0x10);
+    std::array<float, 4> colour{0.23919999599456787f, 0.243149995803833f, 0.1764499992132187f, 0.25f};
+    host.linearize_rgb_004e5c00(colour.data());
+    colour[3] = 1.0f;
+    host.ambient_set_00b7af20(ambient, colour.data());
+    std::array<std::array<float, 4>, 6> faces = kPreviewAmbientFaces;
+    for (std::uint32_t i = 0; i < 6; ++i) {
+        std::array<float, 4>& face = faces[i];
+        face[3] = static_cast<float>(face[3] * 1.5);  // 00CE3D78
+        const double s = face[3];
+        std::array<float, 4> scaled{static_cast<float>(face[0] * s), static_cast<float>(face[1] * s),
+                                    static_cast<float>(face[2] * s), 1.0f};
+        host.linearize_rgb_004e5c00(scaled.data());
+        host.ambient_set_cube_face_00b7af60(ambient, scaled.data(), i);
+    }
+    host.render_device_virtual_04(host.flag_00f88a04());
+    host.render_resources_initialize_00b107f0(host.flag_00f88a0c() ? 1 : 0, host.flag_00f88a0d(), host.dword_00f889d8());
+    host.scene_renderer_set_hdr_params_00b0e9b0(&kPreviewHdrParams);
+    void* const shadow = host.directional_light_create_shadow_owner_00a8fd30(light.p);
+    host.directional_light_set_shadow_owner_00b7bdf0(light.p, shadow);
+    host.ref_release(shadow);
+    screen.at<std::uint32_t>(0x48C) = 0;
+    host.lua_run_script_00b69d40("SCRIPTS/datatables/autoload/VehicleClasses.lua", 0);
+    host.lua_run_script_00b69d40("SCRIPTS/datatables/autoload/DeviceClasses.lua", 0);
+    screen.at<std::uint32_t>(0x4B0) = 1;
+}
+
+void library_fill_order_of_battle_row_00500a90(Raw screen, std::int32_t index, Fe9cOrderOfBattleRowHost& host) {
+    const auto record = [&] { return Raw{static_cast<std::uint8_t*>(screen.ptr(0x460)) + index * 0x2C}; };
+    host.library_find_entry_by_id_004fb090(screen, record().at<std::int32_t>(0));
+    const std::string name = host.vehicle_class_name_or_no_unlock_004fda50(screen, record().at<std::int32_t>(0));
+    void* const row = host.widget_clone_subtree_00aab4c0(screen.ptr(0xAC), nullptr);
+    void* const label = host.find_child_by_name_00aa7e00(row, "MenuItem_Text");
+    host.widget_set_name_2c(row, std::to_string(index));
+    raw(row).at<std::uint8_t>(0x77) = 0;
+    host.gui_text_set_ellipsized_00abb000(label, name, -1.0f, 1);
+    host.widget_set_visible_34(label, 1);
+    void* const units = host.find_child_by_name_00aa7e00(row, "NumUnits_Text");
+    host.widget_set_visible_34(units, 1);
+    const std::int32_t count = record().at<std::int32_t>(8);
+    if (count > 0) host.gui_text_set_localised_source_00abaed0(units, "x" + std::to_string(count), 1);
+    else host.gui_text_set_localised_cstring_00abbe50(units, " ", 1);
+    host.list_box_insert_row_00a9d750(screen.ptr(0xB8), row, 0, 0);
+    if (record().at<std::int32_t>(8) == -1) {
+        raw(row).at<std::uint8_t>(0x77) = 1;
+        host.gui_text_set_localised_cstring_00abbe50(units, "", 1);
+        raw(screen.ptr(0xB8)).at<std::uint8_t>(0x121) = 1;
+    }
 }
 
 } // namespace bsp::cc13_fe3

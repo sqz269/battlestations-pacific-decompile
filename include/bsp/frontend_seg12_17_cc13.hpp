@@ -2412,4 +2412,157 @@ struct Fe9SessionCreateHost {
 // row after the last.
 void session_browser_build_create_options_005684d0(Raw screen, Fe9SessionCreateHost& host);
 
+// ---------------------------------------------------------------------------
+// Packet cc13-fe9c (docs/CC13_FE_9C.md): remaining tactical library bodies.
+// ---------------------------------------------------------------------------
+struct Fe9cLibraryDlcHost : Fe8LuaHost {
+    virtual void* game_lua_owner_1a0c() = 0;                                                 // [00E188A8]+1A0Ch
+    // 004FD8D0 BSP_VehicleClassLua_GetUnlockDlcMinimum, __thiscall(screen, class id, out).
+    virtual std::string vehicle_class_unlock_dlc_minimum_004fd8d0(Raw screen, std::int32_t class_id) = 0;
+    virtual std::uint64_t owned_dlc_mask_2060() = 0;                                         // [00E188A8]+2060h
+};
+
+// 005021E0 BSP_TacticalLibraryScreen_LoadDownloadableClasses, __fastcall(ECX = screen), RET. Fetches
+// (and only releases) the game Lua global VehicleClass; for each 6Ch entry of +3F8h..+3FCh: the
+// class's UnlockDLCMinimum (004FD8D0 with the entry's +48h) loses every "DL_Content_" (00CEB49C;
+// 004CAD40 with "" and count 7FFFFFFFh), n = atol of the rest, and +46h = (mask & owned) == mask for
+// the 64-bit mask 1 << (n - 1) (__allshl: a count of 64 or more, n = 0 included, gives 0, so 1).
+void library_load_downloadable_classes_005021e0(Raw screen, Fe9cLibraryDlcHost& host);
+
+struct Fe9cVehicleRowHost : Fe8LuaHost {
+    virtual void* game_lua_owner_1a0c() = 0;
+    virtual void lua_iterate_first_00b67080(void* table, void* key, void* value) = 0;
+    virtual void lua_iterate_next_00b67190(void* table, void* key, void* value) = 0;
+    virtual bool lua_is_unbound_00b66420(void* key) = 0;
+    virtual bool lua_is_table_00b661b0(void* object) = 0;
+    virtual bool lua_is_boolean_00b66000(void* object) = 0;
+    virtual bool lua_get_boolean_00b66250(void* object) = 0;
+    virtual bool lua_is_string_00b660a0(void* object) = 0;
+    // 007FC4C0 on [00E188A8]+650h: is the unlock with this id satisfied.
+    virtual bool profile_is_unlock_satisfied_007fc4c0(std::string_view id) = 0;
+    // Key/value iteration handles owned by the host for the walk.
+    virtual void* lua_new_object_00b65f50() = 0;
+    virtual void int_vector_push_back_00442190(void* vector, std::int32_t value) = 0;
+    virtual void string_vector_append_00450540(void* vector, std::string_view text) = 0;
+};
+
+// 0050A400 BSP_TacticalLibrary_ReadVehicleClassRow, __thiscall(ECX unused, class ids, types, flags,
+// unused), RET 10h. Walks the game Lua global VehicleClass (00B67080 / 00B67190 until the key is
+// unbound); a table value whose Unlock is the boolean true and whose UnlockID is nil, "" or a
+// satisfied unlock (007FC4C0; a non-string non-nil id fails) and whose Race is not nil with an
+// integer above 0 appends: the key's integer to class ids, Type to types (00450540), and (Race 1 or
+// 4) to flags.
+void library_read_vehicle_class_rows_0050a400(void* class_ids, void* types, void* flags,
+    Fe9cVehicleRowHost& host);
+
+struct Fe9cPreviewLoadHost : Fe8LuaHost {
+    virtual void* game_lua_owner_1a0c() = 0;
+    virtual void library_preview_clear_rotors_0050a950(Raw screen) = 0;
+    virtual void debug_print_004254b0(const char* format, std::int32_t value) = 0;           // empty body
+    // 00BDF4C0 on [0109CEEC]: does the resource exist.
+    virtual bool vfs_resolve_existing_00bdf4c0(std::string_view name) = 0;
+    // 005055C0 on 004FDE20(): enqueue a load job for the path; the last job's +1Ch is then set to
+    // 00509FB0 when the queue (+10h, count +14h) is not empty.
+    virtual void loading_queue_enqueue_005055c0(std::string_view path) = 0;
+    virtual void loading_queue_set_last_callback(std::uint32_t callback) = 0;
+    virtual void* operator_new_00bf681b(std::uint32_t bytes) = 0;
+    virtual void* library_preview_model_construct_004fcfc0(void* storage) = 0;
+    virtual void native_string_assign_cstring_0041e350(void* string, const char* text) = 0;
+    // 00504D20 on 004FDE20(): (const NativeString* name, model).
+    virtual void loading_queue_submit_00504d20(void* name, void* model) = 0;
+};
+
+// 0050AA10 BSP_TacticalLibraryPreview_LoadVehicleModel, __fastcall(ECX = screen), RET. Nothing when
+// +4B4h == +4B0h; else 0050A950, +4B4h = +4B0h, and nothing more for -1. The pack is
+// "mpak/Class_own_<class>.mpak", else "mpak/Class_<class>.mpak", else (logging "ERROR:MPAK files not
+// found for class %d!!!") "giachievement_model_load_temp"; it is enqueued (005055C0) and the last job
+// gets the callback 00509FB0. A new 60h preview model (004FCFC0; null when the allocation fails,
+// then dereferenced) gets +8h = VehicleClass[class].Mesh, +18h = 0, +1Ch = the class, and is
+// submitted (00504D20(model +8h, model)).
+void library_preview_load_vehicle_model_0050aa10(Raw screen, Fe9cPreviewLoadHost& host);
+
+struct Fe9cPreviewSceneHost {
+    virtual ~Fe9cPreviewSceneHost() = default;
+    virtual void simple_3d_scene_init_0093ccc0(void* scene) = 0;                            // ECX = screen+8h
+    virtual void camera_set_render_mode_and_mask_00b6fdf0(void* camera, std::uint32_t value) = 0;
+    virtual void camera_set_clear_flags_00b6fe10(void* camera, std::uint32_t flags) = 0;
+    virtual void* scene_lighting_owner_00b72110(void* scene) = 0;
+    // 004B4D80 BSP_Lighting_DirectionFromAngles(out, a, b).
+    virtual std::array<float, 3> lighting_direction_from_angles_004b4d80(float a, float b) = 0;
+    virtual bool flag_00f88a0c() = 0;                                                        // byte [00F88A0C]
+    virtual void linearize_rgb_004e5c00(float* rgb) = 0;
+    virtual void light_set_base_diffuse_004b62e0(void* light, const float* rgba) = 0;
+    virtual void light_set_diffuse_scale_00b7af90(void* light, float scale) = 0;
+    virtual void light_set_specular_scale_00b7b010(void* light, float scale) = 0;
+    virtual void ambient_set_00b7af20(void* ambient, const float* rgba) = 0;
+    virtual void ambient_set_cube_face_00b7af60(void* ambient, const float* rgba, std::uint32_t face) = 0;
+    virtual void render_device_virtual_04(std::uint32_t value) = 0;                          // [00F8BBF0] vtable +4h
+    virtual std::uint8_t flag_00f88a04() = 0;
+    virtual std::uint8_t flag_00f88a0d() = 0;
+    virtual std::uint32_t dword_00f889d8() = 0;
+    // 00B107F0 on [00F8D39C]: (a0c, a0d, 9d8).
+    virtual void render_resources_initialize_00b107f0(std::uint32_t a, std::uint32_t b, std::uint32_t c) = 0;
+    virtual void scene_renderer_set_hdr_params_00b0e9b0(const void* params) = 0;            // ECX = [00F8D39C]
+    // 00A8FD30, ECX = light, DL = 0 -> a referenced shadow owner.
+    virtual void* directional_light_create_shadow_owner_00a8fd30(void* light) = 0;
+    virtual void directional_light_set_shadow_owner_00b7bdf0(void* light, void* owner) = 0;
+    virtual void ref_release(void* object) = 0;                                              // [00CE2220] at +4h, vtable +0
+    virtual void lua_run_script_00b69d40(std::string_view script, std::uint32_t flag) = 0;   // on [00E188A8]+1A0Ch
+};
+
+// 00504130 BSP_TacticalLibraryScreen_LoadClassTables (the name is the ledger's; most of the body sets up
+// the preview scene), __fastcall(ECX = screen), RET. 0093CCC0 on +8h; camera +10h render mode 0, clear
+// flags 7; the first light of the scene's (+0Ch) lighting owner (+1Ch list): direction from angles
+// (0.4363323f, 4.363323f) (00CEB664 / 00CEB668) into +1E0h..+1E8h; base diffuse (1.0, 0.8, 0.6157,
+// 1.0) linearised with [00F88A0C]; the same colour (rebuilt) stored raw at +1C4h..+1D0h; diffuse
+// scale 4.0f, specular scale 35.0f. The ambient (lighting +10h) gets (0.2392, 0.24315, 0.17645) linearised
+// with alpha 1.0f, and six cube faces (kPreviewAmbientFaces): s = (float)(s * 1.5) (00CE3D78), colour
+// ((float)(r*s), (float)(g*s), (float)(b*s), 1.0f) linearised, face i. Then [00F8BBF0] vtable
+// +4h([00F88A04]); 00B107F0([00F88A0C], [00F88A0D], [00F889D8]); HDR parameters (kPreviewHdrParams,
+// byte +24h = 0); a shadow owner created for the light, set and released; +48Ch = 0; the game Lua
+// runs "SCRIPTS/datatables/autoload/VehicleClasses.lua" and ".../DeviceClasses.lua" (flag 0);
+// +4B0h = 1.
+inline constexpr std::array<std::array<float, 4>, 6> kPreviewAmbientFaces{{
+    {0.24709999561309814f, 0.29409998655319214f, 0.3215999901294708f, 1.0f},
+    {0.7293999791145325f, 0.7215999960899353f, 0.5960999727249146f, 1.0f},
+    {0.26669999957084656f, 0.28630000352859497f, 0.3176000118255615f, 1.0f},
+    {0.1412000060081482f, 0.18039999902248383f, 0.20389999449253082f, 0.5f},
+    {0.40779998898506165f, 0.45489999651908875f, 0.53329998254776f, 1.0f},
+    {0.8587999939918518f, 0.8510000109672546f, 0.7922000288963318f, 1.0f},
+}};
+struct PreviewHdrParams {
+    float values[9];   // +00h..+20h
+    std::uint8_t flag; // +24h
+    float scale;       // +28h
+};
+inline constexpr PreviewHdrParams kPreviewHdrParams{
+    {0.5f, 2.0f, 0.30000001192092896f, 0.05000000074505806f, 0.10000000149011612f, 0.10000000149011612f, 10.0f, 2.0f,
+     10.0f},
+    0,
+    1.0f};
+void library_load_class_tables_00504130(Raw screen, Fe9cPreviewSceneHost& host);
+
+struct Fe9cOrderOfBattleRowHost {
+    virtual ~Fe9cOrderOfBattleRowHost() = default;
+    virtual void* library_find_entry_by_id_004fb090(Raw screen, std::int32_t id) = 0;      // result unused
+    virtual std::string vehicle_class_name_or_no_unlock_004fda50(Raw screen, std::int32_t id) = 0;
+    virtual void* widget_clone_subtree_00aab4c0(void* widget, void* parent) = 0;
+    virtual void* find_child_by_name_00aa7e00(void* parent, std::string_view name) = 0;     // (name, 1)
+    virtual void widget_set_name_2c(void* widget, std::string_view name) = 0;               // vtable +2Ch
+    virtual void gui_text_set_ellipsized_00abb000(void* text, std::string_view source, float width,
+        std::uint32_t flag) = 0;
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;
+    virtual void gui_text_set_localised_source_00abaed0(void* text, std::string_view source, std::uint32_t flag) = 0;
+    virtual void gui_text_set_localised_cstring_00abbe50(void* text, const char* source, std::uint32_t flag) = 0;
+    virtual void list_box_insert_row_00a9d750(void* list, void* row, std::uint32_t a, std::uint32_t b) = 0;
+};
+
+// 00500A90 BSP_TacticalLibraryScreen_FillOrderOfBattleRow, __thiscall(screen, index), RET 4. Record =
+// the 2Ch-byte row index of +460h..+464h (id +0h, count +8h). 004FB090(id) runs with its result unused;
+// a template +0ACh clone is named by the decimal index (vtable +2Ch), +77h = 0; "MenuItem_Text" gets
+// the class name (004FDA50), ellipsized at -1.0f, shown; "NumUnits_Text" is shown with "x" + count
+// for a positive count, else " " (00CE3A90). The row is appended to +0B8h; a count of -1 then marks
+// the row +77h, empties NumUnits_Text and sets byte +121h of the list +0B8h.
+void library_fill_order_of_battle_row_00500a90(Raw screen, std::int32_t index, Fe9cOrderOfBattleRowHost& host);
+
 } // namespace bsp::cc13_fe3
