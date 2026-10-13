@@ -80,7 +80,8 @@
   stays on `main` and merges. Before touching addresses or output files, claim a lease: from a packet
   with `python tools/bsp.py lease claim --packet <id> --from-packet`, or ad hoc with
   `--packet <name> --addresses <a> <b> --files <paths> [--ttl hours]`; release it when done; pick work
-  from `python tools/bsp.py packets ready`. Ledger commands and `ghidra_annotate.py --apply` refuse
+  from `python tools/bsp.py packets ready`. For a file someone else holds, `lease queue` instead of
+  messaging; read `msg inbox` when `brief` shows mail or "your turn". Ledger commands and `ghidra_annotate.py --apply` refuse
   addresses leased to another owner. Every Ghidra mutation goes through the write lock (taken by the
   annotate/tag tools, or `coordination.ghidra_lock` around any other write); never write to Ghidra
   from inline scripts without it. Never `git add -A` in a shared checkout; stage only owned files,

@@ -1023,38 +1023,132 @@ def lease_cmd(args):
         if not (addresses or ranges or files):
             sys.exit('a lease needs --addresses, --ranges lo-hi, --files, or --from-packet')
         try:
-            lease = coordination.claim(args.packet, addresses, ranges, files, ttl_hours=args.ttl, owner=args.owner, note=args.note or '')
+            lease = coordination.claim(args.packet, addresses, ranges, files, ttl_hours=args.ttl, owner=args.owner,
+                                       note=args.note or '', jump=args.jump or '')
         except coordination.LeaseConflict as exc:
             sys.exit(f'lease refused: {exc}')
         print(f"leased {lease['id']}: {len(lease['addresses'])} addresses, {len(lease['ranges'])} ranges, "
               f"{len(lease['files'])} files until {lease['expires']}")
+        if args.jump and lease.get('jumped'):
+            print(f"jumped {lease['jumped'][-1]['over']} (reason recorded and mailed)")
+    elif sub == 'queue':
+        if not (args.addresses or args.ranges or args.files):
+            sys.exit('a waiter needs --files, --addresses or --ranges lo-hi')
+        row = coordination.queue(args.packet, args.addresses or [], args.ranges or [], args.files or [],
+                                 ttl_hours=args.ttl, owner=args.owner, note=args.note or '')
+        print(f"queued {row['id']} since {row['queued'][:16]} until {row['expires'][:16]}")
+        active, waiters = coordination.active_leases(), coordination.live_waiters()
+        for f in row['files']:
+            holders = [l['id'] for l in coordination.path_holders(f, active) if l['owner'] != row['owner']]
+            line = [w['id'] for w in coordination.path_waiters(f, waiters)]
+            print(f"  {f}: held by {', '.join(holders) or 'nobody'}; place {line.index(row['id']) + 1} of {len(line)}"
+                  + ('' if holders else ' -> free now: lease claim'))
+        if row['addresses'] or row['ranges']:
+            part = {'addresses': row['addresses'], 'ranges': row['ranges'], 'files': []}
+            holders = [l['id'] for l in active if l['owner'] != row['owner'] and coordination.overlaps(part, l)]
+            ahead = [w['id'] for w in coordination.waiters_ahead(part, row['owner'], waiters)]
+            print(f"  addresses/ranges: held by {', '.join(holders[:4]) or 'nobody'}; ahead: {', '.join(ahead[:4]) or 'nobody'}")
+    elif sub == 'unqueue':
+        gone = coordination.unqueue(args.packet, owner=args.owner)
+        print(f"left the queue: {[w['id'] for w in gone]}" if gone else 'no waiter row to remove')
     elif sub == 'release':
         released = coordination.release(args.id, packet=args.packet, owner=args.owner)
         print(f"released {[r['id'] for r in released]}" if released else 'nothing active to release')
+        active, waiters = coordination.active_leases(), coordination.live_waiters()
+        for r in released:
+            for f in r.get('files', [])[:args.limit]:
+                holders = [l['id'] for l in coordination.path_holders(f, active)]
+                line = [w['id'] for w in coordination.path_waiters(f, waiters) if w['owner'] != r['owner']]
+                if line or holders:
+                    print(f"  {f}: next {line[0] if line else 'nobody queued'}"
+                          + (f" (still held by {', '.join(holders)})" if holders else ''))
+            part = {'addresses': r.get('addresses', []), 'ranges': r.get('ranges', []), 'files': []}
+            line = [w['id'] for w in coordination.resource_waiters(dict(part, owner=r['owner']), waiters)]
+            if line:
+                print(f"  addresses/ranges: next {line[0]}" + (f" then {', '.join(line[1:3])}" if len(line) > 1 else ''))
     elif sub == 'list':
         rows = coordination.active_leases() if not args.all else coordination.load_leases()
+        waiters = coordination.live_waiters()
+        shown = set()
         for l in rows:
             print(f"{l['id']:<40} {l.get('status', ''):<9} until {l['expires'][:16]}  {len(l.get('addresses', []))} addrs "
                   f"{l.get('ranges', [])} files={l.get('files', [])} worktree={l.get('worktree', '')}")
             if args.verbose:
                 addrs = l.get('addresses', [])
                 print(f"    addresses: {' '.join(addrs[:args.limit])}" + (f' ... {len(addrs) - args.limit} more' if len(addrs) > args.limit else ''))
+            if l.get('status') == 'active':
+                for f in l.get('files', []):
+                    line = [w for w in coordination.path_waiters(f, waiters) if w['owner'] != l['owner']]
+                    shown.update(w['id'] for w in line)
+                    if line:
+                        print(f"    queue {f}: " + ', '.join(w['id'] for w in line))
+                part = {'addresses': l.get('addresses', []), 'ranges': l.get('ranges', []), 'files': [], 'owner': l['owner']}
+                line = coordination.resource_waiters(part, waiters) if part['addresses'] or part['ranges'] else []
+                shown.update(w['id'] for w in line)
+                if line:
+                    print(f"    queue addresses: " + ', '.join(w['id'] for w in line))
         if not rows:
             print('no leases')
+        rest = [w for w in waiters if w['id'] not in shown]
+        if rest:
+            print('waiting on unleased resources: ' + '; '.join(
+                f"{w['id']} ({' '.join(w.get('files', [])[:3]) or str(len(w.get('addresses', []))) + ' addrs'})" for w in rest))
     elif sub == 'check':
         active = coordination.active_leases()
+        waiters = coordination.live_waiters()
         for target in args.targets:
             if re.fullmatch(r'(0x)?[0-9a-fA-F]{5,8}', target):
                 a = int(target, 16)
                 holders = coordination.holders(a)
-                print(f"{h(a)}: " + ('; '.join(f"{l['id']} until {l['expires'][:16]}" for l in holders) if holders else 'unleased'))
+                line = [w['id'] for w in waiters if coordination.covers(w, a)]
+                print(f"{h(a)}: " + ('; '.join(f"{l['id']} until {l['expires'][:16]}" for l in holders) if holders else 'unleased')
+                      + (f"  queue: {', '.join(line)}" if line else ''))
             else:
                 path = target.replace(chr(92), '/')
                 holders = coordination.path_holders(path, active)  # directory-aware, as a claim refusal
-                print(f"{path}: " + ('; '.join(f"{l['id']} until {l['expires'][:16]}" for l in holders) if holders else 'unleased'))
+                line = [w['id'] for w in coordination.path_waiters(path, waiters)]
+                print(f"{path}: " + ('; '.join(f"{l['id']} until {l['expires'][:16]}" for l in holders) if holders else 'unleased')
+                      + (f"  queue: {', '.join(line)}" if line else ''))
     elif sub == 'lock-status':
         lock = coordination.lock_status()
         print(json.dumps(lock) if lock else 'ghidra lock free')
+
+
+def message_header(m):
+    first = m['text'].splitlines()[0] if m['text'] else ''
+    return f"#{m['id']} {m['sent'][5:16].replace('T', ' ')} from {m['from']} to {m['to']}: {first[:90]}"
+
+
+def msg_cmd(args):
+    """Codex sessions cannot receive SendMessage; this registry mailbox reaches every harness through brief."""
+    sub = args.msg_command
+    if sub == 'send':
+        text = Path(args.file).read_text(encoding='utf-8') if args.file else ' '.join(args.text)
+        try:
+            row = coordination.send_message(args.to, text, sender=args.sender)
+        except ValueError as exc:
+            sys.exit(f'not sent: {exc}')
+        print(f"sent #{row['id']} to {row['to']}")
+    elif sub == 'inbox':
+        owner = args.owner or coordination.owner_name()
+        rows = coordination.mailbox(owner, include_read=args.all)
+        unread = [m for m in rows if owner not in m.get('read_by', [])]
+        shown = rows[-args.limit:] if args.all else unread[:args.limit]
+        print(f"inbox for {owner}: {len(unread)} unread" + (f", {len(rows)} total" if args.all else '')
+              + (f"; showing {len(shown)} (--limit)" if len(shown) < (len(rows) if args.all else len(unread)) else ''))
+        for m in shown:
+            print(message_header(m) + ('' if owner in m.get('read_by', []) else '  [new]'))
+            rest = m['text'].splitlines()[1:]
+            for line in rest:
+                print(f"    {line}")
+        marked = coordination.mark_read([m['id'] for m in shown if owner not in m.get('read_by', [])], owner)
+        if marked:
+            print(f"marked read: {' '.join(f'#{i}' for i in marked)}")
+    elif sub == 'ack':
+        owner = args.owner or coordination.owner_name()
+        ids = [m['id'] for m in coordination.mailbox(owner)] if args.ids == ['all'] else args.ids
+        marked = coordination.mark_read(ids, owner)
+        print(f"marked read: {' '.join(f'#{i}' for i in marked)}" if marked else 'nothing unread to mark')
 
 
 def packets_cmd(args):
@@ -1170,6 +1264,8 @@ local/output/ and prints the path. --full or BSP_OUTPUT_BUDGET=0 lifts the cap.
 
   lease claim --packet <id> --from-packet | --addresses A B --files P [--ttl H]
   lease release [--packet <id>] | lease list [-v] | lease check <addr|path> | lease lock-status
+  lease queue --packet <id> --files P [--addresses A] [--ttl 24] | lease unqueue --packet <id> | claim --jump 'reason'
+  msg send <owner|prefix-|all> <text>|--file F | msg inbox [--all] | msg ack <id..|all>
   packets list|ready|done <id>|depend <id> --on <ids>
   worktree add <name> [--packet P] [--base origin/main] | worktree remove <name> [--force] [--delete-branch]
   worktree gc [--apply] [--idle-hours 12] [--merged-only] [--match TEXT] [--delete-merged-branches]
@@ -1226,6 +1322,14 @@ def brief(args):
              if not packet_done(p) and not packet_source_blocked(p) and pid not in leased
              and all(d in packets and packet_done(packets[d]) for d in packet_dependencies(p))]
     print(f"ready packets ({len(ready)}): " + ' '.join(sorted(ready)[:args.limit]))
+    owner = coordination.owner_name()
+    for w, target in coordination.your_turn(owner)[:args.limit]:
+        print(f"your turn: {target} (queued for {w['packet']}) -> python tools/bsp.py lease claim --packet {w['packet']} ...")
+    unread = coordination.mailbox(owner)
+    if unread:
+        print(f"mail: {len(unread)} unread -> python tools/bsp.py msg inbox")
+        for m in unread[:3]:
+            print(f"  {message_header(m)}")
     print('next: python tools/bsp.py cheatsheet   for the full command list')
 
 
@@ -1300,12 +1404,26 @@ def main():
     q = lz.add_parser('claim'); q.add_argument('--packet', required=True); q.add_argument('--owner'); q.add_argument('--addresses', nargs='*')
     q.add_argument('--ranges', nargs='*', help='lo-hi hex pairs'); q.add_argument('--files', nargs='*'); q.add_argument('--from-packet', action='store_true')
     q.add_argument('--ttl', type=float, default=8.0, help='hours'); q.add_argument('--note')
+    q.add_argument('--jump', metavar='REASON', help='claim ahead of earlier waiters; the reason is recorded and mailed to them')
+    q = lz.add_parser('queue', help='wait in line for leased files/addresses; claim refuses others ahead of you')
+    q.add_argument('--packet', required=True); q.add_argument('--owner'); q.add_argument('--addresses', nargs='*')
+    q.add_argument('--ranges', nargs='*', help='lo-hi hex pairs'); q.add_argument('--files', nargs='*')
+    q.add_argument('--ttl', type=float, default=24.0, help='hours before the waiter row expires'); q.add_argument('--note')
+    q = lz.add_parser('unqueue'); q.add_argument('--packet', required=True); q.add_argument('--owner')
     q = lz.add_parser('release'); q.add_argument('id', nargs='?'); q.add_argument('--packet'); q.add_argument('--owner')
+    q.add_argument('--limit', type=int, default=20, help='released files reported per lease')
     q = lz.add_parser('list'); q.add_argument('--all', action='store_true'); q.add_argument('--verbose', '-v', action='store_true', help='also list each lease\'s addresses')
     q.add_argument('--limit', type=int, default=40, help='addresses shown per lease with --verbose')
     q = lz.add_parser('check', help='who holds each address or file path'); q.add_argument('targets', nargs='+', metavar='ADDRESS|FILE')
     lz.add_parser('lock-status')
     p.set_defaults(func=lease_cmd)
+    p = sub.add_parser('msg', help='mailbox in the coordination registry, readable by every harness'); ms = p.add_subparsers(dest='msg_command', required=True)
+    q = ms.add_parser('send'); q.add_argument('to', help='owner (agent/cc9-ships47), prefix ending in - / or * (agent/cc9-), or all')
+    q.add_argument('text', nargs='*'); q.add_argument('--file', help='read the message text from a file'); q.add_argument('--from', dest='sender')
+    q = ms.add_parser('inbox', help='unread mail for this owner; shown messages are marked read'); q.add_argument('--all', action='store_true', help='include read mail')
+    q.add_argument('--limit', type=int, default=10); q.add_argument('--owner')
+    q = ms.add_parser('ack'); q.add_argument('ids', nargs='+', metavar='ID|all'); q.add_argument('--owner')
+    p.set_defaults(func=msg_cmd)
     p = sub.add_parser('packets', help='work packets from config/parallel_work.json with dependencies and leases'); pk = p.add_subparsers(dest='packets_command', required=True)
     pk.add_parser('list'); pk.add_parser('ready')
     q = pk.add_parser('done'); q.add_argument('id')
