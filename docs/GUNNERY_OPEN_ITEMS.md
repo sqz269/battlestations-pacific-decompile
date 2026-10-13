@@ -13954,3 +13954,28 @@ in both. LOMP06 completes at 356.69 s ON against 369.98 s OFF (`refusals=365`). 
 reused for incremental builds (each build takes 2-4 minutes, against 20+ for a fresh export), so check
 `g41_exports.txt` for what a dir currently holds. Base `863d505be`, everything OFF: `g39_rk2`. Current tree ON:
 `g40_tf` (`6f1c8edac`, submarine gate OFF) and `g39_lo` (gate ON).
+
+**227 addendum: the queue at the pause (the lead's later items; none started).** The pause messages crossed my
+last runs, so the submarine-gate win set had already run when they arrived; that result is above. Top of the next
+queue, in order:
+1. **cc13 ver21 artillery ballistics D3/D4.** The image flies the max-range arc on a sped-up clock. cc13 rates it
+   the largest open gunnery divergence.
+2. **cc13 ver23 torpedo attack range.**
+3. **(0a) Release velocity, not done.** cc13's ready hunks are in docs/CC13_GPR_53.md 8.6. The refinements are in
+   docs/CC13_VER_20.md, model `plane_release_ver_cc13::rack_round_release_velocity_006e4d50`.
+   - D1, bombs: `006E4D50` -> `006E1F00` copies the round matrix, then owner vt[190h] = `006E0A70` overwrites row 2
+     with the world velocity minus 3.0 in y and re-orthonormalises it (`0085DC80`). That is round+74h, which the
+     cone turn reads. The host's `release_bomb_drop` (~:13836) uses the plane's own rows, and level bombs land
+     about 30 m long. Correct GUNNERY 130.6 (missed vt[190h]) and 130.4 (the 2-4 degree turn was the host's error).
+   - D2, aerial torpedoes: they take the same `006E4D50` path, which adds 4 stream-1 draws per drop
+     (`006E4F91`/`006E4FB1`/`006E513C`/`006E51AC`, keyed on the bomb_scatter stream) and the Wind 0.01 drift.
+     The host spawns along the nose (~:13620-13638), and units.cpp ~:27297-27316 routes 2Bh away from the rack arm.
+   - D3/D4 (the ThrowMul gate and the row choice) have no AI effect. Record them only.
+   - Pair on USN01 k6, LOMP10, USN21 and ESMP08's start.
+4. **(0b) `kProjectileGravityImageBound`** (cc13, OFF, g = 9.81f), not paired. Pair it with the next USN12/USN15 gun
+   pair.
+5. **AA-kind submerged gate.** `00728A90` tests kinds {1, 5, 6}, but the host hard-sets `muzzle_submerged=false`
+   (~:7854 / ~:11776). It is the twin of `kGunSubmergedArtilleryKindBound`.
+6. **TorpedoBot tick `008FFF20`** (the 0.2 s think, gates A/B, the trigger dropped when `008FBB00` has no solution,
+   ~:6950) and the slot accept `008FC010` (~:5594), from docs/CC13_GPR_40.md section 2.
+7. Items 3a, 4 and 5 and the two OFF switches, as listed above. Item 5 needs a harness scene override.
