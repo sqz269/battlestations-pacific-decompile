@@ -346,7 +346,10 @@ records already exist from cc13-gpr47.
 - `tools/x87_dc_form_scan.py --forms dc,de` over every modelled range found 0 sites. The scanner was
   checked against a known range, `0095E9A0`-`0095EB40`, where it found the `DE E1`/`DE F9` pair. The
   models carry no x87 arithmetic: the float work is constant stores and copies.
-- `./scripts/build.ps1`: see section 8.
+- `./scripts/build.ps1` in this tree passed after the final `git merge origin/main`: `bsp_game.exe`
+  linked and ctest passed 2 of 2. No test was added.
+- No snapshot was taken. The Ghidra function count rose by the two functions of section 1, so the
+  lead's next `bsp.py snapshot` will pick them up.
 
 ## 8. Open and handoff
 
