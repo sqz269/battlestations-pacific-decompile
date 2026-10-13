@@ -126,3 +126,15 @@ value that was not already 0.0, and the elevator takes only folded planes). Reco
 hold unless a restrike's timing matters. ON (takeoff half, on top): `prep_holds` non-zero only for a plane whose
 wings are below 1.0 at prepare (a relaunched plane after the carry's reset spreads over its duration first), so
 relaunches move later by up to 4 s; deck spawns in state 6/7 start at 1.0 and never hold.
+
+## The block step order: `kActuatorBlockStepOrderBound` (cc9-physics5, 2026-10-13), OFF
+
+The wing pair found that the host's `plane_actuator_block_step_007de3a0` stepped a channel only when it was disabled
+or at exactly 1.0f. So an enabled wing channel starting at 0 never moved: with both wing switches ON, every
+Enterprise Wildcat waited forever in the takeoff prepare (2774 holds, no takeoff run). The torpedo bay also stalled
+one step below 1.0f once it began to close. The switch takes the raw listing's gates (header comment,
+`include/bsp/torpedo_release_spawn.hpp`). **Predictions, before the pair:** with the wing switches OFF, the
+`+44h` and `+28h` channels are disabled, so `+60h` (the bay) steps every call and now closes fully after a
+release. Nothing in the host reads the bay below 1.0f except `007BBBA0`'s `!= 1.0f` guard, which a stalled bay and a
+closed bay both pass. So: gameplay identical (verdict 0 or 1) on the torpedo rows (USN01 plan d, LOMP10, ESMP08). If
+so, the switch can flip ON and the wing pairs are re-run on top of it.
