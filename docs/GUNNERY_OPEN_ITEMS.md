@@ -13572,3 +13572,9 @@ entry. Counters: `summary mission gunnery blast crash/kamikaze shape walks=`. OF
 - ESMP08 90000 (ON `local\g40_tc1_e8.log`): 39 drops, `breakups=0`, `water_entry_breakups=0`. The fall test is the
   only path the switch adds, and it never fired, so the OFF partner was not run.
 As predicted on all three rows. Mechanism matches the image, so the switch is flipped ON.
+
+**208 verdict: ON (cc9-gunnery40).** OFF `4cb4287bf` as built (`local\g40_tfoff`), against ON (`local\g40_tf`):
+USN12 s38_u12_p2, USN15 s45_u15_l2 and LOMP06 l50_l6_q6 each give pair_diff exit 1 (gameplay identical) with
+`clears=0`. Every completion is unchanged and the exec guard's refusal is logged. As predicted: on these rows no
+rapid-class gun holds `+4D4h` through a step in which `0072D130` does not send. LOMP06's `009E2B99` raises do not
+reach a shot that the clear would change. The mechanism matches the image, so the switch is flipped ON.

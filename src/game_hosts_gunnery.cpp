@@ -269,7 +269,8 @@ constexpr bool kGunImmediateFireSlotBound = true;
 //    queues a second FireIfReady that the barrel delay refuses (the host's
 //    "one attempt stands for both"). The forced 008A7200 fire calls 00730160
 //    directly and does not clear. OFF: +4D4h holds until the latch drops.
-constexpr bool kTurningGunFireClearsRequestBound = false;
+//    ON since the pairs (GUNNERY_OPEN_ITEMS 208: clears=0, gameplay identical).
+constexpr bool kTurningGunFireClearsRequestBound = true;
 //  * kTorpedoMaxFallBreakupBound: packet cc9_g40_torpedo_fall. 008568E0's
 //    second break-up limit, 00856923..00856932: FLD [shot+0Ch] (the velocity's
 //    y; shot+8 is the vector 0042B2F0 measures for the first limit), FLD
