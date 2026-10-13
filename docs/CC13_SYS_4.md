@@ -182,12 +182,15 @@ push_back; Ghidra's decompile drops the `size++` at `00467F91`), the cloud parti
 - `00468050` (renamed `BSP_PodPointerArray_Resize`) ends with `size = n` at `00468098`. Ghidra's
   decompile drops that store, just as it drops the `size++` in `00467F60`. `004C9870` resizes four
   such arrays to 0 and frees their data.
-- `004CEC00` now has a name and a record.
+- `004CEC00` now has a name and a record.- `00452BD0`, the lens flare driven by the camera: x87 traced (three DC forms, all `ST(1)` destinations) and checked against the decompile. On a segment hit, `v` is the hit distance along the view, at least 1. With no hit, the light that best matches the view cone gives `v = 100000`; otherwise `v` is 10000, or the height over the sine of the dip below the horizon, clamped to 1..100000. The power responses are `|v|^k` and `|+8|^(1/k)` (FYL2X), with first-order smoothing at `+14h * dt`. It draws no random numbers.
+- `004CA2F0` handles the window close: it sets the exit flag in game states 1, 2 and 4, and otherwise raises the `FE_pc.main_quit_confirm` prompt with callback `004BBC50`. The prompt argument list is taken from the decompile.
+
+Still open after sys4b: `0044C970` (E1 constructor through stream objects), `004CAC30`, `004CB420`, `004CCBD0`, `004CCCC0`, `004CD450`, `004C9EC0`, `004C3C90`, `004C6BE0`, the cloud entity bodies, `00471080`/`00479BD0`, and `00466BB0`/`00466C00`/`00467C80`. Thunks and catch funclets are not tagged.
 ## Evidence method
 
 Live `bsp.py ghidra decompile`, `disasm-raw` for every listed body, constants from the PE
 (`local/sys4_consts.py`). Call-site rows: `reports/cc13_sys4_calls.json`
-(`tools/verify_report_calls.py`: 100 rows, 0 failed).
+(`tools/verify_report_calls.py`: 109 rows, 0 failed).
 
 ## Handoff
 

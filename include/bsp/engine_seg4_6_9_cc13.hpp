@@ -13,6 +13,7 @@
 #include <functional>
 #include <optional>
 #include <string>
+#include <vector>
 
 #include "bsp/engine_movie_actions.hpp"
 
@@ -537,6 +538,48 @@ void depth_of_field_set_range_00452a50(float& near_14, float& far_1c, float near
 // 64-bit extended precision until the float store.
 void lens_flare_pow_response_00452b00(float k_1c, float x, float& out_04, float& out_08);
 
+// 00452BD0, __thiscall(ECX = flare, float dt, float zoom), RET 8, under an EH
+// frame; callers binocular/periscope HUD. The camera [00E188B0] world matrix
+// is refreshed (00B6DB70) when bit 2 of +5Ch is clear. With the camera at or
+// below y = 0 (+124h <= 0; NaN continues) the lens effect is cleared
+// (00B0D020(0, 0,0,0,0, 1.0f)). Otherwise the forward (+110h..) times 10000.0
+// (00CE4BD8) gives the segment end. Then
+// brightness = f((zoom - 1) * (-0.7 / (f(1/s) - 1)) + 1), with s at +18h and
+// -0.7 the double 00CE4BD0. The spatial index (0042E630, 0098ADD0) is queried
+// along the segment:
+//   hit:  v = max(dot(f(hit - pos), forward), 1) (a NaN dot passes);
+//   miss: c = f(cos(f(fov+1C4h * 0.25))); the light list [[00E188A8]+19CCh]+0D0h
+//         picks the light whose normalised direction dot exceeds c most
+//         (each light's pose refreshed first); found: v = 100000 (00CE4BC8);
+//         none: v = 10000 (00CE3D64) unless the last y examined (the last
+//         light's normalised d.y, or forward.y*10000 with no lights) is < 0,
+//         then r = f(pos.y / f(sin(-forward.y))), v = 1 if r < 1, 100000 if
+//         r > 100000, else r.
+// p = |v|^k (k at +1Ch; 0 for v == 0; FYL2X/F2XM1/FSCALE); w = +14h * dt on
+// the stack; +4 = f(+4 + (p - +4) * w); +8 = f(+8 + w * (+4 - +8));
+// out = |+8|^(f(1/k)) (0 for 0), then 00B0D020(1, out, out, out, brightness, 1.0f).
+// No random numbers are drawn.
+struct LensFlareFields {
+    float value_04, value_08, gain_14, scale_18, exponent_1c;
+};
+struct LensFlareHost {
+    virtual ~LensFlareHost() = default;
+    virtual bool camera_world_current() = 0;                 // [00E188B0]+5Ch & 2
+    virtual void refresh_camera_world_00b6db70() = 0;
+    virtual std::array<float, 3> camera_position_120() = 0;
+    virtual std::array<float, 3> camera_forward_110() = 0;
+    virtual float camera_fov_1c4() = 0;
+    virtual void set_lens_effect_00b0d020(std::int32_t on, float a, float b, float c, float brightness, float e) = 0;
+    // 0042E630 then 0098ADD0(pos, end, 0, hit record, 0); the hit position is hit record +8.
+    virtual bool query_segment_0098add0(const std::array<float, 3>& from, const std::array<float, 3>& to,
+                                        std::array<float, 3>& hit_position) = 0;
+    virtual std::vector<void*> lights() = 0;                  // node +8, next +4
+    virtual bool light_pose_current_c8(void* light) = 0;
+    virtual void refresh_light_pose_00414db0(void* light) = 0;
+    virtual std::array<float, 3> light_position_fc(void* light) = 0;
+};
+void lens_flare_update_from_camera_00452bd0(LensFlareFields& flare, float dt, float zoom, LensFlareHost& host);
+
 // 00452B80, __thiscall(ECX = flare, u8 on), RET 4: byte +0 = on; when off,
 // 00B0D020 (ECX = [00F8D39C]) with (0, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f) and
 // +4 = 1e-4f (00CE3C68).
@@ -913,6 +956,27 @@ struct FrontEndFrameSelectHost {
     virtual void pool_return_00bd1510(void* data, std::uint32_t bytes, std::int32_t count) = 0;
 };
 void front_end_frame_select_default_004c9680(FrontEndFrameSelectHost& host);
+
+// 004CA2F0, __fastcall(ECX = game), RET, under an EH frame. The close request
+// byte [0109CF04]+180h is read and cleared. Nothing more happens without a
+// request or while [00F8ABE8]+3E8h is set. In game states 1, 2 and 4
+// (+5D4h) the exit flag 00E1AE75 is set. Otherwise the prompt screen
+// (00425D10) raises the quit confirmation through 00531B00 with type 6, the
+// key "FE_pc.main_quit_confirm" (00CE76D4), 1, the callback 004BBC50, 1, an
+// empty string, 0 and 0. The argument list follows the decompile; the image
+// passes the strings through stack copies. The temporary strings are
+// released, then 00530C20 runs on the screen.
+struct WindowCloseHost {
+    virtual ~WindowCloseHost() = default;
+    virtual bool take_close_request_180() = 0;            // read and clear [0109CF04]+180h
+    virtual bool platform_busy_3e8() = 0;                 // [00F8ABE8]+3E8h
+    virtual void set_exit_flag_00e1ae75() = 0;
+    virtual void raise_prompt_00531b00(std::int32_t type, const std::string& key, std::int32_t a,
+                                       std::uint32_t callback, std::int32_t b, const std::string& text,
+                                       std::int32_t c, std::int32_t d) = 0;
+    virtual void prompt_screen_00530c20() = 0;
+};
+void game_process_window_close_request_004ca2f0(std::int32_t state_5d4, WindowCloseHost& host);
 
 // 004CA120, __fastcall(ECX = game), RET: only in game state 0Dh (+5D4h) with
 // a client at +21E8h. Builds "ingame.multi_highlatency" (00CE76B8, through

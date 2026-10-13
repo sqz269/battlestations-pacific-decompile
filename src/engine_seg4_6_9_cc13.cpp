@@ -603,6 +603,82 @@ void lens_flare_pow_response_00452b00(float k_1c, float x, float& out_04, float&
     out_08 = result;
 }
 
+namespace {
+
+// FYL2X/FRNDINT/F2XM1/FSCALE on |v| with exponent e, stored float; 0 for v == 0.
+float x87_power_response(float v, double e) {
+    if (v == 0.0f) return 0.0f;
+    const float magnitude = 0.0f > v ? -0.0f - v : v;
+    return static_cast<float>(std::exp2(e * std::log2(static_cast<double>(magnitude))));
+}
+
+} // namespace
+
+void lens_flare_update_from_camera_00452bd0(LensFlareFields& flare, float dt, float zoom, LensFlareHost& host) {
+    if (!host.camera_world_current()) host.refresh_camera_world_00b6db70();      // 00452BF7..00452C03
+    const std::array<float, 3> pos = host.camera_position_120();
+    if (0.0f >= pos[1]) {                                                         // 00452C3B COMISS; JB (NaN continues)
+        host.set_lens_effect_00b0d020(0, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f);
+        return;
+    }
+    if (!host.camera_world_current()) host.refresh_camera_world_00b6db70();      // 00452C6C..00452C74
+    const std::array<float, 3> fwd = host.camera_forward_110();
+    const std::array<float, 3> reach{static_cast<float>(fwd[0] * 10000.0), static_cast<float>(fwd[1] * 10000.0),
+                                     static_cast<float>(10000.0 * fwd[2])};      // 00452C79..00452CA3
+    const std::array<float, 3> end{reach[0] + pos[0], reach[1] + pos[1], reach[2] + pos[2]}; // 00452CBF..00452CD7
+    const float inv_scale = static_cast<float>(1.0 / flare.scale_18);            // 00452CF8..00452D0E
+    const float brightness = static_cast<float>(
+        (static_cast<double>(zoom) - 1.0) * (-0.699999988079071 / (static_cast<double>(inv_scale) - 1.0)) + 1.0); // 00452D12..00452D2B
+    auto dot_forward = [&](const std::array<float, 3>& d) {
+        return static_cast<float>((static_cast<double>(fwd[1]) * d[1] + static_cast<double>(fwd[0]) * d[0])
+                                  + static_cast<double>(d[2]) * fwd[2]);
+    };
+    float v = 0.0f;
+    std::array<float, 3> hit{};
+    if (host.query_segment_0098add0(pos, end, hit)) {                            // 00452D49
+        const float d = dot_forward({hit[0] - pos[0], hit[1] - pos[1], hit[2] - pos[2]}); // 00452D5E..00452DA7
+        v = 1.0f > d ? 1.0f : d;                                                  // 00452DB9
+    } else {
+        const float quarter = static_cast<float>(host.camera_fov_1c4() * 0.25);   // 00452DF1..00452E05
+        float best_dot = static_cast<float>(std::cos(static_cast<double>(quarter))); // 00452E0D FCOS
+        void* best = nullptr;
+        float last_y = reach[1];
+        for (void* light : host.lights()) {                                       // 00452E40..00452EE5
+            if (!host.light_pose_current_c8(light)) host.refresh_light_pose_00414db0(light);
+            const std::array<float, 3> lp = host.light_position_fc(light);
+            std::array<float, 3> d{lp[0] - pos[0], lp[1] - pos[1], lp[2] - pos[2]};
+            normalize_camera_basis_0042b260(d);                                   // 00452E99
+            last_y = d[1];
+            const float dot = dot_forward(d);
+            if (dot > best_dot) {                                                 // 00452ECC FCOMIP; JBE
+                best_dot = dot;
+                best = light;
+            }
+        }
+        if (best != nullptr) {
+            if (!host.light_pose_current_c8(best)) host.refresh_light_pose_00414db0(best); // 00452EEF..00452EF9
+            v = 100000.0f;                                                        // 00CE4BC8
+        } else if (!(0.0f > last_y)) {                                            // 00452F25 COMISS; JBE
+            v = 10000.0f;                                                         // 00CE3D64
+        } else {
+            const float sine = static_cast<float>(std::sin(static_cast<double>(-0.0f - fwd[1]))); // 00452F2C..00452F43
+            const float r = static_cast<float>(static_cast<double>(pos[1]) / sine); // 00452F47..00452F53
+            if (1.0f > r) v = 1.0f;                                               // 00452F5D
+            else if (r > 100000.0f) v = 100000.0f;                                // 00452F7E JA 00452DBE
+            else v = 1.0f > r ? 1.0f : r;                                         // 00452DB1
+        }
+    }
+    const float p = x87_power_response(v, flare.exponent_1c);                    // 00452DC6..00452FD5
+    const double w = static_cast<double>(flare.gain_14) * dt;                     // 00452FE2..00452FE5
+    const float a1 = flare.value_04;
+    flare.value_04 = static_cast<float>(a1 + (static_cast<double>(p) - a1) * w);  // 00452FF0..00453006
+    const float a2 = flare.value_08;
+    flare.value_08 = static_cast<float>(a2 + w * (static_cast<double>(flare.value_04) - a2)); // 00453009..0045302F
+    const float inv_exponent = static_cast<float>(1.0 / flare.exponent_1c);      // 00453036..00453043
+    const float out = x87_power_response(flare.value_08, inv_exponent);          // 00453047..00453086
+    host.set_lens_effect_00b0d020(1, out, out, out, brightness, 1.0f);            // 004530B4
+}
+
 void lens_flare_set_enabled_00452b80(
     std::uint8_t on, std::uint8_t& enabled_00, float& value_04,
     const std::function<void(std::int32_t, float, float, float, float, float)>& set_lens_effect_00b0d020) {
@@ -1000,6 +1076,17 @@ void front_end_frame_select_default_004c9680(FrontEndFrameSelectHost& host) {
     if (name.data != nullptr) std::memcpy(name.data, kEmpty_00ce3a0c, 1);
     host.select_00518d60(-1, -1, -1, name);                                       // 004C96E5
     if (name.data != nullptr) host.pool_return_00bd1510(name.data, name.length + 1, 1); // 004C9704..004C970B
+}
+
+void game_process_window_close_request_004ca2f0(std::int32_t state_5d4, WindowCloseHost& host) {
+    if (!host.take_close_request_180()) return;                                   // 004CA30F..004CA315
+    if (host.platform_busy_3e8()) return;                                         // 004CA327
+    if (state_5d4 == 1 || state_5d4 == 2 || state_5d4 == 4) {                     // 004CA33A..004CA344
+        host.set_exit_flag_00e1ae75();                                            // 004CA349
+        return;
+    }
+    host.raise_prompt_00531b00(6, "FE_pc.main_quit_confirm", 1, 0x004BBC50, 1, "", 0, 0); // 004CA3CB
+    host.prompt_screen_00530c20();                                                // 004CA422
 }
 
 void game_show_high_latency_warning_004ca120(std::int32_t state_5d4, void* client_21e8, HighLatencyWarningHost& host) {
