@@ -18,9 +18,30 @@ Exports (snapshot, call graph, per-function pseudocode) are shared, not copied: 
 resolves them to the MAIN checkout's `exports/bsp` through `git rev-parse --git-common-dir`
 (`tools/workspace.py`; `BSP_EXPORTS_DIR` overrides). Never create a junction or symlink to
 `exports` inside a worktree: `git worktree remove` and `git clean` traverse reparse points on
-Windows and empty the shared target, which happened once. Remove worktrees with
-`python tools/bsp.py worktree remove <name> [--delete-branch]`, which detaches any legacy
-junction before calling git. Build directories and `local/` (index, logs) are per worktree.
+Windows and empty the shared target, which happened twice (the second time on 2026-10-13, during a
+mass prune of about 96 trees). Delete worktrees ONLY with `bsp.py worktree remove` or
+`bsp.py worktree gc` (`tools/worktree_gc.py`). Neither calls git's remove: a walker deletes the
+tree bottom-up and detaches every junction, directory symlink or mount point it meets without
+entering it. The shared exports are counted before and after each tree, and any drop stops the run.
+
+- `worktree remove <name> [--force] [--delete-branch]` refuses uncommitted work unless `--force`, and
+  deletes the branch only when it is merged into `origin/main`.
+- `worktree gc` is a dry run until `--apply`. It removes only trees that are clean (no tracked
+  changes and no untracked, non-ignored files), have no active lease (by worktree or by branch owner),
+  run no process (exe path or command line), are not locked, and have been idle for `--idle-hours`
+  (default 12). Idle time is the newest of the last HEAD reflog entry, the index mtime, and the top
+  level of `local/`. `--merged-only` also requires the branch to be in `origin/main`; `--match`
+  narrows by name. Branches are kept unless `--delete-merged-branches` is given and they are merged.
+- Before a tree goes, small hand-written inputs under its `local/` (`.txt .ps1 .py .json .lua .md
+  .csv`, at most 512 KB each and 64 MB per tree; logs excluded) are copied to
+  `<parent>/bsp-worktree-archive/<tree>/` (`BSP_WORKTREE_ARCHIVE` overrides), because game logs
+  refer to order files by their old path.
+- If the exports are lost anyway, `bsp.py exports check` says so. `bsp.py exports restore` rebuilds
+  them: snapshot if missing, index, then re-decompiling every named, tagged or reconstructed
+  function. It takes hours, resumes on rerun, and needs Ghidra. `bsp.py index` now builds into a
+  temporary file and swaps it in, so a failed rebuild keeps the old index.
+
+Build directories and `local/` (index, logs) are per worktree.
 The agent's owner name defaults to its branch (`agent/<name>`); set `BSP_AGENT` to override.
 The integrator stays on `main` in the main checkout, merges `agent/*` branches, and owns
 shared headers, CMake, probes and Ghidra mutations as before.
