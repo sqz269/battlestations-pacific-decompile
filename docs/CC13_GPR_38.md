@@ -265,15 +265,13 @@ They are not native layouts and nothing is wired. Status of each: **reconstructe
   - `00722210` (src/band_0067_cc13.cpp).
   
   A follow-up should check each against the bytes and record it.
-- **`0071FDE0` AddPoint.** Its world-bounds clipping (`BSP_Point3Vector_ClipToWorldBounds`,
-  `BSP_Game_ClipSegmentToWorldBounds`) and the two pushes need those helpers' contracts first. The
-  gate is read: without replace, more than 7 points past the cursor are rejected; with replace the
-  list is erased first.
-- **`00720450` CopyStateFrom.** Long, with a land-to-attackmove rewrite for kind-6 owners that goes
-  through `0071DB90`.
-- **`0071F600` BeginCommandBase** and **`0071E4C0` CurrentPathPoint.** Docs exist
-  (docs/COMMAND_EXECUTION.md); not modelled here.
-- **`0071F9F0`, `0071FD10`, `0071FC70`.** Vector assign, path copy and path destructor: STL and
+- **Closed in cc13-gpr38b:** `0071F600` (`begin_command_base_0071f600`), `0071E4C0`
+  (`current_path_point_0071e4c0`) and `00720450` (`copy_state_from_00720450`, including the
+  land-to-attackmove rewrite for kind-6 owners).
+- **`0071FDE0` is modelled with coverage `partial`** (`director_path_add_point_0071fde0`). The gate,
+  the list edits and the push order are the image's. The world-bounds helpers `007B1EC0`,
+  `0071C4F0`, `004BBDD0` and `BSP_Point3Vector_PruneFromIndex` are supplied callbacks. The argument
+  roles of `004BBDD0` are not settled.- **`0071F9F0`, `0071FD10`, `0071FC70`.** Vector assign, path copy and path destructor: STL and
   ownership plumbing.
 - **Reference-count plumbing:** `0071EA60`, `0071F0E0`, `0071F110`, `0071F3B0`, `0071F460`,
   `0071F530`.

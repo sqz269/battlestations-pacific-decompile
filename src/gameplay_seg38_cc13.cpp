@@ -259,6 +259,84 @@ ControllerUpdateActions controller_update_0071f290(ControllerUpdateState& s,
     return a;
 }
 
+void copy_state_from_00720450(DirectorCopyState& dst, const DirectorCopyState& src, bool owner_is_kind_6,
+                              const std::function<NearestUnitAnswer(const Vec3f&)>& nearest_to,
+                              const std::function<Vec3f(const CommandTarget&)>& target_position) {
+    dst.byte_3c = src.byte_3c;
+    dst.byte_3d = src.byte_3d;
+    dst.field_16c = src.field_16c;
+    dst.target_170 = src.target_170;
+    dst.mode_30 = src.mode_30;
+    for (int i = 0; i < kCommandSlots; ++i) {
+        const auto u = static_cast<std::size_t>(i);
+        CommandSlot s = src.queue.slots[u];
+        if (owner_is_kind_6 && s.command_class == kCmdLand) {     // 00720600..
+            const Vec3f at = target_position(s.target);           // BSP_TargetDescriptor_ResolvePosition
+            const NearestUnitAnswer n = nearest_to(at);
+            s.command_class = kCmdAttackMove;
+            s.target = CommandTarget{};
+            s.target.entity_04 = n.entity;
+            if (n.entity != 0) {
+                s.target.has_entity_00 = true;
+                s.target.entity_index_02 = n.entity_index_174;
+            }
+        }
+        dst.queue.slots[u] = s;
+        dst.queue.paths[u] = src.queue.paths[u];                 // 0071FD10
+    }
+    dst.override_188 = CommandSlot{};
+    dst.override_acceptance_4c = false;
+    dst.acceptance_44 = false;
+    dst.override_stage_50 = 0;
+    dst.stage_48 = 0;
+}
+
+CurrentPathPointSource current_path_point_0071e4c0(const DirectorQueue& q) noexcept {
+    const CommandSlot& head = q.slots[0];
+    if (head.command_class == kCmdMoveOnPath) {
+        return q.paths[0].present ? CurrentPathPointSource::kPathCursor
+                                  : CurrentPathPointSource::kNullPathCursor;
+    }
+    if (!head.target.has_point_01 && !head.target.has_entity_00) return CurrentPathPointSource::kInvalid;
+    return CurrentPathPointSource::kTargetPosition;
+}
+
+BeginCommandResult begin_command_base_0071f600(const BeginCommandInputs& in,
+                                               std::uint32_t head_class_after_rewrite) noexcept {
+    BeginCommandResult r;
+    if (!in.use_queue_head) {
+        if (!in.override_present) return r;   // +4Ch = 0, but AL keeps its initial 1
+        r.accepted = in.override_accepts;     // +4Ch
+        r.stored_acceptance = r.accepted;
+        if (r.accepted) {
+            r.report_start = true;               // not gated on [00F8A0C4]
+            r.report_target = in.override_target_resolves;
+        }
+        return r;
+    }
+    if (!in.head_present) {
+        // +44h = 0 but AL keeps its initial 1 (0071F63x).
+        r.accepted = true;
+        return r;
+    }
+    if (in.head_target_resolves && in.head_target_kind_1c &&
+        category_attacks(in.head_category) && in.head_target_same_endpoint) {
+        r.rewrote_head_to_moveto = true;
+    }
+    r.accepted = in.head_accepts_after_rewrite;
+    r.stored_acceptance = r.accepted;
+    if (!r.accepted) return r;
+    if (head_class_after_rewrite == kCmdMoveOnPath) {
+        r.path_build = in.head_target_has_entity_58 ? MoveOnPathBuild::kFromEntityPath
+                                                    : MoveOnPathBuild::kFromSlotPath;
+    }
+    if (in.events_enabled_00f8a0c4) {
+        r.report_start = true;
+        r.report_target = in.head_target_resolves;
+    }
+    return r;
+}
+
 void gun_bot_retire_0071c4a0(GunBotRetireBytes& b) noexcept {
     b.b10 = true;
     b.b11 = false;
@@ -404,6 +482,41 @@ AddUserPathPlan apply_add_user_path_point_007207c0(const DirectorQueue& q, bool 
     p.replace = true;
     p.slot = first_empty_slot(q);
     return p;
+}
+
+AddPointResult director_path_add_point_0071fde0(
+    std::vector<Vec3f>& points, const Vec3f& point, const AddPointInputs& in,
+    const std::function<void(std::vector<Vec3f>&)>& clip_points,
+    const std::function<bool(const Vec3f&)>& outside_map,
+    const std::function<std::array<Vec3f, 2>(const Vec3f& from, const Vec3f& to)>& clip_segment,
+    const std::function<void(std::vector<Vec3f>&, int)>& prune) {
+    AddPointResult r;
+    if (!in.replace) {
+        if (static_cast<int>(points.size()) - in.cursor_18 > 7) {   // 0071FE5x
+            r.rejected = true;
+            return r;
+        }
+    } else {
+        points.clear();                                             // 004C82B0 erase(begin, end)
+    }
+    const Vec3f first = points.empty() ? Vec3f{} : points.front(); // 0059CAE0(0), else 00F87574
+    clip_points(points);                                            // 007B1EC0
+    const Vec3f* push = &point;
+    std::array<Vec3f, 2> clipped{};
+    if (outside_map(point) && points.size() < 7) {                 // 0071C4F0
+        Vec3f from;
+        if (!in.replace && !points.empty()) from = points.back();
+        else if (in.owner_position) from = *in.owner_position;
+        else from = first;
+        clipped = clip_segment(from, point);                        // 004BBDD0
+        points.push_back(clipped[0]);
+        push = &clipped[1];
+    }
+    points.push_back(*push);                                        // 004215D0
+    prune(points, in.cursor_18);
+    if (in.replace) r.issued_moveonpath = true;
+    if (in.session_mode != 2) r.sent_message_57 = true;
+    return r;
 }
 
 int nearest_unit_index_0071db90(const Vec3f& pos, const std::vector<Vec3f>& units) noexcept {
