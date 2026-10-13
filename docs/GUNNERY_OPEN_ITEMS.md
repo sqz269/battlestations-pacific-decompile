@@ -13908,3 +13908,49 @@ identical with 21 non-harm causes (the soft kills reach no harm-filtered listene
 (deaths 716 -> 751); `refusals=0` on USN12. All five VER_19/flak extras together (`g39_rk0`) on USN15 fail at
 1095.89 s. 221 and 222 stay OFF. USN21 logs `refusals=748` (Dace/Darter), so the gate is exercised. 223 stays OFF until the win set runs
 with it.
+
+## 227. Submarine gate verdict and handoff (cc9-gunnery41, 2026-10-13, at about 72% context)
+
+**223 verdict: `kSubmarineCategoryGateBound` ON.** OFF `6f1c8edac` (`local\g40_tf`) against ON (`local\g39_lo`), logs
+`local\g41_r4off_<row>.log` / `g41_r4sb_<row>.log`. USN02 198.06 s, USN12 1500.19 s and LOMP10 1530.87 s are identical
+in both. LOMP06 completes at 356.69 s ON against 369.98 s OFF (`refusals=365`). BSM01 reaches EndMission at
+767.94 s in both (`refusals=8`). USN15 reaches EndMission at 2790.45 s in both (`refusals=0`). USN21 has
+`refusals=748`. Every win is kept.
+
+**On `agent/cc9-gunnery36`, newest first** (built, ctest 2/2, origin/main merged at the start):
+
+| sha | what |
+| --- | --- |
+| (this) | `kSubmarineCategoryGateBound` ON; handoff |
+| `6f1c8edac` | `kKillFunnelCauseBound` ON; win set and USN01 bisect (226) |
+| `1120ac370` | five flak flips ON (D4, D6, D3+D1, D5, D2); verdict table (225) |
+| `27a18350c` | `kKillFunnelCauseBound` OFF binding, `GameUnitsHost::note_kill_cause_00926e02` (224) |
+| `863d505be` / `0694a291f` / `884829feb` | VER_19 D4 / D3 / D2+D1 OFF bindings (223 / 222 / 221) |
+| `6745c3919` / `0f783b582` / `644ce7662` / `fdc944785` / `5433b8e68` | flak D2 / D5 / D3+D1 / D6 / D4 OFF bindings (220-216) |
+
+**With the keeper (cc9-physics7):** USN01 `p3_u1_z4` is lost under D4 and D3+D1, a knife-edge on the last two Nells
+(226). The lead was told that flipping those two OFF restores USN01 with every other win unchanged.
+
+**Open, in order of value.**
+1. **`kDirectorLeaderFireTargetBound`** (222, OFF). It breaks USN12 (47441 inherits; the Japanese members'
+   torpedoes sink the US fleet at 540 s) and USN15 (Game Over at 1774.71 s). Find out whether the ships lane's
+   AutoTarget (`009F5DA0` -> `00835860`) writes a formation member's own `director+238h` the way the image does.
+   If the host leaves members empty, the fallback over-applies; if it does not, check whether category 7 reads the
+   provider at all (`+7Dh`, `kGunneryPassByte7dBound`).
+2. **`kAaSlotRangeOriginBound`** (221, OFF). It loses USN12 (Montpelier at 1142 s) with only 325 flipped gate
+   answers. Check `gun_muzzle_point` against the image's gun `+FCh` (the mount node, `00414DB0`) before re-pairing.
+3. **Hold fire drops the fire target** (lead item 3a). This waits on the ships-lane API requested from the lead,
+   `GameShipAiHost::release_fire_target_00836210(unit)`, which zeroes `+238h` and leaves `+23Ch` alone. Then call it
+   from `set_director_fire_stance_0071be80` when `fire` is false, behind an OFF switch.
+4. **Blast mesh** (215 item 1). USNOS diverges from 15.85 s: land structures die earlier ON (`Static warhawk 06`,
+   `Hangar, Small, 01 02` at 17.15 s against 39.95 s), because the mesh box widens the structures' blast boxes.
+   NH's later loss is chaos downstream of that. Check the land-structure model box against the image's `0070F720`
+   sphere test before re-pairing.
+5. **Fido** (225): blocked in this installation (no menu id reaches the Fido script).
+
+**Tools** (this tree's `local\`): `g41_queue.ps1` (jobs `exe|log|args`). It waits until `g41_exports.txt` has an
+`exit=0` line for the export dir, and it caps the g41 runs at three across all queues; to reuse it, rename the
+`g41_` match. Row argument files: `g41_u12.args`, `g41_u15.args`, `g41_u21.args`, `g41_u1.args`. Export dirs are
+reused for incremental builds (each build takes 2-4 minutes, against 20+ for a fresh export), so check
+`g41_exports.txt` for what a dir currently holds. Base `863d505be`, everything OFF: `g39_rk2`. Current tree ON:
+`g40_tf` (`6f1c8edac`, submarine gate OFF) and `g39_lo` (gate ON).
