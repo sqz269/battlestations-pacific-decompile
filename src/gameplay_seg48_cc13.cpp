@@ -520,6 +520,15 @@ SpeedTerms flight_controller_update_speed_terms_007d8020(const Vec3& world_veloc
     return out;
 }
 
+float flight_forward_speed_007d99c0(float body_forward_44, bool has_parent,
+                                    float parent_velocity_local_z) noexcept {
+    if (!has_parent) {
+        return body_forward_44;  // 007D99D4
+    }
+    const float z = parent_velocity_local_z;
+    const float factor = (z >= kZero) ? 0.1f : 0.8f;  // 007D9A31 COMISS / JB
+    return z * factor + body_forward_44;             // 007D9A58-007D9A5F
+}
 bool flight_controller_set_flag_94_007d8180(bool& flag_94, bool force, bool has_game,
                                             int game_mode_1fe4) noexcept {
     if (force || (has_game && (game_mode_1fe4 == 0 || game_mode_1fe4 == 1))) {

@@ -34,16 +34,21 @@
 //   * 007E1CCF: U(0, 2 pi), STREAM 1, once per rotor Reset (007E1C60), which
 //     Restart (007DDEC0) and the engine list's ResetAll (007DE630, from
 //     007B97F0 RestoreFullHealth) reach.
+//   * 007D7F90, then 0043996D and 0043998D inside 00439950: the controller
+//     constructor's dying spin, three STREAM-1 draws per plane (007D7EA0).
 //   * 007E2862: U(0, 1), STREAM 0, once per call of the damage-effect switch
 //     (007E27B0) while its state is 1, i.e. every plane tick for 10 s after the
 //     plane's damage changes. Presentation on the gameplay stream: the RNG rule
 //     applies (a presentation stream, or OFF with a comment).
 // - OFF-switch prediction: OFF changes nothing. ON, the stream-1 draws are the
-//   only gameplay-visible effect of the rotor models: every plane spawn shifts
-//   stream-1 consumers by 2 + count + rotors draws, and a full-health restore
+//   only gameplay-visible effect of the rotor and controller models: every plane
+//   spawn shifts stream-1 consumers by 3 + 2 + count + rotors draws, and a
+//   full-health restore
 //   by one per rotor. The damage-effect switch, if bound on stream 0, shifts
 //   every later stream-0 consumer from the first hit on a plane with a class
 //   damage-effect list.
+//   The forward speed 007D99C0 differs from the host only for a plane parented
+//   to a moving carrier deck (the host drops the parent term).
 
 #include <array>
 #include <cstdint>
@@ -482,6 +487,15 @@ SpeedTerms flight_controller_update_speed_terms_007d8020(const Vec3& world_veloc
                                                          const Vec3& body_velocity_3c,
                                                          const Vec3& body_angular_48) noexcept;
 
+// 007D99C0 BSP_PlaneFlight_ForwardSpeed, __fastcall(ctl), ST0 (bytes
+// 007D99C0-007D9A68). speed = ctl+44h (the body forward speed); when the unit
+// has a parent (unit+3Ch, a carrier deck) the parent's velocity (its slot
+// +34h) is taken into the unit's frame by 0042D0D0 through the unit's inverse
+// world matrix +110h (rebuilt by 00B63D50 when +10Ch is clear), and
+// speed = float(z * (z >= 0.0f ? 0.1f (00D7A2F0) : 0.8f (00CE74F8)) + speed)
+// with z that local velocity's z (COMISS / JB, so a NaN z takes 0.8).
+float flight_forward_speed_007d99c0(float body_forward_44, bool has_parent,
+                                    float parent_velocity_local_z) noexcept;
 // 007D8180 BSP_PlaneFlightController_SetGravityTerm94, __thiscall(ctl, bool
 // force), RET 4: ctl+94h = 1 when force, or when a game object exists and its
 // mode +1FE4h is 0 or 1 (single player or host). Otherwise nothing is written.

@@ -150,6 +150,10 @@ with a non-empty damage-effect list. It is presentation drawn from the gameplay 
     are `DE FA` (`FDIVP`) and `D8 7E 40` (`FDIVR`), read from the bytes;
   - `+A8h = -0.0f - +4Ch`, `+A4h = +48h`, `+A0h = +50h`: the body angular velocity, reordered and with y
     negated.
+- **`007D99C0`, the forward speed** (nine callers). The speed is `ctl+44h`, plus a term for a unit with a
+  parent (`unit+3Ch`, a carrier deck): `z * (z >= 0 ? 0.1 : 0.8)`. Here `z` is the parent's velocity
+  (its slot `+34h`) in the unit's frame, taken through the inverse world matrix `+110h`. The host
+  (`src/game_hosts_units.cpp:17451`, `:10575`, `:30002`) takes that term as zero.
 - **`007D8180`.** It sets `ctl+94h` when its argument is set, or in game mode 0 or 1. `007DB2C0` clears
   the byte.
 - **`007D7C00`.** It copies the world and body velocities into `dyn+4Ch`/`+64h` and zeroes the six
@@ -202,6 +206,7 @@ with a non-empty damage-effect list. It is presentation drawn from the gameplay 
 | `flight_controller_update_speed_terms_007d8020` | the missing tail of `world_to_body_007d9c10` / `body_to_world_007d9c80` (`src/plane_angular_velocity.cpp:221`, `:228`) | the controller's world and body velocities and body angular velocity | none | OFF: none. ON: `ctl+6Ch`, `+70h`, `+74h` and `+A0h..A8h` get values. Their readers were not traced in this pass. |
 | `control_surface_step_007de2e0` | none (`include/bsp/plane_advance_pose.hpp:138` models the drive values only) | `ControlSurfaceDrive` per surface, the node's `+ACh` | none | presentation only |
 | `actuator_block_save_007deb70`, `actuator_block_load_007dea60`, `timed_flag_debounce_007eb4e0` | none (no save games; no effects component) | the actuator block; the flying predicate and GameTuning `+6C0h` | none | none in a mission run |
+| `flight_forward_speed_007d99c0` | the dot products `v . forward` at `src/game_hosts_units.cpp:10575`, `:10656`, `:30002` and `ctl+44h` at `:17451` | `ctl+44h`; the deck parent's velocity in the plane's frame | none | OFF: none. ON: changes only planes parented to a moving carrier deck (take-off roll and deck taxi), whose forward speed gains 0.1 x the carrier's forward velocity (0.8 x when the carrier moves backward in the plane's frame). Every reader sees the change: the stall ratio, the control authority, the drag. |
 
 ## 3. For cc9 (no host edits made)
 
@@ -216,6 +221,14 @@ with a non-empty damage-effect list. It is presentation drawn from the gameplay 
 - **`src/plane_flight.cpp:604`, `max_sustainable_climb_angle_007d98f0`.** It keeps the image's bisection,
   with a substituted per-angle predicate (`007D9360` integrates ten 0.04 s steps). The ledger record
   marks it as a substitution.
+- **`src/game_hosts_units.cpp:8173`, `plane_class_turn_rate_270_007db4d0`.** It returns the image's rate.
+  Note that the clamped arm of the image (`e > 0.6`) also rewrites the class's TurnRollLeader `+260h` to
+  `atan(0.6 * PitchSpd / c)`. That is a write to the shared class record, so every later call for that
+  class (any plane of the class) starts from the new angle. The host comment records the omission. The
+  first call already returns the clamped rate, and later calls see a different `sr`/`cr`.
+- **`007D7DA0` and `007DB4D0` in the host** keep double intermediates where the image rounds every
+  step to 24 bits (`docs/CC13_FPU_PRECISION.md`).
+- **The forward speed `007D99C0`** has a carrier-deck term the host drops (section 1.5).
 
 ## 4. Ledger
 
@@ -243,6 +256,10 @@ Records for existing reconstructions, checked against the listing, with no host 
   the matrix), `007DEB70`, `007DEA60`; the fragment `007EB4E0` (the flying flag in `007EB380`); and
   `007D80C0`, the existing `src/band_007a_cc13.cpp:128`, checked against the listing. Its record notes one
   difference: that model subtracts and divides in double.
+
+- batch 3: `007D99C0` (model); and, checked against the listing, `007D7DA0`
+  (`src/game_hosts_units.cpp:5727`), `007DB4D0` (`:8173`, partial: the `+260h` rewrite) and `007DB630` (the inline
+  wire seed at `:14474`).
 
 Renames (`config/names`, applied to Ghidra with `tools/ghidra_annotate.py --apply`; the old evidence is kept
 in each record, and the prior annotations are in the tool's local JSON):
@@ -273,3 +290,33 @@ Evidence was appended to `007E27B0` (stream 0), `007D7EA0` (stream 1), `007D9B70
 - `tools/x87_dc_form_scan.py --range 007D7D70-007ECB20` finds 11 DC-form sites, in six functions. None
   is in a function modelled here. `007D9335` (in the checked host function `007D92B0`) is the `x - frndint(x)`
   step of the pow idiom.
+
+## 6. Open and handoff
+
+Not done in this packet, by priority:
+
+1. **Host reconstructions in range still without a record**, because each needs a full listing check:
+   - `007D8230` (`src/plane_advance_pose.cpp:308`) and `007D9F60` (`:334`);
+   - `007D8470` (`src/plane_flight.cpp:436`);
+   - `007DA710` (`src/plane_control_rate.cpp:40`/`:104`);
+   - `007DB680`, the core law (`src/plane_flight.cpp:319`);
+   - `007D9050`/`007D9140`/`007DA380` (inline in the hosts);
+   - `007D9CE0` (the deck reparent);
+   - `007E1D80` and `007EF8F0` (`src/band_007a_cc13.cpp`).
+2. **`007D9360`.** The climb-angle trial integration behind `007D98F0`: the host substitutes its predicate.
+3. **`007EB380`, the effects-component step**, beyond the flying flag:
+   - the power filter (`+34h`/`+38h`/`+3Ch`);
+   - the start/stop state (`running`, `RPM`, `startStopTimer`);
+   - the rotor rpm target passed to every engine's slot `+10h`;
+   - the camera-relative sound part (doppler from `GGame+19FCh`).
+
+   It is presentation with no RNG.
+4. **`007EC5A0`'s other fields** (the Falling/Dying effects, sound loops) and the `007EB0E0`/`007EB160`/
+   `007EB270`/`007EB350` effect helpers. Presentation.
+5. **The squadron functions `007ECF00`-`007F3E50`**, left to cc9's squadron lanes (excluded as air ops and
+   bot tasks). The gun-platform functions `007F6xxx` are cc9's gunnery.
+6. **Infrastructure** (constructors, destructors, pod arrays, STL wrappers) between `007D5AC0` and
+   `007F8280`. Their names stand and they have no records.
+
+The scripts are in this tree's `local/gpr48_*.py`: the function list, the grep and definition finders, the
+record writers and the doc edits. They are not committed.
