@@ -3577,6 +3577,20 @@ const std::vector<GameCommandRow>& GameCommandsHost::rows() const noexcept {
     return impl_->rows;
 }
 
+std::size_t GameCommandsHost::retire_ended_command_rows(std::size_t unit_index,
+    std::uint32_t command_object) {
+    std::size_t n = 0;
+    for (GameCommandRow& row : impl_->rows) {
+        if (row.unit_index != unit_index || !row.current) continue;
+        const bsp::EntityOrderCommandClass* cls = row.ordinal >= 0
+            ? bsp::entity_order_command_class_by_ordinal(row.ordinal) : nullptr;
+        if (cls == nullptr || cls->object_address != command_object) continue;
+        row.current = false;
+        ++n;
+    }
+    return n;
+}
+
 const GameCommandsSummary& GameCommandsHost::summary() const noexcept {
     return impl_->summary;
 }

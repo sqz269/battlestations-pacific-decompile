@@ -598,6 +598,11 @@ public:
     // remaining drive behavior is still outside this host's projection.
 
     const std::vector<GameCommandRow>& rows() const noexcept;
+    // Packet cc9-gunnery38 (bsp::kSquadronDeadTargetRetestBound): a row is current
+    // only while 0071BE40 answers its class (finish_issue_tail), but nothing
+    // re-reads that after 0071E430 ends the command. Clears `current` on this
+    // unit's current rows of that command class; returns how many.
+    std::size_t retire_ended_command_rows(std::size_t unit_index, std::uint32_t command_object);
     const GameCommandsSummary& summary() const noexcept;
 
     // The per-unit table and the one-line summary the milestone reports.

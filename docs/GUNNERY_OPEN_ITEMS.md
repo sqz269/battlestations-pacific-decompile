@@ -13125,3 +13125,11 @@ nine squadrons of 197); each ended command leaves its squadron with no attack co
 fall and the `command target 0071EBF0 ... token="Washington"` lines stop after 1748 s for that squadron; whether the
 slot then accepts the plan's `order 3` lines is unknown. Outcome: ESMP08 still not completed (the plan has no order
 lines for those slots). USN12 win: exit 0/1 or a small move, completion held.
+
+**199.1 First ON run: the ended command did not reach the plane** (`local\g38_rton_we8.log`, c8a347ab4 ON):
+`dead_targets=15 ends=15` (e.g. `Chiyoda_sqn56 target Washington dead at 1633.42 s ... ended (queue_stage_by_mode,
+stage 2)`), but `command target 0071EBF0: unit=Chiyoda_sqn56 token="Washington"` kept resolving after 1633 s: a command
+row's `current` is set once at issue (`finish_issue_tail`) and never re-read after `0071E430`, and the gunnery refresh
+keeps an unauthored unit's old target (`kCommandTargetKeepUnauthoredBound`). USN12 win: exit 1, `dead_targets=0`.
+Added (same switch): `GameCommandsHost::retire_ended_command_rows` clears `current` on the unit's rows of the ended
+class, and each live member's resolved target is cleared when it is the dead one (0071EBF0's neutral record).

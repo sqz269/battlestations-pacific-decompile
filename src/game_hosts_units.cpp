@@ -14982,6 +14982,14 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
                 ++h.retest_dead_targets;
                 const GameCommandCompletion done = end_command_0071e430(leader, command, true);
                 if (done.ran) ++h.retest_ends;
+                // After 0071E430 the director answers no attack class, so 0071EBF0
+                // falls to its neutral record (00E19BB4): the rows stop being current
+                // and the members' resolved target is cleared. LABELLED: the host's
+                // commands are per unit, so each live member's rows are retired.
+                for (const std::size_t m : alive) {
+                    h.commands.retire_ended_command_rows(m, command);
+                    if (h.slots[m]->command_target_plus_one == t) h.slots[m]->command_target_plus_one = 0;
+                }
                 h.log.notef("squadron retest: \"%s\" target %s dead at %.2f s, command %08X "
                     "ended (%s, stage %d) (009F8412 / 009F7D3A, cc9-gunnery38)", sq.name.c_str(),
                     h.slots[t - 1]->row.name.c_str(), static_cast<double>(now), command,
