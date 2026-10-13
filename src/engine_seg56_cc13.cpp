@@ -1062,6 +1062,163 @@ int lua_movcam_pick_snitt_deck_position(LuaArgs& args, MovCamModeHost& host)
     return 0;
 }
 // ---------------------------------------------------------------------------
+// Clouds
+// ---------------------------------------------------------------------------
+
+int lua_set_old_cloud_alpha(LuaArgs& args, CloudSceneHost& host)
+{
+    const float alpha = narrow(args.get_number(0));
+    for (void* node = host.old_cloud_root_first(); node != nullptr;
+         node = host.node_next_sibling_3c(node)) {
+        if (host.node_is_cloud_instance(node)) {
+            host.cloud_instance_set_alpha(node, alpha);
+        }
+        for (void* child = host.node_first_child_34(node); child != nullptr;
+             child = host.node_next_sibling_3c(child)) {
+            if (host.node_is_cloud_instance(child)) {
+                host.cloud_instance_set_alpha(child, alpha);
+            }
+            for (void* grandchild = host.node_first_child_34(child); grandchild != nullptr;
+                 grandchild = host.node_next_sibling_3c(grandchild)) {
+                host.grandchild_set_alpha_00888fc0(grandchild, alpha);
+            }
+        }
+    }
+    return 0;
+}
+
+bool point_in_closed_box(const Vec3& point, const Vec3& lo, const Vec3& hi) noexcept
+{
+    return lo.x <= point.x && lo.y <= point.y && lo.z <= point.z && point.x <= hi.x
+        && point.y <= hi.y && point.z <= hi.z;
+}
+
+int lua_set_cloud_visibility(LuaArgs& args, CloudSceneHost& host)
+{
+    const Vec3 lo = args.read_vector3(0);
+    const Vec3 hi = args.read_vector3(1);
+    const float value = narrow(args.get_number(2));
+    for (void* node = host.visibility_list_first(); node != nullptr;
+         node = host.visibility_list_next_38(node)) {
+        host.node_ensure_world_matrix(node);
+        if (host.node_vcall_5c(node, kCloudVisibilityNodeSelector)
+            && point_in_closed_box(host.node_world_position(node), lo, hi)) {
+            host.node_set_visibility_1c4(node, value);
+        }
+    }
+    return 0;
+}
+// ---------------------------------------------------------------------------
+// Look-at and GUI name
+// ---------------------------------------------------------------------------
+
+int lua_game_camera_look_at_target(LuaArgs& args, LookAtHost& host)
+{
+    bool use_entity = false;
+    void* entity = nullptr;
+    Vec3 position;
+    if (args.is_entity_table(0)) {
+        use_entity = true;
+        entity = args.entity_at(0);
+    } else if (args.is_vector3_table(0)) {
+        position = args.read_vector3(0);
+    }
+    float a1 = kLookAtDefaultFirst;
+    float a2 = kLookAtDefaultSecond;
+    float a3 = 0.0f;
+    float a4 = 0.0f;
+    if (args.count() > 1) {
+        a1 = narrow(args.get_number(1));
+    }
+    if (args.count() > 2) {
+        a2 = narrow(args.get_number(2));
+    }
+    if (args.count() > 3) {
+        a3 = narrow(args.get_number(3));
+    }
+    if (args.count() > 4) {
+        a4 = narrow(args.get_number(4));
+    }
+    if (!host.camera_controller_present()) {
+        return 0;
+    }
+    if (use_entity) {
+        host.controller_look_at_entity(entity, a1, a2, a3, a4);    // 00892309
+    } else {
+        host.controller_look_at_position(position, a1, a2, a3, a4); // 0089235A
+    }
+    return 0;
+}
+
+int lua_set_gui_name(LuaArgs& args, LookAtHost& host)
+{
+    const std::string name = args.get_string(1);
+    void* entity = args.entity_at(0);
+    const bool flag = args.count() > 2 ? args.get_boolean(2) : false;
+    host.entity_set_gui_name(entity, name, flag);
+    return 0;
+}
+// ---------------------------------------------------------------------------
+// Ambient, animation and terrain nodes
+// ---------------------------------------------------------------------------
+
+int lua_enable_engine_sound(LuaArgs& args, AmbientHost& host)
+{
+    void* entity = args.entity_at(0);
+    host.entity_set_engine_sound_9c4(entity, args.get_boolean(1));
+    return 0;
+}
+
+int lua_start_vehicle_anim(LuaArgs& args, AmbientHost& host)
+{
+    void* entity = args.entity_at(0);
+    std::string name;
+    if (args.count() > 1 && args.is_string(1)) {
+        name = args.get_string(1);
+    }
+    const float value = args.count() < 3 ? 0.0f : narrow(args.get_number(2));
+    host.entity_start_anim_0088b4b0(entity, name, value);
+    return 0;
+}
+
+int lua_stop_vehicle_anim(LuaArgs& args, AmbientHost& host)
+{
+    host.entity_stop_anim_70c(args.entity_at(0));
+    return 0;
+}
+
+int lua_get_visibility_terrain_node(LuaArgs& args, LuaResults& results, AmbientHost& host)
+{
+    void* node = host.scene_find_node(args.get_string(0));
+    results.push_boolean(node != nullptr && host.scene_node_visibility_ac(node) > 0.0f);
+    return 1;
+}
+
+int lua_insert_fish_school(LuaArgs& args, AmbientHost& host)
+{
+    const int type = args.get_integer(0);
+    host.fish_school_create(type, args.read_vector3(1));
+    return 0;
+}
+
+int lua_temp_add_floatsam(LuaArgs& args, AmbientHost& host)
+{
+    host.temp_add_floatsam_004a5f30(args, 0);
+    return 0;
+}
+
+int lua_temp_add_anim(LuaArgs& args, AmbientHost& host)
+{
+    host.temp_add_anim_0049dc00(args, 0);
+    return 0;
+}
+
+int lua_remove_temp_added_stuff(LuaArgs& args, AmbientHost& host)
+{
+    host.remove_temp_added_0049de90(args.get_string(0));
+    return 0;
+}
+// ---------------------------------------------------------------------------
 // Small accessors and value types
 // ---------------------------------------------------------------------------
 

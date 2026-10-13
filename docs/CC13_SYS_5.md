@@ -97,6 +97,17 @@ Added after the first commit, same method:
   `008DAD80`, `008C8980`, `008C9350`; `objective_kind_008dbf40` in cc9's
   `src/game_hosts_lua.cpp` backfilled after checking the six strings at 00E0C948.
 
+## Third batch
+
+- Clouds: `SetOldCloudAlpha` 008C8090 (three-level node walk; kind test on the first two
+  levels only), `SetCloudVisibility` 008AE480 (closed box test of the node position).
+- `GameCameraLookAtTarget` 00891FB0: the two controller calls take `(entity | vector, a1, a2,
+  a3, a4)`; the slots were mapped from the `SUB ESP` sequences at 008922EA and 00892313
+  against the frame offsets of the four locals (defaults 2.0f, 99999.0f, 0, 0).
+- `SetGuiName` 008A8F90, `EnableEngineSound` 008911E0, `StartVehicleAnim` 008C2E00,
+  `StopVehicleAnim` 008C3060, `GetVisibilityTerrainNode` 008C3410, `InsertFishSchool` 008C2970,
+  `TempAddFloatsam` 008C5B80, `TempAddAnim` 008C5CD0, `RemoveTempAddedStuff` 008C5E20.
+
 ## Divergences and uncertainty
 
 - The models take values and callbacks; nothing reproduces native object layout.

@@ -42,6 +42,7 @@ struct LuaArgs : LuaBindingArgumentReader {
     virtual bool is_boolean(int index) = 0;   // 00B66000
     virtual bool is_number(int index) = 0;    // 00B66050
     virtual Vec3 read_vector3(int index) = 0; // 00888760, reads fields x/y/z of a table
+    virtual bool is_vector3_table(int index) = 0; // 0088B840
     virtual void* to_userdata(int index) = 0; // 00B662D0
     // 00B662F0 over the argument object: the boolean, or `fallback` when it is not one.
     virtual bool boolean_or(int index, bool fallback) = 0;
@@ -591,6 +592,101 @@ int lua_movcam_tompi_mode(LuaArgs& args, MovCamModeHost& host);           // 008
 int lua_movcam_set_secondary_target(LuaArgs& args, MovCamModeHost& host); // 008B60C0
 int lua_movcam_add_interpolator(LuaArgs& args, MovCamModeHost& host);     // 008B6740
 int lua_movcam_pick_snitt_deck_position(LuaArgs& args, MovCamModeHost& host); // 008B6AD0
+// ---------------------------------------------------------------------------
+// Cloud bindings
+// ---------------------------------------------------------------------------
+
+struct CloudSceneHost {
+    virtual ~CloudSceneHost() = default;
+    // SetOldCloudAlpha walks the tree rooted at *([[00E188A8]+19ECh]+0Ch): siblings through
+    // +3Ch, children through +34h.
+    virtual void* old_cloud_root_first() = 0;
+    virtual void* node_next_sibling_3c(void* node) = 0;
+    virtual void* node_first_child_34(void* node) = 0;
+    // The node's vtable+0Ch with the class object 00BBE290 answers: a kind-of test.
+    virtual bool node_is_cloud_instance(void* node) = 0;
+    virtual void cloud_instance_set_alpha(void* node, float alpha) = 0;   // 00BBE490
+    virtual void grandchild_set_alpha_00888fc0(void* node, float alpha) = 0;
+    // SetCloudVisibility walks the list *(*([[00E188A8]+19CCh]+4)) through +38h.
+    virtual void* visibility_list_first() = 0;
+    virtual void* visibility_list_next_38(void* node) = 0;
+    // When byte +C8h is clear: refresh the parent (+3Ch, 00414DB0), world = local +74h, times
+    // the parent's +CCh (00413920) when there is one, copied to +CCh (004134F0); then byte
+    // +C8h = 1 and byte +10Ch = 0.
+    virtual void node_ensure_world_matrix(void* node) = 0;
+    virtual bool node_vcall_5c(void* node, int selector) = 0;  // vtable+5Ch, called with 3Dh
+    virtual Vec3 node_world_position(void* node) = 0;          // +FCh..+104h
+    // 00475A30 on the node, then the float at its result +1C4h.
+    virtual void node_set_visibility_1c4(void* node, float value) = 0;
+};
+
+// SetOldCloudAlpha 008C8090: alpha = arg0; every cloud-instance node of the first two levels
+// gets 00BBE490, every third-level node 00888FC0, without the kind test.
+int lua_set_old_cloud_alpha(LuaArgs& args, CloudSceneHost& host);
+// SetCloudVisibility 008AE480: box min arg0, max arg1, value arg2; every node that answers
+// vtable+5Ch(3Dh) and lies inside the closed box gets the value.
+int lua_set_cloud_visibility(LuaArgs& args, CloudSceneHost& host);
+inline constexpr int kCloudVisibilityNodeSelector = 0x3D;
+bool point_in_closed_box(const Vec3& point, const Vec3& lo, const Vec3& hi) noexcept;
+// ---------------------------------------------------------------------------
+// Game camera look-at and unit GUI name
+// ---------------------------------------------------------------------------
+
+struct LookAtHost {
+    virtual ~LookAtHost() = default;
+    // The camera controller [[00E188A8]+1ED4h]; the binding does nothing when it is null.
+    virtual bool camera_controller_present() = 0;
+    virtual void controller_look_at_entity(void* entity, float a1, float a2, float a3,
+        float a4) = 0;                                    // vtable+11Ch
+    virtual void controller_look_at_position(const Vec3& position, float a1, float a2,
+        float a3, float a4) = 0;                          // vtable+118h, vector by value
+    // The entity's vtable+0Ch with (native string name, flag).
+    virtual void entity_set_gui_name(void* entity, const std::string& name, bool flag) = 0;
+};
+// GameCameraLookAtTarget 00891FB0: an entity arg0 (008889C0) or a vector arg0 (0088B840 +
+// 00888760); optional numbers arg1..arg4 with defaults 2.0f (dword 00CE3958), 99999.0f
+// (00D119AC), 0, 0. Neither an entity nor a vector leaves the vector uninitialised in the
+// native; the model passes zero.
+int lua_game_camera_look_at_target(LuaArgs& args, LookAtHost& host);
+inline constexpr float kLookAtDefaultFirst = 2.0f;
+inline constexpr float kLookAtDefaultSecond = 99999.0f;
+// SetGuiName 008A8F90: string arg1 read first, entity arg0, optional boolean arg2 (default
+// false), entity vtable+0Ch.
+int lua_set_gui_name(LuaArgs& args, LookAtHost& host);
+// ---------------------------------------------------------------------------
+// Ambient, animation and terrain-node bindings
+// ---------------------------------------------------------------------------
+
+struct AmbientHost {
+    virtual ~AmbientHost() = default;
+    virtual void entity_set_engine_sound_9c4(void* entity, bool enabled) = 0;   // byte +9C4h
+    virtual void entity_start_anim_0088b4b0(void* entity, const std::string& name, float value) = 0;
+    virtual void entity_stop_anim_70c(void* entity) = 0;                         // byte +70Ch = 0
+    // 00B72270(name, 1): the scene node, or null; its float +ACh is the visibility factor.
+    virtual void* scene_find_node(const std::string& name) = 0;
+    virtual float scene_node_visibility_ac(void* node) = 0;
+    virtual void fish_school_create(int type, const Vec3& position) = 0;        // 00709620
+    virtual void temp_add_floatsam_004a5f30(LuaArgs& args, int index) = 0;      // LuaObject copy
+    virtual void temp_add_anim_0049dc00(LuaArgs& args, int index) = 0;          // LuaObject copy
+    virtual void remove_temp_added_0049de90(const std::string& name) = 0;
+};
+// EnableEngineSound 008911E0: entity arg0, byte +9C4h = boolean arg1.
+int lua_enable_engine_sound(LuaArgs& args, AmbientHost& host);
+// StartVehicleAnim 008C2E00: entity arg0; name = string arg1 when present and a string, else
+// ""; value = number arg2 when there are three or more arguments, else 0; 0088B4B0 on the
+// entity with (name, value).
+int lua_start_vehicle_anim(LuaArgs& args, AmbientHost& host);
+// StopVehicleAnim 008C3060: byte +70Ch of entity arg0 = 0.
+int lua_stop_vehicle_anim(LuaArgs& args, AmbientHost& host);
+// GetVisibilityTerrainNode 008C3410: false without a node, else +ACh > 0.0f (00D7A218).
+int lua_get_visibility_terrain_node(LuaArgs& args, LuaResults& results, AmbientHost& host);
+// InsertFishSchool 008C2970: 00709620 __fastcall(int arg0, &vector arg1).
+int lua_insert_fish_school(LuaArgs& args, AmbientHost& host);
+// TempAddFloatsam 008C5B80 / TempAddAnim 008C5CD0: the LuaObject of arg0 to 004A5F30 / 0049DC00.
+int lua_temp_add_floatsam(LuaArgs& args, AmbientHost& host);
+int lua_temp_add_anim(LuaArgs& args, AmbientHost& host);
+// RemoveTempAddedStuff 008C5E20: 0049DE90(string arg0).
+int lua_remove_temp_added_stuff(LuaArgs& args, AmbientHost& host);
 
 // ---------------------------------------------------------------------------
 // Small accessors and value types
