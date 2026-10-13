@@ -1004,4 +1004,20 @@ void bush_group_model_render_filter_00ae23f0(void* model, void* ctx, std::uint32
 void* tree_group_instance_construct_00ae5070(void* instance, void* landscape, void* type, void* root,
     std::uint32_t extra, GroupModelHost& models);
 
+// ---------------------------------------------------------------------------
+// cc13-terrain2: ballistic particle height extrema (x87 traced by hand from the listing).
+// The curve is y(t) = ((a t + b) t + c) t + d about x0: +00h x0, +04h y0, +1Ch a, +20h b,
+// +24h c, +28h d; the other point gives +00h x and +04h y.
+// 00AFB7F0 BSP_ParticleBallistic_MaxHeight and 00AFBA40 BSP_ParticleBallistic_MinHeight,
+// __thiscall(ECX curve, const float* other), RET 4, ST0 result (a float re-loaded):
+//   disc = f(4.0*b*b - 12.0*a*c) (doubles 00D7A328 / 00CE42D0); when 0 > disc or a == 0
+//   (UCOMISS: unordered continues) the fallback applies. Otherwise s = f(sqrt(disc))
+//   (00BF7030), t1 = f((s - 2b)/(6a) + x0), t2 = f((-2b - s)/(6a) + x0) (00CE6628 = 6,
+//   00D7A308 = 2, 00D19660 = -2), each kept when x0 < t < other.x; for u = f(t - x0) the
+//   extremum test is 6a*u + 2b < 0 (Max) / > 0 (Min), and the value
+//   f(((a u + b) u + c) u + d) is returned (t1 first, then t2).
+//   Fallback: Max returns curve.y0 when curve.y0 > other.y else other.y; Min returns
+//   curve.y0 when other.y > curve.y0 else other.y (NaN picks other.y in both).
+float ballistic_max_height_00afb7f0(const float* curve, const float* other) noexcept;
+float ballistic_min_height_00afba40(const float* curve, const float* other) noexcept;
 } // namespace bsp::cc13_terrain
