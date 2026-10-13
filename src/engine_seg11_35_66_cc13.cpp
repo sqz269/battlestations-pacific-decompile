@@ -1123,6 +1123,234 @@ FishSchoolDescLayout* create_fish_school_00709620(std::int32_t kind, const float
     return school;
 }
 
+namespace {
+
+// One structural spring of 00709EF0 between points a and b.
+void flag_spring(FlagClothLayout& cloth, const float* positions, const float* velocities, std::int32_t a,
+                 std::int32_t b, float rest) {
+    const float* pa = positions + a * 3;
+    const float* pb = positions + b * 3;
+    const float dx = pb[0] - pa[0];
+    const float dy = pb[1] - pa[1];
+    const float dz = pb[2] - pa[2];
+    const float sq = dz * dz + dy * dy + dx * dx;
+    const float len = static_cast<double>(sq) <= 1e-10 ? 0.0f : static_cast<float>(std::sqrt(static_cast<double>(sq)));
+    const float inv = 1.0f / len;
+    const float ux = inv * dx;
+    const float uy = dy * inv;
+    const float uz = inv * dz;
+    const float fs = (len - rest) * cloth.stiffness_4c;
+    const float* va = velocities + a * 3;
+    const float* vb = velocities + b * 3;
+    const float fd = ((vb[2] - va[2]) * uz + (vb[1] - va[1]) * uy + (vb[0] - va[0]) * ux) * cloth.damping_50;
+    const float fx = fd * ux + ux * fs;
+    const float fy = uy * fd + uy * fs;
+    const float fz = fd * uz + uz * fs;
+    float* fa = cloth.forces_18 + a * 3;
+    float* fb = cloth.forces_18 + b * 3;
+    fa[0] = fx + fa[0];
+    fa[1] = fy + fa[1];
+    fa[2] = fz + fa[2];
+    fb[0] = fb[0] - fx;
+    fb[1] = fb[1] - fy;
+    fb[2] = fb[2] - fz;
+}
+
+}  // namespace
+
+void apply_flag_wind_00709ef0(FlagClothLayout& cloth, const float* positions, const float* velocities) {
+    for (std::int32_t i = 0; i < cloth.count_04; ++i) {
+        const float* n = cloth.normals_1c + i * 3;
+        float* f = cloth.forces_18 + i * 3;
+        const float s = (n[2] * cloth.wind_20[2] + cloth.wind_20[0] * n[0] + n[1] * cloth.wind_20[1]) /
+                        (n[2] * n[2] + n[0] * n[0] + n[1] * n[1]);
+        f[0] = s * n[0];
+        f[1] = n[1] * s;
+        f[2] = s * n[2];
+        f[1] = cloth.gravity_58 + f[1];
+        const float* v = velocities + i * 3;
+        f[0] = f[0] + cloth.velocity_drag_54 * v[0];
+        f[1] = v[1] * cloth.velocity_drag_54 + f[1];
+        f[2] = f[2] + cloth.velocity_drag_54 * v[2];
+    }
+    for (std::int32_t r = 0; r < cloth.rows_40; ++r) {
+        for (std::int32_t c = 0; c < cloth.columns_3c - 1; ++c) {
+            const std::int32_t a = cloth.columns_3c * r + c;
+            flag_spring(cloth, positions, velocities, a, a + 1, cloth.rest_horizontal_5c);
+        }
+    }
+    for (std::int32_t r = 0; r < cloth.rows_40 - 1; ++r) {
+        for (std::int32_t c = 0; c < cloth.columns_3c; ++c) {
+            flag_spring(cloth, positions, velocities, cloth.columns_3c * r + c, cloth.columns_3c * (r + 1) + c,
+                        cloth.rest_vertical_60);
+        }
+    }
+}
+
+void integrate_flag_cloth_0070a450(const FlagClothLayout& cloth, float* out_a, float* out_b, const float* in_a,
+                                   const float* in_b, const float* vel, float dt) {
+    const float* force = cloth.forces_18;
+    for (std::int32_t i = 0; i < cloth.count_04; ++i) {
+        out_a[0] = in_a[0] + vel[0] * dt;
+        out_a[1] = in_a[1] + vel[1] * dt;
+        out_a[2] = in_a[2] + vel[2] * dt;
+        const float w = (static_cast<float>(i % cloth.columns_3c) / static_cast<float>(cloth.columns_3c - 1)) * dt;
+        out_b[0] = in_b[0] + w * force[0];
+        out_b[1] = in_b[1] + force[1] * w;
+        out_b[2] = in_b[2] + w * force[2];
+        out_a += 3; out_b += 3; in_a += 3; in_b += 3; vel += 3; force += 3;
+    }
+}
+
+void relax_flag_grid_0070a5a0(FlagClothLayout& cloth, VectorNormalizer& normalizer) {
+    for (std::int32_t r = 0; r < cloth.rows_40; ++r) {
+        for (std::int32_t c = 1; c < cloth.columns_3c; ++c) {
+            float* p = cloth.positions_08 + (cloth.columns_3c * r + c) * 3;
+            float d[3] = {p[0] - p[-3], p[1] - p[-2], p[2] - p[-1]};
+            normalizer.normalize_0042b260(d);
+            const float rest = cloth.rest_horizontal_5c;
+            d[0] *= rest;
+            d[1] *= rest;
+            d[2] *= rest;
+            p[0] = d[0] + p[-3];
+            p[1] = d[1] + p[-2];
+            p[2] = d[2] + p[-1];
+        }
+    }
+}
+
+void update_flag_wave_0070aa70(FlagClothLayout& cloth, float dt, float game_time_648, float& published_e19b10,
+                               PresentationRandom& random, FlagClothCalls& calls) {
+    cloth.time_74 = game_time_648;
+    published_e19b10 = game_time_648;
+    if (dt > 0.5f) {
+        dt = 0.5f;
+    }
+    const std::int32_t steps = 1 - static_cast<std::int32_t>(dt / -0.02500000037252903);
+    const float sub = static_cast<float>(dt / steps);
+    const float c = static_cast<float>(std::cos(cloth.angle_2c));
+    const float s = static_cast<float>(std::sin(cloth.angle_2c));
+    cloth.wind_20[0] = random.uniform_00bd2f10(-0.01f, 0.01f);  // 00D7A300 / 00D7A238
+    cloth.wind_20[1] = s;
+    cloth.wind_20[2] = -0.0f - c;
+    calls.normalize_0042b260(cloth.wind_20);
+    for (float& w : cloth.wind_20) {
+        w = static_cast<float>(w * 100.0);  // double 00D7A220
+    }
+    for (std::int32_t i = steps; i > 0; --i) {
+        const float half = static_cast<float>(sub * 0.5);
+        calls.calculate_normals_00709cf0(cloth);
+        apply_flag_wind_00709ef0(cloth, cloth.positions_08, cloth.velocities_10);
+        integrate_flag_cloth_0070a450(cloth, cloth.positions_tmp_0c, cloth.velocities_tmp_14, cloth.positions_08,
+                                      cloth.velocities_10, cloth.velocities_10, half);
+        calls.calculate_normals_00709cf0(cloth);
+        apply_flag_wind_00709ef0(cloth, cloth.positions_tmp_0c, cloth.velocities_tmp_14);
+        integrate_flag_cloth_0070a450(cloth, cloth.positions_08, cloth.velocities_10, cloth.positions_08,
+                                      cloth.velocities_10, cloth.velocities_tmp_14, sub);
+    }
+}
+
+void write_flag_vertices_0070a710(FlagClothLayout& cloth, VertexStreamCalls& calls) {
+    calls.render_lock();
+    const VertexStreamView v = calls.lock_vslot10(cloth.vertex_stream_78, cloth.count_04 * 2);
+    calls.render_unlock();
+    auto at = [&](std::int32_t vertex, std::int32_t offset) {
+        return reinterpret_cast<float*>(v.data_08 + v.stride_0c * vertex + offset);
+    };
+    auto white = [&](std::int32_t vertex) {
+        if (v.colour_34 < 0) {
+            *at(vertex, v.channel_38) = 1.0f;
+            *at(vertex, v.channel_3c) = 1.0f;
+            *at(vertex, v.channel_40) = 1.0f;
+            *at(vertex, v.channel_44) = 1.0f;
+        } else {
+            *reinterpret_cast<std::uint32_t*>(at(vertex, v.colour_34)) = 0xFFFFFFFFu;
+        }
+    };
+    for (std::int32_t i = 0; i < cloth.count_04; ++i) {
+        const float* p = cloth.positions_08 + i * 3;
+        const float* n = cloth.normals_1c + i * 3;
+        const std::int32_t back = cloth.count_04 + i;
+        std::memcpy(at(i, v.position_10), p, 12);
+        float* nf = at(i, v.normal_1c);
+        nf[0] = static_cast<float>(-n[0] * 0.5);
+        nf[1] = static_cast<float>(-n[1] * 0.5);
+        nf[2] = static_cast<float>(-n[2] * 0.5);
+        std::memcpy(at(back, v.position_10), p, 12);
+        float* nb = at(back, v.normal_1c);
+        nb[0] = static_cast<float>(n[0] * 0.5);
+        nb[1] = static_cast<float>(n[1] * 0.5);
+        nb[2] = static_cast<float>(n[2] * 0.5);
+        const std::int32_t columns = cloth.columns_3c;
+        const float u = (static_cast<float>(i % columns) / static_cast<float>(columns - 1) - 0.0f) *
+                            ((cloth.uv_u1_6c - cloth.uv_u0_64) / 1.0f) + cloth.uv_u0_64;
+        const float w = (static_cast<float>(i / columns) / static_cast<float>(cloth.rows_40 - 1) - 0.0f) *
+                            ((cloth.uv_v1_70 - cloth.uv_v0_68) / 1.0f) + cloth.uv_v0_68;
+        float* uvf = at(i, v.uv_28);
+        uvf[0] = u;
+        uvf[1] = w;
+        white(i);
+        float* uvb = at(back, v.uv_28);
+        uvb[0] = u;
+        uvb[1] = w;
+        white(back);
+    }
+    calls.render_lock();
+    calls.unlock_vslot14(cloth.vertex_stream_78);
+    calls.render_unlock();
+}
+
+void build_flag_material_0070b9d0(FlagClothLayout& cloth, std::uint32_t index_count_80, void* index_stream_7c,
+                                  void* mesh, const NativeString& texture, FlagMaterialCalls& calls) {
+    calls.set_vertex_stream_00b73bb0(mesh, 0, cloth.vertex_stream_78);
+    calls.set_index_stream_00b73b70(mesh, index_stream_7c);
+    void* effect = calls.load_effect_vslot48("flag.mshd");
+    void* material = calls.new_material_00b18780_00b18900(effect);
+    calls.release_reference(effect);
+    if (texture.length() != 0) {
+        void* image = calls.load_texture_vslot64(texture);
+        calls.set_material_texture_00b189f0(material, 0, image);
+        calls.release_reference(image);
+    }
+    std::uint32_t* section = calls.new_draw_section_00b85ee0_00b857f0();
+    calls.set_section_material_00b864c0(section, material);
+    calls.release_reference(material);
+    if (section != nullptr) {
+        section[2] = 4;                                                  // +8h
+        section[3] = 0;                                                  // +0Ch
+        section[5] = 0;                                                  // +14h
+        section[4] = static_cast<std::uint32_t>(cloth.count_04 * 2);   // +10h
+        section[6] = index_count_80;                                     // +18h
+    }
+    calls.clear_section_owners_00b73c10(mesh);
+    calls.rebuild_vertex_layout_00b865a0(section, mesh);
+    calls.append_section_00b73c60(mesh, section);
+    calls.release_reference(section);
+}
+
+void render_flag_model_0070ac00(std::uint8_t* model, void* context, float lod, float alpha, std::uint32_t mask,
+                                FlagRenderCalls& calls) {
+    if (std::uint8_t* parent = *reinterpret_cast<std::uint8_t**>(model + 0x30)) {
+        const std::uint32_t inherited = *reinterpret_cast<std::uint32_t*>(parent + 0x48);
+        *reinterpret_cast<std::uint32_t*>(model + 0x48) = inherited;
+        for (auto* child = *reinterpret_cast<std::uint8_t**>(model + 0x34); child != nullptr;
+             child = *reinterpret_cast<std::uint8_t**>(child + 0x3C)) {
+            calls.set_hierarchy_mask_007099c0(child, inherited);
+        }
+    }
+    if (lod > 0.5f) {
+        return;
+    }
+    float clamped = lod;
+    if (0.4000000059604645 > static_cast<double>(lod)) {
+        clamped = 0.4f;  // 00CE7804
+    } else if (lod > 0.5f) {
+        clamped = 0.5f;
+    }
+    const float fade = static_cast<float>((0.5 - clamped) / 0.10000000149011612);
+    calls.render_generated_model_00b748e0(model, context, lod, fade * alpha, mask);
+}
+
 void destruct_fish_school_model_00707570(std::uint8_t* model, GeneratedModelCalls& calls) {
     *reinterpret_cast<std::uint32_t*>(model) = 0x00cfd3a8;
     if (void* owned = *reinterpret_cast<void**>(model + 0x184)) {

@@ -662,6 +662,134 @@ public:
 FishSchoolDescLayout* create_fish_school_00709620(std::int32_t kind, const float position[3], PresentationRandom& random,
                                                   FishSchoolCreateCalls& calls, NativeStringStorage& strings);
 
+// The flag cloth (the object 0070AA70 steps; its own routines take it in ECX). Float vectors are
+// three floats; the arrays hold `count` (+4h) points in rows (+40h) of `columns` (+3Ch).
+struct FlagClothLayout {
+    std::uint32_t word_00;
+    std::int32_t count_04;
+    float* positions_08;
+    float* positions_tmp_0c;
+    float* velocities_10;
+    float* velocities_tmp_14;
+    float* forces_18;
+    float* normals_1c;
+    float wind_20[3];
+    float angle_2c;
+    std::uint8_t pad_30[0x0C];
+    std::int32_t columns_3c;
+    std::int32_t rows_40;
+    std::uint8_t pad_44[0x08];
+    float stiffness_4c;
+    float damping_50;
+    float velocity_drag_54;
+    float gravity_58;
+    float rest_horizontal_5c;
+    float rest_vertical_60;
+    float uv_u0_64;
+    float uv_v0_68;
+    float uv_u1_6c;
+    float uv_v1_70;
+    float time_74;
+    void* vertex_stream_78;
+};
+static_assert(offsetof(FlagClothLayout, wind_20) == 0x20 || sizeof(void*) != 4);
+static_assert(offsetof(FlagClothLayout, columns_3c) == 0x3C || sizeof(void*) != 4);
+static_assert(offsetof(FlagClothLayout, time_74) == 0x74 || sizeof(void*) != 4);
+
+// 00709EF0, __thiscall(ECX = cloth, positions, velocities), RET 8. Per point: force = (wind . n /
+// n . n) n with n the point normal (+1Ch), force.y += gravity (+58h), force += drag (+54h) *
+// velocity. Then the structural springs, horizontal (rest +5Ch) then vertical (rest +60h): for the
+// pair (a, b), d = pb - pa, len = sqrt(|d|^2) or 0 when |d|^2 <= 00CE3820 (the division by 0 is the
+// image's), u = d / len, fs = (len - rest) * stiffness (+4Ch), fd = ((vb - va) . u) * damping
+// (+50h), F = fd u + u fs; force[a] += F, force[b] -= F.
+void apply_flag_wind_00709ef0(FlagClothLayout& cloth, const float* positions, const float* velocities);
+// 0070A450, __thiscall(ECX = cloth, outA, outB, inA, inB, vel, float dt), RET 18h. Per point i:
+// outA = inA + vel * dt; w = (float(i % columns) / float(columns - 1)) * dt; outB = inB + w * force.
+void integrate_flag_cloth_0070a450(const FlagClothLayout& cloth, float* out_a, float* out_b, const float* in_a,
+                                   const float* in_b, const float* vel, float dt);
+// 0070A5A0, __fastcall(ECX = cloth), RET: per row, columns 1..: d = normalize(p[c] - p[c-1])
+// (0042B260), p[c] = p[c-1] + rest_h * d (stored twice by the image).
+void relax_flag_grid_0070a5a0(FlagClothLayout& cloth, VectorNormalizer& normalizer);
+// 0070AA70, __thiscall(ECX = cloth, float dt), RET 4: +74h and the global 00E19B10 = game +648h
+// (passed in); dt = min(dt, 0.5); steps = 1 - ftol(dt / -0.025); sub = dt / steps; wind = normalize(
+// U(-0.01, 0.01), sin(+2Ch), -0.0 - cos(+2Ch)) * 100 (the draw: PresentationRandom, image stream 0);
+// then per step a midpoint pass: normals (00709CF0), wind on (+8h, +10h), integrate into the
+// temporaries with sub * 0.5; normals, wind on (+0Ch, +14h), integrate in place with the temporary
+// velocities and sub.
+class FlagClothCalls : public VectorNormalizer {
+public:
+    virtual void calculate_normals_00709cf0(FlagClothLayout& cloth) = 0;
+};
+void update_flag_wave_0070aa70(FlagClothLayout& cloth, float dt, float game_time_648, float& published_e19b10,
+                               PresentationRandom& random, FlagClothCalls& calls);
+
+// The vertex stream object the cloth writes (+78h): data +8h, stride +0Ch, element offsets position
+// +10h, normal +1Ch, uv +28h, colour +34h (a negative colour offset means four float channels at
+// +38h/+3Ch/+40h/+44h), vtable +10h lock(count, 0, 0) and +14h unlock.
+struct VertexStreamView {
+    std::uint8_t* data_08;
+    std::int32_t stride_0c;
+    std::int32_t position_10;
+    std::int32_t normal_1c;
+    std::int32_t uv_28;
+    std::int32_t colour_34;
+    std::int32_t channel_38, channel_3c, channel_40, channel_44;
+};
+class VertexStreamCalls {
+public:
+    virtual ~VertexStreamCalls() = default;
+    virtual void render_lock() = 0;    // [00F8C274]+30h tracked critical section, when present
+    virtual void render_unlock() = 0;
+    virtual VertexStreamView lock_vslot10(void* stream, std::int32_t count) = 0;
+    virtual void unlock_vslot14(void* stream) = 0;
+};
+// 0070A710, __fastcall(ECX = cloth), RET: lock 2 * count vertices under the render lock; vertex i is
+// the front face (position, normal * -0.5), vertex count + i the back face (normal * 0.5); both get
+// uv = (col / (columns - 1)) * (u1 - u0) + u0, (row / (rows - 1)) * (v1 - v0) + v0 and white; unlock
+// under the render lock.
+void write_flag_vertices_0070a710(FlagClothLayout& cloth, VertexStreamCalls& calls);
+
+// 0070B9D0, __thiscall(ECX = cloth, mesh, const NativeString* texture), RET 8: bind the vertex (+78h)
+// and index (+7Ch) streams to the mesh (00B73BB0 slot 0, 00B73B70); effect "flag.mshd" through
+// [00F8D394] vtable +48h; material 110h (00B18780 + 00B18900) over it; the effect reference dropped;
+// a non-empty texture loads through [00F8D394] vtable +64h(name, 0) into material slot 0 (00B189F0);
+// a 60h draw section (00B85EE0 + 00B857F0) with that material (00B864C0), primitive 4, start 0, base 0,
+// vertex count 2 * count, index count +80h; 00B73C10, 00B865A0(section, mesh), 00B73C60(mesh,
+// section); the section reference dropped. Null allocations reach the image's null paths; this
+// passes the nulls on.
+class FlagMaterialCalls {
+public:
+    virtual ~FlagMaterialCalls() = default;
+    virtual void set_vertex_stream_00b73bb0(void* mesh, std::int32_t slot, void* stream) = 0;
+    virtual void set_index_stream_00b73b70(void* mesh, void* stream) = 0;
+    virtual void* load_effect_vslot48(const std::string& name) = 0;          // returns a reference
+    virtual void* new_material_00b18780_00b18900(void* effect) = 0;          // null when new failed
+    virtual void* load_texture_vslot64(const NativeString& name) = 0;        // returns a reference
+    virtual void set_material_texture_00b189f0(void* material, std::int32_t slot, void* texture) = 0;
+    virtual std::uint32_t* new_draw_section_00b85ee0_00b857f0() = 0;         // null when new failed
+    virtual void set_section_material_00b864c0(void* section, void* material) = 0;
+    virtual void clear_section_owners_00b73c10(void* mesh) = 0;
+    virtual void rebuild_vertex_layout_00b865a0(void* section, void* mesh) = 0;
+    virtual void append_section_00b73c60(void* mesh, void* section) = 0;
+    virtual void release_reference(void* object) = 0;
+};
+void build_flag_material_0070b9d0(FlagClothLayout& cloth, std::uint32_t index_count_80, void* index_stream_7c,
+                                  void* mesh, const NativeString& texture, FlagMaterialCalls& calls);
+
+// 0070AC00, flag model vtable 00CFD488 slot +20h, __thiscall(ECX = model, context, float lod, float
+// alpha, mask), RET 10h. With a parent (+30h): copy its mask (+48h) to +48h and to every child
+// (first +34h, next +3Ch) through 007099C0. A lod above 0.5 draws nothing; otherwise the base render
+// 00B748E0 runs with the original lod and alpha * (0.5 - clamp(lod, 0.4, 0.5)) / 0.1.
+class FlagRenderCalls {
+public:
+    virtual ~FlagRenderCalls() = default;
+    virtual void set_hierarchy_mask_007099c0(void* child, std::uint32_t mask) = 0;
+    virtual void render_generated_model_00b748e0(void* model, void* context, float lod, float alpha,
+                                                 std::uint32_t mask) = 0;
+};
+void render_flag_model_0070ac00(std::uint8_t* model, void* context, float lod, float alpha, std::uint32_t mask,
+                                FlagRenderCalls& calls);
+
 // The fish-school model (pool slot, vtable 00CFD3A8; owned object at +184h).
 class GeneratedModelCalls {
 public:
