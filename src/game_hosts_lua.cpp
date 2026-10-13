@@ -4040,13 +4040,15 @@ std::uint32_t GameMissionLuaHost::create_squadron(const bsp::AirOpsSquadronReque
         // unit+390h at this moment. The owner is the unit `HomeBase` names.
         int owner_skill = -1;
         const GameUnitsHost& units = script_orders_->units();
-        for (std::size_t i = 0; i < units.count(); ++i) {
-            const GameUnitRow* row = units.unit_row(i);
-            if (row != nullptr && row->name == request.home_base) {
-                owner_skill = units.skill_level(i);
-                break;
-            }
-        }
+        // kAirOpsOwnerByInstanceBound: the live instance's skill (SetSkillLevel on
+        // a regenerated carrier lands there, not on the dead row of the same name).
+        const std::size_t owner = bsp::air_ops_owner_row(units.count(), request.home_base,
+            [&](std::size_t i) -> const std::string* {
+                const GameUnitRow* row = units.unit_row(i);
+                return row != nullptr ? &row->name : nullptr;
+            },
+            [&](std::size_t i) { return units.gunnery() != nullptr && units.gunnery()->unit_dead(i); });
+        if (owner < units.count()) owner_skill = units.skill_level(owner);
         if (PendingEntity* node = find_pending(static_cast<int>(entity))) {
             node->launch_skill = owner_skill;
         }

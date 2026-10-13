@@ -488,6 +488,19 @@ struct AirOpsSceneDeck {
 // ON: 5bj's pairs (every set brake released except the one the image's rule
 // holds behind 5bh's airfield hold; no launch queued; death rows re-timed only).
 inline constexpr bool kBaseLaunchBrakeBound = true;
+// Packet cc13-fix7 B (docs/CC13_VER_18.md section 3). 007ED740 answers
+// `+3CCh > 0` first, and a squadron fresh from 006C5050 has +3CCh = 0 (007F2D9D)
+// until its attach (007F4B60) at the next InitAll, so 006C5B70 in the same
+// 006CDC70 call holds the brake. The host's release saw the fused leader at
+// state 7 with the wings unresolved and released at once. True: an air-ops
+// squadron with bag State < 2 holds the brake until its pass C has run the
+// inside start (home_launch_408, 007F1C78), the host's stand-in for the attach.
+// LABELLED: requires kBaseLaunchChainBound and the pass-C hook
+// (kSquadronInitialCommandBound), both ON; with either off it would hold for
+// ever. A bare "any member is kPlaneSquadronNoUnit" test is not used: landed
+// and dead members are also written NoUnit (007F3970 compaction), which would
+// hold for ever. False: released as before.
+inline constexpr bool kBaseLaunchBrakeAttachGateBound = false;
 
 // The block mode 1 leaves behind. `slots` is block+4Ch with its count at
 // block+50h; `max_in_air_planes` is block+58h.
@@ -900,6 +913,38 @@ inline constexpr bool kAirOpsQueueConsumeStockBound = false;
 // kAirOpsQueueConsumeStockBound says, so the stock nets to zero. False: the
 // slot is only reported `queued` and is never launched.
 inline constexpr bool kAirOpsBusyArmQueueLaunchBound = false;
+
+// Packet cc13-fix7 A (docs/CC13_VER_18.md section 2). The image ties a deck to
+// one mother-ship instance: 007593D0 runs 006CADD0 per instance, LaunchSquadron
+// (0089E3C0) resolves its entity through 006BCD20 to that entity's own block,
+// and 006C5050 reads the owner only through block+7Ch. The host keys decks by
+// unit name and took the FIRST row with the name, so a carrier regenerated
+// under its old name (PRCP01 Junyo, Zuiho) stayed bound to the dead instance.
+// True (minimal form, LABELLED: not the image's per-instance rule): the LAST
+// row with the name that is not dead, else the first. False: the first.
+inline constexpr bool kAirOpsOwnerByInstanceBound = false;
+
+// The unit row a deck name (or a bag's `HomeBase`) resolves to, over `count`
+// rows. `name_of(i)` gives row i's name or nullptr; `dead(i)` is the host's
+// death test. Returns `count` when no row has the name.
+template <class NameOf, class Dead>
+std::size_t air_ops_owner_row(std::size_t count, const std::string& name, NameOf name_of,
+                              Dead dead) {
+    std::size_t first = count;
+    for (std::size_t i = 0; i < count; ++i) {
+        const std::string* n = name_of(i);
+        if (n == nullptr || *n != name) continue;
+        if (first == count) first = i;
+        if constexpr (!kAirOpsOwnerByInstanceBound) break;
+    }
+    if constexpr (kAirOpsOwnerByInstanceBound) {
+        for (std::size_t i = count; i-- > first;) {
+            const std::string* n = name_of(i);
+            if (n != nullptr && *n == name && !dead(i)) return i;
+        }
+    }
+    return first;
+}
 
 // 006CCDA0 BSP_AirOps_SlotCommand for the arms a player order reaches: a slot
 // with a class, in state 5 or 1, given order 1 (moveto) or 3 (attack target):
