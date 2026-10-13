@@ -1942,4 +1942,16 @@ void rain_emitter_step_00801400(RainModelFields& f, float dt, float camera_altit
     if (splash != nullptr) host.release(splash);
 }
 
+
+void byte_list_record_assign_007fba30(ByteListRecord& record, std::uint32_t a, std::uint32_t b,
+                                      std::uint32_t c, const std::uint8_t* bytes, std::int32_t count)
+{
+    record.words_20[0] = a;
+    record.words_20[1] = b;
+    record.words_20[2] = c;
+    record.bytes_14.clear();                              // head relinked, size 0, nodes freed
+    for (std::int32_t i = 0; i < count; ++i) record.bytes_14.push_back(bytes[i]);  // node + 007FA3A0
+    record.count_2c = count;
+}
+
 } // namespace bsp::cc13_seg49_64_78

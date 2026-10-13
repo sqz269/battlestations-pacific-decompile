@@ -1027,4 +1027,15 @@ struct RainEmitterHost : RainModelHost {
 void rain_emitter_step_00801400(RainModelFields& f, float dt, float camera_altitude_4,
                                 RainEmitterHost& host);
 
+// 007FBA30, __thiscall(record, a, b, c, const uint8* bytes, int count), RET 14h (caller: the
+// session browser filter edit 0057A910): three words at +20h..+28h, the byte list +14h (head
+// +18h, size +1Ch) emptied and refilled with `count` bytes, +2Ch = count (also when below 1).
+struct ByteListRecord {
+    std::vector<std::uint8_t> bytes_14{};
+    std::uint32_t words_20[3]{};
+    std::int32_t count_2c{0};
+};
+void byte_list_record_assign_007fba30(ByteListRecord& record, std::uint32_t a, std::uint32_t b,
+                                      std::uint32_t c, const std::uint8_t* bytes, std::int32_t count);
+
 }  // namespace bsp::cc13_seg49_64_78
