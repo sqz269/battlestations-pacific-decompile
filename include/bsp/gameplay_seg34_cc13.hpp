@@ -15,7 +15,7 @@
 //     moves the pose by velocity * dt with the up row forced; 00700770 drives the
 //     chute animation and fades the body out below 5 HP.
 //   MDummySubmarine (bullet sub-type 0Eh, class record 00CFA678, reader
-//     00700050): the fixed-step body at 006FFA40 (no Ghidra function; vtable
+//     00700050): the fixed-step body at 006FFA40 (Ghidra function defined by this packet; vtable
 //     00CFCAC8 holds it) gives the dropped round +4 m/s upward on release and,
 //     after OpenAfterTime, creates the submarine unit (004F05F0) with the
 //     round's velocity and reports it to the launching unit.
@@ -193,7 +193,7 @@ DummyTargetBulletStep dummy_target_bullet_fixed_step_00701460(DummyTargetBulletS
                                                              const DummyTargetBulletHost& host);
 
 // ---------------------------------------------------------------------------
-// The MDummySubmarine round's fixed step: 006FFA40 (no Ghidra function).
+// The MDummySubmarine round's fixed step: 006FFA40 (BSP_DummySubmarine_FixedStepTick).
 // ---------------------------------------------------------------------------
 
 struct DummySubmarineBulletClassFields {

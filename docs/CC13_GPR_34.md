@@ -115,8 +115,10 @@ vehicle. These three are named but not modelled here.
 `00700050` reads `OpenAfterTime` into `+D8h` with a default of `1.0` (`00700078` FLD1). It reads
 `SubmarineClass` (`00CFCD08`) into `+DCh`.
 
-`006FFA40` (`dummy_submarine_fixed_step_006ffa40`) has **no Ghidra function**. The bytes run
-`006FFA40`-`006FFDE9`, and the only reference is the data word in vtable `00CFCAC8`.
+`006FFA40` (`dummy_submarine_fixed_step_006ffa40`, ledger name `BSP_DummySubmarine_FixedStepTick`) had
+**no Ghidra function**; its only reference is the data word in vtable `00CFCAC8`. cc13-gpr34 defined it
+(`tools/ghidra_define_function.py 006FFA40 006FFDEC`, body `006FFA40`-`006FFDEB`, record
+`reports/cc13_gpr34_defined.json`) with 'Non-Returning Functions - Discovered' disabled.
 It is `__thiscall(E+3E4h, float dt)`, `RET 4`:
 
 1. `006FFA6B` When not attached and `E+480h < 0`: the launch time is set to now, the arming countdown
@@ -184,14 +186,13 @@ reconstruction ledger does not count them. Their names stay in the names ledger.
   - `00701460` and `006FFA40`: none.
 
   All of them agree with the models.
-- `tools/verify_report_calls.py local/gpr34_calls.json`: 15 call rows checked, 0 failed. `006FFA40` has no
-  Ghidra function, so its calls (`00923810`, `006E1300`, `004F05F0`, `006FF7C0`, `006EB9C0`, `0077C2A0`,
-  `0042B2F0`) were read from the Capstone bytes only.
+- `tools/verify_report_calls.py local/gpr34_calls.json`: 21 call rows checked, 0 failed, including six
+  `006FFA40` rows after the function was defined (`00923810`, `006E1300`, `0042B2F0`, `004F05F0`,
+  `006EB9C0`, `0077C2A0`).
 
 ## 6. Handoff
 
 Open:
-- `006FFA40` needs a Ghidra function (a mutation outside this packet; vtable `00CFCAC8`).
 - `[[E+464h]+0Ch]->vtable[+24h](0, 0.0f, 1)` in `00701460` is unread.
 - Which rack carries bullet 142 in this installation, and which carries the dummy submarine, was not traced.
 - The 51 `host_reference_unverified` records need a listing check if anyone wants them promoted.
