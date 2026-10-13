@@ -2477,4 +2477,186 @@ std::int32_t to_upper_ascii_004f9ab0(const char* c) noexcept {
     return value;
 }
 
+namespace {
+
+std::string format_build(const char* format, const std::string& csd, std::uint32_t build)
+{
+    char buffer[0x800];   // [ESP+104h]
+    std::snprintf(buffer, sizeof buffer, format, csd.c_str(), static_cast<unsigned>(build & 0xFFFFu));
+    return buffer;
+}
+
+}  // namespace
+
+bool describe_os_version_0098c9c0(std::string& description_234, bool& nt5_or_later_c34, OsVersionCalls& calls)
+{
+    nt5_or_later_c34 = false;
+    description_234.clear();
+    OsVersionInfoEx v{};
+    const bool have_ex = calls.get_version_ex(0x9C, v);       // EBP keeps this result
+    if (!have_ex && !calls.get_version_ex(0x94, v)) return false;
+    if (v.major_04 >= 5) nt5_or_later_c34 = true;
+    std::string& s = description_234;                          // every append is an inline strcat
+    const char csd1 = v.csd_version_14.size() > 1 ? v.csd_version_14[1] : '\0';
+
+    if (v.platform_10 == 0) {
+        s += "Microsoft Win32s";
+        return true;
+    }
+    if (v.platform_10 == 1) {
+        if (v.major_04 != 4) return true;
+        if (v.minor_08 == 0) {
+            s += "Microsoft Windows 95 ";
+            if (csd1 == 'C' || csd1 == 'B') s += "OSR2 ";
+        } else if (v.minor_08 == 10) {
+            s += "Microsoft Windows 98 ";
+            if (csd1 == 'A') s += "SE ";
+        } else if (v.minor_08 == 0x5A) {
+            s += "Microsoft Windows Millennium Edition";
+        }
+        return true;
+    }
+    if (v.platform_10 != 2) return true;
+
+    // 0098CA5A: the name by version; major > 6 and major == 6 are separate tests.
+    if (v.major_04 > 6) s += "Higher than Microsoft Windows Vista ";
+    if (v.major_04 == 6) {
+        s += "Microsoft Windows Vista ";
+    } else if (v.major_04 == 5) {
+        if (v.minor_08 == 2) s += "Microsoft Windows Server 2003, ";
+        else if (v.minor_08 == 1) s += "Microsoft Windows XP ";
+        else if (v.minor_08 == 0) s += "Microsoft Windows 2000 ";
+    } else if (v.major_04 <= 4) {
+        s += "Microsoft Windows NT ";
+    }
+
+    const auto build_suffix = [&]() {                          // 0098CD1C
+        s += format_build("%s (Build %d)", v.csd_version_14, v.build_0c);
+        return true;
+    };
+    const auto service_pack_6 = [&]() {                        // 0098D0FC
+        if (_stricmp(v.csd_version_14.c_str(), "Service Pack 6") != 0) return build_suffix();
+        if (calls.reg_open_hklm("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Hotfix\\Q246009")) {
+            char buffer[0x800];
+            std::snprintf(buffer, sizeof buffer, "Service Pack 6a (Build %d)",
+                          static_cast<unsigned>(v.build_0c & 0xFFFFu));
+            s += buffer;
+        } else {
+            s += format_build("%s (Build %d)", v.csd_version_14, v.build_0c);
+        }
+        calls.reg_close();                                     // also after a failed open
+        return true;
+    };
+    const auto tail = [&]() {                                  // 0098D0F3: CMP major, 4
+        return v.major_04 == 4 ? service_pack_6() : build_suffix();
+    };
+
+    if (have_ex) {
+        const std::uint8_t suite = static_cast<std::uint8_t>(v.suite_mask_98);
+        if (v.product_type_9a == 1) {                          // VER_NT_WORKSTATION
+            if (v.major_04 == 4) {
+                s += "Workstation 4.0 ";
+                return service_pack_6();
+            }
+            s += (v.suite_mask_98 & 0x200) != 0 ? "Home Edition " : "Professional ";
+            return tail();
+        }
+        if (v.product_type_9a != 3 && v.product_type_9a != 2) return tail();
+        if (v.major_04 == 5 && v.minor_08 == 2) {
+            if ((suite & 0x80) != 0) s += "Datacenter Edition ";        // TEST AL, AL; JNS
+            else if ((suite & 0x02) != 0) s += "Enterprise Edition ";
+            else if (v.suite_mask_98 == 0x400) s += "Web Edition ";      // CMP AX, 400h
+            else s += "Standard Edition ";
+            return build_suffix();
+        }
+        if (v.major_04 == 5 && v.minor_08 == 0) {
+            if ((suite & 0x80) != 0) s += "Datacenter Server ";
+            else if ((suite & 0x02) != 0) s += "Advanced Server ";
+            else s += "Server ";
+            return build_suffix();
+        }
+        // 0098CF10: every other server version, Vista included.
+        if ((v.suite_mask_98 & 0x02) != 0) {
+            s += "Server 4.0, Enterprise Edition ";
+        } else {
+            s += "Server 4.0 ";
+        }
+        return tail();
+    }
+
+    // 0098CF69: no OSVERSIONINFOEX; the product type from the registry.
+    if (!calls.reg_open_hklm("SYSTEM\\CurrentControlSet\\Control\\ProductOptions")) return false;
+    std::string type;
+    std::uint32_t length = 0x50;
+    if (!calls.reg_query_string("ProductType", type, length)) return false;
+    if (length > 0x50) return false;                           // the key stays open
+    calls.reg_close();
+    if (_stricmp("WINNT", type.c_str()) == 0) s += "Workstation ";
+    if (_stricmp("LANMANNT", type.c_str()) == 0) s += "Server ";
+    if (_stricmp("SERVERNT", type.c_str()) == 0) s += "Advanced Server ";
+    char buffer[0x800];
+    std::snprintf(buffer, sizeof buffer, "%d.%d ", static_cast<int>(v.major_04), static_cast<int>(v.minor_08));
+    s += buffer;
+    return tail();
+}
+
+void download_manager_scan_content_00995690(std::vector<ContentScanRecord>& records,
+                                            std::vector<std::string>& folders_20,
+                                            std::vector<std::string>& names_2c, bool& busy_1c,
+                                            ContentScanCalls& calls)
+{
+    folders_20.clear();
+    names_2c.clear();
+    // Function-scope strings: a skipped record reuses the previous record's folder and name.
+    std::string folder;   // [ESP+24h]
+    std::string name;     // [ESP+1Ch]
+    for (std::size_t i = 0; i < records.size(); ++i) {
+        ContentScanRecord& rec = records[i];
+        rec.damaged_12 = calls.verify_installed_package(i) != 0;
+        if (rec.listed_10 && !rec.mounted_11) {
+            const std::string wide_path = calls.content_path_low_bytes(i);
+            folder = wide_path + "\\content";
+            name.clear();
+            void* directory = calls.vfs_mount_00be1890(calls.compose_path_00994770(folder), ".", -10, 1, -1);
+            std::vector<std::string> listing = calls.directory_list_14(directory, "", "", 1);
+            bool found = false;
+            while (!listing.empty() && !found) {
+                const std::string& entry = listing.back();
+                calls.log_004254b0(std::to_string(static_cast<std::int32_t>(i)) + "    " + entry);  // "%d    %s"
+                // strstr(entry, "") == entry holds for any non-empty buffer; then ".mpkg".
+                if (!entry.empty()) {
+                    const std::size_t at = entry.find(".mpkg");
+                    const std::int32_t index = at == std::string::npos ? -1 : static_cast<std::int32_t>(at);
+                    // size - 5: a four-character name without ".mpkg" also matches (-1 == 4 - 5).
+                    if (index == static_cast<std::int32_t>(entry.size()) - 5) {
+                        rec.package_08 = entry.substr(entry.size() - 12, 7);  // 00469840(size - 0Ch, 7)
+                        name = entry;
+                        calls.vfs_mount_00be1890(name, ".", -10, 0, -1);
+                        found = true;
+                        break;
+                    }
+                }
+                listing.pop_back();                            // the entry's buffer back to the pool
+            }
+            if (!rec.package_08.empty()) {
+                calls.vfs_package_found_00bdef80(rec.package_08);
+            } else {
+                calls.log_004254b0("Damaged content " + rec.title_00);  // null buffer -> 00F8A308
+                rec.damaged_12 = true;
+                calls.vfs_unmount_00be0750(calls.compose_path_00994770(calls.compose_path_00994770(wide_path)), ".");
+                calls.vfs_package_missing_00bdd020(rec.package_08);
+            }
+        }
+        rec.mounted_11 = rec.listed_10 && !rec.damaged_12;
+        if (rec.mounted_11) {
+            folders_20.push_back(folder);                       // 004CDC20
+            names_2c.push_back(name);
+        } else {
+            folders_20.emplace_back();
+            names_2c.emplace_back();
+        }
+    }
+    busy_1c = false;
+}
+
 }  // namespace bsp::engine_seg11_35_66_cc13

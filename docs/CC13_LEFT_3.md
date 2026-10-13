@@ -115,3 +115,34 @@ Twelve records.
 - `004C6BE0` `BSP_Game_GenerateObject` (caller `00944FD0`, which `cc9-lua52` holds a lease on):
   `0046DC10` creates a hidden entity, and `004C3840(0)` runs when `game+1FE4h != 0`. This creates
   gameplay entities. Not reconstructed here.
+
+## 3. Segments 11, 35 and 66 (`engine_seg11_35_66_cc13.*`)
+
+| Address | Function | Notes |
+|---|---|---|
+| `0098C9C0` | `describe_os_version_0098c9c0` | The MSDN "DisplaySystemVersion" sample with Vista strings, taken branch by branch from the listing. |
+| `00995690` | `download_manager_scan_content_00995690` | Re-verifies the installed content packages and mounts them. |
+
+- **`0098C9C0`**: the decompile scrambles the NT branch, so the control flow comes from the listing.
+  For the EX path, server product types (2 and 3) other than 5.0 and 5.2 append "Server 4.0 " or
+  "Server 4.0, Enterprise Edition ", and that includes Vista servers. The Q246009 probe calls
+  `RegCloseKey` even when `RegOpenKeyExA` failed. A registry query that fails, or a `cbData` above
+  50h, returns false with the key still open.
+- **`00995690`**: the decompile is register-spilled, so the body comes from the listing. Findings:
+  - The `.mpkg` test is `index == size - 5` with `index = -1` when there is no match. A
+    four-character name without ".mpkg" therefore also passes.
+  - When the size probe does not return `8007007Ah` with a size of 100h or less, the wide path
+    buffer is never written, and `00436630` converts whatever the stack holds.
+  - The folder and package-name strings live at function scope. A record skipped by the
+    `+10h && !+11h` test that still has `+11h` set after the recompute pushes the previous
+    record's folder and name. `ContentScanRecord` is a string view of the existing
+    `ContentPackageRecord`.
+
+## x87 precision
+
+The rain build and the GUI layout bodies run on the main thread. From device creation onward its
+precision control is 24 bits (`docs/CC13_FPU_PRECISION.md`), so every x87 operation rounds to float
+precision, including values held on the stack. The reconstructions in section 1 therefore use float
+arithmetic. The first build used double intermediates; the follow-up commit switches them to float.
+`rain_emitter_step_00801400` (sys6b, same file) still models its x87-held threshold `dt * 0.3 * k`
+in double. Under the 24-bit control word that should also be float. It has not been changed here.

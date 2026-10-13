@@ -1959,7 +1959,7 @@ float centred_draw(RainBuildHost& host, float r)
 {
     const float two_r = r + r;
     const float draw = host.random_uniform_00bd2f10_stream0(0.0f, two_r);
-    return static_cast<float>(static_cast<double>(draw) - static_cast<double>(two_r) * 0.5);
+    return draw - two_r * 0.5f;
 }
 
 } // namespace
@@ -1986,9 +1986,9 @@ RainModelRef rain_emitter_build_008023b0(const RainModelParams& descriptor, Rain
     const float radius = descriptor_float(descriptor, 0x2C);
     for (RainColumn& c : f.vector_188) {
         const float h = host.random_uniform_00bd2f10_stream0(0.0f, descriptor_float(descriptor, 0x18));
-        c.height_10 = static_cast<float>(static_cast<double>(h) + descriptor_float(descriptor, 0x14));
+        c.height_10 = h + descriptor_float(descriptor, 0x14);
         const float w = host.random_uniform_00bd2f10_stream0(0.0f, descriptor_float(descriptor, 0x10));
-        c.width_0c = static_cast<float>(static_cast<double>(w) + descriptor_float(descriptor, 0x0C));
+        c.width_0c = w + descriptor_float(descriptor, 0x0C);
         c.y_04 = centred_draw(host, radius);
         c.x_00 = centred_draw(host, radius);
         c.z_08 = centred_draw(host, radius);
@@ -2031,17 +2031,17 @@ RainModelRef rain_emitter_build_008023b0(const RainModelParams& descriptor, Rain
     const float xx = dx * dx;
     const float yy = dy * dy;
     const float zz = dz * dz;
-    const float length_sq = static_cast<float>(static_cast<double>(xx) + yy + zz);
+    const float length_sq = (xx + yy) + zz;
     const float length = static_cast<float>(std::sqrt(static_cast<double>(length_sq)));  // 00BF7030
-    const float spread = static_cast<float>(static_cast<double>(length) / 5.0);
+    const float spread = length / 5.0f;
     const float low = -0.0f - spread;                      // 00D7A208 SUBSS
     // 00802916: texture coordinates of the four corners.
     const float uv[4][2] = {{0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
     for (std::int32_t i = 0; i < count; ++i) {
         const RainColumn& c = f.vector_188[static_cast<std::size_t>(i)];
         // 008029B0 / 008029D1: two stream-0 draws per column.
-        const float vx = static_cast<float>(static_cast<double>(host.random_uniform_00bd2f10_stream0(low, spread)) + dx);
-        const float vz = static_cast<float>(static_cast<double>(host.random_uniform_00bd2f10_stream0(low, spread)) + dz);
+        const float vx = host.random_uniform_00bd2f10_stream0(low, spread) + dx;
+        const float vz = host.random_uniform_00bd2f10_stream0(low, spread) + dz;
         for (int corner = 0; corner < 4; ++corner, vertex += 11) {
             vertex[0] = c.x_00;
             vertex[1] = c.y_04;
@@ -2086,7 +2086,7 @@ RainModelRef rain_emitter_build_008023b0(const RainModelParams& descriptor, Rain
     host.geometry_append_draw_section_00b73c60(mesh, section);
     // 00802FA8: +10h = trunc((([00F87474] >> 2) * [00F87470]) * 4.0) under a chop control word.
     const std::uint32_t drawn_quads = host.vertex_count_00f87474() >> 2;
-    const double drawn = static_cast<double>(drawn_quads) * host.drop_num_percent_00f87470() * 4.0;
+    const float drawn = static_cast<float>(drawn_quads) * host.drop_num_percent_00f87470() * 4.0f;
     host.draw_section_store_words(section, 4, 0, static_cast<std::uint32_t>(static_cast<std::int64_t>(drawn)),
                                   0, quads * 2u);
     host.mesh_element_set_bounds_00b855b0(section, sphere);
@@ -2250,7 +2250,9 @@ std::vector<std::string> gui_anim_icon_visit_child_paths_00ab4ce0(
 
 // --- segment 78: frame-box layout and the text cursor (cc13-left3) -------------------------------
 // x87: every DC-form operand order below was read from the bytes (tools/x87_dc_form_scan.py);
-// spills to float are FSTP dword, sums kept on the stack are written as double arithmetic.
+// spills to float are FSTP dword. These bodies run on the main thread, whose x87 precision
+// control is 24 bits during gameplay (docs/CC13_FPU_PRECISION.md), so every x87 step rounds to
+// float precision and float arithmetic models them, values kept on the stack included.
 
 namespace {
 
@@ -2315,8 +2317,8 @@ void gui_frame_box_place_border_icon_00ac0610(const GuiFrameBoxLayout& layout, v
     host.widget_virtual_58(layout.icon_04, host.widget_size_00aa6740(source));
     host.widget_virtual_30(layout.icon_04, source);
     // DC C9 at 00AC067B: ST(1) = +10h * 0.5; then FSUBR from dy (likewise x with +0Ch).
-    const float y = static_cast<float>(static_cast<double>(dy) - static_cast<double>(layout.extra_10) * 0.5);
-    const float x = static_cast<float>(static_cast<double>(dx) - static_cast<double>(layout.extra_0c) * 0.5);
+    const float y = dy - layout.extra_10 * 0.5f;
+    const float x = dx - layout.extra_0c * 0.5f;
     host.widget_set_local_xy_00aa7d00(layout.icon_04, x, y);
 }
 
@@ -2325,13 +2327,13 @@ void gui_text_icon_pair_layout_00ac0bd0(const GuiFrameBoxLayout& layout, void* w
 {
     float h = host.widget_size_00aa6740(widget)[1] + layout.extra_10;
     if (host.widget_virtual_5c(widget) == 3) {
-        h = static_cast<float>(static_cast<double>(host.text_normalized_height_00ab6bd0(widget)) + layout.extra_10);
+        h = host.text_normalized_height_00ab6bd0(widget) + layout.extra_10;
     }
-    const float extent = static_cast<float>(static_cast<double>(h) * 1.3333333730697632);  // 00CF5750
+    const float extent = h * 1.33333337f;   // 00CF5750, the double of float(4/3)
     gui_frame_box_set_icon_extent_00ac0970(layout.icon_04, -1.0f, extent, host);
-    const double half = (static_cast<double>(host.widget_size_00aa6740(layout.icon_04)[1]) - h) * 0.5;
-    const double py = host.widget_local_position_00aa67f0(widget)[1];
-    const float y = static_cast<float>((py + half) - static_cast<double>(h) / 6.0);  // FSUBP ST(1)
+    const float half = (host.widget_size_00aa6740(layout.icon_04)[1] - h) * 0.5f;   // FSTP qword, exact
+    const float py = host.widget_local_position_00aa67f0(widget)[1];
+    const float y = (py + half) - h / 6.0f;   // FSUBP ST(1)
     host.widget_set_local_y_00aa78f0(layout.icon_04, y);
 }
 
@@ -2350,38 +2352,38 @@ void lay_out_nine_slice(void* const (&p)[8], float ox, float oy, float sw, float
     void* const b = p[6];
     void* const br = p[7];
     const auto size = [&host](void* w) { return host.widget_size_00aa6740(w); };
-    const auto to_f = [](double v) { return static_cast<float>(v); };
+    const auto to_f = [](float v) { return v; };
 
     host.widget_set_local_xy_00aa7d00(ul, ox, oy);
     {
-        const double a = size(ur)[0];
+        const float a = size(ur)[0];
         gui_frame_box_set_icon_extent_00ac0970(u, to_f(sw - (size(ul)[0] + a)), -1.0f, host);
     }
-    host.widget_set_local_xy_00aa7d00(u, to_f(static_cast<double>(ox) + size(ul)[0]), oy);
-    const double right = static_cast<double>(sw) + ox;
+    host.widget_set_local_xy_00aa7d00(u, to_f(ox + size(ul)[0]), oy);
+    const float right = sw + ox;
     host.widget_set_local_xy_00aa7d00(ur, to_f(right - size(ur)[0]), oy);
     {
-        const double bly = size(bl)[1];
-        gui_frame_box_set_icon_extent_00ac0970(l, -1.0f, to_f(static_cast<double>(sh) - (size(ul)[1] + bly)), host);
+        const float bly = size(bl)[1];
+        gui_frame_box_set_icon_extent_00ac0970(l, -1.0f, to_f(sh - (size(ul)[1] + bly)), host);
     }
-    host.widget_set_local_xy_00aa7d00(l, ox, to_f(static_cast<double>(size(ul)[1]) + oy));
+    host.widget_set_local_xy_00aa7d00(l, ox, to_f(size(ul)[1] + oy));
     {
-        const double bry = size(br)[1];
-        gui_frame_box_set_icon_extent_00ac0970(r, -1.0f, to_f(static_cast<double>(sh) - (size(ur)[1] + bry)), host);
+        const float bry = size(br)[1];
+        gui_frame_box_set_icon_extent_00ac0970(r, -1.0f, to_f(sh - (size(ur)[1] + bry)), host);
     }
     {
         const std::array<float, 2> rs = size(r);
-        host.widget_set_local_xy_00aa7d00(r, to_f(right - rs[0]), to_f(static_cast<double>(size(ur)[1]) + oy));
+        host.widget_set_local_xy_00aa7d00(r, to_f(right - rs[0]), to_f(size(ur)[1] + oy));
     }
-    const double bottom = static_cast<double>(sh) + oy;
+    const float bottom = sh + oy;
     host.widget_set_local_xy_00aa7d00(bl, ox, to_f(bottom - size(bl)[1]));
     {
-        const double brx = size(br)[0];
+        const float brx = size(br)[0];
         gui_frame_box_set_icon_extent_00ac0970(b, to_f(sw - (size(bl)[0] + brx)), -1.0f, host);
     }
     {
         const std::array<float, 2> bls = size(bl);
-        host.widget_set_local_xy_00aa7d00(b, to_f(static_cast<double>(bls[0]) + ox), to_f(bottom - size(b)[1]));
+        host.widget_set_local_xy_00aa7d00(b, to_f(bls[0] + ox), to_f(bottom - size(b)[1]));
     }
     {
         const std::array<float, 2> brs = size(br);
@@ -2420,7 +2422,7 @@ void gui_frame_box_layout_border_icons_00ac10a0(const GuiFrameBoxLayout& layout,
     // 00AC14BD: shift = (short)font+14h / 720.0 * (+164h as a float).
     float scale;
     std::memcpy(&scale, &border.word_164, sizeof scale);
-    const float shift = static_cast<float>(static_cast<double>(host.text_font_height_108(widget)) / 720.0 * scale);
+    const float shift = static_cast<float>(host.text_font_height_108(widget)) / 720.0f * scale;
     const float ox = shift + offset[0];
     const float oy = shift + offset[1];
     static const char* const kNames[8] = {"UL_Icon", "U_Icon", "UR_Icon", "L_Icon",
@@ -2448,20 +2450,20 @@ void gui_text_position_cursor_00ab9240(void* text, GuiTextCursorFields& f, std::
     for (std::uint32_t i = 0; i < f.index_180; ++i) {
         const std::uint16_t ch = glyphs != nullptr ? glyphs[i] : host.empty_glyph_00f8be50();
         glyph = host.font_select_glyph_00ad4480(f.font_108, ch);
-        x = static_cast<float>(static_cast<double>(glyph.advance_12) * f.advance_scale_1d8 + x);
+        x = static_cast<float>(glyph.advance_12) * f.advance_scale_1d8 + x;
     }
-    f.x_190 = static_cast<float>(static_cast<double>(x) / 960.0);   // DC F9 at 00AB92FB
-    const double left = static_cast<double>(x) + glyph.bearing_10;
+    f.x_190 = x / 960.0f;   // DC F9 at 00AB92FB
+    const float left = x + static_cast<float>(glyph.bearing_10);
     const float x0 = static_cast<float>(left);                       // FST [ESP+14h]
-    const double right = f.mode_17c == 1 ? left + glyph.width_14 : left + 2.0;  // 00D7A308
+    const float right = f.mode_17c == 1 ? left + static_cast<float>(glyph.width_14) : left + 2.0f;  // 00D7A308
     const float x1 = static_cast<float>(right);
     // 00AB933B..00AB9399: (fh + 0) and ((fh + 1) - 1) on the x87 stack, then the divisions.
-    const float h = static_cast<float>((static_cast<double>(font_height) + 1.0) - 1.0);
-    const double v = host.vertical_scale_00e12fd4();
-    const float u0 = static_cast<float>(static_cast<double>(x0) / 960.0);
-    const float u1 = static_cast<float>(static_cast<double>(x1) / 960.0);
-    const float y0 = static_cast<float>((0.0 / 720.0) * v);
-    const float y1 = static_cast<float>((static_cast<double>(h) / 720.0) * v);
+    const float h = (font_height + 1.0f) - 1.0f;
+    const float v = host.vertical_scale_00e12fd4();
+    const float u0 = x0 / 960.0f;
+    const float u1 = x1 / 960.0f;
+    const float y0 = (0.0f / 720.0f) * v;
+    const float y1 = (h / 720.0f) * v;
 
     void* stream = host.cursor_vertex_stream(f.cursor_model_184);
     host.stream_lock_10(stream);
