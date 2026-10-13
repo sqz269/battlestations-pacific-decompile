@@ -1615,4 +1615,34 @@ void send_nose_art_selection_007f8690(const std::uint32_t (&record)[3], ProfileC
     }
 }
 
+
+// --- segment 49: the race record table (00F87464/68) ----------------------------------------------
+
+RaceRecord* race_records_find_by_name_007ffb50(const RaceRecordTable& table, const std::string& name)
+{
+    for (void** slot = table.begin; slot != table.end; ++slot) {
+        auto* record = static_cast<RaceRecord*>(*slot);   // dereferenced without a null test
+        const std::uint32_t length = record->name_08.length();
+        if (length != name.size()) continue;
+        if (length == 0) return record;                   // both empty
+        const char* data = record->name_08.data();
+#if defined(_MSC_VER)
+        if (_stricmp(data, name.c_str()) == 0) return record;
+#else
+        if (strcasecmp(data, name.c_str()) == 0) return record;
+#endif
+    }
+    return nullptr;
+}
+
+void race_records_delete_all_007ffd60(RaceRecordTable& table, NativeStringStorage& strings)
+{
+    for (void** slot = table.begin; slot != table.end; ++slot) {
+        if (*slot == nullptr) continue;
+        // vtable slot 0 with 1: 007FFB10, the scalar deleting destructor.
+        scalar_delete_race_record_007ffb10(static_cast<RaceRecord*>(*slot), 1, strings);
+        *slot = nullptr;
+    }
+}
+
 } // namespace bsp::cc13_seg49_64_78

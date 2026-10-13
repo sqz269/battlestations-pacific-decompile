@@ -23,6 +23,7 @@
 #include "bsp/gui_widgets_cc13.hpp"
 #include "bsp/options_hardware_cc13.hpp"
 #include "bsp/profile_unlock.hpp"
+#include "bsp/race_config.hpp"
 #include "bsp/scoring_bodies.hpp"
 
 namespace bsp::cc13_seg49_64_78 {
@@ -859,5 +860,11 @@ std::string nose_art_texture_path_007f9cb0(std::int32_t index, ProfileCheckpoint
 void nose_art_load_textures_007fa2d0(void* (&textures_104)[3], ProfileCheckpointHost& host);
 // 007F8690, __cdecl(const uint32 record[3]): message E3h, applied locally on the server or sent.
 void send_nose_art_selection_007f8690(const std::uint32_t (&record)[3], ProfileCheckpointHost& host);
+
+// 007FFB50, __fastcall(ECX = const NativeString*): the first record of the race table (00F87464/68)
+// whose name +8h equals it (equal length, then empty or __stricmp), or null. Checked iterators.
+RaceRecord* race_records_find_by_name_007ffb50(const RaceRecordTable& table, const std::string& name);
+// 007FFD60: every non-null record deleted through vtable slot 0 (007FFB10) with 1, slot cleared.
+void race_records_delete_all_007ffd60(RaceRecordTable& table, NativeStringStorage& strings);
 
 }  // namespace bsp::cc13_seg49_64_78
