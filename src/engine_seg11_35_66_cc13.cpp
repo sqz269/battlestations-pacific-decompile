@@ -2659,4 +2659,76 @@ void download_manager_scan_content_00995690(std::vector<ContentScanRecord>& reco
     busy_1c = false;
 }
 
+void update_fish_school_00707b00(FishSchoolDescLayout& school, float dt, FishUpdateCalls& calls,
+                                 PresentationRandom& random, VectorNormalizer& normalizer)
+{
+    if (dt == 0.0f) return;                                    // UCOMISS dt, 0; JNP: equal only
+    void* model = school.model_78;
+    void* camera = calls.camera_node_19fc();
+    if (camera == nullptr) {
+        calls.set_visibility_factor_00b6da70(model, 0.0f, 0);
+        return;
+    }
+    calls.node_refresh_world_if_stale(camera);
+    if (calls.node_translation_120(camera)[1] > 0.0f) {        // COMISS [camera+124h], 0; JA
+        calls.set_visibility_factor_00b6da70(model, 0.0f, 0);
+        return;
+    }
+    calls.node_refresh_world_if_stale(model);
+    auto* fish = static_cast<float*>(school.fish_64);          // 28h records: pos, +0Ch, dir +18h, speed +24h
+    const std::array<float, 3> p = calls.transform_point_00414d10(model, fish);
+    calls.node_refresh_world_if_stale(camera);
+    const std::array<float, 3> c = calls.node_translation_120(camera);
+    const float dx = p[0] - c[0];
+    const float dy = p[1] - c[1];
+    const float dz = p[2] - c[2];
+    const float dist2 = (dx * dx + dy * dy) + dz * dz;          // y and x squared first, then z
+    if (dist2 > 90000.0f) {                                    // FCOMIP; JA (00CFD404)
+        calls.set_visibility_factor_00b6da70(model, 0.0f, 0);
+        return;
+    }
+    calls.set_visibility_factor_00b6da70(model, 1.0f, 0);
+    auto* state = reinterpret_cast<float*>(school.state_68);   // +68h timer, +6Ch target direction
+    state[0] = state[0] - dt;
+    if (!(0.0f < state[0])) respawn_fish_007077b0(school, random, normalizer);  // FCOMIP 0, timer; JB skips
+    const FishSchoolParams& prm = school.params_04;
+    const float k = calls.min_float_00415510(1.0f, prm.word_40 * dt);   // ECX = &1.0, EDX = &(+44h * dt)
+
+    float* dir0 = fish + 6;
+    const float r[3] = {state[1] - dir0[0], state[2] - dir0[1], state[3] - dir0[2]};  // 00427C90
+    for (int a = 0; a < 3; ++a) dir0[a] = k * r[a] + dir0[a];
+    normalizer.normalize_0042b260(dir0);
+    const float v0 = fish[9] * dt;
+    for (int a = 0; a < 3; ++a) fish[a] = fish[a] + v0 * dir0[a];       // 0042AEB0
+    const float up[3] = {0.0f, 1.0f, 0.0f};
+    std::array<float, 3> basis_a = calls.cross_004f9b30(up, dir0);
+    std::array<float, 3> basis_b = calls.cross_004f9b30(dir0, basis_a.data());
+    normalizer.normalize_0042b260(basis_a.data());
+    normalizer.normalize_0042b260(basis_b.data());
+
+    const auto* offsets = static_cast<const float*>(school.positions_60);
+    for (std::int32_t i = 1; i < prm.count_00; ++i) {
+        float* f = fish + i * 10;
+        const float* o = offsets + i * 3;
+        float target[3];
+        for (int a = 0; a < 3; ++a) {
+            const float t2 = o[2] * dir0[a];
+            const float t0 = o[0] * basis_a[a];
+            const float t1 = o[1] * basis_b[a];
+            target[a] = ((fish[a] + t2) + t0) + t1;
+        }
+        float u[3] = {target[0] - f[0], target[1] - f[1], target[2] - f[2]};
+        const float length = calls.length_00419440(u) + 0.005f;      // 00CEC8F8, float-exact
+        for (float& x : u) x = x / length;                            // DE FA, D8 F1, D8 7C
+        float* dir = f + 6;
+        for (int a = 0; a < 3; ++a) dir[a] = dir[a] + k * (u[a] - dir[a]);  // DE EA: u - dir
+        normalizer.normalize_0042b260(dir);
+        float speed_target = prm.word_38 + (length / 5.0f) * (prm.word_3c - prm.word_38);
+        if (speed_target > prm.word_3c) speed_target = prm.word_3c;   // FCOMIP; JBE keeps it
+        f[9] = f[9] + (speed_target - f[9]) * k;
+        const float step = f[9] * dt;
+        for (int a = 0; a < 3; ++a) f[a] = f[a] + step * dir[a];
+    }
+}
+
 }  // namespace bsp::engine_seg11_35_66_cc13

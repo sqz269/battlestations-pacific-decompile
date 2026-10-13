@@ -1624,4 +1624,30 @@ void download_manager_scan_content_00995690(std::vector<ContentScanRecord>& reco
                                             std::vector<std::string>& names_2c, bool& busy_1c,
                                             ContentScanCalls& calls);
 
+// 00707B00, __thiscall(ECX = school, float dt), RET 4 (no reference found; a vtable slot of the
+// fish model is the likely caller). Main thread, 24-bit x87 precision: float arithmetic.
+//   dt == 0 (UCOMISS, ordered equal) returns at once. No game, no camera [game+19FCh], a camera
+//   above the water (+124h > 0) or a squared camera distance to the school's first fish (through
+//   the model +78h matrix +F0h, 00414D10) above 90000 (00CFD404) sets the model's visibility to
+//   0.0 (00B6DA70). Otherwise visibility 1.0; the timer +68h -= dt and 007077B0 respawns at <= 0;
+//   k = min(1, +44h * dt) (00415510); fish 0 steers: dir += k * (+6Ch - dir), normalize, pos +=
+//   (+24h * dt) * dir (0042AEB0); basis A = (0, 1, 0) x dir, B = dir x A (004F9B30), both
+//   normalized. Each other fish i steers toward fish0.pos + o.z dir + o.x A + o.y B (o = positions
+//   +60h [i]): u = (target - pos) / (|target - pos| + 0.005) (00419440), dir += k (u - dir),
+//   normalize; speed += k (min(+3Ch + (+40h - +3Ch) * L / 5, +40h) - speed); pos += speed dt dir.
+class FishUpdateCalls {
+public:
+    virtual ~FishUpdateCalls() = default;
+    virtual void* camera_node_19fc() = 0;               // null when [00E188A8] or the camera is null
+    virtual void node_refresh_world_if_stale(void* node) = 0;   // byte +5Ch bit 1 clear -> 00B6DB70
+    virtual std::array<float, 3> node_translation_120(void* node) = 0;
+    virtual std::array<float, 3> transform_point_00414d10(void* model, const float* point) = 0;  // model +F0h
+    virtual void set_visibility_factor_00b6da70(void* model, float factor, std::uint32_t flag) = 0;
+    virtual float min_float_00415510(float a, float b) = 0;
+    virtual float length_00419440(const float* v) = 0;
+    virtual std::array<float, 3> cross_004f9b30(const float* a, const float* b) = 0;
+};
+void update_fish_school_00707b00(FishSchoolDescLayout& school, float dt, FishUpdateCalls& calls,
+                                 PresentationRandom& random, VectorNormalizer& normalizer);
+
 }  // namespace bsp::engine_seg11_35_66_cc13

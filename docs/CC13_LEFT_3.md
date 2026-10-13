@@ -122,6 +122,7 @@ Twelve records.
 |---|---|---|
 | `0098C9C0` | `describe_os_version_0098c9c0` | The MSDN "DisplaySystemVersion" sample with Vista strings, taken branch by branch from the listing. |
 | `00995690` | `download_manager_scan_content_00995690` | Re-verifies the installed content packages and mounts them. |
+| `00707B00` | `update_fish_school_00707b00` | The per-frame fish-school update. See below. |
 
 - **`0098C9C0`**: the decompile scrambles the NT branch, so the control flow comes from the listing.
   For the EX path, server product types (2 and 3) other than 5.0 and 5.2 append "Server 4.0 " or
@@ -146,3 +147,63 @@ precision, including values held on the stack. The reconstructions in section 1 
 arithmetic. The first build used double intermediates; the follow-up commit switches them to float.
 `rain_emitter_step_00801400` (sys6b, same file) still models its x87-held threshold `dt * 0.3 * k`
 in double. Under the 24-bit control word that should also be float. It has not been changed here.
+
+### `00707B00`, the fish-school update
+
+`update_fish_school_00707b00` was taken from the listing, with every DE-form pop checked against
+its bytes (`DE FA` at `00707F4D`; `DE EA` at `00707F7A`, `00707F93`, `0070803D` and `00708088`).
+The scan finds no DC forms in the body. The update works as follows:
+
+1. **Visibility.** If dt is 0, the update returns at once. The school is hidden (visibility 0.0)
+   when any of these holds:
+   - there is no camera;
+   - the camera is above the water;
+   - the squared distance from the camera to the first fish, transformed by the model matrix
+     `+F0h`, is above 90000.
+
+   Otherwise the visibility is 1.0.
+2. **Respawn timer.** `+68h` counts down by dt. At zero or below, `007077B0` respawns fish.
+3. **Steering rate.** `k = min(1, +44h * dt)`.
+4. **Fish 0.** It steers toward the direction at `+6Ch`, moves, and defines a basis:
+   `A = (0, 1, 0) x dir` and `B = dir x A`.
+5. **Every other fish.** Each one steers toward
+   `fish0 + o.z * dir + o.x * A + o.y * B`, where `o` is its formation offset from `+60h`. Its
+   speed eases toward `min(+3Ch + (+40h - +3Ch) * L / 5, +40h)`, where `L` is the distance to that
+   target.
+
+The only random draws are the respawn's. They are on stream 0 in the image and go through the
+existing `PresentationRandom`.
+
+## Verification
+
+- `scripts/build.ps1` passes (MSVC Win32 build plus the two existing tests) after every batch, and
+  again after the final `git merge origin/main`.
+- `reports/cc13_left3_calls.json`: 48 call-site rows. `tools/verify_report_calls.py` checked them
+  against the live listing with 0 failures.
+- `tools/x87_dc_form_scan.py` was run over every x87 body: `00AB9240`, `00AC0610..00AC1B5D`,
+  `008023B0` and `00707B00`. DE-form pops were read from the raw bytes.
+- No game runs and no Ghidra writes. The ledger names already existed and were left unchanged.
+
+## Handoff
+
+Done: 27 reconstruction records, as follows.
+
+| Section | Records |
+|---|---|
+| Segments 49 and 78 | 11 |
+| Segments 4, 6 and 9 | 12 |
+| Segments 11, 35 and 66 | 4 |
+
+All are build-tested and none is wired into a host. The record tables are in the worker tree's
+`local/l3_tab1.tsv` through `local/l3_tab4.tsv`, written by `local/l3_records.py`.
+`local/l3_envblock.py` and `local/l3_envcheck.py` regenerate and check the `004CB420` tables.
+
+Still open:
+
+- `004C3C90` and `004C6BE0` belong to cc9. See the For cc9 section above.
+- `docs/CC13_SYS_4.md` is leased by `cc9-physics1`, so its sys4b "still open" line was not edited.
+  This document supersedes that line for the twelve bodies in section 2.
+- `rain_emitter_step_00801400` still models one x87 value in double. See the x87 precision
+  section.
+- Host wiring for any of these bodies. The rain build and `00471080` must get a presentation RNG
+  stream before they are wired, because the image draws them on gameplay stream 0.
