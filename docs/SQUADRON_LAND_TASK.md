@@ -16038,8 +16038,8 @@ Zuiho unit 8, Kumano unit 9), and GenerateObject re-creates each under the same 
 `launch` line resolved the target name to the FIRST row, the dead template, so every Junyo launch was refused
 (`the target fails 0043F080`, `local\l55_A0_p01b.log`, 22 lines). `kHarnessTargetPrefersLiveBound`
 (`include/bsp/game_hosts_script_orders.hpp`, OFF) makes `harness_target_row` take the first row by name that passes
-`unit_alive_and_visible` (else the first, as before); used by `player_air_ops_launch`, `player_air_ops_order` and
-(routed hunk) the `launch` branch of `game_hosts_mission_frame.cpp`. HARNESS only: the player picks live markers.
+`unit_alive_and_visible` (else the first, as before); used by `player_air_ops_launch`, `player_air_ops_order` and (lead's loan) every unit/target name lookup in
+`game_hosts_mission_frame.cpp` (launch, select, moveto/takehelm, attack, fire, torpedo, release, build). HARNESS only: the player picks live markers.
 
 **Predictions.** OFF identical. ON: identical on every row whose target names are unique (all current win files,
 unless a file names a re-created template, in which case a refused line becomes applied); PRCP01 with

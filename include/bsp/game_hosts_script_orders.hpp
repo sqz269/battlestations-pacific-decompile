@@ -568,7 +568,8 @@ PlayerAirOpsOrderResult script_orders_player_air_ops_order(const std::string& ba
 // sets it, since it holds the class table.
 void script_orders_set_class_default_arm_reader(int (*reader)(int vehicle_class));
 
-// HARNESS: a `launch`/`order` line's target name -> unit row (units.count() when
+// HARNESS: every --helm-orders unit or target name (launch, order, select, moveto,
+// takehelm, attack, fire, torpedo, release, build) -> unit row (units.count() when
 // no row has it); kHarnessTargetPrefersLiveBound takes a live, shown row first.
 std::size_t harness_target_row(const GameUnitsHost& units, const std::string& name);
 // The host the reconstructed binding bodies run over. Owned for the whole run
