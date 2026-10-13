@@ -116,6 +116,18 @@ jump with ECX = a constant or field (45h, +C4h, 10h, 11h, 13h, 14h); 0067C0E0 ta
 - 0065BE80 tracked unit target (member +208h, observed +21Ch); 0066FFA0 available-entries test
   (effective game mode 8 only; cached in +479h against game+648h).
 
+### Fourth batch (unit library, press start, text fitting)
+
+- Unit library (05h, vtable 00CF6E50, 3D scene sub-object at +8h built by 0093CB10 and torn down
+  through 0093CC80): construct 00680C20, destruct 0067EF50, exit 0067DED0 (preview delete, movie
+  stop, title music, pending profile save), reset selection 0067E580, model-part release 0067ED30
+  (two parallel vectors: parts deleted, handles released, both cleared).
+- Press start: 0067C880 (device button 0 or 0Eh), 0067C8F0 (pending invite for the active user).
+- Text fitting: 0067D870 is `__fastcall(ECX text, EDX prefix, src, cursor_base, first, last)`,
+  RET 10h; 0067D940 slides a window over the source until the text (prefix + window) fits on one
+  line (+110h line count), starting from min(cursor_base + 8, count). The decompile's argument
+  list for both is right only once EDX is read as the prefix.
+
 ### Shared shapes
 
 - `observer_ref_set`: 0064B340, 00656DE0, 00656E20, 0064B610, 0064BB50 (the last two return the

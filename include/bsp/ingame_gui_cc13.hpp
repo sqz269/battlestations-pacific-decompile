@@ -659,6 +659,51 @@ struct SupportEntriesHost {
 };
 bool support_manager_has_available_entries_0066ffa0(Raw s, SupportEntriesHost& host);
 
+// ---------------------------------------------------------------------------
+// Batch 4: unit library (05h, vtable 00CF6E50; 3D scene at +8h, listeners at
+// +64h/+68h, page +6Ch), press start, text range fitting.
+// ---------------------------------------------------------------------------
+struct UnitLibraryHost : HudScreenHost {
+    virtual void simple3d_scene_construct_0093cb10(Raw scene) = 0;
+    virtual void simple3d_scene_destruct_0093cc80(Raw scene) = 0;
+    virtual void free_block(void* block) = 0;
+    virtual void handle_release(void* handle) = 0;
+    virtual void invalid_parameter_00bf6713() = 0;
+    virtual void gui_movie_stop_00aac870(void* movie) = 0;
+    virtual void main_menu_start_title_music_005884a0() = 0;   // ECX = *(*00E198AC + 58h)
+    virtual void profile_save_then_call_007fa1b0(int a, std::uint32_t continuation) = 0;  // ECX = game
+};
+Raw unit_library_construct_00680c20(Raw s, UnitLibraryHost& host);
+void unit_library_release_model_parts_0067ed30(Raw s, UnitLibraryHost& host);
+void unit_library_destruct_0067ef50(Raw s, UnitLibraryHost& host);
+void unit_library_exit_0067ded0(Raw s, UnitLibraryHost& host);
+void unit_library_reset_selection_0067e580(Raw s, UnitLibraryHost& host);
+struct DeviceButtonHost {
+    virtual ~DeviceButtonHost() = default;
+    virtual bool button_held_20(void* device, int button) = 0;   // vtable +20h
+};
+bool press_start_device_button_held_0067c880(void* device, DeviceButtonHost& host);
+struct InviteHost {
+    virtual ~InviteHost() = default;
+    virtual void* pending_invite_00e19880() = 0;
+    virtual bool xenon_has_selected_user_00a3e510() = 0;       // ECX = *00F8ABE8
+    virtual std::int32_t xenon_slot_for_invitee_00a3e470() = 0;
+    virtual std::int32_t xenon_active_user_slot_00a3eac0() = 0;
+};
+bool game_sign_in_state_valid_0067c8f0(InviteHost& host);
+struct TextRangeHost {
+    virtual ~TextRangeHost() = default;
+    // 00469840 (substring), 004261A0 (concat), 00ABAED0(&s, 0), releases.
+    virtual void text_set_prefix_plus_substring(void* text, Raw prefix, Raw src, std::int32_t first,
+        std::int32_t count) = 0;
+    virtual void text_position_cursor_00ab9240(void* text, std::int32_t position) = 0;
+    virtual std::int32_t text_line_count_110(void* text) = 0;   // +110h
+};
+void gui_text_set_source_range_0067d870(void* text, Raw prefix, Raw src, std::int32_t cursor_base,
+    std::int32_t first, std::int32_t last, TextRangeHost& host);
+void gui_text_fit_range_to_one_line_0067d940(void* text, Raw prefix, Raw src, std::int32_t cursor_base,
+    TextRangeHost& host);
+
 void rewards_release_sound_handles_0061ec00(Raw s, RewardsScreenHost& host);
 bool rewards_selected_entry_flagged_0061d8b0(Raw s, RewardsScreenHost& host);
 void rewards_play_and_remove_file_00622e00(void* file, RewardsScreenHost& host);

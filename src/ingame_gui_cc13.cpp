@@ -1624,4 +1624,172 @@ bool support_manager_has_available_entries_0066ffa0(Raw s, SupportEntriesHost& h
     return s.at<std::uint8_t>(0x479) != 0;
 }
 
+// ---------------------------------------------------------------------------
+// Batch 4: unit library (05h), press start, text range fitting
+// ---------------------------------------------------------------------------
+
+inline constexpr std::uint32_t kUnitLibraryVtable = 0x00CF6E50;
+inline constexpr std::uint32_t kUnitLibraryCallbackVtable = 0x00CF6E4C;
+inline constexpr std::uint32_t kUnitLibraryListenerBaseAt64 = 0x00CF6E38;
+inline constexpr std::uint32_t kUnitLibraryWidgetListenerVtable = 0x00CF6E18;
+
+// 00680C20, __thiscall(screen) -> EAX: base construct, the 3D scene at +8h
+// (0093CB10), the listener vtables at +64h/+68h (bases then own), +E0h and the
+// vectors +110h and +120h cleared.
+Raw unit_library_construct_00680c20(Raw s, UnitLibraryHost& host) {
+    host.front_end_screen_construct_004f7180(s);
+    host.simple3d_scene_construct_0093cb10(Raw{s.p + 0x8});
+    s.at<std::uint32_t>(0x64) = kListboxListenerBaseVtable;
+    s.at<std::uint32_t>(0x68) = kWidgetListenerBaseVtable;
+    s.at<std::uint32_t>(0x0) = kUnitLibraryVtable;
+    s.at<std::uint32_t>(0x8) = kUnitLibraryCallbackVtable;
+    s.at<std::uint32_t>(0x64) = kUnitLibraryListenerBaseAt64;
+    s.at<std::uint32_t>(0x68) = kUnitLibraryWidgetListenerVtable;
+    for (std::size_t off : {0xE0u, 0x114u, 0x118u, 0x11Cu, 0x124u, 0x128u, 0x12Cu}) s.at<std::uint32_t>(off) = 0;
+    return s;
+}
+
+// 0067ED30, __fastcall(screen): for each slot of the +110h vector delete the
+// model part at +120h[i] (vtable +4h(1)) and release the handle at +110h[i];
+// clear both vectors (erase(begin, end)); delete +10Ch; release +108h.
+void unit_library_release_model_parts_0067ed30(Raw s, UnitLibraryHost& host) {
+    for (std::size_t i = 0;; ++i) {
+        void** handles = static_cast<void**>(s.ptr(0x114));
+        if (handles == nullptr || i >= static_cast<std::size_t>(static_cast<void**>(s.ptr(0x118)) - handles)) break;
+        void** parts = static_cast<void**>(s.ptr(0x124));
+        if (parts == nullptr || i >= static_cast<std::size_t>(static_cast<void**>(s.ptr(0x128)) - parts)) {
+            host.invalid_parameter_00bf6713();
+        }
+        parts = static_cast<void**>(s.ptr(0x124));
+        if (parts[i] != nullptr) {
+            host.object_delete_04(parts[i]);
+            parts[i] = nullptr;
+        }
+        handles = static_cast<void**>(s.ptr(0x114));
+        if (handles[i] != nullptr) {
+            host.handle_release(handles[i]);
+            handles[i] = nullptr;
+        }
+    }
+    s.ptr(0x128) = s.ptr(0x124);
+    s.ptr(0x118) = s.ptr(0x114);
+    if (s.ptr(0x10C) != nullptr) {
+        host.object_delete_04(s.ptr(0x10C));
+        s.ptr(0x10C) = nullptr;
+    }
+    if (s.ptr(0x108) != nullptr) {
+        host.handle_release(s.ptr(0x108));
+        s.ptr(0x108) = nullptr;
+    }
+}
+
+// 0067EF50, destructor: vtables, delete +E0h, page +6Ch, release the model
+// parts, free the vectors +120h and +110h, the +64h listener base, the 3D
+// scene (0093CC80, ECX = +8h), the base.
+void unit_library_destruct_0067ef50(Raw s, UnitLibraryHost& host) {
+    s.at<std::uint32_t>(0x0) = kUnitLibraryVtable;
+    s.at<std::uint32_t>(0x8) = kUnitLibraryCallbackVtable;
+    s.at<std::uint32_t>(0x64) = kUnitLibraryListenerBaseAt64;
+    s.at<std::uint32_t>(0x68) = kUnitLibraryWidgetListenerVtable;
+    if (s.ptr(0xE0) != nullptr) {
+        host.object_delete_04(s.ptr(0xE0));
+        s.ptr(0xE0) = nullptr;
+    }
+    host.gui_remove_and_destroy_page_00aa31f0(s.ptr(0x6C));
+    unit_library_release_model_parts_0067ed30(s, host);
+    for (std::size_t off : {0x124u, 0x114u}) {
+        if (s.ptr(off) != nullptr) host.free_block(s.ptr(off));
+        s.ptr(off) = nullptr;
+        s.ptr(off + 4) = nullptr;
+        s.ptr(off + 8) = nullptr;
+    }
+    s.at<std::uint32_t>(0x64) = kListboxListenerBaseVtable;
+    host.simple3d_scene_destruct_0093cc80(Raw{s.p + 0x8});
+    host.front_end_screen_destruct_004f71a0(s);
+}
+
+// 0067DED0, exit: delete the preview at +E0h, stop the movie (00AAC870, ECX =
+// +94h), restart the title music (005884A0, ECX = *(*00E198AC + 58h)); a
+// pending save (+104h) runs 007FA1B0(0, 00BD53C0) and is cleared.
+void unit_library_exit_0067ded0(Raw s, UnitLibraryHost& host) {
+    if (s.ptr(0xE0) != nullptr) {
+        host.object_delete_04(s.ptr(0xE0));
+        s.ptr(0xE0) = nullptr;
+    }
+    host.gui_movie_stop_00aac870(s.ptr(0x94));
+    host.main_menu_start_title_music_005884a0();
+    if (s.at<std::uint8_t>(0x104) != 0) {
+        host.profile_save_then_call_007fa1b0(0, 0x00BD53C0);
+        s.at<std::uint8_t>(0x104) = 0;
+    }
+}
+
+// 0067E580, __fastcall(screen): +E8h = 0; show every widget of the list at
+// (*(+6Ch)) +64h (node +8h); hide +78h, show +70h; stop the movie, restart the
+// title music; flag *00E198BC +48h when that object exists.
+void unit_library_reset_selection_0067e580(Raw s, UnitLibraryHost& host) {
+    s.at<std::uint32_t>(0xE8) = 0;
+    Raw page{static_cast<std::uint8_t*>(s.ptr(0x6C))};
+    void* head = page.ptr(0x68);
+    for (void* node = *static_cast<void**>(head); node != head; node = *static_cast<void**>(node)) {
+        host.widget_set_visible_34(Raw{static_cast<std::uint8_t*>(node)}.ptr(0x8), true);
+    }
+    host.widget_set_visible_34(s.ptr(0x78), false);
+    host.widget_set_visible_34(s.ptr(0x70), true);
+    host.gui_movie_stop_00aac870(s.ptr(0x94));
+    host.main_menu_start_title_music_005884a0();
+    if (void* menu = host.global_object(0x00E198BC).p) Raw{static_cast<std::uint8_t*>(menu)}.at<std::uint8_t>(0x48) = 1;
+}
+
+// 0067C880, __fastcall(device) -> AL: button 0 or 0Eh held (vtable +20h).
+bool press_start_device_button_held_0067c880(void* device, DeviceButtonHost& host) {
+    return host.button_held_20(device, 0) || host.button_held_20(device, 0xE);
+}
+
+// 0067C8F0 -> AL: a pending invite (*00E19880) for the signed-in user: its
+// slot (00A3E470) is the active user slot (00A3EAC0).
+bool game_sign_in_state_valid_0067c8f0(InviteHost& host) {
+    if (host.pending_invite_00e19880() == nullptr) return false;
+    if (!host.xenon_has_selected_user_00a3e510()) return false;
+    const std::int32_t slot = host.xenon_slot_for_invitee_00a3e470();
+    return slot == host.xenon_active_user_slot_00a3eac0();
+}
+
+// 0067D870, __fastcall(ECX text, EDX prefix, src, cursor_base, first, last),
+// RET 10h: text = prefix + src[first, last) (00469840, 004261A0), set as the
+// source (00ABAED0(&s, 0)) with the cursor at prefix.count - first +
+// cursor_base (00AB9240).
+void gui_text_set_source_range_0067d870(void* text, Raw prefix, Raw src, std::int32_t cursor_base,
+    std::int32_t first, std::int32_t last, TextRangeHost& host) {
+    host.text_set_prefix_plus_substring(text, prefix, src, first, last - first);
+    host.text_position_cursor_00ab9240(text, prefix.at<std::int32_t>(0x0) - first + cursor_base);
+}
+
+// 0067D940, __thiscall(ECX text, EDX prefix, src, cursor_base), RET 8: show the
+// whole source; while it wraps (+110h line count above 1) slide a window
+// [first, last) with last = min(cursor_base + 8, count): advance first until
+// one line fits, then grow last while it still fits, stepping back once when
+// the last growth wrapped.
+void gui_text_fit_range_to_one_line_0067d940(void* text, Raw prefix, Raw src, std::int32_t cursor_base,
+    TextRangeHost& host) {
+    const std::int32_t count = src.at<std::int32_t>(0x0);
+    gui_text_set_source_range_0067d870(text, prefix, src, cursor_base, 0, count, host);
+    if (host.text_line_count_110(text) <= 1) return;
+    std::int32_t last = cursor_base + 8;
+    if (last >= count) last = count;
+    std::int32_t first = -1;
+    do {
+        ++first;
+        gui_text_set_source_range_0067d870(text, prefix, src, cursor_base, first, last, host);
+    } while (host.text_line_count_110(text) > 1);
+    while (static_cast<std::uint32_t>(last) < static_cast<std::uint32_t>(count)) {
+        ++last;
+        gui_text_set_source_range_0067d870(text, prefix, src, cursor_base, first, last, host);
+        if (host.text_line_count_110(text) > 1) break;
+    }
+    if (host.text_line_count_110(text) > 1) {
+        gui_text_set_source_range_0067d870(text, prefix, src, cursor_base, first, last - 1, host);
+    }
+}
+
 } // namespace bsp::ingame_gui_cc13
