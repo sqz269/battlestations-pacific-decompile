@@ -74,6 +74,29 @@ Constants were read from the PE with `tools/pe_const_read.py`: `00CE3D28` (doubl
 `00D7A24C` 1.0f, `00D7A218` 0.0f, `00CE3800` 0.5f, `00CF8FA4` "pos", `00D14188` "rot",
 `00CE3A70` ".".
 
+## Second batch
+
+Added after the first commit, same method:
+
+- Camera: `GetCameraRelPosW` 008BF230, `GetCameraRelPosL` 008BF460, `GetCameraState` 008BF6A0
+  (Position is camera+30h, not the +120h world position GetCameraPosRot uses; each angle is
+  `(float)(a + 42 pi as qword 00D13268)` fmod `2 pi` (qword 00CE3828), then degrees; Zoom is
+  float 00F889B4 over camera+1C4h), `GetDistFromCrosshair` 008C0560 (00794750 with the camera
+  direction first and the entity offset second, `sqrt(a*a + b*b)` above 1e-10, over the FOV).
+- The thirteen `MovCam_*` mode setters `008B2CC0..008B6AD0`. They share an optional tail
+  (boolean default true, number default 0, string default "", then every further argument as
+  a Lua variant vector built by 00887370 + 006EDF00), modelled once as `read_movcam_tail`.
+  `005CD160` is `__fastcall(movcam)` with no stack argument: values the decompiler showed passed
+  to it are pushes for the setter that follows. `MovCam_SetZoom` was corrected accordingly.
+  `MovCam_AddInterpolator` reads arguments 4, 3, 2, 1 in that order (EDI, EBP, EBX,
+  [ESP+24h]) and passes them as `(name, arg1, arg2, arg3, arg4)` to 007900B0.
+- Glue: `UnloadMessageMap` 008C6490 (its session message passes 1 where LoadMessageMap passes
+  0), `GetConfiguredInput` 008CC030 (two string tables), `ForceEnableInput` 008CBAD0,
+  `UnloadClass` 008CC630.
+- Small: `NextTokenIsInt` 008D8F10 (the "%d" acceptance rule), `008DAD70`, `008DADA0`,
+  `008DAD80`, `008C8980`, `008C9350`; `objective_kind_008dbf40` in cc9's
+  `src/game_hosts_lua.cpp` backfilled after checking the six strings at 00E0C948.
+
 ## Divergences and uncertainty
 
 - The models take values and callbacks; nothing reproduces native object layout.

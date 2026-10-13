@@ -21,6 +21,7 @@
 #include <cstdint>
 #include <map>
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -39,6 +40,7 @@ struct Vec3 {
 // The argument accessors these bindings use beyond the core reader.
 struct LuaArgs : LuaBindingArgumentReader {
     virtual bool is_boolean(int index) = 0;   // 00B66000
+    virtual bool is_number(int index) = 0;    // 00B66050
     virtual Vec3 read_vector3(int index) = 0; // 00888760, reads fields x/y/z of a table
     virtual void* to_userdata(int index) = 0; // 00B662D0
     // 00B662F0 over the argument object: the boolean, or `fallback` when it is not one.
@@ -173,7 +175,9 @@ struct CameraHost {
     // 00467050 __thiscall on free camera +74h: (first, second, 0.0f).
     virtual void free_camera_set_rotation_from_euler(float first, float second, float third) = 0;
     // Movie camera at [[00E198C4]+98h].
-    virtual void movcam_ensure_target(float zoom) = 0;   // 005CD160, answers the target in EAX
+    // 005CD160 __fastcall(movcam): activates the movie camera on the current unit when it is not
+    // active and answers movcam+30h, the ECX of the setter that follows.
+    virtual void movcam_ensure_target() = 0;
     virtual void movcam_set_zoom(float zoom) = 0;        // 0078E480 on that target
     virtual void movcam_set_speed_limits(float a, float b) = 0; // 005CB900
     virtual void movcam_reset_speed_limits() = 0;        // 005CB970
@@ -432,6 +436,186 @@ int lua_get_act_dialog_ids(LuaStringListResults& results, PresentationHost& host
 // Loading_Finish 008C77F0: when game+644h < 1, hide the please-wait screen and call
 // 004CD0F0(0, 0, 1).
 int lua_loading_finish(PresentationHost& host);
+// ---------------------------------------------------------------------------
+// Camera reads, message maps, configured input and class unloading
+// ---------------------------------------------------------------------------
+
+struct GlueHost {
+    virtual ~GlueHost() = default;
+    // Game camera world position, as in GetCameraPosRot.
+    virtual Vec3 game_camera_world_position() = 0;
+    // The entity's world position +FCh..+104h after 00414DB0 when byte +C8h is clear.
+    virtual Vec3 entity_world_position(void* entity) = 0;
+    // The entity's cached inverse world matrix (+110h, built by 00B63D50 when byte +10Ch is
+    // clear, which also sets it) applied to `point` by 004142E0.
+    virtual Vec3 entity_world_to_local(void* entity, const Vec3& point) = 0;
+    // 00706FC0 on [[00E188A8]+21DCh].
+    virtual void message_map_unload(const std::string& name, int index) = 0;
+    virtual std::int32_t game_session_mode_1fe4() = 0;
+    // 0088B6D0(name, index, flag), 0076A9F0 on game+1EF0h, 00765590: the MANAGE_MESSAGES
+    // session message; LoadMessageMap passes flag 0 and UnloadMessageMap flag 1.
+    virtual void session_manage_messages(const std::string& name, int index, int flag) = 0;
+    // 006A33F0 on 005547D0's input settings: the two text lists of an action's bindings.
+    virtual void input_collect_action_binding_texts(int action, std::vector<std::string>& first,
+        std::vector<std::string>& second) = 0;
+    // ForceEnableInput: 0069FA40 inserts into the int set at [00E188A8]+5B0h, 008CA7B0 erases.
+    virtual void forced_input_set_insert(int id) = 0;
+    virtual void forced_input_set_erase(int id) = 0;
+    // Vehicle class registry 00437F50: slot +10h[id], cache size +8h, cache base +4h.
+    virtual std::int32_t vehicle_class_slot(int class_id) = 0;
+    virtual std::int32_t vehicle_class_cache_size() = 0;
+    virtual void vehicle_class_resize_cache(int size) = 0;        // 00437BD0
+    virtual void vehicle_class_release_cached(int slot) = 0;      // intrusive release, slot = 0
+    virtual void log_text(const std::string& text) = 0;           // 004254B0
+};
+
+// GetCameraRelPosW 008BF230: camera world position minus the entity's world position, as a
+// {x, y, z} table. The entity is read (00888AA0) before the table is created.
+int lua_get_camera_rel_pos_w(LuaArgs& args, LuaResults& results, GlueHost& host);
+// GetCameraRelPosL 008BF460: the camera world position in the entity's local frame.
+int lua_get_camera_rel_pos_l(LuaArgs& args, LuaResults& results, GlueHost& host);
+// UnloadMessageMap 008C6490: 00706FC0(string arg0, int arg1); when game+1FE4h == 1 the
+// session MANAGE_MESSAGES path with both arguments re-read and flag 1.
+int lua_unload_message_map(LuaArgs& args, GlueHost& host);
+// GetConfiguredInput 008CC030: two tables of strings (t[i + 1], 00B672F0), the first from
+// 006A33F0's second argument, the second from its third.
+int lua_get_configured_input(LuaArgs& args, LuaStringListResults& results, GlueHost& host);
+// ForceEnableInput 008CBAD0: boolean arg1 false inserts int arg0 into the set, true erases.
+int lua_force_enable_input(LuaArgs& args, GlueHost& host);
+// UnloadClass 008CC630: for every argument, grow the cache when the slot is past its size,
+// release and clear the cached class, then log "Unloading vehicle class %d" with the argument
+// read again. The count is re-read every iteration.
+int lua_unload_class(LuaArgs& args, GlueHost& host);
+// GetCameraState 008BF6A0 and GetDistFromCrosshair 008C0560 read the game camera directly.
+struct CameraStateHost {
+    virtual ~CameraStateHost() = default;
+    virtual Vec3 game_camera_vector_30() = 0;            // camera +30h, after the refresh
+    virtual Vec3 game_camera_basis_angles() = 0;         // 0042D2E0, radians
+    virtual Vec3 game_camera_world_position() = 0;       // +120h..+128h
+    virtual Vec3 game_camera_direction_110() = 0;        // +110h..+118h
+    virtual float game_camera_fov_1c4() = 0;             // +1C4h
+    virtual float base_fov_00f889b4() = 0;               // float 00F889B4
+    virtual Vec3 entity_world_position(void* entity) = 0;
+    // 00794750 (src/cc13_camera_controllers.cpp) with (camera direction, entity offset).
+    virtual std::array<float, 2> camera_direction_angle_delta(const Vec3& direction,
+        const Vec3& offset) = 0;
+};
+struct CameraStateResult {
+    Vec3 position;     // "Position" (00CE68B4)
+    Vec3 rotation;     // "Rotation" (00D0D734), degrees in [0, 360)
+    float zoom{};      // "Zoom" (00D14988)
+};
+struct CameraStateResults {
+    virtual ~CameraStateResults() = default;
+    virtual void push_camera_state(const CameraStateResult& state) = 0;
+};
+// One angle of GetCameraState: (float)(a + 131.9468994140625 (qword 00D13268)), fmod by
+// 6.2831854820251465 (qword 00CE3828), narrowed, then / pi (00CE3D28) * 180 (00CE3D20).
+float camera_state_degrees(float radians) noexcept;
+int lua_get_camera_state(CameraStateResults& results, CameraStateHost& host);
+// GetDistFromCrosshair: offset = entity - camera (float per axis), (a, b) = 00794750, s =
+// a*a + b*b narrowed; 0 when s <= 1e-10 (qword 00CE3820, FCOMI / JBE), else sqrt narrowed;
+// pushed as s / camera FOV (00B66480).
+float dist_from_crosshair(float a, float b, float fov) noexcept;
+int lua_get_dist_from_crosshair(LuaArgs& args, LuaResults& results, CameraStateHost& host);
+// ---------------------------------------------------------------------------
+// Movie-camera mode bindings (MovCam_*)
+// ---------------------------------------------------------------------------
+
+// Most modes end with the same optional tail, read in this order: a boolean (default true,
+// taken only when the argument is a boolean), a number (default 0, only when a number), a
+// string (default "" from 00CE3A0C, only when a string), and, when more arguments follow,
+// every remaining argument collected as Lua variants (00887370(first + 1, -1, 4) over a
+// LuaStateHolder, each pushed by 006EDF00 into a new 0Ch-byte vector) or null.
+struct MovCamTail {
+    bool flag{true};
+    float number{0.0f};
+    std::string name;
+    int extras_from{-1}; // first argument index of the variant vector, -1 for null
+};
+MovCamTail read_movcam_tail(LuaArgs& args, int first);
+
+// Every mode calls 005CD160 first (see CameraHost::movcam_ensure_target) and then its setter
+// on the returned movcam+30h.
+struct MovCamModeHost {
+    virtual ~MovCamModeHost() = default;
+    virtual void movcam_ensure_target() = 0;                     // 005CD160
+    virtual std::int32_t game_session_mode_1fe4() = 0;
+    virtual void set_hand_mode_targeted(void* entity, bool a, bool b) = 0;      // 007A6B40
+    virtual void broadcast_hand_mode_targeted(void* entity, bool a, bool b) = 0; // 0076D390
+    // 0079F400: index of a named vehicle camera; its ECX was not traced.
+    virtual int vehicle_camera_index_of_name(void* entity, const std::string& name) = 0;
+    virtual void set_hand_mode_deck(void* entity, int camera_index) = 0;        // 007A6B90
+    virtual void set_hand_mode_overview(void* entity, const MovCamTail& tail, LuaArgs& args) = 0; // 007A6BC0
+    virtual void set_ref_pos(void* entity, const Vec3& position, const MovCamTail& tail,
+        LuaArgs& args) = 0;                                                      // 007A6CD0
+    virtual void set_ref_pos_polar(void* entity, float a, float b, float c, const MovCamTail& tail,
+        LuaArgs& args) = 0;                                                      // 007A6E60
+    virtual void broadcast_ref_pos_polar(void* entity, float a, float b, float c, bool flag,
+        float number) = 0;                                                       // 0076D460
+    virtual void set_ref_pos_radius(void* entity, float radius, const MovCamTail& tail,
+        LuaArgs& args) = 0;                                                      // 007A7070
+    virtual void broadcast_ref_pos_radius(void* entity, float radius, bool flag,
+        float number) = 0;                                                       // 0076D510
+    // 007AC9D0: the entity's path interface; the point count is (+0Ch - +08h) >> 2, or 0 when
+    // +08h is null.
+    virtual void* entity_path_interface(void* entity) = 0;
+    virtual int path_point_count(void* path) = 0;
+    virtual void set_path_walk(void* path, int start, int end, float speed, const MovCamTail& tail,
+        LuaArgs& args) = 0;                                                      // 007A7200
+    virtual void set_viktor_mode(void* first, void* second, float a, float b, const MovCamTail& tail,
+        LuaArgs& args) = 0;                                                      // 007A7DE0
+    virtual void set_tompi_mode_weak(void* first, const Vec3& a, void* second, const Vec3& b,
+        const MovCamTail& tail, LuaArgs& args) = 0;                              // 007A7F30
+    virtual void set_tompi_mode(void* first, const Vec3& a, void* second, const Vec3& b) = 0; // 007A8100
+    virtual void set_secondary_target(void* entity, const MovCamTail& tail, LuaArgs& args) = 0; // 0079D870
+    // operator new(18h) + 007900B0(name, a1, a2, a3, a4); null when the allocation fails.
+    virtual void* interpolator_create(const std::string& name, float a1, float a2, float a3,
+        float a4) = 0;
+    virtual bool interpolator_allocation_succeeds() = 0;
+    virtual void add_interpolator(void* interpolator) = 0;                      // 0079F6D0
+    virtual void broadcast_add_interpolator(void* interpolator) = 0;            // 0076E750
+    virtual void pick_deck_position(const std::string& name, void* entity, void* other) = 0; // 007A8180
+};
+
+int lua_movcam_hand_mode_targeted(LuaArgs& args, MovCamModeHost& host);   // 008B2CC0
+int lua_movcam_hand_mode_deck(LuaArgs& args, MovCamModeHost& host);       // 008B2FE0
+int lua_movcam_hand_mode_overview(LuaArgs& args, MovCamModeHost& host);   // 008B3270
+int lua_movcam_ref_pos(LuaArgs& args, MovCamModeHost& host);              // 008B3740
+int lua_movcam_ref_pos_polar(LuaArgs& args, MovCamModeHost& host);        // 008B3C70
+int lua_movcam_ref_pos_radius(LuaArgs& args, MovCamModeHost& host);       // 008B4270
+int lua_movcam_path_walk(LuaArgs& args, MovCamModeHost& host);            // 008B47E0
+int lua_movcam_viktor_mode(LuaArgs& args, MovCamModeHost& host);          // 008B52F0
+int lua_movcam_tompi_mode_weak(LuaArgs& args, MovCamModeHost& host);      // 008B5870
+int lua_movcam_tompi_mode(LuaArgs& args, MovCamModeHost& host);           // 008B5DF0
+int lua_movcam_set_secondary_target(LuaArgs& args, MovCamModeHost& host); // 008B60C0
+int lua_movcam_add_interpolator(LuaArgs& args, MovCamModeHost& host);     // 008B6740
+int lua_movcam_pick_snitt_deck_position(LuaArgs& args, MovCamModeHost& host); // 008B6AD0
+
+// ---------------------------------------------------------------------------
+// Small accessors and value types
+// ---------------------------------------------------------------------------
+
+// 008D8F10: the peeked token (delimiters 00CE3A34) is an int when sscanf("%d") assigns one
+// field. 008D8F40 is the "%f" twin (delimiters 00CE4334), already modelled as parse_float.
+bool scene_token_is_int(const std::string& token);
+// 008DAD70: dword +28h of an objective entry (no caller in the index).
+std::int32_t objective_entry_field_28(const std::uint8_t* entry) noexcept;
+// 008DADA0: [world+21A4h] != 0 (no caller in the index).
+bool world_has_entity_set0(const std::uint8_t* world) noexcept;
+// 008DAD80, __thiscall(message, int id), RET 4: 0075B430 (session message base) with the id, dword
+// +4 = 1, vtable 00D16024.
+struct ObjectiveSessionMessageHeader {
+    std::uint32_t vtable{};
+    std::int32_t one_04{};
+};
+ObjectiveSessionMessageHeader objective_session_message_header() noexcept;
+inline constexpr std::uint32_t kObjectiveSessionMessageVtable = 0x00D16024u;
+// 008C8980, __thiscall(out, const NativeString* source), RET 4: copy the string, engaged
+// byte +8 = 1. 008C9350: a nil argument leaves the caller's optional untouched, anything
+// else is converted to a string and engages it.
+std::optional<std::string> optional_string_from(const std::string& source);
+void lua_object_get_optional_string(LuaArgs& args, int index, std::optional<std::string>& out);
 
 // ---------------------------------------------------------------------------
 // Non-binding helpers of the segment

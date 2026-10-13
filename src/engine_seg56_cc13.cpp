@@ -3,8 +3,10 @@
 #include "bsp/engine_seg56_cc13.hpp"
 
 #include <cctype>
+#include <cmath>
 #include <cstdarg>
 #include <cstdio>
+#include <cstring>
 
 namespace bsp::cc13_seg56 {
 namespace {
@@ -219,8 +221,8 @@ int lua_player_set_bomber_view(LuaArgs& args, BomberViewFloats& g)
 int lua_movcam_set_zoom(LuaArgs& args, CameraHost& host)
 {
     const float zoom = narrow(args.get_number(0));
-    host.movcam_ensure_target(zoom); // 005CD160
-    host.movcam_set_zoom(zoom);      // 0078E480, ECX = the returned target
+    host.movcam_ensure_target(); // 005CD160; the float was pushed before it for the next call
+    host.movcam_set_zoom(zoom);  // 0078E480, ECX = the returned movcam+30h
     return 0;
 }
 
@@ -744,6 +746,372 @@ int lua_loading_finish(PresentationHost& host)
         host.game_set_cinematic_mode(0, 0, 1);
     }
     return 0;
+}
+// ---------------------------------------------------------------------------
+// Camera reads, message maps, configured input and class unloading
+// ---------------------------------------------------------------------------
+
+int lua_get_camera_rel_pos_w(LuaArgs& args, LuaResults& results, GlueHost& host)
+{
+    void* entity = args.entity_at(0);
+    const Vec3 camera = host.game_camera_world_position();
+    const Vec3 position = host.entity_world_position(entity);
+    Vec3 relative;
+    relative.x = camera.x - position.x;
+    relative.y = camera.y - position.y;
+    relative.z = camera.z - position.z;
+    results.push_vector3(relative);
+    return 1;
+}
+
+int lua_get_camera_rel_pos_l(LuaArgs& args, LuaResults& results, GlueHost& host)
+{
+    void* entity = args.entity_at(0);
+    const Vec3 camera = host.game_camera_world_position();
+    results.push_vector3(host.entity_world_to_local(entity, camera));
+    return 1;
+}
+
+int lua_unload_message_map(LuaArgs& args, GlueHost& host)
+{
+    host.message_map_unload(args.get_string(0), args.get_integer(1));
+    if (host.game_session_mode_1fe4() == 1) {
+        const std::string name = args.get_string(0);
+        host.session_manage_messages(name, args.get_integer(1), 1); // PUSH ESI = 1
+    }
+    return 0;
+}
+
+int lua_get_configured_input(LuaArgs& args, LuaStringListResults& results, GlueHost& host)
+{
+    std::vector<std::string> first;
+    std::vector<std::string> second;
+    host.input_collect_action_binding_texts(args.get_integer(0), first, second);
+    results.push_string_array(first);
+    results.push_string_array(second);
+    return 2;
+}
+
+int lua_force_enable_input(LuaArgs& args, GlueHost& host)
+{
+    if (!args.get_boolean(1)) {
+        host.forced_input_set_insert(args.get_integer(0));
+    } else {
+        host.forced_input_set_erase(args.get_integer(0));
+    }
+    return 0;
+}
+
+int lua_unload_class(LuaArgs& args, GlueHost& host)
+{
+    for (int index = 0; index < args.count(); ++index) {
+        const std::int32_t slot = host.vehicle_class_slot(args.get_integer(index));
+        if (host.vehicle_class_cache_size() <= slot) {
+            host.vehicle_class_resize_cache(slot + 1);
+        }
+        host.vehicle_class_release_cached(slot);
+        host.log_text(format_text("Unloading vehicle class %d", args.get_integer(index)));
+    }
+    return 0;
+}
+
+float camera_state_degrees(float radians) noexcept
+{
+    const float shifted = narrow(static_cast<double>(radians) + 131.9468994140625); // 008BF874
+    const float wrapped = narrow(std::fmod(static_cast<double>(shifted), 6.2831854820251465));
+    return narrow((static_cast<double>(wrapped) / 3.1415927410125732) * 180.0); // 008BF8A3
+}
+
+int lua_get_camera_state(CameraStateResults& results, CameraStateHost& host)
+{
+    CameraStateResult state;
+    state.position = host.game_camera_vector_30(); // LEA EDX,[ESI+30h] into 0088BA30
+    const Vec3 angles = host.game_camera_basis_angles();
+    state.rotation.x = camera_state_degrees(angles.x);
+    state.rotation.y = camera_state_degrees(angles.y);
+    state.rotation.z = camera_state_degrees(angles.z);
+    state.zoom = host.base_fov_00f889b4() / host.game_camera_fov_1c4(); // 008BF980..008BF996
+    results.push_camera_state(state);
+    return 1;
+}
+
+float dist_from_crosshair(float a, float b, float fov) noexcept
+{
+    const float sum = narrow(static_cast<double>(a) * a + static_cast<double>(b) * b);
+    float distance = 0.0f;
+    if (static_cast<double>(sum) > 1e-10) { // FCOMI with qword 00CE3820, JBE skips sqrt
+        distance = narrow(std::sqrt(static_cast<double>(sum)));
+    }
+    return narrow(static_cast<double>(distance) / fov); // 008C07B4
+}
+
+int lua_get_dist_from_crosshair(LuaArgs& args, LuaResults& results, CameraStateHost& host)
+{
+    void* entity = args.entity_at(0);
+    const Vec3 camera = host.game_camera_world_position();
+    const Vec3 position = host.entity_world_position(entity);
+    Vec3 offset;
+    offset.x = position.x - camera.x; // 008C06D2
+    offset.y = position.y - camera.y;
+    offset.z = position.z - camera.z;
+    const std::array<float, 2> delta =
+        host.camera_direction_angle_delta(host.game_camera_direction_110(), offset);
+    results.push_float(dist_from_crosshair(delta[0], delta[1], host.game_camera_fov_1c4()));
+    return 1;
+}
+// ---------------------------------------------------------------------------
+// Movie-camera modes
+// ---------------------------------------------------------------------------
+
+MovCamTail read_movcam_tail(LuaArgs& args, int first)
+{
+    MovCamTail tail;
+    if (args.count() > first && args.is_boolean(first)) {
+        tail.flag = args.get_boolean(first);
+    }
+    if (args.count() > first + 1 && args.is_number(first + 1)) {
+        tail.number = narrow(args.get_number(first + 1));
+    }
+    if (args.count() > first + 2 && args.is_string(first + 2)) {
+        tail.name = args.get_string(first + 2);
+    }
+    if (args.count() > first + 3) {
+        tail.extras_from = first + 3;
+    }
+    return tail;
+}
+
+namespace {
+
+void* entity_or_null(LuaArgs& args, int index)
+{
+    return args.is_entity_table(index) ? args.entity_at(index) : nullptr; // 008889C0 first
+}
+
+} // namespace
+
+int lua_movcam_hand_mode_targeted(LuaArgs& args, MovCamModeHost& host)
+{
+    void* entity = entity_or_null(args, 0);
+    bool a = true;
+    if (args.count() >= 2 && args.is_boolean(1)) {
+        a = args.get_boolean(1);
+    }
+    bool b = true;
+    if (args.count() > 2 && args.is_boolean(2)) {
+        b = args.get_boolean(2);
+    }
+    host.movcam_ensure_target();
+    host.set_hand_mode_targeted(entity, a, b);
+    if (host.game_session_mode_1fe4() == 1) {
+        host.broadcast_hand_mode_targeted(entity, a, b);
+    }
+    return 0;
+}
+
+int lua_movcam_hand_mode_deck(LuaArgs& args, MovCamModeHost& host)
+{
+    void* entity = args.entity_at(0);
+    int camera_index = 0;
+    if (args.is_number(1)) {
+        camera_index = args.get_integer(1) - 1;
+    } else if (args.is_string(1)) {
+        camera_index = host.vehicle_camera_index_of_name(entity, args.get_string(1));
+    }
+    host.movcam_ensure_target();
+    host.set_hand_mode_deck(entity, camera_index);
+    return 0;
+}
+
+int lua_movcam_hand_mode_overview(LuaArgs& args, MovCamModeHost& host)
+{
+    void* entity = args.entity_at(0); // no entity test in this one
+    const MovCamTail tail = read_movcam_tail(args, 1);
+    host.movcam_ensure_target();
+    host.set_hand_mode_overview(entity, tail, args);
+    return 0;
+}
+
+int lua_movcam_ref_pos(LuaArgs& args, MovCamModeHost& host)
+{
+    void* entity = entity_or_null(args, 0);
+    const Vec3 position = args.read_vector3(1);
+    const MovCamTail tail = read_movcam_tail(args, 2);
+    host.movcam_ensure_target();
+    host.set_ref_pos(entity, position, tail, args);
+    return 0;
+}
+
+int lua_movcam_ref_pos_polar(LuaArgs& args, MovCamModeHost& host)
+{
+    void* entity = entity_or_null(args, 0);
+    const float a = narrow(args.get_number(1));
+    const float b = narrow(args.get_number(2));
+    const float c = narrow(args.get_number(3));
+    const MovCamTail tail = read_movcam_tail(args, 4);
+    host.movcam_ensure_target();
+    host.set_ref_pos_polar(entity, a, b, c, tail, args);
+    if (host.game_session_mode_1fe4() == 1) {
+        host.broadcast_ref_pos_polar(entity, a, b, c, tail.flag, tail.number);
+    }
+    return 0;
+}
+
+int lua_movcam_ref_pos_radius(LuaArgs& args, MovCamModeHost& host)
+{
+    void* entity = entity_or_null(args, 0);
+    const float radius = narrow(args.get_number(1));
+    const MovCamTail tail = read_movcam_tail(args, 2);
+    host.movcam_ensure_target();
+    host.set_ref_pos_radius(entity, radius, tail, args);
+    if (host.game_session_mode_1fe4() == 1) {
+        host.broadcast_ref_pos_radius(entity, radius, tail.flag, tail.number);
+    }
+    return 0;
+}
+
+int lua_movcam_path_walk(LuaArgs& args, MovCamModeHost& host)
+{
+    void* path = host.entity_path_interface(args.entity_at(0));
+    int start = args.get_integer(1) - 1;
+    if (start == -1) {
+        start = 0;
+    }
+    int end = args.get_integer(2) - 1;
+    if (end == -1) {
+        end = host.path_point_count(path) - 1; // 0 means "to the last point"
+    }
+    const float speed = narrow(args.get_number(3));
+    const MovCamTail tail = read_movcam_tail(args, 4);
+    host.movcam_ensure_target();
+    host.set_path_walk(path, start, end, speed, tail, args);
+    return 0;
+}
+
+int lua_movcam_viktor_mode(LuaArgs& args, MovCamModeHost& host)
+{
+    void* first = args.entity_at(0);
+    void* second = args.entity_at(1);
+    const float a = narrow(args.get_number(2));
+    const float b = narrow(args.get_number(3));
+    const MovCamTail tail = read_movcam_tail(args, 4);
+    host.movcam_ensure_target();
+    host.set_viktor_mode(first, second, a, b, tail, args);
+    return 0;
+}
+
+int lua_movcam_tompi_mode_weak(LuaArgs& args, MovCamModeHost& host)
+{
+    void* first = args.entity_at(0);
+    const Vec3 a = args.read_vector3(1);
+    void* second = args.entity_at(2);
+    const Vec3 b = args.read_vector3(3);
+    const MovCamTail tail = read_movcam_tail(args, 4);
+    host.movcam_ensure_target();
+    host.set_tompi_mode_weak(first, a, second, b, tail, args);
+    return 0;
+}
+
+int lua_movcam_tompi_mode(LuaArgs& args, MovCamModeHost& host)
+{
+    void* first = args.is_nil(0) ? nullptr : args.entity_at(0); // nil test, not entity test
+    const Vec3 a = args.read_vector3(1);
+    void* second = args.is_nil(2) ? nullptr : args.entity_at(2);
+    const Vec3 b = args.read_vector3(3);
+    host.movcam_ensure_target();
+    host.set_tompi_mode(first, a, second, b);
+    return 0;
+}
+
+int lua_movcam_set_secondary_target(LuaArgs& args, MovCamModeHost& host)
+{
+    void* entity = entity_or_null(args, 0);
+    const MovCamTail tail = read_movcam_tail(args, 1);
+    host.movcam_ensure_target();
+    host.set_secondary_target(entity, tail, args);
+    return 0;
+}
+
+int lua_movcam_add_interpolator(LuaArgs& args, MovCamModeHost& host)
+{
+    void* interpolator = nullptr;
+    if (host.interpolator_allocation_succeeds()) {
+        const std::string name = args.get_string(0);
+        // EDI/EBP/EBX/[ESP+24h] hold arguments 4/3/2/1 and are read in that order.
+        const float a4 = narrow(args.get_number(4));
+        const float a3 = narrow(args.get_number(3));
+        const float a2 = narrow(args.get_number(2));
+        const float a1 = narrow(args.get_number(1));
+        interpolator = host.interpolator_create(name, a1, a2, a3, a4);
+    }
+    host.movcam_ensure_target();
+    host.add_interpolator(interpolator);
+    if (host.game_session_mode_1fe4() == 1) {
+        host.broadcast_add_interpolator(interpolator);
+    }
+    return 0;
+}
+
+int lua_movcam_pick_snitt_deck_position(LuaArgs& args, MovCamModeHost& host)
+{
+    const std::string name = args.get_string(0);
+    void* entity = args.entity_at(1);
+    void* other = entity_or_null(args, 2);
+    host.movcam_ensure_target();
+    host.pick_deck_position(name, entity, other);
+    return 0;
+}
+// ---------------------------------------------------------------------------
+// Small accessors and value types
+// ---------------------------------------------------------------------------
+
+bool scene_token_is_int(const std::string& token)
+{
+    // sscanf("%d") assigns a field when, after optional white space and one sign, a digit
+    // follows; overflow still counts as an assignment.
+    std::size_t i = 0;
+    while (i < token.size() && std::isspace(static_cast<unsigned char>(token[i]))) {
+        ++i;
+    }
+    if (i < token.size() && (token[i] == '+' || token[i] == '-')) {
+        ++i;
+    }
+    return i < token.size() && std::isdigit(static_cast<unsigned char>(token[i])) != 0;
+}
+
+std::int32_t objective_entry_field_28(const std::uint8_t* entry) noexcept
+{
+    std::int32_t value = 0;
+    std::memcpy(&value, entry + 0x28, sizeof value);
+    return value;
+}
+
+bool world_has_entity_set0(const std::uint8_t* world) noexcept
+{
+    std::uint32_t value = 0;
+    std::memcpy(&value, world + 0x21A4, sizeof value);
+    return value != 0;
+}
+
+ObjectiveSessionMessageHeader objective_session_message_header() noexcept
+{
+    ObjectiveSessionMessageHeader header;
+    header.vtable = kObjectiveSessionMessageVtable;
+    header.one_04 = 1;
+    return header;
+}
+
+std::optional<std::string> optional_string_from(const std::string& source)
+{
+    return std::optional<std::string>(source);
+}
+
+void lua_object_get_optional_string(LuaArgs& args, int index, std::optional<std::string>& out)
+{
+    if (args.is_nil(index)) {
+        return;
+    }
+    out = args.get_string(index);
 }
 // ---------------------------------------------------------------------------
 // Non-binding helpers
