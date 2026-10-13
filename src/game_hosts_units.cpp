@@ -2864,6 +2864,16 @@ struct GameUnitsHost::Impl {
         const GameUnitSlot& head, bsp::LandingSiteCandidate& c);
     unsigned long long rtb_site_keys{0}, rtb_site_keys_carrier{0}, rtb_site_keys_missing{0};
     LandingDeck* landing_deck_006c0750(std::size_t deck_index, std::size_t owner);
+    // The unit row a deck name / bag `HomeBase` resolves to (bsp::air_ops_owner_row:
+    // the first row by name, or under kAirOpsOwnerByInstanceBound the last live one).
+    std::size_t air_ops_owner_unit(const std::string& name) const {
+        return bsp::air_ops_owner_row(slots.size(), name,
+            [&](std::size_t u) -> const std::string* {
+                return slots[u] ? &slots[u]->row.name : nullptr;
+            },
+            [&](std::size_t u) { return gunnery != nullptr && gunnery->unit_dead(u); });
+    }
+    unsigned long long landing_deck_owner_rebuilds{0};
     bool landing_request_006c54c0(GameUnitSlot& plane);
     float landing_sequencer_006cc9f0(LandingDeck& d, std::size_t squadron);
     std::vector<std::size_t> landing_members(std::size_t squadron) const;
@@ -11984,9 +11994,7 @@ void GameUnitsHost::Impl::record_return_to_base_007f16d0(std::size_t unit_index)
         bsp::AirOpsDeckRegistry& hdecks = bsp::air_ops_decks();
         for (std::size_t i = 0; !home_name.empty() && i < hdecks.size(); ++i) {
             if (hdecks.name_at(i) != home_name) continue;
-            for (std::size_t u = 0; u < slots.size(); ++u) {
-                if (slots[u]->row.name == home_name) { home_owner = u; break; }
-            }
+            home_owner = air_ops_owner_unit(home_name);   // kAirOpsOwnerByInstanceBound
             const bsp::AirOpsDeck* hd = hdecks.mutable_at(i);
             const bool sunk = home_owner < slots.size() && gunnery != nullptr
                 && gunnery->unit_dead(home_owner);
@@ -12022,10 +12030,7 @@ void GameUnitsHost::Impl::record_return_to_base_007f16d0(std::size_t unit_index)
         c.node = i + 1u;
         c.block_present = true;
         c.owner_present = deck->owner_present;
-        std::size_t owner = slots.size();
-        for (std::size_t u = 0; u < slots.size(); ++u) {
-            if (slots[u]->row.name == decks.name_at(i)) { owner = u; break; }
-        }
+        const std::size_t owner = air_ops_owner_unit(decks.name_at(i));   // kAirOpsOwnerByInstanceBound
         c.owner_dead_5e = owner < slots.size()
             && std::find(dead.begin(), dead.end(), owner) != dead.end();
         c.owner_remote_5d = false;
@@ -12533,6 +12538,29 @@ GameUnitsHost::Impl::LandingDeck* GameUnitsHost::Impl::landing_deck_006c0750(
     if (landing_decks.size() < decks.size()) landing_decks.resize(decks.size());
     if (deck_index >= landing_decks.size() || owner >= slots.size()) return nullptr;
     LandingDeck& d = landing_decks[deck_index];
+    if constexpr (bsp::kAirOpsOwnerByInstanceBound) {
+        // 007593D0 builds each mother-ship instance its own holder and elevator.
+        // A deck whose holder belongs to a dead instance is rebuilt for the live
+        // one under its name. LABELLED: only when the stored owner is dead and
+        // the new one is not, because planes pass the owner they were assigned
+        // (land_site_plus_one), and an older one must not flap the holder back.
+        if (d.built && d.owner != owner && gunnery != nullptr && gunnery->unit_dead(d.owner)
+                && !gunnery->unit_dead(owner)) {
+            d.built = false;
+            d.refused = false;
+            d.mother_ship = false;
+            d.elevator = CarrierElevator{};
+            d.site_stamp_40 = -99999.0f;
+            d.site_occupants_34.clear();
+            d.site_ready_18 = static_cast<std::size_t>(-1);
+            d.queue.clear();
+            d.assignments.clear();
+            ++landing_deck_owner_rebuilds;
+            log.notef("landing sequencer: deck %s holder rebuilt for owner unit %zu (the "
+                "previous owner %zu is dead; 007593D0 per instance, packet cc13-fix7 A)",
+                decks.name_at(deck_index).c_str(), owner, d.owner);
+        }
+    }
     if (d.built) {
         if constexpr (kCarrierLandingDeckBound) {
             // 00758E80: the carrier's update re-frames its holder (006BEE40).
@@ -12700,10 +12728,7 @@ std::size_t GameUnitsHost::Impl::plane_landing_site_006c0840(const GameUnitSlot&
     }
     std::vector<bsp::LandingSiteCandidate> list;
     for (std::size_t i = 0; i < decks.size(); ++i) {
-        std::size_t owner = slots.size();
-        for (std::size_t u = 0; u < slots.size(); ++u) {
-            if (slots[u]->row.name == decks.name_at(i)) { owner = u; break; }
-        }
+        const std::size_t owner = air_ops_owner_unit(decks.name_at(i));   // kAirOpsOwnerByInstanceBound
         if (owner >= slots.size()) continue;
         const LandingDeck* d = landing_deck_006c0750(i, owner);
         if (d == nullptr) continue;
@@ -13776,9 +13801,7 @@ void GameUnitsHost::Impl::base_launch_task_tick_007f1f00(bsp::PlaneSquadronHostR
     const bsp::AirOpsDeck* deck = di < decks.size() ? decks.mutable_at(di) : nullptr;
     std::size_t owner = slots.size();
     if (deck != nullptr) {
-        for (std::size_t u = 0; u < slots.size(); ++u) {
-            if (slots[u] && slots[u]->row.name == decks.name_at(di)) { owner = u; break; }
-        }
+        owner = air_ops_owner_unit(decks.name_at(di));   // kAirOpsOwnerByInstanceBound
     }
     // 007F1F5C-007F1F71: squadron, block and the block's owner alive.
     if (deck == nullptr || owner >= slots.size()) { ++base_launch_no_deck; return; }
@@ -35750,13 +35773,8 @@ void GameUnitsHost::on_squadron_pass_c_initial_command(std::size_t squadron_inde
                 bsp::plane_squadron_registry().find_by_member_unit(squadron_index);
             if (rec != nullptr && rec->from_air_ops_launch && rec->bag_state < 2
                 && !rec->home_launch_408) {
-                std::size_t base = host.slots.size();
-                for (std::size_t u = 0; u < host.slots.size(); ++u) {
-                    if (host.slots[u] && host.slots[u]->row.name == rec->bag_home_base) {
-                        base = u;
-                        break;
-                    }
-                }
+                // kAirOpsOwnerByInstanceBound: the live instance, as block+7Ch is.
+                const std::size_t base = host.air_ops_owner_unit(rec->bag_home_base);
                 if (base >= host.slots.size()) {
                     ++host.base_launch_inside_no_base;
                 } else {
@@ -35960,13 +35978,8 @@ void GameUnitsHost::on_squadron_pass_c_initial_command(std::size_t squadron_inde
                 ++host.initial_command_no_home;
                 return;
             }
-            std::size_t home_index = host.slots.size();
-            for (std::size_t u = 0; u < host.slots.size(); ++u) {
-                if (host.slots[u]->row.name == home) {
-                    home_index = u;
-                    break;
-                }
-            }
+            // kAirOpsOwnerByInstanceBound: the live instance of the home deck.
+            const std::size_t home_index = host.air_ops_owner_unit(home);
             if (home_index >= host.slots.size()) {
                 ++host.initial_command_no_home;
                 return;
