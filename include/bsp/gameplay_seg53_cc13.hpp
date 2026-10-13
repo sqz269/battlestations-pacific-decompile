@@ -48,6 +48,7 @@
 
 #include "bsp/effects_cc13.hpp"
 
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <functional>
@@ -1287,6 +1288,486 @@ void orthonormalize_from_row_x_0085d3d0(float m[16]) noexcept;
 void orthonormalize_from_row_z_0085d770(float m[16]) noexcept;
 void orthonormalize_from_row_y_then_x_0085d920(float m[16]) noexcept;
 void orthonormalize_from_row_y_then_z_0085dad0(float m[16]) noexcept;
+
+// ---------------------------------------------------------------------------
+// Pass cc13-gpr53e: the "Tracer" effect component (the trace line).
+//
+// The "Tracer" row of 00870400 allocates A0h bytes and constructs them with
+// 0086B8B0 (construct_effect_tracer_0086b8b0, src/gameplay_effect_components.cpp):
+// a trace-line definition at +0 (vtable 00D0D5B0) and the effect component at
+// +80h (vtable 00D0D590). The component pointer (allocation + 80h) is what the
+// loader passes to the reader slot (vtable +14h), so the reader's ECX is the
+// component and its [ESI-6Ch]..[ESI-4] stores land at definition +14h..+7Ch.
+// Each field below carries its definition offset; the 0086B8B0 default is
+// what a key the reader skips leaves in place.
+
+// The {data, count, capacity} pointer array at definition +4Ch/+50h/+54h.
+// Append (inline in 00858700, and as 00858660): when count == capacity,
+// n = 2 * capacity + 2 and, when n > capacity, capacity = n and the items
+// move to a new operator new(n * 4) block (00BF55BE; a size overflow asks for
+// FFFFFFFFh), the old block freed (00BF6989). The item is then stored at
+// [count] and count += 1. Only the capacity is modelled, not the blocks.
+struct TraceLinePointerArray {
+    std::vector<std::uintptr_t> items;   // +4Ch data, +50h count
+    std::uint32_t capacity_54{0};
+};
+void trace_line_pointer_array_append_00858660(TraceLinePointerArray& a, std::uintptr_t item);
+
+struct TraceLineDefinition {
+    bool anim_on_off_04{false};                  // 0086B8B0: 0
+    bool anim_loop_05{true};                     //           1
+    std::int32_t anim_start_frame_08{0};
+    std::int32_t anim_end_frame_0c{0};
+    float anim_play_speed_10{1.0f};              // 00D7A24C
+    float half_width_14{0.1f};                   // 00D7A2F0; Width * 0.5
+    float width_speed_18{0.0f};
+    float width_speed_end_1c{0.0f};
+    std::int32_t max_segment_num_20{3};
+    float min_segment_length_24{0.0f};           // not written by 0086B8B0
+    float segment_life_time_28{3.40282347e38f};  // 00D7A248 FLT_MAX
+    float uv_tile_length_2c{10.0f};              // 00CE38B8
+    std::uint32_t outer_color_30{0};             // not written by 0086B8B0
+    std::uintptr_t vertex_format_40{0};
+    std::uintptr_t vertex_binding_44{0};
+    TraceLinePointerArray textures_4c;
+    bool show_bullet_58{false};                  // the fields from +58h on are
+    std::uintptr_t bullet_tail_texture_5c{0};    // not written by 0086B8B0
+    std::uintptr_t bullet_head_texture_60{0};
+    std::uint32_t tail_color_64{0};
+    std::uint32_t head_color_68{0};
+    float tail_length_6c{0.0f};
+    float head_radius_70{0.0f};
+    float bullet_life_time_74{0.0f};
+    float bullet_fade_begin_78{0.0f};
+    float bullet_fade_span_7c{0.0f};             // life - fade begin
+};
+
+// The Lua accessors 00858700 uses, each on row[key] (00B67800), the temporary
+// released (00B67700) before the next key.
+struct TraceLineLuaRow {
+    std::function<float(const char* key, float fallback)> number_or;              // 00B66330
+    std::function<std::int32_t(const char* key, std::int32_t fallback)> integer_or;  // 00B66380
+    std::function<bool(const char* key, bool fallback)> boolean_or;               // 00B662F0
+    std::function<std::uint32_t(const char* key)> packed_bgra;                     // 00B67F10
+    std::function<bool(const char* key)> is_string;                                // 00B660A0
+    std::function<bool(const char* key)> is_nil;                                   // 00B65FB0
+    // 00B662B0 into a NativeString (0041E870); a null buffer reads as the
+    // zero-filled 00F87570, so the host returns "" for it.
+    std::function<std::string(const char* key)> string;
+};
+struct TraceLineTextureHost {
+    std::function<std::int32_t(const std::string& name)> count_frames;           // 00AF3A20
+    std::function<std::string(const std::string& name, std::int32_t i)> frame_name;  // 00AF3B50
+    std::function<std::uintptr_t(const std::string& name)> find_atlas_item;       // 00AEFB20 on [00F8C26C]
+    std::function<std::uintptr_t(const char* name)> vertex_format;                // [00F8D394] vtable+38h
+    // [00F8D394] vtable+40h(&block): a stack block with +0 = format and
+    // +10h = 1; +4h..+0Ch are never written (stack garbage in the image).
+    std::function<std::uintptr_t(std::uintptr_t format)> vertex_binding;
+};
+
+// 00858700 BSP_EffectTraceLine_ReadLua, __thiscall(component ECX, LuaObject*
+// row), RET 4. 00868BF0 (read_effect_component_base_00868bf0) on the
+// component first; the host runs it, it is not repeated here. Then, in
+// listing order (default in brackets):
+//   Width [0] * 0.5 (FMUL qword 00D7A280; exact) -> +14h, WidthSpeed [0],
+//   WidthSpeedEnd [0], MaxSegmentNum [10] (integer), MinSegmentLength [1],
+//   SegmentLifeTime [1], OuterColor (00B67F10, no default), AnimOnOff [0],
+//   AnimLoop [0] (booleans), AnimStartFrame [0], AnimEndFrame [the start just
+//   read] (integers), AnimPlaySpeed [0].
+//   TextureName: when a string, n = 00AF3A20(name). n == 0: the atlas item of
+//   the name, appended only when non-null. n > 0: for i in 0..n-1 the frame
+//   name 00AF3B50(name, i) and its item; the FIRST null item ends the loop
+//   (00858BC7 -> 00858C81 -> 00858CA8) and the later frames are not tried.
+//   n < 0 appends nothing. When TextureName is not a string, the item of
+//   "cloud_snake.dds" is appended WITHOUT a null test (00858CD7).
+//   ShowBullet [0]; BulletTailTexture (string -> its item, else
+//   "tr_bullet.dds"); BulletHeadTexture (else "tr_glow_add.dds"); neither
+//   item is null-tested. TailLength [16 (00CE6454)], HeadRadius [0.8
+//   (00CE74F8)], BulletLifeTime [2 (00CE3958)], BulletFadeBegin [1.6
+//   (00D06BB4)], then +7Ch = +74h - +78h (D9 46 F4 / D8 66 F8, FSUB m32).
+//   TailColor: nil -> FFFFFFFFh, else 00B67F10. HeadColor: nil -> bytes
+//   32 80 FF 87 (87FF8032h), else 00B67F10. UVTileLength [1] -> +2Ch.
+//   Last, +40h = vertex format "pf43uf43ccuf44uf41.mvfm" (a 17h-reserved
+//   NativeString, 0041DD40 + _memcpy) and +44h = the vtable+40h binding of it.
+// The texture array is appended to, never cleared.
+void trace_line_read_lua_00858700(TraceLineDefinition& def, const TraceLineLuaRow& row,
+                                  const TraceLineTextureHost& host);
+
+// The trace-line effect instance (20h bytes, vtables 00D0C98C / 00D0C988):
+// +4 references, +0Ch byte, +10h the effect owner (EffectInstance), +14h
+// the component, +18h kind 3, +1Ch the NativeTraceline node (1B8h, vtable
+// 00D0C928).
+struct TraceLineInstance {
+    std::uint32_t references_04{1};
+    bool flag_0c{true};
+    std::uintptr_t owner_10{0};
+    std::uintptr_t component_14{0};
+    std::int32_t kind_18{3};
+    std::uintptr_t trace_line_1c{0};
+};
+
+// 00859240 BSP_EffectTraceLine_CreateInstance, __fastcall(definition ECX,
+// owner EDX), plain RET, returns the instance in EAX. 00859370 is the
+// component slot: EDX = [ESP+4], ECX -= 80h, CALL, RET 4.
+//   instance = operator new(20h) (00BF681B); when it succeeds: +0/+8 vptrs
+//   (00CEB130 / 00D0C8C0, then 00D0C98C / 00D0C988), +4 = 1, +0Ch = 1,
+//   +10h = owner, +14h = definition ? definition + 80h : 0, +18h = 3, +1Ch = 0.
+//   node = 00AF3430(1B8h) (model pool); when non-null, 00858260(node,
+//   NativeString "TraceLine") and vtable 00D0C928; the name temporary is
+//   destroyed only when it was built. instance+1Ch = node, then node
+//   vtable+5Ch(definition, [[00E188A8]+19ECh]).
+// Neither allocation is null-tested on the later path: a failed instance
+// allocation writes +1Ch of a null pointer (0085930C), and a failed node
+// allocation calls vtable+5Ch through a null pointer (00859346).
+struct TraceLineCreateHost {
+    std::function<bool()> allocate_instance;                                    // 00BF681B(20h)
+    std::function<std::uintptr_t()> construct_node;                              // 00AF3430 + 00858260
+    std::function<void(std::uintptr_t node, std::uintptr_t definition)> attach;  // vtable+5Ch(def, root)
+};
+struct TraceLineCreateResult {
+    bool instance_allocated{false};
+    TraceLineInstance instance;
+    // The image faults here: a null instance (0085930C) or a null node
+    // (00859346). The model stops without calling attach.
+    bool faults{false};
+};
+TraceLineCreateResult trace_line_create_instance_00859240(std::uintptr_t definition, std::uintptr_t owner,
+                                                          const TraceLineCreateHost& host);
+// 00859370: the component-slot adjustor of 00859240.
+TraceLineCreateResult trace_line_create_instance_slot_00859370(std::uintptr_t component,
+                                                               std::uintptr_t owner,
+                                                               const TraceLineCreateHost& host);
+
+// 008585D0 BSP_TraceLineEffectInstance_Update, vtable 00D0C98C +28h,
+// __thiscall(instance, float dt, unused), RET 8. The owner's node
+// ([+10h]+110h) is refreshed (00B6DB70) when its +5Ch bit 1 is clear; its
+// world position +120h..+128h goes to 00AF2630(node +1Ch, &position, dt),
+// then 00AF1EB0(node +1Ch, dt); when the owner's stopping byte +9 is set,
+// node+194h = 1. The node pointer is not null-tested.
+struct TraceLineUpdateHost {
+    std::function<bool()> owner_node_world_current;       // [[+10h]+110h]+5Ch & 2
+    std::function<void()> refresh_owner_node_world;       // 00B6DB70
+    std::function<Vec3()> owner_node_world_position;      // +120h..+128h
+    std::function<void(const Vec3& point, float dt)> set_point;  // 00AF2630
+    std::function<void(float dt)> update_submodel;        // 00AF1EB0
+    std::function<bool()> owner_stopping;                 // [+10h]+9
+    std::function<void()> mark_node_finishing;            // node+194h = 1
+};
+void trace_line_instance_update_008585d0(float dt, const TraceLineUpdateHost& host);
+
+// 00858530 BSP_TraceLineEffectInstance_Destruct, __thiscall, plain RET.
+// vptrs 00D0C98C / 00D0C988; with a node at +1Ch: when node+A4h equals the
+// world root [[00E188A8]+19ECh], 00B6D890(node, root); then (re-tested)
+// 00B6DFA0(node) and +1Ch = 0. vptrs 00D0C88C / 00D0C888 and 00BD30F0 last.
+struct TraceLineDestructHost {
+    std::function<std::uintptr_t(std::uintptr_t node)> node_parent_a4;
+    std::function<std::uintptr_t()> world_root;                     // [[00E188A8]+19ECh]
+    std::function<void(std::uintptr_t node, std::uintptr_t root)> propagate_root_registration;  // 00B6D890
+    std::function<void(std::uintptr_t node)> unlink_and_release;   // 00B6DFA0
+    std::function<void()> destroy_base;                            // 00BD30F0
+};
+void trace_line_instance_destruct_00858530(TraceLineInstance& inst, const TraceLineDestructHost& host);
+
+// The other non-trivial slots of vtable 00D0C98C (slot 0 00BD30E0, slot 1
+// the deleting destructor 008586E0, slots 3/4 and 6..9 the shared leaves
+// 00858180..008581E0 of section 7.2):
+// 008580A0 +08h IsComplete: node+190h == 0. The node is not null-tested.
+// 00858500 +14h: node+19Ch = the float argument (RET 4); not null-tested.
+// 008583A0 +2Ch: the destructor's first step, with a node: when node+A4h is
+//   the world root [[00E188A8]+19ECh], 00B6D890(node, root).
+// 00858520 +30h Stop: with a node, node+1A8h = 1.
+struct TraceLineNodeView {
+    std::function<std::uint32_t()> count_190;
+    std::function<void(float)> set_19c;
+    std::function<void()> set_stop_1a8;
+};
+bool trace_line_instance_is_complete_008580a0(const TraceLineNodeView& node);
+void trace_line_instance_set_19c_00858500(const TraceLineNodeView& node, float value);
+void trace_line_instance_detach_from_root_008583a0(const TraceLineInstance& inst,
+                                                   const TraceLineDestructHost& host);
+void trace_line_instance_stop_00858520(const TraceLineInstance& inst, const TraceLineNodeView& node);
+
+// ---------------------------------------------------------------------------
+// Pass cc13-gpr53e: the "WaterTracer" effect component (C4h bytes, vtable
+// 00D0D5D4, constructed by 0086BCC0, which zeroes +48h..+54h, +64h..+70h and
+// +8Ch only). Here ECX is the component itself: the offsets are positive.
+
+// The six arrays 0086D180 fills from the WaterSpray table and passes to
+// 00BAE2E0 (w4_water_spray_resource_construct_00bae2e0). The local is
+// destroyed afterwards by 0086C120 (in reverse field order, +3Ch first).
+struct WaterSprayDefinition {
+    std::vector<float> point_00;   // Vec2 pairs: (row[1][1], row[1][2])
+    std::vector<float> offset_0c;  // Vec2 pairs: (row[2][1], row[2][2])
+    std::vector<float> size_18;    // row[6]
+    std::vector<float> a_24;       // row[3]
+    std::vector<float> b_30;       // row[4]
+    std::vector<std::int32_t> count_3c;  // row[5], 00B66290
+};
+// One WaterSpray row. The image reads, per row: value[1] then value[1][2],
+// value[1] again then value[1][1]; number([1][1]) then number([1][2]); the
+// same for [2]; then [3], [4] (00B66270), [5] (00B66290) and [6] (00B66270).
+struct WaterSprayRow {
+    float p1{0.0f}, p2{0.0f}, q1{0.0f}, q2{0.0f}, a3{0.0f}, b4{0.0f};
+    std::int32_t count5{0};
+    float size6{0.0f};
+};
+
+struct WaterTracerComponent {
+    std::uint32_t show_forward_20{0};     // 00B66250, MOVZX
+    std::uint32_t show_backwards_24{0};
+    std::uint32_t fit_to_water_28{0};
+    float lifetime_2c{0.0f};
+    std::uint32_t divisions_34{0};
+    float line_distance_38{0.0f};
+    std::uint32_t lod_3c{0};
+    std::int32_t full_lines_minus_one_40{0};  // written only when LOD and FullLines != 0
+    float texture_rate_44{0.0f};
+    std::string texture_file_48;          // NativeString
+    std::string texture_file2_50;         // NativeString, set only from a string
+    float alpha_scale_58{0.0f};
+    float width_scale_5c{0.0f};
+    float displacement_scale_60{0.0f};    // HeightScale first, then DisplacementScale
+    std::uintptr_t alpha_curve_64{0};
+    std::uintptr_t width_curve_68{0};
+    std::uintptr_t height_x_curve_6c{0};
+    std::uintptr_t height_y_curve_70{0};
+    float fade_in_74{0.0f};
+    float start_time_78{0.0f};
+    float start_speed_7c{0.0f};
+    float stop_time_80{0.0f};
+    float stop_speed_84{0.0f};
+    float width_wave_88{0.0f};
+    std::uintptr_t width_speed_curve_8c{0};
+    std::int32_t heading_lines_90{0};
+    float heading_length_94{0.0f};
+    std::uintptr_t texture_98{0};
+    std::uintptr_t texture2_9c{0};
+    bool local_space_a0{false};
+    std::uintptr_t tracer_resource_a4{0};
+    float width_offset_a8{0.0f};
+    float width_scaler_ac{0.0f};
+    float bone_length_b0{0.0f};
+    std::int32_t bone_count_b4{0};
+    float length_b8{0.0f};
+    bool has_water_spray_bc{false};
+    std::uintptr_t spray_resource_c0{0};
+};
+
+struct WaterTracerLuaRow {
+    std::function<bool(const char* key)> boolean;                                  // 00B66250
+    std::function<std::int32_t(const char* key)> integer;                          // 00B66290
+    std::function<float(const char* key)> number;                                  // 00B66270
+    std::function<float(const char* key, float fallback)> number_or;               // 00B66330
+    std::function<std::int32_t(const char* key, std::int32_t fallback)> integer_or;  // 00B66380
+    std::function<bool(const char* key, bool fallback)> boolean_or;                // 00B662F0
+    std::function<bool(const char* key)> is_string;                                // 00B660A0
+    std::function<bool(const char* key)> is_table;                                 // 00B661B0
+    // 00B662B0; a null pointer is a zero-length string (0041DD40(len, 0) and
+    // a _memcpy of the length).
+    std::function<std::string(const char* key)> string;
+    // 00869E40(row[key], &local, scale) with the local zeroed first
+    // (load_tracer_parameter_curve_00869e40); returns the local.
+    std::function<std::uintptr_t(const char* key, float scale)> load_curve;
+    // The WaterSpray table in 00B67080 / 00B67190 order, ended by 00B66420.
+    std::function<std::vector<WaterSprayRow>(const char* key)> rows;
+};
+struct WaterTracerHost {
+    // [00F8D394] vtable+64h(&NativeString, 0).
+    std::function<std::uintptr_t(const std::string& name)> load_texture;
+    // InterlockedDecrement ([00CE2220]) of curve+4, vtable[0] when it reaches 0.
+    std::function<void(std::uintptr_t curve)> release_curve;
+    // operator new(50h) + 00BADC70(resource, block) (by value, RET 44h); 0 when
+    // the allocation fails.
+    std::function<std::uintptr_t(const std::array<std::uint32_t, 17>& block)> create_tracer_resource;
+    // operator new(2Ch) + 00BAE2E0(resource, &definition); 0 when it fails.
+    std::function<std::uintptr_t(const WaterSprayDefinition& definition)> create_spray_resource;
+};
+
+// 0086D180 BSP_EffectWaterTracer_ReadLua, __thiscall(component ECX,
+// LuaObject* row), RET 4, vtable 00D0D5D4 +14h. 00868BF0 first (the host
+// runs it). Then +98h = +9Ch = +C0h = 0 (no release), and in listing order:
+//   ShowForward, ShowBackwards, FitToWater (00B66250); Lifetime [1];
+//   TimeScale [1] into a local (the curve scale below; not stored);
+//   Divisions [4] (integer); LineDistance [4 (00CE3D34)]; LOD [0]
+//   (boolean, stored as a DWORD); with LOD: n = FullLines (00B66290),
+//   n == 0 clears LOD, else +40h = n - 1. TextureRate [0.066 (00D0D918)].
+//   TextureFile -> +48h and +98h = its texture; TextureFile2, only when a
+//   string, -> +50h and +9Ch. AlphaScale [1], AlphaScaler [1] (local),
+//   WidthScale [6 (00CE6630)], WidthScaler [1] -> +ACh, WidthOffset [0] ->
+//   +A8h, BoneLength [6] -> +B0h, BoneCount = _ftol2(number [25 (00CE89CC)])
+//   -> +B4h, Length [8 (00CE3918)] -> +B8h, HeightScale [1] -> +60h.
+//   Curves, each: local = 0; when the GATE key is a table, local = 00869E40
+//   (KEY, TimeScale); then the old field is released and the field = local
+//   (null when the gate is not a table):
+//     +64h Alpha / Alpha, +68h Width / Width, +6Ch HeightX / HeightX,
+//     +70h gate **HeightX**, key HeightY (0086D9C8 pushes "HeightX" for the
+//     table test, 0086DA0C "HeightY" for the load).
+//   FadeIn, StartTime, StartSpeed, StopTime, StopSpeed (00B66270, no
+//   default) -> +74h..+84h; LocalSpace [0] -> +A0h; WidthWave [0] -> +88h;
+//   +8Ch = 00869E40("WidthSpeed", scale 1.0) with no table test (that Lua
+//   temporary lives to the end of the function); HeadingLines [0] -> +90h;
+//   HeadingLength [0] -> +94h.
+//   Clamps: Divisions = 2 when below 2 UNSIGNED (a negative count stays);
+//   Lifetime and LineDistance = 0.1f when below (double)0.1 (00D7A3A0;
+//   FCOMI / JBE, so a NaN stays).
+//   SegmentCount [50 (00CEB4D4)], VertTessPower [1], HorizDivisions [5
+//   (00CE3850)], HorizTessPower [0]: the two counts by FISTP qword under a
+//   truncating control word (low DWORD kept).
+//   FitToWater == 1: BoneCount = 40, t = f(Length / 39.0) (00D0D7F0),
+//   BoneLength = (3.0 (00D7A2B0) > t) ? 3.0f (00CE3854) : t.
+//   DisplacementScale [0.1 (00D7A2F0)] -> +60h (overwrites HeightScale).
+//   +A4h = the tracer resource of the 44h block (see below).
+//   +BCh = WaterSpray is a table; when set, the rows fill a
+//   WaterSprayDefinition and +C0h = its spray resource.
+// The block, by DWORD: [0] BoneCount, [1] FitToWater != 0, [2] LocalSpace,
+// [3..5] &+68h, &+6Ch, &+70h (the curve holders; host addresses), [6]
+// SegmentCount, [7] VertTessPower, [8] HorizDivisions, [9] HorizTessPower,
+// [10] WidthScaler, [11] WidthOffset, [12] WidthScale, [13]
+// DisplacementScale, [14] Length, [15] TextureRate, [16] AlphaScaler.
+struct WaterTracerCurveHolders {
+    std::uint32_t width_68{0};
+    std::uint32_t height_x_6c{0};
+    std::uint32_t height_y_70{0};
+};
+void water_tracer_read_lua_0086d180(WaterTracerComponent& c, const WaterTracerLuaRow& row,
+                                    const WaterTracerHost& host,
+                                    const WaterTracerCurveHolders& holder_addresses);
+
+// ---------------------------------------------------------------------------
+// Pass cc13-gpr53e: the light instance constructor (segment end address).
+
+// The light instance: the prefix, the point light +1Ch, the countdown +20h
+// that 008738B0 (update_effect_light_instance_008738b0) runs down.
+struct EffectLightInstanceStorage {
+    NativeRegisteredEffectPrefixStorage prefix;   // type_18 = 0
+    std::uintptr_t light_1c{0};
+    float remaining_20{0.0f};
+};
+// The light definition rows read by 00869FD0 (read_effect_light_00869fd0):
+// +20h Duration, +24h Radius, +28h DiffuseColor, +38h SpecularColor.
+struct EffectLightDefinitionFields {
+    float duration_20{0.0f};
+    float radius_24{0.0f};
+    std::array<float, 4> diffuse_28{};
+    std::array<std::uint32_t, 4> specular_38{};   // copied as raw DWORDs
+};
+// 008740E0 BSP_EffectLightInstance_Construct, __thiscall(instance,
+// definition, point), RET 8. The prefix, +18h = 0, tables 00D0DBF0 /
+// 00D0DBEC; light = 00B7BD30 (ECX 1FCh, the point-light slot); when
+// non-null, 00B7C710(light, "dynamic_light_" (00D0DE04) + the NativeString
+// at [point+84h]+1Ch) (0041E870 then 004261A0 BSP_NativeString_Concat; both
+// temporaries destroyed afterwards). +1Ch = light (null on failure). Then,
+// with NO null test: 004B62E0(light, &def+28h) (base diffuse), light+1C4h..
+// +1D0h = def+38h..+44h, light+1F8h = def+24h when it is above 0.01f
+// (00D7A238; COMISS / JA, so a NaN radius gives 0.01f), and instance+20h =
+// def+20h (FLD / FSTP).
+struct EffectLightConstructHost {
+    std::function<std::uintptr_t()> allocate_light;                                   // 00B7BD30(1FCh)
+    std::function<std::string()> point_name;                                          // [[point+84h]+1Ch]
+    std::function<void(std::uintptr_t light, const std::string& name)> construct_light;  // 00B7C710
+    std::function<void(std::uintptr_t light, const std::array<float, 4>& diffuse)> set_base_diffuse;  // 004B62E0
+    std::function<void(std::uintptr_t light, const std::array<std::uint32_t, 4>& specular)> set_specular_1c4;
+    std::function<void(std::uintptr_t light, float radius)> set_radius_1f8;
+};
+struct EffectLightConstructResult {
+    // A null light faults at 00874212 (004B62E0 with ECX 0) in the image;
+    // the model stops there.
+    bool faults{false};
+};
+EffectLightConstructResult construct_effect_light_instance_008740e0(
+    EffectLightInstanceStorage& instance, void* definition, const EffectLightDefinitionFields& def,
+    PointEffectInstanceStorage* point, const EffectLightConstructHost& host);
+
+// The per-kind CreateInstance slots, each __thiscall(definition ECX, point
+// [ESP+4]), RET 4: operator new(bytes) (00BF681B); when it succeeds, the
+// kind's constructor(instance, definition, point) and the instance in EAX;
+// otherwise 0. No other work.
+struct EffectInstanceKind {
+    std::uint32_t create_instance;
+    std::uint32_t bytes;
+    std::uint32_t constructor;
+};
+constexpr std::array<EffectInstanceKind, 6> kEffectInstanceKinds{{
+    {0x00868d00u, 0x20u, 0x00873ae0u},  // sound
+    {0x00869300u, 0x20u, 0x00873010u},  // flare
+    {0x00869370u, 0x24u, 0x00873eb0u},  // thunderstorm
+    {0x008693e0u, 0x24u, 0x00873090u},  // waterdrops
+    {0x00869450u, 0x24u, 0x008740e0u},  // light
+    {0x008695b0u, 0x20u, 0x008739a0u},  // splash
+}};
+struct EffectCreateInstanceHost {
+    std::function<std::uintptr_t(std::uint32_t bytes)> allocate;                     // 00BF681B
+    std::function<void(std::uintptr_t instance, std::uint32_t constructor)> construct;
+};
+std::uintptr_t effect_create_instance_00869300_family(const EffectInstanceKind& kind,
+                                                      const EffectCreateInstanceHost& host);
+
+// ---------------------------------------------------------------------------
+// Pass cc13-gpr53e: torpedo and water-mine wrappers.
+
+// 00855B00 BSP_TorpedoProjectile_CommitStepPose, __thiscall, plain RET:
+// 006E1010 (the bomb step commit) first; then, with a node at +BCh, the
+// node's matrix +74h is copied to +C0h by 004134F0 (sixteen x87 FLD/FSTP
+// pairs; a float copy).
+struct TorpedoCommitStepPoseHost {
+    std::function<void()> base_commit;                 // 006E1010
+    std::function<bool()> has_node_bc;
+    std::function<void()> copy_node_matrix_to_c0;      // 004134F0(+C0h, node+74h)
+};
+void torpedo_commit_step_pose_00855b00(const TorpedoCommitStepPoseHost& host);
+
+// 008559D0 (torpedo) and 0085EAC0 (water mine), __thiscall(float dt), RET 4:
+// the entity's own vtable+194h(dt), nothing else.
+void forward_slot_198_to_194_008559d0(float dt, const std::function<void(float)>& slot_194);
+
+// 00855BB0 (BSP_TorpedoProjectile_HideNode) and 00855B90 (no Ghidra
+// function: it follows the RET 4 of 00855B30), __thiscall(unused), RET 4:
+// with a model at +464h, 00B6DA70(model+0Ch node, factor, 0) with factor 0.0
+// (FLDZ) or 1.0 (FLD1).
+void torpedo_set_node_visibility_00855bb0(bool has_model_464, bool visible,
+                                          const std::function<void(float factor)>& set_visibility);
+
+// 0085F1A0 BSP_WaterMineShot_PlaceStepPose, __thiscall(shot, float dt),
+// RET 4: 006E1060(dt) (the bomb placement); then, with +84h set, the object
+// [[+84h]+160h]+0Ch gets vtable+38h(shot - 370h), the owning entity.
+struct WaterMinePlaceStepPoseHost {
+    std::function<void(float dt)> base_place;          // 006E1060
+    std::function<bool()> has_link_84;
+    std::function<void()> notify_owner;                // [[[+84h]+160h]+0Ch] vtable+38h(this - 370h)
+};
+void water_mine_place_step_pose_0085f1a0(float dt, const WaterMinePlaceStepPoseHost& host);
+
+// 00855F50 BSP_TorpedoProjectile_SendCreateMessage, __thiscall(entity, peer),
+// RET 4: the 00855CC0 message ([class+0Ch], entity) on the stack, then
+// 00779FC0 BSP_Entity_SendMessageToPeer(peer, &message), then the message's
+// base destructor (vtable 00CF9324, 007668E0).
+void torpedo_send_create_message_00855f50(
+    const TorpedoState& state, bool has_target, std::uint16_t target_net_id_174, std::uint32_t peer,
+    const std::function<void(std::uint32_t peer, const TorpedoCreateMessage&)>& send);
+
+// The unit motion-controller factories (docs/UNIT_CONTROLLER_UPDATE.md),
+// __thiscall(unit), plain RET. The ledger's "operator new(0x390)" is wrong
+// for both: the PUSH immediates are 39Ch (00852228) and 394h (00857C37).
+// 00857C20 (variant C): controller = new(394h) + 00939F20(controller, unit),
+//   or 0; unit+1018h = controller.
+// 00852210 (variant B, submarine): controller = new(39Ch) + 00939E50, or 0;
+//   unit+1018h = controller, unit+1210h = 0; then, with NO null test,
+//   body = 00C31DC0([controller+2Ch]); while body: when 00C32450(body) has
+//   bit 1 set, unit+1210h = body and stop; else body = body+208h.
+struct MotionControllerCreateHost {
+    std::function<std::uintptr_t(std::uint32_t bytes)> allocate;         // 00BF681B
+    std::function<void(std::uintptr_t controller)> construct;           // 00939E50 / 00939F20(unit)
+    std::function<std::uintptr_t(std::uintptr_t controller)> first_body;  // 00C31DC0([+2Ch])
+    std::function<std::uint32_t(std::uintptr_t body)> body_flags;         // 00C32450
+    std::function<std::uintptr_t(std::uintptr_t body)> next_body;         // body+208h
+};
+struct MotionControllerCreateResult {
+    std::uintptr_t controller_1018{0};
+    std::uintptr_t flagged_body_1210{0};
+    bool faults{false};   // variant B with a failed allocation (00852263)
+};
+MotionControllerCreateResult unit_create_motion_controller_c_00857c20(const MotionControllerCreateHost& host);
+MotionControllerCreateResult unit_create_motion_controller_b_00852210(const MotionControllerCreateHost& host);
 
 }  // namespace gameplay_seg53_cc13
 }  // namespace bsp
