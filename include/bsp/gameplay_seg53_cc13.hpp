@@ -508,6 +508,11 @@ struct WaterMineClassFields {
     float blast_damage_max_b8{0.0f};  // "Blast.BlastDamageMax"
 };
 
+// 0085EA40 (the water mine's sensor-category slot): MOV EAX, 4; RET. The mine
+// is always category 4 (underwater, the value 00852B90 gives a submarine
+// between periscope and deep depth).
+constexpr int water_mine_sensor_category_0085ea40() noexcept { return 4; }
+
 // 0085F500, __thiscall(class, LuaObject* row), RET 4, after the bomb reader
 // 006E1BE0. The first two keys use 00B66270 (no default argument), the
 // effect 00B66380(0, 1), the last two 00B66330 with the defaults above.
