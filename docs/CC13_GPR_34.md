@@ -161,22 +161,16 @@ binding both rounds above. The gate order and the launch stamp are the same.
 
 ## 4. Ledger
 
-`python local/gpr34_records.py --apply` (not committed) wrote 136 function records to
-`config/reconstruction/006f0000.jsonl` and `00700000.jsonl`. That is every function in the segment that
-had no record and no tag, apart from the two `Unwind@` funclets, plus `006FFA40`:
+`python local/gpr34_records.py --apply` (not committed) wrote function records to
+`config/reconstruction/006f0000.jsonl` and `00700000.jsonl`. Only records that point at real code are
+kept. The 77 functions that are named but reconstructed nowhere are listed in section 6 instead, so the
+reconstruction ledger does not count them. Their names stay in the names ledger.
 
 | status | count |
 | --- | --- |
 | `semantic_build_tested` (this file) | 5 |
 | `host_reconstructed_checked` | 3 |
 | `host_reference_unverified` | 51 |
-| `named_reviewed_not_reconstructed` | 77 |
-
-The `named_reviewed_not_reconstructed` records carry cc13-gp6b's name evidence. They include the convex
-object parser front (`006FA540`-`006FB030`), the cruiser/destroyer class bodies, the debug unit inspector
-(`006FB680`-`006FBBC0`, debug only), the dummy-kamikaze and dummy-submarine class bodies, and the dummy
-target vehicle's create, activate, serializer and HitOnTheFly. `006FF6E0` is a one-instruction
-`JMP 006E1010` (the bomb-family commit).
 
 ## 5. Verification
 
@@ -203,3 +197,8 @@ Open:
 - The 51 `host_reference_unverified` records need a listing check if anyone wants them promoted.
 - `00700E40`'s ledger name (`BSP_DoorClass_ReadLuaFields`) is probably the dummy target vehicle class
   reader (see 1.2). It was not renamed here because the descriptor vtable is untraced.
+- Named but not reconstructed anywhere (no ledger record; 77). These include the convex object parser
+  front, the cruiser and destroyer class bodies, the debug unit inspector (debug only), the dummy-kamikaze
+  and dummy-submarine class bodies, and the dummy target vehicle's create, activate, serializer and
+  HitOnTheFly. `006FF6E0` is a one-instruction `JMP 006E1010` (the bomb-family commit). The list:
+  `006FA540` DynWorld_ForEachBodyDebugDraw, `006FA6D0` DynWorld_ForEachBodyTransform, `006FAF00` ConvexObjectResourceParser_Create, `006FB030` ConvexHull_DebugDrawEdges, `006FB680` UnitDebugInspector_OnTargetGone, `006FB6A0` UnitDebugInspector_SetTarget, `006FB750` UnitDebugInspector_PrintFlooded, `006FB7C0` UnitDebugInspector_PrintLine, `006FB8F0` UnitDebugInspector_ResetOnUnwind, `006FB920` UnitDebugInspector_Construct, `006FB9F0` UnitDebugInspector_Destruct, `006FBA70` Entity_AsKind04_006fba70, `006FBA90` Entity_AsKind04_006fba90, `006FBAD0` UnitDebugInspector_PrintUnitPanel, `006FBB80` UnitDebugInspector_Draw, `006FBBC0` UnitDebugInspector_FrameCallback, `006FBC20` OwnedPtrWithDefault_Assign_006fbc20, `006FBCE0` ElevatorPlatform_StartTravel, `006FBF00` ElevatorPlatform_ReadState, `006FBFD0` ElevatorPlatform_WriteState, `006FC2E0` ElevatorPlatform_Destruct, `006FC960` DepthChargeProjectile_Construct, `006FC9D0` DepthCharge_VSlot198_ForwardTo194, `006FC9F0` SessionMessage_DEPTHCHARGE_CREATE_ApplyFields, `006FCA50` Random_UniformBetweenB4andB8_006fca50, `006FCB60` SessionMessage_DEPTHCHARGE_CREATE_Write, `006FD0D0` DepthCharge_SendCreateMessage, `006FD190` DepthCharge_RegisterInWorldLists, `006FD1D0` DepthCharge_DetachFromWorldLists, `006FDED0` RapidTurningGun_Construct, `006FDFC0` SingleTurningGun_Construct, `006FE730` DummyKamikazePlaneClass_ResolveLinkedClass, `006FE780` LuaTable_ReadNumberOrDefault, `006FE820` DummyKamikazePlane_InitAll, `006FE8B0` Dummy2D_Destruct, `006FE950` DummyKamikazePlane_Construct, `006FEA80` Dummy2D_RegisterInWorldLists, `006FEAC0` Dummy2D_DetachFromWorldLists, `006FEB00` Dummy2D_GetName, `006FEB30` DummyKamikazePlane_RegisterInWorldLists, `006FEB80` DummyKamikazePlane_DetachFromWorldLists, `006FF100` DummyKamikazePlaneClass_CreateEntity, `006FF2F0` DummyShot_BindOwnerCommand, `006FF3F0` Dummy2D_Construct, `006FF570` Dummy2D_Activate, `006FF6A0` DummySubmarineClass_VSlot28_Finalise, `006FF6E0` BombProjectile_CommitStepPose, `006FF700` DummySubmarine_VSlot198_ForwardTo194, `006FF730` DummySubmarine_InitAll, `006FF7C0` ObserverMember_SetTarget_006ff7c0, `006FF800` DummySubmarine_Construct, `006FF890` DummySubmarineShot_IsInWater_True, `006FF920` DummySubmarine_DestructBody, `006FF970` DummySubmarine_RegisterInWorldLists, `006FF9C0` DummySubmarine_DetachFromWorldLists, `006FFFE0` DummySubmarineClass_CreateEntity, `00700150` DummyTargetBulletClass_ResolveLinkedClass, `00700200` DummyTargetVehicleClass_ReconCategory13, `00700250` DummyTargetVehicleClass_ReconMarkDirty, `00700260` DummyTargetVehicle_Activate, `00700290` LuaObject_ReadNumberFieldOr_00700290, `00700330` LuaObject_ReadNumberField_00700330, `007003B0` LuaObject_ReadNumberField_007003b0, `00700520` DummyTarget_Activate, `00700590` DummyTargetVehicle_Construct, `00700840` DummyTargetVehicle_GetName, `00700870` DummyTargetVehicle_Serialize, `00700940` ObserverMember_SetTarget_00700940, `00700980` DummyTargetVehicle_RegisterInWorldLists, `007009C0` DummyTargetVehicle_DetachFromWorldLists, `00700A20` DummyTarget_Construct, `00700B10` DummyTarget_RegisterInWorldLists, `00700B60` DummyTarget_DetachFromWorldLists, `00700DD0` DummyTargetBulletClass_CreateEntity, `00701170` DummyTargetVehicle_Create, `00701250` DummyTargetVehicle_HitOnTheFly, `007016C0` DummyTargetVehicle_InitAll.
