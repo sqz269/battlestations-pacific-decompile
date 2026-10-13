@@ -6,6 +6,7 @@
 
 #include "bsp/native_input_configuration_parse.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/sound_dialog_table.hpp"
 #include "bsp/sound_sample.hpp"
 
 #define WIN32_LEAN_AND_MEAN
@@ -449,6 +450,244 @@ void destroy_native_input_actions_00a93d80(void* header, NativeInputActionRecord
 void clear_input_action_map_vectors_00a93d60(void* map, NativeInputActionRecordsContext& context) {
     resize_native_input_actions_00a93c10(static_cast<unsigned char*>(map) + 4, 0, context);
     resize_native_input_dwords_0086a430(static_cast<unsigned char*>(map) + 0x10, 0);
+}
+
+namespace {
+
+// The shared prologue of the record copies: zero the header, then (dst != src) 0041DD40 and BF7680.
+void copy_pooled_string(void* dst, const void* src, NativeStringStorage& strings) {
+    std::memset(dst, 0, 8);
+    if (dst == src) {
+        return;
+    }
+    const auto length = get<std::uint32_t>(src, 0);
+    resize_native_string_header_0041dd40(dst, strings, length, true);
+    if (get<std::uint32_t>(src, 0) != 0) {
+        // memcpy 00BF7680 with the CURRENT destination length; it tolerates overlap.
+        std::memmove(get<char*>(dst, 4), get<const char*>(src, 4), get<std::uint32_t>(dst, 0));
+    }
+}
+
+unsigned char* bytes(void* p, std::size_t offset = 0) noexcept { return static_cast<unsigned char*>(p) + offset; }
+const unsigned char* bytes(const void* p, std::size_t offset = 0) noexcept {
+    return static_cast<const unsigned char*>(p) + offset;
+}
+
+NativePointerArray& array_at(void* record, std::size_t offset) noexcept {
+    return *reinterpret_cast<NativePointerArray*>(bytes(record, offset));
+}
+const NativePointerArray& array_at(const void* record, std::size_t offset) noexcept {
+    return *reinterpret_cast<const NativePointerArray*>(bytes(record, offset));
+}
+
+using RecordCopy = void* (*)(void*, const void*, NativeStringStorage&);
+using RecordDestroy = void (*)(void*, NativeStringStorage&);
+
+// 00A7FBD0 / 00A7F160 shared body; stride and minimum differ.
+void reserve_records(NativePointerArray& header, std::int32_t requested, std::int32_t minimum, std::uint32_t stride,
+                     RecordCopy copy, RecordDestroy destroy, NativeStringStorage& strings) {
+    if (requested < minimum) {
+        requested = minimum;
+    }
+    if (header.capacity >= requested) {
+        return;
+    }
+    const auto size = static_cast<std::size_t>(static_cast<std::uint32_t>(requested) * stride);
+    void* const fresh = singleton_lifetime_allocate({SingletonAllocationKind::object, size, size});
+    auto* const old = reinterpret_cast<unsigned char*>(header.data);
+    for (std::int32_t i = 0; i < header.count; i = add32(i, 1)) {
+        void* const slot = bytes(fresh, static_cast<std::size_t>(i) * stride);
+        if (slot != nullptr) {
+            copy(slot, old + static_cast<std::size_t>(i) * stride, strings);
+        }
+    }
+    for (std::int32_t i = 0; i < header.count; i = add32(i, 1)) {
+        destroy(old + static_cast<std::size_t>(i) * stride, strings);
+    }
+    singleton_lifetime_free(header.data);
+    header.data = static_cast<std::uint32_t*>(fresh);
+    header.capacity = requested;
+}
+
+} // namespace
+
+void* copy_named_value_00a82ff0(void* dst, const void* name, const std::uint32_t* value, NativeStringStorage& strings) {
+    copy_pooled_string(dst, name, strings);
+    std::memcpy(bytes(dst, 8), value, 4);
+    return dst;
+}
+
+void* copy_named_value_00a83040(void* dst, const void* src, NativeStringStorage& strings) {
+    copy_pooled_string(dst, src, strings);
+    std::memcpy(bytes(dst, 8), bytes(src, 8), 4);
+    return dst;
+}
+
+void* copy_named_value_00a83090(void* dst, const void* src, NativeStringStorage& strings) {
+    return copy_named_value_00a83040(dst, src, strings);
+}
+
+void* copy_sound_configured_type_00a7fb50(void* dst, const void* src, NativeStringStorage& strings) {
+    copy_pooled_string(dst, src, strings);
+    std::memset(bytes(dst, 8), 0, 12);
+    try {
+        assign_sound_sample_pointers_00a7baa0(array_at(dst, 8), array_at(src, 8));
+    } catch (...) {
+        destroy_native_string_header_0041dd20(dst, strings); // EH state 0
+        throw;
+    }
+    return dst;
+}
+
+void* copy_sound_configured_group_00a7d880(void* dst, const void* src, NativeStringStorage& strings) {
+    copy_pooled_string(dst, src, strings);
+    std::memcpy(bytes(dst, 8), bytes(src, 8), 4);
+    std::memset(bytes(dst, 0x0C), 0, 12);
+    try {
+        assign_sound_group_effect_pointers_00a7b7c0(array_at(dst, 0x0C), array_at(src, 0x0C));
+    } catch (...) {
+        destroy_native_string_header_0041dd20(dst, strings);
+        throw;
+    }
+    return dst;
+}
+
+void destroy_sound_configured_type_raw_00a7c6c0(void* record, NativeStringStorage& strings) {
+    NativePointerArray& samples = array_at(record, 8);
+    resize_sound_samples(samples, 0);
+    singleton_lifetime_free(samples.data);
+    destroy_native_string_header_0041dd20(record, strings);
+}
+
+void destroy_sound_configured_group_raw_00a7bfe0(void* record, NativeStringStorage& strings) {
+    NativePointerArray& effects = array_at(record, 0x0C);
+    resize_sound_group_effect_pointers_00a7a930(effects, 0);
+    singleton_lifetime_free(effects.data);
+    destroy_native_string_header_0041dd20(record, strings);
+}
+
+void reserve_sound_configured_types_00a7fbd0(NativePointerArray& header, std::int32_t requested, NativeStringStorage& strings) {
+    reserve_records(header, requested, 1, 0x14, &copy_sound_configured_type_00a7fb50,
+                    &destroy_sound_configured_type_raw_00a7c6c0, strings);
+}
+
+void reserve_sound_configured_groups_00a7f160(NativePointerArray& header, std::int32_t requested, NativeStringStorage& strings) {
+    reserve_records(header, requested, 16, 0x18, &copy_sound_configured_group_00a7d880,
+                    &destroy_sound_configured_group_raw_00a7bfe0, strings);
+}
+
+void append_sound_configured_type_00a7feb0(NativePointerArray& header, const void* type, NativeStringStorage& strings) {
+    if (header.count == header.capacity) {
+        reserve_sound_configured_types_00a7fbd0(header, grown_capacity_doubling(header.capacity), strings);
+    }
+    void* const slot = bytes(header.data, static_cast<std::size_t>(header.count) * 0x14);
+    if (slot != nullptr) {
+        copy_sound_configured_type_00a7fb50(slot, type, strings);
+    }
+    header.count = add32(header.count, 1);
+}
+
+void* append_default_sound_configured_group_00a7faf0(NativePointerArray& header, NativeStringStorage& strings) {
+    if (header.count == header.capacity) {
+        reserve_sound_configured_groups_00a7f160(header, grown_capacity_additive(header.capacity, 16, 16), strings);
+    }
+    void* const slot = bytes(header.data, static_cast<std::size_t>(header.count) * 0x18);
+    if (slot != nullptr) {
+        std::memset(slot, 0, 0x18);
+    }
+    header.count = add32(header.count, 1);
+    return bytes(header.data, static_cast<std::size_t>(header.count) * 0x18 - 0x18);
+}
+
+void pop_back_sound_configured_group_00a7f110(NativePointerArray& header, NativeStringStorage& strings) {
+    if (header.count != 0) {
+        destroy_sound_configured_group_raw_00a7bfe0(
+            bytes(header.data, static_cast<std::size_t>(header.count) * 0x18 - 0x18), strings);
+        header.count = add32(header.count, -1);
+    }
+}
+
+namespace {
+
+using RecordReserve = void (*)(NativePointerArray&, std::int32_t, NativeStringStorage&);
+
+void resize_records(NativePointerArray& header, std::int32_t count, std::uint32_t stride, RecordReserve reserve,
+                    RecordDestroy destroy, NativeStringStorage& strings) {
+    if (count > header.capacity) {
+        reserve(header, count, strings);
+    }
+    for (std::int32_t i = header.count; i < count; i = add32(i, 1)) {
+        void* const slot = bytes(header.data, static_cast<std::size_t>(i) * stride);
+        if (slot != nullptr) {
+            std::memset(slot, 0, stride);
+        }
+    }
+    while (count < header.count) {
+        header.count = add32(header.count, -1);
+        destroy(bytes(header.data, static_cast<std::size_t>(header.count) * stride), strings);
+    }
+    header.count = count;
+}
+
+} // namespace
+
+void resize_sound_configured_types_raw_00a7fcc0(NativePointerArray& header, std::int32_t count, NativeStringStorage& strings) {
+    resize_records(header, count, 0x14, &reserve_sound_configured_types_00a7fbd0,
+                   &destroy_sound_configured_type_raw_00a7c6c0, strings);
+}
+
+void resize_sound_configured_groups_raw_00a7f240(NativePointerArray& header, std::int32_t count, NativeStringStorage& strings) {
+    resize_records(header, count, 0x18, &reserve_sound_configured_groups_00a7f160,
+                   &destroy_sound_configured_group_raw_00a7bfe0, strings);
+}
+
+void destroy_sound_configured_types_00a81460(NativePointerArray& header, NativeStringStorage& strings) {
+    resize_sound_configured_types_raw_00a7fcc0(header, 0, strings);
+    singleton_lifetime_free(header.data);
+}
+
+void destroy_sound_configured_groups_00a7ff30(NativePointerArray& header, NativeStringStorage& strings) {
+    resize_sound_configured_groups_raw_00a7f240(header, 0, strings);
+    singleton_lifetime_free(header.data);
+}
+
+void append_dialog_channel_record_00a86fb0(void* header, const void* record, NativeStringStorage& strings,
+                                           const std::array<std::uint32_t, 4>& format_counts) {
+    if (get<std::int32_t>(header, 4) == get<std::int32_t>(header, 8)) {
+        reserve_sound_dialog_records_00a78dc0(header, grown_capacity_doubling(get<std::int32_t>(header, 8)), strings,
+                                              format_counts);
+    }
+    void* const slot = get<unsigned char*>(header, 0) + static_cast<std::size_t>(get<std::int32_t>(header, 4)) * 0x14;
+    if (slot != nullptr) {
+        copy_sound_dialog_record_00a77ef0(slot, record, strings, format_counts);
+    }
+    const std::int32_t count = add32(get<std::int32_t>(header, 4), 1);
+    std::memcpy(bytes(header, 4), &count, sizeof count);
+}
+
+void* copy_construct_input_binding_vector_00a93900(void* dst, const void* src,
+                                                   const NativeInputBindingStorageContext& context) {
+    std::memset(dst, 0, 12);
+    assign_native_input_bindings_00a937e0(dst, src, context);
+    return dst;
+}
+
+void erase_sound_name_subtree_00a88400(NativeSoundTree& tree, NativeSoundTreeNode* node, NativeStringStorage& strings) {
+    while (node->isnil == 0) {
+        erase_sound_name_subtree_00a88400(tree, node->right, strings);
+        NativeSoundTreeNode* const left = node->left;
+        destroy_native_string_header_0041dd20(node->value, strings); // length +0Ch, data +10h
+        singleton_lifetime_free(node);
+        node = left;
+    }
+}
+
+void clear_sound_name_tree_00a88460(NativeSoundTree& tree, NativeStringStorage& strings) {
+    erase_sound_name_subtree_00a88400(tree, tree.head->parent, strings);
+    tree.head->parent = tree.head;
+    tree.size = 0;
+    tree.head->left = tree.head;
+    tree.head->right = tree.head;
 }
 
 void sound_instance_default_set_parameter_00a7be70(void*, std::uint32_t, std::uint32_t) noexcept {}
