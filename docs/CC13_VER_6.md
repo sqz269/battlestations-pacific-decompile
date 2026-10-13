@@ -56,8 +56,17 @@ A scan for the dword `A0 B6 99 00` finds `0099B6A0` in 20 tables.
 
 An order reaches a flight only when `007C0D90` takes the single-drop arm to `007EEF30`. The test is at
 `007C0E1F`-`007C0E65`: an IsKindOf(10h) bomber whose bullet answers none of 2Ch, 2Bh or 33h takes the rack
-walk instead, and that walk never issues orders. This packet did not settle the kind and bullet class of the
-USN21 Val or SBD. Torpedo bullets answer 2Bh, so finding 3 does not depend on this.
+walk instead, and that walk never issues orders. Resolved:
+
+- `MPlaneDiveBomber` (12h) has parent 0Fh, not 10h (`src/entity_class_ids.cpp`). So a dive bomber takes
+  the single-drop arm `007C0EE0` and does reach `007EEF30`. This assumes USN21 class 113 is built as
+  MPlaneDiveBomber.
+- `007EEF30` gives orders to the wing and not to the issuing leader: the 999 loop skips the leader unless
+  ctl+378h is set, and the leader block writes to the others only.
+- So the task+424h passthrough fires for wingmen: those in follow/moveto/goaway/done, and a wingman's own
+  remaining round after its drop.
+
+Torpedo bullets answer 2Bh, so finding 3 does not depend on any of this.
 
 ## Gates verified equal to the image
 
@@ -123,5 +132,4 @@ USN21 Val or SBD. Torpedo bullets answer 2Bh, so finding 3 does not depend on th
     `release_order_spend_0099af53`.
   - Fix the summary sum at `:37618`.
 - **Open.**
-  - The USN21 Val's `007C0D90` arm (kind 10h and bullet class).
   - Whether `00927F10` answers false for the player's side in single player.
