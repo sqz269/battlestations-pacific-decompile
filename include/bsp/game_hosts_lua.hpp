@@ -252,7 +252,7 @@ inline constexpr bool kSimplifiedReconNativesBound = true;   // ON: SQUADRON_LAN
 // and phases 3 and 4 generate them again (usn_03:1135, 1244), which here answered the
 // dead entity. True: a repeat call whose earlier instance is Dead (its thisTable slot)
 // makes a new entity; a live earlier instance keeps the deviation. False: as before.
-inline constexpr bool kGenerateObjectRespawnsDeadBound = false;
+inline constexpr bool kGenerateObjectRespawnsDeadBound = true;   // ON: SQUADRON_LAND_TASK 5gl
 
 // docs/CC13_AUDIT_LUA51_FLIPS.md item 1c. 00988510 boxes, and 0097B8C0 matches,
 // the target as hitEntity->vtable[140h]() kept only when it answers IsKindOf(2)
@@ -444,6 +444,15 @@ inline constexpr bool kLuaFormationLeaderBound = true;   // ON by its pairs (LUA
 // catapult launch, so the index stays -1. True: the row answers from that
 // state; false: the row stays unimplemented.
 inline constexpr bool kLuaLastCatapultedBound = true;  // ON by its pairs (LUA_BINDING_MISSION)
+
+// Packet cc9_lua55_catapult_stock (docs/SQUADRON_LAND_TASK.md 5gm). GetCatapultStock
+// 00892DE0: vtable[5Ch](5), then max(unit+638h, 0); 0 for any other entity. unit+638h
+// is written at init from the class Catapult.LaunchStock (0095E5B0: [unit+538h]+C8h),
+// decremented by a catapult launch (00957450) and set by SetCatapultStock (009539A0).
+// True: answers the class LaunchStock (LABELLED: neither writer is built here, so the
+// constructor value stands). False: the unimplemented row pushes nothing, which breaks
+// commandhelpers' luaCheckpoint (`GetCatapultStock(unit) > 0`) for every ship.
+inline constexpr bool kLuaGetCatapultStockBound = false;
 inline constexpr bool kLuaFormationQueryBound = true;  // ON: mechanism matched, spread miss recorded (docs/LUA_BINDING_MISSION.md)
 
 // The process-wide 00E17BF2. It is reset from the lobby flags when a mission's settings
@@ -805,6 +814,7 @@ struct GameMissionLuaSummary {
     unsigned long long in_formation_true{0};
     unsigned long long formation_leader_calls{0};   // packet cc9_get_formation_leader
     unsigned long long last_catapulted_calls{0};    // packet cc9_get_last_catapulted
+    unsigned long long catapult_stock_calls{0};     // packet cc9_lua55_catapult_stock
     unsigned long long last_catapulted_nil{0};
     unsigned long long last_catapulted_not_ship{0};
     unsigned long long untouchable_calls{0};        // packet cc9_add_untouchable_unit
@@ -1401,6 +1411,7 @@ public:
     int run_is_in_formation_008996a0(lua_State* state, int argument_count);
     int run_get_formation_leader_00899af0(lua_State* state, int argument_count);
     int run_get_last_catapulted_00892860(lua_State* state, int argument_count);
+    int run_get_catapult_stock_00892de0(lua_State* state, int argument_count);
     int run_add_untouchable_unit_008ac140(lua_State* state, int argument_count);
     int run_leave_formation_00899eb0(lua_State* state, int argument_count);
     // Packet cc13_natives1, under kLuaSquadronSetReleaseAltBound.

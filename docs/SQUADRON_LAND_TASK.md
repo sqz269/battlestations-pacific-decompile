@@ -16059,3 +16059,41 @@ deviation. It needs `kHarnessTargetPrefersLiveBound` for the order file to reach
 **Predictions.** OFF identical. ON: PRCP01 logs `the earlier instance (id 6) is Dead, so a new one is made` for
 Junyo, Kuroshio and Hayashio at phase 3 (and the Zuiho group at phase 4), the Junyo launches are applied, and the
 Junyo can be sunk. Win rows: identical unless a script regenerates a killed object (none known).
+
+### 5gl, the pairs (cc9-lua55, 2026-10-13)
+
+Exports: OFF `local\l55_O` (c696e9051 build copy; the USN12 OFF run is fa67842f1, identical OFF by construction),
+both switches ON `local\l55_G`. Reference env, `--stop-after-end 40`.
+- **USN12 `usn12_s38_u12_p2` 34000:** GAMEPLAY identical (107 deaths, completed 1534.87 s both), sus_prog.exe refusal logged.
+- **JM08 `jm08_s45_j8_m10` 72000:** GAMEPLAY identical (273 deaths, completed 3528.42 s both), refusal logged.
+  Neither win row regenerates a dead object (no `is Dead, so a new one` line).
+- **PRCP01 `local\l55_p01_c.txt` 40000 (ON only):** the Junyo, Kuroshio and Hayashio respawn at phase 3 (new Junyo
+  unit 25, thisTable[26]); the 1600/1620 launches are applied (slots 3 and 4: Avengers and Dauntlesses). The phase-3
+  enemy waves (Kate1/Val1, `luaUS03SpawnEnterpriseKillers`/air waves) now also respawn every wave, as the image does.
+  **The Junyo is not sunk:** the squadron's command target resolves by NAME in the gunnery host's 0071EBF0 resolver
+  (`src/game_hosts_gunnery.cpp` ~5990, `by_name.emplace` keeps the first row, the dead intro Junyo), so
+  `squadron retest: target Junyo dead` ends the leader's attack at launch. That hunk was sent to the lead (gunnery
+  lane); it is identical while respawn is OFF, because duplicate names exist only with respawn ON.
+- **Flipped both ON** (wins identical; respawn is the image's 0046D930 behaviour, the harness rule is a player pick).
+
+## 5gm. PRCP01 after the Junyo: the checkpoint's GetCatapultStock (packet `cc9_lua55_catapult_stock`, cc9-lua55, 2026-10-13)
+
+With main 974089548 (gunnery39's live-name rule in the 0071EBF0 resolver) merged, `local\l55_R1_p01c.log` (60000
+frames, `l55_p01_c.txt`): the Avengers drop three torpedoes, later strikes follow, and **the Junyo is sunk at
+752.04 s** (`kill listener 009813a0: victim "Junyo" attacker "Enterprise_sqn08" -> luaUS03JunyoKilled()`). The
+movie ends, `Blackout(true, "luaUS03SaveCheckpoint1")` fires, and the callback fails:
+`blackout callback luaUS03SaveCheckpoint1 failed: commandhelpers.lua:16462: attempt to compare number with nil`.
+That line is `if GetCatapultStock(unit) > 0 then` in commandhelpers' `luaCheckpoint` ship branch (this
+installation's commandhelpers.lua, mtime 2024-10-29), and `GetCatapultStock` (`00892DE0`) was an UNIMPLEMENTED row
+that pushes nothing. `luaUS03BlackoutDelay` -> `luaUS03GotoPhase4` never runs: the mission stays at MissionPhase 666.
+Any mission whose checkpoint walks a ship hits the same error.
+
+**The binding** (`kLuaGetCatapultStockBound`, `include/bsp/game_hosts_lua.hpp`, OFF): vtable[5Ch](5), then
+max(unit+638h, 0), else 0. unit+638h is set at init from `[unit+538h]+C8h` (`0095E5B0`, the class
+`Catapult.LaunchStock`, docs/AIR_OPERATIONS.md) and is read here from the entity's `Class.Catapult.LaunchStock`.
+LABELLED: the catapult-launch decrement (`00957450`) and `SetCatapultStock` (`009539A0`) are not built.
+
+**Predictions.** OFF identical. PRCP01 ON: `luaUS03SaveCheckpoint1` completes, `usn03.timepasses`, phase 4 starts
+(the Zuiho group respawns, the reinforcement movie runs, `dlg_Cruisersinrange` -> `luaUS03Primary4Add`). Win rows:
+identical unless their scripts reach `luaCheckpoint` with a ship alive, in which case the post-checkpoint code
+that used to be cut short now runs.
