@@ -8,10 +8,12 @@
 // decompile and from bsp.py disasm-raw wherever ECX/EDX, stack cleanup or x87 mattered.
 // Build-tested only: not ABI-compatible, not game-validated.
 #include "bsp/ingame_gui_cc13.hpp"
+#include "bsp/main_menu_command_bar.hpp"
 
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <string>
 #include <string_view>
 
 namespace bsp::cc13_fe3 {
@@ -1215,5 +1217,740 @@ struct Fe6LeaderboardHost {
 };
 void leaderboards_move_selection_00561860(Raw screen, void* scroller, void* list_box, void* clip, bool no_scroll,
     Fe6LeaderboardHost& host);
+
+// ---------------------------------------------------------------------------
+// Packet cc13-fe8 additions (docs/CC13_FE_8.md): leaderboards.
+// Screen layout used here: listener +8h (list boxes), +0Ch (rows and widgets); result rows
+// vector +14h..+18h (60h bytes: +4h rank, +0Ch wide name, +10h value); first shown row +2Ch;
+// scrollers +34h / +0BCh (embedded); boards list box +94h, its row template +98h, clip +90h;
+// entries list box +11Ch, template +120h, clip +118h; total rows +14Ch; pending select +164h.
+// ---------------------------------------------------------------------------
+struct Fe8LeaderboardHost {
+    virtual ~Fe8LeaderboardHost() = default;
+    // Widget virtuals (ECX = widget).
+    virtual std::int32_t widget_type_5c(void* widget) = 0;                                   // vtable +5Ch
+    virtual void widget_set_alpha_4c(void* widget, float alpha) = 0;                         // vtable +4Ch
+    virtual void widget_set_highlight_88(void* widget, std::uint32_t state, std::uint32_t zero, float one) = 0;  // +88h
+    virtual void widget_set_highlight_84(void* widget, std::uint32_t state) = 0;              // vtable +84h
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;             // vtable +34h
+    virtual void widget_set_enabled_60(void* widget, std::uint32_t enabled) = 0;             // vtable +60h
+    // Scrollers (ECX = embedded scroller).
+    virtual void scroller_set_auto_scroll_00683300(void* scroller, std::uint32_t a, float speed, std::uint32_t b) = 0;
+    virtual void scroller_end_thumb_drag_00683320(void* scroller) = 0;
+    virtual void scroller_attach_content_00683790(void* scroller, void* content) = 0;
+    virtual void scroller_set_scroll_range_006834a0(void* scroller, float range) = 0;
+    virtual void scroller_set_widget_alphas_00683330(void* scroller, float a, float up, float down) = 0;
+    // Widgets and list boxes.
+    virtual void* widget_clone_subtree_00aab4c0(void* source, std::uint32_t zero) = 0;
+    virtual void* find_child_by_name_00aa7e00(void* parent, std::string_view name) = 0;     // (name, 1)
+    virtual void gui_text_set_ellipsized_00abb000(void* text, std::string_view source, float width,
+        std::uint32_t flag) = 0;
+    virtual void widget_set_listener_fields_00aa6bc0(void* widget, void* listener, std::uint32_t zero) = 0;
+    virtual void widget_set_hit_clip_from_00aa8f30(void* widget, void* clip, std::uint32_t zero) = 0;
+    virtual std::array<float, 2> widget_size_00aa6740(void* widget) = 0;
+    virtual void list_box_clear_rows_00a9bec0(void* list_box) = 0;
+    virtual void list_box_set_listener_00a9ac40(void* list_box, void* listener) = 0;
+    virtual void list_box_insert_row_00a9d750(void* list_box, void* row, std::uint32_t a, std::uint32_t b) = 0;
+    virtual void list_box_select_index_00a9c7c0(void* list_box, std::int32_t index) = 0;
+    virtual std::int32_t list_box_selected_index_00a9c920(void* list_box) = 0;
+    virtual void list_box_clear_00a9cdc0(void* list_box) = 0;
+    virtual void list_box_set_field124_00a9ceb0(void* list_box, float value, std::uint32_t zero) = 0;
+    // Leaderboard data and screen routines.
+    virtual Raw board_row_00e19468(std::uint32_t index) = 0;   // 40h rows at [00E19468], bounds-checked
+    virtual std::int32_t leaderboard_mode_00e19430() = 0;
+    virtual void leaderboards_show_board_name_00561660(Raw screen) = 0;
+    virtual void leaderboards_move_selection_00561860(Raw screen, void* scroller, void* list_box, void* clip,
+        bool no_scroll) = 0;
+};
+
+// 00561320 BSP_LeaderboardsWidgetListener_Current0C, __thiscall(listener = screen+0Ch, widget),
+// RET 4. Type 2: nothing. Type 3: vtable +4Ch(+0D4h byte ? 0.5f (00CE3800) : 1.0f (00D7A24C)).
+// Otherwise the boards widgets (listener +98h / +94h) stop the +34h scroller's auto-scroll
+// (00683300(0, 0.0f, 0)) and the boards thumb (+0A0h) ends its drag (00683320); the entries
+// widgets (+11Ch / +118h, thumb +124h) do the same on +0BCh. Then type 6 -> vtable +88h(+0D4h != 0,
+// 0, 1.0f) and type 12h -> vtable +84h(+0D4h != 0). Listener offsets are screen offsets - 0Ch.
+void leaderboards_listener_focus_00561320(Raw listener, void* widget, Fe8LeaderboardHost& host);
+
+// 00561BE0 (named RefreshFilterLabel; it builds the boards list), __fastcall(ECX = screen), RET.
+// With a boards list box (+94h): rows cleared, listener dropped, then 18 rows (i * 40h < 480h)
+// cloned from +98h, each "filter_Text" (00CEE938) child showing board row i's +4h string
+// (00ABB000, width -1.0f, 1), shown, listener +0Ch, clipped to +90h, +0D8h = 0, appended.
+// Scroller +34h: content 0, range = (float)((double)(h98 * 18.0 + 1/72.0) - h90) (both doubles
+// 00CEE930 / 00CEBDD0, the sum stored as a double). Row 0 selected, vtable +60h(1), +149h = 0,
+// listener +8h, 00A9CEB0(0.3875f, 0), +12Ch = 1/96 (00CEE924), +130h = 1/360 (00CEE600),
+// +134h = 0, +138h = 1, +14Ah = 0. Always: 00561660, +150h = 0, +154h = 1, +115h = 0.
+void leaderboards_build_board_list_00561be0(Raw screen, Fe8LeaderboardHost& host);
+
+// 00561EB0 BSP_LeaderboardsScreen_FillRows, __fastcall(ECX = screen), RET. Entries list box
+// (+11Ch) loses its listener; one row per 60h result (clone of +120h): "name_Text" = the wide
+// name at +0Ch narrowed by low bytes (00436630; L"" 00E19474 when null; flag 0), "rank_Text" =
+// +4h and "value_Text" = +10h as decimals (004260B0; flag 1), width -1.0f; shown, listener +0Ch,
+// clipped to +118h, +0D8h = 1, appended. Scroller +0BCh: range = (float)((double)(h120 * 1.005
+// * count) - h118), the product stored as a double (00CEE950, FIMUL by list +104h). Then
+// 00A9CDC0, +149h = 0, listener +8h, 00A9CEB0(5/12 (00CEE948), 0), +12Ch = 1/320 (00CEE944),
+// +130h = 1/360, +134h = 0, +138h = 1, +14Ah = 0. A pending select (+164h) clears +154h and,
+// when the entries list is inactive (+85h), moves focus there (boards selection to +0B8h, boards
+// cleared, entries focused and selected at +148h, 00561860(+0BCh, entries, +118h, 1), +8Dh = 0,
+// +115h = 1); +0B8h is then restored to its entry value, value 2 selects the last row, and +164h
+// = 0. Arrow alphas by mode [00E19430] through 00683330 on +0BCh: mode 0 -> (0, first(+2Ch) - 17
+// > 0 ? 1 : 0.25, first + 17 < total(+14Ch) ? 1 : 0.25); mode 1 -> all 1.0 when more than 17 rows,
+// else (0, 0.25, 0.25); mode 2 -> (0, 0.25, 0.25); other modes leave them.
+void leaderboards_fill_rows_00561eb0(Raw screen, Fe8LeaderboardHost& host);
+
+struct Fe8LeaderboardEnterHost : Fe8LeaderboardHost {
+    // 00518D60, ECX = 0, EDX = 0, stack (0, title NativeString), RET 8.
+    virtual void frame_select_00518d60(std::uint32_t ecx, std::uint32_t edx, std::uint32_t zero,
+        std::string_view title) = 0;
+    virtual void frame_set_flag_00518b90(std::uint32_t flag) = 0;                            // ECX = flag
+    virtual void command_bar_set_help_line_0054a0c0(std::string_view line) = 0;              // ECX = [00E1930C]
+    virtual void gui_text_set_localised_cstring_00abbe50(void* text, const char* key, std::uint32_t flag) = 0;
+    virtual const char* filter_name_00e086b4(std::int32_t mode) = 0;                         // [00E086B4 + mode*4]
+    virtual void leaderboards_build_board_list_00561be0(Raw screen) = 0;
+};
+
+// 00562750 BSP_LeaderboardsScreen_Enter, slot +18h of 00CEE9CC, __fastcall(ECX = screen), RET.
+// 00518D60(ECX 0, EDX 0; 0, "FE.main_leaderboards_title" (00CEE97C)); 00518B90(ECX 2); help line
+// "" (00CE3A0C) through 0054A0C0 on [00E1930C]. The title text [+13Ch] is re-set to a copy of its
+// own string (+0F4h/+0F8h): 00ABBE50("", 1) then 00ABB000(copy, -1.0f, 1). The filter text
+// [+134h] shows the [00E086B4 + mode*4] key (FE.lb_topplayers ...) through 00ABB000(-1.0f, 1).
+// +20h = 0; 00561BE0; +158h = +160h = +168h (bytes) = 0, +14Ch = +164h = +15Ch = 0, +2Ch = 1.
+void leaderboards_enter_00562750(Raw screen, Fe8LeaderboardEnterHost& host);
+
+// Lua access shared by the table loaders. Handles follow the image's LuaObject temporaries;
+// a handle is released (00B67700) by the host when the loader drops it.
+struct Fe8LuaHost {
+    virtual ~Fe8LuaHost() = default;
+    // Script owner: 00B66BD0 construct, 00B6A020 Open(4), 00B69D40 RunScriptWithOverrides(path,
+    // 0), 00B67980 GetGlobals (ECX = the owner), 00B669A0 Close.
+    virtual void* lua_owner_open_run_00b6a020(std::uint32_t libs, std::string_view script) = 0;
+    virtual void* lua_owner_globals_00b67980(void* owner) = 0;
+    virtual void lua_owner_close_00b669a0(void* owner) = 0;
+    virtual void* lua_get_by_name_00b67800(void* table, const char* name) = 0;
+    virtual void* lua_get_by_index_00b67720(void* table, std::int32_t index) = 0;
+    virtual bool lua_is_nil_00b65fb0(void* object) = 0;
+    virtual std::int32_t lua_get_integer_00b66290(void* object) = 0;
+    virtual const char* lua_get_string_00b662b0(void* object) = 0;                           // may be null
+    virtual void lua_release_00b67700(void* object) = 0;
+};
+
+// The leaderboard row loader's view of a 40h row: +0h ID, strings +4h Name, +0Ch ColumnName,
+// +14h TableDesc, +1Ch column count, +20h columns (the image stores Columns[j] at +1Ch + j*4).
+struct Fe8BoardRow {
+    std::int32_t id = 0;
+    std::string name;
+    std::string column_name;
+    std::string table_desc;
+    std::int32_t column_count = 0;
+    std::array<std::int32_t, 8> columns{};
+};
+struct Fe8BoardTableHost : Fe8LuaHost {
+    // The three dword vectors at 00E19434 + k*10h ({alloc, begin +4h, end +8h, capacity +0Ch}).
+    virtual void board_ids_clear_00e19434(std::int32_t k) = 0;
+    virtual void board_ids_push_00441f30(std::int32_t k, std::int32_t id) = 0;
+    // The 40h row vector at 00E19464: erase all (00562F80), push_back (005636D0).
+    virtual void board_rows_clear_00562f80() = 0;
+    virtual void board_rows_push_005636d0(const Fe8BoardRow& row) = 0;
+};
+
+// 005638F0 BSP_LeaderboardsScreen_ReadTable, no register or stack arguments, RET. Runs
+// "Scripts/datatables/Leaderboards.lua" (00CEEA38) in a private Lua owner opened with 4. The
+// three id vectors and the row vector are emptied. For k = 1..3, the integers of
+// Leaderboards.LB_UniqueID[k][1..] up to the first nil go to id vector k-1. For i = 1..18 a zeroed
+// row is pushed for every i; when Leaderboards.LBoards[i] is not nil it is filled from ID (00CE59B4),
+// Name (00CE8ED0), ColumnName, TableDesc (null strings -> empty) and Columns[1..] up to the first
+// nil (the count lands at +1Ch). The image does not bound the column index: more than eight
+// columns would write past the 40h row into the loader's other locals; this model stops at eight.
+void leaderboards_read_table_005638f0(Fe8BoardTableHost& host);
+
+struct Fe8LeaderboardRegisterHost {
+    virtual ~Fe8LeaderboardRegisterHost() = default;
+    virtual void front_end_screen_register_004f71d0(Raw screen) = 0;
+    virtual void* gui_load_page_00aa5840(std::string_view name, std::uint32_t one, std::uint32_t zero) = 0;  // ECX = 004C12B0()
+    virtual void leaderboards_read_table_005638f0() = 0;
+    virtual void* find_child_by_name_00aa7e00(void* parent, std::string_view name) = 0;     // (name, 1)
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;             // vtable +34h
+    virtual void widget_set_listener_fields_00aa6bc0(void* widget, void* listener, std::uint32_t zero) = 0;
+    virtual std::array<float, 2> widget_size_00aa6740(void* widget) = 0;
+    virtual void scroller_attach_content_00683790(void* scroller, void* content) = 0;
+    // 00683380, ECX = scroller, (thumb, span, up, down).
+    virtual void scroller_attach_scroll_bar_00683380(void* scroller, void* thumb, float span, void* up,
+        void* down) = 0;
+};
+
+// 00564220 BSP_LeaderboardsScreen_Register, slot +14h of 00CEE9CC, __fastcall(ECX = screen), RET.
+// 004F71D0; page "FE_leaderboards" (00CEEB10) -> +30h (00AA5840(name, 1, 0)); 005638F0; then the
+// lookups (00AA7E00, parent -> store): +30h "clipbox_Clipbox" -> +90h; +90h "filters_Listbox" ->
+// +94h; +94h "listbox_Group" -> +98h (hidden); +30h "info_Group" -> I; I "info_Text" -> +9Ch;
+// +30h "slider_Group" -> S; S "scroll_up_Icon" +0A0h, "scroll_down_Icon" +0A4h, "slider_FrameBox"
+// +0ACh, "back_Icon" +0A8h. The up/down/thumb get listener +0Ch; scroller +34h: content +94h, bar
+// (thumb +0ACh, span = (float)(h(+0A8h) - h(+0ACh)), up +0A0h, down +0A4h). +30h "data_Group" -> D;
+// D "filter_Text" -> +134h (listener +0Ch); D "clipbox_2_Clipbox" -> +118h; +118h "data_Listbox" ->
+// +11Ch; +11Ch "listbox_Group" -> +120h (hidden); D "data_misc_Group" -> M; M "value_Text" +138h,
+// "rank_Text" +13Ch; D "slider2_Group" -> S2; S2 "scroll_up2_Icon" +124h, "scroll_down2_Icon"
+// +128h, "slider2_FrameBox" +130h, "back_Icon" +12Ch; listener +0Ch on the three; scroller +0BCh:
+// content +11Ch, bar (+130h, h(+12Ch) - h(+130h), +124h, +128h). Finally +117h = 0, +20h = 0.
+// The span subtraction runs on x87 with the first height spilled as a double; float - float is
+// exact in double, so (float)((double)a - b) is used.
+void leaderboards_register_00564220(Raw screen, Fe8LeaderboardRegisterHost& host);
+
+struct Fe8LeaderboardInputHost : Fe8LeaderboardHost {
+    virtual void scroller_begin_thumb_drag_00683a40(void* scroller) = 0;
+    virtual void list_box_select_row_00a9c740(void* list_box, void* row) = 0;
+    virtual void leaderboards_sync_selection_00561ad0(Raw screen, std::uint8_t boards) = 0;
+    virtual void leaderboards_return_to_menu_005629a0(Raw screen) = 0;
+    virtual void leaderboards_cycle_filter_005650c0(Raw screen) = 0;
+    // 004BCD20: the checked operator[] of the result-row vector at screen +10h (60h rows; XUID at
+    // +58h/+5Ch).
+    virtual Raw result_row_004bcd20(Raw screen, std::int32_t index) = 0;
+    virtual std::uint32_t xenon_active_user_slot_00a3eac0() = 0;                             // ECX = [00F8ABE8]
+    virtual void xshow_gamer_card_ui_00a4d440(std::uint32_t user, std::uint64_t xuid) = 0;   // stdcall
+};
+
+// 00565190 BSP_LeaderboardsWidgetListener_Current04 (activate), __thiscall(listener = screen+0Ch,
+// widget), RET 4. Offsets below are screen offsets. +158h = 1. Type 2 (a list row): an entries row
+// (+0D8h != 0) first syncs to the entries (00561AD0(0)) while the boards list is active, then is
+// selected (00A9C740) in the entries list; a board row, while the entries list is active, +154h
+// is clear and the boards list inactive, moves focus back (+148h = entries selection, entries
+// cleared, boards vtable +60h(1) and selected at +0B8h, +8Dh = 1, +115h = 0) and is selected in the
+// boards list. Type 3: vtable +4Ch(1.0f); the filter text (+134h) and any icon whose label
+// (+0F0h, "" 00E19474 when null) starts with A7h cycle the filter (005650C0) unless +154h is set;
+// A5h shows the gamer card of the selected entry (while the entries list is active and has a
+// selection: XShowGamerCardUI(00A3EAC0(), row +58h)); A3h returns to the menu (005629A0). Other
+// types: boards widgets — +0A4h auto-scrolls +34h with (2, 0.004f, 1) and, when +154h is clear and
+// the boards list inactive, moves focus back as above; +0A0h (1, 0.004f, 1) then 00561AD0(1); the
+// thumb +0ACh begins a drag (00683A40) then 00561AD0(1). Entries widgets — +128h: mode != 0 ->
+// auto-scroll +0BCh (2, 0.004f, 1); mode 0 with the entries list active and first + 17 below the
+// total (+14Ch) -> first += 17, +154h = 1, +164h = 2, +168h = 1; otherwise +168h = 0. +124h: the
+// mirror (1, ...; first - 17 > 0 -> first -= 17, +164h = 1). Thumb +130h: drag. Finally type 6 ->
+// vtable +88h(2, 0, 1.0f), type 12h -> vtable +84h(2).
+void leaderboards_listener_activate_00565190(Raw listener, void* widget, Fe8LeaderboardInputHost& host);
+
+struct Fe8LeaderboardUpdateHost : Fe8LeaderboardInputHost {
+    virtual bool front_end_action_edge_004d92b0(std::uint32_t action) = 0;                   // ECX = [00E188A8]
+    virtual void scroller_update_00683820(void* scroller, std::uint32_t one) = 0;
+    virtual std::int32_t leaderboards_selected_board_00561300(Raw screen) = 0;
+    virtual void leaderboards_reset_rows_00564e70(Raw screen) = 0;
+    virtual void rebuild_command_bar_0054b530(const std::array<MainMenuCommandArgument, 5>& arguments) = 0;
+    virtual bool xenon_duplicate_sign_in_128() = 0;                                          // [00F8ABE8]+128h != 0
+    // 00531B00 on 00425D10() with (slot, message, kind, callback 0, 0, title "", 0.0f, 0, "", 1).
+    virtual void raise_prompt_00531b00(std::int32_t slot, const char* message, std::int32_t kind) = 0;
+    virtual bool main_menu_connection_gate_00585b40() = 0;
+    virtual bool main_menu_account_gate_00585810(std::uint8_t cl) = 0;
+    virtual std::int32_t game_complete_leaderboard_read_004dd7c0() = 0;                      // ECX = [00E188A8]
+    virtual void game_cancel_leaderboard_read_004bc7f0() = 0;                                // ECX = [00E188A8]
+    virtual Raw please_wait_screen_00e19698() = 0;
+};
+
+// 00565540 BSP_LeaderboardsScreen_Update, slot +20h, __thiscall(screen, float dt), RET 4.
+// Action 4Bh (004D92B0 on [00E188A8]) or +160h -> 005629A0 and return. Both scrollers update
+// (00683820(1)); a scrolling boards scroller (+7Ch byte or +54h) runs 00561860(+34h, boards, +90h,
+// 0) and re-shows the board name (00561660) when +0B8h changed; the entries scroller (+104h /
+// +0DCh) runs 00561860(+0BCh, entries, +118h, 0). Then the first of these actions that fires:
+// 4Dh: boards active with entry rows -> 00561AD0(0); 4Ch: entries active -> 00561AD0(1);
+// 50h: +154h clear -> 005650C0; 4Fh: entries active with a selection -> gamer card of that row;
+// 46h: entries active, first - 17 > 0, mode 0 and selection 0 -> first -= 17, +154h = +164h = 1,
+// +168h = 1, else +168h = 0; 47h: entries active, first + 17 < total, mode 0 and selection 10h ->
+// first += 17, +154h = 1, +164h = 2, +168h = 1, else +168h = 0. A pending page (+154h): a non-zero
+// timer +150h counts down by dt (float) and on going negative is zeroed with first = 1; with the
+// timer zero and +154h == 1, unless +168h, a first page (+20h) equal to the selected board row's id
+// (00561300, 00561510) clears +154h; otherwise 00564E70. +168h = 0. Command bar (0054B530 on
+// [00E1930C]): (A7h "FE.toggle_filter" 0, B3h "globals.navigate" 1, A5h "globals.showgamercard" 1
+// when the entries list is active with rows and a selection, else (0, "") 1, B2h
+// "globals.scroll_menu" 1 when it also has more than 17 rows, else (0, ""), A3h "globals.back" 2).
+// A duplicate sign-in ([00F8ABE8]+128h) raises "FE_pc.multi_liveerrorduplicate" (slot 2, kind 2)
+// and sets +160h; failing 00585B40 or 00585810(CL 0) also sets +160h. Otherwise with a read
+// running (+20h): result 80004005h or 8000FFFFh hides the please-wait screen (+4h = 0) and
+// 80004005h raises "FE.error_while_reading_leaderboard", cancels (004BC7F0) and clears +20h; then
+// +15Ch += dt (float) and, while the please-wait screen shows and it exceeds 30.0, raises
+// "FE.leaderboards_cantaccess", hides the please-wait screen, cancels and clears +20h.
+void leaderboards_update_00565540(Raw screen, float dt, Fe8LeaderboardUpdateHost& host);
+
+// ---------------------------------------------------------------------------
+// Packet cc13-fe8: control binding screen (segment 17). Screen offsets: list listener +8h, widget
+// listener +0Ch, +20h settings list box, +34h conflict text, +168h page, +16Ch + page*4 per-page
+// selection (page 0's slot +16Ch is the input device index), +180h binding variant, +184h binding name (NativeString), +18Ch
+// "binding unknown", +190h binding text widget, +1A0h scroller (embedded; its +48h byte is
+// screen +1E8h and +20h is +1C0h), +218h clip, +21Ch / +220h first / last visible row, +224h row.
+// ---------------------------------------------------------------------------
+struct Fe8ControlBindingHost {
+    virtual ~Fe8ControlBindingHost() = default;
+    // 005547D0 input settings singleton; devices are 8-byte keys at +18h..+1Ch (checked index).
+    virtual Raw input_settings_005547d0() = 0;
+    // 0055C110, ECX = settings +8h: std::map<device key, entry>::operator[]; the entry is a tree
+    // whose head (end) is at +4h.
+    virtual void* input_device_map_index_0055c110(void* map, const void* key) = 0;
+    // 00555940, ECX = entry tree: find(name) -> the node (end() = the head).
+    virtual void* binding_tree_find_00555940(void* tree, std::string_view name) = 0;
+    // 006AAC50, ECX = settings: (key, name, variant, NativeString* conflict) -> AL.
+    virtual bool find_input_binding_conflict_006aac50(Raw settings, const void* key, std::string_view name,
+        std::uint32_t variant, std::string& conflict) = 0;
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;             // vtable +34h
+    virtual void widget_set_enabled_60(void* widget, std::uint32_t enabled) = 0;             // vtable +60h
+    virtual void gui_text_set_localised_source_00abaed0(void* text, std::string_view source, std::uint32_t flag) = 0;
+    virtual std::int32_t list_box_selected_index_00a9c920(void* list_box) = 0;
+    virtual void* list_box_current_row_00425e50(void* list_box) = 0;
+    virtual void* list_box_row_00a9be00(void* list_box, std::int32_t index) = 0;
+    virtual void list_box_select_index_silently_00a9c8f0(void* list_box, std::int32_t index) = 0;
+    virtual void* find_child_by_name_00aa7e00(void* parent, std::string_view name) = 0;     // (name, 1)
+    virtual std::array<float, 3> widget_resolved_position_00aa6750(void* widget) = 0;
+    virtual std::array<float, 2> widget_size_00aa6740(void* widget) = 0;
+    virtual void scroller_toward_start_00683680(void* scroller, float delta) = 0;
+    virtual void scroller_toward_end_00683700(void* scroller, float delta) = 0;
+    virtual void command_bar_set_help_line_0054a0c0(std::string_view line) = 0;              // ECX = [00E1930C]
+    // A NativeString copy: 0041DD40 Resize(length, 1), then memcpy of the characters.
+    virtual void native_string_copy_0041dd40(void* string, std::string_view text) = 0;
+    // Screen routines reconstructed below, routed through the host so callers can substitute.
+    virtual void control_binding_show_conflict_text_0055c200(Raw screen) = 0;
+    virtual void control_binding_refresh_selected_binding_0055c3b0(Raw screen) = 0;
+    virtual bool control_binding_scroll_to_selection_0055cec0(Raw screen, bool no_scroll) = 0;
+};
+
+// 0055C200 BSP_ControlBindingScreen_ShowConflictText, __fastcall(ECX = screen), RET. key = the
+// settings' device key [+16Ch]; entry = map[key] (0055C110); a binding name (+184h) found in the
+// entry (00555940) hides the conflict text (+34h vtable +34h(0)). Otherwise 006AAC50(key, +184h,
+// +180h, &conflict) decides; the text's vtable +34h gets that byte (the image pushes a dword
+// whose upper bytes are stale stack contents), and a conflict shows
+// "FE_pc.controls_conflict|.: |" (00CEE63C) + conflict through 00ABAED0(text, 1).
+void control_binding_show_conflict_text_0055c200(Raw screen, Fe8ControlBindingHost& host);
+
+// 0055C3B0 BSP_ControlBindingScreen_RefreshSelectedBinding, __fastcall(ECX = screen), RET. With a
+// selection in +20h: entry = map[key]; +184h = a copy of the current row's (00425E50) "main_Text"
+// (00E086A0 -> 00CEE4CC) string (+0F4h); +18Ch = the name is not in the entry. Unknown: +180h = 1
+// and +190h = the row's "main_Text"; known: +190h = "var_2_Text" when +180h else "var_1_Text"
+// (00E086A8 / 00E086A4). Then 0055C200.
+void control_binding_refresh_selected_binding_0055c3b0(Raw screen, Fe8ControlBindingHost& host);
+
+// 0055CEC0 BSP_ControlBindingScreen_ScrollToSelection, __thiscall(screen, BYTE no_scroll), RET 4,
+// AL. first (+21Ch) = the row count of +20h, last (+220h) = 0. Clip C = pos - size * anchor of
+// +218h (both components rounded to float). Each row is visible when its rounded top y is below
+// C.y and C.y + clip.h > row.y + row.h (both sums in x87 extended precision); a visible row
+// lowers first or else raises last; every row gets vtable +60h(visible). While the scroller is
+// idle (+1E8h byte and +1C0h clear) and no_scroll is false, a selection above first scrolls
+// +1A0h toward the start (00683680) and one below last toward the end (00683700), by the current
+// row's height, returning 1; otherwise 0. With the scroller moving or no_scroll set, a selection
+// above first snaps forward from first past rows whose +77h byte is set, one below last snaps
+// back from last the same way; the row is selected silently (00A9C8F0), 0055C3B0 runs, +224h =
+// the row, and 1 is returned; 0 when nothing moved or the row index is -1.
+bool control_binding_scroll_to_selection_0055cec0(Raw screen, bool no_scroll, Fe8ControlBindingHost& host);
+
+// 0055D180 BSP_ControlBindingScreen_OnListboxSelectionChanged, __thiscall(listener = screen+8h,
+// row, list box), RET 8 (screen offsets below; the body rebases with ADD ESI, -8 at 0055D2E3). A
+// null row does nothing. +16Ch + page(+168h)*4 = the list's selection (00A9C920), so page 0 writes
+// the device index. Page 0: the help line (0054A0C0 on [00E1930C]) is the row label (+0F4h) +
+// "_help" (00CEE6BC; 004261A0 concatenation); page 1: "FE_pc.cs_loadcontrollerpreset_help"
+// (00CEE698); page 2 with the settings list +20h: 0055C3B0, list vtable +60h(1), then 0055CEC0(0)
+// until it returns 0.
+void control_binding_on_selection_changed_0055d180(Raw listener, void* row, void* list_box,
+    Fe8ControlBindingHost& host);
+
+struct Fe8ControlBindingEnterHost {
+    virtual ~Fe8ControlBindingEnterHost() = default;
+    virtual bool game_in_mission_61f() = 0;                                                  // [00E188A8]+61Fh
+    virtual void* find_child_by_name_00aa7e00(void* parent, std::string_view name) = 0;     // (name, 1)
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;             // vtable +34h
+    virtual void list_box_set_listener_00a9ac40(void* list_box, void* listener) = 0;
+    virtual void control_binding_refresh_page_0055e3a0(Raw screen, std::int32_t page) = 0;
+    virtual void native_string_resize_0041dd40(void* string, std::uint32_t length, std::uint32_t preserve) = 0;
+};
+
+// 0055FA80 BSP_ControlBindingScreen_Enter, slot +18h of 00CEE524, __fastcall(ECX = screen), RET.
+// In a mission ([00E188A8]+61Fh) +1Ch = "Ingame_Main_Listbox" (00CEE830) and "Main_Listbox"
+// (00CEB334) is hidden; otherwise the reverse (both under page +14h). +24h = the list's
+// "MainListbox_Text" (00CEC040); listener +8h; the list shown; 0055E3A0(0); +10h = 0.25f
+// (00CE3868); +0E4h = 0; +38h = 1; the string +3Ch is erased from the front by min(length,
+// 7FFFFFFFh) (memmove of the remainder, then 0041DD40(length - n, 1)), which empties it.
+void control_binding_enter_0055fa80(Raw screen, Fe8ControlBindingEnterHost& host);
+
+struct Fe8ControlBindingConfirmHost {
+    virtual ~Fe8ControlBindingConfirmHost() = default;
+    // 00450540 on 00425D10() +268h: the prompt's button labels.
+    virtual void prompt_append_label_00450540(std::string_view label) = 0;
+    virtual Raw prompt_screen_00425d10() = 0;
+    // 00531B00 on 00425D10(): (slot, message, kind, callback, 0, title "", 0.0f, 0, "", 1).
+    virtual void raise_prompt_00531b00(std::int32_t slot, const char* message, std::int32_t kind,
+        std::uint32_t callback) = 0;
+    virtual void input_settings_save_006aa2d0() = 0;                                         // ECX = 005547D0()
+    virtual void control_binding_refresh_page_0055e3a0(Raw screen, std::int32_t page) = 0;
+};
+
+// 00560210 BSP_ControlBindingScreen_ConfirmOrNextDevice, __fastcall(ECX = screen), RET. With
+// +19Ch set: labels "FE.opt_cancel", "FE.opt_discard", "globals.accept" appended to the prompt
+// (+268h), prompt +284h = 0, then 00531B00(slot 0, "FE.opt_acceptchanges", kind 4, callback
+// 0055FA10). Otherwise 006AA2D0 on the input settings, +16Ch += 1 and 0055E3A0(0).
+void control_binding_confirm_or_next_device_00560210(Raw screen, Fe8ControlBindingConfirmHost& host);
+
+// ---------------------------------------------------------------------------
+// Packet cc13-fe8: tactical library category lists (segment 12). Each builder shows the list
+// box +0B8h (vtable +34h(1)), clones rows from +0ACh, labels each row's "MenuItem_Text"
+// (00CEB474) child through 00ABB000(text, -1.0f, 1), names the row with its index (004260B0 then
+// row vtable +2Ch(&string)), clears row +77h, appends it (00A9D750(row, 0, 0)) and finishes with
+// 00A9CF30(1, 1). Labels are copied through a 200-byte buffer with strcpy_s / sprintf("%s").
+// ---------------------------------------------------------------------------
+struct Fe8LibraryListHost {
+    virtual ~Fe8LibraryListHost() = default;
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;             // vtable +34h
+    virtual void widget_set_name_2c(void* widget, std::string_view name) = 0;                // vtable +2Ch
+    virtual void* widget_clone_subtree_00aab4c0(void* source, std::uint32_t zero) = 0;
+    virtual void* find_child_by_name_00aa7e00(void* parent, std::string_view name) = 0;     // (name, 1)
+    virtual void gui_text_set_ellipsized_00abb000(void* text, std::string_view source, float width,
+        std::uint32_t flag) = 0;
+    virtual void list_box_insert_row_00a9d750(void* list_box, void* row, std::uint32_t a, std::uint32_t b) = 0;
+    virtual void list_box_reset_highlight_00a9cf30(void* list_box, std::uint32_t a, std::uint32_t b) = 0;
+    // 004FDA50 GetNameOrNoUnlock, slot(index, NativeString* out), RET 8.
+    virtual std::string vehicle_class_name_or_no_unlock_004fda50(std::int32_t index) = 0;
+    // 004FAE70, __thiscall(screen, id), RET 4, AL.
+    virtual bool library_has_academy_entry_004fae70(Raw screen, std::int32_t id) = 0;
+    virtual const char* image_string_table(std::uint32_t table, std::int32_t index) = 0;     // [table + index*4]
+};
+
+// 005001A0 BSP_TacticalLibraryScreen_BuildUnlocksList, __fastcall(ECX = screen), RET. One row (index
+// 0). With the first 2Ch record of +46Ch (checked non-empty) holding more ids (+1Ch..+20h) than
+// +458h and ids[+458h] == +454h: +138h = +458h and the label is 004FDA50(record 0 ids[+458h]).
+// Otherwise +138h = 0, +454h = -1, +458h = 0 and the label is "FE.unitlib_nounlock" (00CEB184).
+void library_build_unlocks_list_005001a0(Raw screen, Fe8LibraryListHost& host);
+// 00500450 BSP_TacticalLibraryScreen_BuildMovieList: one row, label [00E08494] ("FE.main_movies").
+void library_build_movie_list_00500450(Raw screen, Fe8LibraryListHost& host);
+// 00500640 BuildNoseArtList: rows i = 0, 1 labelled [00E084F0 + i*4], each built when +98h >= 5Ah
+// or +98h == i.
+void library_build_nose_art_list_00500640(Raw screen, Fe8LibraryListHost& host);
+// 00500860 BuildUnitsWeaponsList: five rows, labels [+31Ch + i*8]; the text is shown before it is
+// labelled.
+void library_build_units_weapons_list_00500860(Raw screen, Fe8LibraryListHost& host);
+// 00500E90 BuildPowerUpList: three rows, labels [+344h + i*8].
+void library_build_power_up_list_00500e90(Raw screen, Fe8LibraryListHost& host);
+// 005010C0 BuildAcademyList: thirteen candidates, labels [+35Ch + i*8]; i is skipped when
+// 004FAE70(screen, i) is true.
+void library_build_academy_list_005010c0(Raw screen, Fe8LibraryListHost& host);
+// 005012F0 BuildAchievementsList: six rows labelled [00E084D8 + i*4].
+void library_build_achievements_list_005012f0(Raw screen, Fe8LibraryListHost& host);
+
+struct Fe8LibrarySmallHost {
+    virtual ~Fe8LibrarySmallHost() = default;
+    // 00437F50: the vehicle class registry; two 800h-dword permutation tables at +10h and +2010h.
+    virtual Raw vehicle_class_registry_00437f50() = 0;
+    virtual void library_reset_order_state_004f8fa0(Raw screen) = 0;                         // tail call
+    virtual void library_refresh_unlock_rows_00503250(Raw screen, std::int32_t class_id) = 0;
+    virtual void* list_box_current_item_00a9ca00(void* list_box) = 0;
+    virtual Raw widget_name_28(void* widget) = 0;                                            // vtable +28h -> NativeString
+    virtual std::int32_t atol_00bf8417(const char* text) = 0;
+    // The function-static colour at 00E18D64 and its guard dword 00E18D74.
+    virtual float* static_grey_00e18d64() = 0;
+    virtual std::uint32_t& static_grey_guard_00e18d74() = 0;
+    virtual std::int32_t list_box_selected_index_00a9c920(void* list_box) = 0;
+    virtual void widget_apply_uv_8c(void* widget) = 0;                                       // vtable +8Ch
+};
+
+// 004F9D80 BSP_Color_StaticGrey, EAX = 00E18D64: the first call (guard bit 0) stores {0.25, 0.25,
+// 0.25 (00CE3868), 1.0 (00D7A24C)}.
+const float* library_colour_static_grey_004f9d80(Fe8LibrarySmallHost& host);
+// 00506510 BSP_TacticalLibraryScreen_ResetVehicleClassOrder, __fastcall(ECX = screen): +134h = 0;
+// both registry tables get the identity permutation (0..7FFh); tail 004F8FA0(screen).
+void library_reset_vehicle_class_order_00506510(Raw screen, Fe8LibrarySmallHost& host);
+// 00506550 BSP_TacticalLibraryScreen_ShowCurrentEntryDetail, __fastcall(ECX = screen): +4B0h =
+// the class id (+48h) of entry [+434h] of the 6Ch-entry vector +448h; the current row of +0B8h
+// (00A9CA00) names a record index (atol of vtable +28h's string, "" 00E18D78 when null); rec = the
+// first dword of that 2Ch record (+460h). When +4B0h differs from +134h: 00503250(+4B0h), +134h =
+// +4B0h, both tables reset to the identity, then table1[rec] = +4B0h and table2[+4B0h] = rec.
+void library_show_current_entry_detail_00506550(Raw screen, Fe8LibrarySmallHost& host);
+// 005661C0 (named GetSelectedSessionIndex), __fastcall(ECX = list box), EAX: the list's own
+// selection (00A9C920 with the same ECX) plus +164h when the +148h byte is set.
+std::int32_t session_list_absolute_selection_005661c0(void* list_box, Fe8LibrarySmallHost& host);
+// 00568290 BSP_GuiIcon_SetUvRect, __thiscall(icon, const float uv[4]), RET 4: +118h..+124h = uv,
+// then vtable +8Ch().
+void gui_icon_set_uv_rect_00568290(Raw icon, const float uv[4], Fe8LibrarySmallHost& host);
+
+struct Fe8LibraryPageHost : Fe8LibrarySmallHost {
+    virtual void rebuild_command_bar_0054b530(const std::array<MainMenuCommandArgument, 5>& arguments) = 0;
+    // 00518D60, ECX = -1, EDX = 0, stack (0, title NativeString), RET 8.
+    virtual void frame_select_00518d60(std::uint32_t ecx, std::uint32_t edx, std::uint32_t zero,
+        std::string_view title) = 0;
+};
+
+// 004FFD00 BSP_TacticalLibraryScreen_ShowUnlocksPage, __fastcall(ECX = screen), RET. Only for view
+// kind +94h == 6 with a current item in +0B8h (00A9CA00). The item name is passed to atol and the
+// result discarded. Command bar (A2h "globals.select" 0, A7h "globals.3dview" ("globals.2dview"
+// when +90h == 1) 1, B2h "globals.scroll_menu" 1, AFh "globals.change" 1, A3h "globals.back" 2);
+// then 00518D60(ECX -1, EDX 0; 0, "FE.taclib_unlocks_title").
+void library_show_unlocks_page_004ffd00(Raw screen, Fe8LibraryPageHost& host);
+// 004FFF20 BSP_TacticalLibraryScreen_ShowOrderOfBattlePage, __fastcall(ECX = screen), RET. Only
+// for view kind 5 with a current item: rec = the 2Ch record (+45Ch vector, 004F9360) at atol(item
+// name). Command bar (A2h "globals.continue" 0, A7h 3dview/2dview 1, B3h "globals.navigate" 1,
+// (AFh "globals.change" when rec has ids (+1Ch..+20h) and its +0Ch byte is set, else (0, "")) 1,
+// A3h "globals.back" 2); then 00518D60(-1, 0; 0, "FE.taclib_orderofbattle_title").
+void library_show_order_of_battle_page_004fff20(Raw screen, Fe8LibraryPageHost& host);
+
+struct Fe8LibraryMapHost {
+    virtual ~Fe8LibraryMapHost() = default;
+    virtual Raw game() = 0;                                                                  // [00E188A8]
+    // The case-insensitive std::map<NativeString, int> at game +6F0h (head at +6F4h): 004BF370
+    // lower_bound and 005070C0 operator[], both ECX = the map; nodes keep the key at +0Ch.
+    virtual void* string_int_map_lower_bound_004bf370(void* map, const void* key) = 0;
+    virtual std::int32_t& string_int_map_index_005070c0(void* map, const void* key) = 0;
+    virtual std::int32_t stricmp_00bf7fbf(const char* a, const char* b) = 0;
+};
+
+// 00509DE0 BSP_TacticalLibraryScreen_BuildMapEntries, __fastcall(ECX = screen), RET. For each
+// 6Ch entry of +3D8h..+3DCh, its +28h name is looked up in the game's map (+6F0h): found
+// (lower_bound plus the !(key < node) test, empty names ordering first) with a positive value
+// clears the entry's +45h "locked" byte; otherwise it is set to 1.
+void library_build_map_entries_00509de0(Raw screen, Fe8LibraryMapHost& host);
+
+struct Fe8LibraryFilterHost {
+    virtual ~Fe8LibraryFilterHost() = default;
+    virtual void entry_vector_clear_00505de0(void* vector) = 0;                              // erase(begin, end)
+    virtual std::uint32_t entry_vector_size_004f92e0(void* vector) = 0;
+    virtual Raw entry_vector_at_005056c0(void* vector, std::uint32_t index) = 0;
+    virtual void entry_vector_push_back_0050ad00(void* vector, Raw entry) = 0;
+    virtual void gui_movie_stop_00aac870(void* movie) = 0;
+    virtual void library_view5_reset_0050b730(Raw screen) = 0;
+    virtual void library_view6_reset_0050b440(Raw screen) = 0;
+};
+
+// 0050D900 (named ClearList; it filters a list), __thiscall(screen, source vector, out vector),
+// RET 8. out is emptied (00505DE0 over [begin, end), both bounds checked), then gets every source
+// entry (005056C0) whose +40h equals +3C0h or exceeds 59h and whose +44h byte is set (0050AD00).
+// Then by view kind +94h (jump table 0050DA10): 4 stops the movies +51Ch, +520h, +524h (non-null,
+// 00AAC870) and sets +558h = +55Ch = -1; 5 -> 0050B730(screen); 6 -> 0050B440(screen).
+void library_filter_entries_0050d900(Raw screen, void* source, void* out, Fe8LibraryFilterHost& host);
+
+struct Fe8FrameRegisterHost {
+    virtual ~Fe8FrameRegisterHost() = default;
+    virtual void front_end_screen_register_004f71d0(Raw screen) = 0;
+    virtual void* gui_load_page_00aa5840(std::string_view name, std::uint32_t one, std::uint32_t zero) = 0;  // ECX = 004C12B0()
+    virtual const char* image_string_table(std::uint32_t table, std::int32_t index) = 0;     // [table + index*4]
+};
+
+// 00517ED0 BSP_FrontEndFrame_Register, slot +14h, __fastcall(ECX = screen), RET. 004F71D0; frame
+// index +160h = 4. Three page tables, each slot loaded (00AA5840(name, 1, 0)) only in the row of
+// the frame index and when the name is non-null, otherwise 0: +0Ch + (row*13 + j)*4 for j < 13
+// from [00E08500 + (index*13 + j)*4]; +110h + (row*2 + j)*4 for j < 2 from [00E08604 + (index*2 +
+// j)*4] ("FE_frame..."); +138h likewise from [00E0862C ...] ("FE_frame_title..."). Rows run 0..4.
+void front_end_frame_register_00517ed0(Raw screen, Fe8FrameRegisterHost& host);
+
+struct Fe8LibraryEventHost {
+    virtual ~Fe8LibraryEventHost() = default;
+    virtual std::int32_t widget_type_5c(void* widget) = 0;                                   // vtable +5Ch
+    virtual std::int16_t widget_state_94(void* widget) = 0;                                  // vtable +94h
+    virtual void widget_set_alpha_4c(void* widget, float alpha) = 0;                         // vtable +4Ch
+    virtual void widget_set_highlight_88(void* widget, std::uint32_t state, std::uint32_t zero, float one) = 0;
+    virtual void widget_set_highlight_84(void* widget, std::uint32_t state) = 0;
+    virtual void* list_box_row_00a9be00(void* list_box, std::int32_t index) = 0;
+    virtual void list_box_select_index_00a9c7c0(void* list_box, std::int32_t index) = 0;
+    virtual void scroller_set_auto_scroll_00683300(void* scroller, std::uint32_t a, float speed, std::uint32_t b) = 0;
+    virtual void scroller_begin_thumb_drag_00683a40(void* scroller) = 0;
+    // Library screen routines (ECX = screen).
+    virtual void library_play_entry_movie_004ff580(Raw screen) = 0;
+    virtual void front_end_show_difficulty_select_004ff6f0(Raw screen) = 0;
+    virtual bool library_is_entry_unlocked_004fc9d0(Raw screen) = 0;
+    virtual void library_back_00515e00(Raw screen) = 0;
+    virtual void library_apply_nose_art_005161c0(Raw screen) = 0;
+    virtual void library_switch_view_00514c20(Raw screen) = 0;
+    virtual void library_open_order_of_battle_view_00514fb0(Raw screen) = 0;
+    virtual std::int32_t library_find_row_by_id_004fcb30(Raw screen, std::int32_t id) = 0;
+    virtual void library_step_carousel_00516010(Raw screen, bool forward) = 0;
+};
+
+// 00517300 BSP_TacticalLibraryScreen_HandleGuiEvent, slot +4h of the listener at screen+68h,
+// __thiscall(listener, widget), RET 4 (screen offsets below). Type 3: a click on rows 0..2 of the
+// list +0C4h while the timer +5B4h is exactly -1.0f selects that row and sets the timer to 0.5f;
+// otherwise vtable +4Ch(1.0f) and the label's first byte (+0F0h, "" 00E18D7C) decides: A2h by view
+// kind +94h (jump table 00517600): 3 -> 004FF580, 5 -> 004FF6F0, 6 -> 00515E00 when 004FC9D0, 7 ->
+// the timer rule above, 8 -> 005161C0; A7h with kind 2, 5 or 6 -> 00514C20; A3h -> 00514FB0 for
+// kind 7, else 00515E00. Other types: +5BCh / +5B8h auto-scroll +0CCh (2 / 1, 0.004f, 1), +5C0h
+// begins a drag; the carousel arrows +574h / +578h step the carousel (00516010(widget == +574h))
+// unless their state (+94h) is 3 (then return); a widget of the pair tables +1D8h / +278h (40
+// each) selects, for kind 5, the row 004FCB30(i) in +0B8h, and with type 6 and state below 3 steps
+// the carousel (forward when it is the +1D8h entry), returning otherwise. Then type 6 ->
+// vtable +88h(2, 0, 1.0f), type 12h -> vtable +84h(2). The StepCarousel byte is pushed as a dword
+// whose upper bytes are stale register contents.
+void library_handle_gui_event_00517300(Raw listener, void* widget, Fe8LibraryEventHost& host);
+
+struct Fe8InGame23Host {
+    virtual ~Fe8InGame23Host() = default;
+    virtual void unit_send_role_transfer_0077c470(void* unit, std::uint32_t role, std::uint32_t zero) = 0;  // ECX = unit
+    // Observer pairs: ECX = observed, EDX = observer member (screen +8h).
+    virtual bool observer_is_pair_registered_00694af0(void* observed, void* observer) = 0;
+    virtual void observer_unregister_pair_006952a0(void* observed, void* observer) = 0;
+    virtual void observer_register_pair_00694a60(void* observed, void* observer) = 0;
+    virtual void* operator_new_00bf55be(std::uint32_t bytes) = 0;
+    virtual void camera_mover_construct_base_00432750(void* camera) = 0;
+    virtual Raw game() = 0;                                                                  // [00E188A8]
+    // 00923870, ECX = camera, (0, game +19CCh, const float matrix[16]).
+    virtual void camera_set_transform_00923870(void* camera, std::uint32_t zero, std::uint32_t scene,
+        const float* matrix) = 0;
+    virtual void airfield_camera_setup_0042cb30(void* camera, void* unit_part) = 0;          // ECX = camera
+    virtual void game_set_camera_mover_004bc410(void* camera) = 0;                           // ECX = [00E188A8]
+};
+
+// 005178F0 BSP_InGameScreen23_BindUnit, __thiscall(screen, unit), RET 4. An old unit (+1Ch) gets
+// 0077C470(1FEh, 0) and loses the observer pair (screen +8h) when registered; +1Ch = unit, which
+// registers the pair when missing. Without a camera (+20h): new(388h), zeroed, 00432750, vtables
+// 00CEC1F8 / +10h 00CEC1DC / +24h 00CEC1D4 / +170h 00CEC1BC (a failed allocation leaves 0); +20h =
+// it; 00923870(ECX camera; 0, [game+19CCh], identity matrix) and the pair (camera, screen +8h)
+// registered. Then 0042CB30(camera; unit ? unit+72Ch : 0), 004BC410(camera), +24h = 0.5f.
+void in_game_screen23_bind_unit_005178f0(Raw screen, void* unit, Fe8InGame23Host& host);
+
+struct Fe8BomberCameraHost : Fe8InGame23Host {
+    virtual void ship_camera_construct_base_00519290(void* camera) = 0;
+    virtual void camera_mover_set_target_0042f650(void* camera, void* target) = 0;           // ECX = camera
+    virtual void* binoculars_screen_00e198c4_4c() = 0;                                       // [[00E198C4]+4Ch]
+    virtual void binoculars_bind_unit_0051e730(void* binoculars, void* camera) = 0;
+    virtual void binoculars_reset_0051e8e0(void* binoculars) = 0;
+};
+
+// 005198F0 BSP_BomberView_EnsureCamera, __fastcall(ECX = screen), RET. A camera (+28h) whose +60h
+// or +5Dh byte is set is dropped (+28h = 0, not freed). Without one: new(3F4h), zeroed, 00519290,
+// vtables 00CEC5F0 / +10h 00CEC5D8 / +24h 00CEC5D0 / +170h 00CEC5B8; 00923870(camera; 0,
+// [game+19CCh], identity); camera +3ECh = -1.553343f (00CEC574), +3F0h = 1.553343f (00CEC400); pair
+// (camera, screen +8h) registered. When the game's mover (+1ED4h) is not the camera or the target
+// +1Ch differs from +20h: 0042F650(camera; +1Ch); a camera with +3E8h clear gets +384h = +388h = 0
+// and +38Ch = +398h = +394h = +390h = 30.0f (00CE38C8); 004BC410(camera); +20h = +1Ch. Always:
+// 0051E730(binoculars; camera) and 0051E8E0(binoculars) on [[00E198C4]+4Ch].
+void bomber_view_ensure_camera_005198f0(Raw screen, Fe8BomberCameraHost& host);
+
+struct Fe8EntryAssignHost {
+    virtual ~Fe8EntryAssignHost() = default;
+    virtual long interlocked_increment_00ce221c(long* value) = 0;                            // import
+    virtual long interlocked_decrement_00ce2220(long* value) = 0;                            // import
+    virtual void object_virtual_0(void* object) = 0;                                         // ECX = object, vtable +0
+    virtual void native_string_resize_0041dd40(void* string, std::uint32_t length, std::uint32_t preserve) = 0;
+};
+
+// 004FE310 BSP_TacticalLibraryEntry_Assign, __thiscall(to, const from), RET 4, EAX = to. A 6Ch
+// library entry: intrusive references at +0h and +14h (count at +4h of the target; the old target
+// is released through its vtable +0 when the count reaches 0, the new one is retained first);
+// dwords +4h..+10h, +18h..+24h, +40h, +48h; bytes +44h, +45h, +46h (+47h is not copied); strings
+// +28h, +30h, +38h, +4Ch, +54h, +5Ch, +64h (each, unless aliased: 0041DD40(length, 1), then the
+// characters copied when the source is non-empty).
+void* library_entry_assign_004fe310(Raw to, Raw from, Fe8EntryAssignHost& host);
+
+struct Fe8UnlockRowsHost : Fe8LibraryListHost {
+    virtual void* list_box_row_00a9be00(void* list_box, std::int32_t index) = 0;
+    virtual void* list_box_current_item_00a9ca00(void* list_box) = 0;
+    virtual Raw widget_name_28(void* widget) = 0;                                            // vtable +28h
+    virtual std::int32_t atol_00bf8417(const char* text) = 0;
+    virtual void* library_find_entry_by_id_004fb090(Raw screen, std::int32_t id) = 0;       // ECX = screen
+};
+
+// 00503250 BSP_TacticalLibraryScreen_RefreshUnlockRows, __thiscall(screen, class id), RET 4. For each
+// row of +0B8h: index = atol(row name); -1 and 99999 skip the row. rec = the 2Ch record at index of
+// +460h (kind +94h == 5) or +470h (kind 6); other kinds keep the previous row's rec (the local is
+// not reset, and is uninitialised for the first row). id = the class id for the current item
+// (00A9CA00), else rec's first dword. 004FB090(id) runs with its result unused. Label: kind 6 with
+// id -1 -> "FE.unitlib_nounlock", else 004FDA50(id); kind 5 with id != rec's id prefixes "|.* |"
+// (00CEB580, 0043C130). The row's "MenuItem_Text" shows it through 00ABB000(-1.0f, 1).
+void library_refresh_unlock_rows_00503250(Raw screen, std::int32_t class_id, Fe8UnlockRowsHost& host);
+
+struct Fe8LibraryLookupHost : Fe8EntryAssignHost {
+    virtual Raw game() = 0;                                                                  // [00E188A8]
+};
+
+// 004FD500 (named CountAvailableMapsForSide; it is a lookup), __thiscall(library, ref* out_object,
+// dword out_data[4]), RET 8, AL. wanted = game +734h when the active slot record ([game + 18CCh +
+// [game+18ECh]*4]) has +28h == 0, else game +730h. The first 6Ch entry of +418h..+41Ch whose +48h
+// equals wanted is copied out: its +0h reference into *out_object (retain new, release old as in
+// 004FE310) and its +4h..+10h into out_data; AL = 1. No match: AL = 0 (the upper EAX bytes hold
+// the entry count).
+bool library_find_entry_for_side_004fd500(Raw library, Raw out_object, std::uint32_t out_data[4],
+    Fe8LibraryLookupHost& host);
+
+struct Fe8OrderOfBattleSideHost {
+    virtual ~Fe8OrderOfBattleSideHost() = default;
+    virtual void library_show_order_of_battle_page_004fff20(Raw screen) = 0;
+    virtual bool native_string_equals_insensitive_00425850(const void* string, const char* text) = 0;  // ECX = string
+    virtual void command_bar_set_help_line_0054a0c0(std::string_view line) = 0;              // ECX = [00E1930C]
+    virtual void library_filter_entries_0050d900(Raw screen, void* source, void* out) = 0;
+    virtual void library_refresh_entry_detail_00510c20(Raw screen) = 0;
+    virtual void scroller_attach_content_00683790(void* scroller, void* content) = 0;
+    virtual long double text_normalized_height_00ab6bd0(void* text) = 0;                     // x87 return
+    virtual std::array<float, 2> widget_size_00aa6740(void* widget) = 0;
+    virtual void scroller_set_scroll_range_006834a0(void* scroller, float range) = 0;
+};
+
+// 00511BF0 BSP_TacticalLibraryScreen_SelectOrderOfBattleSide, __thiscall(screen, side), RET 4.
+// +434h = +138h[side]; +438h = (float)(+434h + 0.003) (FILD, FADD qword 00CEBE08); +558h = +55Ch =
+// -1. Kind 5: +134h = record[side] (+460h, 2Ch) ids[+434h - 1] (00418140) when that record has ids
+// and +434h != 0, else the record's first dword; 004FFF20; the help line is "FE.oob_changeable_help"
+// / "FE.oob_fixed_help" when the record's +10h string is "change" / "fixed" (case-insensitive,
+// 00425850), else that string itself. extra = (float)(1/72) for kind 4, else 0. A new side (!=
+// +3C0h) for kinds 0..6 and 8 stores +3C0h and filters (0050D900) into +444h from +3D4h, +3E4h,
+// +3F4h, +3C4h, +404h, +3F4h, +3F4h, +414h (jump table 00511F10). Then 00510C20, scroller +0CCh
+// content 0, and range = (float)((double)(text height(+0A8h) + extra) - h(+5ACh)).
+void library_select_order_of_battle_side_00511bf0(Raw screen, std::uint32_t side, Fe8OrderOfBattleSideHost& host);
+
+struct Fe8ControlBindWidgetsHost {
+    virtual ~Fe8ControlBindWidgetsHost() = default;
+    virtual void* find_child_by_name_00aa7e00(void* parent, std::string_view name) = 0;     // (name, 1)
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;             // vtable +34h
+    virtual void list_box_set_listener_00a9ac40(void* list_box, void* listener) = 0;
+    virtual void list_box_set_field124_00a9ceb0(void* list_box, float value, std::uint32_t zero) = 0;
+    virtual void widget_set_listener_fields_00aa6bc0(void* widget, void* listener, std::uint32_t zero) = 0;
+    virtual void scroller_attach_content_00683790(void* scroller, void* content) = 0;
+    virtual std::array<float, 2> widget_size_00aa6740(void* widget) = 0;
+    virtual void scroller_attach_scroll_bar_00683380(void* scroller, void* thumb, float span, void* up,
+        void* down) = 0;
+    virtual void gui_text_set_localised_cstring_00abbe50(void* text, const char* key, std::uint32_t flag) = 0;
+    // 005F0390, ECX = parent, EDX = listener (options_find_auto_control_group_005f0390).
+    virtual void options_find_auto_control_group_005f0390(void* parent, void* listener) = 0;
+    virtual const char* image_string_table(std::uint32_t table, std::int32_t index) = 0;     // [table + index*4]
+};
+
+// 00555DC0 BSP_ControlBindingScreen_BindWidgets, slot +14h of 00CEE524 (after 00555C60),
+// __fastcall(ECX = screen), RET. Lookups (parent -> store): +14h "Main_Listbox" -> +1Ch (listener
+// +8h); +1Ch "MainListbox_Text" -> +24h; +18h "column_FrameBox" -> +210h and "listbox_FrameBox" ->
+// +214h (both hidden); +18h "clipbox_Clipbox" -> +218h; +218h "Settings_Listbox" -> +20h (listener
+// +8h; +12Ch = 0, +130h = 1/360, +134h = 0, 00A9CEB0(0.75f, 0), +128h = 1/360); +18h "slider_Group"
+// -> +1FCh with "scroll_up_Icon" +200h, "scroll_down_Icon" +204h, "slider_FrameBox" +20Ch,
+// "back_Icon" +208h; listener +0Ch on +200h, +204h, +20Ch; scroller +1A0h: content +20h, bar
+// (+20Ch, (float)(h(+208h) - h(+20Ch)), +200h, +204h). +20h "setting_Group" -> +28h (hidden); its
+// "main_Text", "var_1_Text", "var_2_Text" ([00E086A0..A8]) get 00ABBE50("", 0); "conflict_1_Group"
+// and "conflict_2_Group" ([00E086AC], [00E086B0]) are hidden. +20h "slider_Group" -> +2Ch (hidden),
+// its arrows (listener +0Ch) and 005F0390(+2Ch, +0Ch); +20h "toggle_text_Group" -> +30h (hidden),
+// its arrows (listener +0Ch). +14h "SelectedConflict_Text" -> +34h.
+void control_binding_bind_widgets_00555dc0(Raw screen, Fe8ControlBindWidgetsHost& host);
+
+struct Fe8ControlEventHost {
+    virtual ~Fe8ControlEventHost() = default;
+    virtual std::int32_t widget_type_5c(void* widget) = 0;                                   // vtable +5Ch
+    virtual std::int16_t widget_child_count_98(void* widget) = 0;                            // vtable +98h
+    virtual void* widget_virtual_28(void* widget, const char* name, std::uint32_t zero) = 0; // vtable +28h
+    virtual bool native_string_has_prefix_at_00553c80(void* result) = 0;                     // ECX = result
+    virtual void widget_set_alpha_4c(void* widget, float alpha) = 0;
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;
+    virtual void widget_set_highlight_88(void* widget, std::uint32_t state, std::uint32_t zero, float one) = 0;
+    virtual void widget_set_highlight_84(void* widget, std::uint32_t state) = 0;
+    virtual float gui_manager_field_5c() = 0;                                                // 004C12B0() +5Ch
+    virtual void list_box_select_index_00a9c7c0(void* list_box, std::int32_t index) = 0;
+    virtual void* list_box_current_row_00425e50(void* list_box) = 0;
+    virtual void list_listener_activate_04(void* listener, void* row, void* list_box) = 0;   // [screen+8] vtable +4
+    virtual void scroller_set_auto_scroll_00683300(void* scroller, std::uint32_t a, float speed, std::uint32_t b) = 0;
+    virtual void scroller_begin_thumb_drag_00683a40(void* scroller) = 0;
+    virtual void set_options_page_00e19650(std::int32_t page) = 0;
+    virtual void front_end_push_interface_request_004cc460(std::uint32_t a, std::uint32_t b) = 0;  // ECX = [00E198B8]
+    virtual bool input_config_load_suppressed_00f88a30() = 0;                                // byte [00F88A30]
+    virtual void input_configuration_load_00698a10() = 0;                                    // ECX = game +3Ch
+    // Control binding routines (ECX = screen).
+    virtual void control_binding_refresh_selected_binding_0055c3b0(Raw screen) = 0;
+    virtual void control_binding_adjust_setting_0055ccc0(Raw screen, std::int32_t delta) = 0;
+    virtual void control_binding_refresh_page_0055e3a0(Raw screen, std::int32_t page) = 0;
+    virtual void control_binding_confirm_or_next_device_00560210(Raw screen) = 0;
+    virtual void control_binding_position_marker_00553b00(Raw screen, void* widget) = 0;
+};
+
+// 00560BF0 BSP_ControlBindingScreen_HandleGuiEvent, slot +4h of the widget listener at screen+0Ch,
+// __thiscall(listener, widget), RET 4 (screen offsets). Page +168h == 3 or widget type 10h: nothing.
+// Type 6 outside the slider group (+1FCh) and type 2 select their row id ([widget+70h]+0D8h /
+// widget+0D8h; zero does nothing): +180h = (004C12B0()+5Ch > 0.625f (00CEE8DC)), 0055C3B0, settings
+// list +20h selects id & 0FFFFh; a type-6 widget with more than one child (vtable +98h) then
+// adjusts the setting by -1 / +1 (0055CCC0) when vtable +28h("arrow_left_Icon" / "arrow_right_Icon",
+// 0) passes 00553C80. Type 3: vtable +4Ch(1.0f); label (+0F0h, "" 00E1942C) A7h does nothing; A2h on
+// pages 0/1 activates the list listener (screen+8h vtable +4) with (the main list's (+1Ch) current
+// row, that list); A3h on page 0 sets [00E19650] = 0, 004CC460(0Ch, 0), reloads the input configuration
+// (00698A10 on game +3Ch) unless [00F88A30], clears +16Ch..+17Ch and hides +210h; page 1 ->
+// 0055E3A0(0); page 2 -> 00560210. Any other label with a row id: top byte FEh / FFh sets +180h to
+// 0 / 1, 0055C3B0, selection as above, 00553B00(+18Ch ? 0 : +190h), 0055E3A0(3). Other types:
+// +204h / +200h auto-scroll +1A0h (2 / 1, 0.004f, 1), +20Ch begins a drag; then type 6 -> vtable
+// +88h(2, 0, 1.0f), type 12h -> vtable +84h(2).
+void control_binding_handle_gui_event_00560bf0(Raw listener, void* widget, Fe8ControlEventHost& host);
 
 } // namespace bsp::cc13_fe3

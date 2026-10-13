@@ -36,7 +36,7 @@ namespace bsp {
 // task arm (0099998C) and the dogfight and strafe tasks feed it a target. It
 // needs the rocket ordnance feed (007ED970 / BSP_Unit_FindAimRocket 007C1EB0)
 // and the homing glue (rocket_homing_cc13.hpp), so it lands with them.
-inline constexpr bool kOpportunisticRocketBound = false;   // OFF: docs/CC13_OPPORTUNISTIC_ROCKET.md 7
+inline constexpr bool kOpportunisticRocketBound = true;   // ON by mechanism: GUNNERY 202 (IJN23 pair)
 
 namespace opportunistic_rocket {
 inline constexpr float kTimerSeed = -1.0f;              // 00D7A260, ctor +10h/+14h

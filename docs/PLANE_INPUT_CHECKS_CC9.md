@@ -157,3 +157,7 @@ LOMP10, ESMP08 without orders) had no Wings plane taking off from a carrier; JM0
   27/99) and JM08 does not complete in 72000 frames.
 - **Flipped ON, both switches** (cc9-physics6, 2026-10-13): mechanism matches, so the lost win goes to re-plan (JM08
   is a knife-edge already: it fails under `BSP_FRAME_JITTER 20,3`).
+- ESMP08 WITH orders (`g38_ord_e8.txt`, 90000 frames; OFF = `local\p6_wo` F1AC46BB9E55, ON = tree at ae34e5462;
+  `local\p6wf_{off,on}_e8.log`): `classes=714 prep_holds=3948`, the rest 0; GAMEPLAY MOVED (first hit 374.68 ->
+  376.78 s, torpedo drops 68 -> 36, deaths 911 -> 903); no completion either side (OFF: Dunlap 1892.62 s and Fanning
+  2757.92 s sink; ON: Dunlap only, 2729.99 s). The ESMP08 re-plan starts from the ON run.

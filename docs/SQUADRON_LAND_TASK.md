@@ -16044,3 +16044,34 @@ Zuiho unit 8, Kumano unit 9), and GenerateObject re-creates each under the same 
 **Predictions.** OFF identical. ON: identical on every row whose target names are unique (all current win files,
 unless a file names a re-created template, in which case a refused line becomes applied); PRCP01 with
 `local\l55_p01_c.txt`: the Junyo and Zuiho launches are applied once each exists.
+
+**The real phase-3 defect (cc9-lua55, after the first pair).** With the harness switch ON the Junyo launches were
+still refused: there is ONE Junyo row. `luaEngineMovieInit` (script line 4) generates the Junyo and Zuiho groups for
+the intro, phase 0 kills every Japanese ship (`Kill(unit, true)`, line 599-601; the 3.05 s deaths), and
+`luaUS03GotoPhase3` (line 1135) and `luaUS03GotoPhase4` (line 1244) generate them again. 0046D930 instantiates on every
+call (its only gate, 0046C550 BSP_SceneEntity_ShouldGenerate, is the MultiType/game-mode predicate, not an
+already-created test), but this host answers a repeat call with the earlier entity (a recorded deviation against
+duplicated carriers), so the script's Junyo was the dead intro instance: the `kill` listener can never fire and
+phase 3 can never end. `kGenerateObjectRespawnsDeadBound` (`include/bsp/game_hosts_lua.hpp`, OFF): a repeat call
+whose earlier instance is `Dead` in its thisTable slot makes a new entity; a live earlier instance keeps the
+deviation. It needs `kHarnessTargetPrefersLiveBound` for the order file to reach the new row.
+
+**Predictions.** OFF identical. ON: PRCP01 logs `the earlier instance (id 6) is Dead, so a new one is made` for
+Junyo, Kuroshio and Hayashio at phase 3 (and the Zuiho group at phase 4), the Junyo launches are applied, and the
+Junyo can be sunk. Win rows: identical unless a script regenerates a killed object (none known).
+
+### 5gl, the pairs (cc9-lua55, 2026-10-13)
+
+Exports: OFF `local\l55_O` (c696e9051 build copy; the USN12 OFF run is fa67842f1, identical OFF by construction),
+both switches ON `local\l55_G`. Reference env, `--stop-after-end 40`.
+- **USN12 `usn12_s38_u12_p2` 34000:** GAMEPLAY identical (107 deaths, completed 1534.87 s both), sus_prog.exe refusal logged.
+- **JM08 `jm08_s45_j8_m10` 72000:** GAMEPLAY identical (273 deaths, completed 3528.42 s both), refusal logged.
+  Neither win row regenerates a dead object (no `is Dead, so a new one` line).
+- **PRCP01 `local\l55_p01_c.txt` 40000 (ON only):** the Junyo, Kuroshio and Hayashio respawn at phase 3 (new Junyo
+  unit 25, thisTable[26]); the 1600/1620 launches are applied (slots 3 and 4: Avengers and Dauntlesses). The phase-3
+  enemy waves (Kate1/Val1, `luaUS03SpawnEnterpriseKillers`/air waves) now also respawn every wave, as the image does.
+  **The Junyo is not sunk:** the squadron's command target resolves by NAME in the gunnery host's 0071EBF0 resolver
+  (`src/game_hosts_gunnery.cpp` ~5990, `by_name.emplace` keeps the first row, the dead intro Junyo), so
+  `squadron retest: target Junyo dead` ends the leader's attack at launch. That hunk was sent to the lead (gunnery
+  lane); it is identical while respawn is OFF, because duplicate names exist only with respawn ON.
+- **Flipped both ON** (wins identical; respawn is the image's 0046D930 behaviour, the harness rule is a player pick).

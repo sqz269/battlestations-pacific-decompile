@@ -163,11 +163,34 @@ push_back; Ghidra's decompile drops the `size++` at `00467F91`), the cloud parti
 - `004D0140` drains the award tracker's hint deque and frees the map, and `004C8310` reserves a
   vector of counted references (it adds a reference for each copy and releases the old elements).
 
+## Packet cc13-sys4b (continuation)
+
+- `004CD7F0` takes a third argument, `u8 append_mode` (RET 4). The existing host
+  `derive_scene_short_name` (`src/mission_scene_load.cpp`) covers the body only up to
+  `004CDB22`. The tail at `004CDB27..004CDBC1` appends a game-mode suffix from `00E08240`:
+  IC1 IC2 IC3 IC4 Du Esc SiE Com SOLO SOLO. The index uses the rule shared with `004C0170`:
+  mode `+614h` when `+61Ch` is set or `+1FE4h != 0`, otherwise `+614h` when it is 8 or 9, else
+  8. The mission-load and scene-contents callers push 1. `derive_scene_short_name_004cd7f0` wraps
+  the old host and adds the suffix; the old host is unchanged, and the lead has been told.
+- `004C0170` publishes Live presence. Whenever 3 s pass, `XUserSetContext(8001h, 5)` runs outside
+  a session or the menu. In a session there are four `XUserSetContextEx` calls (contexts 0, 1,
+  0Fh, 8001h), made when the xuid, record id or mode index changes, the dirty byte `+22DCh` is
+  set, or 3 s pass.
+- `004BC580` and `004BC6D0` are the leaderboard reads. The friends read repeats
+  `XUserReadStats` synchronously (NULL overlapped) after an `ERROR_INSUFFICIENT_BUFFER` probe.
+  The rank/xuid read enumerates asynchronously into `+7054h` and never closes its enumerator.
+- `00468050` (renamed `BSP_PodPointerArray_Resize`) ends with `size = n` at `00468098`. Ghidra's
+  decompile drops that store, just as it drops the `size++` in `00467F60`. `004C9870` resizes four
+  such arrays to 0 and frees their data.
+- `004CEC00` now has a name and a record.- `00452BD0`, the lens flare driven by the camera: x87 traced (three DC forms, all `ST(1)` destinations) and checked against the decompile. On a segment hit, `v` is the hit distance along the view, at least 1. With no hit, the light that best matches the view cone gives `v = 100000`; otherwise `v` is 10000, or the height over the sine of the dip below the horizon, clamped to 1..100000. The power responses are `|v|^k` and `|+8|^(1/k)` (FYL2X), with first-order smoothing at `+14h * dt`. It draws no random numbers.
+- `004CA2F0` handles the window close: it sets the exit flag in game states 1, 2 and 4, and otherwise raises the `FE_pc.main_quit_confirm` prompt with callback `004BBC50`. The prompt argument list is taken from the decompile.
+
+Still open after sys4b: `0044C970` (E1 constructor through stream objects), `004CAC30`, `004CB420`, `004CCBD0`, `004CCCC0`, `004CD450`, `004C9EC0`, `004C3C90`, `004C6BE0`, the cloud entity bodies, `00471080`/`00479BD0`, and `00466BB0`/`00466C00`/`00467C80`. Thunks and catch funclets are not tagged.
 ## Evidence method
 
 Live `bsp.py ghidra decompile`, `disasm-raw` for every listed body, constants from the PE
 (`local/sys4_consts.py`). Call-site rows: `reports/cc13_sys4_calls.json`
-(`tools/verify_report_calls.py`: 82 rows, 0 failed).
+(`tools/verify_report_calls.py`: 109 rows, 0 failed).
 
 ## Handoff
 
@@ -195,3 +218,27 @@ Still open in the three segments (not taken; owners in brackets where known):
 - Thunks and catch funclets (`004BD350`, `004C4590`, `004C8070`, `004C8B70`, `004C8BF0`,
   `004C9A60`, `00453570`, `00468790`, `Catch_All@...`) were not tagged.
 - Precision: every x87 host assumes 53-bit precision control.
+
+## Host fix: the 004CD7F0 mode suffix (cc13-scenesuffix)
+
+`derive_scene_short_name` (`src/mission_scene_load.cpp`) now has the native's `append_mode`
+argument and the suffix tail, behind `kSceneShortNameModeSuffixBound = false` (committed OFF).
+- `append_mode` defaults to 1, which is what the numbered-block and LoadSceneContents callers push.
+  The existing callers therefore take the native behaviour without edits once the switch is ON.
+  `derive_scene_short_name_004cd7f0` passes 0 and appends the suffix itself.
+- The mode index follows the 004BCA50 rule. The host has no game object at these call sites, so
+  the default is the labelled stand-in `kSceneShortNameCampaignStandIn` (raw mode 8, not forced, no
+  session, giving index 8 and the suffix "SOLO"). `GameSceneContentsHost` already holds the real
+  game+614h/+61Ch/+1FE4h inputs and could pass them.
+- Effect ON for a campaign mission: in USN02 (`usn_2_java.scn`) the short name becomes "usn_2SOLO",
+  so the numbered blocks become 1_usn_2SOLO, 3_usn_2SOLO, 4_usn_2SOLO, 5_usn_2SOLO and 6_usn_2SOLO.
+  The last finale run (`usn_final_battle.scn`) would get 1_usn_finalSOLO and so on. The
+  scene-contents block name is derived from the suffixed name too.
+- Log check (no new runs): `local\cc7_v2_USN02.log` (main checkout) and
+  `cc9-gunnery36\local\g39_rk2_fin.log` list the unsuffixed blocks. Every `enter_file_block`
+  (00BE0A30) there is UNIMPLEMENTED, and no line reports a missing block, so the logs cannot show
+  whether the suffixed names would be found. A byte scan of the loose install files (excluding
+  textures and audio) finds neither "1_usn_2" nor "usn_2SOLO", although it does find
+  "usn_2_java" and "SOLO" elsewhere. The block names are therefore not loose file names; they are
+  most likely labels for the named VFS/memory blocks. Whether the suffixed names matter needs the
+  00BE0A30 block handling or a paired run.

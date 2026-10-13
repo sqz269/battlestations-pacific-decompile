@@ -157,3 +157,8 @@ Commits on agent/cc13-fe3:
 
 cc13-fe6 (docs/CC13_FE_6.md) took 00566080 (limbo Enter) and 00561860 (leaderboards
 MoveSelection) from this list; 83 remain.
+
+cc13-fe8 (docs/CC13_FE_8.md) reconstructed 40 routines in these two segments, including the leaderboards bodies,
+the control-binding selection/conflict/event routines, BindWidgets, the tactical library category
+lists, pages, filter and order-of-battle side selection, the frame Register and the in-game camera
+binders. The remaining open targets are listed in the cc13-fe8 handoff.
