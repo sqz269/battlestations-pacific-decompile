@@ -13331,3 +13331,45 @@ category through `gun_artillery_kind_005459b0` behind the switch. `00728A90` sta
 
 **Predictions.** OFF identical. ON moves only rows where an artillery gun's muzzle goes below y = 0: a submarine's deck
 gun while submerged (USN06, JM06), perhaps a sinking ship's guns. Elsewhere identical.
+
+**206 verdict: ON, by mechanism** (cc9-gunnery39). `12e3c2eeb` OFF (`local\g39_mz0_*`) against ON (`g39_mz1_*`):
+- JM06 (`jm06_s45_j6_k`, 92000 frames): OFF completed 2880.63 s; ON **not completed** (deaths 22 -> 19). OFF,
+  Fletcher-class 05 dies to PlayerSub 01's category-2 deck gun (gun 101) at 357 m and Fletcher 02/04 to its blast;
+  ON the deck guns of a submerged boat stay silent (Narwhal-class Submarine 01: shots 76 -> 0; PlayerSub 01 dealt
+  20904 -> 13266). That is the image's 00729A80 rule (muzzle under [00D7A24C] = 1.0 m and an artillery kind), so
+  the plan relied on a host defect: the keeper re-plans JM06.
+- USN06 (18000 frames, idle): moved (deaths 81 -> 80); the first movers are Japanese PT boats' guns from 8 s, whose
+  low muzzles dip under 1.0 m with the hull. Same rule.
+
+## 207. Handoff (cc9-gunnery39, 2026-10-13, at about 75% context)
+
+**On `agent/cc9-gunnery36`, newest first** (built, ctest 2/2; origin/main merged at `648d1436d`):
+
+| sha | what |
+|---|---|
+| `b1ea02b07` | `kGunSubmergedArtilleryKindBound` ON (206; JM06 plan k lost, keeper re-plans) |
+| `99ea4040a` | `kBlastMeshBoundsBound` verdict: stays OFF (205) |
+| `12e3c2eeb` | 005459B0 artillery-kind gate, OFF (206) |
+| `def1f3496` | blast gathers against the model bounds, OFF (205) |
+| `72e64feac` | USN01 plan e lost to the dead-target retest: faithful, plan casualty (204) |
+| `4ad1962a9` | `kBulletBlastDamageMinNestedBound` ON (203) |
+| `df1343735` | reference AI (GAME_EXECUTABLE.md '2026-10-13 ai'; BSM01 lost to crash sweep + mesh test) |
+| `490a8e2f0` / `41a8fa659` / `ce6d38b2f` | plane rockets: glue, platform list, ON (202) |
+| `19d6bcbaf` | small items, blast key OFF, BOMB_FAMILY_TICK note (203) |
+
+**Open, in the lead's order.**
+1. **Recon multiplier forward** (lead queue 3): the gunnery recon binding's `simplified_recon_multiplier()` /
+   `simplified_sonar_multiplier()` (`src/game_hosts_gunnery.cpp`, `GunneryReconSensorPassHost`, ~6342) return 1.0f;
+   the Lua host keeps the set values in private `simplified_recon_74_` / `simplified_sonar_78_`
+   (`include/bsp/game_hosts_lua.hpp` ~1443). Needs two public getters there (asked the lead for the loan; exact
+   text in the request), then `return kXxxBound ? lua.simplified_recon_multiplier() : 1.0f;` behind an OFF switch
+   (the binding needs the Impl's `lua`), pair on a BSM row that calls the setter, flip by verdict.
+2. **Blast gather distance** (205 open item): admit by the mesh AABB but measure the hull entry against the
+   node's shapes; ask the lead first.
+3. Rocket impact damage (202 open): MRocket's impact blast `0084BAD0` / fuze `0080A55D` unread.
+
+**Tools** (this tree's `local\`): `g39_ref_jobs.py` (win rows from config/win_orders), `g39_pair_jobs.py`
+(`prefix=dir ... -- MISSION:frames:tag`), `g39_u1e_jobs.py`, `g39_lo_build.ps1` (sequential incremental
+one-switch-OFF exports into `local\g39_lo`, exe copies per name), `g39_extract_diff.py`, `g39_doc_move2.py`,
+`g39_rocket_devices.py`; `g38_ends.py` and `g36_queue.ps1` as before. Export dirs `g39_rk0/1/2`, `g39_lo` are
+reusable (incremental `pair_export --out`).
