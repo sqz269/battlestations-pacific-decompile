@@ -23,8 +23,8 @@ compare is unordered.
 | `00852740` | `submarine_is_below_band1_for_kind0e_00852740` | False for a null argument or one whose +8h is not 0Eh. Otherwise `y < float(band1 + 2.0)`. |
 | `008527A0` | `submarine_is_above_deck_gun_depth_008527a0` | `y > float(band0 - 3.0)` (00D7A2B0). |
 | `00852820` | `submarine_is_above_depth_charge_depth_00852820` | `y > (band1 + band0) / 3.0`, with no intermediate store. |
-| `00852B50` | `submarine_depth_step_shallower_00852b50` | **No Ghidra function** (INT3-padded leaf). `level > 0` -> `008528B0(level - 1)`. |
-| `00852B70` | `submarine_depth_step_deeper_00852b70` | **No Ghidra function**. `level < 3` -> `008528B0(level + 1)`. |
+| `00852B50` | `submarine_depth_step_shallower_00852b50` | Defined in Ghidra by cc13-gpr53b (unreferenced). `level > 0` -> `008528B0(level - 1)`. |
+| `00852B70` | `submarine_depth_step_deeper_00852b70` | Defined by cc13-gpr53b (unreferenced). `level < 3` -> `008528B0(level + 1)`. |
 | `00852970` | `periscope_debris_step_00852970` | Presentation. The periscope debris piece ("PeriszkopSullyesztoDolog:", built by 008533E0): state 0 captures the matrix and the owner's velocity. State 1 integrates the position, turns the basis when `|w| dt > 0.001` (00D7A23C), sets `vy -= 2.5 dt`, and decays v and w by 0.45 and 0.51 per second. |
 | `00852FF0` | `submarine_navigation_group_at_depth_00852ff0` | `0082ADA0(class)(depthLevel)`, not clamped. |
 
@@ -103,6 +103,78 @@ Host pointers, checked against the listing:
   table is 00E0B578 and the key is computed as `-0.0 - key`. A NaN key takes the default in the
   image (`COMISS`/`JB`); the host negates it instead. The rest of SEntityInit is not modelled.
 
+### 1.6 Follow-up pass cc13-gpr53b
+
+**New Ghidra functions.** `tools/ghidra_define_function.py` defined these under the write lock,
+with flow discovery not re-run; 'Non-Returning Functions - Discovered' stayed disabled. The
+event record is reports/defined_functions.json. Names were applied with
+`ghidra_annotate.py --apply`.
+
+| address | end (excl.) | name | reached from |
+|---|---|---|---|
+| `008571F0` | `00857472` | `BSP_TorpedoProjectile_UpdateWakeEmitter` | torpedo vtable 00D0C3E8 slot DCh (00D0C4C4) |
+| `00855B90` | `00855BAD` | `BSP_TorpedoProjectile_ShowNode` | slot 68h (00D0C450) |
+| `00855BD0` | `00855C15` | `BSP_TorpedoCreateMessage_ResolveTarget_Unreferenced` | no call or data reference |
+| `00852B50` | `00852B64` | `BSP_SubmarineUnit_DepthStepShallower_Unreferenced` | no reference |
+| `00852B70` | `00852B85` | `BSP_SubmarineUnit_DepthStepDeeper_Unreferenced` | no reference |
+
+To establish "no reference", I scanned the whole image for E8/E9 rel32 and absolute dwords
+(local/g53_refscan.py). The positive control was 008528B0: the scan found its call sites,
+including 00852B5E and 00852B7F.
+
+**`008571F0` is the wake emitter, not homing** (`torpedo_wake_step_008571f0`). Each step adds
+dt to +498h. While the water mode is non-zero and the emitter +334h exists, it places the
+emitter at the "bubor" point, sets emitter+54h to the speed and writes the forward row. The one
+branch on HomingVertTurnSpeed (+F4h) only manages the emitter's type-4 children: they are
+retired while the torpedo is below `2*swimdepth`, and the emitter is stopped (00867B10,
+00866B70) when it is shallower and has none. Presentation only, with no RNG.
+
+**The homing guidance is `00856BB0`** (fragment `torpedo_homing_turn_00856bb0`,
+`torpedo_homing_countdown_00856bb0`, `torpedo_homing_pick_target_00856c50`):
+
+- Countdown: `dt < +518h` gives `+518h -= dt`; otherwise `+518h += +514h - dt` and a scan runs.
+- Scan: needs +3BCh. It clears the target link, then walks `[008053C0([+3BCh]+54h)]+DE8h`.
+  Only `IsKindOf(8)` entities (submarines) count, and the nearest by squared distance wins.
+- Turns: +46Ch is set to the target yaw. With HomingVertTurnSpeed > 0, a submarine target and
+  `00852820(target)` false (target submerged), the hull rotates about the right row (+74h) by
+  `clamp(wrap(own_pitch - target_pitch), ±Vert*dt)`. It then rotates about the up row (+84h)
+  by `clamp(-wrap(own_yaw - target_yaw), ±Horz*dt)`, and the function returns without running
+  the depth and heading controllers. Otherwise it rotates about the right row by own_pitch.
+- **Defect in the existing model.** `src/bomb_torpedo_tick.cpp` `torpedo_steer_00856bb0`
+  (lines ~366-376) and docs/TORPEDO_TICK.md (lines 198-205) feed the PITCH error to the second
+  turn. Their ESP bookkeeping misses that 00438B10 is itself `RET 8` (00438B4C). Take E = ESP
+  at 00856E6C: `SUB ESP,8` followed by the call leaves E, and 0085E880 (`RET 8`) leaves E
+  again. So 00856EE8 reads [E+10h] (target yaw) and 00856EF3 reads [E+14h] (own yaw). The doc
+  itself says the yaw outputs live at those two slots. The second turn is a real bearing turn.
+  I did not edit the file; it needs its owner.
+- I checked the depth and heading controllers that follow (00856F83..0085714E) against the
+  same file. `torpedo_depth_velocity`, the ±5 clamp (00CE3850 / 00CFBC84), `atan2(fwd.x,
+  fwd.z)`, and `HeadingTurn * pi / 180 * modifier` all match.
+- Use in this installation: only "Torpedo Fido Homing Airplane" (`bulletclasses.lua`
+  RealisticTable[4] and the arcade twin) has HomingHorzTurnSpeed and HomingVertTurnSpeed (0.5
+  each). It is the aircraft-dropped anti-submarine torpedo, and it homes only on submarines.
+
+**`00853E10` was misnamed "Serialize"**. It is slot F0h of the submarine vtable (00D0C024), and
+it reads state rather than writing it. It is now ledger and Ghidra
+`BSP_SubmarineUnit_ActivateLoadState`, and `submarine_activate_00853e10` models it:
+
+- creation kind 3 (saved game) loads the "_submarine" table (the eight recovered field names
+  are unchanged);
+- creation kind 1 with an "AutoAttackTarget" property issues attackmove (00E08F78);
+- off a network client, a unit with DummyObjectID +6B8h >= 0 draws **U(0, 1) on stream 1**
+  (008540EA) and is ordered to moveto (00E08F68) a point 250 m ahead, at heading ±0.3 rad, at
+  band-1 depth;
+- finally +1279h = "has an IsKindOf(28h) child". This is the flag 008522C0 tests.
+
+Host comments in submarine_model.hpp and docs/SUBMARINE_MODEL.md still call it the save schema.
+
+**Small models.**
+
+- `00857C80` torpedo boat SEntityInit: +1188h = class+808h "TurboTime", +118Ch = 0, and an
+  optional director flags message. No turbo tick was found in this segment.
+- `00852300` / `00852350`: the HUD child counters.
+- `0085EA40`: the water mine's sensor category, always 4.
+
 ## 2. Adoption table (cc9 terms)
 
 | model | replaces (host file:line) | inputs and where the host gets them | RNG | OFF-switch prediction |
@@ -117,31 +189,42 @@ Host pointers, checked against the listing:
 | `00857160` / `00855CC0` | network create (the host has no MT torpedo create) | state, net ids | none | none in single player |
 | water mine (`0085EBC0`, `0085ECD0`, `0085F160`, `0085F6D0`, `0085F7A0`, `0085F500`) | nothing (the host has no water mine; src/game_hosts_ai.cpp:6538 lists only the class name) | class row; world water height (0078CF20); the ships list with each ship's inverse transform and class Length/Width/Height (+A0h/+A4h/+A8h); the depth-charge list | **two draws on stream 1**: activate U(1-r, 1+r) (off a client) and kill U(BlastDamageMin, Max) | OFF: unchanged. ON: missions that lay mines get rounds that sink to FloatingDepth, arm when nearly at rest, and detonate on ship boxes or depth charges. Every mine shifts stream-1 consumers by two draws. JM06 is not known to use mines (not checked). |
 | `00852970` debris | nothing (presentation) | node matrix, owner velocity | none | presentation only |
+| `00856BB0` homing (fragment) | `torpedo_steer_00856bb0` in src/bomb_torpedo_tick.cpp (not wired in the gunnery host: game_hosts_gunnery.cpp runs its own swim, :262) | target list (submarines), own and target pitch/yaw, the 00852820 test on the target, class Homing speeds, +514h/+518h | none here; the +518h phase comes from the 00856132 stream-1 draw | OFF: unchanged. ON: Fido torpedoes (JM06 air attacks on the player's boat) home in pitch and **bearing**, and stop depth-keeping while homed. Binding the existing model unfixed would turn by the pitch error instead. |
+| `00853E10` submarine activate | the units host's submarine spawn (no submarine-side AutoAttackTarget or DummyObjectID moveto found; the host reads AutoAttackTarget for squadrons, game_hosts_lua.cpp:3966) | creation kind and record, the scene property, DummyObjectID, heading, pose, band 1 | **stream 1, one draw per dummy-object submarine** (008540EA) | OFF: unchanged. ON: saved-game loads restore air/depth/periscope; spawned subs with AutoAttackTarget get an attackmove; dummy-object subs wander 250 m off at ±17 deg. |
+| `008571F0` wake | nothing (presentation) | emitter, bubble point, speed, depth | none | presentation only |
 
-No model draws from stream 0.
+No model draws from stream 0. For comparison, the effects band's sound instance 00873AE0 draws
+twice on stream 0 (00873B63, 00873C39); docs/CC13_EFFECTS.md and src/effects_cc13.cpp
+already model that (presentation stream).
 
 ## 3. Findings and open questions
 
 1. **0072C970 returns a swim depth.** See 1.2. Its ledger name `BSP_Gun_TorpedoLaunchHeading`
    should become a depth name; the owner of segment 40 decides.
-2. **Code without Ghidra functions** (all reached through vtables or tail calls; all INT3-padded):
-   00852B50 and 00852B70 (depth steps, modelled); 00855B90 (+464h node shown, 00B6DA70(1.0));
-   00855BD0 (net id -> entity, the 00F89A0C/00F89A60 tables); 008571F0 (the torpedo wake step:
-   +498h += dt, the "bubor" emitter, a homing-only branch on HomingVertTurnSpeed > 0, and the
-   2*swimdepth test). 008571F0 is the next item to model; creating these functions in Ghidra
-   needs the write lock and was left for the lead.
+2. **Horizontal homing turns by bearing, not pitch** (1.6). This must be fixed in
+   src/bomb_torpedo_tick.cpp and docs/TORPEDO_TICK.md before anyone binds homing.
 3. The host's 008568E0 comment (game_hosts_gunnery.cpp:9399) names the second limit wrongly;
    see the adoption table.
-4. 00857780 runs the base activate twice for a far-off start position. The packet did not
+4. 00853E10 is a load, not a save (1.6). The submarine_model comments that call it the save
+   schema should be updated by their owner.
+5. 00857780 runs the base activate twice for a far-off start position. The packet did not
    establish why. This is faithful to the bytes.
-5. Water-mine use in this installation's missions was not surveyed.
+6. Water-mine use in this installation's missions was not surveyed. The torpedo-boat turbo
+   (+1188h/+118Ch, TurboTime/TurboStrength) has no consumer in this segment.
+7. The effects band models in src/effects_cc13.cpp (docs/CC13_EFFECTS.md) have no ledger
+   records (e.g. 00873AE0); a `tools/ledger_backfill.py` run would add them.
 
 ## 4. Ledger
 
-29 `add-function` records (config/reconstruction shards for 0085xxxx). Of these, 25 point at
-`src/gameplay_seg53_cc13.cpp` (status `semantic_build_tested`) and 4 point at checked host
-sources (status `reconstructed_in_existing_source_checked_by_cc13_gpr53`: 00855F00,
-008566B0, 00852B90, 00853630). Ghidra was not annotated in this pass.
+- cc13-gpr53: 29 `add-function` records. Of these, 25 point at src/gameplay_seg53_cc13.cpp and
+  4 at checked host sources (00855F00, 008566B0, 00852B90, 00853630, status
+  `reconstructed_in_existing_source_checked_by_cc13_gpr53`).
+- cc13-gpr53b: 6 more function records (008571F0, 00853E10, 00857C80, 00852300, 00852350,
+  0085EA40) and one fragment record at 00856BB0. The fragment sits beside the existing
+  bomb_torpedo_tick record, which is untouched.
+- config/names: five new names (1.6), and one replacement: 00853E10
+  `BSP_SubmarineUnit_Serialize` became `BSP_SubmarineUnit_ActivateLoadState`. The old values
+  are in local/ghidra-annotations-*.json.
 
 ## 5. Verification
 
@@ -154,15 +237,16 @@ sources (status `reconstructed_in_existing_source_checked_by_cc13_gpr53`: 00855F
 
 Still open, in priority order:
 
-1. 008571F0 (torpedo wake and homing branch; not a Ghidra function) and the torpedo's
-   remaining slots 00855B90 / 00855BD0.
-2. 00853590 (periscope effects release on kill), 008533E0 (debris init), 00853110 / 008530E0
-   (destructor, list detach), 00852D30 (DescribeState: the same eight fields as the save schema
-   00853E10), 00853E10 itself (schema only).
-3. The turning-gun, gunnery-AI and artillery-director getters (0085xxxx-00864xxx). These are
-   cc9's gunnery lane; they were not touched.
-4. The effects band (00865xxx-0087xxxx): splash, thunderstorm, waterdrops, rain, light, flare,
-   trace line. These are presentation; under the RNG rule a binding needs its own stream.
+1. Fix `torpedo_steer_00856bb0`'s second turn (owner of src/bomb_torpedo_tick.cpp).
+2. Segment 53 code in cc9's gunnery lane, not touched: the turning gun, gunnery AI,
+   artillery-director getters and gunnery target records (0085xxxx-00864xxx). 00862CD0,
+   00864880 and 00864D90 draw from the RNG.
+3. `segment_box_hit_0085cdb0` (src/hit_narrowphase.cpp) has no record. It needs a check
+   against the listing before a pointer record is added.
+4. 00853590 (periscope effects release on kill), 008533E0 (debris init), 00853110 / 008530E0
+   (destructor, list detach), 00852D30 (DescribeState).
+5. Math helpers 0085C0F0..0085E8C0 (rotate about axis, orthonormalise variants, ellipsoid
+   and sphere-triangle tests). Torpedo homing and debris use 0085E880 / 0085C3F0.
 
 Functions in the segment that still have no reconstruction record (named, not reconstructed),
 grouped by name prefix:
@@ -174,8 +258,7 @@ grouped by name prefix:
 | `CG` | 56 | 00851F20, 00853010, 00853020, 00853030, 00853040, 00853380, 008533A0, 00856230, 00856250, 00856340, 00857D80, 00857D90, 00857DA0, 00857DB0, 00857E00, 00858150, 00858220, 008586E0, 0085EAE0, 0085EB00, 0085EB60, 00861BA0, 00862630, 00862750, 008627F0, 00863100, 00864660, 00864FD0, 00865CB0, 00866090, 00866280, 00866300, 00867060, 00869CF0, 0086A400, 0086B710, 0086B850, 0086B9A0, 0086BED0, 0086C240, 0086CD10, 0086CF10, 0086CF70, 0086D080, 0086E5A0, 0086E870, 0086FD70, 0086FF00, 008716E0, 00872280, 00873060, 008730E0, 00873420, 00873890, 00873A90, 00873E90 |
 | `BSP_ShipClass` | 1 | 00852200 |
 | `BSP_UnitInstance` | 2 | 00852210, 00857C20 |
-| `BSP_Unit` | 3 | 00852300, 00852350, 00859830 |
-| `BSP_SubmarineUnit` | 6 | 00852D30, 00852F10, 008530E0, 00853110, 00853590, 00853E10 |
+| `BSP_SubmarineUnit` | 5 | 00852D30, 00852F10, 008530E0, 00853110, 00853590 |
 | `TRIV` | 10 | 00852FB0, 00852FC0, 008561D0, 008561E0, 008561F0, 00856200, 00856210, 00858170, 0085EA30, 0086B980 |
 | `BSP_VehicleClassSubmarine` | 1 | 008531A0 |
 | `BSP_SubmarinePeriscopeDebris` | 1 | 008533E0 |
@@ -184,7 +267,7 @@ grouped by name prefix:
 | `Unwind@00856220` | 1 | 00856220 |
 | `Unwind@00856240` | 1 | 00856240 |
 | `BSP_MTorpedo` | 1 | 00856260 |
-| `BSP_TorpedoBoat` | 3 | 00857C80, 00857CD0, 00857F00 |
+| `BSP_TorpedoBoat` | 2 | 00857CD0, 00857F00 |
 | `BSP_TorpedoBoatClass` | 2 | 00857D60, 00857E20 |
 | `BSP_TraceLineEffectInstance` | 4 | 008580A0, 008583A0, 00858530, 008585D0 |
 | `BSP_NodeHandle` | 2 | 008580C0, 008658C0 |
@@ -197,6 +280,7 @@ grouped by name prefix:
 | `BSP_EffectTraceLine` | 3 | 00858700, 00859240, 00859370 |
 | `BSP_SessionMessage` | 5 | 00859410, 00859C80, 00859CC0, 00859FA0, 00859FE0 |
 | `BSP_TurningGun` | 13 | 00859550, 008598B0, 00859920, 00859A20, 00859B10, 0085A130, 0085A3D0, 0085A8B0, 0085AB50, 0085AD00, 0085B980, 0085BA30, 0085BB50 |
+| `BSP_Unit` | 1 | 00859830 |
 | `FUN` | 1 | 00859950 |
 | `BSP_Gun` | 2 | 0085A9A0, 0085B7D0 |
 | `BSP_ReconCategory` | 2 | 0085BCE0, 0085BD50 |
@@ -205,7 +289,6 @@ grouped by name prefix:
 | `BSP_Ellipsoid` | 1 | 0085C5D0 |
 | `BSP_Geometry` | 2 | 0085CDB0, 0085DF60 |
 | `BSP_WaterMine` | 7 | 0085E9C0, 0085EA50, 0085EAC0, 0085F120, 0085F1E0, 0085F270, 0085F2B0 |
-| `BSP_SensorCategory` | 1 | 0085EA40 |
 | `BSP_MWaterMine` | 1 | 0085EB20 |
 | `BSP_WaterMineShot` | 1 | 0085F1A0 |
 | `BSP_WaterMineClass` | 1 | 0085F310 |

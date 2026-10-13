@@ -213,7 +213,9 @@ struct GunFireGateInputs {
     int weapon_type_id{0};           // [gun+3F4h]+80h; kWeaponTypeTorpedo is 7
     float muzzle_world_y{0.0f};      // BSP_EntityPose_GetWorldPositionRefreshed's y
     bool muzzle_submerged{false};    // 00728A90's answer
-    bool muzzle_blocked{false};      // 005459B0's answer
+    // 005459B0's answer: weapon kind [[gun+3F4h]+80h] is 2, 3, 4 or 6 (the
+    // artillery kinds), so such a gun cannot fire with its muzzle under water.
+    bool artillery_kind_005459b0{false};
     int barrel_count{0};             // gun+448h "barrelNum"
     const float* reload_timers{nullptr}; // gun+414h, barrel_count entries
 };

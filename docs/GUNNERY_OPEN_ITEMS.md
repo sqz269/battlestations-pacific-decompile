@@ -13288,3 +13288,46 @@ end it idles, as the host does.
 
 **Verdict:** faithful; USN01 `p5_u1_e` is a plan casualty (it relied on a wasted bomb run on a dead ship). Keeper
 re-plans. The retest stays ON.
+
+## 205. The blast gather's box from the mesh bounds: `kBlastMeshBoundsBound`, OFF (lead queue item 3, from lua54's SQUADRON_LAND_TASK 5gg; cc9-gunnery39, 2026-10-13)
+
+The three blast gathers (`apply_impact_blast` for shells, 0084BAD0; `plane_crash_impact_0084bc60`; the kamikaze arm of
+`kamikaze_detonate_00819a20`) measured the burst against the class Width x Height x Length box about the unit origin.
+The image's gather (`00904470` -> `0098C630` -> `0098AAE0`) tests the sphere against the collision node's AABB, the
+mesh bounds (docs/EXPLOSION_RADIAL_DAMAGE.md). With VehicleClass[234]'s `Height = 5` a burst on TroopTrans3's upper
+works at y = 34.3 lay ~31 m above the box, past the Ohka's 30 m range (`reached=0`).
+
+`Impl::blast_box_distance` now serves all three. True: the model BoundingBox (`ship_model_slots(type).box`, the
+box the line-of-fire AABB test already uses, centre offset included) when the class model reads; else, and OFF,
+the class box. The shell gather's element walk is unchanged (it only runs for units the box admits).
+LABELLED: the node AABB is the model BoundingBox in the unit's pose frame, as at `0098B130`; the gather's shape set
+and falloff distance stay the 5gg gap. Counter: `summary mission gunnery blast mesh box uses=`.
+
+**Predictions.** OFF identical. ON: more units admitted (tall superstructures, masts), so blast hits, damage and
+possibly deaths rise wherever bursts land high or near; USNOS: TroopTrans3's Ohka reaches it (`reached>=1`); USN12
+moves (gun-heavy) but should keep its completion.
+
+**205 verdict: stays OFF** (cc9-gunnery39). `def1f3496` OFF (`local\g39_bb0_*`) against ON (`g39_bb1_*`):
+- USN12 (`usn12_s38_u12_p2`): completed 1534.87 s both; spread moved (deaths 107 -> 108, damage +517).
+- USNOS (`usnos_s45_os_k`, 200000 frames): OFF runs out without an end (560 deaths; the row does not complete on main
+  anyway); ON **fails at 2119.54 s** ("Game Over", HQ1) with 276 deaths. The first big mover is `NH` (a Tilman-class
+  battleship, model box 40 x 29 x 282 m): ON it takes 36 blast hits for 15802 from Shimotsuke's category-6 guns at
+  3170 m from 504 s and dies at 1482.72 s, i.e. flak bursts aimed at planes over NH now fall inside the taller box.
+  `blast mesh box uses=2394425`. No Ohka reached a transport in this run, so 5gg's own case was not exercised.
+- Judgement: the gate is now the image's node AABB, but the host still takes the hull entry's DISTANCE from that box
+  (0 anywhere inside it), where the image takes the burst's distance from the node's shapes. For a ship with tall
+  upper works the box is mostly air, so the change over-applies blasts. Mechanism not matched; OFF, recorded.
+  Next step (open): admit by the mesh AABB but measure the hull entry against the shapes (the shell path already
+  walks the GeomMesh elements; the crash and kamikaze arms do not).
+
+## 206. 005459B0 is a weapon-kind test: `kGunSubmergedArtilleryKindBound`, OFF (lead queue item 3, from cc13-fe5; cc9-gunnery39, 2026-10-13)
+
+`gun_aiming.hpp`'s `muzzle_blocked` was 00729A80's second submerged-fire predicate `005459B0`, which the host set false
+at both gate sites. The listing (`005459B0..005459D8`): `EAX = [[ECX+3F4h]+80h]`; 2, 3, 4 or 6 -> 1, else 0. Called
+at `00729B4A` only after the muzzle's world y failed `>= [00D7A24C]` (`00729B2F`) and `00728A90` answered no. So an
+artillery-kind gun (light/medium/heavy artillery, light artillery flak, in the category numbering the host's torpedo
+test already uses) cannot fire with its muzzle under water. Renamed `artillery_kind_005459b0`, fed from the gun
+category through `gun_artillery_kind_005459b0` behind the switch. `00728A90` stays false (not read here).
+
+**Predictions.** OFF identical. ON moves only rows where an artillery gun's muzzle goes below y = 0: a submarine's deck
+gun while submerged (USN06, JM06), perhaps a sinking ship's guns. Elsewhere identical.

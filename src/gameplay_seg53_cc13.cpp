@@ -174,6 +174,27 @@ bool submarine_is_above_depth_charge_depth_00852820(const SubmarineDepthFields& 
     return unit.world_y_100 > limit;
 }
 
+// 00853E2D..0085420A. 00CE3800 (0.5), 00D06888 (-0.3), 00CE69C8 (+0.3),
+// 00CF8850 (double 250.0). The y component of the direction is not scaled or
+// used: the point's y is band 1 (00854168..00854190).
+bool submarine_activate_00853e10(const SubmarineActivateInputs& in, const SubmarineActivateHost& host) {
+    if (in.creation_kind == 3) {
+        host.read_saved_submarine_table();
+    } else if (in.creation_kind == 1 && in.auto_attack_target >= 0) {
+        host.issue_attackmove(in.auto_attack_target);
+    }
+    if (!in.network_client && in.dummy_object_id_6b8 >= 0) {
+        const float r = host.uniform(1, 0.0f, 1.0f);
+        const float delta = 0.5f > r ? -0.30000001192092896f : 0.30000001192092896f;
+        const float heading = host.add_wrapped_angle(in.heading, delta);
+        const Vec3 dir = host.heading_to_direction_xz(heading);
+        const float ox = dir.x * 250.0f;
+        const float oz = 250.0f * dir.z;
+        host.issue_moveto(Vec3{ox + in.world_position.x, in.band1_1204, in.world_position.z + oz});
+    }
+    return in.has_catapult_child;
+}
+
 std::int32_t submarine_depth_step_shallower_00852b50(std::int32_t depth_level_1268) noexcept {
     return depth_level_1268 > 0 ? depth_level_1268 - 1 : -1;  // 00852B58 JLE
 }
@@ -432,9 +453,156 @@ void torpedo_create_message_apply_00857160(
     state.target_entity_4f8 = target;
 }
 
+// 0085721C..0085744D. The depth test is FLD y; FLD swimdepth; FADD ST0,ST0;
+// FCOMPI; JBE: 2 * swimdepth > y takes the retire loop.
+TorpedoWakeResult torpedo_wake_step_008571f0(const TorpedoWakeInputs& in, const TorpedoWakeHost& host) {
+    TorpedoWakeResult out;
+    out.run_time_498 = in.dt + in.run_time_498;  // 00857220..00857235
+    if (!in.water_mode_nonzero || !in.has_emitter_334) {
+        return out;                              // 0085723F, 00857254
+    }
+    host.place_emitter();                        // 0085725A..00857290
+    host.set_emitter_rate(host.speed());         // 00857295..008572AC
+    host.set_emitter_direction();                // 008572BF..008572EB
+    out.action = TorpedoWakeAction::Placed;
+    if (!(in.homing_vert_turn_speed_f4 > 0.0f)) {
+        return out;                              // 00857300 COMISS, JBE
+    }
+    const float twice = in.swim_depth_47c + in.swim_depth_47c;
+    if (twice > in.world_y_100) {
+        out.action = TorpedoWakeAction::RetireType4;  // 00857340..008573F2
+    } else {
+        out.action = in.has_type4_child ? TorpedoWakeAction::KeepType4
+                                        : TorpedoWakeAction::StopEmitter;  // 0085740A..00857448
+    }
+    return out;
+}
+
+// 00856C50..00856D6B. 004193E0 is x*x + y*y + z*z; the incumbent's value is
+// stored to a float (00856D2D) and the candidate replaces it when the
+// incumbent's is strictly greater (FCOMPI, JBE).
+int torpedo_homing_pick_target_00856c50(const Vec3& own_position,
+                                        const std::vector<TorpedoHomingCandidate>& list) noexcept {
+    int best = -1;
+    for (int i = 0; i < static_cast<int>(list.size()); ++i) {
+        const TorpedoHomingCandidate& c = list[static_cast<std::size_t>(i)];
+        if (!c.is_submarine) {
+            continue;
+        }
+        if (best < 0) {
+            best = i;  // 00856C74 -> 00856D40
+            continue;
+        }
+        const Vec3& b = list[static_cast<std::size_t>(best)].position;
+        const float bx = b.x - own_position.x;
+        const float by = b.y - own_position.y;
+        const float bz = b.z - own_position.z;
+        const float cx = c.position.x - own_position.x;
+        const float cy = c.position.y - own_position.y;
+        const float cz = c.position.z - own_position.z;
+        const float best_d2 = bx * bx + by * by + bz * bz;
+        const float cand_d2 = cx * cx + cy * cy + cz * cz;
+        if (best_d2 > cand_d2) {
+            best = i;
+        }
+    }
+    return best;
+}
+
+// 00856BBA..00856BF6 and 00856F5F.
+TorpedoHomingResult torpedo_homing_countdown_00856bb0(const TorpedoHomingInputs& in) noexcept {
+    TorpedoHomingResult out;
+    out.scan_countdown_518 = in.scan_countdown_518;
+    if (!(in.homing_horz_turn_speed_f0 > 0.0f)) {
+        return out;  // 00856BD0 JBE -> 00856F81
+    }
+    out.active = true;
+    const float countdown = in.scan_countdown_518;
+    if (!(in.dt >= countdown)) {  // FCOMI, JB (unordered takes it)
+        out.scan_countdown_518 = countdown - in.dt;  // FSUBP
+        return out;
+    }
+    out.scan_countdown_518 = countdown + (in.scan_interval_514 - in.dt);  // FSUBR, FADDP
+    out.scan = true;
+    return out;
+}
+
+namespace {
+// 00856E8D..00856ECD: limit = float(speed * dt); clamp to [-limit, limit].
+float homing_clamp(float error, float speed, float dt) {
+    const float limit = speed * dt;
+    if (error > limit) {
+        error = limit;
+    }
+    const float negative = -limit;
+    if (negative > error) {
+        error = negative;
+    }
+    return error;
+}
+}  // namespace
+
+// 00856D73..00856F7F.
+TorpedoHomingResult torpedo_homing_turn_00856bb0(const TorpedoHomingInputs& in,
+                                                 TorpedoHomingResult out,
+                                                 const std::function<float(float, float)>& wrap_subtract) {
+    if (!out.active || !in.has_target) {
+        return out;  // 00856D7A
+    }
+    out.steered = true;
+    out.commanded_heading_46c = in.target_yaw;  // 00856E25
+    if (in.homing_vert_turn_speed_f4 > 0.0f && in.target_is_submarine &&
+        !in.target_above_depth_charge_depth) {
+        const float pitch_error = wrap_subtract(in.own_pitch, in.target_pitch);   // 00856E7E
+        out.right_axis_turn = homing_clamp(pitch_error, in.homing_vert_turn_speed_f4, in.dt);
+        const float yaw_error = -wrap_subtract(in.own_yaw, in.target_yaw);        // 00856EFA, FCHS
+        out.up_axis_turn = homing_clamp(yaw_error, in.homing_horz_turn_speed_f0, in.dt);
+        out.homed = true;
+        return out;
+    }
+    out.right_axis_turn = in.own_pitch;  // 00856F6C
+    return out;
+}
+
 // 00855B59..00855B7D: FLD dt, FMUL qword 00D0C318, FSTP float.
 float torpedo_propeller_angle_00855b30(float dt) noexcept {
     return static_cast<float>(dt * kPropellerRate);
+}
+
+// 00857C83..00857CBE.
+TorpedoBoatTurboState torpedo_boat_sentity_init_00857c80(float class_turbo_time_808,
+                                                         bool world_flag_19d0,
+                                                         std::uint32_t director_flags_1cc) noexcept {
+    TorpedoBoatTurboState s;
+    if (world_flag_19d0) {
+        s.send_director_flags = true;
+        s.director_flags = director_flags_1cc & 0xFFFFFFFBu;
+    }
+    s.turbo_time_1188 = class_turbo_time_808;
+    s.turbo_flag_118c = false;
+    return s;
+}
+
+// 00852310..0085233B: both tests must answer AL != 0.
+int unit_count_devices25_ready_00852300(const std::vector<UnitChildDevice>& children) noexcept {
+    int n = 0;
+    for (const UnitChildDevice& c : children) {
+        if (c.is_kind_25 && c.answers_210_2d) {
+            ++n;
+        }
+    }
+    return n;
+}
+
+// 00852360..00852377.
+int unit_count_bomb_platform_children_00852350(const std::vector<UnitChildDevice>& children) noexcept {
+    int n = 0;
+    for (const UnitChildDevice& c : children) {
+        if (c.is_kind_25) {
+            ++n;
+        }
+    }
+    return n;
 }
 
 bool torpedo_boat_is_body_speed_above_3_00857d40(float body_speed) noexcept {
