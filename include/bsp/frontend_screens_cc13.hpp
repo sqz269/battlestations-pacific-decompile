@@ -17,6 +17,7 @@
 #include <cstdint>
 #include <string>
 #include <string_view>
+#include <vector>
 
 #include "bsp/frontend_menus.hpp"
 #include "bsp/native_string.hpp"
@@ -2191,5 +2192,98 @@ struct LobbyEventHost {
 };
 inline constexpr float kLobbyAutoScrollSpeed = 0.004f;  // 00CEC178
 void lobby_handle_gui_event_005e4490(void* self, std::uint32_t event, LobbyEventHost& host);
+// ---------------------------------------------------------------------------
+// Packet cc13-fe9 (docs/CC13_FE_9.md)
+// ---------------------------------------------------------------------------
+struct Fe9NarrativeRegisterHost {
+    virtual ~Fe9NarrativeRegisterHost() = default;
+    virtual void frontend_screen_register_004f71d0(void* screen) = 0;
+    virtual void* gui_load_page_00aa5840(std::string_view name, std::uint32_t a, std::uint32_t b) = 0;  // ECX = 004C12B0()
+    virtual void* find_child_by_name_00aa7e00(void* parent, std::string_view name) = 0;  // (name, 1)
+    virtual void voice_slot_stop_007026f0(void* slot) = 0;
+    // Widget vtable +54h(out): a pointer to the text's 16-byte colour.
+    virtual const std::array<float, 4>* text_colour_54(void* text) = 0;
+    // The message-box vector +90h (34h-byte elements): erase(begin, end) (005B8E10), then resize(1,
+    // a local element) (005BA6D0); returns the last element.
+    virtual void* message_boxes_reset_to_one(void* vector) = 0;
+    // A fresh Lua owner (00B66BD0), Open(libs), RunScriptWithOverrides(path, flag); globals reads.
+    virtual void* lua_owner_open_run(std::uint32_t libs, std::string_view script, std::uint32_t flag) = 0;
+    virtual double lua_global_number(void* owner, const char* name) = 0;  // GetGlobals, GetByName, GetNumber
+    virtual void lua_owner_close_00b669a0(void* owner) = 0;
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;
+};
+
+// 005BB130 BSP_HudNarrativeScreen_Register, __fastcall(ECX = screen), RET. 004F71D0; page
+// "GUI_blackout" (00AA5840(name, 1, 0)) -> +20h; its "Warnings_Group" -> "MessageBoxTemplate_Group"
+// -> +2Ch; voice slot +8h stopped (007026F0), +60h = 0; page "GUI_subtitle" -> +28h,
+// "textbox_main_Group" -> +30h with "textbox_main_Text" +34h and +38h (the same child twice),
+// "textbox_main_FrameBox" +3Ch, "textbox_main_Icon" +40h; +44h..+50h = the colour from +34h vtable
+// +54h. The message-box vector +90h is reset to one element: +0h = +30h, +4h frame box, +8h text,
+// +0Ch = 0.0f, +10h..+1Ch = the colour, byte +20h = 1, +24h = +28h = 0, +2Ch = 0.0f, +30h = -1. A
+// Lua owner (Open(1)) runs "Scripts/datatables/DialogGlobals.lua" (flag 0): +78h = DialogFadeTime,
+// +88h = 0.0f, +84h = -1, +7Ch = TempCharWait, +80h = TempWaitBase (each FSTP to a float), +8Ch =
+// 0.0f, +70h = -1, +74h = 0. +20h "Blackout_Icon" -> +0BCh; page "GUI_narrative" -> +24h,
+// "MissionInfoTitle_Group" -> +0ACh with "textbox_obj_Text" +0B0h and "textbox_obj_FrameBox" +0B4h;
+// +0D8h = 1.0f, +0D4h = 0.0f, +0DCh = 8.0f (00CE3918), +0C8h = +0C4h = +0C0h = 0.0f; +0BCh hidden;
+// byte +4h = 1; the owner closed.
+void hud_narrative_register_005bb130(void* screen, Fe9NarrativeRegisterHost& host);
+
+// Award-tracker hint texts (00601200): 005FFB20 on [tracker]+30h looks a hint up; the record copy
+// (005FE010) holds a default text +0h and per-language texts +20h (language 0) and +38h (language 1).
+struct HintTexts {
+    std::string fallback;   // +00h
+    std::string language0;  // +20h
+    std::string language1;  // +38h
+};
+
+struct Fe9HintListHost {
+    virtual ~Fe9HintListHost() = default;
+    virtual void list_box_clear_items_00a9bf90(void* list) = 0;
+    virtual void index_tree_erase_005fe9e0(void* tree, void* root) = 0;                    // ECX = screen+11Ch
+    virtual void* award_tracker_004e1ca0() = 0;
+    virtual void* tree_iterator_next_004b7de0(void* node) = 0;
+    virtual void* widget_clone_subtree_00aab4c0(void* widget, void* parent) = 0;
+    virtual void* find_child_by_name_00aa7e00(void* parent, std::string_view name) = 0;     // (name, 1)
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;
+    virtual std::array<float, 2> widget_size_00aa6740(void* widget) = 0;
+    virtual void widget_set_size_58(void* widget, std::array<float, 2> size) = 0;           // vtable +58h
+    virtual void widget_set_state_88(void* widget, std::uint32_t state, std::uint32_t zero, float one) = 0;
+    virtual void gui_text_set_ellipsized_00abb000(void* text, std::string_view source, float width,
+        std::uint32_t flag) = 0;
+    virtual void list_box_insert_row_00a9d750(void* list, void* row, std::uint32_t a, std::uint32_t b) = 0;
+    // 005FF5D0, ECX = screen+11Ch: map<int, NativeString>::operator[](index); the slot is assigned.
+    virtual void index_map_assign_005ff5d0(void* map, std::int32_t index, std::string_view text) = 0;
+    // The tracker's new-hint map +7Ch (case-insensitive): 005FD120 lower bound + compare; the
+    // 006002B0 subscript's +8h count; 005FD4B0 find, its node +14h string list copied (004D26A0).
+    virtual bool new_hints_contains_005fd120(std::string_view key) = 0;
+    virtual std::uint32_t new_hints_count_006002b0(std::string_view key) = 0;
+    virtual std::vector<std::string> new_hints_list_005fd4b0(std::string_view key) = 0;
+    // 004D48A0 copy of a history node's +14h string list.
+    virtual std::vector<std::string> history_sub_hints_004d48a0(void* node) = 0;
+    virtual HintTexts hint_texts_005ffb20(std::string_view key) = 0;
+    // [[00E188A8] + 18CCh + [00E188A8]+18ECh * 4] + 28h.
+    virtual std::int32_t language_index() = 0;
+    virtual void list_box_enable_paging_00a9e230(void* list, std::int32_t page) = 0;
+};
+
+// 00601200 BSP_HudPauseScreen_BuildHintList, __fastcall(ECX = pause screen), RET. Clears the list
+// +2Ch (00A9BF90) and the index map +11Ch (erase from the root, head links back to the head, size
+// 0). For each hint of the award tracker's history (map at tracker +94h, head +98h; key NativeString
+// at node +0Ch, sub-hint list at node +14h), with a running row index from 0: a template +38h row
+// with "hint_Text" (+30h = -0.0302083f (00CF3F80), +34h = 0.0f, byte +1F0h = 0) sized ((float)(w -
+// 1/48.0) (00CF0000), h), then ellipsized at -1.0f to the key without the six characters before
+// position 6 when it contains "AAAAAA" anywhere (substr(6, length - 6)), then sized (0.1979167f
+// (00CF3F7C), h); "felkialtojel_Text" hidden; appended; index map[index] = the key; index + 1. When
+// the tracker's new-hint map +7Ch holds the key with a non-zero count, "felkialtojel_Text" is shown and
+// the new-hint list copied. "button_Icon" takes state 0 (vtable +88h(0, 0, 1.0f)), or state 1 when
+// the key is in the expanded list +128h (case-insensitive; NativeString at node +8h); expanded hints
+// add one template +3Ch row per sub-hint: "hint_Text" sized ((float)(w - 1/60.0) (00CF3F68), h), byte
+// +0FCh = 0, text = the language's text (language 0 -> +20h, 1 -> +38h, when non-empty), else the
+// record's default (+0h) when non-empty, else the sub-hint itself, ellipsized at -1.0f, +30h =
+// -0.009375f (00CF3F64), +34h = 0.0f, +1F0h = 0, sized (0.1854167f (00CF3F60), h); "felkialtojel_Text"
+// hidden, then shown when the sub-hint is in the new-hint list; the index advances without a map
+// entry. Finally paging 10h (00A9E230); the scroll thumb +80h gets (its width, +84h) for up to 16
+// rows, else (its width, (float)(16.0 / rows * +84h)) through vtable +58h, stored at +94h.
+void hud_pause_build_hint_list_00601200(void* screen, Fe9HintListHost& host);
 
 }  // namespace bsp::cc13_fe1
