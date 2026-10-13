@@ -3273,4 +3273,58 @@ void library_select_order_of_battle_side_00511bf0(Raw screen, std::uint32_t side
                                             static_cast<float>(content - host.widget_size_00aa6740(screen.ptr(0x5AC))[1]));
 }
 
+void control_binding_bind_widgets_00555dc0(Raw screen, Fe8ControlBindWidgetsHost& host) {
+    const auto find = [&host](void* parent, std::string_view name) { return host.find_child_by_name_00aa7e00(parent, name); };
+    void* const list_listener = screen.p + 8;
+    void* const widget_listener = screen.p + 0x0C;
+    screen.ptr(0x1C) = find(screen.ptr(0x14), "Main_Listbox");
+    host.list_box_set_listener_00a9ac40(screen.ptr(0x1C), list_listener);
+    screen.ptr(0x24) = find(screen.ptr(0x1C), "MainListbox_Text");
+    screen.ptr(0x210) = find(screen.ptr(0x18), "column_FrameBox");
+    host.widget_set_visible_34(screen.ptr(0x210), 0);
+    screen.ptr(0x214) = find(screen.ptr(0x18), "listbox_FrameBox");
+    host.widget_set_visible_34(screen.ptr(0x214), 0);
+    screen.ptr(0x218) = find(screen.ptr(0x18), "clipbox_Clipbox");
+    screen.ptr(0x20) = find(screen.ptr(0x218), "Settings_Listbox");
+    host.list_box_set_listener_00a9ac40(screen.ptr(0x20), list_listener);
+    {
+        const Raw settings = raw(screen.ptr(0x20));
+        constexpr float kStep = 0.0027777778450399637f;  // 00CEE600
+        settings.at<float>(0x12C) = 0.0f;
+        settings.at<float>(0x130) = kStep;
+        settings.at<float>(0x134) = 0.0f;
+        host.list_box_set_field124_00a9ceb0(settings.p, 0.75f, 0);  // 00CEE07C
+        settings.at<float>(0x128) = kStep;
+    }
+    screen.ptr(0x1FC) = find(screen.ptr(0x18), "slider_Group");
+    screen.ptr(0x200) = find(screen.ptr(0x1FC), "scroll_up_Icon");
+    screen.ptr(0x204) = find(screen.ptr(0x1FC), "scroll_down_Icon");
+    screen.ptr(0x20C) = find(screen.ptr(0x1FC), "slider_FrameBox");
+    screen.ptr(0x208) = find(screen.ptr(0x1FC), "back_Icon");
+    for (const std::size_t off : {0x200u, 0x204u, 0x20Cu})
+        host.widget_set_listener_fields_00aa6bc0(screen.ptr(off), widget_listener, 0);
+    void* const scroller = screen.p + 0x1A0;
+    host.scroller_attach_content_00683790(scroller, screen.ptr(0x20));
+    const double back = host.widget_size_00aa6740(screen.ptr(0x208))[1];
+    host.scroller_attach_scroll_bar_00683380(scroller, screen.ptr(0x20C),
+                                             static_cast<float>(back - host.widget_size_00aa6740(screen.ptr(0x20C))[1]),
+                                             screen.ptr(0x200), screen.ptr(0x204));
+    screen.ptr(0x28) = find(screen.ptr(0x20), "setting_Group");
+    host.widget_set_visible_34(screen.ptr(0x28), 0);
+    for (std::int32_t k = 0; k < 3; ++k)  // main_Text, var_1_Text, var_2_Text
+        host.gui_text_set_localised_cstring_00abbe50(find(screen.ptr(0x28), host.image_string_table(0x00E086A0, k)), "", 0);
+    for (std::int32_t k = 3; k < 5; ++k)  // conflict_1_Group, conflict_2_Group
+        host.widget_set_visible_34(find(screen.ptr(0x28), host.image_string_table(0x00E086A0, k)), 0);
+    screen.ptr(0x2C) = find(screen.ptr(0x20), "slider_Group");
+    host.widget_set_visible_34(screen.ptr(0x2C), 0);
+    host.widget_set_listener_fields_00aa6bc0(find(screen.ptr(0x2C), "arrow_left_Icon"), widget_listener, 0);
+    host.widget_set_listener_fields_00aa6bc0(find(screen.ptr(0x2C), "arrow_right_Icon"), widget_listener, 0);
+    host.options_find_auto_control_group_005f0390(screen.ptr(0x2C), widget_listener);
+    screen.ptr(0x30) = find(screen.ptr(0x20), "toggle_text_Group");
+    host.widget_set_visible_34(screen.ptr(0x30), 0);
+    host.widget_set_listener_fields_00aa6bc0(find(screen.ptr(0x30), "arrow_left_Icon"), widget_listener, 0);
+    host.widget_set_listener_fields_00aa6bc0(find(screen.ptr(0x30), "arrow_right_Icon"), widget_listener, 0);
+    screen.ptr(0x34) = find(screen.ptr(0x14), "SelectedConflict_Text");
+}
+
 } // namespace bsp::cc13_fe3

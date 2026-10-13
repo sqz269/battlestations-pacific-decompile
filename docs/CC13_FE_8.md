@@ -70,6 +70,7 @@ by `tools/verify_report_calls.py` (0 failed).
 | 00503250 | `library_refresh_unlock_rows_00503250` | thiscall(screen, class id), RET 4 | |
 | 004FD500 | `library_find_entry_for_side_004fd500` | thiscall(library, ref*, dword[4]), RET 8, AL | ledger name CountAvailableMapsForSide |
 | 00511BF0 | `library_select_order_of_battle_side_00511bf0` | thiscall(screen, side), RET 4 | x87 +438h and scroll range; jump table 00511F10 |
+| 00555DC0 | `control_binding_bind_widgets_00555dc0` | fastcall(ECX screen), RET | 23 lookups, scroll bar |
 
 ### Leaderboards
 
@@ -178,6 +179,9 @@ by `tools/verify_report_calls.py` (0 failed).
   holds the int exactly; the only difference is double against extended rounding of the sum). The
   scroll range adds the x87 text height (00AB6BD0 returns in ST0) to the float `extra`, spills the sum
   as a double, subtracts h(+5ACh) and rounds to float.
+- 00555DC0: the five setting_Group children come from the pointer table 00E086A0..00E086B0 (`main_Text`,
+  `var_1_Text`, `var_2_Text`, `conflict_1_Group`, `conflict_2_Group`); the three texts are cleared with
+  00ABBE50(`"`, 0) and the two groups hidden. 005F0390 takes (ECX = the slider group, EDX = screen+0Ch).
 
 ## For cc9
 

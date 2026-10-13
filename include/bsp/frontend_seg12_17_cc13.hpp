@@ -1876,4 +1876,35 @@ struct Fe8OrderOfBattleSideHost {
 // content 0, and range = (float)((double)(text height(+0A8h) + extra) - h(+5ACh)).
 void library_select_order_of_battle_side_00511bf0(Raw screen, std::uint32_t side, Fe8OrderOfBattleSideHost& host);
 
+struct Fe8ControlBindWidgetsHost {
+    virtual ~Fe8ControlBindWidgetsHost() = default;
+    virtual void* find_child_by_name_00aa7e00(void* parent, std::string_view name) = 0;     // (name, 1)
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;             // vtable +34h
+    virtual void list_box_set_listener_00a9ac40(void* list_box, void* listener) = 0;
+    virtual void list_box_set_field124_00a9ceb0(void* list_box, float value, std::uint32_t zero) = 0;
+    virtual void widget_set_listener_fields_00aa6bc0(void* widget, void* listener, std::uint32_t zero) = 0;
+    virtual void scroller_attach_content_00683790(void* scroller, void* content) = 0;
+    virtual std::array<float, 2> widget_size_00aa6740(void* widget) = 0;
+    virtual void scroller_attach_scroll_bar_00683380(void* scroller, void* thumb, float span, void* up,
+        void* down) = 0;
+    virtual void gui_text_set_localised_cstring_00abbe50(void* text, const char* key, std::uint32_t flag) = 0;
+    // 005F0390, ECX = parent, EDX = listener (options_find_auto_control_group_005f0390).
+    virtual void options_find_auto_control_group_005f0390(void* parent, void* listener) = 0;
+    virtual const char* image_string_table(std::uint32_t table, std::int32_t index) = 0;     // [table + index*4]
+};
+
+// 00555DC0 BSP_ControlBindingScreen_BindWidgets, slot +14h of 00CEE524 (after 00555C60),
+// __fastcall(ECX = screen), RET. Lookups (parent -> store): +14h "Main_Listbox" -> +1Ch (listener
+// +8h); +1Ch "MainListbox_Text" -> +24h; +18h "column_FrameBox" -> +210h and "listbox_FrameBox" ->
+// +214h (both hidden); +18h "clipbox_Clipbox" -> +218h; +218h "Settings_Listbox" -> +20h (listener
+// +8h; +12Ch = 0, +130h = 1/360, +134h = 0, 00A9CEB0(0.75f, 0), +128h = 1/360); +18h "slider_Group"
+// -> +1FCh with "scroll_up_Icon" +200h, "scroll_down_Icon" +204h, "slider_FrameBox" +20Ch,
+// "back_Icon" +208h; listener +0Ch on +200h, +204h, +20Ch; scroller +1A0h: content +20h, bar
+// (+20Ch, (float)(h(+208h) - h(+20Ch)), +200h, +204h). +20h "setting_Group" -> +28h (hidden); its
+// "main_Text", "var_1_Text", "var_2_Text" ([00E086A0..A8]) get 00ABBE50("", 0); "conflict_1_Group"
+// and "conflict_2_Group" ([00E086AC], [00E086B0]) are hidden. +20h "slider_Group" -> +2Ch (hidden),
+// its arrows (listener +0Ch) and 005F0390(+2Ch, +0Ch); +20h "toggle_text_Group" -> +30h (hidden),
+// its arrows (listener +0Ch). +14h "SelectedConflict_Text" -> +34h.
+void control_binding_bind_widgets_00555dc0(Raw screen, Fe8ControlBindWidgetsHost& host);
+
 } // namespace bsp::cc13_fe3
