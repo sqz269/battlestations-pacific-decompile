@@ -376,6 +376,9 @@ struct GameScriptEntity {
     std::string think_name;       // +1D8h, null when empty
     bool delay_armed{false};      // +1DCh
     float delay_seconds{0.0f};    // +1E0h
+    // Packet cc9_l57_think_delay: bumped by every write of +1DCh/+1E0h (SetWait
+    // 008982C9, the clear 008985A6), so the walk can tell a re-armed delay.
+    std::uint32_t delay_generation{0};
     bool initialised{true};       // +5Ch, set by the construct at 0089886F
     bool blocked_5d{false};       // +5Dh
     bool blocked_5e{false};       // +5Eh, the byte DeleteScript tests at 00898BD9
@@ -407,6 +410,7 @@ struct GameScriptTimerSummary {
     std::size_t scripts_created{0};
     std::size_t think_registrations{0};
     std::size_t waits_armed{0};
+    std::size_t delays_rearmed_in_walk{0};   // packet cc9_l57_think_delay
     std::size_t clears{0};
     std::size_t deletes{0};
     std::size_t passes{0};

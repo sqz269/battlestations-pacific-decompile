@@ -16408,3 +16408,17 @@ Same tree: OFF `9f2469b01` (exe 946E85A55724, frozen at `local\l57_off`), ON = `
 - **LOMP10 (`lomp10_p3_l10_b.txt`, now 26000 frames; 20000 ends at 1000 s, before the 1006.93 s win): holds**, 1006.93 -> 978.43 s,
   dive releases 43 -> 71, guard logged.
 - **Verdict: ON** (the mechanism matches the bytes exactly; one spread miss recorded; USN01 g to the keeper).
+
+## 5gv. luaDelay/SetWait decremented inside the walk (packet `cc9_l57_think_delay`, cc9-lua57, 2026-10-13)
+
+docs/CC13_VER_8.md V3. 00929460 stores `delay - step` into +1E0h (009294C7..009294D7) for each walked entity on the timed branch,
+then calls the think (009294E5); a SetWait (008982C9) inside the think writes the new delay, first decremented on the next pass;
+an entity registered during the walk is on the pending list and not decremented. The host decremented every armed entity after
+the walk, re-armed and new delays included, so each timetable link fired one pass (0.05 s) early.
+
+**The switch (`kThinkDelayInWalkBound`, src/game_hosts_script_orders.cpp, committed OFF).** True: the live nodes on the timed
+branch are recorded with their pre-walk delay and an arm generation (`GameScriptEntity::delay_generation`, bumped by SetWait
+and the clear 008985A6); after the walk each gets `before - step` unless its generation changed.
+
+**Predictions.** Every timetable chain runs one step later per link: moved runs everywhere, mission timings shift by a few
+0.05 s steps per chain; no mechanism change in combat. USN02, PRCP01 and JM08 f must still complete.
