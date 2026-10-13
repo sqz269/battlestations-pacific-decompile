@@ -13222,6 +13222,29 @@ contact only (no fuze), so few kills; HVAR strafes add ship/fort damage. RNG: th
 only; the shared stream 1 is untouched, so gunnery spread elsewhere should not move unless a death moves.
 `kRocketHomingBound` ON on top: `guided` = `launches` against IsKindOf(5) targets, `homing_steps` > 0, a small
 hit-rate rise.
+- **Correction after the first pairs** (USN13/JM08/USN19 identical, 0 launches): every rocket set but the singles
+  (devices 59/60 HVAR/R4M, 22/416 Tiny Tim) is a `MultiBombPlatform` (125 Raiden/Shinden R4M, 126 Kikka R4M, 127
+  Corsair HVAR, 128 Avenger HVAR, 149 Mustang, 262 Hellcat; `local\g39_rocket_devices.py` over this installation's
+  arcade deviceclasses.lua), and the host's per-rack vectors hold single racks only, so cc13's per-rack kind list
+  never found one. The tick now walks its own list, `orx_rack_kind/bullet/ammo`, filled in the census for both
+  platform types (under the switch only), each with its own authored rounds (`rack_equipment_ammo`). LABELLED: the
+  image's rocket is one child record of the platform; the host keeps a count. USN13, JM08 and USN19 had no rocket
+  gun row in 450/1800/900 s; IJN14 and IJN23 do (bullet 8 / 11 on category 10), so the pairs move there.
+
+**202 verdict: both ON, by mechanism** (cc9-gunnery39). Exports of `41a8fa659`: `local\g39_rk0` (both OFF),
+`g39_rk1` (`kOpportunisticRocketBound`), `g39_rk2` (both). Rows, 12000 frames unless noted:
+- **IJN23** (the only row that launches): rk1 `launches=24 ignitions=24`, three equipped Corsairs (`plane equipment
+  type=102 bag=1`) each spend their whole 8-round HVAR platform (`left=7`, `6`, ... two per 0.2 s, the
+  RocketDelay pair) on a land target while strafing; `Rocket::air_step_0080a000` 1136 calls. Against rk0: deaths
+  identical (125), hit records 2613 -> 2638, damage +0.7, four unit-table rows (Watchhouse#2 sunk 1 s earlier).
+  rk2 adds `guided=24 homing_steps=1078` (angle 0.003 rad = SPNormal Rocket_Landfort 0.2 deg) and 4 fewer hits.
+- **Identical** (no rocket released): USN13 9000, JM08 36000, USN19 18000 (no rocket platform in the scene's
+  units), IJN14 (its Raidens and Corsairs carry `bag=0`, no rounds under 5ey), FINAL and PRCP08 (equipped
+  Corsairs, no strafe in 600 s). No win row has a `Type=Rocket` gun row (the reference logs `g39_ai_*`).
+- **Open (recorded, not blocking):** the rockets' hits mostly apply 0 (8/5/12 hits, 0.8 dealt on the three rack
+  rows): they go through the generic direct-hit draw (DamageMin 130..150) against the target's armour; whether
+  MRocket's impact also runs a `0084BAD0` blast (the class has Blast 30/30, 25 m) and the proximity fuze
+  `0080A55D` are unread. R4M air-to-air salvos were not exercised by any row.
 
 ## 203. The small gunnery items from cc13's band sweeps (lead queue item 3; cc9-gunnery39, 2026-10-13)
 
@@ -13242,11 +13265,3 @@ hit-rate rise.
    `build_guns` sites as gunnery38 prepared it. `local\g38_tier_census.py` re-run on this installation's
    arcade and realistic `bulletclasses.lua`: 32 and 26 Artillery classes, 0 change tier. Predicted
    gameplay-identical everywhere.
-- **Correction after the first pairs** (USN13/JM08/USN19 identical, 0 launches): every rocket set but the singles
-  (devices 59/60 HVAR/R4M, 22/416 Tiny Tim) is a `MultiBombPlatform` (125 Raiden/Shinden R4M, 126 Kikka R4M, 127
-  Corsair HVAR, 128 Avenger HVAR, 149 Mustang, 262 Hellcat; `local\g39_rocket_devices.py` over this installation's
-  arcade deviceclasses.lua), and the host's per-rack vectors hold single racks only, so cc13's per-rack kind list
-  never found one. The tick now walks its own list, `orx_rack_kind/bullet/ammo`, filled in the census for both
-  platform types (under the switch only), each with its own authored rounds (`rack_equipment_ammo`). LABELLED: the
-  image's rocket is one child record of the platform; the host keeps a count. USN13, JM08 and USN19 had no rocket
-  gun row in 450/1800/900 s; IJN14 and IJN23 do (bullet 8 / 11 on category 10), so the pairs move there.
