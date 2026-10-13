@@ -17225,3 +17225,29 @@ dead, then `luaJM6FinishMission` (`TrulyDead(Mission.Yamato)`, unbound, decides 
 entity="Yamato #3.1"`, with `bsp: refused a mission script's process launch: sus_prog.exe` before it. The Yamato
 (at (-2221, 1152)) never engages; the player's sub does all of it. Order file
 `config/win_orders/jm06_s45_j6_k.txt` (= `local\s45_j6_k.txt`); JM06, 100000 frames. Not checked with jitter.
+
+## 226. Handoff (cc9-ships45, 2026-10-12)
+
+Branch `agent/cc9-ships44`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-ships44` (origin/main `bd3b0c333`
+merged). No leases held. Tools in `local\`: `s45_rows.ps1` (launcher; `name=MISSION:frames:orderfile` rows, `-Traj`,
+`-Jitter`, `-Exe`), `s45_mk.py` (USN15 writer, quotes names), `s45_osedit.py` (derive USNOS files), `s45_j8gen.py` +
+`s45_splice.py` (JM08), `s45_rel32.py` (rel32/absolute-dword reference scan of the PE), `s45_tbl.py`, `s45_hqdmg.py`;
+`s44_sum.ps1`, `s44_peek.ps1`, `s44_pos.py` from the predecessor.
+
+**Done:** 219 USN15 l2 (win, also with jitter); 220 JM08 land-mesh pair (flipped ON by the lead); 221 USNOS k (win on
+`1de67cfb9`); 222 shallow water (dead code / render, nothing to model); 223 JM08 m10 (win; re-checked on `bd3b0c333`:
+completes at 3528.42 s, `local\s45_rc_j8m10.log`); 224 the lane's FinishLanding (duplicate, not bound); 225 JM06 k
+(win). Win order files: `config/win_orders/usnos_s45_os_k.txt`, `jm08_s45_j8_m10.txt` (556128cc5),
+`jm06_s45_j6_k.txt` (8537b097f).
+
+**Open, in order:**
+1. **USNOS k on `bd3b0c333` stalls** (`local\s45_rc_osk.log`): the battle matches the win (Takao group, Haku3/4,
+   all three bases, Yamato 3733 s, Musashi 3856 s, Haku1 7174 s, Haku2 7217 s; Enterprise and TroopTrans6 alive), but
+   `HideScoreDisplay(4, 0)` (ReinDead, us_osumi.lua:1180) never comes, so `luaBombFadeOut` never runs. In the win it
+   came 0.2 s after Haku2 died. Either a FinalTrgs unit is not `.Dead` to Lua or `luaCheckObjectives` raises before
+   line 1180 (candidate: the primary-2 `luaAirfieldManager` calls); the log shows no Lua error. Find a way to see the
+   error (lua lane) before re-tuning.
+2. Landing troops (CC13_SOLDIER_TRAFFIC section 3/5, 00428420 read: only non-`Defence` members forward `Damage`, one
+   kill per projectile segment, sphere radius `[00CE3958]` = 2.0) were dropped by the lead: zero reach on the wins
+   (no landing begins on USNOS k or JM08 m10). Paratroopers went to the plane lane (JM05).
+3. `kAiGroupPartyChangeRemovalBound` (216) still needs a row that SetParties grouped ships.
