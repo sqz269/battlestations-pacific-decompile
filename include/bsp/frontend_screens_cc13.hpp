@@ -1276,4 +1276,148 @@ void hud_pause_run_lua_command_005fd360(std::uint32_t length, char* data, LuaCom
 // buffer, close the state owner, destroy the reader.
 void lua_globals_ensure_reader_005f60f0(LuaCommandHost& host);
 
+// ---------------------------------------------------------------------------
+// HUD map and minimap object pools (batch 3)
+// ---------------------------------------------------------------------------
+
+struct MapPoolHost {
+    virtual ~MapPoolHost() = default;
+    virtual void invalid_iterator_00bf6713() = 0;
+    virtual void delete_object(void* object) = 0;  // (*vtable[0])(1)
+    virtual void* operator_new(std::size_t size) = 0;
+    virtual void* arrow_widget_construct_005a3610(void* memory, void* screen) = 0;
+    virtual void pointer_array_push_back_0059fad0(void* array_slot, void* const* value) = 0;
+    virtual void** map_subscript_00538910(void* map, std::uint32_t unit) = 0;
+    virtual void* unit_marker_construct_005a6ad0(void* memory, std::uint32_t unit, std::uint32_t scene, void* owner_20) = 0;
+    virtual void observer_register_pair_00694a60(std::uint32_t unit, void* observer) = 0;  // ECX, EDX
+    virtual void update_unit_icon_005adda0(void* screen, void* icon) = 0;
+    virtual void* tree_buy_head_node_005bdd40(void* tree) = 0;
+    virtual void frontend_construct_004f7180(void* screen) = 0;
+};
+// 005A3AA0: delete every marker object of the vector [+580h, +584h) (index
+// checked against the re-read size; each slot nulled), then erase the whole
+// range (the memmove of the empty tail is skipped; +584h = +580h). The
+// checked-iterator tests call 00BF6713 when first > last.
+void hud_map_delete_marker_objects_005a3aa0(void* screen, MapPoolHost& host);
+// 005A4A00 AcquireArrowWidget: ++(+548h); an index inside the pool (+544h)
+// returns the pooled widget; otherwise a new 28h-byte arrow widget (005A3610 with
+// the screen) is pushed onto the pool (0059FAD0) and returned.
+void* hud_map_acquire_arrow_widget_005a4a00(void* screen, MapPoolHost& host);
+// 005B2CB0, __thiscall(screen, unit), RET 4: the unit's icon slot in the map at
+// +4F4h (00538910); when empty, a new 1A0h-byte unit marker (005A6AD0 with unit,
+// [+0Ch], screen+20h), observer registration of the unit with screen+64h, and
+// +598h = 1. Then icon+08h = 1 and UpdateUnitIcon(icon).
+void hud_map_get_or_create_unit_icon_005b2cb0(void* screen, std::uint32_t unit, MapPoolHost& host);
+// 005C0810 HudMinimapScreen constructor: FrontEndScreen_Construct; +08h base
+// vtable 00CE3CD4 with +0Ch..+14h = 0 and +18h = 0; vtables 00CF1404 / 00CF13EC;
+// the icon map at +F8h (head from 005BDD40, nil byte +15h, size +100h = 0); and
+// the vector/array words +108h..+110h, +118h..+120h, +128h..+130h,
+// +138h..+140h, +148h..+150h, +180h, +184h zeroed.
+void* hud_minimap_screen_construct_005c0810(void* screen, MapPoolHost& host);
+
+// Two-page registers (batch 3). Page names read from the image.
+//   005E1820 MultiGameLobby: "FE_lobby" (00CF242C) -> +14h, "FE_lobby_settings"
+//            (00CF2418) -> +18h; vtable +14h; LoadWeatherTable 005E12A0;
+//            +2F4h = +2F0h = +2FCh = +2F8h = -1; +2C8h = +2CCh = +2C0h = +2C4h = 0;
+//            byte +2DCh = 0; +274h = 1.
+//   005F0250 Options: "_Options" (00CF38C4) -> +7Ch, "FE_options" (00CF38B8) ->
+//            +80h; +A8h = 0, bytes +25Ch = +78h = 0; then vtable +14h.
+inline constexpr std::string_view kLobbyPage = "FE_lobby";
+inline constexpr std::string_view kLobbySettingsPage = "FE_lobby_settings";
+inline constexpr std::string_view kOptionsBackgroundPage = "_Options";
+inline constexpr std::string_view kOptionsPage = "FE_options";
+struct LobbyRegisterHost : ScreenLifetimeHost {
+    virtual void load_weather_table_005e12a0(void* screen) = 0;
+};
+void lobby_register_005e1820(void* screen, LobbyRegisterHost& host);
+void options_register_005f0250(void* screen, ScreenLifetimeHost& host);
+
+// HudMinimapScreen exit and destructor (batch 3).
+struct MinimapLifetimeHost : ScreenLifetimeHost {
+    virtual void invalid_iterator_00bf6713() = 0;
+    virtual void delete_object(void* object) = 0;  // (*vtable[0])(1)
+    virtual void observer_unregister_pair_006952a0(std::uint32_t unit, void* observer) = 0;  // ECX, EDX
+    virtual void* tree_next_005bcf70(void* node) = 0;
+    virtual void tree_erase_subtree_005bdc20(void* tree, void* node) = 0;
+    virtual void tree_erase_range_005bfac0(void* tree, void* first, void* last) = 0;
+    virtual void hide_unused_markers_005c0bd0(void* screen) = 0;
+    virtual void callback_owner_destroy_00695870(void* owner) = 0;
+    virtual void destroy_native_string(void* header) = 0;  // the 0041DD20 body inlined at 005C056A
+};
+// 005C0E10 exit: for every icon entry (map at +F8h, key +0Ch, value +10h) delete
+// the value and unregister the unit from screen+8; then clear the map (the
+// inline _Erase: right subtree through 005BDC20, free the node, continue left)
+// and reset its head and size; +154h..+164h = -1; tail JMP HideUnusedMarkers.
+void hud_minimap_screen_exit_005c0e10(void* screen, MinimapLifetimeHost& host);
+// 005C0520 destructor: vtables 00CF1404 / 00CF13EC; destroy the page +1Ch; the
+// native string at +180h; the vectors +148h, +138h, +128h, +118h, +108h; the
+// icon map (erase range 005BFAC0, free the head, +FCh = +100h = 0); the
+// callback owner at +08h (00695870); FrontEndScreen_Destruct.
+void hud_minimap_screen_destruct_005c0520(void* screen, MinimapLifetimeHost& host);
+
+// OptionsScreen constructor and destructor (batch 3).
+struct OptionsLifetimeHost : ScreenLifetimeHost {
+    virtual void game_settings_construct_008d7710(void* settings) = 0;
+    virtual void game_settings_destroy_008d78d0(void* settings) = 0;
+    virtual void* malloc_00bf9f1a(std::size_t size) = 0;
+    virtual void free_00bf9dc8(void* block) = 0;
+};
+// 005F6030: FrontEndScreen_Construct; vtables 00CF3974 / 00CF3960 / 00CF3940;
+// +C4h = 0 and the vector +CCh..+D4h zeroed; GameSettings_Construct on the two
+// edit copies +D8h and +194h; bytes +264h = +265h = 0; +70h = 10 and +26Ch =
+// malloc(10) (the language-name buffer 005EF550 clears).
+void* options_screen_construct_005f6030(void* screen, OptionsLifetimeHost& host);
+// 005F1BB0: vtables back; free +26Ch (00BF9DC8); destroy the pages +7Ch and
+// +80h; GameSettings_Destroy on +194h then +D8h; +C4h = 0 and the vector +CCh
+// freed; +08h = 00CEB0FC; FrontEndScreen_Destruct.
+void options_screen_destruct_005f1bb0(void* screen, OptionsLifetimeHost& host);
+
+// HudPauseScreen constructor and destructor (batch 3).
+struct PauseLifetimeHost : ScreenLifetimeHost {
+    virtual void* list_allocate_sentinel_00582280(void* list) = 0;
+    virtual void* tree_buy_head_node_005fd1b0(void* tree) = 0;
+    virtual void* string_list_allocate_sentinel_004c3020(void* list) = 0;
+    virtual void string_list_clear_storage_004d05e0(void* list) = 0;
+    virtual void tree_erase_range_005fedc0(void* tree, void* first, void* last) = 0;
+    virtual void list_tidy_005822a0(void* list) = 0;
+};
+// 005FFCB0: FrontEndScreen_Construct; vtables 00CF3EF4 / 00CF3EE0 / 00CF3EC0;
+// list +64h (sentinel 00582280 at +68h, size +6Ch = 0); scroller at +9Ch; hint
+// map +11Ch (head 005FD1B0, nil byte +19h, size +124h = 0); pooled string list
+// +128h (sentinel 004C3020 at +12Ch, size +130h = 0).
+void* hud_pause_screen_construct_005ffcb0(void* screen, PauseLifetimeHost& host);
+// 005FF980: vtables back; pages +14h, +18h, +1Ch; clear the string list and
+// free its sentinel; erase the hint map (005FEDC0), free its head, zero +120h and
+// +124h; tidy the list +64h; +08h = 00CEB0FC; FrontEndScreen_Destruct. The
+// scroller at +9Ch is not destroyed here.
+void hud_pause_screen_destruct_005ff980(void* screen, PauseLifetimeHost& host);
+
+// ---------------------------------------------------------------------------
+// Mission tree tables (batch 3)
+// ---------------------------------------------------------------------------
+
+// The table reader's virtuals take 8-byte keys {kind, value} by value; kind 1
+// is an integer index.
+struct TableReaderHost {
+    virtual ~TableReaderHost() = default;
+    virtual void enter_04(std::uint32_t key_kind, std::uint32_t key_value) = 0;  // vtable +04h
+    virtual bool has_index_14(std::int32_t index) = 0;                           // +14h({1, index})
+    virtual std::int32_t read_int_10(std::int32_t index) = 0;                    // +10h({1, index}, {1, &out})
+    virtual void leave_08() = 0;                                                 // +08h
+    virtual void invalid_iterator_00bf6713() = 0;
+    virtual void erase_all_004685a0(void* vector) = 0;              // erase(begin, end)
+    virtual void insert_one_00441f30(void* vector, void* where, const std::int32_t* value) = 0;
+};
+// 005C4AD0 ReadIntVector, __thiscall(reader, Key key, vector*), RET 0Ch: clear
+// the vector {+04h first, +08h last, +0Ch end} (checked first <= last), enter
+// the key, then for index 1, 2, ... while the reader has it: read the integer
+// into the key argument's stack slot and push it (in place when capacity
+// remains, else 00441F30 at last); finally leave.
+void mission_tree_read_int_vector_005c4ad0(std::uint32_t key_kind, std::uint32_t key_value, void* vector,
+    TableReaderHost& host);
+// 005C4BE0 side-block constructor (154h bytes): byte +00h = 0, +04h = +08h = 0,
+// and the twenty vectors whose first/last/end words sit at +18h + 10h*k
+// (k = 0..19) zeroed.
+void mission_side_block_construct_005c4be0(void* block) noexcept;
+
 }  // namespace bsp::cc13_fe1

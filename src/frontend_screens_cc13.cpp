@@ -1591,4 +1591,232 @@ void lua_globals_ensure_reader_005f60f0(LuaCommandHost& host) {
     host.lua_state_owner_close_00b65e80();
     host.lua_reader_destroy_00441a20();
 }
+// ---------------------------------------------------------------------------
+// HUD map and minimap object pools (batch 3)
+// ---------------------------------------------------------------------------
+
+void hud_map_delete_marker_objects_005a3aa0(void* screen, MapPoolHost& host) {
+    for (std::uint32_t i = 0;; ++i) {
+        std::byte* first = read_field<std::byte*>(screen, 0x580);
+        if (first == nullptr) break;
+        const auto size = static_cast<std::uint32_t>((read_field<std::byte*>(screen, 0x584) - first) / 4);
+        if (i >= size) break;
+        void* slot = read_field<std::byte*>(screen, 0x580) + i * 4u;
+        if (void* object = read_field<void*>(slot, 0)) {
+            host.delete_object(object);
+            write_field<std::uint32_t>(slot, 0, 0);
+        }
+    }
+    std::byte* first = read_field<std::byte*>(screen, 0x580);
+    std::byte* last = read_field<std::byte*>(screen, 0x584);
+    if (first > last) host.invalid_iterator_00bf6713();
+    if (read_field<std::byte*>(screen, 0x580) > read_field<std::byte*>(screen, 0x584)) host.invalid_iterator_00bf6713();
+    if (first != last) write_field(screen, 0x584, first);  // the tail [last, last) moved is empty
+}
+
+void* hud_map_acquire_arrow_widget_005a4a00(void* screen, MapPoolHost& host) {
+    const std::int32_t index = read_field<std::int32_t>(screen, 0x548) + 1;
+    write_field(screen, 0x548, index);
+    const void* pool = read_field<const void*>(screen, 0x544);
+    const std::int32_t size = pool == nullptr ? 0 : read_field<std::int32_t>(pool, 0x4);
+    if (index < size) return read_field<void*>(read_field<const void*>(pool, 0x0), index * 4u);
+    void* memory = host.operator_new(0x28);
+    void* widget = memory != nullptr ? host.arrow_widget_construct_005a3610(memory, screen) : nullptr;
+    host.pointer_array_push_back_0059fad0(at(screen, 0x544), &widget);
+    return widget;
+}
+
+void hud_map_get_or_create_unit_icon_005b2cb0(void* screen, std::uint32_t unit, MapPoolHost& host) {
+    void** slot = host.map_subscript_00538910(at(screen, 0x4F4), unit);
+    if (*slot == nullptr) {
+        void* memory = host.operator_new(0x1A0);
+        *slot = memory != nullptr
+            ? host.unit_marker_construct_005a6ad0(memory, unit, read_field<std::uint32_t>(screen, 0xC), at(screen, 0x20))
+            : nullptr;
+        host.observer_register_pair_00694a60(unit, at(screen, 0x64));
+        write_field<std::uint8_t>(screen, 0x598, 1);
+    }
+    write_field<std::uint8_t>(*slot, 0x8, 1);
+    host.update_unit_icon_005adda0(screen, *slot);
+}
+
+void* hud_minimap_screen_construct_005c0810(void* screen, MapPoolHost& host) {
+    host.frontend_construct_004f7180(screen);
+    write_field<std::uint32_t>(screen, 0x08, 0x00CE3CD4u);
+    for (std::size_t offset : {0x0Cu, 0x10u, 0x14u}) write_field<std::uint32_t>(screen, offset, 0);
+    write_field<std::uint8_t>(screen, 0x18, 0);
+    write_field<std::uint32_t>(screen, 0x00, 0x00CF1404u);
+    write_field<std::uint32_t>(screen, 0x08, 0x00CF13ECu);
+    void* tree = at(screen, 0xF8);
+    void* head = host.tree_buy_head_node_005bdd40(tree);
+    write_field(tree, 0x4, head);
+    write_field<std::uint8_t>(head, 0x15, 1);
+    reset_head_links(head);
+    write_field<std::uint32_t>(tree, 0x8, 0);
+    for (std::size_t offset : {0x108u, 0x10Cu, 0x110u, 0x118u, 0x11Cu, 0x120u, 0x128u, 0x12Cu, 0x130u, 0x138u,
+                               0x13Cu, 0x140u, 0x148u, 0x14Cu, 0x150u, 0x180u, 0x184u})
+        write_field<std::uint32_t>(screen, offset, 0);
+    return screen;
+}
+void lobby_register_005e1820(void* screen, LobbyRegisterHost& host) {
+    host.frontend_register_004f71d0(screen);
+    write_field(screen, 0x14, host.load_page_00aa5840(kLobbyPage));
+    write_field(screen, 0x18, host.load_page_00aa5840(kLobbySettingsPage));
+    host.screen_bind_layout(screen);
+    host.load_weather_table_005e12a0(screen);
+    for (std::size_t offset : {0x2F4u, 0x2F0u, 0x2FCu, 0x2F8u}) write_field<std::int32_t>(screen, offset, -1);
+    for (std::size_t offset : {0x2C8u, 0x2CCu, 0x2C0u, 0x2C4u}) write_field<std::uint32_t>(screen, offset, 0);
+    write_field<std::uint8_t>(screen, 0x2DC, 0);
+    write_field<std::uint32_t>(screen, 0x274, 1);
+}
+
+void options_register_005f0250(void* screen, ScreenLifetimeHost& host) {
+    host.frontend_register_004f71d0(screen);
+    write_field(screen, 0x7C, host.load_page_00aa5840(kOptionsBackgroundPage));
+    write_field(screen, 0x80, host.load_page_00aa5840(kOptionsPage));
+    write_field<std::uint32_t>(screen, 0xA8, 0);
+    write_field<std::uint8_t>(screen, 0x25C, 0);
+    write_field<std::uint8_t>(screen, 0x78, 0);
+    host.screen_bind_layout(screen);
+}
+void hud_minimap_screen_exit_005c0e10(void* screen, MinimapLifetimeHost& host) {
+    void* tree = at(screen, 0xF8);
+    void* node = read_field<void*>(read_field<void*>(tree, 0x4), 0x0);  // begin()
+    for (;;) {
+        void* end = read_field<void*>(tree, 0x4);
+        if (node == end) break;
+        if (node == read_field<void*>(tree, 0x4)) host.invalid_iterator_00bf6713();
+        if (void* value = read_field<void*>(node, 0x10)) host.delete_object(value);
+        host.observer_unregister_pair_006952a0(read_field<std::uint32_t>(node, 0xC), at(screen, 0x8));
+        node = host.tree_next_005bcf70(node);
+    }
+    void* root = read_field<void*>(read_field<void*>(tree, 0x4), 0x4);
+    while (read_field<std::uint8_t>(root, 0x15) == 0) {
+        host.tree_erase_subtree_005bdc20(tree, read_field<void*>(root, 0x8));
+        void* left = read_field<void*>(root, 0x0);
+        host.free_block(root);
+        root = left;
+    }
+    void* head = read_field<void*>(tree, 0x4);
+    write_field(head, 0x4, head);
+    write_field<std::uint32_t>(tree, 0x8, 0);
+    write_field(head, 0x0, head);
+    write_field(head, 0x8, head);
+    for (std::size_t offset : {0x154u, 0x158u, 0x15Cu, 0x160u, 0x164u}) write_field<std::int32_t>(screen, offset, -1);
+    host.hide_unused_markers_005c0bd0(screen);
+}
+
+void hud_minimap_screen_destruct_005c0520(void* screen, MinimapLifetimeHost& host) {
+    write_field<std::uint32_t>(screen, 0x0, 0x00CF1404u);
+    write_field<std::uint32_t>(screen, 0x8, 0x00CF13ECu);
+    destroy_pages(screen, {0x1C}, host);
+    host.destroy_native_string(at(screen, 0x180));
+    for (std::size_t offset : {0x148u, 0x138u, 0x128u, 0x118u, 0x108u}) free_vector(screen, offset, host);
+    void* tree = at(screen, 0xF8);
+    void* head = read_field<void*>(tree, 0x4);
+    host.tree_erase_range_005bfac0(tree, read_field<void*>(head, 0x0), head);
+    host.free_block(read_field<void*>(tree, 0x4));
+    write_field<std::uint32_t>(tree, 0x4, 0);
+    write_field<std::uint32_t>(tree, 0x8, 0);
+    host.callback_owner_destroy_00695870(at(screen, 0x8));
+    host.frontend_destruct(screen);
+}
+void* options_screen_construct_005f6030(void* screen, OptionsLifetimeHost& host) {
+    host.frontend_construct_004f7180(screen);
+    write_field<std::uint32_t>(screen, 0x0, 0x00CF3974u);
+    write_field<std::uint32_t>(screen, 0x8, 0x00CF3960u);
+    write_field<std::uint32_t>(screen, 0xC, 0x00CF3940u);
+    for (std::size_t offset : {0xC4u, 0xCCu, 0xD0u, 0xD4u}) write_field<std::uint32_t>(screen, offset, 0);
+    host.game_settings_construct_008d7710(at(screen, 0xD8));
+    host.game_settings_construct_008d7710(at(screen, 0x194));
+    write_field<std::uint8_t>(screen, 0x264, 0);
+    write_field<std::uint8_t>(screen, 0x265, 0);
+    write_field<std::uint32_t>(screen, 0x70, 10);
+    write_field(screen, 0x26C, host.malloc_00bf9f1a(10));
+    return screen;
+}
+
+void options_screen_destruct_005f1bb0(void* screen, OptionsLifetimeHost& host) {
+    write_field<std::uint32_t>(screen, 0x0, 0x00CF3974u);
+    write_field<std::uint32_t>(screen, 0x8, 0x00CF3960u);
+    write_field<std::uint32_t>(screen, 0xC, 0x00CF3940u);
+    host.free_00bf9dc8(read_field<void*>(screen, 0x26C));
+    destroy_pages(screen, {0x7C, 0x80}, host);
+    host.game_settings_destroy_008d78d0(at(screen, 0x194));
+    host.game_settings_destroy_008d78d0(at(screen, 0xD8));
+    write_field<std::uint32_t>(screen, 0xC4, 0);
+    free_vector(screen, 0xCC, host);
+    write_field<std::uint32_t>(screen, 0x8, 0x00CEB0FCu);
+    host.frontend_destruct(screen);
+}
+void* hud_pause_screen_construct_005ffcb0(void* screen, PauseLifetimeHost& host) {
+    host.frontend_construct_004f7180(screen);
+    write_field<std::uint32_t>(screen, 0x0, 0x00CF3EF4u);
+    write_field<std::uint32_t>(screen, 0x8, 0x00CF3EE0u);
+    write_field<std::uint32_t>(screen, 0xC, 0x00CF3EC0u);
+    write_field(screen, 0x68, host.list_allocate_sentinel_00582280(at(screen, 0x64)));
+    write_field<std::uint32_t>(screen, 0x6C, 0);
+    host.scroller_construct_00683610(at(screen, 0x9C));
+    void* tree = at(screen, 0x11C);
+    void* head = host.tree_buy_head_node_005fd1b0(tree);
+    write_field(tree, 0x4, head);
+    write_field<std::uint8_t>(head, 0x19, 1);
+    reset_head_links(head);
+    write_field<std::uint32_t>(tree, 0x8, 0);
+    write_field(screen, 0x12C, host.string_list_allocate_sentinel_004c3020(at(screen, 0x128)));
+    write_field<std::uint32_t>(screen, 0x130, 0);
+    return screen;
+}
+
+void hud_pause_screen_destruct_005ff980(void* screen, PauseLifetimeHost& host) {
+    write_field<std::uint32_t>(screen, 0x0, 0x00CF3EF4u);
+    write_field<std::uint32_t>(screen, 0x8, 0x00CF3EE0u);
+    write_field<std::uint32_t>(screen, 0xC, 0x00CF3EC0u);
+    destroy_pages(screen, {0x14, 0x18, 0x1C}, host);
+    host.string_list_clear_storage_004d05e0(at(screen, 0x128));
+    host.free_block(read_field<void*>(screen, 0x12C));
+    write_field<std::uint32_t>(screen, 0x12C, 0);
+    void* tree = at(screen, 0x11C);
+    void* head = read_field<void*>(tree, 0x4);
+    host.tree_erase_range_005fedc0(tree, read_field<void*>(head, 0x0), head);
+    host.free_block(read_field<void*>(tree, 0x4));
+    write_field<std::uint32_t>(tree, 0x4, 0);
+    write_field<std::uint32_t>(tree, 0x8, 0);
+    host.list_tidy_005822a0(at(screen, 0x64));
+    write_field<std::uint32_t>(screen, 0x8, 0x00CEB0FCu);
+    host.frontend_destruct(screen);
+}
+// ---------------------------------------------------------------------------
+// Mission tree tables (batch 3)
+// ---------------------------------------------------------------------------
+
+void mission_tree_read_int_vector_005c4ad0(std::uint32_t key_kind, std::uint32_t key_value, void* vector,
+    TableReaderHost& host) {
+    if (read_field<std::uintptr_t>(vector, 0x4) > read_field<std::uintptr_t>(vector, 0x8)) host.invalid_iterator_00bf6713();
+    if (read_field<std::uintptr_t>(vector, 0x4) > read_field<std::uintptr_t>(vector, 0x8)) host.invalid_iterator_00bf6713();
+    host.erase_all_004685a0(vector);
+    host.enter_04(key_kind, key_value);
+    for (std::int32_t index = 1; host.has_index_14(index); ++index) {
+        const std::int32_t value = host.read_int_10(index);  // lands in the key's stack slot
+        std::byte* first = read_field<std::byte*>(vector, 0x4);
+        std::byte* last = read_field<std::byte*>(vector, 0x8);
+        const std::uintptr_t size = first == nullptr ? 0 : static_cast<std::uintptr_t>(last - first) / 4;
+        if (first != nullptr && size < static_cast<std::uintptr_t>(read_field<std::byte*>(vector, 0xC) - first) / 4) {
+            write_field(last, 0, value);
+            write_field(vector, 0x8, last + 4);
+        } else {
+            if (first > read_field<std::byte*>(vector, 0x8)) host.invalid_iterator_00bf6713();
+            host.insert_one_00441f30(vector, read_field<void*>(vector, 0x8), &value);
+        }
+    }
+    host.leave_08();
+}
+
+void mission_side_block_construct_005c4be0(void* block) noexcept {
+    write_field<std::uint8_t>(block, 0x0, 0);
+    write_field<std::uint32_t>(block, 0x4, 0);
+    write_field<std::uint32_t>(block, 0x8, 0);
+    for (std::size_t k = 0; k < 20; ++k)
+        for (std::size_t word = 0; word < 3; ++word) write_field<std::uint32_t>(block, 0x18 + 0x10 * k + 4 * word, 0);
+}
 }  // namespace bsp::cc13_fe1
