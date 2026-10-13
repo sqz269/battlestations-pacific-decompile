@@ -15819,8 +15819,8 @@ ON); packet 3 MOVEONPATH + leg altitude manager (5gd: `487cf8170` OFF, flipped O
 - The host then left that plane alive in state 6 for the rest of the run, still `members[0]` of its squadron. The
   wingman `|.-3` lost its own target ("target -> none (empty squadron)") and went aim -> follow, and the follow
   state (`009C1FD0`) flies the station `007F23A0` hands it off **its leader, on the water** near Airfield3. Station
-  height about leader + 25 m puts the wingman at ~16 m over the airfield, where its wing point met
-  `Storage - Raktar03 01` (329.54 s, (-8161, 11, -8736), 120 m from the Airfield3 site).
+  (seat local (60, 25, 70) in the formation log) keeps the wingman near the floating leader's height, 16 m over the airfield, where its wing point met
+  `Storage - Raktar03 01` (329.54 s, (-8161, 11, -8736), 108 m from the Airfield3 site).
 
 **What the image does at that contact.** `007CB7F0` (BSP_Plane_OnWaterContact, listing read whole to `007CB9C2`):
 - `007CB81A`-`007CB82B`: `BL = 1` when the class's MinWaterSpd `desc+198h` is zero.
@@ -15856,3 +15856,50 @@ lands in the same step.
   by those planes and AA shots at floating planes fall.
 - ON, USN12 (win row): the same rule for any live ditching; the win should hold. Read the `plane water contact`
   lines before predicting a count.
+
+### 5gf, the pairs (cc9-lua54, 2026-10-12)
+
+Launcher `local\l54_lane.ps1` (row `os` = USNOS with `cc9-ships44\local\s45_os_k.txt`; `u12` now reads
+`config/win_orders/usn12_s38_u12_p2.txt`, the ships38 tree is gone). Exports `l54_W0` (e7f7a279d OFF), `l54_W1`
+(the switch ON). `BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`.
+- **First, the trace on main (`l54_T0_os`, 7000 frames, `BSP_PLANE_RATE_TRACE`).** On these orders the wingman's
+  crash moves to 332.74 s (`Multi Hangar 1`, (-8121, 10, -8804), 17 m) and it is **in aim**, not follow: its target
+  is the Betty `plane #1.5|.-2` on its Airfield3 approach (that Betty dies at 13 m, 333.99 s), and the aim law's
+  commanded height is the target's (5.3). So the low pass has two causes: (a) the aim law chasing a landing
+  bomber over its own airfield, which is the image's rule as read (no floor but `0099F1C0`'s terrain layer, which
+  holds no buildings); (b) in K4, the follow station off a leader floating on the water, which is the host defect.
+- **USNOS 9000, W0 vs W1:** pair_diff MOVED. Two live water contacts in W0 (`Enterprise_sqn01` and `|.-2`, both at
+  ~23 m/s after chasing the Betties down; `local\l54_live_water.py`) become powerlost deaths in W1 (330.64 s,
+  330.89 s; draw -1, c10 1000, no `007CA8A0` draw). In W0 the leader floated alive to the end of the run and `|.-2`
+  until 380.38 s, under ship fire: shots 16372 -> 11501 (Aki2 2653 -> 248, Aki1 1714 -> 196, Ada2 754 -> 42), and
+  those rounds' blasts had killed `Heavy AA 01` and `Heavy AA 03` (Aki1, 393 s and 405 s), which now survive.
+  Deaths 157 -> 156. The 332.74 s hangar crash stays (cause (a)); the prediction that it would go was wrong for
+  these orders, right for K4's chain.
+- **USN12 34000 (win row):** no live water contact in W0; gameplay identical; completes at 1534.87 s both ways,
+  the guard line ("refused a mission script's process launch: sus_prog.exe") logged on both.
+- **Verdict: the mechanism matches; flipped ON** (this commit). Open: (a) is faithful as read, so a fighter that
+  chases a landing bomber over its airfield can still meet a hangar.
+
+### 5gg. TroopTrans3's 0-damage Ohka (cc9-lua54, 2026-10-12, read only)
+
+`local\l53_K4_osx.log`: `Betty1|.-4_kz06` (c98, range 30) crossed TroopTrans3's mesh at (2505.8, **34.3**, 2165.3),
+`reached=0`. `plane_crash_impact_0084bc60` (`src/game_hosts_gunnery.cpp`) measures the burst against the hull box
+from the class row, and VehicleClass[234] ("US Troop Transport (Strafeable)", this installation's
+`vehicleclasses.lua`, 2026-05-09) has `Height = 5`, so the box's half-height is 2.5 m. A burst 34 m up (a mast or
+the upper works on the mesh) lies about 31 m above the box, past the 30 m range. **A host defect of the
+substitution, not of the sweep:** the image's gather (`00904470` -> `0098C630` -> `0098AAE0`) tests the sphere
+against the collision node's AABB (`node+13Ch`-`+150h`, the mesh bounds) and its shapes
+(docs/EXPLOSION_RADIAL_DAMAGE.md), and the struck node contains the burst. The shape set and the falloff distance
+are a labelled gap there, so the faithful distance is not established. Candidate (gunnery lane, routed to the
+lead): take the struck victim's vertical extent from the mesh bounds the sweep already queries, not the class
+`Height`. The same box serves the shells' blasts, so a mast hit by a shell loses its blast the same way.
+
+### 5gh. HintSystem (queue 3a, cc9-lua54, 2026-10-12, read only)
+
+`IsHintActive` (`008D2850`) is called by `usn_01_battle_of_eastern_solomons.lua` (865, 1750, 1773: hide the
+unit-switch, turbo and map hints) and by jm01/jm03/jm05/jm07/jm10 (`luaJM1IsHintActive` and siblings: the
+message queue holds dialogs and hints while a critical hint shows). None gates a phase, an objective or a win:
+the USN01 calls only hide hints, and the JM queues only order and delay dialog. `ShowHint` / `ShowHintForced`
+are unimplemented (`local\l53_B0_j6.log`), so no hint is ever active and the unimplemented `IsHintActive` returns no value (nil, `binding_trampoline` returns 0), which the JM
+wrappers read as "none". The image would delay queued dialogs while a critical hint shows; that is presentation
+timing, not flow. No binding made.

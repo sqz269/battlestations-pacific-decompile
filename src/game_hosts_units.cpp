@@ -5831,8 +5831,9 @@ struct GameUnitsHost::Impl {
     // 007CB8DC and 007CBE02 raise "powerlost" (00D059F8) through vtable[194h]
     // 007BBFA0 on a plane that reaches the water past 007BC5B0, and 007D0B80's
     // tail destroys it. OFF: the effect is a contract and a live plane floats
-    // in state 6, still its squadron's leader.
-    static constexpr bool kPlaneWaterPowerLostBound = false;
+    // in state 6, still its squadron's leader. ON by verdict (5gf: USNOS and
+    // USN12 pairs, mechanism matches).
+    static constexpr bool kPlaneWaterPowerLostBound = true;
     // Packet cc9_taskless_plan_arms (docs/TASKLESS_PLAN_ARMS.md): 0099D300 runs
     // its arms for a plane with no commanded target. OFF: the host returns
     // before any arm, which froze a task-less Zero after an avoidance repair.
