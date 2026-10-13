@@ -103,3 +103,63 @@ A first bounded batch of the engine helpers: `00414130` lerp, `00414220` vector3
 scale, `004142A0` add, `004191D0` and `004193E0` squared lengths and `004192E0` vector2 normalise. Each
 x87 expression was traced from the bytes with `sc2_x87.py`; the vector3 squared length keeps its partial
 sum in the register before the final float store. The new file is registered in `cmake/startup.cmake`.
+
+## Ghidra annotations
+
+Applied through `tools/ghidra_annotate.py` (prior values in `local/ghidra-annotations-*.json` of this
+tree; the previous ledger records stay in git history):
+
+- `00BD29C0`, `00BD2A50`, `00BD23E0`, `00BD2760`: `BSP_AssertionRecord_Construct`, `_Destroy`,
+  `_FormatContext`, `_FormatReport`. The earlier names (`BSP_NamedStringTree_*`, `BSP_LogMessage_Format`)
+  described the map and the builder, not the record.
+- `00494C30`: `STL_StringPairTree_EraseIterator_00494c30` (tagged as an xlen throw site).
+- `00AFDCF0`: `BSP_NativeParticleEmitter_DrawDebugAxes` (was `UpdateTransform`).
+- `00A84280`: `BSP_SoundResourceCacheRecord_Construct` (was `BSP_SoundResourceCache_ConstructLists`).
+
+## Counts
+
+| area | open at start | reconstructed and recorded | still open |
+|---|---|---|---|
+| water and weather (CC13_LEFT_1 list) | 11 | 11, plus the 5 map helpers | 0 |
+| terrain (CC13_LEFT_1 list) | 6 | 5 | `00ADC930` |
+| sound (Pass 3 list) | 17 named | 17 | the shadow/input bodies of segment 74 (below) |
+| segment 1 | about 125 untagged | 7 | the rest (below) |
+
+That is 52 reconstruction records, all `reconstructed_build_tested`. `./scripts/build.ps1` passes.
+
+## Handoff
+
+Branch `agent/cc13-left2`. Still open, in the suggested order:
+
+1. **`00ADC930`** (terrain visibility group from a source grid, 800h bytes, no caller). It walks the
+   source in 32 x 32 cells; for each 33 x 33 sample it sums the eight clamped neighbours (each index
+   divided by the source's vtable `+1Ch` / `+20h` scale) and, when a cell has any sample above
+   0.01 (`00D7A238`), builds a 44h u16 height block (vtables `00D5D2DC` / `00D5D314`, `00ADAF50` grid)
+   with offset `+6Ch`, scale `00D5D2C8 / (+78h - +6Ch)` and its reciprocal. The control flow is goto
+   heavy: read it block by block with `sc2_x87.py`.
+2. **Segment 74 leftovers** outside the sound list: shadow (`00A8A820`, `00A8A8C0`, `00A8A980`,
+   `00A8F3B0`, `00A8FF30`, `00A8FFF0`), input (`00A90530`, `00A92A20`, `00A93690`, `00A943D0`,
+   `00A97B30`, `00A99180`, `00A9A0B0`) and text (`00A96750`, `00A97140`, `00A97260`).
+3. **Segment 1** (`local/l2_sizes.py 0x00413d10 0x0042a830`). The autotest pair `00426650`
+   (`NextMpakScene`) and `00427190` (`Step`) next to `src/seg1_autotest_cc13.cpp`; the vector and
+   geometry helpers `00427C90`, `00427E30`, `00428090`; the voice bit packers `00429B00`, `0042A480`,
+   `00429140`; then the STL range and array templates.
+
+### For cc9
+
+Gameplay bodies in segment 1 this pass did not touch: the avoid-zone code (`00416270`
+`BSP_AvoidZoneOutline_WalkToCircle`, `00417E60`, `00417FA0`, `0041B4E0`, `0041BC20`, `0041D380`,
+`00421500` `BSP_AvoidZoneManager_Construct`, and the unnamed bodies `004166E0`..`00417990` and
+`0041A030`..`0041BD10` around them), `00428800` `BSP_Explosion_NotifyBlastSites` and `0042A7E0`
+`BSP_Plane_IsOnGround`.
+
+## Tools
+
+In this tree's `local/`:
+
+- `l2_twin.py`: compare two functions byte for byte, resolving each differing rel32.
+- `l2_asmf.py`: compact a `disasm-raw` listing (drops EH-state stores, collapses pooled releases).
+- `l2_esp.py`: rewrite `[esp + X]` as frame slots, given the callees' stack pops.
+- `l2_str.py` / `l2_consts.py`: read strings and DWORDs from the PE.
+- `l2_ledger.py`: add records from a `|`-separated file.
+- `l2_core.ps1`: build only `bsp_core`.
