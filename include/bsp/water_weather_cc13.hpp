@@ -2148,3 +2148,252 @@ void* w3_ocean_wave_field_create_wave_damp_object_00b9ea50(void* field, const fl
     const void* texture, void* device_00f8d394, NativeStringStorage& strings, W3_EngineCalls& calls);
 
 }  // namespace bsp::water_weather_cc13
+
+// ================================================================================================
+// Part g (cc13-left2, docs/CC13_LEFT_2.md): the bodies Part f left open. Read from the live
+// decompile with the listing checked for register arguments, pushes and x87. Build-tested only.
+// ================================================================================================
+namespace bsp {
+struct SingletonLifetimeCallbacks;
+}
+
+namespace bsp::water_weather_cc13 {
+
+// The map<string, string> instantiation at 0048xxxx/0049xxxx (traffic config and the assertion record
+// below) is a byte twin of the physical-index instantiation at 00BDxxxx: the bytes match except for
+// rel32 call targets (each pairing to the twin's callee) and SEH handler addresses (local/l2_twin.py).
+// Node 20h: links +0h/+4h/+8h, key string +0Ch, value string +14h, colour +1Ch, isnil +1Dh; the tree
+// header is {allocator word +0h, head +4h, size +8h}. Each wrapper calls the reconstructed twin.
+// 00485F50 STL_TrafficStringTree_Allocate: cdecl -> EAX node; twin 00BDABA0.
+void* w4_string_tree_allocate_node_00485f50();
+// 00480620 STL_TreeIter_Inc: __fastcall(ECX iterator {owner, node}); twin 00BD9860. A null owner or an
+// increment of the head reports 00BF6713, which returns.
+void w4_string_tree_iterator_increment_00480620(void* iterator, const SingletonLifetimeCallbacks& callbacks);
+// 00494EF0 STL_Tree_Erase: __thiscall(ECX tree, root) RET 4; twin 00BDF7A0. Right recursion, then the
+// pair (00489D50: value string, then key) and the node are released along the left spine.
+void w4_string_tree_erase_subtree_00494ef0(void* tree, void* root, NativeStringStorage& strings) noexcept;
+// 00494C30 (tagged STL_xlen_throw, actually erase(iterator)): __thiscall(ECX tree, out, owner, node) RET 0Ch
+// -> EAX out; twin 00BDFD80.
+void* w4_string_tree_erase_iterator_00494c30(void* tree, void* output, void* owner, void* node,
+                                             NativeStringStorage& strings, const SingletonLifetimeCallbacks& callbacks);
+// 0049A230 STL_Tree_EraseRange: __thiscall(ECX tree, out, first owner, first node, last owner, last node)
+// RET 14h -> EAX out; twin 00BE0C30. [begin, end) erases the whole tree from the root and resets the head;
+// any other range erases one node at a time through 00494C30.
+void* w4_string_tree_erase_range_0049a230(void* tree, void* output, void* first_owner, void* first_node,
+                                          void* last_owner, void* last_node, NativeStringStorage& strings,
+                                          const SingletonLifetimeCallbacks& callbacks);
+
+// Assertion record (2Ch), built by 00BD29C0 and consumed by 00BD2B30. 00BD26B0 (Part f) appends to its
+// message. Nothing in the image calls 00BD29C0, 00BD2760 or 00BD2B30, and no data references them, so
+// the record is dead machinery in this build; the layout is read from the bodies alone.
+struct W4_AssertionRecord {
+    std::uint32_t file_length;        // +0h  file string
+    char* file_data;                  // +4h
+    std::int32_t line;                // +8h  never written by 00BD29C0
+    std::uint32_t expression_length;  // +0Ch expression string
+    char* expression_data;            // +10h
+    std::uint32_t tree_allocator;     // +14h map<string, string> of context values
+    void* tree_head;                  // +18h
+    std::uint32_t tree_size;          // +1Ch
+    std::uint32_t message_length;     // +20h message string
+    char* message_data;               // +24h
+    std::int32_t level;               // +28h 0 WARNING, 1 DEBUG, 2 ERROR, 3 FATAL
+};
+static_assert(sizeof(W4_AssertionRecord) == 0x2C);
+
+// 00BD29C0 BSP_AssertionRecord_Construct, __thiscall(ECX record, const char* expression) RET 4 -> EAX:
+// file = {0, 0}; expression = 0041E870(expression); a new head node (00485F50) with isnil 1 and all three
+// links to itself; size 0; message = {0, 0}; level 1.
+W4_AssertionRecord* w4_assertion_record_construct_00bd29c0(W4_AssertionRecord* record, const char* expression,
+                                                          NativeStringStorage& strings);
+// 00BD2A50 BSP_AssertionRecord_Destroy, __fastcall(ECX record): release the message; erase [begin, end)
+// (0049A230); free the head; head = size = 0; release the expression, then the file.
+void w4_assertion_record_destroy_00bd2a50(W4_AssertionRecord* record, NativeStringStorage& strings,
+                                          const SingletonLifetimeCallbacks& callbacks);
+// 00BD23E0 BSP_AssertionRecord_FormatContext, __thiscall(ECX record, string* out) RET 4 -> EAX out: out =
+// {0, 0}; for each entry in order "<" key "=" value "> " (the literals through pooled temporaries, the key
+// and value appended directly when nonempty); then the message. Iterator checks as in the image: a null
+// or foreign owner, and each of the two dereferences of the head, report 00BF6713.
+void* w4_assertion_record_format_context_00bd23e0(const W4_AssertionRecord* record, void* out,
+                                                  NativeStringStorage& strings,
+                                                  const SingletonLifetimeCallbacks& callbacks);
+// 00BD2760 BSP_AssertionRecord_FormatReport, __thiscall(ECX record, string* out) RET 4 -> EAX out: a log
+// builder (004264A0) receives "<LEVEL>" (only for levels 0..3), " level assertion failed\n",
+// "Expression: " expression "\n", "File: " file " (" line ")\n", the message, then "\t" key ": " value "\n"
+// per entry (one owner check per pass and two head checks per dereference); out is copied from the
+// builder's text (the 00BD2390 shape) and the builder destroyed (00425F80).
+void* w4_assertion_record_format_report_00bd2760(const W4_AssertionRecord* record, void* out,
+                                                 NativeStringStorage& strings,
+                                                 const SingletonLifetimeCallbacks& callbacks,
+                                                 const char* null_format_01090ab4);
+// 00BD2B30 BSP_ErrorReporter_FailWithLocation, __fastcall(ECX record). When the handler 01090AB8 is set:
+// text = 00BD23E0(record); handler(ECX &text) (a register argument: the listing loads ECX with the
+// result and CALLs [01090AB8] with nothing pushed); release text. Otherwise: ")", "\", line: " and
+// " (file: \"" (0041E870 in that order), a copy of the file (00BD2390), the context text (00BD23E0),
+// then context + " (file: \"" + file + "\", line: " + line (004263B0) + ")" (004261A0), reported through
+// the 0109DBDC singleton (00BD2180) and BSP_ErrorReporter_Fail 00BF1F50; the ten temporaries are
+// released newest first. Both paths end by destroying the record (00BD2A50).
+struct W4_FailCalls {
+    // Loader zero-fill; its one writer is BSP_AutoTest_ParseTestName (004278C2). ECX text at the call.
+    void (*handler_01090ab8)(const void* text);
+    void* (*reporter_singleton_00bd2180)();
+    void (*reporter_fail_00bf1f50)(void* reporter, const void* text);
+};
+void w4_error_reporter_fail_with_location_00bd2b30(W4_AssertionRecord* record, const W4_FailCalls& calls,
+                                                   NativeStringStorage& strings,
+                                                   const SingletonLifetimeCallbacks& callbacks);
+
+}  // namespace bsp::water_weather_cc13
+
+namespace bsp {
+struct RandomState;
+}
+
+namespace bsp::water_weather_cc13 {
+
+// Builders of Part g. Engine routines beyond W3_EngineCalls, with the native operands in order.
+class W4_EngineCalls : public W3_EngineCalls {
+public:
+    // 00B86650 BSP_DrawSection_SetVertexLayout, __thiscall(ECX section, layout) RET 4.
+    virtual void draw_section_set_vertex_layout_00b86650(void* section, void* layout) = 0;
+    // 00B18AC0 BSP_Material_RegisterFloat4ArrayParameter, __thiscall(ECX material, const string* name,
+    // float* values, count) RET 0Ch. 00B18AA0 BSP_Material_RegisterFloat4Parameter, (ECX, name, value) RET 8.
+    virtual void material_register_float4_array_00b18ac0(void* material, const void* name, void* values,
+                                                         std::uint32_t count) = 0;
+    virtual void material_register_float4_00b18aa0(void* material, const void* name, void* value) = 0;
+};
+// Device slots used here beyond those listed in Part f: +40h layout* (const W4_DeclarationList*) and
+// +48h effect* (const string* name). Vertex buffers: +10h lock (a, b, c) -> data, +14h unlock; the locked
+// writer fields +8h data, +0Ch stride, +34h packed colour offset (negative when absent), +38h..+44h float
+// colour offsets. Index buffers: +0Ch lock (0, 0, 0) -> WORD*, +10h unlock. Declarations: +0CCh stride.
+struct W4_DeclarationList {
+    void* declarations[4];  // only [0] is stored; the image leaves [1..3] as stack garbage
+    std::uint32_t count;    // 1
+};
+
+// 00BAE2E0 BSP_WaterSprayResource_Construct, __thiscall(ECX resource, const definition*) RET 4 -> EAX.
+// Caller 0086D180. The definition holds six {data, count, capacity} arrays: +0h and +0Ch Vec2, +18h, +24h
+// and +30h floats, +3Ch DWORD counts, the last one's count (+40h) bounding every loop. Ref-counted base,
+// vtable 00D64094, +8h = +0Ch = 0; +14h = sum 4c (vertices) and +18h = sum 2c (triangles), with the
+// total sum T kept. Declaration "waterspray.mvfm"; vertex buffer device +5Ch(+14h, 1, decl); the
+// declaration released (no null test). The buffer is locked (+10h with 0, 0, 0) and filled with four 30h
+// vertices per sub-element j of each element i: {P.x, 0, P.y, s, t, Q.x, Q.y, A, B, 1.0f, r, j/c} where
+// P = +0h[i], Q = +0Ch[i], C = +18h[i], A = +24h[i], B = +30h[i], (s, t) = (-C, C), (-C, -C), (C, -C),
+// (C, C), r = one draw per sub-element of BSP_Random_UniformFloatRange 00BD2F10 on stream 0 (ECX 0 at
+// 00BAE4BD) over [-2pi, 2pi] (00D640C8 / 00CE3D9C), and j/c an x87 quotient of the unsigned j and c stored
+// as a float. Unlock (+14h); index buffer device +60h(6T, 1, 65h) filled {4n, 4n+1, 4n+2, 4n+2, 4n+3, 4n};
+// a mesh (0BCh slot) at +8h with vertex stream 0 and that index stream, each released after (no null
+// test); +0Ch = device +48h("waterspray.mshd"); +1Ch..+24h = 0.0f, +28h = 1.0e10f (00CE4970); +10h =
+// device +64h("p_bubbles_0002.dds", 0). The draw is routed through `random` (cc9 RNG rule): the image
+// shares the gameplay stream here, the source does not.
+struct W4_PresentationRandom {
+    void* context;
+    float (*uniform_range_00bd2f10)(void* context, float low, float high);
+};
+void* w4_water_spray_resource_construct_00bae2e0(void* resource, const void* definition, void* device_00f8d394,
+                                                 NativeStringStorage& strings, W4_EngineCalls& calls,
+                                                 const W4_PresentationRandom& random);
+
+// 00BA3BD0 BSP_OceanBeams_Initialize, __fastcall(ECX beams). Nothing when N (+2Ch) is 0. +0F8h = 6N,
+// +0F4h = 4N; texture device +64h(&+34h, 0) in slot 0 of material 00535320("beam.mshd") (texture released
+// when non-null); declaration "beam.mvfm"; +28h = device +40h({decl, count 1}); +24h = vertex buffer
+// device +5Ch(+0F4h, 1, decl) (old value released and cleared); declaration released; +20h = index buffer
+// device +60h(+0F8h, 1, 65h) (likewise); +1Ch = a draw section with the material (material released),
+// {+8h 4, +0Ch 0, +10h +0F4h, +14h 0, +18h 2N}; +14h = model "UnderwaterBeam" (184h slot), its root from
+// the owner (+0Ch, its +8h when non-null) and +138h &= ~3; indices {4n, 4n+1, 4n+2, 4n+1, 4n+3, 4n+2};
+// +18h = mesh with vertex stream 0 = +24h, index stream +20h; the section gets vertex stream +24h, layout
+// +28h, is rebuilt for the mesh (00B865A0) and appended; geometry (0, mesh, -1.0f, -1.0f). Beam records:
+// +0E0h = N, +0DCh = 0, +0E4h = operator new(N*14h), +0E8h = operator new(N*4) (each size saturated to
+// FFFFFFFFh on overflow) of pointers to the records, each record's +0Ch = +10h = -1.0f. Then +0DCh = N,
+// +0CCh = +7Ch, +0D0h = +80h, +0D4h / +0D8h = their x87 reciprocals when positive (0 otherwise), +50h
+// raised to 0.01f (00D7A238) when negative, +0F0h = +0ECh = -1.0f.
+void w4_ocean_beams_initialize_00ba3bd0(void* beams, void* device_00f8d394, NativeStringStorage& strings,
+                                        W4_EngineCalls& calls);
+
+// 00BA44F0 BSP_OceanWaterParticles_Initialize, __fastcall(ECX particles). Nothing when N (+20h) is 0.
+// +0C8h = 6N, +0C4h = 4N; texture device +64h(&+28h, 0); material 00535320("WaterParticle.mshd") with
+// float4 arrays (count 1) "cVolumeSize" +0CCh, "cVolumeCorner" +0DCh, "cTex1" +0ECh, "cTex2" +0FCh,
+// "cMyTime" +10Ch and float4 "cColor" +30h; parameter owner (particles, 0); slot 0 = texture, slot 1 =
+// null; texture released (no null test). Declaration "WaterParticle.mvfm"; +1Ch = device +40h layout;
+// +18h = vertex buffer device +5Ch(+0C4h, 1, decl) (old released and cleared), zeroed through its lock
+// for decl +0CCh * +0C4h bytes and unlocked; declaration released; +14h = index buffer (6N, 1, 65h);
+// a draw section {4, 0, +0C4h, 0, 2N} with the material; +10h = model "WaterParticles" with its root;
+// indices {4n, 4n+1, 4n+2, 4n+1, 4n+3, 4n+2}; a mesh with vertex stream 0 = +18h and index stream +14h; the
+// section gets vertex stream +18h and layout +1Ch and is appended (no rebuild); geometry (0, mesh, -1.0f,
+// -1.0f). Then the vertex buffer is locked again and every particle i draws three bytes from the module's
+// own Mersenne state 00E13A88 (seeded 4357 by 00CD88B0; random_next_u32_00ba2c20 inlined, guard first):
+// b = trunc(float(v * 2^-32) * 255.0) (x87, chop). Each of its four vertices k gets the colour b2 | b1 << 8
+// | b0 << 16 | (k << 6) << 24 at the packed offset (+34h) when it is not negative, else four floats
+// b0/255, b1/255, b2/255, ((k << 6) & 0FFh)/255 at +38h..+44h (the buffer object is re-read per vertex).
+void w4_ocean_water_particles_initialize_00ba44f0(void* particles, RandomState& state_00e13a88,
+                                                  void* device_00f8d394, NativeStringStorage& strings,
+                                                  W4_EngineCalls& calls);
+
+}  // namespace bsp::water_weather_cc13
+
+namespace bsp::water_weather_cc13 {
+
+// CRT routines the tracer builders call through x87 ST0, bound by the caller. 00BFA910 is _CIlog (its x87
+// path 00BFA968 is FLDLN2/FYL2X); 00BFEEEC is the second SSE2-dispatching _CI routine, applied to k*log(x)
+// so taken as _CIexp (its x87 path goes through the generic dispatcher 00C080F1; not confirmed from its
+// body); 00BF85B0 is the routine other reconstructions bind as floor.
+struct W4_CrtMath {
+    double (*log_00bfa910)(double);
+    double (*exp_00bfeeec)(double);
+    double (*floor_00bf85b0)(double);
+};
+// 00BAA0F0 BSP_SkinedWaterTracer_BuildWidthProfile, __thiscall(ECX resource, float* out, s, w, product, side)
+// RET 14h: writes one 40h vertex (its semantic model is tracer_build_width_profile_00baa0f0 above).
+using W4_TracerVertexWriter = void (*)(void* resource, float* out, float s, float w, float product, float side);
+
+// 00BAD150 BSP_WaterTracerResource_BuildSkinnedMesh, __thiscall(ECX resource, N, float k, BYTE skip_curves,
+// counts*, curve_b**, curve_a**) RET 18h. The one caller (00BADC70) passes skip_curves = 1.
+// +30h += N; declaration "watertracerskined.mvfm"; vertex buffer device +5Ch(+30h, 1, decl), declaration
+// released (no null test), locked (+10h with 0, 0, 0). step = float(1 / (N - 1)) (signed FILD); t starts at
+// 0. Ring i < N: e = k > 1.0 ? float(exp(float(float(log(t)) * k))) : t; m = max(float(resource +10h - 1,
+// unsigned), 1.0f); w = float(-e * m). Vertex j < counts[i] (re-read): s = float((j / (c - 1) - 0.5) * 2)
+// (unsigned j, signed FIDIV); product = 0, or, when skip_curves is 0, float(curve_a(e) * curve_b(s > 0 ?
+// s : -0.0f - s)) through each curve's vtable +8h (ECX curve, float) -> ST0; then 00BAA0F0 writes one
+// vertex with side -1.0f and one with 1.0f when s == 0 (UCOMISS, unordered counts as unequal), else one
+// with side 0 > s ? -1 : 1. t = float(t + step); T += c_i + c_(i+1) - 2 for i < N - 1. Index buffer device
+// +60h(3T, 1, 65h): strips between rings r and r+1 from (a, b, a+1) with a = sum(c + 1) of the rings
+// before and b = a + c_r + 1, each next triangle (y, z, y+1) except at mid = (c_r + c_(r+1) - 2) / 2 - 1
+// (signed), where it is (y+1, z+1, y+2). For each tracer point q < +10h: the leading triangles whose
+// three vertices all have +10h, +14h, +18h <= q (FCOMI against float(q)) are counted into +24h[q], and
+// +18h[q] = 1 + the highest index read (including the failing vertex), or 0 when none counted. Unlock
+// both; +0Ch = mesh (0BCh slot) with vertex stream 0 and the index stream, each released after.
+void w4_water_tracer_build_skinned_mesh_00bad150(void* resource, std::uint32_t rings, float k,
+    std::uint8_t skip_curves, const W2_Array* counts, void* const* curve_b, void* const* curve_a,
+    void* device_00f8d394, NativeStringStorage& strings, W3_EngineCalls& calls, const W4_CrtMath& crt,
+    W4_TracerVertexWriter write_vertex_00baa0f0);
+
+// 00BADC70 BSP_WaterTracerResource_Initialize, __thiscall(ECX resource, 44h-byte parameter block by value)
+// RET 44h -> EAX. Caller BSP_EffectWaterTracer_ReadLua 0086D180. The block, by stack offset: +0h points P,
+// +8h BYTE static, +0Ch DWORD (kept at +48h), +10h / +14h curve holders, +1Ch float k_mesh, +20h base
+// count n0, +24h float k_rings, +28h..+40h seven floats (+34h kept at +8h, +38h at +4Ch); +4h and +18h
+// are not read. Ref-counted base, vtable 00D63F94; +14h = 0; vectors +18h and +24h zeroed then resized to
+// P (00468050, bound) and cleared; effect +14h = device +48h("watertracerstatic.mshd" or
+// "watertracerskined.mshd"); +10h = P; R = 2P - 2 ring counts into a local vector: step = 1 / (R - 1) kept
+// as a double (unsigned FILD); x = float(i * step); count = n0 when k_rings == 0 (UCOMISS), else M =
+// max(float((1 - float(exp(float(float(log(x)) * k_rings)))) * n0), 3.0f), F = float(floor(M)), rounded
+// up by 1.0 when |float(M - F)| > 0.5, then _ftol2; +30h sums the counts. Static: 00BACBD0(resource, R,
+// k_mesh, 1, &counts, +0Ch, +10h, +14h, the seven floats); skinned: 00BAD150(resource, R, k_mesh, 1,
+// &counts, +10h, +14h). Then a draw section (60h, 00B85EE0 / 00B857F0; dereferenced without a null test)
+// {+8h 5, +0Ch..+18h 0} rebuilt for the mesh +0Ch, appended to it and released; the local vector freed
+// (its inlined shrink branches are dead for a non-negative capacity).
+using W4_TracerStaticBuilder = void (*)(void* resource, std::uint32_t rings, float k, std::uint32_t one,
+    W2_Array* counts, std::uint32_t a, std::uint32_t b, std::uint32_t c, float f0, float f1, float f2, float f3,
+    float f4, float f5, float f6);
+struct W4_TracerCalls {
+    W2_Resize resize_00468050;
+    W4_TracerStaticBuilder build_static_mesh_00bacbd0;
+    void (*build_skinned_mesh_00bad150)(void* resource, std::uint32_t rings, float k, std::uint8_t skip_curves,
+                                        const W2_Array* counts, void* const* curve_b, void* const* curve_a);
+    void* (*draw_section_allocate_00b85ee0)(std::uint32_t size);  // ECX size
+    void* (*draw_section_construct_00b857f0)(void* slot);
+};
+void* w4_water_tracer_resource_initialize_00badc70(void* resource, const std::uint32_t* parameters,
+    void* device_00f8d394, NativeStringStorage& strings, W3_EngineCalls& calls, const W4_CrtMath& crt,
+    const W4_TracerCalls& tracer);
+
+}  // namespace bsp::water_weather_cc13
