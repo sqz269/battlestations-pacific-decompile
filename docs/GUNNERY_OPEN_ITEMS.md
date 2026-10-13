@@ -13083,3 +13083,20 @@ not sink the destroyers under full-damage flak, where AH-with-falloff-false need
 (Dunlap 1404.74, Grayson 2184.41, Woodworth 2356.57, Cummings 2590.55 s). So ESMP08 on main needs a different
 allocation (destroyers taken earlier, while the big ships still draw the flak), not only re-targets. The image does not
 re-target a player squadron itself (009F8470's party gate), so these lines are the plan's job.
+
+## 198. Lead rulings on 197 applied (cc9-gunnery38, 2026-10-12)
+
+- **ON by mechanism (ruling a):** `kStrafeProfileActivationSeedBound` (O1), `kDogfightAvoidPickDrawBound`,
+  `kDogfightGunBurstDrawBound`. USN01 `p3_u1_z4` is a plan casualty of each; its re-plan goes to the wins keeper.
+  First divergences on USN01 (OFF = `local\g38_ah_u1.log`) for the keeper:
+  - O1 (`local\g38_o1on_wu1.log`): ConTBD1|.-3's post-drop strafe `gotowards -> aim` at 234.31 s (the leader's
+    re-seeded glide); Convoy1 dies at 283 s instead of 330, Convoy6 never (AH 836 s).
+  - Avoid pick (`local\g38_dfapon_wu1.log`): `dogfight Enterprise_sqn01 aim -> avoid_roll` becomes `avoid_turn`
+    (d=185.5); all six convoys die at AH's times, but phase 3 (escort to navpoint, this installation's
+    `usn_01_battle_of_eastern_solomons.lua` 706-740) never ends.
+  - Gun burst (`local\g38_dfgbon_wu1.log`): Convoy4's killer ConSBD1|.-2 lands 84 gun hits instead of 95 (the SBD's
+    gun-task burst clock, 009FCED1), so Convoy4 dies at 193.91 s instead of 193.26; Convoy1 and Convoy6 survive.
+- **BSM09** does not start in this harness: `startup failed: unit observer creator projection is unavailable:
+  unit=NEW_Cloud 01 creator=00000000 (no vehicle-class descriptor; a StationaryClass row carries no Type)`
+  (`local\g38_auoff_bsm09.log`). Whoever takes BSM09 needs that projection first.
+- n1 is held for the USN01 phase-2 explanation (next section).

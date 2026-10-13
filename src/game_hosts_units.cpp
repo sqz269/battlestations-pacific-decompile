@@ -5703,8 +5703,8 @@ struct GameUnitsHost::Impl {
     // against TurnAfterChance, 009A99C6 the avoid pick, 009FCED1 the gun burst
     // clock from the pilot's skill row. False: the midpoints, as before.
     static constexpr bool kDogfightTurnAfterDrawBound = true;   // GUNNERY 197: ON, USN01 win gameplay-identical
-    static constexpr bool kDogfightAvoidPickDrawBound = false;
-    static constexpr bool kDogfightGunBurstDrawBound = false;
+    static constexpr bool kDogfightAvoidPickDrawBound = true;   // GUNNERY 198: ON by mechanism (lead ruling a)
+    static constexpr bool kDogfightGunBurstDrawBound = true;   // GUNNERY 198: ON by mechanism (lead ruling a)
     // Packet cc9-gunnery38 (docs/CC13_AUDIT13_RECENT_FLIPS.md O1). The strafe
     // cruise profile 009CD020, run once per activation (the install and each
     // time the strafe task resurfaces after a tightturn or flikflak retires),
@@ -5713,7 +5713,7 @@ struct GameUnitsHost::Impl {
     // makes that call on the activation think. False: only the install's and
     // the go-towards enters' seeds, as before. The profile's +394h/+398h
     // gates and its every-unit 009CCED0(0) call are not hosted here.
-    static constexpr bool kStrafeProfileActivationSeedBound = false;
+    static constexpr bool kStrafeProfileActivationSeedBound = true;   // GUNNERY 198: ON by mechanism (lead ruling a)
     // ON since packet cc9_planner_heading_writes: with the torpedo moveto and
     // attackrun heading writes bound (kPilotStateHeadingWritesBound) the Kates
     // close again; pair PHW0/PHW1, docs/PLANNER_HEADING_WRITES.md section 6.
