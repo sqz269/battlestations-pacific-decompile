@@ -13100,3 +13100,28 @@ re-target a player squadron itself (009F8470's party gate), so these lines are t
   unit=NEW_Cloud 01 creator=00000000 (no vehicle-class descriptor; a StationaryClass row carries no Type)`
   (`local\g38_auoff_bsm09.log`). Whoever takes BSM09 needs that projection first.
 - n1 is held for the USN01 phase-2 explanation (next section).
+
+## 199. 009F8160's dead-target retest bound OFF: `kSquadronDeadTargetRetestBound` (lead queue item 5; cc9-gunnery38, 2026-10-12)
+
+Image (read here): `009F8470` (`BSP_SquadronAutoTarget_Tick`) calls `009F8160` with its own `this` (`009F8482 MOV ECX,ESI`),
+then `009F7C90`. In `009F8160`, for the seven ordnance classes and `[00E17BF2] == 0`: when `007ED790` (any member can
+drop) answers true and the object's `+3Dh` is clear, a resolved target that is absent or fails `007EE8F0` goes to
+`009F8412` (`+3Dh = 1`). `009F7C90` (`009F7D01`): `+3Dh` set and `007EE720` true -> (a kind-1Ch target re-issues a
+moveto, `009F7D1D..009F7D45`) -> `0071E430(current command, 1)`. `007EE720` asks each member's head task `vtable[20h]`;
+both the torpedo task (vtable `00D213C8`, slot `00D213E8`) and the dive task (`00D20E38`) hold `007B40F0` (`MOV AL,1;
+RET`), so the command ends on the tick its target dies. `009F8470`'s own re-target (`009F84A5..`) runs only for party
+slot 8 or an AI-held party (`00927F10`), or with the director's `+3Ch` and `+3Dh` (allowFire, allowMove) and the
+unit's `+370h == 2`; it is not bound here.
+
+Host: `bsp::kSquadronDeadTargetRetestBound` (`include/bsp/attack_commands.hpp`, OFF), run in
+`GameUnitsHost::run_spent_ordnance_rtb_0084e010`'s squadron loop: the leader's resolved command target, dead per the
+gunnery host, while a member still holds a rack round, ends the command through `end_command_0071e430(leader,
+command, true)` once per target (`squadron retest:` lines, `summary mission squadron retest`). LABELLED: 007EE8F0 is not
+re-asked; a null target is not taken as gone; depthcharge and the kind-1Ch moveto re-issue are not modelled.
+`attack_command_survives_retest` keeps its shape (the gate is the death test above).
+
+**Predictions (before any ON run).** ESMP08 (`l46_e8_orders2`, 90000 frames): `dead_targets` > 0 ON only (about the
+nine squadrons of 197); each ended command leaves its squadron with no attack command, so the loiter's `done` ticks
+fall and the `command target 0071EBF0 ... token="Washington"` lines stop after 1748 s for that squadron; whether the
+slot then accepts the plan's `order 3` lines is unknown. Outcome: ESMP08 still not completed (the plan has no order
+lines for those slots). USN12 win: exit 0/1 or a small move, completion held.

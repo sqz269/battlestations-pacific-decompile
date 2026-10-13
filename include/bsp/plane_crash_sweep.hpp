@@ -54,7 +54,7 @@
 // that other summary lines read).
 namespace bsp {
 
-inline constexpr bool kPlaneCrashSweepBound = false;
+inline constexpr bool kPlaneCrashSweepBound = true;  // ON: USN19/USN18/USNOS pairs (docs/SQUADRON_LAND_TASK.md 5gc)
 
 // 00CE3854 (float 3.0): 007C5F60's unit+9DCh for a launch spot (2.0, 00CE3850,
 // for a kind-45h base). The host arms it on a plane's first free-flight step.
