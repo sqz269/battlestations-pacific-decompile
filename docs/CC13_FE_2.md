@@ -213,3 +213,34 @@ and 0064A394..0064A3DF (after 0064A360). Not defined in this pass.
   series (docs/NATIVE_SESSION_MESSAGE_BASE_R177.md onward, which stops at 112).
 - STL instantiations over plain ints and rows (heap/sort helpers 0061D5C0..00626320, list/tree
   helpers 00659AA0..0066B2F0): library code; no record added.
+
+## Handoff (cc13-fe2, 2026-10-12)
+
+237 records (220 reconstructed in `src/ingame_gui_cc13.cpp`, 17 backfills), build-tested, call
+report 632 rows / 0 failed. Ghidra was not written (the functions already carry reviewed names;
+no new names were introduced, so no annotation batch was needed).
+
+Remaining reconstruction candidates in the two segments (ledger name, no record, no tag), by area:
+
+- Rewards: 0061F9D0 (debrief speech), 0061FBE0 (bind layout, see the fifth batch note),
+  00621870 (listbox selection), 00621C60 (refresh page), 00622360 (vehicle unlocks), 00623710
+  (date tokens), 00629D10 (register), 0062A970 (rank page).
+- Scene init enter 00637080 (decompile confused by the stack; read the listing).
+- Markers: 00638C60 (off-screen arrow, x87), 00639230, 006394B0, 006395E0, 00639810 (display
+  range: the distance comes back on the stack), 0063C110 (unit widget set, 1296 bytes of finds:
+  fe2_bind.py applies), 0063C620, 0063D1E0, 00640620, 00640A20, 00640D70, 00641910, 00641E30,
+  00642040, 00642960, 00642C20, 00643360, 006434E0. Several are cited by cc9's
+  game_hosts_hud_world.cpp as host calls; check that lane's leases first.
+- HUD root award ticker 00648060 / 00648AB0; ship screen 0064AE20 / 0064B170 (x87) / 0064B370 /
+  0064BB90; submarine 00650450, 00651370, 006515B0; unit icon frame 00652C80.
+- Support manager: 006567D0, 0065A2B0, 0065BBC0, 0065D220, 0065FBF0, 00660B10, 00661240,
+  006619E0, 00662470, 006735D0 (construct), 00674B80 (enter; outside this lease, next to cc9's
+  air-operations range), record helpers 00668540 / 006697A0.
+- Bomb and torpedo-boat view cameras 0067B4D0 / 0067C1A0; invite 0067D6E0, 0067D6B0; unit
+  library 0067E9A0, 0067F080, 0067F4D0, 00680520.
+- Session messages and STL instantiations: see "Not done in this pass".
+
+Tools: `local/fe2_records.py` (records), `local/fe2_calls.py` (call report), `local/fe2_bind.py`
+(page/find extraction; run with `--str` and check for two string pushes before one find),
+`local/fe2_dec.py` / `local/fe2_asmf.py` (batch decompile and listing). They live in the worktree's
+`local/` and are not committed.
