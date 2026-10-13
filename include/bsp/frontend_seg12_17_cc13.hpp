@@ -2819,4 +2819,95 @@ struct Fe11CarouselStepHost {
 // (+55Ch); otherwise every movie forwards (00AAC8C0) and only the frames show.
 void library_update_tutorial_movie_00515050(Raw screen, float rate, Fe11CarouselStepHost& host);
 
+struct Fe11PreviewModelLoadedHost : Fe8LuaHost {
+    using Mat4 = std::array<float, 16>;
+    // Empty log body 004254B0 (kept for the call order).
+    virtual void debug_print_004254b0(const char* format) = 0;
+    // operator new(1ACh) + 007135C0(0, resource vtable +8h(0, 1.0f)); null when the allocation fails.
+    virtual void* unit_part_instance_new_007135c0(void* resource) = 0;
+    virtual void model_groups_select_visible_00710bb0(void* instance, std::int32_t group) = 0;
+    virtual std::string format_string128_004f9a80(const char* format, std::int32_t value) = 0;
+    // 00B6F9A0, ECX = node: every descendant whose name matches (an empty name matches all).
+    virtual std::vector<void*> node_collect_descendants_00b6f9a0(void* node, std::string_view name) = 0;
+    virtual const char* node_name_00b6d800(void* node) = 0;                                  // header +4h, may be null
+    virtual void scene_node_set_visibility_00b6da70(void* node, float factor, std::int32_t flag) = 0;
+    virtual void node_set_scale_2c(void* node, const float* xyz) = 0;                       // vtable +2Ch
+    // 0071BA20, ECX = model (instance +160h): children whose name starts with the prefix.
+    virtual std::vector<void*> model_collect_children_by_prefix_0071ba20(void* model, std::string_view prefix) = 0;
+    virtual void* model_find_note_node_0071ad50(void* model, std::string_view name) = 0;
+    // Push onto the dword vector screen+424h (inline fast path, 00505D50 on growth).
+    virtual void rotor_vector_push(Raw screen, void* node) = 0;
+    virtual void debug_print_rotor_004254b0(std::int32_t index, void* node) = 0;            // "+Rotor %d=0x%x"
+    virtual void node_propagate_root_registration_00b6d890(void* node, void* scene) = 0;
+    // [[00E198AC]+70h]+0B8h list: 00A9CA00 item, vtable +28h()->+4h string (atol result unused).
+    virtual const char* hud_list_selected_text_00a9ca00() = 0;
+    virtual std::int32_t crt_atol_00bf8417(const char* text) = 0;
+    virtual void node_set_parent_00b6e680(void* node, void* parent) = 0;
+    virtual void model_instance_set_numbering_00711be0(void* instance, std::int32_t value) = 0;
+    virtual void* game_lua_owner_1a0c() = 0;
+    virtual std::string lua_string_or_default_00b685c0(void* object, const char* fallback) = 0;
+    virtual void debug_print_type_004254b0(const char* type, const char* ship) = 0;
+    // vtable +44h of a model root -> bounds {x, y, z, radius}.
+    virtual std::array<float, 4> node_bounds_44(void* node) = 0;
+    virtual bool lua_is_number_00b66050(void* object) = 0;
+    virtual double lua_get_number_00b66270(void* object) = 0;
+    virtual void set_preview_distance_00e084f8(float value) = 0;
+    virtual bool lua_is_table_00b661b0(void* object) = 0;
+    virtual bool lua_is_integer_00b66a60(void* object) = 0;
+    virtual bool lua_is_string_00b660a0(void* object) = 0;
+    virtual void* lua_new_object_00b65f50() = 0;
+    virtual void lua_iterate_first_00b67080(void* table, void* key, void* value) = 0;
+    virtual void lua_iterate_next_00b67190(void* table, void* key, void* value) = 0;
+    virtual bool lua_is_unbound_00b66420(void* table, void* key) = 0;
+    virtual std::array<float, 2> lua_get_vector2_00b679f0(void* object) = 0;
+    // 00718000, ECX = resource: the last point group named `name` with index `index`.
+    virtual void* resource_find_last_named_point_group_00718000(void* resource, std::string_view name,
+        std::int32_t index) = 0;
+    virtual std::array<float, 3> vector3_cross_004f9b30(const float* edx_operand, const float* stack_operand) = 0;
+    virtual void matrix_orthonormalize_basis_rows_0085dc80(float* matrix) = 0;
+    // operator new(60h) + 004FCFC0; null when the allocation fails.
+    virtual void* preview_job_new_004fcfc0() = 0;
+    virtual void native_string_assign(void* string, const char* text) = 0;                  // null text -> ""
+    virtual Mat4 rotation_y_00b646e0(float angle) = 0;
+    virtual Mat4 matrix_multiply_00413920(const Mat4& left, const Mat4& right) = 0;
+    // 00504D20 on 004FDE20(): (job +8h name, job).
+    virtual void loading_queue_submit_00504d20(void* name, void* job) = 0;
+    // 00B68D70 on a Lua object (dotted path, &found) and 00B66330(default) on the result.
+    virtual float lua_resolve_float_or_default(void* object, std::string_view path, float fallback, bool& found) = 0;
+    virtual void node_apply_animation_00b6e110(void* node, std::string_view name, float frame) = 0;
+    virtual void node_set_local_matrix_38(void* node, const float* matrix) = 0;            // vtable +38h
+    virtual void ref_array_push_00504870(Raw array, void* job) = 0;                         // screen +5C4h
+    virtual std::int32_t interlocked_decrement(std::int32_t* counter) = 0;                  // [00CE2220]
+    virtual void object_destroy_00(void* object) = 0;                                       // vtable +0h()
+    // 00B85200 (provisional name GetDiffuseColorByEffect), ECX = node, EDX = &name, (const float* rgba).
+    virtual void model_effect_diffuse_00b85200(void* node, std::string_view name, const float* rgba) = 0;
+};
+
+// 005072C0 BSP_TacticalLibraryPreview_OnModelLoaded, __thiscall(screen, resource, job), RET 8. The job is
+// the 60h preview model of 0050AA10 / this routine (+4h refcount, +8h mesh name, +10h resource, +14h part
+// instance, +18h mode, +1Ch class, +20h a 4x4 placement). +10h = resource; a part instance of it goes to
+// +14h (group 0); root = [[instance+160h]+0Ch]. Root descendants "fizika_00".."fizika_19" without
+// "ep_fizika" in their name and the model's "hajobelso" children get visibility 0 and scale 100000.0
+// (00CE4BC8). "rotor", "rotor0".."rotor3" note nodes get visibility 1 and join +424h; their
+// "rotor_still*" / "rotor_still_dam*" companions are hidden. The root is registered with the scene
+// +0Ch. Mode 0 (the vehicle): +48Ch = the instance, numbering 0; VehicleClass[+1Ch].Type ("unknown")
+// sets +4CCh = not one of MotherShip, BattleShip, Cruiser, Cargo, Destroyer, TorpedoBoat,
+// LandingShip, Submarine; job +54h = 50.0 for a non-ship, else 0; +84h = (float)(radius * (non-ship
+// ? 3.0 : 1.5)) from the root bounds; a non-ship's placement becomes identity with translation
+// (-0.0 - x, 50.0, -0.0 - z); a Submarine hides its "water" nodes; "szarny letorik" nodes are hidden;
+// +7Ch = UnitlibViewDistance when it is a number, else +84h, copied to [00E084F8]. Each integer-keyed
+// Platforms entry whose Gun[1] is an integer device with a string DeviceClass[device].Mesh and whose
+// resource point group "slot" with index <key> (00718000) has more than two points queues a mode-1 job for that mesh with the
+// placement RotY(-yaw) * basis (row 3 = p0, row 2 = p2 - p0, row 1 = 004F9B30(p2 - p0, p1 - p0),
+// orthonormalized; yaw = RestAngles[1] or the mean of Windows[1].Min/MaxHorzAngle; the vertical pair is
+// read and dropped). A non-ship plays "default" at PartAnims.Wings.1 (default 0) when that path
+// resolves. Mode 1 (a turret): the root is parented under the vehicle root ([[+48Ch]+160h]+0Ch) and the
+// vehicle's "underwater" nodes are hidden. Every mode then sets the root's placement (vtable +38h with
+// job +20h), keeps the job in +5C4h, drops the callback's reference (destroying the job at zero),
+// sets the vehicle's "gun" effect colour (0.5, 0.5, 0.5, 1.0), hides "belsocockpit" and shows
+// "kulsocockpit". Allocation failures (instance, job) are dereferenced in the image; the model
+// assumes success.
+void library_preview_on_model_loaded_005072c0(Raw screen, void* resource, Raw job,
+    Fe11PreviewModelLoadedHost& host);
+
 } // namespace bsp::cc13_fe3

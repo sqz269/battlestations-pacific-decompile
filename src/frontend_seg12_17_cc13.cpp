@@ -5195,4 +5195,225 @@ void library_update_tutorial_movie_00515050(Raw screen, float rate, Fe11Carousel
     }
 }
 
+void library_preview_on_model_loaded_005072c0(Raw screen, void* resource, Raw job,
+    Fe11PreviewModelLoadedHost& host) {
+    using Mat4 = Fe11PreviewModelLoadedHost::Mat4;
+    host.debug_print_004254b0("ModelLoadedCallback actdata: \"%s\" 0x%x,0x%x readedmodel=0x%x");
+    job.ptr(0x10) = resource;
+    void* const instance = host.unit_part_instance_new_007135c0(job.ptr(0x10));
+    void* const root = raw(raw(instance).ptr(0x160)).ptr(0x0C);
+    job.ptr(0x14) = instance;
+    host.model_groups_select_visible_00710bb0(instance, 0);
+    const float far_scale[3]{100000.0f, 100000.0f, 100000.0f};
+    for (std::int32_t i = 0; i < 0x14; ++i) {
+        const std::string name = host.format_string128_004f9a80("fizika_%02d", i);
+        for (void* const node : host.node_collect_descendants_00b6f9a0(root, name)) {
+            const char* const text = host.node_name_00b6d800(node);
+            if (text != nullptr && std::strstr(text, "ep_fizika") != nullptr) continue;
+            host.scene_node_set_visibility_00b6da70(node, 0.0f, 0);
+            host.node_set_scale_2c(node, far_scale);
+        }
+    }
+    void* const model = raw(instance).ptr(0x160);
+    for (void* const node : host.model_collect_children_by_prefix_0071ba20(model, "hajobelso")) {
+        host.scene_node_set_visibility_00b6da70(node, 0.0f, 0);
+        host.node_set_scale_2c(node, far_scale);
+    }
+    static constexpr const char* kRotors[5][3]{
+        {"rotor", "rotor_still", "rotor_still_dam"},
+        {"rotor0", "rotor_still0", "rotor_still_dam0"},
+        {"rotor1", "rotor_still1", "rotor_still_dam1"},
+        {"rotor2", "rotor_still2", "rotor_still_dam2"},
+        {"rotor3", "rotor_still3", "rotor_still_dam3"},
+    };
+    for (const auto& names : kRotors) {
+        if (void* const rotor = host.model_find_note_node_0071ad50(model, names[0])) {
+            host.scene_node_set_visibility_00b6da70(rotor, 1.0f, 0);
+            host.rotor_vector_push(screen, rotor);
+            auto* const first = static_cast<void**>(screen.ptr(0x428));
+            auto* const last = static_cast<void**>(screen.ptr(0x42C));
+            host.debug_print_rotor_004254b0(first == nullptr ? -1 : static_cast<std::int32_t>(last - first) - 1, last[-1]);
+        }
+        for (int k = 1; k < 3; ++k)
+            if (void* const still = host.model_find_note_node_0071ad50(model, names[k]))
+                host.scene_node_set_visibility_00b6da70(still, 0.0f, 0);
+    }
+    (void)host.node_collect_descendants_00b6f9a0(root, "");  // walked with bounds checks only
+    host.node_propagate_root_registration_00b6d890(root, screen.ptr(0x0C));
+    (void)host.crt_atol_00bf8417(host.hud_list_selected_text_00a9ca00());
+    const auto vehicle_root = [&] { return raw(raw(screen.ptr(0x48C)).ptr(0x160)).ptr(0x0C); };
+    const std::int32_t mode = job.at<std::int32_t>(0x18);
+    if (mode == 0) {
+        screen.ptr(0x48C) = instance;
+        host.model_instance_set_numbering_00711be0(instance, 0);
+        void* const globals = host.lua_owner_globals_00b67980(host.game_lua_owner_1a0c());
+        void* const classes = host.lua_get_by_name_00b67800(globals, "VehicleClass");
+        host.lua_release_00b67700(globals);
+        void* const entry = host.lua_get_by_index_00b67720(classes, job.at<std::int32_t>(0x1C));
+        void* const globals2 = host.lua_owner_globals_00b67980(host.game_lua_owner_1a0c());
+        void* const devices = host.lua_get_by_name_00b67800(globals2, "DeviceClass");
+        host.lua_release_00b67700(globals2);
+        void* const type_object = host.lua_get_by_name_00b67800(entry, "Type");
+        const std::string type = host.lua_string_or_default_00b685c0(type_object, "unknown");
+        host.lua_release_00b67700(type_object);
+        bool ship = false;
+        for (const char* const name : {"MotherShip", "BattleShip", "Cruiser", "Cargo", "Destroyer", "TorpedoBoat",
+                 "LandingShip", "Submarine"})
+            ship = ship || equals_case_insensitive(type, name);
+        screen.at<std::uint8_t>(0x4CC) = ship ? 0 : 1;
+        host.debug_print_type_004254b0(type.c_str(), ship ? "Ship" : "NotShip!");
+        const bool not_ship = screen.at<std::uint8_t>(0x4CC) != 0;
+        job.at<float>(0x54) = not_ship ? 50.0f : 0.0f;
+        const float radius = host.node_bounds_44(vehicle_root())[3];
+        screen.at<float>(0x84) = static_cast<float>(static_cast<double>(radius) * (not_ship ? 3.0 : 1.5));
+        if (not_ship) {
+            const auto bounds = host.node_bounds_44(vehicle_root());
+            const Mat4 placement{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -0.0f - bounds[0], 50.0f, -0.0f - bounds[2], 1};
+            for (std::size_t i = 0; i < 16; ++i) job.at<float>(0x20 + i * 4) = placement[i];
+        }
+        if (equals_case_insensitive(type, "Submarine") && !type.empty())
+            for (void* const node : host.node_collect_descendants_00b6f9a0(vehicle_root(), "water"))
+                host.scene_node_set_visibility_00b6da70(node, 0.0f, 0);
+        for (void* const node : host.node_collect_descendants_00b6f9a0(vehicle_root(), "szarny letorik"))
+            host.scene_node_set_visibility_00b6da70(node, 0.0f, 0);
+        void* const distance_probe = host.lua_get_by_name_00b67800(entry, "UnitlibViewDistance");
+        const bool has_distance = host.lua_is_number_00b66050(distance_probe);
+        host.lua_release_00b67700(distance_probe);
+        if (has_distance) {
+            void* const distance = host.lua_get_by_name_00b67800(entry, "UnitlibViewDistance");
+            screen.at<float>(0x7C) = static_cast<float>(host.lua_get_number_00b66270(distance));
+            host.lua_release_00b67700(distance);
+        } else {
+            screen.at<float>(0x7C) = screen.at<float>(0x84);
+        }
+        host.set_preview_distance_00e084f8(screen.at<float>(0x7C));
+        void* const platforms = host.lua_get_by_name_00b67800(entry, "Platforms");
+        if (host.lua_is_table_00b661b0(platforms)) {
+            void* const key = host.lua_new_object_00b65f50();
+            void* const value = host.lua_new_object_00b65f50();
+            host.lua_iterate_first_00b67080(platforms, key, value);
+            while (!host.lua_is_unbound_00b66420(platforms, key)) {
+                if (host.lua_is_integer_00b66a60(key)) {
+                    bool bad = true;
+                    void* const gun = host.lua_get_by_name_00b67800(value, "Gun");
+                    if (host.lua_is_table_00b661b0(gun)) {
+                        void* const gun2 = host.lua_get_by_name_00b67800(value, "Gun");
+                        void* const first = host.lua_get_by_index_00b67720(gun2, 1);
+                        bad = !host.lua_is_integer_00b66a60(first);
+                        host.lua_release_00b67700(first);
+                        host.lua_release_00b67700(gun2);
+                    }
+                    host.lua_release_00b67700(gun);
+                    if (!bad) {
+                        void* const gun3 = host.lua_get_by_name_00b67800(value, "Gun");
+                        void* const first = host.lua_get_by_index_00b67720(gun3, 1);
+                        const std::int32_t device = host.lua_get_integer_00b66290(first);
+                        host.lua_release_00b67700(first);
+                        host.lua_release_00b67700(gun3);
+                        void* const row = host.lua_get_by_index_00b67720(devices, device);
+                        void* const mesh = host.lua_get_by_name_00b67800(row, "Mesh");
+                        const bool has_mesh = host.lua_is_string_00b660a0(mesh);
+                        host.lua_release_00b67700(mesh);
+                        host.lua_release_00b67700(row);
+                        if (has_mesh) {
+                            const Raw group{static_cast<std::uint8_t*>(host.resource_find_last_named_point_group_00718000(
+                                job.ptr(0x10), "slot", host.lua_get_integer_00b66290(key)))};
+                            const auto* const points = group.p == nullptr ? nullptr : static_cast<const float*>(group.ptr(0x48));
+                            if (points != nullptr &&
+                                (static_cast<const std::uint8_t*>(group.ptr(0x4C)) - reinterpret_cast<const std::uint8_t*>(points)) / 0x0C > 2) {
+                                Mat4 basis{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+                                basis[12] = points[0];
+                                basis[13] = points[1];
+                                basis[14] = points[2];
+                                for (int c = 0; c < 3; ++c) basis[8 + c] = points[6 + c] - points[c];
+                                const float side[3]{points[3] - points[0], points[4] - points[1], points[5] - points[2]};
+                                const float ahead[3]{points[6] - points[0], points[7] - points[1], points[8] - points[2]};
+                                const auto up = host.vector3_cross_004f9b30(ahead, side);
+                                basis[4] = up[0];
+                                basis[5] = up[1];
+                                basis[6] = up[2];
+                                host.matrix_orthonormalize_basis_rows_0085dc80(basis.data());
+                                float yaw = 0.0f;
+                                void* const rest_probe = host.lua_get_by_name_00b67800(value, "RestAngles");
+                                const bool has_rest = host.lua_is_table_00b661b0(rest_probe);
+                                host.lua_release_00b67700(rest_probe);
+                                if (has_rest) {
+                                    void* const rest = host.lua_get_by_name_00b67800(value, "RestAngles");
+                                    yaw = host.lua_get_vector2_00b679f0(rest)[0];
+                                    host.lua_release_00b67700(rest);
+                                } else {
+                                    bool has_window = false;
+                                    void* const windows = host.lua_get_by_name_00b67800(value, "Windows");
+                                    if (host.lua_is_table_00b661b0(windows)) {
+                                        void* const windows2 = host.lua_get_by_name_00b67800(value, "Windows");
+                                        void* const window = host.lua_get_by_index_00b67720(windows2, 1);
+                                        has_window = host.lua_is_table_00b661b0(window);
+                                        host.lua_release_00b67700(window);
+                                        host.lua_release_00b67700(windows2);
+                                    }
+                                    host.lua_release_00b67700(windows);
+                                    if (has_window) {
+                                        void* const windows3 = host.lua_get_by_name_00b67800(value, "Windows");
+                                        void* const window = host.lua_get_by_index_00b67720(windows3, 1);
+                                        host.lua_release_00b67700(windows3);
+                                        void* const low = host.lua_get_by_name_00b67800(window, "MinHorzAngle");
+                                        void* const high = host.lua_get_by_name_00b67800(window, "MaxHorzAngle");
+                                        const double high_value = host.lua_get_number_00b66270(high);
+                                        yaw = static_cast<float>((host.lua_get_number_00b66270(low) + high_value) * 0.5);
+                                        host.lua_release_00b67700(high);
+                                        host.lua_release_00b67700(low);
+                                        void* const vlow = host.lua_get_by_name_00b67800(window, "MinVertAngle");
+                                        void* const vhigh = host.lua_get_by_name_00b67800(window, "MaxVertAngle");
+                                        (void)host.lua_get_number_00b66270(vhigh);
+                                        (void)host.lua_get_number_00b66270(vlow);
+                                        host.lua_release_00b67700(vhigh);
+                                        host.lua_release_00b67700(vlow);
+                                        host.lua_release_00b67700(window);
+                                    }
+                                }
+                                const Raw turret{static_cast<std::uint8_t*>(host.preview_job_new_004fcfc0())};
+                                void* const device_row = host.lua_get_by_index_00b67720(devices, device);
+                                void* const device_mesh = host.lua_get_by_name_00b67800(device_row, "Mesh");
+                                host.native_string_assign(turret.p + 8, host.lua_get_string_00b662b0(device_mesh));
+                                host.lua_release_00b67700(device_mesh);
+                                host.lua_release_00b67700(device_row);
+                                turret.at<std::int32_t>(0x18) = 1;
+                                const Mat4 placed = host.matrix_multiply_00413920(host.rotation_y_00b646e0(-0.0f - yaw), basis);
+                                for (std::size_t i = 0; i < 16; ++i) turret.at<float>(0x20 + i * 4) = placed[i];
+                                host.loading_queue_submit_00504d20(turret.p + 8, turret.p);
+                            }
+                        }
+                    }
+                }
+                host.lua_iterate_next_00b67190(platforms, key, value);
+            }
+            host.lua_release_00b67700(value);
+            host.lua_release_00b67700(key);
+        }
+        if (screen.at<std::uint8_t>(0x4CC) != 0) {
+            bool found = true;
+            const float frame = host.lua_resolve_float_or_default(entry, "PartAnims.Wings.1", 0.0f, found);
+            if (found) host.node_apply_animation_00b6e110(root, "default", frame);
+        }
+        host.lua_release_00b67700(platforms);
+        host.lua_release_00b67700(devices);
+        host.lua_release_00b67700(entry);
+        host.lua_release_00b67700(classes);
+    } else if (mode == 1) {
+        host.node_set_parent_00b6e680(root, vehicle_root());
+        for (void* const node : host.node_collect_descendants_00b6f9a0(vehicle_root(), "underwater"))
+            host.scene_node_set_visibility_00b6da70(node, 0.0f, 0);
+    }
+    host.node_set_local_matrix_38(root, &job.at<float>(0x20));
+    host.ref_array_push_00504870(Raw{screen.p + 0x5C4}, job.p);
+    if (host.interlocked_decrement(&job.at<std::int32_t>(4)) == 0) host.object_destroy_00(job.p);
+    const float grey[4]{0.5f, 0.5f, 0.5f, 1.0f};
+    host.model_effect_diffuse_00b85200(vehicle_root(), "gun", grey);
+    void* const vehicle_model = raw(screen.ptr(0x48C)).ptr(0x160);
+    if (void* const inner = host.model_find_note_node_0071ad50(vehicle_model, "belsocockpit"))
+        host.scene_node_set_visibility_00b6da70(inner, 0.0f, 0);
+    if (void* const outer = host.model_find_note_node_0071ad50(raw(screen.ptr(0x48C)).ptr(0x160), "kulsocockpit"))
+        host.scene_node_set_visibility_00b6da70(outer, 1.0f, 0);
+}
+
 } // namespace bsp::cc13_fe3
