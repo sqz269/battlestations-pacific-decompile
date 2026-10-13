@@ -1846,5 +1846,38 @@ void thunderstorm_read_lua_0086f3b0(ThunderStormComponent& c, const ThunderStorm
 void thunderstorm_destroy_members_0086fb40(ThunderStormComponent& c);
 void thunderstorm_destruct_0086fbc0(ThunderStormComponent& c, const std::function<void()>& destroy_base);
 
+// ---------------------------------------------------------------------------
+// Pass cc13-ver2: the bomb release velocity the host substitutes.
+//
+// 006E0A70 BSP_BombProjectile_ReleaseFromOwner, __thiscall(bomb, owner,
+// float* flight[16]), RET 8. It is the bomb's vtable+190h and is called by
+// 006E1F00 on a copy of the bomb's world matrix (bomb+CCh). When owner
+// vtable+5Ch(0Fh) is true AND owner vtable+38h (speed) > 1.3888890f
+// (00CF8AAC; FCOMI / JBE): w = owner vtable+34h (world velocity), w.y =
+// f(w.y - 3.0f) ([00E08E54], read-only); velocity +318h..+320h = w, matrix row
+// 2 (+20h..+28h) = w, then 0085DC80 (row 2 normalised, rows 1 and 0 rebuilt
+// with row 1 as the hint). Otherwise velocity = the owner's world velocity
+// unchanged and the matrix is left alone.
+// 006E1F00 BSP_BombRack_DropCone then copies that matrix to the bomb (+74h)
+// and, unless D == (1, 1, 1) exactly (three UCOMISS against 1.0f), turns the
+// velocity: L = f(sqrt(f((vy*vy + vx*vx) + vz*vz))) when that square is
+// above (double)1e-10 (00CE3820), else 0, and per component
+//   v_i = f(f(f(f(Dx*r0_i)*L) + f(f(Dy*r1_i)*L)) + f(f(r2_i*Dz)*L)).
+// D comes from 006E4D50: (t cos a, -t sin a, 1) with a, t drawn on stream 1.
+// So with no cone (t = 0) the bomb keeps w exactly. The rows are the
+// velocity-aligned frame from 0085DC80, NOT the plane's own pose.
+struct BombReleaseOwner {
+    bool is_plane_5c_0f{false};
+    float speed_38{0.0f};
+    Vec3 world_velocity_34;
+};
+struct BombReleaseResult {
+    Vec3 velocity;     // +318h..+320h after 006E1F00
+    float matrix[16];  // the release frame written to bomb+74h
+};
+BombReleaseResult bomb_release_velocity_006e0a70_006e1f00(const float rack_matrix[16],
+                                                         const BombReleaseOwner& owner,
+                                                         const Vec3& cone_d);
+
 }  // namespace gameplay_seg53_cc13
 }  // namespace bsp

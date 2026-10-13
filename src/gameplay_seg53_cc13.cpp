@@ -1907,5 +1907,40 @@ void thunderstorm_destruct_0086fbc0(ThunderStormComponent& c, const std::functio
     destroy_base();
 }
 
+// ---------------------------------------------------------------------------
+// Pass cc13-ver2.
+
+BombReleaseResult bomb_release_velocity_006e0a70_006e1f00(const float rack_matrix[16],
+                                                         const BombReleaseOwner& owner,
+                                                         const Vec3& cone_d) {
+    BombReleaseResult r{};
+    std::memcpy(r.matrix, rack_matrix, sizeof r.matrix);
+    Vec3 v = owner.world_velocity_34;
+    if (owner.is_plane_5c_0f && owner.speed_38 > 1.38888896f) {  // 006E0A9B FCOMI / JBE
+        v.y = v.y - 3.0f;                                          // 006E0AB3
+        r.matrix[8] = v.x;                                         // 006E0AE7..006E0AEF
+        r.matrix[9] = v.y;
+        r.matrix[10] = v.z;
+        orthonormalize_pose_matrix_0085dc80(r.matrix);             // 006E0AF4
+    }
+    if (!(cone_d.x == 1.0f && cone_d.y == 1.0f && cone_d.z == 1.0f)) {  // 006E1FD5..006E200A
+        const float sq = (v.y * v.y + v.x * v.x) + v.z * v.z;               // 006E2010..006E2029
+        const float len = static_cast<double>(sq) > 1e-10 ? static_cast<float>(std::sqrt(sq)) : 0.0f;
+        const float* r0 = &r.matrix[0];
+        const float* r1 = &r.matrix[4];
+        const float* r2 = &r.matrix[8];
+        float out[3];
+        for (int i = 0; i < 3; ++i) {
+            const float w2 = (r2[i] * cone_d.z) * len;
+            const float w1 = (cone_d.y * r1[i]) * len;
+            const float w0 = (cone_d.x * r0[i]) * len;
+            out[i] = (w0 + w1) + w2;                                        // 006E213D..006E2181
+        }
+        v = Vec3{out[0], out[1], out[2]};
+    }
+    r.velocity = v;
+    return r;
+}
+
 }  // namespace gameplay_seg53_cc13
 }  // namespace bsp
