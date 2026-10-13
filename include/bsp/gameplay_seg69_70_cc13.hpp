@@ -561,5 +561,33 @@ DefendOrder ai_order_defend_group_00a1a6d0(bool has_groupable_combatant) noexcep
 // float(00A04240(unit) * double 009FDF30([unit+C4h])).
 float ai_hinted_class_weight_00a04530(float hint_multiplier, float class_weight) noexcept;
 
+// ---------------------------------------------------------------------------
+// 00A32DF0 BSP_AiController_InitPartySlots: slot 0 of the controller entity's
+// vtable 00D23240 (its activation). It also zeroes +1A4h, runs 00923840 and
+// names the entity "HighLvlAI" (00D232B8, 9 bytes into the string at +154h).
+// ---------------------------------------------------------------------------
+
+// The player slot record [game+18CCh + 4*slot], bytes +8h..+0Ah.
+struct PlayerSlotFlags {
+    bool present_008{false};
+    bool flag_009{false};      // set on the AI-capable slots (with +8h, it enables the party)
+    bool elected_00a{false};   // written here in modes 0..3
+};
+
+struct PartyInitResult {
+    std::array<bool, 8> ai_enabled{};     // 00F8A8C8 + p*1Ch, +0h
+    std::array<bool, 8> ratios_reset{};   // +4h and +8h were set to 0.5 [00CE3800]
+};
+
+// In effective game modes 0..3 (004BCA50, unsigned JA): for each half of the
+// slots (0..3, then 4..7), when any slot of the half has +8h set and +9h clear,
+// every +0Ah of the half is cleared; otherwise the half's first slot gets
+// +0Ah = 1 and the others 0. Then each party record's +0h = +8h && +9h && +0Ah,
+// and an enabled record's +4h/+8h = 0.5. [00F8AB6A] = 0; when [game+61Ch] is
+// set, record 0 is enabled (00A32F80) regardless.
+PartyInitResult ai_controller_init_party_slots_00a32df0(std::uint32_t effective_game_mode,
+                                                         std::array<PlayerSlotFlags, 8>& slots,
+                                                         bool game_61c) noexcept;
+
 }  // namespace gameplay_seg69_70_cc13
 }  // namespace bsp

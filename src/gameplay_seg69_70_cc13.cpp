@@ -719,5 +719,37 @@ float ai_hinted_class_weight_00a04530(float hint_multiplier, float class_weight)
                               static_cast<double>(class_weight));   // FMUL qword, FSTP float
 }
 
+// ---------------------------------------------------------------------------
+// 00A32DF0
+// ---------------------------------------------------------------------------
+
+PartyInitResult ai_controller_init_party_slots_00a32df0(std::uint32_t effective_game_mode,
+                                                         std::array<PlayerSlotFlags, 8>& slots,
+                                                         bool game_61c) noexcept {
+    if (effective_game_mode <= 3u) {                                    // 00A32E3A JA
+        for (int half = 0; half < 2; ++half) {                          // 00A32F0C
+            const int first = (half != 0) ? 4 : 0;                      // NEG/SBB/AND 4
+            bool human = false;
+            for (int s = first; s <= first + 3; ++s) {                  // 00A32E82..00A32EA1
+                human = human || (slots[s].present_008 && !slots[s].flag_009);
+            }
+            if (human) {
+                for (int s = first; s <= first + 3; ++s) slots[s].elected_00a = false;   // 00A32EC0
+            } else {
+                slots[first].elected_00a = true;                        // 00A32ECF
+                for (int s = first + 1; s <= first + 3; ++s) slots[s].elected_00a = false;
+            }
+        }
+    }
+    PartyInitResult out;
+    for (std::size_t p = 0; p < 8; ++p) {                               // 00A32F34..00A32F6C
+        const bool on = slots[p].present_008 && slots[p].flag_009 && slots[p].elected_00a;
+        out.ai_enabled[p] = on;                                         // 00A32F53
+        out.ratios_reset[p] = on;                                       // 00A32F58, 00A32F5D
+    }
+    if (game_61c) out.ai_enabled[0] = true;                             // 00A32F80
+    return out;
+}
+
 }  // namespace gameplay_seg69_70_cc13
 }  // namespace bsp

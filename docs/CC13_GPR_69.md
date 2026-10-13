@@ -214,6 +214,22 @@ matches these rules except that it reads `+5Dh` through `unit_active` and walks 
   (`00A2C5A0`) patrols to the entity, any other defends its position.
 - **`00A04530`**: `float(00A04240(unit) * 009FDF30([unit+C4h]))`, the factor `00A046C0` also applies.
 
+### 1.7 Which parties the AI runs (`00A32DF0`)
+
+`00A32DF0` is slot 0 of the controller entity's vtable `00D23240`, its activation. Besides naming the
+entity "HighLvlAI", it decides which party records are enabled:
+1. In effective game modes 0..3, each half of the eight player slots (0..3, 4..7) elects at most one
+   AI slot. When any slot of the half has `+8h` set and `+9h` clear, no slot of the half is elected
+   (`+0Ah` cleared on all four); otherwise the half's first slot is elected (`+0Ah` = 1, the others 0).
+2. Party record `p` is enabled when its slot has `+8h`, `+9h` and `+0Ah`; an enabled record's two
+   ratios are reset to 0.5.
+3. `[00F8AB6A]` is cleared, and when `[game+61Ch]` is set, record 0 is enabled regardless.
+
+The host (src/game_hosts_ai.cpp:5866) enables a party slot when a created unit carries that side, and
+its comment attributes the records to the mission's `SetParty` binding. In the image they come from the
+player slot flags here (the Lua binding at `00A374C4` can still write them later). Whether `+8h`/`+9h`
+are "present"/"AI-controlled" was not established beyond this use; the field names are hypotheses.
+
 ## 2. Adoption table (cc9 terms)
 
 | model | replaces (host file:line) | inputs and where the host gets them | RNG | OFF-switch prediction |
@@ -226,6 +242,7 @@ matches these rules except that it reads `+5Dh` through `unit_active` and walks 
 | `ai_capture_spawn_arm_00a2b477`, `ai_defend_spawn_arm_00a29be7`, `ai_planner_owned_resource_00a1c900` | the records `capture_spawn_arm_00a2b400` (src/game_hosts_ai.cpp:4424) and `defend_spawn_tail_00a29b8e` | `00946970` (queued requests), the Defend percent, `00942130`, the owned groups' `00A2C530`, the plan targets and defend records | none | OFF: none. ON: the same decision the host counts, plus the amount and the threats handed to `00A25A30`; nothing spawns without the chain above and authored stock |
 | `ai_group_resource_sum_00a2c530` | the constant `kCaptureGroupResource` (src/game_hosts_ai.cpp:3814) | `member+304h` | none | OFF: none. ON: none on this installation, where `+304h` is 0 for every member (the host's own finding); otherwise capture prices drop by the group resource |
 | `ai_group_count_unit_types_00a2e1e0`, `ai_order_defend_group_00a1a6d0`, `ai_hinted_class_weight_00a04530` | none (the Lua group info, the script creator's order) | member `+170h`, `009FE060`; `00A2C5A0`; `00A04240`, `009FDF30` | none | OFF: none. ON: neither the Lua info nor the script order is bound |
+| `ai_controller_init_party_slots_00a32df0` | the side scan in `create_00a32350` (src/game_hosts_ai.cpp:5866..5875) | the eight player slot records `[game+18CCh+4p]` `+8h..+0Ah`, `004BCA50`, `[game+61Ch]` | none | OFF: none. ON: the AI runs exactly the parties the slot flags elect, one per half at most in modes 0..3; a side with units but no elected slot stops thinking, and an elected slot without units thinks with no groups |
 
 No model draws from stream 0.
 
@@ -239,6 +256,7 @@ No model draws from stream 0.
   delay per party are missing.
 - **`009FFE50`** answers false in the host for the whole multiplayer arm; the image tail-calls
   `004B5510` on the slot record. **`009FFC80`**: with no active party slot the image answers 1, not 0.
+- **The party records come from the slot flags** (`00A32DF0`, section 1.7), not from units' sides.
 - **The power-up use** is complete as a model; its binding still waits on a power-up manager
   (docs/SHIP_AI_OPEN_ITEMS.md section 5).
 
@@ -251,7 +269,8 @@ Function records (`config/reconstruction`), models in `src/gameplay_seg69_70_cc1
   32 sites), `00A23980` (partial: the mode 4+ arm), `00A25A30` (partial: the gate), `00A1C900`;
 - the retreat: `00A01230`, `00A11530`, `00A156E0` (partial: the prelude);
 - the collection: `00A07D40`, `00A24870`;
-- helpers: `00A2C530`, `00A2E1E0`, `00A1A6D0`, `00A04530`.
+- helpers: `00A2C530`, `00A2E1E0`, `00A1A6D0`, `00A04530`;
+- the party slots: `00A32DF0` (partial: the entity name and `00923840`).
 
 Fragments: `00A2B477` (in `00A29FD0`, to `00A2B7A6`) and `00A29BE7` (in `00A28A60`, to `00A29E2A`).
 
