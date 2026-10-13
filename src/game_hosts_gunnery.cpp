@@ -347,6 +347,16 @@ constexpr bool kAaLeadDistanceGateBound = false;
 //    time is strictly greater. The host searched from the first step after
 //    launch. ON: the search waits for the fuse time. OFF: as before.
 constexpr bool kFlakFuseArmTimeBound = false;
+//  * kFlakErrorRerollBound: packet cc9_g41_flak_d2 (docs/CC13_VER_14.md D2).
+//    008FDBE0, the AAFlakBot's error roll, has three callers: 008FF055 in
+//    AttachBallisticClass (once), 008FF247 in SetFireTarget 008FF200 (each
+//    00727F10 re-send by the 2 s 00864FE0 assignment, for a non-null target
+//    and slot 8 or an AI-held slot), and 0090331B after a shot. The roll sets
+//    bot+64h to the clock (00F876A4), so it also covers the shots before it.
+//    The host rolled only after a shot from {0, 0, 0}, so a gun's first
+//    salvo had no error. ON: the attach roll (at the gun's first flak tick,
+//    labelled) and the re-send roll. OFF: as before.
+constexpr bool kFlakErrorRerollBound = false;
 //  * kTorpedoSwimThrustBound: packet cc9_torpedo_tube_turn,
 //    docs/TORPEDO_FRIENDLY_CROSSING.md section 6. 00857480, the swim advance,
 //    per step on a torpedo in the water: 00856BB0 -> 00857061 yaws the NOSE
@@ -3058,8 +3068,34 @@ struct GameGunneryHost::Impl {
     struct AaFlakError {
         float h{0.0f}, v{0.0f}, dist{0.0f};
         bool fired{false};       // gun+474h moved past bot+64h since the last roll
+        bool attached{false};    // kFlakErrorRerollBound: the 008FF055 roll is done
     };
     std::map<std::size_t, AaFlakError> aa_flak_error_by_gun;
+    unsigned long long aa_flak_attach_rolls{0};   // kFlakErrorRerollBound, 008FF055
+    unsigned long long aa_flak_send_rolls{0};     // kFlakErrorRerollBound, 008FF247
+    // 008FDBE0: GoodRatio picks the row half, then AngleErr twice and DistErr,
+    // each with a random sign; bot+64h takes the clock, so a roll also covers
+    // every shot fired before it (fired = false).
+    void roll_aa_flak_error_008fdbe0(AaFlakError& fe, std::size_t g, int level) {
+        const float* row = kAaFlakErrorRows[level];
+        const bool good = draw(Draw::aa_flak_error, g, 0, 0.0f, 100.0f) < row[0] * 100.0f;
+        const float lo_a = good ? row[1] : row[2], hi_a = good ? row[2] : row[3];
+        const float lo_d = good ? row[4] : row[5], hi_d = good ? row[5] : row[6];
+        const auto sign = [&]() {
+            return draw(Draw::aa_flak_error, g, 1, 0.0f, 1.0f) < 0.5f ? -1.0f : 1.0f;
+        };
+        const float ah = draw(Draw::aa_flak_error, g, 0, lo_a, hi_a);
+        fe.h = sign() * ah * 3.14159265358979f / 180.0f;
+        const float av = draw(Draw::aa_flak_error, g, 0, lo_a, hi_a);
+        fe.v = sign() * av * 3.14159265358979f / 180.0f;
+        const float d = draw(Draw::aa_flak_error, g, 0, lo_d, hi_d);
+        fe.dist = sign() * d;
+        fe.fired = false;
+        ++aa_flak_rolls;
+        ++aa_flak_rolls_by_level[level];
+        aa_flak_angle_sum_deg += (ah + av) * 0.5;
+        aa_flak_dist_abs_sum += d;
+    }
     unsigned long long aa_gunner_rolls{0};
     unsigned long long aa_gunner_clamps{0};
     unsigned long long aa_gunner_error_ticks{0};
@@ -6001,6 +6037,20 @@ public:
         row.target_name = other < owner_.unit_state.size()
             ? owner_.unit_state[other].row.name : std::string();
         row.target_is_fire_target = is_fire_target;
+        if (kFlakErrorRerollBound && kAaFlakAimErrorBound && other < owner_.units.count()
+            && (row.category == 5
+                || (row.category == 6 && owner_.dp_air_ammo(slot, row.category, other) != nullptr))
+            && owner_.slot_ai_held_00927f10(row.seat_1ac)) {
+            // 008FF200 (vtable 00D18270, reached only from 00727F10): a non-null
+            // target with slot 8 or an AI-held slot rolls 008FDBE0 (008FF247).
+            // LABELLED: limited to the guns the host's flak tick serves.
+            int level = owner_.units.skill_level(unit_);
+            if (level < 0 || level > 5) level = 1;
+            GameGunneryHost::Impl::AaFlakError& fe = owner_.aa_flak_error_by_gun[slot];
+            fe.attached = true;
+            owner_.roll_aa_flak_error_008fdbe0(fe, slot, level);
+            ++owner_.aa_flak_send_rolls;
+        }
         if (kTailGunnerAimErrorBound && row.category == 1) {
             // 00727F13..00727F2D: +390h's vtable[38h], for TailGunnerBot 008FEA40,
             // which ends with bot+6Ch = -1.0 (00D7A260) whatever the target.
@@ -7393,6 +7443,13 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     // 00903280..00903293: the angles take bot+58h / bot+5Ch; the
                     // reroll after a shot is at the end of the tick, below.
                     AaFlakError& fe = aa_flak_error_by_gun[g];
+                    if (kFlakErrorRerollBound && !fe.attached) {
+                        // 008FF055 (AttachBallisticClass) rolls once at attach.
+                        // SUBSTITUTION, labelled: here at the gun's first flak tick.
+                        fe.attached = true;
+                        roll_aa_flak_error_008fdbe0(fe, g, aa_level);
+                        ++aa_flak_attach_rolls;
+                    }
                     want_horz += fe.h;
                     want_vert += fe.v;
                     if (kFlakNegativeVerticalBound) {
@@ -7403,24 +7460,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     }
                     if (fe.fired) {
                         fe.fired = false;
-                        const float* row = kAaFlakErrorRows[aa_level];
-                        const bool good = draw(Draw::aa_flak_error, g, 0, 0.0f, 100.0f)
-                            < row[0] * 100.0f;
-                        const float lo_a = good ? row[1] : row[2], hi_a = good ? row[2] : row[3];
-                        const float lo_d = good ? row[4] : row[5], hi_d = good ? row[5] : row[6];
-                        const auto sign = [&]() {
-                            return draw(Draw::aa_flak_error, g, 1, 0.0f, 1.0f) < 0.5f ? -1.0f : 1.0f;
-                        };
-                        const float ah = draw(Draw::aa_flak_error, g, 0, lo_a, hi_a);
-                        fe.h = sign() * ah * 3.14159265358979f / 180.0f;
-                        const float av = draw(Draw::aa_flak_error, g, 0, lo_a, hi_a);
-                        fe.v = sign() * av * 3.14159265358979f / 180.0f;
-                        const float d = draw(Draw::aa_flak_error, g, 0, lo_d, hi_d);
-                        fe.dist = sign() * d;
-                        ++aa_flak_rolls;
-                        ++aa_flak_rolls_by_level[aa_level];
-                        aa_flak_angle_sum_deg += (ah + av) * 0.5;
-                        aa_flak_dist_abs_sum += d;
+                        roll_aa_flak_error_008fdbe0(fe, g, aa_level);   // 0090331B
                     }
                 }
                 if (kAaGunnerErrorBound && gun.category == 1 && want_vert < 0.0f
@@ -14418,6 +14458,9 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery flak fuse unarmed steps=%llu bound=%d "
             "(0070C3DA, packet cc9_g41_flak_d5)", host.flak_fuse_unarmed_steps,
             kFlakFuseArmTimeBound ? 1 : 0);
+        host.log.notef("summary mission gunnery flak error attach rolls=%llu send rolls=%llu "
+            "bound=%d (008FF055 / 008FF247, packet cc9_g41_flak_d2)", host.aa_flak_attach_rolls,
+            host.aa_flak_send_rolls, kFlakErrorRerollBound ? 1 : 0);
         host.log.notef("summary mission gunnery water depth kills=%llu (007CE3A7, packet "
             "cc9_water_surface_law)", host.water_depth_kills);
         host.log.notef("summary mission gunnery airfield sub-entity asks=%llu listed=%llu "

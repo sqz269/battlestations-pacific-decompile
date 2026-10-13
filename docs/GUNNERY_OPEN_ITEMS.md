@@ -13738,3 +13738,25 @@ the `kFlakProximityBurstBound` search needs `shot.life > fuse_time`. Counter `fl
 | USN15 | steps=0; exit 0 or 1 |
 | USN12 | steps > 0; exit 3 only if a round locked inside its MinRange; small, slightly less lethal |
 | USN21 | steps > 0; small (every Yamato kill was at 1225 m or more); slightly fewer flak kills |
+
+## 220. Flak D2: the AAFlakBot error rolls at attach and on each SetFireTarget re-send: `kFlakErrorRerollBound`, OFF (lead queue item 1; cc9-gunnery41, 2026-10-13)
+
+**Image** (docs/CC13_VER_14.md D2, re-read at `008FF200` and `008FDBE0`). `008FDBE0` has three callers:
+`008FF055` (AttachBallisticClass, once), `008FF247` (SetFireTarget `008FF200`, reached only from `00727F10`, which
+the 2 s `00864FE0` assignment calls with the current target; it rolls for a non-null target when the gun's slot
+is 8 or AI-held) and `0090331B` (after a shot). cc13's open question is answered: `008FDBE0` ends with
+`bot+64h = [00F876A4]`, so a re-send roll also covers every shot fired before it.
+
+**Host.** The roll is one member, `roll_aa_flak_error_008fdbe0` (same draw order as before). ON: the attach roll
+runs at the gun's first flak tick (labelled substitution for mission load), and `set_bot_fire_target_00727f10`
+rolls for a cat-5 gun, or a cat-6 gun against a plane, on an AI-held slot (labelled: the image's kind-6 bot also
+rolls for a ship target). Counters `aa_flak_attach_rolls` / `aa_flak_send_rolls`, logged as `summary mission
+gunnery flak error attach rolls`. RNG: about 7 more stream-1 draws per roll.
+
+**Predictions, written before any ON run.**
+
+| row | prediction ON |
+| --- | --- |
+| USN15 | rolls 0; exit 0 or 1 |
+| USN12 | exit 3 (stream re-ordered); first salvos carry error, so slightly fewer flak hits early; win kept |
+| USN21 | exit 3; cc13: perfect first salvos were about 40-55 hits (5-7 % of flak damage), so about 2-4 fewer flak kills |
