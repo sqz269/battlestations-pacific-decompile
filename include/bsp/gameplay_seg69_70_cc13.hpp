@@ -470,5 +470,67 @@ std::vector<const TeamEntityView*> ai_collect_threats_near_00a24870(
     int planner_team_034, const TeamEntityView& entity, float tuning_1a4,
     const std::vector<TeamEntityView>& world);
 
+// ---------------------------------------------------------------------------
+// The planners' spawn arms: Capture 00A2B477..00A2B7A6 (in 00A29FD0) and Defend
+// 00A29BE7..00A29E2A (in 00A28A60); 00A1C900 (tagged STL_inst_00a1c900) is the
+// planner's owned resource.
+// ---------------------------------------------------------------------------
+
+// 00A1C900, __thiscall(planner): the sum, in list order, of 00A2C530
+// (BSP_AiGroup_ResourceSum) over the planner's owned groups (list +20h).
+float ai_planner_owned_resource_00a1c900(const std::vector<float>& group_resources) noexcept;
+
+struct PlannerSpawnBudgetInputs {
+    float queued_946970{0.0f};     // 00946970([00F89B3C], brain+20h): queued spawn requests
+    float defend_pct{0.0f};        // [00F8A8BC + 4*009FFC80()]
+    float budget_942130{0.0f};     // 00942130(brain+20h)
+    float owned_resource{0.0f};    // 00A1C900(planner)
+};
+
+// Capture: float(float((1 - pct) * budget) - owned) (DE E1 at 00A2B4BA).
+float ai_capture_spawn_budget_00a2b4a6(const PlannerSpawnBudgetInputs& in) noexcept;
+// Defend: float(float(pct * budget) - owned).
+float ai_defend_spawn_budget_00a29c33(const PlannerSpawnBudgetInputs& in) noexcept;
+
+// A Capture plan target (the tree node): +0Ch the entity, +14h the score, +1Ch
+// the cap, +2Ch the value that must be positive.
+struct CaptureSpawnTarget {
+    const void* entity{nullptr};
+    float score_014{0.0f};
+    float cap_01c{0.0f};
+    float value_02c{0.0f};
+};
+
+struct PlannerSpawnCall {
+    const void* entity{nullptr};   // pos = entity+FCh; tag "[capture]"/"[defend]" + entity+174h
+    float amount{0.0f};            // the weight handed to 00A25A30
+    int flag{0};                   // 00A25A30 arg 5: 0 for Capture, 1 for Defend
+    std::size_t index{0};          // the chosen target or record
+};
+
+// 00A2B477: nullopt when 00946970 > 0 (FCOMI/JA; NaN passes), when the ramp
+// byte [ESP+4Fh] (host ai_tail_capture_spawn_due) is clear, when 1.0 > budget,
+// or when no target has +2Ch > 0 (COMISS/JBE). The target is the strict best
+// +14h above -1e10 [00CE4ADC]; amount = +1Ch unless it is above the budget
+// (FCOMI/JBE: NaN keeps +1Ch). The caller then runs 00A24870 for the entity
+// and 00A25A30(entity+FCh, amount, &threats, tag, 0); a true answer stores
+// planner+3Ch = 0.0.
+std::optional<PlannerSpawnCall> ai_capture_spawn_arm_00a2b477(
+    const PlannerSpawnBudgetInputs& in, bool ramp_due, const std::vector<CaptureSpawnTarget>& targets);
+
+// A Defend record (34h bytes): +0h the entity, +20h its threat records, +30h
+// the remainder.
+struct DefendSpawnRecord {
+    const void* entity{nullptr};
+    float remaining_030{0.0f};
+};
+
+// 00A29BE7: nullopt when 00946970 > 0, when 1.0 > budget, or when no record
+// has +30h > 0; otherwise the FIRST such record, amount = min as in Capture,
+// and the caller runs 00A25A30(entity+FCh, amount, &record+20h, tag, 1). No
+// ramp gate and no +3Ch reset in this arm.
+std::optional<PlannerSpawnCall> ai_defend_spawn_arm_00a29be7(
+    const PlannerSpawnBudgetInputs& in, const std::vector<DefendSpawnRecord>& records);
+
 }  // namespace gameplay_seg69_70_cc13
 }  // namespace bsp

@@ -145,6 +145,25 @@ singleton's table (`+FA8h + mode*10h`) whose ids equal (earlier class, candidate
 (`BSP_UnitList_MaxSpeed`, `BSP_AiGroupRecords_MaxSpeed`), but the seed is 1e10 (`[00CE4970]`) and a
 value replaces it unless it is greater. So the spawn weight divides by the slowest class's speed.
 
+**The two planner arms that call `00A25A30`** (the host records both: src/game_hosts_ai.cpp
+`capture_spawn_arm_00a2b400` and `defend_spawn_tail_00a29b8e`).
+
+| | Capture `00A2B477..00A2B7A6` (in `00A29FD0`) | Defend `00A29BE7..00A29E2A` (in `00A28A60`) |
+| --- | --- | --- |
+| queue gate | `00946970(brain+20h) > 0` skips (`FCOMI`/`JA`; NaN passes) | the same |
+| ramp | the byte `[ESP+4Fh]` (host `ai_tail_capture_spawn_due`) | none |
+| budget w | `float(float((1 - pct) * 00942130) - 00A1C900)` (`DE E1`) | `float(float(pct * 00942130) - 00A1C900)` |
+| budget gate | `1.0 > w` skips (NaN passes) | the same |
+| choice | the strict best `+14h` above -1e10 among targets with `+2Ch > 0` | the first record with `+30h > 0` |
+| amount | `+1Ch`, or w when `+1Ch > w` | `+30h`, or w when `+30h > w` |
+| threats | `00A24870(entity)` | the record's own list `+20h` |
+| call | `00A25A30(entity+FCh, amount, &threats, "[capture]"+id, 0)` at `00A2B758` | `00A25A30(entity+FCh, amount, &rec+20h, "[defend]"+id, 1)` at `00A29DAA` |
+| after | a true answer stores planner+3Ch = 0.0 | nothing |
+
+`pct` is `[00F8A8BC + 4*009FFC80()]`, the Defend resource percent. `00A1C900`, tagged
+`STL_inst_00a1c900`, is game code: the sum of `00A2C530` over the planner's owned groups (renamed
+`BSP_AiPlanner_OwnedResourceSum`). So the Defend spawn is the only one that may mix planes and
+surface units in its composition (flag 1).
 ### 1.3 The party think schedule (`00A163D0`)
 
 The controller constructor (`00A31730`, from `00A32350 BSP_AiController_Create`) initialises the
@@ -192,6 +211,8 @@ matches these rules except that it reads `+5Dh` through `unit_active` and walks 
 | `ai_collect_team_entities_00a07d40`, `ai_collect_threats_near_00a24870` | the labelled stand-in `capture_defenders_00a24870` (src/game_hosts_ai.cpp:4027) | the world list `+34h`, `+5Dh`, `+54h`, the kinds, tuning `+1A4h` | none | OFF: none. ON: the same set when the host's world list 2 is the image's `+34h` list and `unit_active` is `!+5Dh`; any difference shows as different capture group values |
 
 No model draws from stream 0.
+| i_capture_spawn_arm_00a2b477, i_defend_spawn_arm_00a29be7, i_planner_owned_resource_00a1c900 | the records capture_spawn_arm_00a2b400 (src/game_hosts_ai.cpp:4424) and defend_spawn_tail_00a29b8e |  0946970 (queued requests), the Defend percent,  0942130, the owned groups'  0A2C530, the plan targets / defend records | none | OFF: none. ON: the same decision the host counts, plus the amount and the threats handed to  0A25A30; nothing spawns without the chain above and authored stock |
+
 ## 3. For cc9 (no host edits made)
 
 - **`00A02180` / `00A07C10` are minimums.** Rename candidates `BSP_UnitList_MinSpeed`,
@@ -206,6 +227,17 @@ Function records (`config/reconstruction`), models in `src/gameplay_seg69_70_cc1
 `00A03900`, `00A0D1D0`, `00A236F0` (partial), `00A23980` (partial: the mode 4+ arm), `00A25A30`
 (partial: the gate);  0A01230,  0A11530,  0A156E0 (partial: the prelude),  0A07D40,  0A24870.
 
+Fragments:  0A2B477 (in  0A29FD0, to  0A2B7A6) and  0A29BE7 (in  0A28A60, to  0A29E2A). Function  0A1C900.
+
+Renames (config/names, applied with 	ools/ghidra_annotate.py --apply; prior annotations in that tool's local JSON):
+
+| address | was | now |
+| --- | --- | --- |
+|  0A02180 | BSP_UnitList_MaxSpeed | BSP_UnitList_MinSpeed |
+|  0A07C10 | BSP_AiGroupRecords_MaxSpeed | BSP_AiGroupRecords_MinSpeed |
+|  0A07FB0 | BSP_AiGroup_MaxSpeed | BSP_AiGroup_MinSpeed |
+|  0A1C900 | STL_inst_00a1c900 (tag) | BSP_AiPlanner_OwnedResourceSum |
+
 Records for existing reconstructions, each checked against the listing in this pass (local/gpr69_dis.py, local/gpr69_clonecheck.py):
 - the AI command GetType slots (12, to the AiCommandType enum in include/bsp/ai_planners.hpp) and IsType slots (15, to i_command_is_type in src/ai_planners.cpp);
 - in src/band_009f_cc13.cpp (cc13-gp9f's models): the twelve CloneForGroup slots (partial: the type only), the planner IsType and GetName slots (16),  0A2C0A0,  0A2C0D0,  0A2C100,  0A16450,  0A15950,  0A1A660,  0A2C150,  0A2C1C0,  0A2C230,  09FEC40,  0A1C960,  0A1CA60 (the D8 C9, DE FA, D8 F1, D8 7F forms read from the bytes),  0A2B8F0,  0A2B950,  0A2BCC0,  0A2C3D0 (the model divides by the list size where the image divides by +5644h).
@@ -213,7 +245,7 @@ Records for existing reconstructions, each checked against the listing in this p
 ## 5. Verification
 
 - `./scripts/build.ps1` passed in this tree: the build and ctest (2 of 2). No test was added.
-- `tools/verify_report_calls.py local/gpr69_calls.json` checked 58 call-site rows cited here (the power-up pass, the scorers, the spawn chain, the retreat tick, the collection), with 0 failures. The row file is not committed.
+- `tools/verify_report_calls.py local/gpr69_calls.json` checked 66 call-site rows cited here (the power-up pass, the scorers, the spawn chain, the retreat tick, the collection), with 0 failures. The row file is not committed.
 - `tools/x87_dc_form_scan.py --range 009FE130-00A371A0 --by-function` finds 12 DC-form sites in 10 functions. Two are in modelled functions, `00A115A0` (`00A11530`) and `00A17C82` (`00A179E0`); both were read from the bytes (`DC C9`). The `DE` pop forms of `00A0D1D0` and the `D8` forms of `00A1CA60` were read from the bytes as well.
 
 ## 6. Open and handoff

@@ -622,5 +622,65 @@ std::vector<const TeamEntityView*> ai_collect_threats_near_00a24870(
     return out;
 }
 
+// ---------------------------------------------------------------------------
+// Planner spawn arms
+// ---------------------------------------------------------------------------
+
+float ai_planner_owned_resource_00a1c900(const std::vector<float>& group_resources) noexcept {
+    float sum = 0.0f;
+    for (const float r : group_resources) sum = r + sum;   // 00A1C932 CALL 00A2C530, 00A1C937 FADD
+    return sum;
+}
+
+float ai_capture_spawn_budget_00a2b4a6(const PlannerSpawnBudgetInputs& in) noexcept {
+    const float keep = 1.0f - in.defend_pct;              // FLD1, FSUBRP (DE E1)
+    const float share = in.budget_942130 * keep;          // 00A2B4C5
+    return share - in.owned_resource;                     // 00A2B4DC FSUBR qword
+}
+
+float ai_defend_spawn_budget_00a29c33(const PlannerSpawnBudgetInputs& in) noexcept {
+    const float share = in.budget_942130 * in.defend_pct; // 00A29C4E
+    return share - in.owned_resource;                     // 00A29C65
+}
+
+namespace {
+
+float spawn_amount(float cap, float budget) noexcept {
+    // 00A2B689 / 00A29D08: FCOMI cap vs budget, JBE keeps the cap.
+    return (cap > budget) ? budget : cap;
+}
+
+}  // namespace
+
+std::optional<PlannerSpawnCall> ai_capture_spawn_arm_00a2b477(
+    const PlannerSpawnBudgetInputs& in, bool ramp_due, const std::vector<CaptureSpawnTarget>& targets) {
+    if (in.queued_946970 > 0.0f) return std::nullopt;     // 00A2B491 JA
+    if (!ramp_due) return std::nullopt;                   // 00A2B49B
+    const float w = ai_capture_spawn_budget_00a2b4a6(in);
+    if (1.0f > w) return std::nullopt;                    // 00A2B4EA JBE continues
+    float best = -10000000000.0f;                         // [00CE4ADC]
+    std::optional<PlannerSpawnCall> out;
+    for (std::size_t i = 0; i < targets.size(); ++i) {
+        const CaptureSpawnTarget& t = targets[i];
+        if (!(t.value_02c > 0.0f)) continue;              // 00A2B613 COMISS/JBE
+        if (!(t.score_014 > best)) continue;              // 00A2B62B FCOMI/JBE
+        best = t.score_014;
+        out = PlannerSpawnCall{t.entity, spawn_amount(t.cap_01c, w), 0, i};
+    }
+    return out;
+}
+
+std::optional<PlannerSpawnCall> ai_defend_spawn_arm_00a29be7(
+    const PlannerSpawnBudgetInputs& in, const std::vector<DefendSpawnRecord>& records) {
+    if (in.queued_946970 > 0.0f) return std::nullopt;     // 00A29C01 JBE continues
+    const float w = ai_defend_spawn_budget_00a29c33(in);
+    if (1.0f > w) return std::nullopt;                    // 00A29C73 JBE continues
+    for (std::size_t i = 0; i < records.size(); ++i) {
+        if (!(records[i].remaining_030 > 0.0f)) continue; // 00A29CE1 COMISS/JA
+        return PlannerSpawnCall{records[i].entity, spawn_amount(records[i].remaining_030, w), 1, i};
+    }
+    return std::nullopt;
+}
+
 }  // namespace gameplay_seg69_70_cc13
 }  // namespace bsp
