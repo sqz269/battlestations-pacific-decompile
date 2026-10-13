@@ -29,6 +29,13 @@ were checked from the bytes (`ghidra bytes`), not from listing text.
 | 005F7C40 | `options_activate_list_row_005f7c40` | thiscall(listener = screen+8, unused, row), RET 8 | whole routine, 881 instructions |
 
 | 005E4490 | `lobby_handle_gui_event_005e4490` | thiscall(this = lobby+0Ch, event widget), RET 4 | 856 instructions |
+| 00602280 | `hud_pause_register_00602280` | fastcall(ECX screen), RET | three pages, 26 lookups, scroller wiring |
+
+- 00602280: the bindings were extracted mechanically (literal, ECX parent, EAX store). The
+  scroll bar call 00683380 receives (thumb +7Ch, span, up +74h, down +78h) from the pushes at
+  00602D81..00602D91. The span is the info slider's "back_Icon" height minus the thumb height,
+  rounded once to float. The page/widget table `kWidgets3C` in src/hud_screens.cpp lists the
+  same names without the parent and store offsets.
 
 ### MultiGameLobby HandleGuiEvent (005E4490)
 

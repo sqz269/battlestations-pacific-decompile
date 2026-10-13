@@ -1769,6 +1769,36 @@ inline constexpr const char* kPauseExitPrompt = "globals.exitprogram|.\n|globals
 void hud_pause_on_listbox_activate_00604190(void* listener, std::uint32_t row, std::int32_t& page_00e19660,
     PauseScreenHost& host);
 
+// 00602280 HudPause register, __fastcall(ECX = screen), RET. Loads
+// "GUI_pause_single" (+14h), clears the award tracker's new-hint history
+// (00690CA0), sets 00E19660 = 0, loads "GUI_pause_tip" (+18h) and
+// "GUI_pause_objectives" (+1Ch), and makes 26 child lookups (title, info and
+// objectives groups; the .cpp lists them in image order). Between the bindings: +38h, +3Ch, +44h hidden; list box +2Ch gets
+// 00A9AC90(0, 0, 0), byte +78h = 0, 00AA6BC0(0, 0); +84h = the height of the
+// title slider's "back_Icon"; +88h..+90h = position of +80h; +24h, +7Ch, +74h,
+// +78h get 00AA6BC0(screen+0Ch, 0); +104h..+10Ch / +110h..+114h = position /
+// size of +40h; the embedded scroller +9Ch gets content +28h (00683790), +118h =
+// the info slider's "back_Icon" height, then 00683380(+7Ch, (float)(that height
+// - height of +7Ch), +74h, +78h); +10h = 0; list boxes +30h / +34h get
+// 00A9AC90(0, 0, 0); finally +1Ch is hidden.
+struct PauseRegisterHost : ScreenLifetimeHost {
+    virtual void award_tracker_clear_new_hint_history_00690ca0() = 0;  // ECX = 004E1CA0()
+    virtual void set_pause_page_00e19660(std::int32_t page) = 0;
+    virtual std::uint32_t find_child_by_name_00aa7e00(std::uint32_t parent, std::string_view name) = 0;
+    virtual void set_shown(std::uint32_t widget, bool shown) = 0;
+    virtual void list_box_set_layout_flags_00a9ac90(std::uint32_t list_box, std::int32_t a, std::int32_t b,
+        std::int32_t c) = 0;
+    virtual void widget_set_listener_fields_00aa6bc0(std::uint32_t widget, void* listener, std::int32_t arg) = 0;
+    virtual std::array<float, 2> widget_size_00aa6740(std::uint32_t widget) = 0;
+    virtual void scroller_attach_content_00683790(void* scroller, std::uint32_t content) = 0;
+    virtual void scroller_attach_scroll_bar_00683380(void* scroller, std::uint32_t thumb, float span,
+        std::uint32_t up, std::uint32_t down) = 0;
+};
+inline constexpr std::string_view kPauseSinglePage = "GUI_pause_single";          // 00CF40D4
+inline constexpr std::string_view kPauseTipPage = "GUI_pause_tip";                // 00CF40C4
+inline constexpr std::string_view kPauseObjectivesPage = "GUI_pause_objectives";  // 00CF402C
+void hud_pause_register_00602280(void* screen, PauseRegisterHost& host);
+
 // ---------------------------------------------------------------------------
 // HudObjectivesScreen bodies (packet cc13-fe6)
 // ---------------------------------------------------------------------------

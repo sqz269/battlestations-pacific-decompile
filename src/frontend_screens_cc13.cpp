@@ -2298,6 +2298,78 @@ void hud_pause_on_listbox_activate_00604190(void* listener, std::uint32_t row, s
     host.list_box_virtual_80(widget_at(screen, 0x2C), false);
 }
 
+void hud_pause_register_00602280(void* screen, PauseRegisterHost& host) {
+    const auto bind = [&](std::size_t parent, std::size_t store, std::string_view name) {
+        write_field(screen, store, host.find_child_by_name_00aa7e00(widget_at(screen, parent), name));
+    };
+    host.frontend_register_004f71d0(screen);
+    write_field(screen, 0x14, host.load_page_00aa5840(kPauseSinglePage));
+    host.award_tracker_clear_new_hint_history_00690ca0();
+    host.set_pause_page_00e19660(0);
+    write_field(screen, 0x18, host.load_page_00aa5840(kPauseTipPage));
+    bind(0x18, 0x20, "title_Group");
+    bind(0x20, 0x44, "hint_title_Text");
+    bind(0x20, 0x38, "parent_Group");
+    bind(0x20, 0x3C, "child_Group");
+    host.set_shown(widget_at(screen, 0x38), false);
+    host.set_shown(widget_at(screen, 0x3C), false);
+    host.set_shown(widget_at(screen, 0x44), false);
+    bind(0x20, 0x2C, "HintTitle_Listbox");
+    host.list_box_set_layout_flags_00a9ac90(widget_at(screen, 0x2C), 0, 0, 0);
+    write_field<std::uint8_t>(reinterpret_cast<void*>(static_cast<std::uintptr_t>(widget_at(screen, 0x2C))), 0x78, 0);
+    host.widget_set_listener_fields_00aa6bc0(widget_at(screen, 0x2C), nullptr, 0);
+
+    const std::uint32_t title_slider = host.find_child_by_name_00aa7e00(widget_at(screen, 0x20), "slider_Group");
+    write_field(screen, 0x80, host.find_child_by_name_00aa7e00(title_slider, "slider_FrameBox"));
+    write_field(screen, 0x84,
+        host.widget_size_00aa6740(host.find_child_by_name_00aa7e00(title_slider, "back_Icon"))[1]);
+    const std::array<float, 3> frame = host.widget_resolved_position_00aa6750(widget_at(screen, 0x80));
+    write_field(screen, 0x88, frame[0]);
+    write_field(screen, 0x8C, frame[1]);
+    write_field(screen, 0x90, frame[2]);
+
+    bind(0x18, 0x24, "info_Group");
+    host.widget_set_listener_fields_00aa6bc0(widget_at(screen, 0x24), at(screen, 0xC), 0);
+    bind(0x24, 0x70, "info_Clipbox");
+    bind(0x70, 0x28, "info_text_group");
+    bind(0x28, 0x40, "info_Text");
+    bind(0x28, 0xF8, "silverline_FrameBox");
+    const std::array<float, 3> text = host.widget_resolved_position_00aa6750(widget_at(screen, 0x40));
+    write_field(screen, 0x104, text[0]);
+    write_field(screen, 0x108, text[1]);
+    write_field(screen, 0x10C, text[2]);
+    const std::array<float, 2> text_size = host.widget_size_00aa6740(widget_at(screen, 0x40));
+    write_field(screen, 0x110, text_size[0]);
+    write_field(screen, 0x114, text_size[1]);
+    bind(0x28, 0x48, "title_Text");
+    const std::uint32_t info_slider = host.find_child_by_name_00aa7e00(widget_at(screen, 0x24), "slider_Group");
+    write_field(screen, 0x7C, host.find_child_by_name_00aa7e00(info_slider, "slider_FrameBox"));
+    host.widget_set_listener_fields_00aa6bc0(widget_at(screen, 0x7C), at(screen, 0xC), 0);
+    bind(0x24, 0x74, "ScrollUp_Icon");
+    host.widget_set_listener_fields_00aa6bc0(widget_at(screen, 0x74), at(screen, 0xC), 0);
+    bind(0x24, 0x78, "ScrollDown_Icon");
+    host.widget_set_listener_fields_00aa6bc0(widget_at(screen, 0x78), at(screen, 0xC), 0);
+    host.scroller_attach_content_00683790(at(screen, 0x9C), widget_at(screen, 0x28));
+    write_field(screen, 0x118,
+        host.widget_size_00aa6740(host.find_child_by_name_00aa7e00(info_slider, "back_Icon"))[1]);
+    const float back = host.widget_size_00aa6740(host.find_child_by_name_00aa7e00(info_slider, "back_Icon"))[1];
+    const float thumb = host.widget_size_00aa6740(widget_at(screen, 0x7C))[1];
+    host.scroller_attach_scroll_bar_00683380(at(screen, 0x9C), widget_at(screen, 0x7C), back - thumb,
+        widget_at(screen, 0x74), widget_at(screen, 0x78));
+    write_field<std::uint8_t>(screen, 0x10, 0);
+
+    write_field(screen, 0x1C, host.load_page_00aa5840(kPauseObjectivesPage));
+    bind(0x1C, 0xFC, "GUI_pause_objectives_FrameBox");
+    bind(0xFC, 0x50, "objectives_listbox_Text");
+    bind(0xFC, 0x30, "Primary_Listbox");
+    host.list_box_set_layout_flags_00a9ac90(widget_at(screen, 0x30), 0, 0, 0);
+    bind(0xFC, 0x34, "Secondary_Listbox");
+    host.list_box_set_layout_flags_00a9ac90(widget_at(screen, 0x34), 0, 0, 0);
+    bind(0xFC, 0x54, "primary_objectives_Text");
+    bind(0xFC, 0x58, "secondary_objectives_Text");
+    host.set_shown(widget_at(screen, 0x1C), false);
+}
+
 // ---------------------------------------------------------------------------
 // HudObjectivesScreen bodies (packet cc13-fe6)
 // ---------------------------------------------------------------------------
