@@ -1961,4 +1961,101 @@ void support_manager_load_layout_0065daa0(Raw s, LayoutHost& host) {
     find(s, 0x1C4, 0x1B0, "powerup_tip_FrameBox", host);
 }
 
+// ---------------------------------------------------------------------------
+// Batch 6: support-manager fades and icon frames
+// ---------------------------------------------------------------------------
+
+// 006723F0, __thiscall(screen, float dt), RET 4: count the close fade +28Ch
+// down (float-stored, clamped at 0). Above 0.5 the four widgets +7Ch..+88h get
+// alpha 2t - 1 (00AA8610, recursive); at or below it 00670020 runs, +30Ch is
+// cleared and the alpha is 1 - 2t. At exactly 0 the screen marks +2B1h and
+// clears +288h.
+void support_manager_step_close_fade_006723f0(Raw s, float dt, FadeHost& host) {
+    const float t = s.at<float>(0x28C) - dt;
+    s.at<float>(0x28C) = t;
+    if (0.0f > t) s.at<float>(0x28C) = 0.0f;
+    const float v = s.at<float>(0x28C);
+    if (v > 0.5f) {  // 00CE3800
+        for (std::size_t off = 0x7C; off <= 0x88; off += 4) {
+            host.widget_set_alpha_recursive_00aa8610(s.ptr(off),
+                static_cast<float>(static_cast<double>(v + v) - 1.0));  // 00D7A210
+        }
+    } else {
+        host.support_close_finish_00670020(s);
+        s.at<std::uint32_t>(0x30C) = 0;
+        for (std::size_t off = 0x7C; off <= 0x88; off += 4) {
+            host.widget_set_alpha_recursive_00aa8610(s.ptr(off), 1.0f - (v + v));
+        }
+    }
+    if (s.at<float>(0x28C) == 0.0f) {  // 00D7A218
+        s.at<std::uint8_t>(0x2B1) = 1;
+        s.at<std::uint8_t>(0x288) = 0;
+    }
+}
+
+// 0065BD90, __thiscall(screen, float dt), RET 4: while +1E4h is set the name
+// label fades in at 4/s (00D7A328) in +1E8h; reaching 1.0 clears +1E4h, shows
+// the name text +170h and keeps its pixel width / 960 (00CEC380) in +74h. The
+// frame +18Ch is sized (vtable +58h) to (width/960 * fade + 0.21, +198h)
+// (00CF6558), the label group +78h takes the fade as its alpha, and a finished
+// fade re-lays the label (0065BBC0).
+void support_manager_update_name_label_fade_0065bd90(Raw s, float dt, FadeHost& host) {
+    if (s.at<std::uint8_t>(0x1E4) == 0) return;
+    const float f = static_cast<float>(static_cast<double>(dt) * 4.0 + static_cast<double>(s.at<float>(0x1E8)));
+    s.at<float>(0x1E8) = f;
+    Raw text{static_cast<std::uint8_t*>(s.ptr(0x170))};
+    if (f >= 1.0f) {
+        s.at<std::uint8_t>(0x1E4) = 0;
+        s.at<float>(0x1E8) = 1.0f;
+        host.widget_set_visible_34(s.ptr(0x170), true);
+        s.at<float>(0x74) = static_cast<float>(static_cast<double>(text.at<float>(0x114)) / 960.0);
+    }
+    const float width = static_cast<float>(static_cast<double>(text.at<float>(0x114)) / 960.0);
+    const float size[2] = {
+        static_cast<float>(static_cast<double>(width) * static_cast<double>(s.at<float>(0x1E8)) + static_cast<double>(0.21f)),
+        s.at<float>(0x198)};
+    host.widget_set_size_58(s.ptr(0x18C), size);
+    host.widget_set_alpha_recursive_00aa8610(s.ptr(0x78), s.at<float>(0x1E8));
+    if (s.at<std::uint8_t>(0x1E4) == 0) host.support_layout_name_label_0065bbc0(s);
+}
+
+// 00652BA0, __stdcall(slot), RET 4 -> AL: the icon frame of a slot whose unit
+// (+8h) is present (+4h): kind queries through the unit's vtable +18h.
+int hud_unit_icon_frame_00652ba0(Raw slot, IconFrameHost& host) {
+    if (slot.ptr(0x4) == nullptr) return 0;
+    void* unit = slot.ptr(0x8);
+    if (host.unit_has_kind_18(unit, 0x16)) return 0x10;
+    if (host.unit_has_kind_18(unit, 0xE)) return 0xD;
+    if (host.unit_has_kind_18(unit, 0x15)) return 0x10;
+    if (host.unit_has_kind_18(unit, 7)) return 4;
+    if (host.unit_has_kind_18(unit, 8)) return 5;
+    const bool flag = Raw{static_cast<std::uint8_t*>(unit)}.at<std::uint8_t>(0x808) != 0;
+    if (host.unit_has_kind_18(unit, 0xD)) return flag ? 0x15 : 0xC;
+    if (host.unit_has_kind_18(unit, 10)) return flag ? 8 : 7;
+    return 0xE;
+}
+
+// 00658620, __thiscall(screen, record), RET 4 -> AL: the support-manager icon
+// frame of a slot record. While the screen's +1DCh is clear: state 5 -> 20h; a
+// launched unit (+28h) out (state 3/4) whose type (vtable +174h) is 00E08FA0 ->
+// 21h; state 1 -> 21h. Otherwise +298h counts the call and the record's unit
+// (+4h) picks: kind 12h -> 0Eh, 13h or 17h -> 0Fh, 10h -> 11h, 11h -> 13h, else 11h.
+inline constexpr std::uint32_t kSupportOutUnitType = 0x00E08FA0;
+int support_manager_record_icon_frame_00658620(Raw s, Raw record, IconFrameHost& host) {
+    const std::int32_t state = record.at<std::int32_t>(0x2C);
+    const bool closed = s.at<std::uint8_t>(0x1DC) == 0;
+    if (state == 5 && closed) return 0x20;
+    if (record.ptr(0x28) != nullptr && (state == 3 || state == 4)
+        && host.unit_type_174(record.ptr(0x28)) == kSupportOutUnitType && closed) {
+        return 0x21;
+    }
+    if (record.at<std::int32_t>(0x2C) == 1 && closed) return 0x21;
+    s.at<std::int32_t>(0x298) += 1;
+    void* unit = record.ptr(0x4);
+    if (host.unit_has_kind_18(unit, 0x12)) return 0xE;
+    if (host.unit_has_kind_18(unit, 0x13) || host.unit_has_kind_18(unit, 0x17)) return 0xF;
+    if (host.unit_has_kind_18(unit, 0x10)) return 0x11;
+    return host.unit_has_kind_18(unit, 0x11) ? 0x13 : 0x11;
+}
+
 } // namespace bsp::ingame_gui_cc13

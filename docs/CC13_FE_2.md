@@ -146,6 +146,18 @@ names are not pushed as immediates, so the script mispairs them), 0064BB90 (ship
 four samples through 00870CD0 and more), 0067F080 (unit library register: 3D scene set-up),
 00629D10 (rewards register: page names through 00450540).
 
+### Sixth batch (support-manager fades, icon frames)
+
+- 006723F0 close fade: +28Ch counts down by dt (float-stored, clamped at 0); above 0.5 the four
+  widgets +7Ch..+88h take alpha 2t - 1 through 00AA8610, otherwise 00670020 runs, +30Ch clears and
+  the alpha is 1 - 2t; exactly 0 sets +2B1h and clears +288h.
+- 0065BD90 name-label fade-in at 4 per second (00D7A328) in +1E8h; the frame +18Ch is sized to
+  (text width / 960 * fade + 0.21, +198h) (00CEC380, 00CF6558, x87 product kept in extended
+  precision before the add).
+- 00652BA0 slot icon frame (unit kinds 16h, 0Eh, 15h, 7, 8, 0Dh, 0Ah through vtable +18h; record
+  byte +808h picks the alternate frame), 00658620 support record icon frame (states 5 / 3-4 / 1 while
+  +1DCh is clear; out-of-play unit type 00E08FA0; +298h counts the calls that fall through).
+
 ### Shared shapes
 
 - `observer_ref_set`: 0064B340, 00656DE0, 00656E20, 0064B610, 0064BB50 (the last two return the

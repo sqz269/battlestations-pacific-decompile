@@ -725,6 +725,25 @@ void hud_root_load_layout_006463e0(Raw s, LayoutHost& host);
 void ship_status_load_layout_0064c0f0(Raw s, LayoutHost& host);
 void support_manager_load_layout_0065daa0(Raw s, LayoutHost& host);
 
+// ---------------------------------------------------------------------------
+// Batch 6: support-manager fades and icon frames.
+// ---------------------------------------------------------------------------
+struct FadeHost : HudScreenHost {
+    virtual void widget_set_alpha_recursive_00aa8610(void* widget, float alpha) = 0;
+    virtual void widget_set_size_58(void* widget, const float size[2]) = 0;   // vtable +58h
+    virtual void support_close_finish_00670020(Raw screen) = 0;
+    virtual void support_layout_name_label_0065bbc0(Raw screen) = 0;
+};
+void support_manager_step_close_fade_006723f0(Raw s, float dt, FadeHost& host);
+void support_manager_update_name_label_fade_0065bd90(Raw s, float dt, FadeHost& host);
+struct IconFrameHost {
+    virtual ~IconFrameHost() = default;
+    virtual bool unit_has_kind_18(void* unit, int kind) = 0;      // vtable +18h
+    virtual std::uint32_t unit_type_174(void* unit) = 0;          // vtable +174h, a type address
+};
+int hud_unit_icon_frame_00652ba0(Raw slot, IconFrameHost& host);
+int support_manager_record_icon_frame_00658620(Raw s, Raw record, IconFrameHost& host);
+
 void rewards_release_sound_handles_0061ec00(Raw s, RewardsScreenHost& host);
 bool rewards_selected_entry_flagged_0061d8b0(Raw s, RewardsScreenHost& host);
 void rewards_play_and_remove_file_00622e00(void* file, RewardsScreenHost& host);
