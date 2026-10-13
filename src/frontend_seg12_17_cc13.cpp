@@ -2703,4 +2703,134 @@ void control_binding_on_selection_changed_0055d180(Raw screen, void* row, void* 
     }
 }
 
+void control_binding_enter_0055fa80(Raw screen, Fe8ControlBindingEnterHost& host) {
+    const bool in_mission = host.game_in_mission_61f();
+    screen.ptr(0x1C) = host.find_child_by_name_00aa7e00(screen.ptr(0x14), in_mission ? "Ingame_Main_Listbox" : "Main_Listbox");
+    host.widget_set_visible_34(
+        host.find_child_by_name_00aa7e00(screen.ptr(0x14), in_mission ? "Main_Listbox" : "Ingame_Main_Listbox"), 0);
+    screen.ptr(0x24) = host.find_child_by_name_00aa7e00(screen.ptr(0x1C), "MainListbox_Text");
+    host.list_box_set_listener_00a9ac40(screen.ptr(0x1C), screen.p + 8);
+    host.widget_set_visible_34(screen.ptr(0x1C), 1);
+    host.control_binding_refresh_page_0055e3a0(screen, 0);
+    screen.at<float>(0x10) = 0.25f;  // 00CE3868
+    screen.at<std::uint8_t>(0xE4) = 0;
+    screen.at<std::uint8_t>(0x38) = 1;
+    const std::uint32_t length = screen.at<std::uint32_t>(0x3C);
+    if (length != 0) {
+        const std::uint32_t n = length < 0x7FFFFFFFu ? length : 0x7FFFFFFFu;
+        auto* const data = static_cast<char*>(screen.ptr(0x40));
+        std::memmove(data, data + n, length - n);
+        host.native_string_resize_0041dd40(screen.p + 0x3C, length - n, 1);
+    }
+}
+
+void control_binding_confirm_or_next_device_00560210(Raw screen, Fe8ControlBindingConfirmHost& host) {
+    if (screen.at<std::uint8_t>(0x19C) != 0) {
+        host.prompt_append_label_00450540("FE.opt_cancel");
+        host.prompt_append_label_00450540("FE.opt_discard");
+        host.prompt_append_label_00450540("globals.accept");
+        host.prompt_screen_00425d10().at<std::uint32_t>(0x284) = 0;
+        host.raise_prompt_00531b00(0, "FE.opt_acceptchanges", 4, 0x0055FA10);
+        return;
+    }
+    host.input_settings_save_006aa2d0();
+    screen.at<std::int32_t>(0x16C) += 1;
+    host.control_binding_refresh_page_0055e3a0(screen, 0);
+}
+
+namespace {
+
+// One library list row: clone +0ACh, find "MenuItem_Text", name the row with its index, clear
+// row +77h, label (and show) the text, append the row to +0B8h.
+void library_add_row(Raw screen, std::int32_t index, std::string_view label, bool show_before_label,
+                     Fe8LibraryListHost& host) {
+    void* const row = host.widget_clone_subtree_00aab4c0(screen.ptr(0xAC), 0);
+    void* const text = host.find_child_by_name_00aa7e00(row, "MenuItem_Text");
+    host.widget_set_name_2c(row, std::to_string(index));
+    raw(row).at<std::uint8_t>(0x77) = 0;
+    if (show_before_label) host.widget_set_visible_34(text, 1);
+    host.gui_text_set_ellipsized_00abb000(text, label, kTextWidthUnbounded, 1);
+    if (!show_before_label) host.widget_set_visible_34(text, 1);
+    host.list_box_insert_row_00a9d750(screen.ptr(0xB8), row, 0, 0);
+}
+
+// The image copies each label with strcpy_s into a 200-byte buffer (an over-long label raises the
+// CRT invalid-parameter handler); the model passes the label through.
+std::string_view library_label(const char* text) { return text != nullptr ? std::string_view(text) : std::string_view(); }
+
+const char* library_table_label(Raw screen, std::size_t offset, std::int32_t i) {
+    return static_cast<const char*>(screen.ptr(offset + static_cast<std::size_t>(i) * 8));
+}
+
+} // namespace
+
+void library_build_unlocks_list_005001a0(Raw screen, Fe8LibraryListHost& host) {
+    host.widget_set_visible_34(screen.ptr(0xB8), 1);
+    // Record 0 of the 2Ch-record vector at +46Ch (begin +470h); its id vector is +1Ch..+20h.
+    const Raw record{static_cast<std::uint8_t*>(screen.ptr(0x470))};
+    const auto* const ids = static_cast<const std::int32_t*>(record.ptr(0x1C));
+    const std::uint32_t id_count =
+        ids == nullptr ? 0u
+                       : static_cast<std::uint32_t>(static_cast<const std::int32_t*>(record.ptr(0x20)) - ids);
+    std::string label;
+    const std::uint32_t index = screen.at<std::uint32_t>(0x458);
+    if (index < id_count && ids[index] == screen.at<std::int32_t>(0x454)) {
+        screen.at<std::uint32_t>(0x138) = index;
+        label = host.vehicle_class_name_or_no_unlock_004fda50(ids[index]);
+    } else {
+        screen.at<std::uint32_t>(0x138) = 0;
+        screen.at<std::int32_t>(0x454) = -1;
+        screen.at<std::uint32_t>(0x458) = 0;
+        label = "FE.unitlib_nounlock";
+    }
+    library_add_row(screen, 0, label, false, host);
+    host.list_box_reset_highlight_00a9cf30(screen.ptr(0xB8), 1, 1);
+}
+
+void library_build_movie_list_00500450(Raw screen, Fe8LibraryListHost& host) {
+    host.widget_set_visible_34(screen.ptr(0xB8), 1);
+    library_add_row(screen, 0, library_label(host.image_string_table(0x00E08494, 0)), false, host);
+    host.list_box_reset_highlight_00a9cf30(screen.ptr(0xB8), 1, 1);
+}
+
+void library_build_nose_art_list_00500640(Raw screen, Fe8LibraryListHost& host) {
+    host.widget_set_visible_34(screen.ptr(0xB8), 1);
+    for (std::int32_t i = 0; i < 2; ++i) {
+        const std::int32_t unlocked = screen.at<std::int32_t>(0x98);
+        if (unlocked < 0x5A && unlocked != i) continue;
+        library_add_row(screen, i, library_label(host.image_string_table(0x00E084F0, i)), false, host);
+    }
+    host.list_box_reset_highlight_00a9cf30(screen.ptr(0xB8), 1, 1);
+}
+
+void library_build_units_weapons_list_00500860(Raw screen, Fe8LibraryListHost& host) {
+    host.widget_set_visible_34(screen.ptr(0xB8), 1);
+    for (std::int32_t i = 0; i < 5; ++i)
+        library_add_row(screen, i, library_label(library_table_label(screen, 0x31C, i)), true, host);
+    host.list_box_reset_highlight_00a9cf30(screen.ptr(0xB8), 1, 1);
+}
+
+void library_build_power_up_list_00500e90(Raw screen, Fe8LibraryListHost& host) {
+    host.widget_set_visible_34(screen.ptr(0xB8), 1);
+    for (std::int32_t i = 0; i < 3; ++i)
+        library_add_row(screen, i, library_label(library_table_label(screen, 0x344, i)), false, host);
+    host.list_box_reset_highlight_00a9cf30(screen.ptr(0xB8), 1, 1);
+}
+
+void library_build_academy_list_005010c0(Raw screen, Fe8LibraryListHost& host) {
+    host.widget_set_visible_34(screen.ptr(0xB8), 1);
+    for (std::int32_t i = 0; i < 0x0D; ++i) {
+        if (host.library_has_academy_entry_004fae70(screen, i)) continue;
+        library_add_row(screen, i, library_label(library_table_label(screen, 0x35C, i)), false, host);
+    }
+    host.list_box_reset_highlight_00a9cf30(screen.ptr(0xB8), 1, 1);
+}
+
+void library_build_achievements_list_005012f0(Raw screen, Fe8LibraryListHost& host) {
+    host.widget_set_visible_34(screen.ptr(0xB8), 1);
+    for (std::int32_t i = 0; i < 6; ++i)
+        library_add_row(screen, i, library_label(host.image_string_table(0x00E084D8, i)), false, host);
+    host.list_box_reset_highlight_00a9cf30(screen.ptr(0xB8), 1, 1);
+}
+
 } // namespace bsp::cc13_fe3

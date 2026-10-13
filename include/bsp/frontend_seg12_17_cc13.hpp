@@ -1541,4 +1541,85 @@ bool control_binding_scroll_to_selection_0055cec0(Raw screen, bool no_scroll, Fe
 void control_binding_on_selection_changed_0055d180(Raw screen, void* row, void* list_box,
     Fe8ControlBindingHost& host);
 
+struct Fe8ControlBindingEnterHost {
+    virtual ~Fe8ControlBindingEnterHost() = default;
+    virtual bool game_in_mission_61f() = 0;                                                  // [00E188A8]+61Fh
+    virtual void* find_child_by_name_00aa7e00(void* parent, std::string_view name) = 0;     // (name, 1)
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;             // vtable +34h
+    virtual void list_box_set_listener_00a9ac40(void* list_box, void* listener) = 0;
+    virtual void control_binding_refresh_page_0055e3a0(Raw screen, std::int32_t page) = 0;
+    virtual void native_string_resize_0041dd40(void* string, std::uint32_t length, std::uint32_t preserve) = 0;
+};
+
+// 0055FA80 BSP_ControlBindingScreen_Enter, slot +18h of 00CEE524, __fastcall(ECX = screen), RET.
+// In a mission ([00E188A8]+61Fh) +1Ch = "Ingame_Main_Listbox" (00CEE830) and "Main_Listbox"
+// (00CEB334) is hidden; otherwise the reverse (both under page +14h). +24h = the list's
+// "MainListbox_Text" (00CEC040); listener +8h; the list shown; 0055E3A0(0); +10h = 0.25f
+// (00CE3868); +0E4h = 0; +38h = 1; the string +3Ch is erased from the front by min(length,
+// 7FFFFFFFh) (memmove of the remainder, then 0041DD40(length - n, 1)), which empties it.
+void control_binding_enter_0055fa80(Raw screen, Fe8ControlBindingEnterHost& host);
+
+struct Fe8ControlBindingConfirmHost {
+    virtual ~Fe8ControlBindingConfirmHost() = default;
+    // 00450540 on 00425D10() +268h: the prompt's button labels.
+    virtual void prompt_append_label_00450540(std::string_view label) = 0;
+    virtual Raw prompt_screen_00425d10() = 0;
+    // 00531B00 on 00425D10(): (slot, message, kind, callback, 0, title "", 0.0f, 0, "", 1).
+    virtual void raise_prompt_00531b00(std::int32_t slot, const char* message, std::int32_t kind,
+        std::uint32_t callback) = 0;
+    virtual void input_settings_save_006aa2d0() = 0;                                         // ECX = 005547D0()
+    virtual void control_binding_refresh_page_0055e3a0(Raw screen, std::int32_t page) = 0;
+};
+
+// 00560210 BSP_ControlBindingScreen_ConfirmOrNextDevice, __fastcall(ECX = screen), RET. With
+// +19Ch set: labels "FE.opt_cancel", "FE.opt_discard", "globals.accept" appended to the prompt
+// (+268h), prompt +284h = 0, then 00531B00(slot 0, "FE.opt_acceptchanges", kind 4, callback
+// 0055FA10). Otherwise 006AA2D0 on the input settings, +16Ch += 1 and 0055E3A0(0).
+void control_binding_confirm_or_next_device_00560210(Raw screen, Fe8ControlBindingConfirmHost& host);
+
+// ---------------------------------------------------------------------------
+// Packet cc13-fe8: tactical library category lists (segment 12). Each builder shows the list
+// box +0B8h (vtable +34h(1)), clones rows from +0ACh, labels each row's "MenuItem_Text"
+// (00CEB474) child through 00ABB000(text, -1.0f, 1), names the row with its index (004260B0 then
+// row vtable +2Ch(&string)), clears row +77h, appends it (00A9D750(row, 0, 0)) and finishes with
+// 00A9CF30(1, 1). Labels are copied through a 200-byte buffer with strcpy_s / sprintf("%s").
+// ---------------------------------------------------------------------------
+struct Fe8LibraryListHost {
+    virtual ~Fe8LibraryListHost() = default;
+    virtual void widget_set_visible_34(void* widget, std::uint32_t visible) = 0;             // vtable +34h
+    virtual void widget_set_name_2c(void* widget, std::string_view name) = 0;                // vtable +2Ch
+    virtual void* widget_clone_subtree_00aab4c0(void* source, std::uint32_t zero) = 0;
+    virtual void* find_child_by_name_00aa7e00(void* parent, std::string_view name) = 0;     // (name, 1)
+    virtual void gui_text_set_ellipsized_00abb000(void* text, std::string_view source, float width,
+        std::uint32_t flag) = 0;
+    virtual void list_box_insert_row_00a9d750(void* list_box, void* row, std::uint32_t a, std::uint32_t b) = 0;
+    virtual void list_box_reset_highlight_00a9cf30(void* list_box, std::uint32_t a, std::uint32_t b) = 0;
+    // 004FDA50 GetNameOrNoUnlock, slot(index, NativeString* out), RET 8.
+    virtual std::string vehicle_class_name_or_no_unlock_004fda50(std::int32_t index) = 0;
+    // 004FAE70, __thiscall(screen, id), RET 4, AL.
+    virtual bool library_has_academy_entry_004fae70(Raw screen, std::int32_t id) = 0;
+    virtual const char* image_string_table(std::uint32_t table, std::int32_t index) = 0;     // [table + index*4]
+};
+
+// 005001A0 BSP_TacticalLibraryScreen_BuildUnlocksList, __fastcall(ECX = screen), RET. One row (index
+// 0). With the first 2Ch record of +46Ch (checked non-empty) holding more ids (+1Ch..+20h) than
+// +458h and ids[+458h] == +454h: +138h = +458h and the label is 004FDA50(record 0 ids[+458h]).
+// Otherwise +138h = 0, +454h = -1, +458h = 0 and the label is "FE.unitlib_nounlock" (00CEB184).
+void library_build_unlocks_list_005001a0(Raw screen, Fe8LibraryListHost& host);
+// 00500450 BSP_TacticalLibraryScreen_BuildMovieList: one row, label [00E08494] ("FE.main_movies").
+void library_build_movie_list_00500450(Raw screen, Fe8LibraryListHost& host);
+// 00500640 BuildNoseArtList: rows i = 0, 1 labelled [00E084F0 + i*4], each built when +98h >= 5Ah
+// or +98h == i.
+void library_build_nose_art_list_00500640(Raw screen, Fe8LibraryListHost& host);
+// 00500860 BuildUnitsWeaponsList: five rows, labels [+31Ch + i*8]; the text is shown before it is
+// labelled.
+void library_build_units_weapons_list_00500860(Raw screen, Fe8LibraryListHost& host);
+// 00500E90 BuildPowerUpList: three rows, labels [+344h + i*8].
+void library_build_power_up_list_00500e90(Raw screen, Fe8LibraryListHost& host);
+// 005010C0 BuildAcademyList: thirteen candidates, labels [+35Ch + i*8]; i is skipped when
+// 004FAE70(screen, i) is true.
+void library_build_academy_list_005010c0(Raw screen, Fe8LibraryListHost& host);
+// 005012F0 BuildAchievementsList: six rows labelled [00E084D8 + i*4].
+void library_build_achievements_list_005012f0(Raw screen, Fe8LibraryListHost& host);
+
 } // namespace bsp::cc13_fe3

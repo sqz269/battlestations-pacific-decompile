@@ -44,6 +44,15 @@ by `tools/verify_report_calls.py` (0 failed).
 | 0055C3B0 | `control_binding_refresh_selected_binding_0055c3b0` | fastcall(ECX screen), RET | |
 | 0055CEC0 | `control_binding_scroll_to_selection_0055cec0` | thiscall(screen, BYTE no_scroll), RET 4, AL | x87 visibility test |
 | 0055D180 | `control_binding_on_selection_changed_0055d180` | thiscall(screen, row, list box), RET 8 | |
+| 0055FA80 | `control_binding_enter_0055fa80` | fastcall(ECX screen), RET | in-mission list choice |
+| 00560210 | `control_binding_confirm_or_next_device_00560210` | fastcall(ECX screen), RET | accept-changes prompt |
+| 005001A0 | `library_build_unlocks_list_005001a0` | fastcall(ECX screen), RET | one row |
+| 00500450 | `library_build_movie_list_00500450` | fastcall(ECX screen), RET | one row |
+| 00500640 | `library_build_nose_art_list_00500640` | fastcall(ECX screen), RET | two rows, unlock-gated |
+| 00500860 | `library_build_units_weapons_list_00500860` | fastcall(ECX screen), RET | five rows |
+| 00500E90 | `library_build_power_up_list_00500e90` | fastcall(ECX screen), RET | three rows |
+| 005010C0 | `library_build_academy_list_005010c0` | fastcall(ECX screen), RET | thirteen candidates |
+| 005012F0 | `library_build_achievements_list_005012f0` | fastcall(ECX screen), RET | six rows |
 
 ### Leaderboards
 
@@ -93,6 +102,26 @@ by `tools/verify_report_calls.py` (0 failed).
 - 0055CEC0 is the same visibility routine as 00561860 (leaderboards MoveSelection) over the
   binding list +20h, clip +218h and the embedded scroller +1A0h. The snap paths skip rows whose
   +77h byte is set.
+
+- 0055FA80 erases the string +3Ch with the inlined `erase(0, min(length, 7FFFFFFFh))` (a memmove of
+  the remainder, then 0041DD40(length - n, 1)); the model keeps that sequence literally.
+- 00560210 raises the prompt with slot 0, kind 4 and callback 0055FA10 (the revert-prompt result
+  handler already described in docs/CC13_FE_3.md) after appending three button labels to the prompt
+  singleton's +268h vector and clearing its +284h.
+
+### Tactical library category lists
+
+- The seven builders share one row recipe (clone +0ACh, `MenuItem_Text`, row name = the decimal
+  index through vtable +2Ch, row +77h = 0, label, append) and finish with 00A9CF30(1, 1). Only the
+  units/weapons builder shows the text (vtable +34h(1)) before labelling it; the others label first.
+- Label sources: [00E08494] (movies), [00E084F0 + i*4] for i < 2 (nose art, built when +98h >= 5Ah or
+  +98h == i), [+31Ch + i*8] for i < 5 (units/weapons), [+344h + i*8] for i < 3 (power-ups),
+  [+35Ch + i*8] for i < 13 skipping ids for which 004FAE70 answers true (academy), [00E084D8 + i*4]
+  for i < 6 (achievements). Labels go through a 200-byte buffer (strcpy_s, or sprintf `%s`); the
+  model passes them through without the CRT's over-length handler.
+- 005001A0 builds one row: the vehicle-class name of record 0's id at +458h when that id equals +454h,
+  else `FE.unitlib_nounlock` with +454h = -1 and +458h = +138h = 0. The image raises the checked-
+  iterator report (00BF6713) when the record vector is empty; the model assumes a record.
 
 ## For cc9
 
