@@ -17,6 +17,12 @@ added. The code is "Part e" at the end of `include/bsp/water_weather_cc13.hpp` a
 
 ## Method
 
+> **Lead correction (2026-10-13):** the "drops memory stores" claim below is wrong. A raw
+> `python tools/bsp.py ghidra decompile 00BA2D20` and `... 00B9D1E0` both show every store the
+> listing has (`*param_1 = 0; *param_1 = param_2;`, the copy loop, `*param_1 = new; param_1[2] = cap`).
+> The omissions came from this worker's own reading pipeline, not from Ghidra. The live decompile is
+> fine; the listing-based bodies below are still correct.
+
 Every body was read from a capstone listing over the PE (`local/w2tools/w2_fn.py`, `w2_dis.py`). The live Ghidra
 decompile of these bodies **drops memory stores** (2026-10-13). For example:
 
