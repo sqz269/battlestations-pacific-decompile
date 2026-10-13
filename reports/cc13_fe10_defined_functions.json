@@ -374,6 +374,432 @@
     "program": "battlestationspacific.exe",
     "message": "Program saved successfully"
    }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00541130",
+    "end_address": "0054113f"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00541130",
+    "end_address": "0054113e",
+    "bytes_disassembled": 15,
+    "message": "Successfully disassembled 15 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00541130",
+    "disassemble_first": false,
+    "name": "STL_AutoPtrLike_ConstructPtr_00541130"
+   },
+   "result": {
+    "success": true,
+    "address": "00541130",
+    "function_name": "STL_AutoPtrLike_ConstructPtr_00541130",
+    "entry_point": "00541130",
+    "body_size": 15,
+    "message": "Function created successfully at 00541130",
+    "warnings": [
+     "Function name 'STL_AutoPtrLike_ConstructPtr_00541130' \u2014 main part 'AutoPtrLike_ConstructPtr_00541130' is not PascalCase. Expected: AutoptrlikeConstructptr00541130",
+     "Function name 'STL_AutoPtrLike_ConstructPtr_00541130' \u2014 main part 'AutoPtrLike_ConstructPtr_00541130' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'STL_AutoPtrLike_ConstructPtr_00541130' does not start with a recognized verb. First word 'Auto' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00541130",
+   "end": "0054113f",
+   "name": "STL_AutoPtrLike_ConstructPtr_00541130",
+   "after": "Function: STL_AutoPtrLike_ConstructPtr_00541130 at 00541130\nSignature: undefined STL_AutoPtrLike_ConstructPtr_00541130(void)\nEntry: 00541130\nBody: 00541130 - 0054113e"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00541140",
+    "end_address": "00541153"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00541140",
+    "end_address": "00541152",
+    "bytes_disassembled": 19,
+    "message": "Successfully disassembled 19 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00541140",
+    "disassemble_first": false,
+    "name": "STL_AutoPtrLike_CopyConstruct_00541140"
+   },
+   "result": {
+    "success": true,
+    "address": "00541140",
+    "function_name": "STL_AutoPtrLike_CopyConstruct_00541140",
+    "entry_point": "00541140",
+    "body_size": 19,
+    "message": "Function created successfully at 00541140",
+    "warnings": [
+     "Function name 'STL_AutoPtrLike_CopyConstruct_00541140' \u2014 main part 'AutoPtrLike_CopyConstruct_00541140' is not PascalCase. Expected: AutoptrlikeCopyconstruct00541140",
+     "Function name 'STL_AutoPtrLike_CopyConstruct_00541140' \u2014 main part 'AutoPtrLike_CopyConstruct_00541140' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'STL_AutoPtrLike_CopyConstruct_00541140' does not start with a recognized verb. First word 'Auto' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00541140",
+   "end": "00541153",
+   "name": "STL_AutoPtrLike_CopyConstruct_00541140",
+   "after": "Function: STL_AutoPtrLike_CopyConstruct_00541140 at 00541140\nSignature: undefined STL_AutoPtrLike_CopyConstruct_00541140(void)\nEntry: 00541140\nBody: 00541140 - 00541152"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00541160",
+    "end_address": "0054116d"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00541160",
+    "end_address": "0054116c",
+    "bytes_disassembled": 13,
+    "message": "Successfully disassembled 13 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00541160",
+    "disassemble_first": false,
+    "name": "STL_AutoPtrLike_ConstructNull_00541160"
+   },
+   "result": {
+    "success": true,
+    "address": "00541160",
+    "function_name": "STL_AutoPtrLike_ConstructNull_00541160",
+    "entry_point": "00541160",
+    "body_size": 13,
+    "message": "Function created successfully at 00541160",
+    "warnings": [
+     "Function name 'STL_AutoPtrLike_ConstructNull_00541160' \u2014 main part 'AutoPtrLike_ConstructNull_00541160' is not PascalCase. Expected: AutoptrlikeConstructnull00541160",
+     "Function name 'STL_AutoPtrLike_ConstructNull_00541160' \u2014 main part 'AutoPtrLike_ConstructNull_00541160' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'STL_AutoPtrLike_ConstructNull_00541160' does not start with a recognized verb. First word 'Auto' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00541160",
+   "end": "0054116d",
+   "name": "STL_AutoPtrLike_ConstructNull_00541160",
+   "after": "Function: STL_AutoPtrLike_ConstructNull_00541160 at 00541160\nSignature: undefined STL_AutoPtrLike_ConstructNull_00541160(void)\nEntry: 00541160\nBody: 00541160 - 0054116c"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00541170",
+    "end_address": "0054117f"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00541170",
+    "end_address": "0054117e",
+    "bytes_disassembled": 15,
+    "message": "Successfully disassembled 15 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00541170",
+    "disassemble_first": false,
+    "name": "STL_AutoPtrLike_ConstructPtr_00541170"
+   },
+   "result": {
+    "success": true,
+    "address": "00541170",
+    "function_name": "STL_AutoPtrLike_ConstructPtr_00541170",
+    "entry_point": "00541170",
+    "body_size": 15,
+    "message": "Function created successfully at 00541170",
+    "warnings": [
+     "Function name 'STL_AutoPtrLike_ConstructPtr_00541170' \u2014 main part 'AutoPtrLike_ConstructPtr_00541170' is not PascalCase. Expected: AutoptrlikeConstructptr00541170",
+     "Function name 'STL_AutoPtrLike_ConstructPtr_00541170' \u2014 main part 'AutoPtrLike_ConstructPtr_00541170' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'STL_AutoPtrLike_ConstructPtr_00541170' does not start with a recognized verb. First word 'Auto' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00541170",
+   "end": "0054117f",
+   "name": "STL_AutoPtrLike_ConstructPtr_00541170",
+   "after": "Function: STL_AutoPtrLike_ConstructPtr_00541170 at 00541170\nSignature: undefined STL_AutoPtrLike_ConstructPtr_00541170(void)\nEntry: 00541170\nBody: 00541170 - 0054117e"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00541180",
+    "end_address": "00541193"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00541180",
+    "end_address": "00541192",
+    "bytes_disassembled": 19,
+    "message": "Successfully disassembled 19 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00541180",
+    "disassemble_first": false,
+    "name": "STL_AutoPtrLike_CopyConstruct_00541180"
+   },
+   "result": {
+    "success": true,
+    "address": "00541180",
+    "function_name": "STL_AutoPtrLike_CopyConstruct_00541180",
+    "entry_point": "00541180",
+    "body_size": 19,
+    "message": "Function created successfully at 00541180",
+    "warnings": [
+     "Function name 'STL_AutoPtrLike_CopyConstruct_00541180' \u2014 main part 'AutoPtrLike_CopyConstruct_00541180' is not PascalCase. Expected: AutoptrlikeCopyconstruct00541180",
+     "Function name 'STL_AutoPtrLike_CopyConstruct_00541180' \u2014 main part 'AutoPtrLike_CopyConstruct_00541180' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'STL_AutoPtrLike_CopyConstruct_00541180' does not start with a recognized verb. First word 'Auto' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00541180",
+   "end": "00541193",
+   "name": "STL_AutoPtrLike_CopyConstruct_00541180",
+   "after": "Function: STL_AutoPtrLike_CopyConstruct_00541180 at 00541180\nSignature: undefined STL_AutoPtrLike_CopyConstruct_00541180(void)\nEntry: 00541180\nBody: 00541180 - 00541192"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "005411a0",
+    "end_address": "005411ad"
+   },
+   "result": {
+    "success": true,
+    "start_address": "005411a0",
+    "end_address": "005411ac",
+    "bytes_disassembled": 13,
+    "message": "Successfully disassembled 13 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "005411a0",
+    "disassemble_first": false,
+    "name": "BSP_WidgetHolder18_Show_005411A0"
+   },
+   "result": {
+    "success": true,
+    "address": "005411a0",
+    "function_name": "BSP_WidgetHolder18_Show_005411A0",
+    "entry_point": "005411a0",
+    "body_size": 13,
+    "message": "Function created successfully at 005411a0",
+    "warnings": [
+     "Function name 'BSP_WidgetHolder18_Show_005411A0' \u2014 main part 'WidgetHolder18_Show_005411A0' is not PascalCase. Expected: Widgetholder18Show005411a0",
+     "Function name 'BSP_WidgetHolder18_Show_005411A0' \u2014 main part 'WidgetHolder18_Show_005411A0' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_WidgetHolder18_Show_005411A0' does not start with a recognized verb. First word 'Widget' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "005411a0",
+   "end": "005411ad",
+   "name": "BSP_WidgetHolder18_Show_005411A0",
+   "after": "Function: BSP_WidgetHolder18_Show_005411A0 at 005411a0\nSignature: undefined BSP_WidgetHolder18_Show_005411A0(void)\nEntry: 005411a0\nBody: 005411a0 - 005411ac"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "005411b0",
+    "end_address": "005411bd"
+   },
+   "result": {
+    "success": true,
+    "start_address": "005411b0",
+    "end_address": "005411bc",
+    "bytes_disassembled": 13,
+    "message": "Successfully disassembled 13 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "005411b0",
+    "disassemble_first": false,
+    "name": "BSP_WidgetHolder08_Show_005411B0"
+   },
+   "result": {
+    "success": true,
+    "address": "005411b0",
+    "function_name": "BSP_WidgetHolder08_Show_005411B0",
+    "entry_point": "005411b0",
+    "body_size": 13,
+    "message": "Function created successfully at 005411b0",
+    "warnings": [
+     "Function name 'BSP_WidgetHolder08_Show_005411B0' \u2014 main part 'WidgetHolder08_Show_005411B0' is not PascalCase. Expected: Widgetholder08Show005411b0",
+     "Function name 'BSP_WidgetHolder08_Show_005411B0' \u2014 main part 'WidgetHolder08_Show_005411B0' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_WidgetHolder08_Show_005411B0' does not start with a recognized verb. First word 'Widget' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "005411b0",
+   "end": "005411bd",
+   "name": "BSP_WidgetHolder08_Show_005411B0",
+   "after": "Function: BSP_WidgetHolder08_Show_005411B0 at 005411b0\nSignature: undefined BSP_WidgetHolder08_Show_005411B0(void)\nEntry: 005411b0\nBody: 005411b0 - 005411bc"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "005411c0",
+    "end_address": "005411f9"
+   },
+   "result": {
+    "success": true,
+    "start_address": "005411c0",
+    "end_address": "005411f8",
+    "bytes_disassembled": 57,
+    "message": "Successfully disassembled 57 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "005411c0",
+    "disassemble_first": false,
+    "name": "BSP_WidgetHolder18_SetPixelXY_005411C0"
+   },
+   "result": {
+    "success": true,
+    "address": "005411c0",
+    "function_name": "BSP_WidgetHolder18_SetPixelXY_005411C0",
+    "entry_point": "005411c0",
+    "body_size": 57,
+    "message": "Function created successfully at 005411c0",
+    "warnings": [
+     "Function name 'BSP_WidgetHolder18_SetPixelXY_005411C0' \u2014 main part 'WidgetHolder18_SetPixelXY_005411C0' is not PascalCase. Expected: Widgetholder18Setpixelxy005411c0",
+     "Function name 'BSP_WidgetHolder18_SetPixelXY_005411C0' \u2014 main part 'WidgetHolder18_SetPixelXY_005411C0' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_WidgetHolder18_SetPixelXY_005411C0' does not start with a recognized verb. First word 'Widget' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "005411c0",
+   "end": "005411f9",
+   "name": "BSP_WidgetHolder18_SetPixelXY_005411C0",
+   "after": "Function: BSP_WidgetHolder18_SetPixelXY_005411C0 at 005411c0\nSignature: undefined BSP_WidgetHolder18_SetPixelXY_005411C0(void)\nEntry: 005411c0\nBody: 005411c0 - 005411f8"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00541200",
+    "end_address": "0054120a"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00541200",
+    "end_address": "00541209",
+    "bytes_disassembled": 10,
+    "message": "Successfully disassembled 10 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00541200",
+    "disassemble_first": false,
+    "name": "BSP_Holder_SetField04_00541200"
+   },
+   "result": {
+    "success": true,
+    "address": "00541200",
+    "function_name": "BSP_Holder_SetField04_00541200",
+    "entry_point": "00541200",
+    "body_size": 10,
+    "message": "Function created successfully at 00541200",
+    "warnings": [
+     "Function name 'BSP_Holder_SetField04_00541200' \u2014 main part 'Holder_SetField04_00541200' is not PascalCase. Expected: HolderSetfield0400541200",
+     "Function name 'BSP_Holder_SetField04_00541200' \u2014 main part 'Holder_SetField04_00541200' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Holder_SetField04_00541200' does not start with a recognized verb. First word 'Holder_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00541200",
+   "end": "0054120a",
+   "name": "BSP_Holder_SetField04_00541200",
+   "after": "Function: BSP_Holder_SetField04_00541200 at 00541200\nSignature: undefined BSP_Holder_SetField04_00541200(void)\nEntry: 00541200\nBody: 00541200 - 00541209"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00541210",
+    "end_address": "00541249"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00541210",
+    "end_address": "00541248",
+    "bytes_disassembled": 57,
+    "message": "Successfully disassembled 57 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00541210",
+    "disassemble_first": false,
+    "name": "BSP_WidgetHolder08_SetPixelXY_00541210"
+   },
+   "result": {
+    "success": true,
+    "address": "00541210",
+    "function_name": "BSP_WidgetHolder08_SetPixelXY_00541210",
+    "entry_point": "00541210",
+    "body_size": 57,
+    "message": "Function created successfully at 00541210",
+    "warnings": [
+     "Function name 'BSP_WidgetHolder08_SetPixelXY_00541210' \u2014 main part 'WidgetHolder08_SetPixelXY_00541210' is not PascalCase. Expected: Widgetholder08Setpixelxy00541210",
+     "Function name 'BSP_WidgetHolder08_SetPixelXY_00541210' \u2014 main part 'WidgetHolder08_SetPixelXY_00541210' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_WidgetHolder08_SetPixelXY_00541210' does not start with a recognized verb. First word 'Widget' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00541210",
+   "end": "00541249",
+   "name": "BSP_WidgetHolder08_SetPixelXY_00541210",
+   "after": "Function: BSP_WidgetHolder08_SetPixelXY_00541210 at 00541210\nSignature: undefined BSP_WidgetHolder08_SetPixelXY_00541210(void)\nEntry: 00541210\nBody: 00541210 - 00541248"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
   }
  ]
 }
