@@ -202,8 +202,16 @@ struct HudScreenHost : HudScreenServices {
     virtual void binoculars_reset_0051e8e0() = 0;
     // 0051F330(arg), the binoculars view update, and 005454B0(x, y, z) on the
     // screen 2Eh object (*(*00E198C4 + 4Ch)), whose +38h supplies z.
-    virtual void binoculars_update_view_0051f330(std::uint32_t arg) = 0;
-    virtual void screen2e_set_view_centre_005454b0(float x, float y) = 0;
+    virtual void binoculars_update_view_0051f330(float seconds) = 0;  // ECX = *(*00E198C4 + 4Ch)
+    // ECX = *(*00E198C4 + 50h); z is the binoculars zoom (*(*00E198C4 + 4Ch) + 38h)
+    // or the caller's own +5Ch.
+    virtual void screen2e_set_view_centre_005454b0(float x, float y, float z) = 0;
+    virtual void text_set_ellipsized_00abb000(void* text, const char* source, float width, bool flag) = 0;
+    virtual void game_set_view_fov_004dc940(float fov, int flag) = 0;      // ECX = *00E188A8
+    virtual void submarine_camera_select_mode_0042cb70(void* camera, int mode) = 0;
+    virtual void screen_update_20(Raw screen, float seconds) = 0;          // vtable +20h
+    virtual void camera_virtual_dc(void* camera, float value) = 0;         // vtable +DCh
+    virtual void unit_view_ensure_submarine_camera_00651370(Raw screen) = 0;
     // 00452B80(enabled), 006506E0 (periscope detach; reconstructed below but
     // reached through the host when another routine calls it).
     virtual void lens_flare_set_enabled_00452b80(bool enabled) = 0;
@@ -279,7 +287,7 @@ void binoculars_overlay_register_0067c430(Raw s, HudScreenHost& host);
 void binoculars_overlay_enter_0067c050(Raw s, HudScreenHost& host);
 void binoculars_overlay_released_0067c130(Raw s, void* object) noexcept;
 void binoculars_overlay_exit_0067c0a0(Raw s, HudScreenHost& host);
-void binoculars_update_view_recentre_0067c0e0(Raw s, std::uint32_t arg, HudScreenHost& host);
+void binoculars_update_view_recentre_0067c0e0(Raw s, float seconds, HudScreenHost& host);
 
 // ---------------------------------------------------------------------------
 // Screen 24h, the bomb/torpedo view (+4Ch bomb camera, +50h torpedo camera,
@@ -518,6 +526,15 @@ struct RewardsScreenHost : HudScreenHost {
     virtual void push_interface_request_004cc460(std::int32_t request, std::int32_t arg) = 0;
     virtual void session_set_mode_0076fad0(std::int32_t mode) = 0;  // ECX = game+1EF0h
     virtual void multi_menu_push_request_00688ad0(std::int32_t request) = 0;  // ECX = *00E198B4
+    virtual bool xenon_has_selected_user_00a3e510() = 0;         // ECX = *00F8ABE8
+    virtual std::int32_t xenon_selected_sign_in_state_00a3ead0() = 0;
+    virtual std::int32_t listbox_selected_index_00a9c920(void* listbox) = 0;
+    virtual void rewards_play_test_speech_0061f9d0(void* file) = 0;  // ECX = *(*00E198AC + 60h)
+    // 004FC150 (file-store factory), 00BE80B0(file) then 00BE7130.
+    virtual void file_store_remove_00be7130(void* file) = 0;
+    virtual void scroller_construct_00683610(Raw block) = 0;
+    virtual void record10_destroy_range_006243c0(Raw vector) = 0;  // ECX begin, EDX end, (vector, screen)
+    virtual void score_row_vector_tidy_00625a00(Raw vector) = 0;
 };
 
 // ---------------------------------------------------------------------------
@@ -541,7 +558,75 @@ void periscope_destruct_00650970(Raw s, ScreenTeardownHost& host);
 void periscope_load_layout_00651230(Raw s, HudScreenHost& host);
 void submarine_load_layout_00650b90(Raw s, HudScreenHost& host);
 
+// ---------------------------------------------------------------------------
+// Batch 2 hosts and routines.
+// ---------------------------------------------------------------------------
+struct MarkerPool {
+    std::uint32_t acquire;      // the routine
+    std::uint16_t vector_off;   // the vector object (begin at +4h, end at +8h)
+    std::uint16_t cursor_off;   // the hand-out cursor
+    std::uint16_t alloc_size;   // operator new size of a fresh marker
+    std::uint32_t constructor;  // __thiscall(marker, page)
+    std::uint32_t push_back;    // ECX = the vector, (&marker)
+};
+inline constexpr MarkerPool kObjectiveMarkerPool{0x00640860, 0x5C, 0x80, 0x18, 0x0063DEC0, 0x00640250};
+inline constexpr MarkerPool kCommandUnitMarkerPool{0x00640940, 0x6C, 0x84, 0x08, 0x0063E1C0, 0x006402C0};
+struct MarkerPoolHost {
+    virtual ~MarkerPoolHost() = default;
+    // operator new(alloc_size) then the constructor with the page; null on failure.
+    virtual void* make_marker(const MarkerPool& pool, void* page) = 0;
+    virtual void push_marker(const MarkerPool& pool, Raw vector, void* marker) = 0;
+    virtual void invalid_parameter_00bf6713() = 0;
+};
+void* hud_markers_acquire_pooled_marker(const MarkerPool& pool, Raw s, MarkerPoolHost& host);
+
+struct UnitIconHost {
+    virtual ~UnitIconHost() = default;
+    virtual bool unit_is_kind_5c(void* unit, int kind) = 0;
+    virtual int plane_ordnance_icon_kind_007bca50(void* plane) = 0;
+};
+int hud_unit_icon_index_00644ae0(Raw unit, UnitIconHost& host);
+
+struct UnitSelectHost {
+    virtual ~UnitSelectHost() = default;
+    virtual bool unit_selectable_00645060(void* unit, std::int32_t slot, int flag) = 0;
+    virtual std::int32_t local_player_slot() = 0;          // game+18ECh
+    virtual std::int32_t local_player_record_28() = 0;     // *(game+18CCh + 4*slot) + 28h
+    virtual std::int32_t session_mode() = 0;               // game+1FE4h
+};
+bool unit_selectable_for_current_player_00645160(void* unit, int flag, UnitSelectHost& host);
+bool unit_is_local_player_unit_00645180(Raw unit, UnitSelectHost& host);
+
+struct ShipScreenWidgetHost : HudScreenHost {
+    virtual void widget_resolved_position_00aa6750(void* widget, float out[3]) = 0;
+    virtual void widget_set_resolved_position_00aa8240(void* widget, const float pos[3]) = 0;
+    virtual void ship_screen_apply_unit_0064ae20(Raw screen) = 0;
+};
+void ship_screen_trigger_unit_ping_0064a8e0(Raw s, ShipScreenWidgetHost& host);
+void ship_screen_set_unit_0064d590(Raw s, void* unit, ShipScreenWidgetHost& host);
+
+struct PressStartStorageHost {
+    virtual ~PressStartStorageHost() = default;
+    virtual std::uint32_t storage_request_08() = 0;          // *(*0109CECC + 8)
+    virtual void menu_prompts_dismiss_all_00530650() = 0;    // ECX = 00425D10()
+    virtual void title_skip_0068d8a0() = 0;
+};
+void press_start_on_storage_complete_0067ca40(PressStartStorageHost& host);
+
+Raw hud_colour_icon_set_construct_0063dec0(Raw set, void* page, HudScreenHost& host, HudMarkerCloneHost& clone);
+void hud_unit_marker_widgets_destruct_00638f50(Raw w, HudScreenHost& host);
+void text_owner_set_ellipsized_00646d30(Raw owner, const char* text, HudScreenHost& host);
+void hud_root_set_interface_00646040(Raw s, std::uint32_t iface, void* observed, HudScreenHost& host);
+void periscope_attach_unit_00650210(Raw s, HudScreenHost& host);
+void periscope_detach_unit_006506e0(Raw s, HudScreenHost& host);
+void periscope_enter_00650750(Raw s, HudScreenHost& host);
+void unit_view_bind_unit_and_reset_00651760(Raw s, void* unit, HudScreenHost& host);
+
 void rewards_release_sound_handles_0061ec00(Raw s, RewardsScreenHost& host);
+bool rewards_selected_entry_flagged_0061d8b0(Raw s, RewardsScreenHost& host);
+void rewards_play_and_remove_file_00622e00(void* file, RewardsScreenHost& host);
+Raw rewards_construct_00626630(Raw s, RewardsScreenHost& host);
+void rewards_destruct_00626770(Raw s, RewardsScreenHost& host, NativeStringHost& strings);
 void rewards_widget_release_0061d770(Raw listener, void* widget, RewardsScreenHost& host);
 void rewards_widget_press_0062b3b0(Raw listener, void* widget, RewardsScreenHost& host);
 void rewards_exit_00621720(Raw s, RewardsScreenHost& host);

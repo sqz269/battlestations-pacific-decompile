@@ -85,6 +85,22 @@ gamer card of the selected scoreboard row, A7h the player review (both on the mu
 +4Ch == 1, through XShowGamerCardUI / XShowPlayerReviewUI). The auto-scroll speed is 0.004f
 (00CEC178).
 
+### Second batch
+
+| Area | Routines |
+|---|---|
+| 04h rewards | selected-row flag 0061D8B0 (signed-in Xbox user, +230h[row]), play-and-remove 00622E00, construct 00626630, destruct 00626770 |
+| 4Dh markers | colour-icon set construct 0063DEC0 (CLOSE_Group: Yellow, White, Coffe (sic), Blue, Red), unit-marker widgets destruct 00638F50, pooled marker hand-out 00640860 / 00640940 (`kObjectiveMarkerPool`, `kCommandUnitMarkerPool`) |
+| unit icons | 00644AE0: ordnance kind for planes (through their leader +3D0h) and kind 0Fh, record class for kind 1Bh (45h when it is 1Bh with +50h clear), 4/7 for kinds 0Ah/0Ch with record byte +808h, else the class at +C4h; classes map through 006440C0 (src/band_0060_cc13.cpp, called directly) |
+| unit tests | 00645160 (forwards ECX, local slot in EDX, flag on the stack to 00645060), 00645180 (session: owner id +54h against the local player record +28h) |
+| 44h HUD root | set interface 00646040, text helper 00646D30 (ellipsized C string on the text at +34h, width -1.0f) |
+| 45h ship screen | unit ping 0064A8E0, set unit 0064D590 (observer member +170h) |
+| 47h periscope | attach 00650210, detach 006506E0 (role release, fov 1.0), enter 00650750 (periscope state +122Ch / +1234h selects camera mode 1 or 0), bind-and-reset 00651760 (writes the unit's +122Ch back to 0 unless it is 2) |
+| 5Ch press start | storage completion 0067CA40 |
+
+Corrections from the listing: 00644AE0's decompile hides that every class-icon call is a tail
+jump with ECX = a constant or field (45h, +C4h, 10h, 11h, 13h, 14h); 0067C0E0 takes a float.
+
 ### Shared shapes
 
 - `observer_ref_set`: 0064B340, 00656DE0, 00656E20, 0064B610, 0064BB50 (the last two return the

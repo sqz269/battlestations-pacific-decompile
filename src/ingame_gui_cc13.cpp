@@ -3,6 +3,8 @@
 
 #include "bsp/ingame_gui_cc13.hpp"
 
+#include "bsp/band_0060_cc13.hpp"
+
 #include <cmath>
 #include <cstring>
 
@@ -211,11 +213,11 @@ void binoculars_overlay_released_0067c130(Raw s, void* object) noexcept {
     if (object == s.ptr(0x24)) s.ptr(0x24) = nullptr;
 }
 
-// 0067C0E0, __thiscall(screen, arg), RET 4: binoculars view update, then with a
+// 0067C0E0, __thiscall(screen, float), RET 4: binoculars view update, then with a
 // camera (+2Ch) recentre screen 2Eh on (0.5, 0.5).
-void binoculars_update_view_recentre_0067c0e0(Raw s, std::uint32_t arg, HudScreenHost& host) {
-    host.binoculars_update_view_0051f330(arg);
-    if (s.ptr(0x2C) != nullptr) host.screen2e_set_view_centre_005454b0(0.5f, 0.5f);  // 00CE3800
+void binoculars_update_view_recentre_0067c0e0(Raw s, float seconds, HudScreenHost& host) {
+    host.binoculars_update_view_0051f330(seconds);
+    if (s.ptr(0x2C) != nullptr) host.screen2e_set_view_centre_005454b0(0.5f, 0.5f, host.interface_object(0x4C).at<float>(0x38));  // 00CE3800
 }
 
 // ---------------------------------------------------------------------------
@@ -1159,6 +1161,303 @@ void submarine_load_layout_00650b90(Raw s, HudScreenHost& host) {
     s.ptr(0x10) = host.gui_find_child_00aa7e00(s.ptr(0x8), "sub_depth_arrow_Icon");
     s.ptr(0x14) = host.gui_find_child_00aa7e00(s.ptr(0x8), "sub_air_arrow_Icon");
     s.ptr(0x18) = host.gui_find_child_00aa7e00(s.ptr(0x8), "sub_air_warning_Icon");
+}
+
+// ---------------------------------------------------------------------------
+// Batch 2: rewards lifetime, marker sets, unit icons, ship and periscope views
+// ---------------------------------------------------------------------------
+
+// 0061D8B0, __fastcall(screen) -> AL: with a selected, signed-in (state 2)
+// Xbox user, the online service not busy (+19Ch false), and the scoreboard
+// listbox (+D4h) enabled (+85h), the flag byte +230h[selected row].
+bool rewards_selected_entry_flagged_0061d8b0(Raw s, RewardsScreenHost& host) {
+    if (!host.xenon_has_selected_user_00a3e510()) return false;
+    if (host.xenon_selected_sign_in_state_00a3ead0() != 2) return false;
+    if (host.online_virtual_bool(0x19C)) return false;
+    void* listbox = s.ptr(0xD4);
+    if (listbox == nullptr) return false;
+    if (Raw{static_cast<std::uint8_t*>(listbox)}.at<std::uint8_t>(0x85) == 0) return false;
+    if (host.listbox_selected_index_00a9c920(listbox) == -1) return false;
+    return s.at<std::uint8_t>(0x230 + host.listbox_selected_index_00a9c920(s.ptr(0xD4))) != 0;
+}
+
+// 00622E00, __stdcall(file, unused), RET 8: play the file through the
+// debrief voice (0061F9D0, ECX = *(*00E198AC + 60h)), then remove it from the
+// file store (004FC150, 00BE80B0(file), 00BE7130).
+void rewards_play_and_remove_file_00622e00(void* file, RewardsScreenHost& host) {
+    host.rewards_play_test_speech_0061f9d0(file);
+    host.file_store_remove_00be7130(file);
+}
+
+// 00626630, __thiscall(screen) -> EAX: base construct; listener-base vtables
+// (00CEB0FC at +8h, 00CEB110 at +0Ch) then the screen's; the handles and the
+// strings at +10h..+34h cleared; the three scroller blocks (+68h, +128h,
+// +19Ch, 00683610) and the vectors +F8h, +220h, +238h, +248h zeroed.
+inline constexpr std::uint32_t kRewardsVtable = 0x00CF50CC;
+inline constexpr std::uint32_t kRewardsCallbackVtable = 0x00CF50B8;
+inline constexpr std::uint32_t kRewardsListenerVtable = 0x00CF5098;
+inline constexpr std::uint32_t kWidgetListenerBaseVtable = 0x00CEB110;
+Raw rewards_construct_00626630(Raw s, RewardsScreenHost& host) {
+    host.front_end_screen_construct_004f7180(s);
+    s.at<std::uint32_t>(0x8) = kListboxListenerBaseVtable;
+    s.at<std::uint32_t>(0xC) = kWidgetListenerBaseVtable;
+    s.at<std::uint32_t>(0x0) = kRewardsVtable;
+    s.at<std::uint32_t>(0x8) = kRewardsCallbackVtable;
+    s.at<std::uint32_t>(0xC) = kRewardsListenerVtable;
+    for (std::size_t off : {0x10u, 0x14u, 0x28u, 0x2Cu, 0x30u, 0x34u}) s.at<std::uint32_t>(off) = 0;
+    host.scroller_construct_00683610(Raw{s.p + 0x68});
+    for (std::size_t off : {0xFCu, 0x100u, 0x104u}) s.at<std::uint32_t>(off) = 0;
+    host.scroller_construct_00683610(Raw{s.p + 0x128});
+    host.scroller_construct_00683610(Raw{s.p + 0x19C});
+    for (std::size_t off : {0x224u, 0x228u, 0x22Cu, 0x23Cu, 0x240u, 0x244u, 0x24Cu, 0x250u, 0x254u}) {
+        s.at<std::uint32_t>(off) = 0;
+    }
+    return s;
+}
+
+// 00626770, destructor: vtables, page +20h, the sound handles (0061EC00), the
+// two 10h-record vectors +248h and +238h (00 6243C0 destroys the range, then
+// the block is freed), the score rows +220h (00625A00), the vector +F8h, the
+// strings +30h and +28h, the handles +14h and +10h, the listener base, base.
+void rewards_destruct_00626770(Raw s, RewardsScreenHost& host, NativeStringHost& strings) {
+    s.at<std::uint32_t>(0x0) = kRewardsVtable;
+    s.at<std::uint32_t>(0x8) = kRewardsCallbackVtable;
+    s.at<std::uint32_t>(0xC) = kRewardsListenerVtable;
+    host.gui_remove_and_destroy_page_00aa31f0(s.ptr(0x20));
+    rewards_release_sound_handles_0061ec00(s, host);
+    for (std::size_t vec : {0x248u, 0x238u}) {
+        if (s.ptr(vec + 4) != nullptr) {
+            host.record10_destroy_range_006243c0(Raw{s.p + vec});
+            strings.free_block(s.ptr(vec + 4));
+        }
+        s.ptr(vec + 4) = nullptr;
+        s.ptr(vec + 8) = nullptr;
+        s.ptr(vec + 0xC) = nullptr;
+    }
+    host.score_row_vector_tidy_00625a00(Raw{s.p + 0x220});
+    if (s.ptr(0xFC) != nullptr) strings.free_block(s.ptr(0xFC));
+    s.ptr(0xFC) = nullptr;
+    s.ptr(0x100) = nullptr;
+    s.ptr(0x104) = nullptr;
+    native_string_release_at(s, 0x30, strings);
+    native_string_release_at(s, 0x28, strings);
+    release_handle(s, 0x14, host);
+    s.ptr(0x14) = nullptr;
+    release_handle(s, 0x10, host);
+    s.ptr(0x10) = nullptr;
+    s.at<std::uint32_t>(0x8) = kListboxListenerBaseVtable;
+    host.front_end_screen_destruct_004f71a0(s);
+}
+
+// 0063DEC0, __thiscall(set, page), RET 4 -> EAX: find CLOSE_Group in the page,
+// then clone its Yellow, White, Coffe (sic), Blue and Red icons into +4h..+14h.
+inline constexpr std::array<std::string_view, 5> kHudColourIcons{
+    "Yellow_Icon", "White_Icon", "Coffe_Icon", "Blue_Icon", "Red_Icon"};
+Raw hud_colour_icon_set_construct_0063dec0(Raw set, void* page, HudScreenHost& host, HudMarkerCloneHost& clone) {
+    set.at<std::uint32_t>(0x0) = kHudColourIconSetVtable;
+    void* group = host.gui_find_child_00aa7e00(page, "CLOSE_Group");
+    for (std::size_t i = 0; i < kHudColourIcons.size(); ++i) {
+        set.ptr(0x4 + i * 4) = clone.clone_subtree_00aab4c0(host.gui_find_child_00aa7e00(group, kHudColourIcons[i]), 0);
+    }
+    return set;
+}
+
+// 00638F50: the 24 clones at +8h..+64h, then +68h, +78h, +7Ch, +6Ch, +80h,
+// +70h, +74h, each deleted through vtable +4h(1) and cleared.
+inline constexpr std::uint32_t kHudUnitMarkerWidgetsVtable = 0x00CF5758;
+void hud_unit_marker_widgets_destruct_00638f50(Raw w, HudScreenHost& host) {
+    w.at<std::uint32_t>(0x0) = kHudUnitMarkerWidgetsVtable;
+    for (std::size_t i = 0; i < 24; ++i) delete_and_clear(w, 0x8 + i * 4, host);
+    for (std::size_t off : {0x68u, 0x78u, 0x7Cu, 0x6Cu, 0x80u, 0x70u, 0x74u}) delete_and_clear(w, off, host);
+}
+
+// 00640860 / 00640940, __fastcall(screen) -> EAX: hand out the next pooled
+// marker; when the cursor reaches the pool size a new one is made (18h bytes,
+// 0063DEC0, or 8 bytes, 0063E1C0, both with the page +8Ch) and pushed
+// (00640250 / 006402C0, ECX = the vector).
+void* hud_markers_acquire_pooled_marker(const MarkerPool& pool, Raw s, MarkerPoolHost& host) {
+    void** begin = static_cast<void**>(s.ptr(pool.vector_off + 4));
+    const std::size_t size = begin == nullptr ? 0 : static_cast<std::size_t>(static_cast<void**>(s.ptr(pool.vector_off + 8)) - begin);
+    if (s.at<std::uint32_t>(pool.cursor_off) == size) {
+        void* marker = host.make_marker(pool, s.ptr(0x8C));
+        host.push_marker(pool, Raw{s.p + pool.vector_off}, marker);
+    }
+    const std::uint32_t index = s.at<std::uint32_t>(pool.cursor_off)++;
+    begin = static_cast<void**>(s.ptr(pool.vector_off + 4));
+    if (begin == nullptr || index >= static_cast<std::size_t>(static_cast<void**>(s.ptr(pool.vector_off + 8)) - begin)) {
+        host.invalid_parameter_00bf6713();
+    }
+    return static_cast<void**>(s.ptr(pool.vector_off + 4))[index];
+}
+
+// 00644AE0, __fastcall(unit) -> EAX: the HUD icon index of a unit. Planes
+// (kind 18h, read through their leader +3D0h) and kind 0Fh go by the ordnance
+// kind (007BCA50): 9/0Dh -> class 10h, 0Ah -> class 11h, 0Bh -> 0Ch, 0Fh ->
+// 16h, +C24h set -> class 13h, else class 14h. Kind 1Bh uses its record class
+// (+538h -> +178h), 45h when that is 1Bh and +50h is clear. Kinds 0Ah and 0Ch
+// with the record byte +808h give 4 and 7. Others use the class at +C4h. A
+// "class" goes through 006440C0 (band_0060_cc13).
+int hud_unit_icon_index_00644ae0(Raw unit, UnitIconHost& host) {
+    auto icon = [](int cls) { return band_0060_cc13::unit_class_icon_index_006440c0(cls); };
+    if (!host.unit_is_kind_5c(unit.p, 0x18) && !host.unit_is_kind_5c(unit.p, 0xF)) {
+        Raw record{static_cast<std::uint8_t*>(unit.ptr(0x538))};
+        if (host.unit_is_kind_5c(unit.p, 0x1B)) {
+            const std::int32_t cls = record.at<std::int32_t>(0x178);
+            if (cls == 0x1B && unit.at<std::uint32_t>(0x50) == 0) return icon(0x45);
+            return icon(cls);
+        }
+        if (host.unit_is_kind_5c(unit.p, 0xA) && record.at<std::uint8_t>(0x808) != 0) return 4;
+        if (host.unit_is_kind_5c(unit.p, 0xC)
+            && Raw{static_cast<std::uint8_t*>(unit.ptr(0x538))}.at<std::uint8_t>(0x808) != 0) {
+            return 7;
+        }
+        return icon(unit.at<std::int32_t>(0xC4));
+    }
+    Raw u = unit;
+    if (host.unit_is_kind_5c(unit.p, 0x18)) u = Raw{static_cast<std::uint8_t*>(unit.ptr(0x3D0))};
+    const int kind = host.plane_ordnance_icon_kind_007bca50(u.p);
+    if (kind == 9 || kind == 0xD) return icon(0x10);
+    if (kind == 0xA) return icon(0x11);
+    if (kind == 0xB) return 0xC;
+    if (kind == 0xF) return 0x16;
+    if (u.at<std::uint8_t>(0xC24) != 0) return icon(0x13);
+    return icon(0x14);
+}
+
+// 00646D30, __thiscall(owner, const char*), RET 4: build a native string
+// (0041E870) and set it ellipsized on the text at +34h (00ABB000(&s, -1.0f, 1)).
+void text_owner_set_ellipsized_00646d30(Raw owner, const char* text, HudScreenHost& host) {
+    host.text_set_ellipsized_00abb000(owner.ptr(0x34), text, -1.0f, true);  // 00D7A260
+}
+
+// 00645160, __fastcall(ECX unit, EDX flag): 00645060(unit, local slot
+// game+18ECh, flag).
+bool unit_selectable_for_current_player_00645160(void* unit, int flag, UnitSelectHost& host) {
+    return host.unit_selectable_00645060(unit, host.local_player_slot(), flag);
+}
+
+// 00645180, __stdcall(unit), RET 4: in a session, the unit's owner id (+54h)
+// equals the local player record's +28h; otherwise 00645060(unit, slot, 1).
+bool unit_is_local_player_unit_00645180(Raw unit, UnitSelectHost& host) {
+    if (host.session_mode() != 0) return unit.at<std::int32_t>(0x54) == host.local_player_record_28();
+    return host.unit_selectable_00645060(unit.p, host.local_player_slot(), 1);
+}
+
+// 00646040, __thiscall(root, iface, observed), RET 8: only while +1Ch is clear,
+// store +CCh and re-point the observer member +D0h (observed +E4h).
+void hud_root_set_interface_00646040(Raw s, std::uint32_t iface, void* observed, HudScreenHost& host) {
+    if (s.at<std::uint32_t>(0x1C) != 0) return;
+    s.at<std::uint32_t>(0xCC) = iface;
+    observer_ref_set(Raw{s.p + 0xD0}, observed, host);
+}
+
+// 0064A8E0, __fastcall(screen): with a unit (+184h), arm the ping (+119h = 1,
+// +30h = 1.0f), move the ping widget +F8h to (0.5, 0.5, its z) (00AA6750 /
+// 00AA8240) and copy the unit's word +174h into +FCh.
+void ship_screen_trigger_unit_ping_0064a8e0(Raw s, ShipScreenWidgetHost& host) {
+    if (s.ptr(0x184) == nullptr) return;
+    s.at<std::uint8_t>(0x119) = 1;
+    s.at<float>(0x30) = 1.0f;
+    float pos[3];
+    host.widget_resolved_position_00aa6750(s.ptr(0xF8), pos);
+    const float target[3] = {0.5f, 0.5f, pos[2]};
+    host.widget_set_resolved_position_00aa8240(s.ptr(0xF8), target);
+    s.at<std::uint16_t>(0xFC) = Raw{static_cast<std::uint8_t*>(s.ptr(0x184))}.at<std::uint16_t>(0x174);
+}
+
+// 0064D590, __thiscall(screen, unit), RET 4: on a new unit mark +188h and drop
+// timed entry 2 of the four widgets +E8h..+F4h; re-point the observer member
+// +170h (observed +184h); an active screen (+5h) re-applies the unit (0064AE20).
+void ship_screen_set_unit_0064d590(Raw s, void* unit, ShipScreenWidgetHost& host) {
+    if (s.ptr(0x184) != unit) {
+        s.at<std::uint8_t>(0x188) = 1;
+        for (std::size_t i = 0; i < 4; ++i) host.widget_delete_timed_entry_00aa8b80(s.ptr(0xE8 + i * 4), 2);
+    }
+    observer_ref_set(Raw{s.p + 0x170}, unit, host);
+    if (s.at<std::uint8_t>(kActive) != 0) host.ship_screen_apply_unit_0064ae20(s);
+}
+
+// 00650210, __fastcall(screen): bind the weapon-group HUD to (unit +24h, camera
+// +2Ch); observe the unit (member +8h); copy its +980h/+984h into +54h/+58h.
+void periscope_attach_unit_00650210(Raw s, HudScreenHost& host) {
+    host.weapon_group_bind_unit_00549260(s.ptr(0x24), s.ptr(0x2C));
+    void* unit = s.ptr(0x24);
+    if (unit == nullptr) return;
+    if (!host.observer_is_registered_00694af0(s.p + 0x8, unit)) host.observer_register_00694a60(s.p + 0x8, unit);
+    Raw u{static_cast<std::uint8_t*>(s.ptr(0x24))};
+    s.at<float>(0x54) = u.at<float>(0x980);
+    s.at<float>(0x58) = u.at<float>(0x984);
+}
+
+// 006506E0, __fastcall(screen): release the weapon-group HUD and the unit's
+// roles (0077C470(1FEh, 0)); +74h = 0, +5Ch = 1.0f, view fov 1.0 (004DC940(1.0f,
+// 1), ECX = game); an active screen hides +70h and +20h.
+void periscope_detach_unit_006506e0(Raw s, HudScreenHost& host) {
+    host.weapon_group_release_005470c0();
+    if (s.ptr(0x24) != nullptr) host.unit_send_role_transfer_0077c470(s.ptr(0x24), 0x1FE, 0);
+    s.at<std::uint32_t>(0x74) = 0;
+    s.at<float>(0x5C) = 1.0f;
+    host.game_set_view_fov_004dc940(1.0f, 1);
+    if (s.at<std::uint8_t>(kActive) != 0) {
+        host.widget_set_visible_34(s.ptr(0x70), false);
+        host.widget_set_visible_34(s.ptr(0x20), false);
+    }
+}
+
+// 00650750, enter: attach, +34h = -1.0f, hide +70h and +20h. When the unit's
+// periscope state (+122Ch) is not 2 and its +1234h byte is set, mode 2: the
+// camera (+2Ch) selects mode 1 (0042CB70) with its +388h zeroed, +70h shown,
+// +5Ch = 1.0f; otherwise mode 0 and camera mode 0. Then the screen's update
+// (+20h(0.0)) and the camera's +DCh(0.0).
+void periscope_enter_00650750(Raw s, HudScreenHost& host) {
+    periscope_attach_unit_00650210(s, host);
+    s.at<float>(0x34) = -1.0f;
+    host.widget_set_visible_34(s.ptr(0x70), false);
+    host.widget_set_visible_34(s.ptr(0x20), false);
+    Raw unit{static_cast<std::uint8_t*>(s.ptr(0x24))};
+    if (unit.at<std::int32_t>(0x122C) != 2 && unit.at<std::uint8_t>(0x1234) != 0) {
+        s.at<std::uint32_t>(0x74) = 2;
+        if (s.ptr(0x2C) != nullptr) {
+            host.submarine_camera_select_mode_0042cb70(s.ptr(0x2C), 1);
+            Raw{static_cast<std::uint8_t*>(s.ptr(0x2C))}.at<float>(0x388) = 0.0f;
+        }
+        host.widget_set_visible_34(s.ptr(0x70), true);
+        s.at<float>(0x5C) = 1.0f;
+    } else {
+        s.at<std::uint32_t>(0x74) = 0;
+        if (s.ptr(0x2C) != nullptr) host.submarine_camera_select_mode_0042cb70(s.ptr(0x2C), 0);
+    }
+    host.screen_update_20(s, 0.0f);
+    if (s.ptr(0x2C) != nullptr) host.camera_virtual_dc(s.ptr(0x2C), 0.0f);
+}
+
+// 00651760, __thiscall(screen, unit), RET 4: detach, drop the old observation,
+// store the unit (its +122Ch state reset to 0 unless it is 2), attach, ensure
+// the submarine camera (00651370), recentre screen 2Eh on (0.5, 0.5, +5Ch),
+// then +74h = 0, +5Ch = 1.0f and view fov 1.0.
+void unit_view_bind_unit_and_reset_00651760(Raw s, void* unit, HudScreenHost& host) {
+    periscope_detach_unit_006506e0(s, host);
+    if (s.ptr(0x24) != nullptr && host.observer_is_registered_00694af0(s.p + 0x8, s.ptr(0x24))) {
+        host.observer_unregister_006952a0(s.p + 0x8, s.ptr(0x24));
+    }
+    s.ptr(0x24) = unit;
+    Raw u{static_cast<std::uint8_t*>(unit)};
+    if (u.at<std::int32_t>(0x122C) != 2) u.at<std::int32_t>(0x122C) = 0;
+    periscope_attach_unit_00650210(s, host);
+    host.unit_view_ensure_submarine_camera_00651370(s);
+    host.screen2e_set_view_centre_005454b0(0.5f, 0.5f, s.at<float>(0x5C));
+    s.at<std::uint32_t>(0x74) = 0;
+    s.at<float>(0x5C) = 1.0f;
+    host.game_set_view_fov_004dc940(1.0f, 1);
+}
+
+// 0067CA40, press-start storage completion: when *(0109CECC)+8 is clear,
+// dismiss every prompt of the menu-command screen (00425D10, 00530650) and
+// skip the title (0068D8A0, tail jump).
+void press_start_on_storage_complete_0067ca40(PressStartStorageHost& host) {
+    if (host.storage_request_08() != 0) return;
+    host.menu_prompts_dismiss_all_00530650();
+    host.title_skip_0068d8a0();
 }
 
 } // namespace bsp::ingame_gui_cc13
