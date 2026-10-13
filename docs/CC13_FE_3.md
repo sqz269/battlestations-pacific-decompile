@@ -154,3 +154,6 @@ Commits on agent/cc13-fe3:
   0055B520.
 - **Skipped:** 00554680 (x87 bounds outline).
 - **For cc9:** the five functions in "For cc9".
+
+cc13-fe6 (docs/CC13_FE_6.md) took 00566080 (limbo Enter) and 00561860 (leaderboards
+MoveSelection) from this list; 83 remain.
