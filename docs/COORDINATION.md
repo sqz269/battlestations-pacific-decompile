@@ -107,6 +107,30 @@ python tools/bsp.py lease list [-v] | check <address|file>... | release [--packe
   addresses leased to someone else (`--force` on the ledger commands for a deliberate override).
 - `state` shows the current owner, the active leases and whether this owner holds one.
 
+## Waitlist and mailbox (cc13-tool2, 2026-10-13)
+
+Codex sessions cannot receive SendMessage, so "release X when you land" or "do you still need X"
+sent between harnesses went unseen, and hot files (`src/game_hosts_units.cpp`) were queued by hand.
+Both now live in the registry next to `leases.jsonl`, written under the same transaction lock:
+
+- `lease queue --packet <id> --files P [--addresses A] [--ranges lo-hi] [--ttl 24] [--note]` adds a
+  waiter row (`waitlist.jsonl`) for this owner and prints your place per path. Re-queuing the same
+  packet keeps your place and merges the coverage; `lease unqueue --packet <id>` leaves the line.
+  Waiter rows expire after 24 h by default, so a dead agent stops blocking.
+- `lease claim` refuses a now-free path or address when another owner queued for it before you
+  (or you never queued). Pass `--jump '<reason>'` to go ahead anyway: the reason is stored in the
+  lease's `jumped` field and mailed to each waiter you passed. A successful claim removes what it
+  covers from your own waiter rows. Extending a lease you already hold is never blocked by its queue.
+- `lease list` and `lease check` print the queue under each held path; `lease release` prints who
+  is next for each released path.
+- `msg send <to> <text...>|--file F` posts to `messages.jsonl`. `<to>` is an exact owner
+  (`agent/cc9-ships47`), a prefix ending in `-`, `/` or `*` (`agent/cc9-` reaches the lineage), or
+  `all`. Messages are capped at 4000 characters; point at a committed doc for anything longer.
+- `msg inbox [--all] [--limit N]` shows unread mail for this owner and marks what it showed read;
+  `msg ack <id...|all>` marks without showing. Read mail is pruned after 7 days, unread after 30.
+- `brief` prints `your turn: <path>` when you are first in line for a path nobody else holds, and
+  the unread count with the first three headers. Act on both before taking new work.
+
 ## Packets and dependencies
 
 `config/parallel_work.json` is the packet ledger (integrator-owned, tracked in git). Two

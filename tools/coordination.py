@@ -10,6 +10,12 @@ same registry: $BSP_COORDINATION_DIR, else `coordination_dir` in config/target.j
                 expires, status (active|released), worktree
   leases.lock   persistent file; an OS-held exclusive handle serializes lease transactions
   ghidra.lock   JSON {owner, pid, claimed, expires}; created O_EXCL, expired locks are reclaimed
+  waitlist.jsonl  one waiter per (owner, packet) in queue order: the lease fields plus queued,
+                expires (default 24 h) and note; a claim over a resource someone queued for
+                earlier is refused unless it jumps with a recorded reason
+  messages.jsonl  mailbox for harnesses that cannot message each other: id, from, to (owner,
+                prefix ending in - / or *, or all), text, sent, read_by; read mail is pruned after 7 days
+All three .jsonl files are rewritten only inside lease_transaction (the one leases.lock).
 """
 import errno
 import json
@@ -169,8 +175,10 @@ def lease_transaction(wait_seconds=30.0):
 
 
 def load_leases():
-    path = leases_path()
+    return _load_jsonl(leases_path())
 
+
+def _load_jsonl(path):
     def read():
         try:
             with path.open(encoding='utf-8') as handle:
@@ -185,13 +193,18 @@ def load_leases():
 
 def save_leases(rows):
     """Publish rows read and modified inside the current lease_transaction."""
-    path = leases_path().resolve()
-    if getattr(_lease_transaction_state, 'token', None) != (os.getpid(), path):
-        raise RuntimeError('save_leases requires lease_transaction around read and write')
+    _save_jsonl(leases_path(), rows)
+
+
+def _save_jsonl(path, rows):
+    """Atomic replace of one registry file; every registry file shares the lease transaction lock."""
+    path = path.resolve()
+    if getattr(_lease_transaction_state, 'token', None) != (os.getpid(), leases_path().resolve()):
+        raise RuntimeError(f'saving {path.name} requires lease_transaction around read and write')
     temporary = None
     try:
         with tempfile.NamedTemporaryFile(mode='w', encoding='utf-8', newline='\n',
-                                         prefix=f'.leases-{os.getpid()}-', suffix='.tmp',
+                                         prefix=f'.{path.stem}-{os.getpid()}-', suffix='.tmp',
                                          dir=path.parent, delete=False) as handle:
             temporary = Path(handle.name)
             for row in rows:
@@ -298,8 +311,9 @@ def overlaps(a, b):
     return False
 
 
-def claim(packet, addresses=(), ranges=(), files=(), ttl_hours=8.0, owner=None, note=''):
-    """Create or extend the (owner, packet) lease; refuse when it overlaps another owner's active lease."""
+def claim(packet, addresses=(), ranges=(), files=(), ttl_hours=8.0, owner=None, note='', jump=''):
+    """Create or extend the (owner, packet) lease; refuse when it overlaps another owner's active lease,
+    or when another owner queued earlier for a resource this claim newly takes (unless jump gives a reason)."""
     owner = owner or owner_name()
     with lease_transaction():
         wanted = {'id': f'{owner}:{packet}', 'owner': owner, 'packet': packet,
@@ -308,6 +322,8 @@ def claim(packet, addresses=(), ranges=(), files=(), ttl_hours=8.0, owner=None, 
                   'claimed': iso(now()), 'expires': iso(now() + timedelta(hours=ttl_hours)),
                   'status': 'active', 'worktree': str(ROOT), 'note': note}
         rows = load_leases()
+        held = [row for row in active_leases(rows) if row['owner'] == owner]
+        fresh = unheld_part(wanted, held)
         for row in active_leases(rows):
             if row['id'] == wanted['id']:
                 # extending our own lease: merge the coverage
@@ -315,13 +331,30 @@ def claim(packet, addresses=(), ranges=(), files=(), ttl_hours=8.0, owner=None, 
                 wanted['ranges'] = row.get('ranges', []) + [r for r in wanted['ranges'] if r not in row.get('ranges', [])]
                 wanted['files'] = sorted(set(wanted['files']) | set(row.get('files', [])))
                 wanted['claimed'] = row['claimed']
+                if 'jumped' in row:
+                    wanted['jumped'] = row['jumped']
                 continue
             if row['owner'] != owner and overlaps(wanted, row):
                 raise LeaseConflict(f"overlaps active lease {row['id']} on {overlap_detail(wanted, row)} "
-                                    f"(until {row['expires']}, worktree {row.get('worktree', '?')}); drop those from the claim or treat them as external")
+                                    f"(until {row['expires']}, worktree {row.get('worktree', '?')}); "
+                                    f"drop those from the claim, treat them as external, or queue: "
+                                    f"python tools/bsp.py lease queue --packet {packet} --files ...")
+        waiters = live_waiters()
+        ahead = waiters_ahead(fresh, owner, waiters)
+        if ahead and not jump:
+            detail = '; '.join(f"{w['id']} ({overlap_detail(fresh, w)}, queued {w['queued'][:16]})" for w in ahead[:4])
+            raise LeaseConflict(f"earlier waiters for now-free resources: {detail}"
+                                + (f' ... {len(ahead) - 4} more' if len(ahead) > 4 else '')
+                                + "; let them claim first, or pass --jump '<reason>' (recorded and mailed to them)")
+        if ahead:
+            wanted['jumped'] = wanted.get('jumped', []) + [{'over': [w['id'] for w in ahead], 'reason': jump, 'at': iso(now())}]
         rows = [r for r in rows if r['id'] != wanted['id']]
         rows.append(wanted)
         save_leases(rows)
+        _save_jsonl(waitlist_path(), trim_waiters(waiters, owner, wanted))
+        for w in ahead:
+            send_message(w['owner'], f"{owner} claimed {packet} ahead of your queued {w['packet']} "
+                                     f"({overlap_detail(fresh, w)}): {jump}", sender=owner)
     return wanted
 
 
@@ -356,6 +389,194 @@ def check_writable(addresses, owner=None, force=False):
         detail = '; '.join(f"{a} leased by {l['id']} until {l['expires']}" for a, l in conflicts[:5])
         raise LeaseConflict(f'refusing write: {detail} (release the lease, or --force with a reason)')
     return conflicts
+
+
+# ---------------------------------------------------------------- lease waitlist
+
+def waitlist_path():
+    return coordination_dir() / 'waitlist.jsonl'
+
+
+def live_waiters(rows=None):
+    """Unexpired waiter rows in queue order (file order is queue order)."""
+    rows = _load_jsonl(waitlist_path()) if rows is None else rows
+    current = now()
+    return [r for r in rows if parse(r['expires']) > current]
+
+
+def path_within(path, parent):
+    a, b = normalised_path(path), normalised_path(parent)
+    return a == b or a.startswith(b + '/')
+
+
+def unheld_part(wanted, held):
+    """The files, addresses and ranges of wanted that none of the held leases already covers."""
+    return {'files': [f for f in wanted.get('files', []) if not any(path_within(f, g) for r in held for g in r.get('files', []))],
+            'addresses': [a for a in wanted.get('addresses', []) if not any(covers(r, int(a, 16)) for r in held)],
+            'ranges': [[lo, hi] for lo, hi in wanted.get('ranges', [])
+                       if not any(int(l2, 16) <= int(lo, 16) and int(hi, 16) <= int(h2, 16) for r in held for l2, h2 in r.get('ranges', []))]}
+
+
+def waiters_ahead(resources, owner, waiters):
+    """Other owners' waiters overlapping resources that no waiter of owner precedes on the same resource."""
+    mine = [i for i, w in enumerate(waiters) if w['owner'] == owner]
+    ahead = []
+    for i, w in enumerate(waiters):
+        if w['owner'] == owner or not overlaps(resources, w):
+            continue
+        if any(j < i and overlaps(waiters[j], w) and overlaps(waiters[j], resources) for j in mine):
+            continue
+        ahead.append(w)
+    return ahead
+
+
+def trim_waiters(waiters, owner, lease):
+    """Drop what lease now covers from owner's waiter rows; a row with nothing left leaves the queue."""
+    kept = []
+    for w in waiters:
+        if w['owner'] == owner:
+            w = dict(w, **unheld_part(w, [lease]))
+            if not (w['files'] or w['addresses'] or w['ranges']):
+                continue
+        kept.append(w)
+    return kept
+
+
+def queue(packet, addresses=(), ranges=(), files=(), ttl_hours=24.0, owner=None, note=''):
+    """Add or refresh the (owner, packet) waiter; a refresh keeps its place and merges the coverage."""
+    owner = owner or owner_name()
+    with lease_transaction():
+        waiters = live_waiters()
+        row = {'id': f'{owner}:{packet}', 'owner': owner, 'packet': packet,
+               'addresses': sorted({f'{int(a, 16):08x}' for a in addresses}),
+               'ranges': parse_ranges(ranges), 'files': sorted(set(files)),
+               'queued': iso(now()), 'expires': iso(now() + timedelta(hours=ttl_hours)),
+               'worktree': str(ROOT), 'note': note}
+        for i, old in enumerate(waiters):
+            if old['id'] == row['id']:
+                row['addresses'] = sorted(set(row['addresses']) | set(old.get('addresses', [])))
+                row['ranges'] = old.get('ranges', []) + [r for r in row['ranges'] if r not in old.get('ranges', [])]
+                row['files'] = sorted(set(row['files']) | set(old.get('files', [])))
+                row['queued'] = old['queued']
+                row['note'] = note or old.get('note', '')
+                waiters[i] = row
+                break
+        else:
+            waiters.append(row)
+        _save_jsonl(waitlist_path(), waiters)
+    return row
+
+
+def unqueue(packet, owner=None):
+    owner = owner or owner_name()
+    with lease_transaction():
+        waiters = live_waiters()
+        gone = [w for w in waiters if w['id'] == f'{owner}:{packet}']
+        _save_jsonl(waitlist_path(), [w for w in waiters if w not in gone])
+    return gone
+
+
+def path_waiters(path, waiters=None):
+    """Waiters for a file path in queue order, directory-aware like path_holders."""
+    waiters = live_waiters() if waiters is None else waiters
+    return [w for w in waiters if any(paths_overlap(path, f) for f in w.get('files', []))]
+
+
+def resource_waiters(lease, waiters=None):
+    """Waiters overlapping any resource of a lease, in queue order."""
+    waiters = live_waiters() if waiters is None else waiters
+    return [w for w in waiters if w['owner'] != lease.get('owner') and overlaps(lease, w)]
+
+
+def your_turn(owner=None):
+    """(waiter, target) pairs where owner is first in line for a resource no other owner holds.
+    target is a file path, or 'addresses' for the row's address/range part."""
+    owner = owner or owner_name()
+    leases = active_leases()
+    waiters = live_waiters()
+    others = [l for l in leases if l['owner'] != owner]
+    turns = []
+    for w in waiters:
+        if w['owner'] != owner:
+            continue
+        for f in w.get('files', []):
+            if not path_holders(f, others) and path_waiters(f, waiters)[0]['owner'] == owner:
+                turns.append((w, f))
+        part = {'addresses': w.get('addresses', []), 'ranges': w.get('ranges', []), 'files': []}
+        if (part['addresses'] or part['ranges']) and not any(overlaps(part, l) for l in others) \
+                and not waiters_ahead(part, owner, waiters):
+            turns.append((w, 'addresses'))
+    return turns
+
+
+# ---------------------------------------------------------------- cross-harness mailbox
+
+MESSAGE_KEEP_READ_DAYS = 7
+MESSAGE_KEEP_UNREAD_DAYS = 30
+MESSAGE_MAX_CHARS = 4000
+
+
+def messages_path():
+    return coordination_dir() / 'messages.jsonl'
+
+
+def load_messages():
+    return _load_jsonl(messages_path())
+
+
+def addressed_to(message, owner):
+    """Exact owner, 'all', or a prefix ending in '-', '/' or '*' (the '*' is dropped)."""
+    to = message['to']
+    if to == 'all' or to == owner:
+        return True
+    return to.endswith(('-', '/', '*')) and owner.startswith(to.rstrip('*'))
+
+
+def _prune_messages(rows):
+    current = now()
+    return [m for m in rows
+            if not (current - parse(m['sent']) > timedelta(days=MESSAGE_KEEP_READ_DAYS) and m.get('read_by'))
+            and current - parse(m['sent']) <= timedelta(days=MESSAGE_KEEP_UNREAD_DAYS)]
+
+
+def send_message(to, text, sender=None):
+    sender = sender or owner_name()
+    text = text.strip()
+    if not text or not to.strip():
+        raise ValueError('a message needs a recipient and text')
+    if len(text) > MESSAGE_MAX_CHARS:
+        raise ValueError(f'message is {len(text)} chars; the mailbox caps a message at {MESSAGE_MAX_CHARS}, '
+                         'so point at a committed doc instead')
+    with lease_transaction():
+        rows = _prune_messages(load_messages())
+        row = {'id': max((m['id'] for m in rows), default=0) + 1, 'from': sender, 'to': to.strip(),
+               'text': text, 'sent': iso(now()), 'read_by': []}
+        rows.append(row)
+        _save_jsonl(messages_path(), rows)
+    return row
+
+
+def mailbox(owner=None, include_read=False, rows=None):
+    """Messages addressed to owner (not ones it sent to a group it belongs to), oldest first."""
+    owner = owner or owner_name()
+    rows = load_messages() if rows is None else rows
+    return [m for m in rows if addressed_to(m, owner) and not (m['from'] == owner and m['to'] != owner)
+            and (include_read or owner not in m.get('read_by', []))]
+
+
+def mark_read(ids, owner=None):
+    """Mark message ids read for owner; returns the ids that were addressed to owner and unread."""
+    owner = owner or owner_name()
+    wanted = {int(i) for i in ids}
+    with lease_transaction():
+        rows = _prune_messages(load_messages())
+        marked = []
+        for m in rows:
+            if m['id'] in wanted and addressed_to(m, owner) and owner not in m.get('read_by', []):
+                m['read_by'] = m.get('read_by', []) + [owner]
+                marked.append(m['id'])
+        _save_jsonl(messages_path(), rows)
+    return marked
 
 
 # ---------------------------------------------------------------- Ghidra write lock
