@@ -19,6 +19,7 @@
 #include <vector>
 
 #include "bsp/ai_command_lifetime.hpp"
+#include "bsp/gameplay_seg69_70_cc13.hpp"
 #include "bsp/attack_commands.hpp"
 #include "bsp/ai_command_object.hpp"
 #include "bsp/ai_close_attack_tick.hpp"
@@ -5774,7 +5775,36 @@ void GameAiCoordinatorHost::Impl::order_attack(void* group, void* target, float 
     }
     // A higher aggressive ratio makes CAUTIOUSATTACK less likely, because
     // 00BD2F40's uniform draw is compared against it.
-    const bool cautious = random_00bd2f10(0.0f, 1.0f) > aggressive;
+    bool cautious = false;
+    if (kOrderAttackCautiousGatesBound) {
+        // 00A2CC2E: the first member's vtable[5Ch](6).
+        const bool leader_ship = tick_member_is_ship_base(handle(g->members.front()));
+        bool gate = false;
+        if (!leader_ship) {
+            // 00A2CC40 00A10C20(target), then 00A2CC48 00A2C9F0(group)(point).
+            struct Danger final : bsp::gameplay_seg69_70_cc13::DangerHost {
+                Impl& self;
+                void* group;
+                Danger(Impl& s, void* gr) : self(s), group(gr) {}
+                float danger_cost(const float point[3], int team) override {
+                    return self.tick_danger_cost_00a010f0(point, team);
+                }
+                void leader_point(float out[3]) override {
+                    self.tick_leader_point(group, out);
+                }
+            } danger(*this, group);
+            float target_point[3] = {0.0f, 0.0f, 0.0f};
+            tick_leader_point(target, target_point);
+            gate = bsp::gameplay_seg69_70_cc13::ai_should_route_cautiously_00a2c9f0(
+                g->team, tuning.at(bsp::kAiTuningCautionMoveDist), target_point, danger);
+        }
+        // 00A2CC51: the draw happens only when both gates pass.
+        const float draw = (!leader_ship && gate) ? random_00bd2f10(0.0f, 1.0f) : 0.0f;
+        cautious = bsp::ai_attack_arm_00a2cbd0(leader_ship, gate, draw, aggressive) ==
+                   bsp::AiAttackArmChoice::CautiousAttack;
+    } else {
+        cautious = random_00bd2f10(0.0f, 1.0f) > aggressive;
+    }
     // 00A2BD00: the outgoing command is destroyed through its vtable[+0h] with
     // flag 1 and the new pointer is stored at group+564Ch.
     if (bsp::ai_command_install_deletes_previous(true)) ++summary.commands_replaced;

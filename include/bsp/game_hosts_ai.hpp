@@ -109,6 +109,15 @@ inline constexpr bool kAiSquadronRtbExclusionBound = true;
 // close_member_squadron_excluded adds tick_squadron_excluded_009ffeb0 after
 // the 007EDA90 shape. False: 007EDA90 only, as before.
 inline constexpr bool kCloseAttackSquadronHomeBound = false;
+// order_attack's arm choice, 00A2CC2E-00A2CC65 (docs/CC13_GPR_69.md section 3).
+// The image takes MOVETOATTACK without a draw when the group's first member is
+// ship-base (00A2CC36 PUSH 6 / vtable[5Ch], 00A2CC3C JNE) or when
+// 00A2C9F0(group)(00A10C20(target)) answers false (00A2CC4F JE); only then
+// 00A2CC51 MOV ECX,1 / CALL 00BD2F40 draws on stream 1, and draw > aggressive
+// (FCOMIP / JBE) takes CAUTIOUSATTACK. True: ai_attack_arm_00a2cbd0 with
+// ai_should_route_cautiously_00a2c9f0, and the host's private 00BD2F10 LCG
+// draws only after both gates. False: the host draws for every order.
+inline constexpr bool kOrderAttackCautiousGatesBound = false;
 // Packet cc9_group_release_idle (docs/SHIP_AI_OPEN_ITEMS.md section 30). Every
 // ATTACK-family command registers its observer (+8h) on the target group
 // (00A10767, 00694A60), and all four observer vtables (00D22B64, 00D22BA4,
