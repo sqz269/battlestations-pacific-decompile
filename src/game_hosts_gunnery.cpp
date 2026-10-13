@@ -309,6 +309,19 @@ constexpr bool kTorpedoSwimDepthHomingBound = true;
 //    the stored values. OFF: 1.0f.
 //    ON since the USN15 pair (GUNNERY_OPEN_ITEMS 211: ranges x0.75, gameplay identical).
 constexpr bool kReconMultiplierForwardBound = true;
+//  * kFlakSecondAmmoCadenceBound: packet cc9_g41_flak_d4 (docs/CC13_VER_16.md
+//    D4). 008FF200, the AAFlakBot's SetFireTarget, calls 0072D5B0(1, 0) for a
+//    kind-6 gun, so gun+3F8h = [desc+74h] + 1 * 48h, the device's Bullet[2]
+//    record, and every per-shot read goes through it: the reload U(+28h, +2Ch)
+//    (0072D55C..0072D579), the barrel delay +30h (00730A05), the Throw +4h
+//    (007302DF) and the throw seat's sub-type [[gun+3F8h]+34h]+8h (0073031D;
+//    Flak 10h -> the AAFlakBot row). The host read all four from Bullet[1].
+//    ON: a shot that dp_air_ammo routes to Bullet[2] takes Bullet[2]'s reload,
+//    barrel delay, Throw and sub-type. SUBSTITUTION, labelled: the mode is
+//    chosen per shot from the target (dp_air_ammo), not held from the last
+//    SetFireTarget; 0072D5B0's barrel pass only consumes rounds on a
+//    successful ammo ask and so leaves the timers. OFF: as before.
+constexpr bool kFlakSecondAmmoCadenceBound = false;
 //  * kTorpedoSwimThrustBound: packet cc9_torpedo_tube_turn,
 //    docs/TORPEDO_FRIENDLY_CROSSING.md section 6. 00857480, the swim advance,
 //    per step on a torpedo in the water: 00856BB0 -> 00857061 yaws the NOSE
@@ -2360,9 +2373,16 @@ struct GameGunneryHost::Impl {
         float muzzle_speed{0.0f};
         float max_range{0.0f};
         float min_range{0.0f};
+        // kFlakSecondAmmoCadenceBound: Bullet[2]'s +28h reload, +30h barrel
+        // delay, +4h Throw and its class's sub-type (+34h -> +8h).
+        float reload_time{0.0f};
+        float barrel_delay_time{0.0f};
+        float throw_amount{0.0f};
+        int sub_type{-1};
     };
     std::map<std::size_t, SecondAmmo> second_ammo_by_gun;
     unsigned long long dp_air_rounds{0};
+    unsigned long long dp_cadence_shots{0};   // kFlakSecondAmmoCadenceBound
     unsigned long long aa_negative_halvings{0};
     unsigned long long water_depth_kills{0};   // packet cc9_water_surface_law
     unsigned long long airfield_destroy_kills{0};  // packet cc9_airfield_destruction_rule
@@ -3505,9 +3525,10 @@ struct GameGunneryHost::Impl {
         return slot_ai_held_00927f10(slot);
     }
     float bullet_throw_magnitude_0073031d(const GameGunRow& gun, std::size_t owner,
-        int& seat_out) const {
+        int& seat_out, const SecondAmmo* mode1 = nullptr) const {
         seat_out = -1;
-        float magnitude = gun.throw_amount;                           // 007302DF
+        // kFlakSecondAmmoCadenceBound: mode 1 reads [gun+3F8h] = Bullet[2].
+        float magnitude = mode1 != nullptr ? mode1->throw_amount : gun.throw_amount;  // 007302DF
         const int f = gun.category;                                   // gunclass+80h
         if ((f == 1 || f == 5 || f == 6) && kTurnOffAaGunThrow) {     // 007302EA..00730317
             magnitude = 0.0f;
@@ -3520,7 +3541,8 @@ struct GameGunneryHost::Impl {
         if (plane && f == 0) {                                        // 00730348..0073038D
             if (role_ai_held_00521e70(owner, 1)) seat = kThrowPilot;  // [unit+0DF4h]
         } else {
-            const int sub = gun.bullet_sub_type;                      // [[gun+3F8h]+34h]+8h
+            const int sub = mode1 != nullptr ? mode1->sub_type
+                                             : gun.bullet_sub_type;   // [[gun+3F8h]+34h]+8h
             if (sub == 0x0A) {                                        // gun+39Ch, role 5
                 if (f == 7 && role_ai_held_00521e70(owner, 5)) seat = kThrowTorpedo;
             } else if (sub == 0x0B) {                                 // role 7, +3A4h else +3A0h
@@ -4060,6 +4082,11 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "            end\n"
         "            if type(b2) == 'table' then\n"
         "              f[q .. 'bullet2'] = num(b2.Bullet, 1) or -1\n"
+        "              local rt2 = b2.ReloadTime\n"
+        "              if type(rt2) == 'table' then rt2 = rt2[1] end\n"
+        "              f[q .. '2reload'] = num(rt2, 1000) or 0\n"
+        "              f[q .. '2bdelay'] = num(b2.BarrelDelayTime, 1000) or 0\n"
+        "              f[q .. '2throw'] = num(b2.Throw, 1000000) or 0\n"
         "              local BT2 = type(Bullets) == 'table' and Bullets\n"
         "                 or (type(BulletClass) == 'table' and BulletClass or nil)\n"
         "              local bc2 = BT2 and BT2[b2.Bullet] or nil\n"
@@ -4609,6 +4636,11 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                     second.max_range = r2.engagement_range > 0.0f ? r2.engagement_range
                                                                   : fin2.range;
                     second.min_range = fin2.flak_min_range;
+                    second.reload_time = flat_scaled(type_id, make("2reload"), kMilliScale, 0.0f);
+                    second.barrel_delay_time = flat_scaled(type_id, make("2bdelay"),
+                        kMilliScale, 0.0f);
+                    second.throw_amount = flat_scaled(type_id, make("2throw"), kAngleScale, 0.0f);
+                    second.sub_type = r2.sub_type;
                     bullet_min_range[b2] = fin2.flak_min_range;
                     second_ammo_by_gun[guns.size()] = second;
                     if (bullet(b2) == nullptr) {
@@ -7962,8 +7994,12 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         const int barrel = bsp::next_ready_barrel_007298d0(gun.fire.barrel_timers.data(),
             gun.barrel_num, gun.next_fire_barrel);
         gun.next_fire_barrel = (barrel + 1) % std::max(1, gun.barrel_num);
+        // kFlakSecondAmmoCadenceBound: a mode-1 shot reads Bullet[2]'s record.
+        const SecondAmmo* mode1 = kFlakSecondAmmoCadenceBound && have_target
+            ? dp_air_ammo(g, gun.category, target) : nullptr;
+        if (mode1 != nullptr) ++dp_cadence_shots;
         if (barrel >= 0 && static_cast<std::size_t>(barrel) < gun.fire.barrel_timers.size()) {
-            float next_timer = gun.reload_time;
+            float next_timer = mode1 != nullptr ? mode1->reload_time : gun.reload_time;
             if constexpr (kTorpedoStockBound) {
                 if (gun.category == bsp::kUnitGunneryTorpedoCategory
                     && units.unit_is_kind_of(gun.unit_index, bsp::kUnitGunneryKindShipBase)
@@ -7973,7 +8009,8 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             }
             gun.fire.barrel_timers[static_cast<std::size_t>(barrel)] = next_timer;
         }
-        gun.fire.barrel_delay_time = gun.barrel_delay_time;
+        gun.fire.barrel_delay_time = mode1 != nullptr ? mode1->barrel_delay_time
+                                                      : gun.barrel_delay_time;   // 00730A05
         if (plane_gun) ++plane_gun_rounds;
         if (aa_trace_matches(state.row.name)) {
             float aim[3] = {0.0f, 0.0f, 0.0f};
@@ -8068,7 +8105,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         if (gun.shots == 1) {
             // DIAGNOSTIC, both sides: the throw terms this gun fires with.
             int seat = -1;
-            const float m = bullet_throw_magnitude_0073031d(gun, owner_unit, seat);
+            const float m = bullet_throw_magnitude_0073031d(gun, owner_unit, seat, mode1);
             log.notef("gunnery: throw first shot %s plat=%d cat=%d sub=%d throw_deg=%.3f "
                 "level=%d seat=%d magnitude_deg=%.3f (0073031D)", state.row.name.c_str(),
                 gun.platform_key, gun.category, gun.bullet_sub_type,
@@ -8078,7 +8115,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         if constexpr (kBulletThrowBound) {
             // Packet cc9_bullet_throw: 0073031D..0073075E.
             int seat = -1;
-            const float magnitude = bullet_throw_magnitude_0073031d(gun, owner_unit, seat);
+            const float magnitude = bullet_throw_magnitude_0073031d(gun, owner_unit, seat, mode1);
             ++throw_by_seat[seat >= 0 ? seat : kThrowSeatCount];
             if (!(magnitude > 0.0f)) {
                 ++throw_zero_shots;                                   // 00730525 JBE
@@ -14307,6 +14344,9 @@ void GameGunneryHost::report() {
             host.intercept_solves, kGunInterceptBound ? 1 : 0, host.dp_air_rounds,
             kDualPurposeSecondAmmoBound ? 1 : 0, host.aa_negative_halvings,
             kAaGunnerErrorBound ? 1 : 0);
+        host.log.notef("summary mission gunnery flak mode-1 cadence shots=%llu bound=%d "
+            "(008FF200 -> 0072D5B0(1), packet cc9_g41_flak_d4)", host.dp_cadence_shots,
+            kFlakSecondAmmoCadenceBound ? 1 : 0);
         host.log.notef("summary mission gunnery water depth kills=%llu (007CE3A7, packet "
             "cc9_water_surface_law)", host.water_depth_kills);
         host.log.notef("summary mission gunnery airfield sub-entity asks=%llu listed=%llu "

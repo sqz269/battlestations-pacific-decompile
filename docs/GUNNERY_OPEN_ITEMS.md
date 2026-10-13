@@ -13660,3 +13660,27 @@ re-launch of the same log fails at once with an empty launch file. Check
 `Get-CimInstance Win32_Process -Filter "Name='pwsh.exe'"` for the waiting launcher before re-launching. Export
 dirs: `g40_tf` (turning ON), `g39_rk0` (fall ON), `g39_rk1` / `g40_sx1` (swim ON), `g39_rk2` (recon ON),
 `g39_lo` (mesh box ON); OFF snapshots `g40_tfoff`, `g40_tb0`, `g40_sw0`, `g40_sx0`, `g40_bm0`.
+
+## 216. Flak D4: a mode-1 shot reads Bullet[2]'s reload, barrel delay, Throw and seat: `kFlakSecondAmmoCadenceBound`, OFF (lead queue item 1; cc9-gunnery41, 2026-10-13)
+
+**Image** (docs/CC13_VER_16.md D4, re-read here at `008FF200` and `0072D5B0`). `008FF200`, the AAFlakBot's
+SetFireTarget, calls `0072D5B0(1, 0)` for a kind-6 gun (`[[bot+68h]+3F4h]+80h == 6`) when the role slot is 8 or
+AI-held, then rolls the error. `0072D5B0` sets `gun+3F8h = [desc+74h] + 1 * 48h`, so the reload draw
+U(+28h, +2Ch) (`0072D55C`-`0072D579`), the barrel delay +30h (`00730A05`), the Throw +4h (`007302DF`) and the
+seat's sub-type `[[gun+3F8h]+34h]+8h` (`0073031D`) all come from Bullet[2]. Its barrel pass (flag 0) asks each
+barrel for a round and, on success, only consumes it (`vtable[1F8h]`); the timers are written only on an empty
+magazine (`00CFDBF8`).
+
+**Host.** Bullet[2] (`SecondAmmo`) now also carries `2reload`, `2bdelay`, `2throw` and its class's sub-type. With
+the switch ON, a shot that `dp_air_ammo` routes to Bullet[2] (category 6 against a plane) takes those four;
+counter `dp_cadence_shots`, logged as `summary mission gunnery flak mode-1 cadence shots`. Labelled
+substitution: the mode is chosen per shot from the target, not held from the last SetFireTarget.
+
+**Predictions, written before any ON run.** OFF `dp_air_rounds`: USN12 1879, USN01 175, USN15 0.
+
+| row | prediction ON |
+| --- | --- |
+| USN15 s45_u15_l2 90000 | `shots=0`; pair_diff exit 0 or 1 |
+| USN12 s38_u12_p2 36000 | exit 3; DP flak rounds up about 1.5-1.7x (reload 3-6 s against 6-9 s); the 0.6 AAFlak seat replaces 0.9; plane losses up; win kept |
+| USN21 (ships44 `s46_u21_d`) 60000 | exit 3; `dp_air_rounds` about 1832 -> 3150 (cc13); DP kills up; strike releases down slightly |
+| USN01 p3_u1_z4 | exit 3 (175 DP rounds); small; win kept |
