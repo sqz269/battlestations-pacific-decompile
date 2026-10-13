@@ -211,7 +211,7 @@ bool ai_bullet_type_class_gate_009fe270(int sub_type, bool target_is_class_8,
                                         bool target_is_class_1c) noexcept;
 // True: the host's 009FE270 users apply the gate above. False: DepthCharge and
 // Paratroopers answer unconditionally, as before.
-inline constexpr bool kAiBulletClassGateBound = false;
+inline constexpr bool kAiBulletClassGateBound = true;  // ON: lead AI pair (USN15/USN12/IJN18 wins identical, 2026-10-13)
 
 const AiTuningAuthoredRow* ai_tuning_authored_row(AiTuningMode mode) noexcept;
 
