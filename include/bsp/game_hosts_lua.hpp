@@ -575,6 +575,13 @@ inline constexpr bool kLuaSquadronLandAndKillBound = false;
 // so the scene stock survives and a following AddAirBaseStock adds to it
 // (prcpjm08.lua:908, the Hosho).
 inline constexpr bool kLuaRemoveAllAirBasePlanesBound = false;
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 3). 0089AC30 StartLanding2(unit):
+// 00888AA0 on argument 0, then vtable[238h]() and its answer pushed as an integer
+// (the 94h receiver's call, without the message): 0074A4C0 on an MLandingShip
+// (vtable 00CFFA30), 008206F0 on every other ship vtable. True: the row runs the
+// ship AI host's two models and pushes the answer. False: unimplemented, no
+// result (jm08.lua:653 then fails on tonumber(nil) < 0).
+inline constexpr bool kLuaStartLanding2Bound = false;
 inline constexpr bool kLuaAddUntouchableUnitBound = true;   // ON on identity (LUA_BINDING_MISSION)
 // The +1D4h byte of units-host index `index`'s AI object, as AddUntouchableUnit
 // left it. False for every unit while kLuaAddUntouchableUnitBound is false.
@@ -1537,6 +1544,8 @@ public:
     int run_squadron_land_and_kill_008a20e0(lua_State* state, int argument_count);
     // Packet cc13-fix5, under kLuaRemoveAllAirBasePlanesBound.
     int run_remove_all_air_base_planes_008975b0(lua_State* state, int argument_count);
+    // Packet cc13-fix5, under kLuaStartLanding2Bound.
+    int run_start_landing2_0089ac30(lua_State* state, int argument_count);
     // Packet cc9_squadron_travel_alt, under kSquadronTravelAltBound.
     int run_squadron_set_travel_alt_0089f550(lua_State* state, int argument_count);
     // Packet cc9_squadron_attack_alt, under kSquadronAttackAltBound.
