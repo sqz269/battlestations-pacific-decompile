@@ -17464,3 +17464,80 @@ CC13_VER_7: LOMP06 (an exited CrucialCargo fails the mission), USN05, USN06, USN
 The menu rows USN01, USN06 and USN12 load `usn_1_marshall.lua`, `usn_6_guad.lua` and `usn_12_augusta.lua`, not the
 COTP scripts whose ship exitzone listeners CC13_VER_8 counts, so no run here exercises a ship listener. **Verdict: ON
 by mechanism** (the image's countdown and kill reproduce on the probe; every win row is identical).
+
+## 233. Small items: the torpedo-boat rudder torque (T1/T2), 00812B00, 00853E10; IJN08 b (cc9-ships47, 2026-10-13; lead items 4 and 5)
+
+**T1/T2, `kTorpedoBoatRudderTorqueBound`** (`ShipMotionBinding`, `src/game_hosts_units.cpp`; patch
+`local\s47_t1_patch.py`). cc13-ver3 section 6: 00937440 is slot 0 only of the controller vtable 00D196F0 that
+00939F20 builds for the TorpedoBoat (00857C20, vtable 00D0C648 +230h); other ships' controllers run 009329C0 alone.
+True: the torque runs for units answering IsKindOf(0Eh) only, with settings+588h = 1500 (SUBSTITUTION, labelled:
+this installation's shipglobals.lua:553 `TBoatNyomatekSzorzo`, not the loaded field), through
+`tboat_rudder_torque_00937440` (the image's grouping); every other ship goes straight to 009329C0. False: every
+surface ship runs the torque with gain 0, as before.
+**Predictions.** OFF identical. ON: only the `ShipMotion::force_model` / `add_rudder_torque` counts drop to the
+torpedo boats; gameplay identical while the hull's inverse inertia stays zero (the host comment at the force model:
+00C5C940, the AABB producer, unread).
+**Pair** (export of this branch, USN06 idle 18000, `local\s47_t?_u6`): gameplay identical (deaths 79, shots 4564
+both); `force_model` 652279 -> 112279 and `add_rudder_torque` 625072 -> 85072 calls (the ten torpedo boats; the
+torpedo-boat summary counts 112279 trait queries). **Verdict: ON by mechanism.** Not committed yet: it needs the
+`game_hosts_units.cpp` claim.
+
+**00812B00** (cc13-gpr50, ship vtable[168h] command availability): no reach. Its only host consumer would be
+`008162B0` for ships, which is not bound; the script-order host asks `entity_may_follow_target_00779d50` directly.
+Nothing to wire until that is bound.
+
+**00853E10** (cc13-gpr53b, submarine activate): no reach in this installation. No `.scn` or `.props` file under
+`universe\` and no script under `scripts\` contains `AutoAttackTarget` or `DummyObjectID` (byte search of every
+file), so neither the attackmove nor the stream-1 wander draw can run; the saved-game arm is outside the harness.
+
+**IJN08 b** (`local\s47_i08_b.txt`: s46's a without its Maru lines, plus `select Maru1` / `attack Maru1 HQ` every
+2000 frames 13000-70000; 80000 frames). The early selects and the attackmove at the HQ are **accepted** (the
+section-230 refusal was after Maru1 had died). Both transports exist (Maru2 is the right fleet's). Maru1 dies to
+DamagedBB at 2615.03 s (first damage 993 s), Maru2 to US_Airfield_01 bombers at 2784.39 s, and primary 2
+(`JapTrans` all dead) fails the mission: `Game Over` at 2786.59 s. Maru1 starts at (-1000, -11700), about 20 km
+from the HQ at (-1804, 8280). Next: escort or delay the Marus until DamagedBB and the US airfields are down, then
+send them.
+
+## 234. IJN08 variants c-f (cc9-ships47, 2026-10-13; lead item 4)
+
+Generator `local\s47_i08gen.py <out> <hold_until> <end> [airfirst]`: Kongo, Haruna, Kirishima, Aoba, Furutaka and
+Kinugasa `attack` the installations in rotation every 2000 frames from 12500; Maru1/Maru2 `moveto (-1000, -11700)`
+(Maru1's spawn) until `hold_until`, then `attack ... HQ` every 2000 frames. IJN08, 120000-130000 frames.
+| v | change | installations dead (s) | Marus | end |
+| --- | --- | --- | --- | --- |
+| c | hold to 50000 | Jap_Airfield 732, US_Airfield_01 922, US_Shipyard_01 1778, US_Shipyard_02 1803 | Maru2 3106, Maru1 3371 (US_Airfield_03 bombers) | Game Over 3372.16 s |
+| d | hold forever | as c, then US_Airfield_02 5135 | Maru2 4001 (RightBB1); Maru1 lives | none in 6000 s |
+| e | c with `airfirst` (Airfield_03/02 first) | Jap_Airfield 732, Airfield_01 940, Shipyard_01 1425, Shipyard_02 1519, Airfield_03 3690 | Maru2 3888 (Airfield_03 bombers), Maru1 4539 (DamagedBB) | Game Over 4541.12 s |
+| f | e, plus Hiei/Haruna `attack DamagedBB` every 1500 frames to 40000 | Jap_Airfield 732, Airfield_01 951 | Maru2 1082, Maru1 1226 (Airfield_01/03 bombers) | Game Over 1230.07 s |
+Lessons: both Marus take first damage at about 900-1200 s even while held at the spawn; the killers are the US
+airfields' bombers (and DamagedBB / RightBB1). The rotation never reaches US_Shipyard_03 or `Shipyard Entity CB3` in
+time; US_Airfield_02/03 fall only after 3600 s. Primary 2 (`JapTrans` all dead) ends every row. A win needs air
+cover or a hold point out of the bombers' reach, and the remaining three installations killed while a Maru lives.
+
+## 235. Handoff (cc9-ships47, 2026-10-13)
+
+Branch `agent/cc9-ships44`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-ships44` (origin/main
+`b198b2b4a` merged). Leases: `cc9_s47_small` (this doc) released with this commit; no others held.
+Tools in `local\`: `s47_rows.ps1` (launcher, as s46's; `-Exe`, `-Traj`, `-Jitter`), `s47_j6gen.py` (JM06 variants
+from m), `s47_exit_patch.py` (232, applied), `s47_t1_patch.py` (233, NOT applied), `s47_i08gen.py` (IJN08),
+probe order files `s47_j6_exitprobe.txt`, `s47_l6_exitprobe*.txt`, `s47_u6_exitprobe.txt`.
+
+**Done:** 231 JM06 n1 win (`config/win_orders/jm06_s47_j6_n1.txt`, also under jitter 20,3 and 20,5) with
+`kShipSubmergedThrottleBound` and `kShipRightingImageConstantsBound` ON (ef5c0e9f5); 232 the ship out-of-map exit
+00826D70, OFF (569880068) then ON by mechanism (2e8ca8ff4), with cc13's exitzone hook; 233 T1 pair and two no-reach
+reads; 234 IJN08 c-f.
+
+**Open, in order:**
+1. **T1/T2** (233): run `python local\s47_t1_patch.py <tree>` under a short `src/game_hosts_units.cpp` claim from
+   the lead, build, commit OFF, then flip `kTorpedoBoatRudderTorqueBound` ON (verdict already recorded).
+2. **Item 3, land-structure damage**: design sent to the lead (section-to-master forward on AddDamage 007470B0;
+   00747170's master AddDamage(1e10) and the master's vtable[1A8h]; 0095DA00's +71Ch/+728h gate). Vtables read from
+   the PE: airfield 00CF8C08 (+1A8h 006D40F0, +1ACh 0095DA00, +1B0h 006D0D40 = JMP 00958A30), LandFort 00CFF3F8
+   (+7Ch 00747170, +1A8h 00747400, +1ACh 007470B0, +1B0h 00958A30), CommandBuilding 00CFB028 (+1A8h 006F1F80 RET,
+   +1ACh 006F1F20, +1B0h 006F3270). 00744A20's only callers are the airfield and shipyard readers, so masters are
+   airfields/shipyards. 00958A30 destroys a unit at health 0 only when +71Ch is clear; with +71Ch it runs the
+   InferiorFailure / +728h repair branch (not hosted). Prediction to check first: one dead hangar kills an
+   un-adopted airfield or shipyard through the 1e10. Needs `game_hosts_gunnery.cpp` (two hook calls) and units.cpp.
+   USN12's convoy HP pooling is a separate follow-up (convoy_hp loaded, unread).
+3. **IJN08** (234): find air cover for the Marus or a safe hold point; then the last three installations.
+4. JM02 runs no ship motion in the host at all (232): a host gap worth a look.

@@ -324,14 +324,16 @@ constexpr bool kReconMultiplierForwardBound = true;
 //    chosen per shot from the target (dp_air_ammo), not held from the last
 //    SetFireTarget; 0072D5B0's barrel pass only consumes rounds on a
 //    successful ammo ask and so leaves the timers. OFF: as before.
-constexpr bool kFlakSecondAmmoCadenceBound = false;
+//    ON since the pairs (GUNNERY_OPEN_ITEMS 225: USN21 DP rounds 8782 -> 11702, USN12 win kept).
+constexpr bool kFlakSecondAmmoCadenceBound = true;
 //  * kFlakNegativeVerticalBound: packet cc9_g41_flak_d6 (docs/CC13_VER_16.md
 //    D6). 00903297..009032E9, after the AAFlakBot adds bot+5Ch: a negative
 //    vertical against a plane (IsKindOf(0Fh), 009032B3) is fired flat (0);
 //    against anything else, below -0.02f (00D7A320) it becomes
 //    v - (v + 0.02) * 0.5 (flak_bot_vertical_adjust_00903297). The host added
 //    the error and fired as solved. OFF: as before.
-constexpr bool kFlakNegativeVerticalBound = false;
+//    ON since the pairs (GUNNERY_OPEN_ITEMS 225: USN21 adjusts 5751, USN12 identical).
+constexpr bool kFlakNegativeVerticalBound = true;
 //  * kAaLeadDistanceGateBound: packet cc9_g41_flak_d3d1 (docs/CC13_VER_14.md
 //    D1, docs/CC13_VER_16.md D3). The AAGunnerBot's fire gate
 //    (00902FC0..00902FE2, slot < [proj+60h] * 0.9f) and the AAFlakBot's range
@@ -341,14 +343,16 @@ constexpr bool kFlakNegativeVerticalBound = false;
 //    target's current aim point. ON: both gates use the aim block's lead
 //    distance. The TailGunnerBot (a category-1 gun under a plane, no 00901C20
 //    lead) keeps its own measure. OFF: as before.
-constexpr bool kAaLeadDistanceGateBound = false;
+//    ON since the pairs (GUNNERY_OPEN_ITEMS 225: AA shots up 10-20 %, USN12 win kept).
+constexpr bool kAaLeadDistanceGateBound = true;
 //  * kFlakFuseArmTimeBound: packet cc9_g41_flak_d5 (docs/CC13_VER_16.md D5).
 //    0070C0B0, the MFlakBullet finalise, stores +D8h = MinRange / V0
 //    (0070C0BC..0070C0C2; WeaponClassFinaliseResult::flak_fuse_time), and
 //    0070C3DA..0070C3E6 skips the proximity lock search unless the flight
 //    time is strictly greater. The host searched from the first step after
 //    launch. ON: the search waits for the fuse time. OFF: as before.
-constexpr bool kFlakFuseArmTimeBound = false;
+//    ON since the pairs (GUNNERY_OPEN_ITEMS 225: USN12 identical, USN21 small).
+constexpr bool kFlakFuseArmTimeBound = true;
 //  * kFlakErrorRerollBound: packet cc9_g41_flak_d2 (docs/CC13_VER_14.md D2).
 //    008FDBE0, the AAFlakBot's error roll, has three callers: 008FF055 in
 //    AttachBallisticClass (once), 008FF247 in SetFireTarget 008FF200 (each
@@ -358,7 +362,8 @@ constexpr bool kFlakFuseArmTimeBound = false;
 //    The host rolled only after a shot from {0, 0, 0}, so a gun's first
 //    salvo had no error. ON: the attach roll (at the gun's first flak tick,
 //    labelled) and the re-send roll. OFF: as before.
-constexpr bool kFlakErrorRerollBound = false;
+//    ON since the pairs (GUNNERY_OPEN_ITEMS 225: USN12 identical, USN21 RNG-coupled).
+constexpr bool kFlakErrorRerollBound = true;
 //  * kAaSlotRangeOriginBound: packet cc9_g41_aa_pick_d2 (docs/CC13_VER_19.md D2,
 //    D1 folded in). 00729BC0's per-gun range gate (00729C35..00729C7A, then
 //    00729C8A JA: !(distance > [ammo+60h])) measures the gun entity's +FCh, the
@@ -384,7 +389,8 @@ constexpr bool kDirectorLeaderFireTargetBound = false;
 //    refused gate skips the gather and the assignment (008651D1 JE 00865773),
 //    so the guns KEEP their target. The host answered true for every unit.
 //    ON: the submarine gate. OFF: as before.
-constexpr bool kSubmarineCategoryGateBound = false;
+//    ON since the win set (GUNNERY_OPEN_ITEMS 227: LOMP06 365 refusals, every win kept).
+constexpr bool kSubmarineCategoryGateBound = true;
 //  * kKillFunnelCauseBound: packet cc9_g41_kill_cause (lead queue item 3).
 //    00926D90 stores its cause argument at +70h (00926E02; 7 is stored as 2),
 //    and the `Dead` / entityKilled / kill publishers read 00E0CF04[+70h]
@@ -393,7 +399,8 @@ constexpr bool kSubmarineCategoryGateBound = false;
 //    for every death but its own cause-4/5 kills. ON: the funnel records the
 //    normalised cause through GameUnitsHost::note_kill_cause_00926e02.
 //    OFF: as before.
-constexpr bool kKillFunnelCauseBound = false;
+//    ON since the pairs (GUNNERY_OPEN_ITEMS 226: USN01 21 non-harm causes, identical).
+constexpr bool kKillFunnelCauseBound = true;
 //  * kTorpedoSwimThrustBound: packet cc9_torpedo_tube_turn,
 //    docs/TORPEDO_FRIENDLY_CROSSING.md section 6. 00857480, the swim advance,
 //    per step on a torpedo in the water: 00856BB0 -> 00857061 yaws the NOSE

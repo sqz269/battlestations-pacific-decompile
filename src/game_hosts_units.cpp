@@ -940,6 +940,16 @@ struct GameUnitSlot {
     unsigned long long speed_floor_arms{0};
     unsigned long long speed_floor_raises{0};
     unsigned long long rate_floor_steps{0};
+    unsigned long long bank_yaw_steps{0};
+    // kPlaneDeckClampBound: dyn+A4h, and the clamp's counters.
+    bool plane_contact_a4{false};
+    unsigned long long deck_clamp_lifts{0};
+    double deck_clamp_lift_total{0.0};
+    // kPlanePoseFirstBound: ctl+7Ch and the levelling mode the last core law left.
+    float plane_forward_speed_7c{0.0f};
+    bool plane_pose_ground_prev{false};
+    unsigned long long pose_first_steps{0};
+    double bank_yaw_abs_angle{0.0};
     unsigned long long dir_hold_arms{0};
     unsigned long long dir_hold_blend_steps{0};
     float dir_hold_max_seconds{0.0f};
@@ -5700,6 +5710,40 @@ struct GameUnitsHost::Impl {
     // Interp(StallRangeMin,1,StallRangeMax,0, fwd/StallSpd) x Interp(StallOffPitch,
     // 1,StallOnPitch,0, unit+C64h) (007DAABD-007DAB36). False: 1.5|w| on all three.
     static constexpr bool kPlaneRateLawCrossingFloorBound = true;  // ON: CC13_GPR_48 9
+    // Packet cc9_plane_bank_yaw, D2 (docs/CC13_GPR_48.md 7.2, 10): 007D9F60's
+    // bank-driven yaw 007DA00C-007DA117, between the axis-angle rotation and the
+    // levelling. angle = -(sin(unit+C68h) * cos(unit+C64h) * desc+1C8h TurnRollSpd
+    // * Interp(3.0 00CE3854, 0, 5.0 00CE3850, 1, ctl+7Ch) * difficulty * t), built
+    // by 00B646E0 and post-multiplied by 00413920. ctl+7Ch is the body forward
+    // speed (007D80C0). difficulty is 008E6430(0Dh, unit) behind [00E0C978] and
+    // [[00F88C30]+124h], else 1.0f (00D7A24C); this host's modifier list is empty,
+    // so 1.0f. False: no bank yaw, as before.
+    static constexpr bool kPlaneBankYawBound = true;
+    // Packet cc9_plane_deck_clamp, D1 and V4 (docs/CC13_GPR_48.md 7.2, 8.3, 10):
+    // 007DA2B1-007DA338, the tail of 007D9F60. With ctl+FCh == 1 (the ground
+    // law), unit+BF4h set and a parent, h = 006BC530's local height of the
+    // translated position over the holder, d = float(h - (desc+1FCh WheelHeight
+    // + 0.01 [00D7A358, double])); when 0 > d the position's y gains -d and
+    // 007D7D70 sets dyn+98h..A0h = (0,1,0) and dyn+A4h = 1. The next integrate
+    // then zeroes body vy at |vz| < 1e-5 (007D87F6) and projects the world
+    // velocity off the normal (007D8E28) with dyn+A4h set even when dyn+94h is 0,
+    // and clears it. SUBSTITUTIONS, labelled: the parent (unit+3Ch) is taken as
+    // present whenever the holder is, and the lift is applied to world y (the
+    // image lifts the parent-local y; equal for a level deck). False: no clamp,
+    // and the contact terms key on dyn+94h > 0 alone, as before.
+    static constexpr bool kPlaneDeckClampBound = true;
+    // Packet cc9_plane_pose_first, D4 (docs/CC13_GPR_48.md 7.2, 10): the order
+    // within a step. The image runs the +4h pose slot 007D9F60 (rotate with
+    // ctl+24h, bank yaw, level with ctl+8Ch, translate with ctl+18h and unit+810h)
+    // in wave 1, before the +8h physics 007DB680 in wave 3, so the pose moves with
+    // the previous step's velocities and the physics runs on the moved pose. True:
+    // the core law starts with that pose step, using the velocity, forward speed
+    // (ctl+7Ch) and levelling mode the previous core law left, and does not move
+    // the pose at its end. SUBSTITUTION, labelled: the step runs at the head of
+    // the core law, after the arm's attitude refresh, think and water sample,
+    // which in the image read the moved pose. False: physics first, then the
+    // pose with the new velocities, as before.
+    static constexpr bool kPlanePoseFirstBound = true;
     // Packet cc9_plane_ground_roll (docs/SQUADRON_LAND_TASK.md section 5q): the
     // ground-roll arm 007CBFA0 for unit+900h 4 and 5: the pilot pass (0099AE5F
     // admits 4..7), the probe 007C5AC0, and 007DCCF0: the core law in mode 1
@@ -5950,6 +5994,13 @@ struct GameUnitsHost::Impl {
     // target acceleration from the fixed-step difference (was the gun tick's).
     static constexpr bool kTorpedoArmTimeToTargetBound = true;
     static constexpr bool kPlaneYawGainBc4Bound = true;
+    // Packet cc9_plane_yaw_gain_raw, R2 (docs/CC13_GPR_48.md 8.3, 10): where
+    // unit+BC4h enters. 007DA926-007DA94B forms yaw_raw = (YawSpd * latched yaw)
+    // * BC4h, and yaw_raw feeds both the target -(yaw_raw*f2 - slide) and the
+    // coupling roll += (yaw_raw*f1)*1B4h (007DAA5C-007DAA78). False: the host
+    // multiplies the finished yaw target by BC4h, which scales the slide term too
+    // and leaves BC4h out of the coupling. Needs kPlaneYawGainBc4Bound.
+    static constexpr bool kPlaneYawGainRawBound = true;
     static constexpr bool kFighterLeadAccel654Bound = true;
     // Packet cc9_airfield_destruction_rule (docs/GUNNERY_OPEN_ITEMS.md 119): 006D40F0,
     // the airfield's vtable[1A8h], which 006D2510 runs every fixed step. When no
@@ -17736,6 +17787,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                     }
                     void run_core_law_007db680(float step, bool ground) {
+                        if constexpr (GameUnitsHost::Impl::kPlanePoseFirstBound) {
+                            // Wave 1, 007D9F60 / 007D8230, before this step's physics.
+                            for (int i = 0; i < 3; ++i) {
+                                unit_.motion.position[i] += unit_.plane_world_velocity[i] * step;
+                            }
+                            wanderer_publish_007d8230(step);
+                            advance_pose_0085e4d0(step, unit_.plane_pose_ground_prev,
+                                                  unit_.plane_forward_speed_7c);
+                            ++unit_.pose_first_steps;
+                        }
                         // The class field the law actually depends on. StallSpd
                         // is the only authored one; everything else is a
                         // PlaneGlobals default the mirror fills at load.
@@ -18164,7 +18225,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             const float pen = ground
                                 ? unit_.plane_wheel_height_1fc - unit_.plane_contact_height_bfc
                                 : 0.0f;
-                            if (ground && pen > 0.0f) {
+                            bool contact_a4 = false;
+                            if constexpr (GameUnitsHost::Impl::kPlaneDeckClampBound) {
+                                contact_a4 = ground && unit_.plane_contact_a4;
+                            }
+                            if (ground && (pen > 0.0f || contact_a4)) {
                                 // 007D87F6-007D8838: dyn+A4h clear, dyn+94h > 0: body vy
                                 // is zeroed while |vz| < 1e-5 (00CE3C70).
                                 const float avz = vs.velocity[2] > 0.0f
@@ -18291,7 +18356,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // velocity loses its component into the ground normal
                                 // (0, 1, 0), then the body velocity is rebuilt through
                                 // ctl+0B0h (0042D0D0 with 0).
-                                if (pen > 0.0f) {
+                                if (pen > 0.0f || contact_a4) {
+                                    if constexpr (GameUnitsHost::Impl::kPlaneDeckClampBound) {
+                                        unit_.plane_contact_a4 = false;
+                                    }
                                     const float g2 = gw[0] * gw[0] + gw[1] * gw[1] + gw[2] * gw[2];
                                     if (g2 > 0.0f && 0.0f > gw[1]) {
                                         gw[1] = gw[1] - gw[1] * 1.0f;
@@ -18310,16 +18378,22 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     unit_.plane_body_accel_7c[i] = (vs.velocity[i] - vb[i]) / step;
                                 }
                             }
-                            for (int i = 0; i < 3; ++i) {
-                                unit_.motion.position[i] += unit_.plane_world_velocity[i] * step;
+                            if constexpr (!GameUnitsHost::Impl::kPlanePoseFirstBound) {
+                                for (int i = 0; i < 3; ++i) {
+                                    unit_.motion.position[i] += unit_.plane_world_velocity[i] * step;
+                                }
+                                wanderer_publish_007d8230(step);
                             }
-                            wanderer_publish_007d8230(step);
                         } else {
                             for (int i = 0; i < 3; ++i) {
                                 unit_.plane_world_velocity[i] += world_accel[i] * step;
-                                unit_.motion.position[i] += unit_.plane_world_velocity[i] * step;
+                                if constexpr (!GameUnitsHost::Impl::kPlanePoseFirstBound) {
+                                    unit_.motion.position[i] += unit_.plane_world_velocity[i] * step;
+                                }
                             }
-                            wanderer_publish_007d8230(step);
+                            if constexpr (!GameUnitsHost::Impl::kPlanePoseFirstBound) {
+                                wanderer_publish_007d8230(step);
+                            }
                         }
                         // 0092D730 takes the body's linear velocity from
                         // 00C31F40 and dots it with the third row of the body
@@ -18341,7 +18415,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             std::sqrt(wv[0] * wv[0] + wv[1] * wv[1] + wv[2] * wv[2]) * step;
                         control_step_007da710(step, state.forward_speed, ground);
                         if (water_.active) water_law_tail(step, state.forward_speed);
-                        advance_pose_0085e4d0(step, ground);
+                        if constexpr (!GameUnitsHost::Impl::kPlanePoseFirstBound) {
+                            advance_pose_0085e4d0(step, ground, state.forward_speed);
+                        }
+                        unit_.plane_forward_speed_7c = state.forward_speed;   // 007D80C0
+                        unit_.plane_pose_ground_prev = ground;
                     }
 
                     void free_flight_007cc2f0(float step) override {
@@ -33509,8 +33587,59 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         return true;
                     }
 
-                    void advance_pose_0085e4d0(float step, bool ground) {
+                    void advance_pose_0085e4d0(float step, bool ground, float forward_speed) {
+                        advance_pose_body_0085e4d0(step, ground, forward_speed);
+                        if constexpr (GameUnitsHost::Impl::kPlaneDeckClampBound) {
+                            if (ground && unit_.plane_contact_deck_bf4 != 0) {
+                                const auto& d =
+                                    owner_.landing_decks[unit_.plane_contact_deck_bf4 - 1u];
+                                float h = 0.0f;
+                                owner_.landing_over_runway_006bc530(d, unit_.motion.position, &h);
+                                const float dd = static_cast<float>(static_cast<double>(h) -
+                                    (static_cast<double>(unit_.plane_wheel_height_1fc) +
+                                     0.01));                                  // 007DA303-007DA318
+                                if (0.0f > dd) {                              // 007DA320 FCOMI / JBE
+                                    unit_.motion.position[1] = unit_.motion.position[1] - dd;
+                                    unit_.plane_contact_a4 = true;            // 007D7D70
+                                    ++unit_.deck_clamp_lifts;
+                                    unit_.deck_clamp_lift_total += -static_cast<double>(dd);
+                                }
+                            }
+                        }
+                    }
+                    void advance_pose_body_0085e4d0(float step, bool ground, float forward_speed) {
                         rotate_pose_0085e4d0(step);
+                        if constexpr (GameUnitsHost::Impl::kPlaneBankYawBound) {
+                            // 007DA00C-007DA117, which runs whether or not the
+                            // rotation applied. The pitch and bank are unit+C64h /
+                            // +C68h as refresh_attitude_007c1900 left them for this
+                            // step, and ctl+7Ch is the forward speed this step's
+                            // core law produced, the value the image's next wave-1
+                            // pose step reads (007D80C0 copies it after the step).
+                            bsp::NativeAdvanceMatrixOps ops;
+                            const float blend = ops.interpolate_clamped_00419010(
+                                3.0f, 0.0f, 5.0f, 1.0f, forward_speed);
+                            const float angle = bsp::bank_yaw_angle_007da0ae(blend,
+                                unit_.plane_bank_angle_c68, unit_.plane_pitch_angle_c64,
+                                unit_.plane_class_turn_roll_spd, 1.0f, step);
+                            bsp::AdvanceMatrix live{};
+                            float* const rows[3] = {unit_.motion.pose_row0,
+                                unit_.motion.pose_row1, unit_.motion.pose_row2};
+                            for (int r = 0; r < 3; ++r) {
+                                for (int c = 0; c < 3; ++c) live.m[r * 4 + c] = rows[r][c];
+                                live.m[12 + r] = unit_.motion.position[r];
+                            }
+                            live.m[15] = 1.0f;
+                            bsp::AdvanceMatrix rot_y{};
+                            ops.build_rotation_y_00b646e0(rot_y, angle);
+                            bsp::AdvanceMatrix yawed{};
+                            ops.multiply_00413920(yawed, live, rot_y);
+                            for (int r = 0; r < 3; ++r) {
+                                for (int c = 0; c < 3; ++c) rows[r][c] = yawed.m[r * 4 + c];
+                            }
+                            ++unit_.bank_yaw_steps;
+                            unit_.bank_yaw_abs_angle += std::fabs(static_cast<double>(angle));
+                        }
                         if constexpr (GameUnitsHost::Impl::kPlaneGroundLevellingBound) {
                             // 007DA11C-007DA20C, after the rotation (the bank-yaw
                             // 007DA080-007DA117 between them is not carried). The
@@ -33772,6 +33901,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             ++unit_.ground_steer_steps;
                             unit_.ground_steer_last_f2 = f2;
                         }
+                        if constexpr (GameUnitsHost::Impl::kPlaneYawGainBc4Bound &&
+                                      GameUnitsHost::Impl::kPlaneYawGainRawBound) {
+                            // 007DA94B: BC4h read before this step's relax.
+                            state.yaw_scale_bc4 = unit_.plane_yaw_gain_bc4;
+                        }
                         const bsp::PlaneControlTargets targets =
                             bsp::plane_control_targets_007da710(
                                 unit_.plane_class, state, m, f2, coupling);
@@ -33792,7 +33926,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // toward 1.0 by 0.5 x dt (double [00D7A280]),
                             // clamped at 1.0 from either side.
                             float& g = unit_.plane_yaw_gain_bc4;
-                            gained.target[1] = targets.target[1] * g;
+                            if constexpr (!GameUnitsHost::Impl::kPlaneYawGainRawBound) {
+                                gained.target[1] = targets.target[1] * g;
+                            }
                             if (g != 1.0f && step > 0.0f) {
                                 if (g > 1.0f) {
                                     const float r = static_cast<float>(g - step * 0.5);
@@ -37795,13 +37931,31 @@ void GameUnitsHost::report() {
             "cc9_leader_turn_roll)", host.leader_turn_roll_uses,
             GameUnitsHost::Impl::kPlaneLeaderTurnRollBound ? 1 : 0);
         {
-            unsigned long long arms = 0, raises = 0, rsteps = 0;
+            unsigned long long arms = 0, raises = 0, rsteps = 0, bysteps = 0;
+            double byangle = 0.0;
+            unsigned long long dclifts = 0;
+            double dctotal = 0.0;
+            unsigned long long pfsteps = 0;
             for (const auto& s : host.slots) {
                 if (!s) continue;
                 arms += s->speed_floor_arms;
                 raises += s->speed_floor_raises;
                 rsteps += s->rate_floor_steps;
+                bysteps += s->bank_yaw_steps;
+                dclifts += s->deck_clamp_lifts;
+                dctotal += s->deck_clamp_lift_total;
+                pfsteps += s->pose_first_steps;
+                byangle += s->bank_yaw_abs_angle;
             }
+            host.log.notef("summary mission plane bank yaw: steps=%llu abs_angle=%.3f rad "
+                "bound=%d (007DA00C-007DA117, packet cc9_plane_bank_yaw)", bysteps, byangle,
+                GameUnitsHost::Impl::kPlaneBankYawBound ? 1 : 0);
+            host.log.notef("summary mission plane deck clamp: lifts=%llu lift_total=%.3f m bound=%d "
+                "(007DA2B1-007DA338 / 007D7D70, packet cc9_plane_deck_clamp)", dclifts, dctotal,
+                GameUnitsHost::Impl::kPlaneDeckClampBound ? 1 : 0);
+            host.log.notef("summary mission plane pose first: steps=%llu bound=%d (007D9F60 "
+                "before 007DB680, packet cc9_plane_pose_first)", pfsteps,
+                GameUnitsHost::Impl::kPlanePoseFirstBound ? 1 : 0);
             host.log.notef("summary mission plane rate floor: speed_floor_arms=%llu "
                 "speed_floor_raises=%llu rate_floor_steps=%llu bound=%d/%d (007D7A40 / "
                 "007D87C7 / 007DA710, packet cc9_plane_rate_floor)", arms, raises, rsteps,

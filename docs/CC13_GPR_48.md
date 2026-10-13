@@ -694,3 +694,107 @@ gameplay identical):
   `config/win_orders/usn01_p6_u1_k6.txt` (ConTBD1 at Convoy6 at frame 3306). cc13-ver17 independently found V1 to be
   the cause of USN04's Shoho/Zuiho/Yorktown climb-out crashes (planes under continuous band repair bleeding to
   17-19 m/s); the USN04 pair with V1 is open (handoff).
+
+## 10. The rest of the plane-flight packet (cc9-physics7, 2026-10-13)
+
+### 10.1 D2, the bank yaw (`kPlaneBankYawBound`, packet cc9_plane_bank_yaw)
+
+- Image, 007DA00C-007DA117 inside 007D9F60 (re-read with `disasm-raw`): after the axis-angle rotation, whether or
+  not it applied, the live pose is post-multiplied (00413920) by RotY (00B646E0) of
+  `-(sin(unit+C68h) * cos(unit+C64h) * desc+1C8h * Interp(3.0 [00CE3854], 0, 5.0 [00CE3850], 1, ctl+7Ch) * d * t)`.
+  - ctl+7Ch is the body forward speed (007D80C0 copies ctl+44h after each core step; SQUADRON_LAND_TASK 5da).
+  - desc+1C8h is TurnRollSpd: 0.087266 or 0.10472 rad/s (5-6 deg/s) on this installation's plane rows
+    (vehicleclasses.lua, mtime 2026-05-09).
+  - d is 008E6430(0Dh, unit) when the byte [00E0C978] and [[00F88C30]+124h] are set, else 1.0f (00D7A24C). The
+    host's modifier list is empty, so 1.0f (as for every other 008E6430 site).
+- Host: `advance_pose_0085e4d0` calls `bank_yaw_angle_007da0ae` between `rotate_pose_0085e4d0` and the ground
+  levelling, with C64h/C68h from `refresh_attitude_007c1900` and the step's forward speed (the value the image's
+  next wave-1 pose reads). Summary line `summary mission plane bank yaw`.
+- **Predictions, before the pair** (OFF: main ad68156b1, `local\p7_m`; ON: the same plus the switch, `local\p7_d2`;
+  rows USN12, LOMP10, USN01 k6, JM08 f):
+  - OFF: steps=0. ON: steps on every plane pose step; abs_angle grows with time spent banked.
+  - A plane banked 60 deg gains about 5 deg/s of heading rate. Every banked turn changes radius, so every plane
+    path moves: verdict 3 on all four rows.
+  - The sign relative to the turn is not established. If it adds to the turn, attack approaches line up sooner; if
+    it opposes, the pilot's yaw and roll loops must work harder and turn reversals stretch.
+  - Wins: USN12 and LOMP10 should hold (ship-dominated). USN01 k6 is a knife-edge on torpedo geometry and may be
+    lost. JM08 f has margin.
+
+### 10.2 R2, where BC4h enters (`kPlaneYawGainRawBound`, packet cc9_plane_yaw_gain_raw)
+
+- Image, 007DA926-007DA94B: `yaw_raw = (YawSpd * latched yaw) * unit+BC4h`, read before this step's relax
+  (007DA967-007DA9E3). yaw_raw feeds `target = -(yaw_raw*f2 - slide)` and the coupling `roll += (yaw_raw*f1)*1B4h`.
+- Host before: `targets.target[1] * g` after the rule, which scales the slide term by g and leaves g out of the
+  coupling. ON: `state.yaw_scale_bc4 = g` before `plane_control_targets_007da710` (the rule already multiplies it
+  in), and no post-multiply. The relax is unchanged.
+- **Predictions, before the pair** (OFF `local\p7_m`, ON `local\p7_r2`; same rows as 10.1):
+  - Only steps where g != 1 differ: g is raised by 0099BB00 (`max(g, 2(m - 0.4) sin|bank| + 1)`, the terrain arm)
+    and relaxes back at 0.5/s. Planes near terrain while banked: few on the sea rows.
+  - Where it acts, the coordinated-turn roll grows by g and the slide term no longer does.
+  - Verdict 3 (moved) on rows with low terrain flying (LOMP10's island, USN12), possibly 1 on USN01 and JM08.
+    Win times move little.
+
+### 10.3 D4, pose before physics (`kPlanePoseFirstBound`, packet cc9_plane_pose_first)
+
+- Image: wave 1 runs the +4h slot (007D9F60: rotate with ctl+24h, the bank yaw, the levelling with ctl+8Ch,
+  translate with ctl+18h and unit+810h), then wave 3 runs the physics 007DB680 on the moved pose
+  (docs/TICK_ELEMENT_OVERRIDES.md). Host before: physics first, then translate and rotate with the new velocities.
+- ON: the core law starts with the pose step, using the world velocity, ctl+7Ch and the levelling mode the previous
+  core law left; its own translation and the trailing `advance_pose_0085e4d0` are skipped. SUBSTITUTION, labelled:
+  the step sits at the head of the core law, so the arm's attitude refresh, think and water sample still read the
+  pre-move pose (one step stale against the image).
+- **Predictions, before the pair** (OFF `local\p7_m`, ON `local\p7_d4` with D2 OFF; rows as 10.1):
+  - steps = core law steps on ON, 0 on OFF.
+  - Each plane's pose runs one 50 ms step behind the OFF host for the same velocity history (about 5-10 m at
+    cruise), so every plane path moves a little: verdict 3 on all rows. Effects on wins are noise-sized (RNG
+    coupling through the shared stream), except where a knife-edge sits on a torpedo drop point (USN01 k6).
+
+**R2 pair** (OFF `local\p7_m` C277B01AE8BE, ON `local\p7_r2` C0B3DF5C46E6, reference env; logs `local\p7{w1,r2}_<row>.log`):
+USN12 moved, 1534.87 s both; LOMP10 gameplay identical (1244.64 s); USN01 k6 moved, 1118.67 s both; JM08 f moved,
+2318.84 -> 2147.67 s. Guard logged on all. As predicted (moves only where the terrain arm raised g; no win lost).
+
+**D2 pair** (ON `local\p7_d2` D13F73EE6F6C; logs `local\p7d2_<row>.log`): verdict 3 on all four rows.
+- USN12 1534.87 s both. LOMP10 1244.64 -> 1605.04 s. USN01 k6 LOST (no end). JM08 f LOST: failed at 1574.66 s,
+  "The HQ has been destroyed!".
+- Sign: the yaw goes with the bank. With the forward row on +Z and the right wing down, 007C1900's residual gives
+  bank = -phi, so the angle is +sin(phi)*K and RotY turns the forward row toward +X (right). The result does not
+  depend on 00B646E0's convention, because 007C1900 reads the bank through the same RotY.
+- The pilot's own rotation shows it. On USN01 the heading change per rotation step falls from 0.0069 rad (3199 rad
+  over 465495 steps) to 0.0036 rad (1400 rad over 386133 steps), plus 305 rad of bank yaw. The bank term supplies
+  part of the coordinated-turn yaw that the control loop was producing alone.
+
+### 10.4 D1 + V4, the deck/runway clamp (`kPlaneDeckClampBound`, packet cc9_plane_deck_clamp)
+
+- Image, 007DA2B1-007DA338 (re-read with `disasm-raw`): when ctl+FCh == 1, unit+BF4h is set and unit+3Ch is
+  non-null, the translated position goes through the parent's world matrix (00414D10 on parent+CCh). 006BC530
+  (ECX = unit+BF4h) then returns h, the local height over the holder. `d = float(h - (desc+1FCh + 0.01))` (the double
+  `00D7A358`). When `0 > d` the local y becomes `y - d`, and 007D7D70 runs on dyn. V4: with dyn+A4h set the next
+  integrate zeroes body vy at `|vz| < 1e-5` and projects the world velocity off (0,1,0), then clears it.
+- Host ON: at the end of `advance_pose_0085e4d0`, with `ground` and `plane_contact_deck_bf4`. The two contact terms
+  key on `pen > 0 || a4`, and the projection clears a4. SUBSTITUTIONS, labelled: the parent is taken as present
+  whenever the holder is, and the lift applies to world y.
+- **Predictions, before the pair** (ON `local\p7_d1` with D2 OFF):
+  - lifts > 0 only on rows with ground-law planes on a deck or runway (USN01's carriers, the JM08 airfield,
+    LOMP10 if any plane lands). USN12 has none: gameplay identical, or moved only through RNG coupling.
+  - lift_total small (centimetres per step): the host's contact projection already stops downward velocity once
+    below the wheels, so the clamp mostly removes the residual sink.
+  - Takeoff runs start from wheel height instead of slightly below it. Launch times move by a step or so; win
+    times move little.
+
+**D4 pair** (ON `local\p7_d4` 120CFB5B149E, D2 OFF; logs `local\p7d4_<row>.log`): verdict 3 on all four, as predicted.
+USN12 1534.87 s both; LOMP10 1244.64 -> 1016.43 s; JM08 f 2318.84 -> 1926.10 s; USN01 k6 LOST (no end: 69 deaths
+against 81; 36 attack orders against 54; plane steps 468576 -> 249886, with more landings, 9 against 5).
+`pose first: steps` equals the core-law steps. No sign of a broken arm: takeoffs and landings occur, and the two
+ship-heavy rows finish sooner.
+
+**D1 pair** (ON `local\p7_d1` ED7F859DCA28, D2 OFF; logs `local\p7d1_<row>.log`): as predicted.
+- USN12: lifts 0, gameplay identical (1534.87 s).
+- LOMP10: lifts 45592 (2.34 m in all), moved, 1244.64 -> 1147.64 s.
+- USN01 k6: lifts 926 (21.3 m), moved, 1118.67 s both.
+- JM08 f: lifts 29970 (988 m, about 3.3 cm each), moved, 2318.84 -> 2118.19 s.
+- No win lost. Guard logged on all.
+
+**Flipped ON, all four** (cc9-physics7, 2026-10-13, approved by the lead): kPlaneBankYawBound, kPlaneYawGainRawBound,
+kPlanePoseFirstBound and kPlaneDeckClampBound, in one units.cpp commit. The tree build is the same patch as the
+scratch `local\p7_all`. The win set on that build is in WINS_TABLE. USN01 is re-planned as `usn01_p7_u1_a`, and
+ESMP08 is pending (handoff OCEAN_WAVE_FIELD 26).

@@ -835,3 +835,50 @@ Open, in order:
    - Pair each on USN12, LOMP10 and a carrier win (USN01 k6, JM08 f, ESMP08 br3l).
 4. **WINS_TABLE**: re-run USN02, LOMP06, BSM01, USN15, IJN18, JM06 and JM08 f on the next main (the navigator group,
    V1/R1 and the ship flips since moved times).
+## 26. cc9-physics7 handoff (sea/physics lane + WINS KEEPER), 2026-10-13, goal PAUSED
+
+Tree J:\PROG\battlestations-pacific-decompile-cc9-physics1 (agent/cc9-physics1). Nothing in src/ is committed, and no
+lease is held. The units.cpp patches are scripts in local\:
+- `p7_d2_apply.py` (kPlaneBankYawBound), `p7_r2_apply.py` (kPlaneYawGainRawBound), `p7_d4_apply.py`
+  (kPlanePoseFirstBound) and `p7_d1_apply.py` (kPlaneDeckClampBound). D4 and D1 need D2 applied first.
+- `p7_chain.py <units.cpp> d2:on,r2:on,d4:on,d1:on` applies all four OFF, then flips the named switches.
+- `p7_scratch_build.ps1 -Out <dir> -Apply p7_chain.py -ApplyArg ...` exports HEAD, patches it and builds.
+- Runs: `p7_wins.ps1 -Tag <t> -Exe <exe> [-Only keys]` (every win, ABSOLUTE order paths) and `p7_keep.py <tag>`.
+
+Done (docs/CC13_GPR_48.md 10 has the evidence, predictions and pairs; WINS_TABLE has the times):
+- Wins re-time on main ad68156b1. Lost: PRCP01 (lua57's think-delay fix, now on main, restores it at 865.06 s) and
+  ESMP08 br3l (Cummings survives; the kill rate halves).
+- Pairs, OFF = main, rows USN12 / LOMP10 / USN01 k6 / JM08 f:
+  - D2 bank yaw: faithful. Its sign follows the bank. It loses USN01 k6 and JM08 f alone.
+  - R2: no loss.
+  - D4: loses USN01 k6.
+  - D1+V4: no loss; lifts 0 on USN12.
+  - All four ON: every win holds except USN01 (re-planned: `usn01_p7_u1_a`, 366.33 s, jitter unchecked) and
+    ESMP08 (stopped before it ended).
+- D5: no writer of unit+CC8h by disp32 anywhere (the only hit in plane code is the 007DB7BB read). 008E6430 is empty
+  in the host. Nothing to bind; the host's 1.0 stands.
+
+Plan for the resume, APPROVED by the lead:
+1. Claim src/game_hosts_units.cpp, apply `p7_chain.py ... d2:on,r2:on,d4:on,d1:on` to the tree, build, commit one
+   commit with the four switches ON, and release.
+2. Re-run the win set on that commit. Check `usn01_p7_u1_a` under jitter 20,3 and 20,7. Re-plan ESMP08 (the 14
+   kills took until 6475 s; try a longer cycle with `p6_e8_extend.py`, or re-targets to Cummings). Re-check JM08 f
+   (1603.74 s on the scratch).
+3. C1 and R4 (the lead allows edits to src/plane_flight.cpp and src/plane_control_rate.cpp/.hpp):
+   - R4 decoded: when unit+5Dh is set, `roll *= Interp(0,1,RollMulTime,RollMul,C3Ch)`. Then, if C36h,
+     `roll +/- min(4*C3Ch,1)*SpinRollSpd*max(0.35,RollSpd)`. The sign comes from C37h, set at 007D0DD7 from spin
+     message byte +24h: 1 for rightspinning (007BA200 arg), and only when (unit+360h)+160h is non-null. The host
+     has plane_death_c36 and death modes SpinLeft/Right; C37h needs a field.
+   - C1: the in-air ctl+94h producer is 007CE0DB-007CE1D9: unit+5Dh, altitude unit+100h < 15.0 (00CF3F20), and any
+     point of the (unit+538h)+5B8h list below world y -1.0 -> 007D8180(0). That also turns on the extra gravity
+     (state.extra_gravity) in the air. The point list is not in the host.
+4. USN04 V1 confirmation (queue 2): write a minimal USN04 order file that reaches phase 2 (read
+   usn_19_coralus.lua's phase-1 exit). Pair V1 OFF/ON with BSP_FRAME_JITTER=20,3, --frames 45200 --mission-frames
+   45000 --mission-frame-seconds 0.0222 and the reference env.
+
+**Update, same day:** plan step 1 is DONE. The four switches are ON in the commit that adds this note (lead's go
+under the pause). Still pending for the resume:
+- ESMP08 br3l on this build. The all-ON run was stopped before it ended; on main it was already lost, so expect a
+  re-plan with `p6_e8_extend.py` or re-targets to Cummings.
+- The USN01 `usn01_p7_u1_a` jitter checks.
+- Steps 3-4 above.

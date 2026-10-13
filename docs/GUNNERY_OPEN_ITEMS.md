@@ -13837,3 +13837,145 @@ ship-AI funnel call (`game_hosts_ship_ai.cpp`, `kill_unit_00926d90(u, 2)`).
 `Dead` reason reads "soft". Rows whose scripts call `Kill(x, true)` mid-mission can move (exit 3); a script
 that counted kills by reason may branch differently. USN12/USN15/USN01: report the non-harm count; expect exit 0
 or 1 where no harm-filtered listener meets a soft kill.
+
+## 225. Verdicts for 216-223 (cc9-gunnery41, 2026-10-13)
+
+OFF `863d505be` as built (`local\g40_bm0`) against one export per switch at the same commit: D4 `g40_tf`, D6 `g40_tb0`,
+D3+D1 `g40_sw0`, D5 `g40_sx0`, D2 `g40_sx1`, slot origin `g39_rk1`, leader `g39_rk2`, submarine gate `g39_lo`.
+The export dirs are reused for incremental builds, so their names do not match the switches they carry.
+Rows: USN12 `s38_u12_p2` 36000, USN21 (ships44's `s46_u21_d`, copied to `local\g41_u21_d.txt`) 60000, USN15
+`s45_u15_l2` 90000. Logs are `local\g41_<tag>_<row>.log`. OFF USN12 completes at 1500.19 s, and the exec guard's
+`sus_prog.exe` refusal is logged. USN21 has no end in 3000 s in any run.
+
+| switch | USN12 | USN21 | verdict |
+| --- | --- | --- | --- |
+| D4 `kFlakSecondAmmoCadenceBound` (216) | exit 3, completes 1500.19 s; `shots=2043` mode-1, seat flak 0 -> 2043; DP rounds 2069 -> 2043 (US Bullet[2] reloads equal Bullet[1]) | DP rounds 8782 -> 11702 (x1.33; cc13 predicted ~x1.7); deaths 716 -> 754 | mechanism matches, the US-row rate prediction missed; **ON** |
+| D6 `kFlakNegativeVerticalBound` (217) | identical (`adjusts=668` change no hit); missed "exit 3" | `adjusts=5751`; shots +4 %; deaths +29 | **ON** |
+| D3+D1 `kAaLeadDistanceGateBound` (218) | exit 3, completes; shots 17034 -> 18777 | shots +20 %; releases 3 -> 9 torpedo, 25 -> 32 dive (RNG-coupled; "releases down" missed) | mechanism matches; **ON** |
+| D5 `kFlakFuseArmTimeBound` (219) | identical | `unarmed steps=76620`; deaths +25 | **ON** |
+| D2 `kFlakErrorRerollBound` (220) | identical (`send rolls=2848`, the USN12 rows roll zero ranges) | `send rolls=23027`; torpedo releases 3 -> 14 (RNG-coupled) | **ON** |
+| VER_19 D2 `kAaSlotRangeOriginBound` (221) | **LOST**: Montpelier dies at 1142.09 s to `bruh #5.1` (cat 10, from 741 s); `flips=325` only, AA intercept solves 206k -> 141k after the divergence | moved, small | stays **OFF**; lost win to the keeper |
+| VER_19 D3 `kDirectorLeaderFireTargetBound` (222) | **LOST, broken**: `inherits=47441`; at 538-551 s Agano/Naganami/Hatsukaze torpedoes (cat 7, 4-5 km) sink Charles, Cleveland, Spence and Montpelier; no planes ever spawn (deaths 97 -> 10) | see below | stays **OFF** (mechanism suspect, below) |
+| VER_19 D4 `kSubmarineCategoryGateBound` (223) | identical (`refusals=0`) | see below | see below |
+
+**Leader fallback.** cc13's D3 reads the fallback for AA, but the provider feeds every category's step 8.7 arm,
+so a torpedo category tries the leader's target first. In the host every Japanese formation member gets its
+leader's target (47441 inherits) and fires torpedoes at 4-5 km. In the image, members whose own AutoTarget
+think (`009F5DA0` -> `00835860`) sets `director+238h` never reach the fallback. So the inheritance count depends
+on how often the ships lane's AutoTarget leaves a member's row empty. Before this switch can be judged, find out
+whether the host's AutoTarget writes members' rows the way the image does.
+
+**Blast mesh (215 open item 1, lead queue item 4).** The "unlogged blast arm" premise is refuted from 214's own logs
+(`local\g40_bm0_os.log` OFF, `g40_bm1_os.log` ON). On USNOS, every `impact blast ... on NH` line sums to 199.8
+damage in 25 blasts ON, against 14455.4 in 10 blasts OFF over the whole OFF run. NH's 15802 category-6 damage ON
+(36 hits from 504 s) is therefore Shimotsuke's direct fire after the battles diverged, not blast damage. OFF never
+loses NH. The switch stays OFF on the earlier verdict. Next step: compare the OFF and ON death rows before 504 s
+to find the first moved engagement.
+
+**Fido homing (lead queue item 5) is blocked in this installation.** The `IJN12_Fido` trigger (Avenger sent at
+the surfaced player boat, `ShowHint("IJN12_Fido")`) is only in `scripts/missions/COTP-IJN/jm12.lua` and
+`ijn/JM/jm12.lua` (2024-07-13). `scripts/datatables/missiontree.lua` (2025-06-02) maps the Hawaii-2 mission
+(menu id `JM14`) to `prcpijn_12_havaii_2.scn`. Its `prcpjm12.lua` has no Fido block, and menu `JM12` loads the
+Fiji invasion. No menu id reaches the Fido script, and the harness has no scene override.
+
+## 226. Round 2: the win set with the five flips, the USN01 bisect, kill cause (cc9-gunnery41, 2026-10-13)
+
+**Win set.** Base `863d505be` with every new switch OFF (`local\g39_rk2`) against `1120ac370` with the five flips ON
+(`local\g40_bm0`, `kKillFunnelCauseBound` OFF). Same orders and frames as the reference rows:
+
+| row | base | five flips ON |
+| --- | --- | --- |
+| USN01 p3_u1_z4 26000 | completed 1079.03 s | **none (lost)** |
+| USN02 s36_u2_p7 | completed 198.06 s | completed 198.06 s |
+| USN12 s38_u12_p2 | completed 1500.19 s | completed 1500.19 s |
+| LOMP10 p3_l10_b | completed 1244.64 s | completed 1530.87 s |
+| LOMP06 l50_l6_q6 | completed 369.98 s | completed 369.98 s |
+| BSM01 l50_b1_a | EndMission 767.94 s | EndMission 767.94 s |
+| USN15 s45_u15_l2 | EndMission 2790.45 s (OFF `863d505be`) | not run combined |
+
+**USN01 bisect** (each switch alone at `863d505be`): D6, D5 and D2 keep the win (1079.03, 1079.03 and 1103.80 s).
+**D4 and D3+D1 each lose it.** In both, deaths fall 90 -> 87: `Nell4|.-2` and `Nell3|.-3` survive. On the base
+Enterprise's fighters (`Enterprise_sqn01|.-2`, `_sqn03|.-2`, cat 0) kill them at 1006 s and 1074 s, and
+`Enterprise_sqn01` itself dies only on the base. The win depends on fighters catching the last Nells: a
+knife-edge, not a mechanism failure. Both switches stay ON by mechanism. **USN01 goes to the keeper
+(cc9-physics7) for re-planning.**
+
+**Kill cause (224).** OFF `1120ac370` against ON (`local\g40_tf`): USN12 identical (non-harm causes 0), USN01
+identical with 21 non-harm causes (the soft kills reach no harm-filtered listener). **ON.**
+
+**Other OFF switches, USN15/USN21.** Slot origin (221) USN15: moved, EndMission at 1145.44 s, earlier than OFF's
+2790.45 s. Leader fallback (222) USN15: **fails** at 1774.71 s; USN21 identical. Submarine gate (223) USN21: moved
+(deaths 716 -> 751); `refusals=0` on USN12. All five VER_19/flak extras together (`g39_rk0`) on USN15 fail at
+1095.89 s. 221 and 222 stay OFF. USN21 logs `refusals=748` (Dace/Darter), so the gate is exercised. 223 stays OFF until the win set runs
+with it.
+
+## 227. Submarine gate verdict and handoff (cc9-gunnery41, 2026-10-13, at about 72% context)
+
+**223 verdict: `kSubmarineCategoryGateBound` ON.** OFF `6f1c8edac` (`local\g40_tf`) against ON (`local\g39_lo`), logs
+`local\g41_r4off_<row>.log` / `g41_r4sb_<row>.log`. USN02 198.06 s, USN12 1500.19 s and LOMP10 1530.87 s are identical
+in both. LOMP06 completes at 356.69 s ON against 369.98 s OFF (`refusals=365`). BSM01 reaches EndMission at
+767.94 s in both (`refusals=8`). USN15 reaches EndMission at 2790.45 s in both (`refusals=0`). USN21 has
+`refusals=748`. Every win is kept.
+
+**On `agent/cc9-gunnery36`, newest first** (built, ctest 2/2, origin/main merged at the start):
+
+| sha | what |
+| --- | --- |
+| (this) | `kSubmarineCategoryGateBound` ON; handoff |
+| `6f1c8edac` | `kKillFunnelCauseBound` ON; win set and USN01 bisect (226) |
+| `1120ac370` | five flak flips ON (D4, D6, D3+D1, D5, D2); verdict table (225) |
+| `27a18350c` | `kKillFunnelCauseBound` OFF binding, `GameUnitsHost::note_kill_cause_00926e02` (224) |
+| `863d505be` / `0694a291f` / `884829feb` | VER_19 D4 / D3 / D2+D1 OFF bindings (223 / 222 / 221) |
+| `6745c3919` / `0f783b582` / `644ce7662` / `fdc944785` / `5433b8e68` | flak D2 / D5 / D3+D1 / D6 / D4 OFF bindings (220-216) |
+
+**With the keeper (cc9-physics7):** USN01 `p3_u1_z4` is lost under D4 and D3+D1, a knife-edge on the last two Nells
+(226). The lead was told that flipping those two OFF restores USN01 with every other win unchanged.
+
+**Open, in order of value.**
+1. **`kDirectorLeaderFireTargetBound`** (222, OFF). It breaks USN12 (47441 inherits; the Japanese members'
+   torpedoes sink the US fleet at 540 s) and USN15 (Game Over at 1774.71 s). Find out whether the ships lane's
+   AutoTarget (`009F5DA0` -> `00835860`) writes a formation member's own `director+238h` the way the image does.
+   If the host leaves members empty, the fallback over-applies; if it does not, check whether category 7 reads the
+   provider at all (`+7Dh`, `kGunneryPassByte7dBound`).
+2. **`kAaSlotRangeOriginBound`** (221, OFF). It loses USN12 (Montpelier at 1142 s) with only 325 flipped gate
+   answers. Check `gun_muzzle_point` against the image's gun `+FCh` (the mount node, `00414DB0`) before re-pairing.
+3. **Hold fire drops the fire target** (lead item 3a). This waits on the ships-lane API requested from the lead,
+   `GameShipAiHost::release_fire_target_00836210(unit)`, which zeroes `+238h` and leaves `+23Ch` alone. Then call it
+   from `set_director_fire_stance_0071be80` when `fire` is false, behind an OFF switch.
+4. **Blast mesh** (215 item 1). USNOS diverges from 15.85 s: land structures die earlier ON (`Static warhawk 06`,
+   `Hangar, Small, 01 02` at 17.15 s against 39.95 s), because the mesh box widens the structures' blast boxes.
+   NH's later loss is chaos downstream of that. Check the land-structure model box against the image's `0070F720`
+   sphere test before re-pairing.
+5. **Fido** (225): blocked in this installation (no menu id reaches the Fido script).
+
+**Tools** (this tree's `local\`): `g41_queue.ps1` (jobs `exe|log|args`). It waits until `g41_exports.txt` has an
+`exit=0` line for the export dir, and it caps the g41 runs at three across all queues; to reuse it, rename the
+`g41_` match. Row argument files: `g41_u12.args`, `g41_u15.args`, `g41_u21.args`, `g41_u1.args`. Export dirs are
+reused for incremental builds (each build takes 2-4 minutes, against 20+ for a fresh export), so check
+`g41_exports.txt` for what a dir currently holds. Base `863d505be`, everything OFF: `g39_rk2`. Current tree ON:
+`g40_tf` (`6f1c8edac`, submarine gate OFF) and `g39_lo` (gate ON).
+
+**227 addendum: the queue at the pause (the lead's later items; none started).** The pause messages crossed my
+last runs, so the submarine-gate win set had already run when they arrived; that result is above. Top of the next
+queue, in order:
+1. **cc13 ver21 artillery ballistics D3/D4.** The image flies the max-range arc on a sped-up clock. cc13 rates it
+   the largest open gunnery divergence.
+2. **cc13 ver23 torpedo attack range.**
+3. **(0a) Release velocity, not done.** cc13's ready hunks are in docs/CC13_GPR_53.md 8.6. The refinements are in
+   docs/CC13_VER_20.md, model `plane_release_ver_cc13::rack_round_release_velocity_006e4d50`.
+   - D1, bombs: `006E4D50` -> `006E1F00` copies the round matrix, then owner vt[190h] = `006E0A70` overwrites row 2
+     with the world velocity minus 3.0 in y and re-orthonormalises it (`0085DC80`). That is round+74h, which the
+     cone turn reads. The host's `release_bomb_drop` (~:13836) uses the plane's own rows, and level bombs land
+     about 30 m long. Correct GUNNERY 130.6 (missed vt[190h]) and 130.4 (the 2-4 degree turn was the host's error).
+   - D2, aerial torpedoes: they take the same `006E4D50` path, which adds 4 stream-1 draws per drop
+     (`006E4F91`/`006E4FB1`/`006E513C`/`006E51AC`, keyed on the bomb_scatter stream) and the Wind 0.01 drift.
+     The host spawns along the nose (~:13620-13638), and units.cpp ~:27297-27316 routes 2Bh away from the rack arm.
+   - D3/D4 (the ThrowMul gate and the row choice) have no AI effect. Record them only.
+   - Pair on USN01 k6, LOMP10, USN21 and ESMP08's start.
+4. **(0b) `kProjectileGravityImageBound`** (cc13, OFF, g = 9.81f), not paired. Pair it with the next USN12/USN15 gun
+   pair.
+5. **AA-kind submerged gate.** `00728A90` tests kinds {1, 5, 6}, but the host hard-sets `muzzle_submerged=false`
+   (~:7854 / ~:11776). It is the twin of `kGunSubmergedArtilleryKindBound`.
+6. **TorpedoBot tick `008FFF20`** (the 0.2 s think, gates A/B, the trigger dropped when `008FBB00` has no solution,
+   ~:6950) and the slot accept `008FC010` (~:5594), from docs/CC13_GPR_40.md section 2.
+7. Items 3a, 4 and 5 and the two OFF switches, as listed above. Item 5 needs a harness scene override.
