@@ -303,11 +303,6 @@ grouped by name prefix:
 | `BSP_RefPtr` | 11 | 00866730, 00866970, 00866C30, 0086AC50, 0086AC80, 0086ACB0, 0086ACE0, 0086AFC0, 0086B080, 0086B750, 00873AB0 |
 | `BSP_EffectDeletionLock` | 1 | 00866760 |
 | `BSP_EffectManager` | 2 | 008669A0, 008674A0 |
-| `BSP_EffectFlare` | 1 | 0086BDB0 |
-| `BSP_EffectThunderStorm` | 4 | 0086F3B0, 0086FB40, 0086FBC0, 0086FC20 |
-| `BSP_EffectWaterdrops` | 1 | 0086BDF0 |
-| `BSP_EffectLight` | 1 | 0086BE30 |
-| `BSP_EffectSplash` | 1 | 0086BE70 |
 | `BSP_Effects` | 1 | 00869D20 |
 | `BSP_EffectParticle` | 2 | 00869D70, 0086BC50 |
 | `BSP_NativeDwordVector` | 6 | 0086A280, 0086A910, 0086A950, 0086AA10, 0086B630, 00872E70 |
@@ -316,7 +311,7 @@ grouped by name prefix:
 | `BSP_NativeString` | 1 | 0086B290 |
 | `BSP_EffectComponent` | 1 | 0086B7C0 |
 | `BSP_EffectTracer` | 2 | 0086B990, 0086B9B0 |
-| `BSP_EffectWaterTracer` | 4 | 0086BD10, 0086BD20, 0086BF10, 0086C120 |
+| `BSP_EffectWaterTracer` | 1 | 0086C120 |
 | `BSP_EffectShake` | 1 | 0086BD60 |
 | `BSP_EffectNamedRecord14` | 1 | 0086CDB0 |
 | `BSP_EffectNamedRecord14Array` | 4 | 0086CE10, 0086E670, 0086E6F0, 0086F900 |
@@ -636,3 +631,45 @@ Still open, in value order:
 4. The gunnery lane (unchanged; cc9's).
 5. Notes for other owners: the 00BADC70 block comment (7.9.2, item 7) and the 0x390 controller
    size in the 00852210 / 00857C20 ledger names (7.9.4).
+
+## 7.10 Pass cc13-gpr53f
+
+Same terms as 7.9, plus the lead's request to correct the 00BADC70 comment in
+`include/bsp/water_weather_cc13.hpp`, which cc13 owns and this pass leased. That comment now says
+that block +0Ch is the address of the Width curve holder (component + 68h), and that +10h and +14h
+are the HeightX and HeightY holders. Only the comment changed; the code is untouched. Every model is
+**reconstructed and build-tested** from the disk bytes.
+
+| address | model | what it does |
+|---|---|---|
+| `0086BD10` / `0086BD20` | `effect_water_tracer_category_0086bd10`, `..._restart_0086bd20` | 4; `MOV AL, 1`. |
+| `0086BDB0` / `0086BDF0` / `0086BE30` / `0086BE70` / `0086FC20` | `effect_*_category_*` | flare 5; waterdrops, light, splash and thunderstorm 0. Each equals the type +18h that the kind's instance constructor writes (section 7.7). |
+| `0086BF10` | `water_tracer_destruct_0086bf10` | Releases each non-null reference and nulls it, in this order: +98h, +9Ch, +A4h, +C0h, +8Ch, +70h, +6Ch, +68h, +64h (InterlockedDecrement, slot 0 at zero). Then the strings +50h and +48h, then the base 0086B7E0. |
+| `0086F3B0` | `thunderstorm_read_lua_0086f3b0` | Every key is read from **row.ParamsTable**: GlowTexture -> +40h, Has3Dlightning [true] -> +54h, MinLifeTime / MaxLifeTime [0.5 / 4] -> +24h / +28h, MinScale / MaxScale [0.5 / 4] -> +2Ch / +30h, MaxSpawnCount [15] -> +38h, SpawnDelay [1] -> +3Ch (CVTSI2SS). +34h = 2.5f is a constant, not a key. The Textures array +48h is resized to 0 and refilled with {Origo[1], Origo[2] (each [0.5]), Name} records. |
+| `0086FB40` / `0086FBC0` | `thunderstorm_destroy_members_0086fb40`, `thunderstorm_destruct_0086fbc0` | 0086FB40 runs with ECX = component + 24h: the texture array (resize 0, then free), then GlowTexture. The destructor sets vtable 00D0DA38, runs 0086FB40 and then the base 0086B7E0. |
+
+Findings:
+
+1. The water tracer reader zeroes +98h, +9Ch and +C0h without a release (7.9.2). The destructor
+   does release them. The reader also overwrites +A4h (0086DF83) without a release. So a
+   component that is read twice leaks the first textures, the first tracer resource and the first
+   spray resource. It does not leak its curves, which the reader releases before replacing.
+2. SpawnDelay is read as an integer and stored as a float, so a fractional delay in Lua is
+   truncated.
+3. In the Textures loop, the Name copy writes its terminator at 0086F71D before the pool
+   allocation's null test, so a failed allocation faults.
+
+Adoption: this is presentation only, with no RNG. Nothing in the host is replaced: the effect
+component dispatcher in src/gameplay_effect_scalar_components.cpp:273 has no 00D0DA38 or 00D0D5D4
+row. With the switch OFF nothing changes. With it ON, the thunderstorm and water tracer components
+get their fields, and the strike timing is still in 00BC0510 on stream 1 (section 7.2).
+
+Records: 11 `add-function` records. The section 6 open table now lists **303** addresses. Build:
+`scripts/build.ps1` passes. `verify_report_calls` (local/g53f_calls.json) checked 20 rows with 0
+failures. No tests were added and there were no game runs.
+
+### 7.10.1 Handoff (cc13-gpr53f)
+
+Still open: the trace-line leftovers 008580C0, 008580E0 and 008583D0 (unreferenced); 0085C0F0,
+0085C220 and 0085C5D0; the gunnery lane (cc9's); and the remaining table rows (mostly STL, CG and
+the trivial leaves).

@@ -1769,5 +1769,82 @@ struct MotionControllerCreateResult {
 MotionControllerCreateResult unit_create_motion_controller_c_00857c20(const MotionControllerCreateHost& host);
 MotionControllerCreateResult unit_create_motion_controller_b_00852210(const MotionControllerCreateHost& host);
 
+// ---------------------------------------------------------------------------
+// Pass cc13-gpr53f: component leaves, the water tracer destructor and the
+// thunderstorm component.
+
+// Component category slots (MOV EAX, imm / XOR EAX, EAX; RET). Each value
+// equals the type +18h that the kind's instance constructor writes (flare
+// 5, the rest 0; section 7.7).
+constexpr std::int32_t effect_water_tracer_category_0086bd10() noexcept { return 4; }
+constexpr bool effect_water_tracer_restart_0086bd20() noexcept { return true; }  // MOV AL, 1
+constexpr std::int32_t effect_flare_category_0086bdb0() noexcept { return 5; }
+constexpr std::int32_t effect_waterdrops_category_0086bdf0() noexcept { return 0; }
+constexpr std::int32_t effect_light_category_0086be30() noexcept { return 0; }
+constexpr std::int32_t effect_splash_category_0086be70() noexcept { return 0; }
+constexpr std::int32_t effect_thunderstorm_category_0086fc20() noexcept { return 0; }
+
+// 0086BF10 BSP_EffectWaterTracer_Destruct, __thiscall, plain RET: vtable
+// 00D0D5D4, then each non-null reference is released (InterlockedDecrement
+// [00CE2220] of +4, vtable[0] at zero) and nulled, in this order: +98h,
+// +9Ch, +A4h, +C0h, +8Ch, +70h, +6Ch, +68h, +64h. Then the NativeStrings
+// +50h and +48h, and the component base 0086B7E0 last.
+struct WaterTracerDestructHost {
+    std::function<void(std::uintptr_t reference)> release;
+    std::function<void()> destroy_base;   // 0086B7E0
+};
+void water_tracer_destruct_0086bf10(WaterTracerComponent& c, const WaterTracerDestructHost& host);
+
+// The "ThunderStorm" component (58h, vtable 00D0DA38, constructed by
+// 0086FEC0). The members from +24h form one sub-object that 0086FB40
+// destroys.
+struct ThunderStormTexture {   // a 14h record (0086E670 / 0086CDB0)
+    float origo_x{0.0f};       // Origo[1]
+    float origo_y{0.0f};       // Origo[2]
+    std::string name;          // Name; null or empty -> no buffer
+};
+struct ThunderStormComponent {
+    float min_life_time_24{0.0f};
+    float max_life_time_28{0.0f};
+    float min_scale_2c{0.0f};
+    float max_scale_30{0.0f};
+    float constant_34{0.0f};          // 2.5f (00CF87C8), not a Lua key
+    std::int32_t max_spawn_count_38{0};
+    float spawn_delay_3c{0.0f};       // CVTSI2SS of the integer
+    std::string glow_texture_40;      // NativeString
+    std::vector<ThunderStormTexture> textures_48;
+    bool has_3d_lightning_54{false};
+};
+// The accessors on row["ParamsTable"]; every key below is read from that
+// table, not from the row.
+struct ThunderStormParams {
+    std::function<std::string(const char* key)> string;                            // 00B662B0
+    std::function<bool(const char* key, bool fallback)> boolean_or;                // 00B662F0
+    std::function<float(const char* key, float fallback)> number_or;               // 00B66330
+    std::function<std::int32_t(const char* key, std::int32_t fallback)> integer_or;  // 00B66380
+    // Textures in 00B67080 / 00B67190 order: Name (00B662B0) and
+    // number_or(Origo[1], 0.5), number_or(Origo[2], 0.5). The image fetches
+    // Origo[2] first, then Origo[1], and converts [1] first.
+    std::function<std::vector<ThunderStormTexture>(const char* key)> textures;
+};
+// 0086F3B0 BSP_EffectThunderStorm_ReadLua, __thiscall(component, LuaObject*
+// row), RET 4. 00868BF0 first (the host runs it). params = row.ParamsTable;
+// GlowTexture -> +40h (0041DD40 + _memcpy; null -> ""); Has3Dlightning
+// [true] -> +54h. For each Min/Max pair the Max key is fetched first, but
+// the Min value is converted first: MinLifeTime [0.5 (00CE3800)] -> +24h,
+// MaxLifeTime [4 (00CE3D34)] -> +28h, MinScale [0.5] -> +2Ch, MaxScale [4] ->
+// +30h. MaxSpawnCount [15] -> +38h; SpawnDelay [1] -> +3Ch as a float;
+// +34h = 2.5f. Textures: the array +48h is first resized to 0 (0086E6F0),
+// then each row is appended. The name copy writes its terminator before the
+// pool allocation's null test (0086F71D), so a failed allocation faults.
+void thunderstorm_read_lua_0086f3b0(ThunderStormComponent& c, const ThunderStormParams& params);
+
+// 0086FB40, __thiscall(component + 24h): the texture array (0086E6F0(0),
+// then the block freed by 00BF6989), then the GlowTexture string.
+// 0086FBC0 BSP_EffectThunderStorm_Destruct: vtable 00D0DA38, 0086FB40 on
+// +24h, then the base 0086B7E0.
+void thunderstorm_destroy_members_0086fb40(ThunderStormComponent& c);
+void thunderstorm_destruct_0086fbc0(ThunderStormComponent& c, const std::function<void()>& destroy_base);
+
 }  // namespace gameplay_seg53_cc13
 }  // namespace bsp

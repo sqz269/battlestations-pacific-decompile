@@ -2369,8 +2369,10 @@ void w4_water_tracer_build_skinned_mesh_00bad150(void* resource, std::uint32_t r
 
 // 00BADC70 BSP_WaterTracerResource_Initialize, __thiscall(ECX resource, 44h-byte parameter block by value)
 // RET 44h -> EAX. Caller BSP_EffectWaterTracer_ReadLua 0086D180. The block, by stack offset: +0h points P,
-// +8h BYTE static, +0Ch DWORD (kept at +48h), +10h / +14h curve holders, +1Ch float k_mesh, +20h base
-// count n0, +24h float k_rings, +28h..+40h seven floats (+34h kept at +8h, +38h at +4Ch); +4h and +18h
+// +8h BYTE static, +0Ch the address of the Width curve holder (component + 68h; kept at +48h), +10h / +14h
+// the HeightX / HeightY curve holders (component + 6Ch / + 70h), +1Ch float k_mesh, +20h base
+// count n0, +24h float k_rings, +28h..+40h seven floats (+34h kept at +8h, +38h at +4Ch). How 0086D180
+// fills each word is in water_tracer_read_lua_0086d180 (gameplay_seg53_cc13.hpp). +4h and +18h
 // are not read. Ref-counted base, vtable 00D63F94; +14h = 0; vectors +18h and +24h zeroed then resized to
 // P (00468050, bound) and cleared; effect +14h = device +48h("watertracerstatic.mshd" or
 // "watertracerskined.mshd"); +10h = P; R = 2P - 2 ring counts into a local vector: step = 1 / (R - 1) kept
