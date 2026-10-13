@@ -464,7 +464,10 @@ void ship_on_health_changed_00827a90(UnitDamageHost& host, std::uint32_t entity)
         return;  // 00827AB9
     }
     const std::uint32_t descriptor = host.entity_class_descriptor(entity);
-    if (host.descriptor_death_selector(descriptor) >= 0.0f) {
+    // 00827ACA..00827ADA: FLD [desc+B0h], FLD qword 100.0 (00D7A220), FCOMIP, JBE to
+    // the breakup branch: 100.0 <= [desc+B0h], or unordered. Packet cc13-ver5 corrected
+    // the threshold from 0.0f (docs/UNIT_DEATH_MESSAGE_AND_SINK.md already had 100.0).
+    if (!(100.0 > static_cast<double>(host.descriptor_death_selector(descriptor)))) {
         // 00827B1A..00827B63: three availability tests and a random roll decide
         // whether the breakup message is built at all.
         if (!host.breakup_roll(entity)) {
