@@ -1553,6 +1553,11 @@ struct GameUnitSlot {
     // vector above holds the descriptor's kind), census order. -1 when absent.
     std::vector<int> rack_bullet_id_per_rack;
     std::vector<float> rack_repeat_per_rack;
+    // Packet cc9_rack_device_reload: each single rack's ReloadTime +48Ch (the
+    // equipment entry's, 006E3A20) and its countdown +490h, census order.
+    std::vector<float> rack_reload_time_per_rack;
+    std::vector<float> rack_reload_left_per_rack;
+    int rack_device_reloads{0};
     int rack_drops_unspawned{0};       // drops whose host torpedo spawn returned false
     // GUNNERY 133.3 / 137, a diagnostic (no behaviour): single-rack drops since
     // the last issue set dropBombs, drops after the first in that episode (the
@@ -2591,9 +2596,11 @@ struct GameUnitsHost::Impl {
         float latch_at{-1.0f}, ended_at{-1.0f}, issued_at{-1.0f};
         std::uint32_t command{0};
         std::size_t placed{0};
+        std::uint32_t census_unlatched_class{0xFFFFFFFFu};   // BSP_SPENT_RTB_CENSUS only
     };
     std::map<std::string, SpentOrdnanceRtb> spent_rtb;
     unsigned long long spent_rtb_latches{0}, spent_rtb_ends{0}, spent_rtb_issues{0};
+    unsigned long long rack_device_reloads{0};   // packet cc9_rack_device_reload
     unsigned long long retest_dead_targets{0}, retest_ends{0};   // kSquadronDeadTargetRetestBound
     void note_kill_cause(std::size_t unit, int cause) {
         if (kill_cause_by_unit.size() <= unit) kill_cause_by_unit.resize(unit + 1, 1);
@@ -3785,6 +3792,41 @@ struct GameUnitsHost::Impl {
         }
         return read_equipment_ammo(class_id, platform_key);
     }
+    // Packet cc9_rack_device_reload: Equipments[e][platform].ReloadTime, the value
+    // the equipment reader 00961F57 stores per entry and 0095A880 hands the rack's
+    // vtable[1C0h] (006E3A20). -1.0 when any level is absent; the equipment index
+    // is chosen as rack_equipment_ammo chooses it.
+    float rack_equipment_reload_time(const GameUnitSlot& s, int class_id, int platform_key) {
+        if (platform_key < 0) return -1.0f;
+        int equipment = 0;
+        if constexpr (bsp::kPlaneSceneEquipmentBound) {
+            if (s.bag_equipment == 0) return -1.0f;
+            if (s.bag_equipment > 0) equipment = s.bag_equipment;
+        }
+        char chunk[512];
+        char index[48];
+        if (equipment > 0) {
+            std::snprintf(index, sizeof(index), "%d", equipment);
+        } else {
+            std::snprintf(index, sizeof(index), "c.DefaultEquipment or 1");
+        }
+        std::snprintf(chunk, sizeof(chunk),
+            "local c = type(VehicleClass) == 'table' and VehicleClass[%d] or nil\n"
+            "if type(c) ~= 'table' or type(c.Equipments) ~= 'table' then return -1 end\n"
+            "local e = c.Equipments[%s]\n"
+            "if type(e) ~= 'table' or type(e[%d]) ~= 'table' then return -1 end\n"
+            "return tonumber(e[%d].ReloadTime) or -1\n", class_id, index, platform_key, platform_key);
+        const int top = lua.lua_gettop();
+        float value = -1.0f;
+        if (lua.luaL_loadbuffer(chunk, static_cast<int>(std::strlen(chunk)),
+                                "bsp_equipment_reload_time") == 0 &&
+            lua.lua_pcall(0, 1, 0) == 0) {
+            const std::string text = lua.lua_tolstring_at_top();
+            if (!text.empty()) value = static_cast<float>(std::atof(text.c_str()));
+        }
+        lua.lua_settop(top);
+        return value;
+    }
     // Packet cc9_lua45_rack_equipment_device: Equipments[e][platform].Platform,
     // -1 when any level is absent. `equipment` 0 reads `DefaultEquipment or 1`.
     int read_equipment_platform(int class_id, int platform_key, int equipment) {
@@ -4633,6 +4675,11 @@ struct GameUnitsHost::Impl {
             // image's. docs/BOMBER_AFTER_TASK.md 10.10.
             b.distance_to_target = slot.db_aim_point_3d;
             b.speed_ratio_41c = 1.0f;
+            if constexpr (kDiveBreakOffReloadFeedBound) {
+                // 009C8ABE-009C8ACD: ctl+369h (ReloadEnabled, default 1) and [00E17BF2].
+                b.control_flag_369 = kLuaDeviceReloadEnabledBound;
+                b.global_e17bf2 = lua_device_reload_enabled_00e17bf2();
+            }
             in.should_break_off = bsp::dive_bomb_should_break_off_009c8a90(b);
             // 009C8B40-009C8B51: the range arm is `[tuning+4C8h] * [task+41Ch]`
             // against the 3-D range. NOTE the id-space collision: that +4C8h is
@@ -6167,6 +6214,18 @@ struct GameUnitsHost::Impl {
     // False: the static OR of the device kinds, as before. ON by verdict (5eu):
     // IJN01 moves through the two A7M squadrons that emptied both racks.
     static constexpr bool kRackLiveOrdnanceMaskBound = true;
+    // Packet cc9_rack_device_reload (docs/SQUADRON_LAND_TASK.md 5go). True: the
+    // single rack's in-flight reload, 006E56F0's slice 006E57A4-006E57D2, runs
+    // while SetDeviceReloadEnabled's byte [00E17BF2] is set: an empty rack gets
+    // its rounds back ReloadTime seconds (the equipment entry's, default 30, floor
+    // 1) after it emptied. False: an emptied rack stays empty, as before.
+    static constexpr bool kRackDeviceReloadBound = true;   // ON: SQUADRON_LAND_TASK 5go.1
+    // Packet cc9_rack_device_reload, part 2 (5go). True: both feeds of the dive-bomb
+    // break-off 009C8A90 pass ctl+369h and [00E17BF2], so with device reload set
+    // (step 4, 009C8ABE-009C8ACD) a live target never breaks the attack off, as
+    // the torpedo feed (cc9_device_reload_feeds) already does. False: both read
+    // false, so a spent dive bomber breaks off to `done` whatever the flag.
+    static constexpr bool kDiveBreakOffReloadFeedBound = true;   // ON: SQUADRON_LAND_TASK 5go.1
     // Packet cc9_lua45_rack_equipment_device (GUNNERY 144, SQUADRON_LAND_TASK 5ev).
     // True: (a) an absent RepeatTime reads as 006E0242's default, 00B66330 with
     // [00CE3D30] = 0.6f, at both rack readers; (b) a rack's device is the plane's
@@ -15190,6 +15249,23 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
                     sq.name.c_str(), command, alive.size(), static_cast<double>(now));
             }
         }
+        // DIAGNOSTIC (BSP_SPENT_RTB_CENSUS=1): a squadron with every live member
+        // spent that did not latch, logged once per leader command class.
+        if (census && !st.latch_3c && command != st.census_unlatched_class) {
+            bool any = false;
+            for (const std::size_t m : alive) {
+                if (plane_holds_rack_round_007b9140(m)) { any = true; break; }
+            }
+            if (!any) {
+                st.census_unlatched_class = command;
+                h.log.notef("spent ordnance census: squadron \"%s\" spent, not latched: leader %s "
+                    "command %08X ordnance_class=%d fighter=%d reload_open=%d at %.2f s",
+                    sq.name.c_str(), h.slots[leader]->row.name.c_str(), command,
+                    bsp::spent_ordnance_command_class_009f8160(command) ? 1 : 0,
+                    unit_is_kind_of(leader, 0x13) ? 1 : 0, reload_open ? 1 : 0,
+                    static_cast<double>(now));
+            }
+        }
         // Packet cc9-gunnery38 (bsp::kSquadronDeadTargetRetestBound): 009F8160's
         // ordnance arm with ordnance left (009F81E5..009F8212: 007ED790 true, +3Dh
         // clear, the resolved target absent or failing 007EE8F0 -> 009F8412) and
@@ -19514,6 +19590,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // the aim point, 009C8B14-009C8B3B.
                             in.distance_to_target = slot_.db_aim_point_3d;
                             in.speed_ratio_41c = 1.0f;
+                            if constexpr (GameUnitsHost::Impl::kDiveBreakOffReloadFeedBound) {
+                                // 009C8ABE-009C8ACD, as at the transition feed.
+                                in.control_flag_369 = kLuaDeviceReloadEnabledBound;
+                                in.global_e17bf2 = lua_device_reload_enabled_00e17bf2();
+                            }
                             return bsp::dive_bomb_should_break_off_009c8a90(in);
                         }
                         bool manual_release_requested(void*) override {
@@ -23199,6 +23280,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     void run_level_bomber_rack_tick_006e56f0(float dt) {
                         lb_rack_state_seed();
                         if (GameUnitsHost::Impl::kPlaneDeathModesBound && unit_.plane_death_c3a) return;
+                        rack_device_reload_slice_006e57a4(dt);   // packet cc9_rack_device_reload
                         const float angle_max = lb_tuning(
                             &bsp::GameTuningBlock::pilot_general_level_bomb_angle_max, 0.34906587f);
                         for (std::size_t i = 0; i < unit_.lb_rack_to_repeat.size(); ++i) {
@@ -26875,6 +26957,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 unit_.rack_repeat_per_rack.push_back(
                                     owner_.lua.read_device_class_number(dev, "RepeatTime",
                                         owner_.rack_repeat_default()));
+                                // Packet cc9_rack_device_reload: 006E3C00 stores
+                                // 30.0 (00CE38C8); an entry's ReloadTime replaces it
+                                // through 006E3A20 (below 1.0 becomes 1.0), in both
+                                // +48Ch and +490h.
+                                float reload = 30.0f;
+                                const float authored_reload =
+                                    owner_.rack_equipment_reload_time(unit_, type_id, pkey);
+                                if (authored_reload >= 0.0f)
+                                    reload = authored_reload < 1.0f ? 1.0f : authored_reload;
+                                unit_.rack_reload_time_per_rack.push_back(reload);
+                                unit_.rack_reload_left_per_rack.push_back(reload);
                             } else if (type == "MultiBombPlatform") {
                                 ++unit_.rack_multi_count;
                             }
@@ -26932,6 +27025,55 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // +184h is toRepeatTime and +188h dropBombs). Run after the
                     // plane's stage in the same fixed step (order between the
                     // rack's tick and the plane's is not read).
+                    // Packet cc9_rack_device_reload (kRackDeviceReloadBound), the slice
+                    // 006E57A4-006E57D2 of 006E56F0: with the owner's vtable[1E4h]
+                    // (006D1F40 for a plane, the byte [00E17BF2]) set, each rack's
+                    // 006E41C0 counts +490h down by dt x [00E08178] while the rack is
+                    // empty (006E3570); below 0 it routes B2h (session mode 0) and
+                    // resets +490h to +48Ch, and B2h's 006E3410 sets ammo = orgAmmo
+                    // and attaches the next round (006E3E70). SUBSTITUTIONS, labelled:
+                    // every single rack is stepped in one call (the image ticks each
+                    // rack); the multiplier [00E08178] is 1.0 (SetDeviceReloadTimeMul
+                    // 008C14B0 is not hosted); the rearm restores the host's per-rack
+                    // count to the value it was seeded with (orgAmmo) and creates no
+                    // round entity; a rack seeded with 0 rounds is left empty.
+                    void rack_device_reload_slice_006e57a4(float dt) {
+                        if constexpr (!GameUnitsHost::Impl::kRackDeviceReloadBound) {
+                            (void)dt;
+                            return;
+                        } else {
+                            if (!lua_device_reload_enabled_00e17bf2()) return;   // 006E57B6
+                            if (unit_.rack_ammo < 0) return;   // unseeded: every rack is full
+                            const bool authored =
+                                GameUnitsHost::Impl::kDiveBombCarriedRoundsBound &&
+                                unit_.rack_rounds_authored > 0;
+                            const std::size_t n = std::min({unit_.rack_ammo_per_rack.size(),
+                                unit_.rack_authored_per_rack.size(),
+                                unit_.rack_reload_left_per_rack.size(),
+                                unit_.rack_reload_time_per_rack.size()});
+                            for (std::size_t i = 0; i < n; ++i) {
+                                if (unit_.rack_ammo_per_rack[i] > 0) continue;   // 006E41F5
+                                float& left = unit_.rack_reload_left_per_rack[i];
+                                left = static_cast<float>(static_cast<double>(left) - dt);  // 006E4209
+                                if (!(left < 0.0f)) continue;
+                                left = unit_.rack_reload_time_per_rack[i];          // 006E424A
+                                const int a = unit_.rack_authored_per_rack[i];
+                                const int org = authored ? (a > 0 ? a : 0) : 1;
+                                if (org <= 0) continue;
+                                unit_.rack_ammo_per_rack[i] = org;                  // 006E3410
+                                unit_.rack_ammo += org;
+                                ++unit_.rack_device_reloads;
+                                ++owner_.rack_device_reloads;
+                                owner_.log.notef("rack device reload: unit=%s rack=%zu rounds=%d "
+                                    "reload=%.1f s at %.2f s (006E57A4 -> 006E41C0 -> B2h -> "
+                                    "006E3410, packet cc9_rack_device_reload)",
+                                    unit_.row.name.c_str(), i, org,
+                                    static_cast<double>(unit_.rack_reload_time_per_rack[i]),
+                                    static_cast<double>(owner_.summary.simulated_seconds));
+                            }
+                        }
+                    }
+
                     void run_rack_tick_006e56f0(float dt) {
                         // GUNNERY 138 diagnostic: calls and early returns.
                         ++unit_.rack_tick_calls;
@@ -26957,6 +27099,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         // 006E577F-006E579E: counted down while above -1.0.
                         if (unit_.rack_to_repeat > -1.0f) unit_.rack_to_repeat -= dt;
+                        rack_device_reload_slice_006e57a4(dt);   // packet cc9_rack_device_reload
                         if (!unit_.rack_dropping || !(dt > 0.0f) ||
                             !(unit_.rack_to_repeat < 0.0f)) {  // 006E57D4-006E57FA
                             ++unit_.rack_ret_idle;
@@ -36362,6 +36505,10 @@ void GameUnitsHost::report() {
                 "issues=%llu (009F8160 / 009F7C90 / 0084E010, packet "
                 "cc9_squadron_spent_ordnance_rtb)", bsp::kSquadronSpentOrdnanceRtbBound ? 1 : 0,
                 host.spent_rtb_latches, host.spent_rtb_ends, host.spent_rtb_issues);
+            host.log.notef("summary rack device reload bound=%d reloads=%llu flag=%d "
+                "(006E57A4, packet cc9_rack_device_reload)",
+                GameUnitsHost::Impl::kRackDeviceReloadBound ? 1 : 0, host.rack_device_reloads,
+                lua_device_reload_enabled_00e17bf2() ? 1 : 0);
             host.log.notef("summary mission squadron retest bound=%d dead_targets=%llu ends=%llu "
                 "(009F8160 / 009F7C90, cc9-gunnery38)", bsp::kSquadronDeadTargetRetestBound ? 1 : 0,
                 host.retest_dead_targets, host.retest_ends);

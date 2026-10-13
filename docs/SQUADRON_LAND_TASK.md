@@ -16148,3 +16148,89 @@ touchdowns=0` for every Enterprise squadron). The squadrons can't be retargeted 
    In phase 5 the mission only fails when `Mission.USUnits` is empty, and the Zuiho kill still wins.
 4. Unbound on this path: `RemoveAllAirBasePlanes` 008975B0 (Primary4Add calls it twice before restocking),
    `DisbandFormation` 0089A020, `Effect` 008A9730, `GetProperty "TorpedoStock"`, `SetCatapultStock` 00892C30.
+
+## 5go. PRCP01's squadrons never land: device reload, and the rack's in-flight reload (packet `cc9_rack_device_reload`, cc9-lua56, 2026-10-13)
+
+**The question (lead's queue item 1).** On PRCP01 no Enterprise squadron lands (`touchdowns=0`), so slots free only when a squadron dies.
+
+**The census.** `BSP_SPENT_RTB_CENSUS=1` now also logs a squadron whose live members are all spent but which did not latch
+(`spent ordnance census: ... not latched`, once per leader command class). On PRCP01 with `l55_p01_c.txt`
+(`local\l56_D_p01c.log`): every spent Enterprise bomber squadron (sqn04-sqn08, torpedo `00E08F18` and dive `00E08F20`)
+reaches 009F8160 with an ordnance class and no rounds, with `reload_open=0`; the Wildcats (sqn01/02) have no ordnance class
+and are fighters (`IsKindOf(13h)`).
+
+**Why that is the image.** usn_03 calls `SetDeviceReloadEnabled(true)` (`summary mission script device reload ... now=1`).
+Every squadron's `+369h` ReloadEnabled is the constructor's 1 (`007F2D09`; no scene in this installation authors it). With both
+set, 009F8160 does not latch (`(sq+369h == 0 || [00E17BF2] == 0)` fails) and 0084E010's B5 is never reached. So the image's
+spent bombers do not RTB on PRCP01 either. The host's gate is faithful; nothing changes there.
+
+**What the image does instead.** 006E56F0's slice `006E57A4`-`006E57D2` asks the owner's `vtable[1E4h]` (`006D1F40`, the byte
+`[00E17BF2]`) and runs the rack's `vtable[204h]` = `006E41C0`: while the rack is empty (`006E3570`) `+490h` counts down by
+`dt x [00E08178]`; below 0 it routes B2h and resets `+490h` to `+48Ch`; B2h's `006E3410` sets `ammo = orgAmmo` and attaches the
+next round (`006E3E70`). `+48Ch`/`+490h` are 30.0 from `006E3C00` (`00CE38C8`), replaced by the equipment entry's `ReloadTime`
+through `006E3A20` (floor 1.0). cc13-gpr33 modelled the slice (`include/bsp/gameplay_seg33_cc13.hpp`, docs/CC13_GPR_33.md
+"Adoption"); the host's `run_rack_tick_006e56f0` skipped it. This installation (`vehicleclasses.lua`, mtime 2026-05-09):
+SBD (108) platform 78 `ReloadTime` 60, TBF (113) torpedo platform 115 `ReloadTime` 80. So in the image a spent Enterprise bomber
+is re-armed 60 or 80 s after its drop and can attack again.
+
+**The binding (`kRackDeviceReloadBound`, committed OFF).** The slice runs for every single rack in both host rack ticks (the
+general one and the level bomber's), after the live-owner gate. ReloadTime is read per rack from the plane's equipment entry
+(`rack_equipment_reload_time`, the same index rule as the ammo reader). LABELLED: every rack is stepped in one call; the
+multiplier `[00E08178]` is 1.0 (`SetDeviceReloadTimeMul` 008C14B0 is not hosted); the rearm restores the host's per-rack count to
+its seed (orgAmmo) and creates no round entity; a rack seeded with 0 rounds stays empty. Log: `rack device reload: unit=...`,
+`summary rack device reload bound=... reloads=... flag=...`.
+
+**Not bound here (recorded).** Under the same flag, 007EEC00 passes loadout 1 to `006E4060`, whose second arm answers the rack's
+own bullet descriptor for an EMPTY rack: the image's chooser still offers the ordnance class while the rack reloads. The host's
+live ordnance mask (`kRackLiveOrdnanceMaskBound`) drops it. With the reload bound the mask returns when the rack refills.
+
+**Predictions (written before the pairs).**
+- **USN12 (control, s38_u12_p2): exit 0 or 1.** usn_12 does not set the flag (`flag=0`), so `reloads=0` and gameplay is identical.
+- **PRCP01 (`l55_p01_c.txt`, 30000 frames): exit 3.** `reloads` > 0: each spent Enterprise SBD rack refills 60 s and each TBF
+  torpedo rack 80 s after its drop, and Japanese carrier planes re-arm too. A re-armed squadron whose task is still live can
+  drop again (more `bomb drop`/torpedo drops, Junyo damage earlier); one whose task went to `done` and flew off needs a re-issue
+  (the chooser or a new order), which is the next read. Still `touchdowns=0`: nothing here lands a squadron.
+- **JM08 (flag set at prcpjm08.lua 104): exit 3** if any rack empties in the run; Japanese bombers re-arm.
+
+**Part 2, the dive-bomb break-off feed (`kDiveBreakOffReloadFeedBound`, committed OFF).** On `l55_C1_p01c` every Enterprise SBD
+went `aimglide -> done` with `breakoff=1` right after its drop although the flag was set. 009C8A90 step 4 (`009C8ABE`-`009C8ACD`:
+`ctl+369h` and `[00E17BF2]` both set -> FALSE) is in `dive_bomb_should_break_off_009c8a90`, but neither host feed (the transition
+inputs and the task host's `should_break_off`) passed the two values, so they read false. The torpedo feed already passes them
+(packet `cc9_device_reload_feeds`). With the switch, both dive feeds pass `kLuaDeviceReloadEnabledBound` and the byte. In the image
+a spent SBD under device reload therefore never breaks off to `done` while its target lives; with the in-range latch's reload
+hold (`009C7BFC`, already fed) it stays engaged and keeps attacking (re-attack through the go-away, docs/DIVE_BOMB_REATTACK.md),
+with its bomb back after 60 s.
+- **Prediction (both switches ON, PRCP01):** no `aimglide -> done` for an SBD while the Junyo lives; repeated `bomb drop` lines
+  per Enterprise SBD about 60 s apart; the Junyo takes more bomb hits and dies earlier than 752 s. USN12 and JM08 have no
+  device-reload SBD attack in the window (USN12 flag 0), so they stay identical for this part.
+
+### 5go.1 Measured: **ON**, both switches (cc9-lua56, 2026-10-13)
+
+Same tree. OFF is `8f8987755`'s build (both switches false; `59808c7b4` adds only the OFF-gated feed); ON is `59808c7b4` exported with
+both flips (`5F63480CBE53`). `BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`, 30200/30000 frames. Logs `local\l56_{off,on}_<row>.log`.
+
+| row | pair_diff | flag | reloads (ON) | note |
+| --- | --- | --- | --- | --- |
+| USN12 (s38_u12_p2, control) | identical | 0 | 0 | completes at 1534.87 s both sides |
+| PRCP01 (`l55_p01_c.txt`) | MOVED | 1 | 4 | OFF no end; **ON completes at 733.59 s** (`usn03.obj_mission_comp`, Zuiho) |
+| JM08 (`l51_j8_b3.txt`) | MOVED | 1 | many | fails both sides (1077.33 s OFF, 1037.39 s ON) |
+
+**PRCP01, the mechanism as predicted.**
+- OFF: three `aimglide -> done` (sqn05), the SBDs fly off (sqn05 ends 140 km away in 5gn's run); Junyo sunk at 752.04 s (sqn08).
+- ON: no `done`; six `aimglide -> goaway`. sqn05's racks re-arm at drop + 60.0 s (321.50, 328.84, 334.89 s) and sqn05 drops
+  again (bomb drops 4 and 5). One TBF rack re-arms at + 80.0 s (sqn06|.-2, 488.00 s); the other TBFs were shot down within
+  80 s of their drop. Junyo sunk at **428.47 s** (sqn06|.-3), Zuiho at **733.64 s** by Enterprise_sqn08, `luaUS03ZuihoKilled`,
+  `summary mission end: completed at 733.59 s`. The exec guard logged `refused a mission script's process launch: sus_prog.exe`.
+- Cost, from the death rows: the re-attacking SBDs stay over the Japanese AA and all of sqn05 dies (363.73-461.76 s), where OFF's
+  flew away. Deaths 41 -> 45; the ON side ends at 733 s, so later deaths are absent (Hornet, sqn07, sqn08 in OFF's list).
+- **Still `touchdowns=0`:** nothing here lands a squadron. Under device reload the image does not send a spent squadron home
+  (009F8160's gate), so a landing on PRCP01 needs the player's recall (`order <base> <slot> 2`, 006CCDA0 state 3, `kRecallLand`).
+
+**JM08** moves through the re-armed Japanese level bombers (`MainAirFieldEntity 01_sqn03`/`sqn20`, 16 rounds, ReloadTime 120 s) and
+dive bombers (`sqn19`, 30 s, no ReloadTime authored). It fails on both sides and is not a win row.
+
+**Rows without the flag are identical by construction:** the slice returns at the byte, and the dive feed then passes false, as
+before. Of the win rows (USN01, USN02, LOMP10, USN12, LOMP06, BSM01) none calls `SetDeviceReloadEnabled(true)` in this
+installation's scripts; usn_19_coralus (USN04/USN19) does, so USN04 will move.
+
+**Verdict: ON, both switches.**

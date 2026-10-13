@@ -536,6 +536,107 @@ bool unit_is_current_player_unit_00965810(std::uintptr_t unit, bool is_plane,
     return unit == current_player_unit;                   // 0096583B..00965844
 }
 
+// --- class registry loaders (cc13-gprx) ------------------------------------------
+
+// Compare order of 00964020. Sizes: the PUSH before 00BF55BE or the ECX before
+// 00470B80 in each arm.
+const std::array<ClassPreloadRow, 18> kClassPreloadRows = {{
+    {"Destroyer", 0x808, PreloadAlloc::crt_new_memset, 0x00963380, 0x00D1ACF8, 0x00D1ACF4, true},   // 0096414A
+    {"Cruiser", 0x80C, PreloadAlloc::crt_new_memset, 0x00963380, 0x00D1AD38, 0x00D1AD34, true},     // 009641AC
+    {"Cargo", 0x80C, PreloadAlloc::crt_new_memset, 0x00963380, 0x00D1ADBC, 0x00D1ADB8, true},       // 00964207
+    {"BattleShip", 0x80C, PreloadAlloc::crt_new_memset, 0x00963380, 0x00D1ADF8, 0x00D1ADF4, true},  // 00964266
+    {"Submarine", 0x840, PreloadAlloc::crt_new_memset, 0x00963DB0, 0, 0, false},       // 009642C5
+    {"TorpedoBoat", 0x814, PreloadAlloc::crt_new_memset, 0x00963E40, 0, 0, false},     // 00964312
+    {"MotherShip", 0x870, PreloadAlloc::pool_00470b80, 0x00963EC0, 0, 0, false},       // 0096435F
+    {"ReconPlane", 0x60C, PreloadAlloc::pool_00470b80, 0x00951AA0, 0, 0, false},       // 0096439B
+    {"Fighter", 0x60C, PreloadAlloc::pool_00470b80, 0x00951AF0, 0, 0, false},          // 009643D7
+    {"DiveBomber", 0x60C, PreloadAlloc::pool_00470b80, 0x00951B40, 0, 0, false},       // 00964413
+    {"TorpedoBomber", 0x60C, PreloadAlloc::pool_00470b80, 0x00951C20, 0, 0, false},    // 0096444F
+    {"Kamikaze", 0x60C, PreloadAlloc::pool_00470b80, 0x00951D00, 0, 0, false},         // 0096448B
+    {"Bomber", 0x60C, PreloadAlloc::pool_00470b80, 0x00951DE0, 0, 0, false},           // 009644C7
+    {"AirField", 0x140, PreloadAlloc::pool_00470b80, 0x0095FEE0, 0, 0, false},         // 00964503
+    {"Shipyard", 0x138, PreloadAlloc::pool_00470b80, 0x0095FF50, 0, 0, false},         // 0096453F
+    {"LandVehicle", 0x150, PreloadAlloc::pool_00470b80, 0x0095FFC0, 0, 0, false},      // 0096457B
+    {"LandFort", 0x180, PreloadAlloc::pool_00470b80, 0x00749180, 0, 0, false},         // 009645B0
+    {"CommandBuilding", 0x1AC, PreloadAlloc::pool_00470b80, 0x00951E30, 0, 0, false},  // 009645E5
+}};
+
+const ClassPreloadRow* class_preload_row_00964020(const char* type) noexcept {
+    // A null or empty type skips the raw chain and matches none of the native
+    // compares, so it ends at 00964727.
+    if (type == nullptr || *type == '\0') return nullptr;
+    for (const ClassPreloadRow& row : kClassPreloadRows) {
+        if (stricmp_equal(type, row.type)) return &row;
+    }
+    return nullptr;
+}
+
+ClassPreloadResult class_preload_00964020(const std::vector<ClassPreloadEntry>& table) {
+    ClassPreloadResult out;
+    for (const ClassPreloadEntry& e : table) {
+        const ClassPreloadRow* row = class_preload_row_00964020(e.type.c_str());
+        if (row == nullptr) return out;  // 00964727: AL = 0, the rest is not built
+        out.built.emplace_back(e.key, row);
+    }
+    out.completed = true;  // 0096470F MOV AL,1
+    return out;
+}
+
+std::uintptr_t class_get_or_create_from_lua_index_009653b0(std::int32_t index,
+    bool entry_is_table,
+    const std::function<std::uintptr_t(std::int32_t, bool)>& get_or_create_00964790) {
+    if (!entry_is_table || !get_or_create_00964790) return 0;  // 00965414 IsTable
+    return get_or_create_00964790(index, true);                 // 0096544C..00965450
+}
+
+bool class_name_matches_00965480(const char* name_data, std::int32_t name_length,
+                                 const char* class_name) noexcept {
+    if (name_data == nullptr) return class_name == nullptr || *class_name == '\0';
+    if (class_name == nullptr) return name_length == 0;  // 00965695 CMP [EBX],EAX
+    return stricmp_equal(name_data, class_name);         // 0096569D 00BF7FBF
+}
+
+ClassByNameResult class_find_by_name_00965480(const char* name_data, std::int32_t name_length,
+    const std::vector<std::pair<std::uintptr_t, const char*>>& cache_with_names,
+    const std::vector<LuaClassNameEntry>& vehicle_class_table,
+    const std::function<std::uintptr_t(std::int32_t, bool)>& get_or_create_00964790) {
+    ClassByNameResult out;
+    for (const auto& [cls, name] : cache_with_names) {   // registry +4h, count +8h
+        if (cls == 0) continue;
+        if (class_name_matches_00965480(name_data, name_length, name)) {  // name = cls+54h
+            out.cls = cls;
+            out.from_cache = true;
+            return out;
+        }
+    }
+    for (const LuaClassNameEntry& e : vehicle_class_table) {
+        if (!e.key_is_integer || !e.value_is_table) continue;   // 009655A9, 009655BA
+        if (!e.name_is_string) continue;                          // 009655E6
+        if (!class_name_matches_00965480(name_data, name_length, e.name)) continue;
+        out.key = e.key;
+        out.cls = get_or_create_00964790 ? get_or_create_00964790(e.key, true) : 0;  // 0096562A
+        return out;
+    }
+    return out;  // IsUnbound: null
+}
+
+// --- section failure effect (cc13-gprx) ------------------------------------------
+
+SectionFailureEffectAction repair_set_section_failure_effect_0093aa90(
+    const SectionFailureEffectInputs& in) noexcept {
+    // 0093AAC9 / 0093AB62: CMP section, count; JB.
+    if (in.section >= in.slot_count) return SectionFailureEffectAction::invalid_index;
+    if (!in.on) {
+        return in.slot_held ? SectionFailureEffectAction::stop_and_release   // 0093AB0E..0093AB36
+                            : SectionFailureEffectAction::none;              // 0093AAE9
+    }
+    if (in.slot_held) return SectionFailureEffectAction::none;                // 0093AB7B
+    if (!in.section_found || !in.section_effect_name || !in.unit_node_4a4) {
+        return SectionFailureEffectAction::none;                              // 0093AB90..0093ABB3
+    }
+    return SectionFailureEffectAction::create;                                // 0093ABB5..0093AC01
+}
+
 // ---------------------------------------------------------------------------
 // 6. Math
 // ---------------------------------------------------------------------------
