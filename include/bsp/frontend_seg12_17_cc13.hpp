@@ -1711,4 +1711,99 @@ struct Fe8LibraryFilterHost {
 // 00AAC870) and sets +558h = +55Ch = -1; 5 -> 0050B730(screen); 6 -> 0050B440(screen).
 void library_filter_entries_0050d900(Raw screen, void* source, void* out, Fe8LibraryFilterHost& host);
 
+struct Fe8FrameRegisterHost {
+    virtual ~Fe8FrameRegisterHost() = default;
+    virtual void front_end_screen_register_004f71d0(Raw screen) = 0;
+    virtual void* gui_load_page_00aa5840(std::string_view name, std::uint32_t one, std::uint32_t zero) = 0;  // ECX = 004C12B0()
+    virtual const char* image_string_table(std::uint32_t table, std::int32_t index) = 0;     // [table + index*4]
+};
+
+// 00517ED0 BSP_FrontEndFrame_Register, slot +14h, __fastcall(ECX = screen), RET. 004F71D0; frame
+// index +160h = 4. Three page tables, each slot loaded (00AA5840(name, 1, 0)) only in the row of
+// the frame index and when the name is non-null, otherwise 0: +0Ch + (row*13 + j)*4 for j < 13
+// from [00E08500 + (index*13 + j)*4]; +110h + (row*2 + j)*4 for j < 2 from [00E08604 + (index*2 +
+// j)*4] ("FE_frame..."); +138h likewise from [00E0862C ...] ("FE_frame_title..."). Rows run 0..4.
+void front_end_frame_register_00517ed0(Raw screen, Fe8FrameRegisterHost& host);
+
+struct Fe8LibraryEventHost {
+    virtual ~Fe8LibraryEventHost() = default;
+    virtual std::int32_t widget_type_5c(void* widget) = 0;                                   // vtable +5Ch
+    virtual std::int16_t widget_state_94(void* widget) = 0;                                  // vtable +94h
+    virtual void widget_set_alpha_4c(void* widget, float alpha) = 0;                         // vtable +4Ch
+    virtual void widget_set_highlight_88(void* widget, std::uint32_t state, std::uint32_t zero, float one) = 0;
+    virtual void widget_set_highlight_84(void* widget, std::uint32_t state) = 0;
+    virtual void* list_box_row_00a9be00(void* list_box, std::int32_t index) = 0;
+    virtual void list_box_select_index_00a9c7c0(void* list_box, std::int32_t index) = 0;
+    virtual void scroller_set_auto_scroll_00683300(void* scroller, std::uint32_t a, float speed, std::uint32_t b) = 0;
+    virtual void scroller_begin_thumb_drag_00683a40(void* scroller) = 0;
+    // Library screen routines (ECX = screen).
+    virtual void library_play_entry_movie_004ff580(Raw screen) = 0;
+    virtual void front_end_show_difficulty_select_004ff6f0(Raw screen) = 0;
+    virtual bool library_is_entry_unlocked_004fc9d0(Raw screen) = 0;
+    virtual void library_back_00515e00(Raw screen) = 0;
+    virtual void library_apply_nose_art_005161c0(Raw screen) = 0;
+    virtual void library_switch_view_00514c20(Raw screen) = 0;
+    virtual void library_open_order_of_battle_view_00514fb0(Raw screen) = 0;
+    virtual std::int32_t library_find_row_by_id_004fcb30(Raw screen, std::int32_t id) = 0;
+    virtual void library_step_carousel_00516010(Raw screen, bool forward) = 0;
+};
+
+// 00517300 BSP_TacticalLibraryScreen_HandleGuiEvent, slot +4h of the listener at screen+68h,
+// __thiscall(listener, widget), RET 4 (screen offsets below). Type 3: a click on rows 0..2 of the
+// list +0C4h while the timer +5B4h is exactly -1.0f selects that row and sets the timer to 0.5f;
+// otherwise vtable +4Ch(1.0f) and the label's first byte (+0F0h, "" 00E18D7C) decides: A2h by view
+// kind +94h (jump table 00517600): 3 -> 004FF580, 5 -> 004FF6F0, 6 -> 00515E00 when 004FC9D0, 7 ->
+// the timer rule above, 8 -> 005161C0; A7h with kind 2, 5 or 6 -> 00514C20; A3h -> 00514FB0 for
+// kind 7, else 00515E00. Other types: +5BCh / +5B8h auto-scroll +0CCh (2 / 1, 0.004f, 1), +5C0h
+// begins a drag; the carousel arrows +574h / +578h step the carousel (00516010(widget == +574h))
+// unless their state (+94h) is 3 (then return); a widget of the pair tables +1D8h / +278h (40
+// each) selects, for kind 5, the row 004FCB30(i) in +0B8h, and with type 6 and state below 3 steps
+// the carousel (forward when it is the +1D8h entry), returning otherwise. Then type 6 ->
+// vtable +88h(2, 0, 1.0f), type 12h -> vtable +84h(2). The StepCarousel byte is pushed as a dword
+// whose upper bytes are stale register contents.
+void library_handle_gui_event_00517300(Raw listener, void* widget, Fe8LibraryEventHost& host);
+
+struct Fe8InGame23Host {
+    virtual ~Fe8InGame23Host() = default;
+    virtual void unit_send_role_transfer_0077c470(void* unit, std::uint32_t role, std::uint32_t zero) = 0;  // ECX = unit
+    // Observer pairs: ECX = observed, EDX = observer member (screen +8h).
+    virtual bool observer_is_pair_registered_00694af0(void* observed, void* observer) = 0;
+    virtual void observer_unregister_pair_006952a0(void* observed, void* observer) = 0;
+    virtual void observer_register_pair_00694a60(void* observed, void* observer) = 0;
+    virtual void* operator_new_00bf55be(std::uint32_t bytes) = 0;
+    virtual void camera_mover_construct_base_00432750(void* camera) = 0;
+    virtual Raw game() = 0;                                                                  // [00E188A8]
+    // 00923870, ECX = camera, (0, game +19CCh, const float matrix[16]).
+    virtual void camera_set_transform_00923870(void* camera, std::uint32_t zero, std::uint32_t scene,
+        const float* matrix) = 0;
+    virtual void airfield_camera_setup_0042cb30(void* camera, void* unit_part) = 0;          // ECX = camera
+    virtual void game_set_camera_mover_004bc410(void* camera) = 0;                           // ECX = [00E188A8]
+};
+
+// 005178F0 BSP_InGameScreen23_BindUnit, __thiscall(screen, unit), RET 4. An old unit (+1Ch) gets
+// 0077C470(1FEh, 0) and loses the observer pair (screen +8h) when registered; +1Ch = unit, which
+// registers the pair when missing. Without a camera (+20h): new(388h), zeroed, 00432750, vtables
+// 00CEC1F8 / +10h 00CEC1DC / +24h 00CEC1D4 / +170h 00CEC1BC (a failed allocation leaves 0); +20h =
+// it; 00923870(ECX camera; 0, [game+19CCh], identity matrix) and the pair (camera, screen +8h)
+// registered. Then 0042CB30(camera; unit ? unit+72Ch : 0), 004BC410(camera), +24h = 0.5f.
+void in_game_screen23_bind_unit_005178f0(Raw screen, void* unit, Fe8InGame23Host& host);
+
+struct Fe8BomberCameraHost : Fe8InGame23Host {
+    virtual void ship_camera_construct_base_00519290(void* camera) = 0;
+    virtual void camera_mover_set_target_0042f650(void* camera, void* target) = 0;           // ECX = camera
+    virtual void* binoculars_screen_00e198c4_4c() = 0;                                       // [[00E198C4]+4Ch]
+    virtual void binoculars_bind_unit_0051e730(void* binoculars, void* camera) = 0;
+    virtual void binoculars_reset_0051e8e0(void* binoculars) = 0;
+};
+
+// 005198F0 BSP_BomberView_EnsureCamera, __fastcall(ECX = screen), RET. A camera (+28h) whose +60h
+// or +5Dh byte is set is dropped (+28h = 0, not freed). Without one: new(3F4h), zeroed, 00519290,
+// vtables 00CEC5F0 / +10h 00CEC5D8 / +24h 00CEC5D0 / +170h 00CEC5B8; 00923870(camera; 0,
+// [game+19CCh], identity); camera +3ECh = -1.553343f (00CEC574), +3F0h = 1.553343f (00CEC400); pair
+// (camera, screen +8h) registered. When the game's mover (+1ED4h) is not the camera or the target
+// +1Ch differs from +20h: 0042F650(camera; +1Ch); a camera with +3E8h clear gets +384h = +388h = 0
+// and +38Ch = +398h = +394h = +390h = 30.0f (00CE38C8); 004BC410(camera); +20h = +1Ch. Always:
+// 0051E730(binoculars; camera) and 0051E8E0(binoculars) on [[00E198C4]+4Ch].
+void bomber_view_ensure_camera_005198f0(Raw screen, Fe8BomberCameraHost& host);
+
 } // namespace bsp::cc13_fe3

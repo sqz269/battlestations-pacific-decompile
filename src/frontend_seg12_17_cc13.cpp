@@ -2991,4 +2991,174 @@ void library_filter_entries_0050d900(Raw screen, void* source, void* out, Fe8Lib
     }
 }
 
+void front_end_frame_register_00517ed0(Raw screen, Fe8FrameRegisterHost& host) {
+    host.front_end_screen_register_004f71d0(screen);
+    screen.at<std::int32_t>(0x160) = 4;
+    struct Table {
+        std::size_t base;
+        std::uint32_t names;
+        std::int32_t columns;
+    };
+    for (const Table table : {Table{0x0C, 0x00E08500, 13}, Table{0x110, 0x00E08604, 2}, Table{0x138, 0x00E0862C, 2}}) {
+        for (std::int32_t j = 0; j < table.columns; ++j) {
+            const std::int32_t index = screen.at<std::int32_t>(0x160);
+            const char* const name = host.image_string_table(table.names, index * table.columns + j);
+            for (std::int32_t row = 0; row < 5; ++row) {
+                void* page = nullptr;
+                if (row == screen.at<std::int32_t>(0x160) && name != nullptr) page = host.gui_load_page_00aa5840(name, 1, 0);
+                screen.ptr(table.base + static_cast<std::size_t>(row * table.columns + j) * 4) = page;
+            }
+        }
+    }
+}
+
+namespace {
+
+std::uint8_t library_label_lead(void* widget) {
+    const auto* const text = static_cast<const std::uint8_t*>(raw(widget).ptr(0xF0));
+    return text != nullptr ? text[0] : 0;  // "" at 00E18D7C
+}
+
+} // namespace
+
+void library_handle_gui_event_00517300(Raw listener, void* widget, Fe8LibraryEventHost& host) {
+    const Raw screen{listener.p - 0x68};
+    float& timer = screen.at<float>(0x5B4);
+    const std::int32_t kind = screen.at<std::int32_t>(0x94);
+    if (host.widget_type_5c(widget) == 3) {
+        void* const list = screen.ptr(0xC4);
+        if ((widget == host.list_box_row_00a9be00(list, 0) || widget == host.list_box_row_00a9be00(list, 1) ||
+             widget == host.list_box_row_00a9be00(list, 2)) &&
+            timer == kTextWidthUnbounded) {  // -1.0f, 00D7A260
+            std::int32_t row = 0;
+            if (widget == host.list_box_row_00a9be00(list, 1)) row = 1;
+            else if (widget == host.list_box_row_00a9be00(list, 2)) row = 2;
+            host.list_box_select_index_00a9c7c0(list, row);
+            timer = 0.5f;  // 00CE3800
+            return;
+        }
+        host.widget_set_alpha_4c(widget, 1.0f);
+        const std::uint8_t lead = library_label_lead(widget);
+        if (lead == 0xA2) {
+            switch (kind) {
+            case 3: host.library_play_entry_movie_004ff580(screen); return;
+            case 5: host.front_end_show_difficulty_select_004ff6f0(screen); return;
+            case 6:
+                if (host.library_is_entry_unlocked_004fc9d0(screen)) host.library_back_00515e00(screen);
+                return;
+            case 7:
+                if (timer == kTextWidthUnbounded) timer = 0.5f;
+                return;
+            case 8: host.library_apply_nose_art_005161c0(screen); return;
+            default: return;
+            }
+        }
+        if (lead == 0xA7) {
+            if (kind == 2 || (kind > 4 && kind < 7)) host.library_switch_view_00514c20(screen);
+            return;
+        }
+        if (lead == 0xA3) {
+            if (kind == 7) host.library_open_order_of_battle_view_00514fb0(screen);
+            else host.library_back_00515e00(screen);
+        }
+        return;
+    }
+    void* const scroller = screen.p + 0xCC;
+    if (widget == screen.ptr(0x5BC)) {
+        host.scroller_set_auto_scroll_00683300(scroller, 2, kLeaderboardAutoScrollSpeed, 1);
+    } else if (widget == screen.ptr(0x5B8)) {
+        host.scroller_set_auto_scroll_00683300(scroller, 1, kLeaderboardAutoScrollSpeed, 1);
+    } else if (widget == screen.ptr(0x5C0)) {
+        host.scroller_begin_thumb_drag_00683a40(scroller);
+    } else if (widget == screen.ptr(0x574) || widget == screen.ptr(0x578)) {
+        if (host.widget_state_94(widget) == 3) return;
+        host.library_step_carousel_00516010(screen, widget == screen.ptr(0x574));
+    } else {
+        for (std::int32_t i = 0; i < 0x28; ++i) {
+            if (widget != screen.ptr(0x1D8 + i * 4) && widget != screen.ptr(0x278 + i * 4)) continue;
+            const bool first_table = widget == screen.ptr(0x1D8 + i * 4);
+            if (kind == 5)
+                host.list_box_select_index_00a9c7c0(screen.ptr(0xB8), host.library_find_row_by_id_004fcb30(screen, i));
+            if (host.widget_type_5c(widget) != 6) return;
+            if (host.widget_state_94(widget) >= 3) return;
+            host.library_step_carousel_00516010(screen, first_table);
+            break;
+        }
+    }
+    if (host.widget_type_5c(widget) == 6) {
+        host.widget_set_highlight_88(widget, 2, 0, 1.0f);
+        return;
+    }
+    if (host.widget_type_5c(widget) == 0x12) host.widget_set_highlight_84(widget, 2);
+}
+
+void in_game_screen23_bind_unit_005178f0(Raw screen, void* unit, Fe8InGame23Host& host) {
+    void* const observer = screen.p + 8;
+    if (screen.ptr(0x1C) != nullptr) host.unit_send_role_transfer_0077c470(screen.ptr(0x1C), 0x1FE, 0);
+    if (screen.ptr(0x1C) != nullptr && host.observer_is_pair_registered_00694af0(screen.ptr(0x1C), observer))
+        host.observer_unregister_pair_006952a0(screen.ptr(0x1C), observer);
+    screen.ptr(0x1C) = unit;
+    if (unit != nullptr && !host.observer_is_pair_registered_00694af0(unit, observer))
+        host.observer_register_pair_00694a60(screen.ptr(0x1C), observer);
+    if (screen.ptr(0x20) == nullptr) {
+        void* camera = host.operator_new_00bf55be(0x388);
+        if (camera != nullptr) {
+            std::memset(camera, 0, 0x388);
+            host.camera_mover_construct_base_00432750(camera);
+            const Raw c = raw(camera);
+            c.at<std::uint32_t>(0x000) = 0x00CEC1F8;
+            c.at<std::uint32_t>(0x010) = 0x00CEC1DC;
+            c.at<std::uint32_t>(0x024) = 0x00CEC1D4;
+            c.at<std::uint32_t>(0x170) = 0x00CEC1BC;
+        }
+        screen.ptr(0x20) = camera;
+        static constexpr float kIdentity[16] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+        host.camera_set_transform_00923870(camera, 0, host.game().at<std::uint32_t>(0x19CC), kIdentity);
+        host.observer_register_pair_00694a60(screen.ptr(0x20), observer);
+    }
+    void* const unit_part = screen.ptr(0x1C) != nullptr ? static_cast<std::uint8_t*>(screen.ptr(0x1C)) + 0x72C : nullptr;
+    host.airfield_camera_setup_0042cb30(screen.ptr(0x20), unit_part);
+    host.game_set_camera_mover_004bc410(screen.ptr(0x20));
+    screen.at<float>(0x24) = 0.5f;  // 00CE3800
+}
+
+void bomber_view_ensure_camera_005198f0(Raw screen, Fe8BomberCameraHost& host) {
+    if (screen.ptr(0x28) != nullptr &&
+        (raw(screen.ptr(0x28)).at<std::uint8_t>(0x60) != 0 || raw(screen.ptr(0x28)).at<std::uint8_t>(0x5D) != 0))
+        screen.ptr(0x28) = nullptr;
+    if (screen.ptr(0x28) == nullptr) {
+        void* camera = host.operator_new_00bf55be(0x3F4);
+        if (camera != nullptr) {
+            std::memset(camera, 0, 0x3F4);
+            host.ship_camera_construct_base_00519290(camera);
+            const Raw c = raw(camera);
+            c.at<std::uint32_t>(0x000) = 0x00CEC5F0;
+            c.at<std::uint32_t>(0x010) = 0x00CEC5D8;
+            c.at<std::uint32_t>(0x024) = 0x00CEC5D0;
+            c.at<std::uint32_t>(0x170) = 0x00CEC5B8;
+        }
+        screen.ptr(0x28) = camera;
+        static constexpr float kIdentity[16] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+        host.camera_set_transform_00923870(camera, 0, host.game().at<std::uint32_t>(0x19CC), kIdentity);
+        raw(screen.ptr(0x28)).at<float>(0x3EC) = -1.5533430576324463f;  // 00CEC574
+        raw(screen.ptr(0x28)).at<float>(0x3F0) = 1.5533430576324463f;   // 00CEC400
+        host.observer_register_pair_00694a60(screen.ptr(0x28), screen.p + 8);
+    }
+    void* const camera = screen.ptr(0x28);
+    if (host.game().ptr(0x1ED4) != camera || screen.ptr(0x1C) != screen.ptr(0x20)) {
+        host.camera_mover_set_target_0042f650(camera, screen.ptr(0x1C));
+        const Raw c = raw(screen.ptr(0x28));
+        if (c.at<std::uint32_t>(0x3E8) == 0) {
+            c.at<float>(0x384) = 0.0f;
+            c.at<float>(0x388) = 0.0f;
+            for (const std::size_t off : {0x38Cu, 0x398u, 0x394u, 0x390u}) c.at<float>(off) = 30.0f;  // 00CE38C8
+        }
+        host.game_set_camera_mover_004bc410(screen.ptr(0x28));
+        screen.ptr(0x20) = screen.ptr(0x1C);
+    }
+    void* const binoculars = host.binoculars_screen_00e198c4_4c();
+    host.binoculars_bind_unit_0051e730(binoculars, screen.ptr(0x28));
+    host.binoculars_reset_0051e8e0(host.binoculars_screen_00e198c4_4c());
+}
+
 } // namespace bsp::cc13_fe3

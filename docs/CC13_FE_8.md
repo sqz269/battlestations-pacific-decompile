@@ -62,6 +62,10 @@ by `tools/verify_report_calls.py` (0 failed).
 | 004FFF20 | `library_show_order_of_battle_page_004fff20` | fastcall(ECX screen), RET | command bar, title |
 | 00509DE0 | `library_build_map_entries_00509de0` | fastcall(ECX screen), RET | locked flags from the game map |
 | 0050D900 | `library_filter_entries_0050d900` | thiscall(screen, source, out), RET 8 | ledger name ClearList |
+| 00517ED0 | `front_end_frame_register_00517ed0` | fastcall(ECX screen), RET | three page tables, frame index 4 |
+| 00517300 | `library_handle_gui_event_00517300` | thiscall(listener = screen+68h, widget), RET 4 | jump table 00517600 |
+| 005178F0 | `in_game_screen23_bind_unit_005178f0` | thiscall(screen, unit), RET 4 | airfield camera |
+| 005198F0 | `bomber_view_ensure_camera_005198f0` | fastcall(ECX screen), RET | ship camera, binoculars |
 
 ### Leaderboards
 
@@ -143,9 +147,27 @@ by `tools/verify_report_calls.py` (0 failed).
 - 0050D900 (ledger `ClearList`) filters: it empties the output vector and copies the entries whose
   +40h side equals +3C0h or exceeds 59h and whose +44h byte is set, then resets the view by kind.
 
+### Frame, library events and in-game cameras
+
+- 00517ED0 loads pages only in the row of the frame index it has just set to 4; every other slot of
+  the 5x13 (+0Ch), 5x2 (+110h) and 5x2 (+138h) tables is zeroed.
+- 00517300 runs on the listener at screen+68h; its offsets were rebased to the screen. The jump
+  table 00517600 maps view kinds 3..8 to PlayEntryMovie, nothing, ShowDifficultySelect,
+  IsEntryUnlocked/Back, the timer rule and ApplyNoseArt. The timer +5B4h is compared for exact
+  equality with -1.0f (UCOMISS, `TEST AH, 44h; JP`).
+- 005178F0 and 005198F0 construct their camera movers inline (`new`, memset, base constructor, four
+  vtable stores). `memset` runs before the null test in the image; the model tests first. The
+  call-summary tool reported ECX = 0 for 00923870 because it followed the failed-allocation branch;
+  the listing shows ECX = the new camera on the normal path.
+- 005178F0 calls `BSP_UnitInstance_SendRoleTransfer` (0077C470, role 1FEh) on the previous unit;
+  that is gameplay state reached from an in-game screen (see For cc9).
+
 ## For cc9
 
 - `include/bsp/world_entities.hpp:378` `marker_set_scale_006dbac0(target, mode, flag, value)` (the
   BSP_MarkerManager_Update walk, overridden in `src/game_hosts_mission_frame.cpp:747`) lacks the DL
   enable argument; the image passes DL = 1 at 006DC49A. The override is empty, so nothing changes
   behaviour today.
+- `in_game_screen23_bind_unit_005178f0` (005178F0) sends 0077C470 (role 1FEh, 0) to the unit it
+  releases and makes the airfield camera the game's camera mover (004BC410). Wiring it into the host
+  changes in-game unit state; that is the gameplay lane's decision.
