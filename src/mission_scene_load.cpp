@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <cctype>
+#include <stdexcept>
 
 namespace bsp {
 namespace {
@@ -62,7 +63,16 @@ std::string mission_load_phase_block_name(MissionLoadPhase phase, const std::str
     return std::string(mission_load_phase_prefix(phase)) + short_name;
 }
 
-std::string derive_scene_short_name(const std::string& scene_path)
+int scene_short_name_mode_index(const SceneShortNameGameMode& mode) noexcept
+{
+    // 004CDB37..004CDB61 (the inlined 004BCA50 rule).
+    if (mode.mode_forced_61c || mode.multiplayer_1fe4) return mode.raw_mode_614;
+    if (mode.raw_mode_614 == 9 || mode.raw_mode_614 == 8) return mode.raw_mode_614;
+    return 8;
+}
+
+std::string derive_scene_short_name(const std::string& scene_path, bool append_mode,
+    const SceneShortNameGameMode& mode)
 {
     std::string work = scene_path;
     // 004cd85a: BSP_String_ReplaceSubstrings with "\" and "/".
@@ -90,6 +100,15 @@ std::string derive_scene_short_name(const std::string& scene_path)
     // shorter than four characters simply fails the compare.
     if (name.size() >= 4 && equals_ignore_case(name, name.size() - 4, ".scn")) {
         name = name.substr(0, name.size() - 4);
+    }
+
+    // 004cdb27..004cdbc1: the game-mode suffix, OFF until paired.
+    if (kSceneShortNameModeSuffixBound && append_mode) {
+        const int index = scene_short_name_mode_index(mode);
+        if (index < 0 || index >= static_cast<int>(kSceneShortNameModeSuffixes.size())) {
+            throw std::out_of_range("scene mode index outside 00E08240"); // the image reads past the table
+        }
+        name += kSceneShortNameModeSuffixes[static_cast<std::size_t>(index)];
     }
     return name;
 }
