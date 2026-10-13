@@ -854,3 +854,18 @@ The host's **release** does not match its own predictor. It releases at `|w| * f
 Record: `weapon_fall_time_007bcc80` (007BCC80) was added as complete, checked against the bytes.
 
 Still open: 006E4D50's remaining rack body.
+
+### 8.6 Adoption notes for the release-velocity fixes (host file leased; not edited)
+
+Under the HOST FIX TERMS, `src/game_hosts_gunnery.cpp` is leased by cc9 (agent/cc9-gunnery36:
+cc9_g40_turning_fire and cc9_g40_torpedo_fall, checked 2026-10-13). So these notes are for cc9 to
+apply, and this pass made no edit to that file. Gravity (item 2) is left to cc9's gunnery40, and
+MaxFall (item 3) already has its own switch.
+
+| fix | replaces (host file:line) | inputs | RNG | OFF / ON prediction |
+|---|---|---|---|---|
+| `kBombReleaseVelocityFrameBound` | release_bomb_drop, game_hosts_gunnery.cpp:13772 (`velocity[i] = vmag * (dx*right[i] + dy*up[i] + forward[i])`) | call `bomb_release_velocity_006e0a70_006e1f00(rack, owner, D)` with rack = the plane pose as a 4x4 (rows right / up / forward / origin; the mount node is unread, as today), owner = {is_plane = true, speed = 0092D730, world velocity = unit_linear_velocity}, and D = (dx, dy, 1) from the existing draws. Use `result.velocity`. | unchanged: the same draws in the same order, because only the basis changes | OFF: as today. ON: the bomb leaves along the velocity frame (velocity minus 3 m/s), so level-bomb impacts move about **30 m short**, onto the AI's 007BCC80 aim point (8.5 (3)), and dive bombs about 5-7 m. Expect hit counts to change for level bombers (kind 10h) in the missions that have them (not enumerated here); nothing else moves. |
+| `kTorpedoReleaseVelocityBound` | release_ordnance_drop, game_hosts_gunnery.cpp:13557 (`velocity = forward * speed`) | the same model with D = (0, 0, 1), which leaves velocity = the plane's world velocity minus 3 m/s on y: the torpedo's vtable+190h is also 006E0A70, and its cone is t = 0 when Throw is 0 (check the bullet row's Throw; if Throw is non-zero, use the drawn D as bombs do) | none, unless Throw is non-zero | OFF: as today. ON: torpedoes reach the water about 0.1-0.3 s sooner and about 10-25 m shorter, entering about 3 m/s faster downward. The MaxFall margin at the logged 5-39 m release heights stays positive (8.5 (2)), so no new break-ups. Run lengths and hit timing shift slightly in JM02, JM08, USN01 and USN21. |
+
+Both models are in `src/gameplay_seg53_cc13.cpp` / `include/bsp/gameplay_seg53_cc13.hpp`
+(build-tested, not wired).
