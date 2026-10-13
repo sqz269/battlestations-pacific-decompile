@@ -234,6 +234,17 @@ inline constexpr bool kLuaListenerCallbackArgsBound = true;
 // attacker sets name lands a kill in them.
 inline constexpr bool kLuaKillAttackerBound = true;
 
+// Packet cc9_lua54_prcp01 (docs/SQUADRON_LAND_TASK.md 5gj): the four natives on the
+// config at [game+21C4h]. 008B2320 SetSimplifiedReconMultiplier stores Lua argument 1
+// at +74h (008B243C), 008B24A0 GetSimplifiedReconMultiplier pushes it (008B258A);
+// 008B25F0 / 008B2770 do the same for SimplifiedSonarMultiplier at +78h (008B270C).
+// Both default to 1.0f (00444D20). True: the host keeps the two values and answers
+// the getters. False: the rows are unimplemented and the getters push nothing, so
+// commandhelpers.lua's luaPutToRecon (line 16266, `dist * GetSimplifiedRecon...()`)
+// raises an arithmetic-on-nil error. LABELLED: a set value is not forwarded to the
+// gunnery host's recon detection (`simplified_recon_multiplier()` stays 1.0f).
+inline constexpr bool kSimplifiedReconNativesBound = false;
+
 // docs/CC13_AUDIT_LUA51_FLIPS.md item 1c. 00988510 boxes, and 0097B8C0 matches,
 // the target as hitEntity->vtable[140h]() kept only when it answers IsKindOf(2)
 // (00988530..0098859B): for a plane that is its squadron (007B97E0, plane+9D4h).
@@ -1405,6 +1416,11 @@ public:
     bool stationary_class_exists(const std::string& name);
 
     int run_is_ready_to_send_planes_00895d20(lua_State* state, int argument_count);
+    // Packet cc9_lua54_prcp01: 008B2320/008B24A0 and 008B25F0/008B2770.
+    int run_simplified_multiplier(lua_State* state, int argument_count,
+                                  std::uint32_t address);
+    float simplified_recon_74_{1.0f};
+    float simplified_sonar_78_{1.0f};
     int run_launch_squadron_0089e3c0(lua_State* state, int argument_count);
     // 00944FD0 GenerateObject. Instantiates one of the entities the scene pass
     // held back at 0046D3C5, by name, and pushes its `thisTable` slot the way the

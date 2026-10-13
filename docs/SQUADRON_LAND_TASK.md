@@ -15939,3 +15939,39 @@ death paths. Producers: `007C6C30` plane out-of-action countdown and `007F31A0` 
 threshold crossings of the subscription's `hp` on reason `damage`/`repair`, producer `00879070`
 ApplyDamage in the gunnery host): USN14's capture check. Neither is on a current win row. The Lua side
 (subscription parse plus the dispatcher) is this lane's; the producer hooks are gunnery/units edits to route.
+
+## 5gj. PRCP01 (Santa Cruz) bring-up: the phase-3 stall (packet `cc9_lua54_prcp01`, cc9-lua54, 2026-10-12)
+
+Menu id **PRCP01** ("Vanilla - Battle of Santa Cruz", scene `COTP-USN/PRCPUS/usn_03_Battle_of_Santa_Cruz.scn`,
+StageScript `COTP-USN\PRCPUS\usn_03_battle_of_santa_cruz`, mtime 2024-07-13). `--menu-select USN03` is LOMP Ceylon.
+
+**This copy has no player tutorial on the phase path.** `dlg_Cruisersinrange` (script line 295) ends in the
+callback `luaUS03Primary4Add`, which sets `MissionPhase = 4` directly; `luaUS03TargetObjective` (the `input`
+listener on IC_CMD_SETTARGET, then the `target` listener) is never called in this file. The chain to phase 5 is:
+phase 3 `luaUS03EndReconMovie` adds the Junyo `kill` listener -> Junyo sunk -> movie -> checkpoint ->
+`luaUS03GotoPhase4` -> reinforcement movie -> `luaUS03CruisersInRange` -> phase 4 -> the Vanguard `recon`
+listener (oldLevel 1 -> newLevel 2 for the Allies) -> EscapePath -> `exitzone` -> phase 5.
+
+**The stall, from `local\l54_E0_p01.log` (main bd3b0c333, 24000 frames, no orders).** Two script errors:
+- `US03Think failed: commandhelpers.lua:16266: attempt to perform arithmetic on a nil value` in `luaPutToRecon`
+  from `luaUS03SpawnPhase1EnterpriseKillers` (script line 1645): `dist * GetSimplifiedReconMultiplier()`, and
+  `GetSimplifiedReconMultiplier` (`008B24A0`) was an UNIMPLEMENTED row that pushes nothing. The phase-1 spawn
+  of the Enterprise's attackers stops there. **Host defect.**
+- `luaTimetable failed: usn_03:1186: bad argument #1 to 'pairs'` in `luaUS03EndReconMovie`: it has already set
+  `MissionPhase = 3`, then `luaGetSlotsAndSquads(Mission.Enterprise)` returns `0, nil` because the Enterprise has
+  no squadron in its slots, and `pairs(nil)` throws before the Junyo `kill` listener is added. **Phase 3 can
+  then never end.** The image raises the same error for a carrier with no squadron up (commandhelpers'
+  `luaGetSlotsAndSquads` answers `0, nil` and the script does not test it), so this is the player's job: the
+  order file must have Enterprise squadrons launched before the recon movie ends.
+
+**The binding** (`kSimplifiedReconNativesBound`, `include/bsp/game_hosts_lua.hpp`, OFF): the four natives on
+`[game+21C4h]` (`008B2320`/`008B24A0` at `+74h`, `008B25F0`/`008B2770` at `+78h`, default 1.0f from `00444D20`;
+docs/GUNNERY_RECON_DETECTION.md). LABELLED: a set value is not forwarded to the gunnery host's recon detection.
+
+**Predictions (before the pairs).**
+- OFF: identical.
+- PRCP01 ON: no `luaPutToRecon` error; `luaUS03SpawnPhase1EnterpriseKillers` completes, so phase 1 spawns more
+  Japanese attackers against the Enterprise (more plane deaths and Enterprise damage). Phase 3 still stalls at
+  line 1186 without an order file that launches Enterprise squadrons.
+- BSM01 ON (win row; bsm_01 calls `SetSimplifiedReconMultiplier`): gameplay identical (only the setter row
+  becomes concrete; detection still reads 1.0); the win holds.
