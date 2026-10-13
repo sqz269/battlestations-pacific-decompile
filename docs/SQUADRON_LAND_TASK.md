@@ -16148,3 +16148,46 @@ touchdowns=0` for every Enterprise squadron). The squadrons can't be retargeted 
    In phase 5 the mission only fails when `Mission.USUnits` is empty, and the Zuiho kill still wins.
 4. Unbound on this path: `RemoveAllAirBasePlanes` 008975B0 (Primary4Add calls it twice before restocking),
    `DisbandFormation` 0089A020, `Effect` 008A9730, `GetProperty "TorpedoStock"`, `SetCatapultStock` 00892C30.
+
+## 5go. PRCP01's squadrons never land: device reload, and the rack's in-flight reload (packet `cc9_rack_device_reload`, cc9-lua56, 2026-10-13)
+
+**The question (lead's queue item 1).** On PRCP01 no Enterprise squadron lands (`touchdowns=0`), so slots free only when a squadron dies.
+
+**The census.** `BSP_SPENT_RTB_CENSUS=1` now also logs a squadron whose live members are all spent but which did not latch
+(`spent ordnance census: ... not latched`, once per leader command class). On PRCP01 with `l55_p01_c.txt`
+(`local\l56_D_p01c.log`): every spent Enterprise bomber squadron (sqn04-sqn08, torpedo `00E08F18` and dive `00E08F20`)
+reaches 009F8160 with an ordnance class and no rounds, with `reload_open=0`; the Wildcats (sqn01/02) have no ordnance class
+and are fighters (`IsKindOf(13h)`).
+
+**Why that is the image.** usn_03 calls `SetDeviceReloadEnabled(true)` (`summary mission script device reload ... now=1`).
+Every squadron's `+369h` ReloadEnabled is the constructor's 1 (`007F2D09`; no scene in this installation authors it). With both
+set, 009F8160 does not latch (`(sq+369h == 0 || [00E17BF2] == 0)` fails) and 0084E010's B5 is never reached. So the image's
+spent bombers do not RTB on PRCP01 either. The host's gate is faithful; nothing changes there.
+
+**What the image does instead.** 006E56F0's slice `006E57A4`-`006E57D2` asks the owner's `vtable[1E4h]` (`006D1F40`, the byte
+`[00E17BF2]`) and runs the rack's `vtable[204h]` = `006E41C0`: while the rack is empty (`006E3570`) `+490h` counts down by
+`dt x [00E08178]`; below 0 it routes B2h and resets `+490h` to `+48Ch`; B2h's `006E3410` sets `ammo = orgAmmo` and attaches the
+next round (`006E3E70`). `+48Ch`/`+490h` are 30.0 from `006E3C00` (`00CE38C8`), replaced by the equipment entry's `ReloadTime`
+through `006E3A20` (floor 1.0). cc13-gpr33 modelled the slice (`include/bsp/gameplay_seg33_cc13.hpp`, docs/CC13_GPR_33.md
+"Adoption"); the host's `run_rack_tick_006e56f0` skipped it. This installation (`vehicleclasses.lua`, mtime 2026-05-09):
+SBD (108) platform 78 `ReloadTime` 60, TBF (113) torpedo platform 115 `ReloadTime` 80. So in the image a spent Enterprise bomber
+is re-armed 60 or 80 s after its drop and can attack again.
+
+**The binding (`kRackDeviceReloadBound`, committed OFF).** The slice runs for every single rack in both host rack ticks (the
+general one and the level bomber's), after the live-owner gate. ReloadTime is read per rack from the plane's equipment entry
+(`rack_equipment_reload_time`, the same index rule as the ammo reader). LABELLED: every rack is stepped in one call; the
+multiplier `[00E08178]` is 1.0 (`SetDeviceReloadTimeMul` 008C14B0 is not hosted); the rearm restores the host's per-rack count to
+its seed (orgAmmo) and creates no round entity; a rack seeded with 0 rounds stays empty. Log: `rack device reload: unit=...`,
+`summary rack device reload bound=... reloads=... flag=...`.
+
+**Not bound here (recorded).** Under the same flag, 007EEC00 passes loadout 1 to `006E4060`, whose second arm answers the rack's
+own bullet descriptor for an EMPTY rack: the image's chooser still offers the ordnance class while the rack reloads. The host's
+live ordnance mask (`kRackLiveOrdnanceMaskBound`) drops it. With the reload bound the mask returns when the rack refills.
+
+**Predictions (written before the pairs).**
+- **USN12 (control, s38_u12_p2): exit 0 or 1.** usn_12 does not set the flag (`flag=0`), so `reloads=0` and gameplay is identical.
+- **PRCP01 (`l55_p01_c.txt`, 30000 frames): exit 3.** `reloads` > 0: each spent Enterprise SBD rack refills 60 s and each TBF
+  torpedo rack 80 s after its drop, and Japanese carrier planes re-arm too. A re-armed squadron whose task is still live can
+  drop again (more `bomb drop`/torpedo drops, Junyo damage earlier); one whose task went to `done` and flew off needs a re-issue
+  (the chooser or a new order), which is the next read. Still `touchdowns=0`: nothing here lands a squadron.
+- **JM08 (flag set at prcpjm08.lua 104): exit 3** if any rack empties in the run; Japanese bombers re-arm.
