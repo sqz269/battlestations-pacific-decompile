@@ -58,22 +58,19 @@ void plane_actuator_block_step_007de3a0(PlaneActuatorBlock& block, float dt,
         if (!block.channel_b.enabled || block.channel_b.value == 0.0f) {
             plane_actuator_channel_step_007de1e0(block.channel_c, dt, frame);
         }
-        if (!block.channel_a.moving && !block.channel_b.moving && !block.channel_c.moving) {
-            block.moving_any = false;
-        }
-        return;
-    }
-    // The earlier host order, kept OFF for the pair. It is NOT the image's: the
-    // header gives the raw listing's gates. The text below is the old reading.
-    // 007DE3A9, 007DE3D2, 007DE3FA: the order is +44h, +28h, +60h, and each
-    // call is guarded by `enabled == 0 || value == 1.0f`. The guard is the
-    // image's, not a shortcut: a channel that is disabled or already at the top
-    // still enters the step, which is where its moving byte gets cleared.
-    PlaneActuatorChannel* const order[3] = {
-        &block.channel_a, &block.channel_b, &block.channel_c};
-    for (PlaneActuatorChannel* channel : order) {
-        if (!channel->enabled || !(channel->value != kActuatorTop)) {
-            plane_actuator_channel_step_007de1e0(*channel, dt, frame);
+    } else {
+        // The earlier host order, kept OFF for the pair. It is NOT the image's: the
+        // header gives the raw listing's gates. The text below is the old reading.
+        // 007DE3A9, 007DE3D2, 007DE3FA: the order is +44h, +28h, +60h, and each
+        // call is guarded by `enabled == 0 || value == 1.0f`. The guard is the
+        // image's, not a shortcut: a channel that is disabled or already at the top
+        // still enters the step, which is where its moving byte gets cleared.
+        PlaneActuatorChannel* const order[3] = {
+            &block.channel_a, &block.channel_b, &block.channel_c};
+        for (PlaneActuatorChannel* channel : order) {
+            if (!channel->enabled || !(channel->value != kActuatorTop)) {
+                plane_actuator_channel_step_007de1e0(*channel, dt, frame);
+            }
         }
     }
     // 007DE405..007DE417: +11h falls only when all three moving bytes are down.
