@@ -3053,17 +3053,9 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                 // velocity over the fall time. LABELLED: the lead and the radius
                 // are the file's, not a person's eye; the bomb switch is held.
                 const std::size_t count = host.units->count();
-                std::size_t idx = count;
-                std::size_t target_idx = count;
-                for (std::size_t k = 0; k < count; ++k) {
-                    const GameUnitRow* row = host.units->unit_row(k);
-                    if (row == nullptr) continue;
-                    if (row->name == order.unit && idx == count) idx = k;
-                    if (!order.target.empty() && row->name == order.target
-                        && target_idx == count) {
-                        target_idx = k;
-                    }
-                }
+                const std::size_t idx = harness_target_row(*host.units, order.unit);
+                const std::size_t target_idx = order.target.empty()
+                    ? count : harness_target_row(*host.units, order.target);
                 const float seconds = host.units->summary().simulated_seconds;
                 const char* why = "";
                 if (idx >= count) {
@@ -3155,11 +3147,7 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                 // is 00647300's body (docs/HUD_CENTRAL_UPDATES.md). LABELLED: no
                 // click writes HUD root+78h; the commit runs here, before the
                 // fixed step, not from the HUD pump.
-                std::size_t pick = host.units->count();
-                for (std::size_t k = 0; k < host.units->count(); ++k) {
-                    const GameUnitRow* row = host.units->unit_row(k);
-                    if (row != nullptr && row->name == order.unit) { pick = k; break; }
-                }
+                std::size_t pick = harness_target_row(*host.units, order.unit);
                 bool reached = false;
                 bool accepted = false;
                 const char* why = "";
@@ -3190,11 +3178,7 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                 // GameGunneryHost::player_fire_weapon_group, which sends that
                 // message (kPlayerWeaponGroupFireBound) and refuses with its
                 // reason otherwise. LABELLED: no group screen or role take runs.
-                std::size_t idx = host.units->count();
-                for (std::size_t k = 0; k < host.units->count(); ++k) {
-                    const GameUnitRow* row = host.units->unit_row(k);
-                    if (row != nullptr && row->name == order.unit) { idx = k; break; }
-                }
+                std::size_t idx = harness_target_row(*host.units, order.unit);
                 GameGunneryHost* gunnery = host.units->gunnery();
                 std::string why;
                 bool fired = false;
@@ -3227,11 +3211,7 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                 // entry holds the class, then A9h), one unit per order, through
                 // cc9-gunnery30's GameGunneryHost::shipyard_order. LABELLED: no
                 // map screen runs; the file names the shipyard and the class.
-                std::size_t yard = host.units->count();
-                for (std::size_t k = 0; k < host.units->count(); ++k) {
-                    const GameUnitRow* row = host.units->unit_row(k);
-                    if (row != nullptr && row->name == order.unit) { yard = k; break; }
-                }
+                std::size_t yard = harness_target_row(*host.units, order.unit);
                 GameGunneryHost* gunnery = host.units->gunnery();
                 int chosen = 0;
                 std::string reason;
@@ -3261,11 +3241,7 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                 // the marker gate 0043F080 (006431A8), so a target that is dead or
                 // hidden is refused here before the entry runs; a file can then
                 // list fallback targets for one slot on consecutive frames.
-                std::size_t target_pick = host.units->count();
-                for (std::size_t k = 0; k < host.units->count(); ++k) {
-                    const GameUnitRow* row = host.units->unit_row(k);
-                    if (row != nullptr && row->name == order.target) { target_pick = k; break; }
-                }
+                std::size_t target_pick = harness_target_row(*host.units, order.target);
                 if (target_pick < host.units->count()
                     && !host.units->unit_alive_and_visible(target_pick)) {
                     ++host.helm_orders_refused;
@@ -3336,16 +3312,9 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                     if (bar == std::string::npos) break;
                     from = bar + 3;
                 }
-                for (std::size_t k = 0; k < count; ++k) {
-                    const GameUnitRow* row = host.units->unit_row(k);
-                    if (row != nullptr && row->name == order.unit) { idx = k; break; }
-                }
+                idx = harness_target_row(*host.units, order.unit);
                 for (const std::string& pick : picks) {
-                    std::size_t first = count;
-                    for (std::size_t k = 0; k < count; ++k) {
-                        const GameUnitRow* row = host.units->unit_row(k);
-                        if (row != nullptr && row->name == pick) { first = k; break; }
-                    }
+                    const std::size_t first = harness_target_row(*host.units, pick);
                     if (first < count && target_idx == count) target_idx = first;
                     if (first < count && host.units->unit_alive_and_visible(first)) {
                         target_idx = first;
@@ -3416,11 +3385,7 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                 // LABELLED: the image attacks the director's fire target
                 // (+238h, 008364E0) and the player's pick path is unread, so
                 // the target is named here; message 57h is not reproduced.
-                std::size_t idx = host.units->count();
-                for (std::size_t k = 0; k < host.units->count(); ++k) {
-                    const GameUnitRow* row = host.units->unit_row(k);
-                    if (row != nullptr && row->name == order.unit) { idx = k; break; }
-                }
+                std::size_t idx = harness_target_row(*host.units, order.unit);
                 const char* why = "";
                 if (idx >= host.units->count()) {
                     why = " (no created unit has that name)";
@@ -3472,11 +3437,7 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                 x = found->position[0];
                 z = found->position[2];
             }
-            std::size_t unit_index = host.units->count();
-            for (std::size_t k = 0; k < host.units->count(); ++k) {
-                const GameUnitRow* row = host.units->unit_row(k);
-                if (row != nullptr && row->name == order.unit) { unit_index = k; break; }
-            }
+            std::size_t unit_index = harness_target_row(*host.units, order.unit);
             if (order.takehelm) {
                 // Packet cc9_helm_orders_helm_route: the controlled unit's helm.
                 const bool taken = unit_index < host.units->count()

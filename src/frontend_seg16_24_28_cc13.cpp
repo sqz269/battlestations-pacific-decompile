@@ -4,6 +4,8 @@
 
 #include "bsp/frontend_seg16_24_28_cc13.hpp"
 
+#include "bsp/band_0067_cc13.hpp"
+
 #include <cmath>
 #include <cstring>
 #include <initializer_list>
@@ -1444,7 +1446,7 @@ void plane_screen_apply_view_mode_00608280(Raw screen, Fe5Host& host) {
     const Raw plane{static_cast<std::uint8_t*>(screen.ptr(0xB8))};
     if (plane.p != nullptr && !host.unit_is_kind_5c(plane, 0x10) && !host.unit_is_kind_5c(plane, 0x16) &&
         screen.at<std::uint32_t>(0xFC) != 0) {
-        host.plane_screen_ensure_cockpit_camera_00607f60(screen);
+        plane_screen_ensure_cockpit_camera_00607f60(screen, host);
         return;
     }
     plane_screen_ensure_chase_camera_00605e50(screen, host);
@@ -1492,7 +1494,7 @@ void plane_screen_collect_children_00608ef0(Raw screen, void* out, Fe5Host& host
 void plane_screen_set_plane_00609390(Raw screen, void* plane, Fe5Host& host) {
     screen.ptr(0x168) = plane;
     if (screen.at<std::uint8_t>(5) == 0) return;
-    host.plane_screen_rebuild_widgets_00608f30(screen);
+    plane_screen_rebuild_widgets_00608f30(screen, host);
     static_cast<std::uint8_t*>(screen.ptr(0x108))[0x18] = 0;
     static_cast<std::uint8_t*>(screen.ptr(0x10C))[0x18] = 0;
     plane_screen_update_payload_icon_00605380(screen, host);
@@ -2212,7 +2214,7 @@ void plane_screen_enter_006093d0(Raw screen, Fe5Host& host) {
     host.widget_set_visible_34(screen.ptr(0xE0), false);
     screen.at<std::uint8_t>(8) = 1;
     plane_screen_update_payload_icon_00605380(screen, host);
-    host.plane_screen_rebuild_widgets_00608f30(screen);
+    plane_screen_rebuild_widgets_00608f30(screen, host);
     screen.at<std::uint8_t>(0x190) = 1;
 }
 
@@ -2281,6 +2283,908 @@ void plane_effects_register_00607be0(Raw screen, Fe5Host& host) {
     };
     for (const auto& [off, name] : kPlaneEffectHandles) swap_in(off, host.effect_handle_acquire_00871ba0(name));
     swap_in(0x78, host.effect_handle_acquire_id_00870cd0(kPlaneEffectHandleId78));
+}
+
+// ---------------------------------------------------------------------------
+// cc13-fe7: plane HUD widget rebuild, unit library update, idle camera shot
+// vector insert (docs/CC13_FE_7.md).
+// ---------------------------------------------------------------------------
+namespace {
+// A std::vector<widget*> {proxy, first, last, end} at screen+base: delete
+// each widget (virtual +4h(1)) and null its cell, then erase(begin, end)
+// (the image's memmove_s of the empty tail moves nothing; last = first).
+void widget_vector_delete_all(Raw screen, std::size_t base, Fe5Host& host) {
+    for (std::uint32_t i = 0;; ++i) {
+        auto* const first = static_cast<void**>(screen.ptr(base + 4));
+        auto* const last = static_cast<void**>(screen.ptr(base + 8));
+        if (first == nullptr || i >= static_cast<std::uint32_t>(last - first)) break;
+        if (first[i] != nullptr) {
+            host.object_virtual_int(Raw{static_cast<std::uint8_t*>(first[i])}, 0x04, 1);
+            first[i] = nullptr;
+        }
+    }
+    screen.ptr(base + 8) = screen.ptr(base + 4);
+}
+
+// push_back: in place while last < end, else the out-of-line insert.
+void widget_vector_push(Raw screen, std::size_t base, std::uint32_t insert_routine, void* widget, Fe5Host& host) {
+    auto* const first = static_cast<void**>(screen.ptr(base + 4));
+    auto* const last = static_cast<void**>(screen.ptr(base + 8));
+    auto* const end = static_cast<void**>(screen.ptr(base + 0x0C));
+    if (first != nullptr && last - first < end - first) {
+        *last = widget;
+        screen.ptr(base + 8) = last + 1;
+    } else {
+        host.widget_vector_insert_one(Raw{screen.p + base}, insert_routine, last, widget);
+    }
+}
+}  // namespace
+
+int plane_hud_payload_layout(std::int32_t plane_type) noexcept {
+    switch (plane_type) {  // jump table 00609344
+    case 0x09: return 0;
+    case 0x0A: return 5;
+    case 0x0B: return 1;
+    case 0x0D: return 2;
+    case 0x0F: return 3;
+    case 0x12: return 4;
+    default: return -1;
+    }
+}
+
+void plane_screen_rebuild_widgets_00608f30(Raw screen, Fe5Host& host) {
+    widget_vector_delete_all(screen, 0x94, host);
+    widget_vector_delete_all(screen, 0xA4, host);
+    const Raw plane{static_cast<std::uint8_t*>(screen.ptr(0x168))};
+    if (plane.p == nullptr) return;
+    const int layout = plane_hud_payload_layout(plane.at<std::int32_t>(0x970));
+    std::int32_t count = 0;
+    if (layout == 4) {
+        for (Raw child{static_cast<std::uint8_t*>(plane.ptr(0x48))}; child.p != nullptr;
+             child = Raw{static_cast<std::uint8_t*>(child.ptr(0x44))}) {
+            if (host.unit_is_kind_5c(child, 0x26)) {
+                count = child.at<std::int32_t>(0x488);  // 006E3520
+                break;
+            }
+            if (host.unit_is_kind_5c(child, 0x25)) {
+                count = 1;
+                break;
+            }
+        }
+    } else if (layout >= 0) {
+        for (Raw child{static_cast<std::uint8_t*>(plane.ptr(0x48))}; child.p != nullptr;
+             child = Raw{static_cast<std::uint8_t*>(child.ptr(0x44))}) {
+            if (host.unit_is_kind_5c(child, 0x25)) ++count;
+        }
+    }
+    const bool odd = (count & 1) != 0;
+    std::int32_t even_step = -1;
+    for (std::int32_t i = 0; i < count; ++i, --even_step) {
+        // x87: FLD qword step, FIMUL int, FADD qword centre, FSTP float (the
+        // image keeps the product and sum in extended precision).
+        float pos[3] = {kPlaneSlotDefaultX, kPlaneSlotY, kPlaneSlotZ};
+        if (odd) {
+            if (i != 0) {
+                const std::int32_t half = i / 2;
+                const std::int32_t k = (i & 1) != 0 ? half : -half;
+                pos[0] = static_cast<float>(kPlaneSlotOddStep * k + kPlaneSlotOddCentre);
+            }
+        } else {
+            const std::int32_t k = (i & 1) != 0 ? i + 1 : even_step;
+            pos[0] = static_cast<float>(kPlaneSlotEvenStep * k + kPlaneSlotEvenCentre);
+        }
+        void* const front = host.gui_widget_clone_subtree_00aab4c0(screen.ptr(0x8C), 0);
+        host.widget_set_local_position_00aa7dc0(front, pos);
+        widget_vector_push(screen, 0x94, 0x0043DB60, front, host);
+        void* const back = host.gui_widget_clone_subtree_00aab4c0(screen.ptr(0x90), 0);
+        const float back_pos[3] = {pos[0] + 0.0f, pos[1] + 0.0f,
+                                   static_cast<float>(pos[2] - kPlaneSlotBackDepth)};
+        host.widget_set_local_position_00aa7dc0(back, back_pos);
+        widget_vector_push(screen, 0xA4, 0x0052EB90, back, host);
+    }
+}
+
+void unit_library_update_00681ba0(Raw screen, float /*dt*/, Fe5Host& host) {
+    const std::int32_t mode = screen.at<std::int32_t>(0xE8);
+    if (mode == 0) {
+        const bool cursor_row = host.listbox_selected_index_00a9c920(screen.ptr(0x70)) == 0;
+        const bool digit_row = host.listbox_selected_index_00a9c920(screen.ptr(0x70)) == 1;
+        if (host.front_end_action_edge_or_repeat_004d92b0(0x4B)) {
+            host.front_end_manager_push_request_004cc460(host.manager_global(0x00E198AC), 1);
+            return;
+        }
+        if (host.front_end_action_edge_or_repeat_004d92b0(0x4C) || host.front_end_action_edge_or_repeat_004d92b0(0x4D)) {
+            if (cursor_row) {
+                screen.at<std::int32_t>(0xEC) += host.input_action_held_004c5090(0x4C) ? -1 : 1;
+            } else if (digit_row) {
+                const int delta = host.input_action_held_004c5090(0x4C) ? -1 : 1;
+                band_0067_cc13::digit_spinner_step_0067df40(
+                    screen.at<std::int32_t>(0xF0 + 4 * static_cast<std::size_t>(screen.at<std::int32_t>(0xEC))), delta);
+            }
+        }
+    } else if (mode == 1) {
+        if (host.front_end_action_edge_or_repeat_004d92b0(0x4B)) {
+            host.unit_library_reset_selection_0067e580(screen);
+            return;
+        }
+        host.front_end_action_edge_or_repeat_004d92b0(0x4A);  // result unused (00681CD3)
+    }
+    if (host.front_end_action_edge_or_repeat_004d92b0(0x4C)) {
+        screen.at<std::int32_t>(0xE4) = -1;
+    } else if (host.front_end_action_edge_or_repeat_004d92b0(0x4D)) {
+        screen.at<std::int32_t>(0xE4) = 1;
+    }
+    if (screen.at<std::int32_t>(0xE4) == 0) return;
+    void* const globals = host.lua_globals_00b67980();
+    void* const classes = host.lua_get_by_name_00b67800(globals, "VehicleClass");  // 00CE5880
+    host.lua_release_00b67700(globals);
+    void* const entry = host.lua_nil_00b65f50();
+    bool again = true;
+    while (again) {
+        const std::int32_t index = (screen.at<std::int32_t>(0x130) + 1000 + screen.at<std::int32_t>(0xE4)) % 1000;
+        screen.at<std::int32_t>(0x130) = index;
+        void* const row = host.lua_get_by_index_00b67720(classes, index);
+        host.lua_assign_00b67690(entry, row);
+        host.lua_release_00b67700(row);
+        again = true;
+        if (host.lua_is_table_00b661b0(entry)) {
+            void* const mesh = host.lua_get_by_name_00b67800(entry, "Mesh");  // 00CE5FD0
+            again = !host.lua_is_string_00b660a0(mesh);
+            host.lua_release_00b67700(mesh);
+        }
+    }
+    unit_library_load_unit_model_00680db0(screen, host);
+    screen.at<std::int32_t>(0xE4) = 0;
+    host.lua_release_00b67700(entry);
+    host.lua_release_00b67700(classes);
+}
+
+std::uint8_t* idle_camera_shot_uninit_fill_00550dd0(std::uint8_t* dest, std::size_t count, Raw value, Fe5Host& host) {
+    std::uint8_t* p = dest;
+    try {
+        for (; count != 0; --count, p += 0x1C) idle_camera_shot_placement_copy_00550990(p, value, host);
+    } catch (...) {
+        idle_camera_shot_destroy_range_00550e10(dest, p, host);  // Catch_All@00550C4B
+        throw;
+    }
+    return p;
+}
+
+namespace {
+// 00550AC0 / 00550F40: uninitialized copy of [first, last) to dest.
+std::uint8_t* idle_camera_shot_uninit_copy(std::uint8_t* first, std::uint8_t* last, std::uint8_t* dest, Fe5Host& host) {
+    std::uint8_t* p = dest;
+    try {
+        for (; first != last; first += 0x1C, p += 0x1C) idle_camera_shot_placement_copy_00550990(p, Raw{first}, host);
+    } catch (...) {
+        idle_camera_shot_destroy_range_00550e10(dest, p, host);
+        throw;
+    }
+    return p;
+}
+
+// 00550A10: assign value to every shot of [first, last).
+void idle_camera_shot_fill(std::uint8_t* first, std::uint8_t* last, Raw value, Fe5Host& host) {
+    for (; first != last; first += 0x1C) idle_camera_shot_assign_005506c0(Raw{first}, value, host);
+}
+
+std::size_t shot_span(const void* first, const void* last) {
+    return static_cast<std::size_t>(static_cast<const std::uint8_t*>(last) - static_cast<const std::uint8_t*>(first)) / 0x1C;
+}
+}  // namespace
+
+void idle_camera_shot_vector_insert_n_00550fc0(Raw vector, std::uint8_t* where, std::size_t count, Raw value,
+                                               Fe5Host& host) {
+    constexpr std::size_t kMaxShots = 0x09249249;  // max_size() for 1Ch-byte elements
+    std::uint8_t tmp_storage[0x1C];
+    const Raw tmp{tmp_storage};
+    idle_camera_shot_copy_construct_005507e0(tmp, value, host);
+    auto first = [&] { return static_cast<std::uint8_t*>(vector.ptr(4)); };
+    auto last = [&] { return static_cast<std::uint8_t*>(vector.ptr(8)); };
+    auto size = [&] { return first() == nullptr ? std::size_t{0} : shot_span(first(), last()); };
+    std::size_t capacity = first() == nullptr ? 0 : shot_span(first(), vector.ptr(0x0C));
+    if (count != 0) {
+        if (kMaxShots - size() < count) host.stl_xlen_00550b50();
+        if (capacity < size() + count) {
+            capacity = kMaxShots - capacity / 2 < capacity ? 0 : capacity + capacity / 2;
+            if (capacity < size() + count) capacity = size() + count;  // 0054ED10 size()
+            std::uint8_t* const fresh = host.idle_camera_shot_allocate_0054eef0(capacity);
+            std::uint8_t* p = fresh;
+            try {
+                p = idle_camera_shot_uninit_copy(first(), where, fresh, host);
+                p = idle_camera_shot_uninit_fill_00550dd0(p, count, tmp, host);
+                idle_camera_shot_uninit_copy(where, last(), p, host);
+            } catch (...) {
+                idle_camera_shot_destroy_range_00550e10(fresh, p, host);  // Catch_All@00551186
+                host.crt_free(fresh);
+                throw;
+            }
+            const std::size_t new_size = count + size();
+            if (first() != nullptr) {
+                idle_camera_shot_destroy_range_00550e10(first(), last(), host);
+                host.crt_free(first());
+            }
+            vector.ptr(0x0C) = fresh + capacity * 0x1C;
+            vector.ptr(8) = fresh + new_size * 0x1C;
+            vector.ptr(4) = fresh;
+        } else if (shot_span(where, last()) < count) {
+            std::uint8_t* const old_last = last();
+            idle_camera_shot_uninit_copy(where, old_last, where + count * 0x1C, host);
+            try {
+                idle_camera_shot_uninit_fill_00550dd0(old_last, count - shot_span(where, old_last), tmp, host);
+            } catch (...) {
+                idle_camera_shot_destroy_range_00550e10(where + count * 0x1C, last() + count * 0x1C, host);  // 00551240
+                throw;
+            }
+            vector.ptr(8) = old_last + count * 0x1C;
+            idle_camera_shot_fill(where, last() - count * 0x1C, tmp, host);
+        } else {
+            std::uint8_t* const old_last = last();
+            vector.ptr(8) = idle_camera_shot_uninit_copy(old_last - count * 0x1C, old_last, old_last, host);
+            idle_camera_shot_copy_backward_00550930(where, old_last - count * 0x1C, old_last, host);  // 00550BC0
+            idle_camera_shot_fill(where, where + count * 0x1C, tmp, host);
+        }
+    }
+    idle_camera_shot_destroy_00550390(tmp, host);
+}
+
+void plane_screen_ensure_cockpit_camera_00607f60(Raw screen, Fe5Host& host) {
+    if (screen.ptr(0x98) == nullptr) {
+        const Raw built = host.plane_cockpit_camera_new_006065d0();
+        screen.ptr(0x98) = built.p;
+        const float identity[16] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};  // 00D7A24C = 1.0
+        host.camera_add_to_scene_00923870(built, host.game_00e188a8().ptr(0x19CC), identity);
+        host.observer_register_00694a60(screen.ptr(0x98), screen.p + 8);
+    }
+    if (screen.ptr(0x94) != nullptr) {
+        float scratch[3];
+        const float* const pos = host.camera_position_0042cd00(Raw{static_cast<std::uint8_t*>(screen.ptr(0x94))}, scratch);
+        screen.at<float>(0xF0) = pos[0];
+        screen.at<float>(0xF4) = pos[1];
+        screen.at<float>(0xF8) = pos[2];
+    }
+    host.game_set_camera_mover_004bc410(screen.ptr(0x98));
+    screen.ptr(0x94) = nullptr;
+    const Raw plane{static_cast<std::uint8_t*>(screen.ptr(0xB8))};
+    const Raw model{static_cast<std::uint8_t*>(plane.ptr(0x538))};
+    float* const eye_out = &screen.at<float>(0xF0);
+    if (host.object_virtual_ret(plane, 0x1C0) != nullptr) {
+        host.object_virtual(plane, 0x1C4);
+        host.game_set_camera_near_plane_004b4940(kCockpitNearPlane);
+        const Raw camera{static_cast<std::uint8_t*>(screen.ptr(0x98))};
+        host.cockpit_camera_set_position_0042e030(
+            camera, host.unit_local_to_world_18(plane, &model.at<float>(0x244), eye_out));
+        host.cockpit_camera_reset_0042aa00(camera);
+        const Raw link{camera.p + 0x500};
+        void* const observed = link.ptr(0x14);
+        if (observed != plane.p) {
+            if (observed != nullptr) host.observer_unregister_006952a0(observed, link.p);
+            link.ptr(0x14) = plane.p;
+            if (plane.p != nullptr) host.observer_register_00694a60(plane.p, link.p);
+        }
+    } else {
+        const float eye[3] = {0.0f, kCockpitFallbackEyeY,
+                              static_cast<float>(model.at<float>(0xA0) * kCockpitFallbackEyeScale)};
+        const Raw camera{static_cast<std::uint8_t*>(screen.ptr(0x98))};
+        host.cockpit_camera_set_position_0042e030(camera, host.unit_local_to_world_18(plane, eye, eye_out));
+        host.cockpit_camera_reset_0042aa00(camera);
+        const Raw link{camera.p + 0x500};
+        if (link.ptr(0x14) != nullptr) {
+            host.observer_unregister_006952a0(link.ptr(0x14), link.p);
+            link.ptr(0x14) = nullptr;
+        }
+    }
+}
+
+void plane_screen_update_drop_indicator_00609620(Raw screen, Fe5Host& host) {
+    if (screen.ptr(0x168) == nullptr) return;
+    // Locals of the image: two std::vector<bool> (0049F2D0 push_back) and a
+    // std::vector<float> (0045AFD0), destroyed at the end.
+    std::vector<bool> ready;
+    std::vector<bool> gate;
+    std::vector<float> fill;
+    const Raw plane{static_cast<std::uint8_t*>(screen.ptr(0x168))};
+    auto fraction = [](float remaining, float full) {  // FDIV, FLD1, FSUBRP, FSTP float
+        return static_cast<float>(1.0 - static_cast<double>(remaining) / full);
+    };
+    const std::int32_t layout = host.plane_screen_payload_frame_00604c80(screen);
+    auto next = [](Raw child) { return Raw{static_cast<std::uint8_t*>(child.ptr(0x44))}; };
+    if (layout == 4) {
+        for (Raw child{static_cast<std::uint8_t*>(plane.ptr(0x48))}; child.p != nullptr; child = next(child)) {
+            if (host.unit_is_kind_5c(child, 0x26)) {
+                for (std::int32_t j = 0; j < child.at<std::int32_t>(0x488); ++j) {  // 006E3520 each pass
+                    ready.push_back(child.at<std::uint8_t>(0x654 + j) != 0 || child.at<std::uint32_t>(0x514 + 4 * j) != 0);
+                    gate.push_back(true);
+                    fill.push_back(fraction(child.at<float>(0x5B4 + 4 * j), child.at<float>(0x48C)));
+                }
+                break;
+            }
+            if (host.unit_is_kind_5c(child, 0x25)) {
+                ready.push_back(host.unit_virtual_210(child, 0x2A, 0) != 0);
+                gate.push_back(host.plane_drop_attitude_gate_007cc8e0(plane, 0) != 0);
+                fill.push_back(fraction(child.at<float>(0x490), child.at<float>(0x48C)));
+                break;
+            }
+        }
+    } else if (layout >= 0 && layout <= 5) {
+        for (Raw child{static_cast<std::uint8_t*>(plane.ptr(0x48))}; child.p != nullptr; child = next(child)) {
+            if (!host.unit_is_kind_5c(child, 0x25)) continue;
+            ready.push_back(host.unit_virtual_210(child, 0x2A, 0) != 0);
+            const Raw owner{static_cast<std::uint8_t*>(screen.ptr(0x168))};
+            gate.push_back((host.unit_is_kind_5c(owner, 0x10) ? host.plane_level_bomb_attitude_gate_007c7750(owner, 0)
+                                                              : host.plane_drop_attitude_gate_007cc8e0(owner, 0)) != 0);
+            fill.push_back(fraction(child.at<float>(0x490), child.at<float>(0x48C)));
+        }
+    }
+    auto* const front = static_cast<void**>(screen.ptr(0x98));
+    if (front == nullptr) return;
+    const std::int32_t count = static_cast<std::int32_t>(static_cast<void**>(screen.ptr(0x9C)) - front);
+    for (std::int32_t i = 0; i < count; ++i) {
+        const bool shown = screen.at<std::uint8_t>(0x190) != 0;  // re-read per call (MOVZX)
+        // The image indexes through checked accessors (00BF6713 on a miss).
+        void* const widget = static_cast<void**>(screen.ptr(0x98))[i];
+        host.widget_set_visible_34(widget, shown);
+        void* const back = static_cast<void**>(screen.ptr(0xA8))[i];
+        if (ready.at(static_cast<std::size_t>(i))) {
+            host.widget_set_frame_88(widget, gate.at(static_cast<std::size_t>(i)) ? 0 : 1, 0, 1.0f);
+            host.widget_set_visible_34(back, false);
+        } else {
+            host.widget_set_frame_88(widget, 2, 0, 1.0f);
+            host.widget_set_visible_34(back, shown);
+            host.widget_set_quad_floats_00abe6e0(back, fill.at(static_cast<std::size_t>(i)), 0.0f, 0.0f, 1.0f);
+        }
+    }
+}
+
+void plane_screen_altitude_blink_00605b20(Raw screen, float altitude, Fe5Host& host) {
+    const double step = kBlinkSlowBelow > altitude ? kBlinkStepLow
+                        : altitude > kBlinkFastAbove ? kBlinkStepHigh
+                                                     : kBlinkStepMid;
+    const double phase = screen.at<float>(0x134);
+    screen.at<float>(0x134) = static_cast<float>(screen.at<std::uint8_t>(0x130) != 0 ? phase - step : phase + step);
+    const float now = screen.at<float>(0x134);
+    if (0.0f >= now) {  // COMISS 0, phase; JB skips (a NaN phase changes nothing)
+        screen.at<std::uint8_t>(0x130) = 0;
+    } else if (now >= kBlinkPhaseTop) {
+        screen.at<std::uint8_t>(0x130) = 1;
+    }
+    const Raw plane{static_cast<std::uint8_t*>(screen.ptr(0x168))};
+    if (plane.at<std::uint8_t>(0xC8) == 0) host.entity_pose_refresh_00414db0(plane);
+    if (kLowAltitude > plane.at<float>(0x100)) {
+        host.widget_set_visible_34(screen.ptr(0xEC), screen.at<std::uint8_t>(0x130) != 0);
+    }
+}
+
+void plane_screen_update_instruments_00609bd0(Raw screen, float dt, bool ordnance_view, bool aim_view,
+                                              Fe5Host& host) {
+    plane_screen_hide_indicator_grid_00604c20(screen, host);
+    if (host.game_00e188a8().at<std::uint8_t>(0x61F) != 0) return;
+    auto plane = [&] { return Raw{static_cast<std::uint8_t*>(screen.ptr(0x168))}; };
+    auto refresh = [&](Raw unit) {
+        if (unit.at<std::uint8_t>(0xC8) == 0) host.entity_pose_refresh_00414db0(unit);
+    };
+    auto show = [&](std::size_t off) { host.widget_set_visible_34(screen.ptr(off), screen.at<std::uint8_t>(0x190) != 0); };
+    auto unit_at = [](Raw block, std::size_t off) { return Raw{static_cast<std::uint8_t*>(block.ptr(off))}; };
+
+    // Quad fade +16Ch: target 1 (0064A530) while the effects screen's unit
+    // ([*00E198C4+6Ch]+B8h) is neither kind 10h nor 16h and its +FCh is 1,
+    // else 0 (0064A520).
+    const Raw effects = unit_at(host.ingame_interface_00e198c4(), 0x6C);
+    const Raw viewed = unit_at(effects, 0xB8);
+    const Raw fade{screen.p + 0x16C};
+    const bool fade_in = viewed.p != nullptr && !host.unit_is_kind_5c(viewed, 0x10) &&
+                         !host.unit_is_kind_5c(viewed, 0x16) && effects.at<std::int32_t>(0xFC) == 1;
+    fade.at<std::int32_t>(0x20) = fade_in ? 1 : 0;
+    host.quad_fade_update_0064abd0(fade, dt);
+
+    Raw p = plane();
+    refresh(p);
+    const float altitude = p.at<float>(0x100);
+    gauge_needle_set_value_00605410(unit_at(screen, 0x150), altitude, host);
+    gauge_needle_set_value_00605410(unit_at(screen, 0x154), altitude, host);
+    host.widget_set_visible_34(screen.ptr(0xE8), kLowAltitude > altitude);
+    host.widget_set_visible_34(screen.ptr(0xEC), kLowAltitude > altitude);
+    host.widget_set_visible_34(screen.ptr(0xD4), unit_at(plane(), 0x538).at<float>(0x600) != 0.0f);
+
+    float speed = static_cast<float>(host.unit_virtual_float(plane(), 0x204) * kSpeedToKnots);
+    speed = static_cast<float>(static_cast<double>(host.game_tuning_0042e740().at<float>(0x6A0)) * speed);
+    if (host.byte_00f88988() != 0) speed = static_cast<float>(speed * kKnotsToMph);
+    host.digit_gauge_update_0043b370(screen.ptr(0x108), kSpeedShownBelow > speed ? speed : kSpeedShownCap, dt);
+    if (plane().at<std::int32_t>(0x970) != 0) {
+        const std::int32_t rounds = host.unit_count_remaining_ordnance_rounds_007c1db0(plane());
+        host.digit_gauge_update_0043b370(screen.ptr(0x10C), static_cast<float>(rounds), dt);
+    }
+    plane_screen_update_drop_indicator_00609620(screen, host);
+
+    // Ladder: y = +114h - float(v * v) * 0.104 (FMULP, FSTP, FMUL qword, FSUBP).
+    const float v = plane().at<float>(0x9F0);
+    const float v_squared = static_cast<float>(static_cast<double>(v) * v);
+    host.widget_set_local_y_00aa78f0(screen.ptr(0xC8),
+                                     static_cast<float>(screen.at<float>(0x114) - v_squared * kLadderScale));
+
+    const Raw span_block = host.static_needle_span_block_00e1968c();
+    if ((span_block.at<std::uint32_t>(4) & 1) == 0) {
+        span_block.at<std::uint32_t>(4) |= 1;
+        span_block.at<float>(0) = kThrottleNeedleSpan;
+    }
+    const float raw_throttle = plane().at<float>(0xE84);
+    float throttle;
+    if (0.0f > raw_throttle) {
+        throttle = 0.0f;
+    } else if (raw_throttle > 1.0f) {  // 00D7A24C
+        throttle = 1.0f;
+    } else {
+        throttle = raw_throttle;
+    }
+    const double span = span_block.at<float>(0);
+    host.widget_set_rotation_44(screen.ptr(0xDC), static_cast<float>(kThrottleNeedleHalf * span - throttle * span));
+
+    // Horizon: RotY(-pi) * RotX(+C64h) * RotZ(+C68h - pi) into ([+C4h]+ECh)+38h.
+    const float angle_c68 = static_cast<float>(plane().at<float>(0xC68) - kHorizonRollBias);
+    const Raw horizon = unit_at(unit_at(screen, 0xC4), 0xEC);
+    float rot_z[16], rot_x[16], rot_y[16], yx[16], yxz[16];
+    host.matrix_rotation_z_00b64780(rot_z, angle_c68);
+    host.matrix_rotation_x_00b64640(rot_x, plane().at<float>(0xC64));
+    host.matrix_rotation_y_00b646e0(rot_y, kHorizonYaw);
+    host.matrix_multiply_00413920(rot_y, rot_x, yx);
+    host.matrix_multiply_00413920(yx, rot_z, yxz);
+    host.node_set_matrix_38(horizon, yxz);
+
+    // Aim point: position (+FCh, +100h, +104h) + 1000 * forward (+ECh, +F0h, +F4h).
+    p = plane();
+    refresh(p);
+    const float ahead[3] = {static_cast<float>(p.at<float>(0xEC) * kAimDistance),
+                            static_cast<float>(p.at<float>(0xF0) * kAimDistance),
+                            static_cast<float>(kAimDistance * p.at<float>(0xF4))};
+    p = plane();
+    refresh(p);
+    const float aim[3] = {static_cast<float>(ahead[0] + p.at<float>(0xFC)),
+                          static_cast<float>(p.at<float>(0x100) + ahead[1]),
+                          static_cast<float>(p.at<float>(0x104) + ahead[2])};
+    const Raw target = unit_at(unit_at(host.ingame_interface_00e198c4(), 0xCC), 0x4C);
+    auto relation = [&](Raw unit) {
+        return host.recon_relation_if_identified_00803ce0(unit_at(plane(), 0x54), unit);
+    };
+    auto hostile_unmarked = [&](Raw unit) {  // relation 0, not kind 36h, not the plane itself
+        return unit.p != nullptr && relation(unit) == 0 && !host.unit_is_kind_5c(unit, 0x36) && unit.p != plane().p;
+    };
+    bool handled = false;
+    bool rows = false;  // reach 0060A31B
+    std::size_t row = 0;
+    bool ordnance = false;
+    if (plane().p == nullptr) {
+        if (ordnance_view) ordnance = true;
+        else rows = aim_view;  // 0060A317
+    } else if (ordnance_view) {
+        ordnance = true;
+    } else if (aim_view || host.unit_is_kind_5c(plane(), 0x17)) {
+        float on_screen[3];
+        if (host.camera_project_world_to_screen_0043a660(aim, on_screen, 1, 1) == 7) {
+            if (!aim_view && host.unit_is_kind_5c(plane(), 0x17)) {
+                void* const sight = screen.ptr(0x38);
+                if (sight != nullptr) {
+                    host.widget_set_frame_88(sight, 1, 0, 1.0f);
+                    float resolved[3];
+                    host.widget_resolved_position_00aa6750(sight, resolved);
+                    const float pos[3] = {on_screen[0], on_screen[1], resolved[2]};
+                    host.widget_set_resolved_position_00aa8240(sight, pos);
+                    show(0x38);
+                }
+            } else {
+                if (target.p != nullptr && target.at<std::uint8_t>(0x5D) == 0) {
+                    const float* const from = host.unit_world_position_00427eb0(plane());
+                    const float* const to = host.unit_world_position_00427eb0(target);
+                    float delta[3];
+                    host.vector_subtract_00427c90(to, delta, from);
+                    const double d2 = host.vector_length_squared_00427e30(delta);  // compared unrounded
+                    if (plane().at<float>(0x49C) > d2) {
+                        if (!host.object_virtual_al(target, 0x10C)) {
+                            if (relation(target) == 1) {
+                                show(0x20);
+                                handled = true;
+                            } else if (!host.unit_is_kind_5c(target, 0x36)) {
+                                show(0x14);
+                            }
+                        } else if (relation(target) != 1 && !host.unit_is_kind_5c(target, 0x36) &&
+                                   target.p != plane().p) {
+                            show(0x14);
+                        }
+                    }
+                }
+                if (aim_view && !handled) {
+                    const Raw locked = unit_at(unit_at(host.ingame_interface_00e198c4(), 0xCC), 0x4C);
+                    if (locked.p != nullptr && host.object_virtual_al(locked, 0x10C)) {
+                        const float* const from = host.unit_world_position_00427eb0(locked);
+                        const float* const to = host.unit_world_position_00427eb0(plane());
+                        float delta[3];
+                        host.vector_subtract_00427c90(to, delta, from);
+                        const float d2 = static_cast<float>(host.vector_length_squared_00427e30(delta));  // FSTP
+                        if (plane().at<float>(0x49C) > d2) {
+                            show(0x20);
+                            handled = true;
+                        }
+                    }
+                }
+                float pos[3];
+                host.widget_resolved_position_00aa6750(screen.ptr(0x10), pos);  // unconditional
+                pos[0] = on_screen[0];
+                pos[1] = on_screen[1];
+                for (std::size_t off : {0x10u, 0x20u, 0x18u, 0x1Cu, 0x14u}) {
+                    if (screen.ptr(off) != nullptr) host.widget_set_resolved_position_00aa8240(screen.ptr(off), pos);
+                }
+                rows = aim_view;
+            }
+        }
+    }
+    if (ordnance) {
+        // ECX = the plane for every query (null on the plane-less path, as in
+        // the image).
+        float impact[3] = {};
+        bool project = false;
+        auto take = [&](std::uint32_t routine) {
+            float scratch[3];
+            const float* const point = host.plane_ordnance_point(plane(), routine, scratch);
+            impact[0] = point[0];
+            impact[1] = point[1];
+            impact[2] = point[2];
+        };
+        if (host.plane_weapon_query(plane(), 0x007B9320)) {
+            row = 2;
+            take(0x007C21D0);
+            host.widget_set_frame_88(screen.ptr(0x38), plane().at<std::int32_t>(0xC4) != 0x10 ? 1 : 0, 0, 1.0f);
+            if (host.plane_can_release_ordnance_007bb110(plane())) project = true;
+            else handled = true;
+        } else if (host.plane_weapon_query(plane(), 0x007B9400)) {
+            row = 1;
+            take(0x007C2450);
+            project = true;
+        } else if (host.plane_weapon_query(plane(), 0x007B9500)) {
+            row = 4;
+            take(0x007BCCF0);
+            project = true;
+        } else if (host.plane_weapon_query(plane(), 0x007B94F0)) {
+            row = 5;
+            take(0x007C21D0);
+            if (hostile_unmarked(target)) show(0x78);
+            project = true;
+        } else if (host.plane_weapon_query(plane(), 0x007B93F0)) {
+            row = 3;
+            show(0x5C);
+            float marker_y = kTorpedoMarkerY;
+            if (altitude > kTorpedoMarkerAbove) {
+                const float rise = static_cast<float>((altitude - kTorpedoMarkerBase) * kTorpedoMarkerSlope);
+                const float capped = rise > kTorpedoMarkerLimit ? kTorpedoMarkerLimitF : rise;
+                marker_y = static_cast<float>(kReticleOffset - (capped + kTorpedoMarkerPad));
+            }
+            host.widget_set_local_y_00aa78f0(screen.ptr(0x5C), marker_y);
+            if (hostile_unmarked(target)) show(0x50);
+        } else {
+            handled = true;
+        }
+        if (project) {
+            float on_screen[3];
+            if (host.camera_project_world_to_screen_0043a660(impact, on_screen, 1, 1) != 7) {
+                handled = true;
+            } else {
+                const std::size_t base = 0x10 + row * 0x14;
+                auto place = [&](void* widget) {
+                    host.widget_set_local_xy_00aa7d00(widget, static_cast<float>(kReticleOffset + on_screen[0]),
+                                                      static_cast<float>(on_screen[1] + kReticleOffset));
+                };
+                place(screen.ptr(base));  // no null test (0060A4D6)
+                for (std::size_t off : {0x08u, 0x0Cu, 0x04u, 0x10u}) {
+                    if (screen.ptr(base + off) != nullptr) place(screen.ptr(base + off));
+                }
+                if (row == 1) {
+                    const Raw locked = unit_at(unit_at(host.ingame_interface_00e198c4(), 0xCC), 0x4C);
+                    if (locked.p != nullptr && locked.at<std::uint8_t>(0x5D) == 0 && plane().p != nullptr) {
+                        if (relation(locked) == 1) {
+                            show(0x34);
+                            handled = true;
+                        } else {
+                            show(0x28);
+                        }
+                    }
+                }
+            }
+        }
+        rows = true;
+    }
+    if (rows) {
+        if (!handled) show(0x10 + row * 0x14);
+        const std::int32_t mode = host.manager_global(0x00F8A0C4).at<std::int32_t>(0x178);
+        if (mode == 1 && screen.ptr(0x18 + row * 0x14) != nullptr) show(0x18 + row * 0x14);
+        else if (mode == 2 && screen.ptr(0x1C + row * 0x14) != nullptr) show(0x1C + row * 0x14);
+    }
+
+    // 0060A37F: the altitude blinker while the plane's +72Ch sub-object says so.
+    if (host.object_virtual_al(Raw{plane().p + 0x72C}, 0x38)) {
+        p = plane();
+        refresh(p);
+        plane_screen_altitude_blink_00605b20(screen, p.at<float>(0x100), host);
+    }
+    const float previous = screen.at<float>(0x138);
+    const float current = plane().at<float>(0xE84);
+    if (previous > current) {
+        if (!host.widget_is_visible_38(screen.ptr(0xE0))) host.widget_set_visible_34(screen.ptr(0xE0), true);
+        host.plane_screen_pulse_alpha_00604cf0(screen);
+    } else if (current > previous && host.widget_is_visible_38(screen.ptr(0xE0))) {
+        host.widget_set_visible_34(screen.ptr(0xE0), false);
+        host.widget_set_alpha_4c(screen.ptr(0xE0), 0.0f);
+        screen.at<std::uint8_t>(0x140) = 0;
+    }
+    screen.at<float>(0x138) = plane().at<float>(0xE84);
+    host.widget_set_visible_34(screen.ptr(0xBC), false);
+
+    // Shake: stick vector (tuning +194h / +198h / +19Ch), length capped at
+    // tuning +1A0h, timer +164h toggling byte +160h.
+    p = plane();
+    const float t194 = host.game_tuning_0042e740().at<float>(0x194);
+    const float t198 = host.game_tuning_0042e740().at<float>(0x198);
+    const float t19c = host.game_tuning_0042e740().at<float>(0x19C);
+    float stick[3] = {
+        static_cast<float>(static_cast<double>(t194) * p.at<float>(0xBE8) + static_cast<double>(p.at<float>(0xBF0)) * t198),
+        static_cast<float>(static_cast<double>(t194) * p.at<float>(0xBEC) + static_cast<double>(p.at<float>(0xBF0)) * t198),
+        host.float_00f8757c()};
+    const Raw model = unit_at(plane(), 0x538);
+    const float over = static_cast<float>(host.unit_virtual_float(plane(), 0x38) / model.at<float>(0x188) - 1.0);
+    if (over > 0.0f) {
+        const double add = static_cast<double>(over) * t19c;
+        stick[0] = static_cast<float>(stick[0] + add);
+        stick[1] = static_cast<float>(stick[1] + add);
+        stick[2] = static_cast<float>(stick[2] + add);
+    }
+    const float cap = host.game_tuning_0042e740().at<float>(0x1A0);
+    float strength = static_cast<float>(host.vector_length_0042b2f0(stick));
+    if (strength > cap) strength = cap;
+    const float timer = static_cast<float>(screen.at<float>(0x164) - dt);
+    screen.at<float>(0x164) = timer;
+    if (0.0f > timer) {
+        const bool on = screen.at<std::uint8_t>(0x160) == 0;
+        screen.at<std::uint8_t>(0x160) = on ? 1 : 0;
+        const Raw tuning = host.game_tuning_0042e740();
+        const float y0 = on ? tuning.at<float>(0x1B0) : tuning.at<float>(0x1AC);
+        const float y1 = on ? tuning.at<float>(0x1B4) : tuning.at<float>(0x1A8);
+        screen.at<float>(0x164) = static_cast<float>(host.clamped_interpolate_00419010(0.0f, y0, cap, y1, strength));
+        const double next = screen.at<float>(0x164);
+        const float high = static_cast<float>(next * host.game_tuning_0042e740().at<float>(0x1B8));
+        const float low = static_cast<float>(-next * host.game_tuning_0042e740().at<float>(0x1B8));
+        // ECX = 1 (0060AAA2): RNG stream 1, not the gameplay stream 0.
+        screen.at<float>(0x164) =
+            static_cast<float>(host.random_uniform_00bd2f10(1, low, high) + screen.at<float>(0x164));
+    }
+    bool shake = screen.at<std::uint8_t>(0x160) != 0 && strength > 0.0f;  // 00D7A218
+    if (!shake) {
+        const float threshold = static_cast<float>(host.game_tuning_0042e740().at<float>(0x1BC) * static_cast<double>(cap));
+        shake = strength >= threshold;
+    }
+    if (shake) {
+        if (screen.at<std::uint8_t>(0x160) == 0) strength = static_cast<float>(strength * kShakeHalf);
+        void* const scene = host.game_00e188a8().ptr(0x1ED4);
+        if (scene != nullptr) {
+            host.scene_apply_0042c450(
+                scene, static_cast<float>(host.game_tuning_0042e740().at<float>(0x1A4) * static_cast<double>(strength)));
+        }
+    } else {
+        const Raw effect = unit_at(screen, 0x15C);
+        if (effect.p != nullptr) {
+            host.point_effect_stop_children_00867b10(effect);
+            effect.at<std::uint8_t>(9) = 1;
+            refcounted_ptr_release_00605600(Raw{screen.p + 0x15C}, host);  // 00484620(0)
+        }
+    }
+    const Raw last = plane();
+    host.widget_set_visible_34(screen.ptr(0x11C), last.p != nullptr && last.at<std::int32_t>(0xC30) != 0);
+}
+
+void plane_screen_load_layout_00606c60(Raw screen, Fe5Host& host) {
+    screen.ptr(0x0C) = host.gui_load_page_00aa5840("GUI_cross_all");  // 00CF4800
+    if (screen.ptr(0x0C) != nullptr) {
+        screen.ptr(0x88) = host.gui_find_child_00aa7e00(screen.ptr(0x0C), "cross_tilt_Icon");  // 00CF47F0
+        for (std::size_t row = 0; row < kPlaneReticleRows.size(); ++row) {
+            void* const group = host.gui_find_child_00aa7e00(screen.ptr(0x0C), kPlaneReticleRows[row]);
+            for (std::size_t slot = 0; slot < kPlaneReticleSlots.size(); ++slot) {
+                void*& cell = screen.ptr(0x10 + row * 0x14 + slot * 4);
+                cell = nullptr;
+                if ((kPlaneReticleSlots[slot].skip_rows >> row) & 1) continue;
+                cell = host.gui_find_child_00aa7e00(group, kPlaneReticleSlots[slot].name);
+            }
+            void* const f_icon = screen.ptr(0x14 + row * 0x14);
+            if (f_icon != nullptr) {
+                void* const f2 = host.gui_find_child_00aa7e00(f_icon, "cross_F2_Icon");  // 00CEDE30
+                const float* const size = host.widget_size_00aa6740(f_icon);
+                const float w = size[0];
+                const float h = size[1];
+                const float pos[3] = {static_cast<float>(w * kCrossF2Scale), static_cast<float>(kCrossF2Scale * h), 0.0f};
+                host.widget_set_local_position_00aa7dc0(f2, pos);
+            }
+        }
+        screen.ptr(0x8C) = host.gui_find_child_00aa7e00(screen.ptr(0x0C), "payload_template_Icon");     // 00CF4768
+        host.widget_set_visible_34(screen.ptr(0x8C), false);
+        screen.ptr(0x90) = host.gui_find_child_00aa7e00(screen.ptr(0x0C), "payload_template_Section");  // 00CF474C
+        host.widget_set_visible_34(screen.ptr(0x90), false);
+    }
+    screen.ptr(0xB8) = host.gui_load_page_00aa5840("GUI_plane_effects");  // 00CF4738
+    screen.ptr(0xBC) = host.gui_find_child_00aa7e00(screen.ptr(0xB8), "AttackRun_Text");    // 00CF4728
+    screen.ptr(0x11C) = host.gui_find_child_00aa7e00(screen.ptr(0xB8), "RepairZone_Text");  // 00CF4718
+    void* const top = host.gui_find_child_00aa7e00(screen.ptr(0xB8), "VillanasFelso_Icon");  // 00CF4704
+    if (top != nullptr) {
+        void* const bottom = host.gui_find_child_00aa7e00(screen.ptr(0xB8), "VillanasAlso_Icon");  // 00CF46F0
+        void* const left = host.gui_find_child_00aa7e00(screen.ptr(0xB8), "VillanasBal_Icon");     // 00CF46DC
+        void* const right = host.gui_find_child_00aa7e00(screen.ptr(0xB8), "VillanasJobb_Icon");   // 00CF46C8
+        host.quad_fade_bind_0064a540(Raw{screen.p + 0x16C}, top, bottom, left, right);
+    }
+    screen.ptr(0xB4) = host.gui_load_page_00aa5840("GUI_plane");  // 00CF46BC
+    for (const PlaneHudWidget& w : kPlaneHudWidgets) {
+        void* const parent = w.parent == 0 ? screen.ptr(0xB4) : screen.ptr(w.parent);
+        screen.ptr(w.offset) = host.gui_find_child_00aa7e00(parent, w.name);
+    }
+}
+
+void unit_library_load_unit_model_00680db0(Raw screen, Fe5Host& host) {
+    host.unit_library_release_model_parts_0067ed30(screen);
+    // 004263B0 appends the decimal class index to the prefix (00CF70CC).
+    host.file_block_begin("GIUnitLib::ShowSelectedVehicle_" + std::to_string(screen.at<std::int32_t>(0x130)));
+    void* globals = host.lua_globals_00b67980();
+    void* const classes = host.lua_get_by_name_00b67800(globals, "VehicleClass");  // 00CE5880
+    host.lua_release_00b67700(globals);
+    globals = host.lua_globals_00b67980();
+    void* const devices = host.lua_get_by_name_00b67800(globals, "DeviceClass");  // 00CE44BC
+    host.lua_release_00b67700(globals);
+    void* const entry = host.lua_get_by_index_00b67720(classes, screen.at<std::int32_t>(0x130));
+    {
+        void* const mesh = host.lua_get_by_name_00b67800(entry, "Mesh");  // 00CE5FD0
+        screen.ptr(0x108) = host.resource_load_with_game_factory_007188a0(host.lua_get_string_00b662b0(mesh));
+        host.lua_release_00b67700(mesh);
+    }
+    const Raw hull_part = host.unit_part_instance_new_007135c0(screen.ptr(0x108));
+    screen.ptr(0x10C) = hull_part.p;
+    const Raw hull_node{static_cast<std::uint8_t*>(Raw{static_cast<std::uint8_t*>(hull_part.ptr(0x160))}.ptr(0x0C))};
+    host.node_propagate_root_registration_00b6d890(hull_node, screen.ptr(0x0C));
+    const float identity[16] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};  // 00D7A24C = 1.0
+    host.node_set_matrix_34(hull_node, identity);
+    host.model_groups_select_visible_00710bb0(Raw{static_cast<std::uint8_t*>(screen.ptr(0x10C))}, 0);
+
+    void* const platforms = host.lua_get_by_name_00b67800(entry, "Platforms");  // 00CEB734
+    if (host.lua_is_table_00b661b0(platforms)) {
+        void* const key = host.lua_nil_00b65f50();
+        void* const value = host.lua_nil_00b65f50();
+        host.lua_iterate_first_00b67080(platforms, key, value);
+        while (!host.lua_iterate_ended_00b66420(platforms, key)) {
+            if (host.lua_is_integer_00b66a60(key)) {
+                // Gun[1] must be an integer (00681182..0068127C).
+                bool bad = true;
+                void* const gun = host.lua_get_by_name_00b67800(value, "Gun");  // 00CEB730
+                if (host.lua_is_table_00b661b0(gun)) {
+                    void* const gun2 = host.lua_get_by_name_00b67800(value, "Gun");
+                    void* const first = host.lua_get_by_index_00b67720(gun2, 1);
+                    bad = !host.lua_is_integer_00b66a60(first);
+                    host.lua_release_00b67700(first);
+                    host.lua_release_00b67700(gun2);
+                }
+                host.lua_release_00b67700(gun);
+                if (!bad) {
+                    void* const gun3 = host.lua_get_by_name_00b67800(value, "Gun");
+                    void* const first = host.lua_get_by_index_00b67720(gun3, 1);
+                    const std::int32_t device = host.lua_get_integer_00b66290(first);
+                    host.lua_release_00b67700(first);
+                    host.lua_release_00b67700(gun3);
+                    void* const row = host.lua_get_by_index_00b67720(devices, device);
+                    void* const mesh = host.lua_get_by_name_00b67800(row, "Mesh");
+                    const bool has_mesh = host.lua_is_string_00b660a0(mesh);
+                    host.lua_release_00b67700(mesh);
+                    host.lua_release_00b67700(row);
+                    if (has_mesh) {
+                        const Raw group{static_cast<std::uint8_t*>(host.resource_find_last_named_point_group_00718000(
+                            screen.ptr(0x108), "slot", host.lua_get_integer_00b66290(key)))};  // 00CEB728
+                        const Raw points{group.p == nullptr ? nullptr : group.p + 0x44};
+                        const auto point_count = [&] {
+                            return (static_cast<const std::uint8_t*>(points.ptr(8)) - static_cast<const std::uint8_t*>(points.ptr(4))) / 0x0C;
+                        };
+                        if (group.p != nullptr && points.ptr(4) != nullptr && point_count() > 2) {
+                            float basis[16] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+                            const float* p0 = host.point_vector_at_004803a0(points, 0);
+                            basis[12] = p0[0];
+                            basis[13] = p0[1];
+                            basis[14] = p0[2];
+                            auto diff = [&](std::int32_t to, float out[3]) {  // FLD, FSUB, FSTP per component
+                                const float* const a = host.point_vector_at_004803a0(points, 0);
+                                const float* const b = host.point_vector_at_004803a0(points, to);
+                                out[0] = b[0] - a[0];
+                                out[1] = b[1] - a[1];
+                                out[2] = b[2] - a[2];
+                            };
+                            diff(2, &basis[8]);
+                            float side[3];
+                            float ahead[3];
+                            diff(1, side);
+                            diff(2, ahead);
+                            float up[3];
+                            host.vector_cross_004fa230(up, ahead, side);
+                            basis[4] = up[0];
+                            basis[5] = up[1];
+                            basis[6] = up[2];
+                            host.matrix_orthonormalize_basis_rows_0085dc80(basis);
+                            float yaw = 0.0f;
+                            float pitch = 0.0f;
+                            void* const rest_probe = host.lua_get_by_name_00b67800(value, "RestAngles");  // 00CEB71C
+                            const bool has_rest = host.lua_is_table_00b661b0(rest_probe);
+                            host.lua_release_00b67700(rest_probe);
+                            if (has_rest) {
+                                void* const rest = host.lua_get_by_name_00b67800(value, "RestAngles");
+                                float pair[2];
+                                const float* const angles = host.lua_get_vector2_00b679f0(rest, pair);
+                                yaw = angles[0];
+                                pitch = angles[1];
+                                host.lua_release_00b67700(rest);
+                            } else {
+                                bool has_window = false;
+                                void* const windows = host.lua_get_by_name_00b67800(value, "Windows");  // 00CEB714
+                                if (host.lua_is_table_00b661b0(windows)) {
+                                    void* const windows2 = host.lua_get_by_name_00b67800(value, "Windows");
+                                    void* const window = host.lua_get_by_index_00b67720(windows2, 1);
+                                    has_window = host.lua_is_table_00b661b0(window);
+                                    host.lua_release_00b67700(window);
+                                    host.lua_release_00b67700(windows2);
+                                }
+                                host.lua_release_00b67700(windows);
+                                if (has_window) {
+                                    void* const windows3 = host.lua_get_by_name_00b67800(value, "Windows");
+                                    void* const window = host.lua_get_by_index_00b67720(windows3, 1);
+                                    host.lua_release_00b67700(windows3);
+                                    auto mean = [&](const char* low_key, const char* high_key) {
+                                        void* const low = host.lua_get_by_name_00b67800(window, low_key);
+                                        void* const high = host.lua_get_by_name_00b67800(window, high_key);
+                                        const double high_value = host.lua_get_number_00b66270(high);
+                                        const double sum = host.lua_get_number_00b66270(low) + high_value;
+                                        const float result = static_cast<float>(sum * 0.5);  // 00D7A280
+                                        host.lua_release_00b67700(high);
+                                        host.lua_release_00b67700(low);
+                                        return result;
+                                    };
+                                    yaw = mean("MinHorzAngle", "MaxHorzAngle");    // 00CEB704 / 00CEB6F4
+                                    pitch = mean("MinVertAngle", "MaxVertAngle");  // 00CEB6E4 / 00CEB6D4
+                                    host.lua_release_00b67700(window);
+                                }
+                            }
+                            void* const device_row = host.lua_get_by_index_00b67720(devices, device);
+                            void* const device_mesh = host.lua_get_by_name_00b67800(device_row, "Mesh");
+                            void* const model =
+                                host.resource_load_with_game_factory_007188a0(host.lua_get_string_00b662b0(device_mesh));
+                            host.lua_release_00b67700(device_mesh);
+                            host.lua_release_00b67700(device_row);
+                            const Raw part = host.unit_part_instance_new_007135c0(model);
+                            const Raw part_node{static_cast<std::uint8_t*>(Raw{static_cast<std::uint8_t*>(part.ptr(0x160))}.ptr(0x0C))};
+                            host.node_propagate_root_registration_00b6d890(part_node, screen.ptr(0x0C));
+                            host.node_set_parent_00b6e680(part_node, hull_node.p);
+                            float rotation[16];
+                            float placed[16];
+                            const float* const turn = host.matrix_rotation_y_negated_0042b490(rotation, yaw);
+                            host.matrix_multiply_00413920(turn, basis, placed);
+                            host.node_set_matrix_38(part_node, placed);
+                            void* const barrel = host.model_find_note_node_0071ad50(part.ptr(0x160), "barrel");  // 00CF70C4
+                            if (barrel != nullptr) {
+                                float elevation[16];
+                                host.node_set_matrix_38(Raw{static_cast<std::uint8_t*>(barrel)},
+                                                        host.matrix_rotation_x_negated_0042b450(elevation, pitch));
+                            }
+                            host.model_groups_select_visible_00710bb0(part, 0);
+                            host.unit_library_model_vector_push_00680cc0(Raw{screen.p + 0x110}, model);
+                            host.unit_library_part_vector_push_00680d30(Raw{screen.p + 0x120}, part.p);
+                        }
+                    }
+                }
+            }
+            host.lua_iterate_next_00b67190(platforms, key, value);
+        }
+        host.lua_release_00b67700(value);
+        host.lua_release_00b67700(key);
+    }
+    host.lua_release_00b67700(platforms);
+    host.lua_release_00b67700(entry);
+    host.lua_release_00b67700(devices);
+    host.lua_release_00b67700(classes);
+    host.file_block_end();
 }
 // @impl-end
 

@@ -73,8 +73,10 @@ struct MarkerHighlightHost {
     virtual ~MarkerHighlightHost() = default;
     // element+94h = (float)(0.28 * 0.0).
     virtual void set_highlight_level(void* element, float level) = 0;
-    // 006DBAC0 with ECX = element and the walk-4 arguments (1, 0, 1.0f).
-    virtual void apply_highlight_pulse_006dbac0(void* element, int mode, int flag, float value) = 0;
+    // 006DBAC0: ECX = element, DL = enable (a register argument; the body starts
+    // MOV BL, DL; TEST BL, BL), stack (mode, flag, value). The removal call passes DL = 0
+    // (XOR DL, DL at 006DC661); BSP_MarkerManager_Update's call passes DL = 1 (006DC49A).
+    virtual void apply_highlight_pulse_006dbac0(void* element, bool enable, int mode, int flag, float value) = 0;
     // element vtable+54h / +50h, four floats.
     virtual MarkerColor get_color(void* element) = 0;
     virtual void set_color(void* element, const MarkerColor& color) = 0;

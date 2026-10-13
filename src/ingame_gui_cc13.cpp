@@ -2367,35 +2367,39 @@ void session_message_write(const SessionMessageClass& c, Raw m, void* cursor, Se
     }
 }
 
+// The field reads take ECX = cursor + 4h (006503C0 `add edi,4; mov ecx,edi`,
+// 00605300 / 0064A7E0 `lea ecx,[edi+4]`); the header read takes the cursor.
 void session_message_read(const SessionMessageClass& c, Raw m, void* cursor, SessionMessageHost& host) {
     host.read_header_0075b4c0(m, cursor);
+    void* const bits = static_cast<std::uint8_t*>(cursor) + 4;
     for (std::uint8_t i = 0; i < c.field_count; ++i) {
         const SessionField& f = c.fields[i];
         switch (f.kind) {
-        case SessionFieldKind::Bool: host.read_bool_00428d70(cursor, m.at<std::uint8_t>(f.offset)); break;
-        case SessionFieldKind::Signed: host.read_signed_00428d30(cursor, m.at<std::int32_t>(f.offset), f.bits); break;
-        case SessionFieldKind::Unsigned: host.read_unsigned_00428d10(cursor, m.at<std::uint32_t>(f.offset), f.bits); break;
+        case SessionFieldKind::Bool: host.read_bool_00428d70(bits, m.at<std::uint8_t>(f.offset)); break;
+        case SessionFieldKind::Signed: host.read_signed_00428d30(bits, m.at<std::int32_t>(f.offset), f.bits); break;
+        case SessionFieldKind::Unsigned: host.read_unsigned_00428d10(bits, m.at<std::uint32_t>(f.offset), f.bits); break;
         }
     }
 }
 
 // 006563A0, message 82h read: header, bool +1Ch, 6 bits +20h, 3 bits +24h, a
 // presence bit for the 12-bit word +28h (0 when absent), 4 bits into +2Ch
-// (through a local).
+// (through a local). Field reads on cursor + 4h (006563B2 `add edi,4`).
 void session_message130_read_006563a0(Raw m, void* cursor, SessionMessageHost& host) {
     host.read_header_0075b4c0(m, cursor);
-    host.read_bool_00428d70(cursor, m.at<std::uint8_t>(0x1C));
-    host.read_unsigned_00428d10(cursor, m.at<std::uint32_t>(0x20), 6);
-    host.read_unsigned_00428d10(cursor, m.at<std::uint32_t>(0x24), 3);
+    void* const bits = static_cast<std::uint8_t*>(cursor) + 4;
+    host.read_bool_00428d70(bits, m.at<std::uint8_t>(0x1C));
+    host.read_unsigned_00428d10(bits, m.at<std::uint32_t>(0x20), 6);
+    host.read_unsigned_00428d10(bits, m.at<std::uint32_t>(0x24), 3);
     std::uint8_t present = 0;
-    host.read_bool_00428d70(cursor, present);
+    host.read_bool_00428d70(bits, present);
     if (present == 0) {
         m.at<std::uint16_t>(0x28) = 0;
     } else {
-        host.read_word_bits_00428e30(cursor, m.at<std::uint16_t>(0x28), 12);
+        host.read_word_bits_00428e30(bits, m.at<std::uint16_t>(0x28), 12);
     }
     std::uint32_t last = 0;
-    host.read_unsigned_00428d10(cursor, last, 4);
+    host.read_unsigned_00428d10(bits, last, 4);
     m.at<std::uint32_t>(0x2C) = last;
 }
 
