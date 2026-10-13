@@ -56,6 +56,15 @@ listing passes it the text in ECX.
   vertex writer `00BAA0F0` are bound (their reconstructions are semantic models only). `00BFA910` is
   `_CIlog` (FLDLN2/FYL2X); `00BFEEEC` is taken as `_CIexp` from its use on k*log(x).
 
+- `00BA1400` wave field base constructor. Its many pooled temporaries were matched to their stack
+  slots, which settles the `00B4C700` operands: ECX the model name, EDX the geometry file and the first
+  stack word the shader. The "OceanVelAndDepth" model it creates is rooted under the world and given
+  the ocean triangle but never stored in a field.
+- `00BA7530` height generator passes: height map, normal map, height scale and the wave-damp target.
+  The normal pass's vertex block interleaves x87 and integer moves; it was traced symbolically with
+  `sc2_x87.py`. Each vertex carries four neighbour taps (u -/+ dx, v -/+ dy). The three material
+  registration routines `00B18B20`, `00B18AE0` and `00B18B00` take (name, value) with RET 8, unlike
+  the float4-array form `00B18AC0`, which also takes a count.
 ## Terrain: end of `terrain_particles_cc13.*`
 
 The new image calls are in `TerrainLeft2Host` (and `TerrainLeft2NodeCalls` for the node pair).
@@ -87,7 +96,10 @@ The new image calls are in `TerrainLeft2Host` (and `TerrainLeft2NodeCalls` for t
   `00A84D20`. The record destroy and assign (`00A842E0`, `00A84680`) and the alias-list helpers
   (`004C3020`, `004D48A0`) have projected or pool-typed reconstructions elsewhere, so they are bound.
 - `00A7EA30`, the debug dump: it builds one line per sound object and throws it away.
-- `00BA1400` wave field base constructor. Its many pooled temporaries were matched to their stack
-  slots, which settles the `00B4C700` operands: ECX the model name, EDX the geometry file and the first
-  stack word the shader. The "OceanVelAndDepth" model it creates is rooted under the world and given
-  the ocean triangle but never stored in a field.
+
+## Segment 1 (00413D10-0042A830): `engine_seg1_cc13.*`
+
+A first bounded batch of the engine helpers: `00414130` lerp, `00414220` vector3 assign, `00414260`
+scale, `004142A0` add, `004191D0` and `004193E0` squared lengths and `004192E0` vector2 normalise. Each
+x87 expression was traced from the bytes with `sc2_x87.py`; the vector3 squared length keeps its partial
+sum in the register before the final float store. The new file is registered in `cmake/startup.cmake`.
