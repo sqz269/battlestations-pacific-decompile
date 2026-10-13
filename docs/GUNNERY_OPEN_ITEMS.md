@@ -13578,3 +13578,19 @@ USN12 s38_u12_p2, USN15 s45_u15_l2 and LOMP06 l50_l6_q6 each give pair_diff exit
 `clears=0`. Every completion is unchanged and the exec guard's refusal is logged. As predicted: on these rows no
 rapid-class gun holds `+4D4h` through a step in which `0072D130` does not send. LOMP06's `009E2B99` raises do not
 reach a shot that the clear would change. The mechanism matches the image, so the switch is flipped ON.
+
+**214 verdict: `kBlastMeshBoundsBound` stays OFF (cc9-gunnery40).** OFF `530944a5c` as built (`local\g40_bm0`) against
+ON (`local\g39_lo`):
+- USN12 s38_u12_p2: pair_diff exit 3, completes in both runs (exec guard logged). The forts (no element mesh,
+  `entries=0`) now take box distances from the model box, so the early fort kills move by 2..9 s. The spread moved
+  as predicted.
+- USNOS s45_os_k 200000: OFF runs out without an end, as in 205. ON **fails at 2119.54 s ("Game Over", HQ1), the
+  same instant as 205's ON run**, even though 214 changes only the crash and kamikaze arms (`shape walks=3`,
+  `no_shape_in_range=0` ON). The failure is therefore deterministic and comes from the mesh-box admission
+  itself, not from those arms. NH again dies at 1482.72 s to Shimotsuke's category 6
+  (`hits c6=36 dmg c6=15802 killer_blast=1`), yet the `impact blast ... on NH` lines carry only a few hundred
+  points. So most of that damage reaches NH by a path that logs no `impact blast` line. The only reader of the
+  mesh box is `blast_box_distance` (impact, crash and kamikaze arms), so the open question is which arm's record
+  goes unlogged.
+- Mechanism not shown to match; the switch stays OFF with 214's arms in place. Next step: log every blast record
+  that `blast_box_distance` admits under the mesh box (unit, arm, distance, entries) on USNOS ON up to 1482 s.
