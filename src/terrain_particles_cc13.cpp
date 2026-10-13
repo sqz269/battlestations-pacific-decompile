@@ -352,7 +352,7 @@ void foliage_system_remove_landscape_00ad7b90(void* system, void* landscape, Ter
             if (rd<std::uint32_t>(group, 0x14) == 0) continue;
             host.bush_group_detach_00ae1e00(group, at(system, 0x30));
             if (group != nullptr) {
-                host.bush_group_destruct_00ae1c80(group);
+                bush_group_destruct_00ae1c80(group, host);
                 host.free(group);
             }
             std::memmove(&bushes.first[i], &bushes.first[i + 1], (bushes.last - &bushes.first[i + 1]) * 4);
@@ -367,7 +367,7 @@ void foliage_system_remove_landscape_00ad7b90(void* system, void* landscape, Ter
             if (rd<std::uint32_t>(group, 0x08) == 0) continue;
             host.tree_group_detach_00ae4f30(group, at(system, 0x24));
             if (group != nullptr) {
-                host.tree_group_destruct_00ae4c20(group);
+                tree_group_destruct_00ae4c20(group, host);
                 host.free(group);
             }
             std::memmove(&trees.first[i], &trees.first[i + 1], (trees.last - &trees.first[i + 1]) * 4);
@@ -1470,6 +1470,333 @@ float* lua_global_float4_00b1b980(void* owner, float out[4], const void* name, R
     }
     render.lua_object_destruct_00b67700(field);
     return out;
+}
+
+void quad_nodes_reserve_00ae9ac0(NativeArray<QuadNode14>& a, std::int32_t n) {
+    bsp::cc13_scene2::array_reserve_min_one(a, n);
+}
+
+void quad_nodes_push_back_00aea530(NativeArray<QuadNode14>& a, const QuadNode14& node) {
+    if (a.count == a.capacity) {
+        std::int32_t n = a.capacity * 2;
+        if (n < 2) n = 1;
+        quad_nodes_reserve_00ae9ac0(a, n);
+    }
+    a.data[a.count++] = node;
+}
+
+void quad_nodes_resize_00aea590(NativeArray<QuadNode14>& a, std::int32_t n) {
+    bsp::cc13_scene2::array_resize_zero_fill<QuadNode14>(a, n,
+        [](NativeArray<QuadNode14>& x, std::int32_t m) { quad_nodes_reserve_00ae9ac0(x, m); });
+}
+
+void quad_nodes_destroy_00aea8a0(NativeArray<QuadNode14>& a) {
+    quad_nodes_resize_00aea590(a, 0);
+    ::operator delete(a.data);
+}
+
+void* terrain_quadtree_construct_00aea8c0(void* tree) {
+    wr<std::uint32_t>(tree, 0, 0x00D5D6A4);
+    for (std::uint32_t off : {0x3Cu, 0x40u, 0x44u}) wr<std::uint32_t>(tree, off, 0);
+    return tree;
+}
+
+void terrain_quadtree_destroy_00aea8e0(void* tree) {
+    wr<std::uint32_t>(tree, 0, 0x00D5D6A4);
+    quad_nodes_destroy_00aea8a0(*reinterpret_cast<NativeArray<QuadNode14>*>(at(tree, 0x3C)));
+}
+
+void terrain_quadtree_set_bounds_00aea900(void* tree, void* field, const float min[3], const float max[3],
+    std::int32_t depth) {
+    wr<void*>(tree, 0x48, field);
+    for (std::uint32_t k = 0; k < 3; ++k) {
+        wr<float>(tree, 4 + 4 * k, min[k]);
+        wr<float>(tree, 0x10 + 4 * k, max[k]);
+    }
+    wr<std::int32_t>(tree, 0x34, depth);
+    wr<std::int32_t>(tree, 0x38, 1 << (depth & 0x1F));
+    for (std::uint32_t k = 0; k < 3; ++k)
+        wr<float>(tree, 0x1C + 4 * k, f(static_cast<double>(rd<float>(tree, 0x10 + 4 * k)) - rd<float>(tree, 4 + 4 * k)));
+    const double n = static_cast<float>(rd<std::int32_t>(tree, 0x38));
+    for (std::uint32_t k = 0; k < 3; ++k) wr<float>(tree, 0x28 + 4 * k, f(rd<float>(tree, 0x1C + 4 * k) / n));
+    quad_nodes_resize_00aea590(*reinterpret_cast<NativeArray<QuadNode14>*>(at(tree, 0x3C)), 0);
+}
+
+void terrain_quadtree_tile_range_00ae9b50(const void* tree, float out[2], std::int32_t x, std::int32_t y) {
+    const void* field = rd<const void*>(tree, 0x48);
+    if (x < rd<std::int32_t>(field, 0x38) && y < rd<std::int32_t>(field, 0x3C)) {
+        const void* tile = rd<void* const*>(field, 0x40)[rd<std::int32_t>(field, 0x38) * y + x];
+        if (tile != nullptr) {
+            out[0] = rd<float>(tile, 0x14);
+            out[1] = rd<float>(tile, 0x18);
+            return;
+        }
+    }
+    out[0] = kNoDataHeight_00D7A240;
+    out[1] = 1000.0f;
+}
+
+void* terrain_weak_link_construct_00ae9870(void* link, void* ref, TerrainHost& host, WeakOwnerHost& weak) {
+    weak.weak_owner_construct(link);
+    wr<std::uint32_t>(link, 0, 0x00D5D660);
+    wr<std::uint32_t>(link, 0xC, 0);
+    assign_retained(link, 0xC, ref, host);
+    wr<float>(link, 0x10, kNoDataHeight_00D7A240);
+    wr<float>(link, 0x14, 1e10f);
+    wr<float>(link, 0x18, 300.0f);
+    wr<float>(link, 0x1C, 9.375f);
+    return link;
+}
+
+void terrain_weak_link_destruct_00ae9930(void* link, TerrainHost& host, WeakOwnerHost& weak) {
+    wr<std::uint32_t>(link, 0, 0x00D5D660);
+    release_ref_slot(reinterpret_cast<void**>(at(link, 0xC)), host);
+    weak.weak_owner_destroy(link);
+}
+
+void bush_quad_node_destroy_children_00ae09d0(void* node, TerrainHost& host) {
+    for (std::uint32_t off = 0x1C; off <= 0x28; off += 4) {
+        void* child = rd<void*>(node, off);
+        if (child == nullptr) continue;
+        bush_quad_node_destroy_children_00ae09d0(child, host);
+        host.free(child);
+        wr<std::uint32_t>(node, off, 0);
+    }
+}
+
+void bush_quad_node_delete_owned_00ae08e0(void** slot, TerrainHost& host) {
+    void* node = *slot;
+    if (node == nullptr) return;
+    bush_quad_node_destroy_children_00ae09d0(node, host);
+    host.free(node);
+    *slot = nullptr;
+}
+
+void node_ref_release_00ae0910(void** slot, TerrainHost& host) {
+    if (*slot == nullptr) return;
+    host.node_unlink_and_release_00b6d8f0(*slot);
+    *slot = nullptr;
+}
+
+void tree_quad_node_destroy_children_00ae4f70(void* node, TerrainHost& host) {
+    if (rd<std::int32_t>(node, 0x24) > 0) {
+        for (std::uint32_t off = 0x2C; off <= 0x38; off += 4) {
+            void* child = rd<void*>(node, off);
+            if (child == nullptr) continue;
+            tree_quad_node_destroy_children_00ae4f70(child, host);
+            host.free(child);
+            wr<std::uint32_t>(node, off, 0);
+        }
+    }
+    release_ref_slot(reinterpret_cast<void**>(at(node, 0x54)), host);
+    if (void* p = rd<void*>(node, 0x14)) host.free(p);
+    for (std::uint32_t off : {0x14u, 0x18u, 0x1Cu}) wr<std::uint32_t>(node, off, 0);
+}
+
+void tree_quad_node_delete_00ae2ec0(void** slot, TerrainHost& host) {
+    void* node = *slot;
+    if (node == nullptr) return;
+    tree_quad_node_destroy_children_00ae4f70(node, host);
+    host.free(node);
+    *slot = nullptr;
+}
+
+bool pointer_array_erase_value_swap_last_00ae4dd0(PtrArray& a, const void* value) {
+    for (std::int32_t i = 0; i < a.count; ++i) {
+        if (a.data[i] != value) continue;
+        if (i != a.count - 1) a.data[i] = a.data[a.count - 1];
+        --a.count;
+        return true;
+    }
+    return false;
+}
+
+void bush_group_set_enabled_00ae0710(void* group, std::uint8_t enabled, TerrainHost& host) {
+    wr<std::uint8_t>(group, 0x40, enabled);
+    if (void* mesh = rd<void*>(group, 0x2C)) host.mesh_clear_draw_section_owners_00b73c10(mesh);
+}
+
+void tree_group_set_enabled_00ae2c80(void* group, std::uint8_t enabled, TerrainHost& host) {
+    wr<std::uint8_t>(group, 0x38, enabled);
+    host.mesh_clear_draw_section_owners_00b73c10(rd<void*>(group, 0x28));
+}
+
+bool generated_model_finder_visit_00ae2cb0(void* finder, void* node, TerrainHost& host) {
+    if (host.node_is_generated_model(node)) {
+        wr<void*>(finder, 8, node);
+        return true;
+    }
+    for (void* child = rd<void*>(node, 0x34); child != nullptr; child = rd<void*>(child, 0x3C)) {
+        if (host.node_is_generated_model(child)) {
+            wr<void*>(finder, 8, child);
+            return true;
+        }
+    }
+    for (void* child = rd<void*>(node, 0x34); child != nullptr; child = rd<void*>(child, 0x3C))
+        if (generated_model_finder_visit_00ae2cb0(finder, child, host)) return true;
+    wr<void*>(finder, 8, nullptr);
+    return false;
+}
+
+void tree_group_destruct_00ae4c20(void* group, TerrainHost& host) {
+    tree_quad_node_delete_00ae2ec0(reinterpret_cast<void**>(at(group, 0x10)), host);
+    node_ref_release_00ae0910(reinterpret_cast<void**>(at(group, 0x18)), host);
+    void* type = rd<void*>(group, 4);
+    wr<std::int32_t>(type, 0x44, rd<std::int32_t>(type, 0x44) - 1);
+    for (std::uint32_t off : {0x1Cu, 0x20u, 0x24u, 0x28u, 0x34u}) release_ref_slot(reinterpret_cast<void**>(at(group, off)), host);
+}
+
+void bush_group_destruct_00ae1c80(void* group, TerrainHost& host) {
+    for (std::uint32_t off : {0x50u, 0x28u, 0x2Cu, 0x3Cu, 0x38u}) release_ref_slot(reinterpret_cast<void**>(at(group, off)), host);
+    node_ref_release_00ae0910(reinterpret_cast<void**>(at(group, 0x20)), host);
+    bush_quad_node_delete_owned_00ae08e0(reinterpret_cast<void**>(at(group, 0x18)), host);
+    while (rd<std::int32_t>(group, 0x6C) > 0) {
+        wr<std::int32_t>(group, 0x6C, rd<std::int32_t>(group, 0x6C) - 1);
+        host.cs_leave(at(group, 0x54));
+    }
+    host.cs_delete(at(group, 0x54));
+    host.shadow_resize_pointer_vector_00ae19b0(at(group, 0x44), 0);
+    host.free(rd<void*>(group, 0x44));
+    release_native_string(at(group, 0x0C), host);
+    release_native_string(at(group, 0x04), host);
+}
+
+namespace {
+void copy_string_field(void* dst, const void* src, TerrainHost& host) {
+    if (dst != src) host.native_string_assign_0041dd40(dst, rd<const void*>(src, 4), rd<std::uint32_t>(src, 0));
+}
+}  // namespace
+
+void* foliage_type_record_construct_00ae6590(void* record, const FoliageTypeRecordArgs& args, TerrainHost& host) {
+    for (std::uint32_t off = 0xC; off <= 0x20; off += 4) wr<std::uint32_t>(record, off, 0);
+    wr<std::uint8_t>(record, 0, args.flag);
+    wr<std::uint32_t>(record, 4, args.a);
+    copy_string_field(at(record, 0xC), args.s1, host);
+    wr<std::uint32_t>(record, 8, args.b);
+    copy_string_field(at(record, 0x14), args.s2, host);
+    copy_string_field(at(record, 0x1C), args.s3, host);
+    wr<std::uint32_t>(record, 0x24, args.c);
+    wr<std::uint32_t>(record, 0x28, args.d);
+    wr<std::uint32_t>(record, 0x2C, args.e);
+    release_native_string(args.s1, host);
+    release_native_string(args.s2, host);
+    release_native_string(args.s3, host);
+    return record;
+}
+
+void* foliage_type_record_copy_00ae6720(void* record, const void* source, TerrainHost& host) {
+    wr<std::uint8_t>(record, 0, rd<std::uint8_t>(source, 0));
+    wr<std::uint32_t>(record, 4, rd<std::uint32_t>(source, 4));
+    wr<std::uint32_t>(record, 8, rd<std::uint32_t>(source, 8));
+    for (std::uint32_t off : {0xCu, 0x14u, 0x1Cu}) {
+        wr<std::uint32_t>(record, off, 0);
+        wr<std::uint32_t>(record, off + 4, 0);
+        copy_string_field(at(record, off), static_cast<const std::uint8_t*>(source) + off, host);
+    }
+    for (std::uint32_t off : {0x24u, 0x28u, 0x2Cu}) wr<std::uint32_t>(record, off, rd<std::uint32_t>(source, off));
+    return record;
+}
+
+void* foliage_type_record_assign_00ae6840(void* record, const void* source, TerrainHost& host) {
+    wr<std::uint8_t>(record, 0, rd<std::uint8_t>(source, 0));
+    wr<std::uint32_t>(record, 4, rd<std::uint32_t>(source, 4));
+    wr<std::uint32_t>(record, 8, rd<std::uint32_t>(source, 8));
+    for (std::uint32_t off : {0xCu, 0x14u, 0x1Cu})
+        copy_string_field(at(record, off), static_cast<const std::uint8_t*>(source) + off, host);
+    for (std::uint32_t off : {0x24u, 0x28u, 0x2Cu}) wr<std::uint32_t>(record, off, rd<std::uint32_t>(source, off));
+    return record;
+}
+
+void* foliage_type_group_copy_00ae7470(void* group, const void* source, TerrainHost& host,
+    const std::function<void(void* dst_vector, const void* src_vector)>& vector_copy_00ae7030) {
+    wr<std::uint32_t>(group, 0, 0);
+    wr<std::uint32_t>(group, 4, 0);
+    copy_string_field(group, source, host);
+    vector_copy_00ae7030(at(group, 8), static_cast<const std::uint8_t*>(source) + 8);
+    return group;
+}
+
+void foliage_type_group_construct_empty_00ae76c0(void* group) {
+    for (std::uint32_t off : {0x0u, 0x4u, 0xCu, 0x10u, 0x14u}) wr<std::uint32_t>(group, off, 0);
+}
+
+void terrain_float_layer_quantize16_00aed730(void* block, std::uint16_t* out, std::int32_t i, std::int32_t j,
+    TerrainHost& host) {
+    void* owner = rd<void*>(block, 8);
+    _InterlockedIncrement(reinterpret_cast<volatile long*>(at(owner, 4)));
+    const float v = rd<const float*>(block, 0x34)[rd<std::int32_t>(block, 0x2C) * j + i];
+    const float lo = rd<float>(owner, 0x10), hi = rd<float>(owner, 0x14);
+    float c;
+    if (lo > v) c = lo;
+    else if (v > hi) c = hi;
+    else c = v;
+    const float range = f(static_cast<double>(hi) - lo);
+    const double scaled = (static_cast<double>(lo) + c) / range * 65535.0;
+    *out = static_cast<std::uint16_t>(static_cast<std::int32_t>(scaled));
+    if (_InterlockedDecrement(reinterpret_cast<volatile long*>(at(owner, 4))) == 0) host.call_virtual(owner, 0);
+}
+
+void terrain_float_layer_quantize8_00aed820(const void* block, std::uint8_t* out, std::int32_t i, std::int32_t j) {
+    const float v = rd<const float*>(block, 0x34)[rd<std::int32_t>(block, 0x2C) * j + i];
+    float c;
+    if (0.0f > v) c = 0.0f;
+    else if (v > 1.0f) c = 1.0f;
+    else c = v;
+    *out = static_cast<std::uint8_t>(static_cast<std::int32_t>(static_cast<double>(c) * 255.0));
+}
+
+void terrain_block_write_chunk(std::uint32_t address, void* block, void* writer, ChunkHost& chunks,
+    BlockHost& blocks) {
+    if (address == 0x00AEDD60) {
+        chunks.begin_chunk(writer, "F32");
+        for (std::int32_t r = 0; r < rd<std::int32_t>(block, 0x30); ++r) {
+            for (std::int32_t c = 0; c < rd<std::int32_t>(block, 0x2C); ++c) {
+                float v = 0.0f;
+                blocks.block_slot08_sample(block, &v, c, r);
+                chunks.write_float(writer, v);
+            }
+        }
+        chunks.end_chunk(writer, "F32");
+        return;
+    }
+    std::uint32_t size = 0;
+    const char* tag = nullptr;
+    if (address == 0x00ADE670) { size = 2; tag = "U16"; }
+    else if (address == 0x00AE0390) { size = 1; tag = "U8"; }
+    else throw std::invalid_argument("not a block chunk writer");
+    chunks.begin_chunk(writer, tag);
+    chunks.write_float(writer, rd<float>(block, 0x2C));
+    chunks.write_float(writer, rd<float>(block, 0x30));
+    for (std::int32_t r = 0; r < rd<std::int32_t>(block, 0x3C); ++r)
+        for (std::int32_t c = 0; c < rd<std::int32_t>(block, 0x38); ++c)
+            chunks.write_bytes(writer, rd<const std::uint8_t*>(block, 0x40) + (rd<std::int32_t>(block, 0x38) * r + c) * size, size);
+    chunks.end_chunk(writer, tag);
+}
+
+void terrain_tile_write_node_chunk_00ae0250(void* tile, void* writer, ChunkHost& chunks) {
+    chunks.begin_chunk(writer, "NODE");
+    chunks.write_dword(writer, rd<std::uint32_t>(tile, 0xC));
+    chunks.write_dword(writer, rd<std::uint32_t>(tile, 0x10));
+    chunks.block_slot14_write(rd<void*>(tile, 0x1C), writer);
+    chunks.end_chunk(writer, "NODE");
+}
+
+void terrain_block_read_chunk(std::uint32_t address, void* block, void* node, ChunkHost& chunks) {
+    std::uint32_t size = 0;
+    if (address == 0x00ADC6C0) size = 2;
+    else if (address == 0x00ADFBD0) size = 1;
+    else throw std::invalid_argument("not a block chunk reader");
+    wr<float>(block, 0x2C, chunks.node_read_float_00be99d0(node));
+    const float range = chunks.node_read_float_00be99d0(node);
+    wr<float>(block, 0x30, range);
+    wr<float>(block, 0x34, f(1.0 / range));
+    for (std::int32_t r = 0; r < rd<std::int32_t>(block, 0x3C); ++r) {
+        for (std::int32_t c = 0; c < rd<std::int32_t>(block, 0x38); ++c) {
+            std::uint32_t v = 0;
+            chunks.node_read_raw_bytes(node, &v, size);
+            std::memcpy(rd<std::uint8_t*>(block, 0x40) + (rd<std::int32_t>(block, 0x38) * r + c) * size, &v, size);
+        }
+    }
 }
 
 void height_field_destroy_00add1b0(void* field, TerrainHost& host, HeightFieldDestroyHost& more) {

@@ -71,8 +71,6 @@ struct TerrainHost {
     virtual void node_unlink_and_release_00b6d8f0(void* node) = 0;                   // BSP_Node_UnlinkAndRelease
     virtual void destroy_native_string_range_00432050(void* first, void* last) = 0;
     virtual void destroy_foliage_ref_object_00ad7880(void* object) = 0;              // when not modelled inline
-    virtual void bush_group_destruct_00ae1c80(void* group) = 0;
-    virtual void tree_group_destruct_00ae4c20(void* group) = 0;
     // __thiscall(ECX = group, list): detach a group from the system's per-kind list.
     virtual void bush_group_detach_00ae1e00(void* group, void* list_30) = 0;
     virtual void tree_group_detach_00ae4f30(void* group, void* list_24) = 0;
@@ -83,6 +81,15 @@ struct TerrainHost {
         void* name_b, std::uint32_t owner_3c) = 0;
     virtual void* terrain_render_block_construct_00adf6b0(void* memory, std::uint32_t a, std::uint32_t b,
         std::uint32_t c) = 0;
+    // Win32 LeaveCriticalSection / DeleteCriticalSection on an embedded section.
+    virtual void cs_leave(void* cs) = 0;
+    virtual void cs_delete(void* cs) = 0;
+    // 00B73C10 BSP_MeshObject_ClearDrawSectionOwners (ECX = mesh); 00AE19B0
+    // BSP_Shadow_ResizePointerVector(vector, n); the GeneratedModel type id and a node's
+    // vtable +0Ch IsType(type) test.
+    virtual void mesh_clear_draw_section_owners_00b73c10(void* mesh) = 0;
+    virtual void shadow_resize_pointer_vector_00ae19b0(void* vector, std::int32_t n) = 0;
+    virtual bool node_is_generated_model(void* node) = 0;
 };
 
 // ---------------------------------------------------------------------------
@@ -779,5 +786,139 @@ void* named_value_copy_00b1ac50(void* record, const void* source, TerrainHost& h
 // NativeString* name), RET 8 -> out: globals[name] as a float4 when it is a table, else
 // (1, 1, 1, 1) (00D7A24C).
 float* lua_global_float4_00b1b980(void* owner, float out[4], const void* name, RenderMiscHost& render);
+
+// ---------------------------------------------------------------------------
+// Terrain quadtree (vtable 00D5D6A4) and its 14h node array {data +3Ch, count +40h,
+// capacity +44h}; the walk itself is cc9's (node_walk_00ae9d80 / ray_walk_00aea2b0).
+// ---------------------------------------------------------------------------
+struct QuadNode14 { std::uint32_t words[5]; };
+// 00AE9AC0 reserve (n clamped to 1, copy, free), 00AEA530 push back (2 * capacity, minimum
+// 1), 00AEA590 resize (zero new nodes, count = n), 00AEA8A0 destroy (resize 0, free): the
+// cc13_scene2 shapes over 14h nodes. __thiscall(array[, n | const node*]).
+void quad_nodes_reserve_00ae9ac0(NativeArray<QuadNode14>& a, std::int32_t n);
+void quad_nodes_push_back_00aea530(NativeArray<QuadNode14>& a, const QuadNode14& node);
+void quad_nodes_resize_00aea590(NativeArray<QuadNode14>& a, std::int32_t n);
+void quad_nodes_destroy_00aea8a0(NativeArray<QuadNode14>& a);
+// 00AEA8C0 construct (__fastcall): vtable, +3Ch..+44h zeroed. 00AEA8E0 destroy: vtable,
+// resize 0, free +3Ch.
+void* terrain_quadtree_construct_00aea8c0(void* tree);
+void terrain_quadtree_destroy_00aea8e0(void* tree);
+// 00AEA900 BSP_TerrainQuadtree_SetBounds, __thiscall(tree, field, const float min[3], const
+// float max[3], int depth), RET 10h: +48h = field, +04..+0Ch = min, +10h..+18h = max, +34h =
+// depth, +38h = 1 << depth, +1Ch..+24h = f(max - min), +28h..+30h = f(extent / (float)(1 <<
+// depth)), then the node array resized to 0.
+void terrain_quadtree_set_bounds_00aea900(void* tree, void* field, const float min[3], const float max[3],
+    std::int32_t depth);
+// 00AE9B50 (ledger: BSP_TerrainTileGrid_GetTileOrigin; it returns the tile's height range),
+// __thiscall(tree, float out[2], x, y), RET 0Ch: field = +48h; when x < columns, y < rows
+// (signed; no lower bound) and the tile is present: out = tile +14h/+18h; else (-1000, 1000).
+void terrain_quadtree_tile_range_00ae9b50(const void* tree, float out[2], std::int32_t x, std::int32_t y);
+// 00AE9870 BSP_TerrainWeakLink_Construct, __thiscall(link, ref), RET 4: weak-owner base
+// (BSP_WeakOwner_Construct), vtable 00D5D660, +0Ch = 0 then the retained assignment of ref,
+// +10h = -1000, +14h = 1e10, +18h = 300.0 (tile size), +1Ch = 9.375 (cell size).
+// 00AE9930 destruct: vtable, release +0Ch, BSP_WeakOwner_Destroy.
+struct WeakOwnerHost {
+    virtual ~WeakOwnerHost() = default;
+    virtual void weak_owner_construct(void* object) = 0;
+    virtual void weak_owner_destroy(void* object) = 0;
+};
+void* terrain_weak_link_construct_00ae9870(void* link, void* ref, TerrainHost& host, WeakOwnerHost& weak);
+void terrain_weak_link_destruct_00ae9930(void* link, TerrainHost& host, WeakOwnerHost& weak);
+
+// Bush quad nodes (38h): children at +1Ch..+28h. 00AE09D0 destroys each present child
+// recursively, frees it and clears the slot (order +1Ch, +20h, +24h, +28h); 00AE08E0 deletes
+// the owned root (*slot) the same way. 00AE0910: when *slot, BSP_Node_UnlinkAndRelease and
+// clear.
+void bush_quad_node_destroy_children_00ae09d0(void* node, TerrainHost& host);
+void bush_quad_node_delete_owned_00ae08e0(void** slot, TerrainHost& host);
+void node_ref_release_00ae0910(void** slot, TerrainHost& host);
+
+// Tree quad nodes (58h): when +24h > 0, children +2Ch..+38h destroyed recursively, freed and
+// cleared; then +54h released; the array +14h freed and +14h..+1Ch zeroed (00AE4F70).
+// 00AE2EC0 deletes *slot the same way (unreferenced).
+void tree_quad_node_destroy_children_00ae4f70(void* node, TerrainHost& host);
+void tree_quad_node_delete_00ae2ec0(void** slot, TerrainHost& host);
+// 00AE4DD0, __thiscall({data, count}, const T* value), RET 4 -> AL: finds the first equal
+// cell, moves the last cell into it (unless it is the last), count--; false when absent.
+bool pointer_array_erase_value_swap_last_00ae4dd0(PtrArray& a, const void* value);
+// 00AE0710 (ledger: BSP_TerrainRenderObject_SetFlag40), __thiscall(bush group, byte),
+// RET 4: +40h = byte; mesh +2Ch (when set) 00B73C10 BSP_MeshObject_ClearDrawSectionOwners.
+// 00AE2C80 (ledger: ..._SetFlag38): tree group +38h, mesh +28h, unconditional. Both are the
+// per-group "enabled" setters 00AD71C0 runs over the system's +54h / +64h vectors.
+void bush_group_set_enabled_00ae0710(void* group, std::uint8_t enabled, TerrainHost& host);
+void tree_group_set_enabled_00ae2c80(void* group, std::uint8_t enabled, TerrainHost& host);
+// 00AE2CB0 BSP_GeneratedModelFinder_Visit, __thiscall(finder, node), RET 4 -> AL: the node
+// itself when its vtable +0Ch(GeneratedModel type) is true; else the first child (list +34h,
+// siblings +3Ch) that is; else the first child whose recursive visit succeeds; finder+8
+// receives the match (0 when none).
+bool generated_model_finder_visit_00ae2cb0(void* finder, void* node, TerrainHost& host);
+// 00AE4C20 BSP_TreeGroup_Destruct, __fastcall(group): quad root +10h deleted, node +18h
+// unlinked, [+04]+44h (the type's instance count) decremented, ref slots +1Ch, +20h, +24h,
+// +28h, +34h released.
+void tree_group_destruct_00ae4c20(void* group, TerrainHost& host);
+// 00AE1C80 BSP_BushGroup_Destruct, __fastcall(group): ref slots +50h, +28h, +2Ch, +3Ch,
+// +38h; node +20h; quad root +18h; the critical section +54h left while its depth +6Ch is
+// positive, then deleted; the shadow vector +44h resized to 0 (00AE19B0) and freed; strings
+// +0Ch and +04.
+void bush_group_destruct_00ae1c80(void* group, TerrainHost& host);
+
+// Foliage type record (30h): +00 byte, +04, +08, NativeStrings +0Ch / +14h / +1Ch, dwords
+// +24h..+2Ch. 00AE6590 construct, __thiscall(record, byte, a, NativeString s1, b, NativeString
+// s2, NativeString s3, c, d, e) with the strings by value, RET 30h: the three strings zeroed,
+// fields stored in argument order, the strings copied, then the by-value strings released.
+// 00AE6720 copy-construct and 00AE6840 assign, __thiscall(record, const record*), RET 4.
+struct FoliageTypeRecordArgs {
+    std::uint8_t flag; std::uint32_t a; void* s1; std::uint32_t b; void* s2; void* s3;
+    std::uint32_t c, d, e;
+};
+void* foliage_type_record_construct_00ae6590(void* record, const FoliageTypeRecordArgs& args, TerrainHost& host);
+void* foliage_type_record_copy_00ae6720(void* record, const void* source, TerrainHost& host);
+void* foliage_type_record_assign_00ae6840(void* record, const void* source, TerrainHost& host);
+// 00AE7470 BSP_FoliageTypeGroup_CopyConstruct, __thiscall(group, const group*), RET 4: name
+// copy, then 00AE7030 (vector<record> copy) on +08. 00AE76C0, __fastcall(group): +00, +04,
+// +0Ch..+14h zeroed (+08, the allocator word, untouched).
+void* foliage_type_group_copy_00ae7470(void* group, const void* source, TerrainHost& host,
+    const std::function<void(void* dst_vector, const void* src_vector)>& vector_copy_00ae7030);
+void foliage_type_group_construct_empty_00ae76c0(void* group);
+
+// Float-layer quantizers of the float block (__thiscall(block, out, i, j), RET 0Ch):
+// 00AED730: the owner +08 is retained around the body (InterlockedIncrement /
+// InterlockedDecrement, slot 0 at zero); c = clamp(cell, owner+10h, owner+14h) (lo test
+// first; NaN passes through); out u16 = trunc((lo + c) / f(hi - lo) * 65535.0) under a
+// chop-mode FISTP. The numerator is lo + c, not c - lo, as the bytes show (00AED7BA FADD).
+// 00AED820: c = 0 when 0 > cell, 1 when cell > 1, else cell (NaN passes); out byte =
+// trunc(c * 255.0) (chop mode; the ledger's "round" is a truncation).
+void terrain_float_layer_quantize16_00aed730(void* block, std::uint16_t* out, std::int32_t i, std::int32_t j,
+    TerrainHost& host);
+void terrain_float_layer_quantize8_00aed820(const void* block, std::uint8_t* out, std::int32_t i, std::int32_t j);
+
+// Chunked stream I/O. Writers bracket their payload with BeginChunk / EndChunk on a
+// pooled NativeString tag built from the literal ("U16" 00D5D6A8, "U8", "F32" 00D5D49C,
+// "NODE" 00D5D3B8); readers pull from a structured node.
+struct ChunkHost {
+    virtual ~ChunkHost() = default;
+    virtual void begin_chunk(void* writer, const char* tag) = 0;   // BSP_StreamWriter_BeginChunk
+    virtual void end_chunk(void* writer, const char* tag) = 0;     // BSP_StreamWriter_EndChunk
+    virtual void write_float(void* writer, float value) = 0;       // 00BF0360 ..WriteFloatAndDebit
+    virtual void write_dword(void* writer, std::uint32_t value) = 0;
+    virtual void write_bytes(void* writer, const void* bytes, std::uint32_t n) = 0;
+    virtual float node_read_float_00be99d0(void* node) = 0;        // BSP_StructuredNode_ReadFloat
+    virtual void node_read_raw_bytes(void* node, void* out, std::uint32_t n) = 0;
+    virtual void block_slot14_write(void* block, void* writer) = 0; // block vtable +14h(writer)
+};
+// 00ADE670 U16 block write (__thiscall(block, writer), RET 4): "U16"; floats +2Ch, +30h; the
+// +3Ch x +38h u16 samples of +40h row-major, two bytes each. 00AE0390: the same for the U8
+// block, one byte each, tag "U8". 00AEDD60 F32 block: "F32"; for row < +30h, column < +2Ch
+// the block's slot 08 sample (column, row) written as a float.
+void terrain_block_write_chunk(std::uint32_t address, void* block, void* writer, ChunkHost& chunks,
+    BlockHost& blocks);
+// 00AE0250 (ledger: BSP_TerrainHeightField_WriteNodeChunk; ECX is the tile), __thiscall(tile,
+// writer), RET 4: "NODE"; dwords +0Ch, +10h; the block +1Ch writes itself (vtable +14h).
+void terrain_tile_write_node_chunk_00ae0250(void* tile, void* writer, ChunkHost& chunks);
+// 00ADC6C0 U16 / 00ADFBD0 U8 block read (block slot 10h, __thiscall(block, node), RET 4):
+// offset -> +2Ch, range -> +30h, +34h = f(1 / range); then +3Ch x +38h samples read raw
+// (two bytes / one byte each) into +40h row-major. (00ADC6C0's load path is also modelled in
+// cc9's loader.)
+void terrain_block_read_chunk(std::uint32_t address, void* block, void* node, ChunkHost& chunks);
 
 } // namespace bsp::cc13_terrain
