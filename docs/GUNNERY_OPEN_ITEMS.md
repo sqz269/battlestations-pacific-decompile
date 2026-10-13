@@ -13143,3 +13143,47 @@ USN12 win: exit 1, `dead_targets=0`, completed 1539.83 s with the guard. The oth
 (`order <carrier> <slot> 1`, then `order <carrier> <slot> 3 <live ship>`), because `009F8470` does not re-target a player
 squadron, plus an allocation that reaches the destroyers (Fanning, Grayson, Woodworth, Dunlap) before about 1750 s;
 `local\g38_e8_retarget.py` generates the first part from a run log.
+
+## 200. Handoff (cc9-gunnery38, 2026-10-12, at about 75% context)
+
+**On `agent/cc9-gunnery36`, newest first** (built, ctest 2/2; merged with origin/main at `a0e306a25`):
+
+| sha | what |
+|---|---|
+| `395e1fec0` | `kSquadronDeadTargetRetestBound` ON (199.2) |
+| `518193e10` | retest also retires the ended command's rows and dead target (199.1) |
+| `c8a347ab4` | 009F8160/009F7C90 dead-target retest bound OFF (199) |
+| `bc4f4022a` | O1, dogfight avoid pick, gun burst ON by mechanism (lead ruling a; 198) |
+| `6190adabc` | ESMP08 re-target iterations r1/r2 (197) |
+| `39f80436c` | `kAaKind6GateMountFrameBound`, `kDogfightTurnAfterDrawBound` ON (197) |
+| `8ca0a4fc0` | A3, A4, O1 applied OFF (196) |
+| `ae364204e` / `8a7e6cfde` | reference AH (GAME_EXECUTABLE.md '2026-10-12 ah', reports/cc9_reference_rebaseline_36.json) |
+
+**Open, in the lead's order.**
+1. **n1 flip** (`kShipJamMotionBound` in `include/bsp/game_hosts_gunnery.hpp` + `kLuaSetFailureBound` in
+   `include/bsp/game_hosts_lua.hpp:265`, one commit; the lead granted the lua.hpp line). Blocked: `lease claim` on
+   game_hosts_lua.hpp is refused by `cc9_lua53_kamikaze_impact_lua` (until 05:02 UTC). Verdict is faithful: USN01 runs
+   this installation's `usn\usn_1_marshall.lua` (no SetFailure/GetFailure; phase 2 waits for `getn(alive Mission.Convoy)
+   == 0` after `MainAttackHere`, 515-545); with n1 the hit-started EngineJams stop Convoy6/4/2/5 and Convoy5 survives
+   (an Explosion failure at 197.46 s), so the convoy table never empties: a plan re-roll, not a host defect. Pairs:
+   `local\g38_n1on_*` against AH (`local\g38_ah_*`): JM05 9000 exit 3 (the 46.45 s Mogami EngineJam), USN02/LOMP06/
+   LOMP10/BSM01 unchanged, USN12 1534.87 s, USN01 lost. Add USN01 to the keeper's notes when flipped.
+2. **read_bullet_class_number dotted key** (lead item; `game_hosts_gunnery.cpp` ~4450 and ~4498, `"Blast.BlastDamageMin"`
+   read flat, always 0). What it feeds: only `WeaponClassFinaliseInput::blast_damage_min`, i.e. the 006E99E7 artillery
+   tier (`weapon_class_refined_sub_type`: Light 5 / Medium 6 / Heavy 7 below 75 / 150 on BOTH DamageMin and
+   BlastDamageMin), then `gun.bullet_sub_type` (009FE270's accuracy, the kind-6 gate). Census
+   (`local\g38_tier_census.py` over this installation's classtables arcade, 2026-05-09, and realistic, 2025-06-02,
+   bulletclasses.lua): 32 and 26 Artillery classes, **none changes tier** with the authored value. So the fix
+   (`lua.read_bullet_class_nested_number(id, "Blast", "BlastDamageMin", 0.0f)` at both sites, behind an OFF switch)
+   is predicted gameplay-identical everywhere; not applied because `game_hosts_gunnery.cpp` was on loan to physics4.
+3. **ESMP08 re-plan** (wins keeper): needs order-file re-targets after each target death (`local\g38_e8_retarget.py
+   <plan> <log> <out>`) and an allocation that reaches Fanning, Grayson, Woodworth and Dunlap before about 1750 s
+   (199.2). The other five wins were not re-run with the retest ON.
+4. BSM09 does not start in this harness (198).
+
+**Tools** (this tree's `local\`): `g38_jobs.py` (row/win keys, wins on `g38_ord_<key>.txt`), `g38_mkq.py` (one queue
+from `<dir>:<prefix>:<keys>` triples), `g38_ref_jobs.py`, `g38_ends.py` (end, guard, deaths), `g38_window.py <log> t0
+t1 <pat>` (lines between simulated times), `g38_e8scan.py`, `g38_e8_retarget.py`, `g38_tier_census.py`. Queue with
+`local\g36_queue.ps1 -Jobs <f> -Parallel n` started by `Start-Process pwsh` (hidden). Run slots are contended:
+expect 10-30 min waits per run. Renderer-init failures (0x88760868) hit three launches at about 01:07 UTC and
+cleared by themselves.
