@@ -2,6 +2,7 @@
 
 #include <cmath>
 
+#include "bsp/gameplay_seg48_cc13.hpp"
 #include "bsp/unit_rudder.hpp"
 
 namespace bsp {
@@ -41,6 +42,15 @@ float plane_control_axis_step_007da710(const PlaneRotationFactors& factors,
                                        const PlaneControlAxisState& axis,
                                        bool floor_from_deflection,
                                        float step) noexcept {
+    return plane_control_axis_step_007da710(factors, axis, floor_from_deflection, step, -1, 0.0f);
+}
+
+float plane_control_axis_step_007da710(const PlaneRotationFactors& factors,
+                                       const PlaneControlAxisState& axis,
+                                       bool floor_from_deflection,
+                                       float step,
+                                       int image_floor_axis,
+                                       float image_floor_sp) noexcept {
     // 007DAB52..007DAB75. The subtraction is `target - current`, formed by an
     // FSUB of the axis field from a duplicated target, which is also what
     // leaves each target on the x87 stack for the clamp to reuse later.
@@ -58,6 +68,19 @@ float plane_control_axis_step_007da710(const PlaneRotationFactors& factors,
         // the same number either way.
         if (!(rate > factors.idle_floor)) {
             rate = factors.idle_floor;
+        }
+    } else if (image_floor_axis >= 0) {
+        // Packet cc9_plane_rate_floor (docs/CC13_GPR_48.md 8.3 R1): the image's
+        // per-axis floor. Pitch (|current|*1.5)*sp (007DAC08-007DAC40), yaw
+        // |current|*sp (007DAD90-007DADBC), roll none (007DAEC7-007DAF00); sp
+        // is 007DAABD-007DAB36's stall factor, zero above 1.6 x StallSpd or a
+        // 20 deg pitch. The sign test is the same chain on each axis.
+        if (floor_applies(delta, axis.current)) {
+            const float deflection_floor =
+                gameplay_seg48_cc13::rate_law_deflection_floor_007da710(image_floor_axis, axis.current, image_floor_sp);
+            if (deflection_floor >= 0.0f && !(rate > deflection_floor)) {
+                rate = deflection_floor;
+            }
         }
     } else if (floor_applies(delta, axis.current)) {
         // 007DAC08..007DAC40. The deflection is made positive by masking the
