@@ -46,6 +46,8 @@
 //   -sqrt(2 g MaxFall)) break up on water entry, which JM06 air-dropped
 //   torpedoes may hit when released high.
 
+#include "bsp/effects_cc13.hpp"
+
 #include <cstddef>
 #include <cstdint>
 #include <functional>
@@ -1017,6 +1019,86 @@ struct EffectThunderStormState {
 };
 bool update_effect_thunderstorm_instance_00873c80(const EffectThunderStormState& s, float dt,
                                                   const ThunderStormUpdateHost& host);
+
+// ===========================================================================
+// Effect instance constructors and destructors (the lifecycle around the
+// src/effects_cc13.cpp virtuals). Every constructor is __thiscall(instance,
+// definition, point), RET 8, after operator new in its kind's CreateInstance
+// (flare 00869300 20h, thunderstorm 00869370 24h, waterdrops 008693E0 24h,
+// splash 008695B0 20h). The common prefix: table 00CEB130, references 1,
+// secondary 00D0C8C0, active byte +0Ch = 1, +10h point, +14h definition,
+// then the kind's two tables and +18h type.
+// ===========================================================================
+
+// 00873010: tables 00D0DC60 / 00D0DC5C, type 5, payload +1Ch = 0 (the flare
+// itself is not created here).
+void construct_effect_flare_instance_00873010(effects_cc13::EffectNodeInstanceStorage& instance,
+                                              void* definition, PointEffectInstanceStorage* point) noexcept;
+// 00873090: tables 00D0DBB8 / 00D0DBB4, type 0, payload 0, byte +20h = 1
+// (the spawn-pending flag 00873100 consumes).
+void construct_effect_waterdrops_instance_00873090(effects_cc13::EffectNodeInstanceStorage& instance,
+                                                   void* definition, PointEffectInstanceStorage* point) noexcept;
+// 008739A0: type 0 (written before the table switch), tables 00D0DC28 /
+// 00D0DC24, +1Ch = 0, then the point node world position (00B6DB70 when +5Ch
+// bit 1 is clear) and +1Ch = 00B9E3F0 BSP_OceanWaveField_AddWaterRing(&pos,
+// def+20h, def+24h, def+28h) on ([00E188A8]+19F0h)+A8h, with no null test of
+// the ocean (unlike the destructor 00872D60).
+struct EffectSplashConstructHost {
+    std::function<Vec3()> point_node_world_position;
+    std::function<effects_cc13::EffectSplashRingFields*(const Vec3& pos, float a20, float a24, float a28)>
+        add_water_ring;
+};
+void construct_effect_splash_instance_008739a0(effects_cc13::EffectSplashInstanceStorage& instance,
+                                               void* definition, float def_20, float def_24, float def_28,
+                                               PointEffectInstanceStorage* point,
+                                               const EffectSplashConstructHost& host);
+
+// The thunderstorm instance (24h): +1Ch the sky effect, +20h the storm (54h).
+struct EffectThunderStormInstanceStorage {
+    NativeRegisteredEffectPrefixStorage prefix;   // type_18 = 0
+    std::uintptr_t sky_effect_1c{0};
+    std::uintptr_t storm_20{0};
+};
+// 00873EB0: type 0, tables 00D0DDD0 / 00D0DDCC, the atlas
+// "Effects\Lightning\lightning.ats" is loaded (00AF0060), +1Ch =
+// [010909B0] vtable+10h(point node +110h, def+24h), +20h = 0; with byte
+// def+54h set, +20h = new(54h) 00BC0D40(point node +110h) (null when the
+// allocation fails).
+struct EffectThunderStormConstructHost {
+    std::function<void()> load_atlas;                          // 00AF0060
+    std::function<std::uintptr_t()> create_sky_effect;         // [010909B0] vtable+10h
+    std::function<std::uintptr_t()> create_storm;              // new(54h) + 00BC0D40
+};
+void construct_effect_thunderstorm_instance_00873eb0(EffectThunderStormInstanceStorage& instance,
+                                                     void* definition, bool def_storm_54,
+                                                     PointEffectInstanceStorage* point,
+                                                     const EffectThunderStormConstructHost& host);
+// 00873FF0, between its table writes (00D0DDD0/00D0DDCC first, 00D0C88C /
+// 00D0C888 then 00BD30F0 last): a storm at +20h is destroyed (00BC04C0
+// BSP_LightningStorm_Destroy) and freed (00BF65AC), +20h = 0, then the atlas is
+// unloaded. +1Ch (the sky effect) is NOT released here.
+struct EffectThunderStormDestructHost {
+    std::function<void(std::uintptr_t storm)> destroy_and_free_storm;
+    std::function<void()> unload_atlas;
+};
+void destruct_effect_thunderstorm_instance_00873ff0(EffectThunderStormInstanceStorage& instance,
+                                                    const EffectThunderStormDestructHost& host);
+// 00872C10 waterdrops and 00872CB0 light: between the table writes they run
+// the same body as their Stop slots 00872BF0 / 00872D30
+// (src/effects_cc13.cpp); these wrappers call those.
+void destruct_effect_waterdrops_instance_00872c10(effects_cc13::EffectNodeInstanceStorage& instance,
+                                                  effects_cc13::EffectInstanceServices& services);
+void destruct_effect_light_instance_00872cb0(effects_cc13::EffectNodeInstanceStorage& instance,
+                                             effects_cc13::EffectInstanceServices& services);
+// 00872D60 splash: the ring at +1Ch is removed (00B9E4A0 on ([00E188A8]+19F0h)
+// +A8h) only when the ocean +19F0h exists and the ring is set. Unlike the
+// Stop slot 00872DF0 it neither zeroes the ring timer nor clears +1Ch.
+struct EffectSplashDestructHost {
+    std::function<bool()> ocean_present;                       // [[00E188A8]+19F0h] != 0
+    std::function<void(effects_cc13::EffectSplashRingFields* ring)> remove_water_ring;  // 00B9E4A0
+};
+void destruct_effect_splash_instance_00872d60(const effects_cc13::EffectSplashInstanceStorage& instance,
+                                              const EffectSplashDestructHost& host);
 
 // ===========================================================================
 // Point effect handle and child retirement, under the effect manager lock

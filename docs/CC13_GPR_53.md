@@ -479,3 +479,27 @@ Prediction with the switch OFF: unchanged. ON: rain on the 18 IsRain scenes, wit
 (presentation) and no stream-0 shift.
 
 `verify_report_calls` over the pass's call rows: 113 checked, 0 failed.
+
+### 7.7 Effect instance constructors and destructors
+
+These complete the lifecycle around the src/effects_cc13.cpp virtuals, and use that file's storage
+types (`EffectNodeInstanceStorage`, `EffectSplashInstanceStorage`, the 1Ch prefix).
+
+| address | model | what it does |
+|---|---|---|
+| `00873010` | `construct_effect_flare_instance_00873010` | Prefix, type 5, payload 0. The flare object is not created here. |
+| `00873090` | `construct_effect_waterdrops_instance_00873090` | Prefix, type 0, payload 0, spawn-pending byte +20h = 1. |
+| `008739A0` | `construct_effect_splash_instance_008739a0` | Prefix, type 0, then the water ring 00B9E3F0(point position, def+20h/+24h/+28h). The ocean pointer is **not** null-tested here, although the destructor tests it. |
+| `00873EB0` | `construct_effect_thunderstorm_instance_00873eb0` | Prefix, type 0, loads the lightning atlas, sky effect +1Ch through [010909B0] vtable+10h, storm +20h (54h, 00BC0D40) only when def+54h is set. |
+| `00873FF0` | `destruct_effect_thunderstorm_instance_00873ff0` | Destroys and frees the storm, then unloads the atlas. **The sky effect +1Ch is not released.** |
+| `00872C10` / `00872CB0` | `destruct_effect_waterdrops_instance_00872c10`, `destruct_effect_light_instance_00872cb0` | The same body as their Stop slots (00872BF0 / 00872D30); the models call those. |
+| `00872D60` | `destruct_effect_splash_instance_00872d60` | Removes the ring only when the ocean exists. Unlike Stop 00872DF0, it leaves the timer and +1Ch alone. |
+
+Not modelled: the light constructor 008740E0, which sits at the segment's end address and was
+left out of this lease. The per-kind CreateInstance wrappers (operator new plus the constructor)
+are not modelled either.
+
+Findings: the thunderstorm destructor does not release its sky effect +1Ch, and the splash
+constructor dereferences the ocean without the null test that its destructor makes. Both models
+keep the image's behaviour. RNG: none. Adoption: presentation only, nothing to replace in the host
+(the host does not tick effect instances). `verify_report_calls`: 127 rows, 0 failed.

@@ -1030,6 +1030,104 @@ bool update_effect_thunderstorm_instance_00873c80(const EffectThunderStormState&
     return true;
 }
 
+namespace {
+
+void write_effect_prefix(NativeRegisteredEffectPrefixStorage& prefix, void* definition,
+                         PointEffectInstanceStorage* point) noexcept {
+    prefix.table_00 = 0x00ceb130;
+    prefix.references_04.store(1, std::memory_order_relaxed);
+    prefix.secondary_table_08 = 0x00d0c8c0;
+    prefix.active_0c = 1;
+    prefix.borrowed_10 = point;
+    prefix.borrowed_14 = definition;
+}
+
+}  // namespace
+
+void construct_effect_flare_instance_00873010(effects_cc13::EffectNodeInstanceStorage& instance,
+                                              void* definition, PointEffectInstanceStorage* point) noexcept {
+    write_effect_prefix(instance.prefix, definition, point);
+    instance.prefix.table_00 = 0x00d0dc60;
+    instance.prefix.secondary_table_08 = 0x00d0dc5c;
+    instance.prefix.type_18 = 5;
+    instance.payload_1c = nullptr;
+}
+
+void construct_effect_waterdrops_instance_00873090(effects_cc13::EffectNodeInstanceStorage& instance,
+                                                   void* definition, PointEffectInstanceStorage* point) noexcept {
+    write_effect_prefix(instance.prefix, definition, point);
+    instance.suppressed_20 = 1;                                       // 008730B3
+    instance.prefix.type_18 = 0;
+    instance.prefix.table_00 = 0x00d0dbb8;
+    instance.prefix.secondary_table_08 = 0x00d0dbb4;
+    instance.payload_1c = nullptr;
+}
+
+void construct_effect_splash_instance_008739a0(effects_cc13::EffectSplashInstanceStorage& instance,
+                                               void* definition, float def_20, float def_24, float def_28,
+                                               PointEffectInstanceStorage* point,
+                                               const EffectSplashConstructHost& host) {
+    write_effect_prefix(instance.prefix, definition, point);
+    instance.prefix.type_18 = 0;
+    instance.prefix.table_00 = 0x00d0dc28;
+    instance.prefix.secondary_table_08 = 0x00d0dc24;
+    instance.ring_1c = nullptr;
+    const Vec3 pos = host.point_node_world_position ? host.point_node_world_position() : Vec3{};
+    if (host.add_water_ring) {
+        instance.ring_1c = host.add_water_ring(pos, def_20, def_24, def_28);  // 00873A6E
+    }
+}
+
+void construct_effect_thunderstorm_instance_00873eb0(EffectThunderStormInstanceStorage& instance,
+                                                     void* definition, bool def_storm_54,
+                                                     PointEffectInstanceStorage* point,
+                                                     const EffectThunderStormConstructHost& host) {
+    write_effect_prefix(instance.prefix, definition, point);
+    instance.prefix.type_18 = 0;
+    instance.prefix.table_00 = 0x00d0ddd0;
+    instance.prefix.secondary_table_08 = 0x00d0ddcc;
+    if (host.load_atlas) {
+        host.load_atlas();                                            // 00873F51
+    }
+    instance.sky_effect_1c = host.create_sky_effect ? host.create_sky_effect() : 0;  // 00873F8F
+    instance.storm_20 = 0;
+    if (def_storm_54 && host.create_storm) {
+        instance.storm_20 = host.create_storm();                      // 00873F9E / 00873FC0
+    }
+}
+
+void destruct_effect_thunderstorm_instance_00873ff0(EffectThunderStormInstanceStorage& instance,
+                                                    const EffectThunderStormDestructHost& host) {
+    if (instance.storm_20 != 0) {
+        if (host.destroy_and_free_storm) {
+            host.destroy_and_free_storm(instance.storm_20);           // 00874032 / 00874038
+        }
+        instance.storm_20 = 0;
+    }
+    if (host.unload_atlas) {
+        host.unload_atlas();
+    }
+}
+
+void destruct_effect_waterdrops_instance_00872c10(effects_cc13::EffectNodeInstanceStorage& instance,
+                                                  effects_cc13::EffectInstanceServices& services) {
+    effects_cc13::stop_effect_waterdrops_instance_00872bf0(instance, services);
+}
+
+void destruct_effect_light_instance_00872cb0(effects_cc13::EffectNodeInstanceStorage& instance,
+                                             effects_cc13::EffectInstanceServices& services) {
+    effects_cc13::stop_effect_light_instance_00872d30(instance, services);
+}
+
+void destruct_effect_splash_instance_00872d60(const effects_cc13::EffectSplashInstanceStorage& instance,
+                                              const EffectSplashDestructHost& host) {
+    if (!(host.ocean_present && host.ocean_present())) return;        // 00872D90
+    if (instance.ring_1c == nullptr) return;                          // 00872DA4
+    if (host.remove_water_ring) {
+        host.remove_water_ring(instance.ring_1c);                     // 00872DB5
+    }
+}
+
 void effect_handle_request_stop_00866b70(EffectHandleFlags& h) noexcept {
     h.finish_when_done_09 = false;
     if (h.active_08) h.stop_requested_0a = true;
