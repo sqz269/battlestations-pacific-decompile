@@ -34,7 +34,7 @@ not establish: where the channel's enabled byte and rate come from (the property
 the value +4h is committed when a move completes (`007DE7E0` only computes the blend). Not bound; follow-up:
 read the `+DECh` block's construction and its per-class enable for the carrier aircraft.
 
-## (b) 007B95E0 counts ACTIVE wingmen (`kPlaneLeaderTurnRollBound`, OFF)
+## (b) 007B95E0 counts ACTIVE wingmen (`kPlaneLeaderTurnRollBound`, ON by ruling (a))
 
 `007B95E0` is true for `+9D8h == 0` (the flight leader), a squadron at `+9D4h`, and `squadron+3BCh > 0`.
 `007EE790` writes `+3BCh` as the number of members 1..count-1 whose `+9C4h[[00F876B8]*8]` is non-negative,
@@ -57,6 +57,8 @@ torpedo and dive releases may move; verdict 3 likely, the win should hold.
 guard; ON **no completion** (deaths 90 -> 68, hits 3965 -> 2690, torpedo-task releases 6 of 13 -> 5 of 10). USN12
 `s38_u12_p2`: INVALID, both sides ran without orders (the file's tree was removed; `helm orders refused`). Faithful, and it loses the USN01 plan: **kept OFF** for the lead's decision (flip with a
 re-plan, as for gunnery38's O1).
+
+**Flipped ON (cc9-physics5, 2026-10-13)** by the lead's ruling (a): the mechanism is faithful and engages, so it flips by mechanism; the USN01 `p3_u1_z4` loss is covered by the USN01 re-plan on current main (docs/WINS_TABLE.md). Code only, no new run.
 
 ## (a), the follow-up read: channel C is the wings, and the delay is the fold
 
