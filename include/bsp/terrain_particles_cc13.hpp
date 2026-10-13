@@ -1020,4 +1020,155 @@ void* tree_group_instance_construct_00ae5070(void* instance, void* landscape, vo
 //   curve.y0 when other.y > curve.y0 else other.y (NaN picks other.y in both).
 float ballistic_max_height_00afb7f0(const float* curve, const float* other) noexcept;
 float ballistic_min_height_00afba40(const float* curve, const float* other) noexcept;
+
+// ===========================================================================
+// cc13-left1 (docs/CC13_LEFT_1.md): bodies left open by Pass 2. Read from the live decompile
+// with the listing checked for register arguments and x87.
+// ===========================================================================
+
+// Image routines the bodies below call (each virtual named by its address).
+struct TerrainLeftHost {
+    virtual ~TerrainLeftHost() = default;
+    // 00AEF3C0 BSP_TextureAtlas_SplitNameMatches: ECX const string* requested, EDX atlas item -> AL.
+    // (atlas_split_name_matches_00aef3c0 in world_effects_startup models it over std::string.)
+    virtual bool atlas_split_name_matches_00aef3c0(const void* requested, void* item) = 0;
+    // 00AEE220 is texture_atlas_item_destruct_00aee220 in this file.
+    // 00AF5600 BSP_NativeTextBuffer_Construct (ECX 1Ch block) -> EAX; 00AF5620 destroy (ECX);
+    // 00AF5850 load file (ECX buffer, const char* path) RET 4.
+    virtual void* text_buffer_construct_00af5600(void* block) = 0;
+    virtual void text_buffer_destroy_00af5620(void* buffer) = 0;
+    virtual void text_buffer_load_file_00af5850(void* buffer, const char* path) = 0;
+    // 00BDF4C0 BSP_VFS_ResolveExistingName (ECX vfs, string*) RET 4 -> AL.
+    virtual bool vfs_resolve_existing_name_00bdf4c0(void* vfs, void* name) = 0;
+    // 00AEEAF0 BSP_TextureAtlas_ParseBuffer (ECX atlas manager, buffer) RET 4.
+    virtual void texture_atlas_parse_buffer_00aeeaf0(void* manager, void* buffer) = 0;
+    // 004254B0 (cdecl format, ...): the log call; its body in this build is a bare RET.
+    virtual void log_004254b0(const char* format, const char* argument) = 0;
+    // 00886280 BSP_Vfs_EnumerateResourceList (ECX vfs, list*, directory, const string* ext, 1) RET 10h;
+    // 00557A90 BSP_PooledStringList_PopFront (ECX list, string* out) RET 4 -> EAX out;
+    // 004D05E0 BSP_PooledStringList_ClearStorage (ECX list).
+    virtual void vfs_enumerate_resource_list_00886280(void* vfs, void* list, void* directory, const void* ext,
+                                                      std::uint32_t flags) = 0;
+    virtual void* pooled_string_list_pop_front_00557a90(void* list, void* out) = 0;
+    virtual void pooled_string_list_clear_storage_004d05e0(void* list) = 0;
+    // 007375E0 BSP_SingletonHolder_Destruct_00f8c26c (ECX holder).
+    virtual void singleton_holder_destruct_007375e0(void* holder) = 0;
+    // 00B4C700 BSP_D3D9Renderer_CreateGeneratedModel: ECX name*, EDX geometry*, stack (shader*, a, b, c, d).
+    virtual void* create_generated_model_00b4c700(const void* name, const void* geometry, const void* shader,
+        std::uint32_t a, std::uint32_t b, std::uint32_t c, std::uint32_t d) = 0;
+    // 00B189F0 BSP_Material_SetTextureSlot (ECX material, slot, texture) RET 8.
+    virtual void material_set_texture_slot_00b189f0(void* material, std::uint32_t slot, void* texture) = 0;
+    // 00AF10A0 BSP_NativeParticleResources_GetIndexStream (ECX resources) -> EAX.
+    virtual void* particle_index_stream_00af10a0(void* resources) = 0;
+    // 00B73B70 BSP_Geometry_SetIndexStream (ECX geometry, stream) RET 4.
+    virtual void geometry_set_index_stream_00b73b70(void* geometry, void* stream) = 0;
+    // 00B72270 BSP_Scene_FindNodeByName (ECX scene, const string* name, flags) RET 8 -> EAX.
+    virtual void* scene_find_node_by_name_00b72270(void* scene, const void* name, std::uint32_t flags) = 0;
+    // Win32 InitializeCriticalSection (import 00CE220C) on an embedded 18h-byte section.
+    virtual void initialize_critical_section(void* section) = 0;
+    // Draw sections and meshes.
+    virtual void* draw_section_create_00533fa0() = 0;
+    virtual void draw_section_set_material_00b864c0(void* section, void* material) = 0;       // RET 4
+    virtual void draw_section_append_vertex_stream_00b85b80(void* section, void* stream) = 0;  // RET 4
+    virtual void draw_section_set_vertex_layout_00b86650(void* section, void* layout) = 0;     // RET 4
+    virtual void mesh_append_draw_section_00b73c60(void* mesh, void* section) = 0;             // RET 4
+    // 00419440 BSP_Vector3f_Length (ECX const float[3]) -> ST0; 00AD5720 BSP_FoliageSystem_GetScalar0C
+    // (ECX system) -> ST0. Both returned as the x87 value before any store.
+    virtual double vector3_length_00419440(const float* v) = 0;
+    virtual double foliage_system_scalar_0c_00ad5720(void* system) = 0;
+    // 00AE0A50 BSP_FoliageEntryNode_DrawBox (ECX cell, DWORD argb, float) RET 8.
+    virtual void foliage_cell_draw_box_00ae0a50(void* cell, std::uint32_t argb, float width) = 0;
+    // Model assembly (ECX carries the byte size into the raw-slot allocators).
+    virtual void* model_allocate_raw_slot_00b74eb0(std::uint32_t size) = 0;
+    virtual void* generated_model_construct_00b75030(void* slot, const void* name) = 0;           // RET 4
+    virtual void* mesh_allocate_raw_slot_00b73b60(std::uint32_t size) = 0;
+    virtual void* mesh_construct_00b73d70(void* slot) = 0;
+    virtual void mesh_set_vertex_stream_00b73bb0(void* mesh, std::uint32_t index, void* stream) = 0;  // RET 8
+    virtual void generated_model_set_geometry_00b75170(void* model, std::uint32_t a, void* mesh, float x, float y) = 0;
+    // Cameras: 00AD5700 BSP_Foliage_GetScalar08 (ECX system) -> ST0; 00B6FC10 BSP_Camera_SetFarPlane (ECX
+    // camera, float) RET 4; 00B6FDD0 plane count and 00B70710 plane set (ECX camera); 00B656F0
+    // BSP_PlaneSet_GetPlane (ECX set, index) RET 4 -> const float[4]; 00B6DB70 refresh world matrix (ECX node).
+    virtual double foliage_scalar_08_00ad5700(void* system) = 0;
+    virtual void camera_set_far_plane_00b6fc10(void* camera, float distance) = 0;
+    virtual std::int32_t camera_plane_count_00b6fdd0(void* camera) = 0;
+    virtual void* camera_plane_set_00b70710(void* camera) = 0;
+    virtual const float* plane_set_get_plane_00b656f0(void* set, std::int32_t index) = 0;
+    virtual void node_refresh_world_matrix_00b6db70(void* node) = 0;
+    // 00AE1440 BSP_Shadow_ReservePointerVector (ECX vector, n) RET 4; Win32 EnterCriticalSection (00CE2218)
+    // and LeaveCriticalSection (00CE2210).
+    virtual void shadow_reserve_pointer_vector_00ae1440(void* vector, std::int32_t n) = 0;
+    virtual void enter_critical_section(void* section) = 0;
+    virtual void leave_critical_section(void* section) = 0;
+};
+// One-load getters the bodies below call, inlined: 00B74640 model geometry [+180h] (RET 4, argument
+// unused); 00B732C0 element i [[+54h] + 4i]; 00AF1130 particle resources sub-object [+24h].
+
+// Texture atlas registry (the manager published at 00F8C26C): +4h item pointer vector {data, count,
+// capacity}, +10h texture pointer vector.
+// 00AEFA30 BSP_TextureAtlas_Unload, __thiscall(ECX registry, const string* name) RET 4: walk the
+// items with a pointer; for each item 00AEF3C0 matches: release (no clear) and remove every texture
+// equal to item +8h, shifting the rest down; destroy (00AEE220) and operator delete (00BF65AC) the
+// item when non-null; move the last item into the slot unless it is the last; count--. The pointer
+// advances only on a miss; the end is reread every pass.
+void texture_atlas_unload_00aefa30(void* registry, const void* name, TerrainHost& host, TerrainLeftHost& left);
+// 00AEF280 BSP_TextureAtlas_RegisterDescriptor, __stdcall(const string* name) RET 4: text buffer
+// (operator new(1Ch) + 00AF5600, null stays null); a copy of the name; when the VFS (0109CEEC)
+// resolves the copy, load the file named by the ORIGINAL name's data (00F8C270, an empty string,
+// when null) and parse it into the manager 00F8C26C; otherwise log "Atlas file not found: %s"
+// with that path; destroy and free the buffer when non-null; release the copy.
+void texture_atlas_register_descriptor_00aef280(const void* name, void* vfs_0109ceec, void* manager_00f8c26c,
+    const char* empty_00f8c270, TerrainHost& host, TerrainLeftHost& left);
+// 00AEFF40 BSP_TextureAtlas_LoadDirectory, __thiscall(ECX unused, directory) RET 4: enumerate the "ats"
+// files of the directory into a 0Ch pooled string list (+4h storage, +8h count); while the count is
+// nonzero pop the front into a temporary, register it (00AEF280) and release it; clear the list
+// storage (004D05E0) and free +4h (00BF65AC).
+void texture_atlas_load_directory_00aeff40(void* directory, void* vfs_0109ceec, void* manager_00f8c26c,
+    const char* empty_00f8c270, TerrainHost& host, TerrainLeftHost& left);
+// 00AEF090 BSP_TextureAtlasRegistry_Destruct, __fastcall(ECX registry): vtable 00CFEAE8; destroy and
+// free every item; release every texture (no null test); then the inline 4-byte vector teardown
+// (reserve to 1 when capacity < 0, zero any negative-count tail, count down, free) of +10h, then +4h;
+// BSP_SingletonHolder_Destruct_00f8c26c 007375E0.
+void texture_atlas_registry_destruct_00aef090(void* registry, TerrainHost& host, TerrainLeftHost& left);
+// 00AF0F20 BSP_FoliageGroupManager_CreateFloatingParticles, __fastcall(ECX manager): +24h = 0, +2Ch = 1.0f;
+// +24h = 00B4C700("FloatingParticles", "ParticleFloating.mvfm", "ParticleFloating.mshd", 4, 0, 0, 0)
+// (temporaries from 0041E870, released name, geometry, shader); the texture of the particle resources
+// (00F8C280 -> [+24h]: [+10h] when WORD [+34h] > 0, else null) into slot 0 of element 0's material;
+// the resources' index stream (00AF10A0) on the model geometry (00B73B70).
+void foliage_group_manager_create_floating_particles_00af0f20(void* manager, void* particle_resources_00f8c280,
+    TerrainHost& host, TerrainLeftHost& left);
+// 00AE1E10 BSP_BushGroupType_Construct, __thiscall(ECX, landscape, NativeString name_a, NativeString
+// name_b, owner) RET 18h -> EAX; the two strings arrive BY VALUE (length, data on the stack) and the
+// callee releases them at the end. +4h/+0Ch empty strings, +44h..+4Ch = 0, InitializeCriticalSection
+// +54h, +6Ch = 0, +0h = landscape, +1Ch = owner; copy name_a to +4h and name_b to +0Ch; +14h = 0;
+// +20h = 00B72270(ECX owner, "BushGroup", 0); +2Ch = +18h = +50h = 0.
+void* bush_group_type_construct_00ae1e10(void* type, void* landscape, std::uint32_t name_a_length, void* name_a_data,
+    std::uint32_t name_b_length, void* name_b_data, void* owner, TerrainHost& host, TerrainLeftHost& left);
+// 00AE1A10 BSP_BushCell_CullAndEmitLod, __thiscall(ECX cell, group, int running) RET 8 -> EAX. The cell:
+// +0h centre[3], +0Ch half extent[3], +1Ch..+28h four children, +2Ch first and +30h last vertex, +34h
+// "has children". The group: +0h plane count, +4h planes (10h apart), +104h vertex stream, +108h mesh,
+// +10Ch far / +110h near material, +114h BYTE debug boxes, +118h eye[3], +124h vertex layout.
+// Classify a copy of the box against the planes (00AE05E0, terrain_box_classify_planes_00ae05e0):
+// Outside returns running; Intersecting with children recurses into each non-null child, threading
+// the sum (the first child gets running and its result is added to running; each later child gets
+// the running sum and adds its result); otherwise emit: n = last - first + 1; a draw section with
+// the far material when the float distance |centre - eye| (each difference stored as a float,
+// length 00419440 stored as a float) exceeds 00AD5720 of the foliage system 00F8C210 as a double
+// (unordered picks near), {+8h 4, +0Ch first, +10h n, +14h first, +18h n / 3 unsigned, +34h distance},
+// vertex stream, layout, appended to the mesh and released; the debug box (FFFFFFFFh, 0.0f) when
+// enabled; returns running + n.
+std::int32_t bush_cell_cull_and_emit_lod_00ae1a10(void* cell, void* group, std::int32_t running,
+                                                 void* foliage_system_00f8c210, TerrainLeftHost& left);
+// 00AE1FB0 BSP_BushGroupModel_BuildBushObject, __thiscall(ECX bush type, camera) RET 4 -> EAX model:
+// model "BushOjjekt" (184h slot; null stays null); unless the camera view type +198h is 2 or 7, save the
+// camera far plane +1D8h and set 00AD5700 of the foliage system (otherwise the saved value is 0.0f);
+// a mesh (0BCh) as the model geometry (0, -1.0f, -1.0f) with vertex stream 0 = type +28h and cleared
+// section owners; a 128h-byte cull record on the stack (count, the camera's planes copied by FLD/FSTP
+// with d -= 50.0 (double 00CE3938), +104h stream, +108h mesh, +10Ch type +3Ch, +110h type +38h, +114h
+// BYTE 0, +118h camera +120h..+128h after a world-matrix refresh unless camera +5Ch bit 1, +124h type
+// +50h); +34h = 00AE1A10(type +18h root cell, record, 0); clear the owners again unless BYTE +40h;
+// release the mesh; refresh the BushGroup node +20h likewise and pass its +0F0h to the model's vtable
+// +34h; under the section +54h (depth +6Ch) append the model to the pointer vector +44h (growth
+// max(2 * capacity, 4) through 00AE1440); restore the saved far plane (same view-type test).
+void* bush_group_model_build_bush_object_00ae1fb0(void* type, void* camera, void* foliage_system_00f8c210,
+    TerrainHost& host, TerrainLeftHost& left);
 } // namespace bsp::cc13_terrain
