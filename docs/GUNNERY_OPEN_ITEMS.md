@@ -13781,3 +13781,22 @@ gunnery slot range origin flips`. The gate is every category's, so ship-to-ship 
 | USN15 | flips > 0 (surface gunnery at the range edge); exit 3; first-fire times move by seconds per mount; win kept |
 | USN12 | exit 3; AA first rounds seconds earlier (bow) or later (stern); win kept |
 | USN21 | exit 3; RNG-coupled per-plane fates, no attributable sign |
+
+## 222. AA pick D3: a unit with no fire target inherits its formation leader's: `kDirectorLeaderFireTargetBound`, OFF (lead queue item 2; cc9-gunnery41, 2026-10-13)
+
+**Image** (docs/CC13_VER_19.md D3, re-read at `00863640`). On a null `director->vtable[2Ch]` (director+238h) with
+`[director+34h]` set, `007788D0` gives the formation leader; if it answers `IsKindOf(6)` the provider returns
+`[leader+738h]->vtable[2Ch]()`. The leader's answer is its own director field: no second fallback.
+
+**Host.** In `run_gunnery_pass` after the row's own `fire_target`: when it is empty, `unit_formation_group_0284` /
+`formation_leader_0014` give the leader, and a ship leader's row `fire_target` is resolved by name. Planes are
+still nulled afterwards (`kPlaneNullFireTargetProviderBound`). Counter `leader_fire_target_inherits`, logged as
+`summary mission gunnery director leader fire target inherits`.
+
+**Predictions, written before any ON run.**
+
+| row | prediction ON |
+| --- | --- |
+| USN15 (formations fighting ships) | inherits > 0; exit 3; escorts' AA/flak guns try the leader's ship target first |
+| USN12 | inherits > 0 if a formation member lacks a target; exit 3 or 1 |
+| USN21 | small: carrier-vs-carrier strike ranges, the inherited ship fails 00863990's range test |

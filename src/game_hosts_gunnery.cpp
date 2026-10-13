@@ -367,6 +367,14 @@ constexpr bool kFlakErrorRerollBound = false;
 //    the arms use pose origins. Every category's gate moves, not only AA.
 //    OFF: as before.
 constexpr bool kAaSlotRangeOriginBound = false;
+//  * kDirectorLeaderFireTargetBound: packet cc9_g41_aa_pick_d3 (docs/CC13_VER_19.md
+//    D3). 00863640, the director-backed fire-target provider: when
+//    director->vtable[2Ch] (director+238h) is null, [director+34h] -> 007788D0
+//    gives the formation leader; if it answers IsKindOf(6) the provider returns
+//    [leader+738h]->vtable[2Ch](), the leader's own target. The host read only
+//    the unit's own row. ON: a unit with no fire target of its own takes its
+//    formation leader's row target. OFF: as before.
+constexpr bool kDirectorLeaderFireTargetBound = false;
 //  * kTorpedoSwimThrustBound: packet cc9_torpedo_tube_turn,
 //    docs/TORPEDO_FRIENDLY_CROSSING.md section 6. 00857480, the swim advance,
 //    per step on a torpedo in the water: 00856BB0 -> 00857061 yaws the NOSE
@@ -2434,6 +2442,7 @@ struct GameGunneryHost::Impl {
     unsigned long long aa_lead_gate_moves{0};      // kAaLeadDistanceGateBound
     unsigned long long flak_fuse_unarmed_steps{0}; // kFlakFuseArmTimeBound
     unsigned long long aa_slot_origin_flips{0};    // kAaSlotRangeOriginBound
+    unsigned long long leader_fire_target_inherits{0}; // kDirectorLeaderFireTargetBound
     unsigned long long aa_negative_halvings{0};
     unsigned long long water_depth_kills{0};   // packet cc9_water_surface_law
     unsigned long long airfield_destroy_kills{0};  // packet cc9_airfield_destruction_rule
@@ -6868,6 +6877,27 @@ void GameGunneryHost::Impl::run_gunnery_pass(std::size_t index, float dt) {
                 // No command-target producer is wired in this process, and this
                 // run queues no orders, so the faithful answer is "no command
                 // target" - which is what the native would return here.
+            }
+            if (kDirectorLeaderFireTargetBound && state.fire_target == 0) {
+                // 0086365A..0086368B: director+238h null -> 007788D0, the
+                // formation leader [[unit+284h]+14h]; when it answers IsKindOf(6)
+                // the provider returns [leader+738h]->vtable[2Ch](), the
+                // leader's own director target (no further fallback).
+                const std::int32_t group = units.unit_formation_group_0284(index);
+                const std::size_t leader = group >= 0
+                    ? units.formation_leader_0014(group) : static_cast<std::size_t>(-1);
+                if (leader < units.count() && leader < rows.size()
+                    && units.unit_is_kind_of(leader, 6)
+                    && !rows[leader].fire_target.empty()) {
+                    for (std::size_t i = 0; i < units.count(); ++i) {
+                        const GameUnitRow* candidate = units.unit_row(i);
+                        if (candidate != nullptr
+                            && candidate->name == rows[leader].fire_target) {
+                            state.fire_target = i + 1;
+                        }
+                    }
+                    if (state.fire_target != 0) ++leader_fire_target_inherits;
+                }
             }
         }
     }
@@ -14507,6 +14537,9 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery slot range origin flips=%llu bound=%d "
             "(00729C35, packet cc9_g41_aa_pick_d2)", host.aa_slot_origin_flips,
             kAaSlotRangeOriginBound ? 1 : 0);
+        host.log.notef("summary mission gunnery director leader fire target inherits=%llu "
+            "bound=%d (00863640, packet cc9_g41_aa_pick_d3)", host.leader_fire_target_inherits,
+            kDirectorLeaderFireTargetBound ? 1 : 0);
         host.log.notef("summary mission gunnery water depth kills=%llu (007CE3A7, packet "
             "cc9_water_surface_law)", host.water_depth_kills);
         host.log.notef("summary mission gunnery airfield sub-entity asks=%llu listed=%llu "
