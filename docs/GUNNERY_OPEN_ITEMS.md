@@ -13023,3 +13023,63 @@ Source: docs/CC13_AUDIT13_RECENT_FLIPS.md. Image sites re-read here (`disasm-raw
   unchanged. USN01 win: identical (no Lua altitude call there, 193).
 - O1: ESMP08 9000 and USNOS 9000 (the 193 strafe rows): `activations` equal in both builds, `leader_seeds` > 0 ON
   only; exit 3 on ESMP08 (leader glide angle/offset re-drawn), USNOS possibly exit 1; non-strafe rows identical.
+
+## 197. Verdicts on 196, n1, the dogfight trio and the kind-6 mount frame (cc9-gunnery38, 2026-10-12)
+
+Base `1de67cfb9` (OFF exports `local\g38_auOFF` = `8ca0a4fc0`, gameplay-identical to it; win OFFs are AH's
+`local\g38_ah_<key>.log`). ON exports by `pair_export` (directories reused: A3 `g37_a9allON`, A4 `g37_rabON`, O1
+`g37_sbs2ON`, turn-after `g37_a9xON`, avoid pick `g37_sbrON`, gun burst `g37_hqmON`, k6 mount `g36_tgON`, n1
+`g36_sbsON`). Diffs `local\g38_d_<on>_<row>.txt`.
+
+- **A3 `kDiveReleaseAltActivationOnlyBound`: stays OFF, unexercised.** `sq_release_alt_set` is written only by
+  `SquadronSetReleaseAlt` (`game_hosts_units.cpp`), whose binding is behind `kLuaSquadronSetReleaseAltBound` (n7, OFF), so
+  the block is latent in every build. Its two reach rows also fail: BSM09 does not start in this harness ("unit observer
+  creator projection is unavailable: unit=NEW_Cloud 01"), USN07 9000 is idle (no shot, exit 1).
+- **A4 `kMoveToActivationLuaAltOrderBound`: stays OFF, unexercised.** USNRM01 9000 and JM08 `l50_j8_r7` exit 1 (only the
+  refills noise). The prediction (exit 3) missed: no moveto install in those windows retires a script altitude.
+- **O1 `kStrafeProfileActivationSeedBound`: mechanism held; flip pending the lead's USN01 ruling.** ESMP08 9000 exit 3
+  (`activations=33` both, `leader_seeds=11` ON only; first divergence `strafe F4U Corsair #1.6|.-2 follow -> gotowards`
+  altitude 1426.0 -> 1426.9, the re-seeded leader's wing), USNOS 9000 exit 3 (`activations=12`, `leader_seeds=3`, first
+  divergence `plane #1.1|.-3 follow -> gotowards` one second earlier). USN01 `p3_u1_z4` is LOST (Convoy6 survives; first
+  divergence ConTBD1|.-3's strafe `gotowards -> aim`).
+- **n1 (`kShipJamMotionBound` + `kLuaSetFailureBound`, SQUADRON_LAND_TASK 5gb): mechanism re-confirmed; flip pending.**
+  JM05 9000 exit 3, as lua52's pair: `component failure EngineJam on Mogami-class 01 t=46.45`, GetFailure 5 calls.
+  Wins: USN02 203.01, LOMP06 535.24, LOMP10 1002.18, BSM01 767.94 unchanged; USN12 1539.83 -> 1534.87; USN01 LOST (all six
+  convoys dead by 242 s, the script stays in MissionPhase 2).
+- **Dogfight trio** (docs/CC13_DOGFIGHT_DRAWS.md). No dogfight task runs on USN04 4500, E2, LOMP10 9000 (all exit 1);
+  USN01's win is the only row with one (`aircraft=11`).
+  - `kDogfightTurnAfterDrawBound`: **ON**; USN01 exit 1 (gameplay-identical), inert where measured.
+  - `kDogfightAvoidPickDrawBound`: mechanism held (first divergence `dogfight Enterprise_sqn01 aim -> avoid_roll` becomes
+    `avoid_turn`); USN01 LOST in phase 3 (convoys as in AH, the escort-to-navpoint phase of this installation's
+    `usn_01_battle_of_eastern_solomons.lua` 706 never ends). Flip pending.
+  - `kDogfightGunBurstDrawBound`: USN01 LOST (Convoy1 and Convoy6 survive). Flip pending.
+- **`kAaKind6GateMountFrameBound` (195): ON.** USN13 9000 exit 0 and USN02 9000 exit 1, `kind6_gate_rejects` 1576/1576
+  and 1811/1811: on the two rows with the most rejects the lifted hull-frame pair decides no gate differently.
+- **Audits of `kLuaHitTargetSquadronBound`, `kLuaHitSquadronSecondPassBound`, `kEngineMovieStopRosterBound`.** Re-read
+  `00988530..0098859B`, `0098900B..00989060` and the `0046B730` exemption rule against the host: faithful, as
+  cc13-audit11 found. One residual: `0098854C JE 00988994` skips the whole hit evaluation when `vtable[140h]()` is null
+  (a plane with no squadron); the host keeps the plane as the target.
+- **USN01 `p3_u1_z4`** is lost by every plane switch that moves its air battle (O1, avoid pick, gun burst, n1's ship jams):
+  the plan has no margin in phases 2-3. Lead's ruling needed, as in 193.
+
+**ESMP08 (lead queue item 5).** AH loses ESMP08 to `kFlakBlastIgnoreFalloffBound` (GAME_EXECUTABLE.md AH). The late
+strikes are not shot down "before their descent": they never start one. `l46_e8_orders2` has no `order <carrier> <slot>
+1/3` re-target line between frames 27747 and 45341, and none for Zuiho after 26927, so a squadron whose launch target
+sinks keeps the dead name (`command target 0071EBF0 ... token="Washington"` for 900 s after 1748.83 s), ends each
+attackrun in one tick (`Zuiho_sqn62 ... states[moveto=3753 done=25002 attackrun=12]`) and loiters at 1450 m until the
+fleet's flak kills it. Nine squadrons in AH (`local\g38_e8scan.py`). In the image `009F8160` marks the dead target
+(bot `+3Dh`) but `009F8470` re-targets only AI-held or slot-8 parties, or with `+3Ch`, `+3Dh` and attack mode 2 together,
+so a player squadron needs the order lines as well. The host's `attack_command_survives_retest` (`src/attack_commands.cpp`)
+has no caller; binding 009F8160 is a separate item. Re-plan in progress: `local\g38_e8_retarget.py <plan> <log> <out>`
+adds `order 1` + `order 3` lines at each such target death.
+
+**ESMP08 re-plan, first two iterations (AH binary, falloff ON).** `local\g38_ord_e8r1.txt` (`l46_e8_orders2` + 88 re-target
+lines from AH's log) and `local\g38_ord_e8r2.txt` (+59 from r1's log, following accepted `order 3` re-targets) both fail
+to complete in 90000 frames: r1 leaves Fanning, Grayson and Woodworth afloat, r2 Dunlap, Fanning, Grayson and Woodworth.
+The re-target recipe works (`order <c> <s> 1: answer 1` then `order 3 -> Cummings: answer 1`), and the loiter deaths are
+gone: strike-plane deaths after 1800 s above 1000 m go from 9 of 19 on AH to 0 of 13 on r2 (7 of them at or below
+300 m). Nothing large is left after about 1750 s; the late waves (hundreds of applied launches after frame 36000) do
+not sink the destroyers under full-damage flak, where AH-with-falloff-false needed only 4 late launches to finish them
+(Dunlap 1404.74, Grayson 2184.41, Woodworth 2356.57, Cummings 2590.55 s). So ESMP08 on main needs a different
+allocation (destroyers taken earlier, while the big ships still draw the flak), not only re-targets. The image does not
+re-target a player squadron itself (009F8470's party gate), so these lines are the plan's job.

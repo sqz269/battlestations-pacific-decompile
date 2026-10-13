@@ -5702,7 +5702,7 @@ struct GameUnitsHost::Impl {
     // suffix) instead of at their midpoints: 009A8712 the maneuver-expiry roll
     // against TurnAfterChance, 009A99C6 the avoid pick, 009FCED1 the gun burst
     // clock from the pilot's skill row. False: the midpoints, as before.
-    static constexpr bool kDogfightTurnAfterDrawBound = false;
+    static constexpr bool kDogfightTurnAfterDrawBound = true;   // GUNNERY 197: ON, USN01 win gameplay-identical
     static constexpr bool kDogfightAvoidPickDrawBound = false;
     static constexpr bool kDogfightGunBurstDrawBound = false;
     // Packet cc9-gunnery38 (docs/CC13_AUDIT13_RECENT_FLIPS.md O1). The strafe
