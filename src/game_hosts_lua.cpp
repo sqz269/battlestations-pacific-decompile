@@ -534,6 +534,8 @@ int binding_trampoline(lua_State* state) {
         = (kLuaLandConvoyStartBound && dispatch_row.address == 0x00895570u)
         || (kLuaLandConvoyStopBound && dispatch_row.address == 0x008956e0u)
         || (kLuaLandConvoySetSpeedBound && dispatch_row.address == 0x00895850u);
+    const bool launch_slot_row = kLuaLaunchAirBaseSlotBound
+        && dispatch_row.address == 0x00896750u;
     // Packet cc9_squadron_attack_alt.
     const bool attack_alt_row = kSquadronAttackAltBound
         && dispatch_row.address == 0x008a22b0u;
@@ -610,7 +612,7 @@ int binding_trampoline(lua_State* state) {
         || force_gunner_row
         || slot_count_row || add_stock_row || shipyard_stock_row || device_reload_row
         || remove_all_stock_row || start_landing2_row || squadron_plane_row || disband_row
-        || land_convoy_row
+        || land_convoy_row || launch_slot_row
         || unlimited_air_row
         || in_formation_row || leave_formation_row || travel_alt_row || border_zone_row
         || untouchable_row
@@ -751,6 +753,9 @@ int binding_trampoline(lua_State* state) {
     if (land_convoy_row) {
         if (!host->error_replay()) host->run_land_convoy_native(state, argc, dispatch_row.address);
         return 0;
+    }
+    if (launch_slot_row && !host->error_replay()) {
+        return host->run_launch_air_base_slot_00896750(state, argc);
     }
     if (shipyard_stock_row) {
         if (!host->error_replay()) host->run_add_shipyard_stock_00896cc0(state, argc);
@@ -6446,6 +6451,73 @@ int GameMissionLuaHost::run_land_convoy_native(lua_State* state, int argument_co
         log_.implemented("MissionLuaNative::LandConvoySetSpeed", "00895850");
     }
     return 0;
+}
+
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 8). 00896750 LaunchAirBaseSlot(base,
+// slot[, now]), lua_CFunction. 00888AA0 and 006BCD20 for the block; argument 1 as an
+// integer; argument 2 through 00B66250 only when 00B663F0 counts three or more,
+// else 0. A slot whose +2Ch is 2 returns with nothing pushed. Otherwise
+// 00896915..00896964 route 83h {slot - 1, now} (0077C2A0(msg, 0, 0)), 00896972 sets
+// slot+34h, 00896976 00874D00 (CL = 1), 00896983 006CDC70(0.0) on the block,
+// 0089698A 00874D00 (CL = 1), and with slot+28h set the result is
+// thisTable[[slot+28h]+174h].
+// SUBSTITUTIONS (labelled):
+// - the block is the deck registry's entry for the entity; a missing deck or a slot
+//   number outside the array (the image indexes it unchecked) does nothing;
+// - 83h is delivered at the call, after the +34h store, which is where the first
+//   extra step's session pump delivers it in the image; its receiver is
+//   air_ops_launch_slot_message_006ca8e0;
+// - of 006CDC70(0) only its 006C64B0 is run, for this deck: the queue head that
+//   is served is launched by 006C7490(slot, 0), the 89h 006CD6C0 case 8 runs, at
+//   the call; the step-0 slot ticks and the other sub-updates are not run;
+// - the two 00874D00 calls run through the host's runner (kRunExtraFixedStepBound);
+// - the squadron's handle is its entity id, which push_resolved_entity_by_id turns
+//   into the `thisTable` slot (nil when that slot is not built yet).
+// The 83h/85h/89h peer messages, 006BF150's publish and 00984EB0 are records.
+int GameMissionLuaHost::run_launch_air_base_slot_00896750(lua_State* state,
+    int argument_count) {
+    const int id = air_ops_entity_id(state);
+    const int slot_number = argument_count >= 2 ? static_cast<int>(::lua_tonumber(state, 2)) : 0;
+    const bool now = argument_count >= 3 && ::lua_toboolean(state, 3) != 0;
+    const int index = slot_number - 1;
+    bsp::AirOpsDeck* deck = id > 0 ? bsp::air_ops_decks().find_mutable_by_entity_id(id) : nullptr;
+    if (deck == nullptr || index < 0 || static_cast<std::size_t>(index) >= deck->slots.size()) {
+        log_.notef("  LaunchAirBaseSlot 00896750: entity id %d slot %d unresolved (deck %s) "
+            "(packet cc13-fix5)", id, slot_number, deck != nullptr ? "present" : "missing");
+        return 0;
+    }
+    if (deck->slots[static_cast<std::size_t>(index)].state == bsp::AirOpsSlotState::kLaunching) {
+        log_.notef("  LaunchAirBaseSlot 00896750: entity id %d slot %d already in state 2 "
+            "(packet cc13-fix5)", id, slot_number);
+        return 0;
+    }
+    deck->slots[static_cast<std::size_t>(index)].launch_requested = true;   // 00896972
+    const bsp::AirOpsLaunchSlotMessageResult message =
+        bsp::air_ops_launch_slot_message_006ca8e0(*deck, index, now);
+    log_.unimplemented("AirOps::launch_slot_peer_messages", "006bf150");
+    if (kRunExtraFixedStepBound && extra_fixed_step_ != nullptr) {
+        extra_fixed_step_->run_extra_fixed_step_00874d00(true, 0x00896976u);
+    }
+    // The extra step can register decks (GenerateObject), so the deck is found again.
+    deck = bsp::air_ops_decks().find_mutable_by_entity_id(id);
+    int served = -1;
+    if (deck != nullptr) {
+        served = bsp::air_ops_queued_slot_wait_006c64b0(*deck);
+        if (served >= 0) bsp::air_ops_launch_start_006c7490(*deck, served);
+    }
+    if (kRunExtraFixedStepBound && extra_fixed_step_ != nullptr) {
+        extra_fixed_step_->run_extra_fixed_step_00874d00(true, 0x0089698au);
+    }
+    deck = bsp::air_ops_decks().find_mutable_by_entity_id(id);
+    const std::uint32_t squadron = deck != nullptr && static_cast<std::size_t>(index) < deck->slots.size()
+        ? deck->slots[static_cast<std::size_t>(index)].launched_squadron : 0u;
+    log_.notef("  LaunchAirBaseSlot 00896750: entity id %d slot %d now=%d -> %s, served=%d, "
+        "stock left %d, squadron %u (packet cc13-fix5)", id, slot_number, now ? 1 : 0,
+        message.started ? "launched" : "queued", served + 1, message.stock_left, squadron);
+    log_.implemented("MissionLuaNative::LaunchAirBaseSlot", "00896750");
+    if (squadron == 0u) return 0;
+    if (!push_resolved_entity_by_id(state, static_cast<int>(squadron))) ::lua_pushnil(state);
+    return 1;
 }
 
 // Packet cc9_lua_add_shipyard_stock (docs/SQUADRON_LAND_TASK.md 5ej). 00896CC0

@@ -225,3 +225,56 @@ and the commanded-speed stages are already hosted (docs/CRUISE_COMMAND.md).
 **Prediction.** No WIN script calls it. There are 10 calls, in COTP `usn_02_battle_of_cape_esperance` and
 `usn_10_battle_of_capeengano` (both copies of each). Those ships drop their current order and cruise. RNG: none at the
 issue.
+
+## 8. LaunchAirBaseSlot 00896750
+
+Switch: `kLuaLaunchAirBaseSlotBound`. Models:
+- `air_ops_launch_slot_message_006ca8e0` (the 83h receiver)
+- `air_base_consume_stock_006c7d10`
+- a new `air_ops_launch_start_006c7490(deck, slot, flag)` overload in src/air_operations.cpp. The two-argument form
+  now calls it with false, so nothing changes.
+
+src/air_operations.cpp was unleased; lease cc13-fix5-airops was taken first.
+
+The image body, from disk bytes:
+1. The block comes from 006BCD20. Argument 1 is an integer slot number. Argument 2 is read through 00B66250 only when
+   00B663F0 counts three arguments; otherwise it is 0.
+2. A slot whose +2Ch is 2 returns with nothing pushed.
+3. Otherwise:
+   - 00896915..00896964 route 83h `{slot - 1, now}` through 0077C2A0(msg, 0, 0).
+   - 00896972 sets slot+34h = 1.
+   - 00896976 calls 00874D00 with CL = 1 (00896969).
+   - 00896983 calls 006CDC70(0.0) on the block.
+   - 0089698A calls 00874D00 with CL = 1 (00896988).
+4. With slot+28h set, the one result is `thisTable[[slot+28h]+174h]`.
+
+The 83h receiver, 006CA8E0, has two arms.
+- **Flag set:** 006C7490(slot, 1). The flag reaches 006C5050, so the squadron's bag `State` is 7 rather than 1
+  (docs/AIROPS_LAUNCH_START.md), and 006C5314's launch brake is skipped. Then 006C7D10(slot+4h, slot+8h).
+- **Flag clear:** state 2 with timer 0 (5.0 when +34h is set, and +34h is cleared). The index is removed from the
+  launch list and appended to its tail. 006BF150 publishes the slot, then 006C7D10.
+
+006C7D10 subtracts min(count, node count) from the class's stock node, sends 85h to the peers and issues the 00984EB0
+notice.
+
+LABELLED substitutions:
+- 83h is delivered at the call, after the +34h store. In the image, the first extra step's session pump delivers it
+  at that point.
+- Of 006CDC70(0), only its 006C64B0 runs, for this deck. A served queue head is launched by 006C7490(slot, 0), as
+  89h / 006CD6C0 case 8 would launch it. The step-0 slot ticks and the other sub-updates do not run.
+- Both 00874D00 calls go through the host's runner (`kRunExtraFixedStepBound`).
+- A missing deck, or a slot number outside the array, does nothing. The image does not check either.
+
+**Prediction.** No WIN script calls it. `luaPlayerAirbaseManager` is unreached: its one init is commented out in
+chg_6_forcez.lua.
+
+There are 11 calls in five files:
+- COTP usn_01 (lines 1172/1176: the replacement Wildcats, `now` = true; 2044/2045: the movie launches, queued);
+- usn_04, usn_07, usn_08;
+- chg_6.
+
+There, a script launch makes a squadron immediately and returns it, where today it returns nothing.
+- COTP usn_01 1173..1180 can then call SetRoleAvailable / SquadronSetTravelAlt on a real squadron.
+
+RNG: whatever the squadron factory and the two extra steps draw. Those are the same paths GenerateObject and the
+deck's own launches already take, and only in those missions.

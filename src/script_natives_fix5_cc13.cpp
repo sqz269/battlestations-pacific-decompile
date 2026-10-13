@@ -94,4 +94,41 @@ AirBaseRemoveAllStockResult air_base_remove_all_stock_006c8840(
     return out;
 }
 
+std::int32_t air_base_consume_stock_006c7d10(AirOpsDeck& deck, std::uint32_t vehicle_class,
+                                             std::int32_t count) noexcept {
+    for (AirOpsStockEntry& entry : deck.stock) {
+        if (entry.vehicle_class != vehicle_class) continue;
+        entry.count -= count <= entry.count ? count : entry.count;
+        return entry.count;
+    }
+    return -1;
+}
+
+AirOpsLaunchSlotMessageResult air_ops_launch_slot_message_006ca8e0(
+    AirOpsDeck& deck, int slot_index, bool flag) noexcept {
+    AirOpsLaunchSlotMessageResult out;
+    if (slot_index < 0 || static_cast<std::size_t>(slot_index) >= deck.slots.size()) return out;
+    if (flag) {
+        air_ops_launch_start_006c7490(deck, slot_index, true);
+        out.started = true;
+    } else {
+        AirOpsSlot& slot = deck.slots[static_cast<std::size_t>(slot_index)];
+        slot.state = AirOpsSlotState::kLaunching;   // +2Ch = 2
+        slot.timer = 0.0F;
+        if (slot.launch_requested) {
+            slot.timer = kAirOpsSlotCooldownSeconds;
+            slot.launch_requested = false;
+        }
+        deck.launch_queue.erase(std::remove(deck.launch_queue.begin(), deck.launch_queue.end(),
+                                            slot_index),
+                                deck.launch_queue.end());
+        deck.launch_queue.push_back(slot_index);
+        out.queued = true;
+    }
+    // Both arms read slot+4h / +8h after their own stores; neither store touches them.
+    const AirOpsSlot& slot = deck.slots[static_cast<std::size_t>(slot_index)];
+    out.stock_left = air_base_consume_stock_006c7d10(deck, slot.vehicle_class, slot.assigned_count);
+    return out;
+}
+
 } // namespace bsp

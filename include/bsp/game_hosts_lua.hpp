@@ -605,6 +605,15 @@ inline constexpr bool kLuaDisbandFormationBound = false;
 inline constexpr bool kLuaLandConvoyStartBound = false;
 inline constexpr bool kLuaLandConvoyStopBound = false;
 inline constexpr bool kLuaLandConvoySetSpeedBound = false;
+// Packet cc13-fix5 (docs/CC13_FIX_5.md section 8). 00896750 LaunchAirBaseSlot(base,
+// slot[, now]): the block (006BCD20), slot = argument 1 - 1, now = argument 2 only
+// with three arguments. A slot in state 2 does nothing. Otherwise: 83h {slot, now}
+// routed (00896964), slot+34h = 1 (00896972), 00874D00(CL=1), 006CDC70(0) on the
+// block, 00874D00(CL=1) again, and when slot+28h is set, thisTable[squadron+174h] is the
+// one result. 83h's receiver 006CA8E0 launches at once (006C7490 flag 1) or queues
+// (state 2, the launch list), and consumes the slot's stock either way (006C7D10).
+// True: the row runs that sequence on the entity's deck. False: unimplemented.
+inline constexpr bool kLuaLaunchAirBaseSlotBound = false;
 inline constexpr bool kLuaAddUntouchableUnitBound = true;   // ON on identity (LUA_BINDING_MISSION)
 // The +1D4h byte of units-host index `index`'s AI object, as AddUntouchableUnit
 // left it. False for every unit while kLuaAddUntouchableUnitBound is false.
@@ -1576,6 +1585,8 @@ public:
     // Packet cc13-fix5: the LandConvoy natives (00895570, 008956E0, 00895850), each
     // under its own switch. `address` selects the store.
     int run_land_convoy_native(lua_State* state, int argument_count, std::uint32_t address);
+    // Packet cc13-fix5, under kLuaLaunchAirBaseSlotBound.
+    int run_launch_air_base_slot_00896750(lua_State* state, int argument_count);
     // Packet cc9_squadron_travel_alt, under kSquadronTravelAltBound.
     int run_squadron_set_travel_alt_0089f550(lua_State* state, int argument_count);
     // Packet cc9_squadron_attack_alt, under kSquadronAttackAltBound.

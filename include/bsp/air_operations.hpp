@@ -650,6 +650,12 @@ AirOpsSquadronFactory* air_ops_squadron_factory() noexcept;
 // observer pair to the new squadron. It does NOT write block+38h.
 // docs/AIROPS_LAUNCH_START.md.
 void air_ops_launch_start_006c7490(AirOpsDeck& deck, int slot_index) noexcept;
+// Packet cc13-fix5. 006C7490's second argument, the flag 006C74B9 pushes on to
+// 006C5050: set, the squadron's bag `State` is 7 instead of 1 (docs/
+// AIROPS_LAUNCH_START.md) and 006C5314's launch brake is skipped. 006CC690 passes
+// 0 (the overload above); the 83h receiver 006CA8E0 passes 1 for an immediate
+// LaunchAirBaseSlot.
+void air_ops_launch_start_006c7490(AirOpsDeck& deck, int slot_index, bool flag) noexcept;
 
 // 006C65B0 BSP_AirOps_ReleaseSquadronSlot, __thiscall(block, squadron). The far
 // end of the cycle the launch start opens. It walks every slot without an early
