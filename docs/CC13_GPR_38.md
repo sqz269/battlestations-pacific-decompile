@@ -246,38 +246,40 @@ They are not native layouts and nothing is wired. Status of each: **reconstructe
 ## 3. Records, status and what is still open
 
 **Records.**
-- 71 `ledger add-function` records with source `src/gameplay_seg38_cc13.cpp`, status
-  `semantic_build_tested`, `abi_compatible: false`. The four 5Ah senders share one model, and the
-  two thunks `007213B0` and `007213C0` point at the routines they jump to.
+- 85 `ledger add-function` records with source `src/gameplay_seg38_cc13.cpp`, status
+  `semantic_build_tested`, `abi_compatible: false`. Some records share a model:
+  - the four 5Ah senders share one;
+  - the two thunks `007213B0` and `007213C0` point at the routines they jump to;
+  - `0071FC40` has the same body as `0071D270` and points at its model.
+  
+  `0071FDE0` has coverage `partial`; every other record is `complete`.
 - Two records point at the existing `radix_sort_records16_00722210`, as listed in section 2.3.
 - No Ghidra renames or comments were applied in this packet.
 
 **Build.** `./scripts/build.ps1` passes in the worktree, and both CTest suites pass.
 
+**Closed after the first report:**
+- **Host callbacks, not models.** A first pass listed `0071BA20`, `0071BE60`, `0071D810`,
+  `0071D9E0`, `0071BFF0`, `0071D2A0`, `0071D340`, `0071FC40`, `0071D880` and `0071EBF0` as
+  reconstructed elsewhere. They only appear there as host-interface calls, so they are now
+  modelled here and recorded. `00722210` is a real model (src/band_0067_cc13.cpp) and was left
+  alone.
+- **cc13-gpr38b** closed these:
+  - `0071F600` (`begin_command_base_0071f600`);
+  - `0071E4C0` (`current_path_point_0071e4c0`);
+  - `00720450` (`copy_state_from_00720450`, including the land-to-attackmove rewrite for kind-6
+    owners);
+  - `0071FDE0`, with coverage `partial` (`director_path_add_point_0071fde0`). The gate, the list
+    edits and the push order are the image's. The world-bounds helpers `007B1EC0`, `0071C4F0`,
+    `004BBDD0` and `BSP_Point3Vector_PruneFromIndex` are supplied callbacks. The argument roles of
+    `004BBDD0` are not settled.
+- **The two USNOS follow-ups** are answered in section 1.6.
+
 **Not modelled (open), with the reason:**
-- **Existing models elsewhere, not re-checked here.** I did not add records for these:
-  - `0071BA20` (`model_collect_children_by_prefix_0071ba20`, src/frontend_seg12_17_cc13.cpp);
-  - `0071BE60`, `0071D810`, `0071D9E0` (src/unit_commanded_speed.cpp);
-  - `0071BFF0` (src/ship_ai_state_steps.cpp);
-  - `0071D2A0`, `0071D340`, `0071FC40` (src/ai_command_tick.cpp);
-  - `0071D880` (src/entity_command_arms.cpp);
-  - `0071EBF0` (src/unit_gunnery_pass.cpp);
-  - `00722210` (src/band_0067_cc13.cpp).
-  
-  A follow-up should check each against the bytes and record it.
-- **Closed in cc13-gpr38b:** `0071F600` (`begin_command_base_0071f600`), `0071E4C0`
-  (`current_path_point_0071e4c0`) and `00720450` (`copy_state_from_00720450`, including the
-  land-to-attackmove rewrite for kind-6 owners).
-- **`0071FDE0` is modelled with coverage `partial`** (`director_path_add_point_0071fde0`). The gate,
-  the list edits and the push order are the image's. The world-bounds helpers `007B1EC0`,
-  `0071C4F0`, `004BBDD0` and `BSP_Point3Vector_PruneFromIndex` are supplied callbacks. The argument
-  roles of `004BBDD0` are not settled.- **`0071F9F0`, `0071FD10`, `0071FC70`.** Vector assign, path copy and path destructor: STL and
+- **`0071F9F0`, `0071FD10`, `0071FC70`.** Vector assign, path copy and path destructor: STL and
   ownership plumbing.
 - **Reference-count plumbing:** `0071EA60`, `0071F0E0`, `0071F110`, `0071F3B0`, `0071F460`,
   `0071F530`.
 - **Thin forwards and accessors:** `0071BFC0`, `0071C150`, `0071C1A0`, `0071C280` (noop),
   `0071C470`, `0071F150`, `00721030`, `00721CB0`, `00721CC0`.
-- **The USNOS question (section 1).** It is static. No game run was made, by the packet's terms.
-  Still open:
-  - which arm `007F16D0` answers for class 32;
-  - whether a landed Betty leaves `Mission.FinalTrgs`.
+- **USNOS is static evidence only.** No game run was made, by the packet's terms.
