@@ -1,4 +1,5 @@
 #include "bsp/native_singleton_destruction.hpp"
+#include "bsp/native_fixed_step_job_waves.hpp"
 #include "bsp/native_allocation_stats_lifecycle.hpp"
 #include "bsp/native_particle_model_manager.hpp"
 #include "bsp/global_config.hpp"
@@ -203,6 +204,14 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
                 static_cast<std::uint8_t>(flags), *bindings.renderer_lua_owner);
             return;
         }
+        break;
+    case 0x00d0deb0:
+    case 0x00d0dec0:
+    case 0x00d0dea8:
+    case 0x00d0deb8:
+        if (bindings.fixed_step_jobs && delete_native_fixed_step_descriptor_current_00(
+                owner, flags, *bindings.fixed_step_jobs))
+            return;
         break;
     case 0x00ce7550:
         if (bindings.render_jobs && bindings.render_jobs->frame_lifetime) {
