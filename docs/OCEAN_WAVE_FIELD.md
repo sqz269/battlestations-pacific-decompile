@@ -979,3 +979,26 @@ Packet cc9_plane_velocity_lowpass, switch `kPlaneVelocityLowpassBound` in `src/g
 throttle tick, small in steady flight (|v| - |lp| is about 4*dt*accel, so 20x that times pending stays well under the
 0.83 dead band) and larger in dives and pull-outs. Expected verdict 3 on plane missions (throttle and torpedo-run
 pitch move, RNG re-rolls), with torpedo-run timings shifting by a few frames.
+
+**Pairs (cc9-physics8, 2026-10-14).** OFF `local\p8_off` (a103f270a, exe DD0CD04DFDFF), ON `local\p8_c1` (the same
+with the switch, exe 8A53591B1821); reference env; logs `local\p8c2_{off,on}_<row>.log`, diffs `local\p8pd_c2_*`.
+
+| Row | OFF | ON | verdict |
+|---|---|---|---|
+| USN01 `usn01_p8_u1_c` | completed 1094.94 s | **no end**: Convoy2 survives (5 convoys sink by 208 s); torpedo-task releases 2/7 -> 6/14 | 3 |
+| USN12 | completed 1510.35 s | completed 1510.35 s; deaths identical, gunnery and ship ranges move | 3 |
+| LOMP10 | completed 1396.79 s | completed 1631.02 s; deaths 111 -> 126 | 3 |
+| PRCP01 | **failed** 1491.83 s ("usn03.obj_p2_fail", Enterprise) | no end | 3 |
+
+- Mechanism as predicted: `c84_reads` 54693-130412 per mission, corrections on every throttle tick with mean
+  |correction| 0.25 m/s (USN12, PRCP01) to 0.80 m/s (USN01). The error it corrects is cmd+2B4h minus the measured
+  speed (0099DA52-0099DA85), in m/s.
+- PRCP01 is lost on main before C2: a103f270a with R4 and C1 also OFF (`local\p8_r4` re-exported, exe F53C93043F09,
+  `local\p8rc_off_p01.log`) is gameplay-identical to the OFF row. First divergence against the win on f83e91891
+  (`local\p8w1_p01.log`): Kate1's strike dies 30 s later (147.20 -> 177.46 s). Commits in that range include
+  a7a20bc52 (kAirOpsOwnerByInstanceBound, kBaseLaunchBrakeAttachGateBound) and 4cbd5b2cb (kDogfightAimLeadBound).
+- USN01 re-plans for C2 ON: `local\p8_u1_f.txt` (c with ConTBD1's last retarget to Convoy2) completes at 385.03 s
+  and `local\p8_u1_g.txt` (ConTBD2 to Convoy2 at 3413) at 360.04 s, both by the strike; on OFF both complete
+  (1094.94 s, 1155.00 s). Both fail under jitter 20,3 on ON (Convoy5, or Convoy3 and Convoy5, survive). Re-plan
+  continues.
+- **Flipped ON** (faithful; the USN01 loss is re-planned by the keeper), in the commit that adds this note.
