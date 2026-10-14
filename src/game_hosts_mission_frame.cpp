@@ -396,6 +396,15 @@ struct GameMissionFrameHost::Impl {
         bool applied{false};
     };
     std::vector<HelmOrder> helm_orders;
+    // A `torpedo <ship> at <target>` press held until its `release` line: the held
+    // 79h is re-sent every mission frame, as 005484F0 sends one per frame.
+    struct HelmTorpedoHold {
+        std::size_t unit{0};
+        std::string target;
+        int line{0};
+        unsigned long long frames{0};
+    };
+    std::vector<HelmTorpedoHold> helm_torpedo_holds;
     std::string helm_orders_path;
     struct HelmMarker {
         std::string name;
@@ -3038,6 +3047,34 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
     // camera step runs.
     if (!host.helm_orders.empty() && host.units != nullptr) {
         const unsigned long long now = host.frames.frames + 1;
+        // cc9-ships50: 005484F0 builds one 79h per frame from the held fire key
+        // (docs/PLAYER_GUN_SEAT.md section 1), and a surface ship's tubes only
+        // pull the trigger once trained within 5 degrees of the snapped bearing
+        // (0095A2FC), so a held torpedo press is re-sent every frame until its
+        // release line. Before, one message at the press and one at the release
+        // trained the tubes but never fired them (trigger_ons 0).
+        for (std::size_t h = 0; h < host.helm_torpedo_holds.size();) {
+            Impl::HelmTorpedoHold& hold = host.helm_torpedo_holds[h];
+            GameGunneryHost* gunnery = host.units->gunnery();
+            std::string why;
+            bool sent = false;
+            if (!host.units->controlled_bound() || host.units->controlled_index() != hold.unit) {
+                why = "not the controlled unit [00E188D8] any more, which 005484F0 requires";
+            } else if (gunnery == nullptr) {
+                why = "no gunnery host";
+            } else {
+                sent = gunnery->player_fire_torpedo_group(hold.unit, hold.target, 0.0f, true, why);
+            }
+            if (sent) {
+                ++hold.frames;
+                ++h;
+                continue;
+            }
+            host.log.notef("helm torpedo hold dropped: line %d (at mission frame %llu) after %llu "
+                "held frame(s): %s", hold.line, now, hold.frames, why.c_str());
+            host.helm_torpedo_holds.erase(host.helm_torpedo_holds.begin()
+                + static_cast<std::ptrdiff_t>(h));
+        }
         for (Impl::HelmOrder& order : host.helm_orders) {
             if (order.applied || static_cast<unsigned long long>(order.frame) > now) continue;
             if (order.bomb_release) {
@@ -3194,6 +3231,22 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                         // 0095A1CC: the torpedo group (GUNNERY 152/155).
                         fired = gunnery->player_fire_torpedo_group(idx, order.target, 0.0f,
                             order.fire_held, why);
+                        auto& holds = host.helm_torpedo_holds;
+                        for (std::size_t h = 0; h < holds.size(); ++h) {
+                            if (holds[h].unit != idx) continue;
+                            host.log.notef("helm torpedo hold ends: line %d held %llu re-sent "
+                                "frame(s) before line %d", holds[h].line, holds[h].frames,
+                                order.line);
+                            holds.erase(holds.begin() + static_cast<std::ptrdiff_t>(h));
+                            break;
+                        }
+                        if (fired && order.fire_held) {
+                            Impl::HelmTorpedoHold hold;
+                            hold.unit = idx;
+                            hold.target = order.target;
+                            hold.line = order.line;
+                            holds.push_back(hold);
+                        }
                     } else {
                         fired = gunnery->player_fire_weapon_group(idx, order.fire_group_id,
                             order.fire_held, why);
