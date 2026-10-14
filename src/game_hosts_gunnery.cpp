@@ -450,6 +450,18 @@ constexpr bool kRangingBearingFixedBound = true;
 //    before.
 //    ON since the pairs and win set (GUNNERY_OPEN_ITEMS 233).
 constexpr bool kTorpedoBotAttackRangeBound = true;
+//  * kTorpedoBotThinkTimerBound: packet g44_torpedo_think (docs/CC13_GPR_40.md
+//    1.2 step 1; GUNNERY_OPEN_ITEMS 227 item 6). After the target, submerged and
+//    role tests, 008FFF20 subtracts dt from thinkTimeLeft (bot+5Ch) at
+//    009000DD..009000EB; while it is still > 0 (FCOMI/JA, a NaN proceeds) the
+//    tick returns at 00900985, so the gates, the intercept, the heading snap,
+//    0085ABA0 and the trigger all keep their last state; otherwise 00900101
+//    reloads 0.2f (00CE54A0, bytes CD CC 4C 3E). ON: per torpedo gun, a held
+//    tick commands no angles and keeps the last evaluated trigger. LABELLED:
+//    the seed is 0 (neither constructor 008FF260 nor 0072BBD0 stores +5Ch), so
+//    the first targeted tick evaluates. OFF: every fixed step evaluates.
+constexpr bool kTorpedoBotThinkTimerBound = true;   // ON: GUNNERY 245
+constexpr float kTorpedoBotThinkPeriod = 0.2f;   // 00CE54A0
 //  * kTorpedoBotStaleFlagBound: packet g42_ver23 (docs/CC13_VER_23.md D2), only
 //    under kTorpedoBotAttackRangeBound. 00903580 recomputes bot+68h BEFORE it
 //    stores the new bot+6Ch (0090358D, 00903592), so a flag change keeps the old
@@ -725,6 +737,18 @@ constexpr bool kGunneryLineOfSightBound = true;
 //    USN12, USN02 and JM06; USN01 moves by two tests the one-sided cell test
 //    00ADEB80 answers differently in the two directions.
 constexpr bool kGunneryLosRoleSwapBound = true;
+//  * kGunneryLosEyeCacheBound: packet g44_los_eye_cache (cc13 backfill G2). The
+//    owner's eye point and hidden byte live in the visibility cache: 00864680
+//    refreshes +14h..+1Ch (pose raised by Height + Globals +94h) and +20h
+//    (IsKindOf(6) -> 0081DE10) only when the ttl +10h is not above 0
+//    (008646B5 COMISS / JC), then reloads it with 0.5f ([00CE3800], bytes
+//    00 00 00 3F) at 008647A4; 00862C30 subtracts the pass's elapsed time from
+//    +10h first thing (00862C30..00862C43). ON (with the role swap): the
+//    observer's point and hangar answer are reused for 0.5 s. LABELLED: the
+//    class+50h section-span raise (00862C00, Globals +9Ch) is still not taken,
+//    as kGunneryLineOfSightBound says. OFF: recomputed at every test.
+constexpr bool kGunneryLosEyeCacheBound = true;   // ON: GUNNERY 245
+constexpr float kLosEyeCacheSeconds = 0.5f;   // 00CE3800
 //  * kShipyardHangarHiddenBound (packet cc9_hangar_los, docs/GUNNERY_OPEN_ITEMS.md
 //    176): 00864680 runs 0081DE10 for a ship cache owner and answers hidden when
 //    the ship's bow or stern (+-0.5 Length along its axis) lies inside a usable
@@ -1805,6 +1829,11 @@ struct GameGunneryHost::Impl {
             float ttl{0.0f};
         };
         std::vector<VisibilityEntry> visibility;
+        // kGunneryLosEyeCacheBound: the same cache's +10h ttl, +14h..+1Ch eye
+        // point and +20h hidden byte (00864680, aged by 00862C30).
+        float los_eye_ttl{0.0f};
+        float los_eye[3]{};
+        bool los_eye_hidden{false};
         // Packet cc9_unit_fire_cooldown: unit+6F8h and unit+6FCh.
         float fire_cooldown_6f8{0.0f};
         float torpedo_cooldown_6fc{0.0f};
@@ -2079,10 +2108,15 @@ struct GameGunneryHost::Impl {
         float countdown{0.0f};
     };
     std::map<std::size_t, AimErrorState> aim_error_by_gun;
+    // 009FA620 / 009FA7E0 wander state per unit (fighter_aim_distortion_009fa7e0).
+    std::map<std::size_t, bsp::GunAimWander> aim_wanders;
     // Packet cc9_mrtgun_immediate_fire (kGunImmediateFireSlotBound). The turning
     // class comes from the device row's Type (the factories 00731E20 and 006FE390).
-    static constexpr int kTurningClassRapid = 0x24;   // MRTGun, Rapid_Turning_Gun
-    static constexpr int kTurningClassSingle = 0x27;  // MSTGun, Single_Turning_Gun
+    // These are device Type values, not IsKindOf class ids: the class ids are
+    // MRTGun 23h (00730ED0), MSTGun 24h (006FDF20) and MDepthChargeLauncher 27h
+    // (006FE050, under MSTGun).
+    static constexpr int kTurningClassRapid = 0x24;   // device Type -> MRTGun (00731E20)
+    static constexpr int kTurningClassSingle = 0x27;  // device Type -> MSTGun (006FE390)
     struct ImmediateFireState {
         bool delayed_fire{false};       // bot+7Ch
         float fire_delay_time{0.0f};    // bot+80h
@@ -2117,6 +2151,18 @@ struct GameGunneryHost::Impl {
     bsp::WeaponHitAccuracyProfile torpedo_hit_profiles[4]{};
     unsigned long long torpedo_gate_a_drops{0}, torpedo_gate_b_drops{0},
         torpedo_gate_passes{0}, torpedo_submerged_drops{0}, torpedo_no_intercept_drops{0};
+    // kTorpedoBotThinkTimerBound: bot+5Ch thinkTimeLeft and what the last
+    // evaluating tick left in the trigger (vtable[1E8h]), by gun.
+    struct TorpedoThink {
+        float left{0.0f};          // bot+5Ch; LABELLED seed 0 (no constructor store)
+        bool have_target{false};
+        bool want_fire{false};
+        // What 00900476..00900526 left for the gyro run line (007311B0).
+        std::array<float, 2> lead_xz{{0.0f, 0.0f}};
+        float snap_radians{0.0f};
+    };
+    std::map<std::size_t, TorpedoThink> torpedo_think_by_gun;
+    unsigned long long torpedo_think_holds{0}, torpedo_think_evals{0};
     unsigned long long torpedo_zone_tests{0}, torpedo_zone_holds{0};  // kTorpedoLaunchZoneBound
     double torpedo_attack_range_sum{0.0};
     unsigned long long torpedo_attack_range_samples{0};
@@ -3757,6 +3803,7 @@ struct GameGunneryHost::Impl {
     bool line_of_sight_00864680(std::size_t observer, std::size_t target);
     unsigned long long los_tests{0};
     unsigned long long los_blocked{0};
+    unsigned long long los_eye_refreshes{0}, los_eye_cached{0};   // kGunneryLosEyeCacheBound
     unsigned long long los_hits{0};   // packet cc9_los_role_swap: a Landscape hit, either verdict
     unsigned long long los_verdict_disagree{0};   // BSP_LOS_CENSUS=1 only
     unsigned los_hits_logged{0};      // BSP_LOS_CENSUS=1: the first 24 disagreements
@@ -5552,6 +5599,10 @@ public:
     }
 
     void age_visibility_cache_00862c30(float elapsed) override {
+        if constexpr (kGunneryLosEyeCacheBound) {
+            // 00862C30..00862C43: cache+10h -= elapsed, before the entry walk.
+            state_.los_eye_ttl = static_cast<float>(state_.los_eye_ttl - elapsed);
+        }
         std::vector<GameGunneryHost::Impl::UnitState::VisibilityEntry> kept;
         kept.reserve(state_.visibility.size());
         for (auto& entry : state_.visibility) {
@@ -7443,6 +7494,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         float want_horz = gun.rest_horz;
         float want_vert = gun.rest_vert;
         bool have_target = false;
+        bool torpedo_think_hold = false;   // kTorpedoBotThinkTimerBound
         std::size_t target = 0;
         if (gun.target_unit != 0 && gun.target_unit - 1 < unit_state.size()) {
             target = gun.target_unit - 1;
@@ -7576,8 +7628,23 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     ++torpedo_submerged_drops;
                 }
             }
+            // kTorpedoBotThinkTimer: 009000DD..009000F6 thinkTimeLeft -= dt (stored
+            // to float); still > 0 returns at 00900985 with the trigger and the
+            // commanded heading untouched; otherwise 00900101 reloads 0.2f.
+            if (kTorpedoBotThinkTimerBound && gun.category == bsp::kUnitGunneryTorpedoCategory
+                && have_target && !player_seat) {
+                TorpedoThink& think = torpedo_think_by_gun[g];
+                think.left = static_cast<float>(think.left - dt);
+                if (think.left > 0.0f) {
+                    torpedo_think_hold = true;
+                    ++torpedo_think_holds;
+                } else {
+                    think.left = kTorpedoBotThinkPeriod;   // 00CE54A0
+                    ++torpedo_think_evals;
+                }
+            }
             if (gun.category == bsp::kUnitGunneryTorpedoCategory && kTorpedoBotAttackRangeBound
-                && have_target) {
+                && have_target && !torpedo_think_hold) {
                 // Gate A, 009001A8..: 0042B2F0 |target - gun| against
                 // 00415510(unit+44Ch * 1.5, bot+68h + 100).
                 const auto tb = torpedo_bot_range_by_gun.find(g);
@@ -7599,6 +7666,8 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             }
             if (gun.category == bsp::kUnitGunneryTorpedoCategory && !have_target) {
                 // Dropped above: no aim this tick.
+            } else if (gun.category == bsp::kUnitGunneryTorpedoCategory && torpedo_think_hold) {
+                // The think timer holds: no intercept, no gate B (restored below).
             } else if (gun.category == bsp::kUnitGunneryTorpedoCategory) {
                 // The torpedo bot runs its own intercept solver and its round
                 // does not fall, so no gravity term is added.
@@ -8075,6 +8144,15 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 }
             }
         }
+        if (torpedo_think_hold) {
+            // 00900985: no 0085ABA0 this tick (009003DD is past the timer), so the
+            // gun keeps turning toward the last command; the trigger is restored below.
+            command_angles = false;
+            const TorpedoThink& think = torpedo_think_by_gun[g];
+            have_target = think.have_target;
+            torpedo_lead_xz = think.lead_xz;
+            torpedo_snap_radians = think.snap_radians;
+        }
         const bool accepted = command_angles
             && bsp::gun_set_target_angles_0085aba0(gun.angles, arcs,
                 gun.speeds, want_horz, want_vert, accepted_mark);
@@ -8196,6 +8274,11 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 if (image_ready && !accepted) ++summary.torpedo_ready_refused_angles;
             }
             if constexpr (kTorpedoBotReadyGateBound) want_fire = image_ready;
+            if (torpedo_think_hold) {
+                // The trigger keeps the state the last evaluating tick left after
+                // all of its gates (stored below, after the zone test).
+                want_fire = torpedo_think_by_gun[g].want_fire;
+            }
             done("TorpedoBot::launch_test_008fff20", 0x009003f8u);
         }
         // DIAGNOSTIC, env-gated: BSP_FIRE_GATE_TRACE=<owner unit name> prints each of
@@ -8330,7 +8413,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 ++aa_test_flak;
             }
         }
-        if (kTorpedoFriendlyCrossingBound && want_fire
+        if (kTorpedoFriendlyCrossingBound && want_fire && !torpedo_think_hold
             && gun.category == bsp::kUnitGunneryTorpedoCategory) {
             // 008FFF20 0090058A..009007F6, after the settle test and vtable[1D0h].
             ++summary.torpedo_friendly_scans;
@@ -8341,7 +8424,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             }
             done("TorpedoBot::friendly_crossing_scan_008fff20", 0x0090058au);
         }
-        if (kTorpedoLaunchZoneBound && want_fire
+        if (kTorpedoLaunchZoneBound && want_fire && !torpedo_think_hold
             && gun.category == bsp::kUnitGunneryTorpedoCategory) {
             // 008FFF20 0090088E..009008EB: the gun-to-lead line against the layer-5
             // avoid zones. LABELLED: the image draws the AngleErr jitter
@@ -8358,6 +8441,16 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 }
                 done("TorpedoBot::launch_zone_gate_0090088e", 0x0090088eu);
             }
+        }
+        if (kTorpedoBotThinkTimerBound && !torpedo_think_hold && !player_seat
+            && gun.category == bsp::kUnitGunneryTorpedoCategory && torpedo_gun) {
+            // An evaluating tick (or one the timer never reached): what the
+            // trigger and the gyro run line hold until the next evaluation.
+            TorpedoThink& think = torpedo_think_by_gun[g];
+            think.want_fire = want_fire;
+            think.have_target = have_target;
+            think.lead_xz = torpedo_lead_xz;
+            think.snap_radians = torpedo_snap_radians;
         }
         if (kDepthChargeBotTickBound && gun.category == 8 && !player_seat) {
             // Packet cc9_depth_charge_bot: 008FC080 in place of the generic test.
@@ -9388,7 +9481,32 @@ bool GameGunneryHost::Impl::line_of_sight_00864680(std::size_t observer, std::si
         ? bsp::kInstalledLosViewerHeightAdd : bsp::kInstalledLosTargetHeightAdd));
     // 00904400(44h, target point, observer point, hit, 0) -> 0098ADD0; ON:
     // 008647F4 casts (owner point, passed point), observer -> target.
-    if (kShipyardHangarHiddenBound) {
+    UnitState* eye_owner = kGunneryLosEyeCacheBound && kGunneryLosRoleSwapBound
+        && observer < unit_state.size() ? &unit_state[observer] : nullptr;
+    if (eye_owner != nullptr) {
+        // kGunneryLosEyeCacheBound: 008646B5..008646BC refresh the owner's point
+        // (+14h..+1Ch) and the hidden byte (+20h) only when the ttl +10h is not
+        // above 0; 008647A4..008647B0 reload it with 0.5f ([00CE3800]).
+        if (!(0.0f < eye_owner->los_eye_ttl)) {
+            eye_owner->los_eye_hidden = false;                       // 008646C2
+            if (kShipyardHangarHiddenBound && observer < units.count()
+                && units.unit_is_kind_of(observer, 6)) {
+                ++hangar_hidden_tests;
+                eye_owner->los_eye_hidden = ship_in_shipyard_hangar_0081de10(observer);
+            }
+            for (int i = 0; i < 3; ++i) eye_owner->los_eye[i] = op[i];
+            eye_owner->los_eye_ttl = kLosEyeCacheSeconds;
+            ++los_eye_refreshes;
+        } else {
+            for (int i = 0; i < 3; ++i) op[i] = eye_owner->los_eye[i];
+            ++los_eye_cached;
+        }
+        if (eye_owner->los_eye_hidden) {                             // 008647B9
+            ++hangar_hidden;
+            done("Gunnery::line_of_sight_00864680", 0x00864680u);
+            return false;
+        }
+    } else if (kShipyardHangarHiddenBound) {
         // 00864680 (0086469F..008646C6): when the cache owner answers IsKindOf(6),
         // 0081DE10's byte goes to record+20h, and a set byte returns 0 before the ray
         // (00864783). The owner is the observer with kGunneryLosRoleSwapBound.
@@ -12171,22 +12289,25 @@ void GameGunneryHost::Impl::apply_failure_effect_00827b90(std::size_t unit,
     log.notef("gunnery: component failure %s on %s t=%.2f health=%.0f/%.0f",
         name.c_str(), state.row.name.c_str(), static_cast<double>(clock_seconds),
         static_cast<double>(state.health), static_cast<double>(state.max_health));
-    if (name == "Explosion") {
+    // cc13 backfill G3: 00827B90 compares with __stricmp (00BF7FBF) and 00425850,
+    // both case-insensitive.
+    const bool steering_jam = failure_name_is(name, "SteeringJam");
+    if (failure_name_is(name, "Explosion")) {
         ++cf_explosions;
         // msg+30h = unit+36Ch * settings+3C4h, taken when 00827B90 runs.
         pending_explosions.emplace_back(unit, state.max_health * explosion_fraction);
-    } else if (name == "Fire") {
+    } else if (failure_name_is(name, "Fire")) {
         ++cf_fires;
         if constexpr (kShipDamageControlTickBound) {
             damage_control_add_seconds(unit, false, fire_failure_seconds);
         }
-    } else if (name == "SteeringJam" || name == "EngineJam") {
+    } else if (steering_jam || failure_name_is(name, "EngineJam")) {
         ++cf_jams;
-        record(name == "SteeringJam" ? "Failure::steering_jam_flag_0081999d"
-                                     : "Failure::engine_jam_flag_008199c7",
-            name == "SteeringJam" ? 0x0081999du : 0x008199c7u);
+        record(steering_jam ? "Failure::steering_jam_flag_0081999d"
+                            : "Failure::engine_jam_flag_008199c7",
+            steering_jam ? 0x0081999du : 0x008199c7u);
         // Packet cc13_natives1: the byte itself (+9E4h / +9E5h).
-        if (name == "SteeringJam") damage_control[unit].steering_jam_9e4 = true;
+        if (steering_jam) damage_control[unit].steering_jam_9e4 = true;
         else damage_control[unit].engine_jam_9e5 = true;
     }
 }
@@ -14248,7 +14369,9 @@ float GameGunneryHost::death_mode_draw_00bd2f10(int stream, std::size_t unit_ind
 
 void GameGunneryHost::fighter_aim_distortion_009fa7e0(std::size_t unit_index, float dt,
     bool owner_is_fighter, float out[2]) {
-    static std::map<std::size_t, bsp::GunAimWander> wanders;
+    // cc13 backfill G1: the wander state is the mission's (it lived in a
+    // function-local static, which outlived the host into the next mission).
+    std::map<std::size_t, bsp::GunAimWander>& wanders = impl_->aim_wanders;
     auto it = wanders.find(unit_index);
     if (it == wanders.end()) {
         float draws[4];
@@ -15261,6 +15384,10 @@ void GameGunneryHost::report() {
             host.torpedo_attack_range_samples, host.torpedo_submerged_drops,
             kTorpedoBotAttackRangeBound ? 1 : 0, kTorpedoBotStaleFlagBound ? 1 : 0,
             kTorpedoSubmergedTargetDropBound ? 1 : 0);
+        host.log.notef("summary mission gunnery torpedo think timer bound=%d evals=%llu holds=%llu "
+            "(008FFF20 009000DD..00900101, packet g44_torpedo_think)",
+            kTorpedoBotThinkTimerBound ? 1 : 0, host.torpedo_think_evals,
+            host.torpedo_think_holds);
         host.log.notef("summary mission gunnery torpedo swim entity impacts=%llu (swimming rounds that "
             "struck an entity, 0084BC60)", host.torpedo_swim_entity_impacts);
         host.log.notef("summary mission gunnery bullet throw cone=%llu fan=%llu zero=%llu "
@@ -15613,6 +15740,9 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery line of sight tests=%llu blocked=%llu bound=%d "
             "(00864680 / 00904400 kind 44h, packet cc9_gunnery_line_of_sight)",
             host.los_tests, host.los_blocked, kGunneryLineOfSightBound ? 1 : 0);
+        host.log.notef("summary mission gunnery line of sight eye cache bound=%d refreshes=%llu "
+            "cached=%llu (00864680 +10h..+20h, 00862C30, packet g44_los_eye_cache)",
+            kGunneryLosEyeCacheBound ? 1 : 0, host.los_eye_refreshes, host.los_eye_cached);
         host.log.notef("summary mission gunnery hangar hidden tests=%llu hidden=%llu bound=%d "
             "(00864680 -> 0081DE10, packet cc9_hangar_los)", host.hangar_hidden_tests,
             host.hangar_hidden, kShipyardHangarHiddenBound ? 1 : 0);

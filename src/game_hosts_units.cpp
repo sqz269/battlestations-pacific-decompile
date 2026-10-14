@@ -11349,9 +11349,15 @@ void GameUnitsHost::Impl::role_message_4b_00780162(std::size_t index, std::uint3
 
 // 0067BB50, slot 20h of HUD page 27h (vtable 00CF7A38, constructor
 // 0068A8A0), which the player's unit interfaces open (INTF_CAPTAIN and the
-// rest, docs/IN_MISSION_INTERFACE_MANAGER.md). Its page byte +4h is taken as
-// set while a unit is controlled, and it runs once per fixed step here
-// instead of per frame. Both labelled.
+// rest, docs/IN_MISSION_INTERFACE_MANAGER.md). __thiscall(ECX page, float
+// seconds), RET 4. The page byte +4h (BL, read at 0067BB5D) is always set
+// here: the only caller is the pump's slot-20h call (vtable dword 00CF7A58 is
+// the one reference), which skips a page whose +4h or +5h is clear
+// (004F890C/004F8912), so the clear-byte release at 0067BC16..0067BC21 is
+// unreachable and not modelled. game+18ECh, the local slot (set by
+// 004B4740 from the session select-player paths), is kLocalPlayerSlot 0 in
+// the host, so the [0, 7] gate at 0067BBC8..0067BBD4 always passes
+// (cc9-ships50, SHIP_AI_OPEN_ITEMS 248).
 bool GameUnitsHost::Impl::player_flag_0184(const GameUnitSlot& slot) const {
     if constexpr (kPlayerRoleBookkeepingBound) {
         return slot.role_player_0184;
@@ -11373,7 +11379,7 @@ void GameUnitsHost::Impl::role_screen_update_0067bb50() {
     };
     if (controlled_plus_one == 0 ||
         !bsp::unit_is_kind_of(slots[controlled_plus_one - 1]->class_id, 2)) {
-        if (role_screen_unit_plus_one != 0) {                    // 0067BB8F
+        if (role_screen_unit_plus_one != 0) {                    // 0067BC2C..0067BC37
             send(role_screen_unit_plus_one, 1u, 0);
             role_screen_unit_plus_one = 0;
         }
@@ -11381,10 +11387,11 @@ void GameUnitsHost::Impl::role_screen_update_0067bb50() {
     }
     if (role_screen_unit_plus_one != controlled_plus_one && role_screen_unit_plus_one != 0 &&
         holds(role_screen_unit_plus_one, 0)) {
-        send(role_screen_unit_plus_one, 1u, 0);                  // 0067BC21
+        send(role_screen_unit_plus_one, 1u, 0);                  // 0067BB96
     }
     role_screen_unit_plus_one = controlled_plus_one;
-    // 0067BBE0: game+18ECh in [0, 7]; page byte +4h set (labelled).
+    // 0067BBC8: game+18ECh in [0, 7]; 0067BBE0: page byte +4h set (both always
+    // hold on the pump path, see above).
     if (holds(controlled_plus_one, 0)) return;
     GameUnitSlot& c = *slots[controlled_plus_one - 1];
     if (!(c.role_permission_0188[0] == 9 || c.role_permission_0188[0] == kLocalPlayerSlot)) {

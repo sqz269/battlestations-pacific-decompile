@@ -14524,3 +14524,205 @@ ship's guns keep the stored target instead of swinging to the new best. Expect U
 have mixed cruiser/destroyer targets); USN01 i may stay identical if its ships always accept. The clear moves
 only missions whose scripts hold a ship's fire while it has a target; `clears=0` on a row means no reach.
 222 on top of the drop: followers with no target take the leader's stored `+238h`.
+
+## 243. The TorpedoBot think timer: `kTorpedoBotThinkTimerBound`, OFF; the 238 follow-up at `008777D0` (lead queue item 4; cc9-gunnery44, 2026-10-14)
+
+**Image** (`bsp.py disasm-raw`, CC13_GPR_40 1.2 step 1). After the target, submerged-target (`008FFFB2`) and
+role (`+1ACh`) tests, `009000DD`..`009000EB` subtract dt from `bot+5Ch` (thinkTimeLeft) and store it as float.
+`FCOMI` / `JA 00900985`: while it is still above 0 the tick returns, so gate A, the intercept, gate B, the heading
+snap, `0085ABA0` (`009003DD`) and the trigger (`vtable[1E8h]`) keep their last state. Otherwise `00900101` reloads
+`0.2f` (`00CE54A0`, bytes `CD CC 4C 3E`). Neither `008FF260` nor the base `0072BBD0` stores `+5Ch`.
+
+**Binding** (OFF). Per torpedo gun, a targeted AI tick decrements the timer; a held tick commands no angles
+(the gun keeps turning to the last command) and restores the last evaluated `have_target` and `want_fire`.
+LABELLED: the seed is 0, so the first targeted tick evaluates. Counter line
+`summary mission gunnery torpedo think timer bound= evals= holds=`.
+
+**Predictions.** ON: holds are about three times evals at 0.05 s steps (a hold lasts 0.2 s). Launch times move
+by up to 0.2 s and a launch that needed the heading on one exact step may be lost or gained; rows with
+torpedo launches (USN12, JM06, USN01) move, others stay identical.
+
+**238 follow-up.** `008777D0` reads `hit+34h` only for the hull-pass gate (`008777DD`, `-1` skips it) and the
+part entries at `hit+3Ch`; it never reads `+30h`, and `00470510` reads neither. The host's 008777D0 is ungated
+by design (`apply_base_hit_record`), so a plane record that carried the element index would change nothing
+there. It would, however, open the host's `00826F10` hull pass (R1, flood/fire), which is the ship's handler
+and does not run for a plane in the image. Keeping 0Ah / -1 on the plane record is therefore the right
+substitution; no binding.
+
+## 244. cc13 backfill G1-G4 (lead queue item 3; cc9-gunnery44, 2026-10-14)
+
+- **G1** (`771b6a3a0`, plain fix). `fighter_aim_distortion_009fa7e0` kept its `009FA620` / `009FA7E0` wander
+  state in a function-local static map, which outlived the mission. It now lives in the gunnery host, which the
+  per-mission units host owns (`game_hosts_mission_frame.cpp` builds a new `GameUnitsHost` at each mission
+  load). A one-mission run is unchanged.
+- **G3** (`771b6a3a0`). `00827B90` compares with `__stricmp` (`00BF7FBF`, Explosion) and `00425850`
+  (SteeringJam, EngineJam, Fire `00CE7310`), all case-insensitive; the host now uses `failure_name_is`. This
+  installation authors the four names in their canonical case on that path (the only lower-case use,
+  JM02's `SetFailure(unit, "explosion", ...)`, goes through `script_set_failure_008132c0`, already
+  insensitive).
+- **G4** (`771b6a3a0`, comment). `kTurningClassRapid = 0x24` / `kTurningClassSingle = 0x27` are device Type
+  values (factories `00731E20` MRTGun, `006FE390` MSTGun); the IsKindOf class ids are MRTGun 23h (`00730ED0`),
+  MSTGun 24h (`006FDF20`), MDepthChargeLauncher 27h (`006FE050`). The values were right.
+- **G2** `kGunneryLosEyeCacheBound` (OFF). `00864680` refreshes the owner's eye point and hidden byte only when
+  the cache ttl `+10h` is not above 0 (`008646B5` COMISS / JC) and reloads it with 0.5f (`[00CE3800]`);
+  `00862C30` subtracts the elapsed time from `+10h` before the entry walk. ON, with the role swap, the
+  observer's point and hangar answer are reused for 0.5 s. LABELLED: the "shape-based class height" half is the
+  `class+50h` / `00862C00` section-span raise (`top + max(Globals +94h, span * +9Ch)`); this process builds no
+  model at `class+50h` (`game_hosts_units.hpp` `unit_hull_length_09c8`), so the `class+A8h` Height + 5.0
+  fallback the host uses is the branch the image takes for a class without a model, and the raise stays
+  unbound. Prediction: ON moves only rows where a ray grazes land within 0.5 s of a pose change; open-water rows
+  stay gameplay-identical. Counter: `summary mission gunnery line of sight eye cache bound= refreshes= cached=`.
+
+## 245. Verdicts for 242-244; four flips ON, 222 stays OFF (cc9-gunnery44, 2026-10-14)
+
+Same-tree pairs, `BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`, logs in this tree's `local\` (manifests beside them).
+Bases: `g44_off` (`5886bfa03`), `g44_off2` (`589c58d8c`), `g44_off3` (`7c5815dbd`).
+
+| switch | row | verdict | mechanism |
+| --- | --- | --- | --- |
+| `kAutoTargetScanRowWriteDropBound` | USN12 b, USN15 l2, USN01 i | gameplay identical (all three) | `drops=62` on USN12: the row no longer names a scan winner the gates refused |
+| drop + 222 `kDirectorLeaderFireTargetBound` | USN12 b | **MOVED, lost**: shots 15414 -> 866, deaths 106 -> 22, the CA phase never ends | `inherits=190938` |
+| drop + 222 | USN15 l2 | **lost**: failed at 1036.94 s | - |
+| `kDirectorFirePermissionClearBound` | USN01 i | gameplay identical | `clears=0`: USN01's three UnitHoldFire calls come before any target; no reach |
+| `kTorpedoBotThinkTimerBound` | USN01 i | gameplay identical | no ship torpedo tube targeted |
+| `kTorpedoBotThinkTimerBound` | USN12 b | **MOVED, lost** (`none`); CA phase ends at ~940 s instead of 871 s | `evals=1663 holds=6635`, the predicted 1:4 |
+| `kTorpedoBotThinkTimerBound` | USN15 l2 | **MOVED, lost**: failed at 2833.69 s (Fuso outlives the last Fletchers; win was 2808.66 s) | as above |
+| `kGunneryLosEyeCacheBound` | USN12 b, USN01 i | gameplay identical | `refreshes=1320 cached=640` (USN12), `725 / 968` (USN01) |
+
+**Flips ON**: the row-write drop, the permission clear (a direct transcription, no reach yet), the think timer
+(mechanism as predicted; the lost wins are faithful consequences and go to re-plans), the eye cache.
+**222 stays OFF.** With the drop in place, followers that hold no fire target take the leader's and stop
+firing at anything else; whether the image's per-gun pick falls back when that target is out of the gun's
+arcade range (3000 m, section 235) is unread. Next: read the `00863640` consumers (the per-gun target pick)
+for a fallback before binding again.
+
+**Re-plans.** USN12 `usn12_g44_u12_c` (Cleveland moveto at 17700, 19400 and 20600) completes at 1625.46 s on the
+base and 1670.50 s under the think timer; it replaces `b`, which the think timer loses. USN15 under the think
+timer is a knife-edge race against Fuso reaching IJNGoTo (the script fails the mission when an enemy is within
+3000 m of it, or all US ships die). Player torpedo salvos at Fuso (`usn15_g44_u15_a`) launched nothing
+(`player torpedo group ... trigger_ons=0 tube_fires=0`, the same as JM06's sub orders), so that plan is
+dropped; USN15 goes to the wins keeper.
+
+**237 reach**: 0 holds in 56 recent lane logs and in USN12 / USN15 here (USN12 has three layer-5 zones).
+
+**245 addendum (think timer correction).** The first binding held only `want_fire` and re-ran the friendly-crossing
+scan (`0090058A`) and the launch-zone test (`0090088E`) on held ticks, with the snap block overwriting the gyro
+lead (`torpedo_lead_xz`) with the target's present position. Both scans and the run-line inputs (`00900476..00900526`)
+sit after the timer, so a held tick runs none of them. Corrected: the held state is taken after the last gate and
+includes the lead and the snap angle; held ticks skip both scans. Re-paired below.
+
+Re-pair of the corrected timer (`e26b56733`, ON against `g44_t2off` = the same commit with the switch OFF):
+
+| row | OFF | ON |
+| --- | --- | --- |
+| USN12 `c` | completed 1625.46 s | **none** (Cleveland, damaged, crawls at about 1.4 m/s and never reaches CLGoTo) |
+| USN12 `d` | completed 1455.29 s | completed 1430.27 s |
+| USN15 `l2` | EndMission 2808.66 s | **failed 2843.70 s** |
+
+`evals:holds` stays 1:4 (USN12 1434 / 5728, USN15 5636 / 22530). The switch stays ON. USN12 is re-planned as
+`usn12_g44_u12_d`: Montpelier and Cleveland both leave for CLGoTo at 600 s, so whichever is MontGrp[1] in phase 3
+is close and undamaged, while the rest of the fleet fights the CA phase. It replaces `c`. USN15 stays with the
+keeper.
+
+## 246. Handoff (cc9-gunnery44, 2026-10-14, at about 65% context)
+
+**On `agent/cc9-gunnery36`, all integrated into origin/main by the lead** (built, ctest 2/2 at each):
+
+| sha | what |
+| --- | --- |
+| `582e32626` | USN12 re-plan `usn12_g44_u12_d` (1430.27 s timer ON, 1455.29 s OFF); corrected-timer re-pair (245) |
+| `e26b56733` | think timer correction: held ticks skip the `0090058A` / `0090088E` scans and keep the gyro lead |
+| `0cc305ee0` | flips ON: row-write drop, `00836210` clear, think timer, LOS eye cache; 222 stays OFF (245) |
+| `7c5815dbd` | `kGunneryLosEyeCacheBound` OFF (G2, 244) |
+| `589c58d8c` | `kTorpedoBotThinkTimerBound` OFF; 238 follow-up, no binding (243) |
+| `771b6a3a0` | cc13 G1 / G3 / G4 (244) |
+| `5886bfa03` | `kAutoTargetScanRowWriteDropBound`, `kDirectorFirePermissionClearBound` OFF (242) |
+
+**Open, in order of value.**
+1. **USN15 is lost under the think timer** (failed 2843.70 s ON vs EndMission 2808.66 s OFF, `e26b56733`). Sent to
+   cc9-physics9 (wins keeper). The script fails the mission when an enemy is within 3000 m of `IJNGoTo` or every
+   US ship is dead; the win is Fuso dying first. Player torpedo salvos (`torpedo <ship> at Fuso` / `release`)
+   train the tubes but never launch (`player torpedo group ... trigger_ons=0 tube_fires=0`, same on JM06's sub
+   orders): that harness verb looks broken for launches and is worth a look by whoever owns it.
+2. **222 `kDirectorLeaderFireTargetBound`** stays OFF. With the drop ON it still collapses USN12 (from 600 s
+   assigns rise 974 vs 284 while shots stall) and loses USN15 at 1036.94 s. The pass only adds the fire
+   target as step 8.7 candidates (tried first) after `00863990`'s category-range test, so followers lock their
+   guns onto the leader's target and stop picking their own. Next: read what refuses those guns' fire after
+   the assignment, and whether the image's pick has a fallback, before treating it as faithful.
+3. **237 reach**: still 0 holds (56 recent lane logs, USN12 with three layer-5 zones, USN15).
+4. The `00836210` clear has no reach (USN01's UnitHoldFire calls come before any target).
+5. `class+50h` section-span raise (G2's second half) stays labelled: no model is built at `class+50h`.
+6. The 227 list (slot accept `008FC010`, hold fire 3a, blast mesh 4, Fido 5).
+
+**Tools** (this tree's `local\`): `g44_exports.ps1 -Commit <sha> -SpecList "dir;dir:kA=true,kB=true"` (sequential
+exports, appends to `g44_exports.txt`); `g44_queue.ps1 -Jobs <file>` (as g43's; the exports file must exist);
+`g44_pos.py <traj prefix> <steps> <regex>` samples `--trajectory-csv` output. Exports: `g44_off` (`5886bfa03`),
+`g44_off2` (`589c58d8c`), `g44_off3` (`7c5815dbd`), `g44_fl` (`0cc305ee0`), `g44_t2on` / `g44_t2off` (`e26b56733`).
+
+## 247. The submarine case of `kTorpedoBotAttackRangeBound`: faithful, stays ON (lead queue item 1; cc9-gunnery45, 2026-10-14)
+
+**Question.** Under D1 (230, ON since `91d6a9d22`) physics9 saw no JapSub launch in IJN08 phase 1 and the JM06 AI
+PlayerSubs lost their 1-2 km convoy kills. Is gate A mis-bound for submarine owners?
+
+**(a) Gate A decides submarines too.** No other launcher exists for an AI boat.
+- The sub-attack fire step `009E9EB0`-`009EA9B7` has 42 direct call sites to 19 targets, and none of them is a gun or tube call:
+  `00414DB0`, `00414EB0`, `00415690`, `00419010`, `00419510`, `00427C90`, `00427EB0`, `00438AA0`, `00438B10`,
+  `008528B0`, `009E0040`, `009E4A60`, `009E4C70`, `009E4D90`, `009E4EE0`, `009E97B0`, `009E9DE0`, `009E9E50`,
+  `00BF701A` (`disasm-raw 009E9EB0 --length 2824`).
+- Its seven indirect calls are `[unit+0AB4h]->vtable[50h]` (three), one more `vtable[50h]` at `009EA4BF`,
+  the target's `vtable[34h]` (velocity), `vtable[5Ch](8)`, and one through EDX at `009EA352`. So the state only steers, sets the depth and raises the
+  periscope (section 5 of `SHIP_AI_SUB_ATTACK.md`).
+- The launch comes from each Function-7 tube's TorpedoBot, `008FFF20`, as for a surface ship. Its order is:
+  1. The seat gate: return unless `[gun+1ACh]` is 8 or `00927F10` holds it.
+  2. The think timer at `009000DD`..`009000F6`.
+  3. `bot+64h`: when set, `008527E0` on it must answer shallow (`009000FC`..`00900117`).
+  4. Gate A: `0042B2F0` at `009001A8` measures `|target - gun|`, and `009001B5` loads `[edi+44Ch]` for the min.
+- No owner-kind test separates a boat from a ship before gate A.
+
+**(b) R and the row are right.**
+- `009E9CE0` calls `00901BA0(length, 1)`, the same function that fills `bot+68h`. `00901BA0` reads
+  `00731020`, then the row `[00E1998C] + 14h*(bot+34h+1)` (flag 1) or `+14h*bot+34h + 18h` (flag 0), then calls
+  `008387B0(7, length, range, accuracy)` (live decompile).
+- `00731020` returns `classDesc+60h = WTS * FlyTime * 0.6` (`00855A90`). For Type 95 / Mark 14 (51.444, 60) that is
+  1852 m, as in CC13_VER_23.
+- The level is `bot+34h = unit+390h`, which the base constructor seeds to 1 at `0095CCCC` (PILOT_SKILL_LEVEL 1).
+  This installation's `ijn_8_north_sol.lua` (2024-07-13) never calls `SetSkillLevel` on `Mission.JapSubs`
+  (lines 215-218). Its `SkillLevelOwn` goes only to `JapFleetLeft`.
+- The scene `ijn_8_north_sol.scn` authors `Skill` on 60 entities, but not inside `entity "JapSub1"`.
+- So SPNormal (1) is the image's level for these boats, and the host's default 1 matches it. The limit is
+  0.36-0.50 R, as predicted in 230: 669-920 m for 115-180 m targets. physics9's mean of 824 m against the cargo
+  ships fits.
+
+**(c) The image's approach does bring a boat inside the gate.**
+- `009E9D90` switches to fire at `range < R_ft + 150`, where `R_ft` is the flag-1 range from (b).
+- `009E4A60`'s range is `d - own/2 - target/2` (ship target), floored at 0.
+- **Correction to SHIP_AI_SUB_ATTACK.md section 3**, which says the own half-length goes to a dead slot.
+  `PUSH 6` at `009E4B20` comes before `FSTP [ESP+0Ch]` at `009E4B26`, so the store lands in the `[ESP+8]` slot that
+  both exits load. `kSubAttackOwnHalfLengthBound` ON (SHIP_AI 243) is right.
+- In fire (`009E9E50`), the boat runs in to `+54h = R_ft * U(0.8,1) * U(0.3,0.5)`, which is 0.24-0.50 R_ft, before
+  it opens out.
+- That point is well inside gate A's `min(unit+44Ch * 1.5, bot+68h + 100)`, whichever flag `bot+68h` holds:
+  - with flag 1, the limit is R_ft + 100 (center to muzzle);
+  - with flag 0, it is about 0.79 R_ft + 100.
+- Gate B, `min(unit+44Ch, bot+68h)` on the lead, is passed too, at those ranges.
+
+**Runtime, current rules (no new run needed).**
+- physics9's `p9i8_u.log` uses `attack JapSubN CargoM` orders, which go through `0077D600(00E08F78)`, so
+  sub_attack selects at 5.05 / 6.05 / 7.05 s. The boats close, and the JapSubs launch 29 torpedoes (11 / 12 / 6)
+  from 267.31 s. Cargo2 and Cargo6 break up at 286.40 s.
+- The gate counts there are `gate_a_drops=11053 gate_b_drops=2831 passes=23062 mean_attack_range=824`.
+- JM06 (`SHIP_AI` 243): the PlayerSubs select at 81.10 s, switch to fire at about 1060 m and close to 482-483 m.
+  Their kills come at 184.86 s and 191.96 s, where they used to come from 1.0-1.8 km.
+
+**Why ijn08_s49_i08_i11 sees nothing.**
+- That plan parks the boats with `moveto` and orders `torpedo <sub> at <target>` / `release`. Neither order
+  enters sub_attack.
+- The `torpedo` verb is the player's group-4 seat (`player_fire_torpedo_group`, `seat_1ac = 0`). A player seat
+  clears the bot's target (`player_seat`, the side gate `0090003B`), and the group-4 launch itself is the broken
+  verb cc9-ships50 owns.
+- A parked boat outside `bot+68h + 100` is refused by the bot in the image too.
+- So the loss is an order-file problem, not a mis-binding. The re-plan should use `attack` (NavigatorAttackMove)
+  for the AI boats, as `p9_i08_u.txt` does. The same holds for any plan that relies on AI subs killing from
+  1-2 km: the image's AI boats close to about 0.24-0.5 R_ft (about 220-460 m) first.
+
+**Verdict: faithful.** `kTorpedoBotAttackRangeBound` stays ON for submarine owners, and no code change is made.
