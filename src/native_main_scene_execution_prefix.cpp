@@ -1,6 +1,7 @@
 #include "bsp/native_main_scene_execution_prefix.hpp"
 #include "bsp/native_camera_history.hpp"
 #include "bsp/native_camera_far_corners.hpp"
+#include "bsp/native_camera_frame_command.hpp"
 #include "bsp/native_particle_preparation.hpp"
 #include "bsp/native_system_constant_gather.hpp"
 #include "bsp/native_render_resource_init_continuation.hpp"
@@ -767,5 +768,70 @@ void continue_native_main_scene_bloom_targets_00b15bd2(void* service,
     bind_native_renderer_frame_targets_00b24e70(renderer,frame,c.targets);
     state.active_native_site=0x00b15e78;
     state.reached_camera_frame_stage=true;
+}
+
+__declspec(naked) void* __fastcall set_native_camera_render_mode_00b6fdf0(
+    void*, void*, std::uint32_t) {
+    __asm {
+        mov eax, ecx // 00b6fdf0
+        mov ecx, dword ptr [esp + 4] // 00b6fdf2
+        mov edx, 1 // 00b6fdf6
+        shl edx, cl // 00b6fdfb
+        mov dword ptr [eax + 0198h], ecx // 00b6fdfd
+        mov dword ptr [eax + 019ch], edx // 00b6fe03
+        ret 4 // 00b6fe09
+    }
+}
+
+void continue_native_main_scene_camera_gather_00b15e78(void*, void* command,
+    const NativeMainSceneCameraGatherContext& c,
+    NativeMainSceneExecutionPrefixState& state) {
+    if(!state.reached_camera_frame_stage || state.camera_gather_started)
+        throw std::logic_error("main scene camera/gather requires its fresh reached continuation");
+    state.camera_gather_started=true;
+    state.active_native_site=0x00b15e7a;
+    void* camera=get_native_scene_command_camera_00b1bf40(command);
+    auto& targets=c.bloom_targets.targets;
+    auto& renderer_cell=targets.actual_group_owner.actual_surface_context.actual_renderer_00f8d394;
+    state.active_native_site=0x00b15e81;
+    if(static_cast<const volatile void*>(c.camera.renderer_00)!=static_cast<const volatile void*>(&renderer_cell) ||
+       c.camera.renderer_00!=&c.prefix.actual_renderer_00f8d394 ||
+       c.camera.renderer_profile_04!=c.prefix.actual_renderer_profile_00d5f0a8 ||
+       c.camera.renderer_profile_04!=c.bloom_targets.actual_renderer_profile_00d5f0a8 ||
+       !c.camera.prepare_08 || !c.camera.viewport_clear_0c ||
+       c.camera.prepare_08->synchronization_04!=&targets.actual_synchronization_0108d6dc ||
+       c.camera.viewport_clear_0c->synchronization_00!=&targets.actual_synchronization_0108d6dc ||
+       !c.camera.prepare_08->frustum_00 ||
+       c.camera.prepare_08->frustum_00->length_access.dispatch_bypass_0109dd78!=c.prefix.axes.length_access.dispatch_bypass_0109dd78 ||
+       c.camera.prepare_08->frustum_00->length_access.except_00c27489!=c.prefix.axes.length_access.except_00c27489)
+        throw std::logic_error("main scene camera requires the same actual renderer, synchronization and CRT domain");
+    execute_native_camera_frame_command_00b71360(camera,&c.camera);
+    state.camera_frame_completed=true;
+
+    state.active_native_site=0x00b15e88;
+    camera=get_native_scene_command_camera_00b1bf40(command);
+    state.render_mode_bits=word(static_cast<const unsigned char*>(camera)+0x198);
+    state.render_mode_captured=true;
+    camera=get_native_scene_command_camera_00b1bf40(command);
+    state.active_native_site=0x00b15ea2;
+    (void)set_native_camera_render_mode_00b6fdf0(camera,nullptr,6);
+    state.render_mode_changed=true;
+
+    camera=get_native_scene_command_camera_00b1bf40(command);
+    void* const scene=current_member(camera,0xa4);
+    camera=get_native_scene_command_camera_00b1bf40(command);
+    state.active_native_site=0x00b15ebf;
+    if(c.system.actual_renderer_00f8d394!=c.camera.renderer_00 ||
+       c.system.actual_timer_01090ab0!=&c.prefix.actual_clock_01090ab0 ||
+       c.system.actual_axes!=&c.prefix.axes ||
+       c.system.actual_synchronization!=&targets.actual_synchronization_0108d6dc ||
+       c.system.actual_texture_profile_00d61948!=c.bloom_targets.textures.actual_texture_profile_00d61948 ||
+       !c.system_frame.prefix_preimage ||
+       c.system_frame.sampler.phase!=NativeSamplerLoaderOperation::Phase::fresh)
+        throw std::logic_error("main scene system gather requires its fresh frame and same actual provider domain");
+    state.system_gather_started=true;
+    gather_native_system_constants_00b46a70(scene,camera,c.system,c.system_frame);
+    state.active_native_site=0x00b15ec4;
+    state.reached_label_stage=true;
 }
 } // namespace bsp

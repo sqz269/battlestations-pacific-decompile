@@ -6,6 +6,9 @@ struct NativeCameraAxesContext;
 struct NativeCameraHistoryContext;
 struct NativeCameraFarCornersContext;
 struct NativeRendererFrameTargetsContext;
+struct NativeCameraFrameCommandContext;
+struct NativeSystemConstantGatherContext;
+struct NativeSystemConstantGatherFrame;
 
 struct NativeMainSceneExecutionPrefixContext {
     void* const volatile& actual_renderer_00f8d394;
@@ -36,6 +39,13 @@ struct NativeMainSceneExecutionPrefixState {
     bool clear_flags_changed{};
     bool clear_color_changed{};
     bool reached_camera_frame_stage{};
+    std::uint32_t render_mode_bits{};
+    bool camera_gather_started{};
+    bool camera_frame_completed{};
+    bool render_mode_captured{};
+    bool render_mode_changed{};
+    bool system_gather_started{};
+    bool reached_label_stage{};
 };
 
 // Complete raw leaves. Native ECX command / camera. B1BF40 uses RET and returns
@@ -102,5 +112,36 @@ struct NativeMainSceneBloomTargetContext {
 // Stops BEFORE B15E78 camera-frame execution. D5E13C remains UNADMITTED.
 void continue_native_main_scene_bloom_targets_00b15bd2(void* actual_service,
     void* actual_command, const NativeMainSceneBloomTargetContext&,
+    NativeMainSceneExecutionPrefixState&);
+
+// Complete B6FDF0..B6FE0B: ECX actual camera, original stacked DWORD mode,
+// EAX same camera, RET4. EDX is unused. Store full mode+198 and then the x86
+// masked-shift mask+19C; no CameraFrameState projection or owner operation.
+void* __fastcall set_native_camera_render_mode_00b6fdf0(void* actual_camera,
+    void* unused_edx, std::uint32_t mode);
+
+struct NativeMainSceneCameraGatherContext {
+    const NativeMainSceneExecutionPrefixContext& prefix;
+    const NativeMainSceneBloomTargetContext& bloom_targets;
+    const NativeCameraFrameCommandContext& camera;
+    const NativeSystemConstantGatherContext& system;
+    NativeSystemConstantGatherFrame& system_frame;
+};
+
+// Continue SAME command/state through B15E78..B15EC3: real B71360, a fresh
+// camera read to save mode+198, a fresh camera to set mode6, then a camera read
+// for scene+A4 and another for full B46A70. Provider contexts borrow the SAME
+// renderer publication/profile, synchronization, CRT, axes, timer and texture
+// cells as the preceding stages. The service receiver is unused in this clause;
+// B46A70 independently reloads its supplied original service publication.
+//
+// Each call requires a fresh persistent gather frame with the original local
+// prefix preimage. Keep it and this continuation alive on failure; no replay,
+// retirement, cleanup or restoration occurs here. Source checks occur at their
+// reached call boundary, retaining prior camera/renderer mutations. Existing
+// provider exception, private-stack-alias and FP limitations still apply.
+// Stops BEFORE B15EC4 label allocation/FH3 ownership. D5E13C stays UNADMITTED.
+void continue_native_main_scene_camera_gather_00b15e78(void* actual_service,
+    void* actual_command, const NativeMainSceneCameraGatherContext&,
     NativeMainSceneExecutionPrefixState&);
 } // namespace bsp
