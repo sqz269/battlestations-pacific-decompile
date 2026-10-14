@@ -1007,3 +1007,53 @@ with the switch, exe 8A53591B1821); reference env; logs `local\p8c2_{off,on}_<ro
   finds only writes to frame+48h after 0099D593 (0099DBEE and 0099E51F address other slots under a push and a
   `SUB ESP,8`), and 0099E180's `[ESP+5Ch]` is the double stored at 0099E136 under `SUB ESP,14h`. So the value is
   dead and nothing is lost by not carrying it (uncertainty: by-eye ESP tracking over a 6 KB body).
+
+## 29. cc9-physics8 handoff (sea/physics lane + WINS KEEPER), 2026-10-14
+
+Tree J:\PROG\battlestations-pacific-decompile-cc9-physics1 (agent/cc9-physics1), everything committed; no lease held.
+Scripts in local\: `p8_wins.ps1 -Tag <t> [-Exe <exe>] [-Only keys] [-Jitter 20,3] [-Max 3]` (every win, absolute
+order paths, at most -Max runs of mine at once, longest first), `p8_runs.ps1` (rows), `p8_keep.py <tag>` (summary),
+`p8_deaths.py <a> <b>` (death rows side by side, first divergence), `p8_crash.py` (carrier-squadron crashes),
+`p8_c1r4_apply.py` / `p8_c2_apply.py` (the units.cpp patches as applied). `local\p7_m` is the export of the last
+re-time (a2ad905f1).
+
+Done this session:
+- Re-time on f83e91891 and again on a2ad905f1 (WINS_TABLE). USN01 re-planned twice: `usn01_p8_u1_c` (flak/AA flips)
+  and `usn01_p8_u1_i` (C2); i fails under jitter 20,7.
+- R4 (`kPlaneDeadMeatRollBound`) and C1 (`kPlaneWreckForwardDragBound`) bound, paired, ON (section 27). R4's spin
+  half has no reach: the host never draws a spinning death (unit+800h, 007CFDB4, not carried; gunnery/plane-damage).
+- USN04 V1 confirmed (section 27): no orders at 0.0222 s reach phase 2; V1 removes 46 climb-out crashes.
+- C2 (`kPlaneVelocityLowpassBound`) bound, paired, ON (section 28): the ctl+30h low-pass, the C84h path angle that
+  pitch mode 2 holds, and the throttle error correction at 0099DAC8. The third reader is a dead store.
+- P1 (007D9CE0's rotation into the parent frame) needs nothing: `carrier_deck_capture` / `carrier_deck_carry_in`
+  already keep the relative velocity in carrier axes.
+
+Open, in order:
+1. **JM08 lost to C2** (WINS_TABLE): f, m10 and f at 140000 frames all leave "landingships" and "bombing"
+   incomplete. Needs a re-plan from the C2-ON logs (`local\p8w2_j8*.log`).
+2. **PRCP01 c lost on main a103f270a**, not by the plane-flight switches (identical with R4/C1/C2 OFF). Kate1's
+   strike dies 30 s later. The lead was asked to route it to the owning lane (suspects a7a20bc52, 4cbd5b2cb,
+   827fc0327); re-plan it if the change is kept.
+3. **JM06 n1** (lost on f83e91891, sub plan) and **USNOS k**: proposed for cc9-ships48; check the lead's answer.
+4. **ESMP08**: Iowa kills Zuikaku by gunfire from 467 s and the launch rate falls with the carriers. The Iowa-first
+   allocations (`local\p8_e8_iowa.txt`, `p8_e8_iowac.txt`, identical results) sink 13 of 15 by 4475 s; Cummings,
+   Woodworth, Fanning and Grayson survive. Keeping the carriers alive (orders to move them away from Iowa) is the
+   next idea.
+5. USN01 i's 20,7 failure (Convoy2 and Convoy4 survive): a variant with a second weapon on Convoy2/4 would add
+   margin.
+
+**Addendum to 29 (lead's routing, 2026-10-14).**
+- Open keeper items: **PRCP01** `l55_p01_c` was lost to cc9-lua58's a7a20bc52 (Junyo owner-by-instance and the brake
+  attach gate, faithful, staying ON; SQUADRON_LAND_TASK 5gy). Junyo and Zuiho now launch 7 squadrons, and Enterprise
+  sqn01's brake releases at 59.80 s instead of 30.90 s, so plan lines 4-5 are refused by the 0043F080 gate. This is
+  the successor's TOP item: re-plan it on current main. The f83e91891 rows are the pre-flip baseline. **ESMP08** is
+  parked until the plane-AI flips settle. **JM06 / USNOS** went to cc9-ships49. **JM08** is with cc9-lua59.
+  **USN01**: 81397688d's dive flips refuse the opening "release ScoutDauntless ... within 20" line, so expect
+  `usn01_p8_u1_i` to be lost; re-plan after PRCP01, and record the best knife-edge plan rather than chase margin.
+- Not chased: the consumer of 0099D558 (recorded above as a dead store, by-eye ESP tracking). Still open if anyone
+  needs certainty.
+- Frame budgets used (0.05 s frames, `--frames` = budget + 200): USN02 16000, LOMP06 16000, USN01 26000, PRCP01 30000,
+  USN12 36000, LOMP10 36000 (it needs at least 34000: it completes at 1581.97 s), BSM01 40000, IJN18 64000,
+  USN15 90000, JM08 110000, JM06 120000, ESMP08 140000, USNOS 200000. USN04 V1 pair: 45000 at 0.0222 s.
+- Keeper notes not yet re-timed: kTorpedoBoatRudderTorqueBound (BSM01 833.92 s, JM08 1907.44 s by ships48) and
+  kLandMasterDamageBound 1f3bf3d62 (check rows with land targets).

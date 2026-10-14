@@ -336,3 +336,5 @@ mechanism is in the cd761bb52 section above).
     85.65 s instead of 66.55 s (Gyoraitei #Y3 instead of #Y2); the first, at 53.90 -> 54.30 s, already moves, so
     the planes' throttle/pitch change re-rolls the shared stream from the first seconds. Needs a re-plan (the plan
     is 6 MB of generated orders; `jm08_s45_j8_m10` is the older alternative).
+  - JM08 alternatives on the same exe also fail: `jm08_s45_j8_m10` at 72000 frames (`local\p8w2_j8m10.log`) and
+    `p6_j8_f` at 140000 frames (`local\p8w2_j8f9.log`, only Missouri and Nevada complete).
