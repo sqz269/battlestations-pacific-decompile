@@ -16593,3 +16593,85 @@ The mechanism is the predicted one: the slot's count comes off the class stock w
 an exhausted class is refused before 006C0F00 (0067481B). Both plans were written against the old unlimited stock: LOMP10's
 row already had no mission end in this OFF build, and the JM08 win is lost because its Hosho strike classes run out. The
 busy arm writes no log line, so its share is not isolated here. Faithful, flipped ON; JM08 (and LOMP10) go to the wins keeper for a stock-aware re-plan.
+
+### 5gx.1 Measured (cc9-lua58, 2026-10-13)
+
+Pairs at 1ca95cd29 (the four packets landed OFF): OFF is the tree build (`local\l58_t0_*`, PRCP01's OFF `local\l58_off_p01w`
+at f83e91891, the same code paths), ON `local\l58_w_*` (packets 2+4 flipped together) and `local\l58_d_*` (packets 5+6
+flipped together).
+
+**Packets 2 and 4 (`kTorpedoArmFallthroughReleaseBound`, `kReleaseOrderLeaderBlockBound`, `kSquadronMoveToSelfBound`): stay OFF.**
+
+| row | OFF | ON |
+|---|---|---|
+| USN21 f 80000 fr | completed 2941.74 s | gameplay identical |
+| PRCP01 `prcp01_l55_p01_c` | completed 670.81 s | gameplay identical |
+| torpedo wingmen summary | - | `fallthrough_releases=0 leader_block_orders=0` on both rows |
+| moveto-self | - | issued once per squadron after its retest (PRCP01 sqn07 393.08 s, sqn09 670.86 s; USN21 sqn177/178 2539.75 s, Essex sqn183/184 2722.78 s), placed=3 each |
+| command churn | setcmd posts 2323 (PRCP01) / 1457 (USN21) | 11413 / 26202; PRCP01 stage_raises 51 -> 9137 |
+
+The wingmen fallthrough was never reached: USN21 f has 88 arm offers in total, all from leaders that are engaged or in
+prepare, because a wing member only gets a release order through the leader block, and an AI flight's role 1 is 8
+(0 leader-block orders, as predicted). The prediction (releases > 0) failed, so both switches stay OFF until the 0099AF53
+spend (packet 5 finding 2) gives members orders. Moveto-self is issued as specified, but the members' flight did not change
+(identical unit and death tables) and the host re-completes the command every tick (set-command posts x5 on PRCP01 and
+x18 on USN21; PRCP01 stage raises 51 -> 9137).
+That loop is the missing idle-head arm (5gx: "not modelled"), so it stays OFF.
+
+**Packets 5 and 6 (`kInRangeDrawBound`, `kFlyAboveLeadDivisorBound`, `kDiveAttackModeFedBound`): ON.**
+
+| row | OFF | ON |
+|---|---|---|
+| USN04 9000 fr: dive state patterns | 15 aimglide+flyabove+attackrun, 3 attackrun, 1 flyabove+attackrun | 8 follow+aimglide+flyabove, 4 follow+flyabove, 4 moveto+aimglide+flyabove, 2 follow, 1 moveto |
+| USN04 water contacts / deaths | 19 / 51 | 19 / 51 |
+| USN21 f: dive releases / end | 7 of 293 / completed 2941.74 s | 8 of 267 / completed 2936.74 s |
+| LOMP10 `lomp10_p3_l10_b`: dive releases / end | 64 of 86 / completed 1176.57 s | 53 of 104 / completed 1252.65 s |
+| USN01 `usn01_p6_u1_g`: helm orders applied / refused | 15 / 0 | 1 / 14 |
+| JM08 `jm08_p6_j8_f` 40000 fr: dive releases / end | 64 of 60 / none | 44 of 27 / completed 1319.86 s |
+
+As predicted, the host-only attackrun leg is gone on every row: flights stay in moveto/follow and go to flyabove, then
+aimglide. USN04's water contacts do not rise (the E2 failure mode). USN21 f and LOMP10 keep their wins. JM08 has no end in this OFF build (at a7a20bc52 it completed at 1617.15 s, 5ha)
+and completes at 1319.86 s ON. The first divergence
+on every row is the +B8h draw (`approach+B8h=2080.0` -> `2265.7` on USN01), which shifts the stream-1 sequence. On USN01 g
+the player's ScoutDauntless no longer brings its sight within 20 m of Convoy1 before frame 2700 (nearest 48.1 m), so the
+plan's first `release` line is refused and the script never reaches the TBD phase. Every current USN01 plan (g, k6,
+p7_u1_a) opens with that line, so USN01 goes to the wins keeper for a re-plan. Faithful, flipped ON.
+
+### 5gz.2 Measured: `kDogfightAimAdoptsGunTargetBound` stays **OFF** (cc9-lua58, 2026-10-13)
+
+Pair: D1 ON (`local\l58_f1_*`) against D1+D2 ON (`local\l58_f12_*`), both b414ef1e1.
+
+| row | D1 | D1+D2 |
+|---|---|---|
+| JM08 adopts (`dogfight gun adopt`) | - | 37 (e.g. 01_sqn27 flight -> B-17 #2.1) |
+| JM08 air-to-air kills / end | 16 / completed 1617.15 s | 11 / completed 1617.15 s |
+| USNOS adopts | - | 3 |
+| USNOS air-to-air kills / deaths | 13 / 230 | 8 / 223 |
+
+The adoption fires, but both rows move against the prediction (fewer air-to-air kills, not more). The host's gun+74h is
+the finder stand-in `df_finder_scan_007e2090` (cone and score from 007DEEC0, not the image's 007B96F0 search), so what is
+adopted may not be what the image's gun would track. A direction miss on both rows with a stand-in input is not a spread
+miss: kept OFF, recorded. Next step: read 007B96F0 and compare its pick with the finder's before re-pairing.
+
+## 5hb. NavigatorStop and the hold release (packet `cc9_l58_lua_switches`, cc9-lua58, 2026-10-13)
+
+Switches `kLuaNavigatorStopBound` and `kLuaUnitFreeFireBound` (cc13-ver12, docs/CC13_VER_12.md sections 1-2), flipped
+together at a7a20bc52: OFF `local\l58_j1_p01w` / `local\l58_s0_p02`, ON `local\l58_lf_*`.
+
+| row | OFF | ON |
+|---|---|---|
+| PRCP01 NavigatorStop | UNIMPLEMENTED calls=238 | concrete, 239 (Enterprise 238, Hornet 1) |
+| PRCP01 Hornet at the end | `state=movetopos throttle=1.000` | `state=stop dir=stopped throttle=0.000` |
+| PRCP01 first divergence | - | step 6220: Enterprise heading -1.2855 -> -1.2856 (the CarrierMoveHack stop before its moveonpath) |
+| PRCP01 end | failed 1491.83 s (Enterprise dead at 1491.88 s) | none before the 1500 s cut-off |
+| PRCP02 30000 fr (no orders) | no end | identical |
+
+NavigatorStop matches cc13-ver12: the Enterprise stops are masked by the next moveonpath (a sub-step heading change), and
+the Hornet takes `stop` at usn_03:1918 and stays stopped. ON. UnitFreeFire/UnitFreeAttack were called on neither row (no
+binding line; PRCP01's calls at usn_03:938 and 1447 are not reached by this plan, and this PRCP02 run logs no hold or free
+at all). Not exercised, so `kLuaUnitFreeFireBound` stays OFF.
+
+Correction to 5ha: LOMP10 lost its win to a7a20bc52 (5gy), not to the stock switch. `local\l58_t0_l10w` (1ca95cd29, Junyo
+switches OFF) completes at 1176.57 s and `local\l58_s0_l10w` (a7a20bc52) has no end. The first divergence is
+`kBaseLaunchBrakeAttachGateBound` holding airfield CB4_AF's brake until CB4_AF_sqn01 attaches (released at 245.91 s), after
+which the launch chain shifts (deaths 137 -> 109, dive releases 64 -> 34). This is faithful and stays ON.
