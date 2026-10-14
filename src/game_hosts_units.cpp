@@ -1510,6 +1510,12 @@ struct GameUnitSlot {
     unsigned long long torpedo_hit_clock_resets{0};
     int torpedo_state_ticks[8]{0, 0, 0, 0, 0, 0, 0, 0};
     int torpedo_arm_ticks{0};
+    // Packet cc9_l60_torpedo_disarmed: 009D29E0 runs (leader and target known),
+    // its close arm (cmd+2C8h written), the least ratio and the last +8Ch.
+    int torpedo_disarmed_ticks{0};
+    int torpedo_disarmed_close_ticks{0};
+    float torpedo_disarmed_min_ratio{1.0e30f};
+    float torpedo_disarmed_blend_8c{1.0f};
     int torpedo_releases{0};
     // Packet cc9_torpedo_release_counter: the task-level releases above that
     // came from an aircraft the gunnery host already has dead. Such a release
@@ -6106,6 +6112,16 @@ struct GameUnitsHost::Impl {
     // U(70, 100 deg) / U(-70, -100 deg) by the bank sign (+C68h > 0).
     // False: the midpoints, as before.
     static constexpr bool kDogfightEnterDrawsBound = false;
+    // Packet cc9_l60_torpedo_disarmed (cc13-confirm B): 009D2720's disarmed arm
+    // 009D29E0-009D2CF1 (every done tick: the enter leaves +98h = -1.0), run
+    // through bsp::torpedo_done_disarmed_arm_009d29e0 when the squadron has a
+    // first member and the task a target. Close (leader below 300 m, ratio below
+    // 3.5) it writes the bank cap cmd+2C8h = IP(1 -> 0.3, 2.2 -> 1.5; ratio).
+    // The aim point approach->vtable[0] is taken as the target's position
+    // (substitution); approach+A4h = 3 and [approach+1Ch]+40h = 0 have no host
+    // cell; state+8Ch (republished to squadron+3E8h by 009BFDA6) is kept on the
+    // slot for the log only, no host reader. False: the arm is skipped, as before.
+    static constexpr bool kTorpedoDoneDisarmedArmBound = false;
     // Packet cc9-gunnery38 (docs/CC13_AUDIT13_RECENT_FLIPS.md O1). The strafe
     // cruise profile 009CD020, run once per activation (the install and each
     // time the strafe task resurfaces after a tightturn or flikflak retires),
@@ -27368,6 +27384,59 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const bsp::TorpedoState before_state = ctx.current;
                         const bsp::TorpedoArmTickResult r =
                             bsp::torpedo_task_arm_009d4850(binding, ctx, dt);
+                        if constexpr (GameUnitsHost::Impl::kTorpedoDoneDisarmedArmBound) {
+                            if (r.ran_done_tick && r.done_tick.disarmed) {
+                                // 009D274A EDI = [ctl+3D0h], the squadron's first
+                                // member; 009D29E2 skips the arm without one.
+                                const GameUnitSlot* leader = nullptr;
+                                if (const bsp::PlaneSquadronHostRecord* sq =
+                                        bsp::plane_squadron_registry().find_by_member_unit(
+                                            unit_.process_index)) {
+                                    if (!sq->member_units.empty() &&
+                                        sq->member_units[0] < owner_.slots.size()) {
+                                        leader = owner_.slots[sq->member_units[0]].get();
+                                    }
+                                }
+                                const GameUnitSlot* tgt = nullptr;
+                                if (unit_.command_target_plus_one != 0) {
+                                    const std::size_t ti = unit_.command_target_plus_one - 1;
+                                    if (ti < owner_.slots.size()) tgt = owner_.slots[ti].get();
+                                }
+                                if (leader != nullptr && tgt != nullptr) {
+                                    // record+8h TorpReleaseDistFar by skill row (as
+                                    // the 009D0484 seed above) x approach+24h.
+                                    static constexpr float kFar[6] = {
+                                        600.0f, kTorpReleaseDistFarSPNormal, 1200.0f,
+                                        1200.0f, 1200.0f, 1200.0f};
+                                    const int row = (kSkillLevelBound && unit_.pilot_skill_index >= 0 &&
+                                                     unit_.pilot_skill_index <= 5)
+                                                        ? unit_.pilot_skill_index : 1;
+                                    bsp::TorpedoDisarmedArmInputs din;
+                                    din.aim_x = tgt->motion.position[0];
+                                    din.aim_z = tgt->motion.position[2];
+                                    for (int k = 0; k < 3; ++k) {
+                                        din.leader_pos[k] = leader->motion.position[k];
+                                    }
+                                    din.leader_heading = leader->plane_heading_c6c;  // vtable[50h]
+                                    din.release_dist_far = kFar[row];
+                                    din.approach_24 = unit_.plane_max_spd > 0.0f
+                                        ? bsp::bot_task_speed_ratio(unit_.plane_max_spd,
+                                                                    kTorpedoReferenceSpeedAuthored)
+                                        : 1.0f;
+                                    const bsp::TorpedoDisarmedArmResult dr =
+                                        bsp::torpedo_done_disarmed_arm_009d29e0(din);
+                                    ++unit_.torpedo_disarmed_ticks;
+                                    unit_.torpedo_disarmed_blend_8c = dr.follow_blend_8c;
+                                    if (dr.ratio < unit_.torpedo_disarmed_min_ratio) {
+                                        unit_.torpedo_disarmed_min_ratio = dr.ratio;
+                                    }
+                                    if (dr.close) {
+                                        ++unit_.torpedo_disarmed_close_ticks;
+                                        unit_.plan_state.bank_limit_2c8 = dr.bank_cap_2c8;  // 009D2B1D
+                                    }
+                                }
+                            }
+                        }
                         unit_.torpedo_state = ctx.current;
                         ++unit_.torpedo_arm_ticks;
                         const int bucket = torpedo_state_bucket(ctx.current);
@@ -39626,6 +39695,14 @@ void GameUnitsHost::report() {
                     "states[%s] releases=%d",
                     slot->row.name.c_str(), slot->torpedo_arm_ticks,
                     slot->torpedo_transitions, states, slot->torpedo_releases);
+                if (slot->torpedo_disarmed_ticks > 0) {
+                    host.log.notef("  torpedo %-12s disarmed 009D29E0: ticks=%d close=%d "
+                        "min_ratio=%.3f last_8c=%.3f",
+                        slot->row.name.c_str(), slot->torpedo_disarmed_ticks,
+                        slot->torpedo_disarmed_close_ticks,
+                        static_cast<double>(slot->torpedo_disarmed_min_ratio),
+                        static_cast<double>(slot->torpedo_disarmed_blend_8c));
+                }
                 // The engaged pair over time: approach+8Ch (the engage
                 // distance 009D4A70 sets) against approach+90h (the range
                 // 009D3420 writes every tick it has a target), and the first

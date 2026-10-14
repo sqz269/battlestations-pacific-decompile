@@ -288,9 +288,45 @@ struct TorpedoDoneTickResult {
     // the committed branch calls 009D1360 (ECX = approach) before any target
     // test. Packet cc9_torpedo_run_time_update.
     bool run_time_updated = false;
+    // 009D2753 JBE taken: the countdown was disarmed on entry, so the tick ran
+    // the 009D29E0 arm (torpedo_done_disarmed_arm_009d29e0, caller-run).
+    bool disarmed = false;
 };
 TorpedoDoneTickResult torpedo_done_prepare_tick_009d2720(
     const TorpedoDoneTickInputs& in) noexcept;
+
+// 009D29E0-009D2CF1, the disarmed arm of 009D2720 (countdown +98h <= 0, which
+// is every tick in `done`: its enter leaves -1.0). EDI = [ctl+3D0h], the
+// squadron's first member; with none the arm writes nothing (009D29E2).
+//   ratio = |aim.xz - leader.xz| (00414C60) / (record+8h x approach+24h)
+//           x IP(150 -> 1, 500 -> 3; leader.y)                    009D2A06-009D2AA0
+// where aim is approach->vtable[0] (the latched target's point) and record+8h
+// is TorpReleaseDistFar. Unless leader.y < 300 (00CE3AE8) and ratio < 3.5
+// (00D0C308, double), +8Ch = 1.0 (009D2CDA). Otherwise:
+//   cmd+2C8h (the bank cap, not a throttle) = IP(1 -> 0.3, 2.2 -> 1.5; ratio)
+//   approach+A4h = 3; [approach+1Ch]+40h = 0 (written twice, 0 last)
+//   h  = |SubtractWrappedAngle(HeadingAngle(aim - leader), leader vtable[50h])|
+//   b1 = ratio < 1.6 ? IP(0.3 -> 80 deg, 1.6 -> 30 deg) : IP(1.6 -> 30 deg, 3 -> 10 deg)
+//   w  = ratio > 1.5 ? IP(2 -> 2.5, 3.5 -> 1)            : IP(0.3 -> 1, 1.5 -> 2.5)
+//   c  = clamp((1.2 - h / b1) x 5, 0, 1)                         009D2C72-009D2CB7
+//   +8Ch = 1 + (w - 1) x c                                       009D2CBC-009D2CCD
+// state+8Ch is what 009BFDA6-009BFDB2 republishes into squadron+3E8h.
+struct TorpedoDisarmedArmInputs {
+    float aim_x = 0.0f;                // approach->vtable[0] .x
+    float aim_z = 0.0f;                // .z
+    float leader_pos[3] = {0.0f, 0.0f, 0.0f};  // leader pose +FCh/+100h/+104h
+    float leader_heading = 0.0f;       // leader->vtable[50h]()
+    float release_dist_far = 650.0f;   // [approach+14h]+8h, TorpReleaseDistFar
+    float approach_24 = 1.0f;          // approach+24h
+};
+struct TorpedoDisarmedArmResult {
+    bool close = false;            // leader below 300 and ratio below 3.5
+    float ratio = 0.0f;
+    float bank_cap_2c8 = 0.0f;     // written only when close
+    float follow_blend_8c = 1.0f;  // state+8Ch
+};
+TorpedoDisarmedArmResult torpedo_done_disarmed_arm_009d29e0(
+    const TorpedoDisarmedArmInputs& in) noexcept;
 
 // ---------------------------------------------------------------------------
 // The arm's own two arithmetic steps, 009D4874-009D48CF.
