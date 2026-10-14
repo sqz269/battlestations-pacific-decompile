@@ -8,6 +8,7 @@
 #include "bsp/game_native_lua_globals.hpp"
 #include "bsp/game_native_lua_services.hpp"
 #include "bsp/game_native_renderer_application.hpp"
+#include "bsp/game_native_font_probe.hpp"
 #include "bsp/game_native_shader_process.hpp"
 #include "bsp/native_renderer_end_frame.hpp"
 #include "bsp/native_xlive_device_adapter.hpp"
@@ -2318,6 +2319,13 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // diagnostic path may already have made this warm.
     (void)native_diagnostic_sink_get_or_create_004c14c0(
         singletons_->diagnostic_publication_0109cf14(), singletons_->sound_lifetime());
+    char native_font_probe_requested[2]{};
+    if (GetEnvironmentVariableA("BSP_NATIVE_FONT_PROBE", native_font_probe_requested,
+            sizeof(native_font_probe_requested)) == 1 && native_font_probe_requested[0] == '1') {
+        (void)probe_actual_native_fonts(log_, *native_renderer_, *vfs_, *scripts_,
+            language_font_path_008d4890(settings_host_->language_catalog(),
+                settings_view_.gameplay.language_index_04));
+    }
     summary_.fonts_loaded = fonts_->registry().fonts().size();
     summary_.font_resource_opens = fonts_->resource_opens();
     summary_.fingerprint_defined_bytes = fonts_->fingerprint().defined_size();
