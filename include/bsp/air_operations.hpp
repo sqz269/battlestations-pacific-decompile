@@ -500,7 +500,8 @@ inline constexpr bool kBaseLaunchBrakeBound = true;
 // ever. A bare "any member is kPlaneSquadronNoUnit" test is not used: landed
 // and dead members are also written NoUnit (007F3970 compaction), which would
 // hold for ever. False: released as before.
-inline constexpr bool kBaseLaunchBrakeAttachGateBound = false;
+// ON: docs/SQUADRON_LAND_TASK.md 5gy (PRCP01 Enterprise sqn01 released at 59.80 s).
+inline constexpr bool kBaseLaunchBrakeAttachGateBound = true;
 
 // The block mode 1 leaves behind. `slots` is block+4Ch with its count at
 // block+50h; `max_in_air_planes` is block+58h.
@@ -922,7 +923,8 @@ inline constexpr bool kAirOpsBusyArmQueueLaunchBound = false;
 // under its old name (PRCP01 Junyo, Zuiho) stayed bound to the dead instance.
 // True (minimal form, LABELLED: not the image's per-instance rule): the LAST
 // row with the name that is not dead, else the first. False: the first.
-inline constexpr bool kAirOpsOwnerByInstanceBound = false;
+// ON: docs/SQUADRON_LAND_TASK.md 5gy (PRCP01 Junyo and Zuiho launch 7 squadrons).
+inline constexpr bool kAirOpsOwnerByInstanceBound = true;
 
 // The unit row a deck name (or a bag's `HomeBase`) resolves to, over `count`
 // rows. `name_of(i)` gives row i's name or nullptr; `dead(i)` is the host's
