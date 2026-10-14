@@ -15,6 +15,10 @@
 #include "bsp/native_camera_general_inverse.hpp"
 #include "bsp/native_camera_matrix_copy.hpp"
 #include "bsp/native_render_state_leaves.hpp"
+#include "bsp/native_render_batch_preparation_actual.hpp"
+#include "bsp/native_render_job_publication.hpp"
+#include "bsp/native_frame_job_lifetime.hpp"
+#include "bsp/native_material_entry_dispatch.hpp"
 #include <cstddef>
 #include <cstring>
 #include <exception>
@@ -922,6 +926,138 @@ void continue_native_main_scene_drsh_label_00b15ec4(
     } catch(...) {
         frame.failed=true;
         unwind_native_main_scene_drsh_label(c,frame);
+        throw;
+    }
+}
+namespace {
+NativeRenderBatchStorage* main_scene_batch(void* command, std::uint32_t index) noexcept {
+    return static_cast<NativeRenderBatchStorage*>(current_member(command,0x0cu+index*4u));
+}
+NativeRenderBatchPreparationContext& main_scene_preparation(NativeMainSceneBatchContext& c) {
+    if(!c.preparation ||
+       static_cast<const volatile void*>(&c.preparation->actual_manager_01090aa0)!=
+           static_cast<const volatile void*>(&c.label.strings.actual_manager_publication_01090aa0) ||
+       static_cast<const volatile void*>(&c.preparation->actual_queue_constructor.actual_renderer_00f8d394)!=
+           static_cast<const volatile void*>(c.label.system.actual_renderer_00f8d394))
+        throw std::logic_error("main scene batches require the same actual queue, manager and renderer domain");
+    return *c.preparation;
+}
+const volatile std::uint32_t* main_scene_batch_profile(NativeRenderBatchStorage* batch,
+    NativeRenderBatchPreparationContext& preparation) {
+    const volatile std::uint32_t* profile=nullptr;
+    // Capture owner[0] once. The selected table remains live across B1BF40.
+    switch(word(batch)) {
+    case 0x00d5e5ac: profile=preparation.actual_batch_profile_00d5e5ac; break;
+    case 0x00d62064: profile=preparation.actual_base_batch_profile_00d62064; break;
+    default: break;
+    }
+    if(!profile) throw std::logic_error("main scene requires its current concrete batch profile");
+    return profile;
+}
+NativeFrameJobLifetimeBindings& main_scene_job_bindings(NativeMainSceneBatchContext& c) {
+    auto& preparation=main_scene_preparation(c);
+    if(!c.jobs || !c.jobs->frame_lifetime || !c.preparation_dispatch ||
+       &c.jobs->actual_manager_01090aa0!=&preparation.actual_manager_01090aa0 ||
+       &c.preparation_dispatch->preparation_context()!=&preparation ||
+       &c.jobs->frame_lifetime->execution.job_dispatch()!=c.preparation_dispatch)
+        throw std::logic_error("main scene jobs require the same actual preparation and lifetime domain");
+    return *c.jobs->frame_lifetime;
+}
+void main_scene_batch_site(std::uint32_t site, NativeMainSceneDrshLabelFrame& label,
+    NativeMainSceneBatchFrame& frame, NativeMainSceneExecutionPrefixState& state) noexcept {
+    label.active_native_site=frame.active_native_site=state.active_native_site=site;
+}
+} // namespace
+
+void continue_native_main_scene_batches_00b15f63(void* command,
+    NativeMainSceneBatchContext& c, NativeMainSceneDrshLabelFrame& label,
+    NativeMainSceneBatchFrame& frame, NativeMainSceneExecutionPrefixState& state) {
+    if(!state.reached_drsh_batch_stage || state.reached_excluded_node_stage ||
+       !label.completed || label.failed || label.native_cleanup_state!=2 ||
+       label.cleanup_started || frame.started)
+        throw std::logic_error("main scene batches require the fresh reached DRSH state2 frame");
+    frame.started=true;
+    main_scene_batch_site(0x00b15f63,label,frame,state);
+    try {
+        const auto& system=c.label.system;
+        if(!system.actual_synchronization || !system.actual_renderer_00f8d394 ||
+           !system.actual_service_00f8d39c ||
+           system.actual_manager_01090aa0!=&c.label.strings.actual_manager_publication_01090aa0)
+            throw std::logic_error("main scene batches require their retained actual DRSH domain");
+        bool parallel=false;
+        if(system.actual_synchronization->mode_00==0) {
+            main_scene_batch_site(0x00b15f73,label,frame,state);
+            if(native_render_batch_count_00b51b20(main_scene_batch(command,0))>50) {
+                main_scene_batch_site(0x00b15f84,label,frame,state);
+                parallel=native_render_batch_count_00b51b20(main_scene_batch(command,1))>50;
+            }
+        }
+        frame.parallel=parallel;
+        if(parallel) {
+            for(std::uint32_t index=0;index<2;++index) {
+                auto* const initial=main_scene_batch(command,index);
+                static_cast<volatile NativeRenderBatchStorage*>(initial)->mode_08=index;
+                main_scene_batch_site(index==0?0x00b15f98:0x00b15fbd,label,frame,state);
+                auto& bindings=main_scene_job_bindings(c);
+                auto* const owner=get_native_frame_jobs_actual_004c1130(*c.jobs);
+                auto* const captured_batch=main_scene_batch(command,index);
+                auto* const captured_pool=reinterpret_cast<NativeFrameJobPoolStorage*>(
+                    reinterpret_cast<std::uintptr_t>(owner)+4u);
+                main_scene_batch_site(index==0?0x00b15fa3:0x00b15fc8,label,frame,state);
+                auto* const job=get_native_preparation_job_actual_00b0ffb0(*c.jobs);
+                main_scene_batch_site(index==0?0x00b15fb1:0x00b15fd6,label,frame,state);
+                bindings.execution.require_enqueue_virtual_04(*captured_pool);
+                enqueue_native_frame_job_00be3020(*captured_pool,job,
+                    reinterpret_cast<std::uint32_t>(captured_batch));
+                ++frame.submissions_completed;
+            }
+            main_scene_batch_site(0x00b15fd8,label,frame,state);
+            auto& bindings=main_scene_job_bindings(c);
+            auto* const owner=get_native_frame_jobs_actual_004c1130(*c.jobs);
+            auto* const pool=reinterpret_cast<NativeFrameJobPoolStorage*>(
+                reinterpret_cast<std::uintptr_t>(owner)+4u);
+            main_scene_batch_site(0x00b15fe8,label,frame,state);
+            bindings.execution.require_dispatch_virtual_08(*pool);
+            dispatch_native_frame_jobs_00be3150(*pool,1,bindings.scope,bindings.execution);
+            frame.dispatch_completed=true;
+        }
+        for(std::uint32_t index=0;index<2;++index) {
+            if(!parallel) {
+                auto* const batch=main_scene_batch(command,index);
+                main_scene_batch_site(index==0?0x00b16023:0x00b1604a,label,frame,state);
+                auto& preparation=main_scene_preparation(c);
+                const auto* const profile=main_scene_batch_profile(batch,preparation);
+                if(profile[3]!=0x00b51df0)
+                    throw std::logic_error("main scene requires current B51DF0 serial preparation");
+                volatile std::uint32_t argument=index;
+                prepare_native_render_batch_actual_00b51df0(*batch,argument,preparation);
+                ++frame.serial_preparations_completed;
+            }
+            // The serial path reloads the batch AFTER its preparation; the
+            // parallel path reloads after dispatch. Capture profile BEFORE
+            // the camera getter and read its execution slot only afterward.
+            auto* const batch=main_scene_batch(command,index);
+            auto& preparation=main_scene_preparation(c);
+            const auto* const captured_profile=main_scene_batch_profile(batch,preparation);
+            main_scene_batch_site(parallel?(index==0?0x00b15ff1:0x00b16007):
+                (index==0?0x00b16030:0x00b16057),label,frame,state);
+            void* const camera=get_native_scene_command_camera_00b1bf40(command);
+            const std::uint32_t target=captured_profile[2];
+            main_scene_batch_site(parallel?(index==0?0x00b15ffe:0x00b16014):
+                (index==0?0x00b1603e:0x00b16066),label,frame,state);
+            if(target!=0x00b55550 || !c.entries ||
+               &c.entries->actual_renderer_00f8d394!=system.actual_renderer_00f8d394)
+                throw std::logic_error("main scene requires its same actual B55550 material-entry domain");
+            execute_native_render_batch_entries_00b55550(batch,index,camera,*c.entries,frame.entries[index]);
+            ++frame.executions_completed;
+        }
+        main_scene_batch_site(0x00b16068,label,frame,state);
+        frame.completed=true;
+        state.reached_excluded_node_stage=true;
+    } catch(...) {
+        frame.failed=true;
+        label.failed=true;
+        unwind_native_main_scene_drsh_label(c.label,label);
         throw;
     }
 }

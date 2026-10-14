@@ -4,8 +4,9 @@ This packet supplies the genuine B156C0 entry through B1586C, its complete
 actual-storage B0DB00 history calculation, the separate B1586D..B15BD1
 texture/far-corner continuation, the B15BD2..B15E77 bloom/target stage, and
 B15E78..B15EC3 camera-frame/mode/system-gather continuation, and the
-B15EC4..B15F62 DRSH label/ownership clause.
-The current final boundary is immediately before B15F63 batch selection.
+B15EC4..B15F62 DRSH label/ownership clause, and B15F63..B16067 batch
+selection, preparation and execution. The current final boundary is immediately
+before B16068, which tests the optional excluded-node pass.
 Reaching any boundary does not mean a scene command executed successfully. The
 existing queue must continue refusing D5E13C: B17240 preparation and the
 remaining B156C0 render passes are not installed or claimed complete.
@@ -399,10 +400,76 @@ all preceding receipts were verified again. Before the DRSH build, all41
 artifacts from immutable7452af434 were copied and verified under
 `local/main_scene_camera_receipt_7452af434/receipt.json`.
 
+## Actual batch selection and execution
+
+`continue_native_main_scene_batches_00b15f63` covers all 90 instructions and
+261 bytes at B15F63..B16067. Its persistent batch frame carries the caller's
+material-pass frames and progress markers. It retains the preceding DRSH frame
+and the same publication/context domain; it creates no replacement renderer,
+queue, job dispatcher or batch owner.
+
+The current raw byte at 0108D6DC is tested first. Only zero permits the two
+short-circuited B51B20 reads, both interpreted as **signed greater than 50**.
+The serial path performs prepare0, execute0, prepare1, execute1. It reloads each
+command batch after preparation, captures that batch's profile before B1BF40,
+and reads the captured profile's execution slot only after the current-camera
+getter returns. The native numeric profiles select complete raw B51DF0/B55550
+providers; no host callback table stands in for an unknown target. D62064's
+base +08 purecall remains unsupported at execution; concrete D5E5AC is required.
+
+The parallel path writes batch0/1 mode +08 before the corresponding actual
+4C1130 frame getter. Each current command batch and returned pool+04 are
+captured before the B0FFB0 preparation-job getter. The current pool profile
+then selects real BE3020 enqueue. A third frame getter precedes real BE3150
+dispatch with use-workers=1, followed by execute0 and execute1. These providers
+share the actual manager, queue/renderer publication and preparation dispatcher
+with their existing raw job lifetime domain. No queued job, scope counter or
+native mutation is rolled back on failure.
+
+State2 remains armed at the successful B16068 boundary. A source C++ failure
+sets the persistent failure markers and invokes the same explicit CBC46B action
+adapter, which disarms before resetting the **current** global service label.
+Replay is rejected without consuming live state2. The later normal disarm at
+B16097 and B160A2 reset are still outside this clause.
+
+Installed PE and saved/live Ghidra match all 380 bytes in the caller, both
+leaves and borrowed profiles/literal used by the focused comparison. Five
+original261B/source pairs cover mode 128, first count 50, second count 50,
+signed first count -1, and both counts 51. Actual nonempty pointer-slot sorting
+and B55550/B45360 material traversal run in both lanes; material descriptors,
+visibility 0.5 and camera mode6 take the genuine no-selected-pass exit. Whole
+batch/entry/material/texture graphs, sort queue, string pool and frame-job pool
+bytes match. The original caller's direct calls and native virtual targets are
+bridged to the same complete source providers; original count/camera leaf bytes
+execute unchanged. This checks caller composition, not every descendant anew.
+
+The parallel case creates one genuine Windows worker through BE3040, uses
+BE3150's wake/resume/drain/wait behavior, and shuts the worker down through
+BE30C0. It does not attribute either preparation job specifically to the worker
+instead of the calling thread's drain. Warm singleton publications are used;
+cold manager/queue/frame/job creation and registration are not exercised here.
+One additional source-domain failure after real preparation verifies retained
+mutations and state2 cleanup. Original FH3 dispatch and native child-throw
+propagation are not tested. There are no selected material passes, device draws,
+application route, visual or gameplay claims.
+
+The manifested Win32 fixture reserves a private PE section before process
+startup, avoiding ASLR allocation conflicts at the original numeric table/code
+addresses. It verifies MEM_IMAGE ownership before writing fixture bytes; all
+existing PE section bytes, including the embedded manifest, are preserved.
+Strict /MD /W4 /WX /fp:strict compilation, the standard build and all three
+existing checks pass. Emitted code review confirms the signed predicates,
+reload/capture/slot order, serial interleaving and retained cleanup state; all
+325 inherited address-tagged x87 encodings still match. No persistent test
+suite was added. New artifacts are under `local/main_scene_batch/`; all 46
+previous artifacts were copied and hash-verified before edits/build under
+`local/main_scene_label_receipt_9ca98fd55/receipt.json`.
+
 ## Next executed clause
 
-B15F63 selects serial or genuine parallel batch preparation while state2 owns
-the DRSH reset. Later work executes batch/material passes and performs the concrete
-post-effect/cockpit/distortion/stats paths. These remain required. No hidden-node
-bypass, callback-only renderer, D5E13C admission, application invocation, visible
-world pixels or gameplay equivalence is supplied by these stages.
+B16068 tests service+22D; its enabled path invokes B10500 at B1607B. B10500
+currently has only the older projected implementation and is the next concrete
+dependency to reconstruct. It must not be silently skipped. The following
+camera render-mode restore, state2 disarm/current-label reset, later scene and
+post-effect/cockpit/distortion/statistics paths also remain required. D5E13C
+continues to be unadmitted pending the complete raw body and application graph.

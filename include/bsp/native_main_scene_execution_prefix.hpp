@@ -10,6 +10,11 @@ struct NativeCameraFrameCommandContext;
 struct NativeSystemConstantGatherContext;
 struct NativeSystemConstantGatherFrame;
 struct NativeStringRawPoolContext;
+struct NativeRenderBatchPreparationContext;
+struct NativeRenderJobPublicationContext;
+class NativeRenderPreparationJobDispatch;
+struct NativeMaterialEntryDispatchContext;
+struct NativeMaterialEntryDispatchFrame;
 
 struct NativeMainSceneExecutionPrefixContext {
     void* const volatile& actual_renderer_00f8d394;
@@ -48,6 +53,7 @@ struct NativeMainSceneExecutionPrefixState {
     bool system_gather_started{};
     bool reached_label_stage{};
     bool reached_drsh_batch_stage{};
+    bool reached_excluded_node_stage{};
 };
 
 // Complete raw leaves. Native ECX command / camera. B1BF40 uses RET and returns
@@ -195,4 +201,41 @@ void continue_native_main_scene_drsh_label_00b15ec4(
 // A second C++ exception while unwinding terminates, as elsewhere in this domain.
 void unwind_native_main_scene_drsh_label(const NativeMainSceneDrshLabelContext&,
     NativeMainSceneDrshLabelFrame&) noexcept;
+
+// The label frame/context from B15EC4 survives this entire clause. All reached
+// providers borrow the SAME renderer/manager/synchronization and job domain.
+// Optional providers are checked only when their native call is reached.
+struct NativeMainSceneBatchContext {
+    const NativeMainSceneDrshLabelContext& label;
+    NativeRenderBatchPreparationContext* preparation{};
+    NativeRenderJobPublicationContext* jobs{};
+    NativeRenderPreparationJobDispatch* preparation_dispatch{};
+    NativeMaterialEntryDispatchContext* entries{};
+};
+struct NativeMainSceneBatchFrame {
+    NativeMaterialEntryDispatchFrame* entries[2]{};
+    bool started{};
+    bool completed{};
+    bool failed{};
+    bool parallel{};
+    std::uint32_t active_native_site{};
+    std::uint32_t serial_preparations_completed{};
+    std::uint32_t submissions_completed{};
+    bool dispatch_completed{};
+    std::uint32_t executions_completed{};
+};
+
+// Complete B15F63..B16067, stopping BEFORE the optional B10500 node clause.
+// Current raw synchronization byte and signed counts >50 select real job
+// submission/dispatch, followed by batch0 then batch1 execution. Serial path
+// is prepare0/execute0/prepare1/execute1. Preserve each current batch reload,
+// captured profile before B1BF40, and profile slot+08 read AFTER that getter.
+// Parallel +08 mode writes precede each frame getter; captured batch/pool
+// survive the preparation-job getter. No callback substitutes raw providers.
+// State2 remains armed on success; C++ failure consumes it through the SAME
+// explicit label unwind action. No scope/queued-job/native mutation rollback,
+// native FH3 dispatch, later normal B16097 disarm, or D5E13C admission here.
+void continue_native_main_scene_batches_00b15f63(void* actual_command,
+    NativeMainSceneBatchContext&, NativeMainSceneDrshLabelFrame&,
+    NativeMainSceneBatchFrame&, NativeMainSceneExecutionPrefixState&);
 } // namespace bsp
