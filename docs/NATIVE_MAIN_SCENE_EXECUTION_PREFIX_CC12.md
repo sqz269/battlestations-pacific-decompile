@@ -2,8 +2,9 @@
 
 This packet supplies the genuine B156C0 entry through B1586C, its complete
 actual-storage B0DB00 history calculation, the separate B1586D..B15BD1
-texture/far-corner continuation, and the B15BD2..B15E77 bloom/target stage.
-The current final boundary is immediately before B15E78 camera-frame execution.
+texture/far-corner continuation, the B15BD2..B15E77 bloom/target stage, and
+B15E78..B15EC3 camera-frame/mode/system-gather continuation.
+The current final boundary is immediately before B15EC4 label allocation.
 Reaching any boundary does not mean a scene command executed successfully. The
 existing queue must continue refusing D5E13C: B17240 preparation and the
 remaining B156C0 render passes are not installed or claimed complete.
@@ -185,6 +186,42 @@ child owner/renderer providers retain their own cleanup obligations. Exceptions
 across the naked arithmetic helper, native caller EH/SEH and arbitrary private
 stack aliases remain outside the source contract.
 
+## Camera frame, mode and system gather
+
+`continue_native_main_scene_camera_gather_00b15e78` supplies the complete
+21-instruction, 76-byte clause B15E78..B15EC3. It invokes existing complete
+actual-storage B71360 using the first current B1BF40 camera. That provider
+retains enabled17C gating, three separate renderer/profile reads, genuine
+B285A0 preparation, B26770 viewport and B21430 clear dispatch, including the
+original FLD/FSTP outgoing depth argument. No provider is replaced by a semantic
+camera view or a callback body.
+
+After B71360 returns, a second current camera supplies the saved full mode word
+at +198. A third current camera receives mode6 through the new full raw
+`set_native_camera_render_mode_00b6fdf0`. Its seven instructions and 28 emitted
+bytes match the installed function: ECX actual camera, stacked DWORD mode,
+EAX same camera, RET4; full +198 mode store precedes the +19C masked-shift store.
+The added unused EDX formal keeps the original mode argument stacked. This raw
+body does not project a `CameraFrameState` or update an owner companion.
+
+A fourth current camera supplies scene+A4; a fifth supplies the camera argument
+to full existing B46A70 system gather. The captured scene is retained across
+the fifth getter. The service receiver is unused in this clause: B46A70 retains
+its own current service-publication reads. Source boundary checks require the
+same actual renderer publication/profile, synchronization, axes/CRT, timer and
+texture domain as the preceding contexts. They do not capture renderer values
+early or replace the callee's current-slot checks.
+
+The caller provides one fresh persistent `NativeSystemConstantGatherFrame`
+with its initialized 1,232-byte native prefix preimage. Unwritten words are
+preserved; no blank prefix is synthesized. The original warm/cold sampler
+operation belongs to that frame, which must survive failure. Earlier near,
+color and clear-flags saves remain unchanged. New state records frame completion,
+saved mode, mode mutation, gather start and the reached native site. No cleanup,
+mode restoration, rollback or replay is added. Existing provider limitations
+on native exception identity, naked-frame propagation and private stack aliases
+remain; this stage has not armed the later B156C0 string-cleanup state.
+
 ## Validation
 
 - Installed executable and saved Ghidra body bytes matched for the complete
@@ -256,10 +293,34 @@ replay. The current encoding audit matches 46 new x87 instructions plus all
 fixture launch and all three ordinary build tests passed again. No new source
 unit or persistent test suite was added in this follow-up.
 
+The camera/gather follow-up matched all 76 caller and 28 mode bytes against both
+installed PE and saved/live Ghidra data. Three original/source caller comparisons
+use the same complete current B71360 and B46A70 providers with an actual D3D9
+HAL device. They cover disabled camera execution, enabled viewport/clear, and a
+real Clear forwarding observer that changes the command's camera publication
+before B71360 returns. The later mode save/write and system upload must then
+use the new current camera. Both camera byte arrays, renderer and service bytes,
+the saved mode and all 77 registers from each real VS/PS bank matched. Device
+queries also confirm the reached viewport. This fixture uses a warm sampler,
+supplied prefix preimage, no lighting owner, synchronization mode0 and masked
+ordinary FP; it does not independently revalidate every original descendant.
+
+Five direct original/source mode calls cover 0, 6, 31, 32 and FFFFFFFF, comparing
+all camera bytes and returned identity. The emitted COFF leaf is byte-identical
+to the installed 28-byte body. Caller listing review verifies all five camera
+getter calls and the original eight-call sequence, including the scene+A4 load
+before the last getter. No new x87 arithmetic is added; all prior 325 tagged
+x87 encodings still match. A source-only late domain rejection occurs after the
+real camera frame and mode6/mask40 writes; these mutations and saved mode remain,
+gather has not started, and a repaired context cannot replay the started state.
+Strict compilation, manifested fresh-core fixture link/launch and ordinary
+Release Win32 build with all three tests pass. No new persistent tests or source
+unit were added.
+
 `reports/native_main_scene_execution_prefix_cc12.json` records artifact hashes,
 validation limits and annotation receipts. Outputs are under
 `local/main_scene_execution/`, `local/main_scene_texture/` and
-`local/main_scene_bloom/`. All fifteen
+`local/main_scene_bloom/` and `local/main_scene_camera/`. All fifteen
 preceding main-scene artifacts, including its exact old core library, were
 preserved before the prefix build under
 `local/main_scene_receipt_3ccc58cbf/receipt.json`. All 34 artifacts from immutable
@@ -267,13 +328,15 @@ prefix commit `450a751a0`, including its core library and prior receipt, were
 verified and preserved before the follow-up build under
 `local/main_scene_execution_receipt_450a751a0/receipt.json`. Before the
 bloom/target build, all 36 artifacts from immutable `ed43121f9` were verified
-and copied to `local/main_scene_texture_receipt_ed43121f9/receipt.json`.
+and copied to `local/main_scene_texture_receipt_ed43121f9/receipt.json`. Before
+the camera/gather build, all 35 artifacts from immutable `ca9c9c4c0` were preserved
+under `local/main_scene_bloom_receipt_ca9c9c4c0/receipt.json`; those copies and
+all preceding receipts were verified again.
 
 ## Next executed clause
 
-B15E78 next obtains the current camera and invokes B71360 frame execution.
-Later work changes camera mode, submits system constants, prepares and executes
-batch/material passes, and performs the concrete
+B15EC4 begins the DRSH label allocation/copy and subsequent FH3 cleanup state.
+Later work prepares and executes batch/material passes and performs the concrete
 post-effect/cockpit/distortion/stats paths. These remain required. No hidden-node
 bypass, callback-only renderer, D5E13C admission, application invocation, visible
 world pixels or gameplay equivalence is supplied by these stages.
