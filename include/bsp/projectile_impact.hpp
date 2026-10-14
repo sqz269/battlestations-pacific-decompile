@@ -29,7 +29,8 @@ namespace bsp {
 // value 9.8103800773621 is not in the image. True: every user of this constant
 // (projectile_impact.cpp, projectile_kinds.cpp, bomb_torpedo_tick.cpp's kGravity)
 // takes the image's value. False: the host's value, as before.
-inline constexpr bool kProjectileGravityImageBound = false;
+//    ON since the pairs and win set (GUNNERY_OPEN_ITEMS 233).
+inline constexpr bool kProjectileGravityImageBound = true;
 inline constexpr double kProjectileGravityImage = 9.8100004196166992;   // 00CF9058
 inline constexpr double kProjectileGravity =
     kProjectileGravityImageBound ? kProjectileGravityImage : 9.8103800773621;

@@ -375,7 +375,8 @@ constexpr bool kFlakErrorRerollBound = true;
 //    gun_muzzle_point (the mount when known) to the target pose origin, and
 //    the arms use pose origins. Every category's gate moves, not only AA.
 //    OFF: as before.
-constexpr bool kAaSlotRangeOriginBound = false;
+//    ON since the pairs and win set (GUNNERY_OPEN_ITEMS 233).
+constexpr bool kAaSlotRangeOriginBound = true;
 //  * kDirectorLeaderFireTargetBound: packet cc9_g41_aa_pick_d3 (docs/CC13_VER_19.md
 //    D3). 00863640, the director-backed fire-target provider: when
 //    director->vtable[2Ch] (director+238h) is null, [director+34h] -> 007788D0
@@ -414,24 +415,28 @@ constexpr bool kKillFunnelCauseBound = true;
 //    artillery row in this installation). The host used the authored V0, the
 //    plain dt and a life * V0 > Range expiry. ON: all of the above for a gun
 //    or shot of an artillery class. OFF: as before.
-constexpr bool kArtilleryClassSpeedBound = false;
+//    ON since the pairs and win set (GUNNERY_OPEN_ITEMS 233).
+constexpr bool kArtilleryClassSpeedBound = true;
 //  * kArtilleryLaunchBiasBound: packet g42_ver21_d3 (docs/CC13_VER_21.md D4).
 //    006E85C1..006E85E4 subtracts 0.05 * 9.81 from the launch vy for class
 //    sub-types 4..7; the host passed sub-type 0 to 006E8430. ON (only together
 //    with kArtilleryClassSpeedBound): the gun's refined sub-type is passed.
-constexpr bool kArtilleryLaunchBiasBound = false;
+//    ON since the pairs and win set (GUNNERY_OPEN_ITEMS 233).
+constexpr bool kArtilleryLaunchBiasBound = true;
 //  * kRangingSeedVelocityBound: packet g42_ver21_d12 (docs/CC13_VER_21.md D2).
 //    00864880 builds the ranging record with +50h = p - V * k and +60h = p + V * k
 //    (k = WeaponDirectorThinkTime, 2 s; V = the target's world velocity), so the
 //    first shot-arm miss of a steady target is V * k. The host seeded both with
 //    p. ON: the image seeds (unit_velocity for V). OFF: as before.
-constexpr bool kRangingSeedVelocityBound = false;
+//    ON since the pairs and win set (GUNNERY_OPEN_ITEMS 233).
+constexpr bool kRangingSeedVelocityBound = true;
 //  * kRangingBearingFixedBound: packet g42_ver21_d12 (docs/CC13_VER_21.md D1).
 //    00862CD0 draws U(-AngleChange, AngleChange) (00862F46) and discards the
 //    wrapped sum (00862F62 FSTP ST0), so the error bearing +6Ch never turns
 //    after 00864880 drew it. The host added the draw. ON: the draw is consumed
 //    and dropped. OFF: as before.
-constexpr bool kRangingBearingFixedBound = false;
+//    ON since the pairs and win set (GUNNERY_OPEN_ITEMS 233).
+constexpr bool kRangingBearingFixedBound = true;
 //  * kTorpedoBotAttackRangeBound: packet g42_ver23 (docs/CC13_VER_23.md D1).
 //    008FFF20's gates: A (009001A8..) drops the trigger when |target - gun| (3D)
 //    exceeds min(unit+44Ch * 1.5, bot+68h + 100), and B (..0090031E) when the
@@ -442,20 +447,23 @@ constexpr bool kRangingBearingFixedBound = false;
 //    008FF260). The host launched anywhere inside the category range. ON: the
 //    cache and both gates (the 0.2 s think timer is not modelled). OFF: as
 //    before.
-constexpr bool kTorpedoBotAttackRangeBound = false;
+//    ON since the pairs and win set (GUNNERY_OPEN_ITEMS 233).
+constexpr bool kTorpedoBotAttackRangeBound = true;
 //  * kTorpedoBotStaleFlagBound: packet g42_ver23 (docs/CC13_VER_23.md D2), only
 //    under kTorpedoBotAttackRangeBound. 00903580 recomputes bot+68h BEFORE it
 //    stores the new bot+6Ch (0090358D, 00903592), so a flag change keeps the old
 //    flag's range until the next target change. ON: that order
 //    (torpedo_gun_set_bot_fire_target_00727f10). OFF: the range follows the new
 //    flag at once.
-constexpr bool kTorpedoBotStaleFlagBound = false;
+//    ON since the pairs and win set (GUNNERY_OPEN_ITEMS 233).
+constexpr bool kTorpedoBotStaleFlagBound = true;
 //  * kTorpedoSubmergedTargetDropBound: packet g42_ver23 (docs/CC13_VER_23.md D4).
 //    008FFFB2..0090002A: a surface (not IsKindOf(8)) owner's TorpedoBot drops an
 //    IsKindOf(8) target that 00852820 answers below (y <= (band1 + band0) / 3.0)
 //    through bot->vt[38h](0). The host kept it. ON: the gun's target is dropped.
 //    OFF: as before.
-constexpr bool kTorpedoSubmergedTargetDropBound = false;
+//    ON since the pairs and win set (GUNNERY_OPEN_ITEMS 233).
+constexpr bool kTorpedoSubmergedTargetDropBound = true;
 //  * kBombReleaseVelocityFrameBound: packet g42_ver20_d1 (docs/CC13_VER_20.md D1).
 //    006E1F00 copies the round's matrix, and owner->vtable[190h] = 006E0A70
 //    overwrites the copy's row 2 with w' (the owner's world velocity, 3.0 off y)
@@ -465,7 +473,8 @@ constexpr bool kTorpedoSubmergedTargetDropBound = false;
 //    pose frame (GUNNERY 130.4 / 130.6 read the hanging matrix, not the copy).
 //    ON: plane_release_ver_cc13::rack_round_release_velocity_006e4d50 on the
 //    same draws. OFF: as before.
-constexpr bool kBombReleaseVelocityFrameBound = false;
+//    ON since the pairs and win set (GUNNERY_OPEN_ITEMS 233).
+constexpr bool kBombReleaseVelocityFrameBound = true;
 //  * kGunSubmergedAaKindBound: packet g42_small_gates (GUNNERY 227 addendum item 5,
 //    docs/CC13_GPR_40.md section 2). 00729A80's submerged-fire test refuses a gun
 //    whose muzzle is under the waterline when 00728A90 answers true:
