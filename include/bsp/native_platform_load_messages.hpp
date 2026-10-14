@@ -24,6 +24,25 @@ struct NativePlatformLoadMessagePreimage {
     NativePlatformLoadMessagePreimage() noexcept = default;
     NativePlatformLoadMessagePreimage(const MSG& value) noexcept : captured(&value) {}
 };
+// Borrow one existing pointer cell, including the renderer's const-qualified
+// focus publication. Neither overload publishes, copies a receiver, or creates
+// another cell. The reached load pump reads platform+41 only; a focus-domain
+// receiver must never be passed to other whole-platform bodies.
+class NativePlatformLoadPublication final {
+public:
+    NativePlatformLoadPublication(void* const volatile& cell) noexcept : mutable_(&cell) {}
+    NativePlatformLoadPublication(const void* const volatile& cell) noexcept : constant_(&cell) {}
+    void* load() const noexcept {
+        return mutable_ ? *mutable_ : const_cast<void*>(*constant_);
+    }
+    const volatile void* identity() const noexcept {
+        return mutable_ ? static_cast<const volatile void*>(mutable_)
+                        : static_cast<const volatile void*>(constant_);
+    }
+private:
+    void* const volatile* mutable_{};
+    const void* const volatile* constant_{};
+};
 struct NativePlatformLoadMessagesOperation final {
     enum class Phase { fresh, running, complete, failed, diagnostic_retired };
     Phase phase{Phase::fresh};

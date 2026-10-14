@@ -19,6 +19,15 @@ need its byte preimage. The converting constructor preserves existing Source
 aggregate callers that provide a `const MSG&`. This is a Source interface,
 not the original private stack or ABI.
 
+`NativePlatformLoadPublication` borrows either an existing mutable pointer cell
+or its const-qualified counterpart. It reloads that same cell once at sampler
+entry and creates no publication or receiver. The renderer's existing focus
+publication points at the same `+41` cell written by actual window messages.
+That partial storage is valid for the reached load-pump focus-byte read; this
+does not turn it into a complete native platform or permit other platform
+bodies to consume its opaque bytes. No projected `Win32PlatformState` cast or
+duplicate publication is supplied.
+
 The platform, XLive, input and online domains, persistent failure ownership,
 current cursor/focus behavior and sampler root/mode stack-word guard remain
 unchanged. This correction establishes no effect acquisition, native Text,

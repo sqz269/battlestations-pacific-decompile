@@ -23,7 +23,7 @@ using GameNativeGuiSamplerEvidenceLookup = GameNativeGuiSamplerCallEvidence (*)(
     NativeShaderDescriptorStorage& root, NativeShaderDescriptorStorage& mode);
 struct GameNativeGuiSamplerApplicationBindings {
     GameInputRuntime& input;
-    void* volatile& actual_platform_0109cf04;
+    NativePlatformLoadPublication actual_platform_0109cf04;
     NativePlatformLoadMessagePreimage native_message_preimage{};
     // Optional qualified capture; empty keeps Original MSG output bytes unwritten.
     void* evidence_context{};
