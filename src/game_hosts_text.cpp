@@ -1,4 +1,10 @@
 #include "bsp/game_hosts_text.hpp"
+#include "bsp/game_native_text_application.hpp"
+#include "bsp/game_native_renderer_application.hpp"
+#include "bsp/gui_material_binding.hpp"
+#include "bsp/gui_text_child_lifetime.hpp"
+#include "bsp/gui_text_native_layout.hpp"
+#include "bsp/native_game_grid.hpp"
 
 #include "bsp/font_data.hpp"
 #include "bsp/font_geometry.hpp"
@@ -16,6 +22,8 @@
 #include <array>
 #include <cstring>
 #include <cwctype>
+#include <exception>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -437,3 +445,248 @@ bool GameTextHost::build_run(const std::string& page, const GuiLayoutWidget& wid
 }
 
 }  // namespace bsp::game
+
+namespace bsp::game {
+namespace {
+// Actual canonical child ownership is delegated to the one deletion transport.
+// The non-ASCII CRT comparator remains a required current-locale binding.
+class GameNativeTextContentCalls final : public GuiTextContentCalls {
+public:
+    GameNativeTextContentCalls(GuiTextChildDeletion& children,
+        int (*compare)(const char16_t*, const char16_t*))
+        : children_(children), compare_(compare) {
+        if (!compare_) throw std::invalid_argument("Native Text requires its current CRT locale comparer");
+    }
+    GuiTextGlyphChildCalls& glyph_child_calls() noexcept override { return children_; }
+    void accept_detached_child(std::unique_ptr<GuiLayoutWidget> child) noexcept override {
+        children_.accept_detached_child(std::move(child));
+    }
+    void delete_text_child_virtual4(GuiLayoutWidget& child, std::uint32_t flags) override {
+        children_.delete_text_child_virtual4(child, flags);
+    }
+    int compare_current_locale_00c0392a(const char16_t* left, const char16_t* right) override {
+        return compare_(left, right);
+    }
+private:
+    GuiTextChildDeletion& children_;
+    int (*compare_)(const char16_t*, const char16_t*);
+};
+} // namespace
+
+struct GameNativeTextApplication::Impl {
+    GameHostLog& log;
+    GameNativeRendererApplication& renderer;
+    GameNativeTextApplicationBindings binding;
+    NativeGameGridContext& grid;
+    GuiTextNativeLayoutServices& layouts;
+    GuiTextChildDeletion children;
+    GameNativeTextContentCalls calls;
+    GuiTextBufferServices buffers;
+    GuiTextShaderServices shader;
+    GuiTextResourceNameServices names;
+    GuiTextFontNameServices font_names;
+    GuiTextContentEnvironment content;
+    GuiTextNonemptyEnvironment nonempty;
+    GuiTextSingleLineServices single;
+    GuiTextWrappedServices wrapped;
+    GuiTextRuntimeContentServices runtime_content;
+    GuiTextSubmitServices submit;
+    GuiTextPropertyServices properties;
+    GuiTextTypeDispatchServices dispatch;
+    GuiTextClipRefreshServices clip;
+    GuiTextRuntimeFactory text_factory;
+    GuiTextGlyphChildTailServices glyph_tail;
+    bool active{}; // Host callback guard, never a native Text field.
+    std::uint32_t failed_entry{};
+    std::exception_ptr failed;
+
+    Impl(GameHostLog& log_in, GameNativeRendererApplication& renderer_in,
+        GameNativeTextApplicationBindings b)
+        : log(log_in), renderer(renderer_in), binding(b),
+          grid(renderer.game_grid_context()), layouts(renderer.section_layout_services()),
+          children(b.widgets, b.parenting), calls(children, b.compare_current_locale_00c0392a),
+          buffers{b.widgets, grid.graphics.streams.geometry, b.materials, b.parenting,
+              grid.strings, renderer.publication_00f8d394(), b.material_vtable_00d5e520,
+              &grid.graphics},
+          shader{buffers, b.configuration_0109cf04},
+          names{b.widgets, buffers.geometry.actual_owners()},
+          font_names{names, b.published_registry_00f8bf44, b.singleton_lifetime,
+              b.fonts, b.constructor.one_00d7a24c},
+          content{b.locale, b.locale_runtime, b.crt_locale_changed_0109de1c, buffers, calls},
+          nonempty{shader, b.parameters, layouts, b.style, b.fonts, b.blend_factor_00f8be54},
+          single{b.fonts, grid.graphics.streams.mapping, buffers.geometry.actual_owners(),
+              layouts, b.vertical_scale_00e12fd4},
+          wrapped{b.fonts, grid.graphics.streams.mapping, buffers.geometry.actual_owners(),
+              b.widgets, b.parenting, children, b.vertical_scale_00e12fd4,
+              renderer.vertex_half_import()},
+          runtime_content{content, nonempty, single, wrapped, nullptr},
+          submit{runtime_content, b.default_width_00d7a260},
+          properties{font_names, submit, b.crt_sse2_conversion, b.properties},
+          dispatch{buffers, b.compare_names_00bf7fbf},
+          clip{buffers, b.parameters, b.style.aspect_ratio_00e12fc0},
+          text_factory{GuiTextRuntimeFactoryServices{b.pool, buffers, children, b.constructor,
+              dispatch, properties, clip, b.bounds, b.lineage_00f8be28}},
+          glyph_tail{text_factory, buffers, font_names, b.style, b.glyph_strings,
+              b.mesh_vtable_00d62d60, b.glyph_shader_name_00cefd78,
+              b.constructor.shadow_offset_00d5c5c0, b.constructor.one_00d7a24c,
+              b.constructor.disabled_alpha_00ce3800, b.glyph_position} {
+        validate_domain();
+        runtime_content.glyph_children = &glyph_tail;
+    }
+
+    void validate_domain() {
+        // Ready-only renderer revalidation. This does not reload, replace or
+        // replay the application's stable factory/mapping/layout contexts.
+        if (&renderer.game_grid_context() != &grid ||
+            &renderer.section_layout_services() != &layouts ||
+            buffers.native_renderer != &grid.graphics ||
+            &buffers.geometry != &grid.graphics.streams.geometry ||
+            &buffers.strings != &grid.strings ||
+            &buffers.current_renderer_00f8d394 != &renderer.publication_00f8d394() ||
+            &buffers.widgets != &binding.widgets || &buffers.parenting != &binding.parenting ||
+            &buffers.materials != &binding.materials ||
+            &buffers.materials.retained_owners != &buffers.geometry.actual_owners() ||
+            &binding.style.actual_owners != &buffers.geometry.actual_owners() ||
+            &binding.parameters.parameter_names != &grid.strings ||
+            &binding.materials.parameter_names != &grid.strings ||
+            &binding.materials.parameter_slots != &binding.parameters.parameter_slots ||
+            static_cast<NativeStringStorage*>(&binding.glyph_strings) != &grid.strings ||
+            !binding.material_vtable_00d5e520 || !binding.mesh_vtable_00d62d60 ||
+            !binding.glyph_shader_name_00cefd78 ||
+            &binding.constructor.shadow_color_00e12fd8[0] != &binding.properties.shadow_color_00e12fd8[0])
+            throw std::invalid_argument("Native Text application requires the same live renderer, GUI, material and string owners");
+        require_gui_text_native_renderer_domain(grid.graphics,
+            buffers.current_renderer_00f8d394, grid.strings, buffers.geometry.actual_owners());
+    }
+
+    void require_entry() {
+        if (active || failed)
+            throw std::logic_error("Native Text application cannot reenter or replay an interrupted operation");
+        validate_domain();
+    }
+    GuiTextRuntimeImplementation& implementation(GuiWidgetOwner& owner) {
+        if (&owner.runtime() != &binding.widgets)
+            throw std::invalid_argument("Native Text belongs to a different widget runtime");
+        // Factory lookup authenticates its SAME allocation/identity association;
+        // checking the type or native vtable token alone would not do that.
+        (void)text_factory.actual_identity(owner);
+        auto* actual = dynamic_cast<GuiTextRuntimeImplementation*>(&owner.implementation());
+        if (!actual || owner.text_lifetime() != &actual->lifetime())
+            throw std::invalid_argument("Native Text requires its canonical factory implementation and lifetime");
+        return *actual;
+    }
+    void record_failure(std::uint32_t entry) noexcept {
+        failed_entry = entry;
+        failed = std::current_exception();
+    }
+};
+
+namespace {
+struct GameNativeTextEntry final {
+    GameNativeTextApplication::Impl& owner;
+    explicit GameNativeTextEntry(GameNativeTextApplication::Impl& actual) : owner(actual) {
+        owner.require_entry();
+        owner.active = true;
+    }
+    ~GameNativeTextEntry() { owner.active = false; }
+};
+template<class Call>
+GameNativeTextStatus native_text_submit(GameNativeTextApplication::Impl& app,
+    GuiWidgetOwner& owner, std::uint32_t entry, Call&& call) {
+    app.require_entry();
+    auto& implementation = app.implementation(owner);
+    // Pending work is resumable only through the exact native child continuation;
+    // reject a new source before entering native stores or latching a failure.
+    owner.require_no_active_owned_operation();
+    GameNativeTextEntry guard(app);
+    try {
+        call(implementation);
+        app.log.notef("native Text entry=%08x complete", entry);
+        return GameNativeTextStatus::complete;
+    } catch (const GuiTextRuntimePending&) {
+        if (!implementation.has_pending_operation()) {
+            app.record_failure(entry);
+            throw;
+        }
+        app.log.notef("native Text entry=%08x retains pending native work", entry);
+        return GameNativeTextStatus::pending;
+    } catch (...) {
+        app.record_failure(entry);
+        throw;
+    }
+}
+} // namespace
+
+GameNativeTextApplication::GameNativeTextApplication(GameHostLog& log,
+    GameNativeRendererApplication& renderer, GameNativeTextApplicationBindings bindings)
+    : impl_(std::make_unique<Impl>(log, renderer, bindings)) {}
+GameNativeTextApplication::~GameNativeTextApplication() noexcept {
+    // No destructor rollback, force-unlock or disposal of a failed native frame.
+    // The factory and deletion transport independently enforce the same rule.
+    if (requires_process_retention()) std::terminate();
+}
+std::unique_ptr<GuiWidgetTypeImplementation> GameNativeTextApplication::make_type(GuiWidgetOwner& owner) {
+    auto& app = *impl_;
+    app.require_entry();
+    if (&owner.runtime() != &app.binding.widgets ||
+        &app.binding.widgets.owner(owner.layout()) != &owner ||
+        owner.layout().type != GuiWidgetType::Text || owner.layout().transform.type_id != 3 ||
+        owner.node_binding() || owner.text_lifetime())
+        throw std::invalid_argument("Native Text factory requires its fresh primary-null canonical widget owner");
+    GameNativeTextEntry guard(app);
+    try {
+        auto result = app.text_factory.make_type(owner);
+        app.log.implemented("NativeGuiText::default_construct", "00ab9650");
+        return result;
+    } catch (...) {
+        app.record_failure(0x00ab9650);
+        throw;
+    }
+}
+GameNativeTextStatus GameNativeTextApplication::submit_source(GuiWidgetOwner& owner,
+    const std::string& source, bool localize) {
+    return native_text_submit(*impl_, owner, 0x00abaed0,
+        [&](GuiTextRuntimeImplementation& text) { text.submit_source_00abaed0(source, localize); });
+}
+GameNativeTextStatus GameNativeTextApplication::submit_utf16(GuiWidgetOwner& owner,
+    std::u16string_view text) {
+    return native_text_submit(*impl_, owner, 0x00ab6ab0,
+        [&](GuiTextRuntimeImplementation& actual) { actual.submit_utf16_00ab6ab0(text); });
+}
+GameNativeTextStatus GameNativeTextApplication::resume_after_completed_glyph_child(GuiWidgetOwner& owner) {
+    auto& app = *impl_;
+    app.require_entry();
+    auto& actual = app.implementation(owner);
+    auto* pending = actual.pending_content();
+    if (!pending || !pending->child_tail ||
+        pending->child_tail->status != GuiTextGlyphChildTailStatus::complete)
+        throw std::logic_error("Native Text resume requires its same completed glyph-child tail");
+    GameNativeTextEntry guard(app);
+    try {
+        actual.resume_after_glyph_child();
+        return GameNativeTextStatus::complete;
+    } catch (const GuiTextRuntimePending&) {
+        if (!actual.has_pending_operation()) {
+            app.record_failure(0x00aba8d0);
+            throw;
+        }
+        return GameNativeTextStatus::pending;
+    } catch (...) {
+        app.record_failure(0x00aba8d0);
+        throw;
+    }
+}
+GuiTextRuntimeContentContinuation* GameNativeTextApplication::pending_content(GuiWidgetOwner& owner) {
+    return impl_->implementation(owner).pending_content();
+}
+GuiTextRuntimeFactory& GameNativeTextApplication::factory() {
+    impl_->require_entry();
+    return impl_->text_factory;
+}
+bool GameNativeTextApplication::requires_process_retention() const noexcept {
+    return impl_->active || impl_->failed || impl_->text_factory.retained_allocation_count() != 0 ||
+        impl_->children.retained_storage_count() != 0;
+}
+std::uint32_t GameNativeTextApplication::failure_entry() const noexcept { return impl_->failed_entry; }
+const std::exception_ptr& GameNativeTextApplication::failure() const noexcept { return impl_->failed; }
+} // namespace bsp::game

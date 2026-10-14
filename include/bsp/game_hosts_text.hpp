@@ -12,6 +12,8 @@
 // Recorded but not implemented: 00ab8ce0 (the font shader), 00ab8400 (the glyph vertex
 // and index buffers) and 00ab8530 (the draw sections), which are the native material and
 // submission half; the sprite bridge draws the quads instead.
+// game_native_text_application.hpp supplies the separate canonical native
+// factory/service composition. This scratch frontend does not activate it.
 //
 // Nothing in this file is a reconstruction of native code. GameTextHost is an integration
 // binding: it satisfies bsp::GuiTextHost with the already reconstructed font, layout,
