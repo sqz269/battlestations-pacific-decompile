@@ -115,6 +115,7 @@
 #include "bsp/ship_hull_body.hpp"
 #include "bsp/mmod_hull_convex_box.hpp"
 #include "bsp/ship_motion.hpp"
+#include "bsp/ship_motion_ver_cc13.hpp"         // packet cc9_tboat_rudder_torque (00937440)
 #include "bsp/unit_controller.hpp"
 #include "bsp/unit_forces.hpp"
 #include "bsp/air_operations.hpp"
@@ -9672,6 +9673,12 @@ private:
 
 class ShipMotionBinding final : public bsp::ShipMotionHost {
 public:
+    // Packet cc9_tboat_rudder_torque (docs/CC13_VER_3.md T1 and T2, SHIP_AI 233). True:
+    // 00937440's roll torque runs for TorpedoBoats only, with settings+588h = 1500 (the
+    // installed value, labelled), in the image's grouping; other ships skip it. False:
+    // every surface ship runs the torque with a zero gain, as before.
+    static constexpr bool kTorpedoBoatRudderTorqueBound = false;
+    static constexpr float kTorpedoBoatRudderTorqueMulInstalled = 1500.0f;
     ShipMotionBinding(GameUnitsHost::Impl& owner, GameUnitSlot& slot,
         UnitRudderBinding& rudder)
         : owner_(owner), slot_(slot), rudder_(rudder) {}
@@ -9749,6 +9756,34 @@ public:
         in.pose_row2.y = slot_.motion.pose_row2[1];
         in.pose_row2.z = slot_.motion.pose_row2[2];
         in.settings_rudder_torque = 0.0f;  // settings+588h, not recovered
+        if constexpr (kTorpedoBoatRudderTorqueBound) {
+            // Packet cc9_tboat_rudder_torque (docs/CC13_VER_3.md T1/T2, SHIP_AI 233).
+            // 00937440 is slot 0 only of the controller vtable 00D196F0, which 00939F20
+            // builds for 00857C20, the TorpedoBoat vtable's +230h; every other ship's
+            // controller (base 00D19630) runs 009329C0 alone. SUBSTITUTION, labelled:
+            // settings+588h Physics.TBoatNyomatekSzorzo is this installation's
+            // shipglobals.lua:553 value 1500, not the loaded field.
+            if (!bsp::unit_is_kind_of(slot_.class_id, 0x0e)) {
+                run_hydrodynamics_00937622(dt);
+                return bsp::OceanVec3{};
+            }
+            bsp::TorpedoBoatRudderTorqueInputs tb;
+            tb.velocity = slot_.motion.linear_velocity;
+            for (int i = 0; i < 3; ++i) tb.row2[i] = slot_.motion.pose_row2[i];
+            tb.reference_speed = in.reference_speed;
+            tb.pose_row0_y = slot_.motion.pose_row0[1];
+            tb.to_turn = slot_.motion.to_turn;
+            tb.torque_mul = kTorpedoBoatRudderTorqueMulInstalled;
+            tb.hull_mass = slot_.motion_class.hull_mass;
+            owner_.done("ShipMotion::force_model", 0x00937440u);
+            const bsp::OceanVec3 tboat = bsp::tboat_rudder_torque_00937440(tb);
+            if (slot_.state == nullptr || !slot_.state->simulate) {
+                bsp::dyn_body_add_torque_00c35330(slot_.body, tboat);
+                owner_.done("ShipMotion::add_rudder_torque", 0x00c35330u);
+            }
+            run_hydrodynamics_00937622(dt);
+            return tboat;
+        }
         owner_.done("ShipMotion::force_model", 0x00937440u);
         const bsp::OceanVec3 torque = bsp::unit_steering_torque_00937440(in);
         // 00937449 CMP byte ptr [EAX+5Dh],0 / 0093744D JNZ 00937618: a set byte
