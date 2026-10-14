@@ -2,7 +2,7 @@
   "schema": "bsp.cc12.native-scene-property-record-type10-raw-array-storage.v1",
   "packet": "cc12_property_type10_type11_raw_storage_source",
   "type": 10,
-  "status": "raw_Source_reconstructed_production_compiled_complete_fixture_ABI_qualification_pending",
+  "status": "raw_Source_reconstructed_production_compiled_worker_singleprocess_raw_domain_pass_Root_admission_pending",
   "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_type10_type11_raw_storage_source",
   "branch": "agent/cc12_property_type10_type11_raw_storage_source",
   "worker_base_revision": "4f21df543211402d96f1c27dd8751ff63070909b",
@@ -356,5 +356,163 @@
         "sha256": "193e6dccd4e88f7a8a44d31dd4e4f64b37e257bc9a75ae34c8e3651da7558e51"
       }
     ]
+  },
+  "worker_current_singleprocess_qualification": {
+    "schema": "bsp.cc12.type10-current-singleprocess-qualification.v1",
+    "status": "worker_raw_domain_PASS_parent_admission_pending",
+    "Source_admission_credit": 0,
+    "Source_credit": 0,
+    "Root_independent_validation_pending": true,
+    "current_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type10_current02",
+    "worker_base_revision": "9aa204875db05f1df770ea541c8fa1246a8f9de7",
+    "current_Source_unchanged": true,
+    "complete_code": {
+      "primary_and_independent_agree": true,
+      "fresh_objects": 3,
+      "retained_sections": 108,
+      "whole_function_bodies": 29,
+      "whole_function_bytes": 5844,
+      "decoded_instructions": 1690,
+      "all_relocations": 628,
+      "weak_entries": 7,
+      "retained_weak_entries": 2,
+      "weak_modes": [
+        1
+      ],
+      "full_support_extents": "Current archive COFF section sizes and all relocated bytes for three normal/cookie bodies; current short-import-member identity plus whole six-byte IAT thunks for six imports.",
+      "runtime_associative_sections_verified": true,
+      "discarded_FPO_sections": "Exact 16-byte non-executable discardable .debug$F sections, no mapped base, no retained references, and no IMAGE_DEBUG_TYPE_FPO entry. PE has separate Type13 POGO metadata.",
+      "CFG_unknown_edges": 0,
+      "internal_unreachable_nonpadding": 0,
+      "GS_failure_frontier": {
+        "name": "___report_gsfailure",
+        "va": 1375742544
+      },
+      "actual_loaded_bytes_before_after_equal_gate": true
+    },
+    "process": {
+      "pid": 61000,
+      "returncode": 0,
+      "start_ns": 1792018917821885500,
+      "end_ns": 1792018918005123300,
+      "one_current_target_process": true,
+      "successful_family_target_attempts": 1,
+      "roots": 12,
+      "children": 6,
+      "calls": 12,
+      "raw_Source": 4,
+      "raw_fresh_rebound_Native": 4,
+      "ordinary_Source": 4,
+      "root_free_completions": 12,
+      "child_free_completions": 6,
+      "free_event_instrumentation": false,
+      "ordinary_lane_raw_register_claim": false,
+      "counts": [
+        4,
+        1,
+        4,
+        1
+      ],
+      "full_flag_DWORDs": [
+        "73a9d500",
+        "c41e6800",
+        "9b2f7180",
+        "e063ac01"
+      ]
+    },
+    "observed_contract": {
+      "root_bytes": 56,
+      "written_bytes": 29,
+      "preserved_bytes": 27,
+      "owner_30_preserved": true,
+      "marker_2c_one_both_modes_not_ownership": true,
+      "input_guard_scope": "Inside each 40-byte input array only; no adjacent heap redzones",
+      "all_simultaneously_live_root_input_array_child_extents_disjoint_and_outside_active_thread_stack": true,
+      "opaque_payloads_through_embedded_NUL": true,
+      "raw_stack": "COUNT/INPUT/fullFLAG at observed T+4/T+8/T+C; RET0C physical post stack T+16",
+      "raw_nonvolatile": "EBX/EBP/ESI/EDI and EAX root checked on both raw lanes",
+      "retain": "ECX root, EDX input, EFLAGS&08D5=0044 including AF0",
+      "copy": "Six arithmetic flags from observed ADD(T-24,16); ECX/EDX intentionally unconstrained",
+      "entry_DF_clear": true,
+      "ES_FPU_MXCSR_blanket_claim": false
+    },
+    "final_current_selected_input_count": 227,
+    "final_current_selected_input_bookend_pass": true,
+    "evidence_limits": [
+      "Only positive fresh/unowned readable/disjoint successful current allocation/copy/free domain. Dynamic examples use counts1/4; all36 constructor instructions and complete retained helper/caller code reviewed.",
+      "Cold bad_alloc/delete/cookie support is structurally covered, not failure-executed. GS failure frontier and external IAT providers are explicit boundaries.",
+      "No old draft pre-interpreter environment/package/host admission is claimed by this newly adapted isolated workflow.",
+      "No original private CRT/EH/OOM or naked-frame unwind admission.",
+      "No vtable/class/owner publication/free-marker/recursive lifetime or complete clone admission.",
+      "No game ABI drop-in, startup, world construction, renderer activation or gameplay proof."
+    ],
+    "next_gate": "Parent independently reviews current02 Source/complete code/provider/frame/runtime evidence and decides bounded Source admission; original private runtime/class/whole-clone and gameplay gates remain open.",
+    "qualification_report": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type10_current02\\qualification.json",
+      "bytes": 15893,
+      "sha256": "8c4582080d5beeceea96ee6948bf388f4fc862d5b776950055f94b1ccb60262f"
+    },
+    "primary_artifacts": {
+      "type10_probe.exe": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type10_current02\\type10_probe.exe",
+        "bytes": 17920,
+        "sha256": "d072e0a4117ffc6b804e0590ba65873d3964f6121ca8924be835d9bc4ddf2897"
+      },
+      "type10.obj": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type10_current02\\type10.obj",
+        "bytes": 1822,
+        "sha256": "c4e1fa71cc1a481785bf81925955d4819aa2e93d4ded20286c9edf99da6c42e5"
+      },
+      "canonical.obj": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type10_current02\\canonical.obj",
+        "bytes": 36622,
+        "sha256": "90583d00c24cd84c346350e63dba01e7cfc67fb3972843dcecb69b9506335af1"
+      },
+      "probe.obj": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type10_current02\\probe.obj",
+        "bytes": 28185,
+        "sha256": "a84ec08cabc82672ae1b2c7d25adb765ea6199328217d70f7d481dabccab6bc4"
+      },
+      "observations.bin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type10_current02\\observations.bin",
+        "bytes": 9043,
+        "sha256": "7d950c47f94770b2fc54f759cc300160e5bacb9eb2ef31814a76a14fb5043470"
+      },
+      "gate.bin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type10_current02\\gate.bin",
+        "bytes": 6084,
+        "sha256": "f7c1c907f389e815a32e1e0038e3363a1dc636b9f5ef4ffc7dd1f2af622ce430"
+      },
+      "independent_code.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type10_current02\\independent_code.json",
+        "bytes": 889073,
+        "sha256": "60fe88ea6c01bcec3653ebebb426ae05456021922fd5b01509500ff60f90467c"
+      },
+      "independent_recorded.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type10_current02\\independent_recorded.json",
+        "bytes": 15644,
+        "sha256": "7f2799b5f60767c88d6472cbaaa634b8b3e587858eed65e81fd4bd00cc7940b2"
+      }
+    },
+    "prior_failed_attempt": {
+      "family": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type10_current01",
+      "status": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type10_current01\\target.status.json",
+        "bytes": 152,
+        "sha256": "05f11b2d2c5044853177f3183dbee2630eb5f31ff53db813a82087aee93994e5"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type10_current01\\target.stderr",
+        "bytes": 56,
+        "sha256": "b095278319ac9f48a280b1b54e85c9bb3f3de2db1ddd2a7d693d5218af28f703"
+      },
+      "result": "Exit71 before constructor calls; historical snapshot incorrectly required &memcpy already external. Preserved failed attempt is not passing evidence.",
+      "retained_historical_gate_corrections": [
+        "COFF short symbol names use exactly first8 bytes of 18-byte symbol entries.",
+        "Discarded .debug$F metadata is independently distinguished from retained runtime associative sections.",
+        "Type10-only reader tuple retains singleton comma."
+      ]
+    },
+    "evidence_manifest": "local/type10_current02/artifact_manifest.json; independent hash supplied in handoff; includes final tracked-output snapshots without a hash cycle."
   }
 }
