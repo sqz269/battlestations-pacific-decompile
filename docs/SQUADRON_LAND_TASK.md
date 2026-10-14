@@ -17013,3 +17013,22 @@ image's order), so the switch is flipped ON.
   1: that is the keyed-stream discipline (`shared-rng-stream-couples-pairs`), and moving them to a shared stream would
   couple every pair. 007CC8B0's OnDestroyed +C14h draw belongs to a retired plane with no later reader; on a keyed
   stream it is unobservable, and on the shared stream only its sequence shift would show. Left as labelled.
+
+### 5hj.1 The wingmen's half: 0099AF53 -> 009B83D0 and the +424h passthrough 009B8BD0 (committed OFF)
+
+`kLevelBombReleaseOrderSpendBound` (packet `cc9_l60_level_order_spend`; CC13_VER_6 findings 2 and 5). 0099AF53-0099AFC2
+runs in the pilot bot's tick before its task ticks (0099AFCC): with unit+C58h > 0 and the plane in free flight
+((unit+72Ch)->vt[38h] = 0074E210, unit+900h == 7), unit+5Ch set and 007B9140 true, one order is offered to the task's
+vt[24h], else C58h is zeroed (0099AFC2). The level-bomb vt[24h] 009B83D0 (disk listing 009B83D0-009B8414): task+4C6h
+(approach+CEh) and the free-flight test raise task+424h; in prepare (task+310h == task+610h) it calls 009B8100; it always
+answers 1. The arm's tail 009B8BD0-009B8C3D: +424h > 0, free flight, the state none of attackrun/aim/prepare/release
+(task+5CCh/+5F4h/+610h/+6B4h, docs/BOT_TASKS.md) -> 007BBBA0 and +424h -= 1. The host's comment that this "needs a
+player-held aircraft" was wrong (CC13_VER_6). Not modelled: 009B8100 and prepare's tick 009B6670 (no row reaches the
+level-bomb prepare: pr=0 on JM08). Per slot: `levelbomb <name> orders 0099AF53/009B83D0: spent cleared passthrough_releases
+pending_424`.
+
+Prediction, with kLevelBomberIssueTailBound ON as well (JM08 `j8s`): when a flight leader's racks are armed, 007EEF30
+hands the wingmen 999 orders (when ctl+390h > ctl+374h); each wingman in follow/moveto/goaway raises +424h on its next
+tick and releases through 007BBBA0 at once, so the wingmen drop with the leader instead of after their own aim
+(first_release moves to the leader's time; aim ticks fall). A wingman in aim keeps +424h and releases when it leaves
+aim/release for goaway, or through its own aim release.
