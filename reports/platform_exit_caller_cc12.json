@@ -1,0 +1,110 @@
+{
+  "packet": "cc12_platform_exit_caller",
+  "timestamp_utc": "2026-10-14T17:09:12.782875+00:00",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "platform_normal_exit_restore_caller": "not established; raw direct/getter leads closed, indirect virtual aliases remain open",
+  "raw_alias_scan": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "scan": "every byte of executable sections for raw E8/E9 rel32; every byte of raw sections for exact pointer values",
+    "rows": [
+      {
+        "target": "004b4bc0",
+        "rel32": [],
+        "pointers": []
+      },
+      {
+        "target": "00b210d0",
+        "rel32": [],
+        "pointers": []
+      },
+      {
+        "target": "00b23680",
+        "rel32": [],
+        "pointers": []
+      },
+      {
+        "target": "00b25f30",
+        "rel32": [],
+        "pointers": []
+      },
+      {
+        "target": "00bebf70",
+        "rel32": [],
+        "pointers": [
+          {
+            "address": "00d68ccc",
+            "section": ".rdata"
+          }
+        ]
+      },
+      {
+        "target": "00c2ddd0",
+        "rel32": [
+          {
+            "address": "00bebf82",
+            "opcode": "0xe8",
+            "section": ".text"
+          },
+          {
+            "address": "00bed264",
+            "opcode": "0xe8",
+            "section": ".text"
+          }
+        ],
+        "pointers": []
+      }
+    ]
+  },
+  "close_policy": {
+    "native_entry": "004ca2f0",
+    "source": "src/window_close_transport.cpp",
+    "application": "src/game_hosts.cpp",
+    "actual_online_publication": "GameNativeSettingsProcess::online_00f8abe8 shared with real online manager constructor and notification producers",
+    "native_gate": "NativeOnlineManagerStorage::notification9_3e8",
+    "application_call_order": "before menu_->frame, matching native4E4A79",
+    "missing_owner_behavior": "source admission leaves close pending and global exit unchanged; not native null handling",
+    "remaining_prompt_dependency": "actual425D10 shared prompt getter/GUI owner and callback routing"
+  },
+  "validation": {
+    "msvc_win32_O2_transport_compile": "passed",
+    "msvc_win32_O2_game_hosts_compile": "passed",
+    "native_source_policy_callback_scenarios": 15,
+    "native_source_result": "passed",
+    "source_missing_owner_and_lazy_prompt_checks": "passed",
+    "native_bodies": [
+      {
+        "address": "004ca2f0",
+        "size": 326,
+        "sha256": "2e88b6250f5cf1096469beca5cc369ae92799a3681c549e0f2b28fb6758151f9"
+      },
+      {
+        "address": "004bbc50",
+        "size": 25,
+        "sha256": "252855bde80e4b183594b061e4433ef1cdf0534c1ebeaf99480f731160e32085"
+      }
+    ],
+    "probe_link_manifest": "EMBED",
+    "complete_build": "pending primary source registration; worker did not edit held cmake/startup.cmake",
+    "prompt_gui_runtime": "not exercised",
+    "gameplay": "unproved",
+    "new_ctest_cases": 0
+  },
+  "ghidra": {
+    "mutation": "append4CA2F0 evidence preserving existing name/comments, under ghidra_annotate write lock; saved",
+    "before_after_log": "local/ghidra-annotations-20261014T170812Z.json"
+  },
+  "artifact_sha256": {
+    "src/window_close_transport.cpp": "01ae330e22156bd8165f3c6b56e8b7b1de9df461f405a885539ac44c565a0e00",
+    "include/bsp/window_close_transport.hpp": "99b6b20d7203ee81eebeeec32fbc40d2fa04c462d84ff858fa36954f039975d7",
+    "src/game_hosts.cpp": "e3f73e7e0b1046a6f47f88767b3e598a7e846568bb33759f08541da4badf2e72",
+    "include/bsp/game_hosts.hpp": "7187ba46255bfb466d5a3f8a0b239f4bb3714d080a0b3ffd8c46055d183e3df4",
+    "local/window_close_probe.cpp": "2d3ebd248016480964464dab210a0022aef425f6374db58d804e8b18aec80fd8",
+    "local/window_close_probe.exe": "7f8f93e4dbc21c032b03a758396c34456312cddb6854eee06ee5f4a219a24ad6",
+    "local/window_close_transport.obj": "e26f978b0edfed7f45381f9e5da8d111302b8f9c0b55a65d8aa563e30731c413",
+    "local/game_hosts.obj": "ae9258328fe9b03ff2500fa4c10ab4fe3ca52a92ba15fc2a79bfd3afc17667d1",
+    "local/window_close_original.hpp": "36400df3aaebed129cbdeb38d5e2bf69301738010ded93dff485d2e819d1f39a",
+    "local/window_close_probe_build.log": "b26888e13df9d182b473c2e4f8667db9ebf7a4422cdac592b9df6a93d8d0e38a"
+  }
+}
