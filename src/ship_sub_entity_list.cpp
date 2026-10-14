@@ -4,18 +4,14 @@ namespace bsp {
 namespace {
 
 // The append the three bodies share: 00432480 and 006D4DD0 call
-// 004323D0 BSP_PointerVector_PushBack, 007F44E0 inlines its fast path and falls
-// back to 004322D0 when the vector is full. All three copy one 4-byte pointer.
-inline void append(const void* entity,
-                   const void** out,
-                   std::size_t out_capacity,
-                   std::size_t& written) noexcept {
-    if (written < out_capacity && out != nullptr) {
-        out[written] = entity;
-    }
-    ++written;
+// 004323D0 BSP_PointerVector_PushBack (ECX = the vector, [ESP+4] = the address
+// of a local holding the pointer). 007F44E0 inlines push_back's fast path and
+// falls back to 004322D0 when the vector is full; it is routed through the same
+// push_back hook here (same resulting vector, the inlined path is not modelled).
+inline void append(const void* entity, void* vector, PointerVectorHost& host) {
+    const void* local = entity;
+    host.pointer_vector_push_back_004323d0(vector, local);
 }
-
 }  // namespace
 
 bool hangar_contributes_006d4dd0(const AirfieldHangarCandidate& hangar) noexcept {
@@ -24,17 +20,14 @@ bool hangar_contributes_006d4dd0(const AirfieldHangarCandidate& hangar) noexcept
     return hangar.record.object != nullptr && hangar.condition > 0.0f;
 }
 
-std::size_t sub_entity_list_slot0fc(const SubEntityListInputs& inputs,
-                                    const void** out,
-                                    std::size_t out_capacity) noexcept {
-    std::size_t written = 0;
+void sub_entity_list_slot0fc(const SubEntityListInputs& inputs, void* vector, PointerVectorHost& host) {
 
     switch (inputs.provider) {
     case SubEntityProvider::Self:
         // 00432480: PUSH ECX spills `this` to a local, LEA EAX,[ESP] takes its
         // address and 004323D0 copies the pointer in. One element, unconditional
         // - the native body has no null test and no filter.
-        append(inputs.self, out, out_capacity, written);
+        sub_entity_list_self_00432480(inputs.self, vector, host);
         break;
 
     case SubEntityProvider::AirFieldHangars:
@@ -47,7 +40,7 @@ std::size_t sub_entity_list_slot0fc(const SubEntityListInputs& inputs,
             }
             const AirfieldHangarCandidate& hangar = inputs.hangars[i];
             if (hangar_contributes_006d4dd0(hangar)) {
-                append(hangar.record.object, out, out_capacity, written);
+                append(hangar.record.object, vector, host);
             }
         }
         break;
@@ -60,13 +53,16 @@ std::size_t sub_entity_list_slot0fc(const SubEntityListInputs& inputs,
             if (inputs.squadron_planes == nullptr) {
                 break;
             }
-            append(inputs.squadron_planes[static_cast<std::size_t>(i)],
-                   out, out_capacity, written);
+            append(inputs.squadron_planes[static_cast<std::size_t>(i)], vector, host);
         }
         break;
     }
+}
 
-    return written;
+void sub_entity_list_self_00432480(const void* self, void* vector, PointerVectorHost& host) {
+    // 00432480: PUSH ECX spills `this`, LEA EAX,[ESP] takes its address, ECX =
+    // the vector argument, CALL 004323D0; RET 4.
+    append(self, vector, host);
 }
 
 }  // namespace bsp
