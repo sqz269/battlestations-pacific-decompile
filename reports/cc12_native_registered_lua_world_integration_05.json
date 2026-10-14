@@ -1,0 +1,88 @@
+{
+  "utc": "2026-10-14T22:53:39.460820+00:00",
+  "status": "Permanent normal Win32 Release build passed; updated actual GUI run04 launched through shared runner",
+  "source_revision_for_build_and_immutable_executable": "e20f1b31bac3338fe006f4a222fa2119edc75d1b",
+  "permanent_platform_registration_commit": "39e408d91",
+  "exactly_one_permanent_platform_tu_row": true,
+  "temporary_cmake_overlay_absent": true,
+  "normal_build": {
+    "command": "./scripts/build.ps1",
+    "target": "MSVC Win32 Release",
+    "existing_tests": "PASS3/3",
+    "seconds": 11.94,
+    "log": "local/cc12_lua_scope_registered_combined_release_build_01.log"
+  },
+  "lua_scope": {
+    "commit": "3a7b591fcfaf2a8240c620b25264fb3190ea2149",
+    "root_verified_frozen_artifacts": 33,
+    "committed_files": 8,
+    "receipt": "local/cc12_native_parent_receipts/lua_scope_3a/receipt.json",
+    "same_existing_service_borrowed": true,
+    "existing_activation_unchanged": true,
+    "failed_lua_unresumable": true
+  },
+  "world_batch": {
+    "commit": "e12917fa178e38dc1e4f07fd0614327f9a0e69d6",
+    "root_verified_artifacts": 54,
+    "committed_files": 6,
+    "root_original_source_cases_passed": 5,
+    "root_cleanup_and_worker_probe_passed": true,
+    "receipt": "local/cc12_native_parent_receipts/world_e129/receipt.json",
+    "normal_range": "00b15f63..00b16067",
+    "drsh_state2_preserved": true,
+    "next_unsupported_concrete_node": "00b10500"
+  },
+  "readiness_evidence": {
+    "unit_constructor": {
+      "commit": "e60474e9053a20695ecc7d54fd427cc223d5a4cb",
+      "root_verified_artifacts": 260,
+      "receipt": "local/cc12_native_parent_receipts/unit_e604/receipt.json",
+      "new_reconstruction_credit": 0
+    },
+    "platform_window": {
+      "commit": "b02d6fd5193ed9297ab4da7416bc312acf246422",
+      "root_verified_artifacts": 84,
+      "receipt": "local/cc12_native_parent_receipts/platform_b02/receipt.json",
+      "new_reconstruction_credit": 0
+    }
+  },
+  "runtime_04": {
+    "status": "Shared serialized runner active; pending actual run result",
+    "last_verified_live_exec_session": 48480,
+    "source_revision": "e20f1b31bac3338fe006f4a222fa2119edc75d1b",
+    "actual_executable": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_startup_receipts\\e20f1b31bac3338fe006f4a222fa2119edc75d1b\\build\\win32\\cc12_followup_release\\bsp_game.exe",
+    "actual_executable_sha256": "c14be9b4b25afb29672d1a58556541d959f0e6f4ec0346de34c8b24209248bb6",
+    "launch_receipt": "local\\cc12_native_gui_startup_receipts\\e20f1b31bac3338fe006f4a222fa2119edc75d1b\\root_launch_receipt_04.json",
+    "launcher_log": "local/cc12_actual_native_gui_effect_startup_04_launcher.log",
+    "log": "local/cc12_actual_native_gui_effect_startup_04.log",
+    "actual_acquisition_observed": false,
+    "startup_validated": false
+  },
+  "artifacts": [
+    {
+      "path": "local/cc12_lua_scope_registered_combined_release_build_01.log",
+      "bytes": 5478,
+      "sha256": "a398d09351eca0c55dbd9bcf00b344899d620cb9f08e4101ff026e6271530cd7"
+    },
+    {
+      "path": "build/win32/CMakeCache.txt",
+      "bytes": 19835,
+      "sha256": "dce4b4a92074e24d00695de30205f4e7ecadb90770f2740cbcf483cec092d2e4"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 91706906,
+      "sha256": "3791fb32dbf97d3de52c8ef697b11e565a3e7469c755951442771883f1b7cefa"
+    },
+    {
+      "path": "build/win32/cc12_followup_release/bsp_game.exe",
+      "bytes": 5579776,
+      "sha256": "c14be9b4b25afb29672d1a58556541d959f0e6f4ec0346de34c8b24209248bb6"
+    }
+  ],
+  "native_text_draw_validated": false,
+  "world_command_D5E13C_admitted": false,
+  "original_abi_compatible": false,
+  "gameplay_validated": false,
+  "overall_goal": "ACTIVE"
+}
