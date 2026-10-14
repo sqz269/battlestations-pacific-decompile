@@ -79,6 +79,7 @@ Layout as constructed by 0046F160: vtable 00CE59FC; +4 byte; +8 vector of pointe
 | 0046BE50 | `scene_stock_push_positive_counters_0046be50` | fastcall(ECX owner). For game+1910h..+192Ch (00E188A8 re-read), pushes the address of each positive dword with 00442190 on owner+8. No static callers. |
 | 0046BE90 | `scene_stock_register_unit_class_0046be90` | thiscall(owner, unitClass), RET 4. 2ACh returns at once; otherwise unless 00468660([00E18680], unitClass) names "SpawnPoint" (00CE56B8, 00425850), pushes &unitClass with 00442190 on owner+8. |
 | 0046BF20 | `scene_stock_register_from_type_property_0046bf20` | thiscall(owner, bag, className), RET 8. Needs a "Type" property (00CE4780, 008F2260) and 00469690(owner, className) != 47h, then 0046BE90 with the property's +0Ch value (the bag searched a second time). |
+| 0046BF70 | `scene_stock_register_class_stock_lists_0046bf70` | thiscall(owner, bag, className), RET 8. (1) className "AirField" (00CE5738, inline __stricmp on a 0041E870 copy) or "MotherShipGen" (00CE5728, 00425850 on a second copy): "PlaneStock %d" (00CE5718) for 1..12 and "Slot %d" (00CE56F4) for 1..NumSlots, each a type-6 sub-bag whose "Count" is non-zero; its "Type" goes to 0095C4D0 when the bag's "Hidden" byte is 0, else to 0046BE90. (2) "Shipyard" (00CE56E8): "Stock %d" for 1..20 with "Type" > 0, routed the same way. (3) "SpawnPoint" (00CE56B8): "Stock %d" from 1 in the "JapanList" sub-bag, then in "AlliedList" with the index continuing; each with "Count" != 0 queues "Type" through 0095C4D0 unless 004BCA50 reports game mode 4; the list bag may be null and is still passed to 008F2260. Keys are formatted by 00467310 into 20h-byte buffers. |
 | 0046EFB0 | `scene_database_destruct_0046efb0` | fastcall(ECX db). 0046BD10; sets +164h and +158h erased (0046B170) and their heads freed; 004683B0 on +14Ch; NativeStrings +144h, +13Ch; class map (vtable 00CE55B0, 0046B240); pending vector freed; record map erased (0046B570) and head freed; +0Ch vector freed. |
 | 0046F160 | `scene_database_construct_0046f160` | fastcall(ECX db), returns db. Head nodes from 00468260 (isnil +19h) and 004682B0 (isnil +11h); 64 buckets zeroed; +4 byte = 1; 0046AC50 inserts 44h, 5Eh, 1Dh, 47h, 3Dh into +158h and 47h, 3Dh into +164h. |
 | 0046F350 | `scene_database_create_singleton_0046f350` | cdecl. operator new 00BF681B(170h), 0046F160, store to 00E18680 (0 on allocation failure). |
@@ -103,8 +104,9 @@ Layout as constructed by 0046F160: vtable 00CE59FC; +4 byte; +8 vector of pointe
 - 0046B730 (scene reset on engine-movie stop: collects script entities, kills them, runs extra
   fixed steps, SetGameMode 8, then clears the database): 280 lines of register-mangled
   pseudocode over game-world state; mission flow is hooked in `src/game_hosts_mission_frame.cpp`.
-- 0046BF70 (register multiplayer stock, about 300 instructions) and 0046DC10 (create a hidden
-  entity at a placement, 13 callees): left for a later packet; not started.
+- 0046DC10 (create a hidden entity at a placement, 13 callees): the body builds a 70h-byte
+  descriptor on the stack and the decompiler loses its ESP accounting (`local_b8 = 0x46dc46`);
+  it needs an ESP-anchored listing pass. Not started.
 - Gameplay, belongs to cc9: 004684F0 (squadron auto-target ordnance latch helper), 00470440
   (powerup multiplier), 004704B0 / 004704E0 (hit record chain), 0047B7F0, 0047B850 (attack gate),
   0047B880, 0047B9F0 (unit class helpers).

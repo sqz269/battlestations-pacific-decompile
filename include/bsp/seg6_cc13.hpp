@@ -113,6 +113,10 @@ struct Seg6Host {
     virtual std::uint32_t scene_property_array_element_count_008ef7f0(Object property) = 0;  // fastcall
     virtual void matrix_copy_4x4_004134f0(Object dest, Object source) = 0;                  // RET 4
     virtual void sentity_init_all_00925f20(std::uint8_t flag) = 0;                          // CL
+    // 00467310 cdecl(char out[20h], const char* format, ...), one int argument at every site here.
+    virtual void format_to_buffer32_00467310(char* out, const char* format, std::int32_t value) = 0;
+    virtual void vehicle_class_stock_queue_append_0095c4d0(std::int32_t vehicle_class) = 0;  // ECX
+    virtual std::int32_t game_effective_game_mode_004bca50(Object game) = 0;                 // ECX
     virtual void writer_vcall_0c(Object writer, std::int32_t key_zero, const char* key,
                                  std::int32_t value_zero, const char* value) = 0;           // vtable +0Ch
 
@@ -197,6 +201,8 @@ void scene_stock_push_positive_counters_0046be50(Seg6Host& host, Object owner);
 void scene_stock_register_unit_class_0046be90(Seg6Host& host, Object owner, std::int32_t unit_class);
 void scene_stock_register_from_type_property_0046bf20(Seg6Host& host, Object owner, Object bag,
                                                       const char* class_name);
+void scene_stock_register_class_stock_lists_0046bf70(Seg6Host& host, Object owner, Object bag,
+                                                     const char* class_name);
 void scene_database_destruct_0046efb0(Seg6Host& host, Object database);
 Object scene_database_construct_0046f160(Seg6Host& host, Object database);
 void scene_database_create_singleton_0046f350(Seg6Host& host);

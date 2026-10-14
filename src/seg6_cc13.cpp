@@ -711,6 +711,131 @@ void scene_stock_register_from_type_property_0046bf20(Seg6Host& host, Object own
     scene_stock_register_unit_class_0046be90(host, owner, native_at<std::int32_t>(property, 0x0C));
 }
 
+namespace {
+
+const char* literal(Seg6Host& host, std::uint32_t va) { return reinterpret_cast<const char*>(host.image_address(va)); }
+
+// The common body of the "PlaneStock %d" and "Slot %d" passes (0046C07A..
+// 0046C0D8, 0046C11F..0046C180): a sub-bag property (type 6) whose "Count" is
+// non-zero routes its "Type" value by the outer bag's "Hidden" byte: 0 ->
+// 0095C4D0, otherwise 0046BE90. "Type" is read before "Count".
+void route_counted_stock(Seg6Host& host, Object owner, Object bag, const char* key) {
+    Object property = host.property_bag_find_008f2260(bag, key);
+    if (property == nullptr || u32(property, 4) != 6) return;
+    Object sub = native_ptr(property, 0x0C);
+    if (sub == nullptr) return;
+    const std::int32_t type = native_at<std::int32_t>(host.property_bag_find_008f2260(sub, literal(host, 0x00CE4780u)), 0x0C);
+    if (u32(host.property_bag_find_008f2260(sub, literal(host, 0x00CE5710u)), 0x0C) == 0) return;
+    if (native_at<std::uint8_t>(host.property_bag_find_008f2260(bag, literal(host, 0x00CE5708u)), 0x0C) == 0)
+        host.vehicle_class_stock_queue_append_0095c4d0(type);
+    else
+        scene_stock_register_unit_class_0046be90(host, owner, type);
+}
+
+// The inline NativeString built from the class name at 0046C196..0046C1F5 and
+// 0046C299..0046C2F8: resize(strlen, 1); when data is set, copy size+1 bytes
+// (the terminator too), __stricmp against the literal, release. No data, no match.
+bool class_name_is(Seg6Host& host, const char* class_name, std::uint32_t literal_va) {
+    std::uint32_t text[2] = {0, 0};
+    Object text_obj = reinterpret_cast<Object>(text);
+    std::uint32_t length = 0;
+    while (class_name[length] != '\0') ++length;
+    host.native_string_resize_0041dd40(text_obj, length, 1);
+    char* data = reinterpret_cast<char*>(native_ptr(text_obj, 4));
+    if (data == nullptr) return false;
+    const std::uint32_t size = u32(text_obj, 0);
+    host.crt_memcpy_00bf7680(data, class_name, size + 1);
+    const bool match = host.crt_stricmp_00bf7fbf(data, literal(host, literal_va)) == 0;
+    release_string_block(host, data, size);
+    return match;
+}
+
+// 0046C329..0046C3A4 and 0046C3C3..0046C439: "Stock %d" sub-bags of `list`
+// (which may be null; the image calls 008F2260 with it regardless) while each
+// is a non-null type-6 bag; when its "Count" is non-zero, its "Type" is queued
+// through 0095C4D0 unless the effective game mode is 4. Returns the next index.
+std::int32_t queue_list_stock(Seg6Host& host, Object list, std::int32_t index) {
+    for (;; ++index) {
+        char key[32];
+        host.format_to_buffer32_00467310(key, literal(host, 0x00CE56DCu), index);
+        Object property = host.property_bag_find_008f2260(list, key);
+        if (property == nullptr || u32(property, 4) != 6) return index;
+        Object sub = native_ptr(property, 0x0C);
+        if (sub == nullptr) return index;
+        if (u32(host.property_bag_find_008f2260(sub, literal(host, 0x00CE5710u)), 0x0C) == 0) continue;
+        const std::int32_t type = native_at<std::int32_t>(host.property_bag_find_008f2260(sub, literal(host, 0x00CE4780u)), 0x0C);
+        if (host.game_effective_game_mode_004bca50(host.game_00e188a8()) != 4)
+            host.vehicle_class_stock_queue_append_0095c4d0(type);
+    }
+}
+
+}  // namespace
+
+// 0046BF70, __thiscall(owner, bag, const char* className), RET 8.
+// 1. "AirField" (00CE5738; inline __stricmp on a NativeString copy, which an
+//    empty copy never matches) or "MotherShipGen" (00CE5728, 00425850 on a
+//    second copy): "PlaneStock %d" for 1..12, then "Slot %d" for 1..NumSlots.
+// 2. "Shipyard" (00CE56E8): "Stock %d" for 1..20 whose "Type" value is > 0,
+//    routed by the bag's "Hidden" byte as in 1 ("Count" is not consulted).
+// 3. "SpawnPoint" (00CE56B8): "Stock %d" from 1 in the "JapanList" bag, then
+//    on in the "AlliedList" bag with the index continuing where it stopped.
+void scene_stock_register_class_stock_lists_0046bf70(Seg6Host& host, Object owner, Object bag,
+                                                     const char* class_name) {
+    bool generator;
+    {
+        std::uint32_t first[2] = {0, 0};
+        Object first_obj = reinterpret_cast<Object>(first);
+        host.native_string_construct_0041e870(first_obj, class_name);  // 0046BF9F
+        const char* data = reinterpret_cast<const char*>(native_ptr(first_obj, 4));
+        if (data != nullptr && host.crt_stricmp_00bf7fbf(data, literal(host, 0x00CE5738u)) == 0) {
+            generator = true;
+        } else {
+            std::uint32_t second[2] = {0, 0};
+            Object second_obj = reinterpret_cast<Object>(second);
+            Object built = host.native_string_construct_0041e870(second_obj, class_name);  // 0046BFD4
+            generator = host.native_string_equals_00425850(built, literal(host, 0x00CE5728u));
+            release_native_string(host, second_obj);
+        }
+        release_native_string(host, first_obj);
+    }
+    if (generator) {
+        for (std::int32_t i = 1; i <= 12; ++i) {
+            char key[32];
+            host.format_to_buffer32_00467310(key, literal(host, 0x00CE5718u), i);
+            route_counted_stock(host, owner, bag, key);
+        }
+        const std::int32_t slots = native_at<std::int32_t>(host.property_bag_find_008f2260(bag, literal(host, 0x00CE56FCu)), 0x0C);
+        for (std::int32_t i = 0; i < slots; ++i) {
+            char key[32];
+            host.format_to_buffer32_00467310(key, literal(host, 0x00CE56F4u), i + 1);
+            route_counted_stock(host, owner, bag, key);
+        }
+    }
+    if (class_name_is(host, class_name, 0x00CE56E8u)) {
+        for (std::int32_t i = 1; i <= 20; ++i) {
+            char key[32];
+            host.format_to_buffer32_00467310(key, literal(host, 0x00CE56DCu), i);
+            Object property = host.property_bag_find_008f2260(bag, key);
+            if (property == nullptr || u32(property, 4) != 6) continue;
+            Object sub = native_ptr(property, 0x0C);
+            if (sub == nullptr) continue;
+            if (native_at<std::int32_t>(host.property_bag_find_008f2260(sub, literal(host, 0x00CE4780u)), 0x0C) <= 0) continue;
+            const std::int32_t type = native_at<std::int32_t>(host.property_bag_find_008f2260(sub, literal(host, 0x00CE4780u)), 0x0C);
+            if (native_at<std::uint8_t>(host.property_bag_find_008f2260(bag, literal(host, 0x00CE5708u)), 0x0C) == 0)
+                host.vehicle_class_stock_queue_append_0095c4d0(type);
+            else
+                scene_stock_register_unit_class_0046be90(host, owner, type);
+        }
+    }
+    if (!class_name_is(host, class_name, 0x00CE56B8u)) return;
+    Object japan = host.property_bag_find_008f2260(bag, literal(host, 0x00CE56D0u));
+    Object japan_list = (japan != nullptr && u32(japan, 4) == 6) ? native_ptr(japan, 0x0C) : nullptr;
+    const std::int32_t next = queue_list_stock(host, japan_list, 1);
+    Object allied = host.property_bag_find_008f2260(bag, literal(host, 0x00CE56C4u));
+    Object allied_list = (allied != nullptr && u32(allied, 4) == 6) ? native_ptr(allied, 0x0C) : nullptr;
+    queue_list_stock(host, allied_list, next);
+}
+
 // 0046EFB0, __fastcall(ECX database), RET: the destructor body of vtable
 // 00CE59FC slot 0 (CG_scalar_deleting_dtor_0046F330).
 void scene_database_destruct_0046efb0(Seg6Host& host, Object database) {
