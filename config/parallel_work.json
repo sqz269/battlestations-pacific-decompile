@@ -4477,7 +4477,7 @@
       "id": "native_renderer_recreate_device_actual1",
       "packet": "native_renderer_recreate_device_actual1",
       "done": false,
-      "state": "blocked_on_named_and_semantic_actual_storage_dependencies",
+      "state": "integrated_complete_normal_source_bounded_original_parent_fixture_actual_application_domain_remaining",
       "worker": null,
       "function_addresses": [
         "00b29670"
@@ -4498,7 +4498,26 @@
         "Actual XLive thunk/provider integration and CRT returning invalid-parameter contract"
       ],
       "discovery_evidence": "reports/native_renderer_recreate_device_next.json",
-      "current_readiness_report": "reports/native_renderer_reset_readiness_5.json"
+      "current_readiness_report": "reports/cc12_current_renderer_readiness_reconciliation.json",
+      "current_source_coverage": {
+        "function": "recreate_native_renderer_device_00b29670",
+        "source": "src/native_renderer_device_recreation_actual.cpp",
+        "header": "include/bsp/native_renderer_device_recreation_actual.hpp",
+        "evidence": "reports/native_renderer_device_recreation_actual.json",
+        "exact_combined_validation": "reports/native_renderer_device_recreation_aw_validation.json",
+        "full_original_parent_bytes": 1191,
+        "source_integrated": true,
+        "normal_body_fixture_checked": true,
+        "application_bindings": "src/game_native_renderer_application.cpp"
+      },
+      "remaining_contract_boundaries": [
+        "General native FH3/SEH/private-frame ABI identity and arbitrary owner/profile/concurrent mutation domains remain unproved.",
+        "Application startup/reset/normal drain validation does not prove nonempty render queue or whole gameplay/visual parity.",
+        "Current packet dependencies describe historical implementation blockers; concrete normal Source already exists and must not be reconstructed again."
+      ],
+      "current_source_packet_references": [
+        "orch3_native_renderer_device_recreation_actual_aw"
+      ]
     },
     {
       "id": "orch4_scheduled_voice_c",
@@ -5937,7 +5956,7 @@
       "packet": "native_vertex_stream_owner_discovery",
       "worker": "main",
       "done": false,
-      "state": "full_binding_owner_base_and_reset_native_contracts_captured_base_retained_owner_4C_unresolved",
+      "state": "normal_actual_storage_owner_bodies_integrated_positive_retained_4c_runtime_profile_still_unresolved",
       "function_addresses": [],
       "code_ownership": [
         "docs/NATIVE_VERTEX_STREAM_OWNER_DISCOVERY.md",
@@ -5946,7 +5965,22 @@
       "source_ready": false,
       "evidence": "reports/native_vertex_stream_owner_discovery.json",
       "scope": "24freshspans2159bytes; fullB24840/B23710/B4B5D0/B4BF10/B62010/B61E20/B24BF0. Trace actualbase4C retainedowner before implementation. Originalreset repeats streamzero4times.",
-      "current_readiness_report": "reports/native_renderer_reset_readiness_5.json"
+      "current_readiness_report": "reports/cc12_current_renderer_readiness_reconciliation.json",
+      "current_source_coverage": {
+        "source": "src/native_logical_vertex_owner.cpp",
+        "header": "include/bsp/native_logical_vertex_owner.hpp",
+        "evidence": "reports/native_logical_vertex_owner.json",
+        "complete_normal_body_addresses": [
+          "00b287c0",
+          "00b62010"
+        ],
+        "raw_current_04_release_sequence_reconstructed": true,
+        "positive_retained_4c_runtime_writer_or_profile_proved": false
+      },
+      "remaining_contract_boundaries": [
+        "Trace an actual nonnull logical-stream+4C producer, pointee/current profile and final-zero terminal. Existing raw release sequence is not positive runtime type evidence.",
+        "Existing geometry/factory/adoption exclusions must not be repeated as a new source-ready finding."
+      ]
     },
     {
       "id": "orch4_config_singleton_i",
@@ -6714,7 +6748,7 @@
     {
       "id": "native_renderer_binding_reset1",
       "packet": "native_renderer_binding_reset1",
-      "state": "discovery_verified_not_ready_unresolved_logical_retained_4c_terminal",
+      "state": "integrated_complete_actual_storage_binding_reset_bounded_original_fixture_general_owner_profile_remaining",
       "done": false,
       "source_ready": false,
       "worker": "main",
@@ -6730,7 +6764,25 @@
       ],
       "scope": "Full reset/provider/FH3 discovery only. General old logical owner final-zero terminal remains unresolved.",
       "evidence": "reports/native_renderer_binding_reset_audit.json",
-      "current_readiness_report": "reports/native_renderer_reset_readiness_5.json"
+      "current_readiness_report": "reports/cc12_current_renderer_readiness_reconciliation.json",
+      "current_source_coverage": {
+        "function": "reset_native_renderer_bindings_00b24bf0",
+        "source": "src/native_renderer_vertex_binding.cpp",
+        "header": "include/bsp/native_renderer_vertex_binding.hpp",
+        "evidence": "reports/native_renderer_vertex_binding.json",
+        "full_original_parent_bytes": 453,
+        "source_integrated": true,
+        "normal_body_fixture_checked": true
+      },
+      "remaining_contract_boundaries": [
+        "Native setter/reset sequence is reconstructed within the documented D5F0A8/D61D6C/D61E34/D61E7C concrete domain.",
+        "A positive nonnull logical-stream+4C runtime writer/pointee profile and arbitrary current final-zero lifetime closure remain unproved.",
+        "Original ABI/FH3/SEH/general concurrency/gameplay are not established by new C++ API and bounded fixtures."
+      ],
+      "current_source_packet_references": [
+        "orch3_native_renderer_vertex_binding_au",
+        "orch3_native_renderer_cache_clear_av"
+      ]
     },
     {
       "id": "native_logical_vertex_retained_4c_writers12",
