@@ -11,6 +11,8 @@ symbols; address and raw storage behavior are the evidence contract.
 | Source entry | Original coverage | Contract |
 | --- | --- | --- |
 | `construct_native_unit_owner_scene_base_00925ce0` | Complete normal `00925CE0..00925EF3`, 532 bytes | Actual observer/weak prefixes, both x87 matrix copies, mixed-width fields and raw strings; five Source cleanup owners with qualified exception semantics |
+| `restore_native_unit_owner_scene_destructor_profiles_009257a7` | Qualified `009257A7..009257B9`, 19 bytes | Three ordered numeric profile writes before life-reference release and child deletion |
+| `finish_native_unit_owner_scene_retirement_009257f5` | Qualified `009257F5..009258B0`, 188 bytes | After actual life-reference release and child loop: concrete world/list unlink, pooled names, weak, callback and observed retirement; no root free |
 | `construct_native_unit_owner_first_list_0077ef27` | Qualified `0077EF27..0077EFA3` business effects | After actual base and recon-array success: bind three owner/index pairs, install numeric profiles, clear selected fields, allocate the real 0Ch sentinel and publish +29C/+2A0 |
 | `construct_native_unit_owner_second_list_and_fields_0077efa9` | Qualified `0077EFA9..0077F053` business effects | After first-list success: allocate the real 18h sentinel, publish +2A8/+2AC, initialize observer/physical fields and capture actual CE4ADC bits once |
 | `tidy_native_unit_owner_peer_list_0077b980` | Complete normal `0077B980..0077B9C7`, 72 bytes | Reset head links/count, free each node, free sentinel, zero header+4 |
@@ -243,10 +245,50 @@ identity. No failure was injected, and cleanup throwing during unwind remains
 unqualified. `928630` registry selection, full requested ID, callable +148
 dispatch, pending-init publication and enclosing lifetime remain separate.
 
+## Scene-base retirement continuation
+
+The actual scene-base destructor is `00925780..009258C2` (323 bytes).
+`00928630` is the GameEntity **constructor**, not this destructor. It remains
+queued independently. This packet supplies the exact 19-byte profile prefix
+and 188-byte normal continuation after the child loop; **the whole destructor
+and complete scene-base lifetime remain incomplete**.
+
+The intervening call `009257CF -> 00740270` always reaches the actual
+E1AEA0 life-reference registry, even when root+168 is null. Both 740270 and
+its 7400C0 array-erasure dependency remain held by `argon-v2-seg41` and are
+queued as `cc12_unit_receiver_life_ref_retirement`. No null default or no-op
+release replaces them. The following loop reloads current child count +50
+and head +48 and calls the real child's current scalar slot0 with flag1.
+Its concrete child dispatch also remains required; no callback substitutes it.
+
+The admitted continuation unconditionally reads actual root.world +30 and
+world+4 before concrete 903F30 unlink. It then reads current parent +3C.
+A parent uses actual parent+48 for 924710, then clears +3C. Parentless flow
+reloads world, uses the header pointed to by world+8, and only a nonzero +B8
+reloads world again to remove root from the distinct embedded world+0C
+count/head/tail list through real 4845A0. The parented arm does not remove
+from that unit list. No world or hierarchy storage is synthesized.
+
+Normal cleanup then returns name +15C, name +154, destroys actual weak +24,
+callback +10, and observed +0, in that order. The raw string helpers capture
+the original data/length before the actual pool getter; headers remain
+unchanged. The same established atomic +28 and handle identity remain in
+use. Root allocation, name header bits and weak-handle field are retained.
+
+Handler CA6C72 selects FuncInfo DD9E98 with five entries at DD9EBC.
+Its reverse cleanup owners are string +15C (CA6C64), string +154 (CA6C56),
+weak +24 (CA6C2F), callback +10 (CA6C08), and observed root (CA6C00).
+Five Source guards enter with those owners and disarm each member before its
+normal destructor. The emitted code preserves ownership at throwing calls;
+host guard-bit optimization across nonthrowing unlinks is not Native fault
+timing. The Native nullable adjustment in two funclets does not relax this
+entry's requirement for a real nonnull constructed root. Failure execution,
+cleanup throwing and Original FH3/SEH/frame behavior remain unqualified.
+
 ## Validation and integration
 
 Strict MSVC Win32 `/std:c++20 /EHsc /O2 /MD /W4 /WX /fp:strict` compilation
-passed. All eighteen public Source schedules, the shared count helper and the
+passed. All twenty public Source schedules, the shared count helper and the
 recon and scene-base Source unwind guards were
 inspected for the ordered
 mixed-width writes, initial-word capture, current-head reloads and real free
@@ -326,11 +368,26 @@ masked signaling-NaN stress pattern compare x87 results/status. Result:
 **30 checks, zero failures**. Exception execution, the normally skipped memcpy
 arm, unmasked x87 faults and Native entry/frame ABI remain untested.
 
-After syncing pushed main 9228D13FE, the worker's `scripts/build.ps1` Release
+The retirement packet audits all 323 parent bytes and eight EH records against
+live Ghidra and the installed PE. Its fixture executes only the copied 19-byte
+profile prefix and 188-byte continuation. Real raw unlink/list/pool/weak/
+observer Source children are bound; the held release and child loop are not
+executed. The same 170h root with established atomic +28 and actual caller-owned
+World/parent/neighbor/list storage is reused for both comparisons. Parented,
+parentless-listed and parentless-unlisted cases compare complete prefix and
+post-retirement bytes, both chain topologies, conditional first-match unit
+removal, preserved pooled-name headers and returns, retained external weak
+reference, populated cross-endpoint edges and dispatch invalidation, and
+balanced recursive locks. Only allocation pointer values are normalized;
+root, World, parent, neighbor and endpoint identities are retained. Result:
+**77 checks, zero failures**. Full constructor/destructor lifetime and Native
+exception or child-dispatch execution are not established by this fixture.
+
+After syncing pushed main 90BD7AFDC, the worker's `scripts/build.ps1` Release
 build includes the permanently registered TU and passed all three configured
 tests. The new object is also separately strict-compiled and directly linked
 to the freshly built core, Lua and zlib libraries and the application's Windows
 libraries for the manifested comparison. Earlier fixtures remain preserved in
-immutable 088808EDA receipts and were not rerun for this additive entry. No
+immutable D318001E7 receipts and were not rerun for these additive entries. No
 CMake edit was needed. See `reports/native_unit_owner_entity.json` for exact
 validation status and pins.

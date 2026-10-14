@@ -26,6 +26,23 @@ void* construct_native_unit_owner_scene_base_00925ce0(
     NativeObserverLifetime& observers, NativeStringRawPoolContext& strings,
     const volatile std::uint32_t& actual_one_bits_00d7a24c);
 
+// Qualified 009257A7..009257B9 destructor entry stores, before the held
+// 740270 life-reference release and actual child scalar-delete loop. Stamp
+// only the three numeric profiles; no release, child dispatch or ownership
+// transition is supplied here. These words are not callable Source tables.
+void restore_native_unit_owner_scene_destructor_profiles_009257a7(void* actual_root) noexcept;
+
+// Qualified 009257F5..009258B0 normal continuation, ONLY after the real
+// life-reference release and complete child loop. The same actual170h root,
+// live World/update/sibling/list storage and atomic+28 lifetime are required.
+// Real raw unlinks precede names+15C/+154, weak+24, callback+10 and observed+0
+// retirement. Five Source guards retain Native cleanup ownership at throwing
+// call boundaries; Native FH3/SEH and cleanup-throw behavior remain unproven.
+// This never frees the root or supplies the missing release/child dispatch.
+void finish_native_unit_owner_scene_retirement_009257f5(
+    void* actual_root_after_children, NativeWeakOwnerDomain& weak,
+    NativeObserverLifetime& observers, NativeStringRawPoolContext& strings);
+
 // Qualified normal continuation 0077EF27..0077EFA3 of 0077EED0.
 // Requires the genuine containing allocation, its original factory preimage,
 // successful 00928630(root, 1, unchanged full flag), and all three actual 34h
