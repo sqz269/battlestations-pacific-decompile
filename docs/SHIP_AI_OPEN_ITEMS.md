@@ -17603,3 +17603,16 @@ wins hold. ON** (this commit), with 233's USN06 pair.
 **JM02** (235 item 4): not a host gap. `prcpijn_02_force_z.scn` registers 34 entities, 17 held back by `Hidden`;
 `prcpjm02.lua` (2024-07-13) takes Force Z with `luaFindHidden("HMS Prince of Wales")` / `("HMS Repulse")` and shows
 them only as the player's search progresses, so an idle run has planes only and no ship motion to run.
+
+## 239. D3/D4 pairs; `kOverrideHpHealthZeroBound` and `kShipDeathMessageBound` ON (cc9-ships48, 2026-10-13)
+
+Same-tree exports of ceaab77a9 (both switches flipped together), reference env:
+| row | OFF | ON |
+| --- | --- | --- |
+| USN02 `s36_u2_p7`, 16000 | completed 200.06 s | identical; 9Ah 0, no_breakup_nodes 15, draws 0 |
+| JM08 `jm08_p6_j8_f`, 110000 | completed 2181.70 s | identical; 9Ah 8, no_breakup_nodes 14, breakup draws 6, 98h 2 (USTroopTransport 05 at 692.40 s, 02 at 968.74 s), kamikaze removals 0; OverrideHP kills 0 |
+Logs `local\s48_dx{off,on}_{u2,j8}.log`, guard logged on all. 41 of this installation's 239 ship models
+(`models\ships`) carry both `front` and `back` strings; the US cruisers and destroyers of USN02 have none. The
+breakup draw is keyed under `BSP_GUNNERY_RNG_STREAMS=1`, so the reference rows cannot move; without that env it
+consumes the shared stream as the image does. **Mechanism matches, gameplay identical: both ON.** No Kaiten or
+Kamikaze Boat died on these rows (the removal is unexercised).

@@ -1282,7 +1282,7 @@ constexpr bool kLandMasterDamageBound = false;
 //    below 0 destroys the unit (docs/CC13_VER_5.md D3). True: the host's health-zero
 //    test follows the write. False: the write never kills. SetHP 008C1790 is unbound.
 //    Packet cc9_override_hp_health_zero.
-constexpr bool kOverrideHpHealthZeroBound = false;
+constexpr bool kOverrideHpHealthZeroBound = true;  // ON: faithful, no reach (SHIP_AI 239)
 //  * kShipDeathMessageBound: the ship's vtable[1B0h] 00827A90 past 00958A30's destroy
 //    (00827AB0..00827B77, docs/CC13_VER_5.md D4). Mass (class+B0h) below 100.0
 //    ([00D7A220]) sends 9Ah: 00814560 detaches every live part (00935C70) and, for a
@@ -1293,7 +1293,7 @@ constexpr bool kOverrideHpHealthZeroBound = false;
 //    labelled: this installation's shipglobals.lua:496 value 0.3) sends 98h, the
 //    breakup (00761310, presentation; recorded). LABELLED: run once, at the host's
 //    health-zero kill. False: no message and no draw. Packet cc9_ship_death_message.
-constexpr bool kShipDeathMessageBound = false;
+constexpr bool kShipDeathMessageBound = true;  // ON: USN02, JM08 pairs identical (SHIP_AI 239)
 constexpr float kWreckChanceInstalled = 0.3f;
 //  * kPlaneBlastElementEntriesBound: a burst's distance to a PLANE is taken per
 //    GeomMesh element, as kBlastElementEntriesBound does for a ship. The image's
@@ -12575,7 +12575,8 @@ void GameGunneryHost::Impl::ship_death_message_00827ab0(std::size_t victim) {
 void GameGunneryHost::Impl::build_land_masters_00744a20() {
     if (land_masters_built) return;
     land_masters_built = true;
-    land_master_738.assign(unit_state.size(), units.count());
+    // No master: an index no unit takes (a unit created later takes units.count()).
+    land_master_738.assign(unit_state.size(), static_cast<std::size_t>(-1));
     land_master_is_airfield.assign(unit_state.size(), false);
     const auto adopt = [&](std::size_t master, const std::string& object, bool airfield) {
         const std::size_t section = unit_by_name(object);
