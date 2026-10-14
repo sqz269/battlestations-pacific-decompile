@@ -230,7 +230,7 @@ inline constexpr bool kUnitHealthFractionBound = true;
 // count as 0. True: a fused squadron slot answers that average over the registry record's
 // live member_units and wing_count (squadron_average_health_007edc30). False: the fused
 // slot's own row (its wing-0 plane).
-inline constexpr bool kSquadronAverageHealthBound = false;
+inline constexpr bool kSquadronAverageHealthBound = true;   // ON: SQUADRON_LAND_TASK 5he.3
 
 // Packet cc9_submarine_depth_level (docs/SUBMARINE_MODEL.md section 11).
 // True: the Lua native GetSubmarineDepthLevel (00894100) pushes the unit's
