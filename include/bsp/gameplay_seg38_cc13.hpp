@@ -36,6 +36,8 @@
 //   the last member instead of the host's choice; a dead target clears later
 //   queued slots that the host keeps.
 
+#include "bsp/object_handle_resolvers.hpp"
+
 #include <array>
 #include <cstdint>
 #include <functional>
@@ -549,16 +551,13 @@ int nearest_unit_index_0071db90(const Vec3f& pos, const std::vector<Vec3f>& unit
 
 // The entity handle tables at 00F89A0C..00F89AA8: index < [00F89A10] reads the
 // first table at (index - [00F89A0C]), else the second at (index - [00F89A60]),
-// each 10h-byte entry's +0Ch dword. 00720FA0 does this for msg+20h; 00720FE0
-// answers null for index 0 first.
-struct EntityHandleRoute {
-    int table = 0;    // 0 = [00F89A54], 1 = [00F89AA8]
-    int entry = 0;
-};
-EntityHandleRoute entity_handle_route_00720fa0(std::uint16_t index, int split_00f89a10,
-                                               int first_base_00f89a0c, int second_base_00f89a60) noexcept;
-std::optional<EntityHandleRoute> entity_handle_route_nonzero_00720fe0(
-    std::uint16_t index, int split_00f89a10, int first_base_00f89a0c, int second_base_00f89a60) noexcept;
+// each 10h-byte entry's +0Ch dword, which both functions return in EAX.
+// 00720FA0 does this for the word at msg+20h; 00720FE0 answers null for a zero
+// word first. Native __fastcall(ECX=msg), plain RET; `index_20` is word
+// [msg+20h], and `tables` aliases the live globals (signed split compare,
+// unchecked entry read, as in the image).
+void* entity_from_message_00720fa0(std::uint16_t index_20, const ObjectHandleTables& tables) noexcept;
+void* entity_from_message_nonzero_00720fe0(std::uint16_t index_20, const ObjectHandleTables& tables) noexcept;
 
 // The wire descriptor of one command (0071Exxx messages): the class ordinal
 // (class+4h), the entity's network index and an optional point.

@@ -941,3 +941,41 @@ diffs `local\p8pd_*`. Rows USN01 `usn01_p8_u1_c`, USN12 `s38_u12_p2`, LOMP10 `p3
   passes -1 (game_hosts_units.cpp, `din.spin_side_800 = -1`): 007CFDB4 sets the side only when a hull segment of
   the plane is hit, and the host has no per-segment plane hits. Open for the gunnery/plane-damage lane.
 - **Both flipped ON** by verdict (faithful, no win lost) in the commit that adds this note.
+
+**USN04 V1 pair (section 26 step 4, CC13_GPR_48 9).** No order file is needed: with no orders, 45000 frames at
+0.0222 s and `BSP_FRAME_JITTER 20,3` (reference env) the mission reaches phase 2 ("blackout callback luaMoveToPh2
+ran"). At 0.05 s frames it does not: the phase-1 exit re-calls `Blackout(true, "luaMoveToPh2", 3)` on every Think,
+60 frames (3.0 s) apart, and 005B9BA0 re-arms +C8h to 3.0001 s on each call in the image as in the host
+(docs/MISSION_BLACKOUT.md), so the fade never completes. V1 OFF `local\p8_v1off` (dc07a0286 with
+`kPlaneSpeedFloorBound` false, exe 2D59608AE80E, `local\p8u4_v1off.log`) against V1 ON `local\p8_off`
+(`local\p8u4_n.log`): carrier-squadron deaths with no killer (`local\p8_crash.py`) **46 OFF (Zuiho 40, Yorktown 6,
+at 3-20 m from 277 s on) and 0 ON**; plane water contacts 61 -> 36; shots 15319 -> 25374. V1 is confirmed as the
+fix for the climb-out crashes cc13-ver17 found. Neither side ends the mission in 1000 s.
+
+## 28. C2, the ctl+30h velocity low-pass, bound OFF (cc9-physics8, 2026-10-14)
+
+Packet cc9_plane_velocity_lowpass, switch `kPlaneVelocityLowpassBound` in `src/game_hosts_units.cpp`, committed OFF.
+
+- **Producer, 007DC743-007DC80B** (listing re-read; the cc13 model `velocity_lowpass_007dc762`): with `step < 0.25f`
+  (00CE3868, JB), `ctl+30h = ((0.25 - step) * ctl+30h + step * ctl+18h) * 4.0` (doubles 00D7A348, 00D7A328, every
+  product and sum stored as a float), else `ctl+18h`. ctl+18h is the relative velocity, as the host's
+  `plane_world_velocity` is. Other writers (disp-0x30 store census over 007D7000-007DE000): 007DB1F0 (from
+  `BSP_Plane_ApplyControlStateMessage`) and 007DB2C0 (spawn: `ChooseSpawnFlightState`, `PlaceOnLaunchSpotLocked`,
+  `ReadPropertyBag`) copy ctl+18h into it; 007D9CE0 copies it at a re-parent; 007D8430 zeroes it.
+- **Readers** (unit+AE0h = ctl+30h, disp32 census `E0 0A 00 00`):
+  - 007C18B0 (the attitude refresh): when `|ctl+18h| > 0.1` (double 00D7A3A0), unit+C7Ch = atan2(v.y, |v.xz|) and
+    **unit+C84h = atan2(lp.y, |lp.xz|)** (each horizontal length 0 unless its square exceeds 1e-10, 00CE3820); then
+    C80h and C88h are their rates. Pitch mode 2 holds C84h (0099DD0A); the host used the live velocity's angle.
+  - 0099DA97-0099DAC8 (throttle): `error -= (unit+B1Ch - |unit+AE0h|) * 20.0 (00CE3D88) * pending`. unit+B1Ch is
+    ctl+6Ch, which 007D8020 (`RefreshBodyFrame`/`BodyToWorldVelocity`) sets to `|ctl+18h|` (007D807C). The host took
+    the term as 0 because neither field has a literal-displacement writer; both are written through the ctl base.
+  - 0099D51A-0099D593: `|B1Ch - |AE0h||` into [ESP+48h] of the planner. Not carried (its consumer is unread).
+- Host: `plane_velocity_lp_30` filtered after the integrate, copied at both re-parent sites; C84h in
+  `refresh_attitude_007c1900`; the two readers. SUBSTITUTION: the filter seeds from the velocity at a slot's first
+  core step instead of at spawn and at 007DB1F0.
+
+**Predictions (before any run).** OFF: counters 0, gameplay identical to main. ON: `steps` on every core step;
+`c84_reads` wherever a plane holds pitch mode 2 (torpedo runs, USN01/PRCP01 more than USN12); corrections on every
+throttle tick, small in steady flight (|v| - |lp| is about 4*dt*accel, so 20x that times pending stays well under the
+0.83 dead band) and larger in dives and pull-outs. Expected verdict 3 on plane missions (throttle and torpedo-run
+pitch move, RNG re-rolls), with torpedo-run timings shifting by a few frames.

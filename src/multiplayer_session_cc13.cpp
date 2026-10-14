@@ -1512,19 +1512,26 @@ void apply_net_table_sync_text_00780b90(const NetTableSyncText& text, NetTableSy
     host.lua_do_buffer_00b65ec0(std::string(data, text.data_2c != nullptr ? text.length_28 : 0));
 }
 
-NetTableCreateMessage build_net_table_create_00780a70(const void* entity,
-                                                      std::int32_t local_player) noexcept {
+NetTableCreateMessage build_net_table_create_00780a70(const net_cc13::EntityCreateSource& entity,
+                                                      net_cc13::EntityCreateHost& entity_host,
+                                                      std::int32_t local_player) {
     NetTableCreateMessage m;
-    m.entity = entity;               // 00766FC0(DFh, 0, entity, 0)
-    m.byte_c4 = 0;                   // 00780A8C
-    m.local_player_10c = local_player;  // 00780A9F, game+18C8h
+    // 00780A75..00780A81: PUSH 0 (with_name), entity, 0 (word), DFh; CALL 00766FC0.
+    m.base = net_cc13::build_entity_create_00766fc0(kNetTableCreateMessageType, 0, entity, false,
+                                                     entity_host);
+    m.vtable = kNetTableCreateMessageVtable;                    // 00780A86
+    m.base.byte_c4 = 0;                                         // 00780A8C
+    m.base.word_10c = static_cast<std::uint32_t>(local_player);  // 00780A9F, game+18C8h
     return m;
 }
 
-void send_net_table_create_00780ae0(const void* entity, void* peer, std::int32_t local_player,
-                                    NetTableCreateHost& host) {
-    host.send_to_peer_00779fc0(peer, build_net_table_create_00780a70(entity, local_player));
-}
+void send_net_table_create_00780ae0(const void* entity, const net_cc13::EntityCreateSource& source,
+                                    net_cc13::EntityCreateHost& entity_host, void* peer,
+                                    std::int32_t local_player, NetTableCreateHost& host) {
+    // 00780AFC..00780B2C: the same construction inline on the stack.
+    NetTableCreateMessage m = build_net_table_create_00780a70(source, entity_host, local_player);
+    host.send_to_peer_00779fc0(entity, peer, m);  // 00780B4D
+}   // 00780B69: 007668E0 = the base's string/vector destructors
 
 void* create_net_table_entity_007813b0(std::uint16_t id_1c, NetTableCreateHost& host) {
     void* object = host.allocate_zeroed_314();

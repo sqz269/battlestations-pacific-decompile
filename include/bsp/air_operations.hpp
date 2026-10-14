@@ -905,7 +905,7 @@ bool air_ops_queue_slot_006ca640(AirOpsDeck& deck, int slot_index) noexcept;
 // (0067480E 006BF310, 0067481B JLE 00674B46), so an exhausted deck no longer
 // gets the class and a count of 0 written into the slot. False: the stock is
 // never consumed and 006C0F00 runs first (the 0 count is refused after it).
-inline constexpr bool kAirOpsQueueConsumeStockBound = false;
+inline constexpr bool kAirOpsQueueConsumeStockBound = true;  // ON: SQUADRON_LAND_TASK 5ha
 
 // Packet cc13-fix7 D2. True: 006CC690 with block+38h set returns the count to
 // the stock (006CA770 at 006CC71F) and queues the slot (006CA640 at 006CC727)
@@ -913,7 +913,7 @@ inline constexpr bool kAirOpsQueueConsumeStockBound = false;
 // the brake clears. The queue arm consumes as the image's does, whatever
 // kAirOpsQueueConsumeStockBound says, so the stock nets to zero. False: the
 // slot is only reported `queued` and is never launched.
-inline constexpr bool kAirOpsBusyArmQueueLaunchBound = false;
+inline constexpr bool kAirOpsBusyArmQueueLaunchBound = true;  // ON: SQUADRON_LAND_TASK 5ha
 
 // Packet cc13-fix7 A (docs/CC13_VER_18.md section 2). The image ties a deck to
 // one mother-ship instance: 007593D0 runs 006CADD0 per instance, LaunchSquadron
