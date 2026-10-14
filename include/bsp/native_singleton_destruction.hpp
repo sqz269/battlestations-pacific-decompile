@@ -27,6 +27,7 @@ struct NativeRenderResourcesLifetimeContext;
 struct NativeRenderEntryCacheContext;
 struct NativeRenderQueueDestructionContext;
 struct NativeRenderJobPublicationContext;
+struct NativeFixedStepJobDescriptorsActual;
 class XLiveOwnerAllocation;
 struct NativeInputBackendOwnerContext;
 struct NativeInputActionOwnerContext;
@@ -238,6 +239,10 @@ struct NativeSingletonDeletionBindings {
     // independently observes CURRENT F8C274. Bind before any registration and
     // retain the same actual manager/publication/data domain through drain.
     NativeParticleModelManagerAccess* particle_manager{};
+    // Four fixed-step descriptor SECONDARIES borrow the SAME actual AA0
+    // manager/publication domain through its completed raw drain. Append to
+    // preserve the established offsets of all existing dispatch bindings.
+    NativeFixedStepJobDescriptorsActual* fixed_step_jobs{};
 };
 static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);
 static_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);
@@ -266,7 +271,8 @@ static_assert(offsetof(NativeSingletonDeletionBindings, global_configuration) ==
 static_assert(offsetof(NativeSingletonDeletionBindings, actual_pending_registry_publication_00f878cc) == 184);
 static_assert(offsetof(NativeSingletonDeletionBindings, allocation_stats) == 188);
 static_assert(offsetof(NativeSingletonDeletionBindings, particle_manager) == 192);
-static_assert(sizeof(NativeSingletonDeletionBindings) == 196);
+static_assert(offsetof(NativeSingletonDeletionBindings, fixed_step_jobs) == 196);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 200);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting

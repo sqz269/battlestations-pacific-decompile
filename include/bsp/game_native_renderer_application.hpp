@@ -14,6 +14,7 @@ class NativeXLiveDeviceAdapter;
 class XLiveLibrary;
 struct NativeRendererPresentObservation;
 struct NativeTextureCacheContext;
+struct NativeEffectRegistryDestructionContext;
 class NativeRenderActualOwnerRegistry;
 struct NativeCameraEnvironment;
 struct NativeNodeRawConstants;
@@ -95,6 +96,10 @@ public:
     // release ordinary returned references before the shared renderer drain;
     // its own fallback reference follows the native cache cleanup schedule.
     NativeTextureCacheContext& texture_cache() noexcept;
+    // The SAME existing renderer focus publication. Its receiver aliases the
+    // actual window/focus cells at +30/+41; opaque bytes are not a whole native
+    // platform. Borrow only for the established load-pump/focus leaf domain.
+    const void* const volatile& loading_platform_focus_publication();
     NativeRenderActualOwnerRegistry& actual_owners() noexcept;
     // Borrowed until renderer teardown. Callers retain their actual grid
     // storage, operation records and explicit descriptor preimages, and must
@@ -142,6 +147,10 @@ public:
     // native load is created. Keep this application and all retained failed
     // frames alive until native owners, bindings and borrowed uses are retired.
     GameNativeMaterialEffectOwners material_effect_owners();
+    // Ready-only SAME renderer effect-record/string/array/profile/retirement
+    // domain. Borrowing performs no load or cache mutation. Keep this renderer
+    // and any new loading composition alive through the actual native drain.
+    NativeEffectRegistryDestructionContext& effect_registry_domain();
     // Full B43B00 over a caller-owned initialized110h descriptor. The caller
     // keeps descriptor/name/operation alive and retires descriptor children
     // before this graph. Unknown native stack inputs are never synthesized.

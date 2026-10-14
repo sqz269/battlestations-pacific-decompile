@@ -1057,3 +1057,146 @@ Open, in order:
   USN15 90000, JM08 110000, JM06 120000, ESMP08 140000, USNOS 200000. USN04 V1 pair: 45000 at 0.0222 s.
 - Keeper notes not yet re-timed: kTorpedoBoatRudderTorqueBound (BSM01 833.92 s, JM08 1907.44 s by ships48) and
   kLandMasterDamageBound 1f3bf3d62 (check rows with land targets).
+
+## 30. The third C2 reader has a consumer (cc9-physics9, 2026-10-14; corrects section 28)
+
+Section 28 recorded 0099D51A-0099D593 (`|vt[38h]() - |ctl+30h||`, the C2 low-pass velocity) as a dead store. It is
+not. Evidence (Ghidra listing of 0099D300, `bsp.py ghidra disasm 0099d300`; decompile of the same):
+- Stack depth. 0099D300 `SUB ESP,58h; PUSH ESI; PUSH EDI`; the early return pops them at 0099D3BD-0099D3BF; the main
+  path pushes EBX and EBP at 0099D3DA/0099D3DB and pops them at 0099EA66/0099EA67, before `POP EDI` (0099EB94),
+  `POP ESI` (0099EBA5) and `ADD ESP,58h` (0099EBA6). So `[ESP+48h]` at 0099D54B..0099D593 (EBX/EBP pushed) and
+  `[ESP+40h]` at 0099EB54 (popped) are the same slot, entry-20h. Ghidra's decompiler merges them as `fStack_20`:
+  written at 0099D54B (vt[38h]), 0099D564/0099D593 (the absolute difference) and read once, at 0099EB54.
+- The consumer, 0099EB28-0099EB81, at the end of every think: when the two earlier small-value tests pass
+  (plan+280h/284h by plan+288h, plan+298h/29Ch by plan+2A0h, each `< [00D1F3C8]`), 0099B260(plan+28Ch) through
+  0042BE90 is `< [00D1F3C8]` and `fStack_20 < [00CE3958]` (2.0), it writes
+  `unit+520h = ([[00E188A8]+5FCh]+908h == unit+54h)` (0099EB5B-0099EB73) and `plan+2ECh = [00E0E2EC]` (0.24,
+  0099EB79/0099EB81).
+- Reach. 0099D431 clears unit+520h at the head of the same think, so for any plane that is not the player record's
+  selected unit the tail writes the 0 again: no change for AI planes. For the selected plane, a settled flight
+  (speed within 2 m/s of the filtered velocity, the other terms small) publishes unit+520h = 1, which the host
+  reads as "not an AI plane" (game_hosts_units.cpp: 0099C270's fast path, 00953D84, 009A17F8). plan+2ECh is
+  rewritten at the next think's head (0099D446, or [00E0E2F4] at 0099D466 when unit+900h is 4 or 5) before this
+  function reads it; a reader outside 0099D300 between thinks was not searched.
+- Host: not carried (no host site writes unit+520h for a plane, nothing reads the C2 difference). Since the harness
+  gives no player input, carrying the selected-plane hand-over would leave a `select`ed plane on neutral controls;
+  no committed win selects a plane for long (USN01's `release ScoutDauntless` line is refused). Left unbound;
+  candidate packet for the plane lane: bind the tail behind a switch, OFF, with the selected-plane prediction above.
+
+## 31. `kPlaneWandererFloatTrigBound` pair (cc9-physics9, 2026-10-14)
+
+cc13's a0ae654d7 puts 00439950's float rounding of FCOS/FSIN behind `kPlaneWandererFloatTrigBound` (OFF). Listing
+check (`bsp.py disasm-raw 004399A0`): `FLD [esp+4]; FCOS; FSTP dword [esp+8]` (004399BD/004399BF), `FSIN; FSTP dword
+[esp+0Ch]` (004399C7/004399C9), then `FLD [esp+8]; FLD [esp+14h]` (r, stored as a float at 004399B5), `FMULP`
+(004399E2) into [esi], `FMUL dword [esp+0Ch]` (004399EA) into [esi+4]; z goes to [esi+8] by MOVSS (004399DD). The ON
+path matches; the OFF path multiplies r by the unrounded double cos/sin. ABI: __thiscall-like, ESI = out, returns
+EAX = out.
+Prediction (written before the runs): only the last ulp of the wander direction's x/y changes, so the summary line
+`plane wanderer` keeps planes/steps/timer_draws until the first chaotic divergence; offset/speed/accel/displacement
+move in late digits. No mechanism counter can fail; the verdict is by mechanism unless the wins move.
+Pair: OFF = `local\p9_m` (exe 073805D36E49, the re-time logs `local\p9w1_<row>.log`), ON = `local\p9_wt1` (main
+25b98b1fa with the flip), same launch lines.
+Results (logs `local\p9w1_<row>.log` OFF, `local\p9wt_<row>.log` ON, reference env):
+
+| Row | OFF | ON | pair_diff |
+|---|---|---|---|
+| USN02 `s36_u2_p7` | completed 200.06 s | completed 200.06 s | identical |
+| LOMP06 `l50_l6_q6` | completed 376.83 s | completed 376.83 s | identical |
+| USN01 `p8_u1_i` | completed 360.04 s | completed 360.04 s | moved |
+| PRCP01 `p9_p01_k` | completed 536.54 s | completed 536.59 s | moved |
+| LOMP10 `p3_l10_b` | completed 1187.58 s | completed 1144.54 s | moved (deaths 94 -> 90) |
+| BSM01 `p6_b1_a` | EndMission 833.92 s | EndMission 833.92 s | moved |
+
+Mechanism as predicted: `plane wanderer` keeps planes=52 (LOMP10) / 277 (BSM01), offset_max, speed_max and
+accel_max; steps, active, timer_draws and displacement move by under 1% with the run length. LOMP10's first moved
+row is a plane death at 97.70 -> 97.75 s (the killer changes), the chaotic divergence of a shared stream, not a
+mechanism failure. **Flipped ON** (`include/bsp/plane_wanderer.hpp`); every win holds, guard logged on all twelve.
+
+## 32. cc9-physics9 handoff (sea/physics lane + WINS KEEPER), 2026-10-14
+
+Tree J:\PROG\battlestations-pacific-decompile-cc9-physics1 (agent/cc9-physics1), everything committed; no lease held.
+Export `local\p9_m` = main 25b98b1fa (exe 073805D36E49); `local\p9_wt1` = the same with the wanderer flip.
+Scripts in local\: `p9_wins.ps1 -Tag <t> [-Exe] [-Only keys] [-Jitter] [-Max]` (rows now point at
+`prcp01_p9_p01_k` and `ijn08_p9_i08_w` with 100000 frames), `p9_runs.ps1`, `p9_keep.py <tag>`, `p9_story.py`
+(PRCP01 orders/deaths), `p9_i08plan.py` (IJN08 generator), `p9_e8gen.py` / `p9_e8gen_f.py` / `p9_e8sum.py` /
+`p9_e8launch.py` (ESMP08), `p9_traj.py` (trajectory CSV sampler: `--trajectory-csv <path>` on the game).
+
+Done this session (commits 42388ec7c, 010357cbc, 64381d75b, 1a6bc9f97, ad8ef14ce and this one):
+- PRCP01 re-planned: `prcp01_p9_p01_k` (moveto-self then attack Zuiho on Enterprise slot 3), 536.54 s, robust to
+  jitter 20,3/20,5.
+- Re-time on 25b98b1fa (WINS_TABLE): all hold except IJN08; USN01 i holds (360.04 s).
+- IJN08 lost to 91d6a9d22 (phase 1) and the plane flips (phase 2); re-planned `ijn08_p9_i08_w`, 4551.09 s, knife-edge
+  (fails 20,5). Attack lines on dead targets are APPLIED (correction committed).
+- Section 30: the third C2 reader has a consumer (settled tail, 0099EB54); not carried.
+- Section 31: kPlaneWandererFloatTrigBound flipped ON by mechanism.
+
+Open, in order:
+1. ESMP08 (WINS_TABLE, last entry): best is f, 13/15. Ideas: resolve f's per-cycle targets from f's own log (it
+   diverges from b after frame 44100) and iterate; start the surface strike earlier while the carriers' Zeros still
+   cover it; keep two carriers alive by holding them farther north-east once the stock is gone.
+2. IJN08 margin: `w` fails under 20,5 (Marus sunk by 1365 s). Marus are the only target of the airfield manager
+   (ijn_8_north_sol.lua:543-565); kill US_Airfield_03/02 earlier or keep the fleet AA tighter around them.
+3. The settled-tail packet of section 30 for the plane lane (OFF switch, selected-plane prediction).
+4. Keeper notes still not re-timed: kTorpedoBoatRudderTorqueBound and kLandMasterDamageBound (check land rows).
+
+## 33. Packet: the settled tail of 0099D300 (cc9-physics10, 2026-10-14; for the plane lane)
+
+Self-contained packet for section 30's open item. Suggested id `cc9_plane_settled_tail`, switch
+`kPlaneSettledTailBound`, committed OFF. Nothing below is bound yet.
+
+**Image site.** `0099D300 BSP_PilotBot_PlanControls` (__thiscall, ECX = bot/plan, one float dt, `RET 4` at
+0099EBA9; body 0099D300-0099EBAC, INT3 padding from 0099EBAC). Inside the body ESI = plan, EDI = unit. Listing
+(`bsp.py disasm-raw 0099EA84 --length 300`, disk bytes):
+- Head clear, 0099D431: `MOV byte [EDX+520h], 0` (unit+520h = 0 on every think that passes gate A at 0099D309).
+- Tail gates, 0099EA84-0099EB59, every one a fall-through to 0099EB8C on failure (the shared exit that stores 0.12
+  to plan+260h at 0099EB95 and XMM2 to plan+264h at 0099EB9D):
+  1. `plan+26Ch` (byte) non-zero (0099EA84).
+  2. `unit+908h` (float, spilled to [ESP+64h]) is below 3600.0 (`[00CE3D70]`, double) or above 3602.0
+     (`[00D1F3D0]`, double) (0099EA91-0099EAB5); inside [3600, 3602] the tail is skipped.
+  3. `|yaw slot|` < 0.035 (`[00D1F3C8]`, float): the slot value is plan+284h when the byte plan+288h is set, else
+     plan+280h; the absolute value is `x > 0 ? x : -0.0 - x` (XMM2 = 0 from 0099D5AC/0099D5FF/0099D70E, XMM4 =
+     `[00D7A208]` = -0.0) (0099EABF-0099EAF6).
+  4. `|pitch slot|` < 0.035: plan+29Ch when plan+2A0h is set, else plan+298h (0099EAFC-0099EB26).
+  5. `|0099B260(plan+28Ch)|` < 0.035, the roll slot's value through 0042BE90 (0099EB28-0099EB4A).
+  6. `[ESP+40h]` < 2.0 (`[00CE3958]`) (0099EB4C-0099EB59): the C2 difference `| |vt[38h]()| - |ctl+30h| |`
+     written at 0099D54B/0099D564/0099D593 (section 30 has the stack-depth proof that [ESP+48h] there is this slot).
+- Writes when all six pass: `unit+520h = ([[00E188A8]+5FCh]+908h == unit+54h)` (0099EB5B-0099EB73: the local
+  player record's party/id field against the unit's), and `plan+2ECh = [00E0E2EC]` = 0.24 (0099EB79-0099EB81).
+- Section 30 omitted gates 1 and 2; they are listed here from the listing and are part of the packet.
+
+**Host.** Not carried. `generic_suppress_520` (game_hosts_units.cpp:384) is the host's unit+520h; its readers are
+the 009A17F8 avoidance gate (:7753), 007CE6CA (:14639), the bot fast path (:33629) and the ship exit (:35478). No
+host site clears it at 0099D431 or writes it from this tail. The C2 low-pass is carried (`kPlaneVelocityLowpassBound`,
+ON), but the difference at 0099D564/0099D593 is not kept. Insertion point: the end of the host's 0099D300 order,
+just before the `kBandShaperPlan264Bound` block (game_hosts_units.cpp ~33652, the 0099EB9D zero), which keeps the
+image's order (tail, then 0099EB95/0099EB9D). Plan slots: `bsp::kPilotSlotYaw`/`Roll`/`Pitch`
+(include/bsp/pilot_plan_slots.hpp); the plane-lane owner must map plan+280h..2A0h and +2ECh to the host's slot
+fields (the yaw/pitch `desired` fields are written at :8246/:8251) and confirm what 0099B260 returns.
+
+**Correction to section 30 (reach).** The compare is a PARTY test, not a unit identity: unit+54h is the unit's
+party (AIR_OPERATIONS.md: `Party` = owner+54h; AI_PLANNER_TAILS.md teams 0-2), and `[[00E188A8]+5FCh]+908h` is the
+same record the 009A17F8 gate reads as the local player's party (game_hosts_units.cpp:7749). So the tail publishes
+unit+520h = 1 for EVERY plane of the local player's party whose mode byte plan+26Ch is non-zero and whose flight is
+settled, not only for a selected plane. unit+520h is also the formation byte of BOMBER_AFTER_TASK.md section 6c:
+it is published per step to `unit[9C2h + idx*8]` (007CDCD0), the follow state 009BEE30 sets a member's +520h at
+009BF0B8 when its leader's published byte is set (009BEF09), and 0099D300's gate A (0099D33D/0099D345) reads it.
+The writer census there (`00699B14`, `007B959B`, `007BBCF8`, `00959454`, `0099D431`, `009BF0B8`, `00698716`,
+`0095CDD7`, `0099EB73`) is the starting point.
+
+**Prediction (to write into the lane doc before the pair).** Enemy-party planes: the compare gives 0, which the
+head clear already wrote, so nothing moves for them. Player-party planes with plan+26Ch non-zero and a settled flight
+(all six gates): `generic_suppress_520` becomes true until the next think's head (0099D431) clears it, so for the
+ticks in between 009A17F8's avoidance, 007CE6CA and 009998A0's fast-path test (0099C270) see a set byte, and the
+follow states of that plane's members may set their own +520h (009BF0B8, if the host carries it). plan+2ECh = 0.24
+is rewritten at the next think's head (0099D446, or `[00E0E2F4]` at 0099D466 when unit+900h is 4 or 5) before
+0099D300 reads it; a reader outside 0099D300 between thinks was not searched (search it first). Expected movers:
+missions with player-party planes in long settled flight (USN01, PRCP01, LOMP10, BSM01, ESMP08's Zeros); counters to
+watch: the avoidance gate's entries and the fast-path count. A moved row must trace to a player-party plane with
+plan+26Ch non-zero; a moved enemy plane is a mechanism failure (OFF, recorded). Pair rows: USN02 and LOMP06
+(identical expected), USN01, PRCP01, LOMP10, BSM01.
+
+**Uncertainty.** The meaning of unit+908h (gate 2) is unknown (listing only). `[[00E188A8]+5FCh]+908h` as the
+local player's party is BOMBER_AFTER_TASK's provisional reading; the host's stand-in must be named before binding
+(the 009A17F8 comment at :7749 uses the controlled unit's party, labelled). plan+26Ch is task+270h, the mode byte
+gate A tests against 2 (BOMBER_AFTER_TASK.md: `009998CD LEA EDI,[ESI+4]`); which states leave it non-zero decides
+the reach and must be listed by the packet owner.

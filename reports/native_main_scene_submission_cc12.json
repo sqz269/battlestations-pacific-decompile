@@ -1,0 +1,144 @@
+{
+  "packet": "cc12_native_main_scene_submission",
+  "utc": "2026-10-14T18:21:26.027505+00:00",
+  "base_commit": "53fcc0f81d9117ca9fce4b949fc5b5e89115fee2",
+  "scope": "Complete ordinary B101C0..B104F2 actual-storage submission caller; no active application invocation or D5E13C execution",
+  "native_identity": {
+    "address": "00b101c0",
+    "length": 819,
+    "sha256": "96ef2c8bceda7115291c544d97e7fedf20fd2b9d90798acb2682602c40243590",
+    "saved_ghidra_matches_disk": true,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "original_abi": "ECX actual service; stack scene/camera; RET8; no semantic return",
+  "source_abi": "Explicit same-domain context, existing NativeCameraOwner and external operation; source-only command observation; not native ABI",
+  "evidence": {
+    "original_instruction_count": 215,
+    "motion": "FILD signed64 tick/frequency -> FDIVP -> FSTP32; raw world refresh; exact delta/divide/accumulate float32 spills; real00419440; reload tracked node; FCOMIP/JBE hysteresis with actualdoubleD5E1C8; rawB6DA70",
+    "clip": "Actual same camera/frame/extra-plane view; MOVSS CFBC84, COMISS worldY, JBE clear includes equality/unordered; set0,D7A260,0,CE3958 through actualB70410 or clearB70470",
+    "queue": "RealB1F170 same command associations, publishD5E13C; raw004C11F0 twice, actualB1EB80(flags1) traversal/upload and B1CB50 current-last metadata0,24h,5Ch",
+    "ownership": "Publish current actual camera before fresh increment import; captured previous identity decremented through fresh import; same owner-registry zero dispatch without another decrement",
+    "fh3": "CBBC6B -> DF3EE4; maxstate1, unwind mapDF3EDC ->{-1,CBBC60}; CBBC60 frees saved outer allocation throughBF65AC only",
+    "ghidra_annotation_receipt": "local/ghidra-annotations-20261014T181959Z.json",
+    "ghidra_export_refreshed": "exports/bsp/functions/00b101c0",
+    "prior_packet_receipt": {
+      "commit": "b8c8ff0e5264efc2c38ebe3c3aa8ff18c2e50971",
+      "path": "local/world_draw_receipt_b8c8ff0e/receipt.json",
+      "artifacts_verified_unchanged": 12
+    }
+  },
+  "validation": {
+    "strict_compile": "PASS MSVC Win32 /MD /std:c++17 /EHsc /permissive- /W4 /WX /O2 /fp:strict",
+    "strict_real_callee_link": "PASS explicit new TU against fresh bsp_core.lib plus real dependency libraries; /MANIFEST:EMBED executable launched",
+    "standard_build": "PASS scripts/build.ps1 Release Win32; 3/3 reconstructed_math/native_math_differential/tool_tests",
+    "standard_build_scope": "New TU registration remains primary-owned; separate strict compile/link exercises this new source, standard build checks existing closure",
+    "native_motion_prefix": "PASS six cases rebased originalB101DD..B103D3 vs source update_motion, bitwise service/node equality, SAME actual source timer/world/visibility/vector callees; original virtual timer call translated to its canonicalBEE070 body",
+    "native_motion_cases": [
+      "normal blur",
+      "hysteresis retains prior blur",
+      "hysteresis rejects prior blur",
+      "blur enable clear",
+      "unordered speed",
+      "hidden tracked node"
+    ],
+    "native_motion_limits": "Not full caller; finite cases use current world bit2, so refresh branch unexecuted; only default masked FP environment; source CRT fixture aborts if reached",
+    "source_clip": "PASS below threshold plane words, equal threshold clear, unordered worldY clear; not native clip differential",
+    "new_persistent_tests": 0,
+    "fixture_log": "PASS 6 native-prefix motion comparisons; clip below/equal/unordered checks; real raw world/visibility/vector/timer callees"
+  },
+  "unproved": [
+    "original ABI/FH3/SEH/arbitrary stack aliases",
+    "general FP traps and throwing CRT across naked helper",
+    "full native caller and retained-owner failure differential",
+    "active application service/scene/camera creation or invocation",
+    "actual D5E13C:B17240/B156C0 execution",
+    "visible world/gameplay fidelity"
+  ],
+  "execution_admission": {
+    "profile": "00d5e13c",
+    "admitted": false,
+    "requires": [
+      "actual B17240",
+      "actual B156C0 and its genuine domains",
+      "queue domain admitting that actual profile"
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "src/native_main_scene_submission.cpp",
+      "bytes": 11048,
+      "sha256": "31ca6445a4787aef70c4d194984ed234f7b26f8cf38f8f7c90c10289b1bc1e74"
+    },
+    {
+      "path": "include/bsp/native_main_scene_submission.hpp",
+      "bytes": 3032,
+      "sha256": "07e7d996ade0da695fbf76d875448b8891071b118cb65f035833aa53a98e7b76"
+    },
+    {
+      "path": "docs/NATIVE_MAIN_SCENE_SUBMISSION_CC12.md",
+      "bytes": 6864,
+      "sha256": "fe0b8326abec400048c1e8c67d5e2ffc0067f63db37ff67c250e6aef44555b76"
+    },
+    {
+      "path": "local/main_scene/native_main_scene_submission.obj",
+      "bytes": 15002,
+      "sha256": "787ff1fd5a150102f7420f5b0b17d72c97784c93a75cfd06768371de8d520a80"
+    },
+    {
+      "path": "local/main_scene/native_main_scene_submission.asm",
+      "bytes": 59073,
+      "sha256": "1c98765a0a568ab1f2f5caf54c1351444b8565002713d65ee1b86507620a704c"
+    },
+    {
+      "path": "local/main_scene/strict_compile.log",
+      "bytes": 34,
+      "sha256": "f71f67188ab820597af116bbce17ac79ddd71272149d3c47824c2b9b466b0b20"
+    },
+    {
+      "path": "local/main_scene/strict_link.log",
+      "bytes": 16,
+      "sha256": "9107f09f9eea6bcc36b193451cb12d6b097bbc454c3dc7619438d3b4db6b9286"
+    },
+    {
+      "path": "local/main_scene/link_probe.exe",
+      "bytes": 284160,
+      "sha256": "226a1c7818160f959f048f80e0894b1b6f83b7e249c76d24d333e7e4cc27d656"
+    },
+    {
+      "path": "local/main_scene/motion_probe.cpp",
+      "bytes": 5394,
+      "sha256": "84107e92f8f488487eb18e2659a49659c1b3f0e042980624b7bbd4db6586711b"
+    },
+    {
+      "path": "local/main_scene/motion_probe.exe",
+      "bytes": 210432,
+      "sha256": "129464d7bc1e3c8aec866f351f548cd1c6348e0e8febb6b5924f313142ed7411"
+    },
+    {
+      "path": "local/main_scene/motion_probe.log",
+      "bytes": 124,
+      "sha256": "aa6b926e9486a1b02d5ec9bb2c3af5d346f5a6c43bc8c021a4fe4fc1610ec7a6"
+    },
+    {
+      "path": "local/main_scene/build.log",
+      "bytes": 6848,
+      "sha256": "8be6c5eb902554be2ced080007e266712542acf91c288d2c94a1779c2c7510ec"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 90930158,
+      "sha256": "02adccc420e93caa3d12a1d7972c701b7cddce83f776bd716cd1ed1e4f68497b"
+    },
+    {
+      "path": "local/main_scene/main_scene.bin",
+      "bytes": 819,
+      "sha256": "96ef2c8bceda7115291c544d97e7fedf20fd2b9d90798acb2682602c40243590"
+    },
+    {
+      "path": "local/ghidra-annotations-20261014T181959Z.json",
+      "bytes": 2006,
+      "sha256": "c8847004e8352dedcf15b746d841cb8a8161dd606bd84d1ba9f7f4ace301e561"
+    }
+  ]
+}

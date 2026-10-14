@@ -1,0 +1,13 @@
+# Actual GUI effect startup probe
+
+`23fbb8a1d` registers `game_native_gui_effect_probe.cpp` in the normal Win32 game target and adds the opt-in `BSP_NATIVE_GUI_EFFECT_PROBE=1` startup hook after the genuine font/GUI phase7. The hook borrows the existing renderer, VFS, singleton, read-only, settings and input owners, including the renderer's existing focus-publication cell. That partial receiver admits the reached load-pump focus reads only; it does not admit the whole native platform or its Original ABI.
+
+The retained heap probe constructs the canonical shadow target and actual sampler/effect parents, then requests `GuiFont.mshd` and `GuiFontBilinear.mshd` through the native cache acquisition path. Each returned effect remains exactly one owned caller credit. The probe retires those credits in reverse order through the existing current-profile `B32010` release, then destroys its actual input names before the native string-pool drain. Effect, sampler and shadow metadata remain alive until the original shared singleton drain has finished, and close before the input/renderer/VFS providers die.
+
+Failed or interrupted entered operations emit their retained cache, loader, descriptor, compiler and sampler sites and require no-unwind process exit. The startup catch and every shutdown boundary enforce that policy. The probe supplies no synthetic MSG, private sampler-word capture, wrapper effect or extra native retain. A fallback return is logged and cannot establish successful acquisition of the requested effect.
+
+The primary reviewed the worker probe body, verified and preserved its compile/link receipts, and reviewed the latest unit withdrawal packet. The three freshly linked unit comparisons passed 77 checks with 0 failures: withdrawal 20, peer 37 and prefix 20. Those are copied-Original/synthetic-storage comparisons; no actual game unit receiver was constructed.
+
+The registered combined MSVC Win32 Release build passed all 3 existing suites in 10.55 seconds, including compilation/linkage of the new probe. No tests were added. Source/build receipts and the unchanged installed Original executable hash are bound in `reports/native_gui_effect_startup_probe_cc12.json`.
+
+The serialized actual-resource run is queued behind the 6 occupied shared slots. No resource acquisition, retirement, original shared drain or runtime success is claimed yet. The executable built from `23fbb8a1d` is retained unchanged while this queued launcher remains pending. Native Text draw, the full main-scene command at `D5E13C`, Original ABI and gameplay remain unvalidated; the reconstruction goal remains active.

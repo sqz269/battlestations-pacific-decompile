@@ -5,9 +5,9 @@
 namespace bsp {
 struct NativeSamplerCacheEntryContext {
     NativeSamplerCacheContext& cache;
-    void* volatile& actual_platform_0109cf04;
+    NativePlatformLoadPublication actual_platform_0109cf04;
     NativePlatformLoadMessagesContext& messages;
-    const MSG& native_message_preimage;
+    NativePlatformLoadMessagePreimage native_message_preimage;
     const void* actual_default_text_00ce3c5c;
 };
 struct NativeSamplerCacheEntryOperation final {

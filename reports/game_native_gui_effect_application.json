@@ -1,0 +1,83 @@
+{
+  "packet": "cc12_native_gui_effect_production",
+  "source_base": "88a3bcd1d",
+  "status": "genuine_effect_producer_composition_strict_compiled_worker_build_checked",
+  "entry_addresses": ["00B318B0", "00B2EBB0", "00B46950", "00B3C3A0"],
+  "original_entry_abi": "B318B0 ECX actual renderer; stacked actual8h name; EAX owned effect; RET4",
+  "interface": "GameNativeGuiEffectApplication::acquire_effect_00b318b0(const void* stable_actual_name_header)",
+  "same_actual_domains": [
+    "ready GameNativeRendererApplication",
+    "actual canonical effect/pass/shader/reflection/state owners",
+    "renderer native descriptor reader and compiler sources",
+    "process shader-mode and binary-cache cells",
+    "GameVfsHost raw name resolution, streams, dates and pooled strings",
+    "existing renderer effect record allocator and retirement/profile tables",
+    "native texture cache for real compiler/effect constructor textures"
+  ],
+  "new_renderer_api": "ready-only effect_registry_domain() borrows the existing NativeEffectRegistryDestructionContext",
+  "explicit_prerequisites": [
+    "distinct genuine root/mode NativeMaterialDescriptorSamplersContext objects",
+    "same actual sampler factory/cache/platform/manager/loader and pass lifetime",
+    "applicable real B3B280 stack-knowledge and entry/release evidence",
+    "actual material-manager publication F8BBF0",
+    "caller-retained initialized actual8h name header through failure"
+  ],
+  "ownership": {
+    "cache_flags": "0/1/1 original B318B0 route",
+    "normal_result": "actual returned owning reference transferred without additional retain",
+    "nonnull_validation": "same canonical NativeMaterialEffectReference storage/raw+04 atomic, original profile and positive actual count",
+    "null_result": "preserved native null; no unavailable-child default",
+    "operations": "persistent before native entry; nested compiler/loading/cache failures retained",
+    "returned_identity": "diagnostic only after transfer; not a second owner",
+    "failure": "latched nonreplayable graph; caller retains through existing process-exit policy",
+    "normal_close": "graph survives original renderer cache/effect/compiler retirement, then verifies existing renderer native drain",
+    "automatic_native_rollback": false
+  },
+  "verification": {
+    "strict_compile": {
+      "result": "passed",
+      "target": "MSVC Win32 C++17",
+      "flags": "/c /W4 /WX /EHsc /permissive- /O2 /MD /fp:strict",
+      "log": "local/cc12_native_gui_effect_production/compile.log",
+      "log_sha256": "4496E600415C83C0B9C71420583760B3C3C000B9FDDAC0A45698CF224B15C2EA",
+      "object": "local/cc12_native_gui_effect_production/game_native_gui_effect_application.obj",
+      "object_sha256": "4A076392F4923E6AC54B013A034A80565D1FB49497A20D05F418E6ED688A2680"
+    },
+    "worker_build": {
+      "command": "scripts/build.ps1",
+      "result": "passed",
+      "ctest": "2/2 passed; 12.26 seconds",
+      "log": "local/cc12_native_gui_effect_production/build.log",
+      "log_sha256": "6419A1672D2693F7148A8D30D48828C6757F93A848CD3D8B40FF2D525872D3CD",
+      "coverage": "registered source tree includes renderer getter; new effect TU separately strict-compiled until primary CMake registration"
+    },
+    "effect_graph_runtime": "not run; genuine sampler/material parent inputs required",
+    "new_tests": 0,
+    "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+    "ghidra_program": "/battlestationspacific.exe",
+    "ghidra_mutations": 0,
+    "new_register_x87_recovery": false
+  },
+  "independent_primary_native_font_observation": {
+    "checkout": "40fd4eebe",
+    "manifest_sha256": "14b700643b37e12c0f17d18db544bc5ed29bb3f6302c6f08306607f040bef91e",
+    "result": "PASS",
+    "fonts": 6,
+    "glyphs": 1060,
+    "actual_D61948_images": 3,
+    "image_reference_retirement": "exact returned font-owned slots",
+    "owners": "0->1 lazy fallback survives",
+    "evidence_level": "font resources and cleanup only; not this effect graph execution or rendering"
+  },
+  "remaining": [
+    "primary permanent effect-TU registration and combined linkage",
+    "genuine root/mode sampler parent contexts and F8BBF0 material-manager publication",
+    "persistent numeric effect transport into AB8CE0 and native material creation",
+    "canonical GUI page/widget/model owner and material parameter-source lifetime attachment",
+    "actual effect, native Text draw, world rendering and gameplay validation",
+    "original register/string/tree/FH3 ABI and unexposed callee-local failure bookkeeping"
+  ],
+  "frontend_activated": false,
+  "abi_compatible": false,
+  "game_validated": false
+}

@@ -1,0 +1,101 @@
+{
+  "packet": "cc12_native_gui_effect_probe",
+  "source_base": "bf7e06b26",
+  "status": "retained_actual_resource_probe_source_strict_compiled_forced_api_link_checked_not_run",
+  "source": "src/game_native_gui_effect_probe.cpp",
+  "header": "include/bsp/game_native_gui_effect_probe.hpp",
+  "scope": "opt-in actual resource acquisition and retirement; no Text/frontend publication/draw",
+  "api": {
+    "constructor": "GameNativeGuiEffectProbe(log, renderer, VFS, singletons, readOnly, settingsProcess, input, NativePlatformLoadPublication)",
+    "metadata_first": true,
+    "native_entry": "explicit one-shot run() after retained heap construction and real phase7 startup",
+    "result": "const observation of exactly two native returned caller credits held in probe slots; no additional retain or external ownership transfer",
+    "caller_retirement": "retire_caller_references(): B32010 reverse slot order, then actual A41DD20 input-name destruction before string-pool drain",
+    "shared_drain": "caller original singleton/renderer drain with probe/providers alive",
+    "closure": "after_native_renderer_drain(): effect then sampler then shadow metadata closure",
+    "failure": "stored exact exception_ptr and stage; emit actual nested frame observations, rethrow; caller retains entire heap/service graph under no-unwind process-exit policy"
+  },
+  "domains": {
+    "shadow": "canonical renderer shadow context; actual settings+1D capture and genuine2Ch allocation/A8FE30 publication/AA0 registration",
+    "samplers": "same AA0/F8D41C/F8D420/VFS/actual owner domain; empty MSG output preimage; no root/release stack capture or unknown-word read",
+    "effects": "same actual renderer/cache/material/compiler/state/shader/owner/string/retirement domain",
+    "names": [
+      "GuiFont.mshd",
+      "GuiFontBilinear.mshd"
+    ],
+    "name_headers": "two stable actual8h NativeString headers constructed A41E870 through SAME raw VFS/renderer effect string storage",
+    "platform": {
+      "core": "bf7e06b26 NativePlatformLoadPublication",
+      "cell": "borrow caller existing mutable or const-qualified cell; core entry reloads same cell once",
+      "startup_attachment": "primary ready renderer.loading_platform_focus_publication()",
+      "current_owner": "actual partial NativePlatformWindowFocusStorage: HWND+30 and focus+41",
+      "admissible": "reached load-pump focus+41 reads; not whole-platform storage/native ABI",
+      "no_duplicate_or_projected_receiver": true
+    }
+  },
+  "ownership": {
+    "new_native_retain": 0,
+    "rewritten_counts": 0,
+    "separate_owning_slots_even_if_aliased": true,
+    "observed": "same canonical NativeMaterialEffectReference aliases actual+04; current supported profile and positive count",
+    "release": "existing B32010 decrement/current-profile actual-owner terminal path only; release entry recorded before call",
+    "post_release": "read raw only with existing canonical companion; exactly one credit removed or terminal disappearance after count1",
+    "failed_retirement": "preserve entered release flags/remaining obligations; no replay or early graph destruction",
+    "fallback": "actual recursive fallback call recorded; returned fallback does not certify requested GuiFont content"
+  },
+  "observations": [
+    "shadow operation native site/state/section/publication",
+    "stable name header and owning slot state",
+    "effect/cache/loader/native sites and creator/companion/owner-record identities",
+    "recursive fallback cache chain",
+    "descriptor phase/site/retained Lua state",
+    "compiler prefix/tail phase/sites/pass registration",
+    "root/mode sampler phase/site/index/step obligations and knowledge flag only"
+  ],
+  "verification": {
+    "strict": {
+      "result": "passed MSVC Win32 C++17 /W4 /WX /EHsc /permissive- /O2 /MD /fp:strict",
+      "command": "local/cc12_native_gui_effect_probe/compile.cmd",
+      "command_sha256": "8A63A9D77301D5EF2831A39EE2324A66FADC70E8EF4B887B87CC73D8C76219EC",
+      "log": "local/cc12_native_gui_effect_probe/compile.log",
+      "log_sha256": "12E949C03E61A415F8B623D362FF9E92B5490A9D93615403D82E982B54749233",
+      "object": "local/cc12_native_gui_effect_probe/game_native_gui_effect_probe.obj",
+      "object_sha256": "36AC347EF3C5F5920C878837A72BA924AC4D9700EE0A35FC410810FFEF8D34AB",
+      "source_sha256": "6D23497980E77FE54CB6CB17653CCF3B719C4A33D3F22B0ECBB0B1828FA299AF",
+      "header_sha256": "5E1DF4A1D8DC8FD8793B8642C0F329092D796689492CFE3CA11B48F7CFD0B52C"
+    },
+    "link": {
+      "result": "passed combined real bsp_game target with forced retention of every probe API",
+      "overlay": "local/cc12_native_gui_effect_probe/probe_registry.cmake",
+      "overlay_sha256": "FB1DCC15B4874C57B06A9FD1DD4459002057C7389001062B9AEADBA7380B8F39",
+      "anchor": "local/cc12_native_gui_effect_probe/link_anchor.cpp",
+      "anchor_sha256": "FEEC718EF3EC73423554B97511B448355855E014975C98A9D2010EE47F727D5F",
+      "force_symbol": "_bsp_native_gui_effect_probe_link_anchor",
+      "anchor_executed": false,
+      "log": "local/cc12_native_gui_effect_probe/link.log",
+      "log_sha256": "39BE6AE15E168F3E9BF2557F00BE540DA23BB9FC231F6077F756D5B7FBEB9490",
+      "executable": "local/cc12_native_gui_effect_probe/probe_link_bsp_game.exe",
+      "executable_sha256": "06B908A94AEC795ED6C8FE315EB99C8F10DB0AEC8A27B74E3B16CCA428F2A246",
+      "executable_launched": false,
+      "local_anchor_correction": "outer bsp namespace type qualified; earlier failed local-anchor compile log preserved, not a Source/helper/runtime success claim",
+      "failed_anchor_log": "local/cc12_native_gui_effect_probe/link_unqualified_anchor.log"
+    },
+    "default_build": {
+      "command": "./scripts/build.ps1",
+      "result": "passed registered tree and2/2 existing suites10.53seconds",
+      "configuration": "restored cmake/startup.cmake; local overlay/anchor absent from default generated target",
+      "log": "local/cc12_native_gui_effect_probe/build.log",
+      "log_sha256": "831670F122B75B3224381F1E7D54DB6B45B251E177F15B214F8618B6E418FF50"
+    },
+    "new_tests": 0,
+    "actual_resource_run": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "remaining": [
+    "primary permanent registration and real phase7 hook",
+    "actual root-owned serialized acquisition/retirement run; genuine failures meaningful",
+    "no forced PASS or sampler unknown-word bypass",
+    "requested GuiFont content/nativeText/GUI/world rendering/gameplay/register-FH3 ABI unproved"
+  ]
+}

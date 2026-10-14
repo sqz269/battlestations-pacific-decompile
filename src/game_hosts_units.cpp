@@ -713,6 +713,12 @@ struct GameUnitSlot {
     float lb_ga_side_1c{1.0f};                // goaway +1Ch
     bool lb_prepare_a0{false};                // prepare +A0h
     float lb_prepare_98{-1.0f};               // prepare +98h
+    float lb_prepare_8c{1.0f};                // prepare +8Ch (kLevelBombPrepareTickBound)
+    float lb_prepare_9c{0.0f};                // prepare +9Ch
+    int lb_prepare_wait_ticks{0};             // 009B6670 wait-arm ticks
+    int lb_prepare_drop_ticks{0};             // 009B6670 drop-arm ticks
+    int lb_prepare_arms{0};                   // 009B8100 calls
+    int lb_prepare_releases{0};               // 009B67E9 releases
     bool lb_break_off_now{false};             // 009B8D80's last answer (007EE6B0)
     // The level bomber's racks as 007C0D90's level branch fires them: each
     // single rack's own toRepeatTime (+494h) and dropBombs (+498h).
@@ -1521,6 +1527,9 @@ struct GameUnitSlot {
     // Packet cc9_l60_torpedo_disarmed: 009D29E0 runs (leader and target known),
     // its close arm (cmd+2C8h written), the least ratio and the last +8Ch.
     int torpedo_disarmed_ticks{0};
+    int torpedo_command_writes{0};   // kTorpedoCommandWritesBound: binding writes applied
+    int torpedo_done_enters_2530{0};   // kTorpedoDoneFormationBound: 009D2530 runs
+    int torpedo_3e8_republishes{0};    // kTorpedoDoneFormationBound: 009BFDA6 writes
     int torpedo_disarmed_close_ticks{0};
     float torpedo_disarmed_min_ratio{1.0e30f};
     float torpedo_disarmed_blend_8c{1.0f};
@@ -6129,14 +6138,33 @@ struct GameUnitsHost::Impl {
     // (substitution); approach+A4h = 3 and [approach+1Ch]+40h = 0 have no host
     // cell; state+8Ch (republished to squadron+3E8h by 009BFDA6) is kept on the
     // slot for the log only, no host reader. False: the arm is skipped, as before.
-    static constexpr bool kTorpedoDoneDisarmedArmBound = false;
+    static constexpr bool kTorpedoDoneDisarmedArmBound = true;   // ON: SQUADRON_LAND_TASK 5hn
     // Packet cc9_l60_formation_shapes (cc13-confirm C): the drop-kamikaze
     // prepare/done enter 009AD180 writes squadron+3E4h = 3 (009AD1A5) and
     // re-runs 007ED260 after its follow enter 009BED80, which writes 1
     // (009BEDDA). True: both writes reach the registry's formation_shape_3e4
     // (007ED260 runs inside the placement seam, as for the dive bomber), so the
     // wingmen fly 007F23A0's shape-3 station. False: the shape stays as seeded.
-    static constexpr bool kDropKamikazeFormationShapeBound = false;
+    static constexpr bool kDropKamikazeFormationShapeBound = true;   // ON: SQUADRON_LAND_TASK 5hn
+    // Packet cc9_l60_torpedo_command_writes (lead, after SQUADRON_LAND_TASK 5hh). The
+    // torpedo arm's command-block writes reach TorpedoArmBinding's write_command_*
+    // (torpedo_task_arm.cpp): the committed branch's cmd+2C8h = 0.3, the bank cap
+    // (009D2761-009D2794), and the hold / steer arms' cmd+2BCh = 0, +2D0h = 2, +2C4h = 0,
+    // +2CCh = 1 (009D295F-009D29B7). True: they land on the planner state (plan_state
+    // bank_limit_2c8 / pitch_target_2bc / pitch_mode_2d0 / bank_target_2c4 and
+    // plan_heading_mode_2cc). False: every write is dropped, as before.
+    static constexpr bool kTorpedoCommandWritesBound = true;   // ON: SQUADRON_LAND_TASK 5hr
+    // Packet cc9_l61_torpedo_done_formation (SQUADRON_LAND_TASK 5ho item 2). The
+    // done/prepare enter 009D2530 writes squadron+3E4h = 2 (009D254E, after
+    // 009BED80's 1) and state+8Ch = 1.0 (009D2565); every wingman's follow
+    // station update 009BFD70 republishes its state's +8Ch into squadron+3E8h
+    // (009BFDA6-009BFDB2), the scale 007F23A0 reads, before placing itself. The
+    // done tick's disarmed arm 009D29E0 moves +8Ch to 1-2.5 after that, so the
+    // station uses the previous tick's value. True: the enter writes shape 2 and
+    // resets the slot's +8Ch, the torpedo follow base tick republishes it, and the
+    // plain follow tick 009C1FD0 republishes the follow state's 1.0 (009BED80's
+    // +8Ch). False: shape and +3E8h stay as they were.
+    static constexpr bool kTorpedoDoneFormationBound = true;   // ON: SQUADRON_LAND_TASK 5hr
     // Packet cc9_l60_level_issue_tail (cc13-confirm D). 007C0D90's rack walk ends
     // at 007C0ED3 and falls to 007C0ED9 for the level bomber too: when the walk
     // armed a rack (the byte 007C0E23 raises) the tail sets unit+C25h = 1
@@ -6146,7 +6174,7 @@ struct GameUnitsHost::Impl {
     // that tail through the torpedo path's binding. False: it returns after the
     // walk, as before. The per-rack 31h 007BCCF0 -> 006E3F90 point
     // (007C0E98-007C0EC9) is not modelled; no rack here answers 31h.
-    static constexpr bool kLevelBomberIssueTailBound = false;
+    static constexpr bool kLevelBomberIssueTailBound = true;   // ON: SQUADRON_LAND_TASK 5hj.2/5hj.3
     // Packet cc9_l60_level_order_spend (CC13_VER_6 findings 2 and 5, with
     // kLevelBomberIssueTailBound). 0099AF53-0099AFC2 in the pilot bot's tick, before
     // its task ticks (0099AFCC): while unit+C58h > 0, with the plane in free flight
@@ -6159,7 +6187,16 @@ struct GameUnitsHost::Impl {
     // +6B4h), 007BBBA0 and +424h -= 1. True: both run on the level-bomb task. NOT
     // MODELLED: 009B83D0's prepare arm 009B8100 (prepare's own tick 009B6670 is not
     // hosted; no row reaches prepare). False: neither runs.
-    static constexpr bool kLevelBombReleaseOrderSpendBound = false;
+    static constexpr bool kLevelBombReleaseOrderSpendBound = true;   // ON: SQUADRON_LAND_TASK 5hj.2/5hj.3
+    // Packet cc9_l61_level_prepare (SQUADRON_LAND_TASK 5hs). The level-bomb prepare
+    // state: the enter 009B6600 (+A0h = 0, +98h = -1, +8Ch = 1, +9Ch = class+188h x
+    // 0.9, squadron+3E4h = 3 after 009BED80's 1), 009B83D0's prepare arm 009B8100
+    // (+98h = 5, +9Ch = max(vt[38h], 007C47F0), approach+A8h = 007C1FB0 x 0.85) and
+    // the tick 009B6670 (bsp::level_bomb_prepare_tick_009b6670: the wait arm's +8Ch
+    // station scale before the follow tick, the 300 m pitch/speed hold; the drop arm's
+    // countdown and release). True: all three run. False: the follow tick stands in
+    // and only +A0h/+98h are reset on the enter, as before.
+    static constexpr bool kLevelBombPrepareTickBound = true;   // ON: SQUADRON_LAND_TASK 5hs.1
     // Packet cc9-gunnery38 (docs/CC13_AUDIT13_RECENT_FLIPS.md O1). The strafe
     // cruise profile 009CD020, run once per activation (the install and each
     // time the strafe task resurfaces after a tightturn or flikflak retires),
@@ -8569,7 +8606,16 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         slots[m]->retreat_task_installed = false;
         record("PlaneSquadron::on_plane_left_map_007f31a0", 0x007f31a0u);
     }
-    bool run_follow_tick_009c1fd0(GameUnitSlot& unit) {
+    bool run_follow_tick_009c1fd0(GameUnitSlot& unit, float state_8c = 1.0f) {
+        // 009BFDA6-009BFDB2: the calling state's +8Ch. The follow state's is
+        // 009BED80's 1.0 and nothing in its tick moves it (packet
+        // cc9_l61_torpedo_done_formation); the level-bomb prepare passes its own.
+        if constexpr (kTorpedoDoneFormationBound) {
+            if (bsp::PlaneSquadronHostRecord* const sq =
+                    bsp::plane_squadron_registry().find_by_member_unit(unit.process_index)) {
+                if (!unit_is_flight_leader_007b8ad0(unit.process_index)) sq->morale_3e8 = state_8c;
+            }
+        }
         bsp::PlaneFormationStation station;
         const GameUnitSlot* leader = nullptr;
         place_wing_member_on_station_007f23a0(unit, false, &station, &leader, false);
@@ -19749,9 +19795,37 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // record is concrete (packet cc9_release_order_gate).
                             owner_.done("BotApproach::command_altitude", 0x009fba50u);
                         }
-                        void write_command_word(void*, int, int) override {}
+                        void write_command_word(void*, int off, int value) override {
+                            if constexpr (GameUnitsHost::Impl::kTorpedoCommandWritesBound) {
+                                if (off == bsp::pilot_command_off::kMode2D0) {
+                                    slot_.plan_state.pitch_mode_2d0 = value;
+                                    ++slot_.torpedo_command_writes;
+                                } else if (off == bsp::pilot_command_off::kHeadingMode) {
+                                    slot_.plan_heading_mode_2cc = value;
+                                    slot_.plan_heading_2c0_written = false;
+                                    ++slot_.torpedo_command_writes;
+                                }
+                            } else {
+                                (void)off; (void)value;
+                            }
+                        }
                         void write_command_byte(void*, int, unsigned char) override {}
-                        void write_command_float(void*, int, float) override {}
+                        void write_command_float(void*, int off, float value) override {
+                            if constexpr (GameUnitsHost::Impl::kTorpedoCommandWritesBound) {
+                                if (off == bsp::pilot_command_off::kInterp2C8) {
+                                    slot_.plan_state.bank_limit_2c8 = value;   // the bank cap
+                                    ++slot_.torpedo_command_writes;
+                                } else if (off == bsp::pilot_command_off::kWord2BC) {
+                                    slot_.plan_state.pitch_target_2bc = value;
+                                    ++slot_.torpedo_command_writes;
+                                } else if (off == bsp::pilot_command_off::kWord2C4) {
+                                    slot_.plan_state.bank_target_2c4 = value;
+                                    ++slot_.torpedo_command_writes;
+                                }
+                            } else {
+                                (void)off; (void)value;
+                            }
+                        }
                         void set_arm_request(void*, bool) override {}
                         void set_weapon_selector(void*, int) override {}
                         void consume_round(void*) override {}
@@ -20027,6 +20101,23 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             return in;
                         }
                         void set_state(void*, bsp::TorpedoState next) override {
+                            // 009D2530, the done/prepare enter (vtable 00D21320
+                            // slot +4h): 009BED80 (+3E4h = 1, 007ED260), then
+                            // +3E4h = 2 (009D254E), 007ED260, +8Ch = 1.0
+                            // (009D2565). 007ED260 runs inside the placement seam.
+                            if constexpr (GameUnitsHost::Impl::kTorpedoDoneFormationBound) {
+                                if ((next == bsp::TorpedoState::kDone ||
+                                     next == bsp::TorpedoState::kPrepare) &&
+                                    next != slot_.torpedo_state) {
+                                    if (bsp::PlaneSquadronHostRecord* const sq =
+                                            bsp::plane_squadron_registry().find_by_member_unit(
+                                                slot_.process_index)) {
+                                        sq->formation_shape_3e4 = 2;
+                                    }
+                                    slot_.torpedo_disarmed_blend_8c = 1.0f;
+                                    ++slot_.torpedo_done_enters_2530;
+                                }
+                            }
                             // cc8_torpedo_retire item 5. Latch the run-in
                             // geometry on the FIRST tick of each attackrun, in
                             // the same convention the closest-approach census
@@ -20215,6 +20306,19 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                         }
                         void follow_base_tick_009c1fd0(void*, float) override {
+                            // 009BFDA6-009BFDB2: a wingman republishes this
+                            // state's +8Ch into squadron+3E8h before 007F23A0.
+                            if constexpr (GameUnitsHost::Impl::kTorpedoDoneFormationBound) {
+                                if (bsp::PlaneSquadronHostRecord* const sq =
+                                        bsp::plane_squadron_registry().find_by_member_unit(
+                                            slot_.process_index)) {
+                                    if (!owner_.unit_is_flight_leader_007b8ad0(
+                                            slot_.process_index)) {
+                                        sq->morale_3e8 = slot_.torpedo_disarmed_blend_8c;
+                                        ++slot_.torpedo_3e8_republishes;
+                                    }
+                                }
+                            }
                             // 009C1FD0 runs 009BFD70 (the station) and then
                             // 009BFEE0 (the law that flies to it). Only the
                             // first is bound; see
@@ -23459,10 +23563,26 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     base * a.speed_ratio_24;
                                 break;
                             }
-                            case LS::kPrepare:   // 009B6600, PARTIAL: shape 3 not modelled
-                                unit_.lb_prepare_a0 = false;
-                                unit_.lb_prepare_98 = -1.0f;
-                                owner_.record("BotStateLevelBombPrepare::enter_shape3", 0x009b6625u);
+                            case LS::kPrepare:   // 009B6600
+                                if constexpr (GameUnitsHost::Impl::kLevelBombPrepareTickBound) {
+                                    bsp::LevelBombPrepareState ps;
+                                    bsp::level_bomb_prepare_enter_009b6600(ps, unit_.lb_ap.max_speed_ac);
+                                    unit_.lb_prepare_a0 = ps.released_a0;
+                                    unit_.lb_prepare_98 = ps.timer_98;
+                                    unit_.lb_prepare_8c = ps.blend_8c;
+                                    unit_.lb_prepare_9c = ps.speed_9c;
+                                    // 009BED80 writes +3E4h = 1, then 009B6625 = 3;
+                                    // 007ED260 runs inside the placement seam.
+                                    if (bsp::PlaneSquadronHostRecord* const sq =
+                                            bsp::plane_squadron_registry().find_by_member_unit(
+                                                unit_.process_index)) {
+                                        sq->formation_shape_3e4 = 3;
+                                    }
+                                } else {
+                                    unit_.lb_prepare_a0 = false;
+                                    unit_.lb_prepare_98 = -1.0f;
+                                    owner_.record("BotStateLevelBombPrepare::enter_shape3", 0x009b6625u);
+                                }
                                 break;
                             default:
                                 break;
@@ -23794,6 +23914,101 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         owner_.done("BotStateLevelBombAim::tick", 0x009b5c80u);
                     }
+                    // 009B83D0's prepare arm 009B8100 (packet cc9_l61_level_prepare).
+                    // 007C1FB0 is the install's answer (lb_release_delay_1fc), not
+                    // re-read here.
+                    void lb_prepare_arm_009b8100() {
+                        bsp::LevelBombPrepareState s;
+                        s.blend_8c = unit_.lb_prepare_8c;
+                        s.timer_98 = unit_.lb_prepare_98;
+                        s.speed_9c = unit_.lb_prepare_9c;
+                        s.released_a0 = unit_.lb_prepare_a0;
+                        unit_.lb_ap.release_delay_a8 = bsp::level_bomb_prepare_arm_009b8100(
+                            s, GameUnitsHost::Impl::leader_live_speed_007b8e60(unit_),
+                            owner_.bot_desired_speed_007c47f0(unit_), unit_.lb_release_delay_1fc);
+                        unit_.lb_prepare_98 = s.timer_98;
+                        unit_.lb_prepare_9c = s.speed_9c;
+                        ++unit_.lb_prepare_arms;
+                    }
+                    // 009B6670, the prepare tick (packet cc9_l61_level_prepare).
+                    void lb_prepare_tick_009b6670(float dt) {
+                        bsp::LevelBombApproach& a = unit_.lb_ap;
+                        bsp::LevelBombPrepareState s;
+                        s.blend_8c = unit_.lb_prepare_8c;
+                        s.timer_98 = unit_.lb_prepare_98;
+                        s.speed_9c = unit_.lb_prepare_9c;
+                        s.released_a0 = unit_.lb_prepare_a0;
+                        bsp::LevelBombPrepareTickInputs in;
+                        in.dt = dt;
+                        for (int k = 0; k < 3; ++k) {
+                            in.aim[k] = unit_.lb_aim[k];
+                            in.impact[k] = a.impact[k];
+                        }
+                        in.heading = unit_.plane_heading_c6c;              // vtable[50h]
+                        in.pitch_c64 = unit_.plane_pitch_angle_c64;
+                        in.max_speed_ac = a.max_speed_ac;
+                        in.live_speed_38 = GameUnitsHost::Impl::leader_live_speed_007b8e60(unit_);
+                        in.attack_dist_b4 = a.attack_dist_b4;
+                        // [ctl+3D0h], the squadron's first member (007B8AD0's rule:
+                        // the first live entry).
+                        if (const bsp::PlaneSquadronHostRecord* const sq =
+                                bsp::plane_squadron_registry().find_by_member_unit(
+                                    unit_.process_index)) {
+                            for (const std::size_t m : sq->member_units) {
+                                if (m == bsp::kPlaneSquadronNoUnit) continue;
+                                if (m < owner_.slots.size() && owner_.slots[m] != nullptr) {
+                                    const GameUnitSlot& l = *owner_.slots[m];
+                                    in.leader_present = true;
+                                    for (int k = 0; k < 3; ++k) {
+                                        in.leader_position[k] = l.motion.position[k];
+                                    }
+                                    in.leader_heading = l.plane_heading_c6c;
+                                    // SUBSTITUTION, labelled: leader+9C1h+[00F876B8]*8
+                                    // is the leader's published per-step byte; the host
+                                    // takes the leader approach's own +CCh.
+                                    in.leader_bay_9c1 = l.lb_ap.close_cc;
+                                }
+                                break;
+                            }
+                        }
+                        const bsp::LevelBombPrepareTickResult r =
+                            bsp::level_bomb_prepare_tick_009b6670(s, in);
+                        unit_.lb_prepare_8c = s.blend_8c;
+                        unit_.lb_prepare_98 = s.timer_98;
+                        unit_.lb_prepare_a0 = s.released_a0;
+                        if (!r.ran) return;                                // 009B668A
+                        if (r.drop_arm) {
+                            ++unit_.lb_prepare_drop_ticks;
+                        } else {
+                            ++unit_.lb_prepare_wait_ticks;
+                        }
+                        if (r.step_c8 >= 0) a.step_c8 = r.step_c8;
+                        if (r.writes_bay_cc) a.close_cc = r.bay_cc;
+                        if (r.released) {
+                            owner_.release_ordnance_007bbba0(unit_);       // 009B67E9
+                            --a.rounds_2c;                                 // 009B67F1
+                            ++unit_.lb_prepare_releases;
+                            if (unit_.lb_first_release_at < 0.0f)
+                                unit_.lb_first_release_at = owner_.summary.simulated_seconds;
+                        }
+                        if (r.runs_follow_tick) {
+                            // 009B6A75: 009C1FD0, whose 009BFDA6 republishes +8Ch.
+                            unit_.plan_mode_26c = 2;
+                            owner_.run_follow_tick_009c1fd0(unit_, unit_.lb_prepare_8c);
+                            owner_.record("BotStateFollow::station_keeping", 0x009bfee0u);
+                        }
+                        if (r.writes_bank_hold) {
+                            unit_.plan_state.bank_target_2c4 = 0.0f;       // 009B66DE
+                            unit_.plan_heading_mode_2cc = 1;
+                            unit_.plan_heading_2c0_written = false;
+                        }
+                        if (r.writes_pitch) {
+                            unit_.plan_state.pitch_target_2bc = r.pitch_target_2bc;
+                            unit_.plan_state.pitch_mode_2d0 = 2;
+                        }
+                        if (r.writes_speed) st_speed(r.speed_2b4);
+                        owner_.done("BotStateLevelBombPrepare::tick", 0x009b6670u);
+                    }
                     // 009B59F0, the release tick.
                     void lb_release_tick_009b59f0(float dt) {
                         bsp::LevelBombApproach& a = unit_.lb_ap;
@@ -23935,7 +24150,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 for (const int a : unit_.rack_ammo_per_rack) can_drop |= a > 0;
                                 if (free_flight && can_drop) {
                                     // 009B83D0: +4C6h (approach+CEh) and free flight.
-                                    if (unit_.lb_ap.has_ordnance_ce) ++unit_.lb_pending_424;
+                                    if (unit_.lb_ap.has_ordnance_ce) {
+                                        ++unit_.lb_pending_424;
+                                        // 009B83FE-009B840C: in prepare, 009B8100.
+                                        if (GameUnitsHost::Impl::kLevelBombPrepareTickBound &&
+                                            unit_.level_bomb_state == LS::kPrepare) {
+                                            lb_prepare_arm_009b8100();
+                                        }
+                                    }
                                     --unit_.torpedo_release_orders_c58;   // answered 1
                                     ++unit_.lb_orders_spent;
                                 } else {
@@ -24018,8 +24240,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             case LS::kMoveTo: lb_moveto_tick_009b6d20(dt); break;
                             case LS::kFollow:
                             case LS::kPrepare:
-                                // follow 009C1FD0; prepare's own tick 009B6670 is
-                                // unread (PARTIAL) and the follow tick stands in.
+                                if (GameUnitsHost::Impl::kLevelBombPrepareTickBound &&
+                                    unit_.level_bomb_state == LS::kPrepare) {
+                                    lb_prepare_tick_009b6670(dt);
+                                    break;
+                                }
+                                // follow 009C1FD0; with kLevelBombPrepareTickBound
+                                // false the follow tick stands in for 009B6670.
                                 unit_.plan_mode_26c = 2;
                                 owner_.run_follow_tick_009c1fd0(unit_);
                                 owner_.record("BotStateFollow::station_keeping", 0x009bfee0u);
@@ -37703,6 +37930,12 @@ void GameUnitsHost::report() {
                         u.lb_orders_spent, u.lb_orders_cleared, u.lb_passthrough_releases,
                         u.lb_pending_424);
                 }
+                if (u.lb_prepare_wait_ticks + u.lb_prepare_drop_ticks + u.lb_prepare_arms > 0) {
+                    host.log.notef("  levelbomb %-16s prepare 009B6670: wait=%d drop=%d arms_8100=%d "
+                        "releases=%d last_8c=%.3f", u.row.name.c_str(), u.lb_prepare_wait_ticks,
+                        u.lb_prepare_drop_ticks, u.lb_prepare_arms, u.lb_prepare_releases,
+                        static_cast<double>(u.lb_prepare_8c));
+                }
                 if (u.lb_issue_tail_calls > 0) {
                     host.log.notef("  levelbomb %-16s issue tail 007C0ED9: calls=%d raised=%d "
                         "gate_refused=%d c25=%d c58=%d", u.row.name.c_str(),
@@ -39839,6 +40072,17 @@ void GameUnitsHost::report() {
                     "states[%s] releases=%d",
                     slot->row.name.c_str(), slot->torpedo_arm_ticks,
                     slot->torpedo_transitions, states, slot->torpedo_releases);
+                if (slot->torpedo_command_writes > 0) {
+                    host.log.notef("  torpedo %-12s command writes applied=%d (009D2761 / "
+                        "009D295F-009D29B7, packet cc9_l60_torpedo_command_writes)",
+                        slot->row.name.c_str(), slot->torpedo_command_writes);
+                }
+                if (slot->torpedo_done_enters_2530 > 0) {
+                    host.log.notef("  torpedo %-12s done/prepare enter 009D2530=%d 3E8h "
+                        "republish=%d (009BFDA6, packet cc9_l61_torpedo_done_formation)",
+                        slot->row.name.c_str(), slot->torpedo_done_enters_2530,
+                        slot->torpedo_3e8_republishes);
+                }
                 if (slot->torpedo_disarmed_ticks > 0) {
                     host.log.notef("  torpedo %-12s disarmed 009D29E0: ticks=%d close=%d "
                         "min_ratio=%.3f last_8c=%.3f",

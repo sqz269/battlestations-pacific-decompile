@@ -35,6 +35,8 @@ public:
     NativeFontResources& operator=(const NativeFontResources&) = delete;
 
     const FontDescriptor& descriptor() const noexcept { return descriptor_; }
+    bool live() const noexcept { return phase_ == Phase::live; }
+    bool retired() const noexcept { return phase_ == Phase::destroyed; }
     FontData& data() noexcept { return *data_; }
     const FontData& data() const noexcept { return *data_; }
     // Sign-extend the CURRENT sole lowword, not a descriptor/default/cached

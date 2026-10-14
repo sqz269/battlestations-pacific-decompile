@@ -385,7 +385,7 @@ constexpr bool kAaSlotRangeOriginBound = true;
 //    [leader+738h]->vtable[2Ch](), the leader's own target. The host read only
 //    the unit's own row. ON: a unit with no fire target of its own takes its
 //    formation leader's row target. OFF: as before.
-constexpr bool kDirectorLeaderFireTargetBound = false;
+constexpr bool kDirectorLeaderFireTargetBound = true;   // ON: GUNNERY 254 (lead's call)
 //  * kSubmarineCategoryGateBound: packet cc9_g41_aa_pick_d4 (docs/CC13_VER_19.md
 //    D4). 008636A0 installs 00D0D32C on an IsKindOf(8) unit (0086371E..00863743);
 //    its slot 4, 008627A0, opens category 7 when 008527E0 (y > band1 - 3) and
@@ -508,6 +508,18 @@ constexpr bool kTorpedoBotNoInterceptDropBound = true;   // ON by mechanism: GUN
 //    trigger drops. cc13's torpedo_launch_zone_clear_0090088e over the ship-AI
 //    host's zone table. OFF: no zone test, as before.
 constexpr bool kTorpedoLaunchZoneBound = true;   // ON: GUNNERY 240 (no reach yet)
+//  * kTorpedoBotSmallCraftBound: GUNNERY 250 (227 item 6, docs/CC13_GPR_40.md 1.3).
+//    00729BC0 asks a category-7 gun's TorpedoBot slot 1Ch, 008FC010 (dword
+//    00D182CC): IsKindOf(6), then 00828EC0([t+538h]) must answer false, then
+//    [t+5Dh] clear, then gun->vtable[1D4h] (0072F6E0, 1 for kind 7: gun+42Ch is
+//    installed only for kinds 1, 5, 6). 00828EC0 = 00827F70 (class kind 0Eh, or
+//    0Ch with BigLandingShip +808h clear) and MaxSpeed +500h >= 8.938947f
+//    (00D099AC, COMISS/JC). 00862820 already refuses IsKindOf(0Eh) and t+5Dh for
+//    category 7, so what this adds is the fast small landing ship. LABELLED: the
+//    class kinds are the entity kinds, as the AI accuracy group's 00827F70 uses.
+//    ON: such a target refuses the slot. OFF: counted (small_craft_refusals).
+constexpr bool kTorpedoBotSmallCraftBound = true;   // ON: GUNNERY 252 (no reach yet)
+constexpr float kTorpedoProofMinMaxSpeed = 8.938947f;   // 00D099AC
 //  * kTorpedoRackDropBound: packet g43_ver20_d2 (docs/CC13_VER_20.md D2, GUNNERY
 //    239). A plane's torpedo (2Bh, parent 2Ah) leaves through 006E4D50 as a bomb
 //    does: four stream-1 draws (006E4F91, 006E4FB1, 006E513C, 006E51AC), 006E0A70
@@ -901,6 +913,17 @@ constexpr bool kAaKind6GateBound = true;   // ON: GUNNERY_OPEN_ITEMS 184.3
 //    lifted direction's hull-frame pair. OFF: the unlifted hull-frame bearing, and
 //    the world lift added to the hull-frame elevation (184.1's substitution).
 constexpr bool kAaKind6GateMountFrameBound = true;   // GUNNERY 197: ON, inert on USN02/USN13 9000
+//  * kArtilleryAcceptGateBound: GUNNERY 248 (lead queue item 2, the 222 fallback).
+//    00729BC0 sends weapon kinds 2, 3 and 4 to the ArtilleryGunnerBot at gun+398h
+//    (GUNNERY 164.2), whose accept 006DEF30 refuses a target the gravity arc
+//    00955630 cannot reach or the traverse window 0085A8B0 excludes, before
+//    gun->vtable[1D4h] (0072F6E0, which answers 1 for these kinds: gun+42Ch is
+//    only installed for kinds 1, 5 and 6, 00729560). Step 8.8 (00865773) then
+//    tries the gun's next candidate. The host accepted kinds 2-4 on the range
+//    alone. ON: the two gates of kind 6's surface arm, a refusal refusing the
+//    slot. OFF: counted only (artillery_gate_rejects). LABELLED as kind 6:
+//    [[bot+50h]+3Ch] taken as present; a gun with no arcs is not refused.
+constexpr bool kArtilleryAcceptGateBound = true;   // ON: GUNNERY 249
 //  * kBulletBlastDamageMinNestedBound (cc9-gunnery38/39, GUNNERY 203): 006E99E7's artillery
 //    tier reads the class's Blast.BlastDamageMin; read_bullet_class_number takes the
 //    dotted key as one flat name and answers 0. True: the nested reader. False: 0,
@@ -935,7 +958,7 @@ constexpr bool kAabb0085cdb0Bound = true;
 //    the class model reads, else the class box. False: the class Width x Height x Length
 //    box about the origin, so a burst on a mast or the upper works (34 m up on a
 //    Height-5 transport) lies past a 30 m range.
-constexpr bool kBlastMeshBoundsBound = false;
+constexpr bool kBlastMeshBoundsBound = true;   // ON: GUNNERY 252
 //  * kGunSubmergedArtilleryKindBound (cc9-gunnery39, GUNNERY 206; cc13-fe5's note).
 //    00729A80's second submerged-fire test 005459B0 (005459B0-005459D8) answers
 //    whether the weapon kind [[gun+3F4h]+80h] is 2, 3, 4 or 6, so an artillery gun
@@ -2026,6 +2049,7 @@ struct GameGunneryHost::Impl {
     unsigned long long artillery_fly_time_expiries{0};
     unsigned long long aa_window_rejects{0};
     unsigned long long aa_kind6_gate_rejects{0};   // GUNNERY 184
+    unsigned long long artillery_gate_rejects{0};   // GUNNERY 248, kinds 2-4
     unsigned long long aa_armour_rejects{0};
     unsigned long long aa_armour_rejects_tail{0};   // plane-owned kind-1 guns (008FBF70 has no armour term)
     unsigned long long aa_min_range_skips{0};
@@ -2151,12 +2175,16 @@ struct GameGunneryHost::Impl {
     bsp::WeaponHitAccuracyProfile torpedo_hit_profiles[4]{};
     unsigned long long torpedo_gate_a_drops{0}, torpedo_gate_b_drops{0},
         torpedo_gate_passes{0}, torpedo_submerged_drops{0}, torpedo_no_intercept_drops{0};
+    unsigned long long torpedo_small_craft_refusals{0};   // kTorpedoBotSmallCraftBound
     // kTorpedoBotThinkTimerBound: bot+5Ch thinkTimeLeft and what the last
     // evaluating tick left in the trigger (vtable[1E8h]), by gun.
     struct TorpedoThink {
         float left{0.0f};          // bot+5Ch; LABELLED seed 0 (no constructor store)
         bool have_target{false};
         bool want_fire{false};
+        // What 00900476..00900526 left for the gyro run line (007311B0).
+        std::array<float, 2> lead_xz{{0.0f, 0.0f}};
+        float snap_radians{0.0f};
     };
     std::map<std::size_t, TorpedoThink> torpedo_think_by_gun;
     unsigned long long torpedo_think_holds{0}, torpedo_think_evals{0};
@@ -6201,6 +6229,19 @@ public:
             in_range = reach <= (dp != nullptr ? dp->max_range : row.max_range);  // 00729C8A JA
         }
         in.slot_accepts_target = in_range;
+        if (row.category == bsp::kUnitGunneryTorpedoCategory && in_range
+            && other < owner_.units.count()) {
+            // 008FC010 -> 00828EC0: a torpedo-proof small craft (kTorpedoBotSmallCraftBound).
+            const bool small_craft = owner_.units.unit_is_kind_of(other, 0x0E)
+                || (owner_.units.unit_is_kind_of(other, 0x0C)
+                    && !(owner_.ship_ai != nullptr
+                         && owner_.ship_ai->unit_big_landing_ship_0808(other)));
+            if (small_craft && owner_.units.unit_class_max_speed_0500(other)
+                    >= kTorpedoProofMinMaxSpeed) {
+                ++owner_.torpedo_small_craft_refusals;
+                if constexpr (kTorpedoBotSmallCraftBound) in.slot_accepts_target = false;
+            }
+        }
         // Evaluated on every call so a run with the switch off still counts what
         // the bound terms would refuse; applied only when that term's own switch is on.
         {
@@ -6340,6 +6381,40 @@ public:
             ++owner_.line_of_fire_refusals;
             return true;
         };
+        // 006DEF30's two gates, the arc solve 00955630 and the traverse window
+        // 0085A8B0: kind 6's surface picks, and kinds 2-4 under
+        // kArtilleryAcceptGateBound.
+        auto artillery_reach_006def30 = [&]() -> bool {
+            bsp::GunGravityArcQuery q;
+            q.aim_point = {target_pos[0], target_pos[1], target_pos[2]};
+            q.muzzle_position = {muzzle[0], muzzle[1], muzzle[2]};
+            // 006DEF84 FLD [class+50h]: the 006E98BC speed for an artillery class.
+            q.muzzle_speed = kArtilleryClassSpeedBound && row.artillery_class
+                ? row.class_speed : row.muzzle_speed;
+            q.mount_frame = nullptr;
+            const bsp::GunGravityArcSolution arc = bsp::solve_gun_gravity_arc_00955630(q);
+            bool reach = arc.solved;                                // 006DEFAD
+            if (reach) {
+                const float u[3] = {d[0] / len, d[1] / len, d[2] / len};
+                const float direct = std::atan2(d[1], std::sqrt(d[0] * d[0] + d[2] * d[2]));
+                float horz = kGunHorzSign * std::atan2(dot3(u, right), dot3(u, forward));
+                float vert = std::asin(std::max(-1.0f, std::min(1.0f, dot3(u, up))))
+                    + (arc.angles.vert - direct);
+                if constexpr (kAaKind6GateMountFrameBound) {
+                    // The mount-NULL solve returns (pitch, -0 - yaw) in the world frame.
+                    const float p = arc.angles.vert;
+                    const float y = -arc.angles.horz;
+                    const float w[3] = {std::sin(y) * std::cos(p), std::sin(p),
+                        std::cos(y) * std::cos(p)};
+                    horz = kGunHorzSign * std::atan2(dot3(w, right), dot3(w, forward));
+                    vert = std::asin(std::max(-1.0f, std::min(1.0f, dot3(w, up))));
+                }
+                const bsp::GunPlatformArcs arcs{row.arcs.data(), row.arcs.size()};
+                reach = bsp::gun_traverse_allowed_007f5fc0(arcs,           // 0085A8B0
+                    bsp::gun_wrap_angle_0085abbd(horz), bsp::gun_wrap_angle_0085abbd(vert));
+            }
+            return reach;
+        };
         if (kind == 6 && !(kAaKind6GateBound && plane)) {
             // 006DEF30, the ArtilleryGunnerBot accept, evaluated OFF too so the
             // refusals it would add are counted. [[bot+50h]+3Ch] is taken as
@@ -6349,34 +6424,7 @@ public:
             if (!plane && (len <= 0.0f || row.arcs.empty())) {
                 if constexpr (kAaKind6GateBound) return;   // as kind 5 below
             } else if (!plane) {
-                bsp::GunGravityArcQuery q;
-                q.aim_point = {target_pos[0], target_pos[1], target_pos[2]};
-                q.muzzle_position = {muzzle[0], muzzle[1], muzzle[2]};
-                // 006DEF84 FLD [class+50h]: the 006E98BC speed for an artillery class.
-                q.muzzle_speed = kArtilleryClassSpeedBound && row.artillery_class
-                    ? row.class_speed : row.muzzle_speed;
-                q.mount_frame = nullptr;
-                const bsp::GunGravityArcSolution arc = bsp::solve_gun_gravity_arc_00955630(q);
-                bool reach = arc.solved;                                // 006DEFAD
-                if (reach) {
-                    const float u[3] = {d[0] / len, d[1] / len, d[2] / len};
-                    const float direct = std::atan2(d[1], std::sqrt(d[0] * d[0] + d[2] * d[2]));
-                    float horz = kGunHorzSign * std::atan2(dot3(u, right), dot3(u, forward));
-                    float vert = std::asin(std::max(-1.0f, std::min(1.0f, dot3(u, up))))
-                        + (arc.angles.vert - direct);
-                    if constexpr (kAaKind6GateMountFrameBound) {
-                        // The mount-NULL solve returns (pitch, -0 - yaw) in the world frame.
-                        const float p = arc.angles.vert;
-                        const float y = -arc.angles.horz;
-                        const float w[3] = {std::sin(y) * std::cos(p), std::sin(p),
-                            std::cos(y) * std::cos(p)};
-                        horz = kGunHorzSign * std::atan2(dot3(w, right), dot3(w, forward));
-                        vert = std::asin(std::max(-1.0f, std::min(1.0f, dot3(w, up))));
-                    }
-                    const bsp::GunPlatformArcs arcs{row.arcs.data(), row.arcs.size()};
-                    reach = bsp::gun_traverse_allowed_007f5fc0(arcs,           // 0085A8B0
-                        bsp::gun_wrap_angle_0085abbd(horz), bsp::gun_wrap_angle_0085abbd(vert));
-                }
+                const bool reach = artillery_reach_006def30();
                 if (!reach) {
                     ++owner_.aa_kind6_gate_rejects;
                     if constexpr (kAaKind6GateBound) {
@@ -6387,6 +6435,19 @@ public:
                 }
             }
             line_of_fire_refuses();
+            return;
+        }
+        if (kind == 2 || kind == 3 || kind == 4) {
+            // kArtilleryAcceptGateBound: 006DEF30 for the ArtilleryGunnerBot kinds,
+            // counted either way. No line of fire for these kinds (0072F6E0 answers 1).
+            if (len <= 0.0f || row.arcs.empty()) return;
+            if (!artillery_reach_006def30()) {
+                ++owner_.artillery_gate_rejects;
+                if constexpr (kArtilleryAcceptGateBound) {
+                    in.slot_accepts_target = false;
+                    last_refusal_ = AaRefusal::window;
+                }
+            }
             return;
         }
         // Kind 6 against a plane under kAaKind6GateBound: 008FBFC0, the window
@@ -8145,7 +8206,10 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             // 00900985: no 0085ABA0 this tick (009003DD is past the timer), so the
             // gun keeps turning toward the last command; the trigger is restored below.
             command_angles = false;
-            have_target = torpedo_think_by_gun[g].have_target;
+            const TorpedoThink& think = torpedo_think_by_gun[g];
+            have_target = think.have_target;
+            torpedo_lead_xz = think.lead_xz;
+            torpedo_snap_radians = think.snap_radians;
         }
         const bool accepted = command_angles
             && bsp::gun_set_target_angles_0085aba0(gun.angles, arcs,
@@ -8268,14 +8332,10 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 if (image_ready && !accepted) ++summary.torpedo_ready_refused_angles;
             }
             if constexpr (kTorpedoBotReadyGateBound) want_fire = image_ready;
-            if constexpr (kTorpedoBotThinkTimerBound) {
-                TorpedoThink& think = torpedo_think_by_gun[g];
-                if (torpedo_think_hold) {
-                    want_fire = think.want_fire;   // the trigger keeps its last state
-                } else {
-                    think.want_fire = want_fire;
-                    think.have_target = have_target;
-                }
+            if (torpedo_think_hold) {
+                // The trigger keeps the state the last evaluating tick left after
+                // all of its gates (stored below, after the zone test).
+                want_fire = torpedo_think_by_gun[g].want_fire;
             }
             done("TorpedoBot::launch_test_008fff20", 0x009003f8u);
         }
@@ -8411,7 +8471,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 ++aa_test_flak;
             }
         }
-        if (kTorpedoFriendlyCrossingBound && want_fire
+        if (kTorpedoFriendlyCrossingBound && want_fire && !torpedo_think_hold
             && gun.category == bsp::kUnitGunneryTorpedoCategory) {
             // 008FFF20 0090058A..009007F6, after the settle test and vtable[1D0h].
             ++summary.torpedo_friendly_scans;
@@ -8422,7 +8482,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             }
             done("TorpedoBot::friendly_crossing_scan_008fff20", 0x0090058au);
         }
-        if (kTorpedoLaunchZoneBound && want_fire
+        if (kTorpedoLaunchZoneBound && want_fire && !torpedo_think_hold
             && gun.category == bsp::kUnitGunneryTorpedoCategory) {
             // 008FFF20 0090088E..009008EB: the gun-to-lead line against the layer-5
             // avoid zones. LABELLED: the image draws the AngleErr jitter
@@ -8439,6 +8499,16 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 }
                 done("TorpedoBot::launch_zone_gate_0090088e", 0x0090088eu);
             }
+        }
+        if (kTorpedoBotThinkTimerBound && !torpedo_think_hold && !player_seat
+            && gun.category == bsp::kUnitGunneryTorpedoCategory && torpedo_gun) {
+            // An evaluating tick (or one the timer never reached): what the
+            // trigger and the gyro run line hold until the next evaluation.
+            TorpedoThink& think = torpedo_think_by_gun[g];
+            think.want_fire = want_fire;
+            think.have_target = have_target;
+            think.lead_xz = torpedo_lead_xz;
+            think.snap_radians = torpedo_snap_radians;
         }
         if (kDepthChargeBotTickBound && gun.category == 8 && !player_seat) {
             // Packet cc9_depth_charge_bot: 008FC080 in place of the generic test.
@@ -15372,6 +15442,9 @@ void GameGunneryHost::report() {
             host.torpedo_attack_range_samples, host.torpedo_submerged_drops,
             kTorpedoBotAttackRangeBound ? 1 : 0, kTorpedoBotStaleFlagBound ? 1 : 0,
             kTorpedoSubmergedTargetDropBound ? 1 : 0);
+        host.log.notef("summary mission gunnery torpedo bot small craft refusals=%llu bound=%d "
+            "(008FC010 / 00828EC0, GUNNERY 250)", host.torpedo_small_craft_refusals,
+            kTorpedoBotSmallCraftBound ? 1 : 0);
         host.log.notef("summary mission gunnery torpedo think timer bound=%d evals=%llu holds=%llu "
             "(008FFF20 009000DD..00900101, packet g44_torpedo_think)",
             kTorpedoBotThinkTimerBound ? 1 : 0, host.torpedo_think_evals,
@@ -15797,12 +15870,14 @@ void GameGunneryHost::report() {
         }
         host.log.notef("summary mission aa acceptance bound=%d window_rejects=%llu "
             "armour_rejects=%llu min_range_skips=%llu armour_rejects_tail=%llu tail_bound=%d "
-            "lof_expiry_draw=%d kind6_gate=%d kind6_gate_rejects=%llu (packet cc9_aa_targeting)",
+            "lof_expiry_draw=%d kind6_gate=%d kind6_gate_rejects=%llu artillery_gate=%d "
+            "artillery_gate_rejects=%llu (packet cc9_aa_targeting)",
             (kAaMinRangeBound ? 1 : 0) | (kAaFireWindowBound ? 2 : 0) | (kAaArmourBound ? 4 : 0),
             host.aa_window_rejects, host.aa_armour_rejects,
             host.aa_min_range_skips, host.aa_armour_rejects_tail,
             kTailGunnerNoArmourTestBound ? 1 : 0, kAaLineOfFireExpiryDrawBound ? 1 : 0,
-            kAaKind6GateBound ? 1 : 0, host.aa_kind6_gate_rejects);
+            kAaKind6GateBound ? 1 : 0, host.aa_kind6_gate_rejects,
+            kArtilleryAcceptGateBound ? 1 : 0, host.artillery_gate_rejects);
         for (const auto& kv : host.aa_target_stats) {
             const GameGunneryHost::Impl::AaTargetStats& st = kv.second;
             host.log.notef("summary mission aa target %-24s scored=%llu accepted=%llu "

@@ -14,17 +14,17 @@
 //    (src/game_hosts_mission_frame.cpp, docs/CONSTRUCT_WORLD.md). Closed, rows
 //    9..13 of the fan-out are skipped every step; open, each is a named record
 //    below until its body is read.
-// 2. The five 68h groups at 00f876c0 are empty. Every element is built by
-//    00875890, whose nine call sites are unit, aircraft and objective
-//    constructions this process never reaches, and the one routine that would
-//    splice a pending element into a group, 00874c90, is itself row 11 behind
-//    the closed world gate. So every wave walks five empty groups, queues
-//    nothing and dispatches nothing.
+// 2. NativeFixedStepJobWaves binds the actual five groups and the shared frame
+//    owner domain. Once attached it queues real descriptor owners/raw receiver
+//    pointers and runs the native pool exactly once per admitted group. The
+//    Source mission's typed unit vectors alone are not those native groups;
+//    without an attachment this host has no group view and reports that gap.
 //
 // See include/bsp/game_hosts_fixed_step.hpp for the address list.
 
 #include "bsp/game_hosts_fixed_step.hpp"
 #include "bsp/game_native_game_runtime.hpp"
+#include "bsp/native_fixed_step_job_waves.hpp"
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_commands.hpp"
@@ -33,6 +33,7 @@
 #include "bsp/in_mission_subsystem_tick.hpp"
 
 #include <cstdio>
+#include <stdexcept>
 
 namespace bsp::game {
 namespace {
@@ -42,7 +43,8 @@ namespace {
 constexpr float kDynamicsDampingScale = 1.0f;
 
 // Packet cc9_construct_world_p7 (docs/CONSTRUCT_WORLD.md section 13). True:
-// four of the five rows behind the world gate run their single-player arms.
+// three rows behind the world gate run their single-player arms; the raw tick
+// splice now requires the separate native job attachment below.
 // session+F4h is game+1FE4h (docs/SESSION_MESSAGE_DISPATCH.md), 0 here.
 //  * 00778450, the session pump: the countdown at session+278h is armed to
 //    -1.0 by the session constructor (0076EE67, [00D7A260]) and only
@@ -56,14 +58,14 @@ constexpr float kDynamicsDampingScale = 1.0f;
 //  * 0077EC20: the deferred-create list 00F871A4 (count 00F871A8) is filled only
 //    by 0076C600's entity-create arm (00780670); no host path posts one, so the
 //    count is 0 and 0077EC2A returns.
-//  * 00874C90: the pending tick-registration list (head 00E0B6D8, sentinel
-//    00E0B704) is filled only by 00875890, which no host path runs; the empty
-//    arm 00874CDE..00874CFE resets the list headers.
+//  * 00874C90: with an actual native job attachment, splice the genuine pending
+//    tick registrations into their groups. An unattached Source mission does
+//    not provide those raw nodes/headers, so this row remains a named record.
 //  * 0076FFC0: every call sits under +F4h != 0 (0076FFC3); with it clear the
 //    routine only saves and restores 00F876A1.
 // 00925F20 SEntity_InitAll is bound by kSEntityInitAllBound (packet
 // cc9_sentity_init_all, bsp/game_hosts_fixed_step.hpp), not by this switch. False: the
-// four are records, as before. ON by the verdict: USN04 and USN02 pairs moved
+// three are records, as before. ON by the verdict: USN04 and USN02 pairs moved
 // only the predicted rows (docs/CONSTRUCT_WORLD.md section 14).
 constexpr bool kGatedFanoutBodiesBound = true;
 
@@ -90,6 +92,10 @@ void format_address(std::uint32_t value, char (&out)[16]) {
 GameFixedStepHost::GameFixedStepHost(GameHostLog& log, bsp::GameDynamicsState& dynamics)
     : log_(log), dynamics_(dynamics) {}
 
+void GameFixedStepHost::attach_native_jobs(bsp::NativeFixedStepJobWaves* jobs) noexcept {
+    native_jobs_ = jobs;
+}
+
 void GameFixedStepHost::record(const char* method, std::uint32_t address) {
     char text[16];
     format_address(address, text);
@@ -109,7 +115,15 @@ void GameFixedStepHost::done(const char* method, std::uint32_t address) {
 // ---------------------------------------------------------------------------
 
 void GameFixedStepHost::run_job_waves_00875cc0(std::uint8_t run_pass) {
-    bsp::run_fixed_step_job_waves(bsp::kFixedSimulationStepFloat, run_pass, *this);
+    if (native_jobs_) {
+        bsp::NativeFixedStepJobWaveCounts counts{};
+        native_jobs_->run_fixed_waves(counts);
+        summary_.elements_seen += counts.elements_seen;
+        summary_.jobs_queued += counts.jobs_queued;
+        summary_.group_dispatches += counts.group_dispatches;
+    } else {
+        bsp::run_fixed_step_job_waves(bsp::kFixedSimulationStepFloat, run_pass, *this);
+    }
     summary_.wave_groups += 3 * bsp::kJobWaveGroupCount;
     log_.implemented("FixedStep::run_job_waves", "00875cc0");
 }
@@ -119,8 +133,16 @@ void GameFixedStepHost::run_interpolation_wave_00875670(float leftover,
     // 00875f32..00875fcc. The driver stores the leftover accumulator into the
     // 0Ch-byte descriptor's +8h at 00875f50 and the wave hands it to the job
     // body instead of the 0.05f step.
-    static_cast<void>(bsp::run_fixed_step_job_wave(
-        bsp::JobWavePhase::kInterpolation, leftover, run_pass, *this));
+    if (native_jobs_) {
+        bsp::NativeFixedStepJobWaveCounts counts{};
+        native_jobs_->run_interpolation(leftover, counts);
+        summary_.elements_seen += counts.elements_seen;
+        summary_.jobs_queued += counts.jobs_queued;
+        summary_.group_dispatches += counts.group_dispatches;
+    } else {
+        static_cast<void>(bsp::run_fixed_step_job_wave(
+            bsp::JobWavePhase::kInterpolation, leftover, run_pass, *this));
+    }
     summary_.interpolation_groups += bsp::kJobWaveGroupCount;
     log_.implemented("FixedStep::interpolation_wave", "00875670");
 }
@@ -132,10 +154,9 @@ bool GameFixedStepHost::next_element(std::size_t group, std::size_t position,
     static_cast<void>(view);
     if (!groups_reported_) {
         groups_reported_ = true;
-        log_.notef("fixed-step job waves: the five 68h groups at 00f876c0 are empty. Every "
-            "element comes from 00875890, whose nine construction sites are unit, aircraft "
-            "and objective paths this process does not run, and the splice 00874c90 is row "
-            "11 behind the closed world gate");
+        log_.notef("fixed-step job waves: actual groups at 00f876c0 and their shared native "
+            "frame-job owner are not attached. Typed Source unit construction does not "
+            "supply the raw 00875890 registrations/00874c90 group publication");
     }
     return false;
 }
@@ -145,9 +166,9 @@ void GameFixedStepHost::queue_job(bsp::JobWavePhase phase, std::size_t group,
     static_cast<void>(phase);
     static_cast<void>(group);
     static_cast<void>(position);
-    // 004c1130 then [[pool+4h]+4h]. The frame job pool is the render owner's.
-    ++summary_.jobs_queued;
-    log_.unimplemented("FixedStepJobs::queue_job", "00be3020");
+    // The actual attached path performs this call inside NativeFixedStepJobWaves
+    // and never enters the legacy projection's second body walk.
+    throw std::logic_error("Fixed-step queue requires actual native group/owner attachment");
 }
 
 void GameFixedStepHost::dispatch_group(bsp::JobWavePhase phase, std::size_t group,
@@ -155,8 +176,7 @@ void GameFixedStepHost::dispatch_group(bsp::JobWavePhase phase, std::size_t grou
     static_cast<void>(phase);
     static_cast<void>(group);
     static_cast<void>(run_pass);
-    ++summary_.group_dispatches;
-    log_.unimplemented("FixedStepJobs::dispatch_group", "00be3150");
+    throw std::logic_error("Fixed-step dispatch requires actual native group/owner attachment");
 }
 
 void GameFixedStepHost::run_wave1_job_008750a0(std::size_t group, std::size_t position,
@@ -400,9 +420,8 @@ void GameFixedStepHost::apply_pending_entity_creates_0077ec20() {
 
 void GameFixedStepHost::flush_pending_tick_registrations_00874c90() {
     ++summary_.fanout_calls;
-    if constexpr (kGatedFanoutBodiesBound) {
-        // 00874C95 head == sentinel 00E0B704 / JE 00874CDE: nothing to splice;
-        // the tail resets the empty list's headers.
+    if (native_jobs_) {
+        native_jobs_->flush_pending_groups_00874c90();
         done("FixedStepFanout::flush_tick_registrations", 0x00875e9bu);
     } else {
         record("FixedStepFanout::flush_tick_registrations", 0x00875e9bu);

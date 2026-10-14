@@ -1,0 +1,37 @@
+{
+  "packet": "cc12_render_resource_normal_composition",
+  "address": "00b107f0",
+  "source": "src/native_render_resource_initializer.cpp",
+  "interface": "initialize_native_render_resources_00b107f0",
+  "scope": "existing entry and ten normal continuations composed through B13010; existing-init branch preserved",
+  "original_abi": "ECX service; three DWORD stack cells; RET 0C at B13026",
+  "cpp_abi": "explicit C++ interface; no binary replacement claim",
+  "normal_stages": ["00b107f0", "00b109bc", "00b11599", "00b118af", "00b11d7e", "00b11e40", "00b11ef4", "00b120b9", "00b124a1", "00b1297a", "00b12c9a"],
+  "native_body": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "start": "00b107f0",
+    "exclusive_end": "00b13029",
+    "length": 10297,
+    "live_matches_installed_pe": true,
+    "sha256": "b9faf0b255e8bca3eb711bf1186bb1f41533d9047853a753599b9f1abd805a14",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "receipt": "local/cc12_render_resource_original_bytes_receipt.json",
+    "complete_capture": "local/output/ghidra-bytes-00b107f0-length-10297-092656.txt",
+    "initial_cli_error": "hexadecimal length rejected by existing CLI; preserved in local/cc12_render_resource_original_bytes_capture.txt; decimal retry passed"
+  },
+  "retention": "persistent immovable eleven-stage record; identical borrowed service/arguments/continuation domain; no duplicate native credits; failure stops and retains entered records without rollback/replay",
+  "completion": "normal_work_complete records normal resource work only; +1C4 and an existing-init return do not admit unresolved partial-child destruction",
+  "verification": {
+    "component_build": "MSVC Win32 Release passed via scripts/build.ps1",
+    "build_log": "local/cc12_resume_integration_build_02.log",
+    "existing_ctest": "3/3 passed: reconstructed_math, native_math_differential, tool_tests",
+    "ctest_scope": "existing checks; no end-to-end composed initializer fixture",
+    "first_build_error": "integration began before incoming PlatformPowerPolicyContext definition was merged; original build log retained; merged definition and comment-only Text conflict then rebuilt successfully",
+    "first_build_log": "local/cc12_resume_integration_build_01.log",
+    "composed_native_execution": "not performed",
+    "runtime_activation": "parent provider graph not yet connected"
+  },
+  "excluded": ["native FH3/SEH unwind", "private-stack aliasing and register-return sequence", "arbitrary partial-child lifetime admission", "full startup and gameplay fidelity"],
+  "evidence_docs": ["docs/NATIVE_RENDER_RESOURCE_INITIALIZER.md", "docs/NATIVE_RENDER_RESOURCE_INIT_CC10.md", "docs/NATIVE_RENDER_RESOURCE_INIT_CONTINUATION_CC10.md"]
+}

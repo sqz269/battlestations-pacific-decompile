@@ -45,6 +45,7 @@ struct IGameExplorer;
 #include "bsp/frame_clock.hpp"
 #include "bsp/platform_loop.hpp"
 #include "bsp/platform_window.hpp"
+#include "bsp/platform_control_messages.hpp"
 #include "bsp/text_input.hpp"
 #include "bsp/random_threads.hpp"
 #include "bsp/winmain_startup.hpp"
@@ -57,6 +58,8 @@ struct CameraAxesCrtAccess;
 struct NativeFrameClockPublicationContext;
 class NativeOnlineSigninCalls;
 class XLiveLibrary;
+struct NativeOnlineManagerStorage;
+struct WindowClosePromptCalls;
 }
 
 namespace bsp::game {
@@ -74,6 +77,7 @@ class GameNativeSettingsProcess;
 class GameScriptHost;
 class GameNativeLuaServices;
 class GameNativeRendererApplication;
+class GameNativeGuiEffectProbe;
 class GameLocaleHost;
 class GameFontHost;
 // Milestone 2b, defined in bsp/game_hosts_frontend.hpp.
@@ -312,6 +316,7 @@ class GameWindowHost final : public PlatformWindowHost {
 public:
     GameWindowHost(GameHostLog& log, HINSTANCE instance) : log_(log), instance_(instance) {}
     void stop_existing_window(Win32PlatformState& state) override;
+    void initialize_power_policy_after_render_entry_cache(Win32PlatformState& state);
     HCURSOR load_arrow_cursor() override;
     ATOM register_class(const WNDCLASSA& window_class) override;
     BOOL adjust_window_rect(RECT& rectangle, DWORD style, BOOL menu) override;
@@ -337,6 +342,7 @@ private:
     ATOM registered_class_{};
     int origin_x_{};
     int origin_y_{};
+    PlatformPowerPolicyContext power_policy_{win32_platform_power_imports()};
 };
 
 // SaveStorageHost for 00beb2c0: SHGetSpecialFolderPathA plus CreateDirectoryA.
@@ -403,9 +409,11 @@ class GameFrameHost final : public ApplicationFrameHost {
 public:
     GameFrameHost(GameHostLog& log, const NativeFrameClockPublicationContext& clock, Win32PlatformState& platform,
         PlatformLoopState& loop, GameStateSlot& game_state, GameFrameProfiler* profiler,
-        GameMenuHost* menu, GameVfsHost& vfs)
+        GameMenuHost* menu, GameVfsHost& vfs, NativeOnlineManagerStorage* volatile& online,
+        WindowClosePromptCalls* close_prompt = nullptr)
         : log_(log), clock_(clock), platform_(platform), loop_(loop),
-          game_state_(game_state), profiler_(profiler), menu_(menu), vfs_(vfs) {}
+          game_state_(game_state), profiler_(profiler), menu_(menu), vfs_(vfs),
+          online_(online), close_prompt_(close_prompt) {}
 
     void profiler_set_frame_slot_color(std::uint32_t argb) override;
     void profiler_begin_frame_slot() override;
@@ -420,6 +428,11 @@ public:
     void update_loading_queue() override;
     void profiler_end_frame_slot() override;
     void profiler_end_frame() override;
+
+    // Bind only the actual retained confirmation-screen owner. Its callback
+    // dispatcher must route 004BBC50 here while this frame host remains alive.
+    void bind_window_close_prompt(WindowClosePromptCalls* prompt) noexcept { close_prompt_ = prompt; }
+    bool dispatch_window_close_callback(std::uint32_t callback, std::int32_t response) noexcept;
 
     // Global exit byte 00e1ae75, set by the close policy at 004ca2f0.
     bool global_exit() const noexcept { return global_exit_; }
@@ -438,6 +451,8 @@ private:
     GameFrameProfiler* profiler_{};
     GameMenuHost* menu_{};
     GameVfsHost& vfs_;
+    NativeOnlineManagerStorage* volatile& online_;
+    WindowClosePromptCalls* close_prompt_{};
     unsigned long long frame_index_{};
     bool global_exit_{};
 };
@@ -679,7 +694,10 @@ private:
     void exit_if_particle_manager_failed() noexcept;
     void exit_if_native_lua_interrupted() noexcept;
     void exit_if_native_renderer_incomplete() noexcept;
+    void exit_if_native_gui_probe_incomplete() noexcept;
+    void close_native_gui_probe_after_drain() noexcept;
     std::unique_ptr<GameNativeRendererApplication> native_renderer_;
+    std::unique_ptr<GameNativeGuiEffectProbe> native_gui_probe_;
     std::unique_ptr<GameNativeLuaServices> lua_services_;
     struct SoundServices;
     std::unique_ptr<SoundServices> sound_;

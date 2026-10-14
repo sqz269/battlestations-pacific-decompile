@@ -4,9 +4,12 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/platform_control_messages.hpp"
 #include "bsp/platform_text_messages.hpp"
+#include "bsp/window_close_transport.hpp"
 #include "bsp/game_native_lua_globals.hpp"
 #include "bsp/game_native_lua_services.hpp"
 #include "bsp/game_native_renderer_application.hpp"
+#include "bsp/game_native_font_probe.hpp"
+#include "bsp/game_native_gui_effect_probe.hpp"
 #include "bsp/game_native_shader_process.hpp"
 #include "bsp/native_renderer_end_frame.hpp"
 #include "bsp/native_xlive_device_adapter.hpp"
@@ -866,10 +869,15 @@ bool resolve_window_origin(const std::string& spec, int& x, int& y, int& width, 
 // ---------------------------------------------------------------------------
 
 void GameWindowHost::stop_existing_window(Win32PlatformState& state) {
-    // Slot +8 is recovered BEBF70. Its saved power-policy producer and native
-    // normal-shutdown restore schedule are not yet bound in this application.
-    log_.unimplemented("PlatformWindowHost::stop_existing_window", "00bebf70");
-    static_cast<void>(state);
+    // Proven caller BECF27, not an inferred ordinary-shutdown schedule. The
+    // retained context rejects a fabricated/fresh +4C before its real producer.
+    power_policy_.stop_existing_window(state);
+    log_.implemented("PlatformWindowHost::stop_existing_window", "00bebf70");
+}
+
+void GameWindowHost::initialize_power_policy_after_render_entry_cache(Win32PlatformState& state) {
+    power_policy_.initialize_after_render_entry_cache(state);
+    log_.implemented("PlatformWindowHost::initialize_power_policy", "00bed223");
 }
 
 HCURSOR GameWindowHost::load_arrow_cursor() {
@@ -1107,6 +1115,19 @@ void GameFrameHost::game_on_move(float seconds) {
     // at 004e4d32 is not reconstructed.
     log_.implemented("ApplicationFrameHost::game_on_move", "004e4a40");
     log_.unimplemented("GameFrameControl::simulation_spine", "004e4d32");
+    // Native 004E4A79 calls the close processor before the front-end update.
+    // Bind the actual online publication and current game state; an unavailable
+    // confirmation owner is an explicit source boundary, never permission to exit.
+    WindowCloseTransportContext close{platform_, global_exit_, online_};
+    const auto close_result = process_window_close_transport_004ca2f0(
+        close, read_game_state_00737acc(game_state_), close_prompt_);
+    if (close_result == WindowCloseDispatch::missing_online_owner) {
+        log_.unimplemented("CloseRequestPolicy::online_owner", "00f8abe8+3e8");
+    } else if (close_result == WindowCloseDispatch::missing_prompt_owner) {
+        log_.unimplemented("CloseRequestPolicy::confirmation_owner", "00425d10/00531b00");
+    } else if (close_result != WindowCloseDispatch::no_request) {
+        log_.implemented("CloseRequestPolicy::process", "004ca2f0");
+    }
     if (menu_ != nullptr) menu_->frame(seconds, frame_index_);
     ++frame_index_;
     // Milestone 2g: a mission that ended through the debrief path has nothing
@@ -1118,15 +1139,12 @@ void GameFrameHost::game_on_move(float seconds) {
             "application loop exit");
         global_exit_ = true;
     }
-    // One of 004e4a40's callees is reconstructed: the window close processor at 004ca2f0
-    // (docs/WINDOW_CLOSE.md), whose front-end branch reads and clears platform+180h and
-    // sets global exit 00e1ae75. The confirmation-dialog branch taken for other game
-    // states is not reconstructed.
-    if (platform_.close_requested) {
-        platform_.close_requested = false;
-        log_.implemented("CloseRequestPolicy::front_end_branch", "004ca2f0");
-        global_exit_ = true;
-    }
+}
+
+bool GameFrameHost::dispatch_window_close_callback(std::uint32_t callback,
+    std::int32_t response) noexcept {
+    WindowCloseTransportContext close{platform_, global_exit_, online_};
+    return dispatch_window_close_confirmation_004bbc50(close, callback, response);
 }
 
 bool GameFrameHost::exit_requested() {
@@ -1579,7 +1597,33 @@ void GameStartupHost::exit_if_native_renderer_incomplete() noexcept {
     std::_Exit(1);
 }
 
+void GameStartupHost::exit_if_native_gui_probe_incomplete() noexcept {
+    if (!native_gui_probe_ || !native_gui_probe_->requires_process_retention()) return;
+    try {
+        native_gui_probe_->emit_failure_observations();
+        log_.note("incomplete native GUI effect probe; retaining actual effects/samplers/shadow/input/VFS/renderer graph until process exit");
+        log_.close();
+    } catch (...) { std::fputs("bsp_game: native GUI effect probe requires process retention\n", stderr); }
+    std::_Exit(1);
+}
+
+void GameStartupHost::close_native_gui_probe_after_drain() noexcept {
+    if (!native_gui_probe_) return;
+    try {
+        native_gui_probe_->after_native_renderer_drain();
+        native_gui_probe_.reset();
+    } catch (...) {
+        try {
+            native_gui_probe_->emit_failure_observations();
+            log_.note("native GUI effect metadata closure failed after raw singleton drain; retaining providers until process exit");
+            log_.close();
+        } catch (...) { std::fputs("bsp_game: native GUI effect metadata closure failed\n", stderr); }
+        std::_Exit(1);
+    }
+}
+
 GameStartupHost::~GameStartupHost() {
+    exit_if_native_gui_probe_incomplete();
     if(settings_host_&&settings_host_->requires_process_retention()) {
         try{log_.notef("native settings loader interrupted at %08x; retaining actual settings/catalog/VFS/renderer graph",settings_host_->failure_site());log_.close();}
         catch(...){std::fputs("bsp_game: native settings require process retention\n",stderr);std::fflush(stderr);}
@@ -1612,6 +1656,7 @@ GameStartupHost::~GameStartupHost() {
         if(scripts_)scripts_->input().after_singleton_drain();
         if (clock_services_) clock_services_->phase = ClockServices::Phase::drained;
     }
+    close_native_gui_probe_after_drain();
     if (input_) {
         try { input_->core.release_sdk_after_native_drain(); }
         catch (const std::exception& error) {
@@ -1705,6 +1750,7 @@ void GameStartupHost::game_explorer_release() {
 }
 
 void GameStartupHost::exit_process(int code) {
+    exit_if_native_gui_probe_incomplete();
     exit_if_native_renderer_incomplete();
     exit_if_native_lua_interrupted();
     exit_if_frame_clock_failed();
@@ -2191,8 +2237,9 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         // Its actual cache joins the same manager as the renderer and is
         // retired by the manager's current-profile scalar-deletion dispatch.
         native_renderer_->initialize_window_render_entry_cache();
-        // BED223..BED276 is recovered, but production policy mutation awaits
-        // the native restore/lifetime schedule; BECE30 only enables screensaver.
+        // The retained producer/stop owner is concrete in GameWindowHost, but
+        // this startup call remains gated until the actual normal-exit restore
+        // caller is established. BECE30 only enables the screensaver.
         log_.unimplemented("PlatformWindowHost::initialize_power_policy", "00bed223");
         summary_.device_result = device_->creation_result();
         summary_.back_buffer_width = device_->parameters().BackBufferWidth;
@@ -2301,6 +2348,30 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // diagnostic path may already have made this warm.
     (void)native_diagnostic_sink_get_or_create_004c14c0(
         singletons_->diagnostic_publication_0109cf14(), singletons_->sound_lifetime());
+    char native_font_probe_requested[2]{};
+    if (GetEnvironmentVariableA("BSP_NATIVE_FONT_PROBE", native_font_probe_requested,
+            sizeof(native_font_probe_requested)) == 1 && native_font_probe_requested[0] == '1') {
+        (void)probe_actual_native_fonts(log_, *native_renderer_, *vfs_, *scripts_,
+            language_font_path_008d4890(settings_host_->language_catalog(),
+                settings_view_.gameplay.language_index_04));
+    }
+    char native_gui_probe_requested[2]{};
+    if (GetEnvironmentVariableA("BSP_NATIVE_GUI_EFFECT_PROBE", native_gui_probe_requested,
+            sizeof(native_gui_probe_requested)) == 1 && native_gui_probe_requested[0] == '1') {
+        // Retain metadata before entering actual parents. Failure preserves the
+        // entire application graph; a successful run retires only its caller
+        // credits and names, then keeps parent bindings through the raw drain.
+        native_gui_probe_ = std::make_unique<GameNativeGuiEffectProbe>(log_, *native_renderer_,
+            *vfs_, *singletons_, *native_data_, *settings_process_, *input_runtime_,
+            native_renderer_->loading_platform_focus_publication());
+        try {
+            (void)native_gui_probe_->run();
+            native_gui_probe_->retire_caller_references();
+        } catch (...) {
+            exit_if_native_gui_probe_incomplete();
+            throw;
+        }
+    }
     summary_.fonts_loaded = fonts_->registry().fonts().size();
     summary_.font_resource_opens = fonts_->resource_opens();
     summary_.fingerprint_defined_bytes = fonts_->fingerprint().defined_size();
@@ -2380,7 +2451,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     summary_.screenshot_frame = options_.screenshot_frame;
 
     frame_host_ = new GameFrameHost(log_, require_frame_clock_context(), platform_, loop_, game_state_, profiler_,
-        menu_, *vfs_);
+        menu_, *vfs_, settings_process_->online_00f8abe8());
     std::function<void(IDirect3DDevice9&)> capture;
     if (!options_.screenshot_path.empty()) {
         GameFrontendHost* frontend_host = frontend_;
@@ -2424,6 +2495,7 @@ void GameStartupHost::release_platform_window() noexcept {
 }
 
 void GameStartupHost::application_shutdown() {
+    exit_if_native_gui_probe_incomplete();
     exit_if_native_renderer_incomplete();
     exit_if_native_lua_interrupted();
     exit_if_frame_clock_failed();
@@ -2526,6 +2598,7 @@ void GameStartupHost::application_destruct() {
 }
 
 void GameStartupHost::destroy_singleton_lifetime_manager() {
+    exit_if_native_gui_probe_incomplete();
     exit_if_native_renderer_incomplete();
     exit_if_native_lua_interrupted();
     exit_if_frame_clock_failed();
@@ -2535,6 +2608,7 @@ void GameStartupHost::destroy_singleton_lifetime_manager() {
     log_.implemented("StartupHost::destroy_singleton_lifetime_manager", "008f8449");
     if (native_renderer_) native_renderer_->drain_singletons();
     else singletons_->shutdown();
+    close_native_gui_probe_after_drain();
     if (lua_services_)
         log_.notef("native Lua after raw singleton drain: fundamentals=%s getters=%u",
             lua_services_->fundamentals_published() ? "non-null" : "null",

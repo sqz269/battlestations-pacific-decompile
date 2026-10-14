@@ -1,0 +1,98 @@
+#pragma once
+#include "bsp/native_font_resources.hpp"
+#include "bsp/native_texture_loading_cache.hpp"
+#include <exception>
+#include <memory>
+#include <string>
+
+namespace bsp {
+class FontRegistryStartup;
+class GuiTextRuntimeFactory;
+class VfsLuaScriptFiles;
+struct LuaRuntimeGlobals;
+}
+namespace bsp::game {
+class GameHostLog;
+class GameVfsHost;
+class GameNativeRendererApplication;
+
+enum class GameNativeFontLoadPhase {
+    fresh, gfx, alpha, data, decode, adoption, publication, complete, failed
+};
+// One initial font invocation. SAME stable descriptor and caller-owned cache
+// frames; no destructor rolls back partial native references/registration.
+// native_site names the corresponding observed body region/entry, not the
+// exact failing instruction inside a nested provider or this C++ composition.
+// Names with *_name_live=false are consumed headers, never replayable inputs.
+// gfx/alpha hold returned references until adoption clears them. gfx_result/
+// alpha_result and published are borrowed observations, never extra references.
+struct GameNativeFontLoadOperation final {
+    const FontDescriptor* descriptor{};
+    GameNativeFontLoadPhase phase{GameNativeFontLoadPhase::fresh};
+    std::uint32_t native_site{};
+    std::string gfx_path, alpha_path, data_path;
+    NativeString gfx_name, alpha_name;
+    bool gfx_name_live{}, alpha_name_live{};
+    NativeTextureCacheAcquired gfx_cache, alpha_cache;
+    void* gfx{};
+    void* alpha{};
+    void* gfx_result{};
+    void* alpha_result{};
+    std::unique_ptr<FontData> decoded;
+    std::unique_ptr<NativeFontResources> unpublished;
+    NativeFontResources* published{};
+    std::exception_ptr failure;
+};
+
+// Genuine normal initial-load producer over the SAME renderer/VFS/string/
+// canonical-resource domain. Native64's observed B319B0 path loads GFX then
+// alpha (flags0), then read-existing DAT goes through the real VFS and the
+// proven scalar decoder. Adopt transfers the sole decoded allocation and both
+// returned raw image references into NativeFontResources without AddRef or
+// another metric/glyph map. Registry descriptors remain stable across appends.
+//
+// AD4C30 native ABI: ECX font, five string arguments, RET14h. This source
+// composition implements successful final population/ownership; its DAT
+// whole-file transport, typed tree/string allocation and failure timing are
+// not the original per-field stream/SEH/pool ABI. AD51D0 destructive reload is
+// unsupported. AD53A0 uses existing typed payload/GFX/alpha retirement; the
+// native string/tree/sentinel tail remains outside that owner projection.
+// Evidence: FONT_RESOURCE_OWNERSHIP.md, NATIVE_FONT_RESOURCES.md,
+// GUI_TEXT_NATIVE_RENDERER.md and GAME_NATIVE_FONT_APPLICATION.md.
+//
+// Keep renderer, VFS and registry descriptors alive through this component,
+// all Texts/materials, failed frames and shared renderer drain. Serialize with
+// native callbacks, frames, reset/recreation and singleton drain. Retire Texts,
+// then retire_fonts(), then destroy this producer before registry destruction.
+// A bound Text factory must remain alive through retire_fonts().
+class GameNativeFontApplication final {
+public:
+    GameNativeFontApplication(GameHostLog&, GameNativeRendererApplication&,
+        GameVfsHost&, FontRegistryStartup&);
+    ~GameNativeFontApplication() noexcept;
+    GameNativeFontApplication(const GameNativeFontApplication&) = delete;
+    GameNativeFontApplication& operator=(const GameNativeFontApplication&) = delete;
+
+    void load_descriptors_00ac3910(VfsLuaScriptFiles&, const LuaRuntimeGlobals&,
+        const std::string& root, const std::string& descriptor,
+        const std::string& language_path);
+    // Export only after complete initial production. Before any Text factory
+    // creates a borrower, bind that SAME factory below; no unrelated empty
+    // factory can authorize retirement of this resource collection.
+    NativeFontResourceOwners& native_fonts();
+    void bind_text_factory(GuiTextRuntimeFactory&);
+    // Requires zero retained raw Text allocations in the bound factory. Actual
+    // font cleanup runs forward in descriptor/load order, then borrowed registry
+    // bindings are cleared. No implicit reload or failed-operation recovery.
+    void retire_fonts();
+    const GameNativeFontLoadOperation& operation(std::size_t index) const;
+    std::size_t produced_fonts() const noexcept;
+    bool ready() const noexcept;
+    bool requires_process_retention() const noexcept;
+    const std::exception_ptr& failure() const noexcept;
+
+private:
+    struct Impl;
+    std::unique_ptr<Impl> impl_;
+};
+} // namespace bsp::game

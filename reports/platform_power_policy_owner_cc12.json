@@ -1,0 +1,157 @@
+{
+  "packet": "cc12_window_stop_binding",
+  "status": "retained_owner_and_evidenced_old_window_stop_bound_build_and_native_fixture_passed_startup_activation_gated",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "baseline": "896c8f94b",
+  "source_files": [
+    "include/bsp/platform_control_messages.hpp",
+    "src/platform_control_messages.cpp",
+    "src/game_hosts.cpp"
+  ],
+  "primary_owned_header_dependency": "include/bsp/game_hosts.hpp: include platform_control_messages.hpp; GameWindowHost explicit producer declaration and power_policy_ member; copied into worker for build, excluded from worker commit",
+  "saved_policy_initialization": "Native BECDA0/BE2AC0/BE2960 leave scheme4C and both policy ranges untouched. POWER_POLICY members deliberately default initialized; no fabricated policy or scheme. Projected fresh receiver guard occurs outside native stop.",
+  "caller_boundary": {
+    "known_stop_site": "00becf27 existing HWND branch in BECEE0",
+    "producer_range": "00bed223..00bed276 after actual renderer/cache",
+    "native_stop_range": "00bebf70..00bebf94",
+    "production_producer_activated": false,
+    "normal_exit_restore_caller": "unestablished; see PLATFORM_STOP_SCHEDULE_CC10",
+    "new_shutdown_schedule": false
+  },
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "status": "passed",
+      "exit_code": 0,
+      "platform": "MSVC Win32 Release",
+      "log": "local/cc12_window_power_build_final.log",
+      "fresh_build_log": "local/cc12_window_power_build.log",
+      "existing_ctest_passed": 2,
+      "existing_ctest_failed": 0,
+      "existing_ctest_names": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "final_source_recompiled": "platform_control_messages.cpp",
+      "native_differential_fixture": "separate3-case original/source probe; no new CTest cases"
+    },
+    "native_fixture": {
+      "command": "local/cc12_window_power_probe.exe \"I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe\"",
+      "result": "passed",
+      "cases": 3,
+      "producer_modes": [
+        "success",
+        "GetActivePwrScheme failure",
+        "ignored ReadPwrScheme failure"
+      ],
+      "set_active_failure": "ignored in producer and stop for all scenarios",
+      "comparison": [
+        "API traces",
+        "scheme",
+        "saved90h policy bytes",
+        "modified90h policy bytes",
+        "frames42 clear before PostQuitMessage0"
+      ],
+      "owner_checks": [
+        "constructor retains allocation bytes",
+        "fresh receiver rejected before effects",
+        "foreign receiver producer/stop rejected",
+        "destructor schedules no API"
+      ],
+      "native_relocation": "Full37-byte BEBF70 and84-byte BED223 fragment; EBP platform wrapper saves EBP/EBX/ESI/EDI; relative calls and IAT operands redirected to spies; internal branch preserved",
+      "os_power_screensaver_quit_mutation": false,
+      "manifest": "/link /MANIFEST:EMBED",
+      "log": "local/cc12_window_power_probe.log"
+    },
+    "existing_call_check": {
+      "command": "python tools/verify_report_calls.py reports/platform_control_messages_cc10.json",
+      "direct_rows_checked": 4,
+      "failed": 0,
+      "iat_named_rows_skipped": 10
+    }
+  },
+  "native_evidence": {
+    "original_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "original_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00bebf70",
+        "length": 37,
+        "sha256": "8144c2a4b84d01cd8b096ef0d27ddc41750be60e0af5cf6921bf4120ee80dab3",
+        "matches_live_ghidra_bytes": true
+      },
+      {
+        "address": "00bed223",
+        "length": 84,
+        "sha256": "863ec5232f6baf90937353617552434cd81a5bfb1a1b1935047b9daebfaf9426",
+        "matches_live_ghidra_bytes": true
+      }
+    ],
+    "constructor_ranges": [
+      "00becda0..00bece23",
+      "00be2ac0..00be2b09",
+      "00be2960..00be29f0"
+    ],
+    "ghidra_queries_verify_target_before_every_batch": true
+  },
+  "ghidra_annotations": {
+    "changed_addresses": [
+      "00bebf70",
+      "00becda0"
+    ],
+    "tool": "tools/ghidra_annotate.py --apply",
+    "write_lock": true,
+    "saved_project": true,
+    "previous_annotations": "local/ghidra-annotations-20261014T162458Z.json",
+    "exports_refreshed": true
+  },
+  "artifacts": [
+    {
+      "path": "include/bsp/platform_control_messages.hpp",
+      "sha256": "00107c933bdc8da1f4130be878544369acc733d7a339cf41a4fdb42b1b05bcde"
+    },
+    {
+      "path": "src/platform_control_messages.cpp",
+      "sha256": "6e70aeaac9ec399be43802b4424a4fde8db4d4a23996a2e6b64cc0e2fee417ec"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "sha256": "dc061beee23f7557acf971736240a9ee702f4c0d1618eeb8e62106cf6ac27b70"
+    },
+    {
+      "path": "local/cc12_window_power_probe.cpp",
+      "sha256": "c53e231cb1877a87e3f46a27ddc54f96da176815f821ec42a4c7e82f21cdaede"
+    },
+    {
+      "path": "local/cc12_window_power_probe.exe",
+      "sha256": "a8eea0c4c00eb883c66f67476189e453b65ebdbec33e1f487ef951ce31f7b23d"
+    },
+    {
+      "path": "local/cc12_window_power_probe.log",
+      "sha256": "6413c96795dedf5df15551a427b1d0d65dddbe78afcbe5857c98b7382cf17374"
+    },
+    {
+      "path": "local/cc12_window_power_build_final.log",
+      "sha256": "cd020c2f6167d7ea970d1b7189217f30589b9a5a4f65310d42498530b2555f5a"
+    },
+    {
+      "path": "local/cc12_window_power_build.log",
+      "sha256": "e67f2e6449917e8e571ef40649d0f7adeb163a40e043e40bbfaaa775575dbb49"
+    },
+    {
+      "path": "build/win32/Release/bsp_game.exe",
+      "sha256": "2dddba9c18ae8196909ccfb48c21952e4e9494effd8941ed8b9756d6c1b28b23"
+    },
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "sha256": "5912a03da5531cd240c18d2b44d0c9c7676e63b32ce4acef81b599d76849e50e"
+    }
+  ],
+  "limits": [
+    "Projected C++ owner is not native platform object ABI",
+    "No established normal-exit restore call or whole-game lifecycle parity",
+    "Application startup policy mutation remains gated; compiled producer requires genuine normal-exit restore caller before activation"
+  ],
+  "main_integration_acceptance": "pending primary integration/header merge and its required verification; worker did not merge or push Main"
+}

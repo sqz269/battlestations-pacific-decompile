@@ -1,0 +1,244 @@
+{
+  "schema": "cc12.native-component-integration.v1",
+  "authored_utc": "2026-10-14T18:49:25.412928+00:00",
+  "previous_goal_turn": "progress: native font producer and close policy were reconstructed and staged, with local full build verification",
+  "reviewed_components": [
+    {
+      "source": "src/game_native_font_application.cpp",
+      "activation": "not yet canonical font or Text activation",
+      "commit": "5f014f177e082840fbd6b6646a9655544ee2fd1d",
+      "component": "actual font producer"
+    },
+    {
+      "source": "src/window_close_transport.cpp",
+      "activation": "actual close policy bound; prompt singleton producer remains absent",
+      "commit": "d094a6776ccfa1b7a1d7058d6c6e8c64e587d094",
+      "component": "window close policy and prompt transport"
+    },
+    {
+      "component": "canonical raw application frame-job graph",
+      "commit": "da1ff312f",
+      "source": "src/game_native_frame_job_application.cpp",
+      "activation": "actual parent receiver/group attachment pending",
+      "independent_receipts_verified": 8,
+      "fixture_children": "normal real-worker/raw-drain and callback-failure retention both PASS; instrumented receiver callbacks are fixtures"
+    },
+    {
+      "component": "actual native-font startup probe",
+      "commit": "d0bfdf3b246a793511056838fc71b6ced01db235",
+      "source": "src/game_native_font_probe.cpp",
+      "primary_hook_commit": "88a3bcd1d",
+      "activation": "opt-in BSP_NATIVE_FONT_PROBE=1 after genuine phase7; no canonical replacement publication or Text export"
+    },
+    {
+      "component": "actual scene and drawable command submission",
+      "commit": "b8c8ff0e5264efc2c38ebe3c3aa8ff18c2e50971",
+      "source": "src/native_render_scene_submission.cpp",
+      "addresses": [
+        "00B1F4D0",
+        "00B1F5E0"
+      ],
+      "activation": "not called by ordinary game frame; main world route requires B101C0 then D5E13C/B17240/B156C0",
+      "original_caller_fixture": "three normal/alias/mask-miss cases passed; callees explicitly intercepted; no pixels or native EH claim",
+      "independent_preserved_artifacts_verified": 12,
+      "worker_receipt_directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\world_draw_receipt_b8c8ff0e",
+      "primary_combined_build": "PASS Win32 and3/3 suites, local/cc12_scene_submission_full_build_01.log"
+    },
+    {
+      "component": "canonical tick-list registration process",
+      "commit": "9e8967f4e",
+      "source": "src/game_native_tick_registration_process.cpp",
+      "canonical_cells": "same GameNativeStringProcess AA0/F878CC; permanent group/pending backing and initial run byte1",
+      "image_initialization": "absolute PE head/tail pointer words; no PE base-relocation directory",
+      "independent_readonly_receipts_verified": 15,
+      "activation": "actual raw receiver parent and same command-line/Lua byte writer hooks remain unattached"
+    },
+    {
+      "component": "actual GUI effect producer",
+      "commit": "53b2a1ae8ff609d4ac41e613842791d76706a80f",
+      "source": "src/game_native_gui_effect_application.cpp",
+      "effect_registry": "same existing renderer records/string/array/profile/retirement domain; getter is ready-only",
+      "strict_compile_and_worker_build_receipts_verified": 3,
+      "activation": "genuine root/mode sampler contexts and real numeric material/Text consumer remain pending; no actual effect execution"
+    },
+    {
+      "component": "actual main-scene command production",
+      "commit": "3ccc58cbf2c776134d42cf17467f5c77ec8b719f",
+      "source": "src/native_main_scene_submission.cpp",
+      "address": "00B101C0",
+      "independent_artifacts_verified": 15,
+      "motion_proof": "six rebased original-prefix comparisons pass in default masked FP environment; no full native caller/EH proof",
+      "clip_proof": "source below/equal/unordered checks pass; no native clip differential",
+      "activation": "actual service/scene/camera producers and D5E13C:B17240/B156C0 execution remain unbound"
+    },
+    {
+      "component": "actual unit owner list-head leaves",
+      "commit": "e5a2ce36c",
+      "source": "src/native_unit_owner_list_heads.cpp",
+      "addresses": [
+        "0077B940",
+        "0077B960"
+      ],
+      "strict_and_original_receipts_verified": 12,
+      "normal_sizes": [
+        "18h",
+        "0Ch"
+      ],
+      "writes": "guarded raw +0/+4 self links only; other allocated bytes untouched",
+      "activation": "full77EED0/77E380/77E810 raw receiver ownership and dispatch remain unfinished"
+    }
+  ],
+  "permanent_registration": {
+    "worktree_local_injection_removed_from_cache": true,
+    "file": "cmake/startup.cmake",
+    "configure_log": "local/cc12_permanent_registration_configure.log"
+  },
+  "runtime": {
+    "faithful_world_rendering": "contradicted by earlier inspected screenshot; not revalidated by this build",
+    "gameplay_fidelity": "unproven",
+    "actual_font_resource_probe": {
+      "result": "PASS",
+      "fonts": 6,
+      "glyphs": 1060,
+      "unique_actual_images": 3,
+      "profiles": [
+        "00D61948"
+      ],
+      "fallback0091": "verified for all six fonts",
+      "image_retirement": {
+        "gfx_viper": "2->retired, 2 owning slots",
+        "alpha": "6->retired, 6 owning slots",
+        "gfx_arial": "4->retired, 4 owning slots"
+      },
+      "actual_owners_before": 0,
+      "actual_owners_after": 1,
+      "registry_size_equality_asserted": false,
+      "frame_count": 120,
+      "presents": 119,
+      "presents_skipped": 1,
+      "exit_code": 0,
+      "rendering_verified": false,
+      "launcher_session": 47638,
+      "started_utc": "2026-10-14T18:03:50.5857084Z",
+      "finished_utc": "2026-10-14T18:03:53.0223774Z",
+      "manifest_checkout": {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+        "head": "40fd4eebe2fd4dd99d636a46abbd226b0f2ae2bc",
+        "dirty": false
+      },
+      "exe_sha256": "14b700643b37e12c0f17d18db544bc5ed29bb3f6302c6f08306607f040bef91e",
+      "env": {
+        "BSP_NATIVE_FONT_PROBE": "1"
+      },
+      "immutable_receipts": [
+        {
+          "path": "local\\cc12_native_font_runtime_receipts_20261014T180350\\cc12_actual_native_font_startup_01.log",
+          "sha256": "a1cca9c2d9e694360939e549ea85bf98c144e03526f253abba18e15cc290b081",
+          "bytes": 66744
+        },
+        {
+          "path": "local\\cc12_native_font_runtime_receipts_20261014T180350\\cc12_actual_native_font_startup_01.log.manifest.json",
+          "sha256": "6b4506ea08689d665d553f2df363f1c94c8e23382741cc0f849ab968499fb0d3",
+          "bytes": 2451
+        },
+        {
+          "path": "local\\cc12_native_font_runtime_receipts_20261014T180350\\bsp_game.exe",
+          "sha256": "14b700643b37e12c0f17d18db544bc5ed29bb3f6302c6f08306607f040bef91e",
+          "bytes": 5436928
+        },
+        {
+          "path": "local\\cc12_native_font_runtime_receipts_20261014T180350\\cc12_font_probe_full_build_01.log",
+          "sha256": "5e58fd61922f98924df9ea368cfacac5fc66676e9efd78e7f53c37fe735f1289",
+          "bytes": 3338
+        },
+        {
+          "path": "local\\cc12_native_font_runtime_receipts_20261014T180350\\game_native_font_probe.cpp",
+          "sha256": "91e65a963e848ce1a4395011a5cb846ae4ca8237b9bb605f2df288fc367b4bed",
+          "bytes": 14751
+        },
+        {
+          "path": "local\\cc12_native_font_runtime_receipts_20261014T180350\\game_native_font_application.cpp",
+          "sha256": "c253e892ea5344edaf4da2ea3f53c07f00a16c32a433c0036b9ef5fcbf14c519",
+          "bytes": 12355
+        },
+        {
+          "path": "local\\cc12_native_font_runtime_receipts_20261014T180350\\game_hosts.cpp",
+          "sha256": "4f57788b1300eef9712dfadb01b0e620f6f69100bd0fb29392bc1b34eb77708a",
+          "bytes": 128234
+        },
+        {
+          "path": "local\\cc12_native_font_runtime_receipts_20261014T180350\\startup.cmake",
+          "sha256": "7eb3c6413d64e1dba06a21e56d19cffd6e55e42cefe7ccec6dbb54aeec633a80",
+          "bytes": 223086
+        }
+      ]
+    },
+    "world_route_finding": "004BBD00 old WorldView job is sound; actual CameraUpdate004B4820 ->0068A0D0 ->B101C0 ->D5E13C/B17240 ->B156C0; no scene fabricated"
+  },
+  "original_installation_preserved": true,
+  "goal_status": "active",
+  "primary_build_history": [
+    {
+      "ctest_total": 3,
+      "command": "./scripts/build.ps1",
+      "log_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_permanent_component_build_01.log",
+      "exe_size": 5414912,
+      "log_sha256": "2f4ccf77c61b4018f2b9157bd0e564e4ceab35d0aca031bcae7f51ef96b13a78",
+      "checkout_commit": "95cf8bc1958769277d471a6dd80421d68e4ab70e",
+      "result": "PASS",
+      "ctest_passed": 3,
+      "exe_sha256": "63019e5bb354274e39e3dc4c1bef5145b9de492b8fe4566f860ea38a200f8d16"
+    },
+    {
+      "command": "./scripts/build.ps1",
+      "checkout_commit": "88a3bcd1dd529a687ee27a78c826bbf551925793",
+      "result": "PASS",
+      "ctest_passed": 3,
+      "ctest_total": 3,
+      "log_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_font_probe_full_build_01.log",
+      "log_sha256": "5e58fd61922f98924df9ea368cfacac5fc66676e9efd78e7f53c37fe735f1289",
+      "exe_sha256": "14b700643b37e12c0f17d18db544bc5ed29bb3f6302c6f08306607f040bef91e",
+      "exe_size": 5436928,
+      "local_cmake_injection_active": false
+    },
+    {
+      "command": "./scripts/build.ps1",
+      "checkout_commit": "50032fdb1",
+      "result": "PASS",
+      "ctest_passed": 3,
+      "ctest_total": 3,
+      "log_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_scene_submission_full_build_01.log",
+      "log_sha256": "6332359030fd7a03c3fb5f652c2c052d2982f706d0b760e46359623a8cbdaa35",
+      "scope": "includes permanently registered B1F4D0/B1F5E0; later tick/effect/main-scene TU registrations require next combined build"
+    }
+  ],
+  "primary_build": {
+    "command": "./scripts/build.ps1",
+    "checkout_commit": "e069982e8e168cb58cb508cfc098da6c22bfc4ab",
+    "result": "PASS",
+    "ctest_passed": 3,
+    "ctest_total": 3,
+    "log_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_all_native_components_full_build_01.log",
+    "log_sha256": "a23f01bfa90a2f7e807753042b23781af5bf5ac52873f4f9177585dbd4ea5b77",
+    "exe_sha256": "e1465492c5fee35008cfab270c2935ad69094073d860ebfdbfc9bede29605b1e",
+    "exe_size": 5446656,
+    "local_cmake_injection_active": false,
+    "scope": "all nine reviewed components registered in permanent targets; no main-world/actual receiver/nativeText execution admission"
+  },
+  "sampler_caller_evidence": {
+    "original_worker_commit": "e91fe4c59160ff9c995dc4adf4bce273373cd5a6",
+    "owned_evidence_integrated_as": "03193f1b8",
+    "caller": "00B3B3C0",
+    "root_call": "00B3C018",
+    "mode_call": "00B3C024",
+    "alias": "same W=P-30h within one compiler invocation; no intervening reset",
+    "initial_root_word": "not statically established; no universal zero or builder seed",
+    "source_consumer": "text worker constructing shared pair word/knowledge with distinct root/mode contexts",
+    "native_capture_scope": "prior0162E964 capture establishes one invocation only"
+  },
+  "continuing_packets": [
+    "native main-scene executor substantive prefix",
+    "canonical sampler parent and shared caller-word scope",
+    "raw unit receiver root/ownership closure"
+  ]
+}

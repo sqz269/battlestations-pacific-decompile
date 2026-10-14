@@ -493,6 +493,10 @@ GameNativeMaterialEffectOwners GameNativeRendererApplication::material_effect_ow
     check(impl_->phase==Impl::Phase::ready,"material effect owners require the ready application renderer");
     return impl_->effect_owners.borrowed();
 }
+NativeEffectRegistryDestructionContext& GameNativeRendererApplication::effect_registry_domain() {
+    check(impl_->phase==Impl::Phase::ready,"effect registry domain requires the ready application renderer");
+    return impl_->effects;
+}
 GameNativeMaterialCompilerSources GameNativeRendererApplication::material_compiler_sources() {
     check(impl_->phase==Impl::Phase::ready,"material compiler sources require the ready application renderer");
     return impl_->compiler_owners.borrowed_sources();
@@ -546,6 +550,10 @@ const NativeCockpitViewportReleaseContext& GameNativeRendererApplication::cockpi
 }
 NativeTextureCacheContext& GameNativeRendererApplication::texture_cache() noexcept {
     return impl_->texture_loading.cache;
+}
+const void* const volatile& GameNativeRendererApplication::loading_platform_focus_publication() {
+    check(impl_->phase==Impl::Phase::ready,"loading focus publication requires the ready application renderer");
+    return impl_->devices.platform_publication;
 }
 NativeRenderActualOwnerRegistry& GameNativeRendererApplication::actual_owners() noexcept {
     return impl_->owners;
