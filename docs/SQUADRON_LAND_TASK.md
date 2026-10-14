@@ -16992,3 +16992,56 @@ JM08: only the sqn31-vs-B-17 #2.1 engagement moves, as predicted. The four sqn31
 B-17 #2.1 survives ON (killed OFF), so deaths 201 -> 200; two ground kills downstream (US barracks, AA truck 05) move
 by 0.3-4.8 s with a different B-17 killer. No other entity moves. The mechanism matches the image (keyed draws in the
 image's order), so the switch is flipped ON.
+
+## 5hl. cc13 backfill L1-L3 (cc9-lua60, 2026-10-14)
+
+- **L3, bound OFF: `bsp::kAutoAttackNullClassMoveToBound`** (include/bsp/air_operations.hpp). 007F15F0 (disk listing): a plane
+  target stands for its squadron (007F1607 IsKindOf 0Fh -> +9D4h); 007EEC50(target, 1, 1) at 007F161E; with a class,
+  0071ECF0(class, descriptor) (007F165A-007F1686); with none (007F1658 JE), 007F1688-007F16AD builds the same kind-1
+  descriptor (+174h id; kind 0 when the target is null) and issues moveto 00E08F68. The host's AutoAttackTarget serve
+  issued nothing on a null class. Under the switch the served members get moveto on the target through the intake's
+  issue loop, now `GameScriptOrdersHost::issue_command_to_members` (shared with 007F1940, which itself issues nothing on
+  a null class, 007F1B2D). Not extended to the standing per-member launch order (kAutoAttackMemberOnLaunchBound keeps
+  chosen classes only): a deck member launched later gets no moveto (labelled). Rows with a null class: PRCP01 (squadrons
+  14/17 -> Enterprise), USNOS `osx` (543/546/555 -> transports). Prediction: those single-plane squadrons fly a moveto to
+  the target instead of idling; gameplay moves on those rows (their planes approach the target and meet its AA).
+- **L2, no host counterpart.** 007B8AE0 calls [unit+DF4h] (the pilot bot, ECX = unit+38Ch so +A68h) vt[18h](level)
+  unconditionally, then 009565A0, whose 009565A3 test of [ECX-32Fh] (unit+5Dh) skips only the unit's own +390h, its
+  +6DCh object and the IsKindOf(20h) children's vt[1C4h]. The host's `pilot_skill_index` stands for the bot's level (the
+  robot rows), which the image sets for a dead unit too; the host keeps no per-device skill. Recorded, no change.
+- **L1, labelled, no switch.** 009CDD50/009CE1D0 draw on per-unit keyed streams where the image uses the shared stream
+  1: that is the keyed-stream discipline (`shared-rng-stream-couples-pairs`), and moving them to a shared stream would
+  couple every pair. 007CC8B0's OnDestroyed +C14h draw belongs to a retired plane with no later reader; on a keyed
+  stream it is unobservable, and on the shared stream only its sequence shift would show. Left as labelled.
+
+### 5hj.1 The wingmen's half: 0099AF53 -> 009B83D0 and the +424h passthrough 009B8BD0 (committed OFF)
+
+`kLevelBombReleaseOrderSpendBound` (packet `cc9_l60_level_order_spend`; CC13_VER_6 findings 2 and 5). 0099AF53-0099AFC2
+runs in the pilot bot's tick before its task ticks (0099AFCC): with unit+C58h > 0 and the plane in free flight
+((unit+72Ch)->vt[38h] = 0074E210, unit+900h == 7), unit+5Ch set and 007B9140 true, one order is offered to the task's
+vt[24h], else C58h is zeroed (0099AFC2). The level-bomb vt[24h] 009B83D0 (disk listing 009B83D0-009B8414): task+4C6h
+(approach+CEh) and the free-flight test raise task+424h; in prepare (task+310h == task+610h) it calls 009B8100; it always
+answers 1. The arm's tail 009B8BD0-009B8C3D: +424h > 0, free flight, the state none of attackrun/aim/prepare/release
+(task+5CCh/+5F4h/+610h/+6B4h, docs/BOT_TASKS.md) -> 007BBBA0 and +424h -= 1. The host's comment that this "needs a
+player-held aircraft" was wrong (CC13_VER_6). Not modelled: 009B8100 and prepare's tick 009B6670 (no row reaches the
+level-bomb prepare: pr=0 on JM08). Per slot: `levelbomb <name> orders 0099AF53/009B83D0: spent cleared passthrough_releases
+pending_424`.
+
+Prediction, with kLevelBomberIssueTailBound ON as well (JM08 `j8s`): when a flight leader's racks are armed, 007EEF30
+hands the wingmen 999 orders (when ctl+390h > ctl+374h); each wingman in follow/moveto/goaway raises +424h on its next
+tick and releases through 007BBBA0 at once, so the wingmen drop with the leader instead of after their own aim
+(first_release moves to the leader's time; aim ticks fall). A wingman in aim keeps +424h and releases when it leaves
+aim/release for goaway, or through its own aim release.
+
+## 5hm. The moveto-self "hold" is the player's arm: `kSquadronMoveToSelfBound` **ON** (cc9-lua60, 2026-10-14)
+
+5he.4 kept the switch OFF for a stage-1 hold read from the pseudocode (CC13_VER_10 D1, "not byte-read"). The bytes
+(0084E05E-0084E0B6): bVar3 = [ESI+54h] is moveto and 00521EA0(ESI+58h) == [ESI+224h] (0084E05E-0084E078); bVar2 =
+[[ESI+224h]+3D0h] non-null and its byte +184h set (0084E07C-0084E098). With bVar3 and not bVar2, 0084E0A4 `PUSH 2` ->
+0084E149 0071D810(2): the stage is raised to 2 at once. Only with bVar2 does 0084E0B3 raise 1 near the target. unit+184h
+is the player flag (role 1; docs/AI_BRAIN_PLAYER_EXEMPTION.md), so the hold is a player-led squadron's; an AI squadron's
+moveto-self ends on its first step, the 0084E4B1 tail re-issues it, and the image churns (stage 2, clear, re-issue) as the
+host does (USN21 f: stage_raises 43 -> 2152). The pairs of 5he.4 (PRCP01 and USN21 f, gameplay identical) stand and the
+mechanism matches for AI squadrons, so the switch is flipped ON. Not modelled: the player-led arm (0084E0B3-0084E149,
+leader within [00CFE050] of the target raises 1, and 0084E48A keeps it there); no harness row has a player-led squadron.
+No routed edit to game_hosts_commands.cpp is needed.

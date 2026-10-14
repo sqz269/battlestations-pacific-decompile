@@ -732,6 +732,10 @@ struct GameUnitSlot {
     int lb_rack_issues{0};
     int lb_rack_fired{0};
     int lb_issue_tail_calls{0};      // 007C0ED9 tail runs (kLevelBomberIssueTailBound)
+    int lb_pending_424{0};           // task+424h (kLevelBombReleaseOrderSpendBound)
+    int lb_orders_spent{0};          // 0099AF9B offers taken by 009B83D0
+    int lb_orders_cleared{0};        // 0099AFC2 zeroings
+    int lb_passthrough_releases{0};  // 009B8C38 007BBBA0 calls
     int lb_issue_tail_raised{0};     // members 007EEF30 gave orders to
     int lb_issue_tail_gate_refused{0};  // 007EEF50 gate (ctl+390h > ctl+374h) refused
     int lb_rack_drops{0};
@@ -6143,6 +6147,19 @@ struct GameUnitsHost::Impl {
     // walk, as before. The per-rack 31h 007BCCF0 -> 006E3F90 point
     // (007C0E98-007C0EC9) is not modelled; no rack here answers 31h.
     static constexpr bool kLevelBomberIssueTailBound = false;
+    // Packet cc9_l60_level_order_spend (CC13_VER_6 findings 2 and 5, with
+    // kLevelBomberIssueTailBound). 0099AF53-0099AFC2 in the pilot bot's tick, before
+    // its task ticks (0099AFCC): while unit+C58h > 0, with the plane in free flight
+    // ((unit+72Ch)->vt[38h] = 0074E210, unit+900h == 7), unit+5Ch set and 007B9140
+    // true, one order is offered to the task's vt[24h]; the level-bomb task's
+    // 009B83D0 raises task+424h when approach+CEh (task+4C6h) is set and the plane is
+    // in free flight, and always answers 1, so one order is spent; any failed guard
+    // zeroes C58h. 009B8BD0-009B8C3D at the end of the arm: with +424h > 0, free
+    // flight and the state none of attackrun/aim/prepare/release (+5CCh/+5F4h/+610h/
+    // +6B4h), 007BBBA0 and +424h -= 1. True: both run on the level-bomb task. NOT
+    // MODELLED: 009B83D0's prepare arm 009B8100 (prepare's own tick 009B6670 is not
+    // hosted; no row reaches prepare). False: neither runs.
+    static constexpr bool kLevelBombReleaseOrderSpendBound = false;
     // Packet cc9-gunnery38 (docs/CC13_AUDIT13_RECENT_FLIPS.md O1). The strafe
     // cruise profile 009CD020, run once per activation (the install and each
     // time the strafe task resurfaces after a tightturn or flikflak retires),
@@ -6520,7 +6537,9 @@ struct GameUnitsHost::Impl {
     // (+369h and [00E17BF2] both set) and a null 007F16D0 answer. A moveto whose
     // target is the squadron stays at stage 1 (0084E48A), so the flight loiters on
     // itself. False: those squadrons get no order (the host's B5 only).
-    static constexpr bool kSquadronMoveToSelfBound = false;
+    // ON (SQUADRON_LAND_TASK 5hm): unit+184h is the player flag, so an AI squadron's
+    // moveto-self is raised to stage 2 at once (0084E0A4) and the image churns too.
+    static constexpr bool kSquadronMoveToSelfBound = true;
     // Packet cc9_lua45_rack_equipment_device (GUNNERY 144, SQUADRON_LAND_TASK 5ev).
     // True: (a) an absent RepeatTime reads as 006E0242's default, 00B66330 with
     // [00CE3D30] = 0.6f, at both rack readers; (b) a rack's device is the plane's
@@ -23900,6 +23919,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.lb_target_plus_one != unit_.command_target_plus_one) {
                             lb_install_009b7990();
                         }
+                        if constexpr (GameUnitsHost::Impl::kLevelBombReleaseOrderSpendBound) {
+                            // 0099AF53-0099AFC2, run before the task ticks.
+                            if (unit_.torpedo_release_orders_c58 > 0) {
+                                const bool free_flight = unit_.plane_control_mode_900 == 7;
+                                lb_rack_state_seed();
+                                bool can_drop = false;   // 007B9140: a rack holding 2Ah
+                                for (const int a : unit_.rack_ammo_per_rack) can_drop |= a > 0;
+                                if (free_flight && can_drop) {
+                                    // 009B83D0: +4C6h (approach+CEh) and free flight.
+                                    if (unit_.lb_ap.has_ordnance_ce) ++unit_.lb_pending_424;
+                                    --unit_.torpedo_release_orders_c58;   // answered 1
+                                    ++unit_.lb_orders_spent;
+                                } else {
+                                    unit_.torpedo_release_orders_c58 = 0;   // 0099AFC2
+                                    ++unit_.lb_orders_cleared;
+                                }
+                            }
+                        }
                         const bool leader = owner_.unit_is_flight_leader_007b8ad0(unit_.process_index);
                         lb_cruise_profile_009b8c90(leader);
                         ++unit_.lb_arm_ticks;
@@ -23986,8 +24023,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             case LS::kGoAway: lb_goaway_tick_009b5760(); break;
                             default: break;
                         }
-                        // 009B8BD0-009B8C3D: the manual passthrough of +424h needs a
-                        // player-held aircraft ((unit+72Ch)->vt[38h]); none is here.
+                        // 009B8BD0-009B8C3D: the +424h passthrough. (unit+72Ch)->vt[38h]
+                        // is the free-flight test 0074E210, not a player test.
+                        if constexpr (GameUnitsHost::Impl::kLevelBombReleaseOrderSpendBound) {
+                            const LS s = unit_.level_bomb_state;
+                            if (unit_.lb_pending_424 > 0 && unit_.plane_control_mode_900 == 7 &&
+                                s != LS::kAttackRun && s != LS::kAim && s != LS::kPrepare &&
+                                s != LS::kRelease) {
+                                owner_.release_ordnance_007bbba0(unit_);   // 009B8C38
+                                --unit_.lb_pending_424;                    // 009B8C3D
+                                ++unit_.lb_passthrough_releases;
+                            }
+                        }
                         const int b = lb_state_bucket(unit_.level_bomb_state);
                         if (b >= 0) ++unit_.lb_state_ticks[b];
                         owner_.done("BotTaskLevelBomb::arm", 0x009b8b50u);
@@ -37643,6 +37690,12 @@ void GameUnitsHost::report() {
                     static_cast<double>(u.lb_first_drop_at),
                     static_cast<double>(u.lb_min_impact_miss),
                     bsp::level_bomb_state_name(u.level_bomb_state));
+                if (u.lb_orders_spent + u.lb_orders_cleared + u.lb_passthrough_releases > 0) {
+                    host.log.notef("  levelbomb %-16s orders 0099AF53/009B83D0: spent=%d cleared=%d "
+                        "passthrough_releases=%d pending_424=%d", u.row.name.c_str(),
+                        u.lb_orders_spent, u.lb_orders_cleared, u.lb_passthrough_releases,
+                        u.lb_pending_424);
+                }
                 if (u.lb_issue_tail_calls > 0) {
                     host.log.notef("  levelbomb %-16s issue tail 007C0ED9: calls=%d raised=%d "
                         "gate_refused=%d c25=%d c58=%d", u.row.name.c_str(),
