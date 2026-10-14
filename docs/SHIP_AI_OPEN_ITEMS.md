@@ -17836,3 +17836,24 @@ no-controlled release). Uncertainty: unreachability rests on the pump being the 
   presentation in the host's model, plus stream-0/1 draws keyed by unit under `BSP_GUNNERY_RNG_STREAMS=1`. Nothing in
   gameplay reads `+740h`/`+748h`. Not bound. Uncertainty: 00745BE0's class+2Ch point draw (00745E41) is modelled with
   count 0, as before; if that table spawns damaging explosions, the hangar fire would matter.
+
+## 250. Harness: a held `torpedo <ship> at <target>` is re-sent every frame (cc9-ships50, 2026-10-14; lead item)
+
+Why surface ships never launched (gunnery44: USN15 Fletchers, `trigger_ons=0`): 005484F0 builds one 79h per frame
+from the held fire key (docs/PLAYER_GUN_SEAT.md section 1), and for a ship that is not IsKindOf(8)/(0Eh) the group-4
+arm (0095A1CC; `apply_gun_aim_message_group4`) only trains the tubes toward the snapped bearing and sets the trigger
+once a tube is within 5 degrees of it (0095A2FC) while +34h is held. The harness sent one message at the `at` line and
+one at the `release` line, so the tubes trained for one frame and were let go. Subs take the press arm (0095A380),
+which fires on the press itself; that is why the sub plans launched.
+Now (src/game_hosts_mission_frame.cpp) a `torpedo ... at` that applies registers a hold for that unit, and the held
+message is re-sent at the start of every mission frame until the unit's next group-4 line (`release` or another `at`),
+logged as `helm torpedo hold ends: line N held K re-sent frame(s)`. The hold drops, logged with the reason
+(`helm torpedo hold dropped: ...`), when the unit stops being the controlled unit (another `select`; 005484F0 only
+sends for [00E188D8]) or the gunnery host refuses the message. Plans must hold long enough for the tubes to train
+(a Fletcher's tube trains about 100 degrees in a few seconds) and must not `select` another unit meanwhile; a target
+outside every tube window (dead ahead or astern for a Fletcher) still fails the snap and fires nothing, as for a
+player who does not turn the ship.
+Test (`local\s50_t_u15tt3.log`, `s50_t_u15tt4.log`, this tree's build of the commit, USN15): Fuso dead ahead,
+held 395 frames: 808 snap failures, nothing fired (faithful). Eight beam/quarter targets held 200 frames each:
+`trigger_ons=16 order_launches=10` (one salvo hit the friendly Denver, a test artefact). Before: a 5-frame hold gives
+`trigger_ons=0`.
