@@ -1967,6 +1967,9 @@ struct GameUnitSlot {
     float plane_death_timer_c10{-1.0f};
     bool plane_death_c39{false};
     bool plane_death_c36{false};
+    // unit+C37h, 007D0DD7: set for rightspinning (the "rwing"/"aileron_r" arm),
+    // clear for leftspinning (007D104F sets C38h instead). Read by R4.
+    bool plane_spin_right_c37{false};
     bool plane_death_c3a{false};
     bool plane_death_removed{false};
     bool squadron_left_on_death{false};   // packet cc9_val_squadron_registry
@@ -5612,6 +5615,10 @@ struct GameUnitsHost::Impl {
     // chain, so a wing member could never out-run its full-throttle leader.
     static constexpr bool kFollowTurboBound = true;  // ON: along error -65..-93% (PLANE_FOLLOW_PHASE_A 9.4)
     unsigned long long follow_turbo_steps{0};
+    // kPlaneDeadMeatRollBound / kPlaneWreckForwardDragBound step counts.
+    unsigned long long dead_meat_roll_steps{0};
+    unsigned long long dead_meat_spin_steps{0};
+    unsigned long long wreck_drag_steps{0};
     // Packet cc9_follow_catchup_speed (docs/PLANE_FOLLOW_LAW.md section 15):
     // the fly-to arm's two class terms as the image reads them - cruise =
     // 007C47F0 (LevelFlight x StallSpd) x 0.9 at 009BFC41/009BFC49 and the
@@ -5744,6 +5751,20 @@ struct GameUnitsHost::Impl {
     // which in the image read the moved pose. False: physics first, then the
     // pose with the new velocities, as before.
     static constexpr bool kPlanePoseFirstBound = true;
+    // Packet cc9_plane_wreck_roll, R4 (docs/CC13_GPR_48.md 8.3, docs/OCEAN_WAVE_FIELD.md
+    // 27): 007DA7E4-007DA8D5, the DeadMeat roll terms of the rate law. For a dying
+    // plane (unit+5Dh, here plane_death_c3a) the roll target is multiplied by
+    // 00419010(0, 1, RollMulTime, RollMul, C3Ch); a spinning one (C36h) then gains
+    // +/- min(4*C3Ch, 1) * SpinRollSpd * max(0.35, RollSpd), plus for rightspinning
+    // (C37h). SUBSTITUTION, labelled: C37h needs the model's wing node
+    // ((unit+360h)+160h), taken as present. False: the target ignores the death.
+    static constexpr bool kPlaneDeadMeatRollBound = false;
+    // Packet cc9_plane_wreck_roll, C1: 007DBC77-007DBD34 in the drag path. With
+    // ctl+94h and unit+C3Ch > 1.0f, dyn+0Ch -= Interp(-8, 10, -1, 1, alt) * fwd *
+    // min(1, C3Ch - 1). SUBSTITUTION, labelled: ctl+94h is the host's water-step
+    // latch (007CBBE7); the in-air producer 007CE0DB-007CE1D9 (a point of the
+    // class list desc+5BCh below y -1 under 15 m) is not carried. False: no term.
+    static constexpr bool kPlaneWreckForwardDragBound = false;
     // Packet cc9_plane_ground_roll (docs/SQUADRON_LAND_TASK.md section 5q): the
     // ground-roll arm 007CBFA0 for unit+900h 4 and 5: the pilot pass (0099AE5F
     // admits 4..7), the probe 007C5AC0, and 007DCCF0: the core law in mode 1
@@ -17662,6 +17683,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             mode, slot.plane_death_timer_c10);
                         slot.plane_death_c39 = flags.powerlost_c39;
                         slot.plane_death_c36 = flags.spinning_c36;
+                        slot.plane_spin_right_c37 = flags.spinning_c36
+                            && mode == bsp::PlaneDeathMode::SpinRight;   // 007D0DD7
                         slot.plane_death_c3a = true;
                         slot.plane_death_seconds = host.summary.simulated_seconds;
                         // Packet cc9_plane_death_flags. The C3Ah tail's destroy sets
@@ -17965,6 +17988,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             state.drag_accel = d * r2;
                         }
                         state.airborne_time = unit_.plane_airborne_908;
+                        if constexpr (GameUnitsHost::Impl::kPlaneWreckForwardDragBound) {
+                            // 007DBC77: ctl+94h in every controller mode.
+                            state.wreck_drag_ctl_94 = unit_.plane_ctl_94;
+                            if (unit_.plane_ctl_94 && unit_.plane_lost_drag_timer_c3c > 1.0f) {
+                                ++owner_.wreck_drag_steps;
+                            }
+                        }
                         bsp::PlaneDynAccumulators acc =
                             bsp::accumulate_free_flight_007db680(state, cls, tuning, step);
                         if (water_.active) {
@@ -33906,6 +33936,23 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 007DA94B: BC4h read before this step's relax.
                             state.yaw_scale_bc4 = unit_.plane_yaw_gain_bc4;
                         }
+                        if constexpr (GameUnitsHost::Impl::kPlaneDeadMeatRollBound) {
+                            // 007DA7B9 unit+5Dh, 007DA821 C36h, 007DA832 C37h.
+                            if (unit_.plane_death_c3a) {
+                                state.out_of_action_5d = true;
+                                state.spinning_c36 = unit_.plane_death_c36;
+                                state.spin_right_c37 = unit_.plane_spin_right_c37;
+                                state.lost_drag_timer_c3c = unit_.plane_lost_drag_timer_c3c;
+                                if (owner_.lua.plane_globals_loaded()) {
+                                    const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                                    state.dead_meat_spin_roll_spd = g.dynamics_dead_meat_spin_roll_spd;
+                                    state.dead_meat_roll_mul_time = g.dynamics_dead_meat_roll_mul_time;
+                                    state.dead_meat_roll_mul = g.dynamics_dead_meat_roll_mul;
+                                }
+                                ++owner_.dead_meat_roll_steps;
+                                if (state.spinning_c36) ++owner_.dead_meat_spin_steps;
+                            }
+                        }
                         const bsp::PlaneControlTargets targets =
                             bsp::plane_control_targets_007da710(
                                 unit_.plane_class, state, m, f2, coupling);
@@ -37092,6 +37139,11 @@ void GameUnitsHost::report() {
                     }
                 }
             }
+            host.log.notef("summary plane dead meat roll steps=%llu spin=%llu bound=%d wreck drag "
+                "steps=%llu bound=%d (007DA7E4 R4, 007DBC77 C1, packet cc9_plane_wreck_roll)",
+                host.dead_meat_roll_steps, host.dead_meat_spin_steps,
+                Impl::kPlaneDeadMeatRollBound ? 1 : 0, host.wreck_drag_steps,
+                Impl::kPlaneWreckForwardDragBound ? 1 : 0);
             host.log.notef("summary follow turbo steps=%llu bound=%d (009BEE42 -> 007D9062, "
                 "packet cc9_follow_turbo)", host.follow_turbo_steps,
                 Impl::kFollowTurboBound ? 1 : 0);
