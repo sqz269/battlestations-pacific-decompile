@@ -16495,3 +16495,31 @@ in-range latch (009C83F8). Everything the failed E2 lacked is now ON or wired (p
 speed stores, the 1300 m cap). Predictions: no host-only 16-18 km attackrun; flights stay in moveto/follow until 1.6-1.8 r,
 then flyabove; the 30 USN21 dive deaths on the attackrun leg move into follow/flyabove; releases move from the aimdive gate
 to the latch path, direction unknown; USN04 water contacts must not rise above the pinned row (E2 failed on 16 -> 24).
+
+## 5gy. PRCP01 Junyo: owner by instance and the brake attach gate (packet `cc9_l58_junyo`, cc9-lua58, 2026-10-13)
+
+Switches `kAirOpsOwnerByInstanceBound` (cc13-fix7 A) and `kBaseLaunchBrakeAttachGateBound` (cc13-fix7 B), both in
+`include/bsp/air_operations.hpp`, committed OFF by cc13 with the predictions in docs/CC13_VER_18.md section 4. Paired
+together at main f83e91891 (`pair_export --flip` both), PRCP01 `config/win_orders/prcp01_l55_p01_c.txt` 30000 frames and
+USN12 `usn12_s38_u12_p2.txt` 34000 frames as the carrier control; logs `local\l58_off_*` / `local\l58_j1_*` (each with its
+`.manifest.json`).
+
+### 5gy.1 Measured: **ON** (cc9-lua58, 2026-10-13)
+
+| row | OFF | ON |
+|---|---|---|
+| PRCP01 Japanese carrier launches (`base launch task ... send 1` for Junyo/Zuiho squadrons) | 0 | 7 (Junyo_sqn03 from 105.05 s, sqn04, sqn07; Zuiho_sqn10, sqn11, sqn12, sqn14) |
+| PRCP01 brake summary | sets=10 clears=8 held_at_end=2 | sets=14 clears=14 held_at_end=0 |
+| PRCP01 Enterprise_sqn01 brake release | 30.90 s; sqn02 31.90 s | 59.80 s; sqn02 95.80 s |
+| PRCP01 deaths / hits / damage | 46 / 558 / 17033 | 60 / 2008 / 36730 |
+| PRCP01 mission end | **completed 670.81 s** (Zuiho) | **failed 1491.83 s** `usn03.obj_p2_fail` (Enterprise dead) |
+| USN12 control | completed 1510.35 s | identical (pair_diff 1, noise counters only) |
+
+Mechanism matches cc13-ver18 section 4 point for point: A, the regenerated Junyo (id 26) owns its deck, Junyo_sqn03 is
+raised from the live instance and its brake clears at 127.40 s (predicted 115-125 s), and `luaAirfieldManager` then sends
+the 158/162 strikes; Zuiho does the same. B, Enterprise's first queued launch holds the deck until its three planes are
+airborne (59.80 s, predicted about 60 s), so the US first strike lands about 30 s later (first hit 143.40 -> 176.26 s,
+Kate1/Val1 deaths +30-35 s). That delay also moves the Junyo regeneration past frame 1600, so the plan's first Junyo lines
+(4, 5) are refused by the 0043F080 gate (helm refusals 46 -> 111). Faithful, flipped ON; the PRCP01 win is lost and goes
+to the wins keeper for a re-plan (the cc13 note already called the old win provisional). Every completion logged the exec
+guard's `sus_prog.exe` refusal.
