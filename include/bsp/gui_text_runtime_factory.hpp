@@ -229,6 +229,10 @@ public:
     // Call while the completed layout wrapper still exists, before disposal.
     void release_completed_storage(GuiLayoutWidget&);
     std::size_t retained_allocation_count() const noexcept { return allocations_.size(); }
+    // Same borrowed font association domain, for quiescent producer retirement.
+    const NativeFontResourceOwners& native_font_resources() const noexcept {
+        return services_.properties.font_names.fonts;
+    }
 private:
     friend class GuiTextRuntimeImplementation;
     friend class GuiTextRuntimeCopyOperation;
