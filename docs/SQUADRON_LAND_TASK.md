@@ -16778,3 +16778,16 @@ planes. The D2 direction miss of 5gz.2 is therefore not a finder artefact.
   008AAAB8): the host forced members only. Prediction: JM08 (B-17 #2.1, units=4) and USN12 (bruh #1.1) gameplay
   identical; the slot forced is the squadron's lead, already a member.
 - AddAirBaseStock 00896BF5 (0095BA60 party preload mark): labelled as a substitution and recorded per call, no switch.
+
+### 5he.1 Measured: `kLuaCapturePercentageFabsBound` and `kForcedReconOwnRecordBound` **ON** (cc9-lua59, 2026-10-14)
+
+Pairs on 9bc2a55fc: OFF `local\l59_c0_*`, both switches ON `local\l59_lu_*`.
+
+| row | calls | pair_diff |
+|---|---|---|
+| JM05 12000 fr (no plan; fails at 291.05 s on both) | GetCapturePercentage 106 | 1, gameplay identical |
+| JM08 `jm08_p6_j8_f` 40000 fr | no SetForcedReconLevel before frame 40000 | 1, gameplay identical |
+| USN12 34000 fr (no plan) | SetForcedReconLevel on 23 squadrons, units=4 -> 5 | 1, gameplay identical |
+
+Both predictions hold: no gameplay reader of the capture fraction runs on these rows (usn_14:1127 needs the HQ hpEvent),
+and the extra forced record (the squadron's own slot) moves nothing. Both are faithful corrections: flipped ON.
