@@ -9,8 +9,9 @@ selection, preparation and execution, and B16068..B160CF excluded-node and
 camera/label restoration, followed by B160D0..B16109 depth-downscale drawing,
 system gathering and saved-color restoration. The enabled excluded-node path
 uses full raw B10500 and B1E6D0. The depth-downscale path now uses the complete
-raw B4DFB0 and B4DCC0 providers. The current final boundary is before B1610A,
-which begins constructing the SCNE label.
+raw B4DFB0 and B4DCC0 providers. The SCNE label clause B1610A..B161AC now
+constructs and assigns the label with its original temporary/reset ownership.
+The current final boundary is B161AD, before target selection, with state5 armed.
 Reaching any boundary does not mean a scene command executed successfully. The
 existing queue must continue refusing D5E13C: B17240 preparation and the
 remaining B156C0 render passes are not installed or claimed complete.
@@ -618,10 +619,78 @@ previous105ab61e9 artifact pins were frozen before edits/builds under
 `local/main_scene_excluded_receipt_105ab61e9/`; all 261 earlier pins remain
 verified. No persistent tests, host route or CMake activation were added.
 
+## SCNE label and state3/5 ownership
+
+`continue_native_main_scene_scne_label_00b1610a` implements the next 163 bytes,
+51 native instructions, ending before the B161AD target-selection condition.
+It borrows the earlier DRSH context's same actual global-service publication,
+raw StringManager publication and allocator/return-disable cells, plus the
+actual D5E4F8 SCNE bytes. A separate fresh persistent frame records the original
+temporary header, captured EBX data, captured service/destination and ownership
+states. Its destructor performs no cleanup; callers retain it across the next
+stage while state5 remains armed.
+
+The two temporary header words are overwritten with zero before real 41DD40
+resize4. The data pointer is captured once at B1611F. Its current length+1
+selects the copy from borrowed SCNE bytes, including the terminator on the
+ordinary path. Current global F8D39C is captured at B1613D, before state3 is
+installed at B16144. A nonnull service selects its actual+684 header; equality
+with the temporary skips assignment. Otherwise real 41DD40 resizes that captured
+destination to the current temporary length. A second current temporary-length
+test gates copying the captured data; the destination's current length and data
+are then read. Earlier destination effects are never rolled back.
+
+B1618C changes ownership to state5 before normal temporary return. The returned
+pointer remains the captured EBX value; its byte count comes from the current
+temporary length+1 before the real 419CC0 pool getter, followed by BD1510 return.
+A later failure must not retry this normal return. On success the source marks
+B161AD reached and leaves state5 armed. A completed source stage or started
+frame cannot be replayed.
+
+Saved/native CBC499 still loads FuncInfo DF4698 and enters BF6B43. The same
+nine-entry unwind map at DF46BC contains:
+
+- State3 -> (-1,CBC473): `LEA ECX,[EBP-88]; JMP 41DD20`, destroying the current
+  temporary header, which may differ from the captured EBX pointer.
+- State4 -> (3,CBC47E): the intermediate map entry exists but no instruction in
+  this selected clause installs state4.
+- State5 -> (-1,CBC47E): `LEA ECX,[EBP-79]; JMP B13510`. The leaf ignores that
+  ECX value and resets the current global service's label through the same raw
+  string domain; it does not use the earlier captured service.
+
+The explicit source unwind adapter consumes reached state3 or5, installs -1
+before the genuine action, and preserves the failure markers and native storage.
+A second call at -1 does nothing. A second C++ exception during cleanup
+terminates. These are source lifecycle adapters, not native FH3 funclet entries
+or exception delivery; private EBP offsets are recorded rather than emulated.
+
+The existing raw-pool fixture was adapted to the SCNE bytes and state3/5 map.
+Three exact original 163-byte/Source comparisons cover null service, nonnull
+service with a different-length destination, and equal-length destination with
+small returns disabled. Complete actual pool bytes, service headers, temporary
+header words and final state5 match. Three original CBC47E action comparisons
+rebind the global publication before cleanup, proving the newly selected
+service receives X. One CBC473 action comparison deliberately separates current
+temporary data from captured EBX data. A source-only preownership domain
+rejection preserves pool bytes and leaves cleanup unarmed; replay is rejected.
+The post-gather boundary is seeded. Warm raw pool providers and actual resize,
+memmove, getter, return, destructor and reset run; native child exceptions,
+native FH3 dispatch, cold registration and a whole composed scene remain open.
+
+Strict compilation, normal build/all three existing checks, emitted ordering
+and all 330 inherited x87 encodings pass. This clause adds no floating arithmetic.
+The seven raw spans total 308 bytes: caller, both cleanup actions, handler,
+FuncInfo, complete unwind map and borrowed SCNE bytes; live saved Ghidra matches
+the installed image. Artifacts are in `local/main_scene_scne_label/`. All 82 A6
+artifact pins were frozen before mutations in
+`local/main_scene_post_gather_receipt_a6f018a9b/`; all 323 earlier pins remain
+verified. No persistent tests, host route or CMake activation were added.
+
 ## Next executed clause
 
-B1610A begins the SCNE raw-string construction; B16144 installs cleanup state3
-before current global-service label assignment. Its lifetime and failure paths,
-the remaining scene/post/cockpit/distortion/statistics passes and cleanup states
-still need their concrete bodies. B17240 preparation remains separate. D5E13C
-continues to be unadmitted pending the complete raw body and application graph.
+B161AD tests current service+22D and selects current service+48 or+44 before
+B161BE calls B4CB20. Target installation, frame binding, the next camera-frame
+call, remaining scene/post/cockpit/distortion/statistics passes and subsequent
+cleanup states still need their bounded compositions. B17240 preparation
+remains separate. D5E13C continues to be unadmitted pending the complete raw
+body and application graph.
