@@ -570,3 +570,16 @@ Root constructed the inert 23-field Native adoption plan once, preserving 18 fie
 The unchanged DATA adopter's first attempt failed with genuine exit one while rechecking an inherited original Source path under the retired cc12_header13_final_generator_text_proposal worktree. Root confirmed the adopted target was not created and preserved the whole invocation, pending observation and failure. Retained copied artifact integrity does not establish current availability of every original namespace. Original-path recovery and complete adopted-graph, transport and readiness review remain pending; no Native clock or phase ran.
 
 The report's fresh_F7_current_Native_artifact_integrity_and_adoption_checkpoint preserves exact whole-file pins for these reviews, Source gate, actual plan, Root DATA consumption, DATA-only authority and original failed-adopter record. Earlier checkpoints remain historical and unchanged.
+
+
+## F7 metadata restoration and original dependency audit
+
+The immutable restoration proof records 161 restored metadata files, four roots, 41 intermediate directories and 896 journal events. Independent validation passed 247,434 checks across 334 pins, covering every restored file and retained copy. This establishes recorded current restoration; historical inode, timestamp and original-namespace continuity remain unproven.
+
+The full 14,554-original audit completed with exit 0 and read every original. Exactly 14,553 byte pins matched. Its report remains review_passed=false, DATA_checks_passed=false, Source_credit=0 and Root_acceptance=false because one historical report differs: complete_linked_helper_validation_pending changed from true to false. Whole embedded bytes prove the exact forward and inverse edit and preserve all other JSON values and member order. The truthful current Main report was preserved. The unchanged adopter remains blocked, and attempt02 was not invoked.
+
+Root accepted Source-only transport (6,498 checks / 44 pins), readiness (22,008 / 88), and preclock (22,050 / 88). Those receipts grant Source acceptance only. The selected producer, inspector and issuer were not executed by these Source gates. A separate compatibility change remains a Source-only proposal.
+
+This independent checkpoint reader passed 99 checks across 18 current evidence pins and recursively validated 335,306 saved predicate occurrences and 61,563 saved physical-row occurrences. All 17 exact evidence files were freshly read and closed with identical books. Saved target observations were validated as DATA; no restoration target, adopted target, provider leaf or candidate was opened or executed. Full genuine tool chains and the failed first reader/diagnostic attempts are preserved in checkpoint_evidence.DATA.json and original_review_genuine.DATA.json.
+
+The original Native assembler terminal and post-seal results remain unrecovered. No Native clock, Native fixture, ABI qualification, game qualification or runtime authority is established. The continuing Source-scope goal remains active. This packet does not write Main or alter goal status.
