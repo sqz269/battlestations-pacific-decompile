@@ -6041,6 +6041,10 @@ public:
             pads.nearest_pad_xz_006f3af0(building, bpos, unit_pos, xz);
             // 006F3C5A: 00417E60(manager)(&out, &xz, 10.0f [00CE38B8], layer) is
             // 00412120(layer) then 00417B10(group)(out, xz, 10.0f, 1).
+            // Labelled (cc13-avoid1 audit): the ready() and group != 0 guards are
+            // the host's; the image calls 00417B10 unconditionally. group_for_layer
+            // walks as 004120D0 does where the image calls 00412120; the two agree
+            // for the ascending order 00417CA0 keeps (avoid_zone_geometry.hpp).
             std::array<float, 2> out{xz[0], xz[1]};
             if (owner_.zones.ready()) {
                 const std::uint32_t group =
