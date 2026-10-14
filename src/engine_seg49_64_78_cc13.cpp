@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "bsp/band_0067_cc13.hpp"
+#include "bsp/gui_widgets_cc13.hpp"
 
 namespace bsp::cc13_seg49_64_78 {
 namespace {
@@ -1338,10 +1339,12 @@ void hud_ticker_set_range_00ac2f20(GuiHudTickerRange& ticker, std::uint32_t from
     ticker.to_10 = to;
 }
 
-void gui_font_registry_list_construct_00ac3660(GuiFontRegistryList& list, void* sentinel)
+GuiFontRegistryList& gui_font_registry_list_construct_00ac3660(GuiFontRegistryList& list)
 {
-    list.head_04 = sentinel;
+    // 00AC3663: the sentinel comes from 00AC3400 inside the constructor.
+    list.head_04 = gui_widgets_cc13::msvc9_containers::list_buy_sentinel_00aac180();
     list.size_08 = 0;
+    return list;
 }
 
 void gui_write_int_unless_default_00ac4ad0(GuiPropertyWriter& writer, const char* key,

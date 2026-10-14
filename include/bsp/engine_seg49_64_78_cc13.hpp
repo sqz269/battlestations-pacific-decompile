@@ -722,12 +722,14 @@ struct GuiHudTickerRange {
 };
 void hud_ticker_set_range_00ac2f20(GuiHudTickerRange& ticker, std::uint32_t from, std::uint32_t to);
 
-// 00AC3660, __fastcall(ECX = list): +4h = a new sentinel (00AC3xxx allocator), +8h = 0.
+// 00AC3660, __thiscall(ECX = list), RET, EAX = list: 00AC3663 calls 00AC3400 (operator new
+// 0Ch, next = prev = the node; instruction-identical to 00AAC180, reconstructed as
+// gui_widgets_cc13::msvc9_containers::list_buy_sentinel_00aac180), +4h = that sentinel, +8h = 0.
 struct GuiFontRegistryList {
     void* head_04{nullptr};
     std::uint32_t size_08{0};
 };
-void gui_font_registry_list_construct_00ac3660(GuiFontRegistryList& list, void* sentinel);
+GuiFontRegistryList& gui_font_registry_list_construct_00ac3660(GuiFontRegistryList& list);
 
 // 00AC4AD0, __thiscall(writer, key pair, value, default), RET 10h: both values carry tag 1 (an
 // integer); the key/value pair is written unless 00BD5680 finds them equal. The ledger calls it
