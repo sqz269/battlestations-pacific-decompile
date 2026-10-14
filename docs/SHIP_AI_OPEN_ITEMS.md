@@ -17664,3 +17664,23 @@ a negative hold leaves the Marus unordered until that frame).
 4. The 007470B0 fire roll for LandFort hangars (only CommandBuildings host it) and the shipyard's vtable[1A8h]
    00845AC0 (recorded at a hangar death; `shipyard_hangars_lost_00845ac0` is in gameplay_seg52_cc13).
 5. The lead's queue item 4 (ESMP08 / USNOS re-plans with physics) was not started.
+
+## 242. Sub attack range subtracts the own half length: `kSubAttackOwnHalfLengthBound`, OFF (cc9-ships49, 2026-10-14; lead item 1)
+
+cc13 adoption, byte-confirmed with `bsp.py disasm-raw 009e4a60`: 009E4A60 (`ship_ai_sub_attack_range_009e4a60`,
+__thiscall on the sub_attack task, `[ecx+4]` the unit, returns float in ST0) computes the planar distance into
+`[esp+8]` (009E4AE9/009E4AFC), then `FLD [esp+8]; FLD [[unit+0AACh]+0A0h]; FMUL qword [00D7A280] (0.5); PUSH 6;
+FSUBP; FSTP dword [esp+0Ch]` (009E4B05..009E4B26). The PUSH lowers ESP by 4, so `[esp+0Ch]` after it is the
+distance slot. The call at 009E4B2A (target vtable+5Ch, IsKindOf(6)) is __thiscall: no `ADD ESP` follows, so ESP
+is back and the reads at 009E4B30, 009E4B4C and 009E4B6B all see `dist - ownLen*0.5`. The image returns
+`max(0, dist - ownLen*0.5 - (target IsKindOf(6) ? targetLen*0.5 : 0))`; the host dropped the own half length and its
+comment called the slot unread. Bound in `src/ship_ai_sub_attack.cpp` behind `kSubAttackOwnHalfLengthBound`
+(include/bsp/ship_ai_sub_attack.hpp), committed OFF. Own length is the host's `class_number(unit, "Length")`
+(class+A0h). Uncertainty: none on the arithmetic; precision is the host's double chain narrowed per FSTP, as before.
+
+**Predictions (ON).** Every reader of the range shifts by the sub's half length (a Gato/Balao-sized sub is about
+95 m long, so about 47 m; I-boats more): approach->fire (009E9D90, range < torpedo + 150) fires ~45 m farther out,
+fire->approach (009EA9C0, range > torpedo + 400) leaves ~45 m later, the fire band and close latch (009E4B90,
+009E9EB0) and the lead time move the same way. Subs fire and close ~40-50 m later in distance terms, i.e. they
+enter firing earlier on the approach. Non-sub ships are untouched (the task runs only for submarines). Expect the
+JM06 player subs' first torpedo spreads to move by a few seconds and the whole death table after them to move.
