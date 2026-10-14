@@ -14765,3 +14765,45 @@ the leader's target first, so this gap is hit far more often. This is the missin
    battery meets a ship.
 3. ON with 222 (USN12 `d`, USN15 `l2`): part of 222's collapse is undone. Followers' guns that cannot bear on the
    leader's target fall back. The win is not predicted.
+
+## 249. Verdicts for 248 and 222: the artillery gate ON; 222's loss is the torpedo arm (cc9-gunnery45, 2026-10-14)
+
+All pairs are same-tree at `1bab01bdf`, with the reference env (`BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`)
+and `--stop-after-end 40`. Logs are `local\g45_<export>_<row>.log`, each with its manifest. The exports are
+`g45_off` (base), `g45_ag` (`kArtilleryAcceptGateBound`), `g45_222` (`kDirectorLeaderFireTargetBound`) and
+`g45_ag2` (both). The rows are USN12 `usn12_g44_u12_d` and USN15 `usn15_s45_u15_l2`.
+
+| export | USN12 d | USN15 l2 | artillery launches (12 / 15) | `artillery_gate_rejects` (12 / 15) | ship torpedo launches, USN12 (before 800 s) |
+| --- | --- | --- | --- | --- | --- |
+| off | completed 1430.27 s | failed 2843.70 s | 617 / 3410 | 254 / 2393 (counted) | 15 (8), first 785.38 s |
+| ag | **completed 1530.37 s** | **won**: Fuso dies 2900.10 s, MissionStatus=true, sus_prog refused | 673 / 3002 | 925 / 8844 | 12 (4) |
+| 222 | none | failed 1021.92 s | 593 / 1914 | 529 / 1408 | 90 (60), first 695.80 s |
+| ag + 222 | none | failed 1021.92 s | 584 / 1834 | 611 / 5852 | 86 (60), first 695.80 s |
+
+pair_diff exits 3 (MOVED) on both rows for `ag`.
+
+**248 `kArtilleryAcceptGateBound`: ON.** Predictions 1 and 3's mechanism held:
+- The OFF counter is above zero on both rows.
+- ON refuses unreachable targets, and the gun takes a later candidate.
+
+Prediction 2 is a spread miss. USN12's artillery launches rose (617 -> 673), but USN15's fell (3410 -> 3002). A
+host gun that held an unreachable target used to fire anyway. Under the gate, a gun with no reachable candidate
+stays idle, as in the image. USN12 still completes, and USN15 l2 is won again under ON. **Flipped ON.**
+
+**222: the fallback is not what loses the rows.**
+- With the gate ON, 222 still loses both rows, at the same times. Artillery is about level (593 -> 584 on USN12).
+- The collapse is the **torpedo arm**. Under 222, USN12's ship torpedo launches go from 15 to 90, starting at
+  695.80 s instead of 785.38 s. The Japanese followers sink Dyson, Montpelier, Stanley, Claxton, Denver and Foote
+  at 1.9-3.4 km (`killer_cat=7`).
+
+The mechanism is image-bound at each step:
+1. `00863640` gives a follower its leader's `director+238h` (222).
+2. Followers hold pass byte `+7Dh = 1` (103, `follower=264508 one=264545`).
+3. So `00865809` lets category 7 take that inherited fire target.
+4. `00727F10` sends it with flag 1, and `bot+68h` takes FireTargetAccuracy (D1/D2, 230). The mean attack range is
+   2684 m against 2350 m OFF, and the gate passes go from 958 to 16653.
+
+So the per-gun pick does fall back in the image: step 8.8 walks on past a refusal by `00729BC0`, and the host now
+has that for kinds 2-4. But the tubes accept the inherited target, because nothing refuses it. **222 is faithful by
+mechanism.** It stays OFF only as the lead's call on the two lost rows. If it is flipped, USN12 d and USN15 l2 go to
+the keeper for re-plans.

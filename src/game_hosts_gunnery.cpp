@@ -911,7 +911,7 @@ constexpr bool kAaKind6GateMountFrameBound = true;   // GUNNERY 197: ON, inert o
 //    alone. ON: the two gates of kind 6's surface arm, a refusal refusing the
 //    slot. OFF: counted only (artillery_gate_rejects). LABELLED as kind 6:
 //    [[bot+50h]+3Ch] taken as present; a gun with no arcs is not refused.
-constexpr bool kArtilleryAcceptGateBound = false;
+constexpr bool kArtilleryAcceptGateBound = true;   // ON: GUNNERY 249
 //  * kBulletBlastDamageMinNestedBound (cc9-gunnery38/39, GUNNERY 203): 006E99E7's artillery
 //    tier reads the class's Blast.BlastDamageMin; read_bullet_class_number takes the
 //    dotted key as one flat name and answers 0. True: the nested reader. False: 0,
