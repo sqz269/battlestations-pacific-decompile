@@ -9763,7 +9763,7 @@ public:
     // 00937440's roll torque runs for TorpedoBoats only, with settings+588h = 1500 (the
     // installed value, labelled), in the image's grouping; other ships skip it. False:
     // every surface ship runs the torque with a zero gain, as before.
-    static constexpr bool kTorpedoBoatRudderTorqueBound = false;
+    static constexpr bool kTorpedoBoatRudderTorqueBound = true;  // ON: USN06, BSM01, JM08 pairs (SHIP_AI 238)
     static constexpr float kTorpedoBoatRudderTorqueMulInstalled = 1500.0f;
     ShipMotionBinding(GameUnitsHost::Impl& owner, GameUnitSlot& slot,
         UnitRudderBinding& rudder)

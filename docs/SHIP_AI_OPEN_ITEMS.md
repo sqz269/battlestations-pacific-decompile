@@ -17588,3 +17588,18 @@ death removes the unit at once instead of at KillDepth (no gameplay change found
 heavier ships with both nodes draw once on stream 1. Under the reference env (`BSP_GUNNERY_RNG_STREAMS=1`) the
 draw is keyed, so no other draw moves: gameplay identical. Without that env the shared stream shifts and every
 later stream-1 consumer can move.
+
+## 238. T1/T2 pairs on BSM01 and JM08; `kTorpedoBoatRudderTorqueBound` ON; JM02 (cc9-ships48, 2026-10-13; lead item 1)
+
+Same-tree exports of 0351ad19d (OFF exe 05F62B456295), reference env, `--stop-after-end 40`:
+| row | OFF | ON |
+| --- | --- | --- |
+| BSM01 `bsm01_p6_b1_a`, 40000 | EndMission 770.94 s; HenryPT rams MiniSub 440.72 s; `force_model` 609868 | EndMission 833.92 s; MiniSub 504.30 s; `force_model` 24406 |
+| JM08 `jm08_p6_j8_f`, 110000 | completed 2181.70 s; `force_model` 823490 | completed 1907.44 s; `force_model` 164814 |
+Logs `local\s48_t1{off,on}_{b1,j8}.log`, guard line logged on all four. `pair_diff` 3 (moved) on both: the torque now
+moves the torpedo boats' roll (HenryPT's ram is 64 s later) and only they run 00937440. **Mechanism matches; both
+wins hold. ON** (this commit), with 233's USN06 pair.
+
+**JM02** (235 item 4): not a host gap. `prcpijn_02_force_z.scn` registers 34 entities, 17 held back by `Hidden`;
+`prcpjm02.lua` (2024-07-13) takes Force Z with `luaFindHidden("HMS Prince of Wales")` / `("HMS Repulse")` and shows
+them only as the player's search progresses, so an idle run has planes only and no ship motion to run.
