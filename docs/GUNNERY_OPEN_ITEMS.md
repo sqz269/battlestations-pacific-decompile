@@ -14623,3 +14623,38 @@ Re-pair of the corrected timer (`e26b56733`, ON against `g44_t2off` = the same c
 `usn12_g44_u12_d`: Montpelier and Cleveland both leave for CLGoTo at 600 s, so whichever is MontGrp[1] in phase 3
 is close and undamaged, while the rest of the fleet fights the CA phase. It replaces `c`. USN15 stays with the
 keeper.
+
+## 246. Handoff (cc9-gunnery44, 2026-10-14, at about 65% context)
+
+**On `agent/cc9-gunnery36`, all integrated into origin/main by the lead** (built, ctest 2/2 at each):
+
+| sha | what |
+| --- | --- |
+| `582e32626` | USN12 re-plan `usn12_g44_u12_d` (1430.27 s timer ON, 1455.29 s OFF); corrected-timer re-pair (245) |
+| `e26b56733` | think timer correction: held ticks skip the `0090058A` / `0090088E` scans and keep the gyro lead |
+| `0cc305ee0` | flips ON: row-write drop, `00836210` clear, think timer, LOS eye cache; 222 stays OFF (245) |
+| `7c5815dbd` | `kGunneryLosEyeCacheBound` OFF (G2, 244) |
+| `589c58d8c` | `kTorpedoBotThinkTimerBound` OFF; 238 follow-up, no binding (243) |
+| `771b6a3a0` | cc13 G1 / G3 / G4 (244) |
+| `5886bfa03` | `kAutoTargetScanRowWriteDropBound`, `kDirectorFirePermissionClearBound` OFF (242) |
+
+**Open, in order of value.**
+1. **USN15 is lost under the think timer** (failed 2843.70 s ON vs EndMission 2808.66 s OFF, `e26b56733`). Sent to
+   cc9-physics9 (wins keeper). The script fails the mission when an enemy is within 3000 m of `IJNGoTo` or every
+   US ship is dead; the win is Fuso dying first. Player torpedo salvos (`torpedo <ship> at Fuso` / `release`)
+   train the tubes but never launch (`player torpedo group ... trigger_ons=0 tube_fires=0`, same on JM06's sub
+   orders): that harness verb looks broken for launches and is worth a look by whoever owns it.
+2. **222 `kDirectorLeaderFireTargetBound`** stays OFF. With the drop ON it still collapses USN12 (from 600 s
+   assigns rise 974 vs 284 while shots stall) and loses USN15 at 1036.94 s. The pass only adds the fire
+   target as step 8.7 candidates (tried first) after `00863990`'s category-range test, so followers lock their
+   guns onto the leader's target and stop picking their own. Next: read what refuses those guns' fire after
+   the assignment, and whether the image's pick has a fallback, before treating it as faithful.
+3. **237 reach**: still 0 holds (56 recent lane logs, USN12 with three layer-5 zones, USN15).
+4. The `00836210` clear has no reach (USN01's UnitHoldFire calls come before any target).
+5. `class+50h` section-span raise (G2's second half) stays labelled: no model is built at `class+50h`.
+6. The 227 list (slot accept `008FC010`, hold fire 3a, blast mesh 4, Fido 5).
+
+**Tools** (this tree's `local\`): `g44_exports.ps1 -Commit <sha> -SpecList "dir;dir:kA=true,kB=true"` (sequential
+exports, appends to `g44_exports.txt`); `g44_queue.ps1 -Jobs <file>` (as g43's; the exports file must exist);
+`g44_pos.py <traj prefix> <steps> <regex>` samples `--trajectory-csv` output. Exports: `g44_off` (`5886bfa03`),
+`g44_off2` (`589c58d8c`), `g44_off3` (`7c5815dbd`), `g44_fl` (`0cc305ee0`), `g44_t2on` / `g44_t2off` (`e26b56733`).
