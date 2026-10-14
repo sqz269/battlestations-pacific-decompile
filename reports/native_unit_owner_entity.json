@@ -1,0 +1,404 @@
+{
+  "packet": "cc12_unit_receiver_root_recovery",
+  "utc": "2026-10-14T19:02:34.498734+00:00",
+  "base_revision": "e069982e8e168cb58cb508cfc098da6c22bfc4ab",
+  "source": "src/native_unit_owner_entity.cpp",
+  "header": "include/bsp/native_unit_owner_entity.hpp",
+  "documentation": "docs/NATIVE_UNIT_OWNER_ENTITY.md",
+  "source_components": [
+    {
+      "address": "0077ef27",
+      "name": "construct_native_unit_owner_first_list_0077ef27",
+      "kind": "fragment",
+      "end_inclusive": "0077efa3",
+      "bytes": 125,
+      "contract": "After actual GameEntity base and three recon records: owner/index writes, profiles, first real0Ch sentinel. No base/array or Native EH. Allocation-failure unwind stays with enclosing actual owner."
+    },
+    {
+      "address": "0077efa9",
+      "name": "construct_native_unit_owner_second_list_and_fields_0077efa9",
+      "kind": "fragment",
+      "end_inclusive": "0077f053",
+      "bytes": 171,
+      "contract": "After successful first-list stage: real18h sentinel and exact mixed-width observer/physical fields, one CE4ADC bit capture. Stops before Game/network/peer tail. On allocation failure first-list ownership remains with caller."
+    },
+    {
+      "address": "0077b980",
+      "name": "tidy_native_unit_owner_peer_list_0077b980",
+      "kind": "function",
+      "end_inclusive": "0077b9c7",
+      "bytes": 72,
+      "contract": "Complete normal raw peer-list tidy: current-head reloads, self links, count0, all nodes then sentinel freed through actual CRT domain, header+4 cleared. No malformed-list/fault or registerABI claim."
+    },
+    {
+      "address": "0077d930",
+      "name": "clear_native_unit_owner_holder_list_0077d930",
+      "kind": "function",
+      "end_inclusive": "0077d97c",
+      "bytes": 77,
+      "contract": "Complete normal raw holder-list clear: current-head reloads, self links, count0, nonnull node+14 payload freed and zeroed before node free; sentinel retained. Actual CRT domain; no malformed-list/fault or registerABI claim."
+    },
+    {
+      "address": "0077e42c",
+      "name": "destroy_native_unit_owner_lists_0077e42c",
+      "kind": "fragment",
+      "end_inclusive": "0077e456",
+      "bytes": 43,
+      "contract": "After actual observer destruction: clear holder list+2A4, free sentinel+2A8, zero+2A8, tidy peer list+298. No session/global/observer/array/base/root scalar or tick teardown supplied."
+    }
+  ],
+  "parent_constructor_completed": false,
+  "parent_destructor_completed": false,
+  "receiver_activation": false,
+  "actual_game_binding": false,
+  "abi_compatible": false,
+  "game_validated": false,
+  "original_context": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_typed_modification": 158948,
+    "listing_repair_performed": false,
+    "destructor_old_truncation_comment_superseded": true,
+    "actual_destructor_iterator": "00bf7c6e"
+  },
+  "parent_attachments": [
+    {
+      "function": "0077eed0",
+      "address": "0077eef9",
+      "native": "00928630"
+    },
+    {
+      "function": "0077eed0",
+      "address": "0077ef22",
+      "native": "00bf7cd1"
+    },
+    {
+      "function": "0077eed0",
+      "address": "0077ef91",
+      "native": "0077b960"
+    },
+    {
+      "function": "0077eed0",
+      "address": "0077efa9",
+      "native": "0077b940"
+    },
+    {
+      "function": "0077eed0",
+      "address": "0077f072",
+      "native": "0077eb50"
+    },
+    {
+      "function": "0077e380",
+      "address": "0077e427",
+      "native": "006e0860"
+    },
+    {
+      "function": "0077e380",
+      "address": "0077e434",
+      "native": "0077d930"
+    },
+    {
+      "function": "0077e380",
+      "address": "0077e43d",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "0077e380",
+      "address": "0077e452",
+      "native": "0077b980"
+    },
+    {
+      "function": "0077e380",
+      "address": "0077e46c",
+      "native": "00bf7c6e"
+    },
+    {
+      "function": "0077e380",
+      "address": "0077e47b",
+      "native": "009287b0"
+    },
+    {
+      "function": "0077e810",
+      "address": "0077e813",
+      "native": "0077e380"
+    },
+    {
+      "function": "0077e810",
+      "address": "0077e820",
+      "native": "00bf6989"
+    },
+    {
+      "function": "0077b980",
+      "address": "0077b9a3",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "0077b980",
+      "address": "0077b9b7",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "0077d930",
+      "address": "0077d95a",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "0077d930",
+      "address": "0077d96a",
+      "native": "00bf65ac"
+    }
+  ],
+  "failure_ownership": {
+    "stage_one": "Actual owner retains base/recon unwind; no list acquired if allocation throws.",
+    "stage_two": "Actual owner retains first0Ch list on second allocation throw; no guessed rollback.",
+    "successful_stages": "Both actual sentinels owned by containing root; no temporary/shadow receiver."
+  },
+  "validation": {
+    "strict_compile": "passed MSVCWin32 /std:c++20 /EHsc /O2 /MD /W4 /WX /fp:strict",
+    "emitted_schedules_reviewed": 5,
+    "original_comparison": {
+      "checks": 20,
+      "failures": 0,
+      "scope": "Isolated copied Original normal fragments/leaves with freshly compiled actual head and singleton_lifetime TUs; full320h nonzero preimage/hole stores compared, only sentinel identities normalized; ordinary and aliasedCE4ADC; empty and populated peer/holder lists and null/non-null holder payloads. The actual application is not attached.",
+      "native_exception_frames_tested": false,
+      "allocation_failure_tested": false,
+      "invalid_lists_tested": false,
+      "actual_receiver_constructed": false
+    },
+    "baseline_build": {
+      "status": "passed",
+      "source_revision": "e069982e8e168cb58cb508cfc098da6c22bfc4ab",
+      "configuration": "MSVC Win32 Release",
+      "tests_passed": 3,
+      "tests_failed": 0,
+      "log": "local/native_unit_owner_seed_build.log",
+      "includes_new_component": false,
+      "note": "Worker existing baseline build; new Source TU is strict-compiled and directly linked into comparison; primary owns CMake registration."
+    },
+    "primary_registration_required": "target_sources(bsp_core PRIVATE src/native_unit_owner_entity.cpp)",
+    "full_receiver_activation": false,
+    "live_call_rows": {
+      "checked": 17,
+      "failures": 0,
+      "log": "local/native_unit_owner_report_calls.log"
+    },
+    "annotation": {
+      "names_preserved": true,
+      "previous_comments_preserved": true,
+      "write_lock": true,
+      "project_saved": true,
+      "exports_refreshed": [
+        "0077eed0",
+        "0077e380",
+        "0077b980",
+        "0077d930"
+      ],
+      "prior_values": "local/ghidra-annotations-20261014T190259Z.json"
+    }
+  },
+  "original_image_proof": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_base": "00400000",
+    "spans": [
+      {
+        "address": "0077eed0",
+        "length": 446,
+        "sha256": "d04ce20279c5d8a31af378df1b3c626ed8149ab2d3d68739bfd44a12fd0ed2a8",
+        "live_equals_disk": true
+      },
+      {
+        "address": "0077e380",
+        "length": 273,
+        "sha256": "6f7a0052821a7d8424d94a95f7aa07eb91ce98bf35a1bd7035117f627e16ae5d",
+        "live_equals_disk": true
+      },
+      {
+        "address": "0077e810",
+        "length": 30,
+        "sha256": "a5ea8dc0d9ea57dada62add08167285f0bbd76921e677ac8357713f330860a34",
+        "live_equals_disk": true
+      },
+      {
+        "address": "0077b940",
+        "length": 26,
+        "sha256": "2d25af9edc16929406c93df88cdab29e3c86ae006713550f42531b85704d0440",
+        "live_equals_disk": true
+      },
+      {
+        "address": "0077b960",
+        "length": 26,
+        "sha256": "86306c43687f908dcfbff10699bc96a244038e831d5b0b28438822a4f89b6e56",
+        "live_equals_disk": true
+      },
+      {
+        "address": "0077b980",
+        "length": 72,
+        "sha256": "57b8f8c8d3dfba2c54e9418d3666b153083149b5c2c8b95674fb928d1d4d0959",
+        "live_equals_disk": true
+      },
+      {
+        "address": "0077d930",
+        "length": 77,
+        "sha256": "970e8dbf2bd85eeeb7ea5fe6917b1480d4e67523f2ccc7d431fdd8b2a65fefc5",
+        "live_equals_disk": true
+      }
+    ],
+    "fixture": "isolated copied normal bodies/fragments; no original game process or receiver"
+  },
+  "held_dependencies": {
+    "owner": "agent/cc13-seg49",
+    "addresses": [
+      "00805a70",
+      "00804300",
+      "00925ce0",
+      "00928630"
+    ],
+    "action": "Verified held until2026-10-15T00:17UTC; queuedcc12_unit_receiver_dependencies; no writes."
+  },
+  "remaining_gates": [
+    "Actual containing factory/allocation preimage and successful full-flag base plus three genuine34h recon callbacks with BF7CD1/unwind pair.",
+    "Canonical actual observer/weak/string/entity-ID/pending domains and World/hierarchy publication.",
+    "Actual E188A8/game+1FE4/E0AF20 and77EB50 peer tail; actual session message/F87194 withdrawal/+2B0 observer member.",
+    "Recon-array and GameEntity/SceneNode callableWorld/effect teardown; Native root scalar flags/free/exception ownership.",
+    "Embedded310 tick unlink, actual current subnode scalar dispatch, genuine derived factory/current tick/remaining job dispatch.",
+    "Numeric profiles are not Source-callable tables; Seg60Host uint16 requestedID remains interface limitation, not confirmed gameplay divergence."
+  ],
+  "artifacts": [
+    {
+      "path": "docs/NATIVE_UNIT_OWNER_ENTITY.md",
+      "bytes": 7326,
+      "sha256": "8d2b8fffa95986f6affed31b91489fc6519d41308737ae6a59333d503c7cd0cc"
+    },
+    {
+      "path": "include/bsp/native_unit_owner_entity.hpp",
+      "bytes": 3184,
+      "sha256": "26f367ae59783a1085b20d1cb67bcaaf387308480ce23be0788b4d5a59838feb"
+    },
+    {
+      "path": "local/build_native_unit_owner_probe.cmd",
+      "bytes": 931,
+      "sha256": "a743c118326c83115731af122ee86347deebc7339bbd96c74e54fda5396f4189"
+    },
+    {
+      "path": "local/compile_native_unit_owner.cmd",
+      "bytes": 309,
+      "sha256": "2dd7333678cc5f441b39a75c093e94ee231a05e960f9e9a0099126fcb90d27bb"
+    },
+    {
+      "path": "local/extract_native_unit_owner_probe.py",
+      "bytes": 2079,
+      "sha256": "e489282a8033353b4f230e48acf88bb7baee33607038552eb89b4aca03313310"
+    },
+    {
+      "path": "local/ghidra-annotations-20261014T190259Z.json",
+      "bytes": 6639,
+      "sha256": "6cc4207f71345c63f97a7664f7abba2c341b35eca3cf097098b2475737306e1c"
+    },
+    {
+      "path": "local/native_unit_owner_annotations.log",
+      "bytes": 325,
+      "sha256": "25c6ea68f8231a90f10d17bdbb3f5a7710d3226857b3777e94b0a83da1e43cf6"
+    },
+    {
+      "path": "local/native_unit_owner_build.log",
+      "bytes": 84218,
+      "sha256": "69efdf4295007635a34f4d5091f92579dc349cb8b600b4b0f98adee17e8aabc1"
+    },
+    {
+      "path": "local/native_unit_owner_entity.asm",
+      "bytes": 24428,
+      "sha256": "469854db64098bd3a95bf233f7b7d7e6622bf678433c1c54885f57eb6935cea1"
+    },
+    {
+      "path": "local/native_unit_owner_entity.obj",
+      "bytes": 4673,
+      "sha256": "10e8000c88e02fff3dbcfd403bc0417519fb172b6521aebc0cfd4955d4149c4a"
+    },
+    {
+      "path": "local/native_unit_owner_export.log",
+      "bytes": 410,
+      "sha256": "a95c787c4c3289d652b018146572fb613b0314af78882329f59dea2a4c8e1858"
+    },
+    {
+      "path": "local/native_unit_owner_image_proof.json",
+      "bytes": 1622,
+      "sha256": "e192ce227b9f74561e8448ca04e125dcf2626df44752d37f5ba8cfd1594d5910"
+    },
+    {
+      "path": "local/native_unit_owner_lifetime_dependency.obj",
+      "bytes": 36855,
+      "sha256": "6f56327204bbc9dba441cfee6a3cc18c01b2f775804b49d0d8557d7dcdd09e8f"
+    },
+    {
+      "path": "local/native_unit_owner_list_heads.obj",
+      "bytes": 3092,
+      "sha256": "9f189d9d9306726da43fd122e1a0a0b66e743f63a12381045968a31e8ff58b51"
+    },
+    {
+      "path": "local/native_unit_owner_lists_typed_flow.json",
+      "bytes": 14615,
+      "sha256": "7dba2a58d16af4534b9b50123513ff2a8612ad5b8cdf0451693117339b8300cf"
+    },
+    {
+      "path": "local/native_unit_owner_probe.cpp",
+      "bytes": 7232,
+      "sha256": "130e16e3ac2fb27f3102ac24324293aa561cd6a9d131b235f0b0f4d96eca71d7"
+    },
+    {
+      "path": "local/native_unit_owner_probe.exe",
+      "bytes": 29696,
+      "sha256": "d647130eef1fbd0bed3192e4da6c4dfba6eaae79b7cfcc877052374175220a58"
+    },
+    {
+      "path": "local/native_unit_owner_probe_compile.log",
+      "bytes": 87,
+      "sha256": "6c89bda1d0daf543e4020757c88ef3f123dff642416b28ca720906f0576beb1a"
+    },
+    {
+      "path": "local/native_unit_owner_probe_result.txt",
+      "bytes": 69,
+      "sha256": "dc4c9d619d226ca9d15115707708ceb36d5c9260cf236c98ae6035435a212785"
+    },
+    {
+      "path": "local/native_unit_owner_report_calls.log",
+      "bytes": 71,
+      "sha256": "9c109f748bbd78992247e36301226f32c7489b8b5103caf2112e624d796a1b21"
+    },
+    {
+      "path": "local/native_unit_owner_seed_build.log",
+      "bytes": 4590,
+      "sha256": "d50a0a3b6c1b9d7cec7e80c3999a9d9d4cb96afc1f6919369effaa9769ff619b"
+    },
+    {
+      "path": "local/native_unit_owner_strict_compile.log",
+      "bytes": 30,
+      "sha256": "f4dcf35e101ad2d55027ac7e3257bad5dd1fd830c8f2912b04b451a587a96f00"
+    },
+    {
+      "path": "local/native_unit_owner_typed_flow.json",
+      "bytes": 20434,
+      "sha256": "1ed7e8b563158317b84fdc87b91c0b8b8321aeb7e943d5784df818642a8ef6be"
+    },
+    {
+      "path": "local/native_unit_owner_verify_seeds.log",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "src/native_unit_owner_entity.cpp",
+      "bytes": 4882,
+      "sha256": "96053b6dd6efeeb3b5efd81216b171871b4808bb8c7286069678dc362b39e664"
+    },
+    {
+      "path": "src/native_unit_owner_list_heads.cpp",
+      "bytes": 611,
+      "sha256": "60e793177a87edf08c8803541529e7dad97b4c85f3ca210045a5bec7b2db1f67"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    }
+  ]
+}
