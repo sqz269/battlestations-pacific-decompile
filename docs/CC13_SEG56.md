@@ -137,10 +137,10 @@ Of the 108 untagged segment-56 addresses that already had hits in `src/` or `inc
 a working implementation elsewhere. Each one was compared with the Ghidra listing (read-only) and
 given a reconstruction record that points at the existing code. None of that code was edited.
 Counts by status:
-- `existing_host_implementation_defect_found`: 2
+- `existing_host_implementation_defect_found`: 3
 - `existing_helper_verified_not_wired`: 1
 - `existing_library_function_verified_not_wired`: 6
-- `existing_host_implementation_verified_against_listing`: 26
+- `existing_host_implementation_verified_against_listing`: 25
 - `existing_host_substitution_labelled_verified_against_listing`: 31
 
 Defects found in existing code (not fixed here; the files belong to other lanes):
@@ -152,6 +152,10 @@ Defects found in existing code (not fixed here; the files belong to other lanes)
   00805CF0 runs on the entity's own record first (008AAA76), and then on the squadron members or
   the LandConvoy elements. The host forces the members instead of the entity, so a squadron's
   own record is never forced, and this deviation is not labelled.
+- 008C1930 OverrideHP (`GameGunneryHost::override_hp_008c1930`, `src/game_hosts_gunnery.cpp`):
+  the binding stores unit+36Ch (008C1A71) and calls 00877B90 (008C1AA8) without a dead test.
+  The host returns early on `state.dead`, so a sinking unit is never overridden. This was first
+  recorded as verified; the blind audit caught it and the record now says defect_found.
 - 00896A90 AddAirBaseStock (`run_add_air_base_stock_00896a90`), minor: the 0095BA60 party
   preload mark (00896BF5) is neither applied nor labelled.
 
