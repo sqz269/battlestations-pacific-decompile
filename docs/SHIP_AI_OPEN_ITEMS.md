@@ -17633,3 +17633,34 @@ outlives the OFF row's 2371 s; not a host defect. The first ON USN01 run (c8e9e5
 ScoutDauntless, a unit created after the table was filled with `units.count()` as "none": fixed in b4a87cce2.
 **Mechanism matches the predictions: ON.** Wins to re-check by the keeper: any row whose airfield or shipyard
 loses a hangar to gunfire (the master now dies with it unless a CommandBuilding adopted it).
+
+## 241. IJN08 won (s48_i08_h5); handoff (cc9-ships48, 2026-10-14)
+
+**IJN08 h5** (`config/win_orders/ijn08_s48_i08_h5.txt`, source `local\s48_i08_h5.txt` from
+`local\s48_i08gen.py`): the tree build of 1f3bf3d62 (origin/main merged; exe F7A6EC83E188), reference env, 120000 frames,
+`--stop-after-end 40`: **completed 3191.99 s** ("The path to the Coral Sea is clear!"), guard logged
+(`local\s48_ig_h5.log`). The plan: the Marus get no order before frame 60000, so they keep their formation slots
+(Maru1 behind Kongo, Maru2 behind Kirishima) inside the fleet's AA; each heavy ship repeats `attack` on one target
+every 2000 frames (Kongo and Kirishima US_Airfield_03, Haruna and Hiei US_Airfield_02, Aoba/Furutaka/Kinugasa the
+near installations and shipyards); from 36000 Kongo moves to (-1804, 7000) and Kirishima/Haruna/Hiei attack DamagedBB
+and RightBB1; from 60000 both Marus `attack HQ`. Timeline: RightBB1 1578 s, US_Airfield_03 1732 s, DamagedBB
+2110 s, HQ neutralized 2168 s, CB3 2666 s, HQ to party 1 at 3180 s. No Maru dies.
+Variants (same generator; logs `local\s48_ig_<v>.log`): g (Marus held at the spawn) Game Over 1205 s; h (Marus in
+formation to 70000) all eight installations dead by 2666 s, then DamagedBB sinks both Marus (5273 s); h2 Game Over
+1600 s; h3/h4 (release 40000/54000) DamagedBB kills them at 2809-3617 s; j (BB leaders hold at the spawn) 5791 s.
+Lesson: the formation is the air cover, and DamagedBB must die before the Marus sail.
+Not yet checked: `BSP_FRAME_JITTER 20,3`.
+
+**State.** Branch `agent/cc9-ships44` (origin/main merged at c77106f6e). Commits this session: 0351ad19d and
+a234b7b02 (T1/T2 ON, 238), c8e9e5ac3 / b4a87cce2 / 1f3bf3d62 (land master ON, 236/240), ceaab77a9 / 827fc0327
+(D3/D4 ON, 237/239), this one. No leases held after this commit. Tools in `local\`: `s48_lm_patch.py`,
+`s48_d34_patch.py` (applied), `s48_i08gen.py` (plan overrides `Ship=frame:target,...`; `@x/z` is a moveto;
+a negative hold leaves the Marus unordered until that frame).
+
+**Open, in order:**
+1. IJN08 h5 under jitter 20,3 and 20,5; then the keeper's WINS_TABLE row.
+2. Keeper re-checks for the land master flip (any win whose airfield or shipyard loses a hangar to gunfire).
+3. USN01 `p7_u1_a` reached no mission end in 26000 frames on c8e9e5ac3 (both sides of the 240 pair).
+4. The 007470B0 fire roll for LandFort hangars (only CommandBuildings host it) and the shipyard's vtable[1A8h]
+   00845AC0 (recorded at a hangar death; `shipyard_hangars_lost_00845ac0` is in gameplay_seg52_cc13).
+5. The lead's queue item 4 (ESMP08 / USNOS re-plans with physics) was not started.

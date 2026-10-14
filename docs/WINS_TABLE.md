@@ -313,3 +313,26 @@ mechanism is in the cd761bb52 section above).
   "usn03.obj_p2_fail" (Enterprise). First divergence: Kate1's strike dies 30 s later (147.20 -> 177.46 s). Reported
   to the lead for the owning lane (range f83e91891..a103f270a). LOMP10 `p3_l10_b` moved to 1396.79 s on that range,
   and to 1631.02 s with C2 ON (still completes).
+- **Re-time on agent/cc9-physics1 a2ad905f1** (= origin/main after C2 ON, c9a8b1344, plus cc13-seg19-21; cc9-physics8,
+  2026-10-14). Export `local\p7_m`, exe 0AA17CC7F908, reference env, logs `local\p8w2_<row>.log`. ESMP08 and USNOS not
+  re-run (lost, see above).
+
+  | Row | Result | Guard |
+  |---|---|---|
+  | USN02 `s36_u2_p7` | completed 200.06 s | yes |
+  | LOMP06 `l50_l6_q6` | completed 189.86 s | yes |
+  | USN12 `s38_u12_p2` | completed 1510.35 s | yes |
+  | LOMP10 `p3_l10_b` | completed 1581.97 s | yes |
+  | USN15 `s45_u15_l2` | EndMission 2793.65 s | yes |
+  | BSM01 `p6_b1_a` | EndMission 833.92 s | yes |
+  | IJN18 `s46_i18_a` | EndMission 2111.93 s | yes |
+  | USN01 `p8_u1_i` | completed 1185.03 s | yes |
+  | JM08 `p6_j8_f` | **no end** (110000 frames) | - |
+  | PRCP01 `l55_p01_c` | **no end** (failed at 1491.83 s on a103f270a) | - |
+  | JM06 `s47_j6_n1` | **no end** | - |
+
+  - JM08 f is lost to C2: on a103f270a (C2 OFF, `local\p8c2off_j8.log`) it completes at 1776.31 s; with C2 ON the
+    "landingships" and "bombing" objectives never complete. First divergence: the second land kill, Tent01 16, at
+    85.65 s instead of 66.55 s (Gyoraitei #Y3 instead of #Y2); the first, at 53.90 -> 54.30 s, already moves, so
+    the planes' throttle/pitch change re-rolls the shared stream from the first seconds. Needs a re-plan (the plan
+    is 6 MB of generated orders; `jm08_s45_j8_m10` is the older alternative).
