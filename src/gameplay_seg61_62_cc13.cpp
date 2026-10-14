@@ -149,6 +149,22 @@ bool vehicle_class_derive_constants_default_00951f20() noexcept {
     return al != 0;
 }
 
+// 00939F20: CALL 00939CB0 at 00939F28, then MOV [ESI],00D196F0 at 00939F2D.
+std::uint32_t* controller_construct_variant_c_00939f20(std::uint32_t* self, std::uintptr_t unit,
+                                                       const ControllerVariantCtorHost& host) {
+    host.base_construct(self, unit);
+    *self = kControllerVariants[1].vtable;
+    return self;
+}
+
+// 00939F40: CALL 00939CB0 at 00939F48, then MOV [ESI],00D196F4 at 00939F4D.
+std::uint32_t* controller_construct_variant_d_00939f40(std::uint32_t* self, std::uintptr_t unit,
+                                                       const ControllerVariantCtorHost& host) {
+    host.base_construct(self, unit);
+    *self = kControllerVariants[2].vtable;
+    return self;
+}
+
 int controller_b_periscope_shape_00939e50(bool model_has_periszkop,
                                           const std::vector<std::uint32_t>& shape_flags) {
     if (!model_has_periszkop) return -1;                 // 00939EBF
