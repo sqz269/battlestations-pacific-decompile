@@ -14548,3 +14548,27 @@ by design (`apply_base_hit_record`), so a plane record that carried the element 
 there. It would, however, open the host's `00826F10` hull pass (R1, flood/fire), which is the ship's handler
 and does not run for a plane in the image. Keeping 0Ah / -1 on the plane record is therefore the right
 substitution; no binding.
+
+## 244. cc13 backfill G1-G4 (lead queue item 3; cc9-gunnery44, 2026-10-14)
+
+- **G1** (`771b6a3a0`, plain fix). `fighter_aim_distortion_009fa7e0` kept its `009FA620` / `009FA7E0` wander
+  state in a function-local static map, which outlived the mission. It now lives in the gunnery host, which the
+  per-mission units host owns (`game_hosts_mission_frame.cpp` builds a new `GameUnitsHost` at each mission
+  load). A one-mission run is unchanged.
+- **G3** (`771b6a3a0`). `00827B90` compares with `__stricmp` (`00BF7FBF`, Explosion) and `00425850`
+  (SteeringJam, EngineJam, Fire `00CE7310`), all case-insensitive; the host now uses `failure_name_is`. This
+  installation authors the four names in their canonical case on that path (the only lower-case use,
+  JM02's `SetFailure(unit, "explosion", ...)`, goes through `script_set_failure_008132c0`, already
+  insensitive).
+- **G4** (`771b6a3a0`, comment). `kTurningClassRapid = 0x24` / `kTurningClassSingle = 0x27` are device Type
+  values (factories `00731E20` MRTGun, `006FE390` MSTGun); the IsKindOf class ids are MRTGun 23h (`00730ED0`),
+  MSTGun 24h (`006FDF20`), MDepthChargeLauncher 27h (`006FE050`). The values were right.
+- **G2** `kGunneryLosEyeCacheBound` (OFF). `00864680` refreshes the owner's eye point and hidden byte only when
+  the cache ttl `+10h` is not above 0 (`008646B5` COMISS / JC) and reloads it with 0.5f (`[00CE3800]`);
+  `00862C30` subtracts the elapsed time from `+10h` before the entry walk. ON, with the role swap, the
+  observer's point and hangar answer are reused for 0.5 s. LABELLED: the "shape-based class height" half is the
+  `class+50h` / `00862C00` section-span raise (`top + max(Globals +94h, span * +9Ch)`); this process builds no
+  model at `class+50h` (`game_hosts_units.hpp` `unit_hull_length_09c8`), so the `class+A8h` Height + 5.0
+  fallback the host uses is the branch the image takes for a class without a model, and the raise stays
+  unbound. Prediction: ON moves only rows where a ray grazes land within 0.5 s of a pose change; open-water rows
+  stay gameplay-identical. Counter: `summary mission gunnery line of sight eye cache bound= refreshes= cached=`.

@@ -737,6 +737,18 @@ constexpr bool kGunneryLineOfSightBound = true;
 //    USN12, USN02 and JM06; USN01 moves by two tests the one-sided cell test
 //    00ADEB80 answers differently in the two directions.
 constexpr bool kGunneryLosRoleSwapBound = true;
+//  * kGunneryLosEyeCacheBound: packet g44_los_eye_cache (cc13 backfill G2). The
+//    owner's eye point and hidden byte live in the visibility cache: 00864680
+//    refreshes +14h..+1Ch (pose raised by Height + Globals +94h) and +20h
+//    (IsKindOf(6) -> 0081DE10) only when the ttl +10h is not above 0
+//    (008646B5 COMISS / JC), then reloads it with 0.5f ([00CE3800], bytes
+//    00 00 00 3F) at 008647A4; 00862C30 subtracts the pass's elapsed time from
+//    +10h first thing (00862C30..00862C43). ON (with the role swap): the
+//    observer's point and hangar answer are reused for 0.5 s. LABELLED: the
+//    class+50h section-span raise (00862C00, Globals +9Ch) is still not taken,
+//    as kGunneryLineOfSightBound says. OFF: recomputed at every test.
+constexpr bool kGunneryLosEyeCacheBound = false;
+constexpr float kLosEyeCacheSeconds = 0.5f;   // 00CE3800
 //  * kShipyardHangarHiddenBound (packet cc9_hangar_los, docs/GUNNERY_OPEN_ITEMS.md
 //    176): 00864680 runs 0081DE10 for a ship cache owner and answers hidden when
 //    the ship's bow or stern (+-0.5 Length along its axis) lies inside a usable
@@ -1817,6 +1829,11 @@ struct GameGunneryHost::Impl {
             float ttl{0.0f};
         };
         std::vector<VisibilityEntry> visibility;
+        // kGunneryLosEyeCacheBound: the same cache's +10h ttl, +14h..+1Ch eye
+        // point and +20h hidden byte (00864680, aged by 00862C30).
+        float los_eye_ttl{0.0f};
+        float los_eye[3]{};
+        bool los_eye_hidden{false};
         // Packet cc9_unit_fire_cooldown: unit+6F8h and unit+6FCh.
         float fire_cooldown_6f8{0.0f};
         float torpedo_cooldown_6fc{0.0f};
@@ -3783,6 +3800,7 @@ struct GameGunneryHost::Impl {
     bool line_of_sight_00864680(std::size_t observer, std::size_t target);
     unsigned long long los_tests{0};
     unsigned long long los_blocked{0};
+    unsigned long long los_eye_refreshes{0}, los_eye_cached{0};   // kGunneryLosEyeCacheBound
     unsigned long long los_hits{0};   // packet cc9_los_role_swap: a Landscape hit, either verdict
     unsigned long long los_verdict_disagree{0};   // BSP_LOS_CENSUS=1 only
     unsigned los_hits_logged{0};      // BSP_LOS_CENSUS=1: the first 24 disagreements
@@ -5578,6 +5596,10 @@ public:
     }
 
     void age_visibility_cache_00862c30(float elapsed) override {
+        if constexpr (kGunneryLosEyeCacheBound) {
+            // 00862C30..00862C43: cache+10h -= elapsed, before the entry walk.
+            state_.los_eye_ttl = static_cast<float>(state_.los_eye_ttl - elapsed);
+        }
         std::vector<GameGunneryHost::Impl::UnitState::VisibilityEntry> kept;
         kept.reserve(state_.visibility.size());
         for (auto& entry : state_.visibility) {
@@ -9447,7 +9469,32 @@ bool GameGunneryHost::Impl::line_of_sight_00864680(std::size_t observer, std::si
         ? bsp::kInstalledLosViewerHeightAdd : bsp::kInstalledLosTargetHeightAdd));
     // 00904400(44h, target point, observer point, hit, 0) -> 0098ADD0; ON:
     // 008647F4 casts (owner point, passed point), observer -> target.
-    if (kShipyardHangarHiddenBound) {
+    UnitState* eye_owner = kGunneryLosEyeCacheBound && kGunneryLosRoleSwapBound
+        && observer < unit_state.size() ? &unit_state[observer] : nullptr;
+    if (eye_owner != nullptr) {
+        // kGunneryLosEyeCacheBound: 008646B5..008646BC refresh the owner's point
+        // (+14h..+1Ch) and the hidden byte (+20h) only when the ttl +10h is not
+        // above 0; 008647A4..008647B0 reload it with 0.5f ([00CE3800]).
+        if (!(0.0f < eye_owner->los_eye_ttl)) {
+            eye_owner->los_eye_hidden = false;                       // 008646C2
+            if (kShipyardHangarHiddenBound && observer < units.count()
+                && units.unit_is_kind_of(observer, 6)) {
+                ++hangar_hidden_tests;
+                eye_owner->los_eye_hidden = ship_in_shipyard_hangar_0081de10(observer);
+            }
+            for (int i = 0; i < 3; ++i) eye_owner->los_eye[i] = op[i];
+            eye_owner->los_eye_ttl = kLosEyeCacheSeconds;
+            ++los_eye_refreshes;
+        } else {
+            for (int i = 0; i < 3; ++i) op[i] = eye_owner->los_eye[i];
+            ++los_eye_cached;
+        }
+        if (eye_owner->los_eye_hidden) {                             // 008647B9
+            ++hangar_hidden;
+            done("Gunnery::line_of_sight_00864680", 0x00864680u);
+            return false;
+        }
+    } else if (kShipyardHangarHiddenBound) {
         // 00864680 (0086469F..008646C6): when the cache owner answers IsKindOf(6),
         // 0081DE10's byte goes to record+20h, and a set byte returns 0 before the ray
         // (00864783). The owner is the observer with kGunneryLosRoleSwapBound.
@@ -15681,6 +15728,9 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery line of sight tests=%llu blocked=%llu bound=%d "
             "(00864680 / 00904400 kind 44h, packet cc9_gunnery_line_of_sight)",
             host.los_tests, host.los_blocked, kGunneryLineOfSightBound ? 1 : 0);
+        host.log.notef("summary mission gunnery line of sight eye cache bound=%d refreshes=%llu "
+            "cached=%llu (00864680 +10h..+20h, 00862C30, packet g44_los_eye_cache)",
+            kGunneryLosEyeCacheBound ? 1 : 0, host.los_eye_refreshes, host.los_eye_cached);
         host.log.notef("summary mission gunnery hangar hidden tests=%llu hidden=%llu bound=%d "
             "(00864680 -> 0081DE10, packet cc9_hangar_los)", host.hangar_hidden_tests,
             host.hangar_hidden, kShipyardHangarHiddenBound ? 1 : 0);
