@@ -1,5 +1,6 @@
 #include "bsp/native_unit_owner_entity.hpp"
 
+#include "bsp/native_alias_count_growth.hpp"
 #include "bsp/native_unit_owner_list_heads.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
@@ -16,6 +17,31 @@ volatile T& at(void* object, std::size_t offset) noexcept {
 
 void* bytes_at(void* object, std::size_t offset) noexcept {
     return static_cast<std::byte*>(object) + offset;
+}
+
+void* wrapped_at(void* object, std::uint32_t offset) noexcept {
+    return reinterpret_cast<void*>(reinterpret_cast<std::uintptr_t>(object) + offset);
+}
+
+struct CompletedCountMessage {
+    NativeLegacySboStringStorage& value;
+    ~CompletedCountMessage() noexcept { native_legacy_sbo_string_destroy_004072d0(value); }
+};
+
+void grow_owner_count(void* actual_list, std::uint32_t increment, std::uint32_t bound) {
+    const std::uint32_t captured = at<std::uint32_t>(actual_list, 8);
+    if (bound - captured < increment) {
+        NativeLegacySboStringStorage message;
+        message.capacity_18 = 15;
+        message.length_14 = 0;
+        message.buffer_04.inline_bytes[0] = '\0';
+        native_legacy_sbo_string_assign_counted_00408720(message, "list<T> too long", 16);
+        // C89F50/C89F90 arm only after assignment, then destroy the completed
+        // message on legacy owner construction or throw unwind.
+        const CompletedCountMessage completed{message};
+        throw NativeAliasListLengthError{message};
+    }
+    at<std::uint32_t>(actual_list, 8) = captured + increment;
 }
 } // namespace
 
@@ -119,6 +145,101 @@ void destroy_native_unit_owner_lists_0077e42c(void* actual_root_after_observer) 
     singleton_lifetime_free(at<void*>(root, 0x2a8));
     at<void*>(root, 0x2a8) = nullptr;
     tidy_native_unit_owner_peer_list_0077b980(bytes_at(root, 0x298));
+}
+
+void* __stdcall buy_native_unit_owner_holder_node_0077ba60(
+    void* next, void* previous, const volatile std::uint32_t* actual_record) {
+    void* const node = singleton_lifetime_allocate({SingletonAllocationKind::object, 0x18, 0x18});
+    if (node != nullptr) at<void*>(node, 0) = next;
+    if (void* const destination = wrapped_at(node, 4))
+        *static_cast<void* volatile*>(destination) = previous;
+    if (void* const destination = wrapped_at(node, 8)) {
+        auto* const output = static_cast<volatile std::uint32_t*>(destination);
+        output[0] = actual_record[0];
+        output[1] = actual_record[1];
+        output[2] = actual_record[2];
+        output[3] = actual_record[3];
+    }
+    return node;
+}
+
+void* __stdcall buy_native_unit_owner_peer_node_0077bb00(
+    void* next, void* previous, const volatile std::uint32_t* actual_peer_slot) {
+    void* const node = singleton_lifetime_allocate({SingletonAllocationKind::object, 0x0c, 0x0c});
+    if (node != nullptr) at<void*>(node, 0) = next;
+    if (void* const destination = wrapped_at(node, 4))
+        *static_cast<void* volatile*>(destination) = previous;
+    if (void* const destination = wrapped_at(node, 8))
+        *static_cast<volatile std::uint32_t*>(destination) = *actual_peer_slot;
+    return node;
+}
+
+void grow_native_unit_owner_holder_count_0077dd00(void* actual_list, std::uint32_t increment) {
+    grow_owner_count(actual_list, increment, 0x0fffffffu);
+}
+
+void grow_native_unit_owner_peer_count_0077de40(void* actual_list, std::uint32_t increment) {
+    grow_owner_count(actual_list, increment, 0x3fffffffu);
+}
+
+void release_native_unit_owner_holder_scratch_0077b030(void* actual_record) noexcept {
+    void* const payload = at<void*>(actual_record, 0x0c);
+    if (payload != nullptr) {
+        singleton_lifetime_free(payload);
+        at<void*>(actual_record, 0x0c) = nullptr;
+    }
+}
+
+void append_native_unit_owner_peer_0077eb50(
+    void* actual_root,
+    const volatile std::uint32_t& actual_peer_argument_slot,
+    void* actual_holder_scratch_preimage,
+    volatile std::uint8_t& actual_dirty_byte_00f87190) {
+    void* const scratch = actual_holder_scratch_preimage;
+    at<std::uint32_t>(scratch, 0) = actual_peer_argument_slot;
+    at<std::uint32_t>(scratch, 4) = 0xfff0bdc1u;
+    at<std::uint16_t>(scratch, 8) = 0;
+    at<void*>(scratch, 0x0c) = nullptr;
+    void* const holder_head = at<void*>(actual_root, 0x2a8);
+    void* const holder_previous = at<void*>(holder_head, 4);
+    void* peer_head;
+    void* peer_previous;
+    try {
+        void* const holder = buy_native_unit_owner_holder_node_0077ba60(
+            holder_head, holder_previous, static_cast<const volatile std::uint32_t*>(scratch));
+        grow_native_unit_owner_holder_count_0077dd00(bytes_at(actual_root, 0x2a4), 1);
+        at<void*>(holder_head, 4) = holder;
+        void* const current_holder_previous = at<void*>(holder, 4);
+        at<void*>(current_holder_previous, 0) = holder;
+        peer_head = at<void*>(actual_root, 0x29c);
+        peer_previous = at<void*>(peer_head, 4);
+    } catch (...) {
+        // The actual state0 map owns only scratch+0C, not either list node.
+        release_native_unit_owner_holder_scratch_0077b030(scratch);
+        throw;
+    }
+    // Original state -1 is stored before this second allocation.
+    void* const peer = buy_native_unit_owner_peer_node_0077bb00(
+        peer_head, peer_previous, &actual_peer_argument_slot);
+    grow_native_unit_owner_peer_count_0077de40(bytes_at(actual_root, 0x298), 1);
+    at<void*>(peer_head, 4) = peer;
+    void* const current_peer_previous = at<void*>(peer, 4);
+    at<void*>(current_peer_previous, 0) = peer;
+    actual_dirty_byte_00f87190 = 1;
+}
+
+void finish_native_unit_owner_peer_tail_0077f054(
+    void* actual_root_after_physical_fields,
+    void* volatile& actual_game_publication_00e188a8,
+    const volatile std::uint8_t& actual_network_byte_00e0af20,
+    void* actual_holder_scratch_preimage,
+    volatile std::uint8_t& actual_dirty_byte_00f87190) {
+    void* const game = actual_game_publication_00e188a8;
+    if (at<std::uint32_t>(game, 0x1fe4) == 2 && actual_network_byte_00e0af20 == 0) {
+        volatile std::uint32_t peer_argument = 0;
+        append_native_unit_owner_peer_0077eb50(actual_root_after_physical_fields,
+            peer_argument, actual_holder_scratch_preimage, actual_dirty_byte_00f87190);
+    }
 }
 
 } // namespace bsp

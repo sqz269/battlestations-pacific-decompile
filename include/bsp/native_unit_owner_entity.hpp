@@ -52,4 +52,57 @@ void clear_native_unit_owner_holder_list_0077d930(void* actual_list_header) noex
 // owner. Not a complete destructor and never a scalar-delete substitute.
 void destroy_native_unit_owner_lists_0077e42c(void* actual_root_after_observer) noexcept;
 
+// Complete normal node producers. ECX is unused in the Original; stack
+// (next, previous, source), retained EAX result, RET0C. Allocate exactly 18h
+// or 0Ch through the same real BF681B domain. Independently guard the wrapped
+// +0/+4/+8 destinations; read source DWORDs only after allocation and prior
+// link stores. The holder copies all four DWORDs, including its opaque two
+// scratch bytes. Source must be actual live storage, not a default record.
+void* __stdcall buy_native_unit_owner_holder_node_0077ba60(
+    void* next, void* previous, const volatile std::uint32_t* actual_record);
+void* __stdcall buy_native_unit_owner_peer_node_0077bb00(
+    void* next, void* previous, const volatile std::uint32_t* actual_peer_slot);
+
+// Complete checked count operations with unsigned wrapped subtraction bounds
+// 0FFFFFFF and 3FFFFFFF. Overflow retains count and throws the existing owning
+// NativeAliasListLengthError with the actual legacy string/logic-error body.
+// This is Source exception transport, not Original RTTI/throw/frame ABI.
+// These own no node allocation, unlink or rollback.
+void grow_native_unit_owner_holder_count_0077dd00(void* actual_list, std::uint32_t increment);
+void grow_native_unit_owner_peer_count_0077de40(void* actual_list, std::uint32_t increment);
+
+// Complete normal 0077B030..0077B04B: release non-null scratch+0C and zero it.
+// Actual FH3 state0 in 77EB50 reaches this through C8A060. No node is owned.
+void release_native_unit_owner_holder_scratch_0077b030(void* actual_record) noexcept;
+
+// Concrete 0077EB50 business body using the real list/count/CRT components.
+// Requires live root lists and an aligned, disjoint, genuine 10h scratch
+// preimage whose +0A/+0B bytes are supplied by the actual caller/frame domain.
+// Those two bytes are copied unchanged; no zero-filled record is invented.
+// Borrow the actual peer-argument cell: the holder captures it before the
+// first allocation; the peer node reads it after its own later allocation.
+// Preserve state0 scratch cleanup only until the fresh peer head/previous
+// are captured. After that, a failure leaves prior list effects in place.
+// A count failure does not retroactively free the newly allocated node.
+// Full Native stack/exception ABI and scratch provenance remain caller gates.
+void append_native_unit_owner_peer_0077eb50(
+    void* actual_root,
+    const volatile std::uint32_t& actual_peer_argument_slot,
+    void* actual_holder_scratch_preimage,
+    volatile std::uint8_t& actual_dirty_byte_00f87190);
+
+// Qualified normal constructor tail 0077F054..0077F076, after both earlier
+// owner stages. Load actual E188A8 once, then its +1FE4 DWORD. Only mode2
+// reads E0AF20; only a zero byte appends the explicit peer0 through 77EB50.
+// The actual Game publication is required; there is no added null guard.
+// Scratch/dirty cells are untouched on either skipped branch. The actual
+// scratch preimage and all owning base/array/root lifetimes remain required.
+// This still supplies no completed factory, callable profile or tick receiver.
+void finish_native_unit_owner_peer_tail_0077f054(
+    void* actual_root_after_physical_fields,
+    void* volatile& actual_game_publication_00e188a8,
+    const volatile std::uint8_t& actual_network_byte_00e0af20,
+    void* actual_holder_scratch_preimage,
+    volatile std::uint8_t& actual_dirty_byte_00f87190);
+
 } // namespace bsp
