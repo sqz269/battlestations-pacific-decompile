@@ -17802,3 +17802,20 @@ director's fire target and has no named-target path. Before this, a stale repeat
 (1685 s) and Airfield1 (2335 s) while attacking HQ1 / Capture Post 01, and in k2 both airfields survived. Order
 files that relied on attacking a wreck to idle a ship change behaviour; names that resolve to no created unit are
 passed through as before.
+
+## 248. 0067BB50's clear page byte and local-slot gate are unreachable (cc9-ships50, 2026-10-14; lead item 3)
+
+The seg27 blind audit marked `role_screen_update_0067bb50` defect_found: at 0067BBE0 a clear page byte +4h (BL, read
+at 0067BB5D) with role 0 held releases the role through 0077C470(ctrl, 1, 0) (0067BC16..0067BC21), and the
+game+18ECh [0, 7] gate (0067BBC8..0067BBD4) is skipped. Read with `bsp.py disasm-raw 0067bb50` / `004f8830`:
+- The only reference to 0067BB50 is the vtable dword 00CF7A58 (page 27h, vtable 00CF7A38, slot 20h). The pump
+  004F8830's last loop over the screen table 00E18B60..00E18CDC calls slot 20h only when `[ECX+4]` and `[ECX+5]` are
+  both nonzero (004F890C, 004F8912, `CALL [EDX+20h]` at 004F8925 with the frame seconds pushed). The other table
+  readers do not call slot 20h (004D64E8 calls +24h). So BL is set on every call and the release branch never runs.
+  The host pump (src/frontend_states.cpp, `wanted && active`) gates the same way.
+- game+18ECh is the local participant slot set by 004B4740 (callers 007705A0 / 0076C840, the session select-player
+  paths); the host fixes it at `kLocalPlayerSlot` 0, so the gate always passes in single player.
+No counter or switch was added: neither state is reachable on the only call path. The ledger record goes back to
+`semantic_build_tested` with the corrected ABI (`__thiscall(ECX page, float seconds), RET 4`, not __fastcall/RET),
+and the host's two release labels are corrected (0067BB96 is the change-away release, 0067BC2C..0067BC37 the
+no-controlled release). Uncertainty: unreachability rests on the pump being the sole caller of slot 20h of this page.
