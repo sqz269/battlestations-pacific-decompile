@@ -1,0 +1,1199 @@
+{
+  "packet": "argon-v2-seg64",
+  "range": [
+    "0x0096aa00",
+    "0x0097aaf0"
+  ],
+  "function_count": 47,
+  "source_file": "src/warning_string_seg64_argon.cpp",
+  "header_file": "include/bsp/warning_string_seg64_argon.hpp",
+  "doc_file": "docs/ARGON_SEG64_WARNING_STRING.md",
+  "status": "reconstructed_build_tested",
+  "x87_dc_sites": [],
+  "x87_dc_audit_note": "x87_dc_form_scan.py over 0x0096aa00 through 0x0097aaf0 found 1 site (0x0096ef8a inside already-reconstructed 0x0096ef60 BSP_WarningManager_ReportHitFeedback) and 0 sites in the 47 functions of argon-v2-seg64.",
+  "functions": [
+    {
+      "address": "0x0096aa00",
+      "name": "BSP_Warning_Activate_0096aa00",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::warning_activate_0096aa00",
+      "original_name": "TRIV_body_0096aa00",
+      "original_abi": "__thiscall(void* this), RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": []
+    },
+    {
+      "address": "0x0096c280",
+      "name": "BSP_WarningList_RemoveByValue",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::warning_list_remove_by_value_0096c280",
+      "original_name": "BSP_WarningList_RemoveByValue",
+      "original_abi": "__thiscall(void* list, void* const* value_ptr), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x0096c2a8",
+          "function": "0x0096c280",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0096c2b5",
+          "function": "0x0096c280",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0096c2bf",
+          "function": "0x0096c280",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0096c2d6",
+          "function": "0x0096c280",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0096c2f0",
+          "function": "0x0096c280",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0096c309",
+          "function": "0x0096c280",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0096cd90",
+      "name": "BSP_NativeString_ReleaseStorage_0096cd90",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::vtable_native_string_release_storage_0096cd90",
+      "original_name": "BSP_NativeString_ReleaseStorage_0096cd90",
+      "original_abi": "__thiscall(void* this), RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x0096cda7",
+          "function": "0x0096cd90",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0096cdae",
+          "function": "0x0096cd90",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0096cdc0",
+      "name": "CG_scalar_deleting_dtor_0096cdc0",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::vtable_native_string_scalar_deleting_dtor_0096cdc0",
+      "original_name": "CG_scalar_deleting_dtor_0096cdc0",
+      "original_abi": "__thiscall(void* this, uint8_t flags) -> void*, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x0096cdda",
+          "function": "0x0096cdc0",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0096cde1",
+          "function": "0x0096cdc0",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0096cdee",
+          "function": "0x0096cdc0",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0096d330",
+      "name": "BSP_StringListWarning_SaveArchive",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::string_list_warning_save_archive_0096d330",
+      "original_name": "BSP_StringListWarning_SaveArchive",
+      "original_abi": "__thiscall(void* this, void* archive), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x0096d33a",
+          "function": "0x0096d330",
+          "native": "0x0096cf10",
+          "name": "BSP_Warning_SaveArchive",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0096d383",
+          "function": "0x0096d330",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0096d7b0",
+      "name": "BSP_NativeString_ReleaseStorage_0096d7b0",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::native_string_release_storage_0096d7b0",
+      "original_name": "BSP_NativeString_ReleaseStorage_0096d7b0",
+      "original_abi": "__thiscall(void* this), RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x0096d7c0",
+          "function": "0x0096d7b0",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0096d7c7",
+          "function": "0x0096d7b0",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0096db10",
+      "name": "CG_scalar_deleting_dtor_0096db10",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::ref_holder_scalar_deleting_dtor_0096db10",
+      "original_name": "CG_scalar_deleting_dtor_0096db10",
+      "original_abi": "__thiscall(void* this, uint8_t flags) -> void*, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x0096db40",
+          "function": "0x0096db10",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0096dca0",
+      "name": "BSP_WarningEventRecord_GetKind_0096dca0",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::warning_event_record_get_kind_0096dca0",
+      "original_name": "TRIV_body_0096dca0",
+      "original_abi": "__thiscall(void* this) -> uint32_t, RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": []
+    },
+    {
+      "address": "0x0096dd10",
+      "name": "CG_scalar_deleting_dtor_0096dd10",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::warning_event_record_scalar_deleting_dtor_0096dd10",
+      "original_name": "CG_scalar_deleting_dtor_0096dd10",
+      "original_abi": "__thiscall(void* this, uint8_t flags) -> void*, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x0096dd13",
+          "function": "0x0096dd10",
+          "native": "0x0096dcb0",
+          "name": "BSP_WarningEventRecord_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0096dd20",
+          "function": "0x0096dd10",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0096ecc0",
+      "name": "CG_scalar_deleting_dtor_0096ecc0",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::offset_native_string_scalar_deleting_dtor_0096ecc0",
+      "original_name": "CG_scalar_deleting_dtor_0096ecc0",
+      "original_abi": "__thiscall(void* this, uint8_t flags) -> void*, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x0096ecd4",
+          "function": "0x0096ecc0",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0096ecdb",
+          "function": "0x0096ecc0",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0096ece8",
+          "function": "0x0096ecc0",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0096f220",
+      "name": "BSP_Warning_GetZeroLifetime_0096f220",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::warning_get_zero_lifetime_0096f220",
+      "original_name": "TRIV_body_0096f220",
+      "original_abi": "__thiscall(void* this) -> float (ST0), RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": []
+    },
+    {
+      "address": "0x0096f240",
+      "name": "BSP_Warning_GetDefaultCooldown_0096f240",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::warning_get_default_cooldown_0096f240",
+      "original_name": "TRIV_body_0096f240",
+      "original_abi": "__thiscall(void* this) -> float (ST0), RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": []
+    },
+    {
+      "address": "0x0096f250",
+      "name": "CG_scalar_deleting_dtor_0096f250",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::warning_base_scalar_deleting_dtor_0096f250",
+      "original_name": "CG_scalar_deleting_dtor_0096f250",
+      "original_abi": "__thiscall(void* this, uint8_t flags) -> void*, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x0096f253",
+          "function": "0x0096f250",
+          "native": "0x0096f170",
+          "name": "BSP_Warning_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0096f260",
+          "function": "0x0096f250",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00973b80",
+      "name": "CG_scalar_deleting_dtor_00973b80",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::entity_warning_kind0_scalar_deleting_dtor_00973b80",
+      "original_name": "CG_scalar_deleting_dtor_00973b80",
+      "original_abi": "__thiscall(void* this, uint8_t flags) -> void*, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x00973b83",
+          "function": "0x00973b80",
+          "native": "0x0096f270",
+          "name": "BSP_EntityWarning_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00973b90",
+          "function": "0x00973b80",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00973c50",
+      "name": "BSP_EntityWarning_GetKind1_00973c50",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::entity_warning_get_kind1_00973c50",
+      "original_name": "TRIV_body_00973c50",
+      "original_abi": "__thiscall(void* this) -> uint32_t, RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": []
+    },
+    {
+      "address": "0x00973c80",
+      "name": "CG_scalar_deleting_dtor_00973c80",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::entity_warning_kind1_scalar_deleting_dtor_00973c80",
+      "original_name": "CG_scalar_deleting_dtor_00973c80",
+      "original_abi": "__thiscall(void* this, uint8_t flags) -> void*, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x00973c83",
+          "function": "0x00973c80",
+          "native": "0x0096f270",
+          "name": "BSP_EntityWarning_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00973c90",
+          "function": "0x00973c80",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00973cd0",
+      "name": "BSP_EntityWarning_GetKind2_00973cd0",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::entity_warning_get_kind2_00973cd0",
+      "original_name": "TRIV_body_00973cd0",
+      "original_abi": "__thiscall(void* this) -> uint32_t, RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": []
+    },
+    {
+      "address": "0x00973ce0",
+      "name": "BSP_EntityWarningKind2_GetCooldown_00973ce0",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::entity_warning_kind2_get_cooldown_00973ce0",
+      "original_name": "TRIV_body_00973ce0",
+      "original_abi": "__thiscall(void* this) -> float (ST0), RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": []
+    },
+    {
+      "address": "0x00973d10",
+      "name": "CG_scalar_deleting_dtor_00973d10",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::entity_warning_kind2_scalar_deleting_dtor_00973d10",
+      "original_name": "CG_scalar_deleting_dtor_00973d10",
+      "original_abi": "__thiscall(void* this, uint8_t flags) -> void*, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x00973d13",
+          "function": "0x00973d10",
+          "native": "0x0096f270",
+          "name": "BSP_EntityWarning_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00973d20",
+          "function": "0x00973d10",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00973d50",
+      "name": "BSP_Warning_GetKind3_00973d50",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::warning_get_kind3_00973d50",
+      "original_name": "TRIV_body_00973d50",
+      "original_abi": "__thiscall(void* this) -> uint32_t, RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": []
+    },
+    {
+      "address": "0x00973d70",
+      "name": "CG_scalar_deleting_dtor_00973d70",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::warning_kind3_scalar_deleting_dtor_00973d70",
+      "original_name": "CG_scalar_deleting_dtor_00973d70",
+      "original_abi": "__thiscall(void* this, uint8_t flags) -> void*, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x00973d73",
+          "function": "0x00973d70",
+          "native": "0x0096f170",
+          "name": "BSP_Warning_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00973d80",
+          "function": "0x00973d70",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00973dc0",
+      "name": "BSP_EntityWarning_GetKind4_00973dc0",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::entity_warning_get_kind4_00973dc0",
+      "original_name": "TRIV_body_00973dc0",
+      "original_abi": "__thiscall(void* this) -> uint32_t, RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": []
+    },
+    {
+      "address": "0x00973df0",
+      "name": "CG_scalar_deleting_dtor_00973df0",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::entity_warning_kind4_scalar_deleting_dtor_00973df0",
+      "original_name": "CG_scalar_deleting_dtor_00973df0",
+      "original_abi": "__thiscall(void* this, uint8_t flags) -> void*, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x00973df3",
+          "function": "0x00973df0",
+          "native": "0x0096f270",
+          "name": "BSP_EntityWarning_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00973e00",
+          "function": "0x00973df0",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00973e40",
+      "name": "BSP_EntityWarning_GetKind5_00973e40",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::entity_warning_get_kind5_00973e40",
+      "original_name": "TRIV_body_00973e40",
+      "original_abi": "__thiscall(void* this) -> uint32_t, RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": []
+    },
+    {
+      "address": "0x00973e70",
+      "name": "CG_scalar_deleting_dtor_00973e70",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::entity_warning_kind5_scalar_deleting_dtor_00973e70",
+      "original_name": "CG_scalar_deleting_dtor_00973e70",
+      "original_abi": "__thiscall(void* this, uint8_t flags) -> void*, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x00973e73",
+          "function": "0x00973e70",
+          "native": "0x0096f270",
+          "name": "BSP_EntityWarning_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00973e80",
+          "function": "0x00973e70",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00973ec0",
+      "name": "BSP_EntityWarning_GetKind6_00973ec0",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::entity_warning_get_kind6_00973ec0",
+      "original_name": "TRIV_body_00973ec0",
+      "original_abi": "__thiscall(void* this) -> uint32_t, RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": []
+    },
+    {
+      "address": "0x00973f00",
+      "name": "CG_scalar_deleting_dtor_00973f00",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::entity_warning_kind6_scalar_deleting_dtor_00973f00",
+      "original_name": "CG_scalar_deleting_dtor_00973f00",
+      "original_abi": "__thiscall(void* this, uint8_t flags) -> void*, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x00973f03",
+          "function": "0x00973f00",
+          "native": "0x0096f270",
+          "name": "BSP_EntityWarning_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00973f10",
+          "function": "0x00973f00",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00974070",
+      "name": "BSP_WarningManager_ApplyWarning",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::warning_manager_apply_warning_00974070",
+      "original_name": "BSP_WarningManager_ApplyWarning",
+      "original_abi": "__thiscall(void* manager, void* warning), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x0097409f",
+          "function": "0x00974070",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009740cb",
+          "function": "0x00974070",
+          "native": "0x005bbdc0",
+          "name": "BSP_VoiceManager_PlayPositionalLine",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009740e9",
+          "function": "0x00974070",
+          "native": "0x005bbc10",
+          "name": "BSP_VoiceManager_PlayLine",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0097410d",
+          "function": "0x00974070",
+          "native": "0x0096c280",
+          "name": "BSP_WarningList_RemoveByValue",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0097412a",
+          "function": "0x00974070",
+          "native": "0x0096b510",
+          "name": "STL_List_BuyNode_0096b510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00974135",
+          "function": "0x00974070",
+          "native": "0x0096f960",
+          "name": "STL_xlen_throw_0096f960",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00975710",
+      "name": "BSP_Warning_GetKind7_00975710",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::warning_get_kind7_00975710",
+      "original_name": "TRIV_body_00975710",
+      "original_abi": "__thiscall(void* this) -> uint32_t, RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": []
+    },
+    {
+      "address": "0x00975730",
+      "name": "CG_scalar_deleting_dtor_00975730",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::warning_kind7_scalar_deleting_dtor_00975730",
+      "original_name": "CG_scalar_deleting_dtor_00975730",
+      "original_abi": "__thiscall(void* this, uint8_t flags) -> void*, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x00975733",
+          "function": "0x00975730",
+          "native": "0x0096f170",
+          "name": "BSP_Warning_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00975740",
+          "function": "0x00975730",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00975770",
+      "name": "BSP_Warning_GetKind9_00975770",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::warning_get_kind9_00975770",
+      "original_name": "TRIV_body_00975770",
+      "original_abi": "__thiscall(void* this) -> uint32_t, RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": []
+    },
+    {
+      "address": "0x00975790",
+      "name": "CG_scalar_deleting_dtor_00975790",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::warning_kind9_scalar_deleting_dtor_00975790",
+      "original_name": "CG_scalar_deleting_dtor_00975790",
+      "original_abi": "__thiscall(void* this, uint8_t flags) -> void*, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x00975793",
+          "function": "0x00975790",
+          "native": "0x0096f170",
+          "name": "BSP_Warning_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009757a0",
+          "function": "0x00975790",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x009758a0",
+      "name": "BSP_Warning_GetKind8_009758a0",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::warning_get_kind8_009758a0",
+      "original_name": "TRIV_body_009758a0",
+      "original_abi": "__thiscall(void* this) -> uint32_t, RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": []
+    },
+    {
+      "address": "0x009758c0",
+      "name": "CG_scalar_deleting_dtor_009758c0",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::warning_kind8_scalar_deleting_dtor_009758c0",
+      "original_name": "CG_scalar_deleting_dtor_009758c0",
+      "original_abi": "__thiscall(void* this, uint8_t flags) -> void*, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x009758c3",
+          "function": "0x009758c0",
+          "native": "0x0096f170",
+          "name": "BSP_Warning_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009758d0",
+          "function": "0x009758c0",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00975a80",
+      "name": "BSP_Warning_GetKind10_00975a80",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::warning_get_kind10_00975a80",
+      "original_name": "TRIV_body_00975a80",
+      "original_abi": "__thiscall(void* this) -> uint32_t, RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": []
+    },
+    {
+      "address": "0x00975aa0",
+      "name": "CG_scalar_deleting_dtor_00975aa0",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::warning_kind10_scalar_deleting_dtor_00975aa0",
+      "original_name": "CG_scalar_deleting_dtor_00975aa0",
+      "original_abi": "__thiscall(void* this, uint8_t flags) -> void*, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x00975aa3",
+          "function": "0x00975aa0",
+          "native": "0x0096f170",
+          "name": "BSP_Warning_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00975ab0",
+          "function": "0x00975aa0",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00975d00",
+      "name": "STL_ShipNoiseMap_Subscript_00975d00",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::ship_noise_map_subscript_00975d00",
+      "original_name": "FUN_00975d00",
+      "original_abi": "__thiscall(void* map, const uint32_t* key_ptr) -> float*, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x00975d98",
+          "function": "0x00975d00",
+          "native": "0x00973410",
+          "name": "STL_Tree_InsertHint_00973410",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00975dc9",
+          "function": "0x00975d00",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00975dd3",
+          "function": "0x00975d00",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00976280",
+      "name": "BSP_StringListWarning_GetKind0_00976280",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::string_list_warning_get_kind0_00976280",
+      "original_name": "TRIV_body_00976280",
+      "original_abi": "__thiscall(void* this) -> uint32_t, RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": []
+    },
+    {
+      "address": "0x00976cb0",
+      "name": "BSP_WarningManager_ReportFirstString",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::warning_manager_report_first_string_00976cb0",
+      "original_name": "BSP_WarningManager_ReportFirstString",
+      "original_abi": "__thiscall(void* manager, void* string_vector, uint32_t unused2, uint32_t unused3), RET 0xC",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x00976d33",
+          "function": "0x00976cb0",
+          "native": "0x00bf681b",
+          "name": "operator_new",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00976d60",
+          "function": "0x00976cb0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00976d6b",
+          "function": "0x00976cb0",
+          "native": "0x00975ac0",
+          "name": "BSP_MessageWarning_ConstructWithId",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00976d7d",
+          "function": "0x00976cb0",
+          "native": "0x009763e0",
+          "name": "BSP_WarningManager_Report",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00976db0",
+      "name": "BSP_StringListWarning_Activate",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::string_list_warning_activate_00976db0",
+      "original_name": "BSP_StringListWarning_Activate",
+      "original_abi": "__thiscall(void* warning), RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x00976df3",
+          "function": "0x00976db0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00976e15",
+          "function": "0x00976db0",
+          "native": "0x00705e00",
+          "name": "BSP_MessageRecord_ResolveNamed",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00976e2e",
+          "function": "0x00976db0",
+          "native": "0x005bb020",
+          "name": "STL_Vector_PushBack_005bb020",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00976f10",
+      "name": "BSP_WarningManager_CancelByTarget",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::warning_manager_cancel_by_target_00976f10",
+      "original_name": "BSP_WarningManager_CancelByTarget",
+      "original_abi": "__thiscall(void* manager, uint32_t target_id), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x00976f3b",
+          "function": "0x00976f10",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00976f49",
+          "function": "0x00976f10",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00976f58",
+          "function": "0x00976f10",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00976f62",
+          "function": "0x00976f10",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00976f93",
+          "function": "0x00976f10",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00976fad",
+          "function": "0x00976f10",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00976fdd",
+          "function": "0x00976f10",
+          "native": "0x00975c40",
+          "name": "STL_Map_Subscript_00975c40",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00977820",
+      "name": "BSP_WarningManager_PlayCollisionSound",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::warning_manager_play_collision_sound_00977820",
+      "original_name": "BSP_WarningManager_PlayCollisionSound",
+      "original_abi": "__thiscall(void* manager, void* ship_entity), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x0097786e",
+          "function": "0x00977820",
+          "native": "0x00975d00",
+          "name": "FUN_00975d00",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00977938",
+          "function": "0x00977820",
+          "native": "0x008687c0",
+          "name": "BSP_PointEffect_CreateWithParentMatrix",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00977990",
+      "name": "BSP_WarningManager_ScanProximity",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::warning_manager_scan_proximity_00977990",
+      "original_name": "BSP_WarningManager_ScanProximity",
+      "original_abi": "__thiscall(void* manager), RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x00977a15",
+          "function": "0x00977990",
+          "native": "0x00414db0",
+          "name": "BSP_EntityPose_RefreshWorld",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00977a6c",
+          "function": "0x00977990",
+          "native": "0x00803ce0",
+          "name": "BSP_Recon_RelationIfIdentified",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00977a87",
+          "function": "0x00977990",
+          "native": "0x00414db0",
+          "name": "BSP_EntityPose_RefreshWorld",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00977b0a",
+          "function": "0x00977990",
+          "native": "0x00975d00",
+          "name": "FUN_00975d00",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00977b1b",
+          "function": "0x00977990",
+          "native": "0x0096c070",
+          "name": "BSP_ShipNoiseInfo_StartAirRaidEffect",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00977b52",
+          "function": "0x00977990",
+          "native": "0x00867b10",
+          "name": "BSP_PointEffect_StopChildren",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00978fe0",
+      "name": "CG_scalar_deleting_dtor_00978fe0",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::string_list_warning_scalar_deleting_dtor_00978fe0",
+      "original_name": "CG_scalar_deleting_dtor_00978fe0",
+      "original_abi": "__thiscall(void* this, uint8_t flags) -> void*, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x00978fe3",
+          "function": "0x00978fe0",
+          "native": "0x009762a0",
+          "name": "BSP_StringListWarning_Destroy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00978ff0",
+          "function": "0x00978fe0",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00979140",
+      "name": "BSP_SubscriptionSet_MatchesOrEmpty",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::subscription_set_matches_or_empty_00979140",
+      "original_name": "BSP_SubscriptionSet_MatchesOrEmpty",
+      "original_abi": "__thiscall(void* this, const void* candidate) -> uint32_t, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x00979161",
+          "function": "0x00979140",
+          "native": "0x009790d0",
+          "name": "STL_inst_009790d0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00979172",
+          "function": "0x00979140",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0097a130",
+      "name": "CG_scalar_deleting_dtor_0097a130",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::subscription_tree_owner_scalar_deleting_dtor_0097a130",
+      "original_name": "CG_scalar_deleting_dtor_0097a130",
+      "original_abi": "__thiscall(void* this, uint8_t flags) -> void*, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x0097a14a",
+          "function": "0x0097a130",
+          "native": "0x00492a00",
+          "name": "STL_Tree_EraseRange_00492a00",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0097a153",
+          "function": "0x0097a130",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0097a16b",
+          "function": "0x0097a130",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0097aaf0",
+      "name": "BSP_FireSubscription_Construct",
+      "cpp_symbol": "bsp::warning_string_seg64_argon::fire_subscription_construct_0097aaf0",
+      "original_name": "BSP_FireSubscription_Construct",
+      "original_abi": "__thiscall(void* this) -> void*, RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "coverage": "complete",
+      "steps": [
+        {
+          "address": "0x0097ab2d",
+          "function": "0x0097aaf0",
+          "native": "0x0096ba00",
+          "name": "STL_Tree_BuyHeadNode_0096ba00",
+          "kind": "direct_call"
+        }
+      ]
+    }
+  ]
+}

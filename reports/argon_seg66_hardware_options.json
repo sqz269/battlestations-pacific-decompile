@@ -1,0 +1,2279 @@
+{
+  "packet": "argon-v2-seg66",
+  "range": [
+    "0x0098c7f0",
+    "0x00996060"
+  ],
+  "function_count": 70,
+  "source_file": "src/hardware_options_seg66_argon.cpp",
+  "header_file": "include/bsp/hardware_options_seg66_argon.hpp",
+  "doc_file": "docs/ARGON_SEG66_HARDWARE_OPTIONS.md",
+  "status": "reconstructed_build_tested",
+  "x87_dc_sites": [],
+  "x87_dc_audit_note": "python tools/x87_dc_form_scan.py --range 0098c7f0-00996060 returned 0 DC-form x87 instructions.",
+  "functions": [
+    {
+      "address": "0x0098c7f0",
+      "name": "bsp::hardware_options_seg66_argon::hardware_info_cpu_speed_0098c7f0",
+      "original_name": "BSP_HardwareInfo_CpuSpeed",
+      "original_abi": "__thiscall (ECX=self), RET",
+      "status": "reconstructed_build_tested",
+      "steps": []
+    },
+    {
+      "address": "0x0098c800",
+      "name": "bsp::hardware_options_seg66_argon::hardware_info_memory_size_0098c800",
+      "original_name": "BSP_HardwareInfo_MemorySize",
+      "original_abi": "__thiscall (ECX=self), RET",
+      "status": "reconstructed_build_tested",
+      "steps": []
+    },
+    {
+      "address": "0x0098c810",
+      "name": "bsp::hardware_options_seg66_argon::hardware_info_display_options_ptr_0098c810",
+      "original_name": "TRIV_body_0098c810",
+      "original_abi": "__thiscall (ECX=self), RET",
+      "status": "reconstructed_build_tested",
+      "steps": []
+    },
+    {
+      "address": "0x0098d3d0",
+      "name": "bsp::hardware_options_seg66_argon::hardware_info_sound_device_name_0098d3d0",
+      "original_name": "BSP_HardwareInfo_SoundDeviceName",
+      "original_abi": "__cdecl, RET",
+      "status": "reconstructed_build_tested",
+      "steps": []
+    },
+    {
+      "address": "0x0098da40",
+      "name": "bsp::hardware_options_seg66_argon::std_locale_facet_dtor_0098da40",
+      "original_name": "TRIV_body_0098da40",
+      "original_abi": "__thiscall (ECX=self), RET",
+      "status": "reconstructed_build_tested",
+      "steps": []
+    },
+    {
+      "address": "0x0098db80",
+      "name": "bsp::hardware_options_seg66_argon::cg_scalar_deleting_dtor_0098db80",
+      "original_name": "CG_scalar_deleting_dtor_0098db80",
+      "original_abi": "__thiscall (ECX=self, stack flags), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x0098db91",
+          "function": "0x0098db80",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0098dbd0",
+      "name": "bsp::hardware_options_seg66_argon::std_locale_facet_ctor_0098dbd0",
+      "original_name": "TRIV_body_0098dbd0",
+      "original_abi": "__thiscall (ECX=self), RET",
+      "status": "reconstructed_build_tested",
+      "steps": []
+    },
+    {
+      "address": "0x0098dc50",
+      "name": "bsp::hardware_options_seg66_argon::std_codecvt_base_dtor_0098dc50",
+      "original_name": "TRIV_body_0098dc50",
+      "original_abi": "__thiscall (ECX=self), RET",
+      "status": "reconstructed_build_tested",
+      "steps": []
+    },
+    {
+      "address": "0x0098dc60",
+      "name": "bsp::hardware_options_seg66_argon::cg_scalar_deleting_dtor_0098dc60",
+      "original_name": "CG_scalar_deleting_dtor_0098dc60",
+      "original_abi": "__thiscall (ECX=self, stack flags), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x0098dc71",
+          "function": "0x0098dc60",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0098dde0",
+      "name": "bsp::hardware_options_seg66_argon::cg_scalar_deleting_dtor_0098dde0",
+      "original_name": "CG_scalar_deleting_dtor_0098dde0",
+      "original_abi": "__thiscall (ECX=self, stack flags), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x0098ddea",
+          "function": "0x0098dde0",
+          "native": "0x00bf5ec3",
+          "name": "LIBCRT_unmatched_00bf5ec3",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098ddfa",
+          "function": "0x0098dde0",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0098de50",
+      "name": "bsp::hardware_options_seg66_argon::std_locale_scalar_deleting_dtor_0098de50",
+      "original_name": "FUN_0098de50",
+      "original_abi": "__thiscall (ECX=self, stack flags), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x0098de61",
+          "function": "0x0098de50",
+          "native": "0x00bf5993",
+          "name": "_Lockit",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098de88",
+          "function": "0x0098de50",
+          "native": "0x00bf59b4",
+          "name": "LIBCRT_unmatched_00bf59b4",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098dea4",
+          "function": "0x0098de50",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0098e0e0",
+      "name": "bsp::hardware_options_seg66_argon::hardware_info_supports_display_mode_0098e0e0",
+      "original_name": "BSP_HardwareInfo_SupportsDisplayMode",
+      "original_abi": "__thiscall (ECX=self, stack width, height), RET 0x8",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x0098e0e8",
+          "function": "0x0098e0e0",
+          "native": "0x0098d610",
+          "name": "STL_Vector_Size_0098d610",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098e113",
+          "function": "0x0098e0e0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098e130",
+          "function": "0x0098e0e0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098e143",
+          "function": "0x0098e0e0",
+          "native": "0x0098d610",
+          "name": "STL_Vector_Size_0098d610",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0098e170",
+      "name": "bsp::hardware_options_seg66_argon::cg_scalar_deleting_dtor_0098e170",
+      "original_name": "CG_scalar_deleting_dtor_0098e170",
+      "original_abi": "__thiscall (ECX=self, stack flags), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x0098e17a",
+          "function": "0x0098e170",
+          "native": "0x00bf5ec3",
+          "name": "LIBCRT_unmatched_00bf5ec3",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098e18a",
+          "function": "0x0098e170",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0098e4e0",
+      "name": "bsp::hardware_options_seg66_argon::std_basic_streambuf_dtor_0098e4e0",
+      "original_name": "FUN_0098e4e0",
+      "original_abi": "__thiscall (ECX=self), JMP 00bf5f19",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x0098e500",
+          "function": "0x0098e4e0",
+          "native": "0x00bf5993",
+          "name": "_Lockit",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098e527",
+          "function": "0x0098e4e0",
+          "native": "0x00bf59b4",
+          "name": "LIBCRT_unmatched_00bf59b4",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098e53c",
+          "function": "0x0098e4e0",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098e54d",
+          "function": "0x0098e4e0",
+          "native": "0x00bf5f19",
+          "name": "LIBCRT_unmatched_00bf5f19",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "address": "0x0098e890",
+      "name": "bsp::hardware_options_seg66_argon::cg_scalar_deleting_dtor_0098e890",
+      "original_name": "CG_scalar_deleting_dtor_0098e890",
+      "original_abi": "__thiscall (ECX=self, stack flags), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x0098e893",
+          "function": "0x0098e890",
+          "native": "0x0098e4e0",
+          "name": "FUN_0098e4e0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098e8a0",
+          "function": "0x0098e890",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0098f180",
+      "name": "bsp::hardware_options_seg66_argon::std_basic_streambuf_ctor_0098f180",
+      "original_name": "FUN_0098f180",
+      "original_abi": "__thiscall (ECX=self), RET",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x0098f1a9",
+          "function": "0x0098f180",
+          "native": "0x00bf5f01",
+          "name": "LIBCRT_unmatched_00bf5f01",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098f1b8",
+          "function": "0x0098f180",
+          "native": "0x00bf681b",
+          "name": "operator_new",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098f1c7",
+          "function": "0x0098f180",
+          "native": "0x00bf5cc2",
+          "name": "_Init",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098f1ce",
+          "function": "0x0098f180",
+          "native": "0x00bf5acc",
+          "name": "LIBCRT_unmatched_00bf5acc",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098f1db",
+          "function": "0x0098f180",
+          "native": "0x00bf5993",
+          "name": "_Lockit",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098f1f2",
+          "function": "0x0098f180",
+          "native": "0x00bf59b4",
+          "name": "LIBCRT_unmatched_00bf59b4",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098f201",
+          "function": "0x0098f180",
+          "native": "0x0098e250",
+          "name": "STL_basic_streambuf_Init_0098e250",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0098f950",
+      "name": "bsp::hardware_options_seg66_argon::cg_scalar_deleting_dtor_0098f950",
+      "original_name": "CG_scalar_deleting_dtor_0098f950",
+      "original_abi": "__thiscall (ECX=self, stack flags), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x0098f963",
+          "function": "0x0098f950",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098f97c",
+          "function": "0x0098f950",
+          "native": "0x00bf6454",
+          "name": "BSP_AllocatorExceptionBase_Cleanup",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098f989",
+          "function": "0x0098f950",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0098f9a0",
+      "name": "bsp::hardware_options_seg66_argon::std_string_append_chars_0098f9a0",
+      "original_name": "FUN_0098f9a0",
+      "original_abi": "__thiscall (ECX=self, stack count, ch), RET 0x8",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x0098f9b2",
+          "function": "0x0098f9a0",
+          "native": "0x00bf5695",
+          "name": "LIBCRT_unmatched_00bf5695",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098f9ca",
+          "function": "0x0098f9a0",
+          "native": "0x00bf5695",
+          "name": "LIBCRT_unmatched_00bf5695",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098f9dd",
+          "function": "0x0098f9a0",
+          "native": "0x004089e0",
+          "name": "BSP_LegacySboString_GrowAllocation",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098f9f2",
+          "function": "0x0098f9a0",
+          "native": "0x0098e1b0",
+          "name": "STL_String_Chassign_0098e1b0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0098fa90",
+      "name": "bsp::hardware_options_seg66_argon::std_string_assign_chars_0098fa90",
+      "original_name": "FUN_0098fa90",
+      "original_abi": "__thiscall (ECX=self, stack count, ch), RET 0x8",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x0098fa9d",
+          "function": "0x0098fa90",
+          "native": "0x00bf5695",
+          "name": "LIBCRT_unmatched_00bf5695",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098faa9",
+          "function": "0x0098fa90",
+          "native": "0x00bf5695",
+          "name": "LIBCRT_unmatched_00bf5695",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098fabc",
+          "function": "0x0098fa90",
+          "native": "0x004089e0",
+          "name": "BSP_LegacySboString_GrowAllocation",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098facf",
+          "function": "0x0098fa90",
+          "native": "0x0098e1b0",
+          "name": "STL_String_Chassign_0098e1b0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0098fb50",
+      "name": "bsp::hardware_options_seg66_argon::std_locinfo_dtor_wrapper_0098fb50",
+      "original_name": "FUN_0098fb50",
+      "original_abi": "__thiscall (ECX=self), RET",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x0098fb79",
+          "function": "0x0098fb50",
+          "native": "0x00bf5bfd",
+          "name": "_Locinfo_dtor",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098fb8f",
+          "function": "0x0098fb50",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098fbb0",
+          "function": "0x0098fb50",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098fbca",
+          "function": "0x0098fb50",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098fbe4",
+          "function": "0x0098fb50",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098fbff",
+          "function": "0x0098fb50",
+          "native": "0x00bf59b4",
+          "name": "LIBCRT_unmatched_00bf59b4",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0098fc20",
+      "name": "bsp::hardware_options_seg66_argon::std_basic_filebuf_uflow_0098fc20",
+      "original_name": "FUN_0098fc20",
+      "original_abi": "__thiscall (ECX=self), RET",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x0098fc9b",
+          "function": "0x0098fc20",
+          "native": "0x00bfc5f7",
+          "name": "FID_conflict:_getc",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098fcd3",
+          "function": "0x0098fc20",
+          "native": "0x00bfc5f7",
+          "name": "FID_conflict:_getc",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098fceb",
+          "function": "0x0098fc20",
+          "native": "0x0098f9a0",
+          "name": "FUN_0098f9a0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098fd2b",
+          "function": "0x0098fc20",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098fd56",
+          "function": "0x0098fc20",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098fd98",
+          "function": "0x0098fc20",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098fdc1",
+          "function": "0x0098fc20",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098fe1c",
+          "function": "0x0098fc20",
+          "native": "0x0098f490",
+          "name": "STL_inst_0098f490",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098fe23",
+          "function": "0x0098fc20",
+          "native": "0x0098f0c0",
+          "name": "operator*",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098fe30",
+          "function": "0x0098fc20",
+          "native": "0x00bf672c",
+          "name": "_memcpy_s",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098fe41",
+          "function": "0x0098fc20",
+          "native": "0x004072d0",
+          "name": "BSP_LegacySboString_Destroy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098feb6",
+          "function": "0x0098fc20",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098fedf",
+          "function": "0x0098fc20",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098fef1",
+          "function": "0x0098fc20",
+          "native": "0x004087f0",
+          "name": "BSP_LegacySboString_Erase",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098fefa",
+          "function": "0x0098fc20",
+          "native": "0x00bfc5f7",
+          "name": "FID_conflict:_getc",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098ff0f",
+          "function": "0x0098fc20",
+          "native": "0x004072d0",
+          "name": "BSP_LegacySboString_Destroy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098ff40",
+          "function": "0x0098fc20",
+          "native": "0x0098f490",
+          "name": "STL_inst_0098f490",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098ff47",
+          "function": "0x0098fc20",
+          "native": "0x0098f0c0",
+          "name": "operator*",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098ff75",
+          "function": "0x0098fc20",
+          "native": "0x00bfcc1b",
+          "name": "_ungetc",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0098ff8a",
+          "function": "0x0098fc20",
+          "native": "0x004072d0",
+          "name": "BSP_LegacySboString_Destroy",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0098ffe0",
+      "name": "bsp::hardware_options_seg66_argon::std_basic_filebuf_endwrite_0098ffe0",
+      "original_name": "FUN_0098ffe0",
+      "original_abi": "__thiscall (ECX=self), RET",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x009900a6",
+          "function": "0x0098ffe0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009900d1",
+          "function": "0x0098ffe0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990119",
+          "function": "0x0098ffe0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990142",
+          "function": "0x0098ffe0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990175",
+          "function": "0x0098ffe0",
+          "native": "0x004072d0",
+          "name": "BSP_LegacySboString_Destroy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009901e0",
+          "function": "0x0098ffe0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0099020b",
+          "function": "0x0098ffe0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990253",
+          "function": "0x0098ffe0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0099027c",
+          "function": "0x0098ffe0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990289",
+          "function": "0x0098ffe0",
+          "native": "0x00bfb08b",
+          "name": "_fwrite",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009902b2",
+          "function": "0x0098ffe0",
+          "native": "0x0098f9a0",
+          "name": "FUN_0098f9a0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009902db",
+          "function": "0x0098ffe0",
+          "native": "0x004072d0",
+          "name": "BSP_LegacySboString_Destroy",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00990340",
+      "name": "bsp::hardware_options_seg66_argon::std_basic_filebuf_overflow_00990340",
+      "original_name": "FUN_00990340",
+      "original_abi": "__thiscall (ECX=self, stack meta), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x009903c7",
+          "function": "0x00990340",
+          "native": "0x00bfc87f",
+          "name": "FID_conflict:_fputc",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990460",
+          "function": "0x00990340",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0099048b",
+          "function": "0x00990340",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009904cd",
+          "function": "0x00990340",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009904f6",
+          "function": "0x00990340",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990571",
+          "function": "0x00990340",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0099059c",
+          "function": "0x00990340",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009905e8",
+          "function": "0x00990340",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990611",
+          "function": "0x00990340",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990622",
+          "function": "0x00990340",
+          "native": "0x00bfb08b",
+          "name": "_fwrite",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0099066d",
+          "function": "0x00990340",
+          "native": "0x0098f9a0",
+          "name": "FUN_0098f9a0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009906a7",
+          "function": "0x00990340",
+          "native": "0x0098f580",
+          "name": "STL_Fputc_0098f580",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009906b8",
+          "function": "0x00990340",
+          "native": "0x004072d0",
+          "name": "BSP_LegacySboString_Destroy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009906db",
+          "function": "0x00990340",
+          "native": "0x004072d0",
+          "name": "BSP_LegacySboString_Destroy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009906fb",
+          "function": "0x00990340",
+          "native": "0x004072d0",
+          "name": "BSP_LegacySboString_Destroy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0099071d",
+          "function": "0x00990340",
+          "native": "0x004072d0",
+          "name": "BSP_LegacySboString_Destroy",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00990740",
+      "name": "bsp::hardware_options_seg66_argon::std_basic_filebuf_seekoff_00990740",
+      "original_name": "std_basic_filebuf_seekoff_00990740",
+      "original_abi": "__thiscall (ECX=self, stack out_fpos, off_lo, off_hi, way, mode), RET 0x10",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00990778",
+          "function": "0x00990740",
+          "native": "0x0098ffe0",
+          "name": "FUN_0098ffe0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990790",
+          "function": "0x00990740",
+          "native": "0x00bfb72b",
+          "name": "_fseek",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009907a5",
+          "function": "0x00990740",
+          "native": "0x00bfcf65",
+          "name": "_fgetpos",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00990820",
+      "name": "bsp::hardware_options_seg66_argon::std_basic_filebuf_seekpos_00990820",
+      "original_name": "std_basic_filebuf_seekpos_00990820",
+      "original_abi": "__thiscall (ECX=self, 32B stack), RET 0x20",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00990842",
+          "function": "0x00990820",
+          "native": "0x0098ffe0",
+          "name": "FUN_0098ffe0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990858",
+          "function": "0x00990820",
+          "native": "0x00bfcfd0",
+          "name": "_fsetpos",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990873",
+          "function": "0x00990820",
+          "native": "0x00bfb72b",
+          "name": "_fseek",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990888",
+          "function": "0x00990820",
+          "native": "0x00bfcf65",
+          "name": "_fgetpos",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00990910",
+      "name": "bsp::hardware_options_seg66_argon::std_runtime_error_ctor_00990910",
+      "original_name": "std_runtime_error_ctor_00990910",
+      "original_abi": "__thiscall (ECX=self, stack msg_str), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x0099092d",
+          "function": "0x00990910",
+          "native": "0x00bf632f",
+          "name": "BSP_AllocatorExceptionBase_DefaultConstruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990956",
+          "function": "0x00990910",
+          "native": "0x00408120",
+          "name": "BSP_LegacySboString_AssignSubstring",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00990970",
+      "name": "bsp::hardware_options_seg66_argon::std_basic_filebuf_close_00990970",
+      "original_name": "std_basic_filebuf_close_00990970",
+      "original_abi": "__thiscall (ECX=self), RET",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x0099097e",
+          "function": "0x00990970",
+          "native": "0x0098ffe0",
+          "name": "FUN_0098ffe0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0099098c",
+          "function": "0x00990970",
+          "native": "0x00bf8081",
+          "name": "_fclose",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009909a2",
+          "function": "0x00990970",
+          "native": "0x0098e250",
+          "name": "STL_basic_streambuf_Init_0098e250",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x009909e0",
+      "name": "bsp::hardware_options_seg66_argon::std_runtime_error_dtor_009909e0",
+      "original_name": "std_runtime_error_dtor_009909e0",
+      "original_abi": "__thiscall (ECX=self), JMP 00bf6454",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x009909f3",
+          "function": "0x009909e0",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990a0d",
+          "function": "0x009909e0",
+          "native": "0x00bf6454",
+          "name": "BSP_AllocatorExceptionBase_Cleanup",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "address": "0x00990a20",
+      "name": "bsp::hardware_options_seg66_argon::cg_scalar_deleting_dtor_00990a20",
+      "original_name": "CG_scalar_deleting_dtor_00990a20",
+      "original_abi": "__thiscall (ECX=self, stack flags), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00990a33",
+          "function": "0x00990a20",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990a4c",
+          "function": "0x00990a20",
+          "native": "0x00bf6454",
+          "name": "BSP_AllocatorExceptionBase_Cleanup",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990a59",
+          "function": "0x00990a20",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00990a70",
+      "name": "bsp::hardware_options_seg66_argon::std_basic_filebuf_dtor_00990a70",
+      "original_name": "std_basic_filebuf_dtor_00990a70",
+      "original_abi": "__thiscall (ECX=self), RET",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00990aa1",
+          "function": "0x00990a70",
+          "native": "0x00990970",
+          "name": "std_basic_filebuf_close_00990970",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990ab0",
+          "function": "0x00990a70",
+          "native": "0x0098e4e0",
+          "name": "FUN_0098e4e0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00990ad0",
+      "name": "bsp::hardware_options_seg66_argon::cg_scalar_deleting_dtor_00990ad0",
+      "original_name": "CG_scalar_deleting_dtor_00990ad0",
+      "original_abi": "__thiscall (ECX=self, stack flags), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00990ad3",
+          "function": "0x00990ad0",
+          "native": "0x00990a70",
+          "name": "std_basic_filebuf_dtor_00990a70",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990ae0",
+          "function": "0x00990ad0",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00990b60",
+      "name": "bsp::hardware_options_seg66_argon::std_locinfo_ctor_00990b60",
+      "original_name": "std_Locinfo_ctor_00990b60",
+      "original_abi": "__thiscall (ECX=self, stack locname), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00990b83",
+          "function": "0x00990b60",
+          "native": "0x00bf5993",
+          "name": "_Lockit",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990bd8",
+          "function": "0x00990b60",
+          "native": "0x00408720",
+          "name": "BSP_CharacterString_AssignCounted",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990beb",
+          "function": "0x00990b60",
+          "native": "0x00990910",
+          "name": "std_runtime_error_ctor_00990910",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990bfa",
+          "function": "0x00990b60",
+          "native": "0x00bf6885",
+          "name": "__CxxThrowException@8",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990c01",
+          "function": "0x00990b60",
+          "native": "0x00bf5d5c",
+          "name": "_Locinfo_ctor",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00990c20",
+      "name": "bsp::hardware_options_seg66_argon::std_runtime_error_copy_ctor_00990c20",
+      "original_name": "std_runtime_error_copy_ctor_00990c20",
+      "original_abi": "__thiscall (ECX=self, stack other), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00990c43",
+          "function": "0x00990c20",
+          "native": "0x00bf63a6",
+          "name": "exception",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990c6b",
+          "function": "0x00990c20",
+          "native": "0x00408120",
+          "name": "BSP_LegacySboString_AssignSubstring",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00990c90",
+      "name": "bsp::hardware_options_seg66_argon::std_ctype_char_ctor_00990c90",
+      "original_name": "std_ctype_char_ctor_00990c90",
+      "original_abi": "__thiscall (ECX=self, stack table, del_flag, refs), RET 0xc",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00990cd7",
+          "function": "0x00990c90",
+          "native": "0x00990b60",
+          "name": "std_Locinfo_ctor_00990b60",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990ce1",
+          "function": "0x00990c90",
+          "native": "0x00bf5879",
+          "name": "__Getctype",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990d04",
+          "function": "0x00990c90",
+          "native": "0x0098fb50",
+          "name": "FUN_0098fb50",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990d1f",
+          "function": "0x00990c90",
+          "native": "0x00bf9dc8",
+          "name": "_free",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990d2c",
+          "function": "0x00990c90",
+          "native": "0x00bf6989",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00990d60",
+      "name": "bsp::hardware_options_seg66_argon::std_ctype_char_do_tolower_00990d60",
+      "original_name": "std_ctype_char_do_tolower_00990d60",
+      "original_abi": "__thiscall (ECX=self, stack ch), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00990d6a",
+          "function": "0x00990d60",
+          "native": "0x00bf576a",
+          "name": "__Tolower",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00990d80",
+      "name": "bsp::hardware_options_seg66_argon::std_ctype_char_do_tolower_range_00990d80",
+      "original_name": "std_ctype_char_do_tolower_range_00990d80",
+      "original_abi": "__thiscall (ECX=self, stack first, last), RET 0x8",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00990d97",
+          "function": "0x00990d80",
+          "native": "0x00bf576a",
+          "name": "__Tolower",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00990db0",
+      "name": "bsp::hardware_options_seg66_argon::std_ctype_char_do_toupper_00990db0",
+      "original_name": "std_ctype_char_do_toupper_00990db0",
+      "original_abi": "__thiscall (ECX=self, stack ch), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00990dba",
+          "function": "0x00990db0",
+          "native": "0x00bf5f87",
+          "name": "__Toupper",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00990dd0",
+      "name": "bsp::hardware_options_seg66_argon::std_ctype_char_do_toupper_range_00990dd0",
+      "original_name": "std_ctype_char_do_toupper_range_00990dd0",
+      "original_abi": "__thiscall (ECX=self, stack first, last), RET 0x8",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00990de7",
+          "function": "0x00990dd0",
+          "native": "0x00bf5f87",
+          "name": "__Toupper",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00990e00",
+      "name": "bsp::hardware_options_seg66_argon::std_ctype_char_do_widen_00990e00",
+      "original_name": "TRIV_body_00990e00",
+      "original_abi": "__thiscall (stack ch), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "steps": []
+    },
+    {
+      "address": "0x00990e80",
+      "name": "bsp::hardware_options_seg66_argon::std_ctype_char_do_narrow_00990e80",
+      "original_name": "TRIV_body_00990e80",
+      "original_abi": "__thiscall (stack ch, dflt), RET 0x8",
+      "status": "reconstructed_build_tested",
+      "steps": []
+    },
+    {
+      "address": "0x00990f00",
+      "name": "bsp::hardware_options_seg66_argon::std_ctype_char_dtor_00990f00",
+      "original_name": "std_ctype_char_dtor_00990f00",
+      "original_abi": "__thiscall (ECX=self), RET",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00990f14",
+          "function": "0x00990f00",
+          "native": "0x00bf9dc8",
+          "name": "_free",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990f2a",
+          "function": "0x00990f00",
+          "native": "0x00bf6989",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00990f40",
+      "name": "bsp::hardware_options_seg66_argon::cg_scalar_deleting_dtor_00990f40",
+      "original_name": "CG_scalar_deleting_dtor_00990f40",
+      "original_abi": "__thiscall (ECX=self, stack flags), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00990f54",
+          "function": "0x00990f40",
+          "native": "0x00bf9dc8",
+          "name": "_free",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990f61",
+          "function": "0x00990f40",
+          "native": "0x00bf6989",
+          "name": "_free",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990f77",
+          "function": "0x00990f40",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00990f90",
+      "name": "bsp::hardware_options_seg66_argon::std_ctype_char_getcat_00990f90",
+      "original_name": "std_ctype_char_Getcat_00990f90",
+      "original_abi": "__cdecl (stack out_facet), RET",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00990fb5",
+          "function": "0x00990f90",
+          "native": "0x00bf681b",
+          "name": "operator_new",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00990fd5",
+          "function": "0x00990f90",
+          "native": "0x00990c90",
+          "name": "std_ctype_char_ctor_00990c90",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00991000",
+      "name": "bsp::hardware_options_seg66_argon::std_ios_base_clear_00991000",
+      "original_name": "std_ios_base_clear_00991000",
+      "original_abi": "__thiscall (ECX=self, stack state, reraise), RET 0x8",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x0099103e",
+          "function": "0x00991000",
+          "native": "0x00bf6885",
+          "name": "__CxxThrowException@8",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00991051",
+          "function": "0x00991000",
+          "native": "0x00407290",
+          "name": "BSP_LegacySboString_ConstructFromCString",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0099106a",
+          "function": "0x00991000",
+          "native": "0x00990910",
+          "name": "std_runtime_error_ctor_00990910",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00991081",
+          "function": "0x00991000",
+          "native": "0x00bf6885",
+          "name": "__CxxThrowException@8",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00991094",
+          "function": "0x00991000",
+          "native": "0x00407290",
+          "name": "BSP_LegacySboString_ConstructFromCString",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009910ad",
+          "function": "0x00991000",
+          "native": "0x00990910",
+          "name": "std_runtime_error_ctor_00990910",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009910c4",
+          "function": "0x00991000",
+          "native": "0x00bf6885",
+          "name": "__CxxThrowException@8",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009910d2",
+          "function": "0x00991000",
+          "native": "0x00407290",
+          "name": "BSP_LegacySboString_ConstructFromCString",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009910eb",
+          "function": "0x00991000",
+          "native": "0x00990910",
+          "name": "std_runtime_error_ctor_00990910",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00991102",
+          "function": "0x00991000",
+          "native": "0x00bf6885",
+          "name": "__CxxThrowException@8",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00991150",
+      "name": "bsp::hardware_options_seg66_argon::std_ios_base_init_00991150",
+      "original_name": "FUN_00991150",
+      "original_abi": "__thiscall (ECX=self), RET",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00991177",
+          "function": "0x00991150",
+          "native": "0x00991000",
+          "name": "std_ios_base_clear_00991000",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0099117e",
+          "function": "0x00991150",
+          "native": "0x00bf681b",
+          "name": "operator_new",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0099118d",
+          "function": "0x00991150",
+          "native": "0x00bf5cc2",
+          "name": "_Init",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00991194",
+          "function": "0x00991150",
+          "native": "0x00bf5acc",
+          "name": "LIBCRT_unmatched_00bf5acc",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009911a0",
+          "function": "0x00991150",
+          "native": "0x00bf5993",
+          "name": "_Lockit",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009911b7",
+          "function": "0x00991150",
+          "native": "0x00bf59b4",
+          "name": "LIBCRT_unmatched_00bf59b4",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x009911f0",
+      "name": "bsp::hardware_options_seg66_argon::std_use_facet_ctype_char_009911f0",
+      "original_name": "std_use_facet_009911f0",
+      "original_abi": "__cdecl (stack locale_obj), RET",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00991211",
+          "function": "0x009911f0",
+          "native": "0x00bf5993",
+          "name": "_Lockit",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00991237",
+          "function": "0x009911f0",
+          "native": "0x00bf5993",
+          "name": "_Lockit",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0099125b",
+          "function": "0x009911f0",
+          "native": "0x00bf59b4",
+          "name": "LIBCRT_unmatched_00bf59b4",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00991281",
+          "function": "0x009911f0",
+          "native": "0x00bf5acc",
+          "name": "LIBCRT_unmatched_00bf5acc",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009912a6",
+          "function": "0x009911f0",
+          "native": "0x00990f90",
+          "name": "std_ctype_char_Getcat_00990f90",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009912bc",
+          "function": "0x009911f0",
+          "native": "0x00bf6477",
+          "name": "LIBCRT_unmatched_00bf6477",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009912cb",
+          "function": "0x009911f0",
+          "native": "0x00bf6885",
+          "name": "__CxxThrowException@8",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009912dc",
+          "function": "0x009911f0",
+          "native": "0x0098d9c0",
+          "name": "STL_inst_0098d9c0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009912e2",
+          "function": "0x009911f0",
+          "native": "0x00bf5bc4",
+          "name": "facet_Register",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009912f6",
+          "function": "0x009911f0",
+          "native": "0x00bf59b4",
+          "name": "LIBCRT_unmatched_00bf59b4",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00991310",
+      "name": "bsp::hardware_options_seg66_argon::std_basic_ifstream_dtor_00991310",
+      "original_name": "std_basic_ifstream_dtor_00991310",
+      "original_abi": "__thiscall (ECX=vbase_self), RET",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00991346",
+          "function": "0x00991310",
+          "native": "0x00990a70",
+          "name": "std_basic_filebuf_dtor_00990a70",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00991610",
+      "name": "bsp::hardware_options_seg66_argon::std_basic_ios_widen_00991610",
+      "original_name": "FUN_00991610",
+      "original_abi": "__thiscall (ECX=self, stack ch), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x0099162f",
+          "function": "0x00991610",
+          "native": "0x0098dd80",
+          "name": "STL_inst_0098dd80",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0099163d",
+          "function": "0x00991610",
+          "native": "0x009911f0",
+          "name": "std_use_facet_009911f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0099165d",
+          "function": "0x00991610",
+          "native": "0x00bf5993",
+          "name": "_Lockit",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00991684",
+          "function": "0x00991610",
+          "native": "0x00bf59b4",
+          "name": "LIBCRT_unmatched_00bf59b4",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x009916c0",
+      "name": "bsp::hardware_options_seg66_argon::std_facet_ctor_009916c0",
+      "original_name": "std_facet_ctor_009916c0",
+      "original_abi": "__thiscall (ECX=self, stack refs), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00991703",
+          "function": "0x009916c0",
+          "native": "0x00990b60",
+          "name": "std_Locinfo_ctor_00990b60",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0099170c",
+          "function": "0x009916c0",
+          "native": "0x0098fb50",
+          "name": "FUN_0098fb50",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00991970",
+      "name": "bsp::hardware_options_seg66_argon::std_basic_ios_init_00991970",
+      "original_name": "std_basic_ios_init_00991970",
+      "original_abi": "__thiscall (ECX=self, stack streambuf, is_std), RET 0x8",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00991973",
+          "function": "0x00991970",
+          "native": "0x00991150",
+          "name": "FUN_00991150",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0099198a",
+          "function": "0x00991970",
+          "native": "0x00991610",
+          "name": "FUN_00991610",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009919a3",
+          "function": "0x00991970",
+          "native": "0x00991000",
+          "name": "std_ios_base_clear_00991000",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009919b0",
+          "function": "0x00991970",
+          "native": "0x00bf5e73",
+          "name": "_Addstd",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x009919d0",
+      "name": "bsp::hardware_options_seg66_argon::std_facet_getcat_009919d0",
+      "original_name": "std_facet_Getcat_009919d0",
+      "original_abi": "__cdecl (stack out_facet), RET",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x009919f5",
+          "function": "0x009919d0",
+          "native": "0x00bf681b",
+          "name": "operator_new",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00991a11",
+          "function": "0x009919d0",
+          "native": "0x009916c0",
+          "name": "std_facet_ctor_009916c0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00991a40",
+      "name": "bsp::hardware_options_seg66_argon::std_basic_ostream_flush_00991a40",
+      "original_name": "std_basic_ostream_flush_00991a40",
+      "original_abi": "__thiscall (ECX=self), RET",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00991a86",
+          "function": "0x00991a40",
+          "native": "0x00991000",
+          "name": "std_ios_base_clear_00991000",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00991a90",
+      "name": "bsp::hardware_options_seg66_argon::std_basic_istream_ipfx_00991a90",
+      "original_name": "std_basic_istream_Ipfx_00991a90",
+      "original_abi": "__thiscall (ECX=self, stack noskip), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00991ad0",
+          "function": "0x00991a90",
+          "native": "0x00991a40",
+          "name": "std_basic_ostream_flush_00991a40",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00991af9",
+          "function": "0x00991a90",
+          "native": "0x0098dd80",
+          "name": "STL_inst_0098dd80",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00991b06",
+          "function": "0x00991a90",
+          "native": "0x009911f0",
+          "name": "std_use_facet_009911f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00991b13",
+          "function": "0x00991a90",
+          "native": "0x0098daf0",
+          "name": "STL_inst_0098daf0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00991b65",
+          "function": "0x00991a90",
+          "native": "0x00991000",
+          "name": "std_ios_base_clear_00991000",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00991baa",
+          "function": "0x00991a90",
+          "native": "0x0098f3b0",
+          "name": "STL_basic_streambuf_snextc_0098f3b0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00991c02",
+          "function": "0x00991a90",
+          "native": "0x00991000",
+          "name": "std_ios_base_clear_00991000",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00991ce0",
+      "name": "bsp::hardware_options_seg66_argon::std_basic_istream_ctor_00991ce0",
+      "original_name": "std_basic_istream_ctor_00991ce0",
+      "original_abi": "__thiscall (ECX=self, stack streambuf, is_std, init_vbtable), RET 0xc",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00991d44",
+          "function": "0x00991ce0",
+          "native": "0x00991970",
+          "name": "std_basic_ios_init_00991970",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00991d60",
+      "name": "bsp::hardware_options_seg66_argon::std_use_facet_codecvt_char_00991d60",
+      "original_name": "std_use_facet_00991d60",
+      "original_abi": "__cdecl (stack locale_obj), RET",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00991d81",
+          "function": "0x00991d60",
+          "native": "0x00bf5993",
+          "name": "_Lockit",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00991da7",
+          "function": "0x00991d60",
+          "native": "0x00bf5993",
+          "name": "_Lockit",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00991dcb",
+          "function": "0x00991d60",
+          "native": "0x00bf59b4",
+          "name": "LIBCRT_unmatched_00bf59b4",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00991df1",
+          "function": "0x00991d60",
+          "native": "0x00bf5acc",
+          "name": "LIBCRT_unmatched_00bf5acc",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00991e16",
+          "function": "0x00991d60",
+          "native": "0x009919d0",
+          "name": "std_facet_Getcat_009919d0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00991e2c",
+          "function": "0x00991d60",
+          "native": "0x00bf6477",
+          "name": "LIBCRT_unmatched_00bf6477",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00991e3b",
+          "function": "0x00991d60",
+          "native": "0x00bf6885",
+          "name": "__CxxThrowException@8",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00991e4c",
+          "function": "0x00991d60",
+          "native": "0x0098d9c0",
+          "name": "STL_inst_0098d9c0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00991e52",
+          "function": "0x00991d60",
+          "native": "0x00bf5bc4",
+          "name": "facet_Register",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00991e66",
+          "function": "0x00991d60",
+          "native": "0x00bf59b4",
+          "name": "LIBCRT_unmatched_00bf59b4",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00991e80",
+      "name": "bsp::hardware_options_seg66_argon::std_basic_istream_sentry_ctor_00991e80",
+      "original_name": "FUN_00991e80",
+      "original_abi": "__thiscall (ECX=self, stack istream_obj, noskip), RET 0x8",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00991eb3",
+          "function": "0x00991e80",
+          "native": "0x00bf5f2e",
+          "name": "LIBCRT_unmatched_00bf5f2e",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00991ec7",
+          "function": "0x00991e80",
+          "native": "0x00991a90",
+          "name": "std_basic_istream_Ipfx_00991a90",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00992370",
+      "name": "bsp::hardware_options_seg66_argon::std_basic_filebuf_open_00992370",
+      "original_name": "std_basic_filebuf_open_00992370",
+      "original_abi": "__thiscall (ECX=self, stack filename, mode, prot), RET 0xc",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x009923a4",
+          "function": "0x00992370",
+          "native": "0x00bf622c",
+          "name": "_Fiopen",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009923bf",
+          "function": "0x00992370",
+          "native": "0x0098e250",
+          "name": "STL_basic_streambuf_Init_0098e250",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009923f1",
+          "function": "0x00992370",
+          "native": "0x0098e210",
+          "name": "STL_inst_0098e210",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009923fb",
+          "function": "0x00992370",
+          "native": "0x00991d60",
+          "name": "std_use_facet_00991d60",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00992419",
+          "function": "0x00992370",
+          "native": "0x0098daf0",
+          "name": "STL_inst_0098daf0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00992439",
+          "function": "0x00992370",
+          "native": "0x0098e250",
+          "name": "STL_basic_streambuf_Init_0098e250",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00992442",
+          "function": "0x00992370",
+          "native": "0x0098daf0",
+          "name": "STL_inst_0098daf0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00992480",
+      "name": "bsp::hardware_options_seg66_argon::std_operator_gt_gt_string_00992480",
+      "original_name": "FUN_00992480",
+      "original_abi": "__cdecl (stack istream_obj, str_obj), RET",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x009924b2",
+          "function": "0x00992480",
+          "native": "0x00991e80",
+          "name": "FUN_00991e80",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009924cf",
+          "function": "0x00992480",
+          "native": "0x0098dd80",
+          "name": "STL_inst_0098dd80",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009924d9",
+          "function": "0x00992480",
+          "native": "0x009911f0",
+          "name": "std_use_facet_009911f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009924ea",
+          "function": "0x00992480",
+          "native": "0x0098daf0",
+          "name": "STL_inst_0098daf0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009924f5",
+          "function": "0x00992480",
+          "native": "0x004087f0",
+          "name": "BSP_LegacySboString_Erase",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0099258a",
+          "function": "0x00992480",
+          "native": "0x00991000",
+          "name": "std_ios_base_clear_00991000",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009925a9",
+          "function": "0x00992480",
+          "native": "0x00bf5f37",
+          "name": "LIBCRT_unmatched_00bf5f37",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009925d3",
+          "function": "0x00992480",
+          "native": "0x0098f9a0",
+          "name": "FUN_0098f9a0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009925e8",
+          "function": "0x00992480",
+          "native": "0x0098f3b0",
+          "name": "STL_basic_streambuf_snextc_0098f3b0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x009926a0",
+      "name": "bsp::hardware_options_seg66_argon::std_basic_ifstream_ctor_009926a0",
+      "original_name": "std_basic_ifstream_ctor_009926a0",
+      "original_abi": "__thiscall (ECX=self, stack filename, mode, prot, init_vbtable), RET 0x10",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00992702",
+          "function": "0x009926a0",
+          "native": "0x00991150",
+          "name": "FUN_00991150",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00992714",
+          "function": "0x009926a0",
+          "native": "0x00991610",
+          "name": "FUN_00991610",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0099272e",
+          "function": "0x009926a0",
+          "native": "0x00991000",
+          "name": "std_ios_base_clear_00991000",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0099274d",
+          "function": "0x009926a0",
+          "native": "0x0098f180",
+          "name": "FUN_0098f180",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00992760",
+          "function": "0x009926a0",
+          "native": "0x0098e250",
+          "name": "STL_basic_streambuf_Init_0098e250",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0099278d",
+          "function": "0x009926a0",
+          "native": "0x00992370",
+          "name": "std_basic_filebuf_open_00992370",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x009927b1",
+          "function": "0x009926a0",
+          "native": "0x00991000",
+          "name": "std_ios_base_clear_00991000",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00993060",
+      "name": "bsp::hardware_options_seg66_argon::cg_scalar_deleting_dtor_00993060",
+      "original_name": "CG_scalar_deleting_dtor_00993060",
+      "original_abi": "__thiscall (ECX=self, stack flags), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00993074",
+          "function": "0x00993060",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0099307b",
+          "function": "0x00993060",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00993088",
+          "function": "0x00993060",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00993b70",
+      "name": "bsp::hardware_options_seg66_argon::stl_xlive_stat_record_vector_erase_range_00993b70",
+      "original_name": "FUN_00993b70",
+      "original_abi": "__thiscall (ECX=self, 20B stack), RET 0x14",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00993b83",
+          "function": "0x00993b70",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00993baf",
+          "function": "0x00993b70",
+          "native": "0x00993540",
+          "name": "STL_XLiveStatRecordRange_CopyDispatch_00993540",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00993bc4",
+          "function": "0x00993b70",
+          "native": "0x00993990",
+          "name": "STL_inst_00993990",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x009942f0",
+      "name": "bsp::hardware_options_seg66_argon::cg_scalar_deleting_dtor_009942f0",
+      "original_name": "CG_scalar_deleting_dtor_009942f0",
+      "original_abi": "__thiscall (ECX=self, stack flags), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x009942f3",
+          "function": "0x009942f0",
+          "native": "0x00994180",
+          "name": "BSP_XLiveStatsBlock_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00994300",
+          "function": "0x009942f0",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00994500",
+      "name": "bsp::hardware_options_seg66_argon::return_true_stub_00994500",
+      "original_name": "TRIV_body_00994500",
+      "original_abi": "__thiscall (4B stack), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "steps": []
+    },
+    {
+      "address": "0x00994680",
+      "name": "bsp::hardware_options_seg66_argon::cg_scalar_deleting_dtor_00994680",
+      "original_name": "CG_scalar_deleting_dtor_00994680",
+      "original_abi": "__thiscall (ECX=self, stack flags), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00994683",
+          "function": "0x00994680",
+          "native": "0x009945e0",
+          "name": "BSP_DownloadManagerBase_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00994690",
+          "function": "0x00994680",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00994750",
+      "name": "bsp::hardware_options_seg66_argon::cg_scalar_deleting_dtor_00994750",
+      "original_name": "CG_scalar_deleting_dtor_00994750",
+      "original_abi": "__thiscall (ECX=self, stack flags), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00994753",
+          "function": "0x00994750",
+          "native": "0x009946d0",
+          "name": "BSP_ContentPackageRecord_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00994760",
+          "function": "0x00994750",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00994e90",
+      "name": "bsp::hardware_options_seg66_argon::return_false_stub_ret4_00994e90",
+      "original_name": "TRIV_body_00994e90",
+      "original_abi": "__thiscall (4B stack), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "steps": []
+    },
+    {
+      "address": "0x00994ea0",
+      "name": "bsp::hardware_options_seg66_argon::return_false_stub_00994ea0",
+      "original_name": "TRIV_body_00994ea0",
+      "original_abi": "__thiscall, RET",
+      "status": "reconstructed_build_tested",
+      "steps": []
+    },
+    {
+      "address": "0x00994ef0",
+      "name": "bsp::hardware_options_seg66_argon::cg_scalar_deleting_dtor_00994ef0",
+      "original_name": "CG_scalar_deleting_dtor_00994ef0",
+      "original_abi": "__thiscall (ECX=self, stack flags), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00994ef3",
+          "function": "0x00994ef0",
+          "native": "0x00994e10",
+          "name": "BSP_ContentPackageList_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00994f00",
+          "function": "0x00994ef0",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00995670",
+      "name": "bsp::hardware_options_seg66_argon::cg_scalar_deleting_dtor_00995670",
+      "original_name": "CG_scalar_deleting_dtor_00995670",
+      "original_abi": "__thiscall (ECX=self, stack flags), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00995673",
+          "function": "0x00995670",
+          "native": "0x00995150",
+          "name": "BSP_DownloadManager_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00995680",
+          "function": "0x00995670",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00996060",
+      "name": "bsp::hardware_options_seg66_argon::localization_already_running_message_00996060",
+      "original_name": "BSP_Localization_AlreadyRunningMessage",
+      "original_abi": "__fastcall (ECX=lcid, EDX=message_index), RET",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x00996063",
+          "function": "0x00996060",
+          "native": "0x0098d400",
+          "name": "BSP_Localization_LanguageRowForLcid",
+          "kind": "direct_call"
+        }
+      ]
+    }
+  ]
+}

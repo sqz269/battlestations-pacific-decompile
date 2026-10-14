@@ -1,0 +1,3387 @@
+{
+  "packet": "argon-v2-seg58",
+  "range": [
+    "0x008e45d0",
+    "0x008ee410"
+  ],
+  "function_count": 60,
+  "source_file": "src/powerup_seg58_argon.cpp",
+  "header_file": "include/bsp/powerup_seg58_argon.hpp",
+  "doc_file": "docs/ARGON_SEG58_POWERUP.md",
+  "status": "reconstructed_build_tested",
+  "x87_dc_sites": [],
+  "x87_dc_audit_note": "python tools/x87_dc_form_scan.py --range 008e45d0-008ee410 returned 0 DC-form x87 instructions.",
+  "functions": [
+    {
+      "address": "0x008e45d0",
+      "name": "bsp::powerup_seg58_argon::powerup_class_resolve_local_use_target_008e45d0",
+      "original_name": "BSP_PowerupClass_ResolveLocalUseTarget",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": []
+    },
+    {
+      "address": "0x008e4660",
+      "name": "bsp::powerup_seg58_argon::power_up_manager_refresh_hud_if_shown_008e4660",
+      "original_name": "BSP_PowerUpManager_RefreshHudIfShown",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e4675",
+          "function": "0x008e4660",
+          "native": "0x0061b0f0",
+          "name": "BSP_HudPowerupManagerScreen_RebuildLists",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "address": "0x008e4680",
+      "name": "bsp::powerup_seg58_argon::powerup_target_applies_to_unit_008e4680",
+      "original_name": "BSP_PowerupTarget_AppliesToUnit",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e46f5",
+          "function": "0x008e4680",
+          "native": "0x009ffd20",
+          "name": "BSP_Unit_LossCountingSlot",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e478e",
+          "function": "0x008e4680",
+          "native": "0x00427eb0",
+          "name": "BSP_EntityPose_GetWorldPositionRefreshed",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e479b",
+          "function": "0x008e4680",
+          "native": "0x00427eb0",
+          "name": "BSP_EntityPose_GetWorldPositionRefreshed",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e47a2",
+          "function": "0x008e4680",
+          "native": "0x00427c90",
+          "name": "BSP_Vector3f_SubtractTo",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e47a9",
+          "function": "0x008e4680",
+          "native": "0x00427e30",
+          "name": "BSP_Vector3f_LengthSquared",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e4b40",
+      "name": "bsp::powerup_seg58_argon::powerup_slot_record_is_cooldown_expired_008e4b40",
+      "original_name": "BSP_PowerupSlotRecord_IsCooldownExpired",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": []
+    },
+    {
+      "address": "0x008e4b60",
+      "name": "bsp::powerup_seg58_argon::powerup_slot_record_get_ready_time_008e4b60",
+      "original_name": "BSP_PowerupSlotRecord_GetReadyTime",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": []
+    },
+    {
+      "address": "0x008e4b80",
+      "name": "bsp::powerup_seg58_argon::powerup_slot_record_get_end_time_008e4b80",
+      "original_name": "BSP_PowerupSlotRecord_GetEndTime",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": []
+    },
+    {
+      "address": "0x008e4e10",
+      "name": "bsp::powerup_seg58_argon::tmpl_array12_reserve_008e4e10",
+      "original_name": "TMPL_Array12_Reserve_008E4E10",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e4e31",
+          "function": "0x008e4e10",
+          "native": "0x00bf55be",
+          "name": "operator_new",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e4e7e",
+          "function": "0x008e4e10",
+          "native": "0x00bf6989",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e5170",
+      "name": "bsp::powerup_seg58_argon::tmpl_array12_resize_008e5170",
+      "original_name": "TMPL_Array12_Resize_008E5170",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e517e",
+          "function": "0x008e5170",
+          "native": "0x008e4e10",
+          "name": "TMPL_Array12_Reserve_008E4E10",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e5670",
+      "name": "bsp::powerup_seg58_argon::tmpl_array12_push_back_008e5670",
+      "original_name": "TMPL_Array12_PushBack_008E5670",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e5688",
+          "function": "0x008e5670",
+          "native": "0x008e4e10",
+          "name": "TMPL_Array12_Reserve_008E4E10",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e5f60",
+      "name": "bsp::powerup_seg58_argon::tmpl_array12_destroy_008e5f60",
+      "original_name": "TMPL_Array12_Destroy_008E5F60",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e5f65",
+          "function": "0x008e5f60",
+          "native": "0x008e5170",
+          "name": "TMPL_Array12_Resize_008E5170",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e5f6d",
+          "function": "0x008e5f60",
+          "native": "0x00bf6989",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e6220",
+      "name": "bsp::powerup_seg58_argon::cg_adjustor_thunk_008e6220",
+      "original_name": "CG_adjustor_thunk_008e6220",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e6223",
+          "function": "0x008e6220",
+          "native": "0x008e58e0",
+          "name": "STL_List_Clear_008E58E0",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "address": "0x008e6230",
+      "name": "bsp::powerup_seg58_argon::powerup_item_release_modifiers_008e6230",
+      "original_name": "BSP_PowerupItem_ReleaseModifiers",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e624e",
+          "function": "0x008e6230",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e625c",
+          "function": "0x008e6230",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e6269",
+          "function": "0x008e6230",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e6280",
+          "function": "0x008e6230",
+          "native": "0x008e8c30",
+          "name": "BSP_PowerUpManager_ExpireModifier",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e62a0",
+      "name": "bsp::powerup_seg58_argon::power_up_applies_to_unit_008e62a0",
+      "original_name": "BSP_PowerUp_AppliesToUnit",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e62af",
+          "function": "0x008e62a0",
+          "native": "0x008e3680",
+          "name": "BSP_PowerupClass_UnitKindMaskAccepts",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e633e",
+          "function": "0x008e62a0",
+          "native": "0x008e4680",
+          "name": "BSP_PowerupTarget_AppliesToUnit",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e634b",
+          "function": "0x008e62a0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e6400",
+      "name": "bsp::powerup_seg58_argon::native_string_release_storage_008e6400",
+      "original_name": "BSP_NativeString_ReleaseStorage_008e6400",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e6417",
+          "function": "0x008e6400",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e641e",
+          "function": "0x008e6400",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e64a0",
+      "name": "bsp::powerup_seg58_argon::native_string_insert_at_008e64a0",
+      "original_name": "BSP_NativeString_InsertAt_008E64A0",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e64c0",
+          "function": "0x008e64a0",
+          "native": "0x0041dd40",
+          "name": "BSP_NativeString_Resize",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e64d4",
+          "function": "0x008e64a0",
+          "native": "0x00bf87e0",
+          "name": "_memmove",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e64f4",
+          "function": "0x008e64a0",
+          "native": "0x00bf7680",
+          "name": "_memcpy",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e6a80",
+      "name": "bsp::powerup_seg58_argon::powerup_item_construct_008e6a80",
+      "original_name": "BSP_PowerupItem_Construct",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e6aa4",
+          "function": "0x008e6a80",
+          "native": "0x008e58c0",
+          "name": "STL_List_BuyHeadNode_008E58C0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e6ac0",
+      "name": "bsp::powerup_seg58_argon::powerup_modifier_construct_008e6ac0",
+      "original_name": "BSP_PowerupModifier_Construct",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e6b04",
+          "function": "0x008e6ac0",
+          "native": "0x004260b0",
+          "name": "BSP_NativeString_FromInt",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e6b10",
+      "name": "bsp::powerup_seg58_argon::powerup_modifier_init_from_message68_008e6b10",
+      "original_name": "BSP_PowerupModifier_InitFromMessage68",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e6b5e",
+          "function": "0x008e6b10",
+          "native": "0x0041dd40",
+          "name": "BSP_NativeString_Resize",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e6b74",
+          "function": "0x008e6b10",
+          "native": "0x00bf7680",
+          "name": "_memcpy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e6c10",
+          "function": "0x008e6b10",
+          "native": "0x00449af0",
+          "name": "BSP_NativeString_NotEqualCaseInsensitive",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e6c2c",
+          "function": "0x008e6b10",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e6c86",
+          "function": "0x008e6b10",
+          "native": "0x00bf7fbf",
+          "name": "__stricmp",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e6c9d",
+          "function": "0x008e6b10",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e6cb0",
+      "name": "bsp::powerup_seg58_argon::fun_008e6cb0",
+      "original_name": "FUN_008e6cb0",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e6cc5",
+          "function": "0x008e6cb0",
+          "native": "0x008e6530",
+          "name": "STL_Tree_Find_008e6530",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e6cd9",
+          "function": "0x008e6cb0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e6cea",
+          "function": "0x008e6cb0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e6cf4",
+          "function": "0x008e6cb0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e6cfe",
+          "function": "0x008e6cb0",
+          "native": "0x008e34f0",
+          "name": "BSP_PowerupClass_ResolveAirSupportVehicleClasses",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e6d08",
+          "function": "0x008e6cb0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e6d30",
+      "name": "bsp::powerup_seg58_argon::power_up_manager_on_powerup_binding_message_008e6d30",
+      "original_name": "BSP_PowerUpManager_OnPowerupBindingMessage",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e6d69",
+          "function": "0x008e6d30",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e6dbb",
+          "function": "0x008e6d30",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e6dcb",
+          "function": "0x008e6d30",
+          "native": "0x008e6cb0",
+          "name": "FUN_008e6cb0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e6e00",
+      "name": "bsp::powerup_seg58_argon::session_message67_construct_from_class_008e6e00",
+      "original_name": "BSP_SessionMessage67_ConstructFromClass",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e6e22",
+          "function": "0x008e6e00",
+          "native": "0x0075b430",
+          "name": "BSP_SessionMessage_ConstructBase",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e6e5f",
+          "function": "0x008e6e00",
+          "native": "0x0041dd40",
+          "name": "BSP_NativeString_Resize",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e6e74",
+          "function": "0x008e6e00",
+          "native": "0x00bf7680",
+          "name": "_memcpy",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e6ed0",
+      "name": "bsp::powerup_seg58_argon::session_message67_construct_from_name_008e6ed0",
+      "original_name": "BSP_SessionMessage67_ConstructFromName",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e6ef1",
+          "function": "0x008e6ed0",
+          "native": "0x0075b430",
+          "name": "BSP_SessionMessage_ConstructBase",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e6f35",
+          "function": "0x008e6ed0",
+          "native": "0x0041dd40",
+          "name": "BSP_NativeString_Resize",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e6f4a",
+          "function": "0x008e6ed0",
+          "native": "0x00bf7680",
+          "name": "_memcpy",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e6fb0",
+      "name": "bsp::powerup_seg58_argon::session_message68_construct_from_modifier_008e6fb0",
+      "original_name": "BSP_SessionMessage68_ConstructFromModifier",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e6fd2",
+          "function": "0x008e6fb0",
+          "native": "0x0075b430",
+          "name": "BSP_SessionMessage_ConstructBase",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e703d",
+          "function": "0x008e6fb0",
+          "native": "0x0041dd40",
+          "name": "BSP_NativeString_Resize",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e7053",
+          "function": "0x008e6fb0",
+          "native": "0x00bf7680",
+          "name": "_memcpy",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e7240",
+      "name": "bsp::powerup_seg58_argon::cg_scalar_deleting_dtor_008e7240",
+      "original_name": "CG_scalar_deleting_dtor_008e7240",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e7246",
+          "function": "0x008e7240",
+          "native": "0x008e58e0",
+          "name": "STL_List_Clear_008E58E0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e7253",
+          "function": "0x008e7240",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e7270",
+      "name": "bsp::powerup_seg58_argon::cg_scalar_deleting_dtor_008e7270",
+      "original_name": "CG_scalar_deleting_dtor_008e7270",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e728b",
+          "function": "0x008e7270",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e7292",
+          "function": "0x008e7270",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e729f",
+          "function": "0x008e7270",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e72b0",
+      "name": "bsp::powerup_seg58_argon::powerup_modifier_copy_construct_008e72b0",
+      "original_name": "BSP_PowerupModifier_CopyConstruct",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e730f",
+          "function": "0x008e72b0",
+          "native": "0x0041dd40",
+          "name": "BSP_NativeString_Resize",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e7324",
+          "function": "0x008e72b0",
+          "native": "0x00bf7680",
+          "name": "_memcpy",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e7820",
+      "name": "bsp::powerup_seg58_argon::powerup_item_load_lua_008e7820",
+      "original_name": "BSP_PowerupItem_LoadLua",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e7898",
+          "function": "0x008e7820",
+          "native": "0x008e6cb0",
+          "name": "FUN_008e6cb0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e7905",
+          "function": "0x008e7820",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e790c",
+          "function": "0x008e7820",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e7930",
+      "name": "bsp::powerup_seg58_argon::powerup_item_init_from_message67_008e7930",
+      "original_name": "BSP_PowerupItem_InitFromMessage67",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e7942",
+          "function": "0x008e7930",
+          "native": "0x008e6cb0",
+          "name": "FUN_008e6cb0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e7c10",
+      "name": "bsp::powerup_seg58_argon::cg_scalar_deleting_dtor_008e7c10",
+      "original_name": "CG_scalar_deleting_dtor_008e7c10",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e7c16",
+          "function": "0x008e7c10",
+          "native": "0x008e70b0",
+          "name": "STL_PowerupClassPair_Destroy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e7c23",
+          "function": "0x008e7c10",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e8370",
+      "name": "bsp::powerup_seg58_argon::stl_list_erase_modifier_008e8370",
+      "original_name": "FUN_008e8370",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e8389",
+          "function": "0x008e8370",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e8393",
+          "function": "0x008e8370",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e83c6",
+          "function": "0x008e8370",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e83cd",
+          "function": "0x008e8370",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e83d3",
+          "function": "0x008e8370",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e87c0",
+      "name": "bsp::powerup_seg58_argon::power_up_manager_remove_item_008e87c0",
+      "original_name": "BSP_PowerUpManager_RemoveItem",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e87fc",
+          "function": "0x008e87c0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e8827",
+          "function": "0x008e87c0",
+          "native": "0x008e6230",
+          "name": "BSP_PowerupItem_ReleaseModifiers",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e8853",
+          "function": "0x008e87c0",
+          "native": "0x008e6e00",
+          "name": "BSP_SessionMessage67_ConstructFromClass",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e8872",
+          "function": "0x008e87c0",
+          "native": "0x0076a9f0",
+          "name": "CG_adjustor_thunk_0076a9f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e889e",
+          "function": "0x008e87c0",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e88a5",
+          "function": "0x008e87c0",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e88b5",
+          "function": "0x008e87c0",
+          "native": "0x0075b430",
+          "name": "BSP_SessionMessage_ConstructBase",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e88f6",
+          "function": "0x008e87c0",
+          "native": "0x0041dd40",
+          "name": "BSP_NativeString_Resize",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e890f",
+          "function": "0x008e87c0",
+          "native": "0x00bf7680",
+          "name": "_memcpy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e894f",
+          "function": "0x008e87c0",
+          "native": "0x0076a9f0",
+          "name": "CG_adjustor_thunk_0076a9f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e8977",
+          "function": "0x008e87c0",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e897e",
+          "function": "0x008e87c0",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e8998",
+          "function": "0x008e87c0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e89cb",
+          "function": "0x008e87c0",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e89de",
+          "function": "0x008e87c0",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e89e7",
+          "function": "0x008e87c0",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e8a08",
+          "function": "0x008e87c0",
+          "native": "0x0061b0f0",
+          "name": "BSP_HudPowerupManagerScreen_RebuildLists",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e8a30",
+      "name": "bsp::powerup_seg58_argon::power_up_manager_remove_items_bound_to_008e8a30",
+      "original_name": "BSP_PowerUpManager_RemoveItemsBoundTo",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e8a7a",
+          "function": "0x008e8a30",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e8ab1",
+          "function": "0x008e8a30",
+          "native": "0x008e6230",
+          "name": "BSP_PowerupItem_ReleaseModifiers",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e8add",
+          "function": "0x008e8a30",
+          "native": "0x008e6e00",
+          "name": "BSP_SessionMessage67_ConstructFromClass",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e8af9",
+          "function": "0x008e8a30",
+          "native": "0x0076a9f0",
+          "name": "CG_adjustor_thunk_0076a9f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e8b1b",
+          "function": "0x008e8a30",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e8b22",
+          "function": "0x008e8a30",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e8b66",
+          "function": "0x008e8a30",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e8b77",
+          "function": "0x008e8a30",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e8b93",
+          "function": "0x008e8a30",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e8bc8",
+          "function": "0x008e8a30",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e8bdb",
+          "function": "0x008e8a30",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e8be8",
+          "function": "0x008e8a30",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e8c09",
+          "function": "0x008e8a30",
+          "native": "0x0061b0f0",
+          "name": "BSP_HudPowerupManagerScreen_RebuildLists",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e8c30",
+      "name": "bsp::powerup_seg58_argon::power_up_manager_expire_modifier_008e8c30",
+      "original_name": "BSP_PowerUpManager_ExpireModifier",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e8c80",
+          "function": "0x008e8c30",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e8c98",
+          "function": "0x008e8c30",
+          "native": "0x008e5610",
+          "name": "STL_inst_008e5610",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e8cd7",
+          "function": "0x008e8c30",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e8cf6",
+          "function": "0x008e8c30",
+          "native": "0x008e6fb0",
+          "name": "BSP_SessionMessage68_ConstructFromModifier",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e8d12",
+          "function": "0x008e8c30",
+          "native": "0x0076a9f0",
+          "name": "CG_adjustor_thunk_0076a9f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e8d3a",
+          "function": "0x008e8c30",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e8d41",
+          "function": "0x008e8c30",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e8d57",
+          "function": "0x008e8c30",
+          "native": "0x008e8370",
+          "name": "FUN_008e8370",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e8d7a",
+          "function": "0x008e8c30",
+          "native": "0x008e87c0",
+          "name": "BSP_PowerUpManager_RemoveItem",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e94d0",
+      "name": "bsp::powerup_seg58_argon::command_building_powerup_binding_release_008e94d0",
+      "original_name": "BSP_CommandBuildingPowerupBinding_Release",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e94f0",
+          "function": "0x008e94d0",
+          "native": "0x008e8a30",
+          "name": "BSP_PowerUpManager_RemoveItemsBoundTo",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e94ff",
+          "function": "0x008e94d0",
+          "native": "0x006956a0",
+          "name": "BSP_Observer_UnregisterPairIfRegistered",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "address": "0x008e9510",
+      "name": "bsp::powerup_seg58_argon::power_up_manager_on_observed_destroyed_008e9510",
+      "original_name": "BSP_PowerUpManager_OnObservedDestroyed",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e955f",
+          "function": "0x008e9510",
+          "native": "0x008e8a30",
+          "name": "BSP_PowerUpManager_RemoveItemsBoundTo",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e95b8",
+          "function": "0x008e9510",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e95c7",
+          "function": "0x008e9510",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e95d1",
+          "function": "0x008e9510",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e95e0",
+          "function": "0x008e9510",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9611",
+          "function": "0x008e9510",
+          "native": "0x00613760",
+          "name": "STL_TreeIter_Inc_00613760",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e9630",
+      "name": "bsp::powerup_seg58_argon::power_up_manager_on_observed_released_008e9630",
+      "original_name": "BSP_PowerUpManager_OnObservedReleased",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e9670",
+          "function": "0x008e9630",
+          "native": "0x008e8a30",
+          "name": "BSP_PowerUpManager_RemoveItemsBoundTo",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e9a70",
+      "name": "bsp::powerup_seg58_argon::command_building_powerup_binding_destruct_008e9a70",
+      "original_name": "BSP_CommandBuildingPowerupBinding_Destruct",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e9a96",
+          "function": "0x008e9a70",
+          "native": "0x008e8a30",
+          "name": "BSP_PowerUpManager_RemoveItemsBoundTo",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9aa5",
+          "function": "0x008e9a70",
+          "native": "0x006956a0",
+          "name": "BSP_Observer_UnregisterPairIfRegistered",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "address": "0x008e9af0",
+      "name": "bsp::powerup_seg58_argon::power_up_manager_collect_active_008e9af0",
+      "original_name": "BSP_PowerUpManager_CollectActive",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008e9b0b",
+          "function": "0x008e9af0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9b18",
+          "function": "0x008e9af0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9b28",
+          "function": "0x008e9af0",
+          "native": "0x005a0be0",
+          "name": "STL_inst_005a0be0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9b38",
+          "function": "0x008e9af0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9b45",
+          "function": "0x008e9af0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9b55",
+          "function": "0x008e9af0",
+          "native": "0x004685a0",
+          "name": "STL_inst_004685a0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9b65",
+          "function": "0x008e9af0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9b72",
+          "function": "0x008e9af0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9b82",
+          "function": "0x008e9af0",
+          "native": "0x00488bf0",
+          "name": "STL_inst_00488bf0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9b92",
+          "function": "0x008e9af0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9b9f",
+          "function": "0x008e9af0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9baf",
+          "function": "0x008e9af0",
+          "native": "0x00488bf0",
+          "name": "STL_inst_00488bf0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9bbf",
+          "function": "0x008e9af0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9bcc",
+          "function": "0x008e9af0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9bdc",
+          "function": "0x008e9af0",
+          "native": "0x005a0be0",
+          "name": "STL_inst_005a0be0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9c9f",
+          "function": "0x008e9af0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9cb2",
+          "function": "0x008e9af0",
+          "native": "0x005a6580",
+          "name": "STL_Vector_InsertOne_005a6580",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9d2a",
+          "function": "0x008e9af0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9d3d",
+          "function": "0x008e9af0",
+          "native": "0x005a6580",
+          "name": "STL_Vector_InsertOne_005a6580",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9d80",
+          "function": "0x008e9af0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9d93",
+          "function": "0x008e9af0",
+          "native": "0x00441f30",
+          "name": "STL_Vector_InsertOne_00441f30",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9da6",
+          "function": "0x008e9af0",
+          "native": "0x00617030",
+          "name": "STL_Map_Subscript_00617030",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9e17",
+          "function": "0x008e9af0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9e2b",
+          "function": "0x008e9af0",
+          "native": "0x0045a120",
+          "name": "STL_CheckedFloatVector_InsertOne_0045A120",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9e97",
+          "function": "0x008e9af0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9eaa",
+          "function": "0x008e9af0",
+          "native": "0x0045a120",
+          "name": "STL_CheckedFloatVector_InsertOne_0045A120",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9ee0",
+          "function": "0x008e9af0",
+          "native": "0x005a7960",
+          "name": "STL_Vector_PushBack_005a7960",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9ef4",
+          "function": "0x008e9af0",
+          "native": "0x00442190",
+          "name": "STL_Vector_PushBack_00442190",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9f04",
+          "function": "0x008e9af0",
+          "native": "0x00617030",
+          "name": "STL_Map_Subscript_00617030",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9f3f",
+          "function": "0x008e9af0",
+          "native": "0x0045afd0",
+          "name": "STL_Vector_PushBack_0045afd0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9f75",
+          "function": "0x008e9af0",
+          "native": "0x0045afd0",
+          "name": "STL_Vector_PushBack_0045afd0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e9f87",
+          "function": "0x008e9af0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e9fd0",
+      "name": "bsp::powerup_seg58_argon::power_up_manager_prepare_from_lua_008e9fd0",
+      "original_name": "BSP_PowerUpManager_PrepareFromLua",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008ea003",
+          "function": "0x008e9fd0",
+          "native": "0x008e58c0",
+          "name": "STL_List_BuyHeadNode_008E58C0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea025",
+          "function": "0x008e9fd0",
+          "native": "0x00b66fa0",
+          "name": "BSP_LuaObject_CopyConstruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea02e",
+          "function": "0x008e9fd0",
+          "native": "0x004425c0",
+          "name": "BSP_LuaReader_Construct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea03d",
+          "function": "0x008e9fd0",
+          "native": "0x008e7820",
+          "name": "BSP_PowerupItem_LoadLua",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea053",
+          "function": "0x008e9fd0",
+          "native": "0x00441210",
+          "name": "BSP_LuaObjectVector_Tidy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea079",
+          "function": "0x008e9fd0",
+          "native": "0x008e6e00",
+          "name": "BSP_SessionMessage67_ConstructFromClass",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea091",
+          "function": "0x008e9fd0",
+          "native": "0x0076a9f0",
+          "name": "CG_adjustor_thunk_0076a9f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea09e",
+          "function": "0x008e9fd0",
+          "native": "0x007657d0",
+          "name": "BSP_SessionMessage67_Destroy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea0a7",
+          "function": "0x008e9fd0",
+          "native": "0x008e58e0",
+          "name": "STL_List_Clear_008E58E0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008ea0c0",
+      "name": "bsp::powerup_seg58_argon::power_up_manager_list_ready_items_008ea0c0",
+      "original_name": "BSP_PowerUpManager_ListReadyItems",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008ea0d5",
+          "function": "0x008ea0c0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea0e2",
+          "function": "0x008ea0c0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea0f2",
+          "function": "0x008ea0c0",
+          "native": "0x005a0be0",
+          "name": "STL_inst_005a0be0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea133",
+          "function": "0x008ea0c0",
+          "native": "0x00617030",
+          "name": "STL_Map_Subscript_00617030",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea15c",
+          "function": "0x008ea0c0",
+          "native": "0x0059ae20",
+          "name": "STL_Vector_Size_0059ae20",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea178",
+          "function": "0x008ea0c0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea191",
+          "function": "0x008ea0c0",
+          "native": "0x0059ae20",
+          "name": "STL_Vector_Size_0059ae20",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea1b1",
+          "function": "0x008ea0c0",
+          "native": "0x005a7960",
+          "name": "STL_Vector_PushBack_005a7960",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea1cb",
+          "function": "0x008ea0c0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea1ea",
+          "function": "0x008ea0c0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008ea250",
+      "name": "bsp::powerup_seg58_argon::power_up_manager_insert_modifier_008ea250",
+      "original_name": "BSP_PowerUpManager_InsertModifier",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008ea2ca",
+          "function": "0x008ea250",
+          "native": "0x004260b0",
+          "name": "BSP_NativeString_FromInt",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea2e5",
+          "function": "0x008ea250",
+          "native": "0x008e8480",
+          "name": "STL_List_BuyNode_008E8480",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea2f0",
+          "function": "0x008ea250",
+          "native": "0x008e7f10",
+          "name": "STL_xlen_throw_008e7f10",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea31b",
+          "function": "0x008ea250",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea322",
+          "function": "0x008ea250",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea331",
+          "function": "0x008ea250",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea33b",
+          "function": "0x008ea250",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea373",
+          "function": "0x008ea250",
+          "native": "0x0041dd40",
+          "name": "BSP_NativeString_Resize",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea388",
+          "function": "0x008ea250",
+          "native": "0x00bf7680",
+          "name": "_memcpy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea3d7",
+          "function": "0x008ea250",
+          "native": "0x008e5aa0",
+          "name": "STL_List_BuyNode_008E5AA0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea3e2",
+          "function": "0x008ea250",
+          "native": "0x008e7d00",
+          "name": "STL_xlen_throw_008e7d00",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea476",
+          "function": "0x008ea250",
+          "native": "0x008e6fb0",
+          "name": "BSP_SessionMessage68_ConstructFromModifier",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea495",
+          "function": "0x008ea250",
+          "native": "0x0076a9f0",
+          "name": "CG_adjustor_thunk_0076a9f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea4a9",
+          "function": "0x008ea250",
+          "native": "0x007658c0",
+          "name": "BSP_SessionMessage68_Destroy",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008ea4e0",
+      "name": "bsp::powerup_seg58_argon::power_up_manager_on_powerup_effect_message_008ea4e0",
+      "original_name": "BSP_PowerUpManager_OnPowerupEffectMessage",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008ea54f",
+          "function": "0x008ea4e0",
+          "native": "0x008e3570",
+          "name": "BSP_PowerupModifier_MatchesMessage68",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea55d",
+          "function": "0x008ea4e0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea56b",
+          "function": "0x008ea4e0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea576",
+          "function": "0x008ea4e0",
+          "native": "0x008e8c30",
+          "name": "BSP_PowerUpManager_ExpireModifier",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea594",
+          "function": "0x008ea4e0",
+          "native": "0x008e6ac0",
+          "name": "BSP_PowerupModifier_Construct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea5a0",
+          "function": "0x008ea4e0",
+          "native": "0x008e9680",
+          "name": "STL_List_PushBack_008E9680",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea5c4",
+          "function": "0x008ea4e0",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea5cb",
+          "function": "0x008ea4e0",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea5da",
+          "function": "0x008ea4e0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea5e4",
+          "function": "0x008ea4e0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea5ed",
+          "function": "0x008ea4e0",
+          "native": "0x008e6b10",
+          "name": "BSP_PowerupModifier_InitFromMessage68",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008ea610",
+      "name": "bsp::powerup_seg58_argon::lua_binding_prepare_powerup_008ea610",
+      "original_name": "BSP_LuaBinding_PreparePowerup",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008ea652",
+          "function": "0x008ea610",
+          "native": "0x0041e870",
+          "name": "BSP_NativeString_Assign",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea674",
+          "function": "0x008ea610",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea67b",
+          "function": "0x008ea610",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea690",
+          "function": "0x008ea610",
+          "native": "0x00b66c00",
+          "name": "BSP_LuaStateOwner_ConstructBorrowed",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea6a9",
+          "function": "0x008ea610",
+          "native": "0x00b679b0",
+          "name": "BSP_LuaObject_OpenCallFrame",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea6ba",
+          "function": "0x008ea610",
+          "native": "0x00b663f0",
+          "name": "TRIV_body_00b663f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea6cf",
+          "function": "0x008ea610",
+          "native": "0x00b677e0",
+          "name": "BSP_LuaObject_ArgumentAt",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea6e3",
+          "function": "0x008ea610",
+          "native": "0x008e9fd0",
+          "name": "BSP_PowerUpManager_PrepareFromLua",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea6f4",
+          "function": "0x008ea610",
+          "native": "0x00b67700",
+          "name": "BSP_LuaObject_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea6fd",
+          "function": "0x008ea610",
+          "native": "0x00b66400",
+          "name": "BSP_LuaObject_ResultCount",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea710",
+          "function": "0x008ea610",
+          "native": "0x00b67700",
+          "name": "BSP_LuaObject_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ea724",
+          "function": "0x008ea610",
+          "native": "0x00b669a0",
+          "name": "BSP_LuaStateOwner_Close",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008eaad0",
+      "name": "bsp::powerup_seg58_argon::cg_scalar_deleting_dtor_008eaad0",
+      "original_name": "CG_scalar_deleting_dtor_008eaad0",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008eaad6",
+          "function": "0x008eaad0",
+          "native": "0x008e9700",
+          "name": "STL_PowerupRandomNameMapValue_Destroy_008E9700",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eaae3",
+          "function": "0x008eaad0",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008eab00",
+      "name": "bsp::powerup_seg58_argon::power_up_manager_build_available_names_table_008eab00",
+      "original_name": "BSP_PowerUpManager_BuildAvailableNamesTable",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008eab37",
+          "function": "0x008eab00",
+          "native": "0x008ea0c0",
+          "name": "BSP_PowerUpManager_ListReadyItems",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eab45",
+          "function": "0x008eab00",
+          "native": "0x00b67930",
+          "name": "BSP_LuaObject_NewTable",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eab75",
+          "function": "0x008eab00",
+          "native": "0x00b672f0",
+          "name": "BSP_LuaObject_SetLStringAtIndex",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eab86",
+          "function": "0x008eab00",
+          "native": "0x00b67700",
+          "name": "BSP_LuaObject_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eab97",
+          "function": "0x008eab00",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008eabb0",
+      "name": "bsp::powerup_seg58_argon::power_up_manager_on_air_support_flight_spawned_008eabb0",
+      "original_name": "BSP_PowerUpManager_OnAirSupportFlightSpawned",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008eabf3",
+          "function": "0x008eabb0",
+          "native": "0x008e6ed0",
+          "name": "BSP_SessionMessage67_ConstructFromName",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eac0f",
+          "function": "0x008eabb0",
+          "native": "0x0076a9f0",
+          "name": "CG_adjustor_thunk_0076a9f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eac20",
+          "function": "0x008eabb0",
+          "native": "0x007657d0",
+          "name": "BSP_SessionMessage67_Destroy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eac35",
+          "function": "0x008eabb0",
+          "native": "0x00694a60",
+          "name": "BSP_Observer_RegisterPair",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eac4f",
+          "function": "0x008eabb0",
+          "native": "0x00617030",
+          "name": "STL_Map_Subscript_00617030",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eac58",
+          "function": "0x008eabb0",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008eac80",
+      "name": "bsp::powerup_seg58_argon::power_up_manager_bind_pending_flights_008eac80",
+      "original_name": "BSP_PowerUpManager_BindPendingFlights",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008eacf9",
+          "function": "0x008eac80",
+          "native": "0x00694a60",
+          "name": "BSP_Observer_RegisterPair",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ead13",
+          "function": "0x008eac80",
+          "native": "0x00617030",
+          "name": "STL_Map_Subscript_00617030",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ead79",
+          "function": "0x008eac80",
+          "native": "0x0061b0f0",
+          "name": "BSP_HudPowerupManagerScreen_RebuildLists",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008eada0",
+      "name": "bsp::powerup_seg58_argon::power_up_manager_use_item_008eada0",
+      "original_name": "BSP_PowerUpManager_UseItem",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008eadfc",
+          "function": "0x008eada0",
+          "native": "0x008e6e00",
+          "name": "BSP_SessionMessage67_ConstructFromClass",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eae19",
+          "function": "0x008eada0",
+          "native": "0x00770af0",
+          "name": "BSP_Session_SendMessageToSecondaryFirstPeer",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eae2d",
+          "function": "0x008eada0",
+          "native": "0x007657d0",
+          "name": "BSP_SessionMessage67_Destroy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eae72",
+          "function": "0x008eada0",
+          "native": "0x00617030",
+          "name": "STL_Map_Subscript_00617030",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eaecd",
+          "function": "0x008eada0",
+          "native": "0x008e35f0",
+          "name": "BSP_PowerupClass_ScopeAcceptsUnit",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eaefd",
+          "function": "0x008eada0",
+          "native": "0x00bf681b",
+          "name": "operator_new",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eaf18",
+          "function": "0x008eada0",
+          "native": "0x0041e870",
+          "name": "BSP_NativeString_Assign",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eaf51",
+          "function": "0x008eada0",
+          "native": "0x0094bff0",
+          "name": "FUN_0094bff0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eaf65",
+          "function": "0x008eada0",
+          "native": "0x0041dd20",
+          "name": "BSP_NativeString_DestroyStorage",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eaf71",
+          "function": "0x008eada0",
+          "native": "0x008e35f0",
+          "name": "BSP_PowerupClass_ScopeAcceptsUnit",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eafd3",
+          "function": "0x008eada0",
+          "native": "0x008ea250",
+          "name": "BSP_PowerUpManager_InsertModifier",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eb019",
+          "function": "0x008eada0",
+          "native": "0x008e6e00",
+          "name": "BSP_SessionMessage67_ConstructFromClass",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eb038",
+          "function": "0x008eada0",
+          "native": "0x0076a9f0",
+          "name": "CG_adjustor_thunk_0076a9f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eb04c",
+          "function": "0x008eada0",
+          "native": "0x007657d0",
+          "name": "BSP_SessionMessage67_Destroy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eb06d",
+          "function": "0x008eada0",
+          "native": "0x0090f5a0",
+          "name": "FUN_0090f5a0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eb077",
+          "function": "0x008eada0",
+          "native": "0x008e4b00",
+          "name": "BSP_PowerupSlotRecord_StartCooldown",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eb085",
+          "function": "0x008eada0",
+          "native": "0x00617030",
+          "name": "STL_Map_Subscript_00617030",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eb0cf",
+          "function": "0x008eada0",
+          "native": "0x008e87c0",
+          "name": "BSP_PowerUpManager_RemoveItem",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eb0e9",
+          "function": "0x008eada0",
+          "native": "0x0061b0f0",
+          "name": "BSP_HudPowerupManagerScreen_RebuildLists",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008eb350",
+      "name": "bsp::powerup_seg58_argon::lua_binding_get_available_powerups_008eb350",
+      "original_name": "BSP_LuaBinding_GetAvailablePowerups",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008eb392",
+          "function": "0x008eb350",
+          "native": "0x0041e870",
+          "name": "BSP_NativeString_Assign",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eb3b4",
+          "function": "0x008eb350",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eb3bb",
+          "function": "0x008eb350",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eb3d0",
+          "function": "0x008eb350",
+          "native": "0x00b66c00",
+          "name": "BSP_LuaStateOwner_ConstructBorrowed",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eb3e9",
+          "function": "0x008eb350",
+          "native": "0x00b679b0",
+          "name": "BSP_LuaObject_OpenCallFrame",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eb406",
+          "function": "0x008eb350",
+          "native": "0x00b663f0",
+          "name": "TRIV_body_00b663f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eb41b",
+          "function": "0x008eb350",
+          "native": "0x00b677e0",
+          "name": "BSP_LuaObject_ArgumentAt",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eb42a",
+          "function": "0x008eb350",
+          "native": "0x00b66290",
+          "name": "BSP_LuaObject_GetInteger",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eb43d",
+          "function": "0x008eb350",
+          "native": "0x00b67700",
+          "name": "BSP_LuaObject_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eb44e",
+          "function": "0x008eb350",
+          "native": "0x008eab00",
+          "name": "BSP_PowerUpManager_BuildAvailableNamesTable",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eb457",
+          "function": "0x008eb350",
+          "native": "0x00b66400",
+          "name": "BSP_LuaObject_ResultCount",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eb46a",
+          "function": "0x008eb350",
+          "native": "0x00b67700",
+          "name": "BSP_LuaObject_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eb47e",
+          "function": "0x008eb350",
+          "native": "0x00b669a0",
+          "name": "BSP_LuaStateOwner_Close",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008eb6e0",
+      "name": "bsp::powerup_seg58_argon::power_up_manager_use_item_local_008eb6e0",
+      "original_name": "BSP_PowerUpManager_UseItemLocal",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008eb6fb",
+          "function": "0x008eb6e0",
+          "native": "0x008e45d0",
+          "name": "BSP_PowerupClass_ResolveLocalUseTarget",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eb705",
+          "function": "0x008eb6e0",
+          "native": "0x008eada0",
+          "name": "BSP_PowerUpManager_UseItem",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008eb710",
+      "name": "bsp::powerup_seg58_argon::power_up_manager_broadcast_command_building_bindings_008eb710",
+      "original_name": "BSP_PowerUpManager_BroadcastCommandBuildingBindings",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008eb73f",
+          "function": "0x008eb710",
+          "native": "0x00767570",
+          "name": "BSP_SessionMessage69_Construct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eb783",
+          "function": "0x008eb710",
+          "native": "0x007265e0",
+          "name": "STL_Vector_PushBack_007265e0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eb793",
+          "function": "0x008eb710",
+          "native": "0x00450540",
+          "name": "STL_CheckedNativeStringVector_Append_00450540",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eb7b3",
+          "function": "0x008eb710",
+          "native": "0x0076a9f0",
+          "name": "CG_adjustor_thunk_0076a9f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eb7c4",
+          "function": "0x008eb710",
+          "native": "0x00767610",
+          "name": "BSP_SessionMessage69_Destroy",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008ed4b0",
+      "name": "bsp::powerup_seg58_argon::command_building_powerup_binding_grant_to_owner_008ed4b0",
+      "original_name": "BSP_CommandBuildingPowerupBinding_GrantToOwner",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008ed504",
+          "function": "0x008ed4b0",
+          "native": "0x009ffd20",
+          "name": "BSP_Unit_LossCountingSlot",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed518",
+          "function": "0x008ed4b0",
+          "native": "0x008e6a80",
+          "name": "BSP_PowerupItem_Construct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed52f",
+          "function": "0x008ed4b0",
+          "native": "0x008ec420",
+          "name": "STL_inst_008ec420",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed540",
+          "function": "0x008ed4b0",
+          "native": "0x008e58e0",
+          "name": "STL_List_Clear_008E58E0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed547",
+          "function": "0x008ed4b0",
+          "native": "0x008e5ed0",
+          "name": "STL_inst_008e5ed0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed56c",
+          "function": "0x008ed4b0",
+          "native": "0x0041e870",
+          "name": "BSP_NativeString_Assign",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed586",
+          "function": "0x008ed4b0",
+          "native": "0x009789a0",
+          "name": "BSP_WarningManager_ReportPowerup",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed597",
+          "function": "0x008ed4b0",
+          "native": "0x0041dd20",
+          "name": "BSP_NativeString_DestroyStorage",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed5a0",
+          "function": "0x008ed4b0",
+          "native": "0x008e4660",
+          "name": "BSP_PowerUpManager_RefreshHudIfShown",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed5bf",
+          "function": "0x008ed4b0",
+          "native": "0x008e6e00",
+          "name": "BSP_SessionMessage67_ConstructFromClass",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed5db",
+          "function": "0x008ed4b0",
+          "native": "0x0076a9f0",
+          "name": "CG_adjustor_thunk_0076a9f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed5ec",
+          "function": "0x008ed4b0",
+          "native": "0x007657d0",
+          "name": "BSP_SessionMessage67_Destroy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed601",
+          "function": "0x008ed4b0",
+          "native": "0x008eada0",
+          "name": "BSP_PowerUpManager_UseItem",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008ed620",
+      "name": "bsp::powerup_seg58_argon::power_up_manager_on_observed_event_008ed620",
+      "original_name": "BSP_PowerUpManager_OnObservedEvent",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008ed644",
+          "function": "0x008ed620",
+          "native": "0x008e8a30",
+          "name": "BSP_PowerUpManager_RemoveItemsBoundTo",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed64c",
+          "function": "0x008ed620",
+          "native": "0x008ed4b0",
+          "name": "BSP_CommandBuildingPowerupBinding_GrantToOwner",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008ed720",
+      "name": "bsp::powerup_seg58_argon::command_building_powerup_binding_init_from_properties_008ed720",
+      "original_name": "BSP_CommandBuildingPowerupBinding_InitFromProperties",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008ed774",
+          "function": "0x008ed720",
+          "native": "0x008f2260",
+          "name": "BSP_ScenePropertyBag_Find",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed77b",
+          "function": "0x008ed720",
+          "native": "0x008f0df0",
+          "name": "BSP_SceneProperty_GetStringValue",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed785",
+          "function": "0x008ed720",
+          "native": "0x0041e870",
+          "name": "BSP_NativeString_Assign",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed7b1",
+          "function": "0x008ed720",
+          "native": "0x00bf9440",
+          "name": "_strstr",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed7f4",
+          "function": "0x008ed720",
+          "native": "0x00bf9a50",
+          "name": "_strcspn",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed829",
+          "function": "0x008ed720",
+          "native": "0x00469840",
+          "name": "BSP_NativeString_Substring",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed83c",
+          "function": "0x008ed720",
+          "native": "0x00585eb0",
+          "name": "BSP_NativeString_TrimLeftSet",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed84a",
+          "function": "0x008ed720",
+          "native": "0x00584110",
+          "name": "BSP_NativeString_TrimRightSet",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed85d",
+          "function": "0x008ed720",
+          "native": "0x00426060",
+          "name": "BSP_NativeString_CopyConstruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed86d",
+          "function": "0x008ed720",
+          "native": "0x008ec650",
+          "name": "BSP_Powerup_PickFromBracketList_Provisional",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed87c",
+          "function": "0x008ed720",
+          "native": "0x00425f40",
+          "name": "BSP_NativeString_AssignHeader",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed899",
+          "function": "0x008ed720",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed8a0",
+          "function": "0x008ed720",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed8b0",
+          "function": "0x008ed720",
+          "native": "0x008e6cb0",
+          "name": "FUN_008e6cb0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed8c7",
+          "function": "0x008ed720",
+          "native": "0x008ed4b0",
+          "name": "BSP_CommandBuildingPowerupBinding_GrantToOwner",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed8d5",
+          "function": "0x008ed720",
+          "native": "0x00694a60",
+          "name": "BSP_Observer_RegisterPair",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed8f2",
+          "function": "0x008ed720",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed8f9",
+          "function": "0x008ed720",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed925",
+          "function": "0x008ed720",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed92c",
+          "function": "0x008ed720",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed944",
+          "function": "0x008ed720",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed94b",
+          "function": "0x008ed720",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed96f",
+          "function": "0x008ed720",
+          "native": "0x008e6cb0",
+          "name": "FUN_008e6cb0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed986",
+          "function": "0x008ed720",
+          "native": "0x008ed4b0",
+          "name": "BSP_CommandBuildingPowerupBinding_GrantToOwner",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed998",
+          "function": "0x008ed720",
+          "native": "0x00694a60",
+          "name": "BSP_Observer_RegisterPair",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008ed9c0",
+      "name": "bsp::powerup_seg58_argon::power_up_manager_local_player_has_usable_item_008ed9c0",
+      "original_name": "BSP_PowerUpManager_LocalPlayerHasUsableItem",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008ed9db",
+          "function": "0x008ed9c0",
+          "native": "0x008ed660",
+          "name": "STL_List_CopyConstruct_008ED660",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ed9fd",
+          "function": "0x008ed9c0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eda0e",
+          "function": "0x008ed9c0",
+          "native": "0x008e7da0",
+          "name": "STL_inst_008e7da0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eda18",
+          "function": "0x008ed9c0",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eda2b",
+          "function": "0x008ed9c0",
+          "native": "0x008e7da0",
+          "name": "STL_inst_008e7da0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eda35",
+          "function": "0x008ed9c0",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008edad0",
+      "name": "bsp::powerup_seg58_argon::cg_vector_deleting_dtor_008edad0",
+      "original_name": "CG_vector_deleting_dtor_008edad0",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008edb1d",
+          "function": "0x008edad0",
+          "native": "0x008ec550",
+          "name": "STL_Tree_EraseRange_008ec550",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008edb26",
+          "function": "0x008edad0",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008edb52",
+          "function": "0x008edad0",
+          "native": "0x008ec550",
+          "name": "STL_Tree_EraseRange_008ec550",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008edb5b",
+          "function": "0x008edad0",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008edb7e",
+          "function": "0x008edad0",
+          "native": "0x00bf7c6e",
+          "name": "`eh_vector_destructor_iterator'",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008edb91",
+          "function": "0x008edad0",
+          "native": "0x008e5170",
+          "name": "TMPL_Array12_Resize_008E5170",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008edb99",
+          "function": "0x008edad0",
+          "native": "0x00bf6989",
+          "name": "_free",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008edbb6",
+          "function": "0x008edad0",
+          "native": "0x00bf7c6e",
+          "name": "`eh_vector_destructor_iterator'",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008edbcd",
+          "function": "0x008edad0",
+          "native": "0x00bf7c6e",
+          "name": "`eh_vector_destructor_iterator'",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008edbe9",
+          "function": "0x008edad0",
+          "native": "0x008ea990",
+          "name": "STL_Tree_EraseRange_008ea990",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008edbf2",
+          "function": "0x008edad0",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008edc0a",
+          "function": "0x008edad0",
+          "native": "0x00695870",
+          "name": "BSP_CallbackOwner_Destroy",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008edda0",
+      "name": "bsp::powerup_seg58_argon::cg_scalar_deleting_dtor_008edda0",
+      "original_name": "CG_scalar_deleting_dtor_008edda0",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008edda3",
+          "function": "0x008edda0",
+          "native": "0x008edad0",
+          "name": "CG_vector_deleting_dtor_008edad0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eddb0",
+          "function": "0x008edda0",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008eddc0",
+      "name": "bsp::powerup_seg58_argon::power_up_manager_grant_item_008eddc0",
+      "original_name": "BSP_PowerUpManager_GrantItem",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008ede04",
+          "function": "0x008eddc0",
+          "native": "0x008e58c0",
+          "name": "STL_List_BuyHeadNode_008E58C0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ede30",
+          "function": "0x008eddc0",
+          "native": "0x008ebbe0",
+          "name": "STL_inst_008ebbe0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ede3b",
+          "function": "0x008eddc0",
+          "native": "0x008e7e10",
+          "name": "STL_xlen_throw_008e7e10",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ede53",
+          "function": "0x008eddc0",
+          "native": "0x008e58e0",
+          "name": "STL_List_Clear_008E58E0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ede62",
+          "function": "0x008eddc0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ede6c",
+          "function": "0x008eddc0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ede82",
+          "function": "0x008eddc0",
+          "native": "0x00b66fa0",
+          "name": "BSP_LuaObject_CopyConstruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ede8b",
+          "function": "0x008eddc0",
+          "native": "0x004425c0",
+          "name": "BSP_LuaReader_Construct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ede9b",
+          "function": "0x008eddc0",
+          "native": "0x008e7820",
+          "name": "BSP_PowerupItem_LoadLua",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008edea8",
+          "function": "0x008eddc0",
+          "native": "0x00441a20",
+          "name": "BSP_LuaReader_DestroyStackInstance",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008edeb6",
+          "function": "0x008eddc0",
+          "native": "0x0041e870",
+          "name": "BSP_NativeString_Assign",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008eded4",
+          "function": "0x008eddc0",
+          "native": "0x009789a0",
+          "name": "BSP_WarningManager_ReportPowerup",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008edef0",
+          "function": "0x008eddc0",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008edef7",
+          "function": "0x008eddc0",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008edf10",
+          "function": "0x008eddc0",
+          "native": "0x0061b0f0",
+          "name": "BSP_HudPowerupManagerScreen_RebuildLists",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008edf1e",
+          "function": "0x008eddc0",
+          "native": "0x0041e870",
+          "name": "BSP_NativeString_Assign",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008edf2b",
+          "function": "0x008eddc0",
+          "native": "0x004e1ca0",
+          "name": "BSP_AwardTracker_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008edf37",
+          "function": "0x008eddc0",
+          "native": "0x0068e600",
+          "name": "BSP_AwardTracker_HasHintBeenShown",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008edf5a",
+          "function": "0x008eddc0",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008edf61",
+          "function": "0x008eddc0",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008edf75",
+          "function": "0x008eddc0",
+          "native": "0x0041e870",
+          "name": "BSP_NativeString_Assign",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008edf88",
+          "function": "0x008eddc0",
+          "native": "0x004e1ca0",
+          "name": "BSP_AwardTracker_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008edf8f",
+          "function": "0x008eddc0",
+          "native": "0x00690fd0",
+          "name": "BSP_AwardTracker_TriggerHint",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008edfab",
+          "function": "0x008eddc0",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008edfb2",
+          "function": "0x008eddc0",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008edfcf",
+          "function": "0x008eddc0",
+          "native": "0x008e6e00",
+          "name": "BSP_SessionMessage67_ConstructFromClass",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008edfea",
+          "function": "0x008eddc0",
+          "native": "0x0076a9f0",
+          "name": "CG_adjustor_thunk_0076a9f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008edff7",
+          "function": "0x008eddc0",
+          "native": "0x007657d0",
+          "name": "BSP_SessionMessage67_Destroy",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008ee020",
+      "name": "bsp::powerup_seg58_argon::power_up_manager_on_powerup_message_008ee020",
+      "original_name": "BSP_PowerUpManager_OnPowerupMessage",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008ee086",
+          "function": "0x008ee020",
+          "native": "0x008e6cb0",
+          "name": "FUN_008e6cb0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee08f",
+          "function": "0x008ee020",
+          "native": "0x008e6a80",
+          "name": "BSP_PowerupItem_Construct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee09f",
+          "function": "0x008ee020",
+          "native": "0x008ec420",
+          "name": "STL_inst_008ec420",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee0af",
+          "function": "0x008ee020",
+          "native": "0x008e58e0",
+          "name": "STL_List_Clear_008E58E0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee0be",
+          "function": "0x008ee020",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee0c8",
+          "function": "0x008ee020",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee0d1",
+          "function": "0x008ee020",
+          "native": "0x008e7930",
+          "name": "BSP_PowerupItem_InitFromMessage67",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee0df",
+          "function": "0x008ee020",
+          "native": "0x0041e870",
+          "name": "BSP_NativeString_Assign",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee0f6",
+          "function": "0x008ee020",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee100",
+          "function": "0x008ee020",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee119",
+          "function": "0x008ee020",
+          "native": "0x009789a0",
+          "name": "BSP_WarningManager_ReportPowerup",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee135",
+          "function": "0x008ee020",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee13c",
+          "function": "0x008ee020",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee14a",
+          "function": "0x008ee020",
+          "native": "0x0041e870",
+          "name": "BSP_NativeString_Assign",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee157",
+          "function": "0x008ee020",
+          "native": "0x004e1ca0",
+          "name": "BSP_AwardTracker_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee163",
+          "function": "0x008ee020",
+          "native": "0x0068e600",
+          "name": "BSP_AwardTracker_HasHintBeenShown",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee184",
+          "function": "0x008ee020",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee18b",
+          "function": "0x008ee020",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee19d",
+          "function": "0x008ee020",
+          "native": "0x0041e870",
+          "name": "BSP_NativeString_Assign",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee1b1",
+          "function": "0x008ee020",
+          "native": "0x004e1ca0",
+          "name": "BSP_AwardTracker_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee1b8",
+          "function": "0x008ee020",
+          "native": "0x00690fd0",
+          "name": "BSP_AwardTracker_TriggerHint",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee1c5",
+          "function": "0x008ee020",
+          "native": "0x0041dd20",
+          "name": "BSP_NativeString_DestroyStorage",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee1e7",
+          "function": "0x008ee020",
+          "native": "0x0061b0f0",
+          "name": "BSP_HudPowerupManagerScreen_RebuildLists",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee228",
+          "function": "0x008ee020",
+          "native": "0x00435c40",
+          "name": "BSP_NativeString_EqualsInsensitive",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee236",
+          "function": "0x008ee020",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee250",
+          "function": "0x008ee020",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee264",
+          "function": "0x008ee020",
+          "native": "0x008e4b00",
+          "name": "BSP_PowerupSlotRecord_StartCooldown",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee274",
+          "function": "0x008ee020",
+          "native": "0x00617030",
+          "name": "STL_Map_Subscript_00617030",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee2a7",
+          "function": "0x008ee020",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee2ba",
+          "function": "0x008ee020",
+          "native": "0x008e57f0",
+          "name": "STL_inst_008e57f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee2d3",
+          "function": "0x008ee020",
+          "native": "0x008e57c0",
+          "name": "STL_inst_008e57c0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee2dd",
+          "function": "0x008ee020",
+          "native": "0x008e87c0",
+          "name": "BSP_PowerUpManager_RemoveItem",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee2f4",
+          "function": "0x008ee020",
+          "native": "0x008e57f0",
+          "name": "STL_inst_008e57f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee31f",
+          "function": "0x008ee020",
+          "native": "0x008e5670",
+          "name": "TMPL_Array12_PushBack_008E5670",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee35a",
+          "function": "0x008ee020",
+          "native": "0x00435c40",
+          "name": "BSP_NativeString_EqualsInsensitive",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee368",
+          "function": "0x008ee020",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee3ad",
+          "function": "0x008ee020",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee3c0",
+          "function": "0x008ee020",
+          "native": "0x008eada0",
+          "name": "BSP_PowerUpManager_UseItem",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008ee410",
+      "name": "bsp::powerup_seg58_argon::lua_binding_add_powerup_008ee410",
+      "original_name": "BSP_LuaBinding_AddPowerup",
+      "original_abi": "__thiscall/__cdecl",
+      "status": "reconstructed_build_tested",
+      "steps": [
+        {
+          "address": "0x008ee452",
+          "function": "0x008ee410",
+          "native": "0x0041e870",
+          "name": "BSP_NativeString_Assign",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee474",
+          "function": "0x008ee410",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee47b",
+          "function": "0x008ee410",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee490",
+          "function": "0x008ee410",
+          "native": "0x00b66c00",
+          "name": "BSP_LuaStateOwner_ConstructBorrowed",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee4a9",
+          "function": "0x008ee410",
+          "native": "0x00b679b0",
+          "name": "BSP_LuaObject_OpenCallFrame",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee4ba",
+          "function": "0x008ee410",
+          "native": "0x00b663f0",
+          "name": "TRIV_body_00b663f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee4cf",
+          "function": "0x008ee410",
+          "native": "0x00b677e0",
+          "name": "BSP_LuaObject_ArgumentAt",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee4f0",
+          "function": "0x008ee410",
+          "native": "0x008eddc0",
+          "name": "BSP_PowerUpManager_GrantItem",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee506",
+          "function": "0x008ee410",
+          "native": "0x00b677e0",
+          "name": "BSP_LuaObject_ArgumentAt",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee520",
+          "function": "0x008ee410",
+          "native": "0x00b677e0",
+          "name": "BSP_LuaObject_ArgumentAt",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee530",
+          "function": "0x008ee410",
+          "native": "0x00b66290",
+          "name": "BSP_LuaObject_GetInteger",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee53c",
+          "function": "0x008ee410",
+          "native": "0x008eddc0",
+          "name": "BSP_PowerUpManager_GrantItem",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee54d",
+          "function": "0x008ee410",
+          "native": "0x00b67700",
+          "name": "BSP_LuaObject_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee55e",
+          "function": "0x008ee410",
+          "native": "0x00b67700",
+          "name": "BSP_LuaObject_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee567",
+          "function": "0x008ee410",
+          "native": "0x00b66400",
+          "name": "BSP_LuaObject_ResultCount",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee57a",
+          "function": "0x008ee410",
+          "native": "0x00b67700",
+          "name": "BSP_LuaObject_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ee58e",
+          "function": "0x008ee410",
+          "native": "0x00b669a0",
+          "name": "BSP_LuaStateOwner_Close",
+          "kind": "direct_call"
+        }
+      ]
+    }
+  ]
+}
