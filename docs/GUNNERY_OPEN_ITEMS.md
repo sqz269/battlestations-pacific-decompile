@@ -14024,3 +14024,74 @@ aims= launches= biased= scaled_steps= fly_time_expiries=`.
 6. The bias (D4) lowers hits further. It is judged only as D3 + D4 against D3.
 7. Win rows: USN02's Java Sea fight is the most exposed (`s36_u2_p7`). USN12's completion depends on the US
    ships surviving, so it may move either way.
+
+## 229. Ranging record seed and fixed bearing (CC13_VER_21 D2, D1): `kRangingSeedVelocityBound`, `kRangingBearingFixedBound`, OFF (lead queue item 1; cc9-gunnery42, 2026-10-14)
+
+**D2.** `00864880` (`00864A7F..00864B8A`) builds the record with `+50h = p - V k` and `+60h = p + V k` (`+64h = 0`).
+Here `k` is GlobalConfig+88h (WeaponDirectorThinkTime, 2 s in this installation) and `V` is the target's
+vtable[34h], its world velocity. The host seeded both with `p`. ON: `prev_pos = p - V k` and
+`predicted = p + V k`, with `V` from `unit_velocity` (the host's ship velocity; LABELLED: it stands in for
+vtable[34h]). The counter is `velocity_seeds=`.
+
+**D1.** `00862CD0` draws `U(-AngleChange, AngleChange)` at `00862F46` and then discards the wrapped sum
+(`00438AA0`, then `00862F62 FSTP ST0`). It rebuilds the offset from the old `+6Ch`. ON: the draw is consumed and
+dropped. The counter is `bearing_turns_dropped=`. Neither switch changes the stream-0 draw count.
+
+**Predictions.**
+1. OFF is identical to the base.
+2. D2 ON: `velocity_seeds` equals `records_built`. The second and third corrected salvos against a moving ship
+   miss by more (by `|V| k DeviationMul frac^2`, +24 m at SPNormal and full range, +300 m capped for Stun), so
+   early hits are slightly fewer. A stationary target is unchanged.
+3. D1 ON: `bearing_turns_dropped` equals the updates whose error moved. The mean hit rate changes by less than
+   about 5 %, but the spread per engagement grows. The draw count is unchanged, so the first moved hit is the
+   first divergence.
+4. Both are judged on the same rows as 228 (JM08, IJN08, USN13 and USN02), each alone and against the same OFF.
+
+## 230. Ship and submarine torpedo attacks (CC13_VER_23 D1, D2, D4): `kTorpedoBotAttackRangeBound`, `kTorpedoBotStaleFlagBound`, `kTorpedoSubmergedTargetDropBound`, OFF (lead queue item 2; cc9-gunnery42, 2026-10-14)
+
+**D1.** `008FFF20` has two range gates:
+- Gate A drops the trigger when `|target - gun|` in 3D exceeds `min(unit+44Ch * 1.5, bot+68h + 100)`.
+- Gate B drops it when the lead point plus the `unit+6D4h` spread lies farther in x, z than
+  `min(unit+44Ch, bot+68h)`.
+
+`bot+68h` is `00901BA0`, which calls `008387B0(7, Length, tube class range, accuracy)`. The accuracy is the
+TorpedoBot row's FireTargetAccuracy or AnyTargetAccuracy, picked by `bot+6Ch`. Two `00727F10` calls cache it, and
+`008FF260` seeds it at 10000.
+
+ON:
+- a per-gun cache is updated on every cat-7 send (`00727F44` / `00727F56`) and cleared with the target
+  (`008FF2B0`, flag 0, no recompute);
+- the size is the target's `unit_hull_length_09c8` (class Length);
+- the tube range is the gun's 00731020 range;
+- the profile is `WeaponHitAccuracy.Torpedo` from the Lua host;
+- the level rows are this installation's robots.lua TorpedoBot rows (LABELLED substitution, as the ship-AI
+  host's `torpedo_bot_fire_target_accuracy`).
+
+Gate A uses the target pose origin and the muzzle; gate B uses the lead after the spread. A dropped gate sets
+`have_target = false` for the tick, as the snap failure does. The 0.2 s think timer is not modelled.
+
+**D2** (only under D1): `00903580` recomputes before it stores the new flag, so a flag change keeps the old
+flag's range (`torpedo_gun_set_bot_fire_target_00727f10`). With D1 alone, the range follows the new flag.
+
+**D4.** A surface owner drops an `IsKindOf(8)` target that `00852820` answers below
+(`y <= (band1 + band0) / 3`; with the default bands that is -6.7 m).
+
+**D3** (the avoid-zone launch gate `0090088E`) is **not bound** in this commit: it needs the ship-AI host's zone
+table, which belongs to the ships lane. That is an open item.
+
+Counter: `summary mission gunnery torpedo bot range gate_a_drops= gate_b_drops= passes= mean_attack_range=
+submerged_drops=`.
+
+**Predictions.**
+1. OFF is identical to the base.
+2. D1 ON: SPNormal enemy ships launch only inside about 0.36-0.50 R. For the Long Lance (R 6136 m), the mean
+   attack range is 2.2-3.1 km against a cruiser or destroyer. For the Mark 15 (R 1852 m) it is about 0.7-0.9 km.
+   The player's side (SPVeteran) launches inside about 0.9 R.
+3. Fewer and later enemy torpedo launches, and more hits per torpedo. `gate_b_drops` far outnumber
+   `gate_a_drops`, because A has the 1.5x and +100 slack.
+4. On USN02, the opening Long Lance spreads at 0.6-0.8 km are inside the limit, so the early Houston kill should
+   stand.
+5. D2 changes only the guns whose flag flips while they keep a target. The census
+   (`byte_7d_fire_target_assigns_at_0`) suggests that is rare: expect identical or nearly so.
+6. D4: only missions with submerged boats (PRCP01, JM06). Destroyers stop firing torpedoes at boats below
+   -6.7 m.
