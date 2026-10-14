@@ -63,7 +63,14 @@ ABI-compatible, not fixture-tested, not game-validated.
 | `00449310` | `owned_ptr_delete_reset_00449310` | 00449310 __fastcall(slot): when [slot] is set, its vtable +00h(1), then [slot] = 0. |
 | `00445940` | `weather_config_destruct_00445940` | 00445940 __fastcall(config): vtable 00CE4934; the float maps +68h, +5Ch and +38h are emptied (00444B10 over [begin, head)), their head nodes freed and +4h/+8h zeroed; then the NativeString +2Ch/+30h block goes back to the pool. |
 
-## Implemented on main without a ledger record (not re-verified here)
+## Implemented on main before this packet
+
+cc13-backfill (152a7e698) checked this list against the ledger: 43 of the 45 addresses already had
+reconstruction records (`python tools/bsp.py lookup <address>`). The two that did not now have
+records: `0043F080` (`script_entity_live_0043f080`, src/script_orders_ver_cc13.cpp, verified
+against the listing) and `00442220` (`NativeLuaReaderStorage::push_copy_00442220`,
+src/native_lua_reader.cpp, minor deviation: host vector growth in place of the VC9 internals).
+`0044E150`, `0044F0A0` and `004517E0` keep fragment records (full-range clear only). The list:
 
 `0043EBD0`, `0043EBF0`, `0043F080`, `0043FA60`, `00440180`, `004412B0`, `00441360`, `00441760`,
 `00441780`, `00441A20`, `00441A70`, `00442220`, `004425C0`, `00442B90`, `00442C50`, `00442CE0`,
