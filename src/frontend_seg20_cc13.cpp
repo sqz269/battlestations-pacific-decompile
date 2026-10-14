@@ -451,4 +451,201 @@ void* minimap_acquire_marker_005c0930(void* screen, void* unit, Seg20Host& host)
     return marker;
 }
 
+// ---------------------------------------------------------------------------
+// cc13-x87. The x87 code was traced from the bytes with the stack depth at
+// each step (docs/CC13_SEG20.md, "x87 bodies"). A value the image keeps in an
+// x87 register is a double here and is rounded to float where the image
+// stores it; that is the 53/64-bit result. At the main thread's 24-bit
+// precision control each register operation also rounds to 24 bits; the doc
+// lists where that can differ. A single operation on two floats followed by a
+// float store is written as a float operation.
+// ---------------------------------------------------------------------------
+namespace {
+
+constexpr double kMapLeft = 0.05000000074505806;        // 00D7A270 (double, 0.05f widened)
+constexpr double kMapLeftWide = -0.10000000521540642;   // 00CEFFA8 (double BFB99999B0000000h)
+constexpr double kMapRight = 0.949999988079071;         // 00CEFFB0 (double, 0.95f widened)
+constexpr double kMapRightWide = 1.0999999940395355;    // 00CEFFB8 (double 3FF1999998000000h)
+constexpr double kMapInset = 0.020833333333333332;      // 00CF0000 (double, 1/48)
+constexpr float kMapLowY = 0.07777778059244156f;        // 00CEFFF8 (float 3D9F49F5h)
+constexpr double kMapHighYTest = 0.9222221970558167;    // 00CEFFF0 (double, compared)
+constexpr float kMapHighY = 0.9222221970558167f;        // 00CEFFEC (float 3F6C16C1h, stored)
+constexpr float kMapDepth = 110.0f;                     // 00CEFFFC (float)
+constexpr double kMinusOne = -1.0;                      // 00D7A250 (double)
+constexpr float kOne = 1.0f;                            // 00D7A24C (float)
+
+// FLD x; FSUB [screen+54Ch]; FDIV [screen+30h]; FADD [00E08890]; FSTP float.
+float map_x(Seg20Host& host, const Raw& screen, float x) {
+    return static_cast<float>((static_cast<double>(x) - screen.at<float>(0x54C)) / screen.at<float>(0x30) +
+                              global_f32(host, 0x00E08890));
+}
+
+// FLD [screen+550h]; FSUB z; FDIV [screen+34h]; FADD [00E08894]; FSTP float.
+float map_y(Seg20Host& host, const Raw& screen, float z) {
+    return static_cast<float>((static_cast<double>(screen.at<float>(0x550)) - z) / screen.at<float>(0x34) +
+                              global_f32(host, 0x00E08894));
+}
+
+}  // namespace
+
+// 0059DD20. The three offsets are kept as doubles (FST qword at 0059DDFB,
+// 0059DE24 and 0059DE61); each is a product of two floats, so the double is
+// exact. Every corner coordinate is stored as float before it is mapped.
+void hud_map_arrow_widget_set_line_0059dd20(void* widget, void* screen, const float* from,
+                                            const float* to, float width, Seg20Host& host) {
+    const Raw w = raw(widget);
+    const Raw s = raw(screen);
+    host.widget_vslot34(w.ptr(4), 0);
+    for (std::size_t i = 0; i < 8; ++i) host.widget_vslot34(w.ptr(8 + 4 * i), 0);
+    host.widget_vslot7c(w.ptr(4));
+    const float fx = from[0];
+    const float d[3] = {to[0] - fx, 0.0f, to[2] - from[2]};
+    const float length = host.vector3_length_00419440(d);
+    // FLDZ; FCOMI: the reciprocal only for a positive length (NaN gives 0).
+    float inverse = 0.0f;
+    if (length > 0.0f) inverse = static_cast<float>(1.0 / static_cast<double>(length));
+    const float nx = inverse * d[0];
+    const float nz = inverse * d[2];
+    const float neg_nx = -nx;
+    const double along_z = static_cast<double>(nz) * width;   // A
+    const double along_x = static_cast<double>(nx) * width;   // B
+
+    float z = static_cast<float>(static_cast<double>(from[2]) - along_z);
+    float y = map_y(host, s, z);
+    float x = static_cast<float>(static_cast<double>(fx) - along_x);
+    host.points_widget_add_point_00ac2dc0(w.ptr(4), map_x(host, s, x), y);
+
+    const double across = static_cast<double>(neg_nx) * width;  // C
+    z = static_cast<float>(static_cast<double>(from[2]) - across);
+    y = map_y(host, s, z);
+    x = static_cast<float>(static_cast<double>(from[0]) - along_z);
+    host.points_widget_add_point_00ac2dc0(w.ptr(4), map_x(host, s, x), y);
+
+    z = static_cast<float>(static_cast<double>(to[2]) - across);
+    y = map_y(host, s, z);
+    x = static_cast<float>(static_cast<double>(to[0]) - along_z);
+    host.points_widget_add_point_00ac2dc0(w.ptr(4), map_x(host, s, x), y);
+
+    z = static_cast<float>(static_cast<double>(to[2]) + along_z);
+    y = map_y(host, s, z);
+    x = static_cast<float>(static_cast<double>(to[0]) + along_x);
+    host.points_widget_add_point_00ac2dc0(w.ptr(4), map_x(host, s, x), y);
+
+    z = static_cast<float>(static_cast<double>(to[2]) + across);
+    y = map_y(host, s, z);
+    x = static_cast<float>(static_cast<double>(to[0]) + along_z);
+    host.points_widget_add_point_00ac2dc0(w.ptr(4), map_x(host, s, x), y);
+
+    z = static_cast<float>(static_cast<double>(from[2]) + across);
+    y = map_y(host, s, z);
+    x = static_cast<float>(static_cast<double>(from[0]) + along_z);
+    host.points_widget_add_point_00ac2dc0(w.ptr(4), map_x(host, s, x), y);
+
+    z = static_cast<float>(static_cast<double>(from[2]) - along_z);
+    y = map_y(host, s, z);
+    x = static_cast<float>(static_cast<double>(from[0]) - along_x);
+    host.points_widget_add_point_00ac2dc0(w.ptr(4), map_x(host, s, x), y);
+
+    host.widget_vslot80(w.ptr(4));
+    const float rect[4] = {0.0f, kOne, 0.0f, kOne};
+    host.widget_vslot50(w.ptr(4), rect);
+    host.widget_vslot34(w.ptr(4), 1);
+}
+
+// 0059F7C0. The margins are doubles stored as floats before use; the inset
+// sum and difference are rounded at their stores.
+void hud_map_world_to_clamped_map_point_0059f7c0(void* screen, const float* world, float* out,
+                                                 float* angle, Seg20Host& host) {
+    const Raw s = raw(screen);
+    const bool wide = wide_layout(host);
+    const float left = static_cast<float>(wide ? kMapLeftWide : kMapLeft);
+    const float low_x = static_cast<float>(static_cast<double>(left) + kMapInset);
+    const float right = static_cast<float>(wide ? kMapRightWide : kMapRight);
+    const float high_x = static_cast<float>(static_cast<double>(right) - kMapInset);
+    out[0] = map_x(host, s, world[0]);
+    out[2] = kMapDepth;
+    out[1] = map_y(host, s, world[2]);
+    *angle = 0.0f;
+    // FCOMIP low, x; JBE / FCOMIP x, high; JBE: NaN is left alone.
+    const float x = out[0];
+    if (low_x > x) {
+        out[0] = low_x;
+    } else if (x > high_x) {
+        out[0] = high_x;
+    }
+    // COMISS low, y; JBE, then FCOMIP y against the double 00CEFFF0 and a
+    // store of the float 00CEFFEC.
+    const float y = out[1];
+    if (kMapLowY > y) {
+        out[1] = kMapLowY;
+    } else if (static_cast<double>(y) > kMapHighYTest) {
+        out[1] = kMapHighY;
+    }
+    const float clamped_x = out[0];
+    const float clamped_y = out[1];
+    const float unclamped_x = map_x(host, s, world[0]);
+    const float unclamped_y = map_y(host, s, world[2]);
+    const float v[2] = {unclamped_x - clamped_x, unclamped_y - clamped_y};
+    const float r = host.vector2_reciprocal_length_00419260(v);
+    const float nx = v[0] * r;
+    const float ny = r * v[1];
+    // nx*0 + (-1)*ny and nx + ny*0 in ST, each stored as float; the zero
+    // products are kept (they decide the sign of a zero and propagate NaN).
+    const float dot = static_cast<float>(static_cast<double>(nx) * 0.0 + kMinusOne * ny);
+    const float cross = static_cast<float>(static_cast<double>(nx) + static_cast<double>(ny) * 0.0);
+    // FCOMIP cross, 0; JA keeps -1 (NaN gives +1).
+    const std::int32_t sign = cross > 0.0f ? -1 : 1;
+    const float arc = static_cast<float>(host.crt_acos_00bf9940(dot));
+    *angle = static_cast<float>(static_cast<double>(arc) * sign);  // FIMUL dword
+}
+
+// 00581DF0. The image re-tests the static's guard bit before each edge; the
+// four edges reuse two stack points.
+void main_menu_draw_widget_outline_00581df0(void* widget, Seg20Host& host) {
+    const Raw w = raw(widget);
+    const float scaled_x = w.at<float>(0x20) * w.at<float>(0x18);
+    void* parent = w.ptr(0x70);
+    const float scaled_y = w.at<float>(0x24) * w.at<float>(0x1C);
+    const float* local = host.widget_local_position_00aa67f0(widget);
+    const std::array<float, 3> base = host.widget_resolved_position_00aa6750(parent);
+    const float abs_x = base[0] + local[0];
+    const float abs_y = local[1] + base[1];
+    float x0 = abs_x - scaled_x;
+    const float min_y = abs_y - scaled_y;
+    float y0 = min_y;
+    float x1 = host.widget_size_00aa6740(widget)[0] + x0;
+    float y1 = host.widget_size_00aa6740(widget)[1] + min_y;
+    host.widget_vslot64(widget, &x0, &y0, &x1, &y1);
+
+    const auto ensure_colour = [&host] {
+        if ((host.global_u32(0x00E19500) & 1u) == 0) {
+            host.global_u32(0x00E19500) |= 1u;
+            const float colour[4] = {kOne, 0.0f, 0.0f, kOne};
+            for (std::uint32_t i = 0; i < 4; ++i) {
+                std::uint32_t bits;
+                std::memcpy(&bits, &colour[i], sizeof bits);
+                host.global_u32(0x00E194F0 + 4 * i) = bits;
+            }
+        }
+    };
+    float a[2];
+    float b[2];
+    ensure_colour();
+    a[0] = x0; a[1] = y0;
+    b[0] = x1; b[1] = y0;
+    host.gui_rect_draw_outline_00554600(a, b, 0x00E194F0);  // top
+    ensure_colour();
+    a[0] = x0; a[1] = y0;
+    b[0] = x0; b[1] = y1;
+    host.gui_rect_draw_outline_00554600(a, b, 0x00E194F0);  // left
+    ensure_colour();
+    a[0] = x0; a[1] = y1;
+    b[0] = x1; b[1] = y1;
+    host.gui_rect_draw_outline_00554600(a, b, 0x00E194F0);  // bottom
+    ensure_colour();
+    a[0] = x1; a[1] = y0;
+    b[0] = x1; b[1] = y1;
+    host.gui_rect_draw_outline_00554600(a, b, 0x00E194F0);  // right
+}
+
 }  // namespace bsp::frontend_seg20_cc13

@@ -52,13 +52,26 @@ read through the host at run time.
 0059CEF0 truncates the interpolated position with CVTTSS2SI, then keeps the even part
 (CDQ / SUB / SAR 1 / ADD, that is `(n / 2) * 2`).
 
+## x87 bodies (cc13-x87)
+
+The three bodies the first pass left for an x87 pass. Each was traced from the bytes with the x87
+stack depth written down at every step; the DC/DE register forms were checked with
+`tools/x87_dc_form_scan.py --forms dc,de,d8`. Status: reconstructed, Win32 build-tested only.
+A value kept in an x87 register is a `double` in the C++ and is rounded to float where the image
+stores it (the 53/64-bit result); a single operation on two floats followed by a store is a float
+operation. At the main thread's 24-bit precision control (docs/CC13_FPU_PRECISION.md) the
+intermediates marked "in ST" also round to 24 bits, so those can differ in the last place.
+Map coordinates are x' = (x - screen+54Ch) / screen+30h + [00E08890] and
+y' = (screen+550h - z) / screen+34h + [00E08894], each kept in ST and stored once.
+
+| address | C++ | notes and rounding points |
+|---|---|---|
+| `0059DD20` | `hud_map_arrow_widget_set_line_0059dd20` | `__thiscall(ECX widget, screen, from*, to*, float width)`, RET 10h; the ledger's earlier ABI missed the screen argument. Hides [+4] and the eight parts (vtable+34h(0)), [+4] vtable+7Ch(). d = (to.x - from.x, 0, to.z - from.z) stored; length from 00419440 stored; inverse = 1/length (in ST, stored) only when `length > 0` (FCOMI/JBE: NaN gives 0). n.x, n.z stored; A = n.z*w and B = n.x*w kept as doubles (FST qword, exact products), C = (-n.x)*w likewise. Seven points through 00AC2DC0: (fx-B, fz-A), (fx-A, fz-C), (tx-A, tz-C), (tx+B, tz+A), (tx+A, tz+C), (fx+A, fz+C), (fx-B, fz-A); every corner coordinate is stored as float before it is mapped. Then vtable+80h(), vtable+50h({0, 1, 0, 1}), vtable+34h(1). |
+| `0059F7C0` | `hud_map_world_to_clamped_map_point_0059f7c0` | `__thiscall(ECX screen, world*, out*, angle*)`, RET 0Ch. Margins by [[0109CF04]+0Dh]: left 0.05 / -0.1 (doubles 00D7A270 / 00CEFFA8) and right 0.95 / 1.1 (00CEFFB0 / 00CEFFB8), each stored as float, then left + 1/48 and right - 1/48 (00CF0000; in ST, stored). out = (x', y', 110.0f), *angle = 0. x' clamped low first then high (FCOMIP/JBE; NaN unclamped); y' raised to 0.0777778f (00CEFFF8, COMISS) or, when above the double 0.9222222 (00CEFFF0), set to the float 0.9222222 (00CEFFEC). v = unclamped - clamped (stored), r = 00419260(v) stored, n = v*r stored; dot = n.x*0 + (-1)*n.y and cross = n.x + n.y*0 (each in ST, stored; the zero products are kept for the sign of zero and NaN); sign = -1 when cross > 0, else +1 (FCOMIP/JA, NaN gives +1); a = 00BF9940(dot) stored as float, then *angle = a * sign (FIMUL dword, stored). 00BF9940 is read as acos, as in docs/CC13_SOLDIER_TRAFFIC.md. |
+| `00581DF0` | `main_menu_draw_widget_outline_00581df0` | One stack argument (widget), RET 4, ECX not read; no callers. Ledger name BSP_MainMenuScreen_ScaleWidget, but the body draws the widget's bounds: scaled = (+20h * +18h, +24h * +1Ch) stored; p0 = (parent +70h 00AA6750 + 00AA67F0 local) - scaled, p1 = 00AA6740 size + p0, every sum stored; vtable+64h(&x0, &y0, &x1, &y1); four 00554600 calls (ECX the first point, EDX the second, the colour address as the stack argument): top (x0,y0)-(x1,y0), left (x0,y0)-(x0,y1), bottom (x0,y1)-(x1,y1), right (x1,y0)-(x1,y1). Before each, the static colour {1, 0, 0, 1} at 00E194F0 is initialised when bit 0 of [00E19500] is clear. |
+
 ## Skipped
 
-- **x87-heavy, left for an x87-capable pass**: 0059DD20 BSP_HudMapArrowWidget_SetLine (FST double
-  temporaries across a long chain), 0059F7C0 BSP_HudMapScreen_WorldToClampedMapPoint (clamps,
-  00419260, 00BF9940 and an FIMUL sign), 00581DF0 BSP_MainMenuScreen_ScaleWidget (a debug outline
-  drawn by four 00554600 BSP_GuiRect_DrawOutline calls whose stack arguments the decompile garbles;
-  no callers).
 - **0059D4A0 BSP_HudMapIcon_PlaceWidget**: when icon+11Ch is neither 0 nor 1 it passes
   uninitialised stack floats to 00AA8240. No faithful C++ exists for that path without inventing
   values, so it is skipped.

@@ -105,6 +105,27 @@ struct Seg20Host : cc13_fe1::EdgeReferenceHost {
     virtual void pointer_vector_push_back_005c0790(void* vector, void* const* value) = 0;
     // 005BCBD0 __thiscall(vector, index) RET 4 -> &vector[index] (checked).
     virtual void** pointer_vector_at_005bcbd0(void* vector, std::uint32_t index) = 0;
+
+    // cc13-x87.
+    virtual void widget_vslot7c(void* widget) = 0;                                 // vtable +7Ch()
+    virtual void widget_vslot80(void* widget) = 0;                                 // vtable +80h()
+    virtual void widget_vslot50(void* widget, const float (&rect)[4]) = 0;         // vtable +50h(&rect)
+    virtual void widget_vslot64(void* widget, float* x0, float* y0, float* x1, float* y1) = 0;  // +64h
+    // 00419440 BSP_Vector3f_Length (ECX vector), ST0; every caller here stores it as float at once.
+    virtual float vector3_length_00419440(const float* v) = 0;
+    // 00419260 BSP_Vector2f_ReciprocalLength (ECX vector), ST0; stored as float at once.
+    virtual float vector2_reciprocal_length_00419260(const float* v) = 0;
+    // 00BF9940, the CRT's x87-register acos (ST0 in, ST0 out); stored as float at once.
+    virtual double crt_acos_00bf9940(double x) = 0;
+    // 00AC2DC0 __thiscall(ECX points widget, float x, float y), RET 8: appends
+    // the point to the vector at +ECh (004222C0).
+    virtual void points_widget_add_point_00ac2dc0(void* widget, float x, float y) = 0;
+    // 00AA67F0 BSP_GuiWidget_GetLocalPosition __thiscall(widget): widget + 0Ch.
+    virtual float* widget_local_position_00aa67f0(void* widget) = 0;
+    // 00554600 BSP_GuiRect_DrawOutline __fastcall(ECX a, EDX b, color), RET 4.
+    // `color_address` is the pushed immediate (00E194F0 here).
+    virtual void gui_rect_draw_outline_00554600(const float* a, const float* b,
+                                                std::uint32_t color_address) = 0;
 };
 
 inline constexpr std::uint32_t kMinimapMarkerVtable = 0x00CF1154u;
@@ -241,5 +262,38 @@ void hud_map_icon_observer_on_released_005a5920(void* screen, std::uint32_t key,
 // deletes the icon at node+10h (vtable[0](1), node+10h not cleared) and erases
 // the node (005BF810).
 void minimap_icon_observer_on_released_005bfdf0(void* screen, std::uint32_t key, Seg20Host& host);
+
+// --- cc13-x87: the x87-heavy bodies (docs/CC13_SEG20.md, "x87 bodies"). ---
+// Map coordinates: x' = (x - screen+54Ch) / screen+30h + [00E08890],
+// y' = (screen+550h - z) / screen+34h + [00E08894].
+
+// 0059DD20 __thiscall(ECX arrow widget, screen, const float* from, const
+// float* to, float width), RET 10h. Hides [+4] and the eight parts +8..+24h
+// (vtable+34h(0)), [+4]->vtable+7Ch(), then seven map points through
+// 00AC2DC0: with n = (to - from) on x/z scaled by 1/|to - from| (0 when the
+// length is not positive), A = n.z*w, B = n.x*w, C = -n.x*w:
+// (fx-B, fz-A), (fx-A, fz-C), (tx-A, tz-C), (tx+B, tz+A), (tx+A, tz+C),
+// (fx+A, fz+C), (fx-B, fz-A). Then vtable+80h(), vtable+50h({0,1,0,1}),
+// vtable+34h(1).
+void hud_map_arrow_widget_set_line_0059dd20(void* widget, void* screen, const float* from,
+                                            const float* to, float width, Seg20Host& host);
+
+// 0059F7C0 __thiscall(ECX screen, const float* world, float* out, float*
+// angle), RET 0Ch. out = (x', y', 110), *angle = 0; x' is clamped to
+// [left + 1/48, right - 1/48] (left/right 0.05/0.95, or -0.1/1.1 when
+// [[0109CF04]+0Dh] is set), y' to [0.0777778, 0.922222]; then *angle =
+// acos(dot(n, (0, -1))) with the sign -1 when n.x > 0, else +1, where n is
+// the unit vector from the clamped point to the unclamped one.
+void hud_map_world_to_clamped_map_point_0059f7c0(void* screen, const float* world, float* out,
+                                                 float* angle, Seg20Host& host);
+
+// 00581DF0 (ledger name BSP_MainMenuScreen_ScaleWidget; no callers), one
+// stack argument (widget), RET 4; ECX is not read. Draws the widget's bounds
+// as a debug outline: p0 = parent (+70h) resolved position + local position
+// - size scaled by (+20h*+18h, +24h*+1Ch), p1 = p0 + size, both passed through
+// vtable+64h(&x0, &y0, &x1, &y1), then four 00554600 edges (top, left,
+// bottom, right) in the colour {1, 0, 0, 1} at 00E194F0 (a static guarded by bit 0
+// of [00E19500], initialised before each edge if needed).
+void main_menu_draw_widget_outline_00581df0(void* widget, Seg20Host& host);
 
 }  // namespace bsp::frontend_seg20_cc13
