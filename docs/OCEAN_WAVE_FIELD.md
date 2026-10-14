@@ -1041,3 +1041,19 @@ Open, in order:
    next idea.
 5. USN01 i's 20,7 failure (Convoy2 and Convoy4 survive): a variant with a second weapon on Convoy2/4 would add
    margin.
+
+**Addendum to 29 (lead's routing, 2026-10-14).**
+- Open keeper items: **PRCP01** `l55_p01_c` was lost to cc9-lua58's a7a20bc52 (Junyo owner-by-instance and the brake
+  attach gate, faithful, staying ON; SQUADRON_LAND_TASK 5gy). Junyo and Zuiho now launch 7 squadrons, and Enterprise
+  sqn01's brake releases at 59.80 s instead of 30.90 s, so plan lines 4-5 are refused by the 0043F080 gate. This is
+  the successor's TOP item: re-plan it on current main. The f83e91891 rows are the pre-flip baseline. **ESMP08** is
+  parked until the plane-AI flips settle. **JM06 / USNOS** went to cc9-ships49. **JM08** is with cc9-lua59.
+  **USN01**: 81397688d's dive flips refuse the opening "release ScoutDauntless ... within 20" line, so expect
+  `usn01_p8_u1_i` to be lost; re-plan after PRCP01, and record the best knife-edge plan rather than chase margin.
+- Not chased: the consumer of 0099D558 (recorded above as a dead store, by-eye ESP tracking). Still open if anyone
+  needs certainty.
+- Frame budgets used (0.05 s frames, `--frames` = budget + 200): USN02 16000, LOMP06 16000, USN01 26000, PRCP01 30000,
+  USN12 36000, LOMP10 36000 (it needs at least 34000: it completes at 1581.97 s), BSM01 40000, IJN18 64000,
+  USN15 90000, JM08 110000, JM06 120000, ESMP08 140000, USNOS 200000. USN04 V1 pair: 45000 at 0.0222 s.
+- Keeper notes not yet re-timed: kTorpedoBoatRudderTorqueBound (BSM01 833.92 s, JM08 1907.44 s by ships48) and
+  kLandMasterDamageBound 1f3bf3d62 (check rows with land targets).
