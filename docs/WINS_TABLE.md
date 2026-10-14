@@ -338,3 +338,19 @@ mechanism is in the cd761bb52 section above).
     is 6 MB of generated orders; `jm08_s45_j8_m10` is the older alternative).
   - JM08 alternatives on the same exe also fail: `jm08_s45_j8_m10` at 72000 frames (`local\p8w2_j8m10.log`) and
     `p6_j8_f` at 140000 frames (`local\p8w2_j8f9.log`, only Missouri and Nevada complete).
+
+- **PRCP01 re-planned on main 25b98b1fa (cc9-physics9, 2026-10-14): `config/win_orders/prcp01_p9_p01_k.txt`**,
+  replacing `l55_p01_c` (kept). Export `local\p9_m`, exe 073805D36E49, reference env, 30000 frames, logs with
+  `.manifest.json`. On this main `c` no longer fails (Enterprise survives) but never ends: the first wave is repelled
+  at 75.05 s (was 48.05 s), so Junyo is generated after frames 1600/1620 and the first strike leaves at 2600; Junyo
+  dies at 287.20 s, and after Zuiho is generated (~330 s) every launch line finds "no such slot" (all four Enterprise
+  slots hold airborne squadrons; nothing lands in time to free one). Plan `k` is `c` plus, at 6650/6660, Enterprise
+  slot 3 (the Avengers launched at 5600 on Junyo, still armed when Junyo died) told `order 1` (moveto self) and then
+  `order 3 Zuiho`: 006CCDA0 accepts an attack order from state 3 only while the squadron holds at its moveto. The same
+  pair repeats at 12650 as a fallback; the slot-4 lines are refused. Enterprise_sqn08|.-2 sinks Zuiho.
+  **Completed 536.54 s** (`local\p9a_p01k.log`), **675.26 s under jitter 20,3**, **536.09 s under 20,5**
+  (`local\p9a_p01kj3.log`, `local\p9a_p01kj5.log`), guard logged on all three.
+  - Variants that fail on the same exe (`local\p9_p01_<x>.txt`, logs `local\p9a_p01<x>.log`): `d` (extra Junyo lines
+    at 1700-1820), `e` (d plus a CAP recall at 1690), `f`/`g`/`h` (order 3 on slots 3/4 with no moveto first: refused,
+    "006CCDA0 refused the order in this slot state"), `i`/`j` (recall, order 2, then order 3: both are accepted, but the
+    retargeted squadron does not sink Zuiho by 1500 s; not chased).
