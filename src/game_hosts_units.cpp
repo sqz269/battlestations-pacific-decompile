@@ -1522,6 +1522,8 @@ struct GameUnitSlot {
     // its close arm (cmd+2C8h written), the least ratio and the last +8Ch.
     int torpedo_disarmed_ticks{0};
     int torpedo_command_writes{0};   // kTorpedoCommandWritesBound: binding writes applied
+    int torpedo_done_enters_2530{0};   // kTorpedoDoneFormationBound: 009D2530 runs
+    int torpedo_3e8_republishes{0};    // kTorpedoDoneFormationBound: 009BFDA6 writes
     int torpedo_disarmed_close_ticks{0};
     float torpedo_disarmed_min_ratio{1.0e30f};
     float torpedo_disarmed_blend_8c{1.0f};
@@ -6146,6 +6148,17 @@ struct GameUnitsHost::Impl {
     // bank_limit_2c8 / pitch_target_2bc / pitch_mode_2d0 / bank_target_2c4 and
     // plan_heading_mode_2cc). False: every write is dropped, as before.
     static constexpr bool kTorpedoCommandWritesBound = false;
+    // Packet cc9_l61_torpedo_done_formation (SQUADRON_LAND_TASK 5ho item 2). The
+    // done/prepare enter 009D2530 writes squadron+3E4h = 2 (009D254E, after
+    // 009BED80's 1) and state+8Ch = 1.0 (009D2565); every wingman's follow
+    // station update 009BFD70 republishes its state's +8Ch into squadron+3E8h
+    // (009BFDA6-009BFDB2), the scale 007F23A0 reads, before placing itself. The
+    // done tick's disarmed arm 009D29E0 moves +8Ch to 1-2.5 after that, so the
+    // station uses the previous tick's value. True: the enter writes shape 2 and
+    // resets the slot's +8Ch, the torpedo follow base tick republishes it, and the
+    // plain follow tick 009C1FD0 republishes the follow state's 1.0 (009BED80's
+    // +8Ch). False: shape and +3E8h stay as they were.
+    static constexpr bool kTorpedoDoneFormationBound = false;
     // Packet cc9_l60_level_issue_tail (cc13-confirm D). 007C0D90's rack walk ends
     // at 007C0ED3 and falls to 007C0ED9 for the level bomber too: when the walk
     // armed a rack (the byte 007C0E23 raises) the tail sets unit+C25h = 1
@@ -8579,6 +8592,14 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         record("PlaneSquadron::on_plane_left_map_007f31a0", 0x007f31a0u);
     }
     bool run_follow_tick_009c1fd0(GameUnitSlot& unit) {
+        // 009BFDA6-009BFDB2 for the follow state itself: its +8Ch is 009BED80's
+        // 1.0 and nothing in its tick moves it (packet cc9_l61_torpedo_done_formation).
+        if constexpr (kTorpedoDoneFormationBound) {
+            if (bsp::PlaneSquadronHostRecord* const sq =
+                    bsp::plane_squadron_registry().find_by_member_unit(unit.process_index)) {
+                if (!unit_is_flight_leader_007b8ad0(unit.process_index)) sq->morale_3e8 = 1.0f;
+            }
+        }
         bsp::PlaneFormationStation station;
         const GameUnitSlot* leader = nullptr;
         place_wing_member_on_station_007f23a0(unit, false, &station, &leader, false);
@@ -20064,6 +20085,23 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             return in;
                         }
                         void set_state(void*, bsp::TorpedoState next) override {
+                            // 009D2530, the done/prepare enter (vtable 00D21320
+                            // slot +4h): 009BED80 (+3E4h = 1, 007ED260), then
+                            // +3E4h = 2 (009D254E), 007ED260, +8Ch = 1.0
+                            // (009D2565). 007ED260 runs inside the placement seam.
+                            if constexpr (GameUnitsHost::Impl::kTorpedoDoneFormationBound) {
+                                if ((next == bsp::TorpedoState::kDone ||
+                                     next == bsp::TorpedoState::kPrepare) &&
+                                    next != slot_.torpedo_state) {
+                                    if (bsp::PlaneSquadronHostRecord* const sq =
+                                            bsp::plane_squadron_registry().find_by_member_unit(
+                                                slot_.process_index)) {
+                                        sq->formation_shape_3e4 = 2;
+                                    }
+                                    slot_.torpedo_disarmed_blend_8c = 1.0f;
+                                    ++slot_.torpedo_done_enters_2530;
+                                }
+                            }
                             // cc8_torpedo_retire item 5. Latch the run-in
                             // geometry on the FIRST tick of each attackrun, in
                             // the same convention the closest-approach census
@@ -20252,6 +20290,19 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                         }
                         void follow_base_tick_009c1fd0(void*, float) override {
+                            // 009BFDA6-009BFDB2: a wingman republishes this
+                            // state's +8Ch into squadron+3E8h before 007F23A0.
+                            if constexpr (GameUnitsHost::Impl::kTorpedoDoneFormationBound) {
+                                if (bsp::PlaneSquadronHostRecord* const sq =
+                                        bsp::plane_squadron_registry().find_by_member_unit(
+                                            slot_.process_index)) {
+                                    if (!owner_.unit_is_flight_leader_007b8ad0(
+                                            slot_.process_index)) {
+                                        sq->morale_3e8 = slot_.torpedo_disarmed_blend_8c;
+                                        ++slot_.torpedo_3e8_republishes;
+                                    }
+                                }
+                            }
                             // 009C1FD0 runs 009BFD70 (the station) and then
                             // 009BFEE0 (the law that flies to it). Only the
                             // first is bound; see
@@ -39880,6 +39931,12 @@ void GameUnitsHost::report() {
                     host.log.notef("  torpedo %-12s command writes applied=%d (009D2761 / "
                         "009D295F-009D29B7, packet cc9_l60_torpedo_command_writes)",
                         slot->row.name.c_str(), slot->torpedo_command_writes);
+                }
+                if (slot->torpedo_done_enters_2530 > 0) {
+                    host.log.notef("  torpedo %-12s done/prepare enter 009D2530=%d 3E8h "
+                        "republish=%d (009BFDA6, packet cc9_l61_torpedo_done_formation)",
+                        slot->row.name.c_str(), slot->torpedo_done_enters_2530,
+                        slot->torpedo_3e8_republishes);
                 }
                 if (slot->torpedo_disarmed_ticks > 0) {
                     host.log.notef("  torpedo %-12s disarmed 009D29E0: ticks=%d close=%d "

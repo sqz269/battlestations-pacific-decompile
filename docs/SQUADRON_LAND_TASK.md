@@ -17167,3 +17167,30 @@ capped at 0.3 rad from commit on (until the disarmed close arm rewrites it at 0.
 widen; on the hold arm they fly wings level on the held heading instead of the follow law's heading. No RNG draw is
 added. Expect torpedo release counts and hit timing to move on rows with torpedo strikes (USN04 Japanese strike, USN21
 f), nothing on rows without them. Bank cap units: radians, as the 009D29E0 close arm (5hh) already writes.
+
+## 5hq. The torpedo done/prepare formation: `kTorpedoDoneFormationBound` (cc9-lua61, 2026-10-14)
+
+Packet `cc9_l61_torpedo_done_formation` (5ho item 2), committed OFF. Read from the disk listing:
+- 009D2530-009D256E (RET, INT3 at 009D256F), the done/prepare enter, vtable 00D21320 slot +4h: +98h = [00D7A260] = -1.0;
+  009BED80 (the follow enter: +8Ch = [00D7A24C] = 1.0 at 009BEDC9, squadron+3E4h = 1 at 009BEDDA, 007ED260); then
+  squadron+3E4h = 2 (009D254E, no null check), 007ED260 again (009D2558), +8Ch = 1.0 (009D2565).
+- 009BFD70 (the follow station update, called only from 009C1FEA in 009C1FD0): when ctl = [[state+4]+0Ch] is set,
+  [ctl+3D0h] is set and differs from the own unit, 009BFDA6-009BFDB2 copies state+8Ch into ctl+3E8h, then 009BFDCC calls
+  007F23A0, whose shapes read +3E8h as the station scale (src/plane_formation.cpp; shape 2 = 007F25BD-007F26A8: z / max(1,
+  m), x x max(2m - 1, 0.8), y x clamp(2.2 - 1.2m, 0, 1)).
+- 009C1FD0 is the base tick of the follow state (vtable 00D20AB8) and of the depth-charge, dive-bomb and torpedo
+  done/prepare states (009A4950, 009C7278, 009D2731). The torpedo's done tick calls it first and only then runs the
+  disarmed arm 009D29E0 (5hh), so the station uses the previous tick's +8Ch.
+
+Host wiring (true): `TorpedoArmBinding::set_state` on entering done or prepare writes `formation_shape_3e4 = 2` and resets
+the slot's +8Ch (`torpedo_disarmed_blend_8c`) to 1.0; the torpedo `follow_base_tick_009c1fd0` makes a wingman (not the
+flight leader by 007B8AD0's rule) copy it into `morale_3e8` before placing itself; the plain follow tick
+`run_follow_tick_009c1fd0` copies the follow state's 1.0. Holes, stated: the dive-bomb and depth-charge done ticks do not
+republish (their +8Ch is not read; a squadron arriving there from a torpedo done state would keep the torpedo value);
+the leader-null case ([ctl+3D0h] = 0) is taken as the host's first live member. Summary line `torpedo <name> done/prepare
+enter 009D2530 3E8h republish`.
+
+Prediction: only torpedo squadrons with wingmen move. On entering done the wingmen switch from shape 1 to shape 2 (at m =
+1 the same z, the same x, y x 1.0, so no jump), and as the disarmed arm raises +8Ch to 1.5-2.5 near the target, z
+shrinks (/m), x widens (2m - 1) and y flattens (2.2 - 1.2m, 0 at m >= 1.83): the wing spreads abreast and level. No RNG;
+the per-plane release times and positions of the wingmen move, the leaders' do not.
