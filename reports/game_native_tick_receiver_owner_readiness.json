@@ -1,0 +1,602 @@
+{
+  "packet": "cc12_native_tick_receiver_owner_readiness",
+  "component_packet": "cc12_native_unit_owner_list_heads",
+  "base_commit": "b4ab97d9a",
+  "build_receipt_base": "9e8967f4e",
+  "captured_utc": "2026-10-14T18:36:38.376091+00:00",
+  "normal_attachment": false,
+  "parent_constructor_completed": false,
+  "abi_compatible": false,
+  "game_validated": false,
+  "new_source_component": {
+    "file": "src/native_unit_owner_list_heads.cpp",
+    "functions": [
+      "buy_native_unit_owner_list_head_0077b940",
+      "buy_native_unit_owner_list_head_0077b960"
+    ],
+    "complete_original_bytes": 52,
+    "complete_original_instructions": 22,
+    "behavior": "Real BF681B malloc/new-handler boundary + already accepted raw helper; actual18h/0Ch allocations, only+0/+4 independent-guarded self-link writes; all other bytes untouched. No new receiver, manager, domain, count or profile. Real parent owns tidy/free."
+  },
+  "original_leaf_byte_proof": {
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "0077b940",
+        "bytes": 26,
+        "sha256": "2d25af9edc16929406c93df88cdab29e3c86ae006713550f42531b85704d0440",
+        "live_matches_file_backed_original": true,
+        "live_receipt": "local/native_unit_owner_list_head_77b940_live.txt"
+      },
+      {
+        "address": "0077b960",
+        "bytes": 26,
+        "sha256": "86306c43687f908dcfbff10699bc96a244038e831d5b0b28438822a4f89b6e56",
+        "live_matches_file_backed_original": true,
+        "live_receipt": "local/native_unit_owner_list_head_77b960_live.txt"
+      }
+    ]
+  },
+  "validation": {
+    "strict": "MSVCWin32 /std:c++20 /EHsc /O2 /MD /W4 /WX compile passed; full emittedpublicSource schedules inspected",
+    "standard": "scripts/build.ps1 exit0; Release and two configured existing checks passed before cleanFF from9e8967f4e tob4ab97d9a; newTU not yet in heldCMake target",
+    "fixture": "No new tests or fixture execution for list heads; no parent/runtime/ABI/game credit",
+    "source_registration": "Primary must add src/native_unit_owner_list_heads.cpp to bsp_core; CMake/sharedhosts not changed by worker",
+    "ghidra": "Kept correct existing library names; annotate tool preserved prior values/comments, write lock and project save; refreshed both exports"
+  },
+  "current_typed_function_extents": [
+    {
+      "queried_address": "0077EED0",
+      "name": "BSP_UnitOwnerEntity_Construct",
+      "entry": "0077eed0",
+      "no_return": false,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "446",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "0077eed0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "0077f08d"
+            },
+            "length": "446"
+          }
+        ]
+      }
+    },
+    {
+      "queried_address": "0077E380",
+      "name": "BSP_UnitOwnerEntity_Destruct",
+      "entry": "0077e380",
+      "no_return": false,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "273",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "0077e380"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "0077e490"
+            },
+            "length": "273"
+          }
+        ]
+      }
+    },
+    {
+      "queried_address": "0087B670",
+      "name": "BSP_UnitTickableEntity_Construct",
+      "entry": "0087b670",
+      "no_return": false,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "212",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "0087b670"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "0087b743"
+            },
+            "length": "212"
+          }
+        ]
+      }
+    },
+    {
+      "queried_address": "0087A410",
+      "name": "BSP_UnitTickableEntity_Destruct",
+      "entry": "0087a410",
+      "no_return": false,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "203",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "0087a410"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "0087a4da"
+            },
+            "length": "203"
+          }
+        ]
+      }
+    },
+    {
+      "queried_address": "0077E810",
+      "name": "BSP_UnitOwnerEntity_ScalarDeletingDtor",
+      "entry": "0077e810",
+      "no_return": false,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "30",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "0077e810"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "0077e82d"
+            },
+            "length": "30"
+          }
+        ]
+      }
+    },
+    {
+      "queried_address": "00805A70",
+      "name": "BSP_ReconDetection_Construct",
+      "entry": "00805a70",
+      "no_return": false,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "122",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00805a70"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00805ae9"
+            },
+            "length": "122"
+          }
+        ]
+      }
+    },
+    {
+      "queried_address": "00804300",
+      "name": "BSP_ReconDetectionRecord_Destruct",
+      "entry": "00804300",
+      "no_return": false,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "14",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00804300"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "0080430d"
+            },
+            "length": "14"
+          }
+        ]
+      }
+    },
+    {
+      "queried_address": "0077B940",
+      "name": "STL_List_BuyHeadNode_0077b940",
+      "entry": "0077b940",
+      "no_return": false,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "26",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "0077b940"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "0077b959"
+            },
+            "length": "26"
+          }
+        ]
+      }
+    },
+    {
+      "queried_address": "0077B960",
+      "name": "STL_List_BuyHeadNode_0077b960",
+      "entry": "0077b960",
+      "no_return": false,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "26",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "0077b960"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "0077b979"
+            },
+            "length": "26"
+          }
+        ]
+      }
+    },
+    {
+      "queried_address": "0077EB50",
+      "name": "BSP_NetEntity_AddPeerHolder",
+      "entry": "0077eb50",
+      "no_return": false,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "193",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "0077eb50"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "0077ec10"
+            },
+            "length": "193"
+          }
+        ]
+      }
+    },
+    {
+      "queried_address": "00925CE0",
+      "name": "BSP_SceneNode_Construct",
+      "entry": "00925ce0",
+      "no_return": false,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "532",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00925ce0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "00925ef3"
+            },
+            "length": "532"
+          }
+        ]
+      }
+    },
+    {
+      "queried_address": "00928630",
+      "name": "BSP_GameEntity_Construct",
+      "entry": "00928630",
+      "no_return": false,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "352",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00928630"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "0092878f"
+            },
+            "length": "352"
+          }
+        ]
+      }
+    },
+    {
+      "queried_address": "00925780",
+      "name": "BSP_Entity_DestructBase",
+      "entry": "00925780",
+      "no_return": false,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "323",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "00925780"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "009258c2"
+            },
+            "length": "323"
+          }
+        ]
+      }
+    },
+    {
+      "queried_address": "009287B0",
+      "name": "BSP_GameEntity_Destruct",
+      "entry": "009287b0",
+      "no_return": false,
+      "body": {
+        "range_count": 1,
+        "returned_range_count": 1,
+        "address_count": "172",
+        "complete": true,
+        "ranges": [
+          {
+            "start": {
+              "space": "ram",
+              "offset": "009287b0"
+            },
+            "end_inclusive": {
+              "space": "ram",
+              "offset": "0092885b"
+            },
+            "length": "172"
+          }
+        ]
+      }
+    }
+  ],
+  "metadata_correction": "Fresh typed AddressSet77E380..77E490273B,no_returnfalse supersedes old truncation comment atbodymetadata level. This does not establish listinginstruction/edge/unwind completeness; no repair performed.",
+  "current_source_frontier": [
+    "Canonical raw entity-ID pair/pending-init and distinct FC/E4 lock owners now exist; old readiness ownership gaps for those domains are superseded.",
+    "Complete raw77EED0/77E380 adapter not found; existingUnitTickableEntityHost methods remain abstract and projected UnitTickableEntityState usesstdvectors.",
+    "CurrentSeg60Host raw-offset constructor/lifetime Source still requires actual global/image/table/role/world/weak/matrix/string/registry/scalar providers; no concrete subclass found in inspected Source.",
+    "Seg60 GameEntity requestedID formal isuint16; Original forwardsfullDWORD and storesAX. This audit asserts interface limitation only, no proved business-state divergence from narrowing.",
+    "Actual world-chain header allocation/unlink leaves exist; full World/root publication/membership/scalar/child/effect lifetime not established by those leaves.",
+    "Actual current tick/remainingjob dispatch and concrete factory/derivedclass root lifetime remain required; semanticGameUnit is not rawreceiver."
+  ],
+  "specialist_packet": {
+    "model": "gpt-6-astra",
+    "reason": "Fresh whole raw-owner/callback/exception and ABI closure is required before real receiver activation; not delegated to Sol as invented helper bodies. No current listing repair inferred from stale comment.",
+    "owned_primary_addresses_next": [
+      "0077eed0",
+      "0077e380",
+      "0077e810"
+    ],
+    "required_callback_addresses": [
+      "00805a70",
+      "00804300",
+      "0077eb50"
+    ],
+    "base_addresses": [
+      "00925ce0",
+      "00928630",
+      "00925780",
+      "009287b0"
+    ],
+    "child_addresses": [
+      "0087b670",
+      "0087a410",
+      "00875490",
+      "00874f00"
+    ],
+    "borrow_ready_source": [
+      "src/native_unit_owner_list_heads.cpp",
+      "src/native_unit_tick_receiver_fragment.cpp",
+      "src/game_native_tick_registration_process.cpp"
+    ],
+    "proposed_disjoint_files": [
+      "include/bsp/native_unit_owner_entity.hpp",
+      "src/native_unit_owner_entity.cpp",
+      "docs/NATIVE_UNIT_OWNER_ENTITY.md",
+      "reports/native_unit_owner_entity.json"
+    ],
+    "held_at_capture": {
+      "owner": "agent/cc13-seg49:cc13-seg49",
+      "addresses": [
+        "00925ce0",
+        "00928630",
+        "00805a70",
+        "00804300"
+      ],
+      "until_utc": "2026-10-15T00:17"
+    },
+    "raw_inputs": "Actual containing allocation/factory preimage and successful base; unchangedfullflag; canonicalAA0/string/weak/observer/ID/pending services; currentGameE188A8/networkmode+1FE4/E0AF20; CE4ADC/physicalglobals; actual World/hierarchy publication; real callback/table/slot resolution.",
+    "missing_clauses": "Reconarray real callbacks3x34h/root+1E4 backrefs, iterator/EH callbackpairs; both circularlist owners/tidy; peer/session arms/globalwithdrawal/observermember; base Scene/GameEntity callable/World/effect teardown; embeddedtick unlink/current subnode scalar dispatch; real root scalarflags/free and exception ownership; complete tick+remaining dispatcher."
+  },
+  "source_and_link_pins": [
+    {
+      "path": "include/bsp/native_unit_owner_list_heads.hpp",
+      "sha256": "27ef1c0f38d432b2073ffecfd54d43c84be26ef61a496e08eadd6c1b936f6144"
+    },
+    {
+      "path": "src/native_unit_owner_list_heads.cpp",
+      "sha256": "60e793177a87edf08c8803541529e7dad97b4c85f3ca210045a5bec7b2db1f67"
+    },
+    {
+      "path": "include/bsp/detail/native_blank_container_storage.hpp",
+      "sha256": "bc9ce02b0c47b438358c1b111aa10e87a5fd5088dd5b50d3183bfae54301c8fd"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "sha256": "29dab5ac92de8abdb7ce2c71be961d2334dbc9cd9ed222eaa90fc9c065646796"
+    },
+    {
+      "path": "src/landscape_lua_seg55_argon.cpp",
+      "sha256": "b4050f0d2abd293ee010d2a91390bda73cb4abbd99ea7726fea9889625b21615"
+    },
+    {
+      "path": "include/bsp/entity_mission_seg60_argon.hpp",
+      "sha256": "d5e824a32217f0e7e3476d6cd89076a848cc0a7f77b73063a6fe3ff3590ee690"
+    },
+    {
+      "path": "src/entity_mission_seg60_argon.cpp",
+      "sha256": "2afbfd41dee2a1c68d0c2302b1e2eee8473992bf2027173282b633e4913ab42d"
+    },
+    {
+      "path": "include/bsp/native_unit_observer_endpoint.hpp",
+      "sha256": "87b36249aded7b636629c9ade87435a51233ed26d7e1ae85528985efc9b02d72"
+    },
+    {
+      "path": "include/bsp/native_weak_owner.hpp",
+      "sha256": "c9eaa00aa67d55132789209bed9ee037e879c710f3b5eeca9c081f181d8355b4"
+    },
+    {
+      "path": "include/bsp/native_entity_registry_lifetime.hpp",
+      "sha256": "53402350a05919945b977cef21c9db64dc7d605b1de6fe1b5baa9b123c54f10c"
+    },
+    {
+      "path": "include/bsp/native_entity_id_tables.hpp",
+      "sha256": "0b77ca62b83a1835b9351276ed8d1c8aadbb95977637825c2bfc60bb345c015a"
+    },
+    {
+      "path": "include/bsp/game_native_entity_registry_process.hpp",
+      "sha256": "da9ca3612897db4fbee60abcce54b2c97c901ed86ce1bd5eb5f3fcd3b50084ff"
+    },
+    {
+      "path": "include/bsp/game_native_tick_registration_process.hpp",
+      "sha256": "72211f443653e8a4a367737fa3503673be6b0e31415fd625503c99f9d27f3597"
+    },
+    {
+      "path": "include/bsp/native_world_chain_headers.hpp",
+      "sha256": "0dcee7324448292df7aaa06a95cdb53e4d21ff4ff22b8343bf15a3c747368714"
+    },
+    {
+      "path": "include/bsp/native_entity_intrusive_unlink.hpp",
+      "sha256": "a7de3cc8ac55091e7af314f932a012f3cd670febd6edcc3bde87015e69ecb8fc"
+    },
+    {
+      "path": "include/bsp/native_fixed_step_job_waves.hpp",
+      "sha256": "eba8293ca88f306fc01e752334e96efb65b5da5d56570b40547d829c875a1c36"
+    },
+    {
+      "path": "include/bsp/game_native_frame_job_application.hpp",
+      "sha256": "1a9765e5538dfac619229c16c337e8f48cc7dc7a40b763829b059d7b1df1f762"
+    },
+    {
+      "path": "src/mp_seg43_cc13.cpp",
+      "sha256": "eb495ea0ebd06fb70e1e7a319b3e0eb6f8087ff0dae634f56600e274eb5416fd"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "sha256": "6e9f1e1d861b2a8d6a54dd26bdfe9581e879d2d3713c0495473756504e18d31a"
+    }
+  ],
+  "immutable_receipts": [
+    {
+      "path": "local/native_tick_receiver_owner_receipts_20261014/native_tick_receiver_parent_typed_flow.json",
+      "sha256": "9c803f3e0ab9c15d23d7fd59b3fb8ba9680d536288b0b42d51139d27cd2ca80e",
+      "read_only": true
+    },
+    {
+      "path": "local/native_tick_receiver_owner_receipts_20261014/native_tick_receiver_child_typed_flow.json",
+      "sha256": "d5351a651ca168425fd61a876a49689125a3b0e13fb17e19e1f7a6bf738833fe",
+      "read_only": true
+    },
+    {
+      "path": "local/native_tick_receiver_owner_receipts_20261014/native_tick_receiver_base_typed_flow.json",
+      "sha256": "f51791aecfcc990cdf6a2a4707e06792465315acea9d9cc814161e19055b794a",
+      "read_only": true
+    },
+    {
+      "path": "local/native_tick_receiver_owner_receipts_20261014/native_unit_owner_list_heads.obj",
+      "sha256": "abb131cbd5695ed14fe85c9c4ea6144fc3d9241bcc4acefb22f228532c29812b",
+      "read_only": true
+    },
+    {
+      "path": "local/native_tick_receiver_owner_receipts_20261014/native_unit_owner_list_heads.asm",
+      "sha256": "8186aea268443e5b6be5a94a5d8ea9f35ba49c71a59b58fdd5457919b568dabe",
+      "read_only": true
+    },
+    {
+      "path": "local/native_tick_receiver_owner_receipts_20261014/native_unit_owner_list_heads_strict_compile.log",
+      "sha256": "a6a960d87fced61b72fbd7f8ac213612413ba5505bbe529b2f6e25e33b6bb62d",
+      "read_only": true
+    },
+    {
+      "path": "local/native_tick_receiver_owner_receipts_20261014/native_unit_owner_list_heads_build.log",
+      "sha256": "87ab2933e8c8fa88a1949fa44975a836ee891961ba309404cea31d8c79b09183",
+      "read_only": true
+    },
+    {
+      "path": "local/native_tick_receiver_owner_receipts_20261014/native_unit_owner_list_head_77b940_live.txt",
+      "sha256": "27aec1cf799234aa59b5b077271f985a6b6be5690e2f8f5adbd3f1ef2b9bd852",
+      "read_only": true
+    },
+    {
+      "path": "local/native_tick_receiver_owner_receipts_20261014/native_unit_owner_list_head_77b960_live.txt",
+      "sha256": "2f9876c65f32928ba7d6c802718879a3b55d6639f3b8c3b4642cf7043c756d46",
+      "read_only": true
+    },
+    {
+      "path": "local/native_tick_receiver_owner_receipts_20261014/native_unit_owner_list_heads_image_proof.json",
+      "sha256": "7fdd082fe1f515274ede8a033ced0a5a73d833942e40efb255e839c69a00d10b",
+      "read_only": true
+    },
+    {
+      "path": "local/native_tick_receiver_owner_receipts_20261014/verify_native_unit_owner_list_heads_image.py",
+      "sha256": "8c53825d27405a96d9d835b7a4062ea8674f899dc32e0bd5a021a5ae2249f694",
+      "read_only": true
+    },
+    {
+      "path": "local/native_tick_receiver_owner_receipts_20261014/ghidra-annotations-20261014T183133Z.json",
+      "sha256": "ad1e39fedae5beabe858c93e48f464012a7e237d0d8cf35a222a1c4b3d7ed273",
+      "read_only": true
+    }
+  ]
+}
