@@ -14931,3 +14931,38 @@ the lead.
 - `g45_lsclasses.py` lists this installation's LandingShip and TorpedoBoat rows with MaxSpeed and BigLandingShip.
 - The export dirs are `g45_off` / `g45_ag` / `g45_222` / `g45_ag2` (`1bab01bdf`), `g45_sc` (the tree build at
   `4277661b9`) and `g45_bm` (`d3f538a76`, blast mesh ON).
+
+## 254. 222 `kDirectorLeaderFireTargetBound` flipped ON (the lead's call; cc9-gunnery45, 2026-10-14)
+
+249 traced every step of 222's effect to the image:
+- `00863640` gives a follower its leader's target;
+- followers hold `+7Dh = 1`, so `00865809` lets category 7 take that target;
+- the target is sent with the fire-target flag, so FireTargetAccuracy applies.
+
+The writer mismatch that held 222 OFF (236, the scan row write) has been fixed since `0cc305ee0`. The lead ruled
+that a faithful flip goes in even when it costs wins.
+
+Under ON, USN12 `usn12_g44_u12_d` ends with no mission end, and USN15 `usn15_s45_u15_l2` fails at 1021.92 s (249).
+The threat is Japanese follower torpedo salvos at 1.9-3.4 km from about 696 s. Both rows are re-planned by
+cc9-gunnery45 (255).
+
+## 255. Re-plans under 222 ON: USN12 `usn12_g45_u12_e7` (cc9-gunnery45, 2026-10-14)
+
+**What the threat targets.** On USN12 `d` under 222 (`local\g45_p1_u12d.log`), every follower torpedo launch goes at
+Montpelier: Agano 8, Naganami 5, Sendai 4, Hatsukaze 6, Wakatsuki 4, Haguro 3. Montpelier is Myoko's fire target,
+because `NavigatorAttackMove(IJNGrp[1], MontGrp[1])` makes it Myoko's command target. The spreads aimed at it run
+through the US line and sink Dyson, Stanley, Claxton, Denver and Foote. A follower's tubes stay assigned to that
+one target and launch only when it lies inside their gate (about 2.7-3.3 km).
+
+**The plan** (`config/win_orders/usn12_g45_u12_e7.txt`):
+1. **Decoy.** At 600 s Montpelier runs south to (2500, -7000), more than 4 km from the followers' track. The
+   followers' tubes wait on it and never fire.
+2. **Kill the followers.** At 650 s every other US ship is ordered to attack a follower: Cleveland and Stanley
+   take Sendai, Columbia and Thatcher Agano, Denver Naganami, Charles and Claxton Hatsukaze, Converse and Dyson
+   Wakatsuki, Foote and Spence Haguro. The US kills all seven of IJNGrp by about 790 s.
+3. **Escape.** From 830 s (frame 16600, repeated every 2000 frames), Montpelier (MontGrp[1], which the escape
+   check measures) runs past CLGoTo to (7600, 7000). The rest wait at (4500, 2500), clear of its path. In `e4`/`e5`
+   the whole fleet parked at CLGoTo and blocked Montpelier at 1.26-1.44 km, so the check never passed.
+
+**Result** (exe `f7461617d8d9`, commit `9428d8b8f`, reference env, 36000 frames): **completed at 1675.51 s**, with the
+sus_prog refusal logged (`local\g45_p1_u12e7.log`). The `e6` twin (escape from frame 16000) is queued.
