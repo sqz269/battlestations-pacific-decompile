@@ -17143,3 +17143,27 @@ Next, in order:
 4. From 5hf: the strafe gun threshold (unexercised), the FreeFire / SquadronLandAndKill rows (5hc item 4).
 5. Name request for the lead: 00805CF0-00805D6C (RET 4 at 00805D69, INT3 from 00805D6C)
    `BSP_ReconRecord_SetForcedLevel` (provisional; 5hk).
+
+## 5hp. The torpedo arm's command-block writes: `kTorpedoCommandWritesBound` (cc9-lua61, 2026-10-14)
+
+Packet `cc9_l60_torpedo_command_writes` (prepared by cc9-lua60, committed OFF by cc9-lua61). `TorpedoArmBinding` (the
+host side of `bsp::torpedo_task_arm_009d4850`, game_hosts_units.cpp) implemented `write_command_float` and
+`write_command_word` as no-ops, so every command-block write the arm makes was dropped (5hh):
+- 009D2761-009D2794, the committed branch (`wrote_committed_command`): cmd+2C8h = 0.3, the bank cap
+  (`torpedo_constant::kCommittedThrottle`; the name is historical, PILOT_PLANNER_PITCH_ROLL section 2 reads +2C8h as the
+  bank limit).
+- 009D295F-009D29B7, the hold arm: cmd+2BCh = 0.0, +2D0h = 2, +2C4h = 0.0, +2CCh = 1 (wings level, heading held); the
+  steer arm: +2BCh = 0.0, +2D0h = 2, then 009F9E40 (still a record in the host).
+
+True: the writes land on the planner cells the rest of the host already uses (`plan_state.bank_limit_2c8`,
+`pitch_target_2bc`, `pitch_mode_2d0`, `bank_target_2c4`, `plan_heading_mode_2cc`; a +2CCh write clears
+`plan_heading_2c0_written`). The order is the image's: 009D2731 (the follow base tick, which writes its own heading and
+pitch) runs first, then the done tick's writes overwrite it. Other bindings: the dive-bomb binding also drops the three
+`write_command_*`, but none of its hosted calls reach them (the only other writers, `attack_run_tick` and
+`move_to_tick` in bot_task_states.cpp, have no host caller), so nothing else is under this switch.
+
+Prediction: only planes running the torpedo task's done/prepare tick move. The committed Kates/TBDs fly with the bank
+capped at 0.3 rad from commit on (until the disarmed close arm rewrites it at 0.3-1.5), so their turns onto the target
+widen; on the hold arm they fly wings level on the held heading instead of the follow law's heading. No RNG draw is
+added. Expect torpedo release counts and hit timing to move on rows with torpedo strikes (USN04 Japanese strike, USN21
+f), nothing on rows without them. Bank cap units: radians, as the 009D29E0 close arm (5hh) already writes.

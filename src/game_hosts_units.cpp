@@ -1521,6 +1521,7 @@ struct GameUnitSlot {
     // Packet cc9_l60_torpedo_disarmed: 009D29E0 runs (leader and target known),
     // its close arm (cmd+2C8h written), the least ratio and the last +8Ch.
     int torpedo_disarmed_ticks{0};
+    int torpedo_command_writes{0};   // kTorpedoCommandWritesBound: binding writes applied
     int torpedo_disarmed_close_ticks{0};
     float torpedo_disarmed_min_ratio{1.0e30f};
     float torpedo_disarmed_blend_8c{1.0f};
@@ -6137,6 +6138,14 @@ struct GameUnitsHost::Impl {
     // (007ED260 runs inside the placement seam, as for the dive bomber), so the
     // wingmen fly 007F23A0's shape-3 station. False: the shape stays as seeded.
     static constexpr bool kDropKamikazeFormationShapeBound = true;   // ON: SQUADRON_LAND_TASK 5hn
+    // Packet cc9_l60_torpedo_command_writes (lead, after SQUADRON_LAND_TASK 5hh). The
+    // torpedo arm's command-block writes reach TorpedoArmBinding's write_command_*
+    // (torpedo_task_arm.cpp): the committed branch's cmd+2C8h = 0.3, the bank cap
+    // (009D2761-009D2794), and the hold / steer arms' cmd+2BCh = 0, +2D0h = 2, +2C4h = 0,
+    // +2CCh = 1 (009D295F-009D29B7). True: they land on the planner state (plan_state
+    // bank_limit_2c8 / pitch_target_2bc / pitch_mode_2d0 / bank_target_2c4 and
+    // plan_heading_mode_2cc). False: every write is dropped, as before.
+    static constexpr bool kTorpedoCommandWritesBound = false;
     // Packet cc9_l60_level_issue_tail (cc13-confirm D). 007C0D90's rack walk ends
     // at 007C0ED3 and falls to 007C0ED9 for the level bomber too: when the walk
     // armed a rack (the byte 007C0E23 raises) the tail sets unit+C25h = 1
@@ -19749,9 +19758,37 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // record is concrete (packet cc9_release_order_gate).
                             owner_.done("BotApproach::command_altitude", 0x009fba50u);
                         }
-                        void write_command_word(void*, int, int) override {}
+                        void write_command_word(void*, int off, int value) override {
+                            if constexpr (GameUnitsHost::Impl::kTorpedoCommandWritesBound) {
+                                if (off == bsp::pilot_command_off::kMode2D0) {
+                                    slot_.plan_state.pitch_mode_2d0 = value;
+                                    ++slot_.torpedo_command_writes;
+                                } else if (off == bsp::pilot_command_off::kHeadingMode) {
+                                    slot_.plan_heading_mode_2cc = value;
+                                    slot_.plan_heading_2c0_written = false;
+                                    ++slot_.torpedo_command_writes;
+                                }
+                            } else {
+                                (void)off; (void)value;
+                            }
+                        }
                         void write_command_byte(void*, int, unsigned char) override {}
-                        void write_command_float(void*, int, float) override {}
+                        void write_command_float(void*, int off, float value) override {
+                            if constexpr (GameUnitsHost::Impl::kTorpedoCommandWritesBound) {
+                                if (off == bsp::pilot_command_off::kInterp2C8) {
+                                    slot_.plan_state.bank_limit_2c8 = value;   // the bank cap
+                                    ++slot_.torpedo_command_writes;
+                                } else if (off == bsp::pilot_command_off::kWord2BC) {
+                                    slot_.plan_state.pitch_target_2bc = value;
+                                    ++slot_.torpedo_command_writes;
+                                } else if (off == bsp::pilot_command_off::kWord2C4) {
+                                    slot_.plan_state.bank_target_2c4 = value;
+                                    ++slot_.torpedo_command_writes;
+                                }
+                            } else {
+                                (void)off; (void)value;
+                            }
+                        }
                         void set_arm_request(void*, bool) override {}
                         void set_weapon_selector(void*, int) override {}
                         void consume_round(void*) override {}
@@ -39839,6 +39876,11 @@ void GameUnitsHost::report() {
                     "states[%s] releases=%d",
                     slot->row.name.c_str(), slot->torpedo_arm_ticks,
                     slot->torpedo_transitions, states, slot->torpedo_releases);
+                if (slot->torpedo_command_writes > 0) {
+                    host.log.notef("  torpedo %-12s command writes applied=%d (009D2761 / "
+                        "009D295F-009D29B7, packet cc9_l60_torpedo_command_writes)",
+                        slot->row.name.c_str(), slot->torpedo_command_writes);
+                }
                 if (slot->torpedo_disarmed_ticks > 0) {
                     host.log.notef("  torpedo %-12s disarmed 009D29E0: ticks=%d close=%d "
                         "min_ratio=%.3f last_8c=%.3f",
