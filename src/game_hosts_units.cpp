@@ -677,6 +677,7 @@ struct GameUnitSlot {
     int dkz_arm_ticks{0};
     int dkz_state_ticks[7]{};              // moveto, follow, attackrun, prepare, done, release, goAway
     int dkz_installs{0};
+    int dkz_shape_writes[2]{};             // squadron+3E4h = 1 (009BEDDA) / = 3 (009AD1A5)
     int dkz_releases{0};
     int dkz_transition_logs{0};
     int st_aim_entries{0};
@@ -730,6 +731,9 @@ struct GameUnitSlot {
     int lb_break_offs{0};
     int lb_rack_issues{0};
     int lb_rack_fired{0};
+    int lb_issue_tail_calls{0};      // 007C0ED9 tail runs (kLevelBomberIssueTailBound)
+    int lb_issue_tail_raised{0};     // members 007EEF30 gave orders to
+    int lb_issue_tail_gate_refused{0};  // 007EEF50 gate (ctl+390h > ctl+374h) refused
     int lb_rack_drops{0};
     int lb_rack_gate_refused{0};
     float lb_first_release_at{-1.0f};
@@ -6111,7 +6115,7 @@ struct GameUnitsHost::Impl {
     // U(0.8, 1.0) / U(-0.8, -1.0) or the turn's +20h U(0.75, 1.0) and +1Ch
     // U(70, 100 deg) / U(-70, -100 deg) by the bank sign (+C68h > 0).
     // False: the midpoints, as before.
-    static constexpr bool kDogfightEnterDrawsBound = false;
+    static constexpr bool kDogfightEnterDrawsBound = true;   // ON: SQUADRON_LAND_TASK 5hg.1
     // Packet cc9_l60_torpedo_disarmed (cc13-confirm B): 009D2720's disarmed arm
     // 009D29E0-009D2CF1 (every done tick: the enter leaves +98h = -1.0), run
     // through bsp::torpedo_done_disarmed_arm_009d29e0 when the squadron has a
@@ -6122,6 +6126,23 @@ struct GameUnitsHost::Impl {
     // cell; state+8Ch (republished to squadron+3E8h by 009BFDA6) is kept on the
     // slot for the log only, no host reader. False: the arm is skipped, as before.
     static constexpr bool kTorpedoDoneDisarmedArmBound = false;
+    // Packet cc9_l60_formation_shapes (cc13-confirm C): the drop-kamikaze
+    // prepare/done enter 009AD180 writes squadron+3E4h = 3 (009AD1A5) and
+    // re-runs 007ED260 after its follow enter 009BED80, which writes 1
+    // (009BEDDA). True: both writes reach the registry's formation_shape_3e4
+    // (007ED260 runs inside the placement seam, as for the dive bomber), so the
+    // wingmen fly 007F23A0's shape-3 station. False: the shape stays as seeded.
+    static constexpr bool kDropKamikazeFormationShapeBound = false;
+    // Packet cc9_l60_level_issue_tail (cc13-confirm D). 007C0D90's rack walk ends
+    // at 007C0ED3 and falls to 007C0ED9 for the level bomber too: when the walk
+    // armed a rack (the byte 007C0E23 raises) the tail sets unit+C25h = 1
+    // (007C0EE2) and, unless the last rack's descriptor answers 33h (007C0EF0),
+    // calls 007EEF30 on the squadron (007C0EFA-007C0F01), which hands each other
+    // member 999 release orders (unit+C58h). True: the level-bomber branch runs
+    // that tail through the torpedo path's binding. False: it returns after the
+    // walk, as before. The per-rack 31h 007BCCF0 -> 006E3F90 point
+    // (007C0E98-007C0EC9) is not modelled; no rack here answers 31h.
+    static constexpr bool kLevelBomberIssueTailBound = false;
     // Packet cc9-gunnery38 (docs/CC13_AUDIT13_RECENT_FLIPS.md O1). The strafe
     // cruise profile 009CD020, run once per activation (the install and each
     // time the strafe task resurfaces after a tightturn or flikflak retires),
@@ -19099,7 +19120,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                                    GameUnitSlot& slot)
                             : owner_(owner), slot_(slot) {}
 
+                        // The level-bomber branch has walked its racks already:
+                        // the tail asks only whether that walk armed one.
+                        void force_walk_result(bool armed) { walk_forced_ = armed ? 1 : 0; }
                         bool unit_carries_droppable_device_007c0d90() override {
+                            if (walk_forced_ >= 0) return walk_forced_ != 0;
                             // 007C0DB8-007C0E61: a device of class 25h holding
                             // ordnance 2Ah whose descriptor answers 2Ch, 2Bh or
                             // 33h. 2Bh is Torpedo and its descriptor answers 2Ah
@@ -19371,6 +19396,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         GameUnitsHost::Impl& owner_;
                         GameUnitSlot& slot_;
+                        int walk_forced_{-1};
                     };
 
                     // ------------------------------------------------
@@ -24797,7 +24823,25 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             b.unit_.dkz_moveto_far = far_range;
                             b.unit_.dkz_moveto_speed_range = third;
                         }
-                        void enter_formation_state(bsp::DropKamikazeState) override {}
+                        void enter_formation_state(bsp::DropKamikazeState) override {
+                            // 009BED80's 009BEDDA: squadron+3E4h = 1, then 007ED260.
+                            dkz_set_shape(1);
+                        }
+                        void set_squadron_formation_shape_007ed260(int shape) override {
+                            dkz_set_shape(shape);
+                        }
+                        void dkz_set_shape(int shape) {
+                            if constexpr (GameUnitsHost::Impl::kDropKamikazeFormationShapeBound) {
+                                if (bsp::PlaneSquadronHostRecord* const sq =
+                                        bsp::plane_squadron_registry().find_by_member_unit(
+                                            b.unit_.process_index)) {
+                                    sq->formation_shape_3e4 = shape;
+                                    ++b.unit_.dkz_shape_writes[shape == 3 ? 1 : 0];
+                                }
+                            } else {
+                                (void)shape;
+                            }
+                        }
                         void exit_formation_state(bsp::DropKamikazeState) override {}
                         void tick_formation_state(bsp::DropKamikazeState s, float) override {
                             if (s == bsp::DropKamikazeState::kMoveTo) {
@@ -27876,6 +27920,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // Correction (packet cc9_release_issue_stage): +498h is
                         // cleared by the rack tick at 006E58E1 once the ammo is
                         // spent, so busy means "dropping", not "has fired".
+                        if constexpr (GameUnitsHost::Impl::kLevelBomberIssueTailBound) {
+                            // 007CEB00 walks every device: a level bomber's racks
+                            // keep their own dropBombs (lb_rack_dropping, 006E58E1),
+                            // so the C25h the tail raised clears only after them.
+                            for (const char d : unit_.lb_rack_dropping) {
+                                if (d != 0) return true;
+                            }
+                        }
                         return unit_.rack_dropping;
                     }
 
@@ -28191,7 +28243,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     void run_release_order_issue_007c0d90() {
                         if constexpr (bsp::kPlaneLevelBombTaskBound) {
                             if (lb_level_bomber_racks()) {
+                                const int fired_before = unit_.lb_rack_fired;
                                 run_level_bomber_issue_007c0e67();
+                                if constexpr (GameUnitsHost::Impl::kLevelBomberIssueTailBound) {
+                                    // 007C0ED9: the byte 007C0E23 raised for an armed rack.
+                                    if (unit_.lb_rack_fired > fired_before) {
+                                        TorpedoReleaseOrderBinding binding(owner_, unit_);
+                                        binding.force_walk_result(true);
+                                        const bsp::ReleaseOrderIssueResult r =
+                                            bsp::torpedo_issue_release_orders_007c0d90(binding);
+                                        ++unit_.lb_issue_tail_calls;
+                                        unit_.lb_issue_tail_raised += r.units_raised;
+                                        if (!r.gate_passed) ++unit_.lb_issue_tail_gate_refused;
+                                    }
+                                }
                                 return;
                             }
                         }
@@ -37578,6 +37643,13 @@ void GameUnitsHost::report() {
                     static_cast<double>(u.lb_first_drop_at),
                     static_cast<double>(u.lb_min_impact_miss),
                     bsp::level_bomb_state_name(u.level_bomb_state));
+                if (u.lb_issue_tail_calls > 0) {
+                    host.log.notef("  levelbomb %-16s issue tail 007C0ED9: calls=%d raised=%d "
+                        "gate_refused=%d c25=%d c58=%d", u.row.name.c_str(),
+                        u.lb_issue_tail_calls, u.lb_issue_tail_raised,
+                        u.lb_issue_tail_gate_refused, u.torpedo_release_pending_c25 ? 1 : 0,
+                        u.torpedo_release_orders_c58);
+                }
             }
         }
     }
@@ -39200,6 +39272,18 @@ void GameUnitsHost::report() {
                     "locks=%d boosts=%d (009AF510, packet cc9_lua52_kamikaze_wiring)",
                     bsp::kKamikazeTaskBound ? 1 : 0, kz_planes, kz_arm, kz_inst, k[0], k[1], k[2],
                     k[3], k[4], kz_aim, kz_lock, kz_boost);
+                {
+                    int shape_writes[2]{};
+                    for (const auto& slot : host.slots) {
+                        shape_writes[0] += slot->dkz_shape_writes[0];
+                        shape_writes[1] += slot->dkz_shape_writes[1];
+                    }
+                    if (shape_writes[0] + shape_writes[1] > 0) {
+                        host.log.notef("summary mission drop kamikaze formation shape writes "
+                            "shape1=%d shape3=%d (009BEDDA / 009AD1A5)", shape_writes[0],
+                            shape_writes[1]);
+                    }
+                }
                 const bsp::DummyKamikazeRounds& rounds = bsp::dummy_kamikaze_rounds();
                 host.log.notef("summary mission drop kamikaze task bound=%d ordered_planes=%d "
                     "arm_ticks=%d installs=%d moveto=%d follow=%d attackrun=%d prepare=%d done=%d "

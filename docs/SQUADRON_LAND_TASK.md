@@ -16918,3 +16918,77 @@ switch runs the arm and writes `bank_limit_2c8` on the close arm; per slot `torp
 min_ratio last_8c` in the summary. Prediction: on USN04 (no plan, 9000 frames) the done-state Kates run the arm every
 tick; the close arm fires only while the leader is low and within about 2.3 km of the target, capping the bank at
 0.3-1.5 rad; no RNG; releases unchanged (0 for the stuck squadron); small trajectory moves for those Kates only.
+
+## 5hi. cc13-confirm C: 007F23A0's five formation shapes and the drop-kamikaze shape 3 (cc9-lua60, 2026-10-14)
+
+**007F23A0 read whole** (disk listing 007F23A0-007F28FD, `local\l60_7f23a0.asm`). The jump table at 007F2900 maps shape
+1 -> 007F2576, 2 -> 007F25BD, 3 -> 007F2739, 4 -> 007F26AD, 5 -> 007F2838 (the host's comment had 3 and 4 swapped).
+With P the pair number, I the raw formation index (the argument, [ESP+C4h]), M the squadron's +3E8h, sx the lateral
+spacing and (dy, dz) the triple's other two components:
+- 1: (P sx M, P dy M, P dz M).
+- 2: x = P sx max(2M - 1, 0.8), y = P dy clamp(2.2 - 1.2M, 0, 1), z = P dz / max(1, M); the flag pair BL/[ESP+1Bh] = (0.2 > M).
+- 3: y = P dy M. With the tuning singleton's +3E8h byte set: x = M f(sx P) + (1 - M) f(0.15 sx I), z = M f(dz P) +
+  (1 - M) f(0.8 dz I) (f = float store). Clear: x = P sx (0.7M + 0.3), z = P dz (0.25M + 0.75).
+- 4: x = P sx max(1 + 0.8(M - 1), 0.4), y = P dy clamp(2.4 - 1.4M, 0, 1), z = P dz (0.8M + 0.2); flag as shape 2.
+- 5: (P sx, 0, 0).
+- Tail: an odd index negates x; y and z are negated unless the flag is set or the singleton's +3E9h / +3E8h byte is set.
+At M = 1 shapes 2, 3 and 4 give shape 1's station (shape 4's lateral max(1, 0.4) = 1; shape 3's blends collapse), so
+with the host's morale fixed at 1.0 (no writer of squadron+3E8h; 009BFDA6 republishes state+8Ch, see 5hh) a shape change
+moves nothing. Reconstructed in `bsp::plane_formation_station_007f23a0` without a switch: no host path set a shape
+other than 1 before this packet.
+
+**`kDropKamikazeFormationShapeBound`** (committed OFF): the drop-kamikaze enter_formation_state writes shape 1 (009BED80
+009BEDDA) and the prepare/done enter 009AD180 writes 3 (009AD1A5) through the new
+`DropKamikazeTaskHost::set_squadron_formation_shape_007ed260`; `summary mission drop kamikaze formation shape writes`.
+Prediction on USNOS: shape-3 writes appear for the Betty squadrons in prepare/done, and gameplay is identical (M = 1.0).
+
+## 5hj. cc13-confirm D: 007C0D90's level-bomber tail (cc9-lua60, 2026-10-14)
+
+The rack walk loops at 007C0ED3 (`JNE 007C0DB6`) and falls to 007C0ED9 for every caller, the level bomber included:
+`CMP byte [ESP+13h],0` (the byte 007C0E23 raises when a rack is armed through vtable[1F0h]) -> 007C0EE2 unit+C25h = 1 ->
+unless the last rack's descriptor answers 33h (007C0EF0) -> 007C0EFA-007C0F01 `007EEF30(ctl = unit+9D4h, unit)`. So the
+host's comment that the level branch "never sets unit+C25h and never calls 007EEF30" (and CC13_VER_6 finding 5's caveat)
+is wrong. `kLevelBomberIssueTailBound` (committed OFF) runs the tail through the torpedo path's
+`TorpedoReleaseOrderBinding` (with the walk's answer forced to "armed") after `run_level_bomber_issue_007c0e67`, and
+lets the stage cleanup's device walk 007CEB00 see the level racks' own dropBombs (`lb_rack_dropping`), so C25h clears
+only after the last rack stops (006E58E1) and the stage timer passes -1.2 (`docs/PLANE_DEVICE_WALK.md`). Per slot:
+`levelbomb <name> issue tail 007C0ED9: calls raised gate_refused c25 c58`. Not modelled: the per-rack 31h point
+007BCCF0 -> 006E3F90 (007C0E98-007C0EC9; no rack here answers 31h).
+
+Prediction (JM08 `j8s`, USNOS `osd`): each issuing level bomber keeps C25h set while its racks drop, so its release
+state holds the timer at kReleaseHold (009B5AD2/009B5AE1) for the drop plus the cleanup, and leaves release later
+(goaway later, positions move). 007EEF30 gives the other members 999 orders when ctl+390h > ctl+374h; the host has no
+level-bomb reader of unit+C58h yet (0099AF53 -> 009B83D0 and the +424h passthrough 009B8BD0 are the next packet), so the
+wingmen's own flow is unchanged. No RNG.
+
+## 5hk. cc13-confirm F: the synchronous forced-recon notify 00805CF0 (cc9-lua60, 2026-10-14)
+
+00805CF0 (disk listing): old = the record's effective level (+8h when +10h is set, else +4h); +10h = 1, +8h = level
+(00805D0A/00805D0E); when +28h is set, 006952A0 unlinks the record (00805D11-00805D1F); then, if the effective level
+changed (00805D36 CMP / 00805D38 JE), the record's listener [+2Ch] vt[0](+30h, old, new). `bsp::set_forced_recon_level`
+only wrote the map, so the `recon` callbacks fired at the next pass, and the pass dispatch published 0 for a forced
+record of a party with no sensor coverage. `kForcedReconSyncNotifyBound` (committed OFF): SetForcedReconLevel fires the
+matching `recon` listeners at once (old = the level the dispatch last published for that unit and party, a labelled
+substitution for the record's effective level), and the dispatch publishes a forced record's level whatever the
+coverage. 00980E50's body is now `fire_recon_listeners_00980e50`, shared by both callers. Summary:
+`summary mission script forced recon ... sync_notifies=`.
+
+Prediction (cc13): callbacks fire at most one pass earlier; no RNG. USN12 34000 (23 squadrons forced) and USNOS (Haku):
+the same `recon listener` lines, earlier by up to one pass; a forced record of an uncovered party now fires its listener
+where it never did. Gameplay identical unless a callback's timing matters.
+
+### 5hg.1 Measured: `kDogfightEnterDrawsBound` **ON** (cc9-lua60, 2026-10-14)
+
+Pairs on ed6757e2e: OFF `local\l60_e0_*`, ON `local\l60_e1_*` (BSP_GUNNERY_RNG_STREAMS=1).
+
+| row | dogfight activity | pair_diff |
+|---|---|---|
+| BSM01 `b1` (bsm01_l50_b1_a, 30000; completed 767.94 s both, exec guard refused sus_prog.exe) | 3 fighters, aim 10017 ticks, maneuver 3 | 0, identical |
+| JM08 `j8s` (jm08_p6_j8_f, 40000; no end either side) | sqn31 vs the B-17 #2.1 flight at 1855-1870 s | 3, moved |
+| USN04 `u04` (9000, no plan) | none | 1, gameplay identical |
+
+JM08: only the sqn31-vs-B-17 #2.1 engagement moves, as predicted. The four sqn31 fighters die 1.7-5.3 s earlier or later
+(all four still die to B-17 gunners; one death mode leftspinning -> explosion), B-17 #2.1|.-3 dies 3.4 s later, and
+B-17 #2.1 survives ON (killed OFF), so deaths 201 -> 200; two ground kills downstream (US barracks, AA truck 05) move
+by 0.3-4.8 s with a different B-17 killer. No other entity moves. The mechanism matches the image (keyed draws in the
+image's order), so the switch is flipped ON.
