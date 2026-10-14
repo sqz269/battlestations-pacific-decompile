@@ -1,6 +1,6 @@
 # Type10 raw-array storage Source
 
-`construct_native_scene_property_record_type10_raw_array_storage_008ef3e0` reconstructs the whole `[008EF3E0,008EF454)` Native body: 116 bytes / 36 instructions, including retention and copying. **Source admission credit remains 0 pending parent review.** Production registration/compilation and the fresh worker's complete-helper single-process raw-domain qualification have passed. The current qualification is recorded below; the original Source-only packet and Root production evidence remain distinct historical records.
+`construct_native_scene_property_record_type10_raw_array_storage_008ef3e0` reconstructs the whole `[008EF3E0,008EF454)` Native body: 116 bytes / 36 instructions, including retention and copying. **Root accepted one bounded raw-storage Source reconstruction after independent review.** Production registration/compilation and the complete-helper single-process qualification passed. This admits the stated current-provider domain; Original private runtime, class/owner lifetime, complete clone, startup and gameplay remain unqualified. Earlier pending records below are historical.
 
 The implementation is [the owned CPP](../src/native_scene_property_record_type10_raw_array_storage.cpp), with its contract in [the owned header](../include/bsp/native_scene_property_record_type10_raw_array_storage.hpp). The Native whole-body SHA-256 is `00c1508701d10a6508b556eff0feb4737f51a4ec289059dce77a796cc571919b`. Names are descriptive hypotheses, not recovered symbols or class identities.
 
@@ -70,4 +70,10 @@ The preserved `local/type10_current01/` attempt stopped with exit 71 during the 
 
 Current executable SHA-256: `d072e0a4117ffc6b804e0590ba65873d3964f6121ca8924be835d9bc4ddf2897`. Observations: `7d950c47f94770b2fc54f759cc300160e5bacb9eb2ef31814a76a14fb5043470`. Complete loaded-code gate: `f7c1c907f389e815a32e1e0038e3363a1dc636b9f5ef4ffc7dd1f2af622ce430`. The artifact manifest includes final tracked-output snapshots; its independent hash is supplied in the handoff to avoid circular hashes.
 
-The next gate is parent review of the complete current helper/caller/provider/frame evidence and a decision on bounded Source admission. Native private CRT/EH/OOM, exceptional unwind, class/vtable/owner lifetime, complete clone/publication, actual startup, and gameplay remain unqualified.
+The worker handed this evidence to the parent for bounded Source admission. Native private CRT/EH/OOM, exceptional unwind, class/vtable/owner lifetime, complete clone/publication, actual startup, and gameplay remain unqualified.
+
+## Root acceptance, 2026-10-14
+
+Root verified and froze 69 current files including the manifest, all 85 files from the failed first attempt, and all 227 selected inputs. Root then reran both independent readers from a separate copy of the frozen evidence. Complete COFF/map/weak/relocation/control-flow checks and independent decoding of all 12 recorded calls passed. No second target process supplied this acceptance. The constructor's full Source body and transport contract were reviewed, including the low-byte predicate, 29/27 write mask, full stack arguments, arithmetic flags and preserved owner word.
+
+The accepted domain is fresh, unowned, readable and disjoint raw storage with positive nonoverflowing sizes and successful current canonical allocation/copy/free. Count1/4 executions support the reviewed full constructor; unexecuted exceptional paths and the external provider boundary remain explicit. The report's `Root_current_singleprocess_acceptance` binds the parent rerun hashes and frozen receipt. Original private CRT/EH/OOM, naked-frame unwind, class/vtable/publication/recursive lifetime, whole clone, game ABI, startup and gameplay receive no admission.

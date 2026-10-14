@@ -2,15 +2,15 @@
   "schema": "bsp.cc12.native-scene-property-record-type10-raw-array-storage.v1",
   "packet": "cc12_property_type10_type11_raw_storage_source",
   "type": 10,
-  "status": "raw_Source_reconstructed_production_compiled_worker_singleprocess_raw_domain_pass_Root_admission_pending",
+  "status": "accepted_bounded_raw_Source_current_provider_domain",
   "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_type10_type11_raw_storage_source",
   "branch": "agent/cc12_property_type10_type11_raw_storage_source",
   "worker_base_revision": "4f21df543211402d96f1c27dd8751ff63070909b",
-  "Source_credit": 0,
-  "Source_admission_credit": 0,
+  "Source_credit": 1,
+  "Source_admission_credit": 1,
   "adapter_native_credit": 0,
-  "ready_Source_credit": 0,
-  "Root_independent_validation_pending": true,
+  "ready_Source_credit": 1,
+  "Root_independent_validation_pending": false,
   "Root_Main_CMake_registration_build_publication_pending": false,
   "tracked_outputs": [
     "src/native_scene_property_record_type10_raw_array_storage.cpp",
@@ -62,11 +62,11 @@
   "evidence_levels": {
     "reconstructed": true,
     "static_Source_listing_review": true,
-    "build_tested": false,
-    "fixture_tested": false,
-    "physical_register_stack_ABI_measured": false,
-    "emitted_code_inspected": false,
-    "complete_retained_helper_closure_qualified": false,
+    "build_tested": true,
+    "fixture_tested": true,
+    "physical_register_stack_ABI_measured": true,
+    "emitted_code_inspected": true,
+    "complete_retained_helper_closure_qualified": true,
     "Original_private_provider_ABI_admitted": false,
     "native_class_or_drop_in_replacement": false,
     "game_validated": false
@@ -189,12 +189,7 @@
     "includes_all8_owned_output_snapshots": true,
     "independent_SHA256": "Supplied in commit handoff; omitted here to avoid circular hashing with exact report snapshot."
   },
-  "pending_primary_work": [
-    "Register Source in owned shared build metadata.",
-    "Compile normal MSVC Win32 production; inspect actual emitted whole body and all retained code/helper/provider closure.",
-    "Run fresh independent successful retain/copy qualification with real current providers and exact transport/storage/lifetime observations.",
-    "Award Source/name/ledger credit only after primary acceptance."
-  ],
+  "pending_primary_work": [],
   "exclusions": [
     "zero-size/overflow/invalid or overlapping spans",
     "allocation failure, copy faults, reentry and exceptional unwind",
@@ -307,7 +302,7 @@
     "performed"
   ],
   "saved_analysis_publication_pending": false,
-  "complete_helper_ABI_qualification_pending": true,
+  "complete_helper_ABI_qualification_pending": false,
   "Root_saved_raw_Source_analysis_publication": {
     "passed": true,
     "Source_admission_credit": 0,
@@ -514,5 +509,53 @@
       ]
     },
     "evidence_manifest": "local/type10_current02/artifact_manifest.json; independent hash supplied in handoff; includes final tracked-output snapshots without a hash cycle."
+  },
+  "Root_current_singleprocess_acceptance": {
+    "utc": "2026-10-14T23:11:48.678464+00:00",
+    "status": "accepted_bounded_raw_Source_current_provider_domain",
+    "worker_commit": "62df2aeb0603d7a6a037a839351f901d17f30bf7",
+    "Root_independent_code_reader_rerun": "PASS",
+    "Root_independent_recorded_reader_rerun": "PASS",
+    "new_target_process_launched_by_Root": false,
+    "original_successful_process_pid": 61000,
+    "frozen_current_files_including_manifest": 69,
+    "preserved_failed_files": 85,
+    "current_selected_inputs_independently_verified": 227,
+    "whole_function_bodies": 29,
+    "whole_function_bytes": 5844,
+    "decoded_instructions": 1690,
+    "retained_sections": 108,
+    "all_relocations": 628,
+    "calls": 12,
+    "roots": 12,
+    "copied_children": 6,
+    "domain": "Fresh unowned readable/disjoint raw56-byte roots; positive nonoverflowing successful current canonical allocation/copy/free. Retain/copy selected by low FLAG byte. Dynamic examples count1/4; all36 Native constructor instructions reviewed.",
+    "not_admitted": [
+      "Original private CRT/EH/OOM",
+      "naked-frame exceptional unwind",
+      "class/vtable/owner publication/recursive lifetime",
+      "complete clone",
+      "game ABI drop-in",
+      "startup",
+      "gameplay"
+    ],
+    "frozen_receipt": "local\\cc12_native_parent_receipts\\type10_62\\receipt.json",
+    "parent_artifacts": [
+      {
+        "path": "local\\cc12_type10_parent_review_01\\independent_code.json",
+        "bytes": 889172,
+        "sha256": "3cdaa89fb1e9ab4ce0eaee34e11877df1913676578765317639f0db775f724be"
+      },
+      {
+        "path": "local\\cc12_type10_parent_review_01\\independent_recorded.json",
+        "bytes": 15653,
+        "sha256": "2446f76e92cf41a96dba6b0153c0fc6ae7d2b63b7db6c1d03681894744af26de"
+      },
+      {
+        "path": "local\\cc12_type10_parent_review_01\\parent_rerun.log",
+        "bytes": 158,
+        "sha256": "211572f21e52aa76c1c4c3bc16de130113bccba5dcb1a0b906fba5b1a9e153dd"
+      }
+    ]
   }
 }
