@@ -4723,6 +4723,9 @@ struct GameUnitsHost::Impl {
         // been measured yet, not because it is right. Run E2 measures it; see
         // docs/FOLLOWER_ATTACK_HANDOVER.md sections 8 and 9.
         in.engaged.control_mode_370 = 2;
+        if constexpr (kDiveAttackModeFedBound) {
+            in.engaged.control_mode_370 = static_cast<int>(slot.db_attack_mode_370);
+        }
         in.engaged.has_latched_target_440 = slot.command_target_plus_one != 0;
         in.entry.control_mode_370 = in.engaged.control_mode_370;
         in.entry.has_bomb_ordnance_4c9 = slot.db_has_bomb_d1;
@@ -6840,6 +6843,13 @@ struct GameUnitsHost::Impl {
     // Packet cc9_fighter_gunfire_rate: approach+B4h = uniform(0.6, 0.8) * class+268h
     // (009C3F63-009C3F97), pinned at 0.6 before. OFF: unmeasured (runs blocked).
     static constexpr bool kAttackDistDrawBound = true;
+    // Packet cc9_l57_dive_mode_fed: 009C83F8 reads squadron+370h through task+404h.
+    // Its producers are the block init 007F2DC1 (MOV [ESI+370h],EDI, EDI = 1 from
+    // 007F2D41) and the flight leader's 0099B740 (a store of 1); mode 2 comes only
+    // from the Lua binding 008A4B10 and message BCh. True: the dive arm reads
+    // slot.db_attack_mode_370 (the leader's value, copied to the flight) instead
+    // of the pinned 2, so a member's `engaged` is its in-range latch.
+    static constexpr bool kDiveAttackModeFedBound = false;
     // Packet cc9_l57_dive_items (docs/CC13_VER_9.md finding 3): +B8h = +BCh =
     // uniform(1.6, 1.8) * class+268h (009C3FB0 CALL 00BD2F10, stream 1 per cc13-ver9, after the
     // +B4h draw; 009C3FE8 FST / 009C3FF5 FSTP). False: pinned at 1.6.
