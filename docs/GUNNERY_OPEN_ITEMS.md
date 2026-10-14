@@ -14127,3 +14127,20 @@ bound: it reroutes `game_hosts_units.cpp` ~:27297, which is a shared file.
    overshoot on a level run.
 4. More dive-bomb hits on USN04, JM08 and PRCP01. USN01's ScoutDauntless pair should regain the Convoy1 hit
    that 130.4 lost. Stream 1 is not changed by the binding itself; hits shift later draws.
+
+## 232. Submerged AA kinds and the TorpedoBot no-intercept drop: `kGunSubmergedAaKindBound`, `kTorpedoBotNoInterceptDropBound`, OFF (227 addendum items 5 and 6; cc9-gunnery42, 2026-10-14)
+
+- **`kGunSubmergedAaKindBound`.** `00728A90` (read here) answers true for `[[gun+3F4h]+80h]` in {1, 5, 6}
+  (`00728A9C..00728AA9`). `00729A80` refuses a gun whose muzzle is under the waterline when that answer is true,
+  as it does for the artillery kinds through `005459B0`. The host hard-set the answer false at both fire gates
+  (the AI's `0072D860` arm and the seat's). ON: the kind test, with the gun category standing in for the
+  weapon kind, as in the artillery twin. Prediction: identical on every row without a diving submarine. A
+  submerged boat's deck AA stops firing (it shows as more `can_fire_refusals`).
+- **`kTorpedoBotNoInterceptDropBound`.** `0090025E` calls `008FBB00`. With no solution, `00900267..0090026B`
+  jumps to `0090097B`, which calls gun->vtable[1E8h](0) and returns (disk bytes, read here). The host aimed at
+  the present position and could fire. ON: no solution drops the trigger for the tick. Counter: `summary
+  mission gunnery torpedo no-intercept drops=`. Prediction: rare. A 51.4 m/s solver against a ship under
+  about 20 m/s nearly always solves (CC13_VER_23 D1), so the counter is small and torpedo launches fall
+  slightly. Fast targets for Mark 15 / Type 95 tubes (13 m/s swim) are the exception.
+
+The 0.2 s think timer (`008FFF20` step 1) is still not modelled.

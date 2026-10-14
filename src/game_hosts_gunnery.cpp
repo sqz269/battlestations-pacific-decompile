@@ -466,6 +466,19 @@ constexpr bool kTorpedoSubmergedTargetDropBound = false;
 //    ON: plane_release_ver_cc13::rack_round_release_velocity_006e4d50 on the
 //    same draws. OFF: as before.
 constexpr bool kBombReleaseVelocityFrameBound = false;
+//  * kGunSubmergedAaKindBound: packet g42_small_gates (GUNNERY 227 addendum item 5,
+//    docs/CC13_GPR_40.md section 2). 00729A80's submerged-fire test refuses a gun
+//    whose muzzle is under the waterline when 00728A90 answers true:
+//    [[gun+3F4h]+80h] is 1, 5 or 6 (00728A9C..00728AA9, read here). The twin of
+//    kGunSubmergedArtilleryKindBound. The host set the answer false. ON: the
+//    kind test (the gun category, as for the artillery twin). OFF: as before.
+constexpr bool kGunSubmergedAaKindBound = false;
+//  * kTorpedoBotNoInterceptDropBound: packet g42_small_gates (GUNNERY 227 addendum
+//    item 6, docs/CC13_VER_23.md D1). 0090025E CALL 008FBB00; no solution ->
+//    00900267..0090026B JMP 0090097B, gun->vtable[1E8h](0): the trigger drops
+//    and the tick returns. The host aimed at the present position and fired. ON:
+//    no solution drops the trigger for the tick. OFF: as before.
+constexpr bool kTorpedoBotNoInterceptDropBound = false;
 //  * kTorpedoSwimThrustBound: packet cc9_torpedo_tube_turn,
 //    docs/TORPEDO_FRIENDLY_CROSSING.md section 6. 00857480, the swim advance,
 //    per step on a torpedo in the water: 00856BB0 -> 00857061 yaws the NOSE
@@ -876,6 +889,9 @@ constexpr bool kBlastMeshBoundsBound = false;
 //    whose muzzle is below the waterline (00729B2F) cannot fire. The host's kind is
 //    the gun category, as for the torpedo test. False: the answer stays false.
 constexpr bool kGunSubmergedArtilleryKindBound = true;   // ON by mechanism: GUNNERY 206
+inline bool gun_aa_kind_00728a90(int kind) noexcept {
+    return kGunSubmergedAaKindBound && (kind == 1 || kind == 5 || kind == 6);
+}
 inline bool gun_artillery_kind_005459b0(int kind) noexcept {
     return kGunSubmergedArtilleryKindBound
         && (kind == 2 || kind == 3 || kind == 4 || kind == 6);
@@ -2059,7 +2075,7 @@ struct GameGunneryHost::Impl {
     bool torpedo_profile_loaded{false};
     bsp::WeaponHitAccuracyProfile torpedo_hit_profiles[4]{};
     unsigned long long torpedo_gate_a_drops{0}, torpedo_gate_b_drops{0},
-        torpedo_gate_passes{0}, torpedo_submerged_drops{0};
+        torpedo_gate_passes{0}, torpedo_submerged_drops{0}, torpedo_no_intercept_drops{0};
     double torpedo_attack_range_sum{0.0};
     unsigned long long torpedo_attack_range_samples{0};
     // 00901BA0 for one gun and target. LABELLED SUBSTITUTION for the TorpedoBot
@@ -7552,6 +7568,9 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     && bsp::torpedo_intercept_point_008fbb00(shooter, at,
                         solver_speed, v, lead)) {
                     done("GunBot::intercept_point_008fbb00", 0x008fbb00u);
+                } else if (kTorpedoBotNoInterceptDropBound) {
+                    have_target = false;   // 0090026B -> 0090097B, vtable[1E8h](0)
+                    ++torpedo_no_intercept_drops;
                 } else {
                     lead = at;
                 }
@@ -8487,7 +8506,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         }
         gate.weapon_type_id = gun.category;
         gate.muzzle_world_y = muzzle[1];
-        gate.muzzle_submerged = false;
+        gate.muzzle_submerged = gun_aa_kind_00728a90(gun.category);
         gate.artillery_kind_005459b0 = gun_artillery_kind_005459b0(gun.category);
         gate.barrel_count = gun.barrel_num;
         gate.reload_timers = gun.fire.barrel_timers.data();
@@ -12917,7 +12936,7 @@ bool GameGunneryHost::Impl::torpedo_tube_can_fire_1d0(std::size_t g) {
     }
     gate.weapon_type_id = gun.category;
     gate.muzzle_world_y = muzzle[1];
-    gate.muzzle_submerged = false;
+    gate.muzzle_submerged = gun_aa_kind_00728a90(gun.category);
     gate.artillery_kind_005459b0 = gun_artillery_kind_005459b0(gun.category);
     gate.barrel_count = gun.barrel_num;
     gate.reload_timers = gun.fire.barrel_timers.data();
@@ -15119,6 +15138,9 @@ void GameGunneryHost::report() {
             host.artillery_biased_launches, host.artillery_scaled_steps,
             host.artillery_fly_time_expiries, kArtilleryClassSpeedBound ? 1 : 0,
             kArtilleryLaunchBiasBound ? 1 : 0);
+        host.log.notef("summary mission gunnery torpedo no-intercept drops=%llu bound=%d; "
+            "submerged aa kind bound=%d (0090025E, 00728A90)", host.torpedo_no_intercept_drops,
+            kTorpedoBotNoInterceptDropBound ? 1 : 0, kGunSubmergedAaKindBound ? 1 : 0);
         host.log.notef("summary mission gunnery bomb release velocity frame drops=%llu bound=%d "
             "(006E0A70 -> 006E1F00, CC13_VER_20 D1)", host.bomb_release_frame_drops,
             kBombReleaseVelocityFrameBound ? 1 : 0);
