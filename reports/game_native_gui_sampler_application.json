@@ -57,7 +57,21 @@
       "sources": ["game_native_gui_sampler_application", "native_material_program_compiler_actual", "native_sampler_cache_operation", "game_native_gui_effect_application"],
       "log": "local/cc12_native_gui_sampler_parent/compile.log",
       "log_sha256": "5305EFA44EE4A023E625FCC4C58CDFAF86592721381F10FF959C5A6A4184D316",
-      "parent_object_sha256": "7C3CC17B740F0340C41A21C5EAEDA10C87C2C92B2DC447B5686754929B3C2502"
+      "parent_object_sha256": "DF6C740B6C7594A71C8402DF60F0C00A2ED59BAD34D2833B50864745BEBDCF42",
+      "preserved_parent_object": "local/cc12_native_gui_sampler_parent/receipt_correction/current_df6c740b.obj",
+      "parent_object_coff_timestamp": "2026-10-14T18:50:11Z",
+      "receipt_correction": {
+        "superseded_report_commit": "366b9a6c973cb8e5d2cd513e50b23c24afdf6618",
+        "historical_parent_object_sha256": "7C3CC17B740F0340C41A21C5EAEDA10C87C2C92B2DC447B5686754929B3C2502",
+        "historical_object_preserved_or_accepted": false,
+        "cause": "Report kept the earlier object observation after the four-TU compile script emitted the parent object again while the effect TU was changed; compile output text/log stayed identical",
+        "diagnostic": "In-memory substitution of only current COFF timestamp with 2026-10-14T18:43:13Z produces the recorded historical hash; no prior artifact recreated or claimed located",
+        "diagnostic_file": "local/cc12_native_gui_sampler_parent/receipt_correction/timestamp_diagnostic.json",
+        "scope": "receipt provenance only; not independent verification of unavailable earlier object, Source execution, ABI or rendering"
+      },
+      "source_cpp_sha256": "D47B03291CECAD3927DC742325C448121F663AB0B40F493C8E88116EF544ED1E",
+      "source_header_sha256": "D8670A42A439A0A3D84FB5F46035EF10B5DA3A2F368619E150DE2BABA8EA531E",
+      "compile_cmd_sha256": "39CF7A648F1A432B4826D222EAED7804678AC7E095B75354BA2B927917E54E48"
     },
     "standard_worker_build": {
       "command": "scripts/build.ps1",
