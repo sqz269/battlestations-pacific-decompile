@@ -5779,13 +5779,13 @@ struct GameUnitsHost::Impl {
     // +/- min(4*C3Ch, 1) * SpinRollSpd * max(0.35, RollSpd), plus for rightspinning
     // (C37h). SUBSTITUTION, labelled: C37h needs the model's wing node
     // ((unit+360h)+160h), taken as present. False: the target ignores the death.
-    static constexpr bool kPlaneDeadMeatRollBound = false;
+    static constexpr bool kPlaneDeadMeatRollBound = true;
     // Packet cc9_plane_wreck_roll, C1: 007DBC77-007DBD34 in the drag path. With
     // ctl+94h and unit+C3Ch > 1.0f, dyn+0Ch -= Interp(-8, 10, -1, 1, alt) * fwd *
     // min(1, C3Ch - 1). SUBSTITUTION, labelled: ctl+94h is the host's water-step
     // latch (007CBBE7); the in-air producer 007CE0DB-007CE1D9 (a point of the
     // class list desc+5BCh below y -1 under 15 m) is not carried. False: no term.
-    static constexpr bool kPlaneWreckForwardDragBound = false;
+    static constexpr bool kPlaneWreckForwardDragBound = true;
     // Packet cc9_plane_ground_roll (docs/SQUADRON_LAND_TASK.md section 5q): the
     // ground-roll arm 007CBFA0 for unit+900h 4 and 5: the pilot pass (0099AE5F
     // admits 4..7), the probe 007C5AC0, and 007DCCF0: the core law in mode 1
