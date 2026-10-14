@@ -1,0 +1,635 @@
+{
+  "packet": "argon-v2-seg31-32",
+  "range": ["0x006d4370", "0x006deac0"],
+  "function_count": 39,
+  "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+  "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+  "doc_file": "docs/ARGON_SEG31_32_AIRFIELD_MARKER.md",
+  "status": "reconstructed_build_tested",
+  "x87_dc_sites": [],
+  "x87_dc_audit_note": "x87_dc_form_scan.py over 006d4370 through 006deac0 found 1 site (0x006d58c0 in skipped 0x006d5220) and 0 sites across the 39 reconstructed functions.",
+  "functions": [
+    {
+      "address": "0x006d4370",
+      "original_name": "BSP_AirOpsStockSnapshot_Destruct",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::air_ops_stock_snapshot_destruct_006d4370",
+      "abi": "__thiscall(void* self) -> void, RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Restores vtable 00CF8EB8, frees +1Ch and +0Ch vector buffers via 00bf65ac when non-null, and zeroes both triplets.",
+      "steps": [
+        {"address": "0x006d4384", "function": "0x006d4370", "native": "0x00bf65ac", "name": "_free", "kind": "direct_call"},
+        {"address": "0x006d439d", "function": "0x006d4370", "native": "0x00bf65ac", "name": "_free", "kind": "direct_call"}
+      ]
+    },
+    {
+      "address": "0x006d4420",
+      "original_name": "BSP_SessionMessage_AIRFIELD_CREATE_Destruct",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::session_message_airfield_create_destruct_006d4420",
+      "abi": "__thiscall(void* self) -> void, tail JMP 007668e0",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Restores vtable 00CF8EBC, frees +13Ch via 00bf6989, destroys embedded stock snapshot at +110h, and tail-calls 007668e0.",
+      "steps": [
+        {"address": "0x006d4437", "function": "0x006d4420", "native": "0x00bf6989", "name": "_free", "kind": "direct_call"},
+        {"address": "0x006d445a", "function": "0x006d4420", "native": "0x00bf65ac", "name": "_free", "kind": "direct_call"},
+        {"address": "0x006d447f", "function": "0x006d4420", "native": "0x00bf65ac", "name": "_free", "kind": "direct_call"},
+        {"address": "0x006d449d", "function": "0x006d4420", "native": "0x007668e0", "name": "BSP_NetEntityCreateMessage_Destruct", "kind": "tail_jump"}
+      ]
+    },
+    {
+      "address": "0x006d44b0",
+      "original_name": "BSP_SessionMessage_AIRFIELD_CREATE_StockSnapshot",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::session_message_airfield_create_stock_snapshot_006d44b0",
+      "abi": "__thiscall(void* self) -> void*, RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Vtable 00CF8EBC slot +14h; returns self + 110h.",
+      "steps": []
+    },
+    {
+      "address": "0x006d44c0",
+      "original_name": "BSP_NetEntityCreateMessage_VSlot18_ReturnZero",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::net_entity_create_message_vslot18_return_zero_006d44c0",
+      "abi": "__thiscall(void* self) -> uint32_t, RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Vtable 00CF8EBC slot +18h; returns 0.",
+      "steps": []
+    },
+    {
+      "address": "0x006d44f0",
+      "original_name": "BSP_AirOpsStockSnapshot_Write",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::air_ops_stock_snapshot_write_006d44f0",
+      "abi": "__thiscall(void* self, void* cursor) -> void, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Serializes +4 (6 bits), +0Ch/+10h 12-byte records, and +1Ch/+20h 20-byte records through 00429070/00429120 with 00bf6713 bounds checks.",
+      "steps": [
+        {"address": "0x006d4502", "function": "0x006d44f0", "native": "0x00429070", "name": "BSP_BitCursor_WriteUnsignedDwordBits", "kind": "direct_call"},
+        {"address": "0x006d4536", "function": "0x006d44f0", "native": "0x00429070", "name": "BSP_BitCursor_WriteUnsignedDwordBits", "kind": "direct_call"},
+        {"address": "0x006d4567", "function": "0x006d44f0", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006d4577", "function": "0x006d44f0", "native": "0x00429070", "name": "BSP_BitCursor_WriteUnsignedDwordBits", "kind": "direct_call"},
+        {"address": "0x006d459c", "function": "0x006d44f0", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006d45ad", "function": "0x006d44f0", "native": "0x00429070", "name": "BSP_BitCursor_WriteUnsignedDwordBits", "kind": "direct_call"},
+        {"address": "0x006d45d2", "function": "0x006d44f0", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006d45e3", "function": "0x006d44f0", "native": "0x00429070", "name": "BSP_BitCursor_WriteUnsignedDwordBits", "kind": "direct_call"},
+        {"address": "0x006d4628", "function": "0x006d44f0", "native": "0x00429070", "name": "BSP_BitCursor_WriteUnsignedDwordBits", "kind": "direct_call"},
+        {"address": "0x006d4661", "function": "0x006d44f0", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006d4671", "function": "0x006d44f0", "native": "0x00429070", "name": "BSP_BitCursor_WriteUnsignedDwordBits", "kind": "direct_call"},
+        {"address": "0x006d4697", "function": "0x006d44f0", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006d46a8", "function": "0x006d44f0", "native": "0x00429070", "name": "BSP_BitCursor_WriteUnsignedDwordBits", "kind": "direct_call"},
+        {"address": "0x006d46ce", "function": "0x006d44f0", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006d46df", "function": "0x006d44f0", "native": "0x00429070", "name": "BSP_BitCursor_WriteUnsignedDwordBits", "kind": "direct_call"},
+        {"address": "0x006d4705", "function": "0x006d44f0", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006d4717", "function": "0x006d44f0", "native": "0x00429120", "name": "BSP_BitCursor_WriteWordBits", "kind": "direct_call"},
+        {"address": "0x006d473d", "function": "0x006d44f0", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006d474e", "function": "0x006d44f0", "native": "0x00429070", "name": "BSP_BitCursor_WriteUnsignedDwordBits", "kind": "direct_call"}
+      ]
+    },
+    {
+      "address": "0x006d47a0",
+      "original_name": "BSP_SessionMessage_AIRFIELD_CREATE_Write",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::session_message_airfield_create_write_006d47a0",
+      "abi": "__thiscall(void* self, void* cursor) -> void, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Vtable 00CF8EBC slot +4h; calls 00765000 and 006d44f0, writes floats +140h/+144h via 004295c0, and writes +138h count and +13Ch 6-byte hangar records.",
+      "steps": [
+        {"address": "0x006d47aa", "function": "0x006d47a0", "native": "0x00765000", "name": "BSP_NetEntityCreateMessage_Write", "kind": "direct_call"},
+        {"address": "0x006d47b6", "function": "0x006d47a0", "native": "0x006d44f0", "name": "BSP_AirOpsStockSnapshot_Write", "kind": "direct_call"},
+        {"address": "0x006d47d7", "function": "0x006d47a0", "native": "0x004295c0", "name": "BSP_BitCursor_WriteNumericFloat", "kind": "direct_call"},
+        {"address": "0x006d47f8", "function": "0x006d47a0", "native": "0x004295c0", "name": "BSP_BitCursor_WriteNumericFloat", "kind": "direct_call"},
+        {"address": "0x006d4808", "function": "0x006d47a0", "native": "0x00429070", "name": "BSP_BitCursor_WriteUnsignedDwordBits", "kind": "direct_call"},
+        {"address": "0x006d482f", "function": "0x006d47a0", "native": "0x00429120", "name": "BSP_BitCursor_WriteWordBits", "kind": "direct_call"},
+        {"address": "0x006d4844", "function": "0x006d47a0", "native": "0x00429120", "name": "BSP_BitCursor_WriteWordBits", "kind": "direct_call"},
+        {"address": "0x006d4859", "function": "0x006d47a0", "native": "0x00429120", "name": "BSP_BitCursor_WriteWordBits", "kind": "direct_call"}
+      ]
+    },
+    {
+      "address": "0x006d4c20",
+      "original_name": "BSP_AirOpsStockSnapshot_Construct",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::air_ops_stock_snapshot_construct_006d4c20",
+      "abi": "__thiscall(void* self) -> void*, RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Installs vtable 00CF8EB8, zeroes +0Ch..+14h and +1Ch..+24h, and returns self.",
+      "steps": []
+    },
+    {
+      "address": "0x006d4c70",
+      "original_name": "BSP_SessionMessage_AIRFIELD_CREATE_Construct",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::session_message_airfield_create_construct_006d4c70",
+      "abi": "__thiscall(void* self, void* airfield, float field_140, float field_144) -> void*, RET 0xc",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Constructs base NetEntityCreateMessage (0xA3) via 00766fc0, captures stock via 006cc800, allocates 6*count hangar array via 00bf55be, and populates entity/path IDs.",
+      "steps": [
+        {"address": "0x006d4ca9", "function": "0x006d4c70", "native": "0x00766fc0", "name": "BSP_NetEntityCreateMessage_Construct", "kind": "direct_call"},
+        {"address": "0x006d4ce4", "function": "0x006d4c70", "native": "0x006cc800", "name": "BSP_AirOpsStockSnapshot_Capture", "kind": "direct_call"},
+        {"address": "0x006d4d22", "function": "0x006d4c70", "native": "0x00bf55be", "name": "operator_new", "kind": "direct_call"}
+      ]
+    },
+    {
+      "address": "0x006d4dd0",
+      "original_name": "BSP_AirField_AppendIntactHangarsAsSubEntities",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::air_field_append_intact_hangars_as_sub_entities_006d4dd0",
+      "abi": "__thiscall(void* self, void* out_pointer_vec) -> void, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Walks 12-byte hangar records at +830h/+834h and appends non-null hangars with +370h > [00D7A218] via 004323d0.",
+      "steps": [
+        {"address": "0x006d4e13", "function": "0x006d4dd0", "native": "0x004323d0", "name": "BSP_PointerVector_PushBack", "kind": "direct_call"}
+      ]
+    },
+    {
+      "address": "0x006d4eb0",
+      "original_name": "BSP_AirOpsStockSnapshot_Read",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::air_ops_stock_snapshot_read_006d4eb0",
+      "abi": "__thiscall(void* self, void* stream) -> void, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Reads +4 (6 bits), resizes +8h via 006ca010 and reads 12-byte records, then resizes +18h via 006ca0f0 and reads 20-byte records from stream+4.",
+      "steps": [
+        {"address": "0x006d4eca", "function": "0x006d4eb0", "native": "0x00428d10", "name": "BSP_BitCursor_ReadUnsignedDword", "kind": "direct_call"},
+        {"address": "0x006d4ed8", "function": "0x006d4eb0", "native": "0x00428d10", "name": "BSP_BitCursor_ReadUnsignedDword", "kind": "direct_call"},
+        {"address": "0x006d4ef6", "function": "0x006d4eb0", "native": "0x006ca010", "name": "STL_Vector_Resize_006ca010", "kind": "direct_call"},
+        {"address": "0x006d4f30", "function": "0x006d4eb0", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006d4f3f", "function": "0x006d4eb0", "native": "0x00428d10", "name": "BSP_BitCursor_ReadUnsignedDword", "kind": "direct_call"},
+        {"address": "0x006d4f64", "function": "0x006d4eb0", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006d4f75", "function": "0x006d4eb0", "native": "0x00428d10", "name": "BSP_BitCursor_ReadUnsignedDword", "kind": "direct_call"},
+        {"address": "0x006d4f9a", "function": "0x006d4eb0", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006d4fab", "function": "0x006d4eb0", "native": "0x00428d10", "name": "BSP_BitCursor_ReadUnsignedDword", "kind": "direct_call"},
+        {"address": "0x006d4fcd", "function": "0x006d4eb0", "native": "0x00428d10", "name": "BSP_BitCursor_ReadUnsignedDword", "kind": "direct_call"},
+        {"address": "0x006d4ff1", "function": "0x006d4eb0", "native": "0x006ca0f0", "name": "STL_Vector_Resize_006ca0f0", "kind": "direct_call"},
+        {"address": "0x006d5025", "function": "0x006d4eb0", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006d5034", "function": "0x006d4eb0", "native": "0x00428d10", "name": "BSP_BitCursor_ReadUnsignedDword", "kind": "direct_call"},
+        {"address": "0x006d505a", "function": "0x006d4eb0", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006d506b", "function": "0x006d4eb0", "native": "0x00428d10", "name": "BSP_BitCursor_ReadUnsignedDword", "kind": "direct_call"},
+        {"address": "0x006d5091", "function": "0x006d4eb0", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006d50a2", "function": "0x006d4eb0", "native": "0x00428d10", "name": "BSP_BitCursor_ReadUnsignedDword", "kind": "direct_call"},
+        {"address": "0x006d50c8", "function": "0x006d4eb0", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006d50d9", "function": "0x006d4eb0", "native": "0x00428e30", "name": "BSP_BitCursor_ReadWordBits", "kind": "direct_call"},
+        {"address": "0x006d50ff", "function": "0x006d4eb0", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006d5110", "function": "0x006d4eb0", "native": "0x00428d10", "name": "BSP_BitCursor_ReadUnsignedDword", "kind": "direct_call"}
+      ]
+    },
+    {
+      "address": "0x006d5130",
+      "original_name": "BSP_SessionMessage_AIRFIELD_CREATE_Read",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::session_message_airfield_create_read_006d5130",
+      "abi": "__thiscall(void* self, void* stream) -> void, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Vtable 00CF8EBC slot +8h; calls 00767e30 and 006d4eb0, reads +140h/+144h via 004293f0, +138h count via 00428d10, allocates +13Ch via 00bf55be, and reads 6-byte hangar records.",
+      "steps": [
+        {"address": "0x006d513b", "function": "0x006d5130", "native": "0x00767e30", "name": "BSP_NetEntityCreateMessage_Read", "kind": "direct_call"},
+        {"address": "0x006d5147", "function": "0x006d5130", "native": "0x006d4eb0", "name": "BSP_AirOpsStockSnapshot_Read", "kind": "direct_call"},
+        {"address": "0x006d5169", "function": "0x006d5130", "native": "0x004293f0", "name": "BSP_BitCursor_ReadNumericFloat", "kind": "direct_call"},
+        {"address": "0x006d5186", "function": "0x006d5130", "native": "0x004293f0", "name": "BSP_BitCursor_ReadNumericFloat", "kind": "direct_call"},
+        {"address": "0x006d5196", "function": "0x006d5130", "native": "0x00428d10", "name": "BSP_BitCursor_ReadUnsignedDword", "kind": "direct_call"},
+        {"address": "0x006d51af", "function": "0x006d5130", "native": "0x00bf55be", "name": "operator_new", "kind": "direct_call"},
+        {"address": "0x006d51d3", "function": "0x006d5130", "native": "0x00428e30", "name": "BSP_BitCursor_ReadWordBits", "kind": "direct_call"},
+        {"address": "0x006d51e7", "function": "0x006d5130", "native": "0x00428e30", "name": "BSP_BitCursor_ReadWordBits", "kind": "direct_call"},
+        {"address": "0x006d51fb", "function": "0x006d5130", "native": "0x00428e30", "name": "BSP_BitCursor_ReadWordBits", "kind": "direct_call"}
+      ]
+    },
+    {
+      "address": "0x006d6010",
+      "original_name": "BSP_MarkerGroupVector_Clear",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::marker_group_vector_clear_006d6010",
+      "abi": "__thiscall(void* self, void* out_vec) -> void, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Erases out_vec via 006d3a50 and appends eligible 12-byte records from self+830h/+834h via 006d4e40.",
+      "steps": [
+        {"address": "0x006d6024", "function": "0x006d6010", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006d6032", "function": "0x006d6010", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006d6042", "function": "0x006d6010", "native": "0x006d3a50", "name": "STL_inst_006d3a50", "kind": "direct_call"},
+        {"address": "0x006d607d", "function": "0x006d6010", "native": "0x006d4e40", "name": "STL_Vector_PushBack_006d4e40", "kind": "direct_call"}
+      ]
+    },
+    {
+      "address": "0x006d6170",
+      "original_name": "BSP_Vec3_LexicographicLess",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::vec3_lexicographic_less_006d6170",
+      "abi": "__stdcall(const float* lhs, const float* rhs) -> bool, RET 0x8",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Lexicographic 3-float comparator on (x, y, z) for positionMarkers map.",
+      "steps": []
+    },
+    {
+      "address": "0x006d61f0",
+      "original_name": "BSP_MarkerInstance_Tick",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::marker_instance_tick_006d61f0",
+      "abi": "__thiscall(void* self, float delta) -> void, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Vtable 00CF8F68 slot 1; forwards to self vtable +8h.",
+      "steps": []
+    },
+    {
+      "address": "0x006d6200",
+      "original_name": "TRIV_body_006d6200",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::triv_body_006d6200",
+      "abi": "void(void), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Single-byte RET stub.",
+      "steps": []
+    },
+    {
+      "address": "0x006d7100",
+      "original_name": "TMPL_OwnedPtr_DeleteReset_006d7100",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::tmpl_owned_ptr_delete_reset_006d7100",
+      "abi": "__thiscall(void** self_slot) -> void, RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Deletes *self_slot through vslot +0h(1) when non-null and zeroes *self_slot.",
+      "steps": []
+    },
+    {
+      "address": "0x006d7120",
+      "original_name": "BSP_OwnedObjectPtr_Delete_006d7120",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::owned_object_ptr_delete_006d7120",
+      "abi": "__thiscall(void** self_slot) -> void, RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Deletes *self_slot through vslot +4h(1) when non-null and zeroes *self_slot.",
+      "steps": []
+    },
+    {
+      "address": "0x006d7140",
+      "original_name": "TMPL_OwnedPtr_DeleteReset_006d7140",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::tmpl_owned_ptr_delete_reset_006d7140",
+      "abi": "__thiscall(void** self_slot) -> void, RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Deletes *self_slot through vslot +0h(1) when non-null and zeroes *self_slot.",
+      "steps": []
+    },
+    {
+      "address": "0x006d74b0",
+      "original_name": "BSP_MarkerClasses_ResetLuaTable",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::marker_classes_reset_lua_table_006d74b0",
+      "abi": "__cdecl(void) -> void, RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Runs Lua chunk 00CF8F54 on [[00E188A8]+1A08h]+4 via 006b8ad0 with (0, 0, 2).",
+      "steps": [
+        {"address": "0x006d74c9", "function": "0x006d74b0", "native": "0x006b8ad0", "name": "BSP_LuaMachine_RunString", "kind": "direct_call"}
+      ]
+    },
+    {
+      "address": "0x006d74d0",
+      "original_name": "BSP_MarkerInstance_Destruct",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::marker_instance_destruct_006d74d0",
+      "abi": "__thiscall(void* self) -> void, RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Restores vtable 00CF8F68 and releases scene instance at +18h via vslot +4h(1).",
+      "steps": []
+    },
+    {
+      "address": "0x006d7fc0",
+      "original_name": "BSP_MarkerInstance_UpdatePose",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::marker_instance_update_pose_006d7fc0",
+      "abi": "__thiscall(void* self) -> void, RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Vtable 00CF8F68 slot 2; refreshes owner pose via 00414db0 if needed, computes animated transform (modes 1..4), and updates scene node via vslot +34h.",
+      "steps": [
+        {"address": "0x006d7fe9", "function": "0x006d7fc0", "native": "0x00414db0", "name": "BSP_EntityPose_RefreshWorld", "kind": "direct_call"},
+        {"address": "0x006d80c4", "function": "0x006d7fc0", "native": "0x00b64640", "name": "BSP_Matrix_BuildRotationX", "kind": "direct_call"},
+        {"address": "0x006d80ce", "function": "0x006d7fc0", "native": "0x004134f0", "name": "BSP_Matrix_Copy4x4X87", "kind": "direct_call"},
+        {"address": "0x006d80dc", "function": "0x006d7fc0", "native": "0x004134f0", "name": "BSP_Matrix_Copy4x4X87", "kind": "direct_call"},
+        {"address": "0x006d810a", "function": "0x006d7fc0", "native": "0x00b646e0", "name": "BSP_Matrix_BuildRotationY", "kind": "direct_call"},
+        {"address": "0x006d8114", "function": "0x006d7fc0", "native": "0x004134f0", "name": "BSP_Matrix_Copy4x4X87", "kind": "direct_call"},
+        {"address": "0x006d8122", "function": "0x006d7fc0", "native": "0x004134f0", "name": "BSP_Matrix_Copy4x4X87", "kind": "direct_call"},
+        {"address": "0x006d813d", "function": "0x006d7fc0", "native": "0x0042b4d0", "name": "BSP_Matrix_SetRotationZNegated", "kind": "direct_call"},
+        {"address": "0x006d8147", "function": "0x006d7fc0", "native": "0x004134f0", "name": "BSP_Matrix_Copy4x4X87", "kind": "direct_call"}
+      ]
+    },
+    {
+      "address": "0x006d8750",
+      "original_name": "BSP_MarkerInstance_Construct",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::marker_instance_construct_006d8750",
+      "abi": "__thiscall(void* self, void* descriptor, void* owner, float x, float y, float z) -> void*, RET 0x14",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Initializes MarkerInstance (vtable 00CF8F68), instantiates descriptor+14h via vslot +8h, propagates root via 00b6d890, initializes phase (0 or 00bd2f10), and calls 006d7fc0.",
+      "steps": [
+        {"address": "0x006d87ad", "function": "0x006d8750", "native": "0x00b6d890", "name": "BSP_Node_PropagateRootRegistration", "kind": "direct_call"},
+        {"address": "0x006d87c5", "function": "0x006d8750", "native": "0x006d7fc0", "name": "BSP_MarkerInstance_UpdatePose", "kind": "direct_call"},
+        {"address": "0x006d87e7", "function": "0x006d8750", "native": "0x00bd2f10", "name": "BSP_Random_UniformFloatRange", "kind": "direct_call"},
+        {"address": "0x006d87fd", "function": "0x006d8750", "native": "0x006d7fc0", "name": "BSP_MarkerInstance_UpdatePose", "kind": "direct_call"}
+      ]
+    },
+    {
+      "address": "0x006d8c70",
+      "original_name": "BSP_MarkerClass_CreateInstance",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::marker_class_create_instance_006d8c70",
+      "abi": "__thiscall(void* self_descriptor, void* owner, float x, float y, float z) -> void*, RET 0x10",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Allocates 20h bytes via 00bf681b and constructs MarkerInstance via 006d8750 when non-null.",
+      "steps": [
+        {"address": "0x006d8c8d", "function": "0x006d8c70", "native": "0x00bf681b", "name": "operator_new", "kind": "direct_call"},
+        {"address": "0x006d8cd6", "function": "0x006d8c70", "native": "0x006d8750", "name": "BSP_MarkerInstance_Construct", "kind": "direct_call"}
+      ]
+    },
+    {
+      "address": "0x006d8e50",
+      "original_name": "BSP_NativeString_DestroyStorage_006d8e50",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::native_string_destroy_storage_006d8e50",
+      "abi": "__thiscall(void* self_string) -> void, RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Returns non-null NativeString buffer (data, length+1, 1) to singleton pool via 00419cc0 and 00bd1510.",
+      "steps": [
+        {"address": "0x006d8e60", "function": "0x006d8e50", "native": "0x00419cc0", "name": "BSP_SizedStoragePool_GetSingleton", "kind": "direct_call"},
+        {"address": "0x006d8e67", "function": "0x006d8e50", "native": "0x00bd1510", "name": "BSP_SizedStoragePool_ReturnBlock", "kind": "direct_call"}
+      ]
+    },
+    {
+      "address": "0x006d8e70",
+      "original_name": "BSP_NativeString_DestroyStorage_006d8e70",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::native_string_destroy_storage_006d8e70",
+      "abi": "__thiscall(void* self_string) -> void, RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Returns non-null NativeString buffer (data, length+1, 1) to singleton pool via 00419cc0 and 00bd1510.",
+      "steps": [
+        {"address": "0x006d8e80", "function": "0x006d8e70", "native": "0x00419cc0", "name": "BSP_SizedStoragePool_GetSingleton", "kind": "direct_call"},
+        {"address": "0x006d8e87", "function": "0x006d8e70", "native": "0x00bd1510", "name": "BSP_SizedStoragePool_ReturnBlock", "kind": "direct_call"}
+      ]
+    },
+    {
+      "address": "0x006d9140",
+      "original_name": "BSP_NamedValue_Construct_006d9140",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::named_value_construct_006d9140",
+      "abi": "__thiscall(void* self, const void* name_str, const uint32_t* value_ptr) -> void*, RET 0x8",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Copies NativeString name via 0041dd40 and memcpy when non-aliased and stores *value_ptr at +8h.",
+      "steps": [
+        {"address": "0x006d915e", "function": "0x006d9140", "native": "0x0041dd40", "name": "BSP_NativeString_Resize", "kind": "direct_call"},
+        {"address": "0x006d9173", "function": "0x006d9140", "native": "0x00bf7680", "name": "_memcpy", "kind": "direct_call"}
+      ]
+    },
+    {
+      "address": "0x006d9190",
+      "original_name": "BSP_NamedValue_Construct_006d9190",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::named_value_construct_006d9190",
+      "abi": "__thiscall(void* self, const void* name_str, const uint32_t* value_ptr) -> void*, RET 0x8",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Copies NativeString name via 0041dd40 and memcpy when non-aliased and stores *value_ptr at +8h.",
+      "steps": [
+        {"address": "0x006d91ae", "function": "0x006d9190", "native": "0x0041dd40", "name": "BSP_NativeString_Resize", "kind": "direct_call"},
+        {"address": "0x006d91c3", "function": "0x006d9190", "native": "0x00bf7680", "name": "_memcpy", "kind": "direct_call"}
+      ]
+    },
+    {
+      "address": "0x006d91e0",
+      "original_name": "BSP_NamedValue_CopyConstruct_006d91e0",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::named_value_copy_construct_006d91e0",
+      "abi": "__thiscall(void* self, const void* other) -> void*, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Copies NativeString prefix via 0041dd40 and memcpy and copies +8h dword.",
+      "steps": [
+        {"address": "0x006d91fe", "function": "0x006d91e0", "native": "0x0041dd40", "name": "BSP_NativeString_Resize", "kind": "direct_call"},
+        {"address": "0x006d9213", "function": "0x006d91e0", "native": "0x00bf7680", "name": "_memcpy", "kind": "direct_call"}
+      ]
+    },
+    {
+      "address": "0x006d9230",
+      "original_name": "BSP_NamedValue_CopyConstruct_006d9230",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::named_value_copy_construct_006d9230",
+      "abi": "__thiscall(void* self, const void* other) -> void*, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Copies NativeString prefix via 0041dd40 and memcpy and copies +8h dword.",
+      "steps": [
+        {"address": "0x006d924e", "function": "0x006d9230", "native": "0x0041dd40", "name": "BSP_NativeString_Resize", "kind": "direct_call"},
+        {"address": "0x006d9263", "function": "0x006d9230", "native": "0x00bf7680", "name": "_memcpy", "kind": "direct_call"}
+      ]
+    },
+    {
+      "address": "0x006d9300",
+      "original_name": "BSP_GuiElement_BuildPath",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::gui_element_build_path_006d9300",
+      "abi": "__fastcall(void* out_string, void* element) -> void*, RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Walks parent chain (+70h), prepending separator 00CE3A70 and vslot +28h name via 004261a0, then takes substring(1, 0x7fffffff) via 00469840 and releases temporaries.",
+      "steps": [
+        {"address": "0x006d935a", "function": "0x006d9300", "native": "0x0041dd40", "name": "BSP_NativeString_Resize", "kind": "direct_call"},
+        {"address": "0x006d9375", "function": "0x006d9300", "native": "0x00bf7680", "name": "_memcpy", "kind": "direct_call"},
+        {"address": "0x006d9395", "function": "0x006d9300", "native": "0x004261a0", "name": "BSP_NativeString_Concat", "kind": "direct_call"},
+        {"address": "0x006d93ab", "function": "0x006d9300", "native": "0x004261a0", "name": "BSP_NativeString_Concat", "kind": "direct_call"},
+        {"address": "0x006d93c6", "function": "0x006d9300", "native": "0x0041dd40", "name": "BSP_NativeString_Resize", "kind": "direct_call"},
+        {"address": "0x006d93dd", "function": "0x006d9300", "native": "0x00bf7680", "name": "_memcpy", "kind": "direct_call"},
+        {"address": "0x006d93fd", "function": "0x006d9300", "native": "0x00419cc0", "name": "BSP_SizedStoragePool_GetSingleton", "kind": "direct_call"},
+        {"address": "0x006d9404", "function": "0x006d9300", "native": "0x00bd1510", "name": "BSP_SizedStoragePool_ReturnBlock", "kind": "direct_call"},
+        {"address": "0x006d9421", "function": "0x006d9300", "native": "0x00419cc0", "name": "BSP_SizedStoragePool_GetSingleton", "kind": "direct_call"},
+        {"address": "0x006d9428", "function": "0x006d9300", "native": "0x00bd1510", "name": "BSP_SizedStoragePool_ReturnBlock", "kind": "direct_call"},
+        {"address": "0x006d9441", "function": "0x006d9300", "native": "0x00419cc0", "name": "BSP_SizedStoragePool_GetSingleton", "kind": "direct_call"},
+        {"address": "0x006d9448", "function": "0x006d9300", "native": "0x00bd1510", "name": "BSP_SizedStoragePool_ReturnBlock", "kind": "direct_call"},
+        {"address": "0x006d946c", "function": "0x006d9300", "native": "0x00469840", "name": "BSP_NativeString_Substring", "kind": "direct_call"},
+        {"address": "0x006d948c", "function": "0x006d9300", "native": "0x00419cc0", "name": "BSP_SizedStoragePool_GetSingleton", "kind": "direct_call"},
+        {"address": "0x006d9493", "function": "0x006d9300", "native": "0x00bd1510", "name": "BSP_SizedStoragePool_ReturnBlock", "kind": "direct_call"}
+      ]
+    },
+    {
+      "address": "0x006dae20",
+      "original_name": "BSP_MarkerManager_AddGuiHighlight",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::marker_manager_add_gui_highlight_006dae20",
+      "abi": "__thiscall(void* self, void* gui_element, uint8_t recursive_flag, uint8_t color_mode_flag) -> void, RET 0xc",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Inserts gui_element into +38h (when recursive_flag != 0), +44h (when color_mode_flag != 0), or +2Ch via 006da5b0 and resets pulse clock [00E19970].",
+      "steps": [
+        {"address": "0x006dae37", "function": "0x006dae20", "native": "0x006da5b0", "name": "STL_inst_006da5b0", "kind": "direct_call"},
+        {"address": "0x006dae6f", "function": "0x006dae20", "native": "0x006da5b0", "name": "STL_inst_006da5b0", "kind": "direct_call"}
+      ]
+    },
+    {
+      "address": "0x006db3f0",
+      "original_name": "BSP_GuiElement_CollectDescendants",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::gui_element_collect_descendants_006db3f0",
+      "abi": "__fastcall(void* root_element, void* out_vec) -> void, RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Seeds out_vec via 0052ed20 and breadth-first appends child lists (+64h/+68h) bounded by 00519d50.",
+      "steps": [
+        {"address": "0x006db40a", "function": "0x006db3f0", "native": "0x0052ed20", "name": "BSP_CreditsScreen_PushWidget", "kind": "direct_call"},
+        {"address": "0x006db417", "function": "0x006db3f0", "native": "0x00519d50", "name": "STL_Vector_Size_00519d50", "kind": "direct_call"},
+        {"address": "0x006db43d", "function": "0x006db3f0", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006db45b", "function": "0x006db3f0", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006db469", "function": "0x006db3f0", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006db4ab", "function": "0x006db3f0", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006db4ba", "function": "0x006db3f0", "native": "0x0052eb90", "name": "STL_Vector_InsertOne_0052eb90", "kind": "direct_call"},
+        {"address": "0x006db4c8", "function": "0x006db3f0", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006db4de", "function": "0x006db3f0", "native": "0x00519d50", "name": "STL_Vector_Size_00519d50", "kind": "direct_call"}
+      ]
+    },
+    {
+      "address": "0x006dbac0",
+      "original_name": "BSP_GuiElement_ApplyHighlightPulse",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::gui_element_apply_highlight_pulse_006dbac0",
+      "abi": "register ECX=element, DL=enable; stack(uint8_t recursive_flag, uint8_t color_mode_flag, float scale), RET 0xc",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Computes |cos| pulse and either scales RGBA alpha via vslots +54h/+50h or writes element+94h and optionally propagates to descendants from 006db3f0.",
+      "steps": [
+        {"address": "0x006dbbb6", "function": "0x006dbac0", "native": "0x006db3f0", "name": "BSP_GuiElement_CollectDescendants", "kind": "direct_call"},
+        {"address": "0x006dbbec", "function": "0x006dbac0", "native": "0x00bf65ac", "name": "_free", "kind": "direct_call"}
+      ]
+    },
+    {
+      "address": "0x006dc5a0",
+      "original_name": "BSP_MarkerManager_RemoveGuiHighlight",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::marker_manager_remove_gui_highlight_006dc5a0",
+      "abi": "__thiscall(void* self, void* gui_element) -> void, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Finds and erases gui_element from +2Ch, +38h, and +44h highlight trees via 006d8870/006d9bf0, resetting +94h, recursive pulse (006dbac0), or RGBA alpha.",
+      "steps": [
+        {"address": "0x006dc5cd", "function": "0x006dc5a0", "native": "0x006d8870", "name": "STL_Tree_Find_006d8870", "kind": "direct_call"},
+        {"address": "0x006dc5e1", "function": "0x006dc5a0", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006dc609", "function": "0x006dc5a0", "native": "0x006d9bf0", "name": "STL_xlen_throw_006d9bf0", "kind": "direct_call"},
+        {"address": "0x006dc61d", "function": "0x006dc5a0", "native": "0x006d8870", "name": "STL_Tree_Find_006d8870", "kind": "direct_call"},
+        {"address": "0x006dc63a", "function": "0x006dc5a0", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006dc652", "function": "0x006dc5a0", "native": "0x006d9bf0", "name": "STL_xlen_throw_006d9bf0", "kind": "direct_call"},
+        {"address": "0x006dc665", "function": "0x006dc5a0", "native": "0x006dbac0", "name": "BSP_GuiElement_ApplyHighlightPulse", "kind": "direct_call"},
+        {"address": "0x006dc679", "function": "0x006dc5a0", "native": "0x006d8870", "name": "STL_Tree_Find_006d8870", "kind": "direct_call"},
+        {"address": "0x006dc692", "function": "0x006dc5a0", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006dc6a6", "function": "0x006dc5a0", "native": "0x006d9bf0", "name": "STL_xlen_throw_006d9bf0", "kind": "direct_call"}
+      ]
+    },
+    {
+      "address": "0x006dda40",
+      "original_name": "BSP_MarkerManager_ForgetEntity",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::marker_manager_forget_entity_006dda40",
+      "abi": "__thiscall(void* self, uint32_t entity_id) -> void, RET 0x4",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Finds entity_id in +14h via 006d8d10, deletes each inner marker instance via vslot +0h(1) while iterating with 006d7d20, and erases the outer entry via 006dd1f0.",
+      "steps": [
+        {"address": "0x006dda62", "function": "0x006dda40", "native": "0x006d8d10", "name": "STL_Tree_Find_006d8d10", "kind": "direct_call"},
+        {"address": "0x006dda76", "function": "0x006dda40", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006dda8b", "function": "0x006dda40", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006dda95", "function": "0x006dda40", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006ddab9", "function": "0x006dda40", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006ddac9", "function": "0x006dda40", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006ddad6", "function": "0x006dda40", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006ddae0", "function": "0x006dda40", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006ddaff", "function": "0x006dda40", "native": "0x006d7d20", "name": "STL_TreeIter_Inc_006d7d20", "kind": "direct_call"},
+        {"address": "0x006ddb25", "function": "0x006dda40", "native": "0x006dd1f0", "name": "STL_xlen_throw_006dd1f0", "kind": "direct_call"}
+      ]
+    },
+    {
+      "address": "0x006de3d0",
+      "original_name": "BSP_MarkerManager_BindUnitMarkerStub",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::marker_manager_bind_unit_marker_stub_006de3d0",
+      "abi": "__thiscall(void* self, uint32_t arg0, uint32_t arg1) -> void, RET 0x8",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Empty RET 0x8 stub.",
+      "steps": []
+    },
+    {
+      "address": "0x006de3e0",
+      "original_name": "TRIV_body_006de3e0",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::triv_body_006de3e0",
+      "abi": "__thiscall(void* self, uint32_t arg0, float x, float y, float z) -> void, RET 0x10",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Empty RET 0x10 stub.",
+      "steps": []
+    },
+    {
+      "address": "0x006de4c0",
+      "original_name": "BSP_MarkerManager_ClearPositionMarker",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::marker_manager_clear_position_marker_006de4c0",
+      "abi": "__thiscall(void* self, const void* name_str, float x, float y, float z) -> void, RET 0x10",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Resolves position slot in +20h via 006de150 and 006dbd40, deletes non-null marker via vslot +0h(1), and zeroes the slot.",
+      "steps": [
+        {"address": "0x006de4ce", "function": "0x006de4c0", "native": "0x006de150", "name": "STL_Map_Subscript_006de150", "kind": "direct_call"},
+        {"address": "0x006de4d5", "function": "0x006de4c0", "native": "0x006dbd40", "name": "STL_Map_Subscript_006dbd40", "kind": "direct_call"}
+      ]
+    },
+    {
+      "address": "0x006deac0",
+      "original_name": "BSP_MarkerManager_Destruct",
+      "symbol": "bsp::airfield_marker_seg31_32_argon::marker_manager_destruct_006deac0",
+      "abi": "__thiscall(void* self) -> void, RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/airfield_marker_seg31_32_argon.cpp",
+      "header_file": "include/bsp/airfield_marker_seg31_32_argon.hpp",
+      "summary": "Restores vtable 00CF8FF8, drains +2Ch/+38h/+44h highlights via 006dc5a0, erases and frees all five trees via 006da090/006de300/006ddf00 and 00bf65ac, and calls 00695870.",
+      "steps": [
+        {"address": "0x006deb01", "function": "0x006deac0", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006deb0c", "function": "0x006deac0", "native": "0x006dc5a0", "name": "BSP_MarkerManager_RemoveGuiHighlight", "kind": "direct_call"},
+        {"address": "0x006deb29", "function": "0x006deac0", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006deb34", "function": "0x006deac0", "native": "0x006dc5a0", "name": "BSP_MarkerManager_RemoveGuiHighlight", "kind": "direct_call"},
+        {"address": "0x006deb4c", "function": "0x006deac0", "native": "0x00bf6713", "name": "LIBCRT_unmatched_00bf6713", "kind": "direct_call"},
+        {"address": "0x006deb57", "function": "0x006deac0", "native": "0x006dc5a0", "name": "BSP_MarkerManager_RemoveGuiHighlight", "kind": "direct_call"},
+        {"address": "0x006deb79", "function": "0x006deac0", "native": "0x006da090", "name": "STL_Tree_EraseRange_006da090", "kind": "direct_call"},
+        {"address": "0x006deb82", "function": "0x006deac0", "native": "0x00bf65ac", "name": "_free", "kind": "direct_call"},
+        {"address": "0x006deba8", "function": "0x006deac0", "native": "0x006da090", "name": "STL_Tree_EraseRange_006da090", "kind": "direct_call"},
+        {"address": "0x006debb1", "function": "0x006deac0", "native": "0x00bf65ac", "name": "_free", "kind": "direct_call"},
+        {"address": "0x006debd7", "function": "0x006deac0", "native": "0x006da090", "name": "STL_Tree_EraseRange_006da090", "kind": "direct_call"},
+        {"address": "0x006debe0", "function": "0x006deac0", "native": "0x00bf65ac", "name": "_free", "kind": "direct_call"},
+        {"address": "0x006dec06", "function": "0x006deac0", "native": "0x006de300", "name": "STL_Tree_EraseRange_006de300", "kind": "direct_call"},
+        {"address": "0x006dec0f", "function": "0x006deac0", "native": "0x00bf65ac", "name": "_free", "kind": "direct_call"},
+        {"address": "0x006dec34", "function": "0x006deac0", "native": "0x006ddf00", "name": "STL_Tree_EraseRange_006ddf00", "kind": "direct_call"},
+        {"address": "0x006dec3d", "function": "0x006deac0", "native": "0x00bf65ac", "name": "_free", "kind": "direct_call"},
+        {"address": "0x006dec55", "function": "0x006deac0", "native": "0x00695870", "name": "BSP_CallbackOwner_Destroy", "kind": "direct_call"}
+      ]
+    }
+  ]
+}

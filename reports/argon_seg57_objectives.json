@@ -1,0 +1,2424 @@
+{
+  "packet": "argon-v2-seg57",
+  "segment": 57,
+  "header": "include/bsp/objectives_seg57_argon.hpp",
+  "source": "src/objectives_seg57_argon.cpp",
+  "doc": "docs/ARGON_SEG57_OBJECTIVES.md",
+  "functions": [
+    {
+      "address": "0x008dd380",
+      "name": "native_string_release_storage_008dd380",
+      "cpp_symbol": "bsp::objectives_seg57_argon::native_string_release_storage_008dd380",
+      "original_name": "BSP_NativeString_ReleaseStorage_008dd380",
+      "original_abi": "__fastcall (ECX = NativeString* self), RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "When data (+0x04) is non-null, returns (data, length + 1, 1) to the sized storage pool singleton 0x00419cc0 / 0x00bd1510. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008dd390",
+          "function": "0x008dd380",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dd397",
+          "function": "0x008dd380",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008dd460",
+      "name": "objective_sounds_play_throttled_008dd460",
+      "cpp_symbol": "bsp::objectives_seg57_argon::objective_sounds_play_throttled_008dd460",
+      "original_name": "BSP_ObjectiveSounds_PlayThrottled",
+      "original_abi": "__thiscall (ECX = ObjectiveSounds* self, [ESP+4] = int sample_index), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Throttles objective sound playback by comparing self+0x18 + [0x00d7a210] against clock [0x00f876a4], lazily resolves class 'InGameGUI' into [0x00f88c18], plays self[sample_index] as type 'Normal' via 0x00a7e490, releases the tracked sound reference, and updates self+0x18. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008dd4b7",
+          "function": "0x008dd460",
+          "native": "0x0041e870",
+          "name": "BSP_NativeString_Assign",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dd4cc",
+          "function": "0x008dd460",
+          "native": "0x00a7acf0",
+          "name": "BSP_SoundManager_FindClassByName",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dd4ee",
+          "function": "0x008dd460",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dd4f5",
+          "function": "0x008dd460",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dd50d",
+          "function": "0x008dd460",
+          "native": "0x0041e870",
+          "name": "BSP_NativeString_Assign",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dd531",
+          "function": "0x008dd460",
+          "native": "0x00a7b0a0",
+          "name": "BSP_SoundManager_FindTypeByName",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dd545",
+          "function": "0x008dd460",
+          "native": "0x00a7e490",
+          "name": "BSP_SoundManager_CreateTrackedSound",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dd58f",
+          "function": "0x008dd460",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dd596",
+          "function": "0x008dd460",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008dd5c0",
+      "name": "objective_construct_008dd5c0",
+      "cpp_symbol": "bsp::objectives_seg57_argon::objective_construct_008dd5c0",
+      "original_name": "BSP_Objective_Construct",
+      "original_abi": "__thiscall (ECX = Objective* self, const NativeString* id, const NativeString* text, int kind, uint8_t quiet_flag), RET 0x10",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Constructs an 0x2c-byte Objective with vtable 0x00d16038, allocates the entry-pointer list sentinel at +0x24 via 0x008db4f0, copies id (+0x04) and text (+0x0c) via 0x0041dd40 and memcpy, and initializes quiet (+0x14), kind (+0x18), and state=0 (+0x1c). (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008dd606",
+          "function": "0x008dd5c0",
+          "native": "0x008db4f0",
+          "name": "STL_PointerList_AllocateSentinel_008db4f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dd62a",
+          "function": "0x008dd5c0",
+          "native": "0x0041dd40",
+          "name": "BSP_NativeString_Resize",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dd640",
+          "function": "0x008dd5c0",
+          "native": "0x00bf7680",
+          "name": "_memcpy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dd657",
+          "function": "0x008dd5c0",
+          "native": "0x0041dd40",
+          "name": "BSP_NativeString_Resize",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dd66c",
+          "function": "0x008dd5c0",
+          "native": "0x00bf7680",
+          "name": "_memcpy",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008dd6a0",
+      "name": "session_message56_construct_obj_add_008dd6a0",
+      "cpp_symbol": "bsp::objectives_seg57_argon::session_message56_construct_obj_add_008dd6a0",
+      "original_name": "BSP_SessionMessage56_ConstructObjAdd",
+      "original_abi": "__thiscall (ECX = SessionMessage56* self, const Objective* objective), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Constructs MT_OBJ_ADD (0x38, vtable 0x00d16050) via 0x0075b430 and copies the objective id (+0x18), text (+0x20), kind (+0x28), and quiet flag (+0x2c). (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008dd6c2",
+          "function": "0x008dd6a0",
+          "native": "0x0075b430",
+          "name": "BSP_SessionMessage_ConstructBase",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dd702",
+          "function": "0x008dd6a0",
+          "native": "0x0041dd40",
+          "name": "BSP_NativeString_Resize",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dd718",
+          "function": "0x008dd6a0",
+          "native": "0x00bf7680",
+          "name": "_memcpy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dd732",
+          "function": "0x008dd6a0",
+          "native": "0x0041dd40",
+          "name": "BSP_NativeString_Resize",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dd747",
+          "function": "0x008dd6a0",
+          "native": "0x00bf7680",
+          "name": "_memcpy",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008dd780",
+      "name": "session_message57_construct_obj_add_entity_008dd780",
+      "cpp_symbol": "bsp::objectives_seg57_argon::session_message57_construct_obj_add_entity_008dd780",
+      "original_name": "BSP_SessionMessage57_ConstructObjAddEntity",
+      "original_abi": "__thiscall (ECX = SessionMessage57* self, const NativeString* name, const Entity* entity), RET 0x8",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Constructs MT_OBJ_ADD_ENTITY (0x39, vtable 0x00d16064) via 0x0075b430, copies the objective name into +0x18, and copies the 16-bit network handle from entity+0x174 into +0x20. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008dd7a1",
+          "function": "0x008dd780",
+          "native": "0x0075b430",
+          "name": "BSP_SessionMessage_ConstructBase",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dd7da",
+          "function": "0x008dd780",
+          "native": "0x0041dd40",
+          "name": "BSP_NativeString_Resize",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dd7ef",
+          "function": "0x008dd780",
+          "native": "0x00bf7680",
+          "name": "_memcpy",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008dd820",
+      "name": "session_message58_construct_obj_remove_entity_008dd820",
+      "cpp_symbol": "bsp::objectives_seg57_argon::session_message58_construct_obj_remove_entity_008dd820",
+      "original_name": "BSP_SessionMessage58_ConstructObjRemoveEntity",
+      "original_abi": "__thiscall (ECX = SessionMessage58* self, const NativeString* name, const Entity* entity), RET 0x8",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Constructs MT_OBJ_REMOVE_ENTITY (0x3a, vtable 0x00d16078) via 0x0075b430, copies the objective name into +0x18, and copies entity+0x174 into +0x20. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008dd841",
+          "function": "0x008dd820",
+          "native": "0x0075b430",
+          "name": "BSP_SessionMessage_ConstructBase",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dd87a",
+          "function": "0x008dd820",
+          "native": "0x0041dd40",
+          "name": "BSP_NativeString_Resize",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dd88f",
+          "function": "0x008dd820",
+          "native": "0x00bf7680",
+          "name": "_memcpy",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008dd8c0",
+      "name": "session_message59_construct_obj_add_position_008dd8c0",
+      "cpp_symbol": "bsp::objectives_seg57_argon::session_message59_construct_obj_add_position_008dd8c0",
+      "original_name": "BSP_SessionMessage59_ConstructObjAddPosition",
+      "original_abi": "__thiscall (ECX = SessionMessage59* self, const NativeString* name, const float* pos3), RET 0x8",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Constructs MT_OBJ_ADD_POSITION (0x3b, vtable 0x00d1608c) via 0x0075b430, copies the objective name into +0x18, and copies the 3-float position into +0x20..+0x28. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008dd8e1",
+          "function": "0x008dd8c0",
+          "native": "0x0075b430",
+          "name": "BSP_SessionMessage_ConstructBase",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dd91a",
+          "function": "0x008dd8c0",
+          "native": "0x0041dd40",
+          "name": "BSP_NativeString_Resize",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dd92f",
+          "function": "0x008dd8c0",
+          "native": "0x00bf7680",
+          "name": "_memcpy",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008dd970",
+      "name": "session_message60_construct_obj_remove_position_008dd970",
+      "cpp_symbol": "bsp::objectives_seg57_argon::session_message60_construct_obj_remove_position_008dd970",
+      "original_name": "BSP_SessionMessage60_ConstructObjRemovePosition",
+      "original_abi": "__thiscall (ECX = SessionMessage60* self, const NativeString* name, const float* pos3), RET 0x8",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Constructs MT_OBJ_REMOVE_POSITION (0x3c, vtable 0x00d160a0) via 0x0075b430, copies the objective name into +0x18, and copies the 3-float position into +0x20..+0x28. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008dd991",
+          "function": "0x008dd970",
+          "native": "0x0075b430",
+          "name": "BSP_SessionMessage_ConstructBase",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dd9ca",
+          "function": "0x008dd970",
+          "native": "0x0041dd40",
+          "name": "BSP_NativeString_Resize",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dd9df",
+          "function": "0x008dd970",
+          "native": "0x00bf7680",
+          "name": "_memcpy",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008dda20",
+      "name": "session_message61_construct_obj_completed_008dda20",
+      "cpp_symbol": "bsp::objectives_seg57_argon::session_message61_construct_obj_completed_008dda20",
+      "original_name": "BSP_SessionMessage61_ConstructObjCompleted",
+      "original_abi": "__thiscall (ECX = SessionMessage61* self, const Objective* objective, const NativeString* comment, uint8_t silent_flag), RET 0xc",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Constructs MT_OBJ_COMPLETED (0x3d, vtable 0x00d160b4) via 0x0075b430, copies objective+0x04 into +0x18 and comment into +0x20, and stores silent_flag at +0x28. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008dda42",
+          "function": "0x008dda20",
+          "native": "0x0075b430",
+          "name": "BSP_SessionMessage_ConstructBase",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dda82",
+          "function": "0x008dda20",
+          "native": "0x0041dd40",
+          "name": "BSP_NativeString_Resize",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dda98",
+          "function": "0x008dda20",
+          "native": "0x00bf7680",
+          "name": "_memcpy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ddaaf",
+          "function": "0x008dda20",
+          "native": "0x0041dd40",
+          "name": "BSP_NativeString_Resize",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ddac4",
+          "function": "0x008dda20",
+          "native": "0x00bf7680",
+          "name": "_memcpy",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008ddb00",
+      "name": "session_message62_construct_obj_failed_008ddb00",
+      "cpp_symbol": "bsp::objectives_seg57_argon::session_message62_construct_obj_failed_008ddb00",
+      "original_name": "BSP_SessionMessage62_ConstructObjFailed",
+      "original_abi": "__thiscall (ECX = SessionMessage62* self, const Objective* objective, const NativeString* comment, uint8_t silent_flag), RET 0xc",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Constructs MT_OBJ_FAILED (0x3e, vtable 0x00d160c8) via 0x0075b430, copies objective+0x04 into +0x18 and comment into +0x20, and stores silent_flag at +0x28. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008ddb22",
+          "function": "0x008ddb00",
+          "native": "0x0075b430",
+          "name": "BSP_SessionMessage_ConstructBase",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ddb62",
+          "function": "0x008ddb00",
+          "native": "0x0041dd40",
+          "name": "BSP_NativeString_Resize",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ddb78",
+          "function": "0x008ddb00",
+          "native": "0x00bf7680",
+          "name": "_memcpy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ddb8f",
+          "function": "0x008ddb00",
+          "native": "0x0041dd40",
+          "name": "BSP_NativeString_Resize",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ddba4",
+          "function": "0x008ddb00",
+          "native": "0x00bf7680",
+          "name": "_memcpy",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008ddbe0",
+      "name": "objective_sync_describe_objectives_008ddbe0",
+      "cpp_symbol": "bsp::objectives_seg57_argon::objective_sync_describe_objectives_008ddbe0",
+      "original_name": "BSP_ObjectiveSync_DescribeObjectives",
+      "original_abi": "__thiscall (ECX = ObjectiveSet* self, void* archive_writer), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Serializes the 'objectiveEntities' RB-tree (+0x18) and 'objectiveList' pointer list (+0x24) through archive_writer virtual slots +0x04/+0x08/+0x0c and 0x008dc210. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008ddc36",
+          "function": "0x008ddbe0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ddc45",
+          "function": "0x008ddbe0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ddc4f",
+          "function": "0x008ddbe0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ddc7d",
+          "function": "0x008ddbe0",
+          "native": "0x008da530",
+          "name": "STL_TreeIter_Inc_008da530",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ddcce",
+          "function": "0x008ddbe0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ddcdc",
+          "function": "0x008ddbe0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ddcfb",
+          "function": "0x008ddbe0",
+          "native": "0x008dc210",
+          "name": "BSP_MapPingEntry_DescribeProperties",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ddd0e",
+          "function": "0x008ddbe0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008ddd30",
+      "name": "objective_set_remove_position_from_named_objective_008ddd30",
+      "cpp_symbol": "bsp::objectives_seg57_argon::objective_set_remove_position_from_named_objective_008ddd30",
+      "original_name": "BSP_ObjectiveSet_RemovePositionFromNamedObjective",
+      "original_abi": "__thiscall (ECX = ObjectiveSet* self, const NativeString* name, float x, float y, float z), RET 0x10",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Replicates MT_OBJ_REMOVE_POSITION (0x008dd970 / 0x00770b50 / 0x008dce40) on host when peer is present, locates the named objective case-insensitively, removes matching position entries via 0x008dc500, and clears the 'SzurkeNyil' marker via 0x006de4c0. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008ddd7a",
+          "function": "0x008ddd30",
+          "native": "0x008dd970",
+          "name": "BSP_SessionMessage60_ConstructObjRemovePosition",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ddda2",
+          "function": "0x008ddd30",
+          "native": "0x00770b50",
+          "name": "BSP_Session_SendMessageToNonlocalPeer",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dddb3",
+          "function": "0x008ddd30",
+          "native": "0x008dce40",
+          "name": "BSP_SessionMessage60_Destroy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dddc7",
+          "function": "0x008ddd30",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dddd9",
+          "function": "0x008ddd30",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dde0a",
+          "function": "0x008ddd30",
+          "native": "0x00bf7fbf",
+          "name": "__stricmp",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dde20",
+          "function": "0x008ddd30",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dde2e",
+          "function": "0x008ddd30",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dde3b",
+          "function": "0x008ddd30",
+          "native": "0x008dc500",
+          "name": "FUN_008dc500",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dde58",
+          "function": "0x008ddd30",
+          "native": "0x0041dd40",
+          "name": "BSP_NativeString_Resize",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dde73",
+          "function": "0x008ddd30",
+          "native": "0x00bf7680",
+          "name": "_memcpy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ddebc",
+          "function": "0x008ddd30",
+          "native": "0x006de4c0",
+          "name": "BSP_MarkerManager_ClearPositionMarker",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ddedc",
+          "function": "0x008ddd30",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008ddee3",
+          "function": "0x008ddd30",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008ddf40",
+      "name": "objective_sync_apply_obj_remove_position_008ddf40",
+      "cpp_symbol": "bsp::objectives_seg57_argon::objective_sync_apply_obj_remove_position_008ddf40",
+      "original_name": "BSP_ObjectiveSync_ApplyObjRemovePosition",
+      "original_abi": "__thiscall (ECX = ObjectiveSet* self, const SessionMessage60* msg), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Unpacks msg+0x18 and the 3-float vector at msg+0x20..+0x28 and forwards to 0x008ddd30. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008ddf5e",
+          "function": "0x008ddf40",
+          "native": "0x008ddd30",
+          "name": "BSP_ObjectiveSet_RemovePositionFromNamedObjective",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008deb40",
+      "name": "objective_set_erase_named_entries_008deb40",
+      "cpp_symbol": "bsp::objectives_seg57_argon::objective_set_erase_named_entries_008deb40",
+      "original_name": "BSP_ObjectiveSet_EraseNamedEntries",
+      "original_abi": "__thiscall (ECX = void* tree, const void* key_ptr), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Computes equal_range via 0x008dbba0, counts matching nodes via 0x008db950, erases the range via 0x008de7e0, and returns the erased count. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008deb55",
+          "function": "0x008deb40",
+          "native": "0x008dbba0",
+          "name": "STL_inst_008dbba0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008deb80",
+          "function": "0x008deb40",
+          "native": "0x008db950",
+          "name": "STL_inst_008db950",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008deb97",
+          "function": "0x008deb40",
+          "native": "0x008de7e0",
+          "name": "STL_Tree_EraseRange_008de7e0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008debc0",
+      "name": "receive28_range_destroy_forward_008debc0",
+      "cpp_symbol": "bsp::objectives_seg57_argon::receive28_range_destroy_forward_008debc0",
+      "original_name": "BSP_Receive28Range_Destroy_Forward",
+      "original_abi": "__thiscall (ECX = void* self, void* first, void* last), RET 0x8",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Forwards (first, last, self, last) to 0x008de660 (STL_Receive28Range_Destroy_008de660). (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008debce",
+          "function": "0x008debc0",
+          "native": "0x008de660",
+          "name": "STL_Receive28Range_Destroy_008de660",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008dec10",
+      "name": "session_message55_entry_read_properties_008dec10",
+      "cpp_symbol": "bsp::objectives_seg57_argon::session_message55_entry_read_properties_008dec10",
+      "original_name": "BSP_SessionMessage55Entry_ReadProperties",
+      "original_abi": "__thiscall (ECX = Objective* self, void* archive_reader), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Constructs an Objective/SessionMessage55Entry (vtable 0x00d16038, sentinel via 0x008db4f0) and reads 'name', 'text', 'quiet', 'type', 'state', and the 'positions' list from archive_reader. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008dec58",
+          "function": "0x008dec10",
+          "native": "0x008db4f0",
+          "name": "STL_PointerList_AllocateSentinel_008db4f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dedc1",
+          "function": "0x008dec10",
+          "native": "0x00bf681b",
+          "name": "operator_new",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dedd9",
+          "function": "0x008dec10",
+          "native": "0x008db990",
+          "name": "BSP_ObjectiveEntry_SelectEntityOrPosKey_Provisional",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dedfa",
+          "function": "0x008dec10",
+          "native": "0x008db650",
+          "name": "STL_List_BuyNode4_008DB650",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dee07",
+          "function": "0x008dec10",
+          "native": "0x008de200",
+          "name": "STL_xlen_throw_008de200",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008def60",
+      "name": "objective_sync_destruct_008def60",
+      "cpp_symbol": "bsp::objectives_seg57_argon::objective_sync_destruct_008def60",
+      "original_name": "BSP_ObjectiveSync_Destruct",
+      "original_abi": "__fastcall (ECX = ObjectiveSet* self), RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Destroys an ObjectiveSet (vtable 0x00d1610c): calls 0x008dd1c0, destroys the objective list at +0x24 via 0x008db580, erases and frees the entity RB-tree at +0x18 via 0x008de7e0 and 0x00bf65ac, and destroys the base CallbackOwner via 0x00695870. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008def8e",
+          "function": "0x008def60",
+          "native": "0x008dd1c0",
+          "name": "FUN_008dd1c0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008def96",
+          "function": "0x008def60",
+          "native": "0x008db580",
+          "name": "STL_PointerList_Destroy_008db580",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008defb3",
+          "function": "0x008def60",
+          "native": "0x008de7e0",
+          "name": "STL_Tree_EraseRange_008de7e0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008defbc",
+          "function": "0x008def60",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008defdc",
+          "function": "0x008def60",
+          "native": "0x00695870",
+          "name": "BSP_CallbackOwner_Destroy",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008df000",
+      "name": "objective_sync_read_objectives_008df000",
+      "cpp_symbol": "bsp::objectives_seg57_argon::objective_sync_read_objectives_008df000",
+      "original_name": "BSP_ObjectiveSync_ReadObjectives",
+      "original_abi": "__thiscall (ECX = ObjectiveSet* self, void* archive_reader), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Reads 'objectiveEntities' (inserting into +0x18 via 0x008de6a0 and registering observer pairs via 0x00694af0/0x00694a60) and 'objectiveList' (allocating 0x2c-byte entries via 0x008dec10 and pushing via 0x008db6a0/0x008de2a0). (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008df0aa",
+          "function": "0x008df000",
+          "native": "0x008de6a0",
+          "name": "STL_SetPtr_Insert_008de6a0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df0b3",
+          "function": "0x008df000",
+          "native": "0x00694af0",
+          "name": "BSP_Observer_IsPairRegistered",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df0c0",
+          "function": "0x008df000",
+          "native": "0x00694a60",
+          "name": "BSP_Observer_RegisterPair",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df140",
+          "function": "0x008df000",
+          "native": "0x00bf681b",
+          "name": "operator_new",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df15b",
+          "function": "0x008df000",
+          "native": "0x008dec10",
+          "name": "BSP_SessionMessage55Entry_ReadProperties",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df182",
+          "function": "0x008df000",
+          "native": "0x008db6a0",
+          "name": "STL_List_BuyNode4_008DB6A0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df18d",
+          "function": "0x008df000",
+          "native": "0x008de2a0",
+          "name": "STL_List_CheckedSizeAdd_008de2a0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008df1e0",
+      "name": "objective_sync_detach_observers_008df1e0",
+      "cpp_symbol": "bsp::objectives_seg57_argon::objective_sync_detach_observers_008df1e0",
+      "original_name": "BSP_ObjectiveSync_DetachObservers",
+      "original_abi": "__thiscall (ECX = ObjectiveSet* self, void* entity), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Unregisters the (entity, self) observer pair via 0x00694af0/0x006952a0, erases entity entries from every objective in +0x24 via 0x008dc3e0, and erases entity from the RB-tree at +0x18. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008df1f5",
+          "function": "0x008df1e0",
+          "native": "0x00694af0",
+          "name": "BSP_Observer_IsPairRegistered",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df202",
+          "function": "0x008df1e0",
+          "native": "0x006952a0",
+          "name": "BSP_Observer_UnregisterPair",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df217",
+          "function": "0x008df1e0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df225",
+          "function": "0x008df1e0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df22e",
+          "function": "0x008df1e0",
+          "native": "0x008dc3e0",
+          "name": "BSP_Objective_EraseUnitEntries",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df238",
+          "function": "0x008df1e0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df258",
+          "function": "0x008df1e0",
+          "native": "0x008dbba0",
+          "name": "STL_inst_008dbba0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df283",
+          "function": "0x008df1e0",
+          "native": "0x008db950",
+          "name": "STL_inst_008db950",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df29a",
+          "function": "0x008df1e0",
+          "native": "0x008de7e0",
+          "name": "STL_Tree_EraseRange_008de7e0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008df400",
+      "name": "objective_set_remove_unit_from_named_objective_008df400",
+      "cpp_symbol": "bsp::objectives_seg57_argon::objective_set_remove_unit_from_named_objective_008df400",
+      "original_name": "BSP_ObjectiveSet_RemoveUnitFromNamedObjective",
+      "original_abi": "__thiscall (ECX = ObjectiveSet* self, const NativeString* name, void* entity), RET 0x8",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Erases entity from the matching named objective via 0x008dc3e0 while checking remaining active objectives via 0x008dc4a0; if no longer referenced, unregisters the observer pair, erases from +0x18 via 0x008deb40, and drops the 'SzurkeNyil' unit marker via 0x006de3f0. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008df438",
+          "function": "0x008df400",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df44a",
+          "function": "0x008df400",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df47b",
+          "function": "0x008df400",
+          "native": "0x00bf7fbf",
+          "name": "__stricmp",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df491",
+          "function": "0x008df400",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df49e",
+          "function": "0x008df400",
+          "native": "0x008dc3e0",
+          "name": "BSP_Objective_EraseUnitEntries",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df4aa",
+          "function": "0x008df400",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df4bd",
+          "function": "0x008df400",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df4d6",
+          "function": "0x008df400",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df4e3",
+          "function": "0x008df400",
+          "native": "0x008dc4a0",
+          "name": "STL_inst_008dc4a0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df4f1",
+          "function": "0x008df400",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df512",
+          "function": "0x008df400",
+          "native": "0x00694af0",
+          "name": "BSP_Observer_IsPairRegistered",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df521",
+          "function": "0x008df400",
+          "native": "0x006952a0",
+          "name": "BSP_Observer_UnregisterPair",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df532",
+          "function": "0x008df400",
+          "native": "0x008deb40",
+          "name": "BSP_ObjectiveSet_EraseNamedEntries",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df549",
+          "function": "0x008df400",
+          "native": "0x0041dd40",
+          "name": "BSP_NativeString_Resize",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df564",
+          "function": "0x008df400",
+          "native": "0x00bf7680",
+          "name": "_memcpy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df581",
+          "function": "0x008df400",
+          "native": "0x006de3f0",
+          "name": "BSP_MarkerManager_DropUnitMarker",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df5a1",
+          "function": "0x008df400",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df5a8",
+          "function": "0x008df400",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008df800",
+      "name": "objective_sync_apply_obj_add_position_008df800",
+      "cpp_symbol": "bsp::objectives_seg57_argon::objective_sync_apply_obj_add_position_008df800",
+      "original_name": "BSP_ObjectiveSync_ApplyObjAddPosition",
+      "original_abi": "__thiscall (ECX = ObjectiveSet* self, const SessionMessage59* msg), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Unpacks msg+0x18 and the 3-float vector at msg+0x20..+0x28 and forwards to 0x008df5d0. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008df81e",
+          "function": "0x008df800",
+          "native": "0x008df5d0",
+          "name": "BSP_ObjectiveSet_AddPositionToNamedObjective",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008df860",
+      "name": "receive28_vector_tidy_008df860",
+      "cpp_symbol": "bsp::objectives_seg57_argon::receive28_vector_tidy_008df860",
+      "original_name": "BSP_Receive28Vector_Tidy_008df860",
+      "original_abi": "__fastcall (ECX = void* self), RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Destroys 0x1c-byte receive records in [self+0x04, self+0x08) via 0x008de660, frees self+0x04 via 0x00bf65ac, and zeroes +0x04/+0x08/+0x0c. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008df874",
+          "function": "0x008df860",
+          "native": "0x008de660",
+          "name": "STL_Receive28Range_Destroy_008de660",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df87d",
+          "function": "0x008df860",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008df900",
+      "name": "objective_set_construct_008df900",
+      "cpp_symbol": "bsp::objectives_seg57_argon::objective_set_construct_008df900",
+      "original_name": "BSP_ObjectiveSet_Construct",
+      "original_abi": "__thiscall (ECX = ObjectiveSet* self, int slot_index), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Initializes ObjectiveSet (vtable 0x00d1610c, slot_index at +0x14), allocates and self-links the entity RB-tree head at +0x1c via 0x008db7b0, and allocates the objective list sentinel at +0x28 via 0x008db560. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008df943",
+          "function": "0x008df900",
+          "native": "0x008db7b0",
+          "name": "STL_Tree_BuyHeadNode_008db7b0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008df96d",
+          "function": "0x008df900",
+          "native": "0x008db560",
+          "name": "STL_PointerList_AllocateSentinel_008db560",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008df9b0",
+      "name": "objective_set_add_unit_expanding_groups_008df9b0",
+      "cpp_symbol": "bsp::objectives_seg57_argon::objective_set_add_unit_expanding_groups_008df9b0",
+      "original_name": "BSP_ObjectiveSet_AddUnitExpandingGroups",
+      "original_abi": "__thiscall (ECX = ObjectiveSet* self, const NativeString* name, void* unit), RET 0x8",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Replicates MT_OBJ_ADD_ENTITY (0x008dd780 / 0x00770b50 / 0x008dc980) on host when peer is present, then dispatches on unit vtable+0x5c (5 single unit, 0x18 formation, 0x1a squadron vector, 0x45 marker group via 0x006d6010, 0x46 shipyard hangars via 0x00848410) to 0x008df2b0. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008df9fb",
+          "function": "0x008df9b0",
+          "native": "0x008dd780",
+          "name": "BSP_SessionMessage57_ConstructObjAddEntity",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfa1f",
+          "function": "0x008df9b0",
+          "native": "0x00770b50",
+          "name": "BSP_Session_SendMessageToNonlocalPeer",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfa30",
+          "function": "0x008df9b0",
+          "native": "0x008dc980",
+          "name": "BSP_SessionMessage57_Destroy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfa4c",
+          "function": "0x008df9b0",
+          "native": "0x008df2b0",
+          "name": "BSP_ObjectiveSet_AddUnitToNamedObjective",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfa9b",
+          "function": "0x008df9b0",
+          "native": "0x008df2b0",
+          "name": "BSP_ObjectiveSet_AddUnitToNamedObjective",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfae3",
+          "function": "0x008df9b0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfaf0",
+          "function": "0x008df9b0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfaf9",
+          "function": "0x008df9b0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfb0b",
+          "function": "0x008df9b0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfb1a",
+          "function": "0x008df9b0",
+          "native": "0x008df2b0",
+          "name": "BSP_ObjectiveSet_AddUnitToNamedObjective",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfb24",
+          "function": "0x008df9b0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfb58",
+          "function": "0x008df9b0",
+          "native": "0x006d6010",
+          "name": "BSP_MarkerGroupVector_Clear",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfb7c",
+          "function": "0x008df9b0",
+          "native": "0x008df2b0",
+          "name": "BSP_ObjectiveSet_AddUnitToNamedObjective",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfbb0",
+          "function": "0x008df9b0",
+          "native": "0x00848410",
+          "name": "BSP_Shipyard_CollectLiveHangarObjects",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfbd3",
+          "function": "0x008df9b0",
+          "native": "0x008df2b0",
+          "name": "BSP_ObjectiveSet_AddUnitToNamedObjective",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfbde",
+          "function": "0x008df9b0",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008dfc00",
+      "name": "objective_set_remove_unit_expanding_groups_008dfc00",
+      "cpp_symbol": "bsp::objectives_seg57_argon::objective_set_remove_unit_expanding_groups_008dfc00",
+      "original_name": "BSP_ObjectiveSet_RemoveUnitExpandingGroups",
+      "original_abi": "__thiscall (ECX = ObjectiveSet* self, const NativeString* name, void* unit), RET 0x8",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Replicates MT_OBJ_REMOVE_ENTITY (0x008dd820 / 0x00770b50 / 0x008dcb40) on host when peer is present, then expands unit groups across vtable+0x5c selectors (5, 0x18, 0x1a, 0x45, 0x46) into calls to 0x008df400. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008dfc4b",
+          "function": "0x008dfc00",
+          "native": "0x008dd820",
+          "name": "BSP_SessionMessage58_ConstructObjRemoveEntity",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfc6f",
+          "function": "0x008dfc00",
+          "native": "0x00770b50",
+          "name": "BSP_Session_SendMessageToNonlocalPeer",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfc80",
+          "function": "0x008dfc00",
+          "native": "0x008dcb40",
+          "name": "BSP_SessionMessage58_Destroy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfc9c",
+          "function": "0x008dfc00",
+          "native": "0x008df400",
+          "name": "BSP_ObjectiveSet_RemoveUnitFromNamedObjective",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfceb",
+          "function": "0x008dfc00",
+          "native": "0x008df400",
+          "name": "BSP_ObjectiveSet_RemoveUnitFromNamedObjective",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfd33",
+          "function": "0x008dfc00",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfd40",
+          "function": "0x008dfc00",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfd49",
+          "function": "0x008dfc00",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfd5b",
+          "function": "0x008dfc00",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfd6a",
+          "function": "0x008dfc00",
+          "native": "0x008df400",
+          "name": "BSP_ObjectiveSet_RemoveUnitFromNamedObjective",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfd74",
+          "function": "0x008dfc00",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfda8",
+          "function": "0x008dfc00",
+          "native": "0x006d6010",
+          "name": "BSP_MarkerGroupVector_Clear",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfdcc",
+          "function": "0x008dfc00",
+          "native": "0x008df400",
+          "name": "BSP_ObjectiveSet_RemoveUnitFromNamedObjective",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfe00",
+          "function": "0x008dfc00",
+          "native": "0x00848410",
+          "name": "BSP_Shipyard_CollectLiveHangarObjects",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfe23",
+          "function": "0x008dfc00",
+          "native": "0x008df400",
+          "name": "BSP_ObjectiveSet_RemoveUnitFromNamedObjective",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008dfe2e",
+          "function": "0x008dfc00",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e0060",
+      "name": "objective_sync_apply_obj_add_entity_008e0060",
+      "cpp_symbol": "bsp::objectives_seg57_argon::objective_sync_apply_obj_add_entity_008e0060",
+      "original_name": "BSP_ObjectiveSync_ApplyObjAddEntity",
+      "original_abi": "__thiscall (ECX = ObjectiveSet* self, const SessionMessage57* msg), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Resolves the 16-bit network handle at msg+0x20 against split threshold [0x00f89a10] and handle tables [0x00f89a54]/[0x00f89aa8], then calls 0x008df9b0. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008e009a",
+          "function": "0x008e0060",
+          "native": "0x008df9b0",
+          "name": "BSP_ObjectiveSet_AddUnitExpandingGroups",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e00b0",
+      "name": "objective_sync_apply_obj_remove_entity_008e00b0",
+      "cpp_symbol": "bsp::objectives_seg57_argon::objective_sync_apply_obj_remove_entity_008e00b0",
+      "original_name": "BSP_ObjectiveSync_ApplyObjRemoveEntity",
+      "original_abi": "__thiscall (ECX = ObjectiveSet* self, const SessionMessage58* msg), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Resolves the 16-bit network handle at msg+0x20 against split threshold [0x00f89a10] and handle tables [0x00f89a54]/[0x00f89aa8], then calls 0x008dfc00. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008e00ea",
+          "function": "0x008e00b0",
+          "native": "0x008dfc00",
+          "name": "BSP_ObjectiveSet_RemoveUnitExpandingGroups",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e0100",
+      "name": "receive28_vector_tidy_008e0100",
+      "cpp_symbol": "bsp::objectives_seg57_argon::receive28_vector_tidy_008e0100",
+      "original_name": "BSP_Receive28Vector_Tidy_008e0100",
+      "original_abi": "__fastcall (ECX = void* self), RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Destroys 0x1c-byte receive records in [self+0x04, self+0x08) via 0x008de660, frees self+0x04 via 0x00bf65ac, and zeroes +0x04/+0x08/+0x0c. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008e0114",
+          "function": "0x008e0100",
+          "native": "0x008de660",
+          "name": "STL_Receive28Range_Destroy_008de660",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e011d",
+          "function": "0x008e0100",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e1380",
+      "name": "session_message55_construct_obj_create_snapshot_008e1380",
+      "cpp_symbol": "bsp::objectives_seg57_argon::session_message55_construct_obj_create_snapshot_008e1380",
+      "original_name": "BSP_SessionMessage55_ConstructObjCreateSnapshot",
+      "original_abi": "__thiscall (ECX = SessionMessage55* self, const ObjectiveSet* set), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Constructs MT_OBJ_CREATE (0x37, vtable 0x00d16124) via 0x0075b430, allocates list sentinel at +0x1c via 0x008db560, zeroes vector fields +0x28..+0x30, and appends every active objective (state +0x1c == 0) from set+0x24. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008e13a4",
+          "function": "0x008e1380",
+          "native": "0x0075b430",
+          "name": "BSP_SessionMessage_ConstructBase",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e13c1",
+          "function": "0x008e1380",
+          "native": "0x008db560",
+          "name": "STL_PointerList_AllocateSentinel_008db560",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e13fb",
+          "function": "0x008e1380",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e140b",
+          "function": "0x008e1380",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e142c",
+          "function": "0x008e1380",
+          "native": "0x008db6a0",
+          "name": "STL_List_BuyNode4_008DB6A0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1437",
+          "function": "0x008e1380",
+          "native": "0x008de2a0",
+          "name": "STL_List_CheckedSizeAdd_008de2a0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1451",
+          "function": "0x008e1380",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e1720",
+      "name": "objective_set_send_create_snapshot_to_peer_008e1720",
+      "cpp_symbol": "bsp::objectives_seg57_argon::objective_set_send_create_snapshot_to_peer_008e1720",
+      "original_name": "BSP_ObjectiveSet_SendCreateSnapshotToPeer",
+      "original_abi": "__thiscall (ECX = ObjectiveSet* self, const void* peer_owner), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Constructs a stack SessionMessage55 snapshot via 0x008e1380, sends it to peer_owner+0x50 via 0x00770b50, and destroys the temporary message via 0x008e1480. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008e173d",
+          "function": "0x008e1720",
+          "native": "0x008e1380",
+          "name": "BSP_SessionMessage55_ConstructObjCreateSnapshot",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e175f",
+          "function": "0x008e1720",
+          "native": "0x00770b50",
+          "name": "BSP_Session_SendMessageToNonlocalPeer",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e176f",
+          "function": "0x008e1720",
+          "native": "0x008e1480",
+          "name": "BSP_SessionMessage55_Destroy",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e1b90",
+      "name": "objective_set_announce_added_to_local_party_008e1b90",
+      "cpp_symbol": "bsp::objectives_seg57_argon::objective_set_announce_added_to_local_party_008e1b90",
+      "original_name": "BSP_ObjectiveSet_AnnounceAddedToLocalParty",
+      "original_abi": "__thiscall (ECX = ObjectiveSet* self, Objective* objective), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "When self+0x14 matches the local party [0x00e188a8]+0x18ec and objective kind (+0x18) is 0 or 1, plays sound 0 via 0x008dd460 and announces non-empty objective text (prefixed with 'missionglobals.secobjprefix|.: |' for secondary objectives) via 0x00734870. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008e1bed",
+          "function": "0x008e1b90",
+          "native": "0x00432650",
+          "name": "BSP_GlobalConfig_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1bfa",
+          "function": "0x008e1b90",
+          "native": "0x008dd460",
+          "name": "BSP_ObjectiveSounds_PlayThrottled",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1c08",
+          "function": "0x008e1b90",
+          "native": "0x0041e870",
+          "name": "BSP_NativeString_Assign",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1c17",
+          "function": "0x008e1b90",
+          "native": "0x00449af0",
+          "name": "BSP_NativeString_NotEqualCaseInsensitive",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1c31",
+          "function": "0x008e1b90",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1c38",
+          "function": "0x008e1b90",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1c4e",
+          "function": "0x008e1b90",
+          "native": "0x0041e870",
+          "name": "BSP_NativeString_Assign",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1c6a",
+          "function": "0x008e1b90",
+          "native": "0x0041e870",
+          "name": "BSP_NativeString_Assign",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1c84",
+          "function": "0x008e1b90",
+          "native": "0x004261a0",
+          "name": "BSP_NativeString_Concat",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1cb6",
+          "function": "0x008e1b90",
+          "native": "0x00734870",
+          "name": "FUN_00734870",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1cd3",
+          "function": "0x008e1b90",
+          "native": "0x0041dd20",
+          "name": "BSP_NativeString_DestroyStorage",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1ce9",
+          "function": "0x008e1b90",
+          "native": "0x0041dd20",
+          "name": "BSP_NativeString_DestroyStorage",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1d09",
+          "function": "0x008e1b90",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1d10",
+          "function": "0x008e1b90",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e1d30",
+      "name": "objective_set_announce_state_change_008e1d30",
+      "cpp_symbol": "bsp::objectives_seg57_argon::objective_set_announce_state_change_008e1d30",
+      "original_name": "BSP_ObjectiveSet_AnnounceStateChange",
+      "original_abi": "__thiscall (ECX = ObjectiveSet* self, const Objective* obj, const NativeString* text, uint8_t completed_flag, uint8_t silent_flag), RET 0x10",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "For local-party primary/secondary objectives, plays sound 1 (completed) or 2 (failed) via 0x008dd460 when silent_flag is 0 and announces non-empty text via 0x00734870. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008e1d94",
+          "function": "0x008e1d30",
+          "native": "0x00432650",
+          "name": "BSP_GlobalConfig_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1da1",
+          "function": "0x008e1d30",
+          "native": "0x008dd460",
+          "name": "BSP_ObjectiveSounds_PlayThrottled",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1db1",
+          "function": "0x008e1d30",
+          "native": "0x0041e870",
+          "name": "BSP_NativeString_Assign",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1dc1",
+          "function": "0x008e1d30",
+          "native": "0x00449af0",
+          "name": "BSP_NativeString_NotEqualCaseInsensitive",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1ddb",
+          "function": "0x008e1d30",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1de2",
+          "function": "0x008e1d30",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1df4",
+          "function": "0x008e1d30",
+          "native": "0x0041e870",
+          "name": "BSP_NativeString_Assign",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1e15",
+          "function": "0x008e1d30",
+          "native": "0x00734870",
+          "name": "FUN_00734870",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1e35",
+          "function": "0x008e1d30",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1e3c",
+          "function": "0x008e1d30",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e1e60",
+      "name": "objective_sync_apply_obj_create_008e1e60",
+      "cpp_symbol": "bsp::objectives_seg57_argon::objective_sync_apply_obj_create_008e1e60",
+      "original_name": "BSP_ObjectiveSync_ApplyObjCreate",
+      "original_abi": "__thiscall (ECX = ObjectiveSet* self, SessionMessage55* msg), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Applies MT_OBJ_CREATE: copies the objective list from msg+0x18 into self+0x24 via 0x008df8a0, announces each objective via 0x008e1b90, and replays 0x1c-byte entity/position records from msg+0x28..+0x2c via 0x008df9b0 and 0x008df5d0. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008e1e87",
+          "function": "0x008e1e60",
+          "native": "0x008df8a0",
+          "name": "STL_inst_008df8a0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1e98",
+          "function": "0x008e1e60",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1ea6",
+          "function": "0x008e1e60",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1eb3",
+          "function": "0x008e1e60",
+          "native": "0x008e1b90",
+          "name": "BSP_ObjectiveSet_AnnounceAddedToLocalParty",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1ebd",
+          "function": "0x008e1e60",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1f1a",
+          "function": "0x008e1e60",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1f33",
+          "function": "0x008e1e60",
+          "native": "0x008df9b0",
+          "name": "BSP_ObjectiveSet_AddUnitExpandingGroups",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1f5b",
+          "function": "0x008e1e60",
+          "native": "0x008df5d0",
+          "name": "BSP_ObjectiveSet_AddPositionToNamedObjective",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e1f80",
+      "name": "objective_set_add_008e1f80",
+      "cpp_symbol": "bsp::objectives_seg57_argon::objective_set_add_008e1f80",
+      "original_name": "BSP_ObjectiveSet_Add",
+      "original_abi": "__thiscall (ECX = ObjectiveSet* self, const NativeString* id, const NativeString* text, int kind, uint8_t quiet_flag), RET 0x10",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Allocates and constructs an Objective (0x00bf681b / 0x008dd5c0), replicates MT_OBJ_ADD (0x008dd6a0 / 0x00770b50 / 0x008dc7a0) on host when peer is present, appends to self+0x24, announces when quiet_flag == 0 via 0x008e1b90, and clears HUD dirty byte [[0x00e198c4]+0x60]+0x65. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008e1f9e",
+          "function": "0x008e1f80",
+          "native": "0x00bf681b",
+          "name": "operator_new",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e1fca",
+          "function": "0x008e1f80",
+          "native": "0x008dd5c0",
+          "name": "BSP_Objective_Construct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e200d",
+          "function": "0x008e1f80",
+          "native": "0x008dd6a0",
+          "name": "BSP_SessionMessage56_ConstructObjAdd",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e2031",
+          "function": "0x008e1f80",
+          "native": "0x00770b50",
+          "name": "BSP_Session_SendMessageToNonlocalPeer",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e203e",
+          "function": "0x008e1f80",
+          "native": "0x008dc7a0",
+          "name": "BSP_SessionMessage56_Destroy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e2059",
+          "function": "0x008e1f80",
+          "native": "0x008db6a0",
+          "name": "STL_List_BuyNode4_008DB6A0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e2064",
+          "function": "0x008e1f80",
+          "native": "0x008de2a0",
+          "name": "STL_List_CheckedSizeAdd_008de2a0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e2081",
+          "function": "0x008e1f80",
+          "native": "0x008e1b90",
+          "name": "BSP_ObjectiveSet_AnnounceAddedToLocalParty",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e2200",
+      "name": "objective_set_set_failed_008e2200",
+      "cpp_symbol": "bsp::objectives_seg57_argon::objective_set_set_failed_008e2200",
+      "original_name": "BSP_ObjectiveSet_SetFailed",
+      "original_abi": "__thiscall (ECX = ObjectiveSet* self, const NativeString* id, const NativeString* comment, uint8_t silent_flag), RET 0xc",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Finds the named objective case-insensitively in self+0x24, announces failure via 0x008e1d30, clears unit/position markers via 0x008dfe50, sets state (+0x1c) to 2, and replicates MT_OBJ_FAILED (0x008ddb00 / 0x00770b50 / 0x008dd120) on host. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008e222d",
+          "function": "0x008e2200",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e223f",
+          "function": "0x008e2200",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e2271",
+          "function": "0x008e2200",
+          "native": "0x00bf7fbf",
+          "name": "__stricmp",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e2287",
+          "function": "0x008e2200",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e229f",
+          "function": "0x008e2200",
+          "native": "0x008e1d30",
+          "name": "BSP_ObjectiveSet_AnnounceStateChange",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e22a7",
+          "function": "0x008e2200",
+          "native": "0x008dfe50",
+          "name": "BSP_Objective_ClearUnitMarkersAndEmpty",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e22d8",
+          "function": "0x008e2200",
+          "native": "0x008ddb00",
+          "name": "BSP_SessionMessage62_ConstructObjFailed",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e2300",
+          "function": "0x008e2200",
+          "native": "0x00770b50",
+          "name": "BSP_Session_SendMessageToNonlocalPeer",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e2311",
+          "function": "0x008e2200",
+          "native": "0x008dd120",
+          "name": "BSP_SessionMessage62_Destroy",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e2350",
+      "name": "objective_sync_apply_obj_completed_008e2350",
+      "cpp_symbol": "bsp::objectives_seg57_argon::objective_sync_apply_obj_completed_008e2350",
+      "original_name": "BSP_ObjectiveSync_ApplyObjCompleted",
+      "original_abi": "__thiscall (ECX = ObjectiveSet* self, const SessionMessage61* msg), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Forwards (msg+0x18, msg+0x20, msg+0x28) to 0x008e20d0 (BSP_ObjectiveSet_SetCompleted). (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008e2361",
+          "function": "0x008e2350",
+          "native": "0x008e20d0",
+          "name": "BSP_ObjectiveSet_SetCompleted",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e2370",
+      "name": "objective_sync_apply_obj_failed_008e2370",
+      "cpp_symbol": "bsp::objectives_seg57_argon::objective_sync_apply_obj_failed_008e2370",
+      "original_name": "BSP_ObjectiveSync_ApplyObjFailed",
+      "original_abi": "__thiscall (ECX = ObjectiveSet* self, const SessionMessage62* msg), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Forwards (msg+0x18, msg+0x20, msg+0x28) to 0x008e2200 (BSP_ObjectiveSet_SetFailed). (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008e2381",
+          "function": "0x008e2370",
+          "native": "0x008e2200",
+          "name": "BSP_ObjectiveSet_SetFailed",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e2390",
+      "name": "objective_sync_dispatch_received_008e2390",
+      "cpp_symbol": "bsp::objectives_seg57_argon::objective_sync_dispatch_received_008e2390",
+      "original_name": "BSP_ObjectiveSync_DispatchReceived",
+      "original_abi": "__fastcall (ECX = SessionMessage* msg), RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Queries msg vtable+0x0c for message types 0x37..0x3e and dispatches to the local party ObjectiveSet ([0x00e188a8]+0x21a4+party*4) handlers 0x008e1e60, 0x008e1f80, 0x008e0060, 0x008e00b0, 0x008df800, 0x008ddf40, 0x008e2350, and 0x008e2370. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008e23b3",
+          "function": "0x008e2390",
+          "native": "0x008e1e60",
+          "name": "BSP_ObjectiveSync_ApplyObjCreate",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e23ec",
+          "function": "0x008e2390",
+          "native": "0x008e1f80",
+          "name": "BSP_ObjectiveSet_Add",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e2415",
+          "function": "0x008e2390",
+          "native": "0x008e0060",
+          "name": "BSP_ObjectiveSync_ApplyObjAddEntity",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e243e",
+          "function": "0x008e2390",
+          "native": "0x008e00b0",
+          "name": "BSP_ObjectiveSync_ApplyObjRemoveEntity",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e2467",
+          "function": "0x008e2390",
+          "native": "0x008df800",
+          "name": "BSP_ObjectiveSync_ApplyObjAddPosition",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e2490",
+          "function": "0x008e2390",
+          "native": "0x008ddf40",
+          "name": "BSP_ObjectiveSync_ApplyObjRemovePosition",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e24b9",
+          "function": "0x008e2390",
+          "native": "0x008e2350",
+          "name": "BSP_ObjectiveSync_ApplyObjCompleted",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e24e2",
+          "function": "0x008e2390",
+          "native": "0x008e2370",
+          "name": "BSP_ObjectiveSync_ApplyObjFailed",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e24f0",
+      "name": "thread_set_debug_name_008e24f0",
+      "cpp_symbol": "bsp::objectives_seg57_argon::thread_set_debug_name_008e24f0",
+      "original_name": "BSP_Thread_SetDebugName",
+      "original_abi": "__fastcall (ECX = uint32_t thread_id, EDX = const char* name), RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Populates a 4-dword THREADNAME_INFO record {0x1000, name, thread_id, 0} and invokes RaiseException(0x406d1388, 0, 4, &info) via [0x00ce2280]. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": []
+    },
+    {
+      "address": "0x008e2560",
+      "name": "flag_cloth_process_frame_008e2560",
+      "cpp_symbol": "bsp::objectives_seg57_argon::flag_cloth_process_frame_008e2560",
+      "original_name": "BSP_FlagCloth_ProcessFrame",
+      "original_abi": "__stdcall ([ESP+4] = float dt), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Updates wave simulation via 0x0070aa70 and locks vertex buffers via 0x0070a710 on the three global flag cloth instances [0x00e19b08], [0x00e19b04], and [0x00e19b0c]. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008e256e",
+          "function": "0x008e2560",
+          "native": "0x0070aa70",
+          "name": "BSP_FlagModel_UpdateWave",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e2581",
+          "function": "0x008e2560",
+          "native": "0x0070aa70",
+          "name": "BSP_FlagModel_UpdateWave",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e2594",
+          "function": "0x008e2560",
+          "native": "0x0070aa70",
+          "name": "BSP_FlagModel_UpdateWave",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e259f",
+          "function": "0x008e2560",
+          "native": "0x0070a710",
+          "name": "BSP_FlagCloth_LockVertexBuffer",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e25aa",
+          "function": "0x008e2560",
+          "native": "0x0070a710",
+          "name": "BSP_FlagCloth_LockVertexBuffer",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e25b5",
+          "function": "0x008e2560",
+          "native": "0x0070a710",
+          "name": "BSP_FlagCloth_LockVertexBuffer",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e25f0",
+      "name": "map_ping_reset_cooldown_008e25f0",
+      "cpp_symbol": "bsp::objectives_seg57_argon::map_ping_reset_cooldown_008e25f0",
+      "original_name": "BSP_MapPing_ResetCooldown",
+      "original_abi": "__cdecl (void), RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Zeroes the map-ping cooldown timestamp float at [0x00f88c28]. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": []
+    },
+    {
+      "address": "0x008e2b90",
+      "name": "map_ping_list_construct_008e2b90",
+      "cpp_symbol": "bsp::objectives_seg57_argon::map_ping_list_construct_008e2b90",
+      "original_name": "BSP_MapPingList_Construct",
+      "original_abi": "__fastcall (ECX = MapPingList* self), RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Initializes MapPingList with vtable 0x00d16168, allocates the 0x1c-byte list head node at +0x08 via 0x008e28f0, and zeroes count at +0x0c. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008e2b9f",
+          "function": "0x008e2b90",
+          "native": "0x008e28f0",
+          "name": "STL_List_BuyHeadNode_008e28f0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e2bf0",
+      "name": "map_ping_list_prune_expired_008e2bf0",
+      "cpp_symbol": "bsp::objectives_seg57_argon::map_ping_list_prune_expired_008e2bf0",
+      "original_name": "BSP_MapPingList_PruneExpired",
+      "original_abi": "__fastcall (ECX = MapPingList* self), RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Walks the ping list at self+0x04 with checked iterator assertions (0x00bf6713) and unlinks/frees every node whose expiry float (+0x18) <= clock [0x00f876a4]. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008e2c07",
+          "function": "0x008e2bf0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e2c17",
+          "function": "0x008e2bf0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e2c22",
+          "function": "0x008e2bf0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e2c2c",
+          "function": "0x008e2bf0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e2c45",
+          "function": "0x008e2bf0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e2c5f",
+          "function": "0x008e2bf0",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e2da0",
+      "name": "map_ping_handle_received_008e2da0",
+      "cpp_symbol": "bsp::objectives_seg57_argon::map_ping_handle_received_008e2da0",
+      "original_name": "BSP_MapPing_HandleReceived",
+      "original_abi": "__fastcall (ECX = void* msg), RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Rebroadcasts on host via 0x0076a9f0; when the sender party (msg+0x18) shares team (+0x28) with the local party, appends the ping with expiry [0x00f876a4]+[0x00ce3db0] via 0x008e2d60 and sets sound request byte +0x1a via 0x004c1b90. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008e2dbe",
+          "function": "0x008e2da0",
+          "native": "0x0076a9f0",
+          "name": "CG_adjustor_thunk_0076a9f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e2e38",
+          "function": "0x008e2da0",
+          "native": "0x008e2d60",
+          "name": "STL_List_PushBack_008e2d60",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e2e3d",
+          "function": "0x008e2da0",
+          "native": "0x004c1b90",
+          "name": "BSP_SoundRequestQueue_GetSingleton",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e2e50",
+      "name": "map_ping_add_local_008e2e50",
+      "cpp_symbol": "bsp::objectives_seg57_argon::map_ping_add_local_008e2e50",
+      "original_name": "BSP_MapPing_AddLocal",
+      "original_abi": "__stdcall (float x, float y), RET 0x8",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Appends a local-party map ping {local_party, 0, x, y, [0x00f876a4]+[0x00ce3db0]} to [[0x00e188a8]+0x21c8] via 0x008e2b40/0x008e2c80 and flags sound request queue +0x1a via 0x004c1b90. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008e2ea9",
+          "function": "0x008e2e50",
+          "native": "0x008e2b40",
+          "name": "STL_List_BuyNode_008e2b40",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e2eb4",
+          "function": "0x008e2e50",
+          "native": "0x008e2c80",
+          "name": "STL_xlen_throw_008e2c80",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e2ec1",
+          "function": "0x008e2e50",
+          "native": "0x004c1b90",
+          "name": "BSP_SoundRequestQueue_GetSingleton",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e34f0",
+      "name": "powerup_class_resolve_air_support_vehicle_classes_008e34f0",
+      "cpp_symbol": "bsp::objectives_seg57_argon::powerup_class_resolve_air_support_vehicle_classes_008e34f0",
+      "original_name": "BSP_PowerupClass_ResolveAirSupportVehicleClasses",
+      "original_abi": "__fastcall (ECX = PowerupClass* self), RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "When self+0x08 == 1 (air-support), resolves uncached vehicle class descriptors at +0x2c (from type id +0x24, party 0) and +0x64 (from type id +0x5c, party 1) via 0x0095ba60, 0x0046be90, and 0x00964790. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008e3508",
+          "function": "0x008e34f0",
+          "native": "0x0095ba60",
+          "name": "BSP_VehicleClass_MarkPartyRequired",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e3517",
+          "function": "0x008e34f0",
+          "native": "0x0046be90",
+          "name": "BSP_SceneEntity_RegisterHiddenStockUnit",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e3521",
+          "function": "0x008e34f0",
+          "native": "0x00964790",
+          "name": "BSP_VehicleClass_GetOrCreate",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e353b",
+          "function": "0x008e34f0",
+          "native": "0x0095ba60",
+          "name": "BSP_VehicleClass_MarkPartyRequired",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e354a",
+          "function": "0x008e34f0",
+          "native": "0x0046be90",
+          "name": "BSP_SceneEntity_RegisterHiddenStockUnit",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008e3554",
+          "function": "0x008e34f0",
+          "native": "0x00964790",
+          "name": "BSP_VehicleClass_GetOrCreate",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e3570",
+      "name": "powerup_modifier_matches_message68_008e3570",
+      "cpp_symbol": "bsp::objectives_seg57_argon::powerup_modifier_matches_message68_008e3570",
+      "original_name": "BSP_PowerupModifier_MatchesMessage68",
+      "original_abi": "__thiscall (ECX = const PowerupModifier* self, const SessionMessage68* msg), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Compares modifier fields (+0x04, +0x14, +0x0c, +0x0e, +0x10, +0x08, +0x18) against SessionMessage68 fields (+0x18, +0x20, +0x24, +0x26, +0x28, +0x30, +0x34). (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": []
+    },
+    {
+      "address": "0x008e35d0",
+      "name": "command_building_powerup_binding_construct_008e35d0",
+      "cpp_symbol": "bsp::objectives_seg57_argon::command_building_powerup_binding_construct_008e35d0",
+      "original_name": "BSP_CommandBuildingPowerupBinding_Construct",
+      "original_abi": "__thiscall (ECX = void* self, void* owner), RET 0x4",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Initializes CommandBuildingPowerupBinding with vtable 0x00d16194, owner at +0x04, and null powerup class at +0x08. (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": []
+    },
+    {
+      "address": "0x008e35f0",
+      "name": "powerup_class_scope_accepts_unit_008e35f0",
+      "cpp_symbol": "bsp::objectives_seg57_argon::powerup_class_scope_accepts_unit_008e35f0",
+      "original_name": "BSP_PowerupClass_ScopeAcceptsUnit",
+      "original_abi": "__fastcall (ECX = void* unit, EDX = const PowerupClass* cls), RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Returns true when target scope (cls+0x84) is not 1 or 2; otherwise tests unit against the kind mask at cls+0x88 using vtable+0x5c (8 submarine, 6 ship, 0x18 plane) and 0x009fe0b0 (static installation). (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008e3668",
+          "function": "0x008e35f0",
+          "native": "0x009fe0b0",
+          "name": "BSP_Entity_IsStaticInstallation",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e3680",
+      "name": "powerup_class_unit_kind_mask_accepts_008e3680",
+      "cpp_symbol": "bsp::objectives_seg57_argon::powerup_class_unit_kind_mask_accepts_008e3680",
+      "original_name": "BSP_PowerupClass_UnitKindMaskAccepts",
+      "original_abi": "__fastcall (ECX = void* unit, EDX = const PowerupClass* cls), RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Tests non-null unit against cls+0x88 (0x0f accepts all; vtable+0x5c 8 -> bit1, 6 -> bit0, 0x18 or 0x0f -> bit2, 0x009fe0b0 -> bit3). (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": [
+        {
+          "address": "0x008e36e9",
+          "function": "0x008e3680",
+          "native": "0x009fe0b0",
+          "name": "BSP_Entity_IsStaticInstallation",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008e3710",
+      "name": "powerup_slot_record_reset_008e3710",
+      "cpp_symbol": "bsp::objectives_seg57_argon::powerup_slot_record_reset_008e3710",
+      "original_name": "BSP_PowerupSlotRecord_Reset",
+      "original_abi": "__fastcall (ECX = void* self), RET",
+      "status": "reconstructed_build_tested",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Zeroes PowerupSlotRecord fields at +0x08, +0x14 (byte), +0x0c (float), +0x10 (float), +0x04, and +0x00 (byte). (docs/ARGON_SEG57_OBJECTIVES.md; reports/argon_seg57_objectives.json)",
+      "steps": []
+    }
+  ]
+}
