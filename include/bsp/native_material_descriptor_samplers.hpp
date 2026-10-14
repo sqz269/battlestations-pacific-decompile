@@ -37,6 +37,25 @@ struct NativeMaterialDescriptorSamplersContext {
     // knowledge; they do not supply zero, previous contents or a default value.
     NativeMaterialDescriptorSamplerStackKnowledge* stack_knowledge{};
 };
+// One original B3B3C0 invocation's caller-owned sampler state. Root and mode
+// have distinct contexts/operations, but share W=P-30h and its knowledge.
+// The owner outlives both retained operations. A new compiler invocation must
+// acquire a new scope; an uncaptured fresh entry remains unknown.
+class NativeMaterialDescriptorSamplersCallScope {
+public:
+    virtual ~NativeMaterialDescriptorSamplersCallScope() = default;
+    virtual NativeMaterialDescriptorSamplersContext& root() noexcept = 0;
+    virtual NativeMaterialDescriptorSamplersContext& mode() noexcept = 0;
+};
+class NativeMaterialDescriptorSamplersCallFactory {
+public:
+    virtual ~NativeMaterialDescriptorSamplersCallFactory() = default;
+    // Metadata publication only; no native sampler/cache calls or default
+    // stack values. Arguments identify this SAME actual compiler invocation.
+    virtual std::unique_ptr<NativeMaterialDescriptorSamplersCallScope> begin(
+        NativeMaterialProgramBuilderStorage&, NativeMaterialPassStorage&,
+        NativeShaderDescriptorStorage& root, NativeShaderDescriptorStorage& mode) = 0;
+};
 struct NativeMaterialDescriptorSamplerStep final {
     std::uint32_t sampler_index{},state_index{},native_site{};
     NativeShaderSamplerStorage* sampler{};

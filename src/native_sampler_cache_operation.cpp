@@ -210,6 +210,8 @@ void* run(Op& a, std::uint8_t retain_new, std::uint8_t allow_load) {
     a.created_resource = create_native_sampler_factory_resource_00b1b810(a.resolved, a.options,
         a.context->actual_manager_01090aa0, a.context->actual_factory_registry_00f8d41c,
         a.context->factories, *a.factory_child);
+    if (a.created_resource && a.context->register_created_resource)
+        a.context->register_created_resource(a.context->creator_registration_context, a.created_resource);
 
     clear_name(&a.record); a.record_name_live = true;
     a.native_site = 0xb1a782;

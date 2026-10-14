@@ -6,6 +6,7 @@
 #include "bsp/game_native_material_compiler_sources.hpp"
 #include "bsp/game_native_material_effect_owners.hpp"
 #include "bsp/game_native_shader_process.hpp"
+#include "bsp/game_native_renderer_scalars.hpp"
 #include "bsp/native_effect_registry_destroy.hpp"
 #include "bsp/native_material_effect_runtime.hpp"
 #include "bsp/native_material_program_compiler_actual.hpp"
@@ -61,7 +62,7 @@ struct GameNativeGuiEffectApplication::Impl {
               compiler_owners.numeric_renderer.renderer_profile_00d5f0a8,
               shader_cache.actual_physical_profile_00d691b0,
               game_native_shader_process().source_empty_0108d6f2(),
-              game_native_shader_process().stream_empty_0109db64()},
+              game_native_shader_process().stream_empty_0109db64(), bindings.sampler_calls},
           actual_compiler(actual_compiler_context),
           compile_context{raw.strings, shader_cache.load_variants_0108d6f0,
               shader_cache.source_mode_0108d6f1, actual_compiler},
@@ -128,6 +129,9 @@ struct GameNativeGuiEffectApplication::Impl {
             &effect_owners.construction.current_renderer_00f8d394 == &renderer.publication_00f8d394() &&
             &compiler_owners.passes.current_renderer_00f8d394 == &renderer.publication_00f8d394(),
             "GUI effect production requires the same ready actual renderer/VFS/strings/records/compiler/sampler domains");
+        require(&bindings.material_manager_00f8bbf0 ==
+            &game_native_renderer_scalar_process().shadow_target_publication_00f8bbf0(),
+            "GUI effect policy must borrow the canonical actual F8BBF0 shadow-target cell");
         require(cache.allocate_array_00bf55be && cache.free_array_00bf6989 &&
             cache.registry_vtable_00d5f074 && cache.registry_vtable_00d5f074[2] == 0x00b2ebb0 &&
             effects.renderer_profile_00d5f0a8 && effects.renderer_profile_00d5f0a8[0x48 / 4] == 0x00b318b0,

@@ -5,6 +5,7 @@
 
 namespace bsp {
 struct NativeMaterialDescriptorSamplersContext;
+class NativeMaterialDescriptorSamplersCallFactory;
 }
 namespace bsp::game {
 class GameHostLog;
@@ -20,6 +21,10 @@ struct GameNativeGuiEffectApplicationBindings {
     NativeMaterialDescriptorSamplersContext& root_samplers;
     NativeMaterialDescriptorSamplersContext& mode_samplers;
     void* const volatile& material_manager_00f8bbf0;
+    // F8BBF0 above is the existing shadow target's policy+0E publication;
+    // "material_manager" is a historical descriptive hypothesis, not a new
+    // owner type. This factory supplies genuine per-compiler shared stack state.
+    NativeMaterialDescriptorSamplersCallFactory* sampler_calls{};
 };
 
 enum class GameNativeGuiEffectLoadPhase { fresh, running, complete, failed };
