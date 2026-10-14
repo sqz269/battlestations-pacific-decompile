@@ -14994,7 +14994,7 @@ The variants tried (orders in this tree's `local\usn15_g45_u15_*.txt`, generator
 
 | variant | idea | result |
 | --- | --- | --- |
-| `a` | hold the line at the start until 800 s, then all attack Yamashiro / Fuso / Nachi / Ashigara | still queued for a run slot when this was written |
+| `a` | hold the line at the start until 800 s, then all attack Yamashiro / Fuso / Nachi / Ashigara | not run (cancelled while waiting for a run slot) |
 | `b` | hold 500 m further north until 1000 s | failed 1212.11 s |
 | `c` | as `a`, with destroyers on the BB groups' followers first | failed 1107.00 s; the CA groups still arrive by 640 s and torpedo the line |
 | `d` | small ships (Fletchers and light cruisers) 3 km north, while BBs and heavy cruisers hold | failed 1432.32 s; 32/42 US dead; the BBs kill Nachi (Maryland, 2958 m) and four Fubukis at 2.6-2.9 km |
@@ -15009,5 +15009,4 @@ The variants tried (orders in this tree's `local\usn15_g45_u15_*.txt`, generator
 3. Order the BBs to back away (moveto north) whenever a CA group closes inside about 3 km, so that they hold
    range.
 
-**Pending runs.** `g45_p1_u12e6` (an escape twin of `e7`) and `g45_p1_u15a` were still waiting for run slots;
-their logs will appear under `local\`.
+**Cancelled runs.** `g45_p1_u12e6` (an escape twin of `e7`) and `g45_p1_u15a` waited too long for run slots and were cancelled; they never ran.
