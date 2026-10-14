@@ -8,6 +8,7 @@
 #include "bsp/native_material_effect_owner.hpp"
 #include "bsp/native_material_program_compiler_actual.hpp"
 #include "bsp/native_shader_descriptor_reader.hpp"
+#include "bsp/native_vfs_name_resolution.hpp"
 #include <cstdio>
 #include <stdexcept>
 
@@ -105,6 +106,25 @@ void note_cache_chain(GameHostLog& log, const NativeMaterialEffectCacheAcquired&
         log.notef("native GUI cache depth=%zu phase=%u site=%08x loaded=%p result=%p published=%d caller=%d",
             depth, static_cast<unsigned>(cache->phase), cache->native_site, cache->loaded, cache->result,
             cache->cache_published ? 1 : 0, cache->caller_acquired ? 1 : 0);
+        if (const auto* key = cache->key_resolution.get()) {
+            log.notef("native GUI cache key phase=%u step=%u site=%08x original=%d changed=%d output=%d used_original=%d",
+                static_cast<unsigned>(key->phase), static_cast<unsigned>(key->step), key->native_site,
+                key->original_live ? 1 : 0, key->changed_live ? 1 : 0, key->output_live ? 1 : 0,
+                key->used_original ? 1 : 0);
+            note_exception(log, key->failure);
+            const NativeMaterialEffectNameResolutionCall* calls[] = {
+                &key->changed_resolution, &key->original_resolution};
+            for (std::size_t arm = 0; arm < 2; ++arm) {
+                const auto& call = *calls[arm];
+                log.notef("native GUI cache key VFS arm=%zu manager=%p header=%p started=%d returned=%d failed=%d result=%d",
+                    arm, call.manager, call.name, call.started ? 1 : 0, call.returned ? 1 : 0,
+                    call.failed ? 1 : 0, call.result ? 1 : 0);
+                if (call.acquired)
+                    log.notef("native GUI cache key VFS arm=%zu phase=%u site=%08x failure_site=%08x",
+                        arm, static_cast<unsigned>(call.acquired->phase()), call.acquired->active_call_site(),
+                        call.acquired->failure_site());
+            }
+        }
         log.notef("native GUI loader phase=%u site=%08x raw=%p creator=%p companion=%p owner_record=%p constructed=%d registered=%d returned=%d fallback=%p",
             static_cast<unsigned>(loader.phase), loader.native_site, loader.raw_slot, loader.creator,
             loader.companion, loader.owner_record, loader.constructor_complete ? 1 : 0,
