@@ -17790,3 +17790,15 @@ small runs only); USNOS full runs make 2 GB.
    those fields); h5's phase 2 is unchanged in i11.
 3. The rest of 241 (LandFort hangar fire roll 007470B0, shipyard 00845AC0); cc13-seg7 soldier placeholders (never wire
    as-is); 005F98F0 port-range test.
+
+## 247. Harness: `attack` refuses a dead target (cc9-ships50, 2026-10-14; lead item 2)
+
+`--helm-orders` `<frame> attack <unit> <target>` (src/game_hosts_mission_frame.cpp, the 005FAAE0 ship arm) now
+refuses with `(refused: target dead)` when the target name resolves to a created unit (`harness_target_row`) that is
+not `unit_alive_and_visible` (0043F080's test), the same liveness test the squadron `target` arm already used. A
+refused order does not reschedule its repeat. This is a harness rule, not the image's: the image attacks the
+director's fire target and has no named-target path. Before this, a stale repeat (USNOS k2's `attack NH Ada3` every
+600 frames to 47000, Ada3 dead at 960 s) re-tasked the ship onto the wreck each time; the k win's NH killed Airfield2
+(1685 s) and Airfield1 (2335 s) while attacking HQ1 / Capture Post 01, and in k2 both airfields survived. Order
+files that relied on attacking a wreck to idle a ship change behaviour; names that resolve to no created unit are
+passed through as before.

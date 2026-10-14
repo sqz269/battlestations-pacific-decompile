@@ -3396,6 +3396,15 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                     why = " (not the controlled unit [00E188D8])";
                 } else if (!host.units->unit_is_kind_of(idx, 0x06)) {
                     why = " (005FAB05: not a ship)";
+                } else {
+                    // Harness rule, not the image's (cc9-ships50): a named target that is
+                    // a created unit but no longer live is refused, so a stale repeat in
+                    // an order file cannot re-task the ship onto a wreck.
+                    const std::size_t target_idx = harness_target_row(*host.units, order.target);
+                    if (target_idx < host.units->count()
+                        && !host.units->unit_alive_and_visible(target_idx)) {
+                        why = " (refused: target dead)";
+                    }
                 }
                 bool issued = false;
                 if (*why == '\0') {
