@@ -16710,3 +16710,49 @@ finding 2), which is what would let the torpedo wingmen fallthrough fire; re-pai
 moveto-self idle-head arm (the per-tick re-completion) before re-pairing kSquadronMoveToSelfBound. (4) FreeFire and
 SquadronLandAndKill need rows that reach them (usn_03:938/1447 on a plan that kills the Hornet; a PRCP01 phase with three
 Enterprise slots). (5) The squadron GetHpPercentage average (007EDC30).
+
+## 5hd. Corrections to 5ha/5hb/5hc and the open queue (cc9-lua58, 2026-10-13, after the lead's review)
+
+**LOMP10 is probably NOT lost.** My LOMP10 rows ran 26000 frames (1300 s at 0.05). physics8 measures `lomp10_p3_l10_b`
+completing on a base that already contains a7a20bc52 at 1396.79 s (C2 OFF) and 1631.02 s (C2 ON), both past my budget.
+The "no end" in `local\l58_s0_l10w` / `local\l58_s1_l10w` is a frame-budget artefact. The brake attach gate does delay
+CB4_AF's launches (first divergence 245.91 s), which pushes the end later, but no loss is shown. Read the LOMP10 sentences
+in 5ha (table row "end none") and in 5hb's correction paragraph as "no end within 1300 s", not "lost". LOMP10 needs a
+re-check at 34000+ frames on current main.
+
+**Open re-plans, mine and unfinished (the lead assigned them to this lane, stock rules being our mechanism):**
+- LOMP10 `lomp10_p3_l10_b`: re-run at 34000+ frames on current main (stock ON). Plan only if it fails. Any failure that
+  traces to another lane's binding gets reported, not planned around.
+- JM08 `jm08_p6_j8_f`: completed 1617.15 s at a7a20bc52, none in 2000 s with stock ON (74aae670d: Hosho class 162 runs
+  out at frame 10802, then the fallback 158 line launches), and completed 1319.86 s at 1ca95cd29 with the dive packets
+  (before stock). Re-check on current main (dive ON + stock ON). If it fails, re-plan with the Hosho strikes inside
+  the stock (AddAirBaseStock rows in the log give the counts) and commit the new file to config/win_orders/; send the end
+  time to physics8 for WINS_TABLE.
+- USN01: the current win is `config/win_orders/usn01_p8_u1_c.txt` (physics8, completed 1094.94 s on f83e91891), not g.
+  Pair the dive packets (now ON) against it. If its opening `release ScoutDauntless ... within 20` line is refused as on g
+  (sight nearest 48.1 m), re-time that release.
+
+**Open host defect, D2 (5gz.2).** gun+74h is filled from `df_finder_scan_007e2090` (the cached 007E2090 rescan with
+007DEEC0 scores), a stand-in for the image's 007B96F0 search at 009FC90E. Read 007B96F0 and make the stand-in match
+before re-pairing `kDogfightAimAdoptsGunTargetBound`.
+
+**Moveto-self (5gx.1), per the lead:** explain the per-tick set-command churn before deciding. If the image posts once per
+squadron, the churn is a host defect: fix it and flip. If the image churns too, flip as is. **Wingmen fallthrough:** stays
+OFF until a row reaches it (cc13 predicted +0..12 USN21 torpedo drops); don't spend long hunting for one.
+
+**cc13 Lua binding items routed by the lead (cc13-seg56b; each goes behind an OFF switch, gets paired, and flips by verdict):**
+1. GetCapturePercentage 0089B840 (game_hosts_script_orders.cpp, the GetCapturePercentage branch near :4103): the binary
+   applies FABS (D9 E1 at 0089B966) before PushFloat. The host pushes the signed fraction, and its comment saying
+   "no FABS" is wrong. Side-1 captures push a negative value. Grep the mission Lua for readers and pair on one of them.
+2. SetForcedReconLevel 008AA8F0 (`run_set_forced_recon_level_008aa8f0`): the binary forces the entity's OWN record first
+   (00805CF0 at 008AAA76), then the squadron's +3D0h members or the convoy's +394h elements. The host forces only the
+   members.
+3. AddAirBaseStock 00896A90: the 0095BA60 party preload mark (00896BF5) is neither applied nor labelled. Apply it or
+   label it as a substitution.
+- Cheap-only leads: UnitGetAttackTarget 008A6DE0's base-director arm for non-ship units; EntityTurnToEntity 008A0A10
+  with a single-plane squadron taking the squadron arm.
+- SetHP 008C1790: the lead routed a note on it with these items; its content did not reach this lane in writing, so ask
+  the lead for it before acting.
+
+The startup.cmake line in 8885c9175 is redundant (main 3f9bbabd6 had already moved launch_ver_cc13.cpp and
+script_natives_fix5_cc13.cpp to bsp_core) but harmless; the lead left it in.
