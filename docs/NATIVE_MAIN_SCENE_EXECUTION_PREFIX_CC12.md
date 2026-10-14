@@ -1,11 +1,12 @@
 # Main-scene execution prefix and actual camera history
 
-This packet supplies the genuine B156C0 entry through B1586C and the complete
-actual-storage B0DB00 history calculation it calls. It ends immediately before
-the B1586D texture-holder acquisition. A true return means this exact boundary
-was reached, not that a scene command executed successfully. The existing queue
-must continue refusing D5E13C: B17240 preparation and the remaining B156C0 render
-passes are not installed or claimed complete.
+This packet supplies the genuine B156C0 entry through B1586C, its complete
+actual-storage B0DB00 history calculation, and the separate B1586D..B15BD1
+texture/far-corner continuation. The first API returns at texture acquisition;
+the continuation ends immediately before the B15BD2 bloom branch. Reaching
+either boundary does not mean a scene command executed successfully. The
+existing queue must continue refusing D5E13C: B17240 preparation and the
+remaining B156C0 render passes are not installed or claimed complete.
 
 The implementation uses actual service/command/camera/clock storage and existing
 raw camera, matrix and CRT kernels. It creates no renderer, scene, camera,
@@ -97,6 +98,50 @@ future genuine continuation. The raw arithmetic/CRT callees must return normally
 C++ exceptions across the naked helpers, native FH3/SEH, floating traps and
 arbitrary original private-stack aliases are not established.
 
+## Texture constants and complete far corners
+
+`continue_native_main_scene_texture_constants_00b1586d` implements the complete
+869-byte B1586D..B15BD1 clause. It requires the same actual service/command and
+the persistent state returned by the earlier prefix. It leaves the saved near
+word, saved color, and earlier continuation flags intact, then publishes
+`reached_bloom_stage` only after the complete clause returns.
+
+The original first B4CB10 getter captures a texture for the later height query;
+the second getter obtains the current texture for width. This schedule repeats
+for the full-texel pair. Each getter reloads service+4C and uses the existing raw
+holder+08 body. Current captured D61948 slots+3C/+40 resolve to the established
+raw B3CE50/B3CE60 getters over the actual texture+28/+2C descriptor words. No
+nominal dimensions, retained owner, COM query or replacement texture is added.
+The native owner-profile capture is kept, and the selected borrowed table slot
+is checked at the reached dispatch; the owner profile is not reread.
+
+Signed FILD followed by the original 2^32 correction preserves unsigned DWORD
+conversion, including the high-bit branch. Half-texels go to service+04/+08;
+full texels go to +184/+188. The SSE constant initialization and all eighteen
+separate x87 multiply/store operations produce nine XY sample offsets at
+service+F4..+180. Zero dimensions retain native infinities and NaNs.
+
+The final current-camera getter feeds complete raw B0EB10..B0F008, 1,273 bytes
+and 277 listing instructions. The helper retains the near-plane FCOMIP/JBE
+decision, including unordered behavior; writable raw projection argument
+slots; full matrix inverse and vector4 transform; homogeneous divide and its
+float32 stores; rounded far/near scaling; eight original world-rotation passes;
+and all four final XYZW stores. The world matrix is refreshed at each reached
+original bit2 test. The helper writes output only after the calculation, so
+output/camera overlap retains the native store order.
+
+The new far-corner context is saved above the original local frame. Only the
+two public camera/output offsets move by four bytes; all original scratch
+offsets remain unchanged. Real B642F0/B632D0/B62D10/B6DB70 callees are used.
+The context borrows the same native one, negative-one and half cells as the
+texture stage. All one-register x87 directions were derived from installed
+opcodes, not the abbreviated listing operand.
+
+The texture continuation has not armed a native cleanup state either. Its
+arithmetic/domain callees must return normally. No rollback is added on failure;
+unsupported profiles are rejected rather than dispatched as numeric addresses,
+but C++ exceptions crossing the naked helper are outside the valid contract.
+
 ## Validation
 
 - Installed executable and saved Ghidra body bytes matched for the complete
@@ -125,18 +170,43 @@ arbitrary original private-stack aliases are not established.
   registration to the primary owner, so the new units are verified separately by
   strict compilation/linking. No persistent test suite was added.
 
+The follow-up texture packet independently matched saved Ghidra and installed
+bytes for the complete 1,273-byte far-corner body and 869-byte continuation.
+Both changed/new units passed the same strict Win32 flags, then a manifested
+probe linked the fresh real core/dependency libraries and launched. The ordinary
+build again passed all three existing tests; permanent registration remains
+primary-owned. The new camera file needs registration alongside the two prior
+units.
+
+Its one bounded original/source fixture passed eight complete texture-stage
+service/camera comparisons and eight complete far-corner camera/output alias
+comparisons. Cases cover ordinary, one, zero and high-bit dimensions; near below,
+equal, above and unordered; raw world refresh and a singular projection. The
+original virtual dimension lookup is translated to the same concrete raw getter
+in this fixture; current-profile dispatch is source-reviewed, not separately
+native-compared. Masked ordinary floating controls are used; FP status/stack,
+floating traps, native EH, concurrent mutation and private stack aliases remain
+unproved. A machine-listing audit matched 164 unchanged x87 instructions in
+the full far-corner body and 74 in the new clause, plus all 41 prior prefix
+instructions. The checked total is 279; constant-pointer/public-argument
+adaptations are reviewed separately.
+
 `reports/native_main_scene_execution_prefix_cc12.json` records artifact hashes,
 validation limits and annotation receipts. Outputs are under
-`local/main_scene_execution/`. All fifteen preceding main-scene artifacts,
-including its exact old core library, were preserved before this build under
-`local/main_scene_receipt_3ccc58cbf/receipt.json`.
+`local/main_scene_execution/` and `local/main_scene_texture/`. All fifteen
+preceding main-scene artifacts, including its exact old core library, were
+preserved before the prefix build under
+`local/main_scene_receipt_3ccc58cbf/receipt.json`. All 34 artifacts from immutable
+prefix commit `450a751a0`, including its core library and prior receipt, were
+verified and preserved before the follow-up build under
+`local/main_scene_execution_receipt_450a751a0/receipt.json`.
 
 ## Next executed clause
 
-B1586D first reads service+4C and calls B4CB10, then repeats that getter and reads
-the current texture's dimensions through slots3C/40. Later work computes texel
-and far-corner constants, binds real targets, submits camera/system constants,
+B15BD2 next tests service+21A for the bloom clause. Its taken path obtains the
+current bloom output holder through B54CD0 and computes its texture/adaptation
+constants. Later work binds real targets, submits camera/system constants,
 prepares and executes batch/material passes, and performs the concrete
 post-effect/cockpit/distortion/stats paths. These remain required. No hidden-node
 bypass, callback-only renderer, D5E13C admission, application invocation, visible
-world pixels or gameplay equivalence is supplied by this prefix.
+world pixels or gameplay equivalence is supplied by these stages.

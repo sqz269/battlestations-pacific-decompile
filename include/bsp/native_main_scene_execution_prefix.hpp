@@ -4,6 +4,7 @@
 namespace bsp {
 struct NativeCameraAxesContext;
 struct NativeCameraHistoryContext;
+struct NativeCameraFarCornersContext;
 
 struct NativeMainSceneExecutionPrefixContext {
     void* const volatile& actual_renderer_00f8d394;
@@ -26,6 +27,7 @@ struct NativeMainSceneExecutionPrefixState {
     bool frame_active{};
     bool near_changed{};
     bool reached_texture_stage{};
+    bool reached_bloom_stage{};
 };
 
 // Complete raw leaves. Native ECX command / camera. B1BF40 uses RET and returns
@@ -48,5 +50,26 @@ void* __fastcall get_native_camera_clear_color_00b6fe60(const void* actual_camer
 // in the existing queue execution domain. This API does not install a route.
 bool execute_native_main_scene_prefix_00b156c0(void* actual_service,
     void* actual_command, NativeMainSceneExecutionPrefixContext&,
+    NativeMainSceneExecutionPrefixState&);
+
+struct NativeMainSceneTextureConstantsContext {
+    const volatile std::uint32_t* actual_texture_profile_00d61948;
+    const volatile float* unsigned_bias_00ce3978;
+    const volatile double* half_00d7a280;
+    const volatile std::uint32_t* negative_one_00d7a260;
+    const volatile std::uint32_t* one_00d7a24c;
+    const NativeCameraFarCornersContext* far_corners;
+};
+
+// Continue the SAME actual service/command and persistent prefix state through
+// B1586D..B15BD1, ending BEFORE B15BD2 bloom selection. Repeated genuine B4CB10
+// holder getters and captured D61948 current slots3C/40 use B3CE50/B3CE60.
+// Retains unsigned x87 conversion, half/full texel stores, all nine XY offsets,
+// and current-camera full B0EB10 far rays. No owner allocation or ref changes.
+// Only the established valid profile/raw-domain contract is admitted; throwing
+// across the naked arithmetic helper is not supported. Never whole-command
+// success: D5E13C remains unadmitted and all later renderer stages are required.
+void continue_native_main_scene_texture_constants_00b1586d(void* actual_service,
+    void* actual_command, const NativeMainSceneTextureConstantsContext&,
     NativeMainSceneExecutionPrefixState&);
 } // namespace bsp
