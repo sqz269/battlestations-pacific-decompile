@@ -14524,3 +14524,27 @@ ship's guns keep the stored target instead of swinging to the new best. Expect U
 have mixed cruiser/destroyer targets); USN01 i may stay identical if its ships always accept. The clear moves
 only missions whose scripts hold a ship's fire while it has a target; `clears=0` on a row means no reach.
 222 on top of the drop: followers with no target take the leader's stored `+238h`.
+
+## 243. The TorpedoBot think timer: `kTorpedoBotThinkTimerBound`, OFF; the 238 follow-up at `008777D0` (lead queue item 4; cc9-gunnery44, 2026-10-14)
+
+**Image** (`bsp.py disasm-raw`, CC13_GPR_40 1.2 step 1). After the target, submerged-target (`008FFFB2`) and
+role (`+1ACh`) tests, `009000DD`..`009000EB` subtract dt from `bot+5Ch` (thinkTimeLeft) and store it as float.
+`FCOMI` / `JA 00900985`: while it is still above 0 the tick returns, so gate A, the intercept, gate B, the heading
+snap, `0085ABA0` (`009003DD`) and the trigger (`vtable[1E8h]`) keep their last state. Otherwise `00900101` reloads
+`0.2f` (`00CE54A0`, bytes `CD CC 4C 3E`). Neither `008FF260` nor the base `0072BBD0` stores `+5Ch`.
+
+**Binding** (OFF). Per torpedo gun, a targeted AI tick decrements the timer; a held tick commands no angles
+(the gun keeps turning to the last command) and restores the last evaluated `have_target` and `want_fire`.
+LABELLED: the seed is 0, so the first targeted tick evaluates. Counter line
+`summary mission gunnery torpedo think timer bound= evals= holds=`.
+
+**Predictions.** ON: holds are about three times evals at 0.05 s steps (a hold lasts 0.2 s). Launch times move
+by up to 0.2 s and a launch that needed the heading on one exact step may be lost or gained; rows with
+torpedo launches (USN12, JM06, USN01) move, others stay identical.
+
+**238 follow-up.** `008777D0` reads `hit+34h` only for the hull-pass gate (`008777DD`, `-1` skips it) and the
+part entries at `hit+3Ch`; it never reads `+30h`, and `00470510` reads neither. The host's 008777D0 is ungated
+by design (`apply_base_hit_record`), so a plane record that carried the element index would change nothing
+there. It would, however, open the host's `00826F10` hull pass (R1, flood/fire), which is the ship's handler
+and does not run for a plane in the image. Keeping 0Ah / -1 on the plane record is therefore the right
+substitution; no binding.

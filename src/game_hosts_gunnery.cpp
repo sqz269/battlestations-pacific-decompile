@@ -450,6 +450,18 @@ constexpr bool kRangingBearingFixedBound = true;
 //    before.
 //    ON since the pairs and win set (GUNNERY_OPEN_ITEMS 233).
 constexpr bool kTorpedoBotAttackRangeBound = true;
+//  * kTorpedoBotThinkTimerBound: packet g44_torpedo_think (docs/CC13_GPR_40.md
+//    1.2 step 1; GUNNERY_OPEN_ITEMS 227 item 6). After the target, submerged and
+//    role tests, 008FFF20 subtracts dt from thinkTimeLeft (bot+5Ch) at
+//    009000DD..009000EB; while it is still > 0 (FCOMI/JA, a NaN proceeds) the
+//    tick returns at 00900985, so the gates, the intercept, the heading snap,
+//    0085ABA0 and the trigger all keep their last state; otherwise 00900101
+//    reloads 0.2f (00CE54A0, bytes CD CC 4C 3E). ON: per torpedo gun, a held
+//    tick commands no angles and keeps the last evaluated trigger. LABELLED:
+//    the seed is 0 (neither constructor 008FF260 nor 0072BBD0 stores +5Ch), so
+//    the first targeted tick evaluates. OFF: every fixed step evaluates.
+constexpr bool kTorpedoBotThinkTimerBound = false;
+constexpr float kTorpedoBotThinkPeriod = 0.2f;   // 00CE54A0
 //  * kTorpedoBotStaleFlagBound: packet g42_ver23 (docs/CC13_VER_23.md D2), only
 //    under kTorpedoBotAttackRangeBound. 00903580 recomputes bot+68h BEFORE it
 //    stores the new bot+6Ch (0090358D, 00903592), so a flag change keeps the old
@@ -2122,6 +2134,15 @@ struct GameGunneryHost::Impl {
     bsp::WeaponHitAccuracyProfile torpedo_hit_profiles[4]{};
     unsigned long long torpedo_gate_a_drops{0}, torpedo_gate_b_drops{0},
         torpedo_gate_passes{0}, torpedo_submerged_drops{0}, torpedo_no_intercept_drops{0};
+    // kTorpedoBotThinkTimerBound: bot+5Ch thinkTimeLeft and what the last
+    // evaluating tick left in the trigger (vtable[1E8h]), by gun.
+    struct TorpedoThink {
+        float left{0.0f};          // bot+5Ch; LABELLED seed 0 (no constructor store)
+        bool have_target{false};
+        bool want_fire{false};
+    };
+    std::map<std::size_t, TorpedoThink> torpedo_think_by_gun;
+    unsigned long long torpedo_think_holds{0}, torpedo_think_evals{0};
     unsigned long long torpedo_zone_tests{0}, torpedo_zone_holds{0};  // kTorpedoLaunchZoneBound
     double torpedo_attack_range_sum{0.0};
     unsigned long long torpedo_attack_range_samples{0};
@@ -7448,6 +7469,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         float want_horz = gun.rest_horz;
         float want_vert = gun.rest_vert;
         bool have_target = false;
+        bool torpedo_think_hold = false;   // kTorpedoBotThinkTimerBound
         std::size_t target = 0;
         if (gun.target_unit != 0 && gun.target_unit - 1 < unit_state.size()) {
             target = gun.target_unit - 1;
@@ -7581,8 +7603,23 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     ++torpedo_submerged_drops;
                 }
             }
+            // kTorpedoBotThinkTimer: 009000DD..009000F6 thinkTimeLeft -= dt (stored
+            // to float); still > 0 returns at 00900985 with the trigger and the
+            // commanded heading untouched; otherwise 00900101 reloads 0.2f.
+            if (kTorpedoBotThinkTimerBound && gun.category == bsp::kUnitGunneryTorpedoCategory
+                && have_target && !player_seat) {
+                TorpedoThink& think = torpedo_think_by_gun[g];
+                think.left = static_cast<float>(think.left - dt);
+                if (think.left > 0.0f) {
+                    torpedo_think_hold = true;
+                    ++torpedo_think_holds;
+                } else {
+                    think.left = kTorpedoBotThinkPeriod;   // 00CE54A0
+                    ++torpedo_think_evals;
+                }
+            }
             if (gun.category == bsp::kUnitGunneryTorpedoCategory && kTorpedoBotAttackRangeBound
-                && have_target) {
+                && have_target && !torpedo_think_hold) {
                 // Gate A, 009001A8..: 0042B2F0 |target - gun| against
                 // 00415510(unit+44Ch * 1.5, bot+68h + 100).
                 const auto tb = torpedo_bot_range_by_gun.find(g);
@@ -7604,6 +7641,8 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             }
             if (gun.category == bsp::kUnitGunneryTorpedoCategory && !have_target) {
                 // Dropped above: no aim this tick.
+            } else if (gun.category == bsp::kUnitGunneryTorpedoCategory && torpedo_think_hold) {
+                // The think timer holds: no intercept, no gate B (restored below).
             } else if (gun.category == bsp::kUnitGunneryTorpedoCategory) {
                 // The torpedo bot runs its own intercept solver and its round
                 // does not fall, so no gravity term is added.
@@ -8080,6 +8119,12 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 }
             }
         }
+        if (torpedo_think_hold) {
+            // 00900985: no 0085ABA0 this tick (009003DD is past the timer), so the
+            // gun keeps turning toward the last command; the trigger is restored below.
+            command_angles = false;
+            have_target = torpedo_think_by_gun[g].have_target;
+        }
         const bool accepted = command_angles
             && bsp::gun_set_target_angles_0085aba0(gun.angles, arcs,
                 gun.speeds, want_horz, want_vert, accepted_mark);
@@ -8201,6 +8246,15 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 if (image_ready && !accepted) ++summary.torpedo_ready_refused_angles;
             }
             if constexpr (kTorpedoBotReadyGateBound) want_fire = image_ready;
+            if constexpr (kTorpedoBotThinkTimerBound) {
+                TorpedoThink& think = torpedo_think_by_gun[g];
+                if (torpedo_think_hold) {
+                    want_fire = think.want_fire;   // the trigger keeps its last state
+                } else {
+                    think.want_fire = want_fire;
+                    think.have_target = have_target;
+                }
+            }
             done("TorpedoBot::launch_test_008fff20", 0x009003f8u);
         }
         // DIAGNOSTIC, env-gated: BSP_FIRE_GATE_TRACE=<owner unit name> prints each of
@@ -15271,6 +15325,10 @@ void GameGunneryHost::report() {
             host.torpedo_attack_range_samples, host.torpedo_submerged_drops,
             kTorpedoBotAttackRangeBound ? 1 : 0, kTorpedoBotStaleFlagBound ? 1 : 0,
             kTorpedoSubmergedTargetDropBound ? 1 : 0);
+        host.log.notef("summary mission gunnery torpedo think timer bound=%d evals=%llu holds=%llu "
+            "(008FFF20 009000DD..00900101, packet g44_torpedo_think)",
+            kTorpedoBotThinkTimerBound ? 1 : 0, host.torpedo_think_evals,
+            host.torpedo_think_holds);
         host.log.notef("summary mission gunnery torpedo swim entity impacts=%llu (swimming rounds that "
             "struck an entity, 0084BC60)", host.torpedo_swim_entity_impacts);
         host.log.notef("summary mission gunnery bullet throw cone=%llu fan=%llu zero=%llu "
