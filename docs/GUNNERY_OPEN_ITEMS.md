@@ -14024,3 +14024,25 @@ aims= launches= biased= scaled_steps= fly_time_expiries=`.
 6. The bias (D4) lowers hits further. It is judged only as D3 + D4 against D3.
 7. Win rows: USN02's Java Sea fight is the most exposed (`s36_u2_p7`). USN12's completion depends on the US
    ships surviving, so it may move either way.
+
+## 229. Ranging record seed and fixed bearing (CC13_VER_21 D2, D1): `kRangingSeedVelocityBound`, `kRangingBearingFixedBound`, OFF (lead queue item 1; cc9-gunnery42, 2026-10-14)
+
+**D2.** `00864880` (`00864A7F..00864B8A`) builds the record with `+50h = p - V k` and `+60h = p + V k` (`+64h = 0`).
+Here `k` is GlobalConfig+88h (WeaponDirectorThinkTime, 2 s in this installation) and `V` is the target's
+vtable[34h], its world velocity. The host seeded both with `p`. ON: `prev_pos = p - V k` and
+`predicted = p + V k`, with `V` from `unit_velocity` (the host's ship velocity; LABELLED: it stands in for
+vtable[34h]). The counter is `velocity_seeds=`.
+
+**D1.** `00862CD0` draws `U(-AngleChange, AngleChange)` at `00862F46` and then discards the wrapped sum
+(`00438AA0`, then `00862F62 FSTP ST0`). It rebuilds the offset from the old `+6Ch`. ON: the draw is consumed and
+dropped. The counter is `bearing_turns_dropped=`. Neither switch changes the stream-0 draw count.
+
+**Predictions.**
+1. OFF is identical to the base.
+2. D2 ON: `velocity_seeds` equals `records_built`. The second and third corrected salvos against a moving ship
+   miss by more (by `|V| k DeviationMul frac^2`, +24 m at SPNormal and full range, +300 m capped for Stun), so
+   early hits are slightly fewer. A stationary target is unchanged.
+3. D1 ON: `bearing_turns_dropped` equals the updates whose error moved. The mean hit rate changes by less than
+   about 5 %, but the spread per engagement grows. The draw count is unchanged, so the first moved hit is the
+   first divergence.
+4. Both are judged on the same rows as 228 (JM08, IJN08, USN13 and USN02), each alone and against the same OFF.

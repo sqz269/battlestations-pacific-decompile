@@ -418,6 +418,18 @@ constexpr bool kArtilleryClassSpeedBound = false;
 //    sub-types 4..7; the host passed sub-type 0 to 006E8430. ON (only together
 //    with kArtilleryClassSpeedBound): the gun's refined sub-type is passed.
 constexpr bool kArtilleryLaunchBiasBound = false;
+//  * kRangingSeedVelocityBound: packet g42_ver21_d12 (docs/CC13_VER_21.md D2).
+//    00864880 builds the ranging record with +50h = p - V * k and +60h = p + V * k
+//    (k = WeaponDirectorThinkTime, 2 s; V = the target's world velocity), so the
+//    first shot-arm miss of a steady target is V * k. The host seeded both with
+//    p. ON: the image seeds (unit_velocity for V). OFF: as before.
+constexpr bool kRangingSeedVelocityBound = false;
+//  * kRangingBearingFixedBound: packet g42_ver21_d12 (docs/CC13_VER_21.md D1).
+//    00862CD0 draws U(-AngleChange, AngleChange) (00862F46) and discards the
+//    wrapped sum (00862F62 FSTP ST0), so the error bearing +6Ch never turns
+//    after 00864880 drew it. The host added the draw. ON: the draw is consumed
+//    and dropped. OFF: as before.
+constexpr bool kRangingBearingFixedBound = false;
 //  * kTorpedoSwimThrustBound: packet cc9_torpedo_tube_turn,
 //    docs/TORPEDO_FRIENDLY_CROSSING.md section 6. 00857480, the swim advance,
 //    per step on a torpedo in the water: 00856BB0 -> 00857061 yaws the NOSE
@@ -2089,6 +2101,8 @@ struct GameGunneryHost::Impl {
     unsigned long long ranging_shot_updates{0};
     unsigned long long ranging_growth_updates{0};
     unsigned long long ranging_records_dropped{0};
+    unsigned long long ranging_velocity_seeds{0};          // kRangingSeedVelocityBound
+    unsigned long long ranging_bearing_turns_dropped{0};   // kRangingBearingFixedBound
     double ranging_error_sum{0.0};          // over ship-target aim steps
     unsigned long long ranging_error_samples{0};
     int ranging_level(std::size_t owner) {
@@ -2112,11 +2126,21 @@ struct GameGunneryHost::Impl {
         e.error = draw(Draw::ranging, owner, target, err0 * row.min_error_mul, err0);
         e.angle = draw(Draw::ranging, owner, target, 0.0f, 6.28318548202514648438f); // 00CE3D9C
         set_ranging_offset(e);
+        // kRangingSeedVelocityBound (CC13_VER_21 D2): 00864A7F..00864B8A seeds
+        // +50h = p - V * k and +60h = p + V * k, with k = GlobalConfig+88h
+        // (WeaponDirectorThinkTime) and V = target->vtable[34h]. OFF: V * k = 0.
+        float seed[3] = {0.0f, 0.0f, 0.0f};
+        if constexpr (kRangingSeedVelocityBound) {
+            float tv[3];
+            unit_velocity(target, tv);
+            for (int k = 0; k < 3; ++k) seed[k] = tv[k] * think_time;
+            ++ranging_velocity_seeds;
+        }
         for (int k = 0; k < 3; ++k) {
-            e.prev_pos[k] = pt[k];
+            e.prev_pos[k] = pt[k] - seed[k];
             e.prev_right[k] = rt[k];
             e.prev_forward[k] = ft[k];
-            e.predicted[k] = pt[k];
+            e.predicted[k] = pt[k] + seed[k];
         }
         e.predicted[1] = 0.0f;   // +64h = 0 at the end of 00864880
         ++ranging_records_built;
@@ -2164,9 +2188,18 @@ struct GameGunneryHost::Impl {
         if (changed) {
             const float cap = std::min(row.max_error, row.range_mul * dist);
             if (e.error > cap) e.error = cap;
-            e.angle += draw(Draw::ranging, owner, target, -0.0f - row.angle_change,
+            const float turn = draw(Draw::ranging, owner, target, -0.0f - row.angle_change,
                 row.angle_change);
-            e.angle = std::remainder(e.angle, 6.28318548202514648438f);   // AddWrappedAngle
+            if constexpr (kRangingBearingFixedBound) {
+                // CC13_VER_21 D1: 00862F58 passes the draw and +6Ch to 00438AA0,
+                // and 00862F62 FSTP ST0 discards the wrapped sum; +74h..+7Ch are
+                // rebuilt from the old +6Ch. The draw is still consumed.
+                (void)turn;
+                ++ranging_bearing_turns_dropped;
+            } else {
+                e.angle += turn;
+                e.angle = std::remainder(e.angle, 6.28318548202514648438f);   // AddWrappedAngle
+            }
             set_ranging_offset(e);
         }
         // 00862FA9..: the target's motion since the last update, carried from the
@@ -14782,6 +14815,10 @@ void GameGunneryHost::report() {
         host.ranging_error_samples != 0 ? host.ranging_error_sum
             / static_cast<double>(host.ranging_error_samples) : 0.0,
         host.ranging_error_samples);
+    host.log.notef("summary mission gunnery ranging velocity_seeds=%llu bearing_turns_dropped=%llu "
+        "seed=%d bearing=%d (CC13_VER_21 D2/D1)", host.ranging_velocity_seeds,
+        host.ranging_bearing_turns_dropped, kRangingSeedVelocityBound ? 1 : 0,
+        kRangingBearingFixedBound ? 1 : 0);
         host.log.notef("summary mission gunnery wreck hits bound=%d reaching=%llu delivered=%llu "
             "past_window=%llu shapes_offered=%llu (009239A0 / 00826F10, packet "
             "cc9_wreck_hit_delivery)", kWreckHitDeliveryBound ? 1 : 0,
