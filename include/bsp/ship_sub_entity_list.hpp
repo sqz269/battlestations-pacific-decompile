@@ -92,16 +92,19 @@ struct SubEntityListInputs {
 // means an unordered compare skips too, so a NaN condition contributes nothing.
 bool hangar_contributes_006d4dd0(const AirfieldHangarCandidate& hangar) noexcept;
 
-// The slot itself. Writes at most `out_capacity` pointers into `out` in the
-// order the native body appends them, and returns the number it would have
-// appended; a caller that sizes `out` for `hangar_count` (or for
-// `squadron_plane_count`, or 1) never loses an element. `out` may be null only
-// when `out_capacity` is zero, which is how a caller asks for the count alone.
-//
-// The native body appends to a vector the caller cleared first (0063BCD0 at
-// 00865516 and 00865679), so this function always starts from empty as well.
-std::size_t sub_entity_list_slot0fc(const SubEntityListInputs& inputs,
-                                    const void** out,
-                                    std::size_t out_capacity) noexcept;
+// 004323D0 BSP_PointerVector_PushBack, __thiscall(ECX = vector, const void* const* element),
+// RET 4: the native append every arm uses.
+struct PointerVectorHost {
+    virtual ~PointerVectorHost() = default;
+    virtual void pointer_vector_push_back_004323d0(void* vector, const void* const& element) = 0;
+};
+
+// The slot itself: appends to the caller's vector (this+0BCh at the gunnery call
+// sites) in the order the native body does, each element through 004323D0. The
+// caller cleared the vector first (0063BCD0 at 00865516 and 00865679).
+void sub_entity_list_slot0fc(const SubEntityListInputs& inputs, void* vector, PointerVectorHost& host);
+
+// 00432480, __thiscall(entity, vector), RET 4: push_back(vector, this).
+void sub_entity_list_self_00432480(const void* self, void* vector, PointerVectorHost& host);
 
 }  // namespace bsp

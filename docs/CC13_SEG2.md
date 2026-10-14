@@ -114,8 +114,8 @@ Simplifications and uncertainties (also in the C++ comments and ledger evidence)
 | 0042B4D0 | src/marker_manager_cc13.cpp rotation_z_0042b4d0 | matches; builds straight into the output instead of a stack temporary copied by 004134F0 (same values) |
 | 0042BE90 | src/plane_follow_law.cpp fabs_0042be90 | matches the listing (takes the float by value; the native takes a pointer in ECX) |
 | 004396F0 | src/hud_ship_screen.cpp ship_screen_gauge_round_004396f0 | matches the listing |
-| 00439950 | src/plane_wanderer.cpp plane_wanderer_random_direction_00439950 | last-ulp defect: the native stores FCOS/FSIN as floats before multiplying by r |
-| 00432480 | src/ship_sub_entity_list.cpp (SubEntityProvider::Self) | behavioural model: appends to a caller array, not the native 004323D0 push_back |
+| 00439950 | src/plane_wanderer.cpp plane_wanderer_random_direction_00439950 | last-ulp defect (cos/sin not rounded to float before the products) fixed by cc13-seg61; see docs/CC13_SEG61.md |
+| 00432480 | src/ship_sub_entity_list.cpp sub_entity_list_self_00432480 | was a caller-array model; cc13-seg61 made it call 004323D0 push_back through PointerVectorHost |
 | 0042C610 | src/mission_camera.cpp apply_zoom_0042c610 | located, not re-verified |
 | 0042F0C0 | src/mission_camera.cpp keep_above_water_0042f0c0 | located, not re-verified |
 | 00432ED0 | src/mission_camera.cpp update_ship_captain_00432ed0 | located, not re-verified |
