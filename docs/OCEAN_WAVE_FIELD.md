@@ -1096,3 +1096,18 @@ Prediction (written before the runs): only the last ulp of the wander direction'
 move in late digits. No mechanism counter can fail; the verdict is by mechanism unless the wins move.
 Pair: OFF = `local\p9_m` (exe 073805D36E49, the re-time logs `local\p9w1_<row>.log`), ON = `local\p9_wt1` (main
 25b98b1fa with the flip), same launch lines.
+Results (logs `local\p9w1_<row>.log` OFF, `local\p9wt_<row>.log` ON, reference env):
+
+| Row | OFF | ON | pair_diff |
+|---|---|---|---|
+| USN02 `s36_u2_p7` | completed 200.06 s | completed 200.06 s | identical |
+| LOMP06 `l50_l6_q6` | completed 376.83 s | completed 376.83 s | identical |
+| USN01 `p8_u1_i` | completed 360.04 s | completed 360.04 s | moved |
+| PRCP01 `p9_p01_k` | completed 536.54 s | completed 536.59 s | moved |
+| LOMP10 `p3_l10_b` | completed 1187.58 s | completed 1144.54 s | moved (deaths 94 -> 90) |
+| BSM01 `p6_b1_a` | EndMission 833.92 s | EndMission 833.92 s | moved |
+
+Mechanism as predicted: `plane wanderer` keeps planes=52 (LOMP10) / 277 (BSM01), offset_max, speed_max and
+accel_max; steps, active, timer_draws and displacement move by under 1% with the run length. LOMP10's first moved
+row is a plane death at 97.70 -> 97.75 s (the killer changes), the chaotic divergence of a shared stream, not a
+mechanism failure. **Flipped ON** (`include/bsp/plane_wanderer.hpp`); every win holds, guard logged on all twelve.
