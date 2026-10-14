@@ -13,7 +13,7 @@ and BSM01 are byte-identical to the files the last wins used.)
 
 | Row | Order file | Was |
 |---|---|---|
-| USN01 | config/win_orders/usn01_p8_u1_c.txt (since main f83e91891; the newest file per mission is the row, see the notes below) | before: usn01_p7_u1_a, p6_u1_k6, p6_u1_g, p5_u1_e, p3_u1_z4 |
+| USN01 | config/win_orders/usn01_p8_u1_i.txt (since main c9a8b1344; the newest file per mission is the row, see the notes below) | before: usn01_p8_u1_c, usn01_p7_u1_a, p6_u1_k6, p6_u1_g, p5_u1_e, p3_u1_z4 |
 | USN02 | config/win_orders/usn02_s36_u2_p7.txt | cc9-ships36\local\s36_u2_p7.txt |
 | LOMP10 | config/win_orders/lomp10_p3_l10_b.txt | cc9-physics1\local\p3_l10_b.txt (was cc9-ships37\local\s37_l10_p2.txt) |
 | USN12 | config/win_orders/usn12_s38_u12_p2.txt | cc9-ships38\local\s38_u12_p2.txt |
@@ -301,3 +301,15 @@ mechanism is in the cd761bb52 section above).
   - ESMP08 `br3l` still lost: Cummings and Woodworth survive to 7000 s (Salt Lake City at 3894.72 s); the other
     targets die between 431 and 3434 s.
   - USNOS `k` still lost (known, the Betty1 startDist stall).
+- **USN01 re-planned again for C2 (cc9-physics8, 2026-10-14): `config/win_orders/usn01_p8_u1_i.txt`**, replacing
+  `usn01_p8_u1_c` (kept). With `kPlaneVelocityLowpassBound` ON (c9a8b1344) plan c loses Convoy2. Plan i is c with
+  ConTBD1's last retarget to Convoy2 (3691) and ConSBD1 at Convoy5, ConSBD2 at Convoy3 from frame 3300 (the SBDs
+  release before 3700, so the old 3700 slot was too late for them). On c9a8b1344 (export `local\p7_m`, exe
+  BFD82222278F, reference env, 26000 frames): **completed 1185.03 s** (`local\p8u1m_i.log`), **1145.04 s under
+  jitter 20,3**, **1210.06 s under 20,5**, guard logged on all three; **fails under 20,7** (Convoy2 and Convoy4
+  survive, `local\p8u1m_ij7.log`). Convoy6/3/5 sink to the strike by 190 s; the cruisers finish the rest at 880-930 s.
+  Variants f, g (complete without jitter, fail under 20,3) and h (fails under 20,3) are in local\.
+- **PRCP01 `l55_p01_c` lost on main a103f270a** (not C2, R4 or C1: identical with all three OFF): failed 1491.83 s,
+  "usn03.obj_p2_fail" (Enterprise). First divergence: Kate1's strike dies 30 s later (147.20 -> 177.46 s). Reported
+  to the lead for the owning lane (range f83e91891..a103f270a). LOMP10 `p3_l10_b` moved to 1396.79 s on that range,
+  and to 1631.02 s with C2 ON (still completes).
