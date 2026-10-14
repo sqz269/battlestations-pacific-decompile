@@ -14807,3 +14807,31 @@ So the per-gun pick does fall back in the image: step 8.8 walks on past a refusa
 has that for kinds 2-4. But the tubes accept the inherited target, because nothing refuses it. **222 is faithful by
 mechanism.** It stays OFF only as the lead's call on the two lost rows. If it is flipped, USN12 d and USN15 l2 go to
 the keeper for re-plans.
+
+## 250. The TorpedoBot slot accept `008FC010`: `kTorpedoBotSmallCraftBound`, OFF (227 item 6; cc9-gunnery45, 2026-10-14)
+
+**Image.** `00729BC0` sends a category-7 gun to the TorpedoBot's slot `1Ch`, `008FC010`. The vtable is `00D182B0`,
+and the dword `00D182CC` is its only reference. Read live, it refuses a target in four cases:
+1. The target is null or not `IsKindOf(6)`.
+2. `00828EC0([t+538h])` answers true.
+3. `[t+5Dh]` is set.
+4. Otherwise it returns `gun->vtable[1D4h](t)`. That is `0072F6E0`, which answers 1 for kind 7, because `gun+42Ch` is
+   installed only for kinds 1, 5 and 6 (GUNNERY 164.2). CC13_GPR_40 1.3's "line of fire, for torpedoes" therefore
+   adds nothing.
+
+`00828EC0` is `00827F70` AND `class+500h >= 8.938947f` (`00D099AC`, COMISS/JC). `00827F70` answers true for class
+kind 0Eh, or for 0Ch with BigLandingShip `+808h` clear (ATTACK_GATE_TAILS gate 3).
+
+**Host.** Category 7 had the range test only. `00862820` (`kGunneryClassArmsBound`) already refuses `IsKindOf(0Eh)`
+and `t+5Dh`, so the only new refusal is a small landing ship with MaxSpeed of at least 8.938947 m/s.
+
+**Binding.** `kTorpedoBotSmallCraftBound`.
+- ON: such a target refuses the slot.
+- OFF: counted, as `summary mission gunnery torpedo bot small craft refusals=`.
+- LABELLED: the class kinds are the entity kinds, as in the AI accuracy group's `00827F70`. `+808h` comes from the
+  ship-AI host (`unit_big_landing_ship_0808`).
+
+**Predictions, written before any run.**
+1. OFF is identical to the base. The counter is 0 on rows without landing craft (USN12, USN15).
+2. ON: it is gameplay-identical wherever the counter is 0. Where it is above 0 (landing operations under enemy
+   tubes), destroyers stop launching at fast small landing craft and pick their next candidate.

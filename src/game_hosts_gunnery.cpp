@@ -508,6 +508,18 @@ constexpr bool kTorpedoBotNoInterceptDropBound = true;   // ON by mechanism: GUN
 //    trigger drops. cc13's torpedo_launch_zone_clear_0090088e over the ship-AI
 //    host's zone table. OFF: no zone test, as before.
 constexpr bool kTorpedoLaunchZoneBound = true;   // ON: GUNNERY 240 (no reach yet)
+//  * kTorpedoBotSmallCraftBound: GUNNERY 250 (227 item 6, docs/CC13_GPR_40.md 1.3).
+//    00729BC0 asks a category-7 gun's TorpedoBot slot 1Ch, 008FC010 (dword
+//    00D182CC): IsKindOf(6), then 00828EC0([t+538h]) must answer false, then
+//    [t+5Dh] clear, then gun->vtable[1D4h] (0072F6E0, 1 for kind 7: gun+42Ch is
+//    installed only for kinds 1, 5, 6). 00828EC0 = 00827F70 (class kind 0Eh, or
+//    0Ch with BigLandingShip +808h clear) and MaxSpeed +500h >= 8.938947f
+//    (00D099AC, COMISS/JC). 00862820 already refuses IsKindOf(0Eh) and t+5Dh for
+//    category 7, so what this adds is the fast small landing ship. LABELLED: the
+//    class kinds are the entity kinds, as the AI accuracy group's 00827F70 uses.
+//    ON: such a target refuses the slot. OFF: counted (small_craft_refusals).
+constexpr bool kTorpedoBotSmallCraftBound = false;
+constexpr float kTorpedoProofMinMaxSpeed = 8.938947f;   // 00D099AC
 //  * kTorpedoRackDropBound: packet g43_ver20_d2 (docs/CC13_VER_20.md D2, GUNNERY
 //    239). A plane's torpedo (2Bh, parent 2Ah) leaves through 006E4D50 as a bomb
 //    does: four stream-1 draws (006E4F91, 006E4FB1, 006E513C, 006E51AC), 006E0A70
@@ -2163,6 +2175,7 @@ struct GameGunneryHost::Impl {
     bsp::WeaponHitAccuracyProfile torpedo_hit_profiles[4]{};
     unsigned long long torpedo_gate_a_drops{0}, torpedo_gate_b_drops{0},
         torpedo_gate_passes{0}, torpedo_submerged_drops{0}, torpedo_no_intercept_drops{0};
+    unsigned long long torpedo_small_craft_refusals{0};   // kTorpedoBotSmallCraftBound
     // kTorpedoBotThinkTimerBound: bot+5Ch thinkTimeLeft and what the last
     // evaluating tick left in the trigger (vtable[1E8h]), by gun.
     struct TorpedoThink {
@@ -6216,6 +6229,19 @@ public:
             in_range = reach <= (dp != nullptr ? dp->max_range : row.max_range);  // 00729C8A JA
         }
         in.slot_accepts_target = in_range;
+        if (row.category == bsp::kUnitGunneryTorpedoCategory && in_range
+            && other < owner_.units.count()) {
+            // 008FC010 -> 00828EC0: a torpedo-proof small craft (kTorpedoBotSmallCraftBound).
+            const bool small_craft = owner_.units.unit_is_kind_of(other, 0x0E)
+                || (owner_.units.unit_is_kind_of(other, 0x0C)
+                    && !(owner_.ship_ai != nullptr
+                         && owner_.ship_ai->unit_big_landing_ship_0808(other)));
+            if (small_craft && owner_.units.unit_class_max_speed_0500(other)
+                    >= kTorpedoProofMinMaxSpeed) {
+                ++owner_.torpedo_small_craft_refusals;
+                if constexpr (kTorpedoBotSmallCraftBound) in.slot_accepts_target = false;
+            }
+        }
         // Evaluated on every call so a run with the switch off still counts what
         // the bound terms would refuse; applied only when that term's own switch is on.
         {
@@ -15416,6 +15442,9 @@ void GameGunneryHost::report() {
             host.torpedo_attack_range_samples, host.torpedo_submerged_drops,
             kTorpedoBotAttackRangeBound ? 1 : 0, kTorpedoBotStaleFlagBound ? 1 : 0,
             kTorpedoSubmergedTargetDropBound ? 1 : 0);
+        host.log.notef("summary mission gunnery torpedo bot small craft refusals=%llu bound=%d "
+            "(008FC010 / 00828EC0, GUNNERY 250)", host.torpedo_small_craft_refusals,
+            kTorpedoBotSmallCraftBound ? 1 : 0);
         host.log.notef("summary mission gunnery torpedo think timer bound=%d evals=%llu holds=%llu "
             "(008FFF20 009000DD..00900101, packet g44_torpedo_think)",
             kTorpedoBotThinkTimerBound ? 1 : 0, host.torpedo_think_evals,
