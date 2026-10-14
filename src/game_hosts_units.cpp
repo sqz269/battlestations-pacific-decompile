@@ -6537,7 +6537,9 @@ struct GameUnitsHost::Impl {
     // (+369h and [00E17BF2] both set) and a null 007F16D0 answer. A moveto whose
     // target is the squadron stays at stage 1 (0084E48A), so the flight loiters on
     // itself. False: those squadrons get no order (the host's B5 only).
-    static constexpr bool kSquadronMoveToSelfBound = false;
+    // ON (SQUADRON_LAND_TASK 5hm): unit+184h is the player flag, so an AI squadron's
+    // moveto-self is raised to stage 2 at once (0084E0A4) and the image churns too.
+    static constexpr bool kSquadronMoveToSelfBound = true;
     // Packet cc9_lua45_rack_equipment_device (GUNNERY 144, SQUADRON_LAND_TASK 5ev).
     // True: (a) an absent RepeatTime reads as 006E0242's default, 00B66330 with
     // [00CE3D30] = 0.6f, at both rack readers; (b) a rack's device is the plane's

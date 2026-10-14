@@ -17032,3 +17032,16 @@ hands the wingmen 999 orders (when ctl+390h > ctl+374h); each wingman in follow/
 tick and releases through 007BBBA0 at once, so the wingmen drop with the leader instead of after their own aim
 (first_release moves to the leader's time; aim ticks fall). A wingman in aim keeps +424h and releases when it leaves
 aim/release for goaway, or through its own aim release.
+
+## 5hm. The moveto-self "hold" is the player's arm: `kSquadronMoveToSelfBound` **ON** (cc9-lua60, 2026-10-14)
+
+5he.4 kept the switch OFF for a stage-1 hold read from the pseudocode (CC13_VER_10 D1, "not byte-read"). The bytes
+(0084E05E-0084E0B6): bVar3 = [ESI+54h] is moveto and 00521EA0(ESI+58h) == [ESI+224h] (0084E05E-0084E078); bVar2 =
+[[ESI+224h]+3D0h] non-null and its byte +184h set (0084E07C-0084E098). With bVar3 and not bVar2, 0084E0A4 `PUSH 2` ->
+0084E149 0071D810(2): the stage is raised to 2 at once. Only with bVar2 does 0084E0B3 raise 1 near the target. unit+184h
+is the player flag (role 1; docs/AI_BRAIN_PLAYER_EXEMPTION.md), so the hold is a player-led squadron's; an AI squadron's
+moveto-self ends on its first step, the 0084E4B1 tail re-issues it, and the image churns (stage 2, clear, re-issue) as the
+host does (USN21 f: stage_raises 43 -> 2152). The pairs of 5he.4 (PRCP01 and USN21 f, gameplay identical) stand and the
+mechanism matches for AI squadrons, so the switch is flipped ON. Not modelled: the player-led arm (0084E0B3-0084E149,
+leader within [00CFE050] of the target raises 1, and 0084E48A keeps it there); no harness row has a player-led squadron.
+No routed edit to game_hosts_commands.cpp is needed.
