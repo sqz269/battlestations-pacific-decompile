@@ -15,6 +15,10 @@ struct NativeRenderJobPublicationContext;
 class NativeRenderPreparationJobDispatch;
 struct NativeMaterialEntryDispatchContext;
 struct NativeMaterialEntryDispatchFrame;
+struct NativeRenderSceneSubmissionContext;
+struct NativeRenderSceneSubmissionOperation;
+struct NativeRenderQueueExecutionContext;
+struct NativeRenderQueueExecutionFrame;
 
 struct NativeMainSceneExecutionPrefixContext {
     void* const volatile& actual_renderer_00f8d394;
@@ -54,6 +58,7 @@ struct NativeMainSceneExecutionPrefixState {
     bool reached_label_stage{};
     bool reached_drsh_batch_stage{};
     bool reached_excluded_node_stage{};
+    bool reached_post_drsh_stage{};
 };
 
 // Complete raw leaves. Native ECX command / camera. B1BF40 uses RET and returns
@@ -238,4 +243,66 @@ struct NativeMainSceneBatchFrame {
 void continue_native_main_scene_batches_00b15f63(void* actual_command,
     NativeMainSceneBatchContext&, NativeMainSceneDrshLabelFrame&,
     NativeMainSceneBatchFrame&, NativeMainSceneExecutionPrefixState&);
+
+// The same retained label context and canonical queue/command/owner/string
+// domains. Optional children are required only at their reached native calls.
+struct NativeMainSceneExcludedNodeContext {
+    const NativeMainSceneDrshLabelContext& label;
+    NativeRenderBatchPreparationContext* queue{};
+    NativeRenderSceneSubmissionContext* submission{};
+    NativeRenderQueueExecutionContext* execution{};
+};
+struct NativeMainSceneExcludedNodeFrame {
+    NativeRenderSceneSubmissionOperation* submission{};
+    NativeRenderQueueExecutionFrame* execution{};
+    std::uint32_t saved_clear_flags{};
+    std::uint32_t active_native_site{};
+    bool started{};
+    bool entered{};
+    bool visibility_raised{};
+    bool flags_cleared{};
+    bool submitted{};
+    bool executed{};
+    bool flags_restored{};
+    bool visibility_cleared{};
+    bool completed{};
+    bool failed{};
+};
+
+// Full B10500..B105AF [176], native ECX service, command/targets, RET8.
+// Service+22C gates all child access. Capture current camera flags after FLD1,
+// set CURRENT service+1C0 node visibility1, clear current-camera flags, capture
+// current-camera scene before queue getter, capture current node before the
+// next camera getter, submit through actual B1F5E0, get CURRENT queue again,
+// execute/pop its last command through raw B1E6D0, restore saved flags on the
+// current camera, then FLDZ and CURRENT node visibility0. No local EH cleanup:
+// failed submission/execution leaves earlier visibility/flags/queue mutations.
+void execute_native_excluded_node_00b10500(void* actual_service,
+    void* actual_command, void* actual_targets, NativeMainSceneExcludedNodeContext&,
+    NativeMainSceneExcludedNodeFrame&);
+
+struct NativeMainSceneExcludedRestoreFrame {
+    NativeMainSceneExcludedNodeFrame excluded;
+    std::uint32_t active_native_site{};
+    bool started{};
+    bool excluded_called{};
+    bool render_mode_restored{};
+    bool label_reset_completed{};
+    bool clear_flags_restored{};
+    bool near_restored{};
+    bool completed{};
+    bool failed{};
+};
+
+// B16068..B160CF. Test CURRENT service+22D before calling full B10500 with
+// current service+1C8 targets. Keep state2 armed through that call and render
+// mode restore. Disarm at B16097 BEFORE normal current-service B160A2 reset;
+// a throwing reset must never reset again. Then restore saved clear flags and
+// near plane on separately reloaded cameras, retaining native FLD/FSTP32 near
+// conversion. Stop BEFORE service+60 virtual10 at B160D0. Source failure only
+// consumes still-armed state2; it never restores earlier native mutations.
+void continue_native_main_scene_excluded_restore_00b16068(void* actual_service,
+    void* actual_command, NativeMainSceneExcludedNodeContext&,
+    NativeMainSceneDrshLabelFrame&, const NativeMainSceneBatchFrame&,
+    NativeMainSceneExcludedRestoreFrame&, NativeMainSceneExecutionPrefixState&);
 } // namespace bsp

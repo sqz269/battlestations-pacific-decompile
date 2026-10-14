@@ -10,8 +10,9 @@ class NativeRenderActualOwners;
 
 // Same actual command execution, canonical context/owner associations and raw
 // lifetime/string domain. The command profile view contains original numeric
-// targets; it is never invoked as a host table. Lifetime is needed only when
-// current control0 reaches destruction of a nonnull current command.
+// targets; it is never invoked as a host table. Lifetime is needed when either
+// entry reaches destruction of a nonnull current command: B1EBE0 gates that
+// work on current control0; B1E6D0 does not inspect the control word.
 struct NativeRenderQueueExecutionContext {
     NativeRenderCommandExecutionContext& actual_commands;
     NativeRenderActualOwners& actual_owners;
@@ -36,6 +37,16 @@ struct NativeRenderQueueExecutionFrame {
 // No outer exception cleanup or rollback. Null context is valid only when
 // the initial signed command count is nonpositive.
 void execute_native_render_queue_00b1ebe0(NativeRenderCommandQueueStorage&,
+    NativeRenderQueueExecutionContext*, NativeRenderQueueExecutionFrame*);
+
+// Full B1E6D0..B1E717 [72], ECX actual34h queue, RET. Test count !=0
+// (NOT signed-positive), reread count then list and execute current last
+// command virtual0 through the same concrete D5E5E0/B1D950 domain. Reload
+// CURRENT count/list/last after execution, destroy/free that nonnull pointer,
+// then reread count and decrement iff nonzero. Keep the stale cell/capacity.
+// No queue-context publication, retain/release, control-word test or outer
+// exception cleanup. A null context/frame is allowed on the empty path.
+void execute_last_native_render_command_00b1e6d0(NativeRenderCommandQueueStorage&,
     NativeRenderQueueExecutionContext*, NativeRenderQueueExecutionFrame*);
 
 // Source API adds borrowed contexts/frames and canonical source profile
