@@ -162,6 +162,88 @@ void hud_order_leave_unit_005facb0(HudOrderCommandHost& host);
 // 005FD420 __fastcall(ECX = object) -> EAX: six dwords +0h..+14h = 0.
 void* zero_six_dwords_005fd420(void* object) noexcept;
 
+// ---------------------------------------------------------------------------
+// 005FB080, the order screen's idle slot (packet cc13-orderscreen).
+// ---------------------------------------------------------------------------
+
+inline constexpr std::uint32_t kCommandReturnToBaseLanding = 0x00E08FA0u;  // compared with 005F9CF0's command
+inline constexpr std::int32_t kOrderActionOpen = 0xEC;    // +84h while the radial menu is held
+inline constexpr std::int32_t kOrderActionPing = 0x109;   // +84h while the ping menu is held
+inline constexpr std::string_view kOrderFirstUseHint = "ORDER1STUSE";  // 00CF3DB4
+
+// The calls 005FB080 makes beyond HudOrderCommandHost. ECX-only image calls
+// take the object as the first argument. The input queries (004C43C0,
+// 004C50D0, 004C5070, 00535EE0) are __stdcall(action) RET 4 on the input
+// manager 004BEC00; the image loads ECX = [00E188A8] before each and the
+// callee ignores it.
+struct HudOrderIdleHost : HudOrderCommandHost {
+    // 00565D80 cdecl: the limbo screen's respawn-input poll.
+    virtual void hud_limbo_poll_respawn_input_00565d80() = 0;
+    // 0068AB80 __thiscall(manager, clear_level2, run_extra_hook) RET 8.
+    virtual void ingame_collapse_overlays_0068ab80(void* manager, std::int32_t clear_level2,
+                                                   std::int32_t run_extra_hook) = 0;
+    virtual bool ingame_is_base_interface_0068a140(void* manager) = 0;          // __thiscall -> AL
+    virtual void ingame_request_scene_for_screen54_0068aa90(void* manager) = 0; // __thiscall
+    virtual void ingame_push_controlled_unit_request_0068aad0(void* manager) = 0;
+    virtual void ingame_leave_unit_request_level_0068ab30(void* manager) = 0;
+    virtual bool input_action_pressed_this_frame_004c43c0(std::int32_t action) = 0;
+    virtual bool input_action_was_pressed_004c50d0(std::int32_t action) = 0;
+    virtual float input_action_hold_time_004c5070(std::int32_t action) = 0;     // ST0, the record's float
+    virtual bool input_action_released_this_frame_00535ee0(std::int32_t action) = 0;
+    // 004F7230 __fastcall(ECX = 00E18D18) -> AL: that pointer vector is empty.
+    virtual bool pointer_vector_00e18d18_is_empty_004f7230() = 0;
+    virtual void* menu_command_screen_00425d10() = 0;                           // cdecl -> EAX
+    // 0059BBD0 __thiscall(unit, role, slot) RET 8 -> AL.
+    virtual bool unit_role_open_to_slot_0059bbd0(void* unit, std::uint32_t role, std::uint32_t slot) = 0;
+    // 00927F30 __thiscall(unit, arg) RET 4 -> AL.
+    virtual bool unit_is_local_player_role_00927f30(void* unit, std::int32_t arg) = 0;
+    // 00927880 __thiscall(unit) -> EAX: unit vtable +114h(), then that object's vtable +18h() (null -> 0).
+    virtual void* unit_lead_entity_00927880(void* unit) = 0;
+    virtual void* unit_cast_to_squadron_005f9a30(void* unit) = 0;               // __fastcall -> EAX
+    // 005F98F0 __thiscall(unit) -> AL, the port-range test (cc9's; not reconstructed in this file).
+    virtual bool unit_port_range_test_005f98f0(void* unit) = 0;
+    virtual std::int32_t dword_00f8898c() = 0;
+    // 0041E870 builds the NativeString, 004E1CA0 fetches the award tracker,
+    // 0068E600 __thiscall(tracker, &name) RET 4 -> AL, 0041DD20 releases.
+    virtual bool award_hint_has_been_shown_0068e600(std::string_view name) = 0;
+    // 0041E870 builds the NativeString, 004E1CA0, 00690FD0 __thiscall(tracker,
+    // &name, forced) RET 8, 0041DD20 releases.
+    virtual void award_hint_trigger_00690fd0(std::string_view name, std::uint8_t forced) = 0;
+    virtual void* award_tracker_004e1ca0() = 0;
+    // 0068E5B0 __thiscall(tracker, &copy) RET 4, then 00425850 __thiscall(&copy,
+    // name) RET 4 -> AL (case-insensitive), then 0041DD20(&copy).
+    virtual bool award_active_hint_equals_0068e5b0(void* tracker, std::string_view name) = 0;
+    virtual void award_tracker_finish_active_hint_0068e420(void* tracker) = 0;
+    virtual void frontend_screen_close_004b6e50(void* screen) = 0;              // __thiscall
+    virtual void frontend_screen_mark_visible_004b6e30(void* screen) = 0;       // __thiscall
+    // 004F8670 / 004D8B70 cdecl varargs ending at a zero id; `ids` includes the zero.
+    virtual void frontend_set_level3_ids_004f8670(const std::int32_t* ids) = 0;
+    virtual void input_push_level3_ids_004d8b70(void* game, const std::int32_t* ids) = 0;
+    virtual void hud_order_hide_all_005f9490(void* screen) = 0;                 // __fastcall
+    virtual void hud_order_close_005f9520(void* screen) = 0;                    // __fastcall
+    virtual void widget_show_34(void* widget, std::uint8_t shown) = 0;          // vtable +34h, RET 4
+    virtual bool widget_is_selected_38(void* widget) = 0;                       // vtable +38h -> AL
+    virtual void widget_set_colour_50(void* widget, const float* rgba) = 0;     // vtable +50h, RET 4
+    // 00ABBE50 __thiscall(text widget, const char* key, flag) RET 8.
+    virtual void gui_text_set_localised_abbe50(void* text, const char* key, std::int32_t flag) = 0;
+    virtual void weapon_group_resume_00545ac0(void* screen) = 0;                // __thiscall
+    virtual void ship_screen_clear_timed_entry_00644240(void* screen) = 0;      // __thiscall
+    virtual void hud_hints_dismiss_0054e610(void* screen) = 0;                  // __thiscall
+    virtual std::int32_t game_effective_mode_004bca50(void* game) = 0;          // __thiscall -> EAX
+    // 008E2EE0 __fastcall(ECX = kind, {x, y} by value) RET 8: the local map ping.
+    virtual void map_ping_send_local_008e2ee0(std::int32_t kind, std::array<float, 2> position) = 0;
+};
+
+// 005FB080 __thiscall(ECX = order screen), RET; SEH 00C768E0 (the
+// "ORDER1STUSE" NativeString temporaries). The order screen's idle slot,
+// reached from 0068C6BB in BSP_InGameInterface_Update for slot 3Bh. Opens the
+// radial order menu (action ECh) or the ping menu (109h), steers the menu
+// cursor (+60h..+6Ch) from the six stick hold times, picks the highlighted
+// branch +88h (0 none, 1 attack/move, 2 formation/regroup, 3 aggressive /
+// defensive, 4 leave/retreat/land/sell) and issues the order on release.
+// x87 at the main thread's 24-bit precision (docs/CC13_FPU_PRECISION.md).
+void hud_order_idle_005fb080(void* screen, HudOrderIdleHost& host);
+
 // ===========================================================================
 // Options screen (vtable 00CF3940; page index 00E19650) and its listeners.
 // String temporaries the image builds (0041DD40 + memcpy, 0041E870) and
