@@ -26,6 +26,7 @@ struct NativeShaderBinaryCacheContext;
 struct NativeShaderDescriptorStorage;
 struct NativeShaderDescriptorReadContext;
 class NativeShaderDescriptorReadOperation;
+class NativeLuaServiceBindings;
 struct NativeGameGridContext;
 class NativeShadowDepthTargetContext;
 class GuiTextNativeLayoutServices;
@@ -155,6 +156,11 @@ public:
     // keeps descriptor/name/operation alive and retires descriptor children
     // before this graph. Unknown native stack inputs are never synthesized.
     NativeShaderDescriptorReadContext& shader_descriptor_reader() noexcept;
+    // Ready-only borrow of the SAME retained service bundle used by this
+    // descriptor reader's bootstrap/files and native renderer Lua entries.
+    // Activate it around synchronous borrowed-reader execution; retain this
+    // renderer/application Lua owner through any interrupted Lua state.
+    NativeLuaServiceBindings& lua_service_binding();
     void read_shader_descriptor(NativeShaderDescriptorStorage&,const void* actual_name,
         std::uint32_t generation,NativeShaderDescriptorReadOperation&);
     // One camera domain shares the application's pool, type counter, node

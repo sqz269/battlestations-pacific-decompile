@@ -325,8 +325,9 @@ void GameNativeGuiEffectProbe::emit_failure_observations() const noexcept {
                 p.sampler->requires_process_retention() ? 1 : 0);
         if (p.effects) for (std::size_t index = 0; index < p.effects->operation_count(); ++index) {
             const auto& operation = p.effects->operation(index);
-            p.log.notef("native GUI effect op=%zu phase=%u name=%p result=%p",
-                index, static_cast<unsigned>(operation.phase), operation.input_name, operation.result);
+            p.log.notef("native GUI effect op=%zu phase=%u name=%p result=%p lua_binding=%p",
+                index, static_cast<unsigned>(operation.phase), operation.input_name, operation.result,
+                operation.captured_lua_binding);
             note_exception(p.log, operation.failure);
             note_cache_chain(p.log, operation.cache);
         }
