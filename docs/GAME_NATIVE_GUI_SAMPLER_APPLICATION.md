@@ -9,7 +9,8 @@ created to satisfy a missing service.
 ## Existing owners and publications
 
 The constructor takes the running `GameSingletonHost`, renderer, VFS, input
-runtime, original data and caller-qualified platform/MSG bindings. F8D41C is the
+runtime, original data and the actual platform publication. A qualified MSG
+capture is optional. F8D41C is the
 host's already-bound resource registry cell. F8D420 is the same actual
 `NativeParticleClockStorage` used by the sampler loader, with the renderer's
 existing native shutdown domain. AA0 remains the canonical singleton manager.
@@ -25,9 +26,14 @@ branch is reached; null is not repaired with a policy default.
 
 The sampler cache uses the real resource-registry lookup and VFS date services,
 and its entry calls the existing native platform message pump through
-`GameInputRuntime::platform_load_context()`. The caller must supply a genuine
-actual platform publication and MSG preimage. The component does not fill unknown
-MSG bytes with zeros or install a synthetic message service.
+`GameInputRuntime::platform_load_context()`. The caller must supply the genuine
+actual platform publication. `NativePlatformLoadMessagePreimage` is empty by
+default: the retained operation's MSG bytes remain unwritten until real
+`PeekMessageA` produces a message. Original BECCD0 reads those bytes only after
+successful retrieval. An explicit caller-qualified capture can still be passed
+and must remain alive through entry/failure. The component does not fill MSG
+bytes with zeros or install a synthetic message service. The core recovery is
+recorded in [NATIVE_SAMPLER_MESSAGE_OUTPUT_CC12.md](NATIVE_SAMPLER_MESSAGE_OUTPUT_CC12.md).
 
 ## Root and mode caller lifetime
 
@@ -84,7 +90,7 @@ list owns companion metadata only; canonical lookup stays in the renderer.
 
 Construct the sampler parent before the effect graph and use its
 `effect_bindings()` directly. Retain both, the real input/message services,
-caller MSG/evidence and original data through all entered failures and the shared
+any supplied MSG capture/evidence and original data through all entered failures and the shared
 native drain. The application's existing process-retention policy must preserve
 the complete failed heap graph; this component never rolls back native work.
 
@@ -108,8 +114,14 @@ located or accepted. An in-memory timestamp-only diagnostic matches that old
 hash at 18:43:13 UTC; it does not substitute for a preserved earlier artifact.
 The compile/build log hashes and Source files are unchanged by this correction.
 
+The subsequent output-storage binding follows core commit `73fa98d5d`. The four
+sampler/compiler/cache/effect TUs strict-compile with the same Win32 flags, and
+the registered-tree build passes the existing two suites (12.38 seconds). Its
+fresh object and logs are under `local/cc12_sampler_output_message`; the earlier
+receipt artifacts remain preserved. No effect acquisition ran in this check.
+
 No actual effect or native Text run is claimed by this packet. The next focused
-resource probe must supply the real caller MSG and shadow-target policy owner,
+resource probe must supply the genuine shadow-target policy owner,
 then acquire original `GuiFont.mshd` through this effect graph and observe the
 actual descriptor/compiler/sampler result or retained failure. A reached unknown
 root residue is meaningful evidence requiring caller qualification, not a reason
