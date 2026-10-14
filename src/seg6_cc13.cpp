@@ -185,17 +185,19 @@ void matrix_set_rotation_from_euler_00467050(float* m, float a, float b, float c
     m[10] = static_cast<float>(dca * dcb);
 }
 
-// 00468560, __thiscall(descriptor, const float pos[3], extra), RET 8. The
-// stores in image order: word +0 = 0, byte +1 = 1, the position at +8..+10h,
-// +4 = 0, byte +0 = 0, word +2 = 0, +14h = extra.
-void command_target_init_position_00468560(Object d, const float* position, std::uint32_t extra) {
+// 00468560, __thiscall(descriptor, const float pos[3], float extra), RET 8,
+// returns descriptor (MOV EAX,ECX at 00468566; the callers pass EAX on). The
+// stores in image order: word +0 = 0, byte +1 = 1, the position at +8..+10h
+// (FLD/FSTP), +4 = 0, byte +0 = 0, word +2 = 0, +14h = extra (MOVSS).
+Object command_target_init_position_00468560(Object d, const float* position, float extra) {
     native_at<std::uint16_t>(d, 0) = 0;
     native_at<std::uint8_t>(d, 1) = 1;
     for (int i = 0; i < 3; ++i) native_at<float>(d, 8 + 4 * i) = position[i];
     set_u32(d, 4, 0);
     native_at<std::uint8_t>(d, 0) = 0;
     native_at<std::uint16_t>(d, 2) = 0;
-    set_u32(d, 0x14, extra);
+    native_at<float>(d, 0x14) = extra;
+    return d;
 }
 
 // ---------------------------------------------------------------------------
@@ -834,6 +836,85 @@ void scene_stock_register_class_stock_lists_0046bf70(Seg6Host& host, Object owne
     Object allied = host.property_bag_find_008f2260(bag, literal(host, 0x00CE56C4u));
     Object allied_list = (allied != nullptr && u32(allied, 4) == 6) ? native_ptr(allied, 0x0C) : nullptr;
     queue_list_stock(host, allied_list, next);
+}
+
+// 0046DC10, __thiscall(database, const char* name, second, const float pos[3],
+// float heading), RET 10h. ESP-anchored from the listing: the frame is
+// 0Ch (EH) + 94h + 10h (four saves), so the arguments sit at [S+B4h..C0h];
+// locals: key {S+10h, S+14h}, find result {S+18h, S+1Ch}, database copy S+20h
+// (reused for the new block), identity matrix S+24h..S+63h, placed frame
+// S+64h..S+A3h. The 0046C550 RET 5Ch and the creator's 10h cleanup bring ESP
+// back to S, which the epilogue's [ESP+A4h] read confirms.
+Object scene_database_create_hidden_entity_at_0046dc10(Seg6Host& host, Object database, const char* name,
+                                                       Object second, const float* position, float heading) {
+    // 0046DC39..0046DCAA: find the hidden record by name, as in 004691B0.
+    std::uint32_t key[2] = {0, 0};
+    std::uint32_t found[2] = {0, 0};
+    Object key_obj = reinterpret_cast<Object>(key);
+    host.native_string_construct_0041e870(key_obj, name);
+    Object map = database + 0x18;
+    host.hidden_record_map_find_00468cd0(map, reinterpret_cast<Object>(found), key_obj);
+    release_native_string(host, key_obj);
+    Object container = as_object(found[0]);
+    Object node = as_object(found[1]);
+    Object head = native_ptr(map, 4);
+    if (container == nullptr || container != map) host.checked_iterator_report_00bf6713();
+    if (node == head) return nullptr;  // 0046DC95
+    if (container == nullptr) host.checked_iterator_report_00bf6713();
+    if (node == native_ptr(container, 4)) host.checked_iterator_report_00bf6713();
+    Object record = native_ptr(node, 0x14);
+
+    // 0046DCB2..0046DD04: the class row of record+0Ch through 00468FB0 on +34h;
+    // the node's value is read without a null test.
+    std::uint32_t class_key[2] = {0, 0};
+    std::uint32_t bucket = 0;
+    Object class_key_obj = reinterpret_cast<Object>(class_key);
+    host.native_string_construct_0041e870(class_key_obj, reinterpret_cast<const char*>(native_ptr(record, 0x0C)));
+    Object row = native_ptr(scene_class_map_find_node_00468fb0(host, database + 0x34, class_key_obj, &bucket), 8);
+    release_native_string(host, class_key_obj);
+
+    // 0046DD09..0046DD36: the parent entity named by the record's +54h string.
+    Object parent = nullptr;
+    if (u32(record, 0x54) != 0) {
+        const char* parent_name = reinterpret_cast<const char*>(native_ptr(record, 0x58));
+        if (parent_name == nullptr) parent_name = literal(host, 0x00E18560u);
+        parent = host.entity_registry_find_by_name_00925a90(native_ptr(host.game_00e188a8(), 0x19CC), parent_name);
+    }
+
+    // 0046DD3A..0046DDA6: the record's frame (+14h, 16 dwords) with the
+    // translation replaced by pos; the 3x3 part is rebuilt from Euler
+    // (0, heading, 0) when the double 2*pi at 00CE3828 (0x401921FB60000000)
+    // compares strictly above the heading (FCOMIP; an unordered heading skips).
+    float frame[16];
+    for (int i = 0; i < 16; ++i) native_at<std::uint32_t>(reinterpret_cast<Object>(frame), 4 * i) = u32(record, 0x14 + 4 * i);
+    frame[12] = position[0];
+    frame[13] = position[1];
+    frame[14] = position[2];
+    const double two_pi_00ce3828 = 6.283185482025146484375;  // exactly float(2*pi)
+    if (two_pi_00ce3828 > static_cast<double>(heading)) matrix_set_rotation_from_euler_00467050(frame, 0.0f, heading, 0.0f);
+
+    // 0046DDA8..0046DE4A: a literal identity (1.0f from 00D7A24C) passed by value.
+    float identity[16];
+    for (int i = 0; i < 16; ++i) identity[i] = (i % 5 == 0) ? 1.0f : 0.0f;
+
+    // 0046DE4C..0046DE7C: the generation gate; a refusal returns 0.
+    Object bag = native_ptr(record, 4);
+    const std::int32_t class_id = native_at<std::int32_t>(row, 0);
+    const char* class_name = reinterpret_cast<const char*>(
+        scene_database_class_id_to_name_00468660(host, host.scene_database_00e18680(), class_id));
+    if (!host.scene_entity_should_generate_0046c550(database, class_name, second, parent,
+                                                    reinterpret_cast<Object>(frame), bag, 0, identity, 0))
+        return nullptr;
+
+    // 0046DE82..0046DEE2: the class creator at row+4, the 0Ch-byte bag holder
+    // (0 when operator new fails) stored at entity+C0h, then 00925F20 with CL = 0.
+    Object entity = host.class_row_create_entity_call(native_ptr(row, 4), native_at<std::int32_t>(row, 0), second,
+                                                      parent, reinterpret_cast<Object>(frame), native_ptr(record, 4), 0);
+    Object block = host.operator_new_00bf681b(0x0C);
+    Object holder = block != nullptr ? host.property_bag_ref_construct_00922e20(block, native_ptr(record, 4)) : nullptr;
+    set_ptr(entity, 0xC0, holder);
+    host.sentity_init_all_00925f20(0);
+    return entity;
 }
 
 // 0046EFB0, __fastcall(ECX database), RET: the destructor body of vtable
