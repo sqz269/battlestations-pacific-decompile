@@ -56,6 +56,12 @@ enum class GameNativeTextStatus { complete, pending };
 // material services. make_type is the Text arm of the real widget factory;
 // the existing loader must still create/attach the primary Model and call74,
 // base properties, derived properties18, then78 in their recovered order.
+// Existing native bodies: AB9650 default, ABB630 properties, ABAED0/AB6AB0
+// submission, ABA8D0 content, AB8530 sections, AB8400 buffers, AB8CE0 shader,
+// AB9FD0/ABA270 mapped builders and AB98F0's actual child tail. Evidence:
+// docs/GUI_TEXT_RUNTIME_FACTORY.md, docs/GUI_TEXT_BUFFERS.md,
+// docs/GUI_TEXT_NATIVE_RENDERER.md and docs/GUI_TEXT_CHILD_DRIVER.md.
+// This composition adds no newly recovered native body or Ghidra annotation.
 //
 // Source/UTF16 updates use the factory's SAME runtime implementation. Its
 // retained continuations guard ordinary owner retirement and preserve mapped
