@@ -145,6 +145,19 @@ struct Seg6Host {
     virtual void game_entity_destruct_009287b0(Object entity) = 0;
     virtual void path_component_construct_007b28c0(Object component, Object entity) = 0;    // RET 4
     virtual void path_component_destruct_007b1bd0(Object component) = 0;
+
+    // Hidden-entity creation (0046DC10).
+    virtual Object entity_registry_find_by_name_00925a90(Object registry, const char* name) = 0;  // RET 4
+    // 0046C550 __thiscall(database, 23 stack dwords), RET 5Ch: (className, second, parent, frame*,
+    // bag, a6, a 64-byte matrix by value, a8).
+    virtual bool scene_entity_should_generate_0046c550(Object database, const char* class_name, Object second,
+                                                       Object parent, Object frame, Object bag, std::int32_t a6,
+                                                       const float matrix[16], std::int32_t a8) = 0;
+    // The class row's creator at row+4: __fastcall(ECX class id, EDX second, parent, frame*, bag, 0),
+    // the callee pops 10h (the epilogue's ESP-relative reads need it).
+    virtual Object class_row_create_entity_call(Object creator, std::int32_t class_id, Object second,
+                                                Object parent, Object frame, Object bag, std::int32_t zero) = 0;
+    virtual Object property_bag_ref_construct_00922e20(Object block, Object bag) = 0;  // RET 4
 };
 
 // Engine-movie items.
@@ -159,7 +172,7 @@ Object movie_timed_record_construct_00465a40(Seg6Host& host, Object item, float 
 
 // Matrix and small value helpers.
 void matrix_set_rotation_from_euler_00467050(float* matrix, float a, float b, float c);
-void command_target_init_position_00468560(Object descriptor, const float* position, std::uint32_t extra);
+Object command_target_init_position_00468560(Object descriptor, const float* position, float extra);
 
 // Scene database.
 void scene_database_init_entities_once_00467370(Seg6Host& host, Object flag);
@@ -218,6 +231,8 @@ void cloud_entity_update_visibility_00476d80(Seg6Host& host, Object entity);
 void cloud_entity_write_scene_properties_00477180(Seg6Host& host, Object entity, Object writer);
 Object property_bag_find_by_cstring_004772c0(Seg6Host& host, Object bag, const char* name);
 Object path_entity_construct_0047b660(Seg6Host& host, Object entity, std::int32_t id);
+Object scene_database_create_hidden_entity_at_0046dc10(Seg6Host& host, Object database, const char* name,
+                                                       Object second, const float* position, float heading);
 void path_entity_destruct_0047b700(Seg6Host& host, Object entity);
 
 }  // namespace bsp::cc13_seg6
