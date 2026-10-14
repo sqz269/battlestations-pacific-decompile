@@ -1,6 +1,6 @@
 {
   "schema": "cc12.native-component-integration.v1",
-  "authored_utc": "2026-10-14T17:51:19.4633494Z",
+  "authored_utc": "2026-10-14T17:58:42.270251+00:00",
   "previous_goal_turn": "progress: native font producer and close policy were reconstructed and staged, with local full build verification",
   "reviewed_components": [
     {
@@ -14,6 +14,21 @@
       "activation": "actual close policy bound; prompt singleton producer remains absent",
       "commit": "d094a6776ccfa1b7a1d7058d6c6e8c64e587d094",
       "component": "window close policy and prompt transport"
+    },
+    {
+      "component": "canonical raw application frame-job graph",
+      "commit": "da1ff312f",
+      "source": "src/game_native_frame_job_application.cpp",
+      "activation": "actual parent receiver/group attachment pending",
+      "independent_receipts_verified": 8,
+      "fixture_children": "normal real-worker/raw-drain and callback-failure retention both PASS; instrumented receiver callbacks are fixtures"
+    },
+    {
+      "component": "actual native-font startup probe",
+      "commit": "d0bfdf3b246a793511056838fc71b6ced01db235",
+      "source": "src/game_native_font_probe.cpp",
+      "primary_hook_commit": "88a3bcd1d",
+      "activation": "opt-in BSP_NATIVE_FONT_PROBE=1 after genuine phase7; no canonical replacement publication or Text export"
     }
   ],
   "permanent_registration": {
@@ -21,22 +36,36 @@
     "file": "cmake/startup.cmake",
     "configure_log": "local/cc12_permanent_registration_configure.log"
   },
-  "primary_build": {
-    "ctest_total": 3,
-    "command": "./scripts/build.ps1",
-    "log_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_permanent_component_build_01.log",
-    "exe_size": 5414912,
-    "log_sha256": "2f4ccf77c61b4018f2b9157bd0e564e4ceab35d0aca031bcae7f51ef96b13a78",
-    "checkout_commit": "95cf8bc1958769277d471a6dd80421d68e4ab70e",
-    "result": "PASS",
-    "ctest_passed": 3,
-    "exe_sha256": "63019e5bb354274e39e3dc4c1bef5145b9de492b8fe4566f860ea38a200f8d16"
-  },
   "runtime": {
     "faithful_world_rendering": "contradicted by earlier inspected screenshot; not revalidated by this build",
     "gameplay_fidelity": "unproven",
-    "actual_font_resource_probe": "pending helper integration"
+    "actual_font_resource_probe": "launched once through serialized launcher; result pending"
   },
   "original_installation_preserved": true,
-  "goal_status": "active"
+  "goal_status": "active",
+  "primary_build_history": [
+    {
+      "ctest_total": 3,
+      "command": "./scripts/build.ps1",
+      "log_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_permanent_component_build_01.log",
+      "exe_size": 5414912,
+      "log_sha256": "2f4ccf77c61b4018f2b9157bd0e564e4ceab35d0aca031bcae7f51ef96b13a78",
+      "checkout_commit": "95cf8bc1958769277d471a6dd80421d68e4ab70e",
+      "result": "PASS",
+      "ctest_passed": 3,
+      "exe_sha256": "63019e5bb354274e39e3dc4c1bef5145b9de492b8fe4566f860ea38a200f8d16"
+    }
+  ],
+  "primary_build": {
+    "command": "./scripts/build.ps1",
+    "checkout_commit": "88a3bcd1dd529a687ee27a78c826bbf551925793",
+    "result": "PASS",
+    "ctest_passed": 3,
+    "ctest_total": 3,
+    "log_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_font_probe_full_build_01.log",
+    "log_sha256": "5e58fd61922f98924df9ea368cfacac5fc66676e9efd78e7f53c37fe735f1289",
+    "exe_sha256": "14b700643b37e12c0f17d18db544bc5ed29bb3f6302c6f08306607f040bef91e",
+    "exe_size": 5436928,
+    "local_cmake_injection_active": false
+  }
 }
