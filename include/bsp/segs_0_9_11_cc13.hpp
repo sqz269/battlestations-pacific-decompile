@@ -134,8 +134,8 @@ void archive_writer_ref_write_00410850(Segs0911Host& host, Raw handle, const Gui
 void attach_and_call_slot4_004108a0(Segs0911Host& host, Raw self, void* object);
 
 // 00410D80 / 00410E00 __thiscall(pair, 12-byte handle by value) RET 0Ch. pair = {float +0 under
-// the key "freq" (00CE37B0), float +4 under "time" (00CE37A8)}. The calls go through the
-// handle's own vtable (+10h read, +0Ch write); the handle is destroyed on the way out.
+// the key "freq" (00CE37B0), float +4 under "time" (00CE37A8)}. The calls go to the handle's
+// +8h visitor/writer directly (+10h read, +0Ch write); the handle is destroyed on the way out.
 void time_freq_pair_read_00410d80(Segs0911Host& host, float* pair, Raw handle);
 void time_freq_pair_write_00410e00(Segs0911Host& host, const float* pair, Raw handle);
 

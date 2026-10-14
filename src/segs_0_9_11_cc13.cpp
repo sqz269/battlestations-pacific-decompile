@@ -120,23 +120,24 @@ void attach_and_call_slot4_004108a0(Segs0911Host& host, Raw self, void* object) 
     host.call_vslot_04(object);
 }
 
-// 00410D80, ECX = pair, stack handle (12 bytes) RET 0Ch, EH frame 00C5DFA8. Both reads dispatch
-// through the handle's vtable slot +10h with ECX = the stack handle (normally 004106D0).
+// 00410D80, ECX = pair, stack handle (12 bytes) RET 0Ch, EH frame 00C5DFA8. Both reads load
+// [ESP+24h] = the handle's +8 visitor and call its vtable +10h directly (not the handle's own slot).
 void time_freq_pair_read_00410d80(Segs0911Host& host, float* pair, Raw handle) {
-    host.visitor_read_10(handle.p, name_key(kFreq), field(kFieldFloat, &pair[0]));
-    host.visitor_read_10(handle.p, name_key(kTime), field(kFieldFloat, &pair[1]));
+    host.visitor_read_10(handle.ptr(8), name_key(kFreq), field(kFieldFloat, &pair[0]));
+    host.visitor_read_10(handle.ptr(8), name_key(kTime), field(kFieldFloat, &pair[1]));
     archive_reader_ref_destroy_00410630(host, handle);
 }
 
 // 00410E00, ECX = pair, stack handle RET 0Ch, EH frame 00C5DFC8. The value word of each pair is
-// the float's bit pattern (MOVSS to a stack slot, then a dword push); slot +0Ch of the handle.
+// the float's bit pattern (MOVSS to a stack slot, then a dword push). Both writes load [ESP+30h] =
+// the handle's +8 writer and call its vtable +0Ch directly.
 void time_freq_pair_write_00410e00(Segs0911Host& host, const float* pair, Raw handle) {
     GuiLuaVariant value;
     value.tag = kFieldFloat;
     value.value.number = pair[0];
-    host.writer_write_0c(handle.p, name_key(kFreq), value);
+    host.writer_write_0c(handle.ptr(8), name_key(kFreq), value);
     value.value.number = pair[1];
-    host.writer_write_0c(handle.p, name_key(kTime), value);
+    host.writer_write_0c(handle.ptr(8), name_key(kTime), value);
     archive_writer_ref_destroy_004107b0(host, handle);
 }
 
