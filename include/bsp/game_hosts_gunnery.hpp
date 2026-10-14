@@ -115,6 +115,13 @@ struct GameBulletClassRow {
     std::string name;
     std::string type;            // "Artillery", "Torpedo", ...
     float muzzle_speed{0.0f};    // "V0", classDesc+50h at 006E8430
+    // The 006E9890 products for an artillery class (sub-types 4..7): +50h =
+    // sqrt(9.81 * Range), +5Ch = V0 / that, and +54h FlyTime (FLT_MAX unless
+    // authored). docs/CC13_VER_21.md D3.
+    bool artillery_class{false};
+    float class_speed{0.0f};
+    float time_scale{1.0f};
+    float fly_time{3.4028234663852886e+38f};
     float range{0.0f};           // "Range", the falloff divisor and the life bound
     float damage_min{0.0f};      // "DamageMin"
     float damage_max{0.0f};      // "DamageMax"
@@ -209,6 +216,12 @@ struct GameGunRow {
     float wind_amount{0.0f};          // gun[+3F8h]+8h, `Wind` (006E50E3, the rack's drift)
     float max_range{0.0f};            // 00731020's answer, the bullet `Range`
     float muzzle_speed{0.0f};
+    // classDesc+50h and +5Ch AFTER 006E9890: for an artillery class (sub-types
+    // 4..7) 006E98BC makes them sqrt(9.81 * Range) and V0 / that; otherwise
+    // V0 and 1. `muzzle_speed` above keeps the authored V0. docs/CC13_VER_21.md D3.
+    float class_speed{0.0f};
+    float class_time_scale{1.0f};
+    bool artillery_class{false};      // sub-type 4..7 with a usable class_speed
     float water_travel_speed{0.0f};   // MTorpedo classDesc+0E4h, 008566B0
     float swim_speed{0.0f};           // record+470h, WaterTravelSpeed * 0.6
     // gun+120h/+124h, the list 0072AD40 ages at the top of every fixed step.

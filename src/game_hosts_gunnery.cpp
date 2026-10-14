@@ -401,6 +401,23 @@ constexpr bool kSubmarineCategoryGateBound = true;
 //    OFF: as before.
 //    ON since the pairs (GUNNERY_OPEN_ITEMS 226: USN01 21 non-harm causes, identical).
 constexpr bool kKillFunnelCauseBound = true;
+//  * kArtilleryClassSpeedBound: packet g42_ver21_d3 (docs/CC13_VER_21.md D3).
+//    006E98BC rewrites an artillery class (sub-types 4..7) to +50h = sqrt(9.81 *
+//    Range) and +5Ch = V0 / that, and every consumer reads the rewrite: the
+//    lead pre-estimate and its time of flight (006DF876, 006DF8E4..006DF911,
+//    divisor * +5Ch), the arc solve (006DFAB3), the ArtilleryGunnerBot accept
+//    (006DEF84), the launch (006E8594), and the flight step, whose dt is
+//    scaled by +5Ch before the flight time +1C4h accumulates it (006E6490,
+//    006E675A). The expiry is +1C4h > class+54h (FlyTime; FLT_MAX for every
+//    artillery row in this installation). The host used the authored V0, the
+//    plain dt and a life * V0 > Range expiry. ON: all of the above for a gun
+//    or shot of an artillery class. OFF: as before.
+constexpr bool kArtilleryClassSpeedBound = false;
+//  * kArtilleryLaunchBiasBound: packet g42_ver21_d3 (docs/CC13_VER_21.md D4).
+//    006E85C1..006E85E4 subtracts 0.05 * 9.81 from the launch vy for class
+//    sub-types 4..7; the host passed sub-type 0 to 006E8430. ON (only together
+//    with kArtilleryClassSpeedBound): the gun's refined sub-type is passed.
+constexpr bool kArtilleryLaunchBiasBound = false;
 //  * kTorpedoSwimThrustBound: packet cc9_torpedo_tube_turn,
 //    docs/TORPEDO_FRIENDLY_CROSSING.md section 6. 00857480, the swim advance,
 //    per step on a torpedo in the water: 00856BB0 -> 00857061 yaws the NOSE
@@ -1827,6 +1844,15 @@ struct GameGunneryHost::Impl {
     std::map<int, float> bullet_min_range;
     // kFlakFuseArmTimeBound: 0070C0B0's +D8h = MinRange / V0, by bullet class.
     std::map<int, float> flak_fuse_time_by_class;
+    // kArtilleryClassSpeedBound: 006E9890's +54h (FlyTime), by bullet class.
+    std::map<int, float> artillery_fly_time_by_class;
+    // kArtilleryClassSpeedBound counters: aims that took the class speed, shots
+    // launched at it, scaled shot steps, and FlyTime expiries.
+    unsigned long long artillery_class_aims{0};
+    unsigned long long artillery_class_launches{0};
+    unsigned long long artillery_biased_launches{0};
+    unsigned long long artillery_scaled_steps{0};
+    unsigned long long artillery_fly_time_expiries{0};
     unsigned long long aa_window_rejects{0};
     unsigned long long aa_kind6_gate_rejects{0};   // GUNNERY 184
     unsigned long long aa_armour_rejects{0};
@@ -4708,6 +4734,14 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                 // used to discard: +8h after the 006E9968 rewrite. 009FE270
                 // switches on it for the AI target-weight accuracy.
                 gun.bullet_sub_type = finalised.sub_type;
+                // 006E98BC's +50h / +5Ch, carried beside the authored V0 (D3).
+                // A Range of 0 would make +5Ch infinite; no artillery row in this
+                // installation does that, and such a class keeps the V0 path.
+                gun.class_speed = finalised.muzzle_speed;
+                gun.class_time_scale = finalised.time_scale;
+                gun.artillery_class = finalised.sub_type >= 4 && finalised.sub_type <= 7
+                    && finalised.muzzle_speed > 0.0f && std::isfinite(finalised.time_scale);
+                artillery_fly_time_by_class[gun.bullet_class] = finalised.fly_time;
                 flak_fuse_time_by_class[gun.bullet_class] = finalised.flak_fuse_time;
                 if (finalised.engagement_range > 0.0f) {
                     gun.max_range = finalised.engagement_range;
@@ -4785,6 +4819,13 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                 b.id = gun.bullet_class;
                 b.found = true;
                 b.muzzle_speed = gun.muzzle_speed;
+                b.artillery_class = gun.artillery_class;
+                b.class_speed = gun.class_speed;
+                b.time_scale = gun.class_time_scale;
+                {
+                    const auto ft = artillery_fly_time_by_class.find(gun.bullet_class);
+                    if (ft != artillery_fly_time_by_class.end()) b.fly_time = ft->second;
+                }
                 b.range = gun.max_range;
                 b.water_travel_speed = gun.water_travel_speed;
                 b.swim_speed = gun.swim_speed;
@@ -6031,7 +6072,9 @@ public:
                 bsp::GunGravityArcQuery q;
                 q.aim_point = {target_pos[0], target_pos[1], target_pos[2]};
                 q.muzzle_position = {muzzle[0], muzzle[1], muzzle[2]};
-                q.muzzle_speed = row.muzzle_speed;
+                // 006DEF84 FLD [class+50h]: the 006E98BC speed for an artillery class.
+                q.muzzle_speed = kArtilleryClassSpeedBound && row.artillery_class
+                    ? row.class_speed : row.muzzle_speed;
                 q.mount_frame = nullptr;
                 const bsp::GunGravityArcSolution arc = bsp::solve_gun_gravity_arc_00955630(q);
                 bool reach = arc.solved;                                // 006DEFAD
@@ -7367,15 +7410,20 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 const float span[3] = {at[0] - muzzle[0], at[1] - muzzle[1],
                     at[2] - muzzle[2]};
                 const float distance = length3(span);
-                const float speed_squared = gun.muzzle_speed * gun.muzzle_speed;
+                // kArtilleryClassSpeedBound: [class+50h] and [class+5Ch] after
+                // 006E98BC (D3). OFF: the authored V0 and a divisor of one.
+                const bool class_speed = kArtilleryClassSpeedBound && gun.artillery_class;
+                const float arc_speed = class_speed ? gun.class_speed : gun.muzzle_speed;
+                const float arc_time_scale = class_speed ? gun.class_time_scale : 1.0f;
+                if (class_speed) ++artillery_class_aims;
+                const float speed_squared = arc_speed * arc_speed;
                 const float s = distance * kGravity / speed_squared;
                 arc_solved = s <= 1.0f;
                 pitch = std::min(std::asin(std::min(s, 1.0f)) * 0.5f, kQuarterPi);
-                // [muzzle+5Ch] has no recovered producer; the divisor is taken
-                // as one, which makes the push-out the plain time of flight.
+                // 006DF8E4..006DF911: distance / (v * cos(pitch) * [class+5Ch]).
                 const float cosine = std::cos(pitch);
-                const float flight = cosine > 0.0f ? distance / (gun.muzzle_speed * cosine)
-                                                   : 0.0f;
+                const float flight = cosine > 0.0f
+                    ? distance / (arc_speed * cosine * arc_time_scale) : 0.0f;
                 for (int i = 0; i < 3; ++i) lead[i] = at[i] + v[i] * flight;
                 // Step 8, 006DFAD4: the recovered solve 00955630 replaces the
                 // pre-estimate for the FINAL elevation. The pre-estimate above
@@ -7388,7 +7436,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 bsp::GunGravityArcQuery arc_query;
                 arc_query.aim_point = {lead[0], lead[1], lead[2]};
                 arc_query.muzzle_position = {muzzle[0], muzzle[1], muzzle[2]};
-                arc_query.muzzle_speed = gun.muzzle_speed;
+                arc_query.muzzle_speed = arc_speed;   // 006DFAB3 loads [class+50h]
                 // mount_frame == nullptr is 0085B8DE's deliberate world-frame
                 // path: the pair comes back without the local-frame round trip.
                 arc_query.mount_frame = nullptr;
@@ -8370,12 +8418,25 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         shot.team_id_1c = shot_team_id_0072c0f2(gun, owner_unit);
         shot.bullet_class = gun.bullet_class;
         float launch_speed = gun.muzzle_speed;
+        int launch_sub_type = 0;
+        if (kArtilleryClassSpeedBound && gun.artillery_class) {
+            // 006E8594: direction * [class+50h], the 006E98BC speed (D3); and
+            // 006E85C1 takes the vertical bias for sub-types 4..7 (D4).
+            launch_speed = gun.class_speed;
+            if (kArtilleryLaunchBiasBound) launch_sub_type = gun.bullet_sub_type;
+        }
         if (have_target) {
             if (const SecondAmmo* dp = dp_air_ammo(g, gun.category, target)) {
                 shot.bullet_class = dp->bullet_class;
                 launch_speed = dp->muzzle_speed;
+                launch_sub_type = 0;
                 ++dp_air_rounds;
             }
+        }
+        if (kArtilleryClassSpeedBound && gun.artillery_class
+            && shot.bullet_class == gun.bullet_class) {
+            ++artillery_class_launches;
+            if (launch_sub_type != 0) ++artillery_biased_launches;
         }
         if (kAaFlakAimErrorBound) {
             const auto fe = aa_flak_error_by_gun.find(g);
@@ -8447,7 +8508,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         for (int i = 0; i < 3; ++i) shot.position[i] = spawn[i];
         const bsp::TickPoint3 launch_direction{direction[0], direction[1], direction[2]};
         const bsp::TickPoint3 velocity = bsp::projectile_launch_velocity_006e8430(
-            launch_speed, launch_direction, 0);
+            launch_speed, launch_direction, launch_sub_type);
         shot.flight.velocity = velocity;
         shot.flight.snapshot_current = bsp::TickPoint3{spawn[0], spawn[1], spawn[2]};
         shot.flight.local_position = shot.flight.snapshot_current;
@@ -9411,9 +9472,20 @@ void GameGunneryHost::Impl::torpedo_swim3d_step(GameProjectileRow& shot, float d
     ++torpedo_swim3d_depth_samples;
 }
 
-void GameGunneryHost::Impl::run_projectiles(float dt) {
+void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
     for (GameProjectileRow& shot : shots) {
         if (!shot.alive) continue;
+        // 006E6490: the step is [class+5Ch] * step before the flight time and
+        // the mode slot see it. Only an artillery class has a scale other than
+        // one, so OFF and non-artillery rounds step on the plain frame dt.
+        float dt = frame_dt;
+        if constexpr (kArtilleryClassSpeedBound) {
+            const GameBulletClassRow* const sc = bullet(shot.bullet_class);
+            if (sc != nullptr && sc->artillery_class) {
+                dt = sc->time_scale * frame_dt;
+                ++artillery_scaled_steps;
+            }
+        }
         if (shot.serial == 0) shot.serial = ++next_projectile_serial;
         if (kDepthChargeInWaterBound && shot.depth_charge_in_water) {
             // 006E137D: in water the record's +1A0h slot is 006FCD20.
@@ -10058,7 +10130,16 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
             ? row->swim_speed
             : (row != nullptr && row->muzzle_speed > 0.0f ? row->muzzle_speed : 1.0f);
         const float speed = cruise;
-        if (range > 0.0f && shot.life * speed > range) {
+        if (kArtilleryClassSpeedBound && row != nullptr && row->artillery_class) {
+            // 006E6584: +1C4h (the scaled flight time) > [class+54h], FlyTime,
+            // which no artillery row in this installation authors (FLT_MAX).
+            if (shot.life > row->fly_time) {
+                ++artillery_fly_time_expiries;
+                ++summary.expired;
+                shot.fate = 5;
+                shot.alive = false;
+            }
+        } else if (range > 0.0f && shot.life * speed > range) {
             ++summary.expired;
             shot.fate = 5;
             if (trace) {
@@ -14521,6 +14602,13 @@ void GameGunneryHost::report() {
             host.aa_direct_aims, host.artillery_arc_aims, host.aim_error_rerolls,
             host.no_gravity_shots, kGunGravityArcBound ? 1 : 0,
             kBulletNoGravityBound ? 1 : 0, kGunAimErrorBound ? 1 : 0);
+        host.log.notef("summary mission gunnery artillery class speed aims=%llu launches=%llu "
+            "biased=%llu scaled_steps=%llu fly_time_expiries=%llu speed=%d bias=%d "
+            "(006E98BC, CC13_VER_21 D3/D4)",
+            host.artillery_class_aims, host.artillery_class_launches,
+            host.artillery_biased_launches, host.artillery_scaled_steps,
+            host.artillery_fly_time_expiries, kArtilleryClassSpeedBound ? 1 : 0,
+            kArtilleryLaunchBiasBound ? 1 : 0);
         {
             // Packet cc9_mrtgun_immediate_fire: the census of turning classes by
             // whether the ArtilleryGunnerBot drives the category.

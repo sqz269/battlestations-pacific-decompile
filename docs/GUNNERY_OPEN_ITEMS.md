@@ -13979,3 +13979,48 @@ queue, in order:
 6. **TorpedoBot tick `008FFF20`** (the 0.2 s think, gates A/B, the trigger dropped when `008FBB00` has no solution,
    ~:6950) and the slot accept `008FC010` (~:5594), from docs/CC13_GPR_40.md section 2.
 7. Items 3a, 4 and 5 and the two OFF switches, as listed above. Item 5 needs a harness scene override.
+
+## 228. Artillery class speed and launch bias (CC13_VER_21 D3, D4): `kArtilleryClassSpeedBound`, `kArtilleryLaunchBiasBound`, OFF (lead queue item 1; cc9-gunnery42, 2026-10-14)
+
+**Image** (docs/CC13_VER_21.md D3/D4, re-read here). `006E98BC` (`weapon_class_derive_engagement_range`) rewrites an
+artillery class (sub-types 4..7) to `+50h = sqrt(9.81 * Range)` and `+5Ch = V0 / +50h`. The consumers that read the
+rewrite: the lead pre-estimate (`006DF876`) and its time of flight `D / (v' cos(pitch) * +5Ch)`
+(`006DF8E4..006DF911`), the arc solve (`006DFAB3`), the ArtilleryGunnerBot accept (`006DEF84 FLD [EBP+50h]`, read
+here), the launch (`006E8594`), and `006E6490`, which scales the step by `[class+5Ch]` before it adds it to the
+flight time `+80h` of the tick node (`+1C4h` of the projectile) and before the mode slot runs. The expiry there is
+`+1C4h > [class+54h]` (FlyTime). D4: `006E85C1..006E85E4` subtracts `0.05 * 9.81` from the launch vy for
+sub-types 4..7.
+
+**This installation** (`local\g42_arty.py`, arcade `bulletclasses.lua`, mtime 2026-05-09): 32 Artillery rows.
+None authors FlyTime, so `+54h` stays FLT_MAX and an artillery shell never expires on time. The common rows have
+V0 300 and Range 1500..3300 m (v' 121..180 m/s, scale 1.67..2.47). Three rows have a scale of about 0.96:
+997 has Range 4500, 38 has Range 10000, and 164 has V0 900 with Range 90000.
+
+**Host before.** The rows above used the authored V0, the plain dt, and the expiry `life * V0 > Range`, which stands
+in for FlyTime.
+
+**Binding** (OFF). The gun row now carries `class_speed`, `class_time_scale` and `artillery_class`, and the bullet row
+carries `artillery_class`, `class_speed`, `time_scale` and `fly_time` (from the finaliser that was already called).
+ON, for a gun or shot of an artillery class:
+- the lead pre-estimate, its flight-time divisor and the 00955630 arc take `v'` and `+5Ch`;
+- the 006DEF30 accept solves with `v'`;
+- the launch is `direction * v'`;
+- `run_projectiles` steps the shot, and accumulates its `life`, on `+5Ch * dt`;
+- the expiry is `life > FlyTime`.
+
+`kArtilleryLaunchBiasBound` passes the gun's refined sub-type to `006E8430`, and only under the speed switch. A
+DP round (Bullet[2]) keeps its own V0 and sub-type 0. Counters: `summary mission gunnery artillery class speed
+aims= launches= biased= scaled_steps= fly_time_expiries=`.
+
+**Predictions** (written before any run):
+1. OFF is identical to the base, and the counters are 0.
+2. ON: `aims`, `launches` and `scaled_steps` are non-zero on JM08, IJN08, USN13 and USN02, and
+   `fly_time_expiries=0`.
+3. Every gun with an artillery class sees its pre-estimate refuse targets beyond Range (s > 1, slant). Before,
+   V0 = 300 reached about 9 km.
+4. Fewer hull hits per artillery shot: cc13's crude estimate is a third to two thirds fewer.
+5. Later sinkings and fewer deaths in a time-boxed run, with gameplay RNG-coupled downstream (hit-dependent
+   fire and part draws).
+6. The bias (D4) lowers hits further. It is judged only as D3 + D4 against D3.
+7. Win rows: USN02's Java Sea fight is the most exposed (`s36_u2_p7`). USN12's completion depends on the US
+   ships surviving, so it may move either way.
