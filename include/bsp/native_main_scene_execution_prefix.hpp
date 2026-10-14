@@ -1,0 +1,198 @@
+#pragma once
+#include <cstdint>
+
+namespace bsp {
+struct NativeCameraAxesContext;
+struct NativeCameraHistoryContext;
+struct NativeCameraFarCornersContext;
+struct NativeRendererFrameTargetsContext;
+struct NativeCameraFrameCommandContext;
+struct NativeSystemConstantGatherContext;
+struct NativeSystemConstantGatherFrame;
+struct NativeStringRawPoolContext;
+
+struct NativeMainSceneExecutionPrefixContext {
+    void* const volatile& actual_renderer_00f8d394;
+    const volatile std::uint32_t* actual_renderer_profile_00d5f0a8;
+    void* const volatile& actual_clock_01090ab0;
+    const NativeCameraAxesContext& axes;
+    const NativeCameraHistoryContext& history;
+    const volatile double& direction_scale_00cec9e0;
+    const volatile std::uint32_t& near_plane_00ce3800;
+};
+
+// Fresh persistent external continuation state, disjoint from actual native
+// storage, for the ORIGINAL later restore. Do not reuse a completed state.
+// near_bits is the original camera+1D4 word; color_word is the saved +190 word
+// with its high byte replaced by FF exactly as B1573D..B15741. The existing
+// service/camera mutations survive failure and are never rolled back here.
+struct NativeMainSceneExecutionPrefixState {
+    std::uint32_t near_bits{};
+    std::uint32_t color_word{};
+    bool frame_active{};
+    bool near_changed{};
+    bool reached_texture_stage{};
+    bool reached_bloom_stage{};
+    std::uint32_t clear_flags_bits{};
+    std::uint32_t active_native_site{};
+    bool bloom_targets_started{};
+    bool clear_flags_captured{};
+    bool clear_flags_changed{};
+    bool clear_color_changed{};
+    bool reached_camera_frame_stage{};
+    std::uint32_t render_mode_bits{};
+    bool camera_gather_started{};
+    bool camera_frame_completed{};
+    bool render_mode_captured{};
+    bool render_mode_changed{};
+    bool system_gather_started{};
+    bool reached_label_stage{};
+    bool reached_drsh_batch_stage{};
+};
+
+// Complete raw leaves. Native ECX command / camera. B1BF40 uses RET and returns
+// current [[command+28]+08]. B6FE60 has stack outputDWORD, RET4, EAX output.
+void* __fastcall get_native_scene_command_camera_00b1bf40(const void* actual_command);
+void* __fastcall get_native_camera_clear_color_00b6fe60(const void* actual_camera,
+    void* unused_edx, void* actual_output_word);
+
+// Genuine B156C0 entry through B1586C, ending BEFORE B1586D texture-holder
+// acquisition. Includes current renderer slot2C frame-active gating, near/color
+// capture, raw axes/velocity projection, full B0DB00 history, delayed VP copy,
+// and current raw camera VP inverse/copy. Returns true only at that boundary;
+// false means native frame-inactive exit. This is NOT whole command success.
+//
+// No renderer, clock, camera, history, owner or callable table is created. The
+// raw service/command graph and the SAME actual CRT/constants must be supplied.
+// Each B1BF40 call reloads the current camera; no camera snapshot is substituted.
+// B17240 system-prefix preparation and the remaining B156C0 texture/target/
+// batch/material/post stages are unresolved here. D5E13C must stay UNADMITTED
+// in the existing queue execution domain. This API does not install a route.
+bool execute_native_main_scene_prefix_00b156c0(void* actual_service,
+    void* actual_command, NativeMainSceneExecutionPrefixContext&,
+    NativeMainSceneExecutionPrefixState&);
+
+struct NativeMainSceneTextureConstantsContext {
+    const volatile std::uint32_t* actual_texture_profile_00d61948;
+    const volatile float* unsigned_bias_00ce3978;
+    const volatile double* half_00d7a280;
+    const volatile std::uint32_t* negative_one_00d7a260;
+    const volatile std::uint32_t* one_00d7a24c;
+    const NativeCameraFarCornersContext* far_corners;
+};
+
+// Continue the SAME actual service/command and persistent prefix state through
+// B1586D..B15BD1, ending BEFORE B15BD2 bloom selection. Repeated genuine B4CB10
+// holder getters and captured D61948 current slots3C/40 use B3CE50/B3CE60.
+// Retains unsigned x87 conversion, half/full texel stores, all nine XY offsets,
+// and current-camera full B0EB10 far rays. No owner allocation or ref changes.
+// Only the established valid profile/raw-domain contract is admitted; throwing
+// across the naked arithmetic helper is not supported. Never whole-command
+// success: D5E13C remains unadmitted and all later renderer stages are required.
+void continue_native_main_scene_texture_constants_00b1586d(void* actual_service,
+    void* actual_command, const NativeMainSceneTextureConstantsContext&,
+    NativeMainSceneExecutionPrefixState&);
+
+struct NativeMainSceneBloomTargetContext {
+    const NativeMainSceneTextureConstantsContext& textures;
+    const volatile double& adaptation_scale_00ce3cb8;
+    const volatile std::uint32_t& negative_half_00ce69d0;
+    const volatile std::uint32_t& half_float_00ce3800;
+    NativeRendererFrameTargetsContext& targets;
+    const volatile std::uint32_t* actual_renderer_profile_00d5f0a8;
+};
+
+// Continue SAME actual service/command/state through B15BD2..B15E77. Execute
+// the real bloom enabled/disabled branches and shared screen constants, save
+// current camera+188 clear flags, set7/white through current cameras, assign
+// the three current holder-primary surfaces to current service+1C8 groups,
+// then resolve current renderer slot98 to full B24E70 over the SAME group and
+// surface lifetime/synchronization/settings domain. No default targets, owner
+// replacement, extra reference credit, cleanup or rollback. Real owner/callee
+// failures preserve prior mutations and active_native_site; never replay a
+// started stage. The ownership suffix uses ordinary C++ exception frames.
+// Stops BEFORE B15E78 camera-frame execution. D5E13C remains UNADMITTED.
+void continue_native_main_scene_bloom_targets_00b15bd2(void* actual_service,
+    void* actual_command, const NativeMainSceneBloomTargetContext&,
+    NativeMainSceneExecutionPrefixState&);
+
+// Complete B6FDF0..B6FE0B: ECX actual camera, original stacked DWORD mode,
+// EAX same camera, RET4. EDX is unused. Store full mode+198 and then the x86
+// masked-shift mask+19C; no CameraFrameState projection or owner operation.
+void* __fastcall set_native_camera_render_mode_00b6fdf0(void* actual_camera,
+    void* unused_edx, std::uint32_t mode);
+
+struct NativeMainSceneCameraGatherContext {
+    const NativeMainSceneExecutionPrefixContext& prefix;
+    const NativeMainSceneBloomTargetContext& bloom_targets;
+    const NativeCameraFrameCommandContext& camera;
+    const NativeSystemConstantGatherContext& system;
+    NativeSystemConstantGatherFrame& system_frame;
+};
+
+// Continue SAME command/state through B15E78..B15EC3: real B71360, a fresh
+// camera read to save mode+198, a fresh camera to set mode6, then a camera read
+// for scene+A4 and another for full B46A70. Provider contexts borrow the SAME
+// renderer publication/profile, synchronization, CRT, axes, timer and texture
+// cells as the preceding stages. The service receiver is unused in this clause;
+// B46A70 independently reloads its supplied original service publication.
+//
+// Each call requires a fresh persistent gather frame with the original local
+// prefix preimage. Keep it and this continuation alive on failure; no replay,
+// retirement, cleanup or restoration occurs here. Source checks occur at their
+// reached call boundary, retaining prior camera/renderer mutations. Existing
+// provider exception, private-stack-alias and FP limitations still apply.
+// Stops BEFORE B15EC4 label allocation/FH3 ownership. D5E13C stays UNADMITTED.
+void continue_native_main_scene_camera_gather_00b15e78(void* actual_service,
+    void* actual_command, const NativeMainSceneCameraGatherContext&,
+    NativeMainSceneExecutionPrefixState&);
+
+struct NativeMainSceneDrshLabelContext {
+    const NativeSystemConstantGatherContext& system;
+    NativeStringRawPoolContext& strings;
+    const void* actual_drsh_bytes_00d5e500;
+};
+
+// One fresh persistent external frame, disjoint from actual native owners.
+// The caller overwrites both temporary header words before its first resize;
+// no unknown native local bytes are synthesized. Other fields preserve the
+// native EBX data capture and exact FH3 ownership transitions. No destructor
+// performs cleanup. Retain this frame and the same context at later boundaries.
+struct NativeMainSceneDrshLabelFrame {
+    std::uint32_t temporary_header[2]{};
+    void* captured_data{};
+    void* captured_service{};
+    void* destination_header{};
+    std::int32_t native_cleanup_state{-1};
+    std::uint32_t active_native_site{};
+    std::uint32_t cleanup_native_site{};
+    bool started{};
+    bool completed{};
+    bool failed{};
+    bool temporary_return_started{};
+    bool temporary_return_completed{};
+    bool cleanup_started{};
+    bool cleanup_completed{};
+};
+
+// B15EC4..B15F62 only. Initialize the original local8B header, resize4 through
+// the SAME actual raw string pool, capture EBX data, copy current length+1 from
+// borrowed actual D5E500 bytes, then read current F8D39C and arm native state0.
+// Retain native destination alias and current-length checks; after assignment
+// transition to state2 BEFORE normal captured-data/current-length pool return.
+// State0 unwinds CURRENT temporary header; state2 resets CURRENT service label.
+// On success state2 remains armed across the B15F63 batch-selection boundary.
+// Neither a fixed C++ label literal nor a projected string pool is substituted.
+// Source catch cleanup follows the proven map, without rolling back camera or
+// destination mutations. Later shader/batch code and D5E13C remain unadmitted.
+void continue_native_main_scene_drsh_label_00b15ec4(
+    const NativeMainSceneDrshLabelContext&, NativeMainSceneDrshLabelFrame&,
+    NativeMainSceneExecutionPrefixState&);
+
+// Explicit source lifecycle adapter for CBC460/CBC46B, not a native FH3 entry.
+// Consumes only reached state0 or2, disarming before its real cleanup. State-1
+// does nothing. Keep failed frames/callee state after cleanup; no reset/retry.
+// A second C++ exception while unwinding terminates, as elsewhere in this domain.
+void unwind_native_main_scene_drsh_label(const NativeMainSceneDrshLabelContext&,
+    NativeMainSceneDrshLabelFrame&) noexcept;
+} // namespace bsp

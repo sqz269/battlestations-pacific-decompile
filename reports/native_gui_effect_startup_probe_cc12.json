@@ -1,0 +1,163 @@
+{
+  "packet": "cc12_gui_effect_probe_startup",
+  "source_revision": "23fbb8a1df1d79c0e3bbad7dbfa6fa5501b2d0d2",
+  "worker_probe_revision": "22ce33474",
+  "worker_unit_revision": "9847f44ac0474a2ae5ecf0e2dcbc3388c661688b",
+  "activation": "BSP_NATIVE_GUI_EFFECT_PROBE=1 after genuine startup phase7; opt-in actual-resource probe only",
+  "resource_names": [
+    "GuiFont.mshd",
+    "GuiFontBilinear.mshd"
+  ],
+  "ownership": [
+    "retain heap metadata before run",
+    "acquire exactly one native caller credit per returned effect",
+    "retire caller credits in reverse order through B32010",
+    "destroy input names before native string-pool drain",
+    "keep original providers alive through raw singleton drain",
+    "close effect/sampler/shadow metadata after that drain",
+    "retain failed or interrupted native graphs until no-unwind process exit"
+  ],
+  "bindings": "existing actual renderer/VFS/singletons/read-only/settings/input and existing renderer focus-publication cell; no full-platform or Original ABI admission",
+  "build": {
+    "status": "passed",
+    "configuration": "MSVC Win32 Release",
+    "tests_passed": 3,
+    "tests_failed": 0,
+    "test_seconds": 10.55,
+    "log": "local/cc12_native_gui_effect_startup_build_01.log",
+    "new_tests": 0,
+    "temporary_cmake_include": false
+  },
+  "parent_review": {
+    "latest_worker_artifacts_preserved_and_verified": 120,
+    "receipt": "local/cc12_native_parent_receipts/final_parent_receipt.json",
+    "primary_unit_checks": {
+      "withdrawal": 20,
+      "peer": 37,
+      "prefix": 20,
+      "failures": 0
+    },
+    "actual_unit_receiver_constructed": false
+  },
+  "runtime": {
+    "status": "attempt2 executed and failed at B310B8 before sampler entry",
+    "exec_session": 59647,
+    "command": "./tools/run_game.ps1 -Exe local/cc12_native_gui_startup_receipts/23fbb8a1d/build/win32/Release/bsp_game.exe -XLiveDll local/cc12_native_gui_startup_receipts/23fbb8a1d/build/win32/Release/xlive_stub.dll -Log local/cc12_actual_native_gui_effect_startup_02.log -- --frames 120",
+    "environment": {
+      "BSP_NATIVE_GUI_EFFECT_PROBE": "1",
+      "BSP_NATIVE_FONT_PROBE": "0"
+    },
+    "actual_resource_acquisition_observed": false,
+    "references_retired_observed": false,
+    "original_shared_drain_observed": false,
+    "exit_code": 1,
+    "observed_utc": "2026-10-14T21:27:03.505757+00:00",
+    "attempts": [
+      {
+        "attempt": 1,
+        "exec_session": 52984,
+        "launcher_exit_code": 1,
+        "game_exit_code": null,
+        "reason": "gave up after 2400 s: all 6 slots busy",
+        "actual_process_started": false,
+        "log_created": false,
+        "manifest_created": false
+      },
+      {
+        "attempt": 2,
+        "exec_session": 59647,
+        "status": "executed; failed before effect loader/sampler entry",
+        "executable": "local/cc12_native_gui_startup_receipts/23fbb8a1d/build/win32/Release/bsp_game.exe",
+        "xlive_dll": "local/cc12_native_gui_startup_receipts/23fbb8a1d/build/win32/Release/xlive_stub.dll",
+        "log": "local/cc12_actual_native_gui_effect_startup_02.log",
+        "launcher_log": "local/cc12_actual_native_gui_effect_startup_02_launcher.log",
+        "game_arguments": [
+          "--frames",
+          "120"
+        ],
+        "launcher_exit_code": 1,
+        "game_exit_code": 1,
+        "actual_process_started": true,
+        "manifest_created": true
+      }
+    ],
+    "shadow_constructor_and_publication_observed": true,
+    "failure_site": "00B310B8",
+    "failure": "unretained effect name resolution requires an explicitly selected callback",
+    "manifest": "local/cc12_actual_native_gui_effect_startup_02.log.manifest.json",
+    "log": "local/cc12_actual_native_gui_effect_startup_02.log",
+    "runtime_receipt": "reports/cc12_native_scene_base_drsh_integration_03.json"
+  },
+  "original_installation": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "modified": false
+  },
+  "artifacts": [
+    {
+      "path": "local/cc12_native_gui_effect_startup_build_01.log",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_startup_receipts\\23fbb8a1d\\local\\cc12_native_gui_effect_startup_build_01.log",
+      "bytes": 4463,
+      "sha256": "7ede77490bcb54962333a6afb4c26558c7b7527211645fd55eba1049c2b78d01"
+    },
+    {
+      "path": "build/win32/Release/bsp_game.exe",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_startup_receipts\\23fbb8a1d\\build\\win32\\Release\\bsp_game.exe",
+      "bytes": 5573632,
+      "sha256": "915901c409eed7bf6bba24d523ce8f4a97642229e4456cdcc27dae1622344dd6"
+    },
+    {
+      "path": "build/win32/Release/xlive_stub.dll",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_startup_receipts\\23fbb8a1d\\build\\win32\\Release\\xlive_stub.dll",
+      "bytes": 32768,
+      "sha256": "2960a7ec8bc88216d20ad4e5edc066f35394c5455496bd96cb08eb931a0f0353"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_startup_receipts\\23fbb8a1d\\src\\game_hosts.cpp",
+      "bytes": 130601,
+      "sha256": "0f9bd8c63c991e7655bb9e0322d18a876068831074433417f51d6de5c250cd51"
+    },
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_startup_receipts\\23fbb8a1d\\include\\bsp\\game_hosts.hpp",
+      "bytes": 40512,
+      "sha256": "3eddef753ab540514eceae656e6f945b7b0b6548e3030339717cb63119284603"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_startup_receipts\\23fbb8a1d\\cmake\\startup.cmake",
+      "bytes": 225367,
+      "sha256": "485815a3e4aaa45ac4c2d8f814f4bf70918212687baaaf8de139e19f52812ec0"
+    },
+    {
+      "path": "src/game_native_gui_effect_probe.cpp",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_startup_receipts\\23fbb8a1d\\src\\game_native_gui_effect_probe.cpp",
+      "bytes": 18681,
+      "sha256": "6d23497980e77fe54cb6cb17653ccf3b719c4a33d3f22b0ecbb0b1828fa299af"
+    },
+    {
+      "path": "include/bsp/game_native_gui_effect_probe.hpp",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_startup_receipts\\23fbb8a1d\\include\\bsp\\game_native_gui_effect_probe.hpp",
+      "bytes": 3862,
+      "sha256": "5e1df4a1d8dc8fd8793b8642c0f329092d796689492cfe3ca11b48f7cfd0b52c"
+    },
+    {
+      "path": "src/native_unit_owner_entity.cpp",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_startup_receipts\\23fbb8a1d\\src\\native_unit_owner_entity.cpp",
+      "bytes": 12822,
+      "sha256": "40b58281074160e4202da2b0e61642c94aa0dfdb3346209743c7636092b14f5f"
+    },
+    {
+      "path": "include/bsp/native_unit_owner_entity.hpp",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_startup_receipts\\23fbb8a1d\\include\\bsp\\native_unit_owner_entity.hpp",
+      "bytes": 8447,
+      "sha256": "de08e526fd3d30fbbd5fae5981984138090ecbae8150ee16a1ff5140786fefc6"
+    }
+  ],
+  "native_text_draw_validated": false,
+  "world_command_D5E13C_admitted": false,
+  "original_abi_compatible": false,
+  "gameplay_validated": false,
+  "overall_goal": "active"
+}

@@ -314,12 +314,24 @@ void final_states(Frame& a) {
     auto& c = *a.context;
     auto* first_descriptor = &descriptor(a, 0x70);
     put<U>(&b, 0x8c, 0); put<U>(&b, 0x90, 0); put<U>(&b, 0x94, 0);
+    if (c.sampler_calls) {
+        require(!a.sampler_call_scope, "native compiler sampler call scope cannot replay");
+        a.sampler_call_scope = c.sampler_calls->begin(b, *a.pass,
+            *first_descriptor, descriptor(a, 0x74));
+        require(a.sampler_call_scope != nullptr, "native compiler requires its retained sampler call scope");
+    }
+    auto& root_context = a.sampler_call_scope ? a.sampler_call_scope->root() : c.root_samplers;
+    auto& mode_context = a.sampler_call_scope ? a.sampler_call_scope->mode() : c.mode_samplers;
+    require(!a.sampler_call_scope ||
+        (&root_context.stack_b_minus_16 == &mode_context.stack_b_minus_16 &&
+            root_context.stack_knowledge && root_context.stack_knowledge == mode_context.stack_knowledge),
+        "root/mode sampler calls require their same physical-word knowledge");
     auto& first = child(a.samplers[0]);
     site(a, 0x00b3c018);
-    append_native_material_descriptor_samplers_00b3b280(b, *a.pass, *first_descriptor, c.root_samplers, first);
+    append_native_material_descriptor_samplers_00b3b280(b, *a.pass, *first_descriptor, root_context, first);
     auto& second = child(a.samplers[1]);
     site(a, 0x00b3c024);
-    append_native_material_descriptor_samplers_00b3b280(b, *a.pass, descriptor(a, 0x74), c.mode_samplers, second);
+    append_native_material_descriptor_samplers_00b3b280(b, *a.pass, descriptor(a, 0x74), mode_context, second);
     auto& states0 = child(a.lookups[2]); site(a, 0x00b3c030);
     apply_native_descriptor_render_states_00b34920(a.pass, descriptor(a, 0x70), states0);
     auto& states1 = child(a.lookups[3]); site(a, 0x00b3c03c);

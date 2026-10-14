@@ -33,9 +33,10 @@ void* load_native_sampler_cache_00b1a4f0(void* cache,const void* name,const void
     if(a.phase!=Phase::fresh)throw std::logic_error("sampler cache entry is one-shot");
     a.phase=Phase::running;a.context=&c;a.captured_cache=cache;a.input_name=name;a.options=options;
     try {
-        a.captured_platform=c.actual_platform_0109cf04;
+        a.captured_platform=c.actual_platform_0109cf04.load();
         a.pump.emplace();
-        std::memcpy(&a.pump->message,&c.native_message_preimage,sizeof(MSG));
+        if (c.native_message_preimage.captured)
+            std::memcpy(&a.pump->message,c.native_message_preimage.captured,sizeof(MSG));
         a.native_site=0x00b1a518;
         pump_native_platform_load_messages_00beccd0(a.captured_platform,c.messages,*a.pump);
         a.continuation.emplace();a.native_site=0x00b1a51d;

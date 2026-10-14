@@ -1,0 +1,67 @@
+{
+  "packet": "cc12_native_shadow_target_application",
+  "source_base": "75145a66e",
+  "source": "src/game_native_shadow_target_application.cpp",
+  "header": "include/bsp/game_native_shadow_target_application.hpp",
+  "status": "new_source_parent_strict_compiled_registered_tree_build_checked_not_activated",
+  "owned_address": "00A8FE30",
+  "caller_qualification": {
+    "sources": [
+      "docs/APP_INIT_RENDERER.md",
+      "primary current saved73D410 review"
+    ],
+    "interval": "0073DCCB..0073DD04",
+    "semantics": "capture rawF8899D once; zero2048/nonzero4096 square; persist beforeBF681B(2Ch); guardedA8FE30 on returned actual allocation",
+    "canonical_settings": "GameNativeSettingsProcess::settings().data()+1D",
+    "caller_owned_elsewhere": "agent/argon-v2; no caller ledger/annotation/body/ABI mutation"
+  },
+  "native_owner": {
+    "size": "2Ch",
+    "final_profile": "00D5B5E8",
+    "constructor": "00A8FE30 ECX actual owner, width/height stack, EAX owner, RET8",
+    "publication": "renderer actual canonical00F8BBF0",
+    "registration": "existingA8A820 canonicalAA0 path only",
+    "source_allocator": "singleton_lifetime_allocate object native_bytes2Ch/host_bytes2Ch; raw bytes; guarded null retained",
+    "creation": "noA8FF30/resource/enable call",
+    "retirement": "existing canonical singleton deletion context/A900C0/A8FFF0/A8A9D0/A8A8C0/shared free; metadata only closure after real drain"
+  },
+  "failure": {
+    "native_work_in_cpp_constructor": false,
+    "parent_retained_before_one_shot_construct": true,
+    "captures": [
+      "actual settings byte",
+      "saved dimensions",
+      "actual allocation",
+      "constructor operation index",
+      "failure stage",
+      "exact exception_ptr"
+    ],
+    "no_replay_or_cleanup": true,
+    "policy": "entered failure retains parent/renderer/settings/native frames and providers through caller process-retention exit"
+  },
+  "verification": {
+    "strict_compile": "MSVC Win32 C++17 /W4 /WX /EHsc /permissive- /O2 /MD /fp:strict passed",
+    "command": "local/cc12_native_shadow_target_application/compile.cmd",
+    "command_sha256": "CD035F8A4C078F6ABB2D874FA91B1C47E582766AE477AACE1382C538753343C6",
+    "compile_log": "local/cc12_native_shadow_target_application/compile.log",
+    "compile_log_sha256": "D6C86B4DE0EDE519D19894FE7CDDE5F027166D495EE5CDEEEA03E85840D08842",
+    "object": "local/cc12_native_shadow_target_application/game_native_shadow_target_application.obj",
+    "object_sha256": "DC65CC110EDDBA6F91DEB397206ADCB851784BFFFF744337C85984D47A61CCB6",
+    "source_sha256": "DC1D7F46A90052E6A8863BA5CF2DD5D2B1E830DC25A792FDBD30494668E31F17",
+    "header_sha256": "35F02465116119B7DA4D65FE34DA5A7E81B4D079D0C18AC22A7C8E98F3D3F5A8",
+    "build": "scripts/build.ps1 passed registered tree;2/2 existing tests12.09seconds",
+    "build_log": "local/cc12_native_shadow_target_application/build.log",
+    "build_log_sha256": "D6D360C72D6749A74A71B1FB7F0ABD5002C83C299E33AE559B912CF5D536AFAC",
+    "linkage": "new TU strict compiled separately; primary CMake registration and combined target linkage still required",
+    "new_tests": 0,
+    "runtime": "not executed",
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "remaining": [
+    "primary source registration and real retained phase7 attachment",
+    "actualGuiFont.mshd effect acquisition/probe with this genuine owner",
+    "strict sampler complete-word knowledge guard unchanged",
+    "nativeText/GUI draw/world/gameplay/native exception-register ABI unproved"
+  ]
+}

@@ -423,3 +423,22 @@ mechanism is in the cd761bb52 section above).
   then sink the carriers and the surface ships. An attack line on a dead target is applied, so per-cycle target
   lists must be resolved from a reference run's death times.
 - IJN08 variant `x` also completes under jitter 20,3 (4361.83 s, `local\p9i8_xj3.log`).
+- **ESMP08 re-planned: `config/win_orders/esmp08_l61_e8_f.txt`** (cc9-lua61, 2026-10-14). This is br3l with every launch
+  group (frame, carrier, slot) re-ordered by a (class, target) rank, from `local\l61_e8_alloc.py f` in the cc9-lua52 tree:
+  Jills/Kates (163/162) take the battleships first, Judys (159) and then Zeros (150) take the cruisers, and destroyers
+  come after. Exe = tree build of main 8612ef146, copied to `local\l61_m\`, 140000 frames, reference env. Logs are
+  `local\l61_<v>_e8.log`; census with `local\l61_e8_launches.py <log> 1200`.
+  | plan | reference | 20,3 | 20,5 |
+  |---|---|---|---|
+  | br3l (unchanged) | 14/15, Woodworth survives | 7/15 | - |
+  | **f** | **completed 4196.63 s** | 13/15 (Washington, Fanning survive) | **completed 5703.77 s** |
+  | h = f + physics9's carrier hold (p9_e8_a) | completed 2965.92 s | 14/15 (Cummings) | 14/15 (Woodworth) |
+  | j = h + held-slot `order 3` every 1200 fr | completed 2600.56 s | identical to h | - |
+  | e / g / m (destroyers earlier) | 11/15, 9/15, 13/15 | - | - |
+
+  The exec guard refused sus_prog.exe on every completion. Surface `attack` lists for the IJN ships (variants c/d)
+  apply, but no US ship takes surface damage (US cruisers 0 taken at 1200 s), so they are dropped. The binding limit
+  on this exe: a slot whose squadron has landed stays in state 3, and the host's stowed planes cannot fly a re-send
+  (5ep). Launches therefore stop near 2400 s (~80 launches; about 30k "not in state 1 or 5" refusals against 2k "no
+  stock"); routed to cc9-physics10. **f is committed as the most robust plan: 2 of 3 conditions complete, and it is a
+  knife-edge under 20,3.** It still needs a re-time on current main.

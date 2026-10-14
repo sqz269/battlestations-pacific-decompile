@@ -44,6 +44,9 @@ struct NativeMaterialProgramCompilerActualContext {
     const volatile std::uint32_t* actual_physical_stream_profile_00d691b0;
     const char* actual_empty_0108d6f2;
     const char* actual_stream_empty_0109db64;
+    // Production caller owns fresh per-invocation shared W/knowledge through
+    // both root/mode operations. Null preserves qualified legacy contexts.
+    NativeMaterialDescriptorSamplersCallFactory* sampler_calls{};
 };
 
 // Persistent acquisition/continuation metadata, attached to the original
@@ -98,6 +101,8 @@ struct NativeMaterialProgramCompilerActualFrame final : NativeMaterialProgramChi
     std::unique_ptr<NativeVertexShaderCompilationOperation> vertex_compile;
     std::array<std::unique_ptr<NativeCompiledShaderReflectionOperation>, 2> reflections;
     std::array<std::unique_ptr<NativeShaderCompilerLookupOperation>, 8> lookups;
+    // Declared BEFORE the operations so their destruction precedes this state.
+    std::unique_ptr<NativeMaterialDescriptorSamplersCallScope> sampler_call_scope;
     std::array<std::unique_ptr<NativeMaterialDescriptorSamplersOperation>, 2> samplers;
     std::array<std::unique_ptr<NativeMaterialPassShaderSlotsOperation>, 18> slots;
 };

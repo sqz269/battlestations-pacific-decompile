@@ -1,0 +1,41 @@
+{
+  "status": "Original allocation and actual configuration-field stores verified; full raw window/application binding pending",
+  "utc": "2026-10-14T21:59:12.273201+00:00",
+  "configured_project": "C:/Users/sqz269/bsp.gpr",
+  "requested_program": "battlestationspacific.exe",
+  "installed_binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "installed_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "spans": [
+    {
+      "address": "0073d8d1",
+      "bytes": 39,
+      "live_matches_installed_pe": true,
+      "byte_sha256": "5566bea56d33293cf395926ffdf1db1c5148d94ab74bdad682352cdf5e91ea28",
+      "hex": "6884010000e8408f4b0083c404894424183bc7c78424440100000a00000074078bc8e8a8f44a00",
+      "live_capture": "local\\cc12_platform_window_binding_frontier_01\\allocation_live.txt",
+      "capture_sha256": "56c1a19aa7b78567df55b492af27ebe1e5e2daec4d71c966d50147f12d381970"
+    },
+    {
+      "address": "00bed0eb",
+      "bytes": 20,
+      "live_matches_installed_pe": true,
+      "byte_sha256": "fe20e4c4936e4cf34058e10714a07ffe0922511a893d4a19a56ac43a98b39ff0",
+      "hex": "8b8c2484000000897d24894d28885d0cd95c246c",
+      "live_capture": "local\\cc12_platform_window_binding_frontier_01\\configuration_store_live.txt",
+      "capture_sha256": "f41d596e4e206b1f579790263f5413a7437ced1781d9af164a068786455e5c37"
+    }
+  ],
+  "allocation_contract": "73D8D1 allocates184h viaBF681B, tests nonnull, then73D8F3 callsBECDA0 with ECX=allocation. No caller preimage initialization occurs between allocation and constructor.",
+  "constructor_contract": "BE2AC0 reads incoming signedDWORD+24/+28 before its640/480 stores; preserve actual allocation bytes and original x87 schedule, without invented aspect preimage.",
+  "configuration_contract": "BECEE0 writes requested+34/+38 first. After desktop rectangle/x87 work, BED0F2 writes requested width to+24 and BED0F5 writes requested height to+28 on the same EBP owner; BED0F8 writes the fullscreen byte to+0C.",
+  "text_binding_contract": "AB8CE0 reads signedDWORD+28 from the actual0109CF04 configuration. A44-byte focus receiver with opaque+28 does not establish this contract.",
+  "next": "Complete raw BECEE0 with genuine184h owner, window, renderer/cache and power-policy providers; bind the one canonical0109CF04 publication and retire through D68CC4.",
+  "limits": [
+    "Two static/live spans only; no unchanged whole-body execution.",
+    "No source edits or application activation; desktop/window APIs, renderer initialization, original EH/ABI and gameplay remain unproved."
+  ],
+  "native_text_activated": false,
+  "startup_validated": false,
+  "gameplay_validated": false,
+  "overall_goal": "ACTIVE"
+}

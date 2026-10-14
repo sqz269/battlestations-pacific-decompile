@@ -15010,3 +15010,122 @@ The variants tried (orders in this tree's `local\usn15_g45_u15_*.txt`, generator
    range.
 
 **Cancelled runs.** `g45_p1_u12e6` (an escape twin of `e7`) and `g45_p1_u15a` waited too long for run slots and were cancelled; they never ran.
+
+## 257. USN15 under 222 parked on base `r`; the 256 leftovers and the gunnery backlog G1/G2/S4/S5/seg-1 (cc9-gunnery46, 2026-10-14)
+
+### 257.1 USN15 `l2` re-plan under 222: parked, waiting on the surface-tube torpedo line
+
+Build: a fresh export of main `3f25f26ce` (`local\g46_p1`, exe `721C3D926EC2`). g45's `d` reproduces on it exactly
+(fails at 1432.32 s), so nothing between `9428d8b8f` and `3f25f26ce` moved USN15. The plans are in this tree's
+`local\`: the generator `g46_plan.py` (verbs `hold`, `goto`, `gotoabs`, `line`, `attack`; each order is a `select`
+plus the order on the next frame, packed so no other select falls between), the plans `g46_u15*.plan`, the order
+files `usn15_g46_u15_*.txt`, and the readers `g46_counts.py` (US/IJN alive over time), `g46_deaths.py`,
+`g46_hits.py` (blast-line health), `g46_traj.py` and `g46_mind.py` (closest approach to JapanGoTo).
+
+**What decides the mission** (`usn_15_battle_of_surigao_strait.lua`, 2024-08-09, this installation):
+- **The script's running switch.** `Think` compares US alive against IJN alive (USShips is the 42 named ships,
+  IJNShips the 17 of the four groups). While the US has more, every IJN ship gets `UnitSetFireStance(unit, 2)`.
+  Once the US has fewer, every IJN ship gets `NavigatorMoveToPos(unit, JapanGoTo)` and `japsrunning` latches.
+- **The four groups do not all head for JapanGoTo.** The BB groups each draw `random(1,2)` between
+  JapanEdgeMove1/2 (`(12000, 12000)` / `(-12000, 12000)`) and JapanGoTo `(0, 12000)`. The CA groups always take the
+  edges. In this seed Yamashiro takes JapanGoTo and Fuso takes JapanEdgeMove1. Fuso's own path stays about 3.9 km
+  from JapanGoTo (`m`), so it only fails the mission once running mode sends it to JapanGoTo (`g`, at 1422.8 s).
+- **The real constraints** are therefore: Yamashiro dead before about 1400 s (its followers stop when it dies),
+  and US alive kept above IJN alive.
+
+**The firepower limits:**
+- US Fletchers launch no torpedoes in this mission (`accepted=0`, mask 0). `ship.props` gives
+  `TorpedoDirector = false`, and that is the reviewed cc11 binding.
+- Fuso and Yamashiro have about 90k health and armour 130. Every 115/120 blast does 0 against them, so only
+  battleship main guns and direct hits hurt them.
+- Yamashiro kills a US BB about every 50 s while in range. Fubuki 06/07/08 fire-target torpedoes take the rest.
+  Five of the six US BBs die in every variant that kills Yamashiro in time.
+
+**Variants** (exe `721C3D926EC2`, reference env, 90000 mission frames):
+
+| variant | idea | result |
+| --- | --- | --- |
+| `f` | `d`, BBs attack Yamashiro from 800 s | fails 1432.32 s; Yamashiro left at 640 health |
+| `g` | `d`, BBs to a west station (-2500, 6500) at 850 s, attack Yamashiro from 1000 s | Yamashiro dies 1189.59 s (a Fubuki-class07 torpedo at 32 m finishes it); running at 1422.8 s; fails 1492.38 s |
+| `j` / `k` | `g` + Fletchers/cruisers on Fuso at 900-1000 s | fail 1362 / 1397 s (all US dead; Fuso to 25.7k in `j`) |
+| `l` | `g` + Fletchers stage east first | fails 1822.70 s |
+| `m` | `g`, Fletchers attack Fuso at 1200 s | **no fail to 4500 s**; Yamashiro, Nachi, Ashigara dead; Fuso parks at about (6400, 10200) with about 48k |
+| `n` / `o` | `m` + late Fuso attacks | no change: the attackers are dead, crippled or aground |
+| `r` | `g`, then every ship leaves Fuso's path (cruisers west at 1000 s, small ships to (-3000, 10500) at 1100 s, BBs to (-3500, 7500) at 1300 s); Fuso and Ashigara attacked from 2600 s | **base**: Yamashiro dies 1171 s, 22 US alive at 2900 s; the piecemeal Fuso attack does 2.5k; running at 3989 s |
+| `s` | `r` with the attacks from 2000 s | Fuso to 43.9k; running at 3606 s |
+| `u` | decoy Fletchers at x=1000 between the BB tracks | BB deaths identical to the frame: Yamashiro does not switch targets; fails 1417 s |
+| `w1` | `r`, everyone stages at (5000, 11000) from 2200 s | Fuso comes to them; all die; Fuso 48.9k |
+| `y1` / `y2` | swarm (or escorts) with the BBs | fail 3719 / 1657 s |
+| `z1` / `z2` | BB east station | BBs die crossing Yamashiro's track; Yamashiro dies; no fail; Fuso 78-86k |
+| `aa` / `ab` / `ac` / `ad` | BBs held back as a reserve; small ships or cruisers take Yamashiro | running at 1220-1340 s; fail 1357-1432 s (`ab` keeps four BBs) |
+
+**Fletcher behaviour that matters:** under `attack`, Fletchers stand off at about 2 km, outside their own 1.5 km gun
+range (cat 6) and inside Fuso's 3 km (cat 4), so a trickle does nothing. The one strike that worked (`m`, 42k in
+about 200 s) was Fuso driving into them.
+
+**Parked.** The Fuso kill needs torpedoes. cc9-ships50 owns the fix for `torpedo <ship> at <target>` / `torpedo
+<ship> release` (today it never launches from surface tubes; a player-controlled destroyer can fire with
+`TorpedoDirector = false`). When it lands: merge, re-export, and add a coordinated torpedo strike on the parked Fuso
+to `r` (same orders to 2200 s, so the prefix replays). Then Ashigara at (-11100, 7100); the CLs sent there in `r`/`s`
+die with no killer on the way (aground: route them through (-7700, 10300)). Raise `--mission-frames` if needed.
+
+**PT boats (presentation gap, low).** `build "EscortSY 03" class 27` (Elco) works (`local\g46_p1_ptsmoke.log`):
+`00673A10` queues it and `00846320` launches one boat at frame 292. The other seven stay queued in 300 s. The boat's
+unit name is the raw `" ingame.shipnames_pt|.747 #Y3"`, because `SetGuiName` (`008A8F90`) is UNIMPLEMENTED, so an
+order line cannot name it.
+
+### 257.2 GUNNERY 256 leftovers (read-only)
+
+- **237 reach (`kTorpedoLaunchZoneBound`).** There are 0 holds in the 260 logs from the last two days that carry the
+  counter, across every cc9 tree, with 755,592 tests. `004120D0` confirmed: an exact layer key, else the last lower
+  key, else slot 0, so the layer-0 zones are the ones tested. No played row's launch line meets an avoid-zone box.
+  Still no reach.
+- **`00836210` clear reach.** There are 0 clears in the 1124 recent logs that carry
+  `fire permission clear bound=1 clears=`. USN15 calls `UnitSetFireStance` with 2 (attacking) and 1 (running, `aa`
+  `g`), and neither forbids fire. USN04 `LevelBombersEliminated` and USN16's 15% holds remain the only candidates,
+  and neither row has a plan.
+- **The no-mesh blast box** stays LABELLED. The image walks the node's shapes (`0098AAE0`). Whether a fort's node
+  has shapes natively is unknown, because the host has no mesh for those classes.
+
+### 257.3 Gunnery backlog
+
+- **G1** (the `009FA7E0` wander map). Already done: the map is `Impl::aim_wanders`, which is per mission
+  (`game_hosts_gunnery.cpp` `fighter_aim_distortion_009fa7e0`, "cc13 backfill G1").
+- **G2** (`00864680` eye point). The 0.5 s cache (`[00CE3800]`) is `kGunneryLosEyeCacheBound`, ON since `0cc305ee0`.
+  The listing `0086470B..00864799` was re-read. The raise is `Globals+94h` (ViewerHeightAdd 5.0) plus, for
+  IsKindOf(5) with class `+538h`:
+  - with a model at `class+50h` and a non-empty `model+48h` vector (`00862C00`): `top + max(Globals+94h,
+    (top - bottom) * Globals+9Ch)`, where top/bottom are `model+38h` / `model+2Ch` (the box max/min y);
+  - else: `class+A8h` Height `+ Globals+94h`, the branch the host takes.
+
+  This installation's Globals has no ViewerHeightMul (`+9Ch = 0`), so the model branch reduces to
+  `box max y + 5.0`. If the box is symmetric Width/Height/Length (docs/ATTACKER_EVASION.md 447), that is
+  `Height/2 + 5` against the host's `Height + 5`. It stays LABELLED, because no host object stands for
+  `model+48h`'s vector, so the branch condition cannot be decided. It affects only land-grazing rays.
+- **S4** (`009555CD` / `009555D3`). The shot pointer is the base `+170h` interface, so the writes land at
+  `base+184h` (the owner's `+170h` vtable[0]() id) and `base+188h` (`owner+54h`). The shot-base vtable `00CF93B0`
+  getters `006E2470..006E2590` do not read `+14h`/`+18h`. An export census for `+0x184`/`+0x188` in
+  projectile-hinted functions finds only bomb-platform fields (`006E02C0`, `006E56F0`, `006E5900`, different
+  objects). No reader was found. A `[reg+14h]` reader through the interface cannot be censused by bytes (disp8), so
+  this is not a negative. It stays LABELLED (the network create path is the likely reader, and single-player does
+  not run it).
+- **S5** (`game_hosts_gunnery.cpp` near 13155 against `00955830`). `00955830` takes the target direction from the
+  device transform origin (`+3CCh` `+120h`) into the device frame (`+110h` = inverse of `+CCh`) and calls
+  `00521370`: pitch is `asin(clamp(y))` and yaw is `atan2(x, z)` (`005213A7..005213AC`). It then stores `-yaw` and
+  wraps both. The host takes `asin(u.up)` and `kGunHorzSign * atan2(u.right, u.forward)` (sign -1, ON) in the
+  hull frame from the muzzle point. These are equivalent when the mount frame is hull-aligned. Census of
+  `gunnery: mount ... cat=1-6` across eight mission logs:
+  - 2,157 gun mounts, 8 rotated: Zao platforms 25/26 at about 1 degree, Yamato 26 at about 1 degree, Ishi1 7 at
+    about 5 degrees, a Gato deck gun pitched 2 degrees;
+  - the torpedo tubes (cat 7) are rotated, but this arm is the kind-1/2 guns only.
+
+  The residual differences are those few degrees and the origin (device origin against muzzle). They only move a
+  window edge for the player seat arm `00959C20`. LABELLED, not bound.
+- **seg-1 `00428420` / `00428800`.** Both are landing-troop hooks (docs/CC13_SOLDIER_TRAFFIC.md 8):
+  - a projectile segment (`0084BF00`) or a blast (`0084BAD0`) kills troop members in `[[game+21D0h]+28h]` and
+    calls `00480C20`, which applies the member type's Damage (`+1Ch`) to the landing ship through
+    `0095DA00`;
+  - the host has no troop groups. `blast_damage.cpp` calls `host.call_00428800`, but no game host implements that
+    interface (the gunnery host runs its own blast path), and nothing stands for `00428420`;
+  - the gap is gameplay (landing ships take damage when their troops are shot) and is blocked on hosting the troop
+    groups (cc13 section 9: the ships/landing lane).

@@ -1,0 +1,110 @@
+{
+  "source_revision": "a1cda58852918d8bba5f2fd59a0b7064a71c9362",
+  "accepted_workers": {
+    "camera_gather": "7452af43441a3bfb12fe3457c230b64b479d9e31",
+    "unit_recon": "088808eda90d55f944302e8decc86eb37efdc242",
+    "sampler_audit": "a1d4363b5"
+  },
+  "primary_review": {
+    "camera_original_source_pairs": 3,
+    "raw_mode_pairs": 5,
+    "camera_emitted_order_audit": "passed; all five camera reads preserved",
+    "camera_inherited_x87_encodings": 325,
+    "unit_recon_checks": 20,
+    "failures": 0,
+    "sampler_original_pe_bytes": 996,
+    "sampler_spans": 19
+  },
+  "frozen_receipts": [
+    "local/cc12_native_parent_receipts/world745/receipt.json",
+    "local/cc12_native_parent_receipts/unit088/receipt.json",
+    "local/cc12_native_parent_receipts/sampler_a1/receipt.json"
+  ],
+  "worker_artifacts_verified": {
+    "camera": 41,
+    "unit": 147
+  },
+  "combined_build": {
+    "configuration": "MSVC Win32 Release",
+    "status": "passed",
+    "tests_passed": 3,
+    "tests_failed": 0,
+    "test_seconds": 11.44,
+    "runtime_output_directory": "build/win32/cc12_followup_release",
+    "reason": "preserve the queued 23fbb8a1d Release executable and DLLs unchanged",
+    "temporary_source_registration": false,
+    "log": "local/cc12_native_camera_recon_combined_release_build_01.log"
+  },
+  "debug_attempt": {
+    "status": "failed; not a Debug success claim",
+    "cause": "existing NativeLuaReader vector/storage size assertions and HullShape alignment warning C4324 outside accepted packet files",
+    "assertions_relaxed": false,
+    "log": "local/cc12_native_camera_combined_debug_build_01.log"
+  },
+  "gui_probe": {
+    "source_revision": "23fbb8a1df1d79c0e3bbad7dbfa6fa5501b2d0d2",
+    "executable_sha256": "915901c409eed7bf6bba24d523ce8f4a97642229e4456cdcc27dae1622344dd6",
+    "queued_executable_unchanged": true,
+    "status": "first launcher 52984 terminal before native start: all 6 slots busy; immutable retry 59647 queued",
+    "runtime_pass": false,
+    "runtime_report": "reports/native_gui_effect_startup_probe_cc12.json"
+  },
+  "frontier": {
+    "scene_next": "B15EC4 label/FH3 stage",
+    "D5E13C_admitted": false,
+    "unit_base_remaining": [
+      "925CE0",
+      "928630"
+    ],
+    "unit_observer_remaining": "6E0860",
+    "receiver_activated": false,
+    "sampler_complete_word_guard": "unchanged"
+  },
+  "limits": [
+    "camera fixture bridges Original caller to the same current Source descendants",
+    "warm sampler, no lighting/fog, synchronizationmode0 and maskedFP camera coverage",
+    "unit recon constructor nonnull reload and unwind were not dynamically executed",
+    "sampler whole-pass aliases and callbacks are not a closed consumer set"
+  ],
+  "artifacts": [
+    {
+      "path": "local/cc12_native_camera_recon_combined_release_build_01.log",
+      "bytes": 3709,
+      "sha256": "1f6f3ba68500c8b8d502e6c925588fc1520bb2a425ddb0201e463fdf5228adbd"
+    },
+    {
+      "path": "local/cc12_native_camera_combined_debug_build_01.log",
+      "bytes": 78146,
+      "sha256": "90761d75934a40eb6cde9f27c82d02fcb9d5eb3d1360b2048dbb96d8a6b49ad0"
+    },
+    {
+      "path": "build/win32/cc12_followup_release/bsp_game.exe",
+      "bytes": 5573632,
+      "sha256": "c4613d831ab1c43059bc25dcc70e4fd7d1d939012251511996639a08a120083e"
+    },
+    {
+      "path": "src/native_main_scene_execution_prefix.cpp",
+      "bytes": 35684,
+      "sha256": "8e62da1a959bcb9d2d28e2d8b1d41ffad4e6c8ec9a7a00fe3d66353bafde1d05"
+    },
+    {
+      "path": "include/bsp/native_main_scene_execution_prefix.hpp",
+      "bytes": 7647,
+      "sha256": "69d120da6b67897ad297945177fed025e717ac1577e9713ce543e8658a3e6e88"
+    },
+    {
+      "path": "src/native_unit_owner_entity.cpp",
+      "bytes": 14794,
+      "sha256": "24cf53181d2e24239fcd989d123396ab0ad31fef7ab024ab6e78b8bc70042759"
+    },
+    {
+      "path": "include/bsp/native_unit_owner_entity.hpp",
+      "bytes": 9885,
+      "sha256": "82de4009a2ae0ce838a9501b155f08fbc2d8975c2d5824019f467ff1dc81b1f9"
+    }
+  ],
+  "native_text_draw_validated": false,
+  "original_abi_compatible": false,
+  "gameplay_validated": false,
+  "overall_goal": "active"
+}

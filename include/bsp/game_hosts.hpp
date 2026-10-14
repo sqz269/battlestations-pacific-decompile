@@ -77,6 +77,7 @@ class GameNativeSettingsProcess;
 class GameScriptHost;
 class GameNativeLuaServices;
 class GameNativeRendererApplication;
+class GameNativeGuiEffectProbe;
 class GameLocaleHost;
 class GameFontHost;
 // Milestone 2b, defined in bsp/game_hosts_frontend.hpp.
@@ -693,7 +694,10 @@ private:
     void exit_if_particle_manager_failed() noexcept;
     void exit_if_native_lua_interrupted() noexcept;
     void exit_if_native_renderer_incomplete() noexcept;
+    void exit_if_native_gui_probe_incomplete() noexcept;
+    void close_native_gui_probe_after_drain() noexcept;
     std::unique_ptr<GameNativeRendererApplication> native_renderer_;
+    std::unique_ptr<GameNativeGuiEffectProbe> native_gui_probe_;
     std::unique_ptr<GameNativeLuaServices> lua_services_;
     struct SoundServices;
     std::unique_ptr<SoundServices> sound_;

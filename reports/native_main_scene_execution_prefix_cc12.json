@@ -1,0 +1,519 @@
+{
+  "packet": "cc12_native_main_scene_drsh_label",
+  "utc": "2026-10-14T21:35:51.462731+00:00",
+  "base_commit": "9228d13fe2594cb12405733fcdd5ec0160770b66",
+  "scope": "Complete B15EC4..B15F62 DRSH label stage only, including exact temporary ownership states and explicit source cleanup actions from CBC460/CBC46B. Earlier entry/history/texture/far/bloom/target/camera/gather stages preserved. Stops BEFORE B15F63 batch selection; state2 remains armed across that boundary. No whole D5E13C or application route.",
+  "native_identity": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "bodies": [
+      {
+        "name": "label",
+        "address": "00b15ec4",
+        "bytes": 159,
+        "sha256": "46644a090ebf877f054de81010448c2acc06222719c96884dce6fc3c8c48884a",
+        "saved_ghidra_matches_disk": true
+      },
+      {
+        "name": "unwind_temporary",
+        "address": "00cbc460",
+        "bytes": 11,
+        "sha256": "cef8c8dc203e17250f90b55373234d862daaf7436fb0abf7c54153650e16a218",
+        "saved_ghidra_matches_disk": true
+      },
+      {
+        "name": "unwind_reset",
+        "address": "00cbc46b",
+        "bytes": 8,
+        "sha256": "d07c30f6afc9ea1ab38e7bfef37711a5bc029e9f8c8b0d79614adf2c0fbdc005",
+        "saved_ghidra_matches_disk": true
+      },
+      {
+        "name": "handler",
+        "address": "00cbc499",
+        "bytes": 10,
+        "sha256": "e3e2ad413e482a75d3249425cf1e30e7d681e0cd0f6ab8a69303cbdddc2ecafe",
+        "saved_ghidra_matches_disk": true
+      },
+      {
+        "name": "func_info",
+        "address": "00df4698",
+        "bytes": 36,
+        "sha256": "bba2e286bfbcca2cfae6c87890a7834476ea7b90563ef611fd40ba7e106842a9",
+        "saved_ghidra_matches_disk": true
+      },
+      {
+        "name": "unwind_map",
+        "address": "00df46bc",
+        "bytes": 72,
+        "sha256": "6dd6b0c046043b55b4e7976fd6436a5038a1dc2a2fe595f08abc9070ad5427d8",
+        "saved_ghidra_matches_disk": true
+      },
+      {
+        "name": "drsh",
+        "address": "00d5e500",
+        "bytes": 8,
+        "sha256": "e9a6d1af7a104fbbbd3cf2e46d5bd5b455e6607601b65076b9e708826f0cea4c",
+        "saved_ghidra_matches_disk": true
+      }
+    ],
+    "constants": [
+      {
+        "name": "near_word",
+        "address": "00ce3800",
+        "bytes": "0000003f",
+        "value": 0.5
+      },
+      {
+        "name": "bias_word",
+        "address": "00ce3978",
+        "bytes": "0000804f",
+        "value": 4294967296.0
+      },
+      {
+        "name": "one_word",
+        "address": "00d7a24c",
+        "bytes": "0000803f",
+        "value": 1.0
+      },
+      {
+        "name": "half_word",
+        "address": "00d7a280",
+        "bytes": "000000000000e03f",
+        "value": 0.5
+      },
+      {
+        "name": "negative_half_word",
+        "address": "00ce69d0",
+        "bytes": "000000bf",
+        "value": -0.5
+      },
+      {
+        "name": "adaptation_word",
+        "address": "00ce3cb8",
+        "bytes": "000000000088d340",
+        "value": 20000.0
+      }
+    ]
+  },
+  "original_abi": "Enclosing B156C0 uses ECX actual service, stacked actual command, RET4. This stage reads neither incoming receiver nor command. New source continuation takes borrowed actual contexts and external persistent frames; it is not the native caller ABI or a native FH3 entry.",
+  "evidence": {
+    "native_caller_instructions": 51,
+    "native_caller_bytes": 159,
+    "ordered_calls": [
+      "zero both actual temporary header words",
+      "0041DD40 temporary resize4/preserve1",
+      "capture EBX data once",
+      "memmove current temporary length+1 from borrowed actual D5E500 bytes",
+      "capture current F8D39C",
+      "arm state0",
+      "optional current service+684 assignment via 0041DD40/current-length memmove",
+      "arm state2",
+      "00419CC0 current pool getter",
+      "00BD1510 captured block/current temporary length+1"
+    ],
+    "ownership": "The native data pointer capture survives destination resize. Destination identity is compared with the actual temporary header. Current temporary length controls the post-resize copy branch; current destination header length/data control its copy. Normal return byte count is captured before the pool getter. No synthetic DRSH literal, owner, string pool, COM object, or render success is introduced.",
+    "fh3": {
+      "handler": "00cbc499",
+      "func_info": "00df4698",
+      "unwind_map": "00df46bc",
+      "entry_count": 9,
+      "state0": "B15EFE, after current service capture; CBC460 destroys CURRENT temporary header via 0041DD20, then state-1.",
+      "state2": "B15F42, before normal pool getter/return; CBC46B resets CURRENT global service label via B13510, then state-1.",
+      "boundary_state": 2,
+      "later_normal_reset": "B16097 disarms before B160A2 B13510. Future continuation must implement its normal schedule; the explicit unwind adapter is not a substitute for normal completion."
+    },
+    "failure_state": "Fresh frame required and marked started before work. Source catch records failure, consumes only reached state0/state2, disarms before the real current-header/current-service cleanup, and rethrows. Unarmed preflight/allocation/copy failures have no parent action. No rollback of camera, destination or raw pool mutations. Cleanup failure terminates consistently with the existing source domain; native FH3 dispatch is unproved.",
+    "boundary_frame": "Temporary header and EBX data/service captures remain externally visible. State2 stays armed after the successful B15F63 boundary. Keep this frame/context alive across later batch code. Earlier near/color/flags/render-mode saves remain intact. Stage cannot replay.",
+    "ghidra_annotation_receipt": "local/ghidra-annotations-20261014T213259Z.json",
+    "ghidra_saved_and_exports_refreshed": [
+      "00b156c0"
+    ],
+    "prior_receipts": [
+      {
+        "path": "local/main_scene_camera_receipt_7452af434/receipt.json",
+        "artifacts_verified_unchanged": 41
+      },
+      {
+        "path": "local/main_scene_bloom_receipt_ca9c9c4c0/receipt.json",
+        "artifacts_verified_unchanged": 35
+      },
+      {
+        "path": "local/main_scene_texture_receipt_ed43121f9/receipt.json",
+        "artifacts_verified_unchanged": 36
+      },
+      {
+        "path": "local/main_scene_execution_receipt_450a751a0/receipt.json",
+        "artifacts_verified_unchanged": 34
+      },
+      {
+        "path": "local/main_scene_receipt_3ccc58cbf/receipt.json",
+        "artifacts_verified_unchanged": 15
+      }
+    ],
+    "prior_commit": "7452af43441a3bfb12fe3457c230b64b479d9e31",
+    "prior_report_preserved": "local/main_scene_camera_receipt_7452af434/report.json"
+  },
+  "validation": {
+    "strict_compile": "PASS MSVC Win32 /MD /std:c++17 /EHsc /permissive- /W4 /WX /O2 /fp:strict /FAcs; changed prefix and unchanged far-corner TU.",
+    "standard_build": "PASS scripts/build.ps1 Release Win32; 3/3 reconstructed_math/native_math_differential/tool_tests.",
+    "real_callee_link_and_execute": "PASS manifested label_probe with current strict objects, preserved real history object and fresh bsp_core/bsp_lua511/bsp_zlib121. Genuine BD1480 raw pool constructor and BD1480 domain storage, real 0041DD40/00419CC0/BD1120/BD1510/B13510 providers. Full 0x8AD4A0 pool preimage restored at the same address between each reference/source run.",
+    "native_comparisons": "PASS 3 original159B caller/source continuation pairs comparing the entire actual raw pool plus service headers; 3 original CBC46B/source state2 action pairs using a changed service publication; 1 original CBC460/source state0 action pair whose CURRENT header pointer differs from the earlier EBX capture.",
+    "case_coverage": [
+      "null current service",
+      "destination label changes length2 to4",
+      "same-length4 destination with small block returns disabled",
+      "state2 cleanup uses a different newly published service, leaving the earlier DRSH service unchanged",
+      "state0 cleanup uses current temporary header data, not captured EBX data",
+      "source rejects wrong manager publication before allocation/cleanup; successful frame cannot replay"
+    ],
+    "emitted_code_audit": {
+      "result": "PASS",
+      "native_caller_instructions": 51,
+      "native_caller_bytes": 159,
+      "original_handler": {
+        "address": "00cbc499",
+        "func_info": "00df4698",
+        "unwind_map": "00df46bc",
+        "states": [
+          [
+            -1,
+            13354080
+          ],
+          [
+            0,
+            13354091
+          ],
+          [
+            -1,
+            13354091
+          ],
+          [
+            -1,
+            13354099
+          ],
+          [
+            3,
+            13354110
+          ],
+          [
+            -1,
+            13354110
+          ],
+          [
+            -1,
+            13354118
+          ],
+          [
+            6,
+            13354129
+          ],
+          [
+            -1,
+            13354129
+          ]
+        ]
+      },
+      "native_cleanup_actions": [
+        {
+          "address": "00cbc460",
+          "instructions": [
+            "lea ecx, [ebp - 0x88]",
+            "jmp 0x41dd20"
+          ]
+        },
+        {
+          "address": "00cbc46b",
+          "instructions": [
+            "lea ecx, [ebp - 0x79]",
+            "jmp 0xb13510"
+          ]
+        }
+      ],
+      "emitted_provider_call_order": [
+        "resize_native_string_header_0041dd40",
+        "_memmove",
+        "resize_native_string_header_0041dd40",
+        "_memmove",
+        "native_string_pool_get_or_create_00419cc0",
+        "return_native_string_pool_00bd1510",
+        "unwind_native_main_scene_drsh_label"
+      ],
+      "reviewed_order": "Current service captured before state0; exact header alias check; captured data local retained across resize; current source length controls copy and current destination length selects bytes; state2 before current pool getter; normal bytes captured before getter; cleanup disarms before current-header destroy/current-global reset.",
+      "new_x87_instructions": 0,
+      "whole_native_FH3_dispatch_tested": false
+    },
+    "inherited_x87_audit": {
+      "result": "PASS",
+      "checks": [
+        {
+          "listing": "local/main_scene_label/native_camera_far_corners.asm",
+          "tagged_original_x87_instructions_checked": 164,
+          "coverage": "all address-tagged unchanged x87 instructions; context-bound constant loads and source public-argument adapters are separately reviewed",
+          "address_set_sha256": "9bb321e936d5809f930cf5f8d3f623aec5f9498eacd0ad2f2a30447e0cd591e3"
+        },
+        {
+          "listing": "local/main_scene_label/native_main_scene_execution_prefix.asm",
+          "tagged_original_x87_instructions_checked": 161,
+          "coverage": "all address-tagged unchanged x87 instructions; context-bound constant loads and source public-argument adapters are separately reviewed",
+          "address_set_sha256": "8d1f1b8425033cf7b634eeadfdf944b6f9f18bfc300c0ff99c2adec383e270a3"
+        }
+      ],
+      "recovered_ambiguity": "All one-register x87 arithmetic operands use verified installed instruction opcode direction."
+    },
+    "fixture_log": "PASS original/source DRSH case0 and state2 current-publication cleanup; full actual pool bytes match\nPASS original/source DRSH case1 and state2 current-publication cleanup; full actual pool bytes match\nPASS original/source DRSH case2 and state2 current-publication cleanup; full actual pool bytes match\nPASS 3 original159B caller pairs, 3 originalCBC46B reset-action pairs, 1 originalCBC460 current-header action; genuine raw string pool and real resize/getter/return/reset, no native FH3 exception claim",
+    "fixture_limits": "Original caller E8s and exact two-instruction cleanup funclet tail jumps are rebased to the SAME concrete source providers; actual global cells/DRSH bytes are borrowed. Isolated funclet invocation verifies actions, not native FH3 dispatch. Warm raw pool; no actual child throw, cold creation, manager failure, returning-getter failure, private stack aliases, concurrent mutation, hardware exception, full renderer or game proof.",
+    "new_persistent_tests": 0
+  },
+  "execution_admission": {
+    "profile": "00d5e13c",
+    "admitted": false,
+    "complete_enclosing_function": false,
+    "next_native_address": "00b15f63",
+    "requires": [
+      "Actual B17240 preparation",
+      "B15F63 batch selection and remaining material/post/cockpit/distortion/statistics body with all cleanup states",
+      "Full genuine body/domain closure before queue admission"
+    ]
+  },
+  "unproved": [
+    "Whole D5E13C execution",
+    "Original descendants/current virtual profiles/exception ABI/private stack aliases",
+    "Cold pool, child failures, enabled synchronization, concurrency",
+    "General FP status/stack/traps inherited from earlier stages",
+    "Actual application scene/camera creation and invocation",
+    "Visible world/gameplay"
+  ],
+  "artifacts": [
+    {
+      "path": "src/native_main_scene_execution_prefix.cpp",
+      "bytes": 41367,
+      "sha256": "72e2d74a1b118d30915ac0c29f97cee8336ec3a05db9b6c7c26b0b3549836258"
+    },
+    {
+      "path": "include/bsp/native_main_scene_execution_prefix.hpp",
+      "bytes": 10208,
+      "sha256": "3937e1b4e475c29b0b9076ee9748f3ab73e5a5fdfc5382342c4ba353cf32c03b"
+    },
+    {
+      "path": "docs/NATIVE_MAIN_SCENE_EXECUTION_PREFIX_CC12.md",
+      "bytes": 26388,
+      "sha256": "9ba8d83f76ee0eb57655b8c04aa0a2fac50343cc67e5bd7ab4a5d0f7e8ff5f98"
+    },
+    {
+      "path": "src/native_camera_far_corners.cpp",
+      "bytes": 14586,
+      "sha256": "c9f8f2a86f8e8a53da981f3ce1fc096d4fb88a5ccd1949e7110be3892bd868b9"
+    },
+    {
+      "path": "include/bsp/native_camera_far_corners.hpp",
+      "bytes": 1180,
+      "sha256": "f0bda64b3570c67175ed773b5ef36d4fbea4ef618ba10c48ae13693cad375913"
+    },
+    {
+      "path": "src/native_render_diagnostic_labels.cpp",
+      "bytes": 5854,
+      "sha256": "18ddbf93eb84cefd8dba22eef50561fbe50ba6e596600f0b8d826f0352eefb70"
+    },
+    {
+      "path": "include/bsp/native_render_diagnostic_labels.hpp",
+      "bytes": 2453,
+      "sha256": "dead191dfe920c0d422e198801a2b84e6174b77c5810ba08ebecf4d0cd716355"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "bytes": 5103,
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "bytes": 2805,
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+    },
+    {
+      "path": "local/main_scene_execution/native_camera_history.obj",
+      "bytes": 7077,
+      "sha256": "22baea6d710978e1c456204021e49924ac738d8b5a79e2b689d89123cadfee81"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 91517910,
+      "sha256": "da17756f826a80f55e55db4b6ee293c44369786bc100ae371e7cd01376ecc41a"
+    },
+    {
+      "path": "build/win32/Release/bsp_lua511.lib",
+      "bytes": 455544,
+      "sha256": "5bf50d33a269737486f6e521721cc8a6f31c3d5adc836431ee565a4954159729"
+    },
+    {
+      "path": "build/win32/Release/bsp_zlib121.lib",
+      "bytes": 72006,
+      "sha256": "1f4792601d3198471ab898fb8b2a6015fba928b164832817d46b4a0fa8bb11c9"
+    },
+    {
+      "path": "local/main_scene_camera_receipt_7452af434/receipt.json",
+      "bytes": 14485,
+      "sha256": "397e4939295696089f09a83e5741e1d943b6d4e0cc2bb24a52c9d6929c45dc51"
+    },
+    {
+      "path": "local/main_scene_camera_receipt_7452af434/report.json",
+      "bytes": 18338,
+      "sha256": "f022c4f4ead095f27651e7a1d9b5443959a57c037155849b3879528b4bd212eb"
+    },
+    {
+      "path": "local/ghidra-annotations-20261014T213259Z.json",
+      "bytes": 18212,
+      "sha256": "cf070b5317a816d70bd52217520e5e6a87c095d3f334435068d8f4dd74a513c3"
+    },
+    {
+      "path": "local/main_scene_label/native_camera_far_corners.obj",
+      "bytes": 2415,
+      "sha256": "fe662632289d9c370714ff515a7c48468f90fca7c320becd985d449fe5f3a9f7"
+    },
+    {
+      "path": "local/main_scene_label/native_camera_far_corners.asm",
+      "bytes": 34702,
+      "sha256": "4771dc47f5f5ae87f9dbbef209d17705477c651bc80d4df5da28ba30b2694685"
+    },
+    {
+      "path": "local/main_scene_label/native_main_scene_execution_prefix.obj",
+      "bytes": 27605,
+      "sha256": "4919effe0bac320c405076b27c73089eb17b4c49f6be342ee4f624609e6029a2"
+    },
+    {
+      "path": "local/main_scene_label/native_main_scene_execution_prefix.asm",
+      "bytes": 168931,
+      "sha256": "0240e823ccb62992da7aec688435bcc45840a147413ee67a3e53e9f036e49b61"
+    },
+    {
+      "path": "local/main_scene_label/strict_compile.log",
+      "bytes": 71,
+      "sha256": "b5de5f5f8da7ca17d81e6976be0b07c575fdf20e4f94e28e20c6dd656d529014"
+    },
+    {
+      "path": "local/main_scene_label/compile.ps1",
+      "bytes": 1031,
+      "sha256": "ba921b53f4556699ef2f850837452487c5efc940afef6eb5aece55c0b995cd10"
+    },
+    {
+      "path": "local/main_scene_label/build.log",
+      "bytes": 4539,
+      "sha256": "3f5482b061ba4bb31d60f175f18605ee489db3044636de744ce96e436dca4e79"
+    },
+    {
+      "path": "local/main_scene_label/label_probe.cpp",
+      "bytes": 12162,
+      "sha256": "68c1ab670109ba3afe666068f69b64400473a1cef501534e10def6ff1467681b"
+    },
+    {
+      "path": "local/main_scene_label/label_probe.obj",
+      "bytes": 55169,
+      "sha256": "6ade19a2ad1b3efd8040f79b0be7323a54dddfd9d3c8ca3897203357a03ae30f"
+    },
+    {
+      "path": "local/main_scene_label/label_probe.exe",
+      "bytes": 227840,
+      "sha256": "0c1ed4c82b9f90780c215d12ce2e9fe760f9ed85e44712b39d8a68a97a2393a6"
+    },
+    {
+      "path": "local/main_scene_label/label_probe.log",
+      "bytes": 509,
+      "sha256": "815cfb32d2b4d1fcff6b77f60a18a4956a31b7b8304f2269325bc4cb1012c9ee"
+    },
+    {
+      "path": "local/main_scene_label/probe_compile.log",
+      "bytes": 17,
+      "sha256": "cb33925b1a3c7bb4077d17e57743e895455524726ed690ee7fd7ebba4e86ec23"
+    },
+    {
+      "path": "local/main_scene_label/run_probe.ps1",
+      "bytes": 1266,
+      "sha256": "5ea90a0e049f470c11ae3f2fbce03d74b6c4c621d17beda524c077c3c6ea3f50"
+    },
+    {
+      "path": "local/main_scene_label/original_bytes.inc",
+      "bytes": 2408,
+      "sha256": "a9f2bc369ff24074ea9cf9876a9be5e8932549fe169bf32fcffab4ed6dc7fc93"
+    },
+    {
+      "path": "local/main_scene_label/label.bin",
+      "bytes": 159,
+      "sha256": "46644a090ebf877f054de81010448c2acc06222719c96884dce6fc3c8c48884a"
+    },
+    {
+      "path": "local/main_scene_label/unwind_temporary.bin",
+      "bytes": 11,
+      "sha256": "cef8c8dc203e17250f90b55373234d862daaf7436fb0abf7c54153650e16a218"
+    },
+    {
+      "path": "local/main_scene_label/unwind_reset.bin",
+      "bytes": 8,
+      "sha256": "d07c30f6afc9ea1ab38e7bfef37711a5bc029e9f8c8b0d79614adf2c0fbdc005"
+    },
+    {
+      "path": "local/main_scene_label/handler.bin",
+      "bytes": 10,
+      "sha256": "e3e2ad413e482a75d3249425cf1e30e7d681e0cd0f6ab8a69303cbdddc2ecafe"
+    },
+    {
+      "path": "local/main_scene_label/func_info.bin",
+      "bytes": 36,
+      "sha256": "bba2e286bfbcca2cfae6c87890a7834476ea7b90563ef611fd40ba7e106842a9"
+    },
+    {
+      "path": "local/main_scene_label/unwind_map.bin",
+      "bytes": 72,
+      "sha256": "6dd6b0c046043b55b4e7976fd6436a5038a1dc2a2fe595f08abc9070ad5427d8"
+    },
+    {
+      "path": "local/main_scene_label/drsh.bin",
+      "bytes": 8,
+      "sha256": "e9a6d1af7a104fbbbd3cf2e46d5bd5b455e6607601b65076b9e708826f0cea4c"
+    },
+    {
+      "path": "local/main_scene_label/byte_receipt.json",
+      "bytes": 2435,
+      "sha256": "1a8147c57be37fca34ccb9e762cc86df324c59946528f6d832cdb5acb10351f0"
+    },
+    {
+      "path": "local/main_scene_label/byte_check.log",
+      "bytes": 1841,
+      "sha256": "780029fbf0bd2dd01b331502426e9c030b7aa9891a66cfe29b03674c4e93ed72"
+    },
+    {
+      "path": "local/main_scene_label/make_fixture_bytes.py",
+      "bytes": 2907,
+      "sha256": "44b4fd853498dc4d16935969a2faa30d36f311381a99962c905019c7c1dd18ef"
+    },
+    {
+      "path": "local/main_scene_label/audit_x87.py",
+      "bytes": 1963,
+      "sha256": "5f86f06d13909be494bac918d61d2acf1e754b0fac9b938d90225c053375b021"
+    },
+    {
+      "path": "local/main_scene_label/x87_audit.json",
+      "bytes": 976,
+      "sha256": "4ab4b088e86e3b4bb7db73d1b03ca4d4bd0cb37fbee289db3cc18f2f2318d320"
+    },
+    {
+      "path": "local/main_scene_label/audit_emitted.py",
+      "bytes": 3436,
+      "sha256": "d5bdfe6e098f6e27e992aabde087f24c3c6428f697e02bb468067b14335c5dec"
+    },
+    {
+      "path": "local/main_scene_label/emitted_audit.json",
+      "bytes": 1728,
+      "sha256": "53161d27989c45c97d3de7a9c2082e6ab202040aefb9a84c9d0e041fb1f48bec"
+    },
+    {
+      "path": "local/main_scene_label/annotation.log",
+      "bytes": 202,
+      "sha256": "b21aa85f965c6aae6f78eeadbea43080c855cc838556d8b76849b9b3a2279a46"
+    },
+    {
+      "path": "local/main_scene_label/ledger.log",
+      "bytes": 14091,
+      "sha256": "b470e5e9a11f3d2561f1b72e8dcbf0918bfd55f1ca40af38ced9f12df4c95b24"
+    }
+  ]
+}
