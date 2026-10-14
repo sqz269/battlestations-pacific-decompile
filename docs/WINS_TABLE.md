@@ -354,3 +354,30 @@ mechanism is in the cd761bb52 section above).
     at 1700-1820), `e` (d plus a CAP recall at 1690), `f`/`g`/`h` (order 3 on slots 3/4 with no moveto first: refused,
     "006CCDA0 refused the order in this slot state"), `i`/`j` (recall, order 2, then order 3: both are accepted, but the
     retargeted squadron does not sink Zuiho by 1500 s; not chased).
+- **Re-time on main 25b98b1fa** (cc9-physics9, 2026-10-14). Export `local\p9_m`, exe 073805D36E49, reference env,
+  `--stop-after-end 40`, logs `local\p9w1_<row>.log` with `.manifest.json` (launcher `local\p9_wins.ps1`, summary
+  `local\p9_keep.py w1`). JM06, USNOS, JM08, USN12, USN15 and ESMP08 are being re-planned by other lanes and were not
+  re-run.
+
+  | Row | Frames | Result | Guard |
+  |---|---|---|---|
+  | USN02 `s36_u2_p7` | 16000 | completed 200.06 s | yes |
+  | LOMP06 `l50_l6_q6` | 16000 | completed 376.83 s (was 189.86) | yes |
+  | USN01 `p8_u1_i` | 26000 | completed 360.04 s (was 1185.03); 350.09 s under 20,3, 355.04 s under 20,5 | yes |
+  | PRCP01 `p9_p01_k` | 30000 | completed 536.54 s (new plan, above) | yes |
+  | LOMP10 `p3_l10_b` | 36000 | completed 1187.58 s (was 1581.97) | yes |
+  | BSM01 `p6_b1_a` | 40000 | EndMission 833.92 s | yes |
+  | IJN18 `s46_i18_a` | 64000 | EndMission 2156.98 s (was 2111.93) | yes |
+  | IJN08 `s48_i08_h5` | 70000 | **no end** | - |
+
+  - USN01 `i` was expected to lose to 81397688d's dive flips; it does not. The opening ScoutDauntless release line is
+    still refused (sight 47.3 m from Convoy1), yet ScoutDauntless sinks Convoy1 at 171.41 s (Northampton did, at
+    931.45 s, on c9a8b1344), and the strike sinks the other five by 207.66 s (Convoy4 at 203.36 s instead of 880.21 s
+    by Northampton).
+- **JM08 `p6_j8_f` is a win again** (cc9-lua59, reported 2026-10-14): **completes at 1464.00 s** on main fcee16d53
+  (export cc9-lua52\local\l59_m4, 80000 frames, reference env, guard logged; log local\l59_m4s_j8.log with its
+  manifest). It was lost on 453ed7e51 (no end in 110000 frames: LST 01/02, USTroopTransport 02 and LSM 02 survive).
+  A re-plan on 1ae160e44 (filters on the Grayson/Helena/Missouri launch lines plus late PT-boat assignments)
+  completed at 2150.67 s, but later gunnery flips (91d6a9d22 and others) restored the original plan, so no new order
+  file. **Knife-edge** under the stock flips. Removing the Grayson/Helena/Nevada launch lines loses the HQ, because
+  those ships shell it. LOMP10 1581.97 s on 453ed7e51 stands.
