@@ -14893,3 +14893,41 @@ For prediction 3, the box is in use on both rows. The `entries` census per meshe
 214's objection is answered in 251: the damage it could not account for was direct hits. For meshed units the
 admission now matches `0098AAE0` (node bounds, then the shapes decide). Both wins hold. **Flipped ON.**
 USNOS (`s45_os_k`, never a win) failed at 2119.54 s under ON in 205/214; the keeper should note it.
+
+## 253. Handoff (cc9-gunnery45, 2026-10-14, at about 50% context; the lead's queue is done)
+
+**Commits on `agent/cc9-gunnery36`.** Each was built with the full `scripts/build.ps1` (ctest 2/2) and reported to
+the lead.
+
+| sha | what |
+| --- | --- |
+| `96880c63e` | 247: the submarine case of `kTorpedoBotAttackRangeBound` is faithful (no code); corrects SHIP_AI_SUB_ATTACK 3 (`009E4A60` does subtract the own half-length) |
+| `1bab01bdf` | 248: `kArtilleryAcceptGateBound` OFF (`006DEF30` for weapon kinds 2-4) |
+| `01dcecf2e` | 249: that switch flipped ON; the 222 verdict |
+| `4277661b9` | 250: `kTorpedoBotSmallCraftBound` OFF (`008FC010` / `00828EC0`) |
+| `d3f538a76` | 251: 214's NH question closed (direct hits); blast mesh re-pair predictions |
+| `4aa1a549a` | 252: `kBlastMeshBoundsBound` and `kTorpedoBotSmallCraftBound` flipped ON |
+
+**Open, in order of value.**
+1. **222 `kDirectorLeaderFireTargetBound`.** It is faithful by mechanism (249) but loses USN12 `d` and USN15 `l2`
+   through the followers' torpedo arm. It stays OFF as the lead's call. If it is flipped, both rows need
+   re-plans by the keeper.
+2. **237 reach.** There are 0 holds in 278 recent logs across the lanes, with up to 12428 tests per log. The
+   zones are all on layer 0 (`AvoidZoneG all 0 #nnn`), and `004120D0(5)` falls back to that group. If a row ever
+   shows a torpedo line crossing an island with `holds=0`, check `avoid_zone_box_meets_segment_0085c910` /
+   `00416B50`.
+3. **`00836210` clear reach.** There are 0 clears in the 37 logs that carry the counter. The candidates are
+   USN04 `luaUSN04_LevelBombersEliminated` (`UnitHoldFire` on `JAP_DestroyerGroup`) and USN16's
+   `CheckAmagi`-style 15% HP holds. Neither row has a plan.
+4. The blast gather for units with no host mesh (the forts, `entries=0`) keeps one box entry. The image walks
+   the node's shapes (`0098AAE0`) and reaches nothing when the shape array is empty. This is LABELLED.
+5. `class+50h` (G2's second half) stays labelled. Fido (227 item 5) is blocked in this installation.
+
+**Tools** (this tree's `local\`):
+- `g45_exports.ps1 -Commit <sha> -SpecList "dir;dir:kA=true"` and `g45_queue.ps1 -Jobs <file>` are the g44 pair
+  with the `g45_` prefix (the exports file is `g45_exports.txt`).
+- An export can fail on a CMake `generate.stamp` access-denied in a side project. Re-run its `scripts\build.ps1`;
+  if the exe hash is unchanged, append an `exit=0` line.
+- `g45_lsclasses.py` lists this installation's LandingShip and TorpedoBoat rows with MaxSpeed and BigLandingShip.
+- The export dirs are `g45_off` / `g45_ag` / `g45_222` / `g45_ag2` (`1bab01bdf`), `g45_sc` (the tree build at
+  `4277661b9`) and `g45_bm` (`d3f538a76`, blast mesh ON).
