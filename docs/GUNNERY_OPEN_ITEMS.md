@@ -14237,3 +14237,85 @@ PRCP01 `l55_p01_c` was already lost on OFF at `dd4f7d6cd`.
 - `g42_arty.py` prints the arcade Artillery rows (V0, Range, FlyTime, v', +5Ch).
 - The win-set argument lines for the current rows are `g42_q4.jobs` (tags `w0`/`w1`). Same-tree OFF at
   `dd4f7d6cd` is `local\g40_bm0` (logs `g42_x0_<row>`).
+
+## 235. The D3 artillery Range is the right field (lead queue item 1; cc9-gunnery43, 2026-10-14)
+
+The question was whether the `Range` the host feeds `kArtilleryClassSpeedBound` (the s > 1 refusal, `v' =
+sqrt(9.81 * Range)`, the lead and the arc) is the same class field `006E98BC` reads. **It is.** No code change.
+
+**Image, from disk bytes** (`bsp.py disasm-raw`, `ghidra bytes`):
+- `006E8770` (the reader, slot `+18h` of `00CFA440`) pushes the key at `00CFA1A8` (`"Range\0"`; `00CFA1B0` is
+  `"V0"`), defaults it with `FLDZ` (`006E950F`), calls `00B66330` and stores `FSTP dword [ESI+68h]` at `006E9524`.
+  `V0` goes the same way to `FSTP dword [ESI+50h]` at `006E94EB`. Both are float32.
+- `00CFA440 + 10h` = `006E9890` (bytes `90 98 6E 00`), so the artillery descriptor's finalise is the base hook.
+  `006E98BC MOVSS XMM0,[EDI+68h]` reads the same `+68h`, multiplies by the double at `00CF9058` (9.81f), takes
+  `00BF7030` sqrt, stores `+60h = Range`, then `DE FA` (`FDIVP ST2,ST0`) gives `+5Ch = V0 / s` and `+50h = s`.
+- Every consumer reads `+50h` of the descriptor `[[gun+3F8h]+34h]`: the pre-estimate `006DF876` and its
+  divisor `006DF8E4`/`006DF8EF` (`+50h`, `+5Ch`), the accept `006DEF84` (`EBP = [[EDI+3F8h]+34h]`), the arc
+  `006DFAB3`, and the launch `006E8594` (`[projectile+174h]+50h`). The pre-estimate forms
+  `s = D * 9.81 / [+50h]^2` (`006DF881..006DF895`, `FMULP ST2` squares the speed), which is `D / Range`.
+  `gun+3F8h` is `[desc+74h] + mode * 48h` (CC13_VER_16); mode 0 is the gun's own `Bullet`, which is what the
+  host's `gun.bullet_class` holds. The DP air round (mode 1) keeps its own V0 in the host (`dp_air_ammo`).
+
+**Host.** `src/game_hosts_gunnery.cpp:4903` reads `Bullets[gun.bullet_class].Range` (float, fallback 0.0f, the
+`FLDZ` default) through `read_bullet_class_number` (`src/game_hosts_lua.cpp:7899`), and
+`weapon_class_derive_engagement_range` (`src/bullet_engagement_range.cpp`) does the 006E98BC arithmetic with
+the same double rounding. `kGravity` is `00CF9058`. Offset `+68h`, width float32, key `"Range"`: the same field.
+
+**This installation.** `scripts/datatables/autoload/bulletclasses.lua` picks the table on `GameMode`, and
+`gamemode.lua` (mtime 2024-07-13) sets `GameMode = 0`, so `Bullets = ArcadeTable` from
+`classtables/arcade/bulletclasses.lua` (mtime 2026-05-09, locally modified). `ArcadeTable[25]` "14/45
+battleship gun bullet" has `Range = 3000`, `V0 = 300`: `v' = 171.6 m/s`, `+5Ch = 1.75`. Arcade
+`deviceclasses.lua` rows 25 and 26 (and 375) fire `Bullet = 25`. The realistic table's row 25 has `Range = 35450`,
+`V0 = 775`, but this installation never loads it. So in the image too, the US 14-in battery refuses targets
+beyond 3000 m slant. USN12's loss and USN15's knife-edge are faithful consequences of this installation's
+arcade rows, not a host misread; they go to the keeper as re-plans.
+
+**Uncertainty.** The `GameMode` read assumes the image runs the same autoload chunk the host does (the host
+runs this installation's Lua); the 3000 m value was not checked against a live image run.
+
+## 236. 222 census: the writers of `director+238h`, image against host (lead queue item 2; cc9-gunnery43, 2026-10-14)
+
+`kDirectorLeaderFireTargetBound` (222) makes a ship with no fire target take its formation leader's
+`director+238h`. That is faithful only if the host's stand-in for `+238h` (the ship-AI row's `fire_target`,
+which `run_gunnery_pass` resolves by name) has the image's writers and no others.
+
+**Image writers, from disk bytes.** The scans are `89 ?? 38 02 00 00`, `C7 ?? 38 02 00 00`, `8D ?? 38 02 00 00`,
+`8D ?? 24 02 00 00` (the observer sub-object at `+224h`, whose `+14h` is `+238h`), plus `tools/image_ref_scan.py`
+for rel32 and absolute references (`local\g43_scan*.txt`, `local\g43_refs_836240.txt`). In the director band
+(`00835xxx`-`00836xxx`), `+238h` is written only as `[ESI+14h]` with `ESI = director+224h`, at these sites:
+- `0083642F` is the constructor (0).
+- `00835F2D` is the destructor (`006E0860` on the observer).
+- `00836287` is `00836240` StoreFireTarget. Its gate is `force || !+23Ch || !+238h`, and it sets `+23Ch = force`.
+  It has three callers: `00721BF1` (the 5Eh delivery `00721A40`, reached from all 13 `00835860` call sites; see
+  section 13), `00836667` (the property visitor `00836510`, keys `fireTargetID`/`fireTargetIsPrimary`), and
+  `008366BC` (`00836680` CopyStateFrom, derived vtable `+4Ch`, which copies only a forced target).
+- `00836230` is `00836210` StoreFirePermission (vtable `+64h`; absolute refs `00D09F24`, `00D09FBC`). An
+  allowFire of 0 drops the target (`+238h = 0`) and leaves `+23Ch` alone.
+- The observer pair (`006952A0` / `00694A60`) releases a dead target.
+
+**Host writers** of `GameShipAiRow::fire_target` / `Controller::fire_target` (`src/game_hosts_ship_ai.cpp`):
+
+| host site | image counterpart | match |
+| --- | --- | --- |
+| `store_fire_target` `:1665`, from AutoTarget `:11280` (force 0), commands `:12112`, script `:13178` (force 1), dead release `:12102` | `00836240` via `00835860` / 5Eh | yes. The store is synchronous where the image waits for the next session pump (a timing difference only) |
+| `:11193-11194`, a locked target that died | the observer release | yes (labelled) |
+| **`:11205`, `row_.fire_target = scan.best`** inside `scan_party_list` | **none** | **no**. See below |
+| (missing) a stance forbidding fire clears the target | `00836210` at `00836230` | **no**: labelled NOT DONE at `src/game_hosts_script_orders.cpp:2477` |
+| (missing) `fireTargetID` property loads, CopyStateFrom | `00836667`, `008366BC` | not modelled. Not shown to be reached in a mission run |
+
+**The `:11205` divergence.** `009F5E7F` scans and keeps the best in a local. The image writes `+238h` only at
+`009F5F21`, and only after three checks pass:
+- the switch hysteresis (`009F5EAE`);
+- the already-pointed test (`009F5ECB`);
+- the accept test (`009F5ED7`).
+
+The store gate can still refuse it after that. The host instead copies the scan winner into the row as soon as the
+scan returns. When any of those checks fail, the row names the new best while `ctl.fire_target` keeps the stored
+target, and `store_fire_target` (which rewrites the row only when `ctl` changes) does not re-sync it. The
+guns of the ship itself read that row. With 222 ON, so would its followers'. This is the split-copy shape:
+two host copies of one image field.
+
+**Verdict.** The writers do not match, so 222 stays OFF. The fix is in the ships lane's file: drop the `:11205`
+row write behind a switch (`row_.fire_target_score` can stay), then pair it alone and then with 222.
+The `00836210` clear is a second, smaller gap. It matters only for a ship whose stance forbids fire.

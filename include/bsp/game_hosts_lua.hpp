@@ -185,6 +185,12 @@ inline constexpr bool kReconListenerResetCycleBound = true;  // ON: identity pai
 // through bsp::set_forced_recon_level_00805cf0, and the next recon pass publishes it.
 // False: the native stays an unimplemented record.
 inline constexpr bool kForcedReconLevelBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
+// Packet cc9_l59_lua_items (docs/CC13_SEG56.md; docs/SQUADRON_LAND_TASK.md 5he). 008AA8F0
+// forces the entity's OWN record first (00805CF0 at 008AAA76, record = entity + party *
+// 34h + 1E8h), then each squadron +3D0h member (008AAAB8) or convoy element. True: the
+// resolved slot is forced, then the squadron's members. False: the members only (a slot
+// with no squadron record is forced itself either way).
+inline constexpr bool kForcedReconOwnRecordBound = false;
 
 // Packet cc9_lua_add_damage (docs/USN02_PHASES.md section 3; docs/LUA_BINDING_MISSION.md,
 // "AddDamage, 0088E000"). AddDamage(entity, amount) resolves argument 0 (00888AA0), reads
