@@ -14095,3 +14095,52 @@ submerged_drops=`.
    (`byte_7d_fire_target_assigns_at_0`) suggests that is rare: expect identical or nearly so.
 6. D4: only missions with submerged boats (PRCP01, JM06). Destroyers stop firing torpedoes at boats below
    -6.7 m.
+
+## 231. Bomb release in the velocity frame (CC13_VER_20 D1): `kBombReleaseVelocityFrameBound`, OFF (227 addendum item 0a; cc9-gunnery42, 2026-10-14)
+
+**Image** (docs/CC13_VER_20.md D1). `006E1F00` copies the round's world matrix (`006E1F1F..006E1F2E`). Then
+owner->vtable[190h] = `006E0A70` overwrites row 2 of the **copy** with `w' = w - (0, 3, 0)`
+(`006E0AE7..006E0AEF`) and re-orthonormalises it (`0085DC80`, `006E0AF4`). The turn at `006E2062..006E2181`
+reads those rows. So the cone `D = (t cos a, -t sin a, 1)` is centred on the velocity, and a round with
+`t = 0` leaves with exactly `w'`.
+
+**Correction to 130.4 / 130.6.** The plane-pose rows are the matrix the round **hangs** with, not the one the
+turn uses. The 2-4 degree turn that 130.4 measured was the host's error.
+
+**Binding** (OFF). ON: `release_bomb_drop` takes
+`plane_release_ver_cc13::rack_round_release_velocity_006e4d50` with:
+- the plane pose as the hanging matrix (identity attach, 130.6);
+- `unit_forward_speed_0092d730` for vtable[38h] (LABELLED, as `kBombDropVelocityBound`);
+- the world velocity;
+- the same two cone draws.
+
+The draw count and order are unchanged; the `t` draw is now kept before its tangent. The counter is
+`summary mission gunnery bomb release velocity frame drops=`. D2 (aerial torpedoes through `006E4D50`) is not
+bound: it reroutes `game_hosts_units.cpp` ~:27297, which is a shared file.
+
+**Predictions.**
+1. OFF is identical.
+2. ON: `drops` equals `scatter_drops`, and the `bomb drop scatter ... turn=` diagnostic falls to the cone angle
+   alone (0 for SPVeteran/Elite dive bombers, whose ThrowMul is 0).
+3. Bombs land nearer the predicted impact that `009C7D71` already logs (`predicted impact` on the
+   `gunnery: bomb drop` line). The miss distance falls by about 15-30 m on a dive and by the along-track
+   overshoot on a level run.
+4. More dive-bomb hits on USN04, JM08 and PRCP01. USN01's ScoutDauntless pair should regain the Convoy1 hit
+   that 130.4 lost. Stream 1 is not changed by the binding itself; hits shift later draws.
+
+## 232. Submerged AA kinds and the TorpedoBot no-intercept drop: `kGunSubmergedAaKindBound`, `kTorpedoBotNoInterceptDropBound`, OFF (227 addendum items 5 and 6; cc9-gunnery42, 2026-10-14)
+
+- **`kGunSubmergedAaKindBound`.** `00728A90` (read here) answers true for `[[gun+3F4h]+80h]` in {1, 5, 6}
+  (`00728A9C..00728AA9`). `00729A80` refuses a gun whose muzzle is under the waterline when that answer is true,
+  as it does for the artillery kinds through `005459B0`. The host hard-set the answer false at both fire gates
+  (the AI's `0072D860` arm and the seat's). ON: the kind test, with the gun category standing in for the
+  weapon kind, as in the artillery twin. Prediction: identical on every row without a diving submarine. A
+  submerged boat's deck AA stops firing (it shows as more `can_fire_refusals`).
+- **`kTorpedoBotNoInterceptDropBound`.** `0090025E` calls `008FBB00`. With no solution, `00900267..0090026B`
+  jumps to `0090097B`, which calls gun->vtable[1E8h](0) and returns (disk bytes, read here). The host aimed at
+  the present position and could fire. ON: no solution drops the trigger for the tick. Counter: `summary
+  mission gunnery torpedo no-intercept drops=`. Prediction: rare. A 51.4 m/s solver against a ship under
+  about 20 m/s nearly always solves (CC13_VER_23 D1), so the counter is small and torpedo launches fall
+  slightly. Fast targets for Mark 15 / Type 95 tubes (13 m/s swim) are the exception.
+
+The 0.2 s think timer (`008FFF20` step 1) is still not modelled.

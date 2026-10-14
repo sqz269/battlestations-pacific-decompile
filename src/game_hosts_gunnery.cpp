@@ -83,6 +83,7 @@
 #include "bsp/aa_pick_ver_cc13.hpp"
 #include "bsp/gameplay_seg53_cc13.hpp"
 #include "bsp/ship_torpedo_ver_cc13.hpp"
+#include "bsp/plane_release_ver_cc13.hpp"
 
 namespace bsp::game {
 namespace {
@@ -455,6 +456,29 @@ constexpr bool kTorpedoBotStaleFlagBound = false;
 //    through bot->vt[38h](0). The host kept it. ON: the gun's target is dropped.
 //    OFF: as before.
 constexpr bool kTorpedoSubmergedTargetDropBound = false;
+//  * kBombReleaseVelocityFrameBound: packet g42_ver20_d1 (docs/CC13_VER_20.md D1).
+//    006E1F00 copies the round's matrix, and owner->vtable[190h] = 006E0A70
+//    overwrites the copy's row 2 with w' (the owner's world velocity, 3.0 off y)
+//    and re-orthonormalises it (0085DC80) BEFORE the cone turn reads the rows
+//    (006E2062..006E2181). So the cone is centred on the velocity, and a round
+//    with no cone leaves with w' exactly. The host turned the cone in the plane's
+//    pose frame (GUNNERY 130.4 / 130.6 read the hanging matrix, not the copy).
+//    ON: plane_release_ver_cc13::rack_round_release_velocity_006e4d50 on the
+//    same draws. OFF: as before.
+constexpr bool kBombReleaseVelocityFrameBound = false;
+//  * kGunSubmergedAaKindBound: packet g42_small_gates (GUNNERY 227 addendum item 5,
+//    docs/CC13_GPR_40.md section 2). 00729A80's submerged-fire test refuses a gun
+//    whose muzzle is under the waterline when 00728A90 answers true:
+//    [[gun+3F4h]+80h] is 1, 5 or 6 (00728A9C..00728AA9, read here). The twin of
+//    kGunSubmergedArtilleryKindBound. The host set the answer false. ON: the
+//    kind test (the gun category, as for the artillery twin). OFF: as before.
+constexpr bool kGunSubmergedAaKindBound = false;
+//  * kTorpedoBotNoInterceptDropBound: packet g42_small_gates (GUNNERY 227 addendum
+//    item 6, docs/CC13_VER_23.md D1). 0090025E CALL 008FBB00; no solution ->
+//    00900267..0090026B JMP 0090097B, gun->vtable[1E8h](0): the trigger drops
+//    and the tick returns. The host aimed at the present position and fired. ON:
+//    no solution drops the trigger for the tick. OFF: as before.
+constexpr bool kTorpedoBotNoInterceptDropBound = false;
 //  * kTorpedoSwimThrustBound: packet cc9_torpedo_tube_turn,
 //    docs/TORPEDO_FRIENDLY_CROSSING.md section 6. 00857480, the swim advance,
 //    per step on a torpedo in the water: 00856BB0 -> 00857061 yaws the NOSE
@@ -865,6 +889,9 @@ constexpr bool kBlastMeshBoundsBound = false;
 //    whose muzzle is below the waterline (00729B2F) cannot fire. The host's kind is
 //    the gun category, as for the torpedo test. False: the answer stays false.
 constexpr bool kGunSubmergedArtilleryKindBound = true;   // ON by mechanism: GUNNERY 206
+inline bool gun_aa_kind_00728a90(int kind) noexcept {
+    return kGunSubmergedAaKindBound && (kind == 1 || kind == 5 || kind == 6);
+}
 inline bool gun_artillery_kind_005459b0(int kind) noexcept {
     return kGunSubmergedArtilleryKindBound
         && (kind == 2 || kind == 3 || kind == 4 || kind == 6);
@@ -1919,6 +1946,7 @@ struct GameGunneryHost::Impl {
     std::map<int, float> flak_fuse_time_by_class;
     // kArtilleryClassSpeedBound: 006E9890's +54h (FlyTime), by bullet class.
     std::map<int, float> artillery_fly_time_by_class;
+    unsigned long long bomb_release_frame_drops{0};   // kBombReleaseVelocityFrameBound
     // kArtilleryClassSpeedBound counters: aims that took the class speed, shots
     // launched at it, scaled shot steps, and FlyTime expiries.
     unsigned long long artillery_class_aims{0};
@@ -2047,7 +2075,7 @@ struct GameGunneryHost::Impl {
     bool torpedo_profile_loaded{false};
     bsp::WeaponHitAccuracyProfile torpedo_hit_profiles[4]{};
     unsigned long long torpedo_gate_a_drops{0}, torpedo_gate_b_drops{0},
-        torpedo_gate_passes{0}, torpedo_submerged_drops{0};
+        torpedo_gate_passes{0}, torpedo_submerged_drops{0}, torpedo_no_intercept_drops{0};
     double torpedo_attack_range_sum{0.0};
     unsigned long long torpedo_attack_range_samples{0};
     // 00901BA0 for one gun and target. LABELLED SUBSTITUTION for the TorpedoBot
@@ -7540,6 +7568,9 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     && bsp::torpedo_intercept_point_008fbb00(shooter, at,
                         solver_speed, v, lead)) {
                     done("GunBot::intercept_point_008fbb00", 0x008fbb00u);
+                } else if (kTorpedoBotNoInterceptDropBound) {
+                    have_target = false;   // 0090026B -> 0090097B, vtable[1E8h](0)
+                    ++torpedo_no_intercept_drops;
                 } else {
                     lead = at;
                 }
@@ -8475,7 +8506,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         }
         gate.weapon_type_id = gun.category;
         gate.muzzle_world_y = muzzle[1];
-        gate.muzzle_submerged = false;
+        gate.muzzle_submerged = gun_aa_kind_00728a90(gun.category);
         gate.artillery_kind_005459b0 = gun_artillery_kind_005459b0(gun.category);
         gate.barrel_count = gun.barrel_num;
         gate.reload_timers = gun.fire.barrel_timers.data();
@@ -12905,7 +12936,7 @@ bool GameGunneryHost::Impl::torpedo_tube_can_fire_1d0(std::size_t g) {
     }
     gate.weapon_type_id = gun.category;
     gate.muzzle_world_y = muzzle[1];
-    gate.muzzle_submerged = false;
+    gate.muzzle_submerged = gun_aa_kind_00728a90(gun.category);
     gate.artillery_kind_005459b0 = gun_artillery_kind_005459b0(gun.category);
     gate.barrel_count = gun.barrel_num;
     gate.reload_timers = gun.fire.barrel_timers.data();
@@ -14614,8 +14645,9 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
         const float s = chosen->throw_amount * mul;
         const float a = h.draw(Impl::Draw::bomb_scatter, unit_index, 0, 0.0f,
             3.14159274f);                                                   // 006E4F91
-        const float t = std::tan(h.draw(Impl::Draw::bomb_scatter, unit_index, 0, 0.0f,
-            s));                                                            // 006E4FB1
+        const float t_draw = h.draw(Impl::Draw::bomb_scatter, unit_index, 0, 0.0f,
+            s);                                                             // 006E4FB1
+        const float t = std::tan(t_draw);
         const float w = chosen->wind_amount;
         const float r1 = h.draw(Impl::Draw::bomb_scatter, unit_index, 0, -w, w);     // 006E513C
         const float r2 = h.draw(Impl::Draw::bomb_scatter, unit_index, 0, -0.5f * w,
@@ -14642,8 +14674,34 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
         const float vmag = std::sqrt(velocity[0] * velocity[0] + velocity[1] * velocity[1]
             + velocity[2] * velocity[2]);
         const float before[3] = {velocity[0], velocity[1], velocity[2]};
-        for (int i = 0; i < 3; ++i) {
-            velocity[i] = vmag * (dx * right[i] + dy * up[i] + forward[i]);
+        float world_now[3] = {0.0f, 0.0f, 0.0f};
+        if (kBombReleaseVelocityFrameBound
+            && h.units.unit_linear_velocity(unit_index, world_now)) {
+            // 006E0A70 then 006E1F00 on the round's matrix copy (CC13_VER_20 D1).
+            // The round hangs with the plane pose (identity attach, 130.6).
+            bsp::plane_release_ver_cc13::RackRoundReleaseInputs in;
+            const float pose[16] = {right[0], right[1], right[2], 0.0f, up[0], up[1], up[2],
+                0.0f, forward[0], forward[1], forward[2], 0.0f, origin[0], origin[1],
+                origin[2], 1.0f};
+            for (int i = 0; i < 16; ++i) in.pose_matrix[i] = pose[i];
+            in.owner_is_plane_0f = true;
+            in.owner_speed_38 = speed;   // LABELLED: vtable[38h] as 0092D730, as above
+            in.owner_world_velocity_34.x = world_now[0];
+            in.owner_world_velocity_34.y = world_now[1];
+            in.owner_world_velocity_34.z = world_now[2];
+            in.a_draw = a;
+            in.t_draw = t_draw;
+            const bsp::plane_release_ver_cc13::Vec3 v =
+                bsp::plane_release_ver_cc13::rack_round_release_velocity_006e4d50(in);
+            velocity[0] = v.x;
+            velocity[1] = v.y;
+            velocity[2] = v.z;
+            ++h.bomb_release_frame_drops;
+            h.done("Rack::round_release_velocity_006e0a70_006e1f00", 0x006e1f00u);
+        } else {
+            for (int i = 0; i < 3; ++i) {
+                velocity[i] = vmag * (dx * right[i] + dy * up[i] + forward[i]);
+            }
         }
         ++h.scatter_drops;
         {
@@ -15080,6 +15138,12 @@ void GameGunneryHost::report() {
             host.artillery_biased_launches, host.artillery_scaled_steps,
             host.artillery_fly_time_expiries, kArtilleryClassSpeedBound ? 1 : 0,
             kArtilleryLaunchBiasBound ? 1 : 0);
+        host.log.notef("summary mission gunnery torpedo no-intercept drops=%llu bound=%d; "
+            "submerged aa kind bound=%d (0090025E, 00728A90)", host.torpedo_no_intercept_drops,
+            kTorpedoBotNoInterceptDropBound ? 1 : 0, kGunSubmergedAaKindBound ? 1 : 0);
+        host.log.notef("summary mission gunnery bomb release velocity frame drops=%llu bound=%d "
+            "(006E0A70 -> 006E1F00, CC13_VER_20 D1)", host.bomb_release_frame_drops,
+            kBombReleaseVelocityFrameBound ? 1 : 0);
         {
             // Packet cc9_mrtgun_immediate_fire: the census of turning classes by
             // whether the ArtilleryGunnerBot drives the category.
