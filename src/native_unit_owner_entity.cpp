@@ -1,6 +1,7 @@
 #include "bsp/native_unit_owner_entity.hpp"
 
 #include "bsp/native_alias_count_growth.hpp"
+#include "bsp/native_invalid_parameter_noinfo_call.hpp"
 #include "bsp/native_unit_owner_list_heads.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
@@ -240,6 +241,54 @@ void finish_native_unit_owner_peer_tail_0077f054(
         append_native_unit_owner_peer_0077eb50(actual_root_after_physical_fields,
             peer_argument, actual_holder_scratch_preimage, actual_dirty_byte_00f87190);
     }
+}
+
+void restore_native_unit_owner_destructor_profiles_0077e3a0(void* actual_root) noexcept {
+    at<std::uint32_t>(actual_root, 0x00) = 0x00d03e80u;
+    at<std::uint32_t>(actual_root, 0x10) = 0x00d03e68u;
+    at<std::uint32_t>(actual_root, 0x24) = 0x00d03e60u;
+    at<std::uint32_t>(actual_root, 0x170) = 0x00d03e5cu;
+    at<std::uint32_t>(actual_root, 0x1e4) = 0x00d03e54u;
+}
+
+void remove_native_unit_owner_global_matches_0077bea0(
+    void* actual_global_list,
+    const volatile std::uint32_t& actual_target_value_cell) {
+    void* const sentinel = at<void*>(actual_global_list, 4);
+    const std::uint32_t target = actual_target_value_cell;
+    void* node = at<void*>(sentinel, 0);
+    for (;;) {
+        if (actual_global_list == nullptr) invoke_native_invalid_parameter_00bf6713();
+        if (node == sentinel) break;
+        if (actual_global_list == nullptr) invoke_native_invalid_parameter_00bf6713();
+        if (node == at<void*>(actual_global_list, 4)) invoke_native_invalid_parameter_00bf6713();
+        if (at<std::uint32_t>(node, 8) == target) {
+            if (node == at<void*>(actual_global_list, 4)) invoke_native_invalid_parameter_00bf6713();
+            const bool erase = node != at<void*>(actual_global_list, 4);
+            void* const next = at<void*>(node, 0);
+            if (erase) {
+                void* const previous = at<void*>(node, 4);
+                at<void*>(previous, 0) = next;
+                void* const current_next = at<void*>(node, 0);
+                void* const current_previous = at<void*>(node, 4);
+                at<void*>(current_next, 4) = current_previous;
+                singleton_lifetime_free(node);
+                const std::uint32_t count = at<std::uint32_t>(actual_global_list, 8);
+                at<std::uint32_t>(actual_global_list, 8) = count - 1;
+            }
+            node = next;
+        } else {
+            if (node == at<void*>(actual_global_list, 4)) invoke_native_invalid_parameter_00bf6713();
+            node = at<void*>(node, 0);
+        }
+    }
+}
+
+void withdraw_native_unit_owner_global_0077e409(
+    void* actual_root_after_session_release,
+    void* actual_global_list_00f87194) {
+    volatile std::uint32_t target = reinterpret_cast<std::uintptr_t>(actual_root_after_session_release);
+    remove_native_unit_owner_global_matches_0077bea0(actual_global_list_00f87194, target);
 }
 
 } // namespace bsp

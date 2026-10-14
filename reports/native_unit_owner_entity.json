@@ -1,7 +1,7 @@
 {
-  "packet": "cc12_unit_receiver_peer_tail",
-  "utc": "2026-10-14T19:42:36.178454+00:00",
-  "base_revision": "9f1a596188937beeb8378785f296c36d06e90416",
+  "packet": "cc12_unit_receiver_withdrawal",
+  "utc": "2026-10-14T20:25:25.573269+00:00",
+  "base_revision": "e4e1377dfa7b5fc9b7cc15f623beaecfa26b8339",
   "source": "src/native_unit_owner_entity.cpp",
   "header": "include/bsp/native_unit_owner_entity.hpp",
   "documentation": "docs/NATIVE_UNIT_OWNER_ENTITY.md",
@@ -115,6 +115,36 @@
       "coverage": "qualified normal constructor business effects",
       "original_abi": "interior Original-register region; new explicit Source C++ interface",
       "contract": "After physical fields: fresh actualE188A8 once, game+1FE4==2, then actualE0AF20==0; calls concrete77EB50 with peer0 and actual scratch/dirty cells. No null guard/default globals; no actual binding, owning parent composition or receiver activation."
+    },
+    {
+      "address": "0077e3a0",
+      "end_inclusive": "0077e3c7",
+      "name": "restore_native_unit_owner_destructor_profiles_0077e3a0",
+      "kind": "fragment",
+      "bytes": 40,
+      "coverage": "qualified normal destructor profile-write prefix",
+      "original_abi": "Interior ESI actual root; new Source explicit raw argument",
+      "contract": "Five ordered numeric profile DWORD writes at0/10/24/170/1E4. Stops before actual E0AF20/Game/session-release decision and does not establish Native state4, callable profile, member destruction or receiver activation."
+    },
+    {
+      "address": "0077bea0",
+      "end_inclusive": "0077bf3b",
+      "name": "remove_native_unit_owner_global_matches_0077bea0",
+      "kind": "function",
+      "bytes": 156,
+      "coverage": "complete raw list business schedule with qualified Source invalid-parameter policy",
+      "original_abi": "ECX raw list; stack target-cell pointer; RET4; new explicit Source interface, no register-residue ABI claim",
+      "contract": "Capture actual sentinel then target DWORD once, traverse captured sentinel, re-read current head at all checks, remove every matching0Ch node in ordered link stores, real free then fresh modulo32 count decrement. All five returning invalid checks call accepted concrete BF6713 Source entry. Actual SDK policy is qualified, not Native BF66EF handler/frame/fault equivalence. No callbacks/defaults/repair/count clamp; actual allocation/header/target and synchronization domains required."
+    },
+    {
+      "address": "0077e409",
+      "end_inclusive": "0077e41b",
+      "name": "withdraw_native_unit_owner_global_0077e409",
+      "kind": "fragment",
+      "bytes": 19,
+      "coverage": "qualified normal destructor global-withdrawal stage",
+      "original_abi": "Interior ESI actual root; F87194 direct global list object; new explicit Source interface",
+      "contract": "After real session-release arm completes or legitimately skips: materialize actual root-value cell, call concrete77BEA0 on actualF87194 list object, removing all matches. Stops before+2B0 observer destruction. No message/observer/Native EH lifetime or actual global binding supplied."
     }
   ],
   "parent_constructor_completed": false,
@@ -126,7 +156,7 @@
   "original_context": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe",
-    "verified_typed_modification": 158963,
+    "verified_typed_modification": 158974,
     "listing_repair_performed": false,
     "destructor_old_truncation_comment_superseded": true,
     "actual_destructor_iterator": "00bf7c6e",
@@ -304,6 +334,41 @@
       "address": "00c89f93",
       "native": "004072d0",
       "kind": "tail_jump"
+    },
+    {
+      "function": "0077bea0",
+      "address": "0077bec8",
+      "native": "00bf6713"
+    },
+    {
+      "function": "0077bea0",
+      "address": "0077bed5",
+      "native": "00bf6713"
+    },
+    {
+      "function": "0077bea0",
+      "address": "0077bedf",
+      "native": "00bf6713"
+    },
+    {
+      "function": "0077bea0",
+      "address": "0077bef6",
+      "native": "00bf6713"
+    },
+    {
+      "function": "0077bea0",
+      "address": "0077bf29",
+      "native": "00bf6713"
+    },
+    {
+      "function": "0077bea0",
+      "address": "0077bf10",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "0077e380",
+      "address": "0077e417",
+      "native": "0077bea0"
     }
   ],
   "failure_ownership": {
@@ -313,11 +378,12 @@
     "peer_holder_phase": "Native state0 EBA1..EBD4 maps only scratch+0C via C8A060->77B030. Source guard preserves throwing-call cleanup; not Native frame or hardware-fault unwind.",
     "peer_second_phase": "State disarmed EBD5 before second allocation. First holder insertion remains on second allocation/count failure; no node allocation rollback or dirty publication.",
     "count_failure": "Temporary actual legacy message guarded only after408720 assign. Existing owning NativeAliasListLengthError uses concrete legacy logic-error body; Source transport only; Original RTTI/throw ABI false.",
-    "unlinked_allocation": "Count failure owns neither fresh allocation in the actual unwind maps. No cleanup is invented."
+    "unlinked_allocation": "Count failure owns neither fresh allocation in the actual unwind maps. No cleanup is invented.",
+    "global_withdrawal": "Actual invalid-parameter Source policy may return or throw; prior removals remain. No transaction/repair/rollback and no guessed Native handler state. Hardware-fault and returning-handler execution not tested."
   },
   "validation": {
     "strict_compile": "passed MSVCWin32 /std:c++20 /EHsc /O2 /MD /W4 /WX /fp:strict",
-    "emitted_schedules_reviewed": 12,
+    "emitted_schedules_reviewed": 15,
     "original_comparison": {
       "checks": 20,
       "failures": 0,
@@ -326,25 +392,24 @@
       "allocation_failure_tested": false,
       "invalid_lists_tested": false,
       "actual_receiver_constructed": false,
-      "relinked_current_object_result": "local/native_unit_owner_peer_prefix_result.txt"
+      "relinked_current_object_result": "local/native_unit_owner_withdraw_prefix_result.txt"
     },
     "baseline_build": {
       "status": "passed",
-      "source_revision": "9f1a596188937beeb8378785f296c36d06e90416",
+      "source_revision": "e4e1377dfa7b5fc9b7cc15f623beaecfa26b8339",
       "configuration": "MSVC Win32 Release",
       "tests_passed": 3,
       "tests_failed": 0,
-      "log": "local/native_unit_owner_peer_build.log",
+      "log": "local/native_unit_owner_withdraw_build.log",
       "includes_new_component": false,
       "note": "Worker existing baseline build; new Source TU is strict-compiled and directly linked into comparison; primary owns CMake registration."
     },
-    "primary_registration_required": "target_sources(bsp_core PRIVATE src/native_unit_owner_entity.cpp)",
     "full_receiver_activation": false,
     "live_call_rows": {
-      "checked": 33,
+      "checked": 40,
       "failures": 0,
-      "log": "local/native_unit_owner_peer_report_calls.log",
-      "status": "passed"
+      "status": "passed",
+      "log": "local/native_unit_owner_withdraw_report_calls.log"
     },
     "annotation": {
       "names_preserved": true,
@@ -352,16 +417,11 @@
       "write_lock": true,
       "project_saved": true,
       "exports_refreshed": [
-        "0077eed0",
-        "0077eb50",
-        "0077ba60",
-        "0077bb00",
-        "0077dd00",
-        "0077de40",
-        "0077b030"
+        "0077bea0",
+        "0077e380"
       ],
-      "prior_values": "local/ghidra-annotations-20261014T194259Z.json",
-      "log": "local/native_unit_owner_peer_annotations.log"
+      "prior_values": "local/ghidra-annotations-20261014T202559Z.json",
+      "log": "local/native_unit_owner_withdraw_annotations.log"
     },
     "private_shared_count_schedule_reviewed": true,
     "host_eh_state_marker_caveat": "MSVC/EHsc may move host states across nonthrowing memory instructions; exception-call ownership reviewed, Native fault/frame equivalence false.",
@@ -376,22 +436,60 @@
       "allocation_failure_injected": false,
       "native_exception_frames_tested": false,
       "actual_receiver_constructed": false,
-      "scope_limit": "Synthetic storage fixtures; no game process. Source-only second-count failure intentionally leaves unlinked12B node as Native map does. Actual Native scratch provenance/ABI/fault behavior/startup/gameplay untested."
+      "scope_limit": "Synthetic storage fixtures; no game process. Source-only second-count failure intentionally leaves unlinked12B node as Native map does. Actual Native scratch provenance/ABI/fault behavior/startup/gameplay untested.",
+      "relinked_current_object_result": "local/native_unit_owner_withdraw_peer_result.txt"
     },
-    "previous_packet_annotation": {
-      "names_preserved": true,
-      "previous_comments_preserved": true,
-      "write_lock": true,
-      "project_saved": true,
-      "exports_refreshed": [
-        "0077eed0",
-        "0077e380",
-        "0077b980",
-        "0077d930"
-      ],
-      "prior_values": "local/ghidra-annotations-20261014T190259Z.json"
+    "schedule_review": "local/native_unit_owner_withdraw_schedule_review.txt",
+    "previous_schedule_review": "local/native_unit_owner_peer_schedule_review.txt",
+    "withdrawal_comparison": {
+      "checks": 20,
+      "failures": 0,
+      "result": "local/native_unit_owner_withdraw_probe_result.txt",
+      "scope": "Complete copied Original77BEA0 plus profile/withdrawal fragments. Preserve internalE417call; redirect external free and qualified actual SDK invalid boundary and actual global operand. Root nonzero preimage full bytes, list topology/count/sentinel/header payload, duplicate/all/no/empty matches, value-cell capture from freed first node and modulo32count decrement.",
+      "returning_invalid_handler_executed": false,
+      "native_exception_frames_tested": false,
+      "actual_receiver_constructed": false,
+      "fault_behavior_tested": false,
+      "scope_limit": "Synthetic storage fixtures. Original BF66EF handler selection/Watson/frame ABI and actualF87194/global binding untested."
     },
-    "schedule_review": "local/native_unit_owner_peer_schedule_review.txt"
+    "primary_registration": {
+      "worker_baseline_includes_component": false,
+      "root_reported_registered_in_integrator_branch": true,
+      "combined_build_owner": "primary integrator",
+      "note": "Current object strict-compiled and directly linked in all three fixtures; no worker CMake mutation."
+    },
+    "annotation_history": [
+      {
+        "names_preserved": true,
+        "previous_comments_preserved": true,
+        "write_lock": true,
+        "project_saved": true,
+        "exports_refreshed": [
+          "0077eed0",
+          "0077e380",
+          "0077b980",
+          "0077d930"
+        ],
+        "prior_values": "local/ghidra-annotations-20261014T190259Z.json"
+      },
+      {
+        "names_preserved": true,
+        "previous_comments_preserved": true,
+        "write_lock": true,
+        "project_saved": true,
+        "exports_refreshed": [
+          "0077eed0",
+          "0077eb50",
+          "0077ba60",
+          "0077bb00",
+          "0077dd00",
+          "0077de40",
+          "0077b030"
+        ],
+        "prior_values": "local/ghidra-annotations-20261014T194259Z.json",
+        "log": "local/native_unit_owner_peer_annotations.log"
+      }
+    ]
   },
   "original_image_proof": {
     "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
@@ -456,7 +554,7 @@
   "remaining_gates": [
     "Actual containing factory/allocation preimage and successful full-flag base plus three genuine34h recon callbacks with BF7CD1/unwind pair.",
     "Canonical actual observer/weak/string/entity-ID/pending domains and World/hierarchy publication.",
-    "Concrete conditional peer business effects supplied, but actual E188A8/network/dirty bindings and genuine Native scratch frame preimage remain required; actual session message/F87194 withdrawal/+2B0 observer member still outside Source stage.",
+    "Concrete conditional peer effects, destructor profile prefix and actual global-list withdrawal schedule supplied; actual E188A8/network/dirty/F87194 bindings and Native scratch frame preimage remain required. Session message/routing ownership and held6E0860 observer destruction remain outside Source stages.",
     "Recon-array and GameEntity/SceneNode callableWorld/effect teardown; Native root scalar flags/free/exception ownership.",
     "Embedded310 tick unlink, actual current subnode scalar dispatch, genuine derived factory/current tick/remaining job dispatch.",
     "Numeric profiles are not Source-callable tables; Seg60Host uint16 requestedID remains interface limitation, not confirmed gameplay divergence.",
@@ -465,13 +563,18 @@
   "artifacts": [
     {
       "path": "docs/NATIVE_UNIT_OWNER_ENTITY.md",
-      "bytes": 12916,
-      "sha256": "97e177e64b3da5f813847dd2073dc146cb9f4ed991d7e8bfb78224c24b6c974a"
+      "bytes": 16455,
+      "sha256": "d793e2ce00be1b5e42def702b5344201c1eea072cf7a43fa6ac0b466f82953f9"
+    },
+    {
+      "path": "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+      "bytes": 1471,
+      "sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613"
     },
     {
       "path": "include/bsp/native_unit_owner_entity.hpp",
-      "bytes": 6550,
-      "sha256": "457ae026dab26bb73b4fcf4acc19c6e5260c3eeb14debe1d082b7e7b0ece3cb1"
+      "bytes": 8447,
+      "sha256": "de08e526fd3d30fbbd5fae5981984138090ecbae8150ee16a1ff5140786fefc6"
     },
     {
       "path": "local/build_native_unit_owner_peer_prefix_probe.cmd",
@@ -489,6 +592,21 @@
       "sha256": "a743c118326c83115731af122ee86347deebc7339bbd96c74e54fda5396f4189"
     },
     {
+      "path": "local/build_native_unit_owner_withdraw_peer_prefix_probe.cmd",
+      "bytes": 561,
+      "sha256": "9999150412069d3b278b207146c1ccfe84fce9154b01e6713abf0c8b3c248339"
+    },
+    {
+      "path": "local/build_native_unit_owner_withdraw_peer_probe.cmd",
+      "bytes": 552,
+      "sha256": "86e99f2f54ccdac03a312441367ab1d7cc9250180e4a41e7e736a34880cd7237"
+    },
+    {
+      "path": "local/build_native_unit_owner_withdraw_probe.cmd",
+      "bytes": 543,
+      "sha256": "04503a1ff7ecb50087b37fbf18ad32562a0073b75fe6449dae236a05ab3a82c6"
+    },
+    {
       "path": "local/compile_native_unit_owner.cmd",
       "bytes": 309,
       "sha256": "2dd7333678cc5f441b39a75c093e94ee231a05e960f9e9a0099126fcb90d27bb"
@@ -497,6 +615,11 @@
       "path": "local/compile_native_unit_owner_peer.cmd",
       "bytes": 303,
       "sha256": "f37882c44f7f6e05207f2226c01177afc118e0d8ac71b99be785f7f2dede362b"
+    },
+    {
+      "path": "local/compile_native_unit_owner_withdraw.cmd",
+      "bytes": 308,
+      "sha256": "eda61c7859376b67d2a87585b03238597229b2e90fffaac441e92366ed8c5d2d"
     },
     {
       "path": "local/extract_native_unit_owner_peer_probe.py",
@@ -509,6 +632,11 @@
       "sha256": "e489282a8033353b4f230e48acf88bb7baee33607038552eb89b4aca03313310"
     },
     {
+      "path": "local/extract_native_unit_owner_withdraw_probe.py",
+      "bytes": 1631,
+      "sha256": "7d13e4dcf1344a66fccba56c7236bb9230b7995f101868e9a17e6e900d1a992a"
+    },
+    {
       "path": "local/ghidra-annotations-20261014T190259Z.json",
       "bytes": 6639,
       "sha256": "6cc4207f71345c63f97a7664f7abba2c341b35eca3cf097098b2475737306e1c"
@@ -517,6 +645,11 @@
       "path": "local/ghidra-annotations-20261014T194259Z.json",
       "bytes": 10031,
       "sha256": "f8da70c0cd5db1db7c8acce8adf549e824cf2d4b34e708577c73525651775ad4"
+    },
+    {
+      "path": "local/ghidra-annotations-20261014T202559Z.json",
+      "bytes": 6469,
+      "sha256": "64a6fd4d6aa3e2e3f34428b5169c4f46820a9ca40550bdc09fb5a445288fc168"
     },
     {
       "path": "local/native_unit_owner_9f1a59618_receipts/docs/NATIVE_UNIT_OWNER_ENTITY.md",
@@ -547,6 +680,26 @@
       "path": "local/native_unit_owner_build.log",
       "bytes": 84218,
       "sha256": "69efdf4295007635a34f4d5091f92579dc349cb8b600b4b0f98adee17e8aabc1"
+    },
+    {
+      "path": "local/native_unit_owner_e4e1377df_receipts/docs/NATIVE_UNIT_OWNER_ENTITY.md",
+      "bytes": 12916,
+      "sha256": "97e177e64b3da5f813847dd2073dc146cb9f4ed991d7e8bfb78224c24b6c974a"
+    },
+    {
+      "path": "local/native_unit_owner_e4e1377df_receipts/include/bsp/native_unit_owner_entity.hpp",
+      "bytes": 6550,
+      "sha256": "457ae026dab26bb73b4fcf4acc19c6e5260c3eeb14debe1d082b7e7b0ece3cb1"
+    },
+    {
+      "path": "local/native_unit_owner_e4e1377df_receipts/reports/native_unit_owner_entity.json",
+      "bytes": 36538,
+      "sha256": "1cbae8304408399b3f9245b4eaa48e6331ec9195ff3778fba80d71e2c0b9f860"
+    },
+    {
+      "path": "local/native_unit_owner_e4e1377df_receipts/src/native_unit_owner_entity.cpp",
+      "bytes": 10404,
+      "sha256": "d6c3d64aad2916493cb5ed93ca0688dc279bb230b7ae3642d0c12fb67d31fc81"
     },
     {
       "path": "local/native_unit_owner_entity.asm",
@@ -789,9 +942,149 @@
       "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
     },
     {
+      "path": "local/native_unit_owner_withdraw.asm",
+      "bytes": 75063,
+      "sha256": "1363fda0c312c0918a761f43d424d033033060792d9123323350f99ded26aee5"
+    },
+    {
+      "path": "local/native_unit_owner_withdraw.obj",
+      "bytes": 13122,
+      "sha256": "b4087dc8127b3df5dff81666238a8d9e7cee43737c96f4c16a98d25e8b1e0279"
+    },
+    {
+      "path": "local/native_unit_owner_withdraw_77bea0_live.txt",
+      "bytes": 754,
+      "sha256": "e7b1baebc5c6a6527a4809948e2a02efe8a6e0ae7b625a0d322f1229f677445f"
+    },
+    {
+      "path": "local/native_unit_owner_withdraw_77e380_live.txt",
+      "bytes": 1326,
+      "sha256": "cff2b7e683fa52449e2cb60587b8b3fb8a87a0bf84a85dc425f2873460b9c81e"
+    },
+    {
+      "path": "local/native_unit_owner_withdraw_annotations.log",
+      "bytes": 247,
+      "sha256": "f1e5448f75a3739c4780aaa282775c281d5f42f465bd40f084e5a54fb1540e06"
+    },
+    {
+      "path": "local/native_unit_owner_withdraw_build.log",
+      "bytes": 2843,
+      "sha256": "5f3a2b494c1778cfa8166d8e69e15311f478f472f29341ec1b86590aa9b9be28"
+    },
+    {
+      "path": "local/native_unit_owner_withdraw_compile.log",
+      "bytes": 30,
+      "sha256": "f4dcf35e101ad2d55027ac7e3257bad5dd1fd830c8f2912b04b451a587a96f00"
+    },
+    {
+      "path": "local/native_unit_owner_withdraw_export.log",
+      "bytes": 206,
+      "sha256": "c780123f15c9d3886dcec1c988c60b194a02befa35163f2caa9c3e29bd30701a"
+    },
+    {
+      "path": "local/native_unit_owner_withdraw_image_proof.json",
+      "bytes": 776,
+      "sha256": "0b79b8032ddf8aeffdf356235f6c0fed91709b5ec4bec8dd0de07d18499c8410"
+    },
+    {
+      "path": "local/native_unit_owner_withdraw_ledger.log",
+      "bytes": 2013,
+      "sha256": "2f529a48dae4ec2786a34502e318b8106cd0a35c013af6452cf94bc014eaacd7"
+    },
+    {
+      "path": "local/native_unit_owner_withdraw_original.hpp",
+      "bytes": 49455,
+      "sha256": "c225264fb814ef94739d58215a275f0d1d053e436301898f405e7ab3921fcfa0"
+    },
+    {
+      "path": "local/native_unit_owner_withdraw_peer_compile.log",
+      "bytes": 34,
+      "sha256": "128e78a9494e3d5a8ca6814b50c21f43550a620446609b5ed948a5c518bf5f92"
+    },
+    {
+      "path": "local/native_unit_owner_withdraw_peer_prefix_probe.exe",
+      "bytes": 29696,
+      "sha256": "3b5be16f3f7390681fb54493adf9d11b024812526035b1a56fd8f7476c25ca15"
+    },
+    {
+      "path": "local/native_unit_owner_withdraw_peer_prefix_probe.obj",
+      "bytes": 35624,
+      "sha256": "15338722c6dd762a691ab4df467a05a62f5c99a91ca36cd44dca475881489a9d"
+    },
+    {
+      "path": "local/native_unit_owner_withdraw_peer_probe.exe",
+      "bytes": 37888,
+      "sha256": "2a63c81a92cd6e153c99cf901df1b44c446d9f961d9a98b9954b2ed0a5b0f38d"
+    },
+    {
+      "path": "local/native_unit_owner_withdraw_peer_probe.obj",
+      "bytes": 52054,
+      "sha256": "2638a2a9d5778b8ae7a6af473b2506d260e901d1a1804f885a679966c06b05f4"
+    },
+    {
+      "path": "local/native_unit_owner_withdraw_peer_result.txt",
+      "bytes": 63,
+      "sha256": "c1abe702128102c484f86b0836b7c0bf70ea9f9d907549b70db20e599e89268f"
+    },
+    {
+      "path": "local/native_unit_owner_withdraw_prefix_compile.log",
+      "bytes": 29,
+      "sha256": "29ed75be2d6c965a62ebfdd119b78760faeb206a6a20bc229227901e69eaec35"
+    },
+    {
+      "path": "local/native_unit_owner_withdraw_prefix_result.txt",
+      "bytes": 69,
+      "sha256": "dc4c9d619d226ca9d15115707708ceb36d5c9260cf236c98ae6035435a212785"
+    },
+    {
+      "path": "local/native_unit_owner_withdraw_probe.cpp",
+      "bytes": 7180,
+      "sha256": "60bb81c77cecfaa23a83494885add4ecabecbfe9c68ce6b2871e17efdb363020"
+    },
+    {
+      "path": "local/native_unit_owner_withdraw_probe.exe",
+      "bytes": 26624,
+      "sha256": "543b8733a28cc77a1020e1e04f5880f42f4dea8408c3eca1beced11e7613f3a5"
+    },
+    {
+      "path": "local/native_unit_owner_withdraw_probe.obj",
+      "bytes": 65575,
+      "sha256": "ff69fb14d7e187deb020c76f82d82af9145afd85b859b84ce0e56b543bac5e1a"
+    },
+    {
+      "path": "local/native_unit_owner_withdraw_probe_compile.log",
+      "bytes": 38,
+      "sha256": "546c1d82cea9cc74059e6f9d63f893506d855f4b7d52b8d9cf8845a813e3115c"
+    },
+    {
+      "path": "local/native_unit_owner_withdraw_probe_result.txt",
+      "bytes": 64,
+      "sha256": "87211624d3d19948267e6cf56d24ed28f77c52a2e456ddabc58a44d8da3cdf3e"
+    },
+    {
+      "path": "local/native_unit_owner_withdraw_report_calls.log",
+      "bytes": 71,
+      "sha256": "9ad49664000815b5cbc1ddb78dbdfe3ce25edcfc2578189ebad46b974a9493bb"
+    },
+    {
+      "path": "local/native_unit_owner_withdraw_schedule_review.txt",
+      "bytes": 1663,
+      "sha256": "94f65e49e8e436d0dd0b2e45d6fd33f112070cb1af502b6d01ad5a03a4a6c1c1"
+    },
+    {
+      "path": "local/native_unit_owner_withdraw_typed_flow.json",
+      "bytes": 14642,
+      "sha256": "8733459502c953541c6465cb3f3efb4766977ec623ecbbf18a65166367661a99"
+    },
+    {
+      "path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "bytes": 1089,
+      "sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b"
+    },
+    {
       "path": "src/native_unit_owner_entity.cpp",
-      "bytes": 10404,
-      "sha256": "d6c3d64aad2916493cb5ed93ca0688dc279bb230b7ae3642d0c12fb67d31fc81"
+      "bytes": 12822,
+      "sha256": "40b58281074160e4202da2b0e61642c94aa0dfdb3346209743c7636092b14f5f"
     },
     {
       "path": "src/native_unit_owner_list_heads.cpp",
@@ -804,7 +1097,7 @@
       "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
     }
   ],
-  "previous_packet_receipt": "local/native_unit_owner_9f1a59618_receipts/reports/native_unit_owner_entity.json",
+  "previous_packet_receipt": "local/native_unit_owner_e4e1377df_receipts/reports/native_unit_owner_entity.json",
   "peer_original_image_proof": {
     "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
     "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
@@ -939,5 +1232,31 @@
       }
     ],
     "fixture_scope": "Isolated normal copied bodies and constructor tail; Native EH throw execution excluded."
+  },
+  "withdrawal_original_image_proof": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "0077bea0",
+        "length": 156,
+        "sha256": "a9b56c22bc47b390fcdf934aecd770639fd26cfaa4254b36ce8d92de59a2dfb1",
+        "live_equals_disk": true
+      },
+      {
+        "address": "0077e380",
+        "length": 273,
+        "sha256": "6f7a0052821a7d8424d94a95f7aa07eb91ce98bf35a1bd7035117f627e16ae5d",
+        "live_equals_disk": true
+      }
+    ],
+    "fixture_scope": "Isolated normal copied list-remove body and destructor profile/withdrawal fragments; actual invalid-parameter Source boundary; no Original handler/frame or game process."
+  },
+  "queued_observer_dependency": {
+    "address": "006e0860",
+    "owner": "agent/argon-v2:argon-v2-seg33",
+    "lease_until": "2026-10-15T05:50UTC",
+    "queue": "cc12_unit_receiver_observer_owner",
+    "action": "Read-only inspection only; raw6952A0/695870 dependencies do not establish held owning composition."
   }
 }
