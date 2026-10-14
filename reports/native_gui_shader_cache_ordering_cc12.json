@@ -1,0 +1,399 @@
+{
+  "packet": "cc12_gui_shader_cache_ordering",
+  "source_base": "b8395fc39e553a20d6006fc26f146d2658efa7a9",
+  "scope": "read-only physical installed cache/assets + current reconstructed query/cursor composition; no Source/native policy edit or game launch",
+  "cache_file": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\shaders.bin",
+    "size": 2250700,
+    "sha256": "dcc65686e26e0b7b4f4179b45b153aaa353696b0b1b08c32251fbc7c97c0ecf8",
+    "count": 1628,
+    "consumed": 2250700,
+    "exact_eof": true,
+    "format": "DWORD count; repeated DWORD name length, exact ASCII name bytes without NUL, DWORD bytecode size, bytecode"
+  },
+  "case_insensitive_duplicate_count": 0,
+  "guifont_records": [
+    {
+      "index": 700,
+      "file_offset": 850440,
+      "name": "guifont0F3.vso",
+      "name_bytes": 14,
+      "bytecode_offset": 850462,
+      "bytecode_bytes": 784,
+      "version_hex": "fffe0300",
+      "bytecode_sha256": "9056691f34e7e2d68667b3fec2127aeee314d1dced701e33839914703d04124b"
+    },
+    {
+      "index": 701,
+      "file_offset": 851246,
+      "name": "guifont0F3.pso",
+      "name_bytes": 14,
+      "bytecode_offset": 851268,
+      "bytecode_bytes": 424,
+      "version_hex": "ffff0300",
+      "bytecode_sha256": "f70a06ef9cd3d4365e0a0c375b835864d32dadf6e6083f5d31b3fe61de3b9ae7"
+    },
+    {
+      "index": 702,
+      "file_offset": 851692,
+      "name": "guifont0T3.vso",
+      "name_bytes": 14,
+      "bytecode_offset": 851714,
+      "bytecode_bytes": 784,
+      "version_hex": "fffe0300",
+      "bytecode_sha256": "9056691f34e7e2d68667b3fec2127aeee314d1dced701e33839914703d04124b"
+    },
+    {
+      "index": 703,
+      "file_offset": 852498,
+      "name": "guifont0T3.pso",
+      "name_bytes": 14,
+      "bytecode_offset": 852520,
+      "bytecode_bytes": 424,
+      "version_hex": "ffff0300",
+      "bytecode_sha256": "f70a06ef9cd3d4365e0a0c375b835864d32dadf6e6083f5d31b3fe61de3b9ae7"
+    },
+    {
+      "index": 704,
+      "file_offset": 852944,
+      "name": "guifontbilinear0F3.vso",
+      "name_bytes": 22,
+      "bytecode_offset": 852974,
+      "bytecode_bytes": 740,
+      "version_hex": "fffe0300",
+      "bytecode_sha256": "e14226321d6335591c9c7450c8cb77adf7b27c4bdeb2d65cf57da788d6b5cf51"
+    },
+    {
+      "index": 705,
+      "file_offset": 853714,
+      "name": "guifontbilinear0F3.pso",
+      "name_bytes": 22,
+      "bytecode_offset": 853744,
+      "bytecode_bytes": 728,
+      "version_hex": "ffff0300",
+      "bytecode_sha256": "380d6fbe4753f28d849944a1d54d134127a602839c3dd1d93473f8eb2a919838"
+    },
+    {
+      "index": 706,
+      "file_offset": 854472,
+      "name": "guifontbilinear0T3.vso",
+      "name_bytes": 22,
+      "bytecode_offset": 854502,
+      "bytecode_bytes": 740,
+      "version_hex": "fffe0300",
+      "bytecode_sha256": "e14226321d6335591c9c7450c8cb77adf7b27c4bdeb2d65cf57da788d6b5cf51"
+    },
+    {
+      "index": 707,
+      "file_offset": 855242,
+      "name": "guifontbilinear0T3.pso",
+      "name_bytes": 22,
+      "bytecode_offset": 855272,
+      "bytecode_bytes": 728,
+      "version_hex": "ffff0300",
+      "bytecode_sha256": "380d6fbe4753f28d849944a1d54d134127a602839c3dd1d93473f8eb2a919838"
+    }
+  ],
+  "candidate_query_construction": {
+    "programs": "resolved descriptor name stripped at last dot -> stem + decimal mode index + (policy ? T : F) + fixed generation3",
+    "compiler": "builder name copied to local name; strip prefix through last forward slash; add .vso then .pso",
+    "installed_primary_mode": "Combiners contains RM_NORMAL/dummy.shfx; dx9_lua.inc RM_NORMAL0; mode0 only in these direct assets",
+    "installed_shadow": "ShadowShader absent; reader default empty => no sha key branch in this direct descriptor case",
+    "secondary": "existing B45E00 builds/copies primary shader-owner state; no new cached_shader call in that body",
+    "variants": "actual variants0 reads current canonical policy once per load; variants1 performs separate F/T generation and does not use these cached lookups",
+    "qualifications": "actual VFS-selected/override descriptor, manager policy, reached compiler path and live query bytes still require runtime observation"
+  },
+  "forward_policy": {
+    "owner_cursor": "B35340 initializes cursor0 during binary record loading; B34890 separate local counter begins at current owner cursor",
+    "comparison": "current name length equality then actual _stricmp; ASCII-only local analysis uses lowercase for these known names",
+    "advance": "owner cursor increments for skipped rows and matching row; return current rows + cursor*16 -16; no rewind/wrap",
+    "miss": "cursor reaches count; native helper returns null; existing cached_shader later dereferences missing row, no default",
+    "scope": "current Source and prior239byte/17instruction static evidence family72; no new whole-program/ABI proof"
+  },
+  "candidate_forward_simulations": {
+    "FF": [
+      {
+        "query": "guifont0F3.vso",
+        "cursor_before": 0,
+        "row": 700,
+        "cursor_after": 701
+      },
+      {
+        "query": "guifont0F3.pso",
+        "cursor_before": 701,
+        "row": 701,
+        "cursor_after": 702
+      },
+      {
+        "query": "guifontbilinear0F3.vso",
+        "cursor_before": 702,
+        "row": 704,
+        "cursor_after": 705
+      },
+      {
+        "query": "guifontbilinear0F3.pso",
+        "cursor_before": 705,
+        "row": 705,
+        "cursor_after": 706
+      }
+    ],
+    "FT": [
+      {
+        "query": "guifont0F3.vso",
+        "cursor_before": 0,
+        "row": 700,
+        "cursor_after": 701
+      },
+      {
+        "query": "guifont0F3.pso",
+        "cursor_before": 701,
+        "row": 701,
+        "cursor_after": 702
+      },
+      {
+        "query": "guifontbilinear0T3.vso",
+        "cursor_before": 702,
+        "row": 706,
+        "cursor_after": 707
+      },
+      {
+        "query": "guifontbilinear0T3.pso",
+        "cursor_before": 707,
+        "row": 707,
+        "cursor_after": 708
+      }
+    ],
+    "TF": [
+      {
+        "query": "guifont0T3.vso",
+        "cursor_before": 0,
+        "row": 702,
+        "cursor_after": 703
+      },
+      {
+        "query": "guifont0T3.pso",
+        "cursor_before": 703,
+        "row": 703,
+        "cursor_after": 704
+      },
+      {
+        "query": "guifontbilinear0F3.vso",
+        "cursor_before": 704,
+        "row": 704,
+        "cursor_after": 705
+      },
+      {
+        "query": "guifontbilinear0F3.pso",
+        "cursor_before": 705,
+        "row": 705,
+        "cursor_after": 706
+      }
+    ],
+    "TT": [
+      {
+        "query": "guifont0T3.vso",
+        "cursor_before": 0,
+        "row": 702,
+        "cursor_after": 703
+      },
+      {
+        "query": "guifont0T3.pso",
+        "cursor_before": 703,
+        "row": 703,
+        "cursor_after": 704
+      },
+      {
+        "query": "guifontbilinear0T3.vso",
+        "cursor_before": 704,
+        "row": 706,
+        "cursor_after": 707
+      },
+      {
+        "query": "guifontbilinear0T3.pso",
+        "cursor_before": 707,
+        "row": 707,
+        "cursor_after": 708
+      }
+    ]
+  },
+  "reversed_order_counterexample": {
+    "purpose": "illustrates existing cursor sensitivity only, not a proposed reorder or runtime case",
+    "steps": [
+      {
+        "query": "guifontbilinear0T3.vso",
+        "cursor_before": 0,
+        "row": 706,
+        "cursor_after": 707
+      },
+      {
+        "query": "guifontbilinear0T3.pso",
+        "cursor_before": 707,
+        "row": 707,
+        "cursor_after": 708
+      },
+      {
+        "query": "guifont0T3.vso",
+        "cursor_before": 708,
+        "row": null,
+        "cursor_after": 1628
+      }
+    ]
+  },
+  "preload_text": "shaderpreload.lua lines80/81 place guifont then guifontbilinear adjacently; textual order alone is not proof of Lua next iteration order",
+  "diagnostic_limit": "a later actual miss needs reached query bytes, owner cursor/count and actual selected descriptor/variant/fallback path. Query temporary is released before cached reflection; do not treat a freed query buffer from a dump as current live input.",
+  "asset_pins": [
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\shaders.bin",
+      "frozen": "local\\cc12_gui_shader_cache_ordering\\inputs\\shaders.bin",
+      "sha256": "dcc65686e26e0b7b4f4179b45b153aaa353696b0b1b08c32251fbc7c97c0ecf8",
+      "bytes": 2250700
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\shaderpreload.lua",
+      "frozen": "local\\cc12_gui_shader_cache_ordering\\inputs\\shaderpreload.lua",
+      "sha256": "083b751decc24e70b370c9d291baf3b3112f66ad763d5839e6bc47435786bcee",
+      "bytes": 7881
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\gui\\guifont.shfx",
+      "frozen": "local\\cc12_gui_shader_cache_ordering\\inputs\\guifont.shfx",
+      "sha256": "0a9c7265a757c377275b3a04955de00ee59f6531dcb2ce080f464e81ef68470c",
+      "bytes": 1947
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\gui\\guifontbilinear.shfx",
+      "frozen": "local\\cc12_gui_shader_cache_ordering\\inputs\\guifontbilinear.shfx",
+      "sha256": "b587561dc1b3ed48bdd0e18e2c8d17b1785b678a988551d376cd248274bd91cd",
+      "bytes": 3161
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\dummy.shfx",
+      "frozen": "local\\cc12_gui_shader_cache_ordering\\inputs\\dummy.shfx",
+      "sha256": "3768df78e6a57ee28563ab40cfb9cf223569c12eb62e8576458365deb0866c5b",
+      "bytes": 114
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\dx9_lua.inc",
+      "frozen": "local\\cc12_gui_shader_cache_ordering\\inputs\\dx9_lua.inc",
+      "sha256": "7766adc9c116a9e396b3dd77e9d97b3ea6d55c84601cb2a5a49a64362605b11f",
+      "bytes": 3117
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "src/native_shader_compiler_lookups.cpp",
+      "frozen": "local\\cc12_gui_shader_cache_ordering\\inputs\\native_shader_compiler_lookups.cpp",
+      "sha256": "9dff1a78aae5ccb7f41dc76d468918090256a19368162968ad7cbb8ccfe8b06f"
+    },
+    {
+      "path": "src/native_shader_binary_cache.cpp",
+      "frozen": "local\\cc12_gui_shader_cache_ordering\\inputs\\native_shader_binary_cache.cpp",
+      "sha256": "6fd37c5f18b8a673886f0b349fe62fddd4de2726b303d3aca7f9baf3b8752dab"
+    },
+    {
+      "path": "src/native_resource_stream_reads.cpp",
+      "frozen": "local\\cc12_gui_shader_cache_ordering\\inputs\\native_resource_stream_reads.cpp",
+      "sha256": "8947eba748ca262ca9e03360b8ae52aca7b6658b2651f8857b51a54cd82df493"
+    },
+    {
+      "path": "src/native_material_effect_programs.cpp",
+      "frozen": "local\\cc12_gui_shader_cache_ordering\\inputs\\native_material_effect_programs.cpp",
+      "sha256": "bb9b10dd32d0432a0eb42166df33918f4a8f6328ec7d8fc67219ec62ef4c635e"
+    },
+    {
+      "path": "src/native_material_program_compiler.cpp",
+      "frozen": "local\\cc12_gui_shader_cache_ordering\\inputs\\native_material_program_compiler.cpp",
+      "sha256": "0143f236502451b563897f9e8f59bd15289dd7eb113975f364cdbb14cca9b3a7"
+    },
+    {
+      "path": "src/native_material_program_compiler_actual.cpp",
+      "frozen": "local\\cc12_gui_shader_cache_ordering\\inputs\\native_material_program_compiler_actual.cpp",
+      "sha256": "ae82e41615276083c0cd39ca9e3a0ff50510a30f5161810ffe00ffcff9ae4274"
+    },
+    {
+      "path": "src/native_material_pass_copy.cpp",
+      "frozen": "local\\cc12_gui_shader_cache_ordering\\inputs\\native_material_pass_copy.cpp",
+      "sha256": "33e8f824814318affc9c3bb211391a01a92467064559d5cc0f4be30d4235e6d5"
+    },
+    {
+      "path": "src/native_shader_descriptor_reader.cpp",
+      "frozen": "local\\cc12_gui_shader_cache_ordering\\inputs\\native_shader_descriptor_reader.cpp",
+      "sha256": "37740c3cda68afb0ea707a222a4c24dba8ca7aa8592da37e10ba582617c454d9"
+    },
+    {
+      "path": "src/game_native_gui_effect_probe.cpp",
+      "frozen": "local\\cc12_gui_shader_cache_ordering\\inputs\\game_native_gui_effect_probe.cpp",
+      "sha256": "371c294e8f4ae60b765bf09c670717105ed63c11421bc1260a43a32846ef4ed6"
+    }
+  ],
+  "validation": "read-only parse of1628 records consumes exact2250700byte EOF, no case-insensitive duplicates, all4 F/T candidate pairs succeed in physical order; not execution of VFS/native lookup/compiler",
+  "untouched": [
+    "lookup cursor/comparison/miss policy",
+    "mode bytes",
+    "cache records",
+    "Native sampler guard/preimages",
+    "game processes",
+    "evidence family72"
+  ],
+  "runtime_after_bracket": "pending Root immutable GUI05 result; no sampler-reached or effect/rendering claim",
+  "abi_compatible": false,
+  "game_validated": false,
+  "conditional_cold_error_fallback": {
+    "records": [
+      {
+        "index": 192,
+        "file_offset": 251916,
+        "name": "error0F3.vso",
+        "name_bytes": 12,
+        "bytecode_offset": 251936,
+        "bytecode_bytes": 576,
+        "version_hex": "fffe0300",
+        "bytecode_sha256": "37f61e3525f870b386a0eeb5138142105be0cd0a667dbaeee3f7dd46b8546774"
+      },
+      {
+        "index": 193,
+        "file_offset": 252512,
+        "name": "error0F3.pso",
+        "name_bytes": 12,
+        "bytecode_offset": 252532,
+        "bytecode_bytes": 444,
+        "version_hex": "ffff0300",
+        "bytecode_sha256": "1010de3ba58511098c5d1800239975d09175cf3b1ceb010b82688b388840033a"
+      },
+      {
+        "index": 194,
+        "file_offset": 252976,
+        "name": "error0T3.vso",
+        "name_bytes": 12,
+        "bytecode_offset": 252996,
+        "bytecode_bytes": 576,
+        "version_hex": "fffe0300",
+        "bytecode_sha256": "37f61e3525f870b386a0eeb5138142105be0cd0a667dbaeee3f7dd46b8546774"
+      },
+      {
+        "index": 195,
+        "file_offset": 253572,
+        "name": "error0T3.pso",
+        "name_bytes": 12,
+        "bytecode_offset": 253592,
+        "bytecode_bytes": 444,
+        "version_hex": "ffff0300",
+        "bytecode_sha256": "1010de3ba58511098c5d1800239975d09175cf3b1ceb010b82688b388840033a"
+      }
+    ],
+    "limit": "A cold error query after cursor>195 cannot reach rows192..195. An existing effect-cache hit does not perform that lookup; no runtime fallback claimed."
+  },
+  "analysis_tools": [
+    {
+      "path": "local\\cc12_gui_shader_cache_ordering\\analyze_records.py",
+      "frozen": "local\\cc12_gui_shader_cache_ordering\\inputs\\analyze_records.py",
+      "sha256": "2757a1abd5f5e134243bbea98b07aa82acaff385228df6e3272f4a9a2ee3d9d5"
+    },
+    {
+      "path": "local\\cc12_gui_shader_cache_ordering\\record_order_evidence.py",
+      "frozen": "local\\cc12_gui_shader_cache_ordering\\inputs\\record_order_evidence.py",
+      "sha256": "7fd05303635a987bc7280bf83bedaa9b59e153294ddc61a42cffa6368983ac8c"
+    }
+  ],
+  "decoded_rows_sha256": "6be3eb0190e43854998b913bf7aebc82c32aebc8a0bbf627faef9cba83915323"
+}
