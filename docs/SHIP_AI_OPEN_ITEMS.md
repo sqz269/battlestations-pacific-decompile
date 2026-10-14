@@ -17925,3 +17925,7 @@ float rounds the same either way. **Prediction:** gameplay-identical pairs unles
 sign or a far2 comparison within one float ulp); a moved pair would show first in the ShipAiSectorScan counters.
 00417E60's host arm (006F3C5A in game_hosts_ship_ai.cpp) is labelled: its ready() and group != 0 guards are the host's,
 and group_for_layer is 004120D0's walk where the image calls 00412120.
+**Pairs:** ON = `local\s51_x87on` (7c9744416 with the flip) as `local\s51_x87_<row>.log`, against the OFF logs of 252
+(020a12d06's tree build, whose 00416270 is the OFF code; the layout switch was OFF in both): USN10 24000, USN15 36000,
+JM06 36000. pair_diff exit 1, gameplay identical, unit tables identical; only the masked noise moved (ship ai free
+empty/refills, ShipAiSectorScan calls +2 on JM06). **Flipped ON** (faithful, no visible effect).
