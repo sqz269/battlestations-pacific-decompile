@@ -1,6 +1,6 @@
 {
   "schema": "cc12.native-component-integration.v1",
-  "authored_utc": "2026-10-14T18:08:51.475726+00:00",
+  "authored_utc": "2026-10-14T18:49:25.412928+00:00",
   "previous_goal_turn": "progress: native font producer and close policy were reconstructed and staged, with local full build verification",
   "reviewed_components": [
     {
@@ -200,19 +200,31 @@
       "exe_sha256": "14b700643b37e12c0f17d18db544bc5ed29bb3f6302c6f08306607f040bef91e",
       "exe_size": 5436928,
       "local_cmake_injection_active": false
+    },
+    {
+      "command": "./scripts/build.ps1",
+      "checkout_commit": "50032fdb1",
+      "result": "PASS",
+      "ctest_passed": 3,
+      "ctest_total": 3,
+      "log_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_scene_submission_full_build_01.log",
+      "log_sha256": "6332359030fd7a03c3fb5f652c2c052d2982f706d0b760e46359623a8cbdaa35",
+      "scope": "includes permanently registered B1F4D0/B1F5E0; later tick/effect/main-scene TU registrations require next combined build"
     }
   ],
   "primary_build": {
     "command": "./scripts/build.ps1",
-    "checkout_commit": "50032fdb1",
+    "checkout_commit": "e069982e8e168cb58cb508cfc098da6c22bfc4ab",
     "result": "PASS",
     "ctest_passed": 3,
     "ctest_total": 3,
-    "log_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_scene_submission_full_build_01.log",
-    "log_sha256": "6332359030fd7a03c3fb5f652c2c052d2982f706d0b760e46359623a8cbdaa35",
-    "scope": "includes permanently registered B1F4D0/B1F5E0; later tick/effect/main-scene TU registrations require next combined build"
+    "log_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_all_native_components_full_build_01.log",
+    "log_sha256": "a23f01bfa90a2f7e807753042b23781af5bf5ac52873f4f9177585dbd4ea5b77",
+    "exe_sha256": "e1465492c5fee35008cfab270c2935ad69094073d860ebfdbfc9bede29605b1e",
+    "exe_size": 5446656,
+    "local_cmake_injection_active": false,
+    "scope": "all nine reviewed components registered in permanent targets; no main-world/actual receiver/nativeText execution admission"
   },
-  "next_combined_build": "pending four newly registered TUs; no native effect/receiver/world activation",
   "sampler_caller_evidence": {
     "original_worker_commit": "e91fe4c59160ff9c995dc4adf4bce273373cd5a6",
     "owned_evidence_integrated_as": "03193f1b8",
@@ -223,5 +235,10 @@
     "initial_root_word": "not statically established; no universal zero or builder seed",
     "source_consumer": "text worker constructing shared pair word/knowledge with distinct root/mode contexts",
     "native_capture_scope": "prior0162E964 capture establishes one invocation only"
-  }
+  },
+  "continuing_packets": [
+    "native main-scene executor substantive prefix",
+    "canonical sampler parent and shared caller-word scope",
+    "raw unit receiver root/ownership closure"
+  ]
 }
