@@ -1,0 +1,2336 @@
+{
+  "packet": "argon-seg34",
+  "segment": 34,
+  "range": [
+    "0x006fa540",
+    "0x007016c0"
+  ],
+  "function_count": 76,
+  "source_file": "src/dummy_depth_seg34_argon.cpp",
+  "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+  "doc_file": "docs/ARGON_SEG34_DUMMY_DEPTH.md",
+  "x87_dc_sites": [],
+  "functions": [
+    {
+      "address": "0x006fa540",
+      "original_name": "BSP_DynWorld_ForEachBodyDebugDraw",
+      "symbol": "bsp::dummy_depth_seg34_argon::DynWorld_ForEachBodyDebugDraw_006fa540",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006fa547",
+          "function": "0x006fa540",
+          "native": "0x00c31dc0",
+          "name": "DYN_physics_00c31dc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fa559",
+          "function": "0x006fa540",
+          "native": "0x00c32000",
+          "name": "BSP_Object_FieldAt8Accessor",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fa562",
+          "function": "0x006fa540",
+          "native": "0x00c32430",
+          "name": "DYN_physics_00c32430",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fa6aa",
+          "function": "0x006fa540",
+          "native": "0x00c33650",
+          "name": "Dyn_Transform_Expand3x4To4x4",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fa6b5",
+          "function": "0x006fa540",
+          "native": "0x006fa320",
+          "name": "BSP_ConvexObject_BuildDebugMesh",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006fa6d0",
+      "original_name": "BSP_DynWorld_ForEachBodyTransform",
+      "symbol": "bsp::dummy_depth_seg34_argon::DynWorld_ForEachBodyTransform_006fa6d0",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006fa6da",
+          "function": "0x006fa6d0",
+          "native": "0x00c31dc0",
+          "name": "DYN_physics_00c31dc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fa6f7",
+          "function": "0x006fa6d0",
+          "native": "0x00c32430",
+          "name": "DYN_physics_00c32430",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fa6fe",
+          "function": "0x006fa6d0",
+          "native": "0x00c33650",
+          "name": "Dyn_Transform_Expand3x4To4x4",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fa70d",
+          "function": "0x006fa6d0",
+          "native": "0x00413920",
+          "name": "BSP_Matrix_Multiply4x4",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fa7c7",
+          "function": "0x006fa6d0",
+          "native": "0x006fa320",
+          "name": "BSP_ConvexObject_BuildDebugMesh",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006faf00",
+      "original_name": "BSP_ConvexObjectResourceParser_Create",
+      "symbol": "bsp::dummy_depth_seg34_argon::ConvexObjectResourceParser_Create_006faf00",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006faf19",
+          "function": "0x006faf00",
+          "native": "0x00bf681b",
+          "name": "operator_new",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006faf31",
+          "function": "0x006faf00",
+          "native": "0x006f9cd0",
+          "name": "BSP_ConvexObject_Construct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006faf47",
+          "function": "0x006faf00",
+          "native": "0x006fad70",
+          "name": "BSP_ConvexObject_ReadPayload",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006fb030",
+      "original_name": "BSP_ConvexHull_DebugDrawEdges",
+      "symbol": "bsp::dummy_depth_seg34_argon::ConvexHull_DebugDrawEdges_006fb030",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006fb054",
+          "function": "0x006fb030",
+          "native": "0x00c32d20",
+          "name": "DYN_ConvexHull_VertexCount_00C32D20",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fb092",
+          "function": "0x006fb030",
+          "native": "0x00421ae0",
+          "name": "STL_Vector_Resize_00421ae0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fb0b7",
+          "function": "0x006fb030",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fb0c3",
+          "function": "0x006fb030",
+          "native": "0x00c32ce0",
+          "name": "DYN_physics_00c32ce0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fb0e3",
+          "function": "0x006fb030",
+          "native": "0x00c37430",
+          "name": "DYN_physics_00c37430",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fb12c",
+          "function": "0x006fb030",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fb174",
+          "function": "0x006fb030",
+          "native": "0x004142e0",
+          "name": "BSP_Vector3f_TransformAffinePoint",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fb1d4",
+          "function": "0x006fb030",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fb218",
+          "function": "0x006fb030",
+          "native": "0x004142e0",
+          "name": "BSP_Vector3f_TransformAffinePoint",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fb288",
+          "function": "0x006fb030",
+          "native": "0x0085fb30",
+          "name": "BSP_DebugDraw_LineRgbaFloatsOneColour",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fb2c8",
+          "function": "0x006fb030",
+          "native": "0x00bf6989",
+          "name": "_free",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fb2d9",
+          "function": "0x006fb030",
+          "native": "0x00bf65ac",
+          "name": "_free",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006fb680",
+      "original_name": "BSP_UnitDebugInspector_OnTargetGone",
+      "symbol": "bsp::dummy_depth_seg34_argon::UnitDebugInspector_OnTargetGone_006fb680",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": []
+    },
+    {
+      "address": "0x006fb6a0",
+      "original_name": "BSP_UnitDebugInspector_SetTarget",
+      "symbol": "bsp::dummy_depth_seg34_argon::UnitDebugInspector_SetTarget_006fb6a0",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006fb6ac",
+          "function": "0x006fb6a0",
+          "native": "0x006952a0",
+          "name": "BSP_Observer_UnregisterPair",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fb6be",
+          "function": "0x006fb6a0",
+          "native": "0x00694a60",
+          "name": "BSP_Observer_RegisterPair",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006fb750",
+      "original_name": "BSP_UnitDebugInspector_PrintFlooded",
+      "symbol": "bsp::dummy_depth_seg34_argon::UnitDebugInspector_PrintFlooded_006fb750",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006fb75d",
+          "function": "0x006fb750",
+          "native": "0x0074fa80",
+          "name": "BSP_LeakManager_FloodedFraction",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fb7a6",
+          "function": "0x006fb750",
+          "native": "0x004c7070",
+          "name": "BSP_DiagnosticPrintf",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006fb7c0",
+      "original_name": "BSP_UnitDebugInspector_PrintLine",
+      "symbol": "bsp::dummy_depth_seg34_argon::UnitDebugInspector_PrintLine_006fb7c0",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006fb81e",
+          "function": "0x006fb7c0",
+          "native": "0x004c7070",
+          "name": "BSP_DiagnosticPrintf",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006fb8f0",
+      "original_name": "BSP_UnitDebugInspector_ResetOnUnwind",
+      "symbol": "bsp::dummy_depth_seg34_argon::UnitDebugInspector_ResetOnUnwind_006fb8f0",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": []
+    },
+    {
+      "address": "0x006fb920",
+      "original_name": "BSP_UnitDebugInspector_Construct",
+      "symbol": "bsp::dummy_depth_seg34_argon::UnitDebugInspector_Construct_006fb920",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006fb971",
+          "function": "0x006fb920",
+          "native": "0x00bf681b",
+          "name": "operator_new",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fb991",
+          "function": "0x006fb920",
+          "native": "0x004d63d0",
+          "name": "STL_List_PushBack_004d63d0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006fb9f0",
+      "original_name": "BSP_UnitDebugInspector_Destruct",
+      "symbol": "bsp::dummy_depth_seg34_argon::UnitDebugInspector_Destruct_006fb9f0",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006fba4e",
+          "function": "0x006fb9f0",
+          "native": "0x00695870",
+          "name": "BSP_CallbackOwner_Destroy",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006fba70",
+      "original_name": "BSP_Entity_AsKind04_006fba70",
+      "symbol": "bsp::dummy_depth_seg34_argon::Entity_AsKind04_006fba70",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": []
+    },
+    {
+      "address": "0x006fba90",
+      "original_name": "BSP_Entity_AsKind04_006fba90",
+      "symbol": "bsp::dummy_depth_seg34_argon::Entity_AsKind04_006fba90",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": []
+    },
+    {
+      "address": "0x006fbad0",
+      "original_name": "BSP_UnitDebugInspector_PrintUnitPanel",
+      "symbol": "bsp::dummy_depth_seg34_argon::UnitDebugInspector_PrintUnitPanel_006fbad0",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006fbae4",
+          "function": "0x006fbad0",
+          "native": "0x006fb7c0",
+          "name": "BSP_UnitDebugInspector_PrintLine",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fbafb",
+          "function": "0x006fbad0",
+          "native": "0x006fb750",
+          "name": "BSP_UnitDebugInspector_PrintFlooded",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fbb2f",
+          "function": "0x006fbad0",
+          "native": "0x00bf6713",
+          "name": "LIBCRT_unmatched_00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fbb5f",
+          "function": "0x006fbad0",
+          "native": "0x006fbad0",
+          "name": "BSP_UnitDebugInspector_PrintUnitPanel",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006fbb80",
+      "original_name": "BSP_UnitDebugInspector_Draw",
+      "symbol": "bsp::dummy_depth_seg34_argon::UnitDebugInspector_Draw_006fbb80",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006fbbb4",
+          "function": "0x006fbb80",
+          "native": "0x006fbad0",
+          "name": "BSP_UnitDebugInspector_PrintUnitPanel",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006fbbc0",
+      "original_name": "BSP_UnitDebugInspector_FrameCallback",
+      "symbol": "bsp::dummy_depth_seg34_argon::UnitDebugInspector_FrameCallback_006fbbc0",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006fbbc3",
+          "function": "0x006fbbc0",
+          "native": "0x0051f5e0",
+          "name": "BSP_Singleton00E19AAC_GetOrCreate",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fbbf9",
+          "function": "0x006fbbc0",
+          "native": "0x006fbad0",
+          "name": "BSP_UnitDebugInspector_PrintUnitPanel",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006fbc20",
+      "original_name": "BSP_OwnedPtrWithDefault_Assign_006fbc20",
+      "symbol": "bsp::dummy_depth_seg34_argon::OwnedPtrWithDefault_Assign_006fbc20",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": []
+    },
+    {
+      "address": "0x006fbce0",
+      "original_name": "BSP_ElevatorPlatform_StartTravel",
+      "symbol": "bsp::dummy_depth_seg34_argon::ElevatorPlatform_StartTravel_006fbce0",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": []
+    },
+    {
+      "address": "0x006fbf00",
+      "original_name": "BSP_ElevatorPlatform_ReadState",
+      "symbol": "bsp::dummy_depth_seg34_argon::ElevatorPlatform_ReadState_006fbf00",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006fbf3b",
+          "function": "0x006fbf00",
+          "native": "0x006cf0a0",
+          "name": "BSP_SaveReader_ReadObserverRef",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fbfaf",
+          "function": "0x006fbf00",
+          "native": "0x00410630",
+          "name": "BSP_ArchiveReaderRef_Destroy",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006fbfd0",
+      "original_name": "BSP_ElevatorPlatform_WriteState",
+      "symbol": "bsp::dummy_depth_seg34_argon::ElevatorPlatform_WriteState_006fbfd0",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006fc005",
+          "function": "0x006fbfd0",
+          "native": "0x006ce8a0",
+          "name": "BSP_FollowObserverMember_CopyConstruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fc02a",
+          "function": "0x006fbfd0",
+          "native": "0x006cead0",
+          "name": "BSP_SaveWriter_WriteObserverRef",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fc0a8",
+          "function": "0x006fbfd0",
+          "native": "0x004107b0",
+          "name": "BSP_ArchiveWriterRef_Destroy",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006fc2e0",
+      "original_name": "BSP_ElevatorPlatform_Destruct",
+      "symbol": "bsp::dummy_depth_seg34_argon::ElevatorPlatform_Destruct_006fc2e0",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006fc354",
+          "function": "0x006fc2e0",
+          "native": "0x006cdd70",
+          "name": "BSP_FollowObserverMember_Destroy",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006fc960",
+      "original_name": "BSP_DepthChargeProjectile_Construct",
+      "symbol": "bsp::dummy_depth_seg34_argon::DepthChargeProjectile_Construct_006fc960",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006fc968",
+          "function": "0x006fc960",
+          "native": "0x006e2670",
+          "name": "BSP_BombProjectile_Construct",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006fc9d0",
+      "original_name": "BSP_DepthCharge_VSlot198_ForwardTo194",
+      "symbol": "bsp::dummy_depth_seg34_argon::DepthCharge_VSlot198_ForwardTo194_006fc9d0",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": []
+    },
+    {
+      "address": "0x006fc9f0",
+      "original_name": "BSP_SessionMessage_DEPTHCHARGE_CREATE_ApplyFields",
+      "symbol": "bsp::dummy_depth_seg34_argon::SessionMessage_DEPTHCHARGE_CREATE_ApplyFields_006fc9f0",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": []
+    },
+    {
+      "address": "0x006fca50",
+      "original_name": "BSP_Random_UniformBetweenB4andB8_006fca50",
+      "symbol": "bsp::dummy_depth_seg34_argon::Random_UniformBetweenB4andB8_006fca50",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006fca6b",
+          "function": "0x006fca50",
+          "native": "0x00bd2f10",
+          "name": "BSP_Random_UniformFloatRange",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006fcb60",
+      "original_name": "BSP_SessionMessage_DEPTHCHARGE_CREATE_Write",
+      "symbol": "bsp::dummy_depth_seg34_argon::SessionMessage_DEPTHCHARGE_CREATE_Write_006fcb60",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006fcb69",
+          "function": "0x006fcb60",
+          "native": "0x006e0690",
+          "name": "BSP_SessionMessage_BOMB_CREATE_Write",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fcb8a",
+          "function": "0x006fcb60",
+          "native": "0x004295c0",
+          "name": "BSP_BitCursor_WriteNumericFloat",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fcbab",
+          "function": "0x006fcb60",
+          "native": "0x004295c0",
+          "name": "BSP_BitCursor_WriteNumericFloat",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006fd0d0",
+      "original_name": "BSP_DepthCharge_SendCreateMessage",
+      "symbol": "bsp::dummy_depth_seg34_argon::DepthCharge_SendCreateMessage_006fd0d0",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006fd102",
+          "function": "0x006fd0d0",
+          "native": "0x006e0d20",
+          "name": "BSP_SessionMessage_BOMB_CREATE_Construct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fd14b",
+          "function": "0x006fd0d0",
+          "native": "0x00779fc0",
+          "name": "BSP_Entity_SendMessageToPeer",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fd167",
+          "function": "0x006fd0d0",
+          "native": "0x007668e0",
+          "name": "BSP_NetEntityCreateMessage_Destruct",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006fd190",
+      "original_name": "BSP_DepthCharge_RegisterInWorldLists",
+      "symbol": "bsp::dummy_depth_seg34_argon::DepthCharge_RegisterInWorldLists_006fd190",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006fd193",
+          "function": "0x006fd190",
+          "native": "0x00928560",
+          "name": "BSP_GameEntity_RegisterInParentEntityList",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fd19f",
+          "function": "0x006fd190",
+          "native": "0x00484540",
+          "name": "BSP_UnitList_PushBack",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fd1ae",
+          "function": "0x006fd190",
+          "native": "0x00484540",
+          "name": "BSP_UnitList_PushBack",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fd1bd",
+          "function": "0x006fd190",
+          "native": "0x00484540",
+          "name": "BSP_UnitList_PushBack",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006fd1d0",
+      "original_name": "BSP_DepthCharge_DetachFromWorldLists",
+      "symbol": "bsp::dummy_depth_seg34_argon::DepthCharge_DetachFromWorldLists_006fd1d0",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006fd1d3",
+          "function": "0x006fd1d0",
+          "native": "0x006e29c0",
+          "name": "BSP_BombFamily_DetachFromWorldLists",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fd1ff",
+          "function": "0x006fd1d0",
+          "native": "0x004837d0",
+          "name": "BSP_UnitList_EraseNode",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006fded0",
+      "original_name": "BSP_RapidTurningGun_Construct",
+      "symbol": "bsp::dummy_depth_seg34_argon::RapidTurningGun_Construct_006fded0",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006fded8",
+          "function": "0x006fded0",
+          "native": "0x006fdda0",
+          "name": "BSP_TurningGunBase_Construct",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006fdfc0",
+      "original_name": "BSP_SingleTurningGun_Construct",
+      "symbol": "bsp::dummy_depth_seg34_argon::SingleTurningGun_Construct_006fdfc0",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006fdfc8",
+          "function": "0x006fdfc0",
+          "native": "0x006fded0",
+          "name": "BSP_RapidTurningGun_Construct",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006fe730",
+      "original_name": "BSP_DummyKamikazePlaneClass_ResolveLinkedClass",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummyKamikazePlaneClass_ResolveLinkedClass_006fe730",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006fe733",
+          "function": "0x006fe730",
+          "native": "0x006e97f0",
+          "name": "BSP_BulletClass_ResolveLinkedClass",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006fe780",
+      "original_name": "BSP_LuaTable_ReadNumberOrDefault",
+      "symbol": "bsp::dummy_depth_seg34_argon::LuaTable_ReadNumberOrDefault_006fe780",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006fe7ad",
+          "function": "0x006fe780",
+          "native": "0x00b67800",
+          "name": "BSP_LuaObject_GetByName",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fe7bb",
+          "function": "0x006fe780",
+          "native": "0x00b65fb0",
+          "name": "BSP_LuaObject_IsNil",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fe7d0",
+          "function": "0x006fe780",
+          "native": "0x00b66270",
+          "name": "BSP_LuaObject_GetNumber",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fe7ec",
+          "function": "0x006fe780",
+          "native": "0x00b67700",
+          "name": "BSP_LuaObject_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fe7fd",
+          "function": "0x006fe780",
+          "native": "0x00b67700",
+          "name": "BSP_LuaObject_Destruct",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006fe820",
+      "original_name": "BSP_DummyKamikazePlane_InitAll",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummyKamikazePlane_InitAll_006fe820",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006fe823",
+          "function": "0x006fe820",
+          "native": "0x0077fad0",
+          "name": "BSP_NetEntity_ReadReplicationState",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fe82c",
+          "function": "0x006fe820",
+          "native": "0x006e0b40",
+          "name": "BSP_BombProjectile_SetVisible",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fe835",
+          "function": "0x006fe820",
+          "native": "0x00923810",
+          "name": "FUN_00923810",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fe843",
+          "function": "0x006fe820",
+          "native": "0x00923810",
+          "name": "FUN_00923810",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fe84e",
+          "function": "0x006fe820",
+          "native": "0x00923810",
+          "name": "FUN_00923810",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fe86a",
+          "function": "0x006fe820",
+          "native": "0x00923810",
+          "name": "FUN_00923810",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fe875",
+          "function": "0x006fe820",
+          "native": "0x00923810",
+          "name": "FUN_00923810",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006fe8b0",
+      "original_name": "BSP_Dummy2D_Destruct",
+      "symbol": "bsp::dummy_depth_seg34_argon::Dummy2D_Destruct_006fe8b0",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006fe8db",
+          "function": "0x006fe8b0",
+          "native": "0x0042bca0",
+          "name": "BSP_TargetObserver_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fe8eb",
+          "function": "0x006fe8b0",
+          "native": "0x006e0860",
+          "name": "BSP_ObserverMember9348_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fe8fa",
+          "function": "0x006fe8b0",
+          "native": "0x006e2a20",
+          "name": "BSP_BombProjectile_Destruct",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006fe950",
+      "original_name": "BSP_DummyKamikazePlane_Construct",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummyKamikazePlane_Construct_006fe950",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006fe958",
+          "function": "0x006fe950",
+          "native": "0x006ff3f0",
+          "name": "BSP_Dummy2D_Construct",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006fea80",
+      "original_name": "BSP_Dummy2D_RegisterInWorldLists",
+      "symbol": "bsp::dummy_depth_seg34_argon::Dummy2D_RegisterInWorldLists_006fea80",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006fea83",
+          "function": "0x006fea80",
+          "native": "0x00928560",
+          "name": "BSP_GameEntity_RegisterInParentEntityList",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fea8f",
+          "function": "0x006fea80",
+          "native": "0x00484540",
+          "name": "BSP_UnitList_PushBack",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006fea9e",
+          "function": "0x006fea80",
+          "native": "0x00484540",
+          "name": "BSP_UnitList_PushBack",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006feaad",
+          "function": "0x006fea80",
+          "native": "0x00484540",
+          "name": "BSP_UnitList_PushBack",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006feac0",
+      "original_name": "BSP_Dummy2D_DetachFromWorldLists",
+      "symbol": "bsp::dummy_depth_seg34_argon::Dummy2D_DetachFromWorldLists_006feac0",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006feac3",
+          "function": "0x006feac0",
+          "native": "0x006e29c0",
+          "name": "BSP_BombFamily_DetachFromWorldLists",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006feaef",
+          "function": "0x006feac0",
+          "native": "0x004837d0",
+          "name": "BSP_UnitList_EraseNode",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006feb00",
+      "original_name": "BSP_Dummy2D_GetName",
+      "symbol": "bsp::dummy_depth_seg34_argon::Dummy2D_GetName_006feb00",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": []
+    },
+    {
+      "address": "0x006feb30",
+      "original_name": "BSP_DummyKamikazePlane_RegisterInWorldLists",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummyKamikazePlane_RegisterInWorldLists_006feb30",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006feb33",
+          "function": "0x006feb30",
+          "native": "0x00928560",
+          "name": "BSP_GameEntity_RegisterInParentEntityList",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006feb3f",
+          "function": "0x006feb30",
+          "native": "0x00484540",
+          "name": "BSP_UnitList_PushBack",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006feb4e",
+          "function": "0x006feb30",
+          "native": "0x00484540",
+          "name": "BSP_UnitList_PushBack",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006feb5d",
+          "function": "0x006feb30",
+          "native": "0x00484540",
+          "name": "BSP_UnitList_PushBack",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006feb6c",
+          "function": "0x006feb30",
+          "native": "0x00484540",
+          "name": "BSP_UnitList_PushBack",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006feb80",
+      "original_name": "BSP_DummyKamikazePlane_DetachFromWorldLists",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummyKamikazePlane_DetachFromWorldLists_006feb80",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006feb83",
+          "function": "0x006feb80",
+          "native": "0x006e29c0",
+          "name": "BSP_BombFamily_DetachFromWorldLists",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006febaf",
+          "function": "0x006feb80",
+          "native": "0x004837d0",
+          "name": "BSP_UnitList_EraseNode",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006febd6",
+          "function": "0x006feb80",
+          "native": "0x004837d0",
+          "name": "BSP_UnitList_EraseNode",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006ff100",
+      "original_name": "BSP_DummyKamikazePlaneClass_CreateEntity",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummyKamikazePlaneClass_CreateEntity_006ff100",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006ff11f",
+          "function": "0x006ff100",
+          "native": "0x00bf55be",
+          "name": "operator_new",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff12e",
+          "function": "0x006ff100",
+          "native": "0x00bf79f0",
+          "name": "_memset",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff14d",
+          "function": "0x006ff100",
+          "native": "0x006fe950",
+          "name": "BSP_DummyKamikazePlane_Construct",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006ff2f0",
+      "original_name": "BSP_DummyShot_BindOwnerCommand",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummyShot_BindOwnerCommand_006ff2f0",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006ff2fe",
+          "function": "0x006ff2f0",
+          "native": "0x00923810",
+          "name": "FUN_00923810",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff30f",
+          "function": "0x006ff2f0",
+          "native": "0x00923810",
+          "name": "FUN_00923810",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff31a",
+          "function": "0x006ff2f0",
+          "native": "0x00923810",
+          "name": "FUN_00923810",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff336",
+          "function": "0x006ff2f0",
+          "native": "0x00923810",
+          "name": "FUN_00923810",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff341",
+          "function": "0x006ff2f0",
+          "native": "0x00923810",
+          "name": "FUN_00923810",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff386",
+          "function": "0x006ff2f0",
+          "native": "0x006e1820",
+          "name": "BSP_ObserverMember_SetTarget_006e1820",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff3e2",
+          "function": "0x006ff2f0",
+          "native": "0x006e1f00",
+          "name": "BSP_BombRack_DropCone",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006ff3f0",
+      "original_name": "BSP_Dummy2D_Construct",
+      "symbol": "bsp::dummy_depth_seg34_argon::Dummy2D_Construct_006ff3f0",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006ff414",
+          "function": "0x006ff3f0",
+          "native": "0x006e2670",
+          "name": "BSP_BombProjectile_Construct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff4b8",
+          "function": "0x006ff3f0",
+          "native": "0x006952a0",
+          "name": "BSP_Observer_UnregisterPair",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006ff570",
+      "original_name": "BSP_Dummy2D_Activate",
+      "symbol": "bsp::dummy_depth_seg34_argon::Dummy2D_Activate_006ff570",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006ff58d",
+          "function": "0x006ff570",
+          "native": "0x006e2e10",
+          "name": "BSP_BombProjectile_Activate",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff5b3",
+          "function": "0x006ff570",
+          "native": "0x006952a0",
+          "name": "BSP_Observer_UnregisterPair",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff5cb",
+          "function": "0x006ff570",
+          "native": "0x0041dd40",
+          "name": "BSP_NativeString_Resize",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff5e6",
+          "function": "0x006ff570",
+          "native": "0x00bf7680",
+          "name": "_memcpy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff5f9",
+          "function": "0x006ff570",
+          "native": "0x00927b40",
+          "name": "BSP_MissionEntity_LuaSelfObject",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff611",
+          "function": "0x006ff570",
+          "native": "0x00b67460",
+          "name": "BSP_LuaObject_SetNativeStringInteger",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff61e",
+          "function": "0x006ff570",
+          "native": "0x00b67700",
+          "name": "BSP_LuaObject_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff640",
+          "function": "0x006ff570",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff647",
+          "function": "0x006ff570",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006ff6a0",
+      "original_name": "BSP_DummySubmarineClass_VSlot28_Finalise",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummySubmarineClass_VSlot28_Finalise_006ff6a0",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006ff6a3",
+          "function": "0x006ff6a0",
+          "native": "0x006e97f0",
+          "name": "BSP_BulletClass_ResolveLinkedClass",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006ff700",
+      "original_name": "BSP_DummySubmarine_VSlot198_ForwardTo194",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummySubmarine_VSlot198_ForwardTo194_006ff700",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": []
+    },
+    {
+      "address": "0x006ff730",
+      "original_name": "BSP_DummySubmarine_InitAll",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummySubmarine_InitAll_006ff730",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006ff733",
+          "function": "0x006ff730",
+          "native": "0x0077fad0",
+          "name": "BSP_NetEntity_ReadReplicationState",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff73c",
+          "function": "0x006ff730",
+          "native": "0x006e0b40",
+          "name": "BSP_BombProjectile_SetVisible",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff745",
+          "function": "0x006ff730",
+          "native": "0x00923810",
+          "name": "FUN_00923810",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff753",
+          "function": "0x006ff730",
+          "native": "0x00923810",
+          "name": "FUN_00923810",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff75e",
+          "function": "0x006ff730",
+          "native": "0x00923810",
+          "name": "FUN_00923810",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff77a",
+          "function": "0x006ff730",
+          "native": "0x00923810",
+          "name": "FUN_00923810",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff785",
+          "function": "0x006ff730",
+          "native": "0x00923810",
+          "name": "FUN_00923810",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006ff7c0",
+      "original_name": "BSP_ObserverMember_SetTarget_006ff7c0",
+      "symbol": "bsp::dummy_depth_seg34_argon::ObserverMember_SetTarget_006ff7c0",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006ff7d5",
+          "function": "0x006ff7c0",
+          "native": "0x006952a0",
+          "name": "BSP_Observer_UnregisterPair",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff7e5",
+          "function": "0x006ff7c0",
+          "native": "0x00694a60",
+          "name": "BSP_Observer_RegisterPair",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006ff800",
+      "original_name": "BSP_DummySubmarine_Construct",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummySubmarine_Construct_006ff800",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006ff808",
+          "function": "0x006ff800",
+          "native": "0x006ff3f0",
+          "name": "BSP_Dummy2D_Construct",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006ff890",
+      "original_name": "BSP_DummySubmarineShot_IsInWater_True",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummySubmarineShot_IsInWater_True_006ff890",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": []
+    },
+    {
+      "address": "0x006ff920",
+      "original_name": "BSP_DummySubmarine_DestructBody",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummySubmarine_DestructBody_006ff920",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006ff94b",
+          "function": "0x006ff920",
+          "native": "0x0042bca0",
+          "name": "BSP_TargetObserver_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff95a",
+          "function": "0x006ff920",
+          "native": "0x006fe8b0",
+          "name": "BSP_Dummy2D_Destruct",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006ff970",
+      "original_name": "BSP_DummySubmarine_RegisterInWorldLists",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummySubmarine_RegisterInWorldLists_006ff970",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006ff973",
+          "function": "0x006ff970",
+          "native": "0x00928560",
+          "name": "BSP_GameEntity_RegisterInParentEntityList",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff97f",
+          "function": "0x006ff970",
+          "native": "0x00484540",
+          "name": "BSP_UnitList_PushBack",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff98e",
+          "function": "0x006ff970",
+          "native": "0x00484540",
+          "name": "BSP_UnitList_PushBack",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff99d",
+          "function": "0x006ff970",
+          "native": "0x00484540",
+          "name": "BSP_UnitList_PushBack",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff9ac",
+          "function": "0x006ff970",
+          "native": "0x00484540",
+          "name": "BSP_UnitList_PushBack",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006ff9c0",
+      "original_name": "BSP_DummySubmarine_DetachFromWorldLists",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummySubmarine_DetachFromWorldLists_006ff9c0",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006ff9c3",
+          "function": "0x006ff9c0",
+          "native": "0x006e29c0",
+          "name": "BSP_BombFamily_DetachFromWorldLists",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ff9ef",
+          "function": "0x006ff9c0",
+          "native": "0x004837d0",
+          "name": "BSP_UnitList_EraseNode",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x006ffa16",
+          "function": "0x006ff9c0",
+          "native": "0x004837d0",
+          "name": "BSP_UnitList_EraseNode",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x006fffe0",
+      "original_name": "BSP_DummySubmarineClass_CreateEntity",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummySubmarineClass_CreateEntity_006fffe0",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x006fffff",
+          "function": "0x006fffe0",
+          "native": "0x00bf55be",
+          "name": "operator_new",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0070000e",
+          "function": "0x006fffe0",
+          "native": "0x00bf79f0",
+          "name": "_memset",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0070002d",
+          "function": "0x006fffe0",
+          "native": "0x006ff800",
+          "name": "BSP_DummySubmarine_Construct",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00700150",
+      "original_name": "BSP_DummyTargetBulletClass_ResolveLinkedClass",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummyTargetBulletClass_ResolveLinkedClass_00700150",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x00700153",
+          "function": "0x00700150",
+          "native": "0x006e97f0",
+          "name": "BSP_BulletClass_ResolveLinkedClass",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00700200",
+      "original_name": "BSP_DummyTargetVehicleClass_ReconCategory13",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummyTargetVehicleClass_ReconCategory13_00700200",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": []
+    },
+    {
+      "address": "0x00700250",
+      "original_name": "BSP_DummyTargetVehicleClass_ReconMarkDirty",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummyTargetVehicleClass_ReconMarkDirty_00700250",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x00700254",
+          "function": "0x00700250",
+          "native": "0x00803ba0",
+          "name": "BSP_Recon_MarkSlotDirty",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00700260",
+      "original_name": "BSP_DummyTargetVehicle_Activate",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummyTargetVehicle_Activate_00700260",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x00700263",
+          "function": "0x00700260",
+          "native": "0x00955420",
+          "name": "BSP_UnitInstance_InitializeSceneBindings",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00700290",
+      "original_name": "BSP_LuaObject_ReadNumberFieldOr_00700290",
+      "symbol": "bsp::dummy_depth_seg34_argon::LuaObject_ReadNumberFieldOr_00700290",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x007002bd",
+          "function": "0x00700290",
+          "native": "0x00b67800",
+          "name": "BSP_LuaObject_GetByName",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x007002cb",
+          "function": "0x00700290",
+          "native": "0x00b65fb0",
+          "name": "BSP_LuaObject_IsNil",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x007002e0",
+          "function": "0x00700290",
+          "native": "0x00b66270",
+          "name": "BSP_LuaObject_GetNumber",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x007002fc",
+          "function": "0x00700290",
+          "native": "0x00b67700",
+          "name": "BSP_LuaObject_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0070030d",
+          "function": "0x00700290",
+          "native": "0x00b67700",
+          "name": "BSP_LuaObject_Destruct",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00700330",
+      "original_name": "BSP_LuaObject_ReadNumberField_00700330",
+      "symbol": "bsp::dummy_depth_seg34_argon::LuaObject_ReadNumberField_00700330",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x0070035d",
+          "function": "0x00700330",
+          "native": "0x00b67800",
+          "name": "BSP_LuaObject_GetByName",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00700369",
+          "function": "0x00700330",
+          "native": "0x00b66270",
+          "name": "BSP_LuaObject_GetNumber",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00700379",
+          "function": "0x00700330",
+          "native": "0x00b67700",
+          "name": "BSP_LuaObject_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0070038a",
+          "function": "0x00700330",
+          "native": "0x00b67700",
+          "name": "BSP_LuaObject_Destruct",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x007003b0",
+      "original_name": "BSP_LuaObject_ReadNumberField_007003b0",
+      "symbol": "bsp::dummy_depth_seg34_argon::LuaObject_ReadNumberField_007003b0",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x007003dd",
+          "function": "0x007003b0",
+          "native": "0x00b67800",
+          "name": "BSP_LuaObject_GetByName",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x007003e9",
+          "function": "0x007003b0",
+          "native": "0x00b66270",
+          "name": "BSP_LuaObject_GetNumber",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x007003f9",
+          "function": "0x007003b0",
+          "native": "0x00b67700",
+          "name": "BSP_LuaObject_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0070040a",
+          "function": "0x007003b0",
+          "native": "0x00b67700",
+          "name": "BSP_LuaObject_Destruct",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00700520",
+      "original_name": "BSP_DummyTarget_Activate",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummyTarget_Activate_00700520",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x00700523",
+          "function": "0x00700520",
+          "native": "0x006ff570",
+          "name": "BSP_Dummy2D_Activate",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0070052c",
+          "function": "0x00700520",
+          "native": "0x006e0b40",
+          "name": "BSP_BombProjectile_SetVisible",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00700535",
+          "function": "0x00700520",
+          "native": "0x00923810",
+          "name": "FUN_00923810",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00700543",
+          "function": "0x00700520",
+          "native": "0x00923810",
+          "name": "FUN_00923810",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0070054e",
+          "function": "0x00700520",
+          "native": "0x00923810",
+          "name": "FUN_00923810",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0070056a",
+          "function": "0x00700520",
+          "native": "0x00923810",
+          "name": "FUN_00923810",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00700575",
+          "function": "0x00700520",
+          "native": "0x00923810",
+          "name": "FUN_00923810",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00700590",
+      "original_name": "BSP_DummyTargetVehicle_Construct",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummyTargetVehicle_Construct_00700590",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x0070059a",
+          "function": "0x00700590",
+          "native": "0x0095cc90",
+          "name": "BSP_UnitGameObject_Construct",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00700840",
+      "original_name": "BSP_DummyTargetVehicle_GetName",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummyTargetVehicle_GetName_00700840",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": []
+    },
+    {
+      "address": "0x00700870",
+      "original_name": "BSP_DummyTargetVehicle_Serialize",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummyTargetVehicle_Serialize_00700870",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x0070087e",
+          "function": "0x00700870",
+          "native": "0x0095bb10",
+          "name": "BSP_VehicleUnit_LoadArchiveCommon",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x007008d7",
+          "function": "0x00700870",
+          "native": "0x00bd5680",
+          "name": "BSP_TaggedValue_Equals",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00700940",
+      "original_name": "BSP_ObserverMember_SetTarget_00700940",
+      "symbol": "bsp::dummy_depth_seg34_argon::ObserverMember_SetTarget_00700940",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x00700955",
+          "function": "0x00700940",
+          "native": "0x006952a0",
+          "name": "BSP_Observer_UnregisterPair",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00700965",
+          "function": "0x00700940",
+          "native": "0x00694a60",
+          "name": "BSP_Observer_RegisterPair",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00700980",
+      "original_name": "BSP_DummyTargetVehicle_RegisterInWorldLists",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummyTargetVehicle_RegisterInWorldLists_00700980",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x00700983",
+          "function": "0x00700980",
+          "native": "0x00928560",
+          "name": "BSP_GameEntity_RegisterInParentEntityList",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0070098f",
+          "function": "0x00700980",
+          "native": "0x00484540",
+          "name": "BSP_UnitList_PushBack",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0070099b",
+          "function": "0x00700980",
+          "native": "0x00484540",
+          "name": "BSP_UnitList_PushBack",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x007009a7",
+          "function": "0x00700980",
+          "native": "0x00484540",
+          "name": "BSP_UnitList_PushBack",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x007009b6",
+          "function": "0x00700980",
+          "native": "0x00484540",
+          "name": "BSP_UnitList_PushBack",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x007009c0",
+      "original_name": "BSP_DummyTargetVehicle_DetachFromWorldLists",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummyTargetVehicle_DetachFromWorldLists_007009c0",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x007009c3",
+          "function": "0x007009c0",
+          "native": "0x006d3620",
+          "name": "BSP_UnitInstance_DetachFromEarlyWorldLists",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x007009e4",
+          "function": "0x007009c0",
+          "native": "0x004837d0",
+          "name": "BSP_UnitList_EraseNode",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00700a0f",
+          "function": "0x007009c0",
+          "native": "0x004837d0",
+          "name": "BSP_UnitList_EraseNode",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00700a20",
+      "original_name": "BSP_DummyTarget_Construct",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummyTarget_Construct_00700a20",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x00700a28",
+          "function": "0x00700a20",
+          "native": "0x006ff3f0",
+          "name": "BSP_Dummy2D_Construct",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00700b10",
+      "original_name": "BSP_DummyTarget_RegisterInWorldLists",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummyTarget_RegisterInWorldLists_00700b10",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x00700b13",
+          "function": "0x00700b10",
+          "native": "0x00928560",
+          "name": "BSP_GameEntity_RegisterInParentEntityList",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00700b1f",
+          "function": "0x00700b10",
+          "native": "0x00484540",
+          "name": "BSP_UnitList_PushBack",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00700b2e",
+          "function": "0x00700b10",
+          "native": "0x00484540",
+          "name": "BSP_UnitList_PushBack",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00700b3d",
+          "function": "0x00700b10",
+          "native": "0x00484540",
+          "name": "BSP_UnitList_PushBack",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00700b4c",
+          "function": "0x00700b10",
+          "native": "0x00484540",
+          "name": "BSP_UnitList_PushBack",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00700b60",
+      "original_name": "BSP_DummyTarget_DetachFromWorldLists",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummyTarget_DetachFromWorldLists_00700b60",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x00700b63",
+          "function": "0x00700b60",
+          "native": "0x006e29c0",
+          "name": "BSP_BombFamily_DetachFromWorldLists",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00700b8f",
+          "function": "0x00700b60",
+          "native": "0x004837d0",
+          "name": "BSP_UnitList_EraseNode",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00700bb6",
+          "function": "0x00700b60",
+          "native": "0x004837d0",
+          "name": "BSP_UnitList_EraseNode",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00700dd0",
+      "original_name": "BSP_DummyTargetBulletClass_CreateEntity",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummyTargetBulletClass_CreateEntity_00700dd0",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x00700def",
+          "function": "0x00700dd0",
+          "native": "0x00bf55be",
+          "name": "operator_new",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00700dfe",
+          "function": "0x00700dd0",
+          "native": "0x00bf79f0",
+          "name": "_memset",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00700e1d",
+          "function": "0x00700dd0",
+          "native": "0x00700a20",
+          "name": "BSP_DummyTarget_Construct",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00701170",
+      "original_name": "BSP_DummyTargetVehicle_Create",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummyTargetVehicle_Create_00701170",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x00701191",
+          "function": "0x00701170",
+          "native": "0x00bf55be",
+          "name": "operator_new",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x007011a1",
+          "function": "0x00701170",
+          "native": "0x00bf79f0",
+          "name": "_memset",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x007011bc",
+          "function": "0x00701170",
+          "native": "0x00700590",
+          "name": "BSP_DummyTargetVehicle_Construct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x007011db",
+          "function": "0x00701170",
+          "native": "0x004f04c0",
+          "name": "FUN_004f04c0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00701207",
+          "function": "0x00701170",
+          "native": "0x0041dd40",
+          "name": "BSP_NativeString_Resize",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00701218",
+          "function": "0x00701170",
+          "native": "0x00bf7680",
+          "name": "_memcpy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00701223",
+          "function": "0x00701170",
+          "native": "0x009553d0",
+          "name": "BSP_Unit_SetVehicleClass",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00701250",
+      "original_name": "BSP_DummyTargetVehicle_HitOnTheFly",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummyTargetVehicle_HitOnTheFly_00701250",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x0070126e",
+          "function": "0x00701250",
+          "native": "0x004c1570",
+          "name": "BSP_MissionEntityLock_Get",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x007012aa",
+          "function": "0x00701250",
+          "native": "0x0041dd40",
+          "name": "BSP_NativeString_Resize",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x007012c5",
+          "function": "0x00701250",
+          "native": "0x00bf7680",
+          "name": "_memcpy",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x007012dc",
+          "function": "0x00701250",
+          "native": "0x00927b40",
+          "name": "BSP_MissionEntity_LuaSelfObject",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x007012f2",
+          "function": "0x00701250",
+          "native": "0x00b673a0",
+          "name": "BSP_LuaObject_SetBoolean",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00701303",
+          "function": "0x00701250",
+          "native": "0x00b67700",
+          "name": "BSP_LuaObject_Destruct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00701323",
+          "function": "0x00701250",
+          "native": "0x00419cc0",
+          "name": "BSP_SizedStoragePool_GetSingleton",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0070132a",
+          "function": "0x00701250",
+          "native": "0x00bd1510",
+          "name": "BSP_SizedStoragePool_ReturnBlock",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0070133c",
+          "function": "0x00701250",
+          "native": "0x00414db0",
+          "name": "BSP_EntityPose_RefreshWorld",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00701402",
+          "function": "0x00701250",
+          "native": "0x00868420",
+          "name": "BSP_PointEffect_CreateFromMatrix",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00701431",
+          "function": "0x00701250",
+          "native": "0x00926d90",
+          "name": "BSP_MissionEntity_Kill",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x007016c0",
+      "original_name": "BSP_DummyTargetVehicle_InitAll",
+      "symbol": "bsp::dummy_depth_seg34_argon::DummyTargetVehicle_InitAll_007016c0",
+      "size": 0,
+      "status": "reconstructed_build_tested",
+      "source_file": "src/dummy_depth_seg34_argon.cpp",
+      "header_file": "include/bsp/dummy_depth_seg34_argon.hpp",
+      "steps": [
+        {
+          "address": "0x007016dd",
+          "function": "0x007016c0",
+          "native": "0x0095e5b0",
+          "name": "BSP_Unit_ReadCommonLuaProperties",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x007016fc",
+          "function": "0x007016c0",
+          "native": "0x008f2260",
+          "name": "BSP_ScenePropertyBag_Find",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00701744",
+          "function": "0x007016c0",
+          "native": "0x00805cf0",
+          "name": "BSP_ReconDetection_ForceLevel",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00701775",
+          "function": "0x007016c0",
+          "native": "0x009238a0",
+          "name": "SEntity_GetSavedEntityLuaData",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0070177e",
+          "function": "0x007016c0",
+          "native": "0x004425c0",
+          "name": "BSP_LuaReader_Construct",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0070179d",
+          "function": "0x007016c0",
+          "native": "0x00bd8e20",
+          "name": "BSP_LuaReader_EnterKey",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x007017ec",
+          "function": "0x007016c0",
+          "native": "0x00bd68d0",
+          "name": "BSP_LuaReader_ReadFieldOrDefault",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0070181f",
+          "function": "0x007016c0",
+          "native": "0x00bd6830",
+          "name": "BSP_LuaReader_ReadField",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00701828",
+          "function": "0x007016c0",
+          "native": "0x00bd7a20",
+          "name": "BSP_LuaReader_LeaveKeyThunk",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00701841",
+          "function": "0x007016c0",
+          "native": "0x00441210",
+          "name": "BSP_LuaObjectVector_Tidy",
+          "kind": "direct_call"
+        }
+      ]
+    }
+  ]
+}
