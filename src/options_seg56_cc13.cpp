@@ -705,4 +705,261 @@ int lua_scoring_grant_unlock(LuaArgs& args, ImageAccess& image, Seg56Host& host)
     host.string_set_insert_004d0640(set, name);                   // 008CBA4C
     return 0;
 }
+// ---------------------------------------------------------------------------
+// Added by cc13-seg56c
+// ---------------------------------------------------------------------------
+
+namespace {
+
+int set_damage_setting(LuaArgs& args, Seg56Host& host, std::int32_t selector)
+{
+    void* entity = args.entity_at(0);
+    const float value = static_cast<float>(args.get_number(1)); // FSTP float [ESP+10h]
+    bool flag = false;                                          // XOR BL,BL
+    if (args.count() == 3) {                                    // CMP EAX,3 / JNZ
+        flag = args.get_boolean(2);
+    }
+    DamageSettingMessage message;
+    message.value = value;
+    message.flag_cleared = !flag; // TEST BL,BL / SETZ CL
+    message.selector = selector;
+    host.route_damage_message_0077c2a0(entity, message, 7, 0);
+    return 0;
+}
+
+// The inline id -> object lookup PilotGunFire makes (008A522D..008A5262): ids below the
+// count [00F89A10] index the first table ([00F89A54], base id [00F89A0C]), the rest the
+// second ([00F89AA8], base id [00F89A60]); 10h-byte records, object at +0Ch.
+void* object_from_handle_inline(ImageAccess& image, std::uint16_t id)
+{
+    const std::int32_t value = id;
+    std::int32_t index = 0;
+    std::uint8_t* table = nullptr;
+    if (value < image.global_i32(0x00F89A10u)) { // CMP EAX,[00F89A10] / JGE
+        index = value - image.global_i32(0x00F89A0Cu);
+        table = static_cast<std::uint8_t*>(image.global_ptr(0x00F89A54u));
+    } else {
+        index = value - image.global_i32(0x00F89A60u);
+        table = static_cast<std::uint8_t*>(image.global_ptr(0x00F89AA8u));
+    }
+    return image.read_ptr(table + index * 0x10, 0xCu); // SHL EAX,4 / [EAX+ECX+0Ch]
+}
+
+} // namespace
+
+int lua_set_fire_damage(LuaArgs& args, Seg56Host& host)
+{
+    return set_damage_setting(args, host, 0); // MOV [ESP+50h],EBP with EBP = 0
+}
+
+int lua_set_water_damage(LuaArgs& args, Seg56Host& host)
+{
+    return set_damage_setting(args, host, 1); // MOV [ESP+50h],EBP with EBP = 1
+}
+
+int lua_set_motion_blur_params(LuaArgs& args, ImageAccess& image, Seg56Host& host)
+{
+    const float a0 = static_cast<float>(args.get_number(0)); // FSTP float [ESP+1Ch]
+    const float a1 = static_cast<float>(args.get_number(1)); // FSTP float [ESP+10h]
+    const float a2 = static_cast<float>(args.get_number(2)); // FSTP float [ESP+18h]
+    float block[8];
+    block[0] = 1.0f; // [00D7A24C] = 3F800000
+    block[1] = 0.5f; // [00CE3800] = 3F000000
+    block[2] = a0;
+    // DE E2 FSUBRP ST2,ST0 (a1 - a0), DE F9 FDIVP (/ a2), rounded once by the FSTP float.
+    block[3] = static_cast<float>((static_cast<double>(a1) - static_cast<double>(a0)) / static_cast<double>(a2));
+    block[4] = a2;
+    block[5] = 0.0f;
+    block[6] = 0.0f;
+    block[7] = 0.0f;
+    host.scene_renderer_set_motion_blur_00b0ea20(image.global_ptr(0x00F8D39Cu), block); // 0088E738
+    return 0;
+}
+
+int lua_set_control_factor(LuaArgs& args, Seg56Host& host)
+{
+    const std::string name = args.get_string(1); // 0041E870 into a stack native string
+    std::int32_t index = -1;                     // OR EDI,0FFFFFFFFh
+    float value = 0.0f;
+    if (args.count() == 3) {
+        value = static_cast<float>(args.get_number(2));
+    } else {
+        index = args.get_integer(2);
+        value = static_cast<float>(args.get_number(3));
+    }
+    void* entity = args.entity_at(0); // read last (0088ED13)
+    host.entity_set_control_factor_vt1a0(entity, name, index, value); // 0088ED42
+    return 0;
+}
+
+int lua_get_control_factor(LuaArgs& args, LuaResults& results, Seg56Host& host)
+{
+    const std::string name = args.get_string(1);
+    const std::int32_t index = args.count() == 2 ? 0 : args.get_integer(2); // XOR EDI,EDI
+    void* entity = args.entity_at(0);
+    float out; // [ESP+18h], not initialised by the native
+    host.entity_get_control_factor_vt1a4(entity, name, index, &out); // 0088EF69
+    results.push_float(out);                                        // 0088EF77
+    return 1;
+}
+
+int lua_ship_use_catapult(LuaArgs& args, Seg56Host& host)
+{
+    void* object = host.lua_table_ptr_field_00888d20(args, 0); // 00891E58
+    float speed = 0.0f;                                        // XORPS, 00891E76
+    if (args.count() == 2 && args.is_number(1)) {              // CMP EAX,EBX(2); 00B66050
+        speed = static_cast<float>(args.get_number(1));
+    }
+    CatapultLaunchMessage message;
+    message.speed = speed;
+    host.route_catapult_message_0077c2a0(object, message, 2, 0); // PUSH EBP(0), PUSH EBX(2)
+    return 0;
+}
+
+int lua_get_draught(LuaArgs& args, LuaResults& results, ImageAccess& image)
+{
+    void* klass = image.read_ptr(args.entity_at(0), 0x538u);
+    float best = 0.0f; // XORPS, 008937C2
+    // The size (end - begin) / 24h is recomputed every pass (008937D0..008937F9); a null
+    // begin ends the loop. The checked-iterator tests (00BF6713) cannot fire while i < size.
+    for (std::uint32_t i = 0;; ++i) {
+        auto* begin = static_cast<std::uint8_t*>(image.read_ptr(klass, 0x52Cu));
+        if (begin == nullptr) {
+            break;
+        }
+        auto* end = static_cast<std::uint8_t*>(image.read_ptr(klass, 0x530u));
+        const std::int32_t size = static_cast<std::int32_t>(end - begin) / 0x24;
+        if (i >= static_cast<std::uint32_t>(size)) { // CMP EDI,EAX / JNC
+            break;
+        }
+        const float value = image.read_f32(begin + i * 0x24u, 0x14u);
+        if (value > best) { // FCOMIP / JBE skips equal and unordered
+            best = value;
+        }
+    }
+    results.push_float(best);
+    return 1;
+}
+
+int lua_land_convoy_set_path(LuaArgs& args, Seg56Host& host)
+{
+    void* convoy = host.lua_table_ptr_field_00888d20(args, 0);
+    void* entity = args.entity_at(1);
+    host.land_convoy_set_path_00741160(convoy, host.entity_path_interface_007ac9d0(entity));
+    return 0;
+}
+
+int lua_pilot_bomb(LuaArgs& args, LuaCommandTargetSource& targets, Seg56Host& host)
+{
+    void* entity = args.entity_at(0);
+    const SceneCommandTarget target = lua_read_command_target(targets, 1);
+    std::uint32_t command = kCommandObjectDropKamikaze;
+    if (!host.unit_has_drop_kamikaze_ordnance_007ed880(entity, 0)) { // PUSH EBP(0)
+        command = host.entity_is_class_vt5c(entity, 0x10) ? kCommandObjectBombKind10 : kCommandObjectBomb;
+    }
+    host.entity_issue_command_0077d600(entity, command, target, 1); // 008A507F
+    return 0;
+}
+
+int lua_pilot_gun_fire(LuaArgs& args, LuaCommandTargetSource& targets, ImageAccess& image, Seg56Host& host)
+{
+    void* entity = args.entity_at(0);
+    SceneCommandTarget target = lua_read_command_target(targets, 1);
+    void* object = nullptr;               // kind 0: XOR ESI,ESI
+    if (target.kind != 0) {
+        object = target.object;
+        if (object == nullptr) {          // resolve from the id and write it back (008A5264)
+            object = object_from_handle_inline(image, target.object_id);
+            target.object = object;
+        }
+    }
+    // The class tests run on the target object unguarded, as the native does (008A5268).
+    std::uint32_t command = kCommandObjectGunFireShipOrBuilding;
+    if (!host.entity_is_class_vt5c(object, 0x18) && !host.entity_is_class_vt5c(object, 0x0F)) {
+        void* lead_plane = image.read_ptr(entity, 0x3D0u); // [EDI+3D0h]
+        command = host.entity_is_class_vt5c(lead_plane, 0x17) ? kCommandObjectGunFirePlaneKind17
+                                                               : kCommandObjectGunFire;
+    }
+    host.entity_issue_command_0077d600(entity, command, target, 1); // 008A52B6
+    return 0;
+}
+
+int lua_set_player_control(LuaArgs& args, ImageAccess& image, Seg56Host& host)
+{
+    void* object = host.lua_table_ptr_field_00888d20(args, 0);
+    host.unit_send_role_transfer_0077c470(object, 2, 1); // PUSH 1, PUSH EBX(2)
+    if (object != nullptr && host.entity_is_class_vt5c(object, 0x18)) {
+        host.plane_set_control_enabled_007b8c30(image.read_ptr(object, 0x3D0u), true);
+    }
+    return 0;
+}
+
+int lua_enter_player_to_role(LuaArgs& args, Seg56Host& host)
+{
+    void* object = host.lua_table_ptr_field_00888d20(args, 0);
+    RoleTransferMessage message;
+    message.argument_1 = args.get_integer(1);
+    message.argument_2 = args.get_integer(2);
+    host.route_role_message_0077c2a0(object, message, 0, 0); // PUSH 0, PUSH 0
+    return 0;
+}
+
+int lua_set_race(LuaArgs& args, ImageAccess& image, Seg56Host& host)
+{
+    const std::int32_t race = args.get_integer(1); // read before the entity (008A8824)
+    void* entity = args.entity_at(0);
+    if (host.entity_is_class_vt5c(entity, 2)) {    // PUSH EBX(2)
+        IntValueMessage message;
+        message.type = 0x80;
+        message.vtable = 0x00D032FCu;
+        message.value = race;
+        host.route_int_message_0077c2a0(entity, message, 7, 0);
+    } else {
+        std::int32_t out = 0; // MOV [ESP+24h],EBP before the call
+        host.entity_set_race_vt2c(entity, image.read_i32(entity, 0x54u), race, &out);
+    }
+    return 0;
+}
+
+int lua_set_dead_meat(LuaArgs& args, Seg56Host& host)
+{
+    void* entity = args.entity_at(0);
+    if (host.entity_is_class_vt5c(entity, 0x0F)) {
+        host.entity_set_failure_vt194(entity, kDeadMeatFailureName, 0); // 008AC8FB
+    } else if (host.entity_is_class_vt5c(entity, 6)) {
+        // FLD1 / [00D7A260] = -1.0f as hi / lo, ECX = 1, result FSTP float.
+        const float pivot[3] = {static_cast<float>(host.random_uniform_00bd2f10(1, -1.0f, 1.0f)), 0.0f, 0.0f};
+        host.unit_sink_008110f0(entity, pivot); // 008AC96A
+    } else {
+        host.entity_kill_vt70(entity, 1); // 008AC97A
+    }
+    return 0;
+}
+
+int lua_set_repair_priority(LuaArgs& args, Seg56Host& host)
+{
+    void* entity = args.entity_at(0);
+    IntValueMessage message;
+    message.type = 0xA0;
+    message.vtable = 0x00CF5C38u;
+    message.value = args.get_integer(1);
+    host.route_int_message_0077c2a0(entity, message, 7, 0); // 008AD866
+    return 0;
+}
+
+int lua_force_multi_score_send(ImageAccess& image)
+{
+    void* game_object = game(image);
+    if (image.read_i32(game_object, kSessionModeOffset) == 1) { // CMP [EAX+1FE4h],EBX(1)
+        void* world = image.read_ptr(game_object, 0x19CCu);
+        void* node = image.read_ptr(world, 0x49Cu);
+        std::int32_t count = image.read_i32(world, 0x498u);
+        while (count > 0) { // CMP ECX,EBP / JLE, then SUB ECX,1 ... JNZ
+            --count;
+            image.write_u8(image.read_ptr(node, 0x8u), 0x310u, 1); // 008AFF95
+            node = image.read_ptr(node, 0x4u);
+        }
+    }
+    return 0; // XOR EAX,EAX: no call frame in this native
+}
 } // namespace bsp::seg56_options_cc13

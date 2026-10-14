@@ -49,6 +49,7 @@ struct ImageAccess {
     virtual void* global_ptr(std::uint32_t address) = 0;
     virtual void write_global_u8(std::uint32_t address, std::uint8_t value) = 0;
     virtual void write_global_f32(std::uint32_t address, float value) = 0;
+    virtual std::int32_t global_i32(std::uint32_t address) = 0;
 };
 
 inline constexpr std::uint32_t kGameGlobal = 0x00E188A8u;          // the game object
@@ -82,6 +83,62 @@ struct SpawnpointMessage {
     bool active{false};         // +20h
 };
 inline constexpr int kSpawnpointRouteFlags = 7; // PUSH 7 at 0088FA31 / 0088FC38
+
+// The messages below are built the same way (0075B430(type), then the field stores, then
+// 0077C2A0(target, &message, flags, 0), then the base vtable 00CE4974 restored). Offsets are
+// from the message base; +4h is always 1 and +18h/+1Ah are cleared where listed.
+
+// SetFireDamage 0088E4AC..0088E4FF / SetWaterDamage 0088E919..0088E96B: type 9Eh, vtable
+// 00D0334C, word +18h = 0, byte +1Ah = 0, float +1Ch = value, byte +20h = !flag (SETZ),
+// +24h = 0 (fire, EBP) / 1 (water, EBP). Routed with flags 7.
+struct DamageSettingMessage {
+    static constexpr std::uint8_t kType = 0x9E;
+    static constexpr std::uint32_t kVtable = 0x00D0334Cu;
+    std::int32_t dword_04{1};
+    std::uint16_t word_18{0};
+    std::uint8_t byte_1a{0};
+    float value{0.0f};           // +1Ch
+    bool flag_cleared{true};     // +20h, SETZ of the optional boolean
+    std::int32_t selector{0};    // +24h, 0 fire / 1 water
+};
+// ShipUseCatapult 00891F05..00891F48: type 7Bh, vtable 00CE53AC, word +18h = 0, byte +1Ah = 0,
+// byte +1Ch = 0, float +20h = speed. Routed with flags 2 (EBX).
+struct CatapultLaunchMessage {
+    static constexpr std::uint8_t kType = 0x7B;
+    static constexpr std::uint32_t kVtable = 0x00CE53ACu;
+    std::int32_t dword_04{1};
+    std::uint16_t word_18{0};
+    std::uint8_t byte_1a{0};
+    std::uint8_t byte_1c{0};
+    float speed{0.0f};           // +20h
+};
+// SetRace 008A8879..008A88B7 (type 80h, vtable 00D032FC) and SetRepairPriority
+// 008AD826..008AD866 (type A0h, vtable 00CF5C38): word +18h = 0, byte +1Ah = 0,
+// +1Ch = the integer. Routed with flags 7.
+struct IntValueMessage {
+    std::uint8_t type{0};
+    std::uint32_t vtable{0};
+    std::int32_t dword_04{1};
+    std::uint16_t word_18{0};
+    std::uint8_t byte_1a{0};
+    std::int32_t value{0};       // +1Ch
+};
+// EnterPlayerToRole 008A61E1..008A6236: type 4Bh, vtable 00D02C90, word +18h = 0, byte +1Ah = 0,
+// byte +1Ch = 0, byte +20h = 0, +24h = integer arg1, +28h = integer arg2, +2Ch = 1, byte +30h = 1.
+// Routed with flags 0.
+struct RoleTransferMessage {
+    static constexpr std::uint8_t kType = 0x4B;
+    static constexpr std::uint32_t kVtable = 0x00D02C90u;
+    std::int32_t dword_04{1};
+    std::uint16_t word_18{0};
+    std::uint8_t byte_1a{0};
+    std::uint8_t byte_1c{0};
+    std::uint8_t byte_20{0};
+    std::int32_t argument_1{0};  // +24h
+    std::int32_t argument_2{0};  // +28h
+    std::int32_t dword_2c{1};
+    std::uint8_t byte_30{1};
+};
 
 // ---------------------------------------------------------------------------
 // The host: one method per call site kind
@@ -215,6 +272,40 @@ struct Seg56Host {
     virtual void pilot_raise_attack_mode_007ed430(void* entity, std::int32_t mode) = 0;
     // 004D0640, __thiscall(set, pair* sret, const NativeString* key), RET 8; result unused.
     virtual void string_set_insert_004d0640(void* set, const std::string& key) = 0;
+
+    // --- added by cc13-seg56c ---
+    // 0077C2A0 for the other message shapes (see route_message_0077c2a0).
+    virtual void route_damage_message_0077c2a0(void* target, const DamageSettingMessage& message, int flags, int out) = 0;
+    virtual void route_catapult_message_0077c2a0(void* target, const CatapultLaunchMessage& message, int flags, int out) = 0;
+    virtual void route_int_message_0077c2a0(void* target, const IntValueMessage& message, int flags, int out) = 0;
+    virtual void route_role_message_0077c2a0(void* target, const RoleTransferMessage& message, int flags, int out) = 0;
+    // vtable+2Ch, __thiscall(entity, [entity+54h], int, int* out) used by SetRace off-ship.
+    virtual void entity_set_race_vt2c(void* entity, std::int32_t dword_54, std::int32_t race, std::int32_t* out) = 0;
+    // vtable+1A0h, __thiscall(entity, const NativeString*, int index, float value).
+    virtual void entity_set_control_factor_vt1a0(void* entity, const std::string& name, std::int32_t index, float value) = 0;
+    // vtable+1A4h, __thiscall(entity, const NativeString*, int index, float* out). The native
+    // pushes whatever the out float holds afterwards; it does not initialise it.
+    virtual void entity_get_control_factor_vt1a4(void* entity, const std::string& name, std::int32_t index, float* out) = 0;
+    // 007AC9D0, __fastcall(ECX = entity) -> interface pointer or null.
+    virtual void* entity_path_interface_007ac9d0(void* entity) = 0;
+    // 00741160, __thiscall(convoy, value), RET 4: +344h = value.
+    virtual void land_convoy_set_path_00741160(void* convoy, void* path) = 0;
+    // vtable+194h, __thiscall(entity, const NativeString*, int).
+    virtual void entity_set_failure_vt194(void* entity, const std::string& name, std::int32_t value) = 0;
+    // 00BD2F10, (float lo, float hi), RET 8, ST0; ECX (the stream) forwarded to 00BD2ED0.
+    virtual double random_uniform_00bd2f10(std::int32_t stream_ecx, float lo, float hi) = 0;
+    // 008110F0, __thiscall(unit, const float pivot[3]), RET 4.
+    virtual void unit_sink_008110f0(void* unit, const float pivot[3]) = 0;
+    // vtable+70h, __thiscall(entity, int).
+    virtual void entity_kill_vt70(void* entity, std::int32_t mode) = 0;
+    // 00B0EA20, __thiscall(service [00F8D39C], const block[8]), RET 4.
+    virtual void scene_renderer_set_motion_blur_00b0ea20(void* service, const float block[8]) = 0;
+    // 007ED880, __thiscall(unit, int) -> AL.
+    virtual bool unit_has_drop_kamikaze_ordnance_007ed880(void* unit, std::int32_t loadout) = 0;
+    // 0077C470, __thiscall(unit, uint role mask, int take), RET 8.
+    virtual void unit_send_role_transfer_0077c470(void* unit, std::uint32_t role_mask, std::int32_t take) = 0;
+    // 007B8C30, __thiscall(plane, bool), RET 4.
+    virtual void plane_set_control_enabled_007b8c30(void* plane, bool enabled) = 0;
 };
 
 // ---------------------------------------------------------------------------
@@ -377,5 +468,53 @@ inline constexpr std::uint32_t kCommandObjectCloseToShip = 0x00E08FA8u; // 008A4
 int lua_pilot_close_to_ship(LuaArgs& args, LuaCommandTargetSource& targets, Seg56Host& host); // 008A4960
 int lua_pilot_stop_close_to_ship(LuaArgs& args, ImageAccess& image, Seg56Host& host);         // 008A4B10
 int lua_scoring_grant_unlock(LuaArgs& args, ImageAccess& image, Seg56Host& host);             // 008CB920
+
+// ---------------------------------------------------------------------------
+// Added by cc13-seg56c
+// ---------------------------------------------------------------------------
+
+// SetFireDamage 0088E320 / SetWaterDamage 0088E790: entity arg0, number arg1, boolean arg2
+// only with exactly 3 arguments (else false); the 9Eh message routed to the entity.
+int lua_set_fire_damage(LuaArgs& args, Seg56Host& host);
+int lua_set_water_damage(LuaArgs& args, Seg56Host& host);
+// SetMotionBlurParams 0088E560: numbers a0, a1, a2; block {[00D7A24C] 1.0f, [00CE3800] 0.5f,
+// a0, (a1 - a0) / a2, a2, 0, 0, 0} to 00B0EA20 on [00F8D39C].
+int lua_set_motion_blur_params(LuaArgs& args, ImageAccess& image, Seg56Host& host);
+// SetControlFactor 0088EB50 / GetControlFactor 0088EDC0: the entity's vtable+1A0h / +1A4h.
+int lua_set_control_factor(LuaArgs& args, Seg56Host& host);
+int lua_get_control_factor(LuaArgs& args, LuaResults& results, Seg56Host& host);
+// ShipUseCatapult 00891D50: object 00888D20(arg0), speed 0 or number arg1, message 7Bh.
+int lua_ship_use_catapult(LuaArgs& args, Seg56Host& host);
+// GetDraught 008936A0: the largest float +14h over the 24h-byte records of the class vector
+// [[entity+538h]+52Ch .. +530h), starting from 0.0f.
+int lua_get_draught(LuaArgs& args, LuaResults& results, ImageAccess& image);
+// LandConvoySetPath 008959F0: 00741160(00888D20(arg0), 007AC9D0(entity arg1)).
+int lua_land_convoy_set_path(LuaArgs& args, Seg56Host& host);
+// PilotBomb 008A4F00 / PilotGunFire 008A50D0: command chosen by kind, issued with 0077D600.
+inline constexpr std::uint32_t kCommandObjectDropKamikaze = 0x00E08F30u; // 008A5055
+inline constexpr std::uint32_t kCommandObjectBombKind10 = 0x00E08F28u;   // 008A5069
+inline constexpr std::uint32_t kCommandObjectBomb = 0x00E08F20u;         // 008A5070
+inline constexpr std::uint32_t kCommandObjectGunFireShipOrBuilding = 0x00E08F58u; // 008A52A7
+inline constexpr std::uint32_t kCommandObjectGunFirePlaneKind17 = 0x00E08F50u;    // 008A5299
+inline constexpr std::uint32_t kCommandObjectGunFire = 0x00E08F40u;               // 008A52A0
+int lua_pilot_bomb(LuaArgs& args, LuaCommandTargetSource& targets, Seg56Host& host);
+int lua_pilot_gun_fire(LuaArgs& args, LuaCommandTargetSource& targets, ImageAccess& image, Seg56Host& host);
+// SetPlayerControl 008A5BD0: 0077C470(object, 2, 1); for a non-null squadron (class 18h)
+// 007B8C30([object+3D0h], 1). Reads no argument beyond arg0.
+int lua_set_player_control(LuaArgs& args, ImageAccess& image, Seg56Host& host);
+// EnterPlayerToRole 008A6060: object 00888D20(arg0), integers arg1 and arg2, message 4Bh.
+int lua_enter_player_to_role(LuaArgs& args, Seg56Host& host);
+// SetRace 008A8720: integer arg1 BEFORE entity arg0; class 2 routes message 80h, any other
+// calls vtable+2Ch(entity, [entity+54h], race, &zero).
+int lua_set_race(LuaArgs& args, ImageAccess& image, Seg56Host& host);
+// SetDeadMeat 008AC7B0: class 0Fh vtable+194h("spinning", 0); class 6 Sink({rand(-1,1), 0, 0});
+// else vtable+70h(1).
+inline constexpr const char* kDeadMeatFailureName = "spinning"; // 00D059EC
+int lua_set_dead_meat(LuaArgs& args, Seg56Host& host);
+// SetRepairPriority 008AD6F0: message A0h with integer arg1.
+int lua_set_repair_priority(LuaArgs& args, Seg56Host& host);
+// ForceMultiScoreSend 008AFEC0: no call frame. In session mode 1, byte +310h = 1 on the object
+// of every node of the list [[game+19CCh]+49Ch] for [[game+19CCh]+498h] nodes. Returns 0.
+int lua_force_multi_score_send(ImageAccess& image);
 
 } // namespace bsp::seg56_options_cc13

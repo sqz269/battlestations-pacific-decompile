@@ -160,10 +160,9 @@ Not recorded:
 - 008B19A0 CountdownCancel: its listing was not compared beyond the comment's addresses.
 - 0088B410: an implicit struct copy with no concrete host.
 - The rest had mentions only (dispatch rows, header comments, callee-only reconstructions) and
-  are reconstruction candidates (the 17 done in the next section are removed):
-  0088B4B0, 0088B6D0, 0088B840, 0088E320, 0088E560, 0088E790, 0088EB50, 0088EDC0, 00891D50,
-  008936A0, 008959F0, 008A4F00, 008A50D0, 008A5BD0, 008A6060, 008A8720, 008AC7B0, 008AD6F0,
-  008AF700, 008AFEC0, 008C8560, 008CC850, 008CFC10.
+  are reconstruction candidates (the 33 done in the cc13-seg56b and cc13-seg56c sections are removed;
+  the rest are helpers or larger routines):
+  0088B4B0, 0088B6D0, 0088B840, 008AF700, 008C8560, 008CC850, 008CFC10.
 
 ## More reconstructions (cc13-seg56b)
 
@@ -190,3 +189,28 @@ under "added by cc13-seg56b" in the header.
 | 008A4960 | PilotCloseToShip | `lua_pilot_close_to_ship` | 0077D600(entity, 00E08FA8 closetoship, 0088A810(arg1), 1) at 008A4AB7. |
 | 008A4B10 | PilotStopCloseToShip | `lua_pilot_stop_close_to_ship` | director = entity vtable+114h(); when [director+54h] == 00E08FA8 (008A4C35), 007ED430(ECX=entity, EBX=2) at 008A4C41. |
 | 008CB920 | ScoringGrantUnlock | `lua_scoring_grant_unlock` | string arg0 into a stack native string, 004D0640(ECX=game+6CCh, &result, &name) at 008CBA4C, result unused. |
+
+## Third batch (cc13-seg56c)
+
+These 16 bindings also had only dispatch rows and comments. Same files, same conventions, and
+build-tested only. New host methods and message structs are marked "added by cc13-seg56c" in the
+header.
+
+| Address | Lua name | C++ | Behaviour and evidence |
+|---|---|---|---|
+| 0088E320 | SetFireDamage | `lua_set_fire_damage` | entity arg0, (float)number arg1, boolean arg2 only when ArgCount == 3 (0088E475) else BL = 0; 0075B430(9Eh), +4h=1, word +18h=0, byte +1Ah=0, vtable 00D0334C, float +1Ch=value, byte +20h=SETZ(flag), +24h=EBP(0) (0088E4AC..0088E4E9); 0077C2A0(entity, &msg, 7, 0) at 0088E4FF. |
+| 0088E790 | SetWaterDamage | `lua_set_water_damage` | As 0088E320 with EBP = 1 (0088E7AF): +4h=1 (0088E939) and selector +24h=1 (0088E954); route at 0088E96B. |
+| 0088E560 | SetMotionBlurParams | `lua_set_motion_blur_params` | numbers a0, a1, a2 stored as floats; block {[00D7A24C]=1.0f, [00CE3800]=0.5f, a0, (a1-a0)/a2 (DE E2 FSUBRP ST2,ST0 at 0088E70E, DE F9 FDIVP at 0088E71A), a2, 0, 0, 0}; 00B0EA20(ECX=[00F8D39C], &block) at 0088E738. |
+| 0088EB50 | SetControlFactor | `lua_set_control_factor` | string arg1 first; ArgCount == 3: index -1, value number arg2; else index int arg2, value number arg3 (0088EC7A..0088ECE6); entity arg0 read last; vtable+1A0h(&name, index, value) at 0088ED42. |
+| 0088EDC0 | GetControlFactor | `lua_get_control_factor` | string arg1; index 0 when ArgCount == 2 else int arg2 (0088EEEA); entity arg0; vtable+1A4h(&name, index, &out) at 0088EF69; PushFloat(out) at 0088EF77 (out not initialised by the native). |
+| 00891D50 | ShipUseCatapult | `lua_ship_use_catapult` | object 00888D20(arg0); speed 0.0f, or number arg1 when ArgCount == 2 and IsNumber (00891E7C..00891EF1); 0075B430(7Bh), +4h=1, word +18h=0, byte +1Ah=0, byte +1Ch=0, vtable 00CE53AC, float +20h=speed; 0077C2A0(object, &msg, 2, 0) at 00891F48. |
+| 008936A0 | GetDraught | `lua_get_draught` | class = [entity+538h]; max (from 0.0f) of float +14h over the 24h-byte records [class+52Ch]..[class+530h), size recomputed every pass, null begin ends it (008937D0..0089387F); PushFloat at 00893890. The 00BF6713 iterator checks cannot fire and are not reproduced. |
+| 008959F0 | LandConvoySetPath | `lua_land_convoy_set_path` | convoy 00888D20(arg0), entity 00888AA0(arg1), 00741160(convoy, 007AC9D0(entity)) at 00895B44. |
+| 008A4F00 | PilotBomb | `lua_pilot_bomb` | entity arg0, target 0088A810(arg1); 007ED880(entity, 0) true -> 00E08F30, else vtable+5Ch(10h) ? 00E08F28 : 00E08F20 (008A504C..008A5070); 0077D600(entity, cmd, &target, 1) at 008A507F. |
+| 008A50D0 | PilotGunFire | `lua_pilot_gun_fire` | entity arg0, target 0088A810(arg1); object = kind 0 ? null : target.object, resolved inline from the id through [00F89A10]/[00F89A0C]/[00F89A54] or [00F89A60]/[00F89AA8] and written back (008A521A..008A5264); class 18h or 0Fh -> 00E08F58, else [entity+3D0h] class 17h ? 00E08F50 : 00E08F40; 0077D600 at 008A52B6. Class tests run on a null object for kind 0, as the native does. |
+| 008A5BD0 | SetPlayerControl | `lua_set_player_control` | object 00888D20(arg0); 0077C470(object, 2, 1) at 008A5CEE; non-null with vtable+5Ch(18h): 007B8C30([object+3D0h], 1) at 008A5D0E. No other argument read. |
+| 008A6060 | EnterPlayerToRole | `lua_enter_player_to_role` | object 00888D20(arg0), int arg1, int arg2; 0075B430(4Bh), +4h=1, word +18h=0, byte +1Ah=0, byte +1Ch=0, byte +20h=0, vtable 00D02C90, +24h=arg1, +28h=arg2, +2Ch=1, byte +30h=1 (008A61E1..008A621F); 0077C2A0(object, &msg, 0, 0) at 008A6236. |
+| 008A8720 | SetRace | `lua_set_race` | int arg1 read before entity arg0; vtable+5Ch(2): 0075B430(80h), +4h=1, word +18h=0, byte +1Ah=0, vtable 00D032FC, +1Ch=race, 0077C2A0(entity, &msg, 7, 0) at 008A88B7; else vtable+2Ch(entity, [entity+54h], race, &local=0) at 008A88DA. |
+| 008AC7B0 | SetDeadMeat | `lua_set_dead_meat` | class 0Fh: vtable+194h("spinning" 00D059EC, 0) at 008AC8FB; class 6: 008110F0(entity, {00BD2F10(ECX=1, -1.0f [00D7A260], 1.0f), 0, 0}) at 008AC96A; else vtable+70h(1) at 008AC97A. |
+| 008AD6F0 | SetRepairPriority | `lua_set_repair_priority` | entity arg0, int arg1; 0075B430(A0h), +4h=1, word +18h=0, byte +1Ah=0, vtable 00CF5C38, +1Ch=value (008AD826..008AD850); 0077C2A0(entity, &msg, 7, 0) at 008AD866. |
+| 008AFEC0 | ForceMultiScoreSend | `lua_force_multi_score_send` | No call frame (only the dead prologue and guard). Session mode game+1FE4h == 1: for [[game+19CCh]+498h] nodes from [[game+19CCh]+49Ch], byte [[node+8]+310h] = 1, node = [node+4] (008AFF68..008AFF9E); returns 0 (XOR EAX,EAX at 008AFFA6). |
