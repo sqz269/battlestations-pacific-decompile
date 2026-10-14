@@ -17857,3 +17857,36 @@ Test (`local\s50_t_u15tt3.log`, `s50_t_u15tt4.log`, this tree's build of the com
 held 395 frames: 808 snap failures, nothing fired (faithful). Eight beam/quarter targets held 200 frames each:
 `trigger_ons=16 order_launches=10` (one salvo hit the friendly Denver, a test artefact). Before: a 5-frame hold gives
 `trigger_ons=0`.
+
+## 251. USNOS re-plan state; handoff (cc9-ships50, 2026-10-14; lead item 1)
+
+Runs: reference env, 200000 frames, `--stop-after-end 40`, launcher `local\s50_rows.ps1` (s49_rows with its own
+launch-file prefix), generator `local\s50_osgen.py` (s49_osgen plus `raw:<line>`), summary `local\s50_sum.py <log>
+[regex]` (death rows, SetParty, mission end), per-unit csv sampler `local\s50_upos.py`. Order files
+`local\s50_os_k<N>.txt`, logs `local\s50_{f,j3,j5,t}_k<N>.log` with manifests. Builds: k2r..k29 ran this tree at
+0f70e9dee/68fe87dba (exe kept as `local\s50_bsp_game_68fe.exe`); k30 ran 3b30ed84a with origin/main 057d11e10 merged.
+**What the threats are (current host):** the transports die to the airfield squadrons (luaAirfieldManager launches
+fighters/bombers at `Mission.Troops` while an airfield lives), to the armed Cargo7/Cargo8 next to HQ2, to Ada3 (scripted
+to hunt Troops[1]) and Shimotsuke, and to friendly flak bursts (Gear2/Gear18 cat-1 blast hits on already-damaged
+transports). Carrier strikes on the airfields are shredded by the Zao/Shimotsuke AA. Each airfield has one hangar
+section (5500 hp; `Hangar, Large, 08 01` Airfield1, `Hangar, Small, 02 02` Airfield2, `Multi Hangar 1` Airfield3);
+killing it kills the airfield (land master ON).
+**The plan that captures all three bases** (k24 -> k27 -> k28, each from the previous; k2 base): TT1/3/5/6 `moveto`
+next to the Enterprise (11300..11700, -4800..-5400) at 3000-3060; NH on Airfield2's hangar 19500-24000 and Airfield1's
+24600-29000; Portland1/2 on the hangars 19560-30000; Gear14/16 on Cargo7/Cargo8 20000-34000; Gear6/8/10/12 on `Multi
+Hangar 1` 2000-45000; Midway F2G CAP over TT6/3/1/5 every 2500 frames 24000-49000; TT6 to HQ2 at 34000, TT3 to HQ2 at
+36000 then to (-2700, 3800) at 39960 (920 m from HQ1; (-2100, 3300) is 1384 m and never captured), the CB2 route
+shifted to 62000/70000/82000/90000; Loui2 (108600-130000), Loui1 and (k29) DM1 (90000/100000-130000) shell HQ2; TT3
+back to (2300, 4400) at 112000 (k29: 118000); Essex/Intrepid F2Gs at Betty1-6 at 42500-42660 (Betties spawn ~41785).
+k28 (`s50_os_k28.txt`) and k29: HQ1 neutral 1707 s and captured, CB2 captured, HQ2 neutral 5761 s and captured, Yamato,
+Musashi, Haku1-4 and the six Betty leads dead, **no mission end**: seven Betty members (Betty2|.-2/-3/-4, Betty4|.-2/-3,
+Betty6|.-2/-4) still fly, so FinalTrgs never empties (229). k30 adds Lexington/Reprisal hunts on those members (50000-
+50160, their Haku strikes dropped) but ran on the new merged build, where NH is torpedoed by Shima2 at 975 s and the
+plan collapses (no captures). Jitter (k27): 20,5 and 20,3 both lose NH to Shimotsuke near 1500 s.
+**Next:** (1) re-run k28/k30 on current main and re-plan the opening for the NH loss (Shima2 torpedo at 975 s; escort
+NH or keep it out of Shima2's run); (2) then the member hunts (k30's additions); (3) jitter needs the NH-Shimotsuke duel
+won reliably (put Portland1/Gear14/16 on Shimotsuke before 1300 s).
+**Handoff.** Branch `agent/cc9-ships44`. Commits this session: 0f70e9dee (attack refuses dead targets, 247),
+68fe87dba (0067BB50 unreachable, 248), c1186ad17 (241 item 4 unbound, 249), 3b30ed84a (held torpedo press re-sent
+every frame, 250), this one. No leases held. Open: the USNOS items above; 005F98F0 port range; the cc13 soldier
+placeholders (never wire as-is); 004BFED0/004C3A80.
