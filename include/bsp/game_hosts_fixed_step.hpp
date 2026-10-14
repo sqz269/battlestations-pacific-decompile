@@ -24,6 +24,8 @@
 #include "bsp/fixed_step_job_waves.hpp"
 #include "bsp/game_dynamics_list.hpp"
 
+namespace bsp { class NativeFixedStepJobWaves; }
+
 namespace bsp::game {
 
 class GameHostLog;
@@ -228,6 +230,10 @@ public:
     void attach_subsystems(GameStepSubsystemsHost* subsystems) noexcept;
     // Borrow the completed actual game owner through its last fixed step.
     void attach_native_game(GameNativeGameRuntime* game) noexcept;
+    // The native raw-group path owns no producer or pool. Attach only the
+    // application's real groups, descriptor cells and shared owner domain.
+    // Keep it and its actual execution bindings alive through the last wave.
+    void attach_native_jobs(bsp::NativeFixedStepJobWaves* jobs) noexcept;
     // Packet cc9_sentity_init_all: row 12's owner. Attached for the whole run.
     void attach_entity_init(GameEntityInitAllRunner* runner) noexcept;
     // Packet cc9_run_extra_fixed_step.
@@ -295,6 +301,7 @@ private:
     bsp::GameDynamicsState& dynamics_;
     GameStepSubsystemsHost* subsystems_{nullptr};
     GameNativeGameRuntime* native_game_{nullptr};
+    bsp::NativeFixedStepJobWaves* native_jobs_{nullptr};
     GameEntityInitAllRunner* entity_init_{nullptr};
     // Packet cc9_run_extra_fixed_step: the world gate the last fixed step saw
     // ([[game+19CCh]+4ACh], 00874D3A reads the same byte), and the extra steps.
