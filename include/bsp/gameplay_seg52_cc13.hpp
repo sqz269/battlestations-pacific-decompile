@@ -128,9 +128,28 @@ ShipyardAimPick shipyard_aim_point_pick_00844a10(const std::vector<ShipyardHanga
 // PUSH 1), where the airfield passes 0. The caller of the shipyard's slot 1A8h
 // was not found: the shipyard tick 00846320 does not load it, unlike the
 // airfield tick at 006D2526.
-enum class ShipyardHangarsLostArm { HangarLive, InferiorFailure_194, Destroy_70 };
-ShipyardHangarsLostArm shipyard_hangars_lost_00845ac0(
-    const std::vector<ShipyardHangarSlot>& slots, bool adopted_71c) noexcept;
+// The +194h argument is an eight-byte native string (dword length, dword buffer)
+// built on the stack: zeroed, 0041DD40(15, 1), memcpy of 16 bytes from 00CF0B74
+// ("InferiorFailure") when a buffer came back; after the call the buffer goes back
+// to the sized pool (00419CC0, then 00BD1510(buffer, length + 1, 1)).
+struct ShipyardNativeString {
+    std::uint32_t length = 0;
+    char* data = nullptr;
+};
+struct ShipyardHangarsLostHost {
+    virtual ~ShipyardHangarsLostHost() = default;
+    // 0041DD40 __thiscall(string, length, 1) RET 8.
+    virtual void native_string_resize_0041dd40(ShipyardNativeString& s, std::uint32_t length, std::int32_t flag) = 0;
+    // Shipyard vtable +194h __thiscall(shipyard, const string*, 0) RET 8.
+    virtual void shipyard_vslot194(const ShipyardNativeString* name, std::int32_t arg) = 0;
+    // Shipyard vtable +70h __thiscall(shipyard, 1) RET 4.
+    virtual void shipyard_vslot70(std::int32_t arg) = 0;
+    virtual void* pool_singleton_00419cc0() = 0;
+    // 00BD1510 __thiscall(pool, block, size, 1) RET 0Ch.
+    virtual void pool_return_block_00bd1510(void* pool, void* block, std::uint32_t size, std::int32_t flag) = 0;
+};
+void shipyard_hangars_lost_00845ac0(
+    const std::vector<ShipyardHangarSlot>& slots, bool adopted_71c, ShipyardHangarsLostHost& host);
 
 // 00847030 BSP_Shipyard_HandleLaunchRequest, __thiscall(shipyard, msg), RET 4.
 // Jump table on msg+10h - A7h; every arm passes (msg+14h, msg+20h, byte msg+24h)
