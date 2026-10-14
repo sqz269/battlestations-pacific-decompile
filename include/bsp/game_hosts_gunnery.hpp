@@ -590,6 +590,9 @@ struct GameProjectileRow {
     // the run can print predicted against actual. INSTRUMENTATION; the image
     // keeps neither flag nor point on the round.
     bool is_bomb{false};
+    // kTorpedoRackDropBound: a torpedo dropped through 006E4D50's bomb arm, whose
+    // bomb_drift (006E1510) applies while it is airborne.
+    bool rack_drift{false};
     float predicted_impact[3]{};
     // Packet cc13-homing1: a rocket record's motion state (0080A000) and its
     // homing block (0080AA20). docs/CC13_ROCKET_HOMING.md.
