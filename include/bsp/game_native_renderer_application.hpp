@@ -96,6 +96,10 @@ public:
     // release ordinary returned references before the shared renderer drain;
     // its own fallback reference follows the native cache cleanup schedule.
     NativeTextureCacheContext& texture_cache() noexcept;
+    // The SAME existing renderer focus publication. Its receiver aliases the
+    // actual window/focus cells at +30/+41; opaque bytes are not a whole native
+    // platform. Borrow only for the established load-pump/focus leaf domain.
+    const void* const volatile& loading_platform_focus_publication();
     NativeRenderActualOwnerRegistry& actual_owners() noexcept;
     // Borrowed until renderer teardown. Callers retain their actual grid
     // storage, operation records and explicit descriptor preimages, and must

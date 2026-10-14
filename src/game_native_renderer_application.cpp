@@ -551,6 +551,10 @@ const NativeCockpitViewportReleaseContext& GameNativeRendererApplication::cockpi
 NativeTextureCacheContext& GameNativeRendererApplication::texture_cache() noexcept {
     return impl_->texture_loading.cache;
 }
+const void* const volatile& GameNativeRendererApplication::loading_platform_focus_publication() {
+    check(impl_->phase==Impl::Phase::ready,"loading focus publication requires the ready application renderer");
+    return impl_->devices.platform_publication;
+}
 NativeRenderActualOwnerRegistry& GameNativeRendererApplication::actual_owners() noexcept {
     return impl_->owners;
 }
