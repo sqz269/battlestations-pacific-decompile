@@ -17541,3 +17541,27 @@ reads; 234 IJN08 c-f.
    USN12's convoy HP pooling is a separate follow-up (convoy_hp loaded, unread).
 3. **IJN08** (234): find air cover for the Marus or a safe hold point; then the last three installations.
 4. JM02 runs no ship motion in the host at all (232): a host gap worth a look.
+
+## 236. The land-structure master hand-off: `kLandMasterDamageBound`, OFF (cc9-ships48, 2026-10-13; lead item 2)
+
+Packet `cc9_land_master_damage` (`src/game_hosts_gunnery.cpp`, patch `local\s48_lm_patch.py`; 235 item 2's design).
+- **00744A20** (BSP_LandFort_SetMaster), called by the airfield reader 006D5220 and the shipyard reader 00849F70
+  (0084A083) on each `"Hangar %d"` object in authored order: the hangar's `+738h` = the airfield or shipyard; a
+  hangar of party 2 or more takes a master's party below 2; the master's `+36Ch` = the hangar's and 00877B90(master,
+  hangar `+370h`), so the last hangar wins. Host: built at the first gunnery step (LABELLED; the image does it at
+  scene load) from `air_ops_decks()` hangars and each shipyard's authored hangars.
+- **007470B0** (the hangar's vtable[1ACh]; CommandBuilding 006F1F20 calls it) forwards every amount to the master's
+  vtable[1ACh] = 0095DA00 (0074715A). Host: the hit binding's `add_damage` and the explosion object 0081B630.
+  The fire roll at its head stays as hosted (CommandBuildings only). LABELLED order: forward before the section's
+  own write.
+- **00747170** (OnDestroyed, vtable[7Ch]): with `+70h == 1` (the gunfire cause; an explicit kill with another
+  stored cause skips) the master takes vtable[1ACh](1e10, [00CE4970]), then, still live (0074728B..007472A1),
+  vtable[1A8h]: 006D40F0 for an airfield (the hosted rule), 00845AC0 for a shipyard (not hosted, recorded).
+- **00958A30** with `+71Ch` (a parent CommandBuilding, 006F5CC0): health 0 does not destroy (00958A52 arm). The host
+  keeps a land master alive at health 0 when it has a parent, on the health-zero paths only. 0095DA00's own refusal
+  (`+71Ch` and `+728h > 0`) never fires: `+728h`'s writer is 00958A30's unhosted repair arm.
+**Predictions.** OFF: identical (one new summary line). ON: one `land master:` line per listed hangar; every
+master airfield/shipyard starts at its last hangar's health and max; hangar damage moves the master's health; the
+first gunfire hangar death destroys an un-adopted airfield or shipyard at once (its planes stop launching / its
+production stops); an adopted one (USN01 `Airfield2` -> `CB2`) stays alive at health 0 and takes the existing
+InferiorFailure arm only at its last hangar, as before. Kill counts can rise by the masters.

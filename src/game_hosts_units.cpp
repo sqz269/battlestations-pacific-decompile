@@ -2817,6 +2817,7 @@ struct GameUnitsHost::Impl {
     unsigned long long base_launch_no_deck{0};
     // Packet cc9_base_launch_deck_arms (kBaseLaunchChainBound), piece 3.
     void run_airfield_destruction_rule_006d40f0(std::size_t index);
+    void ensure_parent_link_71c_006f5cc0(std::size_t index);
     const bsp::game::ScenePathEntry* landing_hangar_path_006d2780_006d2640(
         const LandingDeck& d, bool entry) const;
     void airfield_site_tick_006cf980(std::size_t deck_index, LandingDeck& d);
@@ -13144,6 +13145,29 @@ void GameUnitsHost::Impl::run_airfield_destruction_rule_006d40f0(std::size_t ind
             }
         }
     }
+    ensure_parent_link_71c_006f5cc0(index);
+    if (slot.parent_link_71c > 0) {
+        // 006D4167-006D41BB: "InferiorFailure" (00CF0B74) -> vtable[194h] 006D2210,
+        // which matches neither RunwayFailure nor HangarFailure and falls to
+        // 00953DA0: message 7Dh through 0077C2A0(msg, 7, 0); 0095AD0A sets +720h.
+        if (deck != nullptr) deck->airfield_blocked = true;
+        if (slot.inferior_failure_steps++ == 0) {
+            log.notef("airfield destruction rule: unit=%s arm=inferior_failure t=%.2f "
+                "(006D2210 -> 00953DA0 7Dh -> +720h, packet cc9_airfield_destruction_rule)",
+                slot.row.name.c_str(), summary.simulated_seconds);
+        }
+        done("Airfield::destruction_rule_inferior_failure_006d40f0", 0x006d40f0u);
+        return;
+    }
+    log.notef("airfield destruction rule: unit=%s arm=destroy t=%.2f (006D41E6 -> 0077D1A0, "
+        "packet cc9_airfield_destruction_rule)", slot.row.name.c_str(),
+        summary.simulated_seconds);
+    gunnery->destroy_unit_0077d1a0(index, 0);  // 006D41EF, vtable[70h](0)
+    done("Airfield::destruction_rule_destroy_006d40f0", 0x006d40f0u);
+}
+
+void GameUnitsHost::Impl::ensure_parent_link_71c_006f5cc0(std::size_t index) {
+    GameUnitSlot& slot = *slots[index];
     if (slot.parent_link_71c == 0) {
         // 006F5CC0 pass 1, from every CommandBuilding's side: kind 45h here, the
         // building is not the entity, entity+724h set (006F5DCF), and the squared
@@ -13175,24 +13199,6 @@ void GameUnitsHost::Impl::run_airfield_destruction_rule_006d40f0(std::size_t ind
                 : "-",
             slot.bag_min_level_724 ? 1 : 0, summary.simulated_seconds);
     }
-    if (slot.parent_link_71c > 0) {
-        // 006D4167-006D41BB: "InferiorFailure" (00CF0B74) -> vtable[194h] 006D2210,
-        // which matches neither RunwayFailure nor HangarFailure and falls to
-        // 00953DA0: message 7Dh through 0077C2A0(msg, 7, 0); 0095AD0A sets +720h.
-        if (deck != nullptr) deck->airfield_blocked = true;
-        if (slot.inferior_failure_steps++ == 0) {
-            log.notef("airfield destruction rule: unit=%s arm=inferior_failure t=%.2f "
-                "(006D2210 -> 00953DA0 7Dh -> +720h, packet cc9_airfield_destruction_rule)",
-                slot.row.name.c_str(), summary.simulated_seconds);
-        }
-        done("Airfield::destruction_rule_inferior_failure_006d40f0", 0x006d40f0u);
-        return;
-    }
-    log.notef("airfield destruction rule: unit=%s arm=destroy t=%.2f (006D41E6 -> 0077D1A0, "
-        "packet cc9_airfield_destruction_rule)", slot.row.name.c_str(),
-        summary.simulated_seconds);
-    gunnery->destroy_unit_0077d1a0(index, 0);  // 006D41EF, vtable[70h](0)
-    done("Airfield::destruction_rule_destroy_006d40f0", 0x006d40f0u);
 }
 
 const bsp::game::ScenePathEntry* GameUnitsHost::Impl::landing_hangar_path_006d2780_006d2640(
@@ -36499,6 +36505,20 @@ bool GameUnitsHost::unit_is_kind_of(std::size_t index, int class_id) const {
 bool GameUnitsHost::inferior_failure_720(std::size_t index) const {
     if (index >= impl_->slots.size()) return false;
     return impl_->slots[index]->inferior_failure_steps != 0;
+}
+
+std::size_t GameUnitsHost::parent_link_71c(std::size_t index) {
+    if (index >= impl_->slots.size()) return impl_->slots.size();
+    impl_->ensure_parent_link_71c_006f5cc0(index);
+    const int link = impl_->slots[index]->parent_link_71c;
+    return link > 0 ? static_cast<std::size_t>(link - 1) : impl_->slots.size();
+}
+
+void GameUnitsHost::run_airfield_destruction_rule_006d40f0(std::size_t index) {
+    if (index >= impl_->slots.size()) return;
+    if constexpr (Impl::kAirfieldDestructionRuleBound) {
+        impl_->run_airfield_destruction_rule_006d40f0(index);
+    }
 }
 
 // Packet cc9_unit_class_lands_troops. Slot 2Ch of the class descriptor vtables
