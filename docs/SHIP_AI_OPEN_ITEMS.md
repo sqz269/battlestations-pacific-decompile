@@ -17890,3 +17890,20 @@ won reliably (put Portland1/Gear14/16 on Shimotsuke before 1300 s).
 68fe87dba (0067BB50 unreachable, 248), c1186ad17 (241 item 4 unbound, 249), 3b30ed84a (held torpedo press re-sent
 every frame, 250), this one. No leases held. Open: the USNOS items above; 005F98F0 port range; the cc13 soldier
 placeholders (never wire as-is); 004BFED0/004C3A80.
+
+## 252. Avoid-zone registry layer layout (cc9-ships51, 2026-10-14; lead item 1)
+
+From docs/CC13_AVOID1.md adoption note 1, verified: 00424730 builds three default layers through 00424680 (angles
+read from 00CE3990 / 00CE398C / 00CE3988 = 3E32B8C3h / 3EB2B8C3h / 3F9C61ABh, 10 / 20 / 70 degrees, each n = 10, cell
+2400, scale 2.0, zero grid), and 004248A0 calls 0041DED0 at 004248C1 with ECX = the registry (EBP), which deletes
+every list element, so a loaded registry holds only the file's layers. The host kept one ten-degree default ahead of
+the file layers. Bound as `kAvoidZoneRegistryImageLayoutBound` (include/bsp/game_hosts_avoid_zones.hpp), OFF.
+Measured with `local\s51_navlayers.py` over this installation's 253 `.nav` files: all but `missions\chg\PC_cargo.nav`
+(zero layers) hold three 240x240 layers with slope limits 0.1763 / 0.3640 / 2.7475 (10 / 20 / 70 degrees), so
+0041DF40(1.5, true) picks the 70-degree file layer under both layouts (image index 2, OFF host index 3). Scenes with
+no `.nav` (missiontree.lua): USN10 and USN11 (COTP-USN/PRCPUS usn_05 / usn_06) and ALT02 (IJN/ijn_14_prelude_mid);
+there the image keeps the 70-degree default and the OFF host its 10-degree one, which differ only in +14h; the hosted
+readers (game_hosts_units.cpp: 0041BC20 samples and the cell size) never read +14h.
+**Prediction:** gameplay-identical pairs (pair_diff 0 or 1) on every mission; the only moved lines are the
+`summary mission avoid-zone layer` note (registry_layers 4 -> 3, squadron_34c 3 -> 2; on USN10: 1 -> 3 layers,
+squadron_34c 0 -> 2, slope 0.176327 -> 2.747477).

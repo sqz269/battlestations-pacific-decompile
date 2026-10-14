@@ -3,10 +3,18 @@
 #include "bsp/game_hosts_avoid_zones.hpp"
 
 #include <cmath>
+#include <cstdint>
+#include <cstring>
 
 namespace bsp::game {
 
 namespace {
+
+float float_bits(std::uint32_t bits) noexcept {
+    float value = 0.0f;
+    std::memcpy(&value, &bits, sizeof(value));
+    return value;
+}
 
 // 00424680 with [00CE3990] (0.17453286, ten degrees): 00423960(10) sets the
 // half extent [00CE3968] 12000.0, the cell 24000.0 [00CE3960] / 10, the scale
@@ -20,6 +28,14 @@ bsp::TerrainGridLayerRecord default_layer_00424680() {
     layer.file_scalar = 2.0f;
     layer.slope_limit = static_cast<float>(std::tan(static_cast<double>(0.17453286f)));
     layer.grid.assign(100, 0);
+    return layer;
+}
+
+// The same layer for the image's angle argument, read as the float bits the
+// constructor loads (00CE3990 3E32B8C3h, 00CE398C 3EB2B8C3h, 00CE3988 3F9C61ABh).
+bsp::TerrainGridLayerRecord default_layer_00424680(std::uint32_t angle_bits) {
+    bsp::TerrainGridLayerRecord layer = default_layer_00424680();
+    layer.slope_limit = static_cast<float>(std::tan(static_cast<double>(float_bits(angle_bits))));
     return layer;
 }
 
@@ -81,7 +97,13 @@ float avoid_zone_sample_0041bc20(const bsp::TerrainGridLayerRecord& layer,
 }
 
 GameAvoidZoneRegistry::GameAvoidZoneRegistry() {
-    layers_.push_back(default_layer_00424680());  // 0042476E-004247B7
+    if constexpr (kAvoidZoneRegistryImageLayoutBound) {
+        layers_.push_back(default_layer_00424680(0x3E32B8C3u));  // 0042476E-004247C2, 10 degrees
+        layers_.push_back(default_layer_00424680(0x3EB2B8C3u));  // 004247CD-0042481E, 20 degrees
+        layers_.push_back(default_layer_00424680(0x3F9C61ABu));  // 00424829-00424886, 70 degrees
+    } else {
+        layers_.push_back(default_layer_00424680());  // 0042476E-004247B7
+    }
 }
 
 GameAvoidZoneRegistry& GameAvoidZoneRegistry::instance() {
@@ -92,7 +114,9 @@ GameAvoidZoneRegistry& GameAvoidZoneRegistry::instance() {
 void GameAvoidZoneRegistry::load_scene_layers(
     const std::vector<bsp::TerrainGridLayerRecord>& file_layers) {
     layers_.clear();
-    layers_.push_back(default_layer_00424680());
+    // 004248C1: 0041DED0 deletes every layer, the constructor's defaults
+    // included, before the file's layers are appended.
+    if constexpr (!kAvoidZoneRegistryImageLayoutBound) layers_.push_back(default_layer_00424680());
     for (const bsp::TerrainGridLayerRecord& layer : file_layers) layers_.push_back(layer);
     ++scene_loads_;
 }
