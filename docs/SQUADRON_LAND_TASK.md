@@ -17128,8 +17128,9 @@ Commits (in order): ec912c84c (JM08 backup plan jm08_l59_j8_r12), ed6757e2e / c3
 passthrough OFF; 5hj.1), 478a2dfaf (kSquadronMoveToSelfBound ON; 5hm), 1ee9b911a (torpedo arm and drop-kamikaze shape
 ON; 5hn), 8da8304e0 (both level-bomber switches ON; 5hj.2/5hj.3).
 
-Still OFF, pairs: `kForcedReconSyncNotifyBound` (F, USN12 `u12`) and `kAutoAttackNullClassMoveToBound` (L3, PRCP01
-`p01k9`, USNOS `osx`): see 5hp for the measurement if it landed, else pair them on the current tree.
+Then 9ef2acd45: `kForcedReconSyncNotifyBound` and `kAutoAttackNullClassMoveToBound` ON (5hk.1/5hl.1). All lane switches of this
+session are ON. Wins on 8da8304e0: JM08 `jm08_p6_j8_f` completed 2041.57 s; `jm08_l59_j8_r12` no end; PRCP01
+`prcp01_p9_p01_k` completed 661.51 s, and 536.79 s with the null-class moveto (9ef2acd45).
 
 Next, in order:
 1. JM08 / PRCP01 / USNOS wins after the level-bomber flips (8da8304e0): send WINS_TABLE results to cc9-physics9.
