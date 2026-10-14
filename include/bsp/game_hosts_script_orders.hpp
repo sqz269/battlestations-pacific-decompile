@@ -224,6 +224,13 @@ inline constexpr bool kSquadronPutToMembersBound = true;
 // entity's 0042BB50, FLD1. False: the gate is clear and the slot answers 0, so
 // every unit reads 0% to the scripts.
 inline constexpr bool kUnitHealthFractionBound = true;
+// Packet cc9_l59_sq_avg_health (docs/CC13_VER_8.md V2; docs/SQUADRON_LAND_TASK.md 5he.3). A
+// squadron's vtable[110h] is 007EDC30, not 00876260: the float sum of 00923BE0 over the
+// +3CCh current members FIDIV the initial count +3C8h (0 when +3C8h <= 0), so removed planes
+// count as 0. True: a fused squadron slot answers that average over the registry record's
+// live member_units and wing_count (squadron_average_health_007edc30). False: the fused
+// slot's own row (its wing-0 plane).
+inline constexpr bool kSquadronAverageHealthBound = false;
 
 // Packet cc9_submarine_depth_level (docs/SUBMARINE_MODEL.md section 11).
 // True: the Lua native GetSubmarineDepthLevel (00894100) pushes the unit's
@@ -1058,6 +1065,7 @@ private:
     // Packet cc9_get_hp_percentage.
     unsigned long long health_reads_{0};
     unsigned long long health_reads_dead_{0};
+    unsigned long long health_reads_squadron_{0};   // 007EDC30 answers (kSquadronAverageHealthBound)
     unsigned long long health_reads_marker_{0};
     // 008A4C90's tally. `calls` counts what the scripts asked for; the two
     // `resolved` counters say whether the Lua argument path actually reached a

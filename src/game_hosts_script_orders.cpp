@@ -40,6 +40,7 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/game_hosts_ship_ai.hpp"  // packet cc9_usn02_deruyter_fire
 #include "bsp/unit_gunnery_pass.hpp"
 #include "bsp/recon_sensor_pass.hpp"  // packet cc9_recon_level_table
+#include "bsp/mission_ver_cc13.hpp"   // packet cc9_l59_sq_avg_health
 #include <algorithm>
 #include <cstdlib>
 #include <cstring>
@@ -4442,6 +4443,24 @@ float GameScriptOrdersHost::unit_health_vtable_110_00923bf6(void* entity) {
     }
     const std::vector<GameGunneryUnitRow>& rows = gunnery->unit_rows();
     if (index >= rows.size()) return 1.0f;
+    if constexpr (kSquadronAverageHealthBound) {
+        // 007EDC30, the squadron's vtable[110h]: 00923BE0 (dead -> 0, else
+        // health / max health) over the current members, over +3C8h.
+        for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+            if (r.squadron_unit != index) continue;
+            std::vector<float> member_health;
+            for (const std::size_t m : r.member_units) {
+                if (m == bsp::kPlaneSquadronNoUnit || m >= rows.size()) continue;
+                member_health.push_back(gunnery->unit_dead(m) ? 0.0f
+                    : static_cast<float>(static_cast<double>(rows[m].health) /
+                                         static_cast<double>(rows[m].max_health)));
+            }
+            ++health_reads_squadron_;
+            log_.implemented("PlaneSquadron::average_health_007edc30", "007edc30");
+            return bsp::squadron_average_health_007edc30(member_health.data(),
+                static_cast<int>(member_health.size()), r.wing_count);
+        }
+    }
     if (gunnery->unit_dead(index)) ++health_reads_dead_;
     log_.implemented("UnitInstance::health_vtable_110_00876260", "00876260");
     return static_cast<float>(static_cast<double>(rows[index].health) /
@@ -5752,6 +5771,11 @@ void GameScriptOrdersHost::report() {
         "markers=%llu (00923BE0 -> 00876260, packet cc9_get_hp_percentage)",
         kUnitHealthFractionBound ? 1 : 0, health_reads_, health_reads_dead_,
         health_reads_marker_);
+    if (health_reads_squadron_ != 0) {
+        log_.notef("summary mission script squadron health reads bound=%d reads=%llu "
+            "(007EDC30, packet cc9_l59_sq_avg_health)", kSquadronAverageHealthBound ? 1 : 0,
+            health_reads_squadron_);
+    }
     log_.notef("summary mission script player shot down bound=%d calls=%llu last=%d "
         "(008BC9B0, packet cc9_bsm01_think_natives)", kScoringPlayerShotDownBound ? 1 : 0,
         shot_down_calls_, shot_down_last_);

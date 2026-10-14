@@ -16809,3 +16809,11 @@ Betty squadrons sqn10/11/13/14 die to Portland/NH/transport AA at 1343-1414 s on
 timeline (the shared RNG stream, `shared-rng-stream-couples-pairs`) after the first adoption at about 288 s. 5gz.2's
 reason for OFF (a stand-in finder) is gone: 007B96F0 forwards to 007E2090 and the gun's arguments match (5he). The
 mechanism matches the image, so the switch is flipped ON.
+
+### 5he.3 007EDC30, the squadron GetHpPercentage average (committed OFF, prediction)
+
+`kSquadronAverageHealthBound` (packet `cc9_l59_sq_avg_health`, CC13_VER_8 V2): a fused squadron slot's vtable[110h]
+answers 007EDC30 (the 00923BE0 sum over the current members over the initial count +3C8h, removed planes 0) through
+`bsp::squadron_average_health_007edc30`, fed by the registry record's `member_units` and `wing_count`; a summary line
+`summary mission script squadron health reads` appears when any read is served. Prediction (cc13: no reach found among
+the 336 GetHpPercentage sites): 0 squadron reads and gameplay identical on JM08, USNOS and USN12.
