@@ -866,10 +866,15 @@ bool resolve_window_origin(const std::string& spec, int& x, int& y, int& width, 
 // ---------------------------------------------------------------------------
 
 void GameWindowHost::stop_existing_window(Win32PlatformState& state) {
-    // Slot +8 is recovered BEBF70. Its saved power-policy producer and native
-    // normal-shutdown restore schedule are not yet bound in this application.
-    log_.unimplemented("PlatformWindowHost::stop_existing_window", "00bebf70");
-    static_cast<void>(state);
+    // Proven caller BECF27, not an inferred ordinary-shutdown schedule. The
+    // retained context rejects a fabricated/fresh +4C before its real producer.
+    power_policy_.stop_existing_window(state);
+    log_.implemented("PlatformWindowHost::stop_existing_window", "00bebf70");
+}
+
+void GameWindowHost::initialize_power_policy_after_render_entry_cache(Win32PlatformState& state) {
+    power_policy_.initialize_after_render_entry_cache(state);
+    log_.implemented("PlatformWindowHost::initialize_power_policy", "00bed223");
 }
 
 HCURSOR GameWindowHost::load_arrow_cursor() {
@@ -2191,8 +2196,9 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         // Its actual cache joins the same manager as the renderer and is
         // retired by the manager's current-profile scalar-deletion dispatch.
         native_renderer_->initialize_window_render_entry_cache();
-        // BED223..BED276 is recovered, but production policy mutation awaits
-        // the native restore/lifetime schedule; BECE30 only enables screensaver.
+        // The retained producer/stop owner is concrete in GameWindowHost, but
+        // this startup call remains gated until the actual normal-exit restore
+        // caller is established. BECE30 only enables the screensaver.
         log_.unimplemented("PlatformWindowHost::initialize_power_policy", "00bed223");
         summary_.device_result = device_->creation_result();
         summary_.back_buffer_width = device_->parameters().BackBufferWidth;
