@@ -35,6 +35,34 @@ void initialize_platform_power_00bed223_fragment(const PlatformPowerImports& imp
 void disable_platform_frames_and_post_quit_00bebf70(const PlatformPowerImports& imports,
     Win32PlatformState& state, POWER_POLICY& saved) noexcept;
 
+// Retained owner for native +50/+E0 policy storage. BECDA0 and its BE2AC0
+// base leave both policies and +4C untouched; BED223 is the first producer.
+// Its storage is deliberately default-initialized, retaining allocation bytes
+// when native ReadPwrScheme fails. No constructor/destructor calls an OS API.
+// This is a projected service, not the 184h-byte native platform object ABI.
+class PlatformPowerPolicyContext final {
+public:
+    explicit PlatformPowerPolicyContext(PlatformPowerImports imports) noexcept;
+    PlatformPowerPolicyContext(const PlatformPowerPolicyContext&) = delete;
+    PlatformPowerPolicyContext& operator=(const PlatformPowerPolicyContext&) = delete;
+
+    // Explicit BECEE0 BED223 boundary: call after the actual renderer and
+    // render-entry cache initialization. It does not schedule ordinary shutdown.
+    void initialize_after_render_entry_cache(Win32PlatformState& state);
+    // BECF27 calls this only for an already configured HWND. A fresh projected
+    // state has no genuine saved-policy producer and cannot satisfy this call.
+    void stop_existing_window(Win32PlatformState& state);
+    bool initialized_for(const Win32PlatformState& state) const noexcept;
+    const POWER_POLICY& saved_policy() const noexcept { return saved_; }
+    const POWER_POLICY& modified_policy() const noexcept { return modified_; }
+
+private:
+    PlatformPowerImports imports_;
+    POWER_POLICY saved_;
+    POWER_POLICY modified_;
+    Win32PlatformState* state_{};
+};
+
 // Only the SystemParametersInfoA call at BECE41, with its argument setup at
 // BECE31..BECE39. The deleting destructor BECE30 also changes the vtable,
 // destroys the text queue/base and conditionally frees; none are covered here.

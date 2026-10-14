@@ -2,6 +2,7 @@
 
 #include <cstring>
 #include <limits>
+#include <stdexcept>
 
 namespace bsp {
 
@@ -34,6 +35,31 @@ void disable_platform_frames_and_post_quit_00bebf70(const PlatformPowerImports& 
     }
     state.frames_enabled = false; // BEBF89, including restore failure
     imports.post_quit_message(0); // BEBF8D
+}
+
+PlatformPowerPolicyContext::PlatformPowerPolicyContext(PlatformPowerImports imports) noexcept
+    : imports_(imports) {
+    // Native BECDA0/BE2AC0 perform no +50/+E0 stores. Do not manufacture a
+    // zero policy: BED23D's ignored read failure retains the allocation bytes.
+}
+
+void PlatformPowerPolicyContext::initialize_after_render_entry_cache(Win32PlatformState& state) {
+    if (state_ != nullptr && state_ != &state)
+        throw std::logic_error("platform power policy belongs to another platform receiver");
+    initialize_platform_power_00bed223_fragment(imports_, state, saved_, modified_);
+    state_ = &state;
+}
+
+bool PlatformPowerPolicyContext::initialized_for(const Win32PlatformState& state) const noexcept {
+    return state_ == &state;
+}
+
+void PlatformPowerPolicyContext::stop_existing_window(Win32PlatformState& state) {
+    // This check is the projected owner contract, outside native BEBF70. A
+    // constructor-normalized +4C cannot replace BED223's actual scheme capture.
+    if (!initialized_for(state))
+        throw std::logic_error("platform stop requires this receiver's completed power-policy producer");
+    disable_platform_frames_and_post_quit_00bebf70(imports_, state, saved_);
 }
 
 void enable_platform_screensaver_00bece41_fragment(
