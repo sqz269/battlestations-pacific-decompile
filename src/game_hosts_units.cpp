@@ -6840,6 +6840,14 @@ struct GameUnitsHost::Impl {
     // Packet cc9_fighter_gunfire_rate: approach+B4h = uniform(0.6, 0.8) * class+268h
     // (009C3F63-009C3F97), pinned at 0.6 before. OFF: unmeasured (runs blocked).
     static constexpr bool kAttackDistDrawBound = true;
+    // Packet cc9_l57_dive_items (docs/CC13_VER_9.md finding 3): +B8h = +BCh =
+    // uniform(1.6, 1.8) * class+268h (009C3FB0 CALL 00BD2F10, stream 1 per cc13-ver9, after the
+    // +B4h draw; 009C3FE8 FST / 009C3FF5 FSTP). False: pinned at 1.6.
+    static constexpr bool kInRangeDrawBound = false;
+    // Packet cc9_l57_dive_items (docs/CC13_VER_6.md finding 4): 009C6EB1/009C6F17
+    // divide by frame [ESP+28h] = R, the 3-second lead range 009C63A6 writes (the
+    // only writer in 009C62B0-009C6F97), not |aim - pos|. False: db_planar_bc.
+    static constexpr bool kFlyAboveLeadDivisorBound = false;
     // Packet cc13-draws1 (docs/CC13_UNLABELLED_DRAWS_BATCH.md). Each is OFF until
     // its pair runs. The draws use release_altitude_draw_00bd2f10 with a per-site
     // key, never stream 0; the image draws all four on stream 1 (ECX = 1).
@@ -24744,6 +24752,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                         unit_.db_attack_dist_b4 = owner_.release_altitude_draw_00bd2f10(
                                             unit_.row.name, 0.6f, 0.8f) * r;
                                     }
+                                    if constexpr (GameUnitsHost::Impl::kInRangeDrawBound) {
+                                        // 009C3F9D-009C3FF5: 00BD2F10(1.6 [00D06BB4],
+                                        // 1.8 [00CF4848]) * class+268h, one draw for
+                                        // +B8h and +BCh (+BCh is recomputed per tick).
+                                        unit_.db_in_range_b8 = owner_.release_altitude_draw_00bd2f10(
+                                            unit_.row.name + "#b8", 1.6f, 1.8f) * r;
+                                    }
                                 } else {
                                     unit_.db_in_range_b8 =
                                         GameUnitsHost::Impl::kPilotDiveBombAttackDist;
@@ -26092,6 +26107,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // point, the same quantity 009C7A80 keeps in
                             // approach+BCh; the flyabove recomputes it locally.
                             ain.planar_distance = unit_.db_planar_bc;
+                            if constexpr (GameUnitsHost::Impl::kFlyAboveLeadDivisorBound) {
+                                // CORRECTED by cc13-ver6 finding 4: the divisor at
+                                // 009C6EB1/009C6F17 is [ESP+28h], the lead range R
+                                // 009C63A6 writes, so the comment above is wrong.
+                                ain.planar_distance = unit_.db_flyabove_lead_range;
+                            }
                             // approach+0Ch is never null here: 009C7A80 reads
                             // [approach+0Ch]+398h unconditionally at
                             // 009C7AA4/009C7AA7 every think, before this tick
