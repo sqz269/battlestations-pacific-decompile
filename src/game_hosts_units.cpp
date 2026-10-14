@@ -6948,12 +6948,13 @@ struct GameUnitsHost::Impl {
     // unconditionally at 009FC917 from the 007B96F0 search, null included) is
     // handed to 009A7650 when it is not null, not approach+B4h, has a squadron
     // (+9D4h) and that squadron is approach+CCh. True: the host's finder result
-    // (df_finder_scan_007e2090, the 007B96F0 stand-in) as last left by the gun
-    // tick, against the order's squadron (the approach+CCh stand-in of
-    // df_approach_update_009aac70); 009A7650's effects as df_select_009aa630 runs
-    // them (target, opportunistic rocket target). False: the aim state keeps its
-    // pick until the reselect.
-    static constexpr bool kDogfightAimAdoptsGunTargetBound = false;
+    // (df_finder_scan_007e2090; 007B96F0 only forwards to 007E2090 on
+    // unit+C50h, and the gun's arguments match, SQUADRON_LAND_TASK 5he) as last
+    // left by the gun tick, against the order's squadron (the approach+CCh
+    // stand-in of df_approach_update_009aac70); 009A7650's effects as
+    // df_select_009aa630 runs them (target, opportunistic rocket target).
+    // False: the aim state keeps its pick until the reselect.
+    static constexpr bool kDogfightAimAdoptsGunTargetBound = true;  // ON: SQUADRON_LAND_TASK 5he.2
     // Packet cc9_fighter_aim_wiring (docs/GUN_AIM_TERMS.md): the fine aim's
     // distortion 009FA7E0 and 009F9FC0's gun+4Ah damped cap, under the lead.
     static constexpr bool kFighterAimTermsBound = true;

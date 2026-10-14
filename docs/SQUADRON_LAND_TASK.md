@@ -16791,3 +16791,21 @@ Pairs on 9bc2a55fc: OFF `local\l59_c0_*`, both switches ON `local\l59_lu_*`.
 
 Both predictions hold: no gameplay reader of the capture fraction runs on these rows (usn_14:1127 needs the HQ hpEvent),
 and the extra forced record (the squadron's own slot) moves nothing. Both are faithful corrections: flipped ON.
+
+### 5he.2 Measured: `kDogfightAimAdoptsGunTargetBound` **ON** (cc9-lua59, 2026-10-14)
+
+Pair on 9bc2a55fc: OFF `local\l59_c0_*`, ON `local\l59_d2_*` (rows j8s = JM08 `jm08_p6_j8_f` 40000, osd = USNOS
+`usnos_s45_os_k` 30000).
+
+| row | adopts (`(gun target)`) | pair_diff | plane deaths | killed by a plane |
+|---|---|---|---|---|
+| JM08 | 0 (the B-17 phase is not reached by frame 40000 on this base) | 1, identical | - | - |
+| USNOS | 13 (Enterprise_sqn01-04 onto members of the squadron they were ordered at: plane #1.5, #1.6, #4.4, #4.5) | 3, moved | 75 -> 86 | 16 -> 14 |
+
+The adoption fires only under the image's four conditions, and every adopted target belongs to the ordered squadron.
+Air-to-air kills hold (15 -> 14 US kills, the same victims bar plane #4.6 and #4.6|.-2). The death rows that flip are not
+dogfight outcomes: Enterprise_sqn05-07 (strike squadrons) die to Zao/Ada AA at 793-1230 s only ON, and the Airfield1/2
+Betty squadrons sqn10/11/13/14 die to Portland/NH/transport AA at 1343-1414 s only OFF. Both follow the shifted
+timeline (the shared RNG stream, `shared-rng-stream-couples-pairs`) after the first adoption at about 288 s. 5gz.2's
+reason for OFF (a stand-in finder) is gone: 007B96F0 forwards to 007E2090 and the gun's arguments match (5he). The
+mechanism matches the image, so the switch is flipped ON.
