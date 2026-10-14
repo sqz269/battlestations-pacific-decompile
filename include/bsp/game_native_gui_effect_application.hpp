@@ -4,6 +4,7 @@
 #include <memory>
 
 namespace bsp {
+class NativeLuaServiceBindings;
 struct NativeMaterialDescriptorSamplersContext;
 class NativeMaterialDescriptorSamplersCallFactory;
 }
@@ -33,6 +34,9 @@ struct GameNativeGuiEffectLoadOperation final {
     // Stable borrowed actual8h header, retained by the caller through failure.
     const void* input_name{};
     void* captured_renderer{};
+    // Borrowed existing service identity, not another binding or Lua owner.
+    // Acquire activates it synchronously; interrupted Lua cannot be resumed.
+    NativeLuaServiceBindings* captured_lua_binding{};
     NativeMaterialEffectCacheAcquired cache;
     // Normal return transfers the actual owning reference to the caller.
     // After that this is an opaque diagnostic identity, not another owner.

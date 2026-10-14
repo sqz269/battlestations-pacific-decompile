@@ -11,6 +11,8 @@
 #include "bsp/native_material_effect_runtime.hpp"
 #include "bsp/native_material_program_compiler_actual.hpp"
 #include "bsp/native_shader_binary_cache.hpp"
+#include "bsp/native_shader_descriptor_reader.hpp"
+#include "bsp/native_lua_service_bindings.hpp"
 #include <cstring>
 #include <stdexcept>
 #include <vector>
@@ -34,6 +36,7 @@ struct GameNativeGuiEffectApplication::Impl {
     GameNativeMaterialCompilerSources sources;
     GameNativeMaterialEffectOwners effect_owners;
     NativeShaderBinaryCacheContext& shader_cache;
+    NativeLuaServiceBindings& lua_binding;
     NativeMaterialProgramCompilerActualContext actual_compiler_context;
     NativeMaterialProgramCompilerActual actual_compiler;
     NativeMaterialProgramCompileContext compile_context;
@@ -52,7 +55,7 @@ struct GameNativeGuiEffectApplication::Impl {
           textures(renderer.texture_cache()), registry(renderer.effect_registry_domain()),
           compiler_owners(renderer.material_compiler_owners()),
           sources(renderer.material_compiler_sources()), effect_owners(renderer.material_effect_owners()),
-          shader_cache(renderer.shader_cache_context()),
+          shader_cache(renderer.shader_cache_context()), lua_binding(renderer.lua_service_binding()),
           actual_compiler_context{raw.strings, shader_cache.load_variants_0108d6f0,
               shader_cache.source_mode_0108d6f1, shader_cache.actual_cache_0108d6ec,
               renderer.publication_00f8d394(), compiler_owners.passes, textures,
@@ -91,6 +94,11 @@ struct GameNativeGuiEffectApplication::Impl {
         validate_domain();
     }
     void validate_domain() {
+        const auto& reader = renderer.shader_descriptor_reader();
+        require(&renderer.lua_service_binding() == &lua_binding &&
+            &reader.files == &lua_binding.files() && &reader.strings == &raw.strings &&
+            reader.bootstrap.do_file_00b69e00 == lua_binding.files().do_file_00b69e00,
+            "GUI effect Lua execution requires the renderer reader's same retained actual service binding");
         (void)renderer.section_layout_services(); // Existing genuine ready gate.
         auto current = vfs.borrow_raw_services();
         require(&current.bindings == &raw.bindings && &current.strings == &raw.strings &&
@@ -160,6 +168,12 @@ void* GameNativeGuiEffectApplication::acquire_effect_00b318b0(const void* name) 
     p.phase = Impl::Phase::loading;
     op.phase = GameNativeGuiEffectLoadPhase::running;
     try {
+        op.captured_lua_binding = &p.lua_binding;
+        // Same scope used by the canonical renderer descriptor entry. It
+        // covers bootstrap, nested DoFile/overrides, and normal descriptor
+        // Lua close. Existing Activation restores the previous thread binding
+        // on ordinary return/C++ unwind; interrupted Lua remains unresumable.
+        NativeLuaServiceBindings::Activation activation(p.lua_binding);
         op.captured_renderer = p.renderer.publication_00f8d394();
         std::uint32_t profile{};
         require(op.captured_renderer != nullptr, "GUI effect producer has no live actual renderer");

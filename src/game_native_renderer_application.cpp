@@ -485,6 +485,10 @@ NativeShaderBinaryCacheContext& GameNativeRendererApplication::shader_cache_cont
 NativeShaderDescriptorReadContext& GameNativeRendererApplication::shader_descriptor_reader() noexcept {
     return impl_->descriptors.reader;
 }
+NativeLuaServiceBindings& GameNativeRendererApplication::lua_service_binding() {
+    check(impl_->phase==Impl::Phase::ready,"Lua service binding requires the ready application renderer");
+    return impl_->lua_services.binding();
+}
 GameNativeMaterialCompilerOwners GameNativeRendererApplication::material_compiler_owners() {
     check(impl_->phase==Impl::Phase::ready,"material compiler owners require the ready application renderer");
     return impl_->compiler_owners.borrowed();
