@@ -5,6 +5,7 @@
 #include "bsp/gameplay_seg38_cc13.hpp"
 
 #include <cmath>
+#include <cstring>
 #include <limits>
 
 namespace bsp {
@@ -603,17 +604,30 @@ int nearest_unit_index_0071db90(const Vec3f& pos, const std::vector<Vec3f>& unit
     return best;
 }
 
-EntityHandleRoute entity_handle_route_00720fa0(std::uint16_t index, int split_00f89a10,
-                                               int first_base_00f89a0c, int second_base_00f89a60) noexcept {
-    const int i = static_cast<int>(index);
-    if (i < split_00f89a10) return EntityHandleRoute{0, i - first_base_00f89a0c};
-    return EntityHandleRoute{1, i - second_base_00f89a60};
+// 00720FA0..00720FD6: MOVZX the word, CMP EAX,[00F89A10] / JGE (signed), then
+// SUB the table's base id, SHL 4 and MOV EAX,[entry + table + 0Ch].
+void* entity_from_message_00720fa0(std::uint16_t index_20, const ObjectHandleTables& tables) noexcept {
+    const std::uint32_t id = index_20;
+    std::uint32_t index;
+    const void* entries;
+    if (static_cast<std::int32_t>(id) < tables.first_end_00f89a10) {
+        index = id - static_cast<std::uint32_t>(tables.first_begin_00f89a0c);
+        entries = tables.first_entries_00f89a54;
+    } else {
+        index = id - static_cast<std::uint32_t>(tables.second_begin_00f89a60);
+        entries = tables.second_entries_00f89aa8;
+    }
+    const std::uint32_t address = reinterpret_cast<std::uint32_t>(entries) + (index << 4) + 0xc;
+    void* entity;
+    std::memcpy(&entity, reinterpret_cast<const void*>(address), sizeof(entity));
+    return entity;
 }
 
-std::optional<EntityHandleRoute> entity_handle_route_nonzero_00720fe0(
-    std::uint16_t index, int split_00f89a10, int first_base_00f89a0c, int second_base_00f89a60) noexcept {
-    if (index == 0) return std::nullopt;
-    return entity_handle_route_00720fa0(index, split_00f89a10, first_base_00f89a0c, second_base_00f89a60);
+// 00720FE0..00721021: TEST AX,AX on the word / JZ -> XOR EAX,EAX; otherwise
+// the same two-table read as 00720FA0 (inlined in the image, not a call).
+void* entity_from_message_nonzero_00720fe0(std::uint16_t index_20, const ObjectHandleTables& tables) noexcept {
+    if (index_20 == 0) return nullptr;
+    return entity_from_message_00720fa0(index_20, tables);
 }
 
 CommandTargetDescriptor descriptor_init_00721070(std::uint32_t ordinal_00e08f8c) noexcept {

@@ -70,6 +70,10 @@ BSP_AutoTest_Step, `00426650` BSP_AutoTest_NextMpakScene.
 
 ## Handoff (cc13-camera2)
 
+Taken by cc13-seg1: 00427190, 00426650, 00425EB0, 00425500 and 00425A80 are reconstructed in
+`src/scenes_seg1_cc13.cpp` (docs/CC13_SEG1.md), and `AutoTestDriver` gained the +20h byte. The list
+below is the original handoff.
+
 Next, in order:
 
 - `00427190` BSP_AutoTest_Step (1776 bytes). It is the per-screen driver. Screen 0Ch counts movie

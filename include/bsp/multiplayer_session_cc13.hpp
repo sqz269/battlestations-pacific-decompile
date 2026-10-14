@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "bsp/native_smoothed_remainder_triplet.hpp"
+#include "bsp/net_entity_create_cc13.hpp"
 #include "bsp/session_message_dispatch.hpp"
 
 // Multiplayer session plumbing in partition segment 43 (0076AA00..00787040):
@@ -1257,26 +1258,29 @@ struct NetTableSyncText {
 };
 void apply_net_table_sync_text_00780b90(const NetTableSyncText& text, NetTableSyncHost& host);
 
-// DFh as 00780A70 constructs it (__thiscall(msg, entity) RET 4, no Ghidra
-// function) and 00780AE0 builds it inline: base 00766FC0(DFh, 0, entity, 0)
-// (the generic entity-create header, not reconstructed here), vtable
-// 00D03804, byte +C4h = 0, dword +10Ch = game+18C8h (the local player). The
-// codec slots are shared generic ones: write 00767D70 (JMP 00765000), read
-// 007683B0 (JMP 00767E30); is-a 00767D40 answers DFh/47h/46h.
+// DFh as 00780A70 constructs it (__thiscall(msg, entity) RET 4) and 00780AE0
+// builds it inline: first the generic entity-create base constructor
+// 00766FC0(DFh, 0, entity, 0) (net_cc13::build_entity_create_00766fc0, which
+// copies the entity's id, parent, position, angles, words and group fields),
+// then vtable 00D03804 over the base's 00D03720, byte +C4h = 0 (overwriting
+// the base's entity+58h copy) and dword +10Ch = [[00E188A8]+18C8h] (the local
+// player, overwriting the base's entity+180h copy). The codec slots are shared
+// generic ones: write 00767D70 (JMP 00765000), read 007683B0 (JMP 00767E30);
+// is-a 00767D40 answers DFh/47h/46h.
 struct NetTableCreateMessage {
-    std::uint8_t type{kNetTableCreateMessageType};
     std::uint32_t vtable{kNetTableCreateMessageVtable};
-    const void* entity{nullptr};
-    std::uint8_t byte_c4{0};
-    std::int32_t local_player_10c{0};
+    net_cc13::EntityCreateMessage base;   // type_10 = DFh from 00766FC0
 };
-NetTableCreateMessage build_net_table_create_00780a70(const void* entity,
-                                                      std::int32_t local_player) noexcept;
+NetTableCreateMessage build_net_table_create_00780a70(const net_cc13::EntityCreateSource& entity,
+                                                      net_cc13::EntityCreateHost& entity_host,
+                                                      std::int32_t local_player);
 
 struct NetTableCreateHost {
     virtual ~NetTableCreateHost() = default;
-    // 00779FC0 on the entity: msg+18h = entity+174h, then 00770B50(peer, msg).
-    virtual void send_to_peer_00779fc0(void* peer, const NetTableCreateMessage& message) = 0;
+    // 00779FC0 __thiscall(entity, peer, msg): msg+18h = entity+174h, then
+    // 00770B50(peer, msg).
+    virtual void send_to_peer_00779fc0(const void* entity, void* peer,
+                                       NetTableCreateMessage& message) = 0;
     // 007813B0: operator new(314h) (00BF55BE) zeroed by 00BF79F0; null on failure.
     virtual void* allocate_zeroed_314() = 0;
     // 00780DB0 __thiscall(obj, uint16 id): BSP_MultiScore_Construct; returns obj.
@@ -1284,9 +1288,12 @@ struct NetTableCreateHost {
 };
 
 // 00780AE0 __thiscall(entity, peer) RET 4: build DFh on the stack (as
-// 00780A70), send it to the peer through 00779FC0, destroy it (007668E0).
-void send_net_table_create_00780ae0(const void* entity, void* peer, std::int32_t local_player,
-                                    NetTableCreateHost& host);
+// 00780A70), send it to the peer through 00779FC0, destroy it (007668E0, which
+// frees the base's +C0h string and +4Ch vector: the members' destructors here).
+// `entity` is the same object `source`/`entity_host` describe.
+void send_net_table_create_00780ae0(const void* entity, const net_cc13::EntityCreateSource& source,
+                                    net_cc13::EntityCreateHost& entity_host, void* peer,
+                                    std::int32_t local_player, NetTableCreateHost& host);
 
 // 007813B0 __fastcall(ECX = DFh msg), the message's vtable[1Ch]: the
 // receiver-side factory 0077EC20 calls when msg+1Ch names no registered

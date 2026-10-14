@@ -72,6 +72,8 @@ hypotheses, not recovered symbols.
   with status `existing_reconstruction_reviewed_minor_rounding_defect`. The image stores dy*dy
   as a float first, then dx*dx as a float, and returns their float sum; the C++ keeps dy*dy in
   double before the add, and its comment says the x square is stored first. Not edited here.
+  Fixed later by cc13-seg1: both squares are now rounded to float, dy*dy first, and the record
+  status is `semantic_build_tested`.
 
 ## Not reconstructed here
 
