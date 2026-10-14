@@ -6,9 +6,11 @@ texture/far-corner continuation, the B15BD2..B15E77 bloom/target stage, and
 B15E78..B15EC3 camera-frame/mode/system-gather continuation, and the
 B15EC4..B15F62 DRSH label/ownership clause, and B15F63..B16067 batch
 selection, preparation and execution, and B16068..B160CF excluded-node and
-camera/label restoration. The enabled excluded-node path now uses full raw
-B10500 and B1E6D0. The current final boundary is before B160D0, which loads
-service+60 for its current virtual +10 call at B160D8.
+camera/label restoration, followed by B160D0..B16109 depth-downscale drawing,
+system gathering and saved-color restoration. The enabled excluded-node path
+uses full raw B10500 and B1E6D0. The depth-downscale path now uses the complete
+raw B4DFB0 and B4DCC0 providers. The current final boundary is before B1610A,
+which begins constructing the SCNE label.
 Reaching any boundary does not mean a scene command executed successfully. The
 existing queue must continue refusing D5E13C: B17240 preparation and the
 remaining B156C0 render passes are not installed or claimed complete.
@@ -541,11 +543,85 @@ Artifacts are under `local/main_scene_excluded/`; the preceding 54 artifact
 pins were frozen and verified under `local/main_scene_batch_receipt_e12917fa1/`
 before edits or builds. Earlier receipt chains remain hash-verified.
 
+## Depth-downscale draw and second gather
+
+`continue_native_main_scene_post_gather_00b160d0` implements the following
+58-byte, 18-instruction clause, ending before B1610A. Its incoming DRSH state
+must already be disarmed at -1 and the preceding camera restoration complete.
+It calls current service+60/current virtual+10, captures current camera+A4
+scene before a second camera getter and real B46A70 system gathering, then
+captures the saved color before a third camera getter and B6FE50 restoration.
+The source frame preserves the last callsite and every completed effect on
+failure; there is no label cleanup, rollback, unmap retry or frame replay.
+
+The actual service producer is B107F0: B10BD6 allocates 20h, B10BF7 installs
+D5E164, and B10C1D publishes the owner at service+60. B10C20 then calls B540B0,
+whose post-effect creation uses `downscale_depth.mshd`, vertex count3 and the
+actual owner+08 post object. The current five-word D5E164 table is BD30E0,
+B10120, B0D540, B540A0, B4DFB0. This producer/profile evidence establishes the
+depth-downscale owner rather than inferring it from the consumer offset.
+
+`draw_native_post_effect_owner_00b4dfb0` is the complete 11-byte wrapper: load
+owner+08, push unused0, call B4DCC0 and return. The complete 555-byte B4DCC0
+provider now runs against the same actual renderer/camera/frame, surface,
+logical/physical vertex, and material contexts used by its descendants:
+
+- Read frame color0 twice; obtain height from the first surface and width from
+  the second, then write the current post camera's actual viewport dimensions.
+- Call current renderer+A0 camera preparation. Capture the next renderer and
+  profile before another current-camera viewport getter, then bind through
+  captured+A4. Read a fresh renderer for current+98 frame-target binding.
+- Get actual generated-model geometry0 and raw stream0. Capture vertex count
+  for real B49980 mapping; reread post+1C after mapping to select triangle3 or
+  the quad path. Preserve every MOVSS/XORPS value, constant-cell read and vertex
+  store order through volatile DWORD operations. Unlock the captured stream
+  through its current established B49A80 slot.
+- Reload the current material/effect/pass and entry, then execute the existing
+  genuine current material-pass dispatcher with its caller-owned persistent
+  constant-builder frame. This body does not create a replacement draw callback.
+
+Original B4DCC0 takes ECX actual20h post object plus one unused stack word and
+returns RET4. B4DFB0 takes ECX actual pass owner and returns RET. The enclosing
+scene clause still belongs to B156C0's private stack/register frame; these source
+context/frame interfaces do not reproduce that ABI. Native SSE arithmetic is
+absent here: the new integer bit copies preserve data and memory access order,
+without claiming incidental XMM values or exception/fault register identity.
+Raw extents, valid profiles and stable borrowed cells remain preconditions;
+arbitrary concurrent mutations and native private-stack aliases are unproved.
+
+The focused fixture maps exact original555+11+58-byte bodies inside its own
+loader-reserved PE section and compares count3 and count4 against Source. It
+uses a real D3D9 HAL device, dynamic vertex buffer Lock/Unlock and84/112-byte
+readback; real camera preparation, viewport binding and changed frame-target
+binding verified by device render-target and viewport readback; the actual
+D61BE8/B454D0 material provider's section+4C==0 geometry
+gate; real B46A70 constant generation with VS/PS device readback; and saved
+color restoration. Camera, viewport, renderer, service, owner counts, vertex
+bytes and uploaded constant bytes match. The material gate is stated explicitly:
+this fixture does not execute an active material draw or shader application.
+The original caller bodies bridge to the same real Source descendants, so these
+comparisons are caller/body evidence, not independent descendant reconstruction
+proof. The incoming prior-restoration boundary is seeded, not rerun as a whole
+native scene chain. Raw owner layouts with positive borrowed counts are prepared
+by the fixture; application owner construction and terminal disposal are not
+claimed. A source-only late material-profile rejection preserves completed map,
+write and unmap effects, skips gather/color work and rejects frame replay.
+
+Strict Win32 compilation and the normal build's three existing checks pass.
+Emitted-code inspection matches 46 ordered native vertex stores and 10 ordered
+constant-cell reads in both the outlined writer and its optimized inline body,
+and confirms the provider/camera-getter call order. All 330 inherited tagged
+x87 encodings still match; this packet adds no x87 operations. The 24 byte spans
+(1,258 bytes including profiles/constants/leaves) match installed and live
+saved-Ghidra bytes. Artifacts are under `local/main_scene_post_gather/`. All 62
+previous105ab61e9 artifact pins were frozen before edits/builds under
+`local/main_scene_excluded_receipt_105ab61e9/`; all 261 earlier pins remain
+verified. No persistent tests, host route or CMake activation were added.
+
 ## Next executed clause
 
-B160D0 loads current service+60; B160D8 calls its current virtual +10. Its real
-producer/profile and complete raw body must be established before advancing.
-Following system gathering, saved-color restoration, scene/post/cockpit/
-distortion/statistics work and cleanup states still need their concrete bodies.
-B17240 preparation remains separate. D5E13C continues to be unadmitted pending
-the complete raw body and application graph.
+B1610A begins the SCNE raw-string construction; B16144 installs cleanup state3
+before current global-service label assignment. Its lifetime and failure paths,
+the remaining scene/post/cockpit/distortion/statistics passes and cleanup states
+still need their concrete bodies. B17240 preparation remains separate. D5E13C
+continues to be unadmitted pending the complete raw body and application graph.
