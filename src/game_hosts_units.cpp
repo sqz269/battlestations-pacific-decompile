@@ -67,6 +67,7 @@
 #include "bsp/torpedo_task_arm.hpp"
 #include "bsp/attack_commands.hpp"
 #include "bsp/strafe_task.hpp"
+#include "bsp/airops_ver_cc13.hpp"  // packet cc9_l57_moveto_self
 #include "bsp/strike_approach_ver_cc13.hpp"  // packet cc9_l57_ctl_cruise_cap
 #include "bsp/kamikaze_task_cc13.hpp"   // packet cc9_lua52_kamikaze_wiring
 #include "bsp/kamikaze_task_host.hpp"
@@ -2627,7 +2628,12 @@ struct GameUnitsHost::Impl {
         std::uint32_t command{0};
         std::size_t placed{0};
         std::uint32_t census_unlatched_class{0xFFFFFFFFu};   // BSP_SPENT_RTB_CENSUS only
+        // Packet cc9_l57_moveto_self: the command the retest ended at stage 2, and
+        // whether 0084E595's moveto-self is the squadron's current order.
+        std::uint32_t ended_stage2_command{0};
+        bool moveto_self{false};
     };
+    unsigned long long moveto_self_issues{0}, moveto_self_placed{0};
     std::map<std::string, SpentOrdnanceRtb> spent_rtb;
     unsigned long long spent_rtb_latches{0}, spent_rtb_ends{0}, spent_rtb_issues{0};
     unsigned long long rack_device_reloads{0};   // packet cc9_rack_device_reload
@@ -6405,6 +6411,14 @@ struct GameUnitsHost::Impl {
     // sent home. False: every plane with 2Bh ordnance and a target also gets a
     // torpedo task, whose break-off answers for the Betty.
     static constexpr bool kDropKamikazeSpentRtbBound = true;   // ON: SQUADRON_LAND_TASK 5gq.1
+    // Packet cc9_l57_moveto_self (docs/CC13_VER_10.md D1, model src/airops_ver_cc13.cpp):
+    // 0084E010's tail sends a squadron to 0084E595, `0071ECF0(00E08F68, 00465080(
+    // squadron, 0.0))`, a moveto on the squadron itself, from three arms: the idle
+    // arm b4 (a command ended at stage 2 without the latch), the resolve gate
+    // (+369h and [00E17BF2] both set) and a null 007F16D0 answer. A moveto whose
+    // target is the squadron stays at stage 1 (0084E48A), so the flight loiters on
+    // itself. False: those squadrons get no order (the host's B5 only).
+    static constexpr bool kSquadronMoveToSelfBound = false;
     // Packet cc9_lua45_rack_equipment_device (GUNNERY 144, SQUADRON_LAND_TASK 5ev).
     // True: (a) an absent RepeatTime reads as 006E0242's default, 00B66330 with
     // [00CE3D30] = 0.6f, at both rack readers; (b) a rack's device is the plane's
@@ -15510,6 +15524,7 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
                 ++h.retest_dead_targets;
                 const GameCommandCompletion done = end_command_0071e430(leader, command, true);
                 if (done.ran) ++h.retest_ends;
+                if (done.ran) st.ended_stage2_command = command;   // packet cc9_l57_moveto_self
                 // After 0071E430 the director answers no attack class, so 0071EBF0
                 // falls to its neutral record (00E19BB4): the rows stop being current
                 // and the members' resolved target is cleared. LABELLED: the host's
@@ -15561,6 +15576,74 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
     if constexpr (bsp::kSquadronSpentOrdnanceRtbBound) {
         for (const auto& e : issue) {
             h.spent_rtb[e.second].placed = issue_return_to_base_007f16d0(e.first, "0084E010 B5");
+        }
+    }
+    if constexpr (Impl::kSquadronMoveToSelfBound) {
+        // 0084E4B1-0084E5C6 through squadron_step_issues_moveto_self. LABELLED: the
+        // stage is 2 once the retest ended the command (0071E430) or B5 ran; the queue
+        // holds that one command (0071BE60() = 1); +368h is 0 and +369h is 1 (007F2D09).
+        const bool device_reload = kLuaDeviceReloadEnabledBound && lua_device_reload_enabled_00e17bf2();
+        for (const bsp::PlaneSquadronHostRecord& sq : bsp::plane_squadron_registry().records()) {
+            auto it = h.spent_rtb.find(sq.name);
+            if (it == h.spent_rtb.end()) continue;
+            Impl::SpentOrdnanceRtb& st = it->second;
+            const std::size_t leader = sq.flight_leader();
+            if (leader == bsp::kPlaneSquadronNoUnit || leader >= h.slots.size()) continue;
+            if (gun->unit_dead(leader)) continue;
+            const std::uint32_t current = h.slots[leader]->attack_command_class;
+            if (st.moveto_self) {
+                // A new order replaced the moveto-self: a fresh cycle.
+                if (current != 0x00E08F68u) {
+                    st.moveto_self = false;
+                    st.ended_stage2_command = 0;
+                }
+                continue;
+            }
+            bsp::SquadronStepTailInputs in;
+            in.latch_3c = st.latch_3c;
+            in.command_54 = st.ended_stage2_command != 0 ? st.ended_stage2_command : st.command;
+            in.reload_enabled_369 = true;
+            in.device_reload_e17bf2 = device_reload;
+            in.flag_368 = false;
+            const bool stage2 = (st.ended_stage2_command != 0 && current == st.ended_stage2_command)
+                || st.ended;
+            in.stage_48 = stage2 ? 2 : 0;
+            in.override_stage_50 = st.ended ? 2 : 0;
+            in.filled_slots_71be60 = 1;
+            in.head_arm = false;
+            const bsp::SquadronStepTailPlan plan = bsp::squadron_step_tail_plan_0084e4b1(in);
+            bool go = false;
+            if (plan.outcome == bsp::SquadronStepTailOutcome::kMoveToSelfIfRoom) {
+                go = bsp::squadron_step_moveto_self_0084e595(1, in.stage_48);
+            } else if (plan.outcome == bsp::SquadronStepTailOutcome::kResolve
+                       && st.issued && st.placed == 0) {
+                go = bsp::squadron_step_moveto_self_0084e595(1, in.stage_48);   // 0084E55B JE
+            }
+            if (!go) continue;
+            if (sq.squadron_unit >= h.slots.size()) continue;
+            bsp::SceneCommandTarget target;
+            target.kind = 1;
+            target.position_valid = 0;
+            target.object_id = static_cast<std::uint16_t>(sq.squadron_unit + 1);
+            target.object = const_cast<void*>(unit_identity(sq.squadron_unit));
+            target.position[0] = target.position[1] = target.position[2] = 0.0f;
+            target.trailing = 0.0f;
+            std::size_t placed = 0;
+            const std::vector<std::size_t> members = sq.member_units;
+            for (const std::size_t m : members) {
+                if (m == bsp::kPlaneSquadronNoUnit || m >= h.slots.size() || gun->unit_dead(m)) continue;
+                if (issue_script_command(m, 0x00E08F68u, target, 1, "0084E595 moveto-self",
+                                         h.slots[sq.squadron_unit]->row.name) != nullptr) {
+                    ++placed;
+                }
+            }
+            st.moveto_self = true;
+            ++h.moveto_self_issues;
+            h.moveto_self_placed += placed;
+            h.log.notef("squadron moveto-self: \"%s\" at %.2f s (latch=%d ended=%d stage2=%08X "
+                "b4=%d b5=%d placed=%zu) (0084E595, packet cc9_l57_moveto_self)", sq.name.c_str(),
+                static_cast<double>(now), st.latch_3c ? 1 : 0, st.ended ? 1 : 0,
+                st.ended_stage2_command, plan.b4 ? 1 : 0, plan.b5 ? 1 : 0, placed);
         }
     }
 }
