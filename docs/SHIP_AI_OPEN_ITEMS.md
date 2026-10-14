@@ -17819,3 +17819,20 @@ No counter or switch was added: neither state is reachable on the only call path
 `semantic_build_tested` with the corrected ABI (`__thiscall(ECX page, float seconds), RET 4`, not __fastcall/RET),
 and the host's two release labels are corrected (0067BB96 is the change-away release, 0067BC2C..0067BC37 the
 no-controlled release). Uncertainty: unreachability rests on the pump being the sole caller of slot 20h of this page.
+
+## 249. 241 item 4: the hangar fire roll and the shipyard's 00845AC0 stay unbound (cc9-ships50, 2026-10-14; lead item 4)
+
+- **00845AC0** (`BSP_Shipyard_OnHangarsLost`, MShipyard vtable 00D0B770 slot 1A8h, dword 00D0B918; read with
+  `bsp.py show 00845ac0`): returns while any `+784h` record's object passes the 0043F080 live test; otherwise
+  `+71Ch` (a parent CommandBuilding) clear calls vtable+70h(1), set calls vtable+194h("InferiorFailure", 0). The
+  shipyard's slot 194h is 00953DA0 (dword 00D0B904), the base arm that sends message 7Dh and sets `+720h`, the byte
+  Lua's `GetFailure(ent, "InferiorFailure")` / `InferiorIsDisabled` read. Its only caller is the hangar's 00747170
+  after the 1e10 hand-off, and only while the master is still live, which needs a parent CommandBuilding (00958A30's
+  `+71Ch` arm). The host already counts that case (`land master ... die_unhosted`): **0 in every run log of the last
+  two days in all cc9 trees** (1307 logs over 1 MB, summary lines read with `Get-Content -Tail 600`), so no row reaches
+  it. Not bound; a counter exists if a mission ever does.
+- **The 007470B0 fire roll on LandFort hangars** (the host runs it for CommandBuildings only): its outcome is the
+  fire effect (00746320 -> 008689C0), the D1h sync and, from 00745BE0, the secondary-explosion effect, all
+  presentation in the host's model, plus stream-0/1 draws keyed by unit under `BSP_GUNNERY_RNG_STREAMS=1`. Nothing in
+  gameplay reads `+740h`/`+748h`. Not bound. Uncertainty: 00745BE0's class+2Ch point draw (00745E41) is modelled with
+  count 0, as before; if that table spawns damaging explosions, the hangar fire would matter.
