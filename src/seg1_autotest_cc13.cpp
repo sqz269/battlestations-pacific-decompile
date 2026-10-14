@@ -141,11 +141,16 @@ std::uint32_t count_flagged_records_00425b20(const std::vector<FlaggedRecord>& r
 }
 
 bool autotest_ensure_screen_00426350(std::int32_t screen, ScreenHost& host) {
-    if (host.active_screen_00a9c990() == screen) {
-        host.activate_current();
+    void* menu = host.main_menu_e198ac_58();
+    // 00426355..00426365: menu ? menu + 8 : 0, the listener sub-object.
+    void* listener = menu != nullptr ? static_cast<void*>(static_cast<std::uint8_t*>(menu) + 8) : nullptr;
+    void* listbox = host.menu_listbox_1b8(menu);                       // 0042636A
+    if (host.listbox_selected_data_00a9c990(listbox) == screen) {      // 00426372
+        // 0042637F..00426390: PUSH list box; 00425E50(list box); PUSH EAX; listener->vtable[4].
+        host.listener_activate_vslot04(listener, host.listbox_current_row_00425e50(listbox), listbox);
         return true;
     }
-    host.request_screen_00a9c860(screen);
+    host.listbox_select_data_00a9c860(listbox, screen);                // 0042639D
     return false;
 }
 
