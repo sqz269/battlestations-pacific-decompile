@@ -1,0 +1,74 @@
+{
+  "packet": "cc12_actual_font_probe",
+  "source_base": "5f014f177e082840fbd6b6646a9655544ee2fd1d",
+  "status": "source_helper_strict_compiled_live_probe_pending",
+  "interface": "bsp::game::probe_actual_native_fonts(GameHostLog&, GameNativeRendererApplication&, GameVfsHost&, GameScriptHost&, const std::string&)",
+  "integration": {
+    "owner": "primary",
+    "opt_in": "BSP_NATIVE_FONT_PROBE=1",
+    "startup_point": "after actual renderer/device/VFS and phase-7 Lua/font initialization",
+    "registry": "isolated empty FontRegistryStartup; no replacement publication",
+    "root_constant": "kFontRootPrefix",
+    "descriptor_constant": "kFontDescriptorPath",
+    "language": "actual VFS language_font_path",
+    "font_export": false,
+    "text_creation": false,
+    "worker_cmake_registration": false,
+    "primary_cmake_registration": "pending"
+  },
+  "genuine_services": [
+    "same GameNativeRendererApplication and actual owner registry",
+    "actual pooled strings and native renderer texture-cache operations",
+    "same GameVfsHost DAT read",
+    "existing sole native font decoder and adoption",
+    "same loaded Lua FileTableRegistry and LuaGlobalRegistry"
+  ],
+  "observations": [
+    "nonempty completed descriptor and persistent producer operation set",
+    "stable descriptor/native-resource identities and cleared transfer slots",
+    "sole distinct FontData allocations and original glyph/fallback aliases",
+    "canonical actual owner before raw texture observation",
+    "actual profile and atomic reference_count at raw +04",
+    "explicit retirement and exact per-image owned-slot reference delta",
+    "canonical metadata lookup before any post-zero storage read"
+  ],
+  "actual_texture_profiles": ["00D61948", "00D61870", "00D618B0"],
+  "failure": {
+    "diagnostics": "actual stage, persistent producer/cache/loader state, paths, exception, HRESULT and transfer identities",
+    "heap_state": "retained; never unwound on failure",
+    "caller_services": "remain live through process exit",
+    "policy": "close log then std::_Exit(1), existing application process-retention policy",
+    "replay_or_retarget": false,
+    "success_default_or_wrapper_texture": false
+  },
+  "verification": {
+    "strict_compile": {
+      "result": "passed",
+      "target": "MSVC Win32",
+      "flags": "/c /std:c++17 /W4 /WX /EHsc /permissive- /O2 /MD /fp:strict",
+      "log": "local/cc12_actual_font_probe/compile.log",
+      "log_sha256": "918D01A64453A28874542428000638DB25A77ED8EFCA4E1B3201701C38793861",
+      "object": "local/cc12_actual_font_probe/game_native_font_probe.obj",
+      "object_sha256": "2DAE0A0D276D0FBE38C07AF6A78E1BEBBCC5025FA6707B30EE050FC61DFB7ECF"
+    },
+    "standard_worker_build": {
+      "command": "scripts/build.ps1",
+      "result": "passed",
+      "ctest": "2/2 passed; 11.04 seconds",
+      "log": "local/cc12_actual_font_probe/build.log",
+      "log_sha256": "BC30841C88733785F224094A9760D608B0E400F858248D431E0FDBC9826B63B0",
+      "coverage": "existing registered sources; new producer/probe TUs separately strict-compiled until primary registration"
+    },
+    "live_execution": "pending primary serialized launcher",
+    "new_tests": 0,
+    "ghidra_mutations": 0
+  },
+  "not_established": [
+    "linked registered helper until primary combined build",
+    "actual runtime resource success until opt-in execution",
+    "original AD4C30 register ABI or raw tree/pool/exception layout",
+    "AD51D0 destructive language reload",
+    "canonical native Text or GUI/material/frontend binding",
+    "native Text/world rendering and gameplay"
+  ]
+}
