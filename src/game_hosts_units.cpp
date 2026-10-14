@@ -6129,14 +6129,14 @@ struct GameUnitsHost::Impl {
     // (substitution); approach+A4h = 3 and [approach+1Ch]+40h = 0 have no host
     // cell; state+8Ch (republished to squadron+3E8h by 009BFDA6) is kept on the
     // slot for the log only, no host reader. False: the arm is skipped, as before.
-    static constexpr bool kTorpedoDoneDisarmedArmBound = false;
+    static constexpr bool kTorpedoDoneDisarmedArmBound = true;   // ON: SQUADRON_LAND_TASK 5hn
     // Packet cc9_l60_formation_shapes (cc13-confirm C): the drop-kamikaze
     // prepare/done enter 009AD180 writes squadron+3E4h = 3 (009AD1A5) and
     // re-runs 007ED260 after its follow enter 009BED80, which writes 1
     // (009BEDDA). True: both writes reach the registry's formation_shape_3e4
     // (007ED260 runs inside the placement seam, as for the dive bomber), so the
     // wingmen fly 007F23A0's shape-3 station. False: the shape stays as seeded.
-    static constexpr bool kDropKamikazeFormationShapeBound = false;
+    static constexpr bool kDropKamikazeFormationShapeBound = true;   // ON: SQUADRON_LAND_TASK 5hn
     // Packet cc9_l60_level_issue_tail (cc13-confirm D). 007C0D90's rack walk ends
     // at 007C0ED3 and falls to 007C0ED9 for the level bomber too: when the walk
     // armed a rack (the byte 007C0E23 raises) the tail sets unit+C25h = 1
@@ -6146,7 +6146,7 @@ struct GameUnitsHost::Impl {
     // that tail through the torpedo path's binding. False: it returns after the
     // walk, as before. The per-rack 31h 007BCCF0 -> 006E3F90 point
     // (007C0E98-007C0EC9) is not modelled; no rack here answers 31h.
-    static constexpr bool kLevelBomberIssueTailBound = false;
+    static constexpr bool kLevelBomberIssueTailBound = true;   // ON: SQUADRON_LAND_TASK 5hj.2/5hj.3
     // Packet cc9_l60_level_order_spend (CC13_VER_6 findings 2 and 5, with
     // kLevelBomberIssueTailBound). 0099AF53-0099AFC2 in the pilot bot's tick, before
     // its task ticks (0099AFCC): while unit+C58h > 0, with the plane in free flight
@@ -6159,7 +6159,7 @@ struct GameUnitsHost::Impl {
     // +6B4h), 007BBBA0 and +424h -= 1. True: both run on the level-bomb task. NOT
     // MODELLED: 009B83D0's prepare arm 009B8100 (prepare's own tick 009B6670 is not
     // hosted; no row reaches prepare). False: neither runs.
-    static constexpr bool kLevelBombReleaseOrderSpendBound = false;
+    static constexpr bool kLevelBombReleaseOrderSpendBound = true;   // ON: SQUADRON_LAND_TASK 5hj.2/5hj.3
     // Packet cc9-gunnery38 (docs/CC13_AUDIT13_RECENT_FLIPS.md O1). The strafe
     // cruise profile 009CD020, run once per activation (the install and each
     // time the strafe task resurfaces after a tightturn or flikflak retires),
