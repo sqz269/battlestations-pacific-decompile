@@ -14144,3 +14144,55 @@ bound: it reroutes `game_hosts_units.cpp` ~:27297, which is a shared file.
   slightly. Fast targets for Mark 15 / Type 95 tubes (13 m/s swim) are the exception.
 
 The 0.2 s think timer (`008FFF20` step 1) is still not modelled.
+
+## 233. Verdicts for 228-231 and 221, win set, flips (cc9-gunnery42, 2026-10-14)
+
+The pairs were exported from `1740e9ab2` (228) and `038ad7bac` (229, 230). The win set and the bisect come from
+`dd4f7d6cd`. Everything is same-tree and uses the reference env. Logs are `local\g42_<tag>_<row>.log`, each with
+its `.manifest.json`. Export dirs and their contents are listed in `local\g42_exports.txt`.
+
+**Pairs (mechanism).**
+
+| switch | evidence | verdict |
+| --- | --- | --- |
+| 228 D3 `kArtilleryClassSpeedBound` | USN02 `aims=109427 launches=692`, `fly_time_expiries=0` everywhere. JM08: hull hits 534 -> 450, shots 3707 -> 2777 (the s > 1 refusal beyond Range). JM08 Failed (HQ) moves 981 -> 907 s; it fails OFF too. USN13 is gameplay-identical (no artillery). IJN08 has 140 launches and small moves | **ON** |
+| 228 D4 `kArtilleryLaunchBiasBound` | `biased` = `launches` (718 on USN02); JM08 hull hits 450 -> 419 against D3 alone | **ON** |
+| 229 D2 `kRangingSeedVelocityBound` | `velocity_seeds` = `records_built` (USN02 56; JM08 136; IJN08 300, identical) | **ON** |
+| 229 D1 `kRangingBearingFixedBound` | `bearing_turns_dropped` = shot + growth updates (USN02 279 + 498 = 777); JM08 Failed 947 s against 981 | **ON** |
+| 230 D1 `kTorpedoBotAttackRangeBound` | USN02 gameplay-identical: its 49 launches all fall inside the limits, so prediction 4 holds. Mean attack range is 2918 m (Long Lance) on USN02 and 891 m (Mark 14 / Type 95) on JM06, as predicted. Gate A drops outnumber gate B (prediction 3 missed: A binds first). IJN08 with no orders collapses (deaths 149 -> 6): the player's AI-run JapSub1 never passes gate A, and the mission never develops. That row is degenerate and not a win row | **ON** |
+| 230 D2 `kTorpedoBotStaleFlagBound` | JM06 mean 891 -> 733 m (the any-target range is kept) | **ON** |
+| 230 D4 `kTorpedoSubmergedTargetDropBound` | PRCP01 and JM06 are gameplay-identical (`submerged_drops=0`; no-order rows have no boats under -6.7 m in range) | **ON** by mechanism |
+| 231 `kBombReleaseVelocityFrameBound` | win-set group only (USN01 completes at 355.04 s against 1094.94 with gravity) | **ON** |
+| `kProjectileGravityImageBound` (cc13) | same group | **ON** |
+| 221 `kAaSlotRangeOriginBound` | re-read `00729C35..00729C8A`: gun `+FCh` (ESI) minus target `+FCh` (EBX) against `[[gun+3F4h]+74h + i*48h + 34h]+60h`, which matches `gun_muzzle_point` (the mount) to the pose origin | **ON** (faithful; the losses go to the keeper) |
+| 222 `kDirectorLeaderFireTargetBound` | loses USN12 alone and fails USN15 at 1777.66 s alone. See the note below | **stays OFF**, lead's call |
+
+**222.** The image's AutoTarget follower gate (`009F5DC4`, `007788B0`; the host's `kAutoTargetFollowerGateBound`,
+ON) makes a formation follower skip its own selection. So in the image a follower's `director+238h` is empty
+unless a script or a command writes it, and `00863640` hands it the leader's target. That reading makes the
+host's inherits faithful. It also depends on the host's other `+238h` writers matching the image, which is a
+ships-lane check.
+
+**Win set at `dd4f7d6cd`** (OFF `x0`; all eleven ON `x1`; flip9 = D3, D4, D2, D1, VER_23 D1/D2/D4, gravity and
+bomb frame `f9`; flip10 = flip9 + 221 `f10`). Group bisects: `ga`, `gb`, `gc` and `gd`, plus `xd` (D3+D4),
+`xr` (the other nine), `s221` and `s222`.
+
+| row | OFF | all ON | f9 | f10 | notes |
+| --- | --- | --- | --- | --- | --- |
+| USN01 p8_u1_c | 1094.94 | none | 355.04 | **none** | every group alone keeps it (`gd` 355.04); lost under f10 and all ON (221 in combination) |
+| USN02 s36_u2_p7 | 200.06 | 200.06 | 200.06 | 200.06 | |
+| USN12 s38_u12_p2 | 1510.35 | none | **none** | - | lost under D3+D4 alone (`xd`), 221 alone and 222 alone. Japanese cruisers survive the US gunnery and torpedo the US ships at 1.0-1.5 km |
+| USN15 s45_u15_l2 | EndMission 2793.65 | failed 1036.94 | **none** | EndMission 2808.66 | knife-edge under D3: Yamashiro's main battery sinks the US battle line at 1.3-2.0 km (US 14-in Range 3000) |
+| LOMP06 l50_l6_q6 | 189.86 | 376.83 | 376.83 | 376.83 | |
+| BSM01 p6_b1_a | EndMission 833.92 | 833.92 | 833.92 | 833.92 | |
+| LOMP10 p3_l10_b | 1396.79 | 1374.77 | 1345.74 | - | |
+| IJN18 s46_i18_a | EndMission 2116.94 | 2116.94 | 2086.91 | - | |
+| JM08 p6_j8_f | 1661.20 | failed 2124.00 | 2051.58 | - | |
+| PRCP01 l55_p01_c | **failed 1491.83** | failed 1275.02 | - | - | already lost on OFF at `dd4f7d6cd` (the keeper had 670.81 at `f83e91891`): main moved it |
+
+The exec guard's `sus_prog.exe` refusal is logged on every completion checked.
+
+**Flipped ON (this commit):** D3, D4, D2, D1, VER_23 D1/D2/D4, gravity image, bomb frame and 221. **To the
+keeper:** USN01 (lost under f10) and USN12 (lost under D3+D4). USN15 holds under f10 (2808.66 s), but under D3
+it rides a knife-edge. PRCP01 was already lost before these flips. **Still OFF:** 222 (lead's call),
+`kGunSubmergedAaKindBound` and `kTorpedoBotNoInterceptDropBound` (232, not yet paired).
