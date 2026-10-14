@@ -338,6 +338,57 @@ void level_bomb_release_enter_009b5b00(LevelBombReleaseState& r, bool release_pe
                                        float current_speed, float level_flight_speed,
                                        float bank_c68, float pitch_c64) noexcept;
 
+// --- prepare, 009B6600 / 009B6670 and its arm 009B8100 ------------------------
+// Packet cc9_l61_level_prepare (docs/SQUADRON_LAND_TASK.md 5hs). The prepare
+// state (task+610h); its +98h > 0 only after 009B8100, which only 009B83D0 (the
+// task's vt[24h], a 0099AF53 order offer) calls while the state is prepare.
+struct LevelBombPrepareState {
+    float blend_8c = 1.0f;          // +8Ch, the follow station scale (009BFDA6)
+    float timer_98 = -1.0f;         // +98h, 00D7A260 on the enter
+    float speed_9c = 0.0f;          // +9Ch
+    bool released_a0 = false;       // +A0h
+};
+// 009B6600 after 009BED80: +A0h = 0, +98h = -1, +8Ch = 1, +9Ch = class+188h x
+// 0.9 (double 00D7A390). The squadron+3E4h = 3 write and 007ED260 stay with the
+// caller.
+void level_bomb_prepare_enter_009b6600(LevelBombPrepareState& s, float max_speed_188) noexcept;
+// 009B8100: +98h = 5 (00CE3850), +9Ch = max(unit vt[38h], 007C47F0), and the
+// approach's +A8h = 007C1FB0 x 0.85 (double 00CF0B58), returned.
+float level_bomb_prepare_arm_009b8100(LevelBombPrepareState& s, float live_speed_38,
+                                      float level_flight_speed, float longest_stick_1fb0) noexcept;
+struct LevelBombPrepareTickInputs {
+    float dt = 0.0f;                                // the RET 4 argument
+    float aim[3] = {0.0f, 0.0f, 0.0f};              // approach->vtable[0]
+    float impact[3] = {0.0f, 0.0f, 0.0f};           // approach+D0h..+D8h
+    float heading = 0.0f;                           // unit vt[50h]
+    float pitch_c64 = 0.0f;                         // unit+C64h
+    float max_speed_ac = 0.0f;                      // approach+ACh
+    float live_speed_38 = 0.0f;                     // unit vt[38h]
+    float attack_dist_b4 = 1.0f;                    // approach+B4h
+    bool leader_present = false;                    // [ctl+3D0h] != 0
+    float leader_position[3] = {0.0f, 0.0f, 0.0f};  // leader+FCh..+104h
+    float leader_heading = 0.0f;                    // leader vt[50h]
+    bool leader_bay_9c1 = false;                    // leader+9C1h+[00F876B8]*8
+};
+struct LevelBombPrepareTickResult {
+    bool ran = false;               // false while +A0h is latched (009B668A)
+    bool drop_arm = false;          // +98h > 0 on entry
+    bool released = false;          // +A0h = 1, 007BBBA0, approach+2Ch -= 1
+    bool runs_follow_tick = false;  // the wait arm's 009C1FD0, after +8Ch
+    bool writes_bay_cc = false;
+    bool bay_cc = false;            // approach+CCh
+    int step_c8 = -1;               // approach+C8h, -1 when not written
+    bool writes_bank_hold = false;  // plan+2C4h = 0, +2CCh = 1
+    bool writes_pitch = false;      // plan+2BCh, with +2D0h = 2
+    float pitch_target_2bc = 0.0f;
+    bool writes_speed = false;      // plan+2B4h, with +2B0h = 0 and +2D8h = 1
+    float speed_2b4 = 0.0f;
+    float ratio = 0.0f;             // wait arm: leader-to-aim over +B4h
+    float distance = 0.0f;          // aim-to-impact (drop arm; the wait arm's 300 m test)
+};
+LevelBombPrepareTickResult level_bomb_prepare_tick_009b6670(
+    LevelBombPrepareState& s, const LevelBombPrepareTickInputs& in) noexcept;
+
 // --- goaway, 009B5680 / 009B5760 ---------------------------------------------
 // The standoff +18h before its U(1.05, 1.2) draw and the +24h ratio.
 float level_bomb_goaway_standoff_base(float safe_dist_450, bool has_extent_target,

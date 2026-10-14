@@ -1,8 +1,11 @@
 #include "bsp/plane_level_bomb_task.hpp"
 
+#include <array>
 #include <cmath>
 
 #include "bsp/dive_bomb_task.hpp"
+#include "bsp/geometry_helpers.hpp"
+#include "bsp/vector_helpers.hpp"
 #include "bsp/plane_flight.hpp"
 #include "bsp/unit_rudder.hpp"
 
@@ -365,6 +368,120 @@ void level_bomb_release_enter_009b5b00(LevelBombReleaseState& r, bool release_pe
     r.speed_20 = level_flight_speed > current_speed ? level_flight_speed : current_speed;
     r.bank_hold_19 = abs_wrapped(bank_c68) > level_bomb::kReleaseLevelAngle;
     r.pitch_hold_1a = abs_wrapped(pitch_c64) > level_bomb::kReleaseLevelAngle;
+}
+
+// 009B6600-009B665D (RET, INT3 from 009B665E), after the 009BED80 call.
+void level_bomb_prepare_enter_009b6600(LevelBombPrepareState& s, float max_speed_188) noexcept {
+    s.released_a0 = false;                                            // 009B660B
+    s.timer_98 = -1.0f;                                               // 009B6612, 00D7A260
+    s.blend_8c = 1.0f;                                                // 009B663F, 00D7A24C
+    s.speed_9c = static_cast<float>(static_cast<double>(max_speed_188) *
+                                    0.89999997615814209);            // 009B6650 00D7A390
+}
+
+// 009B8100-009B8175 (RET, INT3 from 009B8176).
+float level_bomb_prepare_arm_009b8100(LevelBombPrepareState& s, float live_speed_38,
+                                      float level_flight_speed,
+                                      float longest_stick_1fb0) noexcept {
+    s.timer_98 = level_bomb::kReleaseHold;                            // 009B8111, 00CE3850 5.0
+    // 009B813E FCOMIP, JBE: the vt[38h] speed unless 007C47F0's is larger.
+    s.speed_9c = level_flight_speed > live_speed_38 ? level_flight_speed : live_speed_38;
+    return static_cast<float>(static_cast<double>(longest_stick_1fb0) *
+                              0.85000002384185791);                  // 009B8165 00CF0B58
+}
+
+namespace {
+
+// 009B6814-009B6865 and 009B6AE8-009B6B38: min(unit+C64h, 0), and -0.3
+// (00D06888) below the double -0.30000001192 (00D201C0).
+float level_bomb_prepare_pitch(float pitch_c64) noexcept {
+    float v = 0.0f < pitch_c64 ? 0.0f : pitch_c64;
+    if (-0.30000001192092896 > static_cast<double>(v)) v = -0.3f;
+    return v;
+}
+
+}  // namespace
+
+// 009B6670-009B6BA0 (RET 4; INT3 from 009B6BA3). Constants: 00CE4D70 200
+// (double), 00CE3988 70 deg, 00CE3AE8 300, 00CE3D40 0.8 (double), 00CE54A0 0.2,
+// 00CF8858 80 deg, 00CE74F8 0.8, 00CEC724 30 deg, 00D06874 1.4, 00CE3990 10 deg,
+// 00CEC160 1.2 (double), 00D7A370 5 (double), 00CE3800 0.5, 00D7A210 1 (double).
+LevelBombPrepareTickResult level_bomb_prepare_tick_009b6670(
+    LevelBombPrepareState& s, const LevelBombPrepareTickInputs& in) noexcept {
+    LevelBombPrepareTickResult out;
+    if (s.released_a0) return out;                                    // 009B668A
+    out.ran = true;
+    if (s.timer_98 > 0.0f) {                                          // 009B669B, 009B66A5
+        out.drop_arm = true;
+        out.step_c8 = 1;                                              // 009B66B1
+        s.timer_98 = static_cast<float>(s.timer_98 - in.dt);          // 009B66B7-009B66C9
+        bool release = !(0.0f < s.timer_98);                          // 009B66CE JAE
+        if (!release) {
+            out.writes_bank_hold = true;                              // 009B66DE-009B66E6
+            // 009B66F2/009B66FA write +2BCh = 0 and +2D0h = 2; the tail's pitch
+            // overwrites +2BCh below.
+            const std::array<float, 2> d{in.aim[0] - in.impact[0],
+                                         in.aim[2] - in.impact[2]};   // 009B6733-009B6747
+            out.distance = length_2d_00414c60(d);                     // 009B674B
+            const float h = abs_wrapped(wrapped_angle_subtract_00438b10(
+                heading_angle_00414eb0(d), in.heading));              // 009B6769-009B679D
+            if (200.0 > static_cast<double>(out.distance)) {          // 009B67A1-009B67AB
+                if (h > 1.2217305898666382f) {                                 // 009B67AD JA
+                    release = true;
+                } else {
+                    s.timer_98 = s.timer_98 > 1.0f ? s.timer_98 : 1.0f;   // 009B67CA 00415550
+                }
+            } else if (h > 1.2217305898666382f) {                              // 009B67D4 JBE
+                release = true;
+            }
+        }
+        if (release) {
+            s.released_a0 = true;                                     // 009B67E0
+            out.released = true;                                      // 009B67E9, 009B67F1
+        }
+        out.writes_speed = true;                                      // 009B67F5-009B680D
+        out.speed_2b4 = s.speed_9c;
+        out.writes_pitch = true;                                      // 009B6814-009B6865
+        out.pitch_target_2bc = level_bomb_prepare_pitch(in.pitch_c64);
+        return out;
+    }
+
+    // The wait arm, 009B6874-009B6A63.
+    if (!in.leader_present) {
+        s.blend_8c = 1.0f;                                            // 009B6A5B
+    } else {
+        out.writes_bay_cc = true;                                     // 009B687C-009B688A
+        out.bay_cc = in.leader_bay_9c1;
+        const std::array<float, 2> d{in.aim[0] - in.leader_position[0],
+                                     in.aim[2] - in.leader_position[2]};   // 009B68B1-009B68CA
+        out.ratio = static_cast<float>(length_2d_00414c60(d) / in.attack_dist_b4);   // 009B68E6
+        const float h = abs_wrapped(wrapped_angle_subtract_00438b10(
+            heading_angle_00414eb0(d), in.leader_heading));           // 009B6907-009B6945
+        float b = 0.0f;
+        if (0.800000011920929 > static_cast<double>(out.ratio)) {     // 009B694C-009B695E
+            out.step_c8 = 3;                                          // 009B696D
+            b = clamped_interpolate_00419010(0.2f, 1.3962634801864624f, 0.8f, 0.5235988f, out.ratio);
+        } else {
+            b = clamped_interpolate_00419010(0.8f, 0.5235988f, 1.4f, 0.17453294f, out.ratio);
+        }
+        float q = static_cast<float>(
+            (1.2000000476837158 - static_cast<double>(h) / static_cast<double>(b)) * 5.0);   // 009B69C6-009B69E8
+        q = 0.0f > q ? 0.0f : q;                                      // 009B69EC 00415550
+        const double e = static_cast<double>(clamped_interpolate_00419010(
+            1.4f, 1.0f, 0.5f, 0.0f, out.ratio)) - 1.0;                // 009B6A2D-009B6A40
+        const float c = q > 1.0f ? 1.0f : q;                          // 009B6A44 00415510
+        s.blend_8c = static_cast<float>(static_cast<double>(c) * e + 1.0);   // 009B6A49-009B6A53
+    }
+    out.runs_follow_tick = true;                                      // 009B6A75 009C1FD0
+    // 009B6A83: [approach+1Ch]+40h = 0, the gun cone (no host cell).
+    const std::array<float, 2> d{in.aim[0] - in.impact[0], in.aim[2] - in.impact[2]};
+    out.distance = length_2d_00414c60(d);                             // 009B6AD3
+    if (!(300.0f > out.distance)) return out;                         // 009B6AD8-009B6AE2
+    out.writes_pitch = true;                                          // 009B6AE8-009B6B38
+    out.pitch_target_2bc = level_bomb_prepare_pitch(in.pitch_c64);
+    out.writes_speed = true;                                          // 009B6B42-009B6B90
+    out.speed_2b4 = in.live_speed_38 < in.max_speed_ac ? in.live_speed_38 : in.max_speed_ac;
+    return out;
 }
 
 float level_bomb_goaway_standoff_base(float safe_dist_450, bool has_extent_target,

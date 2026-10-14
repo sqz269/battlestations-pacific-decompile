@@ -17143,3 +17143,110 @@ Next, in order:
 4. From 5hf: the strafe gun threshold (unexercised), the FreeFire / SquadronLandAndKill rows (5hc item 4).
 5. Name request for the lead: 00805CF0-00805D6C (RET 4 at 00805D69, INT3 from 00805D6C)
    `BSP_ReconRecord_SetForcedLevel` (provisional; 5hk).
+
+## 5hp. The torpedo arm's command-block writes: `kTorpedoCommandWritesBound` (cc9-lua61, 2026-10-14)
+
+Packet `cc9_l60_torpedo_command_writes` (prepared by cc9-lua60, committed OFF by cc9-lua61). `TorpedoArmBinding` (the
+host side of `bsp::torpedo_task_arm_009d4850`, game_hosts_units.cpp) implemented `write_command_float` and
+`write_command_word` as no-ops, so every command-block write the arm makes was dropped (5hh):
+- 009D2761-009D2794, the committed branch (`wrote_committed_command`): cmd+2C8h = 0.3, the bank cap
+  (`torpedo_constant::kCommittedThrottle`; the name is historical, PILOT_PLANNER_PITCH_ROLL section 2 reads +2C8h as the
+  bank limit).
+- 009D295F-009D29B7, the hold arm: cmd+2BCh = 0.0, +2D0h = 2, +2C4h = 0.0, +2CCh = 1 (wings level, heading held); the
+  steer arm: +2BCh = 0.0, +2D0h = 2, then 009F9E40 (still a record in the host).
+
+True: the writes land on the planner cells the rest of the host already uses (`plan_state.bank_limit_2c8`,
+`pitch_target_2bc`, `pitch_mode_2d0`, `bank_target_2c4`, `plan_heading_mode_2cc`; a +2CCh write clears
+`plan_heading_2c0_written`). The order is the image's: 009D2731 (the follow base tick, which writes its own heading and
+pitch) runs first, then the done tick's writes overwrite it. Other bindings: the dive-bomb binding also drops the three
+`write_command_*`, but none of its hosted calls reach them (the only other writers, `attack_run_tick` and
+`move_to_tick` in bot_task_states.cpp, have no host caller), so nothing else is under this switch.
+
+Prediction: only planes running the torpedo task's done/prepare tick move. The committed Kates/TBDs fly with the bank
+capped at 0.3 rad from commit on (until the disarmed close arm rewrites it at 0.3-1.5), so their turns onto the target
+widen; on the hold arm they fly wings level on the held heading instead of the follow law's heading. No RNG draw is
+added. Expect torpedo release counts and hit timing to move on rows with torpedo strikes (USN04 Japanese strike, USN21
+f), nothing on rows without them. Bank cap units: radians, as the 009D29E0 close arm (5hh) already writes.
+
+## 5hq. The torpedo done/prepare formation: `kTorpedoDoneFormationBound` (cc9-lua61, 2026-10-14)
+
+Packet `cc9_l61_torpedo_done_formation` (5ho item 2), committed OFF. Read from the disk listing:
+- 009D2530-009D256E (RET, INT3 at 009D256F), the done/prepare enter, vtable 00D21320 slot +4h: +98h = [00D7A260] = -1.0;
+  009BED80 (the follow enter: +8Ch = [00D7A24C] = 1.0 at 009BEDC9, squadron+3E4h = 1 at 009BEDDA, 007ED260); then
+  squadron+3E4h = 2 (009D254E, no null check), 007ED260 again (009D2558), +8Ch = 1.0 (009D2565).
+- 009BFD70 (the follow station update, called only from 009C1FEA in 009C1FD0): when ctl = [[state+4]+0Ch] is set,
+  [ctl+3D0h] is set and differs from the own unit, 009BFDA6-009BFDB2 copies state+8Ch into ctl+3E8h, then 009BFDCC calls
+  007F23A0, whose shapes read +3E8h as the station scale (src/plane_formation.cpp; shape 2 = 007F25BD-007F26A8: z / max(1,
+  m), x x max(2m - 1, 0.8), y x clamp(2.2 - 1.2m, 0, 1)).
+- 009C1FD0 is the base tick of the follow state (vtable 00D20AB8) and of the depth-charge, dive-bomb and torpedo
+  done/prepare states (009A4950, 009C7278, 009D2731). The torpedo's done tick calls it first and only then runs the
+  disarmed arm 009D29E0 (5hh), so the station uses the previous tick's +8Ch.
+
+Host wiring (true): `TorpedoArmBinding::set_state` on entering done or prepare writes `formation_shape_3e4 = 2` and resets
+the slot's +8Ch (`torpedo_disarmed_blend_8c`) to 1.0; the torpedo `follow_base_tick_009c1fd0` makes a wingman (not the
+flight leader by 007B8AD0's rule) copy it into `morale_3e8` before placing itself; the plain follow tick
+`run_follow_tick_009c1fd0` copies the follow state's 1.0. Holes, stated: the dive-bomb and depth-charge done ticks do not
+republish (their +8Ch is not read; a squadron arriving there from a torpedo done state would keep the torpedo value);
+the leader-null case ([ctl+3D0h] = 0) is taken as the host's first live member. Summary line `torpedo <name> done/prepare
+enter 009D2530 3E8h republish`.
+
+Prediction: only torpedo squadrons with wingmen move. On entering done the wingmen switch from shape 1 to shape 2 (at m =
+1 the same z, the same x, y x 1.0, so no jump), and as the disarmed arm raises +8Ch to 1.5-2.5 near the target, z
+shrinks (/m), x widens (2m - 1) and y flattens (2.2 - 1.2m, 0 at m >= 1.83): the wing spreads abreast and level. No RNG;
+the per-plane release times and positions of the wingmen move, the leaders' do not.
+
+## 5hr. Measured: `kTorpedoCommandWritesBound` and `kTorpedoDoneFormationBound` **ON** (cc9-lua61, 2026-10-14)
+
+Pairs: OFF `local\l61_off_*` (a7613151b tree build, copied to `local\l61_off\`); ON writes `local\l61_on_*` (a7613151b,
+writes flipped); ON formation `local\l61_fon_*` (6f899650b, formation flipped; everything else as OFF). Launch lines in each
+`<log>.manifest.json`; env BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1. The lead asked for USN04 `st2_u4d2`; that is a
+cc13 run of an unlanded `BSP_DIFFICULTY=2` diff (docs/CC13_AUDIT_REATTACK_AND_SKILL.md 2.6), so the plain `u04` row stands in.
+
+| row | switch | evidence | pair_diff |
+|---|---|---|---|
+| USN04 `u04` 9000 | writes | no Kate reaches done or prepare (states moveto/attackrun/aim) | 1, gameplay identical |
+| USN21 `u21f` (s46_u21_f; completed 2901.71 s both, exec guard refused sus_prog.exe) | writes | one Kate (Cabot_sqn56\|.-3) in done 23 ticks, all disarmed (+98h = -1 from the enter); no write reached the binding (no `command writes applied` line) | 1, gameplay identical |
+| USN21 `u21f` | formation | Enterprise_sqn23 enters done after its release at 672.81 s: the 007ED260 re-assignment over 2 live members logs shape +3E4h = 2 (1 OFF); Cabot_sqn56 likewise later | 3, moved |
+
+Writes: the committed/hold/steer arms need +98h > 0, which only prepare sets, and no row reaches prepare (5ho item 3), so
+the mechanism is unexercised; a faithful binding with an identical result, flipped ON. Formation: the first moved death
+(Enterprise_sqn17, 678.71 -> 679.41 s) follows the Enterprise_sqn23 enter by 6 s; from there the run diverges as a
+cascade (deaths 580 -> 574, shots 97946 -> 117105, torpedo-task releases 1 -> 0 of 232, dive-bomb 3 -> 4, the player's
+F6F_1/F6F_2 flights survive in ON) while the mission still completes at 2901.71 s with the same text. At morale 1.0
+shape 2 equals shape 1 exactly (x x 1, y x 1, z / 1; keep_yz false), so the divergence is the wingman's republished +8Ch
+(1.5-1.7 from the disarmed arm) spreading the station, as predicted. Faithful, mission end unchanged: flipped ON.
+WINS: the flip moves USN21; rows with torpedo squadrons reaching done (JM08, PRCP01, USNOS) need a re-check by the WINS keeper.
+
+## 5hs. The level-bomb prepare: `kLevelBombPrepareTickBound` (cc9-lua61, 2026-10-14)
+
+Packet `cc9_l61_level_prepare` (5ho item 3), committed OFF. Read whole from the disk listing (`local\l61_9b6670.asm`):
+- 009B6600-009B665D (RET; INT3 from 009B665E), the enter: +A0h = 0, +98h = -1 (00D7A260), 009BED80 (shape 1, 007ED260),
+  squadron+3E4h = 3 (009B6625), 007ED260, +8Ch = 1 (00D7A24C), +9Ch = class+188h x 0.9 (double 00D7A390).
+- 009B83D0-009B8414 (RET), the task's vt[24h] order offer: with approach+CEh and free flight, +424h += 1 and, when the
+  state is prepare (task+310h == task+610h), 009B8100.
+- 009B8100-009B8175 (RET; INT3 from 009B8176): +98h = 5 (00CE3850), +9Ch = max(unit vt[38h], 007C47F0) (FCOMIP/JBE: the
+  vt[38h] speed on a tie), approach+A8h = 007C1FB0 x 0.85 (double 00CF0B58).
+- 009B6670-009B6BA0 (RET 4; INT3 from 009B6BA3), the tick. Nothing while +A0h is set.
+  - Drop arm (+98h > 0): approach+C8h = 1; +98h -= dt; at or below 0 it releases. Otherwise plan+2C4h = 0, +2CCh = 1
+    (and +2BCh = 0, +2D0h = 2). With d = |aim - impact| (approach vt[0] minus +D0h/+D8h) and h = |wrap(HeadingAngle(aim
+    - impact) - heading)|: d < 200 (double 00CE4D70): h > 70 deg (00CE3988) releases, else +98h = max(+98h, 1); d >= 200:
+    h > 70 deg releases. The release is +A0h = 1, 007BBBA0, approach+2Ch -= 1. Then plan+2B4h = +9Ch (+2B0h = 0, +2D8h = 1)
+    and plan+2BCh = min(unit+C64h, 0) floored at -0.3 (00D201C0 double / 00D06888), +2D0h = 2.
+  - Wait arm: no leader ([ctl+3D0h] = 0): +8Ch = 1. Otherwise approach+CCh = leader+9C1h+[00F876B8]x8; r = |aim -
+    leader.xz| / approach+B4h; h = |wrap(HeadingAngle(aim - leader) - leader vt[50h])|; r < 0.8 (double 00CE3D40):
+    approach+C8h = 3 and b = IP(0.2 -> 80 deg, 0.8 -> 30 deg; r), else b = IP(0.8 -> 30 deg, 1.4 -> 10 deg; r);
+    c = clamp((1.2 - h / b) x 5, 0, 1); +8Ch = 1 + c x (IP(1.4 -> 1, 0.5 -> 0; r) - 1). Then 009C1FD0 (whose 009BFDA6
+    republishes +8Ch into squadron+3E8h), [approach+1Ch]+40h = 0, and within 300 m (00CE3AE8) of the aim the impact
+    point holds the same pitch and plan+2B4h = min(approach+ACh, unit vt[38h]).
+
+The arithmetic is `bsp::level_bomb_prepare_tick_009b6670` / `_enter_009b6600` / `_arm_009b8100`
+(src/plane_level_bomb_task.cpp). Host wiring (true): the enter also writes shape 3; the 0099AF53 order offer calls the arm
+in prepare; prepare's tick replaces the follow stand-in and passes its +8Ch to `run_follow_tick_009c1fd0` (republished
+under `kTorpedoDoneFormationBound`). Substitutions, labelled: leader+9C1h is taken as the leader approach's +CCh;
+007C1FB0 is the install's `lb_release_delay_1fc`; the gun cone has no host cell. Summary line `levelbomb <name> prepare
+009B6670: wait drop arms_8100 releases last_8c`.
+
+Prediction: no row reaches the level-bomb prepare (pr=0 on every lua60/lua61 log; prepare needs attack mode 0, which
+the leader's 0099B740 lifts to 1 on its first think), so pairs are gameplay identical. Where it is reached, the wingmen
+close their formation (+8Ch down to 0) as the leader nears the aim aligned; an order offer arms a 5 s drop countdown that
+releases on expiry or once the impact point passes the aim.
