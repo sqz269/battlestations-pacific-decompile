@@ -191,6 +191,16 @@ inline constexpr bool kForcedReconLevelBound = true;  // ON: pairs held (docs/LU
 // resolved slot is forced, then the squadron's members. False: the members only (a slot
 // with no squadron record is forced itself either way).
 inline constexpr bool kForcedReconOwnRecordBound = true;   // ON: SQUADRON_LAND_TASK 5he.1
+// Packet cc9_l60_forced_recon_sync (cc13-confirm F; docs/SQUADRON_LAND_TASK.md 5hk).
+// 00805CF0 reads the record's effective level (+8h when +10h is set, else +4h), sets
+// +10h = 1 and +8h = level (00805D0A/00805D0E), unlinks the record when +28h is set
+// (00805D11-00805D1F), and when the effective level changed calls the record's
+// listener [+2Ch] vt[0](+30h, old, new) (00805D36-), which reaches the `recon` channel.
+// True: SetForcedReconLevel fires the matching `recon` listeners at once with the old
+// and new effective levels, and the pass dispatch publishes a forced record's level
+// whatever the party's coverage. False: the change surfaces at the next pass, and an
+// uncovered party's forced record publishes 0.
+inline constexpr bool kForcedReconSyncNotifyBound = false;
 
 // Packet cc9_lua_add_damage (docs/USN02_PHASES.md section 3; docs/LUA_BINDING_MISSION.md,
 // "AddDamage, 0088E000"). AddDamage(entity, amount) resolves argument 0 (00888AA0), reads
@@ -918,6 +928,7 @@ struct GameMissionLuaSummary {
     unsigned long long in_border_zone_no_zone{0};
     unsigned long long forced_recon_calls{0};
     unsigned long long forced_recon_units{0};
+    unsigned long long forced_recon_sync_notifies{0};   // kForcedReconSyncNotifyBound
     unsigned long long forced_recon_unresolved{0};
     unsigned long long add_damage_calls{0};
     unsigned long long add_damage_units{0};
@@ -1525,6 +1536,8 @@ public:
     void dispatch_entity_killed_listeners_00986480();   // packet cc13-ver5
     void dispatch_exit_zone_listeners_00982120();       // packet cc13-fix3
     void dispatch_recon_listeners_00980e50();
+    // 00980E50's per-change body: every matching `recon` callback with (unit, old, new, party).
+    void fire_recon_listeners_00980e50(std::size_t unit, int old, int level, int party);
     void publish_recon_slot_tables_00806b10();
     void dispatch_hit_listeners_00988510();
     // Packet cc9_set_invincible_native. 00897A50 SetInvincible, always bound: the

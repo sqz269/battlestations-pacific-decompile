@@ -16960,3 +16960,19 @@ state holds the timer at kReleaseHold (009B5AD2/009B5AE1) for the drop plus the 
 (goaway later, positions move). 007EEF30 gives the other members 999 orders when ctl+390h > ctl+374h; the host has no
 level-bomb reader of unit+C58h yet (0099AF53 -> 009B83D0 and the +424h passthrough 009B8BD0 are the next packet), so the
 wingmen's own flow is unchanged. No RNG.
+
+## 5hk. cc13-confirm F: the synchronous forced-recon notify 00805CF0 (cc9-lua60, 2026-10-14)
+
+00805CF0 (disk listing): old = the record's effective level (+8h when +10h is set, else +4h); +10h = 1, +8h = level
+(00805D0A/00805D0E); when +28h is set, 006952A0 unlinks the record (00805D11-00805D1F); then, if the effective level
+changed (00805D36 CMP / 00805D38 JE), the record's listener [+2Ch] vt[0](+30h, old, new). `bsp::set_forced_recon_level`
+only wrote the map, so the `recon` callbacks fired at the next pass, and the pass dispatch published 0 for a forced
+record of a party with no sensor coverage. `kForcedReconSyncNotifyBound` (committed OFF): SetForcedReconLevel fires the
+matching `recon` listeners at once (old = the level the dispatch last published for that unit and party, a labelled
+substitution for the record's effective level), and the dispatch publishes a forced record's level whatever the
+coverage. 00980E50's body is now `fire_recon_listeners_00980e50`, shared by both callers. Summary:
+`summary mission script forced recon ... sync_notifies=`.
+
+Prediction (cc13): callbacks fire at most one pass earlier; no RNG. USN12 34000 (23 squadrons forced) and USNOS (Haku):
+the same `recon listener` lines, earlier by up to one pass; a forced record of an uncovered party now fires its listener
+where it never did. Gameplay identical unless a callback's timing matters.
