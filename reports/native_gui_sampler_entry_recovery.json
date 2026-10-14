@@ -1,0 +1,127 @@
+{
+  "packet": "cc12_gui_sampler_entry_recovery",
+  "checked_utc": "2026-10-14T18:39:50.861623+00:00",
+  "baseline_commit": "f5f6acd8ddd46f1a718668a2b7bd328f2df22e21",
+  "project": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "verified_each_live_query": "tools/bsp.py client() invokes Client.verify()",
+    "process_verification": "javaw PID 53500 command line contains C:/Users/sqz269/bsp.gpr"
+  },
+  "binary": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_base": "00400000"
+  },
+  "instruction_ranges": [
+    {
+      "address": "00B3B280",
+      "length": 306,
+      "label": "complete descriptor sampler body through RET 8",
+      "saved_ghidra_equals_disk": true,
+      "sha256": "cdf241047d8ec93b39fa9058ac6b15b71c386832dfb4170b2dc7c0fcce6e28d9",
+      "bytes_hex": "51558be98b4c241033c03981c8000000894424040f86130100005356578d49008b89c40000008b34818b461485c075058b4620eb6983f8017549e8f1319aff8d5e18538bc8e80602feff8bf885ff74648b8d8c000000538b5c241c57518bcbe80c9a00008d570452c6838000000001ff152022ce0085c075348b078b108bcfffd2eb2a83f803752c8b4e208d461850518b4d78e898dcfdff83c8ff2b46200fb6560c8b4c24185250e8d33d020083858c000000018b462433ff397804763b8b5c2418807e0c00740b8b8d9000000083c110eb068b8d940000008b108b54fa048b00528b14f852518bcbe8f23902008b462483c7013b780472c9807e0c00740983859000000001eb07838594000000018b4424108b4c241c83c0013b81c8000000894424100f82f6feffff5f5e5b5d59c20800"
+    },
+    {
+      "address": "00B3BF93",
+      "length": 150,
+      "label": "pixel owner construction and release to paired sampler calls",
+      "saved_ghidra_equals_disk": true,
+      "sha256": "89f06614d350e5629a9e1cfde61b3e27591edd52c4405ff061c340ffaa5d748b",
+      "bytes_hex": "33ed6a10e87fa80b0083c404894424343bc5c68424d80000000a74108b4c2428518bc8e8f53902008bf0eb0233f68b4424283bc5c68424d80000000074088b10508b4208ffd08b4c241456e89d3002008d4e0451ff152022ce0085c075088b168b028bceffd08b4f708b6c24145133f6558bcf89b78c00000089b79000000089b794000000e863f2ffff8b577452558bcfe857f2ffff"
+    },
+    {
+      "address": "00B5F100",
+      "length": 81,
+      "label": "complete reference append body through RET 8",
+      "saved_ghidra_equals_disk": true,
+      "sha256": "43f1eca0b14a4a2a70304c466e895e6c9c63794db89fa31beadd817cd955bd70",
+      "bytes_hex": "83ec088a442410568d7124884424088b4608394604578b7c2414751403c083f8017f05b801000000508bcee8501bfeff8b4e048b168d04ca85c074098b4c240c8938894804834604015f5e83c408c20800"
+    }
+  ],
+  "pinned_files": [
+    {
+      "path": "src/native_material_program_compiler_actual.cpp",
+      "sha256": "4b2c99f0f2eb5c22b11b0f51481b889282c318955542a333e7c93da7d7f10111"
+    },
+    {
+      "path": "src/native_material_descriptor_samplers.cpp",
+      "sha256": "659adc36c07f1e905dde518a79e2df5d3fcc956bdad16d55a0a344bb74b7e630"
+    },
+    {
+      "path": "include/bsp/native_material_descriptor_samplers.hpp",
+      "sha256": "30382331f4d1db4965b2c39f87914638fac128eaf550ff5d70849e4b305d3d17"
+    },
+    {
+      "path": "docs/NATIVE_ORIGINAL_SAMPLER_WORD_ORIGIN_CC10.md",
+      "sha256": "ab98a21c0868f6b3c99e3302c881bb5a2be618d760df725dc22fe6011111ba15"
+    },
+    {
+      "path": "docs/NATIVE_ORIGINAL_SAMPLER_CAPTURE_CC10.md",
+      "sha256": "cb807b6f2ba6fb4ea9bf1dad75f34895ed6b6d2048cf2fe01d7bce67abaf9d81"
+    },
+    {
+      "path": "reports/cc10_sampler_compiler_entry_integration.json",
+      "sha256": "be7fde734b0df8f879de75672c4491fb83f117bd6b6d5a8987f3ac30361c2a42"
+    }
+  ],
+  "contract": {
+    "P": "caller steady ESP at B3BFF9",
+    "root_site": "00B3C018",
+    "mode_site": "00B3C024",
+    "root_return": "00B3C01D",
+    "mode_return": "00B3C029",
+    "callee_entry_esp": "P-0Ch",
+    "nonempty_callee_steady_B": "P-20h",
+    "borrowed_word_W": "B-10h = P-30h",
+    "empty_root": "does not write W; root RET 8 restores P",
+    "root_mode_alias": "same physical W and known/unknown state within one exact compiler invocation",
+    "caller_arguments": "ECX=EDI=builder; first stack DWORD=EBP=pass; second=root [builder+70] or mode [builder+74]",
+    "loop_index": "B3B290 writes P-10h, not W",
+    "initial_value": "not established by caller setup; no default or builder-derived value is justified",
+    "append_low_byte": "B5F10B writes stage at W; B5F13C copies full word from W to appended row+4",
+    "defined_source3_word": "B18FC9 PUSH ESI saves actual sampler at W",
+    "defined_state_setter_word": "B3B369 CALL writes return PC 00B3B36E at W",
+    "source1": "existing loader/binding writes may establish W; successful release requires same-invocation capture or invalidates knowledge",
+    "fpu": "no x87 or SSE instruction or explicit floating-point input in the three validated ranges; no FPU seed justified",
+    "ownership": "retain shared word and knowledge for one compiler frame; distinct root/mode contexts, operations and release captures; no cross-invocation reuse"
+  },
+  "historical_capture": {
+    "source": "docs/NATIVE_ORIGINAL_SAMPLER_CAPTURE_CC10.md",
+    "classification": "previous reviewed run03; raw archive and old process not revalidated by this packet",
+    "P": "0162E86C",
+    "W_address": "0162E83C",
+    "word": "0162E964",
+    "observed_at": [
+      "00B3BFF9",
+      "00B3C018"
+    ],
+    "caveat": "equal to builder only for that invocation; stopped before root sampler call; not a universal producer rule"
+  },
+  "next_action": {
+    "source_adapter": "per-invocation root/mode pair shares word and knowledge, starts unknown without observed entry preimage; owned by text_native_binding worker",
+    "remaining_preimage": "first Source0 reference with no preceding established write needs that invocation W upper 24 bits; API retains complete observed DWORD",
+    "actual_capture_sites": [
+      "B3BFF9: [ESP-30h]",
+      "B3C018 before CALL: [ESP-28h]"
+    ],
+    "capture_binding": "same original frame, builder, pass, root descriptor, thread/invocation and native site; do not transplant run03 value",
+    "source1_release": "capture after current CE2220/optional terminal release returns for that descriptor/sampler/owner, or keep knowledge unknown",
+    "production_source_boundary": "a reconstructed C++ stack cell or fixed seed cannot supply original historical bytes"
+  },
+  "validation": {
+    "read_only_saved_ghidra_and_disk_bytes_equal": 537,
+    "cpp_changed": false,
+    "new_tests": 0,
+    "build_run": false,
+    "build_reason": "documentation and evidence only; paired source adapter and strict Win32 verification belong to text_native_binding worker",
+    "ghidra_mutated": false,
+    "original_game_launched": false,
+    "original_installation_modified": false,
+    "initial_preimage_generally_resolved": false,
+    "sampler_runtime_parity_proved": false,
+    "native_gui_font_text_rendered": false,
+    "gameplay_validated": false
+  }
+}
