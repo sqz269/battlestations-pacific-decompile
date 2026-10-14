@@ -14425,3 +14425,102 @@ that makes no difference. Counters: `summary mission gunnery torpedo rack drops=
    kill totals.
 5. A torpedo now carries a team stamp. Any `team_id_1c` consumer (friendly-hit filtering) sees the plane's
    slot instead of -1.
+
+## 240. Verdicts for 232, 237, 238 and 239; five flips (cc9-gunnery43, 2026-10-14)
+
+All runs used the reference env (`BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`) and `tools/run_game.ps1`. Each log is
+`local\g43_<tag>_<row>.log` with its `.manifest.json`. The exports are listed in `local\g43_exports.txt`:
+- OFF is `g43_off`, an export of `799618c09`.
+- ON for 232 is `g43_sa` and `g43_nd`, both of `799618c09`.
+- ON for 237 is `g43_zn` (`974cfd9a3`), for 238 `g43_sp` (`cad5bd6d9`), and for 239 `g43_td` (`0ac6e62a7`).
+
+LABELLED: the zn, sp and td exports are at their own commits, not at the base's. Each adds only code that is
+`if constexpr`-OFF or returns -1 while OFF. The pairs bear that out: zn is gameplay-identical on four rows.
+
+The rows used here:
+
+| tag | row |
+| --- | --- |
+| u2 | USN02 `s36_u2_p7` |
+| j6 | JM06 `s47_j6_n1`, 40000 frames |
+| p1 | PRCP01 `l55_p01_c` |
+| u12 | USN12 `s38_u12_p2` |
+| l10 | LOMP10 `p3_l10_b` |
+| u1 | USN01 `p8_u1_i` |
+| u13 | USN13, no orders |
+| i8 | IJN08, no orders |
+
+| switch | evidence | verdict |
+| --- | --- | --- |
+| 232 `kGunSubmergedAaKindBound` | j6: PlayerSub 01's shots 827 -> 192 (a submerged boat's deck AA stops, as predicted); one transport sinks 0.2 s later; deaths 12 = 12. p1: deaths and death rows identical; `Junyo_sqn07\|.-3` shots 68 -> 0, which is a plane-owned category-1 gun with its muzzle under 1.0 m. The image refuses that too when the weapon kind is 1; the plane's low pose is the host's own | **ON** |
+| 232 `kTorpedoBotNoInterceptDropBound` | `drops=0` on u2 and j6, both gameplay-identical (prediction: rare) | **ON** by mechanism |
+| 237 `kTorpedoLaunchZoneBound` | `tests` 4955 (u2), 11866 (j6), 514 (i8), 0 (u13); `holds=0` on all four, all gameplay-identical. **Not exercised:** no row here put a layer-5 zone between a tube and its lead point | **ON** (faithful, no reach yet) |
+| 238 `kPlaneSpinSideBound` | sets: u12 1712 (lwing 264, rwing 290, fuselage 889, engine 269); l10 443 (102 / 72 / 101 / 168). l10: 12 plane death rows change, all to left/right spinning; death rows and the end (completed 1187.58 s) are identical. u12 moves through RNG coupling (hit records 3032 -> 3076) and is lost on both sides at 36000 frames. **Prediction 2 missed:** the fuselage, not the wings, takes most of the hits | **ON** |
+| 239 `kTorpedoRackDropBound` | u1: 12 rack drops, 380 drift steps. The first drop's vy goes -4.90 -> -8.01, the fall 1.85 -> 1.60 s, and the entry is about 19 m nearer (prediction 3 said 40-60 m: the planes fly with no angle of attack, so only the 3.0 counts). The win holds: completed 360.04 = 360.04. p1: drops 8 -> 3 and a large RNG-coupled move (4 draws per drop); PRCP01 was already lost on OFF | **ON** |
+
+The exec guard's `sus_prog.exe` refusal is logged on every completion checked (u2, u1, l10).
+
+**Wins.**
+- USN01 (`usn01_p8_u1_i`) holds under 239.
+- LOMP10 holds under 238.
+- USN02 holds under 232 and 237.
+- USN12 `s38_u12_p2` is lost on the base already, and stays with the keeper (235).
+
+## 241. Handoff (cc9-gunnery43, 2026-10-14)
+
+**On `agent/cc9-gunnery36`, newest first** (built, ctest 2/2, origin/main merged at `e8a222b8f`):
+
+| sha | what |
+| --- | --- |
+| (this) | handoff |
+| `c969c12b7` | five flips ON (240) |
+| `0ac6e62a7` | `kTorpedoRackDropBound` OFF (239, VER_20 D2) |
+| `cad5bd6d9` | `kPlaneSpinSideBound` OFF (238, physics8's R4 gap) |
+| `974cfd9a3` | `kTorpedoLaunchZoneBound` OFF (237, VER_23 D3) |
+| `799618c09` | 222 census (236), no code |
+| `7ae9681f4` | the D3 artillery Range check (235), no code |
+
+**Open, in order of value.**
+1. **222 `kDirectorLeaderFireTargetBound`** stays OFF until the ships lane fixes `src/game_hosts_ship_ai.cpp:11205`.
+   `scan_party_list` writes the scan winner into the row before `009F5EAE` / `009F5ECB` / `009F5ED7` and the
+   store gate (236). The proposed edit was sent to the lead: a switch that drops that row write. After it, pair
+   that switch alone, then with 222 (USN15 `s45_u15_l2`, USN12).
+2. **The `00836210` clear**: a stance that forbids fire drops `director+238h`. It is labelled NOT DONE at
+   `src/game_hosts_script_orders.cpp:2477` (lua lane).
+3. **237 has no reach yet.** Find a row where a torpedo ship fires across an island (a layer-5 avoid zone) to
+   exercise `holds`.
+4. The 227 list: the TorpedoBot 0.2 s think timer (`008FFF20` step 1) and the `008FC010` slot accept; hold
+   fire (3a); blast mesh (4); Fido (5, blocked).
+5. **238 follow-up**: the plane record still carries 0Ah / -1. The image puts the element's kind and index into
+   `+30h` / `+34h` for planes too, so `008777D0`'s plane damage path may branch on them. Read it before
+   binding.
+
+**Tools** (this tree's `local\`):
+- `g43_queue.ps1` (jobs `exe|log|args`). It waits for an `^<dir> .*exit=0` line in `g43_exports.txt`, which must
+  exist **before** the queue starts: a missing file aborts the wait statement and the jobs launch at once. Build
+  each job line as ONE string; an array element split across lines launched a run with no args, which sat in the
+  main menu and wrote 1.6 GB.
+- `g43_scanlog.py <log> <regex> [limit]` streams a huge log.
+- Exports: `g43_off` (`799618c09`), `g43_sa`, `g43_nd`, `g43_zn`, `g43_sp`, `g43_td`.
+
+## 242. The scan row write and the 00836210 clear: `kAutoTargetScanRowWriteDropBound`, `kDirectorFirePermissionClearBound`, OFF (lead queue item 1; cc9-gunnery44, 2026-10-14)
+
+Both close the two host-writer gaps of section 236. The ships lane agreed to this edit in its file.
+
+- **`kAutoTargetScanRowWriteDropBound`** (`include/bsp/game_hosts_ship_ai.hpp`). `scan_party_list` stops copying
+  the scan winner into `GameShipAiRow::fire_target`; the row then moves only through `store_fire_target`
+  (`00836240`, reached from `009F5F21` after `009F5EAE` / `009F5ECB` / `009F5ED7`). `fire_target_score` is still
+  written. Counter: `drops`, a scan whose winner differs from the stored target, in the new summary line
+  `summary mission ship ai scan row write drop ...`.
+- **`kDirectorFirePermissionClearBound`**. `GameShipAiHost::store_fire_permission_00836210` zeroes the
+  controller's `fire_target` (the host `+238h`) and the row name when the stance forbids fire (`0071D560`
+  false) and a target is held; the forced flag (`+23Ch`) is left alone. It is called after `0071BE80`'s host
+  in the three ship stance arms (`UnitSetFireStance`, `UnitHoldFire`, `UnitFreeFire`/`UnitFreeAttack`).
+  LABELLED: synchronous, where the image applies it when the 5Ah message is pumped (`0071C1E0` sub-kind 0 ->
+  vtable `+64h`). Counter: `clears`.
+
+**Predictions.** The drop is gameplay-visible wherever a scan winner loses the hysteresis or accept test: that
+ship's guns keep the stored target instead of swinging to the new best. Expect USN12 and USN15 to move (both
+have mixed cruiser/destroyer targets); USN01 i may stay identical if its ships always accept. The clear moves
+only missions whose scripts hold a ship's fire while it has a target; `clears=0` on a row means no reach.
+222 on top of the drop: followers with no target take the leader's stored `+238h`.
