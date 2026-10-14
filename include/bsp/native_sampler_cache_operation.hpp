@@ -16,6 +16,11 @@ struct NativeSamplerCacheContext {
     // Borrow actual original profile storage; re-read its reached slot. This
     // is the CE7D24 procedural route, not D5F088 texture loading.
     const void* actual_secondary_profile_00ce7d24;
+    // Optional canonical admission immediately after a real creator returns,
+    // before native cache publication/retain. Metadata only; no count rewrite
+    // or extra retain. A failed admission leaves created_resource in the frame.
+    void* creator_registration_context{};
+    void (*register_created_resource)(void*, void* actual_resource){};
 };
 
 // Persistent host frame over actual native headers/record. Native fields stay
