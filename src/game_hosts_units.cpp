@@ -6897,7 +6897,7 @@ struct GameUnitsHost::Impl {
     // is last tick's prediction from last tick's target state), the latch gets
     // 007C2610, and df_aim = 00954650(target, this tick's projtime). False: the
     // target's origin and a muzzle speed of 1.0 (the time to target discarded).
-    static constexpr bool kDogfightAimLeadBound = false;
+    static constexpr bool kDogfightAimLeadBound = true;  // ON: SQUADRON_LAND_TASK 5gz.1
     // Packet cc9_l58_df_adopt_gun (docs/CC13_VER_22.md D2). 009A797F-009A79A9, the
     // tail of the aim tick 009A76E0: the gun's auto target gun+74h (stored
     // unconditionally at 009FC917 from the 007B96F0 search, null included) is

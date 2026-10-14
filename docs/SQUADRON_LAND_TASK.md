@@ -16549,3 +16549,23 @@ approach+CCh. Host when ON: the finder's result (`gun_target_74_plus_one`, the 0
 squadron (the approach+CCh stand-in), with 009A7650's effects as `df_select_009aa630` runs them. Summary line
 `dogfight gun adopt <unit> adopts=N`. Predictions: adopts > 0 on JM08 (B-17 flights of 2+) and USNOS; more hits per burst,
 quicker B-17 kills; target_changes rise.
+
+### 5gz.1 Measured: `kDogfightAimLeadBound` **ON** (cc9-lua58, 2026-10-13)
+
+Pair: OFF `local\l58_s0_*` (a7a20bc52, no flips) against ON `local\l58_f1_*` (b414ef1e1 with the D1 flip; the commits between
+add only OFF-gated code). Rows JM08 (`jm08_p6_j8_f`, 40000 frames) and USNOS (`usnos_s45_os_k`, 30000 frames).
+
+| row | OFF | ON |
+|---|---|---|
+| JM08 air-to-air kills (`killer_cat=0` death rows) | 13 (sqn30 6, sqn29 3, sqn31 3, sqn28 1) | 16 (sqn30 10, sqn29 5, sqn28 1) |
+| JM08 first air-to-air kill | 1381.37 s | 1421.26 s |
+| JM08 deaths / mission end | 207 / completed 1617.15 s | 207 / completed 1617.15 s (win kept) |
+| JM08 `dogfight aim lead` mean_shift | - | 54-102 m per plane |
+| USNOS air-to-air kills | 8 | 13 (Enterprise_sqn03 1 -> 6, sqn01 1 -> 2) |
+| USNOS deaths | 271 | 230 |
+
+The first gameplay line that differs in either pair is a dogfight `maneuver -> aim d=` value (JM08 1984.0 -> 1827.4, USNOS
+1995.4 -> 2118.7): d is now taken from the led point. Everything after that is downstream of the changed engagements
+(USNOS has no mission end, and its strike/AA rows diverge from the first changed air fight at about 295 s). The mechanism
+and the direction match the prediction (more air-to-air kills on both rows); the shift is somewhat larger than the 30-80 m
+estimate and JM08's first kill is later, not earlier. Faithful, flipped ON.
