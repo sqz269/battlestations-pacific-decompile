@@ -311,13 +311,18 @@ def index_exported_count():
 # ---------------------------------------------------------------- index queries
 
 def connect(required=True):
-    if not DB.exists():
-        if required:
-            sys.exit('No index; run: python tools/bsp.py index')
-        return None
-    db = sqlite3.connect(DB)
-    db.row_factory = sqlite3.Row
-    return db
+    # An empty file is what a plain sqlite3.connect() on a missing path leaves behind (fresh worktrees);
+    # treat it, and a file without the functions table, as no index at all.
+    usable = DB.exists() and DB.stat().st_size > 0
+    if usable:
+        db = sqlite3.connect(DB)
+        if db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='functions'").fetchone():
+            db.row_factory = sqlite3.Row
+            return db
+        db.close()
+    if required:
+        sys.exit(f'No usable index at {DB}; run: python tools/bsp.py index')
+    return None
 
 
 def fn_label(db, address):

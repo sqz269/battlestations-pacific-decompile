@@ -1,5 +1,7 @@
 #include "bsp/actions_seg5_cc13.hpp"
+#include "bsp/unit_motion.hpp"
 
+#include <cmath>
 #include <cstring>
 #include <string>
 #include <string.h>
@@ -604,7 +606,8 @@ Object record38_assign_00458050(Seg5Host& host, Object dest, Object source) {
 
 // 00456710. The EH frame only brackets the call.
 void list_value_construct_00456710(Seg5Host& host, Object place, Object source) {
-    if (place != nullptr) host.list_node_value_construct_00455880(place, source);
+    (void)host;
+    if (place != nullptr) shake_channel_copy_construct_00455880(place, source);
 }
 
 namespace {
@@ -641,7 +644,7 @@ void entity_track_unparent_00458a70(Seg5Host& host, Object track, float duration
     host.entity_vcall_ac(native_at<Object>(track, 0x11C), 0);
     float buffer[3];
     native_at<std::int32_t>(track, 0x14C) = 0;
-    const float* p = host.track_eval_position_004581e0(parent, buffer, movie_time, 1);
+    const float* p = entity_track_eval_position_004581e0(host, parent, buffer, movie_time, 1);
     const float start[3] = {add_f(p[0], native_at<float>(track, 0x1C8)),
                             add_f(p[1], native_at<float>(track, 0x1CC)),
                             add_f(p[2], native_at<float>(track, 0x1D0))};
@@ -650,7 +653,7 @@ void entity_track_unparent_00458a70(Seg5Host& host, Object track, float duration
     native_at<float>(track, 0x16C) = start[2];
     native_at<float>(track, 0x158) = movie_time;
     const float t0 = static_cast<float>(static_cast<double>(movie_time) - kBlendLead);
-    const float* q = host.track_eval_position_004581e0(parent, buffer, t0, 1);
+    const float* q = entity_track_eval_position_004581e0(host, parent, buffer, t0, 1);
     const float q_copy[3] = {q[0], q[1], q[2]};
     const float d0[3] = {sub_f(q_copy[0], native_at<float>(track, 0x164)),
                          sub_f(q_copy[1], native_at<float>(track, 0x168)),
@@ -659,7 +662,7 @@ void entity_track_unparent_00458a70(Seg5Host& host, Object track, float duration
 
     const double t2_wide = static_cast<double>(duration) + static_cast<double>(movie_time);  // FST double
     const float t2 = static_cast<float>(t2_wide);
-    host.track_eval_position_004581e0(track, buffer, t2, 1);
+    entity_track_eval_position_004581e0(host, track, buffer, t2, 1);
     // The end point is read from the stack buffer (MOVSS [ESP+1Ch..24h]), not
     // through the returned pointer.
     native_at<float>(track, 0x19C) = buffer[0];
@@ -667,7 +670,7 @@ void entity_track_unparent_00458a70(Seg5Host& host, Object track, float duration
     native_at<float>(track, 0x1A4) = buffer[2];
     native_at<float>(track, 0x190) = t2;
     const float t3 = static_cast<float>(t2_wide - kBlendLead);
-    const float* s = host.track_eval_position_004581e0(track, buffer, t3, 1);
+    const float* s = entity_track_eval_position_004581e0(host, track, buffer, t3, 1);
     const float s_copy[3] = {s[0], s[1], s[2]};
     const float end[3] = {native_at<float>(track, 0x19C), native_at<float>(track, 0x1A0),
                           native_at<float>(track, 0x1A4)};
@@ -693,7 +696,7 @@ void entity_track_set_parent_00458d50(Seg5Host& host, Object track, float durati
     native_at<float>(track, 0x16C) = native_at<float>(entity, 0x104);
     native_at<float>(track, 0x158) = movie_time;
     float buffer[3];
-    const float* q = host.track_eval_position_004581e0(track, buffer, t0, 1);
+    const float* q = entity_track_eval_position_004581e0(host, track, buffer, t0, 1);
     const float q_copy[3] = {q[0], q[1], q[2]};
     const float d0[3] = {sub_f(q_copy[0], native_at<float>(track, 0x164)),
                          sub_f(q_copy[1], native_at<float>(track, 0x168)),
@@ -702,14 +705,14 @@ void entity_track_set_parent_00458d50(Seg5Host& host, Object track, float durati
 
     const double t2_wide = static_cast<double>(duration) + static_cast<double>(movie_time);  // FST double
     const float t2 = static_cast<float>(t2_wide);
-    const float* r = host.track_eval_position_004581e0(parent, buffer, t2, 1);
+    const float* r = entity_track_eval_position_004581e0(host, parent, buffer, t2, 1);
     const float end[3] = {add_f(r[0], offset[0]), add_f(r[1], offset[1]), add_f(r[2], offset[2])};
     native_at<float>(track, 0x19C) = end[0];
     native_at<float>(track, 0x1A0) = end[1];
     native_at<float>(track, 0x1A4) = end[2];
     native_at<float>(track, 0x190) = t2;
     const float t3 = static_cast<float>(t2_wide - kBlendLead);
-    const float* s = host.track_eval_position_004581e0(parent, buffer, t3, 1);
+    const float* s = entity_track_eval_position_004581e0(host, parent, buffer, t3, 1);
     const float s_sum[3] = {add_f(offset[0], s[0]), add_f(s[1], offset[1]), add_f(s[2], offset[2])};
     const float end_again[3] = {native_at<float>(track, 0x19C), native_at<float>(track, 0x1A0),
                                 native_at<float>(track, 0x1A4)};
@@ -904,14 +907,15 @@ void entity_track_bind_00457160(Seg5Host& host, Object track) {
 
 // 0045AF70.
 void camera_track_add_shake_0045af70(Seg5Host& host, Object track, float time, float x, float y,
-                                     float z, float amplitude, std::uint8_t camera) {
-    host.shake_list_add_0045a320(camera != 0 ? track + 0x1DC : track + 0x1E8, time, x, y, z, amplitude);
+                                     float z, float key_spacing, std::uint8_t camera) {
+    shake_list_add_0045a320(host, camera != 0 ? track + 0x1DC : track + 0x1E8, time, x, y, z,
+                            key_spacing);
 }
 
 // 0045BD90.
 void camera_track_update_0045bd90(Seg5Host& host, Object track, float time) {
     host.entity_track_update_00459020(track, time);
-    host.camera_track_update_shakes_0045acc0(track);
+    camera_track_update_shakes_0045acc0(host, track);
 }
 
 // 0045BE40. The EH states only order the member destructors.
@@ -960,6 +964,892 @@ void win32_touch_file_0045cac0(Seg5Host& host, Object path) {
     }
     native_at<std::uint32_t>(writer, 0x00) = 0x00CE4E04u;
     if (native_at<void*>(writer, 0x14) != nullptr) host.close_handle_import_00ce225c(native_at<void*>(writer, 0x14));
+}
+
+// ---------------------------------------------------------------------------
+// Camera shake channels and track searches (cc13-x87).
+//
+// Every x87 sequence below was traced from the bytes with the stack depth at
+// each step (docs/CC13_SEG5.md, "Camera shake"). Precision model: a value the
+// image keeps in an x87 register is a double here and is rounded to float
+// exactly where the image stores it (FSTP dword); that reproduces the 53- and
+// 64-bit results. The main thread runs at 24-bit precision control
+// (docs/CC13_FPU_PRECISION.md), where every register operation also rounds to a
+// 24-bit significand; the doc lists, per function, the register intermediates
+// where the two models can differ. A single operation on two floats followed by
+// a float store is written as a float operation: it is correctly rounded in
+// either model.
+// ---------------------------------------------------------------------------
+
+namespace {
+constexpr float kShakeNegZero = -0.0f;                  // 00D7A208 (float 80000000h), SUBSS minuend
+constexpr float kShakeSpacingLow = 0.25f;               // 00CE3868 (float)
+constexpr float kShakeSpacingHigh = 1.0f;               // FLD1
+constexpr double kShakeWindow = 4.0;                    // 00D7A328 (double)
+constexpr double kShakeEndOffset = 1000000.0;           // 00CE4C08 (double)
+constexpr double kShakeEpsilon = 0.10000000149011612;   // 00D7A3A0 (double, 0.1f widened)
+constexpr double kShakeFadeHalf = 0.5;                  // 00D7A280 (double)
+constexpr float kShakeClampHigh = 1.0f;                 // 00D7A24C (float)
+constexpr float kSampleNearestStart = 999999.875f;      // 00CE4C00 (float 497423FEh)
+constexpr float kActionNearestStart = 9999.0f;          // 00CE4C04 (float 461C3C00h)
+constexpr float kDefaultFovDegrees = 35.0f;             // 00CE4D90 (float)
+constexpr double kPiOfFloat = 3.1415927410125732;       // 00CE3D28 (double 400921FB60000000h)
+constexpr double kHalfTurnDegrees = 180.0;              // 00CE3D20 (double)
+
+Object shake_key(Object channel, std::int32_t index) {
+    return channel + 0x1C + index * 0x10;
+}
+
+// The inlined key moves in 00454A50 copy four floats with FLD/FSTP.
+void move_key(Object dest, Object source) {
+    for (std::uint32_t offset = 0; offset < 0x10; offset += 4) {
+        native_at<float>(dest, offset) = native_at<float>(source, offset);
+    }
+}
+
+// One component draw: hi is the amplitude (FLD/FSTP copy), lo is SUBSS
+// (-0.0f - amplitude); ECX = 1.
+float draw_component(Seg5Host& host, float amplitude) {
+    return host.random_uniform_float_range_00bd2f10(1, kShakeNegZero - amplitude, amplitude);
+}
+
+// FLD a; FSUB b; FSTP float; then the sign cleared (FABS or AND 7FFFFFFFh).
+float abs_difference(float a, float b) {
+    return std::fabs(a - b);
+}
+} // namespace
+
+// 00454970.
+Object shake_key_copy_00454970(Object dest, Object source) {
+    move_key(dest, source);
+    return dest;
+}
+
+// 00455880. The keys go through the CRT's `vector copy constructor iterator'
+// (00453ED0) with element size 10h, count 5 and 00454970; that helper calls the
+// copy for each element in order and only adds unwinding, which a float copy
+// never needs, so the five calls are made directly.
+Object shake_channel_copy_construct_00455880(Object dest, Object source) {
+    native_at<float>(dest, 0x00) = native_at<float>(source, 0x00);
+    native_at<float>(dest, 0x04) = native_at<float>(source, 0x04);
+    native_at<float>(dest, 0x08) = native_at<float>(source, 0x08);
+    native_at<std::uint8_t>(dest, 0x0C) = native_at<std::uint8_t>(source, 0x0C);
+    native_at<float>(dest, 0x10) = native_at<float>(source, 0x10);
+    native_at<float>(dest, 0x14) = native_at<float>(source, 0x14);
+    native_at<float>(dest, 0x18) = native_at<float>(source, 0x18);
+    for (std::int32_t i = 0; i < 5; ++i) {
+        shake_key_copy_00454970(shake_key(dest, i), shake_key(source, i));
+    }
+    native_at<std::uint8_t>(dest, 0x6C) = native_at<std::uint8_t>(source, 0x6C);
+    return dest;
+}
+
+// 00454A50.
+void shake_channel_shift_and_redraw_keys_00454a50(Seg5Host& host, Object channel,
+                                                  std::int32_t index, std::uint8_t forward,
+                                                  std::int32_t shift) {
+    if (shift != 0) {
+        if (shift > 0) {
+            // 00454A6B..00454B66: keys 4 down to `shift` take key - shift
+            // (unrolled by four; the order is descending throughout).
+            for (std::int32_t i = 4; i >= shift; --i) move_key(shake_key(channel, i), shake_key(channel, i - shift));
+        } else {
+            // 00454B68..00454C3D: keys 0 up to 4 + shift take key - shift.
+            for (std::int32_t i = 0; i < shift + 5; ++i) move_key(shake_key(channel, i), shake_key(channel, i - shift));
+        }
+    }
+    if (forward == 0) {
+        // 00454D8B: backwards from index - 1. The next key's time is copied to
+        // a double slot, r * spacing is subtracted in ST and stored as float.
+        for (std::int32_t i = index - 1; i >= 0; --i) {
+            Object key = shake_key(channel, i);
+            const double next_time = native_at<float>(key, 0x1C);
+            const float r = host.random_uniform_float_range_00bd2f10(1, kShakeSpacingLow, kShakeSpacingHigh);
+            const float time = static_cast<float>(
+                next_time - static_cast<double>(r) * static_cast<double>(native_at<float>(channel, 0x08)));
+            native_at<float>(key, 0x0C) = time;
+            // FLDZ; FCOMIP ST1; JB: BL = 1 unless 0 < time (NaN gives 0).
+            const bool expired = time <= 0.0f;
+            native_at<float>(key, 0x00) = native_at<std::uint8_t>(channel, 0x0C) != 0 || expired
+                                              ? 0.0f : draw_component(host, native_at<float>(channel, 0x10));
+            native_at<float>(key, 0x04) = native_at<std::uint8_t>(channel, 0x0C) != 0 || expired
+                                              ? 0.0f : draw_component(host, native_at<float>(channel, 0x14));
+            native_at<float>(key, 0x08) = native_at<std::uint8_t>(channel, 0x0C) != 0 || expired
+                                              ? 0.0f : draw_component(host, native_at<float>(channel, 0x18));
+        }
+    } else {
+        // 00454C4E: forwards from index + 1; r * spacing + the previous key's
+        // time in ST, stored as float.
+        for (std::int32_t i = index + 1; i < 5; ++i) {
+            Object key = shake_key(channel, i);
+            const float r = host.random_uniform_float_range_00bd2f10(1, kShakeSpacingLow, kShakeSpacingHigh);
+            native_at<float>(key, 0x0C) = static_cast<float>(
+                static_cast<double>(r) * static_cast<double>(native_at<float>(channel, 0x08)) +
+                static_cast<double>(native_at<float>(shake_key(channel, i - 1), 0x0C)));
+            native_at<float>(key, 0x00) = native_at<std::uint8_t>(channel, 0x0C) == 0
+                                              ? draw_component(host, native_at<float>(channel, 0x10)) : 0.0f;
+            native_at<float>(key, 0x04) = native_at<std::uint8_t>(channel, 0x0C) == 0
+                                              ? draw_component(host, native_at<float>(channel, 0x14)) : 0.0f;
+            native_at<float>(key, 0x08) = native_at<std::uint8_t>(channel, 0x0C) == 0
+                                              ? draw_component(host, native_at<float>(channel, 0x18)) : 0.0f;
+        }
+    }
+}
+
+// 00454EF0.
+float* shake_channel_evaluate_00454ef0(Seg5Host& host, Object channel, float* out, float time) {
+    // FLD time; FSUB [ESI]; FSTP float.
+    const float rel = time - native_at<float>(channel, 0x00);
+    // COMISS 0, rel; JA: NaN carries on.
+    if (native_at<std::uint8_t>(channel, 0x0C) != 0 || 0.0f > rel) {
+        const float* fixed = host.static_vector_00f87574();
+        out[0] = fixed[0];
+        out[1] = fixed[1];
+        out[2] = fixed[2];
+        return out;
+    }
+    // spacing * 4.0 stays in ST for both window tests.
+    const double window = static_cast<double>(native_at<float>(channel, 0x08)) * kShakeWindow;
+    const float first_time = native_at<float>(shake_key(channel, 0), 0x0C);
+    bool redraw = static_cast<double>(first_time) - window > static_cast<double>(rel);
+    float last_time = 0.0f;
+    if (!redraw) {
+        last_time = native_at<float>(shake_key(channel, 4), 0x0C);
+        redraw = static_cast<double>(rel) > static_cast<double>(last_time) + window;
+    }
+    if (redraw) {
+        // 004550BF: re-anchor key 2 on rel with fresh components (no frozen
+        // test here), then redraw both sides of it.
+        Object key = shake_key(channel, 2);
+        native_at<float>(key, 0x0C) = rel;
+        native_at<float>(key, 0x00) = draw_component(host, native_at<float>(channel, 0x10));
+        native_at<float>(key, 0x04) = draw_component(host, native_at<float>(channel, 0x14));
+        native_at<float>(key, 0x08) = draw_component(host, native_at<float>(channel, 0x18));
+        shake_channel_shift_and_redraw_keys_00454a50(host, channel, 2, 1, 0);
+        shake_channel_shift_and_redraw_keys_00454a50(host, channel, 2, 0, 0);
+        out[0] = native_at<float>(key, 0x00);
+        out[1] = native_at<float>(key, 0x04);
+        out[2] = native_at<float>(key, 0x08);
+        return out;
+    }
+    float result[3];
+    if (first_time > rel) {
+        // 00454F5F: before the window, slide the keys up by three.
+        shake_channel_shift_and_redraw_keys_00454a50(host, channel, 3, 0, 3);
+        const float* r = shake_channel_evaluate_00454ef0(host, channel, result, time);
+        out[0] = r[0];
+        out[1] = r[1];
+        out[2] = r[2];
+        return out;
+    }
+    if (rel > last_time) {
+        // 00454F9D: past the window, slide the keys down by three.
+        shake_channel_shift_and_redraw_keys_00454a50(host, channel, 1, 1, -3);
+        const float* r = shake_channel_evaluate_00454ef0(host, channel, result, time);
+        out[0] = r[0];
+        out[1] = r[1];
+        out[2] = r[2];
+        return out;
+    }
+    // 00454FB9: the first key from 1 whose time exceeds rel (5 when none
+    // does, as for a NaN rel; the image then reads past the keys too).
+    std::int32_t i = 1;
+    for (; i < 5; ++i) {
+        if (native_at<float>(shake_key(channel, i), 0x0C) > rel) break;
+    }
+    Object previous = shake_key(channel, i - 1);
+    Object next = shake_key(channel, i);
+    const double previous_time = native_at<float>(previous, 0x0C);
+    // (rel - previous) and (next - previous) stay in ST; the quotient is stored.
+    float f = static_cast<float>((static_cast<double>(rel) - previous_time) /
+                                 (static_cast<double>(native_at<float>(next, 0x0C)) - previous_time));
+    f = bsp::unit_clamp_00415690(f, 0.0f, kShakeClampHigh);
+    const float a0 = native_at<float>(next, 0x00) * f;
+    const float a1 = native_at<float>(next, 0x04) * f;
+    const float a2 = native_at<float>(next, 0x08) * f;
+    const float g = 1.0f - f;
+    const float b0 = native_at<float>(previous, 0x00) * g;
+    const float b1 = native_at<float>(previous, 0x04) * g;
+    const float b2 = g * native_at<float>(previous, 0x08);
+    out[0] = b0 + a0;
+    out[1] = b1 + a1;
+    out[2] = b2 + a2;
+    return out;
+}
+
+// 00456420.
+Object shake_channel_construct_00456420(Seg5Host& host, Object channel, float time, float x,
+                                        float y, float z, float key_spacing) {
+    native_at<float>(channel, 0x00) = time;
+    native_at<float>(channel, 0x04) = static_cast<float>(static_cast<double>(time) + kShakeEndOffset);
+    native_at<float>(channel, 0x08) = key_spacing;
+    // (y*y + x*x) + z*z in ST, stored as float, then compared with 0.1.
+    const float magnitude = static_cast<float>(
+        (static_cast<double>(y) * y + static_cast<double>(x) * x) + static_cast<double>(z) * z);
+    const bool frozen = kShakeEpsilon > static_cast<double>(magnitude);
+    native_at<std::uint8_t>(channel, 0x0C) = frozen ? 1 : 0;
+    const float arguments[3] = {x, y, z};
+    const float* amplitude = frozen ? host.static_vector_00f87574() : arguments;
+    native_at<float>(channel, 0x10) = amplitude[0];
+    native_at<float>(channel, 0x14) = amplitude[1];
+    native_at<float>(channel, 0x18) = amplitude[2];
+    native_at<float>(channel, 0x28) = 0.0f;
+    const float* fixed = host.static_vector_00f87574();
+    native_at<float>(channel, 0x1C) = fixed[0];
+    native_at<float>(channel, 0x20) = fixed[1];
+    native_at<float>(channel, 0x24) = fixed[2];
+    shake_channel_shift_and_redraw_keys_00454a50(host, channel, 0, 1, 0);
+    return channel;
+}
+
+// 004569E0. The checked-iterator tests repeat the loop condition and are
+// omitted.
+float* shake_list_evaluate_004569e0(Seg5Host& host, Object list, float* out, float time) {
+    const float* fixed = host.static_vector_00f87574();
+    if (native_at<std::uint32_t>(list, 8) == 0) {
+        out[0] = fixed[0];
+        out[1] = fixed[1];
+        out[2] = fixed[2];
+        return out;
+    }
+    float sum[3] = {fixed[0], fixed[1], fixed[2]};
+    Object node = native_at<Object>(native_at<Object>(list, 4), 0);
+    while (node != native_at<Object>(list, 4)) {
+        Object channel = node + 8;
+        if (native_at<float>(channel, 0x00) > time) break;  // FCOMIP; JA (sorted by start)
+        Object next = native_at<Object>(node, 0);
+        // (end + 0.5) - time in ST, stored; time - start stored.
+        const float to_end = static_cast<float>(
+            static_cast<double>(native_at<float>(channel, 0x04)) + kShakeFadeHalf - static_cast<double>(time));
+        const float from_start = time - native_at<float>(channel, 0x00);
+        // FCOMIP; JBE keeps to_end, also for NaN.
+        const float nearer = to_end > from_start ? from_start : to_end;
+        const float ramp = nearer + nearer;  // FADD ST0,ST0; FSTP float
+        if (!(0.0f > ramp)) {
+            bool apply = true;
+            float weight = kShakeClampHigh;
+            if (!(ramp > kShakeClampHigh)) {  // COMISS; JBE
+                weight = ramp;
+                apply = ramp > 0.0f;          // COMISS 0.0f (first dword of 00D7A218); JBE skips
+            }
+            if (apply) {
+                float offset[3];
+                const float* v = shake_channel_evaluate_00454ef0(host, channel, offset, time);
+                const float p0 = v[0] * weight;
+                const float p1 = v[1] * weight;
+                const float p2 = weight * v[2];
+                sum[0] = p0 + sum[0];
+                sum[1] = p1 + sum[1];
+                sum[2] = p2 + sum[2];
+            }
+        }
+        node = next;
+    }
+    out[0] = sum[0];
+    out[1] = sum[1];
+    out[2] = sum[2];
+    return out;
+}
+
+// 0045A320. The checked-iterator tests either repeat the loop condition or
+// test the inserted node against the head, so none can fire on a valid list.
+void shake_list_add_0045a320(Seg5Host& host, Object list, float time, float x, float y, float z,
+                             float key_spacing) {
+    alignas(4) std::uint8_t channel[0x70];
+    shake_channel_construct_00456420(host, channel, time, x, y, z, key_spacing);
+    Object last = nullptr;
+    Object node = native_at<Object>(native_at<Object>(list, 4), 0);
+    while (node != native_at<Object>(list, 4)) {
+        last = node;
+        Object next = native_at<Object>(node, 0);
+        const float start = native_at<float>(node, 8);
+        if (kShakeEpsilon > static_cast<double>(abs_difference(time, start))) {
+            const float dx = native_at<float>(node, 0x18) - x;
+            const float dy = native_at<float>(node, 0x1C) - y;
+            const float dz = native_at<float>(node, 0x20) - z;
+            if (kShakeEpsilon > static_cast<double>(abs_difference(native_at<float>(node, 0x10), key_spacing))) {
+                // (dy*dy + dx*dx) + dz*dz in ST, stored as float: an equal
+                // channel is already queued.
+                const float distance = static_cast<float>(
+                    (static_cast<double>(dy) * dy + static_cast<double>(dx) * dx) + static_cast<double>(dz) * dz);
+                if (kShakeEpsilon > static_cast<double>(distance)) return;
+            }
+        }
+        if (start > time) {
+            // 0045A4DE: insert before `node`.
+            Object fresh = host.shake_list_buy_node_00457f30(list, node, native_at<Object>(node, 4), channel);
+            host.shake_list_increment_size_00459ae0(list, 1);
+            native_at<Object>(node, 4) = fresh;
+            native_at<Object>(native_at<Object>(fresh, 4), 0) = fresh;
+            return;
+        }
+        node = next;
+    }
+    // 0045A52A: the last channel ends where the new one starts, then push_back.
+    if (native_at<std::uint32_t>(list, 8) != 0) {
+        native_at<float>(last, 0x0C) = native_at<float>(channel, 0x00);
+    }
+    Object head = native_at<Object>(list, 4);
+    Object fresh = host.shake_list_buy_node_00457f30(list, head, native_at<Object>(head, 4), channel);
+    host.shake_list_increment_size_00459ae0(list, 1);
+    native_at<Object>(head, 4) = fresh;
+    native_at<Object>(native_at<Object>(fresh, 4), 0) = fresh;
+}
+
+// 0045ACC0. The image reuses the destroyed strings' stack slots as the
+// 004569E0 output buffers; separate locals hold the same values.
+void camera_track_update_shakes_0045acc0(Seg5Host& host, Object track) {
+    if (native_at<std::uint32_t>(track, 0x1D4) == 0) return;
+    alignas(4) std::uint8_t name[8];
+    host.native_string_construct_0041e870(name, "CameraPosition 01");  // 00CE4DA4
+    Object eye_entity = host.entity_registry_find_by_name_00925180(
+        native_at<Object>(host.game_00e188a8(), 0x19CC), name);
+    release_native_string(host, name);
+    host.native_string_construct_0041e870(name, "CameraLookat 01");  // 00CE4D94
+    Object target_entity = host.entity_registry_find_by_name_00925180(
+        native_at<Object>(host.game_00e188a8(), 0x19CC), name);
+    release_native_string(host, name);
+
+    const float time = native_at<float>(native_at<Object>(host.game_00e188a8(), 0x38), 4);
+    if (native_at<std::uint8_t>(eye_entity, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(eye_entity);
+    float eye[3] = {native_at<float>(eye_entity, 0xFC), native_at<float>(eye_entity, 0x100),
+                    native_at<float>(eye_entity, 0x104)};
+    float offset[3];
+    const float* s = shake_list_evaluate_004569e0(host, track + 0x1DC, offset, time);
+    eye[0] = s[0] + eye[0];
+    eye[1] = s[1] + eye[1];
+    eye[2] = s[2] + eye[2];
+
+    if (native_at<std::uint8_t>(target_entity, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(target_entity);
+    float target[3] = {native_at<float>(target_entity, 0xFC), native_at<float>(target_entity, 0x100),
+                       native_at<float>(target_entity, 0x104)};
+    const float* t = shake_list_evaluate_004569e0(host, track + 0x1E8, offset, time);
+    target[0] = t[0] + target[0];
+    target[1] = t[1] + target[1];
+    target[2] = t[2] + target[2];
+
+    // FCOS and FSIN of the float roll (+148h, read twice), each stored as
+    // float; the up vector is (sin, cos, 0).
+    const float roll_cos = static_cast<float>(std::cos(static_cast<double>(native_at<float>(track, 0x148))));
+    const float roll_sin = static_cast<float>(std::sin(static_cast<double>(native_at<float>(track, 0x148))));
+    alignas(4) std::uint8_t matrix[0x40];
+    Object view = host.matrix_build_look_at_00b63f10(matrix, eye, target, roll_sin, roll_cos, 0.0f);
+    host.camera_set_view_matrix_00b71490(native_at<Object>(track, 0x1D4), view);
+
+    const std::int32_t mode = native_at<std::int32_t>(native_at<Object>(host.game_00e188a8(), 0x38), 0x60);
+    float fov = kDefaultFovDegrees;
+    if (mode == 1 || mode == 2) fov = camera_track_fov_at_0045a5a0(host, track, time);  // FSTP float
+    // fov * pi / 180 in ST, stored as float.
+    const float radians = static_cast<float>(static_cast<double>(fov) * kPiOfFloat / kHalfTurnDegrees);
+    host.camera_set_field_of_view_00b6fbb0(native_at<Object>(track, 0x1D4), radians);
+}
+
+// 00455BC0. The checked-iterator tests inside the walk repeat the loop
+// condition; the one after the step back fires when no sample precedes `time`.
+Object* entity_track_find_sample_before_00455bc0(Seg5Host& host, Object track, Object* out,
+                                                 float time) {
+    Object list = track + 0xF4;
+    native_at<Object>(track, 0x100) = list;
+    native_at<Object>(track, 0x104) = native_at<Object>(native_at<Object>(track, 0xF8), 0);
+    for (;;) {
+        Object node = native_at<Object>(track, 0x104);
+        if (node == native_at<Object>(list, 4)) {
+            native_at<Object>(track, 0x100) = list;
+            native_at<Object>(track, 0x104) = native_at<Object>(list, 4);
+            break;
+        }
+        if (native_at<float>(node, 8) > time) break;  // FCOMIP; JA
+        native_at<Object>(track, 0x104) = native_at<Object>(node, 0);
+    }
+    Object previous = native_at<Object>(native_at<Object>(track, 0x104), 4);
+    native_at<Object>(track, 0x104) = previous;
+    if (previous == native_at<Object>(native_at<Object>(track, 0x100), 4)) host.checked_iterator_report_00bf6713();
+    out[1] = native_at<Object>(track, 0x104);
+    out[0] = native_at<Object>(track, 0x100);
+    return out;
+}
+
+// 00455CD0. When no sample was taken (empty list) the image reports through
+// 00BF6713 and then reads [0 + 4]; the read is kept (volatile) rather than
+// guarded.
+Object entity_track_find_nearest_sample_00455cd0(Seg5Host& host, Object track, float time) {
+    float best = kSampleNearestStart;
+    Object best_container = nullptr;
+    Object best_node = nullptr;
+    Object list = track + 0xF4;
+    native_at<Object>(track, 0x100) = list;
+    native_at<Object>(track, 0x104) = native_at<Object>(native_at<Object>(track, 0xF8), 0);
+    while (native_at<Object>(track, 0x104) != native_at<Object>(list, 4)) {
+        Object node = native_at<Object>(track, 0x104);
+        // FCOMIP best, |time_n - time|; JBE skips (also for NaN).
+        if (best > abs_difference(native_at<float>(node, 8), time)) {
+            best_container = native_at<Object>(track, 0x100);
+            best_node = node;
+            best = abs_difference(native_at<float>(native_at<Object>(track, 0x104), 8), time);
+        }
+        native_at<Object>(track, 0x104) = native_at<Object>(node, 0);
+    }
+    if (best_container == nullptr) host.checked_iterator_report_00bf6713();
+    if (best_node == *reinterpret_cast<Object volatile*>(best_container + 4)) host.checked_iterator_report_00bf6713();
+    return best_node + 8;
+}
+
+// 00455E30. As 00455BC0 over the action list.
+Object* entity_track_find_action_before_00455e30(Seg5Host& host, Object track, Object* out,
+                                                 float time) {
+    Object list = track + 0x108;
+    native_at<Object>(track, 0x114) = list;
+    native_at<Object>(track, 0x118) = native_at<Object>(native_at<Object>(track, 0x10C), 0);
+    for (;;) {
+        Object node = native_at<Object>(track, 0x118);
+        if (node == native_at<Object>(list, 4)) {
+            native_at<Object>(track, 0x114) = list;
+            native_at<Object>(track, 0x118) = native_at<Object>(list, 4);
+            break;
+        }
+        if (native_at<float>(native_at<Object>(node, 8), 4) > time) break;  // FCOMIP; JA
+        native_at<Object>(track, 0x118) = native_at<Object>(node, 0);
+    }
+    Object previous = native_at<Object>(native_at<Object>(track, 0x118), 4);
+    native_at<Object>(track, 0x118) = previous;
+    if (previous == native_at<Object>(native_at<Object>(track, 0x114), 4)) host.checked_iterator_report_00bf6713();
+    out[1] = native_at<Object>(track, 0x118);
+    out[0] = native_at<Object>(track, 0x114);
+    return out;
+}
+
+// 00455F50. The result register starts as MOV EBP,[ESP+1Ch], the bits of
+// the time argument; with a non-empty list and no action nearer than 9999.0
+// those bits are returned as the pointer.
+Object entity_track_find_nearest_action_00455f50(Seg5Host& host, Object track, float time) {
+    (void)host;
+    Object list = track + 0x108;
+    Object head = native_at<Object>(track, 0x10C);
+    if (native_at<Object>(head, 0) == head) return nullptr;
+    std::uint32_t bits = 0;
+    std::memcpy(&bits, &time, sizeof bits);
+    Object best = reinterpret_cast<Object>(static_cast<std::uintptr_t>(bits));
+    float best_distance = kActionNearestStart;
+    native_at<Object>(track, 0x114) = list;
+    native_at<Object>(track, 0x118) = native_at<Object>(native_at<Object>(list, 4), 0);
+    while (native_at<Object>(track, 0x118) != native_at<Object>(list, 4)) {
+        Object node = native_at<Object>(track, 0x118);
+        if (best_distance > abs_difference(native_at<float>(native_at<Object>(node, 8), 4), time)) {
+            best = native_at<Object>(native_at<Object>(track, 0x118), 8);
+            best_distance = abs_difference(native_at<float>(native_at<Object>(native_at<Object>(track, 0x118), 8), 4), time);
+        }
+        native_at<Object>(track, 0x118) = native_at<Object>(node, 0);
+    }
+    return best;
+}
+
+// 00454340.
+Object* list_iterator_post_decrement_00454340(Seg5Host& host, Object* it, Object* out) {
+    out[0] = it[0];
+    out[1] = it[1];
+    if (it[0] == nullptr) host.checked_iterator_report_00bf6713();
+    it[1] = native_at<Object>(it[1], 4);
+    if (it[1] == native_at<Object>(it[0], 4)) host.checked_iterator_report_00bf6713();
+    return out;
+}
+
+// 004552C0.
+Object list_iterator_deref_004552c0(Seg5Host& host, const Object* it) {
+    if (it[0] == nullptr) host.checked_iterator_report_00bf6713();
+    if (it[1] == native_at<Object>(it[0], 4)) host.checked_iterator_report_00bf6713();
+    return it[1] + 8;
+}
+
+// 004552F0.
+Object* list_iterator_post_increment_004552f0(Seg5Host& host, Object* it, Object* out) {
+    out[0] = it[0];
+    out[1] = it[1];
+    if (it[0] == nullptr) host.checked_iterator_report_00bf6713();
+    if (it[1] == native_at<Object>(it[0], 4)) host.checked_iterator_report_00bf6713();
+    it[1] = native_at<Object>(it[1], 0);
+    return out;
+}
+
+// 00458160. The two checked-iterator tests on the last node cannot fire on a
+// non-empty list.
+float entity_track_last_sample_time_00458160(Seg5Host& host, Object track) {
+    Object list = track + 0xF4;
+    Object head = native_at<Object>(list, 4);
+    if (native_at<Object>(head, 0) == head) return 0.0f;  // FLDZ
+    Object last = native_at<Object>(native_at<Object>(list, 4), 4);
+    alignas(4) std::uint8_t copy[0x38];
+    host.record38_copy_construct_00457ff0(copy, last + 8);
+    release_native_string(host, copy + 4);
+    return native_at<float>(copy, 0);  // FLD dword: exact
+}
+
+namespace {
+constexpr double kTrackBlendLead = 0.03999999910593033;  // 00CE4D68 (double, 0.04f widened)
+constexpr double kTrackTimeScale = 100.0;                // 00D7A220 (double)
+constexpr double kSplineTwo = 2.0;                       // 00D7A308 (double)
+constexpr double kSplineThree = 3.0;                     // 00D7A2B0 (double)
+constexpr double kSplineFour = 4.0;                      // 00D7A328 (double)
+constexpr double kSplineFive = 5.0;                      // 00D7A370 (double)
+constexpr double kSplineHalf = 0.5;                      // 00D7A280 (double)
+constexpr double kSplineOne = 1.0;                       // 00D7A210 (double)
+
+// The four sample records' inlined destructors, in the image's order.
+void release_records(Seg5Host& host, Object d, Object c, Object b, Object a) {
+    release_native_string(host, d + 4);
+    release_native_string(host, c + 4);
+    release_native_string(host, b + 4);
+    release_native_string(host, a + 4);
+}
+} // namespace
+
+// 004581E0. Records: a (ESP+4Ch, the sample at or before `time`), b (+84h,
+// the next one), c (+0F4h, the one before a) and d (+0BCh, the one after b);
+// 38h bytes each: +0 time, +4 NativeString, +0Ch position, +18h roll in
+// degrees, +1Ch and +28h the two tangent points. The checked-iterator tests
+// that repeat a condition already tested are omitted; the ones that can fire
+// on a valid list call the hook.
+float* entity_track_eval_position_004581e0(Seg5Host& host, Object track, float* out, float time,
+                                           std::uint8_t exact) {
+    alignas(4) std::uint8_t a[0x38];
+    alignas(4) std::uint8_t b[0x38];
+    alignas(4) std::uint8_t c[0x38];
+    alignas(4) std::uint8_t d[0x38];
+    host.timed_value_construct_004658d0(a, 0.0f);
+    host.timed_value_construct_004658d0(b, 0.0f);
+    host.timed_value_construct_004658d0(c, 0.0f);
+    host.timed_value_construct_004658d0(d, 0.0f);
+
+    if (exact == 0) {
+        // time + 0.04 (double) in ST against the stored +190h; JB skips, so a
+        // NaN skips too.
+        if (static_cast<double>(time) + kTrackBlendLead >= static_cast<double>(native_at<float>(track, 0x190))) {
+            if (native_at<std::int32_t>(track, 0x14C) == 1) native_at<std::int32_t>(track, 0x14C) = 2;
+            if (native_at<std::int32_t>(track, 0x14C) == 3) {
+                native_at<std::uint32_t>(track, 0x154) = 0;
+                native_at<std::int32_t>(track, 0x14C) = 0;
+            }
+        }
+    }
+    const std::int32_t state = native_at<std::int32_t>(track, 0x14C);
+    if (state != 0 && exact == 0) {
+        if (state != 1 && state != 3) {
+            // 004582DF: attached, the parent offset.
+            out[0] = native_at<float>(track, 0x1C8);
+            out[1] = native_at<float>(track, 0x1CC);
+            out[2] = native_at<float>(track, 0x1D0);
+            host.record38_destroy_00456d10(d);
+            host.record38_destroy_00456d10(c);
+            host.record38_destroy_00456d10(b);
+            host.record38_destroy_00456d10(a);
+            return out;
+        }
+        // 00458357: the blend from +158h to +190h; c and d keep their
+        // constructed values.
+        record38_assign_00458050(host, a, track + 0x158);
+        record38_assign_00458050(host, b, track + 0x190);
+    } else {
+        Object list = track + 0xF4;
+        if (native_at<std::uint32_t>(track, 0xFC) == 1) {
+            // 0045837A: one sample, its position (the first-node test cannot fire).
+            Object first = native_at<Object>(native_at<Object>(track, 0xF8), 0);
+            out[0] = native_at<float>(first, 0x14);
+            out[1] = native_at<float>(first, 0x18);
+            out[2] = native_at<float>(first, 0x1C);
+            release_records(host, d, c, b, a);
+            return out;
+        }
+        const float last_time = entity_track_last_sample_time_00458160(host, track);
+        if (time > last_time) {  // FCOMI; JBE (NaN goes to the search)
+            // 0045845A: --end(), copied out; with an empty list the image
+            // reports twice and copies from the head node.
+            native_at<Object>(track, 0x100) = list;
+            native_at<Object>(track, 0x104) = native_at<Object>(track, 0xF8);
+            Object node = native_at<Object>(native_at<Object>(track, 0x104), 4);
+            native_at<Object>(track, 0x104) = node;
+            if (node == native_at<Object>(native_at<Object>(track, 0x100), 4)) host.checked_iterator_report_00bf6713();
+            if (native_at<Object>(track, 0x104) == native_at<Object>(native_at<Object>(track, 0x100), 4)) {
+                host.checked_iterator_report_00bf6713();
+            }
+            alignas(4) std::uint8_t e[0x38];
+            host.record38_copy_construct_00457ff0(e, native_at<Object>(track, 0x104) + 8);
+            out[0] = native_at<float>(e, 0x0C);
+            out[1] = native_at<float>(e, 0x10);
+            out[2] = native_at<float>(e, 0x14);
+            release_native_string(host, e + 4);
+            release_records(host, d, c, b, a);
+            return out;
+        }
+        // 00458554.
+        Object it[2];
+        entity_track_find_sample_before_00455bc0(host, track, it, time);
+        Object cur[2] = {it[0], it[1]};
+        // No sample at or before `time`: the dereference and increment tests.
+        if (it[1] == native_at<Object>(it[0], 4)) host.checked_iterator_report_00bf6713();
+        cur[1] = native_at<Object>(it[1], 0);
+        if (it[1] == native_at<Object>(it[0], 4)) host.checked_iterator_report_00bf6713();
+        record38_assign_00458050(host, a, it[1] + 8);
+        if (cur[1] == native_at<Object>(track, 0xF8)) {
+            // 004585C9: no later sample, a's position.
+            out[0] = native_at<float>(a, 0x0C);
+            out[1] = native_at<float>(a, 0x10);
+            out[2] = native_at<float>(a, 0x14);
+            release_records(host, d, c, b, a);
+            return out;
+        }
+        record38_assign_00458050(host, b, cur[1] + 8);
+        Object before = a;
+        if (it[1] != native_at<Object>(native_at<Object>(list, 4), 0)) {
+            Object old[2];
+            list_iterator_post_decrement_00454340(host, it, old);
+            before = list_iterator_deref_004552c0(host, it);
+        }
+        record38_assign_00458050(host, c, before);
+        list_iterator_post_increment_004552f0(host, cur, it);
+        it[0] = cur[0];
+        it[1] = cur[1];
+        Object old[2];
+        list_iterator_post_decrement_00454340(host, cur, old);
+        // MOV [ESP+20h], head: cur's node slot is reused for end().
+        Object end = native_at<Object>(list, 4);
+        Object after = it[1] == end ? b : list_iterator_deref_004552c0(host, it);
+        record38_assign_00458050(host, d, after);
+    }
+
+    // 004586EA: the parameter. (time - a) / 100 stays in ST; (b - a) / 100 is
+    // stored, and the quotient is stored.
+    const double a_time = native_at<float>(a, 0x00);
+    const float span = static_cast<float>((static_cast<double>(native_at<float>(b, 0x00)) - a_time) / kTrackTimeScale);
+    const float u = static_cast<float>(((static_cast<double>(time) - a_time) / kTrackTimeScale) / static_cast<double>(span));
+
+    // 00458718: the rolls in radians, each (r / 180) * pi in ST, stored.
+    const float roll_c = static_cast<float>(static_cast<double>(native_at<float>(c, 0x18)) / kHalfTurnDegrees * kPiOfFloat);
+    const float roll_a = static_cast<float>(static_cast<double>(native_at<float>(a, 0x18)) / kHalfTurnDegrees * kPiOfFloat);
+    const float roll_b = static_cast<float>(static_cast<double>(native_at<float>(b, 0x18)) / kHalfTurnDegrees * kPiOfFloat);
+    const float roll_d = static_cast<float>(kPiOfFloat * (static_cast<double>(native_at<float>(d, 0x18)) / kHalfTurnDegrees));
+
+    // 0045875D..004587D7: Catmull-Rom, all in ST, one store.
+    {
+        const double p0 = roll_c;
+        const double p1 = roll_a;
+        const double p2 = roll_b;
+        const double p3 = roll_d;
+        const double t = u;
+        const double quadratic = ((p0 * kSplineTwo - kSplineFive * p1) + kSplineFour * p2) - p3;
+        const double low = (quadratic * t) * t + ((p2 - p0) * t + p1 * kSplineTwo);
+        const double cubic = ((p1 * kSplineThree - p0) - p2 * kSplineThree) + p3;
+        native_at<float>(track, 0x148) = static_cast<float>((((cubic * t) * t) * t + low) * kSplineHalf);
+    }
+
+    // 004587DD: cubic Hermite on the position. The basis products stay in ST
+    // until each basis value is stored; u*u, u*u*u, (2u)u, (3u)u and ((2u)u)u
+    // keep the image's association.
+    const float e0 = native_at<float>(b, 0x0C) - native_at<float>(b, 0x1C);
+    const float e1 = native_at<float>(b, 0x10) - native_at<float>(b, 0x20);
+    const float e2 = native_at<float>(b, 0x14) - native_at<float>(b, 0x24);
+    const double uu = static_cast<double>(u) * u;
+    const double uuu = static_cast<double>(u) * uu;
+    const float h11 = static_cast<float>(uuu - uu);
+    const float t0 = e0 * h11;
+    const float t1 = e1 * h11;
+    const float t2 = h11 * e2;
+    const float g0 = native_at<float>(a, 0x0C) - native_at<float>(a, 0x28);
+    const float g1 = native_at<float>(a, 0x10) - native_at<float>(a, 0x2C);
+    const float g2 = native_at<float>(a, 0x14) - native_at<float>(a, 0x30);
+    const double two_uu = (kSplineTwo * u) * u;
+    const float h10 = static_cast<float>((uuu - two_uu) + u);
+    const float s0 = g0 * h10;
+    const float s1 = g1 * h10;
+    const float s2 = h10 * g2;
+    const double three_uu = (kSplineThree * u) * u;
+    const double two_uuu = two_uu * u;
+    const float h01 = static_cast<float>(three_uu - two_uuu);
+    const float v0 = native_at<float>(b, 0x0C) * h01;
+    const float v1 = h01 * native_at<float>(b, 0x10);
+    const float v2 = h01 * native_at<float>(b, 0x14);
+    const float h00 = static_cast<float>((two_uuu - three_uu) + kSplineOne);
+    const float w0 = native_at<float>(a, 0x0C) * h00;
+    const float w1 = native_at<float>(a, 0x10) * h00;
+    const float w2 = h00 * native_at<float>(a, 0x14);
+    const float x0 = w0 + v0;
+    const float x1 = w1 + v1;
+    const float x2 = w2 + v2;
+    const float y0 = x0 + s0;
+    const float y1 = x1 + s1;
+    const float y2 = x2 + s2;
+    out[0] = y0 + t0;
+    out[1] = y1 + t1;
+    out[2] = y2 + t2;
+    release_records(host, d, c, b, a);
+    return out;
+}
+
+// 004564E0. The tests inside the walk repeat the loop condition; the one on
+// the result fires when no action precedes `time` (or the list is empty).
+Object* action_list_find_before_004564e0(Seg5Host& host, Object track, Object* out, float time,
+                                         Object list) {
+    (void)track;
+    Object node = native_at<Object>(native_at<Object>(list, 4), 0);
+    for (;;) {
+        if (node == native_at<Object>(list, 4)) {
+            node = native_at<Object>(native_at<Object>(list, 4), 4);
+            break;
+        }
+        if (native_at<float>(native_at<Object>(node, 8), 4) > time) {  // FCOMIP; JA
+            node = native_at<Object>(node, 4);
+            break;
+        }
+        node = native_at<Object>(node, 0);
+    }
+    if (node == native_at<Object>(list, 4)) host.checked_iterator_report_00bf6713();
+    out[1] = node;
+    out[0] = list;
+    return out;
+}
+
+namespace {
+constexpr float kFovLeadIn = 0.01f;                     // 00D7A238 (float 3C23D70Ah)
+constexpr double kFovLeadOut = 0.009999999776482582;    // 00D7A358 (double, 0.01f widened)
+constexpr double kFovEdge = 0.02;                       // 00CE4D88 (double 3F947AE147AE147Bh)
+
+// push_back on a list<Action*>: 00455710(list, head, head->prev, &value),
+// 00459A40(1), then the two links.
+void action_list_push_back(Seg5Host& host, Object list, Object* value) {
+    Object head = native_at<Object>(list, 4);
+    Object prev = native_at<Object>(head, 4);
+    Object node = host.action_list_buy_node_00455710(list, head, prev, value);
+    host.action_list_increment_size_00459a40(list, 1);
+    native_at<Object>(head, 4) = node;
+    native_at<Object>(native_at<Object>(node, 4), 0) = node;
+}
+
+float fov_of(Object node) {
+    return native_at<float>(native_at<Object>(node, 8), 0x20);
+}
+} // namespace
+
+// 0045A5A0. Stack: the list at ESP+14h, the frame actions at +11Ch, +94h,
+// +0D8h and +50h. The checked-iterator tests that cannot fire on this list
+// (it always holds the four frame actions) are omitted.
+float camera_track_fov_at_0045a5a0(Seg5Host& host, Object track, float time) {
+    alignas(4) std::uint8_t list[0x0C];
+    native_at<Object>(list, 4) = host.list_buy_head_node_004555b0(list);
+    native_at<std::uint32_t>(list, 8) = 0;
+    const float now = native_at<float>(native_at<Object>(host.game_00e188a8(), 0x38), 0);
+    alignas(4) std::uint8_t first_frame[0x44];
+    alignas(4) std::uint8_t lead_in[0x44];
+    alignas(4) std::uint8_t lead_out[0x44];
+    alignas(4) std::uint8_t last_frame[0x44];
+    host.movie_action_fov_construct_00466020(first_frame, 0.0f);
+    host.movie_action_fov_construct_00466020(lead_in, kFovLeadIn);
+    // now - 0.01 (double) in ST, stored as float, reloaded as the argument.
+    host.movie_action_fov_construct_00466020(
+        lead_out, static_cast<float>(static_cast<double>(now) - kFovLeadOut));
+    host.movie_action_fov_construct_00466020(last_frame, now);
+    native_at<float>(first_frame, 0x20) = kDefaultFovDegrees;
+    native_at<float>(lead_in, 0x20) = kDefaultFovDegrees;
+    native_at<float>(lead_out, 0x20) = kDefaultFovDegrees;
+    native_at<float>(last_frame, 0x20) = kDefaultFovDegrees;
+    Object value = first_frame;
+    action_list_push_back(host, list, &value);
+    value = lead_in;
+    action_list_push_back(host, list, &value);
+
+    // 0045A701: the track's actions, iterator +114h/+118h.
+    native_at<Object>(track, 0x114) = track + 0x108;
+    native_at<Object>(track, 0x118) = native_at<Object>(native_at<Object>(track, 0x10C), 0);
+    while (native_at<Object>(track, 0x118) != native_at<Object>(track, 0x10C)) {
+        Object action = native_at<Object>(native_at<Object>(track, 0x118), 8);
+        if (native_at<std::int32_t>(action, 0x10) == 0x12) {
+            value = action;
+            action_list_push_back(host, list, &value);
+        }
+        // FCOMIP time, ActivateTime; JBE skips (NaN too).
+        if (native_at<std::int32_t>(action, 0x10) == 0x16 && time > native_at<float>(action, 4)) {
+            Object due = action;
+            action_list_push_back(host, list, &due);
+            action_list_push_back(host, list, &due);
+        }
+        native_at<Object>(track, 0x118) = native_at<Object>(native_at<Object>(track, 0x118), 0);
+    }
+    value = lead_out;
+    action_list_push_back(host, list, &value);
+    value = last_frame;
+    action_list_push_back(host, list, &value);
+
+    if (native_at<std::uint32_t>(list, 8) < 5) {
+        // 0045A8D8: no FOV action, the first frame's FOV; the list is
+        // cleared inline here (the other exits call 00456670).
+        const float fov = fov_of(native_at<Object>(native_at<Object>(list, 4), 0));
+        host.action_destroy_00465610(last_frame);
+        host.action_destroy_00465610(lead_out);
+        host.action_destroy_00465610(lead_in);
+        host.action_destroy_00465610(first_frame);
+        Object node = native_at<Object>(native_at<Object>(list, 4), 0);
+        native_at<Object>(native_at<Object>(list, 4), 0) = native_at<Object>(list, 4);
+        native_at<Object>(native_at<Object>(list, 4), 4) = native_at<Object>(list, 4);
+        native_at<std::uint32_t>(list, 8) = 0;
+        if (node != native_at<Object>(list, 4)) {
+            Object next = nullptr;
+            do {
+                next = native_at<Object>(node, 0);
+                host.crt_free_00bf65ac(node);
+                node = next;
+            } while (next != native_at<Object>(list, 4));
+        }
+        host.crt_free_00bf65ac(native_at<Object>(list, 4));
+        return fov;
+    }
+
+    float fov = 0.0f;
+    if (kFovEdge > static_cast<double>(time)) {  // FCOMIP; JBE (NaN carries on)
+        fov = fov_of(native_at<Object>(native_at<Object>(list, 4), 0));
+    } else {
+        const float last_time = entity_track_last_sample_time_00458160(host, track);
+        // 0.02 + time in ST against the last sample time; JBE (NaN searches).
+        if (kFovEdge + static_cast<double>(time) > static_cast<double>(last_time)) {
+            fov = fov_of(native_at<Object>(native_at<Object>(list, 4), 4));
+        } else {
+            Object it[2];
+            action_list_find_before_004564e0(host, track, it, time, list);
+            Object node = it[1];
+            // Dereference and increment tests: fire when no action precedes.
+            if (node == native_at<Object>(it[0], 4)) host.checked_iterator_report_00bf6713();
+            Object next = native_at<Object>(node, 0);
+            if (node == native_at<Object>(it[0], 4)) host.checked_iterator_report_00bf6713();
+            Object p1 = native_at<Object>(node, 8);
+            if (next == native_at<Object>(list, 4) ||
+                node == native_at<Object>(native_at<Object>(list, 4), 0)) {
+                fov = native_at<float>(p1, 0x20);
+            } else {
+                // 0045AAF0. The outer two control values are read from the
+                // same two nodes as the inner ones: [ESI+8] (this node) for
+                // the first and [EBP+8] (the next node) for the last, so the
+                // curve runs through (p1, p1, p2, p2).
+                Object p2 = native_at<Object>(next, 8);
+                const double t1 = native_at<float>(p1, 4);
+                // (time - t1) / 100 stays in ST; (t2 - t1) / 100 is stored,
+                // then the quotient is stored.
+                const double scaled = (static_cast<double>(time) - t1) / kTrackTimeScale;
+                const float span = static_cast<float>((static_cast<double>(native_at<float>(p2, 4)) - t1) / kTrackTimeScale);
+                const float u = static_cast<float>(scaled / static_cast<double>(span));
+                const double a = native_at<float>(native_at<Object>(node, 8), 0x20);
+                const double b = native_at<float>(p1, 0x20);
+                const double c = native_at<float>(p2, 0x20);
+                const double d = native_at<float>(native_at<Object>(next, 8), 0x20);
+                const double t = u;
+                const double quadratic = ((a * kSplineTwo - b * kSplineFive) + c * kSplineFour) - d;
+                const double low = (kSplineTwo * b + (c - a) * t) + (quadratic * t) * t;
+                const double cubic = ((b * kSplineThree - a) - kSplineThree * c) + d;
+                fov = static_cast<float>((t * ((cubic * t) * t) + low) * kSplineHalf);
+            }
+        }
+    }
+    host.action_destroy_00465610(last_frame);
+    host.action_destroy_00465610(lead_out);
+    host.action_destroy_00465610(lead_in);
+    host.action_destroy_00465610(first_frame);
+    host.action_list_destroy_00456670(list);
+    return fov;
 }
 
 } // namespace bsp::cc13_seg5

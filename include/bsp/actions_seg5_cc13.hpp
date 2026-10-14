@@ -51,8 +51,6 @@ struct Seg5Host {
     // Direct calls.
     virtual bool native_string_equals_ci_00425850(Object native_string, const char* text) = 0;
     virtual void entity_vcall_ac(Object entity, std::int32_t arg) = 0;      // entity vtable +ACh
-    virtual const float* track_eval_position_004581e0(Object track, float* out, float time,
-                                                      std::uint8_t flag) = 0;
     virtual void entity_pose_refresh_world_00414db0(Object entity) = 0;
     virtual void hud_movie_screen_show_black_bars_005cb0f0(Object screen) = 0;
     virtual void hud_movie_screen_hide_black_bars_005cb130(Object screen) = 0;
@@ -84,10 +82,6 @@ struct Seg5Host {
     virtual void movie_track_bind_entities_00456dd0(Object track) = 0;
     virtual void game_build_local_player_unit_lists_004c3cb0(Object game) = 0;
     virtual void entity_track_update_00459020(Object track, float time) = 0;
-    virtual void camera_track_update_shakes_0045acc0(Object track) = 0;
-    virtual void shake_list_add_0045a320(Object list, float time, float x, float y, float z,
-                                         float amplitude) = 0;
-    virtual void list_node_value_construct_00455880(Object place, Object source) = 0;
     virtual bool win32_file_writer_open_009501b0(Object writer, const char* path) = 0;
     virtual void close_handle_import_00ce225c(void* handle) = 0;          // CALL [00CE225C]
 
@@ -111,6 +105,53 @@ struct Seg5Host {
                                                   const float* value) = 0;
     virtual Object operator_new_00bf681b(std::uint32_t bytes) = 0;
     virtual bool native_string_equals_insensitive_00435c40(Object string, Object other) = 0;
+
+    // Camera shake and track search (cc13-x87).
+    // 00BD2F10 BSP_Random_UniformFloatRange, __thiscall-shaped: ECX (always 1
+    // here) flows into 00BD2ED0 unchanged, stack (lo, hi), RET 8. The callee
+    // rounds its result to float (FSTP/FLD at 00BD2EC2), so a float return is exact.
+    virtual float random_uniform_float_range_00bd2f10(std::int32_t ecx_stream, float lo,
+                                                      float hi) = 0;
+    // 00BF6713, the checked-iterator report, at the points where it can fire
+    // on a valid container.
+    virtual void checked_iterator_report_00bf6713() = 0;
+    // 00457F30 __thiscall(ECX list, next, prev, const channel*), RET 0Ch: a
+    // 78h-byte node {next, prev, 70h-byte shake channel}.
+    virtual Object shake_list_buy_node_00457f30(Object list, Object next, Object prev,
+                                                Object channel) = 0;
+    // 00459AE0 __thiscall(ECX list, count), RET 4: the length check, then size += count.
+    virtual void shake_list_increment_size_00459ae0(Object list, std::uint32_t count) = 0;
+    // 0041E870 __thiscall(ECX 8-byte NativeString, const char*), RET 4 (a constructor).
+    virtual Object native_string_construct_0041e870(Object string, const char* text) = 0;
+    // 00925180 __thiscall(ECX registry, const NativeString*), RET 4: the entity
+    // whose vtable+10h name matches.
+    virtual Object entity_registry_find_by_name_00925180(Object registry, Object name) = 0;
+    // 00B63F10 BSP_Matrix_BuildLookAt: ECX out, EDX eye, stack (target*, up.x,
+    // up.y, up.z), RET 10h, returns ECX.
+    virtual Object matrix_build_look_at_00b63f10(Object out, const float* eye, const float* target,
+                                                 float up_x, float up_y, float up_z) = 0;
+    // 00B71490 BSP_Camera_SetViewMatrix __thiscall(ECX camera, matrix*), RET 4.
+    virtual void camera_set_view_matrix_00b71490(Object camera, Object matrix) = 0;
+    // 00B6FBB0 BSP_Camera_SetFieldOfView __thiscall(ECX camera, float radians), RET 4.
+    virtual void camera_set_field_of_view_00b6fbb0(Object camera, float radians) = 0;
+    // 004555B0 __fastcall(ECX list): allocates the head node of a list<Action*>.
+    virtual Object list_buy_head_node_004555b0(Object list) = 0;
+    // 00466020 __thiscall(ECX 44h-byte action, float activate time), RET 4:
+    // the FOV action constructor (BSP_MovieAction_FOV_Construct).
+    virtual Object movie_action_fov_construct_00466020(Object action, float activate_time) = 0;
+    // 00455710 __thiscall(ECX list, next, prev, Action* const* value), RET 0Ch:
+    // a 0Ch-byte node {next, prev, Action*}.
+    virtual Object action_list_buy_node_00455710(Object list, Object next, Object prev,
+                                                 Object* value) = 0;
+    // 00459A40 __thiscall(ECX list, count), RET 4: the length check, then size += count.
+    virtual void action_list_increment_size_00459a40(Object list, std::uint32_t count) = 0;
+    // 00456670 __fastcall(ECX list): the list<Action*> destructor (frees the nodes and the head).
+    virtual void action_list_destroy_00456670(Object list) = 0;
+    // 00457FF0 __thiscall(ECX dest, const record*), RET 4: the 38h-byte sample
+    // record's copy constructor (its NativeString at +4 is deep-copied).
+    virtual Object record38_copy_construct_00457ff0(Object dest, Object source) = 0;
+    // 00456D10 __fastcall(ECX record): releases the NativeString at +4.
+    virtual void record38_destroy_00456d10(Object record) = 0;
 };
 
 // ---------------------------------------------------------------------------
@@ -270,11 +311,11 @@ void entity_track_bind_00457160(Seg5Host& host, Object track);
 // Camera track (an entity track with shake lists at +1DCh and +1E8h).
 // ---------------------------------------------------------------------------
 
-// 0045AF70 __thiscall(ECX track, time, x, y, z, amplitude, char camera),
+// 0045AF70 __thiscall(ECX track, time, x, y, z, key spacing, char camera),
 // RET 18h: 0045A320(ECX track+1DCh when camera is non-zero, else track+1E8h,
-// time, x, y, z, amplitude).
+// time, x, y, z, key spacing).
 void camera_track_add_shake_0045af70(Seg5Host& host, Object track, float time, float x, float y,
-                                     float z, float amplitude, std::uint8_t camera);
+                                     float z, float key_spacing, std::uint8_t camera);
 
 // 0045BD90 __thiscall(ECX track, float time), RET 4: 00459020(time), then
 // 0045ACC0().
@@ -372,5 +413,113 @@ void session_bool_message_read_004645d0(Seg5Host& host, Object message, Object s
 // then +18h word 0, +1Ah byte 0, +1Ch byte 0, +4 = 1, vtable 00CE53AC,
 // +20h = the float. Returns ECX.
 Object session_message7b_construct_00464710(Seg5Host& host, Object message, float value);
+
+// ---------------------------------------------------------------------------
+// Camera shake channels and track searches (cc13-x87). The x87 code was traced
+// from the bytes; docs/CC13_SEG5.md "Camera shake" lists every rounding point.
+//
+// Shake channel (70h bytes, the value of a 78h-byte list node at +8):
+//   +00h float start, +04h float end, +08h float key spacing, +0Ch byte
+//   frozen (amplitude below 0.1), +10h/+14h/+18h float amplitude x/y/z,
+//   +1Ch five keys {x, y, z, time} of 10h bytes, +6Ch byte (copied only).
+// A shake list is an MSVC std::list: +4 head node, +8 size; node {next,
+// prev, value}.
+// ---------------------------------------------------------------------------
+
+// 00454970 __thiscall(ECX dest, [ESP+4] source), RET 4: copies one key's four
+// floats with FLD/FSTP. Returns ECX.
+Object shake_key_copy_00454970(Object dest, Object source);
+
+// 00455880 __thiscall(ECX dest, [ESP+4] source), RET 4: the channel copy
+// constructor. Returns ECX.
+Object shake_channel_copy_construct_00455880(Object dest, Object source);
+
+// 00454A50 __thiscall(ECX channel, int index, char forward, int shift), RET
+// 0Ch: moves the keys by `shift` slots, then redraws the keys after `index`
+// (forward) or before it (backward).
+void shake_channel_shift_and_redraw_keys_00454a50(Seg5Host& host, Object channel,
+                                                  std::int32_t index, std::uint8_t forward,
+                                                  std::int32_t shift);
+
+// 00454EF0 __thiscall(ECX channel, float* out, float time), RET 8, returns
+// out: the channel's offset at `time`, interpolated between keys and
+// re-anchored when the time leaves the key window.
+float* shake_channel_evaluate_00454ef0(Seg5Host& host, Object channel, float* out, float time);
+
+// 00456420 __thiscall(ECX channel, time, x, y, z, key spacing), RET 14h,
+// returns ECX: the channel constructor.
+Object shake_channel_construct_00456420(Seg5Host& host, Object channel, float time, float x,
+                                        float y, float z, float key_spacing);
+
+// 004569E0 __thiscall(ECX list, float* out, float time), RET 8, returns out:
+// the weighted sum of the started channels' offsets.
+float* shake_list_evaluate_004569e0(Seg5Host& host, Object list, float* out, float time);
+
+// 0045A320 __thiscall(ECX list, time, x, y, z, key spacing), RET 14h: builds
+// a channel and inserts it by start time unless an equal one is present.
+void shake_list_add_0045a320(Seg5Host& host, Object list, float time, float x, float y, float z,
+                             float key_spacing);
+
+// 0045ACC0 __fastcall(ECX camera track), RET: places the camera from the
+// "CameraPosition 01" and "CameraLookat 01" entities plus the shake lists,
+// rolls it by +148h and sets the FOV.
+void camera_track_update_shakes_0045acc0(Seg5Host& host, Object track);
+
+// 00455BC0 __thiscall(ECX track, Object out[2], float time), RET 8, returns
+// out: the +0F4h sample iterator (also left in +100h/+104h) moved to the
+// first sample whose time (+8) exceeds `time`, then back one.
+Object* entity_track_find_sample_before_00455bc0(Seg5Host& host, Object track, Object* out,
+                                                 float time);
+
+// 00455CD0 __thiscall(ECX track, float time), RET 4: the sample (node+8)
+// whose time is nearest to `time` (strictly nearer than 999999.875).
+Object entity_track_find_nearest_sample_00455cd0(Seg5Host& host, Object track, float time);
+
+// 00455E30 __thiscall(ECX track, Object out[2], float time), RET 8, returns
+// out: as 00455BC0 over the +108h action list (iterator +114h/+118h),
+// comparing each action's ActivateTime (+4).
+Object* entity_track_find_action_before_00455e30(Seg5Host& host, Object track, Object* out,
+                                                 float time);
+
+// 00455F50 __thiscall(ECX track, float time), RET 4: the action whose
+// ActivateTime is nearest to `time` (strictly nearer than 9999.0); null for an
+// empty list.
+Object entity_track_find_nearest_action_00455f50(Seg5Host& host, Object track, float time);
+
+// Checked std::list iterators {container, node} (the container's +4 is the
+// head node). Each test calls 00BF6713 and carries on.
+// 00454340 __thiscall(ECX it, Object out[2], int), RET 8: post-decrement.
+Object* list_iterator_post_decrement_00454340(Seg5Host& host, Object* it, Object* out);
+// 004552C0 __fastcall(ECX it): dereference, returns node + 8.
+Object list_iterator_deref_004552c0(Seg5Host& host, const Object* it);
+// 004552F0 __thiscall(ECX it, Object out[2], int), RET 8: post-increment.
+Object* list_iterator_post_increment_004552f0(Seg5Host& host, Object* it, Object* out);
+
+// 00458160 __fastcall(ECX track), result in ST0: the time (+0) of a copy of
+// the last +0F4h sample record, 0 for an empty list.
+float entity_track_last_sample_time_00458160(Seg5Host& host, Object track);
+
+// 004581E0 __thiscall(ECX track, float* out, float time, char exact), RET
+// 0Ch, returns out: the track's position at `time`. Unless `exact`, a blend
+// that is due (+190h <= time + 0.04) is settled first and a blend state
+// (+14Ch 1 or 3) interpolates from +158h to +190h; state 2 returns the parent
+// offset +1C8h. Otherwise the +0F4h samples are interpolated (cubic Hermite
+// on position with the records' tangent points, Catmull-Rom on the roll,
+// which is written to +148h in radians).
+float* entity_track_eval_position_004581e0(Seg5Host& host, Object track, float* out, float time,
+                                           std::uint8_t exact);
+
+// 004564E0 __thiscall(ECX track (unused), Object out[2], float time,
+// list<Action*>* list), RET 0Ch, returns out: the iterator before the first
+// action whose ActivateTime exceeds `time` (the last one when none does).
+Object* action_list_find_before_004564e0(Seg5Host& host, Object track, Object* out, float time,
+                                         Object list);
+
+// 0045A5A0 __thiscall(ECX camera track, float time), RET 4, result in ST0
+// (a stored float): the FOV in degrees. The track's FOV actions (type 12h,
+// and type 16h twice once due) are framed by four 35-degree FOV actions at 0,
+// 0.01, now - 0.01 and now (now = the movie player's +0), and the FOV is a
+// Catmull-Rom between the actions on either side of `time`.
+float camera_track_fov_at_0045a5a0(Seg5Host& host, Object track, float time);
 
 } // namespace bsp::cc13_seg5

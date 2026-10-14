@@ -84,7 +84,10 @@ def load_text(binary):
 
 
 def load_functions(db, reconstructed):
-    con = sqlite3.connect(db)
+    if not Path(db).is_file() or Path(db).stat().st_size == 0:
+        raise SystemExit(f'{db} is missing or empty; run: python tools/bsp.py index')
+    # read-only: a plain connect() on a missing path creates an empty file that breaks every later bsp.py query
+    con = sqlite3.connect(f'file:{Path(db).as_posix()}?mode=ro', uri=True)
     names = {a: (ln or n) for a, n, ln in con.execute("select address, name, ledger_name from functions")}
     recon = defaultdict(list)
     for a, kind, name, status, src in con.execute("select address, kind, name, status, source from recon"):

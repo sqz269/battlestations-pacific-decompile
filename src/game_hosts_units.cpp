@@ -5808,7 +5808,7 @@ struct GameUnitsHost::Impl {
     // at spawn and at 007DB1F0's control-state message); the third reader,
     // 0099D558's |B1Ch - |AE0h|| into [ESP+48h], is not carried. False: the
     // live velocity in both readers and no correction, as before.
-    static constexpr bool kPlaneVelocityLowpassBound = false;
+    static constexpr bool kPlaneVelocityLowpassBound = true;
     // Packet cc9_plane_ground_roll (docs/SQUADRON_LAND_TASK.md section 5q): the
     // ground-roll arm 007CBFA0 for unit+900h 4 and 5: the pilot pass (0099AE5F
     // admits 4..7), the probe 007C5AC0, and 007DCCF0: the core law in mode 1
