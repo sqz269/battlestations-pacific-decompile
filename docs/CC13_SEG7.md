@@ -114,9 +114,12 @@ The range checks that call 00BF6713 are kept when an index comes from the caller
 ## Belongs to cc9
 
 The soldier and landing-troop behaviour in this range is per-frame unit behaviour. It is
-already partly written as plans in `src/soldier_traffic_cc13.cpp` without ledger records:
-0048A010, 0048A1E0, 0048A5A0, 0048A650, 0048A6D0, 0048AEC0, 0048AF00, 0048B120, 0048BF80,
-0048C090, 0048C190, 0048C230, 00487470.
+already written in `src/soldier_traffic_cc13.cpp`. cc13-backfill (152a7e698) audited it and
+added ledger records: verified 0048A5A0, 0048BF80, 0048C090, 0048C190; minor deviation
+0048A6D0, 0048AF00, 0048B120; labelled host substitution 0048C230 (lane writes returned, +180h
+latch left to the host); defect (plan or flag returned instead of the calls) 0048A010,
+0048A1E0, 0048A650, 0048AEC0. 00487470 is only referenced as a flag there and has no
+implementation or record.
 
 ## Not reconstructed
 
