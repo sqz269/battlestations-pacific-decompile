@@ -14319,3 +14319,31 @@ two host copies of one image field.
 **Verdict.** The writers do not match, so 222 stays OFF. The fix is in the ships lane's file: drop the `:11205`
 row write behind a switch (`row_.fire_target_score` can stay), then pair it alone and then with 222.
 The `00836210` clear is a second, smaller gap. It matters only for a ship whose stance forbids fire.
+
+## 237. The torpedo launch zone gate (CC13_VER_23 D3): `kTorpedoLaunchZoneBound`, OFF (lead queue item 4; cc9-gunnery43, 2026-10-14)
+
+**Image** (docs/CC13_VER_23.md D3). `008FFF20` `0090088E..009008EB` runs after the friendly-crossing scan, the
+AngleErr jitter and the `+634h` inhibit, and before the launch command:
+- `004218E0` returns the avoid zone manager, and `004120D0(5)` returns the layer-5 group. With no group, the
+  launch goes ahead.
+- `00417940(group, &gun_xz, &lead_xz)` must answer true. It is true only when every zone's `00416CD0` keeps
+  the segment out: the box misses, neither end is inside, and no edge crosses.
+- False jumps to `00900974`, `vtable[1E8h](0)`, and the trigger drops.
+
+**Binding** (OFF). The gun-to-lead segment is `{muzzle x, z}` to `torpedo_lead_xz`, which holds the `008FBB00` lead,
+with the `unit+6D4h` spread under `kTorpedoSpreadBound`. It is tested by cc13's
+`torpedo_launch_zone_clear_0090088e` over `GameShipAiHost::avoid_zone_runtime()->table()`, which is the ship-AI
+host's own zone table. `GameAvoidZoneRuntime` needed no new method, because `table()` already exposes the
+groups. The test runs only when the runtime is `ready()`. A false answer clears `want_fire`. Counters:
+`summary mission gunnery torpedo launch zone tests= holds=`.
+
+**LABELLED.** The image draws the jitter before this test, so the draw happens on every tick that reaches it.
+The host draws it at launch, so a held tick draws nothing. Under `BSP_GUNNERY_RNG_STREAMS=1` the draws are
+keyed per gun, which confines the difference to that gun's own stream.
+
+**Predictions**, written before any run:
+1. OFF is identical to the base, and both counters are 0.
+2. ON: `tests` > 0 on every row where a torpedo tube clears the other gates. `holds` > 0 only where a layer-5
+   avoid zone (an island) lies between a tube and its lead point.
+3. Fewer torpedo launches and fewer torpedo `impacts_land` on rows with islands: USN02 (Java Sea) and JM06.
+4. When `holds` = 0, the row is gameplay-identical, since the test draws nothing.

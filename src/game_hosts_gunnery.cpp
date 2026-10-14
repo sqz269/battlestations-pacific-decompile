@@ -83,6 +83,7 @@
 #include "bsp/aa_pick_ver_cc13.hpp"
 #include "bsp/gameplay_seg53_cc13.hpp"
 #include "bsp/ship_torpedo_ver_cc13.hpp"
+#include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/plane_release_ver_cc13.hpp"
 
 namespace bsp::game {
@@ -488,6 +489,13 @@ constexpr bool kGunSubmergedAaKindBound = false;
 //    and the tick returns. The host aimed at the present position and fired. ON:
 //    no solution drops the trigger for the tick. OFF: as before.
 constexpr bool kTorpedoBotNoInterceptDropBound = false;
+//  * kTorpedoLaunchZoneBound: packet g43_ver23_d3 (docs/CC13_VER_23.md D3, GUNNERY
+//    237). 008FFF20 0090088E..009008EB, after the friendly-crossing scan: 004218E0
+//    the avoid zone manager, 004120D0(5) the layer-5 group (none -> launch), then
+//    00417940(group, &gun xz, &lead xz); false -> 00900974, vtable[1E8h](0): the
+//    trigger drops. cc13's torpedo_launch_zone_clear_0090088e over the ship-AI
+//    host's zone table. OFF: no zone test, as before.
+constexpr bool kTorpedoLaunchZoneBound = false;
 //  * kTorpedoSwimThrustBound: packet cc9_torpedo_tube_turn,
 //    docs/TORPEDO_FRIENDLY_CROSSING.md section 6. 00857480, the swim advance,
 //    per step on a torpedo in the water: 00856BB0 -> 00857061 yaws the NOSE
@@ -2085,6 +2093,7 @@ struct GameGunneryHost::Impl {
     bsp::WeaponHitAccuracyProfile torpedo_hit_profiles[4]{};
     unsigned long long torpedo_gate_a_drops{0}, torpedo_gate_b_drops{0},
         torpedo_gate_passes{0}, torpedo_submerged_drops{0}, torpedo_no_intercept_drops{0};
+    unsigned long long torpedo_zone_tests{0}, torpedo_zone_holds{0};  // kTorpedoLaunchZoneBound
     double torpedo_attack_range_sum{0.0};
     unsigned long long torpedo_attack_range_samples{0};
     // 00901BA0 for one gun and target. LABELLED SUBSTITUTION for the TorpedoBot
@@ -8301,6 +8310,24 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 ++summary.torpedo_friendly_holds;
             }
             done("TorpedoBot::friendly_crossing_scan_008fff20", 0x0090058au);
+        }
+        if (kTorpedoLaunchZoneBound && want_fire
+            && gun.category == bsp::kUnitGunneryTorpedoCategory) {
+            // 008FFF20 0090088E..009008EB: the gun-to-lead line against the layer-5
+            // avoid zones. LABELLED: the image draws the AngleErr jitter
+            // (00900830..00900876) before this test; the host draws it at launch, so
+            // a held tick draws nothing here.
+            const GameAvoidZoneRuntime* zones = ship_ai != nullptr
+                ? ship_ai->avoid_zone_runtime() : nullptr;
+            if (zones != nullptr && zones->ready()) {
+                ++torpedo_zone_tests;
+                if (!bsp::ship_torpedo_ver_cc13::torpedo_launch_zone_clear_0090088e(
+                        &zones->table(), {{muzzle[0], muzzle[2]}}, torpedo_lead_xz)) {
+                    want_fire = false;             // 009008EB -> 00900974, vtable[1E8h](0)
+                    ++torpedo_zone_holds;
+                }
+                done("TorpedoBot::launch_zone_gate_0090088e", 0x0090088eu);
+            }
         }
         if (kDepthChargeBotTickBound && gun.category == 8 && !player_seat) {
             // Packet cc9_depth_charge_bot: 008FC080 in place of the generic test.
@@ -15151,6 +15178,9 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery torpedo no-intercept drops=%llu bound=%d; "
             "submerged aa kind bound=%d (0090025E, 00728A90)", host.torpedo_no_intercept_drops,
             kTorpedoBotNoInterceptDropBound ? 1 : 0, kGunSubmergedAaKindBound ? 1 : 0);
+        host.log.notef("summary mission gunnery torpedo launch zone tests=%llu holds=%llu bound=%d "
+            "(0090088E, CC13_VER_23 D3)", host.torpedo_zone_tests, host.torpedo_zone_holds,
+            kTorpedoLaunchZoneBound ? 1 : 0);
         host.log.notef("summary mission gunnery bomb release velocity frame drops=%llu bound=%d "
             "(006E0A70 -> 006E1F00, CC13_VER_20 D1)", host.bomb_release_frame_drops,
             kBombReleaseVelocityFrameBound ? 1 : 0);
