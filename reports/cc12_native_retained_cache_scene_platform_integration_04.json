@@ -1,0 +1,133 @@
+{
+  "utc": "2026-10-14T22:27:43.931709+00:00",
+  "status": "Retained cache route, scene retirement and raw platform retirement integrated; actual GUI next Lua binding failure captured",
+  "source_revision_for_combined_build": "58f2320c8032583d52e0b6db55383b190b44d2c6",
+  "combined_build": {
+    "target": "MSVC Win32 Release",
+    "tests": "PASS3/3",
+    "seconds": 11.83,
+    "permanent_platform_tu_registration": false,
+    "temporary_ignored_overlay": "local/cc12_platform_owner_diagnostic_registration.cmake"
+  },
+  "accepted_packets": {
+    "effect_cache": {
+      "commit": "b4f259da1730bb97a906a0323143bfd94281f431",
+      "verified_artifacts": 20,
+      "committed_files": 7,
+      "receipt": "local/cc12_native_parent_receipts/effect_cache_b4/receipt.json"
+    },
+    "scene_retirement": {
+      "commit": "deb673fe9ffed6eda8d908c8deadd782a84b665c",
+      "verified_artifacts": 230,
+      "root_probe_checks": 77,
+      "root_probe_failures": 0,
+      "receipt": "local/cc12_native_parent_receipts/unit_deb/receipt.json",
+      "whole_destructor_complete": false
+    },
+    "platform_retirement": {
+      "commit": "33bdde8e9b626034ab577a68d97ae608847a81a0",
+      "verified_artifacts": 97,
+      "root_probe_cases": "PASS3/3",
+      "receipt": "local/cc12_native_parent_receipts/platform_33/receipt.json",
+      "actual_application_binding": false
+    }
+  },
+  "runtime_03": {
+    "attempt": "03",
+    "status": "Actual numeric cache resolution completed; descriptor failed at missing Lua service activation",
+    "source_revision": "cba30590f2360eeec37db77b63b88dee3feecc7b",
+    "actual_executable": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_startup_receipts\\cba30590f2360eeec37db77b63b88dee3feecc7b\\build\\win32\\cc12_followup_release\\bsp_game.exe",
+    "actual_executable_sha256": "0312a8a9e1dbbd7c85394f932cc31dc3c8556bb4e0fd1f67f19778caf84937c8",
+    "launcher_checkout_head": "58f2320c8032583d52e0b6db55383b190b44d2c6",
+    "launcher_checkout_head_is_build_source": false,
+    "slot": 3,
+    "started_utc": "2026-10-14T22:16:17.7197834Z",
+    "finished_utc": "2026-10-14T22:16:19.0639249Z",
+    "exit_code": 1,
+    "exec_session": "88641 terminal",
+    "rewritten_name_numeric_vfs_resolution_observed": true,
+    "original_name_resolution_entered": false,
+    "key_resolution": {
+      "phase": 2,
+      "step": 10,
+      "site": "00b2eaaf",
+      "original_live": false,
+      "changed_live": false,
+      "output_live": false
+    },
+    "changed_vfs": {
+      "started": true,
+      "returned": true,
+      "result": true,
+      "phase": 4,
+      "site": "00bdf547",
+      "failure_site": "00000000"
+    },
+    "failure": "native Lua callback invoked without active source service binding",
+    "cache_failure_site": "00b3130d",
+    "loader_failure_site": "00b2ed5a",
+    "program_failure_site": "00b45f5e",
+    "descriptor_failure_site": "00b43b4e",
+    "creator_constructor_complete": true,
+    "creator_registered": false,
+    "sampler_parent_scopes": 0,
+    "procedural_creators": 0,
+    "private_sampler_word_guard_reached": false,
+    "actual_effect_acquisition_observed": false,
+    "caller_retirement_observed": false,
+    "original_shared_drain_observed": false,
+    "failed_graph_retained_until_no_unwind_exit": true,
+    "log": "local/cc12_actual_native_gui_effect_startup_03.log",
+    "manifest": "local/cc12_actual_native_gui_effect_startup_03.log.manifest.json",
+    "launcher": "local/cc12_actual_native_gui_effect_startup_03_launcher.log"
+  },
+  "artifacts": [
+    {
+      "path": "local/cc12_retained_cache_scene_platform_combined_release_build_01.log",
+      "bytes": 4155,
+      "sha256": "7473c0df21c975b650a99bf1f06caa9053dfdd816efdaa27e9e9ec1922530150"
+    },
+    {
+      "path": "local/cc12_retained_effect_resolver_combined_release_build_01.log",
+      "bytes": 4412,
+      "sha256": "8a0fe1259a1b6ee39e0a67539420236ffd35ccd4c72838b7842c0cf41d7cc7f5"
+    },
+    {
+      "path": "local/cc12_actual_native_gui_effect_startup_03.log",
+      "bytes": 22380,
+      "sha256": "d9958b552b7e017cdc9e2384457938a645ffe0fb600eb585d85a9b9128c0e185"
+    },
+    {
+      "path": "local/cc12_actual_native_gui_effect_startup_03.log.manifest.json",
+      "bytes": 3354,
+      "sha256": "a535668ae8a2e102c969918b524329e713f1f047fbffd72947825778a6328650"
+    },
+    {
+      "path": "local/cc12_actual_native_gui_effect_startup_03_launcher.log",
+      "bytes": 392,
+      "sha256": "9a95770bcf2af8d22039468430437e145adff769fad5825b19ce5b38f2a92e4d"
+    },
+    {
+      "path": "local/cc12_platform_owner_diagnostic_registration.cmake",
+      "bytes": 315,
+      "sha256": "d6a3cff8a78b422b319249a758c89c31663cddeec01910b7db2a904f42dad9cb"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 91572164,
+      "sha256": "03cbab607e8d027a6b55ef146056988c6e4a4b753060fd99612e04d9ce4fe977"
+    },
+    {
+      "path": "build/win32/cc12_followup_release/bsp_game.exe",
+      "bytes": 5579776,
+      "sha256": "7f8ebec7f2d64c94d92b6662e93dcaf0c74bcd15980a9befcd993a4400767261"
+    }
+  ],
+  "next": "Activate the existing actual renderer Lua service binding across synchronous GUI acquisition; preserve its real domains and nested restoration.",
+  "native_text_draw_validated": false,
+  "world_command_D5E13C_admitted": false,
+  "original_abi_compatible": false,
+  "startup_validated": false,
+  "gameplay_validated": false,
+  "overall_goal": "ACTIVE"
+}

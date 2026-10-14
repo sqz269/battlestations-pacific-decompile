@@ -40,8 +40,8 @@
     "actual_unit_receiver_constructed": false
   },
   "runtime": {
-    "status": "attempt2 executed and failed at B310B8 before sampler entry",
-    "exec_session": 59647,
+    "status": "Actual numeric cache resolution completed; descriptor failed at missing Lua service activation",
+    "exec_session": "88641 terminal",
     "command": "./tools/run_game.ps1 -Exe local/cc12_native_gui_startup_receipts/23fbb8a1d/build/win32/Release/bsp_game.exe -XLiveDll local/cc12_native_gui_startup_receipts/23fbb8a1d/build/win32/Release/xlive_stub.dll -Log local/cc12_actual_native_gui_effect_startup_02.log -- --frames 120",
     "environment": {
       "BSP_NATIVE_GUI_EFFECT_PROBE": "1",
@@ -51,7 +51,7 @@
     "references_retired_observed": false,
     "original_shared_drain_observed": false,
     "exit_code": 1,
-    "observed_utc": "2026-10-14T21:27:03.505757+00:00",
+    "observed_utc": "2026-10-14T22:16:19.0639249Z",
     "attempts": [
       {
         "attempt": 1,
@@ -79,14 +79,63 @@
         "game_exit_code": 1,
         "actual_process_started": true,
         "manifest_created": true
+      },
+      {
+        "attempt": "03",
+        "status": "Actual numeric cache resolution completed; descriptor failed at missing Lua service activation",
+        "source_revision": "cba30590f2360eeec37db77b63b88dee3feecc7b",
+        "actual_executable": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_startup_receipts\\cba30590f2360eeec37db77b63b88dee3feecc7b\\build\\win32\\cc12_followup_release\\bsp_game.exe",
+        "actual_executable_sha256": "0312a8a9e1dbbd7c85394f932cc31dc3c8556bb4e0fd1f67f19778caf84937c8",
+        "launcher_checkout_head": "58f2320c8032583d52e0b6db55383b190b44d2c6",
+        "launcher_checkout_head_is_build_source": false,
+        "slot": 3,
+        "started_utc": "2026-10-14T22:16:17.7197834Z",
+        "finished_utc": "2026-10-14T22:16:19.0639249Z",
+        "exit_code": 1,
+        "exec_session": "88641 terminal",
+        "rewritten_name_numeric_vfs_resolution_observed": true,
+        "original_name_resolution_entered": false,
+        "key_resolution": {
+          "phase": 2,
+          "step": 10,
+          "site": "00b2eaaf",
+          "original_live": false,
+          "changed_live": false,
+          "output_live": false
+        },
+        "changed_vfs": {
+          "started": true,
+          "returned": true,
+          "result": true,
+          "phase": 4,
+          "site": "00bdf547",
+          "failure_site": "00000000"
+        },
+        "failure": "native Lua callback invoked without active source service binding",
+        "cache_failure_site": "00b3130d",
+        "loader_failure_site": "00b2ed5a",
+        "program_failure_site": "00b45f5e",
+        "descriptor_failure_site": "00b43b4e",
+        "creator_constructor_complete": true,
+        "creator_registered": false,
+        "sampler_parent_scopes": 0,
+        "procedural_creators": 0,
+        "private_sampler_word_guard_reached": false,
+        "actual_effect_acquisition_observed": false,
+        "caller_retirement_observed": false,
+        "original_shared_drain_observed": false,
+        "failed_graph_retained_until_no_unwind_exit": true,
+        "log": "local/cc12_actual_native_gui_effect_startup_03.log",
+        "manifest": "local/cc12_actual_native_gui_effect_startup_03.log.manifest.json",
+        "launcher": "local/cc12_actual_native_gui_effect_startup_03_launcher.log"
       }
     ],
     "shadow_constructor_and_publication_observed": true,
-    "failure_site": "00B310B8",
-    "failure": "unretained effect name resolution requires an explicitly selected callback",
-    "manifest": "local/cc12_actual_native_gui_effect_startup_02.log.manifest.json",
-    "log": "local/cc12_actual_native_gui_effect_startup_02.log",
-    "runtime_receipt": "reports/cc12_native_scene_base_drsh_integration_03.json"
+    "failure_site": "00b43b4e",
+    "failure": "native Lua callback invoked without active source service binding",
+    "manifest": "local/cc12_actual_native_gui_effect_startup_03.log.manifest.json",
+    "log": "local/cc12_actual_native_gui_effect_startup_03.log",
+    "runtime_receipt": "reports/cc12_native_retained_cache_scene_platform_integration_04.json"
   },
   "original_installation": {
     "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
@@ -159,5 +208,14 @@
   "world_command_D5E13C_admitted": false,
   "original_abi_compatible": false,
   "gameplay_validated": false,
-  "overall_goal": "active"
+  "overall_goal": "active",
+  "latest_actual_executable_source_revision": "cba30590f2360eeec37db77b63b88dee3feecc7b",
+  "latest_combined_build": {
+    "source_revision": "58f2320c8032583d52e0b6db55383b190b44d2c6",
+    "target": "MSVC Win32 Release",
+    "tests": "PASS3/3",
+    "seconds": 11.83,
+    "permanent_platform_tu_registration": false,
+    "temporary_ignored_overlay": "local/cc12_platform_owner_diagnostic_registration.cmake"
+  }
 }
