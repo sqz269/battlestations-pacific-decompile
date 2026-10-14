@@ -17194,3 +17194,25 @@ Prediction: only torpedo squadrons with wingmen move. On entering done the wingm
 1 the same z, the same x, y x 1.0, so no jump), and as the disarmed arm raises +8Ch to 1.5-2.5 near the target, z
 shrinks (/m), x widens (2m - 1) and y flattens (2.2 - 1.2m, 0 at m >= 1.83): the wing spreads abreast and level. No RNG;
 the per-plane release times and positions of the wingmen move, the leaders' do not.
+
+## 5hr. Measured: `kTorpedoCommandWritesBound` and `kTorpedoDoneFormationBound` **ON** (cc9-lua61, 2026-10-14)
+
+Pairs: OFF `local\l61_off_*` (a7613151b tree build, copied to `local\l61_off\`); ON writes `local\l61_on_*` (a7613151b,
+writes flipped); ON formation `local\l61_fon_*` (6f899650b, formation flipped; everything else as OFF). Launch lines in each
+`<log>.manifest.json`; env BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1. The lead asked for USN04 `st2_u4d2`; that is a
+cc13 run of an unlanded `BSP_DIFFICULTY=2` diff (docs/CC13_AUDIT_REATTACK_AND_SKILL.md 2.6), so the plain `u04` row stands in.
+
+| row | switch | evidence | pair_diff |
+|---|---|---|---|
+| USN04 `u04` 9000 | writes | no Kate reaches done or prepare (states moveto/attackrun/aim) | 1, gameplay identical |
+| USN21 `u21f` (s46_u21_f; completed 2901.71 s both, exec guard refused sus_prog.exe) | writes | one Kate (Cabot_sqn56\|.-3) in done 23 ticks, all disarmed (+98h = -1 from the enter); no write reached the binding (no `command writes applied` line) | 1, gameplay identical |
+| USN21 `u21f` | formation | Enterprise_sqn23 enters done after its release at 672.81 s: the 007ED260 re-assignment over 2 live members logs shape +3E4h = 2 (1 OFF); Cabot_sqn56 likewise later | 3, moved |
+
+Writes: the committed/hold/steer arms need +98h > 0, which only prepare sets, and no row reaches prepare (5ho item 3), so
+the mechanism is unexercised; a faithful binding with an identical result, flipped ON. Formation: the first moved death
+(Enterprise_sqn17, 678.71 -> 679.41 s) follows the Enterprise_sqn23 enter by 6 s; from there the run diverges as a
+cascade (deaths 580 -> 574, shots 97946 -> 117105, torpedo-task releases 1 -> 0 of 232, dive-bomb 3 -> 4, the player's
+F6F_1/F6F_2 flights survive in ON) while the mission still completes at 2901.71 s with the same text. At morale 1.0
+shape 2 equals shape 1 exactly (x x 1, y x 1, z / 1; keep_yz false), so the divergence is the wingman's republished +8Ch
+(1.5-1.7 from the disarmed arm) spreading the station, as predicted. Faithful, mission end unchanged: flipped ON.
+WINS: the flip moves USN21; rows with torpedo squadrons reaching done (JM08, PRCP01, USNOS) need a re-check by the WINS keeper.

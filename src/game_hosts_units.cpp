@@ -6147,7 +6147,7 @@ struct GameUnitsHost::Impl {
     // +2CCh = 1 (009D295F-009D29B7). True: they land on the planner state (plan_state
     // bank_limit_2c8 / pitch_target_2bc / pitch_mode_2d0 / bank_target_2c4 and
     // plan_heading_mode_2cc). False: every write is dropped, as before.
-    static constexpr bool kTorpedoCommandWritesBound = false;
+    static constexpr bool kTorpedoCommandWritesBound = true;   // ON: SQUADRON_LAND_TASK 5hr
     // Packet cc9_l61_torpedo_done_formation (SQUADRON_LAND_TASK 5ho item 2). The
     // done/prepare enter 009D2530 writes squadron+3E4h = 2 (009D254E, after
     // 009BED80's 1) and state+8Ch = 1.0 (009D2565); every wingman's follow
@@ -6158,7 +6158,7 @@ struct GameUnitsHost::Impl {
     // resets the slot's +8Ch, the torpedo follow base tick republishes it, and the
     // plain follow tick 009C1FD0 republishes the follow state's 1.0 (009BED80's
     // +8Ch). False: shape and +3E8h stay as they were.
-    static constexpr bool kTorpedoDoneFormationBound = false;
+    static constexpr bool kTorpedoDoneFormationBound = true;   // ON: SQUADRON_LAND_TASK 5hr
     // Packet cc9_l60_level_issue_tail (cc13-confirm D). 007C0D90's rack walk ends
     // at 007C0ED3 and falls to 007C0ED9 for the level bomber too: when the walk
     // armed a rack (the byte 007C0E23 raises) the tail sets unit+C25h = 1
