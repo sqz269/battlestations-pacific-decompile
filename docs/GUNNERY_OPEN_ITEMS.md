@@ -14966,3 +14966,47 @@ one target and launch only when it lies inside their gate (about 2.7-3.3 km).
 
 **Result** (exe `f7461617d8d9`, commit `9428d8b8f`, reference env, 36000 frames): **completed at 1675.51 s**, with the
 sus_prog refusal logged (`local\g45_p1_u12e7.log`). The `e6` twin (escape from frame 16000) is queued.
+
+## 256. Handoff 2 (cc9-gunnery45, 2026-10-14, at about 75% context): the USN15 re-plan under 222 is OPEN
+
+**Done since 253.**
+- `9428d8b8f`: 222 flipped ON (254).
+- `d5de8eba6`: USN12 `usn12_g45_u12_e7` completes at 1675.51 s (255).
+
+**USN15 `l2` under 222 fails at 1021.92 s.** `local\g45_p1_u15.log`, exe `f7461617d8d9`, with trajectories in
+`local\g45_p1_u15_traj.*`.
+
+The script (`usn_15_battle_of_surigao_strait.lua`, 2024-08-09):
+- **Win:** Fuso, Yamashiro, Nachi and Ashigara (IJNKeyTrgs) all dead, or every IJN ship dead.
+- **Fail:** an enemy within 3000 m of JapanGoTo (0, 12000), or every US ship dead (`luaCheckObjs`, every 5 s).
+
+The IJN has four formations:
+- IJNRightBBGrp: Fuso, Mogami, Fubuki-class01;
+- IJNLeftBBGrp: Yamashiro, Fubuki-class06..08;
+- IJNRightCAGrp: Nachi, Fubuki-class02..05;
+- IJNLeftCAGrp: Ashigara, Fubuki-class09..12.
+
+All four start at z = -8000. The CA groups run north at about 18 m/s and the BB groups at 12.6 m/s. The leaders
+have only move orders, so their fire targets come from AutoTarget (the nearest US ships). The USN12 decoy trick
+does not transfer, because no leader holds a command target.
+
+The variants tried (orders in this tree's `local\usn15_g45_u15_*.txt`, generator `local\g45_u15gen.py`):
+
+| variant | idea | result |
+| --- | --- | --- |
+| `a` | hold the line at the start until 800 s, then all attack Yamashiro / Fuso / Nachi / Ashigara | not run (cancelled while waiting for a run slot) |
+| `b` | hold 500 m further north until 1000 s | failed 1212.11 s |
+| `c` | as `a`, with destroyers on the BB groups' followers first | failed 1107.00 s; the CA groups still arrive by 640 s and torpedo the line |
+| `d` | small ships (Fletchers and light cruisers) 3 km north, while BBs and heavy cruisers hold | failed 1432.32 s; 32/42 US dead; the BBs kill Nachi (Maryland, 2958 m) and four Fubukis at 2.6-2.9 km |
+| `e` | as `d` until 600 s, then the big ships attack Nachi and Ashigara | failed 1312.20 s |
+
+**Leads for the next attempt.**
+1. US battleship guns kill at 2.6-3.0 km, which is just beyond the Fubukis' fire-target torpedo gate. `d` shows
+   that a BB line holding range kills the CA groups' ships.
+2. The losses come from the small ships: wherever they wait, an IJN group reaches them. Try keeping them west or
+   east of the IJN track rather than north of it. Find what ended `d` at 1432 s, either a ship near JapanGoTo or
+   the BB groups pushing north, by sampling the trajectories against z > 9000.
+3. Order the BBs to back away (moveto north) whenever a CA group closes inside about 3 km, so that they hold
+   range.
+
+**Cancelled runs.** `g45_p1_u12e6` (an escape twin of `e7`) and `g45_p1_u15a` waited too long for run slots and were cancelled; they never ran.
