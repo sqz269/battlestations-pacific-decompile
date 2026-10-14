@@ -162,31 +162,34 @@ void stl_unit_part_pointer_vector_insert_copies_0087af40(
     const std::uint32_t* val_ptr,
     UnitPartPointerVectorHost& host);
 
+// Damageable fake-effect row: +00h float, +04h/+08h dwords, +0Ch intrusive-refcounted
+// owner (count at owner+4, release through owner vslot 0).
 struct FakeEffectRow16 {
     std::uint32_t words[4]{};
 };
 
 // 00878BF0 STL_Copy16_00878BF0
-// __cdecl(first, last, dest), RET. Calls 00878820 and returns `dest + ((last - first) >> 4) * 16`.
+// __cdecl(first, last, dest), RET. Calls 00878820 (refcounting row assignment) and returns
+// `dest + ((last - first) >> 4) * 16`.
 FakeEffectRow16* stl_copy16_00878bf0(
     const FakeEffectRow16* first,
     const FakeEffectRow16* last,
-    FakeEffectRow16* dest) noexcept;
+    FakeEffectRow16* dest);
 
 // 00878D10 STL_CopyBackward16_00878D10
-// __cdecl(first, last, dest_end), RET. Calls 008788D0 and returns
-// `dest_end - ((last - first) >> 4) * 16`.
+// __cdecl(first, last, dest_end), RET. Calls 008788D0 (refcounting row assignment,
+// backward) and returns `dest_end - ((last - first) >> 4) * 16`.
 FakeEffectRow16* stl_copy_backward16_00878d10(
     const FakeEffectRow16* first,
     const FakeEffectRow16* last,
-    FakeEffectRow16* dest_end) noexcept;
+    FakeEffectRow16* dest_end);
 
 // 008793F0 STL_CopyBackward16_008793F0
 // __cdecl(first, last, dest_end), RET. Identical COMDAT twin of 00878D10.
 FakeEffectRow16* stl_copy_backward16_008793f0(
     const FakeEffectRow16* first,
     const FakeEffectRow16* last,
-    FakeEffectRow16* dest_end) noexcept;
+    FakeEffectRow16* dest_end);
 
 struct DamageableSection {
     std::uint32_t vptr{0};          // +00h (00D0DF04)
@@ -444,7 +447,6 @@ struct LandscapeConvexHull {
 
 struct GeneratedModelMeshElement {
     std::string effect_name{};         // from *(*(elem+20h)+7Ch) via 00B172D0
-    bool visibility_factor_zeroed{false};
     std::vector<std::string> registered_params{};
 };
 
@@ -565,6 +567,14 @@ struct LandscapeHost {
         float world_z,
         const TerrainGridCellDesc& cell) = 0;
     virtual void load_foliage_default_00b75ce0(TerrainHeightFieldInterface* hf) = 0;
+    // Hook for 00882420:
+    // 00B6DA70 BSP_SceneNode_SetVisibilityFactor, __thiscall(ECX = node, float factor,
+    // bool recursive), RET 8. Stores `factor` at node+ACh; when `recursive` repeats on each
+    // child (+34h list, +3Ch sibling).
+    virtual void scene_node_set_visibility_factor_00b6da70(
+        GeneratedModelNode* node,
+        float factor,
+        bool recursive) = 0;
     // Hooks for 00883BB0:
     virtual void create_lua_self_table_00928a00(LandscapeState& self) = 0;
     virtual void reset_terrain_state_0087fe90(LandscapeState& self) = 0;
@@ -698,10 +708,12 @@ void landscape_bind_terrain_material_params_00881600(
 
 // 00882420 BSP_Landscape_ApplyOceanWaveDamp
 // __fastcall(ECX = model_node), RET. Recursively checks each mesh element's effect
-// basename (after the last `/`) for `"oceanwavedamp"`; on match calls
-// `00B6DA70(node, 0, 0.0f)` (`BSP_SceneNode_SetVisibilityFactor`).
+// basename (after the last `/`) for `"oceanwavedamp"`; on each match calls
+// `00B6DA70` as `node->SetVisibilityFactor(0.0f, false)` through
+// `host.scene_node_set_visibility_factor_00b6da70`. `host` is not an original argument.
 void landscape_apply_ocean_wave_damp_00882420(
-    GeneratedModelNode* node);
+    GeneratedModelNode* node,
+    LandscapeHost& host);
 
 // 008828E0 BSP_Landscape_Destruct
 // __fastcall(ECX = landscape), RET. Reinstalls the six Landscape vtables, calls

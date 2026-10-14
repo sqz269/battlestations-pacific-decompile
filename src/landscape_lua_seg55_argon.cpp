@@ -1,4 +1,5 @@
 #include "bsp/landscape_lua_seg55_argon.hpp"
+#include "bsp/native_damageable_fake_effect_vector.hpp"
 
 #include <cstring>
 
@@ -204,34 +205,31 @@ void stl_unit_part_pointer_vector_insert_copies_0087af40(
 // 00878BF0 STL_Copy16_00878BF0
 // __cdecl(first, last, dest), RET.
 // Calls 00878820 (00878C1E) and returns `dest + ((last - first) >> 4) * 16`.
+// 00878820 is the per-row assignment loop already reconstructed in
+// native_damageable_fake_effect_vector.cpp: FLD/FSTP +00h, copies +04h/+08h, and when
+// the +0Ch owner differs stores it, InterlockedIncrement(new+4) [00CE221C], then
+// InterlockedDecrement(old+4) [00CE2220] and on zero old->vslot 0 (00878820..00878877).
+// COMDAT twin of 00879330.
 FakeEffectRow16* stl_copy16_00878bf0(
     const FakeEffectRow16* first,
     const FakeEffectRow16* last,
-    FakeEffectRow16* dest) noexcept {
-    const std::ptrdiff_t count = last - first;
-    FakeEffectRow16* out = dest;
-    for (const FakeEffectRow16* cur = first; cur != last; ++cur, ++out) {
-        *out = *cur;
-    }
-    return dest + count;
+    FakeEffectRow16* dest) {
+    bsp::copy_native_damageable_fake_effect_rows_00878820(first, last, dest);
+    return dest + (last - first);
 }
 
 // 00878D10 STL_CopyBackward16_00878D10
 // __cdecl(first, last, dest_end), RET.
 // Calls 008788D0 (00878D3E) and returns `dest_end - ((last - first) >> 4) * 16`.
+// 008788D0 is the backward form of the same refcounting row assignment as 00878820
+// (008788F0..00878936: identical +0Ch increment/decrement/vslot-0 release), reused from
+// native_damageable_fake_effect_vector.cpp. COMDAT twin of 00879870.
 FakeEffectRow16* stl_copy_backward16_00878d10(
     const FakeEffectRow16* first,
     const FakeEffectRow16* last,
-    FakeEffectRow16* dest_end) noexcept {
-    const std::ptrdiff_t count = last - first;
-    const FakeEffectRow16* cur = last;
-    FakeEffectRow16* out = dest_end;
-    while (cur != first) {
-        --cur;
-        --out;
-        *out = *cur;
-    }
-    return dest_end - count;
+    FakeEffectRow16* dest_end) {
+    bsp::copy_backward_native_damageable_fake_effect_rows_008788d0(first, last, dest_end);
+    return dest_end - (last - first);
 }
 
 // 008793F0 STL_CopyBackward16_008793F0
@@ -240,7 +238,7 @@ FakeEffectRow16* stl_copy_backward16_00878d10(
 FakeEffectRow16* stl_copy_backward16_008793f0(
     const FakeEffectRow16* first,
     const FakeEffectRow16* last,
-    FakeEffectRow16* dest_end) noexcept {
+    FakeEffectRow16* dest_end) {
     return stl_copy_backward16_00878d10(first, last, dest_end);
 }
 
@@ -752,12 +750,14 @@ void landscape_bind_terrain_material_params_00881600(
 // Checks `node->vslot_0c(BSP_GeneratedModel_GetCurrentType())`; for each mesh element
 // reads effect name (00B172D0), strips any directory prefix up to the last `/` (004BCB80 /
 // 00469840), and when `strstr(basename, "oceanwavedamp") != nullptr` calls
-// `00B6DA70(node, 0, 0.0f)` (`BSP_SceneNode_SetVisibilityFactor`). Recurses on children.
+// `00B6DA70` (`BSP_SceneNode_SetVisibilityFactor`) on the node, once per matching element.
+// Call bytes 0088258D..00882599: FLDZ; PUSH 0; PUSH ECX; FSTP [ESP]; MOV ECX,[ESP+18h]
+// (= EDI = node, saved at 00882446); CALL 00B6DA70, i.e. thiscall(node, 0.0f, false).
+// Recurses on children (+34h list, +3Ch sibling, 008825F1..00882602). The binary has no
+// null check on `node` (00882444 MOV ESI,[EDI]); `host` is not an original argument.
 void landscape_apply_ocean_wave_damp_00882420(
-    GeneratedModelNode* node) {
-    if (node == nullptr) {
-        return;
-    }
+    GeneratedModelNode* node,
+    LandscapeHost& host) {
     if (node->matches_current_type) {
         for (auto& geom : node->geometries) {
             for (auto& elem : geom) {
@@ -767,13 +767,13 @@ void landscape_apply_ocean_wave_damp_00882420(
                     name = name.substr(slash_pos + 1u);
                 }
                 if (name.find("oceanwavedamp") != std::string::npos) {
-                    elem.visibility_factor_zeroed = true;
+                    host.scene_node_set_visibility_factor_00b6da70(node, 0.0f, false);
                 }
             }
         }
     }
     for (GeneratedModelNode* child : node->children) {
-        landscape_apply_ocean_wave_damp_00882420(child);
+        landscape_apply_ocean_wave_damp_00882420(child, host);
     }
 }
 
@@ -859,7 +859,10 @@ void landscape_load_terrain_00882ac0(
         if (self.terrain_render_node_3cc != nullptr) {
             host.register_ocean_wave_coverage_00b0b830(self.terrain_render_node_3cc);
         }
-        landscape_apply_ocean_wave_damp_00882420(self.generated_model_420);
+        // KNOWN DEVIATION (a55fix, unresolved): at 008830AF..008830BE the binary passes
+        // `height_field_3d0->vslot40()` (the terrain render root), not +420h, and only
+        // inside the `[00E188A8]+19F0h != 0` block that starts at 00883062.
+        landscape_apply_ocean_wave_damp_00882420(self.generated_model_420, host);
         self.has_model_3e1 = true;
         self.unit_part_instance_418 = host.create_unit_part_instance_007135c0(self);
         if (self.generated_model_420 != nullptr) {
