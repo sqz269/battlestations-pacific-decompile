@@ -1,0 +1,555 @@
+{
+  "packet": "cc12_effect_cache_retained_resolver",
+  "source_base": "9cdf1e6a9041bd31b146403e9bd16d995e6fb3f0",
+  "classification": "cache_retained_operation_overload_routing_and_lifetime_bug",
+  "owned_addresses": [
+    "00b31090",
+    "00b2e940"
+  ],
+  "changed_sources": [
+    "src/native_material_effect_cache.cpp",
+    "include/bsp/native_material_effect_cache.hpp",
+    "src/game_native_gui_effect_probe.cpp"
+  ],
+  "application_context_selection_changed": false,
+  "loading_source_changed": false,
+  "parent_observation": {
+    "executable_source": "23fbb8a1d",
+    "executable_sha256_prefix": "915901",
+    "log": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/local/cc12_actual_native_gui_effect_startup_02.log",
+    "actual_shadow": "00d5b5e8 2048x2048 published",
+    "first_effect": "GuiFont.mshd",
+    "failure": "unretained effect name resolution requires an explicitly selected callback",
+    "cache_phase": "failed (3)",
+    "reported_native_site": "00b310b8 (prior message-pump site, stale for reached resolver)",
+    "loader": "fresh, native_site0, no sampler/procedural creator entered, no returned effect",
+    "exit_code": 1,
+    "graph_retained": true
+  },
+  "route": {
+    "before": "B31090 -> legacy B2E940 -> callback-only unretained loading resolver despite selected numeric VFS",
+    "after": "B31090 -> cache-owned key frame -> distinct changed/original existing numeric BDF4C0 calls",
+    "cache_resolver_site": "00b311e9",
+    "changed_native_site": "00b2eaaf",
+    "original_native_site": "00b2eaff",
+    "original_arm": "changed false only; current manager reloaded; original AL ignored; return current mutable original header",
+    "context": "same actual VFS publication/physical strings/program strings; exclusive numeric provider, no resolution callback/context",
+    "output": "stable actual8h pooled header; cache copies then0041DD20; output_live clears only after success",
+    "normal_retirement": "captured search, captured replacement, changed, original; caller-copy then output",
+    "alias_hits": "unchanged, no resolver required",
+    "legacy_callback_arm": "unchanged explicitly selected callback overload",
+    "numeric_no_load_miss": "still requires retained operation for actual VFS resolution"
+  },
+  "failure_retention": {
+    "metadata_first": true,
+    "persistent_names": [
+      "original",
+      "changed",
+      "search",
+      "replacement",
+      "output"
+    ],
+    "persistent_children": [
+      "changed_resolution",
+      "original_resolution"
+    ],
+    "captured": [
+      "phase",
+      "step",
+      "native_site",
+      "live header state",
+      "each actual manager/header and acquired VFS frame",
+      "exception_ptr"
+    ],
+    "replay_or_retarget": "rejected",
+    "entered_failure_cleanup": "none; exact remaining pooled headers and actual VFS children retained",
+    "destruction_guard": "terminates for failed/running phase or live pooled headers",
+    "caller_policy": "retain complete parent/provider graph through no-unwind process exit on failure",
+    "probe_diagnostics": "resolution step/site and changed/original VFS phase/active site/failure site only; no retired-buffer dereference"
+  },
+  "original_evidence": {
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "checked_bytes": 440,
+    "spans": [
+      {
+        "label": "cache_resolver_dispatch",
+        "start": "00b311d7",
+        "end_exclusive": "00b311eb",
+        "length": 20,
+        "live_equals_original_pe": true,
+        "sha256": "7d48f54cc8b32bbc2ba967c0d58c702bdda66fc6abca2c2cd3af13114c98297a",
+        "saved_assembly_sha256": "2e239a2713d1f30437d1dc9799ef51dfce3e3d0c636a3775f8abf47ef2d407b7",
+        "key_instructions": [
+          {
+            "address": "00b311df",
+            "saved_equals_live": true,
+            "saved_live": "00b311df: MOV EDX,dword ptr [EAX + 0x4]",
+            "original_pe": "mov edx, dword ptr [eax + 4]",
+            "original_instruction_bytes": "8b5004"
+          },
+          {
+            "address": "00b311e9",
+            "saved_equals_live": true,
+            "saved_live": "00b311e9: CALL EDX",
+            "original_pe": "call edx",
+            "original_instruction_bytes": "ffd2"
+          }
+        ]
+      },
+      {
+        "label": "replace_and_literal_retirement",
+        "start": "00b2ea4a",
+        "end_exclusive": "00b2eaa4",
+        "length": 90,
+        "live_equals_original_pe": true,
+        "sha256": "e4dbef5479a51ff3de3c9e1a8ea5d9fc24b2b43cc12ebb353a4d69ef84390b7d",
+        "saved_assembly_sha256": "82fae85fc3a53f54432e8a73d1b0ca7b7892f5006de2cb7afd73a5fe1a3d95e7",
+        "key_instructions": [
+          {
+            "address": "00b2ea4a",
+            "saved_equals_live": true,
+            "saved_live": "00b2ea4a: PUSH 0x7fffffff",
+            "original_pe": "push 0x7fffffff",
+            "original_instruction_bytes": "68ffffff7f"
+          },
+          {
+            "address": "00b2ea62",
+            "saved_equals_live": true,
+            "saved_live": "00b2ea62: CALL 0x004cad40",
+            "original_pe": "call 0x4cad40",
+            "original_instruction_bytes": "e8d9c299ff"
+          },
+          {
+            "address": "00b2ea7e",
+            "saved_equals_live": true,
+            "saved_live": "00b2ea7e: CALL 0x00bd1510",
+            "original_pe": "call 0xbd1510",
+            "original_instruction_bytes": "e88d2a0a00"
+          },
+          {
+            "address": "00b2ea9f",
+            "saved_equals_live": true,
+            "saved_live": "00b2ea9f: CALL 0x00bd1510",
+            "original_pe": "call 0xbd1510",
+            "original_instruction_bytes": "e86c2a0a00"
+          }
+        ]
+      },
+      {
+        "label": "changed_resolution",
+        "start": "00b2eaa4",
+        "end_exclusive": "00b2eab9",
+        "length": 21,
+        "live_equals_original_pe": true,
+        "sha256": "87f8f0465d81452c18ed1ab56d616394831388a1aec45d979f2137f17e94b4aa",
+        "saved_assembly_sha256": "82fae85fc3a53f54432e8a73d1b0ca7b7892f5006de2cb7afd73a5fe1a3d95e7",
+        "key_instructions": [
+          {
+            "address": "00b2eaa4",
+            "saved_equals_live": true,
+            "saved_live": "00b2eaa4: MOV ECX,dword ptr [0x0109ceec]",
+            "original_pe": "mov ecx, dword ptr [0x109ceec]",
+            "original_instruction_bytes": "8b0decce0901"
+          },
+          {
+            "address": "00b2eaaa",
+            "saved_equals_live": true,
+            "saved_live": "00b2eaaa: LEA EAX,[ESP + 0x10]",
+            "original_pe": "lea eax, [esp + 0x10]",
+            "original_instruction_bytes": "8d442410"
+          },
+          {
+            "address": "00b2eaaf",
+            "saved_equals_live": true,
+            "saved_live": "00b2eaaf: CALL 0x00bdf4c0",
+            "original_pe": "call 0xbdf4c0",
+            "original_instruction_bytes": "e80c0a0b00"
+          },
+          {
+            "address": "00b2eab4",
+            "saved_equals_live": true,
+            "saved_live": "00b2eab4: CMP AL,BL",
+            "original_pe": "cmp al, bl",
+            "original_instruction_bytes": "3ac3"
+          },
+          {
+            "address": "00b2eab7",
+            "saved_equals_live": true,
+            "saved_live": "00b2eab7: JZ 0x00b2eaf4",
+            "original_pe": "je 0xb2eaf4",
+            "original_instruction_bytes": "743b"
+          }
+        ]
+      },
+      {
+        "label": "original_resolution_ignores_al",
+        "start": "00b2eaf4",
+        "end_exclusive": "00b2eb3d",
+        "length": 73,
+        "live_equals_original_pe": true,
+        "sha256": "ed8471470bcdadd3acc2623dce90c30122b8441ebd0ae1a826329658a0dfe7f2",
+        "saved_assembly_sha256": "82fae85fc3a53f54432e8a73d1b0ca7b7892f5006de2cb7afd73a5fe1a3d95e7",
+        "key_instructions": [
+          {
+            "address": "00b2eaf4",
+            "saved_equals_live": true,
+            "saved_live": "00b2eaf4: MOV ECX,dword ptr [0x0109ceec]",
+            "original_pe": "mov ecx, dword ptr [0x109ceec]",
+            "original_instruction_bytes": "8b0decce0901"
+          },
+          {
+            "address": "00b2eafa",
+            "saved_equals_live": true,
+            "saved_live": "00b2eafa: LEA EDX,[ESP + 0x14]",
+            "original_pe": "lea edx, [esp + 0x14]",
+            "original_instruction_bytes": "8d542414"
+          },
+          {
+            "address": "00b2eaff",
+            "saved_equals_live": true,
+            "saved_live": "00b2eaff: CALL 0x00bdf4c0",
+            "original_pe": "call 0xbdf4c0",
+            "original_instruction_bytes": "e8bc090b00"
+          },
+          {
+            "address": "00b2eb04",
+            "saved_equals_live": true,
+            "saved_live": "00b2eb04: MOV ESI,dword ptr [ESP + 0x3c]",
+            "original_pe": "mov esi, dword ptr [esp + 0x3c]",
+            "original_instruction_bytes": "8b74243c"
+          },
+          {
+            "address": "00b2eb0e",
+            "saved_equals_live": true,
+            "saved_live": "00b2eb0e: MOV dword ptr [ESI],EBX",
+            "original_pe": "mov dword ptr [esi], ebx",
+            "original_instruction_bytes": "891e"
+          },
+          {
+            "address": "00b2eb10",
+            "saved_equals_live": true,
+            "saved_live": "00b2eb10: MOV dword ptr [ESI + 0x4],EBX",
+            "original_pe": "mov dword ptr [esi + 4], ebx",
+            "original_instruction_bytes": "895e04"
+          }
+        ]
+      },
+      {
+        "label": "name_retirement_and_ret0c",
+        "start": "00b2eb3d",
+        "end_exclusive": "00b2eba1",
+        "length": 100,
+        "live_equals_original_pe": true,
+        "sha256": "279df6df9e47a52ab08e08f81b81eff0b50917652181df9f8de18cd69d9320ae",
+        "saved_assembly_sha256": "82fae85fc3a53f54432e8a73d1b0ca7b7892f5006de2cb7afd73a5fe1a3d95e7",
+        "key_instructions": [
+          {
+            "address": "00b2eb3d",
+            "saved_equals_live": true,
+            "saved_live": "00b2eb3d: MOV ECX,dword ptr [ESP + 0x10]",
+            "original_pe": "mov ecx, dword ptr [esp + 0x10]",
+            "original_instruction_bytes": "8b4c2410"
+          },
+          {
+            "address": "00b2eb64",
+            "saved_equals_live": true,
+            "saved_live": "00b2eb64: CALL 0x00bd1510",
+            "original_pe": "call 0xbd1510",
+            "original_instruction_bytes": "e8a7290a00"
+          },
+          {
+            "address": "00b2eb69",
+            "saved_equals_live": true,
+            "saved_live": "00b2eb69: MOV ECX,dword ptr [ESP + 0x18]",
+            "original_pe": "mov ecx, dword ptr [esp + 0x18]",
+            "original_instruction_bytes": "8b4c2418"
+          },
+          {
+            "address": "00b2eb87",
+            "saved_equals_live": true,
+            "saved_live": "00b2eb87: CALL 0x00bd1510",
+            "original_pe": "call 0xbd1510",
+            "original_instruction_bytes": "e884290a00"
+          },
+          {
+            "address": "00b2eb9e",
+            "saved_equals_live": true,
+            "saved_live": "00b2eb9e: RET 0xc",
+            "original_pe": "ret 0xc",
+            "original_instruction_bytes": "c20c00"
+          }
+        ]
+      },
+      {
+        "label": "numeric_vfs_mutation_and_candidates",
+        "start": "00bdf4da",
+        "end_exclusive": "00bdf54c",
+        "length": 114,
+        "live_equals_original_pe": true,
+        "sha256": "3090bba80b57ff174d8766d619ef01993208f01dbaac20dd5f5fd6b366b1ec76",
+        "saved_assembly_sha256": "518fab9afac7c9ca0c63baf0eeef42a26e6f37943ebf82a9903dbf2b70680ad5",
+        "key_instructions": [
+          {
+            "address": "00bdf4df",
+            "saved_equals_live": true,
+            "saved_live": "00bdf4df: MOV EDI,ECX",
+            "original_pe": "mov edi, ecx",
+            "original_instruction_bytes": "8bf9"
+          },
+          {
+            "address": "00bdf4e3",
+            "saved_equals_live": true,
+            "saved_live": "00bdf4e3: CALL 0x00bee690",
+            "original_pe": "call 0xbee690",
+            "original_instruction_bytes": "e8a8f10000"
+          },
+          {
+            "address": "00bdf534",
+            "saved_equals_live": true,
+            "saved_live": "00bdf534: CALL 0x00bddc80",
+            "original_pe": "call 0xbddc80",
+            "original_instruction_bytes": "e847e7ffff"
+          },
+          {
+            "address": "00bdf53b",
+            "saved_equals_live": true,
+            "saved_live": "00bdf53b: TEST BL,BL",
+            "original_pe": "test bl, bl",
+            "original_instruction_bytes": "84db"
+          },
+          {
+            "address": "00bdf53d",
+            "saved_equals_live": true,
+            "saved_live": "00bdf53d: JZ 0x00bdf54c",
+            "original_pe": "je 0xbdf54c",
+            "original_instruction_bytes": "740d"
+          },
+          {
+            "address": "00bdf547",
+            "saved_equals_live": true,
+            "saved_live": "00bdf547: CALL 0x00bdeb40",
+            "original_pe": "call 0xbdeb40",
+            "original_instruction_bytes": "e8f4f5ffff"
+          }
+        ]
+      },
+      {
+        "label": "numeric_vfs_ret4",
+        "start": "00bdf573",
+        "end_exclusive": "00bdf589",
+        "length": 22,
+        "live_equals_original_pe": true,
+        "sha256": "61ab5ca2932778f432c5616ef6d95994ad829260691ce3560f1fd0a98b12be95",
+        "saved_assembly_sha256": "518fab9afac7c9ca0c63baf0eeef42a26e6f37943ebf82a9903dbf2b70680ad5",
+        "key_instructions": [
+          {
+            "address": "00bdf579",
+            "saved_equals_live": true,
+            "saved_live": "00bdf579: MOV AL,BL",
+            "original_pe": "mov al, bl",
+            "original_instruction_bytes": "8ac3"
+          },
+          {
+            "address": "00bdf586",
+            "saved_equals_live": true,
+            "saved_live": "00bdf586: RET 0x4",
+            "original_pe": "ret 4",
+            "original_instruction_bytes": "c20400"
+          }
+        ]
+      }
+    ]
+  },
+  "verification": {
+    "strict": {
+      "status": "passed",
+      "exit_code": 0,
+      "target": "MSVC x86",
+      "translation_units": 3,
+      "flags": "/std:c++17 /W4 /WX /EHsc /permissive- /O2 /MD /fp:strict",
+      "artifacts": [
+        {
+          "path": "local/cc12_effect_cache_retained_resolver/compile.cmd",
+          "frozen": "local/cc12_effect_cache_retained_resolver/receipt_01/strict/compile.cmd",
+          "sha256": "6e5610925b2e56ce7b91f8b282afb9706ae4a25ca7f58d537caf8f4c6fddef02"
+        },
+        {
+          "path": "local/cc12_effect_cache_retained_resolver/compile.log",
+          "frozen": "local/cc12_effect_cache_retained_resolver/receipt_01/strict/compile.log",
+          "sha256": "e697ed071ec947c02a7d26d52057c931df750286239b1544fe0ff59aabf5a9bb"
+        },
+        {
+          "path": "local/cc12_effect_cache_retained_resolver/native_material_effect_cache.obj",
+          "frozen": "local/cc12_effect_cache_retained_resolver/receipt_01/strict/native_material_effect_cache.obj",
+          "sha256": "3675b2844d04090f9640415e3b6a3a6fb9f3422fcdb6657ca40f24492323a3b2",
+          "coff_timestamp_raw_u32": 1792014993
+        },
+        {
+          "path": "local/cc12_effect_cache_retained_resolver/game_native_gui_effect_application.obj",
+          "frozen": "local/cc12_effect_cache_retained_resolver/receipt_01/strict/game_native_gui_effect_application.obj",
+          "sha256": "2207970076eafc0cabce9bee92bb7642c393f3bd053238523d7418dea23ed091",
+          "coff_timestamp_raw_u32": 1792014993
+        },
+        {
+          "path": "local/cc12_effect_cache_retained_resolver/game_native_gui_effect_probe.obj",
+          "frozen": "local/cc12_effect_cache_retained_resolver/receipt_01/strict/game_native_gui_effect_probe.obj",
+          "sha256": "e2af89a2a9ec30c3a51268ec8ffcedf53857fc05ed65d29807f3ebc7dc188172",
+          "coff_timestamp_raw_u32": 1792014993
+        }
+      ]
+    },
+    "registered_worker_build": {
+      "status": "passed",
+      "exit_code": 0,
+      "command": "./scripts/build.ps1",
+      "ctest": "2/2 passed",
+      "test_seconds": 11.55,
+      "artifacts": [
+        {
+          "path": "local/cc12_effect_cache_retained_resolver/build.log",
+          "frozen": "local/cc12_effect_cache_retained_resolver/receipt_01/build/build.log",
+          "sha256": "9bcc8bc4ba6a35ef7e5cf2b870a3c00616aa0155f8f253b00ac720115b14f52d"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_material_effect_cache.obj",
+          "frozen": "local/cc12_effect_cache_retained_resolver/receipt_01/build/native_material_effect_cache.obj",
+          "sha256": "27f7c0e3027387d9f69c7ebd6a3e7b75253b67676d2daf0a0368a402d3955410",
+          "coff_timestamp_raw_u32": 1792015052
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_material_effect_loading.obj",
+          "frozen": "local/cc12_effect_cache_retained_resolver/receipt_01/build/native_material_effect_loading.obj",
+          "sha256": "d02e5ad9bdeb2b5f9fa1e8d047430561417360306a74422c43b5f2578f27e86f",
+          "coff_timestamp_raw_u32": 1792015052
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_native_gui_effect_probe.obj",
+          "frozen": "local/cc12_effect_cache_retained_resolver/receipt_01/build/game_native_gui_effect_probe.obj",
+          "sha256": "825eaa27d6e8941731fa228d04a145497dc4ec75ba1ce61d29ae7be91d8ca014",
+          "coff_timestamp_raw_u32": 1792015127
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_native_gui_effect_application.obj",
+          "frozen": "local/cc12_effect_cache_retained_resolver/receipt_01/build/game_native_gui_effect_application.obj",
+          "sha256": "d47ebe52fb1e9ab7eee458aa153182f3182595d4e61bb18f8f72c579c3db1ffe",
+          "coff_timestamp_raw_u32": 1792015127
+        },
+        {
+          "path": "build/win32/Release/bsp_game.exe",
+          "frozen": "local/cc12_effect_cache_retained_resolver/receipt_01/build/bsp_game.exe",
+          "sha256": "9a21c0c2cd4cd2f492210b9c1f6370fc7eead2f47225645b8401e82b78c5760d"
+        },
+        {
+          "path": "build/win32/bsp_game.map",
+          "frozen": "local/cc12_effect_cache_retained_resolver/receipt_01/build/bsp_game.map",
+          "sha256": "2e96e589366a3c05815dce503d280d1efe55bf1075ccdcdbcb7f13ed4e220485"
+        }
+      ],
+      "game_launched": false
+    },
+    "existing_vfs_device_replay": {
+      "status": "passed",
+      "scope": "existing four-function VFS device dependency fixture; not BDF4C0/cache routing or installed/game execution",
+      "first_attempt": "preserved link failure: old runner omitted current real advapi32/shell32 imports",
+      "first_attempt_log_sha256": "0a3957ccb3d127cb60e14f1150f37b63913faad148134d226784444801a508f9",
+      "runner_change": "owned local copy only: add advapi32.lib and shell32.lib to existing system-library list; no fixture Source/provider changes",
+      "runner_path": "local/cc12_effect_cache_retained_resolver/vfs_device_replay.py",
+      "runner_sha256": "ea7c6a05abb06970eb858de2b12c13b63abf897a6d78974ff0ec540afaffed85",
+      "result": {
+        "status": "passed",
+        "variants": 8,
+        "original_routines": 4,
+        "original_code_bytes": 793,
+        "profile_and_literal_bytes": 14,
+        "normalized_arena_bytes_per_variant": 4096,
+        "actual_pool_prefix_bytes_per_variant": 9098372,
+        "current_include_pins": 15,
+        "baseline_replayed": true,
+        "original_source_outcomes_match": true,
+        "exact_candidate_objects_linked": 2,
+        "input_manifest_sha256": "5c8b4ee43edf040ad5f2de73bf4f92b4cdb8f5c858035cb4522e8e468cf21e9f",
+        "original_inputs_sha256": "0138c40f4557b40d960179edd94d708b001d4254d7c180243db30fe89e53f44c",
+        "original_outcomes_sha256": "91be8f5b4c7a031fc89553abe38487eaa0764e6092678aa2b4b1777cb666c5b5",
+        "source_outcomes_sha256": "91be8f5b4c7a031fc89553abe38487eaa0764e6092678aa2b4b1777cb666c5b5",
+        "installed_or_gameplay_validation": false
+      },
+      "result_sha256": "b4f775ae3a590731a07b496a7386779cdbd1893ed400d50b72920cd28b910e38",
+      "replay_receipt_sha256": "5a4ac2f919071330997e289c4673d7aae121704d52a93d767eee9f75531095f0",
+      "baseline": "reports/native_vfs_device_composition.json"
+    }
+  },
+  "sealed_sources": [
+    {
+      "path": "src/native_material_effect_cache.cpp",
+      "frozen": "local/cc12_effect_cache_retained_resolver/receipt_01/source/src/native_material_effect_cache.cpp",
+      "sha256": "b5edc9b518ba2979d112ebdd03d97937307249e05a978272097020055e7072ae"
+    },
+    {
+      "path": "include/bsp/native_material_effect_cache.hpp",
+      "frozen": "local/cc12_effect_cache_retained_resolver/receipt_01/source/include/bsp/native_material_effect_cache.hpp",
+      "sha256": "56d1930a80ad2ed90883c1f52f26f36ec51c50c6294a844dd64258949d103ff4"
+    },
+    {
+      "path": "src/game_native_gui_effect_probe.cpp",
+      "frozen": "local/cc12_effect_cache_retained_resolver/receipt_01/source/src/game_native_gui_effect_probe.cpp",
+      "sha256": "c48f94cbe343e5742faadaddd8e206baf067633f0f7a2a28313c3d82c4a38f9f"
+    },
+    {
+      "path": "src/game_native_gui_effect_application.cpp",
+      "frozen": "local/cc12_effect_cache_retained_resolver/receipt_01/source/src/game_native_gui_effect_application.cpp",
+      "sha256": "3bb6102531c2f7e8a8ae628ec9eda606698f7e612d8043b203f686cf7e882694"
+    },
+    {
+      "path": "src/native_material_effect_loading.cpp",
+      "frozen": "local/cc12_effect_cache_retained_resolver/receipt_01/source/src/native_material_effect_loading.cpp",
+      "sha256": "6726e4bbe90b91ea0dfd4aee4ef95d374f1bcc744099127dac08f52348b50ebc"
+    },
+    {
+      "path": "include/bsp/native_material_effect_loading.hpp",
+      "frozen": "local/cc12_effect_cache_retained_resolver/receipt_01/source/include/bsp/native_material_effect_loading.hpp",
+      "sha256": "58a70009ee0df21341679430f1b0d88deedaf0602aef81d40b6aaef13d0dbfb9"
+    },
+    {
+      "path": "src/native_vfs_name_resolution.cpp",
+      "frozen": "local/cc12_effect_cache_retained_resolver/receipt_01/source/src/native_vfs_name_resolution.cpp",
+      "sha256": "898923fc270fcaeb5b81b0dc3bf624658868ae92370a36f65c283e8ff83e5615"
+    },
+    {
+      "path": "include/bsp/native_vfs_name_resolution.hpp",
+      "frozen": "local/cc12_effect_cache_retained_resolver/receipt_01/source/include/bsp/native_vfs_name_resolution.hpp",
+      "sha256": "791bd34d2a2826043832d85e27cd723996b988c1d6e22f818e26cd4d45f07bcc"
+    }
+  ],
+  "immutable_receipt_policy": "Exact final Source/COFF/log/build artifacts copied and hash-equal to receipt_01; COFF timestamps are recorded raw, no older hash inferred or reproduced. Prior22ce33474 probe receipts unchanged.",
+  "untouched": [
+    "application numeric context selection",
+    "host/CMake",
+    "sampler complete-word guard",
+    "private sampler upper bytes",
+    "D5E13C activation",
+    "platform domains",
+    "effect refcount/cache/fallback policy"
+  ],
+  "remaining": [
+    "parent combined build and genuine opt-in GuiFont resource rerun",
+    "later actual VFS/descriptor/compiler/sampler/cache branches",
+    "persistent native Text/GUI attachment and actual draw",
+    "Original x86/register ABI/FH3 exception equivalence"
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "native_gui_effect_acquired_by_this_packet": false,
+  "rendering_validated": false
+}

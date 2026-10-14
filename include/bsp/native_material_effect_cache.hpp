@@ -3,6 +3,7 @@
 #include "bsp/native_material_effect_loading.hpp"
 #include "bsp/native_render_resource_record.hpp"
 #include <cstdint>
+#include <exception>
 
 namespace bsp {
 class ActualNativeStringPoolStorage;
@@ -38,6 +39,33 @@ struct NativeMaterialEffectCacheContext {
     void (*free_array_00bf6989)(void*) noexcept;
 };
 
+// Retained B2E940 numeric key resolver. Original and rewritten names need
+// separate one-shot BDF4C0 calls; their mutable8h headers survive failure.
+// Output remains owned here until B31090's caller-copy/0041DD20 succeeds.
+// This is metadata and genuine pooled strings, not another VFS/cache owner.
+struct NativeMaterialEffectCacheKeyResolutionAcquired final {
+    enum class Phase { fresh, running, complete, failed };
+    enum class Step {
+        fresh, original_copy, changed_copy, replacement, search, replace,
+        changed_resolution, original_resolution, output_copy, locals_retirement, complete
+    };
+    NativeMaterialEffectCacheKeyResolutionAcquired();
+    ~NativeMaterialEffectCacheKeyResolutionAcquired();
+    NativeMaterialEffectCacheKeyResolutionAcquired(const NativeMaterialEffectCacheKeyResolutionAcquired&) = delete;
+    NativeMaterialEffectCacheKeyResolutionAcquired& operator=(const NativeMaterialEffectCacheKeyResolutionAcquired&) = delete;
+    Phase phase{Phase::fresh};
+    Step step{Step::fresh};
+    std::uint32_t native_site{};
+    NativeString original, changed, replacement, search, output;
+    bool original_live{}, changed_live{}, replacement_live{}, search_live{}, output_live{};
+    char* captured_replacement{};
+    char* captured_search{};
+    std::uint32_t captured_search_length{};
+    NativeMaterialEffectNameResolutionCall changed_resolution, original_resolution;
+    bool used_original{};
+    std::exception_ptr failure;
+};
+
 // Caller-owned operation frame, not an owner map or a second reference count.
 // Keep it through failure and resolve its loader's actual acquired state.
 // loaded is the loader's returned owned reference, including recursive cache
@@ -53,6 +81,7 @@ struct NativeMaterialEffectCacheAcquired {
     Phase phase{Phase::not_started};
     std::uint32_t native_site{};
     NativeMaterialEffectLoadAcquired loader;
+    std::unique_ptr<NativeMaterialEffectCacheKeyResolutionAcquired> key_resolution;
     void* loaded{};
     void* result{};
     bool cache_published{};
@@ -81,6 +110,14 @@ void append_native_effect_record_00b301a0(void*, const NativeRenderResourceRecor
 // resolve original and return its mutable result even when resolution fails.
 void* resolve_native_effect_cache_name_00b2e940(void* actual_output,
     const void* actual_name, NativeMaterialEffectCacheContext&);
+// Same normal B2E940 schedule over the selected actual NUMERIC VFS domain.
+// Retain acquired before entry; actual_output must be &acquired.output. Distinct
+// rewritten/original call frames capture CURRENT manager separately. On failure
+// headers/children remain live, no rollback/replay. Normal caller destroys output
+// with0041DD20 and then clears output_live before metadata may be discarded.
+void* resolve_native_effect_cache_name_00b2e940(void* actual_output,
+    const void* actual_name, NativeMaterialEffectCacheContext&,
+    NativeMaterialEffectCacheKeyResolutionAcquired&);
 // ECX unused, stack nonnull actual effect, EAX same pointer, RET4. One actual
 // InterlockedIncrement(+04), without a companion or hidden owner reference.
 void* acquire_native_cached_effect_00b31ff0(void* actual_effect) noexcept;

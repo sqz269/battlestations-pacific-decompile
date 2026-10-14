@@ -7,6 +7,10 @@
 #include "bsp/native_render_resource_record_construction.hpp"
 #include "bsp/native_string_pool_storage.hpp"
 #include "bsp/native_material_effect_loading.hpp"
+#include "bsp/native_material_effect_programs.hpp"
+#include "bsp/native_vfs_name_resolution.hpp"
+#include "bsp/native_vfs_device_route.hpp"
+#include "bsp/native_vfs_lookup_routes.hpp"
 #include "bsp/native_vfs_date_route.hpp"
 #include "bsp/resource_load_events.hpp"
 #include "bsp/native_renderer_synchronization_actual.hpp"
@@ -308,6 +312,87 @@ void* resolve_native_effect_cache_name_00b2e940(void* output,
     return output;
 }
 
+NativeMaterialEffectCacheKeyResolutionAcquired::NativeMaterialEffectCacheKeyResolutionAcquired() = default;
+NativeMaterialEffectCacheKeyResolutionAcquired::~NativeMaterialEffectCacheKeyResolutionAcquired() {
+    if ((phase != Phase::fresh && phase != Phase::complete) || original_live || changed_live ||
+        replacement_live || search_live || output_live) std::terminate();
+}
+
+void* resolve_native_effect_cache_name_00b2e940(void* output,
+    const void* name, NativeMaterialEffectCacheContext& c,
+    NativeMaterialEffectCacheKeyResolutionAcquired& a) {
+    require_domains(c);
+    if (a.phase != NativeMaterialEffectCacheKeyResolutionAcquired::Phase::fresh || output != &a.output)
+        throw std::logic_error("numeric effect cache key resolution cannot replay or retarget output");
+    auto* const numeric = c.effects.numeric_name_resolution;
+    if (!numeric || c.effects.resolve_existing_name_00bdf4c0 || c.effects.resolution_context ||
+        &c.strings != &numeric->device.lookup.physical.strings ||
+        &c.effects.programs.strings != &numeric->device.lookup.physical.strings)
+        throw std::invalid_argument("numeric effect cache key resolution requires its same explicitly selected actual VFS/string domain");
+    using Step = NativeMaterialEffectCacheKeyResolutionAcquired::Step;
+    a.phase = NativeMaterialEffectCacheKeyResolutionAcquired::Phase::running;
+    try {
+        a.step = Step::original_copy;
+        a.original_live = true;
+        copy_name(&a.original, name, c.strings);
+        a.step = Step::changed_copy;
+        a.changed_live = true;
+        copy_name(&a.changed, name, c.strings);
+        a.step = Step::replacement;
+        a.replacement_live = true;
+        resize_native_string_header_0041dd40(&a.replacement, c.strings, 5, true);
+        a.captured_replacement = field<char*>(&a.replacement, 4);
+        if (a.captured_replacement)
+            std::memcpy(a.captured_replacement, ".shfx", field<std::uint32_t>(&a.replacement, 0) + 1u);
+        a.step = Step::search;
+        a.search_live = true;
+        resize_native_string_header_0041dd40(&a.search, c.strings, 5, true);
+        a.captured_search = field<char*>(&a.search, 4);
+        a.captured_search_length = field<std::uint32_t>(&a.search, 0);
+        if (a.captured_search)
+            std::memcpy(a.captured_search, ".mshd", a.captured_search_length + 1u);
+        a.step = Step::replace;
+        replace_native_particle_string_substrings_004cad40(&a.changed, &a.search,
+            &a.replacement, 0x7fffffffu, c.strings);
+        // Original retires captured search first, then captured replacement.
+        if (a.captured_search) c.strings.release(a.captured_search, a.captured_search_length + 1u);
+        a.search_live = false;
+        if (a.captured_replacement)
+            c.strings.release(a.captured_replacement, field<std::uint32_t>(&a.replacement, 0) + 1u);
+        a.replacement_live = false;
+        a.step = Step::changed_resolution;
+        a.native_site = 0x00b2eaaf;
+        const void* resolved = &a.changed;
+        if (!a.changed_resolution.invoke(&a.changed, c.effects.current_vfs_0109ceec, *numeric)) {
+            a.step = Step::original_resolution;
+            a.native_site = 0x00b2eaff;
+            a.used_original = true;
+            (void)a.original_resolution.invoke(&a.original, c.effects.current_vfs_0109ceec, *numeric);
+            // Native original AL is ignored; return its current mutable header.
+            resolved = &a.original;
+        }
+        a.step = Step::output_copy;
+        a.output_live = true;
+        field<std::uint32_t>(output, 0) = 0;
+        field<char*>(output, 4) = nullptr;
+        copy_name(output, resolved, c.strings);
+        a.step = Step::locals_retirement;
+        destroy_native_string_header_0041dd20(&a.changed, c.strings);
+        a.changed_live = false;
+        destroy_native_string_header_0041dd20(&a.original, c.strings);
+        a.original_live = false;
+        a.step = Step::complete;
+        a.phase = NativeMaterialEffectCacheKeyResolutionAcquired::Phase::complete;
+        return output;
+    } catch (...) {
+        a.failure = std::current_exception();
+        a.phase = NativeMaterialEffectCacheKeyResolutionAcquired::Phase::failed;
+        // Actual headers and nested numeric operations survive the entered
+        // failure. Caller retains the entire graph under no-unwind exit policy.
+        throw;
+    }
+}
+
 void* acquire_native_cached_effect_00b31ff0(void* effect) noexcept {
     InterlockedIncrement(&field<LONG>(effect, 4));
     return effect;
@@ -355,9 +440,17 @@ void* load_native_cached_material_effect_00b31090(void* registry, const void* na
     }
     Name output;
     require_slot(registry, c, 1, 0x00b2e940);
-    auto* const returned = resolve_native_effect_cache_name_00b2e940(
-        &output, &normalized, c);
-    {
+    if (acquired != nullptr) acquired->native_site = 0x00b311e9;
+    if (c.effects.numeric_name_resolution) {
+        if (!acquired) throw std::invalid_argument("numeric effect cache key resolution requires retained acquired output");
+        acquired->key_resolution = std::make_unique<NativeMaterialEffectCacheKeyResolutionAcquired>();
+        auto& key = *acquired->key_resolution; // Publish before any resolver entry.
+        auto* const returned = resolve_native_effect_cache_name_00b2e940(&key.output, &normalized, c, key);
+        copy_name(&resolved, returned, c.strings);
+        destroy_native_string_header_0041dd20(&key.output, c.strings);
+        key.output_live = false;
+    } else {
+        auto* const returned = resolve_native_effect_cache_name_00b2e940(&output, &normalized, c);
         NameCleanup output_cleanup{&output, c.strings};
         copy_name(&resolved, returned, c.strings);
     }
