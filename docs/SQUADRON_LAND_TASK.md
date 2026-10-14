@@ -16839,3 +16839,37 @@ resolves to the squadron (bVar3, 0084E05E-0084E078) is raised only to stage 1 wh
 0084E48A's raise to stage 2 needs !bVar3, so the image holds the command at stage 1 and does not churn. The stage raise is
 the director completion in `src/game_hosts_commands.cpp` (gunnery lane). So the switch stays **OFF** until that hold is
 modelled; gameplay is identical either way on both rows.
+
+## 5hf. Handoff (cc9-lua59, 2026-10-14, at about 70% context)
+
+Tree `J:\PROG\battlestations-pacific-decompile-cc9-lua52` (agent/cc9-lua52, fast-forwarded onto main fcee16d53 before
+a87e85bee). Launcher `local\l59_lane.ps1` (l58's rows plus `l10x` = LOMP10 `lomp10_p3_l10_b` 36000 and `j5x` = JM05
+12000). JM08 plan tools: `local\l59_j8_filter.py` (drop launch lines by base:class:target) and `local\l59_j8_replan.py`
+(keep a plan before frame F0, then explicit select/attack windows). `local\l59_consts.py` reads floats/doubles from the PE.
+No runs in flight; leases released at handoff.
+
+Commits: 9bc2a55fc (capture FABS + forced-recon own record OFF, 5he), 97b56bead (both ON, 5he.1), 1ae160e44 (D2 adopt
+ON, 5he.2), a87e85bee / 0d97926ce (007EDC30 OFF then ON, 5he.3), 47c123a34 + 4aa51543a (moveto-self to the squadron's
+own director; switch stays OFF, 5he.4).
+
+Win re-checks: LOMP10 `lomp10_p3_l10_b` completed 1581.97 s on 453ed7e51 (`local\l59_s0_l10x.log`). JM08
+`jm08_p6_j8_f` was lost on 453ed7e51 (no end in 110000 frames; stock exhausted with LST 01/02, USTroopTransport 02 and LSM
+02 alive) and completes 1464.00 s on main fcee16d53 (`local\l59_m4s_j8.log`), after the gunnery flips moved the timeline.
+JM08 is knife-edge under stock. Lessons for a JM08 re-plan: the Grayson/Helena/Nevada launch lines protect the HQ
+(dropping them loses it at 964-1124 s); Hosho sinks at 771 s in every run; the plan's PT-boat attack cycles end on a
+target that can already be dead, because the helm `attack` line is "applied" on a dead target (a ships-lane harness
+question: the image's target pick walks the live hostile list). `local\l59_j8_r12.txt` (filters on 166/167 Grayson/
+Helena/Missouri and 152/154 Grayson/Missouri, late PT-boat assignments from frame 29000) completed 2150.67 s on
+1ae160e44 but not on fcee16d53. PRCP01 `prcp01_l55_p01_c` has no end within 30000 frames on 47c123a34
+(`local\l59_x0_p01w.log`): the keeper's PRCP01 re-plan is still open.
+
+Next, in order:
+1. The moveto-self stage-1 hold (5he.4): the director completion in `src/game_hosts_commands.cpp` (gunnery lane) needs
+   the 0084E05E-0084E078 bVar3 test (a moveto whose target resolves to the squadron stays at stage 1 while the leader's
+   +184h is set); route it as an exact edit, then re-pair `kSquadronMoveToSelfBound` on USN21 f (churn 753 -> 2862 posts).
+2. The gun finder's strafe threshold (5he residual a): with the strafe gun point armed (+28h = 0.6, 009CB497) the image
+   searches with threshold 0.6, the host with -1.0 (`df_finder_007e2090`'s call, game_hosts_units.cpp). No row reached the
+   strafe aim state (aims=0 everywhere), so it is unexercised; bind it OFF if a strafe row appears. Residual b (the +84h
+   clock seed U(0, 2) + 2 at 007E1E20) draws RNG; leave it labelled.
+3. The 0099AF53 release-order spend and the torpedo wingmen fallthrough (5hc item 2), then rows that reach FreeFire and
+   SquadronLandAndKill (5hc item 4).
