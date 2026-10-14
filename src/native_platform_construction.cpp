@@ -203,4 +203,60 @@ void* construct_native_win32_platform_00becda0(
     base.armed = false;
     return actual_owner;
 }
+
+__declspec(naked) void __fastcall destroy_native_text_queue_00bec730(
+    void*, void*) noexcept {
+    __asm {
+        push esi
+        mov esi, ecx
+        mov ecx, dword ptr [esi + 4]
+        mov eax, dword ptr [ecx]
+        mov dword ptr [ecx], ecx
+        mov ecx, dword ptr [esi + 4]
+        mov dword ptr [ecx + 4], ecx
+        cmp eax, dword ptr [esi + 4]
+        mov dword ptr [esi + 8], 0
+        je free_sentinel
+        push edi
+        // Original 3-byte alignment LEA ECX,[ECX+0].
+        _emit 08dh
+        _emit 049h
+        _emit 000h
+    free_node:
+        mov edi, dword ptr [eax]
+        push eax
+        call singleton_lifetime_free
+        add esp, 4
+        cmp edi, dword ptr [esi + 4]
+        mov eax, edi
+        jne free_node
+        pop edi
+    free_sentinel:
+        mov eax, dword ptr [esi + 4]
+        push eax
+        call singleton_lifetime_free
+        add esp, 4
+        mov dword ptr [esi + 4], 0
+        pop esi
+        ret
+    }
+}
+
+void destroy_native_win32_platform_00beca00(
+    void* actual_owner, NativePlatformConstructionContext& context) {
+    word(actual_owner) = 0x00d68cc4u;
+    (void)SystemParametersInfoA(0x11, 1, nullptr, 0);
+    destroy_native_text_queue_00bec730(
+        reinterpret_cast<void*>(reinterpret_cast<Word>(actual_owner) + 0x174u),
+        nullptr);
+    destroy_native_window_platform_base_00be2b10(actual_owner, context);
+}
+
+void* delete_native_win32_platform_00bece30(
+    void* actual_owner, std::uint32_t flags,
+    NativePlatformConstructionContext& context) {
+    destroy_native_win32_platform_00beca00(actual_owner, context);
+    if ((flags & 1u) != 0) singleton_lifetime_free(actual_owner);
+    return actual_owner;
+}
 } // namespace bsp

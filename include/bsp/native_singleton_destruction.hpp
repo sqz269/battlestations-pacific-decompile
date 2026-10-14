@@ -9,6 +9,7 @@ struct GlobalConfigContext;
 struct NativeGameClassCleanupContext;
 struct NativeProfileHintsOwnerContext;
 struct NativePlatformFocusOwnersContext;
+struct NativePlatformConstructionContext;
 struct NativeGuiMediaFocusLifetimeContext;
 struct NativeParticleClockShutdownContext;
 struct NativeParticleModelManagerAccess;
@@ -56,6 +57,8 @@ namespace game { class GameSoundRuntime; }
 // D5F0A4, D621EC/D62260 and D626F4/D62A3C. The renderer requires initialized
 // device and surface storage through its complete destruction schedule.
 // D68CBC/D68CC0 use the same raw render-entry cache context as publication.
+// D68CC4 retires the actual184h platform through BECE30, its raw queue and
+// window base, borrowing the SAME publication/string/manager cells as creation.
 // D5E5F4 executes and destroys its actual render queue with shared providers.
 // D24D94/D5BFCC use the raw media/GUI scalar deleters and their original
 // publication cells. GUI page virtual calls remain a required provider domain.
@@ -243,6 +246,12 @@ struct NativeSingletonDeletionBindings {
     // manager/publication domain through its completed raw drain. Append to
     // preserve the established offsets of all existing dispatch bindings.
     NativeFixedStepJobDescriptorsActual* fixed_step_jobs{};
+    // D68CC4 -> BECE30. Actual184h raw owner, not Win32PlatformState or its
+    // 44h focus receiver. Keep the SAME 0109CF04/01090AA0/01090AA8/01090AA4
+    // cells through drain, including lazy pool recreation during title return.
+    // Pass the popped receiver; base cleanup independently reloads current
+    // publication. Missing binding fails closed. No power-stop is scheduled.
+    NativePlatformConstructionContext* platform{};
 };
 static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);
 static_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);
@@ -272,7 +281,8 @@ static_assert(offsetof(NativeSingletonDeletionBindings, actual_pending_registry_
 static_assert(offsetof(NativeSingletonDeletionBindings, allocation_stats) == 188);
 static_assert(offsetof(NativeSingletonDeletionBindings, particle_manager) == 192);
 static_assert(offsetof(NativeSingletonDeletionBindings, fixed_step_jobs) == 196);
-static_assert(sizeof(NativeSingletonDeletionBindings) == 200);
+static_assert(offsetof(NativeSingletonDeletionBindings, platform) == 200);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 204);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting
