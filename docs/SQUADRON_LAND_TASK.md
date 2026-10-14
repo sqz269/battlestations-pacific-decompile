@@ -17097,3 +17097,49 @@ different ship AA, the sqn03 leader's second issue moves 418.22 -> 426.02 s, and
 tents and the B-17 #2 flight die again ON, as on e0). A wingman still in aim when the orders arrive keeps +424h
 (sqn13|.-3 ends with 66 pending). The mechanism matches 0099AF53/009B83D0/009B8BD0, so the switch is flipped ON together
 with the tail. JM08's keeper plan must be re-checked.
+
+### 5hk.1 / 5hl.1 Measured: `kForcedReconSyncNotifyBound` and `kAutoAttackNullClassMoveToBound` **ON** (cc9-lua60, 2026-10-14)
+
+One ON build with both switches (8da8304e0, `local\l60_f1_*`) against the tree build (`local\l60_m1_*`); each row
+exercises one switch (the counters show which).
+
+| row | switch exercised | evidence | pair_diff |
+|---|---|---|---|
+| USN12 `u12` 34000 (no plan) | F | 35 SetForcedReconLevel calls, 147 units, 119 synchronous notifies | 1, gameplay identical |
+| PRCP01 `p01k9` (prcp01_p9_p01_k, 30000) | L3 | Enterprise_sqn01/sqn02 (squadrons 14/17, class 101) get "no class -> moveto Enterprise" | 3: completed 661.51 s -> 536.79 s |
+
+PRCP01: the two Enterprise fighter squadrons are launched with AutoAttackTarget = their own carrier, for which 007EEC50
+picks no class. OFF they got no order; ON they fly the image's moveto to Enterprise and stay over it. The Japanese strike
+planes they met OFF (Junyo_sqn07, Zuiho_sqn10, Kate #4.2, the HornetKiller wings: 31 deaths only OFF) survive ON, and the
+mission completes 124.7 s earlier (exec guard refused sus_prog.exe on both). F: the notifies fire at the call and
+nothing moves. Both mechanisms match the image, so both are flipped ON.
+
+## 5ho. Handoff (cc9-lua60, 2026-10-14)
+
+Tree `J:\PROG\battlestations-pacific-decompile-cc9-lua52` (agent/cc9-lua52, origin/main merged at the start). Launcher
+`local\l60_lane.ps1` (l59's rows plus `p01k9` = PRCP01 `prcp01_p9_p01_k` 30000). Pair builds are under `local\l60_*\`;
+`local\l60_m1\bsp_game.exe` is the tree build at 8da8304e0 (OFF baseline for the F/L3 pairs). Edit scripts:
+`local\l60_*_apply.py`. The 007F23A0 listing is `local\l60_7f23a0.asm`.
+
+Commits (in order): ec912c84c (JM08 backup plan jm08_l59_j8_r12), ed6757e2e / c38e44447 (dogfight enter draws OFF, ON;
+5hg), 2eeb1b5ae (torpedo 009D29E0 arm OFF; 5hh), 7c78cfd61 (007F23A0's five shapes; drop-kamikaze shape 3 OFF; 5hi),
+5b46833ba (level-bomber 007C0ED9 tail OFF; 5hj), a74bea59a (forced-recon synchronous notify OFF; 5hk), e9e89f456
+(007F15F0 null-class moveto OFF; backfill L1/L2 recorded; 5hl), 380493952 (level-bomb 0099AF53 spend and +424h
+passthrough OFF; 5hj.1), 478a2dfaf (kSquadronMoveToSelfBound ON; 5hm), 1ee9b911a (torpedo arm and drop-kamikaze shape
+ON; 5hn), 8da8304e0 (both level-bomber switches ON; 5hj.2/5hj.3).
+
+Then 9ef2acd45: `kForcedReconSyncNotifyBound` and `kAutoAttackNullClassMoveToBound` ON (5hk.1/5hl.1). All lane switches of this
+session are ON. Wins on 8da8304e0: JM08 `jm08_p6_j8_f` completed 2041.57 s; `jm08_l59_j8_r12` no end; PRCP01
+`prcp01_p9_p01_k` completed 661.51 s, and 536.79 s with the null-class moveto (9ef2acd45).
+
+Next, in order:
+1. JM08 / PRCP01 / USNOS wins after the level-bomber flips (8da8304e0): send WINS_TABLE results to cc9-physics9.
+2. The torpedo done/prepare formation: 009D2530 writes squadron+3E4h = 2 (after 009BED80's 1) and +8Ch = 1.0, and
+   009BFDA6-009BFDB2 republishes the follow state's +8Ch into squadron+3E8h (the station scale) every follow tick; with
+   009D29E0 ON the done Kates' +8Ch is 1.5-1.7, so in the image their formation spreads as they near the target. The
+   host keeps `morale_3e8` at 1.0 and shape 1. Shapes 2-5 are reconstructed (5hi).
+3. The level-bomb prepare: 009B83D0's prepare arm 009B8100 and prepare's tick 009B6670 (the release timer +98h and its
+   own +8Ch blend) are not hosted; no row reaches the level-bomb prepare yet (pr=0).
+4. From 5hf: the strafe gun threshold (unexercised), the FreeFire / SquadronLandAndKill rows (5hc item 4).
+5. Name request for the lead: 00805CF0-00805D6C (RET 4 at 00805D69, INT3 from 00805D6C)
+   `BSP_ReconRecord_SetForcedLevel` (provisional; 5hk).

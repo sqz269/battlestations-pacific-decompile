@@ -863,7 +863,7 @@ inline constexpr bool kAutoAttackMemberOnLaunchBound = true;   // ON: AIROPS_LAU
 // 007F15F0: when 007EEC50 chooses no class (007F1623 / 007F1658 JE), 007F1688-007F16AD
 // issues moveto (00E08F68) on the same kind-1 target descriptor (+174h id) through
 // 0071ECF0. True: the served members get that moveto. False: nothing is issued.
-inline constexpr bool kAutoAttackNullClassMoveToBound = false;
+inline constexpr bool kAutoAttackNullClassMoveToBound = true;   // ON: SQUADRON_LAND_TASK 5hl.1
 // Packet cc9_takeoff_own_site (SQUADRON_LAND_TASK 5en). True: the plane's site
 // probe 006C0840 takes its own-site arm (006C086D-006C0964) for a plane with a
 // scene parent (00923810(1); this host: the deck parent) that answers
