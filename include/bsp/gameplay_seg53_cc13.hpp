@@ -305,39 +305,37 @@ void torpedo_activate_00857780(const TorpedoActivateInputs& in, TorpedoState& st
                                const TorpedoActivateHost& host);
 
 // 008568E0, __thiscall(shot, char spawn_effect), RET 4: the water entry.
-enum class TorpedoWaterEntry {
-    AlreadyInWater,   // shot+44h set: nothing happens
-    Enters,           // 006E6450(arg): the round swims
-    BreaksUpServer,   // 00926D90(1): the entity is killed
-    BreaksUpClient,   // network client (world+1FE4h == 2): 006E6450(arg) instead of the kill
-};
+// shot is the projectile sub-object at entity+310h. Every call the image
+// makes goes through a host hook at the image's point: 006E6450 (enter
+// water) before the splash on the surviving arm, 00926D90(1) on the entity
+// (shot-310h) or 006E6450(arg) on a network client after the break-up
+// effect. The heading shot+15Ch is written in place.
 struct TorpedoWaterEntryInputs {
     bool in_water_44{false};
     Vec3 velocity_318{};          // shot+8h
-    float heading_46c{10000.0f};  // shot+15Ch
     bool spawn_effect_arg{false};
-    bool network_client{false};
+    bool network_client{false};   // [00E188A8]+1FE4h == 2, read at 00856B33
 };
 struct TorpedoWaterEntryHost {
     std::function<void(float)> set_weapon_scale;       // shot vtable[20h](1.0)
     std::function<float(const Vec3&)> length;          // 0042B2F0
+    std::function<void(bool)> enter_water;             // 006E6450(char), __thiscall(shot), RET 4
+    std::function<void(bool)> kill_entity;             // 00926D90(char) on shot-310h; passed 1
     // Splash for a surviving round (class+D8h): water crossing 0078D1B0
     // between the pose and shot+60h, then a point effect, effect+9 = 1.
     std::function<void()> spawn_splash_effect;
     // Break-up effect (class+24h): the pose moves to the water crossing,
     // +C8h = 1, +10Ch = 0, then a point effect at the pose, effect+9 = 1.
     std::function<void()> spawn_breakup_effect_and_snap_pose;
-    // 00521370 on the world matrix's forward row (+CCh+20h): the yaw.
+    // 00414DB0 if the pose is stale, then 00521370 on the world matrix's
+    // forward row (+CCh+20h): the yaw.
     std::function<float()> current_yaw;
 };
-struct TorpedoWaterEntryResult {
-    TorpedoWaterEntry outcome{TorpedoWaterEntry::AlreadyInWater};
-    float heading_46c{10000.0f};
-};
-TorpedoWaterEntryResult torpedo_enter_water_008568e0(const TorpedoClassFields& cls,
-                                                     float terminal_fall_speed_ec,
-                                                     const TorpedoWaterEntryInputs& in,
-                                                     const TorpedoWaterEntryHost& host);
+void torpedo_enter_water_008568e0(const TorpedoClassFields& cls,
+                                  float terminal_fall_speed_ec,
+                                  const TorpedoWaterEntryInputs& in,
+                                  float& heading_46c,  // shot+15Ch
+                                  const TorpedoWaterEntryHost& host);
 
 // 00855CC0 / 00857160: MT_TORPEDO_CREATE (the bomb create message, type B8h,
 // vtable 00D037BC) and its apply. The apply copies heading and the target

@@ -1086,6 +1086,20 @@ void hud_markers_destruct_006404a0(Raw s, ScreenTeardownHost& host) {
     host.front_end_screen_destruct_004f71a0(s);
 }
 
+// 00640D50: CALL 006404A0 (00640D53); TEST [ESP+8],1 / JE; PUSH ESI; CALL
+// 00BF65AC (00640D60); MOV EAX,ESI; RET 4.
+Raw hud_markers_scalar_delete_00640d50(Raw s, std::uint8_t flags, ScreenTeardownHost& host) {
+    hud_markers_destruct_006404a0(s, host);
+    if (flags & 1) host.free_block(s.p);
+    return s;
+}
+
+// 006405F0: SUB ECX,8; JMP 00640D50 (disk bytes; INT3 padding from 006405F8).
+Raw hud_markers_scalar_delete_adjustor8_006405f0(Raw secondary, std::uint8_t flags,
+                                                 ScreenTeardownHost& host) {
+    return hud_markers_scalar_delete_00640d50(Raw{secondary.p - 0x8}, flags, host);
+}
+
 // 00647DB0, HUD root destructor: pages +28h, +2Ch, +F8h; seven vectors
 // +168h..+108h; the target observer at +D0h (0042BCA0); the vector of string
 // pairs at +ACh (00647AD0); vectors +A0h, +90h; the string at +70h; the

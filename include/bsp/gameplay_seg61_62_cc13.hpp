@@ -121,6 +121,17 @@ struct ControllerVariantRow {
 };
 inline constexpr std::array<ControllerVariantRow, 3> kControllerVariants = {{
     {0x00939E50, 0x00D196EC}, {0x00939F20, 0x00D196F0}, {0x00939F40, 0x00D196F4}}};
+// 00939F20 (variant C, sole caller 00857C20) and 00939F40 (variant D), both
+// __thiscall(this, unit), RET 4, nine instructions: PUSH [ESP+4]; CALL 00939CB0
+// with ECX = this; MOV [this], vtable; return this. `self` is the object's
+// first dword (the vptr). 00939CB0 is not reconstructed: it runs through the hook.
+struct ControllerVariantCtorHost {
+    std::function<void(std::uint32_t* self, std::uintptr_t unit)> base_construct;  // 00939CB0
+};
+std::uint32_t* controller_construct_variant_c_00939f20(std::uint32_t* self, std::uintptr_t unit,
+                                                       const ControllerVariantCtorHost& host);
+std::uint32_t* controller_construct_variant_d_00939f40(std::uint32_t* self, std::uintptr_t unit,
+                                                       const ControllerVariantCtorHost& host);
 // Returns the index of the shape stored at +394h, or -1 (left 0).
 int controller_b_periscope_shape_00939e50(bool model_has_periszkop,
                                           const std::vector<std::uint32_t>& shape_flags);

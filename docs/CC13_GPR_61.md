@@ -28,7 +28,7 @@ model file is **reconstructed and build-tested**. None of it is ABI-compatible, 
 | `009635D0` | `ship_class_underwater_armour_009635d0` | `FLD [ECX+6B4h]`. |
 | `00963C70` | `landing_ship_class_slot_c12_clear_00963c70` | `+809h == 0`. |
 | `00951F20` | `vehicle_class_derive_constants_default_00951f20` | Calls `00876180` (`MOV AL,1`), so it always returns true. |
-| `00939E50` `00939F20` `00939F40` | `kControllerVariants`, `controller_b_periscope_shape_00939e50` | The unit-controller variants: `00939CB0(arg)` and then the vtable. Variant B is the submarine's (its only caller is `00852210`). It also zeroes `+394h` and `+398h`. When the model has the note node "periszkop", it then keeps at `+394h` the first shape on the body chain whose flags have bit 2. |
+| `00939E50` `00939F20` `00939F40` | `kControllerVariants`, `controller_b_periscope_shape_00939e50`, `controller_construct_variant_c_00939f20`, `controller_construct_variant_d_00939f40` | The unit-controller variants: `00939CB0(arg)` and then the vtable. C and D are reconstructed as bodies (cc13-fix3): the `base_construct` hook for 00939CB0, then the vptr store, returning `this`. Variant B is the submarine's (its only caller is `00852210`). It also zeroes `+394h` and `+398h`. When the model has the note node "periszkop", it then keeps at `+394h` the first shape on the body chain whose flags have bit 2. |
 
 ### 1.2 The ship repair task (`unit+A20h`)
 

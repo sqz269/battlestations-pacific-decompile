@@ -555,6 +555,12 @@ struct ScreenTeardownHost : HudScreenHost {
 };
 void hud_markers_exit_0063e360(Raw s, ScreenTeardownHost& host);
 void hud_markers_destruct_006404a0(Raw s, ScreenTeardownHost& host);
+// 00640D50, markers scalar deleting destructor: __thiscall(s, flags), RET 4 -> EAX s.
+Raw hud_markers_scalar_delete_00640d50(Raw s, std::uint8_t flags, ScreenTeardownHost& host);
+// 006405F0, the kTrivialSlots Adjustor row as code: SUB ECX,8; JMP 00640D50.
+// `secondary` is the +8h base sub-object; returns the full object (00640D50's EAX).
+Raw hud_markers_scalar_delete_adjustor8_006405f0(Raw secondary, std::uint8_t flags,
+                                                 ScreenTeardownHost& host);
 void hud_root_destruct_00647db0(Raw s, ScreenTeardownHost& host, NativeStringHost& strings);
 void ship_status_exit_0064d8d0(Raw s, ScreenTeardownHost& host);
 void periscope_destruct_00650970(Raw s, ScreenTeardownHost& host);

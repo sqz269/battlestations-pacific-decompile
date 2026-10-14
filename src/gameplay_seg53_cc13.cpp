@@ -387,18 +387,17 @@ void torpedo_activate_00857780(const TorpedoActivateInputs& in, TorpedoState& st
 // 008568E0. The break-up test reads the float speed |shot+8h| (FSTP 00856908)
 // against MaxWaterHitVel (JA), then -terminal fall speed (+ECh, FCHS) against
 // the vertical velocity shot+0Ch (JA). Both JA arms are false when unordered.
-// The tail 00856B56 runs for every outcome but AlreadyInWater: a heading still
-// exactly 10000 (UCOMISS, LAHF/TEST AH,44h/JP) takes the pose's yaw.
+// The tail 00856B56 runs on every path but the in-water early exit: a heading
+// still exactly 10000 (UCOMISS, LAHF/TEST AH,44h/JP) takes the pose's yaw,
+// stored to shot+15Ch at 00856B9E.
 // ---------------------------------------------------------------------------
-TorpedoWaterEntryResult torpedo_enter_water_008568e0(const TorpedoClassFields& cls,
-                                                     float terminal_fall_speed_ec,
-                                                     const TorpedoWaterEntryInputs& in,
-                                                     const TorpedoWaterEntryHost& host) {
-    TorpedoWaterEntryResult out;
-    out.heading_46c = in.heading_46c;
+void torpedo_enter_water_008568e0(const TorpedoClassFields& cls,
+                                  float terminal_fall_speed_ec,
+                                  const TorpedoWaterEntryInputs& in,
+                                  float& heading_46c,
+                                  const TorpedoWaterEntryHost& host) {
     if (in.in_water_44) {
-        out.outcome = TorpedoWaterEntry::AlreadyInWater;  // 008568ED
-        return out;
+        return;  // 008568ED
     }
     if (host.set_weapon_scale) {
         host.set_weapon_scale(1.0f);  // 008568FE
@@ -414,20 +413,26 @@ TorpedoWaterEntryResult torpedo_enter_water_008568e0(const TorpedoClassFields& c
         if (cls.has_expl_water_efx_24 && host.spawn_breakup_effect_and_snap_pose) {
             host.spawn_breakup_effect_and_snap_pose();
         }
-        out.outcome = in.network_client ? TorpedoWaterEntry::BreaksUpClient
-                                        : TorpedoWaterEntry::BreaksUpServer;
+        if (in.network_client) {
+            if (host.enter_water) {
+                host.enter_water(in.spawn_effect_arg);  // 00856B4A..00856B51
+            }
+        } else if (host.kill_entity) {
+            host.kill_entity(true);  // 00856B3C..00856B43: PUSH EBX (EBX = 1 from 00856A16)
+        }
     } else {
         // 00856938..00856A04: 006E6450(arg), then the splash when arg and
         // WaterSplashEfx are both set.
-        out.outcome = TorpedoWaterEntry::Enters;
+        if (host.enter_water) {
+            host.enter_water(in.spawn_effect_arg);  // 0085693F
+        }
         if (in.spawn_effect_arg && cls.has_water_splash_efx_d8 && host.spawn_splash_effect) {
             host.spawn_splash_effect();
         }
     }
-    if (out.heading_46c == kHeadingUnset && host.current_yaw) {
-        out.heading_46c = host.current_yaw();  // 00856B93..00856B9E
+    if (heading_46c == kHeadingUnset && host.current_yaw) {
+        heading_46c = host.current_yaw();  // 00856B93..00856B9E
     }
-    return out;
 }
 
 // 00855CC0: 006E0D20(B8h, a1, entity), vtable 00D037BC, +120h = heading,
