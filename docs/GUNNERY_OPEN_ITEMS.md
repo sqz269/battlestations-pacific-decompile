@@ -14604,3 +14604,9 @@ timer is a knife-edge race against Fuso reaching IJNGoTo (the script fails the m
 dropped; USN15 goes to the wins keeper.
 
 **237 reach**: 0 holds in 56 recent lane logs and in USN12 / USN15 here (USN12 has three layer-5 zones).
+
+**245 addendum (think timer correction).** The first binding held only `want_fire` and re-ran the friendly-crossing
+scan (`0090058A`) and the launch-zone test (`0090088E`) on held ticks, with the snap block overwriting the gyro
+lead (`torpedo_lead_xz`) with the target's present position. Both scans and the run-line inputs (`00900476..00900526`)
+sit after the timer, so a held tick runs none of them. Corrected: the held state is taken after the last gate and
+includes the lead and the snap angle; held ticks skip both scans. Re-paired below.

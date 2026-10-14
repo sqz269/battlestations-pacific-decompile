@@ -2157,6 +2157,9 @@ struct GameGunneryHost::Impl {
         float left{0.0f};          // bot+5Ch; LABELLED seed 0 (no constructor store)
         bool have_target{false};
         bool want_fire{false};
+        // What 00900476..00900526 left for the gyro run line (007311B0).
+        std::array<float, 2> lead_xz{{0.0f, 0.0f}};
+        float snap_radians{0.0f};
     };
     std::map<std::size_t, TorpedoThink> torpedo_think_by_gun;
     unsigned long long torpedo_think_holds{0}, torpedo_think_evals{0};
@@ -8145,7 +8148,10 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             // 00900985: no 0085ABA0 this tick (009003DD is past the timer), so the
             // gun keeps turning toward the last command; the trigger is restored below.
             command_angles = false;
-            have_target = torpedo_think_by_gun[g].have_target;
+            const TorpedoThink& think = torpedo_think_by_gun[g];
+            have_target = think.have_target;
+            torpedo_lead_xz = think.lead_xz;
+            torpedo_snap_radians = think.snap_radians;
         }
         const bool accepted = command_angles
             && bsp::gun_set_target_angles_0085aba0(gun.angles, arcs,
@@ -8268,14 +8274,10 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 if (image_ready && !accepted) ++summary.torpedo_ready_refused_angles;
             }
             if constexpr (kTorpedoBotReadyGateBound) want_fire = image_ready;
-            if constexpr (kTorpedoBotThinkTimerBound) {
-                TorpedoThink& think = torpedo_think_by_gun[g];
-                if (torpedo_think_hold) {
-                    want_fire = think.want_fire;   // the trigger keeps its last state
-                } else {
-                    think.want_fire = want_fire;
-                    think.have_target = have_target;
-                }
+            if (torpedo_think_hold) {
+                // The trigger keeps the state the last evaluating tick left after
+                // all of its gates (stored below, after the zone test).
+                want_fire = torpedo_think_by_gun[g].want_fire;
             }
             done("TorpedoBot::launch_test_008fff20", 0x009003f8u);
         }
@@ -8411,7 +8413,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 ++aa_test_flak;
             }
         }
-        if (kTorpedoFriendlyCrossingBound && want_fire
+        if (kTorpedoFriendlyCrossingBound && want_fire && !torpedo_think_hold
             && gun.category == bsp::kUnitGunneryTorpedoCategory) {
             // 008FFF20 0090058A..009007F6, after the settle test and vtable[1D0h].
             ++summary.torpedo_friendly_scans;
@@ -8422,7 +8424,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             }
             done("TorpedoBot::friendly_crossing_scan_008fff20", 0x0090058au);
         }
-        if (kTorpedoLaunchZoneBound && want_fire
+        if (kTorpedoLaunchZoneBound && want_fire && !torpedo_think_hold
             && gun.category == bsp::kUnitGunneryTorpedoCategory) {
             // 008FFF20 0090088E..009008EB: the gun-to-lead line against the layer-5
             // avoid zones. LABELLED: the image draws the AngleErr jitter
@@ -8439,6 +8441,16 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 }
                 done("TorpedoBot::launch_zone_gate_0090088e", 0x0090088eu);
             }
+        }
+        if (kTorpedoBotThinkTimerBound && !torpedo_think_hold && !player_seat
+            && gun.category == bsp::kUnitGunneryTorpedoCategory && torpedo_gun) {
+            // An evaluating tick (or one the timer never reached): what the
+            // trigger and the gyro run line hold until the next evaluation.
+            TorpedoThink& think = torpedo_think_by_gun[g];
+            think.want_fire = want_fire;
+            think.have_target = have_target;
+            think.lead_xz = torpedo_lead_xz;
+            think.snap_radians = torpedo_snap_radians;
         }
         if (kDepthChargeBotTickBound && gun.category == 8 && !player_seat) {
             // Packet cc9_depth_charge_bot: 008FC080 in place of the generic test.
