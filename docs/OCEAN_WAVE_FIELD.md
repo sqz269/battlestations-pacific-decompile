@@ -922,3 +922,22 @@ Packet cc9_plane_wreck_roll. Two switches in `src/game_hosts_units.cpp`, both co
 - C1 ON: `wreck drag steps` > 0 only where a dying plane reaches the water with C3Ch > 1 s; wrecks in the water
   lose forward speed with a 1 s time constant (10 s^-1 below 8 m). Expected verdict 1 (presentation only) or a
   small 3 through wreck positions, with no win lost.
+
+**Pairs (cc9-physics8, 2026-10-14).** OFF `local\p8_off` (dc07a0286, exe 2C6EFA46E476), R4 ON `local\p8_r4`, C1 ON
+`local\p8_c1` (exe D38D11A0C35A); reference env, `--stop-after-end 40`; logs `local\p8p_{off,r4,c1}_<row>.log`,
+diffs `local\p8pd_*`. Rows USN01 `usn01_p8_u1_c`, USN12 `s38_u12_p2`, LOMP10 `p3_l10_b`, PRCP01 `l55_p01_c`.
+
+| Row | OFF end | R4 | C1 |
+|---|---|---|---|
+| USN01 | completed 1094.94 s | 1 identical; roll steps 7945, spin 0 | 1 identical; wreck drag steps 564 |
+| USN12 | completed 1510.35 s | 3 moved: deaths, units and death modes identical, one killer_range 554 -> 553; steps 7199, spin 0 | 1 identical; 860 |
+| LOMP10 | completed 1176.57 s | 1 identical; 10999, spin 0 | 1 identical; 742 |
+| PRCP01 | completed 670.81 s | 1 identical; 2487, spin 0 | 1 identical; 244 |
+
+- C1 as predicted: wrecks reach the -30 m removal on new paths (USN12 MovieBetty|.-3 at 1021.77 s instead of
+  1021.67 s), nothing else moves.
+- R4: the ramp half runs on every dying plane's control step. **The spin half has no reach in the host**: no
+  death draws spinning, because `plane_death_mode_007ca8a0` needs unit+800h (the spin side) at 0 or 1, and the host
+  passes -1 (game_hosts_units.cpp, `din.spin_side_800 = -1`): 007CFDB4 sets the side only when a hull segment of
+  the plane is hit, and the host has no per-segment plane hits. Open for the gunnery/plane-damage lane.
+- **Both flipped ON** by verdict (faithful, no win lost) in the commit that adds this note.
