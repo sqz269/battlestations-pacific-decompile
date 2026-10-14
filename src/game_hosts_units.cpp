@@ -1982,6 +1982,11 @@ struct GameUnitSlot {
     // unit+C37h, 007D0DD7: set for rightspinning (the "rwing"/"aileron_r" arm),
     // clear for leftspinning (007D104F sets C38h instead). Read by R4.
     bool plane_spin_right_c37{false};
+    // ctl+30h..38h (unit+AE0h), the low-passed relative velocity 007DC743 writes
+    // at the core law's tail; unit+C84h, its flight-path angle (007C1D05).
+    float plane_velocity_lp_30[3]{};
+    bool plane_velocity_lp_valid{false};
+    float plane_path_pitch_c84{0.0f};
     bool plane_death_c3a{false};
     bool plane_death_removed{false};
     bool squadron_left_on_death{false};   // packet cc9_val_squadron_registry
@@ -5640,6 +5645,11 @@ struct GameUnitsHost::Impl {
     unsigned long long dead_meat_roll_steps{0};
     unsigned long long dead_meat_spin_steps{0};
     unsigned long long wreck_drag_steps{0};
+    // kPlaneVelocityLowpassBound: filter steps, mode-2 holds read, corrections.
+    unsigned long long velocity_lowpass_steps{0};
+    unsigned long long velocity_lowpass_c84_reads{0};
+    unsigned long long velocity_lowpass_corrections{0};
+    double velocity_lowpass_correction_abs{0.0};
     // Packet cc9_follow_catchup_speed (docs/PLANE_FOLLOW_LAW.md section 15):
     // the fly-to arm's two class terms as the image reads them - cruise =
     // 007C47F0 (LevelFlight x StallSpd) x 0.9 at 009BFC41/009BFC49 and the
@@ -5786,6 +5796,19 @@ struct GameUnitsHost::Impl {
     // latch (007CBBE7); the in-air producer 007CE0DB-007CE1D9 (a point of the
     // class list desc+5BCh below y -1 under 15 m) is not carried. False: no term.
     static constexpr bool kPlaneWreckForwardDragBound = true;
+    // Packet cc9_plane_velocity_lowpass, C2 (docs/CC13_GPR_48.md 8.3,
+    // docs/OCEAN_WAVE_FIELD.md 28). 007DC743-007DC80B: at the core law's tail,
+    // ctl+30h = ((0.25 - step) * ctl+30h + step * ctl+18h) * 4 when step < 0.25,
+    // else ctl+18h; 007D9CE0, 007DB1F0 and 007DB2C0 copy ctl+18h into it. Two
+    // readers: 007C18B0 sets unit+C84h = atan2(lp.y, |lp.xz|) when |ctl+18h| > 0.1
+    // (double 00D7A3A0), which pitch mode 2 holds (0099DD0A); and 0099DA97-0099DAC8
+    // subtracts (unit+B1Ch - |unit+AE0h|) * 20.0 * pending from the throttle error,
+    // B1Ch being ctl+6Ch = |ctl+18h| (007D807C). SUBSTITUTIONS, labelled: the
+    // filter seeds from the velocity at a slot's first core step (the image seeds
+    // at spawn and at 007DB1F0's control-state message); the third reader,
+    // 0099D558's |B1Ch - |AE0h|| into [ESP+48h], is not carried. False: the
+    // live velocity in both readers and no correction, as before.
+    static constexpr bool kPlaneVelocityLowpassBound = false;
     // Packet cc9_plane_ground_roll (docs/SQUADRON_LAND_TASK.md section 5q): the
     // ground-roll arm 007CBFA0 for unit+900h 4 and 5: the pilot pass (0099AE5F
     // admits 4..7), the probe 007C5AC0, and 007DCCF0: the core law in mode 1
@@ -14429,6 +14452,10 @@ void GameUnitsHost::Impl::plane_liftoff_c6h_007c6f50(GameUnitSlot& p, const char
         }
         p.deck_parent_plus_one = 0;
         ++base_launch_liftoff_unparented;
+        if constexpr (kPlaneVelocityLowpassBound) {
+            for (int i = 0; i < 3; ++i) p.plane_velocity_lp_30[i] = p.plane_world_velocity[i];
+            p.plane_velocity_lp_valid = true;   // 007D9CE0's tail
+        }
     }
     const int prev = p.plane_control_mode_900;
     if (prev == 7) return;
@@ -14840,6 +14867,10 @@ void GameUnitsHost::Impl::carrier_deck_reparent_007c71e0(GameUnitSlot& p, const 
     p.plane_world_velocity[0] -= o.motion.linear_velocity.x;
     p.plane_world_velocity[1] -= o.motion.linear_velocity.y;
     p.plane_world_velocity[2] -= o.motion.linear_velocity.z;
+    if constexpr (kPlaneVelocityLowpassBound) {
+        for (int i = 0; i < 3; ++i) p.plane_velocity_lp_30[i] = p.plane_world_velocity[i];
+        p.plane_velocity_lp_valid = true;   // 007D9CE0's tail
+    }
     // 007BA020 / vtable[ACh] (007C7287-007C72B1): the parent and the local pose.
     p.deck_parent_plus_one = d.owner + 1u;
     p.deck_stop_logged = false;
@@ -18608,6 +18639,22 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // unit_forward_speed_0092d730 answered 0.0 for every
                         // flying plane, and an air-dropped torpedo inherited no
                         // velocity at all. docs/TORPEDO_RELEASE_GEOMETRY.md.
+                        if constexpr (GameUnitsHost::Impl::kPlaneVelocityLowpassBound) {
+                            // 007DC743-007DC80B, C2.
+                            float* const lp = unit_.plane_velocity_lp_30;
+                            const float* const v = unit_.plane_world_velocity;
+                            if (!unit_.plane_velocity_lp_valid) {
+                                lp[0] = v[0]; lp[1] = v[1]; lp[2] = v[2];
+                                unit_.plane_velocity_lp_valid = true;
+                            } else {
+                                const bsp::gameplay_seg48_cc13::Vec3 out =
+                                    bsp::gameplay_seg48_cc13::velocity_lowpass_007dc762(
+                                        bsp::gameplay_seg48_cc13::Vec3{lp[0], lp[1], lp[2]},
+                                        bsp::gameplay_seg48_cc13::Vec3{v[0], v[1], v[2]}, step);
+                                lp[0] = out.x; lp[1] = out.y; lp[2] = out.z;
+                            }
+                            ++owner_.velocity_lowpass_steps;
+                        }
                         unit_.motion.linear_velocity = bsp::OceanVec3{
                             unit_.plane_world_velocity[0],
                             unit_.plane_world_velocity[1],
@@ -33360,6 +33407,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.plane_heading_c6c = a.heading;
                             unit_.plane_bank_angle_c68 = a.bank;
                         }
+                        if constexpr (GameUnitsHost::Impl::kPlaneVelocityLowpassBound) {
+                            // 007C1B85-007C1D05: only when |ctl+18h| > 0.1 (double
+                            // 00D7A3A0); the horizontal length is 0 unless its square
+                            // exceeds 1e-10 (00CE3820).
+                            const float* const v = unit_.plane_world_velocity;
+                            const float s2 = v[0] * v[0] + v[1] * v[1] + v[2] * v[2];
+                            const float s = static_cast<double>(s2) > 1.0e-10
+                                ? std::sqrt(s2) : 0.0f;
+                            if (static_cast<double>(s) > 0.10000000149011612
+                                && unit_.plane_velocity_lp_valid) {
+                                const float* const lp = unit_.plane_velocity_lp_30;
+                                const float h2 = lp[0] * lp[0] + lp[2] * lp[2];
+                                const float h = static_cast<double>(h2) > 1.0e-10
+                                    ? std::sqrt(h2) : 0.0f;
+                                unit_.plane_path_pitch_c84 = static_cast<float>(std::atan2(
+                                    static_cast<double>(lp[1]), static_cast<double>(h)));
+                            }
+                        }
                     }
 
                     // 009AC190's bearing into plan+2C0h, then 0099D300's yaw arm
@@ -33697,9 +33762,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                             if (unit_.plan_state.pitch_mode_2d0 == 2) {
                                 const float horizontal = std::sqrt(v[0] * v[0] + v[2] * v[2]);
-                                const float path = static_cast<float>(
+                                float path = static_cast<float>(
                                     std::atan2(static_cast<double>(v[1]),
                                                static_cast<double>(horizontal)));   // 007C1D05
+                                if constexpr (GameUnitsHost::Impl::kPlaneVelocityLowpassBound) {
+                                    // 0099DD0A reads unit+C84h, from the low-passed vector.
+                                    path = unit_.plane_path_pitch_c84;
+                                    ++owner_.velocity_lowpass_c84_reads;
+                                }
                                 float min_control = 0.0f;
                                 if (owner_.lua.plane_globals_loaded()) {
                                     const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
@@ -33831,6 +33901,26 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // writer anywhere in the image, so the term is taken
                             // as zero. SUBSTITUTION, labelled.
                             tin.error_correction = 0.0f;
+                            if constexpr (GameUnitsHost::Impl::kPlaneVelocityLowpassBound) {
+                                // 0099DA97-0099DAC8: B1Ch is ctl+6Ch = |ctl+18h| (007D807C),
+                                // AE0h is ctl+30h; 0042B2F0 is the 3D length.
+                                if (unit_.plane_velocity_lp_valid) {
+                                    const float* const v = unit_.plane_world_velocity;
+                                    const float* const lp = unit_.plane_velocity_lp_30;
+                                    const float sv2 = v[0] * v[0] + v[1] * v[1] + v[2] * v[2];
+                                    const float b1c = static_cast<double>(sv2) > 1.0e-10
+                                        ? std::sqrt(sv2) : 0.0f;
+                                    const float lpl = std::sqrt(
+                                        lp[0] * lp[0] + lp[1] * lp[1] + lp[2] * lp[2]);
+                                    const float d = b1c - lpl;                        // 0099DAA6
+                                    const float d20 = static_cast<float>(
+                                        static_cast<double>(d) * 20.0);               // 0099DABE
+                                    tin.error_correction = d20 * tin.pending;         // 0099DAC4
+                                    ++owner_.velocity_lowpass_corrections;
+                                    owner_.velocity_lowpass_correction_abs +=
+                                        std::fabs(static_cast<double>(tin.error_correction));
+                                }
+                            }
                             tin.dead_band_skips = false;
                             if constexpr (kThrottleDeadBandBound) {
                                 // Packet cc9_throttle_dead_band, 0099DAAA-0099DB56. The
@@ -37502,6 +37592,14 @@ void GameUnitsHost::report() {
                 host.dead_meat_roll_steps, host.dead_meat_spin_steps,
                 Impl::kPlaneDeadMeatRollBound ? 1 : 0, host.wreck_drag_steps,
                 Impl::kPlaneWreckForwardDragBound ? 1 : 0);
+            host.log.notef("summary plane velocity lowpass steps=%llu c84_reads=%llu "
+                "corrections=%llu mean_abs_correction=%.5f bound=%d (007DC743, 007C18B0, 0099DAC8, "
+                "packet cc9_plane_velocity_lowpass)", host.velocity_lowpass_steps,
+                host.velocity_lowpass_c84_reads, host.velocity_lowpass_corrections,
+                host.velocity_lowpass_corrections
+                    ? host.velocity_lowpass_correction_abs
+                        / static_cast<double>(host.velocity_lowpass_corrections) : 0.0,
+                Impl::kPlaneVelocityLowpassBound ? 1 : 0);
             host.log.notef("summary follow turbo steps=%llu bound=%d (009BEE42 -> 007D9062, "
                 "packet cc9_follow_turbo)", host.follow_turbo_steps,
                 Impl::kFollowTurboBound ? 1 : 0);
