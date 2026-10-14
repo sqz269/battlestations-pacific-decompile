@@ -1276,7 +1276,7 @@ constexpr bool kLandStructureBlastElementEntriesBound = false;
 //    LABELLED: the table is built at the first gunnery step (the image builds it at
 //    scene load); a section death hands off at the end of kill_unit; the forward runs
 //    before the section's kill test. False: no master, no forward, no hand-off.
-constexpr bool kLandMasterDamageBound = false;
+constexpr bool kLandMasterDamageBound = true;  // ON: USN01, IJN08 pairs, mechanism matches (SHIP_AI 240)
 //  * kOverrideHpHealthZeroBound: OverrideHP (008C1930) writes the health through
 //    00877B90, whose changed write runs vtable[1B0h] -> 00958A30, so a value at or
 //    below 0 destroys the unit (docs/CC13_VER_5.md D3). True: the host's health-zero
