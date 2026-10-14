@@ -17708,9 +17708,9 @@ reference env, 120000 frames, `--stop-after-end 40`. Generator `local\s49_j6gen.
 logs `local\s49_<prefix>_<v>.log` with manifests.
 
 **Why n1 lost.** Not the swim-depth homing or the AA flips: the convoy phase. The keeper's runs up to a2ad905f1 still
-had the AI boats PlayerSub 02/03 sinking the convoy from 1.0-1.8 km by 291 s; from 91d6a9d22
-(`kTorpedoBotAttackRangeBound` ON, GUNNERY 230 D1, ~891 m for Mark 14 / Type 95 on JM06) their first kill moves from
-82.40 s to ~172 s and four of the convoy (USTroopTransport 01, US Cargo Transport 01, US Tanker 02/03) sail on.
+had the AI boats PlayerSub 02/03 sinking the convoy from 1.0-1.8 km by 291 s; on eeb52a94d their first kill is at
+~172 s. The only torpedo change in a2ad905f1..eeb52a94d is 91d6a9d22 (`kTorpedoBotAttackRangeBound` ON, GUNNERY 230
+D1, ~891 m for Mark 14 / Type 95 on JM06), so it is the inferred cause (not bisected) and four of the convoy (USTroopTransport 01, US Cargo Transport 01, US Tanker 02/03) sail on.
 `luaJM6CheckObjectives` phase 1 needs `Mission.ShipsToSink` (3 on this difficulty) random `CargoTargets` dead, so the
 player's sub has to finish the convoy. That flip is faithful by its pair; nothing here argues against it.
 
@@ -17733,3 +17733,26 @@ the Lexington every 300 frames 34000-44000; then at Fletcher-class 01-05 in rota
 Committed as `config/win_orders/jm06_s49_j6_s.txt` (n1 kept). Near misses: p (Lexington every 300 frames to 52000)
 completes clean 2205.03 s and 20,3 3003.80 s, fails 20,5 (stock); q (Lexington every 400) fails 20,5 (the sub dies at
 2082.86 s); r completes 20,5 at 2745.55 s.
+
+## 245. IJN08: h5 lost on current main; phase 1 re-planned (`ijn08_s49_i08_i11`, clean win only) (cc9-ships49, 2026-10-14; lead item 4)
+
+Build: this tree at fd6d92617 (exe 3E945D0DF0EB), reference env, 120000 frames, `--stop-after-end 40`.
+**h5 on current main** (`local\s49_i8_h5.log`): no mission end. Phase 1 never completes: only Cargo4 dies (681 s);
+JapSub1-3 are sunk by the Fletches at 677-967 s. In the 1f3bf3d62 win the AI subs sank all six Cargos from
+1.85-2.29 km by 609 s; the convoy now passes them 1.7-2.3 km away and they no longer fire (the ~891 m torpedo-bot
+attack range, 91d6a9d22, as on JM06 in 244; inferred, not bisected). Once any Cargo dies, `luaDDAttackSub`
+(ijn_8_north_sol.lua:515, this installation, 2024-07-13) sends the Fletches after the subs, so the six must die
+fast. **h5 under jitter was not run further** (its phase 1 cannot complete).
+
+**i11** (`local\s49_i8gen.py`; h5 plus): JapSub1/2/3 `moveto` (-2600, -4800/-4300/-5300) at 100-140; torpedoes
+rotating JapSub1/2/3 at Fletch1-4 every 150 frames 5000-8500 (no DD reaction before a Cargo dies), then at
+Cargo1/2/1/3/1/4/1/5/1/6 every 150 frames 8550-14000 (Cargo1, the east column next to Fletch3, needs the weight);
+at 11000 JapSub3 to (-2000, -6600) and at 11020 JapSub2 to (-2100, -6200), ahead of Cargo1/Cargo5.
+| run | phase 1 (last Cargo) | result |
+| --- | --- | --- |
+| clean (`s49_i8f_i11`) | 639.52 s | **completed 3191.99 s**, guard logged (US_Airfield_03 1860 s, US_Airfield_02 2037 s, DamagedBB 2121 s) |
+| jitter 20,3 (`s49_i8j3_i11`) | 541.89 s | Game Over 1760.59 s: Maru1 1585.77 s, Maru2 1759.64 s to US_Airfield_02/03 planes |
+| jitter 20,5 (`s49_i8j5_i11`) | 644.57 s | Game Over 1980.81 s: Maru1 1624.21 s, Maru2 1977.05 s to US_Airfield_02/03 planes |
+Phase 1 is now jitter-robust; phase 2 (h5's own part) is not: the airfield planes reach the Marus in formation
+before Kongo/Kirishima/Haruna/Hiei finish US_Airfield_02/03. Variants i1-i10, i12 (`local\s49_i8_i*.txt`) each leave
+one Cargo alive. Committed as `config/win_orders/ijn08_s49_i08_i11.txt` (h5 kept) as a clean-only row.
