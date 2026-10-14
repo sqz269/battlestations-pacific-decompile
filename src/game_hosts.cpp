@@ -9,6 +9,7 @@
 #include "bsp/game_native_lua_services.hpp"
 #include "bsp/game_native_renderer_application.hpp"
 #include "bsp/game_native_font_probe.hpp"
+#include "bsp/game_native_gui_effect_probe.hpp"
 #include "bsp/game_native_shader_process.hpp"
 #include "bsp/native_renderer_end_frame.hpp"
 #include "bsp/native_xlive_device_adapter.hpp"
@@ -1596,7 +1597,33 @@ void GameStartupHost::exit_if_native_renderer_incomplete() noexcept {
     std::_Exit(1);
 }
 
+void GameStartupHost::exit_if_native_gui_probe_incomplete() noexcept {
+    if (!native_gui_probe_ || !native_gui_probe_->requires_process_retention()) return;
+    try {
+        native_gui_probe_->emit_failure_observations();
+        log_.note("incomplete native GUI effect probe; retaining actual effects/samplers/shadow/input/VFS/renderer graph until process exit");
+        log_.close();
+    } catch (...) { std::fputs("bsp_game: native GUI effect probe requires process retention\n", stderr); }
+    std::_Exit(1);
+}
+
+void GameStartupHost::close_native_gui_probe_after_drain() noexcept {
+    if (!native_gui_probe_) return;
+    try {
+        native_gui_probe_->after_native_renderer_drain();
+        native_gui_probe_.reset();
+    } catch (...) {
+        try {
+            native_gui_probe_->emit_failure_observations();
+            log_.note("native GUI effect metadata closure failed after raw singleton drain; retaining providers until process exit");
+            log_.close();
+        } catch (...) { std::fputs("bsp_game: native GUI effect metadata closure failed\n", stderr); }
+        std::_Exit(1);
+    }
+}
+
 GameStartupHost::~GameStartupHost() {
+    exit_if_native_gui_probe_incomplete();
     if(settings_host_&&settings_host_->requires_process_retention()) {
         try{log_.notef("native settings loader interrupted at %08x; retaining actual settings/catalog/VFS/renderer graph",settings_host_->failure_site());log_.close();}
         catch(...){std::fputs("bsp_game: native settings require process retention\n",stderr);std::fflush(stderr);}
@@ -1629,6 +1656,7 @@ GameStartupHost::~GameStartupHost() {
         if(scripts_)scripts_->input().after_singleton_drain();
         if (clock_services_) clock_services_->phase = ClockServices::Phase::drained;
     }
+    close_native_gui_probe_after_drain();
     if (input_) {
         try { input_->core.release_sdk_after_native_drain(); }
         catch (const std::exception& error) {
@@ -1722,6 +1750,7 @@ void GameStartupHost::game_explorer_release() {
 }
 
 void GameStartupHost::exit_process(int code) {
+    exit_if_native_gui_probe_incomplete();
     exit_if_native_renderer_incomplete();
     exit_if_native_lua_interrupted();
     exit_if_frame_clock_failed();
@@ -2326,6 +2355,23 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
             language_font_path_008d4890(settings_host_->language_catalog(),
                 settings_view_.gameplay.language_index_04));
     }
+    char native_gui_probe_requested[2]{};
+    if (GetEnvironmentVariableA("BSP_NATIVE_GUI_EFFECT_PROBE", native_gui_probe_requested,
+            sizeof(native_gui_probe_requested)) == 1 && native_gui_probe_requested[0] == '1') {
+        // Retain metadata before entering actual parents. Failure preserves the
+        // entire application graph; a successful run retires only its caller
+        // credits and names, then keeps parent bindings through the raw drain.
+        native_gui_probe_ = std::make_unique<GameNativeGuiEffectProbe>(log_, *native_renderer_,
+            *vfs_, *singletons_, *native_data_, *settings_process_, *input_runtime_,
+            native_renderer_->loading_platform_focus_publication());
+        try {
+            (void)native_gui_probe_->run();
+            native_gui_probe_->retire_caller_references();
+        } catch (...) {
+            exit_if_native_gui_probe_incomplete();
+            throw;
+        }
+    }
     summary_.fonts_loaded = fonts_->registry().fonts().size();
     summary_.font_resource_opens = fonts_->resource_opens();
     summary_.fingerprint_defined_bytes = fonts_->fingerprint().defined_size();
@@ -2449,6 +2495,7 @@ void GameStartupHost::release_platform_window() noexcept {
 }
 
 void GameStartupHost::application_shutdown() {
+    exit_if_native_gui_probe_incomplete();
     exit_if_native_renderer_incomplete();
     exit_if_native_lua_interrupted();
     exit_if_frame_clock_failed();
@@ -2551,6 +2598,7 @@ void GameStartupHost::application_destruct() {
 }
 
 void GameStartupHost::destroy_singleton_lifetime_manager() {
+    exit_if_native_gui_probe_incomplete();
     exit_if_native_renderer_incomplete();
     exit_if_native_lua_interrupted();
     exit_if_frame_clock_failed();
@@ -2560,6 +2608,7 @@ void GameStartupHost::destroy_singleton_lifetime_manager() {
     log_.implemented("StartupHost::destroy_singleton_lifetime_manager", "008f8449");
     if (native_renderer_) native_renderer_->drain_singletons();
     else singletons_->shutdown();
+    close_native_gui_probe_after_drain();
     if (lua_services_)
         log_.notef("native Lua after raw singleton drain: fundamentals=%s getters=%u",
             lua_services_->fundamentals_published() ? "non-null" : "null",
