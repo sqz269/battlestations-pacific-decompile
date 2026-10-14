@@ -14385,3 +14385,43 @@ units host passed `din.spin_side_800 = -1`, so neither spin could be reached.
    has none, so hit counts stay put unless another model has stray triangles.
 5. Plane wrecks take longer, spinning paths. USN12 and LOMP10 move downstream, RNG-coupled through the
    death draws.
+
+## 239. Aerial torpedoes leave through 006E4D50 (CC13_VER_20 D2): `kTorpedoRackDropBound`, OFF (lead queue item 6; cc9-gunnery43, 2026-10-14)
+
+**Image** (docs/CC13_VER_20.md D2). `006E4D50` walks the rack's children that answer `vtable[5Ch](2Ah)`.
+`MTorpedo` (2Bh) has parent 2Ah, so a plane's torpedo leaves as a bomb does, in this order:
+- four stream-1 draws: `006E4F91` a, `006E4FB1` t, `006E513C` r1, `006E51AC` r2;
+- `006E0A70` on the round's matrix copy: the owner's world velocity, minus 3.0 on y when the owner's speed is
+  above 1.3888889;
+- `006E1F00` with the cone and the drift;
+- the `[plane+1B0h]` team stamp (`006E5527`).
+
+Throw is 0 on every torpedo platform of this installation, so the cone is 0 and the round leaves with
+`w - (0, 3, 0)`.
+
+**Host before.** `release_ordnance_drop` took `forward * forward speed`: no 3.0, no angle between the nose and the
+velocity, no draws, no drift, and the team stamp -1. `game_hosts_units.cpp` routes 2Bh to that spawn and not to
+the rack's bomb arm. The routing stays. The switch changes what the spawn does, so `game_hosts_units.cpp` is
+untouched.
+
+**Binding** (OFF). ON, `release_ordnance_drop` runs the bomb drop's code (`release_bomb_drop` under
+`kBombDropScatterBound`, `kBombDropDriftBound` and `kBombReleaseVelocityFrameBound`):
+- the four `bomb_scatter` draws, keyed (unit, 0);
+- the drift;
+- `rack_round_release_velocity_006e4d50` on the pose and the world velocity;
+- the role-1 slot stamp.
+
+A new `rack_drift` flag on the row applies the drift while the round is airborne and ballistic (`006E1510`).
+LABELLED (D4): the ThrowMul row is the level or dive row, not `00999B70`'s torpedo row (`+34h`). With Throw 0
+that makes no difference. Counters: `summary mission gunnery torpedo rack drops= drift_steps=`.
+
+**Predictions**, written before any run:
+1. OFF is identical to the base, and both counters are 0.
+2. ON: `rack drops` equals the torpedo drops on rows with aerial torpedoes (USN01 Mavs, USN04 and JM08
+   Avengers, PRCP01 Kates), and `drift_steps` > 0.
+3. The entry point moves 40-60 m nearer the release (`vy0 = -3.0` instead of the nose's), with a fall time
+   about 0.3-0.8 s shorter.
+4. Four more stream-1 draws per drop, so every later shared-stream consumer shifts. Judge per drop, not by
+   kill totals.
+5. A torpedo now carries a team stamp. Any `team_id_1c` consumer (friendly-hit filtering) sees the plane's
+   slot instead of -1.

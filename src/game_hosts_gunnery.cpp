@@ -496,6 +496,18 @@ constexpr bool kTorpedoBotNoInterceptDropBound = false;
 //    trigger drops. cc13's torpedo_launch_zone_clear_0090088e over the ship-AI
 //    host's zone table. OFF: no zone test, as before.
 constexpr bool kTorpedoLaunchZoneBound = false;
+//  * kTorpedoRackDropBound: packet g43_ver20_d2 (docs/CC13_VER_20.md D2, GUNNERY
+//    239). A plane's torpedo (2Bh, parent 2Ah) leaves through 006E4D50 as a bomb
+//    does: four stream-1 draws (006E4F91, 006E4FB1, 006E513C, 006E51AC), 006E0A70
+//    on the round's matrix copy (velocity = the owner's world velocity minus 3.0
+//    on y above 1.3888889 m/s), 006E1F00 with the drift, and the [plane+1B0h]
+//    team stamp (006E5527). The host spawned it at forward * forward speed with
+//    no draws. ON: release_ordnance_drop takes the bomb drop's velocity, draws,
+//    drift and stamp. LABELLED (D4): 00999B70 picks the torpedo ThrowMul row by
+//    the record kind 0Ah; the host has only the level and dive rows, and Throw is
+//    0 on every torpedo platform of this installation, so the cone is 0 either
+//    way. OFF: as before.
+constexpr bool kTorpedoRackDropBound = false;
 //  * kTorpedoSwimThrustBound: packet cc9_torpedo_tube_turn,
 //    docs/TORPEDO_FRIENDLY_CROSSING.md section 6. 00857480, the swim advance,
 //    per step on a torpedo in the water: 00856BB0 -> 00857061 yaws the NOSE
@@ -1974,6 +1986,8 @@ struct GameGunneryHost::Impl {
     // kArtilleryClassSpeedBound: 006E9890's +54h (FlyTime), by bullet class.
     std::map<int, float> artillery_fly_time_by_class;
     unsigned long long bomb_release_frame_drops{0};   // kBombReleaseVelocityFrameBound
+    unsigned long long torpedo_rack_drops{0};         // kTorpedoRackDropBound
+    unsigned long long torpedo_rack_drift_steps{0};
     // kArtilleryClassSpeedBound counters: aims that took the class speed, shots
     // launched at it, scaled shot steps, and FlyTime expiries.
     unsigned long long artillery_class_aims{0};
@@ -9939,7 +9953,8 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
         }
         const float from[3] = {shot.position[0], shot.position[1], shot.position[2]};
         shot.flight = bsp::projectile_flight_step(shot.flight, dt);
-        if (kBombDropDriftBound && shot.is_bomb && !shot.flight.class_disables_gravity
+        if (((kBombDropDriftBound && shot.is_bomb) || shot.rack_drift)
+            && !shot.flight.class_disables_gravity
             && shot.flight.mode == bsp::ProjectileMotionMode::kBallistic
             && (shot.bomb_drift[0] != 0.0f || shot.bomb_drift[2] != 0.0f)) {
             // 006E1510 (inside the classDesc+20h NoGravity test): v += record+348h * dt.
@@ -9947,7 +9962,8 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
             // drift reaches the position one step later, as gravity's velocity part does.
             shot.flight.velocity.x += shot.bomb_drift[0] * dt;
             shot.flight.velocity.z += shot.bomb_drift[2] * dt;
-            ++bomb_drift_steps;
+            if (shot.rack_drift) ++torpedo_rack_drift_steps;
+            else ++bomb_drift_steps;
         }
         if (kGunneryLiveWaterSurfaceBound && shot.swimming && !kTorpedoSwimDepthHomingBound) {
             // 00856BB0: the depth controller samples 0078CF20 at +FCh/+104h every
@@ -14550,15 +14566,71 @@ bool GameGunneryHost::release_ordnance_drop(std::size_t unit_index) {
     // GameUnitRow field the Impl's own unit_velocity reads: that field is zero
     // for a plane, which made the first drop a pure free fall.
     const float speed = h.units.unit_forward_speed_0092d730(unit_index);
-    const float velocity[3] = {forward[0] * speed, forward[1] * speed,
+    float velocity[3] = {forward[0] * speed, forward[1] * speed,
         forward[2] * speed};
+    float drift[3] = {0.0f, 0.0f, 0.0f};
+    bool rack_drop = false;
+    if constexpr (kTorpedoRackDropBound) {
+        // CC13_VER_20 D2: 006E4D50's bomb arm, as release_bomb_drop runs it.
+        const int level = h.units.skill_level(unit_index);
+        const int row = (level < 0 || level > 5) ? 1 : level;
+        const float mul = h.units.unit_is_kind_of(unit_index, 0x10)
+            ? kLevelBombThrowMulRows[row] : kDiveBombThrowMulRows[row];
+        const float s = chosen->throw_amount * mul;
+        const float a = h.draw(Impl::Draw::bomb_scatter, unit_index, 0, 0.0f,
+            3.14159274f);                                                   // 006E4F91
+        const float t_draw = h.draw(Impl::Draw::bomb_scatter, unit_index, 0, 0.0f,
+            s);                                                             // 006E4FB1
+        const float w = chosen->wind_amount;
+        const float r1 = h.draw(Impl::Draw::bomb_scatter, unit_index, 0, -w, w);     // 006E513C
+        const float r2 = h.draw(Impl::Draw::bomb_scatter, unit_index, 0, -0.5f * w,
+            0.3f * w);                                                              // 006E51AC
+        float world[3] = {0.0f, 0.0f, 0.0f};
+        if (h.units.unit_linear_velocity(unit_index, world)) {
+            // 006E50E3..006E51EE: the drift across and along the owner's velocity.
+            const float len = std::sqrt(world[0] * world[0] + world[1] * world[1]
+                + world[2] * world[2]);
+            const float n = len > 0.0f ? 1.0f / len : 0.0f;
+            drift[0] = n * world[2] * r1 + r2 * (n * world[0]);
+            drift[2] = -n * world[0] * r1 + r2 * (n * world[2]);
+            // 006E0A70 then 006E1F00 on the round's matrix copy.
+            bsp::plane_release_ver_cc13::RackRoundReleaseInputs in;
+            const float pose[16] = {right[0], right[1], right[2], 0.0f, up[0], up[1], up[2],
+                0.0f, forward[0], forward[1], forward[2], 0.0f, origin[0], origin[1],
+                origin[2], 1.0f};
+            for (int i = 0; i < 16; ++i) in.pose_matrix[i] = pose[i];
+            in.owner_is_plane_0f = true;
+            in.owner_speed_38 = speed;   // LABELLED: vtable[38h] as 0092D730
+            in.owner_world_velocity_34.x = world[0];
+            in.owner_world_velocity_34.y = world[1];
+            in.owner_world_velocity_34.z = world[2];
+            in.a_draw = a;
+            in.t_draw = t_draw;
+            const bsp::plane_release_ver_cc13::Vec3 v =
+                bsp::plane_release_ver_cc13::rack_round_release_velocity_006e4d50(in);
+            velocity[0] = v.x;
+            velocity[1] = v.y;
+            velocity[2] = v.z;
+            rack_drop = true;
+            ++h.torpedo_rack_drops;
+            h.done("Rack::torpedo_drop_006e4d50", 0x006e4d50u);
+        }
+    }
 
     GameProjectileRow shot;
     shot.gun_row = static_cast<std::size_t>(chosen - h.guns.data());
     shot.owner_unit = unit_index + 1;
     shot.owner_side = h.units.unit_side_0054(unit_index);
     // Packet cc9_projectile_team_id: the torpedo / depth-charge drop's team
-    // stamp is not traced, so team_id_1c stays -1 (labelled).
+    // stamp is not traced, so team_id_1c stays -1 (labelled). Under
+    // kTorpedoRackDropBound a torpedo takes 006E4D50's stamp at 006E5527.
+    if (rack_drop) {
+        std::int32_t slot = -1;
+        h.units.unit_current_role_slot(unit_index, 1, slot);
+        shot.team_id_1c = slot;
+        shot.rack_drift = true;
+        for (int i = 0; i < 3; ++i) shot.bomb_drift[i] = drift[i];
+    }
     shot.bullet_class = chosen->bullet_class;
     shot.alive = true;
     for (int i = 0; i < 3; ++i) shot.position[i] = origin[i];
@@ -15238,6 +15310,9 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery bomb release velocity frame drops=%llu bound=%d "
             "(006E0A70 -> 006E1F00, CC13_VER_20 D1)", host.bomb_release_frame_drops,
             kBombReleaseVelocityFrameBound ? 1 : 0);
+        host.log.notef("summary mission gunnery torpedo rack drops=%llu drift_steps=%llu bound=%d "
+            "(006E4D50, CC13_VER_20 D2)", host.torpedo_rack_drops, host.torpedo_rack_drift_steps,
+            kTorpedoRackDropBound ? 1 : 0);
         {
             // Packet cc9_mrtgun_immediate_fire: the census of turning classes by
             // whether the ArtilleryGunnerBot drives the category.
