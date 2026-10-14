@@ -14870,3 +14870,26 @@ would walk its shapes.
 1. USN12 `d` completes in both runs, and the spread moves (214: fort kills move by 2-9 s): exit 3.
 2. USN15 `l2`: exit 3. The outcome is not predicted (it is a win at this base).
 3. On both rows, `blast_mesh_box_uses` > 0 ON. No `impact blast` line ON has `entries=0` for a unit that has a mesh.
+
+## 252. Verdicts for 250 and 251: `kTorpedoBotSmallCraftBound` and `kBlastMeshBoundsBound` ON (cc9-gunnery45, 2026-10-14)
+
+**250 `kTorpedoBotSmallCraftBound`.** OFF census on the `4277661b9` build (`local\g45_sc_*`):
+`small craft refusals=0` on USN14 (no orders, 24000 frames), on IJN29 (no orders, 24000; it has LSTs), and on
+USN12 `d` and USN15 `l2`. There is no reach in any of these rows, so prediction 1 holds and prediction 2 is vacuous.
+This installation's fast small landing ships are the LSM (MaxSpeed 10.80) and the LST (18.01, BigLandingShip
+unset). The binding is a direct transcription of `008FC010` / `00828EC0`. **ON by mechanism**, no reach yet.
+
+**251 `kBlastMeshBoundsBound`.** The pair is `g45_sc` (OFF, `4277661b9`) against `g45_bm` (ON, `d3f538a76`, exe
+`628A6888AD9D`):
+
+| row | pair_diff | OFF | ON |
+| --- | --- | --- | --- |
+| USN12 `d` | exit 3 | completed 1530.37 s, deaths 108 | completed 1530.37 s, deaths 108, `mesh box uses=200306` |
+| USN15 `l2` | exit 1 | won (EndMission 2903.76 s, MissionStatus=true) | identical, `mesh box uses=97728` |
+
+Prediction 1 held. Prediction 2 missed: USN15 is gameplay-identical rather than moved, which is a spread miss.
+For prediction 3, the box is in use on both rows. The `entries` census per meshed unit was not run.
+
+214's objection is answered in 251: the damage it could not account for was direct hits. For meshed units the
+admission now matches `0098AAE0` (node bounds, then the shapes decide). Both wins hold. **Flipped ON.**
+USNOS (`s45_os_k`, never a win) failed at 2119.54 s under ON in 205/214; the keeper should note it.

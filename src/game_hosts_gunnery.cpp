@@ -518,7 +518,7 @@ constexpr bool kTorpedoLaunchZoneBound = true;   // ON: GUNNERY 240 (no reach ye
 //    category 7, so what this adds is the fast small landing ship. LABELLED: the
 //    class kinds are the entity kinds, as the AI accuracy group's 00827F70 uses.
 //    ON: such a target refuses the slot. OFF: counted (small_craft_refusals).
-constexpr bool kTorpedoBotSmallCraftBound = false;
+constexpr bool kTorpedoBotSmallCraftBound = true;   // ON: GUNNERY 252 (no reach yet)
 constexpr float kTorpedoProofMinMaxSpeed = 8.938947f;   // 00D099AC
 //  * kTorpedoRackDropBound: packet g43_ver20_d2 (docs/CC13_VER_20.md D2, GUNNERY
 //    239). A plane's torpedo (2Bh, parent 2Ah) leaves through 006E4D50 as a bomb
@@ -958,7 +958,7 @@ constexpr bool kAabb0085cdb0Bound = true;
 //    the class model reads, else the class box. False: the class Width x Height x Length
 //    box about the origin, so a burst on a mast or the upper works (34 m up on a
 //    Height-5 transport) lies past a 30 m range.
-constexpr bool kBlastMeshBoundsBound = false;
+constexpr bool kBlastMeshBoundsBound = true;   // ON: GUNNERY 252
 //  * kGunSubmergedArtilleryKindBound (cc9-gunnery39, GUNNERY 206; cc13-fe5's note).
 //    00729A80's second submerged-fire test 005459B0 (005459B0-005459D8) answers
 //    whether the weapon kind [[gun+3F4h]+80h] is 2, 3, 4 or 6, so an artillery gun
