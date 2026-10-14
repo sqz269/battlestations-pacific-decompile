@@ -1,31 +1,24 @@
 {
-  "packet": "cc12_native_main_scene_execution_prefix",
-  "utc": "2026-10-14T19:06:12.336625+00:00",
-  "base_commit": "c216489abbf9e38841d37774ae62cdec690a317c",
-  "scope": "Genuine B156C0 entry through B1586C only; complete B0DB00 history, 005803E0 lerp, B1BF40/B6FE60 raw leaves. Ends before texture stage B1586D; no whole command success or application route.",
+  "packet": "cc12_native_main_scene_texture_constants",
+  "utc": "2026-10-14T19:29:54.834796+00:00",
+  "base_commit": "450a751a0cfea443a733f2b20a3e46917564eac2",
+  "scope": "Separate genuine B1586D..B15BD1 texture/far-corner continuation and complete B0EB10. Existing B156C0 entry..B1586C/history preserved. Stops BEFORE B15BD2 bloom branch; no whole renderer execution or application route.",
   "native_identity": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe",
     "bodies": [
       {
-        "name": "history",
-        "address": "00b0db00",
-        "bytes": 3621,
-        "sha256": "a7d8eddc6289f89c17c0ac552f09342a055311e7ec81d6f202ac39adb0eb4897",
+        "name": "corners",
+        "address": "00b0eb10",
+        "bytes": 1273,
+        "sha256": "16e4e415f1b7026e104e8bb846e01b0f7b12f18df9b14e57729fef5b00495c65",
         "saved_ghidra_matches_disk": true
       },
       {
-        "name": "lerp",
-        "address": "005803e0",
-        "bytes": 177,
-        "sha256": "5d1e261017d2e89178b5dc8acf6329a6cb02deea71a8abe043368dae8a92de9d",
-        "saved_ghidra_matches_disk": true
-      },
-      {
-        "name": "prefix",
-        "address": "00b156c0",
-        "bytes": 429,
-        "sha256": "222683590195ebb81cdd635e0ef2c1c26f2d9801b7686d4dd34f05e4ab7b7f24",
+        "name": "texture",
+        "address": "00b1586d",
+        "bytes": 869,
+        "sha256": "ae515dcf14de835363ddee29f3d7816e2e91cffebe6410f8469bc2c76af2f16a",
         "saved_ghidra_matches_disk": true
       }
     ],
@@ -37,10 +30,10 @@
         "value": 0.5
       },
       {
-        "name": "reset_word",
-        "address": "00ce3930",
-        "bytes": "0000a041",
-        "value": 20.0
+        "name": "bias_word",
+        "address": "00ce3978",
+        "bytes": "0000804f",
+        "value": 4294967296.0
       },
       {
         "name": "one_word",
@@ -49,133 +42,133 @@
         "value": 1.0
       },
       {
-        "name": "direction_scale",
-        "address": "00cec9e0",
-        "bytes": "000000000000e0bf",
-        "value": -0.5
+        "name": "half_word",
+        "address": "00d7a280",
+        "bytes": "000000000000e03f",
+        "value": 0.5
+      },
+      {
+        "name": "negative_one_word",
+        "address": "00d7a260",
+        "bytes": "000080bf",
+        "value": -1.0
       }
     ]
   },
   "original_abi": {
-    "00b156c0": "ECX actual service, stack command, RET4. New persistent external continuation record and explicit borrowed context; not original ABI.",
-    "00b0db00": "ECX actual history, stack time bits and actual camera, RET8. Source EDX context and extra saved EBP; only public argument offsets move4.",
-    "005803e0": "ECX outputXYZ, EDX oldXYZ, target/fraction words on stack, RET8, EAX output. Original first public argument slot overwritten after pointer capture.",
-    "00b1bf40": "ECX command, RET, EAX current [[command+28]+08].",
-    "00b6fe60": "ECX camera, stack outputDWORD, RET4, EAX output. Copies actual camera+190."
+    "00b156c0": "Original full function ECX service,stack command,RET4. New continuation uses explicit borrowed context and SAME persistent prefix state; it is not a replacement native function.",
+    "00b0eb10": "ECX unused,stack actual camera/output16,RET8,EAX output. Source ECX adds context, EDX unused; one saved context shifts only public camera/output offsets4.",
+    "00b4cb10": "Existing raw ECX actualholder,RET,EAX borrowed texture at+08; no retain or null fallback.",
+    "00b3ce50_00b3ce60": "Existing raw ECX actualtexture,RET,EAX descriptor DWORD at+28/+2C. Current captured D61948 slots3C/40 must select these concrete bodies."
   },
   "evidence": {
-    "history": "Complete3621byte817instruction actual history schedule: distance restart; eight-sample slide; world/FOV/time capture; original time-search/fraction clamps/unordered cases; rounded lerp, sqrt/normalize/cross; raw projection/inverse/product; final result and previous-position stores.",
-    "prefix": "Current actual D5F0A8 slot2C:B1FE20 frame-active gate; original repeated current camera getters; near capture/set0.5; clear-color capture/highbyteFF; actual axes and normalized velocity dot products; current clock+4; full history on service+314; history matrix copy to+5A8; current VP inverse/copy to+5E8.",
-    "x87_operand_recovery": "B157EA bytes DC C9 write ST1 rather than ST0. All one-register arithmetic translations use verified opcode direction; first differential mismatch drove correction.",
-    "raw_domains": "Uses same canonical actual camera/CRT/constants through concrete raw leaves, no callback-only renderer or fabricated callable table. Context identity checks are source-domain admission only.",
-    "lifetime": "No B156C0 cleanup state armed before this boundary. Near-plane and service/history mutations persist. Fresh external state and actual domains must survive genuine future continuation; no rollback invented.",
-    "ghidra_annotation_receipt": "local/ghidra-annotations-20261014T190307Z.json",
+    "texture_clause": "164 original instructions/869bytes. Pair of repeated service+4C/current holder+08 reads captures height texture before current width texture; pair repeats. Preserve captured owner profiles and current selected slots, signedFILD+2^32 correction, half/full texel float spills and all9XYoffsets.",
+    "far_corners": "Complete277 listing instructions/1273bytes. Retains near FCOMIP/JBE unordered decision, real raw projection/inverse/vector4, homogeneous divide and binary32 spills, rounded far/near scaling, eight original world-rotation passes, currentworldbit2 refresh and all final XYZW stores.",
+    "raw_domains": "Reuses genuine B4CB10,B3CE50/B3CE60,B642F0,B632D0,B62D10,B6DB70. Borrowed numeric profile tables are checked data only; no original numeric address is called as a host function pointer. No fake renderer/texture/owner or callback execution substitutes.",
+    "continuation": "Requires previous reached_texture_stage, same actual service/command and same persistent state. Earlier near/color/flags unchanged; reached_bloom_stage published after completed clause. No cleanup state armed and no rollback invented.",
+    "x87_direction": "All abbreviated one-register x87 arithmetic uses installed opcode direction. Static encoding audit covers unchanged instructions; constant-pointer and argument adapters reviewed separately.",
+    "ghidra_annotation_receipt": "local/ghidra-annotations-20261014T192842Z.json",
     "ghidra_exports_refreshed": [
-      "00b0db00",
-      "005803e0",
       "00b156c0",
-      "00b1bf40",
-      "00b6fe60"
+      "00b0eb10",
+      "00b4cb10"
     ],
     "prior_packet_receipt": {
-      "commit": "3ccc58cbf2c776134d42cf17467f5c77ec8b719f",
-      "path": "local/main_scene_receipt_3ccc58cbf/receipt.json",
-      "artifacts_verified_unchanged": 15,
-      "includes_exact_old_core_library": true
+      "commit": "450a751a0cfea443a733f2b20a3e46917564eac2",
+      "path": "local/main_scene_execution_receipt_450a751a0/receipt.json",
+      "artifacts_verified_unchanged": 34,
+      "includes_exact_old_core_library": true,
+      "preserved_report": "local/main_scene_execution_receipt_450a751a0/report.json",
+      "prior3ccc_artifacts_reverified": 15
     }
   },
   "validation": {
-    "strict_compile": "PASS both new units: MSVC Win32 /MD /std:c++17 /EHsc /permissive- /W4 /WX /O2 /fp:strict",
-    "strict_real_callee_link": "PASS explicit new objects against fresh real bsp_core.lib and real dependencies; /MANIFEST:EMBED link probe launched.",
-    "standard_build": "PASS scripts/build.ps1 Release Win32; 3/3 reconstructed_math/native_math_differential/tool_tests",
-    "standard_build_scope": "Primary owns permanent TU registration; new units checked by separate strict compile/link. Standard build checks existing registered closure.",
+    "strict_compile": "PASS new far-corner and changed prefix units, MSVC Win32 /MD /std:c++17 /EHsc /permissive- /W4 /WX /O2 /fp:strict",
+    "real_callee_link_and_execute": "PASS manifested texture_probe linked exact new/changed objects, preserved real history object, freshly built bsp_core.lib and genuine dependency libraries; /MANIFEST:EMBED, launched and passed.",
+    "standard_build": "PASS scripts/build.ps1 Release Win32 and3/3 reconstructed_math/native_math_differential/tool_tests",
+    "standard_build_scope": "Primary owns permanent TU registration. Changed/new code is separately strict compiled and manifested fixture linked against fresh registered closure.",
+    "native_comparisons": "PASS8 rebased Original/source complete texture-stage service/camera comparisons plus8 complete far-corner camera/output-alias comparisons.",
+    "cases": [
+      "ordinary640x480",
+      "one dimensions/equal near",
+      "zero dimensions/above near",
+      "unsignedFFFFFFFF/80000000 dimensions",
+      "unsigned80000001 width",
+      "unordered near",
+      "world-cache refresh with rotation",
+      "singular projection far=selectednear"
+    ],
+    "fixture_log": "PASS 8 original/source texture stages plus8 far-corner camera/output aliases; unsigned/zero dimensions, near threshold/unordered, world refresh and continuation state",
+    "fixture_limits": "The four original dimension virtual entries are translated to the same genuine concrete raw scalar getters; original vtable fetch is not native-compared. Uses default masked FP; no FP status/stack/trap, native FH3/SEH, concurrent owner/profile mutation or private-stack alias proof. No full command/application/game.",
     "x87_audit": {
       "result": "PASS",
       "checks": [
         {
-          "listing": "local/main_scene_execution/native_camera_history.asm",
-          "tagged_original_x87_instructions_checked": 648,
-          "coverage": "all address-tagged unchanged x87 instructions; context-bound constant loads and shifted public time argument are separately reviewed",
-          "address_set_sha256": "ac7879935af8664c1b30478e5b146969506ae02928b191938c4e0c14ef081338"
+          "listing": "local/main_scene_texture/native_camera_far_corners.asm",
+          "tagged_original_x87_instructions_checked": 164,
+          "coverage": "all address-tagged unchanged x87 instructions; context-bound constant loads and source public-argument adapters are separately reviewed",
+          "address_set_sha256": "9bb321e936d5809f930cf5f8d3f623aec5f9498eacd0ad2f2a30447e0cd591e3"
         },
         {
-          "listing": "local/main_scene_execution/native_main_scene_execution_prefix.asm",
-          "tagged_original_x87_instructions_checked": 41,
-          "coverage": "all address-tagged unchanged x87 instructions; context-bound constant loads and shifted public time argument are separately reviewed",
-          "address_set_sha256": "63a15b3d5448d62b784077acb1c9b5434e4402f951fda95d3de00d223d72f903"
+          "listing": "local/main_scene_texture/native_main_scene_execution_prefix.asm",
+          "tagged_original_x87_instructions_checked": 115,
+          "coverage": "all address-tagged unchanged x87 instructions; context-bound constant loads and source public-argument adapters are separately reviewed",
+          "address_set_sha256": "34bd05cab705485134fe0c0fc7783027f7fc2609e42b33714a86f54fb60a8171"
         }
       ],
-      "recovered_ambiguity": "B157EA bytes DC C9 writes ST1, not ST0; retained in Source. All one-register arithmetic operands use verified opcode direction."
+      "recovered_ambiguity": "All one-register x87 arithmetic operands use verified installed instruction opcode direction."
     },
-    "native_fixture": "PASS23 service/camera byte comparisons: rebased original B156F6..B1586C plus complete original B0DB00/005803E0 vs source prefix/history. Same established raw camera/math/CRT callees with explicit source-context/argument bridges.",
-    "native_fixture_cases": [
-      "11 rolling-history frames including full eight-sample slide",
-      "1 zero-delay unordered case",
-      "11 world-refresh and reset-distance frames"
-    ],
-    "source_fixture": "PASS source inactive-frame exit and near/color/continuation state checks.",
-    "native_fixture_limits": "Original renderer gate excluded; not full B156C0. CRT dispatch bypass byte1 and ordinary masked FP environment. No CRT exception/callback branch, FP status/stack identity, original EH/SEH or arbitrary stack-alias proof.",
-    "fixture_log": "PASS 23 original/source prefix+full-history comparisons: rolling8, zero-delay unordered, reset-distance and world refresh; source inactive gate and continuation fields",
+    "x87_audit_breakdown": {
+      "new_far_corner": 164,
+      "new_texture_clause": 74,
+      "unchanged_prior_prefix": 41,
+      "total": 279
+    },
     "new_persistent_tests": 0
   },
   "execution_admission": {
     "profile": "00d5e13c",
     "admitted": false,
     "complete_enclosing_function": false,
-    "next_native_address": "00b1586d",
+    "next_native_address": "00b15bd2",
     "requires": [
-      "Actual B17240 preparation",
-      "B156C0 texture-holder/dimensions and concrete remaining target/constants/batch/material/post-effect/cockpit/distortion/stats stages",
-      "Queue execution domain admission after genuine body/domain closure"
+      "B17240 actual preparation",
+      "B15BD2 bloom branch and remaining B156C0 target/constants/batch/material/post/cockpit/distortion/stats stages",
+      "Queue admission only after actual execution body/domain closure"
     ]
   },
   "unproved": [
-    "Whole command execution",
-    "Original ABI/FH3/SEH and private stack aliases",
-    "General floating traps, FP status/stack identity and throwing CRT across naked helpers",
-    "Actual application scene/camera production and invocation",
+    "Whole D5E13C renderer execution",
+    "Original call/exception ABI and private stack aliases",
+    "General FP traps, status/stack identity and concurrent mutation",
+    "Actual application scene/camera creation or invocation",
     "Visible world or gameplay equivalence"
   ],
   "artifacts": [
     {
-      "path": "src/native_camera_history.cpp",
-      "bytes": 42252,
-      "sha256": "d30bab10069cd9770e1ba2a8427fda3e8e946526a3139174b78242fbbfd00eda"
-    },
-    {
-      "path": "include/bsp/native_camera_history.hpp",
-      "bytes": 1907,
-      "sha256": "21819adeedf4a59b90b54c2607fba2cb1df0b34f5cb3be0b180a12af758955a1"
-    },
-    {
       "path": "src/native_main_scene_execution_prefix.cpp",
-      "bytes": 8905,
-      "sha256": "47517b44849dce16be9c06e8fb3b86a3d79306f360de750abdccee7d5128c0db"
+      "bytes": 20798,
+      "sha256": "71345832c9074bd2101e52e44ad460f7b985ff0f95f8159b79537c07c238466b"
     },
     {
       "path": "include/bsp/native_main_scene_execution_prefix.hpp",
-      "bytes": 2566,
-      "sha256": "20177406ffcc67424fc4cb23247f1b2404791bcb1af16119cdc1c12ff6676e83"
+      "bytes": 3840,
+      "sha256": "b87001fa5ff3b10aa9f31b9aeb593b08fb3b92bbfbed2834e697c5b656238626"
+    },
+    {
+      "path": "src/native_camera_far_corners.cpp",
+      "bytes": 14586,
+      "sha256": "c9f8f2a86f8e8a53da981f3ce1fc096d4fb88a5ccd1949e7110be3892bd868b9"
+    },
+    {
+      "path": "include/bsp/native_camera_far_corners.hpp",
+      "bytes": 1180,
+      "sha256": "f0bda64b3570c67175ed773b5ef36d4fbea4ef618ba10c48ae13693cad375913"
     },
     {
       "path": "docs/NATIVE_MAIN_SCENE_EXECUTION_PREFIX_CC12.md",
-      "bytes": 8933,
-      "sha256": "77d27fbc0b53b1aaede32035bc3a8433f1162dc1a860efa56e4dbfe4d9f4ce81"
-    },
-    {
-      "path": "build/win32/Release/bsp_core.lib",
-      "bytes": 90961450,
-      "sha256": "61818b5cbf0b334ead0a127b40f505df574c3a2421b494462630ac78ff8f111e"
-    },
-    {
-      "path": "local/main_scene_receipt_3ccc58cbf/receipt.json",
-      "bytes": 5040,
-      "sha256": "949e8c5eaa30fdfa8ba69e95cbbc9792419bc4f07b945a5a77df17cc11ef7e9f"
-    },
-    {
-      "path": "local/ghidra-annotations-20261014T190307Z.json",
-      "bytes": 7430,
-      "sha256": "5c6387a6234d10e1a8b99e01565968dc62acd0101abdf717c819d5eb0302da6c"
+      "bytes": 13387,
+      "sha256": "0a171ae9588e49a6b82b1743489205ffad791c66a7dd5f53cd4810ff5ac6e501"
     },
     {
       "path": "local/main_scene_execution/native_camera_history.obj",
@@ -183,129 +176,154 @@
       "sha256": "22baea6d710978e1c456204021e49924ac738d8b5a79e2b689d89123cadfee81"
     },
     {
-      "path": "local/main_scene_execution/native_camera_history.asm",
-      "bytes": 105388,
-      "sha256": "a1c3fcc34ef6f3e976b21313affa36bba832b505c816ac379150009808872daa"
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 90961450,
+      "sha256": "61818b5cbf0b334ead0a127b40f505df574c3a2421b494462630ac78ff8f111e"
     },
     {
-      "path": "local/main_scene_execution/native_main_scene_execution_prefix.obj",
-      "bytes": 11557,
-      "sha256": "586ed58111ec5de6ddf77d31292655453f905a7251488bf725159bdb95fe08ef"
+      "path": "build/win32/Release/bsp_lua511.lib",
+      "bytes": 455544,
+      "sha256": "5bf50d33a269737486f6e521721cc8a6f31c3d5adc836431ee565a4954159729"
     },
     {
-      "path": "local/main_scene_execution/native_main_scene_execution_prefix.asm",
-      "bytes": 48675,
-      "sha256": "576cdf94422432245b69147f06a95aaba859c9fa1e17892d7c4b944cb76a0192"
+      "path": "build/win32/Release/bsp_zlib121.lib",
+      "bytes": 72006,
+      "sha256": "1f4792601d3198471ab898fb8b2a6015fba928b164832817d46b4a0fa8bb11c9"
     },
     {
-      "path": "local/main_scene_execution/strict_compile.log",
-      "bytes": 67,
-      "sha256": "8b2abebfe266b460e696948a0f66f5a3e1929b1d26414081c0cee60be8893144"
+      "path": "local/main_scene_execution_receipt_450a751a0/receipt.json",
+      "bytes": 12238,
+      "sha256": "206a2d635048cf1a54ec5f554ced97b85664ec9eac857f65149c5a25c4cc374b"
     },
     {
-      "path": "local/main_scene_execution/strict_link.log",
-      "bytes": 16,
-      "sha256": "9107f09f9eea6bcc36b193451cb12d6b097bbc454c3dc7619438d3b4db6b9286"
+      "path": "local/main_scene_execution_receipt_450a751a0/report.json",
+      "bytes": 13969,
+      "sha256": "9ea562b9df54abee9e8fb5a150a3b3d1fd6eb526eae996213b8a876a65d63ecf"
     },
     {
-      "path": "local/main_scene_execution/link_probe.cpp",
-      "bytes": 388,
-      "sha256": "b7608fd608364907fc42d6b0522112f58bf73692d7853a51ed5c111b0c909d48"
+      "path": "local/ghidra-annotations-20261014T192842Z.json",
+      "bytes": 10396,
+      "sha256": "4c4e51c9d103c440f06ee8fdf09204a7c60fb73612365023b2ef62b2defe2709"
     },
     {
-      "path": "local/main_scene_execution/link_probe.obj",
-      "bytes": 2505,
-      "sha256": "924ec3acc4705366cc8f82621b5d1a6c215668b877d68aaaacd0b224f1f1be9f"
+      "path": "local/main_scene_texture/native_camera_far_corners.obj",
+      "bytes": 2419,
+      "sha256": "83c3ef736d1ea7e95c2e5db3f7dd942d0e99d87565c9797b1df31dd20df53f36"
     },
     {
-      "path": "local/main_scene_execution/link_probe.exe",
-      "bytes": 31232,
-      "sha256": "9f1518ffe3ae5dec768f8d59bbd1b0fadeada0a1dba97865c97c1873d3c42e90"
+      "path": "local/main_scene_texture/native_camera_far_corners.asm",
+      "bytes": 34704,
+      "sha256": "4bfc1c1c7684d3a6d1f8e3d9c0a0114f92be4728452ec8eec09b30a7ee7a3c19"
     },
     {
-      "path": "local/main_scene_execution/build.log",
-      "bytes": 3653,
-      "sha256": "3cd0c4ed17a58e74f7baf8927c995a296a76a2040c56bfe46a409fade707554a"
+      "path": "local/main_scene_texture/native_main_scene_execution_prefix.obj",
+      "bytes": 15535,
+      "sha256": "bea9f7c73ee83d06a46086b52a9b3e948ab75ba092492617217e132ff153b5f0"
     },
     {
-      "path": "local/main_scene_execution/execution_probe.cpp",
-      "bytes": 10851,
-      "sha256": "df70a05e53bfba887399984ddd3959295be0d8d6e3277e190c10d023d0405c52"
+      "path": "local/main_scene_texture/native_main_scene_execution_prefix.asm",
+      "bytes": 84003,
+      "sha256": "2671fc9c6b09c9491cc2d76f524bdd7877fd2d78a162098aa2eda99f30e21069"
     },
     {
-      "path": "local/main_scene_execution/execution_probe.obj",
-      "bytes": 31011,
-      "sha256": "51d0e8d9756f82a41874dfa5abb7eaab1fa79e9410f700ee5f21934d290367dd"
+      "path": "local/main_scene_texture/strict_compile.log",
+      "bytes": 71,
+      "sha256": "b5de5f5f8da7ca17d81e6976be0b07c575fdf20e4f94e28e20c6dd656d529014"
     },
     {
-      "path": "local/main_scene_execution/execution_probe.exe",
-      "bytes": 43520,
-      "sha256": "af713ca47c9e007e20cbd47093428b82a245fff40f0242b0961a287fc850a816"
+      "path": "local/main_scene_texture/compile.ps1",
+      "bytes": 1041,
+      "sha256": "5d50f41bb77af7e61ef17f7f0f2c26ac084c76ccf6ac43650ac51262d552d0ef"
     },
     {
-      "path": "local/main_scene_execution/execution_compile.log",
-      "bytes": 21,
-      "sha256": "f5fbf3b8c9724d0447054d0b8a15011bf261f7eaa058c953f3f0e6ef416077eb"
+      "path": "local/main_scene_texture/build.log",
+      "bytes": 2715,
+      "sha256": "6524513b53fda4ba9e96cae64d3e93bcc07ee7a1d67a2593f966108c4e630821"
     },
     {
-      "path": "local/main_scene_execution/execution_probe.log",
-      "bytes": 169,
-      "sha256": "6514e0135f0354924bdce73930fd8a557803168743daa50b59a5600d24b67453"
+      "path": "local/main_scene_texture/texture_probe.cpp",
+      "bytes": 9525,
+      "sha256": "ee4dba730eee2295823e31587511ecf429d0d4e0a53bf8610a2a338f5759e7c2"
     },
     {
-      "path": "local/main_scene_execution/original_bytes.inc",
-      "bytes": 22328,
-      "sha256": "f836fe0728a52d6eef680fd674b7dba53d896ddec26af232596d5775b69ce64c"
+      "path": "local/main_scene_texture/texture_probe.obj",
+      "bytes": 24627,
+      "sha256": "8c0e6c498329c3c66fc3b256bf47a9b4f4a467df30dc00ab8c88720b0a0c9409"
     },
     {
-      "path": "local/main_scene_execution/make_fixture_bytes.py",
-      "bytes": 2730,
-      "sha256": "419b99d3d48b3231e4bd366ef77de9ad02627558ba5375b23730ab8c90e3a58f"
+      "path": "local/main_scene_texture/texture_probe.exe",
+      "bytes": 221184,
+      "sha256": "3518d1ae0d873733cb70c6ae982cbec81e62b1bd3abe74f99b3784a976a5273b"
     },
     {
-      "path": "local/main_scene_execution/generate_source.py",
-      "bytes": 11635,
-      "sha256": "45f386d1639a437337fb07383ffcbb33ab912b99eb84377fb8e5ab4b79463b29"
+      "path": "local/main_scene_texture/texture_probe.log",
+      "bytes": 168,
+      "sha256": "576dc03ba9fbcce4d0a226a5269feaa65261f8161c4fa3683163b43936ffb03b"
     },
     {
-      "path": "local/main_scene_execution/history.bin",
-      "bytes": 3621,
-      "sha256": "a7d8eddc6289f89c17c0ac552f09342a055311e7ec81d6f202ac39adb0eb4897"
+      "path": "local/main_scene_texture/probe_compile.log",
+      "bytes": 19,
+      "sha256": "e7b2f768bcb0ffb06424731e26df19220cb554e132abf78271a62a48be806abd"
     },
     {
-      "path": "local/main_scene_execution/lerp.bin",
-      "bytes": 177,
-      "sha256": "5d1e261017d2e89178b5dc8acf6329a6cb02deea71a8abe043368dae8a92de9d"
+      "path": "local/main_scene_texture/run_probe.ps1",
+      "bytes": 1296,
+      "sha256": "9ea6804797889a891c7a337950a369540d29f6db2cf4a32373285829d93b9813"
     },
     {
-      "path": "local/main_scene_execution/prefix.bin",
-      "bytes": 429,
-      "sha256": "222683590195ebb81cdd635e0ef2c1c26f2d9801b7686d4dd34f05e4ab7b7f24"
+      "path": "local/main_scene_texture/original_bytes.inc",
+      "bytes": 11406,
+      "sha256": "1bc9e9d2e7c5501ee94cffe7dcb74119a32c38207ed873228bb2fc7b402248ef"
     },
     {
-      "path": "local/main_scene_execution/byte_receipt.json",
-      "bytes": 1284,
-      "sha256": "4076085fef00553ab4e33f404c2f0fb7e7eb9e860fc757a9113adbf5df744079"
+      "path": "local/main_scene_texture/corners.bin",
+      "bytes": 1273,
+      "sha256": "16e4e415f1b7026e104e8bb846e01b0f7b12f18df9b14e57729fef5b00495c65"
     },
     {
-      "path": "local/main_scene_execution/audit_x87.py",
-      "bytes": 1845,
-      "sha256": "c53f12141fb9cf8ea5fa4a4712b9414009bdfa1107a240da653ac0b7557e17d1"
+      "path": "local/main_scene_texture/texture.bin",
+      "bytes": 869,
+      "sha256": "ae515dcf14de835363ddee29f3d7816e2e91cffebe6410f8469bc2c76af2f16a"
     },
     {
-      "path": "local/main_scene_execution/x87_audit.json",
-      "bytes": 1007,
-      "sha256": "1e025ea8aa9b054ad0057cfe036570935b81bed89388134d8f4688c7f8e83bc7"
+      "path": "local/main_scene_texture/byte_receipt.json",
+      "bytes": 1200,
+      "sha256": "239276e6e65ee6455710063d5540d95dcf6e6b31e66799b6b8d4240ed3f156ba"
     },
     {
-      "path": "local/main_scene_execution/annotation.log",
-      "bytes": 374,
-      "sha256": "c2997df2417ddff2bbe5e6bf165a2a6dfd58146159a52e873895b3691bf4a7a5"
+      "path": "local/main_scene_texture/byte_check.log",
+      "bytes": 881,
+      "sha256": "470fdb983ab79ebd6ee061352f2b736064e0b393913bbc6a729b0cdce51f6626"
     },
     {
-      "path": "local/main_scene_execution/ledger.log",
-      "bytes": 2578,
-      "sha256": "ff4daaf7af1c2be6bb94372250d2849de89b45083ae97a622b6b02956ec43802"
+      "path": "local/main_scene_texture/make_fixture_bytes.py",
+      "bytes": 2775,
+      "sha256": "af18e27ffceb83c97b0191de540cfe525b705bc05ac1ac3b44033732143de056"
+    },
+    {
+      "path": "local/main_scene_texture/generate_source.py",
+      "bytes": 6850,
+      "sha256": "bd58e91d019a12694b53591a8376eaf882df1190259e60e5442bc6d6c3dd4e06"
+    },
+    {
+      "path": "local/main_scene_texture/audit_x87.py",
+      "bytes": 1847,
+      "sha256": "a1b3003a947faa5522667bf29a4881f414aa9146651f1072f4dd89c3b00c98bd"
+    },
+    {
+      "path": "local/main_scene_texture/x87_audit.json",
+      "bytes": 980,
+      "sha256": "48696ed86579d9cbd8153fdaf7f23c04abab5b0d13af4406000358f33da8f934"
+    },
+    {
+      "path": "local/main_scene_texture/annotation.log",
+      "bytes": 295,
+      "sha256": "245d7e9982ba5bd2819893d77c080a58dfeba0eb232d289bfbf22ef18e5801ac"
+    },
+    {
+      "path": "local/main_scene_texture/ledger.log",
+      "bytes": 5447,
+      "sha256": "d1958d40fb1413f16c971e2e216ce3e0d1f114381f5df2f296d6665ac141be79"
     }
   ]
 }

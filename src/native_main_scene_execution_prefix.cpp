@@ -1,5 +1,8 @@
 #include "bsp/native_main_scene_execution_prefix.hpp"
 #include "bsp/native_camera_history.hpp"
+#include "bsp/native_camera_far_corners.hpp"
+#include "bsp/native_particle_preparation.hpp"
+#include "bsp/native_system_constant_gather.hpp"
 #include "bsp/native_camera_axes.hpp"
 #include "bsp/native_camera_configuration_leaves.hpp"
 #include "bsp/native_camera_cache_getters.hpp"
@@ -215,5 +218,271 @@ bool execute_native_main_scene_prefix_00b156c0(void* service, void* command,
     execute_prefix_body(service,&access,command);
     state.reached_texture_stage=true;
     return true;
+}
+
+namespace {
+using TextureContext=NativeMainSceneTextureConstantsContext;
+static_assert(offsetof(TextureContext, actual_texture_profile_00d61948)==0);
+static_assert(offsetof(TextureContext, unsigned_bias_00ce3978)==4);
+static_assert(offsetof(TextureContext, half_00d7a280)==8);
+static_assert(offsetof(TextureContext, negative_one_00d7a260)==12);
+static_assert(offsetof(TextureContext, one_00d7a24c)==16);
+static_assert(offsetof(TextureContext, far_corners)==20);
+std::uint32_t __fastcall texture_width(const void* actual, const TextureContext* c,
+    std::uint32_t captured_profile) {
+    if(captured_profile!=0x00d61948 || !c->actual_texture_profile_00d61948 ||
+        c->actual_texture_profile_00d61948[15]!=0x00b3ce50)
+        throw std::logic_error("main scene requires current D61948:B3CE50 width");
+    return get_raw_texture_width_00b3ce50(actual);
+}
+std::uint32_t __fastcall texture_height(const void* actual, const TextureContext* c,
+    std::uint32_t captured_profile) {
+    if(captured_profile!=0x00d61948 || !c->actual_texture_profile_00d61948 ||
+        c->actual_texture_profile_00d61948[16]!=0x00b3ce60)
+        throw std::logic_error("main scene requires current D61948:B3CE60 height");
+    return get_raw_texture_height_00b3ce60(actual);
+}
+// Native B1586D..B15BD1. Added context is above the native scratch frame;
+// EBP continues capturing the first texture for the later height dispatch.
+__declspec(naked) void __fastcall execute_texture_constants(void*, const TextureContext*, void*) {
+    __asm {
+        push edx
+        sub esp, 090h
+        push ebx
+        push ebp
+        push esi
+        push edi
+        mov esi, ecx
+        mov edi, dword ptr [esp + 0a8h]
+        mov ecx,dword ptr [esi + 04ch] // 00b1586d
+        call native_shadow_holder_texture_00b4cb10
+        mov ecx,dword ptr [esi + 04ch] // 00b15875
+        mov ebp,eax // 00b15878
+        call native_shadow_holder_texture_00b4cb10
+        mov edx,dword ptr [eax] // 00b1587f
+        mov ecx,eax // 00b15881
+        mov eax, edx // preserve the original captured owner profile
+        push eax
+        mov edx, dword ptr [esp + 0a4h]
+        call texture_width
+        test eax,eax // 00b15888
+        mov dword ptr [esp + 02ch],eax // 00b1588a
+        fild dword ptr [esp + 02ch] // 00b1588e
+        jge loc_00b1589a // 00b15892
+        push eax
+        mov eax, dword ptr [esp + 0a4h]
+        mov eax, dword ptr [eax + 4]
+        fadd dword ptr [eax]
+        pop eax
+    loc_00b1589a:
+        push eax
+        mov eax, dword ptr [esp + 0a4h]
+        mov eax, dword ptr [eax + 8]
+        fdivr qword ptr [eax]
+        pop eax
+        mov edx,dword ptr [ebp] // 00b158a0
+        mov eax, edx // preserve the original captured owner profile
+        mov ecx,ebp // 00b158a6
+        fstp dword ptr [esp + 014h] // 00b158a8
+        push eax
+        mov edx, dword ptr [esp + 0a4h]
+        call texture_height
+        test eax,eax // 00b158ae
+        mov dword ptr [esp + 02ch],eax // 00b158b0
+        fild dword ptr [esp + 02ch] // 00b158b4
+        jge loc_00b158c0 // 00b158b8
+        push eax
+        mov eax, dword ptr [esp + 0a4h]
+        mov eax, dword ptr [eax + 4]
+        fadd dword ptr [eax]
+        pop eax
+    loc_00b158c0:
+        push eax
+        mov eax, dword ptr [esp + 0a4h]
+        mov eax, dword ptr [eax + 8]
+        fdivr qword ptr [eax]
+        pop eax
+        fstp dword ptr [esp + 010h] // 00b158c6
+        fld dword ptr [esp + 014h] // 00b158ca
+        fstp dword ptr [esi + 04h] // 00b158ce
+        fld dword ptr [esp + 010h] // 00b158d1
+        fstp dword ptr [esi + 08h] // 00b158d5
+        mov ecx,dword ptr [esi + 04ch] // 00b158d8
+        call native_shadow_holder_texture_00b4cb10
+        mov ecx,dword ptr [esi + 04ch] // 00b158e0
+        mov ebp,eax // 00b158e3
+        call native_shadow_holder_texture_00b4cb10
+        mov edx,dword ptr [eax] // 00b158ea
+        mov ecx,eax // 00b158ec
+        mov eax, edx // preserve the original captured owner profile
+        push eax
+        mov edx, dword ptr [esp + 0a4h]
+        call texture_width
+        test eax,eax // 00b158f3
+        mov dword ptr [esp + 02ch],eax // 00b158f5
+        fild dword ptr [esp + 02ch] // 00b158f9
+        jge loc_00b15905 // 00b158fd
+        push eax
+        mov eax, dword ptr [esp + 0a4h]
+        mov eax, dword ptr [eax + 4]
+        fadd dword ptr [eax]
+        pop eax
+    loc_00b15905:
+        fld1 // 00b15905
+        mov edx,dword ptr [ebp] // 00b15907
+        fdivrp st(1), st(0) // 00b1590a
+        mov eax, edx // preserve the original captured owner profile
+        mov ecx,ebp // 00b1590f
+        fstp dword ptr [esp + 014h] // 00b15911
+        push eax
+        mov edx, dword ptr [esp + 0a4h]
+        call texture_height
+        test eax,eax // 00b15917
+        mov dword ptr [esp + 02ch],eax // 00b15919
+        fild dword ptr [esp + 02ch] // 00b1591d
+        jge loc_00b15929 // 00b15921
+        push eax
+        mov eax, dword ptr [esp + 0a4h]
+        mov eax, dword ptr [eax + 4]
+        fadd dword ptr [eax]
+        pop eax
+    loc_00b15929:
+        fld1 // 00b15929
+        xorps xmm0,xmm0 // 00b1592b
+        fdivrp st(1), st(0) // 00b1592e
+        push eax
+        mov eax, dword ptr [esp + 0a4h]
+        mov eax, dword ptr [eax + 12]
+        movss xmm1,dword ptr [eax]
+        pop eax
+        push eax
+        mov eax, dword ptr [esp + 0a4h]
+        mov eax, dword ptr [eax + 16]
+        movss xmm2,dword ptr [eax]
+        pop eax
+        fstp dword ptr [esp + 010h] // 00b15940
+        fld dword ptr [esp + 014h] // 00b15944
+        fstp dword ptr [esi + 0184h] // 00b15948
+        fld dword ptr [esp + 010h] // 00b1594e
+        fstp dword ptr [esi + 0188h] // 00b15952
+        movss dword ptr [esi + 0f4h],xmm1 // 00b15958
+        movss dword ptr [esi + 0f8h],xmm1 // 00b15960
+        movss dword ptr [esi + 0fch],xmm0 // 00b15968
+        movss dword ptr [esi + 0100h],xmm0 // 00b15970
+        movss dword ptr [esi + 0104h],xmm0 // 00b15978
+        movss dword ptr [esi + 0108h],xmm1 // 00b15980
+        movss dword ptr [esi + 010ch],xmm0 // 00b15988
+        movss dword ptr [esi + 0110h],xmm0 // 00b15990
+        movss dword ptr [esi + 0114h],xmm2 // 00b15998
+        movss dword ptr [esi + 0118h],xmm1 // 00b159a0
+        movss dword ptr [esi + 011ch],xmm0 // 00b159a8
+        movss dword ptr [esi + 0120h],xmm0 // 00b159b0
+        movss dword ptr [esi + 0124h],xmm1 // 00b159b8
+        movss dword ptr [esi + 0128h],xmm0 // 00b159c0
+        movss dword ptr [esi + 012ch],xmm0 // 00b159c8
+        movss dword ptr [esi + 0130h],xmm0 // 00b159d0
+        movss dword ptr [esi + 0134h],xmm0 // 00b159d8
+        movss dword ptr [esi + 0138h],xmm0 // 00b159e0
+        movss dword ptr [esi + 013ch],xmm0 // 00b159e8
+        movss dword ptr [esi + 0140h],xmm0 // 00b159f0
+        movss dword ptr [esi + 0144h],xmm2 // 00b159f8
+        movss dword ptr [esi + 0148h],xmm0 // 00b15a00
+        movss dword ptr [esi + 014ch],xmm0 // 00b15a08
+        movss dword ptr [esi + 0150h],xmm0 // 00b15a10
+        movss dword ptr [esi + 0154h],xmm1 // 00b15a18
+        movss dword ptr [esi + 0158h],xmm2 // 00b15a20
+        movss dword ptr [esi + 015ch],xmm0 // 00b15a28
+        movss dword ptr [esi + 0160h],xmm0 // 00b15a30
+        movss dword ptr [esi + 0164h],xmm0 // 00b15a38
+        movss dword ptr [esi + 0168h],xmm2 // 00b15a40
+        movss dword ptr [esi + 016ch],xmm0 // 00b15a48
+        movss dword ptr [esi + 0170h],xmm0 // 00b15a50
+        movss dword ptr [esi + 0174h],xmm2 // 00b15a58
+        movss dword ptr [esi + 0178h],xmm2 // 00b15a60
+        movss dword ptr [esi + 017ch],xmm0 // 00b15a68
+        movss dword ptr [esi + 0180h],xmm0 // 00b15a70
+        fld dword ptr [esi + 0f4h] // 00b15a78
+        fmul dword ptr [esi + 0184h] // 00b15a7e
+        fstp dword ptr [esi + 0f4h] // 00b15a84
+        fld dword ptr [esi + 0f8h] // 00b15a8a
+        fmul dword ptr [esi + 0188h] // 00b15a90
+        fstp dword ptr [esi + 0f8h] // 00b15a96
+        fld dword ptr [esi + 0104h] // 00b15a9c
+        fmul dword ptr [esi + 0184h] // 00b15aa2
+        fstp dword ptr [esi + 0104h] // 00b15aa8
+        fld dword ptr [esi + 0188h] // 00b15aae
+        fmul dword ptr [esi + 0108h] // 00b15ab4
+        fstp dword ptr [esi + 0108h] // 00b15aba
+        fld dword ptr [esi + 0114h] // 00b15ac0
+        fmul dword ptr [esi + 0184h] // 00b15ac6
+        fstp dword ptr [esi + 0114h] // 00b15acc
+        fld dword ptr [esi + 0118h] // 00b15ad2
+        fmul dword ptr [esi + 0188h] // 00b15ad8
+        fstp dword ptr [esi + 0118h] // 00b15ade
+        fld dword ptr [esi + 0124h] // 00b15ae4
+        fmul dword ptr [esi + 0184h] // 00b15aea
+        fstp dword ptr [esi + 0124h] // 00b15af0
+        fld dword ptr [esi + 0128h] // 00b15af6
+        fmul dword ptr [esi + 0188h] // 00b15afc
+        fstp dword ptr [esi + 0128h] // 00b15b02
+        fld dword ptr [esi + 0134h] // 00b15b08
+        fmul dword ptr [esi + 0184h] // 00b15b0e
+        fstp dword ptr [esi + 0134h] // 00b15b14
+        fld dword ptr [esi + 0138h] // 00b15b1a
+        fmul dword ptr [esi + 0188h] // 00b15b20
+        fstp dword ptr [esi + 0138h] // 00b15b26
+        fld dword ptr [esi + 0144h] // 00b15b2c
+        fmul dword ptr [esi + 0184h] // 00b15b32
+        fstp dword ptr [esi + 0144h] // 00b15b38
+        fld dword ptr [esi + 0188h] // 00b15b3e
+        fmul dword ptr [esi + 0148h] // 00b15b44
+        fstp dword ptr [esi + 0148h] // 00b15b4a
+        lea ecx,[esi + 0b4h] // 00b15b50
+        fld dword ptr [esi + 0154h] // 00b15b56
+        push ecx // 00b15b5c
+        fmul dword ptr [esi + 0184h] // 00b15b5d
+        mov ecx,edi // 00b15b63
+        fstp dword ptr [esi + 0154h] // 00b15b65
+        fld dword ptr [esi + 0158h] // 00b15b6b
+        fmul dword ptr [esi + 0188h] // 00b15b71
+        fstp dword ptr [esi + 0158h] // 00b15b77
+        fld dword ptr [esi + 0164h] // 00b15b7d
+        fmul dword ptr [esi + 0184h] // 00b15b83
+        fstp dword ptr [esi + 0164h] // 00b15b89
+        fld dword ptr [esi + 0168h] // 00b15b8f
+        fmul dword ptr [esi + 0188h] // 00b15b95
+        fstp dword ptr [esi + 0168h] // 00b15b9b
+        fld dword ptr [esi + 0174h] // 00b15ba1
+        fmul dword ptr [esi + 0184h] // 00b15ba7
+        fstp dword ptr [esi + 0174h] // 00b15bad
+        fld dword ptr [esi + 0178h] // 00b15bb3
+        fmul dword ptr [esi + 0188h] // 00b15bb9
+        fstp dword ptr [esi + 0178h] // 00b15bbf
+        call get_native_scene_command_camera_00b1bf40
+        push eax // 00b15bca
+        mov ecx,esi // 00b15bcb
+        mov ecx, dword ptr [esp + 0a8h]
+        mov ecx, dword ptr [ecx + 20]
+        call compute_native_camera_far_corners_00b0eb10
+        pop edi
+        pop esi
+        pop ebp
+        pop ebx
+        add esp, 094h
+        ret 4
+    }
+}
+} // namespace
+
+void continue_native_main_scene_texture_constants_00b1586d(void* service,
+    void* command, const TextureContext& c, NativeMainSceneExecutionPrefixState& state) {
+    if(!state.reached_texture_stage || state.reached_bloom_stage)
+        throw std::logic_error("main scene texture continuation requires its fresh reached prefix");
+    if(!c.far_corners || c.far_corners->one_00d7a24c!=c.one_00d7a24c ||
+       c.far_corners->negative_one_00d7a260!=c.negative_one_00d7a260 ||
+       c.far_corners->half_00d7a280!=c.half_00d7a280)
+        throw std::logic_error("main scene constants require the same actual far-corner cells");
+    execute_texture_constants(service,&c,command);
+    state.reached_bloom_stage=true;
 }
 } // namespace bsp
