@@ -1138,3 +1138,65 @@ Open, in order:
    (ijn_8_north_sol.lua:543-565); kill US_Airfield_03/02 earlier or keep the fleet AA tighter around them.
 3. The settled-tail packet of section 30 for the plane lane (OFF switch, selected-plane prediction).
 4. Keeper notes still not re-timed: kTorpedoBoatRudderTorqueBound and kLandMasterDamageBound (check land rows).
+
+## 33. Packet: the settled tail of 0099D300 (cc9-physics10, 2026-10-14; for the plane lane)
+
+Self-contained packet for section 30's open item. Suggested id `cc9_plane_settled_tail`, switch
+`kPlaneSettledTailBound`, committed OFF. Nothing below is bound yet.
+
+**Image site.** `0099D300 BSP_PilotBot_PlanControls` (__thiscall, ECX = bot/plan, one float dt, `RET 4` at
+0099EBA9; body 0099D300-0099EBAC, INT3 padding from 0099EBAC). Inside the body ESI = plan, EDI = unit. Listing
+(`bsp.py disasm-raw 0099EA84 --length 300`, disk bytes):
+- Head clear, 0099D431: `MOV byte [EDX+520h], 0` (unit+520h = 0 on every think that passes gate A at 0099D309).
+- Tail gates, 0099EA84-0099EB59, every one a fall-through to 0099EB8C on failure (the shared exit that stores 0.12
+  to plan+260h at 0099EB95 and XMM2 to plan+264h at 0099EB9D):
+  1. `plan+26Ch` (byte) non-zero (0099EA84).
+  2. `unit+908h` (float, spilled to [ESP+64h]) is below 3600.0 (`[00CE3D70]`, double) or above 3602.0
+     (`[00D1F3D0]`, double) (0099EA91-0099EAB5); inside [3600, 3602] the tail is skipped.
+  3. `|yaw slot|` < 0.035 (`[00D1F3C8]`, float): the slot value is plan+284h when the byte plan+288h is set, else
+     plan+280h; the absolute value is `x > 0 ? x : -0.0 - x` (XMM2 = 0 from 0099D5AC/0099D5FF/0099D70E, XMM4 =
+     `[00D7A208]` = -0.0) (0099EABF-0099EAF6).
+  4. `|pitch slot|` < 0.035: plan+29Ch when plan+2A0h is set, else plan+298h (0099EAFC-0099EB26).
+  5. `|0099B260(plan+28Ch)|` < 0.035, the roll slot's value through 0042BE90 (0099EB28-0099EB4A).
+  6. `[ESP+40h]` < 2.0 (`[00CE3958]`) (0099EB4C-0099EB59): the C2 difference `| |vt[38h]()| - |ctl+30h| |`
+     written at 0099D54B/0099D564/0099D593 (section 30 has the stack-depth proof that [ESP+48h] there is this slot).
+- Writes when all six pass: `unit+520h = ([[00E188A8]+5FCh]+908h == unit+54h)` (0099EB5B-0099EB73: the local
+  player record's party/id field against the unit's), and `plan+2ECh = [00E0E2EC]` = 0.24 (0099EB79-0099EB81).
+- Section 30 omitted gates 1 and 2; they are listed here from the listing and are part of the packet.
+
+**Host.** Not carried. `generic_suppress_520` (game_hosts_units.cpp:384) is the host's unit+520h; its readers are
+the 009A17F8 avoidance gate (:7753), 007CE6CA (:14639), the bot fast path (:33629) and the ship exit (:35478). No
+host site clears it at 0099D431 or writes it from this tail. The C2 low-pass is carried (`kPlaneVelocityLowpassBound`,
+ON), but the difference at 0099D564/0099D593 is not kept. Insertion point: the end of the host's 0099D300 order,
+just before the `kBandShaperPlan264Bound` block (game_hosts_units.cpp ~33652, the 0099EB9D zero), which keeps the
+image's order (tail, then 0099EB95/0099EB9D). Plan slots: `bsp::kPilotSlotYaw`/`Roll`/`Pitch`
+(include/bsp/pilot_plan_slots.hpp); the plane-lane owner must map plan+280h..2A0h and +2ECh to the host's slot
+fields (the yaw/pitch `desired` fields are written at :8246/:8251) and confirm what 0099B260 returns.
+
+**Correction to section 30 (reach).** The compare is a PARTY test, not a unit identity: unit+54h is the unit's
+party (AIR_OPERATIONS.md: `Party` = owner+54h; AI_PLANNER_TAILS.md teams 0-2), and `[[00E188A8]+5FCh]+908h` is the
+same record the 009A17F8 gate reads as the local player's party (game_hosts_units.cpp:7749). So the tail publishes
+unit+520h = 1 for EVERY plane of the local player's party whose mode byte plan+26Ch is non-zero and whose flight is
+settled, not only for a selected plane. unit+520h is also the formation byte of BOMBER_AFTER_TASK.md section 6c:
+it is published per step to `unit[9C2h + idx*8]` (007CDCD0), the follow state 009BEE30 sets a member's +520h at
+009BF0B8 when its leader's published byte is set (009BEF09), and 0099D300's gate A (0099D33D/0099D345) reads it.
+The writer census there (`00699B14`, `007B959B`, `007BBCF8`, `00959454`, `0099D431`, `009BF0B8`, `00698716`,
+`0095CDD7`, `0099EB73`) is the starting point.
+
+**Prediction (to write into the lane doc before the pair).** Enemy-party planes: the compare gives 0, which the
+head clear already wrote, so nothing moves for them. Player-party planes with plan+26Ch non-zero and a settled flight
+(all six gates): `generic_suppress_520` becomes true until the next think's head (0099D431) clears it, so for the
+ticks in between 009A17F8's avoidance, 007CE6CA and 009998A0's fast-path test (0099C270) see a set byte, and the
+follow states of that plane's members may set their own +520h (009BF0B8, if the host carries it). plan+2ECh = 0.24
+is rewritten at the next think's head (0099D446, or `[00E0E2F4]` at 0099D466 when unit+900h is 4 or 5) before
+0099D300 reads it; a reader outside 0099D300 between thinks was not searched (search it first). Expected movers:
+missions with player-party planes in long settled flight (USN01, PRCP01, LOMP10, BSM01, ESMP08's Zeros); counters to
+watch: the avoidance gate's entries and the fast-path count. A moved row must trace to a player-party plane with
+plan+26Ch non-zero; a moved enemy plane is a mechanism failure (OFF, recorded). Pair rows: USN02 and LOMP06
+(identical expected), USN01, PRCP01, LOMP10, BSM01.
+
+**Uncertainty.** The meaning of unit+908h (gate 2) is unknown (listing only). `[[00E188A8]+5FCh]+908h` as the
+local player's party is BOMBER_AFTER_TASK's provisional reading; the host's stand-in must be named before binding
+(the 009A17F8 comment at :7749 uses the controlled unit's party, labelled). plan+26Ch is task+270h, the mode byte
+gate A tests against 2 (BOMBER_AFTER_TASK.md: `009998CD LEA EDI,[ESI+4]`); which states leave it non-zero decides
+the reach and must be listed by the packet owner.
