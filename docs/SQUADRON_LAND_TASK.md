@@ -16460,3 +16460,38 @@ goAway/moveto oscillation); it needs a plan, not code (reported, accepted by the
 patches as one commit per switch (all OFF), build, release, then pair (2+4) on USN21 f, PRCP01, USN12 and (5+6) on USN04,
 USN21 f, USN01 g, LOMP10, JM08 f; flip by verdict, lost wins to the keeper. Still queued: packet 5 finding 2 (the 0099AF53
 spend), packet 7's note_kill_cause_00926d90 forward and the squadron GetHpPercentage average (007EDC30).
+
+## 5gx. Torpedo wingmen, moveto-self, dive items, dive mode fed (cc9-lua57, landed by cc9-lua58, 2026-10-13)
+
+Four switches, each committed OFF in its own commit, all in `src/game_hosts_units.cpp` (one claim).
+
+**`kTorpedoArmFallthroughReleaseBound` + `kReleaseOrderLeaderBlockBound` (packet `cc9_l57_torpedo_wingmen`, cc13-ver6 3a/3b).**
+The 009D49A0 call now feeds 0099B6A0's inputs (squadron present; unit+900h == 7) and acts on `release_007bbba0` with
+`release_ordnance_007bbba0`. The release-order binding answers the leader block's five virtuals: 007B8AD0, the flight's
+`torpedo_attack_mode_370`, unit+1B0h = `current_roles_01ac[1]`, 00927F10 SUBSTITUTED as player-held (+9 = 0) for a non-8 slot
+(the gunnery host's reading without its participant pools; which record SP slot 0 is stays UNCERTAIN), and the 007EEFD7
+issuer test. Summary line `summary mission torpedo wingmen: fallthrough_releases=N leader_block_orders=M`.
+Predictions: USN21 f, fallthrough releases > 0 and torpedo drops up by 0-12 (bounded by the leaders' order spends);
+leader_block_orders near 0, because an AI flight's role 1 is 8. USN12 and PRCP01: small moves.
+
+**`kSquadronMoveToSelfBound` (packet `cc9_l57_moveto_self`, cc13-ver10 D1).** In `run_spent_ordnance_rtb_0084e010`, after B5,
+`squadron_step_tail_plan_0084e4b1` per squadron, with these stand-ins (LABELLED): stage 2 = the retest ended the command
+(0071E430 ran) or the 009F7C90 end; the queue holds one command; +368h = 0 and +369h = 1. A kMoveToSelfIfRoom outcome, or a
+kResolve whose B5 placed nothing (0084E55B), issues 00E08F68 on each live member with the squadron unit as object target
+(0084E595). A replacing order clears it. Not modelled: the idle head arm after a moveto end clears the class.
+Log line `squadron moveto-self: ...`. Predictions: PRCP01, sqn07 and sqn10 get the moveto-self after their retest ends
+(about 515.80 s and 779.38 s) and loiter over their own position instead of flying the task exit; deaths may move.
+USN21 f: squadrons whose target dies loiter. USN12: identical unless a retest fires.
+
+**`kInRangeDrawBound` and `kFlyAboveLeadDivisorBound` (packet `cc9_l57_dive_items`, cc13-ver9 finding 3, cc13-ver6 finding 4).**
++B8h = U(1.6, 1.8) * class+268h (009C3F9D-009C3FF5, CALL 00BD2F10 at 009C3FB0), key `<name>#b8`; the flyabove altitude arm
+divides by the lead range [ESP+28h] (009C63A6 FSTP, 009C6EB1 FLD), not db_planar_bc. Predictions: the dive in-range latch
+fires 0-12.5% further out (about 130 m on average), aimglide entry about 55 m higher from that, and the flyabove hand-over
+45-80 m lower from finding 4; dive releases +0-2 on USN21 f, LOMP10, JM08 f; USN04 small.
+
+**`kDiveAttackModeFedBound` (packet `cc9_l57_dive_mode_fed`, item 6).** The dive arm reads `slot.db_attack_mode_370` (1, the
+leader's 0099B740 store; the block init at 007F2DC1 is also 1) instead of the pinned 2, so `engaged` collapses to the
+in-range latch (009C83F8). Everything the failed E2 lacked is now ON or wired (placement off, follow law, hold arm, fly-to
+speed stores, the 1300 m cap). Predictions: no host-only 16-18 km attackrun; flights stay in moveto/follow until 1.6-1.8 r,
+then flyabove; the 30 USN21 dive deaths on the attackrun leg move into follow/flyabove; releases move from the aimdive gate
+to the latch path, direction unknown; USN04 water contacts must not rise above the pinned row (E2 failed on 16 -> 24).

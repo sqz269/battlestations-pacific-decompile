@@ -1527,6 +1527,10 @@ struct GameUnitSlot {
     // (009D3245), [2] the leader's range test 009D325B.
     int torpedo_blocked_clause[3]{0, 0, 0};
     int torpedo_blocked_by_arm{0};
+    // Packet cc9_l57_torpedo_wingmen: 0099B6CD's 007BBBA0 through the 009D49DA
+    // fallthrough, and the members 007EEFDD gave one order (leader block).
+    int torpedo_fallthrough_releases{0};
+    int torpedo_leader_block_raised{0};
     // unit+C58h, the queued release-order count BSP_PilotBot_Tick 0099ACD0
     // spends at 0099AF81 by offering it to each task's vtable +24h. Its raiser
     // was not found: contract: unread, so it stays at zero here.
@@ -19046,6 +19050,34 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                         }
 
+                        // Packet cc9_l57_torpedo_wingmen (cc13-ver6 finding 3b,
+                        // read under kReleaseOrderLeaderBlockBound): the guards of
+                        // 007EEF96-007EEFC3 and the member walk's 007EEFD7 test.
+                        bool issuer_is_flight_leader_007eef9c() override {
+                            return owner_.unit_is_flight_leader_007b8ad0(
+                                slot_.process_index);
+                        }
+                        // ctl+370h, the squadron's: 0099B740's leader copy puts
+                        // the leader's mode on every member slot.
+                        int attack_mode_370() override {
+                            return static_cast<int>(slot_.torpedo_attack_mode_370);
+                        }
+                        // unit+1B0h is +1ACh role 1 (00928630 fills 8).
+                        int issuer_party_slot_1b0() override {
+                            return slot_.current_roles_01ac[1];
+                        }
+                        // SUBSTITUTION: 00927F10 reads +9 of the party slot record,
+                        // which this host does not reach from here. A non-8 slot is
+                        // taken as player-held (+9 = 0, the player records 004BB2D0
+                        // clears), the same reading the gunnery host uses without
+                        // its participant pools. UNCERTAIN which record SP slot 0 is.
+                        bool party_slot_byte_9_00927f10(int /*slot*/) override {
+                            return false;
+                        }
+                        bool controlled_unit_is_issuer(int index) override {
+                            return controlled(index) == &slot_;   // 007EEFD7 CMP ECX,EBP
+                        }
+
                        private:
                         // ctl+3D0h[index], in array order, skipping a wing whose
                         // record never became a unit so the index matches the
@@ -27156,10 +27188,21 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 bsp::kTorpedoEngageRangeScale_00d05ac8;
                             arm.engaged.engage_range_limit_488 =
                                 unit_.torpedo_engage_limit_90;
+                            // Packet cc9_l57_torpedo_wingmen (cc13-ver6 finding
+                            // 3a, read under kTorpedoArmFallthroughReleaseBound):
+                            // 0099B6A3 task+2FCh, the squadron block, and 0099B6C5
+                            // (unit+72Ch)->vt[38h] = 0074E210, unit+900h == 7.
+                            arm.has_squadron_2fc = bsp::plane_squadron_registry()
+                                .find_by_member_unit(unit_.process_index) != nullptr;
+                            arm.unit_free_flight_72c = unit_.plane_control_mode_900 == 7;
                             const bsp::TorpedoArmResult ar =
                                 bsp::torpedo_arm_drop_009d49a0(arm);
                             if (ar.armed) {
                                 unit_.torpedo_drop_timer = ar.prepare_timer;
+                            }
+                            if (ar.release_007bbba0) {
+                                owner_.release_ordnance_007bbba0(unit_);   // 0099B6CD
+                                ++unit_.torpedo_fallthrough_releases;
                             }
                             if (ar.consumed) --unit_.torpedo_release_orders_c58;
                         }
@@ -27756,6 +27799,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         ++unit_.torpedo_orders_issue_ticks;
                         unit_.torpedo_orders_issued += r.units_raised;
+                        unit_.torpedo_leader_block_raised += r.leader_block_raised;
                     }
 
                     // 0099B740, the tail of the torpedo task's +54h cruise
@@ -39047,6 +39091,7 @@ void GameUnitsHost::report() {
             int blocked_engaged = 0;
             int blocked_arm = 0;
             int blocked_clause[3] = {0, 0, 0};
+            int wing_fallthrough = 0, wing_leader_block = 0;
             for (const auto& slot : host.slots) {
                 if (!slot->torpedo_task_installed) continue;
                 ++tasked;
@@ -39054,6 +39099,8 @@ void GameUnitsHost::report() {
                 releases_dead += slot->torpedo_releases_dead;
                 blocked_engaged += slot->torpedo_blocked_by_engaged;
                 for (int k = 0; k < 3; ++k) blocked_clause[k] += slot->torpedo_blocked_clause[k];
+                wing_fallthrough += slot->torpedo_fallthrough_releases;
+                wing_leader_block += slot->torpedo_leader_block_raised;
                 blocked_arm += slot->torpedo_blocked_by_arm;
                 char states[192];
                 int used = 0;
@@ -39376,6 +39423,12 @@ void GameUnitsHost::report() {
                     "engaged_refusals no_target=%d member=%d range=%d",
                     tasked, releases_total, blocked_engaged, blocked_arm,
                     blocked_clause[0], blocked_clause[1], blocked_clause[2]);
+                if constexpr (bsp::kTorpedoArmFallthroughReleaseBound ||
+                              bsp::kReleaseOrderLeaderBlockBound) {
+                    host.log.notef("summary mission torpedo wingmen: fallthrough_releases=%d "
+                        "(0099B6CD) leader_block_orders=%d (007EEFDD, packet "
+                        "cc9_l57_torpedo_wingmen)", wing_fallthrough, wing_leader_block);
+                }
                 // Packet cc9_torpedo_release_counter: `releases` above is task-level
                 // and counts dead aircraft, which spawn nothing. The rounds in the
                 // water are the gunnery host's `torpedo_drop drops`.
