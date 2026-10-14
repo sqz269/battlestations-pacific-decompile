@@ -1,0 +1,45 @@
+{
+  "schema": "cc12.native-sampler-stage-consumption.v1",
+  "verified_utc": "2026-10-14T19:08:04.254015+00:00",
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "region": {
+    "address": "00B434A0",
+    "length": 144,
+    "saved_ghidra_matches_disk": true,
+    "sha256": "a8827d7b7f59e842cafe2b08df51bd6206d6fc129e5ffa83b68cc34e973cfce9",
+    "cli_receipt": "local\\cc12_sampler_stage_consumer_bytes.txt",
+    "cli_receipt_sha256": "27925d6976fd4a49a1f2f9ef83bb7bc0986014f2528b85f4cad4c7fe99924419"
+  },
+  "stage_reads": [
+    {
+      "address": "00B434B4",
+      "width": "byte",
+      "operation": "skip disabled pixel texture when stage==0"
+    },
+    {
+      "address": "00B434F3",
+      "width": "byte",
+      "operation": "select vertex16+ or pixel slot for renderer130/B24710"
+    }
+  ],
+  "selector_read": {
+    "address": "00B434BE",
+    "width": "signed DWORD",
+    "offset": "row+0"
+  },
+  "existing_source": "src/native_material_pass_execution.cpp:253-287",
+  "copy": "copy_native_material_pass_pairs_00b41e80 copies full8-byte rows, including upper24; this does not consume their meaning",
+  "retirement": "B5F3F0 frees pair storage; no stage-field interpretation in existing Source",
+  "limits": [
+    "Bounded draw-texture loop only, not an exhaustive whole-program alias/memory consumer audit",
+    "No native draw/GPU execution",
+    "No claim that every upper24 value is interchangeable in all original paths",
+    "Current strict complete-word acquisition interface remains unchanged"
+  ],
+  "next_action": "Analyze every reachable pair consumer before choosing any separate defined-stage Source representation; retain original strict raw/captured-word path and pair alias contract",
+  "source_changes": false,
+  "ghidra_mutations": 0
+}

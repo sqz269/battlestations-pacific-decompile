@@ -1,0 +1,311 @@
+{
+  "packet": "cc12_native_main_scene_execution_prefix",
+  "utc": "2026-10-14T19:06:12.336625+00:00",
+  "base_commit": "c216489abbf9e38841d37774ae62cdec690a317c",
+  "scope": "Genuine B156C0 entry through B1586C only; complete B0DB00 history, 005803E0 lerp, B1BF40/B6FE60 raw leaves. Ends before texture stage B1586D; no whole command success or application route.",
+  "native_identity": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "bodies": [
+      {
+        "name": "history",
+        "address": "00b0db00",
+        "bytes": 3621,
+        "sha256": "a7d8eddc6289f89c17c0ac552f09342a055311e7ec81d6f202ac39adb0eb4897",
+        "saved_ghidra_matches_disk": true
+      },
+      {
+        "name": "lerp",
+        "address": "005803e0",
+        "bytes": 177,
+        "sha256": "5d1e261017d2e89178b5dc8acf6329a6cb02deea71a8abe043368dae8a92de9d",
+        "saved_ghidra_matches_disk": true
+      },
+      {
+        "name": "prefix",
+        "address": "00b156c0",
+        "bytes": 429,
+        "sha256": "222683590195ebb81cdd635e0ef2c1c26f2d9801b7686d4dd34f05e4ab7b7f24",
+        "saved_ghidra_matches_disk": true
+      }
+    ],
+    "constants": [
+      {
+        "name": "near_word",
+        "address": "00ce3800",
+        "bytes": "0000003f",
+        "value": 0.5
+      },
+      {
+        "name": "reset_word",
+        "address": "00ce3930",
+        "bytes": "0000a041",
+        "value": 20.0
+      },
+      {
+        "name": "one_word",
+        "address": "00d7a24c",
+        "bytes": "0000803f",
+        "value": 1.0
+      },
+      {
+        "name": "direction_scale",
+        "address": "00cec9e0",
+        "bytes": "000000000000e0bf",
+        "value": -0.5
+      }
+    ]
+  },
+  "original_abi": {
+    "00b156c0": "ECX actual service, stack command, RET4. New persistent external continuation record and explicit borrowed context; not original ABI.",
+    "00b0db00": "ECX actual history, stack time bits and actual camera, RET8. Source EDX context and extra saved EBP; only public argument offsets move4.",
+    "005803e0": "ECX outputXYZ, EDX oldXYZ, target/fraction words on stack, RET8, EAX output. Original first public argument slot overwritten after pointer capture.",
+    "00b1bf40": "ECX command, RET, EAX current [[command+28]+08].",
+    "00b6fe60": "ECX camera, stack outputDWORD, RET4, EAX output. Copies actual camera+190."
+  },
+  "evidence": {
+    "history": "Complete3621byte817instruction actual history schedule: distance restart; eight-sample slide; world/FOV/time capture; original time-search/fraction clamps/unordered cases; rounded lerp, sqrt/normalize/cross; raw projection/inverse/product; final result and previous-position stores.",
+    "prefix": "Current actual D5F0A8 slot2C:B1FE20 frame-active gate; original repeated current camera getters; near capture/set0.5; clear-color capture/highbyteFF; actual axes and normalized velocity dot products; current clock+4; full history on service+314; history matrix copy to+5A8; current VP inverse/copy to+5E8.",
+    "x87_operand_recovery": "B157EA bytes DC C9 write ST1 rather than ST0. All one-register arithmetic translations use verified opcode direction; first differential mismatch drove correction.",
+    "raw_domains": "Uses same canonical actual camera/CRT/constants through concrete raw leaves, no callback-only renderer or fabricated callable table. Context identity checks are source-domain admission only.",
+    "lifetime": "No B156C0 cleanup state armed before this boundary. Near-plane and service/history mutations persist. Fresh external state and actual domains must survive genuine future continuation; no rollback invented.",
+    "ghidra_annotation_receipt": "local/ghidra-annotations-20261014T190307Z.json",
+    "ghidra_exports_refreshed": [
+      "00b0db00",
+      "005803e0",
+      "00b156c0",
+      "00b1bf40",
+      "00b6fe60"
+    ],
+    "prior_packet_receipt": {
+      "commit": "3ccc58cbf2c776134d42cf17467f5c77ec8b719f",
+      "path": "local/main_scene_receipt_3ccc58cbf/receipt.json",
+      "artifacts_verified_unchanged": 15,
+      "includes_exact_old_core_library": true
+    }
+  },
+  "validation": {
+    "strict_compile": "PASS both new units: MSVC Win32 /MD /std:c++17 /EHsc /permissive- /W4 /WX /O2 /fp:strict",
+    "strict_real_callee_link": "PASS explicit new objects against fresh real bsp_core.lib and real dependencies; /MANIFEST:EMBED link probe launched.",
+    "standard_build": "PASS scripts/build.ps1 Release Win32; 3/3 reconstructed_math/native_math_differential/tool_tests",
+    "standard_build_scope": "Primary owns permanent TU registration; new units checked by separate strict compile/link. Standard build checks existing registered closure.",
+    "x87_audit": {
+      "result": "PASS",
+      "checks": [
+        {
+          "listing": "local/main_scene_execution/native_camera_history.asm",
+          "tagged_original_x87_instructions_checked": 648,
+          "coverage": "all address-tagged unchanged x87 instructions; context-bound constant loads and shifted public time argument are separately reviewed",
+          "address_set_sha256": "ac7879935af8664c1b30478e5b146969506ae02928b191938c4e0c14ef081338"
+        },
+        {
+          "listing": "local/main_scene_execution/native_main_scene_execution_prefix.asm",
+          "tagged_original_x87_instructions_checked": 41,
+          "coverage": "all address-tagged unchanged x87 instructions; context-bound constant loads and shifted public time argument are separately reviewed",
+          "address_set_sha256": "63a15b3d5448d62b784077acb1c9b5434e4402f951fda95d3de00d223d72f903"
+        }
+      ],
+      "recovered_ambiguity": "B157EA bytes DC C9 writes ST1, not ST0; retained in Source. All one-register arithmetic operands use verified opcode direction."
+    },
+    "native_fixture": "PASS23 service/camera byte comparisons: rebased original B156F6..B1586C plus complete original B0DB00/005803E0 vs source prefix/history. Same established raw camera/math/CRT callees with explicit source-context/argument bridges.",
+    "native_fixture_cases": [
+      "11 rolling-history frames including full eight-sample slide",
+      "1 zero-delay unordered case",
+      "11 world-refresh and reset-distance frames"
+    ],
+    "source_fixture": "PASS source inactive-frame exit and near/color/continuation state checks.",
+    "native_fixture_limits": "Original renderer gate excluded; not full B156C0. CRT dispatch bypass byte1 and ordinary masked FP environment. No CRT exception/callback branch, FP status/stack identity, original EH/SEH or arbitrary stack-alias proof.",
+    "fixture_log": "PASS 23 original/source prefix+full-history comparisons: rolling8, zero-delay unordered, reset-distance and world refresh; source inactive gate and continuation fields",
+    "new_persistent_tests": 0
+  },
+  "execution_admission": {
+    "profile": "00d5e13c",
+    "admitted": false,
+    "complete_enclosing_function": false,
+    "next_native_address": "00b1586d",
+    "requires": [
+      "Actual B17240 preparation",
+      "B156C0 texture-holder/dimensions and concrete remaining target/constants/batch/material/post-effect/cockpit/distortion/stats stages",
+      "Queue execution domain admission after genuine body/domain closure"
+    ]
+  },
+  "unproved": [
+    "Whole command execution",
+    "Original ABI/FH3/SEH and private stack aliases",
+    "General floating traps, FP status/stack identity and throwing CRT across naked helpers",
+    "Actual application scene/camera production and invocation",
+    "Visible world or gameplay equivalence"
+  ],
+  "artifacts": [
+    {
+      "path": "src/native_camera_history.cpp",
+      "bytes": 42252,
+      "sha256": "d30bab10069cd9770e1ba2a8427fda3e8e946526a3139174b78242fbbfd00eda"
+    },
+    {
+      "path": "include/bsp/native_camera_history.hpp",
+      "bytes": 1907,
+      "sha256": "21819adeedf4a59b90b54c2607fba2cb1df0b34f5cb3be0b180a12af758955a1"
+    },
+    {
+      "path": "src/native_main_scene_execution_prefix.cpp",
+      "bytes": 8905,
+      "sha256": "47517b44849dce16be9c06e8fb3b86a3d79306f360de750abdccee7d5128c0db"
+    },
+    {
+      "path": "include/bsp/native_main_scene_execution_prefix.hpp",
+      "bytes": 2566,
+      "sha256": "20177406ffcc67424fc4cb23247f1b2404791bcb1af16119cdc1c12ff6676e83"
+    },
+    {
+      "path": "docs/NATIVE_MAIN_SCENE_EXECUTION_PREFIX_CC12.md",
+      "bytes": 8933,
+      "sha256": "77d27fbc0b53b1aaede32035bc3a8433f1162dc1a860efa56e4dbfe4d9f4ce81"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 90961450,
+      "sha256": "61818b5cbf0b334ead0a127b40f505df574c3a2421b494462630ac78ff8f111e"
+    },
+    {
+      "path": "local/main_scene_receipt_3ccc58cbf/receipt.json",
+      "bytes": 5040,
+      "sha256": "949e8c5eaa30fdfa8ba69e95cbbc9792419bc4f07b945a5a77df17cc11ef7e9f"
+    },
+    {
+      "path": "local/ghidra-annotations-20261014T190307Z.json",
+      "bytes": 7430,
+      "sha256": "5c6387a6234d10e1a8b99e01565968dc62acd0101abdf717c819d5eb0302da6c"
+    },
+    {
+      "path": "local/main_scene_execution/native_camera_history.obj",
+      "bytes": 7077,
+      "sha256": "22baea6d710978e1c456204021e49924ac738d8b5a79e2b689d89123cadfee81"
+    },
+    {
+      "path": "local/main_scene_execution/native_camera_history.asm",
+      "bytes": 105388,
+      "sha256": "a1c3fcc34ef6f3e976b21313affa36bba832b505c816ac379150009808872daa"
+    },
+    {
+      "path": "local/main_scene_execution/native_main_scene_execution_prefix.obj",
+      "bytes": 11557,
+      "sha256": "586ed58111ec5de6ddf77d31292655453f905a7251488bf725159bdb95fe08ef"
+    },
+    {
+      "path": "local/main_scene_execution/native_main_scene_execution_prefix.asm",
+      "bytes": 48675,
+      "sha256": "576cdf94422432245b69147f06a95aaba859c9fa1e17892d7c4b944cb76a0192"
+    },
+    {
+      "path": "local/main_scene_execution/strict_compile.log",
+      "bytes": 67,
+      "sha256": "8b2abebfe266b460e696948a0f66f5a3e1929b1d26414081c0cee60be8893144"
+    },
+    {
+      "path": "local/main_scene_execution/strict_link.log",
+      "bytes": 16,
+      "sha256": "9107f09f9eea6bcc36b193451cb12d6b097bbc454c3dc7619438d3b4db6b9286"
+    },
+    {
+      "path": "local/main_scene_execution/link_probe.cpp",
+      "bytes": 388,
+      "sha256": "b7608fd608364907fc42d6b0522112f58bf73692d7853a51ed5c111b0c909d48"
+    },
+    {
+      "path": "local/main_scene_execution/link_probe.obj",
+      "bytes": 2505,
+      "sha256": "924ec3acc4705366cc8f82621b5d1a6c215668b877d68aaaacd0b224f1f1be9f"
+    },
+    {
+      "path": "local/main_scene_execution/link_probe.exe",
+      "bytes": 31232,
+      "sha256": "9f1518ffe3ae5dec768f8d59bbd1b0fadeada0a1dba97865c97c1873d3c42e90"
+    },
+    {
+      "path": "local/main_scene_execution/build.log",
+      "bytes": 3653,
+      "sha256": "3cd0c4ed17a58e74f7baf8927c995a296a76a2040c56bfe46a409fade707554a"
+    },
+    {
+      "path": "local/main_scene_execution/execution_probe.cpp",
+      "bytes": 10851,
+      "sha256": "df70a05e53bfba887399984ddd3959295be0d8d6e3277e190c10d023d0405c52"
+    },
+    {
+      "path": "local/main_scene_execution/execution_probe.obj",
+      "bytes": 31011,
+      "sha256": "51d0e8d9756f82a41874dfa5abb7eaab1fa79e9410f700ee5f21934d290367dd"
+    },
+    {
+      "path": "local/main_scene_execution/execution_probe.exe",
+      "bytes": 43520,
+      "sha256": "af713ca47c9e007e20cbd47093428b82a245fff40f0242b0961a287fc850a816"
+    },
+    {
+      "path": "local/main_scene_execution/execution_compile.log",
+      "bytes": 21,
+      "sha256": "f5fbf3b8c9724d0447054d0b8a15011bf261f7eaa058c953f3f0e6ef416077eb"
+    },
+    {
+      "path": "local/main_scene_execution/execution_probe.log",
+      "bytes": 169,
+      "sha256": "6514e0135f0354924bdce73930fd8a557803168743daa50b59a5600d24b67453"
+    },
+    {
+      "path": "local/main_scene_execution/original_bytes.inc",
+      "bytes": 22328,
+      "sha256": "f836fe0728a52d6eef680fd674b7dba53d896ddec26af232596d5775b69ce64c"
+    },
+    {
+      "path": "local/main_scene_execution/make_fixture_bytes.py",
+      "bytes": 2730,
+      "sha256": "419b99d3d48b3231e4bd366ef77de9ad02627558ba5375b23730ab8c90e3a58f"
+    },
+    {
+      "path": "local/main_scene_execution/generate_source.py",
+      "bytes": 11635,
+      "sha256": "45f386d1639a437337fb07383ffcbb33ab912b99eb84377fb8e5ab4b79463b29"
+    },
+    {
+      "path": "local/main_scene_execution/history.bin",
+      "bytes": 3621,
+      "sha256": "a7d8eddc6289f89c17c0ac552f09342a055311e7ec81d6f202ac39adb0eb4897"
+    },
+    {
+      "path": "local/main_scene_execution/lerp.bin",
+      "bytes": 177,
+      "sha256": "5d1e261017d2e89178b5dc8acf6329a6cb02deea71a8abe043368dae8a92de9d"
+    },
+    {
+      "path": "local/main_scene_execution/prefix.bin",
+      "bytes": 429,
+      "sha256": "222683590195ebb81cdd635e0ef2c1c26f2d9801b7686d4dd34f05e4ab7b7f24"
+    },
+    {
+      "path": "local/main_scene_execution/byte_receipt.json",
+      "bytes": 1284,
+      "sha256": "4076085fef00553ab4e33f404c2f0fb7e7eb9e860fc757a9113adbf5df744079"
+    },
+    {
+      "path": "local/main_scene_execution/audit_x87.py",
+      "bytes": 1845,
+      "sha256": "c53f12141fb9cf8ea5fa4a4712b9414009bdfa1107a240da653ac0b7557e17d1"
+    },
+    {
+      "path": "local/main_scene_execution/x87_audit.json",
+      "bytes": 1007,
+      "sha256": "1e025ea8aa9b054ad0057cfe036570935b81bed89388134d8f4688c7f8e83bc7"
+    },
+    {
+      "path": "local/main_scene_execution/annotation.log",
+      "bytes": 374,
+      "sha256": "c2997df2417ddff2bbe5e6bf165a2a6dfd58146159a52e873895b3691bf4a7a5"
+    },
+    {
+      "path": "local/main_scene_execution/ledger.log",
+      "bytes": 2578,
+      "sha256": "ff4daaf7af1c2be6bb94372250d2849de89b45083ae97a622b6b02956ec43802"
+    }
+  ]
+}
