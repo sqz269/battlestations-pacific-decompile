@@ -1255,6 +1255,16 @@ constexpr bool kHullElementSegmentBound = true;
 //    docs/AA_LETHALITY_AUDIT.md section 9.5.
 //    Packet cc9_plane_mesh_hit.
 constexpr bool kPlaneMeshHitTestBound = true;
+//  * kPlaneSpinSideBound: packet g43_plane_spin_side (GUNNERY 238; physics8's R4
+//    gap, docs/OCEAN_WAVE_FIELD.md). 007BBCF0 (plane vtable +ECh, the hit record
+//    handler) copies [[hit+38h]+4h], the hit element's kind, into unit+800h when
+//    hit+34h != -1 (CC13_GPR_47 1.4); 007CFDB4 (the constructor) seeds -1, and
+//    007CA8A0 spins left on 0 (lwing) and right on 1 (rwing). ON: the plane mesh
+//    trace walks the GeomMesh elements as for a ship (00723D60) and a direct hit
+//    stores the closest element's kind as the plane's spin side, which the units
+//    host passes to 007CA8A0. LABELLED: the plane record still carries 0Ah / -1,
+//    so the plane damage path is unchanged. OFF: the side stays -1.
+constexpr bool kPlaneSpinSideBound = false;
 //  * kLandStructureMeshHitTestBound: a shell's direct-hit test against a LAND
 //    STRUCTURE (IsKindOf 1Bh: MLandFort, MCommandBuilding) uses the triangles of
 //    its model's GeomMesh, as kPlaneMeshHitTestBound does for a plane. 0087BCC0
@@ -3106,6 +3116,12 @@ struct GameGunneryHost::Impl {
     // segment query returned, set by run_projectiles around apply_hit only.
     int impact_shape_kind{0x0A};
     int impact_hull_segment{-1};
+    // kPlaneSpinSideBound: the element kind the last plane mesh trace of a unit
+    // found (-1 for none), and unit+800h per unit (-1 from 007CFDB4).
+    std::vector<int> plane_trace_element_kind;
+    std::vector<int> plane_spin_side_800;
+    unsigned long long plane_spin_side_sets{0};
+    unsigned long long plane_spin_side_by_kind[4]{0, 0, 0, 0};
     // The repair task at unit+A20h, as far as this host models it (0093BCC0):
     // the two timers and the per-class inputs of 0093CA20.
     struct DamageControl {
@@ -9165,8 +9181,11 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
         int best_index = kDirectHitHullSegment;
         // A plane's or a land structure's record keeps 0Ah / -1 (see the switches).
         const bool ship_model = model == owner_.ship_mesh_of(index);
-        const bool by_element = kHullElementSegmentBound && !model->element_tris.empty()
-            && ship_model;
+        // kPlaneSpinSideBound: a plane's trace walks its elements too (00723D60).
+        const bool plane_elements = kPlaneSpinSideBound && !ship_model
+            && !model->element_tris.empty() && model == owner_.plane_mesh_of(index);
+        const bool by_element = (kHullElementSegmentBound && !model->element_tris.empty()
+            && ship_model) || plane_elements;
         const auto& tri = by_element ? model->element_tris : model->tris;
         for (std::size_t n = 0; n + 2 < tri.size(); n += 3) {
             const auto& a = tri[n];
@@ -9206,8 +9225,18 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
         point.z = wf[2] + (wt[2] - wf[2]) * best;
         bsp::shape_hit_fill_0087fec0(record, point, entity);
         // 00723F62 / 00723F6C with the element bound; 0Ah / -1 otherwise.
-        record.shape_kind = best_kind;
-        record.hull_segment = best_index;
+        if (plane_elements) {
+            // LABELLED: the plane record keeps 0Ah / -1; the element kind is kept
+            // aside for 007BBCF0's unit+800h store.
+            if (owner_.plane_trace_element_kind.size() <= index) {
+                owner_.plane_trace_element_kind.resize(index + 1, -1);
+            }
+            owner_.plane_trace_element_kind[index]
+                = best_index != kDirectHitHullSegment ? best_kind : -1;
+        } else {
+            record.shape_kind = best_kind;
+            record.hull_segment = best_index;
+        }
         bsp::hit_record_set_entity_00470370(record, entity);
         hit_unit = index + 1;
         hit_landscape = 0;
@@ -10075,6 +10104,26 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
                     if (record.shape_kind == bsp::kShipHitSegmentKindBreakable) {
                         ++element_hits_fizika;
                     }
+                }
+            }
+            if constexpr (kPlaneSpinSideBound) {
+                // 007BBCF0: hit+34h != -1 -> unit+800h = [[hit+38h]+4h], before
+                // 008777D0 applies the damage.
+                const std::size_t victim = query.hit_unit - 1;
+                if (victim < plane_trace_element_kind.size()
+                    && plane_trace_element_kind[victim] >= 0
+                    && units.unit_is_kind_of(victim, 0x0f)) {
+                    if (plane_spin_side_800.size() <= victim) {
+                        plane_spin_side_800.resize(victim + 1, -1);
+                    }
+                    const int kind = plane_trace_element_kind[victim];
+                    plane_spin_side_800[victim] = kind;
+                    ++plane_spin_side_sets;
+                    if (kind < 4) ++plane_spin_side_by_kind[kind];
+                    done("Plane::hit_record_spin_side_007bbcf0", 0x007bbcf0u);
+                }
+                if (victim < plane_trace_element_kind.size()) {
+                    plane_trace_element_kind[victim] = -1;
                 }
             }
             apply_hit(shot.owner_unit - 1, shot.gun_row, query.hit_unit - 1, point,
@@ -14157,6 +14206,11 @@ bool GameGunneryHost::damage_smoke_tick_008227e0(std::size_t unit_index, float d
     return true;
 }
 
+int GameGunneryHost::plane_spin_side_800(std::size_t unit_index) const {
+    if (!kPlaneSpinSideBound || unit_index >= impl_->plane_spin_side_800.size()) return -1;
+    return impl_->plane_spin_side_800[unit_index];
+}
+
 float GameGunneryHost::death_mode_draw_00bd2f10(int stream, std::size_t unit_index,
     float low, float high) {
     // Stream 1 is the shared generator, exactly as ship_ai_draw uses it; under the
@@ -15508,6 +15562,11 @@ void GameGunneryHost::report() {
             "bound=%d (007BBCF0 -> 00999AA0 -> 009D3270, packet cc9_plane_hit_task_notify)",
             host.plane_hit_records, host.plane_hit_notices, host.plane_hit_notices_taken,
             kPlaneHitTaskNotifyBound ? 1 : 0);
+        host.log.notef("summary mission gunnery plane spin side sets=%llu lwing=%llu rwing=%llu "
+            "fuselage=%llu engine=%llu bound=%d (007BBCF0 unit+800h, packet g43_plane_spin_side)",
+            host.plane_spin_side_sets, host.plane_spin_side_by_kind[0],
+            host.plane_spin_side_by_kind[1], host.plane_spin_side_by_kind[2],
+            host.plane_spin_side_by_kind[3], kPlaneSpinSideBound ? 1 : 0);
         host.log.notef("summary mission gunnery director stance sets=%llu (stance 0/1/2/3 "
             "%llu/%llu/%llu/%llu) fire_forbidden_pushes=%llu move_forbidden_reads=%llu bound=%d "
             "(0071BE80 / 0071D560 / 0071D580 / 008624C0, packet cc9_ship_fire_stance)",

@@ -17842,8 +17842,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                 //   00BD2F10: stream 1 (selection) is the shared generator,
                 //   stream 0 (delay) a separate one whose seed is not reproduced;
                 // * unit+DFCh (rammed by a unit) is clear, since this host has no
-                //   ram hit, and unit+800h stays at 007CFDB4's -1, since its hits
-                //   carry no hull segment, so neither spin is reachable;
+                //   ram hit; unit+800h is 007BBCF0's last element kind from the
+                //   gunnery host (kPlaneSpinSideBound), else 007CFDB4's -1;
                 // * the 007D0B80 message is delivered in the same step.
                 if constexpr (GameUnitsHost::Impl::kPlaneDeathModesBound) {
                     GameGunneryHost* const gun_host = host.gunnery.get();
@@ -17858,7 +17858,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         din.draw = slot.plane_water_powerlost_raised ? -1.0f
                             : gun_host->death_mode_draw_00bd2f10(1, index, 0.0f, 1.0f);
                         din.rammed_dfc = false;
-                        din.spin_side_800 = -1;
+                        din.spin_side_800 = gun_host->plane_spin_side_800(index);
                         if (host.lua.plane_globals_loaded()) {
                             const bsp::GameTuningBlock& g = host.lua.plane_globals();
                             din.chance_explosion = g.death_mode_chances_explosion;
