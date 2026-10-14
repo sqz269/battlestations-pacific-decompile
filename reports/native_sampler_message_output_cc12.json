@@ -1,0 +1,47 @@
+{
+  "packet": "cc12_sampler_message_output",
+  "verified_utc": "2026-10-14T19:33:19.224723+00:00",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "original_binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "body": {
+    "start": "00BECCD0",
+    "end_inclusive": "00BECD36",
+    "bytes": 103,
+    "saved_ghidra_matches_disk": true,
+    "sha256": "fb8d69fd84a258f76f7fe1a491fc89db03aa373d8aa24fa0e58051b517e67278",
+    "receipt": "local\\cc12_sampler_message_output_bytes.txt",
+    "receipt_sha256": "0dd11b83b76db2a09ab246624df68502510efa798f64ded7631bf0c2665b7531"
+  },
+  "original_schedule": [
+    "BECCD0 reserves 1Ch unwritten local output storage; no MSG input or copy",
+    "BECCF8 supplies that storage to the real PeekMessageA call at BECCFD",
+    "BECD06 zero-result exit reaches cursor/focus without reading MSG",
+    "BECD0D/1B/22 XLive/Translate/Dispatch consume only successful actual output"
+  ],
+  "source_change": "Optional captured preimage metadata; absent capture leaves MSG unwritten and adds no value/default. Existing const MSG& aggregate callers convert through the wrapper.",
+  "source": [
+    "include/bsp/native_platform_load_messages.hpp",
+    "include/bsp/native_sampler_cache_entry.hpp",
+    "src/native_sampler_cache_entry.cpp"
+  ],
+  "unchanged": [
+    "real Win32 transport and result guard",
+    "actual platform/input/online/XLive services",
+    "persistent failed-frame ownership",
+    "shared sampler-word unknown guard"
+  ],
+  "validation": {
+    "original_bytes": "PASS103",
+    "source_build": "pending combined primary build",
+    "new_tests": 0
+  },
+  "limits": [
+    "No original stack/ABI identity",
+    "No current GUI/effect invocation",
+    "No world pixels or gameplay result"
+  ],
+  "ghidra_mutations": 0,
+  "game_validated": false
+}
