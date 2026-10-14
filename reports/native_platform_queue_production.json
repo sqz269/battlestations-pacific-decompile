@@ -1,0 +1,498 @@
+{
+  "status": "raw_source_queue_production_strict_win32_current_fixture_passed",
+  "updated_utc": "2026-10-14T22:53:38.063452+00:00",
+  "baseline_commit": "e20f1b31bac3338fe006f4a222fa2119edc75d1b",
+  "source": "src/native_platform_construction.cpp",
+  "header": "include/bsp/native_platform_construction.hpp",
+  "documentation": "docs/NATIVE_PLATFORM_QUEUE_PRODUCTION.md",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "functions": [
+    {
+      "address": "00bec7b0",
+      "bytes": 53,
+      "source_symbol": "create_native_text_queue_node_00bec7b0",
+      "ghidra_name": "BSP_TextQueue_CreateNode",
+      "original_abi": "Three stack arguments next, previous, two-byte event pointer; ECX/EDX unconsumed; EAX node; RET0Ch.",
+      "behavior": "Actual12B canonical CRT node. Three independent pointer tests include wrapped +4/+8 addresses; WORD load/store at+8, +0A/+0B untouched. Exact53-byte COFF/linked code except one allocation operand to real Source CRT bridge.",
+      "reconstructed": true,
+      "build_tested": true,
+      "fixture_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00bed290",
+      "bytes": 147,
+      "source_symbol": "increase_native_text_queue_count_00bed290",
+      "ghidra_name": "BSP_TextQueue_IncreaseCount",
+      "original_abi": "ECX actual0Ch queue header; increment stack; EDX unconsumed; EAX updated count; RET4.",
+      "behavior": "Capture volatile count+8 once. Unsigned(7fffffff-count)<increment throws before update; accepted addition wraps32. Actual legacy SBO16-byte message and28h exception owner via current NativeAliasListLengthError transport; completed-message cleanup armed only after assignment. New Source RTTI/catch/EH, not Original D83F98/FH3 ABI.",
+      "reconstructed": true,
+      "build_tested": true,
+      "fixture_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00bed370",
+      "bytes": 50,
+      "source_symbol": "append_native_text_queue_00bed370",
+      "ghidra_name": "BSP_TextQueue_Append",
+      "original_abi": "ECX actual embedded+174h queue header; event pointer stack; EDX unconsumed; RET4.",
+      "behavior": "Capture sentinel and its previous link before allocation; allocate, increase count1, store captured sentinel.previous, reload created-node.previous then store old-last.next. No local EH/free/RAII: count failure retains unlinked node. Exact50-byte COFF/linked code except two real Source callee operands.",
+      "reconstructed": true,
+      "build_tested": true,
+      "fixture_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "prior_construction_and_retirement_bodies_preserved": true,
+  "original_bytes": {
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00bec7b0",
+        "bytes": 53,
+        "sha256": "e589bb25ddabd90c27747866f9e2611b247a90ed4c5cbebd51edd2d0f10c1b6c",
+        "live_equals_pe": true,
+        "saved_listing_equals_live": true
+      },
+      {
+        "address": "00bed290",
+        "bytes": 147,
+        "sha256": "78a25bb0ae803ab95e253bcf8b8c61282099a84ea41392345a9c1c89ae4c8790",
+        "live_equals_pe": true,
+        "saved_listing_equals_live": true
+      },
+      {
+        "address": "00bed370",
+        "bytes": 50,
+        "sha256": "41630ec9d826fd52f9e3226df16ce7890b7ddc00eb963367b85bbdb4045f59a8",
+        "live_equals_pe": true,
+        "saved_listing_equals_live": true
+      },
+      {
+        "address": "00cc74a0",
+        "bytes": 18,
+        "sha256": "9fd2351bbd41265c29a43d0fbf4f8edd318356b0f6acce594681d512a03ef5de",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00e01fe4",
+        "bytes": 44,
+        "sha256": "e106a22ead450329af52a117b876676c81812a685915ac1ff3f3dd3f40888c8d",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00d83f98",
+        "bytes": 16,
+        "sha256": "0fb86056d0dd63b9d5d9391ccdcf486f97d3557596015202ea2e40eb6bbae4f6",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00d83fd4",
+        "bytes": 16,
+        "sha256": "0a8b9d596c19d3c70400882f4ec012f7fcd1218ce95d18c044472052d5fed30f",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00ce38f8",
+        "bytes": 17,
+        "sha256": "137ba7b8130c7be0ea882fe7eb408a7dd1c2b6913a9577da91b84bbdd756734c",
+        "live_equals_pe": true
+      }
+    ],
+    "direct_calls": [
+      {
+        "site": "00bec7b2",
+        "target": "00bf681b"
+      },
+      {
+        "site": "00bed384",
+        "target": "00bec7b0"
+      },
+      {
+        "site": "00bed38f",
+        "target": "00bed290"
+      },
+      {
+        "site": "00bed2dc",
+        "target": "00408720"
+      },
+      {
+        "site": "00bed2f1",
+        "target": "00411700"
+      },
+      {
+        "site": "00bed308",
+        "target": "00bf6885"
+      }
+    ],
+    "verified_bytes": 361
+  },
+  "contracts": {
+    "owner": "Actual184h platform allocation; embedded0Ch queue at+174h with opaque+0, sentinel+4, count+8. Same constructor/retirement allocation domain and fixture manager/string-pool/publication cells.",
+    "allocation": "BEC7B0 allocates0Ch through actual Source singleton_lifetime_allocate bridge. Independent null/wrapped-field tests and WORD event load/store retained; tail0A/0B untouched.",
+    "count": "Capture volatile count once; unsigned(7fffffff-count)<increment. Equality accepted; wrapped32 addition/update/return on success.",
+    "append": "Capture sentinel before allocation and its then-current previous link; create node, grow count1, captured sentinel.previous=node, reload node.previous, old-last.next=node.",
+    "failure": "No BED370 local EH/free/RAII. Count failure retains allocated unlinked node while count/links remain unchanged. Fixture alone frees observed allocation.",
+    "exception_payload": "Legacy SBO16-byte message plus terminator managed by408720/4072D0; actual28h NativeLegacyExceptionStorage constructed by411700, derivedvtableD69260, copied411940, destroyed411780. Existing NativeAliasListLengthError is current host transport.",
+    "exception_scope": "Original maxstate1 E01FEC/unwindE01FE4 hasCC74A0 completed-message cleanup, armed after assignment. Source mirrors completed-owner lifetime with compiler EH. Original D83F98 ThrowInfo/FH3 RTTI/catch ABI is not replaced.",
+    "typed_queue": "Earlier src/text_input.cpp private typed owner/new-delete/RAII implementation remains separate and is not called or cast as the raw queue."
+  },
+  "validation": {
+    "candidate_compile": {
+      "flags": [
+        "/O2",
+        "/MD",
+        "/EHsc",
+        "/W4",
+        "/WX",
+        "/fp:strict",
+        "/std:c++17",
+        "/Gy"
+      ],
+      "script": "local/platform_queue_production/compile_probe.cmd",
+      "exit": 0,
+      "object_sha256": "e0393608296dc752457d18eae5a17d252b182d1a8a11478e9fdfacd34f9b785a"
+    },
+    "build": {
+      "command": "./scripts/build.ps1",
+      "log": "local/platform_queue_production/permanent-full-build.log",
+      "exit": 0,
+      "tests_passed": 3,
+      "tests_total": 3,
+      "native_math_differential_passed": true,
+      "permanent_cmake_registration": true,
+      "local_include_overlay_in_cache": false,
+      "initial_overlay_build_retained_as_history": true,
+      "new_cmake_or_test_registration_changes": false
+    },
+    "emitted": {
+      "candidate_object_sha256": "e0393608296dc752457d18eae5a17d252b182d1a8a11478e9fdfacd34f9b785a",
+      "coff": [
+        {
+          "symbol": "?create_native_text_queue_node_00bec7b0@bsp@@YGPAXPAX0PBX@Z",
+          "source_name": "create_native_text_queue_node_00bec7b0",
+          "bytes": 53,
+          "sha256": "e96f86f42074bd238110bd9d20accee61422401ec0f7e26eb82c80d77223cea7",
+          "relocations": [
+            {
+              "offset": 3,
+              "symbol": "?allocate_text_queue_node_bytes@?A0x6214cc8a@bsp@@YAPAXI@Z",
+              "type": 20
+            }
+          ],
+          "matches_original_except_named_rel32_operands": true
+        },
+        {
+          "symbol": "?append_native_text_queue_00bed370@bsp@@YIXPAX0PBX@Z",
+          "source_name": "append_native_text_queue_00bed370",
+          "bytes": 50,
+          "sha256": "486657022160de33fe86e7ca05e3fb2223d50bca23c082ace32cdfed7be03dc0",
+          "relocations": [
+            {
+              "offset": 21,
+              "symbol": "?create_native_text_queue_node_00bec7b0@bsp@@YGPAXPAX0PBX@Z",
+              "type": 20
+            },
+            {
+              "offset": 32,
+              "symbol": "?increase_native_text_queue_count_00bed290@bsp@@YIIPAX0I@Z",
+              "type": 20
+            }
+          ],
+          "matches_original_except_named_rel32_operands": true
+        },
+        {
+          "symbol": "?destroy_native_text_queue_00bec730@bsp@@YIXPAX0@Z",
+          "source_name": "destroy_native_text_queue_00bec730",
+          "bytes": 72,
+          "sha256": "56d8c0c145d53460c9d7a3ea654bf3429706af397919c60fc486a4ebf55d458d",
+          "relocations": [
+            {
+              "offset": 36,
+              "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+              "type": 20
+            },
+            {
+              "offset": 56,
+              "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+              "type": 20
+            }
+          ],
+          "matches_original_except_named_rel32_operands": true
+        },
+        {
+          "symbol": "?increase_native_text_queue_count_00bed290@bsp@@YIIPAX0I@Z",
+          "source_name": "increase_native_text_queue_count_00bed290",
+          "bytes": 166,
+          "sha256": "b47e44157aabbb36e4c8dba3bca209fcdea0cef35abd158c37f3ca984792b2b7",
+          "relocations": [
+            {
+              "offset": 6,
+              "symbol": "__ehhandler$?increase_native_text_queue_count_00bed290@bsp@@YIIPAX0I@Z",
+              "type": 6
+            },
+            {
+              "offset": 21,
+              "symbol": "___security_cookie",
+              "type": 6
+            },
+            {
+              "offset": 82,
+              "symbol": "@__security_check_cookie@4",
+              "type": 20
+            },
+            {
+              "offset": 105,
+              "symbol": "??_C@_0BB@MOGOBHAF@list?$DMT?$DO?5too?5long@",
+              "type": 6
+            },
+            {
+              "offset": 122,
+              "symbol": "?native_legacy_sbo_string_assign_counted_00408720@bsp@@YAAAUNativeLegacySboStringStorage@1@AAU21@PBDI@Z",
+              "type": 20
+            },
+            {
+              "offset": 147,
+              "symbol": "??0NativeAliasListLengthError@bsp@@QAE@ABUNativeLegacySboStringStorage@1@@Z",
+              "type": 20
+            },
+            {
+              "offset": 152,
+              "symbol": "__TI1?AVNativeAliasListLengthError@bsp@@",
+              "type": 6
+            },
+            {
+              "offset": 161,
+              "symbol": "__CxxThrowException@8",
+              "type": 20
+            }
+          ]
+        }
+      ],
+      "linked": [
+        {
+          "symbol": "?create_native_text_queue_node_00bec7b0@bsp@@YGPAXPAX0PBX@Z",
+          "address": "00401290",
+          "bytes": 53,
+          "targets": [
+            {
+              "operand_offset": 3,
+              "address": "00401050",
+              "symbol": "?allocate_text_queue_node_bytes@?A0x6214cc8a@bsp@@YAPAXI@Z",
+              "object": "native_platform_construction.obj"
+            }
+          ],
+          "matches_original_except_named_rel32_operands": true
+        },
+        {
+          "symbol": "?append_native_text_queue_00bed370@bsp@@YIXPAX0PBX@Z",
+          "address": "00401090",
+          "bytes": 50,
+          "targets": [
+            {
+              "operand_offset": 21,
+              "address": "00401290",
+              "symbol": "?create_native_text_queue_node_00bec7b0@bsp@@YGPAXPAX0PBX@Z",
+              "object": "native_platform_construction.obj"
+            },
+            {
+              "operand_offset": 32,
+              "address": "004014e0",
+              "symbol": "?increase_native_text_queue_count_00bed290@bsp@@YIIPAX0I@Z",
+              "object": "native_platform_construction.obj"
+            }
+          ],
+          "matches_original_except_named_rel32_operands": true
+        },
+        {
+          "symbol": "?destroy_native_text_queue_00bec730@bsp@@YIXPAX0@Z",
+          "address": "004013f0",
+          "bytes": 72,
+          "targets": [
+            {
+              "operand_offset": 36,
+              "address": "004037f0",
+              "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+              "object": "bsp_core:singleton_lifetime.obj"
+            },
+            {
+              "operand_offset": 56,
+              "address": "004037f0",
+              "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+              "object": "bsp_core:singleton_lifetime.obj"
+            }
+          ],
+          "matches_original_except_named_rel32_operands": true
+        }
+      ],
+      "manifest": [
+        {
+          "id": 1,
+          "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+          "as_invoker": true
+        }
+      ],
+      "executable_sha256": "3eb9dc4245a4bfc12ca017be7cfb5806c793427d01deed3fca6abfce7ba96cf2"
+    },
+    "libraries": {
+      "bsp_core.lib": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 91704448,
+        "sha256": "c3af25d02528e6ff0a34ae4e6018fe52bb10d100d6db8577249a9ecc94b33039"
+      },
+      "bsp_lua511.lib": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\build\\win32\\Release\\bsp_lua511.lib",
+        "bytes": 455384,
+        "sha256": "1459f8e5d692ab96cc18a81ccd0d1f20db1cdc8a3cc4230626a97cb4c9c781ad"
+      },
+      "bsp_zlib121.lib": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\build\\win32\\Release\\bsp_zlib121.lib",
+        "bytes": 71966,
+        "sha256": "8f5763424fa0ccca3a72c61ddae5ad701a53c6fc150dd23955682fe3f8bd9f7b"
+      }
+    },
+    "library_hashes_equal_before_and_after_final_probe": true,
+    "probe": {
+      "command": "local/platform_queue_production/platform_queue_probe.exe",
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner",
+      "exit": 0,
+      "stdout": [
+        "PASS copied Original node53/append50/current Source on same388-byte owner+174 queue; all388 bytes normalized sentinel, exact payload/links",
+        "PASS copied Original147 normal count vs Source: bound equality, unsigned high count, modulo32 wrap; Original failure path not executed",
+        "PASS Source legacy28h length-error payload, unchanged count/links, actual CRT heap confirms retained unlinked12B node; fixture alone frees it; base/manager cleanup complete"
+      ],
+      "sha256": "3eb9dc4245a4bfc12ca017be7cfb5806c793427d01deed3fca6abfce7ba96cf2",
+      "source_sha256": "deb71bbdeacb366c37d951699613a36568ccfe1af6952ebb6a0c2ed247609cba",
+      "object_sha256": "b8f4ba8f4c10a6cf38bd4ff660032a67bcdd14685d9d72501d52c1fd01c9678f",
+      "map_sha256": "90057986686a0805191a2dcc2fcafe2d01db95e2e8afef98c58867e57accacce",
+      "manifest": [
+        {
+          "id": 1,
+          "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+          "as_invoker": true
+        }
+      ],
+      "full_owner_bytes_compared": 388,
+      "owner_normalized_pointer_offsets": [
+        "00000178"
+      ],
+      "source_owner_is_actual_constructor_created_storage": true,
+      "fixture_cells_are_application_globals": false,
+      "explicit_aspect_preimage": [
+        "80000001",
+        "01000001"
+      ],
+      "preimage_is_game_default": false,
+      "accepted_count_cases": [
+        [
+          "00000000",
+          "00000001"
+        ],
+        [
+          "7ffffffe",
+          "00000001"
+        ],
+        [
+          "80000000",
+          "ffffffff"
+        ],
+        [
+          "ffffffff",
+          "00000001"
+        ]
+      ],
+      "copied_original_node_bytes": 53,
+      "original_node_allocation_rel32_operands_rebound": [
+        3
+      ],
+      "copied_original_append_bytes": 50,
+      "original_append_callee_rel32_operands_rebound": [
+        21,
+        32
+      ],
+      "copied_original_count_bytes": 147,
+      "original_count_failure_path_executed": false,
+      "source_failure_native_payload_and_count_links_checked": true,
+      "unlinked_node_observed_as_used_in_actual_crt_heap": true,
+      "unlinked_node_freed_only_by_fixture": true,
+      "queue_and_window_base_cleanup_executed": true,
+      "derived_screensaver_retirement_executed": false,
+      "actual_window_apis_called": false,
+      "window_or_game_launched": false,
+      "node_tail_padding_runtime_preimage_proof": false
+    },
+    "annotations": {
+      "prior_values": "local/platform_queue_production/prior-comments.json",
+      "prior_comments_preserved": true,
+      "all_three_names_retained": true,
+      "saved": true,
+      "write_lock": "tools/ghidra_annotate.py --apply",
+      "mutation_receipt": "local/ghidra-annotations-20261014T225153Z.json",
+      "readback": "local/platform_queue_production/annotations-readback.json",
+      "exports_forcibly_refreshed": [
+        "00bec7b0",
+        "00bed290",
+        "00bed370"
+      ]
+    },
+    "checker_correction": "COFF symbol lookup filters external storage class2 to exclude compiler EH handler symbols containing the same source name. No candidate source changed for this correction.",
+    "fixture_output_label_correction": "Final probe prints legacy28h for the40-byte exception owner; prior local output incorrectly called it28B. Final executable was strictly rebuilt, relinked and rerun."
+  },
+  "readiness": {
+    "raw_queue_producer_source_ready": true,
+    "raw_queue_retirement_source_ready": true,
+    "actual_platform_owner_fixture_ready": true,
+    "application_binding_ready": false,
+    "raw_bec3b0_publication_dispatch_ready": false,
+    "full_raw_bed3b0_handler_ready": false,
+    "full_raw_becee0_window_power_configuration_ready": false,
+    "text_singleton_activation_ready": false,
+    "original_exception_abi_compatible": false,
+    "game_validated": false
+  },
+  "limitations": [
+    "Original exception/throw/handler code was not dynamically executed.",
+    "Allocation failure, null/wrapped fault behavior and assignment/constructor unwind failures were not injected.",
+    "Native data layout and exact node/append instructions do not prove binary register, FH3 or catch ABI compatibility.",
+    "No application binding, window creation, message dispatch, Text activation, frame or gameplay proof.",
+    "Private typed TextInputQueue remains a separate semantic implementation.",
+    "Source constructor fixture preimages are explicit adversarial inputs, not recovered game defaults."
+  ],
+  "prior_manifests_unchanged": {
+    "local/checkpoints/cc14-native-platform-owner/final/validation.json": "c7e8df690dc9618fbe54c08c5f160bec4b38392a27624990d1ac7f86ecab2f9d",
+    "local/checkpoints/cc14-native-platform-owner-retirement/final/validation.json": "deb621284ef2e7aa81f107e94c8ec2a2148c57970fbe1b00b6d7191ca9ac5eb2",
+    "local/checkpoints/cc14-native-platform-window-configuration/final/validation.json": "1bd928ab3e234acfff4d8b2f5550c74ab3ecf6010562ac529d238ee9682d796b"
+  },
+  "artifact_capture": {
+    "manifest": "local/checkpoints/cc14-native-platform-queue-production/final/validation.json",
+    "immutable": true,
+    "captures_current_sources_providers_libraries_objects_probe_and_exports": true
+  }
+}
