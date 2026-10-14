@@ -941,3 +941,13 @@ diffs `local\p8pd_*`. Rows USN01 `usn01_p8_u1_c`, USN12 `s38_u12_p2`, LOMP10 `p3
   passes -1 (game_hosts_units.cpp, `din.spin_side_800 = -1`): 007CFDB4 sets the side only when a hull segment of
   the plane is hit, and the host has no per-segment plane hits. Open for the gunnery/plane-damage lane.
 - **Both flipped ON** by verdict (faithful, no win lost) in the commit that adds this note.
+
+**USN04 V1 pair (section 26 step 4, CC13_GPR_48 9).** No order file is needed: with no orders, 45000 frames at
+0.0222 s and `BSP_FRAME_JITTER 20,3` (reference env) the mission reaches phase 2 ("blackout callback luaMoveToPh2
+ran"). At 0.05 s frames it does not: the phase-1 exit re-calls `Blackout(true, "luaMoveToPh2", 3)` on every Think,
+60 frames (3.0 s) apart, and 005B9BA0 re-arms +C8h to 3.0001 s on each call in the image as in the host
+(docs/MISSION_BLACKOUT.md), so the fade never completes. V1 OFF `local\p8_v1off` (dc07a0286 with
+`kPlaneSpeedFloorBound` false, exe 2D59608AE80E, `local\p8u4_v1off.log`) against V1 ON `local\p8_off`
+(`local\p8u4_n.log`): carrier-squadron deaths with no killer (`local\p8_crash.py`) **46 OFF (Zuiho 40, Yorktown 6,
+at 3-20 m from 277 s on) and 0 ON**; plane water contacts 61 -> 36; shots 15319 -> 25374. V1 is confirmed as the
+fix for the climb-out crashes cc13-ver17 found. Neither side ends the mission in 1000 s.
