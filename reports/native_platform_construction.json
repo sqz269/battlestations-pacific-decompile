@@ -1,11 +1,11 @@
 {
-  "status": "adopted_raw_source_strict_win32_current_core_bounded_fixture_passed",
-  "updated_utc": "2026-10-14T21:45:02.382481+00:00",
+  "status": "raw_construction_and_retirement_strict_win32_overlay_build_and_current_fixture_passed",
+  "updated_utc": "2026-10-14T22:11:47.680966+00:00",
   "source": "src/native_platform_construction.cpp",
   "header": "include/bsp/native_platform_construction.hpp",
   "baseline_commit": "9228d13fe2594cb12405733fcdd5ec0160770b66",
   "adopted_commit": "0ca920c74f87df949340d01fbb66025973cd9959",
-  "source_and_header_identical_to_adopted_commit": true,
+  "source_and_header_identical_to_adopted_commit": false,
   "target": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe",
@@ -116,6 +116,45 @@
       "behavior": "Complete raw base construction, D68CC4, actual 0Ch sentinel at +178h/count +17Ch then ordered clears. Untouched +174h/requested/power/padding bytes retained. E01F94/E01F8C cleanup calls BE2B10.",
       "reconstructed": true,
       "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00bec730",
+      "bytes": 72,
+      "source_symbol": "destroy_native_text_queue_00bec730",
+      "ghidra_name": "BSP_TextQueue_Destroy",
+      "original_abi": "ECX actual0Ch queue header, EDX unconsumed, no stack arguments, RET.",
+      "behavior": "Header+0 untouched; current sentinel+4 and count+8. Reset sentinel links and count; save next before each free and reload current sentinel after each free; free and clear sentinel. Exact72-byte COFF/linked match except two actual Source CRT-free rel32 operands.",
+      "reconstructed": true,
+      "build_tested": true,
+      "fixture_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00beca00",
+      "bytes": 42,
+      "source_symbol": "destroy_native_win32_platform_00beca00",
+      "ghidra_name": "BSP_Win32Platform_Destroy",
+      "original_abi": "ECX actual184h owner, no stack arguments, tail JMP BE2B10.",
+      "behavior": "Store D68CC4; actual SystemParametersInfoA(11h,1,nullptr,0), ignored result; raw queue at+174h; BE2B10 title/base/publication cleanup. No power restoration, DestroyWindow or platform-stop call.",
+      "reconstructed": true,
+      "build_tested": true,
+      "fixture_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00bece30",
+      "bytes": 63,
+      "source_symbol": "delete_native_win32_platform_00bece30",
+      "ghidra_name": "BSP_Win32Platform_ScalarDelete",
+      "original_abi": "ECX actual184h owner, stack flags, EAX original owner, RET4.",
+      "behavior": "Same D68CC4/screensaver/queue/base schedule; flags bit0 alone frees original owner using canonical current Source CRT. Canonical D68CC4 singleton deletion dispatch borrows the same creation/publication/manager/string context.",
+      "reconstructed": true,
+      "build_tested": true,
+      "fixture_tested": true,
       "abi_compatible": false,
       "game_validated": false
     }
@@ -549,7 +588,20 @@
     "strings": "Borrow same raw manager plus actual01090AA8 pool and01090AA4 gate; raw419CC0 getter andBD1510 return. Getter can throw before noexcept return; title header stale.",
     "allocation": "singleton_lifetime_allocate/free current Source CRT ownership; real0Ch sentinel. No original static CRT or null-allocation success claim.",
     "publication": "Borrow one0109CF04 reference; publish original receiver, re-read current publication after second manager getter, clear only after successful removal.",
-    "cleanup": "411EE0 captured8-byte guard and412430 generic profile cleanup; four reviewed FH3 maps. Synchronous C++ cleanup expression is not original FH3/SEH ABI."
+    "cleanup": "411EE0 captured8-byte guard and412430 generic profile cleanup; four reviewed FH3 maps. Synchronous C++ cleanup expression is not original FH3/SEH ABI.",
+    "raw_queue": "Actual12B header at platform+174h: opaque+0 untouched, current sentinel+4, count+8. Nodes and sentinel use singleton_lifetime allocation/free; private TextInputQueue typed new/delete storage is a different owner. Current sentinel reloads and pre-count-store comparison preserved by exact72-byte instruction match with2 free relocations.",
+    "derived_cleanup": "D68CC4 -> actual SystemParametersInfoA(11h,1,nullptr,0), ignored result -> BEC730 raw queue -> BE2B10 title/base/publication -> scalarflags bit0 free. No DestroyWindow, platform-stop or captured-power restore.",
+    "canonical_deletion_binding": {
+      "profile": "00d68cc4",
+      "native_slot0": "00bece30",
+      "dispatcher_source": "src/native_singleton_destruction.cpp",
+      "binding": "NativeSingletonDeletionBindings::platform",
+      "binding_offset": 200,
+      "binding_structure_bytes": 204,
+      "previous_field_offsets_preserved": true,
+      "missing_binding": "existing fail-closed logic_error",
+      "contract": "Same NativePlatformConstructionContext and actual AA0/CF04/AA8/AA4 cells as creation."
+    }
   },
   "readiness": {
     "source_construction_callable": true,
@@ -559,24 +611,32 @@
     "owner_size_hex": "0x184",
     "incoming_aspect_preimage_established": false,
     "original_abi_replacement": false,
-    "full_derived_retirement_ready": false,
+    "full_derived_retirement_ready": true,
     "application_publication_bound": false,
     "native_text_activation_ready": false,
     "cmake_registered_by_this_packet": false,
-    "game_runtime_launched": false
+    "game_runtime_launched": false,
+    "raw_queue_retirement_callable": true,
+    "canonical_d68cc4_deletion_dispatch_callable": true,
+    "permanent_cmake_registration_done_by_this_packet": false,
+    "temporary_overlay_combined_build_tested": true
   },
   "remaining": [
     "Actual canonical388-byte owner/allocation and incoming24h/28h bytes must be preserved; no invented width/height default or semantic/raw clone.",
-    "Raw BEC730 queue retirement, BECA00/BECE30 derived screensaver/base/free schedule, and D68CC4 canonical singleton deletion binding remain. Current Source base cleanup alone leaks the derived queue unless fixture cleans it explicitly.",
     "Actual shared0109CF04 binding to full configuration, renderer/window focus and Text AB8CE0 signedDWORD+28h consumer is absent. Current0x44 focus storage has only recovered+30HWND/+41active; opaque+28 is not height.",
     "Actual BECEE0 window/configuration ownership and BEC3B0->BED3B0 message receiver/stack ABI plus render-entry-cache, input/UI/audio/renderer/power-policy bindings remain outside adoption.",
-    "Do not infer a normal-exit+8 stop/power-restore call from construction. Reviewed BECA00/BECE30 retirement only enables screensaver before queue/base cleanup."
+    "Do not infer a normal-exit+8 stop/power-restore call from construction. Reviewed BECA00/BECE30 retirement only enables screensaver before queue/base cleanup.",
+    "Permanent cmake/startup.cmake row remains independently FIFO coordinated; the current combined build uses an ignored local configure overlay, with no tracked CMake edit."
   ],
   "limits": [
     "Strict current Source compilation and fixture use added context interfaces. Numeric profiles are identity data, never callable host vtables.",
     "Fixture explicit adversarial incoming bytes are not an original game allocation preimage. Unchanged original64-byte fragment execution is not whole-body/FH3/ABI/game validation.",
     "Allocation/registration/Leave failures, second-failure termination, hardware-fault unwind, concurrent publication mutation and invalid storage remain unexercised.",
-    "No permanent tests, CMake registration, game_hosts/platform_window/renderer edits, application activation or window/game-runtime launch in this packet."
+    "No permanent tests, CMake registration, game_hosts/platform_window/renderer edits, application activation or window/game-runtime launch in this packet.",
+    "Copied Original72 raw queue with only2 free CALL operands rebound and exact Source COFF/linked bytes do not prove original BF65AC allocator behavior or whole-derived-body/ABI execution.",
+    "Populated queue fixture uses stable current sentinel; allocator-induced sentinel mutation is not exercised. Its load schedule is preserved by exact instruction comparison.",
+    "Actual SystemParametersInfoA result is ignored, matching Original. Fixture screensaver state was 0 before/after/restored; no API-success or effective setting-change claim.",
+    "Initial no-overlay full build failed on the known absent platform CMake row. The ignored local configure overlay then built all targets and passed2/2; verify-seeds enabled native differential tests, and the final unchanged scripts/build.ps1 passed3/3."
   ],
   "validation_retries": [
     {
@@ -608,7 +668,9 @@
     ],
     "readback": "local/platform_owner_adoption/annotations-readback.json"
   },
-  "fresh_validation": {
+  "adopted_six_source_bodies_preserved": true,
+  "retirement_baseline_commit": "e7d28388bcd2ecf61278caa481492f1d43f8accb",
+  "adoption_validation": {
     "utc": "2026-10-14T21:45:02.382481+00:00",
     "baseline_commit": "9228d13fe2594cb12405733fcdd5ec0160770b66",
     "candidate_source_commit": "0ca920c74f87df949340d01fbb66025973cd9959",
@@ -715,8 +777,358 @@
       "unchanged": true
     }
   },
-  "artifact_capture": {
+  "adoption_artifact_capture": {
     "manifest": "local/checkpoints/cc14-native-platform-owner/final/validation.json",
     "scope": "Fresh candidate, probe, current Core libraries, build inputs, byte evidence and frozen committed historical candidate. No unavailable old binary is represented as preserved."
+  },
+  "adoption_validation_scope": "Frozen earlier e9430ea adoption receipts remain unchanged. The following fresh_validation covers this retirement candidate and current combined Core.",
+  "fresh_validation": {
+    "utc": "2026-10-14T22:11:47.680966+00:00",
+    "baseline_commit": "e7d28388bcd2ecf61278caa481492f1d43f8accb",
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "original_bytes": {
+      "utc": "2026-10-14T22:00:19.353246+00:00",
+      "baseline_commit": "e7d28388bcd2ecf61278caa481492f1d43f8accb",
+      "target": {
+        "project": "bsp",
+        "program": "battlestationspacific.exe",
+        "program_path": "/battlestationspacific.exe",
+        "language": "x86:LE:32:default",
+        "image_base": "00400000",
+        "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+        "ghidra_url": "http://127.0.0.1:8089",
+        "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "project_file": "C:/Users/sqz269/bsp.gpr",
+        "coordination_dir": "C:/Users/sqz269/.bsp"
+      },
+      "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "spans": [
+        {
+          "address": "00bec730",
+          "bytes": 72,
+          "sha256": "080f04b31299e988bbf55b1cffa5978e3ca00a48414b742d1948af8b5e48e695",
+          "live_equals_pe": true,
+          "saved_equals_live": true
+        },
+        {
+          "address": "00beca00",
+          "bytes": 42,
+          "sha256": "c97073267739e0aa514052b7d5ffff33ede1546e83cbb8241922b875b85f6010",
+          "live_equals_pe": true,
+          "saved_equals_live": true
+        },
+        {
+          "address": "00bece30",
+          "bytes": 63,
+          "sha256": "e6747a00ac6cded472183cafa5a10f70c0d638e381ad1279f7dcdf3836949bdd",
+          "live_equals_pe": true,
+          "saved_equals_live": true
+        },
+        {
+          "address": "00d68cc4",
+          "bytes": 4,
+          "sha256": "4ea2213ff8cfc2b512101f604fecf693eaae203fd4d85cfaf20c7f834eb33a06",
+          "live_equals_pe": true
+        }
+      ],
+      "body_bytes": 177,
+      "profile_bytes": 4,
+      "calls": [
+        {
+          "address": "00bec753",
+          "function": "00bec730",
+          "native": "00bf65ac",
+          "kind": "call"
+        },
+        {
+          "address": "00bec767",
+          "function": "00bec730",
+          "native": "00bf65ac",
+          "kind": "call"
+        },
+        {
+          "address": "00beca1d",
+          "function": "00beca00",
+          "native": "00bec730",
+          "kind": "call"
+        },
+        {
+          "address": "00beca25",
+          "function": "00beca00",
+          "native": "00be2b10",
+          "kind": "tail_jump"
+        },
+        {
+          "address": "00bece4d",
+          "function": "00bece30",
+          "native": "00bec730",
+          "kind": "call"
+        },
+        {
+          "address": "00bece54",
+          "function": "00bece30",
+          "native": "00be2b10",
+          "kind": "call"
+        },
+        {
+          "address": "00bece61",
+          "function": "00bece30",
+          "native": "00bf65ac",
+          "kind": "call"
+        }
+      ],
+      "indirect_calls": [
+        {
+          "address": "00beca11",
+          "iat": "00ce2340",
+          "import": "SystemParametersInfoA",
+          "arguments": [
+            17,
+            1,
+            0,
+            0
+          ],
+          "return_ignored": true
+        },
+        {
+          "address": "00bece41",
+          "iat": "00ce2340",
+          "import": "SystemParametersInfoA",
+          "arguments": [
+            17,
+            1,
+            0,
+            0
+          ],
+          "return_ignored": true
+        }
+      ],
+      "local_eh_registration": false,
+      "no_ghidra_mutations": true
+    },
+    "current_combined_build": {
+      "command": "./scripts/build.ps1",
+      "exit": 0,
+      "log": "local/platform_owner_retirement/overlay-full-build-native.log",
+      "log_sha256": "51ff5d9aa5c902c8340322e110e15eb1a130c127293873a2b12600c70acb3be9",
+      "ctest_summary": "100% tests passed, 0 tests failed out of 3",
+      "native_seeds_verified": true,
+      "candidate_registered_in_core_via_temporary_overlay": true,
+      "tracked_cmake_files_edited": false,
+      "overlay": "local/platform_owner_retirement/core_sources.cmake",
+      "overlay_sha256": "34b4460471cbb7f4c0490aa4475a85d83a9cf478d1a08e9f37f0e9f7d3915353",
+      "cmake_cache_entry": "CMAKE_PROJECT_INCLUDE_BEFORE:UNINITIALIZED=J:/PROG/battlestations-pacific-decompile-cc14-platform-owner/local/platform_owner_retirement/core_sources.cmake",
+      "permanent_registration": false
+    },
+    "candidate_compile": {
+      "flags": "/O2 /MD /EHsc /W4 /WX /fp:strict /std:c++17 /Gy",
+      "source": "src/native_platform_construction.cpp",
+      "object_sha256": "49da9f4dc862aca8179667f37e9d6b65039003a08c41a62e340f293305c087ec",
+      "new_interfaces_not_original_abi": true
+    },
+    "emitted_verification": {
+      "candidate_object_sha256": "49da9f4dc862aca8179667f37e9d6b65039003a08c41a62e340f293305c087ec",
+      "coff": [
+        {
+          "symbol": "?destroy_native_text_queue_00bec730@bsp@@YIXPAX0@Z",
+          "section": 23,
+          "bytes": 72,
+          "sha256": "56d8c0c145d53460c9d7a3ea654bf3429706af397919c60fc486a4ebf55d458d",
+          "relocations": [
+            {
+              "offset": 36,
+              "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+              "type": 20
+            },
+            {
+              "offset": 56,
+              "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+              "type": 20
+            }
+          ],
+          "matches_original_except_two_free_rel32_operands": true
+        },
+        {
+          "symbol": "?destroy_native_win32_platform_00beca00@bsp@@YAXPAXAAUNativePlatformConstructionContext@1@@Z",
+          "section": 24,
+          "bytes": 53,
+          "sha256": "67f290356c29ffcb7306e555db800a06f133b06e2e32905d9adb96e5bfc65972",
+          "relocations": [
+            {
+              "offset": 21,
+              "symbol": "__imp__SystemParametersInfoA@16",
+              "type": 6
+            },
+            {
+              "offset": 34,
+              "symbol": "?destroy_native_text_queue_00bec730@bsp@@YIXPAX0@Z",
+              "type": 20
+            },
+            {
+              "offset": 44,
+              "symbol": "?destroy_native_window_platform_base_00be2b10@bsp@@YAXPAXAAUNativePlatformConstructionContext@1@@Z",
+              "type": 20
+            }
+          ]
+        },
+        {
+          "symbol": "?delete_native_win32_platform_00bece30@bsp@@YAPAXPAXIAAUNativePlatformConstructionContext@1@@Z",
+          "section": 19,
+          "bytes": 71,
+          "sha256": "87539a7cdd986dfb857aa45eec4fad323361065275b4cf7cee35f74187994dbe",
+          "relocations": [
+            {
+              "offset": 21,
+              "symbol": "__imp__SystemParametersInfoA@16",
+              "type": 6
+            },
+            {
+              "offset": 34,
+              "symbol": "?destroy_native_text_queue_00bec730@bsp@@YIXPAX0@Z",
+              "type": 20
+            },
+            {
+              "offset": 44,
+              "symbol": "?destroy_native_window_platform_base_00be2b10@bsp@@YAXPAXAAUNativePlatformConstructionContext@1@@Z",
+              "type": 20
+            },
+            {
+              "offset": 60,
+              "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+              "type": 20
+            }
+          ]
+        }
+      ],
+      "linked_queue": {
+        "symbol": "?destroy_native_text_queue_00bec730@bsp@@YIXPAX0@Z",
+        "address": "00401380",
+        "bytes": 72,
+        "matches_original_except_two_free_rel32_operands": true,
+        "free_targets": [
+          {
+            "offset": 36,
+            "address": "00402b00",
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "object": "bsp_core:singleton_lifetime.obj"
+          },
+          {
+            "offset": 56,
+            "address": "00402b00",
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "object": "bsp_core:singleton_lifetime.obj"
+          }
+        ]
+      },
+      "coff_original_x87_64byte_sequence_count": 2,
+      "linked_preserved_original_x87_64byte_sequences": [
+        {
+          "address": "00401158",
+          "symbol": "?construct_native_win32_platform_00becda0@bsp@@YAPAXPAXAAUNativePlatformConstructionContext@1@@Z",
+          "object": "native_platform_construction.obj"
+        }
+      ],
+      "manifest": [
+        {
+          "id": 1,
+          "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+          "as_invoker": true
+        }
+      ]
+    },
+    "fresh_libraries": {
+      "bsp_core.lib": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 91529714,
+        "sha256": "6af393004c1a31fc0e4e95573dbbe93251a375d694d6fc924270259289ed48a3"
+      },
+      "bsp_lua511.lib": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\build\\win32\\Release\\bsp_lua511.lib",
+        "bytes": 455384,
+        "sha256": "1459f8e5d692ab96cc18a81ccd0d1f20db1cdc8a3cc4230626a97cb4c9c781ad"
+      },
+      "bsp_zlib121.lib": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\build\\win32\\Release\\bsp_zlib121.lib",
+        "bytes": 71966,
+        "sha256": "8f5763424fa0ccca3a72c61ddae5ad701a53c6fc150dd23955682fe3f8bd9f7b"
+      }
+    },
+    "core_library_invariant_after_probe": true,
+    "probe": {
+      "command": [
+        "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_owner_retirement\\platform_retirement_probe.exe"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner",
+      "exit": 0,
+      "sha256": "4a0aea41e8232c2e1569fb58b6c9fdc0e35c728be56d4c259ff463d3a7c521bf",
+      "object_sha256": "3a8e570ca95911768bcf6dc6ee81432cb22195a01da78932186f329c58efa119",
+      "map_sha256": "7d65cd137f0843995ee9db63bff90a71c69b98bb1471de70d4a1497ad0005f2c",
+      "source_sha256": "e264d4fed278ab7fc5e78268f7e1364fb4fb8ee134bea2d98fc3a8f36bcbd4cd",
+      "manifest": [
+        {
+          "id": 1,
+          "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+          "as_invoker": true
+        }
+      ],
+      "stdout": [
+        "PASS Original72/current Source populated queue; only two free CALL operands rebound; header+0 preserved, sentinel/count cleared",
+        "PASS Source BECA00/BECE30 bit0-clear populated retirement; all388 bytes, title reuse, publication, registry hole; screensaver before=0 after=0",
+        "PASS canonical D68CC4 flags1 manager drain with same AA0/CF04/AA8/AA4 cells; pool/vector/section retired; screensaver after=0 restored=0"
+      ],
+      "copied_original_queue_bytes": 72,
+      "copied_original_queue_free_rel32_operands_rebound": [
+        36,
+        56
+      ],
+      "original_derived_whole_bodies_executed": false,
+      "window_or_game_launched": false,
+      "fixture_cells_are_application_globals": false,
+      "explicit_fixture_preimage": [
+        "80000001",
+        "01000001"
+      ],
+      "preimage_is_game_default": false,
+      "candidate_derived_retirement_executed": true,
+      "actual_win32_screensaver_api_called": true,
+      "screensaver_before": 0,
+      "screensaver_after_scalar": 0,
+      "screensaver_after_drain": 0,
+      "screensaver_restored_readback": 0
+    },
+    "annotations": {
+      "prior_values": "local/platform_owner_retirement/prior-comments.json",
+      "prior_comments_preserved": true,
+      "all_three_names_retained": true,
+      "saved": true,
+      "write_lock": "tools/ghidra_annotate.py --apply",
+      "readback": "local/platform_owner_retirement/annotations-readback.json",
+      "exports_forcibly_refreshed": [
+        "00bec730",
+        "00beca00",
+        "00bece30"
+      ]
+    },
+    "validation_checker_correction": "Initial emitted checker expected2 linked x87 copies, inherited from broader adoption probe. Current retirement probe references only the derived constructor; the standalone window-base copy is removed by OPT:REF. Final check requires2 exact COFF copies and1 linked derived-owner copy. No candidate code change."
+  },
+  "artifact_capture": {
+    "manifest": "local/checkpoints/cc14-native-platform-owner-retirement/final/validation.json",
+    "immutable": true,
+    "captures_current_source_header_doc_report_ledgers": true,
+    "captures_current_libraries_candidate_and_probe": true,
+    "historical_before_overlay_probe_library_binary_retained": false,
+    "historical_before_overlay_probe_note": "Before-overlay executable/map/output/library hashes retained; the earlier Core archive was superseded by the overlay build. Final validation uses the freshly relinked/rerun probe and all three captured current libraries."
   }
 }

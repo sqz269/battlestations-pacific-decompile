@@ -1,12 +1,14 @@
-# Raw platform construction and base cleanup
+# Raw platform construction and retirement
 
 This module adopts the six raw source bodies from commit
 `0ca920c74f87df949340d01fbb66025973cd9959` onto Main
-`9228d13fe2594cb12405733fcdd5ec0160770b66`. The C++ and header are unchanged.
+`9228d13fe2594cb12405733fcdd5ec0160770b66`. The original six source bodies are
+preserved; the follow-up retirement packet starts from `e7d28388b`.
 It provides source-callable construction for actual **0x184-byte (388-byte)**
 platform storage, publication through a borrowed raw singleton domain, and
-window-base retirement. It does not yet provide complete derived retirement or
-application activation. Evidence: `reports/native_platform_construction.json`.
+window-base and derived retirement. The D68CC4 canonical singleton deletion
+dispatch now borrows the same raw creation context. Application activation
+remains absent. Evidence: `reports/native_platform_construction.json`.
 
 | Native body | Source operation | Original ABI |
 | --- | --- | --- |
@@ -16,8 +18,11 @@ application activation. Evidence: `reports/native_platform_construction.json`.
 | BE2B10..BE2B76, 103 bytes | Destroy window base | ECX owner; no specified result; RET |
 | BEC710..BEC729, 26 bytes | Allocate/self-link queue sentinel | ECX unused; EAX node; RET |
 | BECDA0..BECE23, 132 bytes | Construct derived Win32 platform | ECX owner; EAX original owner; RET |
+| BEC730..BEC777, 72 bytes | Destroy raw text queue | ECX queue header; RET |
+| BECA00..BECA29, 42 bytes | Retire derived Win32 platform | ECX owner; tail jump BE2B10 |
+| BECE30..BECE6E, 63 bytes | Retire/free derived Win32 platform | ECX owner; stack flags; EAX original owner; RET 4 |
 
-All six bodies consume no original stack arguments. The added C++ context
+The first eight bodies consume no original stack arguments. The added C++ context
 parameters are new interfaces, not replacements for the original register/FH3
 ABI. Names are behavioral hypotheses, not recovered symbols. Numeric profiles
 are identity DWORDs and must never be called as host vtables.
@@ -90,7 +95,7 @@ remain untouched. E01F94/E01F8C and CC7460 establish the exception cleanup to
 BE2B10. BEC710 self-links +0/+4 and leaves +8..+Bh untouched, preserving both
 pointer tests and DWORD wrapping; it does not normalize null allocation.
 
-## Current bounded validation
+## Construction adoption validation
 
 The fresh validation section in the report records the strict Win32 build,
 standalone manifested probe, exact library/object/executable hashes and results.
@@ -115,6 +120,49 @@ corrected against the existing BCFCA0 raw contract and preserved null slots.
 The standalone link also needed the application's advapi32/shell32 imports.
 Failed logs/binaries are retained; neither correction changed the candidate.
 
+## Raw derived retirement and current validation
+
+The raw queue header at platform+174h is 12 bytes: +0 is untouched, +4 is the
+current sentinel, and +8 is count. BEC730 resets the sentinel's two links and
+count, captures each node's next pointer before freeing it, reloads the current
+sentinel after each free, then frees and clears the sentinel. The existing
+`TextInputQueue` owns a different private typed allocation and cannot provide
+this contract. The naked Source wrapper retains the complete original 72-byte
+instruction sequence, including the comparison before the count store and the
+alignment instruction. Only its two free call operands change to the canonical
+current Source CRT provider. Both COFF and linked bytes verify this equality.
+
+BECA00 and BECE30 store D68CC4, call the actual
+`SystemParametersInfoA(0x11, 1, nullptr, 0)` and ignore its result, retire the raw
+queue, then run BE2B10. The scalar form frees the original owner only when flags
+bit 0 is set, after successful base cleanup. Neither path destroys a window,
+restores the captured power scheme, or introduces a platform-stop call.
+The canonical singleton dispatcher requires an explicit `platform` context,
+appended at offset 200 in its Source binding structure; every prior field offset
+is preserved. Missing binding follows the existing fail-closed path.
+
+The retirement packet rechecks all 177 body bytes and the 4-byte D68CC4 slot
+against saved listings, live Ghidra and the installed PE. Its strict Win32
+candidate object and manifested probe use current Core and actual Win32 APIs.
+The focused fixture compares copied Original72 queue code (only the two free
+operands rebound) against Source for a populated queue. It also checks a
+bit0-clear scalar retirement across all 388 bytes, title return/reuse, cleared
+publication and preserved registry holes, then drains a second empty-queue owner
+through the actual D68CC4 binding and the same manager/string-pool cells. This
+second case owns the flags1 platform free, pool free, vector and section cleanup.
+The fixture saves, restores and reads back the real screensaver setting; it was
+0 before, after both retirements, and after restoration. API success or an
+effective system-setting transition is not asserted by the candidate.
+
+The permanent CMake row is coordinated separately. This packet's combined
+`scripts/build.ps1` qualification uses an ignored local
+`CMAKE_PROJECT_INCLUDE_BEFORE` overlay that adds the actual source to Core.
+The exact overlay, cache entry, build result, current libraries, probe and
+emitted code are retained in
+`local/checkpoints/cc14-native-platform-owner-retirement/final/validation.json`.
+The earlier construction-adoption artifact set remains unchanged. No permanent
+test framework, host binding or game/window launch is added.
+
 ## Remaining full-owner integration
 
 1. Preserve a genuine canonical 0x184-byte allocation and its incoming +24h/+28h
@@ -124,14 +172,7 @@ Failed logs/binaries are retained; neither correction changed the candidate.
    +30h and active +41h; its opaque +28h bytes are not configuration height.
    Neither that receiver nor `Win32PlatformState` may be cast or cloned into a
    full raw owner.
-2. Supply raw BEC730 queue retirement (saved-next nodes, sentinel reset/free and
-   pointer clear), then BECA00/BECE30 derived retirement: D68CC4, screensaver
-   enable, queue cleanup, BE2B10, and flags-bit0 free for BECE30. Add the explicit
-   D68CC4 deletion binding to the same canonical singleton drain. Current
-   `native_singleton_destruction.cpp` has no such profile. Existing
-   EngineServiceCalls/TextInputQueue projections do not establish this ownership
-   contract. Base-only cleanup cannot retire the derived queue allocation.
-3. Bind actual window/configuration BECEE0 and HWND/message ownership through
+2. Bind actual window/configuration BECEE0 and HWND/message ownership through
    BEC3B0 -> BED3B0, including the original stack ABIs, window-extra receiver,
    renderer/input/UI/audio dependencies and shared backing fields. Retain the
    real render-entry-cache and power-policy owners. Do not invent a normal-exit
@@ -142,5 +183,7 @@ Failed logs/binaries are retained; neither correction changed the candidate.
 Allocation/registration/Leave exceptions, second-failure termination, original
 FH3/SEH ABI, concurrent publication mutation and invalid-pointer behavior have
 not been differentially exercised. The source cleanup schedule is supported by
-assembly/EH evidence. Fresh build and fixture results do not prove Original
-whole-body execution, native ABI replacement, active frame, draw or gameplay.
+assembly/EH evidence. The populated copied queue case does not exercise a free
+provider that mutates the sentinel; exact instruction equality preserves those
+reloads. Fresh build and fixture results do not prove Original whole-derived-body
+execution, native ABI replacement, active frame, draw or gameplay.

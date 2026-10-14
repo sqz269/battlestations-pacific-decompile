@@ -34,6 +34,7 @@
 #include "bsp/native_vfs_derived_manager.hpp"
 #include "bsp/native_string_pool_owner.hpp"
 #include "bsp/native_string_pool_storage.hpp"
+#include "bsp/native_platform_construction.hpp"
 #include "bsp/xlive_owner_lifetime.hpp"
 #include "bsp/native_online_manager_lifetime.hpp"
 
@@ -461,6 +462,12 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
             delete_native_string_pool_00bd1730(*static_cast<NativeStringPoolStorage*>(owner),
                 flags, *bindings.actual_string_pool_publication_01090aa8,
                 *bindings.actual_string_returns_disabled_01090aa4);
+            return;
+        }
+        break;
+    case 0x00d68cc4:
+        if (bindings.platform != nullptr) {
+            delete_native_win32_platform_00bece30(owner, flags, *bindings.platform);
             return;
         }
         break;
