@@ -101,6 +101,13 @@ The standard registered-source build passes CTest 2/2 (12.00 seconds), including
 the permanently registered effect producer and compiler/cache changes. The new
 parent TU needs primary-owned CMake registration and combined linkage.
 
+The follow-up receipt pins the preserved final strict-compile object
+`DF6C740B...` (COFF timestamp 18:50:11 UTC). Commit `366b9a6c9` retained an earlier
+`7C3CC17B...` observation after that object was re-emitted. No earlier object was
+located or accepted. An in-memory timestamp-only diagnostic matches that old
+hash at 18:43:13 UTC; it does not substitute for a preserved earlier artifact.
+The compile/build log hashes and Source files are unchanged by this correction.
+
 No actual effect or native Text run is claimed by this packet. The next focused
 resource probe must supply the real caller MSG and shadow-target policy owner,
 then acquire original `GuiFont.mshd` through this effect graph and observe the
