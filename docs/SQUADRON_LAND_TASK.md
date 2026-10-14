@@ -16821,3 +16821,21 @@ the 336 GetHpPercentage sites): 0 squadron reads and gameplay identical on JM08,
 Measured (cc9-lua59, 2026-10-14), pair on a87e85bee OFF `local\l59_h0_j8s` / ON `local\l59_h1_*`: 0 squadron reads on
 JM08 (827 unit health reads), USNOS and USN12; JM08 pair_diff 1, gameplay identical. As predicted the path is not reached
 on these rows; it is a faithful correction, so `kSquadronAverageHealthBound` is flipped **ON**.
+
+### 5he.4 Moveto-self: one post per squadron; the churn is the missing stage-1 hold (cc9-lua59, 2026-10-14)
+
+0084E5A8-0084E5C6 issues `0071ECF0(00E08F68, 00465080([ESI+224h], 0.0))` with ECX = ESI, the squadron's own command
+block: one moveto into the squadron's director, not one per member. 47c123a34 makes the stand-in do that (still under
+`kSquadronMoveToSelfBound`, OFF). Pair on 47c123a34, OFF `local\l59_x0_*`, ON `local\l59_x1_*`:
+
+| row | moveto-self issues | apply_set_command | director stage_raises / clear_messages | pair_diff |
+|---|---|---|---|---|
+| PRCP01 `prcp01_l55_p01_c` 30000 (no end either side on this base) | 1 | 7368 -> 7369 | 292 / 5264 -> 292 / 5265 | 1, identical |
+| USN21 `s46_u21_f` 80000 (completed 1310.15 s both) | 1 | 753 -> 2862 | 43 / 547 -> 2152 / 2657 | 1, identical |
+
+The per-member posts are gone (PRCP01 now +1 post), but on USN21 the squadron's director still re-raises the stage and
+re-clears about once a tick after the issue. That is the head arm the image has and the host lacks: a moveto whose target
+resolves to the squadron (bVar3, 0084E05E-0084E078) is raised only to stage 1 while the leader's +184h is set, and
+0084E48A's raise to stage 2 needs !bVar3, so the image holds the command at stage 1 and does not churn. The stage raise is
+the director completion in `src/game_hosts_commands.cpp` (gunnery lane). So the switch stays **OFF** until that hold is
+modelled; gameplay is identical either way on both rows.
