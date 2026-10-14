@@ -12269,7 +12269,8 @@ void GameGunneryHost::Impl::ship_death_message_00827ab0(std::size_t victim) {
 void GameGunneryHost::Impl::build_land_masters_00744a20() {
     if (land_masters_built) return;
     land_masters_built = true;
-    land_master_738.assign(unit_state.size(), units.count());
+    // No master: an index no unit takes (a unit created later takes units.count()).
+    land_master_738.assign(unit_state.size(), static_cast<std::size_t>(-1));
     land_master_is_airfield.assign(unit_state.size(), false);
     const auto adopt = [&](std::size_t master, const std::string& object, bool airfield) {
         const std::size_t section = unit_by_name(object);
