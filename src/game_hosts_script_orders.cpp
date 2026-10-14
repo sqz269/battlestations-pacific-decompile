@@ -1640,6 +1640,12 @@ std::uint32_t GameScriptOrdersHost::squadron_intake_007f1940(std::size_t leader,
         ++squadron_intake_declined_;   // 007F1B2D JE 007F1B5D: nothing issued
         return 0u;
     }
+    issue_command_to_members(members, chosen, target_index, "ai:close_attack 007F1940");
+    return chosen;
+}
+
+void GameScriptOrdersHost::issue_command_to_members(const std::vector<std::size_t>& members,
+    std::uint32_t chosen, std::size_t target_index, const char* source) {
     // 00A14A08-00A14A5D: the kind-1 descriptor naming the target, its +174h id.
     bsp::SceneCommandTarget target{};
     target.kind = 1;
@@ -1647,7 +1653,7 @@ std::uint32_t GameScriptOrdersHost::squadron_intake_007f1940(std::size_t leader,
     target.object = reinterpret_cast<void*>(static_cast<std::uintptr_t>(target_index + 1u));
     const std::uint32_t target_token = static_cast<std::uint32_t>(target_index + 1u);
     const std::string saved_source = delivery_source_;
-    delivery_source_ = "ai:close_attack 007F1940";
+    delivery_source_ = source;
     for (const std::size_t member : members) {
         if (member >= units_.count()) continue;
         void* const handle = reinterpret_cast<void*>(static_cast<std::uintptr_t>(member + 1u));
@@ -1665,7 +1671,6 @@ std::uint32_t GameScriptOrdersHost::squadron_intake_007f1940(std::size_t leader,
         if (!commands_after_last_issue_delivery(install)) install();
     }
     delivery_source_ = saved_source;
-    return chosen;
 }
 
 std::uint32_t script_orders_squadron_intake_007f1940(std::size_t leader,
@@ -2024,6 +2029,17 @@ void GameScriptOrdersHost::run_air_ops_player_launch_queue(float step) {
             chosen = squadron_intake_007f1940(members.front(), members, target);
         if (chosen != 0u) ++auto_attack_issued_; else ++auto_attack_declined_;
         const GameUnitRow* trow = target < units_.count() ? units_.unit_row(target) : nullptr;
+        if constexpr (bsp::kAutoAttackNullClassMoveToBound) {
+            // 007F1688-007F16AD: no class, so moveto (00E08F68) on the same descriptor.
+            if (chosen == 0u && !members.empty() && target < units_.count()) {
+                issue_command_to_members(members, 0x00E08F68u, target,
+                                         "ai:auto_attack moveto 007F1688");
+                ++auto_attack_null_class_movetos_;
+                log_.notef("air ops AutoAttackTarget: squadron %u members=%zu no class -> moveto "
+                    "\"%s\" (007F1688 -> 0071ECF0, packet cc9_l60_auto_attack_moveto)",
+                    p.squadron_entity, members.size(), trow != nullptr ? trow->name.c_str() : "-");
+            }
+        }
         log_.notef("air ops AutoAttackTarget: squadron %u members=%zu target=\"%s\" class=%08X "
             "(007F4EC0 -> 007F15F0 -> 007EEC50, packet cc9_player_air_ops_launch)",
             p.squadron_entity, members.size(), trow != nullptr ? trow->name.c_str() : "-",

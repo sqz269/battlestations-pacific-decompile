@@ -617,6 +617,10 @@ public:
     // script_orders_squadron_intake_007f1940.
     std::uint32_t squadron_intake_007f1940(std::size_t leader,
         const std::vector<std::size_t>& members, std::size_t target_index);
+    // The intake's issue loop: `command` on a kind-1 descriptor naming the target, to
+    // every member, with the bot task installed after the delivery.
+    void issue_command_to_members(const std::vector<std::size_t>& members,
+        std::uint32_t command, std::size_t target_index, const char* source);
 
     // Packet cc8_ship_moveonpath: `GetSelectedUnit` 008AB070 reads the global
     // 00E188D8, which 004C0893 stores in BSP_Game_SetControlledUnit 004C0890.
@@ -982,6 +986,7 @@ private:
     unsigned long long player_launch_started_{0};
     unsigned long long auto_attack_issued_{0};
     unsigned long long auto_attack_declined_{0};
+    unsigned long long auto_attack_null_class_movetos_{0};   // kAutoAttackNullClassMoveToBound
     void run_air_ops_player_launch_queue(float step);
     void run_standing_attacks();
     GameHostLog& log_;

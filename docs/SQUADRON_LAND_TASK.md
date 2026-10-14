@@ -16992,3 +16992,24 @@ JM08: only the sqn31-vs-B-17 #2.1 engagement moves, as predicted. The four sqn31
 B-17 #2.1 survives ON (killed OFF), so deaths 201 -> 200; two ground kills downstream (US barracks, AA truck 05) move
 by 0.3-4.8 s with a different B-17 killer. No other entity moves. The mechanism matches the image (keyed draws in the
 image's order), so the switch is flipped ON.
+
+## 5hl. cc13 backfill L1-L3 (cc9-lua60, 2026-10-14)
+
+- **L3, bound OFF: `bsp::kAutoAttackNullClassMoveToBound`** (include/bsp/air_operations.hpp). 007F15F0 (disk listing): a plane
+  target stands for its squadron (007F1607 IsKindOf 0Fh -> +9D4h); 007EEC50(target, 1, 1) at 007F161E; with a class,
+  0071ECF0(class, descriptor) (007F165A-007F1686); with none (007F1658 JE), 007F1688-007F16AD builds the same kind-1
+  descriptor (+174h id; kind 0 when the target is null) and issues moveto 00E08F68. The host's AutoAttackTarget serve
+  issued nothing on a null class. Under the switch the served members get moveto on the target through the intake's
+  issue loop, now `GameScriptOrdersHost::issue_command_to_members` (shared with 007F1940, which itself issues nothing on
+  a null class, 007F1B2D). Not extended to the standing per-member launch order (kAutoAttackMemberOnLaunchBound keeps
+  chosen classes only): a deck member launched later gets no moveto (labelled). Rows with a null class: PRCP01 (squadrons
+  14/17 -> Enterprise), USNOS `osx` (543/546/555 -> transports). Prediction: those single-plane squadrons fly a moveto to
+  the target instead of idling; gameplay moves on those rows (their planes approach the target and meet its AA).
+- **L2, no host counterpart.** 007B8AE0 calls [unit+DF4h] (the pilot bot, ECX = unit+38Ch so +A68h) vt[18h](level)
+  unconditionally, then 009565A0, whose 009565A3 test of [ECX-32Fh] (unit+5Dh) skips only the unit's own +390h, its
+  +6DCh object and the IsKindOf(20h) children's vt[1C4h]. The host's `pilot_skill_index` stands for the bot's level (the
+  robot rows), which the image sets for a dead unit too; the host keeps no per-device skill. Recorded, no change.
+- **L1, labelled, no switch.** 009CDD50/009CE1D0 draw on per-unit keyed streams where the image uses the shared stream
+  1: that is the keyed-stream discipline (`shared-rng-stream-couples-pairs`), and moving them to a shared stream would
+  couple every pair. 007CC8B0's OnDestroyed +C14h draw belongs to a retired plane with no later reader; on a keyed
+  stream it is unobservable, and on the shared stream only its sequence shift would show. Left as labelled.
