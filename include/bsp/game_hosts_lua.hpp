@@ -383,7 +383,7 @@ inline constexpr bool kLuaUnitGetAttackTargetBound = true;  // ON: pairs held (d
 // `CMP byte [EAX+5Dh],0 / JNE nil` on both arms; +5Dh is set at the end of the kill step,
 // while +5Ch (unit_active) stays set through the whole wreck descent. True: a resolved
 // target with GameUnitsHost::unit_flag_005d set answers nil. False: the unit_active test.
-inline constexpr bool kLuaAttackTargetDeadNilBound = false;
+inline constexpr bool kLuaAttackTargetDeadNilBound = true;  // ON: SQUADRON_LAND_TASK 5hc
 
 // Packet cc9_squadron_set_speed (docs/LUA_BINDING_MISSION.md, "SquadronSetSpeed,
 // 0089F780"). SquadronSetSpeed(squadron, speed) calls member->vtable[3Ch](speed) for

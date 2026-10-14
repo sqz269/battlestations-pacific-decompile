@@ -16675,3 +16675,38 @@ Correction to 5ha: LOMP10 lost its win to a7a20bc52 (5gy), not to the stock swit
 switches OFF) completes at 1176.57 s and `local\l58_s0_l10w` (a7a20bc52) has no end. The first divergence is
 `kBaseLaunchBrakeAttachGateBound` holding airfield CB4_AF's brake until CB4_AF_sqn01 attaches (released at 245.91 s), after
 which the launch chain shifts (deaths 137 -> 109, dive releases 64 -> 34). This is faithful and stays ON.
+
+## 5hc. SquadronLandAndKill and AttackTargetDeadNil pairs; handoff (cc9-lua58, 2026-10-13, at about 75% context)
+
+**`kLuaSquadronLandAndKillBound` stays OFF (not exercised).** Order file `local\l58_p01_lk.txt` (prcp01_l55_p01_c plus two
+more Wildcat launches at frames 640/660) was meant to put more than two Enterprise squadrons up before
+`luaUS03EndReconMovie` (usn_03:1186-1192 kills `idx > 2`). Enterprise has only two launch slots then: both extra lines are
+refused `no such slot`, and the pair (`local\l58_s0_p01k` / `local\l58_lk_p01k`, a7a20bc52) is identical with no
+SquadronLandAndKill call. The cause-5 forward that CC13_VER_10 section 7 asked for already exists: the gunnery funnel
+`kill_unit_00926d90` stores the normalised cause through `note_kill_cause_00926e02` (kKillFunnelCauseBound, ON), so the
+binding's deaths will publish `landed` with no further edit.
+
+**`kLuaAttackTargetDeadNilBound` ON.** PRCP01 (`local\l58_j1_p01w` / `local\l58_dn_p01w`) is identical, even with the
+Junyo/Zuiho `luaAirfieldManager` loops now live. USNOS (`local\l58_s0_osd` /
+`local\l58_dn_osd`) is identical too, which agrees with cc13-ver13 (0 pushes of a dead target in four logs). The fix is
+the byte-read 008A6F58 +5Dh test and it moves nothing on either row, so it is flipped ON.
+
+**Handoff.** Tree `J:\PROG\battlestations-pacific-decompile-cc9-lua52` (agent/cc9-lua52), launcher `local\l58_lane.ps1`
+(rows as l57 plus `p01k`, `p02`, `j8s` = JM08 f 40000, `osd` = USNOS k 30000) and `local\l58_chain.ps1` (sequential jobs;
+NOTE: a job started before its export's exe exists dies silently and its chain waits for ever, so chain only after the
+build's done file). No leases held, no runs in flight.
+
+Commits: 2449d7600, ede6123b4, 6883dab54, 1ca95cd29 (the l57 packets OFF); a7a20bc52 (Junyo switches ON, 5gy);
+35a8bc59e, b414ef1e1 (D1/D2 OFF, 5gz); 4cbd5b2cb (D1 ON, 5gz.1); 74aae670d (stock ON, 5ha); 81397688d (dive packets and
+NavigatorStop ON, 5gx.1, 5gz.2, 5hb); 8885c9175 (bsp_math_tests link fix for 74aae670d); the commit carrying this section flips kLuaAttackTargetDeadNilBound ON.
+
+Wins for the keeper to re-plan on 81397688d or later: PRCP01 (Junyo strikes kill Enterprise), LOMP10 (brake attach gate
+from a7a20bc52), JM08 (stock: Hosho class 162 runs out at frame 10802; the dive packets alone completed it at 1319.86 s on
+1ca95cd29), USN01 (the opening ScoutDauntless release line is refused under the dive packets).
+
+Next, in order: (1) D2's gun-target source: read 007B96F0 and compare its pick with `df_finder_scan_007e2090` before
+re-pairing kDogfightAimAdoptsGunTargetBound; D3/D4/D5 of CC13_VER_22 after. (2) The 0099AF53 release-order spend (packet 5
+finding 2), which is what would let the torpedo wingmen fallthrough fire; re-pair the wingmen switches after it. (3) The
+moveto-self idle-head arm (the per-tick re-completion) before re-pairing kSquadronMoveToSelfBound. (4) FreeFire and
+SquadronLandAndKill need rows that reach them (usn_03:938/1447 on a plan that kills the Hornet; a PRCP01 phase with three
+Enterprise slots). (5) The squadron GetHpPercentage average (007EDC30).
