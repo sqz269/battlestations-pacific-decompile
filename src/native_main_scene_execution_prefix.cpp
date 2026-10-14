@@ -23,6 +23,8 @@
 #include "bsp/native_render_scene_submission.hpp"
 #include "bsp/native_render_queue_execution.hpp"
 #include "bsp/native_render_command_execution.hpp"
+#include "bsp/native_post_effect_submission.hpp"
+#include "bsp/native_material_pass_execution.hpp"
 #include "bsp/native_render_command_owner.hpp"
 #include <cstddef>
 #include <cstring>
@@ -1257,5 +1259,45 @@ void continue_native_main_scene_excluded_restore_00b16068(void* service,void* co
         unwind_native_main_scene_drsh_label(c.label,label); // State-1 does nothing.
         throw;
     }
+}
+void continue_native_main_scene_post_gather_00b160d0(void* service,void* command,
+    NativeMainScenePostGatherContext& c,const NativeMainSceneDrshLabelFrame& label,
+    const NativeMainSceneExcludedRestoreFrame& restored,NativeMainScenePostGatherFrame& frame,
+    NativeMainSceneExecutionPrefixState& state) {
+    if(!state.reached_post_drsh_stage || state.reached_scne_label_stage ||
+       !restored.completed || restored.failed || label.native_cleanup_state!=-1 ||
+       !label.cleanup_completed || label.failed || frame.started)
+        throw std::logic_error("post DRSH requires completed restoration and disarmed label state");
+    if(c.system.actual_renderer_00f8d394!=c.post.camera.renderer_00 ||
+       c.system.actual_service_00f8d39c!=&c.post.materials.actual_diagnostics_00f8d39c ||
+       c.system.actual_synchronization!=&c.post.materials.synchronization ||
+       !frame.system.prefix_preimage || frame.system.sampler.phase!=NativeSamplerLoaderOperation::Phase::fresh)
+        throw std::logic_error("post DRSH requires its fresh system frame and same actual renderer/service domain");
+    frame.started=true;
+    try {
+        frame.active_native_site=state.active_native_site=0x00b160d8;
+        void* const owner=current_member(service,0x60);
+        if(word(owner)!=0x00d5e164 || !c.depth_profile_00d5e164 ||
+           c.depth_profile_00d5e164[0x10/4]!=0x00b4dfb0)
+            throw std::logic_error("post DRSH requires current D5E164 depth-downscale draw");
+        draw_native_post_effect_owner_00b4dfb0(owner,c.post,frame.post);
+        frame.depth_draw_completed=true;
+        frame.active_native_site=state.active_native_site=0x00b160dc;
+        void* camera=get_native_scene_command_camera_00b1bf40(command);
+        void* const scene=current_member(camera,0xa4);
+        frame.active_native_site=state.active_native_site=0x00b160e9;
+        camera=get_native_scene_command_camera_00b1bf40(command);
+        frame.active_native_site=state.active_native_site=0x00b160f2;
+        gather_native_system_constants_00b46a70(scene,camera,c.system,frame.system);
+        frame.system_gather_completed=true;
+        const std::uint32_t color=state.color_word;
+        frame.active_native_site=state.active_native_site=0x00b160fe;
+        camera=get_native_scene_command_camera_00b1bf40(command);
+        frame.active_native_site=state.active_native_site=0x00b16105;
+        set_native_camera_clear_color_00b6fe50(camera,nullptr,color);
+        frame.color_restored=true;
+        frame.active_native_site=state.active_native_site=0x00b1610a;
+        frame.completed=true;state.reached_scne_label_stage=true;
+    } catch(...) {frame.failed=true;throw;}
 }
 } // namespace bsp

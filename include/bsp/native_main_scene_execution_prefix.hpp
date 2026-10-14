@@ -19,6 +19,8 @@ struct NativeRenderSceneSubmissionContext;
 struct NativeRenderSceneSubmissionOperation;
 struct NativeRenderQueueExecutionContext;
 struct NativeRenderQueueExecutionFrame;
+struct NativePostEffectExecutionContext;
+struct NativePostEffectDrawFrame;
 
 struct NativeMainSceneExecutionPrefixContext {
     void* const volatile& actual_renderer_00f8d394;
@@ -59,6 +61,7 @@ struct NativeMainSceneExecutionPrefixState {
     bool reached_drsh_batch_stage{};
     bool reached_excluded_node_stage{};
     bool reached_post_drsh_stage{};
+    bool reached_scne_label_stage{};
 };
 
 // Complete raw leaves. Native ECX command / camera. B1BF40 uses RET and returns
@@ -305,4 +308,34 @@ void continue_native_main_scene_excluded_restore_00b16068(void* actual_service,
     void* actual_command, NativeMainSceneExcludedNodeContext&,
     NativeMainSceneDrshLabelFrame&, const NativeMainSceneBatchFrame&,
     NativeMainSceneExcludedRestoreFrame&, NativeMainSceneExecutionPrefixState&);
+
+struct NativeMainScenePostGatherContext {
+    NativePostEffectExecutionContext& post;
+    const NativeSystemConstantGatherContext& system;
+    // B107F0 publishes this actual depth-downscale profile at service+60;
+    // its current +10 must select full raw B4DFB0 -> B4DCC0.
+    const volatile std::uint32_t* depth_profile_00d5e164;
+};
+struct NativeMainScenePostGatherFrame {
+    NativePostEffectDrawFrame& post;
+    NativeSystemConstantGatherFrame& system;
+    std::uint32_t active_native_site{};
+    bool started{};
+    bool depth_draw_completed{};
+    bool system_gather_completed{};
+    bool color_restored{};
+    bool completed{};
+    bool failed{};
+};
+
+// B160D0..B16109: current service+60/current+10 depth draw, fresh camera scene
+// capture before another fresh camera and actual B46A70, then saved color
+// capture before a third fresh camera and B6FE50. Incoming DRSH state is -1;
+// no local cleanup, retry, unmap or earlier-state rollback. Fresh persistent
+// post/material/system frames share the same physical renderer/service domain.
+// Stops BEFORE B1610A SCNE string construction; no whole D5E13C admission.
+void continue_native_main_scene_post_gather_00b160d0(void* actual_service,
+    void* actual_command, NativeMainScenePostGatherContext&,
+    const NativeMainSceneDrshLabelFrame&, const NativeMainSceneExcludedRestoreFrame&,
+    NativeMainScenePostGatherFrame&, NativeMainSceneExecutionPrefixState&);
 } // namespace bsp
