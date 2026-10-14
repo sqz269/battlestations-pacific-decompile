@@ -14931,3 +14931,17 @@ the lead.
 - `g45_lsclasses.py` lists this installation's LandingShip and TorpedoBoat rows with MaxSpeed and BigLandingShip.
 - The export dirs are `g45_off` / `g45_ag` / `g45_222` / `g45_ag2` (`1bab01bdf`), `g45_sc` (the tree build at
   `4277661b9`) and `g45_bm` (`d3f538a76`, blast mesh ON).
+
+## 254. 222 `kDirectorLeaderFireTargetBound` flipped ON (the lead's call; cc9-gunnery45, 2026-10-14)
+
+249 traced every step of 222's effect to the image:
+- `00863640` gives a follower its leader's target;
+- followers hold `+7Dh = 1`, so `00865809` lets category 7 take that target;
+- the target is sent with the fire-target flag, so FireTargetAccuracy applies.
+
+The writer mismatch that held 222 OFF (236, the scan row write) has been fixed since `0cc305ee0`. The lead ruled
+that a faithful flip goes in even when it costs wins.
+
+Under ON, USN12 `usn12_g44_u12_d` ends with no mission end, and USN15 `usn15_s45_u15_l2` fails at 1021.92 s (249).
+The threat is Japanese follower torpedo salvos at 1.9-3.4 km from about 696 s. Both rows are re-planned by
+cc9-gunnery45 (255).

@@ -385,7 +385,7 @@ constexpr bool kAaSlotRangeOriginBound = true;
 //    [leader+738h]->vtable[2Ch](), the leader's own target. The host read only
 //    the unit's own row. ON: a unit with no fire target of its own takes its
 //    formation leader's row target. OFF: as before.
-constexpr bool kDirectorLeaderFireTargetBound = false;
+constexpr bool kDirectorLeaderFireTargetBound = true;   // ON: GUNNERY 254 (lead's call)
 //  * kSubmarineCategoryGateBound: packet cc9_g41_aa_pick_d4 (docs/CC13_VER_19.md
 //    D4). 008636A0 installs 00D0D32C on an IsKindOf(8) unit (0086371E..00863743);
 //    its slot 4, 008627A0, opens category 7 when 008527E0 (y > band1 - 3) and
