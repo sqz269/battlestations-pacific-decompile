@@ -559,3 +559,14 @@ The independently accepted Source04 transition constructor also ran once and com
 The original Native DATA assembler invocation was last observed pending in session 28151. On resume its process handle is absent and no matching assembler process is running. A final disk seal exists, but the producer performs checks after writing that seal; original terminal stdout and exit zero have not been recovered. The independent artifact-only review is pending. No assembler replay, DATA adoption, Native clock or phase execution is credited here.
 
 This checkpoint verifies the nine current direct artifacts and their historical complete predicate arrays. It does not refresh every retained provider leaf. Source and plan receipt, DATA assembly, adoption, a fresh Native clock, whole 116/119-byte Native reads, complete COFF/helper/caller/frame/linked CFG evidence, provider continuity, ABI and gameplay remain distinct gates. Source credit remains zero.
+
+
+## Native DATA integrity and stopped adoption (2026-10-14 UTC)
+
+A fresh independent read-only review verified the current unadopted Native DATA family: 77,670 predicates, 4,309 current pins and exact 1,512-file/1,513-member membership. Its genuine current reader ended with exit zero. This terminal does not recover the original assembler terminal; original stdout, exit and post-seal results remain uncredited.
+
+Root constructed the inert 23-field Native adoption plan once, preserving 18 fields and changing five. Its independent actual DATA review passed 861 predicates and 16 books. Two independent Source reviews admitted the explicit artifact-only consumer and finite auxiliary Source gate. Root then consumed both complete actual DATA reviews with 277,262 predicates and 4,332 current books. The unchanged issuer granted only DATA adoption through nine exact bindings, with dispatch, clocks and runtime/fixture/ABI/game qualification disabled.
+
+The unchanged DATA adopter's first attempt failed with genuine exit one while rechecking an inherited original Source path under the retired cc12_header13_final_generator_text_proposal worktree. Root confirmed the adopted target was not created and preserved the whole invocation, pending observation and failure. Retained copied artifact integrity does not establish current availability of every original namespace. Original-path recovery and complete adopted-graph, transport and readiness review remain pending; no Native clock or phase ran.
+
+The report's fresh_F7_current_Native_artifact_integrity_and_adoption_checkpoint preserves exact whole-file pins for these reviews, Source gate, actual plan, Root DATA consumption, DATA-only authority and original failed-adopter record. Earlier checkpoints remain historical and unchanged.
