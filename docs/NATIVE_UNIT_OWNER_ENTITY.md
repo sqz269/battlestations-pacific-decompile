@@ -24,6 +24,8 @@ symbols; address and raw storage behavior are the evidence contract.
 | `restore_native_unit_owner_destructor_profiles_0077e3a0` | Qualified `0077E3A0..0077E3C7`, 40 bytes | Ordered five numeric profile writes before the session-release decision |
 | `remove_native_unit_owner_global_matches_0077bea0` | `0077BEA0..0077BF3B`, 156 bytes | Capture actual sentinel and target once, remove every matching node, free then reload/decrement count; accepted Source invalid-parameter boundary |
 | `withdraw_native_unit_owner_global_0077e409` | Qualified `0077E409..0077E41B`, 19 bytes | After actual session-release arm completes/skips: materialize root value cell and remove every match from actual F87194 list |
+| `construct_native_unit_owner_recon_record_00805a70` | Complete normal `00805A70..00805AE9`, 122 bytes | Actual 34h record writes and fresh target reload through the existing raw observer domain; qualified Source cleanup |
+| `destroy_native_unit_owner_recon_record_00804300` | Complete normal `00804300..0080430D`, 14 bytes | Stamp D08E74, then accepted raw 4B7EF0 at record+14; retain record allocation and +28 target bits |
 
 These Source interfaces target MSVC Win32 and use the genuine raw allocation.
 They do not reinterpret `GameUnit`, synthesize a replacement header, zero an
@@ -62,6 +64,45 @@ Untouched factory bytes and padding stay untouched. It stops before the real
 E188A8 publication read, game+1FE4 comparison, E0AF20 byte and possible
 77EB50 peer-holder construction. The separate tail below supplies those effects
 when its actual storage and lifetime prerequisites are met.
+
+## Raw recon-record lifetime primitives
+
+805A70 now operates on the actual 34h allocation and its preimage. It writes
+D08E74 at +0; zeroes the embedded callback owner's +4/+8/+C and target +14
+(record +18/+1C/+20/+28); stores BYTE1 at record+24; then stamps CE75CC at
+record+14. It clears record+4/+8/+C and BYTE+10 in that order. The Original
+MOVSS zero at +C is reproduced as the same zero DWORD bits. Padding +11..13
+and +25..27 and the actual +2C owner/+30 index remain untouched. The constructor
+returns the exact record address and reads the current +28 target after those
+writes. A non-null capture invokes the real 6952A0 pair removal with callback
+base record+14, then clears +28 after that call returns.
+
+The Source API borrows the existing `NativeObserverLifetime` object. It does
+not reinterpret the cc13 semantic recon classes, create another process domain,
+install callable numeric tables, or substitute callback-only services. Current
+`src/native_game_array_lifetime.cpp` still matches the accepted R122 Source hash
+for its concrete `destroy_native_game_participant_observer_004b7ef0` child.
+That child stamps CE74FC, captures its +14 target, uses the same raw graph for
+6952A0, then executes concrete 695870 callback-owner destruction. Retirement
+804300 stamps only record+0 before calling that child at +14. The normal child
+retains the target bits and frees its observer-array storage without freeing
+the containing record; its final callback profile is CE3CD4.
+
+Fresh FH3 data establishes handler C9053B -> FuncInfo DC1248 -> unwind map
+DC1240 -> funclet C90530. The sole state0 action reloads the captured record,
+adds 14h and jumps through 4BD350 to 4B7EF0. Source arms a private guard after
+the actual target capture and invokes that accepted child on a throwing call;
+normal completion disarms it. This is Source exception ownership over the
+same record, not Original FH3 stack-slot, hardware-fault or throw ABI. The
+accepted child itself covers its normal body, so failure inside that cleanup
+and the enclosing vector iterator remain explicit Native lifetime gates.
+
+Current typed metadata recognizes 804300 as its own complete 14-byte function;
+its older comment about no function start is historical. No listing repair was
+needed. These record primitives do not yet supply BF7CD1/BF7C6E iteration,
+the actual GameEntity base, or a completed root/derived factory. The first
+owner stage still requires all three records to have genuinely completed in
+the actual containing allocation, with the full enclosing failure owner.
 
 ## Conditional peer tail and insertion ownership
 
@@ -151,8 +192,11 @@ The actual recon destructor call at E46C targets **BF7C6E**; BF7D69 is not that
 call's target. The scalar wrapper calls E380 at E813 and BF6989 at E820 when
 flags bit zero is set. This packet does not replace that wrapper.
 
-805A70/804300 and 925CE0/928630 remain owned by cc13-seg49 at this audit and
-were queued, not changed. Observer destructor 006E0860 remains leased to
+805A70/804300 were claimed when the existing queue reached its turn and now
+have the qualified raw Source primitives above. 925CE0/928630 were unleased
+at this audit and remain separately queued for the next base frontier; their
+semantic Source interfaces are not treated as actual raw constructors.
+Observer destructor 006E0860 remains leased to
 argon-v2-seg33 and is separately queued; the accepted raw 6952A0/695870
 dependencies alone do not establish that missing owning composition.
 Remaining root gates include their concrete owning
@@ -166,7 +210,8 @@ AA0/F878CC process identity is unchanged. Full receiver activation stays false.
 ## Validation and integration
 
 Strict MSVC Win32 `/std:c++20 /EHsc /O2 /MD /W4 /WX /fp:strict` compilation
-passed. All fifteen public Source schedules and the shared count helper were
+passed. All seventeen public Source schedules, the shared count helper and the
+new Source recon unwind guard were
 inspected for the ordered
 mixed-width writes, initial-word capture, current-head reloads and real free
 calls. A manifested isolated comparison links the new production object,
@@ -215,10 +260,25 @@ execution, malformed-memory faults, Native exception execution and the actual
 global/game receiver remain untested. The previous peer and prefix fixtures
 were relinked with this extended object and still pass **37 and 20 checks**.
 
-The worker's `scripts/build.ps1` Release baseline passed all three configured
-tests after verified native-math seeds were enabled. The new TU is separately
-strict-compiled and directly linked into the comparison; it is not in that
-baseline's CMake target. The primary reports permanent registration of
-`src/native_unit_owner_entity.cpp` in its integrator branch and owns validation
-of the resulting combined build. See
+The recon packet compares complete live/file bodies for 805A70 (122 bytes),
+804300 (14), and accepted observer child 4B7EF0 (88), plus five EH/thunk records.
+Its copied Original retirement leaf remains connected to the copied observer
+child; only the admitted 6952A0/695870 boundaries use the same concrete Source
+graph. The fixture uses actual raw manager publication, canonical observer
+edges/endpoint arrays, a real Win32 critical section, and canonical manager
+teardown. A nonzero 34h preimage checks return identity, exact field widths,
+padding and owner/index preservation. Empty and populated retirement check
+repeated pair references, a second edge, dispatch invalidation, retained target
+bits, endpoint counts/capacities and balanced locking. Only allocated array
+pointer identities are normalized. Result: **20 checks, zero failures**.
+The constructor normally clears its target before reloading it; this fixture
+does not execute the non-null reload arm or its Source unwind guard. Native
+exception execution, fault behavior, array iteration and actual game binding
+remain untested. Earlier packet results remain in their frozen receipts.
+
+After syncing local main 23FBB8A1D, the worker's `scripts/build.ps1` Release
+build includes the permanently registered TU and passed all three configured
+tests. The recon object is also separately strict-compiled and directly linked
+to the freshly built core, Lua and zlib libraries and the application's Windows
+libraries for the manifested comparison. No CMake edit was needed. See
 `reports/native_unit_owner_entity.json` for exact validation status and pins.
