@@ -14196,3 +14196,44 @@ The exec guard's `sus_prog.exe` refusal is logged on every completion checked.
 keeper:** USN01 (lost under f10) and USN12 (lost under D3+D4). USN15 holds under f10 (2808.66 s), but under D3
 it rides a knife-edge. PRCP01 was already lost before these flips. **Still OFF:** 222 (lead's call),
 `kGunSubmergedAaKindBound` and `kTorpedoBotNoInterceptDropBound` (232, not yet paired).
+
+## 234. Handoff (cc9-gunnery42, 2026-10-14, at about 72% context)
+
+**On `agent/cc9-gunnery36`, newest first** (built, ctest 2/2, origin/main merged at `8825ee71a`):
+
+| sha | what |
+| --- | --- |
+| (this) | handoff |
+| `91d6a9d22` | ten flips ON (233) |
+| `992b26782` | `kGunSubmergedAaKindBound`, `kTorpedoBotNoInterceptDropBound` OFF (232) |
+| `dd4f7d6cd` | `kBombReleaseVelocityFrameBound` OFF (231) |
+| `038ad7bac` | VER_23 D1/D2/D4 OFF (230) |
+| `820e55386` | VER_21 D2/D1 OFF (229) |
+| `1740e9ab2` | VER_21 D3/D4 OFF (228) |
+
+**With the keeper.** Under the flips, USN01 `p8_u1_c` and USN12 `s38_u12_p2` are lost. USN15 is a knife-edge under D3.
+PRCP01 `l55_p01_c` was already lost on OFF at `dd4f7d6cd`.
+
+**Open, in order of value.**
+1. **222 `kDirectorLeaderFireTargetBound`** (OFF, the lead's call; 233 note). Ask the ships lane whether the
+   host's other `director+238h` writers (Lua SetFireTarget, the command paths' `00835860`) match the image for
+   followers. If they do, flip it and hand USN15 to the keeper.
+2. **Pair 232**: `kGunSubmergedAaKindBound` on a row with diving boats (JM06 `s47_j6_n1` or PRCP01's win
+   orders), and `kTorpedoBotNoInterceptDropBound` on USN02 and JM06.
+3. **VER_23 D3, the avoid-zone launch gate `0090088E`.** This needs a `00417940` group segment test on
+   `GameAvoidZoneRuntime` (ships lane). The question went to the lead; there is no answer yet. cc13's
+   `torpedo_launch_zone_clear_0090088e` is the model, and `torpedo_lead_xz` already holds the lead point.
+4. **VER_20 D2** (aerial torpedoes through `006E4D50`). It reroutes `game_hosts_units.cpp` ~:27297 (shared),
+   adds four bomb_scatter draws per drop, and moves the entry 40-60 m.
+5. The 227 list: the TorpedoBot 0.2 s think timer and the `008FC010` slot accept; hold fire (3a, waiting on
+   the ships-lane API); blast mesh (4); Fido (5, blocked).
+
+**Tools** (this tree's `local\`):
+- `g42_queue.ps1` (jobs `exe|log|args`, `-Parallel`). It caps g42 runs across every queue and waits for an
+  `^<dir> .*exit=0` line in `g42_exports.txt`. **Remove a dir's stale lines before re-exporting it**: a queue
+  started on a stale line once launched a half-built export.
+- `g42_chain.ps1 -After <progress> -Jobs <jobs>` starts a queue after another's `QUEUE DONE`.
+- `g42_metrics.py <logs>` prints the artillery, ranging and end metrics.
+- `g42_arty.py` prints the arcade Artillery rows (V0, Range, FlyTime, v', +5Ch).
+- The win-set argument lines for the current rows are `g42_q4.jobs` (tags `w0`/`w1`). Same-tree OFF at
+  `dd4f7d6cd` is `local\g40_bm0` (logs `g42_x0_<row>`).
