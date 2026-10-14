@@ -14658,3 +14658,71 @@ keeper.
 exports, appends to `g44_exports.txt`); `g44_queue.ps1 -Jobs <file>` (as g43's; the exports file must exist);
 `g44_pos.py <traj prefix> <steps> <regex>` samples `--trajectory-csv` output. Exports: `g44_off` (`5886bfa03`),
 `g44_off2` (`589c58d8c`), `g44_off3` (`7c5815dbd`), `g44_fl` (`0cc305ee0`), `g44_t2on` / `g44_t2off` (`e26b56733`).
+
+## 247. The submarine case of `kTorpedoBotAttackRangeBound`: faithful, stays ON (lead queue item 1; cc9-gunnery45, 2026-10-14)
+
+**Question.** Under D1 (230, ON since `91d6a9d22`) physics9 saw no JapSub launch in IJN08 phase 1 and the JM06 AI
+PlayerSubs lost their 1-2 km convoy kills. Is gate A mis-bound for submarine owners?
+
+**(a) Gate A decides submarines too.** No other launcher exists for an AI boat.
+- The sub-attack fire step `009E9EB0`-`009EA9B7` has 42 direct call sites to 19 targets, and none of them is a gun or tube call:
+  `00414DB0`, `00414EB0`, `00415690`, `00419010`, `00419510`, `00427C90`, `00427EB0`, `00438AA0`, `00438B10`,
+  `008528B0`, `009E0040`, `009E4A60`, `009E4C70`, `009E4D90`, `009E4EE0`, `009E97B0`, `009E9DE0`, `009E9E50`,
+  `00BF701A` (`disasm-raw 009E9EB0 --length 2824`).
+- Its seven indirect calls are `[unit+0AB4h]->vtable[50h]` (three), one more `vtable[50h]` at `009EA4BF`,
+  the target's `vtable[34h]` (velocity), `vtable[5Ch](8)`, and one through EDX at `009EA352`. So the state only steers, sets the depth and raises the
+  periscope (section 5 of `SHIP_AI_SUB_ATTACK.md`).
+- The launch comes from each Function-7 tube's TorpedoBot, `008FFF20`, as for a surface ship. Its order is:
+  1. The seat gate: return unless `[gun+1ACh]` is 8 or `00927F10` holds it.
+  2. The think timer at `009000DD`..`009000F6`.
+  3. `bot+64h`: when set, `008527E0` on it must answer shallow (`009000FC`..`00900117`).
+  4. Gate A: `0042B2F0` at `009001A8` measures `|target - gun|`, and `009001B5` loads `[edi+44Ch]` for the min.
+- No owner-kind test separates a boat from a ship before gate A.
+
+**(b) R and the row are right.**
+- `009E9CE0` calls `00901BA0(length, 1)`, the same function that fills `bot+68h`. `00901BA0` reads
+  `00731020`, then the row `[00E1998C] + 14h*(bot+34h+1)` (flag 1) or `+14h*bot+34h + 18h` (flag 0), then calls
+  `008387B0(7, length, range, accuracy)` (live decompile).
+- `00731020` returns `classDesc+60h = WTS * FlyTime * 0.6` (`00855A90`). For Type 95 / Mark 14 (51.444, 60) that is
+  1852 m, as in CC13_VER_23.
+- The level is `bot+34h = unit+390h`, which the base constructor seeds to 1 at `0095CCCC` (PILOT_SKILL_LEVEL 1).
+  This installation's `ijn_8_north_sol.lua` (2024-07-13) never calls `SetSkillLevel` on `Mission.JapSubs`
+  (lines 215-218). Its `SkillLevelOwn` goes only to `JapFleetLeft`.
+- The scene `ijn_8_north_sol.scn` authors `Skill` on 60 entities, but not inside `entity "JapSub1"`.
+- So SPNormal (1) is the image's level for these boats, and the host's default 1 matches it. The limit is
+  0.36-0.50 R, as predicted in 230: 669-920 m for 115-180 m targets. physics9's mean of 824 m against the cargo
+  ships fits.
+
+**(c) The image's approach does bring a boat inside the gate.**
+- `009E9D90` switches to fire at `range < R_ft + 150`, where `R_ft` is the flag-1 range from (b).
+- `009E4A60`'s range is `d - own/2 - target/2` (ship target), floored at 0.
+- **Correction to SHIP_AI_SUB_ATTACK.md section 3**, which says the own half-length goes to a dead slot.
+  `PUSH 6` at `009E4B20` comes before `FSTP [ESP+0Ch]` at `009E4B26`, so the store lands in the `[ESP+8]` slot that
+  both exits load. `kSubAttackOwnHalfLengthBound` ON (SHIP_AI 243) is right.
+- In fire (`009E9E50`), the boat runs in to `+54h = R_ft * U(0.8,1) * U(0.3,0.5)`, which is 0.24-0.50 R_ft, before
+  it opens out.
+- That point is well inside gate A's `min(unit+44Ch * 1.5, bot+68h + 100)`, whichever flag `bot+68h` holds:
+  - with flag 1, the limit is R_ft + 100 (center to muzzle);
+  - with flag 0, it is about 0.79 R_ft + 100.
+- Gate B, `min(unit+44Ch, bot+68h)` on the lead, is passed too, at those ranges.
+
+**Runtime, current rules (no new run needed).**
+- physics9's `p9i8_u.log` uses `attack JapSubN CargoM` orders, which go through `0077D600(00E08F78)`, so
+  sub_attack selects at 5.05 / 6.05 / 7.05 s. The boats close, and the JapSubs launch 29 torpedoes (11 / 12 / 6)
+  from 267.31 s. Cargo2 and Cargo6 break up at 286.40 s.
+- The gate counts there are `gate_a_drops=11053 gate_b_drops=2831 passes=23062 mean_attack_range=824`.
+- JM06 (`SHIP_AI` 243): the PlayerSubs select at 81.10 s, switch to fire at about 1060 m and close to 482-483 m.
+  Their kills come at 184.86 s and 191.96 s, where they used to come from 1.0-1.8 km.
+
+**Why ijn08_s49_i08_i11 sees nothing.**
+- That plan parks the boats with `moveto` and orders `torpedo <sub> at <target>` / `release`. Neither order
+  enters sub_attack.
+- The `torpedo` verb is the player's group-4 seat (`player_fire_torpedo_group`, `seat_1ac = 0`). A player seat
+  clears the bot's target (`player_seat`, the side gate `0090003B`), and the group-4 launch itself is the broken
+  verb cc9-ships50 owns.
+- A parked boat outside `bot+68h + 100` is refused by the bot in the image too.
+- So the loss is an order-file problem, not a mis-binding. The re-plan should use `attack` (NavigatorAttackMove)
+  for the AI boats, as `p9_i08_u.txt` does. The same holds for any plan that relies on AI subs killing from
+  1-2 km: the image's AI boats close to about 0.24-0.5 R_ft (about 220-460 m) first.
+
+**Verdict: faithful.** `kTorpedoBotAttackRangeBound` stays ON for submarine owners, and no code change is made.
