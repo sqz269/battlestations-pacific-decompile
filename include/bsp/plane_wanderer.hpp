@@ -72,7 +72,8 @@ bool plane_wanderer_fixed_step_007be060(PlaneWandererState& s, const PlaneWander
 // The image stores FCOS/FSIN as floats (004399BF, 004399C9) before the products with r.
 // true: that float rounding (the faithful path). false: the older double cos/sin products,
 // kept as the default until a measured pair lands it (live gameplay numerics, cc9 host terms).
-inline constexpr bool kPlaneWandererFloatTrigBound = false;
+// ON by mechanism (docs/OCEAN_WAVE_FIELD.md 31): counters as predicted, the six wins hold.
+inline constexpr bool kPlaneWandererFloatTrigBound = true;
 void plane_wanderer_random_direction_00439950(float out[3], const PlaneWandererDraw& draw);
 
 }  // namespace bsp

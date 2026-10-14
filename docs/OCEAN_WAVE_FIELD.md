@@ -1057,3 +1057,57 @@ Open, in order:
   USN15 90000, JM08 110000, JM06 120000, ESMP08 140000, USNOS 200000. USN04 V1 pair: 45000 at 0.0222 s.
 - Keeper notes not yet re-timed: kTorpedoBoatRudderTorqueBound (BSM01 833.92 s, JM08 1907.44 s by ships48) and
   kLandMasterDamageBound 1f3bf3d62 (check rows with land targets).
+
+## 30. The third C2 reader has a consumer (cc9-physics9, 2026-10-14; corrects section 28)
+
+Section 28 recorded 0099D51A-0099D593 (`|vt[38h]() - |ctl+30h||`, the C2 low-pass velocity) as a dead store. It is
+not. Evidence (Ghidra listing of 0099D300, `bsp.py ghidra disasm 0099d300`; decompile of the same):
+- Stack depth. 0099D300 `SUB ESP,58h; PUSH ESI; PUSH EDI`; the early return pops them at 0099D3BD-0099D3BF; the main
+  path pushes EBX and EBP at 0099D3DA/0099D3DB and pops them at 0099EA66/0099EA67, before `POP EDI` (0099EB94),
+  `POP ESI` (0099EBA5) and `ADD ESP,58h` (0099EBA6). So `[ESP+48h]` at 0099D54B..0099D593 (EBX/EBP pushed) and
+  `[ESP+40h]` at 0099EB54 (popped) are the same slot, entry-20h. Ghidra's decompiler merges them as `fStack_20`:
+  written at 0099D54B (vt[38h]), 0099D564/0099D593 (the absolute difference) and read once, at 0099EB54.
+- The consumer, 0099EB28-0099EB81, at the end of every think: when the two earlier small-value tests pass
+  (plan+280h/284h by plan+288h, plan+298h/29Ch by plan+2A0h, each `< [00D1F3C8]`), 0099B260(plan+28Ch) through
+  0042BE90 is `< [00D1F3C8]` and `fStack_20 < [00CE3958]` (2.0), it writes
+  `unit+520h = ([[00E188A8]+5FCh]+908h == unit+54h)` (0099EB5B-0099EB73) and `plan+2ECh = [00E0E2EC]` (0.24,
+  0099EB79/0099EB81).
+- Reach. 0099D431 clears unit+520h at the head of the same think, so for any plane that is not the player record's
+  selected unit the tail writes the 0 again: no change for AI planes. For the selected plane, a settled flight
+  (speed within 2 m/s of the filtered velocity, the other terms small) publishes unit+520h = 1, which the host
+  reads as "not an AI plane" (game_hosts_units.cpp: 0099C270's fast path, 00953D84, 009A17F8). plan+2ECh is
+  rewritten at the next think's head (0099D446, or [00E0E2F4] at 0099D466 when unit+900h is 4 or 5) before this
+  function reads it; a reader outside 0099D300 between thinks was not searched.
+- Host: not carried (no host site writes unit+520h for a plane, nothing reads the C2 difference). Since the harness
+  gives no player input, carrying the selected-plane hand-over would leave a `select`ed plane on neutral controls;
+  no committed win selects a plane for long (USN01's `release ScoutDauntless` line is refused). Left unbound;
+  candidate packet for the plane lane: bind the tail behind a switch, OFF, with the selected-plane prediction above.
+
+## 31. `kPlaneWandererFloatTrigBound` pair (cc9-physics9, 2026-10-14)
+
+cc13's a0ae654d7 puts 00439950's float rounding of FCOS/FSIN behind `kPlaneWandererFloatTrigBound` (OFF). Listing
+check (`bsp.py disasm-raw 004399A0`): `FLD [esp+4]; FCOS; FSTP dword [esp+8]` (004399BD/004399BF), `FSIN; FSTP dword
+[esp+0Ch]` (004399C7/004399C9), then `FLD [esp+8]; FLD [esp+14h]` (r, stored as a float at 004399B5), `FMULP`
+(004399E2) into [esi], `FMUL dword [esp+0Ch]` (004399EA) into [esi+4]; z goes to [esi+8] by MOVSS (004399DD). The ON
+path matches; the OFF path multiplies r by the unrounded double cos/sin. ABI: __thiscall-like, ESI = out, returns
+EAX = out.
+Prediction (written before the runs): only the last ulp of the wander direction's x/y changes, so the summary line
+`plane wanderer` keeps planes/steps/timer_draws until the first chaotic divergence; offset/speed/accel/displacement
+move in late digits. No mechanism counter can fail; the verdict is by mechanism unless the wins move.
+Pair: OFF = `local\p9_m` (exe 073805D36E49, the re-time logs `local\p9w1_<row>.log`), ON = `local\p9_wt1` (main
+25b98b1fa with the flip), same launch lines.
+Results (logs `local\p9w1_<row>.log` OFF, `local\p9wt_<row>.log` ON, reference env):
+
+| Row | OFF | ON | pair_diff |
+|---|---|---|---|
+| USN02 `s36_u2_p7` | completed 200.06 s | completed 200.06 s | identical |
+| LOMP06 `l50_l6_q6` | completed 376.83 s | completed 376.83 s | identical |
+| USN01 `p8_u1_i` | completed 360.04 s | completed 360.04 s | moved |
+| PRCP01 `p9_p01_k` | completed 536.54 s | completed 536.59 s | moved |
+| LOMP10 `p3_l10_b` | completed 1187.58 s | completed 1144.54 s | moved (deaths 94 -> 90) |
+| BSM01 `p6_b1_a` | EndMission 833.92 s | EndMission 833.92 s | moved |
+
+Mechanism as predicted: `plane wanderer` keeps planes=52 (LOMP10) / 277 (BSM01), offset_max, speed_max and
+accel_max; steps, active, timer_draws and displacement move by under 1% with the run length. LOMP10's first moved
+row is a plane death at 97.70 -> 97.75 s (the killer changes), the chaotic divergence of a shared stream, not a
+mechanism failure. **Flipped ON** (`include/bsp/plane_wanderer.hpp`); every win holds, guard logged on all twelve.
