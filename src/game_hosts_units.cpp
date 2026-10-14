@@ -37,6 +37,7 @@
 #include "bsp/plane_control_rate.hpp"
 #include "bsp/pilot_plan_slots.hpp"
 #include "bsp/dogfight_task.hpp"
+#include "bsp/dogfight_ver_cc13.hpp"
 #include "bsp/near_field_probe.hpp"
 #include "bsp/camera_position_modes.hpp"
 #include "bsp/plane_attitude_angles.hpp"
@@ -1111,6 +1112,8 @@ struct GameUnitSlot {
     float nb_clock_7c{4.5f};
     float nb_clock_84{3.0f};
     std::size_t nb_found_plus_one{0};
+    std::size_t gun_target_74_plus_one{0};   // gun+74h (009FC917), the finder's result
+    int df_gun_adopts{0};                    // 009A79A9 calls (kDogfightAimAdoptsGunTargetBound)
     int nb_refreshes{0};
     int nb_scans{0};
     // Packet cc9_near_field_probe census.
@@ -6895,6 +6898,17 @@ struct GameUnitsHost::Impl {
     // 007C2610, and df_aim = 00954650(target, this tick's projtime). False: the
     // target's origin and a muzzle speed of 1.0 (the time to target discarded).
     static constexpr bool kDogfightAimLeadBound = false;
+    // Packet cc9_l58_df_adopt_gun (docs/CC13_VER_22.md D2). 009A797F-009A79A9, the
+    // tail of the aim tick 009A76E0: the gun's auto target gun+74h (stored
+    // unconditionally at 009FC917 from the 007B96F0 search, null included) is
+    // handed to 009A7650 when it is not null, not approach+B4h, has a squadron
+    // (+9D4h) and that squadron is approach+CCh. True: the host's finder result
+    // (df_finder_scan_007e2090, the 007B96F0 stand-in) as last left by the gun
+    // tick, against the order's squadron (the approach+CCh stand-in of
+    // df_approach_update_009aac70); 009A7650's effects as df_select_009aa630 runs
+    // them (target, opportunistic rocket target). False: the aim state keeps its
+    // pick until the reselect.
+    static constexpr bool kDogfightAimAdoptsGunTargetBound = false;
     // Packet cc9_fighter_aim_wiring (docs/GUN_AIM_TERMS.md): the fine aim's
     // distortion 009FA7E0 and 009F9FC0's gun+4Ah damped cap, under the lead.
     static constexpr bool kFighterAimTermsBound = true;
@@ -20468,6 +20482,41 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         bsp::dogfight_off_axis_009aac70(unit_.df_local_ec, unit_.df_tan_f8);
                     }
 
+                    // 009A797F-009A79A9 (kDogfightAimAdoptsGunTargetBound).
+                    void df_adopt_gun_target_009a797f() {
+                        const std::size_t g = unit_.gun_target_74_plus_one;
+                        bsp::DogfightAimAdoptFacts f;
+                        f.gun_target_present = g != 0 && g - 1 < owner_.slots.size();
+                        f.gun_target_is_current = g == unit_.df_target_plus_one;
+                        const bsp::PlaneSquadronHostRecord* gsq = nullptr;
+                        if (f.gun_target_present) {
+                            gsq = bsp::plane_squadron_registry().find_by_member_unit(g - 1);
+                        }
+                        f.gun_target_has_squadron = gsq != nullptr;
+                        const bsp::PlaneSquadronHostRecord* tsq = nullptr;
+                        if (unit_.command_target_plus_one != 0) {
+                            tsq = bsp::plane_squadron_registry().find_by_member_or_departed_unit(
+                                unit_.command_target_plus_one - 1);
+                        }
+                        f.squadron_is_target_squadron = gsq != nullptr && gsq == tsq;
+                        if (!bsp::dogfight_aim_adopts_gun_target_009a797f(f)) return;
+                        ++unit_.df_gun_adopts;
+                        ++unit_.df_target_changes;
+                        owner_.log.notef("  dogfight %-12s target -> %s (gun target)",
+                            unit_.row.name.c_str(), owner_.slots[g - 1]->row.name.c_str());
+                        unit_.df_target_plus_one = g;  // 009A7650
+                        if constexpr (bsp::kOpportunisticRocketBound) {
+                            // 009A76D3: 007B7870(task+38Ch, target, [00F87574]).
+                            const GameUnitSlot* t = df_target_slot();
+                            bsp::opportunistic_rocket_set_target_007b7870(
+                                unit_.orx, t != nullptr ? g : 0,
+                                t != nullptr && bsp::unit_is_kind_of(t->class_id, 0x0F),
+                                {0.0f, 0.0f, 0.0f});
+                            unit_.orx_owner = 1;
+                        }
+                        owner_.record("BotTaskDogfight::set_target", 0x009a7650u);
+                    }
+
                     void df_select_009aa630(const bsp::PlaneSquadronHostRecord& tsq) {
                         ++unit_.df_reselects;
                         unit_.df_reselect_timer_e4 = 2.0f;  // 00BD2F10(1.0, 3.0), midpoint
@@ -21750,6 +21799,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             fp.near_c4 = static_cast<float>(gi.shoot_distance * 0.30000001192092896);
                             found = df_finder_scan_007e2090(fp, -1.0f, nullptr, 0.0f);  // +28h
                         }
+                        // 009FC917: +74h = the search result, before the live test.
+                        unit_.gun_target_74_plus_one = found != nullptr ? unit_.nb_found_plus_one : 0;
                         // 009FC922: a live result becomes +74h.
                         if (found != nullptr && df_slot_live(*found)) {
                             gi.has_target = true;
@@ -22055,6 +22106,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if (unit_.df_distance_d4 < unit_.df_row.aim_shoot_distance &&
                                 ai.tan_len < 0.25f) {
                                 ++unit_.df_gun_window_ticks;
+                            }
+                            if constexpr (GameUnitsHost::Impl::kDogfightAimAdoptsGunTargetBound) {
+                                df_adopt_gun_target_009a797f();
                             }
                             owner_.record("BotStateDogfightAim::tick", 0x009a76e0u);
                             return;
@@ -38837,6 +38891,10 @@ void GameUnitsHost::report() {
                              slot->df_target_plus_one - 1 < host.slots.size())
                                 ? host.slots[slot->df_target_plus_one - 1]->row.name.c_str()
                                 : "-");
+                        if constexpr (GameUnitsHost::Impl::kDogfightAimAdoptsGunTargetBound) {
+                            host.log.notef("  dogfight gun adopt %-12s adopts=%d",
+                                slot->row.name.c_str(), slot->df_gun_adopts);
+                        }
                         if constexpr (GameUnitsHost::Impl::kDogfightAimLeadBound) {
                             host.log.notef("  dogfight aim lead %-12s lead_ticks=%d mean_shift=%.2f",
                                 slot->row.name.c_str(), slot->df_aim_lead_ticks,
