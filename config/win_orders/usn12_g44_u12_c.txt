@@ -1,0 +1,11 @@
+# g44 USN12 c: b plus repeated Cleveland moveto orders. Montpelier dies at 811-822 s, so MontGrp[1] becomes Cleveland; steer it to CLGoTo from 885 s and repeat after phase 3 is up (950 s under the TorpedoBot think timer)
+12000 select Montpelier
+12010 moveto Montpelier CLGoTo
+17700 select Cleveland
+17710 moveto Cleveland CLGoTo
+18400 select Montpelier
+18410 moveto Montpelier CLGoTo
+19400 select Cleveland
+19410 moveto Cleveland CLGoTo
+20600 select Cleveland
+20610 moveto Cleveland CLGoTo
