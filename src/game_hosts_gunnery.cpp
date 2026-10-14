@@ -901,6 +901,17 @@ constexpr bool kAaKind6GateBound = true;   // ON: GUNNERY_OPEN_ITEMS 184.3
 //    lifted direction's hull-frame pair. OFF: the unlifted hull-frame bearing, and
 //    the world lift added to the hull-frame elevation (184.1's substitution).
 constexpr bool kAaKind6GateMountFrameBound = true;   // GUNNERY 197: ON, inert on USN02/USN13 9000
+//  * kArtilleryAcceptGateBound: GUNNERY 248 (lead queue item 2, the 222 fallback).
+//    00729BC0 sends weapon kinds 2, 3 and 4 to the ArtilleryGunnerBot at gun+398h
+//    (GUNNERY 164.2), whose accept 006DEF30 refuses a target the gravity arc
+//    00955630 cannot reach or the traverse window 0085A8B0 excludes, before
+//    gun->vtable[1D4h] (0072F6E0, which answers 1 for these kinds: gun+42Ch is
+//    only installed for kinds 1, 5 and 6, 00729560). Step 8.8 (00865773) then
+//    tries the gun's next candidate. The host accepted kinds 2-4 on the range
+//    alone. ON: the two gates of kind 6's surface arm, a refusal refusing the
+//    slot. OFF: counted only (artillery_gate_rejects). LABELLED as kind 6:
+//    [[bot+50h]+3Ch] taken as present; a gun with no arcs is not refused.
+constexpr bool kArtilleryAcceptGateBound = false;
 //  * kBulletBlastDamageMinNestedBound (cc9-gunnery38/39, GUNNERY 203): 006E99E7's artillery
 //    tier reads the class's Blast.BlastDamageMin; read_bullet_class_number takes the
 //    dotted key as one flat name and answers 0. True: the nested reader. False: 0,
@@ -2026,6 +2037,7 @@ struct GameGunneryHost::Impl {
     unsigned long long artillery_fly_time_expiries{0};
     unsigned long long aa_window_rejects{0};
     unsigned long long aa_kind6_gate_rejects{0};   // GUNNERY 184
+    unsigned long long artillery_gate_rejects{0};   // GUNNERY 248, kinds 2-4
     unsigned long long aa_armour_rejects{0};
     unsigned long long aa_armour_rejects_tail{0};   // plane-owned kind-1 guns (008FBF70 has no armour term)
     unsigned long long aa_min_range_skips{0};
@@ -6343,6 +6355,40 @@ public:
             ++owner_.line_of_fire_refusals;
             return true;
         };
+        // 006DEF30's two gates, the arc solve 00955630 and the traverse window
+        // 0085A8B0: kind 6's surface picks, and kinds 2-4 under
+        // kArtilleryAcceptGateBound.
+        auto artillery_reach_006def30 = [&]() -> bool {
+            bsp::GunGravityArcQuery q;
+            q.aim_point = {target_pos[0], target_pos[1], target_pos[2]};
+            q.muzzle_position = {muzzle[0], muzzle[1], muzzle[2]};
+            // 006DEF84 FLD [class+50h]: the 006E98BC speed for an artillery class.
+            q.muzzle_speed = kArtilleryClassSpeedBound && row.artillery_class
+                ? row.class_speed : row.muzzle_speed;
+            q.mount_frame = nullptr;
+            const bsp::GunGravityArcSolution arc = bsp::solve_gun_gravity_arc_00955630(q);
+            bool reach = arc.solved;                                // 006DEFAD
+            if (reach) {
+                const float u[3] = {d[0] / len, d[1] / len, d[2] / len};
+                const float direct = std::atan2(d[1], std::sqrt(d[0] * d[0] + d[2] * d[2]));
+                float horz = kGunHorzSign * std::atan2(dot3(u, right), dot3(u, forward));
+                float vert = std::asin(std::max(-1.0f, std::min(1.0f, dot3(u, up))))
+                    + (arc.angles.vert - direct);
+                if constexpr (kAaKind6GateMountFrameBound) {
+                    // The mount-NULL solve returns (pitch, -0 - yaw) in the world frame.
+                    const float p = arc.angles.vert;
+                    const float y = -arc.angles.horz;
+                    const float w[3] = {std::sin(y) * std::cos(p), std::sin(p),
+                        std::cos(y) * std::cos(p)};
+                    horz = kGunHorzSign * std::atan2(dot3(w, right), dot3(w, forward));
+                    vert = std::asin(std::max(-1.0f, std::min(1.0f, dot3(w, up))));
+                }
+                const bsp::GunPlatformArcs arcs{row.arcs.data(), row.arcs.size()};
+                reach = bsp::gun_traverse_allowed_007f5fc0(arcs,           // 0085A8B0
+                    bsp::gun_wrap_angle_0085abbd(horz), bsp::gun_wrap_angle_0085abbd(vert));
+            }
+            return reach;
+        };
         if (kind == 6 && !(kAaKind6GateBound && plane)) {
             // 006DEF30, the ArtilleryGunnerBot accept, evaluated OFF too so the
             // refusals it would add are counted. [[bot+50h]+3Ch] is taken as
@@ -6352,34 +6398,7 @@ public:
             if (!plane && (len <= 0.0f || row.arcs.empty())) {
                 if constexpr (kAaKind6GateBound) return;   // as kind 5 below
             } else if (!plane) {
-                bsp::GunGravityArcQuery q;
-                q.aim_point = {target_pos[0], target_pos[1], target_pos[2]};
-                q.muzzle_position = {muzzle[0], muzzle[1], muzzle[2]};
-                // 006DEF84 FLD [class+50h]: the 006E98BC speed for an artillery class.
-                q.muzzle_speed = kArtilleryClassSpeedBound && row.artillery_class
-                    ? row.class_speed : row.muzzle_speed;
-                q.mount_frame = nullptr;
-                const bsp::GunGravityArcSolution arc = bsp::solve_gun_gravity_arc_00955630(q);
-                bool reach = arc.solved;                                // 006DEFAD
-                if (reach) {
-                    const float u[3] = {d[0] / len, d[1] / len, d[2] / len};
-                    const float direct = std::atan2(d[1], std::sqrt(d[0] * d[0] + d[2] * d[2]));
-                    float horz = kGunHorzSign * std::atan2(dot3(u, right), dot3(u, forward));
-                    float vert = std::asin(std::max(-1.0f, std::min(1.0f, dot3(u, up))))
-                        + (arc.angles.vert - direct);
-                    if constexpr (kAaKind6GateMountFrameBound) {
-                        // The mount-NULL solve returns (pitch, -0 - yaw) in the world frame.
-                        const float p = arc.angles.vert;
-                        const float y = -arc.angles.horz;
-                        const float w[3] = {std::sin(y) * std::cos(p), std::sin(p),
-                            std::cos(y) * std::cos(p)};
-                        horz = kGunHorzSign * std::atan2(dot3(w, right), dot3(w, forward));
-                        vert = std::asin(std::max(-1.0f, std::min(1.0f, dot3(w, up))));
-                    }
-                    const bsp::GunPlatformArcs arcs{row.arcs.data(), row.arcs.size()};
-                    reach = bsp::gun_traverse_allowed_007f5fc0(arcs,           // 0085A8B0
-                        bsp::gun_wrap_angle_0085abbd(horz), bsp::gun_wrap_angle_0085abbd(vert));
-                }
+                const bool reach = artillery_reach_006def30();
                 if (!reach) {
                     ++owner_.aa_kind6_gate_rejects;
                     if constexpr (kAaKind6GateBound) {
@@ -6390,6 +6409,19 @@ public:
                 }
             }
             line_of_fire_refuses();
+            return;
+        }
+        if (kind == 2 || kind == 3 || kind == 4) {
+            // kArtilleryAcceptGateBound: 006DEF30 for the ArtilleryGunnerBot kinds,
+            // counted either way. No line of fire for these kinds (0072F6E0 answers 1).
+            if (len <= 0.0f || row.arcs.empty()) return;
+            if (!artillery_reach_006def30()) {
+                ++owner_.artillery_gate_rejects;
+                if constexpr (kArtilleryAcceptGateBound) {
+                    in.slot_accepts_target = false;
+                    last_refusal_ = AaRefusal::window;
+                }
+            }
             return;
         }
         // Kind 6 against a plane under kAaKind6GateBound: 008FBFC0, the window
@@ -15809,12 +15841,14 @@ void GameGunneryHost::report() {
         }
         host.log.notef("summary mission aa acceptance bound=%d window_rejects=%llu "
             "armour_rejects=%llu min_range_skips=%llu armour_rejects_tail=%llu tail_bound=%d "
-            "lof_expiry_draw=%d kind6_gate=%d kind6_gate_rejects=%llu (packet cc9_aa_targeting)",
+            "lof_expiry_draw=%d kind6_gate=%d kind6_gate_rejects=%llu artillery_gate=%d "
+            "artillery_gate_rejects=%llu (packet cc9_aa_targeting)",
             (kAaMinRangeBound ? 1 : 0) | (kAaFireWindowBound ? 2 : 0) | (kAaArmourBound ? 4 : 0),
             host.aa_window_rejects, host.aa_armour_rejects,
             host.aa_min_range_skips, host.aa_armour_rejects_tail,
             kTailGunnerNoArmourTestBound ? 1 : 0, kAaLineOfFireExpiryDrawBound ? 1 : 0,
-            kAaKind6GateBound ? 1 : 0, host.aa_kind6_gate_rejects);
+            kAaKind6GateBound ? 1 : 0, host.aa_kind6_gate_rejects,
+            kArtilleryAcceptGateBound ? 1 : 0, host.artillery_gate_rejects);
         for (const auto& kv : host.aa_target_stats) {
             const GameGunneryHost::Impl::AaTargetStats& st = kv.second;
             host.log.notef("summary mission aa target %-24s scored=%llu accepted=%llu "

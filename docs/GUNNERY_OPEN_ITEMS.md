@@ -14726,3 +14726,42 @@ PlayerSubs lost their 1-2 km convoy kills. Is gate A mis-bound for submarine own
   1-2 km: the image's AI boats close to about 0.24-0.5 R_ft (about 220-460 m) first.
 
 **Verdict: faithful.** `kTorpedoBotAttackRangeBound` stays ON for submarine owners, and no code change is made.
+
+## 248. The artillery accept `006DEF30` for kinds 2-4: `kArtilleryAcceptGateBound`, OFF (lead queue item 2, the 222 fallback; cc9-gunnery45, 2026-10-14)
+
+**The 222 question.** With 222 ON, a follower's guns get the leader's target as the first step 8.7 candidate. Is
+there a fallback in the image when a gun cannot use it?
+
+**Image.** Step 8.8 (`00865773`..`0086587E`, UNIT_GUNNERY_PASS 5) walks every candidate for each gun, and
+`00729BC0` decides. A refusal goes on to the next candidate, so a gun that refuses the leader's target takes its
+own pick. `00729BC0` checks two things:
+- the ammunition range `[proj+60h]`;
+- the bot slot's `vtable[1Ch]`.
+
+For weapon kinds 2, 3 and 4 that slot is the ArtilleryGunnerBot at `gun+398h`, vtable `00CFE000`
+(`00CFE00C` = the tick `006DF520`, the only xref). Its slot `1Ch` = `006DEF30` (bytes at `00CFE01C`: `30 EF 6D 00`).
+Live decompile of `006DEF30`:
+1. Null target, `[bot+50h]` or `[[bot+50h]+3Ch]`: refuse.
+2. `00955630` arc solve at speed `[[gun+3F8h]+34h]+50h`: refuse on 0.
+3. `0085A8B0(horz, vert)`, the traverse window: refuse on 0.
+4. Then `gun->vtable[1D4h]` = `0072F6E0`, which answers 1 for these kinds (`gun+42Ch` is installed only for kinds
+   1, 5 and 6, GUNNERY 164.2).
+
+**Host.** `bind_aa_acceptance` ran `006DEF30` for kind 6 only (`kAaKind6GateBound`, 184). It returned early for
+kinds 2-4, so a main or secondary battery gun accepted any target within its range, including one it cannot
+traverse to. That gun keeps the target, and its bot never fires. Under 222 every follower's battery is offered
+the leader's target first, so this gap is hit far more often. This is the missing fallback.
+
+**Binding.** `kArtilleryAcceptGateBound`.
+- ON: kinds 2-4 take kind 6's two surface gates. The code is factored into `artillery_reach_006def30`, unchanged
+  for kind 6. A refusal refuses the slot, as a window refusal.
+- OFF: the refusals are only counted (`artillery_gate_rejects` on the `aa acceptance` summary line).
+- LABELLED as for kind 6: `[[bot+50h]+3Ch]` is taken as present, and a gun with no arcs is not refused.
+
+**Predictions, written before any run.**
+1. OFF is identical to the base, and `artillery_gate_rejects` > 0 on the surface rows (USN12, USN15).
+2. ON alone, USN12 `d` / USN15 `l2`: exit 3. More artillery candidates are tried per gun, and artillery launches
+   rise, because guns that sat on unreachable targets now fire at the next candidate. USN01 `i` moves only if a
+   battery meets a ship.
+3. ON with 222 (USN12 `d`, USN15 `l2`): part of 222's collapse is undone. Followers' guns that cannot bear on the
+   leader's target fall back. The win is not predicted.
