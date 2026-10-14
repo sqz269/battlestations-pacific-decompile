@@ -51,7 +51,9 @@ scheme, both 90h-byte policies and frame-clear-before-quit ordering: successful
 read, failed scheme capture, and ignored read failure. Activation/restoration
 failures are ignored in all scenarios. Placement construction over known bytes
 proves no policy initialization; fresh and foreign receiver calls are rejected,
-and destruction schedules no API. All three scenarios passed.
+and destruction schedules no API. All three scenarios passed. The complete
+MSVC Win32 Release build and final source recompilation passed both existing
+CTest cases (`reconstructed_math` and `tool_tests`). No new CTest case was added.
 
 `reports/platform_power_policy_owner_cc12.json` records build/test results and
 probe artifact hashes. This proves a projected retained owner and bounded
