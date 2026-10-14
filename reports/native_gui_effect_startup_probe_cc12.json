@@ -40,9 +40,9 @@
     "actual_unit_receiver_constructed": false
   },
   "runtime": {
-    "status": "queued; all 6 shared slots occupied",
-    "exec_session": 52984,
-    "command": "./tools/run_game.ps1 -Log local/cc12_actual_native_gui_effect_startup_01.log -- --frames 120",
+    "status": "first launcher terminal before native start; immutable executable retry queued",
+    "exec_session": 59647,
+    "command": "./tools/run_game.ps1 -Exe local/cc12_native_gui_startup_receipts/23fbb8a1d/build/win32/Release/bsp_game.exe -XLiveDll local/cc12_native_gui_startup_receipts/23fbb8a1d/build/win32/Release/xlive_stub.dll -Log local/cc12_actual_native_gui_effect_startup_02.log -- --frames 120",
     "environment": {
       "BSP_NATIVE_GUI_EFFECT_PROBE": "1",
       "BSP_NATIVE_FONT_PROBE": "0"
@@ -50,7 +50,33 @@
     "actual_resource_acquisition_observed": false,
     "references_retired_observed": false,
     "original_shared_drain_observed": false,
-    "exit_code": null
+    "exit_code": null,
+    "observed_utc": "2026-10-14T21:27:03.505757+00:00",
+    "attempts": [
+      {
+        "attempt": 1,
+        "exec_session": 52984,
+        "launcher_exit_code": 1,
+        "game_exit_code": null,
+        "reason": "gave up after 2400 s: all 6 slots busy",
+        "actual_process_started": false,
+        "log_created": false,
+        "manifest_created": false
+      },
+      {
+        "attempt": 2,
+        "exec_session": 59647,
+        "status": "queued",
+        "executable": "local/cc12_native_gui_startup_receipts/23fbb8a1d/build/win32/Release/bsp_game.exe",
+        "xlive_dll": "local/cc12_native_gui_startup_receipts/23fbb8a1d/build/win32/Release/xlive_stub.dll",
+        "log": "local/cc12_actual_native_gui_effect_startup_02.log",
+        "launcher_log": "local/cc12_actual_native_gui_effect_startup_02_launcher.log",
+        "game_arguments": [
+          "--frames",
+          "120"
+        ]
+      }
+    ]
   },
   "original_installation": {
     "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
