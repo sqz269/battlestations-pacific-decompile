@@ -1,0 +1,310 @@
+{
+  "status": "complete_raw_stop_source_strict_win32_original_fixture_passed_no_handler_admission",
+  "updated_utc": "2026-10-14T23:50:32.065758+00:00",
+  "baseline_commit": "4d9161bf8e519de52624d847a55fe16561b1c16a",
+  "documentation": "docs/NATIVE_PLATFORM_RAW_STOP.md",
+  "function": {
+    "address": "00bebf70",
+    "name": "stop_native_win32_platform_00bebf70",
+    "cpp_symbol": "stop_native_win32_platform_00bebf70",
+    "source": "src/native_platform_construction.cpp",
+    "header": "include/bsp/native_platform_construction.hpp",
+    "status": "raw_source_stop_strict_win32_current_original_fixture_passed",
+    "native_end_exclusive": "00bebf95",
+    "bytes": 37,
+    "original_abi": "ECX actual184h owner; EDX unconsumed; no stack arguments; preserves ESI; RET. Source fastcall exposes unused EDX; exact37-byte schedule except named import operands.",
+    "reconstructed": true,
+    "build_tested": true,
+    "fixture_tested": true,
+    "native_entry_abi_verified": true,
+    "abi_compatible": false,
+    "abi_limit": "Bounded entry/stack schedule verified; no installed binary replacement or native exception/application ABI claim.",
+    "game_validated": false,
+    "evidence": "Hypothesis, not a recovered symbol. Raw184h owner stop adoption on4d9161bf8: docs/NATIVE_PLATFORM_RAW_STOP.md; reports/native_platform_raw_stop.json. Complete37B ECX owner/no consumed stack/RET, EDX unconsumed. Capture scheme+4C once; unlessFFFFFFFF call real SetActivePwrScheme(captured,null,same-owner+50), ignore result; push0, clear captured-owner byte42, real PostQuitMessage0. No canonical0109CF04 read/write, WindowExtra access, policy copy, HWND destruction, queue retirement or exit181 store. Strict and normal CMake COFF/linked body equal Original37 except named power-call and quit-IAT operands. Fresh7live/PE spans108B, listing and imported targets verified. CopiedOriginal/currentSource fixture on actual constructor-produced388B owner: sentinel/FALSE/TRUE, same+50 pointer, publication replacement and all388B differential pass; actual isolated-thread WM_QUIT0 drained6times. Fixture power writes intercepted, IAT restored; actual scheme/policy/screensaver readbacks unchanged. NormalRelease3/3. Not fullWM_ACTIVATE/BED3B0/window/app/nativeexception/game proof.",
+    "report": "reports/native_platform_raw_stop.json"
+  },
+  "static_live_evidence": {
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00bebf70",
+        "bytes": 37,
+        "sha256": "8144c2a4b84d01cd8b096ef0d27ddc41750be60e0af5cf6921bf4120ee80dab3",
+        "live_equals_installed_pe": true
+      },
+      {
+        "address": "00c2ddd0",
+        "bytes": 6,
+        "sha256": "3787977f49a470380c72de7597dd3c1601292685e866d4f59719ce880d141196",
+        "live_equals_installed_pe": true
+      },
+      {
+        "address": "00ce22e8",
+        "bytes": 4,
+        "sha256": "ef5f40bcb561d44f52b5f6aef145e47b468156bc88a3fa0d199f95f8d0b75d4c",
+        "live_equals_installed_pe": true
+      },
+      {
+        "address": "00ce234c",
+        "bytes": 4,
+        "sha256": "6e612d15862292f71090d7399e6b15f75ac88067819750f7e0eed16773ce7667",
+        "live_equals_installed_pe": true
+      },
+      {
+        "address": "00d68ccc",
+        "bytes": 4,
+        "sha256": "f0e39e438e4e528c8151aaa2eefd1bce92113aab5f5ca3f798fc1ee662283d1e",
+        "live_equals_installed_pe": true
+      },
+      {
+        "address": "00becf19",
+        "bytes": 17,
+        "sha256": "962cfafb41ea08b8fbf09562b0c387b56fdbafe70415d5a79e684756581817c6",
+        "live_equals_installed_pe": true
+      },
+      {
+        "address": "00bec3b0",
+        "bytes": 36,
+        "sha256": "01e60e1316d293035548925c1dfa9a93708490eb43824567fcde534954951d7d",
+        "live_equals_installed_pe": true
+      }
+    ],
+    "verified_bytes": 108,
+    "saved_listing_equals_live": true,
+    "imports": {
+      "00ce22e8": [
+        "POWRPROF.dll",
+        "SetActivePwrScheme"
+      ],
+      "00ce234c": [
+        "USER32.dll",
+        "PostQuitMessage"
+      ]
+    },
+    "canonical_platform_cell": "0109cf04",
+    "stop_reads_publication": false
+  },
+  "emitted_and_linked_evidence": {
+    "objects": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_raw_stop\\native_platform_construction.obj",
+        "sha256": "4744544f62de193c007f084e9c5bf4f44c2a74744e575a0e848e0031e8364e8a",
+        "bodies": [
+          {
+            "name": "stop_native_win32_platform_00bebf70",
+            "bytes": 37,
+            "sha256": "423a58944171ffa09e2c5d0546b652e7044ed422796a898250fcadf5980884ee",
+            "relocations": [
+              {
+                "offset": 19,
+                "symbol": "_SetActivePwrScheme@12",
+                "coff_type": 20
+              },
+              {
+                "offset": 31,
+                "symbol": "__imp__PostQuitMessage@4",
+                "coff_type": 6
+              }
+            ],
+            "matches_original_except_named_relocations": true
+          }
+        ]
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\build\\win32\\bsp_core.dir\\Release\\native_platform_construction.obj",
+        "sha256": "a6e1d9c740a6e63baefded10e2bcf9e30cf94740020d8463ccf484a31679af32",
+        "bodies": [
+          {
+            "name": "stop_native_win32_platform_00bebf70",
+            "bytes": 37,
+            "sha256": "423a58944171ffa09e2c5d0546b652e7044ed422796a898250fcadf5980884ee",
+            "relocations": [
+              {
+                "offset": 19,
+                "symbol": "_SetActivePwrScheme@12",
+                "coff_type": 20
+              },
+              {
+                "offset": 31,
+                "symbol": "__imp__PostQuitMessage@4",
+                "coff_type": 6
+              }
+            ],
+            "matches_original_except_named_relocations": true
+          }
+        ]
+      }
+    ],
+    "linked": {
+      "stop_address": "00401410",
+      "thunk_address": "00446d3b",
+      "post_iat": "0044a0cc",
+      "power_iat": "0044a0bc",
+      "exact37_except_named_relocations": true
+    },
+    "manifest": [
+      {
+        "id": 1,
+        "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+        "as_invoker": true
+      }
+    ],
+    "executable_sha256": "d5eb9ce2e4f85b84f422d5280c0c74631d501b39b4c360363a91df8a61d01658"
+  },
+  "validation": {
+    "normal_build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "Release",
+      "tests_passed": 3,
+      "log": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_raw_stop_build.log",
+        "bytes": 3212,
+        "sha256": "5fd9c1702275eb3455b393f8abd363b3c9ceddfc57413eda0fd46b1e705882f2"
+      }
+    },
+    "probe": {
+      "command": "local/platform_raw_stop/platform_stop_probe.exe",
+      "exit": 0,
+      "stdout": [
+        "PASS Original37/current Source raw388 owner: sentinel, ignored FALSE/TRUE, exact owner+50 pointer and API order; all388 bytes compared",
+        "PASS real WM_QUIT0 on isolated thread, drained after each of6 calls; captured owner survives publication replacement; fixture owners/manager freed and IAT restored",
+        "PASS system setting readbacks unchanged: scheme_ok=1 policy_ok=1 screensaver_ok=1; power calls intercepted, no real scheme write"
+      ],
+      "executable": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_raw_stop\\platform_stop_probe.exe",
+        "bytes": 420352,
+        "sha256": "d5eb9ce2e4f85b84f422d5280c0c74631d501b39b4c360363a91df8a61d01658"
+      },
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_raw_stop\\platform_stop_probe.cpp",
+        "bytes": 9994,
+        "sha256": "ff5b2b608b221edfce47229d20d3e2908c70c105b1cfbd9205c11a043c6dee6f"
+      },
+      "original_bytes_executed": 37,
+      "original_operand_rebindings": {
+        "0x13": "fixture SetActivePwrScheme spy rel32",
+        "0x1f": "fixture PostQuitMessage spy pointer-cell absolute"
+      },
+      "source_import_hooks": [
+        "SetActivePwrScheme",
+        "PostQuitMessage"
+      ],
+      "source_process_iat_restored": true,
+      "actual_owner_bytes_compared": 388,
+      "actual_source_constructor_used": true,
+      "fixture_publication_is_actual_game_0109cf04": false,
+      "fixture_publication_is_one_borrowed_cell": true,
+      "fixture_policy": "patterned raw owner+50; no BED223 producer executed",
+      "cases": [
+        {
+          "scheme": "ffffffff",
+          "power_calls": 0
+        },
+        {
+          "scheme": "00000011",
+          "power_api_result": false,
+          "publication_replaced_during_import": true
+        },
+        {
+          "scheme": "00000017",
+          "power_api_result": true,
+          "publication_replaced_during_import": true
+        }
+      ],
+      "real_isolated_thread_wm_quit_zero_observed_and_drained": 6,
+      "real_power_writes": 0,
+      "actual_settings_readbacks": {
+        "active_scheme": "successful_unchanged",
+        "full_power_policy": "successful_unchanged",
+        "screensaver": "successful_unchanged"
+      },
+      "cleanup": "Both process IAT hooks restored; isolated-thread messages drained; raw queue/title/base/publication and actual singleton manager freed"
+    },
+    "libraries": {
+      "bsp_core.lib": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 91901160,
+        "sha256": "197e40a90a57608cf2c6fbe7a47a1b4774fa51277c2eb58834fa75d2620ec2e9"
+      },
+      "bsp_lua511.lib": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\build\\win32\\Release\\bsp_lua511.lib",
+        "bytes": 455384,
+        "sha256": "1459f8e5d692ab96cc18a81ccd0d1f20db1cdc8a3cc4230626a97cb4c9c781ad"
+      },
+      "bsp_zlib121.lib": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\build\\win32\\Release\\bsp_zlib121.lib",
+        "bytes": 71966,
+        "sha256": "8f5763424fa0ccca3a72c61ddae5ad701a53c6fc150dd23955682fe3f8bd9f7b"
+      }
+    },
+    "entry_abi": "Exact37 normal/probe COFF and linked schedule except two named operands; copied Original/current Source both invoked ECX/no native stack/RET",
+    "prior_ghidra_name_and_comment_preserved": true,
+    "ghidra_write_lock_used_and_project_saved": true,
+    "affected_export_refreshed": true,
+    "installed_pe_hash_unchanged": true
+  },
+  "ownership": {
+    "stop_receiver": "captured explicitECX actual184h owner",
+    "power_policy": "same captured owner+50",
+    "scheme": "captured once from same owner+4C",
+    "clear": "same captured owner byte42 after returning power call",
+    "canonical_publication": "0109CF04 not read or written by BEBF70",
+    "window_extra": "not accessed by BEBF70",
+    "vtable": "D68CCC -> BEBF70",
+    "known_caller": "BECEE0 old-HWND BECF27 dispatch"
+  },
+  "next_frontier": {
+    "handler": "BED3B0 not composed/admitted",
+    "concrete_children_present": [
+      "rawBED370 queue",
+      "GUI/media getter owner bodies",
+      "sound/movie dispatch bodies",
+      "rawB0D1E0 focus control"
+    ],
+    "named_incomplete_bindings": [
+      "B24FB0 -> NativeRendererActivationBindings resource_reload_slot_08 for B22030/B21F70 current raw resource identities",
+      "B24DD0 -> B19000 concrete canonical resource/texture provider and runtime verification",
+      "B469A0 callable-descriptor domain does not establish raw registry domain",
+      "BEC3B0 current0109CF04 borrow vs DeviceGraph private copied publication"
+    ],
+    "bed3b0_owner_rule": "Current publication, explicit active receiver and captured WindowExtra owner remain distinct"
+  },
+  "limits": [
+    "No WM_ACTIVATE/full BED3B0 or BEC3B0 activation",
+    "No whole BECEE0/window/application startup",
+    "No real power policy write or BED223 producer execution",
+    "No Original FH3/native exception compatibility claim",
+    "No installed binary replacement or game validation"
+  ],
+  "frozen_checkpoint": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\checkpoints\\cc14-native-platform-raw-stop\\final",
+  "frozen_manifest": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\checkpoints\\cc14-native-platform-raw-stop\\final\\manifest.json",
+  "current_artifacts": {
+    "src/native_platform_construction.cpp": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\src\\native_platform_construction.cpp",
+      "bytes": 12798,
+      "sha256": "4e0b51f70e211d0653f4fac61c9a63c9dded64aaabf6ba3e85249583f475daa0"
+    },
+    "include/bsp/native_platform_construction.hpp": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\include\\bsp\\native_platform_construction.hpp",
+      "bytes": 6925,
+      "sha256": "953e730654caad7f434b069e086acc601cf5df095fcc8d62cc015019acdbbcea"
+    },
+    "docs/NATIVE_PLATFORM_RAW_STOP.md": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\docs\\NATIVE_PLATFORM_RAW_STOP.md",
+      "bytes": 5259,
+      "sha256": "6fbd77b93f739d1af84900c7386a67f94a0796c7805d2f5ed53182d4c024548e"
+    }
+  }
+}

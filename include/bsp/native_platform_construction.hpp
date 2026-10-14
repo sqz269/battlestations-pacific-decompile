@@ -76,6 +76,17 @@ void* delete_native_win32_platform_00bece30(
     void* actual_owner, std::uint32_t flags,
     NativePlatformConstructionContext& context);
 
+// BEBF70[37]: ECX actual184h owner, EDX unconsumed, no stack arguments, RET.
+// Capture owner+4C once. Unless FFFFFFFF, call real SetActivePwrScheme with
+// that value, null global policy, and the SAME owner's +50 saved policy.
+// Ignore the result; clear only owner+42 before real PostQuitMessage(0).
+// The owner is captured across synchronous import re-entry. This operation
+// neither reads nor changes canonical0109CF04 or window-extra ownership.
+// No HWND destruction, queue retirement, power-policy copy, or exit+181 write.
+// Caller must establish the original power producer when +4C is not sentinel.
+void __fastcall stop_native_win32_platform_00bebf70(
+    void* actual_owner, void* unused_edx) noexcept;
+
 // BEC7B0[53]: three stack arguments next/previous/pointer-to-two-event-bytes,
 // EAX allocated0Ch node, RET0Ch; ECX/EDX have no input contract. Preserve all
 // three pointer tests, DWORD offset wrapping and the WORD load/store at+8.

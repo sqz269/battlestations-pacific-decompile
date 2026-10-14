@@ -11,6 +11,7 @@
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
 #include <Windows.h>
+#include <powrprof.h>
 #include <cstddef>
 #include <cstdint>
 #include <exception>
@@ -268,6 +269,30 @@ void* delete_native_win32_platform_00bece30(
     destroy_native_win32_platform_00beca00(actual_owner, context);
     if ((flags & 1u) != 0) singleton_lifetime_free(actual_owner);
     return actual_owner;
+}
+
+__declspec(naked) void __fastcall stop_native_win32_platform_00bebf70(
+    void*, void*) noexcept {
+    __asm {
+        push esi
+        mov esi, ecx
+        mov eax, dword ptr [esi + 4ch]
+        cmp eax, -1
+        jz post_quit
+        lea ecx, [esi + 50h]
+        push ecx
+        push 0
+        push eax
+        // Original C2DDD0 and the current import library both supply the
+        // six-byte jump to the real PowrProf IAT. Preserve this rel32 call.
+        call SetActivePwrScheme
+    post_quit:
+        push 0
+        mov byte ptr [esi + 42h], 0
+        call PostQuitMessage
+        pop esi
+        ret
+    }
 }
 
 __declspec(naked) void* __stdcall create_native_text_queue_node_00bec7b0(
