@@ -37,7 +37,7 @@ float dist2(const std::array<float, 2>& a, const std::array<float, 2>& b) {
 // sum (0041630A..00416310, 00416436..0041645A): the products are exact in a
 // double, so one rounding to float matches the image (cc13-avoid1 audit).
 // OFF keeps the SSE float products, each rounded before the add.
-inline constexpr bool kOutlineWalkX87ProductsBound = false;
+inline constexpr bool kOutlineWalkX87ProductsBound = true;
 
 float sum_of_products_x87(float a, float b, float c, float d) {
     if constexpr (kOutlineWalkX87ProductsBound) {
