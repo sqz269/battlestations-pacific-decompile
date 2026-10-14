@@ -1,0 +1,574 @@
+{
+  "packet": "cc12_gui_effect_shader_cache_bracket",
+  "source_base": "9daa118b16f83e3bbaeb276c63d16e4e70cb8d9d",
+  "owned_application_addresses": [
+    "00b3a600",
+    "00b3b140"
+  ],
+  "held_read_only_caller": "0073bf80 agent/argon-v2; no mutation/annotation/ABI claim",
+  "classification": "missing_real_canonical_shader_cache_lifecycle_prerequisite_on_resource_probe",
+  "root_run04": {
+    "attempt": "04",
+    "status": "Terminal hardware access violation in shader-cache record lookup; null actual cache publication",
+    "source_revision": "e20f1b31bac3338fe006f4a222fa2119edc75d1b",
+    "actual_executable": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_startup_receipts\\e20f1b31bac3338fe006f4a222fa2119edc75d1b\\build\\win32\\cc12_followup_release\\bsp_game.exe",
+    "actual_executable_sha256": "c14be9b4b25afb29672d1a58556541d959f0e6f4ec0346de34c8b24209248bb6",
+    "pe_timestamp": "6ad005ce",
+    "preferred_and_actual_base": "10000000",
+    "launcher_checkout_head": "9c5991f614a7c716e05f7f0623d7ae31010f2135",
+    "launcher_checkout_head_is_build_source": false,
+    "slot": 5,
+    "affinity_core": 12,
+    "started_utc": "2026-10-14T22:56:04.1589929Z",
+    "finished_utc": "2026-10-14T22:56:06.2370511Z",
+    "exit_code": -1073741819,
+    "exec_session": "48480 terminal",
+    "exception": {
+      "code": "c0000005",
+      "address": "1038eb9d",
+      "read_address": "00000000",
+      "function": "find_native_shader_binary_cache_record_00b34890",
+      "function_start": "1038eb60",
+      "offset": "3d",
+      "instruction": "mov eax,dword ptr [edi]",
+      "EDI": "00000000",
+      "top_cache_argument": "00000000",
+      "source_site": "src/native_shader_compiler_lookups.cpp:56"
+    },
+    "stack": [
+      "cached_shader",
+      "NativeMaterialProgramCompilerActual::continue_material_pass_00b3b3c0",
+      "compile_native_material_program_00b3c3a0",
+      "NativeMaterialEffectCompilerBinding::build_program_00b3c3a0",
+      "NativeMaterialEffectNativeChildren::build_program_00b3c3a0",
+      "load_native_material_effect_programs_00b45ee0",
+      "load_native_material_effect_variants_00b46950",
+      "load_native_material_effect_00b2ebb0",
+      "load_native_cached_material_effect_00b31090",
+      "load_native_renderer_material_effect_00b318b0",
+      "GameNativeGuiEffectApplication::acquire_effect_00b318b0",
+      "GameNativeGuiEffectProbe::run"
+    ],
+    "stack_qualification": "Return addresses resolved against matching map; CDB warns later frame unwinds may be wrong. Faulting instruction/register and top argument are direct dump observations.",
+    "shadow_constructor_and_publication_observed": true,
+    "shadow_profile": "00d5b5e8",
+    "shadow_extent": [
+      2048,
+      2048
+    ],
+    "material_program_compiler_reached": true,
+    "private_sampler_word_guard_reached": "not established",
+    "actual_effect_acquisition_observed": false,
+    "caller_retirement_observed": false,
+    "original_shared_drain_observed": false,
+    "startup_validated": false,
+    "gameplay_validated": false,
+    "log": "local/cc12_actual_native_gui_effect_startup_04.log",
+    "manifest": "local/cc12_actual_native_gui_effect_startup_04.log.manifest.json",
+    "launcher": "local/cc12_actual_native_gui_effect_startup_04_launcher.log",
+    "dump": "local/cc12_actual_native_gui_effect_startup_04.dmp",
+    "frozen_crash_receipt": "local/cc12_gui_crash_receipt_04/receipt.json"
+  },
+  "parent_evidence": {
+    "inputs": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gui_crash_receipt_04\\receipt.json",
+        "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/parent04/receipt.json",
+        "sha256": "80f8a4d4666eca5834aa55c2203595494ec96979d7b179a009c295f87a8204ca"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gui_crash_receipt_04\\cdb_exception_stack.txt",
+        "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/parent04/cdb_exception_stack.txt",
+        "sha256": "0d57e1c754aab2a1e79ca16b4a44e9ef603e51edfcca9014446257c086ef31f0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gui_crash_receipt_04\\bsp_game_e20.map",
+        "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/parent04/bsp_game_e20.map",
+        "sha256": "0aa3b84a40b3908a5cc51de8989efbc8d0832bf115561b604bc8e09947bf020a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gui_crash_receipt_04\\run04.dmp",
+        "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/parent04/run04.dmp",
+        "sha256": "573090b1e457d55229bf0338cd1d9d725fff2c6cdb94da0bdf2f6c552ffa84a6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_startup_receipts\\e20f1b31bac3338fe006f4a222fa2119edc75d1b\\build\\win32\\cc12_followup_release\\bsp_game.exe",
+        "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/parent04/bsp_game_e20.exe",
+        "sha256": "c14be9b4b25afb29672d1a58556541d959f0e6f4ec0346de34c8b24209248bb6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_actual_native_gui_effect_startup_04.log",
+        "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/parent04/run04.log",
+        "sha256": "8847aef47d01d627bf4ad76cceca70323464dd6d75c9b779695facefdd486049"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_actual_native_gui_effect_startup_04.log.manifest.json",
+        "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/parent04/run04.manifest.json",
+        "sha256": "d91a86cb57738ab245917b57feb61c6eca1c24122a6a547a7017b97c561c701a"
+      }
+    ],
+    "compiled_fault_bytes": "8b07",
+    "compiled_fault_instruction": "mov eax, dword ptr [edi]",
+    "register_and_argument": "Root CDB direct exception context EDI0/read0/top cache argument0",
+    "stack_qualification": "matching-map return-address associations; CDB warns later frame unwinds may be wrong",
+    "prior_actual_modes": {
+      "log_line": 63,
+      "load_variants_0108d6f0": 0,
+      "source_mode_0108d6f1": 0,
+      "hires": 0,
+      "reload": 0
+    },
+    "source_domain": "existing GUI admission checks exact compiler/cache cell identity with GameNativeShaderProcess; no private/wrong publication found"
+  },
+  "schedule": {
+    "original": "73BFA6 B3A600 -> Lua/preload renderer+48 iteration73C12F -> B3B140 at73C1BE -> Lua cleanup",
+    "probe": "metadata first -> actual shadow -> same renderer cache create -> real sampler/effect graph + stable actual names -> GuiFont/Bilinear acquisitions -> same cache release -> ready",
+    "later_retirement": "existing reverse caller effect credits/name release before original shared renderer drain; metadata remains alive through drain",
+    "scope_limit": "bounded opt-in resource cache bracket, not full73BF80/script/FileNames/application+08 vector order or normal frontend activation",
+    "application_contract": "cold binary-mode acquisitions require caller canonical cache bracket; application header now states this",
+    "actual_filename": "shaderfx/shaders.bin, originalD60D30 readable literal",
+    "same_domain": "existing GameNativeShaderProcess publication/mode cells and renderer ShaderGraph over actual VFS/string/stream/allocator domain"
+  },
+  "mode_and_installation": {
+    "overrides": false,
+    "private_cache": false,
+    "private_target": false,
+    "observations": "actual shared source/variants bytes sampled before creation for diagnostics only; native helpers resample originals",
+    "selected_run04": "source0/variants0 -> OriginalB38A70 flags2/read; no shader-mode CLI override",
+    "existing_variants1": "flags5/write and release count rewrite preserved; Root must pin/back up any actual writable target before choosing such a run",
+    "source_mode_bypass_added": false,
+    "worker_original_installation_changes": false,
+    "next_actual_modes": "pending Root runtime; probe logs captured values on normal create and failure diagnostics"
+  },
+  "phase_and_publication_invariants": [
+    "admit only absent existing operation + null canonical publication; reject another bracket rather than replace",
+    "ShaderGraph publishes metadata operation before B3A600 entry; running/failed frame persists",
+    "B3A600 publishes constructor result only on return; native null allocation remains null, probe rejects before binary consumers",
+    "creation complete + actual owner admitted before cold acquisitions; original lookup/compiler and missing-row behavior untouched",
+    "release requires original completed/unreleased operation and current publication==captured created owner",
+    "normal release destroys/frees then clears same publication, marks released; probe ready only after returned release and null publication",
+    "creation metadata remains complete after normal release with opaque stale raw identity; it is not a surviving owner",
+    "renderer native closure requires quiescent shader graph and null cache; shared drain is not an alternate cleanup"
+  ],
+  "failure_ownership": {
+    "create": "retains actual allocation/cache/temporary/partial records/current stream in existing creation frame; renderer failed; no rollback/replay",
+    "acquire": "cache remains live; exact returned earlier effect credits and interrupted operations remain in probe; no finally release",
+    "release": "entered/returned flags + existing renderer failed state retain partially retired cache and exact effect caller credits; no replay/retarget/free-count rewrite",
+    "release_substep_limit": "native release has no separate persistent acquired frame; diagnostics do not invent a release-failure native subsite",
+    "diagnostics": "probe stage/create-release flags/current and captured identities/mode observations; actual creation phase/function/site/cache/allocation/completed-records/index/temporary-live",
+    "caller_policy": "retain complete real parent/provider graph under existing no-unwind process exit; never destroy failed frames",
+    "pointer_limit": "no raw cache/allocation/header dereference after release; metadata identity only"
+  },
+  "original_evidence": {
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "checked_bytes": 239,
+    "spans": [
+      {
+        "label": "preload_create_first",
+        "start": "0073bfa1",
+        "end_exclusive": "0073bfab",
+        "length": 10,
+        "live_equals_original_pe": true,
+        "sha256": "5aa56eb46c63d98f3d711ce6427b28f847679a202b258515a7ad1eecfc94d289",
+        "key_instructions": [
+          {
+            "address": "0073bfa6",
+            "saved_equals_live": true,
+            "saved_live": "0073bfa6: CALL 0x00b3a600",
+            "original_pe": "call 0xb3a600",
+            "original_instruction_bytes": "e855e63f00"
+          }
+        ],
+        "saved_assembly_sha256": "7a37084d19c756b801e245fb0ab898c5d4c790e1cc470db83f03cf30a7d49cf8"
+      },
+      {
+        "label": "preload_material_receiver",
+        "start": "0073c117",
+        "end_exclusive": "0073c131",
+        "length": 26,
+        "live_equals_original_pe": true,
+        "sha256": "186421e713707dec08e1c061337ce4f1c4e2993a2af46c8a7418b07a5051f8d3",
+        "key_instructions": [
+          {
+            "address": "0073c117",
+            "saved_equals_live": true,
+            "saved_live": "0073c117: MOV ECX,dword ptr [0x00f8d394]",
+            "original_pe": "mov ecx, dword ptr [0xf8d394]",
+            "original_instruction_bytes": "8b0d94d3f800"
+          },
+          {
+            "address": "0073c11f",
+            "saved_equals_live": true,
+            "saved_live": "0073c11f: MOV EAX,dword ptr [EAX + 0x48]",
+            "original_pe": "mov eax, dword ptr [eax + 0x48]",
+            "original_instruction_bytes": "8b4048"
+          },
+          {
+            "address": "0073c12f",
+            "saved_equals_live": true,
+            "saved_live": "0073c12f: CALL EAX",
+            "original_pe": "call eax",
+            "original_instruction_bytes": "ffd0"
+          }
+        ],
+        "saved_assembly_sha256": "7a37084d19c756b801e245fb0ab898c5d4c790e1cc470db83f03cf30a7d49cf8"
+      },
+      {
+        "label": "preload_release_before_lua_cleanup",
+        "start": "0073c1be",
+        "end_exclusive": "0073c1d4",
+        "length": 22,
+        "live_equals_original_pe": true,
+        "sha256": "7eb3f6b142245d31385507a6b8076af0354e5b9463c47d6aa7e542443a3f5289",
+        "key_instructions": [
+          {
+            "address": "0073c1be",
+            "saved_equals_live": true,
+            "saved_live": "0073c1be: CALL 0x00b3b140",
+            "original_pe": "call 0xb3b140",
+            "original_instruction_bytes": "e87def3f00"
+          },
+          {
+            "address": "0073c1cf",
+            "saved_equals_live": true,
+            "saved_live": "0073c1cf: CALL 0x00b67700",
+            "original_pe": "call 0xb67700",
+            "original_instruction_bytes": "e82cb54200"
+          }
+        ],
+        "saved_assembly_sha256": "7a37084d19c756b801e245fb0ab898c5d4c790e1cc470db83f03cf30a7d49cf8"
+      },
+      {
+        "label": "create_allocate_construct_publish",
+        "start": "00b3a600",
+        "end_exclusive": "00b3a660",
+        "length": 96,
+        "live_equals_original_pe": true,
+        "sha256": "d09e49d9c7b19df7e33eb3ae51e46288f1ba7b81a255b627a1361a346988c6f3",
+        "key_instructions": [
+          {
+            "address": "00b3a618",
+            "saved_equals_live": true,
+            "saved_live": "00b3a618: CALL 0x00bf681b",
+            "original_pe": "call 0xbf681b",
+            "original_instruction_bytes": "e8fec10b00"
+          },
+          {
+            "address": "00b3a631",
+            "saved_equals_live": true,
+            "saved_live": "00b3a631: CALL 0x00b38a70",
+            "original_pe": "call 0xb38a70",
+            "original_instruction_bytes": "e83ae4ffff"
+          },
+          {
+            "address": "00b3a636",
+            "saved_equals_live": true,
+            "saved_live": "00b3a636: MOV [0x0108d6ec],EAX",
+            "original_pe": "mov dword ptr [0x108d6ec], eax",
+            "original_instruction_bytes": "a3ecd60801"
+          },
+          {
+            "address": "00b3a650",
+            "saved_equals_live": true,
+            "saved_live": "00b3a650: MOV [0x0108d6ec],EAX",
+            "original_pe": "mov dword ptr [0x108d6ec], eax",
+            "original_instruction_bytes": "a3ecd60801"
+          }
+        ],
+        "saved_assembly_sha256": "d84a68b32ac892f737fc8d45d5cfa0eef1ecdffd120089e1c23e5af271aef438"
+      },
+      {
+        "label": "release_capture_destroy_free_clear",
+        "start": "00b3b140",
+        "end_exclusive": "00b3b167",
+        "length": 39,
+        "live_equals_original_pe": true,
+        "sha256": "e8451429566b87723c35c3e9ff89fc792198c1bcabd12821087fd51b2b84b108",
+        "key_instructions": [
+          {
+            "address": "00b3b140",
+            "saved_equals_live": true,
+            "saved_live": "00b3b140: MOV ECX,dword ptr [0x0108d6ec]",
+            "original_pe": "mov ecx, dword ptr [0x108d6ec]",
+            "original_instruction_bytes": "8b0decd60801"
+          },
+          {
+            "address": "00b3b14d",
+            "saved_equals_live": true,
+            "saved_live": "00b3b14d: CALL 0x00b352b0",
+            "original_pe": "call 0xb352b0",
+            "original_instruction_bytes": "e85ea1ffff"
+          },
+          {
+            "address": "00b3b153",
+            "saved_equals_live": true,
+            "saved_live": "00b3b153: CALL 0x00bf65ac",
+            "original_pe": "call 0xbf65ac",
+            "original_instruction_bytes": "e854b40b00"
+          },
+          {
+            "address": "00b3b15b",
+            "saved_equals_live": true,
+            "saved_live": "00b3b15b: MOV dword ptr [0x0108d6ec],0x0",
+            "original_pe": "mov dword ptr [0x108d6ec], 0",
+            "original_instruction_bytes": "c705ecd6080100000000"
+          }
+        ],
+        "saved_assembly_sha256": "19fb9c52b0ea668c947dac8bfac8c3cc6d7582639a711bdad873d2b142868b89"
+      },
+      {
+        "label": "lookup_gate_then_owner_read",
+        "start": "00b34890",
+        "end_exclusive": "00b348a9",
+        "length": 25,
+        "live_equals_original_pe": true,
+        "sha256": "e54cd60b396f59c48bce8d0a0c1b007dd3ff4607cb986ec21648db0c9eed666f",
+        "key_instructions": [
+          {
+            "address": "00b34890",
+            "saved_equals_live": true,
+            "saved_live": "00b34890: CMP byte ptr [0x0108d6f1],0x0",
+            "original_pe": "cmp byte ptr [0x108d6f1], 0",
+            "original_instruction_bytes": "803df1d6080100"
+          },
+          {
+            "address": "00b3489a",
+            "saved_equals_live": true,
+            "saved_live": "00b3489a: JZ 0x00b348a2",
+            "original_pe": "je 0xb348a2",
+            "original_instruction_bytes": "7406"
+          },
+          {
+            "address": "00b348a3",
+            "saved_equals_live": true,
+            "saved_live": "00b348a3: MOV EBX,dword ptr [ESI]",
+            "original_pe": "mov ebx, dword ptr [esi]",
+            "original_instruction_bytes": "8b1e"
+          }
+        ],
+        "saved_assembly_sha256": "295ac45253adc1f94e5ee2368fd993fcb55c67021bb84b0801ccec1cb7436ccd"
+      },
+      {
+        "label": "actual_shader_filename",
+        "start": "00d60d30",
+        "end_exclusive": "00d60d45",
+        "length": 21,
+        "live_equals_original_pe": true,
+        "sha256": "3f3852350b1782f4d088dbdb8c92aab372232975eeeaf2a51822307c4f384b40",
+        "key_instructions": [],
+        "literal": "shaderfx/shaders.bin"
+      }
+    ]
+  },
+  "verification": {
+    "strict": {
+      "status": "passed",
+      "exit_code": 0,
+      "target": "MSVC x86",
+      "translation_units": 3,
+      "flags": "/std:c++17 /W4 /WX /EHsc /permissive- /O2 /MD /fp:strict",
+      "artifacts": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_text_native_binding\\local\\cc12_gui_effect_shader_cache_bracket\\compile.cmd",
+          "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/strict/compile.cmd",
+          "sha256": "eb9767b7180c17bc3351a13314556d7aaa92a37549ee378219ed0022cf556642"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_text_native_binding\\local\\cc12_gui_effect_shader_cache_bracket\\compile_final.log",
+          "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/strict/compile_final.log",
+          "sha256": "c061c37a93f467b0ce28f8a7608787482cb511e6280f4914556d013822a506cb"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_text_native_binding\\local\\cc12_gui_effect_shader_cache_bracket\\game_native_renderer_application.obj",
+          "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/strict/game_native_renderer_application.obj",
+          "sha256": "b7080d57b8cfa141460562f3e155e10cc349b02f21b6b2fe2390fd7f07266a37",
+          "coff_timestamp_raw_u32": 1792019760
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_text_native_binding\\local\\cc12_gui_effect_shader_cache_bracket\\game_native_gui_effect_probe.obj",
+          "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/strict/game_native_gui_effect_probe.obj",
+          "sha256": "6a1fa27a19eba0062e47be3cadb0799c03fb5512a4f4fb69b420fc8ef4b5d34d",
+          "coff_timestamp_raw_u32": 1792019759
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_text_native_binding\\local\\cc12_gui_effect_shader_cache_bracket\\game_native_gui_effect_application.obj",
+          "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/strict/game_native_gui_effect_application.obj",
+          "sha256": "8ec49522603355709d9b9836bc0725fac2b6967f8383893a780587dd4fb469e6",
+          "coff_timestamp_raw_u32": 1792019759
+        }
+      ]
+    },
+    "normal_registered_build": {
+      "status": "passed",
+      "exit_code": 0,
+      "command": "./scripts/build.ps1",
+      "ctest": "2/2 passed",
+      "suites": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "test_seconds": 12.07,
+      "overlay": false,
+      "artifacts": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_text_native_binding\\local\\cc12_gui_effect_shader_cache_bracket\\build_final.log",
+          "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/build/build_final.log",
+          "sha256": "432fb62ffa350ec7b2134f3e027742edc19d390061f4cba9c338fe7ec806645a"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_text_native_binding\\build\\win32\\bsp_game.dir\\Release\\game_native_renderer_application.obj",
+          "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/build/game_native_renderer_application.obj",
+          "sha256": "1f9be0c8e313f06a39d1981ee64eb490155e7f48fa42933b5a9a2f88328c718d",
+          "coff_timestamp_raw_u32": 1792019304
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_text_native_binding\\build\\win32\\bsp_game.dir\\Release\\game_native_gui_effect_probe.obj",
+          "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/build/game_native_gui_effect_probe.obj",
+          "sha256": "baa9f1240e000124608dbf2babfd26d19c7b00ac5e106438b735a7728da16257",
+          "coff_timestamp_raw_u32": 1792019765
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_text_native_binding\\build\\win32\\bsp_game.dir\\Release\\game_native_gui_effect_application.obj",
+          "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/build/game_native_gui_effect_application.obj",
+          "sha256": "40819f3da5bea809d3b989ced81de53455f83038fd03d9c36852ec0d409f338f",
+          "coff_timestamp_raw_u32": 1792019765
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_text_native_binding\\build\\win32\\Release\\bsp_game.exe",
+          "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/build/bsp_game.exe",
+          "sha256": "040f454039d023b9260afce3547934e70b9f33d1cbe048075eb106dd5ea4c673"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_text_native_binding\\build\\win32\\bsp_game.map",
+          "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/build/bsp_game.map",
+          "sha256": "dd6dd7901931611080c3f6a18ac97ae732da0da83048962007e2c498ad1cc7fe"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_text_native_binding\\build\\win32\\CTestTestfile.cmake",
+          "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/build/CTestTestfile.cmake",
+          "sha256": "655df7bd978ccbb477644daa8f26a2e0304005dcd0df66f73c78357971fc354e"
+        }
+      ],
+      "game_launched": false
+    },
+    "native_differential": {
+      "configured": false,
+      "reason": "CMake EXISTS(local/seed_reference.hpp) false; local header absent",
+      "claimed_run": false
+    },
+    "cc13_leaf_differential": {
+      "configured": false,
+      "reason": "local/cc13_leaf_reference.hpp absent",
+      "claimed_run": false
+    },
+    "chronology": "final strict and normal build refreshed after caller-header contract comment; earlier logs retained separately, only final inputs accepted",
+    "new_tests": "none; Root actual cache/record/acquisition run remains acceptance",
+    "runtime_after_fix": "not run by worker"
+  },
+  "sealed_changed_source": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_text_native_binding\\src\\game_native_renderer_application.cpp",
+      "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/source/src/game_native_renderer_application.cpp",
+      "sha256": "e5724350d58d3e9d642b904bc2957913bcbe0c6f13174098da2f10bb80298d26"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_text_native_binding\\include\\bsp\\game_native_renderer_application.hpp",
+      "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/source/include/bsp/game_native_renderer_application.hpp",
+      "sha256": "54e0177b1b558ad26110b0fe6e6737684a8cc739a057bad02e30e58598c9ede8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_text_native_binding\\src\\game_native_renderer_shaders.inc",
+      "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/source/src/game_native_renderer_shaders.inc",
+      "sha256": "40baaaf5db1768ed04ed27febff6ba3176348f44fed964026a04e1e17e51d0ce"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_text_native_binding\\src\\game_native_gui_effect_probe.cpp",
+      "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/source/src/game_native_gui_effect_probe.cpp",
+      "sha256": "371c294e8f4ae60b765bf09c670717105ed63c11421bc1260a43a32846ef4ed6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_text_native_binding\\include\\bsp\\game_native_gui_effect_probe.hpp",
+      "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/source/include/bsp/game_native_gui_effect_probe.hpp",
+      "sha256": "64283c93a74848d4c10567d5764a8820870ee006e2fdd8efd1b5f80674ccaf58"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_text_native_binding\\include\\bsp\\game_native_gui_effect_application.hpp",
+      "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/source/include/bsp/game_native_gui_effect_application.hpp",
+      "sha256": "8c70f812a075b46904dc3ff3a2bd9c4702eb4697ff4b3c16f105ae1a45ba36bd"
+    }
+  ],
+  "sealed_unchanged_dependency_source": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_text_native_binding\\src\\game_native_shader_process.cpp",
+      "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/dependency/src/game_native_shader_process.cpp",
+      "sha256": "af04556c2737b782c3074a3ad61736fc6ac02662aa8c912ba74768b0256b5862"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_text_native_binding\\include\\bsp\\game_native_shader_process.hpp",
+      "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/dependency/include/bsp/game_native_shader_process.hpp",
+      "sha256": "1553718aae054081d17fd0302a3f0b0800b7d2b2e8b95b3080817793789e052a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_text_native_binding\\src\\native_shader_binary_cache.cpp",
+      "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/dependency/src/native_shader_binary_cache.cpp",
+      "sha256": "6fd37c5f18b8a673886f0b349fe62fddd4de2726b303d3aca7f9baf3b8752dab"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_text_native_binding\\include\\bsp\\native_shader_binary_cache.hpp",
+      "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/dependency/include/bsp/native_shader_binary_cache.hpp",
+      "sha256": "97bdd44bb5047a5389caee8cb09a456462ce333ada28618fc9d0402cf96e485c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_text_native_binding\\src\\native_shader_compiler_lookups.cpp",
+      "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/dependency/src/native_shader_compiler_lookups.cpp",
+      "sha256": "9dff1a78aae5ccb7f41dc76d468918090256a19368162968ad7cbb8ccfe8b06f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_text_native_binding\\src\\native_material_program_compiler_actual.cpp",
+      "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/dependency/src/native_material_program_compiler_actual.cpp",
+      "sha256": "ae82e41615276083c0cd39ca9e3a0ff50510a30f5161810ffe00ffcff9ae4274"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_text_native_binding\\src\\native_shader_preload.cpp",
+      "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/dependency/src/native_shader_preload.cpp",
+      "sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_text_native_binding\\src\\game_native_gui_effect_application.cpp",
+      "frozen": "local/cc12_gui_effect_shader_cache_bracket/receipt_01/dependency/src/game_native_gui_effect_application.cpp",
+      "sha256": "a6bf1114236353d69a99461e848cadeb40e9c46f3a80699d807b0621c42dad3d"
+    }
+  ],
+  "receipt_policy": "Current final Source/log/COFF/map/exe/parent artifacts copied and hash-equal to receipt_01 before commit; unchanged dependencies byte-equal Source base. Raw timestamps not normalized. b4/3a frozen receipts preserved. Report written LF.",
+  "untouched": [
+    "native cache/lookup/compiler/Lua bodies",
+    "startup mode selection",
+    "sampler private-word guard/preimage",
+    "reference/cache accounting",
+    "host/CMake",
+    "Original installation"
+  ],
+  "remaining": [
+    "Root combined normal build and immutable real resource rerun",
+    "actual cache stream/record support and cursor/name ordering",
+    "later compiler/sampler/GuiFont result",
+    "full preload application vector/GUI/native Text attachment and draw",
+    "Original x86/FH3 parity"
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "native_gui_effect_acquired_by_this_packet": false,
+  "rendering_validated": false
+}

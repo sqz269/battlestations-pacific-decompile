@@ -53,6 +53,9 @@ struct GameNativeGuiEffectLoadOperation final {
 // B318B0's fixed0/1/1 route returns an actual held effect (or native null).
 // It is the missing production supplier for GuiFont.mshd/GuiFontBilinear.mshd;
 // constructing this graph does not yet attach the current sprite frontend.
+// Cold binary-mode acquisitions require the caller's existing canonical shader
+// cache create/acquire/release bracket. This graph borrows that SAME process
+// publication; it does not create a private cache or bypass the native lookup.
 //
 // Actual B3B3C0, B3C3A0, B43B00, B46950, B2EBB0 and B318B0 bodies are composed
 // from existing established helpers. No new raw register/x87 recovery or ABI
