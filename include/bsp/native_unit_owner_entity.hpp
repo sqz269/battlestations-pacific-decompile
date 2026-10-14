@@ -105,4 +105,34 @@ void finish_native_unit_owner_peer_tail_0077f054(
     void* actual_holder_scratch_preimage,
     volatile std::uint8_t& actual_dirty_byte_00f87190);
 
+// Qualified 0077E3A0..0077E3C7 destructor prefix: ordered numeric profile
+// writes to the genuine root before the actual session-release decision.
+// These are evidence words, not Source-callable tables. Does not send, unlink,
+// destroy a member or establish the enclosing Native EH state4.
+void restore_native_unit_owner_destructor_profiles_0077e3a0(void* actual_root) noexcept;
+
+// Complete 0077BEA0..0077BF3B list business schedule. The actual F87194 list
+// object has head at+4 and DWORD count at+8; each0Ch node has next/previous/
+// value at0/4/8. Capture the sentinel, then the actual target DWORD once, then
+// the first node. Remove every match, free the node in the real CRT domain,
+// and only then reload/decrement count modulo32. Retain the original sentinel
+// for iteration termination while re-reading current head for each check.
+// Returning invalid checks call the accepted concrete BF6713 Source boundary;
+// its actual SDK policy is qualified, not Native BF66EF handler equivalence.
+// No repaired storage, callback provider, count clamp or null-list default.
+// Requires real live allocations/header/target storage and the caller's
+// synchronization domain; invalid-memory/fault and register ABI unproven.
+void remove_native_unit_owner_global_matches_0077bea0(
+    void* actual_global_list,
+    const volatile std::uint32_t& actual_target_value_cell);
+
+// Qualified 0077E409..0077E41B destructor continuation, after the real
+// conditional session-release arm has completed or legitimately skipped.
+// Materialize the actual root value cell and remove all its matches from the
+// actual F87194 list object. No membership cache or replacement global exists.
+// Stops before +2B0 observer destruction; no list/member/root deletion here.
+void withdraw_native_unit_owner_global_0077e409(
+    void* actual_root_after_session_release,
+    void* actual_global_list_00f87194);
+
 } // namespace bsp

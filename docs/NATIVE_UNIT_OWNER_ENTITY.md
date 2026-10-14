@@ -1,4 +1,4 @@
-# Raw unit-owner construction, peer insertion and owned lists
+# Raw unit-owner construction, peer insertion and withdrawal
 
 `src/native_unit_owner_entity.cpp` supplies concrete normal storage stages of
 the real unit-owner constructor and destructor, concrete peer insertion, and
@@ -21,6 +21,9 @@ symbols; address and raw storage behavior are the evidence contract.
 | `release_native_unit_owner_holder_scratch_0077b030` | Complete normal `0077B030..0077B04B`, 28 bytes | Free non-null scratch+0C and zero it; owns no list node |
 | `append_native_unit_owner_peer_0077eb50` | Qualified business body of `0077EB50..0077EC10`, 193 bytes | Insert holder, then peer, then set actual F87190; requires actual argument cell and caller/frame scratch preimage |
 | `finish_native_unit_owner_peer_tail_0077f054` | Qualified `0077F054..0077F076`, 35 bytes | Fresh actual E188A8/game+1FE4 and conditional E0AF20 read; mode2/byte0 calls concrete insertion with peer0 |
+| `restore_native_unit_owner_destructor_profiles_0077e3a0` | Qualified `0077E3A0..0077E3C7`, 40 bytes | Ordered five numeric profile writes before the session-release decision |
+| `remove_native_unit_owner_global_matches_0077bea0` | `0077BEA0..0077BF3B`, 156 bytes | Capture actual sentinel and target once, remove every matching node, free then reload/decrement count; accepted Source invalid-parameter boundary |
+| `withdraw_native_unit_owner_global_0077e409` | Qualified `0077E409..0077E41B`, 19 bytes | After actual session-release arm completes/skips: materialize root value cell and remove every match from actual F87194 list |
 
 These Source interfaces target MSVC Win32 and use the genuine raw allocation.
 They do not reinterpret `GameUnit`, synthesize a replacement header, zero an
@@ -106,9 +109,35 @@ RTTI, register return residues and exception-frame ABI remain outside coverage.
 
 ## Lifetime boundary and current Original evidence
 
+The destructor prefix supplies the five DWORD writes in Original order: +0,
++10, +24, +170, +1E4. It ends before the E0AF20/E188A8/game+1FE4 session-release
+decision. Neither the profile writes nor the later withdrawal replace the
+00779780 message owner, 0077C2A0 routing, or their actual EH lifetime.
+
+The separate withdrawal stage starts at E409 only after that actual message
+arm succeeds or legitimately skips. F87194 is the list object itself, not a
+pointer publication or a synthetic membership cache. The stage creates the
+real root-value cell and calls concrete 77BEA0. That leaf loads header+4 before
+capturing the target DWORD, then loads the first node. It keeps that initial
+sentinel as the loop terminator while re-reading the current header+4 for
+iterator checks. Every matching 0Ch node is unlinked in the Original order;
+next/previous are reloaded before the second link store. Only after real CRT
+free returns does it reload header+8 and decrement modulo32. Nonmatches and
+duplicate matches retain their Original traversal behavior. The target cell
+may be in the first removed node because its value was already captured once.
+
+All five returning invalid-parameter sites call the accepted concrete
+`invoke_native_invalid_parameter_00bf6713` entry. Its actual SDK
+`_invalid_parameter_noinfo` policy remains qualified: this does not establish
+Native BF66EF encoded-handler selection, debugger/Watson behavior, fault or
+return addresses. No callback-only service, repaired header, null-list default,
+membership set or count clamp is introduced. The caller still supplies actual
+live raw allocations, the canonical list, and its synchronization domain.
+
 The list destructor continuation starts only after the real session-message
-arm, F87194 withdrawal and +2B0 observer destruction. It does not perform or
-replace them. Its end precedes the recon-array destructor iterator and the
+arm, F87194 withdrawal and +2B0 observer destruction. Withdrawal now has a
+separate concrete stage; observer destruction is still required before entering
+this list stage. Its end precedes the recon-array destructor iterator and the
 GameEntity/SceneNode destructor. Root scalar flags/free, embedded +310 tick
 unlink and current-subnode deleting dispatch also remain outside this stage.
 
@@ -123,10 +152,13 @@ call's target. The scalar wrapper calls E380 at E813 and BF6989 at E820 when
 flags bit zero is set. This packet does not replace that wrapper.
 
 805A70/804300 and 925CE0/928630 remain owned by cc13-seg49 at this audit and
-were queued, not changed. Remaining root gates include their concrete owning
+were queued, not changed. Observer destructor 006E0860 remains leased to
+argon-v2-seg33 and is separately queued; the accepted raw 6952A0/695870
+dependencies alone do not establish that missing owning composition.
+Remaining root gates include their concrete owning
 composition, actual observer/weak/string/entity-ID/pending domains, World and
 hierarchy publication, actual Game/network/dirty bindings and scratch frame
-provenance, session/global withdrawal, callable World
+provenance, actual session-release ownership and observer destruction, callable World
 and effect teardown, complete scalar/exception ownership, genuine derived
 factory, current tick methods and remaining-job dispatcher. Existing canonical
 AA0/F878CC process identity is unchanged. Full receiver activation stays false.
@@ -134,7 +166,7 @@ AA0/F878CC process identity is unchanged. Full receiver activation stays false.
 ## Validation and integration
 
 Strict MSVC Win32 `/std:c++20 /EHsc /O2 /MD /W4 /WX /fp:strict` compilation
-passed. All twelve public Source schedules and the shared count helper were
+passed. All fifteen public Source schedules and the shared count helper were
 inspected for the ordered
 mixed-width writes, initial-word capture, current-head reloads and real free
 calls. A manifested isolated comparison links the new production object,
@@ -170,10 +202,23 @@ path was replayed. No allocation-failure injection, Native exception execution,
 invalid-list/fault behavior, original register ABI, startup or gameplay is
 claimed. Both fixtures operate on synthetic storage, not constructed receivers.
 
+The withdrawal packet additionally compares two complete live/file bodies:
+77BEA0 (156 bytes) and 77E380 (273 bytes). Its manifested copied-Original
+fixture retains the internal E417 -> 77BEA0 call, redirects the actual global
+operand and external free/qualified invalid-parameter boundaries, and stops
+each fragment before the next lifecycle dependency. Nonzero root preimage
+bytes match after the five profile stores and remain unchanged by withdrawal.
+List topology, retained sentinel payload/header bytes, duplicates, all matches,
+no matches, an empty list, target capture from a subsequently freed node, and
+modulo32 count decrement pass **20 checks, zero failures**. Returning handler
+execution, malformed-memory faults, Native exception execution and the actual
+global/game receiver remain untested. The previous peer and prefix fixtures
+were relinked with this extended object and still pass **37 and 20 checks**.
+
 The worker's `scripts/build.ps1` Release baseline passed all three configured
 tests after verified native-math seeds were enabled. The new TU is separately
 strict-compiled and directly linked into the comparison; it is not in that
-baseline's CMake target. The primary owns CMake registration and must add
-`src/native_unit_owner_entity.cpp` to
-`bsp_core`, then validate the resulting integrated build. See
+baseline's CMake target. The primary reports permanent registration of
+`src/native_unit_owner_entity.cpp` in its integrator branch and owns validation
+of the resulting combined build. See
 `reports/native_unit_owner_entity.json` for exact validation status and pins.
