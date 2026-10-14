@@ -157,8 +157,31 @@ inline constexpr int kMidwaySaveAwardCount = 1;
 // false: the award is for a player whose machine already carried a
 // Battlestations: Midway save directory.
 inline constexpr std::uint32_t kErrorAlreadyExists = 0xB7u;
-bool midway_save_folder_preexisted_0090c5d0(bool create_directory_succeeded,
-    std::uint32_t last_error) noexcept;
+// The eight-byte native string the body builds on its stack (dword length, dword buffer).
+struct MidwayNativeString {
+    std::uint32_t length = 0;
+    char* data = nullptr;
+};
+// One method per call the body makes, in body order.
+struct MidwaySaveFolderHost {
+    virtual ~MidwaySaveFolderHost() = default;
+    // [00CE22F0] SHGetSpecialFolderPathA(0, buffer[104h], 5 = CSIDL_PERSONAL, 0) -> BOOL.
+    virtual int sh_get_special_folder_path_a(char (&buffer)[0x104], int csidl, int create) = 0;
+    // 0041E870 __thiscall(string, const char*) RET 4: zero-initialised temporary from a C string.
+    virtual void native_string_from_cstring_0041e870(MidwayNativeString& s, const char* text) = 0;
+    // 004261A0 __thiscall(left, out, const right*) RET 8: out = left + right.
+    virtual void native_string_concat_004261a0(const MidwayNativeString& left, MidwayNativeString& out,
+        const MidwayNativeString& right) = 0;
+    virtual void* pool_singleton_00419cc0() = 0;
+    // 00BD1510 __thiscall(pool, block, size, 1) RET 0Ch.
+    virtual void pool_return_block_00bd1510(void* pool, void* block, std::uint32_t size, int flag) = 0;
+    // The text 00F899A0 a null buffer is replaced with (BSS, an empty string at run time).
+    virtual const char* empty_text_00f899a0() = 0;
+    // [00CE227C] CreateDirectoryA(path, 0) -> BOOL; [00CE2258] GetLastError.
+    virtual int create_directory_a(const char* path, void* security) = 0;
+    virtual std::uint32_t get_last_error() = 0;
+};
+bool midway_save_folder_preexisted_0090c5d0(MidwaySaveFolderHost& host);
 
 // The whole 004e4310..004e43e2 predicate as one pure function. Both online
 // checks read the same manager, so they are one input here.

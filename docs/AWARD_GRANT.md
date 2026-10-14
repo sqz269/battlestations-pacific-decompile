@@ -200,8 +200,10 @@ by the in-mission code that calls it.
 - `OnlineSignInState` and the four gate predicates
   `selected_slot_state_00a3ead0`, `live_enabled_account_00a3e520`, `signed_into_live_004b44f0`,
   `may_queue_award_00a410a0`.
-- `midway_save_folder_preexisted_0090c5d0(create_succeeded, last_error)`, the Win32 result
-  reduction.
+- `midway_save_folder_preexisted_0090c5d0(MidwaySaveFolderHost&)`, the whole body (cc13-fixes2):
+  SHGetSpecialFolderPathA(0, buffer, 5, 0), the two 0041E870 temporaries and the 004261A0 concatenation,
+  their pool releases, CreateDirectoryA and GetLastError, each a named host method called in body
+  order. The earlier version took the CreateDirectoryA result and the error as parameters.
 - `should_grant_award_004e4310(AwardGrantInputs)`, the whole call-site predicate as a pure
   function.
 - `AwardGrantHost` with one method per native call site of the block, and
