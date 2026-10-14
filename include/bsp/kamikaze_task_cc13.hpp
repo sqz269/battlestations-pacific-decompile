@@ -603,6 +603,9 @@ struct DropKamikazeTaskHost {
     virtual void set_moveto_ranges_009bde80(float near_range, float far_range, float third) = 0;
     // moveto/follow and the follow base of prepare/done (009C1FD0, exit 009BDE40).
     virtual void enter_formation_state(DropKamikazeState s) = 0;
+    // [[state+4]+0Ch]+3E4h = shape, then 007ED260 on that squadron (009AD1A5/009AD1AF
+    // in the prepare/done enter, after the follow enter's own shape 1).
+    virtual void set_squadron_formation_shape_007ed260(int shape) { (void)shape; }
     virtual void exit_formation_state(DropKamikazeState s) = 0;
     virtual void tick_formation_state(DropKamikazeState s, float dt) = 0;
     virtual void apply_plan(const KamikazePlanCommand& c) = 0;

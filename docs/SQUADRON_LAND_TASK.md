@@ -16918,3 +16918,26 @@ switch runs the arm and writes `bank_limit_2c8` on the close arm; per slot `torp
 min_ratio last_8c` in the summary. Prediction: on USN04 (no plan, 9000 frames) the done-state Kates run the arm every
 tick; the close arm fires only while the leader is low and within about 2.3 km of the target, capping the bank at
 0.3-1.5 rad; no RNG; releases unchanged (0 for the stuck squadron); small trajectory moves for those Kates only.
+
+## 5hi. cc13-confirm C: 007F23A0's five formation shapes and the drop-kamikaze shape 3 (cc9-lua60, 2026-10-14)
+
+**007F23A0 read whole** (disk listing 007F23A0-007F28FD, `local\l60_7f23a0.asm`). The jump table at 007F2900 maps shape
+1 -> 007F2576, 2 -> 007F25BD, 3 -> 007F2739, 4 -> 007F26AD, 5 -> 007F2838 (the host's comment had 3 and 4 swapped).
+With P the pair number, I the raw formation index (the argument, [ESP+C4h]), M the squadron's +3E8h, sx the lateral
+spacing and (dy, dz) the triple's other two components:
+- 1: (P sx M, P dy M, P dz M).
+- 2: x = P sx max(2M - 1, 0.8), y = P dy clamp(2.2 - 1.2M, 0, 1), z = P dz / max(1, M); the flag pair BL/[ESP+1Bh] = (0.2 > M).
+- 3: y = P dy M. With the tuning singleton's +3E8h byte set: x = M f(sx P) + (1 - M) f(0.15 sx I), z = M f(dz P) +
+  (1 - M) f(0.8 dz I) (f = float store). Clear: x = P sx (0.7M + 0.3), z = P dz (0.25M + 0.75).
+- 4: x = P sx max(1 + 0.8(M - 1), 0.4), y = P dy clamp(2.4 - 1.4M, 0, 1), z = P dz (0.8M + 0.2); flag as shape 2.
+- 5: (P sx, 0, 0).
+- Tail: an odd index negates x; y and z are negated unless the flag is set or the singleton's +3E9h / +3E8h byte is set.
+At M = 1 shapes 2, 3 and 4 give shape 1's station (shape 4's lateral max(1, 0.4) = 1; shape 3's blends collapse), so
+with the host's morale fixed at 1.0 (no writer of squadron+3E8h; 009BFDA6 republishes state+8Ch, see 5hh) a shape change
+moves nothing. Reconstructed in `bsp::plane_formation_station_007f23a0` without a switch: no host path set a shape
+other than 1 before this packet.
+
+**`kDropKamikazeFormationShapeBound`** (committed OFF): the drop-kamikaze enter_formation_state writes shape 1 (009BED80
+009BEDDA) and the prepare/done enter 009AD180 writes 3 (009AD1A5) through the new
+`DropKamikazeTaskHost::set_squadron_formation_shape_007ed260`; `summary mission drop kamikaze formation shape writes`.
+Prediction on USNOS: shape-3 writes appear for the Betty squadrons in prepare/done, and gameplay is identical (M = 1.0).

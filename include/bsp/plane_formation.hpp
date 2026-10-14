@@ -92,7 +92,7 @@ struct PlaneFormationStationInputs {
     // plane+9D0h. The odd/even bit decides the side: 007F2853
     // `TEST byte ptr [ESP+0C4h],1`, and [ESP+0C4h] is the first stack argument.
     int formation_index{0};
-    // squadron+3E4h, 1 to 5. Only shape 1 is bound; see `produced` below.
+    // squadron+3E4h, 1 to 5; all five bodies are read (packet cc9_l60_formation_shapes).
     int shape{kPlaneFormationDefaultShape};
     // squadron+3E8h.
     float morale{kPlaneFormationDefaultMorale};
@@ -126,8 +126,7 @@ struct PlaneFormationStationInputs {
 };
 
 struct PlaneFormationStation {
-    // False when `shape` is one of the four cases this packet did not read, or
-    // when it is outside 1..5. 007F2569 `JA 007F2853` takes an out-of-range
+    // False when `shape` is outside 1..5. 007F2569 `JA 007F2853` takes an out-of-range
     // shape to the tail with the three components still at whatever the frame
     // held, which this process refuses to reproduce rather than guess.
     bool produced{false};

@@ -677,6 +677,7 @@ struct GameUnitSlot {
     int dkz_arm_ticks{0};
     int dkz_state_ticks[7]{};              // moveto, follow, attackrun, prepare, done, release, goAway
     int dkz_installs{0};
+    int dkz_shape_writes[2]{};             // squadron+3E4h = 1 (009BEDDA) / = 3 (009AD1A5)
     int dkz_releases{0};
     int dkz_transition_logs{0};
     int st_aim_entries{0};
@@ -6122,6 +6123,13 @@ struct GameUnitsHost::Impl {
     // cell; state+8Ch (republished to squadron+3E8h by 009BFDA6) is kept on the
     // slot for the log only, no host reader. False: the arm is skipped, as before.
     static constexpr bool kTorpedoDoneDisarmedArmBound = false;
+    // Packet cc9_l60_formation_shapes (cc13-confirm C): the drop-kamikaze
+    // prepare/done enter 009AD180 writes squadron+3E4h = 3 (009AD1A5) and
+    // re-runs 007ED260 after its follow enter 009BED80, which writes 1
+    // (009BEDDA). True: both writes reach the registry's formation_shape_3e4
+    // (007ED260 runs inside the placement seam, as for the dive bomber), so the
+    // wingmen fly 007F23A0's shape-3 station. False: the shape stays as seeded.
+    static constexpr bool kDropKamikazeFormationShapeBound = false;
     // Packet cc9-gunnery38 (docs/CC13_AUDIT13_RECENT_FLIPS.md O1). The strafe
     // cruise profile 009CD020, run once per activation (the install and each
     // time the strafe task resurfaces after a tightturn or flikflak retires),
@@ -24797,7 +24805,25 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             b.unit_.dkz_moveto_far = far_range;
                             b.unit_.dkz_moveto_speed_range = third;
                         }
-                        void enter_formation_state(bsp::DropKamikazeState) override {}
+                        void enter_formation_state(bsp::DropKamikazeState) override {
+                            // 009BED80's 009BEDDA: squadron+3E4h = 1, then 007ED260.
+                            dkz_set_shape(1);
+                        }
+                        void set_squadron_formation_shape_007ed260(int shape) override {
+                            dkz_set_shape(shape);
+                        }
+                        void dkz_set_shape(int shape) {
+                            if constexpr (GameUnitsHost::Impl::kDropKamikazeFormationShapeBound) {
+                                if (bsp::PlaneSquadronHostRecord* const sq =
+                                        bsp::plane_squadron_registry().find_by_member_unit(
+                                            b.unit_.process_index)) {
+                                    sq->formation_shape_3e4 = shape;
+                                    ++b.unit_.dkz_shape_writes[shape == 3 ? 1 : 0];
+                                }
+                            } else {
+                                (void)shape;
+                            }
+                        }
                         void exit_formation_state(bsp::DropKamikazeState) override {}
                         void tick_formation_state(bsp::DropKamikazeState s, float) override {
                             if (s == bsp::DropKamikazeState::kMoveTo) {
@@ -39200,6 +39226,18 @@ void GameUnitsHost::report() {
                     "locks=%d boosts=%d (009AF510, packet cc9_lua52_kamikaze_wiring)",
                     bsp::kKamikazeTaskBound ? 1 : 0, kz_planes, kz_arm, kz_inst, k[0], k[1], k[2],
                     k[3], k[4], kz_aim, kz_lock, kz_boost);
+                {
+                    int shape_writes[2]{};
+                    for (const auto& slot : host.slots) {
+                        shape_writes[0] += slot->dkz_shape_writes[0];
+                        shape_writes[1] += slot->dkz_shape_writes[1];
+                    }
+                    if (shape_writes[0] + shape_writes[1] > 0) {
+                        host.log.notef("summary mission drop kamikaze formation shape writes "
+                            "shape1=%d shape3=%d (009BEDDA / 009AD1A5)", shape_writes[0],
+                            shape_writes[1]);
+                    }
+                }
                 const bsp::DummyKamikazeRounds& rounds = bsp::dummy_kamikaze_rounds();
                 host.log.notef("summary mission drop kamikaze task bound=%d ordered_planes=%d "
                     "arm_ticks=%d installs=%d moveto=%d follow=%d attackrun=%d prepare=%d done=%d "

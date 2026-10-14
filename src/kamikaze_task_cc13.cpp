@@ -906,6 +906,8 @@ void drop_enter(DropKamikazeTask& task, DropKamikazeTaskHost& host, DropKamikaze
         case S::kDone:
             // 009AD180: BSP_BotStateFollow_Enter first (the host's follow enter).
             host.enter_formation_state(S::kFollow);
+            // 009AD19F-009AD1AF: squadron+3E4h = 3, then 007ED260.
+            host.set_squadron_formation_shape_007ed260(3);
             drop_kamikaze_follow_enter_009ad180(s == S::kPrepare ? task.prepare : task.done,
                                                 host.level_flight_speed_007c47f0());
             break;
