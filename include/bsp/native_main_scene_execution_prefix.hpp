@@ -9,6 +9,7 @@ struct NativeRendererFrameTargetsContext;
 struct NativeCameraFrameCommandContext;
 struct NativeSystemConstantGatherContext;
 struct NativeSystemConstantGatherFrame;
+struct NativeStringRawPoolContext;
 
 struct NativeMainSceneExecutionPrefixContext {
     void* const volatile& actual_renderer_00f8d394;
@@ -46,6 +47,7 @@ struct NativeMainSceneExecutionPrefixState {
     bool render_mode_changed{};
     bool system_gather_started{};
     bool reached_label_stage{};
+    bool reached_drsh_batch_stage{};
 };
 
 // Complete raw leaves. Native ECX command / camera. B1BF40 uses RET and returns
@@ -144,4 +146,53 @@ struct NativeMainSceneCameraGatherContext {
 void continue_native_main_scene_camera_gather_00b15e78(void* actual_service,
     void* actual_command, const NativeMainSceneCameraGatherContext&,
     NativeMainSceneExecutionPrefixState&);
+
+struct NativeMainSceneDrshLabelContext {
+    const NativeSystemConstantGatherContext& system;
+    NativeStringRawPoolContext& strings;
+    const void* actual_drsh_bytes_00d5e500;
+};
+
+// One fresh persistent external frame, disjoint from actual native owners.
+// The caller overwrites both temporary header words before its first resize;
+// no unknown native local bytes are synthesized. Other fields preserve the
+// native EBX data capture and exact FH3 ownership transitions. No destructor
+// performs cleanup. Retain this frame and the same context at later boundaries.
+struct NativeMainSceneDrshLabelFrame {
+    std::uint32_t temporary_header[2]{};
+    void* captured_data{};
+    void* captured_service{};
+    void* destination_header{};
+    std::int32_t native_cleanup_state{-1};
+    std::uint32_t active_native_site{};
+    std::uint32_t cleanup_native_site{};
+    bool started{};
+    bool completed{};
+    bool failed{};
+    bool temporary_return_started{};
+    bool temporary_return_completed{};
+    bool cleanup_started{};
+    bool cleanup_completed{};
+};
+
+// B15EC4..B15F62 only. Initialize the original local8B header, resize4 through
+// the SAME actual raw string pool, capture EBX data, copy current length+1 from
+// borrowed actual D5E500 bytes, then read current F8D39C and arm native state0.
+// Retain native destination alias and current-length checks; after assignment
+// transition to state2 BEFORE normal captured-data/current-length pool return.
+// State0 unwinds CURRENT temporary header; state2 resets CURRENT service label.
+// On success state2 remains armed across the B15F63 batch-selection boundary.
+// Neither a fixed C++ label literal nor a projected string pool is substituted.
+// Source catch cleanup follows the proven map, without rolling back camera or
+// destination mutations. Later shader/batch code and D5E13C remain unadmitted.
+void continue_native_main_scene_drsh_label_00b15ec4(
+    const NativeMainSceneDrshLabelContext&, NativeMainSceneDrshLabelFrame&,
+    NativeMainSceneExecutionPrefixState&);
+
+// Explicit source lifecycle adapter for CBC460/CBC46B, not a native FH3 entry.
+// Consumes only reached state0 or2, disarming before its real cleanup. State-1
+// does nothing. Keep failed frames/callee state after cleanup; no reset/retry.
+// A second C++ exception while unwinding terminates, as elsewhere in this domain.
+void unwind_native_main_scene_drsh_label(const NativeMainSceneDrshLabelContext&,
+    NativeMainSceneDrshLabelFrame&) noexcept;
 } // namespace bsp

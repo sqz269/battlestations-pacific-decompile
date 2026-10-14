@@ -1,24 +1,59 @@
 {
-  "packet": "cc12_native_main_scene_camera_gather",
-  "utc": "2026-10-14T20:53:02.996985+00:00",
-  "base_commit": "f17431149bf30a5cf2f7a0d929cbb85cf4a01fc9",
-  "scope": "Separate complete B15E78..B15EC3 actual camera-frame/mode/system-gather continuation plus complete raw B6FDF0. Earlier entry/history/texture/far/bloom/target stages preserved. Stops BEFORE B15EC4 DRSH label allocation/FH3 ownership; no whole D5E13C or application route.",
+  "packet": "cc12_native_main_scene_drsh_label",
+  "utc": "2026-10-14T21:35:51.462731+00:00",
+  "base_commit": "9228d13fe2594cb12405733fcdd5ec0160770b66",
+  "scope": "Complete B15EC4..B15F62 DRSH label stage only, including exact temporary ownership states and explicit source cleanup actions from CBC460/CBC46B. Earlier entry/history/texture/far/bloom/target/camera/gather stages preserved. Stops BEFORE B15F63 batch selection; state2 remains armed across that boundary. No whole D5E13C or application route.",
   "native_identity": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe",
     "bodies": [
       {
-        "name": "camera_gather",
-        "address": "00b15e78",
-        "bytes": 76,
-        "sha256": "565d5009cc07e5a53ed1e131289e719396b259c2ed98de17bf3502307fbc919f",
+        "name": "label",
+        "address": "00b15ec4",
+        "bytes": 159,
+        "sha256": "46644a090ebf877f054de81010448c2acc06222719c96884dce6fc3c8c48884a",
         "saved_ghidra_matches_disk": true
       },
       {
-        "name": "mode",
-        "address": "00b6fdf0",
-        "bytes": 28,
-        "sha256": "e601f0a42946d456ee82f8630141f06cb1671dab3d951dbdb071e27db4a29f1e",
+        "name": "unwind_temporary",
+        "address": "00cbc460",
+        "bytes": 11,
+        "sha256": "cef8c8dc203e17250f90b55373234d862daaf7436fb0abf7c54153650e16a218",
+        "saved_ghidra_matches_disk": true
+      },
+      {
+        "name": "unwind_reset",
+        "address": "00cbc46b",
+        "bytes": 8,
+        "sha256": "d07c30f6afc9ea1ab38e7bfef37711a5bc029e9f8c8b0d79614adf2c0fbdc005",
+        "saved_ghidra_matches_disk": true
+      },
+      {
+        "name": "handler",
+        "address": "00cbc499",
+        "bytes": 10,
+        "sha256": "e3e2ad413e482a75d3249425cf1e30e7d681e0cd0f6ab8a69303cbdddc2ecafe",
+        "saved_ghidra_matches_disk": true
+      },
+      {
+        "name": "func_info",
+        "address": "00df4698",
+        "bytes": 36,
+        "sha256": "bba2e286bfbcca2cfae6c87890a7834476ea7b90563ef611fd40ba7e106842a9",
+        "saved_ghidra_matches_disk": true
+      },
+      {
+        "name": "unwind_map",
+        "address": "00df46bc",
+        "bytes": 72,
+        "sha256": "6dd6b0c046043b55b4e7976fd6436a5038a1dc2a2fe595f08abc9070ad5427d8",
+        "saved_ghidra_matches_disk": true
+      },
+      {
+        "name": "drsh",
+        "address": "00d5e500",
+        "bytes": 8,
+        "sha256": "e9a6d1af7a104fbbbd3cf2e46d5bd5b455e6607601b65076b9e708826f0cea4c",
         "saved_ghidra_matches_disk": true
       }
     ],
@@ -61,33 +96,44 @@
       }
     ]
   },
-  "original_abi": "B156C0 ECX actualservice,stack actualcommand,RET4. This clause does not read service receiver. New source continuation takes explicit borrowed contexts/persistent state; not native caller ABI. B6FDF0 raw leaf retains ECX actualcamera, stackedDWORDmode, EAXsamecamera,RET4; new unusedEDX formal does not shift stack.",
+  "original_abi": "Enclosing B156C0 uses ECX actual service, stacked actual command, RET4. This stage reads neither incoming receiver nor command. New source continuation takes borrowed actual contexts and external persistent frames; it is not the native caller ABI or a native FH3 entry.",
   "evidence": {
-    "native_caller_instructions": 21,
-    "native_caller_bytes": 76,
-    "complete_new_mode_instructions": 7,
-    "complete_new_mode_bytes": 28,
+    "native_caller_instructions": 51,
+    "native_caller_bytes": 159,
     "ordered_calls": [
-      "current B1BF40 camera",
-      "full actual B71360",
-      "current B1BF40 camera/save+198",
-      "current B1BF40 camera",
-      "full raw B6FDF0 mode6",
-      "current B1BF40 camera/capture scene+A4",
-      "current B1BF40 camera",
-      "full actual B46A70 capturedscene/currentcamera"
+      "zero both actual temporary header words",
+      "0041DD40 temporary resize4/preserve1",
+      "capture EBX data once",
+      "memmove current temporary length+1 from borrowed actual D5E500 bytes",
+      "capture current F8D39C",
+      "arm state0",
+      "optional current service+684 assignment via 0041DD40/current-length memmove",
+      "arm state2",
+      "00419CC0 current pool getter",
+      "00BD1510 captured block/current temporary length+1"
     ],
-    "camera_provider": "Existing complete B71360 retains enabled17C branch, repeated current renderer/profile slotsA0/B285A0,A4/B26770,08/B21430 and original x87 depth argument. Same actual raw camera, renderer, viewport and contexts. No semantic camera receiver cast.",
-    "mode_leaf": "Full original7instructions and exact28COFF bytes. Native x86 masked CL shift then full mode+198 store followed bymask+19C. Currentcaller uses6; generalmode32/FFFFFFFF behavior remains.",
-    "gather_provider": "Existing complete B46A70 receives scene from fourth camera and fifth currentcamera. Supplied persistent fresh frame preserves1232B initialized local-prefix preimage and actual sampler operation. Genuine current publication/profile/raw fog-light-shadow/axes/clock/shader providers retained; no blank prefix, default getter or snapshot substitute.",
-    "domain_checks": "At reached call boundaries verify shared renderer publication/profile, actual synchronization, CRT/axes, timer and texture-domain identities. Current renderer/profile values remain callee reads; originalservice publication remains gather input and may differ from unused callerreceiver.",
-    "continuation": "Append render_mode_bits and started/completed/captured/changed/gatherstarted/reachedlabel markers; retain previous near/color/clearflags saves and active_native_site. Started stages cannot replay. Failed stage retains all existing mutations and external gather frame; no cleanup or rollback.",
-    "ghidra_annotation_receipt": "local/ghidra-annotations-20261014T205155Z.json",
+    "ownership": "The native data pointer capture survives destination resize. Destination identity is compared with the actual temporary header. Current temporary length controls the post-resize copy branch; current destination header length/data control its copy. Normal return byte count is captured before the pool getter. No synthetic DRSH literal, owner, string pool, COM object, or render success is introduced.",
+    "fh3": {
+      "handler": "00cbc499",
+      "func_info": "00df4698",
+      "unwind_map": "00df46bc",
+      "entry_count": 9,
+      "state0": "B15EFE, after current service capture; CBC460 destroys CURRENT temporary header via 0041DD20, then state-1.",
+      "state2": "B15F42, before normal pool getter/return; CBC46B resets CURRENT global service label via B13510, then state-1.",
+      "boundary_state": 2,
+      "later_normal_reset": "B16097 disarms before B160A2 B13510. Future continuation must implement its normal schedule; the explicit unwind adapter is not a substitute for normal completion."
+    },
+    "failure_state": "Fresh frame required and marked started before work. Source catch records failure, consumes only reached state0/state2, disarms before the real current-header/current-service cleanup, and rethrows. Unarmed preflight/allocation/copy failures have no parent action. No rollback of camera, destination or raw pool mutations. Cleanup failure terminates consistently with the existing source domain; native FH3 dispatch is unproved.",
+    "boundary_frame": "Temporary header and EBX data/service captures remain externally visible. State2 stays armed after the successful B15F63 boundary. Keep this frame/context alive across later batch code. Earlier near/color/flags/render-mode saves remain intact. Stage cannot replay.",
+    "ghidra_annotation_receipt": "local/ghidra-annotations-20261014T213259Z.json",
     "ghidra_saved_and_exports_refreshed": [
-      "00b156c0",
-      "00b6fdf0"
+      "00b156c0"
     ],
     "prior_receipts": [
+      {
+        "path": "local/main_scene_camera_receipt_7452af434/receipt.json",
+        "artifacts_verified_unchanged": 41
+      },
       {
         "path": "local/main_scene_bloom_receipt_ca9c9c4c0/receipt.json",
         "artifacts_verified_unchanged": 35
@@ -105,54 +151,109 @@
         "artifacts_verified_unchanged": 15
       }
     ],
-    "prior_commit": "ca9c9c4c03f1c9acd176448b0eedf181675b6541",
-    "prior_report_preserved": "local/main_scene_bloom_receipt_ca9c9c4c0/report.json"
+    "prior_commit": "7452af43441a3bfb12fe3457c230b64b479d9e31",
+    "prior_report_preserved": "local/main_scene_camera_receipt_7452af434/report.json"
   },
   "validation": {
-    "strict_compile": "PASS MSVC Win32 /MD /std:c++17 /EHsc /permissive- /W4 /WX /O2 /fp:strict /FAcs; changedprefix and unchangedfarcorner",
-    "standard_build": "PASS scripts/build.ps1 ReleaseWin32;3/3 reconstructed_math/native_math_differential/tool_tests",
-    "real_callee_link_and_execute": "PASS manifested camera_probe links current strictobjects plus preserved realhistory object and fresh bsp_core/bsp_lua511/bsp_zlib121; actual D3D9 HAL device. /MANIFEST:EMBED.",
-    "native_comparisons": "PASS3 original76B caller/source continuation pairs, same real currentB71360/B46A70 and getters, originalnativeB6FDF0 forreference; bothcamera/renderer/service fullbytes, savedmode and77VS+77PS constants match. PASS5 standalone original28B mode/source pairs including returnidentity.",
+    "strict_compile": "PASS MSVC Win32 /MD /std:c++17 /EHsc /permissive- /W4 /WX /O2 /fp:strict /FAcs; changed prefix and unchanged far-corner TU.",
+    "standard_build": "PASS scripts/build.ps1 Release Win32; 3/3 reconstructed_math/native_math_differential/tool_tests.",
+    "real_callee_link_and_execute": "PASS manifested label_probe with current strict objects, preserved real history object and fresh bsp_core/bsp_lua511/bsp_zlib121. Genuine BD1480 raw pool constructor and BD1480 domain storage, real 0041DD40/00419CC0/BD1120/BD1510/B13510 providers. Full 0x8AD4A0 pool preimage restored at the same address between each reference/source run.",
+    "native_comparisons": "PASS 3 original159B caller/source continuation pairs comparing the entire actual raw pool plus service headers; 3 original CBC46B/source state2 action pairs using a changed service publication; 1 original CBC460/source state0 action pair whose CURRENT header pointer differs from the earlier EBX capture.",
     "case_coverage": [
-      "camera disabled17C but full systemgather follows",
-      "enabled actualviewport+clear and full systemgather",
-      "real Clear forwarding observer changes commandcamera beforeB71360returns; later savedmode andmode6/gather usecurrent secondcamera",
-      "standalone mode0,6,31,32,FFFFFFFF"
+      "null current service",
+      "destination label changes length2 to4",
+      "same-length4 destination with small block returns disabled",
+      "state2 cleanup uses a different newly published service, leaving the earlier DRSH service unchanged",
+      "state0 cleanup uses current temporary header data, not captured EBX data",
+      "source rejects wrong manager publication before allocation/cleanup; successful frame cannot replay"
     ],
-    "backend_evidence": "GetViewport confirms reached rectangle; GetVertexShaderConstantF andGetPixelShaderConstantF confirm both77register banks, writtenmatrix/currentcamera position and unchanged suppliedpreimage slot. Real Clear executes once ineach enabledcase. No visible worldoutput.",
-    "source_failure_check": "Different timerpublication identity rejected atB15EBF AFTER realcamera frame/clear andrawmode6/mask40 writes. Oldmode saved; gather notstarted, samplerframefresh, completionfalse. Repairing context doesnot permitreplay or asecondClear.",
     "emitted_code_audit": {
       "result": "PASS",
-      "native_caller_instructions": 21,
-      "native_caller_bytes": 76,
-      "full_mode_instructions": 7,
-      "full_mode_coff_bytes": 28,
-      "full_mode_coff_equals_installed": true,
-      "mode_sha256": "e601f0a42946d456ee82f8630141f06cb1671dab3d951dbdb071e27db4a29f1e",
-      "emitted_direct_call_order": [
-        "get_native_scene_command_camera_00b1bf40",
-        "execute_native_camera_frame_command_00b71360",
-        "get_native_scene_command_camera_00b1bf40",
-        "get_native_scene_command_camera_00b1bf40",
-        "set_native_camera_render_mode_00b6fdf0",
-        "get_native_scene_command_camera_00b1bf40",
-        "get_native_scene_command_camera_00b1bf40",
-        "gather_native_system_constants_00b46a70"
+      "native_caller_instructions": 51,
+      "native_caller_bytes": 159,
+      "original_handler": {
+        "address": "00cbc499",
+        "func_info": "00df4698",
+        "unwind_map": "00df46bc",
+        "states": [
+          [
+            -1,
+            13354080
+          ],
+          [
+            0,
+            13354091
+          ],
+          [
+            -1,
+            13354091
+          ],
+          [
+            -1,
+            13354099
+          ],
+          [
+            3,
+            13354110
+          ],
+          [
+            -1,
+            13354110
+          ],
+          [
+            -1,
+            13354118
+          ],
+          [
+            6,
+            13354129
+          ],
+          [
+            -1,
+            13354129
+          ]
+        ]
+      },
+      "native_cleanup_actions": [
+        {
+          "address": "00cbc460",
+          "instructions": [
+            "lea ecx, [ebp - 0x88]",
+            "jmp 0x41dd20"
+          ]
+        },
+        {
+          "address": "00cbc46b",
+          "instructions": [
+            "lea ecx, [ebp - 0x79]",
+            "jmp 0xb13510"
+          ]
+        }
       ],
-      "reviewed": "Emitted +198 read before setter; current scene+A4 read before fifth camera getter; source frames/guards add integer plumbing only. No new x87 arithmetic in caller or mode leaf; inherited325 tagged encodings separately checked.",
-      "source_abi_compatible": false
+      "emitted_provider_call_order": [
+        "resize_native_string_header_0041dd40",
+        "_memmove",
+        "resize_native_string_header_0041dd40",
+        "_memmove",
+        "native_string_pool_get_or_create_00419cc0",
+        "return_native_string_pool_00bd1510",
+        "unwind_native_main_scene_drsh_label"
+      ],
+      "reviewed_order": "Current service captured before state0; exact header alias check; captured data local retained across resize; current source length controls copy and current destination length selects bytes; state2 before current pool getter; normal bytes captured before getter; cleanup disarms before current-header destroy/current-global reset.",
+      "new_x87_instructions": 0,
+      "whole_native_FH3_dispatch_tested": false
     },
     "inherited_x87_audit": {
       "result": "PASS",
       "checks": [
         {
-          "listing": "local/main_scene_camera/native_camera_far_corners.asm",
+          "listing": "local/main_scene_label/native_camera_far_corners.asm",
           "tagged_original_x87_instructions_checked": 164,
           "coverage": "all address-tagged unchanged x87 instructions; context-bound constant loads and source public-argument adapters are separately reviewed",
           "address_set_sha256": "9bb321e936d5809f930cf5f8d3f623aec5f9498eacd0ad2f2a30447e0cd591e3"
         },
         {
-          "listing": "local/main_scene_camera/native_main_scene_execution_prefix.asm",
+          "listing": "local/main_scene_label/native_main_scene_execution_prefix.asm",
           "tagged_original_x87_instructions_checked": 161,
           "coverage": "all address-tagged unchanged x87 instructions; context-bound constant loads and source public-argument adapters are separately reviewed",
           "address_set_sha256": "8d1f1b8425033cf7b634eeadfdf944b6f9f18bfc300c0ff99c2adec383e270a3"
@@ -160,44 +261,44 @@
       ],
       "recovered_ambiguity": "All one-register x87 arithmetic operands use verified installed instruction opcode direction."
     },
-    "fixture_log": "PASS original/source camera-gather case0; clear0 and 77 registers in both real shader banks\nPASS original/source camera-gather case1; clear1 and 77 registers in both real shader banks\nPASS original/source camera-gather case2; clear1 and 77 registers in both real shader banks\nPASS 3 real-camera/gather caller pairs, 5 full raw mode pairs, late rejection/replay retention; genuine providers, warm sampler, no lighting, masked FP",
-    "fixture_limits": "Originalcaller E8s bridge to SAME concrete current-source providers; originalcallee virtual tables/instructions are notindependently revalidated except fullB6FDF0. ActualD3D9 observer temporarily replaces threeCOM slots, restoresactualvptr forforwarding and permanently afterClear. Warmcontrolled samplerpreimage, initializedprefix, nolightingowner/fog, synchronizationmode0, defaultmaskedFP. No coldsingleton/retirement, childthrow, nativeFH3/hardwarefault/private-stackalias, concurrentmutation, FPstatus/stack/trap orfullrenderer proof.",
+    "fixture_log": "PASS original/source DRSH case0 and state2 current-publication cleanup; full actual pool bytes match\nPASS original/source DRSH case1 and state2 current-publication cleanup; full actual pool bytes match\nPASS original/source DRSH case2 and state2 current-publication cleanup; full actual pool bytes match\nPASS 3 original159B caller pairs, 3 originalCBC46B reset-action pairs, 1 originalCBC460 current-header action; genuine raw string pool and real resize/getter/return/reset, no native FH3 exception claim",
+    "fixture_limits": "Original caller E8s and exact two-instruction cleanup funclet tail jumps are rebased to the SAME concrete source providers; actual global cells/DRSH bytes are borrowed. Isolated funclet invocation verifies actions, not native FH3 dispatch. Warm raw pool; no actual child throw, cold creation, manager failure, returning-getter failure, private stack aliases, concurrent mutation, hardware exception, full renderer or game proof.",
     "new_persistent_tests": 0
   },
   "execution_admission": {
     "profile": "00d5e13c",
     "admitted": false,
     "complete_enclosing_function": false,
-    "next_native_address": "00b15ec4",
+    "next_native_address": "00b15f63",
     "requires": [
-      "ActualB17240 preparation",
-      "B15EC4DRSH label/FH3 plusremainingbatch/material/post/cockpit/distortion/stats body",
-      "Full genuinebody/domain closure beforequeueadmission"
+      "Actual B17240 preparation",
+      "B15F63 batch selection and remaining material/post/cockpit/distortion/statistics body with all cleanup states",
+      "Full genuine body/domain closure before queue admission"
     ]
   },
   "unproved": [
-    "WholeD5E13C execution",
-    "Alloriginal descendant/nativecurrent-profile/exceptionABI/private-stackaliases",
-    "Coldsampler/full lighting/fog/shadow/childfailures/enabledsynchronization/concurrency",
-    "GeneralFPstatus/stack/traps",
-    "Actualapplicationscene/camera creation/invocation",
-    "Visibleworld/gameplay"
+    "Whole D5E13C execution",
+    "Original descendants/current virtual profiles/exception ABI/private stack aliases",
+    "Cold pool, child failures, enabled synchronization, concurrency",
+    "General FP status/stack/traps inherited from earlier stages",
+    "Actual application scene/camera creation and invocation",
+    "Visible world/gameplay"
   ],
   "artifacts": [
     {
       "path": "src/native_main_scene_execution_prefix.cpp",
-      "bytes": 36521,
-      "sha256": "5b8907647461bfbca9b50a49b2f247ec8071d8701864ab894c83256ed2c2a28f"
+      "bytes": 41367,
+      "sha256": "72e2d74a1b118d30915ac0c29f97cee8336ec3a05db9b6c7c26b0b3549836258"
     },
     {
       "path": "include/bsp/native_main_scene_execution_prefix.hpp",
-      "bytes": 7647,
-      "sha256": "69d120da6b67897ad297945177fed025e717ac1577e9713ce543e8658a3e6e88"
+      "bytes": 10208,
+      "sha256": "3937e1b4e475c29b0b9076ee9748f3ab73e5a5fdfc5382342c4ba353cf32c03b"
     },
     {
       "path": "docs/NATIVE_MAIN_SCENE_EXECUTION_PREFIX_CC12.md",
-      "bytes": 22012,
-      "sha256": "4649946a1fadc6ac6de35eb150f57709e03a31d4e31e9d063cc4cf2b219314c9"
+      "bytes": 26388,
+      "sha256": "9ba8d83f76ee0eb57655b8c04aa0a2fac50343cc67e5bd7ab4a5d0f7e8ff5f98"
     },
     {
       "path": "src/native_camera_far_corners.cpp",
@@ -210,24 +311,24 @@
       "sha256": "f0bda64b3570c67175ed773b5ef36d4fbea4ef618ba10c48ae13693cad375913"
     },
     {
-      "path": "src/native_camera_frame_command.cpp",
-      "bytes": 2793,
-      "sha256": "9b88d61f567a3228ee519772b369d8c86fc21968eb10308da94f202f2f0ee269"
+      "path": "src/native_render_diagnostic_labels.cpp",
+      "bytes": 5854,
+      "sha256": "18ddbf93eb84cefd8dba22eef50561fbe50ba6e596600f0b8d826f0352eefb70"
     },
     {
-      "path": "include/bsp/native_camera_frame_command.hpp",
-      "bytes": 2306,
-      "sha256": "842e2795af3798d18f6be7d2d2b4217446a4a44b177d089d8c625c083d42097b"
+      "path": "include/bsp/native_render_diagnostic_labels.hpp",
+      "bytes": 2453,
+      "sha256": "dead191dfe920c0d422e198801a2b84e6174b77c5810ba08ebecf4d0cd716355"
     },
     {
-      "path": "src/native_system_constant_gather.cpp",
-      "bytes": 34872,
-      "sha256": "8078dc01ff71f37185a8149cf7535019257a300d71562b292cc8216a74e75a86"
+      "path": "src/native_string_pool_storage.cpp",
+      "bytes": 5103,
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5"
     },
     {
-      "path": "include/bsp/native_system_constant_gather.hpp",
-      "bytes": 3792,
-      "sha256": "c50c3972023f6275762edc02119843c626c002d0820a92302342e89ce654ae11"
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "bytes": 2805,
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
     },
     {
       "path": "local/main_scene_execution/native_camera_history.obj",
@@ -236,8 +337,8 @@
     },
     {
       "path": "build/win32/Release/bsp_core.lib",
-      "bytes": 91508790,
-      "sha256": "7a7c32fb2c967f8bca8ea342b77dd584a6a69e33fe4e87f5f28e5d35ca5095de"
+      "bytes": 91517910,
+      "sha256": "da17756f826a80f55e55db4b6ee293c44369786bc100ae371e7cd01376ecc41a"
     },
     {
       "path": "build/win32/Release/bsp_lua511.lib",
@@ -250,144 +351,169 @@
       "sha256": "1f4792601d3198471ab898fb8b2a6015fba928b164832817d46b4a0fa8bb11c9"
     },
     {
-      "path": "local/main_scene_bloom_receipt_ca9c9c4c0/receipt.json",
-      "bytes": 12313,
-      "sha256": "2504fd66b87bc58a59cab7aa10c91d97a721d1d88a683f170e68540b72fc49f3"
+      "path": "local/main_scene_camera_receipt_7452af434/receipt.json",
+      "bytes": 14485,
+      "sha256": "397e4939295696089f09a83e5741e1d943b6d4e0cc2bb24a52c9d6929c45dc51"
     },
     {
-      "path": "local/main_scene_bloom_receipt_ca9c9c4c0/report.json",
-      "bytes": 15292,
-      "sha256": "011782095563664238fec689cc1631924c636127f30127ea98f38cd438e4ffeb"
+      "path": "local/main_scene_camera_receipt_7452af434/report.json",
+      "bytes": 18338,
+      "sha256": "f022c4f4ead095f27651e7a1d9b5443959a57c037155849b3879528b4bd212eb"
     },
     {
-      "path": "local/ghidra-annotations-20261014T205155Z.json",
-      "bytes": 14450,
-      "sha256": "f621e2dfa3e601bcbb2f7979340f6041ac9b8f01bcdcae02cd613ec862b12d23"
+      "path": "local/ghidra-annotations-20261014T213259Z.json",
+      "bytes": 18212,
+      "sha256": "cf070b5317a816d70bd52217520e5e6a87c095d3f334435068d8f4dd74a513c3"
     },
     {
-      "path": "local/main_scene_camera/native_camera_far_corners.obj",
+      "path": "local/main_scene_label/native_camera_far_corners.obj",
       "bytes": 2415,
-      "sha256": "a3575f5e17a2337aa3f18d191823bebe2b0fefe96f6ff44de238ebc3548ddd7f"
+      "sha256": "fe662632289d9c370714ff515a7c48468f90fca7c320becd985d449fe5f3a9f7"
     },
     {
-      "path": "local/main_scene_camera/native_camera_far_corners.asm",
-      "bytes": 34703,
-      "sha256": "d725b194b3d9862d8c076e94be6bdd762385294f16c2c306eb0b53782d54e3b8"
+      "path": "local/main_scene_label/native_camera_far_corners.asm",
+      "bytes": 34702,
+      "sha256": "4771dc47f5f5ae87f9dbbef209d17705477c651bc80d4df5da28ba30b2694685"
     },
     {
-      "path": "local/main_scene_camera/native_main_scene_execution_prefix.obj",
-      "bytes": 21951,
-      "sha256": "a902d653e218f221abe5761be02979faf446da0812fce8cd8ca533ca1c44a48b"
+      "path": "local/main_scene_label/native_main_scene_execution_prefix.obj",
+      "bytes": 27605,
+      "sha256": "4919effe0bac320c405076b27c73089eb17b4c49f6be342ee4f624609e6029a2"
     },
     {
-      "path": "local/main_scene_camera/native_main_scene_execution_prefix.asm",
-      "bytes": 141084,
-      "sha256": "04c2db206783846f44c28080d49f8384a2da4db014857f0aa83cb8a02457ff4f"
+      "path": "local/main_scene_label/native_main_scene_execution_prefix.asm",
+      "bytes": 168931,
+      "sha256": "0240e823ccb62992da7aec688435bcc45840a147413ee67a3e53e9f036e49b61"
     },
     {
-      "path": "local/main_scene_camera/strict_compile.log",
+      "path": "local/main_scene_label/strict_compile.log",
       "bytes": 71,
       "sha256": "b5de5f5f8da7ca17d81e6976be0b07c575fdf20e4f94e28e20c6dd656d529014"
     },
     {
-      "path": "local/main_scene_camera/compile.ps1",
-      "bytes": 1037,
-      "sha256": "54000fd2cc0eda3b98570f9423d5d60503256519ddf3ba419b6e2fbf1bbba4e5"
+      "path": "local/main_scene_label/compile.ps1",
+      "bytes": 1031,
+      "sha256": "ba921b53f4556699ef2f850837452487c5efc940afef6eb5aece55c0b995cd10"
     },
     {
-      "path": "local/main_scene_camera/build.log",
-      "bytes": 4280,
-      "sha256": "5119fc6cd4410d4e8645e8bc2199cad84f6dd68550a8292da28d57154b0001de"
+      "path": "local/main_scene_label/build.log",
+      "bytes": 4539,
+      "sha256": "3f5482b061ba4bb31d60f175f18605ee489db3044636de744ce96e436dca4e79"
     },
     {
-      "path": "local/main_scene_camera/camera_probe.cpp",
-      "bytes": 19074,
-      "sha256": "eb1935a8855f43c5b1493b2b2ec743fef5c657572e671b73e90ea2f70ae62b61"
+      "path": "local/main_scene_label/label_probe.cpp",
+      "bytes": 12162,
+      "sha256": "68c1ab670109ba3afe666068f69b64400473a1cef501534e10def6ff1467681b"
     },
     {
-      "path": "local/main_scene_camera/camera_probe.obj",
-      "bytes": 77133,
-      "sha256": "c46a81b2edacf928c4f6119559e1aa8f6424aae5fdb00cb415786092f128b441"
+      "path": "local/main_scene_label/label_probe.obj",
+      "bytes": 55169,
+      "sha256": "6ade19a2ad1b3efd8040f79b0be7323a54dddfd9d3c8ca3897203357a03ae30f"
     },
     {
-      "path": "local/main_scene_camera/camera_probe.exe",
-      "bytes": 263168,
-      "sha256": "8349e8a2034cde2f90978bf13db938ba08f43b0a2aa75abf576d282dbd8cda68"
+      "path": "local/main_scene_label/label_probe.exe",
+      "bytes": 227840,
+      "sha256": "0c1ed4c82b9f90780c215d12ce2e9fe760f9ed85e44712b39d8a68a97a2393a6"
     },
     {
-      "path": "local/main_scene_camera/camera_probe.log",
-      "bytes": 432,
-      "sha256": "d14fcf0a43fe21d452a18e59f3a57d37179b552753c37b8418b884a6cfd06c58"
+      "path": "local/main_scene_label/label_probe.log",
+      "bytes": 509,
+      "sha256": "815cfb32d2b4d1fcff6b77f60a18a4956a31b7b8304f2269325bc4cb1012c9ee"
     },
     {
-      "path": "local/main_scene_camera/probe_compile.log",
-      "bytes": 18,
-      "sha256": "9f6ada050c1189629533ecd91ead16c6a30f560af42189241c8bc966f64488e3"
+      "path": "local/main_scene_label/probe_compile.log",
+      "bytes": 17,
+      "sha256": "cb33925b1a3c7bb4077d17e57743e895455524726ed690ee7fd7ebba4e86ec23"
     },
     {
-      "path": "local/main_scene_camera/run_probe.ps1",
-      "bytes": 1282,
-      "sha256": "a24c8aea7129f449527be0f2ee3839f787dcdb7427e768c7cfba7fd3d1a062fc"
+      "path": "local/main_scene_label/run_probe.ps1",
+      "bytes": 1266,
+      "sha256": "5ea90a0e049f470c11ae3f2fbce03d74b6c4c621d17beda524c077c3c6ea3f50"
     },
     {
-      "path": "local/main_scene_camera/original_bytes.inc",
-      "bytes": 1203,
-      "sha256": "da31b2e46412391eaab9a497ff5bcb8131adb816706490d9dad3b275b2b764e5"
+      "path": "local/main_scene_label/original_bytes.inc",
+      "bytes": 2408,
+      "sha256": "a9f2bc369ff24074ea9cf9876a9be5e8932549fe169bf32fcffab4ed6dc7fc93"
     },
     {
-      "path": "local/main_scene_camera/camera_gather.bin",
-      "bytes": 76,
-      "sha256": "565d5009cc07e5a53ed1e131289e719396b259c2ed98de17bf3502307fbc919f"
+      "path": "local/main_scene_label/label.bin",
+      "bytes": 159,
+      "sha256": "46644a090ebf877f054de81010448c2acc06222719c96884dce6fc3c8c48884a"
     },
     {
-      "path": "local/main_scene_camera/mode.bin",
-      "bytes": 28,
-      "sha256": "e601f0a42946d456ee82f8630141f06cb1671dab3d951dbdb071e27db4a29f1e"
+      "path": "local/main_scene_label/unwind_temporary.bin",
+      "bytes": 11,
+      "sha256": "cef8c8dc203e17250f90b55373234d862daaf7436fb0abf7c54153650e16a218"
     },
     {
-      "path": "local/main_scene_camera/byte_receipt.json",
-      "bytes": 1340,
-      "sha256": "089b67dbf1ddcee8da01fa68f42a901d186c8f81875e84852b4af6a30704d7da"
+      "path": "local/main_scene_label/unwind_reset.bin",
+      "bytes": 8,
+      "sha256": "d07c30f6afc9ea1ab38e7bfef37711a5bc029e9f8c8b0d79614adf2c0fbdc005"
     },
     {
-      "path": "local/main_scene_camera/byte_check.log",
-      "bytes": 981,
-      "sha256": "4acdada18c9e93972e448b8e8dfb2fc55eec10d6ca7e00991db5a7595052d975"
+      "path": "local/main_scene_label/handler.bin",
+      "bytes": 10,
+      "sha256": "e3e2ad413e482a75d3249425cf1e30e7d681e0cd0f6ab8a69303cbdddc2ecafe"
     },
     {
-      "path": "local/main_scene_camera/make_fixture_bytes.py",
-      "bytes": 2780,
-      "sha256": "bf6324ed97bc05253b44e117b4a58468bc1f4cf3b6c7c0174b1da06cda51518c"
+      "path": "local/main_scene_label/func_info.bin",
+      "bytes": 36,
+      "sha256": "bba2e286bfbcca2cfae6c87890a7834476ea7b90563ef611fd40ba7e106842a9"
     },
     {
-      "path": "local/main_scene_camera/audit_x87.py",
-      "bytes": 1965,
-      "sha256": "1f22bb9cc1574f2c7831f2130b105499105a8a8cce43918ee3ca9d7b83b033fd"
+      "path": "local/main_scene_label/unwind_map.bin",
+      "bytes": 72,
+      "sha256": "6dd6b0c046043b55b4e7976fd6436a5038a1dc2a2fe595f08abc9070ad5427d8"
     },
     {
-      "path": "local/main_scene_camera/x87_audit.json",
-      "bytes": 978,
-      "sha256": "7ed6adcf74d49747a553e432ce46e3eb759932ff19c2ca97aeaf7312da8dd6bf"
+      "path": "local/main_scene_label/drsh.bin",
+      "bytes": 8,
+      "sha256": "e9a6d1af7a104fbbbd3cf2e46d5bd5b455e6607601b65076b9e708826f0cea4c"
     },
     {
-      "path": "local/main_scene_camera/audit_emitted.py",
-      "bytes": 2618,
-      "sha256": "345c9cd18f2b9af53d0c4d7f049bfc0c2619fd1140474793112cf022dc74fe81"
+      "path": "local/main_scene_label/byte_receipt.json",
+      "bytes": 2435,
+      "sha256": "1a8147c57be37fca34ccb9e762cc86df324c59946528f6d832cdb5acb10351f0"
     },
     {
-      "path": "local/main_scene_camera/emitted_audit.json",
-      "bytes": 998,
-      "sha256": "0b0bf0d9c05efc4bd19b14dfe1f2a446d4ce8aefd46156c80572d268c875b65d"
+      "path": "local/main_scene_label/byte_check.log",
+      "bytes": 1841,
+      "sha256": "780029fbf0bd2dd01b331502426e9c030b7aa9891a66cfe29b03674c4e93ed72"
     },
     {
-      "path": "local/main_scene_camera/annotation.log",
-      "bytes": 247,
-      "sha256": "9398f82c6611f9dce0e2a4f58358ec7cdb0a50283b358a37d4eeb05ff33ec456"
+      "path": "local/main_scene_label/make_fixture_bytes.py",
+      "bytes": 2907,
+      "sha256": "44b4fd853498dc4d16935969a2faa30d36f311381a99962c905019c7c1dd18ef"
     },
     {
-      "path": "local/main_scene_camera/ledger.log",
-      "bytes": 10966,
-      "sha256": "0b312bf2ee8198a5c07302649157ee8f7fe0dbf6b948d9ba999ce57e1127b3ca"
+      "path": "local/main_scene_label/audit_x87.py",
+      "bytes": 1963,
+      "sha256": "5f86f06d13909be494bac918d61d2acf1e754b0fac9b938d90225c053375b021"
+    },
+    {
+      "path": "local/main_scene_label/x87_audit.json",
+      "bytes": 976,
+      "sha256": "4ab4b088e86e3b4bb7db73d1b03ca4d4bd0cb37fbee289db3cc18f2f2318d320"
+    },
+    {
+      "path": "local/main_scene_label/audit_emitted.py",
+      "bytes": 3436,
+      "sha256": "d5bdfe6e098f6e27e992aabde087f24c3c6428f697e02bb468067b14335c5dec"
+    },
+    {
+      "path": "local/main_scene_label/emitted_audit.json",
+      "bytes": 1728,
+      "sha256": "53161d27989c45c97d3de7a9c2082e6ab202040aefb9a84c9d0e041fb1f48bec"
+    },
+    {
+      "path": "local/main_scene_label/annotation.log",
+      "bytes": 202,
+      "sha256": "b21aa85f965c6aae6f78eeadbea43080c855cc838556d8b76849b9b3a2279a46"
+    },
+    {
+      "path": "local/main_scene_label/ledger.log",
+      "bytes": 14091,
+      "sha256": "b470e5e9a11f3d2561f1b72e8dcbf0918bfd55f1ca40af38ced9f12df4c95b24"
     }
   ]
 }
