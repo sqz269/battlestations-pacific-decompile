@@ -47,7 +47,11 @@ ABI facts used throughout (all from disasm-raw):
 
 `kTrivialSlots` (45 rows): every screen-id getter (`MOV EAX,imm; RET`), the byte predicates, the
 empty bodies with their RET sizes, the this-adjusting deleting-destructor thunks (`SUB ECX,n; JMP`)
-and 0067B3F0 (`JMP 004F71D0`). `kCollectChildrenSlots` (11 rows): the page offsets each
+and 0067B3F0 (`JMP 004F71D0`). The markers thunk 006405F0 also has code (cc13-fix3):
+the deleting destructor `hud_markers_scalar_delete_00640d50` runs the markers destructor
+006404A0, frees the object when flags bit 0 is set and returns it; the thunk
+`hud_markers_scalar_delete_adjustor8_006405f0` subtracts 8 and jumps there.
+`kCollectChildrenSlots` (11 rows): the page offsets each
 collect-children slot pushes.
 
 Screen ids confirmed: 04h rewards, 05h unit library, 28h cursor, 43h spectator, 44h HUD root,
