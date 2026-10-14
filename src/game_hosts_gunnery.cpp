@@ -83,6 +83,7 @@
 #include "bsp/aa_pick_ver_cc13.hpp"
 #include "bsp/gameplay_seg53_cc13.hpp"
 #include "bsp/ship_torpedo_ver_cc13.hpp"
+#include "bsp/plane_release_ver_cc13.hpp"
 
 namespace bsp::game {
 namespace {
@@ -455,6 +456,16 @@ constexpr bool kTorpedoBotStaleFlagBound = false;
 //    through bot->vt[38h](0). The host kept it. ON: the gun's target is dropped.
 //    OFF: as before.
 constexpr bool kTorpedoSubmergedTargetDropBound = false;
+//  * kBombReleaseVelocityFrameBound: packet g42_ver20_d1 (docs/CC13_VER_20.md D1).
+//    006E1F00 copies the round's matrix, and owner->vtable[190h] = 006E0A70
+//    overwrites the copy's row 2 with w' (the owner's world velocity, 3.0 off y)
+//    and re-orthonormalises it (0085DC80) BEFORE the cone turn reads the rows
+//    (006E2062..006E2181). So the cone is centred on the velocity, and a round
+//    with no cone leaves with w' exactly. The host turned the cone in the plane's
+//    pose frame (GUNNERY 130.4 / 130.6 read the hanging matrix, not the copy).
+//    ON: plane_release_ver_cc13::rack_round_release_velocity_006e4d50 on the
+//    same draws. OFF: as before.
+constexpr bool kBombReleaseVelocityFrameBound = false;
 //  * kTorpedoSwimThrustBound: packet cc9_torpedo_tube_turn,
 //    docs/TORPEDO_FRIENDLY_CROSSING.md section 6. 00857480, the swim advance,
 //    per step on a torpedo in the water: 00856BB0 -> 00857061 yaws the NOSE
@@ -1919,6 +1930,7 @@ struct GameGunneryHost::Impl {
     std::map<int, float> flak_fuse_time_by_class;
     // kArtilleryClassSpeedBound: 006E9890's +54h (FlyTime), by bullet class.
     std::map<int, float> artillery_fly_time_by_class;
+    unsigned long long bomb_release_frame_drops{0};   // kBombReleaseVelocityFrameBound
     // kArtilleryClassSpeedBound counters: aims that took the class speed, shots
     // launched at it, scaled shot steps, and FlyTime expiries.
     unsigned long long artillery_class_aims{0};
@@ -14614,8 +14626,9 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
         const float s = chosen->throw_amount * mul;
         const float a = h.draw(Impl::Draw::bomb_scatter, unit_index, 0, 0.0f,
             3.14159274f);                                                   // 006E4F91
-        const float t = std::tan(h.draw(Impl::Draw::bomb_scatter, unit_index, 0, 0.0f,
-            s));                                                            // 006E4FB1
+        const float t_draw = h.draw(Impl::Draw::bomb_scatter, unit_index, 0, 0.0f,
+            s);                                                             // 006E4FB1
+        const float t = std::tan(t_draw);
         const float w = chosen->wind_amount;
         const float r1 = h.draw(Impl::Draw::bomb_scatter, unit_index, 0, -w, w);     // 006E513C
         const float r2 = h.draw(Impl::Draw::bomb_scatter, unit_index, 0, -0.5f * w,
@@ -14642,8 +14655,34 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
         const float vmag = std::sqrt(velocity[0] * velocity[0] + velocity[1] * velocity[1]
             + velocity[2] * velocity[2]);
         const float before[3] = {velocity[0], velocity[1], velocity[2]};
-        for (int i = 0; i < 3; ++i) {
-            velocity[i] = vmag * (dx * right[i] + dy * up[i] + forward[i]);
+        float world_now[3] = {0.0f, 0.0f, 0.0f};
+        if (kBombReleaseVelocityFrameBound
+            && h.units.unit_linear_velocity(unit_index, world_now)) {
+            // 006E0A70 then 006E1F00 on the round's matrix copy (CC13_VER_20 D1).
+            // The round hangs with the plane pose (identity attach, 130.6).
+            bsp::plane_release_ver_cc13::RackRoundReleaseInputs in;
+            const float pose[16] = {right[0], right[1], right[2], 0.0f, up[0], up[1], up[2],
+                0.0f, forward[0], forward[1], forward[2], 0.0f, origin[0], origin[1],
+                origin[2], 1.0f};
+            for (int i = 0; i < 16; ++i) in.pose_matrix[i] = pose[i];
+            in.owner_is_plane_0f = true;
+            in.owner_speed_38 = speed;   // LABELLED: vtable[38h] as 0092D730, as above
+            in.owner_world_velocity_34.x = world_now[0];
+            in.owner_world_velocity_34.y = world_now[1];
+            in.owner_world_velocity_34.z = world_now[2];
+            in.a_draw = a;
+            in.t_draw = t_draw;
+            const bsp::plane_release_ver_cc13::Vec3 v =
+                bsp::plane_release_ver_cc13::rack_round_release_velocity_006e4d50(in);
+            velocity[0] = v.x;
+            velocity[1] = v.y;
+            velocity[2] = v.z;
+            ++h.bomb_release_frame_drops;
+            h.done("Rack::round_release_velocity_006e0a70_006e1f00", 0x006e1f00u);
+        } else {
+            for (int i = 0; i < 3; ++i) {
+                velocity[i] = vmag * (dx * right[i] + dy * up[i] + forward[i]);
+            }
         }
         ++h.scatter_drops;
         {
@@ -15080,6 +15119,9 @@ void GameGunneryHost::report() {
             host.artillery_biased_launches, host.artillery_scaled_steps,
             host.artillery_fly_time_expiries, kArtilleryClassSpeedBound ? 1 : 0,
             kArtilleryLaunchBiasBound ? 1 : 0);
+        host.log.notef("summary mission gunnery bomb release velocity frame drops=%llu bound=%d "
+            "(006E0A70 -> 006E1F00, CC13_VER_20 D1)", host.bomb_release_frame_drops,
+            kBombReleaseVelocityFrameBound ? 1 : 0);
         {
             // Packet cc9_mrtgun_immediate_fire: the census of turning classes by
             // whether the ArtilleryGunnerBot drives the category.
