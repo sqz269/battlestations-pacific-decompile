@@ -17890,3 +17890,38 @@ won reliably (put Portland1/Gear14/16 on Shimotsuke before 1300 s).
 68fe87dba (0067BB50 unreachable, 248), c1186ad17 (241 item 4 unbound, 249), 3b30ed84a (held torpedo press re-sent
 every frame, 250), this one. No leases held. Open: the USNOS items above; 005F98F0 port range; the cc13 soldier
 placeholders (never wire as-is); 004BFED0/004C3A80.
+
+## 252. Avoid-zone registry layer layout (cc9-ships51, 2026-10-14; lead item 1)
+
+From docs/CC13_AVOID1.md adoption note 1, verified: 00424730 builds three default layers through 00424680 (angles
+read from 00CE3990 / 00CE398C / 00CE3988 = 3E32B8C3h / 3EB2B8C3h / 3F9C61ABh, 10 / 20 / 70 degrees, each n = 10, cell
+2400, scale 2.0, zero grid), and 004248A0 calls 0041DED0 at 004248C1 with ECX = the registry (EBP), which deletes
+every list element, so a loaded registry holds only the file's layers. The host kept one ten-degree default ahead of
+the file layers. Bound as `kAvoidZoneRegistryImageLayoutBound` (include/bsp/game_hosts_avoid_zones.hpp), OFF.
+Measured with `local\s51_navlayers.py` over this installation's 253 `.nav` files: all but `missions\chg\PC_cargo.nav`
+(zero layers) hold three 240x240 layers with slope limits 0.1763 / 0.3640 / 2.7475 (10 / 20 / 70 degrees), so
+0041DF40(1.5, true) picks the 70-degree file layer under both layouts (image index 2, OFF host index 3). Scenes with
+no `.nav` (missiontree.lua): USN10 and USN11 (COTP-USN/PRCPUS usn_05 / usn_06) and ALT02 (IJN/ijn_14_prelude_mid);
+there the image keeps the 70-degree default and the OFF host its 10-degree one, which differ only in +14h; the hosted
+readers (game_hosts_units.cpp: 0041BC20 samples and the cell size) never read +14h.
+**Prediction:** gameplay-identical pairs (pair_diff 0 or 1) on every mission; the only moved lines are the
+`summary mission avoid-zone layer` note (registry_layers 4 -> 3, squadron_34c 3 -> 2; on USN10: 1 -> 3 layers,
+squadron_34c 0 -> 2, slope 0.176327 -> 2.747477).
+**Pairs** (020a12d06, `local\s51_off_<row>.log` vs `local\s51_on_<row>.log`, ON = `local\s51_avon` export, manifests
+beside each log): USN10 24000 frames (no `.nav`), USN15 36000, JM06 36000. pair_diff exit 1 on all three, gameplay
+identical (unit tables identical; USN10 deaths 14/14, damage 49475.7 both). Moved: only the avoid-zone summary
+(USN10 registry_layers 1 -> 3, squadron_34c 0 -> 2, slope 0.176327 -> 2.747478; USN15/JM06 4 -> 3 layers, 3 -> 2) plus
+the masked noise counters (ShipAiSectorScan, ship ai free empty/refills). As predicted: **flipped ON**. No mission
+completed in these rows, so no exec-guard line was expected. The scene-contents note "004248a0 appends without
+clearing" (game_hosts_scene_contents.cpp, lua lane) is now stale; routed to the lead.
+
+## 253. 00416270's x87 sums of products; 00417E60 guards labelled (cc9-ships51, 2026-10-14; lead item 3)
+
+00416270 (src/ship_ai_free_bearing.cpp) forms far2 (0041630A..00416310), the facing test (0041634A..0041635C) and the
+two crossing distances (00416426..0041645E) as x87 sums of two products and stores only the sum; the host's SSE build
+rounded each product to float first. `kOutlineWalkX87ProductsBound` (OFF) computes each product in double (exact for
+float operands) and rounds the sum once. Single products elsewhere in the walk (radius2) are unchanged: a float times a
+float rounds the same either way. **Prediction:** gameplay-identical pairs unless a walk sits on a near-tie (a facing
+sign or a far2 comparison within one float ulp); a moved pair would show first in the ShipAiSectorScan counters.
+00417E60's host arm (006F3C5A in game_hosts_ship_ai.cpp) is labelled: its ready() and group != 0 guards are the host's,
+and group_for_layer is 004120D0's walk where the image calls 00412120.
