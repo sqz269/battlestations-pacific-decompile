@@ -45,6 +45,7 @@ struct IGameExplorer;
 #include "bsp/frame_clock.hpp"
 #include "bsp/platform_loop.hpp"
 #include "bsp/platform_window.hpp"
+#include "bsp/platform_control_messages.hpp"
 #include "bsp/text_input.hpp"
 #include "bsp/random_threads.hpp"
 #include "bsp/winmain_startup.hpp"
@@ -312,6 +313,7 @@ class GameWindowHost final : public PlatformWindowHost {
 public:
     GameWindowHost(GameHostLog& log, HINSTANCE instance) : log_(log), instance_(instance) {}
     void stop_existing_window(Win32PlatformState& state) override;
+    void initialize_power_policy_after_render_entry_cache(Win32PlatformState& state);
     HCURSOR load_arrow_cursor() override;
     ATOM register_class(const WNDCLASSA& window_class) override;
     BOOL adjust_window_rect(RECT& rectangle, DWORD style, BOOL menu) override;
@@ -337,6 +339,7 @@ private:
     ATOM registered_class_{};
     int origin_x_{};
     int origin_y_{};
+    PlatformPowerPolicyContext power_policy_{win32_platform_power_imports()};
 };
 
 // SaveStorageHost for 00beb2c0: SHGetSpecialFolderPathA plus CreateDirectoryA.

@@ -1,0 +1,61 @@
+{
+  "batch": "cc12_resume_implementation_20261014",
+  "components": {
+    "canonical_native_text_application": "aaa2c7a7387cc7105dcbe16d06a89b3e60c60f3f",
+    "platform_policy_owner": "d325ba943108251918578414fae74e6157ceb447",
+    "platform_policy_verification": "239622b536ef99adce8cd58bb515e3bcbf19d2dc",
+    "raw_fixed_step_jobs": "7a0a35ac6",
+    "render_resource_normal_composition": "src/native_render_resource_initializer.cpp"
+  },
+  "combined_validation": {
+    "build": "scripts/build.ps1 MSVC Win32 Release passed",
+    "ctest": "3/3 passed: reconstructed_math, native_math_differential, tool_tests",
+    "log": "local/cc12_resume_integration_build_final.log",
+    "exe_sha256": "6040451a91dbfd9666c3c5b6f333928e50523595bdcf3533712f20fd6b055745",
+    "platform_original_source_fixture": "3/3 producer-stop scenarios; real native bytes with spied power/screensaver/quit imports",
+    "job_probe": "Source raw registration/splice/descriptor lifetime/LIFO/admission/interpolation/single execution/failure preservation; instrumented downstream callbacks and zero-worker arm",
+    "text_component": "worker full build2/2 and strict compilation passed; no current HAL Text fixture rerun",
+    "render_resource_native_bytes": "full10297 physical body bytes live/disk matched; no composed initializer native execution"
+  },
+  "startup_smoke": {
+    "exe_sha256": "b3a919280c5771ec78a252b5199737067812efa159aa13bbd451b7ffc7e4aced",
+    "checkout_head": "896c8f94b90a34329540ddc99d5df8db98deb8dc",
+    "manifest_checkout_dirty": true,
+    "scope": "baseline executable built before this component batch; launcher recorded later working-tree metadata",
+    "log": "local/cc12_resume_startup_baseline.log",
+    "manifest": "local/cc12_resume_startup_baseline.log.manifest.json",
+    "loop_ticks": 240,
+    "presented": 239,
+    "skipped": 1,
+    "window_created": true,
+    "d3d9_device_created": true,
+    "exit_code": 0,
+    "unimplemented_host_methods": 74
+  },
+  "usn01_smoke": {
+    "exe_sha256": "4d519de146b08c087c2ae8b18db0146d3bc60da47e57305842d0acf7aad863db",
+    "checkout_head": "ffe4b59ef04db5a6e8d7cd91930614eb6d9f3e72",
+    "manifest_checkout_dirty": true,
+    "scope": "intermediate build with Text and policy owner plus render composition; precedes final raw-job integration; these new parent graphs were not activated",
+    "log": "local/cc12_resume_usn01_baseline.log",
+    "manifest": "local/cc12_resume_usn01_baseline.log.manifest.json",
+    "arguments": "--frames 3200 --press-start-frame 30 --menu-select USN01 --mission-frames 3000 --mission-frame-seconds 0.05; screenshot at mission frame 1800",
+    "mission_frames": 3000,
+    "presented": 3199,
+    "skipped": 1,
+    "exit_code": 0,
+    "unimplemented_host_methods": 490,
+    "screenshot": "local/cc12_resume_usn01_baseline.png",
+    "screenshot_sha256": "4ac10493e714735539c46b3e0ee7e72afd8c081e690b4cac39149ccbe18ce433",
+    "visual_observation": "dark field with HUD fragments, white block and oversized Err graphics; actual world rendering absent",
+    "faithful_gameplay_validation": "not passed"
+  },
+  "goal": "active; faithful startup and gameplay remain unproved",
+  "remaining_parent_requirements": [
+    "actual GUI/material/effect and native-font producers for canonical Text factory",
+    "genuine native normal-exit saved-power restore caller before production power mutation",
+    "actual raw tick receiver/group/pending backing and shared frame-job owner/execution attachment",
+    "actual material/pass/distortion/dust provider graph and child retirement for composed render initialization",
+    "complete world rendering and original gameplay behavior validation"
+  ]
+}
