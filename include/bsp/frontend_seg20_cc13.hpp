@@ -5,6 +5,7 @@
 // (Raw::at at the image's offsets); every engine routine the image calls is a
 // named host method invoked at the same point. Nothing here runs in the game.
 #include "bsp/engine_seg49_64_78_cc13.hpp"
+#include "bsp/frontend_screens_cc13.hpp"
 
 #include <array>
 #include <cstddef>
@@ -22,8 +23,7 @@ struct Raw {
 };
 inline Raw raw(void* p) noexcept { return Raw{static_cast<std::uint8_t*>(p)}; }
 
-struct Seg20Host {
-    virtual ~Seg20Host() = default;
+struct Seg20Host : cc13_fe1::EdgeReferenceHost {
     // Image globals (dword storage at the address).
     virtual std::uint32_t& global_u32(std::uint32_t address) = 0;
 
@@ -74,7 +74,90 @@ struct Seg20Host {
     // 00AA8240 __thiscall(widget, const float* xyz) RET 4: set resolved position.
     virtual void widget_set_resolved_position_00aa8240(void* widget, const float (&xyz)[3]) = 0;
     virtual void widget_vslot4c(void* widget, float value) = 0;                    // vtable +4Ch(float)
+    // 008DDF90 __thiscall(szurke, unit) RET 4 -> AL.
+    virtual bool szurke_contains_unit_008ddf90(void* szurke, void* unit) = 0;
+    // 007788B0 __fastcall(unit) -> AL.
+    virtual bool unit_is_formation_follower_007788b0(void* unit) = 0;
+    // 00521F10 __thiscall(unit+1E4h, side) RET 4: the side's 34h-byte record.
+    virtual std::int32_t unit_side_record_value_00521f10(void* records, std::uint32_t side) = 0;
+
+    // --- models and hangars ---
+    virtual void* generated_model_geometry_00b74640(void* model, std::int32_t index) = 0;
+    virtual std::uint32_t mesh_count58_00b72b40(void* geometry) = 0;
+    virtual void* mesh_element_00b732c0(void* geometry, std::uint32_t index) = 0;
+    // 00B172D0 __thiscall(effect) -> const NativeString*; returns its data (+4h), null when empty.
+    virtual const char* effect_name_data_00b172d0(void* effect) = 0;
+    virtual const char* strstr_00bf9440(const char* text, const char* pattern) = 0;
+    virtual void* shipyard_first_live_hangar_object_00845750(void* unit) = 0;
+    virtual void* airfield_find_usable_hangar_object_006d2730(void* unit) = 0;
+    // 00535110 __thiscall(iterator*): the in-order successor of a map node.
+    virtual void* tree_next_00535110(void* node) = 0;
+    // 0059E690 __thiscall(array slot, int capacity) RET 4.
+    virtual void icon_array_reserve_0059e690(void* slot, std::int32_t capacity) = 0;
+
+    // --- minimap markers ---
+    virtual void* operator_new_00bf681b(std::uint32_t size) = 0;
+    // 00AAB4C0 __thiscall(template widget, 0) RET 4 -> the clone.
+    virtual void* widget_clone_00aab4c0(void* widget, std::int32_t flags) = 0;
+    // 00AAA5A0 __thiscall(parent, child, 0) RET 8: add the child.
+    virtual void widget_add_child_00aaa5a0(void* parent, void* child, std::int32_t flags) = 0;
+    // 005C0790 __thiscall(vector, void* const* value) RET 4: push_back.
+    virtual void pointer_vector_push_back_005c0790(void* vector, void* const* value) = 0;
+    // 005BCBD0 __thiscall(vector, index) RET 4 -> &vector[index] (checked).
+    virtual void** pointer_vector_at_005bcbd0(void* vector, std::uint32_t index) = 0;
 };
+
+inline constexpr std::uint32_t kMinimapMarkerVtable = 0x00CF1154u;
+
+// 005BCAC0 __thiscall(marker, unit) RET 4 -> marker: vtable 00CF1154; with
+// layout = [[00E198C4]+58h], the template is layout+7Ch for no unit, else
+// layout+74h (is-a 8), +6Ch (is-a 6), +70h (is-a 0Fh) or +78h; marker+4 =
+// 00AAB4C0(template, 0); 00AAA5A0(layout+F0h, marker+4, 0); then
+// (marker+4)->vtable[34h](1).
+void* minimap_marker_construct_005bcac0(void* marker, void* unit, Seg20Host& host);
+
+// 005C0930 __thiscall(screen, unit) RET 4 -> marker. Category k: 0 for no
+// unit, else 1 (is-a 8), 2 (is-a 6), 3 (is-a 0Fh), 4. The use counter at
+// screen+154h+k*4 is incremented; when it is below the size of the pointer
+// vector at screen+104h+k*10h that element is returned (k = 0 inline with a
+// checked index, otherwise 005BCBD0); else a new 8-byte marker
+// (00BF681B, 005BCAC0(unit) unless the allocation failed, then null) is
+// pushed (005C0790) and returned.
+void* minimap_acquire_marker_005c0930(void* screen, void* unit, Seg20Host& host);
+
+// 0059EAD0 __thiscall(slot, int count) RET 4: the slot points at {data, size,
+// ...}; cur = [slot] ? [[slot]+4] : 0. When count != cur: 0059E690(slot,
+// count), then [[slot]+4] = count (the block re-read after the reserve).
+void hud_map_icon_array_resize_0059ead0(void* slot, std::int32_t count, Seg20Host& host);
+
+// 005A07B0 __fastcall(ECX = model, EDX = const NativeString* name) -> EAX:
+// for i < 00B72B40(00B74640(model, 0)), element = 00B732C0(00B74640(model,
+// 0), i), material = [element+20h]; the first material whose effect name
+// (00B172D0 on [material+7Ch]) contains the name (both data pointers non-null,
+// strstr hit at an offset other than -1) is returned; 0 otherwise. `name_data`
+// is the name's +4h data pointer.
+void* generated_model_find_material_by_effect_name_005a07b0(void* model, const char* name_data, Seg20Host& host);
+
+// 005A1220 __thiscall(screen, object) RET 4 -> EAX: walks the icon map at
+// +4F4h in order; for each icon (node+10h) whose unit ([icon+4]) is-a 46h,
+// 00845750(unit), or is-a 45h, 006D2730(unit), equals `object`, returns the
+// icon; 0 at the end.
+void* hud_map_find_icon_carrying_unit_005a1220(void* screen, void* object, Seg20Host& host);
+
+// 0059D6D0 __thiscall(screen, icon) RET 4 -> AL. p = 00AA6750(first widget of
+// the icon's vector at +ECh); n = ((float)((+F8h + 60.0) / 960.0),
+// (float)((60.0 + +FCh) / 720.0)); q = (p.x + n.x, n.y + p.y, p.z + 0.0) as
+// floats. When 0059D410(p) and 0059D410(q) both hold: icon+120h = 0, AL = 1;
+// otherwise icon+120h = 0059A910(icon, screen+54Ch), AL = 0.
+bool hud_map_icon_update_offscreen_edge_0059d6d0(void* screen, void* icon, Seg20Host& host);
+
+// 0059D940 __thiscall(screen, unit) RET 4 -> AL, z = screen+2Ch (zoom level):
+// is-a 1Ch -> 1; in the local side's grey arrow ([00E188A8]+21A4h+side*4,
+// 008DDF90) with z >= 1 -> 1; is-a 19h/1Bh/1Ah/0Fh -> z >= 2; is-a 18h -> z <
+// 2; is-a 6 and a formation follower (007788B0) -> z >= 1; neither 2Bh nor
+// 34h -> 1; else z >= 2 and 00521F10(unit+1E4h, [[00E188A8]+18CCh+side*4]+
+// 28h) >= 2.
+bool hud_map_is_unit_shown_at_zoom_0059d940(void* screen, void* unit, Seg20Host& host);
 
 // 0059CEF0 __thiscall(icon, byte invert) RET 4 -> AL. a = +110h, g = float
 // [00F876A4]. g >= a: +100h/+104h = +F8h/+FCh and AL = 1, t = 1.0. Else t =
