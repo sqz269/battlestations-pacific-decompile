@@ -3,6 +3,9 @@
 #include "bsp/native_camera_far_corners.hpp"
 #include "bsp/native_particle_preparation.hpp"
 #include "bsp/native_system_constant_gather.hpp"
+#include "bsp/native_render_resource_init_continuation.hpp"
+#include "bsp/native_renderer_frame_targets.hpp"
+#include "bsp/native_world_configuration_leaves.hpp"
 #include "bsp/native_camera_axes.hpp"
 #include "bsp/native_camera_configuration_leaves.hpp"
 #include "bsp/native_camera_cache_getters.hpp"
@@ -484,5 +487,285 @@ void continue_native_main_scene_texture_constants_00b1586d(void* service,
         throw std::logic_error("main scene constants require the same actual far-corner cells");
     execute_texture_constants(service,&c,command);
     state.reached_bloom_stage=true;
+}
+
+namespace {
+struct BloomScalarAccess {
+    const TextureContext* textures;
+    const volatile double* adaptation_scale;
+    const volatile std::uint32_t* negative_half;
+    const volatile std::uint32_t* half_float;
+};
+static_assert(offsetof(BloomScalarAccess, textures)==0);
+static_assert(offsetof(BloomScalarAccess, adaptation_scale)==4);
+static_assert(offsetof(BloomScalarAccess, negative_half)==8);
+static_assert(offsetof(BloomScalarAccess, half_float)==12);
+void* __fastcall bloom_output_holder_actual(const void* actual) noexcept {
+    return native_bloom_output_holder_00b54cd0(actual);
+}
+// Native B15BD2..B15DDB: complete active/inactive bloom arithmetic and shared
+// screen constants. Native scratch slots/spills and opcode directions retained.
+__declspec(naked) void __fastcall execute_bloom_constants(void*, const BloomScalarAccess*, void*) {
+    __asm {
+        push edx
+        sub esp, 090h
+        push ebx
+        push ebp
+        push esi
+        push edi
+        mov esi, ecx
+        mov edi, dword ptr [esp + 0a8h]
+        cmp byte ptr [esi + 021ah],00h // 00b15bd2
+        jz loc_00b15d1d // 00b15bd9
+        mov ecx,dword ptr [esi + 02ch] // 00b15bdf
+        call bloom_output_holder_actual
+        mov ecx,eax // 00b15be7
+        call native_shadow_holder_texture_00b4cb10
+        mov ecx,dword ptr [esi + 02ch] // 00b15bee
+        mov ebp,eax // 00b15bf1
+        call bloom_output_holder_actual
+        mov ecx,eax // 00b15bf8
+        call native_shadow_holder_texture_00b4cb10
+        mov edx,dword ptr [eax] // 00b15bff
+        mov ecx,eax // 00b15c01
+        mov eax, edx // original captured owner profile
+        push eax
+        mov edx, dword ptr [esp + 0a4h]
+        mov edx, dword ptr [edx]
+        call texture_width
+        test eax,eax // 00b15c08
+        mov dword ptr [esp + 02ch],eax // 00b15c0a
+        fild dword ptr [esp + 02ch] // 00b15c0e
+        jge loc_00b15c1a // 00b15c12
+        push eax
+        mov eax, dword ptr [esp + 0a4h]
+        mov eax, dword ptr [eax]
+        mov eax, dword ptr [eax + 4]
+        fadd dword ptr [eax]
+        pop eax
+    loc_00b15c1a:
+        push eax
+        mov eax, dword ptr [esp + 0a4h]
+        mov eax, dword ptr [eax]
+        mov eax, dword ptr [eax + 8]
+        fdivr qword ptr [eax]
+        pop eax
+        mov edx,dword ptr [ebp] // 00b15c20
+        mov eax, edx // original captured owner profile
+        mov ecx,ebp // 00b15c26
+        fstp dword ptr [esp + 014h] // 00b15c28
+        push eax
+        mov edx, dword ptr [esp + 0a4h]
+        mov edx, dword ptr [edx]
+        call texture_height
+        test eax,eax // 00b15c2e
+        mov dword ptr [esp + 02ch],eax // 00b15c30
+        fild dword ptr [esp + 02ch] // 00b15c34
+        jge loc_00b15c40 // 00b15c38
+        push eax
+        mov eax, dword ptr [esp + 0a4h]
+        mov eax, dword ptr [eax]
+        mov eax, dword ptr [eax + 4]
+        fadd dword ptr [eax]
+        pop eax
+    loc_00b15c40:
+        push eax
+        mov eax, dword ptr [esp + 0a4h]
+        mov eax, dword ptr [eax]
+        mov eax, dword ptr [eax + 8]
+        fld qword ptr [eax]
+        pop eax
+        push eax
+        mov eax, dword ptr [esp + 0a4h]
+        mov eax, dword ptr [eax]
+        mov eax, dword ptr [eax + 16]
+        movss xmm1,dword ptr [eax]
+        pop eax
+        fld st(0) // 00b15c4e
+        xorps xmm0,xmm0 // 00b15c50
+        fdivrp st(2),st(0) // 00b15c53
+        fxch // 00b15c55
+        fstp dword ptr [esp + 010h] // 00b15c57
+        fld dword ptr [esp + 014h] // 00b15c5b
+        fstp dword ptr [esi + 018ch] // 00b15c5f
+        fld dword ptr [esp + 010h] // 00b15c65
+        fstp dword ptr [esi + 0190h] // 00b15c69
+        fld dword ptr [esi + 0258h] // 00b15c6f
+        push eax
+        mov eax, dword ptr [esp + 0a4h]
+        mov eax, dword ptr [eax + 4]
+        fld qword ptr [eax]
+        pop eax
+        fdiv st(1),st(0) // 00b15c7b
+        fxch // 00b15c7d
+        fstp dword ptr [esi + 026ch] // 00b15c7f
+        fld dword ptr [esi + 025ch] // 00b15c85
+        fdiv st(0),st(1) // 00b15c8b
+        fld1 // 00b15c8d
+        fld st(0) // 00b15c8f
+        fdivrp st(2),st(0) // 00b15c91
+        fxch // 00b15c93
+        fstp dword ptr [esi + 0270h] // 00b15c95
+        fld dword ptr [esi + 0264h] // 00b15c9b
+        fsubr st(0),st(1) // 00b15ca1
+        fstp dword ptr [esp + 014h] // 00b15ca3
+        fld dword ptr [esp + 014h] // 00b15ca7
+        fldz // 00b15cab
+        fcomi st(0),st(1) // 00b15cad
+        fstp st(1) // 00b15caf
+        jbe loc_00b15cb8 // 00b15cb1
+        movaps xmm2,xmm0 // 00b15cb3
+        jmp loc_00b15cc6 // 00b15cb6
+    loc_00b15cb8:
+        movss xmm2,dword ptr [esp + 014h] // 00b15cb8
+        comiss xmm2,xmm1 // 00b15cbe
+        jbe loc_00b15cc6 // 00b15cc1
+        movaps xmm2,xmm1 // 00b15cc3
+    loc_00b15cc6:
+        fld dword ptr [esi + 0260h] // 00b15cc6
+        movss dword ptr [esi + 0274h],xmm2 // 00b15ccc
+        fdivrp st(3),st(0) // 00b15cd4
+        fld st(1) // 00b15cd6
+        fdivrp st(3),st(0) // 00b15cd8
+        fxch st(2) // 00b15cda
+        fstp dword ptr [esi + 0278h] // 00b15cdc
+        fsub dword ptr [esi + 0268h] // 00b15ce2
+        fstp dword ptr [esp + 014h] // 00b15ce8
+        fld dword ptr [esp + 014h] // 00b15cec
+        fxch // 00b15cf0
+        fcomip st(0),st(1) // 00b15cf2
+        fstp st(0) // 00b15cf4
+        jbe loc_00b15d05 // 00b15cf6
+        movaps xmm2,xmm0 // 00b15cf8
+        movss dword ptr [esi + 027ch],xmm2 // 00b15cfb
+        jmp loc_00b15d2e // 00b15d03
+    loc_00b15d05:
+        movss xmm2,dword ptr [esp + 014h] // 00b15d05
+        comiss xmm2,xmm1 // 00b15d0b
+        jbe loc_00b15d13 // 00b15d0e
+        movaps xmm2,xmm1 // 00b15d10
+    loc_00b15d13:
+        movss dword ptr [esi + 027ch],xmm2 // 00b15d13
+        jmp loc_00b15d2e // 00b15d1b
+    loc_00b15d1d:
+        push eax
+        mov eax, dword ptr [esp + 0a4h]
+        mov eax, dword ptr [eax]
+        mov eax, dword ptr [eax + 16]
+        movss xmm1,dword ptr [eax]
+        pop eax
+        push eax
+        mov eax, dword ptr [esp + 0a4h]
+        mov eax, dword ptr [eax]
+        mov eax, dword ptr [eax + 8]
+        fld qword ptr [eax]
+        pop eax
+        xorps xmm0,xmm0 // 00b15d2b
+    loc_00b15d2e:
+        fld dword ptr [esi + 04h] // 00b15d2e
+        push eax
+        mov eax, dword ptr [esp + 0a4h]
+        mov eax, dword ptr [eax + 12]
+        movss xmm2,dword ptr [eax]
+        pop eax
+        fadd st(0),st(1) // 00b15d39
+        mov ecx,edi // 00b15d3b
+        fstp dword ptr [esp + 014h] // 00b15d3d
+        fadd dword ptr [esi + 08h] // 00b15d41
+        movss dword ptr [esi + 01d8h],xmm2 // 00b15d44
+        push eax
+        mov eax, dword ptr [esp + 0a4h]
+        mov eax, dword ptr [eax + 8]
+        movss xmm2,dword ptr [eax]
+        pop eax
+        movss dword ptr [esi + 01ech],xmm2 // 00b15d54
+        movss xmm2,dword ptr [esp + 014h] // 00b15d5c
+        fstp dword ptr [esp + 010h] // 00b15d62
+        movss dword ptr [esi + 0208h],xmm2 // 00b15d66
+        movss xmm2,dword ptr [esp + 010h] // 00b15d6e
+        movss dword ptr [esi + 01dch],xmm0 // 00b15d74
+        movss dword ptr [esi + 01e0h],xmm0 // 00b15d7c
+        movss dword ptr [esi + 01e4h],xmm0 // 00b15d84
+        movss dword ptr [esi + 01e8h],xmm0 // 00b15d8c
+        movss dword ptr [esi + 01f0h],xmm0 // 00b15d94
+        movss dword ptr [esi + 01f4h],xmm0 // 00b15d9c
+        movss dword ptr [esi + 01f8h],xmm0 // 00b15da4
+        movss dword ptr [esi + 01fch],xmm0 // 00b15dac
+        movss dword ptr [esi + 0200h],xmm1 // 00b15db4
+        movss dword ptr [esi + 0204h],xmm0 // 00b15dbc
+        movss dword ptr [esi + 020ch],xmm2 // 00b15dc4
+        movss dword ptr [esi + 0210h],xmm0 // 00b15dcc
+        movss dword ptr [esi + 0214h],xmm1 // 00b15dd4
+        pop edi
+        pop esi
+        pop ebp
+        pop ebx
+        add esp, 094h
+        ret 4
+    }
+}
+void* current_member(const void* actual, std::uint32_t offset) noexcept {
+    return reinterpret_cast<void*>(word(static_cast<const unsigned char*>(actual)+offset));
+}
+} // namespace
+
+void continue_native_main_scene_bloom_targets_00b15bd2(void* service,
+    void* command, const NativeMainSceneBloomTargetContext& c,
+    NativeMainSceneExecutionPrefixState& state) {
+    if(!state.reached_bloom_stage || state.bloom_targets_started)
+        throw std::logic_error("main scene bloom/targets require their fresh reached continuation");
+    if(!c.textures.far_corners || c.textures.far_corners->near_00ce3800!=&c.half_float_00ce3800)
+        throw std::logic_error("main scene bloom requires the same actual half-float cell");
+    state.bloom_targets_started=true;
+    state.active_native_site=0x00b15bd2;
+    const BloomScalarAccess access{&c.textures,&c.adaptation_scale_00ce3cb8,
+        &c.negative_half_00ce69d0,&c.half_float_00ce3800};
+    execute_bloom_constants(service,&access,command);
+
+    state.active_native_site=0x00b15ddc;
+    void* camera=get_native_scene_command_camera_00b1bf40(command);
+    state.clear_flags_bits=word(static_cast<const unsigned char*>(camera)+0x188);
+    state.clear_flags_captured=true;
+    const std::uint32_t clear_flags=7;
+    camera=get_native_scene_command_camera_00b1bf40(command);
+    state.active_native_site=0x00b15df6;
+    (void)set_native_camera_clear_flags_00b6fe10(camera,&clear_flags);
+    state.clear_flags_changed=true;
+    // BL is FF from B1573D and survives every preceding callee. The original
+    // four byte stores prepare this full DWORD before the next camera getter.
+    const std::uint32_t white=0xffffffffu;
+    camera=get_native_scene_command_camera_00b1bf40(command);
+    state.active_native_site=0x00b15e19;
+    set_native_camera_clear_color_00b6fe50(camera,nullptr,white);
+    state.clear_color_changed=true;
+
+    auto& groups=c.targets.actual_group_owner;
+    state.active_native_site=0x00b15e21;
+    auto* surface=native_render_holder_primary_00b4cb20(current_member(service,0x38));
+    auto* frame=static_cast<NativeFrameTargetOwnerStorage*>(current_member(service,0x1c8));
+    state.active_native_site=0x00b15e30;
+    set_native_frame_target_color_00b1fab0(*frame,0,surface,groups);
+    state.active_native_site=0x00b15e38;
+    surface=native_render_holder_primary_00b4cb20(current_member(service,0x3c));
+    frame=static_cast<NativeFrameTargetOwnerStorage*>(current_member(service,0x1c8));
+    state.active_native_site=0x00b15e46;
+    set_native_frame_target_color_00b1fab0(*frame,1,surface,groups);
+    state.active_native_site=0x00b15e4e;
+    surface=native_render_holder_primary_00b4cb20(current_member(service,0x40));
+    frame=static_cast<NativeFrameTargetOwnerStorage*>(current_member(service,0x1c8));
+    state.active_native_site=0x00b15e5c;
+    set_native_frame_target_color_00b1fab0(*frame,2,surface,groups);
+
+    // Original publication -> captured profile -> current frame -> slot98.
+    void* renderer=groups.actual_surface_context.actual_renderer_00f8d394;
+    const std::uint32_t captured_profile=word(renderer);
+    frame=static_cast<NativeFrameTargetOwnerStorage*>(current_member(service,0x1c8));
+    state.active_native_site=0x00b15e76;
+    if(captured_profile!=0x00d5f0a8 || !c.actual_renderer_profile_00d5f0a8 ||
+       c.actual_renderer_profile_00d5f0a8[0x98/4]!=0x00b24e70)
+        throw std::logic_error("main scene requires current D5F0A8:B24E70 frame-target binding");
+    bind_native_renderer_frame_targets_00b24e70(renderer,frame,c.targets);
+    state.active_native_site=0x00b15e78;
+    state.reached_camera_frame_stage=true;
 }
 } // namespace bsp

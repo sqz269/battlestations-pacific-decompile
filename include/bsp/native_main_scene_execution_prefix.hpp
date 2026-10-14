@@ -5,6 +5,7 @@ namespace bsp {
 struct NativeCameraAxesContext;
 struct NativeCameraHistoryContext;
 struct NativeCameraFarCornersContext;
+struct NativeRendererFrameTargetsContext;
 
 struct NativeMainSceneExecutionPrefixContext {
     void* const volatile& actual_renderer_00f8d394;
@@ -28,6 +29,13 @@ struct NativeMainSceneExecutionPrefixState {
     bool near_changed{};
     bool reached_texture_stage{};
     bool reached_bloom_stage{};
+    std::uint32_t clear_flags_bits{};
+    std::uint32_t active_native_site{};
+    bool bloom_targets_started{};
+    bool clear_flags_captured{};
+    bool clear_flags_changed{};
+    bool clear_color_changed{};
+    bool reached_camera_frame_stage{};
 };
 
 // Complete raw leaves. Native ECX command / camera. B1BF40 uses RET and returns
@@ -71,5 +79,28 @@ struct NativeMainSceneTextureConstantsContext {
 // success: D5E13C remains unadmitted and all later renderer stages are required.
 void continue_native_main_scene_texture_constants_00b1586d(void* actual_service,
     void* actual_command, const NativeMainSceneTextureConstantsContext&,
+    NativeMainSceneExecutionPrefixState&);
+
+struct NativeMainSceneBloomTargetContext {
+    const NativeMainSceneTextureConstantsContext& textures;
+    const volatile double& adaptation_scale_00ce3cb8;
+    const volatile std::uint32_t& negative_half_00ce69d0;
+    const volatile std::uint32_t& half_float_00ce3800;
+    NativeRendererFrameTargetsContext& targets;
+    const volatile std::uint32_t* actual_renderer_profile_00d5f0a8;
+};
+
+// Continue SAME actual service/command/state through B15BD2..B15E77. Execute
+// the real bloom enabled/disabled branches and shared screen constants, save
+// current camera+188 clear flags, set7/white through current cameras, assign
+// the three current holder-primary surfaces to current service+1C8 groups,
+// then resolve current renderer slot98 to full B24E70 over the SAME group and
+// surface lifetime/synchronization/settings domain. No default targets, owner
+// replacement, extra reference credit, cleanup or rollback. Real owner/callee
+// failures preserve prior mutations and active_native_site; never replay a
+// started stage. The ownership suffix uses ordinary C++ exception frames.
+// Stops BEFORE B15E78 camera-frame execution. D5E13C remains UNADMITTED.
+void continue_native_main_scene_bloom_targets_00b15bd2(void* actual_service,
+    void* actual_command, const NativeMainSceneBloomTargetContext&,
     NativeMainSceneExecutionPrefixState&);
 } // namespace bsp
