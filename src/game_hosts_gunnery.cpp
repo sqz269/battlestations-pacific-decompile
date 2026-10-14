@@ -460,7 +460,7 @@ constexpr bool kTorpedoBotAttackRangeBound = true;
 //    tick commands no angles and keeps the last evaluated trigger. LABELLED:
 //    the seed is 0 (neither constructor 008FF260 nor 0072BBD0 stores +5Ch), so
 //    the first targeted tick evaluates. OFF: every fixed step evaluates.
-constexpr bool kTorpedoBotThinkTimerBound = false;
+constexpr bool kTorpedoBotThinkTimerBound = true;   // ON: GUNNERY 245
 constexpr float kTorpedoBotThinkPeriod = 0.2f;   // 00CE54A0
 //  * kTorpedoBotStaleFlagBound: packet g42_ver23 (docs/CC13_VER_23.md D2), only
 //    under kTorpedoBotAttackRangeBound. 00903580 recomputes bot+68h BEFORE it
@@ -747,7 +747,7 @@ constexpr bool kGunneryLosRoleSwapBound = true;
 //    observer's point and hangar answer are reused for 0.5 s. LABELLED: the
 //    class+50h section-span raise (00862C00, Globals +9Ch) is still not taken,
 //    as kGunneryLineOfSightBound says. OFF: recomputed at every test.
-constexpr bool kGunneryLosEyeCacheBound = false;
+constexpr bool kGunneryLosEyeCacheBound = true;   // ON: GUNNERY 245
 constexpr float kLosEyeCacheSeconds = 0.5f;   // 00CE3800
 //  * kShipyardHangarHiddenBound (packet cc9_hangar_los, docs/GUNNERY_OPEN_ITEMS.md
 //    176): 00864680 runs 0081DE10 for a ship cache owner and answers hidden when

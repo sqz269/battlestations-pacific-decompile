@@ -14572,3 +14572,35 @@ substitution; no binding.
   fallback the host uses is the branch the image takes for a class without a model, and the raise stays
   unbound. Prediction: ON moves only rows where a ray grazes land within 0.5 s of a pose change; open-water rows
   stay gameplay-identical. Counter: `summary mission gunnery line of sight eye cache bound= refreshes= cached=`.
+
+## 245. Verdicts for 242-244; four flips ON, 222 stays OFF (cc9-gunnery44, 2026-10-14)
+
+Same-tree pairs, `BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`, logs in this tree's `local\` (manifests beside them).
+Bases: `g44_off` (`5886bfa03`), `g44_off2` (`589c58d8c`), `g44_off3` (`7c5815dbd`).
+
+| switch | row | verdict | mechanism |
+| --- | --- | --- | --- |
+| `kAutoTargetScanRowWriteDropBound` | USN12 b, USN15 l2, USN01 i | gameplay identical (all three) | `drops=62` on USN12: the row no longer names a scan winner the gates refused |
+| drop + 222 `kDirectorLeaderFireTargetBound` | USN12 b | **MOVED, lost**: shots 15414 -> 866, deaths 106 -> 22, the CA phase never ends | `inherits=190938` |
+| drop + 222 | USN15 l2 | **lost**: failed at 1036.94 s | - |
+| `kDirectorFirePermissionClearBound` | USN01 i | gameplay identical | `clears=0`: USN01's three UnitHoldFire calls come before any target; no reach |
+| `kTorpedoBotThinkTimerBound` | USN01 i | gameplay identical | no ship torpedo tube targeted |
+| `kTorpedoBotThinkTimerBound` | USN12 b | **MOVED, lost** (`none`); CA phase ends at ~940 s instead of 871 s | `evals=1663 holds=6635`, the predicted 1:4 |
+| `kTorpedoBotThinkTimerBound` | USN15 l2 | **MOVED, lost**: failed at 2833.69 s (Fuso outlives the last Fletchers; win was 2808.66 s) | as above |
+| `kGunneryLosEyeCacheBound` | USN12 b, USN01 i | gameplay identical | `refreshes=1320 cached=640` (USN12), `725 / 968` (USN01) |
+
+**Flips ON**: the row-write drop, the permission clear (a direct transcription, no reach yet), the think timer
+(mechanism as predicted; the lost wins are faithful consequences and go to re-plans), the eye cache.
+**222 stays OFF.** With the drop in place, followers that hold no fire target take the leader's and stop
+firing at anything else; whether the image's per-gun pick falls back when that target is out of the gun's
+arcade range (3000 m, section 235) is unread. Next: read the `00863640` consumers (the per-gun target pick)
+for a fallback before binding again.
+
+**Re-plans.** USN12 `usn12_g44_u12_c` (Cleveland moveto at 17700, 19400 and 20600) completes at 1625.46 s on the
+base and 1670.50 s under the think timer; it replaces `b`, which the think timer loses. USN15 under the think
+timer is a knife-edge race against Fuso reaching IJNGoTo (the script fails the mission when an enemy is within
+3000 m of it, or all US ships die). Player torpedo salvos at Fuso (`usn15_g44_u15_a`) launched nothing
+(`player torpedo group ... trigger_ons=0 tube_fires=0`, the same as JM06's sub orders), so that plan is
+dropped; USN15 goes to the wins keeper.
+
+**237 reach**: 0 holds in 56 recent lane logs and in USN12 / USN15 here (USN12 has three layer-5 zones).

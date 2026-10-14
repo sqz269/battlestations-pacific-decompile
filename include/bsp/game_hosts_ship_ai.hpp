@@ -101,7 +101,7 @@ inline constexpr bool kWeaponDirectorFireTargetBound = true;
 // row's fire_target, so the row changes only through store_fire_target (the host copy
 // of +238h). fire_target_score is still recorded. False: the scan winner is written to
 // the row as soon as the scan returns, as before. Committed OFF.
-inline constexpr bool kAutoTargetScanRowWriteDropBound = false;
+inline constexpr bool kAutoTargetScanRowWriteDropBound = true;   // ON: GUNNERY 245
 
 // Packet g44_scan_row_write (section 236, second gap). 00836210 (director vtable[64h],
 // reached from the 5Ah stance message through 0071C1E0 sub-kind 0) stores allowFire at
@@ -111,7 +111,7 @@ inline constexpr bool kAutoTargetScanRowWriteDropBound = false;
 // clear the ship-AI fire target when the stance forbids fire. LABELLED: synchronous,
 // where the image applies it when the 5Ah message is pumped. False: nothing is
 // cleared, as before. Committed OFF.
-inline constexpr bool kDirectorFirePermissionClearBound = false;
+inline constexpr bool kDirectorFirePermissionClearBound = true;   // ON: GUNNERY 245 (no reach yet)
 
 // Packet cc13-ver13 (docs/CC13_VER_13.md finding 2). 00835F60, the first call of the
 // ship director step 00836920, releases director+238h every step unless the target is
