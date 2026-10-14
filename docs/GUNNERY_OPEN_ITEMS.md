@@ -14502,3 +14502,25 @@ The exec guard's `sus_prog.exe` refusal is logged on every completion checked (u
   main menu and wrote 1.6 GB.
 - `g43_scanlog.py <log> <regex> [limit]` streams a huge log.
 - Exports: `g43_off` (`799618c09`), `g43_sa`, `g43_nd`, `g43_zn`, `g43_sp`, `g43_td`.
+
+## 242. The scan row write and the 00836210 clear: `kAutoTargetScanRowWriteDropBound`, `kDirectorFirePermissionClearBound`, OFF (lead queue item 1; cc9-gunnery44, 2026-10-14)
+
+Both close the two host-writer gaps of section 236. The ships lane agreed to this edit in its file.
+
+- **`kAutoTargetScanRowWriteDropBound`** (`include/bsp/game_hosts_ship_ai.hpp`). `scan_party_list` stops copying
+  the scan winner into `GameShipAiRow::fire_target`; the row then moves only through `store_fire_target`
+  (`00836240`, reached from `009F5F21` after `009F5EAE` / `009F5ECB` / `009F5ED7`). `fire_target_score` is still
+  written. Counter: `drops`, a scan whose winner differs from the stored target, in the new summary line
+  `summary mission ship ai scan row write drop ...`.
+- **`kDirectorFirePermissionClearBound`**. `GameShipAiHost::store_fire_permission_00836210` zeroes the
+  controller's `fire_target` (the host `+238h`) and the row name when the stance forbids fire (`0071D560`
+  false) and a target is held; the forced flag (`+23Ch`) is left alone. It is called after `0071BE80`'s host
+  in the three ship stance arms (`UnitSetFireStance`, `UnitHoldFire`, `UnitFreeFire`/`UnitFreeAttack`).
+  LABELLED: synchronous, where the image applies it when the 5Ah message is pumped (`0071C1E0` sub-kind 0 ->
+  vtable `+64h`). Counter: `clears`.
+
+**Predictions.** The drop is gameplay-visible wherever a scan winner loses the hysteresis or accept test: that
+ship's guns keep the stored target instead of swinging to the new best. Expect USN12 and USN15 to move (both
+have mixed cruiser/destroyer targets); USN01 i may stay identical if its ships always accept. The clear moves
+only missions whose scripts hold a ship's fire while it has a target; `clears=0` on a row means no reach.
+222 on top of the drop: followers with no target take the leader's stored `+238h`.

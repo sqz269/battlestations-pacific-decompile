@@ -38,6 +38,7 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 // Packet cc8_ship_follow: 00779D50's transcription and the ship-base kind.
 #include "bsp/ship_ai_states.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"  // packet cc9_usn02_deruyter_fire
+#include "bsp/weapon_director.hpp"     // packet g44_scan_row_write (0071D560)
 #include "bsp/unit_gunnery_pass.hpp"
 #include "bsp/recon_sensor_pass.hpp"  // packet cc9_recon_level_table
 #include <algorithm>
@@ -2451,6 +2452,24 @@ GameScriptOrdersHost::SquadronPermissions squadron_permissions_0084d810(
     }
     return p;
 }
+
+// Packet g44_scan_row_write (kDirectorFirePermissionClearBound): the 5Ah stance
+// message reaches 00836210 through 0071C1E0 sub-kind 0, which drops director+238h
+// when the stance forbids fire (0071D560 false). The ship arms call this after
+// 0071BE80's host. Returns true when a fire target was dropped.
+bool director_fire_permission_00836210(GameShipAiHost* ship_ai, std::size_t unit,
+                                       int stance) {
+    if constexpr (kDirectorFirePermissionClearBound) {
+        if (ship_ai == nullptr) return false;
+        return ship_ai->store_fire_permission_00836210(unit,
+            bsp::director_stance_allows_fire_0071d560(static_cast<bsp::FireStance>(stance)));
+    } else {
+        static_cast<void>(ship_ai);
+        static_cast<void>(unit);
+        static_cast<void>(stance);
+        return false;
+    }
+}
 }  // namespace
 
 int GameScriptOrdersHost::run_unit_set_fire_stance(GameScriptOrderRow& row) {
@@ -2473,9 +2492,10 @@ int GameScriptOrdersHost::run_unit_set_fire_stance(GameScriptOrderRow& row) {
                    && units_.gunnery() != nullptr) {
             // Packet cc9_ship_fire_stance (routed from gunnery13): the ship's
             // director predicates 0071D560 / 0071D580, stored by the gunnery host.
-            // NOT DONE, labelled: the director fire-target release when a stance
-            // forbids fire (00836210 at 0083622B, kWeaponDirectorFireTarget).
+            // The director fire-target release when a stance forbids fire (00836210
+            // at 0083622B) is kDirectorFirePermissionClearBound.
             units_.gunnery()->set_director_fire_stance_0071be80(row.unit_index, stance);
+            director_fire_permission_00836210(units_.ship_ai(), row.unit_index, stance);
             log_.implemented("MissionLuaNative::UnitSetFireStance ship arm (0071BE80)",
                              "0071be80");
         } else {
@@ -2531,6 +2551,7 @@ int GameScriptOrdersHost::run_unit_hold_fire(GameScriptOrderRow& row) {
         // Packet cc9_ship_fire_stance (routed from gunnery13): 0071BED0 is
         // 0071BE80 with stance 0 on the ship's director.
         units_.gunnery()->set_director_fire_stance_0071be80(row.unit_index, 0);
+        director_fire_permission_00836210(units_.ship_ai(), row.unit_index, 0);
         log_.implemented("MissionLuaNative::UnitHoldFire ship arm (0071BED0)", "0071bed0");
     } else {
         log_.unimplemented("MissionLuaNative::UnitHoldFire director arm (0071DA50 5Ah)",
@@ -2576,6 +2597,7 @@ int GameScriptOrdersHost::run_unit_free_fire(GameScriptOrderRow& row,
     } else if (row.unit_index < units_.count() && units_.unit_is_kind_of(row.unit_index, 6)
                && units_.gunnery() != nullptr) {
         units_.gunnery()->set_director_fire_stance_0071be80(row.unit_index, stance);
+        director_fire_permission_00836210(units_.ship_ai(), row.unit_index, stance);
         log_.implemented(order == bsp::ScriptFireOrder::kFreeAttack
             ? "MissionLuaNative::UnitFreeAttack ship arm (0071BF70)"
             : "MissionLuaNative::UnitFreeFire ship arm (0071BF20)",
