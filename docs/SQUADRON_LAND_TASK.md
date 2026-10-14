@@ -16976,3 +16976,19 @@ coverage. 00980E50's body is now `fire_recon_listeners_00980e50`, shared by both
 Prediction (cc13): callbacks fire at most one pass earlier; no RNG. USN12 34000 (23 squadrons forced) and USNOS (Haku):
 the same `recon listener` lines, earlier by up to one pass; a forced record of an uncovered party now fires its listener
 where it never did. Gameplay identical unless a callback's timing matters.
+
+### 5hg.1 Measured: `kDogfightEnterDrawsBound` **ON** (cc9-lua60, 2026-10-14)
+
+Pairs on ed6757e2e: OFF `local\l60_e0_*`, ON `local\l60_e1_*` (BSP_GUNNERY_RNG_STREAMS=1).
+
+| row | dogfight activity | pair_diff |
+|---|---|---|
+| BSM01 `b1` (bsm01_l50_b1_a, 30000; completed 767.94 s both, exec guard refused sus_prog.exe) | 3 fighters, aim 10017 ticks, maneuver 3 | 0, identical |
+| JM08 `j8s` (jm08_p6_j8_f, 40000; no end either side) | sqn31 vs the B-17 #2.1 flight at 1855-1870 s | 3, moved |
+| USN04 `u04` (9000, no plan) | none | 1, gameplay identical |
+
+JM08: only the sqn31-vs-B-17 #2.1 engagement moves, as predicted. The four sqn31 fighters die 1.7-5.3 s earlier or later
+(all four still die to B-17 gunners; one death mode leftspinning -> explosion), B-17 #2.1|.-3 dies 3.4 s later, and
+B-17 #2.1 survives ON (killed OFF), so deaths 201 -> 200; two ground kills downstream (US barracks, AA truck 05) move
+by 0.3-4.8 s with a different B-17 killer. No other entity moves. The mechanism matches the image (keyed draws in the
+image's order), so the switch is flipped ON.

@@ -6115,7 +6115,7 @@ struct GameUnitsHost::Impl {
     // U(0.8, 1.0) / U(-0.8, -1.0) or the turn's +20h U(0.75, 1.0) and +1Ch
     // U(70, 100 deg) / U(-70, -100 deg) by the bank sign (+C68h > 0).
     // False: the midpoints, as before.
-    static constexpr bool kDogfightEnterDrawsBound = false;
+    static constexpr bool kDogfightEnterDrawsBound = true;   // ON: SQUADRON_LAND_TASK 5hg.1
     // Packet cc9_l60_torpedo_disarmed (cc13-confirm B): 009D2720's disarmed arm
     // 009D29E0-009D2CF1 (every done tick: the enter leaves +98h = -1.0), run
     // through bsp::torpedo_done_disarmed_arm_009d29e0 when the squadron has a
