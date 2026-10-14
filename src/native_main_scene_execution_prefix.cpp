@@ -19,6 +19,11 @@
 #include "bsp/native_render_job_publication.hpp"
 #include "bsp/native_frame_job_lifetime.hpp"
 #include "bsp/native_material_entry_dispatch.hpp"
+#include "bsp/native_node_visibility_factor.hpp"
+#include "bsp/native_render_scene_submission.hpp"
+#include "bsp/native_render_queue_execution.hpp"
+#include "bsp/native_render_command_execution.hpp"
+#include "bsp/native_render_command_owner.hpp"
 #include <cstddef>
 #include <cstring>
 #include <exception>
@@ -1058,6 +1063,198 @@ void continue_native_main_scene_batches_00b15f63(void* command,
         frame.failed=true;
         label.failed=true;
         unwind_native_main_scene_drsh_label(c.label,label);
+        throw;
+    }
+}
+namespace {
+// Keep FLD1 before the saved-camera word read, and FSTP32 after the current
+// node load, exactly as B1051E..B10532. No x87 value crosses a C++ adapter.
+__declspec(naked) std::uint32_t __fastcall raise_excluded_node_and_capture_flags(
+    void*, const void*) {
+    __asm {
+        push esi
+        fld1 // 00b1051e
+        mov esi, dword ptr [edx + 0188h]
+        push 0
+        push ecx
+        mov ecx, dword ptr [ecx + 01c0h]
+        fstp dword ptr [esp] // 00b1052f
+        call set_native_node_visibility_factor_00b6da70
+        mov eax, esi
+        pop esi
+        ret
+    }
+}
+__declspec(naked) void __fastcall clear_current_excluded_node_visibility(void*) {
+    __asm {
+        fldz // 00b10596
+        push 0
+        push ecx
+        mov ecx, dword ptr [ecx + 01c0h]
+        fstp dword ptr [esp] // 00b105a1
+        call set_native_node_visibility_factor_00b6da70
+        ret
+    }
+}
+__declspec(naked) void __fastcall restore_current_camera_near(void*, const void*) {
+    __asm {
+        push esi
+        mov esi, ecx
+        fld dword ptr [edx] // B160BA: borrowed saved word, source operand relocation.
+        push ecx
+        mov ecx, esi
+        fstp dword ptr [esp] // 00b160c1
+        call get_native_scene_command_camera_00b1bf40
+        mov ecx, eax
+        mov edx, esp
+        call set_native_camera_near_00b6fbf0
+        add esp, 4
+        pop esi
+        ret
+    }
+}
+NativeRenderCommandQueueStorage* excluded_node_queue(NativeMainSceneExcludedNodeContext& c) {
+    if(!c.queue ||
+       &c.queue->actual_manager_01090aa0!=&c.label.strings.actual_manager_publication_01090aa0 ||
+       static_cast<const volatile void*>(&c.queue->actual_queue_constructor.actual_renderer_00f8d394)!=
+           static_cast<const volatile void*>(c.label.system.actual_renderer_00f8d394))
+        throw std::logic_error("excluded node requires the same actual queue, manager and renderer cells");
+    return get_native_render_command_queue_004c11f0(*c.queue);
+}
+void require_excluded_submission(NativeMainSceneExcludedNodeContext& c,
+    NativeMainSceneExcludedNodeFrame& frame) {
+    if(!c.submission || !frame.submission ||
+       &c.submission->strings.actual_published_01090aa8!=&c.label.strings.actual_published_01090aa8 ||
+       &c.submission->strings.actual_small_returns_disabled_01090aa4!=&c.label.strings.actual_small_returns_disabled_01090aa4 ||
+       &c.submission->strings.actual_manager_publication_01090aa0!=&c.label.strings.actual_manager_publication_01090aa0 ||
+       frame.submission->allocation || frame.submission->command || frame.submission->appended || frame.submission->completed)
+        throw std::logic_error("excluded node requires its fresh actual drawable submission and string domain");
+}
+void require_excluded_execution_domain(NativeMainSceneExcludedNodeContext& c) {
+    if(!c.execution) return; // The raw B1E6D0 empty path needs no context.
+    if(&c.execution->actual_commands.actual_renderer_00f8d394!=c.label.system.actual_renderer_00f8d394 ||
+       &c.execution->actual_commands.actual_service_00f8d39c!=c.label.system.actual_service_00f8d39c ||
+       &c.execution->actual_commands.actual_strings.actual_published_01090aa8!=&c.label.strings.actual_published_01090aa8 ||
+       &c.execution->actual_commands.actual_strings.actual_small_returns_disabled_01090aa4!=&c.label.strings.actual_small_returns_disabled_01090aa4 ||
+       &c.execution->actual_commands.actual_strings.actual_manager_publication_01090aa0!=&c.label.strings.actual_manager_publication_01090aa0 ||
+       &c.execution->actual_owners!=&c.submission->commands.owners || !c.execution->actual_lifetime ||
+       &c.execution->actual_lifetime->batch_references!=&c.submission->commands.batch_references ||
+       &c.execution->actual_lifetime->models!=&c.submission->commands.models)
+        throw std::logic_error("excluded node execution must retain its actual submission owner and lifetime domains");
+}
+void excluded_restore_site(std::uint32_t site, NativeMainSceneDrshLabelFrame& label,
+    NativeMainSceneExcludedRestoreFrame& frame, NativeMainSceneExecutionPrefixState& state) noexcept {
+    label.active_native_site=frame.active_native_site=state.active_native_site=site;
+}
+} // namespace
+
+void execute_native_excluded_node_00b10500(void* service,void* command,void* targets,
+    NativeMainSceneExcludedNodeContext& c, NativeMainSceneExcludedNodeFrame& frame) {
+    if(frame.started) throw std::logic_error("excluded node requires its fresh persistent frame");
+    frame.started=true;
+    frame.active_native_site=0x00b10503;
+    if(*static_cast<const volatile unsigned char*>(static_cast<const void*>(
+        static_cast<const unsigned char*>(service)+0x22c))==0) {
+        frame.completed=true;
+        return;
+    }
+    frame.entered=true;
+    try {
+        frame.active_native_site=0x00b10519;
+        void* camera=get_native_scene_command_camera_00b1bf40(command);
+        frame.active_native_site=0x00b10532;
+        const std::uint32_t flags=raise_excluded_node_and_capture_flags(service,camera);
+        frame.saved_clear_flags=flags;
+        frame.visibility_raised=true;
+        const std::uint32_t zero=0;
+        frame.active_native_site=0x00b1053b;
+        camera=get_native_scene_command_camera_00b1bf40(command);
+        frame.active_native_site=0x00b10542;
+        (void)set_native_camera_clear_flags_00b6fe10(camera,&zero);
+        frame.flags_cleared=true;
+        frame.active_native_site=0x00b10549;
+        camera=get_native_scene_command_camera_00b1bf40(command);
+        void* const scene=current_member(camera,0xa4);
+        frame.active_native_site=0x00b10554;
+        auto* const captured_queue=excluded_node_queue(c);
+        void* const node=current_member(service,0x1c0);
+        frame.active_native_site=0x00b1056b;
+        camera=get_native_scene_command_camera_00b1bf40(command);
+        frame.active_native_site=0x00b10576;
+        require_excluded_submission(c,frame);
+        (void)submit_native_drawable_00b1f5e0(*captured_queue,scene,camera,targets,node,
+            *c.submission,*frame.submission);
+        frame.submitted=true;
+        frame.active_native_site=0x00b1057b;
+        auto* const current_queue=excluded_node_queue(c);
+        frame.active_native_site=0x00b10582;
+        require_excluded_execution_domain(c);
+        execute_last_native_render_command_00b1e6d0(*current_queue,c.execution,frame.execution);
+        frame.executed=true;
+        frame.active_native_site=0x00b1058a;
+        camera=get_native_scene_command_camera_00b1bf40(command);
+        frame.active_native_site=0x00b10591;
+        (void)set_native_camera_clear_flags_00b6fe10(camera,&flags);
+        frame.flags_restored=true;
+        frame.active_native_site=0x00b105a4;
+        clear_current_excluded_node_visibility(service);
+        frame.visibility_cleared=true;
+        frame.active_native_site=0x00b105af;
+        frame.completed=true;
+    } catch(...) {
+        frame.failed=true; // B10500 has no local restoration or ownership cleanup.
+        throw;
+    }
+}
+
+void continue_native_main_scene_excluded_restore_00b16068(void* service,void* command,
+    NativeMainSceneExcludedNodeContext& c, NativeMainSceneDrshLabelFrame& label,
+    const NativeMainSceneBatchFrame& batch, NativeMainSceneExcludedRestoreFrame& frame,
+    NativeMainSceneExecutionPrefixState& state) {
+    if(!state.reached_excluded_node_stage || state.reached_post_drsh_stage ||
+       !batch.completed || batch.failed || !label.completed || label.failed ||
+       label.native_cleanup_state!=2 || label.cleanup_started || frame.started)
+        throw std::logic_error("main scene excluded/restore requires completed batches and live DRSH state2");
+    frame.started=true;
+    excluded_restore_site(0x00b16068,label,frame,state);
+    try {
+        if(*static_cast<const volatile unsigned char*>(static_cast<const void*>(
+            static_cast<const unsigned char*>(service)+0x22d))!=0) {
+            void* const targets=current_member(service,0x1c8);
+            frame.excluded_called=true;
+            excluded_restore_site(0x00b1607b,label,frame,state);
+            execute_native_excluded_node_00b10500(service,command,targets,c,frame.excluded);
+        }
+        const std::uint32_t mode=state.render_mode_bits;
+        excluded_restore_site(0x00b16087,label,frame,state);
+        void* camera=get_native_scene_command_camera_00b1bf40(command);
+        excluded_restore_site(0x00b1608e,label,frame,state);
+        (void)set_native_camera_render_mode_00b6fdf0(camera,nullptr,mode);
+        frame.render_mode_restored=true;
+        excluded_restore_site(0x00b16097,label,frame,state);
+        label.native_cleanup_state=-1; // Native normal path disarms BEFORE reset.
+        label.cleanup_started=true;
+        label.cleanup_native_site=0x00b160a2;
+        excluded_restore_site(0x00b160a2,label,frame,state);
+        reset_native_render_diagnostic_label_00b13510(*c.label.system.actual_service_00f8d39c,c.label.strings);
+        label.cleanup_completed=true;
+        frame.label_reset_completed=true;
+        const std::uint32_t flags=state.clear_flags_bits;
+        excluded_restore_site(0x00b160ae,label,frame,state);
+        camera=get_native_scene_command_camera_00b1bf40(command);
+        excluded_restore_site(0x00b160b5,label,frame,state);
+        (void)set_native_camera_clear_flags_00b6fe10(camera,&flags);
+        frame.clear_flags_restored=true;
+        excluded_restore_site(0x00b160ba,label,frame,state);
+        restore_current_camera_near(command,&state.near_bits);
+        frame.near_restored=true;
+        excluded_restore_site(0x00b160d0,label,frame,state);
+        frame.completed=true;
+        state.reached_post_drsh_stage=true;
+    } catch(...) {
+        frame.failed=true;
+        label.failed=true;
+        unwind_native_main_scene_drsh_label(c.label,label); // State-1 does nothing.
         throw;
     }
 }

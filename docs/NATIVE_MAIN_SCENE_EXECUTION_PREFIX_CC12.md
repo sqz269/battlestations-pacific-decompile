@@ -5,8 +5,10 @@ actual-storage B0DB00 history calculation, the separate B1586D..B15BD1
 texture/far-corner continuation, the B15BD2..B15E77 bloom/target stage, and
 B15E78..B15EC3 camera-frame/mode/system-gather continuation, and the
 B15EC4..B15F62 DRSH label/ownership clause, and B15F63..B16067 batch
-selection, preparation and execution. The current final boundary is immediately
-before B16068, which tests the optional excluded-node pass.
+selection, preparation and execution, and B16068..B160CF excluded-node and
+camera/label restoration. The enabled excluded-node path now uses full raw
+B10500 and B1E6D0. The current final boundary is before B160D0, which loads
+service+60 for its current virtual +10 call at B160D8.
 Reaching any boundary does not mean a scene command executed successfully. The
 existing queue must continue refusing D5E13C: B17240 preparation and the
 remaining B156C0 render passes are not installed or claimed complete.
@@ -465,11 +467,85 @@ suite was added. New artifacts are under `local/main_scene_batch/`; all 46
 previous artifacts were copied and hash-verified before edits/build under
 `local/main_scene_label_receipt_9ca98fd55/receipt.json`.
 
+## Excluded node and DRSH restoration
+
+`execute_native_excluded_node_00b10500` supplies all 56 instructions / 176
+bytes of B10500..B105AF. The raw service+22C byte gates every descendant.
+After FLD1, it captures current camera+188 flags, loads the current service+1C0
+node, spills 1.0 and calls real B6DA70. It clears current-camera flags, captures
+current-camera+A4 scene before the queue getter, then captures the current node
+before another current-camera getter. Actual B1F5E0 constructs and submits the
+command into the same physical queue. Another genuine 4C11F0 getter precedes
+full raw B1E6D0. Saved flags are restored on a freshly loaded camera, then FLDZ
+and a fresh service+1C0 read precede real B6DA70 visibility0. The caller has no
+local EH cleanup: source failure marks its frame but does not restore flags,
+visibility or queue mutations.
+
+`execute_last_native_render_command_00b1e6d0` supplies all 29 instructions /
+72 bytes of B1E6D0..B1E717. The first count predicate is **nonzero**, not signed
+positive; this corrects the older provisional naming evidence. It reloads count
+and list, invokes the last command's current D5E5E0/B1D950 execution, then
+reloads current count/list/last pointer for real raw B1DDD0 destruction and
+ordinary free. A final current count is decremented iff nonzero. It preserves
+the stale cell, capacity, queue context and control word; it neither publishes
+nor retains the command context, unlike B1EBE0. Returning actual providers and
+valid native storage remain preconditions; no native fault-domain widening is
+claimed for negative counts or a mutation to an invalid list.
+
+`continue_native_main_scene_excluded_restore_00b16068` supplies the next 29
+instructions / 104 bytes through B160CF. Service+22D independently gates the
+B10500 call with current +1C8 targets. It retains DRSH state2 through that call
+and the render-mode restoration. **B16097 disarms state2 before B160A2 resets
+the current global service label.** A throwing normal reset cannot invoke it
+again. The source then restores saved flags and near plane through separate
+current-camera reads, preserving the native FLD/FSTP32 near conversion. Only
+successful completion sets `reached_post_drsh_stage`; the saved color word and
+later work remain live. Source failure invokes only an already-armed DRSH
+cleanup; it does not replay completed work or restore prior native mutations.
+
+Installed PE and saved/live Ghidra match all 411 bytes in the three bodies,
+camera leaf, profiles and DRSH literal. A manifested Win32 fixture executes
+the original 176/72/104-byte bodies with direct-call bridges to the same real
+source providers. Three original/source pairs cover outer gate off, outer on /
+inner off, and both gates on. Complete camera and node bytes match, including
+near-plane cache invalidation, negative zero, signaling-NaN quieting and a
+subnormal near-plane word. The enabled pair genuinely allocates the command
+and context, acquires two pooled batches, retains actual scene/camera/targets,
+returns all three counts, destroys/frees the context and command, and returns
+both batches under the actual critical-section pool. It checks the unchanged
+queue context/control, stale last cell and capacity, real pooled DRSH reset,
+and native local cleanup-state disarm. An extra pair covers empty B1E6D0.
+
+The enabled fixture uses a natural drawable mask miss and real B1D950
+readiness-false branch; it does not claim active scene traversal, a selected
+material pass or device draws. A separate source-only current target-profile
+rejection after real submission verifies retained visibility1 / flags0 / queued
+command plus one outer state2 reset; explicit genuine B1E6D0 recovery consumes
+that retained command once. That check is not native exception or FH3 proof.
+The continuation fixture seeds the previously established batch-boundary frame;
+it does not rerun the earlier full prefix/batch stages as one native caller.
+All successful descendants are existing concrete physical providers. Warm
+queue/string/batch-pool/lock publications and prepared canonical associations
+are used; cold construction/registration and arbitrary reentrant mutation are
+not revalidated here.
+
+Strict Win32 compilation, the normal build and all three existing checks pass.
+The initial standard build failed on an upstream missing platform-destructor
+registration; the log is preserved, and the subsequent normal build passes
+after main's provider-registration fix. Emitted-code inspection confirms
+current getter/call ordering, fresh last-command rereads, the nonzero predicate
+and disarm-before-reset. All 330 address-tagged x87 encodings match, including
+five newly unchanged instructions; the new borrowed-address FLD for near uses
+its explicit source ABI. No persistent tests or host/CMake admission were added.
+Artifacts are under `local/main_scene_excluded/`; the preceding 54 artifact
+pins were frozen and verified under `local/main_scene_batch_receipt_e12917fa1/`
+before edits or builds. Earlier receipt chains remain hash-verified.
+
 ## Next executed clause
 
-B16068 tests service+22D; its enabled path invokes B10500 at B1607B. B10500
-currently has only the older projected implementation and is the next concrete
-dependency to reconstruct. It must not be silently skipped. The following
-camera render-mode restore, state2 disarm/current-label reset, later scene and
-post-effect/cockpit/distortion/statistics paths also remain required. D5E13C
-continues to be unadmitted pending the complete raw body and application graph.
+B160D0 loads current service+60; B160D8 calls its current virtual +10. Its real
+producer/profile and complete raw body must be established before advancing.
+Following system gathering, saved-color restoration, scene/post/cockpit/
+distortion/statistics work and cleanup states still need their concrete bodies.
+B17240 preparation remains separate. D5E13C continues to be unadmitted pending
+the complete raw body and application graph.
