@@ -6213,6 +6213,11 @@ int GameMissionLuaHost::run_set_air_base_slot_count_008963e0(lua_State* state,
 // class 00964790 over argument 1 (00896BD8), 0095BA60(class+70h, entity+54h) (the party
 // preload, 00896BF5), 00964790 again, then 006CA770(class, argument 2) on the block at
 // 00896C54 (argument index EBX = 2). Returns no value.
+// SUBSTITUTION (labelled, cc9-lua59 after docs/CC13_SEG56.md): the 0095BA60 party preload
+// mark at 00896BF5 is not applied. It sets the class's party byte in the vehicle-class
+// preload bitmap (byte[base + class_index * 3 + party] = 1, include/bsp/vehicle_class.hpp),
+// which the image reads when it preloads class resources; this host loads no class
+// resources from that bitmap, so the mark has nothing to feed. It is recorded per call.
 // SUBSTITUTIONS (labelled): the block is the deck registry's entry for the entity and the
 // class is its id (the deck's stock list holds ids); an entity with no deck is counted
 // unresolved, where the image calls 006CA770 on a null block. 006CA770's replication
@@ -6229,6 +6234,7 @@ int GameMissionLuaHost::run_add_air_base_stock_00896a90(lua_State* state, int ar
             "cc9_lua_add_air_base_stock)", id);
         return 0;
     }
+    log_.unimplemented("VehicleClass::mark_party_preload", "0095ba60");   // 00896BF5
     bsp::AirOpsStockEntry created{};
     const bsp::AirOpsStockAddResult result = bsp::air_base_stock_add_006ca770(
         deck->stock.data(), static_cast<int>(deck->stock.size()),
@@ -7296,8 +7302,9 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
 
 // Packet cc9_forced_recon_level. 008AA8F0 SetForcedReconLevel(entity, level,
 // party): argument 0 through 00888AA0, arguments 1 and 2 as integers (00B66290),
-// then 00805CF0(level) on the entity's record for that party; a squadron (18h) or
-// LandConvoy (1Ah) forces each +3CCh member instead.
+// then 00805CF0(level) on the entity's record for that party (008AAA76); a squadron
+// (18h) or LandConvoy (1Ah) then forces each +3CCh member as well (008AAAB8). The own
+// record is forced only under kForcedReconOwnRecordBound.
 // SUBSTITUTIONS (labelled): the force is published at the next recon pass, not by
 // 00805CF0's immediate notify; a LandConvoy forces its own slot (no member vector);
 // an entity with no units-host slot is counted unresolved.
@@ -7316,6 +7323,8 @@ int GameMissionLuaHost::run_set_forced_recon_level_008aa8f0(lua_State* state,
     }
     const std::size_t index = static_cast<std::size_t>(id - 1);
     std::vector<std::size_t> targets;
+    // 008AAA76: the entity's own record first (kForcedReconOwnRecordBound).
+    if (kForcedReconOwnRecordBound) targets.push_back(index);
     for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
         if (r.squadron_unit == bsp::kPlaneSquadronNoUnit || r.squadron_unit != index) continue;
         for (std::size_t member : r.member_units) {
