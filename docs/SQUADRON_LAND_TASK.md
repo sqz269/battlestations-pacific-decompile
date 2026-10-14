@@ -17216,3 +17216,37 @@ F6F_1/F6F_2 flights survive in ON) while the mission still completes at 2901.71 
 shape 2 equals shape 1 exactly (x x 1, y x 1, z / 1; keep_yz false), so the divergence is the wingman's republished +8Ch
 (1.5-1.7 from the disarmed arm) spreading the station, as predicted. Faithful, mission end unchanged: flipped ON.
 WINS: the flip moves USN21; rows with torpedo squadrons reaching done (JM08, PRCP01, USNOS) need a re-check by the WINS keeper.
+
+## 5hs. The level-bomb prepare: `kLevelBombPrepareTickBound` (cc9-lua61, 2026-10-14)
+
+Packet `cc9_l61_level_prepare` (5ho item 3), committed OFF. Read whole from the disk listing (`local\l61_9b6670.asm`):
+- 009B6600-009B665D (RET; INT3 from 009B665E), the enter: +A0h = 0, +98h = -1 (00D7A260), 009BED80 (shape 1, 007ED260),
+  squadron+3E4h = 3 (009B6625), 007ED260, +8Ch = 1 (00D7A24C), +9Ch = class+188h x 0.9 (double 00D7A390).
+- 009B83D0-009B8414 (RET), the task's vt[24h] order offer: with approach+CEh and free flight, +424h += 1 and, when the
+  state is prepare (task+310h == task+610h), 009B8100.
+- 009B8100-009B8175 (RET; INT3 from 009B8176): +98h = 5 (00CE3850), +9Ch = max(unit vt[38h], 007C47F0) (FCOMIP/JBE: the
+  vt[38h] speed on a tie), approach+A8h = 007C1FB0 x 0.85 (double 00CF0B58).
+- 009B6670-009B6BA0 (RET 4; INT3 from 009B6BA3), the tick. Nothing while +A0h is set.
+  - Drop arm (+98h > 0): approach+C8h = 1; +98h -= dt; at or below 0 it releases. Otherwise plan+2C4h = 0, +2CCh = 1
+    (and +2BCh = 0, +2D0h = 2). With d = |aim - impact| (approach vt[0] minus +D0h/+D8h) and h = |wrap(HeadingAngle(aim
+    - impact) - heading)|: d < 200 (double 00CE4D70): h > 70 deg (00CE3988) releases, else +98h = max(+98h, 1); d >= 200:
+    h > 70 deg releases. The release is +A0h = 1, 007BBBA0, approach+2Ch -= 1. Then plan+2B4h = +9Ch (+2B0h = 0, +2D8h = 1)
+    and plan+2BCh = min(unit+C64h, 0) floored at -0.3 (00D201C0 double / 00D06888), +2D0h = 2.
+  - Wait arm: no leader ([ctl+3D0h] = 0): +8Ch = 1. Otherwise approach+CCh = leader+9C1h+[00F876B8]x8; r = |aim -
+    leader.xz| / approach+B4h; h = |wrap(HeadingAngle(aim - leader) - leader vt[50h])|; r < 0.8 (double 00CE3D40):
+    approach+C8h = 3 and b = IP(0.2 -> 80 deg, 0.8 -> 30 deg; r), else b = IP(0.8 -> 30 deg, 1.4 -> 10 deg; r);
+    c = clamp((1.2 - h / b) x 5, 0, 1); +8Ch = 1 + c x (IP(1.4 -> 1, 0.5 -> 0; r) - 1). Then 009C1FD0 (whose 009BFDA6
+    republishes +8Ch into squadron+3E8h), [approach+1Ch]+40h = 0, and within 300 m (00CE3AE8) of the aim the impact
+    point holds the same pitch and plan+2B4h = min(approach+ACh, unit vt[38h]).
+
+The arithmetic is `bsp::level_bomb_prepare_tick_009b6670` / `_enter_009b6600` / `_arm_009b8100`
+(src/plane_level_bomb_task.cpp). Host wiring (true): the enter also writes shape 3; the 0099AF53 order offer calls the arm
+in prepare; prepare's tick replaces the follow stand-in and passes its +8Ch to `run_follow_tick_009c1fd0` (republished
+under `kTorpedoDoneFormationBound`). Substitutions, labelled: leader+9C1h is taken as the leader approach's +CCh;
+007C1FB0 is the install's `lb_release_delay_1fc`; the gun cone has no host cell. Summary line `levelbomb <name> prepare
+009B6670: wait drop arms_8100 releases last_8c`.
+
+Prediction: no row reaches the level-bomb prepare (pr=0 on every lua60/lua61 log; prepare needs attack mode 0, which
+the leader's 0099B740 lifts to 1 on its first think), so pairs are gameplay identical. Where it is reached, the wingmen
+close their formation (+8Ch down to 0) as the leader nears the aim aligned; an order offer arms a 5 s drop countdown that
+releases on expiry or once the impact point passes the aim.
