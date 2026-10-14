@@ -1,0 +1,181 @@
+{
+  "packet": "cc12_native_tick_registration_process",
+  "base_commit": "88a3bcd1d",
+  "captured_utc": "2026-10-14T18:13:20.438719+00:00",
+  "component": "bsp::game::GameNativeTickRegistrationProcess",
+  "normal_game_attachment": false,
+  "new_native_body_recovery": false,
+  "original_abi_compatible": false,
+  "game_validated": false,
+  "original_image_data_proof": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "original_base_relocation_directory": [
+      0,
+      0
+    ],
+    "pending_image_pointer_words": {
+      "00e0b6d8": "00e0b704",
+      "00e0b708": "00e0b6d0"
+    },
+    "run_pass_initial_byte": 1,
+    "spans": [
+      {
+        "address": "0xe0b6c8",
+        "bytes": 116,
+        "sha256": "35151e0acec2969cfb8c1852a765158172d98cc0317cf1ab77bd2bac130e06c4",
+        "disk_matches_verified_live_bytes": true,
+        "live_receipt": "local/native_tick_registration_pending_live.txt"
+      },
+      {
+        "address": "0xf876c0",
+        "bytes": 520,
+        "sha256": "20aa497d9bd4c19e851e3df6e386700faada213db38acf7679f6365832830b3d",
+        "disk_matches_verified_live_bytes": true,
+        "live_receipt": "local/native_tick_registration_groups_live.txt"
+      }
+    ]
+  },
+  "original_composed_bodies": [
+    "00cd27c0..00cd2858 borrowed initializer",
+    "00875890 raw registration constructor",
+    "0087b699..0087b728 qualified parent-constructed receiver fragment"
+  ],
+  "canonical_cells": "SAME retained GameNativeStringProcess F878CC pending registry and raw01090AA0 manager; no added publication/manager domain",
+  "run_pass_writers": "One mutable byte initial1, same Lists reference. Command-line004E354F zero store and existing Lua008A199D !arg0 must bind to this accessor; writer/root hooks remain unattached.",
+  "validation": {
+    "strict_compile": "MSVC Win32 /std:c++20 /EHsc /O2 /MD /W4 /WX passed for new TU",
+    "standard_build": "./scripts/build.ps1 exit0; Release and both configured existing suites passed at current base; new TU not in held registry yet",
+    "probe_compile": "MSVC Win32 /std:c++20 /EHsc /O2 /MD; new TU + existing bsp_game StringProcess compiled explicitly, same current core200-byte dispatcher; /MANIFEST:EMBED /INCREMENTAL:NO /BASE:0x04000000",
+    "normal_probe": "PASS canonical cells, once refusal before initialization, exact links/initial byte, real getter-created pending registry and registration/splice, once preserves populated links, real frame worker, original raw drain clearing registry/frame/descriptors, graph retirement",
+    "failure_probe": "PASS thrown tick leaves original active/scope/slot state and requires retention; no retry/drain/rollback",
+    "fixture_limits": "Controlled metadata-bootstrap child, two-processor child fixture, raw instrumented receiver/downstream tick and remaining-job fixture bodies. No actual game unit parent or gameplay."
+  },
+  "next_parent_packet": {
+    "addresses": [
+      "00925ce0",
+      "00928630",
+      "0077eed0",
+      "0087b670"
+    ],
+    "contract": "Specialist readiness/closure of complete raw receiver constructor/lifetime chain using canonical observer/string/entity-ID/pending services; actual callable virtuals, world preimage/publication, peer/list/iterator callback pairs and root/exception destruction must be established before composing qualified fragment.",
+    "attachment": "Register TU in bsp_game; explicit group CRT-once at genuine startup, real producer supplies actual raw receiver/node, complete tick+remaining dispatcher, then pass Lists identities to application.bind_actual_fixed_step_groups and attach returned waves. Preserve accepted application metadata/random/deletion lifetime and retention/drain rules."
+  },
+  "source_and_link_pins": [
+    {
+      "path": "include/bsp/game_native_tick_registration_process.hpp",
+      "sha256": "72211f443653e8a4a367737fa3503673be6b0e31415fd625503c99f9d27f3597"
+    },
+    {
+      "path": "src/game_native_tick_registration_process.cpp",
+      "sha256": "60e36ec4804175d428a3ebb0d8b0daffba0d6cfa3916e5107716fb6c877e1c74"
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "sha256": "b8dde55aa8ef2dfe69a7ce14d6ba7752c6feae9c1716ef6962240b3eccadcace"
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "sha256": "ca2c2665dd5da2c3481fa6382520e60010c35919c86102d802e4d03c3eaf0b0a"
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "sha256": "393fb33d7a92121ca79d7b5b21bc09fd0bf36edb25f3041c7568e75ebca8f2c4"
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "sha256": "483bb33a15cfdee4ba1dc5ac28379c1852f465d5f79a7ca303fd0d88bc970b98"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "sha256": "6e9f1e1d861b2a8d6a54dd26bdfe9581e879d2d3713c0495473756504e18d31a"
+    },
+    {
+      "path": "build/win32/Release/bsp_lua511.lib",
+      "sha256": "121d7c22b4f68cfe3d8a0114de8a39f0464334c7f658d284f7a1cc589897d589"
+    },
+    {
+      "path": "build/win32/Release/bsp_zlib121.lib",
+      "sha256": "1a3df7cb4603bcbcc52a2188ffce6dc49c6cfbb7a7198d486dab84c3f5c16173"
+    }
+  ],
+  "immutable_receipts": [
+    {
+      "path": "local/native_tick_registration_process_receipts_20261014/native_tick_registration_process_build.log",
+      "sha256": "040bb0792b6c78bae60c446e6785d7b26431bd2c78e10b63f17adb9f59bf6c7e",
+      "read_only": true
+    },
+    {
+      "path": "local/native_tick_registration_process_receipts_20261014/native_tick_registration_process_strict_compile.log",
+      "sha256": "ac40cc014f9022dbb5f196636e44620bde711b62f06b8dd00e3966c38dd9405e",
+      "read_only": true
+    },
+    {
+      "path": "local/native_tick_registration_process_receipts_20261014/game_native_tick_registration_process_strict.obj",
+      "sha256": "bd7f4b3d3f5aa06961eac392e774b96defb26497bb78bdc7e1b2e50f8a00c96b",
+      "read_only": true
+    },
+    {
+      "path": "local/native_tick_registration_process_receipts_20261014/native_tick_registration_process_probe.log",
+      "sha256": "e868419e7b16f5c67a0730a10156a0a67a1379fbbee8e52ec6b08322fb7cc764",
+      "read_only": true
+    },
+    {
+      "path": "local/native_tick_registration_process_receipts_20261014/native_tick_registration_process_probe.cpp",
+      "sha256": "fa26a7b5445b71f39fab747562256690d5d1457a7f2994afb1431000c11c358f",
+      "read_only": true
+    },
+    {
+      "path": "local/native_tick_registration_process_receipts_20261014/native_tick_registration_process_probe.exe",
+      "sha256": "79be29a9dd069082f48d0326824fde9a9649323fa9d3d81910c0fddf09002de1",
+      "read_only": true
+    },
+    {
+      "path": "local/native_tick_registration_process_receipts_20261014/game_native_tick_registration_process.obj",
+      "sha256": "85ddec6c4ca5758ac303cb2b961089d5176ff0e06c7a8ed023795d8bf5aea3ae",
+      "read_only": true
+    },
+    {
+      "path": "local/native_tick_registration_process_receipts_20261014/compile_native_tick_registration_process_probe.ps1",
+      "sha256": "a6b24a035da20eced29a834874535f0e414b25aff4d4263ce93f192162cd2434",
+      "read_only": true
+    },
+    {
+      "path": "local/native_tick_registration_process_receipts_20261014/verify_native_tick_registration_image.py",
+      "sha256": "432851a3990dd1b3c260cb2e79b1b57fbb7731358edf2c1fd23829a8b107eb0f",
+      "read_only": true
+    },
+    {
+      "path": "local/native_tick_registration_process_receipts_20261014/native_tick_registration_image_proof.json",
+      "sha256": "f1e540ee10bc5b9a375b4a1de698630fcbdd40294cadfe02831c6b83da785568",
+      "read_only": true
+    },
+    {
+      "path": "local/native_tick_registration_process_receipts_20261014/native_tick_registration_groups_live.txt",
+      "sha256": "803599a2e0a19bb1692eed3f0baf510771874b938589520158ddedc3b08d3c52",
+      "read_only": true
+    },
+    {
+      "path": "local/native_tick_registration_process_receipts_20261014/native_tick_registration_pending_live.txt",
+      "sha256": "a8055ab6b5b839546902bf1183c8989db78804a99b314fff35ff1b2ca1479da7",
+      "read_only": true
+    },
+    {
+      "path": "local/native_tick_registration_process_receipts_20261014/native_tick_registration_runpass_write.txt",
+      "sha256": "b486c43db21f23ee44d196964fea9b6c592910b1b65e1bb8a7aece1f227ca317",
+      "read_only": true
+    },
+    {
+      "path": "local/native_tick_registration_process_receipts_20261014/frame_job_application_normal_child.txt",
+      "sha256": "d6d6b69277eb00877c9bf8ea1465d69a52094cbf078883a7bb6ad47814948e37",
+      "read_only": true
+    },
+    {
+      "path": "local/native_tick_registration_process_receipts_20261014/frame_job_application_failure_child.txt",
+      "sha256": "55d4f813ed2518b5709770a956a27816b635156445220aa5c82bc0c1834619f0",
+      "read_only": true
+    }
+  ]
+}
