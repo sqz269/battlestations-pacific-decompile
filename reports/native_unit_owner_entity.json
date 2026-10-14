@@ -1,7 +1,7 @@
 {
-  "packet": "cc12_unit_receiver_recon_records",
-  "utc": "2026-10-14T20:59:52.329862+00:00",
-  "base_revision": "23fbb8a1df1d79c0e3bbad7dbfa6fa5501b2d0d2",
+  "packet": "cc12_unit_receiver_scene_base",
+  "utc": "2026-10-14T21:32:29.466115+00:00",
+  "base_revision": "9228d13fe2594cb12405733fcdd5ec0160770b66",
   "source": "src/native_unit_owner_entity.cpp",
   "header": "include/bsp/native_unit_owner_entity.hpp",
   "documentation": "docs/NATIVE_UNIT_OWNER_ENTITY.md",
@@ -165,6 +165,16 @@
       "coverage": "complete normal raw retirement leaf using admitted concrete observer child",
       "original_abi": "ECX actual34h record; writeD08E74, adjustECX+14, tailJMP4B7EF0; new Source interface not tail-register ABI",
       "contract": "Stamp actual recordD08E74 then invoke accepted raw4B7EF0 on embedded+14 using same NativeObserverLifetime. Actual pair removal, callback array ownership and canonical edge deletion; target+28 and record allocation retained. Private Source stage is diagnostic metadata, not a native owner. No Native exception/array/root lifetime claim."
+    },
+    {
+      "address": "00925ce0",
+      "end_inclusive": "00925ef3",
+      "name": "construct_native_unit_owner_scene_base_00925ce0",
+      "kind": "function",
+      "bytes": 532,
+      "coverage": "complete normal raw scene-base body with five qualified Source unwind owners",
+      "original_abi": "ECX actual root, EAX same root, plainRET; explicit Source domains/global-bit reference and atomic-lifetime precondition are not Native entry/frame ABI",
+      "contract": "Use actual observer prefixes and same-storage weak+24/+28/+2C domain; retain ordered profile/child/mixed-width stores and untouched World/parent/link preimages. Read actualD7A24C twice; two real x87 copies to same+74. Actual+154 raw-pool resize, fresh+158/+154 conditional memcpy arm. Five real Source cleanup owners match native unwind map at throwing calls; Native FH3/SEH/asynchronous fault timing and cleanup-throw behavior remain open. No private pool, semantic root casts, guessed globals or callable profiles. Full GameEntity/receiver composition remains false."
     }
   ],
   "parent_constructor_completed": false,
@@ -176,7 +186,7 @@
   "original_context": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe",
-    "verified_typed_modification": 158977,
+    "verified_typed_modification": 158983,
     "listing_repair_performed": false,
     "destructor_old_truncation_comment_superseded": true,
     "actual_destructor_iterator": "00bf7c6e",
@@ -423,6 +433,61 @@
       "function": "004b7ef0",
       "address": "004b7f33",
       "native": "00695870"
+    },
+    {
+      "function": "00925ce0",
+      "address": "00925d34",
+      "native": "00925490"
+    },
+    {
+      "function": "00925ce0",
+      "address": "00925dca",
+      "native": "004134f0"
+    },
+    {
+      "function": "00925ce0",
+      "address": "00925ea0",
+      "native": "004134f0"
+    },
+    {
+      "function": "00925ce0",
+      "address": "00925ea9",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00925ce0",
+      "address": "00925eba",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00ca6c80",
+      "address": "00ca6c83",
+      "native": "00695760",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00ca6c88",
+      "address": "00ca6c8e",
+      "native": "00695870",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00ca6c93",
+      "address": "00ca6c99",
+      "native": "00925540",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00ca6c9e",
+      "address": "00ca6ca7",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00ca6cac",
+      "address": "00ca6cb5",
+      "native": "0041dd20",
+      "kind": "tail_jump"
     }
   ],
   "failure_ownership": {
@@ -435,11 +500,12 @@
     "unlinked_allocation": "Count failure owns neither fresh allocation in the actual unwind maps. No cleanup is invented.",
     "global_withdrawal": "Actual invalid-parameter Source policy may return or throw; prior removals remain. No transaction/repair/rollback and no guessed Native handler state. Hardware-fault and returning-handler execution not tested.",
     "recon_constructor": "Native state0 map DC1248/DC1240 invokes C90530->4BD350->4B7EF0 on captured record+14. Source guard arms after actual target capture before unregister call and uses the admitted normal child on unwind; this guard and a second cleanup failure were not dynamically tested. Native FH3/fault/throw ABI remains open.",
-    "recon_retirement": "Accepted4B7EF0 supplies normal observer pair/callback-array retirement only; allocation/free of the containing record and vector partial-failure ownership remain with actual caller."
+    "recon_retirement": "Accepted4B7EF0 supplies normal observer pair/callback-array retirement only; allocation/free of the containing record and vector partial-failure ownership remain with actual caller.",
+    "scene_base": "NativeCA6CBA -> DD9EE4/maxstate5 -> DD9F08: unwind second string+15C, first+154, weak+24, callback+10, observed root. Five Source guards use actual children and are armed by corresponding throwing-call boundaries. Compiler movement of host armed bits is not Native asynchronous-fault-state equivalence. Failure execution and cleanup throwing remain untested."
   },
   "validation": {
     "strict_compile": "passed MSVCWin32 /std:c++20 /EHsc /O2 /MD /W4 /WX /fp:strict",
-    "emitted_schedules_reviewed": 17,
+    "emitted_schedules_reviewed": 18,
     "original_comparison": {
       "checks": 20,
       "failures": 0,
@@ -453,20 +519,20 @@
     },
     "baseline_build": {
       "status": "passed",
-      "source_revision": "23fbb8a1df1d79c0e3bbad7dbfa6fa5501b2d0d2",
+      "source_revision": "9228d13fe2594cb12405733fcdd5ec0160770b66",
       "configuration": "MSVC Win32 Release",
       "tests_passed": 3,
       "tests_failed": 0,
-      "log": "local/native_unit_owner_recon_build.log",
+      "log": "local/native_unit_owner_scene_build.log",
       "includes_new_component": true,
-      "note": "Synced local main23fbb8a1d; permanently registered native_unit_owner_entity.cpp compiled in bsp_core; complete Win32 Release build3/3tests passed. No CMake edit."
+      "note": "Pushedmain9228d13fe synced; permanently registered TU compiled in combined Win32Release build;3/3 configured tests passed. No CMake edit."
     },
     "full_receiver_activation": false,
     "live_call_rows": {
-      "checked": 46,
+      "checked": 56,
       "failures": 0,
       "status": "passed",
-      "log": "local/native_unit_owner_recon_report_calls.log"
+      "log": "local/native_unit_owner_scene_report_calls.log"
     },
     "annotation": {
       "names_preserved": true,
@@ -474,11 +540,10 @@
       "write_lock": true,
       "project_saved": true,
       "exports_refreshed": [
-        "00805a70",
-        "00804300"
+        "00925ce0"
       ],
-      "prior_values": "local/ghidra-annotations-20261014T210022Z.json",
-      "log": "local/native_unit_owner_recon_annotations.log"
+      "prior_values": "local/ghidra-annotations-20261014T213256Z.json",
+      "log": "local/native_unit_owner_scene_annotations.log"
     },
     "private_shared_count_schedule_reviewed": true,
     "host_eh_state_marker_caveat": "MSVC/EHsc may move host states across nonthrowing memory instructions; exception-call ownership reviewed, Native fault/frame equivalence false.",
@@ -497,7 +562,7 @@
       "last_relinked_result": "local/native_unit_owner_withdraw_peer_result.txt",
       "last_relinked_object": "local/native_unit_owner_withdraw.obj"
     },
-    "schedule_review": "local/native_unit_owner_recon_schedule_review.txt",
+    "schedule_review": "local/native_unit_owner_scene_schedule_review.txt",
     "withdrawal_comparison": {
       "checks": 20,
       "failures": 0,
@@ -558,14 +623,27 @@
         ],
         "prior_values": "local/ghidra-annotations-20261014T202559Z.json",
         "log": "local/native_unit_owner_withdraw_annotations.log"
+      },
+      {
+        "names_preserved": true,
+        "previous_comments_preserved": true,
+        "write_lock": true,
+        "project_saved": true,
+        "exports_refreshed": [
+          "00805a70",
+          "00804300"
+        ],
+        "prior_values": "local/ghidra-annotations-20261014T210022Z.json",
+        "log": "local/native_unit_owner_recon_annotations.log"
       }
     ],
     "private_recon_unwind_schedule_reviewed": true,
     "previous_schedule_reviews": [
       "local/native_unit_owner_peer_schedule_review.txt",
-      "local/native_unit_owner_withdraw_schedule_review.txt"
+      "local/native_unit_owner_withdraw_schedule_review.txt",
+      "local/native_unit_owner_recon_schedule_review.txt"
     ],
-    "prior_fixture_scope": "Earlier prefix20/peer37/withdrawal20 results are frozen9847 receipts; unchanged fixtures were not rerun for this two-entry additive packet.",
+    "prior_fixture_scope": "Prior prefix20/peer37/withdrawal20/recon20 comparisons are retained in immutable088808eda receipts and were not rerun for this additive entry. Current scene30 uses current object and freshly built combined dependencies.",
     "recon_comparison": {
       "checks": 20,
       "failures": 0,
@@ -579,6 +657,25 @@
       "actual_receiver_constructed": false,
       "fault_behavior_tested": false,
       "scope_limit": "Synthetic raw storage and real Source dependencies; no game process, Native caller/handler ABI or whole root admission."
+    },
+    "private_scene_unwind_schedule_reviewed": true,
+    "scene_comparison": {
+      "status": "passed",
+      "checks": 30,
+      "failures": 0,
+      "result": "local/native_unit_owner_scene_probe_result.txt",
+      "probe_source": "local/native_unit_owner_scene_probe.cpp",
+      "probe_executable": "local/native_unit_owner_scene_probe.exe",
+      "scope": "Copied Original full532B925CE0 connected to copied103B x87 matrix. Weak construction and raw resize bind to admitted actual Source domains. Actual raw manager/weak pool/allocator-list/recursive-lock storage and raw string context. Full170h preimage/return identity, World+parent+link preservation, real weak handle target/profile/count, balanced locks and retained external weak-reference lifetime. One1.0 and masked signaling-NaN stress pattern compare bytes/x87 status.",
+      "pointer_normalization": "Only allocated weak-handle pointerDWORD+2C normalized; actual handle target+24/count/profile independently checked.",
+      "weak_native_body_copied_executed": false,
+      "source_constructor_unwind_executed": false,
+      "nonnull_memcpy_arm_executed": false,
+      "native_exception_frames_tested": false,
+      "unmasked_x87_faults_tested": false,
+      "actual_receiver_constructed": false,
+      "fault_behavior_tested": false,
+      "scope_limit": "Synthetic root storage with explicit actual domain owners, not a game process, callable profile, Native caller/handler ABI, full SceneNode destruction or whole unit receiver."
     }
   },
   "original_image_proof": {
@@ -633,28 +730,28 @@
   },
   "held_dependencies": {
     "addresses": [
-      "00925ce0",
       "00928630"
     ],
-    "lease_state_at_audit": "unleased",
+    "lease_state_at_audit": "claimed with925CE0, untouched and released/queued at packet close",
     "queue": "cc12_unit_receiver_base_dependencies",
-    "action": "Not modified; semantic interfaces do not establish raw base construction. Observer6E0860 remains separately held/queued."
+    "action": "Deferred full GameEntity registry/vslot/pending frontier; no semantic-type cast. Observer6E0860 remains separately held/queued."
   },
   "remaining_gates": [
-    "Actual containing factory/allocation preimage, full-flag raw GameEntity/SceneNode base, and concrete three-record BF7CD1/BF7C6E array iteration and failure ownership. Raw805A70/804300 normal primitives now supplied; Native callback/array ABI remains open.",
+    "Actual factory/allocation preimage and atomic-lifetime establishment, full-flag rawGameEntity928630, and real three-recordBF7CD1/BF7C6E array iteration/failure ownership. Qualified rawSceneNode925CE0 and805A70/804300 primitives supplied; Native callback/array/root ABI remains open.",
     "Canonical actual observer/weak/string/entity-ID/pending domains and World/hierarchy publication.",
     "Concrete conditional peer effects, destructor profile prefix and actual global-list withdrawal schedule supplied; actual E188A8/network/dirty/F87194 bindings and Native scratch frame preimage remain required. Session message/routing ownership and held6E0860 observer destruction remain outside Source stages.",
     "Recon-array and GameEntity/SceneNode callableWorld/effect teardown; Native root scalar flags/free/exception ownership.",
     "Embedded310 tick unlink, actual current subnode scalar dispatch, genuine derived factory/current tick/remaining job dispatch.",
     "Numeric profiles are not Source-callable tables; Seg60Host uint16 requestedID remains interface limitation, not confirmed gameplay divergence.",
     "Original peer/count throw RTTI and complete Native exception/frame ABI; Source host transport and inspected unwind ownership do not close these gates.",
-    "Constructor nonnull target arm and Source guard were statically preserved but not dynamically exercised; accepted4B7EF0 child remains normal-only on failure, with Native FH3 cleanup still unqualified."
+    "Constructor nonnull target arm and Source guard were statically preserved but not dynamically exercised; accepted4B7EF0 child remains normal-only on failure, with Native FH3 cleanup still unqualified.",
+    "Scene-base Source guards are statically matched to the five Native unwind owners, but failure execution, cleanup throwing, non-null memcpy-arm/fault policy and unmasked x87 exceptions remain unqualified. Successful construction does not establish World ownership for normal925780 destruction."
   ],
   "artifacts": [
     {
       "path": "build/win32/Release/bsp_core.lib",
-      "bytes": 91525576,
-      "sha256": "10db9759960fdf65fb2a305f4358f62cddeca96adc05f374ae0c4a8789e9510b"
+      "bytes": 91535140,
+      "sha256": "a290b1c12902b276565ff7906aa448b45cc7b3d67ba205c0520cf804137045ed"
     },
     {
       "path": "build/win32/Release/bsp_lua511.lib",
@@ -668,13 +765,18 @@
     },
     {
       "path": "build/win32/bsp_core.dir/Release/native_unit_owner_entity.obj",
-      "bytes": 13222,
-      "sha256": "c0c720121f54187826122519e6c7ff4047324d7cdc34158d79063689c41c872f"
+      "bytes": 19627,
+      "sha256": "ed2167792a66893ae5282ee80d1bec94742c252affc0f25b918c3625c46dcbbe"
     },
     {
       "path": "docs/NATIVE_UNIT_OWNER_ENTITY.md",
-      "bytes": 20781,
-      "sha256": "e1a7d9bdf9ba9dcb06b7d42d263bb1dc5ab2c424e9a5ff2e7a7dd9f21deb2f50"
+      "bytes": 24322,
+      "sha256": "3f087acc8e8e5a6bb659d8a31f49fbedce90421e92eb83f20ca366a25a643b1f"
+    },
+    {
+      "path": "include/bsp/native_camera_matrix_copy.hpp",
+      "bytes": 606,
+      "sha256": "70e741350edb66be14fc9d1b981181fe5ecf8c536f33eab47221469d8d3f1a7a"
     },
     {
       "path": "include/bsp/native_game_array_lifetime.hpp",
@@ -687,9 +789,19 @@
       "sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613"
     },
     {
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+    },
+    {
       "path": "include/bsp/native_unit_owner_entity.hpp",
-      "bytes": 9885,
-      "sha256": "82de4009a2ae0ce838a9501b155f08fbc2d8975c2d5824019f467ff1dc81b1f9"
+      "bytes": 10876,
+      "sha256": "91cdda7119581090c2df98c0b2a0a8350e6befa4a4c4e3f6d11dd8a110d161ad"
+    },
+    {
+      "path": "include/bsp/native_weak_owner.hpp",
+      "bytes": 4547,
+      "sha256": "c9eaa00aa67d55132789209bed9ee037e879c710f3b5eeca9c081f181d8355b4"
     },
     {
       "path": "include/bsp/observer_edges.hpp",
@@ -722,6 +834,11 @@
       "sha256": "3b678555378a494d0b577d8db2bc5928a680e4ffbcf8245ef0d975ec80b485e9"
     },
     {
+      "path": "local/build_native_unit_owner_scene_probe.cmd",
+      "bytes": 643,
+      "sha256": "661df6c2df76469df0183377e1367820dc18e0fe39499fbaa20be53e64a2ca27"
+    },
+    {
       "path": "local/build_native_unit_owner_withdraw_peer_prefix_probe.cmd",
       "bytes": 561,
       "sha256": "9999150412069d3b278b207146c1ccfe84fce9154b01e6713abf0c8b3c248339"
@@ -752,6 +869,11 @@
       "sha256": "71f4ddfd5b4525c2c45aaff256f959c758179423854ce7e9d0c3f2c389e02ad9"
     },
     {
+      "path": "local/compile_native_unit_owner_scene.cmd",
+      "bytes": 304,
+      "sha256": "0d0171ddf7bd306bcab5d74981eca4820f2df82582dc4cb691148fae85267911"
+    },
+    {
       "path": "local/compile_native_unit_owner_withdraw.cmd",
       "bytes": 308,
       "sha256": "eda61c7859376b67d2a87585b03238597229b2e90fffaac441e92366ed8c5d2d"
@@ -770,6 +892,11 @@
       "path": "local/extract_native_unit_owner_recon_probe.py",
       "bytes": 2014,
       "sha256": "facfc48bf750795d743aa917111ea49608c4f4c8945779c1978845eb1ef629b4"
+    },
+    {
+      "path": "local/extract_native_unit_owner_scene_probe.py",
+      "bytes": 2111,
+      "sha256": "1591b4448898f042adf572cd099298ff0fda28fa68f7c6912bf55a44f7b7334c"
     },
     {
       "path": "local/extract_native_unit_owner_withdraw_probe.py",
@@ -795,6 +922,31 @@
       "path": "local/ghidra-annotations-20261014T210022Z.json",
       "bytes": 4014,
       "sha256": "61702793d326132dd7b4f24c7b29e5640e23ed574437c13d7f1bfec067d6fee4"
+    },
+    {
+      "path": "local/ghidra-annotations-20261014T213256Z.json",
+      "bytes": 3616,
+      "sha256": "7a41b83cf487dcb5d524ac985fb7cdc2f4e103a72d476c02559596f1cd080c4c"
+    },
+    {
+      "path": "local/native_unit_owner_088808eda_receipts/docs/NATIVE_UNIT_OWNER_ENTITY.md",
+      "bytes": 20781,
+      "sha256": "e1a7d9bdf9ba9dcb06b7d42d263bb1dc5ab2c424e9a5ff2e7a7dd9f21deb2f50"
+    },
+    {
+      "path": "local/native_unit_owner_088808eda_receipts/include/bsp/native_unit_owner_entity.hpp",
+      "bytes": 9885,
+      "sha256": "82de4009a2ae0ce838a9501b155f08fbc2d8975c2d5824019f467ff1dc81b1f9"
+    },
+    {
+      "path": "local/native_unit_owner_088808eda_receipts/reports/native_unit_owner_entity.json",
+      "bytes": 65837,
+      "sha256": "2f25354bd2ff9e84ae06ce26fb0bb8055c081dbe5a35ac905ea02ea53b8809f8"
+    },
+    {
+      "path": "local/native_unit_owner_088808eda_receipts/src/native_unit_owner_entity.cpp",
+      "bytes": 14794,
+      "sha256": "24cf53181d2e24239fcd989d123396ab0ad31fef7ab024ab6e78b8bc70042759"
     },
     {
       "path": "local/native_unit_owner_9847f44ac_receipts/docs/NATIVE_UNIT_OWNER_ENTITY.md",
@@ -1192,6 +1344,121 @@
       "sha256": "9c109f748bbd78992247e36301226f32c7489b8b5103caf2112e624d796a1b21"
     },
     {
+      "path": "local/native_unit_owner_scene.asm",
+      "bytes": 132846,
+      "sha256": "46a4660ce6ee6c15ef024be719cc9601e67a68c5ee85db3839c063a586e05e58"
+    },
+    {
+      "path": "local/native_unit_owner_scene.obj",
+      "bytes": 22282,
+      "sha256": "b5d3ba602019f1f3ecdec895e7af723a46200d7fe50365428a1e5c3e4cbd2a57"
+    },
+    {
+      "path": "local/native_unit_owner_scene_4134f0_live.txt",
+      "bytes": 507,
+      "sha256": "2f6c74d8d9f3407be3a4182d967c07626c8ea2de8365d936cbc786769421eed9"
+    },
+    {
+      "path": "local/native_unit_owner_scene_925490_live.txt",
+      "bytes": 835,
+      "sha256": "edb962e602827e0a1757694e1bbf941f9dd3988e9d2e419e7a70a0da9f10bd4a"
+    },
+    {
+      "path": "local/native_unit_owner_scene_925ce0_live.txt",
+      "bytes": 2570,
+      "sha256": "aaa1452c3005abb64cbcc03eaf77007c8335abdf471ad6ea85f930d8842f3a19"
+    },
+    {
+      "path": "local/native_unit_owner_scene_annotations.log",
+      "bytes": 204,
+      "sha256": "d296436e11e360d5c0aa32f7333c91d24f4d1c4419da36d2f20cc2d7cd2b0276"
+    },
+    {
+      "path": "local/native_unit_owner_scene_build.log",
+      "bytes": 3493,
+      "sha256": "c217565adcfc084dbfcbae1d15fe0a8eb52079f6b24e3303cd404d0f959ac98f"
+    },
+    {
+      "path": "local/native_unit_owner_scene_compile.txt",
+      "bytes": 30,
+      "sha256": "f4dcf35e101ad2d55027ac7e3257bad5dd1fd830c8f2912b04b451a587a96f00"
+    },
+    {
+      "path": "local/native_unit_owner_scene_constructor_schedule.txt",
+      "bytes": 22341,
+      "sha256": "dd201d307da9459ba324c5edf952c1ac0c80abdc948eab9f2b4973c894d6ae46"
+    },
+    {
+      "path": "local/native_unit_owner_scene_dependencies_typed_flow.json",
+      "bytes": 37654,
+      "sha256": "b7007e51911840fff092a645a18c963d74d618c573a48993b2d5a2f1c1b38e66"
+    },
+    {
+      "path": "local/native_unit_owner_scene_eh_live.txt",
+      "bytes": 706,
+      "sha256": "79cf4d9b8d7c53423c5059c9eaf43f94bf6e6536960360c012ce7c590a80d79c"
+    },
+    {
+      "path": "local/native_unit_owner_scene_exports.log",
+      "bytes": 104,
+      "sha256": "888a569114179edef12e51cda8343e112048efb938e22422c1b9c48248f498d7"
+    },
+    {
+      "path": "local/native_unit_owner_scene_image_proof.json",
+      "bytes": 2920,
+      "sha256": "3ea409f8d5fc8aca3d3b729ea102f833c7234069fbd1194a41e350f13abbe76b"
+    },
+    {
+      "path": "local/native_unit_owner_scene_ledger.json",
+      "bytes": 1493,
+      "sha256": "046f51e555bfe8463ee32cb1336d7924d663f67894902b39c9a29b20e0bbc444"
+    },
+    {
+      "path": "local/native_unit_owner_scene_original.hpp",
+      "bytes": 4300,
+      "sha256": "740356a4efa4bb0ad2818f3ea3b27557e4c63c56ec6466d3a98a81c4f4f82d03"
+    },
+    {
+      "path": "local/native_unit_owner_scene_probe.cpp",
+      "bytes": 7352,
+      "sha256": "8953c415affbebcd8cf7280bb3c89b9c2bbb2a1eb6b8020dc981ce3ce575dd54"
+    },
+    {
+      "path": "local/native_unit_owner_scene_probe.exe",
+      "bytes": 427520,
+      "sha256": "317fcb0b3ed7ff3d11ca96e726238cd5e8cd0a94725f2dbc43f7471ed26ecc81"
+    },
+    {
+      "path": "local/native_unit_owner_scene_probe.obj",
+      "bytes": 48092,
+      "sha256": "fae94ffe26d2c5a9a054f1022ea16f0bacf75db12459aeb8933cd8090193b416"
+    },
+    {
+      "path": "local/native_unit_owner_scene_probe_build.txt",
+      "bytes": 35,
+      "sha256": "47ac9361d433f73364c9d6ccff3f30c5a57881b76497b457313ac6eba4b0ca19"
+    },
+    {
+      "path": "local/native_unit_owner_scene_probe_result.txt",
+      "bytes": 28,
+      "sha256": "cebb940fee105b72791ad648aedebeeb9fee9d830abbb987c647ed8ae46511ef"
+    },
+    {
+      "path": "local/native_unit_owner_scene_report_calls.log",
+      "bytes": 71,
+      "sha256": "7fd06dd1c603bf869dad534ae0753e146d4154ed3c370d5b64d2c1eab31375aa"
+    },
+    {
+      "path": "local/native_unit_owner_scene_schedule_review.txt",
+      "bytes": 2169,
+      "sha256": "97b0fd7860abc8559d2d0f6baebba281deaf412962500f79b17fe7a3ea71c42b"
+    },
+    {
+      "path": "local/native_unit_owner_scene_typed_flow.json",
+      "bytes": 20379,
+      "sha256": "6c18c1c504681dc199a1456a77e2439d8e1a364394418926d801275a82429353"
+    },
+    {
       "path": "local/native_unit_owner_seed_build.log",
       "bytes": 4590,
       "sha256": "d50a0a3b6c1b9d7cec7e80c3999a9d9d4cb96afc1f6919369effaa9769ff619b"
@@ -1347,9 +1614,29 @@
       "sha256": "8733459502c953541c6465cb3f3efb4766977ec623ecbbf18a65166367661a99"
     },
     {
+      "path": "reports/native_camera_matrix_copy_audit.json",
+      "bytes": 12090,
+      "sha256": "63595e7877fcf424c15e0ba3b134de2a198b1847aa803bf684a43dd9b759cd01"
+    },
+    {
       "path": "reports/native_game_array_lifetime_r122.json",
       "bytes": 152657,
       "sha256": "5d58cc3a983e9da90c8b2ffb1e824e0ed7f4c5a53f30e8481034cf51ea098178"
+    },
+    {
+      "path": "reports/native_string_raw_pool_context.json",
+      "bytes": 10442,
+      "sha256": "849983082b940d53e3a204dde23e1b8d3bbdaf14416f0ad2f6cd6e3be1f1f113"
+    },
+    {
+      "path": "reports/native_weak_owner.json",
+      "bytes": 15495,
+      "sha256": "50d8e8767cbde88be57643460414fd676df39854d33c27520e02932fc5a53cd4"
+    },
+    {
+      "path": "src/native_camera_matrix_copy.cpp",
+      "bytes": 1626,
+      "sha256": "31840777adef31ac0717e7bc4cb148ecd9aa45be8e5d2d52eb79f3c8a00a708d"
     },
     {
       "path": "src/native_game_array_lifetime.cpp",
@@ -1362,14 +1649,24 @@
       "sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b"
     },
     {
+      "path": "src/native_string.cpp",
+      "bytes": 9121,
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+    },
+    {
       "path": "src/native_unit_owner_entity.cpp",
-      "bytes": 14794,
-      "sha256": "24cf53181d2e24239fcd989d123396ab0ad31fef7ab024ab6e78b8bc70042759"
+      "bytes": 20057,
+      "sha256": "9986cbe37d964c14d3ec43c3d6f66403ed2c0208c49e66ce3c6de52efe373db2"
     },
     {
       "path": "src/native_unit_owner_list_heads.cpp",
       "bytes": 611,
       "sha256": "60e793177a87edf08c8803541529e7dad97b4c85f3ca210045a5bec7b2db1f67"
+    },
+    {
+      "path": "src/native_weak_owner.cpp",
+      "bytes": 16030,
+      "sha256": "632fc52513516017d92295d682ec5236bb0422162bca64d5848936cb6667ae27"
     },
     {
       "path": "src/observer_edges.cpp",
@@ -1387,7 +1684,7 @@
       "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
     }
   ],
-  "previous_packet_receipt": "local/native_unit_owner_9847f44ac_receipts/reports/native_unit_owner_entity.json",
+  "previous_packet_receipt": "local/native_unit_owner_088808eda_receipts/reports/native_unit_owner_entity.json",
   "peer_original_image_proof": {
     "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
     "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
@@ -1618,5 +1915,111 @@
     "acceptance_report": "reports/native_game_array_lifetime_r122.json",
     "current_hash_matches_accepted": true,
     "coverage": "complete normal body only, actual observer lifetime reused; no copied semantic classes or callback-only replacement"
-  }
+  },
+  "scene_original_image_proof": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00925ce0",
+        "length": 532,
+        "sha256": "be6e1f1a7377f229ecfa8acad8861d06144e46c26d524f4ae7fce3dee1547795",
+        "live_equals_disk": true
+      },
+      {
+        "address": "004134f0",
+        "length": 103,
+        "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00925490",
+        "length": 173,
+        "sha256": "9ea17813e7d0d771258a553efffc4c88933e3db5ec389639e2546cebfa399d43",
+        "live_equals_disk": true
+      }
+    ],
+    "eh_records": [
+      {
+        "address": "00ca6cba",
+        "length": 10,
+        "hex": "b8e49edd00e97ffef4ff",
+        "sha256": "c046480d3cffd4d96b4b62a1255271bf694ca344a9aec259639b5d3e91de954c",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00dd9ee4",
+        "length": 36,
+        "hex": "2205931905000000089fdd00000000000000000000000000000000000000000001000000",
+        "sha256": "d5faff00d698e5f3986064d22620b8860a05458b73872d075bded46b374e3004",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00dd9f08",
+        "length": 40,
+        "hex": "ffffffff806cca0000000000886cca0001000000936cca00020000009e6cca0003000000ac6cca00",
+        "sha256": "07a7f841d161f800f165e62f160c3e20173a14363f3abe1d0716adab1c3ffb7d",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00ca6c80",
+        "length": 8,
+        "hex": "8b4db0e9d8ea9eff",
+        "sha256": "e9788998b49a365919b4d1afbf5ea72cbeaf02e1c6e6c34175f2f3ec993bc6be",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00ca6c88",
+        "length": 11,
+        "hex": "8b4db083c110e9ddeb9eff",
+        "sha256": "36c121a20874453e5056c86fcebfd075561a46778ac404f52e6d6f0c2ffcf22f",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00ca6c93",
+        "length": 11,
+        "hex": "8b4db083c124e9a2e8c7ff",
+        "sha256": "c6b6170eb7a364292e13a3e0191bc17a784d233ac1e693b6cf308d2326a03008",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00ca6c9e",
+        "length": 14,
+        "hex": "8b4db081c154010000e9747077ff",
+        "sha256": "bc0061e1ba1881582017fd1fca028b7bce58905ae2978aa7552c1d530af2bf24",
+        "live_equals_disk": true
+      },
+      {
+        "address": "00ca6cac",
+        "length": 14,
+        "hex": "8b4db081c15c010000e9667077ff",
+        "sha256": "5ac608c635752a08866750091eca908d7d2ed88cbf7436e5ef7a33a10d923c38",
+        "live_equals_disk": true
+      }
+    ],
+    "fixture_scope": "Full copied normal scene-base532B and matrix103B; weak construction and raw resize bind to admitted concrete Source domains. Native FH3 not executed. Weak173B independently byte-audited but not copied-executed."
+  },
+  "scene_admitted_dependencies": [
+    {
+      "source": "src/native_weak_owner.cpp",
+      "header": "include/bsp/native_weak_owner.hpp",
+      "prior_report": "reports/native_weak_owner.json",
+      "current_source_lf_sha256": "632fc52513516017d92295d682ec5236bb0422162bca64d5848936cb6667ae27",
+      "qualification": "Current concrete Source body inspected and used; prior report is lineage, not an assertion that every prior artifact hash remains current."
+    },
+    {
+      "source": "src/native_camera_matrix_copy.cpp",
+      "header": "include/bsp/native_camera_matrix_copy.hpp",
+      "prior_report": "reports/native_camera_matrix_copy_audit.json",
+      "current_source_lf_sha256": "31840777adef31ac0717e7bc4cb148ecd9aa45be8e5d2d52eb79f3c8a00a708d",
+      "qualification": "Current concrete Source body inspected and used; prior report is lineage, not an assertion that every prior artifact hash remains current."
+    },
+    {
+      "source": "src/native_string.cpp",
+      "header": "include/bsp/native_string.hpp",
+      "prior_report": "reports/native_string_raw_pool_context.json",
+      "current_source_lf_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "qualification": "Current concrete Source body inspected and used; prior report is lineage, not an assertion that every prior artifact hash remains current."
+    }
+  ]
 }
