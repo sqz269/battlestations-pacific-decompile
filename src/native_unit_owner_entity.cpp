@@ -1,8 +1,10 @@
 #include "bsp/native_unit_owner_entity.hpp"
 
 #include "bsp/native_alias_count_growth.hpp"
+#include "bsp/native_game_array_lifetime.hpp"
 #include "bsp/native_invalid_parameter_noinfo_call.hpp"
 #include "bsp/native_unit_owner_list_heads.hpp"
+#include "bsp/observer_lifetime.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
 #include <cstddef>
@@ -27,6 +29,20 @@ void* wrapped_at(void* object, std::uint32_t offset) noexcept {
 struct CompletedCountMessage {
     NativeLegacySboStringStorage& value;
     ~CompletedCountMessage() noexcept { native_legacy_sbo_string_destroy_004072d0(value); }
+};
+
+struct ReconConstructorUnwind {
+    void* record;
+    NativeObserverLifetime& observers;
+    bool armed = true;
+    ~ReconConstructorUnwind() noexcept(false) {
+        if (armed) {
+            NativeGameArrayLifetimeStage stage;
+            stage.owner = record;
+            destroy_native_game_participant_observer_004b7ef0(
+                bytes_at(record, 0x14), observers, stage);
+        }
+    }
 };
 
 void grow_owner_count(void* actual_list, std::uint32_t increment, std::uint32_t bound) {
@@ -289,6 +305,41 @@ void withdraw_native_unit_owner_global_0077e409(
     void* actual_global_list_00f87194) {
     volatile std::uint32_t target = reinterpret_cast<std::uintptr_t>(actual_root_after_session_release);
     remove_native_unit_owner_global_matches_0077bea0(actual_global_list_00f87194, target);
+}
+
+void* construct_native_unit_owner_recon_record_00805a70(
+    void* actual_record, NativeObserverLifetime& actual_observers) {
+    void* const callback = bytes_at(actual_record, 0x14);
+    at<std::uint32_t>(actual_record, 0) = 0x00d08e74u;
+    at<void*>(callback, 4) = nullptr;
+    at<std::uint32_t>(callback, 8) = 0;
+    at<std::uint32_t>(callback, 0x0c) = 0;
+    at<void*>(callback, 0x14) = nullptr;
+    at<std::uint8_t>(callback, 0x10) = 1;
+    at<std::uint32_t>(callback, 0) = 0x00ce75ccu;
+    at<std::uint32_t>(actual_record, 4) = 0;
+    at<std::uint32_t>(actual_record, 8) = 0;
+    at<std::uint32_t>(actual_record, 0x0c) = 0;
+    at<std::uint8_t>(actual_record, 0x10) = 0;
+    void* const first = at<void*>(callback, 0x14);
+    ReconConstructorUnwind unwind{actual_record, actual_observers};
+    if (first != nullptr) {
+        actual_observers.unregister_pair_006952a0(
+            *static_cast<NativeObserverOwnerStorage*>(first),
+            *static_cast<NativeObserverOwnerStorage*>(callback));
+        at<void*>(callback, 0x14) = nullptr;
+    }
+    unwind.armed = false;
+    return actual_record;
+}
+
+void destroy_native_unit_owner_recon_record_00804300(
+    void* actual_record, NativeObserverLifetime& actual_observers) {
+    at<std::uint32_t>(actual_record, 0) = 0x00d08e74u;
+    NativeGameArrayLifetimeStage stage;
+    stage.owner = actual_record;
+    destroy_native_game_participant_observer_004b7ef0(
+        bytes_at(actual_record, 0x14), actual_observers, stage);
 }
 
 } // namespace bsp

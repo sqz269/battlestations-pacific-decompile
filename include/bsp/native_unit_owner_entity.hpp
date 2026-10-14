@@ -8,6 +8,8 @@
 
 namespace bsp {
 
+class NativeObserverLifetime;
+
 // Qualified normal continuation 0077EF27..0077EFA3 of 0077EED0.
 // Requires the genuine containing allocation, its original factory preimage,
 // successful 00928630(root, 1, unchanged full flag), and all three actual 34h
@@ -134,5 +136,26 @@ void remove_native_unit_owner_global_matches_0077bea0(
 void withdraw_native_unit_owner_global_0077e409(
     void* actual_root_after_session_release,
     void* actual_global_list_00f87194);
+
+// Complete normal 00805A70..00805AE9 record-constructor business effects.
+// Requires the actual aligned34h record allocation/preimage and the existing
+// observer lifetime domain. Preserve holes11..13/25..27 and owner/index2C/30.
+// Initialize embedded callback storage at+14 with the Original mixed widths;
+// then re-read+28 and, if non-null, call real6952A0 before clearing that field.
+// Return the same actual record address. Source unwind calls the accepted
+// raw4B7EF0 child on record+14, matching C90530->4BD350 ownership; neither that
+// normal child nor this host guard supplies Original FH3/fault/frame ABI.
+// No array iterator, base/root construction, callable profile or activation.
+void* construct_native_unit_owner_recon_record_00805a70(
+    void* actual_record, NativeObserverLifetime& actual_observers);
+
+// Complete normal 00804300..0080430D retirement leaf: stamp D08E74 at the
+// actual record, then invoke accepted raw4B7EF0 at record+14 using the same
+// observer domain. Its concrete pair removal/callback destruction owns the
+// embedded observer arrays; it does not clear record+28 or free the record.
+// Source diagnostic stage is private metadata, not a second native owner.
+// No reconstruction of the enclosing vector/FH3 unwind or register tail ABI.
+void destroy_native_unit_owner_recon_record_00804300(
+    void* actual_record, NativeObserverLifetime& actual_observers);
 
 } // namespace bsp
