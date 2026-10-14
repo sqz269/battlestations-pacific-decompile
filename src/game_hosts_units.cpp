@@ -731,6 +731,9 @@ struct GameUnitSlot {
     int lb_break_offs{0};
     int lb_rack_issues{0};
     int lb_rack_fired{0};
+    int lb_issue_tail_calls{0};      // 007C0ED9 tail runs (kLevelBomberIssueTailBound)
+    int lb_issue_tail_raised{0};     // members 007EEF30 gave orders to
+    int lb_issue_tail_gate_refused{0};  // 007EEF50 gate (ctl+390h > ctl+374h) refused
     int lb_rack_drops{0};
     int lb_rack_gate_refused{0};
     float lb_first_release_at{-1.0f};
@@ -6130,6 +6133,16 @@ struct GameUnitsHost::Impl {
     // (007ED260 runs inside the placement seam, as for the dive bomber), so the
     // wingmen fly 007F23A0's shape-3 station. False: the shape stays as seeded.
     static constexpr bool kDropKamikazeFormationShapeBound = false;
+    // Packet cc9_l60_level_issue_tail (cc13-confirm D). 007C0D90's rack walk ends
+    // at 007C0ED3 and falls to 007C0ED9 for the level bomber too: when the walk
+    // armed a rack (the byte 007C0E23 raises) the tail sets unit+C25h = 1
+    // (007C0EE2) and, unless the last rack's descriptor answers 33h (007C0EF0),
+    // calls 007EEF30 on the squadron (007C0EFA-007C0F01), which hands each other
+    // member 999 release orders (unit+C58h). True: the level-bomber branch runs
+    // that tail through the torpedo path's binding. False: it returns after the
+    // walk, as before. The per-rack 31h 007BCCF0 -> 006E3F90 point
+    // (007C0E98-007C0EC9) is not modelled; no rack here answers 31h.
+    static constexpr bool kLevelBomberIssueTailBound = false;
     // Packet cc9-gunnery38 (docs/CC13_AUDIT13_RECENT_FLIPS.md O1). The strafe
     // cruise profile 009CD020, run once per activation (the install and each
     // time the strafe task resurfaces after a tightturn or flikflak retires),
@@ -19107,7 +19120,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                                    GameUnitSlot& slot)
                             : owner_(owner), slot_(slot) {}
 
+                        // The level-bomber branch has walked its racks already:
+                        // the tail asks only whether that walk armed one.
+                        void force_walk_result(bool armed) { walk_forced_ = armed ? 1 : 0; }
                         bool unit_carries_droppable_device_007c0d90() override {
+                            if (walk_forced_ >= 0) return walk_forced_ != 0;
                             // 007C0DB8-007C0E61: a device of class 25h holding
                             // ordnance 2Ah whose descriptor answers 2Ch, 2Bh or
                             // 33h. 2Bh is Torpedo and its descriptor answers 2Ah
@@ -19379,6 +19396,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         GameUnitsHost::Impl& owner_;
                         GameUnitSlot& slot_;
+                        int walk_forced_{-1};
                     };
 
                     // ------------------------------------------------
@@ -27902,6 +27920,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // Correction (packet cc9_release_issue_stage): +498h is
                         // cleared by the rack tick at 006E58E1 once the ammo is
                         // spent, so busy means "dropping", not "has fired".
+                        if constexpr (GameUnitsHost::Impl::kLevelBomberIssueTailBound) {
+                            // 007CEB00 walks every device: a level bomber's racks
+                            // keep their own dropBombs (lb_rack_dropping, 006E58E1),
+                            // so the C25h the tail raised clears only after them.
+                            for (const char d : unit_.lb_rack_dropping) {
+                                if (d != 0) return true;
+                            }
+                        }
                         return unit_.rack_dropping;
                     }
 
@@ -28217,7 +28243,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     void run_release_order_issue_007c0d90() {
                         if constexpr (bsp::kPlaneLevelBombTaskBound) {
                             if (lb_level_bomber_racks()) {
+                                const int fired_before = unit_.lb_rack_fired;
                                 run_level_bomber_issue_007c0e67();
+                                if constexpr (GameUnitsHost::Impl::kLevelBomberIssueTailBound) {
+                                    // 007C0ED9: the byte 007C0E23 raised for an armed rack.
+                                    if (unit_.lb_rack_fired > fired_before) {
+                                        TorpedoReleaseOrderBinding binding(owner_, unit_);
+                                        binding.force_walk_result(true);
+                                        const bsp::ReleaseOrderIssueResult r =
+                                            bsp::torpedo_issue_release_orders_007c0d90(binding);
+                                        ++unit_.lb_issue_tail_calls;
+                                        unit_.lb_issue_tail_raised += r.units_raised;
+                                        if (!r.gate_passed) ++unit_.lb_issue_tail_gate_refused;
+                                    }
+                                }
                                 return;
                             }
                         }
@@ -37604,6 +37643,13 @@ void GameUnitsHost::report() {
                     static_cast<double>(u.lb_first_drop_at),
                     static_cast<double>(u.lb_min_impact_miss),
                     bsp::level_bomb_state_name(u.level_bomb_state));
+                if (u.lb_issue_tail_calls > 0) {
+                    host.log.notef("  levelbomb %-16s issue tail 007C0ED9: calls=%d raised=%d "
+                        "gate_refused=%d c25=%d c58=%d", u.row.name.c_str(),
+                        u.lb_issue_tail_calls, u.lb_issue_tail_raised,
+                        u.lb_issue_tail_gate_refused, u.torpedo_release_pending_c25 ? 1 : 0,
+                        u.torpedo_release_orders_c58);
+                }
             }
         }
     }

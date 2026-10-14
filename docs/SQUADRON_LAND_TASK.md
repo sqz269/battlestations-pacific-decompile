@@ -16941,3 +16941,22 @@ other than 1 before this packet.
 009BEDDA) and the prepare/done enter 009AD180 writes 3 (009AD1A5) through the new
 `DropKamikazeTaskHost::set_squadron_formation_shape_007ed260`; `summary mission drop kamikaze formation shape writes`.
 Prediction on USNOS: shape-3 writes appear for the Betty squadrons in prepare/done, and gameplay is identical (M = 1.0).
+
+## 5hj. cc13-confirm D: 007C0D90's level-bomber tail (cc9-lua60, 2026-10-14)
+
+The rack walk loops at 007C0ED3 (`JNE 007C0DB6`) and falls to 007C0ED9 for every caller, the level bomber included:
+`CMP byte [ESP+13h],0` (the byte 007C0E23 raises when a rack is armed through vtable[1F0h]) -> 007C0EE2 unit+C25h = 1 ->
+unless the last rack's descriptor answers 33h (007C0EF0) -> 007C0EFA-007C0F01 `007EEF30(ctl = unit+9D4h, unit)`. So the
+host's comment that the level branch "never sets unit+C25h and never calls 007EEF30" (and CC13_VER_6 finding 5's caveat)
+is wrong. `kLevelBomberIssueTailBound` (committed OFF) runs the tail through the torpedo path's
+`TorpedoReleaseOrderBinding` (with the walk's answer forced to "armed") after `run_level_bomber_issue_007c0e67`, and
+lets the stage cleanup's device walk 007CEB00 see the level racks' own dropBombs (`lb_rack_dropping`), so C25h clears
+only after the last rack stops (006E58E1) and the stage timer passes -1.2 (`docs/PLANE_DEVICE_WALK.md`). Per slot:
+`levelbomb <name> issue tail 007C0ED9: calls raised gate_refused c25 c58`. Not modelled: the per-rack 31h point
+007BCCF0 -> 006E3F90 (007C0E98-007C0EC9; no rack here answers 31h).
+
+Prediction (JM08 `j8s`, USNOS `osd`): each issuing level bomber keeps C25h set while its racks drop, so its release
+state holds the timer at kReleaseHold (009B5AD2/009B5AE1) for the drop plus the cleanup, and leaves release later
+(goaway later, positions move). 007EEF30 gives the other members 999 orders when ctl+390h > ctl+374h; the host has no
+level-bomb reader of unit+C58h yet (0099AF53 -> 009B83D0 and the +424h passthrough 009B8BD0 are the next packet), so the
+wingmen's own flow is unchanged. No RNG.
