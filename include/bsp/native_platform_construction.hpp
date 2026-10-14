@@ -76,6 +76,31 @@ void* delete_native_win32_platform_00bece30(
     void* actual_owner, std::uint32_t flags,
     NativePlatformConstructionContext& context);
 
+// BEC7B0[53]: three stack arguments next/previous/pointer-to-two-event-bytes,
+// EAX allocated0Ch node, RET0Ch; ECX/EDX have no input contract. Preserve all
+// three pointer tests, DWORD offset wrapping and the WORD load/store at+8.
+// Padding+0A/+0B is untouched. The only rebound call uses canonical Source CRT.
+void* __stdcall create_native_text_queue_node_00bec7b0(
+    void* next, void* previous, const void* actual_event_bytes);
+
+// BED290[147]: ECX actual0Ch header, increment stack slot, RET4; normal EAX
+// is updated count. EDX is unconsumed input. Capture count+8 once; unsigned
+// (7FFFFFFF-count)<increment throws before update, otherwise add modulo32.
+// Reuse the actual legacy SBO/28h length-error payload and its completed
+// temporary cleanup, transported as NativeAliasListLengthError by current C++
+// EH. Its RTTI/catch type is new, not Original D83F98/FH3 exception ABI.
+std::uint32_t __fastcall increase_native_text_queue_count_00bed290(
+    void* actual_queue, void* unused_edx, std::uint32_t increment);
+
+// BED370[50]: ECX platform's actual+174h queue header, event-pointer stack
+// slot, RET4; EDX is unconsumed input. Capture sentinel before allocation,
+// allocate from its then-current previous link, increase count, write the
+// captured sentinel's previous, then reread created-node.previous to link.
+// No local EH or unlinked-node cleanup: a count failure retains that allocation.
+// Instruction sequence is exact except the two Source callee relocations.
+void __fastcall append_native_text_queue_00bed370(
+    void* actual_queue, void* unused_edx, const void* actual_event_bytes);
+
 // Context parameters are new source interfaces, not original register/SEH ABI.
 // Numeric profiles preserve identity and are not callable host vtables. C++
 // cleanup follows reviewed FH3 states; a second escaping cleanup exception

@@ -1,4 +1,5 @@
 #include "bsp/native_platform_construction.hpp"
+#include "bsp/native_alias_count_growth.hpp"
 #include "bsp/native_diagnostic_sink_lifetime.hpp"
 #include "bsp/native_render_service_base.hpp"
 #include "bsp/native_singleton_publication.hpp"
@@ -23,6 +24,15 @@ volatile Word& word(void* owner, Word offset = 0) noexcept {
 volatile unsigned char& byte(void* owner, Word offset) noexcept {
     return *reinterpret_cast<volatile unsigned char*>(reinterpret_cast<Word>(owner) + offset);
 }
+__declspec(noinline) void* __cdecl allocate_text_queue_node_bytes(Word size) {
+    return singleton_lifetime_allocate({SingletonAllocationKind::object, size, size});
+}
+struct CompletedTextQueueMessage {
+    NativeLegacySboStringStorage& storage;
+    ~CompletedTextQueueMessage() noexcept {
+        native_legacy_sbo_string_destroy_004072d0(storage);
+    }
+};
 struct NativeGuard { Word profile; CRITICAL_SECTION* section; };
 static_assert(sizeof(void*) == 4 && sizeof(NativeGuard) == 8);
 static_assert(offsetof(NativeGuard, section) == 4 && sizeof(CRITICAL_SECTION) == 0x18);
@@ -258,5 +268,81 @@ void* delete_native_win32_platform_00bece30(
     destroy_native_win32_platform_00beca00(actual_owner, context);
     if ((flags & 1u) != 0) singleton_lifetime_free(actual_owner);
     return actual_owner;
+}
+
+__declspec(naked) void* __stdcall create_native_text_queue_node_00bec7b0(
+    void*, void*, const void*) {
+    __asm {
+        push 0ch
+        call allocate_text_queue_node_bytes
+        add esp, 4
+        test eax, eax
+        jz previous_field
+        mov ecx, dword ptr [esp + 4]
+        mov dword ptr [eax], ecx
+    previous_field:
+        lea ecx, [eax + 4]
+        test ecx, ecx
+        jz payload_field
+        mov edx, dword ptr [esp + 8]
+        mov dword ptr [ecx], edx
+    payload_field:
+        lea ecx, [eax + 8]
+        test ecx, ecx
+        jz done
+        mov edx, dword ptr [esp + 0ch]
+        mov dx, word ptr [edx]
+        mov word ptr [ecx], dx
+    done:
+        ret 0ch
+    }
+}
+
+std::uint32_t __fastcall increase_native_text_queue_count_00bed290(
+    void* actual_queue, void*, std::uint32_t increment) {
+    const Word captured = word(actual_queue, 8);
+    if (Word{0x7fffffffu} - captured < increment) {
+        NativeLegacySboStringStorage message;
+        message.capacity_18 = 15;
+        message.length_14 = 0;
+        message.buffer_04.inline_bytes[0] = '\0';
+        native_legacy_sbo_string_assign_counted_00408720(
+            message, "list<T> too long", 16);
+        // CC74A0 destroys the completed message only after state0 is armed.
+        const CompletedTextQueueMessage completed{message};
+        throw NativeAliasListLengthError{message};
+    }
+    const Word updated = captured + increment;
+    word(actual_queue, 8) = updated;
+    return updated;
+}
+
+__declspec(naked) void __fastcall append_native_text_queue_00bed370(
+    void*, void*, const void*) {
+    __asm {
+        mov eax, dword ptr [esp + 4]
+        push ebx
+        push esi
+        push edi
+        mov esi, ecx
+        mov edi, dword ptr [esi + 4]
+        mov ecx, dword ptr [edi + 4]
+        push eax
+        push ecx
+        push edi
+        mov ecx, esi
+        call create_native_text_queue_node_00bec7b0
+        push 1
+        mov ecx, esi
+        mov ebx, eax
+        call increase_native_text_queue_count_00bed290
+        mov dword ptr [edi + 4], ebx
+        mov edx, dword ptr [ebx + 4]
+        pop edi
+        pop esi
+        mov dword ptr [edx], ebx
+        pop ebx
+        ret 4
+    }
 }
 } // namespace bsp
