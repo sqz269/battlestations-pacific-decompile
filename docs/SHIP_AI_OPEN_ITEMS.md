@@ -17684,3 +17684,19 @@ fire->approach (009EA9C0, range > torpedo + 400) leaves ~45 m later, the fire ba
 009E9EB0) and the lead time move the same way. Subs fire and close ~40-50 m later in distance terms, i.e. they
 enter firing earlier on the approach. Non-sub ships are untouched (the task runs only for submarines). Expect the
 JM06 player subs' first torpedo spreads to move by a few seconds and the whole death table after them to move.
+
+## 243. Sub attack own half length pair; `kSubAttackOwnHalfLengthBound` ON (cc9-ships49, 2026-10-14)
+
+JM06 `jm06_s47_j6_n1`, 120000 frames, reference env, `--stop-after-end 40`. OFF: this tree's build of eeb52a94d
+(exe F5BBB7F80E82); ON: `pair_export --commit eeb52a94d --flip kSubAttackOwnHalfLengthBound=true` (`local\s49_son`,
+exe DEF43A411CCE). Logs `local\s49_soff_j6.log` / `local\s49_son_j6.log` with manifests; `pair_diff` MOVED.
+| sub | OFF to-fire | ON to-fire | OFF min range | ON min range |
+| --- | --- | --- | --- | --- |
+| PlayerSub 03 | 140.35 s (range 1060.4) | 137.35 s (1056.7) | 519.8 | 483.4 |
+| PlayerSub 02 | 149.85 s (1060.2) | 145.85 s (1063.6) | 532.9 | 482.5 |
+Both boats select sub_attack at 81.10 s on both sides; the approach->fire switch comes 3-4 s earlier and the
+reported range runs ~40-50 m lower, as predicted. Downstream everything moves: deaths 13 -> 10, ship shots
+6791 -> 194 (PlayerSub 01's deck gun barely fires ON), Hospital Ship falls to PlayerSub 03 at 184.86 s instead of
+PlayerSub 01 at 896.15 s, USTroopTransport 03 to PlayerSub 02 at 191.96 s; US Cargo Transport 01, US Tanker 03 and
+USTroopTransport 04 survive ON. Neither side reaches a mission end (n1 was already lost on main). **Mechanism matches:
+ON.** JM06 is re-planned on top of it (lead item 2).

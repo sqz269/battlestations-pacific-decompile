@@ -69,8 +69,8 @@ float ship_ai_sub_attack_range_009e4a60(ShipAiSubAttackHost& host) {
     // The PUSH 6 at 009E4B20 lowers ESP by 4 first, so the FSTP [ESP+0Ch] at
     // 009E4B26 lands in the distance slot the reads at 009E4B30/4B4C/4B6B use
     // (IsKindOf, vtable+5Ch, is __thiscall and pops its argument). With
-    // kSubAttackOwnHalfLengthBound off the host keeps the plain distance, the
-    // old misreading of the slot as unread.
+    // kSubAttackOwnHalfLengthBound off (it is ON) the host keeps the plain
+    // distance, the old misreading of the slot as unread.
     float result = distance;
     if (kSubAttackOwnHalfLengthBound) {
         result = f(static_cast<double>(distance)
