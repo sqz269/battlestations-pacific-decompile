@@ -1837,6 +1837,7 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_gam
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/near_field_probe.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/network_online_cc13.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/part_damage_reachability.cpp)
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/path_movcam_seg46_argon.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/pilot_command_path.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/plane_follow_hold.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/plane_follow_law.cpp)
@@ -1858,3 +1859,5 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_gam
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/unit_message_arms.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/unit_neighbour_fields.cpp)
 cmake_language(DEFER CALL include "${CMAKE_SOURCE_DIR}/cmake/native_data_placement.cmake")
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/flak_note_seg36_37_argon.cpp)
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/dummy_depth_seg34_argon.cpp)
