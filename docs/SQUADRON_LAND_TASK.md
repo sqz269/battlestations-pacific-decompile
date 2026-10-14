@@ -17045,3 +17045,20 @@ host does (USN21 f: stage_raises 43 -> 2152). The pairs of 5he.4 (PRCP01 and USN
 mechanism matches for AI squadrons, so the switch is flipped ON. Not modelled: the player-led arm (0084E0B3-0084E149,
 leader within [00CFE050] of the target raises 1, and 0084E48A keeps it there); no harness row has a player-led squadron.
 No routed edit to game_hosts_commands.cpp is needed.
+
+## 5hn. Measured: `kTorpedoDoneDisarmedArmBound` and `kDropKamikazeFormationShapeBound` **ON** (cc9-lua60, 2026-10-14)
+
+Pairs: OFF `local\l60_e0_*` (ed6757e2e); ON B `local\l60_t1_*` (2eeb1b5ae, B flipped), ON C `local\l60_k1_*` (5b46833ba, C
+flipped). The OFF commit precedes both, and everything between is committed OFF, so the pairs compare the switch alone.
+
+| row | switch | evidence | pair_diff |
+|---|---|---|---|
+| USN21 `u21f` (s46_u21_f, completed 1310.15 s both, exec guard refused sus_prog.exe) | B | five done Kates run 009D29E0 every done tick (15-43 ticks), all close (min ratio 0.73-0.84), +8Ch 1.54-1.68 | 1, gameplay identical |
+| USN04 `u04` 9000 | B | no Kate reaches done | 1, identical |
+| USNOS `osx` (s43_os_x; failed 1515.35 s both) | C | no drop-kamikaze orders on this base (ordered_planes=0) | 1, gameplay identical |
+
+B: the arm runs where predicted and caps the bank on the close arm; done lasts under 2 s on USN21, so nothing moves. Its
++8Ch (1.5-1.7 at the drop) is what 009BFDA6 republishes into squadron+3E8h, the station scale of 007F23A0; the host has no
+writer of `morale_3e8` and keeps shape 1 for the torpedo done state (009D254E writes shape 2), so that spacing is not
+applied yet (next: the torpedo done/prepare enter's shape 2 plus the 009BFDA6 republish). C: not reached on this base; a
+faithful correction with an identical prediction at morale 1.0 (5hi). Both flipped ON.

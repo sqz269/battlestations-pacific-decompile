@@ -6129,14 +6129,14 @@ struct GameUnitsHost::Impl {
     // (substitution); approach+A4h = 3 and [approach+1Ch]+40h = 0 have no host
     // cell; state+8Ch (republished to squadron+3E8h by 009BFDA6) is kept on the
     // slot for the log only, no host reader. False: the arm is skipped, as before.
-    static constexpr bool kTorpedoDoneDisarmedArmBound = false;
+    static constexpr bool kTorpedoDoneDisarmedArmBound = true;   // ON: SQUADRON_LAND_TASK 5hn
     // Packet cc9_l60_formation_shapes (cc13-confirm C): the drop-kamikaze
     // prepare/done enter 009AD180 writes squadron+3E4h = 3 (009AD1A5) and
     // re-runs 007ED260 after its follow enter 009BED80, which writes 1
     // (009BEDDA). True: both writes reach the registry's formation_shape_3e4
     // (007ED260 runs inside the placement seam, as for the dive bomber), so the
     // wingmen fly 007F23A0's shape-3 station. False: the shape stays as seeded.
-    static constexpr bool kDropKamikazeFormationShapeBound = false;
+    static constexpr bool kDropKamikazeFormationShapeBound = true;   // ON: SQUADRON_LAND_TASK 5hn
     // Packet cc9_l60_level_issue_tail (cc13-confirm D). 007C0D90's rack walk ends
     // at 007C0ED3 and falls to 007C0ED9 for the level bomber too: when the walk
     // armed a rack (the byte 007C0E23 raises) the tail sets unit+C25h = 1
