@@ -14237,3 +14237,39 @@ PRCP01 `l55_p01_c` was already lost on OFF at `dd4f7d6cd`.
 - `g42_arty.py` prints the arcade Artillery rows (V0, Range, FlyTime, v', +5Ch).
 - The win-set argument lines for the current rows are `g42_q4.jobs` (tags `w0`/`w1`). Same-tree OFF at
   `dd4f7d6cd` is `local\g40_bm0` (logs `g42_x0_<row>`).
+
+## 235. The D3 artillery Range is the right field (lead queue item 1; cc9-gunnery43, 2026-10-14)
+
+The question was whether the `Range` the host feeds `kArtilleryClassSpeedBound` (the s > 1 refusal, `v' =
+sqrt(9.81 * Range)`, the lead and the arc) is the same class field `006E98BC` reads. **It is.** No code change.
+
+**Image, from disk bytes** (`bsp.py disasm-raw`, `ghidra bytes`):
+- `006E8770` (the reader, slot `+18h` of `00CFA440`) pushes the key at `00CFA1A8` (`"Range\0"`; `00CFA1B0` is
+  `"V0"`), defaults it with `FLDZ` (`006E950F`), calls `00B66330` and stores `FSTP dword [ESI+68h]` at `006E9524`.
+  `V0` goes the same way to `FSTP dword [ESI+50h]` at `006E94EB`. Both are float32.
+- `00CFA440 + 10h` = `006E9890` (bytes `90 98 6E 00`), so the artillery descriptor's finalise is the base hook.
+  `006E98BC MOVSS XMM0,[EDI+68h]` reads the same `+68h`, multiplies by the double at `00CF9058` (9.81f), takes
+  `00BF7030` sqrt, stores `+60h = Range`, then `DE FA` (`FDIVP ST2,ST0`) gives `+5Ch = V0 / s` and `+50h = s`.
+- Every consumer reads `+50h` of the descriptor `[[gun+3F8h]+34h]`: the pre-estimate `006DF876` and its
+  divisor `006DF8E4`/`006DF8EF` (`+50h`, `+5Ch`), the accept `006DEF84` (`EBP = [[EDI+3F8h]+34h]`), the arc
+  `006DFAB3`, and the launch `006E8594` (`[projectile+174h]+50h`). The pre-estimate forms
+  `s = D * 9.81 / [+50h]^2` (`006DF881..006DF895`, `FMULP ST2` squares the speed), which is `D / Range`.
+  `gun+3F8h` is `[desc+74h] + mode * 48h` (CC13_VER_16); mode 0 is the gun's own `Bullet`, which is what the
+  host's `gun.bullet_class` holds. The DP air round (mode 1) keeps its own V0 in the host (`dp_air_ammo`).
+
+**Host.** `src/game_hosts_gunnery.cpp:4903` reads `Bullets[gun.bullet_class].Range` (float, fallback 0.0f, the
+`FLDZ` default) through `read_bullet_class_number` (`src/game_hosts_lua.cpp:7899`), and
+`weapon_class_derive_engagement_range` (`src/bullet_engagement_range.cpp`) does the 006E98BC arithmetic with
+the same double rounding. `kGravity` is `00CF9058`. Offset `+68h`, width float32, key `"Range"`: the same field.
+
+**This installation.** `scripts/datatables/autoload/bulletclasses.lua` picks the table on `GameMode`, and
+`gamemode.lua` (mtime 2024-07-13) sets `GameMode = 0`, so `Bullets = ArcadeTable` from
+`classtables/arcade/bulletclasses.lua` (mtime 2026-05-09, locally modified). `ArcadeTable[25]` "14/45
+battleship gun bullet" has `Range = 3000`, `V0 = 300`: `v' = 171.6 m/s`, `+5Ch = 1.75`. Arcade
+`deviceclasses.lua` rows 25 and 26 (and 375) fire `Bullet = 25`. The realistic table's row 25 has `Range = 35450`,
+`V0 = 775`, but this installation never loads it. So in the image too, the US 14-in battery refuses targets
+beyond 3000 m slant. USN12's loss and USN15's knife-edge are faithful consequences of this installation's
+arcade rows, not a host misread; they go to the keeper as re-plans.
+
+**Uncertainty.** The `GameMode` read assumes the image runs the same autoload chunk the host does (the host
+runs this installation's Lua); the 3000 m value was not checked against a live image run.
