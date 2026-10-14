@@ -1,0 +1,3548 @@
+{
+  "packet": "argon-seg55",
+  "segment": 55,
+  "range": [
+    "0x00878530",
+    "0x0088b3d0"
+  ],
+  "function_count": 68,
+  "verified_call_site_count": 455,
+  "source_file": "src/landscape_lua_seg55_argon.cpp",
+  "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+  "doc_file": "docs/ARGON_SEG55_LANDSCAPE_LUA.md",
+  "status": "reconstructed_build_tested",
+  "x87_dc_sites": [],
+  "x87_dc_audit_note": "tools/x87_dc_form_scan.py --range 00878530-0088b3d0 reports 12 dc f9 (FDIV ST1, ST0) sites, all inside already-reconstructed 0087D7B0 BSP_GlobalConfig_LoadFromLuaGlobals; 0 DC-form sites lie in the 68 functions of packet argon-seg55.",
+  "functions": [
+    {
+      "address": "0x00878530",
+      "original_name": "STL_Tree_Inc_00878530",
+      "symbol": "bsp::landscape_lua_seg55_argon::stl_tree_inc_00878530",
+      "abi": "__thiscall(ECX = iterator*), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Advances damageable frame-tree iterator via 008772B0 and returns iterator in EAX.",
+      "steps": [
+        {
+          "address": "0x00878533",
+          "function": "0x00878530",
+          "native": "0x008772b0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00878610",
+      "original_name": "STL_Tree_InitHead_00878610",
+      "symbol": "bsp::landscape_lua_seg55_argon::stl_tree_init_head_00878610",
+      "abi": "__thiscall(ECX = tree*), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Allocates sentinel head node via 00877FA0, sets +55h = 1 (is_nil), self-links parent/left/right, zeroes size (+08h).",
+      "steps": [
+        {
+          "address": "0x00878613",
+          "function": "0x00878610",
+          "native": "0x00877fa0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008786c0",
+      "original_name": "STL_UnitPartPointerVector_CopyBackward",
+      "symbol": "bsp::landscape_lua_seg55_argon::stl_unit_part_pointer_vector_copy_backward_008786c0",
+      "abi": "__cdecl(first, last, dest_end), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Copies dwords backward from [first, last) into [dest_begin, dest_end) and returns dest_end - ((last - first) >> 2) * 4.",
+      "steps": []
+    },
+    {
+      "address": "0x00878990",
+      "original_name": "BSP_UnitTickableEntity_OnKilled",
+      "symbol": "bsp::landscape_lua_seg55_argon::unit_tickable_entity_on_killed_00878990",
+      "abi": "__thiscall(ECX = ent), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Vtable 00D0DF70 slot +7Ch: hides scene nodes via 008781F0(0) and tail-jumps 0077D270 BSP_UnitInstance_OnKilledLua.",
+      "steps": [
+        {
+          "address": "0x00878995",
+          "function": "0x00878990",
+          "native": "0x008781f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087899d",
+          "function": "0x00878990",
+          "native": "0x0077d270",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "address": "0x00878a90",
+      "original_name": "STL_Tree_Construct_00878A90",
+      "symbol": "bsp::landscape_lua_seg55_argon::stl_tree_construct_00878a90",
+      "abi": "__thiscall(ECX = tree*, comp, alloc), RET 8",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Allocates sentinel head node via 00877FA0, initializes self-links and size = 0, and returns this.",
+      "steps": [
+        {
+          "address": "0x00878a93",
+          "function": "0x00878a90",
+          "native": "0x00877fa0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00878bb0",
+      "original_name": "STL_UnitPartPointerVector_FillConstructCount",
+      "symbol": "bsp::landscape_lua_seg55_argon::stl_unit_part_pointer_vector_fill_construct_count_00878bb0",
+      "abi": "__thiscall(ECX = vec, dest, count, val_slot), RET 0Ch",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Forwards ECX = dest, EDX = count to 00878190 and returns dest + count * 4.",
+      "steps": [
+        {
+          "address": "0x00878bd4",
+          "function": "0x00878bb0",
+          "native": "0x00878190",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00878bf0",
+      "original_name": "STL_Copy16_00878BF0",
+      "symbol": "bsp::landscape_lua_seg55_argon::stl_copy16_00878bf0",
+      "abi": "__cdecl(first, last, dest), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Forwards 16-byte fake-effect rows to 00878820 and returns dest + ((last - first) >> 4) * 16.",
+      "steps": [
+        {
+          "address": "0x00878c1e",
+          "function": "0x00878bf0",
+          "native": "0x00878820",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00878d10",
+      "original_name": "STL_CopyBackward16_00878D10",
+      "symbol": "bsp::landscape_lua_seg55_argon::stl_copy_backward16_00878d10",
+      "abi": "__cdecl(first, last, dest_end), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Forwards 16-byte fake-effect rows backward to 008788D0 and returns dest_end - ((last - first) >> 4) * 16.",
+      "steps": [
+        {
+          "address": "0x00878d3e",
+          "function": "0x00878d10",
+          "native": "0x008788d0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00878e10",
+      "original_name": "STL_Construct_DamageableSection_00878E10",
+      "symbol": "bsp::landscape_lua_seg55_argon::stl_construct_damageable_section_00878e10",
+      "abi": "__fastcall(ECX = place, EDX = src), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Placement copy-constructs DamageableSection via 00878B40 when place != nullptr (SEH 00C96571).",
+      "steps": [
+        {
+          "address": "0x00878e3c",
+          "function": "0x00878e10",
+          "native": "0x00878b40",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00878eb0",
+      "original_name": "BSP_DamageableSection_ConstructDefault",
+      "symbol": "bsp::landscape_lua_seg55_argon::damageable_section_construct_default_00878eb0",
+      "abi": "__fastcall(ECX = section), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Stores vtable 00D0DF04, zeroes +24h, calls _memset(this, 0, 0x30), and sets +28h = +2Ch = 10.0f ([00CE38B8]).",
+      "steps": [
+        {
+          "address": "0x00878ec5",
+          "function": "0x00878eb0",
+          "native": "0x00bf79f0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00878f80",
+      "original_name": "BSP_UnitTickableEntity_ReleaseSceneNodes",
+      "symbol": "bsp::landscape_lua_seg55_argon::unit_tickable_entity_release_scene_nodes_00878f80",
+      "abi": "__fastcall(ECX = ent), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Deletes each scene node in +380h..+384h via vslot +04h(1), erases vector (_memmove_s), and recurses on +48h/+44h children where vslot +5Ch(4) != 0.",
+      "steps": [
+        {
+          "address": "0x00878fbc",
+          "function": "0x00878f80",
+          "native": "0x00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00878fef",
+          "function": "0x00878f80",
+          "native": "0x00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00879002",
+          "function": "0x00878f80",
+          "native": "0x00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00879029",
+          "function": "0x00878f80",
+          "native": "0x00bf67a7",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00879051",
+          "function": "0x00878f80",
+          "native": "0x00878f80",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008793c0",
+      "original_name": "STL_UnitPartPointerVector_CopyConstructWrapper",
+      "symbol": "bsp::landscape_lua_seg55_argon::stl_unit_part_pointer_vector_copy_construct_wrapper_008793c0",
+      "abi": "__thiscall(ECX = vec, first, last, dest), RET 0Ch",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Forwards ECX = first, EDX = last, dest to 008776B0.",
+      "steps": [
+        {
+          "address": "0x008793dc",
+          "function": "0x008793c0",
+          "native": "0x008776b0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008793f0",
+      "original_name": "STL_CopyBackward16_008793F0",
+      "symbol": "bsp::landscape_lua_seg55_argon::stl_copy_backward16_008793f0",
+      "abi": "__cdecl(first, last, dest_end), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "COMDAT duplicate of 00878D10 over 008788D0.",
+      "steps": [
+        {
+          "address": "0x0087941e",
+          "function": "0x008793f0",
+          "native": "0x008788d0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00879470",
+      "original_name": "STL_Construct_DamageableSection_00879470",
+      "symbol": "bsp::landscape_lua_seg55_argon::stl_construct_damageable_section_00879470",
+      "abi": "__stdcall(place, src), RET 8",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Stack-argument twin of 00878E10 over 00878B40 (SEH 00C965B1).",
+      "steps": [
+        {
+          "address": "0x008794a2",
+          "function": "0x00879470",
+          "native": "0x00878b40",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008794c0",
+      "original_name": "TMPL_RefPtr_ReleaseAt0C_008794C0",
+      "symbol": "bsp::landscape_lua_seg55_argon::tmpl_ref_ptr_release_at_0c_008794c0",
+      "abi": "__fastcall(ECX = owner), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Decrements refcount (+04h) of [ECX+0Ch], invokes vslot 0 at zero, and zeroes [ECX+0Ch].",
+      "steps": []
+    },
+    {
+      "address": "0x008797b0",
+      "original_name": "BSP_UnitInstance_ReleaseDamageStateInstance",
+      "symbol": "bsp::landscape_lua_seg55_argon::unit_instance_release_damage_state_instance_008797b0",
+      "abi": "__thiscall(ECX = unit), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Compares vslot +18h() against [00E188DC] (-> 004BCA80), calls 00878F80, deletes [unit+360h] via vslot +04h(1), and tail-jumps 009277F0.",
+      "steps": [
+        {
+          "address": "0x008797d5",
+          "function": "0x008797b0",
+          "native": "0x004bca80",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008797dc",
+          "function": "0x008797b0",
+          "native": "0x00878f80",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00879801",
+          "function": "0x008797b0",
+          "native": "0x009277f0",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "address": "0x0087a410",
+      "original_name": "BSP_UnitTickableEntity_Destruct",
+      "symbol": "bsp::landscape_lua_seg55_argon::unit_tickable_entity_destruct_0087a410",
+      "abi": "__thiscall(ECX = ent), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Rewrites 6 vptrs (00D0DF70..00D0DF28), frees +380h and +348h buffers, calls 00875490(ent+310h), and calls 0077E380.",
+      "steps": [
+        {
+          "address": "0x0087a474",
+          "function": "0x0087a410",
+          "native": "0x00bf65ac",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087a499",
+          "function": "0x0087a410",
+          "native": "0x00bf65ac",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087a4b5",
+          "function": "0x0087a410",
+          "native": "0x00875490",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087a4c4",
+          "function": "0x0087a410",
+          "native": "0x0077e380",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0087af40",
+      "original_name": "STL_UnitPartPointerVector_InsertCopies",
+      "symbol": "bsp::landscape_lua_seg55_argon::stl_unit_part_pointer_vector_insert_copies_0087af40",
+      "abi": "__thiscall(ECX = vec, iter_proxy, where_ptr, count, val_ptr), RET 10h",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Captures *val_ptr, checks 0x3FFFFFFF bound (0087A7E0), reallocates 1.5x via 00876A80 or shifts/fills in place via 008793C0 / 00878BB0 / 008786C0 / 008780F0.",
+      "steps": [
+        {
+          "address": "0x0087afa4",
+          "function": "0x0087af40",
+          "native": "0x0087a7e0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087b005",
+          "function": "0x0087af40",
+          "native": "0x00876a80",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087b02a",
+          "function": "0x0087af40",
+          "native": "0x008776b0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087b03a",
+          "function": "0x0087af40",
+          "native": "0x00878bb0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087b052",
+          "function": "0x0087af40",
+          "native": "0x008776b0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087b074",
+          "function": "0x0087af40",
+          "native": "0x00bf65ac",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087b0d8",
+          "function": "0x0087af40",
+          "native": "0x008793c0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087b0fb",
+          "function": "0x0087af40",
+          "native": "0x00878bb0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087b111",
+          "function": "0x0087af40",
+          "native": "0x008780f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087b142",
+          "function": "0x0087af40",
+          "native": "0x008793c0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087b150",
+          "function": "0x0087af40",
+          "native": "0x008786c0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087b160",
+          "function": "0x0087af40",
+          "native": "0x008780f0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0087b670",
+      "original_name": "BSP_UnitTickableEntity_Construct",
+      "symbol": "bsp::landscape_lua_seg55_argon::unit_tickable_entity_construct_0087b670",
+      "abi": "__thiscall(ECX = ent, int flag), RET 4",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Calls 0077EED0(flag) and 00875890(ent+310h, ent, 0), installs 6 vptrs, zeroes +348h/+380h vectors, sets +35Ch = -1, +364h = 99.9f, +374h = 0x3F, +C4h = 4.",
+      "steps": [
+        {
+          "address": "0x0087b694",
+          "function": "0x0087b670",
+          "native": "0x0077eed0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087b6a9",
+          "function": "0x0087b670",
+          "native": "0x00875890",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0087b8b0",
+      "original_name": "STL_Vector_Tidy_0087B8B0",
+      "symbol": "bsp::landscape_lua_seg55_argon::stl_vector_tidy_0087b8b0",
+      "abi": "__fastcall(ECX = vec), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "When [vec+04h] != 0, calls 0087AB30(ECX = first, EDX = last) and _free([vec+04h]), then zeroes +04h..+0Ch.",
+      "steps": [
+        {
+          "address": "0x0087b8c4",
+          "function": "0x0087b8b0",
+          "native": "0x0087ab30",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087b8cd",
+          "function": "0x0087b8b0",
+          "native": "0x00bf65ac",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0087bf80",
+      "original_name": "BSP_UnitTickableEntity_SEntityInitSlotA4",
+      "symbol": "bsp::landscape_lua_seg55_argon::unit_tickable_entity_sentity_init_slot_a4_0087bf80",
+      "abi": "__thiscall(ECX = ent), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Vtable 00D0DF70 slot +A4h: calls 0077FAD0, reads _fragile.damagedGFXLevel (-> 00876EC0) and _fragile.damage[i].fire, then clones and attaches frame-tree section nodes (+380h) via 0087B840 and 00B6E680.",
+      "steps": [
+        {
+          "address": "0x0087bf9e",
+          "function": "0x0087bf80",
+          "native": "0x0077fad0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087bfc9",
+          "function": "0x0087bf80",
+          "native": "0x009238a0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087bfd2",
+          "function": "0x0087bf80",
+          "native": "0x004425c0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087bff1",
+          "function": "0x0087bf80",
+          "native": "0x00bd8e20",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087c034",
+          "function": "0x0087bf80",
+          "native": "0x00bd68d0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087c044",
+          "function": "0x0087bf80",
+          "native": "0x00876ec0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087c05f",
+          "function": "0x0087bf80",
+          "native": "0x00bd8e20",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087c0a7",
+          "function": "0x0087bf80",
+          "native": "0x00bd5eb0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087c0c9",
+          "function": "0x0087bf80",
+          "native": "0x00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087c0e4",
+          "function": "0x0087bf80",
+          "native": "0x00bd8e20",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087c111",
+          "function": "0x0087bf80",
+          "native": "0x00bd6830",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087c11a",
+          "function": "0x0087bf80",
+          "native": "0x00bd7a20",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087c12b",
+          "function": "0x0087bf80",
+          "native": "0x00bd7a20",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087c134",
+          "function": "0x0087bf80",
+          "native": "0x00bd7a20",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087c14d",
+          "function": "0x0087bf80",
+          "native": "0x00441210",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087c1d4",
+          "function": "0x0087bf80",
+          "native": "0x00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087c1e1",
+          "function": "0x0087bf80",
+          "native": "0x00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087c1eb",
+          "function": "0x0087bf80",
+          "native": "0x00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087c219",
+          "function": "0x0087bf80",
+          "native": "0x0087b840",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087c226",
+          "function": "0x0087bf80",
+          "native": "0x00b6e680",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087c23a",
+          "function": "0x0087bf80",
+          "native": "0x008772b0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0087c2a0",
+      "original_name": "STL_Tree_Construct_0087C2A0",
+      "symbol": "bsp::landscape_lua_seg55_argon::stl_tree_construct_0087c2a0",
+      "abi": "__thiscall(ECX = tree*), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Same body as 00878A90 with plain RET; allocates head via 00877FA0 and returns this.",
+      "steps": [
+        {
+          "address": "0x0087c2a3",
+          "function": "0x0087c2a0",
+          "native": "0x00877fa0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0087c700",
+      "original_name": "BSP_DamageableClass_Destruct",
+      "symbol": "bsp::landscape_lua_seg55_argon::damageable_class_destruct_0087c700",
+      "abi": "__thiscall(ECX = self), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Restores vptr 00D0E13C, frees +54h, releases +50h, erases frame tree +60h (0087AE70), returns pool blocks (+58h, +38h), clears points (+28h..+30h), calls 00879240(+18h), releases owner rows (+08h), and calls 00BD30F0.",
+      "steps": [
+        {
+          "address": "0x0087c739",
+          "function": "0x0087c700",
+          "native": "0x00bf6989",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087c77c",
+          "function": "0x0087c700",
+          "native": "0x0087ae70",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087c785",
+          "function": "0x0087c700",
+          "native": "0x00bf65ac",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087c7a9",
+          "function": "0x0087c700",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087c7b0",
+          "function": "0x0087c700",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087c7cb",
+          "function": "0x0087c700",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087c7d2",
+          "function": "0x0087c700",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087c7e7",
+          "function": "0x0087c700",
+          "native": "0x0074d190",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087c800",
+          "function": "0x0087c700",
+          "native": "0x00bf6989",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087c810",
+          "function": "0x0087c700",
+          "native": "0x00879240",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087c82c",
+          "function": "0x0087c700",
+          "native": "0x0087ab30",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087c835",
+          "function": "0x0087c700",
+          "native": "0x00bf65ac",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0087c850",
+          "function": "0x0087c700",
+          "native": "0x00bd30f0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0087f9a0",
+      "original_name": "BSP_Landscape_OnHit",
+      "symbol": "bsp::landscape_lua_seg55_argon::landscape_on_hit_0087f9a0",
+      "abi": "__thiscall(ECX = landscape, p2, p3, p4), RET 0Ch",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Vtable 00CEA050 slot +64h: queries [+3D0h]->vslot_40(p3, p4, p2) and calls 007407C0 BSP_DecalList_AddDecal.",
+      "steps": [
+        {
+          "address": "0x0087f9c6",
+          "function": "0x0087f9a0",
+          "native": "0x007407c0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0087f9f0",
+      "original_name": "BSP_Landscape_SetMatrixNoOp",
+      "symbol": "bsp::landscape_lua_seg55_argon::landscape_set_matrix_no_op_0087f9f0",
+      "abi": "__thiscall(ECX = landscape), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Bare RET (slot +120h of 00CEA050).",
+      "steps": []
+    },
+    {
+      "address": "0x0087fa20",
+      "original_name": "BSP_Landscape_ForwardLocalHeight",
+      "symbol": "bsp::landscape_lua_seg55_argon::landscape_forward_local_height_0087fa20",
+      "abi": "__thiscall(ECX = landscape, float a, float b), RET 8",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Forwards (a, b) to heightfield [+3D0h] vslot +24h (00ADA160).",
+      "steps": []
+    },
+    {
+      "address": "0x0087fa50",
+      "original_name": "BSP_Landscape_ForwardHeightAt",
+      "symbol": "bsp::landscape_lua_seg55_argon::landscape_forward_height_at_0087fa50",
+      "abi": "__thiscall(ECX = landscape, float x, float z), RET 8",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Forwards (x, z) to heightfield [+3D0h] vslot +28h.",
+      "steps": []
+    },
+    {
+      "address": "0x0087fb90",
+      "original_name": "BSP_Landscape_ForwardLocalNormal",
+      "symbol": "bsp::landscape_lua_seg55_argon::landscape_forward_local_normal_0087fb90",
+      "abi": "__thiscall(ECX = landscape, Vec3* out, float x, float z), RET 0Ch",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Forwards (out, x, z) to heightfield [+3D0h] vslot +34h (00ADA1C0) and returns out.",
+      "steps": []
+    },
+    {
+      "address": "0x0087fc30",
+      "original_name": "BSP_Landscape_ForwardLocalGridToWorldXZ",
+      "symbol": "bsp::landscape_lua_seg55_argon::landscape_forward_local_grid_to_world_xz_0087fc30",
+      "abi": "__thiscall(ECX = landscape, Vec2* out, float a, float b), RET 0Ch",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Forwards (out, a, b) to heightfield [+3D0h] vslot +1Ch (00ADA0D0) and returns out.",
+      "steps": []
+    },
+    {
+      "address": "0x0087fc60",
+      "original_name": "BSP_Landscape_HeightAtWorldOrDefault",
+      "symbol": "bsp::landscape_lua_seg55_argon::landscape_height_at_world_or_default_0087fc60",
+      "abi": "__thiscall(ECX = landscape, const float* xz), RET 4",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Calls [+3D0h] vslot +2Ch(xz[0], xz[1]) when [+3D0h] != 0, otherwise returns -1.0f ([00D7A260]).",
+      "steps": []
+    },
+    {
+      "address": "0x0087fe80",
+      "original_name": "BSP_Landscape_VSlot198_NoOp",
+      "symbol": "bsp::landscape_lua_seg55_argon::landscape_vslot198_no_op_0087fe80",
+      "abi": "__thiscall(ECX = landscape), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Bare RET (slot +198h of 00CEA050).",
+      "steps": []
+    },
+    {
+      "address": "0x0087ff80",
+      "original_name": "BSP_CollisionShape_TraceSegment_Subobject",
+      "symbol": "bsp::landscape_lua_seg55_argon::collision_shape_trace_segment_subobject_0087ff80",
+      "abi": "__thiscall(ECX = shape_344, ray, filter, hit_record), RET 0Ch",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Tests [shape+8Ch]->vslot_3c(ray, filter, &local_hit); on hit stores local_hit, calls 00470370(hit_record, shape-344h), sets +30h = 10, +34h = -1, returns 1.",
+      "steps": [
+        {
+          "address": "0x0087ffd9",
+          "function": "0x0087ff80",
+          "native": "0x00470370",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00880000",
+      "original_name": "BSP_Landscape_TickTerrain",
+      "symbol": "bsp::landscape_lua_seg55_argon::landscape_tick_terrain_00880000",
+      "abi": "__thiscall(ECX = landscape, float dt), RET 4",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Slot +DCh: advances +3DCh += dt, updates +3D4h (00BB0A90) and +3D8h (00BAEC50), calls 00ADA0C0 on +3D0h, and updates +3CCh vslot +38h(this+74h).",
+      "steps": [
+        {
+          "address": "0x00880029",
+          "function": "0x00880000",
+          "native": "0x00bb0a90",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00880046",
+          "function": "0x00880000",
+          "native": "0x00baec50",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088005d",
+          "function": "0x00880000",
+          "native": "0x00ada0c0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00880af0",
+      "original_name": "BSP_RefCountedPtr_Release_00880af0",
+      "symbol": "bsp::landscape_lua_seg55_argon::ref_counted_ptr_release_00880af0",
+      "abi": "__fastcall(ECX = ptr_slot), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Decrements refcount (+04h) of *slot, invokes vslot 0 at zero, zeroes *slot, returns slot.",
+      "steps": []
+    },
+    {
+      "address": "0x00880b20",
+      "original_name": "BSP_RefCountedPtr_Release_00880b20",
+      "symbol": "bsp::landscape_lua_seg55_argon::ref_counted_ptr_release_00880b20",
+      "abi": "__fastcall(ECX = ptr_slot), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "COMDAT twin of 00880AF0.",
+      "steps": []
+    },
+    {
+      "address": "0x00880b50",
+      "original_name": "BSP_RefCountedPtr_Release_00880b50",
+      "symbol": "bsp::landscape_lua_seg55_argon::ref_counted_ptr_release_00880b50",
+      "abi": "__fastcall(ECX = ptr_slot), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "COMDAT twin of 00880AF0.",
+      "steps": []
+    },
+    {
+      "address": "0x00880b80",
+      "original_name": "BSP_RefCountedPtr_Release_00880b80",
+      "symbol": "bsp::landscape_lua_seg55_argon::ref_counted_ptr_release_00880b80",
+      "abi": "__fastcall(ECX = ptr_slot), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "COMDAT twin of 00880AF0.",
+      "steps": []
+    },
+    {
+      "address": "0x00880bb0",
+      "original_name": "BSP_Landscape_ReleaseVertexStreams",
+      "symbol": "bsp::landscape_lua_seg55_argon::landscape_release_vertex_streams_00880bb0",
+      "abi": "__fastcall(ECX = landscape), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Walks convex hulls (+50h..+54h) of [+420h], refreshes world pose (00414DB0) if [+C8h]==0, translates world matrix (+CCh) by hull offset (+14h..+1Ch), and calls 006FB030 BSP_ConvexHull_DebugDrawEdges.",
+      "steps": [
+        {
+          "address": "0x00880bd8",
+          "function": "0x00880bb0",
+          "native": "0x00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00880bf1",
+          "function": "0x00880bb0",
+          "native": "0x00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00880bfc",
+          "function": "0x00880bb0",
+          "native": "0x00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00880c0e",
+          "function": "0x00880bb0",
+          "native": "0x00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00880c21",
+          "function": "0x00880bb0",
+          "native": "0x00414db0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00880c5f",
+          "function": "0x00880bb0",
+          "native": "0x006fb030",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00880c6d",
+          "function": "0x00880bb0",
+          "native": "0x00bf6713",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00880cd0",
+      "original_name": "BSP_Landscape_Teardown",
+      "symbol": "bsp::landscape_lua_seg55_argon::landscape_teardown_00880cd0",
+      "abi": "__fastcall(ECX = landscape), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Slot +84h: detaches this+1E4h from SpatialIndex (0042E630 / 0098A500), resets AvoidZoneRegistry layers (004C17D0 / 00423AF0), zeroes +2DCh, and tail-jumps 009277F0.",
+      "steps": [
+        {
+          "address": "0x00880ce2",
+          "function": "0x00880cd0",
+          "native": "0x0042e630",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00880ce9",
+          "function": "0x00880cd0",
+          "native": "0x0098a500",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00880cee",
+          "function": "0x00880cd0",
+          "native": "0x004c17d0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00880cf5",
+          "function": "0x00880cd0",
+          "native": "0x00423af0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00880d07",
+          "function": "0x00880cd0",
+          "native": "0x009277f0",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "address": "0x00881600",
+      "original_name": "BSP_Landscape_BindTerrainMaterialParams",
+      "symbol": "bsp::landscape_lua_seg55_argon::landscape_bind_terrain_material_params_00881600",
+      "abi": "__fastcall(ECX = model_node), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Recursively binds 8 terrain shader parameters (cStaticShot_Size_OffsetX_OffsetY .. cUWColor1) via 00B18AA0/AC0/AE0/B00 on every mesh element and child node.",
+      "steps": [
+        {
+          "address": "0x0088162d",
+          "function": "0x00881600",
+          "native": "0x00b74310",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00881645",
+          "function": "0x00881600",
+          "native": "0x00b74650",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00881669",
+          "function": "0x00881600",
+          "native": "0x00b74640",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00881676",
+          "function": "0x00881600",
+          "native": "0x00b72b40",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088169b",
+          "function": "0x00881600",
+          "native": "0x00b732c0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008816b2",
+          "function": "0x00881600",
+          "native": "0x0041dd40",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008816cd",
+          "function": "0x00881600",
+          "native": "0x00bf7680",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008816e5",
+          "function": "0x00881600",
+          "native": "0x00b18ae0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00881700",
+          "function": "0x00881600",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00881707",
+          "function": "0x00881600",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088171b",
+          "function": "0x00881600",
+          "native": "0x0041dd40",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00881736",
+          "function": "0x00881600",
+          "native": "0x00bf7680",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00881752",
+          "function": "0x00881600",
+          "native": "0x00b18ac0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088176d",
+          "function": "0x00881600",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00881774",
+          "function": "0x00881600",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00881788",
+          "function": "0x00881600",
+          "native": "0x0041dd40",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008817a3",
+          "function": "0x00881600",
+          "native": "0x00bf7680",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008817bf",
+          "function": "0x00881600",
+          "native": "0x00b18ae0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008817da",
+          "function": "0x00881600",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008817e1",
+          "function": "0x00881600",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008817f5",
+          "function": "0x00881600",
+          "native": "0x0041dd40",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00881810",
+          "function": "0x00881600",
+          "native": "0x00bf7680",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088182c",
+          "function": "0x00881600",
+          "native": "0x00b18b00",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00881847",
+          "function": "0x00881600",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088184e",
+          "function": "0x00881600",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00881862",
+          "function": "0x00881600",
+          "native": "0x0041dd40",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088187d",
+          "function": "0x00881600",
+          "native": "0x00bf7680",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00881899",
+          "function": "0x00881600",
+          "native": "0x00b18ae0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008818b4",
+          "function": "0x00881600",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008818bb",
+          "function": "0x00881600",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008818cf",
+          "function": "0x00881600",
+          "native": "0x0041dd40",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008818ea",
+          "function": "0x00881600",
+          "native": "0x00bf7680",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00881906",
+          "function": "0x00881600",
+          "native": "0x00b18b00",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00881921",
+          "function": "0x00881600",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00881928",
+          "function": "0x00881600",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088193c",
+          "function": "0x00881600",
+          "native": "0x0041dd40",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00881957",
+          "function": "0x00881600",
+          "native": "0x00bf7680",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00881973",
+          "function": "0x00881600",
+          "native": "0x00b18aa0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088198e",
+          "function": "0x00881600",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00881995",
+          "function": "0x00881600",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008819a9",
+          "function": "0x00881600",
+          "native": "0x0041dd40",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008819c4",
+          "function": "0x00881600",
+          "native": "0x00bf7680",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008819e0",
+          "function": "0x00881600",
+          "native": "0x00b18aa0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008819fb",
+          "function": "0x00881600",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00881a02",
+          "function": "0x00881600",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00881a42",
+          "function": "0x00881600",
+          "native": "0x00881600",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00882420",
+      "original_name": "BSP_Landscape_ApplyOceanWaveDamp",
+      "symbol": "bsp::landscape_lua_seg55_argon::landscape_apply_ocean_wave_damp_00882420",
+      "abi": "__fastcall(ECX = model_node), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Recursively inspects each mesh element effect basename for oceanwavedamp and calls 00B6DA70(node, 0, 0.0f) on match.",
+      "steps": [
+        {
+          "address": "0x0088244d",
+          "function": "0x00882420",
+          "native": "0x00b74310",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882469",
+          "function": "0x00882420",
+          "native": "0x00b74650",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882479",
+          "function": "0x00882420",
+          "native": "0x00b74640",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882484",
+          "function": "0x00882420",
+          "native": "0x00b72b40",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882494",
+          "function": "0x00882420",
+          "native": "0x00b732c0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088249f",
+          "function": "0x00882420",
+          "native": "0x00b172d0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008824bd",
+          "function": "0x00882420",
+          "native": "0x0041dd40",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008824d5",
+          "function": "0x00882420",
+          "native": "0x00bf7680",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008824f3",
+          "function": "0x00882420",
+          "native": "0x004bcb80",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088250f",
+          "function": "0x00882420",
+          "native": "0x00469840",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088252c",
+          "function": "0x00882420",
+          "native": "0x0041dd40",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882544",
+          "function": "0x00882420",
+          "native": "0x00bf7680",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882564",
+          "function": "0x00882420",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088256b",
+          "function": "0x00882420",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088257a",
+          "function": "0x00882420",
+          "native": "0x00bf9440",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882599",
+          "function": "0x00882420",
+          "native": "0x00b6da70",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008825b5",
+          "function": "0x00882420",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008825bc",
+          "function": "0x00882420",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008825c6",
+          "function": "0x00882420",
+          "native": "0x00b72b40",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008825e4",
+          "function": "0x00882420",
+          "native": "0x00b74650",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008825fa",
+          "function": "0x00882420",
+          "native": "0x00882420",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008828e0",
+      "original_name": "BSP_Landscape_Destruct",
+      "symbol": "bsp::landscape_lua_seg55_argon::landscape_destruct_008828e0",
+      "abi": "__fastcall(ECX = landscape), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Reinstalls 6 Landscape vptrs (00CEA090..00CEA050), calls 008826F0 BSP_Landscape_ReleaseTerrain, frees strings/vectors/refptr, and calls 009287B0 BSP_GameEntity_Destruct.",
+      "steps": [
+        {
+          "address": "0x0088293a",
+          "function": "0x008828e0",
+          "native": "0x008826f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088295d",
+          "function": "0x008828e0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882964",
+          "function": "0x008828e0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882970",
+          "function": "0x008828e0",
+          "native": "0x00bf6989",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882993",
+          "function": "0x008828e0",
+          "native": "0x00bf6989",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008829b5",
+          "function": "0x008828e0",
+          "native": "0x00bf6989",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008829c7",
+          "function": "0x008828e0",
+          "native": "0x00bf6989",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882a1d",
+          "function": "0x008828e0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882a24",
+          "function": "0x008828e0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882a34",
+          "function": "0x008828e0",
+          "native": "0x00bf65ac",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882a59",
+          "function": "0x008828e0",
+          "native": "0x00bf65ac",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882a8c",
+          "function": "0x008828e0",
+          "native": "0x00bf6989",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882a9e",
+          "function": "0x008828e0",
+          "native": "0x009287b0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00882ac0",
+      "original_name": "BSP_Landscape_LoadTerrain",
+      "symbol": "bsp::landscape_lua_seg55_argon::landscape_load_terrain_00882ac0",
+      "abi": "__thiscall(ECX = landscape, const NativeString* file_path), RET 4",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Constructs heightfield (+3D0h via 00ADD290), loads either models/terrain/<F>.mmod (007188A0 + physics hulls/grid cells via 00C31AA0) or terrain/<F>_heightmap.tdt (00ADEAD0), loads foliage (00B75CE0), and binds material params (00881600).",
+      "steps": [
+        {
+          "address": "0x00882ae5",
+          "function": "0x00882ac0",
+          "native": "0x008826f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882b02",
+          "function": "0x00882ac0",
+          "native": "0x0041dd40",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882b1d",
+          "function": "0x00882ac0",
+          "native": "0x00bf7680",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882b3d",
+          "function": "0x00882ac0",
+          "native": "0x00467cf0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882b54",
+          "function": "0x00882ac0",
+          "native": "0x0041dd40",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882b6f",
+          "function": "0x00882ac0",
+          "native": "0x00bf7680",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882b88",
+          "function": "0x00882ac0",
+          "native": "0x00467cf0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882ba2",
+          "function": "0x00882ac0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882ba9",
+          "function": "0x00882ac0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882bc8",
+          "function": "0x00882ac0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882bcf",
+          "function": "0x00882ac0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882bee",
+          "function": "0x00882ac0",
+          "native": "0x00469840",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882c0e",
+          "function": "0x00882ac0",
+          "native": "0x0041dd40",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882c29",
+          "function": "0x00882ac0",
+          "native": "0x00bf7680",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882c46",
+          "function": "0x00882ac0",
+          "native": "0x0043c130",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882c62",
+          "function": "0x00882ac0",
+          "native": "0x004261a0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882c88",
+          "function": "0x00882ac0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882c8f",
+          "function": "0x00882ac0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882ca7",
+          "function": "0x00882ac0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882cae",
+          "function": "0x00882ac0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882cc3",
+          "function": "0x00882ac0",
+          "native": "0x0041dd40",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882cde",
+          "function": "0x00882ac0",
+          "native": "0x00bf7680",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882cfe",
+          "function": "0x00882ac0",
+          "native": "0x0041dd40",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882d19",
+          "function": "0x00882ac0",
+          "native": "0x00bf7680",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882d36",
+          "function": "0x00882ac0",
+          "native": "0x0043c130",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882d52",
+          "function": "0x00882ac0",
+          "native": "0x004261a0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882d78",
+          "function": "0x00882ac0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882d7f",
+          "function": "0x00882ac0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882d97",
+          "function": "0x00882ac0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882d9e",
+          "function": "0x00882ac0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882da8",
+          "function": "0x00882ac0",
+          "native": "0x00bf681b",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882de3",
+          "function": "0x00882ac0",
+          "native": "0x0041dd40",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882df8",
+          "function": "0x00882ac0",
+          "native": "0x00bf7680",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882e0f",
+          "function": "0x00882ac0",
+          "native": "0x00add290",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882e3a",
+          "function": "0x00882ac0",
+          "native": "0x0041dd40",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882e55",
+          "function": "0x00882ac0",
+          "native": "0x00bf7680",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882e79",
+          "function": "0x00882ac0",
+          "native": "0x0043c130",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882e95",
+          "function": "0x00882ac0",
+          "native": "0x004261a0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882ebb",
+          "function": "0x00882ac0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882ec2",
+          "function": "0x00882ac0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882eda",
+          "function": "0x00882ac0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882ee1",
+          "function": "0x00882ac0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882f0c",
+          "function": "0x00882ac0",
+          "native": "0x0041e870",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882f2d",
+          "function": "0x00882ac0",
+          "native": "0x0043c130",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882f49",
+          "function": "0x00882ac0",
+          "native": "0x004261a0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882f6f",
+          "function": "0x00882ac0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882f76",
+          "function": "0x00882ac0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882f96",
+          "function": "0x00882ac0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882f9d",
+          "function": "0x00882ac0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882fb7",
+          "function": "0x00882ac0",
+          "native": "0x0041e870",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882fc8",
+          "function": "0x00882ac0",
+          "native": "0x007188a0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882fee",
+          "function": "0x00882ac0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00882ff5",
+          "function": "0x00882ac0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883058",
+          "function": "0x00882ac0",
+          "native": "0x00ade820",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088308c",
+          "function": "0x00882ac0",
+          "native": "0x00b6d890",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008830aa",
+          "function": "0x00882ac0",
+          "native": "0x00ba1370",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008830be",
+          "function": "0x00882ac0",
+          "native": "0x00882420",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008830cf",
+          "function": "0x00882ac0",
+          "native": "0x00bf681b",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008830f1",
+          "function": "0x00882ac0",
+          "native": "0x007135c0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883119",
+          "function": "0x00882ac0",
+          "native": "0x00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883142",
+          "function": "0x00882ac0",
+          "native": "0x00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088315e",
+          "function": "0x00882ac0",
+          "native": "0x00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088317e",
+          "function": "0x00882ac0",
+          "native": "0x00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088319b",
+          "function": "0x00882ac0",
+          "native": "0x00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883378",
+          "function": "0x00882ac0",
+          "native": "0x00414db0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883388",
+          "function": "0x00882ac0",
+          "native": "0x00c336c0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088340a",
+          "function": "0x00882ac0",
+          "native": "0x00bf55be",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088344c",
+          "function": "0x00882ac0",
+          "native": "0x00bf6989",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008834a0",
+          "function": "0x00882ac0",
+          "native": "0x00c5d580",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008834b4",
+          "function": "0x00882ac0",
+          "native": "0x004216b0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008834cd",
+          "function": "0x00882ac0",
+          "native": "0x00bf6989",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008834ed",
+          "function": "0x00882ac0",
+          "native": "0x00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883513",
+          "function": "0x00882ac0",
+          "native": "0x00adac30",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883520",
+          "function": "0x00882ac0",
+          "native": "0x00adac40",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088356c",
+          "function": "0x00882ac0",
+          "native": "0x00adea70",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088362f",
+          "function": "0x00882ac0",
+          "native": "0x00adea70",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883662",
+          "function": "0x00882ac0",
+          "native": "0x00adea70",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008837ea",
+          "function": "0x00882ac0",
+          "native": "0x00bf55be",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088382c",
+          "function": "0x00882ac0",
+          "native": "0x00bf6989",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088390c",
+          "function": "0x00882ac0",
+          "native": "0x00c336c0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883921",
+          "function": "0x00882ac0",
+          "native": "0x00c5d580",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088396e",
+          "function": "0x00882ac0",
+          "native": "0x00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883984",
+          "function": "0x00882ac0",
+          "native": "0x00420830",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088399d",
+          "function": "0x00882ac0",
+          "native": "0x00bf6989",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883a0d",
+          "function": "0x00882ac0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883a14",
+          "function": "0x00882ac0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883a7d",
+          "function": "0x00882ac0",
+          "native": "0x00adda60",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883a94",
+          "function": "0x00882ac0",
+          "native": "0x00adac90",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883aa8",
+          "function": "0x00882ac0",
+          "native": "0x00881600",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883ace",
+          "function": "0x00882ac0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883ad5",
+          "function": "0x00882ac0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883afb",
+          "function": "0x00882ac0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883b02",
+          "function": "0x00882ac0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883b22",
+          "function": "0x00882ac0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883b29",
+          "function": "0x00882ac0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883b4f",
+          "function": "0x00882ac0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883b56",
+          "function": "0x00882ac0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883b7f",
+          "function": "0x00882ac0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883b86",
+          "function": "0x00882ac0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00883bb0",
+      "original_name": "BSP_Landscape_InitAttachTerrain",
+      "symbol": "bsp::landscape_lua_seg55_argon::landscape_init_attach_terrain_00883bb0",
+      "abi": "__fastcall(ECX = landscape), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Slot +9Ch: creates Lua self table (00928A00), resets terrain (0087FE90), reads FilePath/ModelPath, calls 00882AC0, creates ShallowWater decal (+42Ch), sets spatial bounds (+42.0 on max.y via 0098A920), attaches to SpatialIndex (0098BA10), and registers decal owner (00740FE0).",
+      "steps": [
+        {
+          "address": "0x00883c02",
+          "function": "0x00883bb0",
+          "native": "0x00928a00",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883c09",
+          "function": "0x00883bb0",
+          "native": "0x00881a70",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883c33",
+          "function": "0x00883bb0",
+          "native": "0x00bf87e0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883c44",
+          "function": "0x00883bb0",
+          "native": "0x0041dd40",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883c65",
+          "function": "0x00883bb0",
+          "native": "0x008f2260",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883c6e",
+          "function": "0x00883bb0",
+          "native": "0x008f0df0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883c76",
+          "function": "0x00883bb0",
+          "native": "0x0041e350",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883c82",
+          "function": "0x00883bb0",
+          "native": "0x004772c0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883c97",
+          "function": "0x00883bb0",
+          "native": "0x008f0df0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883c9f",
+          "function": "0x00883bb0",
+          "native": "0x0041e350",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883cad",
+          "function": "0x00883bb0",
+          "native": "0x0041e870",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883cbc",
+          "function": "0x00883bb0",
+          "native": "0x008f0df0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883cc6",
+          "function": "0x00883bb0",
+          "native": "0x0041e870",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883cd9",
+          "function": "0x00883bb0",
+          "native": "0x0041e870",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883cef",
+          "function": "0x00883bb0",
+          "native": "0x004261a0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883d05",
+          "function": "0x00883bb0",
+          "native": "0x004261a0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883d12",
+          "function": "0x00883bb0",
+          "native": "0x00425f40",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883d2f",
+          "function": "0x00883bb0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883d36",
+          "function": "0x00883bb0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883d53",
+          "function": "0x00883bb0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883d5a",
+          "function": "0x00883bb0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883d77",
+          "function": "0x00883bb0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883d7e",
+          "function": "0x00883bb0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883d9b",
+          "function": "0x00883bb0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883da2",
+          "function": "0x00883bb0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883dc2",
+          "function": "0x00883bb0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883dc9",
+          "function": "0x00883bb0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883dd3",
+          "function": "0x00883bb0",
+          "native": "0x00882ac0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883e24",
+          "function": "0x00883bb0",
+          "native": "0x008f2260",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883e38",
+          "function": "0x00883bb0",
+          "native": "0x008f2260",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883e4f",
+          "function": "0x00883bb0",
+          "native": "0x004773a0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883e56",
+          "function": "0x00883bb0",
+          "native": "0x008f0df0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883e60",
+          "function": "0x00883bb0",
+          "native": "0x0041e870",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883e7e",
+          "function": "0x00883bb0",
+          "native": "0x008f2260",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883e90",
+          "function": "0x00883bb0",
+          "native": "0x00414db0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883e9c",
+          "function": "0x00883bb0",
+          "native": "0x008f2260",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883eae",
+          "function": "0x00883bb0",
+          "native": "0x00414db0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883ee4",
+          "function": "0x00883bb0",
+          "native": "0x008f2260",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883f08",
+          "function": "0x00883bb0",
+          "native": "0x008f2260",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883f7c",
+          "function": "0x00883bb0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883f83",
+          "function": "0x00883bb0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883fd9",
+          "function": "0x00883bb0",
+          "native": "0x00414db0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883fef",
+          "function": "0x00883bb0",
+          "native": "0x004134f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00883fff",
+          "function": "0x00883bb0",
+          "native": "0x00414db0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00884032",
+          "function": "0x00883bb0",
+          "native": "0x00414db0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00884066",
+          "function": "0x00883bb0",
+          "native": "0x0098a920",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00884071",
+          "function": "0x00883bb0",
+          "native": "0x0042e630",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00884078",
+          "function": "0x00883bb0",
+          "native": "0x0098ba10",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00884083",
+          "function": "0x00883bb0",
+          "native": "0x00740fe0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008844f0",
+      "original_name": "BSP_MissionLuaHost_ReleaseMachine",
+      "symbol": "bsp::landscape_lua_seg55_argon::mission_lua_host_release_machine_008844f0",
+      "abi": "__fastcall(ECX = host), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Deletes LuaMachine at [host+04h] via vslot 0(1) and zeroes [host+04h].",
+      "steps": []
+    },
+    {
+      "address": "0x00885110",
+      "original_name": "BSP_MissionLuaHost_RunScriptFile",
+      "symbol": "bsp::landscape_lua_seg55_argon::mission_lua_host_run_script_file_00885110",
+      "abi": "__thiscall(ECX = host, const char* path), RET 4",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Opens path via VFS [0109CEEC] vslot +04h(mode 2), reads all vslot +30h() bytes via vslot +24h(), and executes via 006B89F0 BSP_LuaMachine_RunChunk.",
+      "steps": [
+        {
+          "address": "0x0088523c",
+          "function": "0x00885110",
+          "native": "0x0041e870",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00885275",
+          "function": "0x00885110",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088527c",
+          "function": "0x00885110",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088529e",
+          "function": "0x00885110",
+          "native": "0x00bf55be",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008852e7",
+          "function": "0x00885110",
+          "native": "0x006b89f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008852ed",
+          "function": "0x00885110",
+          "native": "0x00bf6989",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00885325",
+          "function": "0x00885110",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088532c",
+          "function": "0x00885110",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00885350",
+      "original_name": "BSP_VfsFileBlockScope_Destruct",
+      "symbol": "bsp::landscape_lua_seg55_argon::vfs_file_block_scope_destruct_00885350",
+      "abi": "__fastcall(ECX = scope), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Sets vptr 00D0E6EC; when [scope+04h] < [[0109CEEC]+14h], calls 00BDC9B0 BSP_VFS_LeaveFileBlock(empty).",
+      "steps": [
+        {
+          "address": "0x00885384",
+          "function": "0x00885350",
+          "native": "0x0041e870",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088539b",
+          "function": "0x00885350",
+          "native": "0x00bdc9b0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008853ba",
+          "function": "0x00885350",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008853c1",
+          "function": "0x00885350",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00885a30",
+      "original_name": "BSP_MissionLuaResultSink_AppendAllAsText",
+      "symbol": "bsp::landscape_lua_seg55_argon::mission_lua_result_sink_append_all_as_text_00885a30",
+      "abi": "__thiscall(ECX = sink, NativeString* out), RET 4",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Walks [sink+08h] for [sink+0Ch] 20-byte records and calls 008855B0(elem, out) on each.",
+      "steps": [
+        {
+          "address": "0x00885a53",
+          "function": "0x00885a30",
+          "native": "0x008855b0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00885da0",
+      "original_name": "BSP_MissionLua_PushArgumentRecord",
+      "symbol": "bsp::landscape_lua_seg55_argon::mission_lua_push_argument_record_00885da0",
+      "abi": "__thiscall(ECX = record, LuaMachine* machine), RET 4",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Switches on [record+04h] (0..6) to push number (006B80E0), string (006B8120), boolean (006B80C0), thisTable[id] (00884240/006B8460/006B8470), table (006B84B0/00885A70), or nil (006B8130).",
+      "steps": [
+        {
+          "address": "0x00885dc5",
+          "function": "0x00885da0",
+          "native": "0x006b80e0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00885ddb",
+          "function": "0x00885da0",
+          "native": "0x006b80c0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00885dfc",
+          "function": "0x00885da0",
+          "native": "0x006b8120",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00885e20",
+          "function": "0x00885da0",
+          "native": "0x00884240",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00885e33",
+          "function": "0x00885da0",
+          "native": "0x006b8460",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00885e3f",
+          "function": "0x00885da0",
+          "native": "0x006b8120",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00885e48",
+          "function": "0x00885da0",
+          "native": "0x006b8470",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00885e51",
+          "function": "0x00885da0",
+          "native": "0x006b7ea0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00885e62",
+          "function": "0x00885da0",
+          "native": "0x006b8130",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00885e74",
+          "function": "0x00885da0",
+          "native": "0x006b84b0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00885e9e",
+          "function": "0x00885da0",
+          "native": "0x00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00885eab",
+          "function": "0x00885da0",
+          "native": "0x00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00885eb5",
+          "function": "0x00885da0",
+          "native": "0x00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00885ec2",
+          "function": "0x00885da0",
+          "native": "0x00bf6713",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00885ed0",
+          "function": "0x00885da0",
+          "native": "0x00885a70",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00885ed9",
+          "function": "0x00885da0",
+          "native": "0x006eda20",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00885fb0",
+      "original_name": "BSP_MissionLuaHost_RunScriptWithVariants",
+      "symbol": "bsp::landscape_lua_seg55_argon::mission_lua_host_run_script_with_variants_00885fb0",
+      "abi": "__thiscall(ECX = host, const char* path, char run_variants), RET 8",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Calls 00885110(path), and when run_variants != 0 queries 00BDEF90 and calls 00885110 on each variant path.",
+      "steps": [
+        {
+          "address": "0x00885fd2",
+          "function": "0x00885fb0",
+          "native": "0x00885110",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00885ff8",
+          "function": "0x00885fb0",
+          "native": "0x0041e870",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00886012",
+          "function": "0x00885fb0",
+          "native": "0x00bdef90",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088602e",
+          "function": "0x00885fb0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00886035",
+          "function": "0x00885fb0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088605e",
+          "function": "0x00885fb0",
+          "native": "0x00885110",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088607a",
+          "function": "0x00885fb0",
+          "native": "0x00427110",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00886084",
+          "function": "0x00885fb0",
+          "native": "0x00bf6989",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00886e00",
+      "original_name": "BSP_MissionLua_BuildVariantFromStack",
+      "symbol": "bsp::landscape_lua_seg55_argon::mission_lua_build_variant_from_stack_00886e00",
+      "abi": "__thiscall(ECX = sink, LuaVariant* out, int idx, int depth, int max_depth), RET 10h",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Guarded by depth < max_depth; switches on 006B7EC0 lua_type(idx) (0..7) to populate 20-byte LuaVariant, recursing on tables via 006B85B0 lua_next.",
+      "steps": [
+        {
+          "address": "0x00886e3f",
+          "function": "0x00886e00",
+          "native": "0x006b7ec0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00886e58",
+          "function": "0x00886e00",
+          "native": "0x006b8000",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00886e68",
+          "function": "0x00886e00",
+          "native": "0x008869f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00886e76",
+          "function": "0x00886e00",
+          "native": "0x006b8020",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00886e86",
+          "function": "0x00886e00",
+          "native": "0x008869d0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00886e94",
+          "function": "0x00886e00",
+          "native": "0x006b8060",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00886e9e",
+          "function": "0x00886e00",
+          "native": "0x0041e870",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00886eb6",
+          "function": "0x00886e00",
+          "native": "0x00886a10",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00886eca",
+          "function": "0x00886e00",
+          "native": "0x0041dd20",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00886ed8",
+          "function": "0x00886e00",
+          "native": "0x006eeaf0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00886eeb",
+          "function": "0x00886e00",
+          "native": "0x006b8130",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00886ef4",
+          "function": "0x00886e00",
+          "native": "0x006b85b0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00886f2d",
+          "function": "0x00886e00",
+          "native": "0x006b7f60",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00886f3b",
+          "function": "0x00886e00",
+          "native": "0x006b8060",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00886f45",
+          "function": "0x00886e00",
+          "native": "0x00781430",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00886f4c",
+          "function": "0x00886e00",
+          "native": "0x006b8040",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00886f56",
+          "function": "0x00886e00",
+          "native": "0x007814e0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00886f8a",
+          "function": "0x00886e00",
+          "native": "0x006b7e70",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00886f97",
+          "function": "0x00886e00",
+          "native": "0x00886e00",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00886fa1",
+          "function": "0x00886e00",
+          "native": "0x006b85f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00886fbb",
+          "function": "0x00886e00",
+          "native": "0x006ee0d0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00886fd2",
+          "function": "0x00886e00",
+          "native": "0x006ee4e0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00886fe2",
+          "function": "0x00886e00",
+          "native": "0x006ee040",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00886ff3",
+          "function": "0x00886e00",
+          "native": "0x00884af0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00887013",
+          "function": "0x00886e00",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088701a",
+          "function": "0x00886e00",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088702a",
+          "function": "0x00886e00",
+          "native": "0x006b85b0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00887044",
+          "function": "0x00886e00",
+          "native": "0x00886b50",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00887058",
+          "function": "0x00886e00",
+          "native": "0x006eeab0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00887068",
+          "function": "0x00886e00",
+          "native": "0x00886920",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088707a",
+          "function": "0x00886e00",
+          "native": "0x006b80a0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00887087",
+          "function": "0x00886e00",
+          "native": "0x00886b30",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00887097",
+          "function": "0x00886e00",
+          "native": "0x0041e870",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008870b3",
+          "function": "0x00886e00",
+          "native": "0x00886a10",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008870c7",
+          "function": "0x00886e00",
+          "native": "0x0041dd20",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008870d8",
+          "function": "0x00886e00",
+          "native": "0x006b86b0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00887220",
+      "original_name": "BSP_MissionLua_CollectStackResults",
+      "symbol": "bsp::landscape_lua_seg55_argon::mission_lua_collect_stack_results_00887220",
+      "abi": "__thiscall(ECX = sink, int count, int max_depth), RET 8",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Reads top count values (or 1..top when count < 1) via 006B7E70 / 00886E00 and appends to sink+08h via 006EDF00.",
+      "steps": [
+        {
+          "address": "0x00887262",
+          "function": "0x00887220",
+          "native": "0x006b7e70",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008872bf",
+          "function": "0x00887220",
+          "native": "0x00886e00",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008872cb",
+          "function": "0x00887220",
+          "native": "0x006edf00",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008872e1",
+          "function": "0x00887220",
+          "native": "0x00886920",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008872fd",
+          "function": "0x00887220",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00887304",
+          "function": "0x00887220",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088732b",
+          "function": "0x00887220",
+          "native": "0x00886920",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088734e",
+          "function": "0x00887220",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00887355",
+          "function": "0x00887220",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008874c0",
+      "original_name": "BSP_MissionLuaPendingResults_Destruct",
+      "symbol": "bsp::landscape_lua_seg55_argon::mission_lua_pending_results_destruct_008874c0",
+      "abi": "__fastcall(ECX = pending), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Sets vptr 00D0E6F0; when byte [pending+0Ch] != 0, calls 00887220(sink, -1 - [pending+08h], 4) and 006B85F0(-[pending+08h]).",
+      "steps": [
+        {
+          "address": "0x008874ea",
+          "function": "0x008874c0",
+          "native": "0x00887220",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008874f7",
+          "function": "0x008874c0",
+          "native": "0x006b85f0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00887560",
+      "original_name": "BSP_MissionLuaDeferredCall_CopyArguments",
+      "symbol": "bsp::landscape_lua_seg55_argon::mission_lua_deferred_call_copy_arguments_00887560",
+      "abi": "__thiscall(ECX = dst_vec, const ArgVector* src), RET 4",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Calls 006B88E0(0), 006B87F0(src->count), and 006EDF00 on each 20-byte record, returning dst_vec.",
+      "steps": [
+        {
+          "address": "0x00887567",
+          "function": "0x00887560",
+          "native": "0x006b88e0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00887576",
+          "function": "0x00887560",
+          "native": "0x006b87f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088758c",
+          "function": "0x00887560",
+          "native": "0x006edf00",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008875d0",
+      "original_name": "BSP_MissionLuaResultSink_Construct",
+      "symbol": "bsp::landscape_lua_seg55_argon::mission_lua_result_sink_construct_008875d0",
+      "abi": "__fastcall(ECX = sink), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Stores vptr 00D0E798 and zeroes +04h..+10h.",
+      "steps": []
+    },
+    {
+      "address": "0x008875f0",
+      "original_name": "BSP_LuaScriptOverrideList_Construct",
+      "symbol": "bsp::landscape_lua_seg55_argon::lua_script_override_list_construct_008875f0",
+      "abi": "__thiscall(ECX = sink, void* machine), RET 4",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Stores vptr 00D0E798, zeroes +04h..+10h, stores machine at +04h, returns this.",
+      "steps": [
+        {
+          "address": "0x0088762e",
+          "function": "0x008875f0",
+          "native": "0x006b88e0",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00887670",
+      "original_name": "BSP_LuaVariantVector_Tidy_00887670",
+      "symbol": "bsp::landscape_lua_seg55_argon::lua_variant_vector_tidy_00887670",
+      "abi": "__fastcall(ECX = sink), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Stores vptr 00D0E798, calls 006B88E0(0) on +08h, and frees [sink+08h] via 00BF6989.",
+      "steps": [
+        {
+          "address": "0x0088767e",
+          "function": "0x00887670",
+          "native": "0x006b88e0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00887686",
+          "function": "0x00887670",
+          "native": "0x00bf6989",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008876b0",
+      "original_name": "BSP_MissionLuaDeferredCall_Destruct",
+      "symbol": "bsp::landscape_lua_seg55_argon::mission_lua_deferred_call_destruct_008876b0",
+      "abi": "__fastcall(ECX = call), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Clears/frees +10h variant vector (006B88E0 / 00BF6989) and returns pool blocks for NativeStrings at +08h and +00h.",
+      "steps": [
+        {
+          "address": "0x008876dd",
+          "function": "0x008876b0",
+          "native": "0x006b88e0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008876e5",
+          "function": "0x008876b0",
+          "native": "0x00bf6989",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00887703",
+          "function": "0x008876b0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088770a",
+          "function": "0x008876b0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00887727",
+          "function": "0x008876b0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088772e",
+          "function": "0x008876b0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00887b30",
+      "original_name": "BSP_MissionLuaHost_CallNamedForced",
+      "symbol": "bsp::landscape_lua_seg55_argon::mission_lua_host_call_named_forced_00887b30",
+      "abi": "__thiscall(ECX = host, self_key, name, args, stack_first, stack_last), RET 14h",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Forwards to 00887750 BSP_MissionLuaHost_CallNamed with results = 0 and force = 1.",
+      "steps": [
+        {
+          "address": "0x00887b4d",
+          "function": "0x00887b30",
+          "native": "0x00887750",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00887c30",
+      "original_name": "BSP_MissionLuaCallQueue_InsertNode",
+      "symbol": "bsp::landscape_lua_seg55_argon::mission_lua_call_queue_insert_node_00887c30",
+      "abi": "__thiscall(ECX = queue, next, prev, value), RET 0Ch",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Allocates 2Ch-byte node (00BF681B), stores next (+00h) and prev (+04h), and copy-constructs payload (+08h) via 00887A10.",
+      "steps": [
+        {
+          "address": "0x00887c53",
+          "function": "0x00887c30",
+          "native": "0x00bf681b",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00887c91",
+          "function": "0x00887c30",
+          "native": "0x00887a10",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00887d90",
+      "original_name": "BSP_MissionLuaCallQueue_Clear",
+      "symbol": "bsp::landscape_lua_seg55_argon::mission_lua_call_queue_clear_00887d90",
+      "abi": "__fastcall(ECX = queue), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Reseats sentinel head links, zeroes size (+08h), and walks list calling 008876B0 and 00BF65AC _free.",
+      "steps": [
+        {
+          "address": "0x00887db5",
+          "function": "0x00887d90",
+          "native": "0x008876b0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00887dbb",
+          "function": "0x00887d90",
+          "native": "0x00bf65ac",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00888300",
+      "original_name": "BSP_MissionLuaHost_Destruct",
+      "symbol": "bsp::landscape_lua_seg55_argon::mission_lua_host_destruct_00888300",
+      "abi": "__fastcall(ECX = host), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Restores vptr 00D0E7A8, deletes [host+04h] via vslot 0(1), clears call queue +08h via 00887D90, and frees sentinel [host+0Ch].",
+      "steps": [
+        {
+          "address": "0x00888354",
+          "function": "0x00888300",
+          "native": "0x00887d90",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088835d",
+          "function": "0x00888300",
+          "native": "0x00bf65ac",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00888760",
+      "original_name": "BSP_LuaObject_ReadVector3",
+      "symbol": "bsp::landscape_lua_seg55_argon::lua_object_read_vector3_00888760",
+      "abi": "__fastcall(ECX = float* out, EDX = LuaObject* table), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Iterates LuaObject table (00B67080 / 00B67190), reads x (00CEB488), y (00D045F8), z (00CFD718) via 00B660F0 / 00B66270, stores out[0..2], returns out.",
+      "steps": [
+        {
+          "address": "0x00888782",
+          "function": "0x00888760",
+          "native": "0x00b65f50",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00888793",
+          "function": "0x00888760",
+          "native": "0x00b65f50",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008887a9",
+          "function": "0x00888760",
+          "native": "0x00b67080",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008887b5",
+          "function": "0x00888760",
+          "native": "0x00b66420",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008887cb",
+          "function": "0x00888760",
+          "native": "0x00b660f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008887d8",
+          "function": "0x00888760",
+          "native": "0x00b66270",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008887ec",
+          "function": "0x00888760",
+          "native": "0x00b660f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x008887f9",
+          "function": "0x00888760",
+          "native": "0x00b66270",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088880d",
+          "function": "0x00888760",
+          "native": "0x00b660f0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088881a",
+          "function": "0x00888760",
+          "native": "0x00b66270",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088882f",
+          "function": "0x00888760",
+          "native": "0x00b67190",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088883b",
+          "function": "0x00888760",
+          "native": "0x00b66420",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00888871",
+          "function": "0x00888760",
+          "native": "0x00b67700",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00888882",
+          "function": "0x00888760",
+          "native": "0x00b67700",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008889c0",
+      "original_name": "BSP_LuaValue_IsEntityHandle",
+      "symbol": "bsp::landscape_lua_seg55_argon::lua_value_is_entity_handle_008889c0",
+      "abi": "__fastcall(ECX = LuaObject* val), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Checks IsTable (00B661B0), fetches Ptr (00CFAD08) via 00B67800, checks IsLightUserdata (00B66160), converts via 00B662D0, and tests entity->vslot_5C(1).",
+      "steps": [
+        {
+          "address": "0x008889db",
+          "function": "0x008889c0",
+          "native": "0x00b661b0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00888a03",
+          "function": "0x008889c0",
+          "native": "0x00b67800",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00888a12",
+          "function": "0x008889c0",
+          "native": "0x00b66160",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00888a28",
+          "function": "0x008889c0",
+          "native": "0x00b67700",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00888a3e",
+          "function": "0x008889c0",
+          "native": "0x00b67800",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00888a4d",
+          "function": "0x008889c0",
+          "native": "0x00b662d0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00888a60",
+          "function": "0x008889c0",
+          "native": "0x00b67700",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x00888d20",
+      "original_name": "BSP_LuaTable_GetPtrField",
+      "symbol": "bsp::landscape_lua_seg55_argon::lua_table_get_ptr_field_00888d20",
+      "abi": "__fastcall(ECX = LuaObject* table), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Fetches Ptr (00CFAD08) via 00B67800 and converts via 00B662D0 ToUserdata.",
+      "steps": [
+        {
+          "address": "0x00888d43",
+          "function": "0x00888d20",
+          "native": "0x00b67800",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00888d52",
+          "function": "0x00888d20",
+          "native": "0x00b662d0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x00888d65",
+          "function": "0x00888d20",
+          "native": "0x00b67700",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x008890f0",
+      "original_name": "BSP_Game_IsScriptLoadActive",
+      "symbol": "bsp::landscape_lua_seg55_argon::game_is_script_load_active_008890f0",
+      "abi": "__fastcall(ECX = game), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Returns *(int*)(game + 644h) > 0.",
+      "steps": []
+    },
+    {
+      "address": "0x0088b1b0",
+      "original_name": "BSP_MissionEntity_FindByName",
+      "symbol": "bsp::landscape_lua_seg55_argon::mission_entity_find_by_name_0088b1b0",
+      "abi": "__stdcall(int len, char* data), RET 8",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "Walks 14 active entity kind buckets in [[00E188A8]+19CCh]+1Ch, filters by +5Ch..+60h flags, compares vslot +10h() name via 00BF7FBF _stricmp, and releases NativeString buffer.",
+      "steps": [
+        {
+          "address": "0x0088b277",
+          "function": "0x0088b1b0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088b27e",
+          "function": "0x0088b1b0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088b2a8",
+          "function": "0x0088b1b0",
+          "native": "0x00bf7fbf",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088b2ea",
+          "function": "0x0088b1b0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088b2f1",
+          "function": "0x0088b1b0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        }
+      ]
+    },
+    {
+      "address": "0x0088b3d0",
+      "original_name": "BSP_NativeString_ReleaseStorage_0088b3d0",
+      "symbol": "bsp::landscape_lua_seg55_argon::native_string_release_storage_0088b3d0",
+      "abi": "__fastcall(ECX = NativeString*), RET",
+      "status": "reconstructed_build_tested",
+      "source_file": "src/landscape_lua_seg55_argon.cpp",
+      "header_file": "include/bsp/landscape_lua_seg55_argon.hpp",
+      "summary": "When [str+04h] != 0, returns block ([str+04h], [str]+1, 1) to SizedStoragePool (00419CC0 / 00BD1510).",
+      "steps": [
+        {
+          "address": "0x0088b3e0",
+          "function": "0x0088b3d0",
+          "native": "0x00419cc0",
+          "kind": "direct_call"
+        },
+        {
+          "address": "0x0088b3e7",
+          "function": "0x0088b3d0",
+          "native": "0x00bd1510",
+          "kind": "direct_call"
+        }
+      ]
+    }
+  ]
+}
