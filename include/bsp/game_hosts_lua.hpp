@@ -200,7 +200,7 @@ inline constexpr bool kForcedReconOwnRecordBound = true;   // ON: SQUADRON_LAND_
 // and new effective levels, and the pass dispatch publishes a forced record's level
 // whatever the party's coverage. False: the change surfaces at the next pass, and an
 // uncovered party's forced record publishes 0.
-inline constexpr bool kForcedReconSyncNotifyBound = false;
+inline constexpr bool kForcedReconSyncNotifyBound = true;   // ON: SQUADRON_LAND_TASK 5hk.1
 
 // Packet cc9_lua_add_damage (docs/USN02_PHASES.md section 3; docs/LUA_BINDING_MISSION.md,
 // "AddDamage, 0088E000"). AddDamage(entity, amount) resolves argument 0 (00888AA0), reads
