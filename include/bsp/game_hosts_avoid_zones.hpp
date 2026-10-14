@@ -37,7 +37,7 @@ namespace bsp::game {
 
 // The image's registry layout (three constructor defaults, cleared by the scene
 // load); OFF keeps the earlier one-default-ahead layout.
-inline constexpr bool kAvoidZoneRegistryImageLayoutBound = false;
+inline constexpr bool kAvoidZoneRegistryImageLayoutBound = true;
 
 // 00417FA0, __thiscall(layer, float2* out, float x, float z), RET 0Ch.
 // u = (x + half) / cell, v = (z + half) / cell, each stored as a float and

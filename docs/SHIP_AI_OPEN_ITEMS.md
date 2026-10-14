@@ -17907,6 +17907,13 @@ readers (game_hosts_units.cpp: 0041BC20 samples and the cell size) never read +1
 **Prediction:** gameplay-identical pairs (pair_diff 0 or 1) on every mission; the only moved lines are the
 `summary mission avoid-zone layer` note (registry_layers 4 -> 3, squadron_34c 3 -> 2; on USN10: 1 -> 3 layers,
 squadron_34c 0 -> 2, slope 0.176327 -> 2.747477).
+**Pairs** (020a12d06, `local\s51_off_<row>.log` vs `local\s51_on_<row>.log`, ON = `local\s51_avon` export, manifests
+beside each log): USN10 24000 frames (no `.nav`), USN15 36000, JM06 36000. pair_diff exit 1 on all three, gameplay
+identical (unit tables identical; USN10 deaths 14/14, damage 49475.7 both). Moved: only the avoid-zone summary
+(USN10 registry_layers 1 -> 3, squadron_34c 0 -> 2, slope 0.176327 -> 2.747478; USN15/JM06 4 -> 3 layers, 3 -> 2) plus
+the masked noise counters (ShipAiSectorScan, ship ai free empty/refills). As predicted: **flipped ON**. No mission
+completed in these rows, so no exec-guard line was expected. The scene-contents note "004248a0 appends without
+clearing" (game_hosts_scene_contents.cpp, lua lane) is now stale; routed to the lead.
 
 ## 253. 00416270's x87 sums of products; 00417E60 guards labelled (cc9-ships51, 2026-10-14; lead item 3)
 
