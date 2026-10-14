@@ -69,6 +69,10 @@ bool plane_wanderer_fixed_step_007be060(PlaneWandererState& s, const PlaneWander
                                         const PlaneWandererDraw& draw);
 
 // 00439950: a uniform direction, z = U(-1, 1), phi = U(0, 2pi) (00CE3D9C), r = sqrt(1 - z^2).
+// The image stores FCOS/FSIN as floats (004399BF, 004399C9) before the products with r.
+// true: that float rounding (the faithful path). false: the older double cos/sin products,
+// kept as the default until a measured pair lands it (live gameplay numerics, cc9 host terms).
+inline constexpr bool kPlaneWandererFloatTrigBound = false;
 void plane_wanderer_random_direction_00439950(float out[3], const PlaneWandererDraw& draw);
 
 }  // namespace bsp

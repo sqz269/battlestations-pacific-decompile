@@ -61,10 +61,16 @@ void plane_wanderer_random_direction_00439950(float out[3], const PlaneWandererD
         static_cast<float>(1.0 - static_cast<double>(z) * z))));   // 004399A8 sqrt
     // 004399BD FCOS / 004399C7 FSIN are each stored as floats (004399BF, 004399C9)
     // before the products with r (004399E2 FMULP, 004399EA FMUL).
-    const float c = static_cast<float>(std::cos(static_cast<double>(phi)));
-    const float s = static_cast<float>(std::sin(static_cast<double>(phi)));
-    out[0] = static_cast<float>(static_cast<double>(r) * c);
-    out[1] = static_cast<float>(static_cast<double>(r) * s);
+    // kPlaneWandererFloatTrigBound false keeps the older double products.
+    if constexpr (kPlaneWandererFloatTrigBound) {
+        const float c = static_cast<float>(std::cos(static_cast<double>(phi)));
+        const float s = static_cast<float>(std::sin(static_cast<double>(phi)));
+        out[0] = static_cast<float>(static_cast<double>(r) * c);
+        out[1] = static_cast<float>(static_cast<double>(r) * s);
+    } else {
+        out[0] = static_cast<float>(static_cast<double>(r) * std::cos(static_cast<double>(phi)));
+        out[1] = static_cast<float>(static_cast<double>(r) * std::sin(static_cast<double>(phi)));
+    }
     out[2] = z;
 }
 
