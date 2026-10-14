@@ -16817,3 +16817,7 @@ answers 007EDC30 (the 00923BE0 sum over the current members over the initial cou
 `bsp::squadron_average_health_007edc30`, fed by the registry record's `member_units` and `wing_count`; a summary line
 `summary mission script squadron health reads` appears when any read is served. Prediction (cc13: no reach found among
 the 336 GetHpPercentage sites): 0 squadron reads and gameplay identical on JM08, USNOS and USN12.
+
+Measured (cc9-lua59, 2026-10-14), pair on a87e85bee OFF `local\l59_h0_j8s` / ON `local\l59_h1_*`: 0 squadron reads on
+JM08 (827 unit health reads), USNOS and USN12; JM08 pair_diff 1, gameplay identical. As predicted the path is not reached
+on these rows; it is a faithful correction, so `kSquadronAverageHealthBound` is flipped **ON**.

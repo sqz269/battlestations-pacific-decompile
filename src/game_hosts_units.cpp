@@ -15768,14 +15768,15 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
             target.object = const_cast<void*>(unit_identity(sq.squadron_unit));
             target.position[0] = target.position[1] = target.position[2] = 0.0f;
             target.trailing = 0.0f;
+            // 0084E5A8-0084E5C6: ECX = the squadron's own command block (ESI), the
+            // target 00465080([ESI+224h] = the squadron, 0.0), so the moveto goes
+            // into the squadron's director once (cc9-lua59), not to each member.
             std::size_t placed = 0;
-            const std::vector<std::size_t> members = sq.member_units;
-            for (const std::size_t m : members) {
-                if (m == bsp::kPlaneSquadronNoUnit || m >= h.slots.size() || gun->unit_dead(m)) continue;
-                if (issue_script_command(m, 0x00E08F68u, target, 1, "0084E595 moveto-self",
-                                         h.slots[sq.squadron_unit]->row.name) != nullptr) {
-                    ++placed;
-                }
+            if (!gun->unit_dead(sq.squadron_unit) &&
+                issue_script_command(sq.squadron_unit, 0x00E08F68u, target, 1,
+                                     "0084E595 moveto-self",
+                                     h.slots[sq.squadron_unit]->row.name) != nullptr) {
+                ++placed;
             }
             st.moveto_self = true;
             ++h.moveto_self_issues;
