@@ -14425,3 +14425,43 @@ that makes no difference. Counters: `summary mission gunnery torpedo rack drops=
    kill totals.
 5. A torpedo now carries a team stamp. Any `team_id_1c` consumer (friendly-hit filtering) sees the plane's
    slot instead of -1.
+
+## 240. Verdicts for 232, 237, 238 and 239; five flips (cc9-gunnery43, 2026-10-14)
+
+All runs used the reference env (`BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`) and `tools/run_game.ps1`. Each log is
+`local\g43_<tag>_<row>.log` with its `.manifest.json`. The exports are listed in `local\g43_exports.txt`:
+- OFF is `g43_off`, an export of `799618c09`.
+- ON for 232 is `g43_sa` and `g43_nd`, both of `799618c09`.
+- ON for 237 is `g43_zn` (`974cfd9a3`), for 238 `g43_sp` (`cad5bd6d9`), and for 239 `g43_td` (`0ac6e62a7`).
+
+LABELLED: the zn, sp and td exports are at their own commits, not at the base's. Each adds only code that is
+`if constexpr`-OFF or returns -1 while OFF. The pairs bear that out: zn is gameplay-identical on four rows.
+
+The rows used here:
+
+| tag | row |
+| --- | --- |
+| u2 | USN02 `s36_u2_p7` |
+| j6 | JM06 `s47_j6_n1`, 40000 frames |
+| p1 | PRCP01 `l55_p01_c` |
+| u12 | USN12 `s38_u12_p2` |
+| l10 | LOMP10 `p3_l10_b` |
+| u1 | USN01 `p8_u1_i` |
+| u13 | USN13, no orders |
+| i8 | IJN08, no orders |
+
+| switch | evidence | verdict |
+| --- | --- | --- |
+| 232 `kGunSubmergedAaKindBound` | j6: PlayerSub 01's shots 827 -> 192 (a submerged boat's deck AA stops, as predicted); one transport sinks 0.2 s later; deaths 12 = 12. p1: deaths and death rows identical; `Junyo_sqn07\|.-3` shots 68 -> 0, which is a plane-owned category-1 gun with its muzzle under 1.0 m. The image refuses that too when the weapon kind is 1; the plane's low pose is the host's own | **ON** |
+| 232 `kTorpedoBotNoInterceptDropBound` | `drops=0` on u2 and j6, both gameplay-identical (prediction: rare) | **ON** by mechanism |
+| 237 `kTorpedoLaunchZoneBound` | `tests` 4955 (u2), 11866 (j6), 514 (i8), 0 (u13); `holds=0` on all four, all gameplay-identical. **Not exercised:** no row here put a layer-5 zone between a tube and its lead point | **ON** (faithful, no reach yet) |
+| 238 `kPlaneSpinSideBound` | sets: u12 1712 (lwing 264, rwing 290, fuselage 889, engine 269); l10 443 (102 / 72 / 101 / 168). l10: 12 plane death rows change, all to left/right spinning; death rows and the end (completed 1187.58 s) are identical. u12 moves through RNG coupling (hit records 3032 -> 3076) and is lost on both sides at 36000 frames. **Prediction 2 missed:** the fuselage, not the wings, takes most of the hits | **ON** |
+| 239 `kTorpedoRackDropBound` | u1: 12 rack drops, 380 drift steps. The first drop's vy goes -4.90 -> -8.01, the fall 1.85 -> 1.60 s, and the entry is about 19 m nearer (prediction 3 said 40-60 m: the planes fly with no angle of attack, so only the 3.0 counts). The win holds: completed 360.04 = 360.04. p1: drops 8 -> 3 and a large RNG-coupled move (4 draws per drop); PRCP01 was already lost on OFF | **ON** |
+
+The exec guard's `sus_prog.exe` refusal is logged on every completion checked (u2, u1, l10).
+
+**Wins.**
+- USN01 (`usn01_p8_u1_i`) holds under 239.
+- LOMP10 holds under 238.
+- USN02 holds under 232 and 237.
+- USN12 `s38_u12_p2` is lost on the base already, and stays with the keeper (235).

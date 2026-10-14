@@ -482,20 +482,20 @@ constexpr bool kBombReleaseVelocityFrameBound = true;
 //    [[gun+3F4h]+80h] is 1, 5 or 6 (00728A9C..00728AA9, read here). The twin of
 //    kGunSubmergedArtilleryKindBound. The host set the answer false. ON: the
 //    kind test (the gun category, as for the artillery twin). OFF: as before.
-constexpr bool kGunSubmergedAaKindBound = false;
+constexpr bool kGunSubmergedAaKindBound = true;   // ON: GUNNERY 240
 //  * kTorpedoBotNoInterceptDropBound: packet g42_small_gates (GUNNERY 227 addendum
 //    item 6, docs/CC13_VER_23.md D1). 0090025E CALL 008FBB00; no solution ->
 //    00900267..0090026B JMP 0090097B, gun->vtable[1E8h](0): the trigger drops
 //    and the tick returns. The host aimed at the present position and fired. ON:
 //    no solution drops the trigger for the tick. OFF: as before.
-constexpr bool kTorpedoBotNoInterceptDropBound = false;
+constexpr bool kTorpedoBotNoInterceptDropBound = true;   // ON by mechanism: GUNNERY 240
 //  * kTorpedoLaunchZoneBound: packet g43_ver23_d3 (docs/CC13_VER_23.md D3, GUNNERY
 //    237). 008FFF20 0090088E..009008EB, after the friendly-crossing scan: 004218E0
 //    the avoid zone manager, 004120D0(5) the layer-5 group (none -> launch), then
 //    00417940(group, &gun xz, &lead xz); false -> 00900974, vtable[1E8h](0): the
 //    trigger drops. cc13's torpedo_launch_zone_clear_0090088e over the ship-AI
 //    host's zone table. OFF: no zone test, as before.
-constexpr bool kTorpedoLaunchZoneBound = false;
+constexpr bool kTorpedoLaunchZoneBound = true;   // ON: GUNNERY 240 (no reach yet)
 //  * kTorpedoRackDropBound: packet g43_ver20_d2 (docs/CC13_VER_20.md D2, GUNNERY
 //    239). A plane's torpedo (2Bh, parent 2Ah) leaves through 006E4D50 as a bomb
 //    does: four stream-1 draws (006E4F91, 006E4FB1, 006E513C, 006E51AC), 006E0A70
@@ -507,7 +507,7 @@ constexpr bool kTorpedoLaunchZoneBound = false;
 //    the record kind 0Ah; the host has only the level and dive rows, and Throw is
 //    0 on every torpedo platform of this installation, so the cone is 0 either
 //    way. OFF: as before.
-constexpr bool kTorpedoRackDropBound = false;
+constexpr bool kTorpedoRackDropBound = true;   // ON: GUNNERY 240
 //  * kTorpedoSwimThrustBound: packet cc9_torpedo_tube_turn,
 //    docs/TORPEDO_FRIENDLY_CROSSING.md section 6. 00857480, the swim advance,
 //    per step on a torpedo in the water: 00856BB0 -> 00857061 yaws the NOSE
@@ -1276,7 +1276,7 @@ constexpr bool kPlaneMeshHitTestBound = true;
 //    stores the closest element's kind as the plane's spin side, which the units
 //    host passes to 007CA8A0. LABELLED: the plane record still carries 0Ah / -1,
 //    so the plane damage path is unchanged. OFF: the side stays -1.
-constexpr bool kPlaneSpinSideBound = false;
+constexpr bool kPlaneSpinSideBound = true;   // ON: GUNNERY 240
 //  * kLandStructureMeshHitTestBound: a shell's direct-hit test against a LAND
 //    STRUCTURE (IsKindOf 1Bh: MLandFort, MCommandBuilding) uses the triangles of
 //    its model's GeomMesh, as kPlaneMeshHitTestBound does for a plane. 0087BCC0
