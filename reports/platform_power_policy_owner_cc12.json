@@ -1,6 +1,6 @@
 {
   "packet": "cc12_window_stop_binding",
-  "status": "retained_owner_and_evidenced_old_window_stop_bound_native_fixture_passed_build_pending",
+  "status": "retained_owner_and_evidenced_old_window_stop_bound_build_and_native_fixture_passed_startup_activation_gated",
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
   "baseline": "896c8f94b",
@@ -22,8 +22,19 @@
   "validation": {
     "build": {
       "command": "./scripts/build.ps1",
-      "status": "pending",
-      "log": "local/cc12_window_power_build.log"
+      "status": "passed",
+      "exit_code": 0,
+      "platform": "MSVC Win32 Release",
+      "log": "local/cc12_window_power_build_final.log",
+      "fresh_build_log": "local/cc12_window_power_build.log",
+      "existing_ctest_passed": 2,
+      "existing_ctest_failed": 0,
+      "existing_ctest_names": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "final_source_recompiled": "platform_control_messages.cpp",
+      "native_differential_fixture": "separate3-case original/source probe; no new CTest cases"
     },
     "native_fixture": {
       "command": "local/cc12_window_power_probe.exe \"I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe\"",
@@ -119,11 +130,28 @@
     {
       "path": "local/cc12_window_power_probe.log",
       "sha256": "6413c96795dedf5df15551a427b1d0d65dddbe78afcbe5857c98b7382cf17374"
+    },
+    {
+      "path": "local/cc12_window_power_build_final.log",
+      "sha256": "cd020c2f6167d7ea970d1b7189217f30589b9a5a4f65310d42498530b2555f5a"
+    },
+    {
+      "path": "local/cc12_window_power_build.log",
+      "sha256": "e67f2e6449917e8e571ef40649d0f7adeb163a40e043e40bbfaaa775575dbb49"
+    },
+    {
+      "path": "build/win32/Release/bsp_game.exe",
+      "sha256": "2dddba9c18ae8196909ccfb48c21952e4e9494effd8941ed8b9756d6c1b28b23"
+    },
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "sha256": "5912a03da5531cd240c18d2b44d0c9c7676e63b32ce4acef81b599d76849e50e"
     }
   ],
   "limits": [
     "Projected C++ owner is not native platform object ABI",
     "No established normal-exit restore call or whole-game lifecycle parity",
     "Application startup policy mutation remains gated; compiled producer requires genuine normal-exit restore caller before activation"
-  ]
+  ],
+  "main_integration_acceptance": "pending primary integration/header merge and its required verification; worker did not merge or push Main"
 }
