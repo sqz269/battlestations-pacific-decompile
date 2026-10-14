@@ -73,6 +73,9 @@ The hangar records are `+780h..+788h` (10h each, `+4` the hangar Object, filled 
   - a shipyard adopted by a CommandBuilding (`+71Ch != 0`) gets `vtable +194h("InferiorFailure", 0)`;
   - any other gets `vtable +70h(1)`. `00845B55` pushes 1, where the airfield passes 0
     (`src/game_hosts_units.cpp:5797`).
+  - The C++ (cc13-fixes2) makes both calls through `ShipyardHangarsLostHost`: the 15-character
+    temporary is built from `00CF0B74` (`0041DD40`, memcpy of 16 bytes), passed by address with 0, and its
+    buffer released to the sized pool afterwards. The earlier version returned an enum instead.
 
   **The caller is not found.** The shipyard tick `00846320` does not load `+1A8h`; the airfield tick
   loads it at `006D2526`. A scan for `FF ?? A8 01 00 00` finds no call, and the 68

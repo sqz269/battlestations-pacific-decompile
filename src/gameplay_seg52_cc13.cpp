@@ -5,6 +5,8 @@
 
 #include "bsp/gameplay_seg52_cc13.hpp"
 
+#include <cstring>
+
 #include "bsp/band_0080_cc13.hpp"  // stationary_check_destroyed_0084eb80
 
 namespace bsp {
@@ -80,14 +82,28 @@ ShipyardAimPick shipyard_aim_point_pick_00844a10(const std::vector<ShipyardHanga
     return pick;
 }
 
-ShipyardHangarsLostArm shipyard_hangars_lost_00845ac0(
-    const std::vector<ShipyardHangarSlot>& slots, bool adopted_71c) noexcept {
+void shipyard_hangars_lost_00845ac0(
+    const std::vector<ShipyardHangarSlot>& slots, bool adopted_71c, ShipyardHangarsLostHost& host) {
     // The walk returns at the first live object; the image does not test record+4
     // for null, a null object is taken as not live here.
-    if (shipyard_first_live_hangar_00845750(slots)) return ShipyardHangarsLostArm::HangarLive;
-    // 00845B4E: CMP [ESI+71Ch], 0; JE to vtable +70h(1) at 00845BEA.
-    return adopted_71c ? ShipyardHangarsLostArm::InferiorFailure_194
-                       : ShipyardHangarsLostArm::Destroy_70;
+    if (shipyard_first_live_hangar_00845750(slots)) return;
+    // 00845B4E: CMP [ESI+71Ch], 0; JE to vtable +70h(1) at 00845BEA (the PUSH 1 at
+    // 00845B55 is the +70h argument on that arm and the resize flag on the other).
+    if (!adopted_71c) {
+        host.shipyard_vslot70(1);
+        return;
+    }
+    // 00845B5D..00845BD3: the temporary "InferiorFailure" (00CF0B74), +194h(&name, 0),
+    // then the pool release of its buffer.
+    static constexpr char kInferiorFailure[] = "InferiorFailure";
+    ShipyardNativeString name;
+    host.native_string_resize_0041dd40(name, 0xF, 1);
+    if (name.data != nullptr) std::memcpy(name.data, kInferiorFailure, name.length + 1);
+    host.shipyard_vslot194(&name, 0);
+    if (name.data != nullptr) {
+        void* pool = host.pool_singleton_00419cc0();
+        host.pool_return_block_00bd1510(pool, name.data, name.length + 1, 1);
+    }
 }
 
 ShipyardMessageArm shipyard_message_arm_00847030(std::uint8_t kind) noexcept {

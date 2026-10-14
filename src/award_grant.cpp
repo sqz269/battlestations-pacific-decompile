@@ -135,12 +135,38 @@ bool may_queue_award_00a410a0(const OnlineSignInState& state) noexcept
     return state.live_enabled;
 }
 
-bool midway_save_folder_preexisted_0090c5d0(bool create_directory_succeeded,
-    std::uint32_t last_error) noexcept
+namespace {
+void release_midway_string(MidwaySaveFolderHost& host, const MidwayNativeString& s)
 {
-    // SHGetSpecialFolderPathA failing leaves the routine on its return 0 path,
-    // which a caller models by reporting a successful create it never made.
-    return !create_directory_succeeded && last_error == kErrorAlreadyExists;
+    if (s.data != nullptr) {
+        void* pool = host.pool_singleton_00419cc0();
+        host.pool_return_block_00bd1510(pool, s.data, s.length + 1, 1);
+    }
+}
+}  // namespace
+
+// 0090C5D0..0090C738. The buffer is the 104h-byte stack array at [ESP+14h].
+bool midway_save_folder_preexisted_0090c5d0(MidwaySaveFolderHost& host)
+{
+    char folder[0x104];
+    if (host.sh_get_special_folder_path_a(folder, 5, 0) == 0) {
+        return false;                                                    // 0090C5FE -> 0090C722
+    }
+    MidwayNativeString suffix;                                           // [ESP+8]
+    host.native_string_from_cstring_0041e870(suffix, "\\Battlestations-Midway\\save");  // 00D18734
+    MidwayNativeString base;                                             // [ESP+10h]
+    host.native_string_from_cstring_0041e870(base, folder);
+    MidwayNativeString path;                                             // [ESP+0]
+    host.native_string_concat_004261a0(base, path, suffix);
+    release_midway_string(host, base);                                   // 0090C644..0090C666
+    release_midway_string(host, suffix);                                 // 0090C66B..0090C68D
+    const char* text = path.data != nullptr ? path.data : host.empty_text_00f899a0();
+    if (host.create_directory_a(text, nullptr) == 0 && host.get_last_error() == kErrorAlreadyExists) {
+        release_midway_string(host, path);
+        return true;                                                     // 0090C6E2 MOV AL,1
+    }
+    release_midway_string(host, path);
+    return false;
 }
 
 bool should_grant_award_004e4310(const AwardGrantInputs& in) noexcept
