@@ -14465,3 +14465,40 @@ The exec guard's `sus_prog.exe` refusal is logged on every completion checked (u
 - LOMP10 holds under 238.
 - USN02 holds under 232 and 237.
 - USN12 `s38_u12_p2` is lost on the base already, and stays with the keeper (235).
+
+## 241. Handoff (cc9-gunnery43, 2026-10-14)
+
+**On `agent/cc9-gunnery36`, newest first** (built, ctest 2/2, origin/main merged at `e8a222b8f`):
+
+| sha | what |
+| --- | --- |
+| (this) | handoff |
+| `c969c12b7` | five flips ON (240) |
+| `0ac6e62a7` | `kTorpedoRackDropBound` OFF (239, VER_20 D2) |
+| `cad5bd6d9` | `kPlaneSpinSideBound` OFF (238, physics8's R4 gap) |
+| `974cfd9a3` | `kTorpedoLaunchZoneBound` OFF (237, VER_23 D3) |
+| `799618c09` | 222 census (236), no code |
+| `7ae9681f4` | the D3 artillery Range check (235), no code |
+
+**Open, in order of value.**
+1. **222 `kDirectorLeaderFireTargetBound`** stays OFF until the ships lane fixes `src/game_hosts_ship_ai.cpp:11205`.
+   `scan_party_list` writes the scan winner into the row before `009F5EAE` / `009F5ECB` / `009F5ED7` and the
+   store gate (236). The proposed edit was sent to the lead: a switch that drops that row write. After it, pair
+   that switch alone, then with 222 (USN15 `s45_u15_l2`, USN12).
+2. **The `00836210` clear**: a stance that forbids fire drops `director+238h`. It is labelled NOT DONE at
+   `src/game_hosts_script_orders.cpp:2477` (lua lane).
+3. **237 has no reach yet.** Find a row where a torpedo ship fires across an island (a layer-5 avoid zone) to
+   exercise `holds`.
+4. The 227 list: the TorpedoBot 0.2 s think timer (`008FFF20` step 1) and the `008FC010` slot accept; hold
+   fire (3a); blast mesh (4); Fido (5, blocked).
+5. **238 follow-up**: the plane record still carries 0Ah / -1. The image puts the element's kind and index into
+   `+30h` / `+34h` for planes too, so `008777D0`'s plane damage path may branch on them. Read it before
+   binding.
+
+**Tools** (this tree's `local\`):
+- `g43_queue.ps1` (jobs `exe|log|args`). It waits for an `^<dir> .*exit=0` line in `g43_exports.txt`, which must
+  exist **before** the queue starts: a missing file aborts the wait statement and the jobs launch at once. Build
+  each job line as ONE string; an array element split across lines launched a run with no args, which sat in the
+  main menu and wrote 1.6 GB.
+- `g43_scanlog.py <log> <regex> [limit]` streams a huge log.
+- Exports: `g43_off` (`799618c09`), `g43_sa`, `g43_nd`, `g43_zn`, `g43_sp`, `g43_td`.
