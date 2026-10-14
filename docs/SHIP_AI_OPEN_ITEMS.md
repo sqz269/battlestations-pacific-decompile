@@ -17756,3 +17756,37 @@ at 11000 JapSub3 to (-2000, -6600) and at 11020 JapSub2 to (-2100, -6200), ahead
 Phase 1 is now jitter-robust; phase 2 (h5's own part) is not: the airfield planes reach the Marus in formation
 before Kongo/Kirishima/Haruna/Hiei finish US_Airfield_02/03. Variants i1-i10, i12 (`local\s49_i8_i*.txt`) each leave
 one Cargo alive. Committed as `config/win_orders/ijn08_s49_i08_i11.txt` (h5 kept) as a clean-only row.
+
+## 246. USNOS on current main; handoff (cc9-ships49, 2026-10-14; lead item 3 started)
+
+Build as 244 (fd6d92617, exe 3E945D0DF0EB). USNOS, reference env, `--stop-after-end 40`; generator
+`local\s49_osgen.py` (`a:<from>:<to>:<step>:<unit>:<target>` select+attack repeats, `m:` moveto, `drop:<regex>`).
+**k and s46 a6 now fail at 1500.34 s** (`local\s49_os_k.log`, `s49_os_a6.log`, with a 2 GB combined trajectory
+`local\s49_os_k.csv`; sample it with `local\s49_pos.py <csv> <steps> <regex>`): Game Over (HQ1), all six transports
+dead by 1498 s. TroopTrans2/4 to planes (260/451 s, as before); **Ada3** (type 386, a 221 m battleship parked at
+(-1800, -2600) until ~1200 s) sinks Gear13/15/17 from ~3 km (873-1061 s) and then TroopTrans5 (1348 s) and
+TroopTrans1 (1429 s); TroopTrans3/6 fall to Airfield2/Airfield1 planes (1443/1498 s). The keeper's p8w1 run (before
+the ten gunnery flips) lost the same Gears to Ada3 but its transports lived to 1619/2717 s (Shimotsuke).
+k only sends NH at Ada3 from 47500.
+| v | change to k | outcome |
+| --- | --- | --- |
+| k1 (40000 frames) | `attack NH Ada3` every 600 frames 17000-47000 | Ada3 dies 958.89 s (NH); TT3/5/6 still die 1476-1897 s |
+| k2 | k1 plus Gear14 and Gear16 `attack Ada3` every 600 frames 17020-30000 | Ada3 960.29 s; **Game Over 2801.61 s** (`s49_osf_k2`): TT3 1730 s (ToSpawnTakao), TT1 1999 s (Airfield1 planes), TT6 2270 s (Airfield2 planes), TT5 2798 s (Airfield1 planes); Haku3/Haku4 die to DM1 (2599/2676 s), Betty1 dies 2719.83 s (Reprisal_sqn94) |
+| k2 jitter 20,3 | | Game Over 2165.99 s: TT6 1541 s (Shimotsuke), TT3 1728 s, TT5 1976 s, TT1 2163 s |
+Next for USNOS: the airfield strikes on the parked transports now decide the row (Airfield1/2/3 squadrons, cat 10).
+Either keep TroopTrans5/6 under the fleet's AA (as IJN08's Marus) until the HQ moves, or hunt the airfield
+squadrons with Enterprise/Midway F2Gs (229's hunt mechanics: four hunts per carrier). Betty1 died in k2 without
+special orders, so the 229 stall may not recur once the transports live.
+
+**Handoff.** Branch `agent/cc9-ships44` (origin/main 067bcac79 merged). Commits this session: eeb52a94d / fd6d92617
+(`kSubAttackOwnHalfLengthBound`, 242-243), a1c08af90 (JM06 `jm06_s49_j6_s`, 244), d78f7af9b (IJN08
+`ijn08_s49_i08_i11`, 245), this one. No leases held after this commit. Tools in `local\`: `s49_rows.ps1` (launcher;
+`-Traj`, `-Jitter`; writes `<prefix>_<row>.done`), `s49_runs.ps1`, `s49_j6gen.py`, `s49_i8gen.py`, `s49_osgen.py`,
+`s49_pos.py`. Note `--trajectory-csv` writes ONE combined csv per run (the per-unit csvs of older runs came from
+small runs only); USNOS full runs make 2 GB.
+**Open, in order:**
+1. USNOS re-plan (above); then Betty1 if the 229 stall returns.
+2. IJN08 phase 2 under jitter (245: the Marus fall to US_Airfield_02/03 planes at 1586-1977 s before the BBs kill
+   those fields); h5's phase 2 is unchanged in i11.
+3. The rest of 241 (LandFort hangar fire roll 007470B0, shipyard 00845AC0); cc13-seg7 soldier placeholders (never wire
+   as-is); 005F98F0 port-range test.
