@@ -412,6 +412,8 @@ void unit_tickable_entity_sentity_init_slot_a4_0087bf80(
 //    (0087F9A0..00883BB0)
 // ============================================================================
 
+struct GeneratedModelNode;
+
 struct TerrainHeightFieldInterface {
     virtual ~TerrainHeightFieldInterface() = default;
     // vslot +0Ch: query world AABB (min Vec3 at +00h, max Vec3 at +0Ch)
@@ -428,8 +430,9 @@ struct TerrainHeightFieldInterface {
     virtual Vec3* local_normal_vslot34(Vec3* out, float x, float z) = 0;
     // vslot +3Ch: segment trace against heightfield (returns hit bool, writes hit_pos)
     virtual bool trace_segment_vslot3c(const void* ray, const void* filter, Vec3& out_hit_pos) = 0;
-    // vslot +40h: decal target / terrain render root
-    virtual void* get_terrain_render_root_vslot40(std::uint32_t a, std::uint32_t b, std::uint32_t c) = 0;
+    // vslot +40h: the terrain render root (also the decal target). __thiscall(hf), no stack
+    // arguments: 0087F9BD, 00883075 and 008830BA call it with nothing pushed for it.
+    virtual GeneratedModelNode* get_terrain_render_root_vslot40() = 0;
 };
 
 struct HitRecordState {
@@ -503,8 +506,9 @@ struct LandscapeState {
 
 struct LandscapeHost {
     virtual ~LandscapeHost() = default;
-    // 007407C0 BSP_DecalList_AddDecal
-    virtual void add_decal_007407c0(void* target, std::uint32_t a, std::uint32_t b, std::uint32_t c) = 0;
+    // 007407C0 BSP_DecalList_AddDecal, __thiscall(ECX = [landscape+168h], target, a, b, c).
+    virtual void add_decal_007407c0(std::uint32_t decal_list_168, void* target, std::uint32_t a,
+        std::uint32_t b, std::uint32_t c) = 0;
     // 00470370 BSP_HitRecord_SetEntity
     virtual void hit_record_set_entity_00470370(HitRecordState& rec, void* entity) = 0;
     // 00BB0A90 BSP_CoastMesh_SetTime
@@ -547,8 +551,16 @@ struct LandscapeHost {
         GeneratedModelNode* model,
         float world_size_x,
         float world_size_z) = 0;
-    virtual void* create_terrain_render_node(TerrainHeightFieldInterface* hf) = 0;
-    virtual void register_ocean_wave_coverage_00b0b830(void* render_node) = 0;
+    // The [[00E188A8]+19F0h] block of 00882AC0 (00883062..008830BE):
+    // [[00E188A8]+19F0h], the ocean wave scene (null skips the block).
+    virtual void* game_ocean_scene_19f0() = 0;
+    // root->vtable[10h](6, 0) -> the terrain render node stored at +3CCh.
+    virtual void* render_root_create_node_vslot10(GeneratedModelNode* root, std::int32_t kind,
+        std::int32_t flag) = 0;
+    // 00B6D890 BSP_Node_PropagateRootRegistration, __thiscall(node, 0) RET 4.
+    virtual void node_propagate_root_registration_00b6d890(void* node, std::int32_t arg) = 0;
+    // 00BA1370 BSP_OceanWaveField_AddTerrainCoverage, __thiscall(ECX = [scene+A8h], node) RET 4.
+    virtual void ocean_wave_field_add_terrain_coverage_00ba1370(void* scene_19f0, void* node) = 0;
     virtual void* create_unit_part_instance_007135c0(LandscapeState& self) = 0;
     virtual void* create_hull_physics_body_00c31aa0(
         LandscapeState& self,

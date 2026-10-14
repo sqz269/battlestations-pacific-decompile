@@ -512,18 +512,17 @@ void unit_tickable_entity_sentity_init_slot_a4_0087bf80(
 
 // 0087F9A0 BSP_Landscape_OnHit
 // __thiscall(ECX = landscape, param_2, param_3, param_4), RET 0Ch.
-// Calls `[+3D0h]->vslot_40(param_3, param_4, param_2)` and `007407C0` (0087F9DF).
+// `[+3D0h]->vslot_40()` takes no arguments: the three pushes at 0087F9A9..0087F9B9 stay on the
+// stack for `007407C0(ECX = [+168h], root, param_3, param_4, param_2)` (0087F9C6). No null test
+// on +3D0h (cc13-fixes2; the earlier version passed the three words to vslot_40 and guarded it).
 void landscape_on_hit_0087f9a0(
     LandscapeState& self,
     std::uint32_t param_2,
     std::uint32_t param_3,
     std::uint32_t param_4,
     LandscapeHost& host) {
-    void* target = nullptr;
-    if (self.height_field_3d0 != nullptr) {
-        target = self.height_field_3d0->get_terrain_render_root_vslot40(param_3, param_4, param_2);
-    }
-    host.add_decal_007407c0(target, param_3, param_4, param_2);
+    void* target = self.height_field_3d0->get_terrain_render_root_vslot40();
+    host.add_decal_007407c0(self.decal_owner_id, target, param_3, param_4, param_2);
 }
 
 // 0087F9F0 BSP_Landscape_SetMatrixNoOp
@@ -810,9 +809,9 @@ void landscape_destruct_008828e0(
 
 // 00882AC0 BSP_Landscape_LoadTerrain
 // __thiscall(ECX = landscape, const NativeString* file_path), RET 4.
-// Releases previous terrain (008826F0), extracts basename `F` after the last `\` or `/`,
-// builds `terrain/<F>_heightmap.tdt`, `"NULL"`, `terrain/<F>_colormap.dds`, and
-// `models/terrain/<F>.mmod`, constructs heightfield at `+3D0h` (00ADD290), and branches
+// Releases previous terrain (008826F0), extracts basename `F` after the last `\` or `/`
+// (unused), builds `terrain/<file_path>_heightmap.tdt`, `"NULL"`, `terrain/<file_path>_colormap.dds`,
+// and `models/terrain/<file_path>.mmod`, constructs heightfield at `+3D0h` (00ADD290), and branches
 // on VFS existence of `models/terrain/<F>.mmod` (00882EFB).
 void landscape_load_terrain_00882ac0(
     LandscapeState& self,
@@ -832,7 +831,12 @@ void landscape_load_terrain_00882ac0(
     if (last_slash != std::string::npos && static_cast<int>(last_slash) > cut_index) {
         cut_index = static_cast<int>(last_slash);
     }
+    // 00882BEE: 00469840 copies the text after the separator into a temporary ([ESP+140h]),
+    // but every path below is built from the full argument: the 0043C130 prefix calls push
+    // EDI = [ESP+208h] (the argument, 00882BD4) at 00882C31 and 00882D21, and
+    // [ESP+208h] again at 00882E5D. The temporary is only released (checked cc13-fixes2).
     const std::string base_name = file_path.substr(static_cast<std::size_t>(cut_index + 1));
+    static_cast<void>(base_name);
     const std::string tdt_path = "terrain/" + file_path + "_heightmap.tdt";
     const std::string null_tag = "NULL";
     const std::string dds_path = "terrain/" + file_path + "_colormap.dds";
@@ -855,14 +859,19 @@ void landscape_load_terrain_00882ac0(
             self.generated_model_420,
             world_size_x,
             world_size_z);
-        self.terrain_render_node_3cc = host.create_terrain_render_node(self.height_field_3d0);
-        if (self.terrain_render_node_3cc != nullptr) {
-            host.register_ocean_wave_coverage_00b0b830(self.terrain_render_node_3cc);
+        // 00883062..008830BE (cc13-fixes2): only with an ocean scene at [[00E188A8]+19F0h]:
+        // the render node root->vslot10(6, 0) into +3CCh, 00B6D890(node, 0), the scene's wave
+        // field ([scene+A8h]) 00BA1370(node), then 00882420 on the render root (vslot40()
+        // fetched again), not on the model +420h. No null test on the node.
+        if (host.game_ocean_scene_19f0() != nullptr) {
+            GeneratedModelNode* root = self.height_field_3d0->get_terrain_render_root_vslot40();
+            self.terrain_render_node_3cc = host.render_root_create_node_vslot10(root, 6, 0);
+            host.node_propagate_root_registration_00b6d890(self.terrain_render_node_3cc, 0);
+            host.ocean_wave_field_add_terrain_coverage_00ba1370(host.game_ocean_scene_19f0(),
+                self.terrain_render_node_3cc);
+            landscape_apply_ocean_wave_damp_00882420(
+                self.height_field_3d0->get_terrain_render_root_vslot40(), host);
         }
-        // KNOWN DEVIATION (a55fix, unresolved): at 008830AF..008830BE the binary passes
-        // `height_field_3d0->vslot40()` (the terrain render root), not +420h, and only
-        // inside the `[00E188A8]+19F0h != 0` block that starts at 00883062.
-        landscape_apply_ocean_wave_damp_00882420(self.generated_model_420, host);
         self.has_model_3e1 = true;
         self.unit_part_instance_418 = host.create_unit_part_instance_007135c0(self);
         if (self.generated_model_420 != nullptr) {
