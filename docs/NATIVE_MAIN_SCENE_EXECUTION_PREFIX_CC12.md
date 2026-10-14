@@ -1,10 +1,10 @@
 # Main-scene execution prefix and actual camera history
 
 This packet supplies the genuine B156C0 entry through B1586C, its complete
-actual-storage B0DB00 history calculation, and the separate B1586D..B15BD1
-texture/far-corner continuation. The first API returns at texture acquisition;
-the continuation ends immediately before the B15BD2 bloom branch. Reaching
-either boundary does not mean a scene command executed successfully. The
+actual-storage B0DB00 history calculation, the separate B1586D..B15BD1
+texture/far-corner continuation, and the B15BD2..B15E77 bloom/target stage.
+The current final boundary is immediately before B15E78 camera-frame execution.
+Reaching any boundary does not mean a scene command executed successfully. The
 existing queue must continue refusing D5E13C: B17240 preparation and the
 remaining B156C0 render passes are not installed or claimed complete.
 
@@ -142,6 +142,49 @@ arithmetic/domain callees must return normally. No rollback is added on failure;
 unsupported profiles are rejected rather than dispatched as numeric addresses,
 but C++ exceptions crossing the naked helper are outside the valid contract.
 
+## Bloom and actual frame targets
+
+`continue_native_main_scene_bloom_targets_00b15bd2` supplies all 678 native bytes
+of B15BD2..B15E77. Its 120-instruction arithmetic helper runs the original
+service+21A branch. When enabled, it repeatedly reads the current service+2C
+bloom and actual B54CD0 output holder+20, then gets width/height through the
+same concrete texture domain. It preserves unsigned conversion, half-texel
+stores at +18C/+190, current +258/+25C/+260 adaptation values divided by the
+actual double20000 cell CE3CB8, and both native lower/upper/unordered clamp
+schedules from +264/+268 into +274/+27C. Disabled bloom leaves those fields
+untouched and joins the shared screen-constant matrix at +1D8..+214. The shared
+half and negative-half cells remain native inputs, not capability defaults.
+
+The ownership suffix uses normal C++ exception frames. It gets the current
+camera, captures its full +188 clear-flags word in the external state, then
+gets the current camera again for flags7 and again for white clear color. The
+prior near/color restore words remain unchanged. The original white word comes
+from four byte stores of BL=FF, established at B1573D and preserved across prior
+callees; its private stack-store order is outside this new source interface.
+
+For slots0/1/2, it independently reads service+38/+3C/+40, calls the existing
+full B4CB20 primary-surface getter, then reloads current service+1C8 and invokes
+full B1FAB0. The same actual surface domain publishes and retains incoming
+before releasing the captured outgoing owner at zero. No extra owner credit,
+null replacement, automatic cleanup or post-failure rollback is added.
+
+Finally it reloads the actual F8D394 publication through that same surface
+domain, captures the renderer profile, reloads current service+1C8, and resolves
+current D5F0A8 slot98 to full B24E70. The genuine binding provider keeps its
+original optional guard, frame retain/release, current F8D398 sRGB setting,
+color unbind/bind sequence, depth binding and current device methods. The
+setting is not inferred from device capabilities. Material/effect execution
+has not yet been reached; the actual bloom output owner is only read here.
+
+The persistent state records whether this stage started, each reached call
+site, the saved clear-flags word and completed clear changes. A failure retains
+earlier mutations and the active call site. A started stage cannot be replayed.
+`reached_camera_frame_stage` is published only after target binding returns.
+The B156C0 caller still has no cleanup state armed at this boundary; the actual
+child owner/renderer providers retain their own cleanup obligations. Exceptions
+across the naked arithmetic helper, native caller EH/SEH and arbitrary private
+stack aliases remain outside the source contract.
+
 ## Validation
 
 - Installed executable and saved Ghidra body bytes matched for the complete
@@ -191,22 +234,46 @@ the full far-corner body and 74 in the new clause, plus all 41 prior prefix
 instructions. The checked total is 279; constant-pointer/public-argument
 adaptations are reviewed separately.
 
+The bloom/target follow-up matched all 678 installed/saved Ghidra caller bytes.
+Its manifested fixture passed five complete original/source stage comparisons
+of service, camera, renderer and both frame-group byte states, plus incoming and
+outgoing surface counts. Cases cover inactive/active bloom, zero/high-bit
+dimensions, lower/upper/equal clamp branches and unordered weights. Every case
+changes the bound frame and invokes the real B1FAB0/B24E70 providers. A genuine
+D3D9 HAL device and three real render targets are used; device queries confirm
+all three current target identities and enabled sRGB state. This is bounded
+backend-state evidence, not visible world output.
+
+The fixture translates only the known native dimension/renderer virtual slots
+to the same concrete source bodies. It does not prove original table dispatch,
+terminal-zero deletion, enabled synchronization, child exceptions, concurrent
+publication changes, FP status/traps or original exception ABI. Controlled owner
+preimages keep counts positive and retain the real lifecycle context; no
+deletion callback is substituted. Separate source checks confirm rejected
+renderer dispatch preserves completed mutations/call-site state and disallows
+replay. The current encoding audit matches 46 new x87 instructions plus all
+279 preceding ones, 325 total. Strict Win32 compilation, fresh real-core link,
+fixture launch and all three ordinary build tests passed again. No new source
+unit or persistent test suite was added in this follow-up.
+
 `reports/native_main_scene_execution_prefix_cc12.json` records artifact hashes,
 validation limits and annotation receipts. Outputs are under
-`local/main_scene_execution/` and `local/main_scene_texture/`. All fifteen
+`local/main_scene_execution/`, `local/main_scene_texture/` and
+`local/main_scene_bloom/`. All fifteen
 preceding main-scene artifacts, including its exact old core library, were
 preserved before the prefix build under
 `local/main_scene_receipt_3ccc58cbf/receipt.json`. All 34 artifacts from immutable
 prefix commit `450a751a0`, including its core library and prior receipt, were
 verified and preserved before the follow-up build under
-`local/main_scene_execution_receipt_450a751a0/receipt.json`.
+`local/main_scene_execution_receipt_450a751a0/receipt.json`. Before the
+bloom/target build, all 36 artifacts from immutable `ed43121f9` were verified
+and copied to `local/main_scene_texture_receipt_ed43121f9/receipt.json`.
 
 ## Next executed clause
 
-B15BD2 next tests service+21A for the bloom clause. Its taken path obtains the
-current bloom output holder through B54CD0 and computes its texture/adaptation
-constants. Later work binds real targets, submits camera/system constants,
-prepares and executes batch/material passes, and performs the concrete
+B15E78 next obtains the current camera and invokes B71360 frame execution.
+Later work changes camera mode, submits system constants, prepares and executes
+batch/material passes, and performs the concrete
 post-effect/cockpit/distortion/stats paths. These remain required. No hidden-node
 bypass, callback-only renderer, D5E13C admission, application invocation, visible
 world pixels or gameplay equivalence is supplied by these stages.
