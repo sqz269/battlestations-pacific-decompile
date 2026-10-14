@@ -22,24 +22,6 @@ namespace bsp::seg1_cc13 {
 inline constexpr const char* kMpakCampaignNames_00e08048[6] = {
     "us", "japan", "multi", "training", "dlcusa", "dlcjap"};
 
-// The GUI list box and its listener as 00425EB0 drives them. All handles are
-// the host's; the C++ only passes them along.
-struct ListboxSelectHost {
-    virtual ~ListboxSelectHost() = default;
-    // 00A9C990 __thiscall(listbox) -> the selected row's data.
-    virtual std::int32_t listbox_selected_data_00a9c990(void* listbox) = 0;
-    // 00A9C920 __thiscall(listbox) -> the selected row's index.
-    virtual std::int32_t listbox_selected_index_00a9c920(void* listbox) = 0;
-    // 00425E50 __thiscall(listbox): the current row (node +8h), 0 at the end.
-    virtual std::uint32_t listbox_current_row_00425e50(void* listbox) = 0;
-    // listener->vtable[4](row, listbox): the row-activated callback.
-    virtual void listener_activate_vslot04(void* listener, std::uint32_t row, void* listbox) = 0;
-    // 00A9C860 __thiscall(listbox, value) RET 4: select the row whose data is value.
-    virtual void listbox_select_data_00a9c860(void* listbox, std::int32_t value) = 0;
-    // 00A9C7C0 __thiscall(listbox, index) RET 4: select by index.
-    virtual void listbox_select_index_00a9c7c0(void* listbox, std::int32_t index) = 0;
-};
-
 // 00425EB0 __thiscall(driver, listener, listbox, value, by_index) RET 10h ->
 // AL. The driver is not read. by_index == 0: when 00A9C990(listbox) == value,
 // listener->vtable[4](00425E50(listbox), listbox) and return 1, else
@@ -86,7 +68,7 @@ void autotest_focus_lobby_00425500(void* lobby, LobbyFocusHost& host);
 
 // The engine side of 00427190. Global singletons: game [00E188A8], GUI roots
 // [00E198AC], [00E198B4], [00E198C4], movie player [00E18D48].
-struct AutoTestStepHost : AutoTestHost, ScreenHost, ListboxSelectHost, MpakScenesLuaHost,
+struct AutoTestStepHost : AutoTestHost, ScreenHost, MpakScenesLuaHost,
                           LobbyFocusHost {
     // [[00E188A8]+38h] != 0 and its +60h == 1: a movie is playing.
     virtual bool movie_playing_game_38() = 0;

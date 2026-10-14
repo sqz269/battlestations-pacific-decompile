@@ -17616,3 +17616,20 @@ Logs `local\s48_dx{off,on}_{u2,j8}.log`, guard logged on all. 41 of this install
 breakup draw is keyed under `BSP_GUNNERY_RNG_STREAMS=1`, so the reference rows cannot move; without that env it
 consumes the shared stream as the image does. **Mechanism matches, gameplay identical: both ON.** No Kaiten or
 Kamikaze Boat died on these rows (the removal is unexercised).
+
+## 240. Land master pairs; `kLandMasterDamageBound` ON (cc9-ships48, 2026-10-13)
+
+OFF export of c8e9e5ac3, ON export of b4a87cce2 (the "no master" sentinel fix; the change is inside the switch, so
+the OFF side is the same program), reference env:
+| row | OFF | ON |
+| --- | --- | --- |
+| USN01 `usn01_p7_u1_a`, 26000 | no mission end in 1300 s (death rows 65) | death rows identical; `Multi Hangar 1` -> `Airfield2` (5500/5500); the hangar dies 73.90 s, Airfield2 at 0 is kept alive by CB2 (00958A30 +71Ch arm), then InferiorFailure as before; forwards 74 |
+| IJN08 `s47_i08_e`, 95000 | `Game Over` 2376.19 s (Maru2 2371.89 s) | 8 sections -> 8 masters, 1 party adoption; Jap_Airfield (732.09 s), US_Airfield_01 (940.14 s) and US_Shipyard_02 (1805.79 s, forwarded damage) destroyed through their sections; Maru1 1585.42 s, Maru2 3106.35 s; then no mission end |
+Logs `local\s48_lm{off,on}_{u1,i8}.log`. The IJN08 ON row never fails after Maru2 dies because this installation's
+modded `commandhelpers.lua` (mtime 2024-10-29) throws in `luaAirfieldManager` -> `luaSortByDistance` ("luaGetDistance's
+second param is a non-table parameter", 550 times from 3106.86 s), which aborts each `luaCheckObjectives` before its
+primary-2 test. That is the script's own failure on an empty transport list, reached here only because Maru2
+outlives the OFF row's 2371 s; not a host defect. The first ON USN01 run (c8e9e5ac3 flipped) mapped sections to
+ScoutDauntless, a unit created after the table was filled with `units.count()` as "none": fixed in b4a87cce2.
+**Mechanism matches the predictions: ON.** Wins to re-check by the keeper: any row whose airfield or shipyard
+loses a hangar to gunfire (the master now dies with it unless a CommandBuilding adopted it).

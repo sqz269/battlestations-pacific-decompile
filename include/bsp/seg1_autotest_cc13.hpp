@@ -111,15 +111,33 @@ struct FlaggedRecord {
 };
 std::uint32_t count_flagged_records_00425b20(const std::vector<FlaggedRecord>& records) noexcept;
 
-// 00426350 __thiscall(driver, int screen) RET 4 -> AL: when the active GUI
-// screen ([[[00E198ACh]+58h]+1B8h], 00A9C990) is `screen`, invoke the
-// screen's +8h object slot 4 with 00425E50's value and return 1; otherwise ask
-// for `screen` (00A9C860) and return 0.
-struct ScreenHost {
-    virtual ~ScreenHost() = default;
-    virtual std::int32_t active_screen_00a9c990() = 0;
-    virtual void activate_current() = 0;            // [screen+8h]->vtable[4](00425E50(...))
-    virtual void request_screen_00a9c860(std::int32_t screen) = 0;
+// The GUI list box and its listener as 00425EB0 and 00426350 drive them. All
+// handles are the host's; the C++ only passes them along.
+struct ListboxSelectHost {
+    virtual ~ListboxSelectHost() = default;
+    // 00A9C990 __thiscall(listbox) -> the selected row's data.
+    virtual std::int32_t listbox_selected_data_00a9c990(void* listbox) = 0;
+    // 00A9C920 __thiscall(listbox) -> the selected row's index.
+    virtual std::int32_t listbox_selected_index_00a9c920(void* listbox) = 0;
+    // 00425E50 __thiscall(listbox): the current row (node +8h), 0 at the end.
+    virtual std::uint32_t listbox_current_row_00425e50(void* listbox) = 0;
+    // listener->vtable[4](row, listbox): the row-activated callback.
+    virtual void listener_activate_vslot04(void* listener, std::uint32_t row, void* listbox) = 0;
+    // 00A9C860 __thiscall(listbox, value) RET 4: select the row whose data is value.
+    virtual void listbox_select_data_00a9c860(void* listbox, std::int32_t value) = 0;
+    // 00A9C7C0 __thiscall(listbox, index) RET 4: select by index.
+    virtual void listbox_select_index_00a9c7c0(void* listbox, std::int32_t index) = 0;
+};
+
+// 00426350 __thiscall(driver, int screen) RET 4 -> AL. The driver is not
+// read. menu = [[00E198AC]+58h]; listener = menu ? menu + 8 : 0; list box =
+// [menu+1B8h] (no null test). When 00A9C990(list box) == screen:
+// listener->vtable[4](00425E50(list box), list box) and return 1; otherwise
+// 00A9C860(list box, screen) and return 0. The same shape as 00425EB0 with
+// by_index 0.
+struct ScreenHost : ListboxSelectHost {
+    virtual void* main_menu_e198ac_58() = 0;                 // [[00E198AC]+58h]
+    virtual void* menu_listbox_1b8(void* menu) = 0;          // [menu+1B8h]
 };
 bool autotest_ensure_screen_00426350(std::int32_t screen, ScreenHost& host);
 

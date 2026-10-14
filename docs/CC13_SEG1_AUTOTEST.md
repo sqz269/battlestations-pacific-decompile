@@ -53,7 +53,7 @@ is constructed by 00426250, and 13 screen Update functions call 00427190 on it. 
 | `00425B80` | BSP_AutoTest_FatalHook | function created by cc13-camera2; crash.log "<message>" and exit code 2 |
 | `00426E60` / `00426ED0` / `00426F30` / `00427040` | BSP_AutoLog_Group / EndGroup / Value / Memory | StringBuilder lines `GROUP <name>`, `ENDGROUP`, `LOG <name_with_underscores> <value>`, and an empty Memory group |
 | `00425B20` | BSP_RecordVector_CountFlagged | count of 18h-byte records with byte +11h set |
-| `00426350` | BSP_AutoTest_EnsureScreen | activate when the GUI is already on the screen, else request it |
+| `00426350` | BSP_AutoTest_EnsureScreen | list box `[[[00E198AC]+58h]+1B8h]`: when 00A9C990 gives the screen, listener (menu+8h) vtable[4](00425E50 row, list box) and 1; else 00A9C860(list box, screen) and 0 (row and list-box arguments added by cc13-seg1b) |
 
 The test-name parse: 00BD20A0 splits the argument on ':'. The first piece must equal "LoadWaitQuit"
 (__stricmp, 00CE3AD8). The second piece is split on ','. Its second element goes through atol - 1 into
