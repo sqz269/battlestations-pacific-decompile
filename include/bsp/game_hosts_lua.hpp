@@ -190,7 +190,7 @@ inline constexpr bool kForcedReconLevelBound = true;  // ON: pairs held (docs/LU
 // 34h + 1E8h), then each squadron +3D0h member (008AAAB8) or convoy element. True: the
 // resolved slot is forced, then the squadron's members. False: the members only (a slot
 // with no squadron record is forced itself either way).
-inline constexpr bool kForcedReconOwnRecordBound = false;
+inline constexpr bool kForcedReconOwnRecordBound = true;   // ON: SQUADRON_LAND_TASK 5he.1
 
 // Packet cc9_lua_add_damage (docs/USN02_PHASES.md section 3; docs/LUA_BINDING_MISSION.md,
 // "AddDamage, 0088E000"). AddDamage(entity, amount) resolves argument 0 (00888AA0), reads
