@@ -1,0 +1,457 @@
+{
+  "packet": "argon-seg46",
+  "segment": 46,
+  "range": "007a49a0-007b2d80",
+  "header": "include/bsp/path_movcam_seg46_argon.hpp",
+  "source": "src/path_movcam_seg46_argon.cpp",
+  "doc": "docs/ARGON_SEG46_PATH_MOVCAM.md",
+  "status": "reconstructed_build_tested",
+  "reconstructed_count": 89,
+  "functions": [
+    {
+      "address": "007a6270",
+      "symbol": "movcam_set_mode1_flag_bit1_007a6270",
+      "ghidra_name": "BSP_MovCam_SetMode1FlagBit1"
+    },
+    {
+      "address": "007a6310",
+      "symbol": "movcam_set_mode1_flag_bit0_007a6310",
+      "ghidra_name": "BSP_MovCam_SetMode1FlagBit0"
+    },
+    {
+      "address": "007a63b0",
+      "symbol": "movcam_set_ref_pos_point_impl_007a63b0",
+      "ghidra_name": "BSP_MovCam_SetRefPosPointImpl"
+    },
+    {
+      "address": "007a68f0",
+      "symbol": "movcam_on_activate_007a68f0",
+      "ghidra_name": "BSP_MovCam_OnActivate"
+    },
+    {
+      "address": "007a6910",
+      "symbol": "movcam_set_target_007a6910",
+      "ghidra_name": "BSP_MovCam_SetTarget"
+    },
+    {
+      "address": "007a6a30",
+      "symbol": "movcam_on_observed_released_007a6a30",
+      "ghidra_name": "BSP_MovCam_OnObservedReleased"
+    },
+    {
+      "address": "007a6b40",
+      "symbol": "movcam_set_hand_mode_targeted_007a6b40",
+      "ghidra_name": "BSP_MovCam_SetHandModeTargeted"
+    },
+    {
+      "address": "007a6b90",
+      "symbol": "movcam_set_hand_mode_deck_007a6b90",
+      "ghidra_name": "BSP_MovCam_SetHandModeDeck"
+    },
+    {
+      "address": "007a6bc0",
+      "symbol": "movcam_set_hand_mode_overview_007a6bc0",
+      "ghidra_name": "BSP_MovCam_SetHandModeOverview"
+    },
+    {
+      "address": "007a6cd0",
+      "symbol": "movcam_set_ref_pos_007a6cd0",
+      "ghidra_name": "BSP_MovCam_SetRefPos"
+    },
+    {
+      "address": "007a6e60",
+      "symbol": "movcam_set_ref_pos_polar_007a6e60",
+      "ghidra_name": "BSP_MovCam_SetRefPosPolar"
+    },
+    {
+      "address": "007a7070",
+      "symbol": "movcam_set_ref_pos_radius_007a7070",
+      "ghidra_name": "BSP_MovCam_SetRefPosRadius"
+    },
+    {
+      "address": "007a7de0",
+      "symbol": "movcam_set_viktor_mode_007a7de0",
+      "ghidra_name": "BSP_MovCam_SetViktorMode"
+    },
+    {
+      "address": "007a7f30",
+      "symbol": "movcam_set_tompi_mode_weak_007a7f30",
+      "ghidra_name": "BSP_MovCam_SetTompiModeWeak"
+    },
+    {
+      "address": "007a8100",
+      "symbol": "movcam_set_tompi_mode_007a8100",
+      "ghidra_name": "BSP_MovCam_SetTompiMode"
+    },
+    {
+      "address": "007a8180",
+      "symbol": "movcam_pick_deck_position_007a8180",
+      "ghidra_name": "BSP_MovCam_PickDeckPosition"
+    },
+    {
+      "address": "007a82c0",
+      "symbol": "movcam_set_ref_pos_point_007a82c0",
+      "ghidra_name": "BSP_MovCam_SetRefPosPoint"
+    },
+    {
+      "address": "007a8420",
+      "symbol": "movcam_set_ref_pos_spherical_007a8420",
+      "ghidra_name": "BSP_MovCam_SetRefPosSpherical"
+    },
+    {
+      "address": "007aadb0",
+      "symbol": "movie_cam_lookat_activate_007aadb0",
+      "ghidra_name": "BSP_MovieCamLookat_Activate"
+    },
+    {
+      "address": "007aadd0",
+      "symbol": "movie_cam_pos_activate_007aadd0",
+      "ghidra_name": "BSP_MovieCamPos_Activate"
+    },
+    {
+      "address": "007aae50",
+      "symbol": "lua_object_get_float_field_007aae50",
+      "ghidra_name": "BSP_LuaObject_GetFloatField_007aae50"
+    },
+    {
+      "address": "007aaed0",
+      "symbol": "lua_object_get_float_field_007aaed0",
+      "ghidra_name": "BSP_LuaObject_GetFloatField_007aaed0"
+    },
+    {
+      "address": "007aaf50",
+      "symbol": "lua_object_get_float_field_007aaf50",
+      "ghidra_name": "BSP_LuaObject_GetFloatField_007aaf50"
+    },
+    {
+      "address": "007aafd0",
+      "symbol": "lua_object_get_float_field_007aafd0",
+      "ghidra_name": "BSP_LuaObject_GetFloatField_007aafd0"
+    },
+    {
+      "address": "007ab7d0",
+      "symbol": "mparatrooper_send_create_message_007ab7d0",
+      "ghidra_name": "BSP_MParatrooper_SendCreateMessage"
+    },
+    {
+      "address": "007ab8a0",
+      "symbol": "mparatrooper_set_landing_pos_adjust_120_007ab8a0",
+      "ghidra_name": "BSP_MParatrooper_SetLandingPosAdjust120"
+    },
+    {
+      "address": "007ab9d0",
+      "symbol": "mparatrooper_get_flag_pair_false_007ab9d0",
+      "ghidra_name": "BSP_MParatrooper_GetFlagPairFalse"
+    },
+    {
+      "address": "007abab0",
+      "symbol": "mparatrooper_register_in_world_lists_007abab0",
+      "ghidra_name": "BSP_MParatrooper_RegisterInWorldLists"
+    },
+    {
+      "address": "007abaf0",
+      "symbol": "mparatrooper_unregister_from_world_lists_007abaf0",
+      "ghidra_name": "BSP_MParatrooper_UnregisterFromWorldLists"
+    },
+    {
+      "address": "007ac2c0",
+      "symbol": "mparatrooper_class_create_with_pose_007ac2c0",
+      "ghidra_name": "BSP_MParatrooperClass_CreateWithPose"
+    },
+    {
+      "address": "007ac4c0",
+      "symbol": "mparatrooper_class_create_007ac4c0",
+      "ghidra_name": "BSP_MParatrooperClass_Create"
+    },
+    {
+      "address": "007ac780",
+      "symbol": "mparatrooper_class_read_lua_fields_007ac780",
+      "ghidra_name": "BSP_MParatrooperClass_ReadLuaFields"
+    },
+    {
+      "address": "007aca30",
+      "symbol": "path_object_get_entity_007aca30",
+      "ghidra_name": "BSP_PathObject_GetEntity"
+    },
+    {
+      "address": "007ad180",
+      "symbol": "path_points_set_point_local_007ad180",
+      "ghidra_name": "BSP_PathPoints_SetPointLocal"
+    },
+    {
+      "address": "007ad330",
+      "symbol": "path_points_add_point_local_007ad330",
+      "ghidra_name": "BSP_PathPoints_AddPointLocal"
+    },
+    {
+      "address": "007ad4e0",
+      "symbol": "path_points_insert_point_local_007ad4e0",
+      "ghidra_name": "BSP_PathPoints_InsertPointLocal"
+    },
+    {
+      "address": "007ad5c0",
+      "symbol": "path_replicator_send_path_set_007ad5c0",
+      "ghidra_name": "BSP_PathReplicator_SendPathSet"
+    },
+    {
+      "address": "007ad660",
+      "symbol": "path_replicator_send_path_add_007ad660",
+      "ghidra_name": "BSP_PathReplicator_SendPathAdd"
+    },
+    {
+      "address": "007ad700",
+      "symbol": "path_replicator_send_path_insert_007ad700",
+      "ghidra_name": "BSP_PathReplicator_SendPathInsert"
+    },
+    {
+      "address": "007ad7a0",
+      "symbol": "path_replicator_send_path_delete_007ad7a0",
+      "ghidra_name": "BSP_PathReplicator_SendPathDelete"
+    },
+    {
+      "address": "007adb90",
+      "symbol": "path_cursor_point_at_index_007adb90",
+      "ghidra_name": "BSP_PathCursor_PointAtIndex"
+    },
+    {
+      "address": "007adc60",
+      "symbol": "entity_command_is_on_final_leg_007adc60",
+      "ghidra_name": "BSP_EntityCommand_IsOnFinalLeg"
+    },
+    {
+      "address": "007adcc0",
+      "symbol": "entity_command_path_cursor_next_index_007adcc0",
+      "ghidra_name": "BSP_EntityCommand_PathCursorNextIndex"
+    },
+    {
+      "address": "007add50",
+      "symbol": "path_cursor_advance_to_next_index_007add50",
+      "ghidra_name": "BSP_PathCursor_AdvanceToNextIndex"
+    },
+    {
+      "address": "007ae060",
+      "symbol": "path_cursor_set_index_from_message_007ae060",
+      "ghidra_name": "BSP_PathCursor_SetIndexFromMessage"
+    },
+    {
+      "address": "007ae330",
+      "symbol": "vector3_component_min_007ae330",
+      "ghidra_name": "BSP_Vector3_ComponentMin_007ae330"
+    },
+    {
+      "address": "007ae3e0",
+      "symbol": "vector3_component_max_007ae3e0",
+      "ghidra_name": "BSP_Vector3_ComponentMax_007ae3e0"
+    },
+    {
+      "address": "007ae650",
+      "symbol": "point3_vector_save_to_archive_007ae650",
+      "ghidra_name": "BSP_Point3Vector_SaveToArchive"
+    },
+    {
+      "address": "007aeec0",
+      "symbol": "point3_ptr_array_nearest_point_to_line_007aeec0",
+      "ghidra_name": "BSP_Point3PtrArray_NearestPointToLine"
+    },
+    {
+      "address": "007af020",
+      "symbol": "point3_ptr_array_load_from_archive_007af020",
+      "ghidra_name": "BSP_Point3PtrArray_LoadFromArchive"
+    },
+    {
+      "address": "007af090",
+      "symbol": "point3_ptr_array_save_to_archive_007af090",
+      "ghidra_name": "BSP_Point3PtrArray_SaveToArchive"
+    },
+    {
+      "address": "007af110",
+      "symbol": "path_component_save_points_007af110",
+      "ghidra_name": "BSP_PathComponent_SavePoints"
+    },
+    {
+      "address": "007af740",
+      "symbol": "scene_path_point_to_world_cached_007af740",
+      "ghidra_name": "BSP_ScenePath_PointToWorldCached"
+    },
+    {
+      "address": "007afc60",
+      "symbol": "camera_path_sample_world_linear_cached_007afc60",
+      "ghidra_name": "BSP_CameraPath_SampleWorldLinearCached"
+    },
+    {
+      "address": "007afd60",
+      "symbol": "camera_path_sample_world_linear_007afd60",
+      "ghidra_name": "BSP_CameraPath_SampleWorldLinear"
+    },
+    {
+      "address": "007b03c0",
+      "symbol": "camera_path_sample_world_cached_cubic_007b03c0",
+      "ghidra_name": "BSP_CameraPath_SampleWorld"
+    },
+    {
+      "address": "007b0650",
+      "symbol": "scene_path_centroid_world_007b0650",
+      "ghidra_name": "BSP_ScenePath_CentroidWorld"
+    },
+    {
+      "address": "007b0710",
+      "symbol": "scene_path_distance_to_polyline_world_007b0710",
+      "ghidra_name": "BSP_ScenePath_DistanceToPolylineWorld"
+    },
+    {
+      "address": "007b0b00",
+      "symbol": "path_component_save_points_007b0b00",
+      "ghidra_name": "BSP_PathComponent_SavePoints_00CE84E8"
+    },
+    {
+      "address": "007b0b40",
+      "symbol": "path_save_entity_and_points_007b0b40",
+      "ghidra_name": "BSP_Path_SaveEntityAndPoints"
+    },
+    {
+      "address": "007b0ba0",
+      "symbol": "path_owner_save_entity_and_points_007b0ba0",
+      "ghidra_name": "BSP_PathOwner_SaveEntityAndPoints_0077c160"
+    },
+    {
+      "address": "007b0bf0",
+      "symbol": "session_message_path_create_write_007b0bf0",
+      "ghidra_name": "BSP_SessionMessage_PATH_CREATE_Write"
+    },
+    {
+      "address": "007b0d30",
+      "symbol": "path_entity_save_entity_and_points_007b0d30",
+      "ghidra_name": "BSP_PathEntity_SaveEntityAndPoints_004e6660"
+    },
+    {
+      "address": "007b0e30",
+      "symbol": "simple_path_source_point_count_007b0e30",
+      "ghidra_name": "BSP_SimplePathSource_PointCount"
+    },
+    {
+      "address": "007b0f00",
+      "symbol": "simple_path_source_save_007b0f00",
+      "ghidra_name": "BSP_SimplePathSource_Save"
+    },
+    {
+      "address": "007b1030",
+      "symbol": "authored_path_source_point_count_007b1030",
+      "ghidra_name": "BSP_AuthoredPathSource_PointCount"
+    },
+    {
+      "address": "007b10a0",
+      "symbol": "authored_path_source_get_point_007b10a0",
+      "ghidra_name": "BSP_AuthoredPathSource_GetPoint"
+    },
+    {
+      "address": "007b10c0",
+      "symbol": "authored_path_source_last_point_007b10c0",
+      "ghidra_name": "BSP_AuthoredPathSource_LastPoint"
+    },
+    {
+      "address": "007b1100",
+      "symbol": "authored_path_source_nearest_index_007b1100",
+      "ghidra_name": "BSP_AuthoredPathSource_NearestIndex"
+    },
+    {
+      "address": "007b1120",
+      "symbol": "authored_path_source_load_007b1120",
+      "ghidra_name": "BSP_AuthoredPathSource_Load"
+    },
+    {
+      "address": "007b1170",
+      "symbol": "authored_path_source_save_007b1170",
+      "ghidra_name": "BSP_AuthoredPathSource_Save"
+    },
+    {
+      "address": "007b1320",
+      "symbol": "path_cursor_next_point_007b1320",
+      "ghidra_name": "BSP_PathCursor_NextPoint"
+    },
+    {
+      "address": "007b1350",
+      "symbol": "path_cursor_follow_mode_last_point_007b1350",
+      "ghidra_name": "BSP_PathCursor_FollowModeLastPoint"
+    },
+    {
+      "address": "007b19b0",
+      "symbol": "path_source_ref_assign_007b19b0",
+      "ghidra_name": "BSP_PathSourceRef_Assign"
+    },
+    {
+      "address": "007b1b10",
+      "symbol": "point3_ptr_array_alloc_point_007b1b10",
+      "ghidra_name": "BSP_Point3PtrArray_AllocPoint"
+    },
+    {
+      "address": "007b1bf0",
+      "symbol": "path_source_ref_copy_from_007b1bf0",
+      "ghidra_name": "BSP_PathSourceRef_CopyFrom"
+    },
+    {
+      "address": "007b1c50",
+      "symbol": "entity_command_path_cursor_start_007b1c50",
+      "ghidra_name": "BSP_EntityCommand_PathCursorStart"
+    },
+    {
+      "address": "007b1d30",
+      "symbol": "entity_command_path_cursor_start_thunk_007b1d30",
+      "ghidra_name": "BSP_EntityCommand_PathCursorStartThunk"
+    },
+    {
+      "address": "007b1d90",
+      "symbol": "path_source_ref_release_007b1d90",
+      "ghidra_name": "BSP_PathSourceRef_Release"
+    },
+    {
+      "address": "007b1fb0",
+      "symbol": "point3_vector_prune_from_index_007b1fb0",
+      "ghidra_name": "BSP_Point3Vector_PruneFromIndex"
+    },
+    {
+      "address": "007b2250",
+      "symbol": "entity_path_source_create_for_slot_007b2250",
+      "ghidra_name": "BSP_EntityPathSource_CreateForSlot"
+    },
+    {
+      "address": "007b22a0",
+      "symbol": "entity_path_source_create_for_entity_007b22a0",
+      "ghidra_name": "BSP_EntityPathSource_CreateForEntity"
+    },
+    {
+      "address": "007b28c0",
+      "symbol": "path_component_construct_007b28c0",
+      "ghidra_name": "BSP_PathComponent_Construct"
+    },
+    {
+      "address": "007b28f0",
+      "symbol": "camera_path_component_construct_007b28f0",
+      "ghidra_name": "BSP_CameraPathComponent_Construct"
+    },
+    {
+      "address": "007b2950",
+      "symbol": "session_message_path_create_construct_007b2950",
+      "ghidra_name": "BSP_SessionMessage_PATH_CREATE_Construct"
+    },
+    {
+      "address": "007b2ab0",
+      "symbol": "owned_points_path_source_construct_007b2ab0",
+      "ghidra_name": "BSP_OwnedPointsPathSource_Construct"
+    },
+    {
+      "address": "007b2c00",
+      "symbol": "owned_points_path_source_save_007b2c00",
+      "ghidra_name": "BSP_OwnedPointsPathSource_Save"
+    },
+    {
+      "address": "007b2cf0",
+      "symbol": "owned_points_path_source_free_points_007b2cf0",
+      "ghidra_name": "BSP_OwnedPointsPathSource_FreePoints"
+    },
+    {
+      "address": "007b2d80",
+      "symbol": "owned_points_path_source_construct_empty_007b2d80",
+      "ghidra_name": "BSP_OwnedPointsPathSource_ConstructEmpty"
+    }
+  ]
+}
