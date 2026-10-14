@@ -68,7 +68,11 @@ public:
     // registration 00408720. Slot 0 is skipped by 00be3640 and 00be3660, so the
     // executable registers the frame in slot 1 and records the substitution.
     int app_update_slot() const noexcept { return 1; }
-    int registered_slot_count() const noexcept { return slot_count_; }
+    // 00e15118, the static counter count: the executable's chosen capacity.
+    const int& static_slot_count() const noexcept { return slot_count_; }
+    // 0109cf18, the run-time registration count. Nothing in the executable
+    // registers counters at run time, so it stays 0; 00be34d0 clears it.
+    int& runtime_slot_count() noexcept { return runtime_slot_count_; }
     // 0109db48, zero in the image and filled at run time. Its unit is unproven
     // (docs/APP_FRAME_GAME_STATE.md), and a zero scale makes every converted
     // value non finite, so the executable supplies seconds per performance
@@ -80,6 +84,7 @@ public:
 private:
     GameHostLog& log_;
     int slot_count_{};
+    int runtime_slot_count_{0};
     std::vector<ProfilerCounterRecord> records_;
     std::vector<float> history_;
     std::vector<float> start_offsets_;
