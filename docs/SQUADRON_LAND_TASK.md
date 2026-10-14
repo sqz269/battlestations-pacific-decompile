@@ -16569,3 +16569,27 @@ The first gameplay line that differs in either pair is a dogfight `maneuver -> a
 (USNOS has no mission end, and its strike/AA rows diverge from the first changed air fight at about 295 s). The mechanism
 and the direction match the prediction (more air-to-air kills on both rows); the shift is somewhat larger than the 30-80 m
 estimate and JM08's first kill is later, not earlier. Faithful, flipped ON.
+
+## 5ha. Air-ops stock consumed and the busy arm queued (packet `cc9_l58_stock`, cc9-lua58, 2026-10-13)
+
+Switches `kAirOpsQueueConsumeStockBound` (cc13-fix7 D1) and `kAirOpsBusyArmQueueLaunchBound` (D2), docs/CC13_VER_15.md
+sections 4 and 7, committed OFF by cc13 (7c7e90a08, 7faa8d8cb). Prediction (cc13-ver15): the stock is consumed, which
+lowers the player strike counts the old host inflated; the busy arm is reached by no current log. Paired together at
+a7a20bc52 (Junyo switches ON): OFF `local\l58_s0_*`, ON `local\l58_s1_*`; USN12's OFF is `local\l58_j1_u12` (f83e91891
+with the Junyo flips, the same code paths).
+
+### 5ha.1 Measured: **ON** (cc9-lua58, 2026-10-13)
+
+| row | OFF | ON |
+|---|---|---|
+| LOMP10 `lomp10_p3_l10_b` 26000 fr: player launches queued | 22 | 8 (36 refusals `no stock of the class`) |
+| LOMP10 deaths / dive releases / end | 109 / 34 of 41 / none | 70 / 28 of 26 / none |
+| JM08 `jm08_p6_j8_f` 40000 fr: first divergence | - | frame 10802: Hosho class 162 refused for stock, the fallback line launches 158 |
+| JM08 refusals `no stock of the class` | 0 | 890 |
+| JM08 deaths / dive releases / end | 207 / 47 of 42 / **completed 1617.15 s** | 203 / 78 of 60 / **none** in 2000 s |
+| USN12 `usn12_s38_u12_p2` 34000 fr | completed 1510.35 s | identical |
+
+The mechanism is the predicted one: the slot's count comes off the class stock when it is queued, and a player launch of
+an exhausted class is refused before 006C0F00 (0067481B). Both plans were written against the old unlimited stock: LOMP10's
+row already had no mission end in this OFF build, and the JM08 win is lost because its Hosho strike classes run out. The
+busy arm writes no log line, so its share is not isolated here. Faithful, flipped ON; JM08 (and LOMP10) go to the wins keeper for a stock-aware re-plan.
