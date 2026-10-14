@@ -17700,3 +17700,36 @@ reported range runs ~40-50 m lower, as predicted. Downstream everything moves: d
 PlayerSub 01 at 896.15 s, USTroopTransport 03 to PlayerSub 02 at 191.96 s; US Cargo Transport 01, US Tanker 03 and
 USTroopTransport 04 survive ON. Neither side reaches a mission end (n1 was already lost on main). **Mechanism matches:
 ON.** JM06 is re-planned on top of it (lead item 2).
+
+## 244. JM06 re-planned: `jm06_s49_j6_s` (cc9-ships49, 2026-10-14; lead item 2)
+
+Build: this tree at fd6d92617 (origin/main 067bcac79 plus `kSubAttackOwnHalfLengthBound` ON; exe 3E945D0DF0EB),
+reference env, 120000 frames, `--stop-after-end 40`. Generator `local\s49_j6gen.py`, launcher `local\s49_rows.ps1`,
+logs `local\s49_<prefix>_<v>.log` with manifests.
+
+**Why n1 lost.** Not the swim-depth homing or the AA flips: the convoy phase. The keeper's runs up to a2ad905f1 still
+had the AI boats PlayerSub 02/03 sinking the convoy from 1.0-1.8 km by 291 s; from 91d6a9d22
+(`kTorpedoBotAttackRangeBound` ON, GUNNERY 230 D1, ~891 m for Mark 14 / Type 95 on JM06) their first kill moves from
+82.40 s to ~172 s and four of the convoy (USTroopTransport 01, US Cargo Transport 01, US Tanker 02/03) sail on.
+`luaJM6CheckObjectives` phase 1 needs `Mission.ShipsToSink` (3 on this difficulty) random `CargoTargets` dead, so the
+player's sub has to finish the convoy. That flip is faithful by its pair; nothing here argues against it.
+
+**Two traps found.** (1) `luaJM6CheckUSNSubs` sends Narwhal-class Submarine 01 (start (-87, -910), y = -80) on
+`NavigatorAttackMove` at the player once within 3000 m. Left alone it dies of depth damage at 250.01 s; a player
+sub that comes within 3 km first (variants a/a2/a3) is hunted and torpedoed at 480-512 m (669-1013 s). So the sub
+goes east first and only turns north after 251 s. (2) The torpedo stock runs dry (`fires its last torpedo`,
+`ships_dry=1`) with a 300-frame cadence over all of phases 3-4 (p under 20,5: Fletcher-class 04 survives).
+
+**s** (from n1's orders before 29000): moveto (1600, -3600) at 200, (1300, -1500) at 5020; torpedoes over the five
+convoy survivors every 300 frames 7000-13000; n1's moveto (800, -1500) 13000 and (1500, -1100) 21000;
+`takehelm 0.3 300 -100 stop 1300` at 30000 (faces the Lexington's new approach from the north-west); torpedoes at
+the Lexington every 300 frames 34000-44000; then at Fletcher-class 01-05 in rotation every 450 frames to 110000.
+| run | result | guard |
+| --- | --- | --- |
+| clean (`s49_f_s`) | **completed 1991.82 s** (Lexington 1853.23 s, last escort 1980.36 s) | yes |
+| `BSP_FRAME_JITTER 20,3` (`s49_j3_s`) | **completed 2901.71 s** | yes |
+| 20,5 (`s49_j5_s`) | **completed 2247.07 s** | yes |
+| 20,7 (`s49_j7_s`) | **completed 2181.00 s** | yes |
+Committed as `config/win_orders/jm06_s49_j6_s.txt` (n1 kept). Near misses: p (Lexington every 300 frames to 52000)
+completes clean 2205.03 s and 20,3 3003.80 s, fails 20,5 (stock); q (Lexington every 400) fails 20,5 (the sub dies at
+2082.86 s); r completes 20,5 at 2745.55 s.
