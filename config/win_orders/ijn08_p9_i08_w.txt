@@ -1,4 +1,4 @@
-# cc9-physics9 IJN08 w (local\p9_i08plan.py, from cc9-ships48 s48_i08gen.py): phase 1, every 200 frames each JapSub is selected and given one attack line per Cargo, least preferred first (a dead target is refused, so the first live preference sticks), because the torpedo-bot range gate (91d6a9d22) keeps unordered subs from firing; phase 2 is ships48 h5 shifted by -3500 frames (phase 1 ends ~200 s earlier), the battleships hitting the near airfields first and every late target list ending in US_Airfield_03.
+# cc9-physics9 IJN08 w (local\p9_i08plan.py, from cc9-ships48 s48_i08gen.py): phase 1, every 200 frames each JapSub is selected and given one attack line per Cargo, least preferred first (every line is applied, also on a dead target, so the first preference, issued last, sticks; see WINS_TABLE), because the torpedo-bot range gate (91d6a9d22) keeps unordered subs from firing; phase 2 is ships48 h5 shifted by -3500 frames (phase 1 ends ~200 s earlier), the battleships hitting the near airfields first and US_Airfield_03 lines issued before each late target (overridden a frame later).
 100 select JapSub1
 101 attack JapSub1 Cargo6
 102 attack JapSub1 Cargo2

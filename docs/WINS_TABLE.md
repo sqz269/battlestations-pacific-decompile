@@ -394,7 +394,12 @@ mechanism is in the cd761bb52 section above).
     script's airfield manager (ijn_8_north_sol.lua:543-565) targets only the Marus (Mission.JapTrans), so this is
     the plane flips since 181196e51 (C2 and later); not bisected further.
   - Plan `w`: phase 1, every 200 frames each JapSub is selected and given one `attack` line per Cargo, least
-    preferred first (a dead target is refused, so the first live preference sticks); all six Cargos sink by ~414 s.
+    preferred first; all six Cargos sink by ~414 s. CORRECTION (cc9-physics9, same day): an `attack` line on a dead
+    target is applied, not refused (`local\p9i8_w.log` frame 6101: Cargo6, dead at 286.40 s, is applied), so in every
+    cycle the LAST line, the sub's first preference, sticks even when that target is dead. The same holds for the
+    phase-2 `A|B` lists: `A` is issued last and sticks, so the US_Airfield_03 entries below are issued and overridden
+    a frame later, never a real fallback. Why `w` wins where `n` (the same plan without those lines) does not is not
+    established; the extra order traffic may act only through the shared random stream. Treat `w` as a knife-edge.
     Phase 2 is h5 shifted by -3500 frames, with Kongo/Hiei on Jap_Airfield and Kirishima/Haruna on US_Airfield_01
     first, and every later target list ending in US_Airfield_03 (in h5 nothing attacks it after frame 40500).
     **Completed 4551.09 s** (`local\p9i8_w.log`), **4406.65 s under jitter 20,3**, guard logged on both; no Maru
@@ -405,3 +410,16 @@ mechanism is in the cd761bb52 section above).
     the uncontrolled subs), c/d (5 of 6 Cargos), e/f (phase 1 done; Marus lost by 1440/1010 s with h5 unshifted),
     g/h/i/q/r/s/t/u (Marus lost 1060-1415 s), m (Marus held at the spawn with a cruiser screen: 2171 s), n (w
     without the US_Airfield_03 fallbacks: 3067 s; 4103 s under 20,3 with everything but US_Airfield_03 dead).
+- **ESMP08 on main 25b98b1fa (cc9-physics9, parked item, not won).** `esmp08_p6_e8_br3l`, 140000 frames: no end,
+  10/15 US ships sunk; Zuikaku sails south-west on its own at ~10 m/s from the start (trajectory CSV
+  `local\p9e8_traj.csv`) and Iowa sinks it at 1388 s. Variants (`local\p9_e8gen.py`, `local\p9_e8gen_f.py`, logs
+  `local\p9e8_<v>.log`, summary `local\p9_e8sum.py`, launches `local\p9_e8launch.py`):
+  a (select+moveto every 2000 frames holding the four carriers ~500 m north-east of their start) 11/15;
+  b (a plus Ise/Hyuga moved to ~(8000, 7700) as the US attack-move's nearest target) 12/15, three carriers alive;
+  e (b plus surface attack lists from 2000 s) failed 5406.88 s; f (b plus one live target per ship per cycle from
+  frame 44100, from b's death times) **13/15** (Fanning, Woodworth survive) but failed 6527.49 s; g (light ships only)
+  12/15, failed 6955.81 s. Limits: from ~2500 s every launch line is refused with "no stock of the class" (stock is
+  consumed since 74aae670d, all classes including the Zeros), and the script's endless US bomber waves (every 180 s)
+  then sink the carriers and the surface ships. An attack line on a dead target is applied, so per-cycle target
+  lists must be resolved from a reference run's death times.
+- IJN08 variant `x` also completes under jitter 20,3 (4361.83 s, `local\p9i8_xj3.log`).

@@ -1111,3 +1111,30 @@ Mechanism as predicted: `plane wanderer` keeps planes=52 (LOMP10) / 277 (BSM01),
 accel_max; steps, active, timer_draws and displacement move by under 1% with the run length. LOMP10's first moved
 row is a plane death at 97.70 -> 97.75 s (the killer changes), the chaotic divergence of a shared stream, not a
 mechanism failure. **Flipped ON** (`include/bsp/plane_wanderer.hpp`); every win holds, guard logged on all twelve.
+
+## 32. cc9-physics9 handoff (sea/physics lane + WINS KEEPER), 2026-10-14
+
+Tree J:\PROG\battlestations-pacific-decompile-cc9-physics1 (agent/cc9-physics1), everything committed; no lease held.
+Export `local\p9_m` = main 25b98b1fa (exe 073805D36E49); `local\p9_wt1` = the same with the wanderer flip.
+Scripts in local\: `p9_wins.ps1 -Tag <t> [-Exe] [-Only keys] [-Jitter] [-Max]` (rows now point at
+`prcp01_p9_p01_k` and `ijn08_p9_i08_w` with 100000 frames), `p9_runs.ps1`, `p9_keep.py <tag>`, `p9_story.py`
+(PRCP01 orders/deaths), `p9_i08plan.py` (IJN08 generator), `p9_e8gen.py` / `p9_e8gen_f.py` / `p9_e8sum.py` /
+`p9_e8launch.py` (ESMP08), `p9_traj.py` (trajectory CSV sampler: `--trajectory-csv <path>` on the game).
+
+Done this session (commits 42388ec7c, 010357cbc, 64381d75b, 1a6bc9f97, ad8ef14ce and this one):
+- PRCP01 re-planned: `prcp01_p9_p01_k` (moveto-self then attack Zuiho on Enterprise slot 3), 536.54 s, robust to
+  jitter 20,3/20,5.
+- Re-time on 25b98b1fa (WINS_TABLE): all hold except IJN08; USN01 i holds (360.04 s).
+- IJN08 lost to 91d6a9d22 (phase 1) and the plane flips (phase 2); re-planned `ijn08_p9_i08_w`, 4551.09 s, knife-edge
+  (fails 20,5). Attack lines on dead targets are APPLIED (correction committed).
+- Section 30: the third C2 reader has a consumer (settled tail, 0099EB54); not carried.
+- Section 31: kPlaneWandererFloatTrigBound flipped ON by mechanism.
+
+Open, in order:
+1. ESMP08 (WINS_TABLE, last entry): best is f, 13/15. Ideas: resolve f's per-cycle targets from f's own log (it
+   diverges from b after frame 44100) and iterate; start the surface strike earlier while the carriers' Zeros still
+   cover it; keep two carriers alive by holding them farther north-east once the stock is gone.
+2. IJN08 margin: `w` fails under 20,5 (Marus sunk by 1365 s). Marus are the only target of the airfield manager
+   (ijn_8_north_sol.lua:543-565); kill US_Airfield_03/02 earlier or keep the fleet AA tighter around them.
+3. The settled-tail packet of section 30 for the plane lane (OFF switch, selected-plane prediction).
+4. Keeper notes still not re-timed: kTorpedoBoatRudderTorqueBound and kLandMasterDamageBound (check land rows).
