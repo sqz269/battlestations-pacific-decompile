@@ -43,6 +43,12 @@ inline constexpr double kSubAttackEnterFireMargin = 150.0;    // 00CE3DD8 (doubl
 inline constexpr double kSubAttackLeaveFireMargin = 400.0;    // 00CE3D90 (double), 009EA9F1
 inline constexpr double kSubAttackRangeEpsilonSq = 1.0e-10;   // 00CE3820 (double), 009E4AD4
 inline constexpr double kSubAttackHalf = 0.5;                 // 00D7A280 (double), 009E4B17
+// 009E4A60 subtracts the sub's own half length before the target's (the
+// FSTP [ESP+0Ch] at 009E4B26 follows PUSH 6, so it overwrites the distance
+// slot). OFF keeps the earlier host, which subtracted only the target's.
+// Packet cc9_sub_attack_own_half; docs/SHIP_AI_OPEN_ITEMS.md section 242.
+// ON by the JM06 pair: fire switch 3-4 s earlier, min range ~50 m lower (243).
+inline constexpr bool kSubAttackOwnHalfLengthBound = true;
 inline constexpr float kSubAttackDefaultTargetLength = 100.0f;// 00CE3D08, 009E9D37
 inline constexpr float kSubAttackNoTubeRange = 500.0f;        // 00CE397C, 009E9D80
 inline constexpr float kSubAttackReadyHorizon = 10.0f;        // 00CE38B8 -> fire+5Ch, 009EABFC

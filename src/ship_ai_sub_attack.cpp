@@ -65,13 +65,19 @@ float ship_ai_sub_attack_range_009e4a60(ShipAiSubAttackHost& host) {
     if (static_cast<double>(d2) > kSubAttackRangeEpsilonSq) {
         distance = f(std::sqrt(static_cast<double>(d2)));               // 009E4AE4 CRT sqrt
     }
-    // 009E4B05..009E4B26: distance - selfLength * 0.5 is computed and stored to
-    // [ESP+0Ch], a slot nothing reads afterwards; both returns load [ESP+8],
-    // which holds the plain distance unless the target is a ship. So the own
-    // hull is NOT subtracted. Reproduced as the listing has it.
+    // 009E4B05..009E4B26: distance - selfLength * 0.5 (own class [unit+0AACh]+A0h).
+    // The PUSH 6 at 009E4B20 lowers ESP by 4 first, so the FSTP [ESP+0Ch] at
+    // 009E4B26 lands in the distance slot the reads at 009E4B30/4B4C/4B6B use
+    // (IsKindOf, vtable+5Ch, is __thiscall and pops its argument). With
+    // kSubAttackOwnHalfLengthBound off (it is ON) the host keeps the plain
+    // distance, the old misreading of the slot as unread.
     float result = distance;
-    if (host.target_is_kind(6)) {                                       // 009E4B2A
+    if (kSubAttackOwnHalfLengthBound) {
         result = f(static_cast<double>(distance)
+                   - static_cast<double>(host.self_class_length_00a0()) * kSubAttackHalf);
+    }
+    if (host.target_is_kind(6)) {                                       // 009E4B2A
+        result = f(static_cast<double>(result)
                    - static_cast<double>(host.target_class_length_00a0()) * kSubAttackHalf);
     }
     if (0.0f > result) return 0.0f;                                     // 009E4B52 JBE
