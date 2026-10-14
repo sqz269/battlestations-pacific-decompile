@@ -399,6 +399,7 @@ void free_native_gui_group_pool_table_00ac70d0(void* header) noexcept {
 // of the same native engine, parameterized by include/bsp/native_gui_widget_pools_cc13.hpp.
 #include "bsp/native_gui_widget_pools_cc13.hpp"
 #include "bsp/terrain_bush_pool_cc13.hpp"
+#include "bsp/cc13_seg87.hpp"
 namespace bsp {
 template<class T> NativeGuiWidgetPool<T>::NativeGuiWidgetPool(AllocatorListDomain& list,
     NativeGuiWidgetPoolStorage& storage) : allocator_list_(list), storage_(storage) {
@@ -448,6 +449,8 @@ BSP_GUI_WIDGET_POOL_INSTANCE(GuiFrameBoxPoolTraits)
 BSP_GUI_WIDGET_POOL_INSTANCE(GuiAnimIconPoolTraits)
 // cc13-terrain2: the BushGroup model pool (include/bsp/terrain_bush_pool_cc13.hpp).
 BSP_GUI_WIDGET_POOL_INSTANCE(BushGroupModelPoolTraits)
+// cc13-seg87: the Listbox pool at 00F8BC10 (include/bsp/cc13_seg87.hpp).
+BSP_GUI_WIDGET_POOL_INSTANCE(GuiListboxPoolTraits)
 #undef BSP_GUI_WIDGET_POOL_INSTANCE
 } // namespace bsp
 // The out-of-line Mit pointer-vector members of the slab table (ECX = pool+28h:
