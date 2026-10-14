@@ -51,6 +51,11 @@ The parent must supply all of the following from its **one actual owner domain**
    bindings using the application's same random registry, native table metadata,
    event owners, `0109DBE4` scope and Win32 worker entry. The entry must receive
    the real pool address and invoke the reconstructed native thread entry.
+   The canonical application uses `NativeFixedStepJobDescriptorsActual` over
+   `SoundLifetimeAccess` and the existing raw `NativeRenderJobPublicationContext`.
+   The original semantic descriptor/wave interfaces remain fixture-compatible;
+   creating a semantic manager is not an application attachment. See
+   `GAME_NATIVE_FRAME_JOB_APPLICATION.md` for the concrete shared worker graph.
 3. `NativeFixedStepTickBindings` that resolves the **actual receiver's current
    table** and calls its established virtual04/08/0C, pose refresh, inverse and
    subnode bodies. Pure table resolution cannot execute callbacks or mutate
