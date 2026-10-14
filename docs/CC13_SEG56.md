@@ -130,3 +130,38 @@ Existing implementations were not re-done; the addresses with hits in `src/` or 
 dispatch rows) are left for a recording pass. The larger untouched handlers (HitTarget,
 SetWeaponDirectorTargetEnable, IsAreaEmpty, the scoring adders, GetETA, the trigger builders)
 were not attempted in this packet.
+
+## Existing implementations recorded (cc13-seg56b)
+
+Of the 108 untagged segment-56 addresses that already had hits in `src/` or `include/`, 66 have
+a working implementation elsewhere. Each one was compared with the Ghidra listing (read-only) and
+given a reconstruction record that points at the existing code. None of that code was edited.
+Counts by status:
+- `existing_host_implementation_defect_found`: 2
+- `existing_helper_verified_not_wired`: 1
+- `existing_library_function_verified_not_wired`: 6
+- `existing_host_implementation_verified_against_listing`: 26
+- `existing_host_substitution_labelled_verified_against_listing`: 31
+
+Defects found in existing code (not fixed here; the files belong to other lanes):
+
+- 0089B840 GetCapturePercentage (`src/game_hosts_script_orders.cpp`, GetCapturePercentage
+  branch): the binding applies FABS (D9 E1 at 0089B966) to the 006F1F90 fraction before
+  PushFloat. The host pushes the signed value, and its comment says there is no FABS.
+- 008AA8F0 SetForcedReconLevel (`src/game_hosts_lua.cpp` run_set_forced_recon_level_008aa8f0):
+  00805CF0 runs on the entity's own record first (008AAA76), and then on the squadron members or
+  the LandConvoy elements. The host forces the members instead of the entity, so a squadron's
+  own record is never forced, and this deviation is not labelled.
+- 00896A90 AddAirBaseStock (`run_add_air_base_stock_00896a90`), minor: the 0095BA60 party
+  preload mark (00896BF5) is neither applied nor labelled.
+
+Not recorded:
+
+- 008B19A0 CountdownCancel: its listing was not compared beyond the comment's addresses.
+- 0088B410: an implicit struct copy with no concrete host.
+- The rest had mentions only (dispatch rows, header comments, callee-only reconstructions) and
+  are reconstruction candidates: 0088B4B0, 0088B6D0, 0088B840, 0088E320, 0088E560, 0088E790,
+  0088EB50, 0088EDC0, 00891D50, 008936A0, 008959F0, 00897720, 0089AF40, 0089D9D0, 0089DB70,
+  0089DD10, 0089DEB0, 0089FE50, 008A2710, 008A28B0, 008A4960, 008A4B10, 008A4F00, 008A50D0,
+  008A5BD0, 008A6060, 008A8720, 008A9E10, 008AB3D0, 008AC2B0, 008AC7B0, 008AD6F0, 008AF700,
+  008AFEC0, 008B21A0, 008C14B0, 008C8560, 008CB920, 008CC850, 008CFC10.
