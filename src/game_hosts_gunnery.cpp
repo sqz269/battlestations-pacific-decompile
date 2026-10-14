@@ -82,6 +82,7 @@
 #include "bsp/flak_ver_cc13.hpp"
 #include "bsp/aa_pick_ver_cc13.hpp"
 #include "bsp/gameplay_seg53_cc13.hpp"
+#include "bsp/ship_torpedo_ver_cc13.hpp"
 
 namespace bsp::game {
 namespace {
@@ -430,6 +431,30 @@ constexpr bool kRangingSeedVelocityBound = false;
 //    after 00864880 drew it. The host added the draw. ON: the draw is consumed
 //    and dropped. OFF: as before.
 constexpr bool kRangingBearingFixedBound = false;
+//  * kTorpedoBotAttackRangeBound: packet g42_ver23 (docs/CC13_VER_23.md D1).
+//    008FFF20's gates: A (009001A8..) drops the trigger when |target - gun| (3D)
+//    exceeds min(unit+44Ch * 1.5, bot+68h + 100), and B (..0090031E) when the
+//    lead point (with the unit+6D4h spread) is farther in x, z than
+//    min(unit+44Ch, bot+68h). bot+68h is 00901BA0: 008387B0(7, target Length,
+//    the tube class range, the TorpedoBot row's FireTargetAccuracy or
+//    AnyTargetAccuracy by bot+6Ch), cached by 00727F10 (seeded 10000 at
+//    008FF260). The host launched anywhere inside the category range. ON: the
+//    cache and both gates (the 0.2 s think timer is not modelled). OFF: as
+//    before.
+constexpr bool kTorpedoBotAttackRangeBound = false;
+//  * kTorpedoBotStaleFlagBound: packet g42_ver23 (docs/CC13_VER_23.md D2), only
+//    under kTorpedoBotAttackRangeBound. 00903580 recomputes bot+68h BEFORE it
+//    stores the new bot+6Ch (0090358D, 00903592), so a flag change keeps the old
+//    flag's range until the next target change. ON: that order
+//    (torpedo_gun_set_bot_fire_target_00727f10). OFF: the range follows the new
+//    flag at once.
+constexpr bool kTorpedoBotStaleFlagBound = false;
+//  * kTorpedoSubmergedTargetDropBound: packet g42_ver23 (docs/CC13_VER_23.md D4).
+//    008FFFB2..0090002A: a surface (not IsKindOf(8)) owner's TorpedoBot drops an
+//    IsKindOf(8) target that 00852820 answers below (y <= (band1 + band0) / 3.0)
+//    through bot->vt[38h](0). The host kept it. ON: the gun's target is dropped.
+//    OFF: as before.
+constexpr bool kTorpedoSubmergedTargetDropBound = false;
 //  * kTorpedoSwimThrustBound: packet cc9_torpedo_tube_turn,
 //    docs/TORPEDO_FRIENDLY_CROSSING.md section 6. 00857480, the swim advance,
 //    per step on a torpedo in the water: 00856BB0 -> 00857061 yaws the NOSE
@@ -1976,6 +2001,43 @@ struct GameGunneryHost::Impl {
     unsigned long long torpedo_swim3d_starts{0}, torpedo_swim3d_steps{0},
         torpedo_homing_scans{0}, torpedo_homing_binds{0}, torpedo_homing_turn_steps{0},
         torpedo_sub_vs_sub_launches{0};
+    // kTorpedoBotAttackRangeBound: bot+68h / bot+6Ch and the bot's target, by gun.
+    struct TorpedoBotRange {
+        bsp::ship_torpedo_ver_cc13::TorpedoBotRangeCache cache;
+        std::size_t target_plus_one{0};
+    };
+    std::map<std::size_t, TorpedoBotRange> torpedo_bot_range_by_gun;
+    bool torpedo_profile_loaded{false};
+    bsp::WeaponHitAccuracyProfile torpedo_hit_profiles[4]{};
+    unsigned long long torpedo_gate_a_drops{0}, torpedo_gate_b_drops{0},
+        torpedo_gate_passes{0}, torpedo_submerged_drops{0};
+    double torpedo_attack_range_sum{0.0};
+    unsigned long long torpedo_attack_range_samples{0};
+    // 00901BA0 for one gun and target. LABELLED SUBSTITUTION for the TorpedoBot
+    // level row: this process holds no descriptor, so the rows are this
+    // installation's robots.lua TorpedoBot (lines 388..436, mtime 2025-06-01),
+    // FireTargetAccuracy / AnyTargetAccuracy by skill 0 Stun .. 5 Elite.
+    float torpedo_attack_range_00901ba0(std::size_t owner, std::size_t target,
+                                        float tube_range, bool fire_target) {
+        static constexpr float kAccuracy[6][2] = {{0.03f, 0.035f}, {0.35f, 0.45f},
+            {0.055f, 0.065f}, {0.04f, 0.05f}, {0.045f, 0.05f}, {0.055f, 0.065f}};
+        if (!torpedo_profile_loaded) {
+            torpedo_profile_loaded = true;
+            lua.read_weapon_hit_accuracy(torpedo_hit_profiles);
+        }
+        int level = units.skill_level(owner);
+        if (level < 0 || level > 5) level = 1;
+        bsp::TorpedoBotParameters row{};
+        row.fire_target_accuracy_014 = kAccuracy[level][0];
+        row.any_target_accuracy_018 = kAccuracy[level][1];
+        const float range = bsp::ship_torpedo_ver_cc13::torpedo_attack_range_00901ba0(
+            torpedo_hit_profiles[2], row, units.unit_hull_length_09c8(target), fire_target,
+            tube_range);
+        torpedo_attack_range_sum += static_cast<double>(range);
+        ++torpedo_attack_range_samples;
+        done("TorpedoBot::attack_range_00901ba0", 0x00901ba0u);
+        return range;
+    }
     double torpedo_swim3d_depth_sum{0.0};
     unsigned long long torpedo_swim3d_depth_samples{0};
     void torpedo_swim3d_start(GameProjectileRow& shot);
@@ -6207,6 +6269,26 @@ public:
         row.target_unit = other + 1;
         row.target_name = other < owner_.unit_state.size()
             ? owner_.unit_state[other].row.name : std::string();
+        if (kTorpedoBotAttackRangeBound && row.category == bsp::kUnitGunneryTorpedoCategory
+            && other < owner_.units.count()) {
+            // 00727F44 -> 009035A0, 00727F56 -> 00903580 (CC13_VER_23 D1/D2).
+            GameGunneryHost::Impl::TorpedoBotRange& tb = owner_.torpedo_bot_range_by_gun[slot];
+            const bool changed = tb.target_plus_one != other + 1;
+            tb.target_plus_one = other + 1;
+            const float tube_range = row.max_range;
+            const std::size_t owner_unit = unit_;
+            auto range_for_flag = [this, owner_unit, other, tube_range](bool flag) {
+                return owner_.torpedo_attack_range_00901ba0(owner_unit, other, tube_range, flag);
+            };
+            if constexpr (kTorpedoBotStaleFlagBound) {
+                bsp::ship_torpedo_ver_cc13::torpedo_gun_set_bot_fire_target_00727f10(
+                    tb.cache, changed, is_fire_target, range_for_flag);
+            } else if (changed || tb.cache.fire_target_06c != is_fire_target) {
+                tb.cache.fire_target_06c = is_fire_target;
+                tb.cache.attack_range_068 = range_for_flag(is_fire_target);
+                ++tb.cache.recomputes;
+            }
+        }
         row.target_is_fire_target = is_fire_target;
         if (kFlakErrorRerollBound && kAaFlakAimErrorBound && other < owner_.units.count()
             && (row.category == 5
@@ -6295,6 +6377,14 @@ public:
         row.target_unit = 0;
         row.target_name.clear();
         row.target_is_fire_target = false;
+        if (kTorpedoBotAttackRangeBound && row.category == bsp::kUnitGunneryTorpedoCategory) {
+            // 008FF2B0: bot+6Ch = 0 at 008FF2DF, no recompute. LABELLED: the bot's
+            // target is taken as cleared with the gun's, so the next send counts
+            // as a change.
+            GameGunneryHost::Impl::TorpedoBotRange& tb = owner_.torpedo_bot_range_by_gun[slot];
+            tb.cache.fire_target_06c = false;
+            tb.target_plus_one = 0;
+        }
         owner_.done("Gunnery::clear_bot_fire_target_00728000", 0x00728000u);
     }
 
@@ -7320,7 +7410,59 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             std::array<float, 3> lead = at;
             float pitch = 0.0f;
 
-            if (gun.category == bsp::kUnitGunneryTorpedoCategory) {
+            if (gun.category == bsp::kUnitGunneryTorpedoCategory
+                && kTorpedoSubmergedTargetDropBound
+                && units.unit_is_kind_of(target, 8) && !units.unit_is_kind_of(owner_unit, 8)) {
+                // 008FFFB2..0090002A (CC13_VER_23 D4). The owner is the ship the
+                // gun belongs to, so the IsKindOf(5) parent walk is taken as found.
+                float tx = 0.0f, ty = 0.0f, tz = 0.0f;
+                units.unit_position_00fc(target, tx, ty, tz);
+                bsp::gameplay_seg53_cc13::SubmarineDepthFields depth{};
+                depth.world_y_100 = ty;
+                depth.bands_1200[0] = 0.0f;
+                depth.bands_1200[1] = -20.0f;                        // 00E0B578 defaults
+                units.submarine_band_y(target, 0, depth.bands_1200[0]);
+                units.submarine_band_y(target, 1, depth.bands_1200[1]);
+                bsp::ship_torpedo_ver_cc13::SubmergedTargetInputs sub;
+                sub.has_target = true;
+                sub.target_is_submarine_8 = true;
+                sub.owner_found_5 = true;
+                sub.owner_is_submarine_8 = false;
+                sub.target_above_00852820 =
+                    bsp::gameplay_seg53_cc13::submarine_is_above_depth_charge_depth_00852820(depth);
+                if (bsp::ship_torpedo_ver_cc13::torpedo_bot_drops_submerged_target_008fffb2(sub)) {
+                    // bot->vt[38h](0): the target goes, and the trigger with it.
+                    gun.target_unit = 0;
+                    gun.target_name.clear();
+                    gun.target_is_fire_target = false;
+                    have_target = false;
+                    ++torpedo_submerged_drops;
+                }
+            }
+            if (gun.category == bsp::kUnitGunneryTorpedoCategory && kTorpedoBotAttackRangeBound
+                && have_target) {
+                // Gate A, 009001A8..: 0042B2F0 |target - gun| against
+                // 00415510(unit+44Ch * 1.5, bot+68h + 100).
+                const auto tb = torpedo_bot_range_by_gun.find(g);
+                const float attack_range = tb != torpedo_bot_range_by_gun.end()
+                    ? tb->second.cache.attack_range_068
+                    : bsp::ship_torpedo_ver_cc13::kTorpedoBotInitialAttackRange;
+                const float unit_range = state.category_ranges[
+                    static_cast<std::size_t>(bsp::kUnitGunneryTorpedoCategory)];
+                float tr[3], tu[3], tf[3], to[3];
+                unit_pose(target, tr, tu, tf, to);
+                const float span[3] = {to[0] - muzzle[0], to[1] - muzzle[1], to[2] - muzzle[2]};
+                const float limit_a = bsp::gameplay_seg40_59_cc13::min_float_by_ref_00415510(
+                    static_cast<float>(static_cast<double>(unit_range) * 1.5),
+                    static_cast<float>(static_cast<double>(attack_range) + 100.0));
+                if (length3(span) > limit_a) {
+                    have_target = false;   // vtable[1E8h](0)
+                    ++torpedo_gate_a_drops;
+                }
+            }
+            if (gun.category == bsp::kUnitGunneryTorpedoCategory && !have_target) {
+                // Dropped above: no aim this tick.
+            } else if (gun.category == bsp::kUnitGunneryTorpedoCategory) {
                 // The torpedo bot runs its own intercept solver and its round
                 // does not fall, so no gravity term is added.
                 // 0090022B loads [[gun+3F8h]+34h]+0E4h, WaterTravelSpeed, for
@@ -7347,6 +7489,25 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     const float spread = state.torpedo_spread;
                     lead[0] += spread * tf[0];
                     lead[2] += spread * tf[2];
+                }
+                if (kTorpedoBotAttackRangeBound) {
+                    // Gate B, ..0090031E: the lead point in x, z (y = 0) against
+                    // 00415510(unit+44Ch, bot+68h).
+                    const auto tb = torpedo_bot_range_by_gun.find(g);
+                    const float attack_range = tb != torpedo_bot_range_by_gun.end()
+                        ? tb->second.cache.attack_range_068
+                        : bsp::ship_torpedo_ver_cc13::kTorpedoBotInitialAttackRange;
+                    const float unit_range = state.category_ranges[
+                        static_cast<std::size_t>(bsp::kUnitGunneryTorpedoCategory)];
+                    const float dx = lead[0] - muzzle[0], dz = lead[2] - muzzle[2];
+                    const float limit_b = bsp::gameplay_seg40_59_cc13::min_float_by_ref_00415510(
+                        unit_range, attack_range);
+                    if (std::sqrt(dx * dx + dz * dz) > limit_b) {
+                        have_target = false;   // vtable[1E8h](0)
+                        ++torpedo_gate_b_drops;
+                    } else {
+                        ++torpedo_gate_passes;
+                    }
                 }
             } else if (kGunGravityArcBound && gun.muzzle_speed > 0.0f
                        && (aa_bot_aims(gun.category, target)
@@ -14602,6 +14763,15 @@ void GameGunneryHost::report() {
                 : 0.0,
             host.torpedo_homing_scans, host.torpedo_homing_binds,
             host.torpedo_homing_turn_steps, host.torpedo_sub_vs_sub_launches);
+        host.log.notef("summary mission gunnery torpedo bot range gate_a_drops=%llu gate_b_drops=%llu "
+            "passes=%llu mean_attack_range=%.0f over %llu submerged_drops=%llu bound=%d stale=%d "
+            "submerged=%d (008FFF20 / 00901BA0 / 008FFFB2, CC13_VER_23 D1/D2/D4)",
+            host.torpedo_gate_a_drops, host.torpedo_gate_b_drops, host.torpedo_gate_passes,
+            host.torpedo_attack_range_samples ? host.torpedo_attack_range_sum
+                / static_cast<double>(host.torpedo_attack_range_samples) : 0.0,
+            host.torpedo_attack_range_samples, host.torpedo_submerged_drops,
+            kTorpedoBotAttackRangeBound ? 1 : 0, kTorpedoBotStaleFlagBound ? 1 : 0,
+            kTorpedoSubmergedTargetDropBound ? 1 : 0);
         host.log.notef("summary mission gunnery torpedo swim entity impacts=%llu (swimming rounds that "
             "struck an entity, 0084BC60)", host.torpedo_swim_entity_impacts);
         host.log.notef("summary mission gunnery bullet throw cone=%llu fan=%llu zero=%llu "
