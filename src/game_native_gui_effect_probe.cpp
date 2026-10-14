@@ -9,6 +9,7 @@
 #include "bsp/native_material_program_compiler_actual.hpp"
 #include "bsp/native_shader_descriptor_reader.hpp"
 #include "bsp/native_vfs_name_resolution.hpp"
+#include "bsp/native_shader_binary_cache.hpp"
 #include <cstdio>
 #include <stdexcept>
 
@@ -23,11 +24,13 @@ const char* stage_name(Stage stage) noexcept {
     switch (stage) {
     case Stage::prepared: return "prepared";
     case Stage::shadow: return "shadow";
+    case Stage::shader_cache: return "shader-cache-create";
     case Stage::sampler_parent: return "sampler-parent";
     case Stage::effect_parent: return "effect-parent";
     case Stage::names: return "names";
     case Stage::first_effect: return "GuiFont.mshd";
     case Stage::second_effect: return "GuiFontBilinear.mshd";
+    case Stage::shader_cache_release: return "shader-cache-release";
     case Stage::ready: return "ready";
     case Stage::retiring_references: return "retiring-references";
     case Stage::retiring_names: return "retiring-names";
@@ -189,6 +192,24 @@ const GameNativeGuiEffectProbeObservation& GameNativeGuiEffectProbe::run() {
         p.log.notef("native GUI effect probe shadow owner=%p profile=%08x extent=%u/%u policy=%u",
             target, target->profile_00, target->width_04, target->height_08,
             static_cast<unsigned>(target->policy_0e));
+        o.stage = Stage::shader_cache;
+        require(!p.renderer.shader_cache_creation_operation() &&
+            !p.renderer.shader_cache_context().actual_cache_0108d6ec,
+            "GUI effect probe requires an unused canonical shader-cache bracket");
+        // Original73BF80 brackets its material acquisitions with B3A600/B3B140.
+        // This bounded resource probe schedules those same existing producers;
+        // it does not run the preload script/vector or change either mode byte.
+        o.source_mode_on_create = p.renderer.shader_cache_context().source_mode_0108d6f1;
+        o.load_variants_on_create = p.renderer.shader_cache_context().load_variants_0108d6f0;
+        o.cache_creation_entered = true;
+        p.renderer.create_shader_cache();
+        o.cache_creation_returned = true;
+        o.cache_identity = p.renderer.shader_cache_context().actual_cache_0108d6ec;
+        require(o.cache_identity != nullptr,
+            "actual shader-cache allocation returned null; GUI effect probe cannot enter binary consumers");
+        p.log.notef("native GUI effect probe shader cache owner=%p source_mode=%u load_variants=%u",
+            o.cache_identity, static_cast<unsigned>(o.source_mode_on_create),
+            static_cast<unsigned>(o.load_variants_on_create));
         o.stage = Stage::sampler_parent;
         p.sampler = std::make_unique<GameNativeGuiSamplerApplication>(p.log, p.renderer, p.vfs,
             p.singletons, p.data, GameNativeGuiSamplerApplicationBindings{p.input, p.platform});
@@ -219,6 +240,13 @@ const GameNativeGuiEffectProbeObservation& GameNativeGuiEffectProbe::run() {
                 slot.requested_name, static_cast<const void*>(&slot.native_name), slot.caller_reference,
                 slot.profile, slot.references_on_return, slot.fallback_call_seen ? 1 : 0);
         }
+        o.stage = Stage::shader_cache_release;
+        o.cache_release_entered = true;
+        p.renderer.release_shader_cache();
+        o.cache_release_returned = true;
+        require(p.renderer.shader_cache_released() &&
+            !p.renderer.shader_cache_context().actual_cache_0108d6ec,
+            "GUI effect probe shader cache survived its native release bracket");
         o.stage = Stage::ready;
         return o;
     } catch (...) {
@@ -299,6 +327,16 @@ bool GameNativeGuiEffectProbe::requires_process_retention() const noexcept {
 void GameNativeGuiEffectProbe::emit_failure_observations() const noexcept {
     const auto& p = *impl_;
     try {
+        p.log.notef("native GUI shader cache create=%d/%d release=%d/%d identity=%p current=%p source_mode=%u load_variants=%u",
+            p.observed.cache_creation_entered ? 1 : 0, p.observed.cache_creation_returned ? 1 : 0,
+            p.observed.cache_release_entered ? 1 : 0, p.observed.cache_release_returned ? 1 : 0,
+            p.observed.cache_identity, p.renderer.shader_cache_context().actual_cache_0108d6ec,
+            static_cast<unsigned>(p.observed.source_mode_on_create),
+            static_cast<unsigned>(p.observed.load_variants_on_create));
+        if (const auto* cache = p.renderer.shader_cache_creation_operation())
+            p.log.notef("native GUI shader cache operation phase=%u function=%08x site=%08x cache=%p allocation=%p records=%u index=%u temporary_live=%d",
+                static_cast<unsigned>(cache->phase), cache->function, cache->native_site, cache->cache,
+                cache->allocation, cache->completed_records, cache->index, cache->temporary_live ? 1 : 0);
         p.log.notef("native GUI effect probe state=%s failed_stage=%s retention=%d",
             stage_name(p.observed.stage), stage_name(p.observed.failure_stage), requires_process_retention() ? 1 : 0);
         note_exception(p.log, p.observed.failure);

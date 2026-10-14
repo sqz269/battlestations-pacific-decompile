@@ -15,12 +15,15 @@ struct ShaderGraph {
        profiles(0xd691b0),cameras.decrement,&raw_allocate,&raw_allocate,&raw_free,&raw_free} {}
  void create() {
   check(!operation,"application shader cache creation is one-shot");
+  check(!process.cache_0108d6ec(),"application shader cache cannot replace another published cache");
   operation=std::make_unique<NativeShaderBinaryCacheOperation>();
   create_native_shader_binary_cache_00b3a600(cache,*operation);
  }
  void release() {
   check(operation && operation->phase==NativeShaderBinaryCacheOperation::Phase::complete && !released,
       "application shader cache requires a completed unretired creation");
+  check(process.cache_0108d6ec()==operation->cache,
+      "application shader cache release cannot retarget its captured created owner");
   release_native_shader_binary_cache_00b3b140(cache);released=true;
  }
  bool quiescent() const noexcept {return (!operation || released) && !process.cache_0108d6ec();}

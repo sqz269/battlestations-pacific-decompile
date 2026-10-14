@@ -23,6 +23,7 @@ struct NativeCockpitViewportReleaseContext;
 struct NativeRenderResourcesLifetimeContext;
 class NativeRenderResourcesConstructionAcquired;
 struct NativeShaderBinaryCacheContext;
+struct NativeShaderBinaryCacheOperation;
 struct NativeShaderDescriptorStorage;
 struct NativeShaderDescriptorReadContext;
 class NativeShaderDescriptorReadOperation;
@@ -136,6 +137,11 @@ public:
     // Full preload loop remains separate; these entrypoints perform real I/O.
     void create_shader_cache();
     void release_shader_cache();
+    // Retained lifecycle metadata remains readable after entered failure or
+    // normal release. Cache/allocation pointers are diagnostic identities after
+    // retirement; they do not grant another owner or permit replay/rebinding.
+    const NativeShaderBinaryCacheOperation* shader_cache_creation_operation() const noexcept;
+    bool shader_cache_released() const noexcept;
     NativeShaderBinaryCacheContext& shader_cache_context() noexcept;
     // Same compiler and secondary-pass construction/copy/registration domains.
     // No effect/program load graph is created. The caller keeps persistent
