@@ -176,9 +176,20 @@ struct PlaneControlUnitState {
     // every step, so free flight is 0.
     int controller_mode_fc = 0;
     // unit+5Dh out of action, and the spin block it gates (unit+C36h present,
-    // unit+C37h sign, unit+C3Ch the lost-drag timer). Unmodelled here: an
-    // undamaged plane takes none of it.
+    // unit+C37h sign, unit+C3Ch the lost-drag timer). An undamaged plane takes
+    // none of it; a host that leaves the flag false keeps the old target.
     bool out_of_action_5d = false;
+    // 007DA7E4-007DA8D5 (R4). unit+C36h is set by the kind-67h death message
+    // (007D0DB4); unit+C37h by 007D0DD7, rightspinning with a model whose wing
+    // node is present (the "rwing"/"aileron_r" arm), clear for leftspinning.
+    bool spinning_c36 = false;
+    bool spin_right_c37 = false;
+    float lost_drag_timer_c3c = 0.0f;
+    // PlaneGlobals Dynamics/DeadMeat: SpinRollSpd +258h (00F87338),
+    // RollMulTime +25Ch (00F8733C), RollMul +260h (00F87340).
+    float dead_meat_spin_roll_spd = 0.0f;
+    float dead_meat_roll_mul_time = 0.0f;
+    float dead_meat_roll_mul = 1.0f;
 };
 
 // The three targets, and the three acceleration terms the rate law pairs with

@@ -361,6 +361,21 @@ PlaneDynAccumulators accumulate_free_flight_007db680(const PlaneFreeFlightState&
                 acc.world_drag[1] += 0.0f * d * extra;             // 007DBC4B, the zeroed term
                 acc.world_drag[2] += n[2] * d * extra;             // 007DBC55
             }
+            // 007DBC77-007DBD34, C1: a wreck with ctl+94h and unit+C3Ch > 1.0f
+            // loses forward speed into dyn+0Ch, which is still zero here; the
+            // ceiling below adds to it, and 0 - a + b is exactly b - a. The same
+            // law as gameplay_seg48_cc13's dead_meat_forward_drag_007dbc77
+            // (bsp_core does not link that file). 007DBC8F COMISS against the
+            // 1.0f still in XMM0.
+            if (state.wreck_drag_ctl_94 && state.lost_drag_timer > 1.0f) {
+                const float excess = state.lost_drag_timer - 1.0f;  // 007DBCA9, double 1.0
+                // 007DBCFC: -8.0f (00CE3CC8), 10.0f (00CE38B8), -1.0f (00D7A260), 1.0f.
+                const float depth =
+                    interp_clamped_00419010(-8.0f, 10.0f, -1.0f, 1.0f, state.world_altitude);
+                const float scaled = state.forward_speed * depth;   // 007DBD0C
+                const float share = min_float(1.0f, excess);        // 007DBD1C 00415510
+                acc.body_damping[2] -= share * scaled;              // 007DBD21 / 007DBD28
+            }
         }
     }
 

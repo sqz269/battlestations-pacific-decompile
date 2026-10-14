@@ -882,3 +882,43 @@ under the pause). Still pending for the resume:
   re-plan with `p6_e8_extend.py` or re-targets to Cummings.
 - The USN01 `usn01_p7_u1_a` jitter checks.
 - Steps 3-4 above.
+
+## 27. C1 and R4 bound OFF (cc9-physics8, 2026-10-14)
+
+Packet cc9_plane_wreck_roll. Two switches in `src/game_hosts_units.cpp`, both committed OFF; the terms live in
+`plane_control_targets_007da710` (src/plane_control_rate.cpp) and `accumulate_free_flight_007db680`
+(src/plane_flight.cpp), which leave the old result when the host does not set their new inputs.
+
+- **R4, `kPlaneDeadMeatRollBound`, `007DA7E4`-`007DA8D5`** (listing read whole; constants read from the image):
+  - unit+5Dh set: `roll = 00419010(0, 1, RollMulTime [00F8733C], RollMul [00F87340], C3Ch) * roll`
+    (6 s and 2.0 in this installation's PlaneGlobals).
+  - and C36h set: `ramp = float(C3Ch * 4.0)` (double 00D7A328) capped at 1.0f (00D7A24C, JBE so the value wins
+    ties); `term = ramp * SpinRollSpd [00F87338] * 00415550(0.35f [00CF6560], RollSpd desc+1A8h)`, the larger.
+    C37h set: `roll + term` (007DA890 FADD); clear: `roll - term` (007DA8D1 FSUBR on the roll kept as a double).
+  - Then 007DA8D9 still zeroes the roll target in controller mode 1.
+  - C37h: 007D0DD7 sets it in the kind-67h arm when the message byte +24h is set (rightspinning) and the model
+    object is non-null; that arm also looks up the "rwing" (00CE444C) and "aileron_r" (00D06178) nodes. Leftspinning
+    takes 007D1043, which sets C38h ("lwing", "aileron_l") and leaves C37h clear. Host: `plane_spin_right_c37` set
+    at the death latch for `SpinRight`. SUBSTITUTION: the model object is taken as present.
+  - unit+5Dh is the host's `plane_death_c3a`, as in the water step.
+- **C1, `kPlaneWreckForwardDragBound`, `007DBC77`-`007DBD34`**, the cc13 model `dead_meat_forward_drag_007dbc77`
+  (CC13_GPR_48 8.3) placed after the roll-drag extra, inside the speed > 0.001 path. dyn+0Ch is still zero there,
+  and the ceiling adds to it later, so the order is exact.
+  - The gate is ctl+94h. The image sets it in two places: the water step (007CBBE7, the host carries it) and the
+    free-flight arm `007CE0DB`-`007CE1D9` (listing read): unit+5Dh, `unit+100h < 15.0` (double 00CF3F20), ctl+94h
+    still clear (`007D7A80` returns it), then each 12-byte point of the class list (unit+538h)+5BCh..5C0h through the
+    pose (`004142E0`); the first with world y below -1.0f (00D7A260) calls `007D8180(0)`, which sets ctl+94h in
+    single player (`[00E188A8]+1FE4h` 0 or 1). The point list is not in the host, so the in-air producer is not
+    carried (SUBSTITUTION, labelled): an airborne wreck gets C1 only after its first water step.
+- Counters: `summary plane dead meat roll steps=.. spin=.. bound=.. wreck drag steps=.. bound=..`.
+
+**Predictions (written before any run).**
+- OFF: every counter is 0 with bound=0, and the build is gameplay-identical to main (pair_diff 0 or 1).
+- R4 ON: `steps` > 0 wherever a plane dies in the air, `spin` > 0 where a death draws spinning
+  (`death_mode_chances_spinning`). Dying planes roll up to twice as fast over 6 s and spinners corkscrew
+  (5 * max(0.35, RollSpd) rad/s more). Expected verdict 3 on USN12/LOMP10/the carrier win: crash points and
+  timings move, so crash-sweep contacts and the shared RNG stream re-roll later kills. Mechanism check: the
+  per-plane roll of a spinning wreck in the ON log grows in the C37h sign.
+- C1 ON: `wreck drag steps` > 0 only where a dying plane reaches the water with C3Ch > 1 s; wrecks in the water
+  lose forward speed with a 1 s time constant (10 s^-1 below 8 m). Expected verdict 1 (presentation only) or a
+  small 3 through wreck positions, with no win lost.

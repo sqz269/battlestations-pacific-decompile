@@ -144,11 +144,25 @@ PlaneControlTargets plane_control_targets_007da710(const PlaneControlClass& cls,
     }
     // 007DA7C2..007DA7DA.
     roll = cls.roll_spd * mode_factor_f1 * bank_factor * roll;
-    // 007DA7B9 / 007DA7DE: the out-of-action ramp and the spin term. This host
-    // does not model unit+5Dh, unit+C36h/C37h or the lost-drag timer's use here,
-    // so an undamaged plane takes neither, and the flag is carried in the input
-    // so that a host which does model them has somewhere to say so rather than
-    // this being silently absent.
+    // 007DA7B9 / 007DA7DE: the out-of-action ramp and the spin term (R4,
+    // docs/CC13_GPR_48.md 8.3), only when the host sets unit+5Dh here.
+    if (unit.out_of_action_5d) {
+        // 007DA7E4-007DA828: roll *= 00419010(0, 1, RollMulTime, RollMul, C3Ch).
+        roll = clamped_interpolate_00419010(0.0f, 1.0f, unit.dead_meat_roll_mul_time,
+                                            unit.dead_meat_roll_mul,
+                                            unit.lost_drag_timer_c3c) * roll;
+        if (unit.spinning_c36) {
+            // 007DA839-007DA879: min(C3Ch * 4.0 (double 00D7A328), 1.0f (00D7A24C)),
+            // stored as a float; 007DA87F 00415550 = max(0.35f (00CF6560), RollSpd).
+            float ramp = static_cast<float>(
+                static_cast<double>(unit.lost_drag_timer_c3c) * 4.0);
+            if (ramp > 1.0f) ramp = 1.0f;
+            const float floor_spd = cls.roll_spd > 0.35f ? cls.roll_spd : 0.35f;
+            const float term = ramp * unit.dead_meat_spin_roll_spd * floor_spd;
+            // 007DA890 FADD (C37h set) / 007DA8D1 FSUBR (clear).
+            roll = unit.spin_right_c37 ? roll + term : roll - term;
+        }
+    }
     //
     // 007DA8D9..007DA8E5: zeroed on the ground. The sense is `mode == 1`, not
     // `!= 1` - the Ghidra plate comment had it inverted for one packet.

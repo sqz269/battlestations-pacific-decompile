@@ -501,6 +501,9 @@ struct PlaneFreeFlightState {
     float roll_drag_scale{1.0f};  // ctl+98h, the extra world-x drag above 1.0
     float lift_scale{1.0f};       // ctl+9Ch, the multiplier on q
     bool extra_gravity{false};    // ctl+94h, gates the second gravity term
+    // ctl+94h again, for the wreck drag 007DBC77-007DBD34 (C1, docs/CC13_GPR_48.md
+    // 8.3) inside the drag path. A host that leaves it false omits the term.
+    bool wreck_drag_ctl_94{false};
     // Supplied by the host, not reconstructed here: see the doc's coverage table.
     float thrust_accel{0.0f};  // 007D9050 * unit+0CC8h * the 008E6430 multiplier
     float drag_accel{0.0f};    // 007D9140 * the 007DBB23 pitch ramp; negative forward
