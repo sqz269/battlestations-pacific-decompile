@@ -1,4 +1,5 @@
 #include "bsp/native_fixed_step_job_waves.hpp"
+#include "bsp/native_render_job_publication.hpp"
 
 #include <cstddef>
 #include <cstdint>
@@ -13,17 +14,6 @@ template<class T> T& raw_at(void* owner, std::size_t offset) noexcept {
 void* current_pointer(void* owner, std::size_t offset) noexcept {
     return raw_at<void* volatile>(owner, offset);
 }
-class CapturedSection final {
-public:
-    explicit CapturedSection(SystemSingletonCriticalSection* section) : section_(section) {
-        if (section_) { singleton_enter_critical_section(*section_); ++section_->recursion_18; }
-    }
-    ~CapturedSection() {
-        if (section_) { --section_->recursion_18; singleton_leave_critical_section(*section_); }
-    }
-private:
-    SystemSingletonCriticalSection* section_;
-};
 struct DescriptorProfile {
     std::uint32_t primary;
     std::uint32_t holder;
@@ -35,11 +25,11 @@ constexpr DescriptorProfile kWave2{0x00d0dec4u, 0x00d0de9cu, 0x00d0dec0u, 8};
 constexpr DescriptorProfile kWave3{0x00d0deacu, 0x00d0de90u, 0x00d0dea8u, 8};
 constexpr DescriptorProfile kInterpolation{0x00d0debcu, 0x00d0de98u, 0x00d0deb8u, 12};
 
-void* descriptor_singleton(void* volatile& publication, SingletonLifetimeDomain& domain,
+void* descriptor_singleton(void* volatile& publication, SoundLifetimeAccess domain,
     const DescriptorProfile& profile) {
     if (void* const existing = publication) return existing;
     {
-        CapturedSection section(domain.get_manager_00415350()->system_owner().section_10);
+        CapturedSoundLifetimeSection section(domain);
         if (!publication) {
             void* const raw = singleton_lifetime_allocate(
                 {SingletonAllocationKind::object, profile.bytes, profile.bytes});
@@ -53,7 +43,7 @@ void* descriptor_singleton(void* volatile& publication, SingletonLifetimeDomain&
             void* const secondary = published
                 ? static_cast<std::uint8_t*>(published) + 4 : nullptr;
             // Native reloads the manager AFTER capturing the published +04.
-            auto* const manager = domain.get_manager_00415350();
+            auto manager = domain.get_manager_00415350();
             manager->register_object(secondary);
         }
     }
@@ -101,8 +91,21 @@ void* native_step_job_interpolation_descriptor_00875670(NativeFixedStepJobDescri
     return descriptor_singleton(bindings.interpolation_00f878d8,
         bindings.lifetime_01090aa0, kInterpolation);
 }
-bool delete_native_fixed_step_descriptor_current_00(void* secondary, std::uint32_t flags,
-    NativeFixedStepJobDescriptors& bindings) noexcept {
+void* native_step_job_wave1_descriptor_008755a0(NativeFixedStepJobDescriptorsActual& bindings) {
+    return descriptor_singleton(bindings.wave1_00f878d4, bindings.lifetime_01090aa0, kWave1);
+}
+void* native_step_job_wave2_descriptor_00875750(NativeFixedStepJobDescriptorsActual& bindings) {
+    return descriptor_singleton(bindings.wave2_00f878dc, bindings.lifetime_01090aa0, kWave2);
+}
+void* native_step_job_wave3_descriptor_008754d0(NativeFixedStepJobDescriptorsActual& bindings) {
+    return descriptor_singleton(bindings.wave3_00f878d0, bindings.lifetime_01090aa0, kWave3);
+}
+void* native_step_job_interpolation_descriptor_00875670(NativeFixedStepJobDescriptorsActual& bindings) {
+    return descriptor_singleton(bindings.interpolation_00f878d8,
+        bindings.lifetime_01090aa0, kInterpolation);
+}
+template<class Bindings> bool delete_descriptor_current(void* secondary, std::uint32_t flags,
+    Bindings& bindings) noexcept {
     const auto current = raw_at<volatile std::uint32_t>(secondary, 0);
     void* volatile* publication = nullptr;
     switch (current) {
@@ -117,6 +120,14 @@ bool delete_native_fixed_step_descriptor_current_00(void* secondary, std::uint32
     raw_at<volatile std::uint32_t>(secondary, 0) = 0x00ce3818u;
     if (flags & 1u) singleton_lifetime_free(primary);
     return true;
+}
+bool delete_native_fixed_step_descriptor_current_00(void* secondary, std::uint32_t flags,
+    NativeFixedStepJobDescriptors& bindings) noexcept {
+    return delete_descriptor_current(secondary, flags, bindings);
+}
+bool delete_native_fixed_step_descriptor_current_00(void* secondary, std::uint32_t flags,
+    NativeFixedStepJobDescriptorsActual& bindings) noexcept {
+    return delete_descriptor_current(secondary, flags, bindings);
 }
 
 NativeFixedStepJobDispatch::NativeFixedStepJobDispatch(const volatile float& fixed_step,
@@ -182,9 +193,26 @@ NativeFixedStepJobWaves::NativeFixedStepJobWaves(void* groups,
     NativeFrameJobOwnerStorage* volatile& frame, NativeFrameJobLifetimeBindings& frame_lifetime,
     NativeFixedStepJobDescriptors& descriptors)
     : groups_(groups), pending_head_(pending_head), pending_tail_(pending_tail), run_pass_(run_pass),
-      frame_(frame), frame_lifetime_(frame_lifetime), descriptors_(descriptors) {
+      frame_(frame), frame_lifetime_(frame_lifetime), descriptors_(&descriptors) {
     if (!groups || !pending_head || !pending_tail)
         throw std::invalid_argument("Native fixed-step jobs require actual groups/pending sentinels");
+}
+namespace {
+NativeFrameJobLifetimeBindings& require_frame_lifetime(NativeRenderJobPublicationContext& c) {
+    if (!c.frame_lifetime) throw std::logic_error("Actual frame-job wave lifetime is not bound");
+    return *c.frame_lifetime;
+}
+}
+NativeFixedStepJobWaves::NativeFixedStepJobWaves(void* groups, void* head, void* tail,
+    const volatile std::uint8_t& run_pass, NativeRenderJobPublicationContext& frame,
+    NativeFixedStepJobDescriptorsActual& descriptors, std::atomic<bool>& interrupted)
+    : groups_(groups), pending_head_(head), pending_tail_(tail), run_pass_(run_pass),
+      frame_(frame.actual_frame_0109cf08), frame_lifetime_(require_frame_lifetime(frame)),
+      actual_descriptors_(&descriptors), actual_frame_context_(&frame),
+      application_interrupted_(&interrupted) {
+    if (!groups || !head || !tail || !descriptors.lifetime_01090aa0.uses_actual_storage()
+        || !descriptors.lifetime_01090aa0.borrows_same_domain(frame.actual_manager_01090aa0))
+        throw std::invalid_argument("Actual fixed-step groups require the same raw owner domain");
 }
 void NativeFixedStepJobWaves::flush_pending_groups_00874c90() {
     void* element = current_pointer(pending_head_, 8);
@@ -207,26 +235,38 @@ void NativeFixedStepJobWaves::flush_pending_groups_00874c90() {
     raw_at<volatile std::uint32_t>(pending_tail_, 8) = 0;
     raw_at<void* volatile>(pending_tail_, 4) = pending_head_;
 }
-void NativeFixedStepJobWaves::queue_element(JobWavePhase phase, void* element) {
-    // The original gets the current pool BEFORE the per-element descriptor.
-    auto* const frame = native_frame_job_singleton_004c1130(frame_,
-        descriptors_.lifetime_01090aa0, frame_lifetime_);
-    void* descriptor;
+NativeFrameJobOwnerStorage* NativeFixedStepJobWaves::get_frame_owner() {
+    if (actual_frame_context_) return get_native_frame_jobs_actual_004c1130(*actual_frame_context_);
+    return native_frame_job_singleton_004c1130(frame_, descriptors_->lifetime_01090aa0, frame_lifetime_);
+}
+void* NativeFixedStepJobWaves::get_descriptor(JobWavePhase phase) {
     switch (phase) {
-    case JobWavePhase::kWave1: descriptor = native_step_job_wave1_descriptor_008755a0(descriptors_); break;
-    case JobWavePhase::kWave2: descriptor = native_step_job_wave2_descriptor_00875750(descriptors_); break;
-    case JobWavePhase::kWave3: descriptor = native_step_job_wave3_descriptor_008754d0(descriptors_); break;
+    case JobWavePhase::kWave1: return actual_descriptors_
+        ? native_step_job_wave1_descriptor_008755a0(*actual_descriptors_)
+        : native_step_job_wave1_descriptor_008755a0(*descriptors_);
+    case JobWavePhase::kWave2: return actual_descriptors_
+        ? native_step_job_wave2_descriptor_00875750(*actual_descriptors_)
+        : native_step_job_wave2_descriptor_00875750(*descriptors_);
+    case JobWavePhase::kWave3: return actual_descriptors_
+        ? native_step_job_wave3_descriptor_008754d0(*actual_descriptors_)
+        : native_step_job_wave3_descriptor_008754d0(*descriptors_);
     case JobWavePhase::kInterpolation:
-        descriptor = native_step_job_interpolation_descriptor_00875670(descriptors_); break;
+        return actual_descriptors_
+            ? native_step_job_interpolation_descriptor_00875670(*actual_descriptors_)
+            : native_step_job_interpolation_descriptor_00875670(*descriptors_);
     default: throw std::invalid_argument("Unknown native fixed-step wave");
     }
+}
+void NativeFixedStepJobWaves::queue_element(JobWavePhase phase, void* element) {
+    // The original gets the current pool BEFORE the per-element descriptor.
+    auto* const frame = get_frame_owner();
+    void* const descriptor = get_descriptor(phase);
     frame_lifetime_.execution.require_enqueue_virtual_04(frame->pool_04);
     enqueue_native_frame_job_00be3020(frame->pool_04, descriptor,
         static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(element)));
 }
 void NativeFixedStepJobWaves::dispatch_group() {
-    auto* const frame = native_frame_job_singleton_004c1130(frame_,
-        descriptors_.lifetime_01090aa0, frame_lifetime_);
+    auto* const frame = get_frame_owner();
     frame_lifetime_.execution.require_dispatch_virtual_08(frame->pool_04);
     // Native reads the byte anew at each dispatch, after the CURRENT slot load.
     dispatch_native_frame_jobs_00be3150(frame->pool_04, run_pass_,
@@ -254,15 +294,25 @@ void NativeFixedStepJobWaves::run_wave(JobWavePhase phase, NativeFixedStepJobWav
     }
 }
 void NativeFixedStepJobWaves::run_fixed_waves(NativeFixedStepJobWaveCounts& counts) {
-    run_wave(JobWavePhase::kWave1, counts);
-    run_wave(JobWavePhase::kWave2, counts);
-    run_wave(JobWavePhase::kWave3, counts);
+    try {
+        run_wave(JobWavePhase::kWave1, counts);
+        run_wave(JobWavePhase::kWave2, counts);
+        run_wave(JobWavePhase::kWave3, counts);
+    } catch (...) {
+        if (application_interrupted_) application_interrupted_->store(true);
+        throw;
+    }
 }
 void NativeFixedStepJobWaves::run_interpolation(float leftover, NativeFixedStepJobWaveCounts& counts) {
     // 00875F43/00875F50: the factory and +08 store precede EVERY group walk,
     // even with no admitted elements. Per-element getters still reload it.
-    void* const descriptor = native_step_job_interpolation_descriptor_00875670(descriptors_);
-    raw_at<volatile float>(descriptor, 8) = leftover;
-    run_wave(JobWavePhase::kInterpolation, counts);
+    try {
+        void* const descriptor = get_descriptor(JobWavePhase::kInterpolation);
+        raw_at<volatile float>(descriptor, 8) = leftover;
+        run_wave(JobWavePhase::kInterpolation, counts);
+    } catch (...) {
+        if (application_interrupted_) application_interrupted_->store(true);
+        throw;
+    }
 }
 } // namespace bsp

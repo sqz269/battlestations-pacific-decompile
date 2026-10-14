@@ -2,12 +2,15 @@
 
 #include "bsp/fixed_step_job_waves.hpp"
 #include "bsp/native_frame_job_lifetime.hpp"
+#include "bsp/sound_lifetime_access.hpp"
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native fixed-step job waves require MSVC Win32.
 #endif
 
 namespace bsp {
+
+struct NativeRenderJobPublicationContext;
 
 // Borrow the four actual lazy-singleton publication cells and the application's
 // existing 01090AA0 domain. The native factories allocate 8/8/8/12 bytes, leave
@@ -24,12 +27,29 @@ void* native_step_job_wave2_descriptor_00875750(NativeFixedStepJobDescriptors&);
 void* native_step_job_wave3_descriptor_008754d0(NativeFixedStepJobDescriptors&);
 void* native_step_job_interpolation_descriptor_00875670(NativeFixedStepJobDescriptors&);
 
+// Canonical application path: borrow the ACTUAL raw AA0 manager cell. This
+// owns no semantic manager and shares the application's existing raw drain.
+// Keep the preceding fixture interface for existing semantic-domain callers.
+struct NativeFixedStepJobDescriptorsActual {
+    void* volatile& wave1_00f878d4;
+    void* volatile& wave2_00f878dc;
+    void* volatile& wave3_00f878d0;
+    void* volatile& interpolation_00f878d8;
+    SoundLifetimeAccess lifetime_01090aa0;
+};
+void* native_step_job_wave1_descriptor_008755a0(NativeFixedStepJobDescriptorsActual&);
+void* native_step_job_wave2_descriptor_00875750(NativeFixedStepJobDescriptorsActual&);
+void* native_step_job_wave3_descriptor_008754d0(NativeFixedStepJobDescriptorsActual&);
+void* native_step_job_interpolation_descriptor_00875670(NativeFixedStepJobDescriptorsActual&);
+
 // Extend the SAME domain's deleting-destructor dispatcher with this resolver.
 // The pointer is the registered secondary (+04), not the primary job owner.
 // Returns false for a different current table; true means the native thunk
 // and scalar destructor ran, including publication clear and flags&1 free.
 bool delete_native_fixed_step_descriptor_current_00(void* actual_secondary,
     std::uint32_t flags, NativeFixedStepJobDescriptors&) noexcept;
+bool delete_native_fixed_step_descriptor_current_00(void* actual_secondary,
+    std::uint32_t flags, NativeFixedStepJobDescriptorsActual&) noexcept;
 
 // Required existing bindings for the actual raw tick receiver. Each virtual
 // method resolves that receiver's CURRENT table in its established Source
@@ -90,11 +110,18 @@ public:
         const volatile std::uint8_t& actual_run_pass_00e0b6ce,
         NativeFrameJobOwnerStorage* volatile& actual_frame_0109cf08,
         NativeFrameJobLifetimeBindings&, NativeFixedStepJobDescriptors&);
+    NativeFixedStepJobWaves(void* actual_groups_00f876c0,
+        void* actual_pending_head_00e0b6d0, void* actual_pending_tail_00e0b704,
+        const volatile std::uint8_t& actual_run_pass_00e0b6ce,
+        NativeRenderJobPublicationContext&, NativeFixedStepJobDescriptorsActual&,
+        std::atomic<bool>& application_interrupted);
     void flush_pending_groups_00874c90();
     void run_fixed_waves(NativeFixedStepJobWaveCounts&);
     void run_interpolation(float actual_leftover, NativeFixedStepJobWaveCounts&);
 private:
     void run_wave(JobWavePhase, NativeFixedStepJobWaveCounts&);
+    NativeFrameJobOwnerStorage* get_frame_owner();
+    void* get_descriptor(JobWavePhase);
     void queue_element(JobWavePhase, void* actual_element);
     void dispatch_group();
     void* groups_;
@@ -103,7 +130,10 @@ private:
     const volatile std::uint8_t& run_pass_;
     NativeFrameJobOwnerStorage* volatile& frame_;
     NativeFrameJobLifetimeBindings& frame_lifetime_;
-    NativeFixedStepJobDescriptors& descriptors_;
+    NativeFixedStepJobDescriptors* descriptors_{};
+    NativeFixedStepJobDescriptorsActual* actual_descriptors_{};
+    NativeRenderJobPublicationContext* actual_frame_context_{};
+    std::atomic<bool>* application_interrupted_{};
 };
 
 // Original bodies, raw layouts and new explicit C++ ABI. This service does
