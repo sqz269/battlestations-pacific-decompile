@@ -601,9 +601,10 @@ void ElevatorPlatform_ReadState_006fbf00(
         void* obj;
     } ref{reader_w0, reader_w1, reader_obj};
 
+    // 006FBF26: ECX = LEA of the 12-byte by-value reader itself (its w0 is a vptr), not of ref.obj.
     ByValPair8 cargo_key{0u, 0x00cfb9e8u};
     fn_at<void(__fastcall*)(void*, void*, ByValPair8)>(0x006cf0a0)(
-        &ref.obj,
+        &ref,
         static_cast<std::uint8_t*>(self) + 0x20,
         cargo_key
     );
@@ -624,10 +625,12 @@ void ElevatorPlatform_ReadState_006fbf00(
         static_cast<std::uint8_t*>(self) + 0x18
     );
 
+    // 006FBF8E..006FBF9A: the "state" read is a vcall on the by-value reader itself (vtable = its w0,
+    // ECX = its address), unlike the two reads above, which go through ref.obj.
     std::uint32_t state_val = 0u;
     using ReadTaggedFn = void(__thiscall*)(void*, std::uint32_t, std::uintptr_t, ByValPair8);
-    vslot_at<ReadTaggedFn>(ref.obj, 0x10)(
-        ref.obj,
+    vslot_at<ReadTaggedFn>(&ref, 0x10)(
+        &ref,
         0u,
         0x00ce7324u,
         ByValPair8{1u, reinterpret_cast<std::uintptr_t>(&state_val)}
@@ -1091,12 +1094,12 @@ void Dummy2D_Activate_006ff570(void* self) {
     fn_at<void(__thiscall*)(void*)>(0x00b67700)(&lua_obj);
 
     if (key_str.data != nullptr) {
-        void* alloc = fn_at<void*(__cdecl*)(void*, std::uint32_t, std::uint32_t)>(0x00419cc0)(
-            key_str.data,
-            key_str.size + 1u,
-            1u
-        );
-        fn_at<void(__thiscall*)(void*)>(0x00bd1510)(alloc);
+        // (data, size + 1, 1) are pushed first; 00419CC0 takes no arguments and returns the pool
+        // singleton, which becomes ECX for 00BD1510 ReturnBlock(ptr, size, align), RET 0Ch
+        // (006FF639..006FF647 and 0070131C..0070132A).
+        void* pool = fn_at<void*(__cdecl*)()>(0x00419cc0)();
+        fn_at<void(__thiscall*)(void*, void*, std::uint32_t, std::uint32_t)>(0x00bd1510)(
+            pool, key_str.data, key_str.size + 1u, 1u);
     }
 }
 
@@ -1554,12 +1557,12 @@ bool DummyTargetVehicle_HitOnTheFly_00701250(void* self, void* /*hit_arg*/) {
     fn_at<void(__thiscall*)(void*)>(0x00b67700)(&lua_obj);
 
     if (key_str.data != nullptr) {
-        void* alloc = fn_at<void*(__cdecl*)(void*, std::uint32_t, std::uint32_t)>(0x00419cc0)(
-            key_str.data,
-            key_str.size + 1u,
-            1u
-        );
-        fn_at<void(__thiscall*)(void*)>(0x00bd1510)(alloc);
+        // (data, size + 1, 1) are pushed first; 00419CC0 takes no arguments and returns the pool
+        // singleton, which becomes ECX for 00BD1510 ReturnBlock(ptr, size, align), RET 0Ch
+        // (006FF639..006FF647 and 0070131C..0070132A).
+        void* pool = fn_at<void*(__cdecl*)()>(0x00419cc0)();
+        fn_at<void(__thiscall*)(void*, void*, std::uint32_t, std::uint32_t)>(0x00bd1510)(
+            pool, key_str.data, key_str.size + 1u, 1u);
     }
 
     if (field_at<std::uint8_t>(self, 0xc8) == 0u) {

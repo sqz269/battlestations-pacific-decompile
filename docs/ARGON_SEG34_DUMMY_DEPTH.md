@@ -472,3 +472,17 @@ Running `python tools/x87_dc_form_scan.py over `006fa540` through `007016c0`` re
 - `0070181f CALL 00bd6830` (`BSP_LuaReader_ReadField`)
 - `00701828 CALL 00bd7a20` (`BSP_LuaReader_LeaveKeyThunk`)
 - `00701841 CALL 00441210` (`BSP_LuaObjectVector_Tidy`)
+
+## Lead review notes (cc13, 2026-10-14)
+
+- Merged to main as parts B/C of the argon review: seg36-37, seg46 and seg34, without argon's first five segments.
+- Blind audit: 2 of 30 sampled seg34 functions defective, confirmed by a second reviewer; both are fixed in this merge:
+  - 006FF570 Dummy2D_Activate, and the same idiom in 00701250 DummyTargetVehicle_HitOnTheFly: the pool free.
+    The binary pushes (data, size + 1, 1), calls 00419CC0 (no arguments; returns the pool), then 00BD1510 as a
+    thiscall on the pool. The reconstruction had passed the arguments to 00419CC0 and called 00BD1510 bare.
+  - 006FBF00 ElevatorPlatform_ReadState: 006CF0A0 and the "state" read take the 12-byte by-value reader itself
+    (its w0 is a vptr), not ref.obj.
+- OPEN: this file and src/flak_note_seg36_37_argon.cpp call original functions by absolute address through n_at
+  (155 + 185 sites). bsp_game.exe loads at 0x10000000 and maps only read-only data spans of the original image, so
+  those addresses hold no code in the game process. The code is not called by the game today; before anything is
+  wired to it, convert each n_at call to a named hook or an existing reconstruction.
