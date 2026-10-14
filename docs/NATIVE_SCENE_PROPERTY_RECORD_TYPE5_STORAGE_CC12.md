@@ -146,3 +146,25 @@ Independent seal `b7b34d6b5573664cbfdab4dcd103fd8c8fe57c17a17c829e5f28187ca26dab
 ## Complete linked helper validation reopened
 
 Reopen the historical Type5 Root fixture validation after independent raw COFF/map/linked-byte and gate.bin audit confirmed 18 normal-path emitted probe/gate/capture/serialization bodies outside its runtime code spans. The audit separately identifies six retained cold canonical exception-support bodies outside the old gates. A new complementary independent family must gate every retained fresh TU function, full main and required map-owned external helpers before and after its sole fresh execution. Historical sealed inventories, prior pins and publication receipts remain preserved; no accepted helper, phase, object or process is replayed. Source admission credit is zero pending the complete-gate validation. This finding concerns fixture code coverage; original-private-CRT/EH, class, native game ABI and gameplay remain unadmitted.
+
+## Current qualification and evidence availability
+
+Root qualification `d654ac1ee3c1dd2853e0f7788d273af05b1bde70` supersedes the
+historical complete-helper hold above for successful nonnull construction in
+the qualified current allocator domain. The accepted `type5p3` process covered
+one Source and one relocated Original call, four allocations/frees and all
+53 retained code spans. The six current Source/header pins still match that
+qualification. The constructor null path was not runtime-tested. Original
+private CRT/EH, failure/unwind, class/owner/destructor, native game ABI, startup
+and gameplay remain unadmitted.
+
+A read-only integrity audit on 2026-10-14 UTC verified the preserved
+`battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT/local/t5runPeer01`
+copy: all 2,903 artifact hashes, its exact 2,905-file membership, and all 762
+copied Root fixture artifact pins match. The original
+`cc12_type5_fixture_execution` worktree remains absent. Its
+`type5select04/Root_namespace_evidence_seal.json` and the four
+`Root_type5_final01` records (`Root_qualification_acceptance.json`,
+`Root_final_case_verification.json`, `Root_sealed_families_verification.json`,
+and `Root_runtime_peer_package_verification.json`) remain unlocated. This
+availability check did not replay the accepted fixture or expand its admission.
