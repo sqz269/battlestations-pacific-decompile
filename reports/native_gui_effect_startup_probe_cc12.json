@@ -40,7 +40,7 @@
     "actual_unit_receiver_constructed": false
   },
   "runtime": {
-    "status": "first launcher terminal before native start; immutable executable retry queued",
+    "status": "attempt2 executed and failed at B310B8 before sampler entry",
     "exec_session": 59647,
     "command": "./tools/run_game.ps1 -Exe local/cc12_native_gui_startup_receipts/23fbb8a1d/build/win32/Release/bsp_game.exe -XLiveDll local/cc12_native_gui_startup_receipts/23fbb8a1d/build/win32/Release/xlive_stub.dll -Log local/cc12_actual_native_gui_effect_startup_02.log -- --frames 120",
     "environment": {
@@ -50,7 +50,7 @@
     "actual_resource_acquisition_observed": false,
     "references_retired_observed": false,
     "original_shared_drain_observed": false,
-    "exit_code": null,
+    "exit_code": 1,
     "observed_utc": "2026-10-14T21:27:03.505757+00:00",
     "attempts": [
       {
@@ -66,7 +66,7 @@
       {
         "attempt": 2,
         "exec_session": 59647,
-        "status": "queued",
+        "status": "executed; failed before effect loader/sampler entry",
         "executable": "local/cc12_native_gui_startup_receipts/23fbb8a1d/build/win32/Release/bsp_game.exe",
         "xlive_dll": "local/cc12_native_gui_startup_receipts/23fbb8a1d/build/win32/Release/xlive_stub.dll",
         "log": "local/cc12_actual_native_gui_effect_startup_02.log",
@@ -74,9 +74,19 @@
         "game_arguments": [
           "--frames",
           "120"
-        ]
+        ],
+        "launcher_exit_code": 1,
+        "game_exit_code": 1,
+        "actual_process_started": true,
+        "manifest_created": true
       }
-    ]
+    ],
+    "shadow_constructor_and_publication_observed": true,
+    "failure_site": "00B310B8",
+    "failure": "unretained effect name resolution requires an explicitly selected callback",
+    "manifest": "local/cc12_actual_native_gui_effect_startup_02.log.manifest.json",
+    "log": "local/cc12_actual_native_gui_effect_startup_02.log",
+    "runtime_receipt": "reports/cc12_native_scene_base_drsh_integration_03.json"
   },
   "original_installation": {
     "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
