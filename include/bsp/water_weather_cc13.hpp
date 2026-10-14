@@ -1087,8 +1087,9 @@ public:
     virtual void render_vslot60() = 0;  // model vtable+60h
 };
 
-// 00BC2030 __fastcall(mem): writes only these fields (GeneratedModel base excluded).
-void waterdrops_construct_00bc2030(WaterdropsC& w) noexcept;
+// The field stores of 00BC2030 on the semantic projection (no GeneratedModel base, no vtable);
+// the 00BC2D00 model below uses it. The native routine is waterdrops_construct_00bc2030 further down.
+void waterdrops_construct_fields(WaterdropsC& w) noexcept;
 bool waterdrops_is_finished_00bc1150(const WaterdropsC& w) noexcept;
 void waterdrops_set_size_range_00bc1160(WaterdropsC& w, float lo, float hi) noexcept;
 void waterdrops_set_life_range_00bc1180(WaterdropsC& w, float lo, float hi) noexcept;
@@ -1799,6 +1800,12 @@ void* w3_cloud_plane_model_construct_base_00bc7db0(void* object, NativeStringSto
                                                   W3_ConstructGeneratedModel construct_00b75030);
 void* w3_lightning_model_construct_base_00bc93e0(void* object, NativeStringStorage& strings,
                                                 W3_ConstructGeneratedModel construct_00b75030);
+// 00BC2030 BSP_Waterdrops_Construct, __fastcall(ECX) -> EAX: the pooled name "waterdrops" (00D647C4,
+// length 0Ah), BSP_GeneratedModel_Construct 00B75030(object, &name), release the name, vtable 00D64760,
+// then +184h/+188h/+18Ch = 0, +194h = 0.01f (00D7A238), +198h = 0.025f (00D1FBBC), +19Ch = 0.5f (00CE3800),
+// +1A0h = 4.0f (00CE3D34), +1C8h = 0, bytes +1D5h..+1D7h = 0, +1C4h = 0.95f (00CED9E0), byte +1D4h = 1.
+void* waterdrops_construct_00bc2030(void* object, NativeStringStorage& strings,
+                                    W3_ConstructGeneratedModel construct_00b75030);
 
 // 00BB8690 BSP_MemoryStream_CastFromStream_00bb8690, __fastcall(ECX stream) -> EAX: null stays null;
 // otherwise the stream's vtable +0Ch (IsKindOf) on the memory file type (00BEF480 returns 0109DBA0); the

@@ -1779,7 +1779,7 @@ void lightning_storm_destroy_00bc04c0(LightningStormHandlesC& s, std::uint32_t& 
 // ---------------------------------------------------------------------------
 // Waterdrops
 
-void waterdrops_construct_00bc2030(WaterdropsC& w) noexcept {
+void waterdrops_construct_fields(WaterdropsC& w) noexcept {
     w.drops_184 = W1C_NativeArray<WaterdropsDropC>{};
     w.min_size_194 = 0.01f;   // 00D7A238
     w.max_size_198 = 0.025f;  // 00D1FBBC
@@ -1973,7 +1973,7 @@ std::int32_t waterdrops_pool_destroy_00bc27c0(WaterdropsPoolC& p, WaterdropsPool
 
 WaterdropsPoolSlotC waterdrops_create_00bc2d00(WaterdropsPoolC& pool_010909bc, WaterdropsC& object) {
     const WaterdropsPoolSlotC s = waterdrops_pool_allocate_00bc2bb0(pool_010909bc);
-    waterdrops_construct_00bc2030(object);  // then vtable 00D647D0
+    waterdrops_construct_fields(object);  // the field stores of 00BC2030; then vtable 00D647D0
     return s;
 }
 
@@ -3339,6 +3339,25 @@ void* w3_lightning_model_construct_base_00bc93e0(void* object, NativeStringStora
                                                 W3_ConstructGeneratedModel construct_00b75030) {
     w3_construct_named_model(object, "Lightning", strings, construct_00b75030, 0x00D64A50u);
     for (std::size_t offset = 0x188; offset <= 0x1B4; offset += 4) w3_field<std::uint32_t>(object, offset) = 0;
+    return object;
+}
+
+void* waterdrops_construct_00bc2030(void* object, NativeStringStorage& strings,
+                                    W3_ConstructGeneratedModel construct_00b75030) {
+    w3_construct_named_model(object, "waterdrops", strings, construct_00b75030, 0x00D64760u);
+    w3_field<std::uint32_t>(object, 0x184) = 0;
+    w3_field<std::uint32_t>(object, 0x188) = 0;
+    w3_field<std::uint32_t>(object, 0x18C) = 0;
+    w3_field<float>(object, 0x194) = 0.01f;   // 00D7A238
+    w3_field<float>(object, 0x198) = 0.025f;  // 00D1FBBC
+    w3_field<float>(object, 0x19C) = 0.5f;    // 00CE3800
+    w3_field<float>(object, 0x1A0) = 4.0f;    // 00CE3D34
+    w3_field<std::uint32_t>(object, 0x1C8) = 0;
+    w3_field<std::uint8_t>(object, 0x1D5) = 0;
+    w3_field<std::uint8_t>(object, 0x1D6) = 0;
+    w3_field<std::uint8_t>(object, 0x1D7) = 0;
+    w3_field<float>(object, 0x1C4) = 0.95f;   // 00CED9E0
+    w3_field<std::uint8_t>(object, 0x1D4) = 1;
     return object;
 }
 

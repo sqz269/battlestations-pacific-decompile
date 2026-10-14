@@ -84,7 +84,11 @@ The 25 existing reconstructions are in `src/water_render.cpp`, `src/ocean_wave_f
     and group visibility.
   - Sky box rotation and luminance.
   - The lightning storm teardown.
-  - The waterdrops constructor and the drop fill (00BC2340, traced through all four corners).
+  - The waterdrops constructor and the drop fill (00BC2340, traced through all four corners). The constructor
+    (00BC2030) is waterdrops_construct_00bc2030 on native storage: the pooled "waterdrops" name,
+    GeneratedModel base 00B75030, vtable 00D64760, then its own fields (cc13-fixes2; the earlier version
+    omitted the base constructor and the vtable). waterdrops_construct_fields keeps the field stores for
+    the semantic 00BC2D00 model.
 - **Cloud puffs, render models, pools, lightning strands (part d).**
   - Puff geometry and sorting helpers.
   - The cloud render model.
