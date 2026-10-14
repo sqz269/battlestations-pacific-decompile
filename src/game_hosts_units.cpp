@@ -6855,15 +6855,15 @@ struct GameUnitsHost::Impl {
     // from the Lua binding 008A4B10 and message BCh. True: the dive arm reads
     // slot.db_attack_mode_370 (the leader's value, copied to the flight) instead
     // of the pinned 2, so a member's `engaged` is its in-range latch.
-    static constexpr bool kDiveAttackModeFedBound = false;
+    static constexpr bool kDiveAttackModeFedBound = true;  // ON: SQUADRON_LAND_TASK 5gx.1
     // Packet cc9_l57_dive_items (docs/CC13_VER_9.md finding 3): +B8h = +BCh =
     // uniform(1.6, 1.8) * class+268h (009C3FB0 CALL 00BD2F10, stream 1 per cc13-ver9, after the
     // +B4h draw; 009C3FE8 FST / 009C3FF5 FSTP). False: pinned at 1.6.
-    static constexpr bool kInRangeDrawBound = false;
+    static constexpr bool kInRangeDrawBound = true;  // ON: SQUADRON_LAND_TASK 5gx.1
     // Packet cc9_l57_dive_items (docs/CC13_VER_6.md finding 4): 009C6EB1/009C6F17
     // divide by frame [ESP+28h] = R, the 3-second lead range 009C63A6 writes (the
     // only writer in 009C62B0-009C6F97), not |aim - pos|. False: db_planar_bc.
-    static constexpr bool kFlyAboveLeadDivisorBound = false;
+    static constexpr bool kFlyAboveLeadDivisorBound = true;  // ON: SQUADRON_LAND_TASK 5gx.1
     // Packet cc13-draws1 (docs/CC13_UNLABELLED_DRAWS_BATCH.md). Each is OFF until
     // its pair runs. The draws use release_altitude_draw_00bd2f10 with a per-site
     // key, never stream 0; the image draws all four on stream 1 (ECX = 1).
