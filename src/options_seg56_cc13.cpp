@@ -572,4 +572,137 @@ int lua_pause(LuaArgs& args, ImageAccess& image, Seg56Host& host)
     return 0;
 }
 
+// ---------------------------------------------------------------------------
+// Added by cc13-seg56b
+// ---------------------------------------------------------------------------
+
+int lua_set_plane_yaw_control(LuaArgs& args, ImageAccess& image)
+{
+    void* plane = args.entity_at(0);
+    image.write_f32(plane, 0x998u, static_cast<float>(args.get_number(1))); // 0089DB05
+    return 0;
+}
+
+int lua_set_plane_pitch_control(LuaArgs& args, ImageAccess& image)
+{
+    void* plane = args.entity_at(0);
+    image.write_f32(plane, 0x99Cu, static_cast<float>(args.get_number(1))); // 0089DCA5
+    return 0;
+}
+
+int lua_set_plane_roll_control(LuaArgs& args, ImageAccess& image)
+{
+    void* plane = args.entity_at(0);
+    image.write_f32(plane, 0x9A0u, static_cast<float>(args.get_number(1))); // 0089DE45
+    return 0;
+}
+
+int lua_set_plane_power_control(LuaArgs& args, ImageAccess& image)
+{
+    void* plane = args.entity_at(0);
+    image.write_f32(plane, 0x9A4u, static_cast<float>(args.get_number(1))); // 0089DFE5
+    return 0;
+}
+
+int lua_squadron_enable_terrain_avoidance(LuaArgs& args, ImageAccess& image)
+{
+    void* squadron = args.entity_at(0);
+    const bool enable = args.get_boolean(1);
+    const std::int32_t flags = image.read_i32(squadron, 0x3A4u);
+    // OR EAX,1 / AND EAX,0FEh (25 FE 00 00 00 at 0089FFA7: the AND also clears bits 8..31).
+    image.write_i32(squadron, 0x3A4u, enable ? (flags | 0x1) : (flags & 0xFE));
+    return 0;
+}
+
+int lua_squadron_set_force_release(LuaArgs& args, ImageAccess& image)
+{
+    void* squadron = args.entity_at(0);
+    image.write_u8(squadron, 0x3AEu, args.get_boolean(1) ? 1 : 0); // 008A29FC
+    return 0;
+}
+
+int lua_set_torpedo_swim_depth(LuaArgs& args, ImageAccess& image, Seg56Host& host)
+{
+    void* object = host.lua_table_ptr_field_00888d20(args, 0); // 008A280F, not 00888AA0
+    const float depth = static_cast<float>(args.get_number(1)); // FSTP float [ESP+10h]
+    image.write_f32(object, 0x47Cu, depth);                      // 008A2861
+    return 0;
+}
+
+int lua_remove_untouchable_unit(LuaArgs& args, ImageAccess& image, Seg56Host& host)
+{
+    void* entity = args.entity_at(0);
+    image.write_u8(host.entity_object_vt140(entity), 0x1D4u, 0); // CALL [vtable+140h], 008AC3D6
+    return 0;
+}
+
+int lua_set_air_base_plane_limit(LuaArgs& args, Seg56Host& host)
+{
+    void* block = host.air_ops_block_006bcd20(args.entity_at(0), false); // XOR DL,DL
+    const std::int32_t limit = args.get_integer(1);
+    host.air_ops_block_set_plane_limit_006ba6d0(block, limit);          // 00897878
+    return 0;
+}
+
+int lua_set_device_reload_time_mul(LuaArgs& args, ImageAccess& image)
+{
+    image.write_global_f32(0x00E08178u, static_cast<float>(args.get_number(0))); // 008C15B4
+    return 0;
+}
+
+int lua_set_weather(LuaArgs& args, ImageAccess& image, Seg56Host& host)
+{
+    const std::string name = args.get_string(0); // 0041E870 into the by-value argument
+    host.weather_set_current_00445a30(image.read_ptr(game(image), 0x21C4u), name);
+    return 0;
+}
+
+int lua_find_hidden_entity(LuaArgs& args, LuaResults& results, ImageAccess& image, Seg56Host& host)
+{
+    const std::string name = args.get_string(0);
+    results.push_boolean(host.scene_has_hidden_entity_record_00469480(image.global_ptr(0x00E18680u), name));
+    return 1;
+}
+
+int lua_is_landing_traffic_active(LuaArgs& args, LuaResults& results, Seg56Host& host)
+{
+    results.push_boolean(host.entity_landing_traffic_active_vt210(args.entity_at(0))); // 0089B060
+    return 1;
+}
+
+int lua_multi_select_unit(LuaArgs& args, ImageAccess& image, Seg56Host& host)
+{
+    const std::int32_t slot = args.get_integer(0); // read before the entity
+    void* unit = args.entity_at(1);
+    auto* session = static_cast<std::uint8_t*>(game(image)) + 0x1EF0; // ADD ECX,1EF0h
+    host.session_send_pending_selection_0076cf30(session, slot, unit);
+    return 0;
+}
+
+int lua_pilot_close_to_ship(LuaArgs& args, LuaCommandTargetSource& targets, Seg56Host& host)
+{
+    void* entity = args.entity_at(0);
+    const SceneCommandTarget target = lua_read_command_target(targets, 1);
+    host.entity_issue_command_0077d600(entity, kCommandObjectCloseToShip, target, 1); // 008A4AB7
+    return 0;
+}
+
+int lua_pilot_stop_close_to_ship(LuaArgs& args, ImageAccess& image, Seg56Host& host)
+{
+    void* entity = args.entity_at(0);
+    void* director = host.entity_director_vt114(entity);
+    // CMP [EAX+54h],00E08FA8: the director's current command object is closetoship.
+    if (static_cast<std::uint32_t>(image.read_i32(director, 0x54u)) == kCommandObjectCloseToShip) {
+        host.pilot_raise_attack_mode_007ed430(entity, 2); // PUSH EBX(2), ECX = the entity
+    }
+    return 0;
+}
+
+int lua_scoring_grant_unlock(LuaArgs& args, ImageAccess& image, Seg56Host& host)
+{
+    const std::string name = args.get_string(0); // 0041E870 into a stack native string
+    auto* set = static_cast<std::uint8_t*>(game(image)) + 0x6CC; // ADD ECX,6CCh
+    host.string_set_insert_004d0640(set, name);                   // 008CBA4C
+    return 0;
+}
 } // namespace bsp::seg56_options_cc13

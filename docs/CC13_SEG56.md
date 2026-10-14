@@ -160,8 +160,33 @@ Not recorded:
 - 008B19A0 CountdownCancel: its listing was not compared beyond the comment's addresses.
 - 0088B410: an implicit struct copy with no concrete host.
 - The rest had mentions only (dispatch rows, header comments, callee-only reconstructions) and
-  are reconstruction candidates: 0088B4B0, 0088B6D0, 0088B840, 0088E320, 0088E560, 0088E790,
-  0088EB50, 0088EDC0, 00891D50, 008936A0, 008959F0, 00897720, 0089AF40, 0089D9D0, 0089DB70,
-  0089DD10, 0089DEB0, 0089FE50, 008A2710, 008A28B0, 008A4960, 008A4B10, 008A4F00, 008A50D0,
-  008A5BD0, 008A6060, 008A8720, 008A9E10, 008AB3D0, 008AC2B0, 008AC7B0, 008AD6F0, 008AF700,
-  008AFEC0, 008B21A0, 008C14B0, 008C8560, 008CB920, 008CC850, 008CFC10.
+  are reconstruction candidates (the 17 done in the next section are removed):
+  0088B4B0, 0088B6D0, 0088B840, 0088E320, 0088E560, 0088E790, 0088EB50, 0088EDC0, 00891D50,
+  008936A0, 008959F0, 008A4F00, 008A50D0, 008A5BD0, 008A6060, 008A8720, 008AC7B0, 008AD6F0,
+  008AF700, 008AFEC0, 008C8560, 008CC850, 008CFC10.
+
+## More reconstructions (cc13-seg56b)
+
+These 17 bindings had only dispatch rows and comments. They are now in the same files as the
+first batch, with the same conventions, and are build-tested only. New host methods are listed
+under "added by cc13-seg56b" in the header.
+
+| Address | Lua name | C++ | Behaviour and evidence |
+|---|---|---|---|
+| 0089D9D0 | SetPlaneYawControl | `lua_set_plane_yaw_control` | entity arg0 (00888AA0), float [entity+998h] = number arg1, FSTP at 0089DB05. |
+| 0089DB70 | SetPlanePitchControl | `lua_set_plane_pitch_control` | entity arg0, float [entity+99Ch] = number arg1, FSTP at 0089DCA5. |
+| 0089DD10 | SetPlaneRollControl | `lua_set_plane_roll_control` | entity arg0, float [entity+9A0h] = number arg1, FSTP at 0089DE45. |
+| 0089DEB0 | SetPlanePowerControl | `lua_set_plane_power_control` | entity arg0, float [entity+9A4h] = number arg1, FSTP at 0089DFE5. |
+| 0089FE50 | SquadronEnableTerrainAvoidance | `lua_squadron_enable_terrain_avoidance` | [entity+3A4h] |= 1, or &= 0FEh with a 32-bit immediate (25 FE 00 00 00 at 0089FFA7, clears bits 8..31), stored at 0089FFB0. |
+| 008A28B0 | SquadronSetForceRelease | `lua_squadron_set_force_release` | byte [entity+3AEh] = boolean arg1 (008A29FC). |
+| 008A2710 | SetTorpedoSwimDepth | `lua_set_torpedo_swim_depth` | object = 00888D20(arg0) (the table's Ptr field, 008A280F), float [object+47Ch] = (float)number arg1 (008A2861). |
+| 008AC2B0 | RemoveUntouchableUnit | `lua_remove_untouchable_unit` | entity arg0, vtable+140h() (008AC3D0), byte [result+1D4h] = 0 (008AC3D6). |
+| 00897720 | SetAirBasePlaneLimit | `lua_set_air_base_plane_limit` | block = 006BCD20(entity, DL=0) before int arg1; 006BA6D0(block, n) at 00897878 (stores block+58h). |
+| 008C14B0 | SetDeviceReloadTimeMul | `lua_set_device_reload_time_mul` | float [00E08178] = number arg0 (FSTP at 008C15B4). |
+| 008B21A0 | SetWeather | `lua_set_weather` | string arg0 assigned into an 8-byte by-value NativeString (008B22A4..008B22AE), 00445A30 on [game+21C4h] at 008B22BF. |
+| 008A9E10 | FindHiddenEntity | `lua_find_hidden_entity` | string arg0, 00469480(ECX=[00E18680], text) at 008A9F1B, PushBoolean(AL) at 008A9F3D. |
+| 0089AF40 | IsLandingTrafficActive | `lua_is_landing_traffic_active` | entity arg0, vtable+210h() at 0089B060, PushBoolean at 0089B067. |
+| 008AB3D0 | MultiSelectUnit | `lua_multi_select_unit` | int arg0 first, entity arg1, 0076CF30(ECX=game+1EF0h, slot, unit) at 008AB528. |
+| 008A4960 | PilotCloseToShip | `lua_pilot_close_to_ship` | 0077D600(entity, 00E08FA8 closetoship, 0088A810(arg1), 1) at 008A4AB7. |
+| 008A4B10 | PilotStopCloseToShip | `lua_pilot_stop_close_to_ship` | director = entity vtable+114h(); when [director+54h] == 00E08FA8 (008A4C35), 007ED430(ECX=entity, EBX=2) at 008A4C41. |
+| 008CB920 | ScoringGrantUnlock | `lua_scoring_grant_unlock` | string arg0 into a stack native string, 004D0640(ECX=game+6CCh, &result, &name) at 008CBA4C, result unused. |

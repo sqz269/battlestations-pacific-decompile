@@ -48,6 +48,7 @@ struct ImageAccess {
     virtual std::uint16_t global_u16(std::uint32_t address) = 0;
     virtual void* global_ptr(std::uint32_t address) = 0;
     virtual void write_global_u8(std::uint32_t address, std::uint8_t value) = 0;
+    virtual void write_global_f32(std::uint32_t address, float value) = 0;
 };
 
 inline constexpr std::uint32_t kGameGlobal = 0x00E188A8u;          // the game object
@@ -190,6 +191,30 @@ struct Seg56Host {
     virtual bool unit_is_selectable_00645160(void* unit, bool flag) = 0;
     // 004CD0F0, __thiscall(game, bool, int, int), RET 0Ch.
     virtual void game_set_cinematic_mode_004cd0f0(void* game, bool on, std::int32_t second, std::int32_t third) = 0;
+
+    // --- added by cc13-seg56b ---
+    // 00888D20, __fastcall(ECX = LuaObject*): the argument table's "Ptr" field (00CFAD08)
+    // through 00B67800 and 00B662D0, or null.
+    virtual void* lua_table_ptr_field_00888d20(LuaArgs& args, int index) = 0;
+    // vtable+140h, __thiscall(entity) -> object (the untouchable flag lives at its +1D4h).
+    virtual void* entity_object_vt140(void* entity) = 0;
+    // 006BA6D0, __thiscall(block, int), RET 4: [ECX+58h] = int.
+    virtual void air_ops_block_set_plane_limit_006ba6d0(void* block, std::int32_t limit) = 0;
+    // 00445A30, __thiscall(weather config [game+21C4h], NativeString by value), the callee
+    // takes ownership of the 8-byte string pushed at 008B22A4.
+    virtual void weather_set_current_00445a30(void* weather_config, const std::string& name) = 0;
+    // 00469480, __thiscall(scene database [00E18680], const char*) -> AL.
+    virtual bool scene_has_hidden_entity_record_00469480(void* scene_database, const std::string& name) = 0;
+    // vtable+210h, __thiscall(entity) -> AL.
+    virtual bool entity_landing_traffic_active_vt210(void* entity) = 0;
+    // 0076CF30, __thiscall(game+1EF0h, int slot, unit), RET 8: message 4Dh.
+    virtual void session_send_pending_selection_0076cf30(void* session, std::int32_t slot, void* unit) = 0;
+    // vtable+114h, __thiscall(entity) -> the AI director.
+    virtual void* entity_director_vt114(void* entity) = 0;
+    // 007ED430, __thiscall(entity, int), RET 4.
+    virtual void pilot_raise_attack_mode_007ed430(void* entity, std::int32_t mode) = 0;
+    // 004D0640, __thiscall(set, pair* sret, const NativeString* key), RET 8; result unused.
+    virtual void string_set_insert_004d0640(void* set, const std::string& key) = 0;
 };
 
 // ---------------------------------------------------------------------------
@@ -327,5 +352,30 @@ int lua_navigator_force_move_close_to_target(LuaArgs& args, ImageAccess& image);
 int lua_is_unit_selectable(LuaArgs& args, LuaResults& results, Seg56Host& host);               // 008AB580
 int lua_set_repair_effectivity(LuaArgs& args, ImageAccess& image);                             // 008AD8D0
 int lua_pause(LuaArgs& args, ImageAccess& image, Seg56Host& host);                             // 008AFD50
+
+// ---------------------------------------------------------------------------
+// Added by cc13-seg56b (bindings that had only dispatch rows and comments)
+// ---------------------------------------------------------------------------
+
+// SetPlaneYawControl 0089D9D0 / Pitch 0089DB70 / Roll 0089DD10 / Power 0089DEB0: float
+// entity+998h / +99Ch / +9A0h / +9A4h = number arg1 (FSTP straight from GetNumber).
+int lua_set_plane_yaw_control(LuaArgs& args, ImageAccess& image);
+int lua_set_plane_pitch_control(LuaArgs& args, ImageAccess& image);
+int lua_set_plane_roll_control(LuaArgs& args, ImageAccess& image);
+int lua_set_plane_power_control(LuaArgs& args, ImageAccess& image);
+int lua_squadron_enable_terrain_avoidance(LuaArgs& args, ImageAccess& image);                 // 0089FE50
+int lua_squadron_set_force_release(LuaArgs& args, ImageAccess& image);                        // 008A28B0
+int lua_set_torpedo_swim_depth(LuaArgs& args, ImageAccess& image, Seg56Host& host);           // 008A2710
+int lua_remove_untouchable_unit(LuaArgs& args, ImageAccess& image, Seg56Host& host);          // 008AC2B0
+int lua_set_air_base_plane_limit(LuaArgs& args, Seg56Host& host);                             // 00897720
+int lua_set_device_reload_time_mul(LuaArgs& args, ImageAccess& image);                        // 008C14B0
+int lua_set_weather(LuaArgs& args, ImageAccess& image, Seg56Host& host);                      // 008B21A0
+int lua_find_hidden_entity(LuaArgs& args, LuaResults& results, ImageAccess& image, Seg56Host& host); // 008A9E10
+int lua_is_landing_traffic_active(LuaArgs& args, LuaResults& results, Seg56Host& host);       // 0089AF40
+int lua_multi_select_unit(LuaArgs& args, ImageAccess& image, Seg56Host& host);                // 008AB3D0
+inline constexpr std::uint32_t kCommandObjectCloseToShip = 0x00E08FA8u; // 008A4AB0, 008A4C35
+int lua_pilot_close_to_ship(LuaArgs& args, LuaCommandTargetSource& targets, Seg56Host& host); // 008A4960
+int lua_pilot_stop_close_to_ship(LuaArgs& args, ImageAccess& image, Seg56Host& host);         // 008A4B10
+int lua_scoring_grant_unlock(LuaArgs& args, ImageAccess& image, Seg56Host& host);             // 008CB920
 
 } // namespace bsp::seg56_options_cc13
