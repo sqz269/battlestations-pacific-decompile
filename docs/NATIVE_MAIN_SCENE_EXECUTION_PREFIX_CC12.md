@@ -3,8 +3,9 @@
 This packet supplies the genuine B156C0 entry through B1586C, its complete
 actual-storage B0DB00 history calculation, the separate B1586D..B15BD1
 texture/far-corner continuation, the B15BD2..B15E77 bloom/target stage, and
-B15E78..B15EC3 camera-frame/mode/system-gather continuation.
-The current final boundary is immediately before B15EC4 label allocation.
+B15E78..B15EC3 camera-frame/mode/system-gather continuation, and the
+B15EC4..B15F62 DRSH label/ownership clause.
+The current final boundary is immediately before B15F63 batch selection.
 Reaching any boundary does not mean a scene command executed successfully. The
 existing queue must continue refusing D5E13C: B17240 preparation and the
 remaining B156C0 render passes are not installed or claimed complete.
@@ -222,6 +223,41 @@ mode restoration, rollback or replay is added. Existing provider limitations
 on native exception identity, naked-frame propagation and private stack aliases
 remain; this stage has not armed the later B156C0 string-cleanup state.
 
+## DRSH label and exact cleanup ownership
+
+`continue_native_main_scene_drsh_label_00b15ec4` supplies all 51 instructions
+and 159 bytes through B15F62. The original caller zeros both local8B header
+words, resizes to4 through the actual raw pool, captures the resulting data in
+EBX, and copies current length+1 from D5E500. The source borrows those actual
+verified bytes; it does not introduce a C++ DRSH literal or a string projection.
+
+Only then does B15EF7 capture current F8D39C. B15EFE arms state0 even when that
+service is null. Nonnull service uses the actual +684 header, preserving the
+header-identity skip, requested source length, post-resize current source-length
+test, current destination length/data and the earlier captured source pointer.
+The source follows the existing raw-string policy of omitting zero-byte host
+memmove calls. No terminator copy is added to the service assignment.
+
+The installed/saved handler CBC499 loads FuncInfo DF4698 and jumps BF6B43.
+Its nine-entry map at DF46BC gives state0 -> (-1,CBC460), state1 -> (0,CBC46B),
+and state2 -> (-1,CBC46B). CBC460 addresses the current temporary at EBP-88
+and tail-calls 41DD20. CBC46B passes an ignored ECX value to B13510, which
+resets the currently published service label. State1 is not reached by this
+clause. B15F42 changes state0 to state2 BEFORE normal temporary release:
+the later 419CC0 failure path resets the label and must not retry the temporary.
+Normal return uses captured EBX data and current temporary length+1, evaluated
+before the returning pool getter. The header is not cleared.
+
+The persistent `NativeMainSceneDrshLabelFrame` owns the external8B header,
+captures, reached site and cleanup state. State2 remains armed at B15F63;
+future batch/material code must retain that frame and same raw pool/service
+domain until the original reset boundary. No frame destructor performs cleanup.
+The explicit unwind adapter consumes only reached state0 or2 and disarms before
+the real action. Source exceptions in this clause invoke the proven active
+action, retain failed-frame diagnostics and prior mutations, then rethrow.
+An exception during cleanup terminates. This reconstructs source ownership
+behavior without claiming the original FH3/register/stack/fault ABI.
+
 ## Validation
 
 - Installed executable and saved Ghidra body bytes matched for the complete
@@ -317,10 +353,38 @@ Strict compilation, manifested fresh-core fixture link/launch and ordinary
 Release Win32 build with all three tests pass. No new persistent tests or source
 unit were added.
 
+The DRSH packet matched its159 caller bytes, both cleanup actions, handler,
+FuncInfo, all nine unwind-map entries and borrowed D5E500 bytes against installed
+PE and saved/live Ghidra. Three rebased original/source caller comparisons use
+the same complete actual 41DD40/419CC0/BD1120/BD1510 providers and a genuinely
+constructed raw string pool. All 8AD4A0 pool bytes and service headers match for
+null service, changed label length and same label length with small returns
+disabled. Three isolated original CBC46B comparisons change the publication
+after the normal stage and confirm cleanup resets the new current service.
+One isolated CBC460 comparison uses a current temporary buffer different from
+the captured EBX buffer and confirms only the current header drives cleanup.
+
+The tests also verify retained prior near/color/flags/mode words, stage2 ownership
+at the boundary, unchanged temporary header after return, replay rejection and
+no cleanup for a source-domain failure before state0. Emitted code review checks
+the publication capture before state0, original alias/copy reads, captured source
+pointer, state2 before the returning getter, argument capture before that getter,
+and cleanup disarming before the actual action. All325 inherited x87 encodings
+still match; this clause adds no floating arithmetic. Strict compilation, fresh
+manifested real-core probe and the ordinary three tests pass.
+
+Original caller calls and cleanup tail jumps are relocated to the same genuine
+current source providers. The test proves the isolated cleanup actions, not full
+native FH3 exception dispatch, child-throw propagation or private stack aliases.
+It uses a warm pool and does not prove cold singleton construction, manager
+failure, returning-getter failure, concurrent publication or complete renderer
+behavior. No callback allocator or projected pool replaces an actual operation.
+
 `reports/native_main_scene_execution_prefix_cc12.json` records artifact hashes,
 validation limits and annotation receipts. Outputs are under
 `local/main_scene_execution/`, `local/main_scene_texture/` and
-`local/main_scene_bloom/` and `local/main_scene_camera/`. All fifteen
+`local/main_scene_bloom/`, `local/main_scene_camera/` and
+`local/main_scene_label/`. All fifteen
 preceding main-scene artifacts, including its exact old core library, were
 preserved before the prefix build under
 `local/main_scene_receipt_3ccc58cbf/receipt.json`. All 34 artifacts from immutable
@@ -331,12 +395,14 @@ bloom/target build, all 36 artifacts from immutable `ed43121f9` were verified
 and copied to `local/main_scene_texture_receipt_ed43121f9/receipt.json`. Before
 the camera/gather build, all 35 artifacts from immutable `ca9c9c4c0` were preserved
 under `local/main_scene_bloom_receipt_ca9c9c4c0/receipt.json`; those copies and
-all preceding receipts were verified again.
+all preceding receipts were verified again. Before the DRSH build, all41
+artifacts from immutable7452af434 were copied and verified under
+`local/main_scene_camera_receipt_7452af434/receipt.json`.
 
 ## Next executed clause
 
-B15EC4 begins the DRSH label allocation/copy and subsequent FH3 cleanup state.
-Later work prepares and executes batch/material passes and performs the concrete
+B15F63 selects serial or genuine parallel batch preparation while state2 owns
+the DRSH reset. Later work executes batch/material passes and performs the concrete
 post-effect/cockpit/distortion/stats paths. These remain required. No hidden-node
 bypass, callback-only renderer, D5E13C admission, application invocation, visible
 world pixels or gameplay equivalence is supplied by these stages.
