@@ -410,3 +410,16 @@ mechanism is in the cd761bb52 section above).
     the uncontrolled subs), c/d (5 of 6 Cargos), e/f (phase 1 done; Marus lost by 1440/1010 s with h5 unshifted),
     g/h/i/q/r/s/t/u (Marus lost 1060-1415 s), m (Marus held at the spawn with a cruiser screen: 2171 s), n (w
     without the US_Airfield_03 fallbacks: 3067 s; 4103 s under 20,3 with everything but US_Airfield_03 dead).
+- **ESMP08 on main 25b98b1fa (cc9-physics9, parked item, not won).** `esmp08_p6_e8_br3l`, 140000 frames: no end,
+  10/15 US ships sunk; Zuikaku sails south-west on its own at ~10 m/s from the start (trajectory CSV
+  `local\p9e8_traj.csv`) and Iowa sinks it at 1388 s. Variants (`local\p9_e8gen.py`, `local\p9_e8gen_f.py`, logs
+  `local\p9e8_<v>.log`, summary `local\p9_e8sum.py`, launches `local\p9_e8launch.py`):
+  a (select+moveto every 2000 frames holding the four carriers ~500 m north-east of their start) 11/15;
+  b (a plus Ise/Hyuga moved to ~(8000, 7700) as the US attack-move's nearest target) 12/15, three carriers alive;
+  e (b plus surface attack lists from 2000 s) failed 5406.88 s; f (b plus one live target per ship per cycle from
+  frame 44100, from b's death times) **13/15** (Fanning, Woodworth survive) but failed 6527.49 s; g (light ships only)
+  12/15, failed 6955.81 s. Limits: from ~2500 s every launch line is refused with "no stock of the class" (stock is
+  consumed since 74aae670d, all classes including the Zeros), and the script's endless US bomber waves (every 180 s)
+  then sink the carriers and the surface ships. An attack line on a dead target is applied, so per-cycle target
+  lists must be resolved from a reference run's death times.
+- IJN08 variant `x` also completes under jitter 20,3 (4361.83 s, `local\p9i8_xj3.log`).
