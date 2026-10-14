@@ -14,6 +14,7 @@ class NativeXLiveDeviceAdapter;
 class XLiveLibrary;
 struct NativeRendererPresentObservation;
 struct NativeTextureCacheContext;
+struct NativeEffectRegistryDestructionContext;
 class NativeRenderActualOwnerRegistry;
 struct NativeCameraEnvironment;
 struct NativeNodeRawConstants;
@@ -142,6 +143,10 @@ public:
     // native load is created. Keep this application and all retained failed
     // frames alive until native owners, bindings and borrowed uses are retired.
     GameNativeMaterialEffectOwners material_effect_owners();
+    // Ready-only SAME renderer effect-record/string/array/profile/retirement
+    // domain. Borrowing performs no load or cache mutation. Keep this renderer
+    // and any new loading composition alive through the actual native drain.
+    NativeEffectRegistryDestructionContext& effect_registry_domain();
     // Full B43B00 over a caller-owned initialized110h descriptor. The caller
     // keeps descriptor/name/operation alive and retires descriptor children
     // before this graph. Unknown native stack inputs are never synthesized.
