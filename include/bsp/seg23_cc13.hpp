@@ -674,4 +674,87 @@ void lobby_show_selection_hint_005e19e0(void* listener, void* listbox, LobbyHint
 // vtable +88h(+D4h != 0, 0, 1.0f) or kind 12h vtable +84h(+D4h != 0).
 void hud_pause_on_widget_refresh_005fcae0(void* listener, void* widget, MenuMiscHost& host);
 
+// ===========================================================================
+// cc13-x87b: x87 bodies (docs/CC13_SEG23.md, "x87 bodies").
+// ===========================================================================
+struct MultiMainEventHost : MultiMainOnlineHost {
+    // The listener object at listener-4 (screen+8h): its vtable +4(widget, other).
+    virtual void listener_vslot04(void* object, void* widget, void* other) = 0;
+    virtual std::uint8_t default_event_code_00e1960c() = 0;              // the byte 00E1960C (widget+F0h null)
+    virtual void scroller_begin_thumb_drag_00683a40(void* scroller) = 0;  // __thiscall
+    virtual void widget_vslot84(void* widget, std::int32_t value) = 0;    // vtable +84h(int)
+    virtual std::int32_t widget_vslot28(void* widget) = 0;                // vtable +28h() -> EAX
+    virtual void* award_manager_00e19900() = 0;                           // [00E19900]
+    // 0050FC30 __thiscall(table = manager+10h, id) RET 4 -> record.
+    virtual void* award_table_find_record_0050fc30(void* table, std::int32_t id) = 0;
+    virtual void award_record_copy_construct_0050a210(void* dst, const void* src) = 0;  // RET 4
+    virtual void award_record_destroy_00501fa0(void* record) = 0;                       // __fastcall
+    virtual float* widget_local_position_00aa67f0(void* widget) = 0;      // LEA EAX,[ECX+0Ch]
+    virtual void widget_set_local_position_00aa7dc0(void* widget, const float* position) = 0;  // RET 4
+    virtual void widget_set_local_z_00aa7910(void* widget, float z) = 0;                      // RET 4
+    // 00AA6750 __thiscall(widget, float out[3]) RET 4 -> out.
+    virtual std::array<float, 3> widget_resolved_position_00aa6750(void* widget) = 0;
+    // 00ABAED0 with the image's NativeString pointer (the record's +0 and +0Ch strings).
+    virtual void text_set_localised_native_00abaed0(void* text, const void* native_string,
+                                                    std::int32_t flag) = 0;
+};
+
+// 005E97D0 __thiscall(ECX listener = multi main menu screen+0Ch, widget),
+// RET 4, the widget-listener slot +4 (vtable 00CF26D4). Kind 3: alpha 1.0,
+// then event code A2h hands the widget to listener-4 vtable+4 with the first
+// of [+18h]/[+14h] whose +77h is clear, A3h refreshes the online state
+// (005E7900 on listener-0Ch). Kind 12h, the widget [+C0h]: thumb drag on
+// +60h and vtable+84h(2). Kind 6, [+58h] or [+54h]: 00683300(+60h, 2 or 1,
+// 0.004f, 1) and vtable+88h(2, 0, 1.0f). Then, when widget+76h is set: the
+// award record for vtable+28h() is copied, the previous focus [+DCh] gets
+// scale (1, 1) and the widget (1.25, 1.25); the frame [+C8h] moves to the
+// widget's local position with z -100 and is shown; the texts [+3Ch]/[+40h]
+// get the record's two strings; column/row +D4h/+D8h = trunc(round((widget -
+// [+D0h]) / 0.084375 or 0.102778)); +E4h = the smallest-magnitude of e, e -
+// 0.102778 and (e - 0.102778) - 0.102778, e = resolved y - [+E0h]; [+DCh] =
+// widget; [+14h]+77h = [+18h]+77h = 1.
+void multi_main_listener_on_gui_event_005e97d0(void* listener, void* widget, MultiMainEventHost& host);
+
+struct PauseCheatListHost {
+    virtual ~PauseCheatListHost() = default;
+    virtual void invalid_parameter_00bf6713() = 0;
+    virtual void listbox_clear_items_00a9bf90(void* listbox) = 0;                 // __thiscall
+    virtual void tree_erase_005fe9e0(void* tree, void* root) = 0;                  // __thiscall RET 4
+    virtual void* award_tracker_004e1ca0() = 0;                                    // cdecl singleton
+    virtual void* widget_clone_subtree_00aab4c0(void* widget, std::int32_t flags) = 0;  // RET 4
+    // 00ABAED0 __thiscall(text, const NativeString*, flag) RET 8.
+    virtual void text_set_localised_native_00abaed0(void* text, const void* native_string,
+                                                    std::int32_t flag) = 0;
+    // 005FF5D0 __thiscall(map<int, NativeString>, const int* key) RET 4 -> &map[key].
+    virtual void* int_string_map_subscript_005ff5d0(void* map, const std::int32_t* key) = 0;
+    virtual void native_string_resize_0041dd40(void* string, std::uint32_t length, std::int32_t keep) = 0;
+    virtual void memcpy_00bf7680(void* dst, const void* src, std::uint32_t size) = 0;
+    virtual const void* empty_wide_string_00e19688() = 0;                          // the default text
+    // 00436630 __thiscall(NativeString, const wchar_t*) RET 4.
+    virtual void native_string_construct_from_wide_00436630(void* string, const void* text) = 0;
+    // 00469840 __thiscall(string, out, pos, count) RET 0Ch -> out.
+    virtual void* native_string_substring_00469840(const void* string, void* out, std::uint32_t pos,
+                                                   std::uint32_t count) = 0;
+    // 004261A0 __thiscall(string, out, const NativeString* tail) RET 8 -> out.
+    virtual void* native_string_concat_004261a0(const void* string, void* out, const void* tail) = 0;
+    virtual void* sized_pool_singleton_00419cc0(void* data, std::uint32_t bytes, std::int32_t flag) = 0;
+    virtual void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t bytes,
+                                                  std::int32_t flag) = 0;
+    virtual void listbox_insert_row_00a9d750(void* listbox, void* row, std::int32_t a, std::int32_t b) = 0;
+    virtual void tree_iterator_increment_004b7de0(void* iterator) = 0;             // __thiscall
+    virtual void listbox_enable_paging_00a9e230(void* listbox, std::int32_t rows) = 0;  // RET 4
+    virtual float* widget_size_00aa6740(void* widget) = 0;                         // LEA EAX,[ECX+20h]
+    virtual void widget_vslot58(void* widget, const float* pair) = 0;              // vtable +58h(&pair)
+};
+
+// 00601F80 __fastcall(ECX pause cheat screen), RET. Clears the listbox
+// [+2Ch] and the index -> name map at +11Ch (005FE9E0 on the root, then the
+// head reset), then for each entry of the award tracker's map at +94h: a row
+// cloned from [+44h] gets the entry's name (node+0Ch), map[index++] = that
+// name, and a text longer than 20 characters (row+ECh) is replaced by its
+// first 20 plus "..."; the row is inserted (00A9D750(row, 0, 0)). Then
+// paging 16 rows and the scrollbar thumb [+80h] gets {size.x, +84h} for at
+// most 16 rows, else {size.x, float(16.0 / rows * +84h)} (vtable +58h).
+void pause_cheat_build_list_00601f80(void* screen, PauseCheatListHost& host);
+
 }  // namespace bsp::seg23_cc13

@@ -1,5 +1,6 @@
 // Segment 23 reconstructions, packet cc13-seg23 (docs/CC13_SEG23.md).
 #include "bsp/seg23_cc13.hpp"
+#include "bsp/hud_ship_screen.hpp"
 
 #include <cstring>
 #include <string>
@@ -963,6 +964,215 @@ void* hint_definition_assign_005fdd90(void* dst, const void* src, HintDefinition
     write_field(dst, 0x120, read_field<std::uint32_t>(src, 0x120));
     write_field(dst, 0x124, read_field<std::uint32_t>(src, 0x124));
     return dst;
+}
+
+// ---------------------------------------------------------------------------
+// cc13-x87b. The x87 code was traced from the bytes with the stack depth at
+// each step (docs/CC13_SEG23.md, "x87 bodies"). A value the image keeps in an
+// x87 register is a double here and is rounded to float where the image
+// stores it (the 53/64-bit result); at the main thread's 24-bit precision
+// control those intermediates also round to 24 bits.
+// ---------------------------------------------------------------------------
+namespace {
+constexpr float kAwardScrollStep = 0.004000000189989805f;   // 00CEC178 (float 3B83126Fh)
+constexpr float kAwardFocusScale = 1.25f;                   // 00CF29A8 (float)
+constexpr float kAwardFrameZ = -100.0f;                     // 00CE65D8 (float)
+constexpr double kAwardCellWidth = 0.08437500149011612;     // 00CF29A0 (double, 0.084375f widened)
+constexpr double kAwardCellHeight = 0.10277800261974335;    // 00CF2998 (double, float widened)
+constexpr float kAwardNegZero = -0.0f;                      // 00D7A208 (float), SUBSS minuend
+constexpr float kAwardOne = 1.0f;                           // FLD1 / 00D7A24C
+
+// FLD (widget - frame) stored as float; 004396F0 (floor, plus 1 above a half);
+// 00BF7420 _ftol2 truncates the ST0 result and EAX keeps the low dword. The
+// rounded value is integral, so the truncation is exact for any in-range cell.
+std::int32_t award_cell(float widget, float frame, double size) {
+    const float scaled = static_cast<float>((static_cast<double>(widget) - frame) / size);
+    return static_cast<std::int32_t>(bsp::ship_screen_gauge_round_004396f0(scaled));
+}
+
+// -0.0f - x by SUBSS unless x > 0 (the comparison NaN takes the SUBSS path).
+float award_magnitude(float x) {
+    return x > 0.0f ? x : kAwardNegZero - x;
+}
+}  // namespace
+
+// 005E97D0. The kind is re-read through vtable +5Ch for each test, as the
+// image does.
+void multi_main_listener_on_gui_event_005e97d0(void* listener, void* widget, MultiMainEventHost& host) {
+    const auto event_code = [&] {
+        const auto* code = read_field<const std::uint8_t*>(widget, 0xF0);
+        return code != nullptr ? *code : host.default_event_code_00e1960c();
+    };
+    if (host.widget_kind_5c(widget) == 3) {
+        host.widget_set_alpha_4c(widget, kAwardOne);
+        if (event_code() == 0xA2) {
+            void* first = read_field<void*>(listener, 0x18);
+            if (read_field<std::uint8_t>(first, 0x77) == 0) {
+                host.listener_vslot04(at(listener, 0) - 4, widget, first);
+            } else {
+                void* second = read_field<void*>(listener, 0x14);
+                if (read_field<std::uint8_t>(second, 0x77) == 0) {
+                    host.listener_vslot04(at(listener, 0) - 4, widget, second);
+                }
+            }
+        } else if (event_code() == 0xA3) {
+            multi_main_refresh_online_state_005e7900(at(listener, 0) - 0x0C, host);
+        }
+    } else if (host.widget_kind_5c(widget) == 0x12) {
+        if (widget == read_field<void*>(listener, 0xC0)) {
+            host.scroller_begin_thumb_drag_00683a40(at(listener, 0x60));
+            host.widget_vslot84(widget, 2);
+        }
+    } else if (host.widget_kind_5c(widget) == 6) {
+        std::int32_t direction = 0;
+        if (widget == read_field<void*>(listener, 0x58)) {
+            direction = 2;
+        } else if (widget == read_field<void*>(listener, 0x54)) {
+            direction = 1;
+        }
+        if (direction != 0) {
+            host.scroller_set_auto_scroll_00683300(at(listener, 0x60), direction, kAwardScrollStep, 1);
+            host.widget_show_88(widget, 2, 0, kAwardOne);
+        }
+    }
+    if (read_field<std::uint8_t>(widget, 0x76) == 0) return;
+
+    void* record = host.award_table_find_record_0050fc30(at(host.award_manager_00e19900(), 0x10),
+                                                         host.widget_vslot28(widget));
+    alignas(4) std::byte copy[0x4C];
+    host.award_record_copy_construct_0050a210(copy, record);
+    const float unit_scale[2] = {kAwardOne, kAwardOne};
+    host.widget_set_scale_48(read_field<void*>(listener, 0xDC), unit_scale);
+    const float focus_scale[2] = {kAwardFocusScale, kAwardFocusScale};
+    host.widget_set_scale_48(widget, focus_scale);
+    host.widget_set_local_position_00aa7dc0(read_field<void*>(listener, 0xC8),
+                                            host.widget_local_position_00aa67f0(widget));
+    host.widget_set_local_z_00aa7910(read_field<void*>(listener, 0xC8), kAwardFrameZ);
+    host.widget_enable_34(read_field<void*>(listener, 0xC8), 1);
+    host.text_set_localised_native_00abaed0(read_field<void*>(listener, 0x3C), copy, 1);
+    host.text_set_localised_native_00abaed0(read_field<void*>(listener, 0x40), copy + 0x0C, 1);
+
+    const float widget_x = host.widget_local_position_00aa67f0(widget)[0];
+    const float frame_x = host.widget_local_position_00aa67f0(read_field<void*>(listener, 0xD0))[0];
+    const std::int32_t column = award_cell(widget_x, frame_x, kAwardCellWidth);
+    const float widget_y = host.widget_local_position_00aa67f0(widget)[1];
+    const float frame_y = host.widget_local_position_00aa67f0(read_field<void*>(listener, 0xD0))[1];
+    const std::int32_t row = award_cell(widget_y, frame_y, kAwardCellHeight);
+    write_field<std::int32_t>(listener, 0xD4, column);
+    write_field<std::int32_t>(listener, 0xD8, row);
+
+    // 005E9A91: the scroll offset of smallest magnitude among e, e - h and
+    // (e - h) - h (e - h kept in ST for the second); ties keep the later one.
+    const float resolved_y = host.widget_resolved_position_00aa6750(widget)[1];
+    const float e = resolved_y - read_field<float>(listener, 0xE0);
+    const double e_less = static_cast<double>(e) - kAwardCellHeight;
+    const float a = static_cast<float>(e_less);
+    const float b = static_cast<float>(e_less - kAwardCellHeight);
+    const float magnitude_e = award_magnitude(e);   // FCOMIP e, 0; JBE
+    const float magnitude_a = award_magnitude(a);   // COMISS
+    float offset = e;
+    if (!(magnitude_a > magnitude_e)) {             // FCOMIP; JA keeps e
+        const float magnitude_b = award_magnitude(b);
+        offset = magnitude_b > magnitude_a ? a : b;  // FCOMIP; JBE stores b (NaN too)
+    }
+    write_field<float>(listener, 0xE4, offset);
+    write_field<void*>(listener, 0xDC, widget);
+    write_field<std::uint8_t>(read_field<void*>(listener, 0x14), 0x77, 1);
+    write_field<std::uint8_t>(read_field<void*>(listener, 0x18), 0x77, 1);
+    host.award_record_destroy_00501fa0(copy);
+}
+
+namespace {
+constexpr double kCheatPageRows = 16.0;        // 00CED9F8 (double)
+constexpr std::uint32_t kCheatNameLimit = 0x14;
+
+// The inlined NativeString destructor: a non-null buffer goes back to the
+// sized pool with size + 1.
+void release_cheat_string(const std::byte* string, PauseCheatListHost& host) {
+    void* data = read_field<void*>(string, 4);
+    if (data != nullptr) {
+        const std::uint32_t bytes = read_field<std::uint32_t>(string, 0) + 1;
+        void* pool = host.sized_pool_singleton_00419cc0(data, bytes, 1);
+        host.sized_pool_return_block_00bd1510(pool, data, bytes, 1);
+    }
+}
+}  // namespace
+
+// 00601F80. The checked-iterator tests on the tracker map compare the
+// iterator with the map it was taken from, or the node with the head the loop
+// has just excluded, so they cannot fire and are omitted.
+void pause_cheat_build_list_00601f80(void* screen, PauseCheatListHost& host) {
+    host.listbox_clear_items_00a9bf90(read_field<void*>(screen, 0x2C));
+    std::byte* names = at(screen, 0x11C);
+    host.tree_erase_005fe9e0(names, read_field<void*>(read_field<void*>(names, 4), 4));
+    void* head = read_field<void*>(names, 4);
+    write_field<void*>(head, 4, head);
+    write_field<std::uint32_t>(names, 8, 0);
+    write_field<void*>(read_field<void*>(names, 4), 0, read_field<void*>(names, 4));
+    write_field<void*>(read_field<void*>(names, 4), 8, read_field<void*>(names, 4));
+    std::int32_t index = 0;
+
+    // The iterator {map, node} at ESP+20h; begin is the head's left link.
+    alignas(4) std::byte iterator[8];
+    std::byte* tracker_map = at(host.award_tracker_004e1ca0(), 0x94);
+    write_field<void*>(iterator, 0, tracker_map);
+    write_field<void*>(iterator, 4, read_field<void*>(read_field<void*>(tracker_map, 4), 0));
+    for (;;) {
+        void* end = read_field<void*>(host.award_tracker_004e1ca0(), 0x98);
+        void* node = read_field<void*>(iterator, 4);
+        if (node == end) break;
+        void* row = host.widget_clone_subtree_00aab4c0(read_field<void*>(screen, 0x44), 0);
+        const std::byte* name = at(node, 0x0C);
+        host.text_set_localised_native_00abaed0(row, name, 1);
+        void* slot = host.int_string_map_subscript_005ff5d0(names, &index);
+        if (slot != name) {
+            host.native_string_resize_0041dd40(slot, read_field<std::uint32_t>(name, 0), 1);
+            if (read_field<std::uint32_t>(name, 0) != 0) {
+                host.memcpy_00bf7680(read_field<void*>(slot, 4), read_field<void*>(name, 4),
+                                     read_field<std::uint32_t>(slot, 0));
+            }
+        }
+        ++index;
+        const void* wide = read_field<const void*>(row, 0xF0);
+        if (wide == nullptr) wide = host.empty_wide_string_00e19688();
+        alignas(4) std::byte text[8];
+        host.native_string_construct_from_wide_00436630(text, wide);
+        if (read_field<std::int32_t>(row, 0xEC) > static_cast<std::int32_t>(kCheatNameLimit)) {
+            alignas(4) std::byte ellipsis[8] = {};
+            host.native_string_resize_0041dd40(ellipsis, 3, 1);
+            if (read_field<void*>(ellipsis, 4) != nullptr) {
+                host.memcpy_00bf7680(read_field<void*>(ellipsis, 4), "...",  // 00CF3F98
+                                     read_field<std::uint32_t>(ellipsis, 0) + 1);
+            }
+            alignas(4) std::byte head_text[8];
+            alignas(4) std::byte joined[8];
+            void* first = host.native_string_substring_00469840(text, head_text, 0, kCheatNameLimit);
+            void* both = host.native_string_concat_004261a0(first, joined, ellipsis);
+            host.text_set_localised_native_00abaed0(row, both, 1);
+            release_cheat_string(joined, host);
+            release_cheat_string(head_text, host);
+            release_cheat_string(ellipsis, host);
+        }
+        host.listbox_insert_row_00a9d750(read_field<void*>(screen, 0x2C), row, 0, 0);
+        release_cheat_string(text, host);
+        host.tree_iterator_increment_004b7de0(iterator);
+    }
+
+    host.listbox_enable_paging_00a9e230(read_field<void*>(screen, 0x2C), 0x10);
+    const std::int32_t rows = read_field<std::int32_t>(read_field<void*>(screen, 0x2C), 0x154);
+    std::byte* thumb = at(screen, 0x94);
+    if (rows <= 0x10) {
+        const float width = host.widget_size_00aa6740(read_field<void*>(screen, 0x80))[0];
+        write_field<float>(thumb, 4, read_field<float>(screen, 0x84));
+        write_field<float>(thumb, 0, width);
+    } else {
+        const float width = host.widget_size_00aa6740(read_field<void*>(screen, 0x80))[0];
+        // FILD rows; FDIVR 16.0; FMUL [+84h]: kept in ST, stored once.
+        write_field<float>(thumb, 4, static_cast<float>(kCheatPageRows / static_cast<double>(rows) *
+                                                        static_cast<double>(read_field<float>(screen, 0x84))));
+        write_field<float>(thumb, 0, width);
+    }
+    host.widget_vslot58(read_field<void*>(screen, 0x80), reinterpret_cast<const float*>(thumb));
 }
 
 }  // namespace bsp::seg23_cc13
