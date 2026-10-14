@@ -14347,3 +14347,41 @@ keyed per gun, which confines the difference to that gun's own stream.
    avoid zone (an island) lies between a tube and its lead point.
 3. Fewer torpedo launches and fewer torpedo `impacts_land` on rows with islands: USN02 (Java Sea) and JM06.
 4. When `holds` = 0, the row is gameplay-identical, since the test draws nothing.
+
+## 238. The plane spin side, unit+800h (physics8's R4 gap): `kPlaneSpinSideBound`, OFF (lead queue item 5; cc9-gunnery43, 2026-10-14)
+
+**Image.**
+- `007CFDB4` is in the plane constructor `007CFD20` and seeds `unit+800h = -1`.
+- The only writer after that is `007BBCF0`, the hit-record handler at plane vtable `+ECh` (CC13_GPR_47 1.4).
+  When `hit+34h != -1` it copies `[[hit+38h]+4h]` into `+800h`.
+- `00723E90` stores the element pointer verbatim at `+38h` (`include/bsp/hit_hull_segment.hpp`), so
+  `[+38h]+4h` is the element's kind. `007149D0`'s kind table (docs/PART_DAMAGE_REACHABILITY.md) has
+  0 `lwing`, 1 `rwing`, 2 `fuselage` and 3 `engine`. The B5N Kate's four elements are exactly those
+  (docs/AA_LETHALITY_AUDIT.md 9).
+- `007CA8A0` spins left on 0 and right on 1, each on its `chance_spinning` draw. Any other kind (2, 3)
+  overwrites the side and allows no spin. A blast record keeps `+34h = -1` and leaves the side alone.
+
+**Host before.** The plane mesh trace (`kPlaneMeshHitTestBound`) tested every triangle and kept 0Ah / -1. The
+units host passed `din.spin_side_800 = -1`, so neither spin could be reached.
+
+**Binding** (OFF).
+- ON, a plane's trace walks its GeomMesh elements as a ship's does (`00723D60`, the last acceptor of an equal
+  distance wins) and keeps the closest element's kind aside.
+- The record still carries 0Ah / -1 (LABELLED), so the plane damage path is unchanged.
+- At the direct impact, before `apply_hit` (`007BBCF0` runs before `008777D0`), a plane victim's `+800h` takes
+  that kind.
+- `GameGunneryHost::plane_spin_side_800` returns it (-1 while OFF), and `game_hosts_units.cpp` passes it to
+  `plane_death_mode_007ca8a0`.
+- Counters: `summary mission gunnery plane spin side sets= lwing= rwing= fuselage= engine=`.
+
+**Predictions**, written before any run:
+1. OFF is identical to the base, and `sets=0`.
+2. ON: `sets` > 0 on any row where guns hit planes. The wings are 24 of the Kate's 44 triangles and the widest
+   target, so lwing + rwing take most of the sets.
+3. ON: the death table gains SpinLeft / SpinRight modes where a plane's last direct hit was a wing, at
+   `chance_spinning`. They are taken from the explosion / powerloss shares, because the mode order in
+   `007CA8A0` puts the spin arms first.
+4. The element walk can move a plane hit or miss only where a triangle lies outside every element. The Kate
+   has none, so hit counts stay put unless another model has stray triangles.
+5. Plane wrecks take longer, spinning paths. USN12 and LOMP10 move downstream, RNG-coupled through the
+   death draws.

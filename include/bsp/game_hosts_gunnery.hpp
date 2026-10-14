@@ -1167,6 +1167,10 @@ public:
     // Under BSP_GUNNERY_RNG_STREAMS=1, a MEASUREMENT option, each (stream, unit)
     // key gets its own deterministic generator instead.
     float death_mode_draw_00bd2f10(int stream, std::size_t unit_index, float low, float high);
+    // Packet g43_plane_spin_side: unit+800h as 007BBCF0 last stored it from a
+    // direct hit's element kind (0 lwing, 1 rwing), -1 (007CFDB4) before any or
+    // with kPlaneSpinSideBound OFF.
+    int plane_spin_side_800(std::size_t unit_index) const;
     // Packet cc9_damage_smoke_draws (docs/GUNNERY_OPEN_ITEMS.md 127): 008227E0 on
     // the unit's damage-smoke controller (unit+10A0h) for one update step 7, with
     // the units host's scaled delta. False when kDamageSmokeDrawsBound is off: the
