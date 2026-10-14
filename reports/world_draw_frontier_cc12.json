@@ -1,0 +1,203 @@
+{
+  "packet": "cc12_world_draw_frontier",
+  "implementation_packet": "cc12_world_draw_scene_submission",
+  "utc": "2026-10-14T18:03:42.921464+00:00",
+  "base_commit": "b13cd2605b2695fffd1519936b7aa657cf212715",
+  "scope": "Complete ordinary raw scene B1F4D0 and drawable B1F5E0 command production; no active application invocation",
+  "native_identity": {
+    "program": "/battlestationspacific.exe",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "bodies": [
+      {
+        "address": "00b1f4d0",
+        "length": 263,
+        "sha256": "352a835a878ca6ed2bff51429fb24db398ff9eb36e0b1589c3d95fa8f64174f8",
+        "saved_ghidra_matches_disk": true
+      },
+      {
+        "address": "00b1f5e0",
+        "length": 207,
+        "sha256": "10348ffc1d85852283cafaa7ade937ff4c21af58f65877eba6755ed6b3cda7fe",
+        "saved_ghidra_matches_disk": true
+      }
+    ]
+  },
+  "original_abi": {
+    "00b1f4d0": "ECX queue; scene/camera/targets and owned8h string by value; RET14",
+    "00b1f5e0": "ECX queue; scene/camera/targets/drawable; RET10"
+  },
+  "source_abi": "Explicit same-domain context and retained operation; source-only command return; not original ABI",
+  "evidence": {
+    "fh3": "DF5188 -> DF5178: state0 cleanup CBCC70 ->41DD20 current argument header; state1 CBCC78 frees outer new allocation then state0",
+    "source_composition": [
+      "BF681B shared allocation",
+      "actual B1F170",
+      "raw queue-pointer append B1CC20/B1C6C0",
+      "actual B72190",
+      "actual B1E990",
+      "raw 41DD40/419CC0/BD1510"
+    ],
+    "drawable_fp": "FLD1 before current native profile/context/slot; FSTP32; FLDZ; FSTP32; original four outgoing words to selected concrete body",
+    "actual_application": "GameDeviceHost::clear_and_present remains begin/overlay/end; no actual scene/camera/command-association graph fabricated",
+    "main_route": "004E54D1 ->004CA440; CameraUpdate job004B4820 ->0068A0D0 ->B101C0 ->D5E13C:B17240 ->B156C0; old WorldView job004BBD00 services sound"
+  },
+  "validation": {
+    "strict_compile": {
+      "exit_code": 0,
+      "options": "MSVC x86 /MD /std:c++17 /EHsc /permissive- /W4 /WX /O2 /fp:strict",
+      "generated_listing": true
+    },
+    "real_dependency_link": {
+      "exit_code": 0,
+      "bsp_core": true,
+      "both_entrypoints_retained": true,
+      "fixture_replacements": false,
+      "execution": "entry addresses printed only; no scene invoked"
+    },
+    "scripts_build": {
+      "exit_code": 0,
+      "configuration": "Release Win32",
+      "tests_passed": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "new_tu_registered_in_worker_cmake": false,
+      "qualification": "New TU separately strict compiled and linked against real fresh library; primary owns shared registration"
+    },
+    "verify_seeds": {
+      "exit_code": 0,
+      "log": "local/world_draw/verify_seeds.log"
+    },
+    "original_caller_fixture": {
+      "exit_code": 0,
+      "source": "local/world_draw/caller_probe.cpp",
+      "original_bodies": "rebased exact saved/disk byte bodies; relative direct calls redirected to explicit recorders; local branches retained",
+      "cases": [
+        "scene normal",
+        "scene source pointer changed by resize and current length changed during traverse/upload",
+        "drawable mask miss still queued"
+      ],
+      "checks": [
+        "matching event sequence",
+        "queue appended before traversal",
+        "same actual command/context identity",
+        "copy and normal cleanup use pre-resize pointer",
+        "cleanup size reloads current length"
+      ],
+      "source_only_case": "constructor failure frees outer44h then cleans current owned argument; checked against inspected FH3 map",
+      "limits": [
+        "callee bodies intercepted",
+        "no visible drawable execution",
+        "no native exception runtime",
+        "no real render entry/material/D3D/world/gameplay execution"
+      ]
+    },
+    "history": [
+      "First fixture fixed-address mapping hit a nonexecutable preexisting page at41DD40; final probe uses private rebased executable allocations with explicit relative-call interceptions. This was a fixture fault, not a source comparison failure.",
+      "Optional generated-listing compile initially used invalid /Fa:path syntax and failed C1083; corrected /Fapath build passed without source edits."
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "src/native_render_scene_submission.cpp",
+      "bytes": 8520,
+      "sha256": "104416ae57b475d7d90896bd4bf6916ce0c8ac5aa9f7c745c83531f93a3833ad"
+    },
+    {
+      "path": "include/bsp/native_render_scene_submission.hpp",
+      "bytes": 3337,
+      "sha256": "7f2238e2d1926c434c52799e184fc455478863b0fb6f64732a5efb1574bd4609"
+    },
+    {
+      "path": "docs/WORLD_DRAW_FRONTIER_CC12.md",
+      "bytes": 7245,
+      "sha256": "f3d127a9ac25a2933e50f57d011328455c1b81a77efd8a3f1dbe45b079e24491"
+    },
+    {
+      "path": "local/world_draw/native_render_scene_submission.obj",
+      "bytes": 16978,
+      "sha256": "a0a01fe392fc86cdc5a1882b9e66e0bc166e00c9aa2be3bde73e5a4087cf5d1a"
+    },
+    {
+      "path": "local/world_draw/native_render_scene_submission.asm",
+      "bytes": 59514,
+      "sha256": "4f5bfc2dee1a7522cc2a941f89966cabfb6703ed4f1f867cc3789326f40cecc0"
+    },
+    {
+      "path": "local/world_draw/strict_link.log",
+      "bytes": 52,
+      "sha256": "63058dc3e51eab20defb5ba5380b6677ed9ed9302c81c4192abeaef56efdca49"
+    },
+    {
+      "path": "local/world_draw/link_probe.exe",
+      "bytes": 246784,
+      "sha256": "46071913e2babbd1525455fcc48b8de3b3bbaa5797cc0f274785ddc2ced5fca6"
+    },
+    {
+      "path": "local/world_draw/caller_probe.cpp",
+      "bytes": 12382,
+      "sha256": "b10efbff2665eec27d6d911b95990aec02efead134faa6292d5447bb2a54be73"
+    },
+    {
+      "path": "local/world_draw/caller_probe.exe",
+      "bytes": 148992,
+      "sha256": "e652d88e5a8bbe3fcc20308d0d962b9fccf488d9e4f6ec1c8a7adeccc9d79817"
+    },
+    {
+      "path": "local/world_draw/caller_probe.log",
+      "bytes": 421,
+      "sha256": "c04d3a37acef78b8b75974f70ffa3b412c292eef206a3bc6fc7ab457ef7d883b"
+    },
+    {
+      "path": "local/world_draw/build.log",
+      "bytes": 83605,
+      "sha256": "14d9dce9b530cece553834f0d1bf0c831cd4c797144e368d7f3433463ca95dfc"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 90698530,
+      "sha256": "0f51b4da51b71353c747a0777380de7a909a7a495f74365fee9794c15226aff3"
+    }
+  ],
+  "ghidra_annotation_receipt": "local/ghidra-annotations-20261014T175830Z.json; old comments preserved, reviewed evidence appended, project saved and both exports refreshed",
+  "integration": {
+    "owned_files": [
+      "include/bsp/native_render_scene_submission.hpp",
+      "src/native_render_scene_submission.cpp",
+      "docs/WORLD_DRAW_FRONTIER_CC12.md",
+      "reports/world_draw_frontier_cc12.json",
+      "config/names/00b10000.jsonl",
+      "config/reconstruction/00b10000.jsonl"
+    ],
+    "primary_cmake_registration": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_render_scene_submission.cpp)",
+    "ready_original_callers": [
+      "GUI scene submission",
+      "A8E860/A8ECB0 shadow views",
+      "A8E180 single-view shadow",
+      "B10500 excluded-motion-blur drawable",
+      "B3C6E0 cockpit drawable"
+    ],
+    "main_scene_profile": "D5E13C is distinct; existing raw queue executor currently admits D5E5E0/B1D950 only"
+  },
+  "not_claimed": [
+    "Original binary/SEH/fault ABI",
+    "full native helper/owner lifetime differential",
+    "actual main-scene renderer execution",
+    "visible USN01 world",
+    "gameplay fidelity"
+  ],
+  "next_packet": {
+    "proposal": "cc12_native_main_scene_submission",
+    "address": "00b101c0",
+    "end_exclusive": "00b104f3",
+    "ownership_at_inspection": "unleased",
+    "files": [
+      "src/native_main_scene_submission.cpp",
+      "include/bsp/native_main_scene_submission.hpp",
+      "docs/NATIVE_MAIN_SCENE_SUBMISSION_CC12.md",
+      "reports/native_main_scene_submission_cc12.json"
+    ],
+    "implementation": "Complete raw main-scene producer: clock1C interval fraction, raw current node motion/hysteresis, actual44h command with D5E13C, actual camera clip plane, current getter ->B1EB80 flags1 -> second current getter ->B1CB50 metadata, retained camera replacement. Reuse existing actual command domains, raw B6DB70, vector length with existing CRT context, B6DA70, borrowed actual CameraClipPlaneState, raw queue getter and owner registry. No skipped motion-blur branch or profile substitution.",
+    "remaining_execution_boundary": "D5E13C command execution B17240/B156C0 and app producer-created main scene/camera graph remain separate."
+  }
+}
