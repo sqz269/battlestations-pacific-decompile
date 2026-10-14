@@ -24,7 +24,8 @@ using GameNativeGuiSamplerEvidenceLookup = GameNativeGuiSamplerCallEvidence (*)(
 struct GameNativeGuiSamplerApplicationBindings {
     GameInputRuntime& input;
     void* volatile& actual_platform_0109cf04;
-    const MSG& native_message_preimage; // Genuine caller-qualified MSG bytes.
+    NativePlatformLoadMessagePreimage native_message_preimage{};
+    // Optional qualified capture; empty keeps Original MSG output bytes unwritten.
     void* evidence_context{};
     GameNativeGuiSamplerEvidenceLookup evidence{}; // Null retains unknown root entry.
 };
@@ -35,7 +36,7 @@ struct GameNativeGuiSamplerApplicationBindings {
 // companions register into the renderer's SAME owner registry without a retain.
 // Root+mode share one retained per-compiler W=P-30h and its knowledge; separate
 // calls never reuse a previous invocation's residue. Unknown consumption fails.
-// Hold this parent, real messages/evidence and providers through failed frames
+// Hold this parent, optional captured message/evidence and providers through failed frames
 // and the original shared drain. No automatic native rollback is supplied.
 class GameNativeGuiSamplerApplication final {
 public:
