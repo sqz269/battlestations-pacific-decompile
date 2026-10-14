@@ -1,8 +1,8 @@
-# Raw unit-owner construction stages and owned lists
+# Raw unit-owner construction, peer insertion and owned lists
 
 `src/native_unit_owner_entity.cpp` supplies concrete normal storage stages of
-the real unit-owner constructor and destructor, plus two complete raw list
-leaves. It does not construct a whole root, publish a unit, provide a callable
+the real unit-owner constructor and destructor, concrete peer insertion, and
+the required raw list/count leaves. It does not construct a whole root, publish a unit, provide a callable
 profile, or activate the native tick/application path.
 Source names and field roles are descriptive hypotheses, not recovered C++
 symbols; address and raw storage behavior are the evidence contract.
@@ -14,6 +14,13 @@ symbols; address and raw storage behavior are the evidence contract.
 | `tidy_native_unit_owner_peer_list_0077b980` | Complete normal `0077B980..0077B9C7`, 72 bytes | Reset head links/count, free each node, free sentinel, zero header+4 |
 | `clear_native_unit_owner_holder_list_0077d930` | Complete normal `0077D930..0077D97C`, 77 bytes | Reset head links/count; per node free a non-null +14 payload, zero that field, then free node; retain sentinel |
 | `destroy_native_unit_owner_lists_0077e42c` | Qualified `0077E42C..0077E456` business effects | After actual observer destruction: clear +2A4 list, free its sentinel and zero +2A8, then tidy +298 list |
+| `buy_native_unit_owner_holder_node_0077ba60` | Complete normal `0077BA60..0077BAA6`, 71 bytes | Allocate 18h; independently guard wrapped +0/+4/+8 destinations; copy the four actual record DWORDs after link stores |
+| `buy_native_unit_owner_peer_node_0077bb00` | Complete normal `0077BB00..0077BB32`, 51 bytes | Allocate 0Ch; same guarded links; read actual peer argument after allocation |
+| `grow_native_unit_owner_holder_count_0077dd00` | `0077DD00..0077DD92`, 147 bytes | Unsigned wrapped count bound 0FFFFFFF; actual legacy string/logic-error ownership with Source exception transport |
+| `grow_native_unit_owner_peer_count_0077de40` | `0077DE40..0077DED2`, 147 bytes | Corresponding bound 3FFFFFFF; no allocation ownership or rollback |
+| `release_native_unit_owner_holder_scratch_0077b030` | Complete normal `0077B030..0077B04B`, 28 bytes | Free non-null scratch+0C and zero it; owns no list node |
+| `append_native_unit_owner_peer_0077eb50` | Qualified business body of `0077EB50..0077EC10`, 193 bytes | Insert holder, then peer, then set actual F87190; requires actual argument cell and caller/frame scratch preimage |
+| `finish_native_unit_owner_peer_tail_0077f054` | Qualified `0077F054..0077F076`, 35 bytes | Fresh actual E188A8/game+1FE4 and conditional E0AF20 read; mode2/byte0 calls concrete insertion with peer0 |
 
 These Source interfaces target MSVC Win32 and use the genuine raw allocation.
 They do not reinterpret `GameUnit`, synthesize a replacement header, zero an
@@ -50,7 +57,52 @@ It reads CE4ADC once after +2C8 and before +2E8, then copies the captured bits
 to +2E4 and +300. MOVSS is a bit transfer here, including non-finite patterns.
 Untouched factory bytes and padding stay untouched. It stops before the real
 E188A8 publication read, game+1FE4 comparison, E0AF20 byte and possible
-77EB50 peer-holder construction. None of those dependencies is defaulted.
+77EB50 peer-holder construction. The separate tail below supplies those effects
+when its actual storage and lifetime prerequisites are met.
+
+## Conditional peer tail and insertion ownership
+
+The tail loads the borrowed actual E188A8 publication once, reads the resulting
+game+1FE4 DWORD, and reads the actual E0AF20 byte only when the mode equals 2.
+Only a zero byte enters 77EB50 with an explicit peer argument of zero. There is
+no added null guard, cached Game object, substituted mode, or callback provider.
+The two skipped branches leave scratch and dirty storage untouched.
+
+77EB50 requires both live owning lists and a disjoint aligned 10h scratch
+preimage from the actual caller/frame domain. Original scratch+0A/+0B are
+unwritten but copied by 77BA60. Source preserves those exact supplied bytes;
+it does not invent a zero-filled temporary or claim to recover Native stack
+provenance. The actual peer argument cell is borrowed: its first value becomes
+holder scratch+0, while the later peer-node payload reads that cell again after
+the second allocation. The other scratch writes are DWORD FFF0BDC1 at +4,
+WORD zero at +8, and pointer zero at +0C.
+
+The actual holder head/previous are captured before the first allocation.
+After allocation, checked count growth precedes holder linking. The next head
+and previous come from a fresh +29C load after that insertion. The second
+allocation and checked count precede peer linking; only then is the actual
+F87190 byte set to 1. Node producers use the same concrete BF681B allocation
+domain as the sentinels, with independent wrapped destination guards and
+ordered volatile payload reads. No virtual tables or receiver are synthesized.
+
+Fresh live/file EH records prove C8A068 -> FuncInfo DBA454 -> unwind map DBA44C
+-> C8A060, which passes EBP-1C to 77B030. State0 is armed at EBA1 before the
+holder allocation and disarmed at EBD5 before the peer allocation. Only the
+scratch+0C payload is owned by that map. Neither a newly allocated but unlinked
+node nor an earlier completed list insertion is rolled back. Source preserves
+this cleanup around throwing calls; `/EHsc` may move its host state markers
+across nonthrowing memory operations. Native frame layout, hardware-fault
+unwind and Original exception ABI are not established by that Source guard.
+
+The two count guards use unsigned `bound - captured < increment`, including
+wrapped subtraction. Their real failure path builds the legacy string
+`list<T> too long` with count16 and constructs the existing owning
+`NativeAliasListLengthError` through the concrete legacy logic-error body.
+No shadow process or replacement `std::length_error` is introduced. The
+completed temporary message is guarded only after assignment returns, matching
+C89F58/DBA324/DBA31C/C89F50 and C89F98/DBA37C/DBA374/C89F90, whose cleanup
+targets 4072D0. Transport uses the Source host exception type; Original throw
+RTTI, register return residues and exception-frame ABI remain outside coverage.
 
 ## Lifetime boundary and current Original evidence
 
@@ -73,7 +125,8 @@ flags bit zero is set. This packet does not replace that wrapper.
 805A70/804300 and 925CE0/928630 remain owned by cc13-seg49 at this audit and
 were queued, not changed. Remaining root gates include their concrete owning
 composition, actual observer/weak/string/entity-ID/pending domains, World and
-hierarchy publication, actual peer/session/global withdrawal, callable World
+hierarchy publication, actual Game/network/dirty bindings and scratch frame
+provenance, session/global withdrawal, callable World
 and effect teardown, complete scalar/exception ownership, genuine derived
 factory, current tick methods and remaining-job dispatcher. Existing canonical
 AA0/F878CC process identity is unchanged. Full receiver activation stays false.
@@ -81,11 +134,15 @@ AA0/F878CC process identity is unchanged. Full receiver activation stays false.
 ## Validation and integration
 
 Strict MSVC Win32 `/std:c++20 /EHsc /O2 /MD /W4 /WX /fp:strict` compilation
-passed. All five emitted Source schedules were inspected for the ordered
+passed. All twelve public Source schedules and the shared count helper were
+inspected for the ordered
 mixed-width writes, initial-word capture, current-head reloads and real free
 calls. A manifested isolated comparison links the new production object,
 the actual head-producer TU and the existing concrete CRT allocation domain.
-Seven complete live byte spans equal the file-backed PE spans.
+The original packet's seven complete live spans match the PE. The peer packet
+adds seven freshly compared bodies (one overlaps the constructor) and twelve
+matching live/file EH records; those record bytes do not prove Native exception
+execution.
 
 The focused comparison executes copied Original normal fragments/leaves with
 their real internal calls, redirects only the external allocator/free and
@@ -95,8 +152,23 @@ stages and list teardown, normalizing only allocated sentinel identities.
 It also checks retained self-links, empty/two-node lists, null/non-null holder
 payloads, and initial-word capture before an aliased store: **20 checks, zero
 failures**. These are synthetic storage fixtures, not constructed receivers.
-They do not test allocation failure, Original exception frames, invalid lists,
-fault behavior, original register ABI, startup or gameplay.
+This prefix fixture was relinked against the extended Source object and still
+passes all 20 checks.
+
+The peer fixture executes copied Original 77EB50 and the normal tail with its
+internal calls retained. It redirects only external allocator/free calls and
+the three borrowed global operands. A populated first insertion and a second
+peer0 tail insertion compare list topology, payloads, counts, untouched root
+bytes and dirty state. The opaque two-byte scratch preimage is read from the
+Original-created holder node and then supplied to Source, rather than guessed.
+Both skipped tail branches, near-bound and wrapped count growth, and null and
+non-null scratch cleanup are covered. Source-only owning count exceptions and
+one second-count failure check cover retained first-list effects without
+rollback. Result: **37 checks, zero failures**. The second-count failure keeps
+the unlinked peer allocation, as the Original map prescribes; no Original throw
+path was replayed. No allocation-failure injection, Native exception execution,
+invalid-list/fault behavior, original register ABI, startup or gameplay is
+claimed. Both fixtures operate on synthetic storage, not constructed receivers.
 
 The worker's `scripts/build.ps1` Release baseline passed all three configured
 tests after verified native-math seeds were enabled. The new TU is separately
