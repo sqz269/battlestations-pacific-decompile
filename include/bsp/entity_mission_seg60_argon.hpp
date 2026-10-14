@@ -305,8 +305,8 @@ struct Seg60Host {
   virtual void dyn_physics_get_linear_velocity_00c31f40(void* body, float* out_xyz) = 0;
   virtual void dyn_physics_get_box_extents_00c31f90(
       void* shape_box,
-      float* out_max_xyz,
-      float* out_min_xyz
+      float* out_min_xyz,   // first output: 00929B80 passes it to 0085CDB0 in EDX, the min slot
+      float* out_max_xyz
   ) = 0;
   virtual float dyn_body_get_mass_00c31fc0(void* body) = 0;
   virtual float* object_field_at8_accessor_00c32000(void* body) = 0;

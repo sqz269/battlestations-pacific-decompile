@@ -1376,7 +1376,8 @@ std::uint8_t collision_shape_trace_segment_transformed_box_00929b80(
   Raw s{static_cast<std::uint8_t*>(shape_at_1a4)};
   float raw_max[3]{};
   float raw_min[3]{};
-  host.dyn_physics_get_box_extents_00c31f90(s.ptr(0x1b0), raw_max, raw_min);
+  // 00929B87..00929B97: the first output of 00C31F90 is the box MIN (it reaches 0085CDB0 in EDX).
+  host.dyn_physics_get_box_extents_00c31f90(s.ptr(0x1b0), raw_min, raw_max);
 
   const float box_max[3] = {raw_max[0], raw_max[1], raw_max[2]};
   const float box_min[3] = {raw_min[0], raw_min[1], raw_min[2]};
