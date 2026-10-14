@@ -1002,3 +1002,8 @@ with the switch, exe 8A53591B1821); reference env; logs `local\p8c2_{off,on}_<ro
   (1094.94 s, 1155.00 s). Both fail under jitter 20,3 on ON (Convoy5, or Convoy3 and Convoy5, survive). Re-plan
   continues.
 - **Flipped ON** (faithful; the USN01 loss is re-planned by the keeper), in the commit that adds this note.
+- The third reader, 0099D51A-0099D593 (`|B1Ch - |AE0h||` into the planner's frame+48h), has no consumer: a sweep of
+  0099D300-0099EA00 with the ESP adjustments tracked (`local/output/disasm-raw-0099d300-length-0x1700-233702.txt`)
+  finds only writes to frame+48h after 0099D593 (0099DBEE and 0099E51F address other slots under a push and a
+  `SUB ESP,8`), and 0099E180's `[ESP+5Ch]` is the double stored at 0099E136 under `SUB ESP,14h`. So the value is
+  dead and nothing is lost by not carrying it (uncertainty: by-eye ESP tracking over a 6 KB body).
