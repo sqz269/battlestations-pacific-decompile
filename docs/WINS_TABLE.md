@@ -394,7 +394,12 @@ mechanism is in the cd761bb52 section above).
     script's airfield manager (ijn_8_north_sol.lua:543-565) targets only the Marus (Mission.JapTrans), so this is
     the plane flips since 181196e51 (C2 and later); not bisected further.
   - Plan `w`: phase 1, every 200 frames each JapSub is selected and given one `attack` line per Cargo, least
-    preferred first (a dead target is refused, so the first live preference sticks); all six Cargos sink by ~414 s.
+    preferred first; all six Cargos sink by ~414 s. CORRECTION (cc9-physics9, same day): an `attack` line on a dead
+    target is applied, not refused (`local\p9i8_w.log` frame 6101: Cargo6, dead at 286.40 s, is applied), so in every
+    cycle the LAST line, the sub's first preference, sticks even when that target is dead. The same holds for the
+    phase-2 `A|B` lists: `A` is issued last and sticks, so the US_Airfield_03 entries below are issued and overridden
+    a frame later, never a real fallback. Why `w` wins where `n` (the same plan without those lines) does not is not
+    established; the extra order traffic may act only through the shared random stream. Treat `w` as a knife-edge.
     Phase 2 is h5 shifted by -3500 frames, with Kongo/Hiei on Jap_Airfield and Kirishima/Haruna on US_Airfield_01
     first, and every later target list ending in US_Airfield_03 (in h5 nothing attacks it after frame 40500).
     **Completed 4551.09 s** (`local\p9i8_w.log`), **4406.65 s under jitter 20,3**, guard logged on both; no Maru
