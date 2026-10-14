@@ -2079,10 +2079,15 @@ struct GameGunneryHost::Impl {
         float countdown{0.0f};
     };
     std::map<std::size_t, AimErrorState> aim_error_by_gun;
+    // 009FA620 / 009FA7E0 wander state per unit (fighter_aim_distortion_009fa7e0).
+    std::map<std::size_t, bsp::GunAimWander> aim_wanders;
     // Packet cc9_mrtgun_immediate_fire (kGunImmediateFireSlotBound). The turning
     // class comes from the device row's Type (the factories 00731E20 and 006FE390).
-    static constexpr int kTurningClassRapid = 0x24;   // MRTGun, Rapid_Turning_Gun
-    static constexpr int kTurningClassSingle = 0x27;  // MSTGun, Single_Turning_Gun
+    // These are device Type values, not IsKindOf class ids: the class ids are
+    // MRTGun 23h (00730ED0), MSTGun 24h (006FDF20) and MDepthChargeLauncher 27h
+    // (006FE050, under MSTGun).
+    static constexpr int kTurningClassRapid = 0x24;   // device Type -> MRTGun (00731E20)
+    static constexpr int kTurningClassSingle = 0x27;  // device Type -> MSTGun (006FE390)
     struct ImmediateFireState {
         bool delayed_fire{false};       // bot+7Ch
         float fire_delay_time{0.0f};    // bot+80h
@@ -12171,22 +12176,25 @@ void GameGunneryHost::Impl::apply_failure_effect_00827b90(std::size_t unit,
     log.notef("gunnery: component failure %s on %s t=%.2f health=%.0f/%.0f",
         name.c_str(), state.row.name.c_str(), static_cast<double>(clock_seconds),
         static_cast<double>(state.health), static_cast<double>(state.max_health));
-    if (name == "Explosion") {
+    // cc13 backfill G3: 00827B90 compares with __stricmp (00BF7FBF) and 00425850,
+    // both case-insensitive.
+    const bool steering_jam = failure_name_is(name, "SteeringJam");
+    if (failure_name_is(name, "Explosion")) {
         ++cf_explosions;
         // msg+30h = unit+36Ch * settings+3C4h, taken when 00827B90 runs.
         pending_explosions.emplace_back(unit, state.max_health * explosion_fraction);
-    } else if (name == "Fire") {
+    } else if (failure_name_is(name, "Fire")) {
         ++cf_fires;
         if constexpr (kShipDamageControlTickBound) {
             damage_control_add_seconds(unit, false, fire_failure_seconds);
         }
-    } else if (name == "SteeringJam" || name == "EngineJam") {
+    } else if (steering_jam || failure_name_is(name, "EngineJam")) {
         ++cf_jams;
-        record(name == "SteeringJam" ? "Failure::steering_jam_flag_0081999d"
-                                     : "Failure::engine_jam_flag_008199c7",
-            name == "SteeringJam" ? 0x0081999du : 0x008199c7u);
+        record(steering_jam ? "Failure::steering_jam_flag_0081999d"
+                            : "Failure::engine_jam_flag_008199c7",
+            steering_jam ? 0x0081999du : 0x008199c7u);
         // Packet cc13_natives1: the byte itself (+9E4h / +9E5h).
-        if (name == "SteeringJam") damage_control[unit].steering_jam_9e4 = true;
+        if (steering_jam) damage_control[unit].steering_jam_9e4 = true;
         else damage_control[unit].engine_jam_9e5 = true;
     }
 }
@@ -14248,7 +14256,9 @@ float GameGunneryHost::death_mode_draw_00bd2f10(int stream, std::size_t unit_ind
 
 void GameGunneryHost::fighter_aim_distortion_009fa7e0(std::size_t unit_index, float dt,
     bool owner_is_fighter, float out[2]) {
-    static std::map<std::size_t, bsp::GunAimWander> wanders;
+    // cc13 backfill G1: the wander state is the mission's (it lived in a
+    // function-local static, which outlived the host into the next mission).
+    std::map<std::size_t, bsp::GunAimWander>& wanders = impl_->aim_wanders;
     auto it = wanders.find(unit_index);
     if (it == wanders.end()) {
         float draws[4];
