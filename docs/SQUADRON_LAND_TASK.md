@@ -16873,3 +16873,48 @@ Next, in order:
    clock seed U(0, 2) + 2 at 007E1E20) draws RNG; leave it labelled.
 3. The 0099AF53 release-order spend and the torpedo wingmen fallthrough (5hc item 2), then rows that reach FreeFire and
    SquadronLandAndKill (5hc item 4).
+
+## 5hg. cc13-confirm A: the dogfight state-enter draws (cc9-lua60, 2026-10-14)
+
+`kDogfightEnterDrawsBound` (packet `cc9_l60_df_enter_draws`, committed OFF). The host took five dogfight state-enter draws
+at their midpoints; under the switch each is 00BD2F10 on the unit's keyed stream (`release_altitude_draw_00bd2f10`, name
+plus `#dfmr` / `#dfae` / `#dfav`), in the image's order:
+- 009A8560 (from 009A86F0 and the aim -> maneuver arm): +34h = U(0.3, 1.1) x row+230h (host 0.7);
+- 009A75C0 aim enter: +1Ch = U(0.8, 1.4) x row+210h, then +20h = U(0.5, 0.8) x row+20Ch x approach+24h (host 1.1, 0.65);
+- 009A7DE0 / 009A8020 avoid enters: timer +18h = U(0.75, 1.5) x row+214h (host 1.125); roll +1Ch = U(0.8, 1.0) when
+  +C68h > 0 (009A7E35) else U(-0.8, -1.0) (host +-0.9); turn +20h = U(0.75, 1.0) (host 0.875) and +1Ch = U(70, 100 deg)
+  or U(-70, -100 deg) (00CE3988/00CEDD00/00D1F958/00D1F95C; host +-85 deg).
+Constants read from the PE on disk (`local\l59_consts.py`). Not in this switch: the 009A87F0 maneuver enter's four
+midpoints (bearing U(-0.5, 0.5), heading U(-0.8, 0.8), pitch U(lo, hi), timer U(0.8, 1.3)) and the 009AA630 reselect
+timer U(1, 3); cc13 did not list them.
+
+Prediction (cc13): means unchanged; per engagement the pursuit range varies +-57%, aim time +-27%, avoid time +-33%, so
+individual dogfight timings and the kill/loss order move while totals do not shift systematically. Under
+BSP_GUNNERY_RNG_STREAMS=1 the draws are on their own keys and shift no other stream. Pair on JM08 and BSM01.
+
+## 5hh. cc13-confirm B: the torpedo done tick's disarmed arm 009D29E0 (cc9-lua60, 2026-10-14)
+
+`kTorpedoDoneDisarmedArmBound` (packet `cc9_l60_torpedo_disarmed`, committed OFF). In `done` the enter leaves +98h = -1.0,
+so 009D2753 JBE always takes 009D29E0-009D2CF1, which `torpedo_done_prepare_tick_009d2720` reduced to `kIdle`. Read whole
+from the disk listing; the arithmetic is `bsp::torpedo_done_disarmed_arm_009d29e0` (include/bsp/torpedo_task_arm.hpp):
+- EDI = [ctl+3D0h], the squadron's first member; none: nothing written (009D29E2).
+- ratio = |aim.xz - leader.xz| / (record+8h TorpReleaseDistFar x approach+24h) x IP(150 -> 1, 500 -> 3; leader.y), where aim
+  is approach->vtable[0] (the target point, 009C40A0 on the dive-bomb approach; taken here as the target's position).
+- Unless leader.y < 300 (00CE3AE8) and ratio < 3.5 (00D0C308 double): +8Ch = 1.0 (009D2CDA).
+- Close: cmd+2C8h = IP(1 -> 0.3, 2.2 -> 1.5; ratio) (009D2B1D), approach+A4h = 3, [approach+1Ch]+40h = 0; then
+  h = |wrap(HeadingAngle(aim - leader) - leader vtable[50h])|, b1 = ratio < 1.6 ? IP(0.3 -> 80 deg, 1.6 -> 30 deg) :
+  IP(1.6 -> 30 deg, 3 -> 10 deg), w = ratio > 1.5 ? IP(2 -> 2.5, 3.5 -> 1) : IP(0.3 -> 1, 1.5 -> 2.5),
+  c = clamp((1.2 - h / b1) x 5, 0, 1), +8Ch = 1 + (w - 1) c.
+
+Correction to cc13's write-up: cmd+2C8h is the bank cap (docs/PILOT_PLANNER_PITCH_ROLL.md section 2; the host's
+`plan_state.bank_limit_2c8`), not a throttle, and the "own point" is the aim point, so ratio measures the LEADER's
+distance to the target. state+8Ch is republished into squadron+3E8h by 009BFDA6-009BFDB2; the host has no reader of
+either, so it is logged only. approach+A4h and [approach+1Ch]+40h have no host cell. Note also that the host's
+TorpedoArmBinding drops every `write_command_float` (game_hosts_units.cpp, a no-op), so the armed branch's cmd+2C8h = 0.3
+is not applied either; that is outside this switch.
+
+Host wiring: after `torpedo_task_arm_009d4850`, when the done tick ran disarmed, with a first member and a target, the
+switch runs the arm and writes `bank_limit_2c8` on the close arm; per slot `torpedo <name> disarmed 009D29E0: ticks close
+min_ratio last_8c` in the summary. Prediction: on USN04 (no plan, 9000 frames) the done-state Kates run the arm every
+tick; the close arm fires only while the leader is low and within about 2.3 km of the target, capping the bank at
+0.3-1.5 rad; no RNG; releases unchanged (0 for the stuck squadron); small trajectory moves for those Kates only.

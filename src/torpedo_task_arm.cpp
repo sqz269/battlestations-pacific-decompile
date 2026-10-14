@@ -3,6 +3,11 @@
 
 #include "bsp/torpedo_task_arm.hpp"
 
+#include "bsp/geometry_helpers.hpp"
+#include "bsp/unit_rudder.hpp"
+#include "bsp/vector_helpers.hpp"
+
+#include <array>
 #include <cmath>
 
 namespace bsp {
@@ -236,8 +241,50 @@ TorpedoDoneTickResult torpedo_done_prepare_tick_009d2720(
     }
 
     // 009D29E0: the countdown is disarmed. This branch never releases and
-    // never writes +98h; it produces the blend value at state->+8Ch.
+    // never writes +98h; it produces the blend value at state->+8Ch. The caller
+    // runs it (torpedo_done_disarmed_arm_009d29e0) when it has a leader.
+    out.disarmed = true;
     out.outcome = TorpedoDoneTickOutcome::kIdle;
+    return out;
+}
+
+// 009D29E0-009D2CF1, the disarmed arm, given a leader (009D29E2 JE skips it
+// when [ctl+3D0h] is null; the caller makes that test). Constants from the PE:
+// 00CE3808 150, 00CE397C 500, 00CE3854 3, 00CE3AE8 300, 00D0C308 3.5 (double),
+// 00CE89D8 2.2, 00CE380C 1.5, 00CE69C8 0.3, 00CE3D48 1.6 (double), 00CF8858
+// 80 deg, 00CEC724 30 deg, 00CE3990 10 deg, 00CE3958 2, 00CF87C8 2.5,
+// 00CE77A0 3.5, 00CEC160 1.2 (double), 00D7A370 5 (double), 00D7A24C 1.
+TorpedoDisarmedArmResult torpedo_done_disarmed_arm_009d29e0(
+    const TorpedoDisarmedArmInputs& in) noexcept {
+    TorpedoDisarmedArmResult out;
+    const std::array<float, 2> d{in.aim_x - in.leader_pos[0],
+                                 in.aim_z - in.leader_pos[2]};          // 009D2A06-009D2A21
+    const float len = length_2d_00414c60(d);                            // 009D2A35
+    const float scale = in.release_dist_far * in.approach_24;           // 009D2A44-009D2A4A
+    const float alt_mul = interpolate_clamped(150.0f, 1.0f, 500.0f, 3.0f,
+                                              in.leader_pos[1]);        // 009D2A9B
+    out.ratio = (len / scale) * alt_mul;                                // 009D2A4E, 009D2AA0
+    if (!(300.0f > in.leader_pos[1]) ||
+        !(3.5 > static_cast<double>(out.ratio))) {                      // 009D2AB5, 009D2AC9
+        out.follow_blend_8c = 1.0f;                                     // 009D2CDA
+        return out;
+    }
+    out.close = true;
+    out.bank_cap_2c8 = interpolate_clamped(1.0f, 0.3f, 2.2f, 1.5f, out.ratio);  // 009D2B10
+    const float h = wrapped_angle_subtract_00438b10(heading_angle_00414eb0(d),
+                                                    in.leader_heading);  // 009D2B58-009D2B6B
+    const float ah = 0.0f < h ? h : -0.0f - h;                          // 009D2B7A-009D2B90
+    const float b1 = (1.6 > static_cast<double>(out.ratio))             // 009D2BA9
+        ? interpolate_clamped(0.3f, 1.3962635f, 1.6f, 0.5235988f, out.ratio)
+        : interpolate_clamped(1.6f, 0.5235988f, 3.0f, 0.17453294f, out.ratio);
+    const float w = (out.ratio > 1.5f)                                  // 009D2C14
+        ? interpolate_clamped(2.0f, 2.5f, 3.5f, 1.0f, out.ratio)
+        : interpolate_clamped(0.3f, 1.0f, 1.5f, 2.5f, out.ratio);
+    float c = static_cast<float>(
+        (1.2000000476837158 - static_cast<double>(ah / b1)) * 5.0);    // 009D2C72-009D2C94
+    c = 0.0f > c ? 0.0f : c;                                            // 009D2C98 00415550
+    c = c > 1.0f ? 1.0f : c;                                            // 009D2CB7 00415510
+    out.follow_blend_8c = (w - 1.0f) * c + 1.0f;                        // 009D2CBC-009D2CCD
     return out;
 }
 
