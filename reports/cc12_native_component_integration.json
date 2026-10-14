@@ -1,6 +1,6 @@
 {
   "schema": "cc12.native-component-integration.v1",
-  "authored_utc": "2026-10-14T17:58:42.270251+00:00",
+  "authored_utc": "2026-10-14T18:08:51.475726+00:00",
   "previous_goal_turn": "progress: native font producer and close policy were reconstructed and staged, with local full build verification",
   "reviewed_components": [
     {
@@ -29,6 +29,20 @@
       "source": "src/game_native_font_probe.cpp",
       "primary_hook_commit": "88a3bcd1d",
       "activation": "opt-in BSP_NATIVE_FONT_PROBE=1 after genuine phase7; no canonical replacement publication or Text export"
+    },
+    {
+      "component": "actual scene and drawable command submission",
+      "commit": "b8c8ff0e5264efc2c38ebe3c3aa8ff18c2e50971",
+      "source": "src/native_render_scene_submission.cpp",
+      "addresses": [
+        "00B1F4D0",
+        "00B1F5E0"
+      ],
+      "activation": "not called by ordinary game frame; main world route requires B101C0 then D5E13C/B17240/B156C0",
+      "original_caller_fixture": "three normal/alias/mask-miss cases passed; callees explicitly intercepted; no pixels or native EH claim",
+      "independent_preserved_artifacts_verified": 12,
+      "worker_receipt_directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\world_draw_receipt_b8c8ff0e",
+      "primary_combined_build": "pending permanent source registration check"
     }
   ],
   "permanent_registration": {
@@ -39,7 +53,84 @@
   "runtime": {
     "faithful_world_rendering": "contradicted by earlier inspected screenshot; not revalidated by this build",
     "gameplay_fidelity": "unproven",
-    "actual_font_resource_probe": "launched once through serialized launcher; result pending"
+    "actual_font_resource_probe": {
+      "result": "PASS",
+      "fonts": 6,
+      "glyphs": 1060,
+      "unique_actual_images": 3,
+      "profiles": [
+        "00D61948"
+      ],
+      "fallback0091": "verified for all six fonts",
+      "image_retirement": {
+        "gfx_viper": "2->retired, 2 owning slots",
+        "alpha": "6->retired, 6 owning slots",
+        "gfx_arial": "4->retired, 4 owning slots"
+      },
+      "actual_owners_before": 0,
+      "actual_owners_after": 1,
+      "registry_size_equality_asserted": false,
+      "frame_count": 120,
+      "presents": 119,
+      "presents_skipped": 1,
+      "exit_code": 0,
+      "rendering_verified": false,
+      "launcher_session": 47638,
+      "started_utc": "2026-10-14T18:03:50.5857084Z",
+      "finished_utc": "2026-10-14T18:03:53.0223774Z",
+      "manifest_checkout": {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+        "head": "40fd4eebe2fd4dd99d636a46abbd226b0f2ae2bc",
+        "dirty": false
+      },
+      "exe_sha256": "14b700643b37e12c0f17d18db544bc5ed29bb3f6302c6f08306607f040bef91e",
+      "env": {
+        "BSP_NATIVE_FONT_PROBE": "1"
+      },
+      "immutable_receipts": [
+        {
+          "path": "local\\cc12_native_font_runtime_receipts_20261014T180350\\cc12_actual_native_font_startup_01.log",
+          "sha256": "a1cca9c2d9e694360939e549ea85bf98c144e03526f253abba18e15cc290b081",
+          "bytes": 66744
+        },
+        {
+          "path": "local\\cc12_native_font_runtime_receipts_20261014T180350\\cc12_actual_native_font_startup_01.log.manifest.json",
+          "sha256": "6b4506ea08689d665d553f2df363f1c94c8e23382741cc0f849ab968499fb0d3",
+          "bytes": 2451
+        },
+        {
+          "path": "local\\cc12_native_font_runtime_receipts_20261014T180350\\bsp_game.exe",
+          "sha256": "14b700643b37e12c0f17d18db544bc5ed29bb3f6302c6f08306607f040bef91e",
+          "bytes": 5436928
+        },
+        {
+          "path": "local\\cc12_native_font_runtime_receipts_20261014T180350\\cc12_font_probe_full_build_01.log",
+          "sha256": "5e58fd61922f98924df9ea368cfacac5fc66676e9efd78e7f53c37fe735f1289",
+          "bytes": 3338
+        },
+        {
+          "path": "local\\cc12_native_font_runtime_receipts_20261014T180350\\game_native_font_probe.cpp",
+          "sha256": "91e65a963e848ce1a4395011a5cb846ae4ca8237b9bb605f2df288fc367b4bed",
+          "bytes": 14751
+        },
+        {
+          "path": "local\\cc12_native_font_runtime_receipts_20261014T180350\\game_native_font_application.cpp",
+          "sha256": "c253e892ea5344edaf4da2ea3f53c07f00a16c32a433c0036b9ef5fcbf14c519",
+          "bytes": 12355
+        },
+        {
+          "path": "local\\cc12_native_font_runtime_receipts_20261014T180350\\game_hosts.cpp",
+          "sha256": "4f57788b1300eef9712dfadb01b0e620f6f69100bd0fb29392bc1b34eb77708a",
+          "bytes": 128234
+        },
+        {
+          "path": "local\\cc12_native_font_runtime_receipts_20261014T180350\\startup.cmake",
+          "sha256": "7eb3c6413d64e1dba06a21e56d19cffd6e55e42cefe7ccec6dbb54aeec633a80",
+          "bytes": 223086
+        }
+      ]
+    },
+    "world_route_finding": "004BBD00 old WorldView job is sound; actual CameraUpdate004B4820 ->0068A0D0 ->B101C0 ->D5E13C/B17240 ->B156C0; no scene fabricated"
   },
   "original_installation_preserved": true,
   "goal_status": "active",
