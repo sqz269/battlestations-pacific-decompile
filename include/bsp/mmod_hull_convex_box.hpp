@@ -58,6 +58,11 @@ struct MmodHullConvexBox {
     // listed by some Hierarchy record. periscope_shape: that record lists a ConvexObject (the
     // first {item, node} pair with that node, 009397F0..0093985B) and has a Matrix.
     bool periscope_node{false};
+    // Packet cc9_ship_death_message: some Hierarchy record lists a Note named exactly
+    // `front` / `back`, so 0071AD50 at 00938DB9 / 00938DE2 stores a node into
+    // controller+370h / +374h, which 0092BEA0 / 0092BE90 return to 00827A90.
+    bool front_node{false};
+    bool back_node{false};
     bool periscope_shape{false};
     OceanVec3 periscope_min{};      // 00C57C40's box for the shape, widened by 0.02
     OceanVec3 periscope_max{};

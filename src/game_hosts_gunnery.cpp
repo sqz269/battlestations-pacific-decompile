@@ -1213,6 +1213,24 @@ constexpr bool kLandStructureBlastElementEntriesBound = false;
 //    scene load); a section death hands off at the end of kill_unit; the forward runs
 //    before the section's kill test. False: no master, no forward, no hand-off.
 constexpr bool kLandMasterDamageBound = false;
+//  * kOverrideHpHealthZeroBound: OverrideHP (008C1930) writes the health through
+//    00877B90, whose changed write runs vtable[1B0h] -> 00958A30, so a value at or
+//    below 0 destroys the unit (docs/CC13_VER_5.md D3). True: the host's health-zero
+//    test follows the write. False: the write never kills. SetHP 008C1790 is unbound.
+//    Packet cc9_override_hp_health_zero.
+constexpr bool kOverrideHpHealthZeroBound = false;
+//  * kShipDeathMessageBound: the ship's vtable[1B0h] 00827A90 past 00958A30's destroy
+//    (00827AB0..00827B77, docs/CC13_VER_5.md D4). Mass (class+B0h) below 100.0
+//    ([00D7A220]) sends 9Ah: 00814560 detaches every live part (00935C70) and, for a
+//    class with KamikazeDamage or KamikazeBlastDamage above 0, Kill(1) at once, which
+//    removes the entity (host: the KillDepth path's removal, labelled). Otherwise, when
+//    the controller's `front` and `back` nodes exist (0092BEA0 / 0092BE90), one stream-1
+//    U(0, 1) (00827B4D, ECX = 1) below WreckChance (settings+65Ch; SUBSTITUTION,
+//    labelled: this installation's shipglobals.lua:496 value 0.3) sends 98h, the
+//    breakup (00761310, presentation; recorded). LABELLED: run once, at the host's
+//    health-zero kill. False: no message and no draw. Packet cc9_ship_death_message.
+constexpr bool kShipDeathMessageBound = false;
+constexpr float kWreckChanceInstalled = 0.3f;
 //  * kPlaneBlastElementEntriesBound: a burst's distance to a PLANE is taken per
 //    GeomMesh element, as kBlastElementEntriesBound does for a ship. The image's
 //    sphere test for the plane's unit-part shape is 0070F720, which ends in
@@ -1930,6 +1948,7 @@ struct GameGunneryHost::Impl {
         damage_smoke = 21,    // 008227E0's respawn draws, key (unit, slot * 2 [+1 for stream 0])
         plane_crash_blast = 27, // 0084BAD0's blast for a plane's crash shot (007C0910), key (plane, 0)
         torpedo_scan_phase = 28, // 00856132, -U(0, 1) into record+518h, stream 1, key (shot serial, 0)
+        ship_breakup = 29,    // 00827B4D, the breakup roll against WreckChance, stream 1, key (unit, 0)
     };
     unsigned long long next_projectile_serial{0};
     static bool rng_streams_enabled() {
@@ -3556,6 +3575,13 @@ struct GameGunneryHost::Impl {
     void forward_land_master_damage_0074715a(std::size_t section, float amount);
     void land_master_add_damage_0095da00(std::size_t master, float amount);
     void land_section_destroyed_00747170(std::size_t section);
+    // Packet cc9_ship_death_message (kShipDeathMessageBound).
+    void ship_death_message_00827ab0(std::size_t victim);
+    struct ShipDeathCounts {
+        unsigned long long messages_9a{0}, kamikaze_removals{0}, no_breakup_nodes{0};
+        unsigned long long breakup_draws{0}, breakups_98{0};
+    } ship_death;
+    unsigned long long override_hp_kills{0};
     // Packet cc9_gunnery_line_of_sight: 00864680 for (observer, target).
     bool line_of_sight_00864680(std::size_t observer, std::size_t target);
     unsigned long long los_tests{0};
@@ -12284,6 +12310,36 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
     ++summary.kill_credits;
     done("KillCredit::record_unit_kill_0091bda0", 0x0091bda0u);
     if constexpr (kLandMasterDamageBound) land_section_destroyed_00747170(victim);
+    if constexpr (kShipDeathMessageBound) {
+        if (explicit_kill_cause == 0) ship_death_message_00827ab0(victim);
+    }
+}
+
+void GameGunneryHost::Impl::ship_death_message_00827ab0(std::size_t victim) {
+    const GameUnitsHost::ShipDeathMessageClass c = units.ship_death_message_class(victim);
+    if (!c.ship) return;
+    if (c.mass < 100.0f) {                         // 00827ACA..00827ADA, [00D7A220]
+        ++ship_death.messages_9a;
+        explode_to_parts_00935c70(victim);         // 9Ah -> 00814560 -> 00935C70
+        if (c.kamikaze && units.kill_and_remove_00814595(victim)) {
+            ++ship_death.kamikaze_removals;
+        }
+        done("ShipDeath::message_9a_00814560", 0x00814560u);
+        return;
+    }
+    if (!c.front_back) {                           // 00827B1A / 00827B29
+        ++ship_death.no_breakup_nodes;
+        return;
+    }
+    ++ship_death.breakup_draws;
+    const float roll = draw(Draw::ship_breakup, victim, 0, 0.0f, 1.0f);   // 00827B4D
+    done("ShipDeath::breakup_roll_00827b4d", 0x00827b4du);
+    if (kWreckChanceInstalled <= roll) return;     // 00827B5B
+    ++ship_death.breakups_98;
+    log.notef("ship death message: unit=%s breakup 98h roll=%.4f t=%.2f (00827B60, "
+        "packet cc9_ship_death_message)", unit_state[victim].row.name.c_str(),
+        static_cast<double>(roll), static_cast<double>(clock_seconds));
+    record("ShipDeath::breakup_message_98_00761310", 0x00761310u);
 }
 
 // Packet cc9_land_master_damage. 006D5220 and 00849F70 call 00744A20 on each listed
@@ -13962,6 +14018,17 @@ void GameGunneryHost::override_hp_008c1930(std::size_t unit_index, float value) 
     state.row.health = state.health;
     ++host.override_hp_applied;
     host.done("MissionLuaNative::OverrideHP", 0x008c1930u);
+    if constexpr (kOverrideHpHealthZeroBound) {
+        // 008C1AA8 00877B90 -> vtable[1B0h] -> 00958A30: destroyed at health 0.
+        bsp::UnitHealth after;
+        after.current_health = state.health;
+        after.max_health = state.max_health;
+        if (bsp::unit_is_dead(after)
+            && host.health_zero_callback_allowed(write.dispatch_health_changed)) {
+            ++host.override_hp_kills;
+            host.kill_unit(unit_index);
+        }
+    }
 }
 
 void GameGunneryHost::set_unit_invincibility(std::size_t unit_index, float value) {
@@ -14921,6 +14988,16 @@ void GameGunneryHost::report() {
                 host.smoke_clock_resets, host.smoke_respawns, host.smoke_expired_held,
                 host.smoke_first_unit.empty() ? "none" : host.smoke_first_unit.c_str(),
                 static_cast<double>(host.smoke_first_respawn));
+        }
+        {
+            const Impl::ShipDeathCounts& d = host.ship_death;
+            host.log.notef("summary mission gunnery ship death message 9Ah=%llu "
+                "kamikaze_removals=%llu no_breakup_nodes=%llu breakup_draws=%llu 98h=%llu "
+                "bound=%d; OverrideHP kills=%llu bound=%d (00827A90, 008C1930, packets "
+                "cc9_ship_death_message, cc9_override_hp_health_zero)", d.messages_9a,
+                d.kamikaze_removals, d.no_breakup_nodes, d.breakup_draws, d.breakups_98,
+                kShipDeathMessageBound ? 1 : 0, host.override_hp_kills,
+                kOverrideHpHealthZeroBound ? 1 : 0);
         }
         {
             const Impl::LandMasterCounts& c = host.land_master;

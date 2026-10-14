@@ -1166,6 +1166,19 @@ public:
     // (00747170's 007472A7 call for a hangar's master); a no-op while
     // kAirfieldDestructionRuleBound is off.
     void run_airfield_destruction_rule_006d40f0(std::size_t index);
+    // Packet cc9_ship_death_message (docs/CC13_VER_5.md D4). The class inputs the
+    // ship's health-changed slot 00827A90 reads past 00958A30.
+    struct ShipDeathMessageClass {
+        bool ship{false};            // the unit answers the ship base kind
+        float mass{0.0f};            // class+B0h Mass
+        bool front_back{false};      // controller+370h `front` and +374h `back` both set
+        bool kamikaze{false};        // class+510h KamikazeDamage or +514h KamikazeBlastDamage > 0
+    };
+    ShipDeathMessageClass ship_death_message_class(std::size_t index);
+    // 00814595 Kill 00926D90(1) for a kamikaze class at its death message, with the kill
+    // list's removal and unlink applied at once (the KillDepth path's labelled
+    // substitution), then 0092BD30 (recorded). False when the unit was already removed.
+    bool kill_and_remove_00814595(std::size_t index);
     // Packet cc9_unit_class_lands_troops. [unit+538h]->vtable[2Ch](): 00827FB0 on a
     // ship-family class ([class+78Ch] LandingShip and [class+790h] LandingShipAmount
     // both non-zero), 00963C70 on the landing-ship class (creator 0074BE00:

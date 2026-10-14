@@ -6465,9 +6465,8 @@ struct GameUnitsHost::Impl {
     // registrar). ON: all of that, the removal and the unlink applied at the
     // kill (SUBSTITUTION, labelled: the host's row-15 kill list cannot take a
     // host entity). OFF: nothing; the census of hull ends prints in both builds.
-    // ON since the USN02 and E2 9200/9000 pairs: identical gameplay. No host wreck
-    // descends (USN02: 20 wrecks, lowest hull end -47.04 m), so the kill and the
-    // unlink have not run in any measured mission.
+    // ON since the USN02 and E2 9200/9000 pairs: identical gameplay. Host wrecks do
+    // reach KillDepth (docs/CC13_VER_5.md section 5).
     static constexpr bool kSunkShipKillDepthBound = true;
     // Packet cc9_ship_terrain_contact (docs/SHIP_AI_OPEN_ITEMS.md section 87).
     // The image stops a hull on the terrain in the Dyn library's contact phase
@@ -36717,6 +36716,54 @@ std::size_t GameUnitsHost::parent_link_71c(std::size_t index) {
     impl_->ensure_parent_link_71c_006f5cc0(index);
     const int link = impl_->slots[index]->parent_link_71c;
     return link > 0 ? static_cast<std::size_t>(link - 1) : impl_->slots.size();
+}
+
+GameUnitsHost::ShipDeathMessageClass GameUnitsHost::ship_death_message_class(
+    std::size_t index) {
+    ShipDeathMessageClass out;
+    if (index >= impl_->slots.size()) return out;
+    const GameUnitSlot& slot = *impl_->slots[index];
+    out.ship = bsp::unit_is_kind_of(slot.class_id, bsp::kUnitGunneryKindShipBase);
+    if (!out.ship) return out;
+    out.mass = slot.motion_class.hull_mass;                                   // class+B0h
+    const Impl::ClassHullBox& hull = impl_->class_hull_box(slot);
+    out.front_back = hull.ok && hull.box.front_node && hull.box.back_node;
+    const int type_id = slot.row.type_id;
+    out.kamikaze = impl_->lua.read_vehicle_class_number(type_id, "KamikazeDamage", 0.0f) > 0.0f
+        || impl_->lua.read_vehicle_class_number(type_id, "KamikazeBlastDamage", 0.0f) > 0.0f;
+    return out;
+}
+
+bool GameUnitsHost::kill_and_remove_00814595(std::size_t index) {
+    if (index >= impl_->slots.size()) return false;
+    Impl& host = *impl_;
+    GameUnitSlot& slot = *host.slots[index];
+    if (slot.scene_removed_005f != 0) return false;
+    // 00926D90(1): +5Fh, and Destroy (vt[70h]) when +60h is clear.
+    slot.scene_removed_005f = 1;
+    if (slot.scene_pending_destroy_0060 == 0) {
+        slot.scene_pending_destroy_0060 = 1;
+        host.record("Entity::destroy_at_kill_00926e05", 0x00926e05u);
+    }
+    // SUBSTITUTION, labelled, as at KillDepth: the kill list's row-15 drain
+    // (009274A1..0092751F) applied here, the removal 009263C0 and the vt[80h] unlink.
+    bsp::SceneNodeFlags flags;
+    if (unit_scene_node_flags(index, flags) && !flags.destroyed) {
+        bsp::scene_node_remove_009263c0(flags);
+        slot.state->active = flags.active;
+        slot.state->simulate = flags.torn_down;
+        slot.scene_destroyed_005e = flags.destroyed;
+        slot.scene_removed_005f = flags.removed;
+        slot.row.active = flags.active;
+        host.record("Entity::on_killed_lua_self_00928c80", 0x00928c80u);
+        host.world_lists_unlink_unit_00928f24(slot);
+    }
+    host.log.notef("ship death message: unit=%s kamikaze Kill(1) and removal t=%.2f "
+        "unlinked_nodes=%zu (00814595, packet cc9_ship_death_message)", slot.row.name.c_str(),
+        static_cast<double>(host.summary.simulated_seconds), slot.world_nodes_unlinked);
+    host.done("ShipDeath::kamikaze_kill_00814595", 0x00814595u);
+    host.record("UnitController::clear_hull_shape_fields", 0x0092bd30u);   // 0081459B JMP
+    return true;
 }
 
 void GameUnitsHost::run_airfield_destruction_rule_006d40f0(std::size_t index) {

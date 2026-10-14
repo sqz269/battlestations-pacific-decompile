@@ -184,6 +184,8 @@ bool read_mmod_hull_convex_box(const std::vector<std::uint8_t>& mmod_bytes,
         for (const std::uint32_t index : records[record]) {
             const auto note = notes.find(index);
             if (note != notes.end() && is_owner_note(note->second)) owner = true;
+            if (note != notes.end() && note->second == "front") out.front_node = true;
+            if (note != notes.end() && note->second == "back") out.back_node = true;
         }
         if (!owner) continue;
         if (record != 0) ++out.note_owner_records;

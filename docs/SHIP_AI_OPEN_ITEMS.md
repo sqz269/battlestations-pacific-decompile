@@ -17565,3 +17565,26 @@ master airfield/shipyard starts at its last hangar's health and max; hangar dama
 first gunfire hangar death destroys an un-adopted airfield or shipyard at once (its planes stop launching / its
 production stops); an adopted one (USN01 `Airfield2` -> `CB2`) stays alive at health 0 and takes the existing
 InferiorFailure arm only at its last hangar, as before. Kill counts can rise by the masters.
+
+## 237. cc13-ver5 D3/D4: `kOverrideHpHealthZeroBound` and `kShipDeathMessageBound`, OFF (cc9-ships48, 2026-10-13; lead item 3)
+
+Packets `cc9_override_hp_health_zero` and `cc9_ship_death_message` (`src/game_hosts_gunnery.cpp`, units host
+accessors, `mmod_hull_convex_box` `front_node`/`back_node`; patch `local\s48_d34_patch.py`).
+- **D3.** OverrideHP 008C1930 writes through 00877B90 (008C1AA8), whose changed write runs vtable[1B0h] ->
+  00958A30: at or below 0 the unit is destroyed. True: the host's health-zero test follows the write. SetHP
+  008C1790 is unbound (lua lane). The stale `kSunkShipKillDepthBound` sentence ("no host wreck descends") is
+  replaced in the same commit (CC13_VER_5 D6 / section 5).
+- **D4.** 00827A90 past 00958A30 (00827AB0..00827B77): Mass (class+B0h) < 100.0 ([00D7A220]) sends 9Ah ->
+  00814560: 00935C70 detaches every live part and, for KamikazeDamage (+510h) or KamikazeBlastDamage (+514h) > 0,
+  00814595 Kill(1) and 0092BD30. Host: `explode_to_parts_00935c70`, then the KillDepth path's removal and unlink
+  (same labelled substitution). Mass >= 100.0 with the controller's `front` (+370h) and `back` (+374h) nodes
+  (0092BEA0 / 0092BE90; a Hierarchy record listing a Note of that exact name) draws one stream-1 U(0, 1)
+  (00827B4D, new key `ship_breakup` (unit, 0)) and below WreckChance (settings+65Ch; SUBSTITUTION, labelled:
+  this installation's shipglobals.lua:496 = 0.3, mtime 2024-07-13) sends 98h, the breakup (00761310,
+  presentation, recorded). LABELLED: run once, at the host's health-zero kill only (not at explicit kills).
+**Predictions.** OFF identical (one new summary line). ON: D3 no reach (no script passes a value at or below 0).
+D4: every ship death below Mass 100 detaches its parts (dead hull; no gameplay change); a Kaiten or Kamikaze Boat
+death removes the unit at once instead of at KillDepth (no gameplay change found: Dead flips at the same time);
+heavier ships with both nodes draw once on stream 1. Under the reference env (`BSP_GUNNERY_RNG_STREAMS=1`) the
+draw is keyed, so no other draw moves: gameplay identical. Without that env the shared stream shifts and every
+later stream-1 consumer can move.
