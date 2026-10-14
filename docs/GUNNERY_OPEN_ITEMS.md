@@ -14273,3 +14273,49 @@ arcade rows, not a host misread; they go to the keeper as re-plans.
 
 **Uncertainty.** The `GameMode` read assumes the image runs the same autoload chunk the host does (the host
 runs this installation's Lua); the 3000 m value was not checked against a live image run.
+
+## 236. 222 census: the writers of `director+238h`, image against host (lead queue item 2; cc9-gunnery43, 2026-10-14)
+
+`kDirectorLeaderFireTargetBound` (222) makes a ship with no fire target take its formation leader's
+`director+238h`. That is faithful only if the host's stand-in for `+238h` (the ship-AI row's `fire_target`,
+which `run_gunnery_pass` resolves by name) has the image's writers and no others.
+
+**Image writers, from disk bytes.** The scans are `89 ?? 38 02 00 00`, `C7 ?? 38 02 00 00`, `8D ?? 38 02 00 00`,
+`8D ?? 24 02 00 00` (the observer sub-object at `+224h`, whose `+14h` is `+238h`), plus `tools/image_ref_scan.py`
+for rel32 and absolute references (`local\g43_scan*.txt`, `local\g43_refs_836240.txt`). In the director band
+(`00835xxx`-`00836xxx`), `+238h` is written only as `[ESI+14h]` with `ESI = director+224h`, at these sites:
+- `0083642F` is the constructor (0).
+- `00835F2D` is the destructor (`006E0860` on the observer).
+- `00836287` is `00836240` StoreFireTarget. Its gate is `force || !+23Ch || !+238h`, and it sets `+23Ch = force`.
+  It has three callers: `00721BF1` (the 5Eh delivery `00721A40`, reached from all 13 `00835860` call sites; see
+  section 13), `00836667` (the property visitor `00836510`, keys `fireTargetID`/`fireTargetIsPrimary`), and
+  `008366BC` (`00836680` CopyStateFrom, derived vtable `+4Ch`, which copies only a forced target).
+- `00836230` is `00836210` StoreFirePermission (vtable `+64h`; absolute refs `00D09F24`, `00D09FBC`). An
+  allowFire of 0 drops the target (`+238h = 0`) and leaves `+23Ch` alone.
+- The observer pair (`006952A0` / `00694A60`) releases a dead target.
+
+**Host writers** of `GameShipAiRow::fire_target` / `Controller::fire_target` (`src/game_hosts_ship_ai.cpp`):
+
+| host site | image counterpart | match |
+| --- | --- | --- |
+| `store_fire_target` `:1665`, from AutoTarget `:11280` (force 0), commands `:12112`, script `:13178` (force 1), dead release `:12102` | `00836240` via `00835860` / 5Eh | yes. The store is synchronous where the image waits for the next session pump (a timing difference only) |
+| `:11193-11194`, a locked target that died | the observer release | yes (labelled) |
+| **`:11205`, `row_.fire_target = scan.best`** inside `scan_party_list` | **none** | **no**. See below |
+| (missing) a stance forbidding fire clears the target | `00836210` at `00836230` | **no**: labelled NOT DONE at `src/game_hosts_script_orders.cpp:2477` |
+| (missing) `fireTargetID` property loads, CopyStateFrom | `00836667`, `008366BC` | not modelled. Not shown to be reached in a mission run |
+
+**The `:11205` divergence.** `009F5E7F` scans and keeps the best in a local. The image writes `+238h` only at
+`009F5F21`, and only after three checks pass:
+- the switch hysteresis (`009F5EAE`);
+- the already-pointed test (`009F5ECB`);
+- the accept test (`009F5ED7`).
+
+The store gate can still refuse it after that. The host instead copies the scan winner into the row as soon as the
+scan returns. When any of those checks fail, the row names the new best while `ctl.fire_target` keeps the stored
+target, and `store_fire_target` (which rewrites the row only when `ctl` changes) does not re-sync it. The
+guns of the ship itself read that row. With 222 ON, so would its followers'. This is the split-copy shape:
+two host copies of one image field.
+
+**Verdict.** The writers do not match, so 222 stays OFF. The fix is in the ships lane's file: drop the `:11205`
+row write behind a switch (`row_.fire_target_score` can stay), then pair it alone and then with 222.
+The `00836210` clear is a second, smaller gap. It matters only for a ship whose stance forbids fire.
