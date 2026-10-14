@@ -116,6 +116,7 @@
 #include "bsp/ship_hull_body.hpp"
 #include "bsp/mmod_hull_convex_box.hpp"
 #include "bsp/ship_motion.hpp"
+#include "bsp/ship_motion_ver_cc13.hpp"         // packet cc9_tboat_rudder_torque (00937440)
 #include "bsp/unit_controller.hpp"
 #include "bsp/unit_forces.hpp"
 #include "bsp/air_operations.hpp"
@@ -2829,6 +2830,7 @@ struct GameUnitsHost::Impl {
     unsigned long long base_launch_no_deck{0};
     // Packet cc9_base_launch_deck_arms (kBaseLaunchChainBound), piece 3.
     void run_airfield_destruction_rule_006d40f0(std::size_t index);
+    void ensure_parent_link_71c_006f5cc0(std::size_t index);
     const bsp::game::ScenePathEntry* landing_hangar_path_006d2780_006d2640(
         const LandingDeck& d, bool entry) const;
     void airfield_site_tick_006cf980(std::size_t deck_index, LandingDeck& d);
@@ -9729,6 +9731,12 @@ private:
 
 class ShipMotionBinding final : public bsp::ShipMotionHost {
 public:
+    // Packet cc9_tboat_rudder_torque (docs/CC13_VER_3.md T1 and T2, SHIP_AI 233). True:
+    // 00937440's roll torque runs for TorpedoBoats only, with settings+588h = 1500 (the
+    // installed value, labelled), in the image's grouping; other ships skip it. False:
+    // every surface ship runs the torque with a zero gain, as before.
+    static constexpr bool kTorpedoBoatRudderTorqueBound = false;
+    static constexpr float kTorpedoBoatRudderTorqueMulInstalled = 1500.0f;
     ShipMotionBinding(GameUnitsHost::Impl& owner, GameUnitSlot& slot,
         UnitRudderBinding& rudder)
         : owner_(owner), slot_(slot), rudder_(rudder) {}
@@ -9806,6 +9814,34 @@ public:
         in.pose_row2.y = slot_.motion.pose_row2[1];
         in.pose_row2.z = slot_.motion.pose_row2[2];
         in.settings_rudder_torque = 0.0f;  // settings+588h, not recovered
+        if constexpr (kTorpedoBoatRudderTorqueBound) {
+            // Packet cc9_tboat_rudder_torque (docs/CC13_VER_3.md T1/T2, SHIP_AI 233).
+            // 00937440 is slot 0 only of the controller vtable 00D196F0, which 00939F20
+            // builds for 00857C20, the TorpedoBoat vtable's +230h; every other ship's
+            // controller (base 00D19630) runs 009329C0 alone. SUBSTITUTION, labelled:
+            // settings+588h Physics.TBoatNyomatekSzorzo is this installation's
+            // shipglobals.lua:553 value 1500, not the loaded field.
+            if (!bsp::unit_is_kind_of(slot_.class_id, 0x0e)) {
+                run_hydrodynamics_00937622(dt);
+                return bsp::OceanVec3{};
+            }
+            bsp::TorpedoBoatRudderTorqueInputs tb;
+            tb.velocity = slot_.motion.linear_velocity;
+            for (int i = 0; i < 3; ++i) tb.row2[i] = slot_.motion.pose_row2[i];
+            tb.reference_speed = in.reference_speed;
+            tb.pose_row0_y = slot_.motion.pose_row0[1];
+            tb.to_turn = slot_.motion.to_turn;
+            tb.torque_mul = kTorpedoBoatRudderTorqueMulInstalled;
+            tb.hull_mass = slot_.motion_class.hull_mass;
+            owner_.done("ShipMotion::force_model", 0x00937440u);
+            const bsp::OceanVec3 tboat = bsp::tboat_rudder_torque_00937440(tb);
+            if (slot_.state == nullptr || !slot_.state->simulate) {
+                bsp::dyn_body_add_torque_00c35330(slot_.body, tboat);
+                owner_.done("ShipMotion::add_rudder_torque", 0x00c35330u);
+            }
+            run_hydrodynamics_00937622(dt);
+            return tboat;
+        }
         owner_.done("ShipMotion::force_model", 0x00937440u);
         const bsp::OceanVec3 torque = bsp::unit_steering_torque_00937440(in);
         // 00937449 CMP byte ptr [EAX+5Dh],0 / 0093744D JNZ 00937618: a set byte
@@ -13166,6 +13202,29 @@ void GameUnitsHost::Impl::run_airfield_destruction_rule_006d40f0(std::size_t ind
             }
         }
     }
+    ensure_parent_link_71c_006f5cc0(index);
+    if (slot.parent_link_71c > 0) {
+        // 006D4167-006D41BB: "InferiorFailure" (00CF0B74) -> vtable[194h] 006D2210,
+        // which matches neither RunwayFailure nor HangarFailure and falls to
+        // 00953DA0: message 7Dh through 0077C2A0(msg, 7, 0); 0095AD0A sets +720h.
+        if (deck != nullptr) deck->airfield_blocked = true;
+        if (slot.inferior_failure_steps++ == 0) {
+            log.notef("airfield destruction rule: unit=%s arm=inferior_failure t=%.2f "
+                "(006D2210 -> 00953DA0 7Dh -> +720h, packet cc9_airfield_destruction_rule)",
+                slot.row.name.c_str(), summary.simulated_seconds);
+        }
+        done("Airfield::destruction_rule_inferior_failure_006d40f0", 0x006d40f0u);
+        return;
+    }
+    log.notef("airfield destruction rule: unit=%s arm=destroy t=%.2f (006D41E6 -> 0077D1A0, "
+        "packet cc9_airfield_destruction_rule)", slot.row.name.c_str(),
+        summary.simulated_seconds);
+    gunnery->destroy_unit_0077d1a0(index, 0);  // 006D41EF, vtable[70h](0)
+    done("Airfield::destruction_rule_destroy_006d40f0", 0x006d40f0u);
+}
+
+void GameUnitsHost::Impl::ensure_parent_link_71c_006f5cc0(std::size_t index) {
+    GameUnitSlot& slot = *slots[index];
     if (slot.parent_link_71c == 0) {
         // 006F5CC0 pass 1, from every CommandBuilding's side: kind 45h here, the
         // building is not the entity, entity+724h set (006F5DCF), and the squared
@@ -13197,24 +13256,6 @@ void GameUnitsHost::Impl::run_airfield_destruction_rule_006d40f0(std::size_t ind
                 : "-",
             slot.bag_min_level_724 ? 1 : 0, summary.simulated_seconds);
     }
-    if (slot.parent_link_71c > 0) {
-        // 006D4167-006D41BB: "InferiorFailure" (00CF0B74) -> vtable[194h] 006D2210,
-        // which matches neither RunwayFailure nor HangarFailure and falls to
-        // 00953DA0: message 7Dh through 0077C2A0(msg, 7, 0); 0095AD0A sets +720h.
-        if (deck != nullptr) deck->airfield_blocked = true;
-        if (slot.inferior_failure_steps++ == 0) {
-            log.notef("airfield destruction rule: unit=%s arm=inferior_failure t=%.2f "
-                "(006D2210 -> 00953DA0 7Dh -> +720h, packet cc9_airfield_destruction_rule)",
-                slot.row.name.c_str(), summary.simulated_seconds);
-        }
-        done("Airfield::destruction_rule_inferior_failure_006d40f0", 0x006d40f0u);
-        return;
-    }
-    log.notef("airfield destruction rule: unit=%s arm=destroy t=%.2f (006D41E6 -> 0077D1A0, "
-        "packet cc9_airfield_destruction_rule)", slot.row.name.c_str(),
-        summary.simulated_seconds);
-    gunnery->destroy_unit_0077d1a0(index, 0);  // 006D41EF, vtable[70h](0)
-    done("Airfield::destruction_rule_destroy_006d40f0", 0x006d40f0u);
 }
 
 const bsp::game::ScenePathEntry* GameUnitsHost::Impl::landing_hangar_path_006d2780_006d2640(
@@ -36669,6 +36710,20 @@ bool GameUnitsHost::unit_is_kind_of(std::size_t index, int class_id) const {
 bool GameUnitsHost::inferior_failure_720(std::size_t index) const {
     if (index >= impl_->slots.size()) return false;
     return impl_->slots[index]->inferior_failure_steps != 0;
+}
+
+std::size_t GameUnitsHost::parent_link_71c(std::size_t index) {
+    if (index >= impl_->slots.size()) return impl_->slots.size();
+    impl_->ensure_parent_link_71c_006f5cc0(index);
+    const int link = impl_->slots[index]->parent_link_71c;
+    return link > 0 ? static_cast<std::size_t>(link - 1) : impl_->slots.size();
+}
+
+void GameUnitsHost::run_airfield_destruction_rule_006d40f0(std::size_t index) {
+    if (index >= impl_->slots.size()) return;
+    if constexpr (Impl::kAirfieldDestructionRuleBound) {
+        impl_->run_airfield_destruction_rule_006d40f0(index);
+    }
 }
 
 // Packet cc9_unit_class_lands_troops. Slot 2Ch of the class descriptor vtables

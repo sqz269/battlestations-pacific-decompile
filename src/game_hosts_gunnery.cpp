@@ -1195,6 +1195,24 @@ constexpr bool kLandStructureMeshHitTestBound = true;  // ON: JM08 b3 pair, mech
 //    (docs/CC13_JM08_AA_TRUCK_HQ_DAMAGE.md section 4). OFF: the class box.
 //    Packet cc13_jm08_aa_truck_hq_damage.
 constexpr bool kLandStructureBlastElementEntriesBound = false;
+//  * kLandMasterDamageBound: the LandFort master +738h (packet cc9_land_master_damage,
+//    SHIP_AI 236). 00744A20 (BSP_LandFort_SetMaster), called by the airfield reader
+//    006D5220 and the shipyard reader 00849F70 (0084A083) on each "Hangar %d" object,
+//    stores the airfield or shipyard as the hangar's +738h and copies the hangar's
+//    +36Ch and +370h onto the master (the last hangar wins). 007470B0 (the hangar's
+//    AddDamage, vtable[1ACh]; a CommandBuilding's 006F1F20 calls it too) forwards
+//    every amount to the master's vtable[1ACh] (0074715A) after its own 0095DA00.
+//    00747170 (OnDestroyed, vtable[7Ch]) hands the master AddDamage(1e10, [00CE4970])
+//    and, while the master is still live (0074728B..007472A1), runs its vtable[1A8h]
+//    (006D40F0 for an airfield; 00845AC0 for a shipyard, not hosted: recorded). A
+//    master at health 0 with a parent CommandBuilding (+71Ch, 006F5CC0) does not die
+//    (00958A30's +71Ch arm returns at health 0 while +720h is clear, and arms its
+//    +728h repair timer otherwise; neither is hosted). 0095DA00's own refusal
+//    (+71Ch set and +728h > 0) never fires here: the host has no +728h writer.
+//    LABELLED: the table is built at the first gunnery step (the image builds it at
+//    scene load); a section death hands off at the end of kill_unit; the forward runs
+//    before the section's kill test. False: no master, no forward, no hand-off.
+constexpr bool kLandMasterDamageBound = false;
 //  * kPlaneBlastElementEntriesBound: a burst's distance to a PLANE is taken per
 //    GeomMesh element, as kBlastElementEntriesBound does for a ship. The image's
 //    sphere test for the plane's unit-part shape is 0070F720, which ends in
@@ -2500,6 +2518,18 @@ struct GameGunneryHost::Impl {
     unsigned long long aa_negative_halvings{0};
     unsigned long long water_depth_kills{0};   // packet cc9_water_surface_law
     unsigned long long airfield_destroy_kills{0};  // packet cc9_airfield_destruction_rule
+    // Packet cc9_land_master_damage: per unit, the master +738h (npos for none) and
+    // whether it is an airfield (the vtable[1A8h] the host can run).
+    std::vector<std::size_t> land_master_738;
+    std::vector<bool> land_master_is_airfield;
+    bool land_masters_built{false};
+    // 0 on the health-zero paths; the stored +70h cause during an explicit kill.
+    int explicit_kill_cause{0};
+    struct LandMasterCounts {
+        unsigned long long sections{0}, masters{0}, party_adoptions{0}, forwards{0};
+        unsigned long long section_deaths{0}, hand_offs_skipped_cause{0}, die_calls{0};
+        unsigned long long die_unhosted{0}, master_kills{0}, kept_alive{0};
+    } land_master;
     unsigned long long airfield_sub_entity_asks{0};   // packet cc9_airfield_sub_entities
     unsigned long long airfield_sub_entities_listed{0};
     unsigned long long scatter_drops{0};           // packet cc9_bomb_drop_scatter
@@ -3521,6 +3551,11 @@ struct GameGunneryHost::Impl {
     void apply_impact_blast(std::size_t shooter, std::size_t gun_row, int team_id,
         const float point[3], const float direction[3], bool ignore_falloff = false);
     void kill_unit(std::size_t victim);
+    // Packet cc9_land_master_damage (kLandMasterDamageBound).
+    void build_land_masters_00744a20();
+    void forward_land_master_damage_0074715a(std::size_t section, float amount);
+    void land_master_add_damage_0095da00(std::size_t master, float amount);
+    void land_section_destroyed_00747170(std::size_t section);
     // Packet cc9_gunnery_line_of_sight: 00864680 for (observer, target).
     bool line_of_sight_00864680(std::size_t observer, std::size_t target);
     unsigned long long los_tests{0};
@@ -10459,6 +10494,11 @@ public:
             ++owner_.cb_gate_passes;
         }
         applied_ += damage;
+        if constexpr (kLandMasterDamageBound) {
+            // 007470B0's tail (0074714B..0074715A): the master's vtable[1ACh] takes the
+            // same amount. LABELLED order: before this section's own write.
+            owner_.forward_land_master_damage_0074715a(victim_, damage);
+        }
         bsp::UnitHealth health;
         health.current_health = owner_.unit_state[victim_].health;
         health.max_health = owner_.unit_state[victim_].max_health;
@@ -11914,6 +11954,9 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
             }
             state.row.health = state.health;
             done("Failure::explosion_damage_0081b630", 0x0081b630u);
+            if constexpr (kLandMasterDamageBound) {
+                forward_land_master_damage_0074715a(unit, amount);  // 0081B630 -> vtable[1ACh]
+            }
             bsp::UnitHealth after;
             after.current_health = state.health;
             after.max_health = state.max_health;
@@ -12030,6 +12073,24 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
     // reaches 006F3270, which neutralizes it. The ship AI host answers false
     // unless kCommandBuildingCaptureBound is on.
     if (ship_ai != nullptr && ship_ai->command_building_health_zero_006f3270(victim)) return;
+    if constexpr (kLandMasterDamageBound) {
+        // 00958A30 with +71Ch set: health 0 does not destroy (00958A52 arm). Only for
+        // the land masters, and only on the health-zero paths.
+        if (explicit_kill_cause == 0 && victim < land_master_is_airfield.size()
+            && std::find(land_master_738.begin(), land_master_738.end(), victim)
+                != land_master_738.end()
+            && units.parent_link_71c(victim) < unit_state.size()) {
+            if (land_master.kept_alive++ == 0) {
+                log.notef("land master: unit=%s health 0 with parent %s, not destroyed "
+                    "t=%.2f (00958A30 +71Ch arm, packet cc9_land_master_damage)",
+                    target.row.name.c_str(),
+                    unit_state[units.parent_link_71c(victim)].row.name.c_str(),
+                    static_cast<double>(clock_seconds));
+            }
+            done("LandMaster::health_zero_parent_arm_00958a52", 0x00958a52u);
+            return;
+        }
+    }
     target.dead = true;
     target.row.sunk = true;
     target.row.sunk_seconds = clock_seconds;
@@ -12222,6 +12283,141 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
     bsp::kill_credit_record_unit_kill_0091bda0(binding, in);
     ++summary.kill_credits;
     done("KillCredit::record_unit_kill_0091bda0", 0x0091bda0u);
+    if constexpr (kLandMasterDamageBound) land_section_destroyed_00747170(victim);
+}
+
+// Packet cc9_land_master_damage. 006D5220 and 00849F70 call 00744A20 on each listed
+// "Hangar %d" object in authored order. 00744A20-00744A84: store +738h/+73Ch; when the
+// section's party is 2 or more and the master's below 2 the section takes the master's
+// party (vtable[2Ch]); the master's +36Ch = the section's, and 00877B90(master, the
+// section's +370h).
+void GameGunneryHost::Impl::build_land_masters_00744a20() {
+    if (land_masters_built) return;
+    land_masters_built = true;
+    land_master_738.assign(unit_state.size(), units.count());
+    land_master_is_airfield.assign(unit_state.size(), false);
+    const auto adopt = [&](std::size_t master, const std::string& object, bool airfield) {
+        const std::size_t section = unit_by_name(object);
+        if (section >= unit_state.size() || section == master) return;
+        if (land_master_738[section] >= unit_state.size()) ++land_master.sections;
+        land_master_738[section] = master;
+        land_master_is_airfield[section] = airfield;
+        const int section_party = units.unit_side_0054(section);
+        const int master_party = units.unit_side_0054(master);
+        if (section_party >= 2 && master_party < 2) {
+            units.set_unit_side_0054(section, master_party);
+            unit_state[section].row.side = master_party;
+            ++land_master.party_adoptions;
+        }
+        UnitState& m = unit_state[master];
+        const UnitState& s = unit_state[section];
+        m.max_health = s.max_health;
+        m.row.max_health = s.max_health;
+        m.health = s.health;
+        m.row.health = s.health;
+        log.notef("land master: section=%s master=%s health=%.1f/%.1f (00744A20, packet "
+            "cc9_land_master_damage)", s.row.name.c_str(), m.row.name.c_str(),
+            static_cast<double>(m.health), static_cast<double>(m.max_health));
+    };
+    std::vector<bool> counted(unit_state.size(), false);
+    for (std::size_t d = 0; d < bsp::air_ops_decks().size(); ++d) {
+        const bsp::AirOpsDeck* deck = bsp::air_ops_decks().mutable_at(d);
+        if (deck == nullptr || deck->hangars.empty()) continue;
+        const std::size_t master = unit_by_name(bsp::air_ops_decks().name_at(d));
+        if (master >= unit_state.size()) continue;
+        if (!counted[master]) { counted[master] = true; ++land_master.masters; }
+        for (const bsp::AirOpsDeck::HangarNames& h : deck->hangars) adopt(master, h.object, true);
+    }
+    bsp::ShipyardRegistry& yards = bsp::shipyards();
+    for (std::size_t y = 0; y < yards.size(); ++y) {
+        const bsp::ShipyardState* yard = yards.mutable_at(y);
+        if (yard == nullptr) continue;
+        const std::size_t master = unit_by_name(yard->owner_name);
+        if (master >= unit_state.size()) continue;
+        bool any = false;
+        for (const bsp::ShipyardSceneHangar& h : yard->authored.hangars) {
+            if (h.object.empty()) continue;
+            adopt(master, h.object, false);
+            any = true;
+        }
+        if (any && !counted[master]) { counted[master] = true; ++land_master.masters; }
+    }
+}
+
+void GameGunneryHost::Impl::forward_land_master_damage_0074715a(std::size_t section,
+                                                               float amount) {
+    if (section >= land_master_738.size()) return;
+    const std::size_t master = land_master_738[section];
+    if (master >= unit_state.size()) return;
+    ++land_master.forwards;
+    done("LandFort::master_forward_0074715a", 0x0074715au);
+    land_master_add_damage_0095da00(master, amount);
+}
+
+// The master's vtable[1ACh] = 0095DA00 for an airfield or a shipyard. Its +71Ch/+728h
+// refusal reads +728h = 0 here (no writer is hosted), so it never refuses.
+void GameGunneryHost::Impl::land_master_add_damage_0095da00(std::size_t master, float amount) {
+    UnitState& state = unit_state[master];
+    if (state.dead) return;
+    bsp::UnitHealth health;
+    health.current_health = state.health;
+    health.max_health = state.max_health;
+    health.invincibility = invincibility_of(master);   // unit+150h
+    const float scaled = difficulty_scaled_damage(master, amount);
+    bsp::UnitDamageGates gates;
+    const bsp::UnitDamageOutcome outcome = bsp::apply_damage_00879070(health, gates, scaled);
+    bool dispatch_health_changed = false;
+    if (!outcome.refused) {
+        note_floor(health, scaled, outcome.new_health);
+        const bsp::UnitHealthWrite write = bsp::set_health_00877b90(health,
+            outcome.new_health, bsp::UnitSessionMode::campaign, 0, false);
+        dispatch_health_changed = write.dispatch_health_changed;
+        if (write.wrote) state.health = write.stored_health;
+    }
+    state.row.health = state.health;
+    done("LandMaster::add_damage_0095da00", 0x0095da00u);
+    bsp::UnitHealth after;
+    after.current_health = state.health;
+    after.max_health = state.max_health;
+    if (bsp::unit_is_dead(after) && health_zero_callback_allowed(dispatch_health_changed)) {
+        kill_unit(master);
+        if (state.dead) {
+            ++land_master.master_kills;
+            log.notef("land master: unit=%s destroyed through its sections t=%.2f "
+                "(0095DA00 -> 00958A30, packet cc9_land_master_damage)",
+                state.row.name.c_str(), static_cast<double>(clock_seconds));
+        }
+    }
+}
+
+// 00747170 (LandFort OnDestroyed, vtable[7Ch]): with +70h == 1 and the clock gate,
+// a non-null master takes vtable[1ACh](1e10) (007472A7's block), then vtable[1A8h]
+// while it is still live. The clock gate (DAT_00D7A24C < [00F876A4]) is read as true.
+void GameGunneryHost::Impl::land_section_destroyed_00747170(std::size_t section) {
+    if (section >= land_master_738.size()) return;
+    const std::size_t master = land_master_738[section];
+    if (master >= unit_state.size()) return;
+    ++land_master.section_deaths;
+    if (explicit_kill_cause != 0 && explicit_kill_cause != 1) {   // 0074718A, +70h == 1
+        ++land_master.hand_offs_skipped_cause;
+        return;
+    }
+    log.notef("land master: section=%s died, master=%s takes 1e10 t=%.2f (00747170, "
+        "packet cc9_land_master_damage)", unit_state[section].row.name.c_str(),
+        unit_state[master].row.name.c_str(), static_cast<double>(clock_seconds));
+    const int saved_cause = explicit_kill_cause;
+    explicit_kill_cause = 0;   // the master's 0095DA00 is a health-zero path
+    land_master_add_damage_0095da00(master, 1.0e10f);
+    explicit_kill_cause = saved_cause;
+    if (unit_state[master].dead) return;   // 0074728B..007472A1
+    ++land_master.die_calls;
+    if (land_master_is_airfield[section]) {
+        units.run_airfield_destruction_rule_006d40f0(master);   // 006D40F0
+        done("LandMaster::die_airfield_006d40f0", 0x006d40f0u);
+    } else {
+        ++land_master.die_unhosted;
+        record("LandMaster::die_shipyard_00845ac0", 0x00845ac0u);
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -13288,6 +13484,7 @@ void GameGunneryHost::fixed_step(float step_seconds) {
         for (const std::size_t unit : pending) host.explode_to_parts_00935c70(unit);
     }
     if (host.guns.empty()) return;
+    if constexpr (kLandMasterDamageBound) host.build_land_masters_00744a20();
     host.clock_seconds += step_seconds;
     ++host.step_index;
     // 008073C0 runs once over every side before the per-unit pass, because it
@@ -13865,7 +14062,9 @@ void GameGunneryHost::kill_unit_00926d90(std::size_t unit_index, int cause) {
         if (stored != 1) ++impl_->kill_funnel_non_harm_causes;
     }
     ++impl_->water_depth_kills;
+    impl_->explicit_kill_cause = bsp::normalized_kill_cause_00926d90(cause);
     impl_->kill_unit(unit_index);
+    impl_->explicit_kill_cause = 0;
 }
 
 void GameGunneryHost::destroy_unit_0077d1a0(std::size_t unit_index, int recurse) {
@@ -13874,7 +14073,9 @@ void GameGunneryHost::destroy_unit_0077d1a0(std::size_t unit_index, int recurse)
     // cause, and the destroy message (0077D1E4) is not modelled.
     (void)recurse;
     ++impl_->airfield_destroy_kills;
+    impl_->explicit_kill_cause = 1;   // the gunfire funnel's cause
     impl_->kill_unit(unit_index);
+    impl_->explicit_kill_cause = 0;
 }
 
 const std::vector<GameGunneryUnitRow>& GameGunneryHost::unit_rows() const noexcept {
@@ -14720,6 +14921,16 @@ void GameGunneryHost::report() {
                 host.smoke_clock_resets, host.smoke_respawns, host.smoke_expired_held,
                 host.smoke_first_unit.empty() ? "none" : host.smoke_first_unit.c_str(),
                 static_cast<double>(host.smoke_first_respawn));
+        }
+        {
+            const Impl::LandMasterCounts& c = host.land_master;
+            host.log.notef("summary mission gunnery land master sections=%llu masters=%llu "
+                "party_adoptions=%llu forwards=%llu section_deaths=%llu skipped_cause=%llu "
+                "die_calls=%llu die_unhosted=%llu master_kills=%llu kept_alive=%llu bound=%d "
+                "(00744A20 / 007470B0 / 00747170, packet cc9_land_master_damage)",
+                c.sections, c.masters, c.party_adoptions, c.forwards, c.section_deaths,
+                c.hand_offs_skipped_cause, c.die_calls, c.die_unhosted, c.master_kills,
+                c.kept_alive, kLandMasterDamageBound ? 1 : 0);
         }
         if (host.airfield_destroy_kills != 0) {
             host.log.notef("summary mission gunnery airfield destroy kills=%llu (006D41EF -> "

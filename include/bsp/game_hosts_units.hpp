@@ -1158,6 +1158,14 @@ public:
     // (InferiorFailure); here the airfield destruction rule's inferior arm has
     // run at least once. What 00953E60 answers for "InferiorFailure".
     bool inferior_failure_720(std::size_t index) const;
+    // Packet cc9_land_master_damage. unit+71Ch, the CommandBuilding that adopted this
+    // CommandBuildingInferior unit (006F5CC0 pass 1, the airfield rule's reading),
+    // computed on the first ask; count() for none.
+    std::size_t parent_link_71c(std::size_t index);
+    // Packet cc9_land_master_damage. The airfield's vtable[1A8h] 006D40F0 on demand
+    // (00747170's 007472A7 call for a hangar's master); a no-op while
+    // kAirfieldDestructionRuleBound is off.
+    void run_airfield_destruction_rule_006d40f0(std::size_t index);
     // Packet cc9_unit_class_lands_troops. [unit+538h]->vtable[2Ch](): 00827FB0 on a
     // ship-family class ([class+78Ch] LandingShip and [class+790h] LandingShipAmount
     // both non-zero), 00963C70 on the landing-ship class (creator 0074BE00:
