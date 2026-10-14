@@ -13,7 +13,7 @@ and BSM01 are byte-identical to the files the last wins used.)
 
 | Row | Order file | Was |
 |---|---|---|
-| USN01 | config/win_orders/usn01_p3_u1_z4.txt | cc9-physics1\local\p3_u1_z4.txt (since main cd761bb52; before: p3_u1_o.txt, l50_u1_u2.txt) |
+| USN01 | config/win_orders/usn01_p8_u1_c.txt (since main f83e91891; the newest file per mission is the row, see the notes below) | before: usn01_p7_u1_a, p6_u1_k6, p6_u1_g, p5_u1_e, p3_u1_z4 |
 | USN02 | config/win_orders/usn02_s36_u2_p7.txt | cc9-ships36\local\s36_u2_p7.txt |
 | LOMP10 | config/win_orders/lomp10_p3_l10_b.txt | cc9-physics1\local\p3_l10_b.txt (was cc9-ships37\local\s37_l10_p2.txt) |
 | USN12 | config/win_orders/usn12_s38_u12_p2.txt | cc9-ships38\local\s38_u12_p2.txt |
@@ -266,3 +266,38 @@ mechanism is in the cd761bb52 section above).
     Convoy1` (Convoy4 now dies first). It completes at 366.33 s (`local\p7u1_a.log`). Jitter status (20,3 and 20,7): pending; the
     checks were stopped at the pause.
   - Variants b-f (ConSBD3 or ConSBD1/2 at Convoy1, ConTBD1's retarget at 3600) did not complete.
+- **Re-time on main f83e91891** (cc9-physics8, 2026-10-14). Export `local\p7_m` re-exported at f83e91891, exe
+  04087FFFB22D, reference env, `--stop-after-end 40`, logs `local\p8w1_<row>.log` with `.manifest.json`
+  (launcher `local\p8_wins.ps1`, summary `local\p8_keep.py w1`, death diff `local\p8_deaths.py <a> <b>`):
+
+  | Row | Frames | Result | Guard |
+  |---|---|---|---|
+  | USN02 `s36_u2_p7` | 16000 | completed 200.06 s (was 203.01) | yes |
+  | LOMP06 `l50_l6_q6` | 16000 | completed 189.86 s (was 372.83) | yes |
+  | USN12 `s38_u12_p2` | 36000 | completed 1510.35 s | yes |
+  | LOMP10 `p3_l10_b` | 36000 | completed 1176.57 s | yes |
+  | USN15 `s45_u15_l2` | 90000 | EndMission 2793.65 s | yes |
+  | BSM01 `p6_b1_a` | 40000 | EndMission 770.94 s | yes |
+  | JM08 `p6_j8_f` | 110000 | completed 2181.70 s | yes |
+  | IJN18 `s46_i18_a` | 64000 | EndMission 2116.94 s | yes |
+  | PRCP01 `l55_p01_c` | 30000 | completed 670.81 s | yes |
+  | USN01 `p7_u1_a` | 26000 | **no end** | - |
+  | JM06 `s47_j6_n1` | 120000 | **no end** (6000 s) | - |
+  | ESMP08 `p6_e8_br3l` | 140000 | **no end** | - |
+  | USNOS `s45_os_k` | 200000 | **failed** at 2721.53 s ("Troop": TroopTrans5 sunk by Shimotsuke at 2717.13 s) | - |
+
+  - USN01 `a` lost. First divergence against `local\p7u1_a.log`: Mav5 dies at 61.85 s instead of 63.50 s
+    (SaltLakeCity; the flak/AA flips 1120ac370 and 6f1c8edac moved the opening AA). All nine TBDs and twelve SBDs now
+    release, but Convoy3 and Convoy5 are never hit. **Re-planned: `config/win_orders/usn01_p8_u1_c.txt`** (a with
+    `3413 target ConTBD2 Convoy3`): **completed 1094.94 s** (`local\p8u1_c.log`), **1094.94 s under
+    `BSP_FRAME_JITTER 20,3`** and **1089.94 s under 20,7** (`local\p8u1_cj3.log`, `local\p8u1_cj7.log`), guard logged
+    on all three. Convoy6/3/2 (and 4 in two of three) sink to the strike by 210 s; Convoy5 and Convoy1 fall to
+    SaltLakeCity and Northampton at 907-926 s. Variant b (also keeping ConTBD3 on Convoy5) and e (ConTBD1's last
+    retarget to Convoy5) give the same 1094.94 s.
+  - JM06 `n1` lost. First divergence against `local\p7a1_j6.log`: the first hit (USTroopTransport 02) at 82.40 s
+    instead of 82.35 s; Fletcher-class 09 is no longer sunk by PlayerSub 03 at 132.70 s (it dies at 1616.10 s with no
+    killer), and the rest of the convoy kills slip by 40-2500 s; ship shots 16594 -> 8706. Suspects on the range:
+    the torpedo swim-depth homing (8572ddf97) and the AA/flak flips (1120ac370, 30a9b3991). For the ships lane.
+  - ESMP08 `br3l` still lost: Cummings and Woodworth survive to 7000 s (Salt Lake City at 3894.72 s); the other
+    targets die between 431 and 3434 s.
+  - USNOS `k` still lost (known, the Betty1 startDist stall).
