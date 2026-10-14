@@ -62,6 +62,7 @@ struct NativeMainSceneExecutionPrefixState {
     bool reached_excluded_node_stage{};
     bool reached_post_drsh_stage{};
     bool reached_scne_label_stage{};
+    bool reached_scne_target_stage{};
 };
 
 // Complete raw leaves. Native ECX command / camera. B1BF40 uses RET and returns
@@ -338,4 +339,43 @@ void continue_native_main_scene_post_gather_00b160d0(void* actual_service,
     void* actual_command, NativeMainScenePostGatherContext&,
     const NativeMainSceneDrshLabelFrame&, const NativeMainSceneExcludedRestoreFrame&,
     NativeMainScenePostGatherFrame&, NativeMainSceneExecutionPrefixState&);
+
+struct NativeMainSceneScneLabelContext {
+    // Preserve the same actual global-service and raw StringManager cells
+    // already used by DRSH; the SCNE bytes are borrowed from actual D5E4F8.
+    const NativeMainSceneDrshLabelContext& domains;
+    const void* actual_scne_bytes_00d5e4f8;
+};
+struct NativeMainSceneScneLabelFrame {
+    std::uint32_t temporary_header[2]{};
+    void* captured_data{};
+    void* captured_service{};
+    void* destination_header{};
+    std::int32_t native_cleanup_state{-1};
+    std::uint32_t active_native_site{};
+    std::uint32_t cleanup_native_site{};
+    bool started{};
+    bool completed{};
+    bool failed{};
+    bool temporary_return_started{};
+    bool temporary_return_completed{};
+    bool cleanup_started{};
+    bool cleanup_completed{};
+};
+
+// B1610A..B161AC only: initialize the temporary8B header, resize4, capture
+// data, copy current length+1 from borrowed SCNE bytes, capture current global
+// service, THEN arm state3. Preserve destination alias/current-length gates.
+// State5 is installed BEFORE normal captured-data/current-length pool return;
+// successful completion leaves5 armed for the following target-selection body.
+// State3 cleanup destroys CURRENT temporary header; state5 resets CURRENT
+// global service label. No native FH3 entry, automatic destruction or rollback.
+void continue_native_main_scene_scne_label_00b1610a(
+    const NativeMainSceneScneLabelContext&, NativeMainSceneScneLabelFrame&,
+    NativeMainSceneExecutionPrefixState&);
+// Explicit source adapters for CBC473/CBC47E. Both reached map entries go to
+// -1, installed before real cleanup. A failed cleanup during unwind terminates.
+// State4 -> (3,CBC47E) exists in the map but is not installed by this clause.
+void unwind_native_main_scene_scne_label(const NativeMainSceneScneLabelContext&,
+    NativeMainSceneScneLabelFrame&) noexcept;
 } // namespace bsp

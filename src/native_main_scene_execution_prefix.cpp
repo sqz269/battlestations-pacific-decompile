@@ -1300,4 +1300,90 @@ void continue_native_main_scene_post_gather_00b160d0(void* service,void* command
         frame.completed=true;state.reached_scne_label_stage=true;
     } catch(...) {frame.failed=true;throw;}
 }
+void unwind_native_main_scene_scne_label(const NativeMainSceneScneLabelContext& c,
+    NativeMainSceneScneLabelFrame& frame) noexcept {
+    const auto state=frame.native_cleanup_state;
+    if(state==-1) return;
+    if((state!=3 && state!=5) || frame.cleanup_started) std::terminate();
+    frame.native_cleanup_state=-1; // Both proven unwind-map entries go to -1.
+    frame.cleanup_started=true;
+    try {
+        if(state==3) {
+            frame.cleanup_native_site=0x00cbc473;
+            destroy_native_string_header_0041dd20(frame.temporary_header,c.domains.strings);
+        } else {
+            frame.cleanup_native_site=0x00cbc47e;
+            reset_native_render_diagnostic_label_00b13510(*c.domains.system.actual_service_00f8d39c,c.domains.strings);
+        }
+        frame.cleanup_completed=true;
+    } catch(...) { std::terminate(); }
+}
+
+void continue_native_main_scene_scne_label_00b1610a(
+    const NativeMainSceneScneLabelContext& c, NativeMainSceneScneLabelFrame& frame,
+    NativeMainSceneExecutionPrefixState& state) {
+    if(!state.reached_scne_label_stage || state.reached_scne_target_stage || frame.started || frame.native_cleanup_state!=-1)
+        throw std::logic_error("main scene SCNE requires its fresh reached label frame");
+    frame.started=true;
+    frame.active_native_site=state.active_native_site=0x00b1610a;
+    try {
+        if(!c.domains.system.actual_service_00f8d39c || !c.actual_scne_bytes_00d5e4f8 ||
+           c.domains.system.actual_manager_01090aa0!=&c.domains.strings.actual_manager_publication_01090aa0)
+            throw std::logic_error("main scene SCNE requires the same actual service and raw string-manager domain");
+        auto* const temporary=frame.temporary_header;
+        *static_cast<volatile std::uint32_t*>(temporary)=0;
+        *static_cast<volatile std::uint32_t*>(temporary+1)=0;
+        frame.active_native_site=state.active_native_site=0x00b1611a;
+        resize_native_string_header_0041dd40(temporary,c.domains.strings,4,true);
+        // EBX is captured once at B1611F; later header pointer changes do not
+        // replace this source or the normal return's block argument.
+        void* const captured_data=current_member(temporary,4);
+        frame.captured_data=captured_data;
+        if(captured_data) {
+            const std::uint32_t bytes=word(temporary)+1u;
+            frame.active_native_site=state.active_native_site=0x00b16135;
+            if(bytes) std::memmove(captured_data,c.actual_scne_bytes_00d5e4f8,bytes);
+        }
+        void* const service=*c.domains.system.actual_service_00f8d39c; // B1613D
+        frame.captured_service=service;
+        frame.native_cleanup_state=3; // B16144, AFTER publication capture.
+        if(service) {
+            void* const destination_header=reinterpret_cast<void*>(
+                reinterpret_cast<std::uintptr_t>(service)+0x684u);
+            frame.destination_header=destination_header;
+            if(destination_header!=temporary) {
+                const std::uint32_t requested=word(temporary);
+                frame.active_native_site=state.active_native_site=0x00b1616b;
+                resize_native_string_header_0041dd40(destination_header,c.domains.strings,requested,true);
+                if(word(temporary)!=0) {
+                    const std::uint32_t bytes=word(destination_header);
+                    void* const destination=current_member(destination_header,4);
+                    frame.active_native_site=state.active_native_site=0x00b16182;
+                    if(bytes) std::memmove(destination,captured_data,bytes);
+                }
+            }
+        }
+        // B1618C disowns the temporary and arms label reset BEFORE the pool
+        // getter/return. A returning-getter failure must not retry that block.
+        frame.native_cleanup_state=5;
+        if(captured_data) {
+            const std::uint32_t bytes=word(temporary)+1u;
+            frame.temporary_return_started=true;
+            frame.active_native_site=state.active_native_site=0x00b161a1;
+            auto* const pool=native_string_pool_get_or_create_00419cc0(
+                c.domains.strings.actual_published_01090aa8,c.domains.strings.actual_manager_publication_01090aa0);
+            frame.active_native_site=state.active_native_site=0x00b161a8;
+            return_native_string_pool_00bd1510(pool,captured_data,bytes,
+                c.domains.strings.actual_small_returns_disabled_01090aa4);
+            frame.temporary_return_completed=true;
+        }
+        frame.active_native_site=state.active_native_site=0x00b161ad;
+        frame.completed=true;
+        state.reached_scne_target_stage=true;
+    } catch(...) {
+        frame.failed=true;
+        unwind_native_main_scene_scne_label(c,frame);
+        throw;
+    }
+}
 } // namespace bsp
