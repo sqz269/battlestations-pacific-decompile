@@ -14835,3 +14835,38 @@ and `t+5Dh`, so the only new refusal is a small landing ship with MaxSpeed of at
 1. OFF is identical to the base. The counter is 0 on rows without landing craft (USN12, USN15).
 2. ON: it is gameplay-identical wherever the counter is 0. Where it is above 0 (landing operations under enemy
    tubes), destroyers stop launching at fast small landing craft and pick their next candidate.
+
+## 251. 214's open question closed: NH's "unlogged" damage is the bursts' direct-hit damage; `kBlastMeshBoundsBound` re-paired (227 item 4; cc9-gunnery45, 2026-10-14)
+
+**214's question** was which arm delivers most of NH's 15802 points on USNOS ON (`local\g40_bm1_os.log`), when the
+`impact blast ... on NH` lines carry only about 11 each.
+
+**Answer: no blast arm.**
+- The 25 `impact blast bullet=23 on NH` lines all have `dist=0.0`: these are shells bursting on the hull.
+- Between consecutive lines NH's `health` drops by far more than the `took=11.1` they log, for example
+  1831.7 -> 1064.7 -> 109.5 over the last three.
+- The line logs only the blast part (`part_damage_base`). The shell's own damage goes through the direct-hit
+  record (`hull_damage_base` is 0 in the blast record; "the burst's damage is +28h, see above"), and no
+  per-hit line is logged for it.
+- So NH dies to direct hits from Shimotsuke's category 6 at 3170 m in a run that has diverged. OFF has the same
+  pair: `command target ... unit=Shimotsuke token="NH"` appears 753 times, but NH survives. The mesh box is read
+  only by `blast_box_distance` and does not touch direct hits.
+
+**The image's admission** (`0098AAE0`, live decompile):
+- It is an AABB-vs-AABB reject: the sphere's box `centre +/- r` against the node's world bounds
+  `node+13Ch..+150h`, with six strict tests.
+- Then it takes the OR of the shapes' slot-4 sphere tests (`0070F720` -> `00723F80`).
+- An empty shape array reaches no unit.
+
+For a unit with an element mesh, the shapes decide in both the image and the host (`kBlastElementEntriesBound`),
+so the box only has to be no smaller than the node's bounds. The OFF class box (W x H x L about the origin) is
+smaller than the mesh on tall upper works, so it rejected bursts that the image's shapes take. ON (the model
+BoundingBox) fixes that.
+
+Remaining LABELLED gap: a unit with no host mesh (the forts, `entries=0`) keeps the single box entry. The image
+would walk its shapes.
+
+**Predictions, written before the re-pair** (base `4277661b9`, i.e. main plus 248/250; ON = `kBlastMeshBoundsBound`):
+1. USN12 `d` completes in both runs, and the spread moves (214: fort kills move by 2-9 s): exit 3.
+2. USN15 `l2`: exit 3. The outcome is not predicted (it is a win at this base).
+3. On both rows, `blast_mesh_box_uses` > 0 ON. No `impact blast` line ON has `entries=0` for a unit that has a mesh.
