@@ -58,6 +58,8 @@ struct CameraAxesCrtAccess;
 struct NativeFrameClockPublicationContext;
 class NativeOnlineSigninCalls;
 class XLiveLibrary;
+struct NativeOnlineManagerStorage;
+struct WindowClosePromptCalls;
 }
 
 namespace bsp::game {
@@ -406,9 +408,11 @@ class GameFrameHost final : public ApplicationFrameHost {
 public:
     GameFrameHost(GameHostLog& log, const NativeFrameClockPublicationContext& clock, Win32PlatformState& platform,
         PlatformLoopState& loop, GameStateSlot& game_state, GameFrameProfiler* profiler,
-        GameMenuHost* menu, GameVfsHost& vfs)
+        GameMenuHost* menu, GameVfsHost& vfs, NativeOnlineManagerStorage* volatile& online,
+        WindowClosePromptCalls* close_prompt = nullptr)
         : log_(log), clock_(clock), platform_(platform), loop_(loop),
-          game_state_(game_state), profiler_(profiler), menu_(menu), vfs_(vfs) {}
+          game_state_(game_state), profiler_(profiler), menu_(menu), vfs_(vfs),
+          online_(online), close_prompt_(close_prompt) {}
 
     void profiler_set_frame_slot_color(std::uint32_t argb) override;
     void profiler_begin_frame_slot() override;
@@ -423,6 +427,11 @@ public:
     void update_loading_queue() override;
     void profiler_end_frame_slot() override;
     void profiler_end_frame() override;
+
+    // Bind only the actual retained confirmation-screen owner. Its callback
+    // dispatcher must route 004BBC50 here while this frame host remains alive.
+    void bind_window_close_prompt(WindowClosePromptCalls* prompt) noexcept { close_prompt_ = prompt; }
+    bool dispatch_window_close_callback(std::uint32_t callback, std::int32_t response) noexcept;
 
     // Global exit byte 00e1ae75, set by the close policy at 004ca2f0.
     bool global_exit() const noexcept { return global_exit_; }
@@ -441,6 +450,8 @@ private:
     GameFrameProfiler* profiler_{};
     GameMenuHost* menu_{};
     GameVfsHost& vfs_;
+    NativeOnlineManagerStorage* volatile& online_;
+    WindowClosePromptCalls* close_prompt_{};
     unsigned long long frame_index_{};
     bool global_exit_{};
 };

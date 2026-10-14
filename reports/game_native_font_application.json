@@ -1,0 +1,83 @@
+{
+  "packet": "cc12_native_font_production",
+  "source_base": "0340b027310639c02ed64f586d4f1392aeb1f127",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "source": [
+    "src/game_native_font_application.cpp",
+    "src/font_registry_startup.cpp",
+    "include/bsp/game_native_font_application.hpp",
+    "include/bsp/font_registry_startup.hpp",
+    "include/bsp/native_font_resources.hpp",
+    "include/bsp/gui_text_runtime_factory.hpp"
+  ],
+  "documentation": "docs/GAME_NATIVE_FONT_APPLICATION.md",
+  "native_addresses": {
+    "00ad4c30": {
+      "original_abi": "ECX font, five native-string arguments, RET14h",
+      "coverage": "bounded real initial producer source composition using established cache/VFS/decoder/adoption helpers",
+      "sequence": "current renderer64 GFX flags0, current renderer64 alpha flags0, read-existing DAT flags2, scalar decode, actual resource adoption and canonical publication"
+    },
+    "00ac3910": {
+      "original_abi": "ECX registry, root/descriptor/language stack arguments, RET0Ch",
+      "coverage": "native resource arm on existing stable list/descriptor/evaluated-Lua traversal"
+    },
+    "00ad51d0": {
+      "original_abi": "ECX font, root/extra stack arguments, RET8",
+      "coverage": "unsupported destructive reload; initial producer cannot substitute"
+    },
+    "00ad53a0": {
+      "original_abi": "ECX font, no stack arguments, RET",
+      "coverage": "uses existing typed payload and actual GFX/alpha retirement after same-factory Text quiescence"
+    }
+  },
+  "host_steps": [
+    {"address": "00ad4cd0", "native": "00b319b0", "binding": "current renderer64 observed D5F0A8 profile, concrete actual cache body, flags0"},
+    {"address": "00ad4e29", "native": "00b319b0", "binding": "nonempty alpha root+name, flags0"},
+    {"address": "00ad4e6e", "native": "00b319b0", "binding": "empty alpha unprefixed white.tga, flags0"},
+    {"address": "00ad4f3a", "binding": "existing proved SSE scalar DAT decoder over complete actual-VFS bytes; raw per-field stream timing excluded"},
+    {"address": "00ad50cb", "binding": "existing sole FontData allocation and real image reference adoption"},
+    {"address": "00ad53a0", "binding": "forward actual resource owner retirement; same native-font Text factory must have zero retained raw allocations"}
+  ],
+  "ownership": {
+    "descriptors": "same stable FontRegistryOwnedFont descriptors, appended before loading",
+    "metrics": "one decoded FontData allocation transferred without map copy into NativeFontResources",
+    "images": "two returned actual native references, no extra retain or semantic wrappers",
+    "association": "one NativeFontResourceOwners collection; registry native_resources pointers borrow its owners",
+    "failure": "persistent image/cache/name/decoded/adopted operation records; entered errors are nonreplayable and require retention",
+    "retirement": "actual same-font factory identity plus zero raw Text allocations; forward font destruction then completed-owner registry binding clear"
+  },
+  "validation": {
+    "strict_compile": {
+      "result": "passed",
+      "command": "cmd /c local\\cc12_native_font_production\\compile.cmd",
+      "options": "/std:c++17 /W4 /WX /EHsc /permissive- /O2 /MD /fp:strict",
+      "log": "local/cc12_native_font_production/compile.log"
+    },
+    "standard_worker_build": {
+      "command": "./scripts/build.ps1",
+      "result": "passed",
+      "exit_code": 0,
+      "ctest_passed": 2,
+      "ctest_total": 2,
+      "ctest_seconds": 10.39,
+      "log": "local/cc12_native_font_production/build.log",
+      "coverage": "changed registry and dependent headers linked in worker bsp_game; new producer translation unit separately strict-compiled pending primary source registration"
+    },
+    "cmake_registration": "primary-owned, queued",
+    "live_native_font_probe": "pending primary serialized runtime integration",
+    "new_tests": 0,
+    "abi_compatible": false,
+    "game_validated": false,
+    "rendering_validated": false
+  },
+  "remaining": [
+    "register new producer source and invoke native font startup arm in application",
+    "real initialized canonical GUI/material/effect owners for active Text routing",
+    "serialized actual native-font production probe",
+    "AD51D0 destructive reload with actual Text borrower quiescence",
+    "native per-field DAT stream/tree/string/pool/SEH ABI and full destructor-tail equivalence",
+    "faithful world/menu/UI rendering and gameplay proof"
+  ]
+}

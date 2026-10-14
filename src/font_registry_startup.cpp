@@ -1,5 +1,8 @@
 #include "bsp/font_registry_startup.hpp"
+#include "bsp/native_font_resources.hpp"
 #include <cstring>
+#include <exception>
+#include <stdexcept>
 #include <utility>
 
 namespace bsp {
@@ -17,6 +20,9 @@ bool completed_resources(const std::unique_ptr<FontResources>& resources) {
 }
 
 FontRegistryStartup::~FontRegistryStartup() {
+    // Actual resources borrow these exact descriptors. Their producer must
+    // retire them and clear the associations before descriptor destruction.
+    for (const auto& font : fonts_) if (font->native_resources) std::terminate();
     // 00ac374a/00ac3762: destroy font owners in forward list order. Each font's
     // existing destructor clears glyphs, then GFX and alpha references.
     for (auto& font : fonts_) font.reset();
@@ -42,6 +48,77 @@ bool FontRegistryStartup::load_lua_descriptors_00ac3910(VfsLuaScriptFiles& files
         error = "Font registry startup requires the native font resource load boundary.";
         return false;
     }
+    for (const auto& font : fonts_) {
+        if (font->native_resources) {
+            error = "Cannot append semantic font resources to an actual native font registry.";
+            return false;
+        }
+    }
+    return load_lua_descriptors_with_loader(files, globals,
+        [&](FontRegistryOwnedFont& font, std::string& failure) {
+            std::unique_ptr<FontResources> resources;
+            if (!load_resource(font.descriptor, root, language_path, resources, failure)) {
+                if (failure.empty()) failure = "Cannot load font resources: " + font.descriptor.name;
+                return false;
+            }
+            if (!completed_resources(resources)) {
+                failure = "Font resource loader returned incomplete ownership: " + font.descriptor.name;
+                return false;
+            }
+            font.resources = std::move(resources);
+            return true;
+        }, root, descriptor, language_path, error);
+}
+
+bool FontRegistryStartup::load_lua_native_descriptors_00ac3910(VfsLuaScriptFiles& files,
+    const LuaRuntimeGlobals& globals, const FontRegistryNativeResourceLoader& load_resource,
+    const std::string& root, const std::string& descriptor,
+    const std::string& language_path, std::string& error) {
+    error.clear();
+    if (!load_resource) {
+        error = "Actual font registry startup requires its native resource loader.";
+        return false;
+    }
+    for (const auto& font : fonts_) {
+        if (font->resources) {
+            error = "Cannot append actual native fonts to a semantic resource registry.";
+            return false;
+        }
+    }
+    return load_lua_descriptors_with_loader(files, globals,
+        [&](FontRegistryOwnedFont& font, std::string& failure) {
+            NativeFontResources* resources = nullptr;
+            if (!load_resource(font.descriptor, root, language_path, resources, failure)) {
+                if (failure.empty()) failure = "Cannot load actual font resources: " + font.descriptor.name;
+                return false;
+            }
+            if (!resources || !resources->live() || &resources->descriptor() != &font.descriptor) {
+                failure = "Native font loader did not publish the same live descriptor association: " + font.descriptor.name;
+                return false;
+            }
+            font.native_resources = resources;
+            return true;
+        }, root, descriptor, language_path, error);
+}
+
+void FontRegistryStartup::clear_retired_native_binding(const FontDescriptor& descriptor,
+    const NativeFontResources& resources) {
+    for (auto& font : fonts_) {
+        if (&font->descriptor != &descriptor) continue;
+        if (font->native_resources != &resources || !resources.retired() ||
+            &resources.descriptor() != &descriptor)
+            throw std::logic_error("Native font binding cleanup requires the same retired resource owner");
+        font->native_resources = nullptr;
+        return;
+    }
+    throw std::logic_error("Native font binding cleanup requires its stable owned descriptor");
+}
+
+bool FontRegistryStartup::load_lua_descriptors_with_loader(VfsLuaScriptFiles& files,
+    const LuaRuntimeGlobals& globals, const OwnedFontLoader& load_resource,
+    const std::string& root, const std::string& descriptor,
+    const std::string& language_path, std::string& error) {
+    error.clear();
     if (!valid_paths(root, language_path, error)) return false;
     if (descriptor.find('\0') != std::string::npos) {
         error = "Embedded-NUL font descriptor paths are outside the startup projection.";
@@ -75,17 +152,7 @@ bool FontRegistryStartup::load_lua_descriptors_00ac3910(VfsLuaScriptFiles& files
             auto* appended = font.get();
             fonts_.push_back(std::move(font)); // 00ac3b92..00ac3bcc
 
-            std::unique_ptr<FontResources> resources;
-            if (!load_resource(appended->descriptor, root, language_path, resources, failure)) {
-                if (failure.empty()) failure = "Cannot load font resources: " + appended->descriptor.name;
-                return false;
-            }
-            if (!completed_resources(resources)) {
-                failure = "Font resource loader returned incomplete ownership: " + appended->descriptor.name;
-                return false;
-            }
-            appended->resources = std::move(resources); // 00ac3d99, per entry
-            return true;
+            return load_resource(*appended, failure); // 00ac3d99, per entry
         }, error);
 }
 

@@ -4,6 +4,7 @@
 #include "bsp/vfs_lua_scripts.hpp"
 
 namespace bsp {
+class NativeFontResources;
 
 // Required native00ad4c30 boundary. Bind the existing stream resource loader
 // to the application's live device, D3DX imports, VFS and mip setting. A true
@@ -11,12 +12,20 @@ namespace bsp {
 using FontRegistryResourceLoader = std::function<bool(const FontDescriptor&,
     const std::string& root, const std::string& language_path,
     std::unique_ptr<FontResources>&, std::string& error)>;
+// Actual-resource arm. The external canonical owner collection owns the
+// returned live resource; its SAME descriptor is the already appended record.
+// No semantic FontResources/COM wrapper is required or manufactured. Retire
+// Texts, resources and these borrowed bindings before that collection dies.
+using FontRegistryNativeResourceLoader = std::function<bool(const FontDescriptor&,
+    const std::string& root, const std::string& language_path,
+    NativeFontResources*&, std::string& error)>;
 
 struct FontRegistryOwnedFont {
     FontDescriptor descriptor;
     std::string root;
     std::string language_path;
     std::unique_ptr<FontResources> resources;
+    NativeFontResources* native_resources{}; // Borrowed canonical association.
 };
 
 // Native00ad51d0 checks saved root/extra, then destructively clears old glyphs
@@ -59,6 +68,16 @@ public:
         const FontRegistryResourceLoader&, const std::string& root,
         const std::string& descriptor, const std::string& language_path,
         std::string& error);
+    // Same stable list/descriptor and per-entry Lua order, actual owner arm.
+    // Rejects mixing in semantic loaded records. Append precedes resource
+    // loading; failures preserve earlier rows and the incomplete current row.
+    bool load_lua_native_descriptors_00ac3910(VfsLuaScriptFiles&, const LuaRuntimeGlobals&,
+        const FontRegistryNativeResourceLoader&, const std::string& root,
+        const std::string& descriptor, const std::string& language_path,
+        std::string& error);
+    // Host association cleanup AFTER successful actual font retirement, while
+    // descriptor/owner storage remains live. No native release or list erasure.
+    void clear_retired_native_binding(const FontDescriptor&, const NativeFontResources&);
 
     // ECX registry; stack(root, language_path); native RET8. No registry-wide
     // path store: invoke required per-font reload in list order, including when
@@ -68,6 +87,10 @@ public:
         std::string& error);
 
 private:
+    using OwnedFontLoader = std::function<bool(FontRegistryOwnedFont&, std::string&)>;
+    bool load_lua_descriptors_with_loader(VfsLuaScriptFiles&, const LuaRuntimeGlobals&,
+        const OwnedFontLoader&, const std::string&, const std::string&,
+        const std::string&, std::string&);
     friend FontRegistryStartup* get_font_registry_007371d0(
         FontRegistryStartup*&, SingletonLifetimeManager&);
     FontRegistry registry_;
