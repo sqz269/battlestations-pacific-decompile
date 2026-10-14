@@ -28,6 +28,7 @@ struct AutoTestDriver {
     std::uint8_t byte_16{0};
     std::int32_t campaign_18{0};
     std::int32_t mission_1c{0};
+    std::uint8_t byte_20{0};            // 00427190: 0 on screen 8, 1 on screen 10; screen 9 tests it
     std::int32_t f_24{0};
     std::int32_t f_28{0};
     std::int32_t f_30{0};
