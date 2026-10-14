@@ -17907,3 +17907,14 @@ readers (game_hosts_units.cpp: 0041BC20 samples and the cell size) never read +1
 **Prediction:** gameplay-identical pairs (pair_diff 0 or 1) on every mission; the only moved lines are the
 `summary mission avoid-zone layer` note (registry_layers 4 -> 3, squadron_34c 3 -> 2; on USN10: 1 -> 3 layers,
 squadron_34c 0 -> 2, slope 0.176327 -> 2.747477).
+
+## 253. 00416270's x87 sums of products; 00417E60 guards labelled (cc9-ships51, 2026-10-14; lead item 3)
+
+00416270 (src/ship_ai_free_bearing.cpp) forms far2 (0041630A..00416310), the facing test (0041634A..0041635C) and the
+two crossing distances (00416426..0041645E) as x87 sums of two products and stores only the sum; the host's SSE build
+rounded each product to float first. `kOutlineWalkX87ProductsBound` (OFF) computes each product in double (exact for
+float operands) and rounds the sum once. Single products elsewhere in the walk (radius2) are unchanged: a float times a
+float rounds the same either way. **Prediction:** gameplay-identical pairs unless a walk sits on a near-tie (a facing
+sign or a far2 comparison within one float ulp); a moved pair would show first in the ShipAiSectorScan counters.
+00417E60's host arm (006F3C5A in game_hosts_ship_ai.cpp) is labelled: its ready() and group != 0 guards are the host's,
+and group_for_layer is 004120D0's walk where the image calls 00412120.
