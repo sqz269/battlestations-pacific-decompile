@@ -17250,3 +17250,11 @@ Prediction: no row reaches the level-bomb prepare (pr=0 on every lua60/lua61 log
 the leader's 0099B740 lifts to 1 on its first think), so pairs are gameplay identical. Where it is reached, the wingmen
 close their formation (+8Ch down to 0) as the leader nears the aim aligned; an order offer arms a 5 s drop countdown that
 releases on expiry or once the impact point passes the aim.
+
+### 5hs.1 Measured: `kLevelBombPrepareTickBound` **ON** (cc9-lua61, 2026-10-14)
+
+Pairs on f4d728799: OFF `local\l61_off2_*` (tree build copied to `local\l61_off2\`), ON `local\l61_pon_*` (switch
+flipped). JM08 `j8s` (jm08_p6_j8_f, 40000 fr, no end either side): pair_diff 1, gameplay identical. USNOS `osd`
+(usnos_s45_os_k, 30000 fr, no end): pair_diff 1, gameplay identical. Neither run logs a `prepare 009B6670` line: no
+level bomber enters prepare, as predicted. A faithful binding that is not exercised on any current row, so it is
+flipped ON. The leader+9C1h substitution (5hs) is the open item if a row ever reaches the wait arm.

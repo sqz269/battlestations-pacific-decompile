@@ -6196,7 +6196,7 @@ struct GameUnitsHost::Impl {
     // station scale before the follow tick, the 300 m pitch/speed hold; the drop arm's
     // countdown and release). True: all three run. False: the follow tick stands in
     // and only +A0h/+98h are reset on the enter, as before.
-    static constexpr bool kLevelBombPrepareTickBound = false;
+    static constexpr bool kLevelBombPrepareTickBound = true;   // ON: SQUADRON_LAND_TASK 5hs.1
     // Packet cc9-gunnery38 (docs/CC13_AUDIT13_RECENT_FLIPS.md O1). The strafe
     // cruise profile 009CD020, run once per activation (the install and each
     // time the strafe task resurfaces after a tightturn or flikflak retires),
