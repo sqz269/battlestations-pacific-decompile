@@ -1,8 +1,10 @@
 // Segment 23 reconstructions, packet cc13-seg23 (docs/CC13_SEG23.md).
 #include "bsp/seg23_cc13.hpp"
 #include "bsp/hud_ship_screen.hpp"
+#include "bsp/frontend_screens_cc13.hpp"
 
 #include <cstring>
+#include <initializer_list>
 #include <string>
 
 namespace bsp::seg23_cc13 {
@@ -201,6 +203,570 @@ void* zero_six_dwords_005fd420(void* object) noexcept {
     for (std::size_t offset = 0; offset < 0x18; offset += 4) write_field<std::uint32_t>(object, offset, 0);
     return object;
 }
+
+// ---------------------------------------------------------------------------
+// 005FB080, the order screen's idle slot (cc13-orderscreen)
+// ---------------------------------------------------------------------------
+//
+// Control-flow map, from the listing (005FB080..005FC5FB; every exit is the
+// shared epilogue, written here as `return`):
+//   005FB09C  no controlled unit, +4h set and +84h == ECh: 00565D80, return.
+//   005FB0CF  [[M]+40h]+1Ch == 1 or [M]+20h in {2Bh, 2Ch, 2Dh, 29h}: return
+//             (M = [00E198C4], re-read at each use as the image does).
+//   005FB10B  a squadron unit (kind 18h) with byte +3B0h: +4h clear returns,
+//             else 0068AB80(1, 1) and return.
+//   005FB156  action 4Bh pressed: the back/close path 005FB16B..005FB2C2,
+//             every leg returns.
+//   005FB2C3  action 88h pressed: the unit-request path 005FB2DB..005FB3A3,
+//             returns or falls to 005FB3A4.
+//   005FB3A4  +4h clear (menu closed): 005FB3AE..005FB830, open on ECh
+//             (005FB4EF) or on 109h (005FB7E4); all legs return.
+//   005FB831  +4h set (menu open): resume the HUD when +82h is clear, then
+//             with +84h == ECh and +82h clear the stick cluster 005FB883..
+//             005FBC89, the branch pick 005FBC89..005FBE06 and the branch
+//             widgets 005FBE07..005FC168.
+//   005FC169  pings F3h/F4h on the 109h menu; 005FC247 on release of +84h:
+//             ECh issues the picked order (005FC272..005FC54A), 109h sends
+//             the ping of branch +88h (005FC561..005FC5E5).
+//
+// x87: the six hold times are FSTP'd to float locals; every sum, quotient
+// and comparison operand is float-valued (the double constants 00CE3D40,
+// 00D7A3A0, 00CE65D0, 00CED6B0 are 0.8f, 0.1f, 0.4f, -0.4f widened, and
+// 00D7A2B0 is 3.0). The idle slot runs on the main thread, whose precision
+// control is 24 bits, so each x87 result is rounded to float here (r24); at
+// 53 or 64 bits the in-ST values (the two stick sums and the /3 quotients)
+// would keep more bits until their store or compare.
+namespace {
+
+float r24(double v) noexcept { return static_cast<float>(v); }
+
+// 0042BE90 __fastcall(ECX = float*) -> ST0: x when x > 0.0f (COMISS against
+// 00D7A218), else -0.0f - x (SUBSS from 00D7A208); the result is a float.
+float abs_0042be90(float x) noexcept { return x > 0.0f ? x : -0.0f - x; }
+
+void* widget_at(void* screen, std::size_t offset) noexcept { return read_field<void*>(screen, offset); }
+
+void issue_leave_or_return_legs(void* screen, HudOrderIdleHost& host);
+
+}  // namespace
+
+void hud_order_idle_005fb080(void* screen, HudOrderIdleHost& host) {
+    static constexpr float kWhite[4] = {1.0f, 1.0f, 1.0f, 1.0f};  // 00D7A24C x4, a stack block
+    // 005FB09C..005FB0CE
+    if (host.controlled_unit_00e188d8() == nullptr) {
+        if (read_field<std::uint8_t>(screen, 0x04) != 0 && read_field<std::int32_t>(screen, 0x84) == kOrderActionOpen) {
+            host.hud_limbo_poll_respawn_input_00565d80();
+            return;
+        }
+    }
+    // 005FB0CF..005FB10A
+    {
+        void* const m = host.frontend_manager_00e198c4();
+        if (read_field<std::int32_t>(read_field<void*>(m, 0x40), 0x1C) == 1) return;
+        const std::int32_t current = read_field<std::int32_t>(m, 0x20);
+        if (current == 0x2B || current == 0x2C || current == 0x2D || current == 0x29) return;
+    }
+    // 005FB10B..005FB155: ECX still holds the first [00E188D8] read.
+    if (void* const unit = host.controlled_unit_00e188d8();
+        unit != nullptr && host.unit_is_kind(unit, 0x18) &&
+        read_field<std::uint8_t>(host.controlled_unit_00e188d8(), 0x3B0) != 0) {
+        if (read_field<std::uint8_t>(screen, 0x04) == 0) return;
+        host.ingame_collapse_overlays_0068ab80(host.frontend_manager_00e198c4(), 1, 1);
+        return;
+    }
+
+    // 005FB156..005FB2C2: action 4Bh.
+    if (host.input_action_pressed_this_frame_004c43c0(0x4B)) {
+        void* m = host.frontend_manager_00e198c4();
+        void* const p60 = read_field<void*>(m, 0x60);
+        if (read_field<std::uint8_t>(p60, 0x05) != 0 && read_field<std::uint8_t>(p60, 0x70) != 0) return;
+        if (read_field<std::uint8_t>(host.game_00e188a8(), 0x19C4) != 0) {
+            if (host.input_action_pressed_this_frame_004c43c0(0xD1)) return;
+            m = host.frontend_manager_00e198c4();
+        }
+        if (!host.pointer_vector_00e18d18_is_empty_004f7230()) {
+            // 006529E0 inlined (MOV AL,[ECX+4]); 00652A00 inlined ([ECX+5Ch] == 2).
+            if (read_field<std::uint8_t>(read_field<void*>(m, 0xBC), 0x04) != 0 &&
+                read_field<std::int32_t>(read_field<void*>(host.frontend_manager_00e198c4(), 0xBC), 0x5C) != 2) {
+                void* const support = read_field<void*>(host.frontend_manager_00e198c4(), 0xBC);
+                if (read_field<std::uint8_t>(support, 0x04) != 0) {
+                    // 006529B0 inlined: __thiscall(support, byte) RET 4 stores +66h.
+                    write_field<std::uint8_t>(read_field<void*>(host.frontend_manager_00e198c4(), 0xBC), 0x66, 1);
+                }
+                if (read_field<std::uint8_t>(host.menu_command_screen_00425d10(), 0x25C) != 0) return;
+                host.ingame_collapse_overlays_0068ab80(host.frontend_manager_00e198c4(), 0, 1);
+                return;
+            }
+            m = host.frontend_manager_00e198c4();  // 005FB23B
+        }
+        // 005FB241
+        if (read_field<std::uint8_t>(host.game_00e188a8(), 0x19C4) != 0) {
+            if (read_field<std::uint8_t>(read_field<void*>(m, 0xBC), 0x04) == 0 &&
+                read_field<std::int32_t>(read_field<void*>(host.frontend_manager_00e198c4(), 0xBC), 0x5C) != 2) {
+                m = host.frontend_manager_00e198c4();
+                void* const hints = read_field<void*>(m, 0xA8);
+                if (read_field<std::uint8_t>(hints, 0x05) == 0 || read_field<std::uint8_t>(hints, 0x08) == 0) {
+                    host.ingame_request_scene_for_screen54_0068aa90(m);
+                    return;
+                }
+            } else {
+                m = host.frontend_manager_00e198c4();  // 005FB2A4
+            }
+        }
+        host.ingame_leave_unit_request_level_0068ab30(m);  // 005FB2AA
+        return;
+    }
+
+    // 005FB2C3..005FB3A3: action 88h.
+    if (host.input_action_pressed_this_frame_004c43c0(0x88) &&
+        !(read_field<std::uint8_t>(host.game_00e188a8(), 0x19C4) != 0 && host.input_action_was_pressed_004c50d0(0xC4)) &&
+        unit_is_kind_9_45_46_005f9710(host.controlled_unit_00e188d8(), host)) {
+        void* const unit = host.controlled_unit_00e188d8();
+        const std::uint32_t slot = read_field<std::uint32_t>(host.game_00e188a8(), 0x18EC);
+        if (host.unit_role_open_to_slot_0059bbd0(unit, 8, slot)) {
+            if (host.unit_is_local_player_role_00927f30(unit, 0)) {
+                host.ingame_collapse_overlays_0068ab80(host.frontend_manager_00e198c4(), 1, 1);
+                const bool base = host.ingame_is_base_interface_0068a140(host.frontend_manager_00e198c4());
+                void* const m = host.frontend_manager_00e198c4();
+                if (base) {
+                    host.ingame_leave_unit_request_level_0068ab30(m);  // 005FB2AC
+                } else {
+                    host.ingame_push_controlled_unit_request_0068aad0(m);
+                }
+                return;
+            }
+            if (read_field<std::uint8_t>(host.game_00e188a8(), 0x19C4) != 0) {
+                host.ingame_collapse_overlays_0068ab80(host.frontend_manager_00e198c4(), 1, 1);
+                host.ingame_push_controlled_unit_request_0068aad0(host.frontend_manager_00e198c4());
+            }
+        }
+    }
+
+    // 005FB3A4: menu closed.
+    if (read_field<std::uint8_t>(screen, 0x04) == 0) {
+        void* unit = nullptr;
+        bool to_ping_test = true;  // 005FB7A3 / 005FB7A9
+        if (host.input_action_pressed_this_frame_004c43c0(kOrderActionOpen) &&
+            (unit = host.controlled_unit_00e188d8()) != nullptr) {
+            const std::uint32_t slot = read_field<std::uint32_t>(host.game_00e188a8(), 0x18EC);
+            if (host.unit_role_open_to_slot_0059bbd0(unit, 0, slot) &&
+                read_field<std::uint8_t>(read_field<void*>(host.frontend_manager_00e198c4(), 0xBC), 0x04) == 0) {
+                void* const m = host.frontend_manager_00e198c4();
+                if (!cc13_fe1::hud_order_screen_has_pending_order_005f9410(read_field<void*>(m, 0x78)) &&
+                    read_field<std::uint8_t>(read_field<void*>(m, 0x5C), 0x05) == 0) {
+                    to_ping_test = false;
+                }
+            }
+        }
+        if (to_ping_test) {
+            // 005FB7A3..005FB830: the ping menu.
+            void* const game = host.game_00e188a8();
+            if (read_field<std::uint8_t>(game, 0x19C4) == 0) return;
+            if (read_field<std::int32_t>(game, 0x1FE4) == 0) return;
+            if (clock_f88c28_ahead_005f9820(host)) return;
+            if (!host.input_action_pressed_this_frame_004c43c0(kOrderActionPing)) return;
+            write_field<std::int32_t>(screen, 0x84, kOrderActionPing);
+            host.ingame_collapse_overlays_0068ab80(host.frontend_manager_00e198c4(), 0, 1);
+            host.frontend_screen_mark_visible_004b6e30(screen);
+            static constexpr std::int32_t kLevel3[] = {0x3B, 0};
+            host.frontend_set_level3_ids_004f8670(kLevel3);
+            static constexpr std::int32_t kInput[] = {0x18, 0};
+            host.input_push_level3_ids_004d8b70(host.game_00e188a8(), kInput);
+            return;
+        }
+        // 005FB42A: the first-use hint gate.
+        if (host.dword_00f8898c() > 1) {
+            if (!host.award_hint_has_been_shown_0068e600(kOrderFirstUseHint)) {
+                host.award_hint_trigger_00690fd0(kOrderFirstUseHint, 1);
+                return;
+            }
+            if (host.award_active_hint_equals_0068e5b0(host.award_tracker_004e1ca0(), kOrderFirstUseHint)) return;
+        }
+        // 005FB4EF: open the radial menu.
+        write_field<std::uint8_t>(screen, 0x81, 1);
+        write_field<std::uint8_t>(screen, 0x82, 0);
+        write_field<float>(screen, 0x68, 0.0f);
+        write_field<float>(screen, 0x6C, 0.0f);
+        write_field<std::int32_t>(screen, 0x84, kOrderActionOpen);
+        write_field<std::int32_t>(screen, 0x88, 0);
+        host.ingame_collapse_overlays_0068ab80(host.frontend_manager_00e198c4(), 1, 0);
+        host.ingame_leave_unit_request_level_0068ab30(host.frontend_manager_00e198c4());
+        host.frontend_screen_close_004b6e50(read_field<void*>(host.frontend_manager_00e198c4(), 0x78));
+        host.frontend_screen_mark_visible_004b6e30(screen);
+        static constexpr std::int32_t kLevel3[] = {0x3B, 0};
+        host.frontend_set_level3_ids_004f8670(kLevel3);
+        static constexpr std::int32_t kInput[] = {0x18, 0x19, 0};
+        host.input_push_level3_ids_004d8b70(host.game_00e188a8(), kInput);
+        host.hud_order_hide_all_005f9490(screen);
+        // 005FB571: the branches the controlled unit offers.
+        if (host.unit_is_kind(host.controlled_unit_00e188d8(), 0x18)) {
+            void* const squadron = host.unit_cast_to_squadron_005f9a30(host.controlled_unit_00e188d8());
+            if (squadron == nullptr) return;
+            if (host.director_flags_allow_0071c060(0x40, host.controlled_unit_00e188d8())) {
+                host.gui_text_set_localised_abbe50(widget_at(screen, 0x58), "", 1);  // 00CE3A0C
+                CommandWithTarget1C resolved;
+                hud_order_resolve_return_to_base_005f9cf0(&resolved, host);
+                if (resolved.command != 0) {
+                    host.widget_show_34(widget_at(screen, resolved.command == kCommandReturnToBaseLanding ? 0x34 : 0x30), 1);
+                }
+            }
+            // 005FB5EC
+            if (host.director_flags_allow_0071c060(0x80, host.controlled_unit_00e188d8())) {
+                host.widget_show_34(widget_at(screen, 0x20), 1);
+            } else if (host.unit_lead_entity_00927880(host.controlled_unit_00e188d8()) != nullptr) {
+                host.widget_show_34(widget_at(screen, 0x1C), 1);
+            }
+            // 005FB620: signed count at squadron+3CCh.
+            if (read_field<std::int32_t>(squadron, 0x3CC) > 0 &&
+                host.director_flags_allow_0071c060(0x100, host.controlled_unit_00e188d8())) {
+                host.widget_show_34(widget_at(screen, 0x14), 1);
+            }
+            host.widget_show_34(widget_at(screen, 0x10), read_field<std::uint8_t>(screen, 0x83) == 0 ? 1 : 0);
+            host.widget_show_34(widget_at(screen, 0x0C), read_field<std::uint8_t>(screen, 0x83));
+            return;
+        }
+        // 005FB682: ships.
+        if (!host.unit_is_kind(host.controlled_unit_00e188d8(), 6)) return;
+        void* const ship = host.controlled_unit_00e188d8();
+        if (read_field<std::uint32_t>(ship, 0x284) != 0) {
+            if (host.director_flags_allow_0071c060(0x4, ship)) host.widget_show_34(widget_at(screen, 0x2C), 1);
+            if (host.director_flags_allow_0071c060(0x8, host.controlled_unit_00e188d8())) {
+                host.widget_show_34(widget_at(screen, 0x18), 1);
+            }
+        } else if (read_field<std::int32_t>(host.game_00e188a8(), 0x1FE4) != 0 ||
+                   read_field<std::uint8_t>(screen, 0x8C) != 0) {
+            // 005FB6F8: ECX is still the ship read at 005FB693.
+            if (host.unit_port_range_test_005f98f0(ship)) host.widget_show_34(widget_at(screen, 0x28), 1);
+        }
+        // 005FB70D
+        if (host.director_flags_allow_0071c060(0x10, host.controlled_unit_00e188d8())) {
+            host.widget_show_34(widget_at(screen, read_field<std::uint8_t>(screen, 0x83) != 0 ? 0x0C : 0x10), 1);
+        }
+        if (hud_order_can_attack_move_005f9840(host)) {  // ECX = screen, unused
+            host.widget_show_34(widget_at(screen, 0x24), 1);
+            host.widget_show_34(widget_at(screen, 0x1C), 0);
+            return;
+        }
+        if (host.unit_lead_entity_00927880(host.controlled_unit_00e188d8()) == nullptr) return;
+        host.widget_show_34(widget_at(screen, 0x1C), 1);
+        return;
+    }
+
+    // 005FB831: menu open.
+    if (read_field<std::uint8_t>(screen, 0x82) == 0) {
+        host.weapon_group_resume_00545ac0(read_field<void*>(host.frontend_manager_00e198c4(), 0x50));
+        write_field<std::uint8_t>(read_field<void*>(host.frontend_manager_00e198c4(), 0x68), 0x190, 0);
+        host.ship_screen_clear_timed_entry_00644240(read_field<void*>(host.frontend_manager_00e198c4(), 0x40));
+    }
+    if (read_field<std::int32_t>(screen, 0x84) == kOrderActionOpen && read_field<std::uint8_t>(screen, 0x82) == 0) {
+        // 005FB883..005FB908: dt and the six hold times (each FSTP'd to a float local).
+        const float dt = read_field<float>(host.game_00e188a8(), 0x21EC);
+        const float h104 = host.input_action_hold_time_004c5070(0x104);
+        const float h105 = host.input_action_hold_time_004c5070(0x105);
+        const float h11c = host.input_action_hold_time_004c5070(0x11C);
+        const float h11d = host.input_action_hold_time_004c5070(0x11D);
+        const float h126 = host.input_action_hold_time_004c5070(0x126);
+        const float h127 = host.input_action_hold_time_004c5070(0x127);
+        auto set_mode = [screen](std::uint8_t a, std::uint8_t b, std::uint8_t c) {
+            write_field<std::uint8_t>(screen, 0x5C, a);
+            write_field<std::uint8_t>(screen, 0x5D, b);
+            write_field<std::uint8_t>(screen, 0x5E, c);
+        };
+        // 005FB909..005FB92F: |h126| + |h127| kept in ST, FCOMIP against 0.8; JBE.
+        if (r24(static_cast<double>(abs_0042be90(h126)) + abs_0042be90(h127)) > 0.8f) {
+            if (h127 < 0.0f) {  // 005FB93E: COMISS 0, h127; JBE
+                const float v = read_field<float>(screen, 0x64);
+                set_mode(0, 1, 0);
+                write_field<float>(screen, 0x68, 0.0f);
+                if (0.1f > v) {  // FCOMIP 0.1 vs v; JBE -> 005FB98A
+                    write_field<float>(screen, 0x60, 0.0f);
+                    write_field<float>(screen, 0x64, -0.5f);  // 00CE69D0
+                    write_field<float>(screen, 0x6C, -0.9f);  // 00CED6C8
+                } else {
+                    write_field<float>(screen, 0x64, r24(static_cast<double>(v) - dt));
+                    write_field<float>(screen, 0x6C, 0.0f);
+                }
+            } else if (h127 > 0.0f) {  // 005FB996: COMISS h127, 0; JBE
+                const float v = read_field<float>(screen, 0x64);
+                set_mode(0, 1, 0);
+                write_field<float>(screen, 0x68, 0.0f);
+                if (v > -0.01f) {  // COMISS v, 00D7A300; JBE -> 005FB9DF
+                    write_field<float>(screen, 0x60, 0.0f);
+                    write_field<float>(screen, 0x64, 0.5f);   // 00CE3800
+                    write_field<float>(screen, 0x6C, 0.9f);   // 00CE3860
+                } else {
+                    write_field<float>(screen, 0x64, r24(static_cast<double>(v) + dt));
+                    write_field<float>(screen, 0x6C, 0.0f);
+                }
+            } else if (h126 < 0.0f) {  // 005FB9EF
+                const float v = read_field<float>(screen, 0x60);
+                set_mode(0, 1, 0);
+                write_field<float>(screen, 0x6C, 0.0f);
+                if (v > -0.01f) {  // -> 005FBA43 otherwise
+                    write_field<float>(screen, 0x60, 0.5f);
+                    write_field<float>(screen, 0x64, 0.0f);
+                    write_field<float>(screen, 0x68, -0.9f);
+                } else {
+                    write_field<float>(screen, 0x68, 0.0f);
+                    write_field<float>(screen, 0x60, r24(static_cast<double>(v) + dt));
+                }
+            } else if (h126 > 0.0f) {  // 005FBA58
+                const float v = read_field<float>(screen, 0x60);
+                set_mode(0, 1, 0);
+                write_field<float>(screen, 0x6C, 0.0f);
+                if (0.01f > v) {  // COMISS 00D7A238, v; JBE -> 005FBAAE
+                    write_field<float>(screen, 0x60, -0.5f);
+                    write_field<float>(screen, 0x64, 0.0f);
+                    write_field<float>(screen, 0x68, 0.9f);
+                } else {
+                    write_field<float>(screen, 0x68, 0.0f);
+                    write_field<float>(screen, 0x60, r24(static_cast<double>(v) - dt));
+                }
+            }
+        } else {
+            // 005FBAC3: L = |h11c| + |h11d| (FSTP double over the dt slot), R = |h104| + |h105| in ST.
+            const float a11d = abs_0042be90(h11d);
+            const float a11c = abs_0042be90(h11c);
+            const float left = r24(static_cast<double>(a11c) + a11d);
+            const float right = r24(static_cast<double>(abs_0042be90(h104)) + abs_0042be90(h105));
+            if (left > right) {  // FCOMI ST0 = L, ST1 = R; JBE -> 005FBBF8
+                set_mode(1, 0, 0);
+                // DC F9 FDIV ST(1),ST(0): h11c / 3.0 kept in ST, DE C2 FADDP adds +68h, FSTP to the local.
+                const float n68 = r24(static_cast<double>(r24(static_cast<double>(h11c) / 3.0)) +
+                                      read_field<float>(screen, 0x68));
+                write_field<float>(screen, 0x68, n68);
+                // FDIVR [h11d]: h11d / 3.0, FADD +6Ch, FSTP to the local.
+                const float n6c = r24(static_cast<double>(r24(static_cast<double>(h11d) / 3.0)) +
+                                      read_field<float>(screen, 0x6C));
+                write_field<float>(screen, 0x6C, n6c);
+                if (a11c > a11d) {  // FCOMIP ST0 = |h11c|, ST1 = |h11d|; JBE -> 005FBBA8
+                    if (n68 > 0.55f) {  // 00CED6C4
+                        write_field<float>(screen, 0x68, 0.6f);   // 00CE3D30
+                        write_field<float>(screen, 0x6C, 0.0f);
+                    }
+                    if (-0.55f > read_field<float>(screen, 0x68)) {  // 00CED6C0
+                        write_field<float>(screen, 0x68, -0.6f);  // 00CED6BC
+                        write_field<float>(screen, 0x6C, 0.0f);
+                    }
+                } else {
+                    if (n6c > 0.55f) {
+                        write_field<float>(screen, 0x6C, 0.6f);
+                        write_field<float>(screen, 0x68, 0.0f);
+                    }
+                    if (-0.55f > read_field<float>(screen, 0x6C)) {
+                        write_field<float>(screen, 0x6C, -0.6f);
+                        write_field<float>(screen, 0x68, 0.0f);
+                    }
+                }
+            } else if (right > left) {  // 005FBBF8: FXCH, FCOMI ST0 = R, ST1 = L; JBE -> 005FBC21
+                write_field<float>(screen, 0x68, h104);
+                set_mode(0, 0, 1);
+                write_field<float>(screen, 0x6C, h105);
+            } else if (left == right) {  // 005FBC21: FUCOMIP, LAHF, TEST AH,44h, JP: ordered equal only
+                if (read_field<std::uint8_t>(screen, 0x5D) != 0 &&
+                    0.59f > abs_0042be90(read_field<float>(screen, 0x6C)) &&  // 00CED6B8
+                    0.59f > abs_0042be90(read_field<float>(screen, 0x68))) {
+                    write_field<float>(screen, 0x6C, 0.0f);
+                    write_field<float>(screen, 0x68, 0.0f);
+                    write_field<float>(screen, 0x60, 0.0f);
+                    write_field<float>(screen, 0x64, 0.0f);
+                }
+                if (read_field<std::uint8_t>(screen, 0x5E) != 0) {  // 005FBC79
+                    write_field<float>(screen, 0x68, 0.0f);
+                    write_field<float>(screen, 0x6C, 0.0f);
+                }
+            }
+        }
+
+        // 005FBC89..005FBE06: the highlighted branch +88h.
+        if (0.4f > abs_0042be90(read_field<float>(screen, 0x6C)) &&
+            0.4f > abs_0042be90(read_field<float>(screen, 0x68))) {
+            write_field<std::int32_t>(screen, 0x88, 0);
+        } else if (abs_0042be90(read_field<float>(screen, 0x6C)) > abs_0042be90(read_field<float>(screen, 0x68))) {
+            const float v = read_field<float>(screen, 0x6C);
+            if (v > 0.4f) {
+                if (host.widget_is_selected_38(widget_at(screen, 0x14)) ||
+                    host.widget_is_selected_38(widget_at(screen, 0x18))) {
+                    write_field<std::int32_t>(screen, 0x88, 2);
+                }
+            } else if (-0.4f > v) {
+                if (host.widget_is_selected_38(widget_at(screen, 0x1C)) ||
+                    host.widget_is_selected_38(widget_at(screen, 0x20)) ||
+                    host.widget_is_selected_38(widget_at(screen, 0x24))) {
+                    write_field<std::int32_t>(screen, 0x88, 1);
+                }
+            }
+        } else {
+            const float v = read_field<float>(screen, 0x68);  // 005FBD79
+            if (v > 0.4f) {
+                if (host.widget_is_selected_38(widget_at(screen, 0x28)) ||
+                    host.widget_is_selected_38(widget_at(screen, 0x2C)) ||
+                    host.widget_is_selected_38(widget_at(screen, 0x30)) ||
+                    host.widget_is_selected_38(widget_at(screen, 0x34))) {
+                    write_field<std::int32_t>(screen, 0x88, 4);
+                }
+            } else if (-0.4f > v) {
+                if (host.widget_is_selected_38(widget_at(screen, 0x10)) ||
+                    host.widget_is_selected_38(widget_at(screen, 0x0C))) {
+                    write_field<std::int32_t>(screen, 0x88, 3);
+                }
+            }
+        }
+
+        // 005FBE07..005FC168: the branch highlight widgets and the help line +58h.
+        for (std::size_t offset = 0x44; offset <= 0x54; offset += 4) host.widget_show_34(widget_at(screen, offset), 0);
+        struct Label {
+            std::size_t widget;
+            const char* key;
+        };
+        auto show_branch = [&](std::size_t highlight, std::initializer_list<Label> labels) {
+            host.widget_show_34(widget_at(screen, highlight), 1);
+            host.widget_set_colour_50(widget_at(screen, highlight), kWhite);
+            for (const Label& label : labels) {
+                if (host.widget_is_selected_38(widget_at(screen, label.widget))) {
+                    host.gui_text_set_localised_abbe50(widget_at(screen, 0x58), label.key, 1);
+                    return;
+                }
+            }
+        };
+        switch (read_field<std::int32_t>(screen, 0x88)) {
+        case 3:
+            show_branch(0x44, {{0x0C, "ingame.orders_aggressive"}, {0x10, "ingame.orders_defensive"}});
+            break;
+        case 4:
+            show_branch(0x48, {{0x28, "ingame.orders_shipsell"}, {0x34, "ingame.orders_planelanding"},
+                               {0x30, "ingame.orders_planeretreat"}, {0x2C, "ingame.orders_shipleaveformation"}});
+            break;
+        case 1:
+            show_branch(0x4C, {{0x20, "ingame.orders_planeattack"}, {0x24, "ingame.orders_shipattack"},
+                               {0x1C, "ingame.orders_shipplanemove"}});
+            break;
+        case 2:
+            show_branch(0x50, {{0x18, "ingame.orders_shipformation"}, {0x14, "ingame.orders_planeregroup"}});
+            break;
+        case 0:
+            host.widget_show_34(widget_at(screen, 0x44), 0);
+            host.widget_show_34(widget_at(screen, 0x48), 0);
+            host.widget_show_34(widget_at(screen, 0x4C), 0);
+            host.widget_show_34(widget_at(screen, 0x50), 0);
+            host.widget_show_34(widget_at(screen, 0x54), 1);
+            host.widget_set_colour_50(widget_at(screen, 0x54), kWhite);
+            host.gui_text_set_localised_abbe50(widget_at(screen, 0x58), "ingame.orders_cancel", 1);
+            write_field<std::int32_t>(screen, 0x88, 0);
+            break;
+        default:
+            break;
+        }
+    }
+
+    // 005FC169..005FC246: pings on the 109h menu.
+    if ((host.input_action_pressed_this_frame_004c43c0(0xF1) || host.input_action_pressed_this_frame_004c43c0(0xF2) ||
+         host.input_action_pressed_this_frame_004c43c0(0xF3) || host.input_action_pressed_this_frame_004c43c0(0xF4)) &&
+        read_field<std::int32_t>(screen, 0x84) == kOrderActionPing) {
+        std::int32_t kind = 0;
+        if (host.input_action_pressed_this_frame_004c43c0(0xF3)) {
+            kind = 1;
+        } else if (host.input_action_pressed_this_frame_004c43c0(0xF4)) {
+            kind = 2;
+        }
+        if (kind != 0) {
+            // The map cursor {x, y} at [[00E198C4]+54h]+554h, copied by FLD/FSTP float.
+            const void* const map = read_field<void*>(host.frontend_manager_00e198c4(), 0x54);
+            host.map_ping_send_local_008e2ee0(kind, {read_field<float>(map, 0x554), read_field<float>(map, 0x558)});
+        }
+    }
+
+    // 005FC247: on release of the held action.
+    if (!host.input_action_released_this_frame_00535ee0(read_field<std::int32_t>(screen, 0x84))) return;
+    const std::int32_t action = read_field<std::int32_t>(screen, 0x84);
+    if (action == kOrderActionOpen) {
+        write_field<std::uint8_t>(screen, 0x81, 0);
+        write_field<std::uint8_t>(screen, 0x82, 1);
+        write_field<float>(screen, 0x70, 0.0f);
+        host.hud_hints_dismiss_0054e610(read_field<void*>(host.frontend_manager_00e198c4(), 0xA8));
+        host.award_tracker_finish_active_hint_0068e420(host.award_tracker_004e1ca0());
+        if (read_field<std::int32_t>(screen, 0x88) == 3 &&
+            (host.widget_is_selected_38(widget_at(screen, 0x0C)) || host.widget_is_selected_38(widget_at(screen, 0x10)))) {
+            hud_order_toggle_permanent_005f9580(screen, host);
+            return;
+        }
+        const std::int32_t branch = read_field<std::int32_t>(screen, 0x88);  // 005FC2E2
+        if (branch == 1) {
+            if (host.widget_is_selected_38(widget_at(screen, 0x20)) || host.widget_is_selected_38(widget_at(screen, 0x24))) {
+                hud_order_attack_005faae0(host);  // ECX = screen, unused
+                return;
+            }
+            if (!host.widget_is_selected_38(widget_at(screen, 0x1C))) return;
+            // 00927880's result goes to 005F9B20 unchecked.
+            hud_order_issue_moveto_entity_005f9b20(host.unit_lead_entity_00927880(host.controlled_unit_00e188d8()), host);
+            return;
+        }
+        if (branch == 2) {
+            if (host.unit_is_kind(host.controlled_unit_00e188d8(), 6) &&
+                read_field<std::uint32_t>(host.controlled_unit_00e188d8(), 0x284) != 0 &&
+                host.widget_is_selected_38(widget_at(screen, 0x18))) {
+                host.hud_order_close_005f9520(screen);
+                hud_order_open_submenu_005f98b0(host);
+                return;
+            }
+            // 005FC3B2 / 005FC3B8
+            if (!host.unit_is_kind(host.controlled_unit_00e188d8(), 0x18)) return;
+            if (!host.widget_is_selected_38(widget_at(screen, 0x14))) return;
+            hud_order_regroup_005fa9f0(host);
+            return;
+        }
+        if (branch != 4) return;
+        if (host.unit_is_kind(host.controlled_unit_00e188d8(), 6) &&
+            read_field<std::uint32_t>(host.controlled_unit_00e188d8(), 0x284) != 0 &&
+            host.widget_is_selected_38(widget_at(screen, 0x2C))) {
+            if (read_field<std::uint8_t>(read_field<void*>(host.frontend_manager_00e198c4(), 0x5C), 0x04) != 0) return;
+            hud_order_leave_or_disband_005f9c40(host);
+            return;
+        }
+        issue_leave_or_return_legs(screen, host);  // 005FC459
+        return;
+    }
+    if (action == 0xED) return;
+    if (action != kOrderActionPing) return;
+    // 005FC561: the ping of the highlighted branch (ECX = the branch for 1 and 2, XOR ECX for 0).
+    const std::int32_t branch = read_field<std::int32_t>(screen, 0x88);
+    if (branch != 1 && branch != 2 && branch != 0) return;
+    const void* const map = read_field<void*>(host.frontend_manager_00e198c4(), 0x54);
+    host.map_ping_send_local_008e2ee0(branch, {read_field<float>(map, 0x554), read_field<float>(map, 0x558)});
+}
+
+namespace {
+
+// 005FC459..005FC54A, branch 4 when the ship leave/disband leg did not fire.
+// Effective game mode 8 (004BCA50, called twice) with +8Ch set and [+28h]
+// selected leaves the unit at once; otherwise outside mode 8 or with +8Ch set
+// the port-range test 005F98F0 must also pass. Then the squadron legs:
+// [+30h] release-and-return, [+34h] return-to-base.
+void issue_leave_or_return_legs(void* screen, HudOrderIdleHost& host) {
+    if (host.game_effective_mode_004bca50(host.game_00e188a8()) == 8 && read_field<std::uint8_t>(screen, 0x8C) != 0 &&
+        host.widget_is_selected_38(widget_at(screen, 0x28))) {
+        hud_order_leave_unit_005facb0(host);
+        return;
+    }
+    // 005FC480
+    if ((host.game_effective_mode_004bca50(host.game_00e188a8()) != 8 || read_field<std::uint8_t>(screen, 0x8C) != 0) &&
+        host.unit_port_range_test_005f98f0(host.controlled_unit_00e188d8()) &&
+        host.widget_is_selected_38(widget_at(screen, 0x28))) {
+        hud_order_leave_unit_005facb0(host);
+        return;
+    }
+    // 005FC4CF
+    if (host.unit_is_kind(host.controlled_unit_00e188d8(), 0x18) && host.widget_is_selected_38(widget_at(screen, 0x30))) {
+        hud_order_release_and_return_005f9bb0(host);
+        return;
+    }
+    // 005FC509
+    if (host.unit_is_kind(host.controlled_unit_00e188d8(), 0x18) && host.widget_is_selected_38(widget_at(screen, 0x34))) {
+        hud_order_issue_return_to_base_005f9aa0(host);
+    }
+}
+
+}  // namespace
 
 // ---------------------------------------------------------------------------
 // Options screen
