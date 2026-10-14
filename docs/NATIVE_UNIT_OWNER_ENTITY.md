@@ -8,6 +8,11 @@ profile, or activate the native tick/application path.
 Source names and field roles are descriptive hypotheses, not recovered C++
 symbols; address and raw storage behavior are the evidence contract.
 
+The `00928630` GameEntity constructor audit below refreshes the current dependency
+frontier. It adds no Source body or fragment: the component count remains twenty,
+and whole constructor, destructor, receiver activation and game-binding claims
+remain false.
+
 | Source entry | Original coverage | Contract |
 | --- | --- | --- |
 | `construct_native_unit_owner_scene_base_00925ce0` | Complete normal `00925CE0..00925EF3`, 532 bytes | Actual observer/weak prefixes, both x87 matrix copies, mixed-width fields and raw strings; five Source cleanup owners with qualified exception semantics |
@@ -284,6 +289,64 @@ host guard-bit optimization across nonthrowing unlinks is not Native fault
 timing. The Native nullable adjustment in two funclets does not relax this
 entry's requirement for a real nonnull constructed root. Failure execution,
 cleanup throwing and Original FH3/SEH/frame behavior remain unqualified.
+
+## GameEntity constructor dependency frontier
+
+At integrated main `3ad814e99`, the complete `00928630..0092878F` constructor
+is 352 bytes and 81 instructions. Fresh live Ghidra and installed-PE bytes agree.
+The actual raw scene constructor `00925CE0`, adjacent ID-table owner pair,
+`00928240` SceneRegistry lock getter and `00926BE0` pending-list producer now
+have concrete Source providers. The older readiness document's statement that
+these registry owners were unresolved is historical, not their current status.
+No semantic table, deduplicating queue or substitute manager is needed for them.
+
+The original sequence still matters. Successful construction of the same root's
+scene prefix precedes the transient `CFF378` and final GameEntity profile stores.
+The actual SceneRegistry `+4` section is captured, entered and incremented at
+`+18`. Only the **low byte** of the first DWORD selects primary `F89A08` versus
+alternate `F89A5C`; `0x100` selects alternate. The full second DWORD reaches
+`009517C0`, whose AX is written to root `+174`. The constructor then invokes
+the actual `+148` slot with `(1FF,9)`, writes the nine holder DWORDs and current
+`F876A4` bits, and enqueues the same root through `00926BE0` while the captured
+outer scene lock remains held. It clears `+1D4`, decrements depth and leaves.
+
+Live profile cells establish `D192E0+148 -> 00927D20` and
+`D192E0+5C -> 0047F190`. The complete 34-byte class-query leaf already has a
+concrete Source provider. The complete 299-byte role method, however, performs
+a current `+5C` call for every selected role and ultimately invokes
+`00696350(root,event=5,value=0)`. Fixed constructor value nine does not remove
+that notification. The existing event-word dispatcher requires an actual
+callback-owner `+0C` provider through `ObserverEventWordCallbackAccess`; the
+current Source tree contains the interface and consumers, but no concrete
+provider that closes this constructor's dispatch domain. A dummy callback,
+omitted notification, or assumed permanently empty endpoint list is not an
+admitted replacement. The general role method's session-message and `+2C`
+branches are also not supplied by this packet.
+
+The exact constructor cleanup map is now recovered, rather than inferred from
+its normal state stores. Handler `CA6FAE` loads FuncInfo `DDA3B8`, magic
+`19930522`, maximum state three, with unwind map `DDA3A0`:
+
+| State | Next state | Funclet | Actual cleanup |
+| --- | --- | --- | --- |
+| 0 | -1 | `CA6F90` | Root from `[EBP-18]`, tail to full `00925780` |
+| 1 | 0 | `CA6F98` | Same root `+178` name, tail to `0041DD20` |
+| 2 | 1 | `CA6FA6` | Actual guard at `[EBP-14]`, tail to `00411EE0` |
+
+The name and captured-guard cleanup providers exist. Complete `00925780`
+still requires held `740270/7400C0` and the actual current-child scalar-delete
+loop before the admitted retirement continuation. Consequently, successful
+normal fragments alone cannot establish constructor failure ownership. Native
+FH3/SEH execution, reentrant effects and original frame/entry ABI remain unproven.
+
+This audit verified three full spans (685 bytes, 183 instructions, twelve call
+sites), six constructor EH records and both profile cells against live bytes and
+the installed PE. It adds no split API exporting a held lock, Source stub, or
+reconstruction ledger credit. The twenty existing components and their strict
+Win32, 77-check retirement and 3/3 build receipts remain the frozen `deb673fe9`
+evidence; this documentation-only audit does not rerun or relabel them as new
+constructor execution. `928630` stays queued, as do the separate life-reference
+and `6E0860` observer-owner dependencies.
 
 ## Validation and integration
 

@@ -1,7 +1,7 @@
 {
-  "packet": "cc12_unit_receiver_scene_retirement",
-  "utc": "2026-10-14T22:06:15.207657+00:00",
-  "base_revision": "90bd7afdce5ce878044daab8b32bf56e6416fb21",
+  "packet": "cc12_unit_receiver_game_ctor_readiness",
+  "utc": "2026-10-14T22:19:37.427059+00:00",
+  "base_revision": "3ad814e99f18a3cbda756b0e76f2ab7494b522f1",
   "source": "src/native_unit_owner_entity.cpp",
   "header": "include/bsp/native_unit_owner_entity.hpp",
   "documentation": "docs/NATIVE_UNIT_OWNER_ENTITY.md",
@@ -206,7 +206,7 @@
   "original_context": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe",
-    "verified_typed_modification": 158994,
+    "verified_typed_modification": 159000,
     "listing_repair_performed": false,
     "destructor_old_truncation_comment_superseded": true,
     "actual_destructor_iterator": "00bf7c6e",
@@ -600,6 +600,79 @@
       "address": "00ca6c6d",
       "native": "0041dd20",
       "kind": "tail_jump"
+    },
+    {
+      "function": "00928630",
+      "address": "00928651",
+      "native": "00925ce0",
+      "source_attached": false,
+      "note": "Read-only dependency/EH frontier; no new constructor or role Source composition supplied."
+    },
+    {
+      "function": "00928630",
+      "address": "00928695",
+      "native": "00928240",
+      "source_attached": false,
+      "note": "Read-only dependency/EH frontier; no new constructor or role Source composition supplied."
+    },
+    {
+      "function": "00928630",
+      "address": "009286e4",
+      "native": "009517c0",
+      "source_attached": false,
+      "note": "Read-only dependency/EH frontier; no new constructor or role Source composition supplied."
+    },
+    {
+      "function": "00928630",
+      "address": "00928760",
+      "native": "00926be0",
+      "source_attached": false,
+      "note": "Read-only dependency/EH frontier; no new constructor or role Source composition supplied."
+    },
+    {
+      "function": "00927d20",
+      "address": "00927d8c",
+      "native": "0075b430",
+      "source_attached": false,
+      "note": "Read-only dependency/EH frontier; no new constructor or role Source composition supplied."
+    },
+    {
+      "function": "00927d20",
+      "address": "00927dcf",
+      "native": "0077c2a0",
+      "source_attached": false,
+      "note": "Read-only dependency/EH frontier; no new constructor or role Source composition supplied."
+    },
+    {
+      "function": "00927d20",
+      "address": "00927e31",
+      "native": "00696350",
+      "source_attached": false,
+      "note": "Read-only dependency/EH frontier; no new constructor or role Source composition supplied."
+    },
+    {
+      "function": "00ca6f90",
+      "address": "00ca6f93",
+      "native": "00925780",
+      "source_attached": false,
+      "note": "Read-only dependency/EH frontier; no new constructor or role Source composition supplied.",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00ca6f98",
+      "address": "00ca6fa1",
+      "native": "0041dd20",
+      "source_attached": false,
+      "note": "Read-only dependency/EH frontier; no new constructor or role Source composition supplied.",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00ca6fa6",
+      "address": "00ca6fa9",
+      "native": "00411ee0",
+      "source_attached": false,
+      "note": "Read-only dependency/EH frontier; no new constructor or role Source composition supplied.",
+      "kind": "tail_jump"
     }
   ],
   "failure_ownership": {
@@ -614,7 +687,45 @@
     "recon_constructor": "Native state0 map DC1248/DC1240 invokes C90530->4BD350->4B7EF0 on captured record+14. Source guard arms after actual target capture before unregister call and uses the admitted normal child on unwind; this guard and a second cleanup failure were not dynamically tested. Native FH3/fault/throw ABI remains open.",
     "recon_retirement": "Accepted4B7EF0 supplies normal observer pair/callback-array retirement only; allocation/free of the containing record and vector partial-failure ownership remain with actual caller.",
     "scene_base": "NativeCA6CBA -> DD9EE4/maxstate5 -> DD9F08: unwind second string+15C, first+154, weak+24, callback+10, observed root. Five Source guards use actual children and are armed by corresponding throwing-call boundaries. Compiler movement of host armed bits is not Native asynchronous-fault-state equivalence. Failure execution and cleanup throwing remain untested.",
-    "scene_retirement": "NativeCA6C72 -> DD9E98/maxstate5 -> DD9EBC. After actual missing life-ref/child phases, five Source owners enter; second name disarmed before normal+15C return, then first name+154,weak+24,callback+10,observedroot. Failed current member is not redestroyed; only remaining owners unwind. Host optimization at noexcept unlinks is not Native fault-state equivalence. Dynamicfailure/cleanup-throw/NativeFH3 untested."
+    "scene_retirement": "NativeCA6C72 -> DD9E98/maxstate5 -> DD9EBC. After actual missing life-ref/child phases, five Source owners enter; second name disarmed before normal+15C return, then first name+154,weak+24,callback+10,observedroot. Failed current member is not redestroyed; only remaining owners unwind. Host optimization at noexcept unlinks is not Native fault-state equivalence. Dynamicfailure/cleanup-throw/NativeFH3 untested.",
+    "game_constructor": {
+      "handler": "00ca6fae",
+      "func_info": "00dda3b8",
+      "magic": "19930522",
+      "max_state": 3,
+      "map": "00dda3a0",
+      "entries": [
+        {
+          "state": 0,
+          "to_state": -1,
+          "action": "00ca6f90",
+          "tail_site": "00ca6f93",
+          "target": "00925780",
+          "owner": "root from EBP-18",
+          "complete_source": false
+        },
+        {
+          "state": 1,
+          "to_state": 0,
+          "action": "00ca6f98",
+          "tail_site": "00ca6fa1",
+          "target": "0041dd20",
+          "owner": "same root+178",
+          "complete_source": true
+        },
+        {
+          "state": 2,
+          "to_state": 1,
+          "action": "00ca6fa6",
+          "tail_site": "00ca6fa9",
+          "target": "00411ee0",
+          "owner": "actual captured guard at EBP-14",
+          "complete_source": true
+        }
+      ],
+      "missing_base_owners": "Full925780 still requires held740270/7400C0 and current child scalar-delete loop. Existing continuation cannot substitute for failed-base destruction.",
+      "native_eh_executed": false
+    }
   },
   "validation": {
     "strict_compile": "passed MSVCWin32 /std:c++20 /EHsc /O2 /MD /W4 /WX /fp:strict",
@@ -638,14 +749,16 @@
       "tests_failed": 0,
       "log": "local/native_unit_owner_scene_retire_build.log",
       "includes_new_component": true,
-      "note": "Pushedmain90bd7afdc synced; permanently registered TU compiled in combined Win32Release build;3/3 tests passed. Final77check probe relinked current strict object against newly builtcore/Lua/zlib. NoCMake edit."
+      "note": "Pushedmain90bd7afdc synced; permanently registered TU compiled in combined Win32Release build;3/3 tests passed. Final77check probe relinked current strict object against newly builtcore/Lua/zlib. NoCMake edit.",
+      "receipt_scope": "Historical deb673fe9 Source build; not rerun by this readiness-only packet."
     },
     "full_receiver_activation": false,
     "live_call_rows": {
-      "checked": 73,
+      "checked": 83,
       "failures": 0,
       "status": "passed",
-      "log": "local/native_unit_owner_scene_retire_report_calls.log"
+      "log": "local/native_unit_owner_game_calls.log",
+      "scope": "Existing73 rows plus10 read-only constructor/role/EH dependency rows; no new Source attachment claimed."
     },
     "annotation": {
       "names_preserved": true,
@@ -653,10 +766,11 @@
       "write_lock": true,
       "project_saved": true,
       "exports_refreshed": [
-        "00925780"
+        "00928630"
       ],
-      "prior_values": "local/ghidra-annotations-20261014T220659Z.json",
-      "log": "local/native_unit_owner_scene_retire_annotations.log"
+      "prior_values": "local/ghidra-annotations-20261014T221954Z.json",
+      "log": "local/native_unit_owner_game_annotations.log",
+      "scope": "Readiness evidence only; no listing repair or new Source function claim."
     },
     "private_shared_count_schedule_reviewed": true,
     "host_eh_state_marker_caveat": "MSVC/EHsc may move host states across nonthrowing memory instructions; exception-call ownership reviewed, Native fault/frame equivalence false.",
@@ -759,6 +873,17 @@
         ],
         "prior_values": "local/ghidra-annotations-20261014T213256Z.json",
         "log": "local/native_unit_owner_scene_annotations.log"
+      },
+      {
+        "names_preserved": true,
+        "previous_comments_preserved": true,
+        "write_lock": true,
+        "project_saved": true,
+        "exports_refreshed": [
+          "00925780"
+        ],
+        "prior_values": "local/ghidra-annotations-20261014T220659Z.json",
+        "log": "local/native_unit_owner_scene_retire_annotations.log"
       }
     ],
     "private_recon_unwind_schedule_reviewed": true,
@@ -768,7 +893,7 @@
       "local/native_unit_owner_recon_schedule_review.txt",
       "local/native_unit_owner_scene_schedule_review.txt"
     ],
-    "prior_fixture_scope": "Prior prefix20/peer37/withdrawal20/recon20/scene30 comparisons are frozen d318001e7 receipts and not rerun for this additive fragment packet. Current retirement77 uses current strict object and freshly built combined dependencies.",
+    "prior_fixture_scope": "All Source compile, schedule and runtime fixture results predate this readiness-only packet. Frozen deb673fe9 receipts retain their original scope; no928630 normal/EH execution occurred.",
     "recon_comparison": {
       "checks": 20,
       "failures": 0,
@@ -820,6 +945,14 @@
       "actual_receiver_constructed": false,
       "fault_behavior_tested": false,
       "scope_limit": "Fragment register setup/private state-word storage is a fixture boundary, not OriginalFH3/frame ABI. No fake release or child provider; fullconstructor/destructor/root lifetime stays incomplete."
+    },
+    "current_packet": {
+      "scope": "Documentation/report/name-evidence only; no C++ changes or new Source completion credit.",
+      "static_body_profile_eh_audit": "passed:685bytes/183instructions/12calls;sixEHrecords;twoactualprofilecells",
+      "source_build_rerun": false,
+      "runtime_fixture_rerun": false,
+      "reason": "No production code changed. Existing deb strict/77-check/3-test receipts are preserved historical evidence, not928630 execution.",
+      "frozen_previous_receipt": "local/native_unit_owner_deb673fe9_receipts/reports/native_unit_owner_entity.json"
     }
   },
   "original_image_proof": {
@@ -891,7 +1024,8 @@
     "Original peer/count throw RTTI and complete Native exception/frame ABI; Source host transport and inspected unwind ownership do not close these gates.",
     "Constructor nonnull target arm and Source guard were statically preserved but not dynamically exercised; accepted4B7EF0 child remains normal-only on failure, with Native FH3 cleanup still unqualified.",
     "Scene-base Source guards are statically matched to the five Native unwind owners, but failure execution, cleanup throwing, non-null memcpy-arm/fault policy and unmasked x87 exceptions remain unqualified. Successful construction does not establish World ownership for normal925780 destruction.",
-    "Complete925780 still requires actualE1AEA0/740270->7400C0 life-reference release and concrete current child scalar slot0 loop before admitted9257F5 continuation. Both release addresses held/queued. This packet does not establish fullSceneNode constructor/destructor lifetime or Native exception execution."
+    "Complete925780 still requires actualE1AEA0/740270->7400C0 life-reference release and concrete current child scalar slot0 loop before admitted9257F5 continuation. Both release addresses held/queued. This packet does not establish fullSceneNode constructor/destructor lifetime or Native exception execution.",
+    "928630 exact +148->927D20 requires concrete actual callback+0C event-word dispatch; its three-state failure map requires complete925780. Keep unavailable; no split-held-lock interface or skipped notification/cleanup."
   ],
   "artifacts": [
     {
@@ -916,8 +1050,8 @@
     },
     {
       "path": "docs/NATIVE_UNIT_OWNER_ENTITY.md",
-      "bytes": 28313,
-      "sha256": "b0691265e60f86918fb97b82b8b05050f602d226f816d11113d86eb77d79da1d"
+      "bytes": 32221,
+      "sha256": "e323eda0df74487d19cc7f3c85d181b77d04439944cea1b9310a510bf7074ac9"
     },
     {
       "path": "include/bsp/native_camera_matrix_copy.hpp",
@@ -925,9 +1059,29 @@
       "sha256": "70e741350edb66be14fc9d1b981181fe5ecf8c536f33eab47221469d8d3f1a7a"
     },
     {
+      "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+      "bytes": 2257,
+      "sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1"
+    },
+    {
+      "path": "include/bsp/native_entity_id_tables.hpp",
+      "bytes": 2513,
+      "sha256": "0b77ca62b83a1835b9351276ed8d1c8aadbb95977637825c2bfc60bb345c015a"
+    },
+    {
       "path": "include/bsp/native_entity_intrusive_unlink.hpp",
       "bytes": 1614,
       "sha256": "a7de3cc8ac55091e7af314f932a012f3cd670febd6edcc3bde87015e69ecb8fc"
+    },
+    {
+      "path": "include/bsp/native_entity_registry_lifetime.hpp",
+      "bytes": 6613,
+      "sha256": "53402350a05919945b977cef21c9db64dc7d605b1de6fe1b5baa9b123c54f10c"
+    },
+    {
+      "path": "include/bsp/native_entity_root_kind.hpp",
+      "bytes": 1109,
+      "sha256": "3af43f96079f46fcf858787a4afd611ad86d3e45df8c8a4e0535cc3a89040378"
     },
     {
       "path": "include/bsp/native_game_array_lifetime.hpp",
@@ -980,9 +1134,19 @@
       "sha256": "7c6ec51a0a98a3e1033d32ab1b88d1ab03987088025b6343575093c752e7d3fe"
     },
     {
+      "path": "include/bsp/observer_event_producer.hpp",
+      "bytes": 5926,
+      "sha256": "212341eb85cfb43371a79b9155dbf2bb49d208dfe6d3cffec1b89c6e70d31ea4"
+    },
+    {
       "path": "include/bsp/observer_lifetime.hpp",
       "bytes": 7290,
       "sha256": "54cbbee3143c23385b9598b07e9a74cb173ea31886cae125f3819ab6fc283f82"
+    },
+    {
+      "path": "local/audit_native_unit_owner_game.py",
+      "bytes": 3225,
+      "sha256": "592dc21ca9a4eafb63955b1f0fd0626751c50cec39aedd2ab20a66add2504171"
     },
     {
       "path": "local/build_native_unit_owner_peer_prefix_probe.cmd",
@@ -1120,6 +1284,11 @@
       "sha256": "fdfc98d48738135f6a518890f624d6573cdc72348c25633363b527781359a32a"
     },
     {
+      "path": "local/ghidra-annotations-20261014T221954Z.json",
+      "bytes": 3805,
+      "sha256": "54e4d69e9d2ecf9c7251fa9f3c71a264e92089c950b98384a8db5f590ba71882"
+    },
+    {
       "path": "local/native_unit_owner_088808eda_receipts/docs/NATIVE_UNIT_OWNER_ENTITY.md",
       "bytes": 20781,
       "sha256": "e1a7d9bdf9ba9dcb06b7d42d263bb1dc5ab2c424e9a5ff2e7a7dd9f21deb2f50"
@@ -1210,6 +1379,11 @@
       "sha256": "9986cbe37d964c14d3ec43c3d6f66403ed2c0208c49e66ce3c6de52efe373db2"
     },
     {
+      "path": "local/native_unit_owner_deb673fe9_receipts/reports/native_unit_owner_entity.json",
+      "bytes": 101464,
+      "sha256": "65bdcb9e7d0c4922340cbbb290ddb69d3dcc5a6d2f227329f273991695330b04"
+    },
+    {
       "path": "local/native_unit_owner_e4e1377df_receipts/docs/NATIVE_UNIT_OWNER_ENTITY.md",
       "bytes": 12916,
       "sha256": "97e177e64b3da5f813847dd2073dc146cb9f4ed991d7e8bfb78224c24b6c974a"
@@ -1243,6 +1417,76 @@
       "path": "local/native_unit_owner_export.log",
       "bytes": 410,
       "sha256": "a95c787c4c3289d652b018146572fb613b0314af78882329f59dea2a4c8e1858"
+    },
+    {
+      "path": "local/native_unit_owner_game_47f190_listing.txt",
+      "bytes": 279,
+      "sha256": "21a1915220c523d1e8e5a9c3f14b3cb59d517a9fe5731fc55fb33ece62b52f2a"
+    },
+    {
+      "path": "local/native_unit_owner_game_47f190_live.txt",
+      "bytes": 175,
+      "sha256": "ed7024475a96fc6391478a19b7744c789af3aca23686f05f96124ec4dfb603f2"
+    },
+    {
+      "path": "local/native_unit_owner_game_927d20_listing.txt",
+      "bytes": 2779,
+      "sha256": "7d08e7f17458346b1e60ac10adeec48b533c21a0decb1172d0c320f3b0e399be"
+    },
+    {
+      "path": "local/native_unit_owner_game_927d20_live.txt",
+      "bytes": 1443,
+      "sha256": "0d960ce00320a64e6aab3d14c55ace83e8c7bd002552396518b789974a1ea936"
+    },
+    {
+      "path": "local/native_unit_owner_game_928630_listing.txt",
+      "bytes": 2681,
+      "sha256": "894fa596788a2e147fa138b060164f91a612a16d9a49aee46713284cbaf6f652"
+    },
+    {
+      "path": "local/native_unit_owner_game_928630_live.txt",
+      "bytes": 1694,
+      "sha256": "2f99f77509736bc964894408396152ea7eaa9f6a29d9dbf5950e9b3b4187fd2c"
+    },
+    {
+      "path": "local/native_unit_owner_game_annotations.log",
+      "bytes": 205,
+      "sha256": "91b3664e4edc25d729d6d73c5525160190d76f1d19ec2267c96a33684fda31ef"
+    },
+    {
+      "path": "local/native_unit_owner_game_callback_frontier.txt",
+      "bytes": 423,
+      "sha256": "a5b8419607406060bed50d60064b820bd7766c4ffd8bf0fed9d3ffcb77c29fdc"
+    },
+    {
+      "path": "local/native_unit_owner_game_calls.log",
+      "bytes": 71,
+      "sha256": "a6eb2fc88683b4e98b809bb12515365f7514e316826bb1a67b1cbf98d1fe4f0e"
+    },
+    {
+      "path": "local/native_unit_owner_game_eh_live.txt",
+      "bytes": 517,
+      "sha256": "a48b0f8c6d8883c0a13bfce36b4f007c029c3491b437a04f4cdadd1c01107ffc"
+    },
+    {
+      "path": "local/native_unit_owner_game_image_proof.json",
+      "bytes": 4245,
+      "sha256": "810ea7a62fc72a5f99a567b238aabb42c53736a1ca2cde2261fd0aa8c6fbd563"
+    },
+    {
+      "path": "local/native_unit_owner_game_ownership.txt",
+      "bytes": 555,
+      "sha256": "fd65f90c3c3ee584d49c8742d1a02489532831c8e0f477e3b3c2d36343616722"
+    },
+    {
+      "path": "local/native_unit_owner_game_profiles_live.txt",
+      "bytes": 58,
+      "sha256": "e2820586b1a18d877d2afdd9352c7004c75e34e831fb43f65dee0c3b1aec2661"
+    },
+    {
+      "path": "local/native_unit_owner_game_typed_flow.json",
+      "bytes": 26126,
+      "sha256": "88bcc8de1cabdadadc37a548ce2610c49928916d1a5d7c00bf1e316b1410842e"
     },
     {
       "path": "local/native_unit_owner_image_proof.json",
@@ -1945,6 +2189,11 @@
       "sha256": "8733459502c953541c6465cb3f3efb4766977ec623ecbbf18a65166367661a99"
     },
     {
+      "path": "reports/cc11_session_entity_id_table_storage.json",
+      "bytes": 130216,
+      "sha256": "a246a90f2c1a08cac0c7248166ab0b9b805f52c274ce2e240ff0dfe934e1df5a"
+    },
+    {
       "path": "reports/cc12_native_entity_intrusive_unlink_source.json",
       "bytes": 24208,
       "sha256": "1b06be9817a44777f0a58635fc407c3a7f81705c5b3be9c7a5035cb61c62c9bc"
@@ -1953,6 +2202,11 @@
       "path": "reports/native_camera_matrix_copy_audit.json",
       "bytes": 12090,
       "sha256": "63595e7877fcf424c15e0ba3b134de2a198b1847aa803bf684a43dd9b759cd01"
+    },
+    {
+      "path": "reports/native_entity_root_kind_cc11.json",
+      "bytes": 28163,
+      "sha256": "5560c9fa23139e60b496af6d1b233ae125b3fcab611f0a5cb8df9d76c50eb2eb"
     },
     {
       "path": "reports/native_game_array_lifetime_r122.json",
@@ -1980,14 +2234,39 @@
       "sha256": "50d8e8767cbde88be57643460414fd676df39854d33c27520e02932fc5a53cd4"
     },
     {
+      "path": "reports/observer_event_producer.json",
+      "bytes": 19410,
+      "sha256": "ec92dda3423cce54c9ad75794b8d994a71e8b45bddfa05c1940840ea7b9f8d93"
+    },
+    {
       "path": "src/native_camera_matrix_copy.cpp",
       "bytes": 1626,
       "sha256": "31840777adef31ac0717e7bc4cb148ecd9aa45be8e5d2d52eb79f3c8a00a708d"
     },
     {
+      "path": "src/native_diagnostic_sink_lifetime.cpp",
+      "bytes": 5460,
+      "sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4"
+    },
+    {
+      "path": "src/native_entity_id_tables.cpp",
+      "bytes": 7158,
+      "sha256": "bc83f100bbcf3c66de75a5e054962a4fd5b6bf44c2270cf0ea719ceaf400f145"
+    },
+    {
       "path": "src/native_entity_intrusive_unlink.cpp",
       "bytes": 2988,
       "sha256": "5f918b5807cb78086d9d0e107a9d45bd1e665ba65735fdc6ec439bb40bb7aa8e"
+    },
+    {
+      "path": "src/native_entity_registry_lifetime.inc",
+      "bytes": 9885,
+      "sha256": "66fcae058cc4900fc235261258627f022ca763000a01c909e2638388a06c5554"
+    },
+    {
+      "path": "src/native_entity_root_kind.cpp",
+      "bytes": 1106,
+      "sha256": "281545a2b384a5d9d618111bf0c46165dbc3f424413b839b7302d0f0e6b0ee9e"
     },
     {
       "path": "src/native_game_array_lifetime.cpp",
@@ -2035,6 +2314,11 @@
       "sha256": "95f2700be5f8621b620b3a4df6b7e0cd708e0a358b73d2ebde7660b41ddfd225"
     },
     {
+      "path": "src/observer_event_producer.cpp",
+      "bytes": 4450,
+      "sha256": "c29284ac52ea92d3f7340d9035741cc357e7b5b88937cd410be58bdaa18af336"
+    },
+    {
       "path": "src/observer_lifetime.cpp",
       "bytes": 14092,
       "sha256": "b6d0c6d299e055d742dfd75fc5a126762553c513c6353c67bc269aa8d97d2e26"
@@ -2045,7 +2329,7 @@
       "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
     }
   ],
-  "previous_packet_receipt": "local/native_unit_owner_d318001e7_receipts/reports/native_unit_owner_entity.json",
+  "previous_packet_receipt": "local/native_unit_owner_deb673fe9_receipts/reports/native_unit_owner_entity.json",
   "peer_original_image_proof": {
     "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
     "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
@@ -2476,5 +2760,101 @@
       "address": "006e0860",
       "packet": "cc12_unit_receiver_observer_owner"
     }
+  },
+  "game_constructor_completed": false,
+  "game_ctor_original_image_proof": "local/native_unit_owner_game_image_proof.json",
+  "game_constructor_frontier": {
+    "address": "00928630",
+    "end_inclusive": "0092878f",
+    "bytes": 352,
+    "instructions": 81,
+    "kind": "read_only_dependency_and_failure_ownership_audit",
+    "new_source_functions": 0,
+    "new_source_fragments": 0,
+    "reconstruction_credit": 0,
+    "full_constructor_source_ready": false,
+    "source_components_retained": 20,
+    "actual_ready_dependencies": [
+      {
+        "address": "00925ce0",
+        "provider": "construct_native_unit_owner_scene_base_00925ce0",
+        "contract": "Same actual root; established atomic+28 and actual weak/observer/string domains."
+      },
+      {
+        "address": "00928240",
+        "provider": "get_native_scene_registry_lock_00928240",
+        "contract": "Actual process FC publication, actual canonical01090AA0 manager; capture returned owner+4."
+      },
+      {
+        "address": "009517c0",
+        "provider": "allocate_native_entity_id_009517c0",
+        "contract": "Actual permanent adjacent54h F89A08/F89A5C owner pair from NativeEntityRegistryProcess; full requested DWORD, consume AX."
+      },
+      {
+        "address": "00926be0",
+        "provider": "enqueue_native_pending_init_00926be0",
+        "contract": "Actual process CC list, distinct E4 lock and canonical manager; same borrowed root, no deduplication; outer FC lock stays held."
+      },
+      {
+        "address": "0047f190",
+        "provider": "native_entity_root_is_kind_0047f190",
+        "contract": "Actual D1933C cell; current root+C4 dynamic test, no semantic class projection."
+      }
+    ],
+    "selector": "Only low byte of first DWORD selects primary;0x100 selects alternate. Full second DWORD is forwarded unchanged.",
+    "role_boundary": {
+      "site": "00928711",
+      "slot_cell": "00d19428",
+      "native_target": "00927d20",
+      "arguments": [
+        "000001ff",
+        "00000009"
+      ],
+      "required_effects": "Current+5C call per selected role and unconditional696350(event5,value0); fixed state9 does not erase notifier.",
+      "actual_class_slot_cell": "00d1933c",
+      "actual_class_target": "0047f190",
+      "missing_provider": "Concrete actual callback-owner+0C dispatch for ObserverEventWordCallbackAccess. Existing interface/consumers are not a complete provider; no dummy callback or empty-endpoint assumption added."
+    },
+    "failure_ownership": {
+      "handler": "00ca6fae",
+      "func_info": "00dda3b8",
+      "magic": "19930522",
+      "max_state": 3,
+      "map": "00dda3a0",
+      "entries": [
+        {
+          "state": 0,
+          "to_state": -1,
+          "action": "00ca6f90",
+          "tail_site": "00ca6f93",
+          "target": "00925780",
+          "owner": "root from EBP-18",
+          "complete_source": false
+        },
+        {
+          "state": 1,
+          "to_state": 0,
+          "action": "00ca6f98",
+          "tail_site": "00ca6fa1",
+          "target": "0041dd20",
+          "owner": "same root+178",
+          "complete_source": true
+        },
+        {
+          "state": 2,
+          "to_state": 1,
+          "action": "00ca6fa6",
+          "tail_site": "00ca6fa9",
+          "target": "00411ee0",
+          "owner": "actual captured guard at EBP-14",
+          "complete_source": true
+        }
+      ],
+      "missing_base_owners": "Full925780 still requires held740270/7400C0 and current child scalar-delete loop. Existing continuation cannot substitute for failed-base destruction.",
+      "native_eh_executed": false
+    },
+    "decision": "Keep928630 unavailable; no new split API exporting the held scene lock, skipped cleanup, callback substitute or source fragment.",
+    "queue": "cc12_unit_receiver_base_dependencies",
+    "old_readiness_correction": "Registry/ID/pending owners previously unresolved in historical scene-base readiness are concrete now; this does not close role dispatch or failed-base lifetime."
   }
 }
