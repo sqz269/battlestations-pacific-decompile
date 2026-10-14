@@ -18538,4 +18538,152 @@
       }
     }
   }
+,
+  "fresh_F7_current_Native_DATA_adoption_checkpoint": {
+    "schema": "cc12_type1011_F7_Native_DATA_adoption_public_checkpoint_v1",
+    "Source_credit": 0,
+    "Root_acceptance": false,
+    "status": "DATA_adoption_completed_actual_graph_review_pending",
+    "checkpoint_scope": "Completed DATA-only issuer and adopter, accepted Source reviews, and bounded final metadata counts. Actual adopted-graph DATA acceptance is outside this checkpoint.",
+    "actual_DATA_adoption": {
+      "completed": true,
+      "original_genuine_native": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\Root_F7_native01_historical_metadata_successor_adopter_attempt02_original_genuine_native_DATA01.json",
+        "bytes": 8087798,
+        "sha256": "273fc49aaad7514e45e29ab7435e269e80f693adf7ad79df12393d3c8d8530ee"
+      },
+      "original_execution_tool_count": 5,
+      "original_terminal_chunk_id": "40616c",
+      "original_terminal_exit_code": 0,
+      "original_stdout_status": "ROOT_AUTHORIZED_DATA_ADOPTION_ONLY",
+      "original_stdout_Root_acceptance": false,
+      "original_stdout_Source_credit": 0,
+      "original_stdout_actual_execution_event": null,
+      "dispatch_executed": false,
+      "original_assembler_zero_observed": false,
+      "original_assembler_exit_stdout_and_post_seal_results_recovered": false,
+      "DATA_adopter_zero_is_original_assembler_zero": false
+    },
+    "actual_DATA_only_authority": {
+      "original_genuine_native": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\Root_F7_native01_historical_metadata_successor_DATA_authority_original_genuine_native_DATA01.json",
+        "bytes": 26137,
+        "sha256": "7860e4e8d6ab73a4eee4c00769f5e187d248afc7ff802263996d6abed3da2d7b"
+      },
+      "allow_DATA_adoption": true,
+      "allow_dispatch": false,
+      "ancestor_binding_count": 9,
+      "successor_binding_count": 6,
+      "authority_scope": "Separate Root DATA-adoption authorization only"
+    },
+    "accepted_Source_reviews": {
+      "historical_metadata_successor_Source12": {
+        "receipt": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\Root_F7_review01_historical_metadata_successor_Source_acceptance_DATA01.json",
+          "bytes": 3223127,
+          "sha256": "8b460f8397270739e778059ef48c95fe3128aa9c94f5f8e4a6c46ace5ee751de"
+        },
+        "original_genuine_native": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\Root_F7_historical_metadata_successor_Source_acceptance_original_genuine_native_DATA01.json",
+          "bytes": 30056,
+          "sha256": "3fe34a3516422a67eee15dd21ed7ac7d445bdbf29120533f6c6df82a124e5f3a"
+        },
+        "positive_predicates": 7650,
+        "current_input_pins": 62,
+        "Source_acceptance_only": true
+      },
+      "actual_graph_consumer_Source02_in_Source13": {
+        "receipt": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\Root_F7_review01_actual_successor_graph_consumer_Source02_acceptance_DATA02.json",
+          "bytes": 12348278,
+          "sha256": "7e48c7b2f487c9ef3780d037d9b6a82d2b477e68b08d203c395bebb94cfff66d"
+        },
+        "original_genuine_native": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\Root_F7_actual_successor_graph_consumer_Source02_acceptance_original_genuine_native_DATA01.json",
+          "bytes": 32813,
+          "sha256": "04e58c5beb8ad4859f67307cc14b6eac2d9618febe66eb4f00f1b8604a780154"
+        },
+        "positive_predicates": 16765,
+        "current_input_pins": 89,
+        "Source_acceptance_only": true
+      }
+    },
+    "current_final_DATA_metadata": {
+      "Root_selection": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_type1011F7D08_adopter01\\type1011_f7_native01_adopted01\\Root_selection.json",
+        "bytes": 7835735,
+        "sha256": "f146c1dbe6d945cd98326b25639f56b2df9985f5cf366653774b334516989732"
+      },
+      "Root_seal": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_type1011F7D08_adopter01\\type1011_f7_native01_adopted01\\Root_seal.json",
+        "bytes": 727291,
+        "sha256": "e7fcfc4863d06776141ad5aa5068c0aa694479adc168afc10fec39e2755dd23b"
+      },
+      "fixture_selection": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_type1011F7D08_adopter01\\type1011_f7_native01_adopted01\\fixture_selection.json",
+        "bytes": 21336076,
+        "sha256": "f2f084d411dac6dc8db44f56903427c91dc7c5b383687417bede09f3af92171a"
+      },
+      "fixture_file_count": 16099,
+      "fixture_scope_count": 70,
+      "fixture_membership_count": 37223,
+      "Root_seal_file_count": 1569,
+      "Root_seal_member_count": 1572,
+      "count_evidence_scope": "Whole pinned final metadata JSON files only; no referenced artifact or provider leaf scan.",
+      "Root_seal_DATA_adoption_acceptance": true,
+      "actual_graph_DATA_acceptance": false
+    },
+    "separate_preserved_failures_and_repairs": {
+      "successor_adopter_attempt01": {
+        "original_genuine_failure": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\Root_F7_native01_historical_metadata_successor_adopter_attempt01_original_genuine_failure_DATA01.json",
+          "bytes": 17008,
+          "sha256": "83457dc31bbf9036cccbeda52cc2d24f982e683ef62e274bfa06a6556f86a582"
+        },
+        "original_terminal_exit_code": 1,
+        "failed_before_target_creation": true,
+        "failure": "An unlisted generated tools/__pycache__/ghidra_launch.cpython-313.pyc member failed the complete inherited scope inventory."
+      },
+      "generated_cache_quarantine": {
+        "original_observations": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\Root_F7_generated_cache_quarantine_original_observations_DATA01.json",
+          "bytes": 18359,
+          "sha256": "8aa93e63f95ec82db655077aafef0b24343820c3bce26e8411ecafa4cee5327c"
+        },
+        "original_generated_file_preserved": true,
+        "exact_old_four_cache_members_and_payloads_restored": true,
+        "cache_generation_cause_demonstrated": false,
+        "immutable_D03_and_selected_frozen_files_mutated": false,
+        "candidate_and_authority_mutated": false
+      },
+      "declined_Graph_Source13_peer_count": {
+        "original_failure": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F7_retry_materialization_control01\\Root_F7_actual_successor_graph_Source13_attempt01_original_failure_DATA01.json",
+          "bytes": 6997,
+          "sha256": "5e7d1dbadf004230e8e320a114fa9237570adfc5b1f72dccf4f4e961bb582092"
+        },
+        "declared_predicates": 11487,
+        "actual_positive_predicates": 11488,
+        "acceptance_issued_by_declined_attempt": false,
+        "accepted_Source13_uses_separate_corrected_peer": true
+      }
+    },
+    "remaining": [
+      "Complete actual adopted-graph DATA review and Root acceptance",
+      "Complete actual transport production, independent DATA review and Root acceptance",
+      "Actual readiness and preclock DATA review and Root authority",
+      "Any later Native Dispatch, clock, fixture execution and resulting qualification"
+    ],
+    "boundary": {
+      "new_Native_clock_started": false,
+      "Native_phase_executed": false,
+      "Native_fixture_qualified": false,
+      "ABI_qualified": false,
+      "game_qualified": false,
+      "runtime_authority_granted": false,
+      "original_assembler_terminal_recovered": false,
+      "prior_public_checkpoint_values_changed": false,
+      "goal_status_changed": false
+    }
+  }
 }

@@ -583,3 +583,14 @@ Root accepted Source-only transport (6,498 checks / 44 pins), readiness (22,008 
 This independent checkpoint reader passed 99 checks across 18 current evidence pins and recursively validated 335,306 saved predicate occurrences and 61,563 saved physical-row occurrences. All 17 exact evidence files were freshly read and closed with identical books. Saved target observations were validated as DATA; no restoration target, adopted target, provider leaf or candidate was opened or executed. Full genuine tool chains and the failed first reader/diagnostic attempts are preserved in checkpoint_evidence.DATA.json and original_review_genuine.DATA.json.
 
 The original Native assembler terminal and post-seal results remain unrecovered. No Native clock, Native fixture, ABI qualification, game qualification or runtime authority is established. The continuing Source-scope goal remains active. This packet does not write Main or alter goal status.
+
+
+## F7 historical-metadata successor DATA adoption checkpoint
+
+The historical-metadata successor DATA-only issuer and the unchanged successor adopter completed with genuine exit zero. The adopter's complete chain contains five original tool records and ends at chunk 40616c. Its stdout reports ROOT_AUTHORIZED_DATA_ADOPTION_ONLY, with Source_credit=0, Root_acceptance=false, no actual execution event and no dispatch. This DATA-adopter terminal does not recover the still-missing original Native assembler exit, stdout or post-seal results.
+
+The final pinned metadata contains 16,099 fixture files, 70 scopes and 37,223 memberships; the Root seal contains 1,569 files and 1,572 members. These are metadata counts, with no referenced artifact or provider-leaf scan in this checkpoint. The DATA-only authority binds nine ancestors and six successors. Root accepted the successor Source12 review (7,650 predicates / 62 pins) and the actual-graph consumer Source02 review in Source13 (16,765 / 89).
+
+The failed successor-adopter attempt remains separate: an unlisted generated ghidra_launch.cpython-313.pyc cache member prevented target creation. The generated file was preserved in quarantine and the prior four-member cache inventory was restored; the cause of cache generation remains unproven. The declined Graph Source13 peer-count attempt is also preserved separately: its declared 11,487 predicates omitted the final, positive 11,488th predicate. A separate corrected peer supplied the accepted Source review.
+
+Complete actual adopted-graph DATA acceptance, transport, readiness and preclock remain pending in this checkpoint. No Native clock, Native fixture, ABI or game qualification, or runtime authority is granted. Earlier public checkpoint values remain unchanged. The report's fresh_F7_current_Native_DATA_adoption_checkpoint contains the exact whole-file evidence pins.
