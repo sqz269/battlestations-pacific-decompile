@@ -300,12 +300,15 @@ float pick_screen_distance_00522050(UnitPickHost& host, const float point[3]) {
     float x = 0.0f;
     float y = 0.0f;
     if (host.project_0043a660(point, x, y) != 7u) return kPickOffScreen;
-    // 00522069..005220A7: both differences are stored as floats, the x one
-    // squared and stored, then y*y added in the x87 and stored.
+    // 00522069..005220A7: both differences are stored as floats (dx to
+    // [esp+14h], dy to [esp]). Then dy*dy is stored to float (0052208D),
+    // dx*dx is stored to float (0052209B), and the two stored floats are
+    // added (FADD m32 at 0052209F) and stored once more.
     const float dx = static_cast<float>(kPickScreenCentre - static_cast<double>(x));
     const float dy = static_cast<float>(kPickScreenCentre - static_cast<double>(y));
+    const float dy2 = static_cast<float>(static_cast<double>(dy) * dy);
     const float dx2 = static_cast<float>(static_cast<double>(dx) * dx);
-    return static_cast<float>(static_cast<double>(dy) * dy + dx2);
+    return static_cast<float>(static_cast<double>(dy2) + dx2);
 }
 
 }  // namespace
