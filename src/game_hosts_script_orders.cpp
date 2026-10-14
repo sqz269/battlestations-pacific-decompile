@@ -4103,7 +4103,9 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         // 0089B840: 00888AA0 on argument 0, 006F1F90 on that entity with no class
         // test, then 00B66480 on the result as it is; one result. 006F1F90
         // (006F1F90-006F1FB2): +7A4h == 0 -> 0.0, else FLD [+7A8h] / FIDIV [+7A4h] /
-        // FSTP, with no FABS, so a side-1 capture pushes a NEGATIVE fraction.
+        // FSTP; the binding then applies FABS at 0089B966 before the push, so the
+        // pushed fraction is never negative (kLuaCapturePercentageFabsBound; the
+        // switch off pushes the signed fraction).
         // SUBSTITUTION, labelled: an entity that is not one of the ship-AI host's
         // capture buildings answers 0.0; the image reads those two offsets of
         // whatever object it is handed.
@@ -4117,7 +4119,8 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             ++capture_percentage_unresolved_;
             fraction = 0.0f;
         }
-        push_number_float_00b66480(fraction);   // signed
+        if (kLuaCapturePercentageFabsBound) fraction = std::fabs(fraction);   // 0089B966
+        push_number_float_00b66480(fraction);
         results = state_ != nullptr ? 1 : 0;
     } else if (std::strcmp(binding->name, "CountdownTimeLeft") == 0) {
         // 008B1B40 computes the time left without testing +3Ch.

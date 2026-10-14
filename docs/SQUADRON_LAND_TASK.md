@@ -16756,3 +16756,25 @@ OFF until a row reaches it (cc13 predicted +0..12 USN21 torpedo drops); don't sp
 
 The startup.cmake line in 8885c9175 is redundant (main 3f9bbabd6 had already moved launch_ver_cc13.cpp and
 script_natives_fix5_cc13.cpp to bsp_core) but harmless; the lead left it in.
+
+## 5he. D2's finder read, the cc13 Lua items and the lane re-checks (cc9-lua59, 2026-10-14)
+
+**D2 finder: no stand-in defect.** 007B96F0 is a forwarder: `unit+C50h != 0 ? 007E2090(7 args) : 0` (RET 1Ch). The
+host's `df_finder_scan_007e2090` is 007E2090 itself (cache +B0h, clock +84h against +8Ch = 2.0, the +50h enemy list,
+the +5Ch/+5Dh/+5Eh/+60h live test, optional squadron filter, optional U(0, noise), best above threshold). The gun's
+arguments at 009FC8B5-009FC90E match the host's: cone = max(+2Ch = 0.4 (00CE7804), +40h * 1.25 (00CF87C0)), inner
++38h = max(row+220h * 3.0, 0.08) (0099C82E-0099C864, row+220h = AimDistortAngle1, 0.03 on the SPNormal row, so 0.09),
+range +30h, near +34h * 0.3 (00CE3DC8), threshold +28h, squadron 0, noise 0.0. Two residual differences, neither on
+the dogfight path: (a) the search runs only while `1.0 (00D7A24C) > +28h`, with +28h as the threshold; the strafe state
+writes +28h = 0.6 (009CB497), so the image's strafe gun search keeps only scores above 0.6 where the host passes -1.0;
+(b) the image seeds the +84h clock at U(0, 2) + 2 (007E1E20), the host at 3.0, so host rescans are in phase across
+planes. The D2 direction miss of 5gz.2 is therefore not a finder artefact.
+
+**cc13 Lua items (committed OFF, predictions).**
+- `kLuaCapturePercentageFabsBound` (0089B966 D9 E1, confirmed on the disk bytes): the host pushed the signed fraction.
+  Readers in this installation: jm05.lua (display text), jm13.lua (display), usn_14:1127 (`> 0` sets LandingStarted;
+  armed only by the HQ hpEvent listener). Prediction: JM05 gameplay identical, capture text non-negative.
+- `kForcedReconOwnRecordBound` (00805CF0 at 008AAA76 on entity + party * 34h + 1E8h, before the +3D0h members at
+  008AAAB8): the host forced members only. Prediction: JM08 (B-17 #2.1, units=4) and USN12 (bruh #1.1) gameplay
+  identical; the slot forced is the squadron's lead, already a member.
+- AddAirBaseStock 00896BF5 (0095BA60 party preload mark): labelled as a substitution and recorded per call, no switch.
