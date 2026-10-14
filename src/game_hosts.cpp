@@ -1164,10 +1164,11 @@ void GameFrameHost::profiler_end_frame() {
         return;
     }
     // 00be34d0 closes slots 1 .. registered - 1, converts the accumulated ticks through
-    // the scale at 0109db48 and advances the ring index modulo 14h.
+    // the scale at 0109db48, clears the run-time count 0109cf18 and advances the ring
+    // index modulo 14h.
     static_cast<void>(profiler_end_frame_00be34d0(profiler_->counters(),
-        profiler_->registered_slot_count(), profiler_->app_update_slot(),
-        profiler_->tick_scale()));
+        profiler_->static_slot_count(), profiler_->runtime_slot_count(),
+        profiler_->app_update_slot(), profiler_->tick_scale()));
     log_.implemented("ApplicationFrameHost::profiler_end_frame", "00be34d0");
 }
 

@@ -155,9 +155,12 @@ void profiler_set_slot_color(ProfilerCounters& profiler, int slot, std::uint32_t
 // 00be34d0. __thiscall, ECX = the profiler, no stack arguments, RET, returns an
 // int. Closes the frame for slots 1 through registered_slot_count - 1: slot 0
 // is skipped by the loop's initial EDI, and the bound is the sum of the static
-// count at 00e15118 and the run-time count at 0109cf18. The native also clears
-// 0109cf18 at 00be361d; that global is not modelled here, so a caller that
-// tracks run-time registrations must clear its own copy after this call.
+// count at 00e15118 and the run-time count at 0109cf18, both re-read on every
+// pass (00be35fc / 00be3602). It then clears 0109cf18 (00be361d) whether or not
+// the loop ran. Nothing is null- or range-checked: the app record, the records,
+// both rings, the current array and the display array are indexed directly, and
+// the app record is read even when app_update_slot is 0 (cc13-seg56b removed the
+// guards an earlier version added).
 // app_update_slot is the PERF_APP_UPDATE index held at 0109d014; every
 // normalised offset is measured from that record's first entry.
 // tick_scale is the double at 0109db48, zero in the image and filled at run
@@ -168,8 +171,8 @@ void profiler_set_slot_color(ProfilerCounters& profiler, int slot, std::uint32_t
 // Converted values are therefore seconds; docs/CC13_ENGINE_CORE.md.)
 // The return value is (ring_index + 1) / kProfilerHistoryFrames, which is 1 on
 // the frame the ring wraps and 0 otherwise. The application frame discards it.
-int profiler_end_frame_00be34d0(ProfilerCounters& profiler, int registered_slot_count,
-    int app_update_slot, double tick_scale);
+int profiler_end_frame_00be34d0(ProfilerCounters& profiler, const int& static_slot_count_00e15118,
+    int& runtime_slot_count_0109cf18, int app_update_slot, double tick_scale);
 
 // ---------------------------------------------------------------------------
 // Message-loop pretranslation

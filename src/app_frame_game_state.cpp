@@ -84,24 +84,20 @@ void profiler_set_slot_color(ProfilerCounters& profiler, int slot, std::uint32_t
     profiler.colors[slot] = argb;
 }
 
-int profiler_end_frame_00be34d0(ProfilerCounters& profiler, int registered_slot_count,
-    int app_update_slot, double tick_scale) {
-    // 00be34ef. Nothing runs when the bound leaves no slot above zero, and the
-    // ring index still advances at 00be3627.
-    const ProfilerCounterRecord* app_record = record_for_slot(profiler, app_update_slot);
-    const std::int64_t frame_origin = app_record != nullptr ? app_record->first_entry : 0;
+int profiler_end_frame_00be34d0(ProfilerCounters& profiler, const int& static_slot_count_00e15118,
+    int& runtime_slot_count_0109cf18, int app_update_slot, double tick_scale) {
+    // 00be34d9..00be34f5. Nothing runs when the bound leaves no slot above zero;
+    // the clear at 00be361d and the ring advance at 00be3627 still happen. The
+    // records, rings and display array are indexed without any null or range
+    // test, as the native does.
     const double display_scale = static_cast<double>(profiler.display_scale);
 
-    for (int slot = 1; slot < registered_slot_count; ++slot) {
-        ProfilerCounterRecord* record = record_for_slot(profiler, slot);
-        if (record == nullptr) {
-            continue;
-        }
+    // 00be35f8..00be3613: the bound is both counts re-read and summed every pass.
+    for (int slot = 1; slot < static_slot_count_00e15118 + runtime_slot_count_0109cf18; ++slot) {
+        ProfilerCounterRecord* record = profiler.records + slot;
         const int offset = ring_offset(profiler, slot);
 
-        if (profiler.display != nullptr) {
-            profiler.display[slot].hit_count = record->hit_count; // 00be3520
-        }
+        profiler.display[slot].hit_count = record->hit_count; // 00be3520
 
         // 00be3527..00be353c. The native converts through the x87 stack, so the
         // divide happens at 80 bit precision and rounds once on the store to
@@ -109,13 +105,9 @@ int profiler_end_frame_00be34d0(ProfilerCounters& profiler, int registered_slot_
         // bit for values that fall on a tie.
         const float seconds
             = static_cast<float>(static_cast<double>(record->accumulated_ticks) / tick_scale);
-        if (profiler.history != nullptr) {
-            profiler.history[offset] = seconds;
-            if (profiler.current != nullptr) {
-                // 00be354a, the current value is reloaded from the ring.
-                profiler.current[slot] = profiler.history[offset];
-            }
-        }
+        profiler.history[offset] = seconds;
+        // 00be354a, the current value is reloaded from the ring.
+        profiler.current[slot] = profiler.history[offset];
 
         // 00be3556..00be3561, in native order: the hit count, the depth and both
         // halves of the accumulator. The two timestamps survive, which is what
@@ -125,19 +117,20 @@ int profiler_end_frame_00be34d0(ProfilerCounters& profiler, int registered_slot_
         record->accumulated_ticks = 0;
 
         // 00be356d..00be35a6 and 00be35a9..00be35f4. Both offsets are measured
-        // from the PERF_APP_UPDATE record's first entry, divided by the tick
-        // scale and then by profiler+4h, and biased.
+        // from the PERF_APP_UPDATE record's first entry (slot [0109d014], read
+        // unguarded, slot 0 included), divided by the tick scale and then by
+        // profiler+4h, and biased.
+        const std::int64_t frame_origin = profiler.records[app_update_slot].first_entry;
         const double start_delta = static_cast<double>(record->first_entry - frame_origin);
         const double end_delta = static_cast<double>(record->last_exit - frame_origin);
-        if (profiler.start_offsets != nullptr) {
-            profiler.start_offsets[offset] = static_cast<float>(
-                (start_delta / tick_scale) / display_scale + kProfilerNormalizedBias);
-        }
-        if (profiler.display != nullptr) {
-            profiler.display[slot].end_offset = static_cast<float>(
-                (end_delta / tick_scale) / display_scale + kProfilerNormalizedBias);
-        }
+        profiler.start_offsets[offset] = static_cast<float>(
+            (start_delta / tick_scale) / display_scale + kProfilerNormalizedBias);
+        profiler.display[slot].end_offset = static_cast<float>(
+            (end_delta / tick_scale) / display_scale + kProfilerNormalizedBias);
     }
+
+    // 00be361d: the run-time registration count is cleared every frame.
+    runtime_slot_count_0109cf18 = 0;
 
     // 00be3627..00be3637. The remainder becomes the new ring index and the
     // quotient is returned, so the result is 1 exactly on the wrapping frame.

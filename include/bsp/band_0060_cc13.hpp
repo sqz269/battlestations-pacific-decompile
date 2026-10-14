@@ -64,10 +64,19 @@ void clamp_to_screen_margins_00638b90(float& x, float& y, const ScreenMargins& m
 // 00622E30 BSP_RewardsScreen_StepPage, __thiscall(ECX screen, int direction), RET 4.
 // page is +58h, enabled is the byte table 00E08C88[6]. direction > 0 scans i = page+1 ..
 // page+5 for the first enabled i % 6; direction < 0 scans i = page+5 down to 1 (so for page > 0
-// the scan reaches page itself); direction == 0 keeps the page. Every path tail-jumps to
-// 00621C60(page) (BSP_RewardsScreen_RefreshPage), which stays with the caller: the returned value
-// is the page it receives and the new +58h.
-int rewards_step_page_00622e30(int page, const std::array<bool, 6>& enabled, int direction) noexcept;
+// the scan reaches page itself); direction == 0 keeps the page. A hit stores i % 6 to +58h
+// (00622E9F / 00622F09); every path then tail-jumps to 00621C60(screen, +58h)
+// (BSP_RewardsScreen_RefreshPage; JMPs at 00622E85 / 00622EA9 / 00622EEF / 00622F14). The forward
+// bound page+6 re-reads +58h every pass (00622E70); the table is read live at each test.
+struct RewardsStepPageHost {
+    virtual ~RewardsStepPageHost() = default;
+    virtual std::int32_t screen_page_58(void* screen) = 0;                // [ECX+58h]
+    virtual void set_screen_page_58(void* screen, std::int32_t page) = 0;  // [ECX+58h] = page
+    virtual bool page_enabled_00e08c88(std::int32_t index) = 0;           // byte 00E08C88[index]
+    // 00621C60, __thiscall(screen, page), RET 4, reached by tail jump.
+    virtual void rewards_refresh_page_00621c60(void* screen, std::int32_t page) = 0;
+};
+void rewards_step_page_00622e30(void* screen, int direction, RewardsStepPageHost& host);
 
 // 006440C0 BSP_Hud_UnitClassIconIndex, __fastcall(ECX class id), RET.
 int unit_class_icon_index_006440c0(int class_id) noexcept;

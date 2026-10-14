@@ -56,26 +56,26 @@ void clamp_to_screen_margins_00638b90(float& x, float& y, const ScreenMargins& m
     y = clamp_axis(y, margins.y_lo, margins.y_hi);                  // 00638C11..
 }
 
-int rewards_step_page_00622e30(int page, const std::array<bool, 6>& enabled, int direction) noexcept {
+void rewards_step_page_00622e30(void* screen, int direction, RewardsStepPageHost& host) {
     if (direction > 0) {
-        // 00622E39..00622E7B: i = page+1 while i < page+6.
-        for (int i = page + 1; i < page + 6; ++i) {
-            if (enabled[static_cast<std::size_t>(i % 6)]) {
-                return i % 6;  // 00622E9F
+        // 00622E39..00622E7B: i = page+1 while i < [+58h]+6, the bound re-read each pass.
+        for (int i = host.screen_page_58(screen) + 1; i < host.screen_page_58(screen) + 6; ++i) {
+            if (host.page_enabled_00e08c88(i % 6)) {
+                host.set_screen_page_58(screen, i % 6);  // 00622E9F
+                break;
             }
         }
-        return page;
-    }
-    if (direction < 0) {
-        // 00622EB0..00622EE5: i = page+5 while i > 0.
-        for (int i = page + 5; i > 0; --i) {
-            if (enabled[static_cast<std::size_t>(i % 6)]) {
-                return i % 6;  // 00622F09
+    } else if (direction < 0) {
+        // 00622EB0..00622EE5: i = [+58h]+5 while i > 0.
+        for (int i = host.screen_page_58(screen) + 5; i > 0; --i) {
+            if (host.page_enabled_00e08c88(i % 6)) {
+                host.set_screen_page_58(screen, i % 6);  // 00622F09
+                break;
             }
         }
-        return page;
     }
-    return page;  // 00622F0C
+    // Every exit reloads +58h (or reuses the value just stored, 00622EA2) and tail-jumps.
+    host.rewards_refresh_page_00621c60(screen, host.screen_page_58(screen));
 }
 
 int unit_class_icon_index_006440c0(int class_id) noexcept {
