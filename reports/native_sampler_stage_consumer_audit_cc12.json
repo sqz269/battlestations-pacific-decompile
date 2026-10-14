@@ -1,0 +1,507 @@
+{
+  "packet": "cc12_sampler_stage_consumer_audit",
+  "source_base": "23fbb8a1d",
+  "status": "bounded_static_audit_verified_complete_word_guard_unchanged_consumer_closure_unproved",
+  "project_identity": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "configured_project": "bsp",
+    "saved_export_program": "/battlestationspacific.exe",
+    "live_wrapper_program": "/battlestationspacific.exe",
+    "independent_whole_program_proof": false
+  },
+  "field": "data=*(pass+24h); physical stage field=data+8*row+4; header count pass+28 is distinct",
+  "findings": [
+    {
+      "kind": "byte_semantic_reads",
+      "function": "00B43410",
+      "sites": [
+        "00B434B4",
+        "00B434F3"
+      ],
+      "selector_separate_signed_dword": "00B434BE row+00"
+    },
+    {
+      "kind": "full_dword_opaque_transport",
+      "reserve": [
+        "00B40CBF",
+        "00B40CC3"
+      ],
+      "copy": [
+        "00B41ED5",
+        "00B41ED8"
+      ],
+      "template_push": [
+        "00B41521",
+        "00B41524"
+      ],
+      "template_current_live_xrefs": 0,
+      "absolute_pattern_matches": 0,
+      "computed_entry_not_excluded": true
+    },
+    {
+      "kind": "producer",
+      "append": "B5F10B writes BYTE local;B5F13C reads completeDWORD;B5F142 copies all4 bytes to row",
+      "resize": "B40E2D zeroes complete secondDWORD only for newly exposed rows",
+      "base_init": "B5F753/756/759 clear header, not rows/private stack"
+    },
+    {
+      "kind": "retirement",
+      "pairs": "B5F3F0 resize0/free without stage interpretation",
+      "inline_base_tail": "B5F666..B5F67C header resize0/free; raw-byte scope, no full saved flow repair"
+    }
+  ],
+  "canonical_profiles": {
+    "derived": "D61BE8+08=B454D0; wrapper callsB44750, established routeB43410",
+    "base": "D62A80+08=B5E5E0 RET4 no-op",
+    "finalize": "both+0C=B5F6A0; actual pass toB5F160 and state owners18/1C/20 only in audited finalizer",
+    "excluded": "D5E13C raw words/xrefB10404 recorded only; no layout/activation/compatibility inference"
+  },
+  "escape_boundaries": [
+    "B42350 receives whole pass atB4353A/B4353C; large/x87/register alias closure not recovered here",
+    "B435B1 callback through entry/material chain; target family closure unproved",
+    "B44750 established route; no new whole-function/callee closure proof",
+    "B455C0 prefix only; later aliases/callbacks not newly audited",
+    "B5F160 established render-state row representation; no new machine-level callee closure",
+    "other profiles/computed calls/external raw-storage access not excluded"
+  ],
+  "validation": {
+    "tool": "read-only bsp.py ghidra wrappers plus saved exports and original PE/Capstone",
+    "checked_bytes": 996,
+    "spans": 19,
+    "saved_live_key_instruction_matches": 30,
+    "byte_receipt": "local/cc12_sampler_stage_consumer_audit/byte_receipt.json",
+    "byte_receipt_sha256": "C39D4926A45C38602804E51973204D01FB7EEDB866C5B80D8F29A8C536072209",
+    "validator": "local/cc12_sampler_stage_consumer_audit/verify.py",
+    "validator_sha256": "0D1DE7175DC29141629C1538F363E9F68C5252DC64B5D78A8CC4A972C75FD8A0",
+    "log": "local/cc12_sampler_stage_consumer_audit/verify.log",
+    "log_sha256": "9FD99D3DFB22F26BF069198A69AAD9A2C48D091FE27CEFA070BB3D8FCBCD2DE0",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "scopes": [
+      {
+        "label": "reserve",
+        "start": "00b40c80",
+        "end_exclusive": "00b40ce8",
+        "length": 104,
+        "live_equals_original_pe": true,
+        "sha256": "d10f0b3f05e892371be03729f01f1bb009795f4f617c506a5918f4a066a7f58c",
+        "key_instructions": [
+          {
+            "address": "00b40cbf",
+            "saved_equals_live": true,
+            "saved_live": "00b40cbf: MOV EDX,dword ptr [EDX + EAX*0x8 + 0x4]",
+            "original_pe": "mov edx, dword ptr [edx + eax*8 + 4]",
+            "original_instruction_bytes": "8b54c204"
+          },
+          {
+            "address": "00b40cc3",
+            "saved_equals_live": true,
+            "saved_live": "00b40cc3: MOV dword ptr [ECX + 0x4],EDX",
+            "original_pe": "mov dword ptr [ecx + 4], edx",
+            "original_instruction_bytes": "895104"
+          }
+        ],
+        "saved_assembly_sha256": "349bcf98be44af758f74274ebc54f98ebdf92fb7f0e25baf32735425172e204c"
+      },
+      {
+        "label": "resize",
+        "start": "00b40e00",
+        "end_exclusive": "00b40e50",
+        "length": 80,
+        "live_equals_original_pe": true,
+        "sha256": "77b387d77567ef88960753ac104bab6c17a2c38164b74728d2cc1a046610dc34",
+        "key_instructions": [
+          {
+            "address": "00b40e2d",
+            "saved_equals_live": true,
+            "saved_live": "00b40e2d: MOV dword ptr [EAX + 0x4],EDX",
+            "original_pe": "mov dword ptr [eax + 4], edx",
+            "original_instruction_bytes": "895004"
+          }
+        ],
+        "saved_assembly_sha256": "834293531e9cdaabe33109319913cc663dcc866b96ec3db567da71c6d0adcd6c"
+      },
+      {
+        "label": "push_back_template",
+        "start": "00b414f0",
+        "end_exclusive": "00b4152f",
+        "length": 63,
+        "live_equals_original_pe": true,
+        "sha256": "f2758e72f70993959af570dd8dff76310caf13cf7d33ff075ef8491e4d324ae4",
+        "key_instructions": [
+          {
+            "address": "00b41521",
+            "saved_equals_live": true,
+            "saved_live": "00b41521: MOV ECX,dword ptr [ECX + 0x4]",
+            "original_pe": "mov ecx, dword ptr [ecx + 4]",
+            "original_instruction_bytes": "8b4904"
+          },
+          {
+            "address": "00b41524",
+            "saved_equals_live": true,
+            "saved_live": "00b41524: MOV dword ptr [EAX + 0x4],ECX",
+            "original_pe": "mov dword ptr [eax + 4], ecx",
+            "original_instruction_bytes": "894804"
+          }
+        ],
+        "saved_assembly_sha256": "e1def41421990d4ddee2b1aef1360dc80cbe753d07aea19b88583e687af02843"
+      },
+      {
+        "label": "clear",
+        "start": "00b41530",
+        "end_exclusive": "00b41538",
+        "length": 8,
+        "live_equals_original_pe": true,
+        "sha256": "673b839fdaf969c1b17a51a4c91c685c05b7ead1a72203168b52e959074e928b",
+        "key_instructions": [
+          {
+            "address": "00b41532",
+            "saved_equals_live": true,
+            "saved_live": "00b41532: CALL 0x00b40e00",
+            "original_pe": "call 0xb40e00",
+            "original_instruction_bytes": "e8c9f8ffff"
+          }
+        ],
+        "saved_assembly_sha256": "aaeb28aeace442be48a9a72103026e867ba70443177a1134de3c2ab0ad6b65ea"
+      },
+      {
+        "label": "copy_pairs",
+        "start": "00b41e80",
+        "end_exclusive": "00b41ef0",
+        "length": 112,
+        "live_equals_original_pe": true,
+        "sha256": "c0b99c11c2a5b6756dc579ce9d06dffa59c448b4528db79c8720f3cbb6de0fdc",
+        "key_instructions": [
+          {
+            "address": "00b41ed5",
+            "saved_equals_live": true,
+            "saved_live": "00b41ed5: MOV EDX,dword ptr [EBP + 0x4]",
+            "original_pe": "mov edx, dword ptr [ebp + 4]",
+            "original_instruction_bytes": "8b5504"
+          },
+          {
+            "address": "00b41ed8",
+            "saved_equals_live": true,
+            "saved_live": "00b41ed8: MOV dword ptr [EAX + 0x4],EDX",
+            "original_pe": "mov dword ptr [eax + 4], edx",
+            "original_instruction_bytes": "895004"
+          }
+        ],
+        "saved_assembly_sha256": "c4f44df715235128a2d8b63f74d3d22c19595a045d1eea31f517d5d066f04748"
+      },
+      {
+        "label": "append",
+        "start": "00b5f100",
+        "end_exclusive": "00b5f151",
+        "length": 81,
+        "live_equals_original_pe": true,
+        "sha256": "43f1eca0b14a4a2a70304c466e895e6c9c63794db89fa31beadd817cd955bd70",
+        "key_instructions": [
+          {
+            "address": "00b5f10b",
+            "saved_equals_live": true,
+            "saved_live": "00b5f10b: MOV byte ptr [ESP + 0x8],AL",
+            "original_pe": "mov byte ptr [esp + 8], al",
+            "original_instruction_bytes": "88442408"
+          },
+          {
+            "address": "00b5f13c",
+            "saved_equals_live": true,
+            "saved_live": "00b5f13c: MOV ECX,dword ptr [ESP + 0xc]",
+            "original_pe": "mov ecx, dword ptr [esp + 0xc]",
+            "original_instruction_bytes": "8b4c240c"
+          },
+          {
+            "address": "00b5f142",
+            "saved_equals_live": true,
+            "saved_live": "00b5f142: MOV dword ptr [EAX + 0x4],ECX",
+            "original_pe": "mov dword ptr [eax + 4], ecx",
+            "original_instruction_bytes": "894804"
+          }
+        ],
+        "saved_assembly_sha256": "5a1183be949595c03f383b8cfe316680020c8cd5d79858d0b6ff8d2945a6aaf2"
+      },
+      {
+        "label": "destroy_pairs",
+        "start": "00b5f3f0",
+        "end_exclusive": "00b5f407",
+        "length": 23,
+        "live_equals_original_pe": true,
+        "sha256": "3fc33e3db5e95deb724d45c8a5fd90ebdfd27d877a0affba09fffbb28e969a16",
+        "key_instructions": [
+          {
+            "address": "00b5f3f5",
+            "saved_equals_live": true,
+            "saved_live": "00b5f3f5: CALL 0x00b40e00",
+            "original_pe": "call 0xb40e00",
+            "original_instruction_bytes": "e8061afeff"
+          },
+          {
+            "address": "00b5f3fd",
+            "saved_equals_live": true,
+            "saved_live": "00b5f3fd: CALL 0x00bf6989",
+            "original_pe": "call 0xbf6989",
+            "original_instruction_bytes": "e887750900"
+          }
+        ],
+        "saved_assembly_sha256": "8b3079f2a9653e4e828dde1308807c5e64f7ae8b2e037425dc7fa7eadb160273"
+      },
+      {
+        "label": "copy_pass_prefix",
+        "start": "00b455c0",
+        "end_exclusive": "00b455ee",
+        "length": 46,
+        "live_equals_original_pe": true,
+        "sha256": "019fa6810fcc9ab39d5407a9e43c64d46406ffe990d50cbd35bd99d545742a96",
+        "key_instructions": [
+          {
+            "address": "00b455e2",
+            "saved_equals_live": true,
+            "saved_live": "00b455e2: LEA EAX,[EDI + 0x24]",
+            "original_pe": "lea eax, [edi + 0x24]",
+            "original_instruction_bytes": "8d4724"
+          },
+          {
+            "address": "00b455e6",
+            "saved_equals_live": true,
+            "saved_live": "00b455e6: LEA ECX,[ESI + 0x24]",
+            "original_pe": "lea ecx, [esi + 0x24]",
+            "original_instruction_bytes": "8d4e24"
+          },
+          {
+            "address": "00b455e9",
+            "saved_equals_live": true,
+            "saved_live": "00b455e9: CALL 0x00b41e80",
+            "original_pe": "call 0xb41e80",
+            "original_instruction_bytes": "e892c8ffff"
+          }
+        ],
+        "saved_assembly_sha256": "5d761d61570b7ff69fb8c6fc35221dec40df4129efdceb0d9b5ff5463441ff9f"
+      },
+      {
+        "label": "derived_draw_entry",
+        "start": "00b454d0",
+        "end_exclusive": "00b454df",
+        "length": 15,
+        "live_equals_original_pe": true,
+        "sha256": "73a42931d4f4d385cbf29137d38a8c5ed4a17d34a9c11f217f5331b2636c84d8",
+        "key_instructions": [
+          {
+            "address": "00b454d7",
+            "saved_equals_live": true,
+            "saved_live": "00b454d7: CALL 0x00b44750",
+            "original_pe": "call 0xb44750",
+            "original_instruction_bytes": "e874f2ffff"
+          }
+        ],
+        "saved_assembly_sha256": "18d1f645df86deff01f0997ba6130f391800a8417bad5bb09c4ee37ddc8520e0"
+      },
+      {
+        "label": "base_draw_noop",
+        "start": "00b5e5e0",
+        "end_exclusive": "00b5e5e3",
+        "length": 3,
+        "live_equals_original_pe": true,
+        "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+        "key_instructions": [
+          {
+            "address": "00b5e5e0",
+            "saved_equals_live": true,
+            "saved_live": "00b5e5e0: RET 0x4",
+            "original_pe": "ret 4",
+            "original_instruction_bytes": "c20400"
+          }
+        ],
+        "saved_assembly_sha256": "d1eca99c61d4127c82cc3b92de85fc51f29060dde350ca6ab8f1d0be2a13ae49"
+      },
+      {
+        "label": "state_finalize",
+        "start": "00b5f6a0",
+        "end_exclusive": "00b5f6e0",
+        "length": 64,
+        "live_equals_original_pe": true,
+        "sha256": "d36ded4aadb2f49529d8acfc9cdfa022cd39cffb73ac15f3174bd92b824a084d",
+        "key_instructions": [
+          {
+            "address": "00b5f6a3",
+            "saved_equals_live": true,
+            "saved_live": "00b5f6a3: CALL 0x00b5f160",
+            "original_pe": "call 0xb5f160",
+            "original_instruction_bytes": "e8b8faffff"
+          },
+          {
+            "address": "00b5f6a8",
+            "saved_equals_live": true,
+            "saved_live": "00b5f6a8: MOV EAX,dword ptr [ESI + 0x18]",
+            "original_pe": "mov eax, dword ptr [esi + 0x18]",
+            "original_instruction_bytes": "8b4618"
+          },
+          {
+            "address": "00b5f6c9",
+            "saved_equals_live": true,
+            "saved_live": "00b5f6c9: MOV EDX,dword ptr [ESI + 0x20]",
+            "original_pe": "mov edx, dword ptr [esi + 0x20]",
+            "original_instruction_bytes": "8b5620"
+          }
+        ],
+        "saved_assembly_sha256": "af5d64df9448bc5b89914154f7761d630b7ef3b3b234ad635f5c4f4bb49c822f"
+      },
+      {
+        "label": "base_header_init",
+        "start": "00b5f739",
+        "end_exclusive": "00b5f75c",
+        "length": 35,
+        "live_equals_original_pe": true,
+        "sha256": "d06c23f8e6537d7776a89f59d1af255bbdecdf092703d75ad4b3446249c680e3",
+        "key_instructions": [
+          {
+            "address": "00b5f753",
+            "saved_equals_live": true,
+            "saved_live": "00b5f753: MOV dword ptr [ESI + 0x24],EBX",
+            "original_pe": "mov dword ptr [esi + 0x24], ebx",
+            "original_instruction_bytes": "895e24"
+          },
+          {
+            "address": "00b5f756",
+            "saved_equals_live": true,
+            "saved_live": "00b5f756: MOV dword ptr [ESI + 0x28],EBX",
+            "original_pe": "mov dword ptr [esi + 0x28], ebx",
+            "original_instruction_bytes": "895e28"
+          },
+          {
+            "address": "00b5f759",
+            "saved_equals_live": true,
+            "saved_live": "00b5f759: MOV dword ptr [ESI + 0x2c],EBX",
+            "original_pe": "mov dword ptr [esi + 0x2c], ebx",
+            "original_instruction_bytes": "895e2c"
+          }
+        ],
+        "saved_assembly_sha256": "7edcaa0f5499b7ec385d54f9c4cc74e3ab0e8f155e6d8e2da758c5fbcbe45c21"
+      },
+      {
+        "label": "draw_texture_loop",
+        "start": "00b434a0",
+        "end_exclusive": "00b43530",
+        "length": 144,
+        "live_equals_original_pe": true,
+        "sha256": "a8827d7b7f59e842cafe2b08df51bd6206d6fc129e5ffa83b68cc34e973cfce9",
+        "key_instructions": [
+          {
+            "address": "00b434b4",
+            "saved_equals_live": true,
+            "saved_live": "00b434b4: CMP byte ptr [ECX + EBX*0x8 + 0x4],0x0",
+            "original_pe": "cmp byte ptr [ecx + ebx*8 + 4], 0",
+            "original_instruction_bytes": "807cd90400"
+          },
+          {
+            "address": "00b434be",
+            "saved_equals_live": true,
+            "saved_live": "00b434be: CMP dword ptr [EDX + EBX*0x8],0x0",
+            "original_pe": "cmp dword ptr [edx + ebx*8], 0",
+            "original_instruction_bytes": "833cda00"
+          },
+          {
+            "address": "00b434f3",
+            "saved_equals_live": true,
+            "saved_live": "00b434f3: CMP byte ptr [ECX + EBX*0x8 + 0x4],0x0",
+            "original_pe": "cmp byte ptr [ecx + ebx*8 + 4], 0",
+            "original_instruction_bytes": "807cd90400"
+          }
+        ],
+        "saved_assembly_sha256": "a6cdf254d50bf6a97517fd51cb006fafc32f02b09f3cce61ad98076cc1eeb800"
+      },
+      {
+        "label": "draw_alias_boundaries",
+        "start": "00b43530",
+        "end_exclusive": "00b435b3",
+        "length": 131,
+        "live_equals_original_pe": true,
+        "sha256": "13c26f40b0d6673335a5f78b4499df7ca10b8b3cf32471d68d1739c793ce69e0",
+        "key_instructions": [
+          {
+            "address": "00b4353a",
+            "saved_equals_live": true,
+            "saved_live": "00b4353a: MOV ECX,ESI",
+            "original_pe": "mov ecx, esi",
+            "original_instruction_bytes": "8bce"
+          },
+          {
+            "address": "00b4353c",
+            "saved_equals_live": true,
+            "saved_live": "00b4353c: CALL 0x00b42350",
+            "original_pe": "call 0xb42350",
+            "original_instruction_bytes": "e80feeffff"
+          },
+          {
+            "address": "00b435b1",
+            "saved_equals_live": true,
+            "saved_live": "00b435b1: CALL EAX",
+            "original_pe": "call eax",
+            "original_instruction_bytes": "ffd0"
+          }
+        ],
+        "saved_assembly_sha256": "a6cdf254d50bf6a97517fd51cb006fafc32f02b09f3cce61ad98076cc1eeb800"
+      },
+      {
+        "label": "base_destroy_pair_tail",
+        "start": "00b5f666",
+        "end_exclusive": "00b5f67d",
+        "length": 23,
+        "live_equals_original_pe": true,
+        "sha256": "a3f58e1d78199f7382d8dd0e8f7142225f90fcbcc1b1ad2381ffaaf2a49dd4cc",
+        "key_instructions": [],
+        "saved_assembly_sha256": "97373765ba384b6047460923a77691d443db0c64c74d944d2cb5f32cb8f8e567"
+      },
+      {
+        "label": "profile_derived",
+        "start": "00d61be8",
+        "end_exclusive": "00d61bf8",
+        "length": 16,
+        "live_equals_original_pe": true,
+        "sha256": "cf7a34f4503ac2a9f46bdf70af31c0110c48484d133ad84dddbe25e2ddf18933",
+        "key_instructions": []
+      },
+      {
+        "label": "profile_base",
+        "start": "00d62a80",
+        "end_exclusive": "00d62a90",
+        "length": 16,
+        "live_equals_original_pe": true,
+        "sha256": "f7f0f41a63b5ce41b3311d4fedcc96f01942ece5b3da205102fa50f9d46f2b56",
+        "key_instructions": []
+      },
+      {
+        "label": "profile_root",
+        "start": "00d5e508",
+        "end_exclusive": "00d5e518",
+        "length": 16,
+        "live_equals_original_pe": true,
+        "sha256": "51f39ca1fc49b7ae7957949b998862e63e0a10079ffac08e43921edf02c9f699",
+        "key_instructions": []
+      },
+      {
+        "label": "excluded_token",
+        "start": "00d5e13c",
+        "end_exclusive": "00d5e14c",
+        "length": 16,
+        "live_equals_original_pe": true,
+        "sha256": "6c45f3f576d8f99cf2e8d36dda7e367c72f90d9b414e8f19cc08c2bb9232c64a",
+        "key_instructions": []
+      }
+    ],
+    "limitations": "retirement saved-body tails remain truncated; cited tail raw bytes match live memory/PE, not complete live listing/control-flow repair",
+    "source_changed": false,
+    "ghidra_mutations": 0,
+    "runtime_run": false,
+    "new_tests": 0,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "gating": {
+    "complete_word_guard": "unchanged",
+    "private_upperbytes": "unknown; no zero/normalization/capture invented",
+    "closure": "not exhaustive; cannot authorize byte-only replacement interface",
+    "usefulness": "exact BYTE sink and fullDWORD physical-transport sites for actual sampler failure diagnosis"
+  },
+  "preserved": "22ce33474 strict/link/runtime-probe Source receipts untouched",
+  "remaining": "separately qualified alias/profile/callback closure and actual root-owned GuiFont finding"
+}
