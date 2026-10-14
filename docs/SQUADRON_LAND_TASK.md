@@ -16873,3 +16873,21 @@ Next, in order:
    clock seed U(0, 2) + 2 at 007E1E20) draws RNG; leave it labelled.
 3. The 0099AF53 release-order spend and the torpedo wingmen fallthrough (5hc item 2), then rows that reach FreeFire and
    SquadronLandAndKill (5hc item 4).
+
+## 5hg. cc13-confirm A: the dogfight state-enter draws (cc9-lua60, 2026-10-14)
+
+`kDogfightEnterDrawsBound` (packet `cc9_l60_df_enter_draws`, committed OFF). The host took five dogfight state-enter draws
+at their midpoints; under the switch each is 00BD2F10 on the unit's keyed stream (`release_altitude_draw_00bd2f10`, name
+plus `#dfmr` / `#dfae` / `#dfav`), in the image's order:
+- 009A8560 (from 009A86F0 and the aim -> maneuver arm): +34h = U(0.3, 1.1) x row+230h (host 0.7);
+- 009A75C0 aim enter: +1Ch = U(0.8, 1.4) x row+210h, then +20h = U(0.5, 0.8) x row+20Ch x approach+24h (host 1.1, 0.65);
+- 009A7DE0 / 009A8020 avoid enters: timer +18h = U(0.75, 1.5) x row+214h (host 1.125); roll +1Ch = U(0.8, 1.0) when
+  +C68h > 0 (009A7E35) else U(-0.8, -1.0) (host +-0.9); turn +20h = U(0.75, 1.0) (host 0.875) and +1Ch = U(70, 100 deg)
+  or U(-70, -100 deg) (00CE3988/00CEDD00/00D1F958/00D1F95C; host +-85 deg).
+Constants read from the PE on disk (`local\l59_consts.py`). Not in this switch: the 009A87F0 maneuver enter's four
+midpoints (bearing U(-0.5, 0.5), heading U(-0.8, 0.8), pitch U(lo, hi), timer U(0.8, 1.3)) and the 009AA630 reselect
+timer U(1, 3); cc13 did not list them.
+
+Prediction (cc13): means unchanged; per engagement the pursuit range varies +-57%, aim time +-27%, avoid time +-33%, so
+individual dogfight timings and the kill/loss order move while totals do not shift systematically. Under
+BSP_GUNNERY_RNG_STREAMS=1 the draws are on their own keys and shift no other stream. Pair on JM08 and BSM01.

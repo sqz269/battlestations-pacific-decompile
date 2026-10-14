@@ -6096,6 +6096,16 @@ struct GameUnitsHost::Impl {
     static constexpr bool kDogfightTurnAfterDrawBound = true;   // GUNNERY 197: ON, USN01 win gameplay-identical
     static constexpr bool kDogfightAvoidPickDrawBound = true;   // GUNNERY 198: ON by mechanism (lead ruling a)
     static constexpr bool kDogfightGunBurstDrawBound = true;   // GUNNERY 198: ON by mechanism (lead ruling a)
+    // Packet cc9_l60_df_enter_draws (cc13-confirm A): the remaining dogfight
+    // state-enter draws, each 00BD2F10 on ECX = 1, taken on keyed host streams
+    // instead of at their midpoints: 009A857E the maneuver pursuit range
+    // U(0.3, 1.1) x row+230h; 009A75DD-009A7635 the aim enter U(0.8, 1.4) x
+    // row+210h and U(0.5, 0.8) x row+20Ch x approach+24h; 009A7DE0/009A8020 the
+    // avoid enters' timer U(0.75, 1.5) x row+214h, then the roll side
+    // U(0.8, 1.0) / U(-0.8, -1.0) or the turn's +20h U(0.75, 1.0) and +1Ch
+    // U(70, 100 deg) / U(-70, -100 deg) by the bank sign (+C68h > 0).
+    // False: the midpoints, as before.
+    static constexpr bool kDogfightEnterDrawsBound = false;
     // Packet cc9-gunnery38 (docs/CC13_AUDIT13_RECENT_FLIPS.md O1). The strafe
     // cruise profile 009CD020, run once per activation (the install and each
     // time the strafe task resurfaces after a tightturn or flikflak retires),
@@ -20764,11 +20774,21 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const double a = v[0] / v[2], b = v[1] / v[2];
                         return std::sqrt(a * a + b * b) < 1.0;                      // 009A86C6
                     }
+                    // A dogfight state-enter draw: 00BD2F10(lo, hi) on the unit's keyed
+                    // stream under kDogfightEnterDrawsBound, else the midpoint.
+                    float df_enter_draw(const char* suffix, float mid, float lo, float hi) {
+                        if constexpr (GameUnitsHost::Impl::kDogfightEnterDrawsBound) {
+                            return owner_.release_altitude_draw_00bd2f10(unit_.row.name + suffix, lo, hi);
+                        } else {
+                            (void)suffix; (void)lo; (void)hi;
+                            return mid;
+                        }
+                    }
                     // 009A8560: mode 0, range U(0.3, 1.1) x ShootDistance (0.7 mid).
                     void df_maneuver_arm_009a8560() {
                         unit_.mv_mode_18 = 0;
                         unit_.df_maneuver_range_34 = bsp::dogfight_maneuver_pursuit_range_009a8560(
-                            unit_.df_row.aim_shoot_distance, 0.7f);
+                            unit_.df_row.aim_shoot_distance, df_enter_draw("#dfmr", 0.7f, 0.3f, 1.1f));
                     }
                     // 009A86F0.
                     void df_maneuver_expire_009a86f0() {
@@ -20952,11 +20972,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.av_latch_24 = false;
                         unit_.av_20 = 0.0f;
                         const bool right = unit_.plane_bank_angle_c68 > 0.0f;
+                        // Bank tests 009A7E35 (roll) and 009A8020's (turn, > 0.0 at 00D7A218);00CE3988 = 70 deg, 00CEDD00 = 100 deg.
                         if (!turn) {
-                            unit_.av_1c = right ? 0.9f : -0.9f;                     // U(0.8, 1.0)
+                            unit_.av_1c = right ? df_enter_draw("#dfav", 0.9f, 0.8f, 1.0f)       // U(0.8, 1.0)
+                                                : df_enter_draw("#dfav", -0.9f, -0.8f, -1.0f);
                         } else {
-                            unit_.av_20 = 0.875f;                                   // U(0.75, 1.0)
-                            unit_.av_1c = right ? 1.4835299f : -1.4835299f;        // U(70, 100 deg)
+                            unit_.av_20 = df_enter_draw("#dfav", 0.875f, 0.75f, 1.0f);           // U(0.75, 1.0)
+                            unit_.av_1c = right
+                                ? df_enter_draw("#dfav", 1.4835299f, 1.2217306f, 1.7453293f)  // U(70, 100 deg)
+                                : df_enter_draw("#dfav", -1.4835299f, -1.2217306f, -1.7453293f);
                         }
                     }
                     // 009A7A50, shared by both avoid ticks.
@@ -22085,21 +22109,26 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.dogfight_state = tr.next;
                             if (tr.maneuver_from_aim_8560) {
                                 unit_.mv_mode_18 = 0;   // 009A8567
-                                // 009A8560, draw 00BD2F10(0.3, 1.1) at its midpoint.
+                                // 009A8560, draw 00BD2F10(0.3, 1.1) (midpoint unless
+                                // kDogfightEnterDrawsBound).
                                 unit_.df_maneuver_range_34 = bsp::dogfight_maneuver_pursuit_range_009a8560(
-                                    unit_.df_row.aim_shoot_distance, 0.7f);
+                                    unit_.df_row.aim_shoot_distance, df_enter_draw("#dfmr", 0.7f, 0.3f, 1.1f));
                             }
                             if (unit_.dogfight_state != was) {
                                 // 009A9D50: enter the new state.
                                 if (unit_.dogfight_state == bsp::DogfightState::kAim) {
-                                    // Draws 00BD2F10(0.8, 1.4) and (0.5, 0.8) at midpoints.
+                                    // Draws 00BD2F10(0.8, 1.4) then (0.5, 0.8) (midpoints
+                                    // unless kDogfightEnterDrawsBound).
+                                    const float boring = df_enter_draw("#dfae", 1.1f, 0.8f, 1.4f);
+                                    const float close = df_enter_draw("#dfae", 0.65f, 0.5f, 0.8f);
                                     unit_.df_aim_state = bsp::dogfight_aim_enter_009a75c0(
-                                        unit_.df_row, 1.0f, 1.1f, 0.65f);
+                                        unit_.df_row, 1.0f, boring, close);
                                 } else if (unit_.dogfight_state == bsp::DogfightState::kAvoidRoll ||
                                            unit_.dogfight_state == bsp::DogfightState::kAvoidTurn) {
-                                    // Draw 00BD2F10(0.75, 1.5) at its midpoint.
+                                    // Draw 00BD2F10(0.75, 1.5), the first draw of both avoid
+                                    // enters (midpoint unless kDogfightEnterDrawsBound).
                                     unit_.df_avoid_timer = bsp::dogfight_avoid_timer_009a7de0(
-                                        unit_.df_row.avoid_time, 1.125f);
+                                        unit_.df_row.avoid_time, df_enter_draw("#dfav", 1.125f, 0.75f, 1.5f));
                                     unit_.df_avoid_sign =
                                         unit_.plane_bank_angle_c68 > 0.0f ? 1.0f : -1.0f;
                                     if constexpr (GameUnitsHost::Impl::kDogfightAvoidBodiesBound) {
