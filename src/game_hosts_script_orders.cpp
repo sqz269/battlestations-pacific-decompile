@@ -38,8 +38,10 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 // Packet cc8_ship_follow: 00779D50's transcription and the ship-base kind.
 #include "bsp/ship_ai_states.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"  // packet cc9_usn02_deruyter_fire
+#include "bsp/weapon_director.hpp"     // packet g44_scan_row_write (0071D560)
 #include "bsp/unit_gunnery_pass.hpp"
 #include "bsp/recon_sensor_pass.hpp"  // packet cc9_recon_level_table
+#include "bsp/mission_ver_cc13.hpp"   // packet cc9_l59_sq_avg_health
 #include <algorithm>
 #include <cstdlib>
 #include <cstring>
@@ -1638,6 +1640,12 @@ std::uint32_t GameScriptOrdersHost::squadron_intake_007f1940(std::size_t leader,
         ++squadron_intake_declined_;   // 007F1B2D JE 007F1B5D: nothing issued
         return 0u;
     }
+    issue_command_to_members(members, chosen, target_index, "ai:close_attack 007F1940");
+    return chosen;
+}
+
+void GameScriptOrdersHost::issue_command_to_members(const std::vector<std::size_t>& members,
+    std::uint32_t chosen, std::size_t target_index, const char* source) {
     // 00A14A08-00A14A5D: the kind-1 descriptor naming the target, its +174h id.
     bsp::SceneCommandTarget target{};
     target.kind = 1;
@@ -1645,7 +1653,7 @@ std::uint32_t GameScriptOrdersHost::squadron_intake_007f1940(std::size_t leader,
     target.object = reinterpret_cast<void*>(static_cast<std::uintptr_t>(target_index + 1u));
     const std::uint32_t target_token = static_cast<std::uint32_t>(target_index + 1u);
     const std::string saved_source = delivery_source_;
-    delivery_source_ = "ai:close_attack 007F1940";
+    delivery_source_ = source;
     for (const std::size_t member : members) {
         if (member >= units_.count()) continue;
         void* const handle = reinterpret_cast<void*>(static_cast<std::uintptr_t>(member + 1u));
@@ -1663,7 +1671,6 @@ std::uint32_t GameScriptOrdersHost::squadron_intake_007f1940(std::size_t leader,
         if (!commands_after_last_issue_delivery(install)) install();
     }
     delivery_source_ = saved_source;
-    return chosen;
 }
 
 std::uint32_t script_orders_squadron_intake_007f1940(std::size_t leader,
@@ -2022,6 +2029,17 @@ void GameScriptOrdersHost::run_air_ops_player_launch_queue(float step) {
             chosen = squadron_intake_007f1940(members.front(), members, target);
         if (chosen != 0u) ++auto_attack_issued_; else ++auto_attack_declined_;
         const GameUnitRow* trow = target < units_.count() ? units_.unit_row(target) : nullptr;
+        if constexpr (bsp::kAutoAttackNullClassMoveToBound) {
+            // 007F1688-007F16AD: no class, so moveto (00E08F68) on the same descriptor.
+            if (chosen == 0u && !members.empty() && target < units_.count()) {
+                issue_command_to_members(members, 0x00E08F68u, target,
+                                         "ai:auto_attack moveto 007F1688");
+                ++auto_attack_null_class_movetos_;
+                log_.notef("air ops AutoAttackTarget: squadron %u members=%zu no class -> moveto "
+                    "\"%s\" (007F1688 -> 0071ECF0, packet cc9_l60_auto_attack_moveto)",
+                    p.squadron_entity, members.size(), trow != nullptr ? trow->name.c_str() : "-");
+            }
+        }
         log_.notef("air ops AutoAttackTarget: squadron %u members=%zu target=\"%s\" class=%08X "
             "(007F4EC0 -> 007F15F0 -> 007EEC50, packet cc9_player_air_ops_launch)",
             p.squadron_entity, members.size(), trow != nullptr ? trow->name.c_str() : "-",
@@ -2451,6 +2469,24 @@ GameScriptOrdersHost::SquadronPermissions squadron_permissions_0084d810(
     }
     return p;
 }
+
+// Packet g44_scan_row_write (kDirectorFirePermissionClearBound): the 5Ah stance
+// message reaches 00836210 through 0071C1E0 sub-kind 0, which drops director+238h
+// when the stance forbids fire (0071D560 false). The ship arms call this after
+// 0071BE80's host. Returns true when a fire target was dropped.
+bool director_fire_permission_00836210(GameShipAiHost* ship_ai, std::size_t unit,
+                                       int stance) {
+    if constexpr (kDirectorFirePermissionClearBound) {
+        if (ship_ai == nullptr) return false;
+        return ship_ai->store_fire_permission_00836210(unit,
+            bsp::director_stance_allows_fire_0071d560(static_cast<bsp::FireStance>(stance)));
+    } else {
+        static_cast<void>(ship_ai);
+        static_cast<void>(unit);
+        static_cast<void>(stance);
+        return false;
+    }
+}
 }  // namespace
 
 int GameScriptOrdersHost::run_unit_set_fire_stance(GameScriptOrderRow& row) {
@@ -2473,9 +2509,10 @@ int GameScriptOrdersHost::run_unit_set_fire_stance(GameScriptOrderRow& row) {
                    && units_.gunnery() != nullptr) {
             // Packet cc9_ship_fire_stance (routed from gunnery13): the ship's
             // director predicates 0071D560 / 0071D580, stored by the gunnery host.
-            // NOT DONE, labelled: the director fire-target release when a stance
-            // forbids fire (00836210 at 0083622B, kWeaponDirectorFireTarget).
+            // The director fire-target release when a stance forbids fire (00836210
+            // at 0083622B) is kDirectorFirePermissionClearBound.
             units_.gunnery()->set_director_fire_stance_0071be80(row.unit_index, stance);
+            director_fire_permission_00836210(units_.ship_ai(), row.unit_index, stance);
             log_.implemented("MissionLuaNative::UnitSetFireStance ship arm (0071BE80)",
                              "0071be80");
         } else {
@@ -2531,6 +2568,7 @@ int GameScriptOrdersHost::run_unit_hold_fire(GameScriptOrderRow& row) {
         // Packet cc9_ship_fire_stance (routed from gunnery13): 0071BED0 is
         // 0071BE80 with stance 0 on the ship's director.
         units_.gunnery()->set_director_fire_stance_0071be80(row.unit_index, 0);
+        director_fire_permission_00836210(units_.ship_ai(), row.unit_index, 0);
         log_.implemented("MissionLuaNative::UnitHoldFire ship arm (0071BED0)", "0071bed0");
     } else {
         log_.unimplemented("MissionLuaNative::UnitHoldFire director arm (0071DA50 5Ah)",
@@ -2576,6 +2614,7 @@ int GameScriptOrdersHost::run_unit_free_fire(GameScriptOrderRow& row,
     } else if (row.unit_index < units_.count() && units_.unit_is_kind_of(row.unit_index, 6)
                && units_.gunnery() != nullptr) {
         units_.gunnery()->set_director_fire_stance_0071be80(row.unit_index, stance);
+        director_fire_permission_00836210(units_.ship_ai(), row.unit_index, stance);
         log_.implemented(order == bsp::ScriptFireOrder::kFreeAttack
             ? "MissionLuaNative::UnitFreeAttack ship arm (0071BF70)"
             : "MissionLuaNative::UnitFreeFire ship arm (0071BF20)",
@@ -4442,6 +4481,24 @@ float GameScriptOrdersHost::unit_health_vtable_110_00923bf6(void* entity) {
     }
     const std::vector<GameGunneryUnitRow>& rows = gunnery->unit_rows();
     if (index >= rows.size()) return 1.0f;
+    if constexpr (kSquadronAverageHealthBound) {
+        // 007EDC30, the squadron's vtable[110h]: 00923BE0 (dead -> 0, else
+        // health / max health) over the current members, over +3C8h.
+        for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+            if (r.squadron_unit != index) continue;
+            std::vector<float> member_health;
+            for (const std::size_t m : r.member_units) {
+                if (m == bsp::kPlaneSquadronNoUnit || m >= rows.size()) continue;
+                member_health.push_back(gunnery->unit_dead(m) ? 0.0f
+                    : static_cast<float>(static_cast<double>(rows[m].health) /
+                                         static_cast<double>(rows[m].max_health)));
+            }
+            ++health_reads_squadron_;
+            log_.implemented("PlaneSquadron::average_health_007edc30", "007edc30");
+            return bsp::squadron_average_health_007edc30(member_health.data(),
+                static_cast<int>(member_health.size()), r.wing_count);
+        }
+    }
     if (gunnery->unit_dead(index)) ++health_reads_dead_;
     log_.implemented("UnitInstance::health_vtable_110_00876260", "00876260");
     return static_cast<float>(static_cast<double>(rows[index].health) /
@@ -5752,6 +5809,11 @@ void GameScriptOrdersHost::report() {
         "markers=%llu (00923BE0 -> 00876260, packet cc9_get_hp_percentage)",
         kUnitHealthFractionBound ? 1 : 0, health_reads_, health_reads_dead_,
         health_reads_marker_);
+    if (health_reads_squadron_ != 0) {
+        log_.notef("summary mission script squadron health reads bound=%d reads=%llu "
+            "(007EDC30, packet cc9_l59_sq_avg_health)", kSquadronAverageHealthBound ? 1 : 0,
+            health_reads_squadron_);
+    }
     log_.notef("summary mission script player shot down bound=%d calls=%llu last=%d "
         "(008BC9B0, packet cc9_bsm01_think_natives)", kScoringPlayerShotDownBound ? 1 : 0,
         shot_down_calls_, shot_down_last_);

@@ -677,6 +677,7 @@ struct GameUnitSlot {
     int dkz_arm_ticks{0};
     int dkz_state_ticks[7]{};              // moveto, follow, attackrun, prepare, done, release, goAway
     int dkz_installs{0};
+    int dkz_shape_writes[2]{};             // squadron+3E4h = 1 (009BEDDA) / = 3 (009AD1A5)
     int dkz_releases{0};
     int dkz_transition_logs{0};
     int st_aim_entries{0};
@@ -730,6 +731,13 @@ struct GameUnitSlot {
     int lb_break_offs{0};
     int lb_rack_issues{0};
     int lb_rack_fired{0};
+    int lb_issue_tail_calls{0};      // 007C0ED9 tail runs (kLevelBomberIssueTailBound)
+    int lb_pending_424{0};           // task+424h (kLevelBombReleaseOrderSpendBound)
+    int lb_orders_spent{0};          // 0099AF9B offers taken by 009B83D0
+    int lb_orders_cleared{0};        // 0099AFC2 zeroings
+    int lb_passthrough_releases{0};  // 009B8C38 007BBBA0 calls
+    int lb_issue_tail_raised{0};     // members 007EEF30 gave orders to
+    int lb_issue_tail_gate_refused{0};  // 007EEF50 gate (ctl+390h > ctl+374h) refused
     int lb_rack_drops{0};
     int lb_rack_gate_refused{0};
     float lb_first_release_at{-1.0f};
@@ -1510,6 +1518,12 @@ struct GameUnitSlot {
     unsigned long long torpedo_hit_clock_resets{0};
     int torpedo_state_ticks[8]{0, 0, 0, 0, 0, 0, 0, 0};
     int torpedo_arm_ticks{0};
+    // Packet cc9_l60_torpedo_disarmed: 009D29E0 runs (leader and target known),
+    // its close arm (cmd+2C8h written), the least ratio and the last +8Ch.
+    int torpedo_disarmed_ticks{0};
+    int torpedo_disarmed_close_ticks{0};
+    float torpedo_disarmed_min_ratio{1.0e30f};
+    float torpedo_disarmed_blend_8c{1.0f};
     int torpedo_releases{0};
     // Packet cc9_torpedo_release_counter: the task-level releases above that
     // came from an aircraft the gunnery host already has dead. Such a release
@@ -6096,6 +6110,56 @@ struct GameUnitsHost::Impl {
     static constexpr bool kDogfightTurnAfterDrawBound = true;   // GUNNERY 197: ON, USN01 win gameplay-identical
     static constexpr bool kDogfightAvoidPickDrawBound = true;   // GUNNERY 198: ON by mechanism (lead ruling a)
     static constexpr bool kDogfightGunBurstDrawBound = true;   // GUNNERY 198: ON by mechanism (lead ruling a)
+    // Packet cc9_l60_df_enter_draws (cc13-confirm A): the remaining dogfight
+    // state-enter draws, each 00BD2F10 on ECX = 1, taken on keyed host streams
+    // instead of at their midpoints: 009A857E the maneuver pursuit range
+    // U(0.3, 1.1) x row+230h; 009A75DD-009A7635 the aim enter U(0.8, 1.4) x
+    // row+210h and U(0.5, 0.8) x row+20Ch x approach+24h; 009A7DE0/009A8020 the
+    // avoid enters' timer U(0.75, 1.5) x row+214h, then the roll side
+    // U(0.8, 1.0) / U(-0.8, -1.0) or the turn's +20h U(0.75, 1.0) and +1Ch
+    // U(70, 100 deg) / U(-70, -100 deg) by the bank sign (+C68h > 0).
+    // False: the midpoints, as before.
+    static constexpr bool kDogfightEnterDrawsBound = true;   // ON: SQUADRON_LAND_TASK 5hg.1
+    // Packet cc9_l60_torpedo_disarmed (cc13-confirm B): 009D2720's disarmed arm
+    // 009D29E0-009D2CF1 (every done tick: the enter leaves +98h = -1.0), run
+    // through bsp::torpedo_done_disarmed_arm_009d29e0 when the squadron has a
+    // first member and the task a target. Close (leader below 300 m, ratio below
+    // 3.5) it writes the bank cap cmd+2C8h = IP(1 -> 0.3, 2.2 -> 1.5; ratio).
+    // The aim point approach->vtable[0] is taken as the target's position
+    // (substitution); approach+A4h = 3 and [approach+1Ch]+40h = 0 have no host
+    // cell; state+8Ch (republished to squadron+3E8h by 009BFDA6) is kept on the
+    // slot for the log only, no host reader. False: the arm is skipped, as before.
+    static constexpr bool kTorpedoDoneDisarmedArmBound = true;   // ON: SQUADRON_LAND_TASK 5hn
+    // Packet cc9_l60_formation_shapes (cc13-confirm C): the drop-kamikaze
+    // prepare/done enter 009AD180 writes squadron+3E4h = 3 (009AD1A5) and
+    // re-runs 007ED260 after its follow enter 009BED80, which writes 1
+    // (009BEDDA). True: both writes reach the registry's formation_shape_3e4
+    // (007ED260 runs inside the placement seam, as for the dive bomber), so the
+    // wingmen fly 007F23A0's shape-3 station. False: the shape stays as seeded.
+    static constexpr bool kDropKamikazeFormationShapeBound = true;   // ON: SQUADRON_LAND_TASK 5hn
+    // Packet cc9_l60_level_issue_tail (cc13-confirm D). 007C0D90's rack walk ends
+    // at 007C0ED3 and falls to 007C0ED9 for the level bomber too: when the walk
+    // armed a rack (the byte 007C0E23 raises) the tail sets unit+C25h = 1
+    // (007C0EE2) and, unless the last rack's descriptor answers 33h (007C0EF0),
+    // calls 007EEF30 on the squadron (007C0EFA-007C0F01), which hands each other
+    // member 999 release orders (unit+C58h). True: the level-bomber branch runs
+    // that tail through the torpedo path's binding. False: it returns after the
+    // walk, as before. The per-rack 31h 007BCCF0 -> 006E3F90 point
+    // (007C0E98-007C0EC9) is not modelled; no rack here answers 31h.
+    static constexpr bool kLevelBomberIssueTailBound = true;   // ON: SQUADRON_LAND_TASK 5hj.2/5hj.3
+    // Packet cc9_l60_level_order_spend (CC13_VER_6 findings 2 and 5, with
+    // kLevelBomberIssueTailBound). 0099AF53-0099AFC2 in the pilot bot's tick, before
+    // its task ticks (0099AFCC): while unit+C58h > 0, with the plane in free flight
+    // ((unit+72Ch)->vt[38h] = 0074E210, unit+900h == 7), unit+5Ch set and 007B9140
+    // true, one order is offered to the task's vt[24h]; the level-bomb task's
+    // 009B83D0 raises task+424h when approach+CEh (task+4C6h) is set and the plane is
+    // in free flight, and always answers 1, so one order is spent; any failed guard
+    // zeroes C58h. 009B8BD0-009B8C3D at the end of the arm: with +424h > 0, free
+    // flight and the state none of attackrun/aim/prepare/release (+5CCh/+5F4h/+610h/
+    // +6B4h), 007BBBA0 and +424h -= 1. True: both run on the level-bomb task. NOT
+    // MODELLED: 009B83D0's prepare arm 009B8100 (prepare's own tick 009B6670 is not
+    // hosted; no row reaches prepare). False: neither runs.
+    static constexpr bool kLevelBombReleaseOrderSpendBound = true;   // ON: SQUADRON_LAND_TASK 5hj.2/5hj.3
     // Packet cc9-gunnery38 (docs/CC13_AUDIT13_RECENT_FLIPS.md O1). The strafe
     // cruise profile 009CD020, run once per activation (the install and each
     // time the strafe task resurfaces after a tightturn or flikflak retires),
@@ -6473,7 +6537,9 @@ struct GameUnitsHost::Impl {
     // (+369h and [00E17BF2] both set) and a null 007F16D0 answer. A moveto whose
     // target is the squadron stays at stage 1 (0084E48A), so the flight loiters on
     // itself. False: those squadrons get no order (the host's B5 only).
-    static constexpr bool kSquadronMoveToSelfBound = false;
+    // ON (SQUADRON_LAND_TASK 5hm): unit+184h is the player flag, so an AI squadron's
+    // moveto-self is raised to stage 2 at once (0084E0A4) and the image churns too.
+    static constexpr bool kSquadronMoveToSelfBound = true;
     // Packet cc9_lua45_rack_equipment_device (GUNNERY 144, SQUADRON_LAND_TASK 5ev).
     // True: (a) an absent RepeatTime reads as 006E0242's default, 00B66330 with
     // [00CE3D30] = 0.6f, at both rack readers; (b) a rack's device is the plane's
@@ -11283,9 +11349,15 @@ void GameUnitsHost::Impl::role_message_4b_00780162(std::size_t index, std::uint3
 
 // 0067BB50, slot 20h of HUD page 27h (vtable 00CF7A38, constructor
 // 0068A8A0), which the player's unit interfaces open (INTF_CAPTAIN and the
-// rest, docs/IN_MISSION_INTERFACE_MANAGER.md). Its page byte +4h is taken as
-// set while a unit is controlled, and it runs once per fixed step here
-// instead of per frame. Both labelled.
+// rest, docs/IN_MISSION_INTERFACE_MANAGER.md). __thiscall(ECX page, float
+// seconds), RET 4. The page byte +4h (BL, read at 0067BB5D) is always set
+// here: the only caller is the pump's slot-20h call (vtable dword 00CF7A58 is
+// the one reference), which skips a page whose +4h or +5h is clear
+// (004F890C/004F8912), so the clear-byte release at 0067BC16..0067BC21 is
+// unreachable and not modelled. game+18ECh, the local slot (set by
+// 004B4740 from the session select-player paths), is kLocalPlayerSlot 0 in
+// the host, so the [0, 7] gate at 0067BBC8..0067BBD4 always passes
+// (cc9-ships50, SHIP_AI_OPEN_ITEMS 248).
 bool GameUnitsHost::Impl::player_flag_0184(const GameUnitSlot& slot) const {
     if constexpr (kPlayerRoleBookkeepingBound) {
         return slot.role_player_0184;
@@ -11307,7 +11379,7 @@ void GameUnitsHost::Impl::role_screen_update_0067bb50() {
     };
     if (controlled_plus_one == 0 ||
         !bsp::unit_is_kind_of(slots[controlled_plus_one - 1]->class_id, 2)) {
-        if (role_screen_unit_plus_one != 0) {                    // 0067BB8F
+        if (role_screen_unit_plus_one != 0) {                    // 0067BC2C..0067BC37
             send(role_screen_unit_plus_one, 1u, 0);
             role_screen_unit_plus_one = 0;
         }
@@ -11315,10 +11387,11 @@ void GameUnitsHost::Impl::role_screen_update_0067bb50() {
     }
     if (role_screen_unit_plus_one != controlled_plus_one && role_screen_unit_plus_one != 0 &&
         holds(role_screen_unit_plus_one, 0)) {
-        send(role_screen_unit_plus_one, 1u, 0);                  // 0067BC21
+        send(role_screen_unit_plus_one, 1u, 0);                  // 0067BB96
     }
     role_screen_unit_plus_one = controlled_plus_one;
-    // 0067BBE0: game+18ECh in [0, 7]; page byte +4h set (labelled).
+    // 0067BBC8: game+18ECh in [0, 7]; 0067BBE0: page byte +4h set (both always
+    // hold on the pump path, see above).
     if (holds(controlled_plus_one, 0)) return;
     GameUnitSlot& c = *slots[controlled_plus_one - 1];
     if (!(c.role_permission_0188[0] == 9 || c.role_permission_0188[0] == kLocalPlayerSlot)) {
@@ -15768,14 +15841,15 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
             target.object = const_cast<void*>(unit_identity(sq.squadron_unit));
             target.position[0] = target.position[1] = target.position[2] = 0.0f;
             target.trailing = 0.0f;
+            // 0084E5A8-0084E5C6: ECX = the squadron's own command block (ESI), the
+            // target 00465080([ESI+224h] = the squadron, 0.0), so the moveto goes
+            // into the squadron's director once (cc9-lua59), not to each member.
             std::size_t placed = 0;
-            const std::vector<std::size_t> members = sq.member_units;
-            for (const std::size_t m : members) {
-                if (m == bsp::kPlaneSquadronNoUnit || m >= h.slots.size() || gun->unit_dead(m)) continue;
-                if (issue_script_command(m, 0x00E08F68u, target, 1, "0084E595 moveto-self",
-                                         h.slots[sq.squadron_unit]->row.name) != nullptr) {
-                    ++placed;
-                }
+            if (!gun->unit_dead(sq.squadron_unit) &&
+                issue_script_command(sq.squadron_unit, 0x00E08F68u, target, 1,
+                                     "0084E595 moveto-self",
+                                     h.slots[sq.squadron_unit]->row.name) != nullptr) {
+                ++placed;
             }
             st.moveto_self = true;
             ++h.moveto_self_issues;
@@ -19072,7 +19146,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                                    GameUnitSlot& slot)
                             : owner_(owner), slot_(slot) {}
 
+                        // The level-bomber branch has walked its racks already:
+                        // the tail asks only whether that walk armed one.
+                        void force_walk_result(bool armed) { walk_forced_ = armed ? 1 : 0; }
                         bool unit_carries_droppable_device_007c0d90() override {
+                            if (walk_forced_ >= 0) return walk_forced_ != 0;
                             // 007C0DB8-007C0E61: a device of class 25h holding
                             // ordnance 2Ah whose descriptor answers 2Ch, 2Bh or
                             // 33h. 2Bh is Torpedo and its descriptor answers 2Ah
@@ -19344,6 +19422,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         GameUnitsHost::Impl& owner_;
                         GameUnitSlot& slot_;
+                        int walk_forced_{-1};
                     };
 
                     // ------------------------------------------------
@@ -20763,11 +20842,21 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const double a = v[0] / v[2], b = v[1] / v[2];
                         return std::sqrt(a * a + b * b) < 1.0;                      // 009A86C6
                     }
+                    // A dogfight state-enter draw: 00BD2F10(lo, hi) on the unit's keyed
+                    // stream under kDogfightEnterDrawsBound, else the midpoint.
+                    float df_enter_draw(const char* suffix, float mid, float lo, float hi) {
+                        if constexpr (GameUnitsHost::Impl::kDogfightEnterDrawsBound) {
+                            return owner_.release_altitude_draw_00bd2f10(unit_.row.name + suffix, lo, hi);
+                        } else {
+                            (void)suffix; (void)lo; (void)hi;
+                            return mid;
+                        }
+                    }
                     // 009A8560: mode 0, range U(0.3, 1.1) x ShootDistance (0.7 mid).
                     void df_maneuver_arm_009a8560() {
                         unit_.mv_mode_18 = 0;
                         unit_.df_maneuver_range_34 = bsp::dogfight_maneuver_pursuit_range_009a8560(
-                            unit_.df_row.aim_shoot_distance, 0.7f);
+                            unit_.df_row.aim_shoot_distance, df_enter_draw("#dfmr", 0.7f, 0.3f, 1.1f));
                     }
                     // 009A86F0.
                     void df_maneuver_expire_009a86f0() {
@@ -20951,11 +21040,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.av_latch_24 = false;
                         unit_.av_20 = 0.0f;
                         const bool right = unit_.plane_bank_angle_c68 > 0.0f;
+                        // Bank tests 009A7E35 (roll) and 009A8020's (turn, > 0.0 at 00D7A218);00CE3988 = 70 deg, 00CEDD00 = 100 deg.
                         if (!turn) {
-                            unit_.av_1c = right ? 0.9f : -0.9f;                     // U(0.8, 1.0)
+                            unit_.av_1c = right ? df_enter_draw("#dfav", 0.9f, 0.8f, 1.0f)       // U(0.8, 1.0)
+                                                : df_enter_draw("#dfav", -0.9f, -0.8f, -1.0f);
                         } else {
-                            unit_.av_20 = 0.875f;                                   // U(0.75, 1.0)
-                            unit_.av_1c = right ? 1.4835299f : -1.4835299f;        // U(70, 100 deg)
+                            unit_.av_20 = df_enter_draw("#dfav", 0.875f, 0.75f, 1.0f);           // U(0.75, 1.0)
+                            unit_.av_1c = right
+                                ? df_enter_draw("#dfav", 1.4835299f, 1.2217306f, 1.7453293f)  // U(70, 100 deg)
+                                : df_enter_draw("#dfav", -1.4835299f, -1.2217306f, -1.7453293f);
                         }
                     }
                     // 009A7A50, shared by both avoid ticks.
@@ -22084,21 +22177,26 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.dogfight_state = tr.next;
                             if (tr.maneuver_from_aim_8560) {
                                 unit_.mv_mode_18 = 0;   // 009A8567
-                                // 009A8560, draw 00BD2F10(0.3, 1.1) at its midpoint.
+                                // 009A8560, draw 00BD2F10(0.3, 1.1) (midpoint unless
+                                // kDogfightEnterDrawsBound).
                                 unit_.df_maneuver_range_34 = bsp::dogfight_maneuver_pursuit_range_009a8560(
-                                    unit_.df_row.aim_shoot_distance, 0.7f);
+                                    unit_.df_row.aim_shoot_distance, df_enter_draw("#dfmr", 0.7f, 0.3f, 1.1f));
                             }
                             if (unit_.dogfight_state != was) {
                                 // 009A9D50: enter the new state.
                                 if (unit_.dogfight_state == bsp::DogfightState::kAim) {
-                                    // Draws 00BD2F10(0.8, 1.4) and (0.5, 0.8) at midpoints.
+                                    // Draws 00BD2F10(0.8, 1.4) then (0.5, 0.8) (midpoints
+                                    // unless kDogfightEnterDrawsBound).
+                                    const float boring = df_enter_draw("#dfae", 1.1f, 0.8f, 1.4f);
+                                    const float close = df_enter_draw("#dfae", 0.65f, 0.5f, 0.8f);
                                     unit_.df_aim_state = bsp::dogfight_aim_enter_009a75c0(
-                                        unit_.df_row, 1.0f, 1.1f, 0.65f);
+                                        unit_.df_row, 1.0f, boring, close);
                                 } else if (unit_.dogfight_state == bsp::DogfightState::kAvoidRoll ||
                                            unit_.dogfight_state == bsp::DogfightState::kAvoidTurn) {
-                                    // Draw 00BD2F10(0.75, 1.5) at its midpoint.
+                                    // Draw 00BD2F10(0.75, 1.5), the first draw of both avoid
+                                    // enters (midpoint unless kDogfightEnterDrawsBound).
                                     unit_.df_avoid_timer = bsp::dogfight_avoid_timer_009a7de0(
-                                        unit_.df_row.avoid_time, 1.125f);
+                                        unit_.df_row.avoid_time, df_enter_draw("#dfav", 1.125f, 0.75f, 1.5f));
                                     unit_.df_avoid_sign =
                                         unit_.plane_bank_angle_c68 > 0.0f ? 1.0f : -1.0f;
                                     if constexpr (GameUnitsHost::Impl::kDogfightAvoidBodiesBound) {
@@ -23828,6 +23926,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.lb_target_plus_one != unit_.command_target_plus_one) {
                             lb_install_009b7990();
                         }
+                        if constexpr (GameUnitsHost::Impl::kLevelBombReleaseOrderSpendBound) {
+                            // 0099AF53-0099AFC2, run before the task ticks.
+                            if (unit_.torpedo_release_orders_c58 > 0) {
+                                const bool free_flight = unit_.plane_control_mode_900 == 7;
+                                lb_rack_state_seed();
+                                bool can_drop = false;   // 007B9140: a rack holding 2Ah
+                                for (const int a : unit_.rack_ammo_per_rack) can_drop |= a > 0;
+                                if (free_flight && can_drop) {
+                                    // 009B83D0: +4C6h (approach+CEh) and free flight.
+                                    if (unit_.lb_ap.has_ordnance_ce) ++unit_.lb_pending_424;
+                                    --unit_.torpedo_release_orders_c58;   // answered 1
+                                    ++unit_.lb_orders_spent;
+                                } else {
+                                    unit_.torpedo_release_orders_c58 = 0;   // 0099AFC2
+                                    ++unit_.lb_orders_cleared;
+                                }
+                            }
+                        }
                         const bool leader = owner_.unit_is_flight_leader_007b8ad0(unit_.process_index);
                         lb_cruise_profile_009b8c90(leader);
                         ++unit_.lb_arm_ticks;
@@ -23914,8 +24030,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             case LS::kGoAway: lb_goaway_tick_009b5760(); break;
                             default: break;
                         }
-                        // 009B8BD0-009B8C3D: the manual passthrough of +424h needs a
-                        // player-held aircraft ((unit+72Ch)->vt[38h]); none is here.
+                        // 009B8BD0-009B8C3D: the +424h passthrough. (unit+72Ch)->vt[38h]
+                        // is the free-flight test 0074E210, not a player test.
+                        if constexpr (GameUnitsHost::Impl::kLevelBombReleaseOrderSpendBound) {
+                            const LS s = unit_.level_bomb_state;
+                            if (unit_.lb_pending_424 > 0 && unit_.plane_control_mode_900 == 7 &&
+                                s != LS::kAttackRun && s != LS::kAim && s != LS::kPrepare &&
+                                s != LS::kRelease) {
+                                owner_.release_ordnance_007bbba0(unit_);   // 009B8C38
+                                --unit_.lb_pending_424;                    // 009B8C3D
+                                ++unit_.lb_passthrough_releases;
+                            }
+                        }
                         const int b = lb_state_bucket(unit_.level_bomb_state);
                         if (b >= 0) ++unit_.lb_state_ticks[b];
                         owner_.done("BotTaskLevelBomb::arm", 0x009b8b50u);
@@ -24751,7 +24877,25 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             b.unit_.dkz_moveto_far = far_range;
                             b.unit_.dkz_moveto_speed_range = third;
                         }
-                        void enter_formation_state(bsp::DropKamikazeState) override {}
+                        void enter_formation_state(bsp::DropKamikazeState) override {
+                            // 009BED80's 009BEDDA: squadron+3E4h = 1, then 007ED260.
+                            dkz_set_shape(1);
+                        }
+                        void set_squadron_formation_shape_007ed260(int shape) override {
+                            dkz_set_shape(shape);
+                        }
+                        void dkz_set_shape(int shape) {
+                            if constexpr (GameUnitsHost::Impl::kDropKamikazeFormationShapeBound) {
+                                if (bsp::PlaneSquadronHostRecord* const sq =
+                                        bsp::plane_squadron_registry().find_by_member_unit(
+                                            b.unit_.process_index)) {
+                                    sq->formation_shape_3e4 = shape;
+                                    ++b.unit_.dkz_shape_writes[shape == 3 ? 1 : 0];
+                                }
+                            } else {
+                                (void)shape;
+                            }
+                        }
                         void exit_formation_state(bsp::DropKamikazeState) override {}
                         void tick_formation_state(bsp::DropKamikazeState s, float) override {
                             if (s == bsp::DropKamikazeState::kMoveTo) {
@@ -27338,6 +27482,59 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const bsp::TorpedoState before_state = ctx.current;
                         const bsp::TorpedoArmTickResult r =
                             bsp::torpedo_task_arm_009d4850(binding, ctx, dt);
+                        if constexpr (GameUnitsHost::Impl::kTorpedoDoneDisarmedArmBound) {
+                            if (r.ran_done_tick && r.done_tick.disarmed) {
+                                // 009D274A EDI = [ctl+3D0h], the squadron's first
+                                // member; 009D29E2 skips the arm without one.
+                                const GameUnitSlot* leader = nullptr;
+                                if (const bsp::PlaneSquadronHostRecord* sq =
+                                        bsp::plane_squadron_registry().find_by_member_unit(
+                                            unit_.process_index)) {
+                                    if (!sq->member_units.empty() &&
+                                        sq->member_units[0] < owner_.slots.size()) {
+                                        leader = owner_.slots[sq->member_units[0]].get();
+                                    }
+                                }
+                                const GameUnitSlot* tgt = nullptr;
+                                if (unit_.command_target_plus_one != 0) {
+                                    const std::size_t ti = unit_.command_target_plus_one - 1;
+                                    if (ti < owner_.slots.size()) tgt = owner_.slots[ti].get();
+                                }
+                                if (leader != nullptr && tgt != nullptr) {
+                                    // record+8h TorpReleaseDistFar by skill row (as
+                                    // the 009D0484 seed above) x approach+24h.
+                                    static constexpr float kFar[6] = {
+                                        600.0f, kTorpReleaseDistFarSPNormal, 1200.0f,
+                                        1200.0f, 1200.0f, 1200.0f};
+                                    const int row = (kSkillLevelBound && unit_.pilot_skill_index >= 0 &&
+                                                     unit_.pilot_skill_index <= 5)
+                                                        ? unit_.pilot_skill_index : 1;
+                                    bsp::TorpedoDisarmedArmInputs din;
+                                    din.aim_x = tgt->motion.position[0];
+                                    din.aim_z = tgt->motion.position[2];
+                                    for (int k = 0; k < 3; ++k) {
+                                        din.leader_pos[k] = leader->motion.position[k];
+                                    }
+                                    din.leader_heading = leader->plane_heading_c6c;  // vtable[50h]
+                                    din.release_dist_far = kFar[row];
+                                    din.approach_24 = unit_.plane_max_spd > 0.0f
+                                        ? bsp::bot_task_speed_ratio(unit_.plane_max_spd,
+                                                                    kTorpedoReferenceSpeedAuthored)
+                                        : 1.0f;
+                                    const bsp::TorpedoDisarmedArmResult dr =
+                                        bsp::torpedo_done_disarmed_arm_009d29e0(din);
+                                    ++unit_.torpedo_disarmed_ticks;
+                                    unit_.torpedo_disarmed_blend_8c = dr.follow_blend_8c;
+                                    if (dr.ratio < unit_.torpedo_disarmed_min_ratio) {
+                                        unit_.torpedo_disarmed_min_ratio = dr.ratio;
+                                    }
+                                    if (dr.close) {
+                                        ++unit_.torpedo_disarmed_close_ticks;
+                                        unit_.plan_state.bank_limit_2c8 = dr.bank_cap_2c8;  // 009D2B1D
+                                    }
+                                }
+                            }
+                        }
                         unit_.torpedo_state = ctx.current;
                         ++unit_.torpedo_arm_ticks;
                         const int bucket = torpedo_state_bucket(ctx.current);
@@ -27777,6 +27974,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // Correction (packet cc9_release_issue_stage): +498h is
                         // cleared by the rack tick at 006E58E1 once the ammo is
                         // spent, so busy means "dropping", not "has fired".
+                        if constexpr (GameUnitsHost::Impl::kLevelBomberIssueTailBound) {
+                            // 007CEB00 walks every device: a level bomber's racks
+                            // keep their own dropBombs (lb_rack_dropping, 006E58E1),
+                            // so the C25h the tail raised clears only after them.
+                            for (const char d : unit_.lb_rack_dropping) {
+                                if (d != 0) return true;
+                            }
+                        }
                         return unit_.rack_dropping;
                     }
 
@@ -28092,7 +28297,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     void run_release_order_issue_007c0d90() {
                         if constexpr (bsp::kPlaneLevelBombTaskBound) {
                             if (lb_level_bomber_racks()) {
+                                const int fired_before = unit_.lb_rack_fired;
                                 run_level_bomber_issue_007c0e67();
+                                if constexpr (GameUnitsHost::Impl::kLevelBomberIssueTailBound) {
+                                    // 007C0ED9: the byte 007C0E23 raised for an armed rack.
+                                    if (unit_.lb_rack_fired > fired_before) {
+                                        TorpedoReleaseOrderBinding binding(owner_, unit_);
+                                        binding.force_walk_result(true);
+                                        const bsp::ReleaseOrderIssueResult r =
+                                            bsp::torpedo_issue_release_orders_007c0d90(binding);
+                                        ++unit_.lb_issue_tail_calls;
+                                        unit_.lb_issue_tail_raised += r.units_raised;
+                                        if (!r.gate_passed) ++unit_.lb_issue_tail_gate_refused;
+                                    }
+                                }
                                 return;
                             }
                         }
@@ -37479,6 +37697,19 @@ void GameUnitsHost::report() {
                     static_cast<double>(u.lb_first_drop_at),
                     static_cast<double>(u.lb_min_impact_miss),
                     bsp::level_bomb_state_name(u.level_bomb_state));
+                if (u.lb_orders_spent + u.lb_orders_cleared + u.lb_passthrough_releases > 0) {
+                    host.log.notef("  levelbomb %-16s orders 0099AF53/009B83D0: spent=%d cleared=%d "
+                        "passthrough_releases=%d pending_424=%d", u.row.name.c_str(),
+                        u.lb_orders_spent, u.lb_orders_cleared, u.lb_passthrough_releases,
+                        u.lb_pending_424);
+                }
+                if (u.lb_issue_tail_calls > 0) {
+                    host.log.notef("  levelbomb %-16s issue tail 007C0ED9: calls=%d raised=%d "
+                        "gate_refused=%d c25=%d c58=%d", u.row.name.c_str(),
+                        u.lb_issue_tail_calls, u.lb_issue_tail_raised,
+                        u.lb_issue_tail_gate_refused, u.torpedo_release_pending_c25 ? 1 : 0,
+                        u.torpedo_release_orders_c58);
+                }
             }
         }
     }
@@ -39101,6 +39332,18 @@ void GameUnitsHost::report() {
                     "locks=%d boosts=%d (009AF510, packet cc9_lua52_kamikaze_wiring)",
                     bsp::kKamikazeTaskBound ? 1 : 0, kz_planes, kz_arm, kz_inst, k[0], k[1], k[2],
                     k[3], k[4], kz_aim, kz_lock, kz_boost);
+                {
+                    int shape_writes[2]{};
+                    for (const auto& slot : host.slots) {
+                        shape_writes[0] += slot->dkz_shape_writes[0];
+                        shape_writes[1] += slot->dkz_shape_writes[1];
+                    }
+                    if (shape_writes[0] + shape_writes[1] > 0) {
+                        host.log.notef("summary mission drop kamikaze formation shape writes "
+                            "shape1=%d shape3=%d (009BEDDA / 009AD1A5)", shape_writes[0],
+                            shape_writes[1]);
+                    }
+                }
                 const bsp::DummyKamikazeRounds& rounds = bsp::dummy_kamikaze_rounds();
                 host.log.notef("summary mission drop kamikaze task bound=%d ordered_planes=%d "
                     "arm_ticks=%d installs=%d moveto=%d follow=%d attackrun=%d prepare=%d done=%d "
@@ -39596,6 +39839,14 @@ void GameUnitsHost::report() {
                     "states[%s] releases=%d",
                     slot->row.name.c_str(), slot->torpedo_arm_ticks,
                     slot->torpedo_transitions, states, slot->torpedo_releases);
+                if (slot->torpedo_disarmed_ticks > 0) {
+                    host.log.notef("  torpedo %-12s disarmed 009D29E0: ticks=%d close=%d "
+                        "min_ratio=%.3f last_8c=%.3f",
+                        slot->row.name.c_str(), slot->torpedo_disarmed_ticks,
+                        slot->torpedo_disarmed_close_ticks,
+                        static_cast<double>(slot->torpedo_disarmed_min_ratio),
+                        static_cast<double>(slot->torpedo_disarmed_blend_8c));
+                }
                 // The engaged pair over time: approach+8Ch (the engage
                 // distance 009D4A70 sets) against approach+90h (the range
                 // 009D3420 writes every tick it has a target), and the first

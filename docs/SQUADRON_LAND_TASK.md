@@ -16809,3 +16809,291 @@ Betty squadrons sqn10/11/13/14 die to Portland/NH/transport AA at 1343-1414 s on
 timeline (the shared RNG stream, `shared-rng-stream-couples-pairs`) after the first adoption at about 288 s. 5gz.2's
 reason for OFF (a stand-in finder) is gone: 007B96F0 forwards to 007E2090 and the gun's arguments match (5he). The
 mechanism matches the image, so the switch is flipped ON.
+
+### 5he.3 007EDC30, the squadron GetHpPercentage average (committed OFF, prediction)
+
+`kSquadronAverageHealthBound` (packet `cc9_l59_sq_avg_health`, CC13_VER_8 V2): a fused squadron slot's vtable[110h]
+answers 007EDC30 (the 00923BE0 sum over the current members over the initial count +3C8h, removed planes 0) through
+`bsp::squadron_average_health_007edc30`, fed by the registry record's `member_units` and `wing_count`; a summary line
+`summary mission script squadron health reads` appears when any read is served. Prediction (cc13: no reach found among
+the 336 GetHpPercentage sites): 0 squadron reads and gameplay identical on JM08, USNOS and USN12.
+
+Measured (cc9-lua59, 2026-10-14), pair on a87e85bee OFF `local\l59_h0_j8s` / ON `local\l59_h1_*`: 0 squadron reads on
+JM08 (827 unit health reads), USNOS and USN12; JM08 pair_diff 1, gameplay identical. As predicted the path is not reached
+on these rows; it is a faithful correction, so `kSquadronAverageHealthBound` is flipped **ON**.
+
+### 5he.4 Moveto-self: one post per squadron; the churn is the missing stage-1 hold (cc9-lua59, 2026-10-14)
+
+0084E5A8-0084E5C6 issues `0071ECF0(00E08F68, 00465080([ESI+224h], 0.0))` with ECX = ESI, the squadron's own command
+block: one moveto into the squadron's director, not one per member. 47c123a34 makes the stand-in do that (still under
+`kSquadronMoveToSelfBound`, OFF). Pair on 47c123a34, OFF `local\l59_x0_*`, ON `local\l59_x1_*`:
+
+| row | moveto-self issues | apply_set_command | director stage_raises / clear_messages | pair_diff |
+|---|---|---|---|---|
+| PRCP01 `prcp01_l55_p01_c` 30000 (no end either side on this base) | 1 | 7368 -> 7369 | 292 / 5264 -> 292 / 5265 | 1, identical |
+| USN21 `s46_u21_f` 80000 (completed 1310.15 s both) | 1 | 753 -> 2862 | 43 / 547 -> 2152 / 2657 | 1, identical |
+
+The per-member posts are gone (PRCP01 now +1 post), but on USN21 the squadron's director still re-raises the stage and
+re-clears about once a tick after the issue. That is the head arm the image has and the host lacks: a moveto whose target
+resolves to the squadron (bVar3, 0084E05E-0084E078) is raised only to stage 1 while the leader's +184h is set, and
+0084E48A's raise to stage 2 needs !bVar3, so the image holds the command at stage 1 and does not churn. The stage raise is
+the director completion in `src/game_hosts_commands.cpp` (gunnery lane). So the switch stays **OFF** until that hold is
+modelled; gameplay is identical either way on both rows.
+
+## 5hf. Handoff (cc9-lua59, 2026-10-14, at about 70% context)
+
+Tree `J:\PROG\battlestations-pacific-decompile-cc9-lua52` (agent/cc9-lua52, fast-forwarded onto main fcee16d53 before
+a87e85bee). Launcher `local\l59_lane.ps1` (l58's rows plus `l10x` = LOMP10 `lomp10_p3_l10_b` 36000 and `j5x` = JM05
+12000). JM08 plan tools: `local\l59_j8_filter.py` (drop launch lines by base:class:target) and `local\l59_j8_replan.py`
+(keep a plan before frame F0, then explicit select/attack windows). `local\l59_consts.py` reads floats/doubles from the PE.
+No runs in flight; leases released at handoff.
+
+Commits: 9bc2a55fc (capture FABS + forced-recon own record OFF, 5he), 97b56bead (both ON, 5he.1), 1ae160e44 (D2 adopt
+ON, 5he.2), a87e85bee / 0d97926ce (007EDC30 OFF then ON, 5he.3), 47c123a34 + 4aa51543a (moveto-self to the squadron's
+own director; switch stays OFF, 5he.4).
+
+Win re-checks: LOMP10 `lomp10_p3_l10_b` completed 1581.97 s on 453ed7e51 (`local\l59_s0_l10x.log`). JM08
+`jm08_p6_j8_f` was lost on 453ed7e51 (no end in 110000 frames; stock exhausted with LST 01/02, USTroopTransport 02 and LSM
+02 alive) and completes 1464.00 s on main fcee16d53 (`local\l59_m4s_j8.log`), after the gunnery flips moved the timeline.
+JM08 is knife-edge under stock. Lessons for a JM08 re-plan: the Grayson/Helena/Nevada launch lines protect the HQ
+(dropping them loses it at 964-1124 s); Hosho sinks at 771 s in every run; the plan's PT-boat attack cycles end on a
+target that can already be dead, because the helm `attack` line is "applied" on a dead target (a ships-lane harness
+question: the image's target pick walks the live hostile list). `local\l59_j8_r12.txt` (filters on 166/167 Grayson/
+Helena/Missouri and 152/154 Grayson/Missouri, late PT-boat assignments from frame 29000) completed 2150.67 s on
+1ae160e44 but not on fcee16d53. PRCP01 `prcp01_l55_p01_c` has no end within 30000 frames on 47c123a34
+(`local\l59_x0_p01w.log`): the keeper's PRCP01 re-plan is still open.
+
+Next, in order:
+1. The moveto-self stage-1 hold (5he.4): the director completion in `src/game_hosts_commands.cpp` (gunnery lane) needs
+   the 0084E05E-0084E078 bVar3 test (a moveto whose target resolves to the squadron stays at stage 1 while the leader's
+   +184h is set); route it as an exact edit, then re-pair `kSquadronMoveToSelfBound` on USN21 f (churn 753 -> 2862 posts).
+2. The gun finder's strafe threshold (5he residual a): with the strafe gun point armed (+28h = 0.6, 009CB497) the image
+   searches with threshold 0.6, the host with -1.0 (`df_finder_007e2090`'s call, game_hosts_units.cpp). No row reached the
+   strafe aim state (aims=0 everywhere), so it is unexercised; bind it OFF if a strafe row appears. Residual b (the +84h
+   clock seed U(0, 2) + 2 at 007E1E20) draws RNG; leave it labelled.
+3. The 0099AF53 release-order spend and the torpedo wingmen fallthrough (5hc item 2), then rows that reach FreeFire and
+   SquadronLandAndKill (5hc item 4).
+
+## 5hg. cc13-confirm A: the dogfight state-enter draws (cc9-lua60, 2026-10-14)
+
+`kDogfightEnterDrawsBound` (packet `cc9_l60_df_enter_draws`, committed OFF). The host took five dogfight state-enter draws
+at their midpoints; under the switch each is 00BD2F10 on the unit's keyed stream (`release_altitude_draw_00bd2f10`, name
+plus `#dfmr` / `#dfae` / `#dfav`), in the image's order:
+- 009A8560 (from 009A86F0 and the aim -> maneuver arm): +34h = U(0.3, 1.1) x row+230h (host 0.7);
+- 009A75C0 aim enter: +1Ch = U(0.8, 1.4) x row+210h, then +20h = U(0.5, 0.8) x row+20Ch x approach+24h (host 1.1, 0.65);
+- 009A7DE0 / 009A8020 avoid enters: timer +18h = U(0.75, 1.5) x row+214h (host 1.125); roll +1Ch = U(0.8, 1.0) when
+  +C68h > 0 (009A7E35) else U(-0.8, -1.0) (host +-0.9); turn +20h = U(0.75, 1.0) (host 0.875) and +1Ch = U(70, 100 deg)
+  or U(-70, -100 deg) (00CE3988/00CEDD00/00D1F958/00D1F95C; host +-85 deg).
+Constants read from the PE on disk (`local\l59_consts.py`). Not in this switch: the 009A87F0 maneuver enter's four
+midpoints (bearing U(-0.5, 0.5), heading U(-0.8, 0.8), pitch U(lo, hi), timer U(0.8, 1.3)) and the 009AA630 reselect
+timer U(1, 3); cc13 did not list them.
+
+Prediction (cc13): means unchanged; per engagement the pursuit range varies +-57%, aim time +-27%, avoid time +-33%, so
+individual dogfight timings and the kill/loss order move while totals do not shift systematically. Under
+BSP_GUNNERY_RNG_STREAMS=1 the draws are on their own keys and shift no other stream. Pair on JM08 and BSM01.
+
+## 5hh. cc13-confirm B: the torpedo done tick's disarmed arm 009D29E0 (cc9-lua60, 2026-10-14)
+
+`kTorpedoDoneDisarmedArmBound` (packet `cc9_l60_torpedo_disarmed`, committed OFF). In `done` the enter leaves +98h = -1.0,
+so 009D2753 JBE always takes 009D29E0-009D2CF1, which `torpedo_done_prepare_tick_009d2720` reduced to `kIdle`. Read whole
+from the disk listing; the arithmetic is `bsp::torpedo_done_disarmed_arm_009d29e0` (include/bsp/torpedo_task_arm.hpp):
+- EDI = [ctl+3D0h], the squadron's first member; none: nothing written (009D29E2).
+- ratio = |aim.xz - leader.xz| / (record+8h TorpReleaseDistFar x approach+24h) x IP(150 -> 1, 500 -> 3; leader.y), where aim
+  is approach->vtable[0] (the target point, 009C40A0 on the dive-bomb approach; taken here as the target's position).
+- Unless leader.y < 300 (00CE3AE8) and ratio < 3.5 (00D0C308 double): +8Ch = 1.0 (009D2CDA).
+- Close: cmd+2C8h = IP(1 -> 0.3, 2.2 -> 1.5; ratio) (009D2B1D), approach+A4h = 3, [approach+1Ch]+40h = 0; then
+  h = |wrap(HeadingAngle(aim - leader) - leader vtable[50h])|, b1 = ratio < 1.6 ? IP(0.3 -> 80 deg, 1.6 -> 30 deg) :
+  IP(1.6 -> 30 deg, 3 -> 10 deg), w = ratio > 1.5 ? IP(2 -> 2.5, 3.5 -> 1) : IP(0.3 -> 1, 1.5 -> 2.5),
+  c = clamp((1.2 - h / b1) x 5, 0, 1), +8Ch = 1 + (w - 1) c.
+
+Correction to cc13's write-up: cmd+2C8h is the bank cap (docs/PILOT_PLANNER_PITCH_ROLL.md section 2; the host's
+`plan_state.bank_limit_2c8`), not a throttle, and the "own point" is the aim point, so ratio measures the LEADER's
+distance to the target. state+8Ch is republished into squadron+3E8h by 009BFDA6-009BFDB2; the host has no reader of
+either, so it is logged only. approach+A4h and [approach+1Ch]+40h have no host cell. Note also that the host's
+TorpedoArmBinding drops every `write_command_float` (game_hosts_units.cpp, a no-op), so the armed branch's cmd+2C8h = 0.3
+is not applied either; that is outside this switch.
+
+Host wiring: after `torpedo_task_arm_009d4850`, when the done tick ran disarmed, with a first member and a target, the
+switch runs the arm and writes `bank_limit_2c8` on the close arm; per slot `torpedo <name> disarmed 009D29E0: ticks close
+min_ratio last_8c` in the summary. Prediction: on USN04 (no plan, 9000 frames) the done-state Kates run the arm every
+tick; the close arm fires only while the leader is low and within about 2.3 km of the target, capping the bank at
+0.3-1.5 rad; no RNG; releases unchanged (0 for the stuck squadron); small trajectory moves for those Kates only.
+
+## 5hi. cc13-confirm C: 007F23A0's five formation shapes and the drop-kamikaze shape 3 (cc9-lua60, 2026-10-14)
+
+**007F23A0 read whole** (disk listing 007F23A0-007F28FD, `local\l60_7f23a0.asm`). The jump table at 007F2900 maps shape
+1 -> 007F2576, 2 -> 007F25BD, 3 -> 007F2739, 4 -> 007F26AD, 5 -> 007F2838 (the host's comment had 3 and 4 swapped).
+With P the pair number, I the raw formation index (the argument, [ESP+C4h]), M the squadron's +3E8h, sx the lateral
+spacing and (dy, dz) the triple's other two components:
+- 1: (P sx M, P dy M, P dz M).
+- 2: x = P sx max(2M - 1, 0.8), y = P dy clamp(2.2 - 1.2M, 0, 1), z = P dz / max(1, M); the flag pair BL/[ESP+1Bh] = (0.2 > M).
+- 3: y = P dy M. With the tuning singleton's +3E8h byte set: x = M f(sx P) + (1 - M) f(0.15 sx I), z = M f(dz P) +
+  (1 - M) f(0.8 dz I) (f = float store). Clear: x = P sx (0.7M + 0.3), z = P dz (0.25M + 0.75).
+- 4: x = P sx max(1 + 0.8(M - 1), 0.4), y = P dy clamp(2.4 - 1.4M, 0, 1), z = P dz (0.8M + 0.2); flag as shape 2.
+- 5: (P sx, 0, 0).
+- Tail: an odd index negates x; y and z are negated unless the flag is set or the singleton's +3E9h / +3E8h byte is set.
+At M = 1 shapes 2, 3 and 4 give shape 1's station (shape 4's lateral max(1, 0.4) = 1; shape 3's blends collapse), so
+with the host's morale fixed at 1.0 (no writer of squadron+3E8h; 009BFDA6 republishes state+8Ch, see 5hh) a shape change
+moves nothing. Reconstructed in `bsp::plane_formation_station_007f23a0` without a switch: no host path set a shape
+other than 1 before this packet.
+
+**`kDropKamikazeFormationShapeBound`** (committed OFF): the drop-kamikaze enter_formation_state writes shape 1 (009BED80
+009BEDDA) and the prepare/done enter 009AD180 writes 3 (009AD1A5) through the new
+`DropKamikazeTaskHost::set_squadron_formation_shape_007ed260`; `summary mission drop kamikaze formation shape writes`.
+Prediction on USNOS: shape-3 writes appear for the Betty squadrons in prepare/done, and gameplay is identical (M = 1.0).
+
+## 5hj. cc13-confirm D: 007C0D90's level-bomber tail (cc9-lua60, 2026-10-14)
+
+The rack walk loops at 007C0ED3 (`JNE 007C0DB6`) and falls to 007C0ED9 for every caller, the level bomber included:
+`CMP byte [ESP+13h],0` (the byte 007C0E23 raises when a rack is armed through vtable[1F0h]) -> 007C0EE2 unit+C25h = 1 ->
+unless the last rack's descriptor answers 33h (007C0EF0) -> 007C0EFA-007C0F01 `007EEF30(ctl = unit+9D4h, unit)`. So the
+host's comment that the level branch "never sets unit+C25h and never calls 007EEF30" (and CC13_VER_6 finding 5's caveat)
+is wrong. `kLevelBomberIssueTailBound` (committed OFF) runs the tail through the torpedo path's
+`TorpedoReleaseOrderBinding` (with the walk's answer forced to "armed") after `run_level_bomber_issue_007c0e67`, and
+lets the stage cleanup's device walk 007CEB00 see the level racks' own dropBombs (`lb_rack_dropping`), so C25h clears
+only after the last rack stops (006E58E1) and the stage timer passes -1.2 (`docs/PLANE_DEVICE_WALK.md`). Per slot:
+`levelbomb <name> issue tail 007C0ED9: calls raised gate_refused c25 c58`. Not modelled: the per-rack 31h point
+007BCCF0 -> 006E3F90 (007C0E98-007C0EC9; no rack here answers 31h).
+
+Prediction (JM08 `j8s`, USNOS `osd`): each issuing level bomber keeps C25h set while its racks drop, so its release
+state holds the timer at kReleaseHold (009B5AD2/009B5AE1) for the drop plus the cleanup, and leaves release later
+(goaway later, positions move). 007EEF30 gives the other members 999 orders when ctl+390h > ctl+374h; the host has no
+level-bomb reader of unit+C58h yet (0099AF53 -> 009B83D0 and the +424h passthrough 009B8BD0 are the next packet), so the
+wingmen's own flow is unchanged. No RNG.
+
+## 5hk. cc13-confirm F: the synchronous forced-recon notify 00805CF0 (cc9-lua60, 2026-10-14)
+
+00805CF0 (disk listing): old = the record's effective level (+8h when +10h is set, else +4h); +10h = 1, +8h = level
+(00805D0A/00805D0E); when +28h is set, 006952A0 unlinks the record (00805D11-00805D1F); then, if the effective level
+changed (00805D36 CMP / 00805D38 JE), the record's listener [+2Ch] vt[0](+30h, old, new). `bsp::set_forced_recon_level`
+only wrote the map, so the `recon` callbacks fired at the next pass, and the pass dispatch published 0 for a forced
+record of a party with no sensor coverage. `kForcedReconSyncNotifyBound` (committed OFF): SetForcedReconLevel fires the
+matching `recon` listeners at once (old = the level the dispatch last published for that unit and party, a labelled
+substitution for the record's effective level), and the dispatch publishes a forced record's level whatever the
+coverage. 00980E50's body is now `fire_recon_listeners_00980e50`, shared by both callers. Summary:
+`summary mission script forced recon ... sync_notifies=`.
+
+Prediction (cc13): callbacks fire at most one pass earlier; no RNG. USN12 34000 (23 squadrons forced) and USNOS (Haku):
+the same `recon listener` lines, earlier by up to one pass; a forced record of an uncovered party now fires its listener
+where it never did. Gameplay identical unless a callback's timing matters.
+
+### 5hg.1 Measured: `kDogfightEnterDrawsBound` **ON** (cc9-lua60, 2026-10-14)
+
+Pairs on ed6757e2e: OFF `local\l60_e0_*`, ON `local\l60_e1_*` (BSP_GUNNERY_RNG_STREAMS=1).
+
+| row | dogfight activity | pair_diff |
+|---|---|---|
+| BSM01 `b1` (bsm01_l50_b1_a, 30000; completed 767.94 s both, exec guard refused sus_prog.exe) | 3 fighters, aim 10017 ticks, maneuver 3 | 0, identical |
+| JM08 `j8s` (jm08_p6_j8_f, 40000; no end either side) | sqn31 vs the B-17 #2.1 flight at 1855-1870 s | 3, moved |
+| USN04 `u04` (9000, no plan) | none | 1, gameplay identical |
+
+JM08: only the sqn31-vs-B-17 #2.1 engagement moves, as predicted. The four sqn31 fighters die 1.7-5.3 s earlier or later
+(all four still die to B-17 gunners; one death mode leftspinning -> explosion), B-17 #2.1|.-3 dies 3.4 s later, and
+B-17 #2.1 survives ON (killed OFF), so deaths 201 -> 200; two ground kills downstream (US barracks, AA truck 05) move
+by 0.3-4.8 s with a different B-17 killer. No other entity moves. The mechanism matches the image (keyed draws in the
+image's order), so the switch is flipped ON.
+
+## 5hl. cc13 backfill L1-L3 (cc9-lua60, 2026-10-14)
+
+- **L3, bound OFF: `bsp::kAutoAttackNullClassMoveToBound`** (include/bsp/air_operations.hpp). 007F15F0 (disk listing): a plane
+  target stands for its squadron (007F1607 IsKindOf 0Fh -> +9D4h); 007EEC50(target, 1, 1) at 007F161E; with a class,
+  0071ECF0(class, descriptor) (007F165A-007F1686); with none (007F1658 JE), 007F1688-007F16AD builds the same kind-1
+  descriptor (+174h id; kind 0 when the target is null) and issues moveto 00E08F68. The host's AutoAttackTarget serve
+  issued nothing on a null class. Under the switch the served members get moveto on the target through the intake's
+  issue loop, now `GameScriptOrdersHost::issue_command_to_members` (shared with 007F1940, which itself issues nothing on
+  a null class, 007F1B2D). Not extended to the standing per-member launch order (kAutoAttackMemberOnLaunchBound keeps
+  chosen classes only): a deck member launched later gets no moveto (labelled). Rows with a null class: PRCP01 (squadrons
+  14/17 -> Enterprise), USNOS `osx` (543/546/555 -> transports). Prediction: those single-plane squadrons fly a moveto to
+  the target instead of idling; gameplay moves on those rows (their planes approach the target and meet its AA).
+- **L2, no host counterpart.** 007B8AE0 calls [unit+DF4h] (the pilot bot, ECX = unit+38Ch so +A68h) vt[18h](level)
+  unconditionally, then 009565A0, whose 009565A3 test of [ECX-32Fh] (unit+5Dh) skips only the unit's own +390h, its
+  +6DCh object and the IsKindOf(20h) children's vt[1C4h]. The host's `pilot_skill_index` stands for the bot's level (the
+  robot rows), which the image sets for a dead unit too; the host keeps no per-device skill. Recorded, no change.
+- **L1, labelled, no switch.** 009CDD50/009CE1D0 draw on per-unit keyed streams where the image uses the shared stream
+  1: that is the keyed-stream discipline (`shared-rng-stream-couples-pairs`), and moving them to a shared stream would
+  couple every pair. 007CC8B0's OnDestroyed +C14h draw belongs to a retired plane with no later reader; on a keyed
+  stream it is unobservable, and on the shared stream only its sequence shift would show. Left as labelled.
+
+### 5hj.1 The wingmen's half: 0099AF53 -> 009B83D0 and the +424h passthrough 009B8BD0 (committed OFF)
+
+`kLevelBombReleaseOrderSpendBound` (packet `cc9_l60_level_order_spend`; CC13_VER_6 findings 2 and 5). 0099AF53-0099AFC2
+runs in the pilot bot's tick before its task ticks (0099AFCC): with unit+C58h > 0 and the plane in free flight
+((unit+72Ch)->vt[38h] = 0074E210, unit+900h == 7), unit+5Ch set and 007B9140 true, one order is offered to the task's
+vt[24h], else C58h is zeroed (0099AFC2). The level-bomb vt[24h] 009B83D0 (disk listing 009B83D0-009B8414): task+4C6h
+(approach+CEh) and the free-flight test raise task+424h; in prepare (task+310h == task+610h) it calls 009B8100; it always
+answers 1. The arm's tail 009B8BD0-009B8C3D: +424h > 0, free flight, the state none of attackrun/aim/prepare/release
+(task+5CCh/+5F4h/+610h/+6B4h, docs/BOT_TASKS.md) -> 007BBBA0 and +424h -= 1. The host's comment that this "needs a
+player-held aircraft" was wrong (CC13_VER_6). Not modelled: 009B8100 and prepare's tick 009B6670 (no row reaches the
+level-bomb prepare: pr=0 on JM08). Per slot: `levelbomb <name> orders 0099AF53/009B83D0: spent cleared passthrough_releases
+pending_424`.
+
+Prediction, with kLevelBomberIssueTailBound ON as well (JM08 `j8s`): when a flight leader's racks are armed, 007EEF30
+hands the wingmen 999 orders (when ctl+390h > ctl+374h); each wingman in follow/moveto/goaway raises +424h on its next
+tick and releases through 007BBBA0 at once, so the wingmen drop with the leader instead of after their own aim
+(first_release moves to the leader's time; aim ticks fall). A wingman in aim keeps +424h and releases when it leaves
+aim/release for goaway, or through its own aim release.
+
+## 5hm. The moveto-self "hold" is the player's arm: `kSquadronMoveToSelfBound` **ON** (cc9-lua60, 2026-10-14)
+
+5he.4 kept the switch OFF for a stage-1 hold read from the pseudocode (CC13_VER_10 D1, "not byte-read"). The bytes
+(0084E05E-0084E0B6): bVar3 = [ESI+54h] is moveto and 00521EA0(ESI+58h) == [ESI+224h] (0084E05E-0084E078); bVar2 =
+[[ESI+224h]+3D0h] non-null and its byte +184h set (0084E07C-0084E098). With bVar3 and not bVar2, 0084E0A4 `PUSH 2` ->
+0084E149 0071D810(2): the stage is raised to 2 at once. Only with bVar2 does 0084E0B3 raise 1 near the target. unit+184h
+is the player flag (role 1; docs/AI_BRAIN_PLAYER_EXEMPTION.md), so the hold is a player-led squadron's; an AI squadron's
+moveto-self ends on its first step, the 0084E4B1 tail re-issues it, and the image churns (stage 2, clear, re-issue) as the
+host does (USN21 f: stage_raises 43 -> 2152). The pairs of 5he.4 (PRCP01 and USN21 f, gameplay identical) stand and the
+mechanism matches for AI squadrons, so the switch is flipped ON. Not modelled: the player-led arm (0084E0B3-0084E149,
+leader within [00CFE050] of the target raises 1, and 0084E48A keeps it there); no harness row has a player-led squadron.
+No routed edit to game_hosts_commands.cpp is needed.
+
+## 5hn. Measured: `kTorpedoDoneDisarmedArmBound` and `kDropKamikazeFormationShapeBound` **ON** (cc9-lua60, 2026-10-14)
+
+Pairs: OFF `local\l60_e0_*` (ed6757e2e); ON B `local\l60_t1_*` (2eeb1b5ae, B flipped), ON C `local\l60_k1_*` (5b46833ba, C
+flipped). The OFF commit precedes both, and everything between is committed OFF, so the pairs compare the switch alone.
+
+| row | switch | evidence | pair_diff |
+|---|---|---|---|
+| USN21 `u21f` (s46_u21_f, completed 1310.15 s both, exec guard refused sus_prog.exe) | B | five done Kates run 009D29E0 every done tick (15-43 ticks), all close (min ratio 0.73-0.84), +8Ch 1.54-1.68 | 1, gameplay identical |
+| USN04 `u04` 9000 | B | no Kate reaches done | 1, identical |
+| USNOS `osx` (s43_os_x; failed 1515.35 s both) | C | no drop-kamikaze orders on this base (ordered_planes=0) | 1, gameplay identical |
+
+B: the arm runs where predicted and caps the bank on the close arm; done lasts under 2 s on USN21, so nothing moves. Its
++8Ch (1.5-1.7 at the drop) is what 009BFDA6 republishes into squadron+3E8h, the station scale of 007F23A0; the host has no
+writer of `morale_3e8` and keeps shape 1 for the torpedo done state (009D254E writes shape 2), so that spacing is not
+applied yet (next: the torpedo done/prepare enter's shape 2 plus the 009BFDA6 republish). C: not reached on this base; a
+faithful correction with an identical prediction at morale 1.0 (5hi). Both flipped ON.
+
+### 5hj.2 Measured: `kLevelBomberIssueTailBound` **ON** (cc9-lua60, 2026-10-14)
+
+Pairs: OFF `local\l60_e0_*` (ed6757e2e), ON `local\l60_d1_*` (5b46833ba with the switch flipped; everything between is
+committed OFF). JM08 `j8s` (jm08_p6_j8_f, 40000 fr) and USNOS `osd` (usnos_s45_os_k, 30000 fr); no end on either side.
+
+| row | tail | pair_diff |
+|---|---|---|
+| JM08 | 1-2 calls per issuing bomber; the 007EEF50 gate refuses most leaders (ctl+390h <= ctl+374h), members get 999 | 3: deaths 201 -> 195, units 353 -> 312 |
+| USNOS | 30 calls | 3: deaths 233 -> 214, units 453 -> 430 |
+
+Why the rows move. The tail's C25h holds each issuing bomber's release timer (009B5AD2/009B5AE1) until its racks stop and
+the stage cleanup clears it: JM08's release states grow from 51 to 67-74 ticks (sqn03/04/13), and the sqn04 leader, still
+holding bombs, comes round for a second release (fired 6 -> 12, drops 12 -> 24). On USNOS the first issuing leader (plane
+#1.4 at 123.60 s) holds in release longer and its wingman #1.4|.-2, which follows it, issues at 132.20 s instead of
+131.80 s; from there the launches and squadron numbering shift (Airfield squadrons renumber) and the mission timeline
+moves. On JM08 the moved bombing changes the ground kills (four tents, LST 01 survive ON) and the mission script's later
+phase: the B-17 #2 flight is not spawned by frame 40000 ON. The wingmen's 999 orders have no reader until
+kLevelBombReleaseOrderSpendBound. The mechanism matches the image (007C0ED9-007C0F01 and 007CEB00's device walk), so the
+switch is flipped ON. The JM08 keeper plan must be re-checked (cc9-physics9 told).
+
+### 5hj.3 Measured: `kLevelBombReleaseOrderSpendBound` **ON** (cc9-lua60, 2026-10-14)
+
+Pair on 380493952 with kLevelBomberIssueTailBound ON on both sides: OFF `local\l60_s0_j8s`, ON `local\l60_s1_j8s` (JM08
+jm08_p6_j8_f 40000 fr; no end either side). pair_diff 3: deaths 195 -> 209, units 312 -> 354.
+
+The wingmen spend the 999 orders one per tick (spent 5-98, then one zeroing when their racks run dry, 0099AFC2) and the
+passthrough releases 5-87 times per wingman. None of it moves a first drop (every wingman is already in aim when its
+leader issues, and aim is excluded): the passthrough fires in follow/goaway after the wingman's own drop, mostly on
+empty or busy racks (fired and drops unchanged; issues 1 -> 6-88). The first entity to move is downstream of those
+extra 007BBBA0 calls (the bay channel and the stage's request/cleanup cycle): sqn05/sqn06 die 1-3 s apart from ~337 s to
+different ship AA, the sqn03 leader's second issue moves 418.22 -> 426.02 s, and the mission timeline moves (LST 01, four
+tents and the B-17 #2 flight die again ON, as on e0). A wingman still in aim when the orders arrive keeps +424h
+(sqn13|.-3 ends with 66 pending). The mechanism matches 0099AF53/009B83D0/009B8BD0, so the switch is flipped ON together
+with the tail. JM08's keeper plan must be re-checked.

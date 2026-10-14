@@ -5657,6 +5657,11 @@ void GameMissionLuaHost::dispatch_recon_listeners_00980e50() {
             std::vector<std::pair<int, int>> transitions;
             bsp::ReconDetectionLevel forced_level = bsp::ReconDetectionLevel::none;
             const bool forced = bsp::forced_recon_level(party, u, forced_level);
+            if (kForcedReconSyncNotifyBound && forced) {
+                // The record's effective level is its +8h whatever the coverage.
+                published = forced_level == bsp::ReconDetectionLevel::identified ? 2
+                    : forced_level == bsp::ReconDetectionLevel::blip ? 1 : 0;
+            }
             if (kReconListenerResetCycleBound && !forced) {
                 // 00807490 -> 00805BE0: old -> 0; then 00805AF0: 0 -> new.
                 if (last != 0) transitions.emplace_back(last, 0);
@@ -5667,8 +5672,16 @@ void GameMissionLuaHost::dispatch_recon_listeners_00980e50() {
             last = published;
             if (dead || !any_recon) continue;   // 00980E50's live-unit gate
             for (const auto& transition : transitions) {
-            const int old = transition.first;
-            const int level = transition.second;
+                fire_recon_listeners_00980e50(u, transition.first, transition.second, party);
+            }
+        }
+    }
+}
+
+void GameMissionLuaHost::fire_recon_listeners_00980e50(std::size_t u, int old, int level,
+    int party) {
+    {
+        {
             ++summary_.listener_recon_changes;
             const int unit_id = static_cast<int>(u + 1);
             std::vector<std::string> callbacks;
@@ -5705,7 +5718,6 @@ void GameMissionLuaHost::dispatch_recon_listeners_00980e50() {
                 }
                 ::lua_settop(state_, top);
             }
-            }   // transitions
         }
     }
 }
@@ -7336,6 +7348,30 @@ int GameMissionLuaHost::run_set_forced_recon_level_008aa8f0(lua_State* state,
     for (std::size_t unit : targets) {
         bsp::set_forced_recon_level_00805cf0(unit, party, level);
         ++summary_.forced_recon_units;
+        if (kForcedReconSyncNotifyBound && party >= 0 && party < 3) {
+            // 00805D02-00805D38: old = the effective level, new = the forced one; a
+            // change notifies at once. The effective level is the one the pass
+            // dispatch last published for (unit, party) (SUBSTITUTION, labelled).
+            const std::size_t count = units->count();
+            if (recon_listener_levels_.size() < count * 3) {
+                recon_listener_levels_.resize(count * 3, 0);
+            }
+            int& last = recon_listener_levels_[unit * 3 + static_cast<std::size_t>(party)];
+            const int now = level <= 0 ? 0 : level == 1 ? 1 : 2;
+            if (now == last) continue;   // 00805D38 JE: no change, no notify
+            const int old = last;
+            last = now;
+            ++summary_.forced_recon_sync_notifies;
+            const GameGunneryHost* gunnery = units->gunnery();
+            bool any_recon = false;
+            for (const ListenerEntry& entry : listeners_) {
+                if (listener_key_equal(entry.channel, "recon")) { any_recon = true; break; }
+            }
+            // 00980E50's live-unit gate, as in the pass dispatch.
+            if (!kLuaListenersBound || !kLuaReconListenersBound || !any_recon ||
+                state_ == nullptr || (gunnery != nullptr && gunnery->unit_dead(unit))) continue;
+            fire_recon_listeners_00980e50(unit, old, now, party);
+        }
     }
     const GameUnitRow* row = units->unit_row(index);
     log_.notef("  SetForcedReconLevel 008aa8f0: \"%s\" level=%d party=%d units=%zu (packet "
@@ -9262,9 +9298,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         "(0088E000 -> 0095DA00, packet cc9_lua_add_damage)", kLuaAddDamageBound ? 1 : 0,
         summary_.add_damage_calls, summary_.add_damage_units, summary_.add_damage_unresolved);
     log_.notef("summary mission script forced recon bound=%d calls=%llu units=%llu "
-        "unresolved=%llu (008AA8F0 -> 00805CF0, packet cc9_forced_recon_level)",
+        "unresolved=%llu sync_notifies=%llu (008AA8F0 -> 00805CF0, packet cc9_forced_recon_level)",
         kForcedReconLevelBound ? 1 : 0, summary_.forced_recon_calls,
-        summary_.forced_recon_units, summary_.forced_recon_unresolved);
+        summary_.forced_recon_units, summary_.forced_recon_unresolved,
+        summary_.forced_recon_sync_notifies);
     log_.notef("summary mission script border zones bound=%d loaded=%d calls=%llu missing=%llu "
         "(008AECD0 / 004C7730, packet cc9_get_closest_border_zone)",
         kLuaClosestBorderZoneBound ? 1 : 0, border_zones_loaded_ ? 1 : 0,

@@ -1708,6 +1708,8 @@ struct GameShipAiHost::Impl {
         return bsp::gameplay_seg52_cc13::director_release_fire_target_00835f60(f, units.unit_side_0054(owner));
     }
     unsigned long long script_fire_target_releases{0};
+    unsigned long long scan_row_write_drops{0};         // g44 kAutoTargetScanRowWriteDropBound
+    unsigned long long fire_permission_clears{0};       // g44 kDirectorFirePermissionClearBound
     unsigned long long autotarget_recon_scans{0};       // cc9_autotarget_recon_candidates
     unsigned long long autotarget_recon_candidates{0};
     unsigned long long autotarget_recon_unbuilt{0};
@@ -11201,8 +11203,15 @@ public:
         if (scan.best != nullptr && !keep_locked) {
             const std::size_t chosen
                 = static_cast<std::size_t>(reinterpret_cast<std::uintptr_t>(scan.best)) - 1;
-            const GameUnitRow* row = owner_.units.unit_row(chosen);
-            row_.fire_target = row != nullptr ? row->name : std::string();
+            if constexpr (kAutoTargetScanRowWriteDropBound) {
+                // 009F5E7F keeps the winner in a local; +238h moves only at 009F5F21.
+                if (static_cast<std::size_t>(ctl_.fire_target) != chosen + 1) {
+                    ++owner_.scan_row_write_drops;
+                }
+            } else {
+                const GameUnitRow* row = owner_.units.unit_row(chosen);
+                row_.fire_target = row != nullptr ? row->name : std::string();
+            }
             row_.fire_target_score = scan.best_score;
         }
         return scan;
@@ -13180,6 +13189,19 @@ void GameShipAiHost::store_fire_target_00836240(std::size_t unit, std::size_t ta
     ++impl_->script_fire_target_sets;
     impl_->done("WeaponDirector::store_fire_target", 0x00836240u);
 }
+bool GameShipAiHost::store_fire_permission_00836210(std::size_t unit, bool allow_fire) {
+    // 00836210: +3Ch = allowFire (the gunnery host keeps it); only when fire is
+    // forbidden and +238h is non-null: 006952A0 at 0083622B, +238h = 0 at 00836230.
+    // +23Ch (the forced flag) is not touched.
+    if (unit >= impl_->controllers.size() || unit >= impl_->rows.size()) return false;
+    auto& ctl = impl_->controllers[unit];
+    if (ctl.generated_non_ship || allow_fire || ctl.fire_target == 0) return false;
+    ctl.fire_target = 0;
+    impl_->rows[unit].fire_target.clear();
+    ++impl_->fire_permission_clears;
+    impl_->done("WeaponDirector::store_fire_permission", 0x00836210u);
+    return true;
+}
 const GameShipAiSummary& GameShipAiHost::summary() const noexcept { return impl_->summary; }
 bool GameShipAiHost::avoid_zone_offset_point_00a020f0(std::size_t unit, const float in_xz[2],
                                                      float margin, float out_xz[2]) {
@@ -13712,6 +13734,11 @@ void GameShipAiHost::report() {
         "(0089A8B0 / 00835860 / 00836240, packet cc9_usn02_deruyter_fire)",
         kScriptFireTargetBound ? 1 : 0, host.script_fire_target_sets,
         host.script_fire_target_releases);
+    host.log.notef("summary mission ship ai scan row write drop bound=%d drops=%llu; fire "
+        "permission clear bound=%d clears=%llu (009F5F21 / 00836210, packet "
+        "g44_scan_row_write)", kAutoTargetScanRowWriteDropBound ? 1 : 0,
+        host.scan_row_write_drops, kDirectorFirePermissionClearBound ? 1 : 0,
+        host.fire_permission_clears);
     host.log.notef("summary mission ship ai autotarget recon candidates bound=%d scans=%llu "
         "mean_candidates=%.2f unbuilt=%llu (009F5D30 over [008053C0]+0DE8h, packet "
         "cc9_autotarget_recon_candidates)", kAutoTargetReconCandidatesBound ? 1 : 0,

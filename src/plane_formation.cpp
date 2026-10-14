@@ -101,10 +101,9 @@ PlaneFormationStation plane_formation_station_007f23a0(
     // 007F2556-007F2569: `[ESI+3E4h] - 1` indexes a five-entry jump table and
     // anything above 4 is unsigned-above, which falls through to the tail.
     if (in.shape < 1 || in.shape > 5) return out;
-    // Only case 0 of the table - shape 1, the value 007F2C60 seeds - is read.
-    // The other four bodies (007F25BD, 007F26AD, 007F27DE, 007F2838) are in the
-    // listing and are NOT reconstructed here: this is a hole, not a proof.
-    if (in.shape != 1) return out;
+    // The table at 007F2900 (disk bytes): shape 1 -> 007F2576, 2 -> 007F25BD,
+    // 3 -> 007F2739, 4 -> 007F26AD, 5 -> 007F2838. All five are read below
+    // (packet cc9_l60_formation_shapes, docs/SQUADRON_LAND_TASK.md 5hi).
 
     // 007F250E-007F2544: the lateral spacing is the larger of the triple's
     // first component and the leader class's +A4h times the double at 00D049A8.
@@ -115,27 +114,98 @@ PlaneFormationStation plane_formation_station_007f23a0(
     const float spacing_x =
         (in.displacement[0] > width_floor) ? in.displacement[0] : width_floor;
 
-    // 007F2576-007F25B8, case 0. Each component is the pair number times its
-    // own displacement times the squadron's morale.
     const float pair = static_cast<float>(pair_number(in.formation_index));
-    float x = pair * spacing_x * in.morale;
-    float y = pair * in.displacement[1] * in.morale;
-    float z = pair * in.displacement[2] * in.morale;
+    const float m = in.morale;                       // squadron+3E8h
+    const float dy = in.displacement[1];
+    const float dz = in.displacement[2];
+    const double pd = static_cast<double>(pair);
+    const double md = static_cast<double>(m);
+    // 00415510 then 00415550 against 1.0 and 0.0 (007F2647-007F267B).
+    const auto clamp01 = [](float v) noexcept {
+        v = 1.0f < v ? 1.0f : v;
+        return 0.0f > v ? 0.0f : v;
+    };
+    float x = 0.0f;
+    float y = 0.0f;
+    float z = 0.0f;
+    // BL and [ESP+1Bh], cleared at 007F255F/007F2564 and set together only by
+    // shapes 2 and 4 (007F268E-007F26A4: 0.2 (00CE3D10, double) > morale). Set,
+    // the tail mirrors neither y nor z.
+    bool keep_yz = false;
+    switch (in.shape) {
+        case 1:
+            // 007F2576-007F25B8. Each component is the pair number times its
+            // own displacement times the squadron's morale.
+            x = pair * spacing_x * m;
+            y = pair * dy * m;
+            z = pair * dz * m;
+            break;
+        case 2: {
+            // 007F25BD-007F26A8. z over max(1, morale) (007F25DF 00415550);
+            // x times max(2 morale - 1, 0.8) (00CE74F8); y times
+            // clamp(2.2 - 1.2 morale, 0, 1) (00D05AC8, 00CEC160, doubles).
+            const double m1 = static_cast<double>(1.0f < m ? m : 1.0f);
+            z = static_cast<float>((1.0 / m1) * (pd * dz));                       // 007F260C
+            const float wide = static_cast<float>((md - 1.0) * 2.0 + 1.0);         // 007F2620
+            x = static_cast<float>(pd * spacing_x * (wide > 0.8f ? wide : 0.8f));  // 007F2633
+            y = static_cast<float>(pd * dy * clamp01(static_cast<float>(
+                    2.2000000476837158 - md * 1.2000000476837158)));                // 007F268A
+            keep_yz = 0.20000000298023224 > md;
+            break;
+        }
+        case 3:
+            // 007F2739-007F2836. y is shape 1's. The rest depends on the tuning
+            // singleton's +3E8h byte (007F2744), the flag the tail's z mirror reads.
+            y = static_cast<float>(pd * dy * md);                                  // 007F2832
+            if (in.symmetrical_position) {
+                // 007F2751-007F27DC: blend, by morale, the pair spacing with one
+                // scaled by the raw formation index ([ESP+C4h], the argument):
+                // 0.15 (00CE6618) laterally, 0.8 (00CE3D40) along z. Each product
+                // is stored to a float before the blend.
+                const double idx = static_cast<double>(static_cast<float>(in.formation_index));
+                const double rest = 1.0 - md;
+                const float a = static_cast<float>(spacing_x * idx * 0.15000000596046448);
+                const float b = static_cast<float>(static_cast<double>(spacing_x) * pd);
+                x = static_cast<float>(b * md + a * rest);                          // 007F27A8
+                const float c = static_cast<float>(idx * dz * 0.800000011920929);
+                const float d = static_cast<float>(static_cast<double>(dz) * pd);
+                z = static_cast<float>(d * md + c * rest);                          // 007F2824
+            } else {
+                // 007F27DE-007F2822: 0.7 (00CEFFA0) m + 0.3 (00CE3DC8) laterally,
+                // 0.25 (00D7A348) m + 0.75 (00CEC9D8) along z.
+                x = static_cast<float>(pd * spacing_x *
+                                       (0.699999988079071 * md + 0.30000001192092896));
+                z = static_cast<float>(pd * dz * (md * 0.25 + 0.75));
+            }
+            break;
+        case 4: {
+            // 007F26AD-007F2734, then shape 2's y clamp and flag (007F2647-).
+            z = static_cast<float>(pd * dz * (md * 0.800000011920929 + 0.20000000298023224));
+            const float wide = static_cast<float>((md - 1.0) * 0.800000011920929 + 1.0);
+            x = static_cast<float>(pd * spacing_x * (wide > 0.4f ? wide : 0.4f));  // 00CE7804
+            y = static_cast<float>(pd * dy * clamp01(static_cast<float>(
+                    2.4000000953674316 - md * 1.399999976158142)));                 // 00D08B20, 00D045F0
+            keep_yz = 0.20000000298023224 > md;
+            break;
+        }
+        default:
+            // 007F2838-007F284F, shape 5: the pair spacing laterally, y = z = 0.
+            x = pair * spacing_x;
+            break;
+    }
 
     // 007F2853-007F28B9, the tail. Everything here is under the odd test; an
     // even index is transformed as it stands.
     if ((in.formation_index & 1) != 0) {
         // 007F285F-007F286D, unconditional inside the odd arm.
         x = kPlaneFormationMirrorBase - x;
-        // 007F2873-007F2890. `BL` is the per-shape flag that only the shape-2
-        // body sets (007F26A2), so it is 0 here; the mirror then runs unless
-        // the singleton's +3E9h byte is non-zero.
-        if (!in.symmetrical_altitude) {
+        // 007F2873-007F2890: unless BL, the mirror runs when the singleton's
+        // +3E9h byte is zero.
+        if (!keep_yz && !in.symmetrical_altitude) {
             y = kPlaneFormationMirrorBase - y;
         }
-        // 007F2896-007F28B9. The same for +3E8h, under the same shape flag,
-        // which the shape-1 body leaves at the 0 of 007F2564.
-        if (!in.symmetrical_position) {
+        // 007F2896-007F28B9: unless [ESP+1Bh], the same for +3E8h.
+        if (!keep_yz && !in.symmetrical_position) {
             z = kPlaneFormationMirrorBase - z;
         }
     }

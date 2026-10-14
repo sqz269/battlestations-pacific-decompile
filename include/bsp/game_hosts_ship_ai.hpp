@@ -94,6 +94,25 @@ inline constexpr bool kScriptFireTargetBound = true;
 // ON by the pairs of 2026-09-28 (docs/GUNNERY_OPEN_ITEMS.md section 15).
 inline constexpr bool kWeaponDirectorFireTargetBound = true;
 
+// Packet g44_scan_row_write (docs/GUNNERY_OPEN_ITEMS.md section 236). 009F5E7F keeps the
+// scan winner in a local; the image writes director+238h only at 009F5F21, after the
+// hysteresis (009F5EAE), already-pointed (009F5ECB) and accept (009F5ED7) tests and the
+// 00836240 store gate. True: scan_party_list no longer copies the scan winner into the
+// row's fire_target, so the row changes only through store_fire_target (the host copy
+// of +238h). fire_target_score is still recorded. False: the scan winner is written to
+// the row as soon as the scan returns, as before. Committed OFF.
+inline constexpr bool kAutoTargetScanRowWriteDropBound = true;   // ON: GUNNERY 245
+
+// Packet g44_scan_row_write (section 236, second gap). 00836210 (director vtable[64h],
+// reached from the 5Ah stance message through 0071C1E0 sub-kind 0) stores allowFire at
+// +3Ch and, when fire is forbidden and +238h is non-null, unregisters the observer
+// (006952A0 at 0083622B) and zeroes +238h at 00836230; +23Ch is left alone. True: the
+// three ship stance arms (UnitSetFireStance, UnitHoldFire, UnitFreeFire/FreeAttack)
+// clear the ship-AI fire target when the stance forbids fire. LABELLED: synchronous,
+// where the image applies it when the 5Ah message is pumped. False: nothing is
+// cleared, as before. Committed OFF.
+inline constexpr bool kDirectorFirePermissionClearBound = true;   // ON: GUNNERY 245 (no reach yet)
+
 // Packet cc13-ver13 (docs/CC13_VER_13.md finding 2). 00835F60, the first call of the
 // ship director step 00836920, releases director+238h every step unless the target is
 // a nav point (41h) or a live hostile: +5Ch set, +5Dh/+60h/+5Eh clear, another side,
@@ -897,6 +916,9 @@ public:
     // target_plus_one 0 for a null target.
     void store_fire_target_00836240(std::size_t unit, std::size_t target_plus_one,
                                     bool force);
+    // Packet g44_scan_row_write: 00836210's fire-target drop when allowFire is 0
+    // (kDirectorFirePermissionClearBound). Returns true when a target was dropped.
+    bool store_fire_permission_00836210(std::size_t unit, bool allow_fire);
     const GameShipAiSummary& summary() const noexcept;
 
     // Packet cc9_ai_command_avoid_zone_point. 00A02020's ship arm for the AI

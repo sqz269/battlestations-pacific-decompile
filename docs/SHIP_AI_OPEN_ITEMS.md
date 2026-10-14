@@ -17700,3 +17700,122 @@ reported range runs ~40-50 m lower, as predicted. Downstream everything moves: d
 PlayerSub 01 at 896.15 s, USTroopTransport 03 to PlayerSub 02 at 191.96 s; US Cargo Transport 01, US Tanker 03 and
 USTroopTransport 04 survive ON. Neither side reaches a mission end (n1 was already lost on main). **Mechanism matches:
 ON.** JM06 is re-planned on top of it (lead item 2).
+
+## 244. JM06 re-planned: `jm06_s49_j6_s` (cc9-ships49, 2026-10-14; lead item 2)
+
+Build: this tree at fd6d92617 (origin/main 067bcac79 plus `kSubAttackOwnHalfLengthBound` ON; exe 3E945D0DF0EB),
+reference env, 120000 frames, `--stop-after-end 40`. Generator `local\s49_j6gen.py`, launcher `local\s49_rows.ps1`,
+logs `local\s49_<prefix>_<v>.log` with manifests.
+
+**Why n1 lost.** Not the swim-depth homing or the AA flips: the convoy phase. The keeper's runs up to a2ad905f1 still
+had the AI boats PlayerSub 02/03 sinking the convoy from 1.0-1.8 km by 291 s; on eeb52a94d their first kill is at
+~172 s. The only torpedo change in a2ad905f1..eeb52a94d is 91d6a9d22 (`kTorpedoBotAttackRangeBound` ON, GUNNERY 230
+D1, ~891 m for Mark 14 / Type 95 on JM06), so it is the inferred cause (not bisected) and four of the convoy (USTroopTransport 01, US Cargo Transport 01, US Tanker 02/03) sail on.
+`luaJM6CheckObjectives` phase 1 needs `Mission.ShipsToSink` (3 on this difficulty) random `CargoTargets` dead, so the
+player's sub has to finish the convoy. That flip is faithful by its pair; nothing here argues against it.
+
+**Two traps found.** (1) `luaJM6CheckUSNSubs` sends Narwhal-class Submarine 01 (start (-87, -910), y = -80) on
+`NavigatorAttackMove` at the player once within 3000 m. Left alone it dies of depth damage at 250.01 s; a player
+sub that comes within 3 km first (variants a/a2/a3) is hunted and torpedoed at 480-512 m (669-1013 s). So the sub
+goes east first and only turns north after 251 s. (2) The torpedo stock runs dry (`fires its last torpedo`,
+`ships_dry=1`) with a 300-frame cadence over all of phases 3-4 (p under 20,5: Fletcher-class 04 survives).
+
+**s** (from n1's orders before 29000): moveto (1600, -3600) at 200, (1300, -1500) at 5020; torpedoes over the five
+convoy survivors every 300 frames 7000-13000; n1's moveto (800, -1500) 13000 and (1500, -1100) 21000;
+`takehelm 0.3 300 -100 stop 1300` at 30000 (faces the Lexington's new approach from the north-west); torpedoes at
+the Lexington every 300 frames 34000-44000; then at Fletcher-class 01-05 in rotation every 450 frames to 110000.
+| run | result | guard |
+| --- | --- | --- |
+| clean (`s49_f_s`) | **completed 1991.82 s** (Lexington 1853.23 s, last escort 1980.36 s) | yes |
+| `BSP_FRAME_JITTER 20,3` (`s49_j3_s`) | **completed 2901.71 s** | yes |
+| 20,5 (`s49_j5_s`) | **completed 2247.07 s** | yes |
+| 20,7 (`s49_j7_s`) | **completed 2181.00 s** | yes |
+Committed as `config/win_orders/jm06_s49_j6_s.txt` (n1 kept). Near misses: p (Lexington every 300 frames to 52000)
+completes clean 2205.03 s and 20,3 3003.80 s, fails 20,5 (stock); q (Lexington every 400) fails 20,5 (the sub dies at
+2082.86 s); r completes 20,5 at 2745.55 s.
+
+## 245. IJN08: h5 lost on current main; phase 1 re-planned (`ijn08_s49_i08_i11`, clean win only) (cc9-ships49, 2026-10-14; lead item 4)
+
+Build: this tree at fd6d92617 (exe 3E945D0DF0EB), reference env, 120000 frames, `--stop-after-end 40`.
+**h5 on current main** (`local\s49_i8_h5.log`): no mission end. Phase 1 never completes: only Cargo4 dies (681 s);
+JapSub1-3 are sunk by the Fletches at 677-967 s. In the 1f3bf3d62 win the AI subs sank all six Cargos from
+1.85-2.29 km by 609 s; the convoy now passes them 1.7-2.3 km away and they no longer fire (the ~891 m torpedo-bot
+attack range, 91d6a9d22, as on JM06 in 244; inferred, not bisected). Once any Cargo dies, `luaDDAttackSub`
+(ijn_8_north_sol.lua:515, this installation, 2024-07-13) sends the Fletches after the subs, so the six must die
+fast. **h5 under jitter was not run further** (its phase 1 cannot complete).
+
+**i11** (`local\s49_i8gen.py`; h5 plus): JapSub1/2/3 `moveto` (-2600, -4800/-4300/-5300) at 100-140; torpedoes
+rotating JapSub1/2/3 at Fletch1-4 every 150 frames 5000-8500 (no DD reaction before a Cargo dies), then at
+Cargo1/2/1/3/1/4/1/5/1/6 every 150 frames 8550-14000 (Cargo1, the east column next to Fletch3, needs the weight);
+at 11000 JapSub3 to (-2000, -6600) and at 11020 JapSub2 to (-2100, -6200), ahead of Cargo1/Cargo5.
+| run | phase 1 (last Cargo) | result |
+| --- | --- | --- |
+| clean (`s49_i8f_i11`) | 639.52 s | **completed 3191.99 s**, guard logged (US_Airfield_03 1860 s, US_Airfield_02 2037 s, DamagedBB 2121 s) |
+| jitter 20,3 (`s49_i8j3_i11`) | 541.89 s | Game Over 1760.59 s: Maru1 1585.77 s, Maru2 1759.64 s to US_Airfield_02/03 planes |
+| jitter 20,5 (`s49_i8j5_i11`) | 644.57 s | Game Over 1980.81 s: Maru1 1624.21 s, Maru2 1977.05 s to US_Airfield_02/03 planes |
+Phase 1 is now jitter-robust; phase 2 (h5's own part) is not: the airfield planes reach the Marus in formation
+before Kongo/Kirishima/Haruna/Hiei finish US_Airfield_02/03. Variants i1-i10, i12 (`local\s49_i8_i*.txt`) each leave
+one Cargo alive. Committed as `config/win_orders/ijn08_s49_i08_i11.txt` (h5 kept) as a clean-only row.
+
+## 246. USNOS on current main; handoff (cc9-ships49, 2026-10-14; lead item 3 started)
+
+Build as 244 (fd6d92617, exe 3E945D0DF0EB). USNOS, reference env, `--stop-after-end 40`; generator
+`local\s49_osgen.py` (`a:<from>:<to>:<step>:<unit>:<target>` select+attack repeats, `m:` moveto, `drop:<regex>`).
+**k and s46 a6 now fail at 1500.34 s** (`local\s49_os_k.log`, `s49_os_a6.log`, with a 2 GB combined trajectory
+`local\s49_os_k.csv`; sample it with `local\s49_pos.py <csv> <steps> <regex>`): Game Over (HQ1), all six transports
+dead by 1498 s. TroopTrans2/4 to planes (260/451 s, as before); **Ada3** (type 386, a 221 m battleship parked at
+(-1800, -2600) until ~1200 s) sinks Gear13/15/17 from ~3 km (873-1061 s) and then TroopTrans5 (1348 s) and
+TroopTrans1 (1429 s); TroopTrans3/6 fall to Airfield2/Airfield1 planes (1443/1498 s). The keeper's p8w1 run (before
+the ten gunnery flips) lost the same Gears to Ada3 but its transports lived to 1619/2717 s (Shimotsuke).
+k only sends NH at Ada3 from 47500.
+| v | change to k | outcome |
+| --- | --- | --- |
+| k1 (40000 frames) | `attack NH Ada3` every 600 frames 17000-47000 | Ada3 dies 958.89 s (NH); TT3/5/6 still die 1476-1897 s |
+| k2 | k1 plus Gear14 and Gear16 `attack Ada3` every 600 frames 17020-30000 | Ada3 960.29 s; **Game Over 2801.61 s** (`s49_osf_k2`): TT3 1730 s (ToSpawnTakao), TT1 1999 s (Airfield1 planes), TT6 2270 s (Airfield2 planes), TT5 2798 s (Airfield1 planes); Haku3/Haku4 die to DM1 (2599/2676 s), Betty1 dies 2719.83 s (Reprisal_sqn94) |
+| k2 jitter 20,3 | | Game Over 2165.99 s: TT6 1541 s (Shimotsuke), TT3 1728 s, TT5 1976 s, TT1 2163 s |
+Next for USNOS: the airfield strikes on the parked transports now decide the row (Airfield1/2/3 squadrons, cat 10).
+Either keep TroopTrans5/6 under the fleet's AA (as IJN08's Marus) until the HQ moves, or hunt the airfield
+squadrons with Enterprise/Midway F2Gs (229's hunt mechanics: four hunts per carrier). Betty1 died in k2 without
+special orders, so the 229 stall may not recur once the transports live.
+
+**Handoff.** Branch `agent/cc9-ships44` (origin/main 067bcac79 merged). Commits this session: eeb52a94d / fd6d92617
+(`kSubAttackOwnHalfLengthBound`, 242-243), a1c08af90 (JM06 `jm06_s49_j6_s`, 244), d78f7af9b (IJN08
+`ijn08_s49_i08_i11`, 245), this one. No leases held after this commit. Tools in `local\`: `s49_rows.ps1` (launcher;
+`-Traj`, `-Jitter`; writes `<prefix>_<row>.done`), `s49_runs.ps1`, `s49_j6gen.py`, `s49_i8gen.py`, `s49_osgen.py`,
+`s49_pos.py`. Note `--trajectory-csv` writes ONE combined csv per run (the per-unit csvs of older runs came from
+small runs only); USNOS full runs make 2 GB.
+**Open, in order:**
+1. USNOS re-plan (above); then Betty1 if the 229 stall returns.
+2. IJN08 phase 2 under jitter (245: the Marus fall to US_Airfield_02/03 planes at 1586-1977 s before the BBs kill
+   those fields); h5's phase 2 is unchanged in i11.
+3. The rest of 241 (LandFort hangar fire roll 007470B0, shipyard 00845AC0); cc13-seg7 soldier placeholders (never wire
+   as-is); 005F98F0 port-range test.
+
+## 247. Harness: `attack` refuses a dead target (cc9-ships50, 2026-10-14; lead item 2)
+
+`--helm-orders` `<frame> attack <unit> <target>` (src/game_hosts_mission_frame.cpp, the 005FAAE0 ship arm) now
+refuses with `(refused: target dead)` when the target name resolves to a created unit (`harness_target_row`) that is
+not `unit_alive_and_visible` (0043F080's test), the same liveness test the squadron `target` arm already used. A
+refused order does not reschedule its repeat. This is a harness rule, not the image's: the image attacks the
+director's fire target and has no named-target path. Before this, a stale repeat (USNOS k2's `attack NH Ada3` every
+600 frames to 47000, Ada3 dead at 960 s) re-tasked the ship onto the wreck each time; the k win's NH killed Airfield2
+(1685 s) and Airfield1 (2335 s) while attacking HQ1 / Capture Post 01, and in k2 both airfields survived. Order
+files that relied on attacking a wreck to idle a ship change behaviour; names that resolve to no created unit are
+passed through as before.
+
+## 248. 0067BB50's clear page byte and local-slot gate are unreachable (cc9-ships50, 2026-10-14; lead item 3)
+
+The seg27 blind audit marked `role_screen_update_0067bb50` defect_found: at 0067BBE0 a clear page byte +4h (BL, read
+at 0067BB5D) with role 0 held releases the role through 0077C470(ctrl, 1, 0) (0067BC16..0067BC21), and the
+game+18ECh [0, 7] gate (0067BBC8..0067BBD4) is skipped. Read with `bsp.py disasm-raw 0067bb50` / `004f8830`:
+- The only reference to 0067BB50 is the vtable dword 00CF7A58 (page 27h, vtable 00CF7A38, slot 20h). The pump
+  004F8830's last loop over the screen table 00E18B60..00E18CDC calls slot 20h only when `[ECX+4]` and `[ECX+5]` are
+  both nonzero (004F890C, 004F8912, `CALL [EDX+20h]` at 004F8925 with the frame seconds pushed). The other table
+  readers do not call slot 20h (004D64E8 calls +24h). So BL is set on every call and the release branch never runs.
+  The host pump (src/frontend_states.cpp, `wanted && active`) gates the same way.
+- game+18ECh is the local participant slot set by 004B4740 (callers 007705A0 / 0076C840, the session select-player
+  paths); the host fixes it at `kLocalPlayerSlot` 0, so the gate always passes in single player.
+No counter or switch was added: neither state is reachable on the only call path. The ledger record goes back to
+`semantic_build_tested` with the corrected ABI (`__thiscall(ECX page, float seconds), RET 4`, not __fastcall/RET),
+and the host's two release labels are corrected (0067BB96 is the change-away release, 0067BC2C..0067BC37 the
+no-controlled release). Uncertainty: unreachability rests on the pump being the sole caller of slot 20h of this page.

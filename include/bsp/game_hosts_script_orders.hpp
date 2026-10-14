@@ -224,6 +224,13 @@ inline constexpr bool kSquadronPutToMembersBound = true;
 // entity's 0042BB50, FLD1. False: the gate is clear and the slot answers 0, so
 // every unit reads 0% to the scripts.
 inline constexpr bool kUnitHealthFractionBound = true;
+// Packet cc9_l59_sq_avg_health (docs/CC13_VER_8.md V2; docs/SQUADRON_LAND_TASK.md 5he.3). A
+// squadron's vtable[110h] is 007EDC30, not 00876260: the float sum of 00923BE0 over the
+// +3CCh current members FIDIV the initial count +3C8h (0 when +3C8h <= 0), so removed planes
+// count as 0. True: a fused squadron slot answers that average over the registry record's
+// live member_units and wing_count (squadron_average_health_007edc30). False: the fused
+// slot's own row (its wing-0 plane).
+inline constexpr bool kSquadronAverageHealthBound = true;   // ON: SQUADRON_LAND_TASK 5he.3
 
 // Packet cc9_submarine_depth_level (docs/SUBMARINE_MODEL.md section 11).
 // True: the Lua native GetSubmarineDepthLevel (00894100) pushes the unit's
@@ -610,6 +617,10 @@ public:
     // script_orders_squadron_intake_007f1940.
     std::uint32_t squadron_intake_007f1940(std::size_t leader,
         const std::vector<std::size_t>& members, std::size_t target_index);
+    // The intake's issue loop: `command` on a kind-1 descriptor naming the target, to
+    // every member, with the bot task installed after the delivery.
+    void issue_command_to_members(const std::vector<std::size_t>& members,
+        std::uint32_t command, std::size_t target_index, const char* source);
 
     // Packet cc8_ship_moveonpath: `GetSelectedUnit` 008AB070 reads the global
     // 00E188D8, which 004C0893 stores in BSP_Game_SetControlledUnit 004C0890.
@@ -975,6 +986,7 @@ private:
     unsigned long long player_launch_started_{0};
     unsigned long long auto_attack_issued_{0};
     unsigned long long auto_attack_declined_{0};
+    unsigned long long auto_attack_null_class_movetos_{0};   // kAutoAttackNullClassMoveToBound
     void run_air_ops_player_launch_queue(float step);
     void run_standing_attacks();
     GameHostLog& log_;
@@ -1058,6 +1070,7 @@ private:
     // Packet cc9_get_hp_percentage.
     unsigned long long health_reads_{0};
     unsigned long long health_reads_dead_{0};
+    unsigned long long health_reads_squadron_{0};   // 007EDC30 answers (kSquadronAverageHealthBound)
     unsigned long long health_reads_marker_{0};
     // 008A4C90's tally. `calls` counts what the scripts asked for; the two
     // `resolved` counters say whether the Lua argument path actually reached a
