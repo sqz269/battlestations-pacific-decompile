@@ -58,10 +58,10 @@ struct GameNativeGuiSamplerApplication::Impl final : NativeMaterialDescriptorSam
             : domain(d), counted(invocation), knowledge{false},
               root_context{d.compiler.passes.lifetime, d.singletons.manager_publication_01090aa0(),
                   d.singletons.particle_clock_publication_00f8d420(), d.entry, word,
-                  evidence.root_release, evidence.root_release_count, &knowledge},
+                  evidence.root_release, evidence.root_release_count, &knowledge, invocation ? this : nullptr},
               mode_context{d.compiler.passes.lifetime, d.singletons.manager_publication_01090aa0(),
                   d.singletons.particle_clock_publication_00f8d420(), d.entry, word,
-                  evidence.mode_release, evidence.mode_release_count, &knowledge} {
+                  evidence.mode_release, evidence.mode_release_count, &knowledge, invocation ? this : nullptr} {
             if (evidence.root_entry_word) { word = *evidence.root_entry_word; knowledge.known = true; }
             if (counted) ++domain.live_scopes;
         }

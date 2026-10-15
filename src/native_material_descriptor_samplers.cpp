@@ -1,6 +1,8 @@
 #include "bsp/native_material_descriptor_samplers.hpp"
+#include <cstring>
 #include <exception>
 #include <stdexcept>
+#include <windows.h>
 
 namespace bsp {
 namespace {
@@ -22,19 +24,49 @@ void record_stack(const NativeMaterialDescriptorSamplersContext& c,U word) noexc
 }
 void consume_release_stack(Op& a,NativeMaterialDescriptorSamplerStep& s) {
     const auto& c=*a.context;
+    // A failed identity/agreement check must not leave the pre-release word
+    // advertised as known in the shared root/mode scope.
+    if(c.stack_knowledge)c.stack_knowledge->known=false;
     if(a.release_stack_index>=c.release_stack_count||!c.release_stack) {
+        if(s.release_word_established){record_stack(c,0x00b3b2e4);return;}
         if(c.stack_knowledge){c.stack_knowledge->known=false;return;}
         throw std::logic_error("successful sampler release requires its native B-16 residue");
     }
     const auto& residue=c.release_stack[a.release_stack_index];
     if(c.stack_knowledge&&residue.sampler_index>s.sampler_index){
+        if(s.release_word_established){record_stack(c,0x00b3b2e4);return;}
         c.stack_knowledge->known=false;return;
     }
     if(residue.sampler_index!=s.sampler_index||residue.released_owner_identity!=s.captured_owner)
         throw std::logic_error("native sampler release stack residue identity/order mismatch");
+    if(s.release_word_established&&residue.word_b_minus_16!=0x00b3b2e4)
+        throw std::logic_error("captured sampler release word conflicts with established native word");
     record_stack(c,residue.word_b_minus_16);
     ++a.release_stack_index;
 }
+}
+bool qualify_native_material_descriptor_sampler_release_provider(
+    NativeMaterialDescriptorSamplerReleaseProvider& evidence) noexcept {
+    // Same complete nonforwarded20-byte Kernel32 profile as the cached-entry
+    // proof. No cached COM Release/96-byte bridge is used or changed here.
+    static constexpr unsigned char decrement[] = {
+        0x8b,0xff,0x55,0x8b,0xec,0x8b,0x4d,0x08,0x83,0xc8,0xff,0xf0,0x0f,0xc1,0x01,0x48,
+        0x5d,0xc2,0x04,0x00};
+    evidence.module=0;evidence.entry=0;evidence.matched=false;
+    HMODULE module = GetModuleHandleW(L"kernel32.dll");
+    if(!module)return false;
+    evidence.module=reinterpret_cast<std::uintptr_t>(module);
+    auto* dos=reinterpret_cast<const IMAGE_DOS_HEADER*>(module);
+    if(dos->e_magic!=IMAGE_DOS_SIGNATURE||dos->e_lfanew<=0||dos->e_lfanew>0x1000)return false;
+    auto* nt=reinterpret_cast<const IMAGE_NT_HEADERS32*>(
+        reinterpret_cast<const unsigned char*>(module)+dos->e_lfanew);
+    if(nt->Signature!=IMAGE_NT_SIGNATURE||nt->FileHeader.Machine!=IMAGE_FILE_MACHINE_I386||
+        nt->OptionalHeader.Magic!=IMAGE_NT_OPTIONAL_HDR32_MAGIC||
+        nt->FileHeader.TimeDateStamp!=0x0f052f7bu||nt->OptionalHeader.SizeOfImage!=0x000f0000u)return false;
+    evidence.entry=reinterpret_cast<std::uintptr_t>(GetProcAddress(module,"InterlockedDecrement"));
+    if(evidence.entry!=evidence.module+0x31ab0u)return false;
+    evidence.matched=std::memcmp(reinterpret_cast<const void*>(evidence.entry),decrement,sizeof decrement)==0;
+    return evidence.matched;
 }
 NativeMaterialDescriptorSamplersOperation::~NativeMaterialDescriptorSamplersOperation(){
     if(phase==Phase::running||phase==Phase::failed)std::terminate();
@@ -81,8 +113,19 @@ void append_native_material_descriptor_samplers_00b3b280(NativeMaterialProgramBu
                     record_stack(c,0x00b3b2e4);
                     *reinterpret_cast<volatile std::uint8_t*>(&pass.byte_80)=1;
                     a.native_site=s.native_site=0x00b3b2ef;s.release_entered=true;
-                    release_native_render_actual_owner(c.pass_lifetime.retained_owners,s.captured_owner);
+                    s.release_invocation_identity=c.invocation_identity;
+                    if(s.release_invocation_identity)
+                        qualify_native_material_descriptor_sampler_release_provider(s.release_provider_before);
+                    release_native_render_actual_owner_observed(c.pass_lifetime.retained_owners,
+                        s.captured_owner,s.release_observation);
                     s.release_returned=true;s.owner_obligation=false;
+                    if(s.release_invocation_identity) {
+                        qualify_native_material_descriptor_sampler_release_provider(s.release_provider_after);
+                        const auto& before=s.release_provider_before;
+                        const auto& after=s.release_provider_after;
+                        s.release_word_established=s.release_observation.previous_count>1&&
+                            before.matched&&after.matched&&before.module==after.module&&before.entry==after.entry;
+                    }
                     consume_release_stack(a,s);
                     increment(&builder,0x8c);
                 }

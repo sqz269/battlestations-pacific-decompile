@@ -23,6 +23,13 @@ struct NativeMaterialDescriptorSamplerReleaseScratch {
 struct NativeMaterialDescriptorSamplerStackKnowledge {
     bool known{};
 };
+// Exact current Win32 CE2220 provider profile; no release is executed here.
+struct NativeMaterialDescriptorSamplerReleaseProvider {
+    std::uintptr_t module{}, entry{};
+    bool matched{};
+};
+bool qualify_native_material_descriptor_sampler_release_provider(
+    NativeMaterialDescriptorSamplerReleaseProvider&) noexcept;
 struct NativeMaterialDescriptorSamplersContext {
     NativeMaterialPassDestructionAccess& pass_lifetime;
     void* volatile& actual_manager_01090aa0;
@@ -36,6 +43,10 @@ struct NativeMaterialDescriptorSamplersContext {
     // known=true only at actual B5F100 consumption. Missing captures invalidate
     // knowledge; they do not supply zero, previous contents or a default value.
     NativeMaterialDescriptorSamplerStackKnowledge* stack_knowledge{};
+    // The retained actual compiler root/mode scope. Nonnull opts into the
+    // current-provider nonzero Source1 proof. It is an identity, never read.
+    // It must outlive this context and both retained descriptor operations.
+    const void* invocation_identity{};
 };
 // One original B3B3C0 invocation's caller-owned sampler state. Root and mode
 // have distinct contexts/operations, but share W=P-30h and its knowledge.
@@ -63,6 +74,10 @@ struct NativeMaterialDescriptorSamplerStep final {
     NativeSamplerLoaderSingletonStorage* loader{};
     void* captured_owner{};
     bool owner_obligation{},release_entered{},release_returned{};
+    const void* release_invocation_identity{};
+    NativeRenderActualOwnerReleaseObservation release_observation;
+    NativeMaterialDescriptorSamplerReleaseProvider release_provider_before,release_provider_after;
+    bool release_word_established{};
     std::optional<NativeSamplerLoaderOperation> singleton;
     std::optional<NativeSamplerDefaultLoadOperation> load;
     std::optional<NativeDescriptorSamplerOperation> effect_name,reference,binding;
