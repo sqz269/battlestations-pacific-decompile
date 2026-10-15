@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_raw_dword_list_node",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_raw_dword_list_node.cpp",
+  "header": "include/bsp/native_raw_dword_list_node.hpp",
+  "documentation": "docs/GOAL_OCT15_RAW_DWORD_LIST_NODE.md",
+  "base_revision": "6400fb9dd1a6eb5b7d1f3213d70dc62b16f73e02",
+  "status": "whole_actual_storage_source_build_pending",
+  "routine": {
+    "address": "00467ba0",
+    "body_end_inclusive": "00467bca",
+    "body_bytes": 43,
+    "instructions": 15,
+    "blocks": 3,
+    "physical_calls": 1,
+    "implementation": "allocate_native_raw_dword_list_node_00467ba0",
+    "retained_name": "STL_List_BuyNodeC_00467ba0",
+    "coverage": "complete_actual_raw_storage_source_at_concrete_current_crt_allocation_boundary",
+    "original_abi": "one live stackedDWORD entryESP+4;RET4 both tails;incomingECX/EDX unused;no nonvolatile writes;rawEAX allocation or0 if literal address8 write returns;semantic returntype unproved",
+    "live_callers": 0,
+    "live_code_or_data_xrefs": 0,
+    "live_hex": "6a0ce874ec780033c983c4043bc1740f89088948048b4c2404894808c204008b54240433c0895008c20400",
+    "disk_hex": "6a0ce874ec780033c983c4043bc1740f89088948048b4c2404894808c204008b54240433c0895008c20400",
+    "live_installed_pe_equal": true,
+    "sha256": "443ef913af48a565bd09334b248a0922d89f942f7f1f47cd3dc381dc9439eb41"
+  },
+  "host_steps": [
+    {
+      "address": "00467ba2",
+      "native": "00bf681b",
+      "function": "00467ba0",
+      "kind": "call"
+    }
+  ],
+  "implementation_search": "no indexed/unindexed whole00467BA0 or new Source API before reconstruction;correct descriptive library name retained as provisional shape,without nominal payload/list-owner claim",
+  "source_contract": "explicit stable actual_parameter4 backing;all allocation before argument reads;nonnull zero node0,zero node4,thenCURRENT parameter read/node8 store. Entire literal nulltail CURRENT argument read,storeabsolute8,return0 if write returns;no nullrecovery. Valid reached backing/parameter-node aliases retained;no implicit Source/native frame or argument-home aliases/concurrency.",
+  "concrete_allocator": "accepted singleton_lifetime_allocate({object,0x0c,0x0c}) actual malloc/_callnewh(size) retry/std::bad_alloc service;nonnull-or-throw at current boundary. Native original BF681B assembly verified;static exception/globalhandler/vtable/CRT representation identity unclaimed. No provider edits/callbacks/stubs or positive-only wrapper.",
+  "eh_and_ownership": "no local EH frame,funclet,temporary,validation,cleanup,release,rollback,payload destructor or nominal class ownership",
+  "annotation": {
+    "before_comments": "local/goal_oct15_raw_dword_list_node_before_comments.json",
+    "before_documentation": "local/goal_oct15_raw_dword_list_node_before_documentation.json",
+    "preserve_correct_library_name_prior_values_comments_evidence": true,
+    "locked_apply_save": "passed;local/ghidra-annotations-20261015T215200Z.json;correct descriptive library name and all prior values/comments/evidence retained;project saved",
+    "refreshed_exports": "passed;owned address forced after annotation",
+    "readback": "passed;local/goal_oct15_raw_dword_list_node_after_comments.json;expected name,prior comments and added evidence verified"
+  },
+  "verification": {
+    "project_program_guard": "bsp.py Client.verify each live batch;bsp,/battlestationspacific.exe,x86:LE:32:default,image00400000",
+    "whole_assembly_abi_allocator_and_xrefs": "passed",
+    "live_installed_bytes": "passed;whole43B/15instructions including both RET4 tails",
+    "typed_native_transfers": "passed;1 typed native row and1 Markdown claim;7 cited addresses;0 failed/unchecked/warnings",
+    "cmake_registration": "passed;unique append after immediate unleased check;no exclusive file lease",
+    "strict_win32_build_and_existing_ctest": "pending",
+    "compiled_object_review": "pending",
+    "source_file_sha256": {
+      "src/native_raw_dword_list_node.cpp": "6f561076df3df8202db0a7ad80316a9ca002d2bbcb006fa437b068ae370ffc24",
+      "include/bsp/native_raw_dword_list_node.hpp": "f193d51a6e3a5fa672d8ee6d4a88dbe02b093fc96cd90581f5a40bc0531039ec"
+    },
+    "new_tests": false,
+    "packet_native_differential": "not run",
+    "game_validation": "not run",
+    "diff_check": "passed"
+  },
+  "limits": [
+    "Current concrete allocation nonnull-or-throw service with full literal native nulltail retained;no original CRT/exception/globalhandler identity.",
+    "Live actual parameter backing and raw words;no nominal payload class,key type,list ownership or hidden frame alias.",
+    "New ordinary C++ interface;no original register/stack/private-frame/fault/SEH/instruction/COFF or semantic returntype identity.",
+    "No packet-specific native differential/application/game validation."
+  ]
+}
