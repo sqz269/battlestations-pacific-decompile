@@ -1,0 +1,291 @@
+{
+  "schema": "native_scene_property_bag_reset_cc12_v1",
+  "address": "008F5470",
+  "proposed_name": "reset_native_scene_property_bag_008f5470",
+  "source_scope": "Complete 117-byte/45-instruction normal successful-domain Reset; new concrete-context C++ ABI.",
+  "original": {
+    "start": "008F5470",
+    "end_exclusive": "008F54E5",
+    "bytes": 117,
+    "instructions": 45,
+    "blocks": 9,
+    "edges": 12,
+    "calls": 8,
+    "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+    "ghidra_program": "/battlestationspacific.exe",
+    "listing_tools": [
+      "3c43e8",
+      "65c280"
+    ],
+    "current_proto_tool": "9661ee",
+    "current_whole_bytes_tool": "3a4b74",
+    "abi": "ECX outer destination; optional source at entry ESP+4, read after clear; RET 4. New entry does not claim this register/stack ABI or residual registers.",
+    "fresh_installed_PE_span": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "file_offset": 5198960,
+      "bytes": 117,
+      "sha256": "d58d72d0010696362effa22a072a0cf27d63734a2ffdf755d4135ef4e79cd6f4",
+      "hex": "53578bf98d4f04e8b4eaffff8b5c240c85db745c566a0ce88f1330008bf083c40485f6740e83c3048bce891ee8efb1b8ffeb0233f68b460485c0742a8d6424008b4808e8a8faffff508bcee860f8b8ff508bcfe828dfffff8bcee8b18fb8ff8b460485c075da56e8d010300083c4045e5f5bc20400",
+      "matches_current_Ghidra_whole_span": true,
+      "whole_PE_rehashed": false
+    }
+  },
+  "contract": {
+    "destination": "Actual raw61-produced live destination, +4 actual map; same concrete clone/insertion/lifetime context and canonical process generation.",
+    "source": "Null means clear-only. Distinct finite acyclic owning graph and payloads disjoint from destination, borrowed unchanged. Exact self-reset follows clear then real empty iterator; other ownership overlap excluded.",
+    "order": [
+      "clear actual destination map",
+      "read optional source; return if null",
+      "allocate actual 12-byte heap iterator, store source+4 and begin even for empty/self",
+      "read node+8 record; whole clone008F4F60 BEFORE iterator key00484D20",
+      "whole insert008F33F0; iterator next0047E480",
+      "free iterator once after normal loop"
+    ],
+    "preserved": "No bag initializer or phase/owner+110 write. Counter+10C is retained rather than reset; insertion may increment it for incoming ordinal-zero records.",
+    "key_role": "Existing IteratorKeyCString00484D20 returns node key or its ordinary static empty string for E186ED. No new fallback cell; clone-specific F89450 is not substituted.",
+    "domain": [
+      "current heap, actual canonical key/property pools and live list owners",
+      "all 12 accepted whole-clone constructor domains, Type1 FP contract and raw iterator memory domain",
+      "ASCII/current C locale, no ordinal overflow, sufficient stack, normal successful providers",
+      "no concurrent mutation, trim, reentry, invalid graph, ancestor overlap, OOM/EH/class/private-CRT/game equivalence"
+    ]
+  },
+  "implementation": {
+    "header": "include/bsp/native_scene_property_bag_reset.hpp",
+    "source": "src/native_scene_property_bag_reset.cpp",
+    "documentation": "docs/NATIVE_SCENE_PROPERTY_BAG_RESET_CC12.md",
+    "api": "void reset_native_scene_property_bag_008f5470(void*, const void*, NativeScenePropertyCloneContext&)",
+    "hypothesis": true,
+    "code_changes_outside_owned_files": false
+  },
+  "validation": {
+    "strict_Msvc_Win32_compile_passed": true,
+    "whole_COFF_body_inspected": true,
+    "original_byte_equal": false,
+    "ordinary_Cpp_ABI_only": true,
+    "existing_repository_build_passed": true,
+    "existing_tests_passed": 2,
+    "existing_tests_total": 2,
+    "Reset_registered_in_CMake": false,
+    "Reset_registered_library_build_passed": false,
+    "Reset_focused_Source_runtime_executed": false,
+    "Original_Native_executed": false,
+    "game_validated": false
+  },
+  "dependencies": {
+    "whole_clone_Source_integrated": "6b009c86e / Main5955c177c",
+    "whole_clone_Source_runtime": {
+      "actual_tool": "2cdc55",
+      "exit_code": 0,
+      "pid": 49956,
+      "parent_whole_current_verification": true,
+      "scope": "3 bags,15 records/all12 arms,55 source spans2208B stable through cleanup,disjoint owning outputs,6 FP rows. This is dependency evidence, not Reset execution.",
+      "record": "J:/PROG/battlestations-pacific-decompile-cc12_type5_resume/local/FullRecursivePropertyCloneSource01/actual_Source_probe_process.DATA.json",
+      "bytes": 18536,
+      "sha256": "8e7926ad5bc310ba913b9e193edae78f5ad705b838173f60c896a3972482c3fc"
+    }
+  },
+  "actual_tools": {
+    "initial_compile_failure": {
+      "tool": "exec_command",
+      "args": {
+        "cmd": "New-Item -ItemType Directory -Path build/native_scene_property_bag_reset_cc12 -Force | Out-Null\ncmd.exe /d /c 'call \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvars32.bat\" >nul && cl /nologo /Bv /std:c++17 /MD /O2 /W4 /WX /EHsc /Gy /GL- /Z7 /c /Iinclude src\\native_scene_property_bag_reset.cpp /Fobuild\\native_scene_property_bag_reset_cc12\\native_scene_property_bag_reset.obj && dumpbin /nologo /headers /symbols /disasm build\\native_scene_property_bag_reset_cc12\\native_scene_property_bag_reset.obj >build\\native_scene_property_bag_reset_cc12\\COFF_disassembly.txt'\nexit $LASTEXITCODE",
+        "workdir": "J:/PROG/battlestations-pacific-decompile-cc12_native_resume_data",
+        "max_output_tokens": 1800
+      },
+      "result": {
+        "chunk_id": "43a5e2",
+        "wall_time_seconds": 5.5832124,
+        "exit_code": 2,
+        "original_token_count": 316,
+        "output": "Compiler Passes:\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\cl.exe:        Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c1.dll:        Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c1xx.dll:      Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c2.dll:        Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c1xx.dll:      Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\link.exe:      Version 14.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\mspdb140.dll:  Version 14.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\1033\\clui.dll: Version 19.51.36244.0\r\n\r\nnative_scene_property_bag_reset.cpp\r\nsrc\\native_scene_property_bag_reset.cpp(17): error C2400: inline assembler syntax error in 'second operand'; found 'newline'\r\n"
+      }
+    },
+    "corrected_pre_documentation_compile": {
+      "tool": "exec_command",
+      "args": {
+        "cmd": "New-Item -ItemType Directory -Path build/native_scene_property_bag_reset_cc12 -Force | Out-Null\ncmd.exe /d /c 'call \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvars32.bat\" >nul && cl /nologo /Bv /std:c++17 /MD /O2 /W4 /WX /EHsc /Gy /GL- /Z7 /c /Iinclude src\\native_scene_property_bag_reset.cpp /Fobuild\\native_scene_property_bag_reset_cc12\\native_scene_property_bag_reset.obj && dumpbin /nologo /headers /symbols /disasm build\\native_scene_property_bag_reset_cc12\\native_scene_property_bag_reset.obj >build\\native_scene_property_bag_reset_cc12\\COFF_disassembly.txt'\nexit $LASTEXITCODE",
+        "workdir": "J:/PROG/battlestations-pacific-decompile-cc12_native_resume_data",
+        "max_output_tokens": 1800
+      },
+      "result": {
+        "chunk_id": "25cf9e",
+        "wall_time_seconds": 4.7562448,
+        "exit_code": 0,
+        "original_token_count": 285,
+        "output": "Compiler Passes:\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\cl.exe:        Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c1.dll:        Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c1xx.dll:      Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c2.dll:        Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c1xx.dll:      Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\link.exe:      Version 14.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\mspdb140.dll:  Version 14.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\1033\\clui.dll: Version 19.51.36244.0\r\n\r\nnative_scene_property_bag_reset.cpp\r\n"
+      }
+    },
+    "current_compile": {
+      "tool": "exec_command",
+      "args": {
+        "cmd": "New-Item -ItemType Directory -Path build/native_scene_property_bag_reset_cc12 -Force | Out-Null\ncmd.exe /d /c 'call \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvars32.bat\" >nul && cl /nologo /Bv /std:c++17 /MD /O2 /W4 /WX /EHsc /Gy /GL- /Z7 /c /Iinclude src\\native_scene_property_bag_reset.cpp /Fobuild\\native_scene_property_bag_reset_cc12\\native_scene_property_bag_reset.obj && dumpbin /nologo /headers /symbols /disasm build\\native_scene_property_bag_reset_cc12\\native_scene_property_bag_reset.obj >build\\native_scene_property_bag_reset_cc12\\COFF_disassembly.txt'\nexit $LASTEXITCODE",
+        "workdir": "J:/PROG/battlestations-pacific-decompile-cc12_native_resume_data",
+        "max_output_tokens": 500
+      },
+      "result": {
+        "chunk_id": "45765a",
+        "wall_time_seconds": 4.2578751,
+        "exit_code": 0,
+        "original_token_count": 285,
+        "output": "Compiler Passes:\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\cl.exe:        Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c1.dll:        Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c1xx.dll:      Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c2.dll:        Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\c1xx.dll:      Version 19.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\link.exe:      Version 14.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\mspdb140.dll:  Version 14.51.36244.0\r\n C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX86\\x86\\1033\\clui.dll: Version 19.51.36244.0\r\n\r\nnative_scene_property_bag_reset.cpp\r\n"
+      }
+    },
+    "existing_repository_build": [
+      {
+        "tool": "exec_command",
+        "args": {
+          "cmd": "try {\n    & ./scripts/build.ps1 *> build/native_scene_property_bag_reset_cc12/repository_build.log\n    if ($LASTEXITCODE -ne 0) { throw \"Build script returned $LASTEXITCODE\" }\n    Get-Content build/native_scene_property_bag_reset_cc12/repository_build.log -Tail 16\n} catch {\n    Get-Content build/native_scene_property_bag_reset_cc12/repository_build.log -Tail 22\n    Write-Output $_\n    exit 1\n}",
+          "workdir": "J:/PROG/battlestations-pacific-decompile-cc12_native_resume_data",
+          "max_output_tokens": 1800,
+          "yield_time_ms": 1000
+        },
+        "result": {
+          "chunk_id": "82d50b",
+          "wall_time_seconds": 10.0078137,
+          "session_id": 39965,
+          "original_token_count": 0,
+          "output": ""
+        }
+      },
+      {
+        "tool": "write_stdin",
+        "args": {
+          "session_id": 39965,
+          "chars": "",
+          "yield_time_ms": 1000,
+          "max_output_tokens": 1000
+        },
+        "result": {
+          "chunk_id": "d54218",
+          "wall_time_seconds": 1.08e-05,
+          "exit_code": 0,
+          "original_token_count": 194,
+          "output": "  game_native_string_process.cpp\r\n  game_native_tick_registration_process.cpp\r\n  game_native_vertex_declarations.cpp\r\n  game_native_vfs_application.cpp\r\n  Generating Code...\r\n  bsp_game.vcxproj -> J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\build\\win32\\Release\\bsp_game.exe\r\n  Building Custom Rule J:/PROG/battlestations-pacific-decompile-cc12_native_resume_data/CMakeLists.txt\r\nTest project J:/PROG/battlestations-pacific-decompile-cc12_native_resume_data/build/win32\r\n    Start 1: reconstructed_math\r\n1/2 Test #1: reconstructed_math ...............   Passed    0.29 sec\r\n    Start 2: tool_tests\r\n2/2 Test #2: tool_tests .......................   Passed   11.46 sec\r\n\r\n100% tests passed, 0 tests failed out of 2\r\n\r\nTotal Test time (real) =  11.80 sec\r\n"
+        }
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "failure_chunk": "43a5e2",
+      "exit_code": 2,
+      "cause": "MSVC inline-assembly reserved keyword offset used as helper parameter.",
+      "correction": "Rename helper parameter offset to byte_offset; no algorithm change."
+    }
+  ],
+  "proposed_ledger_record": {
+    "address": "008F5470",
+    "name": "reset_native_scene_property_bag_008f5470",
+    "status": "whole ordinary C++ reconstructed; strict Win32 source compiled; whole emitted body inspected; existing repository build2/2 passed; registered-library/Reset runtime admission pending",
+    "source_file": "src/native_scene_property_bag_reset.cpp",
+    "header_file": "include/bsp/native_scene_property_bag_reset.hpp",
+    "original_abi": "ECX outer bag; stack optional source; RET4",
+    "uncertainty": "Descriptive name is a hypothesis; no Original ABI/EH/OOM/class/game qualification."
+  },
+  "current_source_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\include\\bsp\\native_scene_property_bag_reset.hpp",
+      "bytes": 1767,
+      "sha256": "678f0398f9032ef0b018b71308765ffde4aeefbe29493d57a684c384988b7477"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\src\\native_scene_property_bag_reset.cpp",
+      "bytes": 2092,
+      "sha256": "f0886290d0b2d72c363bbc23eae74f5f718a473155aa64379be26e5a03c47783"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\docs\\NATIVE_SCENE_PROPERTY_BAG_RESET_CC12.md",
+      "bytes": 2208,
+      "sha256": "4d955f85e5140e3f68d3a214d174ccc1f53ad2ad4c991bde026632ca9a974a73"
+    }
+  ],
+  "COFF": {
+    "machine": "i386",
+    "symbol": "?reset_native_scene_property_bag_008f5470@bsp@@YAXPAXPBXAAVNativeScenePropertyCloneContext@1@@Z",
+    "function_offset": 0,
+    "complete_function_bytes": 222,
+    "sha256": "066fd2d31759ba1a39f2dbc97a424671c57924998601081727873bc4895aa09d",
+    "relocations": [
+      {
+        "offset": 4,
+        "type": 6,
+        "symbol": "___security_cookie"
+      },
+      {
+        "offset": 31,
+        "type": 20,
+        "symbol": "?clear_native_scene_property_record_map_008f3f30@bsp@@YAXPAXAAVNativeScenePropertyLifetimeContext@1@@Z"
+      },
+      {
+        "offset": 81,
+        "type": 20,
+        "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+      },
+      {
+        "offset": 98,
+        "type": 20,
+        "symbol": "?property_bag_iterator_begin_00480690@cc13_seg7@bsp@@YAXPAE@Z"
+      },
+      {
+        "offset": 162,
+        "type": 20,
+        "symbol": "?clone_native_scene_property_record_008f4f60@bsp@@YAPAXPBXAAVNativeScenePropertyCloneContext@1@@Z"
+      },
+      {
+        "offset": 170,
+        "type": 20,
+        "symbol": "?property_bag_iterator_key_00484d20@cc13_seg7@bsp@@YAPBDPAE@Z"
+      },
+      {
+        "offset": 179,
+        "type": 20,
+        "symbol": "?insert_native_scene_property_bag_008f33f0@bsp@@YAPAXPAXPBD0AAVNativeScenePropertyInsertionContext@1@@Z"
+      },
+      {
+        "offset": 185,
+        "type": 20,
+        "symbol": "?property_bag_iterator_next_0047e480@cc13_seg7@bsp@@YA_NPAE@Z"
+      },
+      {
+        "offset": 196,
+        "type": 20,
+        "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+      },
+      {
+        "offset": 214,
+        "type": 20,
+        "symbol": "@__security_check_cookie@4"
+      }
+    ],
+    "operation_call_offsets": {
+      "clear": 30,
+      "allocate_iterator": 80,
+      "iterator_begin": 97,
+      "clone": 161,
+      "key": 169,
+      "insert": 178,
+      "next": 184,
+      "free_iterator": 195
+    },
+    "extra_compiler_relocations": "MSVC security-cookie global at4 and cookie-check call at213",
+    "comparison": "Full-body schedule/loads/calls inspected; not a 117-byte or register-ABI equality claim."
+  },
+  "validation_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\build\\native_scene_property_bag_reset_cc12\\native_scene_property_bag_reset.obj",
+      "bytes": 27984,
+      "sha256": "8f7dc7b461267ba2464548653e1b22ede31afeac71394052812418c0e7f0d6f7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\build\\native_scene_property_bag_reset_cc12\\COFF_disassembly.txt",
+      "bytes": 20729,
+      "sha256": "b6a108c2fa5fb1b20aee58989878002c6a789604bf1858baecdf612577df85b0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\build\\native_scene_property_bag_reset_cc12\\repository_build.log",
+      "bytes": 6470,
+      "sha256": "a753d7a3d2633de6e79acd8f839b2344cc9a8e402e2761ecbcd68378c5326216"
+    }
+  ]
+}
