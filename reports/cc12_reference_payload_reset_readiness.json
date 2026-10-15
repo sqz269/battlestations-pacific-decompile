@@ -1,0 +1,397 @@
+{
+  "schema": "bsp.cc12.reference_payload_reset.primary_readiness.v1",
+  "Source_ready": [
+    "008F0380"
+  ],
+  "Source_blocked": [
+    "008F0600"
+  ],
+  "Source_implemented": false,
+  "Source_admission_credit": 0,
+  "packet": "cc12_reference_payload_reset_008f0380",
+  "output_files": [
+    "include/bsp/native_reference_payload_reset.hpp",
+    "src/native_reference_payload_reset.cpp",
+    "docs/NATIVE_REFERENCE_PAYLOAD_RESET_CC12.md",
+    "reports/native_reference_payload_reset_cc12.json"
+  ],
+  "primary_whole_Original_and_contract_review": true,
+  "contract": "Whole [008F0380,008F03A2),34 bytes/12 instructions. ECX is genuine live raw8 reference payload: opaque full scalar at+0, owned pointer at+4. Capture old pointer; if nonnull call canonical current free then clear DWORD+4; always clear DWORD scalar+0. The null path does not store+4. No root free, virtual dispatch, tag/kind reset or reversed 03F0 array header substitution. Proposed MSVC Win32 naked void __fastcall(void*) noexcept retains30 non-CALL operand bytes and rebinds only[12,16) to singleton_lifetime_free. Actual accepted0310/0340/current physical duplicate provenance; old pointer null or sole-owned current-heap duplicate, valid disjoint live payload/frame and successful normal free. No alias, reentry, concurrent mutation, fault, rollback or Original private CRT/EH/full ABI/caller/class/game claim. Existing scalar-deleting slot0600 is separately blocked and receives no Source authorization.",
+  "reset_0380": {
+    "Source_ready": true,
+    "whole": {
+      "address": "008F0380",
+      "end_exclusive": "008F03A2",
+      "bytes": 34,
+      "instruction_count": 12,
+      "section": ".text",
+      "file_offset": 5178240,
+      "hex": "568bf18b460485c0741050e8f965300083c404c7460400000000c706000000005ec3",
+      "sha256": "cebff76019d054f62e5664408c7f5094a557b977e8db9b049c0347fe3e260437",
+      "instructions": [
+        {
+          "address": "008F0380",
+          "hex": "56",
+          "mnemonic": "push",
+          "operands": "esi",
+          "size": 1
+        },
+        {
+          "address": "008F0381",
+          "hex": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx",
+          "size": 2
+        },
+        {
+          "address": "008F0383",
+          "hex": "8b4604",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 4]",
+          "size": 3
+        },
+        {
+          "address": "008F0386",
+          "hex": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax",
+          "size": 2
+        },
+        {
+          "address": "008F0388",
+          "hex": "7410",
+          "mnemonic": "je",
+          "operands": "0x8f039a",
+          "size": 2
+        },
+        {
+          "address": "008F038A",
+          "hex": "50",
+          "mnemonic": "push",
+          "operands": "eax",
+          "size": 1
+        },
+        {
+          "address": "008F038B",
+          "hex": "e8f9653000",
+          "mnemonic": "call",
+          "operands": "0xbf6989",
+          "size": 5
+        },
+        {
+          "address": "008F0390",
+          "hex": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4",
+          "size": 3
+        },
+        {
+          "address": "008F0393",
+          "hex": "c7460400000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 4], 0",
+          "size": 7
+        },
+        {
+          "address": "008F039A",
+          "hex": "c70600000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi], 0",
+          "size": 6
+        },
+        {
+          "address": "008F03A0",
+          "hex": "5e",
+          "mnemonic": "pop",
+          "operands": "esi",
+          "size": 1
+        },
+        {
+          "address": "008F03A1",
+          "hex": "c3",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        }
+      ],
+      "live_before_disk_live_after_equal": true,
+      "typed_body_before_after_equal": true,
+      "typed_body": {
+        "entry": {
+          "space": "ram",
+          "offset": "008f0380"
+        },
+        "name": "BSP_OwnedBuffer_Reset",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "34",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "008f0380"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "008f03a1"
+              },
+              "length": "34"
+            }
+          ]
+        }
+      }
+    },
+    "cached_name_qualification": "BSP_OwnedBuffer_Reset is a descriptive hypothesis; size/count semantics are not established. Layout agrees with accepted scalar+ownedstring reference payload, unlike the reversed pointer+size03F0 array header.",
+    "Original_ABI": "ECX actual8B payload; incomingEDX unused; no stackarguments; plainRET; PUSH/POPESI. EBX/EDI/EBP follow normal free provider ABI. No x87/SSE/FS/EH setup.",
+    "exact_schedule": [
+      "Load oldDWORD+4 intoEAX; TEST; null branches to008F039A.",
+      "Nonnull: PUSH old; CALL00BF6989; ADD ESP4; only after successful return storeDWORD+4=0.",
+      "Both paths: store fullDWORD+0=0; POPESI; plainRET. Scalar+0 is never read. Pointer+4 is not stored on null path."
+    ],
+    "record_write_footprint": {
+      "null_pointer": "4 distinct bytes at+0, +4 already zero is not written.",
+      "nonnull_pointer": "8 distinct bytes: +4 clear after free then+0 clear.",
+      "both_final_words_zero": true
+    },
+    "residual_registers_and_flags": "Null old: EAX0, ECX originalpayload, EDX incoming unchanged; final TEST0 flags CF/OF/SF0,ZF/PF1,AFundefined. Nonnull: EAX/ECX/EDX inherit ordinary free residuals; final arithmetic flags from ADD ESP4 before MOV/POP/RET. No full provider flags/FP/Original ABI promise.",
+    "stack_schedule": "Let E=entryESP. SaveESI E-4, freeargument E-8, freeentry E-12, freeRET E-8, ADD4 E-4, POP E, outerRET E+4. No callee argument is left behind.",
+    "direct_provider_closure": {
+      "Original_call": "008F038B ->00BF6989 JMP00BF65AC; saved whole5B thunk matchesdisk.",
+      "current_Source": "singleton_lifetime_free(void*) noexcept in src/singleton_lifetime.cpp calls std::free(pointer). Same accepted canonical binding as0310/0340/03F0/0640.",
+      "current_owned_producers": [
+        "physical duplicate_native_string_00438e40",
+        "replace_native_reference_payload_008f0310",
+        "copy_native_reference_payload_008f0340"
+      ],
+      "missing_direct_Source_providers": [],
+      "historical_free_privateCRT_or_failure_EH_compatibility": false
+    },
+    "actual_storage_domain": "Actual caller-owned live writable disjoint8B payload: arbitrary fullDWORD scalar+0 and actual pointer+4. Pointer is null or a sole-owned real same-current-CRT allocation supplied by admitted physical duplicate/0310/0340 operations; no privateOriginal heap crossing. Keep payload/frame/owned allocation disjoint and payload live through final stores. Free exactly once; do not inspect retired bytes. Successful normal nonthrowing free; no alias/reentry/concurrentmutation/fault/overflow. No root/container allocation or class ownership is inferred.",
+    "relationship_to_accepted_ops": "0310/0340 use scalar+0/currentownedpointer+4 and can leave a genuine live payload for0380.03F0 uses pointer+0/size+4 and is not interchangeable.0640 tag5 frees record+1C then clears+18; that is a related field schedule, not a new call/credit.",
+    "live_xref_qualification": {
+      "site": "008F5348",
+      "actual_bytes": "LEA ECX,[ESI+18] at008F5345 then CALL008F0380.",
+      "typed_function_containing_site": null,
+      "typed_functions": [],
+      "scope": "Real defined call site outside a live function body; cached enclosing candidate008F4F60 is not live function ownership proof. No caller/clone/class closure or listing repair is claimed."
+    },
+    "minimal_four_file_proposal": [
+      "include/bsp/native_reference_payload_reset.hpp",
+      "src/native_reference_payload_reset.cpp",
+      "docs/NATIVE_REFERENCE_PAYLOAD_RESET_CC12.md",
+      "reports/native_reference_payload_reset_cc12.json"
+    ],
+    "proposed_interface_hypothesis": "void __fastcall reset_native_reference_payload_008f0380(void* actual_payload_ecx) noexcept;",
+    "proposed_body": "Straightforward literal MSVCWin32 naked whole34B12; retain all30 nonCALLoperandbytes and rebind only DWORD CALLoperand[12,16) to accepted genuine canonical free. No callbacks/models/context/factory/defaults/new allocation.",
+    "register_x87_or_listing_repair_required_for_leaf": false,
+    "future_validation": "Only after separate Source authorization: own before-compile Source/include/tool closure, one strict Win32 object and complete byte/relocation audit, then proportionate repository checks under primary coordination. None executed by this readiness task."
+  },
+  "blocked_0600": {
+    "Source_ready": false,
+    "whole": {
+      "address": "008F0600",
+      "end_exclusive": "008F0619",
+      "bytes": 25,
+      "instruction_count": 12,
+      "section": ".text",
+      "file_offset": 5178880,
+      "hex": "568bf18b0e85c9740e8b018b106a01ffd2c706000000005ec3",
+      "sha256": "a64cccdbae0bd914f487bb3b23fce89cf97e3eeab4c316b1dae064029207b50b",
+      "instructions": [
+        {
+          "address": "008F0600",
+          "hex": "56",
+          "mnemonic": "push",
+          "operands": "esi",
+          "size": 1
+        },
+        {
+          "address": "008F0601",
+          "hex": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx",
+          "size": 2
+        },
+        {
+          "address": "008F0603",
+          "hex": "8b0e",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esi]",
+          "size": 2
+        },
+        {
+          "address": "008F0605",
+          "hex": "85c9",
+          "mnemonic": "test",
+          "operands": "ecx, ecx",
+          "size": 2
+        },
+        {
+          "address": "008F0607",
+          "hex": "740e",
+          "mnemonic": "je",
+          "operands": "0x8f0617",
+          "size": 2
+        },
+        {
+          "address": "008F0609",
+          "hex": "8b01",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx]",
+          "size": 2
+        },
+        {
+          "address": "008F060B",
+          "hex": "8b10",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [eax]",
+          "size": 2
+        },
+        {
+          "address": "008F060D",
+          "hex": "6a01",
+          "mnemonic": "push",
+          "operands": "1",
+          "size": 2
+        },
+        {
+          "address": "008F060F",
+          "hex": "ffd2",
+          "mnemonic": "call",
+          "operands": "edx",
+          "size": 2
+        },
+        {
+          "address": "008F0611",
+          "hex": "c70600000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi], 0",
+          "size": 6
+        },
+        {
+          "address": "008F0617",
+          "hex": "5e",
+          "mnemonic": "pop",
+          "operands": "esi",
+          "size": 1
+        },
+        {
+          "address": "008F0618",
+          "hex": "c3",
+          "mnemonic": "ret",
+          "operands": "",
+          "size": 1
+        }
+      ],
+      "live_before_disk_live_after_equal": true,
+      "typed_body_before_after_equal": true,
+      "typed_body": {
+        "entry": {
+          "space": "ram",
+          "offset": "008f0600"
+        },
+        "name": "BSP_OwnedPolymorphic_Reset",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "25",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "008f0600"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "008f0618"
+              },
+              "length": "25"
+            }
+          ]
+        }
+      }
+    },
+    "Original_ABI": "ECX actual writable4B owner slot; no outer stackarguments; plainRET; PUSH/POPESI. Load actualobject inECX. Nonnull virtual callee receives that actualECX and stackDWORD1, must return with its argument consumed; observed candidateOriginal scalars RET4. No outer ADD ESP4.",
+    "exact_schedule": [
+      "Read fullDWORD[slot] intoECX; TEST; null jumps008F0617 and writes nothing.",
+      "Nonnull: load actualobjectDWORD+0 intoEAX as actual vtable; load actual DWORD[vtable+0] intoEDX; PUSH fullDWORD1; CALL EDX at008F060F.",
+      "Only after actualcallee returns: write fullDWORD[retainedslotESI]=0; POPESI; RET. Never inspect the retired object afterward."
+    ],
+    "write_footprint": "Null0B; nonnull exactly4B owner-slot clear after deletion returns. No object field store is made by this leaf.",
+    "residuals": "Null: incomingEAX andEDX preserved, ECX0, ESIrestored, TEST0flags exceptundefinedAF. Nonnull EAX/ECX/EDX and flags inherit actualvirtualcallee residuals; this leaf adds only MOV/POP/RET after it.",
+    "required_ownership_contract": "Actual owner slot live/writable, disjoint from sole-owned genuine live object, nestedownedgraph and activeframes. Real object generation, real callable vtable and matching deleting entry must remain valid until call. Nonthrowing normal call must consume flags4B and preserveESI; nested graph unique/unshared/acyclic/currentheap and all acceptedprocess/pool/context lifetimes honored. Slot aliasing into deleted object would be UAF.",
+    "observed_Original_DATA_candidates": [
+      {
+        "phase": "00CE89D4",
+        "physical_row0": "004E6730",
+        "Original_scalar": "Whole30B11; destroy008F0DE0; flags&1 currentOriginalfreeBF65AC; EAXrootbits/RET4.",
+        "accepted_Source": "scalar_delete_native_scene_property_record_004e6730(void*,uint32_t,NativeScenePropertyLifetimeContext&) in native_scene_property_bag_storage.cpp."
+      },
+      {
+        "phase": "00D16504",
+        "physical_row0": "008F59E0",
+        "Original_scalar": "Whole30B11; destroy008F5410; flags&1 currentOriginalfreeBF65AC; EAXrootbits/RET4.",
+        "accepted_Source": "scalar_delete_native_scene_property_bag_008f59e0(void*,uint32_t,NativeScenePropertyLifetimeContext&) in native_scene_property_bag_storage.cpp."
+      }
+    ],
+    "candidate_qualification": "These two actual phase rows and wholeOriginalscalar bytes matchlive/disk. They are examples from accepted property/bag profiles, not a closed set of0600 targets. No actual0600caller/receiver provenance connects the generic leaf to these profiles.",
+    "accepted_producer_boundary": "Accepted raw type5/type6/other38hrecord and raw61/114hbag producers publish Original phaseDATA. Headers explicitly prohibit treating those numbers as callable Source vtables. The accepted cohesive lifetime family substitutes no Source vtable and directly calls complete context-bearing scalars on separately proven provenance-qualified domains.",
+    "precise_blockers": [
+      "No accepted actual receiver producer supplies a real callable Source vtable to the slot consumed by0600.",
+      "Available accepted scalar callees expose ordinary context-bearing C++ APIs, not physical ECX/stackflags/RET4 deleting entries at actual vtable[0].",
+      "No live references to0600 were returned in this observation; that absence does not prove a closed receiver/type world. Adjacent function names/phase equality cannot provide missing provenance."
+    ],
+    "no_fake_resolution": "Do not call Original numeric addresses, reinterpret phaseDATA as Source tables, hardcode a phase switch on name alone, invent a callback/model/stub/default/null-only whole admission, or synthesize a receiver/context factory.",
+    "future_work_if_requested": "A separately bounded actual callable producer/vtable/physical deleting-entry contract with genuine receiver provenance and complete ABI evidence is required before a whole raw0600 Source proposal. Existing ordinary lifetime projection alone does not close it.",
+    "register_x87_or_listing_repair": "No x87 or hidden input is visible in whole25B12. The virtual deleting-target transport/binding is unresolved; resolve it before Source and use the required ABI-recovery effort if that work is authorized."
+  },
+  "qualifications": {
+    "index": "brief reported local index built2026-10-15T19:03:47 STALE; snapshot76771 versus typed-before live76773. Cached0380callers0 missed actual live008F5348. Readiness relies on live typed body/flow/xrefs and disk, not stale negative graph evidence.",
+    "config_EOL": {
+      "working": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\config\\target.json",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      "Main": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\config\\target.json",
+        "bytes": 467,
+        "sha256": "83b26a388b77d3b817eafd6005f72a0d9b4137efc62ac8cbe17963ac18589533"
+      },
+      "LF_normalized_equal": true,
+      "JSON_equal": true
+    },
+    "analysis_window": "Typed batches separately accepted at modifications2078 and2090; target whole bodies and live/disk bytes unchanged. Caller context at2086. Global analysis changed externally, so no global quiescence/snapshot freshness claim.",
+    "cached_name_ledger": "Descriptive names and old partial caller notes are hypotheses/history, not Source admission or current whole-body proof.",
+    "local_inspection_error": "Tool5a311d exited1 after printing valid scalar listings because an inspection expression assumed caller functions[0]. Exact typed response was retained; corrected inspection135b62 confirmed functions=[]/no owner. No live query or Source/compile was retried or repaired."
+  },
+  "sealed_family": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\ScenePropertyPayloadResetReadiness01\\family_receipt.DATA.json",
+    "bytes": 36885,
+    "sha256": "fb91cf6759ab0654fd2af0610760de266580d60ad7393a9b21006ea38e866259"
+  },
+  "primary_inputs": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_reference_payload_reset_readiness_primary_20261015\\verified_inputs.DATA.json",
+    "bytes": 48091,
+    "sha256": "1d78e3671e060e5f877135f33c99180d6877c01c622f6ac474775d801e69ef3c"
+  },
+  "readiness_contract": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\ScenePropertyPayloadResetReadiness01\\readiness.md",
+    "bytes": 4062,
+    "sha256": "c552eac87514f91b6808f134899d5fb30a44c412783fe9d27d7b6028ced6f65c"
+  },
+  "Original_ABI_compatible": false,
+  "Original_private_CRT_EH_compatible": false,
+  "game_validated": false
+}

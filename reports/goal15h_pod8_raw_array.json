@@ -1,0 +1,668 @@
+{
+  "packet": "goal15h_pod8_raw_array",
+  "worker": "agent/goal15f_pod8",
+  "source_base": "fd5434e6e9fd15b845e95018f7efedff67374405",
+  "status": "complete_five_raw_x87_bodies_strict_x86_coff_and_actual_source_probe_verified_pending_primary_registration",
+  "source": "src/native_pod8_raw_array.cpp",
+  "header": "include/bsp/native_pod8_raw_array.hpp",
+  "documentation": "docs/GOAL15H_POD8_RAW_ARRAY.md",
+  "functions": [
+    {
+      "address": "00414010",
+      "end_inclusive": "00414067",
+      "physical_span_bytes": 88,
+      "name": "set_capacity_native_pod8_raw_array_00414010",
+      "retained_native_name": "TMPL_Pod8Array_SetCapacity_00414010",
+      "source": "src/native_pod8_raw_array.cpp",
+      "header": "include/bsp/native_pod8_raw_array.hpp",
+      "status": "complete_five_raw_x87_bodies_strict_x86_coff_and_actual_source_probe_verified_pending_primary_registration",
+      "coverage": "complete_function",
+      "original_abi": "ECX actual owner;one stack uint32 capacity;RET4;no semantic EAX result",
+      "source_abi": "Exact naked MSVC Win32 fastcall body with unused EDX adapter placeholder;not an Original argument",
+      "semantics": "Unconditionally publish capacity=n;wrappedn*8 actual allocation including0;copy CURRENT size;late free;publish allocation. Size unchanged even ifcapacity smaller."
+    },
+    {
+      "address": "00414070",
+      "end_inclusive": "004140c8",
+      "physical_span_bytes": 89,
+      "name": "grow_native_pod8_raw_array_00414070",
+      "retained_native_name": "TMPL_Pod8Array_Grow_00414070",
+      "source": "src/native_pod8_raw_array.cpp",
+      "header": "include/bsp/native_pod8_raw_array.hpp",
+      "status": "complete_five_raw_x87_bodies_strict_x86_coff_and_actual_source_probe_verified_pending_primary_registration",
+      "coverage": "complete_function",
+      "original_abi": "ECX actual owner;no consumed EDX/stack input;plainRET;no semantic EAX result",
+      "source_abi": "Exact naked MSVC Win32 fastcall body with unused EDX adapter placeholder;not an Original argument",
+      "semantics": "Unconditionally publish capacity=capacity*2+2 moduloDWORD;wrapped bytes;complete reallocate/copy/free/publication."
+    },
+    {
+      "address": "00418ea0",
+      "end_inclusive": "00418f22",
+      "physical_span_bytes": 131,
+      "name": "append_native_pod8_raw_array_00418ea0",
+      "retained_native_name": "TMPL_Pod8Array_PushBack_00418EA0",
+      "source": "src/native_pod8_raw_array.cpp",
+      "header": "include/bsp/native_pod8_raw_array.hpp",
+      "status": "complete_five_raw_x87_bodies_strict_x86_coff_and_actual_source_probe_verified_pending_primary_registration",
+      "coverage": "complete_function",
+      "original_abi": "ECX actual owner;one stack actual value pointer;RET4;no semantic EAX result",
+      "source_abi": "Exact naked MSVC Win32 fastcall body with unused EDX adapter placeholder;not an Original argument",
+      "semantics": "Grow iff size==capacity, including complete copy/free/publication;then reload size,data,physical value slot. FLD/FSTP word0/store0 beforeword1/store1. Null computed dest skips value slot/pointed reads and stores;still increment actualsize. No pre-free snapshot of an old-storage alias."
+    },
+    {
+      "address": "00418f30",
+      "end_inclusive": "00418f98",
+      "physical_span_bytes": 105,
+      "name": "resize_native_pod8_raw_array_00418f30",
+      "retained_native_name": "TMPL_Pod8Array_ReserveIfLarger_00418F30",
+      "source": "src/native_pod8_raw_array.cpp",
+      "header": "include/bsp/native_pod8_raw_array.hpp",
+      "status": "complete_five_raw_x87_bodies_strict_x86_coff_and_actual_source_probe_verified_pending_primary_registration",
+      "coverage": "complete_function",
+      "original_abi": "ECX actual owner;one stack uint32 size;RET4;no semantic EAX result",
+      "source_abi": "Exact naked MSVC Win32 fastcall body with unused EDX adapter placeholder;not an Original argument",
+      "semantics": "Reallocate iff unsignedn>oldsize ANDn>capacity;ALWAYS size=n afterward, including shrinking/no-allocation. New elements uninitialized. Preserve existing Native name with stronger observed size-write evidence."
+    },
+    {
+      "address": "00418fb0",
+      "end_inclusive": "0041900c",
+      "physical_span_bytes": 93,
+      "name": "reserve_native_pod8_raw_array_00418fb0",
+      "retained_native_name": "TMPL_Pod8Array_Reserve_00418FB0",
+      "source": "src/native_pod8_raw_array.cpp",
+      "header": "include/bsp/native_pod8_raw_array.hpp",
+      "status": "complete_five_raw_x87_bodies_strict_x86_coff_and_actual_source_probe_verified_pending_primary_registration",
+      "coverage": "complete_function",
+      "original_abi": "ECX actual owner;one stack uint32 capacity;RET4;no semantic EAX result",
+      "source_abi": "Exact naked MSVC Win32 fastcall body with unused EDX adapter placeholder;not an Original argument",
+      "semantics": "Reallocate iff unsignedcapacity<n;size unchanged;precall capacity publication,wrapped bytes,current-count/data reloads and conditional latefree."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00414022",
+      "native": "00bf55be",
+      "function": "00414010",
+      "contract": "cdecl actual wrapped uint32 byte request;capacity already published;actual BF55BE->BF681B;Source genuine allocation bridge ->singleton_lifetime_allocate({object,bytes,bytes})"
+    },
+    {
+      "address": "00414059",
+      "native": "00bf6989",
+      "function": "00414010",
+      "contract": "cdecl late reloaded CURRENT owner data;conditional nulltest only;actual BF6989->BF65AC->BF9DC8;Source genuine matching free bridge ->singleton_lifetime_free"
+    },
+    {
+      "address": "00414085",
+      "native": "00bf55be",
+      "function": "00414070",
+      "contract": "cdecl actual wrapped uint32 byte request;capacity already published;actual BF55BE->BF681B;Source genuine allocation bridge ->singleton_lifetime_allocate({object,bytes,bytes})"
+    },
+    {
+      "address": "004140bc",
+      "native": "00bf6989",
+      "function": "00414070",
+      "contract": "cdecl late reloaded CURRENT owner data;conditional nulltest only;actual BF6989->BF65AC->BF9DC8;Source genuine matching free bridge ->singleton_lifetime_free"
+    },
+    {
+      "address": "00418eba",
+      "native": "00bf55be",
+      "function": "00418ea0",
+      "contract": "cdecl actual wrapped uint32 byte request;capacity already published;actual BF55BE->BF681B;Source genuine allocation bridge ->singleton_lifetime_allocate({object,bytes,bytes})"
+    },
+    {
+      "address": "00418ef6",
+      "native": "00bf6989",
+      "function": "00418ea0",
+      "contract": "cdecl late reloaded CURRENT owner data;conditional nulltest only;actual BF6989->BF65AC->BF9DC8;Source genuine matching free bridge ->singleton_lifetime_free"
+    },
+    {
+      "address": "00418f4e",
+      "native": "00bf55be",
+      "function": "00418f30",
+      "contract": "cdecl actual wrapped uint32 byte request;capacity already published;actual BF55BE->BF681B;Source genuine allocation bridge ->singleton_lifetime_allocate({object,bytes,bytes})"
+    },
+    {
+      "address": "00418f86",
+      "native": "00bf6989",
+      "function": "00418f30",
+      "contract": "cdecl late reloaded CURRENT owner data;conditional nulltest only;actual BF6989->BF65AC->BF9DC8;Source genuine matching free bridge ->singleton_lifetime_free"
+    },
+    {
+      "address": "00418fc7",
+      "native": "00bf55be",
+      "function": "00418fb0",
+      "contract": "cdecl actual wrapped uint32 byte request;capacity already published;actual BF55BE->BF681B;Source genuine allocation bridge ->singleton_lifetime_allocate({object,bytes,bytes})"
+    },
+    {
+      "address": "00418ffe",
+      "native": "00bf6989",
+      "function": "00418fb0",
+      "contract": "cdecl late reloaded CURRENT owner data;conditional nulltest only;actual BF6989->BF65AC->BF9DC8;Source genuine matching free bridge ->singleton_lifetime_free"
+    },
+    {
+      "address": "00bf55be",
+      "native": "00bf681b",
+      "function": "00bf55be",
+      "kind": "tail_jump",
+      "contract": "Complete live five-byte JMP thunk;actual current Source service boundary qualified"
+    },
+    {
+      "address": "00bf6989",
+      "native": "00bf65ac",
+      "function": "00bf6989",
+      "kind": "tail_jump",
+      "contract": "Complete live five-byte JMP thunk;actual current Source service boundary qualified"
+    },
+    {
+      "address": "00bf65ac",
+      "native": "00bf9dc8",
+      "function": "00bf65ac",
+      "kind": "tail_jump",
+      "contract": "Complete live five-byte JMP thunk;actual current Source service boundary qualified"
+    }
+  ],
+  "evidence": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "target_verification": "Every live bsp.py ghidra query verifies existing project/program/language/base;no import/mutation.",
+    "complete_bodies": "Allfive full pseudocode then full assembly inspected,plus complete allocation/free thunk listings and accepted genuine current allocation/free providers.",
+    "native_names_and_comments_before": [
+      {
+        "address": "00414010",
+        "annotation": {
+          "address": "00414010",
+          "function_name": "TMPL_Pod8Array_SetCapacity_00414010",
+          "comment": "[BSP reconstruction 00414010]\nHypothesis, not a recovered symbol. docs/CC13_BAND_0040_0044.md. capacity = n, operator_new(n*8), copies size 8-byte elements, _free old (8-byte element variant of the pointer-array template)"
+        }
+      },
+      {
+        "address": "00414070",
+        "annotation": {
+          "address": "00414070",
+          "function_name": "TMPL_Pod8Array_Grow_00414070",
+          "comment": "[BSP reconstruction 00414070]\nHypothesis, not a recovered symbol. docs/CC13_BAND_0040_0044.md. capacity = capacity*2+2 then the same reallocate/copy as 00414010"
+        }
+      },
+      {
+        "address": "00418ea0",
+        "annotation": {
+          "address": "00418ea0",
+          "function_name": "TMPL_Pod8Array_PushBack_00418EA0",
+          "comment": "[BSP reconstruction 00418ea0]\nHypothesis, not a recovered symbol. docs/CC13_BAND_0040_0044.md. grows capacity*2+2 (operator_new(n*8), copy, _free) when full, then appends the 8-byte value"
+        }
+      },
+      {
+        "address": "00418f30",
+        "annotation": {
+          "address": "00418f30",
+          "function_name": "TMPL_Pod8Array_ReserveIfLarger_00418F30",
+          "comment": "[BSP reconstruction 00418f30]\nHypothesis, not a recovered symbol. docs/CC13_BAND_0040_0044.md. when n exceeds both size and capacity, reallocates to n 8-byte elements and copies"
+        }
+      },
+      {
+        "address": "00418fb0",
+        "annotation": {
+          "address": "00418fb0",
+          "function_name": "TMPL_Pod8Array_Reserve_00418FB0",
+          "comment": "[BSP reconstruction 00418fb0]\nHypothesis, not a recovered symbol. docs/CC13_BAND_0040_0044.md. when capacity < n, reallocates to n 8-byte elements and copies"
+        }
+      }
+    ],
+    "original_prototypes_before": [
+      "00414010 TMPL_Pod8Array_SetCapacity_00414010  undefined TMPL_Pod8Array_SetCapacity_00414010(void)  body 00414010 - 00414067",
+      "00414070 TMPL_Pod8Array_Grow_00414070  undefined TMPL_Pod8Array_Grow_00414070(void)  body 00414070 - 004140c8",
+      "00418ea0 TMPL_Pod8Array_PushBack_00418EA0  undefined TMPL_Pod8Array_PushBack_00418EA0(void)  body 00418ea0 - 00418f22",
+      "00418f30 TMPL_Pod8Array_ReserveIfLarger_00418F30  undefined TMPL_Pod8Array_ReserveIfLarger_00418F30(void)  body 00418f30 - 00418f98",
+      "00418fb0 TMPL_Pod8Array_Reserve_00418FB0  undefined TMPL_Pod8Array_Reserve_00418FB0(void)  body 00418fb0 - 0041900c"
+    ],
+    "original_typed_bodies_before": [
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "00414010"
+        },
+        "name": "TMPL_Pod8Array_SetCapacity_00414010",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "88",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00414010"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00414067"
+              },
+              "length": "88"
+            }
+          ]
+        }
+      },
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "00414070"
+        },
+        "name": "TMPL_Pod8Array_Grow_00414070",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "89",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00414070"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "004140c8"
+              },
+              "length": "89"
+            }
+          ]
+        }
+      },
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "00418ea0"
+        },
+        "name": "TMPL_Pod8Array_PushBack_00418EA0",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 2,
+          "returned_range_count": 2,
+          "address_count": "128",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00418ea0"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00418ecc"
+              },
+              "length": "45"
+            },
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00418ed0"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00418f22"
+              },
+              "length": "83"
+            }
+          ]
+        }
+      },
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "00418f30"
+        },
+        "name": "TMPL_Pod8Array_ReserveIfLarger_00418F30",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "105",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00418f30"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00418f98"
+              },
+              "length": "105"
+            }
+          ]
+        }
+      },
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "00418fb0"
+        },
+        "name": "TMPL_Pod8Array_Reserve_00418FB0",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "93",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00418fb0"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "0041900c"
+              },
+              "length": "93"
+            }
+          ]
+        }
+      }
+    ],
+    "typed_modification_number": "1764",
+    "padding": {
+      "address": "00418ecd",
+      "bytes": "8d4900",
+      "length": 3,
+      "meaning": "Unreachable LEA ECX,[ECX+0] padding skipped by native JMP418ECB->418ED0;no Ghidra disassembly/function ownership mutation",
+      "native_admitted_body_bytes_total": 503,
+      "physical_five_spans_total": 506
+    },
+    "original_abi_policy": "Actual pointer receiverECX;one stack word/RET4 except Grow ECX-only/plainRET. No Source EDX placeholder installed asOriginal;no recovered C++ template/class/semantic return identity promised.",
+    "caller_census": {
+      "tool": "tools/callsite_census.py",
+      "scanned_sections": [
+        ".text",
+        ".rdata",
+        ".data"
+      ],
+      "counts": {
+        "00414010": 0,
+        "00414070": 0,
+        "00418ea0": 0,
+        "00418f30": 0,
+        "00418fb0": 0
+      },
+      "meaning": "No incoming CALL/JMP/literal candidates found in scanned sections;does not establish dynamic reachability/adoption. Sourceprobe calls public reconstructed entries directly."
+    }
+  },
+  "behavior": {
+    "owner": "actual0Ch consumed prefix:data+0,size+4,capacity+8;no vtable/checked-vector/hostcontainer",
+    "arithmetic": "Literal DWORD ADD/LEA wrap, unsigned compares and size reloads;no count overflow guard or normalization",
+    "publication": "Capacity before allocation;actual size controls copies;late currentdata free;allocation published afterward. Provider throw causes no later publication/rollback by this entry;actual provider/new-handler field side effects remain.",
+    "fp_and_alias": "Native FLD/FSTP perword. Data base reloaded periteration;second source address captured BEFORE firststore,contents reread AFTER firststore. Count reloaded everycomparison. Current null dest skips pointed reads/stores butincrementsindex/cursor. Ambient FP borrowed.",
+    "append": "Size/data/value physical slot reread after reallocation/free;no value snapshot repairing retired storage;null computed destination skips value-pointer load;actual sizeRMWincrement even skipped.",
+    "admission": "Every actually reached stack/owner/data/control access must be backed;literal schedules must terminate. No additional safe malformed-header policy.",
+    "virtuals": "None in any ofthefive complete Native bodies. No callback/virtual facade used."
+  },
+  "concrete_providers": {
+    "allocation": "Positive defined private cdecl allocate_pod8_raw_bytes ->genuine singleton_lifetime_allocate({object,bytes,bytes});current malloc/_callnewh/retry/std::bad_alloc",
+    "free": "Positive defined private cdecl free_pod8_raw_bytes ->genuine singleton_lifetime_free;matching current malloc/free domain",
+    "native_thunks": "BF55BE->BF681B;BF6989->BF65AC->BF9DC8;complete five-byte jumps verified live/PE",
+    "boundaries": "Current staticCRT/new-handler/errno/invalidparameter/exception behavior differs from Original runtime identity;no invented globals,callbacks,heap state or native RTTI/throw frame."
+  },
+  "coff_evidence": {
+    "status": "pass",
+    "checked_object": "J:\\PROG\\battlestations-pacific-decompile-goal15f_pod8\\local\\goal15h_pod8\\native_pod8_raw_array.obj",
+    "object_sha256": "6d3c3cd2bce029815d733b60588c74350779ae8ee6b5b9c80d936bbb56001461",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "native_functions": [
+      {
+        "address": "00414010",
+        "name": "set_capacity_native_pod8_raw_array_00414010",
+        "size": 88,
+        "coff_section": 12,
+        "native_bytes": "8b442404568bf189460803c003c003c05750e897157e0033c983c404394e048bf8761f85c074108b16d904ca8d14cad918d94204d9580483c10183c0083b4e0472e18b0685c0740950e82b297e0083c404893e5f5ec20400",
+        "compiled_bytes": "8b442404568bf189460803c003c003c05750e80000000033c983c404394e048bf8761f85c074108b16d904ca8d14cad918d94204d9580483c10183c0083b4e0472e18b0685c0740950e80000000083c404893e5f5ec20400",
+        "matched_nonrelocation_bytes": 80,
+        "relocations": [
+          {
+            "operand_offset": 19,
+            "type": "IMAGE_REL_I386_REL32",
+            "target_symbol": "?allocate_pod8_raw_bytes@?A0xd6b6e1e0@bsp@@YAPAXI@Z",
+            "target_defined_section": 4,
+            "native_target": "00bf55be"
+          },
+          {
+            "operand_offset": 74,
+            "type": "IMAGE_REL_I386_REL32",
+            "target_symbol": "?free_pod8_raw_bytes@?A0xd6b6e1e0@bsp@@YAXPAX@Z",
+            "target_defined_section": 7,
+            "native_target": "00bf6989"
+          }
+        ],
+        "differences": []
+      },
+      {
+        "address": "00414070",
+        "name": "grow_native_pod8_raw_array_00414070",
+        "size": 89,
+        "coff_section": 9,
+        "native_bytes": "568bf18b46088d44000289460803c003c003c05750e834157e0033c983c404394e048bf8761f85c074108b16d904ca8d14cad918d94204d9580483c10183c0083b4e0472e18b0685c0740950e8c8287e0083c404893e5f5ec3",
+        "compiled_bytes": "568bf18b46088d44000289460803c003c003c05750e80000000033c983c404394e048bf8761f85c074108b16d904ca8d14cad918d94204d9580483c10183c0083b4e0472e18b0685c0740950e80000000083c404893e5f5ec3",
+        "matched_nonrelocation_bytes": 81,
+        "relocations": [
+          {
+            "operand_offset": 22,
+            "type": "IMAGE_REL_I386_REL32",
+            "target_symbol": "?allocate_pod8_raw_bytes@?A0xd6b6e1e0@bsp@@YAPAXI@Z",
+            "target_defined_section": 4,
+            "native_target": "00bf55be"
+          },
+          {
+            "operand_offset": 77,
+            "type": "IMAGE_REL_I386_REL32",
+            "target_symbol": "?free_pod8_raw_bytes@?A0xd6b6e1e0@bsp@@YAXPAX@Z",
+            "target_defined_section": 7,
+            "native_target": "00bf6989"
+          }
+        ],
+        "differences": []
+      },
+      {
+        "address": "00418ea0",
+        "name": "append_native_pod8_raw_array_00418ea0",
+        "size": 131,
+        "coff_section": 6,
+        "native_bytes": "568bf18b460839460475568d44000289460803c003c003c05750e8ffc67d0033c983c404394e048bf87624eb038d490085c074108b16d904ca8d14cad918d94204d9580483c10183c0083b4e0472e18b0685c0740950e88eda7d0083c404893e5f8b46048b0e8d04c185c0740e8b4c2408d901d918d94104d95804834604015ec20400",
+        "compiled_bytes": "568bf18b460839460475568d44000289460803c003c003c05750e80000000033c983c404394e048bf87624eb038d490085c074108b16d904ca8d14cad918d94204d9580483c10183c0083b4e0472e18b0685c0740950e80000000083c404893e5f8b46048b0e8d04c185c0740e8b4c2408d901d918d94104d95804834604015ec20400",
+        "matched_nonrelocation_bytes": 123,
+        "relocations": [
+          {
+            "operand_offset": 27,
+            "type": "IMAGE_REL_I386_REL32",
+            "target_symbol": "?allocate_pod8_raw_bytes@?A0xd6b6e1e0@bsp@@YAPAXI@Z",
+            "target_defined_section": 4,
+            "native_target": "00bf55be"
+          },
+          {
+            "operand_offset": 87,
+            "type": "IMAGE_REL_I386_REL32",
+            "target_symbol": "?free_pod8_raw_bytes@?A0xd6b6e1e0@bsp@@YAXPAX@Z",
+            "target_defined_section": 7,
+            "native_target": "00bf6989"
+          }
+        ],
+        "differences": []
+      },
+      {
+        "address": "00418f30",
+        "name": "resize_native_pod8_raw_array_00418f30",
+        "size": 105,
+        "coff_section": 11,
+        "native_bytes": "56578b7c240c8bf13b7e0476543b7e08764f8d04fd000000005350897e08e86bc67d0033c983c404394e048bd876209085c074108b16d904ca8d14cad918d94204d9580483c10183c0083b4e0472e18b0685c0740950e8fed97d0083c404891e5b897e045f5ec20400",
+        "compiled_bytes": "56578b7c240c8bf13b7e0476543b7e08764f8d04fd000000005350897e08e80000000033c983c404394e048bd876209085c074108b16d904ca8d14cad918d94204d9580483c10183c0083b4e0472e18b0685c0740950e80000000083c404891e5b897e045f5ec20400",
+        "matched_nonrelocation_bytes": 97,
+        "relocations": [
+          {
+            "operand_offset": 31,
+            "type": "IMAGE_REL_I386_REL32",
+            "target_symbol": "?allocate_pod8_raw_bytes@?A0xd6b6e1e0@bsp@@YAPAXI@Z",
+            "target_defined_section": 4,
+            "native_target": "00bf55be"
+          },
+          {
+            "operand_offset": 87,
+            "type": "IMAGE_REL_I386_REL32",
+            "target_symbol": "?free_pod8_raw_bytes@?A0xd6b6e1e0@bsp@@YAXPAX@Z",
+            "target_defined_section": 7,
+            "native_target": "00bf6989"
+          }
+        ],
+        "differences": []
+      },
+      {
+        "address": "00418fb0",
+        "name": "reserve_native_pod8_raw_array_00418fb0",
+        "size": 93,
+        "coff_section": 10,
+        "native_bytes": "8b442404568bf1394608734d89460803c003c003c05750e8f2c57d0033c983c404394e048bf8761f85c074108b16d904ca8d14cad918d94204d9580483c10183c0083b4e0472e18b0685c0740950e886d97d0083c404893e5f5ec20400",
+        "compiled_bytes": "8b442404568bf1394608734d89460803c003c003c05750e80000000033c983c404394e048bf8761f85c074108b16d904ca8d14cad918d94204d9580483c10183c0083b4e0472e18b0685c0740950e80000000083c404893e5f5ec20400",
+        "matched_nonrelocation_bytes": 85,
+        "relocations": [
+          {
+            "operand_offset": 24,
+            "type": "IMAGE_REL_I386_REL32",
+            "target_symbol": "?allocate_pod8_raw_bytes@?A0xd6b6e1e0@bsp@@YAPAXI@Z",
+            "target_defined_section": 4,
+            "native_target": "00bf55be"
+          },
+          {
+            "operand_offset": 79,
+            "type": "IMAGE_REL_I386_REL32",
+            "target_symbol": "?free_pod8_raw_bytes@?A0xd6b6e1e0@bsp@@YAXPAX@Z",
+            "target_defined_section": 7,
+            "native_target": "00bf6989"
+          }
+        ],
+        "differences": []
+      }
+    ],
+    "native_bytes": 506,
+    "matched_nonrelocation_bytes": 466,
+    "verified_kernel_rel32s": 10,
+    "genuine_source_bridges": [
+      {
+        "symbol": "?allocate_pod8_raw_bytes@?A0xd6b6e1e0@bsp@@YAPAXI@Z",
+        "section": 4,
+        "bytes": 61,
+        "required_actual_provider": "singleton_lifetime_allocate",
+        "relocations": [
+          {
+            "offset": 4,
+            "type": 6,
+            "target": "___security_cookie"
+          },
+          {
+            "offset": 39,
+            "type": 20,
+            "target": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+          },
+          {
+            "offset": 53,
+            "type": 20,
+            "target": "@__security_check_cookie@4"
+          }
+        ]
+      },
+      {
+        "symbol": "?free_pod8_raw_bytes@?A0xd6b6e1e0@bsp@@YAXPAX@Z",
+        "section": 7,
+        "bytes": 5,
+        "required_actual_provider": "singleton_lifetime_free",
+        "relocations": [
+          {
+            "offset": 1,
+            "type": 20,
+            "target": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+          }
+        ]
+      }
+    ],
+    "native_thunks": [
+      {
+        "address": "00bf55be",
+        "target": "00bf681b",
+        "bytes": "e958120000",
+        "live_disasm_verified": true
+      },
+      {
+        "address": "00bf6989",
+        "target": "00bf65ac",
+        "bytes": "e91efcffff",
+        "live_disasm_verified": true
+      },
+      {
+        "address": "00bf65ac",
+        "target": "00bf9dc8",
+        "bytes": "e917380000",
+        "live_disasm_verified": true
+      }
+    ],
+    "total_object_relocations": 16,
+    "mask_rule": "Only ten actual CALL displacement operands; opcodes and every other byte compared. Every masked target is a positive defined current Source bridge with genuine actual singleton provider binding."
+  },
+  "verification": {
+    "compiler": "Microsoft MSVC x8614.51.36244.0",
+    "flags": "/std:c++17 /MD /O2 /W4 /WX /EHsc /fp:strict /permissive-",
+    "focused_compile": "PASS without warnings",
+    "exact_five_spans": "PASS:506B physical spans including3B unexecuted padding;466fixedbytes exact;10genuine CALL REL32 targets",
+    "source_provider_bindings": "PASS:both actual positive private bridge definitions have required real public provider relocations;probe links actual current bsp_core.lib",
+    "focused_source_probe": "PASS:one ignored pod8_raw_array_probe.cpp/exe with /MANIFEST:EMBED;new object +actual current integrator archive",
+    "source_probe_cases": [
+      "allfive Source entries with actual growth/free",
+      "x87 masked-SNaN quieting",
+      "appendalias firststore changes secondsource read",
+      "resize shrinking/unconditional size and growth/reserve/no-growth",
+      "append growth with live external value",
+      "wrapped countbytes actual allocation0",
+      "nullcomputed appenddest skips unreadable value",
+      "real current allocationfailure leaves publishedcapacity/prior data+size"
+    ],
+    "report_calls": "PASS:13 exact Native CALL/tail-JMP rows checked,0 failed",
+    "diff_check": "PASS:git diff --check; final staged check before commit",
+    "registered_build_archive_and_existing_tests": "Primary integrator after registration;not claimed by worker",
+    "new_test_targets": 0,
+    "ghidra_mutations": 0,
+    "scope_expansion": false,
+    "captured_native_execution": false,
+    "original_binary_abi_installation": false,
+    "original_crt_rtti_eh_seh_identity": false,
+    "runtime_reachability_or_adoption": false,
+    "game_validation": false
+  },
+  "source_hashes": {
+    "src/native_pod8_raw_array.cpp": "5e96757a8f4aa3c4b231c188f3c1a7ce564103fa86b8e2a6b5ac73cc777ea9c6",
+    "include/bsp/native_pod8_raw_array.hpp": "06b693ad8e0ab9bf8ec3827c300a3f2957c173c7d88a8f87383b97ca26b075de"
+  },
+  "integration": {
+    "target": "bsp_core",
+    "add_source": "src/native_pod8_raw_array.cpp",
+    "primary_owned": "Registration,final registered object/archive verification,strict Win32 build/existing suites,annotations/save/exports,mainintegration",
+    "comparer": "python local/goal15h_pod8/verify_coff.py --object <registered.obj> --output <receipt.json>",
+    "probe": "cwd worker:cmd /d /c local\\goal15h_pod8\\probe_registered.cmd <actual-archive.lib> [optional-new-standalone.obj];omit optionalobj for finalarchive consumption"
+  }
+}
