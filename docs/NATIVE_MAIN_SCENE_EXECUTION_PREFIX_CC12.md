@@ -949,11 +949,71 @@ pass. No persistent tests, shared CMake changes or post-effect/material calls
 were added. Artifacts are in `local/main_scene_post_label/`;664 prior artifact
 pins and28 committed snapshots were verified and remain frozen.
 
+## POST target gate B163FA
+
+The separate `continue_native_main_scene_post_targets_00b163fa` covers the
+97 bytes and25 instructions B163FA..B1645A. It requires the completed POST
+label with state8 armed and allows one attempt. The original service's current
+byte+22D is read before target-domain validation. Zero skips all target work
+and stops at B164B8; nonzero stops at B1645B immediately before the first
+post-effect draw. Both successful exits retain state8 and record their distinct
+next native address; neither retires POST ownership.
+
+The true path reads the current renderer and D5F0A8 slot+98 and invokes the
+established B24E70 provider with null. It then reads the current service+44
+holder's primary surface through B4CB20 and installs it in current service+1CC
+color0 through B1FAB0. After that call it rereads service+1CC before reading
+service+664 and calls B4E2B0. Finally, it captures current service+48 holder
+texture through B4CB10 before rereading service+664, obtaining its material
+through B4CBA0, and calling unchecked slot0 B189F0. These are established raw
+providers; the renderer publication, synchronization, frame owner, surface
+owner and current profile/import cells remain shared actual domains. No
+effect factory, default resource graph or replacement callback was added.
+
+Actual ownership effects remain in the providers. Null renderer binding clears
+the cached frame and releases its old owner while leaving GPU targets alone.
+Frame and material assignment publish and retain new owners before releasing
+captured old owners. B189F0 updates the signed16-bit count before the identity
+gate. Failure marks this attempt and the enclosing POST frame failed, then
+uses the established CBC491 state8 current-global-service reset after disarm;
+earlier mutations are preserved and cleanup cannot be replayed.
+
+The fixed-image fixture executes the exact97-byte caller, original59-byte
+B4E2B0,80-byte B189F0, and three4-byte getters. Their bytes and the renderer,
+surface and frame profiles match the installed PE and live saved Ghidra.
+Native B4E2B0/B189F0 call actual Win32 Interlocked imports at fixture-owned
+CE221C/CE2220 cells. Only B24E70 and B1FAB0 calls bridge to their established
+Source implementations. The F8D394 operand is relocated to the same live
+publication used by Source. A register-preserving wrapper supplies original
+ESI/EBP0 and stack state8; separate epilogues observe B1645B/B164B8.
+
+Four original/Source pairs cover zero gate with invalid skipped descendants,
+changed owners, nonzero80 identity paths, and null incoming texture. They
+compare the complete raw renderer/group/surface/post/material/texture/service
+graphs, positive intrusive counts, material count-before-identity and retained
+POST label/state8. A genuine HAL D3D9 device confirms the GPU render target
+does not change. A Source-only failure removes the actual current decrement
+import before B4E2B0: the provider publishes/retains the new frame before its
+reached validation failure. Earlier renderer/color changes survive; the newly
+published global service is reset once while the original POST service stays
+unchanged. This is Source failure evidence, not native exception delivery.
+
+Strict Win32 `/O2 /fp:strict` COFF checks cover939B/257 instructions and eight
+provider relocations, current loads, capture order, separate exits and no
+normal state8 write. The earlier Source prefix is unchanged except for two
+new includes; all330 inherited x87 instructions retain their verified bytes.
+The normal build and all three existing checks pass. No persistent tests or
+shared CMake changes were added. `local/main_scene_post_targets/` preserves
+the fixture and audits;728 historical artifacts and34 committed snapshots
+were verified after the initial Source edit and remain frozen.
+
 ## Next executed clause
 
-The new boundary is B163FA with POST state8 armed. Its current original-service
-byte+22D gates the following target/post-effect composition; the true branch
-starts with current renderer+98 binding null before holder/group/effect work.
-That body, remaining scene/material/cockpit/distortion/statistics passes, later
-cleanup states and independent B17240 preparation remain. D5E13C stays
-unadmitted pending the complete raw body and application graph.
+The true branch next reaches B1645B and its B4DCC0 submission; the false branch
+reaches B164B8. These remain separate frontiers. B4DCC0 already has Source,
+but this packet does not execute its material/program/device graph. Terminal
+owner releases, enabled synchronization, cold construction, native childthrow,
+FH3/private stack ABI, the whole earlier caller chain, later POST camera and
+scene/material/cockpit/distortion/statistics passes, later cleanup states and
+independent B17240 preparation remain unproved here. D5E13C stays unadmitted
+pending the complete raw body and application graph.
