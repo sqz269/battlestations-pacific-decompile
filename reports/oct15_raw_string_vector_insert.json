@@ -1,0 +1,418 @@
+{
+  "packet": "oct15_raw_string_vector_insert_count",
+  "status": "complete_actual_raw_pool_general_insert_build_tested_qualified_interfaces",
+  "source_ready": true,
+  "source": "src/native_string_vector_insert.cpp",
+  "header": "include/bsp/native_string_vector_insert.hpp",
+  "documentation": "docs/OCT15_RAW_STRING_VECTOR_INSERT.md",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Each bsp.py ghidra query verifies current project/program/language/image base; typed capture independently verifies before/after at modification109.",
+    "ghidra_mutations": false,
+    "owned_exports_refreshed": [
+      "0044f410",
+      "0044f5c8",
+      "0044f653"
+    ]
+  },
+  "routines": [
+    {
+      "address": "0044f410",
+      "native_name": "STL_CheckedNativeStringVector_InsertCount_0044f410",
+      "reviewed_name": "STL_CheckedNativeStringVector_InsertCount_0044f410",
+      "name": "insert_native_string_header_vector_count_0044f410",
+      "coverage": "complete general insertion, all normal branches and both Source exception scopes under inherited provider/ABI/EH qualifications",
+      "body_ranges": [
+        "0044f410-0044f5c7",
+        "0044f5ea-0044f652",
+        "0044f679-0044f6eb"
+      ],
+      "original_abi": "fastcall ECX actual10h vector, EDX unused, stacked unused owner/position/unsigned count/value-header, RET10h, no semantic result. Source preserves these physical inputs plus explicit stacked actual raw-pool context.",
+      "layout": "Actual10h header opaque+0 untouched, begin+4/end+8/capacity+C; canonical8h pooled-string elements. Actual Buy/copy producers establish offsets; current body publishes capacity/end/begin.",
+      "input_checks": "None added. Incoming owner is never read; no iterator, owner, position, range, alignment, null, capacity-consistency or overlap validation.",
+      "temporary": "Real8h NativeString with no implicit storage destructor. Actual0044BCB0 Source schedule matches native inline zero/identity/0041DD40 resize/current-field copy; its null-destination branch cannot be taken. Construct before vector read/count check, even count0. No cleanup on failed temporary construction; first vector begin read also precedes state0.",
+      "capacity_and_count": "Capture begin after temporary copy, derive capacity from current capend unless begin0, then check count. Nonzero count uses repeated fresh header-end reads against captured begin, DWORD wrap/SAR3 sizes, unsigned max-size subtraction and capacity comparison. Growth candidate0 if max-(cap>>1)<cap, else cap+(cap>>1); compare to size+count and reread size again if selecting size+count.",
+      "growth": "Actual direct allocation; reload current begin after allocation. Parent progress starts fresh, advances after prefix copy and fill success (after suffix-end read), final suffix-copy result ignored. Growth catch ends before old cleanup. Capture current old begin/current size; destroy captured old begin..fresh current end; free CURRENT begin; publish cap/end/begin from captured fresh/capacity/size. Old cleanup failure does not free completed new backing.",
+      "inplace_short": "Capture old end/tail count. If tail<count, first uninit-copy tail to position+count*8 outside state3. Capture CURRENT end, derive missing count, arm fill catch. Fill; add bytecount to CURRENT header end; reload assignment limit. Catch off before assigned fill. Failure cleanup uses position+count*8..CURRENT header-end+count*8.",
+      "inplace_long_equal": "Uninit-copy last count headers to captured old end; publish returned end; backward assign position..cut into old end; assigned-fill gap. No local rollback; later failure leaves published end and partial assignments then cleans temporary.",
+      "host_steps": [
+        {
+          "address": "0044f450",
+          "native": "0041dd40",
+          "function": "0044f410",
+          "host": "resize_native_string_header_0041dd40 inside accepted0044BCB0 temporary constructor",
+          "contract": "Native inline fresh temporary uses current value length and preserve1; accepted exact raw-pool resize, no generic storage callback."
+        },
+        {
+          "address": "0044f465",
+          "native": "00bf7680",
+          "function": "0044f410",
+          "host": "accepted0044BCB0 raw-pool current-CRT overlap-copy",
+          "contract": "Post-resize CURRENT value-length check, temporary length, value-data, temporary-data schedule retained. Current memmove overlap policy/omitted zero-byte copy boundary qualified; original static CRT identity not claimed."
+        },
+        {
+          "address": "0044f4ab",
+          "native": "00431f70",
+          "function": "0044f410",
+          "host": "throw_native_string_vector_length_error_00431f70",
+          "contract": "Accepted actual owning28h vector-too-long payload and current Source C++ RTTI/EH, not generic std::length_error or original native throw identity."
+        },
+        {
+          "address": "0044f51b",
+          "native": "0042bf40",
+          "function": "0044f410",
+          "host": "allocate_native_string_vector_0042bf40",
+          "contract": "Accepted direct checked count*8 allocator, ECX chosen capacity/EDX0, real current-CRT new-handler/retry policy and matching free domain."
+        },
+        {
+          "address": "0044f542",
+          "native": "0044d0c0",
+          "function": "0044f410",
+          "host": "copy_native_string_uninitialized_range_0044d0c0",
+          "contract": "Current begin..captured position onto fresh backing, owner header. RET10h consumes destination/owner/count-as-unused-tag/private-high24-low0 tag. Accepted logical Source interface omits unconsumed private tags."
+        },
+        {
+          "address": "0044f555",
+          "native": "0044db60",
+          "function": "0044f410",
+          "host": "fill_native_string_uninitialized_n_dispatch_0044db60",
+          "contract": "Owner header, destination completed-prefix end, original count, private temporary; RET0Ch. Parent completed prefix updated before child; child's own catch cleans its failed fill prefix."
+        },
+        {
+          "address": "0044f570",
+          "native": "0044d0c0",
+          "function": "0044f410",
+          "host": "copy_native_string_uninitialized_range_0044d0c0",
+          "contract": "Captured position..CURRENT end loaded after fill; destination fill end; parent progress set only after end read. Four stacked words include unused count and position bits low0; RET10h; final EAX ignored."
+        },
+        {
+          "address": "0044f5a0",
+          "native": "00432050",
+          "function": "0044f410",
+          "host": "destroy_native_string_header_range_00432050",
+          "contract": "Outside growth try. Captured current old begin through fresh CURRENT old end; two unused header/count native stack words, RET8."
+        },
+        {
+          "address": "0044f5a9",
+          "native": "00bf65ac",
+          "function": "0044f410",
+          "host": "singleton_lifetime_free",
+          "contract": "Reload CURRENT begin after destruction; accepted real current-CRT free. Only afterward publish new capacity/end/begin; failures do not enter new-backing cleanup."
+        },
+        {
+          "address": "0044f60c",
+          "native": "0044f170",
+          "function": "0044f410",
+          "host": "copy_native_string_uninitialized_dispatch_0044f170",
+          "contract": "Short tail: captured position..captured old end to position+count*8, owner header, RET0Ch. Entire child construction precedes state3 and parent short-tail catch."
+        },
+        {
+          "address": "0044f62c",
+          "native": "0044db60",
+          "function": "0044f410",
+          "host": "fill_native_string_uninitialized_n_dispatch_0044db60",
+          "contract": "Current destination end and count-SAR32(currentend-position,3) captured before state3; value temporary. After success RMW CURRENT end by bytecount and reload assignment endpoint."
+        },
+        {
+          "address": "0044f649",
+          "native": "0044c770",
+          "function": "0044f410",
+          "host": "fill_native_string_header_range_0044c770",
+          "contract": "Short branch after state3 is disabled. Position..reloaded end-bytecount assigned temporary; cdecl three native pointers, ADD ESP0Ch; failure retains published end."
+        },
+        {
+          "address": "0044f68e",
+          "native": "0044f170",
+          "function": "0044f410",
+          "host": "copy_native_string_uninitialized_dispatch_0044f170",
+          "contract": "Long/equal branch: oldend-count*8..oldend onto captured oldend, RET0Ch. Publish returned end immediately; no additional local catch."
+        },
+        {
+          "address": "0044f69c",
+          "native": "0044d850",
+          "function": "0044f410",
+          "host": "copy_native_string_backward_dispatch_0044d850",
+          "contract": "Position..cut backward onto captured old end; child return ignored. Its cdecl3 native args remain on stack until combined cleanup after next fill."
+        },
+        {
+          "address": "0044f6ad",
+          "native": "0044c770",
+          "function": "0044f410",
+          "host": "fill_native_string_header_range_0044c770",
+          "contract": "Fill position..position+count*8 from temporary; ADD ESP18h consumes this3ptr block plus preceding backward3ptr block. No rollback."
+        }
+      ]
+    },
+    {
+      "address": "0044f5c8",
+      "native_name": "Catch_All@0044f5c8",
+      "reviewed_name": "Catch_All@0044f5c8",
+      "name": "insert_native_string_header_vector_count_0044f410_growth_catch",
+      "coverage": "complete Source exception-scope fragment, native parent-frame entry not standalone API",
+      "body": "0044f5c8-0044f5e9",
+      "original_abi": "Parent EBP: completed parent end-14, fresh backing-20, saved receiver-18. Catch selected only by state1 try map.",
+      "schedule": "Destroy fresh..completed via actual dispatch, free captured fresh backing, then rethrow fragment0044F5E5. Child copy/fill failures clean own completed prefix before parent cleanup. Cleanup failure immediately escapes to temporary-owner Source scope.",
+      "host_steps": [
+        {
+          "address": "0044f5d3",
+          "native": "00432360",
+          "function": "0044f5c8",
+          "host": "destroy_native_string_range_dispatch_00432360",
+          "contract": "Actual raw-pool forward destruction of completed parent prefix; owner ignored by native dispatcher; first/last two stacked words, RET8."
+        },
+        {
+          "address": "0044f5d9",
+          "native": "00bf65ac",
+          "function": "0044f5c8",
+          "host": "singleton_lifetime_free",
+          "contract": "Free captured new backing only after normal prefix cleanup; cdeclptr ADD ESP4; no retry/finally free if destruction throws."
+        }
+      ]
+    },
+    {
+      "address": "0044f5e5",
+      "native_name": null,
+      "name": "insert_native_string_header_vector_count_0044f410_growth_rethrow",
+      "coverage": "complete Source rethrow fragment inside growth catch, no independent function/name annotation",
+      "body": "0044f5e5-0044f5e9",
+      "containing_function": "0044f5c8",
+      "host_steps": [
+        {
+          "address": "0044f5e5",
+          "native": "00bf6885",
+          "function": "0044f5c8",
+          "host": "C++ throw; in growth catch",
+          "contract": "Native pushes0,0; current typed body now contains this call and actual target is no-return. Source rethrow current C++ exception; no original FH3/SEH/CRT exception identity."
+        }
+      ]
+    },
+    {
+      "address": "0044f653",
+      "native_name": "Catch_All@0044f653",
+      "reviewed_name": "Catch_All@0044f653",
+      "name": "insert_native_string_header_vector_count_0044f410_short_tail_catch",
+      "coverage": "complete Source exception-scope fragment, no standalone native-frame API",
+      "body": "0044f653-0044f678",
+      "original_abi": "Parent count/position argument slots and saved receiver-18; capture CURRENT header+8, form count*8 wrapping, endpoints position+bytecount/currentend+bytecount.",
+      "host_steps": [
+        {
+          "address": "0044f66b",
+          "native": "00432360",
+          "function": "0044f653",
+          "host": "destroy_native_string_range_dispatch_00432360",
+          "contract": "Destroy moved tail using CURRENT end, not saved old end; unused owner receiver, stack first,last, RET8. Fill child has already cleaned its own completed prefix."
+        },
+        {
+          "address": "0044f674",
+          "native": "00bf6885",
+          "function": "0044f653",
+          "host": "C++ throw; in short-tail catch",
+          "contract": "Native zero/zero rethrow; Source current C++ exception domain, later temporary cleanup through state0 counterpart."
+        }
+      ]
+    },
+    {
+      "address": "0044f6b5",
+      "native_name": null,
+      "name": "insert_native_string_header_vector_count_0044f410_temporary_cleanup",
+      "coverage": "complete normal semantic-cleanup/parent-epilogue fragment, no independent function/name annotation",
+      "body": "0044f6b5-0044f6eb",
+      "containing_function": "0044f410",
+      "original_abi": "Requires parent private temporary length/data and frame. Normal state=-1 precedes pool return; receiver header+0 unchanged.",
+      "host_steps": [
+        {
+          "address": "0044f6cd",
+          "native": "00419cc0",
+          "function": "0044f410",
+          "host": "actual raw-pool getter inside destroy_native_string_header_0041dd20",
+          "contract": "Capture temporary data first, null skips length/getter/release. Capture length+1 wrapping and flag1; resolve actual current publications before returning captured block."
+        },
+        {
+          "address": "0044f6d4",
+          "native": "00bd1510",
+          "function": "0044f410",
+          "host": "actual raw-pool return inside destroy_native_string_header_0041dd20",
+          "contract": "Exact accepted manager/pool return, captured block/size; header untouched. Normal cleanup is outside Source algorithm catch, so failure is not retried."
+        }
+      ]
+    }
+  ],
+  "caller_evidence": [
+    {
+      "address": "004501d0",
+      "native": "0044f410",
+      "function": "00450180",
+      "host": "native caller evidence only",
+      "contract": "Complete InsertOne body: push value,count1,arbitrary position,owner; ECX actual receiver; child RET10h. Preceding caller reports do not imply validation inside insertion."
+    },
+    {
+      "address": "0049e0b3",
+      "native": "0044f410",
+      "function": "0049e050",
+      "host": "native caller evidence only",
+      "contract": "Complete Resize body: push address of actual by-value fill header, computed requested-oldsize count, captured end, receiver owner; ECX receiver; child RET10h."
+    }
+  ],
+  "native_disk_evidence": {
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "span": "0044f410-0044f6eb",
+    "end_exclusive": "0044f6ec",
+    "bytes": 732,
+    "sha256": "9faffefbc39b8eef20caeda65d3950e1966d9a8660ced3aaefa9f0c70b4136de",
+    "instruction_count": 281,
+    "current_export_instruction_starts_match": true,
+    "native_call_sites": 22,
+    "receipt": "local/oct15_raw_string_insert_disk.json",
+    "inspection": "Full normal listing and both direct callers; native catch/normal-cleanup disk instructions separately read."
+  },
+  "exception_metadata": {
+    "entry_handler": "00c60308",
+    "func_info": "00d87404",
+    "magic": "19930522",
+    "max_state": 5,
+    "raw_eh_bytes": {"address":"00d873e4","length":148,"sha256":"232e5c22044733b6b143fc8d5d16f0fce15b425a2df8a6b7776ddfefc6e637d1","hex":"40000000000000000000000053f64400400000000000000000000000c8f5440022059319050000005074d800020000002874d8000000000000000000000000000100000001000000010000000200000001000000f473d80003000000030000000400000001000000e473d800ffffffff0003c6000000000000000000000000000000000000000000000000000000000000000000","matches_live_four_table_byte_reads":true,"unwind_and_handler":[{"address":"00c60300","bytes":"8d4dd8","instruction":"lea ecx, [ebp - 0x28]"},{"address":"00c60303","bytes":"e918da7bff","instruction":"jmp 0x41dd20"},{"address":"00c60308","bytes":"b80474d800","instruction":"mov eax, 0xd87404"},{"address":"00c6030d","bytes":"e93168f9ff","instruction":"jmp 0xbf6b43"}]},
+    "unwind_map": "00d87450",
+    "unwind_entries": [
+      [
+        -1,
+        "00c60300"
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ]
+    ],
+    "try_map": "00d87428",
+    "try_records": [
+      [
+        1,
+        1,
+        2,
+        1,
+        "00d873f4"
+      ],
+      [
+        3,
+        3,
+        4,
+        1,
+        "00d873e4"
+      ]
+    ],
+    "handler_records": [
+      [
+        "40",
+        0,
+        0,
+        "0044f5c8"
+      ],
+      [
+        "40",
+        0,
+        0,
+        "0044f653"
+      ]
+    ],
+    "unwind_action": {
+      "entry": "00c60300",
+      "instructions": [
+        "LEA ECX,[EBP-28h]",
+        "JMP0041DD20"
+      ],
+      "source_equivalent": "accepted destroy_native_string_header_0041dd20 for temporary",
+      "scope": "Read-only dependency metadata, not new leaf reconstruction or ordinary CALL row."
+    },
+    "scope_states": "Temporary initialization/first vector begin read atstate-1; state0 owns temporary; state1 only new-backing construction; state3 only short-tail fill through end update; state0 resumes before old cleanup/assigned fill. Normal release setsstate-1 first.",
+    "limits": "Source explicit C++ catch/rethrow and actual destructor composition; native FH3/SEH/private frames/fault/double-exception personality not proved."
+  },
+  "flow_evidence": {
+    "typed_receipt": "local/oct15_raw_string_insert_typed_flow.json",
+    "typed_modification": "109",
+    "typed_validation": "accepted complete metadata, no analysis/mutation",
+    "current_body_repair_gap": "none in owned ranges; no repair proposed/performed",
+    "growth_catch_current_body": "0044f5c8-0044f5e9",
+    "rethrow_containing_function": "0044f5c8",
+    "normal_cleanup_function_at": null,
+    "normal_cleanup_containing_function": "0044f410",
+    "rethrow_flow_override": "CALL_RETURN",
+    "rethrow_effective_flow": "CALL_TERMINATOR",
+    "rethrow_fallthrough": null,
+    "rethrow_target_no_return": true,
+    "legacy_flow_properties": "Read-only script request returned scripts-disabled; no script enabling or mutator fallback. Typed metadata supplied exact properties.",
+    "legacy_flow_properties_receipt": "local/oct15_raw_string_insert_flow_properties.json",
+    "readonly_repair_reporter": "0 listed gaps in0044F410,0044F5C8,0044F653; no --apply/no mutation."
+  },
+  "preserved_projection": {
+    "source": "src/native_checked_string_storage.cpp",
+    "header": "include/bsp/native_checked_string_storage.hpp",
+    "symbol": "append_checked_native_string_storage",
+    "action": "Unchanged, with original storage boundary, append-only scope/provenance and fixture claims. New exact Source function/scope records added separately; no old fragment is promoted or replaced."
+  },
+  "dependency_readiness": {
+    "baseline": "All actual dependencies accepted/integrated mainc1615ecc7; branch merged main before build.",
+    "temporary": "Accepted actual0044BCB0/0041DD40/0041DD20 Source body schedules inspected; additional null-destination branch untaken for private temporary; current-CRT copy-zero/overlap limits inherited.",
+    "copy_and_destroy": "Accepted0044D0C0/00431F40/00432050/00432360 actual raw-pool composition, failed child element excluded.",
+    "inplace": "Accepted2eb706769 actual0044BC50/0044C770/0044D850/0044F170; stable complete Source/header bodies inspected.",
+    "fill": "Acceptedc0d671c5b actual0044CE20/0044CE6D/0044DB60; complete Source/header inspected; own completed-prefix cleanup.",
+    "allocation": "Accepted0042BF40/00431F70 real current allocator/free/error payload, no arbitrary callback or generic substitute."
+  },
+  "corrections": [
+    {
+      "was": "Historical saved metadata/AT evidence listed suspect callee0044F6B5 and qualified0044F5E5 outside saved catch body.",
+      "is": "Current typed body metadata placesF6B5 inside normal parent andF5E5 inside growth catch; disk and refreshed exports agree, without live analysis changes.",
+      "evidence": "Typed mod109 complete body ranges/function-at-null/contained catch; disk732bytes/281starts; three owned force exports; readonly repair reporter0gaps."
+    },
+    {
+      "was": "Existing storage source covers append; potential temptation to reuse that as general insertion.",
+      "is": "Full exact general insertion has count0 temporary work, guarded1.5growth, two in-place branches, exact publication and three distinct ownership scopes.",
+      "evidence": "Full0044F410 native span, FuncInfoD87404/unwindC60300, all22 native CALL sites and both complete direct callers."
+    }
+  ],
+  "checks": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "exit_code": 0,
+      "log": "local/oct15_raw_string_vector_insert_build.log",
+      "existing_suites_passed": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "native_math_differential_scope": "Existing math seeds only; no new-function native differential probe."
+    },
+    "report_calls": {"json_checked": 24, "documentation_checked": 24, "failed": 0, "documentation_unchecked": 0, "documentation_warnings": 0},
+    "source_review": "Primary reviewed full Source/header and all281 refreshed native listing instructions; no requested source changes.",
+    "ledger_scope": "Only five leased addresses changed: three name records (established library/generated names retained), one new complete Source function and four Source scope fragments. All previous name metadata/evidence and reconstruction records preserved. No function-name entry fabricated for rethrowF5E5 or cleanupF6B5.",
+    "index": "python tools/bsp.py index --if-stale completed after owned ledger additions",
+    "diff_check": "git diff --check and final git diff --cached --check passed",
+    "new_tests": "none; complete native/disk/callee/caller/EH evidence plus existing suites",
+    "existing_build_warning": "Preexisting unrelated LNK4006 duplicate spawn_request_id_matches remains."
+  },
+  "limits": {
+    "actual_source": "Complete under valid taken storage and accepted actual raw-pool/manager/current-CRT services.",
+    "original_abi_compatible": false,
+    "native_fh3_seh_identity": false,
+    "original_crt_exception_identity": false,
+    "private_stack_aliasing": "By-value pointers/counts and extra context/private temporary do not expose mutation/aliasing of original argument slots or unknown high dead-tag bytes.",
+    "copy_policy": "Accepted current-CRT overlap-copy and omitted zero-byte-copy boundaries inherited.",
+    "cleanup_failure": "Current Source cleanup exception immediately escapes; later cleanup in the current scope is skipped. No native unwind personality/double-exception identity claim.",
+    "native_differential_for_new_function": false,
+    "runtime_binding": false,
+    "game_validated": false
+  }
+}
