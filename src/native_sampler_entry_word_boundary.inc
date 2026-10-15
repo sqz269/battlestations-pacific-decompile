@@ -2,6 +2,8 @@
 // recorded in reports/native_sampler_entry_word_cc12.json. Unknown
 // module versions or modified code do not grant sampler-word knowledge.
 
+#include "native_sampler_entry_word_profile_20261015.inc"
+
 constexpr U d3d9_timestamp = 0x7678a845u;
 constexpr U d3d9_image_size = 0x0017a000u;
 constexpr U d3d9_preferred_base = 0x10000000u;
@@ -105,6 +107,26 @@ bool sampler_module_matches(HMODULE module, U timestamp, U size) noexcept {
         pe->OptionalHeader.Magic == IMAGE_NT_OPTIONAL_HDR32_MAGIC &&
         pe->FileHeader.TimeDateStamp == timestamp && pe->OptionalHeader.SizeOfImage == size;
 }
+
+struct SamplerEntryProviderRvas {
+    U shader_release, shader_addref, device_addref, device_release;
+};
+constexpr SamplerEntryProviderRvas sampler_entry_legacy_rvas{0x7eb90,0x122490,0x81990,0x65bd0};
+constexpr SamplerEntryProviderRvas sampler_entry_current_rvas{0x7eab0,0x122170,0x818b0,0x65af0};
+
+// Admit only complete, individually proved DLL triplets. This selects target
+// RVAs, not word knowledge; full code/IAT/object/count/slot checks still follow.
+const SamplerEntryProviderRvas* sampler_entry_provider(HMODULE d3d, HMODULE nt, HMODULE kernel) noexcept {
+    if (sampler_module_matches(d3d,d3d9_timestamp,d3d9_image_size) &&
+        sampler_module_matches(nt,ntdll_timestamp,ntdll_image_size) &&
+        sampler_module_matches(kernel,kernel32_timestamp,kernel32_image_size))
+        return &sampler_entry_legacy_rvas;
+    if (sampler_module_matches(d3d,d3d9_current_timestamp,d3d9_current_image_size) &&
+        sampler_module_matches(nt,ntdll_current_timestamp,ntdll_current_image_size) &&
+        sampler_module_matches(kernel,kernel32_current_timestamp,kernel32_current_image_size))
+        return &sampler_entry_current_rvas;
+    return nullptr;
+}
 template<std::size_t N, std::size_t R>
 bool sampler_code_matches(HMODULE module, U preferred_base, U rva,
     const unsigned char (&bytes)[N], const std::array<U, R>& relocations) noexcept {
@@ -129,26 +151,40 @@ bool sampler_entry_profile(Frame::SamplerEntryWord& e) noexcept {
     HMODULE d3d = GetModuleHandleW(L"d3d9.dll");
     HMODULE nt = GetModuleHandleW(L"ntdll.dll");
     HMODULE kernel = GetModuleHandleW(L"kernel32.dll");
-    if (!sampler_module_matches(d3d, d3d9_timestamp, d3d9_image_size) ||
-        !sampler_module_matches(nt, ntdll_timestamp, ntdll_image_size) ||
-        !sampler_module_matches(kernel, kernel32_timestamp, kernel32_image_size)) return false;
+    const auto* profile = sampler_entry_provider(d3d,nt,kernel);
+    if (!profile) return false;
     if (e.profile_matched && (e.d3d9_module != reinterpret_cast<U>(d3d) ||
         e.ntdll_module != reinterpret_cast<U>(nt) || e.kernel32_module != reinterpret_cast<U>(kernel))) return false;
 #define BSP_SAMPLER_CODE(module, family, rva) \
     sampler_code_matches(module, family##_preferred_base, 0x##rva, family##_##rva, family##_##rva##_relocations)
-    const bool code = BSP_SAMPLER_CODE(d3d,d3d9,7eb90) && BSP_SAMPLER_CODE(d3d,d3d9,489e4) &&
+    const bool code = profile == &sampler_entry_legacy_rvas ?
+        BSP_SAMPLER_CODE(d3d,d3d9,7eb90) && BSP_SAMPLER_CODE(d3d,d3d9,489e4) &&
         BSP_SAMPLER_CODE(d3d,d3d9,48a34) && BSP_SAMPLER_CODE(d3d,d3d9,81990) &&
         BSP_SAMPLER_CODE(d3d,d3d9,65bd0) && BSP_SAMPLER_CODE(d3d,d3d9,817b0) &&
         BSP_SAMPLER_CODE(d3d,d3d9,122490) && BSP_SAMPLER_CODE(nt,ntdll,53460) &&
         BSP_SAMPLER_CODE(nt,ntdll,42410) && BSP_SAMPLER_CODE(kernel,kernel32,31ab0) &&
-        BSP_SAMPLER_CODE(kernel,kernel32,31af0);
+        BSP_SAMPLER_CODE(kernel,kernel32,31af0) :
+        BSP_SAMPLER_CODE(d3d,d3d9_current,7eab0) && BSP_SAMPLER_CODE(d3d,d3d9_current,489d4) &&
+        BSP_SAMPLER_CODE(d3d,d3d9_current,48a24) && BSP_SAMPLER_CODE(d3d,d3d9_current,818b0) &&
+        BSP_SAMPLER_CODE(d3d,d3d9_current,65af0) && BSP_SAMPLER_CODE(d3d,d3d9_current,816d0) &&
+        BSP_SAMPLER_CODE(d3d,d3d9_current,122170) && BSP_SAMPLER_CODE(nt,ntdll_current,51660) &&
+        BSP_SAMPLER_CODE(nt,ntdll_current,40630) && BSP_SAMPLER_CODE(kernel,kernel32_current,31e50) &&
+        BSP_SAMPLER_CODE(kernel,kernel32_current,31e90);
 #undef BSP_SAMPLER_CODE
-    if (!code ||
-        read<U>(d3d, 0x165790) != reinterpret_cast<U>(d3d) + 0x817b0 ||
-        read<U>(d3d, 0x1652b0) != reinterpret_cast<U>(nt) + 0x53460 ||
-        read<U>(d3d, 0x1652b8) != reinterpret_cast<U>(GetProcAddress(kernel, "EnterCriticalSection")) ||
-        reinterpret_cast<U>(GetProcAddress(kernel, "InterlockedIncrement")) != reinterpret_cast<U>(kernel) + 0x31af0 ||
-        reinterpret_cast<U>(GetProcAddress(kernel, "InterlockedDecrement")) != reinterpret_cast<U>(kernel) + 0x31ab0) return false;
+    if (!code) return false;
+    if (profile == &sampler_entry_legacy_rvas) {
+        if (read<U>(d3d, 0x165790) != reinterpret_cast<U>(d3d) + 0x817b0 ||
+            read<U>(d3d, 0x1652b0) != reinterpret_cast<U>(nt) + 0x53460 ||
+            read<U>(d3d, 0x1652b8) != reinterpret_cast<U>(GetProcAddress(kernel, "EnterCriticalSection")) ||
+            reinterpret_cast<U>(GetProcAddress(kernel, "InterlockedIncrement")) != reinterpret_cast<U>(kernel) + 0x31af0 ||
+            reinterpret_cast<U>(GetProcAddress(kernel, "InterlockedDecrement")) != reinterpret_cast<U>(kernel) + 0x31ab0) return false;
+    } else {
+        if (read<U>(d3d, 0x164790) != reinterpret_cast<U>(d3d) + 0x816d0 ||
+            read<U>(d3d, 0x1642b0) != reinterpret_cast<U>(nt) + 0x51660 ||
+            read<U>(d3d, 0x1642b8) != reinterpret_cast<U>(GetProcAddress(kernel, "EnterCriticalSection")) ||
+            reinterpret_cast<U>(GetProcAddress(kernel, "InterlockedIncrement")) != reinterpret_cast<U>(kernel) + 0x31e90 ||
+            reinterpret_cast<U>(GetProcAddress(kernel, "InterlockedDecrement")) != reinterpret_cast<U>(kernel) + 0x31e50) return false;
+    }
     e.d3d9_module = reinterpret_cast<U>(d3d); e.ntdll_module = reinterpret_cast<U>(nt);
     e.kernel32_module = reinterpret_cast<U>(kernel);
     return true;
@@ -219,11 +255,14 @@ bool prepare_sampler_entry_release(Frame& a) noexcept {
         read<void*>(e.owner, 8) != e.shader || read<U>(e.owner) != 0x00d62a60 ||
         read<void*>(e.pass, 0x58) != nullptr || !sampler_entry_profile(e)) return false;
     const auto d3d = static_cast<U>(e.d3d9_module);
+    const auto* profile = sampler_entry_provider(reinterpret_cast<HMODULE>(e.d3d9_module),
+        reinterpret_cast<HMODULE>(e.ntdll_module),reinterpret_cast<HMODULE>(e.kernel32_module));
+    if (!profile) return false;
     const auto* shader_table = read<const void*>(e.shader);
     const auto* device_table = read<const void*>(e.device);
     e.release_target = read<U>(shader_table, 8);
-    if (e.release_target != d3d + 0x7eb90 || read<U>(shader_table, 4) != d3d + 0x122490 ||
-        read<U>(device_table, 4) != d3d + 0x81990 || read<U>(device_table, 8) != d3d + 0x65bd0 ||
+    if (e.release_target != d3d + profile->shader_release || read<U>(shader_table, 4) != d3d + profile->shader_addref ||
+        read<U>(device_table, 4) != d3d + profile->device_addref || read<U>(device_table, 8) != d3d + profile->device_release ||
         read<void*>(e.shader, 0x10) != e.device || read<void*>(e.device, 0x24) != e.device ||
         read<U>(e.device, 0x1c) != 1) return false;
     e.shader_count_before = read<U>(e.shader, 8);
@@ -241,8 +280,10 @@ void finish_sampler_entry_release(Frame& a, const NativeMaterialPassShaderSlotsO
     // device's AddRef before its final Release. The renderer's retained baseline
     // is positive, so that pair is n -> n+1 -> n, including n==1. Exclude a
     // changed observed count as well as independent retirement/replacement.
-    e.known = e.profile_matched && e.release_returned && e.com_release_result == 1 &&
-        e.release_target == e.d3d9_module + 0x7eb90 &&
+    const auto* profile = e.profile_matched ? sampler_entry_provider(reinterpret_cast<HMODULE>(e.d3d9_module),
+        reinterpret_cast<HMODULE>(e.ntdll_module),reinterpret_cast<HMODULE>(e.kernel32_module)) : nullptr;
+    e.known = profile && e.profile_matched && e.release_returned && e.com_release_result == 1 &&
+        e.release_target == e.d3d9_module + profile->shader_release &&
         e.device_count_after == e.device_count_before && e.device_count_after != 0 &&
         e.owner_release_previous_count == 2 && slot.phase == NativeMaterialPassShaderSlotsOperation::Phase::complete &&
         slot.old_identity == nullptr && slot.incoming_identity == e.owner && slot.slot_published &&
@@ -251,7 +292,7 @@ void finish_sampler_entry_release(Frame& a, const NativeMaterialPassShaderSlotsO
         e.shader == a.pixel_shader && read<void*>(e.pass, 0x58) == e.owner &&
         read<void*>(e.owner, 8) == e.shader &&
         read<U>(read<const void*>(e.shader), 8) == e.release_target &&
-        read<U>(read<const void*>(e.device), 8) == e.d3d9_module + 0x65bd0 &&
+        read<U>(read<const void*>(e.device), 8) == e.d3d9_module + profile->device_release &&
         sampler_entry_profile(e);
 }
 
