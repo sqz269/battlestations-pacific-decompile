@@ -1,0 +1,94 @@
+{
+  "schema": "bsp.cc12.deferred-runtime-receipts24.v1",
+  "date": "2026-10-15",
+  "status": "genuine_source_direct_factory_zero_terminal_executed",
+  "production_source_authority": {
+    "frozen_base_commit": "dd55786413e718d5b00c0f8083f7229c1f55b840",
+    "factory_application_overlay_commit": "b9184da386562497c06078b63b479194b294a146",
+    "frozen_family_manifest_sha256": "64171d7a650149b93ceed457ead6aa9e80329cacfb3187d00bfed04d580426c2",
+    "payload_hashes_revalidated": 5113,
+    "production_cpp_recompiled": 0,
+    "scope": "Frozen prepared fixture family and exact factory overlay; not a runtime test of later Main changes."
+  },
+  "texture_parent04": {
+    "status": "terminal_before_texture_comparison",
+    "source_authority": "f083 frozen 137 application objects and three libraries; forwarding-main artifact directory override only",
+    "executable_sha256": "9ff41a1564740d03d7019003a0db0ee8cf8f226ee6f06dd9dc4e92716eb8be01",
+    "production_cpp_recompiled": 0,
+    "exit_code": 4,
+    "runtime_log": "local/cc12_texture_reload_parent_review_04/runtime_artifacts/runtime.log",
+    "runtime_manifest": "local/cc12_texture_reload_parent_review_04/runtime_artifacts/runtime.log.manifest.json",
+    "failure": "CreateDevice retry HRESULT 0x8876086a; renderer remained null",
+    "runtime_state": "session=1 console_session=2 remote=1 input_desktop=Default/Default logonui=1/1",
+    "scope": "No Original747/Source texture comparison, texture cleanup or frame result established. The earlier successful unchanged basic probe occurred under a different session state."
+  },
+  "cpu_attempt_chain": [
+    {
+      "family": "local/cc12_factory_owner_runtime_23",
+      "pid": 57916,
+      "exit_code": 77,
+      "status": "retained_first_failure_before_factory_construction",
+      "failure": "Required native data band unavailable during direct GameNativeReadOnlyData reservation"
+    },
+    {
+      "family": "local/cc12_factory_owner_bootstrap_24",
+      "parent_pid": 57136,
+      "child_pid": 72552,
+      "parent_exit_code": 78,
+      "executable_sha256": "b76d9688aacb557f81449d8a7d86187a9f608c9f8cc5cc4a5e05cd09352df75c",
+      "status": "controlled_child_reservation_rejected_before_resume",
+      "failure": "Required CE0000 band lies in reserved private allocation beginning C00000; initial ESP CFFB90; parent/child ASLR flags 1/1",
+      "preservation": "Both response-file build failures and the actual failed launch remain immutable in this family. No factory construction occurred."
+    },
+    {
+      "family": "local/cc12_factory_owner_bootstrap_25",
+      "parent_pid": 61928,
+      "child_pid": 68264,
+      "parent_exit_code": 0,
+      "child_exit_code": 0,
+      "executable_sha256": "03e11e2505567769560588cfd03285c5c4216ef58288828dfa66b8bf9236641d",
+      "fixture_source_sha256": "6049ef92bd77d12da9d1e2f677bb6fd3f14dfce26428cd33f95c126aeebd9318",
+      "status": "verified_mapping_then_normal_source_owner_and_parent_retirement",
+      "change_from_24": "Relinked the identical fixture object using existing production placement /BASE:0x10000000 /DYNAMICBASE:NO /FIXED:NO; no C++ recompile, system mitigation change, stack relocation, retry loop or reservation guard relaxation",
+      "placement_authority": "cmake/native_data_placement.cmake",
+      "headers_verified": 521,
+      "uncovered_headers": 0,
+      "toolchain_inputs_verified": 20,
+      "embedded_manifest": "asInvoker",
+      "D3D_imports": 0,
+      "USER32_imports": ["SystemParametersInfoA"],
+      "owner_bits": "005ad258",
+      "initial_count": 1,
+      "release_previous_count": 1,
+      "release_result_bits": 0,
+      "terminal_retired": true,
+      "factory_table_retired_and_parent_drained": true,
+      "sampler_release_provider_profile_matched": false,
+      "B1B4D0_executed": false,
+      "B3B280_executed": false
+    }
+  ],
+  "verified_behavior": [
+    "Real installed-image data mapped through genuine one-use controlled-child reservation capability using the same five data spans.",
+    "Complete BBCB40 factory setup and lookup used the dormant production VFS/singleton/string domains and explicit typed Source frame inputs.",
+    "Actual B1B810/B19E90 creator returned an owner with constructor count one; the canonical companion borrowed that owner's actual +04 count.",
+    "One observed real release took count 1 to 0, returned through normal terminal dispatch, unbound the raw owner, retired companion metadata and emptied the owner registry.",
+    "The real pooled name was returned, BBC5D0 table retirement retained the native dangling publication, singleton shutdown and after_parent_drain completed normally.",
+    "Installed original executable remains byte-identical to the frozen reference; factory body, production object/library inputs and provider qualification guard were unchanged."
+  ],
+  "evidence": {
+    "local_manifest": "local/cc12_deferred_runtime_receipts_24/manifest.json",
+    "manifest_sha256": "1192bcdb4284d125adbe22bf6e38fa53f7ea853f021fc3be311d230ad2f34bca",
+    "archive": "local/cc12_deferred_runtime_receipts_24/runtime_family.zip",
+    "archive_sha256": "20f46475f95ec15020922e44d7d10516b80daabdf99fcf1c40744ad0094787f3",
+    "archive_bytes": 6124179,
+    "archived_payloads_verified": 90,
+    "new_test_cases": 0
+  },
+  "not_established": [
+    "Original register/private-stack/FH3/SEH ABI or drop-in binary equivalence; zero frame preimages are explicit Source inputs.",
+    "Sampler Source1 cached compiler/pass parent, B1B4D0 platform/message/cache path, B3B280 bindings, nonzero release or B-16 consumption. Provider profile remains unmatched.",
+    "New Text consumer invocation, Native glyph/layout/draw, world draw or POST cold/warm runtime checks.",
+    "Full frontend startup, scene/gameplay validation or runtime proof for later Main changes."
+  ]
+}
