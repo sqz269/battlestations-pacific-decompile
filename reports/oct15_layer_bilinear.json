@@ -1,0 +1,84 @@
+{
+  "packet": "oct15_layer_bilinear",
+  "owner": "agent/oct15_avoid_tangent",
+  "date": "2026-10-15",
+  "status": "complete_source_instruction_schedule_build_existing_checks_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "Read-only verifying bsp.py queries and existing exports; primary owns mutation",
+  "sources": ["src/avoid_zone_layer_bilinear.cpp", "include/bsp/avoid_zone_layer_bilinear.hpp"],
+  "docs": ["docs/OCT15_LAYER_BILINEAR.md"],
+  "routines": [
+    {
+      "address": "0041bc20",
+      "existing_reviewed_name": "BSP_AvoidZoneLayer_SampleBilinear",
+      "previous_live_name": "FUN_0041bc20",
+      "reconstruction": "layer_sample_bilinear_kernel_0041bc20",
+      "body_start": "0041bc20",
+      "body_end_inclusive": "0041bd02",
+      "body_bytes": 227,
+      "listed_instructions": 79,
+      "original_abi": "ECX mutable layer; stack world_x/world_z; ST0 float; RET8 at0041bd00",
+      "source_abi": "stdcall(layer,world_x,world_z); ST0 float; RET0Ch",
+      "coverage": "complete instruction schedule through accepted concrete Source sampling kernels with explicit ABI setup/cleanup adaptation",
+      "unread_ranges": [],
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {"function": "0041bc20", "address": "0041bc40", "native": "00417fa0", "contract": "Complete accepted raw instruction kernel; Source ECX layer, EDX out, stack x/z, RET8; original stack out/x/z RET0Ch"},
+    {"function": "0041bc20", "address": "0041bc6d", "native": "0041bae0", "contract": "h11 at wrapped ix+1/iz+1; accepted raw height kernel; Source ECX layer, EDX x, stacked z RET4, ST0; caller discards one padding word"},
+    {"function": "0041bc20", "address": "0041bc7a", "native": "0041bae0", "contract": "h01 at ix/iz+1; same complete Source height contract"},
+    {"function": "0041bc20", "address": "0041bc8a", "native": "0041bae0", "contract": "h10 at wrapped ix+1/iz; same complete Source height contract"},
+    {"function": "0041bc20", "address": "0041bc97", "native": "0041bae0", "contract": "h00 at ix/iz; same complete Source height contract"}
+  ],
+  "dependency_readiness": [
+    {"entry": "00417fa0", "source": "layer_world_to_cell_kernel_00417fa0", "state": "complete Source instruction schedule; existing four bounded original-output/return cases"},
+    {"entry": "0041bae0", "source": "layer_cell_height_kernel_0041bae0", "state": "complete Source instruction schedule through qualified current CRT; existing one valid-span original wrapped-row case"},
+    {"entry": "00bf6713", "source": "invoke_native_invalid_parameter_00bf6713", "state": "indirect named dependency; actual current Source SDK service is present; original encoded-global/handler/debugger/Watson and fault/return identity remain qualified, not inferred from name"}
+  ],
+  "corrections": [
+    {"address": "0041bc20", "was": "Existing game-host implementation uses C++ float-to-int casts, integer increments and double interpolation intermediates", "is": "Separate raw Source kernel uses CVTTSS2SI, wrapped LEA increments and original x87 schedule/float stores; old helper and record preserved", "evidence": "0041bc49/0041bc4f conversions,0041bc5d/0041bc60/0041bc84 LEA, full0041bca0-0041bcf9 interpolation; complete listing reviewed"}
+  ],
+  "arithmetic": {
+    "indices": "CVTTSS2SI base indices and DWORD-wrapped LEA neighbors; unlike adjacent normal's extended cell+1 converter",
+    "order": "WorldToCell, h11, h01, h10, h00; float-store each result",
+    "stores": "u fraction before height calls; bottom/top blends, v fraction and final result stored to float; other intermediates retained x87",
+    "stack": "fu retained across both row blends; original indexed pop destinations/order retained",
+    "bytes": "0041bcb5 DE CB;0041bccd DE CA DE C1;0041bcf1 DE CA DE C1",
+    "dc_scan": "0041bc20-0041bd02: zero DC register-form sites"
+  },
+  "data_contract": {
+    "raw_backing": "Existing mutable Cc13TerrainGridLayerNative producer-shaped backing and accepted kernel obligations; no valid-only adapter restrictions added to raw API",
+    "semantic_adapter": "Existing normal adapter's private valid-only backing is not exposed or duplicated; no invented callbacks, cells or proxy/owner identity",
+    "older_interface": "bsp::game::avoid_zone_sample_0041bc20 and its ledger record unchanged"
+  },
+  "validation": {
+    "body_callee_readiness_and_abi_review": "passed",
+    "incoming_xrefs": "nine sites in four original functions; no runtime consequence claimed",
+    "win32_build_and_existing_ctest": "passed: ./scripts/build.ps1; reconstructed_math/native_math_differential/tool_tests, 3/3 in 6.86 seconds; existing seeds only",
+    "build_log": "local/oct15_layer_bilinear_build.log",
+    "verify_report_calls": "passed: five direct call rows, zero failed",
+    "markdown_checker": "zero failures; one converter-absence narrative claim unpaired by parser, supported by complete original and adjacent normal listings",
+    "paired_original_bilinear_output": {
+      "owner": "primary",
+      "result": "one finite nonplanar grid case passed; original and Source 40aaf1ac, invalid sentinel not reached",
+      "world_bits": ["bff47ae1", "bfd1eb85"],
+      "raw_layer": {"dimension": 4, "half_extent": 2.0, "cell_size": 0.3, "file_scalar": 0.1, "grid": [0,9,21,4,7,83,13,51,204,17,99,6,12,33,44,71]},
+      "provenance": "Full 227-byte installed sampler independently matched to saved Ghidra bytes; all five calls relocated to full original 159-byte World/105-byte Cell bodies; double 2.0 data operand and unused invalid sentinel additionally relocated",
+      "evidence_main_checkout": ["local/oct15_layer_sampling_probe/bilinear_input.json", "local/oct15_layer_sampling_probe/bilinear_result.json", "local/oct15_layer_sampling_probe/bilinear_probe.cpp"],
+      "state": "Masked default FP; /MANIFEST:EMBED; worker library comparison, primary integrated-library rerun planned",
+      "limits": "One output-bit case only; no abnormal/trap/status, other FP modes, sampler ABI, CRT diagnostics, adapter, full-domain numerical or gameplay proof"
+    },
+    "dependency_receipt": "Main 5a45adc36 reports/oct15_third_reconstruction_batch.json: World four output/return cases and Cell one valid-span wrapped-row case, not bilinear coverage",
+    "diff_check": "passed: git diff --cached --check"
+  },
+  "limitations": [
+    "Complete Source body coverage with adapted incoming/outgoing/callee ABIs, not native ABI/drop-in or member binding",
+    "Raw backing storage and returning invalid-handler repair/fault obligations remain those of accepted kernels",
+    "Original CRT identity/diagnostics remain qualified behind actual current Source SDK entry",
+    "Dependency probes do not establish sampler/adapter/normal behavior; sampler probe is one finite output case",
+    "No new worker tests, shared interface edits, game wiring or gameplay validation"
+  ]
+}
