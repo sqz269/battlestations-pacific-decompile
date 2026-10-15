@@ -335,6 +335,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_token
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_token_values.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_tokenizer.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_typed_array_vector_providers.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_property_integer_add.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_string_float_format.cpp src/game_native_lua_display_string.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_typed_property_providers.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_deferred_message_storage.cpp)
