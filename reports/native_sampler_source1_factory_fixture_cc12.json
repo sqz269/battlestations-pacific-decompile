@@ -1,0 +1,189 @@
+{
+  "address": "00b3b280",
+  "name": "native_sampler_source1_genuine_factory_fixture_cc12",
+  "status": "prepared_and_win32_build_verified_not_executed_runtime_unadmitted",
+  "base_commit": "dd55786413e718d5b00c0f8083f7229c1f55b840",
+  "executed": false,
+  "gpu_target_launches": 0,
+  "tests_added": 0,
+  "build": {
+    "production_target": "bsp_game",
+    "configuration": "Release Win32",
+    "production_build_passed": true,
+    "fixture_build_passed": true,
+    "manifest_embedded": true,
+    "requested_execution_level": "asInvoker",
+    "exe_sha256": "73573a8feb1c4b96b1631d9c9eb26e9125e1de47333bdf588239156aedb5a61a",
+    "exe_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_sampler_source1_release\\local\\cc12_sampler_source1_factory_fixture\\factory_owner_probe.exe"
+  },
+  "scope": {
+    "real_factory_table": [
+      "00bbcb40",
+      "00bbc900",
+      "00bbc5f0",
+      "00bbc740"
+    ],
+    "direct_creator": [
+      "00b1b810",
+      "00b19e90",
+      "00bbc6f0",
+      "00c30470",
+      "00b19980"
+    ],
+    "proposed_count_observation": "actual constructor one credit, exactly one observed release 1->0",
+    "terminal": [
+      "00bd30e0",
+      "00bbc6d0",
+      "00c304a0"
+    ],
+    "retirement": [
+      "00bbc5d0",
+      "shared manager drain",
+      "wrapper after_parent_drain"
+    ],
+    "inputs": "explicit initialized ordinary Source values, not Original register/stack/FH3 evidence",
+    "vfs": "genuine dormant owner services and raw strings before phase2; not mounted/active VFS"
+  },
+  "not_claimed": [
+    "execution",
+    "nonzero Source1 parent comparison",
+    "00b1b4d0",
+    "00b3b280",
+    "following Source0 consumer",
+    "Original B-16",
+    "renderer/pass readiness",
+    "Native ABI/FH3",
+    "game behavior"
+  ],
+  "static_inspection": {
+    "machine": "I386",
+    "pe": "PE32",
+    "crt_initializers": [
+      {
+        "cell": "00464440",
+        "target": "0045ee10",
+        "symbol": "?pre_cpp_initialization@@YAXXZ",
+        "provider": "f   MSVCRT:exe_main.obj"
+      },
+      {
+        "cell": "00464444",
+        "target": "00401150",
+        "symbol": "??__E_Fac_tidy_reg@std@@YAXXZ",
+        "provider": "f   msvcprt:locale0_implib.obj"
+      },
+      {
+        "cell": "00464448",
+        "target": "00401000",
+        "symbol": "??__Eapplication_math_runtime@?A0x80f3102b@game@bsp@@YAXXZ",
+        "provider": "f   app_providers:game_hosts.obj"
+      },
+      {
+        "cell": "0046444c",
+        "target": "00401040",
+        "symbol": "??__Eg_scene_owner_players@?A0x5cacf3e3@game@bsp@@YAXXZ",
+        "provider": "f   app_providers:game_hosts_ai.obj"
+      },
+      {
+        "cell": "00464450",
+        "target": "00401010",
+        "symbol": "??__Eg_scene_owner_player_conflicts@?A0x5cacf3e3@game@bsp@@YAXXZ",
+        "provider": "f   app_providers:game_hosts_ai.obj"
+      },
+      {
+        "cell": "00464454",
+        "target": "00401070",
+        "symbol": "??__Eg_unit_owner_players@?A0x5cacf3e3@game@bsp@@YAXXZ",
+        "provider": "f   app_providers:game_hosts_ai.obj"
+      },
+      {
+        "cell": "00464458",
+        "target": "004010a0",
+        "symbol": "??__Eg_unit_untouchable_1d4@?A0x31da599c@game@bsp@@YAXXZ",
+        "provider": "f   app_providers:game_hosts_lua.obj"
+      },
+      {
+        "cell": "0046445c",
+        "target": "004010b0",
+        "symbol": "??__Eg_lua_callback_trace@?A0xa8356bb1@game@bsp@@YAXXZ",
+        "provider": "f   app_providers:game_hosts_script_orders.obj"
+      },
+      {
+        "cell": "00464460",
+        "target": "00401130",
+        "symbol": "??__Eg_ocean_live_field@?A0xbb6b10e0@bsp@@YAXXZ",
+        "provider": "f   bsp_core:ocean_spectrum.obj"
+      },
+      {
+        "cell": "00464464",
+        "target": "00401140",
+        "symbol": "??__EkNoPads@?A0x2cbca153@bsp@@YAXXZ",
+        "provider": "f   bsp_core:building_pads.obj"
+      }
+    ],
+    "map_providers_count": 663,
+    "application_map_providers": 43,
+    "core_map_providers": 516,
+    "no_d3d_import": true,
+    "user32_imports": [
+      {
+        "library": "USER32.dll",
+        "names": [
+          "SystemParametersInfoA"
+        ]
+      }
+    ],
+    "limit": "static inspection only; no runtime non-interference or behavioral proof"
+  },
+  "source_closure": {
+    "repository_file_count": 4660,
+    "production_app_objects": 137,
+    "external_headers": 274,
+    "wrapper_pins": [
+      {
+        "path": "include/bsp/game_native_procedural_factory_application.hpp",
+        "origin": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\include\\bsp\\game_native_procedural_factory_application.hpp",
+        "sha256": "1b1e6fc01922baec39c94cbc9f5d4953d39c39dc884bf7940ff760316a710474"
+      },
+      {
+        "path": "src/game_native_procedural_factory_application.cpp",
+        "origin": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\src\\game_native_procedural_factory_application.cpp",
+        "sha256": "3789eaedda4e0e5c98f00d3d53b0e24b575d783e9309e0e7480e54db681aae45"
+      }
+    ],
+    "recipe": "fixture/build_factory_owner_probe.cmd",
+    "object_pins": "fixture/app_object_pins.json",
+    "link_map": "fixture/factory_owner_probe.map",
+    "toolchain_pins": "toolchain_pins.json",
+    "manifest": "family_manifest.json",
+    "wrapper_commit": "b9184da386562497c06078b63b479194b294a146"
+  },
+  "archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_sampler_source1_release\\local\\cc12_sampler_source1_factory_fixture\\source1_factory_fixture_family.zip",
+    "sha256": "b04c637993e2a4ae2b47d2a23461aaafad4ad8be4e45748fba318bd563b13b50",
+    "bytes": 57746108,
+    "entries": 5114,
+    "manifest_sha256": "64171d7a650149b93ceed457ead6aa9e80329cacfb3187d00bfed04d580426c2"
+  },
+  "prior_families": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_sampler_source1_release\\local\\cc12_sampler_source1_observed_release\\source1_observed_release_family.zip",
+      "sha256": "5913ff17452a0af229250798589415eaf95cf70d1d503adc5b0663fa366774d1",
+      "unchanged": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_sampler_source1_release\\local\\cc12_sampler_source1_owner_binding_readiness\\source1_owner_binding_readiness_family.zip",
+      "sha256": "039216008cde0a0f3a1db9e89250fa97518ab031228bdb7fa67119f701964595",
+      "unchanged": true
+    }
+  ],
+  "execution_gate": "Root review required; current user steering drains existing work and pauses",
+  "doc": "docs/NATIVE_SAMPLER_SOURCE1_FACTORY_FIXTURE_CC12.md",
+  "verification": {
+    "archive_identity_verified": true,
+    "zip_entries_verified": 5114,
+    "payload_hashes_verified": 5113,
+    "current_inputs_match_frozen": true,
+    "executable_executed": false,
+    "sha256": "b04c637993e2a4ae2b47d2a23461aaafad4ad8be4e45748fba318bd563b13b50"
+  }
+}

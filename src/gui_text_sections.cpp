@@ -68,7 +68,8 @@ void release_creator(Resource*& creator, std::uint32_t site,
     frame.release_phase = GuiTextSectionReleasePhase::returned;
 }
 void append_default_section(NativeMeshStorage& mesh, GuiTextBufferServices& services,
-    GuiTextSectionOperation& frame, bool shadow_branch) {
+    GuiTextSectionOperation& frame, bool shadow_branch,
+    GuiTextEffectConsumerSectionCall* consumer_call) {
     auto& owners = services.geometry.actual_owners();
     frame.section_appended = false;
     frame.material_published = false;
@@ -80,22 +81,44 @@ void append_default_section(NativeMeshStorage& mesh, GuiTextBufferServices& serv
     append_native_mesh_draw_section_00b73c60(mesh, frame.section);
     frame.section_appended = true;
     frame.native_site = shadow_branch ? 0x00ab8643 : 0x00ab8716;
+    if (consumer_call) {
+        consumer_call->materials.push_back(nullptr);
+        consumer_call->consumer->begin_section_material(*consumer_call,
+            consumer_call->materials.back());
+        frame.active_effect_material = consumer_call->materials.back();
+        require(frame.active_effect_material && frame.active_effect_material->parent == consumer_call &&
+            frame.active_effect_material->phase == GuiTextEffectConsumerPhase::running,
+            "Text material provider returned without publishing its exact caller");
+        frame.active_effect_name = &frame.active_effect_material->name;
+        frame.active_effect_material->name_phase = GuiTextEffectNamePhase::constructing;
+    } else {
+        frame.active_effect_material = nullptr;
+        frame.active_effect_name = &frame.temporary_name;
+    }
     frame.name_constructing = true;
-    frame.temporary_name.assign_0041e870(services.strings, "guidefault.mshd");
+    frame.active_effect_name->assign_0041e870(services.strings, "guidefault.mshd");
     frame.name_constructing = false;
     frame.name_live = true;
     frame.name_cleanup_armed = true;
+    if (frame.active_effect_material)
+        frame.active_effect_material->name_phase = GuiTextEffectNamePhase::live;
     frame.native_unwind_state = shadow_branch ? 4 : 5;
     frame.native_site = shadow_branch ? 0x00ab8654 : 0x00ab8727;
     frame.factory_in_flight = GuiTextSectionFactory::material;
-    frame.material = services.geometry.create_material_for_effect_00535320(frame.temporary_name,
-        services.current_renderer_00f8d394, services.materials, services.material_vtable_00d5e520);
+    frame.material = consumer_call
+        ? consumer_call->consumer->create_section_material(*frame.active_effect_material)
+        : services.geometry.create_material_for_effect_00535320(*frame.active_effect_name,
+            services.current_renderer_00f8d394, services.materials, services.material_vtable_00d5e520);
     frame.factory_in_flight = GuiTextSectionFactory::none;
     frame.native_unwind_state = -1;
     frame.name_cleanup_armed = false;
     frame.name_live = false;
     frame.native_site = shadow_branch ? 0x00ab867d : 0x00ab8750;
-    destroy_native_string_header_0041dd20(&frame.temporary_name, services.strings);
+    if (frame.active_effect_material)
+        frame.active_effect_material->name_phase = GuiTextEffectNamePhase::consuming;
+    destroy_native_string_header_0041dd20(frame.active_effect_name, services.strings);
+    if (frame.active_effect_material)
+        frame.active_effect_material->name_phase = GuiTextEffectNamePhase::consumed;
     frame.native_site = shadow_branch ? 0x00ab8685 : 0x00ab8758;
     set_native_mesh_section_material_00b864c0(*frame.section, owners, frame.material);
     frame.material_published = true;
@@ -107,6 +130,11 @@ void append_default_section(NativeMeshStorage& mesh, GuiTextBufferServices& serv
 void ensure_gui_text_draw_sections_00ab8530(GuiWidgetOwner& widget, GuiTextWidget& text,
     NativeNodeBinding*& shadow, GuiTextBufferServices& services, GuiTextSectionOperation& frame) {
     require(!frame.has_incomplete(), "failed or active Text section operation cannot replay");
+    auto* const consumer = services.native_effect_consumer;
+    for (const auto* prior : frame.effect_consumer_calls)
+        require(prior && prior->phase == GuiTextEffectConsumerPhase::complete &&
+            prior->consumer == consumer,
+            "Text section consumer history cannot replay or change its provider");
     require(!frame.mesh && !frame.section && !frame.material && !frame.model_creator &&
         !frame.constructed_model_owner && !frame.unconstructed_model_slot &&
         !frame.name_live && !frame.name_cleanup_armed,
@@ -141,7 +169,20 @@ void ensure_gui_text_draw_sections_00ab8530(GuiWidgetOwner& widget, GuiTextWidge
     frame.model_phase = GuiTextSectionModelPhase::not_started;
     frame.model_failure_phase = GuiTextSectionModelPhase::not_started;
     frame.model_metadata_failure = false;
+    frame.active_effect_material = nullptr;
+    frame.active_effect_name = nullptr;
+    GuiTextEffectConsumerSectionCall** consumer_slot{};
     try {
+        if (consumer) {
+            frame.effect_consumer_calls.push_back(nullptr);
+            consumer_slot = &frame.effect_consumer_calls.back();
+            consumer->begin_sections(*lifetime, frame, services, *consumer_slot);
+            require(*consumer_slot && (*consumer_slot)->consumer == consumer &&
+                (*consumer_slot)->lifetime == lifetime && (*consumer_slot)->caller == &frame &&
+                (*consumer_slot)->services == &services &&
+                (*consumer_slot)->phase == GuiTextEffectConsumerPhase::running,
+                "Text section provider returned without publishing its exact caller");
+        }
         if (!shadow) {
             frame.shadow_branch = true;
             services.widgets.create_auxiliary_model_00ab8530_fragment(shadow, services.strings, frame);
@@ -160,7 +201,8 @@ void ensure_gui_text_draw_sections_00ab8530(GuiWidgetOwner& widget, GuiTextWidge
             frame.native_site = 0x00ab8626;
             set_native_model_geometry_00b75170(actual_model(receiver, services), 0,
                 frame.mesh, scalar_178, scalar_17c);
-            append_default_section(*frame.mesh, services, frame, true);
+            append_default_section(*frame.mesh, services, frame, true,
+                consumer_slot ? *consumer_slot : nullptr);
             release_creator(frame.mesh, 0x00ab86bd, services.geometry.actual_owners(), frame);
         }
         frame.native_site = 0x00ab86cb;
@@ -174,7 +216,8 @@ void ensure_gui_text_draw_sections_00ab8530(GuiWidgetOwner& widget, GuiTextWidge
                     gui_model_geometry_00b74640(main.storage.model, 0));
                 frame.native_site = 0x00ab86f1;
                 if (gui_mesh_element_count_00b72b40(current_mesh) == 0)
-                    append_default_section(*current_mesh, services, frame, false);
+                    append_default_section(*current_mesh, services, frame, false,
+                        consumer_slot ? *consumer_slot : nullptr);
             }
             frame.native_site = 0x00ab8787;
             auto* const requested_parent = text.shadowed ? widget.node_binding() : nullptr;
@@ -192,8 +235,10 @@ void ensure_gui_text_draw_sections_00ab8530(GuiWidgetOwner& widget, GuiTextWidge
             }
         }
         frame.native_site = 0x00ab87cb;
+        if (consumer_slot) consumer->finish_sections(**consumer_slot);
         frame.phase = GuiTextSectionPhase::complete;
     } catch (...) {
+        const auto failure = std::current_exception();
         if (!frame.failure_site) frame.failure_site = frame.native_site;
         // FH3 states4/5 own only the currently constructed effect name.
         // Model states0/1 are handled by the tracked canonical owner producer.
@@ -204,9 +249,14 @@ void ensure_gui_text_draw_sections_00ab8530(GuiWidgetOwner& widget, GuiTextWidge
             frame.name_cleanup_armed = false;
             frame.name_live = false;
             frame.native_unwind_state = -1;
-            destroy_native_string_header_0041dd20(&frame.temporary_name, services.strings);
+            if (frame.active_effect_material)
+                frame.active_effect_material->name_phase = GuiTextEffectNamePhase::consuming;
+            destroy_native_string_header_0041dd20(frame.active_effect_name, services.strings);
+            if (frame.active_effect_material)
+                frame.active_effect_material->name_phase = GuiTextEffectNamePhase::consumed;
         }
         frame.phase = GuiTextSectionPhase::failed;
+        if (consumer_slot && *consumer_slot) consumer->fail_sections(**consumer_slot, failure);
         throw;
     }
 }

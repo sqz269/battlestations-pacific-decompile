@@ -98,8 +98,16 @@ public:
     GuiTextLifetimeFields& fields() noexcept { return fields_; }
     NativeNodeBinding*& shadow_slot_188() noexcept { return shadow_188_; }
     GuiTextSectionOperation& section_operation() noexcept { return sections_; }
+    GuiTextBufferServices& buffer_services() noexcept { return buffers_; }
+    std::vector<GuiTextEffectConsumerShaderCall*>& shader_consumer_calls() noexcept {
+        return shader_consumer_calls_;
+    }
     GuiTextGlyphBuffersAcquired& glyph_buffer_operation() noexcept { return glyph_buffers_; }
     bool has_incomplete_native_resources() const noexcept {
+        if (buffers_.native_effect_consumer &&
+            buffers_.native_effect_consumer->has_incomplete_caller(*this)) return true;
+        for (const auto* call : shader_consumer_calls_)
+            if (!call || call->phase != GuiTextEffectConsumerPhase::complete) return true;
         return sections_.has_incomplete() || glyph_buffers_.phase == GuiTextGlyphBuffersPhase::running ||
             glyph_buffers_.phase == GuiTextGlyphBuffersPhase::failed;
     }
@@ -162,6 +170,7 @@ private:
     // Native local acquisitions retained in their SAME canonical lifetime.
     // These are diagnostic caller frames, not additional raw Text fields.
     GuiTextSectionOperation sections_;
+    std::vector<GuiTextEffectConsumerShaderCall*> shader_consumer_calls_;
     GuiTextGlyphBuffersAcquired glyph_buffers_;
     bool default_completion_entered_{};
 };

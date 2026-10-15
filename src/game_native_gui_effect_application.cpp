@@ -15,6 +15,9 @@
 #include "bsp/native_shader_descriptor_reader.hpp"
 #include "bsp/native_lua_service_bindings.hpp"
 #include "bsp/native_game_grid.hpp"
+#include "bsp/native_platform_load_messages.hpp"
+#include "bsp/gui_text_material.hpp"
+#include "bsp/gui_text_lifetime.hpp"
 #include <cstring>
 #include <stdexcept>
 #include <vector>
@@ -25,8 +28,9 @@ void require(bool condition, const char* message) {
     if (!condition) throw std::logic_error(message);
 }
 } // namespace
-struct GameNativeGuiEffectApplication::Impl {
+struct GameNativeGuiEffectApplication::Impl final : GuiTextEffectConsumer {
     enum class Phase { ready, loading, draining, closed, failed };
+    GameNativeGuiEffectApplication& facade;
     GameHostLog& log;
     GameNativeRendererApplication& renderer;
     GameVfsHost& vfs;
@@ -49,12 +53,21 @@ struct GameNativeGuiEffectApplication::Impl {
     NativeMaterialEffectCacheContext cache;
     std::vector<std::unique_ptr<GameNativeGuiEffectLoadOperation>> operations;
     std::vector<std::unique_ptr<GameNativeGuiMaterialFactoryOperation>> material_operations;
+    GuiTextBufferServices* consumer_services{};
+    NativeMaterialDestructionAccess* consumer_materials{};
+    const volatile std::uint32_t* consumer_material_profile{};
+    std::vector<std::unique_ptr<GuiTextEffectConsumerSectionCall>> section_calls;
+    std::vector<std::unique_ptr<GameNativeGuiTextMaterialCall>> text_material_calls;
+    std::vector<std::unique_ptr<GameNativeGuiTextShaderCall>> text_shader_calls;
+    GuiTextEffectConsumerSectionCall* active_sections{};
+    GameNativeGuiTextShaderCall* active_shader{};
     Phase phase{Phase::ready};
     std::exception_ptr failed;
 
-    Impl(GameHostLog& l, GameNativeRendererApplication& r, GameVfsHost& files,
+    Impl(GameNativeGuiEffectApplication& application, GameHostLog& l,
+        GameNativeRendererApplication& r, GameVfsHost& files,
         GameNativeGuiEffectApplicationBindings inputs)
-        : log(l), renderer(r), vfs(files), bindings(inputs), raw(vfs.borrow_raw_services()),
+        : facade(application), log(l), renderer(r), vfs(files), bindings(inputs), raw(vfs.borrow_raw_services()),
           textures(renderer.texture_cache()), registry(renderer.effect_registry_domain()),
           compiler_owners(renderer.material_compiler_owners()),
           sources(renderer.material_compiler_sources()), effect_owners(renderer.material_effect_owners()),
@@ -165,29 +178,247 @@ struct GameNativeGuiEffectApplication::Impl {
             "GUI material invocation requires the same canonical geometry, owners, strings and process pools");
         return renderer.borrow_gui_material_destruction_profile_00d5e520();
     }
+    const volatile std::uint32_t* validate_consumer_domain(GuiTextBufferServices& services) {
+        validate_domain();
+        const auto* profile = validate_material_domain(services.geometry, services.materials);
+        require(&services.strings == &raw.strings &&
+            &services.current_renderer_00f8d394 == &renderer.publication_00f8d394() &&
+            services.material_vtable_00d5e520 == profile &&
+            &services.widgets.environment().models.retained_owners == &renderer.actual_owners() &&
+            &services.widgets.environment().models.nodes == &services.parenting.nodes,
+            "Text effect consumer requires the exact renderer/profile/string/widget owner domains");
+        if (consumer_services)
+            require(consumer_services == &services && services.native_effect_consumer == this &&
+                consumer_materials == &services.materials && consumer_material_profile == profile,
+                "Text effect consumer cannot replace its services, destruction access or mapped profile");
+        return profile;
+    }
+    bool caller_active() const noexcept { return active_sections || active_shader; }
+    bool has_incomplete_caller(const GuiTextLifetime& lifetime) const noexcept override {
+        return (active_sections && active_sections->lifetime == &lifetime) ||
+            (active_shader && active_shader->lifetime == &lifetime);
+    }
+    template<class T, class U> static bool owns(const std::vector<std::unique_ptr<T>>& frames, const U* pointer) {
+        for (const auto& frame : frames) if (frame.get() == pointer) return true;
+        return false;
+    }
+    GameNativeGuiTextMaterialCall& material_call(GuiTextEffectConsumerMaterialCall& call) {
+        require(owns(text_material_calls, &call), "Text material call is not this provider's retained invocation");
+        return static_cast<GameNativeGuiTextMaterialCall&>(call);
+    }
+    GameNativeGuiTextShaderCall& shader_call(GuiTextEffectConsumerShaderCall& call) {
+        require(owns(text_shader_calls, &call), "Text shader call is not this provider's retained invocation");
+        return static_cast<GameNativeGuiTextShaderCall&>(call);
+    }
+    void begin_sections(GuiTextLifetime&, GuiTextSectionOperation&, GuiTextBufferServices&,
+        GuiTextEffectConsumerSectionCall*&) override;
+    void begin_section_material(GuiTextEffectConsumerSectionCall&,
+        GuiTextEffectConsumerMaterialCall*&) override;
+    NativeMaterialStorage* create_section_material(GuiTextEffectConsumerMaterialCall&) override;
+    void finish_sections(GuiTextEffectConsumerSectionCall&) override;
+    void fail_sections(GuiTextEffectConsumerSectionCall&, std::exception_ptr) noexcept override;
+    void begin_shader(GuiTextLifetime&, GuiTextShaderServices&,
+        GuiTextEffectConsumerShaderCall*&) override;
+    void* acquire_font_effect(GuiTextEffectConsumerShaderCall&) override;
+    void finish_shader(GuiTextEffectConsumerShaderCall&) override;
+    void fail_shader(GuiTextEffectConsumerShaderCall&, std::exception_ptr) noexcept override;
 };
+
+void GameNativeGuiEffectApplication::Impl::begin_sections(GuiTextLifetime& lifetime,
+    GuiTextSectionOperation& caller, GuiTextBufferServices& services,
+    GuiTextEffectConsumerSectionCall*& published) {
+    require(phase == Phase::ready && !caller_active() && !published && consumer_services == &services &&
+        &lifetime.buffer_services() == &services && caller.phase == GuiTextSectionPhase::running &&
+        caller.native_site == 0x00ab8553 && !caller.effect_consumer_calls.empty() &&
+        &published == &caller.effect_consumer_calls.back(),
+        "Text sections require their exact fresh retained caller slot and idle provider");
+    validate_consumer_domain(services);
+    auto frame = std::make_unique<GuiTextEffectConsumerSectionCall>();
+    auto& call = *frame;
+    call.consumer = this;
+    call.lifetime = &lifetime;
+    call.caller = &caller;
+    call.services = &services;
+    section_calls.push_back(std::move(frame));
+    call.phase = GuiTextEffectConsumerPhase::running;
+    active_sections = &call;
+    published = &call; // Stable whole caller before Model/string/factory effects.
+}
+void GameNativeGuiEffectApplication::Impl::begin_section_material(
+    GuiTextEffectConsumerSectionCall& parent, GuiTextEffectConsumerMaterialCall*& published) {
+    require(phase == Phase::ready && owns(section_calls, &parent) && active_sections == &parent &&
+        !active_shader && parent.phase == GuiTextEffectConsumerPhase::running && !published &&
+        !parent.materials.empty() && &published == &parent.materials.back() &&
+        parent.caller->phase == GuiTextSectionPhase::running &&
+        (parent.caller->native_site == 0x00ab8643 || parent.caller->native_site == 0x00ab8716) &&
+        !parent.caller->name_live && !parent.caller->name_cleanup_armed,
+        "Text material name requires its exact retained AB8530 invocation and fresh slot");
+    validate_consumer_domain(*parent.services);
+    for (std::size_t i = 0; i + 1 < parent.materials.size(); ++i) {
+        require(parent.materials[i] != nullptr, "Text material caller has an unpublished prior slot");
+        auto& prior = material_call(*parent.materials[i]);
+        require(prior.parent == &parent && prior.name_phase == GuiTextEffectNamePhase::consumed &&
+            prior.acquisition && prior.acquisition->phase == GameNativeGuiMaterialFactoryPhase::complete,
+            "Text material caller cannot overlap or replay an earlier name/factory");
+    }
+    auto frame = std::make_unique<GameNativeGuiTextMaterialCall>();
+    auto& call = *frame;
+    call.parent = &parent;
+    text_material_calls.push_back(std::move(frame));
+    call.phase = GuiTextEffectConsumerPhase::running;
+    published = &call; // Header storage exists before the native name constructor.
+}
+NativeMaterialStorage* GameNativeGuiEffectApplication::Impl::create_section_material(
+    GuiTextEffectConsumerMaterialCall& supplied) {
+    auto& call = material_call(supplied);
+    require(phase == Phase::ready && active_sections == call.parent && !active_shader &&
+        call.parent->phase == GuiTextEffectConsumerPhase::running &&
+        call.phase == GuiTextEffectConsumerPhase::running && !call.acquisition &&
+        call.name_phase == GuiTextEffectNamePhase::live &&
+        call.parent->caller->active_effect_material == &call &&
+        call.parent->caller->active_effect_name == &call.name &&
+        call.parent->caller->factory_in_flight == GuiTextSectionFactory::material &&
+        (call.parent->caller->native_site == 0x00ab8654 || call.parent->caller->native_site == 0x00ab8727),
+        "Text material entry requires its exact active factory token and live caller name");
+    validate_consumer_domain(*call.parent->services);
+    call.result = facade.create_material_for_caller(&call.name, consumer_services->geometry,
+        *consumer_materials, call.acquisition, &call);
+    return call.result;
+}
+void GameNativeGuiEffectApplication::Impl::finish_sections(GuiTextEffectConsumerSectionCall& call) {
+    require(phase == Phase::ready && owns(section_calls, &call) && active_sections == &call &&
+        !active_shader && call.phase == GuiTextEffectConsumerPhase::running &&
+        call.caller->native_site == 0x00ab87cb && !call.caller->name_live &&
+        !call.caller->name_cleanup_armed && !call.caller->mesh && !call.caller->section &&
+        !call.caller->material && call.caller->factory_in_flight == GuiTextSectionFactory::none &&
+        call.caller->release_phase != GuiTextSectionReleasePhase::entered,
+        "Text sections cannot complete an interrupted native caller");
+    validate_consumer_domain(*call.services);
+    for (auto* child : call.materials) {
+        require(child != nullptr, "Text sections retained an unpublished material call");
+        auto& material = material_call(*child);
+        require(material.parent == &call && material.name_phase == GuiTextEffectNamePhase::consumed &&
+            material.acquisition && material.acquisition->phase == GameNativeGuiMaterialFactoryPhase::complete &&
+            !material.acquisition->input_name_borrow_active,
+            "Text sections retained an incomplete material acquisition or name");
+    }
+    for (auto* child : call.materials) child->phase = GuiTextEffectConsumerPhase::complete;
+    call.phase = GuiTextEffectConsumerPhase::complete;
+    active_sections = nullptr;
+}
+void GameNativeGuiEffectApplication::Impl::fail_sections(GuiTextEffectConsumerSectionCall& call,
+    std::exception_ptr failure) noexcept {
+    if (active_sections != &call || call.consumer != this) std::terminate();
+    call.failure = failure;
+    call.phase = GuiTextEffectConsumerPhase::failed;
+    for (auto* child : call.materials)
+        if (child) child->phase = GuiTextEffectConsumerPhase::failed;
+    failed = failure;
+    phase = Phase::failed; // Keep the active caller/children; no cleanup/replay.
+}
+void GameNativeGuiEffectApplication::Impl::begin_shader(GuiTextLifetime& lifetime,
+    GuiTextShaderServices& services, GuiTextEffectConsumerShaderCall*& published) {
+    auto& history = lifetime.shader_consumer_calls();
+    require(phase == Phase::ready && !caller_active() && !published &&
+        consumer_services == &services.buffers && &lifetime.buffer_services() == consumer_services &&
+        !lifetime.cached_shader_slot_1ec() && !history.empty() && &published == &history.back() &&
+        NativePlatformLoadPublication(services.configuration_0109cf04).identity() ==
+            renderer.borrow_platform_publication_0109cf04().identity(),
+        "Text shader requires its exact fresh caller slot, services/configuration and idle provider");
+    validate_consumer_domain(services.buffers);
+    auto frame = std::make_unique<GameNativeGuiTextShaderCall>();
+    auto& call = *frame;
+    call.consumer = this;
+    call.lifetime = &lifetime;
+    call.services = &services;
+    text_shader_calls.push_back(std::move(frame));
+    call.phase = GuiTextEffectConsumerPhase::running;
+    active_shader = &call;
+    published = &call; // Both possible headers exist before selection/name effects.
+}
+void* GameNativeGuiEffectApplication::Impl::acquire_font_effect(GuiTextEffectConsumerShaderCall& supplied) {
+    auto& call = shader_call(supplied);
+    require(phase == Phase::ready && active_shader == &call && !active_sections &&
+        call.phase == GuiTextEffectConsumerPhase::running && !call.acquisition &&
+        call.name_phase == GuiTextEffectNamePhase::live &&
+        call.selected_name == (call.default_selected ? static_cast<const void*>(&call.default_name)
+            : static_cast<const void*>(&call.override_name)),
+        "Text shader entry requires its exact active acquisition token and retained live header");
+    validate_consumer_domain(call.services->buffers);
+    // The texture loader's event-provider cell is not this actual publication.
+    // Borrow identity only; the caller still supplies a valid actual +28 input.
+    require(NativePlatformLoadPublication(call.services->configuration_0109cf04).identity() ==
+        renderer.borrow_platform_publication_0109cf04().identity(),
+        "Text shader cannot retarget its live configuration cell");
+    call.result = facade.acquire_effect_for_caller(call.selected_name, call.acquisition, &call);
+    return call.result;
+}
+void GameNativeGuiEffectApplication::Impl::finish_shader(GuiTextEffectConsumerShaderCall& supplied) {
+    auto& call = shader_call(supplied);
+    require(phase == Phase::ready && active_shader == &call && !active_sections &&
+        call.phase == GuiTextEffectConsumerPhase::running && call.shader_published &&
+        !call.name_cleanup_armed && call.acquisition &&
+        call.acquisition->phase == GameNativeGuiEffectLoadPhase::complete &&
+        !call.acquisition->input_name_borrow_active &&
+        call.lifetime->cached_shader_slot_1ec() == call.result &&
+        call.name_phase == (call.default_selected ? GuiTextEffectNamePhase::consumed :
+            GuiTextEffectNamePhase::borrow_ended),
+        "Text shader cannot complete before publication and its exact native name cleanup");
+    validate_consumer_domain(call.services->buffers);
+    call.phase = GuiTextEffectConsumerPhase::complete;
+    active_shader = nullptr;
+}
+void GameNativeGuiEffectApplication::Impl::fail_shader(GuiTextEffectConsumerShaderCall& call,
+    std::exception_ptr failure) noexcept {
+    if (active_shader != &call || call.consumer != this) std::terminate();
+    call.failure = failure;
+    call.phase = GuiTextEffectConsumerPhase::failed;
+    failed = failure;
+    phase = Phase::failed; // Keep the caller/header/acquisition without native rollback.
+}
 
 GameNativeGuiEffectApplication::GameNativeGuiEffectApplication(GameHostLog& log,
     GameNativeRendererApplication& renderer, GameVfsHost& vfs,
     GameNativeGuiEffectApplicationBindings bindings)
-    : impl_(std::make_unique<Impl>(log, renderer, vfs, bindings)) {}
+    : impl_(std::make_unique<Impl>(*this, log, renderer, vfs, bindings)) {}
 GameNativeGuiEffectApplication::~GameNativeGuiEffectApplication() noexcept {
     if (impl_->phase != Impl::Phase::closed &&
         (impl_->phase != Impl::Phase::ready || !impl_->operations.empty() ||
-            !impl_->material_operations.empty())) std::terminate();
+            !impl_->material_operations.empty() || !impl_->section_calls.empty() ||
+            !impl_->text_shader_calls.empty() || impl_->caller_active())) std::terminate();
+    if (impl_->consumer_services) {
+        if (impl_->consumer_services->native_effect_consumer != impl_.get()) std::terminate();
+        impl_->consumer_services->native_effect_consumer = nullptr;
+    }
 }
 void* GameNativeGuiEffectApplication::acquire_effect_00b318b0(const void* name) {
+    const GameNativeGuiEffectLoadOperation* operation{};
+    return acquire_effect_00b318b0(name, operation);
+}
+void* GameNativeGuiEffectApplication::acquire_effect_00b318b0(const void* name,
+    const GameNativeGuiEffectLoadOperation*& published_operation) {
+    return acquire_effect_for_caller(name, published_operation, nullptr);
+}
+void* GameNativeGuiEffectApplication::acquire_effect_for_caller(const void* name,
+    const GameNativeGuiEffectLoadOperation*& published_operation,
+    const GuiTextEffectConsumerShaderCall* authorization) {
     auto& p = *impl_;
     require(p.phase == Impl::Phase::ready, "GUI effect producer cannot replay/reenter/retarget or reopen after drain");
-    require(name && (reinterpret_cast<std::uintptr_t>(name) & 3u) == 0,
-        "GUI effect producer requires a stable initialized actual8h name header");
+    require(authorization ? (p.active_shader == authorization && !p.active_sections &&
+        authorization->phase == GuiTextEffectConsumerPhase::running &&
+        authorization->selected_name == name) : !p.caller_active(),
+        "GUI effect entry is not the exact active Text caller's authorized acquisition");
+    require(!published_operation && name && (reinterpret_cast<std::uintptr_t>(name) & 3u) == 0,
+        "GUI effect producer requires a fresh output and stable initialized actual8h name header");
     p.validate_domain(); // Pure admission checks precede native entry.
     auto frame = std::make_unique<GameNativeGuiEffectLoadOperation>();
     auto& op = *frame;
     op.input_name = name;
     p.operations.push_back(std::move(frame)); // Publish BEFORE capturing/native effects.
+    published_operation = &op;
     p.phase = Impl::Phase::loading;
     op.phase = GameNativeGuiEffectLoadPhase::running;
+    op.input_name_borrow_active = true;
     try {
         op.captured_lua_binding = &p.lua_binding;
         // Same scope used by the canonical renderer descriptor entry. It
@@ -225,8 +456,11 @@ void* GameNativeGuiEffectApplication::acquire_effect_00b318b0(const void* name) 
         p.log.notef("actual GUI effect acquire renderer=%p name=%p result=%p profile=%08x refs=%d cache_site=%08x cache_published=%d caller_acquired=%d",
             op.captured_renderer, op.input_name, op.result, op.result_profile, op.result_references, op.cache.native_site,
             op.cache.cache_published ? 1 : 0, op.cache.caller_acquired ? 1 : 0);
+        op.input_name_borrow_active = false;
+        op.caller_reference_transferred = op.result != nullptr;
         return op.result;
     } catch (...) {
+        op.input_name_borrow_active = false;
         op.failure = std::current_exception();
         op.phase = GameNativeGuiEffectLoadPhase::failed;
         p.failed = op.failure;
@@ -243,9 +477,21 @@ const GameNativeGuiEffectLoadOperation& GameNativeGuiEffectApplication::operatio
 NativeMaterialStorage* GameNativeGuiEffectApplication::create_material_00535320(const void* name,
     GuiNativeGeometryOwners& geometry, NativeMaterialDestructionAccess& materials,
     const GameNativeGuiMaterialFactoryOperation*& published_operation) {
+    return create_material_for_caller(name, geometry, materials, published_operation, nullptr);
+}
+NativeMaterialStorage* GameNativeGuiEffectApplication::create_material_for_caller(const void* name,
+    GuiNativeGeometryOwners& geometry, NativeMaterialDestructionAccess& materials,
+    const GameNativeGuiMaterialFactoryOperation*& published_operation,
+    const GuiTextEffectConsumerMaterialCall* authorization) {
     auto& p = *impl_;
     require(p.phase == Impl::Phase::ready,
         "GUI material producer cannot replay/reenter/retarget or reopen after drain");
+    require(authorization ? (p.active_sections == authorization->parent && !p.active_shader &&
+        authorization->phase == GuiTextEffectConsumerPhase::running &&
+        name == &authorization->name && p.consumer_services &&
+        &geometry == &p.consumer_services->geometry && &materials == p.consumer_materials)
+        : !p.caller_active(),
+        "GUI material entry is not the exact active Text caller's authorized factory");
     require(!published_operation && name && (reinterpret_cast<std::uintptr_t>(name) & 3u) == 0,
         "GUI material producer requires a fresh output and stable initialized actual8h name header");
     p.validate_domain();
@@ -320,23 +566,38 @@ const GameNativeGuiMaterialFactoryOperation&
 GameNativeGuiEffectApplication::material_operation(std::size_t index) const {
     return *impl_->material_operations.at(index);
 }
+void GameNativeGuiEffectApplication::bind_text_effect_consumer(GuiTextBufferServices& services) {
+    auto& p = *impl_;
+    require(p.phase == Impl::Phase::ready && !p.caller_active() && !p.consumer_services &&
+        !services.native_effect_consumer,
+        "Text effect consumer requires an idle graph and a fresh exact services binding");
+    const auto* profile = p.validate_consumer_domain(services);
+    p.consumer_services = &services;
+    p.consumer_materials = &services.materials;
+    p.consumer_material_profile = profile;
+    services.native_effect_consumer = &p;
+}
 bool GameNativeGuiEffectApplication::requires_process_retention() const noexcept {
     const auto phase = impl_->phase;
-    return phase == Impl::Phase::loading || phase == Impl::Phase::draining || phase == Impl::Phase::failed;
+    return impl_->caller_active() || phase == Impl::Phase::loading ||
+        phase == Impl::Phase::draining || phase == Impl::Phase::failed;
 }
 const std::exception_ptr& GameNativeGuiEffectApplication::failure() const noexcept {
     return impl_->failed;
 }
 void GameNativeGuiEffectApplication::after_native_renderer_drain() {
     auto& p = *impl_;
-    require(p.phase == Impl::Phase::ready, "failed/active/closed GUI effect graph cannot retire its metadata");
-    if (p.operations.empty() && p.material_operations.empty()) { p.phase = Impl::Phase::closed; return; }
+    require(p.phase == Impl::Phase::ready && !p.caller_active(),
+        "failed/active/closed GUI effect graph cannot retire its metadata");
+    if (p.operations.empty() && p.material_operations.empty() && p.section_calls.empty() &&
+        p.text_shader_calls.empty()) { p.phase = Impl::Phase::closed; return; }
     p.phase = Impl::Phase::draining;
     try {
         require(!p.renderer.publication_00f8d394(), "GUI effect graph must survive the actual renderer cache/effect drain");
         p.renderer.after_native_drain(); // Existing owner/worker/native closure verification.
         for (const auto& op : p.operations)
-            require(op->phase == GameNativeGuiEffectLoadPhase::complete,
+            require(op->phase == GameNativeGuiEffectLoadPhase::complete &&
+                !op->input_name_borrow_active && (!op->result || op->caller_reference_transferred),
                 "GUI effect graph has an interrupted retained acquisition");
         for (const auto& op : p.material_operations)
             require(op->phase == GameNativeGuiMaterialFactoryPhase::complete &&
@@ -344,6 +605,18 @@ void GameNativeGuiEffectApplication::after_native_renderer_drain() {
                 op->factory.phase == NativeMaterialFactoryAcquired::Phase::complete &&
                 (!op->result || (op->factory.registered && op->caller_reference_transferred)),
                 "GUI effect graph has an interrupted retained material acquisition");
+        for (const auto& call : p.section_calls)
+            require(call->phase == GuiTextEffectConsumerPhase::complete,
+                "GUI effect graph has an interrupted retained Text section caller");
+        for (const auto& call : p.text_material_calls)
+            require(call->phase == GuiTextEffectConsumerPhase::complete &&
+                call->name_phase == GuiTextEffectNamePhase::consumed,
+                "GUI effect graph has an interrupted retained Text material caller");
+        for (const auto& call : p.text_shader_calls)
+            require(call->phase == GuiTextEffectConsumerPhase::complete && !call->name_cleanup_armed &&
+                call->name_phase == (call->default_selected ? GuiTextEffectNamePhase::consumed :
+                    GuiTextEffectNamePhase::borrow_ended),
+                "GUI effect graph has an interrupted retained Text shader caller");
         p.phase = Impl::Phase::closed;
     } catch (...) {
         p.failed = std::current_exception();
