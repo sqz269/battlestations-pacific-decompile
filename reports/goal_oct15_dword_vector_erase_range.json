@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_dword_vector_erase_range",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_scene_dword_erase_range.cpp",
+  "header": "include/bsp/native_scene_dword_erase_range.hpp",
+  "documentation": "docs/GOAL_OCT15_DWORD_VECTOR_ERASE_RANGE.md",
+  "base_revision": "2b572e396ab81df2521233c7a9097ab7188a0cd0",
+  "status": "whole_actual_raw_source_build_pending",
+  "routine": {
+    "address": "004685a0",
+    "body_end_inclusive": "004685f9",
+    "body_bytes": 90,
+    "instructions": 37,
+    "blocks": 8,
+    "physical_calls": 2,
+    "implementation": "erase_native_scene_dword_range_004685a0",
+    "prior_name": "STL_inst_004685a0",
+    "name_hypothesis": "STL_CheckedDwordVector_EraseRange_004685A0",
+    "coverage": "complete_actual_control_live_parameters_source_at_accepted_returnable_crt_and_positive_move_kernel_boundaries",
+    "original_abi": "ECX captured control;five stackedDWORDs output,firstowner,firstnode,lastowner,lastnode;RET14h/EAX currentoutput;captured owner beforeCRT,node thenowner output stores",
+    "live_hex": "558b6c240c85ed56578bf974063b6c241c7405e85be178008b7424188b5424203bf274278b47082bc2c1f80285c08d0c8500000000538d1c317e0c51525156e8c3e1780083c410895f085b8b4424105f8970045e89285dc21400",
+    "live_installed_equal": true,
+    "sha256": "5c2e1d383527e0db87120546f760b26da011e7d1dd80494475c80ae50af1b245"
+  },
+  "host_steps": [
+    {
+      "address": "004685b3",
+      "native": "00bf6713",
+      "function": "004685a0",
+      "kind": "call"
+    },
+    {
+      "address": "004685df",
+      "native": "00bf67a7",
+      "function": "004685a0",
+      "kind": "call"
+    },
+    {
+      "address": "00468b1d",
+      "native": "004685a0",
+      "function": "00468af0",
+      "kind": "call"
+    },
+    {
+      "address": "00468cbe",
+      "native": "004685a0",
+      "function": "00468c90",
+      "kind": "call"
+    }
+  ],
+  "implementation_search": "no indexed/unindexed whole actual Source;existing frontend/HUD/powerup projections/callbacks are not providers and are untouched",
+  "source_contract": "explicit stable/disjoint actual_parameters20 metadata;live cells out0,firstowner4,firstnode8,lastownerC,lastnode10. Capture owner before diagnostic;shortcircuit lastowner read ifzero,no owner==control guard. After return readcurrentfirstnode thenlastnode;equal skips control.end/move/endpublication. Unequal currentend then exactpositive kernel;zero/negative still publish wrapped result. CURRENT out read afterSDK/endstore;captured node store BEFORE captured owner;return capturedout.",
+  "provider_composition": "accepted invoke_native_invalid_parameter_00bf6713 real five-zero-word/currentSDK shim and move_native_scene_dword_range_00467d90 positive kernel;actual native second target is BF67A7,NOT D90. No provider edits,callbacks,stubs,newguards,allocation,ownership,EHcleanup,pool or rollback.",
+  "provider_file_sha256": {
+    "src/native_scene_dword_move.cpp": "25534e8fd6f7db5d904832ca623ae9ade05f0c05a3f9848e1cb625b519a83386",
+    "include/bsp/native_scene_dword_move.hpp": "61294c3eb1ce7b42553587bbdfd206a3fbbf129dd15770a66e1da98a8ac9e9f2",
+    "src/native_invalid_parameter_noinfo_call.cpp": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+    "include/bsp/native_invalid_parameter_noinfo_call.hpp": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613"
+  },
+  "caller_context": "local/goal_oct15_scene_dword_erase_range_preflight_callers.json",
+  "annotation": {
+    "before_comments": "local/goal_oct15_dword_vector_erase_range_before_comments.json",
+    "before_documentation": "local/goal_oct15_dword_vector_erase_range_before_documentation.json",
+    "preserve_prior_values_comments_evidence_correct_library_targets": true,
+    "locked_apply_save": "passed;local/ghidra-annotations-20261015T224743Z.json;old placeholder/name/comments/evidence retained;new behavior hypothesis applied,correct library targets unchanged;project saved",
+    "refreshed_export": "passed;owned address forced after annotation",
+    "readback": "passed;local/goal_oct15_dword_vector_erase_range_after_comments.json;expected name,prior comments and added evidence verified"
+  },
+  "verification": {
+    "project_program_guard": "bsp.py Client.verify every live batch;bsp,/battlestationspacific.exe,x86:LE:32:default,image00400000",
+    "whole_assembly_abi_live_cells_providers_and_bounded_callers": "passed",
+    "live_installed_bytes": "passed;whole90B/37instructions including RET14h",
+    "typed_native_transfers": "passed;4 actual rows (2 own+2 selected incoming) and4 exact Markdown siteclaims;9 citedaddresses;0 failed/unchecked/warnings",
+    "cmake_registration": "passed;unique append at own first queue turn,only own request removed,immediate unleased recheck,no exclusive registry lease",
+    "strict_win32_build_and_existing_ctest": "pending",
+    "compiled_object_review": "pending",
+    "source_file_sha256": {
+      "src/native_scene_dword_erase_range.cpp": "95fada1a5a0b8c7717764c7357372ef10d66c21396818685a4c55f83ff0c3e50",
+      "include/bsp/native_scene_dword_erase_range.hpp": "40b52fccce54daba3b420024dd3deadb30e8684c2e01aaae2c770178f1df0e82"
+    },
+    "new_tests": false,
+    "packet_native_differential": "not run",
+    "game_validation": "not run",
+    "primary_readiness_review": "passed full90B/37ops/live20B-argument and captured/current schedule/proven concrete diagnostic and positive-kernel scout before Source",
+    "diff_check": "passed",
+    "primary_independent_source_review": "passed full37-op native listing and complete Source/header plus accepted positive kernel;owner shortcircuit/current nodes/equal skip/zero-negative end publication/late output/node-before-owner all match;no mismatch or edits;review hashes verified unchanged from d43cf7146b10652bbbc78a2f4a933e03635f7978"
+  },
+  "limits": [
+    "Current concrete CRT/SDK behavior composed,including returning diagnostics and signed-positive movement;no original staticCRT/globalhandler/errno/exception/fault/SEH identity.",
+    "New ordinary Source interface with explicit actual argument cells;valid reached accesses,stable/disjoint binding metadata,no hidden compiler/native frame/argumenthome/spill/async aliases.",
+    "Captured owner/node/control versus current cells retained;no stronger owner==control guard,early output snapshot,equal-path end access or dropped negative end publication.",
+    "Source D90 reuse is not a native edge;no nominal C++ container/ownership or binaryABI/game identity.",
+    "No packet-specific native differential/application/game validation."
+  ]
+}
