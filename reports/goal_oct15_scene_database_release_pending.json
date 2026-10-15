@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_scene_database_release_pending",
+  "source": "src/native_scene_database_release_pending.cpp",
+  "header": "include/bsp/native_scene_database_release_pending.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_DATABASE_RELEASE_PENDING.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "address": "0046bd10",
+      "end_exclusive": "0046be42",
+      "coverage": "complete ordinary Source function; unreachable diagnostic documented",
+      "cpp_symbol": "release_native_scene_database_records_and_pending_0046bd10",
+      "original_abi": "ECX database; plainRET/no semantic result; private12h saved database and actual8h iterator",
+      "instructions": 112,
+      "bytes": "83 ec 0c 8b 41 1c 53 55 8b 28 56 57 8d 79 18 8b f7 89 4c 24 10 89 6c 24 18 89 74 24 14 8d 49 00 85 f6 8b 5f 04 74 04 3b f7 74 05 e8 d3 a9 78 00 3b eb 74 35 85 f6 75 05 e8 c6 a9 78 00 3b 6e 04 75 05 e8 bc a9 78 00 8b 4d 14 85 c9 74 08 8b 11 8b 02 6a 01 ff d0 8d 4c 24 14 e8 11 bc ff ff 8b 6c 24 18 8b 74 24 14 eb b7 8b 74 24 10 8b 5e 28 83 c6 24 3b 5e 08 76 08 e8 86 a9 78 00 8d 49 00 8b 6e 08 39 6e 04 76 05 e8 76 a9 78 00 3b f6 74 05 e8 6d a9 78 00 3b dd 74 27 3b 5e 08 72 05 e8 5f a9 78 00 8b 0b 85 c9 74 08 8b 11 8b 02 6a 01 ff d0 3b 5e 08 72 05 e8 47 a9 78 00 83 c3 04 eb bf 8b 4f 04 8b 51 04 52 8b cf e8 31 ef ff ff 8b 47 04 89 40 04 8b 47 04 c7 47 08 00 00 00 00 89 00 8b 7f 04 89 7f 08 8b 7e 08 39 7e 04 76 05 e8 0f a9 78 00 8b 5e 04 3b 5e 08 76 05 e8 02 a9 78 00 3b df 74 25 8b 46 08 2b c7 c1 f8 02 85 c0 8d 0c 85 00 00 00 00 8d 2c 19 7e 0c 51 57 51 53 e8 73 a9 78 00 83 c4 10 89 6e 08 5f 5e 5d 5b 83 c4 0c c3",
+      "sha256": "0dbf58ad2002ffb019c099c7c7b9ca8c57cba7836585d8166271201e5b928fc1",
+      "live_disk_equal": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0046bd3b",
+      "native": "00bf6713",
+      "function": "0046bd10"
+    },
+    {
+      "address": "0046bd48",
+      "native": "00bf6713",
+      "function": "0046bd10"
+    },
+    {
+      "address": "0046bd52",
+      "native": "00bf6713",
+      "function": "0046bd10"
+    },
+    {
+      "address": "0046bd88",
+      "native": "00bf6713",
+      "function": "0046bd10"
+    },
+    {
+      "address": "0046bd98",
+      "native": "00bf6713",
+      "function": "0046bd10"
+    },
+    {
+      "address": "0046bda1",
+      "native": "00bf6713",
+      "function": "0046bd10",
+      "reachability": "unreachable: CMP ESI,ESI at0046BD9D always takes JZ0046BDA6; Source does not invent this report"
+    },
+    {
+      "address": "0046bdaf",
+      "native": "00bf6713",
+      "function": "0046bd10"
+    },
+    {
+      "address": "0046bdc7",
+      "native": "00bf6713",
+      "function": "0046bd10"
+    },
+    {
+      "address": "0046bdff",
+      "native": "00bf6713",
+      "function": "0046bd10"
+    },
+    {
+      "address": "0046be0c",
+      "native": "00bf6713",
+      "function": "0046bd10"
+    },
+    {
+      "address": "0046bd6a",
+      "native": "00467980",
+      "function": "0046bd10"
+    },
+    {
+      "address": "0046bdda",
+      "native": "0046ad10",
+      "function": "0046bd10"
+    },
+    {
+      "address": "0046be2f",
+      "native": "00bf67a7",
+      "function": "0046bd10"
+    }
+  ],
+  "caller_sites": [
+    {
+      "address": "0046efdf",
+      "native": "0046bd10",
+      "function": "0046efb0"
+    },
+    {
+      "address": "004dac03",
+      "native": "0046bd10",
+      "function": "004da780"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "address": "0046bd64",
+      "function": "0046bd10",
+      "target": "captured object current vtable slot0",
+      "native_abi": "ECX object,stackflag1,RET4;returnedEAX unused",
+      "slot_cleared": false
+    },
+    {
+      "address": "0046bdc0",
+      "function": "0046bd10",
+      "target": "captured object current vtable slot0",
+      "native_abi": "ECX object,stackflag1,RET4;returnedEAX unused",
+      "slot_cleared": false
+    }
+  ],
+  "source_reuse": {
+    "map_clear": "complete46460 Source schedule reused for inlined original AD10+head reset, not a claimed native call to46460",
+    "virtual_calls": "actual current Win32 __thiscall vtable entries; no new callback",
+    "memory_copy": "current real CRT memmove_s; return ignored and captured end published afterward"
+  },
+  "status": "whole_Source_independently_reviewed_default_Win32_and_three_existing_checks_passed",
+  "abi_compatible": false,
+  "game_validated": false,
+  "limits": [
+    "New explicit stable private12B backing/raw pool context; original physical cross-frame aliases and ABI/register residue are not reproduced.",
+    "Current CRT validation/memmove_s/pool/free and callable object vtable domains; no original provider/heap/FH3 identity proof.",
+    "Full wrapped pointer/SAR arithmetic retained after returning handlers; no valid-only narrowing or invented rollback.",
+    "Legacy Seg6Host Source remains separate; no application adoption or gameplay claim.",
+    "Existing regression tests do not execute this body against the original native function."
+  ],
+  "verification": {
+    "combined_build": {
+      "revision": "47b9e46d094d37034026fbf1b249a1a2a6438694",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_erase_combined_build.log",
+      "log_sha256": "10a95fe0188ed538b50a9c4def68edb93313c4bce505ef8de70f9e603f909c70",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 8.32,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "scope": "existing regression checks; no new-body native differential execution",
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "temporary_override_removed": true
+    },
+    "typed_transfer_rows_checked": 15,
+    "typed_transfer_rows_failed": 0,
+    "independent_whole_assembly_review": "passed;/root/string_allocate",
+    "annotation_receipt": "local/ghidra-annotations-20261015T204653Z.json",
+    "export_refreshed": "0046bd10",
+    "new_tests": false
+  }
+}
