@@ -1,0 +1,111 @@
+{
+  "packet": "oct15_lua_cache_tree",
+  "title": "Native Lua cache string range and vector equality",
+  "status": "complete_actual_header_source_build_tested_current_crt_qualified",
+  "source_ready": true,
+  "source": "src/lua_cache_tree_helpers.cpp",
+  "header": "include/bsp/lua_cache_tree_helpers.hpp",
+  "documentation": "docs/OCT15_LUA_CACHE_TREE.md",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Every bsp.py ghidra query calls Client.verify for project/program/language/image base.",
+    "ghidra_mutations": false,
+    "snapshot_total_functions": 76771
+  },
+  "routines": [
+    {
+      "address": "00b6c480",
+      "old_name": "STL_NativeStringRange_Mismatch_00b6c480",
+      "reviewed_name": "STL_NativeStringRange_Mismatch_00b6c480",
+      "name": "mismatch_native_string_range_00b6c480",
+      "body": "00b6c480-00b6c4df",
+      "coverage": "complete",
+      "original_abi": "cdecl; six physical stacked DWORDs (output, first, last, second-first, unused iterator word, unused dispatch word); only first four consumed; EAX=output; plain RET",
+      "behavior": "Traverse 8-byte length/data headers; unequal lengths or nonzero equal lengths with _stricmp!=0 stop; equal zero lengths skip pointers; result writes right+4 then left+0.",
+      "known_callers_read": ["00b6c670", "00b6c7b0"],
+      "host_steps": [
+        {"address": "00b6c4b8", "native": "00bf7fbf", "function": "00b6c480", "host": "current CRT _stricmp", "contract": "Native body read live: VS2005 ASCII/locale branches. Source preserves library boundary, not original CRT locale/error/handler identity; cdecl two args, ADD ESP8 at00b6c4bd."}
+      ]
+    },
+    {
+      "address": "00b6c7b0",
+      "old_name": "FUN_00b6c7b0",
+      "reviewed_name": "STL_NativeStringRange_EqualChecked_00b6c7b0",
+      "name": "equal_native_string_range_00b6c7b0",
+      "body": "00b6c7b0-00b6c815",
+      "coverage": "complete",
+      "original_abi": "cdecl; six stacked DWORDs (first, last, second-owner, second-first, unused last copy, unused dispatch word); AL0/1 only; plain RET; native mismatch output overwrites argument slots3/4",
+      "behavior": "Capture SAR32(last-first,3), report null owner, validate wrapping second endpoint against current end then begin; returning handlers continue; invoke exact mismatch and compare first result to captured last.",
+      "known_callers_read": ["00b6c990"],
+      "host_steps": [
+        {"address": "00b6c7c9", "native": "00bf6713", "function": "00b6c7b0", "host": "invoke_native_invalid_parameter_00bf6713", "contract": "Existing qualified Source CRT adapter; may return; no native handler/EH identity claimed."},
+        {"address": "00b6c7e0", "native": "00bf6713", "function": "00b6c7b0", "host": "invoke_native_invalid_parameter_00bf6713", "contract": "Same returning boundary; endpoint/captured pointers are not normalized or retried."},
+        {"address": "00b6c800", "native": "00b6c480", "function": "00b6c7b0", "host": "mismatch_native_string_range_00b6c480", "contract": "Complete same-packet raw-header mismatch; six words followed by ADD ESP18h at00b6c805."}
+      ]
+    },
+    {
+      "address": "00b6c990",
+      "old_name": "FUN_00b6c990",
+      "reviewed_name": "STL_NativeStringVector_Equal_00b6c990",
+      "name": "equal_native_string_vectors_00b6c990",
+      "body": "00b6c990-00b6ca25",
+      "coverage": "complete",
+      "original_abi": "ECX=left vector owner, EDX=right vector owner; EAX=0/1; no stacked input; plain RET",
+      "behavior": "Compare null-begin-aware SAR3 counts before checks; preserve captured right begin, captured left end and later captured left begin through separate current-bound checks and returning reports; call checked equality.",
+      "known_callers_read": ["00b6d3c0", "00b6d400"],
+      "host_steps": [
+        {"address": "00b6c9c9", "native": "00bf6713", "function": "00b6c990", "host": "invoke_native_invalid_parameter_00bf6713", "contract": "Returning current-CRT report after captured-right-begin versus current-right-end check."},
+        {"address": "00b6c9da", "native": "00bf6713", "function": "00b6c990", "host": "invoke_native_invalid_parameter_00bf6713", "contract": "Returning report after current-left-begin versus captured-left-end check."},
+        {"address": "00b6c9e8", "native": "00bf6713", "function": "00b6c990", "host": "invoke_native_invalid_parameter_00bf6713", "contract": "Returning report after captured-left-begin versus current-left-end check."},
+        {"address": "00b6ca04", "native": "00b6c7b0", "function": "00b6c990", "host": "equal_native_string_range_00b6c7b0", "contract": "Six physical words, ADD ESP18h at00b6ca09; source zeroes dead padding instead of reading indeterminate native local high bytes."}
+      ]
+    }
+  ],
+  "caller_evidence": [
+    {"address": "00b6c697", "native": "00b6c480", "function": "00b6c670", "contract": "Second mismatch caller; complete listing read; six physical words with ADD ESP18h at00b6c69c, only first four consumed."},
+    {"address": "00b6d3c8", "native": "00b6c990", "function": "00b6d3c0", "contract": "ECX input names, EDX0108ff30; AL gates global-cache clear/assign/build."},
+    {"address": "00b6d40c", "native": "00b6c990", "function": "00b6d400", "contract": "ECX input names, EDX cache owner; AL gates instance-cache clear/assign/build."}
+  ],
+  "layout_producers": [
+    {"address": "00432090", "contract": "Producer clears+4/+8/+c, allocates count*8, stores begin/end then capacity; owner+0 untouched."},
+    {"address": "00506c80", "contract": "Cache names assignment writes same16B STL vector representation; distinct from12B NativeStringVectorStorage."},
+    {"address": "0041e870", "contract": "Actual8B string constructor writes recorded length0 and data4; reuses canonical NativeString declaration."}
+  ],
+  "corrections": [
+    {"was": "Historical packet/file label lua_cache_tree", "is": "Contiguous native-string range/vector equality; no tree behavior", "evidence": "8-byte pointer increments at00b6c4c9/00b6c4cc; owner begin/end reads at00b6c998/00b6c9a5; producer00432090."},
+    {"was": "Pseudocode shows four parameters for00b6c7b0 and00b6c480", "is": "Each called with six physical DWORD slots; final two not consumed", "evidence": "00b6c805,00b6ca09,00b6c69c each ADD ESP18h; complete callee listings establish consumed stack subset."},
+    {"was": "Simple generic string-vector equality could appear sufficient", "is": "Length-gated case-insensitive NUL-terminated comparison plus retained validation and callback continuation order", "evidence": "00b6c493..00b6c4c7;00b6c7c5..00b6c7e0;00b6c9c4..00b6ca04."}
+  ],
+  "dependency_readiness": {
+    "00b6c480": "Complete exact helper added under approved extended address lease.",
+    "00bf6713": "Existing actual Source CRT adapter reused, with its documented current-SDK handler-policy limit.",
+    "00bf7fbf": "Established correct library identity preserved; current CRT _stricmp used with explicit VS2005 locale/error/handler-identity qualification.",
+    "00506c80_00432090_0041e870": "Producer/caller evidence only, no new implementation or name changes.",
+    "runtime_cache_host_binding": "Existing LuaScriptCacheServices interface remains unmodified and unbound to new functions by this packet."
+  },
+  "checks": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "exit_code": 0,
+      "log": "local/oct15_lua_cache_tree_build.log",
+      "existing_suites_passed": ["reconstructed_math", "native_math_differential", "tool_tests"],
+      "native_math_differential_scope": "Existing seed references only; these three routines are not covered by native differential tests."
+    },
+    "report_calls": {"json_checked": 11, "documentation_checked": 11, "failed": 0, "documentation_unchecked": 0, "documentation_warnings": 0},
+    "diff_check": "git diff --check and final git diff --cached --check passed",
+    "index": "python tools/bsp.py index --if-stale completed after ledger additions",
+    "new_tests": "none; relevant existing build/CTest checks only"
+  },
+  "limits": {
+    "source": "Complete instruction-path semantics over valid actual backing, with explicit current CRT providers.",
+    "native_stack": "Private two-word result replaces native c7b0 output alias into argument slots; dead dispatch padding initialized; no private caller-frame aliases or exact stack/register/fault addresses.",
+    "exceptions": "No local native EH frame/ownership cleanup in these bodies; source adds no noexcept/noreturn, rollback, conversion or native CRT/SEH identity.",
+    "native_differential": false,
+    "abi_compatible": false,
+    "production_cache_binding": false,
+    "game_validated": false
+  }
+}
