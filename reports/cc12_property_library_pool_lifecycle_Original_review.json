@@ -1,0 +1,72 @@
+{
+  "schema": "cc12_property_library_node_pool_Original_lifecycle_v1",
+  "utc": "2026-10-15T02:43:26.969545+00:00",
+  "decision": "Selected E17540 lifecycle is established for ordinary Source reconstruction.",
+  "selected": [
+    {
+      "address": "00cc8a70",
+      "end_exclusive": "00cc8a86",
+      "bytes": 22,
+      "instructions": 6,
+      "hex": "b94075e100e8d68574ff687092cd00e871e5f2ff59c3",
+      "normal": "No arguments. Select actualE17540, whole00411050, then realatexitBF6FF5 forCD9270; return registrationEAX without rollback/onceguard."
+    },
+    {
+      "address": "00cd9270",
+      "end_exclusive": "00cd927a",
+      "bytes": 10,
+      "instructions": 2,
+      "hex": "b94075e100e9e67773ff",
+      "normal": "No arguments. Select SAMEE17540; tail whole00410A60; same canonicalE188B4 list and payload-before-pages lifetime."
+    }
+  ],
+  "live_disk_equal": true,
+  "repair": {
+    "launch": "011fe8/session5598",
+    "terminal": "ab268c/exit0",
+    "old_state": "Instructions existed at all four xrefs but no function at or containing selectedentries (c30d11/739a9b/8085aa). No existing functions/comments removed.",
+    "write_lock": true,
+    "save": true,
+    "record": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\PropertyLibraryPoolLifecycleOriginal01\\defined_functions.DATA.json",
+      "bytes": 2054,
+      "sha256": "b1a958b17d84152fb7500d119498211fbf8160da1ed88ba55803f245915eb6d4"
+    }
+  },
+  "annotation": {
+    "terminal": "559c5f/exit0",
+    "old_values": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\ghidra-annotations-20261015T024234Z.json",
+      "bytes": 1569,
+      "sha256": "b011a1256fd6af3deaa60d37fe28600f76293c33f0604d7d20524c4146bd352c"
+    },
+    "save": true,
+    "export_terminal": "681d8f/exit0",
+    "proto_terminal": "50321b/exit0"
+  },
+  "exports": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00cc8a70\\assembly.txt",
+      "bytes": 141,
+      "sha256": "2a89406665a253c5d5c39d6e8d8f4817f99e56d4aac3fcfa923d13155a5adcec"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00cd9270\\assembly.txt",
+      "bytes": 54,
+      "sha256": "f3cc33c30f6f1107a25193446619f87980c6b773103f358cfb693f5e497fa8ec"
+    }
+  ],
+  "aliases": "CD9F60 and CDEB50 raw10B identical MOVECX/E17540/JMP00410A60; no function repair/registration-context expansion/Source callback admission for these aliases.",
+  "owner_contract": "Distinct38h owner,14h slots; existing CE37A4 trim,00411050 constructor,00410A60 destructor, same E188B4 list; never E175B0/E175E8 substitution.",
+  "limits": [
+    "New Source interfaces and current successful ordinary provider domain only.",
+    "No repeated startup/registration, alias callback schedule, Original ABI/EH/OOM/privateCRT/class/game proof."
+  ],
+  "snapshot": {
+    "actual_terminal": "d60708/exit0",
+    "previous_function_count": 76767,
+    "function_count": 76769,
+    "selected_new_functions": 2,
+    "index_rebuilt": true
+  }
+}
