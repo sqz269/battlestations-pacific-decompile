@@ -94,6 +94,15 @@ and refreshes the affected export. No game installation changes are made.
 Verification results are recorded in
 `reports/goal_oct15_native_string_erase.json`. Compilation and existing suite
 results do not establish native execution, binary ABI, visual or game behavior.
+The primary combined `scripts/build.ps1` run at
+`ff5b6fb1a6350c36224f1f53e3bbcbf6c01deb5a` contains the exact reviewed Source
+draft `0d3b8598d` and passed all three existing CTests (`reconstructed_math`,
+`native_math_differential`, `tool_tests`; 8.07 seconds). Its log was inspected.
+The fresh worker build also linked `bsp_core.lib` and `bsp_game.exe`, then passed
+`reconstructed_math`; the primary requested cancellation during the final tool
+suite after the combined pass. No full worker-script or worker-suite pass is
+claimed. The passing existing native differential suite covers existing math,
+and does not provide a dedicated native execution check of this erase body.
 No new tests are added. Source omits only the accepted zero-byte CRT copy while
 retaining all header reads, inherits actual pool/manager/current-CRT provider
 limits, and does not reproduce private stack aliasing, instruction fault
