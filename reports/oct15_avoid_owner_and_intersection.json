@@ -1,0 +1,72 @@
+{
+  "packet": "oct15_avoid_owner_and_intersection",
+  "worker": "agent/oct15_avoid_distance",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "source": "src/avoid_zone_pointer_and_intersection.cpp",
+  "header": "include/bsp/avoid_zone_pointer_and_intersection.hpp",
+  "documentation": "docs/OCT15_AVOID_OWNER_AND_INTERSECTION.md",
+  "routines": [
+    {
+      "address": "0041c490",
+      "body_end_inclusive": "0041c4c7",
+      "coverage": "complete",
+      "implementation": "avoid_zone_owner_destroy_0041c490",
+      "proposed_name": "BSP_AvoidZoneOwner_DestroyAndNull",
+      "previous_live_name": "FUN_0041c490",
+      "original_abi": "ECX owner-cell address; no stack arguments; RET at0041c4c7",
+      "binding": "Exact existing0041a1e0 for counted records and pointer buffer, then separate actual00bf65ac callback for object allocation and owner-cell null.",
+      "preconditions": "Valid actual owned zone/records/buffer/object with matching frees; owner cell remains writable through object free and final null, outside all freed allocations; no concurrent mutation/callback invalidation. Opaque-prefix copy does not establish safe ownership.",
+      "flow_gaps": []
+    },
+    {
+      "address": "0041a4e0",
+      "body_end_inclusive": "0041a532",
+      "coverage": "complete",
+      "implementation": "segment_intersection_optional_point_0041a4e0",
+      "proposed_name": "BSP_Segment2f_IntersectionOptionalPoint",
+      "previous_live_name": "FUN_0041a4e0",
+      "original_abi": "fastcall ECX out, EDX a0; stack a1,b0,b1; EAX out; RET0Ch at0041a525/0041a530",
+      "binding": "Existing exact native_segment_crossing_004f3730 with separate local float2 result; existing Cc13AvoidZoneOptionalVector output layout.",
+      "writes": "Hit: MOVSS representation copies x,z, then valid=1. Miss: only valid=0. Three padding bytes always unchanged. Return output identity.",
+      "aliasing": "Endpoint pairs may overlap each other and output; all reads occur in crossing call before wrapper writes. Endpoints readable/stable, output writable.",
+      "flow_gaps": []
+    }
+  ],
+  "host_steps": [
+    {"address":"0041c49c","native":"004167c0","function":"0041c490","contract":"complete_body_previously_read","binding":"semantic composition through exact avoid_zone_destroy_owned_storage_0041a1e0"},
+    {"address":"0041c4a8","native":"00bf6989","function":"0041c490","contract":"returning_free_thunks_and_body_previously_read","role":"pointer_buffer","arguments":"captured object's nonnull buffer; ADD ESP,4; buffer pointer zero afterward"},
+    {"address":"0041c4b7","native":"00bf65ac","function":"0041c490","contract":"returning_free_thunk_and_body_previously_read","role":"zone_object","arguments":"captured zone allocation, distinct from records/buffer; ADD ESP,4; owner cell zero afterward"},
+    {"address":"0041a4fd","native":"004f3730","function":"0041a4e0","contract":"complete_body_previously_read","binding":"native_segment_crossing_004f3730","arguments":"ECX a0, EDX a1; stack b0,b1,local_result; RET0Ch"}
+  ],
+  "layout_evidence": {
+    "zone": "Existing AvoidZoneNativeStorage/record types; concrete0041ccd0 producer header/bounds/24h record stores previously read; exact0041a1e0 complete listing/source contract identical to C490 inlined cleanup.",
+    "optional_point": "Existing Cc13AvoidZoneOptionalVector size0Ch; complete producer0041b290 coordinate/valid stores read this packet; x0,z4,valid8,padding9..Bh asserted/reused."
+  },
+  "corrections": [
+    {
+      "was": "0041a4e0 pseudocode shows __thiscall with apparent unused first stack argument and no live EDX endpoint.",
+      "is": "Actual fastcall ECX output, EDX a0, stacked a1,b0,b1, EAX output, RET0Ch; first stacked slot feeds a1.",
+      "evidence": "Full listing and raw installed.text0041a4e0..0041a501: A4E6 EDX->EAX; frame-adjusted A4E8 b1, A4F1 b0, A4F6 a1; A4FB a0->ECX; A4FD native crossing call."
+    }
+  ],
+  "observations": [
+    "Complete listings:22/28 instructions, zero gaps and explicit returns; no no-return repair made. No known live callers or preexisting implementations.",
+    "Owner null path skips every free and write; nonnull captures object before calls and clears owner only after object free returns.",
+    "Record, pointer-buffer and object lifetimes remain separate; exact destructor composition preserves capacity/trailing metadata until object free.",
+    "Intersection result uses a local producer; exact MOVSS bit copies preserve result representation without an extra x87 conversion.",
+    "Optional-point miss preserves coordinate bytes; all paths preserve three padding bytes; raw input pointers retain proven output alias behavior.",
+    "Only callee performs floating arithmetic/NaN/degenerate crossing decisions; wrapper adds no repair or replacement policy."
+  ],
+  "validation": {
+    "win32_build_and_existing_ctest": "pass: full ./scripts/build.ps1; reconstructed_math, native_math_differential, tool_tests all3/3 passed,7.11 test seconds; existing seeds do not cover these new routines",
+    "build_log": "local/oct15_avoid_owner_and_intersection_build.log",
+    "verify_report_calls": "pass: 4 direct call rows checked,0 failed",
+    "git_diff_check": "pass",
+    "new_tests": 0,
+    "native_differential_fixture": false,
+    "abi_compatible": false,
+    "game_validated": false
+  }
+}
