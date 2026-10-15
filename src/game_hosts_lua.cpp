@@ -16,6 +16,7 @@
 #include "bsp/game_hosts_mission_frame.hpp"
 
 #include "bsp/air_operations.hpp"
+#include "bsp/mothership_failure.hpp"
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/bullet_engagement_range.hpp"  // packet cc9_ai_plane_loadout_arm
 #include "bsp/objective_units.hpp"
@@ -7550,7 +7551,21 @@ int GameMissionLuaHost::run_set_failure_0088eff0(lua_State* state, int argument_
     }
     const std::size_t index = static_cast<std::size_t>(id - 1);
     int arm = 0;
-    if (units->unit_is_kind_of(index, kFailureShipKindOfClassId)) {
+    // Packet p11_carrier_runway_failure (bsp/mothership_failure.hpp): the
+    // mothership's +194h 00758750 takes the two air-ops names before 008132C0;
+    // the duration is not read. Arms 10 / 11.
+    const bsp::MothershipFailureArm carrier_arm = bsp::kCarrierRunwayFailureBound
+        && units->unit_is_kind_of(index, bsp::kMothershipKindOfClassId)
+        ? bsp::mothership_failure_arm(name) : bsp::MothershipFailureArm::none;
+    if (carrier_arm != bsp::MothershipFailureArm::none) {
+        bsp::AirOpsDeck* deck = bsp::air_ops_decks().find_mutable_by_entity_id(id);
+        bsp::mothership_apply_failure_message(deck, carrier_arm, true);
+        arm = carrier_arm == bsp::MothershipFailureArm::runway ? 10 : 11;
+        log_.notef("  SetFailure 0088eff0: mothership 00758750 %s on deck=%s "
+            "(packet p11_carrier_runway_failure)",
+            carrier_arm == bsp::MothershipFailureArm::runway ? "72h runway" : "74h hangar",
+            deck != nullptr ? "yes" : "none");
+    } else if (units->unit_is_kind_of(index, kFailureShipKindOfClassId)) {
         // 0093BD80: more than two arguments and argument 2 a number, else 1e10.
         const float seconds = argument_count >= 3 && ::lua_type(state, 3) == LUA_TNUMBER
             ? static_cast<float>(::lua_tonumber(state, 3)) : 1e10f;
