@@ -1,6 +1,6 @@
 {
   "packet": "goal_oct15_primary_review",
-  "status": "combined_source_build_and_three_existing_checks_passed_finalizing_integration",
+  "status": "reviewed_complete_source_strict_win32_build_and_three_existing_checks_passed",
   "target_project": "C:/Users/sqz269/bsp.gpr",
   "target_program": "/battlestationspacific.exe",
   "workers": [
@@ -12,7 +12,8 @@
       "review": "Source compared to full original listing; raw header/copy/release order and current count decrement match.",
       "source_revision": "0d3b8598d",
       "call_rows_checked": 5,
-      "call_rows_failed": 0
+      "call_rows_failed": 0,
+      "validation_revision": "be0e9f3f1"
     },
     {
       "branch": "agent/goal_oct15_allocate",
@@ -22,7 +23,8 @@
       "review": "Source compared to full original listing; concrete getter before wrapped length increment and actual allocator composition match.",
       "source_revision": "7d509c1bd90157746243c1e884b3a7c17abea46c",
       "call_rows_checked": 2,
-      "call_rows_failed": 0
+      "call_rows_failed": 0,
+      "validation_revision": "0765705bce6fc0bd2a4a5fcba1876bf26fba12c6"
     },
     {
       "branch": "agent/goal_oct15_copy",
@@ -33,7 +35,12 @@
       "review": "Source/header compared to complete original listings and accepted raw00426060 helper. Header initialization and current-field reloads match; scalar is read late through explicit FLD/FSTP, including identity. Current explicit Source context/CRT/EH qualifications retained.",
       "source_revision": "246ac8ae719841398f5007b797684ab32a0b33f6",
       "call_rows_checked": 4,
-      "call_rows_failed": 0
+      "call_rows_failed": 0,
+      "validation_revision": "16e4d5f747a6b8d3e473d0f2fb840b40e02a4574",
+      "compiled_x87_checked": true,
+      "compiled_x87_receipt": "local/goal_oct15_copy_disasm.txt",
+      "compiled_x87_receipt_sha256": "9881ff300029bed5ae96d1287b62055f1edd8f827ac88d09a950280e0280d3cf",
+      "compiled_x87": "Both public wrappers contain D900 FLD / D91A FSTP after the raw-header call; same pair also exists in local helper. Matches worker object inspection."
     }
   ],
   "primary": {
@@ -55,8 +62,6 @@
       "native_math_differential",
       "tool_tests"
     ],
-    "main_revision": null,
-    "pushed": false,
     "build_source_revision": "ff5b6fb1a6350c36224f1f53e3bbcbf6c01deb5a",
     "build_log": "local/goal_oct15_combined_build.log",
     "build_command": "scripts/build.ps1",
@@ -86,7 +91,25 @@
         "Hash": "6922EC81BD02A8713A9F38391F34649F8751A12D5325CA31C73642F00BA5E2C5",
         "Path": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\build\\win32\\bsp_core.dir\\Release\\native_vfs_remove_content.obj"
       }
-    ]
+    ],
+    "refresh_build_after_numeric_main": {
+      "source_revision": "3664d2b44b4d34b639a094d50b76a9a14db9fa75",
+      "log": "local/goal_oct15_final_build.log",
+      "log_sha256": "2d5076b9485222c473f5ff992c9c09ab5f69c48889cc4aadbb6df85ffd62d1af",
+      "build": "pass",
+      "existing_ctests_passed": 3,
+      "tests_seconds": 7.86
+    },
+    "concurrent_main_refresh": {
+      "source_revision": "d946a7324",
+      "reason": "Another harness advanced main with independent pool/zone functions before fast-forward. Registry union resolved with merge_resolve.py; rerun required.",
+      "log": "local/goal_oct15_final_main_build.log",
+      "build": "pass",
+      "existing_ctests_passed": 3,
+      "tests_seconds": 8.55,
+      "log_sha256": "32432df158a4921f5c7fa780b1fd282a0979bfe1c4183b6a083312fc50e4f1fa"
+    },
+    "worker_validation_commits_merged": true
   },
   "limits": [
     "New explicit-context Source interfaces; original stack/register/privateCRT/EH identity unestablished.",
