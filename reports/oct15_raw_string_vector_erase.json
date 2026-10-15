@@ -1,0 +1,389 @@
+{
+  "packet": "oct15_raw_string_vector_erase",
+  "status": "complete_actual_raw_pool_erase_and_clear_build_tested_qualified_interfaces",
+  "source_ready": true,
+  "source": "src/native_string_vector_erase.cpp",
+  "header": "include/bsp/native_string_vector_erase.hpp",
+  "documentation": "docs/OCT15_RAW_STRING_VECTOR_ERASE.md",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Every bsp.py ghidra query verifies project/program/language/image base through its client.",
+    "ghidra_mutations": false
+  },
+  "routines": [
+    {
+      "address": "004954f0",
+      "old_name": "STL_CheckedNativeStringVector_EraseRange_004954f0",
+      "reviewed_name": "STL_CheckedNativeStringVector_EraseRange_004954f0",
+      "name": "erase_native_string_header_vector_range_004954f0",
+      "body": "004954f0-0049556d",
+      "coverage": "complete with inherited provider and private-frame qualifications",
+      "original_abi": "ECX actual10h header; EDX unused; stack output/first-owner/first/last-owner/last; RET14h; EAX output. Source retains those inputs and adds actual raw-pool context.",
+      "validation": "Capture first-owner; report only null first-owner or unequal owners; returning report continues. Receiver need not equal iterator owner; no bounds/capacity/null-header/alignment checks added.",
+      "empty": "Validate and write output owner+0 then first+4; no header+8 read/copy/destruction/end publication.",
+      "nonempty": "Capture header+8 before suffix assignment; use captured last/end/first; reload CURRENT header+8 after copy for destruction; compute wrapping newend=first+SAR32(captured_end-last,3)*8; destroy trailing range, publish captured newend, then ordered output pair.",
+      "host_steps": [
+        {
+          "address": "00495505",
+          "native": "00bf6713",
+          "function": "004954f0",
+          "host": "invoke_native_invalid_parameter_00bf6713",
+          "contract": "Existing current-SDK zero-info report boundary; body/header inspected in retained context; may return; no native encoded-handler/Watson/FH3 identity."
+        },
+        {
+          "address": "00495535",
+          "native": "0048da50",
+          "function": "004954f0",
+          "host": "assign_native_string_header_range_0048da50",
+          "contract": "Newly accepted exact actual-pool range source; suffix last..captured end onto captured first; six physical words, unused output/header-low0/last-owner-low0; ADD ESP18h at00495543; child EAX ignored."
+        },
+        {
+          "address": "00495551",
+          "native": "00432050",
+          "function": "004954f0",
+          "host": "destroy_native_string_header_range_00432050",
+          "contract": "Existing complete actual-header/raw-pool destruction; newend..CURRENT header-end captured after assignment; native two unused header/output stack words, RET8; publish newend only after normal return."
+        }
+      ],
+      "local_eh": "No local catch/cleanup/rollback; provider exceptions escape before later publication/output."
+    },
+    {
+      "address": "00498ff0",
+      "old_name": "STL_inst_00498ff0",
+      "reviewed_name": "STL_CheckedNativeStringVector_Clear_00498ff0",
+      "name": "clear_native_string_header_vector_00498ff0",
+      "body": "00498ff0-00499028",
+      "coverage": "complete with inherited provider and private-result qualifications",
+      "original_abi": "ECX header, no meaningful EDX or stacked input, plain RET, no semantic result. Source additionally receives actual raw-pool context in EDX.",
+      "schedule": "Capture oldend; compare current begin with captured oldend, report/continue; capture current begin; compare captured begin with fresh current end, report/continue; delegate exact erase with both owners=header and captured endpoints plus private two-DWORD output.",
+      "host_steps": [
+        {
+          "address": "00499000",
+          "native": "00bf6713",
+          "function": "00498ff0",
+          "host": "invoke_native_invalid_parameter_00bf6713",
+          "contract": "Returning report after current begin versus captured oldend; preserve captured oldend."
+        },
+        {
+          "address": "0049900d",
+          "native": "00bf6713",
+          "function": "00498ff0",
+          "host": "invoke_native_invalid_parameter_00bf6713",
+          "contract": "Returning second report after captured begin versus CURRENT end; preserve captured begin and oldend."
+        },
+        {
+          "address": "0049901d",
+          "native": "004954f0",
+          "function": "00498ff0",
+          "host": "erase_native_string_header_vector_range_004954f0",
+          "contract": "Exact same-packet actual raw-pool erase; five original stacked words, child RET14h; native unused EDX has no logical role, Source supplies0; private two-DWORD output, no backing free."
+        }
+      ],
+      "local_eh": "No local catch/cleanup/rollback; ordinary provider exceptions propagate."
+    }
+  ],
+  "caller_evidence": [
+    {
+      "address": "006a7d32",
+      "native": "004954f0",
+      "function": "006a7be0",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "0049e103",
+      "native": "004954f0",
+      "function": "0049e050",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "006b9501",
+      "native": "004954f0",
+      "function": "006b9450",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "007fdd3f",
+      "native": "004954f0",
+      "function": "007fdb20",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "0053294e",
+      "native": "004954f0",
+      "function": "00532360",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "0050e995",
+      "native": "004954f0",
+      "function": "0050e3c0",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "0050a867",
+      "native": "004954f0",
+      "function": "0050a820",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "006279e2",
+      "native": "004954f0",
+      "function": "00627960",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "00627a28",
+      "native": "004954f0",
+      "function": "00627960",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "00627a71",
+      "native": "004954f0",
+      "function": "00627960",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "00627baa",
+      "native": "004954f0",
+      "function": "00627960",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "00627bf0",
+      "native": "004954f0",
+      "function": "00627960",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "00627c37",
+      "native": "004954f0",
+      "function": "00627960",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "00b6cff0",
+      "native": "004954f0",
+      "function": "00b6cf90",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "0049fd1e",
+      "native": "004954f0",
+      "function": "0049fc80",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "0049fd50",
+      "native": "004954f0",
+      "function": "0049fc80",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "0049fd95",
+      "native": "004954f0",
+      "function": "0049fc80",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "006269e8",
+      "native": "004954f0",
+      "function": "00626930",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "00626a31",
+      "native": "004954f0",
+      "function": "00626930",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "00626a77",
+      "native": "004954f0",
+      "function": "00626930",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "00626bb0",
+      "native": "004954f0",
+      "function": "00626930",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "00626bf9",
+      "native": "004954f0",
+      "function": "00626930",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "00626c3f",
+      "native": "004954f0",
+      "function": "00626930",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "005c58b3",
+      "native": "004954f0",
+      "function": "005c5860",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "00629e01",
+      "native": "004954f0",
+      "function": "00629d10",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "008ec817",
+      "native": "004954f0",
+      "function": "008ec650",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "007fe1dc",
+      "native": "004954f0",
+      "function": "007fdf00",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "00a9e58c",
+      "native": "004954f0",
+      "function": "00a9e400",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "00aa06b1",
+      "native": "004954f0",
+      "function": "00aa0680",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "00b6d0f8",
+      "native": "004954f0",
+      "function": "00b6d0a0",
+      "contract": "Five stacked pointer words and receiver setup inspected through bounded exact instruction-context; no extra receiver/owner equality or bounds rule inferred."
+    },
+    {
+      "address": "00506ca5",
+      "native": "00498ff0",
+      "function": "00506c80",
+      "contract": "ECX actual vector owner, no logical EDX or stacked input; exact clear argument setup read."
+    },
+    {
+      "address": "00910649",
+      "native": "00498ff0",
+      "function": "009105f0",
+      "contract": "ECX actual vector owner, no logical EDX or stacked input; exact clear argument setup read."
+    },
+    {
+      "address": "00910653",
+      "native": "00498ff0",
+      "function": "009105f0",
+      "contract": "ECX actual vector owner, no logical EDX or stacked input; exact clear argument setup read."
+    },
+    {
+      "address": "0091065d",
+      "native": "00498ff0",
+      "function": "009105f0",
+      "contract": "ECX actual vector owner, no logical EDX or stacked input; exact clear argument setup read."
+    }
+  ],
+  "caller_coverage": {
+    "erase_direct_sites": 31,
+    "erase_caller_functions": 19,
+    "clear_direct_sites": 4,
+    "clear_caller_functions": 2,
+    "all_known_direct_setups_reviewed": true,
+    "erase_inventory": [
+      "006a7be0",
+      "0049e050",
+      "006b9450",
+      "007fdb20",
+      "00532360",
+      "0050e3c0",
+      "0050a820",
+      "00627960",
+      "00b6cf90",
+      "0049fc80",
+      "00626930",
+      "005c5860",
+      "00629d10",
+      "008ec650",
+      "007fdf00",
+      "00a9e400",
+      "00aa0680",
+      "00b6d0a0",
+      "00498ff0"
+    ],
+    "evidence": "Full owned listings retained in context; live proto/function-containment checks and xrefs limit100; two bounded12-instruction contexts plus28 bounded24-instruction contexts; own clear listing; all4 clear sites inspected.",
+    "local_receipts": [
+      "local/oct15_raw_erase_context_probe.json",
+      "local/oct15_raw_erase_caller_contexts.json"
+    ],
+    "scope": "Known direct calls only; no claim about unknown indirect calls or production source binding."
+  },
+  "preserved_fragment": {
+    "address": "004954f0",
+    "kind": "fragment",
+    "name": "erase_checked_native_string_storage",
+    "source": "src/native_checked_string_storage.cpp",
+    "status": "actual_storage_contract_integrated_settings_strict_win32_native_differential_passed",
+    "action": "unchanged; separate new actual-pool function/name/file/record, not replacement"
+  },
+  "dependency_readiness": {
+    "0048da50": "Accepted complete actual-header/raw-pool assignment from preceding packet, directly reused with all six physical words.",
+    "00432050": "Existing complete actual-header/raw-pool destructor reused, current419cc0/bd1510 domain.",
+    "00bf6713": "Existing qualified current-CRT invalid_parameter_noinfo adapter reused directly; returning continuation retained.",
+    "00506c80": "Actual erase/clear dependency closed only; vector assignment and remaining Buy/throw service remain incomplete and are not implemented here."
+  },
+  "aliases_and_reloads": {
+    "actual_header": "Opaque+0,begin+4,end+8,capacity+c; actual8h pooled-string elements. Existing producer00432090 and canonical NativeString establish layout.",
+    "pair": "Output owner word first, first-pointer word second, both AFTER nonempty header-end publication. Output may alias actual header/data and overwrite the just-published end; no header reads follow the pair stores.",
+    "captures": "Copy uses captured pre-copy end; destruction uses post-copy CURRENT header end; computed newend survives destruction. Clear preserves its pre-report oldend and later captured begin.",
+    "unused_child_words": "Erase assignment physical word4=output; word5=initial receiver bits with low byte0; word6=last-owner bits with low byte0. All unused by accepted core.",
+    "private_frame": "Native argument slots are reread after report/copy/destruction; Source by-value pointers do not expose mutation of those private slots or aliases into compiler frames. External header/data/output alias order is retained."
+  },
+  "corrections": [
+    {
+      "was": "Pseudocode extraout_EDX suggests a second clear input",
+      "is": "EDX is not a logical input; clear uses only its ECX header and five explicitly pushed erase words",
+      "evidence": "Full00498ff0..00499028 listing;00499012..0049901d pushes five words; owned erase never consumes incoming EDX."
+    },
+    {
+      "was": "Erase/clear might be reduced to end=begin or an iterator model",
+      "is": "Returning reports, captured oldend/current begin, suffix assignment, post-copy end reload, destruction then end/output store order",
+      "evidence": "004954f8..00495568 and00498ff7..0049901d; all known direct argument setups."
+    }
+  ],
+  "checks": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "exit_code": 0,
+      "log": "local/oct15_raw_string_vector_erase_build.log",
+      "existing_suites_passed": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "native_math_differential_scope": "Existing seeds only; no new-function native differential probe."
+    },
+    "report_calls": {"json_checked": 40, "documentation_checked": 40, "failed": 0, "documentation_unchecked": 0, "documentation_warnings": 0},
+    "diff_check": "git diff --check and final git diff --cached --check passed",
+    "index": "python tools/bsp.py index --if-stale completed after owned ledger additions",
+    "new_tests": "none; full owned/callee evidence and all known direct call setups plus existing checks",
+    "existing_build_warning": "Previously recorded LNK4006 duplicate spawn_request_id_matches remains in unrelated existing source."
+  },
+  "limits": {
+    "actual_source": "Complete actual-pool composition over valid taken backing and accepted provider policies.",
+    "zero_copy": "Inherited accepted range-assignment/raw-resize zero-byte copy omission.",
+    "private_abi": "Additional context/private result/by-value pointers qualify original entry, native stack-slot aliases, CRT/FH3/SEH/fault identity; no synthetic iterator or arbitrary provider callback.",
+    "native_differential_for_new_functions": false,
+    "original_abi_compatible": false,
+    "vector_assignment_reconstructed": false,
+    "runtime_cache_binding": false,
+    "game_validated": false
+  }
+}
