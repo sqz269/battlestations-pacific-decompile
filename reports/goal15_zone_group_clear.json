@@ -1,0 +1,73 @@
+{
+  "schema": "bsp.goal15.zone_group_clear.v1",
+  "packet": "goal15_zone_cleanup",
+  "status": "complete_reconstruction_focused_msvc_win32_compile_and_call_checks_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "base_commit": "09432cdf3",
+  "owned_addresses": ["0041ded0"],
+  "outputs": [
+    "include/bsp/native_zone_group_clear.hpp",
+    "src/native_zone_group_clear.cpp",
+    "docs/GOAL15_ZONE_GROUP_CLEAR.md",
+    "reports/goal15_zone_group_clear.json"
+  ],
+  "routines": [{
+    "address": "0041ded0",
+    "name": "BSP_AvoidZoneRegistry_ClearLayers",
+    "source": "src/native_zone_group_clear.cpp",
+    "entry": "native_avoid_zone_registry_clear_layers_0041ded0",
+    "body": "0041ded0-0041df34",
+    "coverage": "complete",
+    "abi": "ECX registry, no stack arguments, plain RET; no defined result; own EDI/ESI saved and restored",
+    "interface": "new C++ host interface, not original ABI",
+    "schema": "Cc13AvoidZoneRegistryNative, Cc13TerrainGridLayerListNode and Cc13TerrainGridLayerNative from cc13_avoid1.hpp"
+  }],
+  "host_steps": [
+    {"address": "0041dee9", "native": "00bf6713", "function": "0041ded0", "method": "invalid_parameter_00bf6713", "contract": "body read; void cdecl wrapper can return"},
+    {"address": "0041defb", "native": "layer+vtable00", "function": "0041ded0", "method": "scalar_delete_layer_vtable_0", "contract": "ECX payload, pushed flags 1; dynamic dispatch; normal producer vtable selects 0041f640, body read"},
+    {"address": "0041df06", "native": "00bf6713", "function": "0041ded0", "method": "invalid_parameter_00bf6713", "contract": "second report after callback/head reload; may return before the third comparison"},
+    {"address": "0041df20", "native": "00bf65ac", "function": "0041ded0", "method": "free_list_node_00bf65ac", "contract": "actual matching CRT free; pointer stack argument; ADD ESP,4 at 0041df25"}
+  ],
+  "consumer_calls": [
+    {"address": "0041f0fb", "native": "0041ded0", "function": "0041f0d0", "contract": "registry destruction before separate list tidy"},
+    {"address": "004248c1", "native": "0041ded0", "function": "004248a0", "contract": "registry stream reload before reading replacement layers"}
+  ],
+  "supporting_calls": [
+    {"address": "0042492f", "native": "004239e0", "function": "004248a0", "contract": "deserialize produced 28h terrain-grid layer"},
+    {"address": "0042494f", "native": "0041c1f0", "function": "004248a0", "contract": "node producer body read: next/previous/value at +0/+4/+8 in 0ch node"},
+    {"address": "0041f651", "native": "00bf65ac", "function": "0041f640", "contract": "normal payload destructor releases non-null grid pointer"},
+    {"address": "0041f676", "native": "00bf65ac", "function": "0041f640", "contract": "normal payload destructor releases self for flags&1"},
+    {"address": "00bf65ac", "native": "00bf9dc8", "function": "00bf65ac", "kind": "tail_jump", "contract": "retain correct library name _free"},
+    {"address": "00bf671a", "native": "00bf66ef", "function": "00bf6713", "contract": "invalid report wrapper has normal RET after ADD ESP,14h"}
+  ],
+  "evidence": [
+    {"span": "0041ded0-0041df34", "kind": "live prototype, exported pseudocode and complete assembly", "conclusion": "complete owning-list deletion/unlink/count schedule; no stack input"},
+    {"span": "0041defd-0041df0e", "kind": "complete assembly", "conclusion": "reload sentinel/front after virtual destruction, then two checks separated by possibly returning invalid service"},
+    {"span": "0041bfd0", "kind": "live producer pseudocode", "conclusion": "0ch sentinel self-links without initializing payload slot"},
+    {"span": "0041c1f0", "kind": "live producer pseudocode", "conclusion": "0ch node fields written next, previous, payload"},
+    {"span": "004248a0-004249b2", "kind": "live producer pseudocode and complete assembly", "conclusion": "stream loader clears registry, constructs 28h vtable 00ce38cc layers, deserializes and appends them"},
+    {"span": "0041f640-0041f681", "kind": "live pseudocode and complete assembly", "conclusion": "normal layer scalar-delete implementation releases grid then self for flags&1; RET4"},
+    {"span": "00bf6713-00bf6722", "kind": "exported pseudocode and live complete assembly", "conclusion": "invalid-parameter wrapper plain RET, no unconditional noreturn assumption"}
+  ],
+  "corrections": [
+    {"was": "initial zone-group clear packet label", "is": "avoid-zone registry terrain-grid-layer list clear", "evidence": "existing cc13 schema plus 004248a0 payload producer and 0041f640 destructor"},
+    {"was": "cc13_avoid1.hpp existing host comment requires invalid_parameter_00bf6713 not to return", "is": "new helper permits return and preserves native continuation; shared comment not edited", "evidence": "00bf6722 RET and native_invalid_parameter_noinfo_call.hpp qualified return contract"}
+  ],
+  "validation": {
+    "call_site_check": "PASS: 11 report call rows and 2 markdown call claims, zero failures or warnings; dynamic vtable dispatch excluded from direct-call checks",
+    "focused_compile": "PASS: MSVC x86 cl /std:c++17 /EHsc /W4 /c /Iinclude src/native_zone_group_clear.cpp; zero warnings; local/goal15_zone_cleanup/native_zone_group_clear.obj",
+    "full_registered_build": "primary integrator responsibility after source registration",
+    "new_tests": 0,
+    "ghidra_mutations": 0,
+    "runtime_tested": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "limits": [
+    "Host must dispatch actual payload vtable and preserve matching allocator/free semantics.",
+    "Callback list mutation order is preserved; caller/host must preserve native pointer lifetime preconditions.",
+    "Returning invalid handlers retain native unchecked malformed-state consequences.",
+    "Complete source reconstruction does not establish game runtime equivalence or original ABI compatibility."
+  ]
+}
