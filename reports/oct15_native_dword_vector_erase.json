@@ -71,8 +71,73 @@
     "include/bsp/native_dword_vector_erase.hpp": "5443ed62d1b45c0d1db42485230621620f230678980e39f23a27d20f83fda463"
   },
   "actual_diagnostic": "invoke_native_invalid_parameter_00bf6713; accepted currentSDK returning/throwing policy, not nativeCRT/Watson identity",
-  "build": "pending",
-  "independent_source_review": "pending",
+  "build": {
+    "tested_commit": "dc431000048ce895c863dac22d422045bdab7509",
+    "command": "./scripts/build.ps1",
+    "platform": "MSVC Win32",
+    "existing_suites_passed": 3,
+    "existing_suites_total": 3,
+    "seconds": 7.61,
+    "log": "local/oct15_seventeenth_initial_build.log",
+    "new_native_execution_claimed": false
+  },
+  "transfer_validation": {
+    "report_claims_passed": 5,
+    "markdown_claims_passed": 5,
+    "failed_or_unchecked": 0,
+    "combined_log": "local/oct15_seventeenth_initial_transfers.log"
+  },
+  "independent_source_review": {
+    "reviewer": "lua_cache_tree",
+    "pinned_source_commit": "dc431000048ce895c863dac22d422045bdab7509",
+    "receipt_path": "J:/PROG/battlestations-pacific-decompile-oct15_movie_factory/local/oct15_root_dword_vector_erase_review.json",
+    "receipt_sha256": "b04ceeda4b96de92811b47947c39352d62cb40c1359bb038771e9769ffa6cb24",
+    "checks_passed": 15,
+    "checks": [
+      "Both complete current body ranges, all156 bytes and66 starts agree with installed PE; four owned calls have exact current owner/default/effective targets.",
+      "Erase ECX receiver/unused EDX, five stacked words and RET14h/EAX original output match; clear RET/no public semantic EAX is qualified.",
+      "Erase validates nonnull first_owner==last_owner only; it never adds owner==receiver.",
+      "Initial owner capture precedes the diagnostic; positions are loaded only after a returning diagnostic; throwing policy propagates without a wrapper catch.",
+      "Equal positions skip receiver end accesses and all copy/end publication.",
+      "Nonempty erasure captures current end and precomputes first+SAR2(DWORD(end-last))*4 before its copy.",
+      "Copy reads current source DWORD before displacement store, increments source4 and compares against captured end; no snapshot, nullskip or memmove substitute.",
+      "First-owner input is reloaded only after a copying loop actually ran, before publishing end; empty tail retains captured owner.",
+      "End publication precedes output node at+4 then output owner at+0; returned output pointer was captured before output stores.",
+      "Clear captures original end before first unsigned begin>end diagnostic.",
+      "Clear subsequently captures current begin and compares it against fresh current end for its second diagnostic.",
+      "After a returning second diagnostic clear retains captured begin and original end, passes receiver as both owners and calls actual erase using private8B output.",
+      "No local native EH, allocation, cleanup, rollback or extra validation is introduced; declared finite accessible raw traversal boundary is explicit.",
+      "Actual accepted diagnostic uses currentSDK returning/throwing policy; original CRT/Watson/fault/SEH/ABI, private-frame/input aliases and gameplay remain qualified.",
+      "Header/CPP exactly match pinned dc4310000 physical hashes; documentation/report current bytes are recorded separately from their pinned blobs."
+    ],
+    "findings": [],
+    "owned_bytes": 156,
+    "owned_current_starts": 66,
+    "owned_CALLs": 4,
+    "source_hashes": {
+      "src/native_dword_vector_erase.cpp": {
+        "physical_current": "938ff915fdce02bcfba3b8b11157c177e3583ccbb47d86c9497cac03ce7c1c2b",
+        "pinned_git_blob": "938ff915fdce02bcfba3b8b11157c177e3583ccbb47d86c9497cac03ce7c1c2b",
+        "equal": true
+      },
+      "include/bsp/native_dword_vector_erase.hpp": {
+        "physical_current": "5443ed62d1b45c0d1db42485230621620f230678980e39f23a27d20f83fda463",
+        "pinned_git_blob": "5443ed62d1b45c0d1db42485230621620f230678980e39f23a27d20f83fda463",
+        "equal": true
+      },
+      "docs/OCT15_NATIVE_DWORD_VECTOR_ERASE.md": {
+        "physical_current": "d4a2ad401accf24f14332b11f968869dd95189e41980e2c54bc4debd93750c53",
+        "pinned_git_blob": "7a4c05e21e4b9c9ae7275ca643976bb578308a41e222a295aa4f91e35f1f47f4",
+        "equal": false
+      },
+      "reports/oct15_native_dword_vector_erase.json": {
+        "physical_current": "fb419027d7081ab4cfddd60253b645c4ef6f1a6dc244a80f94c0e09649779b0f",
+        "pinned_git_blob": "e02660208aa0f7cb91f7112f8fc2817c005329554c71670b2ec6f9081cea9ec4",
+        "equal": false
+      }
+    },
+    "new_native_execution": false
+  },
   "original_abi": {
     "006977f0": "ECXreceiver,EDXunused;5stackwords output,firstowner,first,lastowner,last;RET14h/EAXoutput.",
     "00697890": "ECXreceiver,EDXunused,no stackinputs,RET/no semanticEAX; privateoutputEAX excluded."
@@ -87,5 +152,21 @@
     "Accessible reached raw storage/finite equality traversal required; no validation, memmove_s, typedarray substitute, fabricated iterator/frame, nullskip, ownership or rollback.",
     "CurrentSDK diagnostics canreturn/throw; addedSource/privateargs/privateoutput/register/flags/nativeCRT/fault/SEH/binaryABI/game identity unproved.",
     "Historical actual storage fragments and focused fixtures remain unchanged in their narrower validarray/memmove_s domains; assignment697BD0 stays separately incomplete."
-  ]
+  ],
+  "compiled_source": {
+    "object_sha256": "187147319413078aafb7d00f437d208d247967270fea98ca9965cd46136f2824",
+    "dump_path": "local/oct15_erase_compiled_dumpbin.txt",
+    "dump_sha256": "2e36ead5d6b507a0f28b3b956d187d01cf04473930e4e11e4ebb786924fdced2",
+    "erase_section_bytes": 116,
+    "clear_section_bytes": 100,
+    "ret_shapes": "erase RET14h and clear RET; static evidence only",
+    "checks": [
+      "Progressive read/store loop retained with x86 SAR2 and wrapped LEA.",
+      "Firstowner input reload remains only after nonempty loop; emptytail and equalrange branches skip it.",
+      "Headerend publication precedes outputnode thenowner; original outputpointer retained.",
+      "Clear originalend capture precedes first diagnostic; currentbegin/freshend second comparison precedes second diagnostic; no endpoint reload afterwards.",
+      "Only actual diagnostic and actual erase dependencies; no memmove or localCxxFrameHandler symbol."
+    ],
+    "native_execution": false
+  }
 }

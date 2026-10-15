@@ -31,7 +31,12 @@ one bounded assignment-caller instruction also agrees. Five native transfers:
 - `006978bd CALL 006977f0` in00697890.
 - `00697bf5 CALL 00697890` in00697bd0.
 
-Build, independent review and transfer validation are recorded in the report.
+The combined Source at dc431000048ce895c863dac22d422045bdab7509 passed
+MSVC Win32 and all three existing suites in7.61s. Independent review passed
+15checks with no findings, including all156PE/live bytes and66currentstarts.
+All five report transfers and five Markdown claims passed. Compiled Source
+retains the progressive loop, conditional owner reload and endpoint captures;
+erase emits RET14h and clear emits plainRET. No new tests were added.
 Reached storage and finite equality termination are required. Source private
 arguments/outputframes, flags/register residue, nativeCRT/Watson/SEH/fault/ABI
 and gameplay identity remain unproved; no new native execution is claimed.
