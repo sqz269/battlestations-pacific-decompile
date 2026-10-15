@@ -65,7 +65,9 @@ file lease. Prior-value annotation log:
 Required normal `scripts/build.ps1` at
 `32e7e0edf4bd2da8377ac2fb58682d2be3e400a3` passed strict Win32 and all 3 existing
 CTests in 8.20s. Log: `local/goal_oct15_dword_move_nonzero_build.log`.
-Source/header hashes remain unchanged from that draft.
+Source/header hashes remain unchanged from that draft. The primary independently
+reviewed all 18 native instructions and the exact Source/header, including the
+negative guard and captured result, without a mismatch or requested Source edit.
 
 Focused actual-object inspection found a 97-byte stdcall entry. It reads last,
 first and destination in that relative order, constructs the explicit SAR2 bits
