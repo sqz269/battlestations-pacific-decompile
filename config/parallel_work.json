@@ -40838,6 +40838,60 @@
       "contract": "Whole bounded ordinary Source; actual raw/live backing,current-CRT providers,full returnable diagnostics and wrapped arithmetic paths. Explicit Source/private-frame interfaces are qualified.",
       "Original_ABI_compatible": false,
       "game_validated": false
+    },
+    {
+      "id": "goal_oct15_raw_dword_list_node",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "00467ba0"
+      ],
+      "output_files": [
+        "src/native_raw_dword_list_node.cpp",
+        "include/bsp/native_raw_dword_list_node.hpp",
+        "docs/GOAL_OCT15_RAW_DWORD_LIST_NODE.md",
+        "reports/goal_oct15_raw_dword_list_node.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_raw_dword_list_node.json",
+      "primary_review": "reports/goal_oct15_raw_storage_primary_review.json",
+      "code_revision": "b6423d4a21fc303170e0cba7a061557fd1c53f86",
+      "integrated_main_revision": "73982d384e302a7256f3da3ba26fd1ba99a21a11",
+      "Main_build_gate": "passed; Original ABI,new-entry native differential and runtime gates remain unproved",
+      "contract": "Whole bounded ordinary raw Source,currentCRT allocation/free,late actual parameter reads and full native branches; opaque storage/payload meanings and fault/private-stack identity qualified.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_vector_storage_tidy",
+      "done": true,
+      "state": "whole_ordinary_Source_default_Win32_existing_checks_and_Main_integration_verified",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00468840"
+      ],
+      "output_files": [
+        "src/native_vector_storage_tidy.cpp",
+        "include/bsp/native_vector_storage_tidy.hpp",
+        "docs/GOAL_OCT15_VECTOR_STORAGE_TIDY.md",
+        "reports/goal_oct15_vector_storage_tidy.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_vector_storage_tidy.json",
+      "primary_review": "reports/goal_oct15_raw_storage_primary_review.json",
+      "code_revision": "b6423d4a21fc303170e0cba7a061557fd1c53f86",
+      "integrated_main_revision": "73982d384e302a7256f3da3ba26fd1ba99a21a11",
+      "Main_build_gate": "passed; Original ABI,new-entry native differential and runtime gates remain unproved",
+      "contract": "Whole bounded ordinary raw Source,currentCRT allocation/free,late actual parameter reads and full native branches; opaque storage/payload meanings and fault/private-stack identity qualified.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {
