@@ -308,12 +308,12 @@
   "annotation": {
     "status": "pending 8F ledger queue;no Ghidra mutations yet"
   },
-  "source_registration": "queued after existing CMake waiters;no registration edit or exclusive lease yet",
+  "source_registration": "unique cmake/startup.cmake append when unheld and own queue first;own queue immediately removed,no exclusive whole-file lease",
   "validation": {
     "source_ready": false,
     "whole_control_flow_source_available": true,
     "unrestricted_parent_admission_proved": false,
-    "build": "pending CMake turn and required scripts/build.ps1",
+    "build": "pending required scripts/build.ps1 after owned registration",
     "existing_ctests": "pending",
     "report_call_verification": "PASS13 typed rows and13 documentation claims;0failures/unchecked/warnings",
     "new_tests": 0,
