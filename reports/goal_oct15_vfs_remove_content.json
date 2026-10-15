@@ -1,0 +1,99 @@
+{
+  "packet": "goal_oct15_vfs_remove_content",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "status": "complete_actual_raw_storage_source_strict_win32_build_and_existing_checks_passed",
+  "functions": [
+    {
+      "address": "00bdd020",
+      "name": "remove_native_vfs_content_package_00bdd020",
+      "source": "src/native_vfs_remove_content.cpp",
+      "header": "include/bsp/native_vfs_remove_content.hpp",
+      "status": "complete_actual_raw_storage_source_strict_win32_build_and_existing_checks_passed",
+      "coverage": "complete",
+      "native_end_inclusive": "00bdd09d",
+      "native_byte_count": 126,
+      "original_abi": "ECX actual manager; stack actual8h string key; RET4; no defined return. Source context explicit.",
+      "evidence": [
+        "docs/GOAL_OCT15_VFS_REMOVE_CONTENT.md",
+        "reports/goal_oct15_vfs_remove_content.json"
+      ],
+      "uncertainty": "New C++ interface, current CRT locale dependency, no original ABI/EH/privateCRT or game equivalence."
+    }
+  ],
+  "native_span": {
+    "entry": "00bdd020",
+    "end_inclusive": "00bdd09d",
+    "bytes": 126,
+    "sha256": "3d2057bff94397bd118e506797dd56f74f067c78a66c0f3741b8df0619b72561",
+    "live_equals_installed": true
+  },
+  "listing": {
+    "instructions": 54,
+    "gaps": 0,
+    "typed_flow_properties_read": false
+  },
+  "call_sites": [
+    {
+      "address": "00bdd065",
+      "native": "00bf7fbf",
+      "function": "00bdd020",
+      "operation": "retained current CRT _stricmp"
+    },
+    {
+      "address": "00bdd07d",
+      "native": "0043ea00",
+      "function": "00bdd020",
+      "operation": "complete actual raw unordered erase"
+    },
+    {
+      "address": "00995475",
+      "native": "00bdd020",
+      "function": "00995150",
+      "operation": "actual manager plus download row8 key"
+    },
+    {
+      "address": "00995da2",
+      "native": "00bdd020",
+      "function": "00995690",
+      "operation": "actual manager plus scanned row8 key"
+    }
+  ],
+  "validation": {
+    "source_build": "scripts/build.ps1 pass in combined integration",
+    "original_fixture_executed": false,
+    "Original_ABI_compatible": false,
+    "game_validated": false,
+    "call_rows_checked": 4,
+    "call_rows_failed": 0,
+    "build_source_revision": "ff5b6fb1a6350c36224f1f53e3bbcbf6c01deb5a",
+    "existing_ctests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "existing_ctests_passed": 3,
+    "build_log": "local/goal_oct15_combined_build.log",
+    "build_log_sha256": "08bbfa8ca9009de0eb0d77ea9a18adc2a18a8c3291dd8ccc0805343d47c107ea"
+  },
+  "ghidra_mutations": [
+    {
+      "address": "00bdd020",
+      "before": {
+        "address": "00bdd020",
+        "function_name": "BSP_VFS_RemoveContentPackageName",
+        "comment": "[BSP reconstruction 00bdd020]\nECX VFS manager, stack counted name, RET 4: erases every manager+48h vector entry with equal length and _stricmp equality (0043EA00). Callers 00995150 (\"Remove active content package (%s)\") and 00995690 (\"Damaged content %s\"). Reconstructed (list semantics) src/engine_core_cc13.cpp. (cc13-render5; docs/CC13_ENGINE_CORE.md)"
+      },
+      "after": {
+        "address": "00bdd020",
+        "name": "BSP_VFS_RemoveContentPackageName",
+        "evidence": "ECX VFS manager, stack counted name, RET 4: erases every manager+48h vector entry with equal length and _stricmp equality (0043EA00). Callers 00995150 (\"Remove active content package (%s)\") and 00995690 (\"Damaged content %s\"). Reconstructed (list semantics) src/engine_core_cc13.cpp. (cc13-render5; docs/CC13_ENGINE_CORE.md) | Complete actual raw manager+48 vector Source: src/native_vfs_remove_content.cpp; docs/GOAL_OCT15_VFS_REMOVE_CONTENT.md. Preserves unordered last-row replacement and same-cursor retry, current key/header reloads, empty-length comparison, count-before-begin end reload. 126 installed/live bytes, ECX manager/stack key/RET4. Existing engine_core_cc13.cpp remains partial semantic list projection. New context-bearing API; current CRT locale, Original ABI/EH/privateCRT and game remain unqualified."
+      },
+      "status": "applied"
+    }
+  ],
+  "ghidra_project_saved": true,
+  "exports_refreshed": true
+}
