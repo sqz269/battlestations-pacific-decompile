@@ -79,15 +79,15 @@
   "indirect_calls": "two in0046BD10; actual current object deleting-vtable-slot0/flag1, dynamically target-dependent",
   "independent_review": "/root/string_allocate: whole0046BD10/0046A470/C61C70, no mismatch; primary reviewed head/extrema bodies and concrete-provider/publication contracts",
   "combined_build": {
-    "revision": "a027c3e3868c15f24eb881b545deaeb90e5a7b4c",
+    "revision": "8f40ecca359d34db551c4e5a8bc9211f5b91efe3",
     "command": "scripts/build.ps1",
     "configuration": "MSVC Release Win32",
     "exit_code": 0,
     "log": "local\\goal_oct15_erase_combined_build.log",
-    "log_sha256": "a5118a98ebcb393b762b775cd97fc80330f3fc9705fa4b79c6546bf5a248076c",
+    "log_sha256": "9ef586887a9a6235d5daa1f1448cb4ae2874860af511215a732323f80e44123b",
     "ctest_passed": 3,
     "ctest_failed": 0,
-    "ctest_seconds": 7.77,
+    "ctest_seconds": 7.93,
     "tests": [
       "reconstructed_math",
       "native_math_differential",
@@ -105,7 +105,7 @@
   },
   "archive_identity": {
     "library": "build\\win32\\Release\\bsp_core.lib",
-    "sha256": "c8d404299b705d70febdecb3e3c7f6c8a9bd335a84856350ebedb5fb3bba1e57",
+    "sha256": "db241cc336ab4ec39562b9d950f54f850828304dedf8fa22b1e08c5687267d19",
     "unique_owned_objects": {
       "native_scene_integer_set_head": [
         "bsp_core.dir\\Release\\native_scene_integer_set_head.obj"
