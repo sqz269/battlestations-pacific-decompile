@@ -58,7 +58,7 @@
     "read pointed key; read color LOW byte10",
     "store keyC,color10,nil11=0; padding12/13 untouched"
   ],
-  "source_registration": "queued until foreign CMake lease releases; no exclusive shared registry lease taken",
+  "source_registration": "unique bsp_core append after foreign lease release and own queue removal; no exclusive shared registry lease",
   "validation": {
     "build": "pending",
     "existing_ctests": "pending",

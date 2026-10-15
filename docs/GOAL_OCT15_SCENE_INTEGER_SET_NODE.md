@@ -53,7 +53,8 @@ The complete candidate assembly, real allocator body/API and caller setup were
 inspected. Live query batches verify configured `C:/Users/sqz269/bsp.gpr` and
 `/battlestationspacific.exe`; complete original bytes are compared to installed
 PE. Prior annotations are preserved under the Ghidra write lock before save
-and refreshed exports. CMake registration and strict MSVC Win32 build are
-pending in the initial draft while a foreign registry lease is active.
+and refreshed exports. After the foreign registry lease released, the worker
+removed only its own queue and appended the unique CMake source registration
+without an exclusive registry lease. Strict MSVC Win32 build is pending.
 No new routine tests, candidate-specific original-byte differential, private
 physical-stack/CRT/FH3/SEH ABI, startup execution or gameplay proof are claimed.
