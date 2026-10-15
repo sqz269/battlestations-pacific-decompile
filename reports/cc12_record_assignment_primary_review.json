@@ -1,7 +1,7 @@
 {
   "schema": "cc12_whole_record_assignment_primary_review_v1",
   "address": "008f0700",
-  "stage": "whole_Source_and_three_case_fixture_accepted_Main_registration_and_build_pending",
+  "stage": "whole_Source_and_focused_fixture_accepted_registered_Main3checks_and_complete_current_archive_machine_review_passed",
   "whole_Original": {
     "bytes": 193,
     "instructions": 69,
@@ -48,8 +48,8 @@
     "primary_Source_and_proposed_domain_pass": true,
     "independent_FP_COFF_and_process_pass": true,
     "independent_ownership_review_pass": true,
-    "registered_Main_build_pass": false,
-    "actual_Main_COFF_review_pass": false
+    "registered_Main_build_pass": true,
+    "actual_Main_COFF_review_pass": true
   },
   "limits": [
     "Only three selected Source runtime calls; full12-arm static proof is separate.",
@@ -64,8 +64,39 @@
   },
   "Source_commit": "58f06421f",
   "ghidra_annotations": {
-    "actual_terminal": "see original28 tool receipt for this batch",
-    "prior_values_recorded": true,
+    "actual_terminal": "b170a8/exit0",
+    "prior_values": "local/ghidra-annotations-20261015T014746Z.json",
+    "project_saved": true,
+    "affected_export_refreshed": true
+  },
+  "registered_Main_build": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_record_assignment_Main_build01\\result.DATA.json",
+    "bytes": 1917,
+    "sha256": "0284bc3c48211dd211b5b638872d8e9ee5a9dd890573aec2869b9956c65adbbe",
+    "actual_terminal": "4ca506/exit0",
+    "existing_tests_passed": 3,
+    "selected4inputs_unchanged": true,
+    "prior3validated_objects_unchanged": true,
+    "unique_actual_archive_member_verified": true
+  },
+  "source_domain_accepted_by_primary": true,
+  "independent_actual_Main_machine_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\MainRecordAssignmentCOFFIndependentReview01\\compact_review.DATA.json",
+    "bytes": 8584,
+    "sha256": "07f1530bb220a1d589bb0fd685c1dee982640e4807680e6b23031c5270407f80",
+    "primary13currentinputs_verified": true,
+    "functions": 5,
+    "section_bytes": 448,
+    "code_bytes": 399,
+    "instructions": 153,
+    "table_bytes": 48,
+    "padding_bytes": 1,
+    "relocations": 18,
+    "x87_helper_hex": "d9420cd9590cc3"
+  },
+  "ghidra_Main_validation_annotation": {
+    "actual_terminal": "527e58/exit0",
+    "prior_values": "local/ghidra-annotations-20261015T015639Z.json",
     "project_saved": true,
     "affected_export_refreshed": true
   }
