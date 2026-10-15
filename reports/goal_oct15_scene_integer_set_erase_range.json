@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_scene_integer_set_erase_range",
+  "source": "src/native_scene_integer_set_erase_range.cpp",
+  "header": "include/bsp/native_scene_integer_set_erase_range.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_INTEGER_SET_ERASE_RANGE.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "routines": [
+    {
+      "address": "0046b170",
+      "end_exclusive": "0046b239",
+      "coverage": "complete",
+      "cpp_symbol": "erase_native_scene_integer_set_range_0046b170",
+      "original_abi": "ECX tree; stack output,first-owner,node,last-owner,node; RET14; EAX current output",
+      "bytes": "83 ec 08 53 55 56 57 8b 7c 24 20 85 ff 8b f1 8b 46 04 8b 28 74 04 3b fe 74 05 e8 84 b5 78 00 8b 5c 24 24 3b dd 75 59 8b 44 24 28 85 c0 8b 6e 04 74 04 3b c6 74 05 e8 68 b5 78 00 39 6c 24 2c 75 3f 8b 4e 04 8b 51 04 52 8b ce e8 41 d1 ff ff 8b 46 04 89 40 04 8b 46 04 c7 46 08 00 00 00 00 89 00 8b 46 04 89 40 08 8b 46 04 8b 08 8b 44 24 1c 5f 89 30 5e 5d 89 48 04 5b 83 c4 08 c2 14 00 90 85 ff 74 06 3b 7c 24 28 74 05 e8 14 b5 78 00 3b 5c 24 2c 74 21 8d 4c 24 20 e8 d2 b8 ff ff 53 57 8d 54 24 18 52 8b ce e8 24 f5 ff ff 8b 5c 24 24 8b 7c 24 20 eb ca 8b 44 24 1c 89 38 5f 5e 5d 89 58 04 5b 83 c4 08 c2 14 00",
+      "live_disk_equal": true,
+      "live_callers": 5,
+      "instruction_bytes": 200,
+      "padding": {
+        "address": "0046b1ef",
+        "bytes": "90",
+        "reachable": false
+      },
+      "sha256": "8e6e76bb899d126557fdbe5f2a2bb6842cbe294ae308cf7d35774ab7cc3a27e4"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0046b18a",
+      "native": "00bf6713",
+      "function": "0046b170",
+      "contract": "returning initial owner diagnostic after minimum capture"
+    },
+    {
+      "address": "0046b1a6",
+      "native": "00bf6713",
+      "function": "0046b170",
+      "contract": "returning last-owner diagnostic after current head capture"
+    },
+    {
+      "address": "0046b1ba",
+      "native": "00468300",
+      "function": "0046b170",
+      "contract": "current root, RET4; exact reset shared through actual clear68980 in Source"
+    },
+    {
+      "address": "0046b1fa",
+      "native": "00bf6713",
+      "function": "0046b170",
+      "contract": "partial owner diagnostic, short-circuit current last-owner read"
+    },
+    {
+      "address": "0046b209",
+      "native": "00466ae0",
+      "function": "0046b170",
+      "contract": "actual outer first iterator atparameters+4"
+    },
+    {
+      "address": "0046b217",
+      "native": "0046a740",
+      "function": "0046b170",
+      "contract": "child actual output/OLD owner/OLD node cells; RETC; child private savedNODE4 delegated"
+    }
+  ],
+  "caller_sites": [
+    {
+      "address": "0046b546",
+      "native": "0046b170",
+      "function": "0046b530",
+      "contract": "captured begin/end, private output; range RET14"
+    },
+    {
+      "address": "0046c4d6",
+      "native": "0046b170",
+      "function": "0046c4c0",
+      "contract": "captured begin/end, private output; range RET14"
+    },
+    {
+      "address": "0046cea6",
+      "native": "0046b170",
+      "function": "0046ce90",
+      "contract": "captured begin/end, private output; range RET14"
+    },
+    {
+      "address": "0046f002",
+      "native": "0046b170",
+      "function": "0046efb0",
+      "contract": "database embedded integer set+164h, private output"
+    },
+    {
+      "address": "0046f039",
+      "native": "0046b170",
+      "function": "0046efb0",
+      "contract": "database embedded integer set+158h, private output"
+    }
+  ],
+  "source_dependencies": [
+    {
+      "routine": "00468980",
+      "symbol": "clear_native_scene_integer_set_00468980",
+      "source": "src/native_scene_integer_set_clear.cpp",
+      "status": "accepted primary staging Source; reuses complete subtree/reset schedule",
+      "modified": false
+    },
+    {
+      "routine": "00466ae0",
+      "symbol": "increment_native_scene_integer_set_iterator_00466ae0",
+      "source": "src/native_scene_integer_set_increment.cpp",
+      "status": "accepted concrete final6991d0647; dependency merge pending",
+      "modified": false
+    },
+    {
+      "routine": "0046a740",
+      "symbol": "erase_native_scene_integer_set_iterator_0046a740",
+      "source": "src/native_scene_integer_set_erase.cpp",
+      "status": "named concrete draftcd9d10a6; dependency merge pending",
+      "modified": false
+    }
+  ],
+  "prior_annotations": [
+    {
+      "address": "0046b170",
+      "name": "STL_Tree_EraseRange_0046b170",
+      "comment": ""
+    }
+  ],
+  "source_registration": "unique cmake/startup.cmake append after fresh unleased check; own queue removed; real dependency merge required before build",
+  "validation": {
+    "source_ready": false,
+    "build": "pending real dependency merge",
+    "existing_ctests": "pending",
+    "report_call_verification": "PASS: 11 typed rows; documentation 0 failures/unchecked/warnings",
+    "new_tests": 0,
+    "native_differential_fixture": false,
+    "abi_compatible": false,
+    "game_executed": false,
+    "game_validated": false
+  },
+  "qualification": "Complete ordinary actual14h range algorithm draft with named real increment/single-erase dependencies not yet merged; lazy explicit outer/child/private output/savedNODE backing, all returnable diagnostics; no stub/callback/narrowing/private CRT/FH3/native ABI/candidate differential/game claim",
+  "disk_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "annotation": {
+    "tool": "tools/ghidra_annotate.py --apply --addresses 0046B170",
+    "prior_values_log": "local/ghidra-annotations-20261015T213812Z.json",
+    "saved": true,
+    "refreshed_export": "exports/bsp/functions/0046b170/decompiled.c",
+    "library_role_name_retained": true
+  }
+}
