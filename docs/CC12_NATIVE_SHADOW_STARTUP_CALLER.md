@@ -58,6 +58,12 @@ build artifacts are sealed separately. All four shadow-binding Source files
 match the runtime-validated tree; runtime proof remains at `19C2BAD0E`, and is
 not promoted to execution coverage for that later avoidance code.
 
+The actual Main publication merge `4EB46BD3ABBFFDF95C78FF619DCC20FD51B6B338`
+also includes the contemporaneous reviewed layer-sampling and string-range
+packets. Its canonical build passes all three checks in 7.15 seconds. That
+publication build has its own frozen executable/map/library and log receipt;
+native execution coverage remains at the explicit earlier runtime Source.
+
 The first actual attempt had no private options file and selected fullscreen
 defaults. It exited 4 at device creation, before the shadow block. Its log is
 preserved. The unchanged basic D3D9 probe had succeeded under the then-current
