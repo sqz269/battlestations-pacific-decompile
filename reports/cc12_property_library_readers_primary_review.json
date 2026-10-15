@@ -4,7 +4,7 @@
     "008f2db0",
     "00469b60"
   ],
-  "status": "Whole Source and worker build/compiler gates pass; Main TU now registered, required Main build pending",
+  "status": "Complete ordinary Source, registered Main3checks and actual archive/compiled-code identity to independent review PASS",
   "primary_complete_Source_header_Original_and_all_emitted_instructions_read": true,
   "Source": [
     {
@@ -71,8 +71,8 @@
     "primary_Original_Source_pass": true,
     "independent_current_COFF_pass": true,
     "worker_normal_build_pass": true,
-    "registered_Main_build_pass": false,
-    "actual_Main_compiler_review_pass": false
+    "registered_Main_build_pass": true,
+    "actual_Main_compiler_review_pass": true
   },
   "new_Source_runtime_executed": false,
   "Original_ABI_compatible": false,
@@ -92,5 +92,36 @@
   "worker_existing_checks_passed": 2,
   "worker_existing_checks_seconds": 7.28,
   "Main_registration": "Registered exactly once in bsp_core; required Main build pending.",
-  "Main_registered": true
+  "Main_registered": true,
+  "registered_Main_build": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_library_composition_Main_build01\\result.DATA.json",
+    "bytes": 4107,
+    "sha256": "d7e76fca7abc47fbecbb913076397499f03e2696caae081bd85ffc474abab0f3"
+  },
+  "actual_Main_DATA_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\PropertyLibraryCompositionMainIdentity01\\compact_review.DATA.json",
+    "bytes": 16622,
+    "sha256": "d1c0cb4568762d396b27bc77fdc9da0cd5097f6ad1e573f72e95eabb01001eb0"
+  },
+  "primary_complete_code_relocation_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_library_insert_integration_20261015\\Main_primary_identity.DATA.json",
+    "bytes": 2576,
+    "sha256": "3b18a4ccda4d8fa871ece4416ba7ee835a65ab294f70ac6160d573a05c53e241"
+  },
+  "primary_complete_archive_consumption": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_library_insert_integration_20261015\\Main_archive_primary_consumption.DATA.json",
+    "bytes": 2625,
+    "sha256": "cf79a794dadf07095bae59e167926d0b42aa7ee6577bab261d362c8ed8108e22"
+  },
+  "Ghidra_evidence_update": {
+    "annotations": "a06e9c/exit0",
+    "previous_annotations": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\ghidra-annotations-20261015T164605Z.json",
+      "bytes": 5436,
+      "sha256": "b3da9c418b8f2602f4f9c5c83d9c87d10f45ffa3754e43ae73fdfd8c9a21141d"
+    },
+    "project_saved": true,
+    "exports": "9780a6/exit0",
+    "index": "0cc7d9/exit0"
+  }
 }
