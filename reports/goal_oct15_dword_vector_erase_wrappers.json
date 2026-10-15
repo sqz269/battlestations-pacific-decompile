@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_dword_vector_erase_wrappers",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_scene_dword_erase_wrappers.cpp",
+  "header": "include/bsp/native_scene_dword_erase_wrappers.hpp",
+  "documentation": "docs/GOAL_OCT15_DWORD_VECTOR_ERASE_WRAPPERS.md",
+  "base_revision": "fd5434e6e9fd15b845e95018f7efedff67374405",
+  "status": "whole_actual_raw_source_registration_build_pending",
+  "routines": [
+    {
+      "address": "00468af0",
+      "body_end_inclusive": "00468b28",
+      "body_bytes": 57,
+      "instructions": 26,
+      "blocks": 5,
+      "physical_calls": 3,
+      "implementation": "clear_native_scene_dword_vector_00468af0",
+      "prior_name": "STL_inst_00468af0",
+      "name_hypothesis": "STL_CheckedDwordVector_Clear_00468AF0",
+      "coverage": "complete_actual_control_explicit_private_output_and_live_child_arguments_source_at_accepted_providers",
+      "original_abi": "ECX receiver;EDX unused;no stackargs/plainRET;EBX/ESI/EDI preserved;control=ECX;rawEAX actualchild currentoutput;privateoutputP-8,childargsP-40,childentryP-44",
+      "live_hex": "83ec0853568bf18b5e08395e04577605e80edc78008b7e043b7e087605e801dc7800535657568d44241c508bcee87efaffff5f5e5b83c408c3",
+      "live_installed_equal": true,
+      "sha256": "e51cce0ebcc4fb90d099d610dc1a7652c1d2dcf3c68dad9a4841c3a7798d0ea2"
+    },
+    {
+      "address": "00468c90",
+      "body_end_inclusive": "00468cc9",
+      "body_bytes": 58,
+      "instructions": 26,
+      "blocks": 5,
+      "physical_calls": 3,
+      "implementation": "clear_native_scene_dword_vector_embedded8_00468c90",
+      "prior_name": "STL_inst_00468c90",
+      "name_hypothesis": "STL_CheckedDwordVector_ClearEmbedded8_00468C90",
+      "coverage": "complete_actual_control_explicit_private_output_and_live_child_arguments_source_at_accepted_providers",
+      "original_abi": "ECX receiver;EDX unused;no stackargs/plainRET;EBX/ESI/EDI preserved;control=ECX+8 modulo32;rawEAX actualchild currentoutput;privateoutputP-8,childargsP-40,childentryP-44",
+      "live_hex": "83ec0853568d7108578b7e08397e047605e86dda78008b5e043b5e087605e860da7800575653568d44241c508bcee8ddf8ffff5f5e5b83c408c3",
+      "live_installed_equal": true,
+      "sha256": "7687213a5907e0f50d7d5f3875402d0b93c318d034c75418725c3d444d470d3e"
+    }
+  ],
+  "coverage_totals": {
+    "bytes": 115,
+    "instructions": 52,
+    "blocks": 10,
+    "physical_calls": 6
+  },
+  "host_steps": [
+    {
+      "address": "00468b00",
+      "native": "00bf6713",
+      "function": "00468af0",
+      "kind": "call"
+    },
+    {
+      "address": "00468b0d",
+      "native": "00bf6713",
+      "function": "00468af0",
+      "kind": "call"
+    },
+    {
+      "address": "00468b1d",
+      "native": "004685a0",
+      "function": "00468af0",
+      "kind": "call"
+    },
+    {
+      "address": "00468ca1",
+      "native": "00bf6713",
+      "function": "00468c90",
+      "kind": "call"
+    },
+    {
+      "address": "00468cae",
+      "native": "00bf6713",
+      "function": "00468c90",
+      "kind": "call"
+    },
+    {
+      "address": "00468cbe",
+      "native": "004685a0",
+      "function": "00468c90",
+      "kind": "call"
+    },
+    {
+      "address": "004f6105",
+      "native": "00468af0",
+      "function": "004f60e0",
+      "kind": "call"
+    },
+    {
+      "address": "004d54a4",
+      "native": "00468c90",
+      "function": "004d4df0",
+      "kind": "call"
+    }
+  ],
+  "implementation_search": "no whole indexed/unindexed Source;C90 application projection/unimplemented hook remains separate;actual provider and all full native listings reviewed",
+  "source_contract": "stable/disjoint frame metadata {actual_output8,actual_child_parameters20};no output initialization. Capture originalend,readcurrentbegin unsignedreport;capture FRESHbegin,compare FRESHend/reportagain;retainoriginalend/capturedbegin throughsecondreport. Five volatile child stores in PUSH order +10,+C,+8,+4,+0 thenactual685A0. Return actualchild selected outputpointer,not owner or forcedprivateoutput. C90 receiver+8 modulo32.",
+  "frame_qualification": "nativeP output8=P-8,savedregs12gap,childargs20=P-40,childentryP-44. Native diagnostic private temporary reuse can overlap future child args;hidden helper/registersave/nativeframe/argumenthome/return/EH/spill coincidences and native dangling return lifetime are excluded,not simulated with callbacks. Explicit control/payload aliases remain;only reachedaccesses valid;no async mutation.",
+  "provider_composition": "real invoke_native_invalid_parameter_00bf6713 and erase_native_scene_dword_range_004685a0;child capturedowner/currentnodes/lateoutput/currentSDK domains preserved. Shared ordinary wrapper mechanics add no native inter-wrapper edge;no new provider,guard,allocation,ownership,EHcleanup or rollback.",
+  "provider_file_sha256": {
+    "src/native_scene_dword_erase_range.cpp": "95fada1a5a0b8c7717764c7357372ef10d66c21396818685a4c55f83ff0c3e50",
+    "include/bsp/native_scene_dword_erase_range.hpp": "40b52fccce54daba3b420024dd3deadb30e8684c2e01aaae2c770178f1df0e82",
+    "src/native_invalid_parameter_noinfo_call.cpp": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+    "include/bsp/native_invalid_parameter_noinfo_call.hpp": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613"
+  },
+  "caller_context": "local/goal_oct15_dword_erase_wrappers_parent_context.json",
+  "annotation": {
+    "before_comments": "local/goal_oct15_dword_vector_erase_wrappers_before_comments.json",
+    "before_documentation": "local/goal_oct15_dword_vector_erase_wrappers_before_documentation.json",
+    "preserve_prior_values_comments_evidence_correct_library_targets": true,
+    "locked_apply_save": "passed; prior values logged, two owned hypotheses applied under tool write lock and project saved",
+    "refreshed_exports": "passed; both owned exports forced after annotation",
+    "readback": "passed; old comments preserved and both hypothesis names/evidence markers verified in local/goal_oct15_dword_vector_erase_wrappers_after_comments.json",
+    "log": "local/ghidra-annotations-20261015T230513Z.json"
+  },
+  "verification": {
+    "project_program_guard": "bsp.py Client.verify every live batch;bsp,/battlestationspacific.exe,x86:LE:32:default,image00400000",
+    "whole_assembly_abi_captures_push_order_private_output_and_real_providers": "passed",
+    "live_installed_bytes": "passed;whole115B/52instructions including both plainRET tails",
+    "typed_native_transfers": "passed; 8 JSON rows and 8 Markdown claims;0 failed/unchecked/warnings",
+    "cmake_registration": "pending primary unique registration at its next CMake turn;own non-owning queue removed by primary instruction",
+    "strict_win32_build_and_existing_ctest": "pending primary combined normal scripts/build.ps1 against exact reviewed Source;explicitly supersedes duplicate worker build",
+    "compiled_object_review": "pending",
+    "source_file_sha256": {
+      "src/native_scene_dword_erase_wrappers.cpp": "dbd9731759d8880ea3565d625e6f7482be84825a7cb6e3822a93d834ee5db22d",
+      "include/bsp/native_scene_dword_erase_wrappers.hpp": "88c349b5474542f91c1844df01a909bc07f8f5652949f25655dd279e5708f09e"
+    },
+    "new_tests": false,
+    "packet_native_differential": "not run",
+    "game_validation": "not run",
+    "primary_independent_review": {
+      "status": "passed complete 52-operation assembly and complete actual Source/header/provider review;no mismatch or edits",
+      "source_hashes_asserted": {
+        "src/native_scene_dword_erase_wrappers.cpp": "dbd9731759d8880ea3565d625e6f7482be84825a7cb6e3822a93d834ee5db22d",
+        "include/bsp/native_scene_dword_erase_wrappers.hpp": "88c349b5474542f91c1844df01a909bc07f8f5652949f25655dd279e5708f09e"
+      },
+      "scope": "original end/fresh begin and end/returning reports/five push-order volatile stores/real child/raw child EAX/wrapped embedded8/private backing qualification"
+    }
+  },
+  "limits": [
+    "Actual current CRT/SDK and explicit raw storage domain;no original staticCRT/globalhandler/errno/exception/fault/SEH identity.",
+    "New ordinary interface with stable/disjoint explicit output8/child20/frame metadata;no implicit privateframe/argumenthome/return/EH/registersave/spill/async aliases or native dangling lifetime.",
+    "Originalend and captured freshbegin survive reports;five actual push-order stores and real child current-output result preserved;no added snapshot/valid-only/owner guard.",
+    "No production projection replacement,nominal receiver/container ownership,binaryABI or game identity.",
+    "No packet-specific native differential/application/game validation."
+  ]
+}
