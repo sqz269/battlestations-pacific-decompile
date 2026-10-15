@@ -39,6 +39,10 @@ the report before appending the new evidence through the annotation write lock.
 Validation and limits are recorded in
 `reports/goal_oct15_native_string_allocate.json`. The C++ API adds a raw context
 argument and is not a drop-in native ABI replacement. This packet establishes
-ordinary Source reconstruction; required Win32 build checking is pending in
-the initial revision and will be recorded in the report. It claims no original
+ordinary Source reconstruction. The primary's combined strict Win32 build at
+`ff5b6fb1a6350c36224f1f53e3bbcbf6c01deb5a` passed, including all three existing
+CTests. This source and header have identical Git objects in that tested commit.
+The redundant fresh worker build was canceled at the primary's request after
+that combined pass. The existing native differential test covers math and does
+not establish a differential fixture for this helper. This packet claims no original
 byte differential fixture, game execution or gameplay validation.

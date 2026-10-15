@@ -49,15 +49,23 @@
     }
   ],
   "validation": {
-    "build": "pending",
-    "existing_ctests": "pending",
+    "build": "PASS primary combined strict MSVC Win32 scripts/build.ps1 with CL /MP4; exact source/header git objects verified equal",
+    "existing_ctests": "PASS 3/3: reconstructed_math, native_math_differential, tool_tests; native differential covers existing math, not this helper",
     "report_call_verification": "PASS 2 call rows checked, 0 failed; markdown 0 failures or warnings",
     "new_tests": 0,
     "native_differential_fixture": false,
     "abi_compatible": false,
     "game_executed": false,
     "game_validated": false,
-    "diff_check": "PASS git diff --check"
+    "diff_check": "PASS git diff --check",
+    "tested_commit": "ff5b6fb1a6350c36224f1f53e3bbcbf6c01deb5a",
+    "build_log": "J:/PROG/battlestations-pacific-decompile-goal_oct15_integrator/local/goal_oct15_combined_build.log",
+    "worker_build": {
+      "status": "canceled after primary combined build passed",
+      "log": "local/goal-oct15-native-string-allocate-build.log",
+      "completed": false,
+      "reason": "primary requested stopping redundant fresh-worktree build after exact-source combined validation"
+    }
   },
   "qualification": "Complete ordinary Source composition over existing actual raw native pool implementations; no callback substitution; added context argument is a new C++ ABI; no original-byte differential or game-validation claim",
   "disk_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
