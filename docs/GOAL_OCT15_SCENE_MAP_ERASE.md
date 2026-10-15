@@ -136,7 +136,46 @@ project, and refreshed both exports. The prior-value log is
 The unique CMake line was appended only after an immediate unleased check and
 removal of this worker's queue request, with no exclusive whole-file lease.
 
-Strict Win32 build/existing CTests and focused compiled evidence are pending.
-The independent extrema provider is an external accepted API dependency whose
-Source integration is pending. No new tests are added; packet differential and
-game validation have not run.
+Accepted extrema Source `af4feef5e` and registration `a6bf90804` were merged
+without provider edits at `f6b977c8090055c9f66d36f698a9700653182f4f`. The only
+merge conflict was resolved mechanically by `merge_resolve.py`'s CMake union.
+Erase Source/header remain unchanged from draft
+`8e1be2328be24a9f6a18817ed88986f60aed4ba7`.
+
+The worker's required `scripts/build.ps1` Release MSVC Win32 build passed with
+`/W4 /WX /fp:strict`; process-local `/MP4` only enables parallel compilation.
+All three existing CTests passed in 8.76 seconds: reconstructed math 0.23s,
+native math differential 0.04s, and tool tests 8.44s. An unrelated existing
+`LNK4006` duplicate `spawn_request_id_matches` warning remains. No new tests
+were added; existing math differential does not cover this entry, and packet
+differential/game validation did not run.
+
+The actual compiled erase entry has a `30Bh` code section (779 bytes, including
+terminal INT3). It retains the initial node/nil capture before saved-map store
+at `+11/+14/+1A`, actual increment at `+28`, and current successor reload at
+`+49`. All six rotation calls remain, at `+18C/+1E7/+22F/+253/+274/+29C`.
+After nonfinal rotations, actual sibling reads precede saved-map value reloads;
+the current repair map is retained for ordinary ascent. The compiled ascent
+captures the root word before reading parent.parent, then performs the pure
+comparison afterward; its inputs and resulting branch remain the captured
+pre-load values. Native flag timing is not claimed.
+
+Captured name data/length loads are at `+2A5/+2B2`, before getter `+2BA`;
+the compiler computes captured length+1 after getter without rereading length.
+Pool return is `+2CA`, node free `+2D3`, current saved-map/count reload
+`+2E2/+2E4`. Final owner/output/node loads at `+2F4/+2F7/+2F9` precede ordered
+stores at `+2FC/+2FE`. These are new Source offsets, not native addresses or
+private caller-argument aliases.
+
+The throw helper assigns the counted message at `+42`, arms state0 at `+54`,
+constructs the existing owning carrier at `+5B`, and invokes the real current
+C++ throw runtime at `+69`. Its real unwind funclet transfers to the completed
+message guard, whose destructor calls actual `004072D0`. Current compiler
+throw metadata references the carrier's real copy/destructor and one Source
+catch type; it does not claim the native descriptor's three-type hierarchy.
+
+The object is 6995 bytes, SHA-256
+`b50a4247d92cf57303889b5f7a988de576a9b606a911ba0568e1af7cf876cea4`.
+Receipts are `local/goal_oct15_scene_map_erase_build.log`,
+`local/goal_oct15_scene_map_erase_object.txt`, and
+`local/goal_oct15_scene_map_erase_bytes.json`. Diff whitespace checks pass.

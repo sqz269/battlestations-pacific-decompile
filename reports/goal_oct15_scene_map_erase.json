@@ -13,7 +13,7 @@
     "0046a470",
     "00c61c70"
   ],
-  "status": "whole_actual_storage_source_dependency_build_pending",
+  "status": "whole_actual_storage_source_strict_win32_existing_ctest_and_compiler_checked",
   "routines": [
     {
       "address": "0046a470",
@@ -303,13 +303,79 @@
     "live_installed_full_bytes": "passed;724B/243instructions including whole normal and unwind spans",
     "verify_report_calls": "passed;17native transfer rows,0failed;markdown28addresses,0failed/unchecked/warnings",
     "cmake_registration": "passed;unique appended line after immediate unleased check/own unqueue;no exclusive whole-file lease",
-    "extrema_dependency": "API accepted;independent worker draft integration pending",
-    "strict_win32_build_and_existing_ctest": "pending",
-    "compiled_object_review": "pending",
+    "extrema_dependency": "accepted Source af4feef5e and registrationa6bf90804 merged without provider edits at f6b977c8090055c9f66d36f698a9700653182f4f;only CMake conflict resolved mechanically via merge_resolve.py",
+    "strict_win32_build_and_existing_ctest": "passed own scripts/build.ps1 Release at f6b977c8090055c9f66d36f698a9700653182f4f,erase Source/header unchanged from8e1be2328;exit0,3/3existing CTests8.76s",
+    "compiled_object_review": "passed;actual initial capture/saved-map publish,current successor/saved-map reloads,all6rotations,captured pool return/free/current count and final owner-output-node loads/stores;real guard unwind and owning throw metadata",
     "diff_check": "passed",
     "new_tests": false,
     "packet_native_differential": "not run",
-    "game_validation": "not run"
+    "game_validation": "not run",
+    "worker_build": {
+      "command": "scripts/build.ps1",
+      "configuration": "Release MSVC Win32 /W4 /WX /fp:strict",
+      "parallel_only_addition": "CL=/MP4",
+      "source_revision": "8e1be2328be24a9f6a18817ed88986f60aed4ba7",
+      "build_revision": "f6b977c8090055c9f66d36f698a9700653182f4f",
+      "source_unchanged_from_draft": true,
+      "log": "local/goal_oct15_scene_map_erase_build.log",
+      "result": "exit0,3/3pass,0fail,total8.76s",
+      "ctests": {
+        "reconstructed_math": "pass0.23s",
+        "native_math_differential": "pass0.04s",
+        "tool_tests": "pass8.44s"
+      },
+      "existing_warning": "LNK4006 duplicate spawn_request_id_matches lua_binding_spawn.obj/lua_spawn_new.obj;no packet compiler warning",
+      "packet_native_differential": "not run;existing math differential unrelated to this entry"
+    },
+    "compiled_object": {
+      "path": "build/win32/bsp_core.dir/Release/native_scene_record_map_erase.obj",
+      "receipt": "local/goal_oct15_scene_map_erase_object.txt",
+      "tool": "MSVC dumpbin14.51.36244.0 /DISASM /RELOCATIONS /SYMBOLS",
+      "bytes": 6995,
+      "sha256": "b50a4247d92cf57303889b5f7a988de576a9b606a911ba0568e1af7cf876cea4",
+      "erase_code_section_bytes": 779,
+      "erase_code_section_includes_terminal_int3": true,
+      "erase_code_relocations": "13REL32;increment,2extrema,6rotations,rawgetter,rawreturn,currentCRTfree,actual owning throw helper",
+      "offsets": {
+        "original_node": "11",
+        "original_nil_byte": "14",
+        "saved_map_store": "1a",
+        "increment_call": "28",
+        "current_successor_reload": "49",
+        "captured_name_data": "2a5",
+        "captured_name_length": "2b2",
+        "getter_call": "2ba",
+        "pool_return": "2ca",
+        "node_free": "2d3",
+        "postfree_saved_map_value": "2e2",
+        "current_count": "2e4",
+        "owner_reload": "2f4",
+        "output_pointer_reload": "2f7",
+        "node_reload": "2f9",
+        "owner_store": "2fc",
+        "node_store": "2fe"
+      },
+      "rotation_calls": [
+        "18c",
+        "1e7",
+        "22f",
+        "253",
+        "274",
+        "29c"
+      ],
+      "postrotation": "actual sibling read before saved-map VALUE reload;stable/disjoint metadata reads may occur earlier",
+      "ascent": "capture root word before parent-parent load;pure comparison can follow load while using captured root/parent values;native flag timing excluded",
+      "returned_size": "length captured before getter,+1 computed later without reread;native physical caller-argument home/flags excluded",
+      "throw_helper_offsets": {
+        "counted_assign": "42",
+        "state0_armed": "54",
+        "owning_carrier_construct": "5b",
+        "actual_current_cpp_throw": "69"
+      },
+      "real_cleanup": "compiler unwind funclet tail-transfers CompletedTemporary destructor;destructor calls actual native_legacy_sbo_string_destroy_004072d0",
+      "throw_metadata": "actual current carrier copy/destructor and one Source catch type;not native3type hierarchy/descriptor/FH3 frame identity",
+      "identity_claim": "actual payload/cell access schedule and concrete provider/current C++ cleanup composition only;new cdecl interface,not original register/stack/privateframe/byte/COFF identity"
+    }
   },
   "limits": [
     "explicit Source live-frame/raw-pool interface is not original register/stack ABI or private FH3/SEH frame entry",
