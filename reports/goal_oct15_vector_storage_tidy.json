@@ -1,6 +1,6 @@
 {
   "packet": "goal_oct15_vector_storage_tidy",
-  "status": "complete_actual_opaque_storage_source_build_pending",
+  "status": "complete_actual_opaque_storage_source_win32_build_and_two_enabled_existing_checks_passed",
   "source_ready": true,
   "source": "src/native_vector_storage_tidy.cpp",
   "header": "include/bsp/native_vector_storage_tidy.hpp",
@@ -266,8 +266,19 @@
     "instructions": 13,
     "exact_typed_body_branch_and_free_call_read": true,
     "report_calls": "1exactcall row checked,0failed",
-    "build": "pending",
-    "existing_tests": "pending",
+    "build": "PASS scripts/build.ps1 Release Win32 exit0; registered ownedSource compiled and all targets linked",
+    "existing_tests": {
+      "enabled": 2,
+      "passed": 2,
+      "failed": 0,
+      "suites": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "total_seconds": 7.42,
+      "native_math_differential_enabled": false,
+      "new_entry_native_differential": false
+    },
     "cmake_registration": "Current ownership rechecked unleased;unique Source append without exclusive lease",
     "new_tests": 0,
     "direct_native_entry_execution": false,
@@ -276,16 +287,27 @@
     "application_adoption": false,
     "documentation_claim_check": "4addresses cited,1call checked,0failed,0unchecked,0warnings",
     "annotation_readback": "Live comments response shows preserved STL_Vector_Tidy_00468840 and exact reconstruction marker/evidence",
-    "diff_check": "passed before Source draft"
+    "diff_check": "passed before Source draft,main registry-union merge and finalmetadata commit",
+    "source_commit": "fdcf899ae",
+    "tested_revision": "3d74e4c8d",
+    "main_batch_imported": "17abbeab5",
+    "base_sync": "main contains accepted970dc0942; sole startup append conflict resolved by required merge_resolve registry union,unique tidy registration retained once",
+    "build_log": "local/goal_oct15_vector_storage_tidy_build.log",
+    "build_log_sha256": "9a56d87c4b22ac41d26363b08d002922ac40e5fb333718eabb4533f88715bbfb",
+    "inherited_linker_warning": "LNK4006 spawn_request_id_matches duplicate in unchanged lua_binding_spawn.obj/lua_spawn_new.obj;second definition ignored"
   },
   "source_hashes": {
     "src/native_vector_storage_tidy.cpp": {
       "bytes_sha256": "07b2acf3d95a6135d6dc6918c9739ebf09f9d7f6d195e3da02c4438fff091383",
-      "normalized_lf_sha256": "07b2acf3d95a6135d6dc6918c9739ebf09f9d7f6d195e3da02c4438fff091383"
+      "normalized_lf_sha256": "07b2acf3d95a6135d6dc6918c9739ebf09f9d7f6d195e3da02c4438fff091383",
+      "git_blob_bytes_sha256": "07b2acf3d95a6135d6dc6918c9739ebf09f9d7f6d195e3da02c4438fff091383",
+      "accepted_source_revision": "fdcf899ae"
     },
     "include/bsp/native_vector_storage_tidy.hpp": {
       "bytes_sha256": "75c437ed87f0c201617b0c2dc1d2a8643061910c4d0ec431523533fc68d42a06",
-      "normalized_lf_sha256": "75c437ed87f0c201617b0c2dc1d2a8643061910c4d0ec431523533fc68d42a06"
+      "normalized_lf_sha256": "75c437ed87f0c201617b0c2dc1d2a8643061910c4d0ec431523533fc68d42a06",
+      "git_blob_bytes_sha256": "75c437ed87f0c201617b0c2dc1d2a8643061910c4d0ec431523533fc68d42a06",
+      "accepted_source_revision": "fdcf899ae"
     }
   },
   "cmake_source_line": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_vector_storage_tidy.cpp)",
@@ -308,6 +330,23 @@
         "evidence": "Complete42B/13op actualopaque16Bstorage Source src/native_vector_storage_tidy.cpp;correctSTL_Vector_Tidy libraryname retained,Source description not recovered element/fieldtype. ECXstorage,unusedEDX,ESIpreserved,plainRET/nosemanticresult. Capture+4ONCE;conditional actualcurrentCRTfree capturedpointer;both returning paths orderedzero+4,+8,+Ch;no reload/elementdtor/diagnostic/owner/state narrowing. LivePE all42B andexacttyped body/branch/freecall;no livecallers,named-incomplete depsnone at accepted currentCRTboundary. Locked annotation/readback and buildpending;privateframe/ABI/game limits. docs/GOAL_OCT15_VECTOR_STORAGE_TIDY.md"
       },
       "status": "applied"
+    }
+  ],
+  "independent_reviews": [
+    {
+      "reviewer": "primary /root",
+      "accepted": true,
+      "source_revision": "fdcf899ae",
+      "scope": "complete13-op native listing and full Source/header",
+      "finding": "captured4once,conditional actualfree,orderedzero4/8/C both returning paths,semanticvoid and opaque element/field roles allmatch"
+    },
+    {
+      "reviewer": "/root/string_allocate",
+      "accepted": true,
+      "source_revision": "fdcf899ae",
+      "scope": "complete42B/13ops native body and Source/header/doc",
+      "finding": "no mismatch;stablebase,capturedpointerfree,no+4reload/+0access/elementsemantics/EAXpromise;nativeECX/RET/libraryname and ABIqualifications correct",
+      "accepted_draft_doc_sha256": "0bd0a6b9b5a2e516ff0351f1437d22e41f64fcb891f4ef8241b0639d5fb8c452"
     }
   ]
 }
