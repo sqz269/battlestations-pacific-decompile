@@ -270,10 +270,12 @@ MissionTreeIndex find_mission_by_id_005c3470(const std::vector<MissionGroupData>
     for (std::size_t group = 0; group < groups.size(); ++group) {
         const auto& missions = groups[group].missions;
         for (std::size_t mission = 0; mission < missions.size(); ++mission) {
+            // 005C3583..005C358D store the pair and fall through to 005C3590's
+            // increment: the walk never exits early, so the LAST match wins.
+            // That only differs from a first-match walk for duplicate ids.
             if (equal_ignoring_case(missions[mission].screen.name, id)) {
                 found.mission = static_cast<std::uint32_t>(mission);
                 found.group = static_cast<std::uint32_t>(group);
-                return found;
             }
         }
     }

@@ -466,6 +466,19 @@ private:
     GameFrontendHost::Impl& owner_;
 };
 
+// 004c12b0, the double-checked singleton over DAT_00f8bc5c, constructed by
+// 00aa5d70. The lifetime manager's critical section is not modelled; the
+// once-only construction it protects is. Startup (0073bae0) and every later
+// caller share this one get-or-create.
+void* gui_manager_get_or_create_004c12b0(GameFrontendHost::Impl& owner) {
+    if (!owner.manager.constructed) {
+        owner.manager.constructed = true;
+        owner.summary.gui_manager_created = true;
+        owner.log.implemented("GuiStartupHost::gui_manager_get_or_create", "004c12b0");
+    }
+    return &owner.manager;
+}
+
 // GuiStartupHost for 0073bae0.
 class GameGuiStartupHost final : public GuiStartupHost {
 public:
@@ -497,17 +510,7 @@ public:
         owner_.log.implemented("GuiStartupHost::preload_fallback_glyph_table", "0053bc00");
     }
 
-    void* gui_manager() override {
-        // 004c12b0, the double-checked singleton over DAT_00f8bc5c, constructed by
-        // 00aa5d70. The lifetime manager's critical section is not modelled; the
-        // once-only construction it protects is.
-        if (!owner_.manager.constructed) {
-            owner_.manager.constructed = true;
-            owner_.summary.gui_manager_created = true;
-            owner_.log.implemented("GuiStartupHost::gui_manager_get_or_create", "004c12b0");
-        }
-        return &owner_.manager;
-    }
+    void* gui_manager() override { return gui_manager_get_or_create_004c12b0(owner_); }
 
     void* create_gui_resource(void* manager, void* parent,
         const GuiManagerResource& entry) override {
@@ -1084,6 +1087,10 @@ void GameFrontendHost::set_widget_text_source(GuiLayoutWidget& widget, std::stri
 }
 
 void GameFrontendHost::invalidate_bridge() { impl_->quads_built = false; }
+
+void* GameFrontendHost::gui_manager_004c12b0() {
+    return gui_manager_get_or_create_004c12b0(*impl_);
+}
 
 // ---------------------------------------------------------------------------
 // Milestone 2k: run-time clones of a page's own authored template

@@ -46,6 +46,7 @@ class GameHostLog;
 class GameVfsHost;
 class GameScriptHost;
 class GameFrontendHost;
+class GameNativeRendererApplication;
 class GameFrameProfiler;
 class GameMissionLuaHost;
 class GameMissionFrameHost;
@@ -212,6 +213,11 @@ public:
     // this host and all its retained records. COM sprite textures do not
     // satisfy the native +04/current0 texture contract.
     void bind_mission_picture_services(const MissionPictureTextureServices&);
+    // Builds and binds services over the live native renderer: its slot +64h
+    // loader (B319B0), actual owner registry and the frontend's 004c12b0. Call
+    // after device creation and before 005caaf0; the renderer must outlive
+    // this host. See NativeMissionPictureLoader in game_hosts_mission.cpp.
+    void bind_native_mission_pictures(GameNativeRendererApplication&);
     void load_mission_tree_005caaf0();
     // 005861b0, the main-menu screen's slot +14h override: FE_worldmap_historical,
     // FE_briefing_grid and FE_briefing, and the fourteen widget handles 0058c010

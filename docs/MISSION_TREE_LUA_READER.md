@@ -403,3 +403,43 @@ leave the optional picture unresolved. GameMissionHost can borrow the real
 services before loading and reports picture completion separately. Picture
 reference/copy fixtures pass, but no full executable or render claim is made.
 See MISSION_PICTURE_OWNER.md and ORCH5_MENU_INPUT_BATCH.md.
+
+## bsp_game binds the picture services (cc13-pic, 2026-10-14)
+
+Until this change nothing called `bind_mission_picture_services`, so every run
+took the metadata-only branch. `GameStartupHost` (src/game_hosts.cpp) now calls
+`GameMissionHost::bind_native_mission_pictures` once the device exists and
+before any menu frame. In the image, `005C75A9` (`004C12B0`) and `005C75C7`
+(`00AA2660`) reach globals that are set up during startup (renderer
+constructor `0073DA88`, device in `BECEE0`, GUI startup `0073BAE0`), so binding
+before `005CAAF0` keeps that order. `NativeMissionPictureLoader` in
+src/game_hosts_mission.cpp supplies:
+
+| Service | What it does |
+|---|---|
+| `load_texture` | The current renderer's slot +64h. It checks that profile `D5F0A8` holds `B319B0` there, then calls `load_native_renderer_texture_00b319b0` with flags 0 and a persistent acquisition frame. |
+| `actual_owners` | The renderer's actual owner registry. |
+| `get_gui_manager_004c12b0` | `GameFrontendHost::gui_manager_004c12b0`, the same get-or-create that GUI startup uses. |
+| `width`, `height` | Profile `D61948` slots +3Ch/+40h, which are `B3CE50`/`B3CE60` (image bytes at `00D61984`/`00D61988`). |
+| `retain` | `InterlockedIncrement(+4)`. |
+
+Residuals:
+
+- The atlas lookup (`00AEFB20` on manager `00F8C26C`) always misses, because
+  the host never constructs that manager (`00AF0060` is unimplemented). That
+  matches the binary for this installation: none of the twelve
+  `interface/textures/*.ats` descriptors names a `missions/` item, and every
+  picture is a loose `fe/missions/` texture.
+- `005C75B4` passes an uninitialized frame float2. The host passes zero
+  instead. `00AA2660` reads that value only on an atlas hit.
+
+Run `local/cc13pic_usn02.log` (USN02, 2000 frames) reports 143 renderer loads
+through `005c6a70` with 0 null results. That equals the 143 non-empty live
+`picture` fields among the 177 records in this installation's missiontree.lua.
+The pictures load, but no reconstructed screen draws them yet.
+
+`005C3470` keeps the **last** match: `005C3583..005C358D` store the pair and
+fall through to the increment with no break. `find_mission_by_id_005c3470`
+returned the first match and now keeps the last. The two differ only for a
+duplicate id. This installation's one duplicate (`TRN2`) has its second copy
+inside a Lua comment, so this changes nothing here.

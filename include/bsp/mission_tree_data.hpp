@@ -413,7 +413,8 @@ MissionTreeTables load_mission_tree_005caaf0(MissionTreeScriptHost& host,
 MissionTreeTables load_mission_tree_metadata(MissionTreeScriptHost& host);
 
 // 005C3470: walk every group and every mission and compare the record's id
-// case-insensitively. The default is {FFFFFFFFh, 0}.
+// case-insensitively. The default is {FFFFFFFFh, 0}. A hit does not end the
+// walk, so a duplicate id resolves to its last occurrence.
 MissionTreeIndex find_mission_by_id_005c3470(const std::vector<MissionGroupData>& groups,
                                              std::string_view id) noexcept;
 
