@@ -50,3 +50,9 @@ CRT/CPP/RawCtx/private frames do not prove original ABI/flags/FH3/SEH/RTTI/
 heap/fault/runtime or game behavior. Existing math native differential tests
 cover older seeds. Device-record/pair cleanup and DWORD insertion/append work
 continue as separate bounded packets; this batch does not mark them complete.
+
+Main Source integration is 752c379e0f4d6e15c50a21074f69c34356c96335.
+Source, headers, CMake, tools and scripts there exactly equal the tested union;
+all10owned Source/header hashes were rechecked. The unrelated Main untracked
+report and argon_v2_seg40.cpp are preserved. Publication uses one batch push
+after this metadata receipt; later independent additions may follow.

@@ -1,6 +1,6 @@
 {
   "batch": "oct15_fifteenth_reconstruction_batch",
-  "status": "reviewed_integrated_staging_win32_build_and_static_transfer_checked_main_publication_pending",
+  "status": "reviewed_integrated_main_win32_build_and_static_transfer_checked",
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
   "tested_source_pin": "d1fd051ea1668bb471592736afbb42795ef6d80b",
@@ -1201,5 +1201,21 @@
     "Current Source/RawCtx/privateframes/CRT/CPP exceptions differ from original register/stack/flags/FH3/SEH/RTTI/heap/fault/gameplay ABI.",
     "Parent device record/pair/scalar-delete plus10actions are next-batch worker work; whole697990 and697DC0/697F40 remain separately incomplete pending audits."
   ],
-  "publication": "pending main merge andpush"
+  "publication": {
+    "branch": "main",
+    "remote": "origin",
+    "source_anchor": "752c379e0f4d6e15c50a21074f69c34356c96335",
+    "method": "One batch push after the metadata receipt merge; verify remote independently."
+  },
+  "main_integration": {
+    "source_integration_commit": "752c379e0f4d6e15c50a21074f69c34356c96335",
+    "exact_tested_source_pin": "d1fd051ea1668bb471592736afbb42795ef6d80b",
+    "src_include_cmake_tools_scripts_equal_tested_union": true,
+    "git_diff_exit_code": 0,
+    "all10_owned_source_header_hashes_rechecked": true,
+    "unrelated_untracked_files_preserved": [
+      "reports/native_light_shadow_view_build.txt",
+      "src/argon_v2_seg40.cpp"
+    ]
+  }
 }
