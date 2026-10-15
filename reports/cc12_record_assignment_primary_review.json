@@ -1,0 +1,72 @@
+{
+  "schema": "cc12_whole_record_assignment_primary_review_v1",
+  "address": "008f0700",
+  "stage": "whole_Source_and_three_case_fixture_accepted_Main_registration_and_build_pending",
+  "whole_Original": {
+    "bytes": 193,
+    "instructions": 69,
+    "table_bytes": 48
+  },
+  "primary_whole_Source_header_Original_listing_and_probe_Source_read": true,
+  "independent_FP_COFF_process_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\WholeRecordAssignmentIndependentReview01\\compact_review.DATA.json",
+    "bytes": 5361,
+    "sha256": "22a2b196a1292a07bc7bbff4c2c79fbc0a11ff477616f6a401a62c3c592ddb92"
+  },
+  "reviewed_semantics": [
+    "destination tag dispatch only; tag6 and invalid return dest without source read",
+    "Type2 freeclear before physical source+C read and raw duplicate",
+    "Type4 identity and Type5+8 preserved; raw Type5+18 reference copy",
+    "Type7 sequential physical DWORD pairs; positive owning byte-array replacement leaves flag",
+    "no owner ordinal phase tag writes; stable disjoint raw record domain",
+    "Type1 exact7B direct m32 FLD/FSTP retains actual hardware quieting/status with explicit masked empty stack contract"
+  ],
+  "worker_strict_compile": "555e50/exit0",
+  "worker_normal_build": {
+    "terminal": "9e37e3/exit0",
+    "existing_tests_passed": 2,
+    "new_TU_registered": false
+  },
+  "focused_actual_Source_process": {
+    "terminal": "e20a6a/exit0",
+    "pid": 26076,
+    "launches": 1,
+    "actual_inputs": 20,
+    "primary_input_and_stdout_review": "a72d92/exit0",
+    "stdout_bytes": 639,
+    "stderr_bytes": 0,
+    "source_and_untouched_bytes_preserved": true,
+    "cleanup_completed": true,
+    "string_old_new_address_reuse_permitted": true,
+    "selected_SNaN": [
+      "7f812345",
+      "7fc12345",
+      "0001"
+    ]
+  },
+  "gates": {
+    "primary_Source_and_proposed_domain_pass": true,
+    "independent_FP_COFF_and_process_pass": true,
+    "independent_ownership_review_pass": true,
+    "registered_Main_build_pass": false,
+    "actual_Main_COFF_review_pass": false
+  },
+  "limits": [
+    "Only three selected Source runtime calls; full12-arm static proof is separate.",
+    "No independent per-free or leak measurement.",
+    "No Original Native execution or register/stack/FS/EH/OOM/privateCRT/class/application/game proof."
+  ],
+  "independent_ownership_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\local\\WholePropertyRecordAssignmentOwnershipReview01\\compact_ownership_review.DATA.json",
+    "bytes": 18357,
+    "sha256": "c61fb43b45e7eda32d65df55b204baa005d8d1791b8660798c133a602578024a",
+    "primary13currentbooks_verified": true
+  },
+  "Source_commit": "58f06421f",
+  "ghidra_annotations": {
+    "actual_terminal": "see original28 tool receipt for this batch",
+    "prior_values_recorded": true,
+    "project_saved": true,
+    "affected_export_refreshed": true
+  }
+}
