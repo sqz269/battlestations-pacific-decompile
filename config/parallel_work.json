@@ -39285,7 +39285,7 @@
     {
       "id": "cc12_property_library_insert_or_replace",
       "done": false,
-      "state": "in_progress_whole_Source_first_strict_compile_pass_worker_normal_build_and_independent_review_pending",
+      "state": "whole_Source_accepted_worker_strict_normal_and_independent_COFF_pass_Main_registration_queued",
       "worker": "library_insert_source",
       "model": "gpt-6.1-sol",
       "reasoning_effort": "xhigh",
@@ -39306,7 +39306,55 @@
       ],
       "source_ready": true,
       "contract": "Whole172B65 insertion/replacement from actual108h map and raw8h key, physical retirement/key copy/publication/count order, same canonical string process and E17540outer/E175B0inner pools. No arbitrary dispatch/graph/startup/loader scope. Root handles shared registration and metadata.",
-      "qualification": "New ordinary C++ interface. No new tests/probes/runtime or OriginalABI/EH/privateCRT/game claim."
+      "qualification": "New ordinary C++ interface. No new tests/probes/runtime or OriginalABI/EH/privateCRT/game claim.",
+      "code_revision": "198d7c5cd713574651a177ae2c728942452f61be",
+      "full_main_build_pending": true,
+      "worker_normal_build": "8c8bab/exit0",
+      "worker_existing_checks_passed": 2
+    },
+    {
+      "id": "cc12_property_library_CString_readers",
+      "done": false,
+      "state": "in_progress_whole_ordinary_Source_authoring",
+      "worker": "library_lookup_data_resume",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "008f2db0",
+        "00469b60"
+      ],
+      "output_files": [
+        "include/bsp/native_property_library_readers.hpp",
+        "src/native_property_library_readers.cpp",
+        "docs/NATIVE_PROPERTY_LIBRARY_READERS_CC12.md",
+        "reports/native_property_library_readers_cc12.json"
+      ],
+      "depends_on": [
+        "cc12_property_library_lookup_whole"
+      ],
+      "source_ready": true,
+      "contract": "Complete CString wrappers: genuine raw key constructor, owner+4 raw lookup, bool membership without mapped read; value read node+8 before key cleanup and no invented missing-key guard. Same retained canonical string context and fallback authorities. New ordinary interfaces; no Original ABI/EH/privateCRT/game claim."
+    },
+    {
+      "id": "cc12_scene_token_text_wrappers",
+      "done": false,
+      "state": "ABI_and_unreachable_alignment_resolved_whole_Source_authoring",
+      "worker": "scene_token_text_source",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "008d9930",
+        "008d9980"
+      ],
+      "output_files": [
+        "include/bsp/native_scene_token_text.hpp",
+        "src/native_scene_token_text.cpp",
+        "docs/NATIVE_SCENE_TOKEN_TEXT_CC12.md",
+        "reports/native_scene_token_text_cc12.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "contract": "Complete ordinary token wrappers over accepted raw peek/consume/recovery and NativeSceneTokenValueContext. Exact ECX/stack/AL or EAX returns established from Original; 999D..999F is unreachable LEA alignment, no listing repair needed. No file constructor, fabricated tokenizer, model host or new callbacks."
     }
   ],
   "snapshot_after_analysis": {
