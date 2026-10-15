@@ -1,6 +1,6 @@
 {
   "packet": "goal15d_group_lifetime",
-  "status": "complete_concrete_source_group_chain_and_recovered_unwind_operation_strict_compiled_static_checked",
+  "status": "registered_win32_build_3_existing_ctests_registered_source_fixture_and_documented_coff_checks_passed_native_abi_qualified",
   "source": "src/native_avoid_group_lifetime.cpp",
   "header": "include/bsp/native_avoid_group_lifetime.hpp",
   "documentation": "docs/GOAL15D_AVOID_GROUP_LIFETIME.md",
@@ -90,5 +90,18 @@
     "full_registered_build_ctest": "primary owns source registration, full build/CTest, registered COFF/fixture and annotations/exports; pending worker commit"
   },
   "history": "Earlier cc13_avoid_group_clear/destroy typed callback APIs and their reconstruction records/proofs remain intact; new concrete full-entry records added under distinct Source names; existing reviewed/compiler-generated/library names retained",
-  "remaining_limits": ["Native FH3/SEH/frame and original CRT/heap identities not transplanted", "Source table only consumed slot0, production object construction/binding not installed", "invalid allocation graphs/counts/alias lifetime retain original preconditions; no repairs", "no Native execution or game/gameplay/drop-in ABI proof"]
+  "remaining_limits": ["Native FH3/SEH/frame and original CRT/heap identities not transplanted", "Source table only consumed slot0, production object construction/binding not installed", "invalid allocation graphs/counts/alias lifetime retain original preconditions; no repairs", "no Native execution or game/gameplay/drop-in ABI proof"],
+  "primary_integration_validation": {
+  "registered_build": "PASS scripts/build.ps1; all3 existing CTests passed",
+  "build_log": "local/goal15d_final_registered_build.log",
+  "batch_report": "reports/goal15d_reconstruction_batch.json",
+  "saved_annotations_and_exports": "PASS; before annotations/prototype retained in local rollback JSON, program saved and exports refreshed",
+  "native_abi_and_gameplay": "not established",
+  "source_fixture": "PASS actual registered archive genuine Source vtable and clear/destruct/delete chain,11 tracked releases, flags0 group retention",
+  "registered_coff": "PASS132 clear+30 scalar bytes excluding5 expected CALL operands; real table relocation/current95B destructor EH/guard/action emitted",
+  "unwind": "static current guard/action verified; not dynamically exercised or proved equivalent to native FH3/SEH/double-exception ABI",
+  "report_rows": 7,
+  "markdown_claims": 0,
+  "worker_stage_status": "complete_concrete_source_group_chain_and_recovered_unwind_operation_strict_compiled_static_checked"
+}
 }

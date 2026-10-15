@@ -154,3 +154,7 @@ claim follows from the recovered action or static emission checks.
   pending checks must not be inferred from the worker's strict object or peer
   overlay fixture. No Native execution, ABI drop-in, game or gameplay proof is
   claimed. Earlier typed API/history evidence is preserved without rerun.
+
+## Primary integration result
+
+The registered Win32 build and all three existing CTests passed. PASS actual registered archive genuine Source vtable and clear/destruct/delete chain,11 tracked releases, flags0 group retention. PASS132 clear+30 scalar bytes excluding5 expected CALL operands; real table relocation/current95B destructor EH/guard/action emitted. Worker-stage pending checks above are superseded by these actual registered results. Ghidra annotations are saved and exports refreshed; exact archive/object/fixture hashes, prototype rollback and evidence limits are in `reports/goal15d_reconstruction_batch.json`. No dynamic unwind, original ABI or gameplay proof is claimed.

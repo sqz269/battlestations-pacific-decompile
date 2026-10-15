@@ -1,7 +1,7 @@
 {
   "packet":"goal15d_manager_clear",
   "source_base":"80d27d3e9",
-  "status":"complete_native_manager_clear_58_bytes_normalized_real_provider_source_composition_checked_pending_registered_build",
+  "status":"registered_win32_build_3_existing_ctests_registered_source_fixture_and_documented_coff_checks_passed_native_abi_qualified",
   "owned_addresses":["0041f600"],
   "owned_files":["include/bsp/native_avoid_manager_clear.hpp","src/native_avoid_manager_clear.cpp","docs/GOAL15D_AVOID_MANAGER_CLEAR.md","reports/goal15d_avoid_manager_clear.json"],
   "functions":[{
@@ -77,5 +77,18 @@
     "native_runtime_differential":"not run",
     "gameplay":"not validated"
   },
-  "integration":{"target":"bsp_core","target_sources_add":"src/native_avoid_manager_clear.cpp","ghidra_mutations":"none; primary annotation/export owns saved evidence","lease":"release after commit for primary transfer"}
+  "integration":{"target":"bsp_core","target_sources_add":"src/native_avoid_manager_clear.cpp","ghidra_mutations":"none; primary annotation/export owns saved evidence","lease":"release after commit for primary transfer"},
+  "primary_integration_validation": {
+  "registered_build": "PASS scripts/build.ps1; all3 existing CTests passed",
+  "build_log": "local/goal15d_final_registered_build.log",
+  "batch_report": "reports/goal15d_reconstruction_batch.json",
+  "saved_annotations_and_exports": "PASS; before annotations/prototype retained in local rollback JSON, program saved and exports refreshed",
+  "native_abi_and_gameplay": "not established",
+  "source_fixture": "PASS actual registered archive virtual group destruction, cache/queue/hull composition,11 tracked releases and retained storage",
+  "registered_coff": "PASS58 native bytes vs60 Source; only context PUSH/POP and tail JMP operand excluded",
+  "report_rows": 4,
+  "markdown_claims": 5,
+  "unchecked_indirect_claim": "manually/byte/table/registered-fixture checked; direct-call parser cannot pair CALL EDX",
+  "worker_stage_status": "complete_native_manager_clear_58_bytes_normalized_real_provider_source_composition_checked_pending_registered_build"
+}
 }

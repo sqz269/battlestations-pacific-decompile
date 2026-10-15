@@ -132,3 +132,7 @@ in `bsp_core`, performs saved annotation/export refresh, and runs the full
 required Win32 build/CTest. The worker changes only four owned outputs and this
 address's appended name/new function ledger records. Current provider/global
 binding, original SEH and game/runtime equivalence are not claimed.
+
+## Primary integration result
+
+The registered Win32 build and all three existing CTests passed. PASS actual registered archive virtual group destruction, cache/queue/hull composition,11 tracked releases and retained storage. PASS58 native bytes vs60 Source; only context PUSH/POP and tail JMP operand excluded. Worker-stage pending checks above are superseded by these actual registered results. Ghidra annotations are saved and exports refreshed; exact archive/object/fixture hashes, prototype rollback and evidence limits are in `reports/goal15d_reconstruction_batch.json`. No dynamic unwind, original ABI or gameplay proof is claimed.

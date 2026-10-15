@@ -102,3 +102,7 @@ failures, unchecked claims or warnings. `git diff --check` passed.
 No repository test target/framework, native differential or game-runtime proof
 is added. Primary registers `src/native_grid_list_node.cpp`, builds, annotates
 and integrates the packet. The lease is released on final transfer.
+
+## Primary integration result
+
+The registered Win32 build and all three existing CTests passed. PASS actual registered archive node allocation, three DWORDs, matching free. PASS51 native bytes except1 redirected allocator CALL operand. Worker-stage pending checks above are superseded by these actual registered results. Ghidra annotations are saved and exports refreshed; exact archive/object/fixture hashes, prototype rollback and evidence limits are in `reports/goal15d_reconstruction_batch.json`. No dynamic unwind, original ABI or gameplay proof is claimed.
