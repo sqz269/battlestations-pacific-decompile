@@ -1,0 +1,207 @@
+{
+  "packet": "oct15_string_vector_allocation",
+  "worker": "agent/oct15_avoid_distance",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "project_program_verified_before_analysis": true,
+  "ghidra_read_only": true,
+  "source": "src/native_string_vector_allocation.cpp",
+  "header": "include/bsp/native_string_vector_allocation.hpp",
+  "documentation": "docs/OCT15_STRING_VECTOR_ALLOCATION.md",
+  "routines": [
+    {
+      "address": "00432090",
+      "body_end_inclusive": "004320d6",
+      "listed_instructions": 28,
+      "flow_gaps": [],
+      "coverage": "complete_at_existing_current_CRT_and_owning_Source_exception_boundaries",
+      "implementation": "buy_native_checked_string_vector_00432090",
+      "retained_name": "STL_NativeStringVector_Buy_00432090",
+      "original_abi": "ECX actual16B checked-vector header; unsigned count first stacked DWORD; EDX ignored; EAX full result; RET4. Source fastcall reserves ignored EDX.",
+      "layout": "opaque/proxy+0 untouched; begin+4,end+8,capacity_end+C. Not the distinct NativeStringVectorStorage0Ch data/count/capacity overlay.",
+      "schedule": "Capture count; zero+4,+8,+C; count0 returns full0 without allocation; unsigned count>1FFFFFFF throws owning length transport; otherwise allocate count*8, publish begin,end=begin,capacity_end in order. No old destruction/free/rollback.",
+      "return": "Positive EAX=(native32 capacity_end & FFFFFF00)|1; zero EAX=0. Native MOV AL,1 does not clear upper24 bits.",
+      "arithmetic": "Unsigned32 count*8 and native32 address addition preserve defined wrap; no C++ out-of-array pointer arithmetic.",
+      "preconditions": "Actual16B header storage remains live/writable across actual current new-handler/EH activity. All accesses and allocation-domain ownership admitted; private implementation-frame/spill aliases excluded. No proxy or element construction invented."
+    },
+    {
+      "address": "0042bf40",
+      "body_end_inclusive": "0042bf94",
+      "listed_instructions": 25,
+      "flow_gaps": [],
+      "coverage": "complete_at_accepted_00BCFEB0_current_CRT_boundary",
+      "implementation": "allocate_native_string_vector_0042bf40",
+      "retained_name": "STL_allocator_allocate_0042bf40",
+      "original_abi": "ECX unsigned count, no consumed EDX/stack inputs, EAX raw pointer, plain RET. Source fastcall reserves ignored EDX.",
+      "range": "Native zero path allocates0. For positive count unsigned DIV FFFFFFFF/count compared>=8 admits count<=1FFFFFFF; max bytesFFFFFFF8. No extra host guard.",
+      "binding": "singleton_lifetime_allocate object byte-domain, native_bytes=host_bytes=count*8; actual current malloc/_callnewh/retry/bad_alloc, matching singleton_lifetime_free.",
+      "exception_boundary": "Overflow uses accepted pointerallocator00BCFEB0 Source std::bad_alloc boundary; original BF6340 null-slot base construction, D6923C vtable, E03CC0 ThrowInfo, static CRT and FH3/catch identity are qualified and not reproduced."
+    },
+    {
+      "address": "00431f70",
+      "body_end_inclusive": "00431fd8",
+      "listed_instructions": 23,
+      "flow_gaps": [],
+      "coverage": "complete_by_exact_matched_accepted_owning_exception_service",
+      "implementation": "throw_native_string_vector_length_error_00431f70",
+      "retained_name": "STL_xlen_throw_00431f70",
+      "original_abi": "No consumed input; noreturn. Source cdecl noreturn wrapper.",
+      "binding": "native_singleton_length_error_00bd0590; complete original bodies, raw handlers/FuncInfo/maps/actions compared before reuse.",
+      "side_effects": "Actual no-init SBO capacity15,length0,NUL; counted18 bytes vector<T> too long; state0 armed after successful counted assign; actual00411700 legacy payload construction; D69260 word; completed SBO cleanup004072D0. No generic std::length_error or extra initialization.",
+      "exception_boundary": "NativeSingletonVectorLengthError owns actual28h legacy payload, copy00411940/destroy00411780. Source catch/RTTI/compiler EH replace original D83F98/BF6885/FH3/native std::length_error identity; vtable address is data, not host-callable."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "004320b6",
+      "native": "00431f70",
+      "function": "00432090",
+      "contract": "complete body and exact matched accepted owning throw service read",
+      "binding": "throw_native_string_vector_length_error_00431f70 after three zero stores"
+    },
+    {
+      "address": "004320bf",
+      "native": "0042bf40",
+      "function": "00432090",
+      "contract": "complete body read; currentCRT/overflow exception boundary explicit",
+      "arguments": "ECX captured count, EDX explicitly0; EAX allocation",
+      "binding": "allocate_native_string_vector_0042bf40(count,nullptr)"
+    },
+    {
+      "address": "0042bf51",
+      "native": "00bf681b",
+      "function": "0042bf40",
+      "contract": "accepted complete actual singleton_lifetime_allocate service read",
+      "arguments": "one count*8 byte argument, including0",
+      "binding": "actual current malloc/_callnewh/retry/Source bad_alloc service; installed staticCRT identity unbound"
+    },
+    {
+      "address": "0042bf79",
+      "native": "00bf6340",
+      "function": "0042bf40",
+      "contract": "native base-constructor export read; currentCRT exception boundary retained as accepted00BCFEB0",
+      "arguments": "ECX local exception base, stacked address of null message slot",
+      "binding": "qualified Source std::bad_alloc overflow transport; no claim of native payload/constructor binary identity"
+    },
+    {
+      "address": "0042bf90",
+      "native": "00bf6885",
+      "function": "0042bf40",
+      "contract": "library throw, no normal return; native payload/vtable/ThrowInfo operands recovered",
+      "arguments": "native exception object with D6923C word and E03CC0 ThrowInfo",
+      "binding": "qualified accepted currentCRT Source std::bad_alloc, not original FH3/catch identity"
+    },
+    {
+      "address": "00431fa8",
+      "native": "00408720",
+      "function": "00431f70",
+      "contract": "accepted actual counted assignment binding read through complete owning throw service",
+      "arguments": "actual no-init SBO initialized capacity15,length0,NUL; messageCE37E0,count18",
+      "binding": "via exact matched native_singleton_length_error_00bd0590"
+    },
+    {
+      "address": "00431fbd",
+      "native": "00411700",
+      "function": "00431f70",
+      "contract": "accepted actual legacy owning constructor binding read through complete owning throw service and public payload contract",
+      "arguments": "actual exception payload from completed SBO message, state0 armed",
+      "binding": "via NativeSingletonVectorLengthError construction in exact matched accepted service"
+    },
+    {
+      "address": "00431fd4",
+      "native": "00bf6885",
+      "function": "00431f70",
+      "contract": "library noreturn throw; same original operands as accepted00BD0590",
+      "arguments": "legacy payload D69260 first word; native ThrowInfoD83F98",
+      "binding": "accepted owning Source exception transport; original native catch/EH identity qualified"
+    }
+  ],
+  "layout_evidence": {
+    "identity": "existing checked-vector assignment/erase raw+4,+8,+C field contracts, confirmed original Buy stores; no use of different0Ch NativeStringVectorStorage",
+    "storage_access": "raw x86 DWORD stores; no overlay, indeterminate pointer preimage evaluation or constructed triplet",
+    "alias_limit": "header remains actual live writable storage; private source frame/spill aliases excluded"
+  },
+  "original_byte_audit": {
+    "original_binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "extraction": "PE32 optional-header image base and section-table RVA-to-raw mapping; original disk bytes, no Ghidra execution or mutation.",
+    "new_body": "00431f70..00431fd8",
+    "accepted_body": "00bd0590..00bd05f8",
+    "size_each": 105,
+    "matching_nonrelocation_bytes": 89,
+    "mask": "Offset03..06 handler address;39..3C,4E..51,65..68 CALL displacements. All three CALL targets independently resolved and equal; handlers independently matched by FuncInfo/unwind actions.",
+    "differences_after_mask": [],
+    "calls": [
+      {
+        "new_call": "00431fa8",
+        "old_call": "00bd05c8",
+        "resolved_target": "00408720"
+      },
+      {
+        "new_call": "00431fbd",
+        "old_call": "00bd05dd",
+        "resolved_target": "00411700"
+      },
+      {
+        "new_call": "00431fd4",
+        "old_call": "00bd05f4",
+        "resolved_target": "00bf6885"
+      }
+    ],
+    "new_bytes": "6aff6838ecc50064a100000000506489250000000083ec446a1268e037ce008d4c2408c74424200f000000c744241c00000000c644240c00e87367fdff8d0424508d4c2420c744245000000000e83ef7fdff68983fd8008d4c242051c74424246092d600e8ac487c00",
+    "accepted_bytes": "6aff687854cc0064a100000000506489250000000083ec446a1268e037ce008d4c2408c74424200f000000c744241c00000000c644240c00e8538183ff8d0424508d4c2420c744245000000000e81e1184ff68983fd8008d4c242051c74424246092d600e88c620200",
+    "eh": [
+      {
+        "handler": "00c5ec38",
+        "funcinfo": "00d8533c",
+        "unwind_map": "00d85334",
+        "state0_action": "00c5ec30",
+        "funcinfo_prefix_bytes": "22059319010000003453d800",
+        "unwind_map_bytes": "ffffffff30ecc500",
+        "handler_bytes": "b83c53d800e9017ff9ff",
+        "action_bytes": "8d4db0e998867aff",
+        "state0": "to -1; LEA ECX,[EBP-50h]; JMP004072D0",
+        "handler_target": "00bf6b43"
+      },
+      {
+        "handler": "00cc5478",
+        "funcinfo": "00dff4bc",
+        "unwind_map": "00dff4b4",
+        "state0_action": "00cc5470",
+        "funcinfo_prefix_bytes": "2205931901000000b4f4df00",
+        "unwind_map_bytes": "ffffffff7054cc00",
+        "handler_bytes": "b8bcf4df00e9c116f3ff",
+        "action_bytes": "8d4db0e9581e74ff",
+        "state0": "to -1; LEA ECX,[EBP-50h]; JMP004072D0",
+        "handler_target": "00bf6b43"
+      }
+    ],
+    "scope": "Static original-to-original equality evidence only; no compiled-source byte equality, native execution, original EH/catch ABI or gameplay claim."
+  },
+  "compiled_source_evidence": {
+    "object": "build/win32/bsp_core.dir/Release/native_string_vector_allocation.obj",
+    "dump_file": "local/oct15_string_vector_allocation_coff.asm",
+    "dumper": "MSVC dumpbin14.51.36244.0 /DISASM",
+    "buy": "count captured EDI at offset11 before stores24,34,44; publication stores93,A1,B4; uint32 result atBA..C5 and RET4 atD1; no float/pointer-arithmetic surrogate",
+    "allocator": "unsigned JA limit1FFFFFFF at10..16; count*8 at18; unconditional accepted allocation service at30 on admitted path, including zero; currentCRT Source bad_alloc on overflow",
+    "throw": "single E9 rel32 tail JMP to native_singleton_length_error_00bd0590, inspected actual named COFF symbol",
+    "scope": "Static exact-source output inspection, not original-versus-source byte equality or native execution; optimizer inlines allocator into Buy."
+  },
+  "floating_point": "No x87/FP instruction in any of the three original bodies; no NaN semantics involved.",
+  "uncertainties": [
+    "Retained library-role names are descriptive hypotheses, not recovered source symbols.",
+    "New interfaces preserve stated register/stack/result contracts, but do not promise original complete binary ABI or original FH3 exception transport.",
+    "Installed staticCRT heap/new-handler, allocator bad_alloc payload/catch identity and legacy length-error native catch/RTTI remain qualified accepted Source boundaries.",
+    "No packet-specific native differential fixture, original exception execution, startup or gameplay validation."
+  ],
+  "checks": {
+    "build": "pass ./scripts/build.ps1 after exact C++ source changes",
+    "build_log": "local/oct15_string_vector_allocation_build.log",
+    "existing_suites": "3/3 pass: reconstructed_math, native_math_differential, tool_tests",
+    "verify_report_calls": "pass8/8 exact call sites and containing functions",
+    "git_diff_check": "pass",
+    "new_tests": 0,
+    "packet_native_differential_fixture": false,
+    "abi_compatible": false,
+    "game_validated": false
+  }
+}
