@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_scene_integer_set_node",
+  "source": "src/native_scene_integer_set_node.cpp",
+  "header": "include/bsp/native_scene_integer_set_node.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_INTEGER_SET_NODE.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "routines": [
+    {
+      "address": "004681b0",
+      "end_exclusive": "004681e9",
+      "coverage": "complete",
+      "cpp_symbol": "allocate_native_scene_integer_set_node_004681b0",
+      "original_abi": "No register input; five stack words left,parent,right,key-pointer,color; RET14; EAX allocation",
+      "bytes": "6a 14 e8 64 e6 78 00 83 c4 04 85 c0 74 28 8b 4c 24 04 8b 54 24 08 89 08 8b 4c 24 0c 89 50 04 8b 54 24 10 89 48 08 8b 0a 8a 54 24 14 89 48 0c 88 50 10 c6 40 11 00 c2 14 00",
+      "live_disk_equal": true,
+      "live_callers": 1,
+      "instruction_count": 18,
+      "sha256": "5819c062207fc40ccce491ddd5f2990fd74f1aa00d195f3afb37affbd5301575"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "004681b2",
+      "native": "00bf681b",
+      "function": "004681b0",
+      "contract": "real allocation14h before all cell reads; caller ADD ESP,4 at004681B7"
+    },
+    {
+      "address": "0046a1d4",
+      "native": "004681b0",
+      "function": "0046a150",
+      "contract": "five stacked words in left/parent/right/key-pointer/color order; callee RET14; EAX node"
+    }
+  ],
+  "source_dependency": {
+    "routine": "00bf681b",
+    "symbol": "singleton_lifetime_allocate",
+    "source": "src/singleton_lifetime.cpp",
+    "kind": "object",
+    "native_bytes": 20,
+    "host_bytes": 20,
+    "modified": false
+  },
+  "prior_annotations": [
+    {
+      "address": "004681b0",
+      "name": "STL_Tree_BuyNode_004681b0",
+      "comment": ""
+    }
+  ],
+  "input_schedule": [
+    "allocation before every cell read; null skips all remaining accesses",
+    "read left0,parent4; store node.left0",
+    "read right8; store node.parent4",
+    "read key-pointerC; store node.right8",
+    "read pointed key; read color LOW byte10",
+    "store keyC,color10,nil11=0; padding12/13 untouched"
+  ],
+  "source_registration": "queued until foreign CMake lease releases; no exclusive shared registry lease taken",
+  "validation": {
+    "build": "pending",
+    "existing_ctests": "pending",
+    "report_call_verification": "PASS2/2 native transfer rows; markdown0failures,0unchecked,0warnings",
+    "new_tests": 0,
+    "native_differential_fixture": false,
+    "abi_compatible": false,
+    "game_executed": false,
+    "game_validated": false,
+    "diff_check": "PASS git diff --check"
+  },
+  "qualification": "Complete ordinary raw14h node Source over real current-CRT allocation, current post-allocation/interleaved argument reads, full null branch and untouched padding; no new callbacks, nominal enum, private stack/CRT/EH ABI, candidate native differential or game claim",
+  "disk_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "annotation": {
+    "applied": true,
+    "names_retained": true,
+    "prior_values_log": "local/ghidra-annotations-20261015T210217Z.json",
+    "program_saved": true,
+    "exports_refreshed": true
+  }
+}
