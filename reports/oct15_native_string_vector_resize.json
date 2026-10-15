@@ -1,0 +1,285 @@
+{
+  "packet": "oct15_native_string_vector_resize",
+  "status": "complete_actual_raw_pool_resize_build_tested_qualified_interfaces",
+  "source_ready": true,
+  "source": "src/native_string_vector_resize.cpp",
+  "header": "include/bsp/native_string_vector_resize.hpp",
+  "documentation": "docs/OCT15_NATIVE_STRING_VECTOR_RESIZE.md",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Every live bsp.py ghidra query verifies project/program/language/image base before analysis.",
+    "ghidra_mutations": false
+  },
+  "routines": [
+    {
+      "address": "0049e050",
+      "native_name": "STL_CheckedNativeStringVector_Resize_0049E050",
+      "reviewed_name": "STL_CheckedNativeStringVector_Resize_0049E050",
+      "name": "resize_native_string_header_vector_0049e050",
+      "body": "0049e050-0049e143",
+      "coverage": "complete actual resize all branches and owned-parameter cleanup, under accepted Source/context/CRT/EH qualifications",
+      "original_abi": "fastcall ECX actual10h header, EDXunused; stack requested count, owned fill length, owned fill data; RET0Ch; no semantic result. Source preserves three scalar words and adds actual raw-pool context, with canonical private8h header holding the original owned bits.",
+      "layout": "Opaque+0, begin+4,end+8,capacity+C; actual8h pooled-string elements, producer-established. No generic vector, fake iterator or storage callback.",
+      "ownership": "Consumes an already prepared independent owning8h parameter on growth/shrink/no-change/empty paths; no extra allocation/copy construction. Caller retaining prototype must prepare independent owned data first. Source canonical NativeString has no implicit destructor; explicit actual0041DD20 releases current words once. Normal destructor lies outside algorithm catch.",
+      "growth": "Initial begin captured before state0; null gives initialsize0 without end read. If initialsize<requested, recompute size against same captured begin/fresh end; capture another current end, report begin>end, continue preserving captured size/end. Actual full InsertCount receives requested-oldsize wrapping, captured end and actual owned fill header.",
+      "shrink": "If captured begin0 skip. Else reread end, compare requested against fresh SAR32(end-captured begin,3) size, skip if requested>=size. Otherwise report captured begin>captured end; capture current begin and report it>fresh end; compute target from captured post-report begin; report target>fresh end OR target<fresh begin with short-circuit. Target/end survive returning reports. Actual erase gets private2DWORD output and both owners=receiver.",
+      "arithmetic": "All count/difference/address arithmetic uses DWORD wrap; signed SAR3 represented as unsigned32 bit result. No additional guard/clamp/rollback/owner validation.",
+      "host_steps": [
+        {
+          "address": "0049e0a2",
+          "native": "00bf6713",
+          "function": "0049e050",
+          "host": "invoke_native_invalid_parameter_00bf6713",
+          "contract": "Growth captured begin versus captured end; returning report preserves recomputed oldsize, requested and insertion end. Existing current-CRT noinfo adapter, original encoded handler/Watson identity qualified."
+        },
+        {
+          "address": "0049e0b3",
+          "native": "0044f410",
+          "function": "0049e050",
+          "host": "insert_native_string_header_vector_count_0044f410",
+          "contract": "Complete accepted full actual general InsertCount; owner receiver, position captured end, requested-oldsize wrapping, pointer to owned8h parameter; Native RET10h consumes four stacked words; Source extra raw-pool context. Child temporary copy does not transfer parameter ownership."
+        },
+        {
+          "address": "0049e0d0",
+          "native": "00bf6713",
+          "function": "0049e050",
+          "host": "invoke_native_invalid_parameter_00bf6713",
+          "contract": "Shrink captured initial begin versus retained fresh end; returning continuation keeps that end."
+        },
+        {
+          "address": "0049e0dd",
+          "native": "00bf6713",
+          "function": "0049e050",
+          "host": "invoke_native_invalid_parameter_00bf6713",
+          "contract": "Captured post-report CURRENT begin versus another CURRENT end; preserve that begin for target calculation."
+        },
+        {
+          "address": "0049e0f3",
+          "native": "00bf6713",
+          "function": "0049e050",
+          "host": "invoke_native_invalid_parameter_00bf6713",
+          "contract": "Computed target versus fresh end then fresh begin with short-circuit above-end test; returning report preserves target and earlier end."
+        },
+        {
+          "address": "0049e103",
+          "native": "004954f0",
+          "function": "0049e050",
+          "host": "erase_native_string_header_vector_range_004954f0",
+          "contract": "Exact accepted actual raw-pool erase with owner receiver/target/owner receiver/captured end and private two-DWORD output; Native five stacked words, RET14h; result ignored. No direct end=target substitute."
+        },
+        {
+          "address": "0049e127",
+          "native": "00419cc0",
+          "function": "0049e050",
+          "host": "raw-pool getter inside destroy_native_string_header_0041dd20",
+          "contract": "Normal native captures fill data before state-1, null skips later reads/providers; length+1 wraps. Source invokes accepted actual destructor outside algorithm catch so provider failure is not retried."
+        },
+        {
+          "address": "0049e12e",
+          "native": "00bd1510",
+          "function": "0049e050",
+          "host": "raw-pool return inside destroy_native_string_header_0041dd20",
+          "contract": "Return captured current owned-fill block using captured length+1/flag1 and actual current publication/pool/manager policy. Native static CRT/fault/exception identity not claimed."
+        }
+      ]
+    },
+    {
+      "address": "00c63540",
+      "native_name": "Unwind@00c63540",
+      "reviewed_name": "Unwind@00c63540",
+      "name": "resize_native_string_header_vector_0049e050_owned_fill_unwind",
+      "body": "00c63540-00c63547",
+      "coverage": "complete Source ownership-unwind fragment using accepted actual0041DD20; not a standalone native-frame API",
+      "standalone_api": false,
+      "original_abi": "Unwind runtime supplies EBP frame basis; LEA ECX,[EBP+8] selects owned8h argument header, JMP0041DD20. Distinct from normal-path EBP used as captured end.",
+      "tail_transfer": {
+        "instruction_address": "00c63543",
+        "target": "0041dd20",
+        "instructions": [
+          "LEA ECX,[EBP+8]",
+          "JMP0041DD20"
+        ],
+        "evidence": "Disk/live disassembly metadata, not ordinary CALL check."
+      },
+      "source_scope": "After first receiver-begin read, C++ catch destroys CURRENT owned private header then rethrows. Cleanup failure immediately escapes, no retry; native FH3/SEH/double-exception personality remains distinct."
+    }
+  ],
+  "caller_evidence": [
+    {
+      "address": "004a3735",
+      "native": "0049e050",
+      "function": "004a3610",
+      "contract": "Read full dominating constructor prefix through argument setup: EBX zeroed at entry and unchanged before call/callee-saved boundaries; SUB ESP8, write two words EBX, push captured requested count, receiver actual string-vector subobject. No extra caller-side argument destruction after callee RET0Ch."
+    },
+    {
+      "address": "006a8f68",
+      "native": "0049e050",
+      "function": "006a7be0",
+      "contract": "Read bounded24-instruction setup: SUB ESP8, write both owned argument words0, push requested2, receiver captured nested vector. Empty concrete arguments do not narrow nonempty callee ownership."
+    }
+  ],
+  "caller_coverage": {
+    "direct_sites": 2,
+    "containing_functions": [
+      "004a3610",
+      "006a7be0"
+    ],
+    "evidence": "Live xrefs limit100; bounded24-instruction contexts both sites; complete dominating constructor register/producer prefix through first call; existing settings producer context. No indirect-call claim.",
+    "receipt": "local/oct15_native_string_vector_resize_callers.json"
+  },
+  "native_disk_evidence": {
+    "span": "0049e050-0049e143",
+    "end_exclusive": "0049e144",
+    "bytes": 244,
+    "sha256": "f0c46828c6cf6e1095c57a394e9c4fdff0565405f6b07254f68a2a10a3256005",
+    "instruction_count": 92,
+    "current_export_instruction_starts_match": true,
+    "native_call_sites": [
+      {
+        "address": "0049e0a2",
+        "callee": "00bf6713"
+      },
+      {
+        "address": "0049e0b3",
+        "callee": "0044f410"
+      },
+      {
+        "address": "0049e0d0",
+        "callee": "00bf6713"
+      },
+      {
+        "address": "0049e0dd",
+        "callee": "00bf6713"
+      },
+      {
+        "address": "0049e0f3",
+        "callee": "00bf6713"
+      },
+      {
+        "address": "0049e103",
+        "callee": "004954f0"
+      },
+      {
+        "address": "0049e127",
+        "callee": "00419cc0"
+      },
+      {
+        "address": "0049e12e",
+        "callee": "00bd1510"
+      }
+    ],
+    "eh": {
+      "address": "00d8b760",
+      "length": 44,
+      "hex": "ffffffff4035c600220593190100000060b7d800000000000000000000000000000000000000000001000000",
+      "sha256": "55aacd9c8c693f22881df373bf0228d2ad379d18b54ad2e86d8fa5e2227a526a",
+      "matches_live_byte_reads": true
+    },
+    "unwind_and_handler": [
+      {
+        "address": "00c63540",
+        "bytes": "8d4d08",
+        "instruction": "lea ecx, [ebp + 8]"
+      },
+      {
+        "address": "00c63543",
+        "bytes": "e9d8a77bff",
+        "instruction": "jmp 0x41dd20"
+      },
+      {
+        "address": "00c63548",
+        "bytes": "b868b7d800",
+        "instruction": "mov eax, 0xd8b768"
+      },
+      {
+        "address": "00c6354d",
+        "bytes": "e9f135f9ff",
+        "instruction": "jmp 0xbf6b43"
+      }
+    ],
+    "receipt": "local/oct15_native_string_vector_resize_disk.json",
+    "scope": "Full92-instruction owned normal listing read in retained InsertCount context and reused; original byte boundaries compared to export; unwind/handler and EH bytes separately inspected."
+  },
+  "exception_metadata": {
+    "entry_handler": "00c63548",
+    "func_info": "00d8b768",
+    "magic": "19930522",
+    "max_state": 1,
+    "unwind_map": "00d8b760",
+    "unwind_entries": [
+      [
+        -1,
+        "00c63540"
+      ]
+    ],
+    "try_count": 0,
+    "try_map": null,
+    "state_boundary": "State0 armed0049E075 after first receiver begin read0049E06E; normal state-1 stored0049E111 before getter/return.",
+    "stack": "Entry words ret/requested/fill length/fill data. Normal ESP=entryESP-24h, so count+28h/fill+2Ch/data+30h/state+20h. Funclet EBP supplied by unwind runtime is not the normal captured-end EBP register.",
+    "limits": "Source explicit C++ /EHsc catch/rethrow and private canonical header replace native funclet invocation; no original frame/ABI/FH3/SEH/fault/cleanup-failure identity."
+  },
+  "preserved_projection": {
+    "address": "0049e050",
+    "kind": "fragment",
+    "name": "resize_native_input_settings_strings_0049e050",
+    "source": "src/native_input_settings_vector_storage.cpp",
+    "status": "actual_storage_contract_integrated_settings_strict_win32_native_differential_passed",
+    "action": "Unchanged; separate new actual-pool Source function and ownership fragment. Prior NativeStringStorage/qualified inner append/fixture evidence not promoted or replaced."
+  },
+  "dependency_readiness": {
+    "0044f410": "Accepted complete actual general InsertCount22ed4514d; all branches/temporary ownership/cleanup distinctions retained.",
+    "004954f0": "Accepted complete actual raw-pool erasea6ff2e70c; exact copy/destruction/end/output order and returning reports.",
+    "0041dd20/00419cc0/00bd1510": "Accepted actual8h header destructor/current raw pool/manager return, captured data/null policy/current getter and length+1 wrap.",
+    "00bf6713": "Accepted current-CRT noinfo adapter, may return or throw supported C++ exception.",
+    "baseline": "Root staging22239cedc merged, then published main6f83fab39 merged before build; all children accepted. No unresolved stub/callback/model introduced."
+  },
+  "cmake_coordination": {
+    "packet": "oct15_native_string_vector_resize_registration",
+    "protocol": "Queued behind previous writer, claimed after queue cleared, appended own source only, released at primary request after append. Address/source lease retained pending integration."
+  },
+  "corrections": [
+    {
+      "was": "Treat by-value fill as borrowed prototype or introduce an additional deep copy at function entry.",
+      "is": "Three scalar stack words preserve requested plus already owned8h header bits; consume on every completed path, with canonical private header and no extra allocation.",
+      "evidence": "Caller8-byte argument writes, native parameter stack offsets/RET0Ch, normal data cleanup and FuncInfo state0 unwindC63540."
+    },
+    {
+      "was": "Reduce resize growth/shrink to generic append/end assignment or freshly recompute endpoints after invalid-handler return.",
+      "is": "Use accepted complete actual InsertCount/erase, preserving captured begin/size/end/target and all fresh reads/returning continuation.",
+      "evidence": "Full0049E050..0049E143 listing and all8 native CALL sites."
+    }
+  ],
+  "checks": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "exit_code": 0,
+      "log": "local/oct15_native_string_vector_resize_build.log",
+      "existing_suites_passed": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "native_math_differential_scope": "Existing math seeds only; no new-function native differential probe."
+    },
+    "report_calls": {"json_checked": 10, "documentation_checked": 10, "failed": 0, "documentation_unchecked": 0, "documentation_warnings": 0},
+    "source_review": "Primary reviewed full Source/header, all92 normal native instructions, raw unwind/FuncInfo and cleanup action; no code changes requested.",
+    "ledger_scope": "Only two leased addresses: established resize name evidence appended, generated unwind name recorded, one new actual Source function and one ownership-unwind fragment. All previous name metadata/evidence and reconstruction records preserved.",
+    "index": "python tools/bsp.py index --if-stale completed after owned ledger additions",
+    "diff_check": "git diff --check and final git diff --cached --check passed",
+    "existing_build_warning": "Previously recorded unrelated LNK4006 duplicate spawn_request_id_matches remains; no new Source warning.",
+    "new_tests": "none; full owned native/EH evidence, all direct caller setups and existing suites"
+  },
+  "limits": {
+    "complete_source": "Valid taken actual header/backing and independent owned parameter allocation accepted by the actual RawPoolContext services.",
+    "original_abi_compatible": false,
+    "private_frame": "New Source extra context and canonical private parameter header differ from native stack-slot addresses/aliasing and exact private load/fault schedule.",
+    "copy_policy": "Accepted current-CRT overlap-copy/zero-byte omission through actual children inherited.",
+    "exception_domain": "Source current C++ /EHsc cleanup/rethrow; normal destructor outside catch; cleanup failure escapes immediately. Original CRT/FH3/SEH/double-exception/fault identity not established.",
+    "native_differential_for_new_function": false,
+    "runtime_binding": false,
+    "game_validated": false
+  }
+}
