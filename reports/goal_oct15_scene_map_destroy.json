@@ -128,15 +128,18 @@
   ],
   "source_registration": "unique bsp_core CMake append after fresh unleased check and only own queue removal; no exclusive whole-file lease",
   "validation": {
-    "build": "pending",
-    "existing_ctests": "pending",
+    "build": "PASS scripts/build.ps1; strict MSVC Win32; new TU compiled",
+    "existing_ctests": "PASS2/2 configured tests: reconstructed_math,tool_tests; native_math_differential not enabled in this worktree",
     "report_call_verification": "PASS8/8 direct native call/tail rows; markdown0failures,0unchecked,0warnings",
     "new_tests": 0,
     "native_differential_fixture": false,
     "abi_compatible": false,
     "game_executed": false,
     "game_validated": false,
-    "diff_check": "PASS git diff --check"
+    "diff_check": "PASS git diff --check",
+    "tested_commit": "7dda07ee6e19360e1ed36d070ef6604fa8c687b0",
+    "build_log": "local/goal-oct15-scene-map-destroy-build.log",
+    "build_warning": "LNK4006 duplicate spawn_request_id_matches in existing lua_binding_spawn.obj/lua_spawn_new.obj; outside packet scope"
   },
   "qualification": "Three complete ordinary raw bodies share verified equal implementation, full real range provider with distinct explicit argument/output/private backing and returning diagnostics; free current head, no mapped ownership/callback, private stack/CRT/FH3/ABI/candidate differential/game proof",
   "canonical_body_comparisons": [

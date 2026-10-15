@@ -59,7 +59,9 @@ Live batches verify configured `C:/Users/sqz269/bsp.gpr` and
 PE. Prior names/empty plate comments are preserved under the Ghidra write lock,
 then the project is saved and affected exports refreshed. The worker removed
 only its own queue after a fresh unleased check and appended the unique CMake
-line, without an exclusive registry lease. Strict MSVC Win32 build and existing
-CTests are pending in the initial draft.
+line, without an exclusive registry lease. Strict MSVC Win32 `scripts/build.ps1`
+passed for Source revision `7dda07ee6e19360e1ed36d070ef6604fa8c687b0`, with both
+configured existing CTests (`reconstructed_math` and `tool_tests`) passing.
+Native math differential tests were not enabled in this worktree.
 No new routine tests, candidate original-byte differential, binary ABI or
 gameplay validation are claimed.
