@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_scene_integer_set_clear",
+  "source": "src/native_scene_integer_set_clear.cpp",
+  "header": "include/bsp/native_scene_integer_set_clear.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_INTEGER_SET_CLEAR.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "address": "00468300",
+      "end_exclusive": "00468335",
+      "coverage": "complete ordinary Source",
+      "cpp_symbol": "destroy_native_scene_integer_set_subtree_00468300",
+      "original_abi": "ECX forwarded tree,one stacked node,unused EDX,RET4,no semantic result",
+      "instruction_count": 23,
+      "native_bytes": 53,
+      "bytes": "53 56 57 8b 7c 24 10 80 7f 11 00 8b d9 8b f7 75 1e 8b 46 08 50 8b cb e8 e4 ff ff ff 8b 36 57 e8 88 e2 78 00 83 c4 04 80 7e 11 00 8b fe 74 e2 5f 5e 5b c2 04 00",
+      "sha256": "7434159a87406ca00f5650b26a7267a2b5b621ba81583461ec8856bca229080d",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00468980",
+      "end_exclusive": "004689ab",
+      "coverage": "complete ordinary Source",
+      "cpp_symbol": "clear_native_scene_integer_set_00468980",
+      "original_abi": "ECX tree,unused EDX,RET,no semantic result",
+      "instruction_count": 16,
+      "native_bytes": 43,
+      "bytes": "56 8b f1 8b 46 04 8b 48 04 51 8b ce e8 6f f9 ff ff 8b 46 04 89 40 04 8b 46 04 c7 46 08 00 00 00 00 89 00 8b 76 04 89 76 08 5e c3",
+      "sha256": "7a1ca484241520aaada780a08f110ca4403840c72ec79e9b53c90c791c160b64",
+      "live_disk_equal": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00468317",
+      "native": "00468300",
+      "function": "00468300"
+    },
+    {
+      "address": "0046831f",
+      "native": "00bf65ac",
+      "function": "00468300"
+    },
+    {
+      "address": "0046898c",
+      "native": "00468300",
+      "function": "00468980"
+    },
+    {
+      "address": "0046b1ba",
+      "native": "00468300",
+      "function": "0046b170"
+    }
+  ],
+  "source_dependency": {
+    "symbol": "singleton_lifetime_free",
+    "native": "00bf65ac",
+    "source": "src/singleton_lifetime.cpp",
+    "modified": false
+  },
+  "status": "whole_raw_Source_build_pending",
+  "abi_compatible": false,
+  "game_validated": false,
+  "limits": [
+    "Requires reached native14h/nil11 storage and currentCRT allocation domain.",
+    "No new-body native differential,original binary/CRT/heap ABI,application or game claim."
+  ]
+}
