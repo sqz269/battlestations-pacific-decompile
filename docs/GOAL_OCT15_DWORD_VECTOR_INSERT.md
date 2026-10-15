@@ -1,7 +1,8 @@
 # Raw DWORD-vector insertion
 
-Draft complete ordinary Source for 0046AFB0 and 0046B4A0. Source readiness
-and build credit remain pending until every actual provider is integrated.
+Complete ordinary Source for 0046AFB0 (436B/181 instructions) and 0046B4A0
+(137B/56 instructions). Independent full-listing review passed and every real
+provider is integrated. The default Win32 build gate remains pending.
 The descriptive vector/scene names are hypotheses, not recovered class symbols.
 The original STL names are retained. Vector storage is the observed 16B raw
 receiver: +4 begin, +8 end, +Ch capacity, with +0 untouched directly.
@@ -57,6 +58,7 @@ fill (INCLUDING high-bit count), 00468460 signed-positive copy backward,
 00468440 progressive fill, actual 00BF65AC free and 00BF6713 returning CRT
 diagnostic. No callbacks or unresolved stand-ins are introduced. Their complete
 ordinary Source must be delivered before this packet earns Source-ready/build
-credit. Current-CRT/owning C++ transport does not prove original heap/staticCRT/
+credit. Their actual Source implementations are now integrated.
+Current-CRT/owning C++ transport does not prove original heap/staticCRT/
 RTTI/FH3/register/private-stack/fault ABI, new-body native differential behavior,
 application adoption or game validation.
