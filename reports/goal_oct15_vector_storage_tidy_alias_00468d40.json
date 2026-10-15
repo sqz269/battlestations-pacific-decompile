@@ -1,0 +1,207 @@
+{
+  "packet": "goal_oct15_vector_storage_tidy_alias_00468d40",
+  "status": "whole_Source_independently_assembly_reviewed_default_Win32_three_existing_checks_passed",
+  "source_ready": true,
+  "source": "src/native_vector_storage_tidy_alias.cpp",
+  "header": "include/bsp/native_vector_storage_tidy_alias.hpp",
+  "documentation": "docs/GOAL_OCT15_VECTOR_STORAGE_TIDY_ALIAS_00468D40.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "address": "00468d40",
+      "name": "tidy_native_vector_storage_00468d40",
+      "native_name_preserved": "STL_Vector_Tidy_00468d40",
+      "body_end_inclusive": "00468d69",
+      "native_bytes": 42,
+      "instructions": 13,
+      "coverage": "complete ordinary opaque-storage Source alias; not original private ABI",
+      "original_abi": "ECX opaque16B storage,EDX unused,ESI preserved,no stack arguments,plain RET,no semantic EAX result",
+      "original_bytes_hex": "568bf18b460485c0740950e85cd8780083c404c7460400000000c7460800000000c7460c000000005ec3",
+      "original_bytes_sha256": "af271ccf0e1d81d72d7f5941fe9a204db2cde41487fe902bea0d2768a627150e",
+      "live_equals_installed_PE": true
+    }
+  ],
+  "equality_evidence": {
+    "canonical": "00468840",
+    "bytes_checked": 42,
+    "only_permitted_difference_offsets": [
+      12,
+      13,
+      14,
+      15
+    ],
+    "both_call_targets": "00bf65ac",
+    "canonical_bytes_sha256": "4b509f3738d7d5a94205765eb2f06c8d7ed0060fb85bbe486307c86ab8db7af2"
+  },
+  "typed_metadata": {
+    "path": "local/goal_oct15_vector_storage_tidy_00468d40_typed.json",
+    "sha256": "27850a9e4eef98ec9c100bde93049b0026a5612aa295c801471bf3701ad35993",
+    "endpoint": "get_flow_metadata",
+    "read_only": true,
+    "utc": "2026-10-15T22:46:23.286945+00:00",
+    "functions": [
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "00468d40"
+        },
+        "name": "STL_Vector_Tidy_00468d40",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "42",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00468d40"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00468d69"
+              },
+              "length": "42"
+            }
+          ]
+        }
+      },
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "00c62006"
+        },
+        "name": "Unwind@00c62006",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "11",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c62006"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c62010"
+              },
+              "length": "11"
+            }
+          ]
+        }
+      },
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "00c62086"
+        },
+        "name": "Unwind@00c62086",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "11",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00c62086"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00c62090"
+              },
+              "length": "11"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "source_hashes": {
+    "src/native_vector_storage_tidy_alias.cpp": "40f85bcb9f23ccdc8a78c9bb635feedb43b73e47a9ba20a2fcfeab2a887afbac",
+    "include/bsp/native_vector_storage_tidy_alias.hpp": "11d145160262b76899c740dc6f50dd4335c0baebbc7afbadfb7401846422b887"
+  },
+  "limits": [
+    "Valid reached raw storage and current-CRT release admission",
+    "No recovered element or field meanings",
+    "Source delegation is not a native call claim",
+    "Original CRT,heap,register,private-frame,FH3,fault,mangling ABI and new-entry differential/application/game proof open"
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "typed_transfer_capture": {
+    "path": "local/goal_oct15_vector_storage_tidy_00468d40_transfers.json",
+    "sha256": "ec04b28f64f32edf76d148f5f929238aa18e6f27552cd4459b3b2d442442ce91"
+  },
+  "host_steps": [
+    {
+      "address": "00468d4b",
+      "native": "00bf65ac",
+      "function": "00468d40",
+      "kind": "call"
+    },
+    {
+      "address": "00c6200c",
+      "native": "00468d40",
+      "function": "00c62006",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6208c",
+      "native": "00468d40",
+      "function": "00c62086",
+      "kind": "tail_jump"
+    }
+  ],
+  "validation": {
+    "combined_build": {
+      "revision": "4f164cfc6bd72752edc55a0d0c41186b78ee8afb",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_vector_callers_combined_build.log",
+      "log_sha256": "d1af069a04e97eae679a73f143bc039fbebde9eb8de4502ae2e6a988d90fb3cd",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 8.09,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies"
+    },
+    "typed_rows_passed": 3,
+    "new_tests": 0
+  },
+  "independent_review": {
+    "reviewer": "string_allocate",
+    "result": "passed whole native body,canonical actual Source,header,new API and both incoming tail jumps",
+    "source_sha256": "40f85bcb9f23ccdc8a78c9bb635feedb43b73e47a9ba20a2fcfeab2a887afbac",
+    "header_sha256": "11d145160262b76899c740dc6f50dd4335c0baebbc7afbadfb7401846422b887"
+  },
+  "annotation": {
+    "prior_values_log": "local/ghidra-annotations-20261015T225244Z.json",
+    "native_name_retained": true,
+    "project_saved": true,
+    "exports_refreshed": true
+  }
+}

@@ -1,0 +1,387 @@
+{
+  "packet": "goal15f_pod8_primitives",
+  "worker": "agent/goal15f_pod8",
+  "source_base": "5d1d0a1cc",
+  "status": "complete_source_msvc_x86_coff_and_focused_source_fixture_verified_pending_primary_registration",
+  "source": "src/native_pod8_range.cpp",
+  "header": "include/bsp/native_pod8_range.hpp",
+  "documentation": "docs/GOAL15F_POD8_RANGE.md",
+  "functions": [
+    {
+      "address": "00419960",
+      "end_inclusive": "0041998b",
+      "bytes": 44,
+      "coverage": "complete_function",
+      "retained_native_name": "STL_Pod8Range_UninitializedCopy_00419960",
+      "name": "copy_native_pod8_range_00419960",
+      "source": "src/native_pod8_range.cpp",
+      "header": "include/bsp/native_pod8_range.hpp",
+      "original_abi": "ECX first, EDX last; stack destination,ignored0,ignored1,tag; RET10h; EAX advanced destination",
+      "source_abi": "Exact six-word MSVC Win32 fastcall pointer/pointer/pointer/uint32/uint32/uint32; pointer result reflects consumed EAX",
+      "return_uncertainty": "EAX advanced destination is consumed; original C++ type/template unrecovered",
+      "semantics": "Equal endpoints still load destination but touch no pointed storage. Per current destination: null skips both reads/stores; otherwise DWORD read0/store0/read1/store1, preserving alias. ADD8 on both cursors modulo2^32, compare for equality. ESI preserved; EDI untouched."
+    },
+    {
+      "address": "0041c7e0",
+      "end_inclusive": "0041c80b",
+      "bytes": 44,
+      "coverage": "complete_function",
+      "retained_native_name": "STL_Pod8Range_UninitializedFillN_0041C7E0",
+      "name": "fill_n_native_pod8_range_0041c7e0",
+      "source": "src/native_pod8_range.cpp",
+      "header": "include/bsp/native_pod8_range.hpp",
+      "original_abi": "ECX destination, EDX uint32 count; stack value,ignored0,ignored1,tag; RET10h; no established semantic result",
+      "source_abi": "Exact six-word MSVC Win32 fastcall pointer/uint32/pointer/uint32/uint32/uint32; void result",
+      "return_uncertainty": "Count0 preserves incoming EAX; nonzero loads value into EAX; no consumer establishes a semantic return, so Source is void",
+      "semantics": "TEST EDX/JBE is count0 only, including unsigned high-bit counts. Zero avoids value load/access; nonzero reloads both DWORDs per iteration after current destination null test. First store precedes second source read. SUB1/ADD8/TEST/JA preserves uint32 schedule. EDX ends0; ESI preserved; EDI untouched."
+    },
+    {
+      "address": "0041e3c0",
+      "end_inclusive": "0041e3f1",
+      "bytes": 50,
+      "coverage": "complete_function",
+      "retained_native_name": "STL_inst_0041e3c0",
+      "name": "fill_n_native_pod8_dispatch_0041e3c0",
+      "source": "src/native_pod8_range.cpp",
+      "header": "include/bsp/native_pod8_range.hpp",
+      "original_abi": "ECX metadata preimage; three stack DWORDs first,count,value; RET0Ch; EAX first+count*8 modulo2^32; original EDX unconsumed",
+      "source_abi": "Explicit Source fastcall adapter: uint32 ECX preimage,uint32 unused EDX placeholder,pointer first,uint32 count,pointer value; original three stack slots retained",
+      "return_uncertainty": "Native numeric endpoint is established, original C++ return type/template unrecovered. Unused Source EDX placeholder is not an Original argument.",
+      "semantics": "Save ECX local; clear only tag low byte; retain full outgoing value,unmaskedECX,value,maskedECX stack words and ECX first/EDX count. Call actual fill body; LEA endpoint; POP EDI,ESI; POP ECX returns masked preimage. No cached value pair."
+    },
+    {
+      "address": "0041f4e0",
+      "end_inclusive": "0041f504",
+      "bytes": 37,
+      "coverage": "complete_function",
+      "retained_native_name": "STL_TagDispatch_0041f4e0",
+      "name": "copy_native_pod8_dispatch_0041f4e0",
+      "source": "src/native_pod8_range.cpp",
+      "header": "include/bsp/native_pod8_range.hpp",
+      "original_abi": "ECX metadata preimage; three stack DWORDs first,last,destination; RET0Ch; EAX actual copy result; original EDX overwritten",
+      "source_abi": "Explicit Source fastcall adapter: uint32 ECX preimage,uint32 unused EDX placeholder,pointer first,pointer last,pointer destination; original three stack slots retained",
+      "return_uncertainty": "Consumed kernel EAX is forwarded; original C++ type/template unrecovered. Unused Source EDX placeholder is not an Original argument.",
+      "semantics": "Save ECX local; clear only low byte; retain full outgoing destination,unmaskedECX,destination,maskedECX stack words and ECX first/EDX last. Call actual copy body; POP ECX returns masked preimage without changing EAX."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0041f4fc",
+      "native": "00419960",
+      "function": "0041f4e0",
+      "contract": "ECX first/EDX last; stack destination,unmaskedECX,destination,maskedECX; kernel RET10h; wrapper POP ECX/RET0Ch"
+    },
+    {
+      "address": "00421070",
+      "native": "00419960",
+      "function": "00420f80",
+      "contract": "ECX old begin,EDX insertion position; stack new allocation,owner,insertion count,tag; four outgoing words, callee cleanup"
+    },
+    {
+      "address": "00421098",
+      "native": "00419960",
+      "function": "00420f80",
+      "contract": "ECX position,EDX old end; stack fill endpoint,owner,insertion count,tag; callee cleanup"
+    },
+    {
+      "address": "0041e3e4",
+      "native": "0041c7e0",
+      "function": "0041e3c0",
+      "contract": "ECX first,EDX unsigned count; stack value,unmaskedECX,value,maskedECX; callee cleanup"
+    },
+    {
+      "address": "004223f9",
+      "native": "0041c7e0",
+      "function": "004223b0",
+      "contract": "ECX actual end,EDX1; stack actual element pointer,owner,element pointer,partially zeroed local tag; callee cleanup"
+    },
+    {
+      "address": "00421080",
+      "native": "0041e3c0",
+      "function": "00420f80",
+      "contract": "ECX actual owner preimage; stack copied-prefix endpoint,insertion count,address of copied local pair; wrapper RET0Ch"
+    },
+    {
+      "address": "00421141",
+      "native": "0041e3c0",
+      "function": "00420f80",
+      "contract": "ECX owner preimage; stack old end,insertion count minus suffix count,address of copied local pair; RET0Ch"
+    },
+    {
+      "address": "0042111e",
+      "native": "0041f4e0",
+      "function": "00420f80",
+      "contract": "ECX owner preimage; stack insertion position,old end,position+count*8; wrapper RET0Ch"
+    },
+    {
+      "address": "00421188",
+      "native": "0041f4e0",
+      "function": "00420f80",
+      "contract": "ECX owner preimage; stack oldend-count*8,oldend,oldend; wrapper RET0Ch"
+    },
+    {
+      "address": "0041cad8",
+      "native": "00419960",
+      "function": "0041cac0",
+      "kind": "no_ghidra_function",
+      "contract": "Complete33B raw wrapper: ECX/EDX unchanged; stack incoming word1,incoming word2,incoming word2,masked incoming ECX; target RET10h; POP ECX then RET10h at41DC80,RET8 elsewhere. Live bytes equal installed PE.",
+      "verification": "Full native raw disassembly/byte target verified; live Ghidra containment/listing unavailable, no caller name inferred from nearest index entry"
+    },
+    {
+      "address": "0041dc98",
+      "native": "00419960",
+      "function": "0041dc80",
+      "kind": "no_ghidra_function",
+      "contract": "Complete33B raw wrapper: ECX/EDX unchanged; stack incoming word1,incoming word2,incoming word2,masked incoming ECX; target RET10h; POP ECX then RET10h at41DC80,RET8 elsewhere. Live bytes equal installed PE.",
+      "verification": "Full native raw disassembly/byte target verified; live Ghidra containment/listing unavailable, no caller name inferred from nearest index entry"
+    },
+    {
+      "address": "0041e708",
+      "native": "00419960",
+      "function": "0041e6f0",
+      "kind": "no_ghidra_function",
+      "contract": "Complete33B raw wrapper: ECX/EDX unchanged; stack incoming word1,incoming word2,incoming word2,masked incoming ECX; target RET10h; POP ECX then RET10h at41DC80,RET8 elsewhere. Live bytes equal installed PE.",
+      "verification": "Full native raw disassembly/byte target verified; live Ghidra containment/listing unavailable, no caller name inferred from nearest index entry"
+    },
+    {
+      "address": "0041d9c8",
+      "native": "0041c7e0",
+      "function": "0041d9b0",
+      "kind": "no_ghidra_function",
+      "contract": "Complete33B raw wrapper: ECX/EDX unchanged; stack incoming word1,incoming word2,incoming word2,masked incoming ECX; target RET10h; POP ECX then RET10h at41DC80,RET8 elsewhere. Live bytes equal installed PE.",
+      "verification": "Full native raw disassembly/byte target verified; live Ghidra containment/listing unavailable, no caller name inferred from nearest index entry"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "0041cac0",
+      "end_inclusive": "0041cae0",
+      "bytes": 33,
+      "reason": "No live function or instruction at physical CALL; full disk body and live bytes inspected; no new function created",
+      "native_bytes": "51c60424008b0424508b442410508b442414508b44241450e883ceffff59c20800"
+    },
+    {
+      "address": "0041dc80",
+      "end_inclusive": "0041dca0",
+      "bytes": 33,
+      "reason": "No live function or instruction at physical CALL; full disk body and live bytes inspected; no new function created",
+      "native_bytes": "51c60424008b0424508b442410508b442414508b44241450e8c3bcffff59c21000"
+    },
+    {
+      "address": "0041e6f0",
+      "end_inclusive": "0041e710",
+      "bytes": 33,
+      "reason": "No live function or instruction at physical CALL; full disk body and live bytes inspected; no new function created",
+      "native_bytes": "51c60424008b0424508b442410508b442414508b44241450e853b2ffff59c20800"
+    },
+    {
+      "address": "0041d9b0",
+      "end_inclusive": "0041d9d0",
+      "bytes": 33,
+      "reason": "No live function or instruction at physical CALL; full disk body and live bytes inspected; no new function created",
+      "native_bytes": "51c60424008b0424508b442410508b442414508b44241450e813eeffff59c20800"
+    }
+  ],
+  "evidence": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "target_verification": "Every bsp.py ghidra query constructs Client and verifies project/program/language/base. No reimport or inline live query.",
+    "representations": "All four complete exported assembly listings; pseudocode also read. Full argument setup for every one of13 physical sites inspected before final contract. No Source interface inferred solely from malformed decompilation.",
+    "caller_census": "tools/callsite_census.py: copy6,fill3,fill-dispatch2,copy-dispatch2; no E9 or literal-address occurrences in scanned.text/.rdata/.data",
+    "stale_index_correction": "421080,421141,42111E,421188 live inside420F80..4211C0. Separate Catch_All@4210E7 body4210E7..4210FB. Nearest-index attribution to catch or preceding routines not accepted as ownership.",
+    "old_ghidra_metadata": [
+      {
+        "address": "00419960",
+        "function_name": "STL_Pod8Range_UninitializedCopy_00419960",
+        "live_typed_prototype": "undefined STL_Pod8Range_UninitializedCopy_00419960(void)",
+        "comment": "[BSP reconstruction 00419960]\nHypothesis, not a recovered symbol. docs/CC13_BAND_0040_0044.md. duplicate of 00419930",
+        "mutation": "none; name/comment/prototype retained"
+      },
+      {
+        "address": "0041c7e0",
+        "function_name": "STL_Pod8Range_UninitializedFillN_0041C7E0",
+        "live_typed_prototype": "undefined STL_Pod8Range_UninitializedFillN_0041C7E0(void)",
+        "comment": "[BSP reconstruction 0041c7e0]\nHypothesis, not a recovered symbol. docs/CC13_BAND_0040_0044.md. duplicate of 0041C760",
+        "mutation": "none; name/comment/prototype retained"
+      },
+      {
+        "address": "0041e3c0",
+        "function_name": "STL_inst_0041e3c0",
+        "live_typed_prototype": "undefined STL_inst_0041e3c0(void)",
+        "comment": null,
+        "mutation": "none; name/comment/prototype retained"
+      },
+      {
+        "address": "0041f4e0",
+        "function_name": "STL_TagDispatch_0041f4e0",
+        "live_typed_prototype": "undefined STL_TagDispatch_0041f4e0(void)",
+        "comment": null,
+        "mutation": "none; name/comment/prototype retained"
+      }
+    ],
+    "original_prototype_policy": "Primary may install only a separately verified original physical prototype. Do not install unused EDX Source adapter placeholders into Original. Return C++ types/template identities remain unrecovered."
+  },
+  "coff_evidence": {
+    "status": "pass",
+    "functions": [
+      {
+        "address": "00419960",
+        "source_name": "copy_native_pod8_range_00419960",
+        "decorated_symbol": "?copy_native_pod8_range_00419960@bsp@@YIPAXPBX0PAXIII@Z",
+        "coff_section": 4,
+        "size": 44,
+        "native_bytes": "3bca8b4424047421568da4240000000085c0740a8b3189308b710489700483c10883c0083bca75e85ec21000",
+        "compiled_bytes": "3bca8b4424047421568da4240000000085c0740a8b3189308b710489700483c10883c0083bca75e85ec21000",
+        "native_sha256": "b1fd2d696770390c5c8300ab494b66faf73583a21b8432cca21af50e5c518a13",
+        "matched_nonrelocation_bytes": 44,
+        "relocations": [],
+        "differences": []
+      },
+      {
+        "address": "0041c7e0",
+        "source_name": "fill_n_native_pod8_range_0041c7e0",
+        "decorated_symbol": "?fill_n_native_pod8_range_0041c7e0@bsp@@YIXPAXIPBXIII@Z",
+        "coff_section": 6,
+        "size": 44,
+        "native_bytes": "85d276258b442404568da4240000000085c9740a8b3089318b700489710483ea0183c10885d277e85ec21000",
+        "compiled_bytes": "85d276258b442404568da4240000000085c9740a8b3089318b700489710483ea0183c10885d277e85ec21000",
+        "native_sha256": "56de3ef474a694b160932013acfa44dfaf6267ec644e5549b1dc294da50967eb",
+        "matched_nonrelocation_bytes": 44,
+        "relocations": [],
+        "differences": []
+      },
+      {
+        "address": "0041e3c0",
+        "source_name": "fill_n_native_pod8_dispatch_0041e3c0",
+        "decorated_symbol": "?fill_n_native_pod8_dispatch_0041e3c0@bsp@@YIPAXIIPAXIPBX@Z",
+        "coff_section": 5,
+        "size": 50,
+        "native_bytes": "518b542410568b742410578b7c2410c6442408008b442408508b44241c5251508bd68bcfe8f7e3ffff8d04f75f5e59c20c00",
+        "compiled_bytes": "518b542410568b742410578b7c2410c6442408008b442408508b44241c5251508bd68bcfe8000000008d04f75f5e59c20c00",
+        "native_sha256": "c5019c22d814882409ca71336d0411d0a0cf022d6b5b23ec81ca1c3c0880c6f6",
+        "matched_nonrelocation_bytes": 46,
+        "relocations": [
+          {
+            "operand_offset": 37,
+            "type": "IMAGE_REL_I386_REL32",
+            "target_symbol": "?fill_n_native_pod8_range_0041c7e0@bsp@@YIXPAXIPBXIII@Z",
+            "target_native": "0041c7e0",
+            "target_defined_section": 6,
+            "target_defined_value": 0,
+            "native_call_target": "0041c7e0"
+          }
+        ],
+        "differences": []
+      },
+      {
+        "address": "0041f4e0",
+        "source_name": "copy_native_pod8_dispatch_0041f4e0",
+        "decorated_symbol": "?copy_native_pod8_dispatch_0041f4e0@bsp@@YIPAXIIPBX0PAX@Z",
+        "coff_section": 3,
+        "size": 37,
+        "native_bytes": "518b542410c60424008b0424508b442414528b542414518b4c241450e85fa4ffff59c20c00",
+        "compiled_bytes": "518b542410c60424008b0424508b442414528b542414518b4c241450e80000000059c20c00",
+        "native_sha256": "8469fd81b011d93cc84d0221c26d32c84582fb2978d5d710179bb65da1acaf2c",
+        "matched_nonrelocation_bytes": 33,
+        "relocations": [
+          {
+            "operand_offset": 29,
+            "type": "IMAGE_REL_I386_REL32",
+            "target_symbol": "?copy_native_pod8_range_00419960@bsp@@YIPAXPBX0PAXIII@Z",
+            "target_native": "00419960",
+            "target_defined_section": 4,
+            "target_defined_value": 0,
+            "native_call_target": "00419960"
+          }
+        ],
+        "differences": []
+      }
+    ],
+    "native_bytes": 175,
+    "matched_nonrelocation_bytes": 167,
+    "total_coff_relocations": 2,
+    "coff_sha256": "b6d57f5006e141265b6c0389f8d5e34d9a056092e7ac84d80dc0cfac517b6fc9",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "live_capture_equals_installed_pe": true,
+    "uncreated_wrappers": [
+      {
+        "head": "0041cac0",
+        "end_inclusive": "0041cae0",
+        "callsite": "0041cad8",
+        "target": "00419960",
+        "live_equals_installed_pe": true,
+        "native_bytes": "51c60424008b0424508b442410508b442414508b44241450e883ceffff59c20800"
+      },
+      {
+        "head": "0041dc80",
+        "end_inclusive": "0041dca0",
+        "callsite": "0041dc98",
+        "target": "00419960",
+        "live_equals_installed_pe": true,
+        "native_bytes": "51c60424008b0424508b442410508b442414508b44241450e8c3bcffff59c21000"
+      },
+      {
+        "head": "0041e6f0",
+        "end_inclusive": "0041e710",
+        "callsite": "0041e708",
+        "target": "00419960",
+        "live_equals_installed_pe": true,
+        "native_bytes": "51c60424008b0424508b442410508b442414508b44241450e853b2ffff59c20800"
+      },
+      {
+        "head": "0041d9b0",
+        "end_inclusive": "0041d9d0",
+        "callsite": "0041d9c8",
+        "target": "0041c7e0",
+        "live_equals_installed_pe": true,
+        "native_bytes": "51c60424008b0424508b442410508b442414508b44241450e813eeffff59c20800"
+      }
+    ],
+    "compiled_object": "local/goal15f_pod8/native_pod8_range.obj",
+    "parser": "Direct COFF section, symbol and relocation table parsing; positive defined external symbols; exact full section size and symbol offset0; every object relocation accounted for",
+    "dump_file": "local/goal15f_pod8/native_pod8_range.dump.txt",
+    "capture": "Four complete bsp.py ghidra bytes captures, separately compared with PE32 section/RVA mapped installed bytes; extra four uncreated wrapper captures checked too",
+    "mask_rule": "Only four operand bytes at fill-wrapper offset25h and copy-wrapper offset1Dh; E8 opcode and every other byte match; target symbols and original native CALL destinations separately checked"
+  },
+  "verification": {
+    "compiler": "Microsoft MSVC x86 14.51.36244.0",
+    "flags": "/std:c++17 /MD /O2 /W4 /WX /EHsc /fp:strict /permissive-",
+    "focused_compile": "PASS; final compile without warnings; local/goal15f_pod8/compile.cmd",
+    "full_native_length_and_nonrelocation_bytes": "PASS:175 bytes total;167 compared bytes;0 differences;2 verified genuine CALL REL32 operands",
+    "source_fixture": "PASS:one ignored pod8_probe.cpp/pod8_probe.exe, /link /MANIFEST:EMBED; actual reconstructed bodies, original three-stack-word wrapper calls",
+    "source_fixture_scope": [
+      "copy and fill word1 rereads after aliasing first store",
+      "signaling-NaN bit pattern remains raw integer bits",
+      "null destination skips inaccessible source",
+      "copy cursor wraps FFFFFFF8h to0 on skipped iteration",
+      "count0 preserves incoming EAX",
+      "wrapper maskedECX, endpoint and original RET stack cleanup"
+    ],
+    "fixture_log": "PASS: POD8 alias rereads/raw bits, null skip, modulo32 schedule, count0 EAX, wrapper tag/stack",
+    "report_calls": "PASS:13 physical call rows checked,0 failed;9 live function/listing checks and4 explicitly uncreated raw bodies with independently checked targets; no containment claim for those4",
+    "diff_check": "PASS:git diff --check; final staged check also required before commit",
+    "registered_build_and_existing_tests": "Primary integrator after CMake registration; not run by worker",
+    "registered_archive_membership": "not checked by worker",
+    "new_test_targets": 0,
+    "ghidra_mutations": 0,
+    "captured_native_execution": false,
+    "original_abi_installation": false,
+    "original_runtime_crt_identity": false,
+    "full_exception_or_game_validation": false
+  },
+  "source_hashes": {
+    "src/native_pod8_range.cpp": "f24d802b7f2ac36c3c27478b17efe3cc0176b25b61c59fd35a44797e92bd4de6",
+    "include/bsp/native_pod8_range.hpp": "84e812fe99582b3defe6298472dd64f04248ae29efc6d6a87b600c2cb29c67f7"
+  },
+  "integration": {
+    "target": "bsp_core",
+    "add_source": "src/native_pod8_range.cpp",
+    "consumers": "Future complete00420F80 insertion and004223B0 pushback; raw physical entries, distinct from existing semantic draft/CC13 interfaces",
+    "primary_owned": "CMake registration, registered Win32 build/existing checks, annotation write lock/save/export refresh, archive/member validation, main integration",
+    "no_worker_changes": "No shared CMake/parallel registry or Ghidra mutations"
+  }
+}

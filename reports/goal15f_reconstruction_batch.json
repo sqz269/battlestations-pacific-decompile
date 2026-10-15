@@ -1,0 +1,213 @@
+{
+  "date": "2026-10-15",
+  "state": "eight_complete_entries_registered_build_real_fixtures_saved_annotations_and_full_source_owner_drain_passed",
+  "base_commit": "09f9a9317",
+  "evidence_root": "J:/PROG/battlestations-pacific-decompile-goal15_integrator",
+  "entries": [
+    "004218e0",
+    "0041ddf0",
+    "0041f230",
+    "0041e3a0",
+    "00419960",
+    "0041c7e0",
+    "0041e3c0",
+    "0041f4e0"
+  ],
+  "composition_addresses": [
+    "00421500",
+    "0041f980",
+    "00bd0400"
+  ],
+  "worker_commits": {
+    "tidy": "374b868c8eef77f53e353af413402022c1000d71",
+    "singleton_source": "2ae4c369f8feea14da4faf15d417c9f09de6af24",
+    "pod8": "2c8ea61998d1b3030bd0ae8d4cf3ae93a30c4f03",
+    "singleton_evidence": "6ab2a0d887e4eb5c8bfee8f8cf762e911339aeca"
+  },
+  "limits": [
+    "Explicit finite Source shutdown dispatch does not make Original CALL EDX ABI compatible",
+    "Actual publication cells and Source contexts must be bound by the application owner",
+    "Current Source EH map includes an additional termination action; Original FH3/SEH identity is not claimed",
+    "Current allocator, CRT, exception and hardware-fault identity remain qualified",
+    "Four physical POD8 caller wrappers are not current Ghidra functions",
+    "Native execution and gameplay are not established"
+  ],
+  "tested_source_commit": "4c83b556af363d93a8669b0edaca1066560f316b",
+  "primary_composition_commit": "a6314e948",
+  "build": {
+    "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1",
+    "final_log": "local/goal15f_final_build.log",
+    "prior_log": "local/goal15f_registered_build.log",
+    "existing_ctests": {
+      "reconstructed_math": "PASS",
+      "native_math_differential": "PASS existing math seeds; not new-entry Native ABI evidence",
+      "tool_tests": "PASS"
+    }
+  },
+  "raw_kernels": {
+    "native_and_source_bytes": 275,
+    "entries": {
+      "0041ddf0": 42,
+      "0041f230": 29,
+      "0041e3a0": 29,
+      "00419960": 44,
+      "0041c7e0": 44,
+      "0041e3c0": 50,
+      "0041f4e0": 37
+    },
+    "only_exclusions": "seven verified direct CALL rel32 operands",
+    "logs": [
+      "local/goal15f_tidy_coff.log",
+      "local/goal15f_pod8_coff.log"
+    ],
+    "pod8_receipt": "local/goal15f_pod8_coff_result.json"
+  },
+  "singleton_eh": {
+    "native_bytes": 189,
+    "source_main_bytes": 287,
+    "native_max_state": 2,
+    "source_max_state": 3,
+    "difference": "Current compiler adds a termination action; maps/frames are not equated",
+    "verified": "five concrete provider calls in original order, actual SDK Enter/Leave, allocation state ends before publication/registration, real captured-allocation and captured-guard actions",
+    "log": "local/goal15f_singleton_coff.log",
+    "dynamic_unwind": "not executed"
+  },
+  "composition_static": {
+    "singleton_body_bytes": 167,
+    "singleton_body_sha256": "73e54e1c6f52b21bde6bb2002f28ef2ac51aa1ad93c458c1282a8d4886eaf9f3",
+    "singleton_body_relocations_unchanged": 8,
+    "guard_bytes": 152,
+    "guard_fixed_tidy_targets": true,
+    "prior_standalone_kernels_unchanged": true,
+    "finite_source_avoid_dispatch": true,
+    "limits": "COFF/static Source integration proof; no dynamic unwind or Original virtual ABI proof",
+    "log": "local/goal15f_composition_static.log",
+    "checked_objects_unchanged_after_final_rebuild": true
+  },
+  "source_fixtures": [
+    {
+      "receipt": "local/goal15f_singleton_probe_result.json",
+      "kind": "Source fixture linked against registered archive and real current services",
+      "manifest_embedded": true,
+      "exit_code": 0,
+      "stdout": "Source avoidance singleton probe: PASS (real allocation, publication, registration, fast path, lock depths, complete populated registered lifetime drain and retained body queue)\n",
+      "stderr": "",
+      "sha256": {
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15f_singleton_probe.cpp": "97d20bf97f751a818c39755ac3bab30c6bab70d0013bd3a1dd46cf0efdf099e6",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15f_singleton_probe.obj": "ed830f1a9cd92a32c93b72a13fc1666e334cd7535834583e624f237abfa55f6b",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15f_singleton_probe.exe": "b738dbfdaa2a1ae2082ecb40c3cb08d59279aa00e417dda28af363a5829d6c78",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "2013302d3b539427fd16564bc54936e249be8c1e8a06c9e30013d463a41b58f0",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
+      }
+    },
+    {
+      "receipt": "local/goal15f_tidy_probe_result.json",
+      "kind": "Source fixture linked against registered archive and real current services",
+      "manifest_embedded": true,
+      "exit_code": 0,
+      "stdout": "Avoidance container tidy Source composition: PASS (vector released/zeroed, proxies retained; both list entries clear populated hulls/nodes and free/null current sentinel/count)\n",
+      "stderr": "",
+      "sha256": {
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_pool_cleanup\\local\\output\\avoid_container_tidy_probe.cpp": "d4c1be4c32a0081ab3fb3da032bc260c31352a6596c34cc042f41d01e893aa26",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15f_tidy_probe.obj": "95296a228bb1e7fddcce1ec4fff73868b18cb46ff1df5e3f662cb04e58f159cb",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15f_tidy_probe.exe": "ed497fb3e0653b6c4393c331652a5fdba90511cf56570dd81f300fae9b5b2b7b",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "2013302d3b539427fd16564bc54936e249be8c1e8a06c9e30013d463a41b58f0",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
+      }
+    },
+    {
+      "receipt": "local/goal15f_pod8_probe_result.json",
+      "kind": "Source fixture linked against registered archive and real current services",
+      "manifest_embedded": true,
+      "exit_code": 0,
+      "stdout": "PASS: POD8 alias rereads/raw bits, null skip, modulo32 schedule, count0 EAX, wrapper tag/stack\n",
+      "stderr": "",
+      "sha256": {
+        "J:\\PROG\\battlestations-pacific-decompile-goal15f_pod8\\local\\goal15f_pod8\\pod8_probe.cpp": "99ec5645a00f5fa151c3740ab19b30fa848c5366d0a63b855b86c01f92e89b60",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15f_pod8_probe.obj": "9ce774021ce2d4cb298b9b96d89c37dec2166d508f2fe7a33c055a288af8614e",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15f_pod8_probe.exe": "cd11f4f345731f2da98b92ec6c76db2083cc657601d939c25afb160f87779799",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "2013302d3b539427fd16564bc54936e249be8c1e8a06c9e30013d463a41b58f0",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
+      }
+    }
+  ],
+  "owner_dispatch": {
+    "binding": "NativeSingletonDeletionBindings::avoid_manager, appendedoffset204,size208, alloldoffsets preserved",
+    "admitted": "recoveredNativeCE38F4 or matched actualSourcekNativeAvoidManagerLifetimeSourceVtable",
+    "deleting_entry": "real scalar_delete_native_avoid_manager_00420680 with borrowed lifetime context",
+    "native_slot_evidence": "target-verified live00CE38F4 bytes80064200 ->00420680",
+    "fixture": "kept real registered entry; full parent drain popped/deleted manager, group and body storage, resetactualpubcell, retained/filled actual external queue; no manual entry removal",
+    "limits": "finite Source dispatch and explicit actual bindings, not Original arbitrary virtual ABI or automatic production binding"
+  },
+  "reviews": {
+    "primary": "allSource contracts, provider paths and artifact evidence reviewed; no correctness blockers",
+    "singleton_peer": "pool_cleanup full Native/FH3/Source phase review passed",
+    "pod8_peer": "zone_leaf_max independently reviewed4 wholeNative bodies, Source,9livecalls and4uncreatedphysicalwrappers; passed",
+    "report_rows": {
+      "total_passed": 31,
+      "live_containment": 27,
+      "raw_uncreated_containment_explicitly_unproven": 4,
+      "failures": 0
+    },
+    "markdown_parsed_claims_passed": 18,
+    "logs": [
+      "local/goal15f_tidy_call_review.log",
+      "local/goal15f_singleton_call_review.log",
+      "local/goal15f_pod8_call_review.log"
+    ]
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved_original_physical_prototypes": 9,
+    "saved_evidence_comments": 11,
+    "original_prototype_rollback_and_final_readback": "local/goal15f_original_prototype_changes.json",
+    "wrapper_storage_correction": "local/goal15f_wrapper_prototype_storage_correction.json",
+    "correction_detail": "Scalar this request inserted extra automaticparameter; corrected underwrite lock to automaticvoidpointer ECX marker, exactly4 totalparams and correct decompiledstackuses, rawuint32 metadata meaning preservedincomments",
+    "source_extra_context_or_unused_edx_in_original_prototypes": false,
+    "annotation_log": "local/goal15f_annotations.log",
+    "prior_annotations": "local/ghidra-annotations-20261015T222240Z.json",
+    "export_count": 39,
+    "export_log": "local/goal15f_exports.log",
+    "snapshot_log": "local/goal15f_snapshot.log"
+  },
+  "history_preservation": {
+    "baseline": "09f9a9317",
+    "reconstruction_shards": {
+      "00410000": {
+        "added": 8,
+        "removed": 0
+      },
+      "00420000": {
+        "added": 1,
+        "removed": 0
+      },
+      "00bd0000": {
+        "added": 1,
+        "removed": 0
+      }
+    },
+    "kind_totals": {
+      "functions_added": 8,
+      "source_integration_fragments_added": 2
+    },
+    "older_records": "none removed; historical partial/semantic/typed records remain separate"
+  },
+  "registered_artifacts_sha256": {
+    "build/win32/Release/bsp_core.lib": "2013302d3b539427fd16564bc54936e249be8c1e8a06c9e30013d463a41b58f0",
+    "build/win32/bsp_core.dir/Release/native_avoid_container_tidy.obj": "aa206d7e5e2f37d270fce29e0edf38a836a9cdb7dd7542b61cdaab98a888fe2d",
+    "build/win32/bsp_core.dir/Release/native_avoid_singleton.obj": "545bd3490c3b3f47992231557c5b06159b683631320b13411a9f90a8e2c1ff2e",
+    "build/win32/bsp_core.dir/Release/native_pod8_range.obj": "9030b9081be87cf7fb4ac71d58ca3c0853e7fb0078cbfa32779d717984dc20e8",
+    "build/win32/bsp_core.dir/Release/native_avoid_manager_lifetime.obj": "4973fe6db1cf9a766297f278556f19d194b8402b62d1d0a6ebecc84ee67828b3",
+    "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj": "15e8a40d2919b2eedbd249bd00051bd93924eec204726a79cd53b137f60cacc1"
+  },
+  "integration": {
+    "target": "main",
+    "new_test_targets": 0,
+    "method": "merge bounded workers, union shared registry/ledger appends, final latest-main registered build and archive relinks, fast-forward main and push once",
+    "goal": "continues; complete reconstruction not claimed"
+  }
+}

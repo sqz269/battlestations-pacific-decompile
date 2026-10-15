@@ -1,0 +1,114 @@
+{
+  "schema": "bsp.cc12.bounded_readiness_primary.v1",
+  "Source_ready": true,
+  "Source_implemented": false,
+  "Source_admitted": false,
+  "packet": "cc12_scene_property_reference_set_008f0420",
+  "addresses": [
+    "008f0420"
+  ],
+  "whole_Original_primary_listing_review": true,
+  "contract": "Whole58B19 setter0420. ECXactualrecord;stacknullabletarget/fullDWORDscalar/fullDWORDkind;RET0C/EAXrecord. Oldname+1C ifnonnull realcanonicalfreeBF6989\u2192BF65AC thenzero1C; onlynow physicalduplicate438E40; loadkind beforestore1C, thenloadscalar/store18/store8. Only12distinctbyteswritten, no otherroot/tag/phase/default/lookup/copy/startup. ThreefullDWORD fields/allbitpatterns. Genuine livewritable type5record, oldname soleowned same currentheap, borrowednullabletarget stable/disjointfromoldname; noalias/reentry/concurrency/failure/overflow. Reuse alreadyaccepted0340payloadcopy55B22; no new0340Source/credit. No fullparser/OriginalABI/EH/privateCRT/runtime/game credit.",
+  "readiness_family": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\SceneDeclaredReferenceReadiness01\\family_receipt.DATA.json",
+    "bytes": 36518,
+    "sha256": "19fc1f784dc2ef09917e8e65fa4c1e13afde666044d87199c871bb3289bc543d"
+  },
+  "primary_input_verification": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_holder_setter_readiness_primary_20261015\\verified_readiness_inputs.DATA.json",
+    "bytes": 14883,
+    "sha256": "cc9557bae90eb34088e7c798dc8df45063cb6e860601f452cf79458b04c8d755"
+  },
+  "missing_direct_providers": [],
+  "details": {
+    "already_whole_accepted_008F0340": {
+      "status": "complete qualified whole55B22 rawreference copy; independent4TU/7entries/38codegates/currentMainWin32/all3checksPASS",
+      "existing_admission_credit": 1,
+      "Source": "src/native_reference_payload_copy.cpp",
+      "header": "include/bsp/native_reference_payload_copy.hpp",
+      "whole": "[008F0340,008F0377)55B22",
+      "action": "Reuse existing accepted body; do not duplicate or reopen accepted execution."
+    },
+    "setter_ABI": {
+      "Original": "ECX actual writable record; stack target CString, full DWORD payload scalar, full DWORD reference kind; RET0C; EAX actual record returned.",
+      "incoming_EDX": "Unused by setter; provider-clobber outputs not promised.",
+      "nonvolatiles": "ESI saved/restored; EBX/EDI/EBP not written by leaf; normal provider contracts apply.",
+      "flags": "Leaf adds no exact external/provider flag claim; final flags derive from duplicate/free paths. No x87/SSE/FS/EH setup.",
+      "descriptive_name_hypothesis": true
+    },
+    "setter_schedule": [
+      "00420 PUSH ESI; MOV ESI,ECX; load actual old DWORD+1C; TEST; JZ043A if null.",
+      "Non-null old: PUSH EAX; CALL00BF6989 (JMP00BF65AC); ADD ESP,4; store DWORD+1C=0. Old freed bytes are never read.",
+      "ONLY NOW load target CString from actual stack+8 into ECX; whole physical duplicate00438E40. Null CString is allowed by that genuine provider and returns null.",
+      "After duplicate: load full kind DWORD from actual stack+10 into ECX; store full EAX copy/null DWORD+1C.",
+      "ONLY NOW load full scalar DWORD from actual stack+C into EAX; store scalar DWORD+18; store full kind DWORD+08.",
+      "MOV EAX,ESI; POP ESI; RET0C. No implicit tag5/phase/owner/ordinal write, dispatch, lookup, insertion, constructor, copy-helper call or startup."
+    ],
+    "setter_writes": {
+      "unconditional": "Three full DWORD fields +1C,+18,+08 (12 distinct bytes). Optional old-name path adds earlier separate zeroDWORD+1C.",
+      "preserved_record_bytes": "All other actual record bytes, including phase+0/tag+4/+0C/+10/+14/+20/+24/+28/+2C/+30/+34. No bulk zeroing or BYTE narrowing.",
+      "scalar_and_kind": "Opaque full32-bit values. Parser passes scalar0 in the shown call; leaf adds no zero-default, enum conversion,0..7 check or filter."
+    },
+    "direct_providers": [
+      {
+        "Original": "00BF6989 -> 00BF65AC",
+        "Source": "singleton_lifetime_free(void*) noexcept",
+        "files": [
+          "include/bsp/singleton_lifetime.hpp",
+          "src/singleton_lifetime.cpp"
+        ],
+        "ready": true,
+        "contract": "Real current canonical std::free service, not noop; prior oldname must belong to same current allocation domain. Original privateCRT free body00BF9DC8/EH not admitted."
+      },
+      {
+        "Original": "00438E40",
+        "Source": "duplicate_native_string_00438e40(const char*)",
+        "files": [
+          "include/bsp/native_string_duplicate.hpp",
+          "src/native_string_duplicate.cpp"
+        ],
+        "ready": true,
+        "contract": "Accepted whole57B30 physical ECX/RET0 duplicate, full49 nonCALLoperandbytes retained; null->null; otherwise inline byte scan/length+1/currentcanonicalallocation/standardmemcpy; full EAX ownedcopy. Distinct from older plainCDECL API. Genuine current allocator/newhandler/copy domain only."
+      }
+    ],
+    "borrow_and_ownership": {
+      "record": "Actual caller-owned live writable genuine type5record storage from accepted canonical producer profile; this setter allocates/frees no root and transfers no new root ownership.",
+      "old_name": "Record+1C null or sole-owned real current duplicate; release exactly once before replacement and never inspect retired bytes. Allocator address reuse is permitted.",
+      "incoming_target": "Borrowed null or live stable readable NUL-terminated text with nonwrapping length+1/addressrange; keep live through duplicate. Null is an actual provider path, not a fallback. Do not alias target to freed oldname, owner/frame, or mutable output.",
+      "words": "Full scalar/kind bit patterns are borrowed by value and copied. No owned child is implied by these words; no invented clone/reference-target ownership.",
+      "failure": "Successful nonthrowing normal provider domain only. Old name may already be freed/zero when duplication fails; no rollback,RAII,transaction,FS/EH/fault/privateCRT cleanup equivalence."
+    },
+    "lookup_key_context": {
+      "leaf": "Neither0340 nor0420 accepts a propertykey or performs any bag/map/enum lookup. Do not infer hidden lookup/context/default behavior from the cached descriptive name.",
+      "caller": "Shown Original parser call008F60C1 uses EBX existingrecord, pushes EDI kind, literal0 scalar, and target pointer EAX from008D9980. Declared-key lookup/proof belongs to wider incomplete008F5A00 parser and is outside this leaf proposal.",
+      "composition": "If composed into bag operations, require same genuine114hbag/+4map, canonical currentheap, actual retained string/physical processes, E175B0 propertynodes/commonE188B4 list, rawkey manager gate, distinct E177E4 property/E17654 query cells, completed explicit startup, live pool generations and borrowed keys/nodes. These two leaves create no pool/context/cell and start nothing.",
+      "lifetime": "Keep actual record/bag/process/pool/key generations valid; retire all sole-owned records/keys/nodes before pool teardown. Owning graphs finite unique unshared acyclic and disjoint from borrowed inputs, replaced graph and liveframe; no reentry,aliasing,concurrentmutation/trim,invalidmemory,overflow,or providerthrow. DF clear; stable closedASCII/currentClocale is required by outer accepted key lookup domain, not invented as a new leaf lookup.",
+      "no_credit": "No missing whole parser/declaredkey resolver closure, arbitrary callbacks/models/defaults, fullclone/nativeclass/caller/game credit."
+    },
+    "outside_composition": {
+      "named_incomplete": [
+        "Whole008F5A00 tokenizer/propertybag parser and declared-key branch integration",
+        "Wider008F67B0 library loader"
+      ],
+      "not_direct_leaf_blockers": true,
+      "reason": "Only free and duplicate are direct leaf calls. Do not promote older modeled/backfilled parser Source to accepted actual-storage whole-native composition. New3AC0/3B60 leaf author work neither calls0340 nor0420."
+    },
+    "proposal": {
+      "files": [
+        "include/bsp/native_scene_property_reference_set.hpp",
+        "src/native_scene_property_reference_set.cpp",
+        "docs/NATIVE_SCENE_PROPERTY_REFERENCE_SET_CC12.md",
+        "reports/native_scene_property_reference_set_cc12.json"
+      ],
+      "only_new_Original": "008F0420",
+      "new_context_api_not_needed": "Leaf binds only genuine accepted currentheap free and physical duplicate. Reuse them; no context factories,callbacks,models,or new pools.",
+      "physical_interface_hypothesis": "void* __fastcall set_native_scene_property_reference_008f0420(void* actual_record_ecx,void* unused_edx,const char* actual_target_stack,std::uint32_t payload_scalar_bits,std::uint32_t reference_kind_bits);",
+      "body": "A straightforward literal MSVC Win32 naked body can retain all50 nonCALLoperandbytes and rebind only DWORD CALLoperands [12,16)free and[31,35)duplicate. Proposal only; no body written/compiled/linked/executed and no new OriginalABI claim.",
+      "register_or_x87_escalation_required": false,
+      "shared_metadata_and_CMake": "Root-owned later integration only; none touched by readiness worker."
+    }
+  },
+  "Original_ABI_compatible": false,
+  "Original_private_CRT_EH_compatible": false,
+  "game_validated": false
+}

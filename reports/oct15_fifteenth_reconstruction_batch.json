@@ -1,0 +1,1221 @@
+{
+  "batch": "oct15_fifteenth_reconstruction_batch",
+  "status": "reviewed_integrated_main_win32_build_and_static_transfer_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "tested_source_pin": "d1fd051ea1668bb471592736afbb42795ef6d80b",
+  "scope": {
+    "whole_ordinary_entries": [
+      "005531f0",
+      "00556dc0",
+      "0055a430",
+      "0055aaf0",
+      "00445900",
+      "005572f0",
+      "00553260",
+      "00556c20"
+    ],
+    "complete_explicit_receiver_EH_action": [
+      "00c6d790"
+    ],
+    "only_full_selected_prefixes": [
+      "00559280..005592fe",
+      "00559a90..00559b0e",
+      "00444b10..00444b8e"
+    ],
+    "ordinary_bytes": 1324,
+    "ordinary_starts": 462,
+    "prefix_bytes": 381,
+    "prefix_starts": 147,
+    "action_bytes": 8,
+    "action_starts": 2,
+    "total_owned_bytes": 1713,
+    "total_owned_starts": 611
+  },
+  "components": [
+    {
+      "packet": "oct15_input_scalar_tree_iterator",
+      "report": "reports/oct15_input_scalar_tree_iterator.json",
+      "report_sha256": "5304401a3256ff4fb21bd96f7ded686b0314152f519ab312f5fcc5cac54a55d9",
+      "source_pin": "0043084f0509fb62753597c48b9c62b20961df51",
+      "owned_bytes": 778,
+      "owned_starts": 269,
+      "raw_report_transfer_rows": 17,
+      "source": "src/native_input_scalar_tree_iterator.cpp",
+      "header": "include/bsp/native_input_scalar_tree_iterator.hpp",
+      "documentation": "docs/OCT15_INPUT_SCALAR_TREE_ITERATOR.md",
+      "primary_source_review": {
+        "pin": "0043084f0509fb62753597c48b9c62b20961df51",
+        "report": "reports/oct15_input_scalar_tree_iterator.json",
+        "frozen_git_blob_sha256": {
+          "src/native_input_scalar_tree_iterator.cpp": "8a717044cd975de0f3b2021858b0f1bb8ea47c4c5050e03c08d0029604ee6246",
+          "include/bsp/native_input_scalar_tree_iterator.hpp": "66f429acaceb01630e0d05fa578f1a26359757eb8f581d692a0efb8934259650",
+          "docs/OCT15_INPUT_SCALAR_TREE_ITERATOR.md": "ade4a9c50415931fb3018a40d81f3a769d232e082564e68ec3e80a0c817f137d",
+          "reports/oct15_input_scalar_tree_iterator.json": "5304401a3256ff4fb21bd96f7ded686b0314152f519ab312f5fcc5cac54a55d9"
+        },
+        "reviewed_worktree_files_sha256": {
+          "src/native_input_scalar_tree_iterator.cpp": "8a717044cd975de0f3b2021858b0f1bb8ea47c4c5050e03c08d0029604ee6246",
+          "include/bsp/native_input_scalar_tree_iterator.hpp": "66f429acaceb01630e0d05fa578f1a26359757eb8f581d692a0efb8934259650",
+          "docs/OCT15_INPUT_SCALAR_TREE_ITERATOR.md": "ade4a9c50415931fb3018a40d81f3a769d232e082564e68ec3e80a0c817f137d",
+          "reports/oct15_input_scalar_tree_iterator.json": "5304401a3256ff4fb21bd96f7ded686b0314152f519ab312f5fcc5cac54a55d9"
+        },
+        "git_worktree_equal_modulo_CRLF": true,
+        "source_native_review_checks": [
+          "Both direct delegates use the full accepted ordinary APIs with identical raw argument words.",
+          "Whole5531F0 includes returning owner diagnostic and current-node reload; nil-node diagnostic is an actual tail jump.",
+          "Whole556DC0 retains native partial progress, preincremented actual argument slots, captured erased node and reachable two-child transplant.",
+          "No additional owner==tree check, key/value write, count shortcut, guard, callback or rollback is introduced.",
+          "Complete extrema/rotation body pairs and invalid-iterator owning27-byte message/EH dependencies are proven.",
+          "Native header/N18 nil15 color14 layout matches reused services; key/value fields remain unowned.",
+          "EAX output/RET0C and void increment semantics are declared; emitted wrappers tail-transfer without retained frames.",
+          "CurrentCPP owning error/CRT/diagnostic and original private-frame/FH3/type/fault/ABI/game limits remain explicit.",
+          "Decompiler omission is explained as an inference; current full body/starts and two-child branch remain intact.",
+          "Prior wrong xlen label corrected in ledger with old name retained; no worker Ghidra mutation."
+        ],
+        "independent_full_comparisons": [
+          {
+            "native": "005531f0",
+            "reference": "00869a20",
+            "whole_envelope_bytes": 99,
+            "independent_normalized_PE_comparison": "pass"
+          },
+          {
+            "native": "00556dc0",
+            "reference": "0086e8a0",
+            "whole_envelope_bytes": 679,
+            "independent_normalized_PE_comparison": "pass"
+          },
+          {
+            "native": "00552fb0",
+            "reference": "008697b0",
+            "whole_envelope_bytes": 28,
+            "independent_normalized_PE_comparison": "pass"
+          },
+          {
+            "native": "00552fd0",
+            "reference": "008697d0",
+            "whole_envelope_bytes": 27,
+            "independent_normalized_PE_comparison": "pass"
+          },
+          {
+            "native": "005530d0",
+            "reference": "0086a2f0",
+            "whole_envelope_bytes": 78,
+            "independent_normalized_PE_comparison": "pass"
+          },
+          {
+            "native": "00553120",
+            "reference": "00869810",
+            "whole_envelope_bytes": 82,
+            "independent_normalized_PE_comparison": "pass"
+          }
+        ],
+        "findings": [],
+        "conclusion": "accepted for integration within documented Source domains; native runtime/binaryABI/game not proved"
+      }
+    },
+    {
+      "packet": "oct15_input_bit_sensitivity_map_full_cleanup",
+      "report": "reports/oct15_input_bit_sensitivity_map_full_cleanup.json",
+      "report_sha256": "800c893207c0d09dea367c5a9a79aaad3997486830d2c3d84e32c0286d4fc535",
+      "source_pin": "4d3ddc5893b8e884c376adb5170be24c254629dc",
+      "owned_bytes": 358,
+      "owned_starts": 144,
+      "raw_report_transfer_rows": 16,
+      "source": "src/native_input_bit_sensitivity_map_full_cleanup.cpp",
+      "header": "include/bsp/native_input_bit_sensitivity_map_full_cleanup.hpp",
+      "documentation": "docs/OCT15_INPUT_BIT_SENSITIVITY_MAP_FULL_CLEANUP.md",
+      "primary_source_review": {
+        "pin": "4d3ddc5893b8e884c376adb5170be24c254629dc",
+        "report": "reports/oct15_input_bit_sensitivity_map_full_cleanup.json",
+        "frozen_git_blob_sha256": {
+          "src/native_input_bit_sensitivity_map_full_cleanup.cpp": "dde4131305993d50f6771a13a484dfb33cd9d0a44d0cc8f22cd1626013c88e99",
+          "include/bsp/native_input_bit_sensitivity_map_full_cleanup.hpp": "bb686ba88b9c78d1416c505159f2c0508b3349c4afba3c2ccd44ca47ae28e283",
+          "docs/OCT15_INPUT_BIT_SENSITIVITY_MAP_FULL_CLEANUP.md": "11ba9c7574539c16952d6da107b6fe1be9a965cf8a9f519be4875ee87316a982",
+          "reports/oct15_input_bit_sensitivity_map_full_cleanup.json": "800c893207c0d09dea367c5a9a79aaad3997486830d2c3d84e32c0286d4fc535"
+        },
+        "reviewed_worktree_files_sha256": {
+          "src/native_input_bit_sensitivity_map_full_cleanup.cpp": "3452bbb7e082e3eb5e6a3124bcaae5f4981efd90c05f22e69489574413e2af19",
+          "include/bsp/native_input_bit_sensitivity_map_full_cleanup.hpp": "0dd729b8fa390e8ea92e28ff490d1e49b9274e609bbd9705d8459561c97182e2",
+          "docs/OCT15_INPUT_BIT_SENSITIVITY_MAP_FULL_CLEANUP.md": "d1b94b021ee19bb1fbf842f1dc95fa51db69eb1c02b930c64fc319be8ae58a93",
+          "reports/oct15_input_bit_sensitivity_map_full_cleanup.json": "64f1cb3bdb129b01282a0cdd6d22ee546516452be10a86f33a75643b1a998309"
+        },
+        "git_worktree_equal_modulo_CRLF": true,
+        "source_native_review_checks": [
+          "Both new range scopes are exactly127B full-selection prefixes; partial branches remain outside the new contract.",
+          "Raw owner tests, head-left capture and last-owner/head reload order match both49-instruction native prefixes.",
+          "Both full subtree calls bind distinct actual RawCtx services, preserving bit count clear versus sensitivity payload schedule.",
+          "Reset parent=self; reload head before count0/left=self; reload for right=self; capture result before output owner/node stores.",
+          "Both complete52B/23instruction destructors capture head thenhead.left, use private8B output and actual full-selection arguments.",
+          "Destructors reload current head before free and clear+4then+8, preserve opaque0 and return native definedDWORD0.",
+          "Getter failures propagate with earlier effects retained; no bridge, callback, invented allocator, nullguard, retry or catch.",
+          "No whole ordinary partial eraser or parent destructor is promoted; original frame/CRT/FH3/fault/ABI/game limits remain explicit.",
+          "Historical actual AV/fixture APIs and the accepted previous word/descriptor files remain preserved."
+        ],
+        "independent_full_comparisons": [
+          {
+            "native": "00559280",
+            "reference": "00559a90",
+            "bytes": 127,
+            "independent_normalized_PE_comparison": "pass"
+          },
+          {
+            "native": "0055a430",
+            "reference": "0055aaf0",
+            "bytes": 52,
+            "independent_normalized_PE_comparison": "pass"
+          }
+        ],
+        "findings": [],
+        "conclusion": "accepted for integration within documented Source domains; native runtime/binaryABI/game not proved"
+      }
+    },
+    {
+      "packet": "oct15_input_scalar_map_full_cleanup",
+      "report": "reports/oct15_input_scalar_map_full_cleanup.json",
+      "report_sha256": "fb860c70060db29f8260b31c2fcf6bb1e826774af7348803e2e9d873780696f2",
+      "source_pin": "e8096362f",
+      "owned_bytes": 179,
+      "owned_starts": 72,
+      "raw_report_transfer_rows": 24,
+      "source": "src/native_input_scalar_map_full_cleanup.cpp",
+      "header": "include/bsp/native_input_scalar_map_full_cleanup.hpp",
+      "documentation": "docs/OCT15_INPUT_SCALAR_MAP_FULL_CLEANUP.md",
+      "independent_source_review": {
+        "status": "passed",
+        "checks": 12,
+        "findings": 0,
+        "receipt_sha256": "30236aead4b35fb172ee97a8d5798e848cccbc4796955cb277de9f23c3787c51",
+        "evidence": {
+          "packet": "oct15_root_input_scalar_map_full_cleanup_source_review",
+          "utc": "2026-10-15T22:11:29.908702+00:00",
+          "reviewer_worktree": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill",
+          "root_worktree": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator",
+          "read_only": true,
+          "decision": "pass_no_findings_in_declared_scope",
+          "finding_count": 0,
+          "checks_passed": 12,
+          "source_files": [
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\include\\bsp\\native_input_scalar_map_full_cleanup.hpp",
+              "sha256": "e56641f96f8612950ffd2d6d231b071c8139e51b640a9ddf235edbad1a1d1da7",
+              "normalized_lf_sha256": "e56641f96f8612950ffd2d6d231b071c8139e51b640a9ddf235edbad1a1d1da7",
+              "bytes": 2077,
+              "unchanged_from_initial_read": true,
+              "snapshot": "local\\oct15_root_scalar_cleanup_review_native_input_scalar_map_full_cleanup.hpp"
+            },
+            {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\src\\native_input_scalar_map_full_cleanup.cpp",
+              "sha256": "2e405a53164e42a369a6bd0781f26000f26ffc93331563e41b55ac682dbf57bf",
+              "normalized_lf_sha256": "2e405a53164e42a369a6bd0781f26000f26ffc93331563e41b55ac682dbf57bf",
+              "bytes": 2352,
+              "unchanged_from_initial_read": true,
+              "snapshot": "local\\oct15_root_scalar_cleanup_review_native_input_scalar_map_full_cleanup.cpp"
+            }
+          ],
+          "dependencies": [
+            {
+              "path": "include/bsp/native_soldier_loop_lengths.hpp",
+              "sha256": "ffd4f34fc05ce4f8578f111023266399201d066d697ff24e47be7ec7ec0b3b70",
+              "identical_in_root_and_review_tree": true
+            },
+            {
+              "path": "src/native_soldier_loop_lengths.cpp",
+              "sha256": "603fe0285277401e7c76588ee40d6552e843a96db5ce00d9374dd8801aeffbb5",
+              "identical_in_root_and_review_tree": true
+            },
+            {
+              "path": "include/bsp/native_soldier_registry_lifetime.hpp",
+              "sha256": "36d02f233b4384f192d68f05b8d2a920abd10c7e45b1e47eece2b0f2e77a1761",
+              "identical_in_root_and_review_tree": true
+            },
+            {
+              "path": "src/native_soldier_registry_lifetime.cpp",
+              "sha256": "740daad23a895934570b9365f21888cf1d1036e65b48a61f5d56d47f9a84f59f",
+              "identical_in_root_and_review_tree": true
+            }
+          ],
+          "native_captures": {
+            "typed": "local\\oct15_root_scalar_cleanup_review_typed.json",
+            "typed_sha256": "c96bc9ffaeb9cecfc8021ce0e912326da48bd560cc79e26a34d12b881221c558",
+            "current_listings": [
+              "local/oct15_root_scalar_cleanup_review_range_listing.txt",
+              "local/oct15_root_scalar_cleanup_review_dtor_listing.txt",
+              "local/oct15_root_scalar_cleanup_review_subtree_listing.txt"
+            ],
+            "prefix_scope": "00444B10..00444B8E inclusive,127B/49 instructions",
+            "whole_scope": "00445900..00445933 inclusive,52B/23 instructions",
+            "subtree_listing": "00444760..004447B1 inclusive,82B/34 instructions",
+            "typed_bodies": [
+              {
+                "entry": "00444b10",
+                "no_return": false,
+                "is_thunk": false,
+                "body": {
+                  "range_count": 2,
+                  "returned_range_count": 2,
+                  "address_count": "200",
+                  "complete": true,
+                  "ranges": [
+                    {
+                      "start": {
+                        "space": "ram",
+                        "offset": "00444b10"
+                      },
+                      "end_inclusive": {
+                        "space": "ram",
+                        "offset": "00444b8e"
+                      },
+                      "length": "127"
+                    },
+                    {
+                      "start": {
+                        "space": "ram",
+                        "offset": "00444b90"
+                      },
+                      "end_inclusive": {
+                        "space": "ram",
+                        "offset": "00444bd8"
+                      },
+                      "length": "73"
+                    }
+                  ]
+                },
+                "modification": "779"
+              },
+              {
+                "entry": "00445900",
+                "no_return": false,
+                "is_thunk": false,
+                "body": {
+                  "range_count": 1,
+                  "returned_range_count": 1,
+                  "address_count": "52",
+                  "complete": true,
+                  "ranges": [
+                    {
+                      "start": {
+                        "space": "ram",
+                        "offset": "00445900"
+                      },
+                      "end_inclusive": {
+                        "space": "ram",
+                        "offset": "00445933"
+                      },
+                      "length": "52"
+                    }
+                  ]
+                },
+                "modification": "779"
+              },
+              {
+                "entry": "00444760",
+                "no_return": false,
+                "is_thunk": false,
+                "body": {
+                  "range_count": 1,
+                  "returned_range_count": 1,
+                  "address_count": "82",
+                  "complete": true,
+                  "ranges": [
+                    {
+                      "start": {
+                        "space": "ram",
+                        "offset": "00444760"
+                      },
+                      "end_inclusive": {
+                        "space": "ram",
+                        "offset": "004447b1"
+                      },
+                      "length": "82"
+                    }
+                  ]
+                },
+                "modification": "779"
+              }
+            ],
+            "project": "C:/Users/sqz269/bsp.gpr",
+            "program": "/battlestationspacific.exe"
+          },
+          "checks": [
+            {
+              "check": "scope_and_selection_preconditions",
+              "result": "pass",
+              "evidence": "Header limits 444B10 to 127B/49 instructions and requires nonnull owned tree, equal nonnull owners, first=initial head.left, last=fresh head and stable selection storage. The two invalid-parameter sites and partial branch are unreachable within this admitted domain. Source does not fabricate either continuation or promote the ordinary range entry."
+            },
+            {
+              "check": "initial_capture_and_first_selection",
+              "result": "pass",
+              "evidence": "Native B17/B1B captures/tests first owner before B1F/B22 head and head.left reads; B26 compare and B2F/B33 first-node comparison follow. Inline asm retains the same actual-storage read order. Dropped branches/diagnostics follow the explicit valid full-selection preconditions."
+            },
+            {
+              "check": "last_selection_and_root_capture",
+              "result": "pass",
+              "evidence": "B37/B3B last-owner load/test precedes fresh head read B3D, comparison B42 and last-node comparison B4B; B51/B54 fresh head/root capture follows. Source retains this order and passes captured root to actual 444760; original EDX residue is unused by that child."
+            },
+            {
+              "check": "actual_rawctx_child_and_nil_schedule",
+              "result": "pass",
+              "evidence": "444760 Source forwards to accepted 4B0600 actual N1C/nil19 subtree, not provider/noexcept storage. Complete current native 444760 listing and actual Source confirm right recursion, current key data capture before left capture, nonnull current length capture before getter, pool return, current node free and next nil test. The original mapped scalar is not destructed."
+            },
+            {
+              "check": "ordered_current_head_resets",
+              "result": "pass",
+              "evidence": "After child: B5F reload head; B62 head.parent=head; B65 reload head before B68 tree.count=0; B6F captured head.left=head; B71 fresh head then B74 head.right=head. Source preserves these separate reads/stores and leaves opaque tree+0 untouched."
+            },
+            {
+              "check": "output_alias_and_return_order",
+              "result": "pass",
+              "evidence": "B77/B7A reload current head and capture head.left before output address B7C; B81 owner store precedes B85 node store. Source captures node before either output store and returns output. This protects the shown storage order; arbitrary aliases to Source private frames remain excluded by the stated private-output contract."
+            },
+            {
+              "check": "whole_destructor_captures_and_full_binding",
+              "result": "pass",
+              "evidence": "Whole 445900 captures head at 45906 then head.left at 45909 and passes captured last/first, receiver owner twice and private 8B output. No intervening provider/callback exists during selection. Source composes only the admitted full prefix and preserves capture order."
+            },
+            {
+              "check": "whole_current_head_free_clear_eax",
+              "result": "pass",
+              "evidence": "4591B reloads CURRENT header head after range completion, 4591F frees it, then 45927 zeroes EAX and 45929/4592C clear header+4 then+8. Source preserves CURRENT free, ordered clears, opaque+0 and defined return0; it adds no null, empty or repeated-destroy guard."
+            },
+            {
+              "check": "empty_tree_path",
+              "result": "pass",
+              "evidence": "An empty owned tree still enters subtree with sentinel, which skips node work through nil19. Full selection then performs all resets/output stores, and whole destructor frees the current sentinel. Source adds no shortcut."
+            },
+            {
+              "check": "getter_failure_and_no_extra_eh",
+              "result": "pass",
+              "evidence": "Actual RawCtx getter failures propagate from 444760 before prefix resets/output; whole range failure skips current-head free/clears. Neither native scope has FS registration or local catch and Source adds no catch/guard/rollback/noexcept bridge. Current C++ propagation is not native FH3/type/foreign-SEH identity."
+            },
+            {
+              "check": "native_abi_and_qualification",
+              "result": "pass",
+              "evidence": "Native prefix ECX tree, EDX unused, five stacked DWORDs output/owners/nodes, RET14h and EAX output. Whole destructor ECX tree, EDX unused, no stack arguments, RET and EAX0. Source adds RawPoolContext and changes private frames/register allocation; header explicitly qualifies native binary ABI/CRT/heap/FH3/SEH/game limits."
+            },
+            {
+              "check": "stable_source_and_dependencies",
+              "result": "pass",
+              "evidence": "Both reviewed root files retain initial byte hashes; four accepted dependency files are byte-identical between root and review worktrees. All writes are ignored local review artifacts; no root edits, claims, build, CMake, metadata, Ghidra mutation or parent Source work."
+            }
+          ],
+          "host_steps": [
+            {
+              "function": "00444B10",
+              "address": "00444B2A",
+              "native": "00BF6713",
+              "note": "Native diagnostic, unreachable in admitted selection"
+            },
+            {
+              "function": "00444B10",
+              "address": "00444B46",
+              "native": "00BF6713",
+              "note": "Native diagnostic, unreachable in admitted selection"
+            },
+            {
+              "function": "00444B10",
+              "address": "00444B5A",
+              "native": "00444760",
+              "note": "Actual RawCtx subtree"
+            },
+            {
+              "function": "00445900",
+              "address": "00445916",
+              "native": "00444B10",
+              "note": "Admitted full-selection binding only"
+            },
+            {
+              "function": "00445900",
+              "address": "0044591F",
+              "native": "00BF65AC",
+              "note": "Current head free"
+            },
+            {
+              "function": "00444760",
+              "address": "00444777",
+              "native": "00444760",
+              "note": "Right recursion"
+            },
+            {
+              "function": "00444760",
+              "address": "0044478F",
+              "native": "00419CC0",
+              "note": "Actual pool getter"
+            },
+            {
+              "function": "00444760",
+              "address": "00444796",
+              "native": "00BD1510",
+              "note": "Captured key block return"
+            },
+            {
+              "function": "00444760",
+              "address": "0044479C",
+              "native": "00BF65AC",
+              "note": "Current node free"
+            }
+          ],
+          "validation": {
+            "review": "complete Source/header and current native instruction schedules",
+            "transfer_checker": {
+              "command": "python tools/verify_report_calls.py local/oct15_root_input_scalar_map_full_cleanup_source_review.json",
+              "checked": 9,
+              "failed": 0,
+              "read_only": true
+            },
+            "build": "not run; read-only audit request",
+            "runtime": "not run; no ABI/gameplay proof",
+            "final_source_hashes_rechecked": true
+          },
+          "limits": [
+            "This reviews the new full-selection fragment and whole destructor only; it does not replace the existing ordinary full/partial projection or prove its out-of-fragment diagnostics.",
+            "No original FH3/foreign-SEH/CRT/fault/private-frame/binary ABI/game equivalence is asserted.",
+            "Larger record/pair/scalar parent Source remains unapproved and untouched."
+          ]
+        }
+      }
+    },
+    {
+      "packet": "oct15_input_scalar_tree_range",
+      "report": "reports/oct15_input_scalar_tree_range.json",
+      "report_sha256": "12ddc7a1c6c98d4969c6c6a8495d554fa7bff37f72a953761cdcd67ecda25b20",
+      "source_pin": "7b1fac6adb5bacc09db7b24c66ec806925de672d",
+      "owned_bytes": 200,
+      "owned_starts": 76,
+      "raw_report_transfer_rows": 6,
+      "source": "src/native_input_scalar_tree_range.cpp",
+      "header": "include/bsp/native_input_scalar_tree_range.hpp",
+      "documentation": "docs/OCT15_INPUT_SCALAR_TREE_RANGE.md",
+      "primary_source_review": {
+        "pin": "7b1fac6adb5bacc09db7b24c66ec806925de672d",
+        "report": "reports/oct15_input_scalar_tree_range.json",
+        "git_blob_sha256": {
+          "src/native_input_scalar_tree_range.cpp": "14a938ba450949ac48efe947d30cb7e3c5f307da280b1e9a3f6eb423a8ddc691",
+          "include/bsp/native_input_scalar_tree_range.hpp": "be04b71f4a283e38279d413cb1634066f94931545833f8b3f716682dc60f1a64",
+          "docs/OCT15_INPUT_SCALAR_TREE_RANGE.md": "054db49e9b1d939b68719f78e463b08bcaf8a88d541f4b35132c7c8fff6e33f5",
+          "reports/oct15_input_scalar_tree_range.json": "12ddc7a1c6c98d4969c6c6a8495d554fa7bff37f72a953761cdcd67ecda25b20"
+        },
+        "reviewed_worktree_files_sha256": {
+          "src/native_input_scalar_tree_range.cpp": "14a938ba450949ac48efe947d30cb7e3c5f307da280b1e9a3f6eb423a8ddc691",
+          "include/bsp/native_input_scalar_tree_range.hpp": "be04b71f4a283e38279d413cb1634066f94931545833f8b3f716682dc60f1a64",
+          "docs/OCT15_INPUT_SCALAR_TREE_RANGE.md": "054db49e9b1d939b68719f78e463b08bcaf8a88d541f4b35132c7c8fff6e33f5",
+          "reports/oct15_input_scalar_tree_range.json": "12ddc7a1c6c98d4969c6c6a8495d554fa7bff37f72a953761cdcd67ecda25b20"
+        },
+        "git_worktree_equal_modulo_CRLF": true,
+        "source_native_review_checks": [
+          "Direct sevenargument fastcall reuse of the accepted complete ordinary86EE50 service; no copied partial loop/provider/callback/guard.",
+          "Native fullselected and partial schedules reviewed; returning diagnostics retain captured first bounds and current owner/node reloads.",
+          "Parent increments its ACTUAL argumentiterator slots then erases a separate OLD iterator copy with private output; child output and EAX are discarded.",
+          "Full path captures resultnode before output owner/node stores; partial completion uses captured bounds; no added disjoint-output restriction or rollback.",
+          "Full201Benvelope/200definedB/76instructions matches accepted whole86EE50 after6proved CALL fields; three completechild/referencepairs close current subtree/increment/erase/EH services.",
+          "Emitted9B COFF restores EBP then tail-jumps exact acceptedrange symbol; ECX/EDX/five physicalstackwords preserved without retainedwrapperframe.",
+          "Correct existing STL identity and earlier fullprefix/55AF60 domains remain preserved; current owningerror/SDK/CRT/FH3/fault/privateframe/ABI/game limits explicit."
+        ],
+        "independent_full_comparisons": [
+          {
+            "native": "005572f0",
+            "reference": "0086ee50",
+            "whole_envelope_bytes": 201,
+            "comparison": "pass"
+          },
+          {
+            "native": "00554f10",
+            "reference": "0086aa60",
+            "whole_envelope_bytes": 53,
+            "comparison": "pass"
+          },
+          {
+            "native": "005531f0",
+            "reference": "00869a20",
+            "whole_envelope_bytes": 99,
+            "comparison": "pass"
+          },
+          {
+            "native": "00556dc0",
+            "reference": "0086e8a0",
+            "whole_envelope_bytes": 679,
+            "comparison": "pass"
+          }
+        ],
+        "findings": [],
+        "conclusion": "accepted within documented Source domains; no native runtime/binaryABI/game proof"
+      }
+    },
+    {
+      "packet": "oct15_native_dword_vector_allocation",
+      "report": "reports/oct15_native_dword_vector_allocation.json",
+      "report_sha256": "8582dd534af90f13dd14c07d766af00f758bae93ecedad6ea5177656e63fda9d",
+      "source_pin": "73f81925ade75029de101d4bcea03834181cd815",
+      "owned_bytes": 198,
+      "owned_starts": 50,
+      "raw_report_transfer_rows": 30,
+      "source": "src/native_dword_vector_allocation.cpp",
+      "header": "include/bsp/native_dword_vector_allocation.hpp",
+      "documentation": "docs/OCT15_NATIVE_DWORD_VECTOR_ALLOCATION.md",
+      "primary_source_review": {
+        "pin": "73f81925ade75029de101d4bcea03834181cd815",
+        "report": "reports/oct15_native_dword_vector_allocation.json",
+        "git_blob_sha256": {
+          "src/native_dword_vector_allocation.cpp": "d660b174b88f4e03833f50e953a988ff0c342c117a1be1a6ce20dddcc94b57de",
+          "include/bsp/native_dword_vector_allocation.hpp": "331458efd167fbabb3d2ed729fe347bc20ef4d47975833bb4612b460ad83f186",
+          "docs/OCT15_NATIVE_DWORD_VECTOR_ALLOCATION.md": "6bd4d1aeba90378731482f2f9e56530d1d1d9521fbd8920ed14256947f633980",
+          "reports/oct15_native_dword_vector_allocation.json": "8582dd534af90f13dd14c07d766af00f758bae93ecedad6ea5177656e63fda9d"
+        },
+        "reviewed_worktree_files_sha256": {
+          "src/native_dword_vector_allocation.cpp": "d660b174b88f4e03833f50e953a988ff0c342c117a1be1a6ce20dddcc94b57de",
+          "include/bsp/native_dword_vector_allocation.hpp": "331458efd167fbabb3d2ed729fe347bc20ef4d47975833bb4612b460ad83f186",
+          "docs/OCT15_NATIVE_DWORD_VECTOR_ALLOCATION.md": "6bd4d1aeba90378731482f2f9e56530d1d1d9521fbd8920ed14256947f633980",
+          "reports/oct15_native_dword_vector_allocation.json": "b4e22ec09f5a4fdd6d72beb1bedad7f4ffd60697227588e623e69a64787b5227"
+        },
+        "git_worktree_equal_modulo_CRLF": true,
+        "source_native_review_checks": [
+          "Allthree Source bodies directly use actual accepted services, unchanged unsignedcount/rawvoid*, same full lengthhelper and explicit completed-message storage.",
+          "Allocator full25instructions and unsigneddivision threshold retain zero request and max3FFFFFFF; no stringallocator width/count adaptation.",
+          "Full length23instructions retain no-init1Ch temporary, capacity15,length0,NUL, counted18byte assignment BEFORE state0 arming, actual owning28h exception and D69260/D83F98 identities as qualified data.",
+          "Delegated full helper owns its temporary exactlyonce; standalone C6D790 action has no added object/guard/doublecleanup and directly destroys completed storage.",
+          "C6D790 explicit reference is a Source interface; no synthetic EBP/frame reader or claimed native actionABI.",
+          "Allcurrent native/reference/message/EH metadata checked by worker; OriginalstaticCRT/FH3/RTTI/BF6885/fault/ABI/game identity remain explicit boundaries.",
+          "Complete native allocator/length/action listings and accepted full service Source independently inspected; original library names and oldfragments preserved."
+        ],
+        "independent_full_comparisons": [
+          {
+            "native": "00553260",
+            "reference": "00bcfeb0",
+            "whole_bytes": 85,
+            "comparison": "pass",
+            "exact_masks": [
+              {
+                "offset": 18,
+                "same_target": "0xbf681b"
+              },
+              {
+                "offset": 58,
+                "same_target": "0xbf6340"
+              },
+              {
+                "offset": 81,
+                "same_target": "0xbf6885"
+              }
+            ]
+          },
+          {
+            "native": "00556c20",
+            "reference": "00bd0590",
+            "whole_bytes": 105,
+            "comparison": "pass",
+            "exact_masks": [
+              {
+                "offset": 3,
+                "EHhandler": true
+              },
+              {
+                "offset": 57,
+                "same_target": "0x408720"
+              },
+              {
+                "offset": 78,
+                "same_target": "0x411700"
+              },
+              {
+                "offset": 101,
+                "same_target": "0xbf6885"
+              }
+            ]
+          },
+          {
+            "native": "00556c20",
+            "reference": "00431f70",
+            "whole_bytes": 105,
+            "comparison": "pass",
+            "exact_masks": [
+              {
+                "offset": 3,
+                "EHhandler": true
+              },
+              {
+                "offset": 57,
+                "same_target": "0x408720"
+              },
+              {
+                "offset": 78,
+                "same_target": "0x411700"
+              },
+              {
+                "offset": 101,
+                "same_target": "0xbf6885"
+              }
+            ]
+          },
+          {
+            "native": "00c6d790",
+            "reference": "00cc5470",
+            "whole_bytes": 8,
+            "comparison": "pass",
+            "exact_masks": [
+              {
+                "offset": 4,
+                "same_target": "0x4072d0"
+              }
+            ]
+          },
+          {
+            "native": "00c6d790",
+            "reference": "00c5ec30",
+            "whole_bytes": 8,
+            "comparison": "pass",
+            "exact_masks": [
+              {
+                "offset": 4,
+                "same_target": "0x4072d0"
+              }
+            ]
+          }
+        ],
+        "findings": [],
+        "conclusion": "accepted within documented Source domains; no native runtime/binaryABI/game proof"
+      }
+    }
+  ],
+  "source_files_sha256": {
+    "src/native_input_scalar_tree_iterator.cpp": "8a717044cd975de0f3b2021858b0f1bb8ea47c4c5050e03c08d0029604ee6246",
+    "include/bsp/native_input_scalar_tree_iterator.hpp": "66f429acaceb01630e0d05fa578f1a26359757eb8f581d692a0efb8934259650",
+    "src/native_input_bit_sensitivity_map_full_cleanup.cpp": "dde4131305993d50f6771a13a484dfb33cd9d0a44d0cc8f22cd1626013c88e99",
+    "include/bsp/native_input_bit_sensitivity_map_full_cleanup.hpp": "bb686ba88b9c78d1416c505159f2c0508b3349c4afba3c2ccd44ca47ae28e283",
+    "src/native_input_scalar_map_full_cleanup.cpp": "2e405a53164e42a369a6bd0781f26000f26ffc93331563e41b55ac682dbf57bf",
+    "include/bsp/native_input_scalar_map_full_cleanup.hpp": "e56641f96f8612950ffd2d6d231b071c8139e51b640a9ddf235edbad1a1d1da7",
+    "src/native_input_scalar_tree_range.cpp": "14a938ba450949ac48efe947d30cb7e3c5f307da280b1e9a3f6eb423a8ddc691",
+    "include/bsp/native_input_scalar_tree_range.hpp": "be04b71f4a283e38279d413cb1634066f94931545833f8b3f716682dc60f1a64",
+    "src/native_dword_vector_allocation.cpp": "d660b174b88f4e03833f50e953a988ff0c342c117a1be1a6ce20dddcc94b57de",
+    "include/bsp/native_dword_vector_allocation.hpp": "331458efd167fbabb3d2ed729fe347bc20ef4d47975833bb4612b460ad83f186"
+  },
+  "native_transfer_accounting": {
+    "report_rows_checked": 93,
+    "distinct_current_sites": 81,
+    "duplicate_rows": 12,
+    "markdown_claims_checked": 67,
+    "failed": 0,
+    "unchecked_markdown": 0,
+    "warnings": 0,
+    "log": "local/oct15_fifteenth_final_transfer_verification.log"
+  },
+  "host_steps": [
+    {
+      "address": "0042bf51",
+      "native": "00bf681b",
+      "function": "0042bf40",
+      "kind": "call"
+    },
+    {
+      "address": "0042bf79",
+      "native": "00bf6340",
+      "function": "0042bf40",
+      "kind": "call"
+    },
+    {
+      "address": "0042bf90",
+      "native": "00bf6885",
+      "function": "0042bf40",
+      "kind": "call"
+    },
+    {
+      "address": "00431fa8",
+      "native": "00408720",
+      "function": "00431f70",
+      "kind": "call"
+    },
+    {
+      "address": "00431fbd",
+      "native": "00411700",
+      "function": "00431f70",
+      "kind": "call"
+    },
+    {
+      "address": "00431fd4",
+      "native": "00bf6885",
+      "function": "00431f70",
+      "kind": "call"
+    },
+    {
+      "function": "00444760",
+      "address": "00444777",
+      "native": "00444760"
+    },
+    {
+      "function": "00444760",
+      "address": "0044478f",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00444760",
+      "address": "00444796",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00444760",
+      "address": "0044479c",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "00444B10",
+      "address": "00444b2a",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00444B10",
+      "address": "00444b46",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00444B10",
+      "address": "00444b5a",
+      "native": "00444760"
+    },
+    {
+      "function": "00445900",
+      "address": "00445916",
+      "native": "00444b10"
+    },
+    {
+      "function": "00445900",
+      "address": "0044591f",
+      "native": "00bf65ac"
+    },
+    {
+      "address": "005531f8",
+      "native": "00bf6713",
+      "function": "005531f0",
+      "kind": "call"
+    },
+    {
+      "address": "00553207",
+      "native": "00bf6713",
+      "function": "005531f0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00553271",
+      "native": "00bf681b",
+      "function": "00553260",
+      "kind": "call"
+    },
+    {
+      "address": "00553299",
+      "native": "00bf6340",
+      "function": "00553260",
+      "kind": "call"
+    },
+    {
+      "address": "005532b0",
+      "native": "00bf6885",
+      "function": "00553260",
+      "kind": "call"
+    },
+    {
+      "address": "00556c58",
+      "native": "00408720",
+      "function": "00556c20",
+      "kind": "call"
+    },
+    {
+      "address": "00556c6d",
+      "native": "00411700",
+      "function": "00556c20",
+      "kind": "call"
+    },
+    {
+      "address": "00556c84",
+      "native": "00bf6885",
+      "function": "00556c20",
+      "kind": "call"
+    },
+    {
+      "address": "00556e04",
+      "native": "00408720",
+      "function": "00556dc0",
+      "kind": "call"
+    },
+    {
+      "address": "00556e16",
+      "native": "00411700",
+      "function": "00556dc0",
+      "kind": "call"
+    },
+    {
+      "address": "00556e2d",
+      "native": "00bf6885",
+      "function": "00556dc0",
+      "kind": "call"
+    },
+    {
+      "address": "00556e3e",
+      "native": "005531f0",
+      "function": "00556dc0",
+      "kind": "call"
+    },
+    {
+      "address": "00556ea3",
+      "native": "00552fd0",
+      "function": "00556dc0",
+      "kind": "call"
+    },
+    {
+      "address": "00556ec5",
+      "native": "00552fb0",
+      "function": "00556dc0",
+      "kind": "call"
+    },
+    {
+      "address": "00556f63",
+      "native": "005530d0",
+      "function": "00556dc0",
+      "kind": "call"
+    },
+    {
+      "address": "00556f92",
+      "native": "00553120",
+      "function": "00556dc0",
+      "kind": "call"
+    },
+    {
+      "address": "00556fac",
+      "native": "005530d0",
+      "function": "00556dc0",
+      "kind": "call"
+    },
+    {
+      "address": "00556fc3",
+      "native": "00553120",
+      "function": "00556dc0",
+      "kind": "call"
+    },
+    {
+      "address": "00557007",
+      "native": "005530d0",
+      "function": "00556dc0",
+      "kind": "call"
+    },
+    {
+      "address": "0055701f",
+      "native": "00553120",
+      "function": "00556dc0",
+      "kind": "call"
+    },
+    {
+      "address": "0055702c",
+      "native": "00bf65ac",
+      "function": "00556dc0",
+      "kind": "call"
+    },
+    {
+      "address": "00557226",
+      "function": "00557200",
+      "native": "00556c20",
+      "kind": "call"
+    },
+    {
+      "address": "0055722f",
+      "function": "00557200",
+      "native": "00553260",
+      "kind": "call"
+    },
+    {
+      "address": "0055730a",
+      "native": "00bf6713",
+      "function": "005572f0"
+    },
+    {
+      "address": "00557326",
+      "native": "00bf6713",
+      "function": "005572f0"
+    },
+    {
+      "address": "0055733a",
+      "native": "00554f10",
+      "function": "005572f0"
+    },
+    {
+      "address": "0055737a",
+      "native": "00bf6713",
+      "function": "005572f0"
+    },
+    {
+      "address": "00557389",
+      "native": "005531f0",
+      "function": "005572f0"
+    },
+    {
+      "address": "00557397",
+      "native": "00556dc0",
+      "function": "005572f0"
+    },
+    {
+      "address": "005575e3",
+      "function": "00557590",
+      "native": "00556c20",
+      "kind": "call"
+    },
+    {
+      "address": "005575ec",
+      "function": "00557590",
+      "native": "00553260",
+      "kind": "call"
+    },
+    {
+      "address": "0055929a",
+      "native": "00bf6713",
+      "function": "00559280"
+    },
+    {
+      "address": "005592b6",
+      "native": "00bf6713",
+      "function": "00559280"
+    },
+    {
+      "address": "005592ca",
+      "native": "00558420",
+      "function": "00559280"
+    },
+    {
+      "address": "0055930a",
+      "native": "00bf6713",
+      "function": "00559280"
+    },
+    {
+      "address": "00559319",
+      "native": "00552e90",
+      "function": "00559280"
+    },
+    {
+      "address": "00559327",
+      "native": "00557f90",
+      "function": "00559280"
+    },
+    {
+      "address": "00559aaa",
+      "native": "00bf6713",
+      "function": "00559a90"
+    },
+    {
+      "address": "00559ac6",
+      "native": "00bf6713",
+      "function": "00559a90"
+    },
+    {
+      "address": "00559ada",
+      "native": "00558ed0",
+      "function": "00559a90"
+    },
+    {
+      "address": "00559b1a",
+      "native": "00bf6713",
+      "function": "00559a90"
+    },
+    {
+      "address": "00559b29",
+      "native": "00552770",
+      "function": "00559a90"
+    },
+    {
+      "address": "00559b37",
+      "native": "00558a60",
+      "function": "00559a90"
+    },
+    {
+      "address": "0055a446",
+      "native": "00559280",
+      "function": "0055a430"
+    },
+    {
+      "address": "0055a44f",
+      "native": "00bf65ac",
+      "function": "0055a430"
+    },
+    {
+      "address": "0055ab06",
+      "native": "00559a90",
+      "function": "0055aaf0"
+    },
+    {
+      "address": "0055ab0f",
+      "native": "00bf65ac",
+      "function": "0055aaf0"
+    },
+    {
+      "address": "0055b4a6",
+      "function": "0055b490",
+      "native": "0055b230"
+    },
+    {
+      "address": "0055b4af",
+      "function": "0055b490",
+      "native": "00bf65ac"
+    },
+    {
+      "address": "0055b7f1",
+      "function": "0055b690",
+      "native": "00444b10"
+    },
+    {
+      "address": "006979f4",
+      "function": "00697990",
+      "native": "00556c20",
+      "kind": "call"
+    },
+    {
+      "address": "00697a55",
+      "function": "00697990",
+      "native": "00553260",
+      "kind": "call"
+    },
+    {
+      "address": "00bcfec1",
+      "native": "00bf681b",
+      "function": "00bcfeb0",
+      "kind": "call"
+    },
+    {
+      "address": "00bcfee9",
+      "native": "00bf6340",
+      "function": "00bcfeb0",
+      "kind": "call"
+    },
+    {
+      "address": "00bcff00",
+      "native": "00bf6885",
+      "function": "00bcfeb0",
+      "kind": "call"
+    },
+    {
+      "address": "00bd05c8",
+      "native": "00408720",
+      "function": "00bd0590",
+      "kind": "call"
+    },
+    {
+      "address": "00bd05dd",
+      "native": "00411700",
+      "function": "00bd0590",
+      "kind": "call"
+    },
+    {
+      "address": "00bd05f4",
+      "native": "00bf6885",
+      "function": "00bd0590",
+      "kind": "call"
+    },
+    {
+      "address": "00c5ec33",
+      "native": "004072d0",
+      "function": "00c5ec30",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c5ec3d",
+      "native": "00bf6b43",
+      "function": "00c5ec38",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6d793",
+      "native": "004072d0",
+      "function": "00c6d790",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6d79d",
+      "native": "00bf6b43",
+      "function": "00c6d798",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6d7f3",
+      "native": "004072d0",
+      "function": "00c6d7f0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6d7fd",
+      "native": "00bf6b43",
+      "function": "00c6d7f8",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc5473",
+      "native": "004072d0",
+      "function": "00cc5470",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc547d",
+      "native": "00bf6b43",
+      "function": "00cc5478",
+      "kind": "tail_jump"
+    }
+  ],
+  "validation": {
+    "command": "./scripts/build.ps1",
+    "platform": "MSVC Win32 Release",
+    "tested_source_pin": "d1fd051ea1668bb471592736afbb42795ef6d80b",
+    "existing_suites": "3/3 passed",
+    "ctest_seconds": 8.0,
+    "log": "local/oct15_fifteenth_union_build.log",
+    "build_log_sha256": "a20b31f994df163dffc539deb361b4d1c875e152ff5eb126e1b9ad38150e279e",
+    "initial_own_scalar_source_pin": "e8096362f",
+    "initial_combined_suites": "3/3 passed8.05s",
+    "new_tests": 0,
+    "new_native_entry_execution": false,
+    "original_binary_ABI_proven": false,
+    "game_validated": false
+  },
+  "ghidra": {
+    "annotations_applied": 12,
+    "saved_project": true,
+    "prior_names_comments_and_preimages_preserved": true,
+    "receipts": [
+      {
+        "path": "local/ghidra-annotations-20261015T221313Z.json",
+        "sha256": "0b661724204a4216c6283d22f14aff74aef7e0668e35f6e0acdaaddabde4a84e"
+      },
+      {
+        "path": "local/ghidra-annotations-20261015T221847Z.json",
+        "sha256": "9c72bd8f96cec7c3532485768ab7a0c9eb208ea1bf533136530aaf94e62b11bf"
+      }
+    ],
+    "forced_snapshot": "completed;76771total/76329internal",
+    "snapshot_log": "local/oct15_fifteenth_snapshot.log",
+    "affected_exports": {
+      "status": "completed",
+      "count": 12,
+      "log": "local/oct15_fifteenth_exports.log"
+    }
+  },
+  "preservation": [
+    "Earlier whole actual/provider/AV/fixture domains are real implementations and remain preserved.",
+    "Whole5572F0 now has a distinct ordinary raw API; historical consumed-prefix and55AF60 APIs keep their scopes.",
+    "Only consumed full-selected paths of559280/559A90/444B10 are new here; their partial branches are not promoted.",
+    "Correct STL/library/EH identities retained; wrong old556DC0 xlen hypothesis corrected with old evidence recorded.",
+    "Main unrelated untracked native_light_shadow_view_build.txt and argon_v2_seg40.cpp remain outside this batch."
+  ],
+  "limits": [
+    "Build and existing regressions are not native execution of these new APIs. Complete bytes/currentstarts/metadata/COFF checks are static evidence.",
+    "Current Source/RawCtx/privateframes/CRT/CPP exceptions differ from original register/stack/flags/FH3/SEH/RTTI/heap/fault/gameplay ABI.",
+    "Parent device record/pair/scalar-delete plus10actions are next-batch worker work; whole697990 and697DC0/697F40 remain separately incomplete pending audits."
+  ],
+  "publication": {
+    "branch": "main",
+    "remote": "origin",
+    "source_anchor": "752c379e0f4d6e15c50a21074f69c34356c96335",
+    "method": "One batch push after the metadata receipt merge; verify remote independently."
+  },
+  "main_integration": {
+    "source_integration_commit": "752c379e0f4d6e15c50a21074f69c34356c96335",
+    "exact_tested_source_pin": "d1fd051ea1668bb471592736afbb42795ef6d80b",
+    "src_include_cmake_tools_scripts_equal_tested_union": true,
+    "git_diff_exit_code": 0,
+    "all10_owned_source_header_hashes_rechecked": true,
+    "unrelated_untracked_files_preserved": [
+      "reports/native_light_shadow_view_build.txt",
+      "src/argon_v2_seg40.cpp"
+    ]
+  }
+}

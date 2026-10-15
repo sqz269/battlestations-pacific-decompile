@@ -1,0 +1,100 @@
+{
+  "packet": "goal15g_pod8_insert",
+  "status": "complete_concrete_source_normal_and_recovered_catches_strict_compiled_source_fixture_pass",
+  "source": "src/native_pod8_vector_insert.cpp",
+  "header": "include/bsp/native_pod8_vector_insert.hpp",
+  "documentation": "docs/GOAL15G_POD8_VECTOR_INSERT.md",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "target-verifying bsp.py whole listing, live containing bodies, metadata bytes and consumed dependency assemblies; no writes"
+  },
+  "routines": [{
+    "address": "00420f80",
+    "end": "004211c0",
+    "native_bytes": 577,
+    "listed_instructions": 225,
+    "coverage": "complete normal growth/two in-place paths and both recovered catch operations with actual concrete providers/current Source EH",
+    "original_name": "STL_inst_00420f80",
+    "proposed_native_name": "STL_Pod8Vector_InsertCount_00420f80",
+    "original_abi": "ECX actual raw header, four stack DWORDs unread iterator-owner/position/count/raw8 value pointer, RET10h; no semantic EAX result established",
+    "source_api": "void __fastcall insert_native_pod8_vector_00420f80(void* owner,void* unused_edx,void* ignored_iterator_owner,void* position,uint32_t count,const void* value)",
+    "source_thunk_bytes": 17,
+    "source_private_body_bytes": 866,
+    "storage": "unread +0; first+4,last+8,end+C; all raw DWORD arithmetic and pointer accesses, no host vector or recovered native class identity"
+  }],
+  "host_steps": [
+    {"address":"00420fea","native":"004203a0","containing_function":"00420f80","operation":"owning length-error route before any insertion try; no inputs/no normal return"},
+    {"address":"0042104b","native":"00413390","containing_function":"00420f80","operation":"ECX grown count, EDX zero/unconsumed; actual allocation before state0; plainRET/EAX raw storage"},
+    {"address":"00421070","native":"00419960","containing_function":"00420f80","operation":"ECX current first,EDX position; four stack words allocation,owner,current count,tag; RET10h"},
+    {"address":"00421080","native":"0041e3c0","containing_function":"00420f80","operation":"ECX owner; stack prefix endpoint,current count,local pair; RET0Ch"},
+    {"address":"00421098","native":"00419960","containing_function":"00420f80","operation":"ECX captured position,EDX current last; stack fill endpoint,owner,current count,modified position tag; RET10h"},
+    {"address":"004210ba","native":"00bf65ac","containing_function":"00420f80","operation":"conditional captured CURRENT old first free; cdecl ADD ESP4"},
+    {"address":"0042111e","native":"0041f4e0","containing_function":"00420f80","operation":"ECX owner; position,captured old last,position+countBytes; RET0Ch; before state2"},
+    {"address":"00421141","native":"0041e3c0","containing_function":"00420f80","operation":"ECX owner; current last,current count-SAR(current last-position,3),local pair; RET0Ch; state2"},
+    {"address":"00421157","native":"0041c680","containing_function":"00420f80","operation":"position,reloaded last-countBytes,local pair; cdecl ADD ESP0Ch; state2"},
+    {"address":"00421188","native":"0041f4e0","containing_function":"00420f80","operation":"ECX owner; split,captured old last,captured old last; RET0Ch; state-1"},
+    {"address":"00421196","native":"0041dac0","containing_function":"00420f80","operation":"position,CURRENT split argument slot,captured old last; header last already published; cdecl cleanup deferred"},
+    {"address":"004211a6","native":"0041c680","containing_function":"00420f80","operation":"position,position+CURRENT saved countBytes,local pair; combined cdecl ADD ESP18h"},
+    {"address":"004210eb","native":"00bf65ac","containing_function":"004210e7","operation":"catch1 frees CURRENT reused allocation argument slot; cdecl ADD ESP4"},
+    {"address":"004210f7","native":"00bf6885","containing_function":"004210e7","operation":"shared catch1/catch2 rethrow, zero/zero stack arguments to library stdcall transport"}
+  ],
+  "caller_evidence": [{
+    "address":"00421aa0","native":"00420f80","containing_function":"00421a50",
+    "operation":"one live caller; checked insert-one pushes value,1,position,iterator-owner and binds ECX actual owner; callee RET10h"
+  }],
+  "dependencies": {
+    "range": "complete actual native_pod8_range.hpp providers19960/C7E0/E3C0/F4E0; exact raw word/null/wrap/alias operations, no host pair copy substitute",
+    "inplace": "complete actual native_pod8_inplace_range.hpp providersC680/DAC0, Source cdecl3args/plainRET; per-word alias reload/backward endpoint retained",
+    "failure": "native_pod8_failure.hpp actual13390 quotient/zero-request provider plus owning raw12 direct-overflow transport and actual203A0 owning vector-length transport",
+    "free": "singleton_lifetime_free pairs actual current malloc/new-handler allocation; original private CRT/heap identity qualified",
+    "no_missing_gate": "complete listing found no additional missing dependencies; all previously missing helper entries supplied by accepted peer packets",
+    "no_fake_provider": "no injected callback, replacement owner/private vector/global, fake success or partial branch delegation"
+  },
+  "schedules": {
+    "actual_arguments": "public naked thunk LEA[ESP+4]/push cells/push capturedECX/call privateC++/ADD ESP8/RET10h; all four actual incoming stack cells remain addressed, metadata0 unread; allocation/countBytes,split and byte-only position tag reuse retained",
+    "zero_and_capture": "read value word1 then word0, capture initial first/capacity, THEN count0 check; no float loads; captured raw pair independent of subsequent source overwrite",
+    "arithmetic": "uint32 add/subtract/multiply wrap; explicit SAR3 bits and unsigned count/size/capacity comparisons; capacity half logical; 1FFFFFFF overflow guard retained",
+    "growth": "initial first/capacity retained, fresh last each reached size calculation; allocate before try; current position/first after allocator; prefix/fill/current-last suffix; current old first/size/current count before free; reload saved allocation after free; publish+C,+8,+4",
+    "short_tail": "save countBytes; initial suffix copy outside state2; reload current last/count; state2 fill; RMW ADD current last; reload extended last then gap fill; catch rethrows only",
+    "long_tail": "save countBytes/split in actual cells; tail copy; reload current split; publish last before backward copy; reload countBytes after backward copy; gap fill; no catch/rollback"
+  },
+  "native_eh": {
+    "handler":"00c5e4c0",
+    "func_info":"00d84844",
+    "magic":"19930522",
+    "max_state":4,
+    "unwind_map":"00d84824",
+    "unwind_actions":"all four entries toState=-1/action0",
+    "try_map":"00d84868",
+    "try_entries":[{"try_low":0,"try_high":0,"catch_high":1,"handlers":"00d84814","catch":"004210e7"},{"try_low":2,"try_high":2,"catch_high":3,"handlers":"00d84804","catch":"004210f3"}],
+    "handler_types":"both adjectives40h,type0,disp0",
+    "other_fields":"nTryBlocks2,nIPMapEntries0,IPMap0,ESType0,EHFlags1",
+    "operations":"catch1 CURRENT argument allocation/free then shared throw; catch2 shared throw only; no element destructors/unwind rollback actions",
+    "flow":"225 listed instructions/0 gaps; typed no-return properties unavailable because bridge inline scripts disabled; saved read-only error, no fallback write/repair",
+    "attribution":"Catch_All@004210e7 live body004210e7..004210fb owns both physical catch calls; stale nearest-start graph is not boundary proof"
+  },
+  "source_eh": {
+    "implementation":"two actual current C++ try/catch scopes; fixed local volatile pointers to actual concrete copy/fill/free entries through potentially-throwing types preserve emitted scopes; no injectable provider",
+    "emission":"17B public thunk,866B private body; currentCxxFrameHandler3,maxState4,two try ranges[0,0,1]/[2,2,3],four null unwind actions,CURRENT actual-stack-cell cleanup and shared CxxThrow rethrow tail",
+    "scope":"growth state0 remains through old free/publication; allocation outside; short-tail initial copy outside state2; state2 through final assignment; long-tail stays state-1",
+    "limits":"extra current C++ call/EH frames, Source tag upper-byte preimage, local/caller-temporary spill alias identity, FH3/funclets/cookies/filters/SEH/private CRT/heap/RTTI/double-exception/register identity not proved or transplanted; genuine current C++ rethrow policy; no forced inner-catch runtime proof"
+  },
+  "validation": {
+    "strict_compile":"PASS MSVC Win32 /std:c++17 /EHsc /MD /W4 /WX /permissive- /fp:strict /O2; local/goal15g_pod8_insert/compile.cmd",
+    "object_check":"PASS local/goal15g_pod8_insert/verify_object.py [optional objectpath]: actual-cell17B thunk/eight genuine providers,initial reverse capture before count test,actual argument-byte tag,current-last ADD,+C/+8/+4 publication,cdecl18h cleanup,and complete current EH maps/catches",
+    "native_byte_comparison":"no whole Native577B/Source866B plus thunk17B normalization or equality claim for current C++ EH translation",
+    "call_checker":"PASS15 rows/0 failures:12 normal+2 separate catch rows plus1 caller row; markdown35 addresses/1 claim/0 failures/0 unchecked/0 warnings",
+    "review":"primary whole Source/Native/handoff review found no discrepancy",
+    "source_fixture":"PASS same single ignored real-provider overlay fixture: actual incoming stack-value alias/reused cells,growth/capacity/old free,both in-place suffix branches,aliased value overwritten by backward shift,count0 retention,genuine pre-allocation std::bad_alloc through installed/restored actual CRT declining new-handler,and owning length-error catch; exit0",
+    "fixture_path":"local/goal15g_pod8_insert/pod8_insert_probe.cpp",
+    "fixture_command":"local/goal15g_pod8_insert/run_overlay_probe.cmd; /MD,/MANIFEST:EMBED; actual peer objects plus primary registered Release archive, no stubs",
+    "heap_observation":"bounded current _heapwalk old growth allocation no longer USED/new allocation USED; all fixture-owned buffers freed on pass; no global leak proof",
+    "runtime_eh_limit":"pre-allocation actual current exception and owning length route run; no exception injected into inner growth/short-tail catches; Native runtime/ABI/FH3/SEH/gameplay unproved",
+    "registered_build":"primary owns CMake registration,full Win32 build/existing checks,actual archive-only fixture,registered object checks,annotation/save/export/integration; pending at worker closure"
+  },
+  "history":"retain old STL_inst_00420f80 as prior Native name, descriptive new STL name remains hypothesis; preserve existing correct library/helper names and historical semantic draft/CC13 APIs; append distinct complete Source function record, no shared writes"
+}

@@ -1,0 +1,160 @@
+{
+  "schema": "bsp.property_reference_set_Main_validation.v1",
+  "status": "whole_ordinary_Source_registered_Main3checks_actual_code_archive_identity_pass",
+  "required_Main_build": {
+    "command": "./scripts/build.ps1",
+    "initial_chunk": "da048a",
+    "session": 79616,
+    "terminal_chunk": "ebd183",
+    "exit_code": 0,
+    "configured_CTests_passed": 3,
+    "seconds": 7.3,
+    "snapshot_commit": "3a91caec25210e97aeaf8d8320d7e1a2893ce0ff",
+    "after_commit": "3a91caec25210e97aeaf8d8320d7e1a2893ce0ff",
+    "unchanged_compiler_tool_configuration_current_Source_inputs": 164,
+    "all_known_declared_inputs_pinned_before_Main_build": 82,
+    "original_tools": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_reference_set_Main_build01\\original_build_tools.DATA.json",
+      "bytes": 753,
+      "sha256": "962aefd13f47c6f53e7db2a478bfda4698a6431323bb1ae4d11f638adee1c0c2"
+    },
+    "build_log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_reference_set_Main_build01\\build.log",
+      "bytes": 2879,
+      "sha256": "2f1e3b8fc4efccae357e647227620935d8c3f666410d9abacdb592cf5bd3a931"
+    },
+    "shared_batch": false
+  },
+  "frozen_artifacts": [
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.dir\\Release\\native_scene_property_reference_set.obj",
+        "bytes": 1315,
+        "sha256": "a2dd92677c3aa9068528842bc8a3ce521fa1b07e0cd03d72420c46a8bb1c3494"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_reference_set_Main_build01\\frozen\\native_scene_property_reference_set.obj",
+        "bytes": 1315,
+        "sha256": "a2dd92677c3aa9068528842bc8a3ce521fa1b07e0cd03d72420c46a8bb1c3494"
+      }
+    },
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 93086768,
+        "sha256": "f3f3e3c3283354cc9b61be89551f6c077804f8d4972c1bcf459bc989f623ac05"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_reference_set_Main_build01\\frozen\\bsp_core.lib",
+        "bytes": 93086768,
+        "sha256": "f3f3e3c3283354cc9b61be89551f6c077804f8d4972c1bcf459bc989f623ac05"
+      }
+    }
+  ],
+  "complete_COFF_inventory": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_property_reference_set_integration_20261015\\Main_inventory.DATA.json",
+    "bytes": 8767,
+    "sha256": "2b440a424c773b641036fbf297f80651929ad0eeb6722d4b3d78be4cdab00e6d"
+  },
+  "complete_archive_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_property_reference_set_integration_20261015\\Main_primary_archive.DATA.json",
+    "bytes": 844750,
+    "sha256": "83a32377130b51d41b72404661b370bf2597d414d5aee23f45559dd2fb9691ea"
+  },
+  "complete_symbol_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_property_reference_set_integration_20261015\\Main_symbol_review.DATA.json",
+    "bytes": 2145,
+    "sha256": "f7d19269e2c43b3371f8a594e8e3adb05f914dd3b0bd493729dc65d3285c91a6"
+  },
+  "complete_registration_preservation": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_property_reference_set_integration_20261015\\registration_verification.DATA.json",
+    "bytes": 393,
+    "sha256": "acc490b040afc06ca093fe4dad1ef2d51e36f3054b1f467c80063e7c1e209f14"
+  },
+  "code_and_runtime_data": {
+    "code_bytes": 58,
+    "instructions": 19,
+    "code_sections": 1,
+    "code_relocations": 2,
+    "metadata_relocations": 0,
+    "FPO_16B_literal_equal": false,
+    "all_code_runtime_data_and_relocation_fields_offsets_types_targets_literal": true,
+    "all_primary_auxiliary_records_compared": true,
+    "primary_symbols": 11,
+    "auxiliary_records": 5,
+    "private_runtime_name_differences": 0,
+    "MD_directives_literal_equal": true,
+    "whole_object_debug_checksum_identity": false
+  },
+  "archive": {
+    "members": 2310,
+    "symbols_per_index": 82063,
+    "both_indices_equal": true,
+    "unique_object": {
+      "header_offset": 19968360,
+      "payload_offset": 19968420,
+      "raw_name": "/0",
+      "bytes": 1315,
+      "header_hex": "2f302020202020202020202020202020313739323130353830332020202020202020202020202020313030363636202031333135202020202020600a",
+      "sha256": "a2dd92677c3aa9068528842bc8a3ce521fa1b07e0cd03d72420c46a8bb1c3494"
+    },
+    "own_APIs": [
+      [
+        "?set_native_scene_property_reference_008f0420@bsp@@YIPAXPAX0PBDII@Z",
+        19968360
+      ]
+    ],
+    "all_defined_public_code_data_bindings": [
+      {
+        "symbol": "__Avx2WmemEnabledWeakValue",
+        "binding": [
+          "__Avx2WmemEnabledWeakValue",
+          19968360
+        ],
+        "section_hex": "",
+        "raw_size": 4,
+        "relocations": [],
+        "provider_sha256": "a2dd92677c3aa9068528842bc8a3ce521fa1b07e0cd03d72420c46a8bb1c3494"
+      },
+      {
+        "symbol": "?set_native_scene_property_reference_008f0420@bsp@@YIPAXPAX0PBDII@Z",
+        "binding": [
+          "?set_native_scene_property_reference_008f0420@bsp@@YIPAXPAX0PBDII@Z",
+          19968360
+        ],
+        "section_hex": "568bf18b461c85c0741050e80000000083c404c7461c000000008b4c2408e8000000008b4c241089461c8b44240c894618894e088bc65ec20c00",
+        "raw_size": 58,
+        "relocations": [
+          {
+            "offset": 12,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+          },
+          {
+            "offset": 31,
+            "type": 20,
+            "field_hex": "00000000",
+            "symbol": "?duplicate_native_string_00438e40@bsp@@YIPADPBD@Z"
+          }
+        ],
+        "provider_sha256": "a2dd92677c3aa9068528842bc8a3ce521fa1b07e0cd03d72420c46a8bb1c3494"
+      }
+    ]
+  },
+  "contract": [
+    "Whole008F0420[0420,045A)58B19/Original8dac017d064d307eb6bd6f93de1476f5882325716cb81fd81a6b65ec1c707328. NewMSVCWin32nakedfastcall entry:ECXactualrecord/unusedEDX,stacknullabletarget/fullDWORDscalar/fullDWORDkind,RET0C/EAXrecord. All50nonCALLoperandbytesliteral, only[12,16)canonicalfree/[31,35)actualrawduplicate rebound; fullOriginalABI/privateCRT/EHclaimexcluded.",
+    "Optionaloldname+1C ifnonnull\u2192realcanonicalsingleton_lifetime_freeBF6989\u2192BF65AC thenzeroDWORD1C; onlyNOWloadtarget/rawphysicalnullable00438E40duplicate; loadfullkindBEFOREstorefullresult1C; onlyNOWloadfullscalar/store18/store08. ThreefullDWORDfields12distinctbytes/allbitpatterns, optionalearlier1Cclear; nootherphase/tag/default/filter/lookup/0340/0310/rootallocation/dispatch/startupwrites/calls.",
+    "Genuinelivewritabletype5record, oldname null/soleownedmatchingcanonicalcurrentheapduplicate; borrowednullabletargetstableliveNULterminatedvalidnonwrappingrange/length+1, disjointfromretiredoldname/record/outputs/frame. Fullwordsscalarsnotdereferenced/owned. Successfulnonthrowserialized noalias/reentry/concurrency/fault/overflow; nofailurerollback/RAII/OriginalprivateCRT/EH/parser/loader/runtime/game. Reuseacceptedwhole0340withoutnewSource/credit.",
+    "All82actualcompilerinputs own-precompileamong119candidates;34readinessinputs/64toolsinclbothclui,83readonlyreadinessfilesfrozen. Initialpreflightf597fdabortedBEFOREcompile dueworkingconfigLF455BvsMainCRLF467B; literalbothpins retained, exactnormalizedbytes/parsedJSONequal, all34Mainliteralpinsunchanged. No compile/buildreplay, no headercapturegap/hermeticenvironmentclaim."
+  ],
+  "limits": [
+    "Existing configured checks and static artifacts do not execute these new selected bodies.",
+    "Code/runtime-data/relocation targets and fields are literal; only CodeView-length auxiliary may differ. No whole-object/debug/checksum identity.",
+    "Ordinary successful current-provider domain; no Original full calling/class/FS/EH/privateCRT/fault/startup/parser/runtime/game equivalence.",
+    "Author82actual inputs own-precompile. Initial preflight stopped before compile due exact configLF/CRLF metadata difference; both literal pins and JSON equality retained. No0340credit/widerparserclosure."
+  ],
+  "Original_ABI_compatible": false,
+  "new_Source_runtime_executed": false,
+  "game_validated": false
+}

@@ -1,0 +1,894 @@
+{
+  "packet": "oct15_input_scalar_tree_range",
+  "worker": "agent/oct15_avoid_distance",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "project_program_verified_before_analysis_and_export": true,
+  "ghidra_read_only": true,
+  "owned_addresses": [
+    "005572f0"
+  ],
+  "source": "src/native_input_scalar_tree_range.cpp",
+  "header": "include/bsp/native_input_scalar_tree_range.hpp",
+  "documentation": "docs/OCT15_INPUT_SCALAR_TREE_RANGE.md",
+  "routines": [
+    {
+      "address": "005572f0",
+      "kind": "whole_ordinary_function",
+      "coverage": "complete",
+      "ranges": [
+        [
+          "005572f0",
+          "0055736e"
+        ],
+        [
+          "00557370",
+          "005573b8"
+        ]
+      ],
+      "body_bytes": 200,
+      "envelope_bytes": 201,
+      "instructions": 76,
+      "name_hypothesis": "STL_IntScalarTree_EraseRange_N18_005572F0",
+      "before_annotation_name": "STL_IntScalarTree_EraseRange_N18_005572F0",
+      "before_annotation_no_return": false,
+      "implementation": "erase_native_input_scalar_tree_range_005572f0",
+      "actual_ordinary_binding": "erase_native_int_pointer_tree18_range_0086ee50",
+      "accepted_native_address": "0086ee50",
+      "status": "complete_ordinary_source_build_tested_exact_accepted_actual_service_reuse",
+      "native_abi": "ECX tree, EDX unconsumed, FIVE stack words output/first_owner/first_node/last_owner/last_node; both returns RET14h and defined EAX=output. Four nonvolatile saves, eight private output bytes.",
+      "source_abi": "void* __fastcall(tree, unused_edx, output, first_owner, first_node, last_owner, last_node)",
+      "padding": "0055736F is a NOP outside both complete typed body ranges; retained in 201-byte comparison.",
+      "scope": "Whole full-reset and partial-loop normal effects, returning diagnostics, output aliases and escaping child exceptions. No local catch/rollback. No adjacent range helper is promoted."
+    }
+  ],
+  "duplicate_implementation_check": {
+    "before": "Only the consumed full5572F0..55736E fragment exists at this address; old generic AV full/partial code retains its provider-bearing qualified API.",
+    "decision": "A new named complete ordinary input entry delegates existing whole86EE50, rather than copying its algorithm or broadening the earlier prefix.",
+    "callee_ready": "Accepted86EE50/869A20/86AA60/86E8A0 and actual extrema/rotations/owning-error services already exist on main. No dependency on newly authored5531F0/556DC0 aliases is required."
+  },
+  "storage": "Actual header opaque+0/head+4/count+8. Actual node18h links+0/+4/+8, opaque key/value DWORDs+C/+10, color+14, nil+15. No payload ownership action; current CRT node free via accepted subtree/erase.",
+  "actual_bindings": {
+    "whole_range": "erase_native_int_pointer_tree18_range_0086ee50",
+    "subtree": "destroy_native_input_int_scalar_subtree_00554f10 matches erase_subtree_native_int_pointer_tree18_0086aa60",
+    "increment": "Whole5531F0 matches increment_native_int_pointer_tree18_00869a20",
+    "erase": "Whole556DC0 matches erase_native_int_pointer_tree18_iterator_0086e8a0",
+    "diagnostic": "Accepted current CRT _invalid_parameter_noinfo; may return; no invented guard/conversion",
+    "free": "Accepted current CRT singleton_lifetime_free, no payload release or custom provider"
+  },
+  "captured_bounds_and_returning_diagnostics": [
+    "Capture first_owner in EDI; TEST it; capture CURRENT head then head.left in EBP before the first owner diagnostic. Compare owner with tree if nonzero. BF6713 may return. Only afterward read first_node from its argument slot into EBX and compare against captured initial head.left.",
+    "Only if first_node matches, load/test last_owner; capture CURRENT head before its diagnostic/owner comparison continuation. Compare the CURRENT last_node argument slot against that captured head afterward. A returning diagnostic can change raw storage; do not replace these captures with fresh bounds or add guards.",
+    "Partial-loop owner test/CMP occurs before cursor equality on every iteration. EDI/EBX retain captured first owner/node through a returning diagnostic; last owner/node are read from argument slots at the observed comparisons."
+  ],
+  "full_branch_order": [
+    "Load CURRENT head.root, invoke actual scalar subtree554F10, then reload head and set parent=self.",
+    "Reload head BEFORE count=0, then left=self. Reload head, right=self. Reload head.left into result register BEFORE writing output.owner=tree and output.node=result; return output.",
+    "A valid empty full range still follows root cleanup/reset. Do not add a null/root/count shortcut."
+  ],
+  "partial_loop_and_output_aliases": [
+    "For a non-equal pair, pass the address of the ACTUAL first_owner/first_node argument slots to5531F0. It advances the parent iterator in place.",
+    "Then pass the OLD captured owner/node by value to556DC0 with a private eight-byte output iterator. That child advances its own copied iterator. The parent discards its private result and the child EAX.",
+    "After erase returns, reload first_node then first_owner from the parent argument slots, and repeat owner validation before equality. Do not replace with first=erase(first), snapshot argument slots, or use child output as the next cursor.",
+    "At partial completion, load output pointer, store captured owner, then store captured node. Full completion captures the node result before its first output store. Output may alias live raw storage under the accepted raw API contract; do not add intervening reloads or a disjoint-output restriction.",
+    "No promise equates aliases into the ORIGINAL private native frame with a newly compiled Source frame. The accepted naked service preserves its own physical argument-slot/private-output schedule. Future thin wrapper COFF must be inspected for an unretained frame and unchanged slot shape."
+  ],
+  "exception_profile": {
+    "already_accepted_current_main": [
+      "0086EE50 complete range",
+      "00869A20 complete checked increment",
+      "0086AA60 complete subtree",
+      "0086E8A0 complete iterator erase",
+      "actual extrema/rotations, owning27-byte invalid-iterator error, current CRT diagnostics/free"
+    ],
+    "distinction": "New iterator aliases0043084f are separately primary-accepted. This packet directly reuses already accepted whole86EE50 and does not depend on those aliases for its Source implementation. Main integration provenance will be pinned after the queued merge.",
+    "child_owning_error": "Actual27-byte invalid map/set<T> iterator, same message address/NUL, actual408720 before state0 arming, actual41170028h payload/vtableD6926C/ThrowInfoD863A8. Accepted NativeHardwareLayoutInvalidIterator owns/copies/destroys this payload; no generic std exception.",
+    "native_child_EH": "C6D7F0 action / C6D7F8 handler / D97BDC FuncInfo / D97BD4 unwind state0 -> -1 cleanup4072D0 at EH EBP-50h; no try map. Accepted86E8A0 counterpart C95BB0/C95BB8/DC7AE4/DC7ADC has matching effects; all eight current EH/message spans equal disk and prior capture.",
+    "progress": "No local parent rollback/catch; prior completed erasures persist if a child throws. Source current C++ cleanup/RTTI and current CRT heap/diagnostic domain are explicit; no original FH3/SEH/fault or game exception-identity claim.",
+    "new_ordinary_aliases_primary_accepted": {
+      "pin": "0043084f0509fb62753597c48b9c62b20961df51",
+      "addresses": [
+        "005531f0",
+        "00556dc0"
+      ],
+      "review": "Parent confirmed frozen Source/native acceptance with ten checks and six complete PE pairs; no worker file changes.",
+      "receipt": "J:/PROG/battlestations-pacific-decompile-oct15_integrator/local/oct15_scalar_iterator_primary_review.json",
+      "on_main_at_dependency_merge": false
+    }
+  },
+  "byte_evidence": {
+    "original_image": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "original_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "method": "PE32 section-table VA-to-raw; Capstone5.0.7 x86-32; complete typed body ranges; no native-byte masks in raw evidence",
+    "fresh_body_count": 8,
+    "fresh_body_bytes": 2062,
+    "fresh_current_starts": 736,
+    "all_current_live_equal_disk": true,
+    "all_current_listing_starts_match_capstone": true,
+    "typed_capture": "local/oct15_input_scalar_tree_range_typed_flow.json",
+    "typed_capture_sha256": "7ae0d7846c5ff09b872d0d68ce3b82cd21cbc826d5945bb3db1014cfd4b463d8",
+    "local_audit": "local/oct15_input_scalar_tree_range_evidence/audit.json",
+    "local_audit_sha256": "bc31ee055df121bb39cfbbb8e6fa390b05890fc07107b9364ced98d01e57b799",
+    "audit_scripts": [
+      "local/oct15_input_scalar_tree_range_native_audit.py",
+      "local/oct15_input_scalar_tree_range_eh_audit.py",
+      "local/oct15_input_scalar_tree_range_pair_audit.py"
+    ]
+  },
+  "fresh_native_units": [
+    {
+      "address": "005572f0",
+      "ranges": [
+        [
+          "005572f0",
+          "0055736e"
+        ],
+        [
+          "00557370",
+          "005573b8"
+        ]
+      ],
+      "envelope_bytes": 201,
+      "body_bytes": 200,
+      "instructions": 76,
+      "raw_envelope": "83ec08535556578b7c242085ff8bf18b46048b2874043bfe7405e804f469008b5c24243bdd75598b44242885c08b6e0474043bc67405e8e8f36900396c242c753f8b4e048b5104528bcee8d1dbffff8b46048940048b4604c746080000000089008b46048940088b46048b088b44241c5f89305e5d8948045b83c408c214009085ff74063b7c24287405e894f369003b5c242c74218d4c2420e862beffff53578d542418528bcee824faffff8b5c24248b7c2420ebca8b44241c89385f5e5d8958045b83c408c21400",
+      "live_equals_disk": true,
+      "all_current_listing_starts_match_capstone": true,
+      "no_return": false
+    },
+    {
+      "address": "0086ee50",
+      "ranges": [
+        [
+          "0086ee50",
+          "0086eece"
+        ],
+        [
+          "0086eed0",
+          "0086ef18"
+        ]
+      ],
+      "envelope_bytes": 201,
+      "body_bytes": 200,
+      "instructions": 76,
+      "raw_envelope": "83ec08535556578b7c242085ff8bf18b46048b2874043bfe7405e8a47838008b5c24243bdd75598b44242885c08b6e0474043bc67405e888783800396c242c753f8b4e048b5104528bcee8c1bbffff8b46048940048b4604c746080000000089008b46048940088b46048b088b44241c5f89305e5d8948045b83c408c214009085ff74063b7c24287405e8347838003b5c242c74218d4c2420e832abffff53578d542418528bcee8a4f9ffff8b5c24248b7c2420ebca8b44241c89385f5e5d8958045b83c408c21400",
+      "live_equals_disk": true,
+      "all_current_listing_starts_match_capstone": true,
+      "no_return": false
+    },
+    {
+      "address": "00554f10",
+      "ranges": [
+        [
+          "00554f10",
+          "00554f44"
+        ]
+      ],
+      "envelope_bytes": 53,
+      "body_bytes": 53,
+      "instructions": 23,
+      "raw_envelope": "5356578b7c2410807f15008bd98bf7751e8b4608508bcbe8e4ffffff8b3657e878166a0083c404807e15008bfe74e25f5e5bc20400",
+      "live_equals_disk": true,
+      "all_current_listing_starts_match_capstone": true,
+      "no_return": false
+    },
+    {
+      "address": "0086aa60",
+      "ranges": [
+        [
+          "0086aa60",
+          "0086aa94"
+        ]
+      ],
+      "envelope_bytes": 53,
+      "body_bytes": 53,
+      "instructions": 23,
+      "raw_envelope": "5356578b7c2410807f15008bd98bf7751e8b4608508bcbe8e4ffffff8b3657e828bb380083c404807e15008bfe74e25f5e5bc20400",
+      "live_equals_disk": true,
+      "all_current_listing_starts_match_capstone": true,
+      "no_return": false
+    },
+    {
+      "address": "005531f0",
+      "ranges": [
+        [
+          "005531f0",
+          "00553252"
+        ]
+      ],
+      "envelope_bytes": 99,
+      "body_bytes": 99,
+      "instructions": 38,
+      "raw_envelope": "568bf1833e007505e816356a008b46048078150074065ee907356a008b480880791500751a8b0180781500750d8d49008bc88b018078150074f6894e045ec38b40048078150075168b4e043b4808750e8946048bd08b42048078150074ea8946045ec3",
+      "live_equals_disk": true,
+      "all_current_listing_starts_match_capstone": true,
+      "no_return": false
+    },
+    {
+      "address": "00869a20",
+      "ranges": [
+        [
+          "00869a20",
+          "00869a82"
+        ]
+      ],
+      "envelope_bytes": 99,
+      "body_bytes": 99,
+      "instructions": 38,
+      "raw_envelope": "568bf1833e007505e8e6cc38008b46048078150074065ee9d7cc38008b480880791500751a8b0180781500750d8d49008bc88b018078150074f6894e045ec38b40048078150075168b4e043b4808750e8946048bd08b42048078150074ea8946045ec3",
+      "live_equals_disk": true,
+      "all_current_listing_starts_match_capstone": true,
+      "no_return": false
+    },
+    {
+      "address": "00556dc0",
+      "ranges": [
+        [
+          "00556dc0",
+          "00557066"
+        ]
+      ],
+      "envelope_bytes": 679,
+      "body_bytes": 679,
+      "instructions": 231,
+      "raw_envelope": "64a1000000006aff68f8d7c60050648925000000008b44241883ec488078150055568be9744c6a1b33f668e044ce008d4c2414c744242c0f00000089742428c644241800e81719ebff8d44240c508d4c242c8974245ce8e5a8ebff68a863d8008d4c242c51c74424306c92d600e853fa6900538bd8578d4c246c895c2410e8adc3ffff8b038078150074058b7b08eb188b5308807a150074048bf8eb0b8b4c24703bcb8b79087567807f15008b730475038977048b45043958047505897804eb0b391e7504893eeb03897e088b5d048b033b4424107513807f150074048bc6eb078bcfe828c1ffff89038b5d048b4c2410394b087570807f150074078bc6894308eb638bcfe8e6c0ffff894308eb578948048b1389113b4b0875048bf1eb1a807f15008b71047503897704893e8b43088941088b5308894a048b45043958047505894804eb0e8b4304391875048908eb038948088b43048941048a53148a41148851148843148b442410b3013858140f85f20000008b4d043b79040f84e3000000385f140f85da0000008b063bf875638b4608807814007512885814568bcdc6461400e868c1ffff8b46088078150075728b10385a1475088b4808385914745f8b48083859147512885a14508bcdc6401400e889c1ffff8b46088a4e14884814885e148b5008568bcd885a14e81fc1ffffeb71807814007511885814568bcdc6461400e858c1ffff8b068078150075138b5008385a14751e8b083859147517c64014008b55048bfe3b7a048b76040f854dffffffeb2e8b083859147511885a14508bcdc6401400e8c4c0ffff8b068a4e14884814885e148b10568bcd885a14e8fcc0ffff885f148b44241050e87bf569008b450883c40485c05f5b760683c0ff8945088b4c24648b4424608b54246889088b4c24505e8950045d64890d0000000083c454c20c00",
+      "live_equals_disk": true,
+      "all_current_listing_starts_match_capstone": true,
+      "no_return": false
+    },
+    {
+      "address": "0086e8a0",
+      "ranges": [
+        [
+          "0086e8a0",
+          "0086eb46"
+        ]
+      ],
+      "envelope_bytes": 679,
+      "body_bytes": 679,
+      "instructions": 231,
+      "raw_envelope": "64a1000000006aff68b85bc90050648925000000008b44241883ec488078150055568be9744c6a1b33f668e044ce008d4c2414c744242c0f00000089742428c644241800e8379eb9ff8d44240c508d4c242c8974245ce8052ebaff68a863d8008d4c242c51c74424306c92d600e8737f3800538bd8578d4c246c895c2410e8fdb0ffff8b038078150074058b7b08eb188b5308807a150074048bf8eb0b8b4c24703bcb8b79087567807f15008b730475038977048b45043958047505897804eb0b391e7504893eeb03897e088b5d048b033b4424107513807f150074048bc6eb078bcfe848aeffff89038b5d048b4c2410394b087570807f150074078bc6894308eb638bcfe806aeffff894308eb578948048b1389113b4b0875048bf1eb1a807f15008b71047503897704893e8b43088941088b5308894a048b45043958047505894804eb0e8b4304391875048908eb038948088b43048941048a53148a41148851148843148b442410b3013858140f85f20000008b4d043b79040f84e3000000385f140f85da0000008b063bf875638b4608807814007512885814568bcdc6461400e8a8b8ffff8b46088078150075728b10385a1475088b4808385914745f8b48083859147512885a14508bcdc6401400e899adffff8b46088a4e14884814885e148b5008568bcd885a14e85fb8ffffeb71807814007511885814568bcdc6461400e868adffff8b068078150075138b5008385a14751e8b083859147517c64014008b55048bfe3b7a048b76040f854dffffffeb2e8b083859147511885a14508bcdc6401400e804b8ffff8b068a4e14884814885e148b10568bcd885a14e80cadffff885f148b44241050e89b7a38008b450883c40485c05f5b760683c0ff8945088b4c24648b4424608b54246889088b4c24505e8950045d64890d0000000083c454c20c00",
+      "live_equals_disk": true,
+      "all_current_listing_starts_match_capstone": true,
+      "no_return": false
+    }
+  ],
+  "full_pair_equivalence": [
+    {
+      "native": "005572f0",
+      "accepted_native": "0086ee50",
+      "envelope_bytes": 201,
+      "body_bytes": 200,
+      "instructions": 76,
+      "all_other_bytes_equal": true,
+      "masks": [
+        {
+          "offset": 27,
+          "length": 4,
+          "native_site": "0055730a",
+          "accepted_site": "0086ee6a",
+          "kind": "call",
+          "native_target": "00bf6713",
+          "accepted_target": "00bf6713",
+          "native_bytes": "04f46900",
+          "accepted_bytes": "a4783800"
+        },
+        {
+          "offset": 55,
+          "length": 4,
+          "native_site": "00557326",
+          "accepted_site": "0086ee86",
+          "kind": "call",
+          "native_target": "00bf6713",
+          "accepted_target": "00bf6713",
+          "native_bytes": "e8f36900",
+          "accepted_bytes": "88783800"
+        },
+        {
+          "offset": 75,
+          "length": 4,
+          "native_site": "0055733a",
+          "accepted_site": "0086ee9a",
+          "kind": "call",
+          "native_target": "00554f10",
+          "accepted_target": "0086aa60",
+          "native_bytes": "d1dbffff",
+          "accepted_bytes": "c1bbffff"
+        },
+        {
+          "offset": 139,
+          "length": 4,
+          "native_site": "0055737a",
+          "accepted_site": "0086eeda",
+          "kind": "call",
+          "native_target": "00bf6713",
+          "accepted_target": "00bf6713",
+          "native_bytes": "94f36900",
+          "accepted_bytes": "34783800"
+        },
+        {
+          "offset": 154,
+          "length": 4,
+          "native_site": "00557389",
+          "accepted_site": "0086eee9",
+          "kind": "call",
+          "native_target": "005531f0",
+          "accepted_target": "00869a20",
+          "native_bytes": "62beffff",
+          "accepted_bytes": "32abffff"
+        },
+        {
+          "offset": 168,
+          "length": 4,
+          "native_site": "00557397",
+          "accepted_site": "0086eef7",
+          "kind": "call",
+          "native_target": "00556dc0",
+          "accepted_target": "0086e8a0",
+          "native_bytes": "24faffff",
+          "accepted_bytes": "a4f9ffff"
+        }
+      ]
+    },
+    {
+      "native": "00554f10",
+      "accepted_native": "0086aa60",
+      "envelope_bytes": 53,
+      "body_bytes": 53,
+      "instructions": 23,
+      "all_other_bytes_equal": true,
+      "masks": [
+        {
+          "offset": 24,
+          "length": 4,
+          "native_site": "00554f27",
+          "accepted_site": "0086aa77",
+          "kind": "call",
+          "native_target": "00554f10",
+          "accepted_target": "0086aa60",
+          "native_bytes": "e4ffffff",
+          "accepted_bytes": "e4ffffff"
+        },
+        {
+          "offset": 32,
+          "length": 4,
+          "native_site": "00554f2f",
+          "accepted_site": "0086aa7f",
+          "kind": "call",
+          "native_target": "00bf65ac",
+          "accepted_target": "00bf65ac",
+          "native_bytes": "78166a00",
+          "accepted_bytes": "28bb3800"
+        }
+      ]
+    },
+    {
+      "native": "005531f0",
+      "accepted_native": "00869a20",
+      "envelope_bytes": 99,
+      "body_bytes": 99,
+      "instructions": 38,
+      "all_other_bytes_equal": true,
+      "masks": [
+        {
+          "offset": 9,
+          "length": 4,
+          "native_site": "005531f8",
+          "accepted_site": "00869a28",
+          "kind": "call",
+          "native_target": "00bf6713",
+          "accepted_target": "00bf6713",
+          "native_bytes": "16356a00",
+          "accepted_bytes": "e6cc3800"
+        },
+        {
+          "offset": 24,
+          "length": 4,
+          "native_site": "00553207",
+          "accepted_site": "00869a37",
+          "kind": "jmp",
+          "native_target": "00bf6713",
+          "accepted_target": "00bf6713",
+          "native_bytes": "07356a00",
+          "accepted_bytes": "d7cc3800"
+        }
+      ]
+    },
+    {
+      "native": "00556dc0",
+      "accepted_native": "0086e8a0",
+      "envelope_bytes": 679,
+      "body_bytes": 679,
+      "instructions": 231,
+      "all_other_bytes_equal": true,
+      "masks": [
+        {
+          "offset": 9,
+          "length": 4,
+          "native_site": "00556dc8",
+          "accepted_site": "0086e8a8",
+          "kind": "actual_handler_immediate",
+          "native_target": "00c6d7f8",
+          "accepted_target": "00c95bb8",
+          "native_bytes": "f8d7c600",
+          "accepted_bytes": "b85bc900"
+        },
+        {
+          "offset": 69,
+          "length": 4,
+          "native_site": "00556e04",
+          "accepted_site": "0086e8e4",
+          "kind": "call",
+          "native_target": "00408720",
+          "accepted_target": "00408720",
+          "native_bytes": "1719ebff",
+          "accepted_bytes": "379eb9ff"
+        },
+        {
+          "offset": 87,
+          "length": 4,
+          "native_site": "00556e16",
+          "accepted_site": "0086e8f6",
+          "kind": "call",
+          "native_target": "00411700",
+          "accepted_target": "00411700",
+          "native_bytes": "e5a8ebff",
+          "accepted_bytes": "052ebaff"
+        },
+        {
+          "offset": 110,
+          "length": 4,
+          "native_site": "00556e2d",
+          "accepted_site": "0086e90d",
+          "kind": "call",
+          "native_target": "00bf6885",
+          "accepted_target": "00bf6885",
+          "native_bytes": "53fa6900",
+          "accepted_bytes": "737f3800"
+        },
+        {
+          "offset": 127,
+          "length": 4,
+          "native_site": "00556e3e",
+          "accepted_site": "0086e91e",
+          "kind": "call",
+          "native_target": "005531f0",
+          "accepted_target": "00869a20",
+          "native_bytes": "adc3ffff",
+          "accepted_bytes": "fdb0ffff"
+        },
+        {
+          "offset": 228,
+          "length": 4,
+          "native_site": "00556ea3",
+          "accepted_site": "0086e983",
+          "kind": "call",
+          "native_target": "00552fd0",
+          "accepted_target": "008697d0",
+          "native_bytes": "28c1ffff",
+          "accepted_bytes": "48aeffff"
+        },
+        {
+          "offset": 262,
+          "length": 4,
+          "native_site": "00556ec5",
+          "accepted_site": "0086e9a5",
+          "kind": "call",
+          "native_target": "00552fb0",
+          "accepted_target": "008697b0",
+          "native_bytes": "e6c0ffff",
+          "accepted_bytes": "06aeffff"
+        },
+        {
+          "offset": 420,
+          "length": 4,
+          "native_site": "00556f63",
+          "accepted_site": "0086ea43",
+          "kind": "call",
+          "native_target": "005530d0",
+          "accepted_target": "0086a2f0",
+          "native_bytes": "68c1ffff",
+          "accepted_bytes": "a8b8ffff"
+        },
+        {
+          "offset": 467,
+          "length": 4,
+          "native_site": "00556f92",
+          "accepted_site": "0086ea72",
+          "kind": "call",
+          "native_target": "00553120",
+          "accepted_target": "00869810",
+          "native_bytes": "89c1ffff",
+          "accepted_bytes": "99adffff"
+        },
+        {
+          "offset": 493,
+          "length": 4,
+          "native_site": "00556fac",
+          "accepted_site": "0086ea8c",
+          "kind": "call",
+          "native_target": "005530d0",
+          "accepted_target": "0086a2f0",
+          "native_bytes": "1fc1ffff",
+          "accepted_bytes": "5fb8ffff"
+        },
+        {
+          "offset": 516,
+          "length": 4,
+          "native_site": "00556fc3",
+          "accepted_site": "0086eaa3",
+          "kind": "call",
+          "native_target": "00553120",
+          "accepted_target": "00869810",
+          "native_bytes": "58c1ffff",
+          "accepted_bytes": "68adffff"
+        },
+        {
+          "offset": 584,
+          "length": 4,
+          "native_site": "00557007",
+          "accepted_site": "0086eae7",
+          "kind": "call",
+          "native_target": "005530d0",
+          "accepted_target": "0086a2f0",
+          "native_bytes": "c4c0ffff",
+          "accepted_bytes": "04b8ffff"
+        },
+        {
+          "offset": 608,
+          "length": 4,
+          "native_site": "0055701f",
+          "accepted_site": "0086eaff",
+          "kind": "call",
+          "native_target": "00553120",
+          "accepted_target": "00869810",
+          "native_bytes": "fcc0ffff",
+          "accepted_bytes": "0cadffff"
+        },
+        {
+          "offset": 621,
+          "length": 4,
+          "native_site": "0055702c",
+          "accepted_site": "0086eb0c",
+          "kind": "call",
+          "native_target": "00bf65ac",
+          "accepted_target": "00bf65ac",
+          "native_bytes": "7bf56900",
+          "accepted_bytes": "9b7a3800"
+        }
+      ]
+    }
+  ],
+  "complete_helper_and_EH_provenance": {
+    "audit": "local/oct15_input_scalar_partial_readiness_evidence/audit.json",
+    "sha256": "9599f49c209ee2d7e03ed75d15ebac9a6390cf3eaf8d4215743a9bb1ab2f0b7b",
+    "original_image_sha256_equal": true,
+    "helper_pairs": [
+      {
+        "native": "00552fb0",
+        "accepted_native": "008697b0",
+        "envelope_bytes": 28,
+        "body_bytes": 25,
+        "all_other_bytes_equal": true,
+        "masks": []
+      },
+      {
+        "native": "00552fd0",
+        "accepted_native": "008697d0",
+        "envelope_bytes": 27,
+        "body_bytes": 27,
+        "all_other_bytes_equal": true,
+        "masks": []
+      },
+      {
+        "native": "005530d0",
+        "accepted_native": "0086a2f0",
+        "envelope_bytes": 78,
+        "body_bytes": 78,
+        "all_other_bytes_equal": true,
+        "masks": []
+      },
+      {
+        "native": "00553120",
+        "accepted_native": "00869810",
+        "envelope_bytes": 82,
+        "body_bytes": 82,
+        "all_other_bytes_equal": true,
+        "masks": []
+      }
+    ],
+    "full_eh_equivalence": [
+      {
+        "action": "00c6d7f0",
+        "handler": "00c6d7f8",
+        "info": "00d97bdc",
+        "state0_previous": -1,
+        "state0_cleanup": "004072d0",
+        "temporary_address": "EH EBP-50h",
+        "try_blocks": 0,
+        "other_funcinfo_words_identical": true
+      },
+      {
+        "action": "00c95bb0",
+        "handler": "00c95bb8",
+        "info": "00dc7ae4",
+        "state0_previous": -1,
+        "state0_cleanup": "004072d0",
+        "temporary_address": "EH EBP-50h",
+        "try_blocks": 0,
+        "other_funcinfo_words_identical": true
+      }
+    ],
+    "targeted_flow_metadata": {
+      "capture": "local/oct15_input_scalar_partial_readiness_flow_sites.json",
+      "sha256": "591c01369bc5f3be5c09776341ef93d510f34ff5257ecc03e7703628c09fae59",
+      "call_00556e3e": "OverrideNONE, normalfallthrough6E43, actualtarget5531F0, no fallthroughoverride.",
+      "branch_00556e66": "OverrideNONE, conditionaltarget6ECF/fallthrough6E68.",
+      "conclusion": "No listing/body/flow repair needed. Decompiler ABI/argument-write modeling issue remains an inference; liveproto parameter0 is directly observed."
+    }
+  },
+  "fresh_native_EH_message_spans": [
+    {
+      "address": "00c6d7f0",
+      "bytes": 18,
+      "role": "complete temp cleanup action and FH3 handler",
+      "raw": "8d4db0e9d89a79ffb8dc7bd900e94193f8ff",
+      "live_equals_disk": true,
+      "fresh_live_equals_disk_and_prior": true
+    },
+    {
+      "address": "00d97bdc",
+      "bytes": 36,
+      "role": "complete FH3 FuncInfo9words",
+      "raw": "2205931901000000d47bd900000000000000000000000000000000000000000001000000",
+      "live_equals_disk": true,
+      "fresh_live_equals_disk_and_prior": true
+    },
+    {
+      "address": "00d97bd4",
+      "bytes": 8,
+      "role": "complete state0 unwind map record",
+      "raw": "fffffffff0d7c600",
+      "live_equals_disk": true,
+      "fresh_live_equals_disk_and_prior": true
+    },
+    {
+      "address": "00c95bb0",
+      "bytes": 18,
+      "role": "complete temp cleanup action and FH3 handler",
+      "raw": "8d4db0e9181777ffb8e47adc00e9810ff6ff",
+      "live_equals_disk": true,
+      "fresh_live_equals_disk_and_prior": true
+    },
+    {
+      "address": "00dc7ae4",
+      "bytes": 36,
+      "role": "complete FH3 FuncInfo9words",
+      "raw": "2205931901000000dc7adc00000000000000000000000000000000000000000001000000",
+      "live_equals_disk": true,
+      "fresh_live_equals_disk_and_prior": true
+    },
+    {
+      "address": "00dc7adc",
+      "bytes": 8,
+      "role": "complete state0 unwind map record",
+      "raw": "ffffffffb05bc900",
+      "live_equals_disk": true,
+      "fresh_live_equals_disk_and_prior": true
+    },
+    {
+      "address": "00ce44e0",
+      "bytes": 28,
+      "role": "shared counted27byte invalid iterator message plus NUL",
+      "raw": "696e76616c6964206d61702f7365743c543e206974657261746f7200",
+      "live_equals_disk": true,
+      "fresh_live_equals_disk_and_prior": true
+    },
+    {
+      "address": "00d863a8",
+      "bytes": 16,
+      "role": "same unmasked shared out_of_range ThrowInfo referenced by both native bodies",
+      "raw": "00000000b012440000000000e463d800",
+      "live_equals_disk": true,
+      "fresh_live_equals_disk_and_prior": true
+    }
+  ],
+  "existing_actual_source_files_sha256": {
+    "include/bsp/native_int_pointer_tree18_leaves.hpp": "e35523bfdd5d89aa9f6eb1bfd6ce9e80c2af18cfe70ee7aa7d5d9428f0e13dd1",
+    "src/native_int_pointer_tree18_leaves.cpp": "e63ae28aa2af9087720aea5f0981599313ada1508e16d90f19bc6a45223cf816",
+    "include/bsp/native_int_pointer_tree18_erase.hpp": "86571aedc38dc363aad43efffc8e7d23525181f505885ae72c8fd17a8e99df96",
+    "src/native_int_pointer_tree18_erase.cpp": "0473413cc5ba9b528942ebdf732016da19a65d6f9a15cfae4c679eeafea61bbb",
+    "include/bsp/native_hardware_layout_tree.hpp": "3c8b2c3a5e762a557fbbc5da3d825801c6d60a5b89c636c3ba379420c109c9d5",
+    "src/native_hardware_layout_tree.cpp": "90f288aedf45cc251175c1d2883c6bc4aeb466daba8af85c0a6390f5c4d183a6"
+  },
+  "native_calls": [
+    {
+      "address": "0055730a",
+      "native": "00bf6713",
+      "function": "005572f0"
+    },
+    {
+      "address": "00557326",
+      "native": "00bf6713",
+      "function": "005572f0"
+    },
+    {
+      "address": "0055733a",
+      "native": "00554f10",
+      "function": "005572f0"
+    },
+    {
+      "address": "0055737a",
+      "native": "00bf6713",
+      "function": "005572f0"
+    },
+    {
+      "address": "00557389",
+      "native": "005531f0",
+      "function": "005572f0"
+    },
+    {
+      "address": "00557397",
+      "native": "00556dc0",
+      "function": "005572f0"
+    }
+  ],
+  "flow_and_annotation": {
+    "repair_needed": false,
+    "body_complete": true,
+    "name_preserved": true,
+    "decompiler_issue": "No listing/body repair needed. Old5531F0/556DC0 decompiler prototypes omit actual ABI and argument-slot mutation; false two-child pruning is explained as an inference, not a missing native path. Current full normal starts and prior targeted override/fallthrough metadata prove reachability.",
+    "worker_mutations": false,
+    "annotation_owner": "primary only after acceptance, under write lock"
+  },
+  "preserved_scope": {
+    "consumed_prefix": "clear_native_input_scalar_tree_full_prefix_005572f0 remains ONLY5572F0..55736E, stable valid full-range selection, no diagnostic taken, from accepted5a50f0e.",
+    "whole_AF60": "destroy_native_input_nested_int_subtree_0055af60 remains unchanged. Its actual node+10 owner, captured CURRENT inner head/head.left arguments prove the consumed full branch. Whole5572F0 readiness does not broaden the prefix contract.",
+    "old_generic_AV": "Leave private generic AV/full-partial projection and its storage-provider/qualified contracts unchanged; not the new exact ordinary API.",
+    "no_adjacent_scope": "No4CEF40 or55B230 partial-path ownership, Source promotion, claims or analysis expansion.",
+    "historical_fragment_status": "The original consumed-full-path fragment record retains its historical whole-ordinary-incomplete status unchanged; the new complete ordinary record is separate."
+  },
+  "preserved_files_sha256": {
+    "include/bsp/native_input_nested_int_subtree.hpp": "0ab22617785b377490c7d91579e5a27dd064330789da033bf59072631c25970b",
+    "src/native_input_nested_int_subtree.cpp": "58cb26317ee04a06913cb205cf0ac8a0d6ada8e8cd981790314ba988864ecd13",
+    "docs/OCT15_INPUT_NESTED_INT_SUBTREE.md": "978153e0f2b08b996a1e5deaa85f08517caa1ad0ff43a7127c071c59d23e68e8",
+    "reports/oct15_input_nested_int_subtree.json": "381db7a1795918be0a53506ad712d9e15279686d68c65d07c979f28fdfde9d7c",
+    "include/bsp/native_input_scalar_tree_iterator.hpp": "66f429acaceb01630e0d05fa578f1a26359757eb8f581d692a0efb8934259650",
+    "src/native_input_scalar_tree_iterator.cpp": "8a717044cd975de0f3b2021858b0f1bb8ea47c4c5050e03c08d0029604ee6246",
+    "docs/OCT15_INPUT_SCALAR_TREE_ITERATOR.md": "ade4a9c50415931fb3018a40d81f3a769d232e082564e68ec3e80a0c817f137d",
+    "reports/oct15_input_scalar_tree_iterator.json": "5304401a3256ff4fb21bd96f7ded686b0314152f519ab312f5fcc5cac54a55d9"
+  },
+  "frozen_source_sha256": {
+    "src/native_input_scalar_tree_range.cpp": "14a938ba450949ac48efe947d30cb7e3c5f307da280b1e9a3f6eb423a8ddc691",
+    "include/bsp/native_input_scalar_tree_range.hpp": "be04b71f4a283e38279d413cb1634066f94931545833f8b3f716682dc60f1a64"
+  },
+  "primary_source_review": {
+    "status": "pending frozen-pin review; no primary approval claimed",
+    "pre_pin_review": {
+      "status": "Primary reported no findings after reading current Source/header, native partial-loop schedule, complete physical-frame COFF report, build and6/6 claims; final immutable-pin review remains pending.",
+      "source_sha256": {
+        "src/native_input_scalar_tree_range.cpp": "14a938ba450949ac48efe947d30cb7e3c5f307da280b1e9a3f6eb423a8ddc691",
+        "include/bsp/native_input_scalar_tree_range.hpp": "be04b71f4a283e38279d413cb1634066f94931545833f8b3f716682dc60f1a64"
+      }
+    }
+  },
+  "limits": [
+    "Complete normal effects reuse accepted actual ordinary Source with current SDK/CRT diagnostic/heap ownership and owning C++ error transport.",
+    "New Source physical interfaces/private frames do not establish original binary ABI, volatile-register residue, spill/output aliases into the original stack, native RTTI/catch/heap identity or original FH3 unwind state.",
+    "Actual reachable raw allocations and writable output must support the native access schedule. No new disjoint-output, count/root/null guard or generic exception was introduced.",
+    "Fault/SEH/game runtime/native differential equivalence is unverified. Existing suites do not execute this new entry."
+  ],
+  "validation": {
+    "status": "passed_build_and_static_checks",
+    "verified_at_UTC": "2026-10-15T22:13:40.397212+00:00",
+    "command": "./scripts/build.ps1",
+    "build_exit_code": 0,
+    "build_log": "local/oct15_input_scalar_tree_range_build.log",
+    "build_log_sha256": "7b36f0491a4097a69e528aad110af309f7f260ca675cf4b338fa1eb776feb9a8",
+    "existing_suites": [
+      {
+        "name": "reconstructed_math",
+        "result": "passed"
+      },
+      {
+        "name": "native_math_differential",
+        "result": "passed"
+      },
+      {
+        "name": "tool_tests",
+        "result": "passed"
+      }
+    ],
+    "CTest_total_seconds": 8.04,
+    "new_tests": false,
+    "coverage_limit": "Existing regression/seed suites do not execute this new ordinary input API or establish native/game equivalence.",
+    "call_report": {
+      "result": "6 report rows and6 Markdown claims passed;0 unchecked/failed/warnings",
+      "capture": "local/oct15_input_scalar_tree_range_callcheck.txt",
+      "sha256": "6616b90c68d35b75773de67eee8c542bc6a86e5e25a8e3a007850607c517eb06"
+    },
+    "diff_check": "git diff --check and git diff --cached --check passed; both repeated after final report staging"
+  },
+  "compiled_source_inspection": {
+    "status": "passed",
+    "local_evidence": "local/oct15_input_scalar_tree_range_coff.json",
+    "local_evidence_sha256": "9aa50c3c888838f76e235f9fed84565745a6316e8b03b15f2bd4d3450a8db914",
+    "method": "Direct COFF i386 section/symbol/relocation parsing, corroborated by retained dumpbin DISASM/RELOCATIONS/SYMBOLS output; Capstone5.0.7 x86-32.",
+    "object": "build/win32/bsp_core.dir/Release/native_input_scalar_tree_range.obj",
+    "object_sha256": "19ea550961e1f5ddcf869efb1768adf7ce52efcced990c713162a121860bcf92",
+    "machine": "IMAGE_FILE_MACHINE_I386",
+    "symbol": "?erase_native_input_scalar_tree_range_005572f0@bsp@@YIPAXPAX000000@Z",
+    "section": ".text$mn",
+    "code_body_bytes": 9,
+    "raw_code": "558bec5de900000000",
+    "relocations": [
+      {
+        "offset": 5,
+        "kind": "IMAGE_REL_I386_REL32",
+        "symbol": "?erase_native_int_pointer_tree18_range_0086ee50@bsp@@YIPAXPAX000000@Z",
+        "raw_operand": "00000000",
+        "mask_reason": "External target comes from the exact COFF symbol relocation, not from the zero addend decoded as a runtime displacement."
+      }
+    ],
+    "instructions": [
+      {
+        "offset": 0,
+        "bytes": "55",
+        "mnemonic": "push",
+        "operands": "ebp"
+      },
+      {
+        "offset": 1,
+        "bytes": "8bec",
+        "mnemonic": "mov",
+        "operands": "ebp, esp"
+      },
+      {
+        "offset": 3,
+        "bytes": "5d",
+        "mnemonic": "pop",
+        "operands": "ebp"
+      },
+      {
+        "offset": 4,
+        "bytes": "e900000000",
+        "mnemonic": "jmp",
+        "operands": "9"
+      }
+    ],
+    "result": "Direct tail jump to accepted whole range after any temporary EBP frame is restored. ECX/EDX and all FIVE physical stack argument words are unchanged; no retained wrapper frame, private output or extra semantic input.",
+    "return": "Accepted whole service supplies both EAX=output returns and RET14h; this forwarder has no separate return instruction.",
+    "limits": "Compiled Source frame/argument preservation only, not original game ABI, original spill-address aliases, native runtime, fault/SEH, exception or heap equivalence.",
+    "dumpbin": {
+      "local/oct15_input_scalar_tree_range_coff.asm": "2cdcbb4fbd02b90d15828e1475d354bfeb2335fb1629eaa9edf87ac8d4620a16",
+      "local/oct15_input_scalar_tree_range_coff.relocations.txt": "79fa9fcb601ee9a2e49f45103f47973cbd2112e5ceb85521ca4d02c028f0d4ab",
+      "local/oct15_input_scalar_tree_range_coff.symbols.txt": "9143f8cc4b1094d7e70edfc48a904104de778000cd8e288c4912f6bdd8bdc2f4"
+    }
+  },
+  "provenance": {
+    "base_and_registration": {
+      "main_at_merge": "da3f8535abd1e1e844640f891fdf016be740f365",
+      "merge_commit_before_new_packet": "093d20a2268b0b8abeabdc75cc073ba92077eb8c",
+      "source_files_unstaged_during_prerequisite_merge": true,
+      "cmake_line": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_input_scalar_tree_range.cpp)",
+      "cmake_sha256_before_append": "d5b609f7399b80e879562880547c1594061be496607feaa057add947e18687f9",
+      "cmake_sha256_after_append": "734dd8add23bcd9d924462d86f234ce8a80ba74cfc8e74a394229832cc838d0d",
+      "registration_lease": "oct15_input_scalar_tree_range_cmake",
+      "conflict_resolution": "tools/merge_resolve.py registry union; no unresolved paths"
+    },
+    "source_hashes_confirmed_after_build": true,
+    "accepted_callee_files_unchanged": true,
+    "prior_prefix_AF60_and_iterator_files_unchanged": true,
+    "original_PE_hash_unchanged": true,
+    "primary_source_review": "Pending frozen-pin primary review; no primary approval claimed for this new whole5572F0 packet."
+  },
+  "identity_and_fragment_preservation": {
+    "old_name": "STL_IntScalarTree_EraseRange_N18_005572F0",
+    "name_unchanged": true,
+    "all_prior_name_evidence_retained": true,
+    "exact_prior_fragment_record_unchanged": true,
+    "new_ordinary_record_is_separate": true,
+    "before_snapshot": "local/oct15_input_scalar_tree_range_before_ledgers.json",
+    "before_snapshot_sha256": "a202ba697690f5e18ec488cbbe8d5260f27364ae3578cfda3d7f87df5a59f2d2"
+  }
+}

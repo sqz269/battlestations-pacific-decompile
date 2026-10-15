@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_dword_move_nonzero",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_scene_dword_move_nonzero.cpp",
+  "header": "include/bsp/native_scene_dword_move_nonzero.hpp",
+  "documentation": "docs/GOAL_OCT15_DWORD_MOVE_NONZERO.md",
+  "base_revision": "6477c28764ddd4c0df1864435b36fd253b8f192e",
+  "status": "whole_actual_raw_source_strict_win32_existing_ctest_and_compiler_checked",
+  "routine": {
+    "address": "00468f60",
+    "body_end_inclusive": "00468f8f",
+    "body_bytes": 48,
+    "instructions": 18,
+    "blocks": 3,
+    "physical_calls": 1,
+    "implementation": "move_native_scene_dword_range_00468f60",
+    "prior_name": "STL_inst_00468f60",
+    "name_hypothesis": "STL_DwordRange_MoveNonzero_00468F60",
+    "coverage": "complete_actual_raw_source_at_direct_current_sdk_memmove_s_boundary",
+    "original_abi": "stdcall(first,last,destination),entryESP+4/+8/+Ch,RET0Ch;incomingECX/EDX unused;ESI preserved;capture last,first,destination and result beforeCRT;rawEAX wrapped destination+roundedbytes",
+    "live_hex": "8b4424088b4c24048b54240c2bc1c1f8028d048500000000568d3410740c50515052e820d8780083c4108bc65ec20c00",
+    "live_installed_equal": true,
+    "sha256": "9fd691f0403e2194592a3060e90c49fa8184e53f1809e4df9deccf8512e94606"
+  },
+  "host_steps": [
+    {
+      "address": "00468f82",
+      "native": "00bf67a7",
+      "function": "00468f60",
+      "kind": "call"
+    },
+    {
+      "address": "0046b06e",
+      "native": "00468f60",
+      "function": "0046afb0",
+      "kind": "call"
+    },
+    {
+      "address": "0046b08d",
+      "native": "00468f60",
+      "function": "0046afb0",
+      "kind": "call"
+    },
+    {
+      "address": "0046b0f0",
+      "native": "00468f60",
+      "function": "0046afb0",
+      "kind": "call"
+    },
+    {
+      "address": "0046b138",
+      "native": "00468f60",
+      "function": "0046afb0",
+      "kind": "call"
+    }
+  ],
+  "implementation_search": "no prior indexed/unindexed whole Source;currentD90 actual Source/header and native468F60 full listing reviewed;D90 positive-only guard cannot implement nonzero negative path",
+  "arithmetic_and_sdk_contract": "capture last/first/destination;uint32 difference,SAR2bits,(words*4)mod32,preCRTdestination+bytes result. if(words!=0) calls actualSDKmemmove_s(dst,bytes,first,bytes) INCLUDING NEGATIVE words;ignorestatus. Zero words skipSDK butreturncapturedresult. No guards,callbacks,stubs,poolactions,ownership,cleanup or privateframe aliases added.",
+  "negative_example": "differenceFFFFFFFF =>wordsFFFFFFFF,bytesFFFFFFFC,SDK MUST execute;difference0..3 =>words0,skipSDK",
+  "typed_flow": {
+    "receipt": "local/goal_oct15_dword_copy_nonzero_preflight_all_flow.json",
+    "read_only": true,
+    "typed_instruction_starts": 18,
+    "body_complete": true,
+    "modification_number": "775",
+    "overrides": 0,
+    "default_effective_flow_equal": true,
+    "only_call_site": "00468f82",
+    "only_target": "00bf67a7",
+    "cached_graph_qualification": "cachedlookup listed419CC0/BD1510;live proto/callees/full18instruction typed flow have onlySDK. No Ghidra repair or poolSource dependency inferred."
+  },
+  "caller_context": "local/goal_oct15_dword_copy_nonzero_preflight_callers.json",
+  "annotation": {
+    "before_comments": "local/goal_oct15_dword_move_nonzero_before_comments.json",
+    "before_documentation": "local/goal_oct15_dword_move_nonzero_before_documentation.json",
+    "preserve_prior_values_comments_evidence_correct_library_targets": true,
+    "locked_apply_save": "passed;local/ghidra-annotations-20261015T221222Z.json;old placeholder/name/comments/evidence retained;behavior hypothesis applied,SDK target unchanged;project saved",
+    "refreshed_export": "passed;owned address forced after annotation",
+    "readback": "passed;local/goal_oct15_dword_move_nonzero_after_comments.json;expected name,prior comments and added evidence verified"
+  },
+  "verification": {
+    "project_program_guard": "bsp.py Client.verify each live batch;bsp,/battlestationspacific.exe,x86:LE:32:default,image00400000",
+    "whole_assembly_abi_signed_guard_typed_flow_and_callers": "passed",
+    "live_installed_bytes": "passed;whole48B/18instructions including RET0Ch",
+    "typed_native_transfers": "passed;5 actual rows (1 ownSDK+4 incoming) and5 Markdown siteclaims;13 citedaddresses;0 failed/unchecked/warnings",
+    "cmake_registration": "passed;unique append after immediate unleased check;no exclusive file lease",
+    "strict_win32_build_and_existing_ctest": {
+      "result": "passed",
+      "command": "./scripts/build.ps1",
+      "build_and_source_revision": "32e7e0edf4bd2da8377ac2fb58682d2be3e400a3",
+      "configuration": "MSVC Release Win32;normal startup registry;process-local CL /MP4",
+      "log": "local/goal_oct15_dword_move_nonzero_build.log",
+      "log_sha256": "287e1baf27353749add0d809f7af0f6579d504af3ed4b91478a329d97f364f93",
+      "ctest": "3/3 passed: reconstructed_math0.23s,native_math_differential0.04s,tool_tests7.88s;total8.20s",
+      "source_header_unchanged_from_draft": true,
+      "qualification": "existing unrelated LNK4006 duplicate spawn_request_id_matches Lua objects;no packet compile warning;existing native math differential checks do not exercise this new body"
+    },
+    "compiled_object_review": {
+      "result": "passed focused actual MSVC Release Win32 object",
+      "object": "build/win32/bsp_core.dir/Release/native_scene_dword_move_nonzero.obj",
+      "bytes": 1214,
+      "sha256": "0d9ca8d4fcb87ae523a4c925cfc858c432325f01ceb1f0d85e4cfa0dc8fc6b7c",
+      "dumpbin_version": "14.51.36244.0",
+      "receipt": "local/goal_oct15_dword_move_nonzero_object.txt",
+      "entry_code_bytes": 97,
+      "input_and_arithmetic_schedule": "last load+3,first+6,destination+1A in that relative order;SUB+9,explicit SAR bits SHR+0D/SAR31+10/AND+13/OR+18;bytesLEA+1E;preSDK resultESI+25",
+      "nonzero_negative_guard": "JE+28 preserves OR(words) ZF through MOV/PUSH/LEAs;skips only0 including no signed-positive guard;SDK TEST(bytes)+2A likewise admits negative bits",
+      "real_sdk_schedule": "current SDK memmove_s inline implementation;real errno import+32,EINVAL store+38,returnable invalid_parameter_noinfo import+3E;pointer checks+2E/+4B;actualmemmove+52;equal size/count removes SDK too-small branch",
+      "captured_return_schedule": "ESI preSDK result restored to EAX+44 on returning diagnostic path and+5A on normal/zero path;RET0Ch+48/+5E",
+      "relocations": "DIR32 errno import+34,DIR32 invalid_parameter_noinfo import+40,REL32 actualmemmove+53",
+      "qualification": "compiler SDK inlining/current errno/handler behavior and pointer-value Source evidence only;no native private-frame/argument-home/fault/SEH/instruction/COFF/staticCRT/binaryABI identity"
+    },
+    "source_file_sha256": {
+      "src/native_scene_dword_move_nonzero.cpp": "b7cb4a0d41a6c2c1715f13a1d45f69a02d6026308d5d3a3f582770fb058f323f",
+      "include/bsp/native_scene_dword_move_nonzero.hpp": "b6c522fddc880ddeb9b0ad78dfbf001e951fb678b1488666bba05833981f0419"
+    },
+    "new_tests": false,
+    "packet_native_differential": "not run",
+    "game_validation": "not run",
+    "primary_readiness_review": "passed whole48B/stdcall/nonzero includingnegative/SARflag guard/typed stalegraph preflight contract",
+    "diff_check": "passed",
+    "primary_independent_source_review": "passed complete18-op native listing and exact Source/header at 32e7e0edf4bd2da8377ac2fb58682d2be3e400a3;last/first/destination capture,unsignedSAR2,preCRTresult,full nonzero-negative SDK/statusignore/stdcallRET12 all match;cached poolgraph is not live;no Source edits;final recorded hashes verified unchanged"
+  },
+  "limits": [
+    "Current SDK memmove_s reporting/returning/throwing behavior composed;no original staticCRT errno/globalhandler/exception/fault/SEH identity.",
+    "Ordinary pointer-value Source/calling-convention keyword;no implicit native/Source privateframe/argumenthome or instruction/COFF/binaryABI/game identity.",
+    "Nonzero guard includes negatives;no signed-positive-only narrowing,D90 delegation,poolaction or invented unresolvedprovider.",
+    "No packet-specific native differential/application/game validation."
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "schema": "bsp.cc12.bounded_readiness_primary.v1",
+  "Source_ready": true,
+  "Source_implemented": false,
+  "Source_admitted": false,
+  "packet": "cc12_scene_name_node_holder_release_008f3d80_008f3dc0",
+  "addresses": [
+    "008f3d80",
+    "008f3dc0"
+  ],
+  "whole_Original_primary_listing_review": true,
+  "contract": "Whole two58B24 bodies. Capture holder node once; nullnode no-op. Whole0041DD20 actual raw-context key release (nonnull data captures DWORDlength+1, actual419CC0 thenBD1510), then whole43B0A0 through EXACT E17578(enum3D80) orE17540(library3DC0), ONLY THEN clear holderDWORD. No node/keyheader/mappedpayload cleanup, copy/adoption/refcount. Genuine unique allocated detached14hslot+10page identity/correct canonical pool/startup/generation/commonE188B4; same retained canonicalstringrawcontextAA8/AA4/AA0; caller settles mappedpayload/links first. Disjointstablevalidsuccessnonthrowserialized/noalias/reentry/concurrenttrim domain; no ABI/EH/privateCRT/startup/runtime/game credit.",
+  "readiness_family": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_bool_source_oct15\\local\\SceneNameNodeHolderReadiness01\\family_receipt.DATA.json",
+    "bytes": 19466,
+    "sha256": "3437961d2b4ea2ed7c28198f1d4d9c174d89e031322e9425c5a7b5e372e3aa1e"
+  },
+  "primary_input_verification": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_holder_setter_readiness_primary_20261015\\verified_readiness_inputs.DATA.json",
+    "bytes": 14883,
+    "sha256": "cc9557bae90eb34088e7c798dc8df45063cb6e860601f452cf79458b04c8d755"
+  },
+  "missing_direct_providers": [],
+  "details": {
+    "direct_provider_matrix": [
+      {
+        "target": "00419CC0",
+        "Original_name": "BSP_SizedStoragePool_GetSingleton",
+        "ordinary_Source": "native_string_pool_get_or_create_00419cc0(actual_01090AA8,actual_raw_manager_01090AA0)",
+        "files": [
+          "include/bsp/native_string_pool_owner.hpp",
+          "src/native_string_pool_owner.cpp"
+        ],
+        "status": "actual_storage_reconstructed_strict_win32_and_focused_host_lifetime_fixture_tested",
+        "ready": true,
+        "contract": "No Original args or stack cleanup; staged data/size/1 belong to FOLLOWING BD1510 call. SAME retained actual canonical manager/publication/lifetime; nonthrowing successful normal services, no synthetic or cached singleton."
+      },
+      {
+        "target": "00BD1510",
+        "Original_name": "BSP_SizedStoragePool_ReturnBlock",
+        "ordinary_Source": "return_native_string_pool_00bd1510(actual_pool,captured_data,length_plus_one,actual_01090AA4)",
+        "files": [
+          "include/bsp/native_string_pool_storage.hpp",
+          "src/native_string_pool_storage.cpp"
+        ],
+        "status": "actual_storage_reconstructed_strict_win32_original_bytes_differential_and_lifetime_composition_tested",
+        "ready": true,
+        "contract": "Original ECX=419CC0 result, stack data/size/unused1, RET0C. Large size>=0x96 frees with same currentCRT heap without pool/gate access; small reads actual gate and may skip return. SAME raw context even on large/disabled return. No invented header clear or added free."
+      },
+      {
+        "target": "0043B0A0",
+        "Original_name": "BSP_EnumNodePool_Return14h",
+        "ordinary_Source": "return_native_enum_node_0043b0a0(actual_initialized_pool,captured_slot)",
+        "files": [
+          "include/bsp/native_enum_node_pool.hpp",
+          "src/native_enum_node_pool.cpp"
+        ],
+        "status": "conditional_complete_native_body_Source_integrated_fixture_and_build_passed",
+        "ready": true,
+        "contract": "Original ECX actual38hpool, stack actual14hslot, RET4. SAME canonical CE37A4 owner/list/OS CS, genuine allocated slot+10 page identity; actual table/page/index/counts valid, no alias/reentry/concurrent trim. Provider returns slot via page metadata, preserving payload0..F; use EXACT E17578 for3D80 or E17540 for3DC0. Name retained as existing accepted Source symbol."
+      }
+    ],
+    "existing_composite_key_provider": {
+      "Source": "destroy_native_string_header_0041dd20(actual_node,actual_strings.raw_context())",
+      "files": [
+        "include/bsp/native_string.hpp",
+        "src/native_string.cpp"
+      ],
+      "accepted_function_status": "actual_header_complete_assembly_reviewed_strict_win32_build_checked",
+      "reason": "Exact existing raw-context composition reads data+4 once, null skips length/calls; nonnull reads DWORDlength+0, wraps+1, resolves real419CC0 then wholeBD1510 with live01090AA4. RawStringPoolAccess is concrete, not a host callback. No keyheader writes, copy, refcount or fallback.",
+      "not_Original_direct_CALL": true
+    },
+    "ordinary_domain": {
+      "holder": "Actual accessible aligned4B Win32 holder slot, disjoint from returned node, key buffer, pools/pages/tables/list/context and caller frame. Slot nullptr is invalid; a NULL STORED NODE is ordinary and does nothing. Capture node once, final zero store only on nonnull path.",
+      "node": "Genuine currently allocated unique14h slot from EXACT relevant canonical live38h pool with valid+10 page identity/table membership. Detached from live map/chains/other holders before call. No double-return, stale generation, fabricated header, profileword-only provenance or arbitrary heap node.",
+      "key": "Node first8B actual owning length/data header produced by canonical native string services. Data may be null; nonnull size length+1 matches its actual buffer allocation/current canonical raw-string pool or matching currentCRT large allocation. No free of borrowed fallback/literal. Length arithmetic is native DWORD wrap; ordinary valid allocation sizes/nonoverflow domain required. Release reads no character content, C-locale comparator or CString length; no refcount is present.",
+      "payload": "Node+8 and+C are never read/released/unlinked by either body. Caller has settled any owning mapped payload and all external links before node return; no ownership of bags/records/enums or complete class destructor follows from cached name. Slot+10 belongs to allocator. No node header/payload zeroing is added.",
+      "process": "Use SAME retained canonical GameNativeStringProcess.raw_context(): actual01090AA8 pool publication, actual01090AA4 live shutdown gate, actual01090AA0 manager. Existing raw helper resolves419CC0 on EVERY nonnull-data return, including large frees and disabled small returns. No semantic pool, arbitrary NativeStringStorage callback, literal/fallback substitution or second process.",
+      "physical": "Use SAME canonical GameNativePhysicalPoolProcess with completed explicit relevant startup, CE37A4/whole00410CD0 binding and commonE188B4 list; preserve actual pool cells, OS recursive CS, page/table membership and generations. Accessor must occur only on nonnull-node path, after key release, under its returned-startup/nonthrow contract. Never construct/rebind/reset pools here.",
+      "lifetime": "Keep node/key/string/process/manager/publication/gate/canonical physical owner/common list alive through both returns and final holder clear. Retire all payload/key/node borrowers before corresponding pool/page/manager teardown. Externally serialize mutation/trim/shared-list access; no reentry or concurrent owner teardown.",
+      "success": "Valid stable disjoint storage and coherent finite allocated ownership, successful nonthrowing getter/string-return/node-return, nonoverflowing allocations. No OOM/fault/SEH/failed-provider recovery, rollback, early holder clear or invented RAII.",
+      "fallback_cells": "These bodies do not read E177E4/E17654/E186ED or any fallback CString. Their owning key data must not be substituted with such borrowed bytes. The required actual cells here are01090AA8/01090AA4/01090AA0 plus exact physical pool/list ownership."
+    },
+    "minimal_proposal": {
+      "packet": "cc12_scene_name_node_holder_release_008f3d80_008f3dc0",
+      "addresses": [
+        "008F3D80",
+        "008F3DC0"
+      ],
+      "exact_new_files": [
+        "include/bsp/native_scene_name_node_holder.hpp",
+        "src/native_scene_name_node_holder.cpp",
+        "docs/NATIVE_SCENE_NAME_NODE_HOLDER_CC12.md",
+        "reports/native_scene_name_node_holder_cc12.json"
+      ],
+      "proposed_local_Source_evidence": "local/WholeSceneNameNodeHolderSource01",
+      "APIs": [
+        "void release_native_enum_symbol_node_holder_008f3d80(void* actual_holder_slot,game::GameNativeStringProcess&,game::GameNativePhysicalPoolProcess&)",
+        "void release_native_property_library_node_holder_008f3dc0(void* actual_holder_slot,game::GameNativeStringProcess&,game::GameNativePhysicalPoolProcess&)"
+      ],
+      "algorithm_only": "Read holder DWORD once; if nonzero use existing whole raw-context destroy_native_string_header_0041dd20(node,strings.raw_context()); only after return obtain EXACT relevant actual physical owner and call whole return_native_enum_node_0043b0a0; only after return volatile DWORDzero holder. Do not add mapped payload cleanup, header clearing, class/refcount/copy policy, callbacks or pool startup.",
+      "Source_authorized": false,
+      "Source_emitted": false,
+      "shared_edits": "None proposed for worker; Root owns later registry/ledger/CMake/Ghidra admission. New names are hypotheses tied to exact receiver, not recovered class symbols."
+    },
+    "ABI": {
+      "Original": "ECX actualholder_slot, no EDX input or stack argument, RET; preservesESI/EDI; no specified semantic result",
+      "Source": "New ordinary context-bearing C++ void APIs only; no Original fastcall/ECX/register/EFLAGS/stack/class/EH/drop-in claim.",
+      "EH": "No local FS/EH registration or no-return ambiguity in either58B body. Getter/return failure and faults outside ordinary domain; no invented cleanup."
+    },
+    "named_wider_incomplete_outside_boundary": [
+      "008F5A00 scene parser",
+      "008F67B0 loader"
+    ]
+  },
+  "Original_ABI_compatible": false,
+  "Original_private_CRT_EH_compatible": false,
+  "game_validated": false,
+  "cached_name_correction": "3D80 usesE17578,3DC0 usesE17540; ReleaseCopy performs no copy/adoption; previous same-body annotation is not accepted evidence."
+}

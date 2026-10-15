@@ -1,0 +1,61 @@
+{
+  "packet": "goal15g_pod8_inplace",
+  "source_base": "17c49517e",
+  "status": "complete_two_naked_cdecl_kernels_strict_mdx86_compile_exact_coff_live_disk98bytes_source_alias_fixture_passed_pending_primary_registered_build",
+  "owned_addresses": ["0041c680", "0041dac0"],
+  "owned_files": ["include/bsp/native_pod8_inplace_range.hpp", "src/native_pod8_inplace_range.cpp", "docs/GOAL15G_POD8_INPLACE_RANGE.md", "reports/goal15g_pod8_inplace_range.json"],
+  "functions": [
+    {"address": "0041c680", "name": "STL_Pod8Range_Fill_0041C680", "cpp_symbol": "bsp::fill_native_pod8_range_0041c680", "source": "src/native_pod8_inplace_range.cpp", "header": "include/bsp/native_pod8_inplace_range.hpp", "end_exclusive": "0041c6a4", "bytes": 36, "coverage": "complete", "original_abi": "ordinarycdecl three stacked pointers first,last,value; plainRET; ESI preserved; physicalEAXcapturedlast onreturn but semanticresultunclaimed", "source_abi": "naked MSVCWin32 void __cdecl(void*,const void*,const void*)"},
+    {"address": "0041dac0", "name": "STL_Pod8Range_CopyBackward_0041DAC0", "cpp_symbol": "bsp::copy_backward_native_pod8_range_0041dac0", "source": "src/native_pod8_inplace_range.cpp", "header": "include/bsp/native_pod8_inplace_range.hpp", "end_exclusive": "0041dafe", "bytes": 62, "coverage": "complete", "original_abi": "ordinarycdecl three stacked pointers first,last,destinationEnd; plainRET; ESI/EDI preserved; EAXcaptured endpoint computedbeforeemptytest", "source_abi": "naked MSVCWin32 void* __cdecl(const void*,const void*,void*)"}
+  ],
+  "host_steps": [],
+  "consumer_calls": [
+    {"address": "00421157", "native": "0041c680", "containing_function": "00420f80", "contract": "push actual-local-pair, saved-oldend after currentend/count update, insertionposition; ADDESP0Ch at0042115c"},
+    {"address": "00421196", "native": "0041dac0", "containing_function": "00420f80", "contract": "push oldEndEBX, savedoldEnd-countBytes, insertionposition; owner+8 published00421193 beforecall; argsremainstacked"},
+    {"address": "004211a6", "native": "0041c680", "containing_function": "00420f80", "contract": "push actual-local-pair, insertionPos+countBytes, insertionPos; ADDESP18h at004211ab cleans thisfill andprecedingcopy"}
+  ],
+  "semantics": {
+    "fill": "captureendpoints, equaleven skips valuepointerargumentload; otherwise capturevaluepointeronce, eachiteration read0/store0 THENfreshread1/store1; ADD8/equality; no nullskip",
+    "backward_endpoint": "EAX=destinationEnd-(SAR32(uint32(last-first),3)*8) moduloDWORD beforeemptytest; literalSAR andthreeADDtoSelf, no C++pointerdifference",
+    "backward_loop": "sourceword0 read atoldECX-8 BEFOREdecrement/CMP; thenstore0/freshread1/store1/JNZusing prestoreCMPflags; EDXdestEnd-originalLast wrapoffset",
+    "alias": "word0store can modify subsequent sourceword1; sourcecontents notpair-snapshotted; actual endpointer/stack/register schedule retained",
+    "no_substitution": "no helpercalls, memmove, typedpair, stdcopy, allocator, nullrepair or ordered/signedloopguard",
+    "backing": "equality +/-8 walk mustterminate, all actually reached source/destination/stack/controlcells requirevalidbacking"
+  },
+  "dependencies": [],
+  "evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "native_assembly": "complete36+62B exact-address listings including finalRET; no localEHmetadata/callees",
+    "caller_evidence": "all3 actual argument/cleanup sequences read; liveprotos00421157/196/1a6 place themwithin00420f80..004211c0; physicalcensus2fill+1backward",
+    "byte_script": "local/goal15g_pod8_inplace/compare_pod8_inplace_bytes.py [registered-COFF-object] [live-byte-directory] [PE-path]",
+    "live_captures": "local/goal15g_pod8_inplace/0041c680_bytes.txt and0041dac0_bytes.txt",
+    "source_listing": "local/goal15g_pod8_inplace/native_pod8_inplace_range.asm",
+    "byte_result": "PASS all98 exact COFF/live/originaldisk bytes; zero masking; no ownedrelocations; finalRET included"
+  },
+  "corrections": [
+    {"was": "nearest-start census/index caller label Catch_All@004210e7", "is": "live containingfunction00420f80..004211c0 for all3 sites", "evidence": "bsp.py ghidra proto00421157/00421196/004211a6 --brief andfullNativecaller ranges; no consumedaddress renamed"}
+  ],
+  "verification": {
+    "strict_compile": "PASS MSVCWin32/MD/C++17/EHsc/W4/WX/permissive-/O2/fp:strict/c/FAcs",
+    "exact_bytes": "PASS98B no operandsmasked andno ownedrelocs; freshlive==originaldisk==COFF",
+    "source_fixture": "PASS one ignored real-backed case: fillwordalias and2elementbackwardwordalias; capturednormal/emptyendpoints; emptyfillnullvalue; realbackedoffsetunderflow/effectiveaddresswrap",
+    "fixture_limits": "bounded Sourcealias/addressobservations; not Native differential or all signbit/misalignment/hardwarefault combinations",
+    "fixture_source": "local/goal15g_pod8_inplace/pod8_inplace_probe.cpp",
+    "fixture_script": "local/goal15g_pod8_inplace/run_pod8_inplace_probe.cmd [registered-archive]; defaultdirectkernelobject, argumentarchive-only; embeddedmanifest",
+    "fixture_log": "local/goal15g_pod8_inplace/pod8_inplace_probe.log",
+    "report_calls": "PASS3 exact report transferrows and3 explicit markdown transferclaims; live containingfunction andpublication store also manuallyverified",
+    "diff_check": "PASS",
+    "new_tracked_test_targets": 0,
+    "full_registered_build": "primary-owned",
+    "native_runtime_differential": "not run",
+    "gameplay": "not validated"
+  },
+  "integration": {
+    "target": "bsp_core",
+    "target_sources_add": "src/native_pod8_inplace_range.cpp",
+    "ghidra_mutations": "none; primary owns annotation/prototype/export/save",
+    "lease": "release aftercommit forprimarytransfer"
+  }
+}

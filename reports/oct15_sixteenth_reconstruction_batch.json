@@ -1,0 +1,647 @@
+{
+  "batch": "oct15_sixteenth_reconstruction_batch",
+  "status": "reviewed_integrated_main_win32_build_and_static_transfer_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "scope": {
+    "whole_ordinary_entries": [
+      "0055b690",
+      "0055b8b0",
+      "006a6eb0",
+      "006974b0"
+    ],
+    "complete_logical_receiver_EH_actions": [
+      "00c6dc30",
+      "00c6dc38",
+      "00c6dc43",
+      "00c6dc4e",
+      "00c6dc59",
+      "00c6dc64",
+      "00c6dc6f",
+      "00c6dc7a",
+      "00c6dc85",
+      "00c6dca0"
+    ],
+    "ordinary_bytes": 701,
+    "ordinary_starts": 250,
+    "action_bytes": 104,
+    "action_starts": 28,
+    "total_owned_bytes": 805,
+    "total_owned_starts": 278
+  },
+  "components": [
+    {
+      "packet": "oct15_input_device_record_pair_destroy",
+      "pin": "3d1f01d68471ba881bdf94e6690e83a4862b1e88",
+      "owned_bytes": 768,
+      "owned_starts": 264,
+      "report": "reports/oct15_input_device_record_destroy.json",
+      "report_sha256": "1a108a669024d783d46b00e4bf0e90178bf1a6f23e310455cc7a8583990e83d3",
+      "source": "src/native_input_device_record_destroy.cpp",
+      "header": "include/bsp/native_input_device_record_destroy.hpp",
+      "documentation": "docs/OCT15_INPUT_DEVICE_RECORD_DESTROY.md",
+      "primary_review": {
+        "path": "reports/oct15_input_device_record_primary_review.json",
+        "sha256": "73c867dbc3f2026c7eef3984beecf5e3c0cef58ac280c8e89f3c77a32d98811e",
+        "evidence": {
+          "pin": "3d1f01d68471ba881bdf94e6690e83a4862b1e88",
+          "report": "reports/oct15_input_device_record_destroy.json",
+          "source_native_review_checks": [
+            "Complete426line Source and header reviewed against all195record,29pair,12scalar and28action native instructions.",
+            "Normal record reverse order78/6C/5C/50/40/30/24/18/0C/00 preserved with no vptr or opaque0 modification.",
+            "Each head/head.left or begin capture precedes newstate arm; priorstate remains through clears and nextinitial captures.",
+            "Stable fullselection inputs prove exact consumedprefix domains; private8B iterator output remains separate, no missingpartial callbacks are fabricated.",
+            "Seven tree members reload CURRENT head for free, then clear4before8 without nullhead/repeateddestroy shortcuts.",
+            "Three vectors retain begin/nulltest beforestate, endcapture afterstate, actual ascendingrange and CURRENTbeginfree, unconditional4/8/C clear.",
+            "Outer range dead metadata order remains memberheader/savedrecord; accepted432050 Source dead-stack omission explicitly qualified.",
+            "Record privateguard advances state BEFORE each action, matching independently decoded9entry native unwindmap.",
+            "Only earlier members unwind; current member and first78 member are never retried by record cleanup.",
+            "Private noexcept CurrentCpp guards preserve termination on secondary C++ cleanup throw; normal child calls remain propagating outside guards.",
+            "Both9DWORD FuncInfo records and all9record map/action targets independently match installedPE.",
+            "All ten rawlogical receiver actions match liveassembly; Source never reads synthetic EBP/frame storage.",
+            "Record+40 action is4324A0 actualvector, correcting stale41DD20 readiness prose; pairC6DCA0 is separate41DD20 key.",
+            "Pair arms key before record+8; captures CURRENT data/test beforedisarm and length+1 only afterdisarm whennonnull.",
+            "Pair captures keypointer/size before actual poolgetter and release; keyfields remain untouched; normalgetterfailure is not retried.",
+            "Scalar destroys pair+C before lowbyte flags bit0 read, conditionally frees originalallocation, returns itsoriginalpointerbits, exceptionsskip flag/free/return.",
+            "Parent EAX residue is not promoted into a stable value; scalar EAX/RET4 and deadEDX/context/nativeframe distinctions recorded.",
+            "COFF confirms guard noexcept metadata/terminate routing and scalar flagread afterpair, while extraSourceEH/inlining/privateframes remain qualified.",
+            "Existing real AV/fixture APIs remain preserved as separate Source domains; no newtests/native runtime/game proof claimed.",
+            "Source/frozenpin files match moduloCRLF; all768ownedPEbytes and264fresh current instruction starts match."
+          ],
+          "installed_PE_owned_units": [
+            {
+              "entry": "0055b690",
+              "bytes": 534,
+              "instructions": 195,
+              "installed_PE_sha256_match": true
+            },
+            {
+              "entry": "0055b8b0",
+              "bytes": 97,
+              "instructions": 29,
+              "installed_PE_sha256_match": true
+            },
+            {
+              "entry": "006a6eb0",
+              "bytes": 33,
+              "instructions": 12,
+              "installed_PE_sha256_match": true
+            },
+            {
+              "entry": "00c6dc30",
+              "bytes": 8,
+              "instructions": 2,
+              "installed_PE_sha256_match": true
+            },
+            {
+              "entry": "00c6dc38",
+              "bytes": 11,
+              "instructions": 3,
+              "installed_PE_sha256_match": true
+            },
+            {
+              "entry": "00c6dc43",
+              "bytes": 11,
+              "instructions": 3,
+              "installed_PE_sha256_match": true
+            },
+            {
+              "entry": "00c6dc4e",
+              "bytes": 11,
+              "instructions": 3,
+              "installed_PE_sha256_match": true
+            },
+            {
+              "entry": "00c6dc59",
+              "bytes": 11,
+              "instructions": 3,
+              "installed_PE_sha256_match": true
+            },
+            {
+              "entry": "00c6dc64",
+              "bytes": 11,
+              "instructions": 3,
+              "installed_PE_sha256_match": true
+            },
+            {
+              "entry": "00c6dc6f",
+              "bytes": 11,
+              "instructions": 3,
+              "installed_PE_sha256_match": true
+            },
+            {
+              "entry": "00c6dc7a",
+              "bytes": 11,
+              "instructions": 3,
+              "installed_PE_sha256_match": true
+            },
+            {
+              "entry": "00c6dc85",
+              "bytes": 11,
+              "instructions": 3,
+              "installed_PE_sha256_match": true
+            },
+            {
+              "entry": "00c6dca0",
+              "bytes": 8,
+              "instructions": 2,
+              "installed_PE_sha256_match": true
+            }
+          ],
+          "current_instruction_start_check": {
+            "count": 264,
+            "passed": true,
+            "capture": "local/oct15_device_record_primary_current_starts.json"
+          },
+          "independent_FH3_data_checks": "2FuncInfo records,9recordunwindentries,1pairentry andallactiontailtargets pass",
+          "frozen_git_blob_sha256": {
+            "src/native_input_device_record_destroy.cpp": "6edbd35b0b1ba90b743d491fc6a64e32231a620a4df5b649f0e5b7d96491427f",
+            "include/bsp/native_input_device_record_destroy.hpp": "ffe326a6939bbf2be7a24fa28da2ca616c4618cde37ae71fd02625650c6705bf",
+            "docs/OCT15_INPUT_DEVICE_RECORD_DESTROY.md": "d42a8180b1bda8bda4bb51ad98bd61c2296877048b66a9cb7bc77e96ce44b160",
+            "reports/oct15_input_device_record_destroy.json": "1a108a669024d783d46b00e4bf0e90178bf1a6f23e310455cc7a8583990e83d3"
+          },
+          "reviewed_worktree_files_sha256": {
+            "src/native_input_device_record_destroy.cpp": "6edbd35b0b1ba90b743d491fc6a64e32231a620a4df5b649f0e5b7d96491427f",
+            "include/bsp/native_input_device_record_destroy.hpp": "ffe326a6939bbf2be7a24fa28da2ca616c4618cde37ae71fd02625650c6705bf",
+            "docs/OCT15_INPUT_DEVICE_RECORD_DESTROY.md": "c4214a67cf350d338d8707ff73fcb91ea9d2ee51285338b15dc64a06ac8025b3",
+            "reports/oct15_input_device_record_destroy.json": "9f0ca20fa3608d2d4eba3cb58f13c5e5cc187a233106d9deae0aa1692a634a03"
+          },
+          "findings": [],
+          "conclusion": "accepted for integration within explicit CurrentCpp/rawstorage/context domains; originalFH3/SEH/RTTI/heap/privateframe/fault/ABI/game identity unproved",
+          "integration_status": "accepted and integrated Main;final publication union passed",
+          "staging_integration_commit": "fcb3131d9f9a922bc2fc0e96474d68d7e53813e3",
+          "combined_validation": {
+            "command": "./scripts/build.ps1",
+            "source_pin": "fcb3131d9f9a922bc2fc0e96474d68d7e53813e3",
+            "platform": "MSVC Win32 Release",
+            "existing_suites": "3/3 passed",
+            "ctest_seconds": 7.13,
+            "new_tests": 0,
+            "report_calls": 53,
+            "markdown_claims": 53,
+            "failed": 0,
+            "unchecked": 0,
+            "log": "local/oct15_sixteenth_parent_union_build.log"
+          },
+          "main_source_integration": "f0e76ac97d3fc3c1ed43443c8ed0c0dec4614a92",
+          "final_union_validation": {
+            "tested_source_pin": "f0e76ac97d3fc3c1ed43443c8ed0c0dec4614a92",
+            "MSVC_Win32_Release": "passed",
+            "existing_suites": "3/3 passed",
+            "ctest_seconds": 7.18,
+            "log": "local/oct15_sixteenth_publication_union_build.log"
+          }
+        }
+      }
+    },
+    {
+      "packet": "oct15_native_dword_assignment_copy_dispatch",
+      "pin": "af04536a0dd711c63d5427c24d001c83c8a49d70",
+      "owned_bytes": 37,
+      "owned_starts": 14,
+      "report": "reports/oct15_native_dword_assignment_copy_dispatch.json",
+      "report_sha256": "1f19127b8df542595841a5c944fac01c822ca050dc088bb2d3153d6fb7ad0b93",
+      "source": "src/native_dword_assignment_copy_dispatch.cpp",
+      "header": "include/bsp/native_dword_assignment_copy_dispatch.hpp",
+      "documentation": "docs/OCT15_NATIVE_DWORD_ASSIGNMENT_COPY_DISPATCH.md",
+      "primary_review": {
+        "path": "local/oct15_dword_assignment_copy_primary_review.json",
+        "sha256": "e7de79ab11b26cc6218501e7e99551e7aaf80f61742c7404845d4fc1ffbb5d4f",
+        "evidence": {
+          "pin": "af04536a0dd711c63d5427c24d001c83c8a49d70",
+          "report": "reports/oct15_native_dword_assignment_copy_dispatch.json",
+          "source_native_review_checks": [
+            "Complete Source/header and all14nativeinstructions reviewed; exact fiveinput fastcall delegation to acceptedwhole697860, no conversion or extraobject.",
+            "Independent37B wholePEcomparison matches accepted697860 except singleprovedCALLrel32 to696D40.",
+            "Originalowner/currentinputs/coremetadata shape and RET0C/EAXadvancedoutput retained by the accepteddispatcher, no calculateddistance substitution.",
+            "Acceptedcore progressivealiases/currentDWORDread/nulloutputskip/bothcursoradvance/DWORDwrap retained without memcpy/memmove/snapshot.",
+            "No owner/header/allocator/iterator/callback/guard/cleanup/EH bridge introduced; Sourceprivateframe/fault/CRT/SEH/ABI/game limits declared.",
+            "Actual9B COFF restores EBP andtail-transfers viaexactsymbol relocation; originalECX/EDX/threephysicalstackwords andESP shape retained.",
+            "EarlieractualSource/fixtures/nativeSTL_TagDispatch identity retained; existing3suites7.43s and4CALL/4MDchecks are static/build evidence only."
+          ],
+          "independent_complete_PE_comparison": {
+            "candidate": "006974b0",
+            "reference": "00697860",
+            "bytes": 37,
+            "instructions": 14,
+            "masked_field": "CALLrel32 at+1D;both actualtargets696D40",
+            "allother_bytes_equal": true
+          },
+          "frozen_git_blob_sha256": {
+            "src/native_dword_assignment_copy_dispatch.cpp": "16db6f0e484305c663249a6bc08c25f11737567ac2e08949899e82609b37d8f9",
+            "include/bsp/native_dword_assignment_copy_dispatch.hpp": "453ed6d08cf17ad6c10f2187fb7550d47dd2e121a94eb3dadbd4545097fd0f29",
+            "docs/OCT15_NATIVE_DWORD_ASSIGNMENT_COPY_DISPATCH.md": "060c624ad56d089f8a3c47528e52efb80ccccf3f18727c4fb59fea3bb4b24483",
+            "reports/oct15_native_dword_assignment_copy_dispatch.json": "1f19127b8df542595841a5c944fac01c822ca050dc088bb2d3153d6fb7ad0b93"
+          },
+          "reviewed_worktree_files_sha256": {
+            "src/native_dword_assignment_copy_dispatch.cpp": "16db6f0e484305c663249a6bc08c25f11737567ac2e08949899e82609b37d8f9",
+            "include/bsp/native_dword_assignment_copy_dispatch.hpp": "453ed6d08cf17ad6c10f2187fb7550d47dd2e121a94eb3dadbd4545097fd0f29",
+            "docs/OCT15_NATIVE_DWORD_ASSIGNMENT_COPY_DISPATCH.md": "060c624ad56d089f8a3c47528e52efb80ccccf3f18727c4fb59fea3bb4b24483",
+            "reports/oct15_native_dword_assignment_copy_dispatch.json": "ed150ad1be9cbcd4e923078560b567f91a555ce6bdef611afa9f1a540d0907fe"
+          },
+          "findings": [],
+          "conclusion": "accepted for integration within existing actualrawDWORD CurrentCpp/privateframe/ABIqualifications"
+        }
+      }
+    }
+  ],
+  "source_files_sha256": {
+    "src/native_input_device_record_destroy.cpp": "6edbd35b0b1ba90b743d491fc6a64e32231a620a4df5b649f0e5b7d96491427f",
+    "include/bsp/native_input_device_record_destroy.hpp": "ffe326a6939bbf2be7a24fa28da2ca616c4618cde37ae71fd02625650c6705bf",
+    "src/native_dword_assignment_copy_dispatch.cpp": "16db6f0e484305c663249a6bc08c25f11737567ac2e08949899e82609b37d8f9",
+    "include/bsp/native_dword_assignment_copy_dispatch.hpp": "453ed6d08cf17ad6c10f2187fb7550d47dd2e121a94eb3dadbd4545097fd0f29"
+  },
+  "host_steps": [
+    {
+      "address": "00445916",
+      "native": "00444b10",
+      "function": "00445900"
+    },
+    {
+      "address": "0044591f",
+      "native": "00bf65ac",
+      "function": "00445900"
+    },
+    {
+      "address": "0055a406",
+      "native": "00559110",
+      "function": "0055a3f0"
+    },
+    {
+      "address": "0055a40f",
+      "native": "00bf65ac",
+      "function": "0055a3f0"
+    },
+    {
+      "address": "0055a446",
+      "native": "00559280",
+      "function": "0055a430"
+    },
+    {
+      "address": "0055a44f",
+      "native": "00bf65ac",
+      "function": "0055a430"
+    },
+    {
+      "address": "0055aac6",
+      "native": "005599c0",
+      "function": "0055aab0"
+    },
+    {
+      "address": "0055aacf",
+      "native": "00bf65ac",
+      "function": "0055aab0"
+    },
+    {
+      "address": "0055ab06",
+      "native": "00559a90",
+      "function": "0055aaf0"
+    },
+    {
+      "address": "0055ab0f",
+      "native": "00bf65ac",
+      "function": "0055aaf0"
+    },
+    {
+      "address": "0055b4a6",
+      "native": "0055b230",
+      "function": "0055b490"
+    },
+    {
+      "address": "0055b4af",
+      "native": "00bf65ac",
+      "function": "0055b490"
+    },
+    {
+      "address": "0055b6cc",
+      "native": "004cef40",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b6d5",
+      "native": "00bf65ac",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b6fd",
+      "native": "00559280",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b706",
+      "native": "00bf65ac",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b72c",
+      "native": "0055a3a0",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b735",
+      "native": "00bf65ac",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b75e",
+      "native": "0055b230",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b767",
+      "native": "00bf65ac",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b78d",
+      "native": "00432050",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b796",
+      "native": "00bf65ac",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b7bf",
+      "native": "00432050",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b7c8",
+      "native": "00bf65ac",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b7f1",
+      "native": "00444b10",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b7fa",
+      "native": "00bf65ac",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b820",
+      "native": "00559a90",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b829",
+      "native": "00bf65ac",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b84e",
+      "native": "005599c0",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b857",
+      "native": "00bf65ac",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b87d",
+      "native": "00559110",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b886",
+      "native": "00bf65ac",
+      "function": "0055b690"
+    },
+    {
+      "address": "0055b8d8",
+      "native": "0055b690",
+      "function": "0055b8b0"
+    },
+    {
+      "address": "0055b8f5",
+      "native": "00419cc0",
+      "function": "0055b8b0"
+    },
+    {
+      "address": "0055b8fc",
+      "native": "00bd1510",
+      "function": "0055b8b0"
+    },
+    {
+      "address": "006974cc",
+      "native": "00696d40",
+      "function": "006974b0",
+      "kind": "call"
+    },
+    {
+      "address": "0069787c",
+      "native": "00696d40",
+      "function": "00697860",
+      "kind": "call"
+    },
+    {
+      "address": "00697c99",
+      "native": "006974b0",
+      "function": "00697bd0",
+      "kind": "call"
+    },
+    {
+      "address": "00697ce4",
+      "native": "006974b0",
+      "function": "00697bd0",
+      "kind": "call"
+    },
+    {
+      "address": "006a6eb6",
+      "native": "0055b8b0",
+      "function": "006a6eb0"
+    },
+    {
+      "address": "006a6ec3",
+      "native": "00bf65ac",
+      "function": "006a6eb0"
+    },
+    {
+      "address": "00bf6b64",
+      "native": "00c07991",
+      "function": "00bf6b43"
+    },
+    {
+      "address": "00c06a19",
+      "native": "00c07b10",
+      "function": "00c069a2"
+    },
+    {
+      "address": "00c079f9",
+      "native": "00c069a2",
+      "function": "00c07991"
+    },
+    {
+      "address": "00c07aa3",
+      "native": "00c04de2",
+      "function": "00c07a75"
+    },
+    {
+      "address": "00c6dc33",
+      "native": "0055a3f0",
+      "function": "00c6dc30",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6dc3e",
+      "native": "0055aab0",
+      "function": "00c6dc38",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6dc49",
+      "native": "0055aaf0",
+      "function": "00c6dc43",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6dc54",
+      "native": "00445900",
+      "function": "00c6dc4e",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6dc5f",
+      "native": "004324a0",
+      "function": "00c6dc59",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6dc6a",
+      "native": "004324a0",
+      "function": "00c6dc64",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6dc75",
+      "native": "0055b490",
+      "function": "00c6dc6f",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6dc80",
+      "native": "0055b110",
+      "function": "00c6dc7a",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6dc8b",
+      "native": "0055a430",
+      "function": "00c6dc85",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6dc95",
+      "native": "00bf6b43",
+      "function": "00c6dc90",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6dca3",
+      "native": "0041dd20",
+      "function": "00c6dca0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c6dcad",
+      "native": "00bf6b43",
+      "function": "00c6dca8",
+      "kind": "tail_jump"
+    }
+  ],
+  "native_transfer_verification": {
+    "report_rows": 57,
+    "distinct_sites": 57,
+    "markdown_claims": 57,
+    "failed": 0,
+    "unchecked_markdown": 0,
+    "warnings": 0,
+    "log": "local/oct15_sixteenth_final_transfers.log"
+  },
+  "validation": {
+    "command": "./scripts/build.ps1",
+    "platform": "MSVC Win32 Release",
+    "tested_source_pin": "f0e76ac97d3fc3c1ed43443c8ed0c0dec4614a92",
+    "existing_suites": "3/3 passed",
+    "ctest_seconds": 7.18,
+    "log": "local/oct15_sixteenth_publication_union_build.log",
+    "log_sha256": "47b2e778cfdc5de66f6d0360da3268a3df08ea934799677cda13c5d750e358f1",
+    "initial_parent_union_source": "fcb3131d9f9a922bc2fc0e96474d68d7e53813e3",
+    "initial_parent_suites": "3/3 passed7.13s",
+    "new_tests": 0,
+    "new_native_entry_execution": false,
+    "original_binary_ABI_proven": false,
+    "game_validated": false,
+    "previous_union": {
+      "source_pin": "55b44b284de50d509bb65ff6cf19af1cda194cbd",
+      "ctest_seconds": 8.42,
+      "log": "local/oct15_sixteenth_union_build.log"
+    }
+  },
+  "ghidra": {
+    "annotations": 14,
+    "saved_project": true,
+    "old_names_comments_preimages_retained": true,
+    "receipts": [
+      {
+        "path": "local/ghidra-annotations-20261015T223458Z.json",
+        "sha256": "3fa2e700866a03381bf0460d05d77d7a2bea1a78537c22d86c9e3bcc44dc6167"
+      },
+      {
+        "path": "local/ghidra-annotations-20261015T224216Z.json",
+        "sha256": "5a4bdbfa985c8a41173a538a894dbe11d85c1124732aa340814a981f8bd6cb05"
+      }
+    ],
+    "forced_snapshot": {
+      "status": "completed",
+      "total_functions": 76771,
+      "internal_functions": 76329,
+      "log": "local/oct15_sixteenth_snapshot.log"
+    },
+    "affected_exports": {
+      "status": "completed",
+      "count": 14,
+      "log": "local/oct15_sixteenth_exports.log"
+    }
+  },
+  "behavior": [
+    "Record reverse member order and capture-before-state-arm timing retained through current-header frees and ordered fieldclears. Earlier-member unwind only; no current-member retry.",
+    "Ten explicit saved-receiver actions preserve exact offsets/targets. CurrentCpp privateguards update state before actions and terminate onsecondaryC++cleanupfailure; normal child failures propagate.",
+    "Pair arms CURRENT keycleanup before record+8; captures data/test then disarms before conditional length/getter/release. No keyfieldclears.",
+    "Scalar deletes pair+C before low-byte flagbit0 read; frees originalallocationconditionally and returns originalpointerbits.",
+    "Copy whole body matches accepted697860 after only its CALLrel32 toactual696D40; exact five-input Source delegate retains progressivealiases/nulloutputskip/advancedreturn.9B compiledforwarder restoresEBPbeforetailtransfer.",
+    "Earlier readiness prose mapping record+40action to41DD20 is corrected: actualC6DC64 adds40 thenC6DC6AJMP4324A0. PairC6DCA0 separately uses41DD20. Originalhistoricalreceipt retained; no nativeasymmetry orSourcechange invented."
+  ],
+  "limits": [
+    "Existing actual AV/provider/fixture domains remain preserved. New methods use actualrawstorage/RawCtx/currentCRT/CPPinterfaces.",
+    "Newcontexts/privateframes/CurrentCppEH/typeidentity/terminaterouting and originalFH3/SEH/RTTI/heap/fault/register/flag/binaryABI/game equivalence are separate; no newentryruntimeproof.",
+    "Existing math differential tests cover oldseeds only.",
+    "Whole697990/catch/rethrow and device-subtree6A7540/keyaction are separate workers stillpendingprimarySourceacceptance; insertionwrappers and device-mapcleanup remain futurebounded work."
+  ],
+  "main_integration": {
+    "source_integration_commit": "f0e76ac97d3fc3c1ed43443c8ed0c0dec4614a92",
+    "exact_tested_source_pin": "f0e76ac97d3fc3c1ed43443c8ed0c0dec4614a92",
+    "all_source_header_cmake_tools_scripts_at_that_Main_commit_match_tested_union": true,
+    "all4_owned_Source_header_gitblobs_unchanged_on_later_Main": true,
+    "later_Main_observed": "cb6844b4b0a3568fe95a461450a41b3cb493e894",
+    "later_independent_Main_changes_outside_this_exact_build": [
+      "cmake/startup.cmake",
+      "include/bsp/native_scene_property_reference_subbag_add.hpp",
+      "src/native_scene_property_reference_subbag_add.cpp"
+    ],
+    "unrelated_untracked_preserved": [
+      "reports/native_light_shadow_view_build.txt",
+      "src/argon_v2_seg40.cpp"
+    ]
+  },
+  "publication": {
+    "branch": "main",
+    "remote": "origin",
+    "method": "singlebatchpushafterreceiptmerge;verifyremoteindependently"
+  }
+}

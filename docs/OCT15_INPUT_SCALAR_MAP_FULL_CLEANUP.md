@@ -38,23 +38,23 @@ agree with installedPE/live bytes/export/currentstarts. Total440B/178starts;
 comparisons differ only at their three/two proven call-displacement fields.
 The parent member+24 consumer is evidence only, not parent Source promotion.
 
-| Site | Target | Evidence role |
+| Native transfer | Caller | Evidence role |
 | --- | --- | --- |
-| 00444b2a | 00bf6713 | Owned CALL in00444b10 |
-| 00444b46 | 00bf6713 | Owned CALL in00444b10 |
-| 00444b5a | 00444760 | Owned CALL in00444b10 |
-| 00445916 | 00444b10 | Owned CALL in00445900 |
-| 0044591f | 00bf65ac | Owned CALL in00445900 |
-| 00444777 | 00444760 | Supporting CALL in00444760 |
-| 0044478f | 00419cc0 | Supporting CALL in00444760 |
-| 00444796 | 00bd1510 | Supporting CALL in00444760 |
-| 0044479c | 00bf65ac | Supporting CALL in00444760 |
-| 0055730a | 00bf6713 | Supporting CALL in005572f0 |
-| 00557326 | 00bf6713 | Supporting CALL in005572f0 |
-| 0055733a | 00554f10 | Supporting CALL in005572f0 |
-| 0055b4a6 | 0055b230 | Supporting CALL in0055b490 |
-| 0055b4af | 00bf65ac | Supporting CALL in0055b490 |
-| 0055b7f1 | 00444b10 | Supporting CALL in0055b690 |
+| `00444b2a CALL 00bf6713` | 00444b10 | Owned scope |
+| `00444b46 CALL 00bf6713` | 00444b10 | Owned scope |
+| `00444b5a CALL 00444760` | 00444b10 | Owned scope |
+| `00445916 CALL 00444b10` | 00445900 | Owned scope |
+| `0044591f CALL 00bf65ac` | 00445900 | Owned scope |
+| `00444777 CALL 00444760` | 00444760 | Supporting scope |
+| `0044478f CALL 00419cc0` | 00444760 | Supporting scope |
+| `00444796 CALL 00bd1510` | 00444760 | Supporting scope |
+| `0044479c CALL 00bf65ac` | 00444760 | Supporting scope |
+| `0055730a CALL 00bf6713` | 005572f0 | Supporting scope |
+| `00557326 CALL 00bf6713` | 005572f0 | Supporting scope |
+| `0055733a CALL 00554f10` | 005572f0 | Supporting scope |
+| `0055b4a6 CALL 0055b230` | 0055b490 | Supporting scope |
+| `0055b4af CALL 00bf65ac` | 0055b490 | Supporting scope |
+| `0055b7f1 CALL 00444b10` | 0055b690 | Supporting scope |
 
 Validation is recorded in reports/oct15_input_scalar_map_full_cleanup.json.
 The existing Win32 suites are required; no new tests/native invocation are

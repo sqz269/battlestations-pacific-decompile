@@ -1,0 +1,190 @@
+{
+  "schema": "bsp.cc12.whole_scene_property_reference_set_source.v1",
+  "packet": "cc12_scene_property_reference_set_008f0420",
+  "Source_implemented": true,
+  "Source_admitted": false,
+  "Source_admission_credit": 0,
+  "new_Original_credit_candidate": [
+    "008F0420"
+  ],
+  "existing_008F0340": {
+    "reused": true,
+    "new_body_written": false,
+    "new_credit": 0,
+    "source": "src/native_reference_payload_copy.cpp"
+  },
+  "Original": {
+    "begin": "008F0420",
+    "end_exclusive": "008F045A",
+    "bytes": 58,
+    "instructions": 19,
+    "sha256": "8dac017d064d307eb6bd6f93de1476f5882325716cb81fd81a6b65ec1c707328"
+  },
+  "files": [
+    "include/bsp/native_scene_property_reference_set.hpp",
+    "src/native_scene_property_reference_set.cpp",
+    "docs/NATIVE_SCENE_PROPERTY_REFERENCE_SET_CC12.md",
+    "reports/native_scene_property_reference_set_cc12.json"
+  ],
+  "own_session_uuid": "01a141c0-29a9-76c3-a341-c05f4800eeb8",
+  "working_HEAD_at_precompile": "cb6844b4b0a3568fe95a461450a41b3cb493e894",
+  "physical_interface": "void* __fastcall(actualrecordECX, unusedEDX, nullabletarget_stack, fullDWORDscalar_stack, fullDWORDkind_stack); EAX actualrecord; RET0C.",
+  "schedule": [
+    "SaveESI/actualECXrecord; read oldDWORD+1C; ifnonnull actual canonical free then zeroDWORD+1C.",
+    "Only now load target actualESP+8; actual accepted physical00438E40duplicate; nullable path returns null.",
+    "Load full kindESP+10 BEFORE store duplicate/nullDWORD+1C; then load full scalarESP+C/storeDWORD+18; store kindDWORD+08; EAXrecord/restoreESI/RET0C."
+  ],
+  "distinct_record_write_bytes": 12,
+  "preserved": "Every other actual record byte. No implicit tag5/phase/owner/default/lookup/root allocation/dispatch/copy/startup.",
+  "direct_current_providers": [
+    "singleton_lifetime_free -> std::free (Original BF6989->BF65AC path)",
+    "duplicate_native_string_00438e40 (physical ECX/RET0 provider; full EAX copy/null)"
+  ],
+  "domain": "Genuine live writable type5 record; oldname null or sole-owned real current duplicate. Borrowed nullable stable valid nonwrapping target disjoint from freed oldname/record/output/frame. Opaque full32 scalar/kind, copied without dereference/filter/default. Successful nonthrow/noalias/reentry/concurrency/fault/overflow domain.",
+  "ABI_qualification": "Literal entry ECX/unusedEDX, stack3DWORD, EAXsame-record/RET0C and50retainedbytes statically established. Rebound ordinary current-provider domain; no full Original ABI/provider-register/flags/privateCRT/EH/failure-unwind claim.",
+  "named_incomplete_outside_direct_leaf": [
+    "008F5A00 whole parser and declared-key branch",
+    "008F67B0 library loader"
+  ],
+  "strict_compile": {
+    "runs": 1,
+    "exit_code": 0,
+    "tool_chunk": "bdc53f",
+    "options": "/nologo /Bv /std:c++17 /MD /O2 /Ob2 /Oy- /W4 /WX /EHsc /Gy /GL- /fp:strict /c /sourceDependencies",
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeScenePropertyReferenceSetSource01\\native_scene_property_reference_set.obj",
+      "bytes": 1355,
+      "sha256": "07384fa64db4e974229e5e228ec8fd3dece610dd2b12255c3c65073ccaadb40e"
+    },
+    "prospective_Source_includes": 119,
+    "actual_declared_Source_includes": 82,
+    "unexpected_inputs": [],
+    "current_readiness_inputs": 34,
+    "tools": 64,
+    "both_MSVC_clui_precompile_frozen": true,
+    "every_actual_input_and_tool_had_own_precompile_hash_and_copy": true
+  },
+  "complete_COFF": {
+    "bytes": 1355,
+    "sections": 5,
+    "symbol_indices_including_auxiliary": 16,
+    "code_sections": 1,
+    "code_bytes": 58,
+    "instructions": 19,
+    "code_relocations": 2,
+    "noncode_relocations": 0,
+    "all_file_bytes_headers_primary_aux_symbols_and_string_table_reviewed": true,
+    "all50_nonCALL_operand_bytes_match_Original": true,
+    "only_CALL_operand_rebindings": [
+      {
+        "range": "[12,16)",
+        "provider": "singleton_lifetime_free"
+      },
+      {
+        "range": "[31,35)",
+        "provider": "duplicate_native_string_00438e40"
+      }
+    ],
+    "noncode_qualification": {
+      "drectve": "   /FAILIFMISMATCH:\"_MSC_VER=1900\" /FAILIFMISMATCH:\"_ITERATOR_DEBUG_LEVEL=0\" /FAILIFMISMATCH:\"RuntimeLibrary=MD_DynamicRelease\" /DEFAULTLIB:\"msvcprt\" /FAILIFMISMATCH:\"_CRT_STDIO_ISO_WIDE_SPECIFIERS=0\" /alternatename:__Avx2WmemEnabled=__Avx2WmemEnabledWeakValue /DEFAULTLIB:\"MSVCRT\" /DEFAULTLIB:\"OLDNAMES\" ",
+      "debugS": "236B CodeView object pathname and compiler identity; noncode/no relocations.",
+      "bss": "4B zero-fill __Avx2WmemEnabledWeakValue emitted by current include closure; no setter reference or relocation.",
+      "chks64": "40B compiler checksum records, preserved in full binary audit; noncode/no relocations.",
+      "no_TLS_initializers_unwind_thunks_or_other_code": true
+    }
+  },
+  "normal_existing_build": {
+    "runs": 1,
+    "initial_chunk": "98a17a",
+    "original_session": 18514,
+    "natural_terminal_chunk": "2aee66",
+    "exit_code": 0,
+    "new_TU_registered": false,
+    "existing_checks": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "checks_passed": "2/2",
+    "ctest_seconds": 7.56,
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeScenePropertyReferenceSetSource01\\normal_build.log",
+      "bytes": 4586,
+      "sha256": "6ca4b2d5d815f43168a116c9c14ed88ca77009417cec7ba1f22b36ac1ee0f313"
+    }
+  },
+  "evidence_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeScenePropertyReferenceSetSource01",
+  "readiness_family": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\SceneDeclaredReferenceReadiness01\\family_receipt.DATA.json",
+    "bytes": 36518,
+    "sha256": "19fc1f784dc2ef09917e8e65fa4c1e13afde666044d87199c871bb3289bc543d"
+  },
+  "readiness_all83_files_verified_and_copied": true,
+  "preparatory_preflight_abort": "f597fd exit1 before compile/build; config target LF/CRLF only. Partial frozen copies preserved and verified before preflight completed.",
+  "metadata_EOL_qualification": "Working config/target.json LF455B vs sealed Main CRLF467B; exact LF-normalized bytes and parsed JSON equal. All other33 readiness Main/working inputs literal-equal; no semantic drift.",
+  "evidence": {
+    "precompile_inputs.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeScenePropertyReferenceSetSource01\\precompile_inputs.json",
+      "bytes": 133564,
+      "sha256": "f641d2c08b6d407cb13b0dee82f7a43273aa03d66353af4b8e8bebbb952164e5"
+    },
+    "compiler_declared_inputs.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeScenePropertyReferenceSetSource01\\compiler_declared_inputs.json",
+      "bytes": 70966,
+      "sha256": "d156bc14afbb75f2e781ee74751057a2edb894d8421decf0d1c0f99b556eaea6"
+    },
+    "current_readiness_input_verification.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeScenePropertyReferenceSetSource01\\current_readiness_input_verification.json",
+      "bytes": 24141,
+      "sha256": "f25e2178992d6f8cd62989ef9b3c2113be7bf65a1d34375dfbf934b57a1a2b88"
+    },
+    "complete_COFF.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeScenePropertyReferenceSetSource01\\complete_COFF.json",
+      "bytes": 13964,
+      "sha256": "7b93e9de562971a066411433c3734bde911f487fc908796ae16430276202416d"
+    },
+    "complete_COFF_binary_audit.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeScenePropertyReferenceSetSource01\\complete_COFF_binary_audit.json",
+      "bytes": 9207,
+      "sha256": "59ef0e67e6fa4483c66d4ecfb85459102bef94d679cb974639a5d51ac7bd029a"
+    },
+    "complete_COFF_dumpbin.txt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeScenePropertyReferenceSetSource01\\complete_COFF_dumpbin.txt",
+      "bytes": 8791,
+      "sha256": "8f2768deb1df55efe53222f25db0d6ab9f86b0fdb845240883904f5cf2b36886"
+    },
+    "dumpbin_receipt.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeScenePropertyReferenceSetSource01\\dumpbin_receipt.json",
+      "bytes": 12462,
+      "sha256": "b69470fc036e8c5718acddbe1826ff2d13f993ff0f82a149da76f58e8d5de396"
+    },
+    "complete_strict_review.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeScenePropertyReferenceSetSource01\\complete_strict_review.json",
+      "bytes": 20345,
+      "sha256": "4f87ee398eb452b85e6cf148444e418a172a38a22f6bf342c148c4dc63915a11"
+    },
+    "original_tool_receipts.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeScenePropertyReferenceSetSource01\\original_tool_receipts.json",
+      "bytes": 2244,
+      "sha256": "9878edcc3d3eea7f53d54c1d8a4c28de67e92d996620f21d18028c767af9f2eb"
+    },
+    "original_tool_provenance.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeScenePropertyReferenceSetSource01\\original_tool_provenance.json",
+      "bytes": 10285,
+      "sha256": "1ee5d083e99940de5855dd164009522052f7e8decbc2b60cb9858eebe833e01e"
+    },
+    "final_input_audit.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeScenePropertyReferenceSetSource01\\final_input_audit.json",
+      "bytes": 144845,
+      "sha256": "ef0726364c9226459d466083f748b1b403215f9d4ec4765b5e0fdc774aa81fad"
+    }
+  },
+  "no_shared_CMake_registry_ledger_Ghidra_mutations": true,
+  "new_tests_or_probes": 0,
+  "compile_or_build_replay_restart": false,
+  "selected_entry_executed": false,
+  "Native_differential_executed": false,
+  "Original_ABI_compatible": false,
+  "Original_private_CRT_EH_compatible": false,
+  "runtime_startup_game_validated": false,
+  "full_parser_nativeclass_ownership_claim": false
+}

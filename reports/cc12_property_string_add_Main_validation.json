@@ -1,0 +1,125 @@
+{
+  "schema": "bsp.property_string_add_Main_validation.v1",
+  "status": "whole_ordinary_Source_registered_Main3checks_actual_code_archive_identity_pass",
+  "shared_batch_build": true,
+  "shared_batch_packets": [
+    "cc12_scene_property_string_add_008f38a0",
+    "cc12_scene_property_bool_add"
+  ],
+  "required_Main_build": {
+    "command": "./scripts/build.ps1",
+    "initial_chunk": "dfdbc4",
+    "session": 63954,
+    "terminal_chunk": "16ad03",
+    "exit_code": 0,
+    "configured_CTests_passed": 3,
+    "seconds": 8.23,
+    "snapshot_commit": "73982d384e302a7256f3da3ba26fd1ba99a21a11",
+    "after_commit": "73982d384e302a7256f3da3ba26fd1ba99a21a11",
+    "unchanged_compiler_tool_configuration_current_Source_inputs": 111,
+    "original_actual_batch_tools": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_string_Main_build01\\original_build_tools.DATA.json",
+      "bytes": 727,
+      "sha256": "b4f18112353743298522f5f9b43098e4839839450a3dcd50ea28f4a37b76929d"
+    },
+    "original_actual_batch_build_log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_string_Main_build01\\build.log",
+      "bytes": 3467,
+      "sha256": "662f79dd741e708c91d247c24e241f66c0cde33c8654ceba6be2334e25021c9c"
+    },
+    "qualification": "One actual required Main batch build covers both registered TUs. Receipts/log identify that single original invocation; no second build or replay is claimed."
+  },
+  "frozen_artifacts": [
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.dir\\Release\\native_scene_property_string_add.obj",
+        "bytes": 2204,
+        "sha256": "8767c260c537635c54e8e09526a585d05588a96f338d31ad0b8b41a70b2b9dd7"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_string_Main_build01\\frozen\\native_scene_property_string_add.obj",
+        "bytes": 2204,
+        "sha256": "8767c260c537635c54e8e09526a585d05588a96f338d31ad0b8b41a70b2b9dd7"
+      }
+    },
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 93003194,
+        "sha256": "22009f42ec85f9bf6d94ee8fee935da231f78dfce97177edaf9ddff3731fec9d"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_string_Main_build01\\frozen\\bsp_core.lib",
+        "bytes": 93003194,
+        "sha256": "22009f42ec85f9bf6d94ee8fee935da231f78dfce97177edaf9ddff3731fec9d"
+      }
+    }
+  ],
+  "primary_complete_COFF_inventory": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_property_string_add_integration_20261015\\Main_inventory.DATA.json",
+    "bytes": 31516,
+    "sha256": "bf97e1c5e7c90b0e2552c5c0298062be13dfb693b88de1ff0bbd8ee4541f29b3"
+  },
+  "primary_archive_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_property_string_add_integration_20261015\\Main_primary_archive.DATA.json",
+    "bytes": 833801,
+    "sha256": "1c1c89a86465c01eb872aee594695cf4294b233647befd7bc129d143ef1f8ac7"
+  },
+  "complete_Main_symbol_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_property_string_add_integration_20261015\\Main_symbol_review.DATA.json",
+    "bytes": 2004,
+    "sha256": "10a71a26f75f78fda9c350dda0827b1421e92ffee2de9a235ef27a4757a94e93"
+  },
+  "registration_preservation": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_property_string_add_integration_20261015\\registration_verification.DATA.json",
+    "bytes": 398,
+    "sha256": "592057dbfa690cb738ca60d9bdd63c892edbd13ad32f5eae5abc94719bc7a549"
+  },
+  "complete_code": {
+    "sections": 3,
+    "bytes": 260,
+    "decoded_instructions": 101,
+    "code_relocations": 15,
+    "metadata_relocations": 0,
+    "code_and_runtime_data_literal_equal": true,
+    "all_relocation_fields_types_offsets_literal_equal": true,
+    "MD_directives_literal_equal": true,
+    "exact_private_definition_target_pairs": {
+      "?write_byte@?A0x1c03bcbf@bsp@@YAXPAXIE@Z": "?write_byte@?A0x9dddf2c7@bsp@@YAXPAXIE@Z",
+      "?write_word@?A0x1c03bcbf@bsp@@YAXPAXII@Z": "?write_word@?A0x9dddf2c7@bsp@@YAXPAXII@Z"
+    },
+    "whole_object_debug_checksum_identity": false
+  },
+  "archive": {
+    "members": 2283,
+    "both_indices_equal": true,
+    "symbols_per_index": 81992,
+    "unique_object": {
+      "header_offset": 19957562,
+      "payload_offset": 19957622,
+      "raw_name": "/56",
+      "bytes": 2204,
+      "header_hex": "2f353620202020202020202020202020313739323130313932372020202020202020202020202020313030363636202032323034202020202020600a",
+      "sha256": "8767c260c537635c54e8e09526a585d05588a96f338d31ad0b8b41a70b2b9dd7"
+    },
+    "public_bindings": [
+      [
+        "?add_native_scene_property_string_008f38a0@bsp@@YAPAXPAXPBD1AAVNativeScenePropertyInsertionContext@1@@Z",
+        19957562
+      ]
+    ]
+  },
+  "contract": [
+    "Whole145B/46Original instructions. Canonicalfreshuninitialized38hroot: phaseDWORD0CE89D4/tagDWORD4=2,zeroDWORD18/1c/20/24/30; genuine RAW duplicate00438E40(nullable) FASTCALL ECX/RET0; storeFULLreturnedpointer+C BEFOREzero34;BYTE1+2c;whole33F0.37written19preserved[08,0c),[10,18),[28,2c),[2d,30). No raw8EF1B0 or oldCDECLprojection. Nullinput->null/noallocation; nonnullempty->owned1BNUL. Borrowedinput remainscallerowned, distinctfreshroot+duplicatechild transfer toactualowningmap and existingtype2 lifetime. OriginalCA49AB/DD7670/DD7668/CA49A0savedrootfree state0 deactivatedbeforeinsertion is evidenceonly; noSourcefailedallocationcleanup/unwindtransport.",
+    "Same genuine raw61-produced114hbag/actual108hmap+4, canonicalcurrentCRT heap/string/physical process/context, initializedE175B0/samegeneration/commonE188B4list/realrawkeys/manager/gate/distinctE177E4/E17654cells/allocator+10membership. Stable valid closedASCII/currentClocale keys, finite unique unshared acyclic disjoint owninggraphs, successful nonthrowing serialized services/noalias/no-reentry/concurrenttrim. Nullallocation syntacticallyreacheswhole33F0 but notsuccessful; no inventedrecovery/default/transaction. No Original calling/class/flags/fault/FS/EH/privateCRT/startup/wholeparser/runtime/game credit."
+  ],
+  "limits": [
+    "Configured checks and Core archive membership do not execute these new routines. Source arguments/helper CALL/load/register/flags schedule differs; no Original ABI/fault/EH timing claim.",
+    "Exact private helper name pairs only, other runtime names/bytes/relocations literal. Debug/checksum identity excluded. All captured current inputs stayed unchanged through this Main build.",
+    "No Original FS/EH/privateCRT/startup/runtime/game/wholeparser equivalence. Genuine canonical sameprocess success-domain/ownership contracts still apply."
+  ],
+  "Original_ABI_compatible": false,
+  "new_Source_runtime_executed": false,
+  "game_validated": false,
+  "whole_parser_equivalent": false
+}

@@ -203,12 +203,328 @@
     "include/bsp/native_soldier_registry_lifetime.hpp": "36d02f233b4384f192d68f05b8d2a920abd10c7e45b1e47eece2b0f2e77a1761",
     "include/bsp/native_string.hpp": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
   },
-  "build": "pending",
-  "independent_source_review": "pending",
+  "build": {
+    "status": "passed",
+    "source_pin": "e8096362f",
+    "command": "./scripts/build.ps1",
+    "platform": "MSVC Win32 Release",
+    "existing_suites": "3/3 passed",
+    "ctest_seconds": 8.05,
+    "log": "local/oct15_fifteenth_initial_build.log",
+    "new_tests": 0,
+    "native_entry_execution": false,
+    "game_validated": false
+  },
+  "independent_source_review": {
+    "status": "passed",
+    "checks": 12,
+    "findings": 0,
+    "receipt_sha256": "30236aead4b35fb172ee97a8d5798e848cccbc4796955cb277de9f23c3787c51",
+    "evidence": {
+      "packet": "oct15_root_input_scalar_map_full_cleanup_source_review",
+      "utc": "2026-10-15T22:11:29.908702+00:00",
+      "reviewer_worktree": "J:\\PROG\\battlestations-pacific-decompile-oct15_string_fill",
+      "root_worktree": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator",
+      "read_only": true,
+      "decision": "pass_no_findings_in_declared_scope",
+      "finding_count": 0,
+      "checks_passed": 12,
+      "source_files": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\include\\bsp\\native_input_scalar_map_full_cleanup.hpp",
+          "sha256": "e56641f96f8612950ffd2d6d231b071c8139e51b640a9ddf235edbad1a1d1da7",
+          "normalized_lf_sha256": "e56641f96f8612950ffd2d6d231b071c8139e51b640a9ddf235edbad1a1d1da7",
+          "bytes": 2077,
+          "unchanged_from_initial_read": true,
+          "snapshot": "local\\oct15_root_scalar_cleanup_review_native_input_scalar_map_full_cleanup.hpp"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\src\\native_input_scalar_map_full_cleanup.cpp",
+          "sha256": "2e405a53164e42a369a6bd0781f26000f26ffc93331563e41b55ac682dbf57bf",
+          "normalized_lf_sha256": "2e405a53164e42a369a6bd0781f26000f26ffc93331563e41b55ac682dbf57bf",
+          "bytes": 2352,
+          "unchanged_from_initial_read": true,
+          "snapshot": "local\\oct15_root_scalar_cleanup_review_native_input_scalar_map_full_cleanup.cpp"
+        }
+      ],
+      "dependencies": [
+        {
+          "path": "include/bsp/native_soldier_loop_lengths.hpp",
+          "sha256": "ffd4f34fc05ce4f8578f111023266399201d066d697ff24e47be7ec7ec0b3b70",
+          "identical_in_root_and_review_tree": true
+        },
+        {
+          "path": "src/native_soldier_loop_lengths.cpp",
+          "sha256": "603fe0285277401e7c76588ee40d6552e843a96db5ce00d9374dd8801aeffbb5",
+          "identical_in_root_and_review_tree": true
+        },
+        {
+          "path": "include/bsp/native_soldier_registry_lifetime.hpp",
+          "sha256": "36d02f233b4384f192d68f05b8d2a920abd10c7e45b1e47eece2b0f2e77a1761",
+          "identical_in_root_and_review_tree": true
+        },
+        {
+          "path": "src/native_soldier_registry_lifetime.cpp",
+          "sha256": "740daad23a895934570b9365f21888cf1d1036e65b48a61f5d56d47f9a84f59f",
+          "identical_in_root_and_review_tree": true
+        }
+      ],
+      "native_captures": {
+        "typed": "local\\oct15_root_scalar_cleanup_review_typed.json",
+        "typed_sha256": "c96bc9ffaeb9cecfc8021ce0e912326da48bd560cc79e26a34d12b881221c558",
+        "current_listings": [
+          "local/oct15_root_scalar_cleanup_review_range_listing.txt",
+          "local/oct15_root_scalar_cleanup_review_dtor_listing.txt",
+          "local/oct15_root_scalar_cleanup_review_subtree_listing.txt"
+        ],
+        "prefix_scope": "00444B10..00444B8E inclusive,127B/49 instructions",
+        "whole_scope": "00445900..00445933 inclusive,52B/23 instructions",
+        "subtree_listing": "00444760..004447B1 inclusive,82B/34 instructions",
+        "typed_bodies": [
+          {
+            "entry": "00444b10",
+            "no_return": false,
+            "is_thunk": false,
+            "body": {
+              "range_count": 2,
+              "returned_range_count": 2,
+              "address_count": "200",
+              "complete": true,
+              "ranges": [
+                {
+                  "start": {
+                    "space": "ram",
+                    "offset": "00444b10"
+                  },
+                  "end_inclusive": {
+                    "space": "ram",
+                    "offset": "00444b8e"
+                  },
+                  "length": "127"
+                },
+                {
+                  "start": {
+                    "space": "ram",
+                    "offset": "00444b90"
+                  },
+                  "end_inclusive": {
+                    "space": "ram",
+                    "offset": "00444bd8"
+                  },
+                  "length": "73"
+                }
+              ]
+            },
+            "modification": "779"
+          },
+          {
+            "entry": "00445900",
+            "no_return": false,
+            "is_thunk": false,
+            "body": {
+              "range_count": 1,
+              "returned_range_count": 1,
+              "address_count": "52",
+              "complete": true,
+              "ranges": [
+                {
+                  "start": {
+                    "space": "ram",
+                    "offset": "00445900"
+                  },
+                  "end_inclusive": {
+                    "space": "ram",
+                    "offset": "00445933"
+                  },
+                  "length": "52"
+                }
+              ]
+            },
+            "modification": "779"
+          },
+          {
+            "entry": "00444760",
+            "no_return": false,
+            "is_thunk": false,
+            "body": {
+              "range_count": 1,
+              "returned_range_count": 1,
+              "address_count": "82",
+              "complete": true,
+              "ranges": [
+                {
+                  "start": {
+                    "space": "ram",
+                    "offset": "00444760"
+                  },
+                  "end_inclusive": {
+                    "space": "ram",
+                    "offset": "004447b1"
+                  },
+                  "length": "82"
+                }
+              ]
+            },
+            "modification": "779"
+          }
+        ],
+        "project": "C:/Users/sqz269/bsp.gpr",
+        "program": "/battlestationspacific.exe"
+      },
+      "checks": [
+        {
+          "check": "scope_and_selection_preconditions",
+          "result": "pass",
+          "evidence": "Header limits 444B10 to 127B/49 instructions and requires nonnull owned tree, equal nonnull owners, first=initial head.left, last=fresh head and stable selection storage. The two invalid-parameter sites and partial branch are unreachable within this admitted domain. Source does not fabricate either continuation or promote the ordinary range entry."
+        },
+        {
+          "check": "initial_capture_and_first_selection",
+          "result": "pass",
+          "evidence": "Native B17/B1B captures/tests first owner before B1F/B22 head and head.left reads; B26 compare and B2F/B33 first-node comparison follow. Inline asm retains the same actual-storage read order. Dropped branches/diagnostics follow the explicit valid full-selection preconditions."
+        },
+        {
+          "check": "last_selection_and_root_capture",
+          "result": "pass",
+          "evidence": "B37/B3B last-owner load/test precedes fresh head read B3D, comparison B42 and last-node comparison B4B; B51/B54 fresh head/root capture follows. Source retains this order and passes captured root to actual 444760; original EDX residue is unused by that child."
+        },
+        {
+          "check": "actual_rawctx_child_and_nil_schedule",
+          "result": "pass",
+          "evidence": "444760 Source forwards to accepted 4B0600 actual N1C/nil19 subtree, not provider/noexcept storage. Complete current native 444760 listing and actual Source confirm right recursion, current key data capture before left capture, nonnull current length capture before getter, pool return, current node free and next nil test. The original mapped scalar is not destructed."
+        },
+        {
+          "check": "ordered_current_head_resets",
+          "result": "pass",
+          "evidence": "After child: B5F reload head; B62 head.parent=head; B65 reload head before B68 tree.count=0; B6F captured head.left=head; B71 fresh head then B74 head.right=head. Source preserves these separate reads/stores and leaves opaque tree+0 untouched."
+        },
+        {
+          "check": "output_alias_and_return_order",
+          "result": "pass",
+          "evidence": "B77/B7A reload current head and capture head.left before output address B7C; B81 owner store precedes B85 node store. Source captures node before either output store and returns output. This protects the shown storage order; arbitrary aliases to Source private frames remain excluded by the stated private-output contract."
+        },
+        {
+          "check": "whole_destructor_captures_and_full_binding",
+          "result": "pass",
+          "evidence": "Whole 445900 captures head at 45906 then head.left at 45909 and passes captured last/first, receiver owner twice and private 8B output. No intervening provider/callback exists during selection. Source composes only the admitted full prefix and preserves capture order."
+        },
+        {
+          "check": "whole_current_head_free_clear_eax",
+          "result": "pass",
+          "evidence": "4591B reloads CURRENT header head after range completion, 4591F frees it, then 45927 zeroes EAX and 45929/4592C clear header+4 then+8. Source preserves CURRENT free, ordered clears, opaque+0 and defined return0; it adds no null, empty or repeated-destroy guard."
+        },
+        {
+          "check": "empty_tree_path",
+          "result": "pass",
+          "evidence": "An empty owned tree still enters subtree with sentinel, which skips node work through nil19. Full selection then performs all resets/output stores, and whole destructor frees the current sentinel. Source adds no shortcut."
+        },
+        {
+          "check": "getter_failure_and_no_extra_eh",
+          "result": "pass",
+          "evidence": "Actual RawCtx getter failures propagate from 444760 before prefix resets/output; whole range failure skips current-head free/clears. Neither native scope has FS registration or local catch and Source adds no catch/guard/rollback/noexcept bridge. Current C++ propagation is not native FH3/type/foreign-SEH identity."
+        },
+        {
+          "check": "native_abi_and_qualification",
+          "result": "pass",
+          "evidence": "Native prefix ECX tree, EDX unused, five stacked DWORDs output/owners/nodes, RET14h and EAX output. Whole destructor ECX tree, EDX unused, no stack arguments, RET and EAX0. Source adds RawPoolContext and changes private frames/register allocation; header explicitly qualifies native binary ABI/CRT/heap/FH3/SEH/game limits."
+        },
+        {
+          "check": "stable_source_and_dependencies",
+          "result": "pass",
+          "evidence": "Both reviewed root files retain initial byte hashes; four accepted dependency files are byte-identical between root and review worktrees. All writes are ignored local review artifacts; no root edits, claims, build, CMake, metadata, Ghidra mutation or parent Source work."
+        }
+      ],
+      "host_steps": [
+        {
+          "function": "00444B10",
+          "address": "00444B2A",
+          "native": "00BF6713",
+          "note": "Native diagnostic, unreachable in admitted selection"
+        },
+        {
+          "function": "00444B10",
+          "address": "00444B46",
+          "native": "00BF6713",
+          "note": "Native diagnostic, unreachable in admitted selection"
+        },
+        {
+          "function": "00444B10",
+          "address": "00444B5A",
+          "native": "00444760",
+          "note": "Actual RawCtx subtree"
+        },
+        {
+          "function": "00445900",
+          "address": "00445916",
+          "native": "00444B10",
+          "note": "Admitted full-selection binding only"
+        },
+        {
+          "function": "00445900",
+          "address": "0044591F",
+          "native": "00BF65AC",
+          "note": "Current head free"
+        },
+        {
+          "function": "00444760",
+          "address": "00444777",
+          "native": "00444760",
+          "note": "Right recursion"
+        },
+        {
+          "function": "00444760",
+          "address": "0044478F",
+          "native": "00419CC0",
+          "note": "Actual pool getter"
+        },
+        {
+          "function": "00444760",
+          "address": "00444796",
+          "native": "00BD1510",
+          "note": "Captured key block return"
+        },
+        {
+          "function": "00444760",
+          "address": "0044479C",
+          "native": "00BF65AC",
+          "note": "Current node free"
+        }
+      ],
+      "validation": {
+        "review": "complete Source/header and current native instruction schedules",
+        "transfer_checker": {
+          "command": "python tools/verify_report_calls.py local/oct15_root_input_scalar_map_full_cleanup_source_review.json",
+          "checked": 9,
+          "failed": 0,
+          "read_only": true
+        },
+        "build": "not run; read-only audit request",
+        "runtime": "not run; no ABI/gameplay proof",
+        "final_source_hashes_rechecked": true
+      },
+      "limits": [
+        "This reviews the new full-selection fragment and whole destructor only; it does not replace the existing ordinary full/partial projection or prove its out-of-fragment diagnostics.",
+        "No original FH3/foreign-SEH/CRT/fault/private-frame/binary ABI/game equivalence is asserted.",
+        "Larger record/pair/scalar parent Source remains unapproved and untouched."
+      ]
+    }
+  },
   "source_domain": "Actual12B header,N1Ch/nil19h nodes,actual pooled-string RawPoolContext and current-CRT frees. Existing soldier-loop allcase callback API is real and preserved; direct actual444760 subtree needs no callback.",
   "limits": [
     "444B10 is only its admitted full-selection127B prefix; ordinary partial branch and diagnostics remain outside new scope.",
     "Source context/private8B result/private-frame/register/flags/nativeCRT/FH3/SEH/fault/game equivalence remain qualified. No localEH/rollback/retry/nullguard/noexcept bridge is introduced.",
     "Whole445900 observes native EAX0 and current-head free/4then8 reset. Getter failures preserve earlier effects and stop later operations."
-  ]
+  ],
+  "transfer_verification": {
+    "report": {
+      "checked": 15,
+      "failed": 0
+    },
+    "documentation": {
+      "checked": 15,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0
+    },
+    "log": "local/oct15_scalar_cleanup_transfers.log"
+  }
 }
