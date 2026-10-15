@@ -1,0 +1,51 @@
+{
+  "packet": "goal15h_authored_path_points",
+  "source_base": "6e5b213d4",
+  "status": "complete_two_raw_wrappers_strict_mdx86_normalized_coff_live_disk_and_actual_provider_underflow_fixture_passed_pending_primary_registered_build",
+  "owned_addresses": ["007b10a0", "007b10c0"],
+  "owned_files": ["include/bsp/native_authored_path_points.hpp", "src/native_authored_path_points.cpp", "docs/GOAL15H_AUTHORED_PATH_POINTS.md", "reports/goal15h_authored_path_points.json"],
+  "functions": [
+    {"address": "007b10a0", "name": "BSP_AuthoredPathSource_GetPoint", "cpp_symbol": "bsp::get_native_authored_path_point_007b10a0", "source": "src/native_authored_path_points.cpp", "header": "include/bsp/native_authored_path_points.hpp", "end_exclusive": "007b10b9", "bytes": 25, "coverage": "complete", "original_abi": "ECX actualowner, stackedoutput/index, RET8/EAXcapturedoutput, ESIpreserved", "source_abi": "naked MSVCWin32fastcall(ownerECX,unusedSourceEDX,output,index); physicalstacksame"},
+    {"address": "007b10c0", "name": "BSP_AuthoredPathSource_LastPoint", "cpp_symbol": "bsp::get_last_native_authored_path_point_007b10c0", "source": "src/native_authored_path_points.cpp", "header": "include/bsp/native_authored_path_points.hpp", "end_exclusive": "007b1100", "bytes": 64, "coverage": "complete", "original_abi": "ECX actualowner, stackedoutput, RET4/EAXcapturedoutput, ESIpreserved", "source_abi": "naked MSVCWin32fastcall(ownerECX,unusedSourceEDX,output); physicalstacksame"}
+  ],
+  "host_steps": [
+    {"address": "007b10ae", "native": "007af800", "function": "007b10a0", "contract": "captureindex beforeownerpath, outputafterPUSHESI; ECXpath, stackedoutput/index, childRET8; thenEAXsavedoutput"},
+    {"address": "007b10d8", "native": "007af800", "function": "007b10c0", "contract": "nullfirst path, explicitFFFFFFFF, capturedoutput, ECXcapturedpath, childRET8, forceEAXsavedoutput"},
+    {"address": "007b10f5", "native": "007af800", "function": "007b10c0", "contract": "nonnullfirst path; SAR32(end-first,2)-1 moduloDWORD, captureoutputbeforeADD-1; genuinechildRET8, forceEAXsavedoutput"}
+  ],
+  "semantics": {
+    "owner": "actual0Ch backing only+8 consumed; producer007b22a0 stores capturedEDXpath at+8/007b22c3, ref1/profileD0534C; no newclass/factoryclaim",
+    "get": "physicalindex read beforeowner+8 pathload, thenactualoutputcapture; actual child thenreturn capturedoutput",
+    "last": "captureactualpath/first once; nullfirst noendread/FFFFFFFF, otherwise wrappedSUB/SAR2/ADD-1; two literal branches/RET4s retained",
+    "empty": "no empty/indexrepair; nonnullempty alsoFFFFFFFF; actualpoint currentSDKpolicy mayreturn andpathreloads observe itsrealstoragechanges",
+    "no_substitution": "no virtualfacade, shadowowner, privatepointvector, callback/stub orSourceargumentcopies",
+    "backing": "every actually reached rawowner/path/pose/point/output/stack/control access needsbacking; actualproviderx87 requirements retained"
+  },
+  "references": {
+    "direct_calls": 0,
+    "data_references": [{"slot_address": "00d05354", "target_entry": "007b10a0", "kind": "readonly_vtable_data"}, {"slot_address": "00d05364", "target_entry": "007b10c0", "kind": "readonly_vtable_data"}],
+    "limits": "live xrefs+physicalE8/E9/literalcensus agreement; notall indirectcallers orSource tableinstallation"
+  },
+  "dependencies": ["accepted complete transform_native_scene_path_point_007af800/native_scene_path_point.hpp; actualECXpath+stackoutput/index+RET8, unusedSourceEDX; genuinepose/matrix/currentSDKpolicy/x87 providers; no stub"],
+  "historical_semantic": {"source": "src/path_movcam_seg46_argon.cpp", "names": ["authored_path_source_get_point_007b10a0", "authored_path_source_last_point_007b10c0"], "status": "reconstructed_build_tested", "handling": "unchanged separate typed/host APIs andrecords; newraw completeentry records distinct"},
+  "evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr", "program": "/battlestationspacific.exe", "image_base": "00400000",
+    "native_assembly": "complete25B/64B including3RET tails; originalproducerbody andexistingowner schema read",
+    "census": "local/goal15h_authored_path_points/census.txt",
+    "byte_script": "local/goal15h_authored_path_points/compare_bytes.py [registered-COFF-object] [live-directory] [PE-path]",
+    "source_listing": "local/goal15h_authored_path_points/native_authored_path_points.asm",
+    "byte_result": "PASS89COFF/live/disk with only3CALL operandsmasked; exactactualSourcepointREL32symbols/E8/originaltargets checked;77fixedbytes inclallRETtails identical"
+  },
+  "verification": {
+    "strict_compile": "PASS MD/Win32/C++17/EHsc/W4/WX/permissive-/O2/fp:strict/c/FAcs",
+    "coff": "PASS25+64B completeownedextents; nativeLive==originaldisk, Sourceonly3verifiedCALLoperandsdiffer",
+    "source_fixture": "PASS one actualprovider identity-math composition: indexed1/lastcount2 outputlastpoint; emptylastFFFFFFFF retained acrossactualreturningSDKhandlerpathrepair, wrapfromslots+1 tobackedprecedingslot0 outputfirstpoint; capturedreturns/handlerrestore/rawownerwords retained",
+    "fixture_source": "local/goal15h_authored_path_points/authored_points_probe.cpp",
+    "fixture_script": "local/goal15h_authored_path_points/run_probe.cmd [archive] [archive-only]; defaultownmodule+acceptedpointoverlay, registeredarchive-only option; manifestembedded",
+    "fixture_log": "local/goal15h_authored_path_points/probe.log",
+    "fixture_limits": "bounded currentSource/rawbacking/privateCRT evidence, noextraFPsuite orNative differential; fixtureownsFPenv, productionwrapperschange none",
+    "report_calls": "PASS3exactreportrows+3markdownclaims;0failures/unchecked/warnings", "diff_check": "PASS", "new_tracked_test_targets": 0,
+    "full_registered_build": "primary-owned", "native_runtime_differential": "not run", "gameplay": "not validated"
+  },
+  "integration": {"target": "bsp_core", "target_sources_add": "src/native_authored_path_points.cpp", "ghidra_mutations": "none; primaryannotation/export/save ownsmetadata", "lease": "releaseaftercommit forprimarytransfer"}
+}

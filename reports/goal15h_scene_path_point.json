@@ -1,0 +1,75 @@
+{
+  "packet": "goal15h_scene_point",
+  "status": "complete_raw_source_strict_compile_fixed_bytes_and_source_overlay_fixture_passed_pending_registered_build",
+  "function": {
+    "address": "007af800",
+    "name": "transform_native_scene_path_point_007af800",
+    "source": "src/native_scene_path_point.cpp",
+    "header": "include/bsp/native_scene_path_point.hpp",
+    "status": "complete_raw_source_strict_compile_fixed_bytes_and_source_overlay_fixture_passed_pending_registered_build",
+    "end_exclusive": "007af8d3",
+    "native_bytes": 211,
+    "coverage": "complete",
+    "original_abi": "ECX rawscene path; stack output/index; RET8/EAX actualoutput; no consumed EDX",
+    "evidence": "Complete211B Native body. Actual raw path/pose/slot/point storage; conditional genuine414DB0 refresh, returning real SDK validation and current slot reload; genuine B62D10 through13B physical-ABI adapter. MOVSS capture and complete x87 reciprocal/spill/order retained, including actual incoming index slot reuse. Strict optimizedMDx86 compile;195fixed COFF/live/disk bytes,3verified CALL bindings and1verified read-only1.0 constant binding; one genuine Source overlay fixture passes. Source extraEDX/frames/currentCRT and Original ABI/runtime are qualified. docs/GOAL15H_SCENE_PATH_POINT.md reports/goal15h_scene_path_point.json"
+  },
+  "calls": [
+    {
+      "address": "007af816",
+      "native": "00414db0",
+      "containing_function": "007af800",
+      "contract": "ECX capturedpath+14 pose, only ifbyteC8==0; plainRET"
+    },
+    {
+      "address": "007af838",
+      "native": "00bf6713",
+      "containing_function": "007af800",
+      "contract": "no inputs; genuine returning/throwing/terminating SDK policy; index and capturedmatrix retained; currentbegin reloaded"
+    },
+    {
+      "address": "007af87b",
+      "native": "00b62d10",
+      "containing_function": "007af800",
+      "contract": "ECX local float4; two originalstackwords actual localresult, capturedmatrix; EAXactualresult/RET8; current Source13B adapter tailbinds complete accepted kernel"
+    }
+  ],
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000"
+  },
+  "semantics": {
+    "storage": "path+8/+C pointpointer slots, +14 pose; pose+C8 valid byte and +CC matrix",
+    "capture": "capture pose before refresh; capture matrix and raw uint32 index before validation; returning validation may mutate path+14 but capturedmatrix retained; reload current path+8",
+    "input": "MOVSS reads XYZ before writes; local W is verified readonly Native D7A24C=0000803F",
+    "output": "full genuine transform to local result; x87 component spills and late outputpointer load; reciprocal rounded tofloat into ACTUAL incoming index word; exact x87 XYZ stores; no wzero/nan/normalization/index repair",
+    "bridge": "13B Source stack-destination-to-EDX adapter, actualreturnslot retained one word higher in discarded argument space; full Source B62D10 RET4 consumes shifted matrix and recovers original RET8 endESP; current stack/frame identity is qualified"
+  },
+  "evidence": {
+    "complete_original_bytes": 211,
+    "fixed_exact_bytes": 195,
+    "verified_call_rel32": 3,
+    "verified_constant_dir32": 1,
+    "constant": "Native readonly section and Source data both0000803F",
+    "strict_compile": "PASS MSVCWin32/MD/O2/Gy/W4/WX/permissive-/fp:strict",
+    "coff": "PASS complete211B and13B actualbridge+itsactualkernel REL32; no unverified exclusions",
+    "fixture": "PASS actual Source overlay: dirty rootpose refresh; returning real threadlocal SDK policy repairs slots and changes pathpose; oldmatrixcapture retained; exact finite divide; zerow with input/outputalias ->positiveinfinities",
+    "fixture_script": "local/link_goal15c_probe.py local/goal15h_point/point_probe.cpp goal15h_point_overlay_probe local/goal15h_point/native_scene_path_point.obj",
+    "registered_archive": "pending primary batch",
+    "new_tracked_tests": 0
+  },
+  "sha256": {
+    "src/native_scene_path_point.cpp": "f5b8bded97792ec38da89efd86b7139e1c81199b40dd8ddceaf649c379028fa1",
+    "include/bsp/native_scene_path_point.hpp": "e425d4864941bf43cf9ad92e167d8ce2a5df641a5dae74a36714c5260d4cdcd1"
+  },
+  "limits": [
+    "Descriptive Native/class/template names remain hypotheses",
+    "All reached raw and control addresses require real backing; dirty ancestry must terminate; canonical x87 free-slot requirements apply",
+    "Source constant address, privateCRT policy, current Source stack/frame/address identity and Native RTTI/SEH/ABI/game runtime are not equated",
+    "One bounded Source fixture is not Native differential or all FP-control/alias/fault combinations"
+  ],
+  "parent_readiness": {
+    "0041ccd0": "Existing full normal Source uses explicit scene/allocator/CRT facades. This packet closes genuine raw pointchild; raw ancestor child is concurrent GOAL15H. Raw clip1A540/derive1A200 still separate from current typed projections, as are gameglobal worldbound/parentvirtual binding and exceptional ownership. No complete raw constructor claim.",
+    "0041d1e0": "Existing read-only/partial projection; full raw constructor and allocation/EH failure branch remain requirements. Concurrent raw entitypath getter closes one genuine child, not entire parent."
+  }
+}

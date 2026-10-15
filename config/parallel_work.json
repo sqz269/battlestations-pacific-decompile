@@ -41384,6 +41384,28 @@
       "contract": "Complete actual raw iterator/erase/clear Source and full providers; native alias,reload,returning diagnostics,index64,captured bounds and current child result paths retained. Explicit Source frames and current CRT/SDK are qualified; no Original private-register/fault/mangling/binary ABI or game proof.",
       "Original_ABI_compatible": false,
       "game_validated": false
+    },
+    {
+      "id": "cc12_reference_payload_reset_008f0380",
+      "done": false,
+      "state": "whole_ordinary_Source_ready_no_implementation_yet",
+      "source_ready": true,
+      "function_addresses": [
+        "008f0380"
+      ],
+      "output_files": [
+        "include/bsp/native_reference_payload_reset.hpp",
+        "src/native_reference_payload_reset.cpp",
+        "docs/NATIVE_REFERENCE_PAYLOAD_RESET_CC12.md",
+        "reports/native_reference_payload_reset_cc12.json"
+      ],
+      "depends_on": [],
+      "readiness_report": "reports/cc12_reference_payload_reset_readiness.json",
+      "missing_provider_addresses": [],
+      "worker": "reference_set_source_oct15",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "contract": "Whole [008F0380,008F03A2),34 bytes/12 instructions. ECX is genuine live raw8 reference payload: opaque full scalar at+0, owned pointer at+4. Capture old pointer; if nonnull call canonical current free then clear DWORD+4; always clear DWORD scalar+0. The null path does not store+4. No root free, virtual dispatch, tag/kind reset or reversed 03F0 array header substitution. Proposed MSVC Win32 naked void __fastcall(void*) noexcept retains30 non-CALL operand bytes and rebinds only[12,16) to singleton_lifetime_free. Actual accepted0310/0340/current physical duplicate provenance; old pointer null or sole-owned current-heap duplicate, valid disjoint live payload/frame and successful normal free. No alias, reentry, concurrent mutation, fault, rollback or Original private CRT/EH/full ABI/caller/class/game claim. Existing scalar-deleting slot0600 is separately blocked and receives no Source authorization."
     }
   ],
   "snapshot_after_analysis": {

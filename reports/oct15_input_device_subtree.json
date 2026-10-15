@@ -1,0 +1,312 @@
+{
+  "packet": "oct15_input_device_subtree",
+  "status": "complete_actual_raw_pool_subtree_pair_composition_win32_build_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_input_device_subtree.cpp",
+  "header": "include/bsp/native_input_device_subtree.hpp",
+  "documentation": "docs/OCT15_INPUT_DEVICE_SUBTREE.md",
+  "routines": [
+    {
+      "address": "006a7540",
+      "cpp_name": "destroy_native_input_device_subtree_006a7540",
+      "kind": "function",
+      "coverage": "complete_actual161B_subtree_body;accepted_complete_pair_composition_with_CurrentCpp_unwind",
+      "end": "006a75e0",
+      "original_abi": "Native ECX opaque tree word retained inEBX and forwarded only to right recursion, never dereferenced; EDX unused; one stacked node DWORD; RET4; no semantic EAX. Source retains these input roles and adds stacked RawCtx, changing native stack/private/register ABI."
+    },
+    {
+      "address": "00c7f5a0",
+      "cpp_name": "unwind_native_input_device_subtree_key_00c7f5a0",
+      "kind": "fragment",
+      "coverage": "whole8B_parent_bound_key_action_as_logical_saved_pair_Source_service",
+      "end": "00c7f5a7",
+      "original_abi": "Native MOVECX,[runtimeEBP+4] retrieves already-adjusted savedpair=node+C,then JMP41DD20. Source explicit saved_current_pair andRawCtx,without additional+C or synthetic frame reader;not original binary funclet ABI."
+    }
+  ],
+  "accepted_dependency": {
+    "pin": "3d1f01d68471ba881bdf94e6690e83a4862b1e88",
+    "status": "Primary accepted complete parent packet; integrated root staging before this assignment",
+    "services": [
+      "destroy_native_input_device_pair_0055b8b0(pair,0,RawCtx)",
+      "destroy_native_string_header_0041dd20(savedpair,RawCtx)",
+      "singleton_lifetime_free(currentnode)"
+    ],
+    "parent_source_hashes": {
+      "src/native_input_device_record_destroy.cpp": "6edbd35b0b1ba90b743d491fc6a64e32231a620a4df5b649f0e5b7d96491427f",
+      "include/bsp/native_input_device_record_destroy.hpp": "ffe326a6939bbf2be7a24fa28da2ca616c4618cde37ae71fd02625650c6705bf"
+    },
+    "no_bridge_or_callbacks": true
+  },
+  "layout": {
+    "tree": "actual12B header: opaque0,head4,count8",
+    "node": "actual9Ch: left0,parent4,right8,key length0C/data10,record14..97,color98,nil99; zero nil means ordinary node",
+    "producer": "55BB40 at55BB61 pushes9Ch;55BB66 allocation;link stores55BB8E/93/9A;pair atnode+C before55BB9D\u219255BA00;55BBA5 color98,55BBAB nil99=0. This is layout evidence, not copy-constructor Source approval.",
+    "ownership": "Finite uniquely owned valid ordinary nodes and live nil sentinel. Native has no null-node or owner guard, no fabricated head. Outer tree count/header are not touched by subtree itself; node record owns its own accepted nested structures."
+  },
+  "native_subtree_schedule": {
+    "scope": "006A7540..006A75E0,161B/51instructions",
+    "native_abi": "ECX opaque tree word retained inEBX and forwarded only to right recursion, never dereferenced; EDX unconsumed; one stacked node DWORD; RET4; no semantic EAX. Source can retain dead/opaque inputs and add RawCtx but changes native RET/frames/private aliases.",
+    "schedule": [
+      "7557 captures incoming node;755B tests byte[node+99], zero enters. No null skip or outer count read.",
+      "7570 captures CURRENT right[node+8];7576 recursively destroys it with same opaqueECX. Parent key state remains-1 during this call.",
+      "757B rereads/captures CURRENT left[node] AFTER right recursion; pair=node+C at757D.",
+      "7580 writes pair into incoming node stack argument word;7587 arms state0 BEFORE record+14 call758F\u219255B690.",
+      "7594 captures CURRENT keydata[pair+4],7597 null-test,7599 DWORD disarm-1 BEFORE branch/length/getter.",
+      "Nonnull75A1 branch path:75A3 CURRENT keylength[pair],+1 DWORDwrap;push unused1,capturedsize,captureddata BEFORE75AC getter419CC0;75B3 returns capturedblock/size throughBD1510. No key/header clear.",
+      "Null key skips length read/getter/pool return. Both successful branches unconditionally75B9 free ORIGINAL current node after full pair work.",
+      "75C1 tests nil99 through capturedleft AFTER free;75C8 publishes capturedleft as nextcurrent;repeat if ordinary. No outer tree count decrement or tree-header resets."
+    ],
+    "failure": "Right-recursion failure stops before left capture/current pair cleanup. Record failure completes its own earlier-member unwind first; if that returns, subtree state0 applies CURRENT key cleanup. A secondary C++ failure in either unwind terminates by recovered native/runtime policy; no later node free or iteration is guaranteed. Normal key/getter failure occursstate-1, so key is not retried, currentnode is not freed and laterleft nodes are untouched. No rollback or prefix salvage is invented.",
+    "eax": "Initial nil branch retains entry FS-derived residue; nonempty completion retains latest free residue. Source void must not promise0/self."
+  },
+  "eh": {
+    "handler": "00c7f5a8: MOVEAX,DACAAC;tailJMPBF6B43",
+    "funcinfo": "DACAAC magic19930522,maxState1,mapDACAA4,nTry0/pTry0,IPmap0,typeList0,rawEHFlags1",
+    "map": "state0 ->-1/actionC7F5A0",
+    "action": "C7F5A0 MOVECX,[runtimeEBP+4];C7F5A3 JMP41DD20",
+    "private_frame": "Let S=entryESP. FS registration atS-C;after4saved registers ESP=S-1C. 7580[ESP+20]=[S+4] OVERWRITES original incoming node word with current pair=node+C. 7587[ESP+18]=[S-4] is state0. Runtime CallSettingFrame EBP=establisher+C=S, so action[EBP+4] retrieves saved CURRENT PAIR, not a node to which C should be added again. No synthetic EBP reader is proposed.",
+    "source_policy": "Standalone logical key action may propagate. During actual Source unwind use the accepted pair guard/noexcept CurrentCpp semantics; secondaryC++failure terminates through current runtime. OriginalFH3/RTTI/foreignSEH/managed/fault/private-frame/CRT-handler identity stays qualified."
+  },
+  "pair_equivalence": {
+    "decision": "complete storage/failure schedule equivalent after independent full comparison; reuse55B8B0 for node+C is permitted only with explicit Source/privateABI qualification",
+    "native_pair_sites": "55B8D0 arm0;55B8D8 record+8;55B8DD data;55B8E0 test;55B8E2 disarm-1;55B8EC length;55B8F5 getter;55B8FC return;C6DCA0 CURRENT-key action",
+    "subtree_sites": "7587arm;758Frecord+14;7594data;7597test;7599disarm;75A3length;75ACgetter;75B3return;C7F5A0 CURRENT-key action",
+    "proof": "With pair=node+C, accepted pair record+8=node+14 and key0/4=node+C/10. Data/test/disarm/conditional length+1/getter/captured pool-return order and current-header key unwind are identical. All subtree left/right capture and node-free work remains explicitly outside this reuse. Register allocation and saved receiver slot differ, and incoming node-word overwrite is native-private evidence.",
+    "not_scalar_substitution": "Do not mechanically use6A6EB0 scalar-delete for subtree node destruction: it adds a flags input/read/test absent here. Prefer accepted pair+C cleanup followed by exact unconditional current-node CRT free, or spell the independently verified schedule directly."
+  },
+  "source_behavior": {
+    "initial": "Raw byte nil99 test precedes all payload/link work; nonzero nil returns with no further link/payload/pool/free work. No null-node guard or receiver dereference.",
+    "body": "Capture CURRENT right4B, recurse with same opaque tree/deadEDX normalization0. After successful recursion reread CURRENT left4B,compute pair=node+C. Accepted complete55B8B0 consumes exactly this pair, then free ORIGINAL current node unconditionally. Test capturedleft nil99 after free and before publishing it as nextcurrent.",
+    "no_double_unwind": "The accepted pair destructor already owns the state0 CURRENT-key action and CurrentCpp termination-on-secondary-C++-failure. This module adds no second key guard/catch around it. The standalone logical C7F5A0 service is not an extra iteration cleanup.",
+    "failures": "Right failure precedes currentleftcapture/currentpaircleanup. Record failure can invoke the pair CURRENT-key unwind only after record own unwind succeeds; secondaryC++unwind failures terminate under accepted currentCPP policy. A normal key/getter failure after pairdisarm propagates, stopping nodefree/leftiteration. No rollback,prefix salvage,retry or extra cleanup.",
+    "absent": "No outer tree count/reset/headclear, null validation, scalar flags input/test, generic tree/storage/provider or fabricated EBP/global is added. No scalar-deleting substitution."
+  },
+  "native_evidence": {
+    "typed_capture": "local/oct15_input_device_subtree_typed.json",
+    "typed_modification": "1379",
+    "byte_audit": "local/oct15_input_device_subtree_byte_audit.json",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "owned_spans": [
+      {
+        "entry": "006a7540",
+        "owned": true,
+        "start": "006a7540",
+        "end": "006a75e0",
+        "bytes": 161,
+        "instructions": 51,
+        "sha256": "3fcd02079c518ccb5645fc66af7b7c8a642a3fb87338e463d990072fc5ccdf7a",
+        "live_equals_pe": true
+      },
+      {
+        "entry": "00c7f5a0",
+        "owned": true,
+        "start": "00c7f5a0",
+        "end": "00c7f5a7",
+        "bytes": 8,
+        "instructions": 2,
+        "sha256": "7c96dbe8c287986c87a43a5a63813542cffce27decd2618402327065a9b2ad1e",
+        "live_equals_pe": true
+      }
+    ],
+    "owned_bytes": 169,
+    "owned_starts": 53,
+    "supporting_spans": [
+      {
+        "entry": "00c7f5a8",
+        "owned": false,
+        "start": "00c7f5a8",
+        "end": "00c7f5b1",
+        "bytes": 10,
+        "instructions": 2,
+        "sha256": "67c39c7c0542607834a55f9a2ae7f8c6e2f96a22ada206b0a4618bc029b5b44e",
+        "live_equals_pe": true
+      },
+      {
+        "entry": "0055b8b0",
+        "owned": false,
+        "start": "0055b8b0",
+        "end": "0055b910",
+        "bytes": 97,
+        "instructions": 29,
+        "sha256": "3551deb332952e54b6ccca81a76c5fb9dfffd4d50b45c148013fec995defd72d",
+        "live_equals_pe": true
+      }
+    ],
+    "all_current_starts_checked": 84,
+    "failed": 0,
+    "raw_eh": {
+      "start": "00dacaa4",
+      "bytes": 44,
+      "sha256": "c791455c4630b78bbe3cb520a4b0d06529707bc98c8f7a34e909451e8acf3b83",
+      "live_equals_pe": true,
+      "map": [
+        {
+          "state": 0,
+          "to_state": -1,
+          "action": "00c7f5a0"
+        }
+      ],
+      "funcinfo_hex": [
+        "19930522",
+        "00000001",
+        "00dacaa4",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ]
+    },
+    "scope": "Only169B/twoownedentries are Source ownership. Whole acceptedpair+handler107B and rawEH44B are fresh support evidence,not new reconstruction coverage."
+  },
+  "source_interface_qualification": [
+    "Finite exclusive valid owned N9C nodes/live nilsentinel,borrowed actual RawCtx publication/gate/manager and matching currentCRT allocation ownership are required. Nil is a byte read with no null or count check.",
+    "Native7580 overwrites incoming node argument word[S+4] with currentpair; native runtimeEBP=S andaction[EBP+4] therefore already meansPAIR. Source by-value pointer/context/privateframe aliases differ; never emulate this by guessing a new Source frame.",
+    "Normal RawCtx failures propagate; only the accepted private pair/record CurrentCpp unwind guards impose secondary-C++failure termination. Standalone logicalaction is ordinary propagating Source. OriginalFH3/RTTI/foreignSEH/managed/fault/stack exhaustion/CRT/heap/terminate-handler identity remains distinct.",
+    "Added RawCtx changes native RET4/private stack/register/flag/EAX-residue behavior. Sourcevoid does not expose FS/free residue. No original binary ABI,runtime/game compatibility is claimed.",
+    "Existing NativeStringStorage/AV full+partial domain and correct STL/EH names remain unchanged. Five clear/fullprefix/map scopes from readiness are not Source-owned here."
+  ],
+  "host_steps": [
+    {
+      "function": "006a7540",
+      "address": "006a7576",
+      "native": "006a7540"
+    },
+    {
+      "function": "006a7540",
+      "address": "006a758f",
+      "native": "0055b690"
+    },
+    {
+      "function": "006a7540",
+      "address": "006a75ac",
+      "native": "00419cc0"
+    },
+    {
+      "function": "006a7540",
+      "address": "006a75b3",
+      "native": "00bd1510"
+    },
+    {
+      "function": "006a7540",
+      "address": "006a75b9",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "00c7f5a0",
+      "address": "00c7f5a3",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00c7f5a8",
+      "address": "00c7f5ad",
+      "native": "00bf6b43",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "0055b8b0",
+      "address": "0055b8d8",
+      "native": "0055b690"
+    },
+    {
+      "function": "0055b8b0",
+      "address": "0055b8f5",
+      "native": "00419cc0"
+    },
+    {
+      "function": "0055b8b0",
+      "address": "0055b8fc",
+      "native": "00bd1510"
+    },
+    {
+      "address": "00c6dca3",
+      "native": "0041dd20",
+      "function": "00c6dca0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00bf6b64",
+      "native": "00c07991",
+      "function": "00bf6b43"
+    },
+    {
+      "address": "00c079f9",
+      "native": "00c069a2",
+      "function": "00c07991"
+    },
+    {
+      "address": "00c06a19",
+      "native": "00c07b10",
+      "function": "00c069a2"
+    },
+    {
+      "address": "00c07aa3",
+      "native": "00c04de2",
+      "function": "00c07a75"
+    }
+  ],
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "exit_code": 0,
+      "passed": 3,
+      "failed": 0,
+      "existing_suites": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "seconds": 7.68,
+      "log": "local/oct15_input_device_subtree_build.log",
+      "scope": "No new or dedicated parent/native/game test is claimed."
+    },
+    "new_tests": 0,
+    "transfer_checker": {
+      "json_rows": 15,
+      "markdown_claims": 15,
+      "failed": 0,
+      "unchecked": 0,
+      "warnings": 0,
+      "capture": "local/oct15_input_device_subtree_transfer_check.txt"
+    },
+    "ghidra_mutations": false,
+    "following_five_wrappers": "readiness_only;no claims/files/metadata edits",
+    "registration": {
+      "fifo_success": true,
+      "cmake_target": "bsp_core",
+      "appended_source": "src/native_input_device_subtree.cpp",
+      "baseline": "3d1f01d68471ba881bdf94e6690e83a4862b1e88",
+      "accepted_parent_unchanged": true,
+      "lease_released_before_build": true,
+      "jump": false
+    },
+    "coff": {
+      "object": "build\\win32\\bsp_core.dir\\Release\\native_input_device_subtree.obj",
+      "sha256": "de188bcf08d3946be64b34b3fab8558ea6dfec9ab3155354b55bab4cfd54fe75",
+      "symbols": "local/oct15_input_device_subtree_coff_symbols.txt",
+      "disassembly": "local/oct15_input_device_subtree_coff_disasm.txt",
+      "observed": [
+        "OpaqueECX savedEDI at+7, forwarded at+34 before recursion+36.",
+        "Currentright+28, left reload+3E AFTER recursion. Pair+C formed+43, single pair invocation+4F, ORIGINAL node free+57.",
+        "Capturedleft nil99 test+64 BEFORE nextcurrent publication+71. SourceRET8 at+7F versus nativeRET4 is the qualified added-context ABI.",
+        "Standalone action is direct JMP raw41DD20; no extra+C. No local CxxFrameHandler symbol or second keyguard in this object."
+      ],
+      "qualification": "Compiled Source storage/call-order check only, not original ABI/FH3/runtime/game proof."
+    },
+    "ledger": {
+      "owned_records": 2,
+      "native_names_preserved": 2,
+      "historical_fragments_replaced": false
+    },
+    "known_unrelated_warning": "Existing LNK4006 spawn_request_id_matches duplicate in lua_binding_spawn/lua_spawn_new; untouched."
+  },
+  "source_hashes": {
+    "src/native_input_device_subtree.cpp": "09d75e5d63fb4a21d1e9a3fd383bfe1fc0a2409458be389dc60b1f8e8a5f253e",
+    "include/bsp/native_input_device_subtree.hpp": "e1982777351558bee4b8326110e92c8ef3815f8851989ded0e0ca1a5f9fc7d09"
+  }
+}
