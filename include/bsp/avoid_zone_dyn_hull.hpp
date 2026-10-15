@@ -61,7 +61,10 @@ void avoid_zone_dyn_hull_copy_data_004039d0(AvoidZoneDynHullData&,
 
 // Actual handle lifetime chain; construct is for uninitialized handles,
 // replace destroys the previous data first. Destroy intentionally leaves
-// handle words unchanged (native 00C37450), so it must be called only once.
+// handle words unchanged (native 00C37450). Without an explicit owner replacement
+// it must be called only once. Destroy captures data once before any release;
+// callbacks may republish/end the handle, but the captured data must remain live
+// until its final release. Its vertices field is read after adjacency release.
 void avoid_zone_dyn_hull_construct_00c5df30(AvoidZoneDynHullHandle&,
     const OceanVec3*, std::uint32_t count, const AvoidZoneDynHullMemory&);
 void avoid_zone_dyn_hull_replace_00c5deb0(AvoidZoneDynHullHandle&,
