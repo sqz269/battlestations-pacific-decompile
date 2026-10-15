@@ -102,3 +102,12 @@ and both successful runs. Original installation and saved analysis are preserved
 Ghidra names/prior comments remain, new bounded evidence is appended, the project
 is saved and affected game-function exports are refreshed. No new test suite or
 reference-count fixture was introduced.
+
+After importing current Main, combined Source
+`CDAF687819B79632F2D78713A696CB0B36F2AAA1` passes all three existing checks in
+6.97 seconds and a fresh GUI/POST-acquisition run. Its summary again records
+three qualified returned words, same-identity cold/warm reuse, actual caller
+credit retirement, shared drain and final COM counts zero. The complete 96-byte
+bridge remains identical. This combined compiled/runtime family is sealed
+separately; startup success does not imply execution coverage for the imported
+enum, string, contact-report or other reconstruction methods.

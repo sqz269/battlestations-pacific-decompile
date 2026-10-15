@@ -192,5 +192,94 @@
     "Procedural Source1 B3B280 nonzero/zero-terminal parent execution; selected fakemotion descriptor remains SceneTexture Source0 with empty mode samplers.",
     "POST draw/submission, Native Text glyph/section/draw activation, visible native world, complete frontend or gameplay validation.",
     "Runtime coverage of later Source changes; evidence remains pinned to each named compiled family."
-  ]
+  ],
+  "combined_validation": {
+    "source_commit": "cdaf687819b79632f2d78713a696cb0b36f2aaa1",
+    "canonical_build_exit": 0,
+    "existing_checks": 3,
+    "test_seconds": 6.97,
+    "runtime_exit": 0,
+    "wrapper_pid": 37872,
+    "exe_sha256": "5d16c0eecc054ea12fa822cb22cc3a8ed5dd059de93995ae72a5202f7845cbc7",
+    "qualified_entries": [
+      {
+        "resource": "GuiFont.mshd",
+        "observed": "1",
+        "frames": "1",
+        "profiles": "1",
+        "returns": "1",
+        "known_ready": "1",
+        "has_word": "1",
+        "last_word": "0ed70dd0",
+        "release_rva": "0007eab0",
+        "shader_before": "2",
+        "result": "1",
+        "device_before": 23,
+        "device_after": 23
+      },
+      {
+        "resource": "GuiFontBilinear.mshd",
+        "observed": "2",
+        "frames": "2",
+        "profiles": "2",
+        "returns": "2",
+        "known_ready": "2",
+        "has_word": "1",
+        "last_word": "0ed719d8",
+        "release_rva": "0007eab0",
+        "shader_before": "2",
+        "result": "1",
+        "device_before": 25,
+        "device_after": 25
+      },
+      {
+        "resource": "fakemotionblur.mshd",
+        "observed": "3",
+        "frames": "3",
+        "profiles": "3",
+        "returns": "3",
+        "known_ready": "3",
+        "has_word": "1",
+        "last_word": "0ed6fd68",
+        "release_rva": "0007eab0",
+        "shader_before": "2",
+        "result": "1",
+        "device_before": 27,
+        "device_after": 27
+      },
+      {
+        "resource": "fakemotionblur.mshd (warm)",
+        "observed": "3",
+        "frames": "3",
+        "profiles": "3",
+        "returns": "3",
+        "known_ready": "3",
+        "has_word": "1",
+        "last_word": "0ed6fd68",
+        "release_rva": "0007eab0",
+        "shader_before": "2",
+        "result": "1",
+        "device_before": 27,
+        "device_after": 27
+      }
+    ],
+    "cold_warm_shared_drain": true,
+    "final_renderer_COM_counts": [
+      0,
+      0
+    ],
+    "whole96_bridge_unchanged": true,
+    "verified_payloads": 173,
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_sampler_provider_combined_31\\evidence_family.zip",
+      "sha256": "f8e482ff55a3c69cc7d57b29c0443e28cff90e4485b069b0a96a21c2174fff7f",
+      "bytes": 30245484
+    },
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_sampler_provider_combined_31\\evidence_manifest.json",
+      "sha256": "ee4d0151cbf498413609b2f70a20591fe41f71416bfef39da94ce2576a655ff8",
+      "bytes": 75005
+    },
+    "scope": "Current Main composition plus this provider feature; selected GUI/POST acquisition and closure only. Imported reconstruction methods are not claimed runtime-exercised merely because startup passes."
+  }
 }
