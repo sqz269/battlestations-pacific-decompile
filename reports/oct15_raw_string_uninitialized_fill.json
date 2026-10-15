@@ -1,0 +1,88 @@
+{
+  "packet": "oct15_raw_string_uninitialized_fill",
+  "status": "complete_source_actual_pool_current_cpp_eh_build_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_string_uninitialized_fill.cpp",
+  "header": "include/bsp/native_string_uninitialized_fill.hpp",
+  "documentation": "docs/OCT15_RAW_STRING_UNINITIALIZED_FILL.md",
+  "routines": [
+    {
+      "address": "0044ce20",
+      "cpp_name": "fill_native_string_uninitialized_0044ce20",
+      "original_abi": "ECX destination, EDX unsigned count; stack value-header,owner,unused value duplicate,unused tag; RET10h; no semantic return",
+      "coverage": "complete_normal_and_catch_in_current_Source_CPP_exception_domain",
+      "prior_qualified_provenance_preserved": "native_checked_string_storage"
+    },
+    {
+      "address": "0044db60",
+      "cpp_name": "fill_native_string_uninitialized_n_dispatch_0044db60",
+      "original_abi": "ECX owner; stack destination,count,value; RET0Ch; EAX original destination+original count*8 with DWORD wrap",
+      "coverage": "complete_ordinary_dispatch"
+    }
+  ],
+  "catch": {
+    "address": "0044ce6d",
+    "parent": "0044ce20",
+    "coverage": "ascending captured completed-prefix destruction then Source rethrow",
+    "excluded": "failed current slot; backing storage free; header clearing; rollback"
+  },
+  "host_steps": [
+    {"address": "0044ce5d", "native": "0044bcb0", "function": "0044ce20", "contract": "construct using the captured shared value-header address"},
+    {"address": "0044ce83", "native": "00431f40", "function": "0044ce6d", "contract": "destroy completed prefix ascending"},
+    {"address": "0044ce93", "native": "00bf6885", "function": "0044ce6d", "contract": "native null/null rethrow"},
+    {"address": "0044db84", "native": "0044ce20", "function": "0044db60", "contract": "ordinary fill_n dispatch"},
+    {"address": "00450589", "native": "0044ce20", "function": "00450540", "contract": "append supplies count1; incoming ABI evidence only"},
+    {"address": "0044f555", "native": "0044db60", "contract": "insert-count incoming ABI evidence only"},
+    {"address": "0044f62c", "native": "0044db60", "contract": "insert-count incoming ABI evidence only"}
+  ],
+  "original_eh": {
+    "handler": "00c60100",
+    "frame_handler": "00bf6b43",
+    "funcinfo": "00d86f80",
+    "magic": "19930522",
+    "max_state": 2,
+    "unwind_map": "00d86f5c",
+    "unwind_states": [-1, -1],
+    "unwind_actions": [0, 0],
+    "try_map": "00d86f6c",
+    "try_low": 0,
+    "try_high": 0,
+    "catch_high": 1,
+    "handler_count": 1,
+    "handler_record": "00d86f4c",
+    "adjectives": "00000040",
+    "type": 0,
+    "displacement": 0,
+    "catch": "0044ce6d",
+    "eh_flags": 1,
+    "live_bytes_verified": true
+  },
+  "captures_and_aliases": [
+    "Shared value-header address captured in EBX; no snapshot of header contents.",
+    "Initial destination EBP-18h and completed end EBP-14h are captured separately; completed end advances only after constructor return.",
+    "Remaining count EDI decrements after construction; zero count performs no source or pool access.",
+    "Owner is private stack input used only by catch and ignored by00431F40; dead value/tag words are not callbacks.",
+    "Dispatcher preserves original destination/count across the core call and computes wrapped DWORD result from those values."
+  ],
+  "bindings": [
+    "NativeStringRawPoolContext with existing actual419CC0 publications/gate/manager",
+    "actual-header0044BCB0 raw-pool overload with verified no-op placement-delete leaf",
+    "complete stacked-header00431F40 actual raw-pool destructor"
+  ],
+  "validation": {
+    "win32_release": "passed",
+    "existing_tests": "3/3 passed",
+    "log": "local/oct15_raw_string_uninitialized_fill_build.log",
+    "ctest_seconds": 7.21,
+    "new_tests": 0,
+    "native_call_sites": "7 checked, 0 failed"
+  },
+  "limits": [
+    "New explicit-context C++ interfaces do not preserve original register/stack ABI or private frame identity.",
+    "Current MSVC /EHsc C++ exception domain, not proven original FH3/SEH or nested/double-exception identity.",
+    "If cleanup throws in Source, that exception escapes and later completed elements remain untouched; original exception identity not proved.",
+    "No string-packet native differential, exception-injection, original-game or gameplay proof.",
+    "Separate qualified checked-storage fragments remain unchanged and retain their original coverage limits."
+  ]
+}
