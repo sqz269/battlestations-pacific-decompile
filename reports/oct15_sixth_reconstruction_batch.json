@@ -1,0 +1,196 @@
+{
+  "packet": "oct15_sixth_reconstruction_batch",
+  "status": "integrated_reviewed_build_checked_annotated",
+  "goal_status": "active",
+  "created_utc": "2026-10-15T18:44:07.206377+00:00",
+  "base_main": "147cb61714ab00ac9787bf81cdb19ca73cf554a7",
+  "initial_combined_source_commit": "c1615ecc75f54e9cc0c3aab417aa9f0b15c08751",
+  "promotion_source_commit": "4dd7b1b24f3299b42712d7a9c1007051ca7337cb",
+  "source_entries": [
+    "0044bc50",
+    "0044c770",
+    "0044d850",
+    "0044f170",
+    "00557bc0",
+    "00556b10",
+    "00432440",
+    "006a29c0",
+    "006a2a00",
+    "0044ce20",
+    "0044db60"
+  ],
+  "catch_fragments": [
+    "00556b5a",
+    "00557c84",
+    "0044ce6d"
+  ],
+  "packets": [
+    {
+      "packet": "oct15_string_inplace_ranges",
+      "commit": "2eb7067692bedf3faff6bfaa9339442f61916575",
+      "report": "reports/oct15_string_inplace_ranges.json",
+      "source_entries": [
+        "0044bc50",
+        "0044c770",
+        "0044d850",
+        "0044f170"
+      ],
+      "catch_fragments": [],
+      "checked_call_rows": 6
+    },
+    {
+      "packet": "oct15_raw_string_vector_copy_construct",
+      "commit": "ad96d24bb13e375e67fcc0dbb08945066da35a4f",
+      "report": "reports/oct15_raw_string_vector_copy_construct.json",
+      "source_entries": [
+        "00557bc0",
+        "00556b10",
+        "00432440"
+      ],
+      "catch_fragments": [
+        "00556b5a",
+        "00557c84"
+      ],
+      "checked_call_rows": 52
+    },
+    {
+      "packet": "oct15_checked_string_vector_ranges",
+      "commit": "d7e962340068091cfaa7b584fccabbba3c327ce8",
+      "report": "reports/oct15_checked_string_vector_ranges.json",
+      "source_entries": [
+        "006a29c0",
+        "006a2a00"
+      ],
+      "catch_fragments": [],
+      "checked_call_rows": 7
+    },
+    {
+      "packet": "oct15_raw_string_uninitialized_fill",
+      "commit": "c0d671c5b6ab168fca0b98d67de1c531abf40c9c",
+      "report": "reports/oct15_raw_string_uninitialized_fill.json",
+      "source_entries": [
+        "0044ce20",
+        "0044db60"
+      ],
+      "catch_fragments": [
+        "0044ce6d"
+      ],
+      "checked_call_rows": 7
+    }
+  ],
+  "primary_review": [
+    "Read full Source/header and complete native body listings for every packet; compared copy constructor, raw fill and catch maps with native FuncInfo/unwind/try bytes.",
+    "Copy constructor preserves source captures before destination clearing, opaque +0, allocation-before-catch boundary, reload order, current destination cleanup and native self-alias effects.",
+    "Raw backward/fill ranges compose accepted actual0048DA50 storage with fixed source addresses and no content snapshot; backward dispatch has independent wrapped SAR3 return.",
+    "0044F170 and accepted00505AD0 share all33 nonrelocation bytes of37-byte dispatch bodies and the actual0044D0C0 target.",
+    "16-byte owning-vector ranges compose actual00506C80, preserve fixed value address, forward overlap schedule and cached copy return; void fill API explicitly qualifies native ambient EAX.",
+    "Raw uninitialized fill captures value address and completed-prefix cursor; catch destroys ascending successful prefix and rethrows. Failed slot and backing storage are not cleaned by this parent.",
+    "Historical projected interfaces and provenance remain present; actual-storage entry points are explicit new Source APIs."
+  ],
+  "validation": {
+    "initial_exact_combined_win32_release": {
+      "commit": "c1615ecc75f54e9cc0c3aab417aa9f0b15c08751",
+      "command": "./scripts/build.ps1",
+      "passed": true,
+      "ctest_seconds": 6.95,
+      "log": "local/oct15_sixth_batch_combined_build.log"
+    },
+    "call_site_claims": {
+      "passed": 72,
+      "failed": 0,
+      "unchecked": 0,
+      "local_body_rows": 24,
+      "incoming_interface_rows": 48,
+      "scope": "JSON and Markdown verified against native instructions;72 rows are not72 reconstructed callees or runtime proof."
+    },
+    "backward_overlap_composition": {
+      "source_commit": "c1615ecc75f54e9cc0c3aab417aa9f0b15c08751",
+      "result": {
+        "case": "right_overlapping_two_header_backward_assignment",
+        "original_payload": "AAB",
+        "source_payload": "AAB",
+        "original_invariants": true,
+        "source_invariants": true,
+        "payload_match": true,
+        "return_offsets_correct": true,
+        "resize_bridge_calls": 2,
+        "copy_bridge_calls": 2,
+        "pool_unused": true,
+        "passed": true
+      },
+      "provenance": {
+        "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "function": "0044bc50",
+        "length": 82,
+        "code_hex": "538b5c2408568b7424103bde743d578b7c241883ee0883ef083bfe74248b066a01508bcfe8c720fdff833e0074138b0f8b56048b4704515250e8f2b97a0083c40c3bf375ce8bc75f5e5bc38b4424145e5bc3",
+        "saved_ghidra_full_body_matches_disk": true,
+        "calls": [
+          {
+            "site": "0044bc74",
+            "offset": 36,
+            "target": "0041dd40"
+          },
+          {
+            "site": "0044bc89",
+            "offset": 57,
+            "target": "00bf7680"
+          }
+        ],
+        "dispatch_0044f170_equivalence": {
+          "accepted": "00505ad0",
+          "size_each": 37,
+          "nonrelocation_bytes_matching": 33,
+          "mask_offset": 29,
+          "mask_length": 4,
+          "resolved_callee": "0044d0c0",
+          "new_bytes": "518b542410c60424008b0424508b442414528b542414518b4c241450e82fdfffff59c20c00",
+          "accepted_bytes": "518b542410c60424008b0424508b442414528b542414518b4c241450e8cf75f4ff59c20c00"
+        },
+        "scope": "One right-overlapping backward assignment. Full Original82B loop with2fixed adapters to accepted Source raw resize/currentCRT memmove; Source loop uses same acceptedservices viaone-element raw assignment. Equal1byte lengths bypass pool activity. Not independent Originalchild/resize-allocation/ABI/EH/game proof."
+      },
+      "harness_sha256": "29378d727711f47a27ce54208ab75bf664191eacd012bc6b02789b07817b270d",
+      "scope": "One right-overlapping2-header loop case, full82-byte Original parent with only2relative CALL operands relocated to accepted Source resize and currentCRTcopy bridges. Same real8-byte headers, len1 buffers, no pool traffic. Not fully Original dependencies, allocation/failure paths, fill, binaryABI or gameplay proof."
+    },
+    "new_tracked_tests": 0,
+    "native_math_differential_scope": "Existing verified seed routines only; does not test these new string/vector functions.",
+    "promotion_exact_combined_win32_release": {
+      "commit": "4dd7b1b24f3299b42712d7a9c1007051ca7337cb",
+      "command": "./scripts/build.ps1",
+      "passed": true,
+      "ctest_seconds": 7.11,
+      "log": "local/oct15_sixth_batch_promotion_build.log",
+      "existing_suites": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ]
+    }
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_per_analysis_export_batch": true,
+    "saved": true,
+    "old_names_comments_retained": true,
+    "preimage_logs": [
+      "local/ghidra-annotations-20261015T182740Z.json",
+      "local/ghidra-annotations-20261015T184200Z.json"
+    ],
+    "forced_snapshot_after_annotations": true,
+    "forced_refreshed_exports": 14
+  },
+  "concurrent_main": {
+    "preserved_commits": [
+      "c0892f83b",
+      "4dd7b1b24f3299b42712d7a9c1007051ca7337cb"
+    ],
+    "scope": "Other-harness token/enum and canonical allocator work retained; excluded from this batch function count. Promotion Source rebuilt after merging current main."
+  },
+  "limits": [
+    "Source Win32 interfaces carry explicit contexts and differ from native physicalABI.",
+    "Current C++ catches model accepted Source child exceptions, not original FH3/SEH tables or fault identity.",
+    "Current CRT, raw pool, opaque process globals, admitted pointer/storage and private frame exclusions inherited from accepted child contracts.",
+    "No live game/startup/gameplay or drop-in ABI replacement claim."
+  ]
+}
