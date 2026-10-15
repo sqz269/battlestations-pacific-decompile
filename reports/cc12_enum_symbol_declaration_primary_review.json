@@ -1,0 +1,71 @@
+{
+  "schema": "bsp.enum_symbol_declaration_primary_review.v1",
+  "address": "008f2e40",
+  "Source_commit": "1341be66a6ed83398c5577d62fb5048c9f038190",
+  "status": "whole_ordinary_Source_registered_Main3checks_and_actual_code_archive_identity_pass",
+  "primary_complete_Source_header_and_Original_listing_read": true,
+  "Original_whole_bytes": 296,
+  "Original_instructions": 95,
+  "Original_ABI": "ECX genuine19Ch CEnum owner; CString/int32 stack arguments; RET8; no stable semantic EAX result. New ordinary Source interface returns void.",
+  "Source": "src/native_enum_symbol_declaration.cpp",
+  "independent_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_resume\\local\\EnumSymbolDeclarationIndependentReview01\\review.compact.DATA.json",
+    "bytes": 2230,
+    "sha256": "16420298b17216da1e68ff6a6c6e910d8ebf638b56f742a11f3a2a623444dc88"
+  },
+  "primary_peer_inputs": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_enum_symbol_declaration_integration_20261015\\primary_peer_input_pins.DATA.json",
+    "bytes": 32450,
+    "sha256": "b56964cb23049102fcddd8c5cda2de01cd279702ab21407a5220ae10b21bfd7b"
+  },
+  "contract": [
+    "Genuine8h NativeString query construct, whole0048D480(owner+4), capture duplicate before raw query cleanup.",
+    "Duplicate leaves every enum key/value/count/metadata unchanged. Diagnostic004254B0 is verified sole C3/RET; no diagnostic stub introduced.",
+    "New reads10C after first cleanup, signed min with incoming, writes10C then derives/writes110 from that candidate/incoming, with no old110 read. Reconstruct same query, whole008F2850, then return current header.",
+    "Explicit genuine initialized E17578 symbol pool and same raw strings plus distinct E186ED/E17654 borrowed authorities. No invented fallback, owner, callback, model or startup."
+  ],
+  "ordering_qualification": "Original second pure register CMP precedes store10C; emitted store10C at+84 precedes CMP at+87. No memory read/call/alias dependency crosses either store, and signed results/physical10C-to110 effects agree within the stable/disjoint/no-fault/no-reentry domain. No literal instruction, flags, ABI or EH identity.",
+  "strict": {
+    "failed_chunk": "5dccf0",
+    "failed_exit": 2,
+    "successful_chunk": "58e816",
+    "exit_code": 0,
+    "code_sections": 5,
+    "code_bytes": 282,
+    "instructions": 109,
+    "runtime_REL32": 6,
+    "metadata_DIR32NB": 1
+  },
+  "author_normal": {
+    "initial_chunk": "7ad0a8",
+    "session": 23849,
+    "terminal_chunk": "e0b72b",
+    "exit_code": 0,
+    "configured_tests": 2,
+    "seconds": 7.54,
+    "new_TU_registered": false
+  },
+  "Main_registered": true,
+  "Main_build": "pass",
+  "new_Source_runtime_executed": false,
+  "Original_ABI_compatible": false,
+  "Original_EH_or_private_CRT_compatible": false,
+  "global_application_startup_publication": false,
+  "game_validated": false,
+  "registered_Main_build": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_enum_declaration_Main_build01\\build_result.DATA.json",
+    "bytes": 1104,
+    "sha256": "edf7bcedb7e6912643718a917291579aaa4715ca4031f9e96e0e1845ac67d1f7"
+  },
+  "Main_validation": "reports/cc12_enum_symbol_declaration_Main_validation.json",
+  "link_contract_qualification": "Strict /MT versus actual configured Main /MD. Three exact RuntimeLibrary/default-library differences retained; no full-object, link-directive, Original private-CRT or ABI equivalence.",
+  "static_Source_gate_pass": true,
+  "Ghidra_evidence_update": {
+    "annotate_chunk": "0879b3",
+    "annotate_exit": 0,
+    "project_saved": true,
+    "prior_journal": "local/ghidra-annotations-20261015T190651Z.json",
+    "exports_chunk": "7d7161",
+    "exports_exit": 0
+  }
+}

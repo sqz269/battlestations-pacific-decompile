@@ -1,0 +1,75 @@
+{
+  "schema": "bsp.enum_canonical_providers_Main_validation.v1",
+  "addresses": [
+    "00cc8a10",
+    "00cc8a50",
+    "00cd9280",
+    "00cd9290"
+  ],
+  "Main_build": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_enum_provider_Main_build01\\build_result.DATA.json",
+    "bytes": 1773,
+    "sha256": "02d1cc0c862137b497f714b7cf9affe425703ae3b5f56edffbafa51e0c9a18e7"
+  },
+  "original_Main_build_tools": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_enum_provider_Main_build01\\original_build_tools.DATA.json",
+    "bytes": 2505,
+    "sha256": "ad438553436e2b1ce8fdf56ce01a82a2b5fbab88326f0d396eab80c673d12ed1"
+  },
+  "existing_checks_passed": 3,
+  "existing_checks_seconds": 7.72,
+  "all7_owned_build_inputs_unchanged": true,
+  "Main_advanced_during_build_from": "4dd7b1b24f3299b42712d7a9c1007051ca7337cb",
+  "Main_after": "e15b3999b25e4c7024bb1c0186283032a10df5b8",
+  "primary_all_code_and_binding_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_enum_provider_integration_20261015\\Main_primary_code_identity.DATA.json",
+    "bytes": 382168,
+    "sha256": "93115698f9a0a26a9f6a029db084cf123fdc9cc868d016eb1be2b1163efcf918"
+  },
+  "primary_archive_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_enum_provider_integration_20261015\\Main_primary_archive_identity.DATA.json",
+    "bytes": 481016,
+    "sha256": "00c29f080c07da6249ae1ee0dacf30ecc4665fd3cdb28fc7ed9a38d55499ee29"
+  },
+  "actual_Main_DATA_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\EnumCanonicalProvidersMainIdentity01\\compact_review.DATA.json",
+    "bytes": 6517,
+    "sha256": "094ffd552a3127b74030d898a87ad6eeef8de771bdee770b69d9fb48a6e978f3"
+  },
+  "primary_peer_inputs_verified": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_enum_provider_integration_20261015\\Main_peer_inputs_verified.DATA.json",
+    "bytes": 8075,
+    "sha256": "d0ea8c111250e1a537bd44e46b993aad2616f2cbf750c8fecc0f035c76ed5a70"
+  },
+  "code_sections": 107,
+  "code_bytes": 9165,
+  "instructions": 2914,
+  "code_relocations": 321,
+  "metadata_relocations": 99,
+  "finite_private_definition_pairs": 17,
+  "finite_target_pairs": 9,
+  "target_pair_sites": 29,
+  "literal_unchanged_targets": 391,
+  "directives": "All three Main and strict /MD directives literal-exact; no full-object/path/checksum/timestamp equivalence.",
+  "archive_members": 2178,
+  "archive_index_symbols": 81744,
+  "unique_Core_objects": [
+    "native_enum_node_pool.obj",
+    "game_native_physical_pool.obj"
+  ],
+  "Game_direct_object": "game_native_string_process.obj; absent from Core; no Core symbol/getter credit.",
+  "Ghidra_evidence_update": {
+    "annotate_chunk": "00ec8d",
+    "annotate_exit": 0,
+    "project_saved": true,
+    "prior_journal": "local/ghidra-annotations-20261015T184758Z.json",
+    "exports_chunk": "0d6991",
+    "exports_exit": 0
+  },
+  "static_Source_gate_pass": true,
+  "new_Source_runtime_executed": false,
+  "Original_ABI_compatible": false,
+  "Original_EH_or_private_CRT_compatible": false,
+  "global_application_startup_publication": false,
+  "game_validated": false
+}

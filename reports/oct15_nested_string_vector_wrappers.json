@@ -1,0 +1,72 @@
+{
+  "packet": "oct15_nested_string_vector_placement_wrappers",
+  "status": "complete_actual_header_source_current_cpp_eh_build_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_nested_string_vector_wrappers.cpp",
+  "header": "include/bsp/native_nested_string_vector_wrappers.hpp",
+  "documentation": "docs/OCT15_NESTED_STRING_VECTOR_WRAPPERS.md",
+  "routines": [
+    {"address": "00558640", "cpp_name": "placement_copy_native_nested_string_vector_00558640", "original_abi": "ECX actual16B slot; EDX source; no stacked input; plain RET; semantic EAX contract unestablished", "coverage": "complete_actual_header_Source_and_verified_noop_placement_unwind"},
+    {"address": "005590c0", "cpp_name": "placement_copy_native_nested_string_vector_005590c0", "original_abi": "entry ECX/EDX unconsumed; stacked slot,source; RET8; semantic EAX contract unestablished", "coverage": "complete_actual_header_Source_and_verified_noop_placement_unwind"},
+    {"address": "00559dc0", "cpp_name": "tidy_native_nested_string_vector_00559dc0", "original_abi": "entry ECX/EDX unconsumed; stacked actual16B header; RET4; no semantic return", "coverage": "complete_actual_header_Source_via_verified_00432440_equivalence"}
+  ],
+  "prior_projections_preserved": {
+    "source": "src/frontend_seg12_17_cc13.cpp",
+    "placement": "native_string_vector_placement_copy with Fe3TemplateHost",
+    "tidy": "native_string_vector_tidy_00559dc0 with Fe3TemplateHost and null-begin early return",
+    "difference": "Actual00559DC0 always clears+4,+8,+C even if begin0; historical host projection remains unchanged and separately qualified."
+  },
+  "placement_eax_observation": {
+    "nonnull_normal_return": "EAX=constructor result=slot; wrappers do not overwrite it",
+    "null_return": "EAX=entry FS:[0] prologue load, not a fabricated nullptr",
+    "source": "void APIs expose no EAX residue/return promise; live Ghidra xref queries returned no references to either wrapper"
+  },
+  "host_steps": [
+    {"address": "0055866c", "native": "00557bc0", "function": "00558640", "contract": "nonnull placement, EDX/source bits retained"},
+    {"address": "005590f2", "native": "00557bc0", "function": "005590c0", "contract": "nonnull stacked-slot placement, incoming unused EDX retained"},
+    {"address": "00559dd5", "native": "00432050", "function": "00559dc0", "contract": "actual captured8h string range destruction"},
+    {"address": "00559dde", "native": "00bf65ac", "function": "00559dc0", "contract": "free CURRENT begin after range returns"},
+    {"address": "00c6d938", "native": "00401130", "function": "00c6d930", "contract": "first verified RET-only placement-delete action"},
+    {"address": "00c6d9f8", "native": "00401130", "function": "00c6d9f0", "contract": "second verified RET-only placement-delete action"},
+    {"address": "00432454", "native": "00432050", "function": "00432440", "contract": "accepted destructor exact-schedule dependency evidence"},
+    {"address": "0043245d", "native": "00bf65ac", "function": "00432440", "contract": "accepted destructor CURRENT-begin free equivalence"},
+    {"address": "00559e6a", "native": "00559dc0", "function": "00559e5a", "contract": "separate nested-range catch incoming interface evidence only"},
+    {"address": "006a32a3", "native": "00559dc0", "function": "006a3290", "contract": "incoming stacked-header and ignored-owner interface evidence only"},
+    {"address": "006a33ba", "native": "00559dc0", "function": "006a33aa", "contract": "incoming stacked-header and ignored-owner interface evidence only"},
+    {"address": "006a440b", "native": "00559dc0", "function": "006a43fb", "contract": "incoming stacked-header and ignored-owner interface evidence only"}
+  ],
+  "original_eh": [
+    {"parent": "00558640", "handler": "00c6d941", "funcinfo": "00d97ec8", "magic": "19930522", "max_state": 1, "unwind_map": "00d97ec0", "to_state": -1, "action": "00c6d930", "try_count": 0, "eh_flags": 1, "action_parent_words": ["EBP-14h", "EBP-10h"], "action_coverage": "complete17byte_body_calls_RET_only00401130_no_observable_Source_storage_action"},
+    {"parent": "005590c0", "handler": "00c6da01", "funcinfo": "00d98004", "magic": "19930522", "max_state": 1, "unwind_map": "00d97ffc", "to_state": -1, "action": "00c6d9f0", "try_count": 0, "eh_flags": 1, "action_parent_words": ["EBP+4", "EBP-10h"], "action_coverage": "complete17byte_body_calls_RET_only00401130_no_observable_Source_storage_action"}
+  ],
+  "equivalence": {
+    "00559dc0": "00432440 then accepted actual004324A0; same32050/current-begin free/ordered clears after normalizing physical input",
+    "begin_zero": "still clears+4,+8,+C",
+    "begin_nonzero": "capture begin/end, destroy actual string range, free freshly reloaded begin, ordered clears",
+    "preserved": "+0 owner word; no local catch/retry; cleanup failure stops later operations"
+  },
+  "bindings": [
+    "accepted construct_native_string_header_vector_copy_00557bc0 with concrete actual pool/allocation services",
+    "accepted tidy_native_string_header_vector_00432440 composing actual004324A0",
+    "NativeStringRawPoolContext with existing actual publications/gate/manager; current Source CPP exception domain"
+  ],
+  "validation": {
+    "win32_release": "passed",
+    "existing_tests": "3/3 passed",
+    "log": "local/oct15_nested_string_vector_wrappers_build.log",
+    "ctest_seconds": 7.55,
+    "native_call_sites": "12 checked, 0 failed",
+    "documentation_calls": "5 checked, 0 failed, 0 unchecked, 0 warnings",
+    "new_tests": 0,
+    "complete_entry_bytes_checked": {"00558640": 64, "005590c0": 72, "00559dc0": 63},
+    "complete_action_bytes_checked": {"00c6d930": 17, "00c6d9f0": 17},
+    "placement_delete_leaf_bytes": "00401130 C3 CC CC CC"
+  },
+  "limits": [
+    "Source adds actual raw-pool context and changes stack cleanup; not original binary ABI or private-frame/register residue identity.",
+    "Current Source CPP exception composition, not original FH3/SEH, CRT exception/handler or cleanup-failure unwind identity.",
+    "No new wrapper native differential, exception fixture, original-game runtime or gameplay proof.",
+    "Historical host projections remain separate and unchanged; incoming caller evidence does not promote those callers."
+  ]
+}
