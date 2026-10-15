@@ -1,0 +1,55 @@
+{
+  "date": "2026-10-15",
+  "state": "source_reviewed_integration_pending",
+  "goal": "Continue evidence-based Battlestations Pacific reconstruction",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "architecture": "MSVC Win32"
+  },
+  "packets": [
+    {
+      "id": "goal15_zone_cleanup",
+      "entry": "0041ded0",
+      "coverage": "complete_source_schedule_with_required_external_services",
+      "report": "reports/goal15_zone_group_clear.json",
+      "worker_commit": "11ed57ccdaa3038a2177ddbc28331c0c08f5b9aa",
+      "independent_review": "complete assembly, record schema and call-site review",
+      "call_checks": {"direct_report_rows": 11, "markdown_claims": 2, "failures": 0},
+      "peer_review": "no correctness blockers; callback and returning-handler schedule checked"
+    },
+    {
+      "id": "goal15_pool_cleanup",
+      "entry": "0041f820",
+      "coverage": "complete_source_composition_with_existing_raw_pool_services",
+      "report": "reports/goal15_pool_storage_cleanup.json",
+      "worker_commit": "ac77af1230d239306d089d6827b24e884ab640de",
+      "independent_review": "complete assembly and reused provider access schedule",
+      "call_checks": {"direct_report_rows": 3, "failures": 0},
+      "peer_review": "no findings; raw-context reuse and retained-header behavior checked"
+    },
+    {
+      "id": "goal15_zone_leaf",
+      "entry": "00423640",
+      "coverage": "complete_bounded_source_orchestration_with_required_direct_bindings",
+      "report": "reports/goal15_zone_leaf.json",
+      "worker_commit": "4094c7e9c53e489e7cc957a5a04e409cd7c88dbd",
+      "independent_review": "complete assembly and emitted CVTTSS2SI/x87 arithmetic sequence",
+      "call_checks": {"direct_report_rows": 21, "failures": 0},
+      "peer_review": "no correctness blockers in non-arithmetic orchestration"
+    }
+  ],
+  "baseline_build": {"result": "pass", "ctest_passed": 2, "ctest_failed": 0, "log": "local/goal15_baseline_build.log"},
+  "registered_build": "pending",
+  "ghidra_annotation": "pending",
+  "native_abi_compatible": false,
+  "game_validated": false,
+  "new_tests_added": 0,
+  "limitations": [
+    "Source interfaces and explicit external service contracts do not establish native binary equivalence.",
+    "The owning class and producer of 0041f820 remain unknown.",
+    "00423640 requires external service bindings; no production adapter is installed.",
+    "No original-game or gameplay validation has been performed for these entries."
+  ]
+}
