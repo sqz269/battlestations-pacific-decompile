@@ -746,14 +746,85 @@ pins were frozen before edits in `local/main_scene_scne_label_receipt_f0a5963ff/
 the405 older artifact pins remain verified. Root's separate committed-file
 snapshot supplies its additional six tracked-file pins.
 
+## SCNE worker and inline batches
+
+`continue_native_main_scene_scne_batches_00b161f5` composes B161F5..B162FD:
+265 bytes and90 native instructions. It reuses the same actual preparation,
+publication, worker lifetime and material-entry domains already established
+for DRSH, and requires the same retained label-domain object. The earlier
+source prefix is unchanged. A fresh batch frame retains the per-batch entry
+frames and native call-site/completion state; the SCNE label frame remains
+live with cleanup state5 throughout.
+
+The raw synchronization byte is tested first. Only zero reaches the first
+current command+0C batch count; only its signed count greater than50 reaches
+the current command+10 count. Both must exceed50 to choose workers. The
+parallel arm writes each current batch mode before the frame getter, then
+captures the current batch and returned owner's pool+4 before B0FFB0. It reads
+that captured pool's current enqueue profile after the preparation getter and
+submits the captured batch. After both submissions, a fresh frame getter feeds
+actual BE3150(use_workers1), including genuine dispatch, drain and wait.
+
+The serial arm interleaves prepare0/execute0/prepare1/execute1. Each execution
+reloads its current batch after preparation or worker dispatch, captures its
+profile before the fresh B1BF40 camera getter, then reads that captured
+profile's current+08. Full B55550 independently reloads its actual renderer;
+its camera and index arguments are unused. Its material entries use their own
+entry+10 camera. The source keeps these identities separate. It does not add
+a worker-scope, queue-slot, owner or earlier-mutation rollback when a child
+fails. Successful completion reaches B162FE and leaves state5 armed. Source
+failure marks both frames failed and consumes the existing current-publication
+CBC47E reset after disarming to-1.
+
+The manifested fixture adapts the existing real-worker probe to this exact
+265B caller. Its wrapper supplies EDI command and EBP0, reserves enough private
+stack for the native serial capture at ESP+28, and exits at B162FE. Direct
+count/camera calls use exact original4B/7B leaves; getter and virtual operations
+resolve to genuine Source preparation, job-publication and dispatch providers.
+The fixed-base PE reservation preserves all existing section bytes, including
+the embedded manifest. No original FH3 dispatcher is installed.
+
+Six original/source pairs pass: synchronization80 with51/51;50/51;51/50;
+signed-1/51 with the actual first preparation configuration disabled;51/51 with
+real worker submission/wait; and an inactive current renderer. Nonempty raw
+entry graphs exercise sorting and the established descriptor/fade/mode6 gate.
+The command camera deliberately has mode2 and differs from each entry's mode6
+camera, confirming that the caller argument is not substituted into B55550's
+entry dispatch. The inactive-renderer case retains its cached effect; active
+cases clear it. Complete batch/entry/key/order graphs, worker-pool storage,
+queue, label service and raw string pool agree. This does not exercise an
+active material pass, shader application or device draw.
+
+The pool uses genuine one-worker construction, Win32 entry, event wake/wait,
+stop and array destruction. Frame, preparation-job and queue publications are
+warm. The manager publication contains the trapping value1 so an unexpected
+cold path cannot silently succeed; no manager body/registration is tested.
+Source-only rejection after
+real first preparation preserves the prepared batch, resets a newly published
+service while leaving the captured service's SCNE label intact, and verifies
+that a second cleanup changes neither pool nor header. The target/camera
+boundary is seeded after genuine SCNE label construction, rather than replaying
+the entire earlier main-scene chain.
+
+Strict emitted COFF is1460B/421instructions with17 provider/helper relocations.
+Checks cover signed branches, mode/getter/capture order, current pool dispatch,
+the serial loop, camera/captured-profile ordering and state5 cleanup. The fresh
+core B51B20 leaf is exactly original8B4110C3; the strict camera leaf is exactly
+the original7B. All330 inherited tagged x87 encodings remain unchanged. The
+fresh-core manifested fixture, normal build and all three existing checks pass.
+No persistent tests, CMake activation or host route were added. Artifacts are
+in `local/main_scene_scne_batch/`; all55 preceding target artifacts and their
+six committed snapshots, plus458 historical artifacts and six older committed
+snapshots, were verified before changes and remain frozen.
+
 ## Next executed clause
 
-B161F5 tests the actual synchronization byte, then signed current batch counts
-through B51B20, requiring both to exceed50 for worker preparation. The next
-bounded composition must retain SCNE state5 across actual B0FFB0/job submission,
-wait and current batch preparation/draw operations. Existing concrete count,
-job-publication, lifecycle and batch-dispatch providers are available, but this
-caller clause is not yet composed. Remaining scene/post/cockpit/distortion/
-statistics passes and subsequent cleanup states still need their bounded
-compositions. B17240 preparation remains separate. D5E13C continues to be
-unadmitted pending the complete raw body and application graph.
+B162FE again tests original service current+22D and selects current+48/+44
+before B1630F calls B4CAF0. Current ledgers contain typed `render_fx_cc13.cpp`
+models for B4CAF0 and its B3CDA0 surface-copy child, not the required actual-
+storage caller composition. After that call, eight current renderer+130
+operations precede normal state5 disarm at B1633E and B13510 reset at B16349.
+Those operations, POST ownership, remaining scene/cockpit/distortion/statistics
+passes and later cleanup states still need bounded compositions. B17240
+preparation remains separate. D5E13C stays unadmitted pending the complete raw
+body and application graph.
