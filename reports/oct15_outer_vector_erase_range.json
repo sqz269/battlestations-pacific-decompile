@@ -1,0 +1,102 @@
+{
+  "packet": "oct15_outer_vector_erase_range",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_outer_vector_erase_range.cpp",
+  "header": "include/bsp/native_outer_vector_erase_range.hpp",
+  "documentation": "docs/OCT15_OUTER_VECTOR_ERASE_RANGE.md",
+  "routines": [
+    {
+      "address": "006a5bf0",
+      "implementation": "erase_native_outer_vector_range_006a5bf0",
+      "retained_old_name": "STL_inst_006a5bf0",
+      "body_first": "006a5bf0",
+      "body_last_inclusive": "006a5c47",
+      "bytes": 88,
+      "sha256": "4335203e7ca2cb2ee7416d61b8f2aee19b6dac4fb1bb49f74f7c9914e79e6be4",
+      "instructions": 37,
+      "complete_typed_body": true,
+      "live_equals_installed_PE": true,
+      "all_export_starts_equal_disk_capstone": true,
+      "original_abi": "ECX actual outer16B header; five stacked words(output iterator,first owner,first position,last owner,last position), RET14h; EAX output iterator after owner/position stores. Source reserves EDX and adds context."
+    },
+    {
+      "address": "006a6310",
+      "implementation": "clear_native_outer_vector_via_erase_006a6310",
+      "retained_old_name": "STL_inst_006a6310",
+      "body_first": "006a6310",
+      "body_last_inclusive": "006a6348",
+      "bytes": 57,
+      "sha256": "5e49344cfce9d4bd27d6a2a679a03d2c7d61de1626410876747ff3bb813af0b4",
+      "instructions": 26,
+      "complete_typed_body": true,
+      "live_equals_installed_PE": true,
+      "all_export_starts_equal_disk_capstone": true,
+      "original_abi": "ECX actual header, EDX unconsumed, no stacked words, plain RET; private output-iterator EAX not promoted. Source context inEDX and void interface."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "006a5c03",
+      "native": "00bf6713",
+      "function": "006a5bf0",
+      "binding": "Direct accepted invalid-parameter noinfo wrapper/current SDK policy; a returning diagnostic does not terminate the Source schedule."
+    },
+    {
+      "address": "006a5c1b",
+      "native": "006a29c0",
+      "function": "006a5bf0",
+      "binding": "Direct accepted actual owning16B inner-header forward assignment; preserve overlap/current child reads."
+    },
+    {
+      "address": "006a5c30",
+      "native": "0055a3a0",
+      "function": "006a5bf0",
+      "binding": "Direct accepted actual16B inner-header range cleanup from returned new end to CURRENT receiver end; receiver/output are dead metadata."
+    },
+    {
+      "address": "006a6320",
+      "native": "00bf6713",
+      "function": "006a6310",
+      "binding": "Direct accepted invalid-parameter noinfo wrapper/current SDK policy; a returning diagnostic does not terminate the Source schedule."
+    },
+    {
+      "address": "006a632d",
+      "native": "00bf6713",
+      "function": "006a6310",
+      "binding": "Direct accepted invalid-parameter noinfo wrapper/current SDK policy; a returning diagnostic does not terminate the Source schedule."
+    },
+    {
+      "address": "006a633d",
+      "native": "006a5bf0",
+      "function": "006a6310",
+      "binding": "Direct full actual erase service in this packet with private two-word output iterator; captured begin/end survive diagnostics."
+    }
+  ],
+  "typed_capture": "local/oct15_outer_erase_typed_flow.json",
+  "typed_modification": "248",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "eh": "No local native EH frame; Source adds no local catches or rollback. Child failures preserve earlier effects.",
+  "schedule": [
+    "5BF0 captures first owner before null/owner comparison and returning diagnostic; capture first/last positions afterward; unequal positions invoke actual forward assignment(last,current end,first).",
+    "Capture returned new end; reload current receiver end for actual suffix cleanup; only afterward store new receiver end. Finally store output iterator owner then position and return output address. Equal positions skip receiver range/cleanup/end read and still perform iterator stores.",
+    "6310 captures original end before first unsigned begin>end comparison; after any returning diagnostic, capture begin, compare it with current end, preserve captures through second diagnostic; full erase(owner,begin,owner,original end) into private iterator."
+  ],
+  "limits": [
+    "Added explicit actual RawPoolContext/currentCRT/CPP interfaces do not establish native register/stack ABI, FH3/SEH/RTTI, faults, handler-failure or gameplay identity.",
+    "Current SDK diagnostic policy differs from original encoded provider/Watson/debugger selection; may return and Source retains subsequent reads.",
+    "Admitted actual taken storage, reachable endpoints and child ownership/pool/CRT contracts; exclude native/Source private-frame aliases.",
+    "No added owner/receiver equality check, null/range/self guard, snapshot, allocation, catch or rollback. Output may alias storage and final stores retain native order.",
+    "Existing native math tests cover prior seeds; no new-entry native differential or live game execution."
+  ],
+  "build": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "log": "local/oct15_tenth_erase_insert_build.log",
+    "source_compiled": true,
+    "existing_suites_passed": 3,
+    "existing_suites_total": 3,
+    "ctest_seconds": 7.09,
+    "native_math_scope": "Prior verified seeds only; no new-entry native execution."
+  }
+}
