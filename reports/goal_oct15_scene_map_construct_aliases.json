@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_scene_map_constructor_aliases",
+  "source": "src/native_scene_record_map_construct_aliases.cpp",
+  "header": "include/bsp/native_scene_record_map_construct_aliases.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_MAP_CONSTRUCT_ALIASES.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "address": "00468900",
+      "end_exclusive": "00468929",
+      "coverage": "complete ordinary Source",
+      "cpp_symbol": "construct_native_scene_record_map_head_00468900",
+      "original_abi": "ECX tree,unused EDX,no stacked args,RET;raw final EAX last head capture; semantic return type unestablished",
+      "instruction_count": 14,
+      "native_bytes": 41,
+      "bytes": "56 8b f1 e8 58 f9 ff ff 89 46 04 c6 40 19 01 8b 46 04 89 40 04 8b 46 04 89 00 8b 46 04 89 40 08 c7 46 08 00 00 00 00 5e c3",
+      "sha256": "2416383436d6f04ba0925f013aee0376fe911028809ce6f054031ff71e8a7d5b",
+      "live_disk_equal": true,
+      "live_callers": 0
+    },
+    {
+      "address": "0046f130",
+      "end_exclusive": "0046f15b",
+      "coverage": "complete ordinary Source",
+      "cpp_symbol": "construct_native_scene_record_map_head_0046f130",
+      "original_abi": "ECX tree,unused EDX,no stacked args,RET;EAX original tree",
+      "instruction_count": 15,
+      "native_bytes": 43,
+      "bytes": "56 8b f1 e8 28 91 ff ff 89 46 04 c6 40 19 01 8b 46 04 89 40 04 8b 46 04 89 00 8b 46 04 89 40 08 c7 46 08 00 00 00 00 8b c6 5e c3",
+      "sha256": "9f7aa4f7d09088563302908d10e7fb1b5a8f94e38a0b7f4fce7bd142778c3728",
+      "live_disk_equal": true,
+      "live_callers": 0
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00468903",
+      "native": "00468260",
+      "function": "00468900"
+    },
+    {
+      "address": "0046f133",
+      "native": "00468260",
+      "function": "0046f130"
+    }
+  ],
+  "source_reuse": "F130 reuses complete Source00468E70 identical memory/result schedule, not a native call; native RET vs RET8/unread two words differs.900 retains raw EAX last-head capture without semantic return hypothesis.",
+  "status": "whole_raw_Source_build_pending",
+  "abi_compatible": false,
+  "game_validated": false,
+  "limits": [
+    "Actual raw storage and real currentCRT allocator; no Original binary/register/stack/CRT ABI identity.",
+    "No new-body native differential,application or game proof."
+  ]
+}
