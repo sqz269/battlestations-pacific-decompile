@@ -1,0 +1,1397 @@
+{
+  "packet": "cc12_procedural_factory_setup_contract",
+  "status": "read_only_current_source_and_native_order_verified_application_operation_required",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "worker_base": "5e02dd6dba778feaf4856443be988796ba81140b",
+  "reviewed_main": "f1ed97fbd26068230c923dd25affa5c9128aced6",
+  "installed_binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "installed_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "documentation": "docs/NATIVE_PROCEDURAL_FACTORY_SETUP_CC12.md",
+  "documentation_sha256": "3cb410771ef1cfb413628753c75591a913b50168d10b6d0bac45637e80a9cfcc",
+  "actual_execution": {
+    "factory_setup": false,
+    "factory_lookup": false,
+    "sampler_Source1": false,
+    "GPU": false,
+    "copied_original": false,
+    "game": false
+  },
+  "startup_order": [
+    {
+      "site": "0073d894",
+      "target": "00738360",
+      "purpose": "resource search registrations"
+    },
+    {
+      "site": "0073d8cc",
+      "target": "00bbcb40",
+      "purpose": "genuine procedural table setup"
+    },
+    {
+      "site": "0073d8f3",
+      "target": "00becda0",
+      "purpose": "later Win32 platform construction"
+    },
+    {
+      "site": "0073dd12",
+      "target": "0073bf80",
+      "purpose": "later shader preload, separate binary-cache bracket"
+    }
+  ],
+  "shutdown_order": [
+    {
+      "site": "00738314",
+      "target": "00bbc5d0",
+      "purpose": "capture table, destroy slots C/8/4/0, free captured table; leave publication unchanged"
+    },
+    {
+      "site": "00738319",
+      "target": "00736930",
+      "purpose": "later actual F8D420 loader retirement"
+    }
+  ],
+  "factories": [
+    {
+      "slot": "00",
+      "name": "CausticsTextureSource",
+      "literal": "00ce7dec",
+      "registration": "00bbc5f0",
+      "initial_profile": "00d64470",
+      "final_profile": "00d644e8",
+      "factory_delete": "00bbc890",
+      "creator": "00bbc6f0",
+      "resource_profile": "00d64478",
+      "resource_virtual0": "00bd30e0",
+      "resource_scalar04": "00bbc6d0"
+    },
+    {
+      "slot": "04",
+      "name": "ShoreWaveTextureSource0",
+      "literal": "00ce7dc8",
+      "registration": "00bbc740",
+      "initial_profile": "00d644ac",
+      "final_profile": "00d644f0",
+      "factory_delete": "00bbc8e0",
+      "creator": "00bbc810",
+      "resource_profile": "00d644b4",
+      "resource_virtual0": "00bd30e0",
+      "resource_scalar04": "00bbc7f0"
+    },
+    {
+      "slot": "08",
+      "name": "ShoreWaveTextureSource1",
+      "literal": "00ce7da4",
+      "registration": "00bbc740",
+      "initial_profile": "00d644ac",
+      "final_profile": "00d644f0",
+      "factory_delete": "00bbc8e0",
+      "creator": "00bbc810",
+      "resource_profile": "00d644b4",
+      "resource_virtual0": "00bd30e0",
+      "resource_scalar04": "00bbc7f0"
+    },
+    {
+      "slot": "0c",
+      "name": "ShoreWaveTextureSource2",
+      "literal": "00ce7d80",
+      "registration": "00bbc740",
+      "initial_profile": "00d644ac",
+      "final_profile": "00d644f0",
+      "factory_delete": "00bbc8e0",
+      "creator": "00bbc810",
+      "resource_profile": "00d644b4",
+      "resource_virtual0": "00bd30e0",
+      "resource_scalar04": "00bbc7f0"
+    }
+  ],
+  "table_setup": {
+    "wrapper": "00bbcb40",
+    "table_constructor": "00bbc900",
+    "table_bytes": 16,
+    "factory_bytes": 4,
+    "number_of_factories": 4,
+    "publication": "01090900",
+    "allocator": "00bf681b",
+    "registry": "00b1b730",
+    "registry_publication": "00f8d41c",
+    "manager_publication": "01090aa0",
+    "registry_profiles": [
+      "00d5e594",
+      "00d5e59c"
+    ],
+    "registry_slot04": "00b1b3a0",
+    "insertion": "complete existing native_resource_registry_insertion",
+    "node_factory_offset": "14",
+    "node_factory_ownership": "borrowed; no retain/release/unregister; existing key keeps prior factory",
+    "normal_provider_call_count": 20,
+    "table_registered_with_manager": false,
+    "initialization_guard_in_original": false,
+    "allocation_null_behavior": "publish zero; no substitute table"
+  },
+  "available_application_bindings": [
+    "GameSingletonHost manager01090AA0 and actual F8D41C publication; genuine registry deletion binding is installed by GameNativeVfsApplication after core setup",
+    "GameVfsHost::raw_strings() supplies raw AA8/AA4/AA0 context; raw_services.strings is a separate interface over the same pool domain",
+    "VFS invalid_parameters binding and CE47BC length-error literal",
+    "GameNativeReadOnlyData current CE/D5/D6 bands cover the native names and registry/factory/resource profiles",
+    "Existing normal build registers procedural factory storage, table construction/storage, registry insertion and sampler entry",
+    "GameNativeGuiSamplerApplication actual creator callback binds the real34h resource through NativeProceduralResourceReference to SAME renderer actual_owners before cache publication/retain"
+  ],
+  "missing_application_bindings": [
+    "One retained owner for actual mutable Source publication01090900, with explicit borrowed-cell identity; not copied/private duplicate or read-only mapped storage",
+    "Persistent one-shot table setup and retirement operation that borrows SAME VFS/manager/registry/profile domain before effects",
+    "Complete initialized live publication/constructor/factory/registration/value/hint/fallback/link/node-allocation frame tree; typed iterators/results/SBO and separate diagnostics",
+    "Explicit ordinary Source incoming-ECX/preimage inputs without claiming Original caller-register/private-stack values",
+    "Coordinator-owned startup insertion before dependent sampler work, quiescence before table retirement, then loader/shared-manager drain",
+    "Failure retention and explicit residual disposition; no automatic registry rollback, unregister, second table, retry or false cleanup success"
+  ],
+  "ordinary_source_vs_original": {
+    "ordinary": "A fixture may initialize and record real Source cells and execute the complete existing producer. Those are explicit fixture inputs, not recovered native preimages.",
+    "original": "BBCB40 saves incoming ECX before allocation; 73D8CC does not set one constant ECX across all incoming paths. BBC900 initializes its own EBX/EBP. Untouched native scratch/register/FH3 values are not inferred.",
+    "independent_Source1": "B3B280 true entry word, actual invocation owner and post-release-word observation remain separate from procedural registration."
+  },
+  "genuine_sampler_chain": [
+    "00b1b4d0",
+    "00b1a4f0 real platform-message pump",
+    "00b1a51d current cache continuation",
+    "00ce7d24+08 -> 00b1b810",
+    "00b1b730",
+    "00b19e90 current registry lookup",
+    "current factory profile+04 -> 00bbc6f0 or 00bbc810",
+    "actual34h creator allocation and canonical admission",
+    "actual cache creator credit and caller retain"
+  ],
+  "physical_asset_candidates": [
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\fog_shadow_uw.shfx",
+      "name": "CausticsTextureSource",
+      "selector": "TEXSRC_TEXANIMATOR=1",
+      "evidence": "physical file only"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\shore.shfx",
+      "names": [
+        "ShoreWaveTextureSource0",
+        "ShoreWaveTextureSource1",
+        "ShoreWaveTextureSource2"
+      ],
+      "selector": "TEXSRC_TEXANIMATOR=1",
+      "evidence": "physical file only"
+    }
+  ],
+  "candidate_next_packet": {
+    "owned_source": [
+      "include/bsp/game_native_procedural_factory_application.hpp",
+      "src/game_native_procedural_factory_application.cpp"
+    ],
+    "owned_evidence": [
+      "new dedicated application-operation doc/report",
+      "new ignored source fixture receipt"
+    ],
+    "integrator_owned": [
+      "cmake/startup.cmake registration",
+      "game_hosts.cpp host activation",
+      "existing GUI/fakemotion probe files"
+    ],
+    "proposed_publication_contract": "Borrow one explicitly caller-owned mutable void* volatile& table cell, or coordinate one retained application/process owner; do not silently choose per-fixture copies or fixed-address native admission.",
+    "activation": "Separate from the guarded Source operation until Original order/domain owner is selected; no GPU launch in the bounded implementation packet"
+  },
+  "validation": {
+    "result": "PASS",
+    "checks": 549,
+    "main_HEAD": "f1ed97fbd26068230c923dd25affa5c9128aced6",
+    "read_only": true,
+    "factory_or_sampler_execution": false,
+    "GPU_execution": false,
+    "inputs": 102,
+    "source_snapshots": 50,
+    "native_spans": 26,
+    "native_bytes": 2001,
+    "prior_artifacts": 240,
+    "prior_committed": 12,
+    "cplusplus_changed": false,
+    "cmake_changed": false,
+    "ledger_changed": false,
+    "ghidra_mutated": false,
+    "build_rerun": false,
+    "build_reason": "Read-only readiness contract; no implementation changed.",
+    "application_search": {
+      "commit": "f1ed97fbd26068230c923dd25affa5c9128aced6",
+      "files_scanned": 161,
+      "needles": [
+        "publish_native_procedural_factory_table_00bbcb40",
+        "construct_native_procedural_factory_table_00bbc900",
+        "construct_native_caustics_factory_00bbc5f0",
+        "construct_native_shore_wave_factory_00bbc740",
+        "shutdown_native_procedural_factory_table_00bbc5d0",
+        "01090900"
+      ],
+      "hits": []
+    }
+  },
+  "limits": [
+    "No new factory or sampler execution; no current real-owner Source1 proof.",
+    "Physical descriptor references do not prove selected VFS data, native Lua output, compiler mode, native sampler entry/post-release words, shader cache query order or GPU success.",
+    "No fabricated owner, synthetic counter, cache/registry seed, provider fallback, shader-cache bracket change or native preimage assumption.",
+    "CC10 historical Source-only table fixture is documented; historical copied-native comparison was inconclusive and is not newly credited here.",
+    "No native binary ABI/FH3/SEH, fixed-address mutable global, complete Original application startup/shutdown, full scene or gameplay admission."
+  ],
+  "prior_sealed_manifests": [
+    {
+      "manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\world_fake_post_cache_probe_receipt_5e02dd6db\\manifest.json",
+      "sha256": "3497615e2b49d92c3ba26b7f22b3181b416786cbe0f2fd566c0e964bafdccb8a",
+      "artifacts": 60,
+      "committed": 4
+    },
+    {
+      "manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\world_post_cache_contract_receipt_78ba57fd9\\manifest.json",
+      "sha256": "01bfb898aec0e9f4dc542f1be467741b4c095e6595b0e1f9d7375f668c168d91",
+      "artifacts": 118,
+      "committed": 2
+    },
+    {
+      "manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\main_scene_post_targets_receipt_6d84c7d68\\manifest.json",
+      "sha256": "94ed2fd835063fd266f08c7fa92865588157b8ed0e543a077b8a6059513b48d7",
+      "artifacts": 62,
+      "committed": 6
+    }
+  ],
+  "native_spans": [
+    {
+      "name": "startup_factory_window",
+      "address": "0073d890",
+      "bytes": 104,
+      "sha256": "b9987878d4b0bdd0cc969996dfb1ce23ceeb857041541e705154b60275c9e697",
+      "live_ghidra_matches_installed_PE": true,
+      "instructions": 24,
+      "code": true
+    },
+    {
+      "name": "startup_preload",
+      "address": "0073dd02",
+      "bytes": 21,
+      "sha256": "b58ab4102e0c36c6f7a56ddc09714a7ab9359ae5ba751933741535e3e7f7f382",
+      "live_ghidra_matches_installed_PE": true,
+      "instructions": 5,
+      "code": true
+    },
+    {
+      "name": "shutdown_factory_then_loader",
+      "address": "0073830a",
+      "bytes": 30,
+      "sha256": "8990763a06141ad92dec90f1973d7874b880a1fec155624b662d4810ba79a496",
+      "live_ghidra_matches_installed_PE": true,
+      "instructions": 6,
+      "code": true
+    },
+    {
+      "name": "table_publication",
+      "address": "00bbcb40",
+      "bytes": 96,
+      "sha256": "800f89f585d7ad58597d9545cbf06a404abf5179c5014b6be25a1dedfd3ec90a",
+      "live_ghidra_matches_installed_PE": true,
+      "instructions": 26,
+      "code": true
+    },
+    {
+      "name": "table_construction",
+      "address": "00bbc900",
+      "bytes": 573,
+      "sha256": "39938e8964a5431a80477f5052c7c0388f663b9ec469020abb61bafa21eb1a0f",
+      "live_ghidra_matches_installed_PE": true,
+      "instructions": 177,
+      "code": true
+    },
+    {
+      "name": "caustics_registration",
+      "address": "00bbc5f0",
+      "bytes": 83,
+      "sha256": "5719f8506a028dba5ccb810b0a0fa3e817bb092eea5d7f870734e28281a32517",
+      "live_ghidra_matches_installed_PE": true,
+      "instructions": 25,
+      "code": true
+    },
+    {
+      "name": "shore_registration",
+      "address": "00bbc740",
+      "bytes": 83,
+      "sha256": "53c256624f920fc34fb551aae67585503c789ffb7916d74e68993de8229d1e29",
+      "live_ghidra_matches_installed_PE": true,
+      "instructions": 25,
+      "code": true
+    },
+    {
+      "name": "registry_getter",
+      "address": "00b1b730",
+      "bytes": 200,
+      "sha256": "bb032fcf785ab485134e3f1b4643154a461e636aaae6c09bfd31f713a09484e4",
+      "live_ghidra_matches_installed_PE": true,
+      "instructions": 55,
+      "code": true
+    },
+    {
+      "name": "registry_register",
+      "address": "00b1b3a0",
+      "bytes": 84,
+      "sha256": "4e975fe98e680ca49245f1706c7f56ab7932aba84a43237a8f07f8b46b33812c",
+      "live_ghidra_matches_installed_PE": true,
+      "instructions": 33,
+      "code": true
+    },
+    {
+      "name": "registry_lookup",
+      "address": "00b19e90",
+      "bytes": 108,
+      "sha256": "c40d13471f483f98b2fd146721acd0730c3ea4040ab2f463eab034f43ed6aa09",
+      "live_ghidra_matches_installed_PE": true,
+      "instructions": 46,
+      "code": true
+    },
+    {
+      "name": "loader_factory_dispatch",
+      "address": "00b1b810",
+      "bytes": 20,
+      "sha256": "8a65e02675980fa957b1a0e9d36c98b9b89afb43e7d2ee3f84189a5421809ce8",
+      "live_ghidra_matches_installed_PE": true,
+      "instructions": 6,
+      "code": true
+    },
+    {
+      "name": "caustics_creator",
+      "address": "00bbc6f0",
+      "bytes": 80,
+      "sha256": "310c1fb7dad8d55e21d7f1b328a82539bf058e2c355451fe447951ab14510cfd",
+      "live_ghidra_matches_installed_PE": true,
+      "instructions": 25,
+      "code": true
+    },
+    {
+      "name": "shore_creator",
+      "address": "00bbc810",
+      "bytes": 80,
+      "sha256": "4a25637fc7034fdce68be05e3ff0478dc5b433e444c8a15dadcc94df49613455",
+      "live_ghidra_matches_installed_PE": true,
+      "instructions": 25,
+      "code": true
+    },
+    {
+      "name": "table_destroy",
+      "address": "00bbc520",
+      "bytes": 144,
+      "sha256": "8653ab5f55aae5941086442b2f0ae9a8b7a30f74ac5461baabb872e111cd1207",
+      "live_ghidra_matches_installed_PE": true,
+      "instructions": 53,
+      "code": true
+    },
+    {
+      "name": "table_shutdown",
+      "address": "00bbc5d0",
+      "bytes": 29,
+      "sha256": "ee0618a56ec7836941afd84e36193b1c44d5f3e090e5022495a8e2a68a60de35",
+      "live_ghidra_matches_installed_PE": true,
+      "instructions": 11,
+      "code": true
+    },
+    {
+      "name": "sampler_default_cache_call",
+      "address": "00b1b56e",
+      "bytes": 29,
+      "sha256": "33ab62cccf1f2d16e10c8fe8af4d745f3dda3195332fbb24f39aba83eed4def4",
+      "live_ghidra_matches_installed_PE": true,
+      "instructions": 10,
+      "code": true
+    },
+    {
+      "name": "registry_profiles",
+      "address": "00d5e594",
+      "bytes": 16,
+      "sha256": "c00c0f50c39de292fb1f7372275d131a6332b7dd3b22883957b9bc7df2ee0394",
+      "live_ghidra_matches_installed_PE": true,
+      "instructions": 0,
+      "code": false
+    },
+    {
+      "name": "caustics_reader_profile",
+      "address": "00d64470",
+      "bytes": 8,
+      "sha256": "858b4a794e745f933967b3efc26c0825c1183be90d9f5224b24191f1f43c933e",
+      "live_ghidra_matches_installed_PE": true,
+      "instructions": 0,
+      "code": false
+    },
+    {
+      "name": "shore_reader_profile",
+      "address": "00d644ac",
+      "bytes": 8,
+      "sha256": "667131abd52b9a79518ec858a3216b550299afd892756544c5316360dd5f85d4",
+      "live_ghidra_matches_installed_PE": true,
+      "instructions": 0,
+      "code": false
+    },
+    {
+      "name": "table_factory_profiles",
+      "address": "00d644e8",
+      "bytes": 16,
+      "sha256": "54147319170bff1bcfe88d692bca0992f61bb7361a5dc2bf7a38f1ee87ea9ebc",
+      "live_ghidra_matches_installed_PE": true,
+      "instructions": 0,
+      "code": false
+    },
+    {
+      "name": "caustics_resource_profile",
+      "address": "00d64478",
+      "bytes": 8,
+      "sha256": "c916f226b74b983b1bde5e98659bbdacc5206ed84aa7eb64017209cee7933624",
+      "live_ghidra_matches_installed_PE": true,
+      "instructions": 0,
+      "code": false
+    },
+    {
+      "name": "shore_resource_profile",
+      "address": "00d644b4",
+      "bytes": 8,
+      "sha256": "1670667b0edfaefa9793b4f65435dd7b2cc609320a6ab580fcb28dbe55f46421",
+      "live_ghidra_matches_installed_PE": true,
+      "instructions": 0,
+      "code": false
+    },
+    {
+      "name": "loader_profile",
+      "address": "00ce7d24",
+      "bytes": 20,
+      "sha256": "82fed636b359d203664f7b11c3f1d6a12fab8cb5782d4abf7276be51c5a3fec8",
+      "live_ghidra_matches_installed_PE": true,
+      "instructions": 0,
+      "code": false
+    },
+    {
+      "name": "table_names",
+      "address": "00ce7d80",
+      "bytes": 129,
+      "sha256": "26169359f7ba925ab42259bdd6364b94cd451f19fddfcba1e532f99687f73941",
+      "live_ghidra_matches_installed_PE": true,
+      "instructions": 0,
+      "code": false
+    },
+    {
+      "name": "length_error_text",
+      "address": "00ce47bc",
+      "bytes": 20,
+      "sha256": "d9812c08dd702f493578cf64ef34c80bcb5acf24e29d246839c9ad664db812df",
+      "live_ghidra_matches_installed_PE": true,
+      "instructions": 0,
+      "code": false
+    },
+    {
+      "name": "table_initial_data",
+      "address": "01090900",
+      "bytes": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_ghidra_matches_installed_PE": true,
+      "instructions": 0,
+      "code": false
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\application_search.json",
+      "bytes": 418,
+      "sha256": "cde7e9d1f5ef01da86c470fc704869e89ed08e7387a026d573e273e4cfd45fc7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\assets\\dx9_lua.inc",
+      "bytes": 3117,
+      "sha256": "7766adc9c116a9e396b3dd77e9d97b3ea6d55c84601cb2a5a49a64362605b11f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\assets\\lights\\fog_shadow_uw.shfx",
+      "bytes": 4091,
+      "sha256": "0f6afd9362d4ce3769607528cad936e2c63c9d1b91728f2d67b6982191da3420"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\assets\\ocean\\shore.shfx",
+      "bytes": 6350,
+      "sha256": "7e724802b88ee0f1aed73efd19b61f9c9b61155d8d6f3890257beda02a3993ca"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\audit.json",
+      "bytes": 72561,
+      "sha256": "3f7bc452bee688cbcc82959d2469a531827a1251d8718030e2569756881c9e5f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\audit.log",
+      "bytes": 302,
+      "sha256": "3a150f5d61800204eb77c106fecdad8245d2751d8f1ab64d41de1c1e13748175"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\audit.py",
+      "bytes": 11016,
+      "sha256": "89d8da7688ebe4c80ac23e1b1f933a57fae016463d8ed45afed05bf97d0e1b92"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\capture.json",
+      "bytes": 44800,
+      "sha256": "6bd659c5b6af9b911de69d12174280eb5851cc9512aac3b8eb935c3dbdc20e53"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\capture.log",
+      "bytes": 229,
+      "sha256": "770e513d1ac1b28b203b5d70c22226f61f978693fd21fc6f0f36d5f28c69de75"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\capture.py",
+      "bytes": 9050,
+      "sha256": "27f7f5be13d3f222ccd869a2ddb41f45bda71c36c0bd45854c022dcf11707b02"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00737f30\\assembly.txt",
+      "bytes": 10004,
+      "sha256": "ffe89733bc85d9eb6db0e9cf720a36209fb519cf64e927c537027a3a791ca49d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00737f30\\decompiled.c",
+      "bytes": 9486,
+      "sha256": "7530dc66e01533f34a55efe5b7304e5613e1d830406e5e62cb0db48fee50302d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00737f30\\metadata.json",
+      "bytes": 271,
+      "sha256": "cc71c9cbecf64dc7c1f31db5b6141374896565a5b1720009566d209dd3e9ab5e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\0073d410\\assembly.txt",
+      "bytes": 33500,
+      "sha256": "5fb8af108ad4f7632bdf2f7cb3f967d756cdae9a71f9d054134022696051c88f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\0073d410\\decompiled.c",
+      "bytes": 70936,
+      "sha256": "685abc8ae1a857cc4e9b37f340fbf8b8fe5cdd508c234ab40e4565cad6fa489d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\0073d410\\metadata.json",
+      "bytes": 273,
+      "sha256": "74bfafab82c2665088b6adf7f0bb9d367a7f965da1a33db8c6ecf632474406bb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00b19e90\\assembly.txt",
+      "bytes": 1185,
+      "sha256": "fbc6a79cf255919f18ffe237ded1f59c705ac170932d13e244770d51f772431f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00b19e90\\decompiled.c",
+      "bytes": 4396,
+      "sha256": "5b49d540d062290ecb74d59df2ec148473a12e12cb371c71a9bf474131f63a84"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00b19e90\\metadata.json",
+      "bytes": 282,
+      "sha256": "ae91904a546d96ffb821a5d1b562efdc0eeb29ad85734d9fb4cdc6e59411ffd8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00b1b3a0\\assembly.txt",
+      "bytes": 874,
+      "sha256": "584cad85804b3af7d51a5a69f915d19d17d52adff3839daf5e8d2ab6cd535899"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00b1b3a0\\decompiled.c",
+      "bytes": 1373,
+      "sha256": "d528b3e5ff04ecfa41218c86adc741f608a916555966c1dde780f21c7cb934aa"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00b1b3a0\\metadata.json",
+      "bytes": 283,
+      "sha256": "d8b1d935a16f8d23e0b37aa9ee03f7fa186dc66fe744ede1778fbb2d8a991a0a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00b1b4d0\\assembly.txt",
+      "bytes": 2613,
+      "sha256": "edb44684fdf8edc49c38220a0a569e8cc174f6fe5bb0ae902c55e57b35fa43e6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00b1b4d0\\decompiled.c",
+      "bytes": 4383,
+      "sha256": "9ec5ad754c34090dac32454267a938c2e02f47a0363b22737b45467850b6bf2c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00b1b4d0\\metadata.json",
+      "bytes": 296,
+      "sha256": "05a2a57bb2960ac72cd20b68f3a5fca7a80f6bf9cb0c657e00133fdaaa10380a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00b1b730\\assembly.txt",
+      "bytes": 1618,
+      "sha256": "9f9d52c9af986efad2b362b794eba714a4c68bb0acfbfd7b966e465748248fe5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00b1b730\\decompiled.c",
+      "bytes": 5456,
+      "sha256": "2868c3d0ef3f86c0b2500bb82ca2d240d7874c79d5c4980d6cc68f9e249b86b1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00b1b730\\metadata.json",
+      "bytes": 280,
+      "sha256": "362fd0090fc58fbd2b9fe1d595ca723d328218ec3ca88ff735c08ff2009d7715"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00b1b810\\assembly.txt",
+      "bytes": 157,
+      "sha256": "4f9979d5139fd7bbc9fe40251445c59daae5425bc71982fb7bde5314c440fc6d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00b1b810\\decompiled.c",
+      "bytes": 1930,
+      "sha256": "bd1f31cae73b80ce8d5ba971b6b18e7a1d4d710d9e38402bcbf2b479d14ba67a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00b1b810\\metadata.json",
+      "bytes": 286,
+      "sha256": "35944eef524917c359ddad8c6cb572d7ea1672dfde366687ec67c8db3cd728d0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00bbc520\\assembly.txt",
+      "bytes": 1555,
+      "sha256": "33ca894c5b214e18c051f09e7938a3289123606b9be15e620c94015f50f79cc8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00bbc520\\decompiled.c",
+      "bytes": 1862,
+      "sha256": "f78aefea97312aeab62eedf2bc4d1f1f4b0652273a09363dc98963e73cc291c7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00bbc520\\metadata.json",
+      "bytes": 281,
+      "sha256": "bddacd55fb967f4dbb6451ae253df1e88c3e389a6c70edc90177249cd9f84b01"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00bbc5d0\\assembly.txt",
+      "bytes": 265,
+      "sha256": "1f8d0a4ff6910619b09d97dfa077c9ff8042b7810f07b77183e8b35d5ec8dccc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00bbc5d0\\decompiled.c",
+      "bytes": 1805,
+      "sha256": "d40671775a3817255d55fd79e172505e7f7f41eab36f8efc53dffc6a653b22ad"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00bbc5d0\\metadata.json",
+      "bytes": 280,
+      "sha256": "4e42950cc78e5b93afcd5afe835d0686abf556da06ce0c03d1443e3aba0ca7e0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00bbc5f0\\assembly.txt",
+      "bytes": 710,
+      "sha256": "3e89b19a458eda723f14a9df4a5edae61399f2774e117319e6777eca02cccd8d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00bbc5f0\\decompiled.c",
+      "bytes": 1308,
+      "sha256": "a08fd98fd467ec0d72c7d0e2ce8b610bafb38263af57ed8770bcd91e12a6d57b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00bbc5f0\\metadata.json",
+      "bytes": 279,
+      "sha256": "4d3933920c4616635479418c06e1fa57c25a761ce62fae998a82c726a8e6390b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00bbc6f0\\assembly.txt",
+      "bytes": 670,
+      "sha256": "1083b0d785a05dad4358cdc13427aed4aba7657c3ff0533af841d78e74e3c51c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00bbc6f0\\decompiled.c",
+      "bytes": 1924,
+      "sha256": "f22ceaba0494c4265df02298f6d8c253774c14a402ec5f16de415b25292726b4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00bbc6f0\\metadata.json",
+      "bytes": 279,
+      "sha256": "fa22c69901f3f83a7394df614a08b3091001f2aadbd1a0372a3a38e29115da1d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00bbc740\\assembly.txt",
+      "bytes": 710,
+      "sha256": "03aa66b50d8f98fea3ce7eb84d84628eef507c48c43c4563cb667750d2775523"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00bbc740\\decompiled.c",
+      "bytes": 1310,
+      "sha256": "7f25b5eafc863df6a5bdd48e4dde062539504c9b352a76748de3a90b021ce457"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00bbc740\\metadata.json",
+      "bytes": 280,
+      "sha256": "3b74f837c8fee940649f3b5526ee3527b795780dca7f98c14daadfe4861cd7a1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00bbc810\\assembly.txt",
+      "bytes": 670,
+      "sha256": "25bdd3dcf669ef465ef09560de1e4b321ebb727d89c62f6c7cb2c14bbdc88a13"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00bbc810\\decompiled.c",
+      "bytes": 1690,
+      "sha256": "1b55e56309f43355f1d43e30abd03c71961567aaf00468bf8988f972d5d67bf5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00bbc810\\metadata.json",
+      "bytes": 280,
+      "sha256": "510157f06fe87994a08ffa786cd9a58619cae211b644adec0472599e5ded26e1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00bbc900\\assembly.txt",
+      "bytes": 5040,
+      "sha256": "153ed54bf5350b96500f8727fcde2242729988151f7e378b8aac94c21a79ac38"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00bbc900\\decompiled.c",
+      "bytes": 5693,
+      "sha256": "676bd58cb8926cddc601b9a18ea506a1bd983d5992f2af9d0cc5688261422d55"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00bbc900\\metadata.json",
+      "bytes": 279,
+      "sha256": "863aef8a2d22f1e65429f4b1d464b48626f9b315c7676c9dd750896a38c876a0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00bbcb40\\assembly.txt",
+      "bytes": 721,
+      "sha256": "2b726a1a74feba4ad4747dbcd2b7732bf0b55d9d07c31025e20f49abe33f0662"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00bbcb40\\decompiled.c",
+      "bytes": 3827,
+      "sha256": "cd0a4445c37d4fd4b6298f7a3404f733fad9bfd1a253f2f85e70d8670d580f45"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\exports\\00bbcb40\\metadata.json",
+      "bytes": 287,
+      "sha256": "ebe461ce50b2bb758fef0ebe0992b24083d8931febc0b083c34abc294524ea09"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\make_report.py",
+      "bytes": 8555,
+      "sha256": "17f94d7978d7afe2ea243d28a02b408bb04e32b7bbe747c5008d52933d94ab1e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\caustics_creator.bin",
+      "bytes": 80,
+      "sha256": "310c1fb7dad8d55e21d7f1b328a82539bf058e2c355451fe447951ab14510cfd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\caustics_creator.queries.json",
+      "bytes": 587,
+      "sha256": "6efad036bc2d981fd326c4e2fa8880a012d80c7a1a04752b537f6261fc7822eb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\caustics_creator.txt",
+      "bytes": 675,
+      "sha256": "e6707ebe87ddeab827b490d4c3fb2a78bda4823882c679f219be0479ad45c2f7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\caustics_reader_profile.bin",
+      "bytes": 8,
+      "sha256": "858b4a794e745f933967b3efc26c0825c1183be90d9f5224b24191f1f43c933e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\caustics_reader_profile.queries.json",
+      "bytes": 246,
+      "sha256": "74476ae3d0b85575fb006b7b3143a0d9b9477caec683b40d4d872ee265c3a54c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\caustics_registration.bin",
+      "bytes": 83,
+      "sha256": "5719f8506a028dba5ccb810b0a0fa3e817bb092eea5d7f870734e28281a32517"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\caustics_registration.queries.json",
+      "bytes": 612,
+      "sha256": "d90e1095280ded48facd730cb6589ac19b968165ceed24d9fee779e9409e2b0d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\caustics_registration.txt",
+      "bytes": 714,
+      "sha256": "42a0026cd4b923ab9efe127aae66a863e3448aed674cefc86e69bd8790285f31"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\caustics_resource_profile.bin",
+      "bytes": 8,
+      "sha256": "c916f226b74b983b1bde5e98659bbdacc5206ed84aa7eb64017209cee7933624"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\caustics_resource_profile.queries.json",
+      "bytes": 246,
+      "sha256": "f712fd999653e7df8bb9b66a10a09a9bfa93a8568da10de00ccda296b848f79c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\length_error_text.bin",
+      "bytes": 20,
+      "sha256": "d9812c08dd702f493578cf64ef34c80bcb5acf24e29d246839c9ad664db812df"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\length_error_text.queries.json",
+      "bytes": 308,
+      "sha256": "4a6578eb572049fc2df7a209744ee4baa351ad32aff8b81e7f6cd8cbc145bd7c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\loader_factory_dispatch.bin",
+      "bytes": 20,
+      "sha256": "8a65e02675980fa957b1a0e9d36c98b9b89afb43e7d2ee3f84189a5421809ce8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\loader_factory_dispatch.queries.json",
+      "bytes": 308,
+      "sha256": "b1fab354ec76626ce8c8fee1870d072a67a3825b7aeb5695bb792c9332caab3d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\loader_factory_dispatch.txt",
+      "bytes": 151,
+      "sha256": "a72ba1b7d5fcd4d2256760c013379db07a542a212e65704ff4c73ca55f9ac1bb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\loader_profile.bin",
+      "bytes": 20,
+      "sha256": "82fed636b359d203664f7b11c3f1d6a12fab8cb5782d4abf7276be51c5a3fec8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\loader_profile.queries.json",
+      "bytes": 308,
+      "sha256": "b053d4b60849137410602453f25ff42c22cfbdbb85355fd3011a5b6cd42f1a4a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\registry_getter.bin",
+      "bytes": 200,
+      "sha256": "bb032fcf785ab485134e3f1b4643154a461e636aaae6c09bfd31f713a09484e4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\registry_getter.queries.json",
+      "bytes": 1370,
+      "sha256": "073495f9cc89997bca827f874756a980e14f2d6a77d78c7855edbe95273cc46c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\registry_getter.txt",
+      "bytes": 1617,
+      "sha256": "f9b2f775b6ecc9cd0a74e008755f3d7683d28f3751af739af530b60155473b37"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\registry_lookup.bin",
+      "bytes": 108,
+      "sha256": "c40d13471f483f98b2fd146721acd0730c3ea4040ab2f463eab034f43ed6aa09"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\registry_lookup.queries.json",
+      "bytes": 726,
+      "sha256": "7a65972b33caea74af505240e8574354b61c72bad7a9cfdeae8547f3bc1e2673"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\registry_lookup.txt",
+      "bytes": 1167,
+      "sha256": "1f7d02adad8a0a7d69e89449f41ada829731df466fa66a31a828cc6ecc74b5c7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\registry_profiles.bin",
+      "bytes": 16,
+      "sha256": "c00c0f50c39de292fb1f7372275d131a6332b7dd3b22883957b9bc7df2ee0394"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\registry_profiles.queries.json",
+      "bytes": 279,
+      "sha256": "c0ed4f35a36505c34d303211dc140b60396bae3fcf2624b33bc648deee080c14"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\registry_register.bin",
+      "bytes": 84,
+      "sha256": "4e975fe98e680ca49245f1706c7f56ab7932aba84a43237a8f07f8b46b33812c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\registry_register.queries.json",
+      "bytes": 617,
+      "sha256": "fc25908678f5c239f7d897107daf75b37208ab0f05bafb734403a8d84cbba8c7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\registry_register.txt",
+      "bytes": 861,
+      "sha256": "12f8f6bdf8b11452ae9231e02eaded4dc0d257b4c77799802e08f841503d11c9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\sampler_default_cache_call.bin",
+      "bytes": 29,
+      "sha256": "33ab62cccf1f2d16e10c8fe8af4d745f3dda3195332fbb24f39aba83eed4def4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\sampler_default_cache_call.queries.json",
+      "bytes": 344,
+      "sha256": "2f9b6dac37cf52bb36c93ec3da646f857521aed5c1584c5b4bbca78980feed6a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\sampler_default_cache_call.txt",
+      "bytes": 261,
+      "sha256": "fba3ae4b420a193e1a0f23072ca98b5a5c954ca0595abff556354cb9f7d2ba3f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\shore_creator.bin",
+      "bytes": 80,
+      "sha256": "4a25637fc7034fdce68be05e3ff0478dc5b433e444c8a15dadcc94df49613455"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\shore_creator.queries.json",
+      "bytes": 587,
+      "sha256": "e570bc6c40b5124c2e21085007c93348617a1e3fab74b5dc169d128dd81a1d10"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\shore_creator.txt",
+      "bytes": 675,
+      "sha256": "f04e670df93787f460d7f6ce29f99e02b4b3361020f85d0e33399c2bf924b8ac"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\shore_reader_profile.bin",
+      "bytes": 8,
+      "sha256": "667131abd52b9a79518ec858a3216b550299afd892756544c5316360dd5f85d4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\shore_reader_profile.queries.json",
+      "bytes": 246,
+      "sha256": "869f85a3bdb11f996e00c995e3edc4a3dea3fd9332a8548ce64ddfdfb908ff30"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\shore_registration.bin",
+      "bytes": 83,
+      "sha256": "53c256624f920fc34fb551aae67585503c789ffb7916d74e68993de8229d1e29"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\shore_registration.queries.json",
+      "bytes": 612,
+      "sha256": "1b493284f9c6708faf588fc0c9c6a6f4950718b900df00e4cadb2f479acaf201"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\shore_registration.txt",
+      "bytes": 714,
+      "sha256": "17d94924fc4bc7a9ac3302d69f87d0ad032877dcface8dc806c798945f6ba5c5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\shore_resource_profile.bin",
+      "bytes": 8,
+      "sha256": "1670667b0edfaefa9793b4f65435dd7b2cc609320a6ab580fcb28dbe55f46421"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\shore_resource_profile.queries.json",
+      "bytes": 246,
+      "sha256": "3db2b6dc16e3dff0b30fcc5d67dcfe90b4a7dbcb797a17096fc9e0a3e0daa268"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\shutdown_factory_then_loader.bin",
+      "bytes": 30,
+      "sha256": "8990763a06141ad92dec90f1973d7874b880a1fec155624b662d4810ba79a496"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\shutdown_factory_then_loader.queries.json",
+      "bytes": 348,
+      "sha256": "61cdc11be0f1a1dedfb6167ad2ff627ff41d71b55456026d09dd1b09726d7968"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\shutdown_factory_then_loader.txt",
+      "bytes": 150,
+      "sha256": "c9c2e4c82834343b5a64551b5846d90726bd1d123f7f5b1a031535f5625deef9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\startup_factory_window.bin",
+      "bytes": 104,
+      "sha256": "b9987878d4b0bdd0cc969996dfb1ce23ceeb857041541e705154b60275c9e697"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\startup_factory_window.queries.json",
+      "bytes": 710,
+      "sha256": "c3cbdb3375a619c0776812a00e4b72bae344b14942cbc367fd8953e04356f725"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\startup_factory_window.txt",
+      "bytes": 701,
+      "sha256": "2733a81a711a36b57f4223c71af150c3888952858dec8a0104d4afcc813ca63b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\startup_preload.bin",
+      "bytes": 21,
+      "sha256": "b58ab4102e0c36c6f7a56ddc09714a7ab9359ae5ba751933741535e3e7f7f382"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\startup_preload.queries.json",
+      "bytes": 312,
+      "sha256": "05fbf9ab3787fc36ce94750ca3b01dd797b9299c53a096fe68e103a75fd9e55d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\startup_preload.txt",
+      "bytes": 142,
+      "sha256": "5579fd45cb9439523e44beede5e822055a342d347e83cf12299049657946b9bf"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\table_construction.bin",
+      "bytes": 573,
+      "sha256": "39938e8964a5431a80477f5052c7c0388f663b9ec469020abb61bafa21eb1a0f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\table_construction.queries.json",
+      "bytes": 3367,
+      "sha256": "4be62e1091899e14d3626745b6c8a58ad8cb94287a4e5567b03eb26afacefe7e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\table_construction.txt",
+      "bytes": 5002,
+      "sha256": "c88841d47eb09a4d6422b0186bd31c063f0c517a16c719725b3ec49aa2bcaae4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\table_destroy.bin",
+      "bytes": 144,
+      "sha256": "8653ab5f55aae5941086442b2f0ae9a8b7a30f74ac5461baabb872e111cd1207"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\table_destroy.queries.json",
+      "bytes": 897,
+      "sha256": "95d7793e5b9c852df6785de925b56965616bd74a26c5c9fc8afc01cc4dcb4978"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\table_destroy.txt",
+      "bytes": 1560,
+      "sha256": "e883de3531e5c4e0ab4a62ce940c21f274be1b12620cde2527b6885166dc8b35"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\table_factory_profiles.bin",
+      "bytes": 16,
+      "sha256": "54147319170bff1bcfe88d692bca0992f61bb7361a5dc2bf7a38f1ee87ea9ebc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\table_factory_profiles.queries.json",
+      "bytes": 279,
+      "sha256": "d94d54f021e635deeecb96eb123ae1088c873bbfe176ed2a8a7751a408aaab1d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\table_initial_data.bin",
+      "bytes": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\table_initial_data.queries.json",
+      "bytes": 230,
+      "sha256": "0a9fb46921963bcd7960d281439d32ef801ce41e80062114c672c08d0d3b5214"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\table_names.bin",
+      "bytes": 129,
+      "sha256": "26169359f7ba925ab42259bdd6364b94cd451f19fddfcba1e532f99687f73941"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\table_names.queries.json",
+      "bytes": 836,
+      "sha256": "3b1e6afedafc9acf191a7d5420dc3bfbbbf1070b035d28f37b597835820d6875"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\table_publication.bin",
+      "bytes": 96,
+      "sha256": "800f89f585d7ad58597d9545cbf06a404abf5179c5014b6be25a1dedfd3ec90a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\table_publication.queries.json",
+      "bytes": 664,
+      "sha256": "25ead78801345dd9e33ab85dc450e5d4bf96d38c2fe7966dd67b4157669eeb48"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\table_publication.txt",
+      "bytes": 743,
+      "sha256": "50542de5cc1807490407c246fa1fdf66a0ddafbd82df1d84c3473652026478c8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\table_shutdown.bin",
+      "bytes": 29,
+      "sha256": "ee0618a56ec7836941afd84e36193b1c44d5f3e090e5022495a8e2a68a60de35"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\table_shutdown.queries.json",
+      "bytes": 344,
+      "sha256": "fb20202280ea402f597142b5e3ed4c45ace4ac9996463f4a089cad495f4540b3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\native\\table_shutdown.txt",
+      "bytes": 261,
+      "sha256": "4bbc97623450b2ed3110c498c8e09c91c910f04a39841f4b0fd8ca4ed8cc8a94"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\prior_docs\\NATIVE_PROCEDURAL_FACTORY_STORAGE_CC10.md",
+      "bytes": 7994,
+      "sha256": "b6bfa097e9221dc6dc7ca08f691545bd38c0a49b730a78e09ab23e8cd2d5c52b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\prior_docs\\NATIVE_PROCEDURAL_FACTORY_TABLE_CONSTRUCTION_CC10.md",
+      "bytes": 6927,
+      "sha256": "a02c43a770e01cbe20faac9a2ce79ac6b422f919ff62ed4ff404547e0d59e8c6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\prior_docs\\NATIVE_PROCEDURAL_FACTORY_TABLE_STORAGE_CC10.md",
+      "bytes": 7914,
+      "sha256": "dd2d39477cafeb5224cf18538b08091f7a84249de70694ae8950b51366f1e08e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\prior_docs\\NATIVE_RESOURCE_REGISTRY_INSERTION_CC10.md",
+      "bytes": 10962,
+      "sha256": "57d47ad2164b4a77515940e1552f8df8f5fcad176f83aabd2d8b8cdecacd4796"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\cmake\\startup.cmake",
+      "bytes": 228096,
+      "sha256": "5e668e409ad16d016c77e67f0cbd51df98206d7b004e3f29b80db115a6c39802"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\include\\bsp\\game_hosts_singletons.hpp",
+      "bytes": 9372,
+      "sha256": "b3ee9447cf553409d601560d65bb21c3cd11ddab68bfefe2050ae31540628cb3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\include\\bsp\\game_hosts_vfs.hpp",
+      "bytes": 12775,
+      "sha256": "397bf3eb722ff71175b5e7011a569bf16efeeead5d3f132f3cfc4995fc22f058"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\include\\bsp\\game_native_gui_sampler_application.hpp",
+      "bytes": 3249,
+      "sha256": "2aa6bf3276f649e8fc02eb5d0c1f78902303f8c798208ea1e97c22b8672d2fd9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\include\\bsp\\game_native_readonly_data.hpp",
+      "bytes": 2713,
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\include\\bsp\\game_native_vfs_application.hpp",
+      "bytes": 3022,
+      "sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\include\\bsp\\game_native_vfs_runtime.hpp",
+      "bytes": 9565,
+      "sha256": "aaef98c9ed59cb836e534e7d31619b45a36c574ee7827a8b7833d6e16422d8ad"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\include\\bsp\\native_legacy_sbo_string.hpp",
+      "bytes": 2115,
+      "sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\include\\bsp\\native_procedural_factory_storage.hpp",
+      "bytes": 4652,
+      "sha256": "7e3cb214024561e9b7b7216aaeb671112ffd8b2463ab16ee60521665463236fc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\include\\bsp\\native_procedural_factory_table_construction.hpp",
+      "bytes": 5117,
+      "sha256": "548392479c649484e4dbb6145550ca4aa76fb249d735b8fae4af09208eb2c391"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\include\\bsp\\native_procedural_factory_table_storage.hpp",
+      "bytes": 5275,
+      "sha256": "64da887f3d9de521f3dc69b3e3ea0e17967ff4bcb52302defc34a1990ad1af54"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\include\\bsp\\native_procedural_resource_lifetime.hpp",
+      "bytes": 5891,
+      "sha256": "9cc49e7418f53e49cec2a12074901577f334af26b1e4e036256314756e9ed4fe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\include\\bsp\\native_resource_cache_leaves.hpp",
+      "bytes": 4052,
+      "sha256": "35dce4cb6544e5c59e1da0893669d66637dbb20c27faea4a1a3f10fa7225ee26"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\include\\bsp\\native_resource_registry_destroy.hpp",
+      "bytes": 1603,
+      "sha256": "c60895e2f80155ae0a13748892cd0dd86e95cfe8dc42b1150f4e59e1bfb5e14f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\include\\bsp\\native_resource_registry_insertion.hpp",
+      "bytes": 7491,
+      "sha256": "c0dbe0ab83681a27f76258ab2e3147d746f136944097659388190ca69628720b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\include\\bsp\\native_resource_registry_lookup.hpp",
+      "bytes": 1893,
+      "sha256": "1f3f752e70c8e2264087d1bd8a47cc6089c8e4ac57273a4da4aefdbad71b22a9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\include\\bsp\\native_resource_registry_node_leaves.hpp",
+      "bytes": 4445,
+      "sha256": "f7edfcc707ce3659be8860a0450b87936bd0866878967f7e6036d310f652a206"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\include\\bsp\\native_resource_registry_scalar_delete.hpp",
+      "bytes": 2321,
+      "sha256": "765a3be8d56d4af9e265ca51cc47e8bb22837147df336a684ccf9e05a9eac7d9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\include\\bsp\\native_resource_registry_tree_leaves.hpp",
+      "bytes": 2953,
+      "sha256": "96232ce20dce86fc606bba1aca448a6df0c4dfd871300b2bfc7bfdf7e97d4f29"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\include\\bsp\\native_sampler_cache_entry.hpp",
+      "bytes": 3348,
+      "sha256": "a99dfad2582d3ff437b6b51e40ca643de438daa0574aa4f7c332451a41fa6ce3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\include\\bsp\\native_sampler_cache_operation.hpp",
+      "bytes": 4056,
+      "sha256": "6f6d353b85a8b604b9952b9d2b35f89e26e14bc673e6582b4e119110307a5a15"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\include\\bsp\\native_sampler_loader_context.hpp",
+      "bytes": 3302,
+      "sha256": "876a3634f2daf08c3743833414a365d4cb47bb938945aa56a5e55b8372b04165"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\include\\bsp\\native_string.hpp",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\include\\bsp\\native_string_pool_storage.hpp",
+      "bytes": 2805,
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\include\\bsp\\native_texture_source_storage.hpp",
+      "bytes": 1371,
+      "sha256": "fcbb95174fdc99e34404eefa82b131b2a189574f6cd56bc0a78bfecf5f085731"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\src\\game_hosts_singletons.cpp",
+      "bytes": 9655,
+      "sha256": "0aa58574c6b127d2964d10147059794e2005c49d64a836960f04794cc81d2dc1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\src\\game_hosts_vfs.cpp",
+      "bytes": 21946,
+      "sha256": "df8cd0f4e723e20a331ce4de87fa6f3e547c6254bb013cafca4ed515d516fc4a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\src\\game_main.cpp",
+      "bytes": 75387,
+      "sha256": "8001bf3508e3250a2166fe168bbaa18191235cc8bd14598e9cea0d61693ac7fe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\src\\game_native_gui_sampler_application.cpp",
+      "bytes": 10919,
+      "sha256": "d47b03291cecad3927dc742325c448121f663ab0b40f493c8e88116ef544ed1e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\src\\game_native_readonly_data.cpp",
+      "bytes": 7167,
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\src\\game_native_renderer_application.cpp",
+      "bytes": 53505,
+      "sha256": "516443547ed6f071a13ed531a53dd286f8ff1c09d1140e2336d55ea25cd7f1b3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\src\\game_native_vfs_application.cpp",
+      "bytes": 8470,
+      "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\src\\native_procedural_factory_storage.cpp",
+      "bytes": 5080,
+      "sha256": "c88e1e1c65af70a7338de8f136929a374dcec123f4fb4baab66d57df83e70d49"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\src\\native_procedural_factory_table_construction.cpp",
+      "bytes": 10373,
+      "sha256": "d8b5503a070b5b6e3bbd4118eee54bb7bcc7b45fa39109ac13e83376b16f01a1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\src\\native_procedural_factory_table_storage.cpp",
+      "bytes": 8076,
+      "sha256": "5f51e433847c9718a5e2f4377a8b9eb7185b2ccd6ab5d417722a682dd7b20aa5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\src\\native_procedural_resource_lifetime.cpp",
+      "bytes": 9785,
+      "sha256": "87108b3f56828a77255b2ce561525db435a463b3a0f06cfe1786d2eecef4961b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\src\\native_resource_cache_leaves.cpp",
+      "bytes": 6034,
+      "sha256": "2db1be65e9cd7940759e5b28817ff9bf090f1abdbe8789ce2d62db971be020fa"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\src\\native_resource_registry_destroy.cpp",
+      "bytes": 2365,
+      "sha256": "a7d71184eb97813771339d048292afbecdf02cf21da8021ffe7f9590bc5f78b7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\src\\native_resource_registry_insertion.cpp",
+      "bytes": 17038,
+      "sha256": "65fc20b52f514f013744cdd9d6b6dff6abc60c78fdc28371b663563095b037d5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\src\\native_resource_registry_lookup.cpp",
+      "bytes": 2821,
+      "sha256": "06d92bdfc4da4311df3c49007476bcb9317d954827a4832ccf8daf5d822fc414"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\src\\native_resource_registry_node_leaves.cpp",
+      "bytes": 6656,
+      "sha256": "258da80cb7b2d32ad6455f64e1497f6704aff99568baa35bc8343e047acb188b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\src\\native_resource_registry_scalar_delete.cpp",
+      "bytes": 1508,
+      "sha256": "a4b91450da734d3ff026a8142e9c26639ccaabe15472acdd2b82d693d077acc9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\src\\native_sampler_cache_entry.cpp",
+      "bytes": 4680,
+      "sha256": "ad95a3c36ae5e5f50aaaddd207799c1e878c634b93cb08abdf959d032c4e3e23"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\src\\native_sampler_cache_operation.cpp",
+      "bytes": 13201,
+      "sha256": "ceb6dbdb23319df113248fb09fb65103c174f09bb1c4cf152f52c3c308233959"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\src\\native_sampler_loader_context.cpp",
+      "bytes": 2454,
+      "sha256": "3651878adc40bf0a5e0520108d4aa915e0b19b46b559f68a2a41192c232a3d6d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\src\\native_singleton_destruction.cpp",
+      "bytes": 27205,
+      "sha256": "71f0ffccd926d1e218c9e0429a1c394a578578e21455091cef5453d73fd42a48"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\src\\native_singleton_publication.cpp",
+      "bytes": 4127,
+      "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\src\\native_string.cpp",
+      "bytes": 9121,
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\src\\native_string_pool_storage.cpp",
+      "bytes": 5103,
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\source\\src\\native_vfs_date_leaf_providers.cpp",
+      "bytes": 4749,
+      "sha256": "8a3615bec143538b10b50448e9e44948f3f36374b33cdc6878ad50de27f36559"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\supplement.json",
+      "bytes": 1594,
+      "sha256": "91b425b141a4bf32b5c304c2f1fe23430b5c598c27fc005e656a37bcf6a28c2c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_world_draw_frontier\\local\\procedural_factory_setup_20261015\\supplement.py",
+      "bytes": 1011,
+      "sha256": "63464dfd40f991b72cef9b3d01039a85a06a68dbadc1ee19a42f23d28c6cf3e7"
+    }
+  ]
+}

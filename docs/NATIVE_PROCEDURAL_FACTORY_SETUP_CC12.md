@@ -1,0 +1,70 @@
+# Procedural factory setup contract, CC12
+
+The registered Source path already supplies the real procedural factories needed by the sampler loader: `BBCB40 -> BBC900 -> BBC5F0/BBC740 -> B1B730 -> B1B3A0`. The missing application composition is an owned, one-shot table setup/retirement operation with its complete live frame tree. This packet changes no C++, CMake, ledger or Ghidra state and executes no factory, sampler or GPU work. The accompanying report pins the reviewed Main commit, committed Source inputs, installed assets, and independently matched live-Ghidra/installed-PE byte spans.
+
+## Original order and the smallest existing producer
+
+Within `0073D410`, `0073D894` calls resource search registration `00738360`; `0073D8CC` then calls `00BBCB40`; `0073D8F3` later calls the `184h` Win32 platform constructor `00BECDA0`. Shader preload `0073BF80` is later at `0073DD12`. The procedural table is therefore an earlier startup dependency, independent of the shader binary-cache bracket. Its constructors perform name/registry work without creating a D3D texture or invoking a GPU method.
+
+`00BBCB40` allocates a genuine `10h` table using the existing CRT allocation provider. It calls `00BBC900` only for a nonnull allocation and publishes the returned pointer, or zero, to `01090900`. It has no existing-table guard, old-table release, singleton-manager registration, or second table. `00BBC900` allocates four genuine four-byte factory objects and registers these exact names in order:
+
+| Table slot | Pinned native C string | Registration constructor / initial profile | Final factory profile | Current create slot +4 | Resource profile |
+|---|---|---|---|---|---|
+| `+00` | `CE7DEC`: `CausticsTextureSource` | `BBC5F0` / `D64470` | `D644E8` | `BBC6F0` | `D64478` |
+| `+04` | `CE7DC8`: `ShoreWaveTextureSource0` | `BBC740` / `D644AC` | `D644F0` | `BBC810` | `D644B4` |
+| `+08` | `CE7DA4`: `ShoreWaveTextureSource1` | `BBC740` / `D644AC` | `D644F0` | `BBC810` | `D644B4` |
+| `+0C` | `CE7D80`: `ShoreWaveTextureSource2` | `BBC740` / `D644AC` | `D644F0` | `BBC810` | `D644B4` |
+
+Each registration constructor stamps its initial profile, calls the real lazy registry getter `B1B730`, then reads the current incoming name, returned registry profile, and that profile's current `+4` target. The qualified registry profiles are `D5E594` and `D5E59C`, both selecting `B1B3A0`. The getter constructs and registers the real `10h` registry through the same `01090AA0` manager and `F8D41C` publication. No caller should insert a synthetic registry node or substitute a private registry.
+
+`B1B3A0` searches the genuine tree at registry `+4`. A missing key uses the complete insertion path and stores the current factory pointer at node `+14`; an existing key keeps the old factory pointer. Node names own their copied pool storage, while node `+14` only borrows the factory. There is no factory retain, release or automatic unregister. Re-running setup can therefore create new table objects while existing keys still point to older objects. An application operation must reject replay and competing setup; that is a Source admission guard, not a recovered native initialization guard.
+
+Using the complete existing `publish_native_procedural_factory_table_00bbcb40` operation is the smallest already-composed setup matching the Original four-name startup. A single canonical factory constructor could support a narrower ordinary Source fixture, but it would not reproduce this startup table/order. No new factory, fabricated owner or manual registry seed is needed for either explicitly scoped use.
+
+## Bindings that already exist
+
+| Required binding | Current Source provider / constraint |
+|---|---|
+| One manager and registry publication | `GameSingletonHost::manager_publication_01090aa0()` and `resource_registry_publication_00f8d41c()`; registry deletion must be bound before first publication. |
+| Raw native pooled-string operations | `GameVfsHost::raw_strings()` / `GameNativeVfsApplication::raw_strings()`, a `NativeStringRawPoolContext` over the actual `AA8`, `AA4`, and same `AA0` cells. This is distinct from `borrow_raw_services().strings`, the `ActualNativeStringPoolStorage` interface already used by the sampler cache. |
+| Genuine returning validation and registry retirement | Existing VFS `invalid_parameters`; `GameNativeVfsApplication` binds the same string/validation domain to `GameSingletonHost::bind_resource_registry_domain` immediately after the runtime's `construct_and_register_core`. `NativeResourceRegistryDeleteBindings` already clears and destroys the real registry without disposing borrowed factory values. |
+| Literal/profile views | `GameNativeReadOnlyData::data_at`: names above, `CE47BC` (`map/set<T> too long`), registry profiles `D5E594/D5E59C`, and the four eight-byte factory profiles. Existing application `CE`, `D5`, and `D6` read-only bands cover these spans. They are numeric dispatch data, not callable original code. |
+| Genuine lookup and creation | `NativeResourceRegistryLookupContext`, `create_native_registered_resource_00b19e90`, and existing `BBC6F0/BBC810` Source creators. Both creators allocate `34h` (52 bytes), construct `C30470`/`B19980` including the real `+4` atomic initialized to one, and stamp their actual final resource profile. |
+| Canonical resource admission | `GameNativeGuiSamplerApplication` already binds each real created allocation through `NativeProceduralResourceReference` and the renderer's same `NativeRenderActualOwners`, immediately after real creation and before cache publication/retain. It does not rewrite the count or add a credit. |
+
+The bounded search of committed `game_native_*`/`game_hosts*` application files found no call to the table/factory constructors, no table shutdown call, and no `01090900` binding. That absence is a snapshot finding, not a promise about later Main revisions. All required concrete factory, registry-insertion and sampler-entry translation units are already registered in the normal build.
+
+## Missing owned application operation
+
+The next implementation should own one actual mutable table-publication cell, retained binding contexts, and an address-stable setup frame before entering the constructor. It should borrow the existing VFS/manager/registry/data domain, validate that identity once per entry, and retain itself on failure. It should not expose a bare registry/cache accessor or create another shader/effect graph.
+
+The frame is more than a `void*` table and a name:
+
+- `NativeProceduralFactoryTablePublicationFrame` requires the explicit incoming-ECX value, a live cleanup-allocation DWORD, EH-state DWORD, and the actual constructor frame.
+- `NativeProceduralFactoryTableConstructionFrame` requires five contiguous initialized live DWORDs: mask, cleanup self, current allocation, raw name length, raw name data; a separate live EH-state cell; a prepared factory frame; and four prepared slot-cleanup frames.
+- The shared factory frame requires live name and cleanup-self cells plus a complete registration frame. Registration reaches Value, Hint, fallback PairInsert, Link, and NodeAllocation frames. These include real typed iterator/result objects, the three-word temporary name/value pair, the direction DWORD and preserved result padding, actual raw `1Ch` SBO storage, both five-word node-argument groups, and separate allocation/placement cleanup cells. References describe existing live cells; do not overlay frame aggregates on reused byte scratch.
+- Each of the four factory invocations requires its own fresh, persistent `Acquired` tree even though normal native scratch/frame views are reused. Cleanup diagnostics and all backing must be disjoint and survive failure disposition. Separate fresh table-shutdown diagnostics/frame views are needed for retirement.
+
+`BBC900` itself executes `XOR EBX,EBX` and `XOR EBP,EBP`, zeroes the four table slots and initializes its mask. Its `41E870` name constructor zeroes the current raw name header before creating the pooled name. Those observed stores do not establish unrelated incoming register values or untouched scratch preimages. `BBCB40` saves incoming ECX before allocation; the caller at `73D8CC` does not assign one constant ECX on all preceding paths. An ordinary Source fixture may supply explicitly initialized, documented Source frame values, but must label them as fixture inputs. It cannot call a chosen zero or sentinel the Original caller's ECX/EBX, private-stack value, or FH3 preimage. Original caller/register/stack matching remains separate work; the Source1 sampler's own entry and post-release-word requirements are also separate from table setup.
+
+On Source failure, the existing constructor consumes its native-state projection before each actual cleanup. Some real registrations may survive while their factories have been freed; partial names or a second cleanup failure can leave further obligations. Keep the parent domain and diagnostics, prohibit all lookup/replay, and dispose the real residuals explicitly. Do not invent unregister, registry rollback, automatic table destruction, successful cleanup, or a retry.
+
+Candidate ownership for the next bounded implementation is a new `include/bsp/game_native_procedural_factory_application.hpp` and `src/game_native_procedural_factory_application.cpp`, plus its own new evidence document/report and ignored fixture receipt. Its private implementation can hold the stable frame/backing tree and a setup/retirement state machine. Root should register the new translation unit in `cmake/startup.cmake` and retain host wiring ownership. No changes to the existing GUI/fakemotion probe, `game_hosts.cpp`, or shared constructor bodies belong to that worker packet.
+
+The publication integration decision must be explicit: bind one caller-owned, mutable `void* volatile&` representing the Source application's `01090900` cell, or designate one retained application/process object as that cell's sole owner. Do not read mutable publication state from `GameNativeReadOnlyData`, copy another owner's publication, silently create one cell per fixture, or imply fixed-address native-global admission. The operation needs a retained owner for that cell before effects, an explicit ordinary-Source input for wrapper ECX/preimages, and a host lifetime that reaches table retirement and the subsequent shared drain. Actual host activation should remain a separate patch until the coordinator selects the single cell owner and Original startup/shutdown insertion points. A Source fixture can exercise the operation with explicitly scoped real cells without claiming Original saved-register or private-stack recovery.
+
+## Genuine sampler proof after setup
+
+The later proof must enter the existing `B1B4D0` path with the genuine current `F8D420` loader and actual native name. That operation lowercases its copied requested name, constructs `Default`, and calls `B1A4F0` on current loader `+4` with retain/load flags `1/1`. The existing real platform-message pump is required before the continuation. A cold miss reaches current `CE7D24 +8 -> B1B810`, then `B1B730 -> B19E90`; case-insensitive tree comparison resolves the registered key, and current factory profile `+4` selects `BBC6F0` or `BBC810`. Record the actual creator-returned allocation, canonical registration, cache creator credit and caller retain. Do not substitute the texture-cache `B319B0` path, prepopulate a cache record, or manufacture an atomic owner.
+
+Physical installed `shaderfx/dx9_lua.inc` defines `TEXSRC_TEXANIMATOR = 1`. Installed `lights/fog_shadow_uw.shfx` names `CausticsTextureSource`; `ocean/shore.shfx` names all three ShoreWave factories with that source selector. These pinned files identify real candidate inputs. They do not prove selected VFS content, actual Lua descriptor output, compiler mode, native caller entry words, shader-cache query order, or a successful Source1 invocation. Do not change the existing fakemotion/GUI probe or its shader-cache lifecycle to manufacture this separate case.
+
+Factory setup itself needs no GPU execution. The later application sampler/compiler proof still requires its actual parent/device/domain prerequisites. A raw `B1B810` creation check alone would establish a narrower factory/registry Source composition, not the requested full `B1B4D0`/Source1 release comparison.
+
+## Retirement and proof limits
+
+Original `00737F30` reaches `00738314 -> BBC5D0` after game/render-resource users have been torn down; the next call is `00738319 -> 736930`, retiring `F8D420`. `BBC5D0` captures current `01090900` once. For nonnull tables, `BBC520` disposes slots `+C`, `+8`, `+4`, `+0` through their current scalar selectors, then the wrapper frees the captured table. It does **not** clear or reread `01090900`. Final factory selectors are `D644E8/BBC890` and `D644F0/BBC8E0`, with flags one. There is no table registration in the singleton-manager list.
+
+An application guard must quiesce all factory lookup before table shutdown and explicitly invoke that shutdown before its later loader/shared-manager retirement. Registry erase can subsequently free names/nodes without accessing the dead borrowed factory values. Keep profiles, frame state and the parent domain available through the full drain; reject use of the dangling table publication after normal shutdown. A host closed-state marker may prevent replay without inventing a native null store. Failure must retain the existing operation and residual obligations.
+
+This packet establishes current Source readiness, exact native bytes/order, and required bindings only. Historical CC10 documentation records a genuine-provider Source-only table composition, while its copied-native table comparison was inconclusive because an exact mapping was occupied. Neither that history nor this read-only audit proves current application setup, real loader/Source1 execution, native FH3/SEH or register ABI, shader preload completion, a GPU draw, whole scene execution or gameplay.
