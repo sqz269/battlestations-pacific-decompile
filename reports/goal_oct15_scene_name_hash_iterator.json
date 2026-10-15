@@ -1,0 +1,158 @@
+{
+  "packet": "goal_oct15_scene_name_hash_iterator",
+  "status": "whole_raw_Source_independent_review_and_default_build_pending",
+  "source_ready": false,
+  "source": "src/native_scene_name_hash_iterator.cpp",
+  "header": "include/bsp/native_scene_name_hash_iterator.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_NAME_HASH_ITERATOR.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "address": "00466bb0",
+      "name": "begin_native_scene_name_hash_00466bb0",
+      "native_name_retained": "BSP_SceneNameHash_IteratorBegin",
+      "native_bytes": 65,
+      "instructions": 22,
+      "body_end_inclusive": "00466bf0",
+      "original_abi": "ECX iterator12,EDX unused,no stacked arguments,plainRET;no common semantic EAX result",
+      "coverage": "complete ordinary raw Source; no nominal container,private ABI or game claim",
+      "original_bytes_hex": "8b11837a04007431c7410800000000837a08007519578b410883f840730f83c0018bfa894108837c87080074e95f8b41088b548208895104c3c7410400000000c3",
+      "original_bytes_sha256": "b9167301cb1875e13c9fd0c9075479b79b62210969d8a67cd5f3108c2aeaff2c",
+      "live_equals_installed_PE": true
+    },
+    {
+      "address": "00466c00",
+      "name": "next_native_scene_name_hash_00466c00",
+      "native_name_retained": "BSP_SceneNameHash_IteratorNext",
+      "native_bytes": 92,
+      "instructions": 33,
+      "body_end_inclusive": "00466c5b",
+      "original_abi": "ECX iterator12,EDX unused,no stacked arguments,plainRET;zero-extended EAX0/1",
+      "coverage": "complete ordinary raw Source; no nominal container,private ABI or game claim",
+      "original_bytes_hex": "8b410485c0744c8b400c85c07532834108018b410883f84073188b118d642400837c820800750b83c00183f84089410872ee8b410883f84073128b118b44820889410433c03941040f95c0c3c741040000000033c03941040f95c0c3",
+      "original_bytes_sha256": "3609759b0297a57d1d5234c1cad5899352502be03a0dbbcc6973a0768a7e91a5",
+      "live_equals_installed_PE": true
+    }
+  ],
+  "typed_metadata": {
+    "path": "local/goal_oct15_scene_name_hash_iterator_typed.json",
+    "sha256": "25c45246673a11d0a499d13f06b5fee5951e0f65aaedf96dd4216edf2f5b767f",
+    "endpoint": "get_flow_metadata",
+    "read_only": true,
+    "utc": "2026-10-15T22:58:19.960945+00:00",
+    "functions": [
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "00466bb0"
+        },
+        "name": "BSP_SceneNameHash_IteratorBegin",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "65",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00466bb0"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00466bf0"
+              },
+              "length": "65"
+            }
+          ]
+        }
+      },
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "00466c00"
+        },
+        "name": "BSP_SceneNameHash_IteratorNext",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "92",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00466c00"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00466c5b"
+              },
+              "length": "92"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "caller_sites": [
+    {
+      "address": "0046866e",
+      "native": "00466bb0",
+      "function": "00468660",
+      "kind": "call"
+    },
+    {
+      "address": "004696b6",
+      "native": "00466bb0",
+      "function": "00469690",
+      "kind": "call"
+    },
+    {
+      "address": "00467eee",
+      "native": "00466bb0",
+      "function": "00467ee0",
+      "kind": "call"
+    },
+    {
+      "address": "0046868b",
+      "native": "00466c00",
+      "function": "00468660",
+      "kind": "call"
+    },
+    {
+      "address": "0046975f",
+      "native": "00466c00",
+      "function": "00469690",
+      "kind": "call"
+    },
+    {
+      "address": "00467f0b",
+      "native": "00466c00",
+      "function": "00467ee0",
+      "kind": "call"
+    }
+  ],
+  "source_hashes": {
+    "src/native_scene_name_hash_iterator.cpp": "69e1661e27018e38d57bf45e892c3fa11d021c166f9de0ee18aa9becc6746297",
+    "include/bsp/native_scene_name_hash_iterator.hpp": "d067020450fc886c6d994dff94913a067d60023aa15a5581caff6ab489ba20ee"
+  },
+  "limits": [
+    "Reached raw storage/alias accesses must be valid",
+    "Begin may read head64; no count consistency guard",
+    "Next captures scan table then reloads current table/index and final node",
+    "No nominal container,implicit native/Source frame alias,concurrency,private-register/flags/fault/mangling/binary ABI,new-entry differential,application or game claim"
+  ],
+  "abi_compatible": false,
+  "game_validated": false
+}
