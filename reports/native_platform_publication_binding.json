@@ -1,0 +1,333 @@
+{
+  "schema": "native_platform_publication_binding_v1",
+  "status": "borrowed_source_binding_normal_build_and_bounded_current_cell_fixture_passed",
+  "captured_utc": "2026-10-15T00:14:34.178043+00:00",
+  "baseline_commit": "f6de35fc1aa4cb72e42020272a006e238116cf64",
+  "documentation": "docs/NATIVE_PLATFORM_PUBLICATION_BINDING.md",
+  "prechange_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\checkpoints\\cc14-platform-publication-borrow\\before\\manifest.json",
+    "bytes": 1187,
+    "sha256": "aa74ca134973fb5dfb47e4e117f5434e71e54020ef8a77ade440542fd25b3cc7"
+  },
+  "static_live_evidence": {
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b2abd0",
+        "bytes": 589,
+        "sha256": "923113874aa3e3eca6eb973e7ce7b7f157d10fb53c3d4acfc4d16cee80b8567a",
+        "live_equals_installed_pe": true,
+        "saved_listing_equals_live": true
+      },
+      {
+        "address": "00b20c50",
+        "bytes": 31,
+        "sha256": "ea7ac658dc0fa3d2ac7b95e845cb22f1eae18f27fdcc172b5ae961929c3a810a",
+        "live_equals_installed_pe": true,
+        "saved_listing_equals_live": true
+      },
+      {
+        "address": "00bec230",
+        "bytes": 4,
+        "sha256": "c8cc0b90c656bd6a43ec1c5684c1a494142d2fce4803153d9b1a0944cad7e281",
+        "live_equals_installed_pe": true,
+        "saved_listing_equals_live": true
+      },
+      {
+        "address": "00bec3b0",
+        "bytes": 36,
+        "sha256": "01e60e1316d293035548925c1dfa9a93708490eb43824567fcde534954951d7d",
+        "live_equals_installed_pe": true,
+        "saved_listing_equals_live": true
+      }
+    ],
+    "verified_bytes": 660,
+    "b2abd0_current_publication_load_sites": [
+      "00b2ac9a",
+      "00b2acdf",
+      "00b2ad47",
+      "00b2add2"
+    ],
+    "ghidra_modified": false,
+    "existing_device_lost_hold_divergence_unchanged": true
+  },
+  "artifact_validation": {
+    "normal_application_constructors": [
+      "??0GameNativeRendererApplication@game@bsp@@QAE@AAVGameHostLog@12@AAVGameSingletonHost@12@AAVGameVfsHost@12@AAVGameNativeLuaServices@12@AAVGameNativeReadOnlyData@12@ADSAXPBX@Z",
+      "??0GameNativeRendererApplication@game@bsp@@QAE@AAVGameHostLog@12@AAVGameSingletonHost@12@AAVGameVfsHost@12@AAVGameNativeLuaServices@12@AAVGameNativeReadOnlyData@12@ADSAXVNativePlatformLoadPublication@2@@Z"
+    ],
+    "normal_application_new_and_legacy_accessors_present": true,
+    "runtime_functions_linked_from_current_normal_core": {
+      "process_native_renderer_device_reset_00b2abd0": {
+        "address": "004078b0",
+        "object": "bsp_core:native_renderer_reset_process.obj"
+      },
+      "native_platform_window_00bec230": {
+        "address": "004074f0",
+        "object": "bsp_core:native_renderer_reset_process.obj"
+      },
+      "native_platform_has_focus_00b20c50": {
+        "address": "00406fa0",
+        "object": "bsp_core:native_renderer_reset_readiness.obj"
+      }
+    },
+    "linked_focus31_matches_original_except_actual_getfocus_iat": true,
+    "manifest": [
+      {
+        "id": 1,
+        "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+        "as_invoker": true
+      }
+    ],
+    "source_dataflow_checks": {
+      "device_stores_borrowed_wrapper_not_receiver": true,
+      "reset_load_count": 4,
+      "legacy_fallback_explicit": true,
+      "borrowed_accessor_returns_same_wrapper": true
+    },
+    "artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\build\\win32\\bsp_game.dir\\Release\\game_native_renderer_application.obj",
+        "bytes": 362391,
+        "sha256": "0186a30e3452056a17faac6212f58f1d5da91643691bcd63c217b6472b21eb47"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\build\\win32\\bsp_core.dir\\Release\\native_renderer_reset_process.obj",
+        "bytes": 12707,
+        "sha256": "f40ee1547e47076558f694250781af1736c6e4b814ffe2e2d2e9b62a782fb65f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_publication_borrow\\native_renderer_reset_process.obj",
+        "bytes": 14175,
+        "sha256": "d798a94bfec5b73498109b494022dbea6680ec2fc42c1c5f54736f316c1ad540"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_publication_borrow\\publication_probe.exe",
+        "bytes": 461312,
+        "sha256": "c977aa206a7f4b5d29eca12d28ce28be0d6e1a0058148c1eb170aacf4229c33c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_publication_borrow\\publication_probe.obj",
+        "bytes": 109896,
+        "sha256": "4fd9e930a597efd2724e5c48fef6857b8564a169f86caac76d34bc733e96cd1d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_publication_borrow\\publication_probe.map",
+        "bytes": 776848,
+        "sha256": "ea309950dc34b9545fba7d27763a4c49bc4e3caf10dbe199058fdb1357878c08"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 91950504,
+        "sha256": "a06733cbe124f34bdab41db4eff07909b62a4d39ac82c091e714db5223db441b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\build\\win32\\Release\\bsp_lua511.lib",
+        "bytes": 455384,
+        "sha256": "1459f8e5d692ab96cc18a81ccd0d1f20db1cdc8a3cc4230626a97cb4c9c781ad"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\build\\win32\\Release\\bsp_zlib121.lib",
+        "bytes": 71966,
+        "sha256": "8f5763424fa0ccca3a72c61ddae5ad701a53c6fc150dd23955682fe3f8bd9f7b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\build\\win32\\Release\\bsp_game.exe",
+        "bytes": 5585408,
+        "sha256": "de339a8d70cc75ffe5dfcd132cb77150f61b9c7b6e4c13b431e4ca0984dddb9c"
+      }
+    ]
+  },
+  "source_changes": [
+    {
+      "path": "include/bsp/game_native_renderer_application.hpp",
+      "change": "Retain const-void-pointer constructor and legacy reference accessor; add explicit NativePlatformLoadPublication constructor and metadata borrow accessor."
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "change": "Legacy entry owns explicitly named legacy focus cell. Borrowed entry copies wrapper metadata into DeviceGraph; never reads or copies caller receiver at construction. Legacy accessor rejects borrowed entry. Startup focus observation loads current wrapper."
+    },
+    {
+      "path": "src/game_native_renderer_device.inc",
+      "change": "Replace copied receiver field with borrowed wrapper; forward that same wrapper to reset context."
+    },
+    {
+      "path": "include/bsp/native_renderer_reset_process.hpp",
+      "change": "Reset context field now existing pointer-cell wrapper; persistent legacy const-cell aggregate initialization preserved; mutable raw-cell path supported. Win32 source metadata size24->28, no binary layout compatibility claimed."
+    },
+    {
+      "path": "src/native_renderer_reset_process.cpp",
+      "change": "Four prior platform reads become wrapper.load() at the same original sites; surrounding schedule/providers and existing lost-device hold remain unchanged."
+    },
+    {
+      "path": "include/bsp/native_platform_load_messages.hpp",
+      "change": "Documentation broadens established +30/+41 focus/reset leaf use and reiterates copied metadata retains cell identity."
+    }
+  ],
+  "entry_contract": {
+    "actual_entry": "Explicit NativePlatformLoadPublication(platform_context.actual_platform_0109cf04) final argument",
+    "cell_lifetime": "Caller retains existing publication cell and all reached receivers through renderer drain",
+    "binding_chain": [
+      "caller existing pointer cell",
+      "NativePlatformLoadPublication wrapper copy",
+      "GameNativeRendererApplication new constructor by-value wrapper",
+      "Impl initialization copies supplied wrapper",
+      "DeviceGraph wrapper member",
+      "reset wrapper and borrowed loading accessor"
+    ],
+    "legacy_entry": "Original const void* constructor retains projected focus pointer-value behavior in explicitly named Impl legacy cell",
+    "legacy_loading_accessor": "Original signature and ready guard retained; new borrowed entry rejected and uses wrapper accessor",
+    "current_host_callsite": "src/game_hosts.cpp remains unchanged, &platform_.native_window_focus() through legacy constructor",
+    "game_process_0109cf04_installed": false,
+    "actual184h_host_path_admitted": false,
+    "new_application_construction_runtime_exercised": false
+  },
+  "load_sites": [
+    {
+      "original": "00b2ac9a",
+      "binding": "wrapper.load()",
+      "conditional_limit": "existing lost-device hold excludes this recreation path in normal build"
+    },
+    {
+      "original": "00b2acdf",
+      "binding": "wrapper.load()",
+      "conditional_limit": null
+    },
+    {
+      "original": "00b2ad47",
+      "binding": "wrapper.load()",
+      "conditional_limit": null
+    },
+    {
+      "original": "00b2add2",
+      "binding": "wrapper.load()",
+      "conditional_limit": null
+    }
+  ],
+  "validation": {
+    "normal_build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "Release",
+      "tests_passed": 3,
+      "log": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_publication_borrow\\build.log",
+        "bytes": 4043,
+        "sha256": "039893adc4b0235817d769da05f8939efc0b58917a695dad89e3f9d0f038254d"
+      }
+    },
+    "strict_compile": "Current reset translation unit and focused probe /W4 /WX /fp:strict; probe links current normal bsp_core.lib, not separately compiled reset object",
+    "fixture": {
+      "command": "local/platform_publication_borrow/publication_probe.exe",
+      "exit": 0,
+      "stdout": [
+        "PASS mutable raw constructor cell and legacy const cell retain identity through copied publication metadata; public legacy/new constructor and legacy accessor compile contracts preserved",
+        "PASS copied Original31/current Source focus: first current owner captured across real GetFocus re-entry replacement, later reload uses different raw184 owner and HWND",
+        "PASS current B2ABD0 same mutable cell: real private HAL cooperative call (00000000) fixture-overridden to E_FAIL, two real GetFocus calls, later current receiver rejects recreation, actual Sleep100",
+        "PASS all776 raw owner bytes preserved; real COM/IAT hooks restored, hidden window/device released, raw owner queues/base/publications/manager retired"
+      ],
+      "actual_platform_source_constructor_used": true,
+      "raw_owner_count": 2,
+      "raw_owner_bytes_each": 388,
+      "unchanged_owner_bytes_checked": 776,
+      "one_mutable_cell_shared_with_construction": true,
+      "fixture_cell_is_game_process_0109cf04": false,
+      "owner_preimages": {
+        "A": "active41=1, HWND30=null matching real isolated-thread null focus",
+        "B": "active41=1, HWND30=hidden private STATIC window",
+        "becee0_executed": false
+      },
+      "copied_original_executed": "B20C50 complete31 with GetFocus IAT operand relocated to fixture wrapper",
+      "first_current_load": "A",
+      "during_returning_focus_import": "Call real GetFocus, then replace mutable publication with B",
+      "captured_receiver_after_replacement": "A",
+      "later_current_load": "B",
+      "legacy_const_cell_identity_and_replacement_checked": true,
+      "b2abd0_current_normal_source_executed": true,
+      "b2abd0_whole_original_not_executed": true,
+      "b2abd0_selected_branch": "Real private HAL TestCooperativeLevel returned S_OK; fixture wrapper returned E_FAIL to select other-HRESULT path with pending=lost=1. First captured focus passes; later current B focus fails. Final real Sleep100.",
+      "events": [
+        "real TestCooperativeLevel then selected E_FAIL",
+        "real GetFocus then cell replacement",
+        "real GetFocus on later current receiver",
+        "real Sleep100"
+      ],
+      "renderer_release_or_recreation_children_reached": false,
+      "renderer_storage": "Existing bounded historical reset-fixture Env; not application renderer constructor storage",
+      "inherited_environment": {
+        "source": "C:/Users/sqz269/bsp-ax-renderer-reset/environment.hpp",
+        "sha256": "59231d60c81f6e75d9536c19fc38d322204625f2feba058569e1fb717e80d3fb",
+        "unchanged_copy": true,
+        "boundary_methods": "Existing fixture guards reject unexpected unreachable providers; no new Source renderer callback introduced"
+      },
+      "cleanup_verified": [
+        "Process GetFocus/Sleep IAT identity restored",
+        "Real COM cooperative slot restored before release",
+        "Private device and hidden window released",
+        "Both raw queue/title/base/publications and actual singleton manager retired"
+      ],
+      "settings_mutation": "No foreground, display-mode or power API write performed"
+    },
+    "application_graph_evidence": "Normal application compilation/COFF symbols and exact Source dataflow. No execution of new complete application construction path.",
+    "no_new_native_body_credit": true,
+    "Ghidra_modified": false,
+    "shared_ledger_or_CMake_edits": false
+  },
+  "frontier": [
+    "Canonical borrowing API exists, but actual raw host construction/window/message admission remains separate",
+    "Full BED3B0/WM_ACTIVATE requires concrete B24FB0 resource/material binding in same canonical domains",
+    "B19000/B469A0/B3FA90 bodies exist within their documented provider/descriptor domains; no automatic raw registry admission",
+    "Keep current publication, explicit handler receiver and captured WindowExtra owner distinct"
+  ],
+  "limits": [
+    "Source metadata interface, not original binary ABI",
+    "Old44h projected host remains legacy and is not raw184h",
+    "No full native handler/window/application startup",
+    "No native exception/recreation/gameplay claim"
+  ],
+  "frozen_checkpoint": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\checkpoints\\cc14-platform-publication-borrow\\final",
+  "frozen_manifest": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\checkpoints\\cc14-platform-publication-borrow\\final\\manifest.json",
+  "current_source_artifacts": {
+    "include/bsp/native_platform_load_messages.hpp": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\include\\bsp\\native_platform_load_messages.hpp",
+      "bytes": 4063,
+      "sha256": "a1c249d76d2836bc96be0d770292e52f9bdbfd8f6e7f84666f3bed6f892983ad"
+    },
+    "include/bsp/native_renderer_reset_process.hpp": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\include\\bsp\\native_renderer_reset_process.hpp",
+      "bytes": 3312,
+      "sha256": "703e00a9bd048d31aa3298ece0786c63012536e2949f0920e4a75a17deade193"
+    },
+    "src/native_renderer_reset_process.cpp": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\src\\native_renderer_reset_process.cpp",
+      "bytes": 10518,
+      "sha256": "0d6fd899db8b2ee214d73ede35fc875b4d2ba5da9b5b2b9960ec20132e8d0978"
+    },
+    "include/bsp/game_native_renderer_application.hpp": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\include\\bsp\\game_native_renderer_application.hpp",
+      "bytes": 13342,
+      "sha256": "10dd654bd108b2f6a82bc6a7e34e737507c86a0ea6dbcf4f82207d3dd541bf64"
+    },
+    "src/game_native_renderer_application.cpp": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\src\\game_native_renderer_application.cpp",
+      "bytes": 52167,
+      "sha256": "94ccf8b2f10f1a0c02b1a00201ef871a486763cf581c23b8315a374e09afc169"
+    },
+    "src/game_native_renderer_device.inc": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\src\\game_native_renderer_device.inc",
+      "bytes": 4582,
+      "sha256": "8924bda710641aa6a60fa3c5313a08e9b69dbee00c65fe7cdea26f6473c9f4d1"
+    }
+  }
+}

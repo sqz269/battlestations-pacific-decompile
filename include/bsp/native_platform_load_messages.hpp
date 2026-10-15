@@ -26,8 +26,9 @@ struct NativePlatformLoadMessagePreimage {
 };
 // Borrow one existing pointer cell, including the renderer's const-qualified
 // focus publication. Neither overload publishes, copies a receiver, or creates
-// another cell. The reached load pump reads platform+41 only; a focus-domain
-// receiver must never be passed to other whole-platform bodies.
+// another cell. Loading reads platform+41; renderer reset/focus leaves read
+// +30/+41. A focus-domain receiver must never be passed to whole-platform
+// bodies. Wrapper copies retain cell identity and re-read its current value.
 class NativePlatformLoadPublication final {
 public:
     NativePlatformLoadPublication(void* const volatile& cell) noexcept : mutable_(&cell) {}
