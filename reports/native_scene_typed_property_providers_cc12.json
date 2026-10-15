@@ -1,0 +1,191 @@
+{
+  "schema": "bsp.native_scene_typed_property_providers.cc12.v1",
+  "packet": "cc12_scene_typed_property_providers",
+  "addresses": [
+    "008F3370",
+    "008F3490",
+    "008F3510"
+  ],
+  "names_are_hypotheses": true,
+  "status": "whole_qualified_ordinary_Source_first_strict_and_required_worktree_build_passed_unregistered_TU",
+  "Source_ready": true,
+  "whole_typed_parser_ready": false,
+  "base": "c4b098b4e9d47fb05b46c00f0ed88155d0b4ca3b",
+  "Source": [
+    "include/bsp/native_scene_typed_property_providers.hpp",
+    "src/native_scene_typed_property_providers.cpp"
+  ],
+  "Original": [
+    {
+      "address": "008F3370",
+      "end_exclusive": "008F33B8",
+      "bytes": 72,
+      "instructions": 25,
+      "ECX": "actual38h record",
+      "stack": "CString",
+      "EAX": "same_record",
+      "RET": 4
+    },
+    {
+      "address": "008F3490",
+      "end_exclusive": "008F3504",
+      "bytes": 116,
+      "instructions": 36,
+      "ECX": "actual114hbag",
+      "stack": "key,data,count,fullDWORDflags",
+      "EAX": "same_bag",
+      "RET": 16
+    },
+    {
+      "address": "008F3510",
+      "end_exclusive": "008F3584",
+      "bytes": 116,
+      "instructions": 36,
+      "ECX": "actual114hbag",
+      "stack": "key,data,count,fullDWORDflags",
+      "EAX": "same_bag",
+      "RET": 16
+    }
+  ],
+  "contracts": {
+    "scalar": "Tag2free->physicalzeroAFTERreturn->genuinerawnullableduplicate->store; elseknownfoundreal+28enumgetter->storeall32bits, no extra tagguard/default/oldvaluefree.",
+    "arrays": "Canonical56Broot->actualraw8/9constructor->whole33F0publication. Bytector data/count/flags; fourbytector count/data/flags. Everycopyflagbitpreserved; lowerctor testsLOWbyte. Allocnullstillinsertsnull; faultdomain excluded, no inventedrecovery.",
+    "ownership": "Copy!=0freshownedchild/inputretained; copy0onlygenuine unique same-currentCRT input allocation, caller-managed throughconstruction and transferred withroot onpublication. No borrowed/stack/static/foreign/shared owninggraph. Positivecount and existingfinite/disjoint/livepool contracts retained.",
+    "genuine_providers": "Same concrete canonical rawstrings/process/physical insertion context, realE175B0/E188B4/property/query cells and enumE186ED/E17654; no fakeowner/callback/appstart.",
+    "limits": "Successful nonthrowing positivecount/nonoverflow/C-locale stableASCII/disjoint/unsharedfinite owninggraph domains; no borrowed-owning conflation, trim/mutation/reentry/fault/zero/OOM/exception admission."
+  },
+  "seven_Original_direct_providers": [
+    "00438E40",
+    "0048E840",
+    "008EF2F0",
+    "008EF360",
+    "008F33F0",
+    "00BF681B",
+    "00BF6989"
+  ],
+  "Original_EH": {
+    "handlers": [
+      "00CA492B",
+      "00CA494B"
+    ],
+    "FuncInfo": [
+      "00DD75C0",
+      "00DD75EC"
+    ],
+    "unwind_maps": [
+      "00DD75B8",
+      "00DD75E4"
+    ],
+    "cleanup": [
+      "00CA4920",
+      "00CA4940"
+    ],
+    "observation": "Eachcleanup reads[EBP-10] andcallsBF65AC; state0 onlyacrossconstructor; reset-1beforeinsertion.",
+    "Source_EH_equivalence": false
+  },
+  "strict": {
+    "first_tool": "f3ec50",
+    "exit_code": 0,
+    "flags": "/std:c++17 /MD /O2 /Ob2 /Oy- /W4 /WX /EHsc /Gy /GL- /fp:strict",
+    "compiler": "MSVC19.51.36244 Win32",
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneTypedPropertyProvidersSource01\\native_scene_typed_property_providers.obj",
+      "bytes": 3907,
+      "sha256": "e3da1e2f3928ac6d656f46a55d705587e5f028dd260d07bf11ae3fcffef33288"
+    },
+    "sections": 11,
+    "symbol_indices": 42,
+    "code_sections": 6,
+    "code_bytes": 455,
+    "instructions": 182,
+    "code_relocations": 21,
+    "metadata_relocations": 1,
+    "review": "Allcompletecode/data/metadata/directives/symbols/relocs read; exactordering/fullflags/ctororders/realbindings verified; no normalization or recompile."
+  },
+  "required_build": {
+    "command": "./scripts/build.ps1",
+    "initial_tool": "88ce99",
+    "original_session": 98838,
+    "natural_terminal_tool": "5ca5e5",
+    "exit_code": 0,
+    "existing_checks_passed": 2,
+    "seconds": 7.94,
+    "TU_registered": false,
+    "qualification": "Required registered-project regression gate only; newTU has separatefirststrict gate. No replay/restart/newtest/probe/runtime."
+  },
+  "provenance": {
+    "source_uuid": "01a14050-c68c-7302-a3db-435713ee4394",
+    "source_rollout": "C:\\Users\\sqz269\\.codex\\sessions\\2026\\10\\15\\rollout-2026-10-15T09-06-38-01a14050-c68c-7302-a3db-435713ee4394.jsonl",
+    "frozen_prefix": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneTypedPropertyProvidersSource01\\source_rollout_prefix.jsonl",
+      "lines": 2327,
+      "bytes": 6315690,
+      "sha256": "80ea61f807a2bfcae60908c880f4b7e5f2d65db7d0f27639159d11a47ccae785"
+    },
+    "literal_returned_objects_verified": true
+  },
+  "evidence": {
+    "directory": "local/WholeSceneTypedPropertyProvidersSource01",
+    "frozen_readiness": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneTypedPropertyProvidersSource01\\frozen_readiness_copy.DATA.json",
+      "bytes": 28780,
+      "sha256": "7dc6416f3ff4a342a9e09a37909fe3c5d1f5488e0ad0a34bea0e2b4019cad558"
+    },
+    "precompile_inputs": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneTypedPropertyProvidersSource01\\precompile_inputs.DATA.json",
+      "bytes": 8731,
+      "sha256": "8e39591f30c7068df24bdb7ec1abcb87dac938cd338f6ba1323882dcdcfae74e"
+    },
+    "compiler_inputs": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneTypedPropertyProvidersSource01\\compiler_declared_inputs.DATA.json",
+      "bytes": 29737,
+      "sha256": "8be0dec22550d1e513d97616d8e5f48351d4a1da563952ad9ecec977f57c4acb"
+    },
+    "strict_review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneTypedPropertyProvidersSource01\\complete_strict_review.DATA.json",
+      "bytes": 63462,
+      "sha256": "5fce6e6867c9ba8b72f98e5e7f2985253de9fff37779154e6a7478ac85981ec5"
+    },
+    "complete_COFF": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneTypedPropertyProvidersSource01\\complete_COFF.DATA.json",
+      "bytes": 76466,
+      "sha256": "5d0bc1c7bfaf77a891fe16df2106de7055df4a8e5ce54dfae353ee8a298010fd"
+    },
+    "Original_EH": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneTypedPropertyProvidersSource01\\Original_EH_review.DATA.json",
+      "bytes": 9369,
+      "sha256": "2ec18515746c6e2d5e91b5465f89023c7eea2faee87a61c1cbc0ced8d9e58b95"
+    },
+    "tools": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneTypedPropertyProvidersSource01\\original_tool_receipts.DATA.json",
+      "bytes": 902,
+      "sha256": "5a1ccb01749102f7cb35fe8ef585fae3a19ecb1def5903a04efd658dd6c12f2f"
+    },
+    "raw_provenance": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneTypedPropertyProvidersSource01\\original_tool_provenance.DATA.json",
+      "bytes": 21573,
+      "sha256": "9bcccb474834d6d52d0fe876b1e29819b7ab01904b78de20600015d198e3b9f3"
+    },
+    "normal_log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeSceneTypedPropertyProvidersSource01\\normal_build.log",
+      "bytes": 3726,
+      "sha256": "5e854db969d295fd54ad032ce0e50236db17b499f9962c7c175d27312d33d5d8"
+    }
+  },
+  "qualifications": [
+    "NewCPPABI only; OriginalECX/RET/register/FS/EH/class/privateCRT/FP/errorstate/game unproven",
+    "No loader/whole8F5A00parser/startup/appwiring or zero-size/exception support",
+    "No shared/oldSource/CMake/ledger/Ghidra changes; Root owns registration/independent admission"
+  ],
+  "validation_labels": {
+    "Source": "completequalifiedordinary",
+    "firststrict": "PASS",
+    "required_normal_build": "PASS2existingchecks",
+    "newfixtures": false,
+    "runtime": false,
+    "OriginalABI": false,
+    "privateCRT": false,
+    "game": false,
+    "independent_admission": "Root-owned pending"
+  }
+}
