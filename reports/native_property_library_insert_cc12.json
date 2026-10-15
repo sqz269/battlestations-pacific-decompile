@@ -1,0 +1,272 @@
+{
+  "schema": "bsp.whole_property_library_insert_source.v1",
+  "utc": "2026-10-15T16:23:50.887981+00:00",
+  "status": "complete_ordinary_Source_independent_strict_COFF_review_and_required_existing_build_passed; Root_registration_integration_separate",
+  "base": "f8c310fa2a42d644ca6f28611820a7807d7cc27e",
+  "packet": "cc12_property_library_insert_or_replace",
+  "owned_files": [
+    "include/bsp/native_property_library_insert.hpp",
+    "src/native_property_library_insert.cpp",
+    "docs/NATIVE_PROPERTY_LIBRARY_INSERT_CC12.md",
+    "reports/native_property_library_insert_cc12.json"
+  ],
+  "scope": "Whole008F29A0 only; new context-bearing ordinary C++ interface. No shared edits, loader/parser, Ghidra write, ledger, CMake or application wiring.",
+  "Original": {
+    "entry": "008F29A0",
+    "end_exclusive": "008F2A4C",
+    "bytes": 172,
+    "instructions": 65,
+    "direct_calls": 4,
+    "virtual_calls": 1,
+    "calls": [
+      "29AF:00468ED0",
+      "29C7:oldvirtual0 flags1",
+      "29E5:004E7C00 E17540",
+      "2A0C:0041DD40 preserve1",
+      "2A21:00BF7680"
+    ],
+    "ABI": "ECX actual108h map=raw10Ch library+4; stack actual8h query/incomingbag word; EAX currentcount; both RET8. Last RET8 begins2A49.",
+    "assembly": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\008f29a0\\assembly.txt",
+      "bytes": 1874,
+      "sha256": "1be95e92228d34635ff90b6f451dab1d728e11d6494449df893ab11df9034376",
+      "st_nlink": 1
+    }
+  },
+  "Source": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\include\\bsp\\native_property_library_insert.hpp",
+      "bytes": 3207,
+      "sha256": "f0da7d5b25c56009a540c48a5452b49bb9e668ac27386bb08b91e3e9e2014900",
+      "st_nlink": 1
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\src\\native_property_library_insert.cpp",
+      "bytes": 3694,
+      "sha256": "6bb658af87ec9501ddccd1a35428f97453b24e0f31c4b33668356cb98c15adc8",
+      "st_nlink": 1
+    }
+  ],
+  "readiness": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\PropertyLibraryInsertionReadiness01\\compact_readiness.DATA.json",
+    "bytes": 21653,
+    "sha256": "b81d842b3c3569d5aa4045d86e832aaedebdc2789c5443ef1b951b223f641064",
+    "st_nlink": 1
+  },
+  "ready_inputs": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholePropertyLibraryInsertSource01\\direct_ready_inputs.DATA.json",
+    "bytes": 5830,
+    "sha256": "7dda642589c5226db74e7e54a64cff028d1a40243b8f839062518b109ef56420",
+    "st_nlink": 1
+  },
+  "readiness_resolution": "The pinned earlier readiness identified absent distinct E17540/E18560/raw lookup/lifetime providers; all now accepted in baseMainf8c310fa2. Only direct current family pins checked; accepted ancestors not re-proved.",
+  "context": "Same concrete retained GameNativeStringProcess reference and internal existing NativePropertyTreeLibraryLifetimeContext(actualstrings,actualphysical). bags()/keys() shares canonical keyauthority/E175B0; library_pool() distinctE17540; same canonicalE188B4. Context starts nothing; complete both CC8A30/CC8A70 startups first, retain every provider and externally serialize commonlist mutations.",
+  "contracts": {
+    "hit": "Physical old+8; fixed accepted scalar008F59E0(old,1,samebags) whennonnull; physically zero+8 only afterreturn; publishincoming(nullallowed); physically reloadcount. No samepointer shortcut.",
+    "miss": "Allocate whole004E7C00 on distinctE17540; success zeros only key0/4; preserveallocator+10. Keep node==query branch. Otherwise resize rawnode from currentquerylength preserve1; physically reread querylength; ifnonzero physically reread currentdestlength, sourcedata, destdata and copy currentdestlength. No strlen/extra terminator.",
+    "publication": "Incomingnode+8 first; physical currenthead readusinglookupbucket; node+C; buckethead; physical count ADD1; physical count reload. No ordinal/backlink/metadata reset.",
+    "ownership": "Successful publication transfers incomingroot/finiteunsharedacyclicgraph. Actual10Ch root whole8F5670; admitted114h raw61/8F41A0/clone/acceptedproducer bags, samecurrentheap; nonnullincoming disjointoldgraph/query/key/node/map. Retirebag thenkey thenouterE17540slot beforepoolteardown.",
+    "limits": "Inherit closedstableNULfreeASCII/currentClocale/validraw8h and108h, canonicalkeygate/generation, coherentheads/count/slots, successfulproviders/nooverflow/fault/reentry/concurrentmutation/trim/ownershipalias. Numericphasealone notprovenance. Nativeallocationfailure continuesfault; no fabricated recovery."
+  },
+  "strict_compile": {
+    "actual_first_compile": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholePropertyLibraryInsertSource01\\original_strict_compile_tools.DATA.json",
+      "bytes": 3784,
+      "sha256": "78c31007f009e135d854efcd101e0d97cccb9be185e08873248d61c5bc3eb330",
+      "st_nlink": 1
+    },
+    "compiler": "MSVC x86 19.51.36244.0",
+    "flags": "/std:c++17 /MD /O2 /Ob2 /Oy- /W4 /WX /EHsc /Gy /GL- /fp:strict /c",
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholePropertyLibraryInsertSource01\\native_property_library_insert.obj",
+      "bytes": 4929,
+      "sha256": "85afc0a48c55837b458fe0e6da688cc90e8a599392d3c5985ffef42976cea867",
+      "st_nlink": 1
+    },
+    "complete_COFF": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholePropertyLibraryInsertSource01\\complete_COFF.DATA.json",
+      "bytes": 86615,
+      "sha256": "5e2637e3e0f2fee19537c8d85855eece8d7afb7f786ca0722dfbcc61cc701c2c",
+      "st_nlink": 1
+    },
+    "complete_COFF_review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholePropertyLibraryInsertSource01\\complete_COFF_review.DATA.json",
+      "bytes": 6443,
+      "sha256": "7c0e0fee7bfb723c9fee5f578ca6c53600096b3bc9d711310c1443a769b159ba",
+      "st_nlink": 1
+    },
+    "complete_dumpbin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholePropertyLibraryInsertSource01\\complete_COFF_dumpbin.txt",
+      "bytes": 47693,
+      "sha256": "6f9a88c807234280c785e4e378d638f1462985875b8bb8a418a83c4541056dc6",
+      "st_nlink": 1
+    },
+    "compiler_declared_inputs": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholePropertyLibraryInsertSource01\\compiler_declared_inputs.DATA.json",
+      "bytes": 35667,
+      "sha256": "f8deefe21121d894ccfbbe60c23c5523fe204a07caf2e8f03dca63a7c7c8b24a",
+      "st_nlink": 1
+    },
+    "all_code_sections": 11,
+    "all_code_bytes": 533,
+    "all_instructions": 196,
+    "code_relocations": 8,
+    "debug_metadata_relocations": 5,
+    "unaccounted_or_unreachable_bytes": 0,
+    "FP_or_SIMD_instructions": 0,
+    "primary_body": {
+      "section": 8,
+      "bytes": 411,
+      "instructions": 136
+    },
+    "physical_machine_schedule": {
+      "lookup": "0D queryE17654;16 libraryE18560;27 whole00468ED0 with stack-local bucket atEBP-10.",
+      "hit": "3E physical old+8;52 fixed scalar008F59E0 flags1 samebags;67 clear+8 after return;75 publishincoming;80 physical map+4 reload;8E return.",
+      "miss": "92 whole004E7C00 on captured context E17540 at+0C;B0/C0 zero only node0/4;C3 node/query identity;C6 JE136; no allocator+10 write or recovery return.",
+      "copy": "D0 querylength;DF resize preserve1 same canonical keycontext;EF physical querylength reread;F9 empty branch;103 destinationlength;111 sourcedata;11F destdata;12E memcpy currentdestlength.",
+      "publish": "141 node+8 incoming;157 current lookupbucket head read;16E node+C;17A maphead publish;180 ADD [map+4],1;18C physical count reload;19A return."
+    }
+  },
+  "required_repository_build": {
+    "schema": "bsp.whole_library_insert_original_normal_build_tools.v1",
+    "command": "./scripts/build.ps1 *> local\\WholePropertyLibraryInsertSource01\\normal_build.log; exit $LASTEXITCODE",
+    "initial_tool_result": {
+      "chunk_id": "eb1a4a",
+      "wall_time_seconds": 10.003243,
+      "session_id": 79038,
+      "original_token_count": 0,
+      "output": ""
+    },
+    "terminal_tool_result": {
+      "chunk_id": "8c8bab",
+      "wall_time_seconds": 7.3e-06,
+      "exit_code": 0,
+      "original_token_count": 0,
+      "output": ""
+    },
+    "build_invocations": 1,
+    "restarts_or_replacements": 0,
+    "status": "PASS; original process reached natural terminal",
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholePropertyLibraryInsertSource01\\normal_build.log",
+      "bytes": 85243,
+      "sha256": "83a84f08d5933c49067df0f25afe2981ae808376f0a21c95e39270545e4ca11a",
+      "st_nlink": 1
+    },
+    "generated_bsp_core_project": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\build\\win32\\bsp_core.vcxproj",
+      "bytes": 392500,
+      "sha256": "9551742001862ef9ff29bc15d18f75a4f79ca9a9bcbb1f1fd38ed8ec447fd797",
+      "st_nlink": 1
+    },
+    "tests": [
+      "1/2 Test #1: reconstructed_math ...............   Passed    0.21 sec",
+      "2/2 Test #2: tool_tests .......................   Passed    6.98 sec",
+      "100% tests passed, 0 tests failed out of 2",
+      "Total Test time (real) =   7.23 sec"
+    ],
+    "configured_CTest_checks": 2,
+    "all_configured_checks_passed": true,
+    "warnings": [
+      "lua_binding_spawn.obj : warning LNK4006: \"bool __cdecl bsp::spawn_request_id_matches(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)\" (?spawn_request_id_matches@bsp@@YA_NABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z) already defined in lua_spawn_new.obj; second definition ignored [J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\build\\win32\\bsp_core.vcxproj]"
+    ],
+    "new_insert_TU_registered_in_this_worker_build": false,
+    "limits": [
+      "Original build preserved to natural terminal; no restart/replacement.",
+      "Existing targets/two configured tests passed; new TU evidence is separate first strict compile.",
+      "Shared CMake registration and registered Main evidence belong to Root.",
+      "No new test/probe/Target runtime, Original ABI/class/SEH/privateCRT/exception/game credit."
+    ]
+  },
+  "new_TU_registered_in_worker_build": false,
+  "independent_review": {
+    "accepted": true,
+    "status": "PASS; no Source correction or static blocker",
+    "review_artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\PropertyLibraryInsertIndependentReview01\\family_receipt.DATA.json",
+        "bytes": 2139,
+        "sha256": "6b183cca4a48c326f38ac37e9e494b4f64dfa53c459cd17f54cd4f0386c87f11",
+        "st_nlink": 1
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\PropertyLibraryInsertIndependentReview01\\compact_review.DATA.json",
+        "bytes": 14441,
+        "sha256": "b08874805a22be07c847636d138e378d5863a1fe4616ce7d9cd5f52fbbfa58c2",
+        "st_nlink": 1
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\PropertyLibraryInsertIndependentReview01\\complete_COFF_review.DATA.json",
+        "bytes": 85923,
+        "sha256": "3ef0164d34887d9c19466b85aa1a5ed504292c1b822ec55fb2691e08869e826b",
+        "st_nlink": 1
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\PropertyLibraryInsertIndependentReview01\\execution_tools.DATA.json",
+        "bytes": 597,
+        "sha256": "c630018871420ae45bddd080a47de1a25d4b1957b13b092b47e6129971c5c7d2",
+        "st_nlink": 1
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\PropertyLibraryInsertIndependentReview01\\finalize_review.py",
+        "bytes": 11380,
+        "sha256": "c00a1f4adbfa567390570e88bd09743c330b3a89c24b2bf16ac450601cf2c47f",
+        "st_nlink": 1
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\PropertyLibraryInsertIndependentReview01\\review_complete.py",
+        "bytes": 10821,
+        "sha256": "c305e5a4aa92fde01b8814e4c05a6520769bf4995dc1bf7b130652c40251b6c8",
+        "st_nlink": 1
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\PropertyLibraryInsertIndependentReview01\\review_inputs.DATA.json",
+        "bytes": 12839,
+        "sha256": "05516b3f124063cfb05a858edef1669772025c863b8976cb740f0dcaf7585377",
+        "st_nlink": 1
+      }
+    ],
+    "reviewed_Source": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\include\\bsp\\native_property_library_insert.hpp",
+        "bytes": 3207,
+        "sha256": "f0da7d5b25c56009a540c48a5452b49bb9e668ac27386bb08b91e3e9e2014900",
+        "st_nlink": 1
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\src\\native_property_library_insert.cpp",
+        "bytes": 3694,
+        "sha256": "6bb658af87ec9501ddccd1a35428f97453b24e0f31c4b33668356cb98c15adc8",
+        "st_nlink": 1
+      }
+    ],
+    "reviewed_strict_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholePropertyLibraryInsertSource01\\original_strict_compile_tools.DATA.json",
+      "bytes": 3784,
+      "sha256": "78c31007f009e135d854efcd101e0d97cccb9be185e08873248d61c5bc3eb330",
+      "st_nlink": 1
+    },
+    "all_input_bookends_stable": true,
+    "input_count": 38,
+    "actual_tools": [
+      "91b35f/exit0 first independent whole reader",
+      "64f3f2/exit0 finalizer"
+    ],
+    "scope": "Complete selected Original172B65/Source/all strict COFF static review; no Main admission, normal-build, Native ABI/runtime, privateCRT, EH or game credit."
+  },
+  "credit": {
+    "exported_Original": true,
+    "complete_ordinary_Source": true,
+    "strict_new_TU_compiled": true,
+    "complete_strict_COFF_reviewed": true,
+    "registered_integration": false,
+    "Native_runtime": false,
+    "Original_ABI_class_SEH": false,
+    "historical_private_CRT": false,
+    "exception_fault": false,
+    "gameplay": false,
+    "required_existing_repository_build": true,
+    "independent_Source_and_complete_COFF_review": true
+  },
+  "followup": "Root reviews/integrates exactly four files, registers TU in shared CMake, then validates registered Main. No followup packets in this worker."
+}
