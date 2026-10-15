@@ -1,10 +1,13 @@
 #pragma once
+#include "bsp/native_platform_load_messages.hpp"
 #include <cstdint>
 namespace bsp {
 struct NativeRendererDeviceRecreationContext;
 struct NativeRendererResetProcessContext {
     NativeRendererDeviceRecreationContext& recreation;
-    const void* volatile& actual_platform_0109cf04;
+    // Same caller-owned pointer cell, also for mutable raw platform publications.
+    // Do not copy its current receiver into a private reset publication.
+    NativePlatformLoadPublication actual_platform_0109cf04;
     volatile std::uint8_t& actual_pending_0108d4b8;
     volatile std::uint8_t& actual_lost_0108d4b9;
     volatile std::uint32_t& actual_retries_0108d4c4;

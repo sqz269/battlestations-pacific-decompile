@@ -2,7 +2,7 @@
 struct DeviceGraph {
  DestructionGraph& graph;
  const void* volatile& renderer;
- const void* volatile platform_publication;
+ NativePlatformLoadPublication platform_publication;
  volatile U retries=0,render_thread=0;
  volatile std::uint8_t srgb=0;
  std::array<U,4> null_buffer_sentinel{};
@@ -39,7 +39,7 @@ struct DeviceGraph {
   const auto address=GetProcAddress(module,"D3DXCreateTextureFromFileInMemoryEx");check(address!=nullptr,"actual D3DX texture import");
   CreateTextureFromMemory result;std::memcpy(&result,&address,sizeof result);return result;
  }
- DeviceGraph(DestructionGraph& g,NativeRendererConstructorContext& c,GameSingletonHost& singletons,ActualNativeStringPoolStorage& strings, const void* platform)
+ DeviceGraph(DestructionGraph& g,NativeRendererConstructorContext& c,GameSingletonHost& singletons,ActualNativeStringPoolStorage& strings, NativePlatformLoadPublication platform)
   :graph(g),renderer(const_cast<const void* volatile&>(c.current_renderer_00f8d394)),platform_publication(platform),
    resource_profiles{g.profiles(0xd61948),g.profiles(0xd61870),g.profiles(0xd618b0),g.profiles(0xd619a0),g.profiles(0xd62ad0)},
    release{g.reset,g.cache,resource_profiles},restore{resource_profiles,const_cast<void**>(&c.current_renderer_00f8d394)},

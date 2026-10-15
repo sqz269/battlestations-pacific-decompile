@@ -166,7 +166,7 @@ void process_current_request(void* renderer, NativeRendererResetProcessContext& 
                 // lost branch; the device is kept and polled until DEVICENOTRESET.
                 ++stats.lost_holds;
             } else {
-                const void* const platform = context.actual_platform_0109cf04;
+                const void* const platform = context.actual_platform_0109cf04.load();
                 if (!captured_platform_is_focused(platform)) return;
                 context.actual_retries_0108d4c4 = 0;
                 recreate_native_renderer_device_00b29670(renderer, recreation);
@@ -176,7 +176,7 @@ void process_current_request(void* renderer, NativeRendererResetProcessContext& 
     }
     if (cooperative != 0x88760869u && byte(&context.actual_pending_0108d4b8) == 0)
         return;
-    const void* const focused_platform = context.actual_platform_0109cf04;
+    const void* const focused_platform = context.actual_platform_0109cf04.load();
     if (!captured_platform_is_focused(focused_platform)) return;
     const auto sleep_call = &Sleep; // Native captures the immutable Sleep import once.
     bool reset_succeeded = false;
@@ -186,7 +186,7 @@ void process_current_request(void* renderer, NativeRendererResetProcessContext& 
         release_native_dynamic_buffers_for_reset_00b237d0(renderer, globals);
         release_native_renderer_resources_00b262c0(renderer, recreation.release);
         sleep_call(100);
-        const void* const current_platform = context.actual_platform_0109cf04;
+        const void* const current_platform = context.actual_platform_0109cf04.load();
         void* const window = native_platform_window_00bec230(current_platform);
         put(renderer, 0x1a44, reinterpret_cast<Word>(window));
         void* const device = pointer(word(renderer, 0x1a10));
@@ -213,7 +213,7 @@ void process_current_request(void* renderer, NativeRendererResetProcessContext& 
         }
     }
     if (!reset_succeeded) {
-        const void* const current_platform = context.actual_platform_0109cf04;
+        const void* const current_platform = context.actual_platform_0109cf04.load();
         if (native_platform_has_focus_00b20c50(current_platform) != 0)
             recreate_native_renderer_device_00b29670(renderer, recreation);
     }

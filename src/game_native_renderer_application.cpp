@@ -354,6 +354,10 @@ struct GameNativeRendererApplication::Impl {
     alignas(4) std::array<unsigned char,0x770> gather{};
     NativeRendererConstructorContext constructor;
     DestructionGraph graph;
+    // Only the compatibility pointer-value entry uses this projected focus
+    // cell. The borrowed entry carries the caller's cell directly to devices.
+    const void* volatile legacy_platform_focus_publication;
+    const bool borrowed_platform_publication;
     DeviceGraph devices;
     TextureLoadingGraph texture_loading;
     GameGridGraph game_grids;
@@ -386,7 +390,8 @@ struct GameNativeRendererApplication::Impl {
 
     Impl(GameHostLog& log_,GameSingletonHost& host,GameVfsHost& files,
         GameNativeLuaServices& services,GameNativeReadOnlyData& data,
-        void* const volatile& clock,const void* platform)
+        void* const volatile& clock,const void* legacy_platform,
+        const NativePlatformLoadPublication* borrowed_platform=nullptr)
         : log(log_),singletons(host),lua_services(services),vfs(files.borrow_raw_services()),
           raw(files.raw_strings()),profiles{data},
           entry_cache{host.manager_publication_01090aa0(),entry_cache_publication,*profiles(0xd7a24c)},
@@ -407,7 +412,10 @@ struct GameNativeRendererApplication::Impl {
               mode.data(),identifier.data(),gather.data()},
           graph(constructor,vfs.strings,raw,*host.native_deletion_bindings().resource_support,owners,
               validation,accounting,data,files.native_owners().types(),files.native_types().light_types(),vfs.retained_memory),
-          devices(graph,constructor,host,vfs.strings,platform),
+          legacy_platform_focus_publication(legacy_platform),
+          borrowed_platform_publication(borrowed_platform!=nullptr),
+          devices(graph,constructor,host,vfs.strings,borrowed_platform ? *borrowed_platform :
+              NativePlatformLoadPublication(legacy_platform_focus_publication)),
         texture_loading(graph,devices,owners,vfs,platform_events,validation,accounting),
         game_grids(graph,devices,texture_loading,declaration_cache,vfs.strings,renderer),
           vertex_half(devices.d3dx),
@@ -465,6 +473,10 @@ GameNativeRendererApplication::GameNativeRendererApplication(GameHostLog& log,Ga
     GameVfsHost& files,GameNativeLuaServices& lua,GameNativeReadOnlyData& data,
     void* const volatile& clock,const void* platform)
     :impl_(std::make_unique<Impl>(log,host,files,lua,data,clock,platform)) {}
+GameNativeRendererApplication::GameNativeRendererApplication(GameHostLog& log,GameSingletonHost& host,
+    GameVfsHost& files,GameNativeLuaServices& lua,GameNativeReadOnlyData& data,
+    void* const volatile& clock,NativePlatformLoadPublication platform)
+    :impl_(std::make_unique<Impl>(log,host,files,lua,data,clock,nullptr,&platform)) {}
 GameNativeRendererApplication::~GameNativeRendererApplication()=default;
 void* const volatile& GameNativeRendererApplication::publication_00f8d394() noexcept{return impl_->renderer;}
 void GameNativeRendererApplication::create_shader_cache() {
@@ -563,6 +575,11 @@ NativeTextureCacheContext& GameNativeRendererApplication::texture_cache() noexce
 }
 const void* const volatile& GameNativeRendererApplication::loading_platform_focus_publication() {
     check(impl_->phase==Impl::Phase::ready,"loading focus publication requires the ready application renderer");
+    check(!impl_->borrowed_platform_publication,
+        "borrowed platform entry requires borrow_platform_publication_0109cf04");
+    return impl_->legacy_platform_focus_publication;
+}
+NativePlatformLoadPublication GameNativeRendererApplication::borrow_platform_publication_0109cf04() const noexcept {
     return impl_->devices.platform_publication;
 }
 NativeRenderActualOwnerRegistry& GameNativeRendererApplication::actual_owners() noexcept {
@@ -727,7 +744,7 @@ void GameNativeRendererApplication::create_device(const RendererInitRequest& req
         p.retained_device->AddRef();p.phase=Impl::Phase::ready;
         p.log.notef("native renderer device startup: device=%p pending=%u lost=%u render_thread=%lu focused=%d",
             p.retained_device,p.frame_flag,p.device_lost,static_cast<unsigned long>(p.devices.render_thread),
-            native_platform_has_focus_00b20c50(p.devices.platform_publication));
+            native_platform_has_focus_00b20c50(p.devices.platform_publication.load()));
     } catch(...) {p.phase=Impl::Phase::failed;throw;}
 }
 void GameNativeRendererApplication::initialize_window_render_entry_cache() {
