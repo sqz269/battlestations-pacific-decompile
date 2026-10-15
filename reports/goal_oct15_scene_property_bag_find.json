@@ -306,7 +306,17 @@
     }
   ],
   "annotation": {
-    "status": "pending 8F ledger queue;no Ghidra mutations yet"
+    "status": "PASS locked annotate;prior names/comments preserved;project saved;all three exports refreshed",
+    "prior_values_log": "local/ghidra-annotations-20261015T234444Z.json",
+    "prior_values_log_sha256": "e95475a15ebb5f3728cc7c74696480e417f696cb2a3b8dcc9f6d03bd855273ea",
+    "addresses": [
+      "008f2260",
+      "00ca4770",
+      "00ca4778"
+    ],
+    "project_saved": true,
+    "exports_refreshed": true,
+    "ledger_window": "Queued turn claimed only after both shards unheld;bounded own record appended;short file lease released immediately to next CC12 waiter"
   },
   "source_registration": "unique cmake/startup.cmake append when unheld and own queue first;own queue immediately removed,no exclusive whole-file lease",
   "validation": {

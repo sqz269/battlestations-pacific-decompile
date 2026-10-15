@@ -101,8 +101,11 @@ recorded in JSON. Required `scripts/build.ps1` passed at registered revision
 `f0d3fc0d9`, targeting MSVC Win32. Both enabled existing checks passed in
 6.94 seconds: math and tool tests. Optional native differential fixtures are
 not enabled in this worker build. The existing unrelated LNK4006 duplicate
-`spawn_request_id_matches` warning remains. Locked annotation/export awaits
-the held 8F ledger turn; Source and build evidence do not bypass that boundary.
+`spawn_request_id_matches` warning remains. After the queued 8F shard handoff,
+the bounded parent record was appended and the shared shard window released.
+Locked annotation preserved all three names and prior comments, saved the
+original project and refreshed all three affected exports. The prior-value log
+is `local/ghidra-annotations-20261015T234444Z.json`.
 No new tests are added. Original
 static-CRT heap/errno/handler/locale, RTTI/FH3/SEH/register/fault/binary identity,
 new-entry native differential, application and game proof remain unclaimed.
