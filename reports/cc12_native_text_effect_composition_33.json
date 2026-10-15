@@ -128,5 +128,18 @@
     "Native Text activation/drawing or visual parity",
     "Original register/FH3/string/vector/private-frame ABI equivalence",
     "Full startup fidelity or gameplay validation"
-  ]
+  ],
+  "post_integration_build": {
+    "source_commit": "0af1aa0274c53016004b369bd7c2fdd2f19976e9",
+    "canonical_build_exit": 0,
+    "existing_suites_passed": 3,
+    "test_seconds": 8.5,
+    "manifest": "local/cc12_native_text_effect_composition_33/combined_build/manifest.json",
+    "manifest_sha256": "981c881fbf81850bcf9909adb17b7d766d04e3a81a3fd8b87238ec475d46c99a",
+    "archive": "local/cc12_native_text_effect_composition_33/combined_build.zip",
+    "archive_sha256": "25807c231a3c9bb43933a747ef24e469dc3f279455d7b48ea3f7c903dadc0557",
+    "archive_bytes": 3171239,
+    "Text_COFF_object_identical_to_reviewed_initial_build": true,
+    "native_Text_runtime_invoked": false
+  }
 }
