@@ -609,6 +609,23 @@ NativeRenderActualOwnerRegistry& GameNativeRendererApplication::actual_owners() 
 NativeGameGridContext& GameNativeRendererApplication::game_grid_context() noexcept {
     return impl_->game_grids.context;
 }
+const volatile std::uint32_t*
+GameNativeRendererApplication::borrow_gui_material_destruction_profile_00d5e520() {
+    auto& p=*impl_;
+    check(p.phase==Impl::Phase::ready && !requires_process_retention(),
+        "GUI material profile requires a ready renderer with completed acquisitions");
+    auto& graphics=p.game_grids.graphics;
+    require_gui_text_native_renderer_domain(graphics,p.renderer,p.vfs.strings,p.owners);
+    check(&p.game_grids.context.graphics==&graphics &&
+        &graphics.streams.geometry==&p.texture_loading.geometry &&
+        &graphics.streams.geometry.actual_owners()==&p.owners &&
+        &graphics.streams.geometry.registration().owners==&p.owners,
+        "GUI material profile requires the renderer's canonical geometry and actual owners");
+    const auto* profile=static_cast<const volatile U*>(p.profiles.data.data_at(0x00d5e520,8));
+    check(profile[0]==0x00bd30e0 && profile[1]==0x00b194b0,
+        "GUI material mapped destruction profile differs from supported D5E520 selectors");
+    return profile;
+}
 GuiTextNativeLayoutServices& GameNativeRendererApplication::section_layout_services() {
     check(impl_->phase==Impl::Phase::ready && !impl_->section_layout_acquisition_pending(),
         "native section layout services require ready renderer and completed acquisition");

@@ -1,5 +1,6 @@
 #pragma once
 #include "bsp/native_material_effect_cache.hpp"
+#include "bsp/native_material_factory.hpp"
 #include <exception>
 #include <memory>
 
@@ -7,6 +8,7 @@ namespace bsp {
 class NativeLuaServiceBindings;
 struct NativeMaterialDescriptorSamplersContext;
 class NativeMaterialDescriptorSamplersCallFactory;
+class GuiNativeGeometryOwners;
 }
 namespace bsp::game {
 class GameHostLog;
@@ -46,6 +48,33 @@ struct GameNativeGuiEffectLoadOperation final {
     std::exception_ptr failure;
 };
 
+enum class GameNativeGuiMaterialFactoryPhase { fresh, factory, registration, complete, failed };
+struct GameNativeGuiMaterialFactoryOperation final {
+    GameNativeGuiMaterialFactoryPhase phase{GameNativeGuiMaterialFactoryPhase::fresh};
+    // Borrowed actual8h header, never owned or consumed here. It and its live
+    // bytes must survive synchronous entry. After return/unwind the caller's
+    // native cleanup may consume the name: this pointer is then diagnostic
+    // only, even when the factory frame survives failure. Retain the header's
+    // storage with the caller frame; never reread/replay a consumed name.
+    const void* input_name{};
+    bool input_name_borrow_active{};
+    void* captured_renderer{};
+    NativeLuaServiceBindings* captured_lua_binding{};
+    GuiNativeGeometryOwners* geometry{};
+    // This SAME access object and every referenced provider outlive the
+    // material's final release, retained failures, and shared renderer drain.
+    NativeMaterialDestructionAccess* materials{};
+    const volatile std::uint32_t* material_profile_00d5e520{};
+    NativeMaterialFactoryAcquired factory;
+    // On normal return only, transfer the single creator to the caller.
+    // Neither this diagnostic alias nor the retained frame adds a reference.
+    NativeMaterialStorage* result{};
+    std::uint32_t result_profile{};
+    std::int32_t result_references{};
+    bool caller_reference_transferred{};
+    std::exception_ptr failure;
+};
+
 // Real numeric renderer48/cache/loader/program/compiler composition over the
 // SAME ready renderer, VFS, string pool, actual effects/passes/shaders/states
 // and shared record allocator. No semantic shader/material wrapper, copied
@@ -76,6 +105,19 @@ public:
     void* acquire_effect_00b318b0(const void* stable_actual_name_header);
     std::size_t operation_count() const noexcept;
     const GameNativeGuiEffectLoadOperation& operation(std::size_t) const;
+    // Whole numeric535320 plus metadata-only canonical material admission.
+    // No Text activation, caller name cleanup, extra retain or rollback. Exact
+    // geometry, process material/parameter pools, strings and mapped profile
+    // are authenticated before entry. Null native allocation returns null.
+    // published_operation must be null. Its fresh stable heap frame is
+    // published before native effects, including on later exceptions; retain
+    // this application and the caller's name/access/provider frame through
+    // failure. The output pointer is never cleared or used to permit replay.
+    NativeMaterialStorage* create_material_00535320(const void* stable_actual_name_header,
+        GuiNativeGeometryOwners&, NativeMaterialDestructionAccess&,
+        const GameNativeGuiMaterialFactoryOperation*& published_operation);
+    std::size_t material_operation_count() const noexcept;
+    const GameNativeGuiMaterialFactoryOperation& material_operation(std::size_t) const;
     bool requires_process_retention() const noexcept;
     const std::exception_ptr& failure() const noexcept;
     // Keep this graph alive through renderer cache/effect/compiler retirement.

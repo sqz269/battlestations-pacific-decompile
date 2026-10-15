@@ -140,6 +140,12 @@ public:
     // release grids before draining this renderer. Uses the same VFS strings,
     // declaration cache, stream owners and live process vector as the graph.
     NativeGameGridContext& game_grid_context() noexcept;
+    // Ready-only admission/view of this renderer's SAME verified read-only
+    // D5E520 {BD30E0,B194B0} profile and canonical geometry/actual-owner domain.
+    // No native work, pool, cache or callable table is created. Retain this
+    // renderer/read-only-data owner through every material's final release,
+    // interrupted invocation and shared drain. New C++ view, not Original ABI.
+    const volatile std::uint32_t* borrow_gui_material_destruction_profile_00d5e520();
     // Ready-only borrowed section-layout/vertex-reader prerequisites. These
     // use game_grid_context()'s SAME graphics/string/owner domain and the live
     // renderer publication. Retain this application through every borrower;
