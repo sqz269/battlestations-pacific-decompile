@@ -1,0 +1,146 @@
+{
+  "packet": "oct15_avoid_distance",
+  "worker": "agent/oct15_avoid_distance",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "source": "src/avoid_zone_distance_followup.cpp",
+  "header": "include/bsp/avoid_zone_distance_followup.hpp",
+  "documentation": "docs/OCT15_AVOID_DISTANCE.md",
+  "routines": [
+    {
+      "address": "004171f0",
+      "body_end_inclusive": "004172de",
+      "coverage": "complete",
+      "implementation": "avoid_zone_segment_boundary_distance_004171f0",
+      "proposed_name": "BSP_AvoidZone_MinSegmentBoundaryDistance",
+      "previous_live_name": "FUN_004171f0",
+      "abi": "ECX zone; stack start,end pointers; ST0 distance; RET8 at004172dc",
+      "binding_boundary": "Complete caller through concrete segment_pair_distance_004f49f0 and existing public native dependencies with required actual CRT access.",
+      "preconditions": "Positive count, readable stable pointer array and records, stable geometry across calls; native reads records[count-1] before empty-loop test.",
+      "flow_gaps": []
+    },
+    {
+      "address": "004f49f0",
+      "body_end_inclusive": "004f4ad0",
+      "coverage": "complete",
+      "implementation": "segment_pair_distance_004f49f0",
+      "proposed_name": "BSP_Segment2f_SegmentDistance",
+      "previous_live_name": "BSP_Segment2f_SegmentDistance",
+      "abi": "ECX a0; EDX a1; stack b0,b1; ST0 distance; RET8 at004f4a1c/004f4aba/004f4ace",
+      "binding_boundary": "Existing native_segment_crossing_004f3730 and avoid_zone_segment_distance_00419ab0 APIs; required actual CameraAxesCrtAccess borrowed unchanged.",
+      "preconditions": "Readable stable endpoint pairs; original pointer-bit behavior on solver failure remains observable through borrowed query addresses.",
+      "flow_gaps": []
+    },
+    {
+      "address": "004174a0",
+      "body_end_inclusive": "0041757b",
+      "coverage": "complete",
+      "implementation": "avoid_zone_expanded_boundary_query_004174a0",
+      "proposed_name": "BSP_AvoidZone_QueryExpandedBoundsBoundaryPoint",
+      "previous_live_name": "FUN_004174a0",
+      "abi": "ECX zone; stack point,float margin,out; AL admission; RET0Ch at00417564/00417579",
+      "binding_boundary": "Existing semantic 00416b50 API and instruction-backed 00416f30 API; new C++ interface, not native ABI.",
+      "preconditions": "Nonnegative count, readable records, native storage and matching polygon snapshot remain stable; query/output do not alias geometry or one another.",
+      "flow_gaps": []
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00417295",
+      "native": "004f49f0",
+      "function": "004171f0",
+      "contract": "body_read",
+      "binding": "segment_pair_distance_004f49f0",
+      "arguments": "ECX edge_start, EDX edge_end, stack segment_start,segment_end; RET8"
+    },
+    {
+      "address": "0041753c",
+      "native": "00416b50",
+      "function": "004174a0",
+      "contract": "body_read",
+      "binding": "avoid_zone_contains_point_00416b50"
+    },
+    {
+      "address": "00417556",
+      "native": "00416f30",
+      "function": "004174a0",
+      "contract": "body_read",
+      "binding": "avoid_zone_closest_offset_point_00416f30",
+      "arguments": "query,out+00h,out+08h,out+1Ah,+0.0; RET14h"
+    },
+    {
+      "address": "004f4a0a",
+      "native": "004f3730",
+      "function": "004f49f0",
+      "contract": "body_read",
+      "binding": "native_segment_crossing_004f3730"
+    },
+    {
+      "address": "004f4a24",
+      "native": "00419ab0",
+      "function": "004f49f0",
+      "contract": "body_read",
+      "binding": "avoid_zone_segment_distance_00419ab0",
+      "arguments": "a0,a1,b0,actual CRT; RET4"
+    },
+    {
+      "address": "004f4a32",
+      "native": "00419ab0",
+      "function": "004f49f0",
+      "contract": "body_read",
+      "binding": "avoid_zone_segment_distance_00419ab0",
+      "arguments": "a0,a1,b1,actual CRT; RET4"
+    },
+    {
+      "address": "004f4a40",
+      "native": "00419ab0",
+      "function": "004f49f0",
+      "contract": "body_read",
+      "binding": "avoid_zone_segment_distance_00419ab0",
+      "arguments": "b0,b1,a0,actual CRT; RET4"
+    },
+    {
+      "address": "004f4a4e",
+      "native": "00419ab0",
+      "function": "004f49f0",
+      "contract": "body_read",
+      "binding": "avoid_zone_segment_distance_00419ab0",
+      "arguments": "b0,b1,a1,actual CRT; RET4"
+    }
+  ],
+  "observations": [
+    "004171f0 and 004174a0 had no source implementation and no live callers.",
+    "00417240 dereferences records[count-1] unconditionally; empty-input repair would change native preconditions.",
+    "004171f0 preserves closing-edge-first order, binary32 dependency-result boundary, strict first-tie retention, NaN rejection and no zero early exit.",
+    "004f49f0 reuses complete public dependencies; four binary32 distance stores and second-on-equal/unordered pair/final selection are retained.",
+    "00d7a248 live bytes ffff7f7f identify FLT_MAX.",
+    "004174a0 is expanded half-open AABB admission, not a boundary-distance threshold.",
+    "004174a0 miss writes only out+19h; admitted no-candidate geometry retains old point/edge/endpoint fields.",
+    "Original expanded-bound x87 schedule and spills retained; dependent containment remains the existing semantic projection."
+  ],
+  "corrections": [
+    {
+      "was": "004f49f0 reconstruction ledger status reconstructed_build_tested may suggest an actual native-equivalent reusable helper.",
+      "is": "Its old private game_hosts_ship_ai.cpp helper is explicitly a double textbook SUBSTITUTION with unread child bodies; this packet adds a separate concrete outer wrapper using complete actual public dependencies.",
+      "evidence": "src/game_hosts_ship_ai.cpp:13307-13348; complete 004f49f0 pseudocode and assembly read, including its four 00419ab0 calls and native binary32 distance spills. Integrator owns any dependency-ledger correction."
+    }
+  ],
+  "validation": {
+    "win32_build_and_existing_ctest": "pending",
+    "verify_report_calls": "pass: 8 call rows checked, 0 failed",
+    "git_diff_check": "pass",
+    "new_tests": 0,
+    "native_differential_fixture": false,
+    "concrete_reconstructed_callees_used": true,
+    "native_abi_binding_supplied": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "risks": [
+    "Actual CRT access is required and borrowed unchanged by the 00419ab0 dependency; no default substitute is supplied.",
+    "Ignored solver failure in 00419ab0 depends on query pointer bits; native stack-address identity is not promised by the new typed API.",
+    "004174a0 inherits semantic 00416b50 arithmetic; exact native containment rounding is not newly established.",
+    "Original exception ABI, full floating-point status/exception equivalence, drop-in register ABI and gameplay remain unverified."
+  ]
+}
