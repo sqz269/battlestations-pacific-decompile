@@ -79,3 +79,8 @@ via the shared CMake registry. Existing providers are `src/native_string.cpp`,
 `src/native_string_pool_owner.cpp`, `src/native_string_pool_storage.cpp`, and
 the singleton lifetime implementation. The worker makes no shared registry or
 Ghidra mutation; the integrator owns annotation and export refresh.
+
+Primary integration update: the registered MSVC Win32 build and all three
+existing CTest suites passed. Ghidra annotation/save and standard export
+refresh are complete. See [the batch receipt](../reports/goal15_reconstruction_batch.json).
+These checks do not execute or establish original ABI/gameplay equivalence for this entry.

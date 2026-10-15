@@ -109,3 +109,8 @@ compiled. Details are in `reports/goal15_zone_group_clear.json`.
 The primary integrator registers
 `src/native_zone_group_clear.cpp`, runs the complete required build and existing
 checks, and handles Ghidra annotation. No new test cases were added.
+
+Primary integration update: the registered MSVC Win32 build and all three
+existing CTest suites passed. Ghidra annotation/save and standard export
+refresh are complete. See [the batch receipt](../reports/goal15_reconstruction_batch.json).
+These checks do not execute or establish original ABI/gameplay equivalence for this entry.

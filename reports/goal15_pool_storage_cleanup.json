@@ -81,5 +81,12 @@
     "ghidra_mutation": "none; primary owns annotation and refresh",
     "candidate_name": "BSP_PoolStorage_Cleanup_Provisional",
     "candidate_name_evidence": "Complete cleanup schedule proven; pooled-storage owner identity remains unknown"
+  },
+  "primary_integration_validation": {
+    "receipt": "reports/goal15_reconstruction_batch.json",
+    "registered_win32_build": "pass",
+    "existing_ctest_suites": "3 passed, 0 failed",
+    "ghidra_names_comments_and_exports": "applied, saved and refreshed",
+    "new_entry_native_differential_or_gameplay_validation": false
   }
 }

@@ -26,5 +26,20 @@ was changed by that comment correction.
 The new interfaces are source reconstructions, not binary replacements.
 External services, allocation domains and unknown owner identity remain
 explicit. Build, original ABI compatibility and gameplay evidence are separate
-claims. Registered integration build, annotations and the final batch receipt
-are pending.
+claims. The registered MSVC Win32 build passed, and all three existing CTest
+suites passed: reconstructed math, native math differential and tool tests.
+The differential suite covers its existing seed routines, not these three new
+entries. All 35 direct report call rows passed. No new tests were added.
+
+The three source files compiled into `bsp_core`. Ghidra names and evidence
+comments were applied under the write lock, prior annotations were recorded,
+the project was saved, and all three standard exports were refreshed. See
+[the machine-readable receipt](../reports/goal15_reconstruction_batch.json)
+for log paths, source commits and remaining limits.
+
+The integration helper stopped at seven pre-existing duplicate header names.
+All six implicated headers were byte-identical to current `main`; none of the
+new headers introduces a reported duplicate. The required build and CTests
+were therefore run directly before normal git integration. Existing library
+link warning LNK4006 for `spawn_request_id_matches` also remains outside these
+packets; it did not fail either build.

@@ -69,5 +69,12 @@
     "Callback list mutation order is preserved; caller/host must preserve native pointer lifetime preconditions.",
     "Returning invalid handlers retain native unchecked malformed-state consequences.",
     "Complete source reconstruction does not establish game runtime equivalence or original ABI compatibility."
-  ]
+  ],
+  "primary_integration_validation": {
+    "receipt": "reports/goal15_reconstruction_batch.json",
+    "registered_win32_build": "pass",
+    "existing_ctest_suites": "3 passed, 0 failed",
+    "ghidra_names_comments_and_exports": "applied, saved and refreshed",
+    "new_entry_native_differential_or_gameplay_validation": false
+  }
 }

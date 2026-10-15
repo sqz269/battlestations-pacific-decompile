@@ -47,3 +47,8 @@ Incoming ECX is the manager because the first `004120D0` lookup consumes it. Lat
 - Full registered `scripts/build.ps1`/CTest is owned by the primary integrator and pending this worker's commit. No new tests were added. No native differential test, production dependency binding, startup/gameplay path, or drop-in binary ABI equivalence is claimed.
 - The source deliberately retains uninitialized column allocation, same-length string-buffer reuse, terminator only on the resize branch, and node allocation/count/link order. There is no invented exception rollback. Borrowed native records, globals, callback storage and output list must be valid when reached; native/control storage must not overlap the new Source frame/bindings.
 - Only the `00423640` name/function ledger entries are added. Ghidra annotations, CMake registration and packet-registry integration remain primary-owned; the lease stays held through integration.
+
+Primary integration update: the registered MSVC Win32 build and all three
+existing CTest suites passed. Ghidra annotation/save and standard export
+refresh are complete. See [the batch receipt](../reports/goal15_reconstruction_batch.json).
+These checks do not execute or establish original ABI/gameplay equivalence for this entry.
