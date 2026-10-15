@@ -220,9 +220,10 @@ struct Large61Host {
     // EDX = float out[2]; int, int), RET 8, EAX (7 = on screen).
     virtual std::int32_t camera_project_0043a870(const float* world, float* out, std::int32_t a,
                                                  std::int32_t b) = 0;
-    // 0093FA70, __thiscall(ECX = overlay; float out[2], x, y, dword), RET 10h, EAX = out:
-    // cc13_left61::sound_overlay_place_label_0093fa70 (its float `z` receives the dword bits).
-    virtual float* overlay_place_label_0093fa70(void* overlay, float* out, float x, float y, void* tag) = 0;
+    // 0093FA70, __thiscall(ECX = overlay; float out[2], x, y, sound*), RET 10h, EAX = out:
+    // cc13_left61::sound_overlay_place_label_0093fa70, which stores the sound pointer as the
+    // entry's third dword.
+    virtual float* overlay_place_label_0093fa70(void* overlay, float* out, float x, float y, void* sound) = 0;
     // 0093F790, __thiscall(ECX = overlay; float out[2], key), RET 8, EAX = out:
     // support_seg61_cc13 array12_find_pair_0093f790.
     virtual float* overlay_find_pair_0093f790(void* overlay, float* out, void* key) = 0;
