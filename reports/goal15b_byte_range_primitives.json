@@ -1,0 +1,63 @@
+{
+  "packet": "goal15b_byte_range_primitives",
+  "source_base": "b59da16a6",
+  "status": "complete_actual_byte_reconstruction_msvc_x86_object_and_listing_checked_pending_primary_build",
+  "owned_addresses": ["0041f450", "0041c630", "0041c650", "0041e630"],
+  "owned_files": ["include/bsp/native_byte_range_primitives.hpp", "src/native_byte_range_primitives.cpp", "docs/GOAL15B_BYTE_RANGE_PRIMITIVES.md", "reports/goal15b_byte_range_primitives.json"],
+  "functions": [
+    {"address":"0041f450","name":"STL_ByteRange_FillN_0041F450","cpp_symbol":"bsp::fill_n_native_byte_range_0041f450","source":"src/native_byte_range_primitives.cpp","end_exclusive":"0041f47e","bytes":46,"coverage":"complete","original_abi":"stack first,count,value; RET0Ch; EAX first+count modulo2^32","source_abi":"MSVC Win32 stdcall, same argument/result shape","semantics":"count0 avoids value dereference; each iteration reloads value byte then stores; no signed-count guard"},
+    {"address":"0041c630","name":"STL_ByteRange_Fill_0041C630","cpp_symbol":"bsp::fill_native_byte_range_0041c630","source":"src/native_byte_range_primitives.cpp","end_exclusive":"0041c64e","bytes":30,"coverage":"complete","original_abi":"cdecl first,last,value; plainRET","source_abi":"MSVC Win32 cdecl void result; no EAX promise","semantics":"equal endpoints avoid value dereference; load/store each iteration until DWORD endpoints equal"},
+    {"address":"0041c650","name":"STL_ByteRange_CopyBackwardMemmove_0041C650","cpp_symbol":"bsp::copy_backward_native_byte_range_0041c650","source":"src/native_byte_range_primitives.cpp","end_exclusive":"0041c675","bytes":37,"coverage":"complete","original_abi":"cdecl first,last,destination_end; plainRET; EAX destination_end-uint32(last-first)","source_abi":"MSVC Win32 cdecl same argument/result shape","semantics":"memmove_s(result,n,first,n) only0<n<80000000h; returned endpoint always computed"},
+    {"address":"0041e630","name":"STL_ByteRange_CopyMemmove_0041E630","cpp_symbol":"bsp::copy_native_byte_range_0041e630","source":"src/native_byte_range_primitives.cpp","end_exclusive":"0041e656","bytes":38,"coverage":"complete","original_abi":"stack first,last,destination; RET0Ch; EAX destination+uint32(last-first)","source_abi":"MSVC Win32 stdcall same argument/result shape","semantics":"memmove_s(destination,n,first,n) iff n!=0, including bit31; returned endpoint always computed"}
+  ],
+  "host_steps": [
+    {"address":"0041c669","native":"00bf67a7","containing_function":"0041c650","contract":"body read: cdecl memmove_s(result,n,first,n); ignored result; ADD ESP,10h at0041c66e","source":"genuine current SDK ::memmove_s; current Source CRT policy explicitly qualified"},
+    {"address":"0041e648","native":"00bf67a7","containing_function":"0041e630","contract":"body read: cdecl memmove_s(destination,n,first,n); ignored result; ADD ESP,10h at0041e64d","source":"genuine current SDK ::memmove_s; no guards beyond native n!=0"}
+  ],
+  "consumer_calls": [
+    {"address":"00420e99","native":"0041f450","containing_function":"00420dd0"},
+    {"address":"00420f18","native":"0041f450","containing_function":"00420dd0"},
+    {"address":"00420f2c","native":"0041c630","containing_function":"00420dd0"},
+    {"address":"00420f64","native":"0041c630","containing_function":"00420dd0"},
+    {"address":"00420f55","native":"0041c650","containing_function":"00420dd0"},
+    {"address":"00420f01","native":"0041e630","containing_function":"00420dd0"},
+    {"address":"00420f46","native":"0041e630","containing_function":"00420dd0"}
+  ],
+  "semantics": {
+    "arithmetic":"All pointers converted to uint32 before subtract/add/increment/equality; unsigned modulo2^32, no signed or pointer-difference UB",
+    "fill_aliasing":"Explicit volatile byte load followed by volatile byte store each iteration; source byte not cached and no memset",
+    "secure_copy_boundary":"Exact current SDK memmove_s four arguments; result ignored. Current errno/invalid-handler policy; no fake provider, extra guard, handler installation, or native CRT identity claim",
+    "preconditions":"Any span reached by byte accesses or current CRT must be valid; no new admission/recovery policy"
+  },
+  "evidence": {
+    "project":"C:/Users/sqz269/bsp.gpr",
+    "program":"/battlestationspacific.exe",
+    "image_base":"00400000",
+    "native_bodies":"Four complete exported assembly listings and pseudocode read",
+    "callee_before_contract":"00bf67a7 full live native _memmove_s body read",
+    "physical_census":"Fresh tools/callsite_census.py:2 FillN,2 Fill,1 CopyBackward,2 Copy; all00420dd0; no literal-address occurrences in scanned sections",
+    "all_callers":"Seven argument setups read in00420dd0 assembly; caller vs callee stack cleanup confirmed",
+    "source_listing":"local/output/native_byte_range_primitives.asm",
+    "emitted_alias_loops":"FillN MOV AL,[EDI] before each store, zero guard before value load, RET0Ch; Fill MOV CL,[ESI] before each store, equal guard before value load, plainRET",
+    "emitted_crt":"SDK secure wrapper is genuinely inlined underO2; CRT memmove/errno/invalid-parameter services used. No standalone memmove_s CALL byte identity claimed"
+  },
+  "verification": {
+    "focused_msvc_x86_object_compile":"PASS:C++17 /c /W4 /WX /permissive- /O2 /FAcs;local/output/compile_byte_range_primitives.cmd;no linking",
+    "emitted_listing_inspection":"PASS:alias-sensitive load/store loops, zero/equal guards, copy count branches and endpoint arithmetic",
+    "report_calls":"PASS:9 exact report call rows;0 failures. Markdown has2 unpaired prose claims,0 failed claims and0 warnings; exact sites are covered by report rows",
+    "diff_check":"PASS",
+    "full_build_and_existing_ctest":"primary integrator after CMake registration",
+    "combined_fixture":"parallel grid-byte-vector packet responsibility; not claimed here",
+    "new_tests":0,
+    "native_differential":"not run",
+    "runtime_gameplay":"not validated",
+    "native_binary_abi_equivalence":"not claimed"
+  },
+  "integration": {
+    "target":"bsp_core",
+    "target_sources_add":"src/native_byte_range_primitives.cpp",
+    "public_consumers":"goal15b_grid_byte_vector_resize packet reuses public declarations; no private duplicate needed",
+    "retained_names":"All four existing STL helper names preserved",
+    "ghidra_mutations":"none; primary owns annotation/export refresh"
+  }
+}
