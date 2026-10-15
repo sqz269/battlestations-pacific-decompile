@@ -8,7 +8,7 @@
   "header": "include/bsp/native_scene_dword_erase_wrappers.hpp",
   "documentation": "docs/GOAL_OCT15_DWORD_VECTOR_ERASE_WRAPPERS.md",
   "base_revision": "fd5434e6e9fd15b845e95018f7efedff67374405",
-  "status": "whole_actual_raw_source_registration_build_pending",
+  "status": "whole_actual_raw_source_primary_combined_win32_build_tested",
   "routines": [
     {
       "address": "00468af0",
@@ -124,9 +124,25 @@
     "whole_assembly_abi_captures_push_order_private_output_and_real_providers": "passed",
     "live_installed_bytes": "passed;whole115B/52instructions including both plainRET tails",
     "typed_native_transfers": "passed; 8 JSON rows and 8 Markdown claims;0 failed/unchecked/warnings",
-    "cmake_registration": "pending primary unique registration at its next CMake turn;own non-owning queue removed by primary instruction",
-    "strict_win32_build_and_existing_ctest": "pending primary combined normal scripts/build.ps1 against exact reviewed Source;explicitly supersedes duplicate worker build",
-    "compiled_object_review": "pending",
+    "cmake_registration": "passed;primary unique append committed55d382440,one generated project Source and one archive object;no worker exclusive registry lease",
+    "strict_win32_build_and_existing_ctest": "passed primary normal scripts/build.ps1 at55d382440;3 existing CTests,0failed,7.77s;explicit primary instruction superseded duplicate worker run;no worker build launched",
+    "compiled_object_review": {
+      "tested_revision": "55d382440",
+      "object": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\build\\win32\\bsp_core.dir\\Release\\native_scene_dword_erase_wrappers.obj",
+      "object_bytes": 2232,
+      "object_sha256": "0705b921c35673c070b50dffb02f67d14589442fe1c5a973a7cc1e7c50892339",
+      "source_hashes_asserted_at_tested_revision_and_build_tree": {
+        "src/native_scene_dword_erase_wrappers.cpp": "dbd9731759d8880ea3565d625e6f7482be84825a7cb6e3822a93d834ee5db22d",
+        "include/bsp/native_scene_dword_erase_wrappers.hpp": "88c349b5474542f91c1844df01a909bc07f8f5652949f25655dd279e5708f09e"
+      },
+      "disassembly": "local/goal_oct15_dword_vector_erase_wrappers_object_disasm.txt",
+      "relocations": "public COMDAT#5 real current invalid-parameter provider at operand+14/+23,real erase at+40;public#6 at+17/+26/+43;helper#4 ordinary Source-only composition",
+      "status": "passed focused actual emitted Win32 object review;ordinary Source interface,not original byte/frame ABI",
+      "compiler": "MSVC dumpbin14.51.36244.0;Release Win32",
+      "af0": "EBX originalend+09;firstread+0C/JBE+11/report+13;EDI freshbegin+18,currentend+1B/JBE+20/report+22;five stores +2F/+32/+35/+38/+3D to child+10/+C/+8/+4/+0;real child transfer+3F;epilogue+44..4B leaves EAX unchanged",
+      "c90": "ADD ESI,8 at+08 wraps32;EBX originalend+0C;reports+16/+25;freshbegin+1B/currentend+1E;five stores+32/+35/+38/+3B/+40;real child transfer+42;epilogue+47..4E leaves EAX unchanged",
+      "scope": "captured values survive returning diagnostics;volatile payload ordering and raw child result preserved;no output zero initialization or extra guard;native private-stack/registersave/helper fault/lifetime ABI unproved"
+    },
     "source_file_sha256": {
       "src/native_scene_dword_erase_wrappers.cpp": "dbd9731759d8880ea3565d625e6f7482be84825a7cb6e3822a93d834ee5db22d",
       "include/bsp/native_scene_dword_erase_wrappers.hpp": "88c349b5474542f91c1844df01a909bc07f8f5652949f25655dd279e5708f09e"
@@ -141,7 +157,36 @@
         "include/bsp/native_scene_dword_erase_wrappers.hpp": "88c349b5474542f91c1844df01a909bc07f8f5652949f25655dd279e5708f09e"
       },
       "scope": "original end/fresh begin and end/returning reports/five push-order volatile stores/real child/raw child EAX/wrapped embedded8/private backing qualification"
-    }
+    },
+    "combined_build_receipt": {
+      "revision": "55d382440cd0360de19adff1c5a86cd6e13c8f34",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_scene_hash_clear_combined_build.log",
+      "log_sha256": "d5159b3fba505b316999f1012f64c4a82fb17f2381bc58b4664680d50730f59e",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 7.77,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies",
+      "primary_tree": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator",
+      "primary_report": "reports/goal_oct15_scene_hash_clear_primary_review.json",
+      "primary_report_sha256": "bf624346be309935ff7cd2af0ebdb9ef824dc9df6679612ada0deb93ce31bd5b",
+      "project_source_count": 1,
+      "unique_archive_objects": [
+        "bsp_core.dir\\Release\\native_scene_dword_erase_wrappers.obj"
+      ],
+      "archive_sha256": "f0414d5368a7dca6c8b8558f2bdf5f38ca430b641b51d7b1c4a783025db6ba7c",
+      "source_and_canonical_provider_hashes_asserted_at_tested_revision_and_build_tree": true,
+      "new_body_execution": "existing native math differential seeds exercise prior math only;these wrappers have no packet-specific native execution proof"
+    },
+    "source_unchanged_since_reviewed_draft": "5207224f060787c1ec2e00aa8935eb4e805d7ef1;wrapper and canonical provider hashes asserted unchanged"
   },
   "limits": [
     "Actual current CRT/SDK and explicit raw storage domain;no original staticCRT/globalhandler/errno/exception/fault/SEH identity.",

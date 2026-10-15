@@ -78,8 +78,29 @@ remain separate from ordinary Source composition. Locked naming preserves old
 values/comments/evidence, saves the project and refreshes exports with readback
 recorded in the report. Independent primary review of all 52 native operations
 and the complete Source/header passed with the recorded SHA256 hashes asserted.
-The primary will append unique CMake registration at its next available turn
-and run the required combined normal Win32 build and existing checks; our
-non-owning registration queue was removed at its request. Build and focused
-compiler review remain pending. No new tests are added; packet-specific native differential/game and
-original ABI remain unproved.
+The primary appended unique CMake registration at `55d382440` and ran the
+normal `scripts/build.ps1`: MSVC Release Win32 and all three existing CTests
+passed in 7.77 seconds. This exact combined run superseded a duplicate worker
+build by explicit primary instruction; no worker build was launched. The
+generated project and archive each contain this Source once. Wrapper and
+canonical provider hashes match the reviewed draft, tested revision and build
+tree. Receipt: `reports/goal_oct15_scene_hash_clear_primary_review.json` in
+the primary tree; the full path, log/hash and archive evidence are in our report.
+
+The final 2,232-byte object has SHA256
+`0705b921c35673c070b50dffb02f67d14589442fe1c5a973a7cc1e7c50892339`.
+Both public bodies inline the shared ordinary mechanics. The first keeps the
+original end in EBX, reads the fresh begin into EDI after the first returning
+report, checks a fresh end, and retains those captures through the second
+report. Its five volatile child stores appear at object offsets
+`+2F/+32/+35/+38/+3D` in the required field order; its actual child transfer is at `+3F`.
+The embedded variant adds eight to ESI at `+08`, preserves the same schedule,
+stores at `+32/+35/+38/+3B/+40`, and transfers at `+42`. Both epilogues leave
+the child's EAX result untouched. Relocations select the two accepted concrete
+providers. No output zero initialization or extra guard appears. These are
+compiler observations for the new interface; native bytes/private frame and
+fault timing are not claimed identical.
+
+No new tests were added. The existing native math differential test exercises
+prior math seeds; packet-specific native execution, original ABI/private-stack
+identity and game validation remain unproved.
