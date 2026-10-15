@@ -61,11 +61,52 @@
     "modified": false,
     "may_return": true
   },
-  "status": "whole_raw_Source_build_pending",
+  "status": "whole_Source_independently_assembly_reviewed_default_Win32_three_existing_checks_passed",
   "abi_compatible": false,
   "game_validated": false,
   "limits": [
     "Actual8B rawiterator/owner links and explicit live DWORDparameter backing; stablebinding pointers; reachedvalidaliases admitted.",
     "No Original physicalstack/register/CRTABI,new-body native differential,application or game proof."
-  ]
+  ],
+  "verification": {
+    "combined_build": {
+      "revision": "1a4ab3115a268a160ebaf607e26424c806ebf94c",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_integer_range_combined_build.log",
+      "log_sha256": "5c1c59d759d398b591c5539b336137000ed202d47946657c1bc656eb3b254553",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 8.81,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies"
+    },
+    "typed_rows_passed": 3,
+    "typed_rows_failed": 0,
+    "markdown_checked": 3,
+    "markdown_unchecked": 0,
+    "source_project_count": 1,
+    "archive_member": "bsp_core.dir\\Release\\native_scene_dword_iterator.obj",
+    "new_tests": 0
+  },
+  "independent_review": {
+    "reviewer": "/root/string_allocate",
+    "scope": "complete listings and Source/header/doc",
+    "result": "passed; no mismatch",
+    "source_sha256": "803a6c98606a8464aa78a5447da883d11204a4beff7855fbaba76f94e3c2f50c",
+    "header_sha256": "3ca3a452c272dfd8f3a1ba2e1533e72aa3003326654550a054cd5688591b117f"
+  },
+  "annotation": {
+    "prior_values_log": "local/ghidra-annotations-20261015T214303Z.json",
+    "program_saved": true,
+    "exports_refreshed": true,
+    "comment_readback": true,
+    "descriptive_names_provisional": true
+  }
 }

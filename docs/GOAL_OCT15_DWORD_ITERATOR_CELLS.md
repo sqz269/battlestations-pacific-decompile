@@ -28,3 +28,5 @@ pointers remain stable. The Source APIs require every reached access to remain
 valid, including continuation after diagnostics. Physical private-stack identity,
 register/CRT ABI, new-body differential behavior, application adoption and game
 validation remain open. No new tests are added for this direct reconstruction.
+
+Final combined default MSVC Release Win32 build passed all three existing CTests in 8.81 seconds. Complete independent listing review and three typed transfers passed; detailed receipt: reports/goal_oct15_integer_range_primary_review.json.
