@@ -1,7 +1,7 @@
 {
   "schema": "bsp.cc12.native-post-effect-raw-access.v1",
   "packet": "cc12_native_post_effect_raw_access",
-  "status": "whole_original_COFF_equality_verified_repository_build_pending",
+  "status": "reconstructed_whole_bodies_COFF_verified_existing_build_passed_CMake_registration_pending",
   "Source_credit": 0,
   "Root_independent_validation_pending": true,
   "source_inputs": [
@@ -276,7 +276,7 @@
     }
   ],
   "current_repository_build": {
-    "state": "running",
+    "state": "completed",
     "actual_tools": [
       {
         "tool": "exec_command",
@@ -581,14 +581,61 @@
           "original_token_count": 0,
           "output": ""
         }
+      },
+      {
+        "tool": "write_stdin",
+        "args": {
+          "session_id": 33754,
+          "chars": "",
+          "yield_time_ms": 30000,
+          "max_output_tokens": 1800
+        },
+        "result": {
+          "chunk_id": "815910",
+          "wall_time_seconds": 8.7008966,
+          "exit_code": 0,
+          "original_token_count": 192,
+          "output": "  unit_neighbour_fields.cpp\r\n  game_native_game_tables.cpp\r\n  game_native_player_profile_context.cpp\r\n  game_native_game_application_frame.cpp\r\n  Generating Code...\r\n  bsp_game.vcxproj -> J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\build\\win32\\Release\\bsp_game.exe\r\n  Building Custom Rule J:/PROG/battlestations-pacific-decompile-cc12_native_resume_data/CMakeLists.txt\r\nTest project J:/PROG/battlestations-pacific-decompile-cc12_native_resume_data/build/win32\r\n    Start 1: reconstructed_math\r\n1/2 Test #1: reconstructed_math ...............   Passed    0.34 sec\r\n    Start 2: tool_tests\r\n2/2 Test #2: tool_tests .......................   Passed   11.48 sec\r\n\r\n100% tests passed, 0 tests failed out of 2\r\n\r\nTotal Test time (real) =  11.87 sec\r\n"
+        }
       }
     ],
     "log_path": "build/native_post_effect_raw_access_cc12/repository_build.log",
     "new_getter_TU_registered_in_this_build": false,
     "scope": "Existing repository build/CTest only. New TU has separate strict x86 compilation; Root owns CMake registration and final integration build.",
-    "whole_actual_terminal": null,
-    "observed_state": "original session33754 remains active; no completion asserted",
-    "original_source_revision": "b056f789171fd29376c2b5faabab64cd593a5028"
+    "whole_actual_terminal": {
+      "tool": "write_stdin",
+      "args": {
+        "session_id": 33754,
+        "chars": "",
+        "yield_time_ms": 30000,
+        "max_output_tokens": 1800
+      },
+      "result": {
+        "chunk_id": "815910",
+        "wall_time_seconds": 8.7008966,
+        "exit_code": 0,
+        "original_token_count": 192,
+        "output": "  unit_neighbour_fields.cpp\r\n  game_native_game_tables.cpp\r\n  game_native_player_profile_context.cpp\r\n  game_native_game_application_frame.cpp\r\n  Generating Code...\r\n  bsp_game.vcxproj -> J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\build\\win32\\Release\\bsp_game.exe\r\n  Building Custom Rule J:/PROG/battlestations-pacific-decompile-cc12_native_resume_data/CMakeLists.txt\r\nTest project J:/PROG/battlestations-pacific-decompile-cc12_native_resume_data/build/win32\r\n    Start 1: reconstructed_math\r\n1/2 Test #1: reconstructed_math ...............   Passed    0.34 sec\r\n    Start 2: tool_tests\r\n2/2 Test #2: tool_tests .......................   Passed   11.48 sec\r\n\r\n100% tests passed, 0 tests failed out of 2\r\n\r\nTotal Test time (real) =  11.87 sec\r\n"
+      }
+    },
+    "observed_state": "original session33754 completed naturally with exit_code0",
+    "original_source_revision": "b056f789171fd29376c2b5faabab64cd593a5028",
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_resume_data\\build\\native_post_effect_raw_access_cc12\\repository_build.log",
+      "bytes": 84599,
+      "sha256": "8e3e22a5b2e00d9d6f889765779e8036c8363bf7c52804a2743bc7d5487df6f8"
+    },
+    "tests": {
+      "passed": 2,
+      "failed": 0,
+      "total": 2,
+      "names": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "total_test_time_seconds": 11.87
+    },
+    "qualification_scope": "Existing repository targets only; the new getter TU was unregistered. Separate strict current getter compilation and exact full COFF comparisons are recorded above."
   },
   "current_source_admission": {
     "MSVC_and_M_IX86_guard": true,
@@ -641,7 +688,10 @@
     "runtime_fixture_executed": false,
     "parent_scene_body_completed": false,
     "class_layout_qualified": false,
-    "application_or_game_validated": false
+    "application_or_game_validated": false,
+    "existing_repository_build_passed": true,
+    "existing_repository_CTest_passed": 2,
+    "registered_getter_library_build_qualified": false
   },
   "exclusions": [
     "No B156C0/shared scene-prefix changes",
@@ -659,5 +709,5 @@
   },
   "CMake_registration_pending": true,
   "registered_library_build_qualification_pending": true,
-  "followup": "Keep original build33754 live; append its genuine natural result in a later report update. Root owns new TU registration and registered integration build."
+  "followup": "Root registers src/native_post_effect_raw_access.cpp in CMake, performs the registered integration build, and applies the proposed ledger/Ghidra names under its leases. No new getter runtime, parent scene, or game qualification is claimed."
 }
