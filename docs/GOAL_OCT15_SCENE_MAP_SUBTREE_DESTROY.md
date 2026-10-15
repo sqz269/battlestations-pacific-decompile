@@ -94,6 +94,13 @@ image base against configured `C:/Users/sqz269/bsp.gpr`. Annotation goes through
 the write lock, preserves established names/comments and old values, saves the
 project and refreshes the owned export.
 
+The registered Source draft `2b124d6d2` passed `scripts/build.ps1` Release
+Win32: the new translation unit compiled, all targets linked, and both enabled
+existing CTests passed (`reconstructed_math`, `tool_tests`; 7.56 seconds).
+The log is `local/goal_oct15_scene_map_subtree_destroy_build.log`. Native math
+differential is not enabled in this worker tree. All eight exact report call
+rows and staged whitespace checks passed. No new tests were added.
+
 Compilation and existing regression checks are distinct from original-byte
 native execution. No new routine tests are added. Valid taken backing and
 compatible allocations/current-CRT/raw-pool state are inherited requirements.
