@@ -1,0 +1,73 @@
+{
+  "schema": "cc12_property_insertion_primary_review_v1",
+  "worker_source_commit": "1ff3d1378",
+  "whole_ordinary_native_bodies": [
+    {
+      "address": "008f28f0",
+      "bytes": 172,
+      "instructions": 65
+    },
+    {
+      "address": "008f33f0",
+      "bytes": 155,
+      "instructions": 46
+    }
+  ],
+  "Root_static_acceptance": "481127/exit0",
+  "independent_static_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\NativeScenePropertyInsertionReview01\\final_review.DATA.json",
+    "bytes": 3187,
+    "sha256": "b822a1ad9a82178a815c7d3aefc9a58dc2b49db6687525ae5b948bc29d3873d0"
+  },
+  "independent_static_full_evidence": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\NativeScenePropertyInsertionReview01\\independent_Source_COFF_review.DATA.json",
+    "bytes": 57245,
+    "sha256": "29fdbccb5e054373956596e25de1f292d4e48443be9d274224c2ae48aeb35317"
+  },
+  "independent_closed_family": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\NativeScenePropertyInsertionReview01\\family_receipt.DATA.json",
+    "bytes": 866,
+    "sha256": "e0b2232deb2ca669a24b5b393d3554b869a7f04361c20b5a8151955bd1777720"
+  },
+  "all20review_inputs_freshly_rehashed_by_Root": true,
+  "complete_new_TU_functions": 10,
+  "complete_new_TU_bytes": 477,
+  "complete_new_TU_instructions": 161,
+  "physical_intermediate_zero_store_verified": true,
+  "ordinal_value_captured_before_owner_publication_verified": true,
+  "comparison_flags_timing_excluded_from_Original_ABI_claim": true,
+  "source_pins": [
+    {
+      "path": "src\\native_scene_property_insertion.cpp",
+      "bytes": 4156,
+      "sha256": "3013448b200d8b0cf6ce626ad5ea0aa56691dc61368b21da2443a6f580af60ab"
+    },
+    {
+      "path": "include\\bsp\\native_scene_property_insertion.hpp",
+      "bytes": 4262,
+      "sha256": "bdb8cf2e287e6b995fb99db3fb7c83d6957fe907a65e8b7e08f0be111732a1a5"
+    },
+    {
+      "path": "docs\\NATIVE_SCENE_PROPERTY_INSERTION_CC12.md",
+      "bytes": 5696,
+      "sha256": "632fc2cdaecf25776188d8d7c5f68365d51f778d197d9f46304d21bde30a87d0"
+    }
+  ],
+  "provider_domain": "Same canonical GameNativeStringProcess/GameNativePhysicalPoolProcess after CC8A30; real raw61 bags and admitted current-CRT record producers; stable valid ASCII/C locale, unique pool nodes/keys and finite unshared acyclic graphs. Successful nonthrowing normal domain only.",
+  "saved_Ghidra_annotations": {
+    "path": "local\\ghidra-annotations-20261015T002843Z.json",
+    "bytes": 6826,
+    "sha256": "fdab8f1a5d6843a978ab4103d07e1662ff22d4b788db31648f579a228b08ea98"
+  },
+  "annotation_actual_terminal": "1fd52c/exit0",
+  "affected_export_refresh": "b6995e/exit0",
+  "historical_comments_and_names_preserved": true,
+  "focused_probe_pending": true,
+  "worker_original_baseline_build_pending": true,
+  "worker_original_build_session": 41015,
+  "primary_CMake_registration_pending": true,
+  "primary_registered_build_pending": true,
+  "original_register_FS_SEH_fault_OOM_ABI_qualified": false,
+  "full_populated_clone_qualified": false,
+  "application_or_game_qualified": false
+}
