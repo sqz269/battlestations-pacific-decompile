@@ -1,0 +1,82 @@
+{
+  "packet": "oct15_twelfth_reconstruction_batch",
+  "status": "six_complete_ordinary_subtree_entries_integrated_main_win32_build_and_existing_tests_passed",
+  "source_commit_tested": "1bf0ccdc1b31060ee0f867cca6573aa1728fd982",
+  "component_pins": {
+    "pooled_key_subtrees": "dfbcdaee3056280ed7eb44f501c618fc1a12795a",
+    "provider_free_integer_subtrees": "2ebdba074ea983134ede5451bbab2f2d26eba749",
+    "bit_sensitivity_subtrees_source": "68920b203",
+    "bit_sensitivity_tested_evidence": "beca15c3e"
+  },
+  "functions": [
+    "004c1890",
+    "00554f10",
+    "00558310",
+    "00558e60",
+    "00558420",
+    "00558ed0"
+  ],
+  "ordinary_function_count": 6,
+  "owned_native_body_bytes": 545,
+  "owned_native_instruction_starts": 231,
+  "owned_direct_calls": 24,
+  "packet_reports": [
+    "reports/oct15_input_pooled_key_subtrees.json",
+    "reports/oct15_input_int_subtrees.json",
+    "reports/oct15_input_bit_sensitivity_subtrees.json"
+  ],
+  "source_hashes_sha256": {
+    "include/bsp/native_input_pooled_key_subtrees.hpp": "7a185892034e775a7bacdde455045bee4bf19f50aa6274effc35150fad892813",
+    "src/native_input_pooled_key_subtrees.cpp": "8b257f4aa05ebabad6c82ba3982ac8aaa211c792493bd1a58e578a31c1003b53",
+    "include/bsp/native_input_int_subtrees.hpp": "e4b32740b888f83614a100871c9a87a412da554decfb691c85362b3c9c4f11bf",
+    "src/native_input_int_subtrees.cpp": "a42030f5284b6b3dc3f62352d64f08a8bdceb87cc9d445f7ad468d95cd29fc9c",
+    "include/bsp/native_input_bit_sensitivity_subtrees.hpp": "84445822c1a59a937fab41fec865714e640756e122d1291cf5f4f50fce25b559",
+    "src/native_input_bit_sensitivity_subtrees.cpp": "d8d2b8e9dfa3afc93878857f7658f16127152274d36b9a5a392b1077a115dafa"
+  },
+  "behavior": [
+    "Two provider-free CRT integer subtrees retain distinct nil11h/15h layouts and right-recursion/current-left capture/free/next-nil schedule.",
+    "Two28h pooled-key vector subtrees retain backing-before-left capture, exact three-field clears and full propagating Raw41DD20 key cleanup; complete-byte/instruction/target equivalence justifies descriptor reuse.",
+    "Two2Ch bit/sensitivity subtrees retain distinct left-before-count-clear/backing versus backing-before-left schedules, CURRENT pooled key cleanup and node-free-before-left-nil order."
+  ],
+  "review": {
+    "pooled_key_pair": "Primary reviewed complete Source/header and both109B46instruction native listings; no findings.",
+    "integer_pair": "Primary reviewed complete Source/header and both53B23instruction native listings; hashes frozen in component report, no findings.",
+    "bit_sensitivity_pair": "Independent eight-check whole Source/native review; no findings, hashes stable; embedded in component report."
+  },
+  "validation": {
+    "build": "MSVC Win32 Release passed",
+    "existing_tests": "3/3 passed",
+    "ctest_seconds": 8.76,
+    "log": "local/oct15_twelfth_publication_union_build.log",
+    "earlier_combined_source": "772453da3c8b3081ec88eaa3e678c78217394e58",
+    "earlier_combined_tests": "3/3 passed in8.03s; repeated only after new main platform Source integration.",
+    "transfer_report_rows": 35,
+    "documentation_claims": 35,
+    "failed_unchecked_warnings": 0,
+    "transfer_log": "local/oct15_twelfth_transfer_verification.log",
+    "new_tests": 0,
+    "new_entries_natively_executed": false,
+    "previous_platform_union_source": "9c99369ab2a0abad7cf6c7c685241e97676ce467",
+    "previous_platform_union_tests": "3/3 passed in8.26s",
+    "publication_union_reason": "Included newly integrated scene-map and integer-property Source. Tested1bf0ccdc1 and Main878d6f2e9 Source/header/CMake/tools/scripts compared equal."
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved_annotations": 6,
+    "prior_names_comments_preserved": true,
+    "preimage_logs": [
+      "local/ghidra-annotations-20261015T205536Z.json",
+      "local/ghidra-annotations-20261015T205603Z.json"
+    ],
+    "forced_snapshot": "local/oct15_twelfth_snapshot.log",
+    "six_forced_exports": "local/oct15_twelfth_exports.log"
+  },
+  "limits": [
+    "Actual reached native storage and ownership plus current pool/CRT contracts; no malformed graph/extra safety guards or rollback.",
+    "Added actual pool context, Source C++/current CRT and dead-EDX normalization do not prove original native register/stack/FH3/SEH/fault/heap/exception identity.",
+    "Existing math differential tests cover earlier seeds, not these new ordinary entries. No new-entry runtime, failure-injection or gameplay claim.",
+    "Old AV/frontend fixture projections remain separate; whole input record/pair/scalar-delete destruction and loader remain incomplete and are not promoted by this batch."
+  ],
+  "main_source_integration_commit": "878d6f2e9127fc069fe5c6e76bb0ef8b7024f964"
+}
