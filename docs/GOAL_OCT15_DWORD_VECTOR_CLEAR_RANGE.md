@@ -85,9 +85,22 @@ CLI batches verify `C:/Users/sqz269/bsp.gpr`, program
 prior values, keeps correct library names/comments, saves, refreshes exports and
 reads back the evidence. No provider or unowned caller is annotated.
 
-Draft status: complete actual Source; annotation, registration, normal MSVC
-Win32 build and configured existing checks are finalized in the report. No new
-routine tests. The selected current SDK CRT policy is real, including returning
+Final validation: the primary combined normal `scripts/build.ps1` MSVC Release
+Win32 build passed at `55d382440cd0360de19adff1c5a86cd6e13c8f34`; all three
+existing checks (`reconstructed_math`, `native_math_differential`, `tool_tests`)
+passed in7.77 seconds. Native math seeds do not execute these new bodies. The
+primary explicitly superseded a duplicate worker build; no local worker build
+was started or claimed. The exact primary log and archive hashes, single
+project/archive object, x86 object/publics and Source/header hashes were
+independently checked. All six owned/canonical Source/header hashes remain
+unchanged in both trees. The report cites the primary receipt and exact log.
+Primary independent complete63-op assembly/Source/header review passed; all
+five typed native CALL rows and five documentation claims passed without
+failures or unchecked claims. Primary registered this Source once during its
+queue turn and released the lease; this worker left CMake untouched. No new
+tests were added.
+
+The selected current SDK CRT policy is real, including returning
 or throwing diagnostics; original static CRT errno/encoded handler/debugger/
 Watson behavior is not claimed. Reached storage must remain valid for that actual
 provider. Native argument-home/implicit private-frame aliases and asynchronous

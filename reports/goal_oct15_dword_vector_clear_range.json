@@ -1,6 +1,6 @@
 {
   "packet": "goal_oct15_dword_vector_clear_range",
-  "status": "complete_actual_opaque_vector_erase_alias_and_clear_source_build_pending",
+  "status": "complete_actual_opaque_vector_erase_alias_and_clear_Source_primary_normal_Win32_and_three_existing_checks_passed",
   "source_ready": true,
   "source": "src/native_scene_dword_vector_range_erase.cpp",
   "header": "include/bsp/native_scene_dword_vector_range_erase.hpp",
@@ -11,7 +11,8 @@
     "program": "/battlestationspacific.exe",
     "verification": "Guarded CLI verifies expected project/program/x86/imagebase before every livebatch",
     "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
-    "annotation": "Applied under shared write lock; prior values local/ghidra-annotations-20261015T230224Z.json; correct library names retained; prior comments preserved; project saved; both exports refreshed; live name/comment readback matches"
+    "annotation": "Applied under shared write lock; prior values local/ghidra-annotations-20261015T230224Z.json; correct library names retained; prior comments preserved; project saved; both exports refreshed; live name/comment readback matches",
+    "final_validation_annotation": "Applied under shared write lock; prior values local/ghidra-annotations-20261015T231723Z.json; correct STL names retained; prior comments preserved; project saved; both exports refreshed; final live name/comment readback matches"
   },
   "readiness": {
     "indexed_reconstruction_before_packet": false,
@@ -506,15 +507,68 @@
     "all_native_CALLrows": 5,
     "native_cleanup_tail_JMPs": 0,
     "all_entry_xrefs_read": true,
-    "report_calls": "5 true nativeCALLrows checked,0failed; documentation13addresses/5checked/0failed/unchecked/warnings",
-    "build": "pending",
-    "existing_tests": "pending",
+    "report_calls": "Final:5true nativeCALLrows checked,0failed; documentation13addresses/5claimschecked/0failed/unchecked/warnings",
+    "build": {
+      "revision": "55d382440cd0360de19adff1c5a86cd6e13c8f34",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_scene_hash_clear_combined_build.log",
+      "log_sha256": "d5159b3fba505b316999f1012f64c4a82fb17f2381bc58b4664680d50730f59e",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 7.77,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies",
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator",
+      "log_absolute": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\local\\goal_oct15_scene_hash_clear_combined_build.log",
+      "own_Source_compile_line": 17,
+      "worker_build": "Not started; primary explicitly superseded duplicate worker build with this exact combined normal build",
+      "own_Source_and_all_canonical_hashes_rechecked_in_both_trees": true,
+      "project_Source_instances": 1,
+      "unique_archive_object": [
+        "bsp_core.dir\\Release\\native_scene_dword_vector_range_erase.obj"
+      ],
+      "archive_sha256": "f0414d5368a7dca6c8b8558f2bdf5f38ca430b641b51d7b1c4a783025db6ba7c",
+      "owned_object": {
+        "object_path": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\build\\win32\\bsp_core.dir\\Release\\native_scene_dword_vector_range_erase.obj",
+        "object_sha256": "fda3f0f099ecc2c25dce62190bad9da3d9faa0e45da9b55b4e7c01dff5b63626",
+        "object_machine": "014c",
+        "defined_owned_publics": [
+          "?erase_native_scene_dword_vector_range_004687e0@bsp@@YAPAXPAXPBX@Z",
+          "?clear_native_scene_dword_vector_00468d70@bsp@@YAPAXPAX00@Z"
+        ],
+        "archive_sha256": "f0414d5368a7dca6c8b8558f2bdf5f38ca430b641b51d7b1c4a783025db6ba7c",
+        "log_sha256": "d5159b3fba505b316999f1012f64c4a82fb17f2381bc58b4664680d50730f59e",
+        "receipt_sha256": "bf624346be309935ff7cd2af0ebdb9ef824dc9df6679612ada0deb93ce31bd5b"
+      }
+    },
+    "existing_tests": {
+      "enabled": 3,
+      "passed": 3,
+      "failed": 0,
+      "seconds": 7.77,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "scope": "existing regression checks; native math seeds do not execute these new bodies"
+    },
     "new_tests": 0,
-    "cmake_registration": "Queued behind currentregistryholders;noheldfileedit",
+    "cmake_registration": "Primary awarded queue turn registered unique Source once at55d382440; lease immediately released; worker unqueued and left CMake untouched",
     "direct_native_new_entries_execution": false,
     "abi_compatible": false,
     "game_validated": false,
-    "application_adoption": false
+    "application_adoption": false,
+    "build_tested": true,
+    "lease": "Retained owned address/file lease pending primary integration",
+    "diff_check": "git diff --check and staged diff check passed before final commit"
   },
   "source_hashes": {
     "src/native_scene_dword_vector_range_erase.cpp": {
@@ -551,5 +605,23 @@
       },
       "status": "applied"
     }
-  ]
+  ],
+  "independent_review": {
+    "reviewer": "primary /root",
+    "result": "Passed complete63-op native listings and complete Source/header; no edits required",
+    "unchanged_source_sha256": {
+      "src/native_scene_dword_vector_range_erase.cpp": "e928f3cd4a4eb06af1928a2e334ac7cff35b3e81d21a1f4971515b2552b5dce9",
+      "include/bsp/native_scene_dword_vector_range_erase.hpp": "4aab0a70fbf56b7d2ec4608cb6cbcf79213992f75e29f3d977a00860d512627e"
+    },
+    "evidence": "Fullalias85A0predicate/targets;D70initialend/currentbegin/freshboundaries across two returningreports;outgoing16,C,8,4,0stores;distinctexplicitprivatebacking;actualchildEAXreturn"
+  },
+  "primary_build_receipt": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\reports\\goal_oct15_scene_hash_clear_primary_review.json",
+    "sha256_at_worker_validation": "bf624346be309935ff7cd2af0ebdb9ef824dc9df6679612ada0deb93ce31bd5b",
+    "tested_revision": "55d382440cd0360de19adff1c5a86cd6e13c8f34",
+    "aggregate_bytes": 419,
+    "aggregate_instructions": 170,
+    "aggregate_typed_rows": 19,
+    "qualification": "Aggregate receipt is context,not extra owned coverage; owned scope remains147B63ops/5CALLrows"
+  }
 }
