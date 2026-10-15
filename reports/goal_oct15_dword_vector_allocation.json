@@ -1,0 +1,274 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_dword_vector_allocation",
+  "source": "src/native_scene_dword_vector_allocation.cpp",
+  "header": "include/bsp/native_scene_dword_vector_allocation.hpp",
+  "documentation": "docs/GOAL_OCT15_DWORD_VECTOR_ALLOCATION.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "routines": [
+    {
+      "address": "00466ce0",
+      "end_exclusive": "00466d35",
+      "coverage": "complete",
+      "kind": "ordinary_source_function",
+      "cpp_symbol": "allocate_native_scene_dword_vector_00466ce0",
+      "original_abi": "ECX unsigned count;unused EDX;no stack input;plain RET/EAX allocation",
+      "instruction_bytes": 85,
+      "instruction_count": 25,
+      "bytes": "83 ec 10 85 c9 77 16 33 c9 8d 14 8d 00 00 00 00 52 e8 25 fb 78 00 83 c4 04 83 c4 10 c3 83 c8 ff 33 d2 f7 f1 83 f8 04 73 e0 8d 04 24 50 8d 4c 24 08 c7 44 24 04 00 00 00 00 e8 22 f6 78 00 68 c0 3c e0 00 8d 4c 24 08 51 c7 44 24 0c 3c 92 d6 00 e8 50 fb 78 00",
+      "sha256": "ffcad1bc0b134d49fb55f5a9f4a991dd8cca737b6e000f3ca544d179a107e0f2",
+      "live_disk_equal": true,
+      "new_binary_function_credit": true
+    },
+    {
+      "address": "0046a400",
+      "end_exclusive": "0046a469",
+      "coverage": "complete",
+      "kind": "ordinary_source_function",
+      "cpp_symbol": "throw_native_scene_dword_vector_length_0046a400",
+      "original_abi": "no consumed input/no normal return",
+      "instruction_bytes": 105,
+      "instruction_count": 23,
+      "bytes": "6a ff 68 58 1c c6 00 64 a1 00 00 00 00 50 64 89 25 00 00 00 00 83 ec 44 6a 12 68 e0 37 ce 00 8d 4c 24 08 c7 44 24 20 0f 00 00 00 c7 44 24 1c 00 00 00 00 c6 44 24 0c 00 e8 e3 e2 f9 ff 8d 04 24 50 8d 4c 24 20 c7 44 24 50 00 00 00 00 e8 ae 72 fa ff 68 98 3f d8 00 8d 4c 24 20 51 c7 44 24 24 60 92 d6 00 e8 1c c4 78 00",
+      "sha256": "51745bd10e4e8b2589f600af3e11462b953a61b7c9bfc45dc38d49c04c3f2b10",
+      "live_disk_equal": true,
+      "new_binary_function_credit": true
+    },
+    {
+      "address": "00c61c50",
+      "end_exclusive": "00c61c58",
+      "coverage": "complete",
+      "kind": "qualified_compiler_action_source_guard_mapping_only",
+      "cpp_symbol": "canonical completed-message guard",
+      "original_abi": "compiler EH action:LEA ECX,[EBP-50h];tail JMP4072D0;private native frame",
+      "instruction_bytes": 8,
+      "instruction_count": 2,
+      "bytes": "8d 4d b0 e9 78 56 7a ff",
+      "sha256": "d9b3b31fb5948da441727c970500c48b993730e23208adcd52f982d71fcf1e01",
+      "live_disk_equal": true,
+      "new_binary_function_credit": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00466cf1",
+      "native": "00bf681b",
+      "function": "00466ce0",
+      "contract": "one exact bytes argument,ADDESP4;zero still requests0",
+      "kind": "call"
+    },
+    {
+      "address": "00466d19",
+      "native": "00bf6340",
+      "function": "00466ce0",
+      "contract": "ECX12B receiver,stack null-message slot address,RET4",
+      "kind": "call"
+    },
+    {
+      "address": "00466d30",
+      "native": "00bf6885",
+      "function": "00466ce0",
+      "contract": "payload/E03CC0 bad_alloc,no return",
+      "kind": "call"
+    },
+    {
+      "address": "0046a438",
+      "native": "00408720",
+      "function": "0046a400",
+      "contract": "actual1Ch message/text/count18,RET8;guard not yet armed",
+      "kind": "call"
+    },
+    {
+      "address": "0046a44d",
+      "native": "00411700",
+      "function": "0046a400",
+      "contract": "actual28h receiver/completed message,RET4;state0 armed",
+      "kind": "call"
+    },
+    {
+      "address": "0046a464",
+      "native": "00bf6885",
+      "function": "0046a400",
+      "contract": "payload/D83F98 lengtherror,no return",
+      "kind": "call"
+    },
+    {
+      "address": "00c61c53",
+      "native": "004072d0",
+      "function": "00c61c50",
+      "contract": "actual native[EBP-50h] temporary;qualified Source guard only",
+      "kind": "tail_jump"
+    }
+  ],
+  "caller_sites": [
+    {
+      "address": "0046aff9",
+      "native": "0046a400",
+      "function": "0046afb0",
+      "contract": "unsigned remaining-capacity check;no consumed input/no return"
+    },
+    {
+      "address": "0046b05b",
+      "native": "00466ce0",
+      "function": "0046afb0",
+      "contract": "ECXgrowthcount/explicitEDX0;plainRET/EAX allocation"
+    }
+  ],
+  "relocation_equality": [
+    {
+      "owned": "00466ce0",
+      "canonical": "00bcfeb0",
+      "masked_operand_ranges_zero_based": [
+        "18..21",
+        "58..61",
+        "81..84"
+      ],
+      "all_other_bytes_identical": true,
+      "normalized_sha256": "25ea1cbf3db7cd7771db6dc64c6c523d34dc8e9a53b2692c51b5e618bdc83d6f",
+      "decoded_targets": [
+        {
+          "owned_site": "00466cf1",
+          "canonical_site": "00bcfec1",
+          "opcode": "CALL",
+          "same_decoded_target": "00bf681b"
+        },
+        {
+          "owned_site": "00466d19",
+          "canonical_site": "00bcfee9",
+          "opcode": "CALL",
+          "same_decoded_target": "00bf6340"
+        },
+        {
+          "owned_site": "00466d30",
+          "canonical_site": "00bcff00",
+          "opcode": "CALL",
+          "same_decoded_target": "00bf6885"
+        }
+      ]
+    },
+    {
+      "owned": "0046a400",
+      "canonical": "00bd0590",
+      "masked_operand_ranges_zero_based": [
+        "3..6",
+        "57..60",
+        "78..81",
+        "101..104"
+      ],
+      "all_other_bytes_identical": true,
+      "normalized_sha256": "c29ac82dc2fc193a7d6336aa7c3553f56fc355825b037badc2b0a8b9a4d87577",
+      "decoded_targets": [
+        {
+          "owned_site": "0046a438",
+          "canonical_site": "00bd05c8",
+          "opcode": "CALL",
+          "same_decoded_target": "00408720"
+        },
+        {
+          "owned_site": "0046a44d",
+          "canonical_site": "00bd05dd",
+          "opcode": "CALL",
+          "same_decoded_target": "00411700"
+        },
+        {
+          "owned_site": "0046a464",
+          "canonical_site": "00bd05f4",
+          "opcode": "CALL",
+          "same_decoded_target": "00bf6885"
+        }
+      ]
+    },
+    {
+      "owned": "00c61c50",
+      "canonical": "00cc5470",
+      "masked_operand_ranges_zero_based": [
+        "4..7"
+      ],
+      "all_other_bytes_identical": true,
+      "normalized_sha256": "eef2d7b7d022bd59ec3a58c4fb37fcf149aa5e9fda22eba0d99d16fd1edba2bb",
+      "decoded_targets": [
+        {
+          "owned_site": "00c61c53",
+          "canonical_site": "00cc5473",
+          "opcode": "JMP",
+          "same_decoded_target": "004072d0"
+        }
+      ]
+    }
+  ],
+  "source_reuse": {
+    "source": "src/native_singleton_vector_allocation.cpp",
+    "header": "include/bsp/native_singleton_vector_allocation.hpp",
+    "source_sha256": "4771197c3f1ead7dd635637c849c60f8f525c4d482dcc4a33c8617922362e09e",
+    "header_sha256": "2910d0e12e3ecce6820cc1a083a3bfba9c5478fbbea9cdf9dc4c2926bdb0296a",
+    "allocation": "native_singleton_pointer_allocate_00bcfeb0",
+    "length": "native_singleton_length_error_00bd0590",
+    "cleanup": "CompletedMessage::~CompletedMessage maps completed temporary to4072D0",
+    "source_only_delegation_not_native_edge": true,
+    "real_source_already_integrated": true,
+    "named_incomplete_dependencies": []
+  },
+  "unwind": {
+    "handler": "00c61c58",
+    "funcinfo": "00d89358",
+    "magic": "19930522",
+    "max_state": 1,
+    "unwind_map": "00d89350",
+    "state0_to": -1,
+    "action": "00c61c50",
+    "temporary": "actual native[EBP-50h]",
+    "canonical_handler": "00cc5478",
+    "canonical_funcinfo": "00dff4bc",
+    "canonical_unwind_map": "00dff4b4",
+    "canonical_action": "00cc5470",
+    "guard_armed": "only after408720 returns",
+    "qualification": "complete action semantics mapped to canonical host C++ guard;no new binaryfunction/private FH3 action ABI credit"
+  },
+  "prior_annotations": [
+    {
+      "address": "00466ce0",
+      "name": "STL_allocator_allocate_00466ce0",
+      "comment": ""
+    },
+    {
+      "address": "0046a400",
+      "name": "STL_xlen_throw_0046a400",
+      "comment": ""
+    },
+    {
+      "address": "00c61c50",
+      "name": "Unwind@00c61c50",
+      "comment": ""
+    }
+  ],
+  "source_registration": "unique cmake/startup.cmake append after fresh unleased ownership/queue check;no exclusive file lease",
+  "disk_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "validation": {
+    "source_ready": true,
+    "build": "pending required scripts/build.ps1",
+    "existing_ctests": "pending",
+    "report_call_verification": "PASS9 typed rows,including tail_jump;documentation9 claims,0failures/unchecked/warnings",
+    "new_tests": 0,
+    "native_differential_fixture": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "diff_check": "PASS"
+  },
+  "qualification": "Complete ordinary allocator/length Source over concrete canonical currentCRT/owning exception providers;190B ordinary functions plus8B qualified compiler-action guard mapping. No callback/stub/narrowed range or new original static CRT,exception RTTI/ThrowInfo/FH3/privateframe/native ABI/differential/game proof.",
+  "annotation": {
+    "prior_values_logs": [
+      "local/ghidra-annotations-20261015T220930Z.json"
+    ],
+    "locked": true,
+    "saved": true,
+    "refreshed_exports": [
+      "exports/bsp/functions/00466ce0",
+      "exports/bsp/functions/0046a400",
+      "exports/bsp/functions/00c61c50"
+    ],
+    "existing_library_and_compiler_names_retained": true
+  },
+  "source_sha256": "b6435b655c5f7cf6391d2b4ff68a729112382607661bbd148dcd3837e8949c9a",
+  "header_sha256": "4d1db8661952a7eec9a8944a5a07fce5df32071bee7b519d3e7f1b81695d454d"
+}
