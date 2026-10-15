@@ -1,0 +1,259 @@
+{
+  "packet": "oct15_native_dword_inplace_ranges",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_dword_inplace_ranges.cpp",
+  "header": "include/bsp/native_dword_inplace_ranges.hpp",
+  "documentation": "docs/OCT15_NATIVE_DWORD_INPLACE_RANGES.md",
+  "routines": [
+    {
+      "address": "006970b0",
+      "old_name": "STL_Fill_006970b0",
+      "last_inclusive": "006970cd",
+      "bytes": 30,
+      "instructions": 13,
+      "sha256": "fe5e96b5969e5ae6c7b3311b02a5760fbe387efaa07f367300af69fce91960e0",
+      "complete_typed_body": true,
+      "live_equals_installed_PE": true,
+      "all_export_starts_match_disk_capstone": true,
+      "kind": "function",
+      "implementation": "fill_native_dword_inplace_range_006970b0",
+      "original_abi": "cdecl first,last,value pointer; incomingECX/EDX unconsumed, plainRET. Native EAX ends at capturedlast (discarded by producers); Source returns this observed address."
+    },
+    {
+      "address": "00697440",
+      "old_name": "STL_CopyBackward_00697440",
+      "last_inclusive": "00697474",
+      "bytes": 53,
+      "instructions": 24,
+      "sha256": "f4f066678d7c88e6d00da09e85117b927f19c68c70fde72608361392ac68dc22",
+      "complete_typed_body": true,
+      "live_equals_installed_PE": true,
+      "all_export_starts_match_disk_capstone": true,
+      "kind": "function",
+      "implementation": "copy_backward_native_dword_range_00697440",
+      "original_abi": "cdecl first,last,destination_end; incomingECX/EDX unconsumed, plainRET/EAX independently destination_end-((SAR2(last-first))*4), DWORDwrap, computed before copies."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00697b61",
+      "function": "00697990",
+      "native": "006970b0",
+      "binding": "Direct complete progressive DWORD fill; actual second normal range, not catch697AF1."
+    },
+    {
+      "address": "00697bb0",
+      "function": "00697990",
+      "native": "006970b0",
+      "binding": "Direct complete progressive DWORD fill, current source reread before every store."
+    },
+    {
+      "address": "00697ba0",
+      "function": "00697990",
+      "native": "00697440",
+      "binding": "Direct complete progressive backward DWORD copy with independent SAR2 return."
+    }
+  ],
+  "typed_capture": "local/oct15_dword_inplace_ranges_typed_flow.json",
+  "typed_modification": "479",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "supporting_fill_equivalence": {
+    "unit": {
+      "address": "0043f9e0",
+      "old_name": "STL_Fill_0043f9e0",
+      "last_inclusive": "0043f9fd",
+      "bytes": 30,
+      "instructions": 13,
+      "sha256": "fe5e96b5969e5ae6c7b3311b02a5760fbe387efaa07f367300af69fce91960e0",
+      "complete_typed_body": true,
+      "live_equals_installed_PE": true,
+      "all_export_starts_match_disk_capstone": true
+    },
+    "all30_bytes_equal_with006970b0": true,
+    "source_reuse": "No dependency or Source alias is introduced; own direct scalar loop preserves exact entry schedule."
+  },
+  "current_start_validation": {
+    "owned_starts": 37,
+    "support_starts": 13,
+    "incoming_calls": 3,
+    "capture": "local/oct15_dword_inplace_current_context.json",
+    "exact_sets_and_mnemonics_match": true,
+    "all_incoming_current_targets_match_installed_PE": true
+  },
+  "local_eh": "No local registration/catch; both whole ordinary loops have no external callees.",
+  "schedules": [
+    "Fill captures last and, only on nonempty input, value ADDRESS; rereads current DWORD then stores, advances4 until equality. No null skip or value snapshot.",
+    "Backward copy precomputes SAR2-derived return before any pointed operation, captures displacement only when nonempty, then current_last-4 load, source decrement, store at displacement+current_source until capturedfirst. Progressive aliases and DWORDwrap retained."
+  ],
+  "build": {
+    "status": "passed",
+    "configuration": "MSVC Win32 Release",
+    "source_commit": "7f340c290",
+    "existing_tests": "3/3 passed",
+    "ctest_seconds": 8.03,
+    "log": "local/oct15_fourteenth_initial_build.log",
+    "new_tests": 0,
+    "new_entries_natively_executed": false
+  },
+  "independent_source_review": {
+    "packet": "oct15_native_dword_inplace_ranges_independent_review",
+    "read_only": true,
+    "utc": "2026-10-15T21:41:43.421098+00:00",
+    "result": "no_findings",
+    "reviewer_head_preserved": "43375e9af932e6f3748ba7df0204876484b0cfdf",
+    "reviewer_git_clean": true,
+    "root_worktree": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator",
+    "root_head_at_review": "7f340c2903835def5b661328147e3e6d9559921f",
+    "reviewed_files": [
+      {
+        "path": "include/bsp/native_dword_inplace_ranges.hpp",
+        "sha256": "ac208972c62c9c4cfbf1810f38b670f3b44d1e7121d8fd3c13d0362f9a1e5c3d",
+        "stable_before_and_after_review": true
+      },
+      {
+        "path": "src/native_dword_inplace_ranges.cpp",
+        "sha256": "2ba89ef169f0454bde1e42cda3ee42371a7752d169a38574bac1ca5b66129f31",
+        "stable_before_and_after_review": true
+      }
+    ],
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "native_capture_modification": "481",
+    "native_bodies": [
+      {
+        "address": "006970b0",
+        "end_exclusive": "006970ce",
+        "bytes": 30,
+        "sha256": "fe5e96b5969e5ae6c7b3311b02a5760fbe387efaa07f367300af69fce91960e0",
+        "disk_live_equal": true,
+        "instruction_count": 13,
+        "current_starts": [
+          "006970b0",
+          "006970b4",
+          "006970b8",
+          "006970ba",
+          "006970bc",
+          "006970c0",
+          "006970c1",
+          "006970c3",
+          "006970c5",
+          "006970c8",
+          "006970ca",
+          "006970cc",
+          "006970cd"
+        ],
+        "native_call_count": 0
+      },
+      {
+        "address": "00697440",
+        "end_exclusive": "00697475",
+        "bytes": 53,
+        "sha256": "f4f066678d7c88e6d00da09e85117b927f19c68c70fde72608361392ac68dc22",
+        "disk_live_equal": true,
+        "instruction_count": 24,
+        "current_starts": [
+          "00697440",
+          "00697444",
+          "00697448",
+          "0069744a",
+          "0069744c",
+          "0069744f",
+          "00697451",
+          "00697453",
+          "00697454",
+          "00697458",
+          "00697459",
+          "0069745b",
+          "0069745d",
+          "0069745f",
+          "00697461",
+          "00697463",
+          "00697465",
+          "00697468",
+          "0069746b",
+          "0069746d",
+          "00697470",
+          "00697472",
+          "00697473",
+          "00697474"
+        ],
+        "native_call_count": 0
+      }
+    ],
+    "native_scope": "Two complete bodies83B/37current starts,0CALLs. No source ownership claimed.",
+    "checks": [
+      {
+        "check": "Fill captures first/last once; conditional value ADDRESS capture occurs only on nonempty input.",
+        "result": "pass"
+      },
+      {
+        "check": "Fill reads current4B at captured value ADDRESS before every output store; no snapshot or null skip.",
+        "result": "pass"
+      },
+      {
+        "check": "Fill increments DWORD cursor by4 until captured last; empty has no pointed read/write; Source returns observed native EAX last.",
+        "result": "pass"
+      },
+      {
+        "check": "Backward bounds/destination are captured before memory access; difference wraps as Word32.",
+        "result": "pass"
+      },
+      {
+        "check": "Actual x86 SAR2 helper plus unsigned*4 preserves native SAR/ADD/ADD return calculation,including high-bit/rounded differences.",
+        "result": "pass"
+      },
+      {
+        "check": "Returned destination_end-SAR2*4 is computed before any copy and never recomputed from mutated cursors/memory.",
+        "result": "pass"
+      },
+      {
+        "check": "Only nonempty backward input captures displacement=destination_end-last.",
+        "result": "pass"
+      },
+      {
+        "check": "Each backward iteration reads CURRENT last-4 before cursor decrement,then compares before store.",
+        "result": "pass"
+      },
+      {
+        "check": "Store uses captured displacement plus decremented cursor; saved more predicate controls continuation after store,matching native CMP/MOV/JNZ.",
+        "result": "pass"
+      },
+      {
+        "check": "Every source/output/displacement/count/return arithmetic step uses32-bit unsigned wrap; no out-of-array C++ pointer arithmetic.",
+        "result": "pass"
+      },
+      {
+        "check": "Inline MSVC x86 MOV helpers issue raw current DWORD reads/stores and preserve progressive aliases; no memcpy/memmove model.",
+        "result": "pass"
+      },
+      {
+        "check": "Neither leaf introduces a guard,callback,snapshot,allocator,owning element,rollback,catch or owner cleanup.",
+        "result": "pass"
+      },
+      {
+        "check": "MSVC/_M_IX86 enforcement and pointer/Word size assertion restrict the intended Source target.",
+        "result": "pass"
+      },
+      {
+        "check": "Header explicitly qualifies original private argument/frame aliases,asynchronous mutation,register/flag residue,fault/SEH,binary ABI and game evidence.",
+        "result": "pass"
+      }
+    ],
+    "findings": [],
+    "limits": [
+      "Static independent Source/header and native-instruction review only; no build,new tests,native execution or gameplay proof.",
+      "Matching Source schedules do not establish original binary/private-frame/CRT-fault/SEH equivalence.",
+      "No root files,Source,ledgers,CMake,Ghidra or leases were mutated by this review;completed copy lease was released before review."
+    ]
+  },
+  "source_hashes": {
+    "src/native_dword_inplace_ranges.cpp": "2ba89ef169f0454bde1e42cda3ee42371a7752d169a38574bac1ca5b66129f31",
+    "include/bsp/native_dword_inplace_ranges.hpp": "ac208972c62c9c4cfbf1810f38b670f3b44d1e7121d8fd3c13d0362f9a1e5c3d"
+  },
+  "limits": [
+    "Reached raw4B storage and finite equality termination admitted; no validation, null skip, callbacks, allocator, memmove/std::fill substitute, overlap repair or rollback.",
+    "New C++ interfaces/private arguments/helper frames do not prove original register/flag residue/private-frame aliases/fault/SEH/binary ABI or game behavior.",
+    "Old qualified routines and their fixtures remain separate; no new-entry native differential/failure injection/gameplay proof. Whole697990 insertion and wrapper/append closure remain separate."
+  ]
+}
