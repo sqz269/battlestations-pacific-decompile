@@ -52,5 +52,13 @@ Live batches verify `C:/Users/sqz269/bsp.gpr`, `/battlestationspacific.exe`,
 x86 language and image base. The report records full live/installed bytes,
 typed transfers and prior annotations. Naming/comments are changed only under
 the write lock, preserving old values before save and refreshed export.
-Initial draft status is complete Source with required Win32 build pending.
-No new tests are added; existing checks are used.
+Required `scripts/build.ps1` passed at Source revision `983c031c6`, using
+MSVC Win32. Both enabled existing tests passed in 8.28 seconds: math and tool
+tests. This worker configuration does not enable optional native differential
+fixtures. The existing unrelated LNK4006 duplicate `spawn_request_id_matches`
+warning remains. Three typed transfer rows and documentation verification
+passed. No new tests were added.
+
+The primary independently reviewed the complete 21-instruction native listing
+against the unchanged Source/header at `983c031c6` and found no mismatch.
+The report records the reviewed Source/header hashes.

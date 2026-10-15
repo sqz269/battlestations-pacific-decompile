@@ -75,8 +75,29 @@
   "source_registration": "unique cmake/startup.cmake append after unleased ownership/queue check; no whole-file lease",
   "validation": {
     "source_ready": true,
-    "build": "pending required scripts/build.ps1",
-    "existing_ctests": "pending",
+    "build": {
+      "command": "scripts/build.ps1",
+      "result": "PASS",
+      "exit_code": 0,
+      "revision": "983c031c6",
+      "platform": "MSVC Win32",
+      "log": "local/goal_oct15_dword_move_build.log",
+      "log_sha256": "ad7847d03d02ca97a363aa18557b745f8af37847ec9b030a624add64ef25aac4",
+      "warnings": [
+        "existing unrelated LNK4006 duplicate spawn_request_id_matches in lua_binding_spawn.obj/lua_spawn_new.obj"
+      ]
+    },
+    "existing_ctests": {
+      "enabled": 2,
+      "passed": 2,
+      "failed": 0,
+      "seconds": 8.28,
+      "names": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "optional_native_differential_enabled": false
+    },
     "report_call_verification": "PASS:3 typed rows; documentation0 failures/unchecked/warnings",
     "new_tests": 0,
     "native_differential_fixture": false,
@@ -89,11 +110,21 @@
   "qualification": "Complete ordinary Source with bit-exact wrapping/SAR2/zero-negative paths and fixed actual current SDK memmove_s. New Source interface; no physical argument/private-stack coincidence, stub/callback, nominal class meaning, original CRT errno/handler/SEH/native ABI/candidate differential/game proof.",
   "annotation": {
     "prior_values_logs": [
-      "local/ghidra-annotations-20261015T214608Z.json"
+      "local/ghidra-annotations-20261015T214608Z.json",
+      "local/ghidra-annotations-20261015T214804Z.json"
     ],
     "locked": true,
     "saved": true,
     "refreshed_export": "exports/bsp/functions/00467d90/decompiled.c",
     "correct_callee_library_name_preserved": true
+  },
+  "source_sha256": "25534e8fd6f7db5d904832ca623ae9ade05f0c05a3f9848e1cb625b519a83386",
+  "header_sha256": "61294c3eb1ce7b42553587bbdfd206a3fbbf129dd15770a66e1da98a8ac9e9f2",
+  "independent_review": {
+    "reviewer": "primary /root",
+    "reviewed_draft": "983c031c6",
+    "result": "PASS full21-instruction listing against complete Source/header; exact unsigned SAR2 signfill,last-first wrapping,destination-before-bytes,preCRT result capture,signed-positive-only CRT call and full zero-negative paths; no Source edits",
+    "source_sha256": "25534e8fd6f7db5d904832ca623ae9ade05f0c05a3f9848e1cb625b519a83386",
+    "header_sha256": "61294c3eb1ce7b42553587bbdfd206a3fbbf129dd15770a66e1da98a8ac9e9f2"
   }
 }
