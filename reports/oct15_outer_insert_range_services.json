@@ -1,0 +1,447 @@
+{
+  "packet": "oct15_outer_insert_range_services",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_outer_insert_range_services.cpp",
+  "header": "include/bsp/native_outer_insert_range_services.hpp",
+  "documentation": "docs/OCT15_OUTER_INSERT_RANGE_SERVICES.md",
+  "routines": [
+    {
+      "address": "006a3200",
+      "implementation": "transfer_native_inner_vectors_to_empty_006a3200",
+      "original_abi": "ECX first, EDX last, stack(destination,owner,tag3,tag4), RET10h; EAX advanced destination.",
+      "kind": "function",
+      "parent": null,
+      "retained_name": "STL_StringVectorRange_TransferToEmpty_006A3200",
+      "ranges": [
+        {
+          "first": "006a3200",
+          "last_inclusive": "006a328f",
+          "bytes": 144,
+          "sha256": "e99e2910a0dba6c139b5138a5200fb2e6a5ff055bbabc83bdcde74c586d201b8",
+          "instructions": 50
+        },
+        {
+          "first": "006a32b8",
+          "last_inclusive": "006a32f2",
+          "bytes": 59,
+          "sha256": "b8edf1ebf3300e2155c59eaac2bba91e13a49bbcfe7a6d6940804010dc6a18ab",
+          "instructions": 22
+        }
+      ],
+      "instructions": 72,
+      "complete_typed_body": true,
+      "all_disk_instruction_starts_match_current_export": true
+    },
+    {
+      "address": "006a3290",
+      "implementation": "transfer_native_inner_vectors_to_empty_006a3200_prefix_catch",
+      "original_abi": "Parent EBP-bound completed-prefix catch; no independent Source API.",
+      "kind": "fragment",
+      "parent": "006a3200",
+      "retained_name": "Catch_All@006a3290",
+      "ranges": [
+        {
+          "first": "006a3290",
+          "last_inclusive": "006a32b7",
+          "bytes": 40,
+          "sha256": "a243ce8bfd447ba44feb2b2f5e6611da37fe205686eaf239a3e796596cd6c046",
+          "instructions": 15
+        }
+      ],
+      "instructions": 15,
+      "complete_typed_body": true,
+      "all_disk_instruction_starts_match_current_export": true
+    },
+    {
+      "address": "006a3300",
+      "implementation": "swap_native_inner_vectors_backward_006a3300",
+      "original_abi": "cdecl six physical stack words, first three consumed, plain RET; stable machine EAX final destination exposed by Source.",
+      "kind": "function",
+      "parent": null,
+      "retained_name": "STL_SwapBackward_Vector16_006a3300",
+      "ranges": [
+        {
+          "first": "006a3300",
+          "last_inclusive": "006a3342",
+          "bytes": 67,
+          "sha256": "87a06f13fec1bdc3b82e15860853b37921eba20d64e52ef747d67d7e224cf9ec",
+          "instructions": 26
+        }
+      ],
+      "instructions": 26,
+      "complete_typed_body": true,
+      "all_disk_instruction_starts_match_current_export": true
+    },
+    {
+      "address": "006a4b50",
+      "implementation": "transfer_native_inner_vectors_dispatch_006a4b50",
+      "original_abi": "ECX owner, stack(first,last,destination), RET0Ch; EAX child result.",
+      "kind": "function",
+      "parent": null,
+      "retained_name": "STL_StringVectorRange_TransferToEmpty_Thunk_006a4b50",
+      "ranges": [
+        {
+          "first": "006a4b50",
+          "last_inclusive": "006a4b74",
+          "bytes": 37,
+          "sha256": "09af2325e16f19e6f40f73df558a8a4adaf387a386e3f04dd883fe98827e377f",
+          "instructions": 14
+        }
+      ],
+      "instructions": 14,
+      "complete_typed_body": true,
+      "all_disk_instruction_starts_match_current_export": true
+    },
+    {
+      "address": "006a4b80",
+      "implementation": "swap_native_inner_vectors_backward_dispatch_006a4b80",
+      "original_abi": "cdecl first,last,destination_end, plain RET; independent EAX destination_end-SAR32(last-first,4)*16.",
+      "kind": "function",
+      "parent": null,
+      "retained_name": "STL_MoveBackward_Vector16_006a4b80",
+      "ranges": [
+        {
+          "first": "006a4b80",
+          "last_inclusive": "006a4bbf",
+          "bytes": 64,
+          "sha256": "e136a28f4b485ba8b430ae5d8562a0c1c3c8b6be567cc28029481f8e9c6e759b",
+          "instructions": 29
+        }
+      ],
+      "instructions": 29,
+      "complete_typed_body": true,
+      "all_disk_instruction_starts_match_current_export": true
+    },
+    {
+      "address": "006a43a0",
+      "implementation": "fill_native_inner_vectors_uninitialized_006a43a0",
+      "original_abi": "ECX destination, EDX unsigned count, stack(value,owner,tag3,tag4), RET10h; no semantic EAX promise.",
+      "kind": "function",
+      "parent": null,
+      "retained_name": "STL_UninitFillN_StringVector16_006a43a0",
+      "ranges": [
+        {
+          "first": "006a43a0",
+          "last_inclusive": "006a43fa",
+          "bytes": 91,
+          "sha256": "72638e172e0a52cacfafc76a7c60459cad4819766a862f8822ba4bf0f8b9f7ed",
+          "instructions": 34
+        },
+        {
+          "first": "006a4420",
+          "last_inclusive": "006a4432",
+          "bytes": 19,
+          "sha256": "0e0eeb224a26a7d8e103c618f5f2fe4098178e065e03fc5c18128e6b93608756",
+          "instructions": 8
+        }
+      ],
+      "instructions": 42,
+      "complete_typed_body": true,
+      "all_disk_instruction_starts_match_current_export": true
+    },
+    {
+      "address": "006a43fb",
+      "implementation": "fill_native_inner_vectors_uninitialized_006a43a0_prefix_catch",
+      "original_abi": "Parent EBP-bound completed-prefix catch; no independent Source API.",
+      "kind": "fragment",
+      "parent": "006a43a0",
+      "retained_name": "Catch_All@006a43fb",
+      "ranges": [
+        {
+          "first": "006a43fb",
+          "last_inclusive": "006a441f",
+          "bytes": 37,
+          "sha256": "ee72fa913f2b0a3c986b25917148a84bc89f1ce3fe15c96a013d79f5816a0d1c",
+          "instructions": 15
+        }
+      ],
+      "instructions": 15,
+      "complete_typed_body": true,
+      "all_disk_instruction_starts_match_current_export": true
+    },
+    {
+      "address": "006a5170",
+      "implementation": "fill_native_inner_vectors_dispatch_006a5170",
+      "original_abi": "ECX owner, stack(destination,count,value), RET0Ch; independent EAX original destination+original count*16.",
+      "kind": "function",
+      "parent": null,
+      "retained_name": "STL_TagDispatch_006a5170",
+      "ranges": [
+        {
+          "first": "006a5170",
+          "last_inclusive": "006a51a5",
+          "bytes": 54,
+          "sha256": "0f9f8685d3b471b3334af13b534e7b08ddea8d12beb68886bd2536df0ffa3653",
+          "instructions": 23
+        }
+      ],
+      "instructions": 23,
+      "complete_typed_body": true,
+      "all_disk_instruction_starts_match_current_export": true
+    },
+    {
+      "address": "00c7f260",
+      "implementation": "transfer_native_inner_vectors_to_empty_006a3200_temp_unwind",
+      "original_abi": "Parent EBP-bound action: LEA ECX,[EBP-30h], tail JMP432440; no independent Source API.",
+      "kind": "fragment",
+      "parent": "006a3200",
+      "retained_name": "Unwind@00c7f260",
+      "ranges": [
+        {
+          "first": "00c7f260",
+          "last_inclusive": "00c7f267",
+          "bytes": 8,
+          "sha256": "ed29ae27ec4bfbecd3aad7360f3bff6d93506ba0b8846f8512ab0b9a4504d919",
+          "instructions": 2
+        }
+      ],
+      "instructions": 2,
+      "complete_typed_body": true,
+      "all_disk_instruction_starts_match_current_export": true
+    },
+    {
+      "address": "00c7f268",
+      "implementation": "transfer_native_inner_vectors_to_empty_006a3200_placement_unwind",
+      "original_abi": "Parent EBP-bound placement action, two stack words to actual RET-only401130; no-op Source elision.",
+      "kind": "fragment",
+      "parent": "006a3200",
+      "retained_name": "Unwind@00c7f268",
+      "ranges": [
+        {
+          "first": "00c7f268",
+          "last_inclusive": "00c7f278",
+          "bytes": 17,
+          "sha256": "449cc66b7c411acd7c9f23a08070175795ce456bdc73fbd089e4c2fd80ae9b7d",
+          "instructions": 7
+        }
+      ],
+      "instructions": 7,
+      "complete_typed_body": true,
+      "all_disk_instruction_starts_match_current_export": true
+    },
+    {
+      "address": "00c7f370",
+      "implementation": "fill_native_inner_vectors_uninitialized_006a43a0_placement_unwind",
+      "original_abi": "Parent EBP-bound placement action, two stack words to actual RET-only401130; no-op Source elision.",
+      "kind": "fragment",
+      "parent": "006a43a0",
+      "retained_name": "Unwind@00c7f370",
+      "ranges": [
+        {
+          "first": "00c7f370",
+          "last_inclusive": "00c7f380",
+          "bytes": 17,
+          "sha256": "3d89d83d3c629caddcc75ca8a86aaceaebfcbb0ce3bd080a6802417bb474202a",
+          "instructions": 7
+        }
+      ],
+      "instructions": 7,
+      "complete_typed_body": true,
+      "all_disk_instruction_starts_match_current_export": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "006a3259",
+      "native": "00557bc0",
+      "function": "006a3200",
+      "binding": "Accepted actual owning inner-header copy constructor, with actual RawPoolContext; destination nonnull branch only."
+    },
+    {
+      "address": "006a32d0",
+      "native": "00432050",
+      "function": "006a3200",
+      "binding": "Accepted actual owning8B string range destruction."
+    },
+    {
+      "address": "006a32d6",
+      "native": "00bf65ac",
+      "function": "006a3200",
+      "binding": "Accepted current CRT singleton_lifetime_free; preserve captured begin."
+    },
+    {
+      "address": "006a32a3",
+      "native": "00559dc0",
+      "function": "006a3290",
+      "binding": "Completed-prefix cleanup has exact accepted actual432440 storage effects per16B header; owner/dead words do not change storage."
+    },
+    {
+      "address": "006a32b3",
+      "native": "00bf6885",
+      "function": "006a3290",
+      "binding": "Current C++ rethrow; no original CRT RTTI/exception object or private frame ABI assertion."
+    },
+    {
+      "address": "006a4b6c",
+      "native": "006a3200",
+      "function": "006a4b50",
+      "binding": "Direct complete transfer service in this packet."
+    },
+    {
+      "address": "006a4ba7",
+      "native": "006a3300",
+      "function": "006a4b80",
+      "binding": "Direct complete backward swap service; final three physical words dead."
+    },
+    {
+      "address": "006a43e8",
+      "native": "00557bc0",
+      "function": "006a43a0",
+      "binding": "Accepted actual owning inner-header copy constructor, with actual RawPoolContext; destination nonnull branch only."
+    },
+    {
+      "address": "006a440b",
+      "native": "00559dc0",
+      "function": "006a43fb",
+      "binding": "Completed-prefix cleanup has exact accepted actual432440 storage effects per16B header; owner/dead words do not change storage."
+    },
+    {
+      "address": "006a441b",
+      "native": "00bf6885",
+      "function": "006a43fb",
+      "binding": "Current C++ rethrow; no original CRT RTTI/exception object or private frame ABI assertion."
+    },
+    {
+      "address": "006a5194",
+      "native": "006a43a0",
+      "function": "006a5170",
+      "binding": "Direct complete fill service in this packet."
+    },
+    {
+      "address": "00c7f263",
+      "native": "004324a0",
+      "function": "00c7f260",
+      "kind": "tail_jump",
+      "binding": "Direct actual destroy of private empty inner header in Source outer catch."
+    },
+    {
+      "address": "00c7f270",
+      "native": "00401130",
+      "function": "00c7f268",
+      "binding": "Verified actual single RET: no destructor/free effect; elided placement action."
+    },
+    {
+      "address": "00c7f378",
+      "native": "00401130",
+      "function": "00c7f370",
+      "binding": "Verified actual single RET: no destructor/free effect; elided placement action."
+    }
+  ],
+  "native_disk_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "typed_metadata_capture": "local/oct15_outer_range_typed_flow.json",
+  "typed_metadata_modification": "191",
+  "eh": {
+    "transfer_handler": "C7F279 loads DAC444",
+    "transfer_funcinfo": [
+      "19930522",
+      5,
+      "DAC468",
+      1,
+      "DAC430",
+      0,
+      0,
+      0,
+      1
+    ],
+    "transfer_unwind": [
+      [
+        -1,
+        "C7F260"
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        "C7F268"
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        0
+      ]
+    ],
+    "transfer_try": [
+      1,
+      3,
+      4,
+      1,
+      "DAC420"
+    ],
+    "transfer_catch": [
+      "40",
+      0,
+      0,
+      "6A3290"
+    ],
+    "fill_handler": "C7F381 loads DAC684",
+    "fill_funcinfo": [
+      "19930522",
+      3,
+      "DAC66C",
+      1,
+      "DAC658",
+      0,
+      0,
+      0,
+      1
+    ],
+    "fill_unwind": [
+      [
+        -1,
+        0
+      ],
+      [
+        0,
+        "C7F370"
+      ],
+      [
+        -1,
+        0
+      ]
+    ],
+    "fill_try": [
+      0,
+      1,
+      2,
+      1,
+      "DAC648"
+    ],
+    "fill_catch": [
+      "40",
+      0,
+      0,
+      "6A43FB"
+    ]
+  },
+  "independent_live_disk_EH_audit": {
+    "result": "pass",
+    "auditor": "agent/oct15_avoid_distance",
+    "all_11_full_live_spans_equal_installed_PE": true,
+    "all_252_owned_instruction_starts_equal_Capstone": true,
+    "both_FuncInfo_try_unwind_maps_match": true,
+    "receipt": "pending final audit artifact path"
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "log": "local/oct15_ninth_range_services_build.log",
+    "source_compiled": true,
+    "existing_suites_passed": 3,
+    "existing_suites_total": 3,
+    "ctest_seconds": 8.38,
+    "native_math_differential_scope": "Previously verified math seeds only; no new packet entry executed."
+  },
+  "limits": [
+    "Added actual RawPoolContext, current CRT and C++ exception cleanup; original FH3/SEH/RTTI/private frame and register ABI identity unclaimed.",
+    "Admitted actual storage/ownership/provider contracts and reachable endpoints; native/Source private-frame aliases excluded.",
+    "No new native-function differential execution, game startup or gameplay validation.",
+    "No added null/self/range guard, snapshot, assignment, rollback, callback or ownership projection.",
+    "Backward dispatcher normalizes the last unused physical child tag to zero; native ambient incoming ECX high24 bits are not a Source semantic input."
+  ]
+}
