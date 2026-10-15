@@ -230,8 +230,10 @@ comment. They were not re-verified against the binary here and have no new ledge
 
 1. **Runway and hangar failures never close the launch gates in the host.** `006BF620` (inlined
    in `air_ops_is_ready_to_send_planes_00895d20`) reads the air-ops block's `+1Ch` / `+1Dh`. On an
-   airfield or a carrier the block is embedded at `+72Ch`, so these are the unit's `+748h` / `+749h`,
-   the bytes the Lua `GetFailure` reads. No code in `src/` ever sets `deck.runway_failure` or
+   airfield the block is embedded at `+72Ch`, so these are the unit's `+748h` / `+749h`, the bytes
+   the Lua `GetFailure` reads. On a carrier the block is at `+1188h` (`00758578` LEA [ESI+1188h]
+   -> `006CAC00`), so the bytes are the unit's `+11A4h` / `+11A5h` (correction from cc9 physics10,
+   OCEAN_WAVE_FIELD section 34). No code in `src/` ever sets `deck.runway_failure` or
    `deck.hangar_failure`. `FailureBinding::name_of` maps only effects 1 to 4 (Explosion,
    SteeringJam, EngineJam, Fire), and `apply_failure_effect_00827b90` ignores any other name.
    - What the image does: `SetFailure(unit, "RunwayFailure" | "HangarFailure")` routes message
@@ -244,9 +246,12 @@ comment. They were not re-verified against the binary here and have no new ledge
      `SetFailure(Mission.Lexington, "RunwayFailure", 180)` and `ijn/ESMP/03_south_pacific.lua:1246`
      `SetFailure(Mission.Zuiho, "RunwayFailure")`. So the path is live for carriers that take hits
      in those sections.
-   - Not traced: the carrier-side handler that would set `+748h` / `+749h`. A byte scan finds no
-     `MOV byte [reg+748h], 1` and no `MOV [reg+748h], r8` that sets either byte (the writers found
-     are constructors, `006D31A0` RestoreFullHealth and `0081C550`).
+   - Carrier side (traced by cc9 physics10): `007583A0` sets `+11A4h` / `+11A5h` on `72h` / `74h`
+     and `007583F0` clears them on `73h` / `75h`. The mothership SetFailure is vtable `+194h`
+     `00758750` and ignores the duration; the clear is vtable `+19Ch` `00758A50`, which no script
+     calls for these names, so BSM09's Lexington and ESMP03's Zuiho stop launching for the rest of
+     the mission. (The earlier byte scan for a `+748h` setter used the airfield offset and found
+     none: the writers are constructors, `006D31A0` RestoreFullHealth and `0081C550`.)
    - Shared RNG `00BD2F10`: the component-failure roll already draws in the host
      (`Draw::component_failure`). Applying the failure would not add draws. It would change launch
      timing, and that couples into later draws through the aircraft.
@@ -256,7 +261,8 @@ comment. They were not re-verified against the binary here and have no new ledge
    Both routines store 0 to `+748h` / `+749h`. In the image, then, a SET message received by an
    airfield clears the failure. Together with the scan in note 1, this means an airfield's runway
    failure is probably never set in the image. In that case the host's never-set flags agree with
-   the image for airfields, and the gap in note 1 is a carrier-only gap. This is reconstructed as
+   the image for airfields, and the gap in note 1 is a carrier-only gap (carriers set `+11A4h` /
+   `+11A5h` through `007583A0`). This is reconstructed as
    the bytes read (`air_field_clear_failure_flags_on_set_006d0d50`). Whether it is an original bug
    or an undo path is not established.
 3. **Catapult launch quirk (`008141E0`).** The function has several catapults, and none of them is
