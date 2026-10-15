@@ -121,7 +121,7 @@
     "virtual_calls": "actual current Win32 __thiscall vtable entries; no new callback",
     "memory_copy": "current real CRT memmove_s; return ignored and captured end published afterward"
   },
-  "status": "whole_raw_Source_independent_review_and_build_pending",
+  "status": "whole_Source_independently_reviewed_default_Win32_and_three_existing_checks_passed",
   "abi_compatible": false,
   "game_validated": false,
   "limits": [
@@ -130,5 +130,32 @@
     "Full wrapped pointer/SAR arithmetic retained after returning handlers; no valid-only narrowing or invented rollback.",
     "Legacy Seg6Host Source remains separate; no application adoption or gameplay claim.",
     "Existing regression tests do not execute this body against the original native function."
-  ]
+  ],
+  "verification": {
+    "combined_build": {
+      "revision": "a027c3e3868c15f24eb881b545deaeb90e5a7b4c",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_erase_combined_build.log",
+      "log_sha256": "a5118a98ebcb393b762b775cd97fc80330f3fc9705fa4b79c6546bf5a248076c",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 7.77,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "scope": "existing regression checks; no new-body native differential execution",
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "temporary_override_removed": true
+    },
+    "typed_transfer_rows_checked": 15,
+    "typed_transfer_rows_failed": 0,
+    "independent_whole_assembly_review": "passed;/root/string_allocate",
+    "annotation_receipt": "local/ghidra-annotations-20261015T204653Z.json",
+    "export_refreshed": "0046bd10",
+    "new_tests": false
+  }
 }

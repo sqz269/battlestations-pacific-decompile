@@ -71,6 +71,9 @@ indirect vtable calls remain dynamically target-dependent. Source requires
 valid reached backing and current-provider-compatible raw allocations/vtables.
 Original physical private-frame aliases, CRT/heap/exception/binary ABI,
 application adoption and game behavior remain unvalidated. Existing Seg6Host
-Source is preserved separately. Build and independent-review results are
-recorded in the report once completed; existing checks are regression checks,
-not native differential execution of this new body.
+Source is preserved separately. Independent whole-assembly review found no
+remaining mismatch. The final default `scripts/build.ps1` Release Win32 build
+passed all three existing CTests in7.77s after permanent registration and
+restoration of the normal startup include. Four owned translation units appear
+once each in the generated project and final archive. Existing checks are
+regression checks, not native differential execution of this new body.

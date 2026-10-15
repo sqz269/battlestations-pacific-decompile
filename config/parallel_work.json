@@ -40048,7 +40048,7 @@
       "depends_on": [],
       "source_ready": true,
       "evidence_report": "reports/goal_oct15_string_ordering.json",
-      "primary_review": "reports/goal_oct15_primary_review.json",
+      "primary_review": "reports/goal_oct15_scene_map_primary_review.json",
       "code_revision": "e5618384f",
       "Main_build_gate": "passed; original new-body native differential and runtime gates remain unclaimed",
       "contract": "Complete bounded ordinary Source and qualified private-cleanup composition at the report explicit raw/current-host-provider boundaries. Original ABI, original CRT/private frame, application adoption and game validation are separate, unachieved gates.",
@@ -40111,6 +40111,120 @@
       "game_validated": false,
       "actual_compiler_archive_gate": "pass",
       "Main_validation": "reports/cc12_native_float_format_Main_validation.json"
+    },
+    {
+      "id": "goal_oct15_scene_integer_set_head",
+      "done": true,
+      "state": "whole_ordinary_Source_integrated_Default_Win32_and_existing_regression_checks_passed",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "004682b0",
+        "00468ea0"
+      ],
+      "output_files": [
+        "src/native_scene_integer_set_head.cpp",
+        "include/bsp/native_scene_integer_set_head.hpp",
+        "docs/GOAL_OCT15_SCENE_INTEGER_SET_HEAD.md",
+        "reports/goal_oct15_scene_integer_set_head.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_integer_set_head.json",
+      "primary_review": "reports/goal_oct15_scene_map_erase_primary_review.json",
+      "code_revision": "a027c3e3868c15f24eb881b545deaeb90e5a7b4c",
+      "Main_build_gate": "passed; Original ABI, new-body native differential and runtime gates remain unproved",
+      "contract": "Complete bounded ordinary Source and qualified private-cleanup composition at documented raw/current-provider boundaries; native envelopes distinguish unreachable alignment. No Original ABI/private frame/CRT/application/game credit.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_map_extrema",
+      "done": true,
+      "state": "whole_ordinary_Source_integrated_Default_Win32_and_existing_regression_checks_passed",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00466a00",
+        "00466a20"
+      ],
+      "output_files": [
+        "src/native_scene_record_map_extrema.cpp",
+        "include/bsp/native_scene_record_map_extrema.hpp",
+        "docs/GOAL_OCT15_SCENE_MAP_EXTREMA.md",
+        "reports/goal_oct15_scene_map_extrema.json"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_map_extrema.json",
+      "primary_review": "reports/goal_oct15_scene_map_erase_primary_review.json",
+      "code_revision": "a027c3e3868c15f24eb881b545deaeb90e5a7b4c",
+      "Main_build_gate": "passed; Original ABI, new-body native differential and runtime gates remain unproved",
+      "contract": "Complete bounded ordinary Source and qualified private-cleanup composition at documented raw/current-provider boundaries; native envelopes distinguish unreachable alignment. No Original ABI/private frame/CRT/application/game credit.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_map_erase",
+      "done": true,
+      "state": "whole_ordinary_Source_integrated_Default_Win32_and_existing_regression_checks_passed",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "0046a470",
+        "00c61c70"
+      ],
+      "output_files": [
+        "src/native_scene_record_map_erase.cpp",
+        "include/bsp/native_scene_record_map_erase.hpp",
+        "docs/GOAL_OCT15_SCENE_MAP_ERASE.md",
+        "reports/goal_oct15_scene_map_erase.json"
+      ],
+      "depends_on": [
+        "goal_oct15_scene_map_extrema",
+        "goal_oct15_scene_map_increment",
+        "goal_oct15_scene_map_rotations"
+      ],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_map_erase.json",
+      "primary_review": "reports/goal_oct15_scene_map_erase_primary_review.json",
+      "code_revision": "a027c3e3868c15f24eb881b545deaeb90e5a7b4c",
+      "Main_build_gate": "passed; Original ABI, new-body native differential and runtime gates remain unproved",
+      "contract": "Complete bounded ordinary Source and qualified private-cleanup composition at documented raw/current-provider boundaries; native envelopes distinguish unreachable alignment. No Original ABI/private frame/CRT/application/game credit.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
+    },
+    {
+      "id": "goal_oct15_scene_database_release_pending",
+      "done": true,
+      "state": "whole_ordinary_Source_integrated_Default_Win32_and_existing_regression_checks_passed",
+      "worker": "goal_oct15_reconstruction",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "0046bd10"
+      ],
+      "output_files": [
+        "src/native_scene_database_release_pending.cpp",
+        "include/bsp/native_scene_database_release_pending.hpp",
+        "docs/GOAL_OCT15_SCENE_DATABASE_RELEASE_PENDING.md",
+        "reports/goal_oct15_scene_database_release_pending.json"
+      ],
+      "depends_on": [
+        "goal_oct15_scene_map_clear",
+        "goal_oct15_scene_map_increment"
+      ],
+      "source_ready": true,
+      "evidence_report": "reports/goal_oct15_scene_database_release_pending.json",
+      "primary_review": "reports/goal_oct15_scene_map_erase_primary_review.json",
+      "code_revision": "a027c3e3868c15f24eb881b545deaeb90e5a7b4c",
+      "Main_build_gate": "passed; Original ABI, new-body native differential and runtime gates remain unproved",
+      "contract": "Complete bounded ordinary Source and qualified private-cleanup composition at documented raw/current-provider boundaries; native envelopes distinguish unreachable alignment. No Original ABI/private frame/CRT/application/game credit.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {
