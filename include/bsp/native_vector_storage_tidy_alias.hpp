@@ -15,6 +15,11 @@ namespace bsp {
 // both returning paths. Native00468020 does not call00468840.
 void __fastcall tidy_native_vector_storage_00468020(void* actual_storage16);
 
+// Complete00468D40..00468D69 [42B/13ops], with the same original ABI and
+// full byte schedule as00468840 except the free CALL's rel32 displacement.
+// Native00468D40 calls00BF65AC directly; delegation below is Source reuse.
+void __fastcall tidy_native_vector_storage_00468d40(void* actual_storage16);
+
 // +0 is not directly accessed; element type and all field roles remain opaque.
 // No destructor, diagnostic, copied owner, callback or extra guard is invented.
 // Correct STL_Vector_Tidy native name is retained. Valid taken backing/current-
