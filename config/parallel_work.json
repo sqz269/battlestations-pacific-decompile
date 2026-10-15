@@ -39476,6 +39476,31 @@
       "actual_compiler_archive_gate": "pass",
       "Original_ABI_compatible": false,
       "game_validated": false
+    },
+    {
+      "id": "cc12_enum_symbol_reader",
+      "done": false,
+      "state": "whole_ordinary_Source_primary_peer_accepted_CMake_registration_queued_Main_build_pending",
+      "worker": "scene_token_text_source",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "function_addresses": [
+        "008f31a0"
+      ],
+      "output_files": [
+        "docs/NATIVE_ENUM_SYMBOL_READER_CC12.md",
+        "include/bsp/native_enum_symbol_reader.hpp",
+        "reports/native_enum_symbol_reader_cc12.json",
+        "src/native_enum_symbol_reader.cpp"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "code_revision": "70e0e57ed3329004d1574d8be5ee9c1e7b3973f6",
+      "primary_review": "reports/cc12_enum_symbol_reader_primary_review.json",
+      "Main_build_gate": "pending",
+      "contract": "Whole193B enum name=integer reader over genuine enum/live tokenizer/process scratch and punctuator bindings. Unconditional declaration; no EOF or error-loop exit. New local flag differs from Original incoming argument slot alias. Concrete current-CRT service boundary; no Original ABI/EH/privateCRT/startup/runtime/game/whole-loader credit.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {
