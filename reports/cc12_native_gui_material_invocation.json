@@ -1,0 +1,384 @@
+{
+  "schema_version": 1,
+  "packet": "cc12_native_gui_material_invocation",
+  "captured_utc": "2026-10-15T03:10:35.587953+00:00",
+  "summary": "Guarded 00535320 material invocation on the existing GameNativeGuiEffectApplication private cache, with canonical material-owner registration and an authenticated ready-only 00D5E520 renderer profile view.",
+  "source": {
+    "captured_utc": "2026-10-15T02:50:57.308663+00:00",
+    "source_base_revision": "9839275bbf946d2a1bb47f22dc50c03c01dc5953",
+    "owned_source_paths": [
+      "include/bsp/game_native_gui_effect_application.hpp",
+      "src/game_native_gui_effect_application.cpp",
+      "include/bsp/game_native_renderer_application.hpp",
+      "src/game_native_renderer_application.cpp"
+    ],
+    "only_tracked_modifications_are_owned": true,
+    "build_input_pins": [
+      {
+        "path": "include/bsp/game_native_gui_effect_application.hpp",
+        "sha256": "8083ca410df8a293233fe390d73df8620de2f7a148ffe174c9640de6190eb5c1",
+        "bytes": 7367,
+        "mtime_ns": 1792032405638243600
+      },
+      {
+        "path": "src/game_native_gui_effect_application.cpp",
+        "sha256": "2ea6c6119a58bb8b99776dbc8fc7e203123b8e7e3fa34c95f8f89e1f8a40653a",
+        "bytes": 21912,
+        "mtime_ns": 1792032405640760900
+      },
+      {
+        "path": "include/bsp/game_native_renderer_application.hpp",
+        "sha256": "3380643a25c0e27bc653440c8e79dd138bb68b495dac9f386d1e7e221ef467c0",
+        "bytes": 14808,
+        "mtime_ns": 1792032405639755600
+      },
+      {
+        "path": "src/game_native_renderer_application.cpp",
+        "sha256": "592dc2200fe3e58750a0382856b78b6e88fabd970436794faf8073ee3626722a",
+        "bytes": 54548,
+        "mtime_ns": 1792032405639755600
+      },
+      {
+        "path": "include/bsp/native_material_factory.hpp",
+        "sha256": "2cf4933dc2d616674b501ff1786c95c47f3251cf7dd4deda649ca95bba0a3563",
+        "bytes": 4221,
+        "mtime_ns": 1792029977309594400
+      },
+      {
+        "path": "src/native_material_factory.cpp",
+        "sha256": "6ef1b9855e65cec8e69a1d51001733adef2073d8ed08650fff0115307ec71bcd",
+        "bytes": 4716,
+        "mtime_ns": 1792029981395953100
+      },
+      {
+        "path": "include/bsp/native_material_owner.hpp",
+        "sha256": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320",
+        "bytes": 5986,
+        "mtime_ns": 1792029977309594400
+      },
+      {
+        "path": "src/native_material_owner.cpp",
+        "sha256": "349fad1d983e763d4f53e24e99b2b4dcfe104cbf6e246b902b8346ed3e8fe1fc",
+        "bytes": 9483,
+        "mtime_ns": 1792029981396959900
+      },
+      {
+        "path": "include/bsp/gui_native_geometry.hpp",
+        "sha256": "132f61a4e1f2b7cd09d16b4bae2e5c5cd223805d0fcf7592560f46737a6286cf",
+        "bytes": 10778,
+        "mtime_ns": 1792029977129213800
+      },
+      {
+        "path": "src/gui_native_geometry.cpp",
+        "sha256": "1b957f0aa970eec806bd09389aaa4f21157a64013a3a5c721a0065a0a7e5f0bf",
+        "bytes": 30316,
+        "mtime_ns": 1792029981180959500
+      },
+      {
+        "path": "include/bsp/game_native_material_process.hpp",
+        "sha256": "0358972160de5eba05473228c1a934330ea4eb709ab1201a55a966f1980ff7d4",
+        "bytes": 2509,
+        "mtime_ns": 1792029977098817400
+      },
+      {
+        "path": "src/game_native_material_process.cpp",
+        "sha256": "3ff38235073f429966a50abf942832344e75993037036a2f1c47945fd5225ddf",
+        "bytes": 2569,
+        "mtime_ns": 1792029981143220600
+      },
+      {
+        "path": "include/bsp/native_material_effect_cache.hpp",
+        "sha256": "56d1930a80ad2ed90883c1f52f26f36ec51c50c6294a844dd64258949d103ff4",
+        "bytes": 8016,
+        "mtime_ns": 1792029977308596100
+      },
+      {
+        "path": "src/native_material_effect_cache.cpp",
+        "sha256": "b5edc9b518ba2979d112ebdd03d97937307249e05a978272097020055e7072ae",
+        "bytes": 26228,
+        "mtime_ns": 1792029981393299500
+      },
+      {
+        "path": "include/bsp/game_native_readonly_data.hpp",
+        "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+        "bytes": 2713,
+        "mtime_ns": 1792029977099818500
+      },
+      {
+        "path": "src/game_native_readonly_data.cpp",
+        "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+        "bytes": 7167,
+        "mtime_ns": 1792029981145866300
+      },
+      {
+        "path": "src/game_native_renderer_grid.inc",
+        "sha256": "d5d84bdca33ec50491228d0ae5cccc03c05c02ce2d18d1a69586d423681afcbb",
+        "bytes": 1778,
+        "mtime_ns": 1792029981147877400
+      },
+      {
+        "path": "src/game_native_renderer_textures.inc",
+        "sha256": "e178152527c7b2b39a63608346c6cc555a0306cb05c53af83f2cc654146e824e",
+        "bytes": 2949,
+        "mtime_ns": 1792029981149402000
+      },
+      {
+        "path": "src/gui_text_native_renderer.cpp",
+        "sha256": "9f3753d2cc0232eea8dd990cc5c0e4a5f958145dbd8de35ba64860ab370c74e5",
+        "bytes": 5735,
+        "mtime_ns": 1792029981188612000
+      },
+      {
+        "path": "CMakeLists.txt",
+        "sha256": "eb3c7f83231a2a8184041a981bcd912733b5f12801d0bba2345d1ad0e69c3d79",
+        "bytes": 20832,
+        "mtime_ns": 1792029974961516800
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "sha256": "5e668e409ad16d016c77e67f0cbd51df98206d7b004e3f29b80db115a6c39802",
+        "bytes": 228096,
+        "mtime_ns": 1792032073710235500
+      },
+      {
+        "path": "scripts/build.ps1",
+        "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+        "bytes": 1820,
+        "mtime_ns": 1792029981001720300
+      },
+      {
+        "path": "config/target.json",
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "bytes": 455,
+        "mtime_ns": 1792029975218081300
+      }
+    ],
+    "source_patch_sha256": "949913637005981b59ed7136bc21076d9a99afc4a99011264b21a4ca1647a217",
+    "source_patch_utf8": "diff --git a/include/bsp/game_native_gui_effect_application.hpp b/include/bsp/game_native_gui_effect_application.hpp\nindex 8c25ebff0..a4ceabf15 100644\n--- a/include/bsp/game_native_gui_effect_application.hpp\n+++ b/include/bsp/game_native_gui_effect_application.hpp\n@@ -1,5 +1,6 @@\n #pragma once\n #include \"bsp/native_material_effect_cache.hpp\"\n+#include \"bsp/native_material_factory.hpp\"\n #include <exception>\n #include <memory>\n \n@@ -7,6 +8,7 @@ namespace bsp {\n class NativeLuaServiceBindings;\n struct NativeMaterialDescriptorSamplersContext;\n class NativeMaterialDescriptorSamplersCallFactory;\n+class GuiNativeGeometryOwners;\n }\n namespace bsp::game {\n class GameHostLog;\n@@ -46,6 +48,33 @@ struct GameNativeGuiEffectLoadOperation final {\n     std::exception_ptr failure;\n };\n \n+enum class GameNativeGuiMaterialFactoryPhase { fresh, factory, registration, complete, failed };\n+struct GameNativeGuiMaterialFactoryOperation final {\n+    GameNativeGuiMaterialFactoryPhase phase{GameNativeGuiMaterialFactoryPhase::fresh};\n+    // Borrowed actual8h header, never owned or consumed here. It and its live\n+    // bytes must survive synchronous entry. After return/unwind the caller's\n+    // native cleanup may consume the name: this pointer is then diagnostic\n+    // only, even when the factory frame survives failure. Retain the header's\n+    // storage with the caller frame; never reread/replay a consumed name.\n+    const void* input_name{};\n+    bool input_name_borrow_active{};\n+    void* captured_renderer{};\n+    NativeLuaServiceBindings* captured_lua_binding{};\n+    GuiNativeGeometryOwners* geometry{};\n+    // This SAME access object and every referenced provider outlive the\n+    // material's final release, retained failures, and shared renderer drain.\n+    NativeMaterialDestructionAccess* materials{};\n+    const volatile std::uint32_t* material_profile_00d5e520{};\n+    NativeMaterialFactoryAcquired factory;\n+    // On normal return only, transfer the single creator to the caller.\n+    // Neither this diagnostic alias nor the retained frame adds a reference.\n+    NativeMaterialStorage* result{};\n+    std::uint32_t result_profile{};\n+    std::int32_t result_references{};\n+    bool caller_reference_transferred{};\n+    std::exception_ptr failure;\n+};\n+\n // Real numeric renderer48/cache/loader/program/compiler composition over the\n // SAME ready renderer, VFS, string pool, actual effects/passes/shaders/states\n // and shared record allocator. No semantic shader/material wrapper, copied\n@@ -76,6 +105,19 @@ public:\n     void* acquire_effect_00b318b0(const void* stable_actual_name_header);\n     std::size_t operation_count() const noexcept;\n     const GameNativeGuiEffectLoadOperation& operation(std::size_t) const;\n+    // Whole numeric535320 plus metadata-only canonical material admission.\n+    // No Text activation, caller name cleanup, extra retain or rollback. Exact\n+    // geometry, process material/parameter pools, strings and mapped profile\n+    // are authenticated before entry. Null native allocation returns null.\n+    // published_operation must be null. Its fresh stable heap frame is\n+    // published before native effects, including on later exceptions; retain\n+    // this application and the caller's name/access/provider frame through\n+    // failure. The output pointer is never cleared or used to permit replay.\n+    NativeMaterialStorage* create_material_00535320(const void* stable_actual_name_header,\n+        GuiNativeGeometryOwners&, NativeMaterialDestructionAccess&,\n+        const GameNativeGuiMaterialFactoryOperation*& published_operation);\n+    std::size_t material_operation_count() const noexcept;\n+    const GameNativeGuiMaterialFactoryOperation& material_operation(std::size_t) const;\n     bool requires_process_retention() const noexcept;\n     const std::exception_ptr& failure() const noexcept;\n     // Keep this graph alive through renderer cache/effect/compiler retirement.\ndiff --git a/include/bsp/game_native_renderer_application.hpp b/include/bsp/game_native_renderer_application.hpp\nindex 9583a8fc9..f9257417f 100644\n--- a/include/bsp/game_native_renderer_application.hpp\n+++ b/include/bsp/game_native_renderer_application.hpp\n@@ -140,6 +140,12 @@ public:\n     // release grids before draining this renderer. Uses the same VFS strings,\n     // declaration cache, stream owners and live process vector as the graph.\n     NativeGameGridContext& game_grid_context() noexcept;\n+    // Ready-only admission/view of this renderer's SAME verified read-only\n+    // D5E520 {BD30E0,B194B0} profile and canonical geometry/actual-owner domain.\n+    // No native work, pool, cache or callable table is created. Retain this\n+    // renderer/read-only-data owner through every material's final release,\n+    // interrupted invocation and shared drain. New C++ view, not Original ABI.\n+    const volatile std::uint32_t* borrow_gui_material_destruction_profile_00d5e520();\n     // Ready-only borrowed section-layout/vertex-reader prerequisites. These\n     // use game_grid_context()'s SAME graphics/string/owner domain and the live\n     // renderer publication. Retain this application through every borrower;\ndiff --git a/src/game_native_gui_effect_application.cpp b/src/game_native_gui_effect_application.cpp\nindex 23e891b7a..18f16a14d 100644\n--- a/src/game_native_gui_effect_application.cpp\n+++ b/src/game_native_gui_effect_application.cpp\n@@ -5,6 +5,7 @@\n #include \"bsp/game_native_material_compiler_owners.hpp\"\n #include \"bsp/game_native_material_compiler_sources.hpp\"\n #include \"bsp/game_native_material_effect_owners.hpp\"\n+#include \"bsp/game_native_material_process.hpp\"\n #include \"bsp/game_native_shader_process.hpp\"\n #include \"bsp/game_native_renderer_scalars.hpp\"\n #include \"bsp/native_effect_registry_destroy.hpp\"\n@@ -13,6 +14,7 @@\n #include \"bsp/native_shader_binary_cache.hpp\"\n #include \"bsp/native_shader_descriptor_reader.hpp\"\n #include \"bsp/native_lua_service_bindings.hpp\"\n+#include \"bsp/native_game_grid.hpp\"\n #include <cstring>\n #include <stdexcept>\n #include <vector>\n@@ -46,6 +48,7 @@ struct GameNativeGuiEffectApplication::Impl {\n     NativeMaterialEffectLoadingContext effects;\n     NativeMaterialEffectCacheContext cache;\n     std::vector<std::unique_ptr<GameNativeGuiEffectLoadOperation>> operations;\n+    std::vector<std::unique_ptr<GameNativeGuiMaterialFactoryOperation>> material_operations;\n     Phase phase{Phase::ready};\n     std::exception_ptr failed;\n \n@@ -145,6 +148,23 @@ struct GameNativeGuiEffectApplication::Impl {\n             effects.renderer_profile_00d5f0a8 && effects.renderer_profile_00d5f0a8[0x48 / 4] == 0x00b318b0,\n             \"GUI effect production lacks its genuine record allocation or numeric effect dispatch\");\n     }\n+    const volatile std::uint32_t* validate_material_domain(GuiNativeGeometryOwners& geometry,\n+        NativeMaterialDestructionAccess& materials) {\n+        auto& actual = renderer.actual_owners();\n+        auto& canonical_geometry = renderer.game_grid_context().graphics.streams.geometry;\n+        const auto& registration = geometry.registration();\n+        auto& process = game_native_material_process();\n+        require(&geometry == &canonical_geometry && &geometry.actual_owners() == &actual &&\n+            &registration.owners == &actual && registration.context == &actual &&\n+            registration.bind == &NativeRenderActualOwnerRegistry::bind_callback &&\n+            registration.unbind == &NativeRenderActualOwnerRegistry::unbind_callback &&\n+            registration.find == &NativeRenderActualOwnerRegistry::find_callback &&\n+            &materials.retained_owners == &actual && &materials.parameter_names == &raw.strings &&\n+            &materials.material_slots == &process.material_pool_00f8d3ac() &&\n+            &materials.parameter_slots == &process.parameter_pool_00f8d3e4(),\n+            \"GUI material invocation requires the same canonical geometry, owners, strings and process pools\");\n+        return renderer.borrow_gui_material_destruction_profile_00d5e520();\n+    }\n };\n \n GameNativeGuiEffectApplication::GameNativeGuiEffectApplication(GameHostLog& log,\n@@ -153,7 +173,8 @@ GameNativeGuiEffectApplication::GameNativeGuiEffectApplication(GameHostLog& log,\n     : impl_(std::make_unique<Impl>(log, renderer, vfs, bindings)) {}\n GameNativeGuiEffectApplication::~GameNativeGuiEffectApplication() noexcept {\n     if (impl_->phase != Impl::Phase::closed &&\n-        (impl_->phase != Impl::Phase::ready || !impl_->operations.empty())) std::terminate();\n+        (impl_->phase != Impl::Phase::ready || !impl_->operations.empty() ||\n+            !impl_->material_operations.empty())) std::terminate();\n }\n void* GameNativeGuiEffectApplication::acquire_effect_00b318b0(const void* name) {\n     auto& p = *impl_;\n@@ -219,6 +240,86 @@ std::size_t GameNativeGuiEffectApplication::operation_count() const noexcept {\n const GameNativeGuiEffectLoadOperation& GameNativeGuiEffectApplication::operation(std::size_t index) const {\n     return *impl_->operations.at(index);\n }\n+NativeMaterialStorage* GameNativeGuiEffectApplication::create_material_00535320(const void* name,\n+    GuiNativeGeometryOwners& geometry, NativeMaterialDestructionAccess& materials,\n+    const GameNativeGuiMaterialFactoryOperation*& published_operation) {\n+    auto& p = *impl_;\n+    require(p.phase == Impl::Phase::ready,\n+        \"GUI material producer cannot replay/reenter/retarget or reopen after drain\");\n+    require(!published_operation && name && (reinterpret_cast<std::uintptr_t>(name) & 3u) == 0,\n+        \"GUI material producer requires a fresh output and stable initialized actual8h name header\");\n+    p.validate_domain();\n+    const auto* profile = p.validate_material_domain(geometry, materials);\n+    auto frame = std::make_unique<GameNativeGuiMaterialFactoryOperation>();\n+    auto& op = *frame;\n+    op.input_name = name;\n+    op.geometry = &geometry;\n+    op.materials = &materials;\n+    op.material_profile_00d5e520 = profile;\n+    p.material_operations.push_back(std::move(frame)); // Stable BEFORE any native effects.\n+    published_operation = &op;\n+    p.phase = Impl::Phase::loading;\n+    op.phase = GameNativeGuiMaterialFactoryPhase::factory;\n+    op.input_name_borrow_active = true;\n+    try {\n+        op.captured_lua_binding = &p.lua_binding;\n+        NativeLuaServiceBindings::Activation activation(p.lua_binding);\n+        op.captured_renderer = p.renderer.publication_00f8d394();\n+        require(op.captured_renderer != nullptr, \"GUI material producer has no live actual renderer\");\n+        std::uint32_t renderer_profile{};\n+        std::memcpy(&renderer_profile, op.captured_renderer, sizeof(renderer_profile));\n+        require(renderer_profile == 0x00d5f0a8,\n+            \"GUI material producer requires its actual D5F0A8 receiver\");\n+        // The existing whole factory owns the native renderer capture, cache\n+        // acquisition, allocation/constructor, raw-slot-only constructor\n+        // unwind and normal temporary-effect release. Do not split/replay it.\n+        op.result = create_native_material_from_effect_cache_00535320(name,\n+            materials.material_slots, materials.retained_owners, p.cache, op.factory);\n+        require(op.factory.phase == NativeMaterialFactoryAcquired::Phase::complete &&\n+            op.factory.cache && op.factory.cache->phase == NativeMaterialEffectCacheAcquired::Phase::complete,\n+            \"GUI material producer returned before its retained factory/cache completed\");\n+        if (op.result) {\n+            op.phase = GameNativeGuiMaterialFactoryPhase::registration;\n+            // Admission does not retain or release the creator. Failed bind\n+            // leaves its raw material/companion/record on this SAME frame.\n+            geometry.register_native_material_creator(op.factory, materials, profile);\n+            auto* actual = dynamic_cast<NativeMaterialReference*>(\n+                &p.renderer.actual_owners().resolve_actual(op.result));\n+            require(actual && actual == op.factory.companion && op.factory.registered &&\n+                &actual->storage() == op.result &&\n+                &actual->reference_count == &op.result->references_04,\n+                \"GUI material result lacks its same canonical actual-count companion\");\n+            op.result_profile = op.result->vtable_00;\n+            op.result_references = op.result->references_04.load();\n+            require(op.result_profile == 0x00d5e520 && op.result_references > 0,\n+                \"GUI material result has no live supported actual profile\");\n+        }\n+        op.phase = GameNativeGuiMaterialFactoryPhase::complete;\n+        p.phase = Impl::Phase::ready;\n+        p.log.notef(\"actual GUI material acquire renderer=%p name=%p result=%p profile=%08x refs=%d factory_site=%08x registered=%d\",\n+            op.captured_renderer, op.input_name, static_cast<void*>(op.result), op.result_profile,\n+            op.result_references, op.factory.native_site, op.factory.registered ? 1 : 0);\n+        op.input_name_borrow_active = false;\n+        op.caller_reference_transferred = op.result != nullptr;\n+        return op.result;\n+    } catch (...) {\n+        // Caller cleanup may consume its name after unwinding this entry.\n+        // Retain identities/acquisitions, never dereference/replay that input.\n+        op.input_name_borrow_active = false;\n+        op.failure = std::current_exception();\n+        op.phase = GameNativeGuiMaterialFactoryPhase::failed;\n+        p.failed = op.failure;\n+        p.phase = Impl::Phase::failed;\n+        throw;\n+    }\n+}\n+std::size_t GameNativeGuiEffectApplication::material_operation_count() const noexcept {\n+    return impl_->material_operations.size();\n+}\n+const GameNativeGuiMaterialFactoryOperation&\n+GameNativeGuiEffectApplication::material_operation(std::size_t index) const {\n+    return *impl_->material_operations.at(index);\n+}\n bool GameNativeGuiEffectApplication::requires_process_retention() const noexcept {\n     const auto phase = impl_->phase;\n     return phase == Impl::Phase::loading || phase == Impl::Phase::draining || phase == Impl::Phase::failed;\n@@ -229,7 +330,7 @@ const std::exception_ptr& GameNativeGuiEffectApplication::failure() const noexce\n void GameNativeGuiEffectApplication::after_native_renderer_drain() {\n     auto& p = *impl_;\n     require(p.phase == Impl::Phase::ready, \"failed/active/closed GUI effect graph cannot retire its metadata\");\n-    if (p.operations.empty()) { p.phase = Impl::Phase::closed; return; }\n+    if (p.operations.empty() && p.material_operations.empty()) { p.phase = Impl::Phase::closed; return; }\n     p.phase = Impl::Phase::draining;\n     try {\n         require(!p.renderer.publication_00f8d394(), \"GUI effect graph must survive the actual renderer cache/effect drain\");\n@@ -237,6 +338,12 @@ void GameNativeGuiEffectApplication::after_native_renderer_drain() {\n         for (const auto& op : p.operations)\n             require(op->phase == GameNativeGuiEffectLoadPhase::complete,\n                 \"GUI effect graph has an interrupted retained acquisition\");\n+        for (const auto& op : p.material_operations)\n+            require(op->phase == GameNativeGuiMaterialFactoryPhase::complete &&\n+                !op->input_name_borrow_active &&\n+                op->factory.phase == NativeMaterialFactoryAcquired::Phase::complete &&\n+                (!op->result || (op->factory.registered && op->caller_reference_transferred)),\n+                \"GUI effect graph has an interrupted retained material acquisition\");\n         p.phase = Impl::Phase::closed;\n     } catch (...) {\n         p.failed = std::current_exception();\ndiff --git a/src/game_native_renderer_application.cpp b/src/game_native_renderer_application.cpp\nindex fdcf6779b..1e6e86fff 100644\n--- a/src/game_native_renderer_application.cpp\n+++ b/src/game_native_renderer_application.cpp\n@@ -609,6 +609,23 @@ NativeRenderActualOwnerRegistry& GameNativeRendererApplication::actual_owners()\n NativeGameGridContext& GameNativeRendererApplication::game_grid_context() noexcept {\n     return impl_->game_grids.context;\n }\n+const volatile std::uint32_t*\n+GameNativeRendererApplication::borrow_gui_material_destruction_profile_00d5e520() {\n+    auto& p=*impl_;\n+    check(p.phase==Impl::Phase::ready && !requires_process_retention(),\n+        \"GUI material profile requires a ready renderer with completed acquisitions\");\n+    auto& graphics=p.game_grids.graphics;\n+    require_gui_text_native_renderer_domain(graphics,p.renderer,p.vfs.strings,p.owners);\n+    check(&p.game_grids.context.graphics==&graphics &&\n+        &graphics.streams.geometry==&p.texture_loading.geometry &&\n+        &graphics.streams.geometry.actual_owners()==&p.owners &&\n+        &graphics.streams.geometry.registration().owners==&p.owners,\n+        \"GUI material profile requires the renderer's canonical geometry and actual owners\");\n+    const auto* profile=static_cast<const volatile U*>(p.profiles.data.data_at(0x00d5e520,8));\n+    check(profile[0]==0x00bd30e0 && profile[1]==0x00b194b0,\n+        \"GUI material mapped destruction profile differs from supported D5E520 selectors\");\n+    return profile;\n+}\n GuiTextNativeLayoutServices& GameNativeRendererApplication::section_layout_services() {\n     check(impl_->phase==Impl::Phase::ready && !impl_->section_layout_acquisition_pending(),\n         \"native section layout services require ready renderer and completed acquisition\");\n",
+    "scope": "Source receipt captured while normal Win32 build runs; verify unchanged pins/patch after terminal build result. No runtime admission."
+  },
+  "source_verified_unchanged_after_final_build": true,
+  "owned_documentation": {
+    "path": "docs/GAME_NATIVE_GUI_MATERIAL_INVOCATION.md",
+    "sha256": "3241bb212d00693fd22cec4b3d1cd584b142957778ca72e9f5fc0302cba05f1c",
+    "bytes": 7834
+  },
+  "contract": {
+    "private_cache_reused": true,
+    "replacement_cache_or_owner_graph_created": false,
+    "fresh_operation_published_before_lua_or_native_effects": true,
+    "entry_point": "GameNativeGuiEffectApplication::create_material_00535320",
+    "numeric_factory": "create_native_material_from_effect_cache_00535320",
+    "registration": "GuiNativeGeometryOwners::register_native_material_creator",
+    "admission": [
+      "Existing effect application is ready and in its established renderer/VFS/Lua domain.",
+      "Geometry object, registry context and static registry callbacks are the exact renderer-owned instances.",
+      "Actual owner registry and raw VFS string provider match the established graph.",
+      "Material and parameter pools are the canonical, distinct, already-started GameNativeMaterialProcess pools 00F8D3AC and 00F8D3E4.",
+      "The profile is borrowed from the ready renderer authenticated read-only map at 00D5E520; selectors are 00BD30E0 and 00B194B0."
+    ],
+    "effect_order": [
+      "Publish stable operation frame and caller output pointer.",
+      "Activate the same Lua runtime.",
+      "Invoke the whole existing numeric 00535320 factory against the private cache; preserve its cache acquisition, allocation, constructor, raw-slot-only constructor unwind and temporary effect release.",
+      "For non-null material, register metadata using the existing canonical companion without an extra retain, clone or registration rollback.",
+      "Verify the canonical actual +04 reference count alias, profile identity and positive creator count.",
+      "Complete operation logging, end the name borrow and transfer the existing creator reference to the caller immediately before return."
+    ],
+    "failure": "Retain the operation/factory/cache/registration state and poison the shared effect application after an exception following publication. No retry, caller-name consumption, creator release, cleanup replay or second drain is added.",
+    "null_result": "A normal null factory result remains null; no companion is manufactured.",
+    "name_lifetime": "The actual name header and bytes stay stable during synchronous entry. The borrow is marked inactive on return/unwind; the API never consumes the name. Caller cleanup may consume it afterward. Header/frame storage survives any failed graph, but a consumed name is not readable or replayable through the retained pointer.",
+    "destruction_access_lifetime": "The exact destruction-access object and its borrowed pool/string/owner domains, geometry, mapped profile, renderer, VFS and Lua owner survive material final release and any failed invocation.",
+    "shared_drain": "Both effect and material operation collections participate in the existing application drain-closure policy. Caller creator ownership is transferred or released through existing actual owner paths before shared drain. Completion checks inspect retained metadata without dereferencing retired materials."
+  },
+  "evidence": {
+    "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+    "ghidra_program": "/battlestationspacific.exe",
+    "ghidra_mutations": false,
+    "profile": {
+      "address": "00D5E520",
+      "hex": "e0 30 bd 00 b0 94 b1 00",
+      "selectors": [
+        "00BD30E0",
+        "00B194B0"
+      ],
+      "receipt": {
+        "path": "local/cc12_native_gui_material_invocation/profile_bytes.txt",
+        "sha256": "23c237c523fca7c6e937fad3f6889a581820217e74de07fad5303b0d5a3e4ae3",
+        "bytes": 45
+      }
+    },
+    "seed_verification": {
+      "command": "python tools/ghidra_export.py verify-seeds --output local/cc12_native_gui_material_invocation",
+      "exit_code": 0,
+      "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "ranges": [
+        {
+          "address": "00401170",
+          "length": 28,
+          "matches_disk": true
+        },
+        {
+          "address": "00401c20",
+          "length": 47,
+          "matches_disk": true
+        },
+        {
+          "address": "00401cb0",
+          "length": 25,
+          "matches_disk": true
+        },
+        {
+          "address": "00401cd0",
+          "length": 29,
+          "matches_disk": true
+        },
+        {
+          "address": "00401cf0",
+          "length": 25,
+          "matches_disk": true
+        },
+        {
+          "address": "00bf0cf0",
+          "length": 46,
+          "matches_disk": true
+        },
+        {
+          "address": "00bf0d20",
+          "length": 207,
+          "matches_disk": true
+        },
+        {
+          "address": "00ba2c20",
+          "length": 94,
+          "matches_disk": true
+        }
+      ],
+      "limits": "Only these byte ranges were compared. This does not establish whole-image identity.",
+      "header": {
+        "path": "local/seed_reference.hpp",
+        "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+        "bytes": 2995
+      },
+      "comparison": {
+        "path": "local/cc12_native_gui_material_invocation/seed_byte_comparison.json",
+        "sha256": "32f6c78b0dd1b73bb1023c82831731b40e88e5e57d023bffda0b872c8cf2d298",
+        "bytes": 3288
+      },
+      "log": {
+        "path": "local/cc12_native_gui_material_invocation/seed_verification.log",
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+        "bytes": 3034
+      }
+    }
+  },
+  "validation": {
+    "initial_configuration_observation": "The fresh worktree had no local/seed_reference.hpp when its first normal configure ran, so that first build configured only reconstructed_math and tool_tests. The prescribed seed verification generated the header afterward; the final normal rerun reconfigured with native_math_differential enabled.",
+    "initial_build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "Release",
+      "exit_code": 0,
+      "log": {
+        "path": "local/cc12_native_gui_material_invocation/build.log",
+        "sha256": "163c9af24bc578feb4bbfa77a83c0ca382bb1eafb47bfe8b4fd590cbba9c9dfa",
+        "bytes": 85321
+      },
+      "tests": [
+        {
+          "name": "reconstructed_math",
+          "result": "Passed",
+          "seconds": 0.55
+        },
+        {
+          "name": "tool_tests",
+          "result": "Passed",
+          "seconds": 61.08
+        }
+      ],
+      "ctest_total_seconds": 61.67
+    },
+    "final_build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "Release",
+      "exit_code": 0,
+      "log": {
+        "path": "local/cc12_native_gui_material_invocation/build_with_seeds.log",
+        "sha256": "847cc74b0711de36084205a4f86e1e31b0f121498b28ed17623205807696978d",
+        "bytes": 4560
+      },
+      "tests": [
+        {
+          "name": "reconstructed_math",
+          "result": "Passed",
+          "seconds": 0.39
+        },
+        {
+          "name": "native_math_differential",
+          "result": "Passed",
+          "seconds": 0.24
+        },
+        {
+          "name": "tool_tests",
+          "result": "Passed",
+          "seconds": 57.9
+        }
+      ],
+      "ctest_total_seconds": 58.58
+    },
+    "new_tests_added": false,
+    "source_and_lifetime_contract_review": "Parent integrator reviewed all four owned Source/header diffs and requested no Source revision before final checks.",
+    "pe": {
+      "path": "build/win32/Release/bsp_game.exe",
+      "machine": "0x014c",
+      "optional_header_magic": "0x010b",
+      "architecture": "Win32 x86 PE32"
+    },
+    "artifacts": [
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "sha256": "2137513530e0d9c77277adf7ea524fd517b3b647428c146ee97cc3a5e6438420",
+        "bytes": 5601280
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "c4092acba77d2c53b0006bd36af734dd698d604e02e9a81301548ccd327b0ce6",
+        "bytes": 92353858
+      },
+      {
+        "path": "build/win32/Release/bsp_math_tests.exe",
+        "sha256": "0feb169e88f58aa3ee9cfcb3697018f63dec60fe4533f53be6ffca0214cf236b",
+        "bytes": 844800
+      },
+      {
+        "path": "build/win32/Release/bsp_native_math_tests.exe",
+        "sha256": "292e354dda34712fa038d638663cdfb2a390b767e6f3ac0c5669d30c7ad93b0c",
+        "bytes": 18432
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_gui_effect_application.obj",
+        "sha256": "b4483d0e7439bdc25faeca3db6a6eaa7e199dadb2f2b0361549b53b6a3cfc83c",
+        "bytes": 145936
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_renderer_application.obj",
+        "sha256": "47014fb9f48ddf73510d3e9e5a9f448ee8a78935c95f6bec4316f52e949a49fc",
+        "bytes": 366067
+      }
+    ],
+    "gpu_launches": 0,
+    "native_material_runtime_invocation_executed": false,
+    "native_text_activated": false
+  },
+  "remaining_consumer_binding": [
+    "AB8530 still calls the legacy geometry material factory. A subsequent consumer must provide these admitted owner domains, retain the published operation pointer in its caller frame and preserve original name cleanup while binding constructor material creation to this same private cache.",
+    "AB8CE0 still has the legacy renderer+48 effect call; route its effect acquisition to the established private effect application only with the same caller lifetime and common preload/cache order.",
+    "Font selection, native Text construction, buffers, command/pass contexts, draw and retirement remain unactivated."
+  ],
+  "not_established": [
+    "Original register, class layout, private frame or FH3 ABI equivalence.",
+    "A Native material factory invocation at runtime.",
+    "Native Text rendering or visual equivalence.",
+    "Full native startup or gameplay equivalence.",
+    "Whole-image identity from eight compared seed ranges."
+  ]
+}

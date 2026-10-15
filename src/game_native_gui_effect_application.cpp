@@ -5,6 +5,7 @@
 #include "bsp/game_native_material_compiler_owners.hpp"
 #include "bsp/game_native_material_compiler_sources.hpp"
 #include "bsp/game_native_material_effect_owners.hpp"
+#include "bsp/game_native_material_process.hpp"
 #include "bsp/game_native_shader_process.hpp"
 #include "bsp/game_native_renderer_scalars.hpp"
 #include "bsp/native_effect_registry_destroy.hpp"
@@ -13,6 +14,7 @@
 #include "bsp/native_shader_binary_cache.hpp"
 #include "bsp/native_shader_descriptor_reader.hpp"
 #include "bsp/native_lua_service_bindings.hpp"
+#include "bsp/native_game_grid.hpp"
 #include <cstring>
 #include <stdexcept>
 #include <vector>
@@ -46,6 +48,7 @@ struct GameNativeGuiEffectApplication::Impl {
     NativeMaterialEffectLoadingContext effects;
     NativeMaterialEffectCacheContext cache;
     std::vector<std::unique_ptr<GameNativeGuiEffectLoadOperation>> operations;
+    std::vector<std::unique_ptr<GameNativeGuiMaterialFactoryOperation>> material_operations;
     Phase phase{Phase::ready};
     std::exception_ptr failed;
 
@@ -145,6 +148,23 @@ struct GameNativeGuiEffectApplication::Impl {
             effects.renderer_profile_00d5f0a8 && effects.renderer_profile_00d5f0a8[0x48 / 4] == 0x00b318b0,
             "GUI effect production lacks its genuine record allocation or numeric effect dispatch");
     }
+    const volatile std::uint32_t* validate_material_domain(GuiNativeGeometryOwners& geometry,
+        NativeMaterialDestructionAccess& materials) {
+        auto& actual = renderer.actual_owners();
+        auto& canonical_geometry = renderer.game_grid_context().graphics.streams.geometry;
+        const auto& registration = geometry.registration();
+        auto& process = game_native_material_process();
+        require(&geometry == &canonical_geometry && &geometry.actual_owners() == &actual &&
+            &registration.owners == &actual && registration.context == &actual &&
+            registration.bind == &NativeRenderActualOwnerRegistry::bind_callback &&
+            registration.unbind == &NativeRenderActualOwnerRegistry::unbind_callback &&
+            registration.find == &NativeRenderActualOwnerRegistry::find_callback &&
+            &materials.retained_owners == &actual && &materials.parameter_names == &raw.strings &&
+            &materials.material_slots == &process.material_pool_00f8d3ac() &&
+            &materials.parameter_slots == &process.parameter_pool_00f8d3e4(),
+            "GUI material invocation requires the same canonical geometry, owners, strings and process pools");
+        return renderer.borrow_gui_material_destruction_profile_00d5e520();
+    }
 };
 
 GameNativeGuiEffectApplication::GameNativeGuiEffectApplication(GameHostLog& log,
@@ -153,7 +173,8 @@ GameNativeGuiEffectApplication::GameNativeGuiEffectApplication(GameHostLog& log,
     : impl_(std::make_unique<Impl>(log, renderer, vfs, bindings)) {}
 GameNativeGuiEffectApplication::~GameNativeGuiEffectApplication() noexcept {
     if (impl_->phase != Impl::Phase::closed &&
-        (impl_->phase != Impl::Phase::ready || !impl_->operations.empty())) std::terminate();
+        (impl_->phase != Impl::Phase::ready || !impl_->operations.empty() ||
+            !impl_->material_operations.empty())) std::terminate();
 }
 void* GameNativeGuiEffectApplication::acquire_effect_00b318b0(const void* name) {
     auto& p = *impl_;
@@ -219,6 +240,86 @@ std::size_t GameNativeGuiEffectApplication::operation_count() const noexcept {
 const GameNativeGuiEffectLoadOperation& GameNativeGuiEffectApplication::operation(std::size_t index) const {
     return *impl_->operations.at(index);
 }
+NativeMaterialStorage* GameNativeGuiEffectApplication::create_material_00535320(const void* name,
+    GuiNativeGeometryOwners& geometry, NativeMaterialDestructionAccess& materials,
+    const GameNativeGuiMaterialFactoryOperation*& published_operation) {
+    auto& p = *impl_;
+    require(p.phase == Impl::Phase::ready,
+        "GUI material producer cannot replay/reenter/retarget or reopen after drain");
+    require(!published_operation && name && (reinterpret_cast<std::uintptr_t>(name) & 3u) == 0,
+        "GUI material producer requires a fresh output and stable initialized actual8h name header");
+    p.validate_domain();
+    const auto* profile = p.validate_material_domain(geometry, materials);
+    auto frame = std::make_unique<GameNativeGuiMaterialFactoryOperation>();
+    auto& op = *frame;
+    op.input_name = name;
+    op.geometry = &geometry;
+    op.materials = &materials;
+    op.material_profile_00d5e520 = profile;
+    p.material_operations.push_back(std::move(frame)); // Stable BEFORE any native effects.
+    published_operation = &op;
+    p.phase = Impl::Phase::loading;
+    op.phase = GameNativeGuiMaterialFactoryPhase::factory;
+    op.input_name_borrow_active = true;
+    try {
+        op.captured_lua_binding = &p.lua_binding;
+        NativeLuaServiceBindings::Activation activation(p.lua_binding);
+        op.captured_renderer = p.renderer.publication_00f8d394();
+        require(op.captured_renderer != nullptr, "GUI material producer has no live actual renderer");
+        std::uint32_t renderer_profile{};
+        std::memcpy(&renderer_profile, op.captured_renderer, sizeof(renderer_profile));
+        require(renderer_profile == 0x00d5f0a8,
+            "GUI material producer requires its actual D5F0A8 receiver");
+        // The existing whole factory owns the native renderer capture, cache
+        // acquisition, allocation/constructor, raw-slot-only constructor
+        // unwind and normal temporary-effect release. Do not split/replay it.
+        op.result = create_native_material_from_effect_cache_00535320(name,
+            materials.material_slots, materials.retained_owners, p.cache, op.factory);
+        require(op.factory.phase == NativeMaterialFactoryAcquired::Phase::complete &&
+            op.factory.cache && op.factory.cache->phase == NativeMaterialEffectCacheAcquired::Phase::complete,
+            "GUI material producer returned before its retained factory/cache completed");
+        if (op.result) {
+            op.phase = GameNativeGuiMaterialFactoryPhase::registration;
+            // Admission does not retain or release the creator. Failed bind
+            // leaves its raw material/companion/record on this SAME frame.
+            geometry.register_native_material_creator(op.factory, materials, profile);
+            auto* actual = dynamic_cast<NativeMaterialReference*>(
+                &p.renderer.actual_owners().resolve_actual(op.result));
+            require(actual && actual == op.factory.companion && op.factory.registered &&
+                &actual->storage() == op.result &&
+                &actual->reference_count == &op.result->references_04,
+                "GUI material result lacks its same canonical actual-count companion");
+            op.result_profile = op.result->vtable_00;
+            op.result_references = op.result->references_04.load();
+            require(op.result_profile == 0x00d5e520 && op.result_references > 0,
+                "GUI material result has no live supported actual profile");
+        }
+        op.phase = GameNativeGuiMaterialFactoryPhase::complete;
+        p.phase = Impl::Phase::ready;
+        p.log.notef("actual GUI material acquire renderer=%p name=%p result=%p profile=%08x refs=%d factory_site=%08x registered=%d",
+            op.captured_renderer, op.input_name, static_cast<void*>(op.result), op.result_profile,
+            op.result_references, op.factory.native_site, op.factory.registered ? 1 : 0);
+        op.input_name_borrow_active = false;
+        op.caller_reference_transferred = op.result != nullptr;
+        return op.result;
+    } catch (...) {
+        // Caller cleanup may consume its name after unwinding this entry.
+        // Retain identities/acquisitions, never dereference/replay that input.
+        op.input_name_borrow_active = false;
+        op.failure = std::current_exception();
+        op.phase = GameNativeGuiMaterialFactoryPhase::failed;
+        p.failed = op.failure;
+        p.phase = Impl::Phase::failed;
+        throw;
+    }
+}
+std::size_t GameNativeGuiEffectApplication::material_operation_count() const noexcept {
+    return impl_->material_operations.size();
+}
+const GameNativeGuiMaterialFactoryOperation&
+GameNativeGuiEffectApplication::material_operation(std::size_t index) const {
+    return *impl_->material_operations.at(index);
+}
 bool GameNativeGuiEffectApplication::requires_process_retention() const noexcept {
     const auto phase = impl_->phase;
     return phase == Impl::Phase::loading || phase == Impl::Phase::draining || phase == Impl::Phase::failed;
@@ -229,7 +330,7 @@ const std::exception_ptr& GameNativeGuiEffectApplication::failure() const noexce
 void GameNativeGuiEffectApplication::after_native_renderer_drain() {
     auto& p = *impl_;
     require(p.phase == Impl::Phase::ready, "failed/active/closed GUI effect graph cannot retire its metadata");
-    if (p.operations.empty()) { p.phase = Impl::Phase::closed; return; }
+    if (p.operations.empty() && p.material_operations.empty()) { p.phase = Impl::Phase::closed; return; }
     p.phase = Impl::Phase::draining;
     try {
         require(!p.renderer.publication_00f8d394(), "GUI effect graph must survive the actual renderer cache/effect drain");
@@ -237,6 +338,12 @@ void GameNativeGuiEffectApplication::after_native_renderer_drain() {
         for (const auto& op : p.operations)
             require(op->phase == GameNativeGuiEffectLoadPhase::complete,
                 "GUI effect graph has an interrupted retained acquisition");
+        for (const auto& op : p.material_operations)
+            require(op->phase == GameNativeGuiMaterialFactoryPhase::complete &&
+                !op->input_name_borrow_active &&
+                op->factory.phase == NativeMaterialFactoryAcquired::Phase::complete &&
+                (!op->result || (op->factory.registered && op->caller_reference_transferred)),
+                "GUI effect graph has an interrupted retained material acquisition");
         p.phase = Impl::Phase::closed;
     } catch (...) {
         p.failed = std::current_exception();
