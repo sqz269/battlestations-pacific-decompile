@@ -1,0 +1,413 @@
+{
+  "schema": "bsp.cc12.native_scene_property_array_assignment.worker.v1",
+  "packet": "cc12_scene_property_array_assignment_008f0460_008f04c0_008f0520_008f0580",
+  "status": "whole_raw_Source_authored_strict_COFF_and_unregistered_repository_build_passed_pending_Root",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15",
+  "branch": "agent/cc12_property_leaf_readiness_oct15",
+  "baseline_commit": "9386e45e7785bb7feafcda1221ece0bf02297aff",
+  "addresses": [
+    "008F0460",
+    "008F04C0",
+    "008F0520",
+    "008F0580"
+  ],
+  "files": [
+    "include/bsp/native_scene_property_array_assignment.hpp",
+    "src/native_scene_property_array_assignment.cpp",
+    "docs/NATIVE_SCENE_PROPERTY_ARRAY_ASSIGNMENT_CC12.md",
+    "reports/native_scene_property_array_assignment_cc12.json"
+  ],
+  "Source_admission_credit": 0,
+  "adapter_native_credit": 0,
+  "Root_independent_review_pending": true,
+  "Root_Main_registration_and_build_pending": true,
+  "Root_complete_helper_fixture_and_saved_analysis_publication_pending": true,
+  "Source": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\src\\native_scene_property_array_assignment.cpp",
+    "bytes": 5777,
+    "sha256": "7904602fccf6bdfef850d9fba12e44bb2936d893b22db866ed5b27959138f0ba"
+  },
+  "header": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\include\\bsp\\native_scene_property_array_assignment.hpp",
+    "bytes": 4685,
+    "sha256": "b7c35a0d12aa9c4fb342e1a54ee75dc6f8c948868528d6a9c238428fe72dd62f"
+  },
+  "document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\docs\\NATIVE_SCENE_PROPERTY_ARRAY_ASSIGNMENT_CC12.md",
+    "bytes": 13320,
+    "sha256": "1e6c4d5ebd203217cd2b693fcd26e46ea34e0070bef14036247e1e88c7d758b7"
+  },
+  "whole_Original": [
+    {
+      "address": "008F0460",
+      "end_exclusive": "008F04B6",
+      "whole_bytes": 86,
+      "instructions": 33,
+      "sha256": "1aa4e7ed871e8547fdc979337d00ec3017e793b3c63be3ea630a672c81151ea0",
+      "direct_calls": [
+        {
+          "instruction": "008F046C",
+          "target": "00BF6989",
+          "opcode_offset": 12,
+          "operand_interval": [
+            13,
+            17
+          ],
+          "original_bytes": "e818653000"
+        },
+        {
+          "instruction": "008F048A",
+          "target": "00BF55BE",
+          "opcode_offset": 42,
+          "operand_interval": [
+            43,
+            47
+          ],
+          "original_bytes": "e82f513000"
+        },
+        {
+          "instruction": "008F0499",
+          "target": "00BF7680",
+          "opcode_offset": 57,
+          "operand_interval": [
+            58,
+            62
+          ],
+          "original_bytes": "e8e2713000"
+        }
+      ],
+      "non_CALL_operand_literal_bytes": 74,
+      "stack_DWORD_order": [
+        "input",
+        "byte_count",
+        "full_flags"
+      ],
+      "stride": 1
+    },
+    {
+      "address": "008F04C0",
+      "end_exclusive": "008F051A",
+      "whole_bytes": 90,
+      "instructions": 35,
+      "sha256": "07c8d0cca1c813e7496447bc2834fcff05897b6f1d5f7886cf17e96b336026bb",
+      "direct_calls": [
+        {
+          "instruction": "008F04D4",
+          "target": "00BF6989",
+          "opcode_offset": 20,
+          "operand_interval": [
+            21,
+            25
+          ],
+          "original_bytes": "e8b0643000"
+        },
+        {
+          "instruction": "008F04EE",
+          "target": "00BF55BE",
+          "opcode_offset": 46,
+          "operand_interval": [
+            47,
+            51
+          ],
+          "original_bytes": "e8cb503000"
+        },
+        {
+          "instruction": "008F04FD",
+          "target": "00BF7680",
+          "opcode_offset": 61,
+          "operand_interval": [
+            62,
+            66
+          ],
+          "original_bytes": "e87e713000"
+        }
+      ],
+      "non_CALL_operand_literal_bytes": 78,
+      "stack_DWORD_order": [
+        "element_count",
+        "input",
+        "full_flags"
+      ],
+      "stride": 4
+    },
+    {
+      "address": "008F0520",
+      "end_exclusive": "008F057A",
+      "whole_bytes": 90,
+      "instructions": 35,
+      "sha256": "0c17b9c96e87c2b67b337c81a3abf3856ae7787f0ffc2edff04546a879d2ad37",
+      "direct_calls": [
+        {
+          "instruction": "008F0534",
+          "target": "00BF6989",
+          "opcode_offset": 20,
+          "operand_interval": [
+            21,
+            25
+          ],
+          "original_bytes": "e850643000"
+        },
+        {
+          "instruction": "008F054E",
+          "target": "00BF55BE",
+          "opcode_offset": 46,
+          "operand_interval": [
+            47,
+            51
+          ],
+          "original_bytes": "e86b503000"
+        },
+        {
+          "instruction": "008F055D",
+          "target": "00BF7680",
+          "opcode_offset": 61,
+          "operand_interval": [
+            62,
+            66
+          ],
+          "original_bytes": "e81e713000"
+        }
+      ],
+      "non_CALL_operand_literal_bytes": 78,
+      "stack_DWORD_order": [
+        "element_count",
+        "input",
+        "full_flags"
+      ],
+      "stride": 4
+    },
+    {
+      "address": "008F0580",
+      "end_exclusive": "008F05DD",
+      "whole_bytes": 93,
+      "instructions": 36,
+      "sha256": "3dc15a9fde6100ce0c7362250fa4af5882e65112edde826da325d9fd94d80aed",
+      "direct_calls": [
+        {
+          "instruction": "008F0597",
+          "target": "00BF6989",
+          "opcode_offset": 23,
+          "operand_interval": [
+            24,
+            28
+          ],
+          "original_bytes": "e8ed633000"
+        },
+        {
+          "instruction": "008F05B1",
+          "target": "00BF55BE",
+          "opcode_offset": 49,
+          "operand_interval": [
+            50,
+            54
+          ],
+          "original_bytes": "e808503000"
+        },
+        {
+          "instruction": "008F05C0",
+          "target": "00BF7680",
+          "opcode_offset": 64,
+          "operand_interval": [
+            65,
+            69
+          ],
+          "original_bytes": "e8bb703000"
+        }
+      ],
+      "non_CALL_operand_literal_bytes": 81,
+      "stack_DWORD_order": [
+        "element_count",
+        "input",
+        "full_flags"
+      ],
+      "stride": 12
+    }
+  ],
+  "strict_object": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeScenePropertyArrayAssignmentSource01\\native_scene_property_array_assignment.obj",
+    "bytes": 2702,
+    "sha256": "a3230b09f46bf3671db1407c51c0e56cf851f9f6a102d749899ab05756490c6d"
+  },
+  "COFF_gate": {
+    "retained_literal_bytes": 311,
+    "masked_CALL_operand_bytes": 48,
+    "native_bytes": 359,
+    "native_instructions": 139,
+    "all_four_whole_entries_match": true,
+    "whole_object_bytes": 2702,
+    "all_file_bytes_accounted": true,
+    "code_bytes": 417,
+    "code_instructions": 159,
+    "code_sections": 5,
+    "code_relocations": 15,
+    "metadata_relocations": 0,
+    "adapter_bytes": 58,
+    "adapter_instructions": 20,
+    "adapter_relocations": 3,
+    "adapter_native_credit": 0,
+    "loaded_binding_or_target_execution": false
+  },
+  "compiler_inputs": {
+    "prospective_count": 151,
+    "actual_count": 81,
+    "all_actual_inputs_own_pre_pinned": true,
+    "tools": 67,
+    "providers": 28,
+    "clui_pre_pinned": true,
+    "first_strict_compile_only": true,
+    "actual_readback_after_normal_build_started": true,
+    "hermetic_loader_OS_proof": false
+  },
+  "normal_build": {
+    "schema": "bsp.cc12.array_assignment.normal_build_observation.v1",
+    "observed_utc": "2026-10-15T23:24:47.083680+00:00",
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeScenePropertyArrayAssignmentSource01\\normal_build.log",
+      "bytes": 7877,
+      "sha256": "c3b9dbcb2ecfd2f61d70355b8af3756af0e611b6295e80fa3dd2fbedd0e0f51f"
+    },
+    "required_script": "scripts/build.ps1",
+    "initial_exec_session": 47952,
+    "natural_terminal_exit_code": 0,
+    "strict_compile_invocations": 1,
+    "normal_build_invocations": 1,
+    "existing_checks_passed": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "existing_tests_count": 2,
+    "missing_conditional_checks": {
+      "native_math_differential": "local/seed_reference.hpp absent; CMakeLists253 condition false",
+      "cc13_leaf_differential": "local/cc13_leaf_reference.hpp absent; CMakeLists260 condition false"
+    },
+    "new_TU_registered": false,
+    "new_TU_in_generated_project": false,
+    "current_project_compile_entries": 2307,
+    "normal_build_proves_new_TU": false,
+    "artifacts": [
+      {
+        "relative_path": "build/win32/bsp_core.vcxproj",
+        "actual": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\build\\win32\\bsp_core.vcxproj",
+          "bytes": 377359,
+          "sha256": "df452ffc057ea9a831d291eca6aaaef143a902e06524002f4f8098a050b84acd"
+        },
+        "frozen": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeScenePropertyArrayAssignmentSource01\\normal_build_artifacts\\00_bsp_core.vcxproj",
+          "bytes": 377359,
+          "sha256": "df452ffc057ea9a831d291eca6aaaef143a902e06524002f4f8098a050b84acd"
+        },
+        "first_observed": "AFTER_normal_build"
+      },
+      {
+        "relative_path": "build/win32/CMakeCache.txt",
+        "actual": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\build\\win32\\CMakeCache.txt",
+          "bytes": 19725,
+          "sha256": "dff7c266c8a5afa393fb0870fa9f9acb8585b08448ac6f105d8ff98ccaf24d54"
+        },
+        "frozen": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeScenePropertyArrayAssignmentSource01\\normal_build_artifacts\\01_CMakeCache.txt",
+          "bytes": 19725,
+          "sha256": "dff7c266c8a5afa393fb0870fa9f9acb8585b08448ac6f105d8ff98ccaf24d54"
+        },
+        "first_observed": "AFTER_normal_build"
+      },
+      {
+        "relative_path": "build/win32/CTestTestfile.cmake",
+        "actual": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\build\\win32\\CTestTestfile.cmake",
+          "bytes": 4795,
+          "sha256": "16c10770c51f01adbe123c4ec535f5bb16ad9902be4b9cc165ad685f74b235a7"
+        },
+        "frozen": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeScenePropertyArrayAssignmentSource01\\normal_build_artifacts\\02_CTestTestfile.cmake",
+          "bytes": 4795,
+          "sha256": "16c10770c51f01adbe123c4ec535f5bb16ad9902be4b9cc165ad685f74b235a7"
+        },
+        "first_observed": "AFTER_normal_build"
+      },
+      {
+        "relative_path": "build/win32/Testing/Temporary/LastTest.log",
+        "actual": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\build\\win32\\Testing\\Temporary\\LastTest.log",
+          "bytes": 1660,
+          "sha256": "b19dfdf7df063856542bb875c996953a4bc69ec4a901942010848dffa3f34a91"
+        },
+        "frozen": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeScenePropertyArrayAssignmentSource01\\normal_build_artifacts\\03_LastTest.log",
+          "bytes": 1660,
+          "sha256": "b19dfdf7df063856542bb875c996953a4bc69ec4a901942010848dffa3f34a91"
+        },
+        "first_observed": "AFTER_normal_build"
+      }
+    ],
+    "qualification": "Natural terminal from actual own tool records is retained separately. No seed generation, configuration alteration or build replay. Post-build generated artifacts are not claimed as pre-build measurements. All81 strict compiler-declared inputs and67 tools were pinned before the first strict compile; declared input readback happened after normal build had started."
+  },
+  "domain": {
+    "raw_record_provenance": "Complete genuine accepted raw type8/9/10/11 storage; uniquely owned same-current-heap old payload or null after accepted release; exact existing whole record bytes preserved",
+    "copy": "Stable positive readable disjoint source, exact successful current allocation, pointer store before memcpy",
+    "no_copy": "Actual unique separate matching-current-heap input allocation; sole retirement transfer to record, never inferred borrowed class ownership",
+    "flags": "Full DWORD formal, all256 low-byte patterns; upper24bits ignored",
+    "sizes": "Positive nonwrapping ranges/resources; raw positiveuint32 bytes, four-byte count1..3FFFFFFF, twelve-byte count1..15555555",
+    "zero_size": false,
+    "if_composed": "Same actual bag/process/pool/generation and all existing accepted graph/context/lifetime contracts",
+    "new_guards_cleanup_rollback": false
+  },
+  "evidence": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeScenePropertyArrayAssignmentSource01\\precompile_inputs.json",
+      "bytes": 165187,
+      "sha256": "e8d2c193b63e6f0448dcf95b1ac9316de9670ddb779238c2eb1b5845aadf98e0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeScenePropertyArrayAssignmentSource01\\compiler_declared_inputs.json",
+      "bytes": 108200,
+      "sha256": "94b551a693cd2a2d69e40ad0b4d9d2410510c15340d01502ad52e11776a95320"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeScenePropertyArrayAssignmentSource01\\complete_COFF.json",
+      "bytes": 70370,
+      "sha256": "f8ac1fc216b67cd8c4dc4aa15cec03da1a733d298b922b97baf58267c28295e0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeScenePropertyArrayAssignmentSource01\\complete_COFF_listing.txt",
+      "bytes": 8103,
+      "sha256": "0a75d2f679c90b31b5c4da55c3ee89d46469d294e82f1f34db82c02f6f6ba734"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeScenePropertyArrayAssignmentSource01\\strict_compile.log",
+      "bytes": 1144,
+      "sha256": "b8691f0554865fbf5a6732879c6d3bf8cebfc4364a5ac24dfca8d123b8d83e59"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeScenePropertyArrayAssignmentSource01\\normal_build.log",
+      "bytes": 7877,
+      "sha256": "c3b9dbcb2ecfd2f61d70355b8af3756af0e611b6295e80fa3dd2fbedd0e0f51f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeScenePropertyArrayAssignmentSource01\\normal_build_observation.json",
+      "bytes": 4337,
+      "sha256": "d771817785cff69ea0708d09106462f2d94ebc53cd7fd61aa9b589bab041a344"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_leaf_readiness_oct15\\local\\WholeScenePropertyArrayAssignmentSource01\\frozen_readiness_copy.json",
+      "bytes": 103566,
+      "sha256": "1ffd43513dc245c56e732a0944e319e6a3d9a9634fe9f90238bf8a64e8b39dac"
+    }
+  ],
+  "own_original_execution_provenance": "root_manifest.json -> original_own_tool_pairs.json and own_rollout_prefix.jsonl (sealed after this tracked report; actual literal own UUID records)",
+  "four_Git_blobs": "frozen_Git_blobs plus Git_blob_verification.json (captured from staged exact four files before commit, all literal or explicitly only_EOL)",
+  "no_shared_CMake_registry_ledger_Ghidra_mutation": true,
+  "no_new_tests_probes_selected_Native_or_runtime_execution": true,
+  "ABI_compatible": false,
+  "game_validated": false,
+  "exclusions": [
+    "zero-size",
+    "failure/throw/reentry/concurrency/trim/teardown/fault/overlap/unwind",
+    "Original private CRT/new-handler/exception/vtable identity",
+    "full binary ABI",
+    "native parser/loader/selected populated Scene/World",
+    "startup/runtime/game"
+  ]
+}
