@@ -1,0 +1,158 @@
+{
+  "packet": "goal_oct15_scene_integer_set_primary_review",
+  "status": "whole_Source_independently_reviewed_default_Win32_and_three_existing_checks_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "normal_source_functions": 9,
+  "private_source_cleanup_actions": 1,
+  "native_envelope_bytes": 1264,
+  "native_instruction_bytes": 1263,
+  "unreachable_alignment_bytes_excluded": 1,
+  "spans": [
+    {
+      "address": "0046b570",
+      "envelope_bytes": 201,
+      "native_instruction_bytes": 200,
+      "scope": "normal",
+      "sha256": "2c3bbeb48aeb6c328af1c824de5f811ca75a62e5d1531b6ee93aac3a16c6ea39",
+      "live_equals_installed": true
+    },
+    {
+      "address": "004681b0",
+      "envelope_bytes": 57,
+      "native_instruction_bytes": 57,
+      "scope": "normal",
+      "sha256": "5819c062207fc40ccce491ddd5f2990fd74f1aa00d195f3afb37affbd5301575",
+      "live_equals_installed": true
+    },
+    {
+      "address": "00467740",
+      "envelope_bytes": 78,
+      "native_instruction_bytes": 78,
+      "scope": "normal",
+      "sha256": "e634658a105a919a5162c439f56ba159bb4fa042eb5c46ad63b401db6f70924a",
+      "live_equals_installed": true
+    },
+    {
+      "address": "00467790",
+      "envelope_bytes": 82,
+      "native_instruction_bytes": 82,
+      "scope": "normal",
+      "sha256": "8c3441a1a10a57b5346f8d5f970e9f9aa22ae03f5cd606a8e25049986447accd",
+      "live_equals_installed": true
+    },
+    {
+      "address": "004679f0",
+      "envelope_bytes": 137,
+      "native_instruction_bytes": 137,
+      "scope": "normal",
+      "sha256": "32811476db2312e963481196e5bf7bb16198cdb22e17e4f43b6109076e83d477",
+      "live_equals_installed": true
+    },
+    {
+      "address": "00468210",
+      "envelope_bytes": 12,
+      "native_instruction_bytes": 12,
+      "scope": "normal",
+      "sha256": "15e4196f9290e744b251677d42c5d6dc6018461705a0015102053f20af7ac199",
+      "live_equals_installed": true
+    },
+    {
+      "address": "004688f0",
+      "envelope_bytes": 12,
+      "native_instruction_bytes": 12,
+      "scope": "normal",
+      "sha256": "e5ad97815f48888d94d685fcc1c29ac9381f0af91daecc4ecbf75e163e997d0e",
+      "live_equals_installed": true
+    },
+    {
+      "address": "0046a150",
+      "envelope_bytes": 492,
+      "native_instruction_bytes": 492,
+      "scope": "normal",
+      "sha256": "0ec5ec7849eabb8c32406d589281086e04fc86a00086469247c01d78845886a0",
+      "live_equals_installed": true
+    },
+    {
+      "address": "0046ac50",
+      "envelope_bytes": 185,
+      "native_instruction_bytes": 185,
+      "scope": "normal",
+      "sha256": "eb927e3a7693f4ddcddeecf4985eff839a771158b2c7df3bc835e8c97d22accb",
+      "live_equals_installed": true
+    },
+    {
+      "address": "00c61c10",
+      "envelope_bytes": 8,
+      "native_instruction_bytes": 8,
+      "scope": "qualified Source temporary cleanup",
+      "sha256": "904a8059361621d7332692a34ffb2a0e7070348a9bbf02d87bad22abe93b6e12",
+      "live_equals_installed": true
+    }
+  ],
+  "packet_reports": [
+    "reports/goal_oct15_scene_map_erase_range.json",
+    "reports/goal_oct15_scene_integer_set_node.json",
+    "reports/goal_oct15_scene_integer_set_rotations.json",
+    "reports/goal_oct15_scene_integer_set_iterator.json",
+    "reports/goal_oct15_scene_integer_set_insert.json"
+  ],
+  "typed_transfer_rows_checked": 44,
+  "typed_transfer_rows_failed": 0,
+  "independent_reviews": [
+    "/root/string_allocate: complete range erase, link/unique insertion and temporary unwind matched original listings",
+    "Primary: actual node, rotations, decrement/provider contracts, signed unique insertion and shared repair/owner publication schedules reviewed"
+  ],
+  "combined_build": {
+    "revision": "6a5906ff426b1ffa573abecc8e46720ab37164d4",
+    "command": "scripts/build.ps1",
+    "configuration": "MSVC Release Win32",
+    "exit_code": 0,
+    "log": "local\\goal_oct15_integer_combined_build.log",
+    "log_sha256": "3d5f6f18f04560170ab5ddec68667c4b511e526aa37a9dc60fe318fbd983c041",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "ctest_seconds": 8.02,
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "scope": "existing regression checks; native math seeds do not exercise the new map/set bodies",
+    "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake"
+  },
+  "generated_project_source_counts": {
+    "native_scene_record_map_erase_range": 1,
+    "native_scene_integer_set_node": 1,
+    "native_scene_integer_set_rotations": 1,
+    "native_scene_integer_set_iterator": 1,
+    "native_scene_integer_set_insert": 1
+  },
+  "archive_identity": {
+    "library": "build\\win32\\Release\\bsp_core.lib",
+    "sha256": "3b4c23b0b5b24caf6bf4419c083077cbe1fdb62e3c16d3c43bd1d44cc0a58cd7",
+    "unique_owned_objects": {
+      "native_scene_record_map_erase_range": [
+        "bsp_core.dir\\Release\\native_scene_record_map_erase_range.obj"
+      ],
+      "native_scene_integer_set_node": [
+        "bsp_core.dir\\Release\\native_scene_integer_set_node.obj"
+      ],
+      "native_scene_integer_set_rotations": [
+        "bsp_core.dir\\Release\\native_scene_integer_set_rotations.obj"
+      ],
+      "native_scene_integer_set_iterator": [
+        "bsp_core.dir\\Release\\native_scene_integer_set_iterator.obj"
+      ],
+      "native_scene_integer_set_insert": [
+        "bsp_core.dir\\Release\\native_scene_integer_set_insert.obj"
+      ]
+    }
+  },
+  "limits": [
+    "New explicit raw/private-cell/current-CRT/context interfaces, not Original binary ABI or physical private-frame/register/RTTI identity",
+    "No new-entry native differential or Original CRT/heap/FH3 compatibility proof",
+    "Application adoption and game behavior unvalidated; existing checks are regression checks"
+  ]
+}

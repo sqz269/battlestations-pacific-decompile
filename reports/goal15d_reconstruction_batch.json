@@ -1,0 +1,196 @@
+{
+  "date": "2026-10-15",
+  "state": "registered_five_entry_source_chain_build_real_provider_fixtures_and_static_eh_checks_passed",
+  "evidence_root": "J:/PROG/battlestations-pacific-decompile-goal15_integrator",
+  "base_commit": "80d27d3e9",
+  "packets": [
+    {
+      "id": "goal15d_grid_node",
+      "entries": [
+        "0041c0b0"
+      ],
+      "worker_commit": "6042f1bf0a35c8e5e870363c7c7f69adaf509648",
+      "report_rows_passed": 2,
+      "markdown_call_claims_passed": 2,
+      "peer_review": "No correctness blockers; actual schedules, real providers and evidence boundaries checked independently"
+    },
+    {
+      "id": "goal15d_manager_clear",
+      "entries": [
+        "0041f600"
+      ],
+      "prior_coverage": "partial table projection; native cache-clear tail omitted",
+      "worker_commit": "c78127856d2418232b43f9349afaee59a78ea811",
+      "report_rows_passed": 4,
+      "markdown_call_claims_passed": 5,
+      "peer_review": "No correctness blockers; actual schedules, real providers and evidence boundaries checked independently",
+      "unchecked_markdown_claim": {
+        "count": 1,
+        "kind": "indirect CALL EDX",
+        "resolution": "Native listing, exact registered kernel comparison, actual Source vtable relocation and registered composition fixture cover it; direct-call parser cannot pair it"
+      }
+    },
+    {
+      "id": "goal15d_group_lifetime",
+      "entries": [
+        "0041d0c0",
+        "0041de70",
+        "0041e940"
+      ],
+      "prior_coverage": "typed explicit-allocation-boundary group clear/destruct; scalar deleting entry not reconstructed",
+      "worker_commit": "ffe759e29e078567bab8c7bbe664b440d5e03ae0",
+      "report_rows_passed": 7,
+      "markdown_call_claims_passed": 0,
+      "peer_review": "No correctness blockers; actual schedules, real providers and evidence boundaries checked independently"
+    }
+  ],
+  "prior_turn_classification": "progress: previous batch integrated and pushed at2644a2735; registered build,3 existing CTests, registered Source fixtures and Ghidra save/export checked",
+  "readiness": "No registry-ready packet at turn start; direct consumer graph inspection identified unleased bounded dependencies of the accepted avoidance cache/queue chain",
+  "limits": [
+    "Current Source services and vtable/frame identities must remain distinct from original native runtime identity",
+    "No production native ABI or gameplay validation is claimed",
+    "Existing typed/projection records remain historical evidence; stronger entries must not silently rewrite their scope",
+    "No new tracked test framework or target",
+    "Current95B destructor EH guard is statically verified; no dynamic unwind or original FH3/SEH/double-exception equivalence proved",
+    "The Source virtual table supplies the recovered/consumed deleting slot only; no contract for additional Native virtual slots"
+  ],
+  "native_disk_live_agreement": {
+    "0041c0b0": {
+      "bytes": 51,
+      "sha256": "278a447acff9fdaf09359bfa0e65b8349b86bc85de6e6aeef9ce658995aecc78"
+    },
+    "0041f600": {
+      "bytes": 58,
+      "sha256": "4df55acd5831ebc331d83210f7445dbd35144daccfb66fb01dd3d86e6d0f4ab1"
+    },
+    "0041d0c0": {
+      "bytes": 132,
+      "sha256": "0c65cb5b6f0da16c3ebda77a57da57b3bdd1ba56fcf394a31c0b5c4f84489174"
+    },
+    "0041e940": {
+      "bytes": 30,
+      "sha256": "87d9bce50bbe7643a29d90c38130a3237caa26d60a8bb9912bb05e8505eda872"
+    }
+  },
+  "registered_coff": {
+    "native_kernel_bytes": 271,
+    "source_kernel_bytes": 273,
+    "exclusions": {
+      "0041c0b0": "one genuine allocator CALL rel32 operand",
+      "0041f600": "added Source context PUSH/POP and tail JMP rel32 operand",
+      "0041d0c0": "three genuine free CALL rel32 operands",
+      "0041e940": "two genuine destructor/free CALL rel32 operands"
+    },
+    "logs": [
+      "local/goal15d_node_coff.log",
+      "local/goal15d_manager_coff.log",
+      "local/goal15d_group_coff.log"
+    ],
+    "objects_sha256": {
+      "native_grid_list_node.obj": "44aea73df07afad63ae84158c1184a87a664621741a38861d96c40f3c2171995",
+      "native_avoid_manager_clear.obj": "b4a81265507506222c31e26bff46f49fedd55fbee8e46d34d573e9e5598ce535",
+      "native_avoid_group_lifetime.obj": "0d6ea1d8184ac38bbf36f73287a04f809102da9f7e237c8d2a58be9afb84da89"
+    }
+  },
+  "source_eh": {
+    "entry": "0041de70",
+    "native_bytes": 87,
+    "source_bytes": 95,
+    "native_metadata": {
+      "handler": "00c5e1db",
+      "function_info": "00d84330",
+      "unwind_map": "00d84328",
+      "max_state": 1,
+      "state0_action": "00c5e1d0",
+      "action_target": "00412cd0",
+      "action_operation": "free current nonnull group+4 field then null it after return",
+      "catch_blocks": 0,
+      "eh_flags": 1
+    },
+    "source_operation": "actual Source table store; fixed concrete clear-entry pointer loaded through volatile local; active scope guard through normal current array-free/null; genuine current cleanup on C++ unwind; dismiss only after normal completion",
+    "registered_static_evidence": "real current EH registration/state0, actual clear/vtable relocations, generated unwind funclet -> active guard -> current-field free/null helper",
+    "runtime_unwind_executed": false,
+    "native_frame_metadata_or_double_exception_equivalent": false,
+    "native_instruction_equivalent": false
+  },
+  "registered_build": {
+    "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1",
+    "log": "local/goal15d_integrated_registered_build.log",
+    "exit_code": 0,
+    "ctests_passed": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "built_source_commit": "19679fe0574349ceef542c1de360af32cad36d02",
+    "scope": "Complete registered Win32 build; existing native differential covers existing math seeds, not this new Source chain"
+  },
+  "source_fixtures": {
+    "grid_node": {
+      "kind": "Source fixture linked against registered archive and real current services",
+      "manifest_embedded": true,
+      "exit_code": 0,
+      "stdout": "Source grid node probe: PASS real allocator, three DWORDs, matching free\n",
+      "stderr": "",
+      "sha256": {
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_zone_cleanup\\local\\goal15d_grid_node\\grid_node_probe.cpp": "e3dafb0edd23ecbae48c8050c12eaeab8680369988cf23982e99b950d7b1e933",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15d_grid_node_probe.obj": "e63f5d450ec7b75d6309e0c913768aa1be2cb19101d43a44a14eb97de699522a",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15d_grid_node_probe.exe": "4ca470fe6b06d009ca6e2f9faaef98b5050006b2243d70872bf6f9dfb2259b7e",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "f296a18f55996da3ae76d340f0d7d8bfca3feb9504a0854f4717c6fa7262238c",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
+      }
+    },
+    "manager_group_cache": {
+      "kind": "Source fixture linked against registered archive and real current services",
+      "manifest_embedded": true,
+      "exit_code": 0,
+      "stdout": "Source manager/group/cache real-provider composition: PASS\n",
+      "stderr": "",
+      "sha256": {
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_pool_cleanup\\local\\output\\avoid_manager_clear_probe.cpp": "2547238394e02cb43aa1c7edd85e10e2b7b279e04ff0eba52e84ca8dc9c95561",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15d_manager_group_probe.obj": "636a3ede645e1b243d59fc29008052bb4ef62c9b8bf451f0e83217ec6ba173ab",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15d_manager_group_probe.exe": "395d6f86212f5c8230a45c4ab94ef7b5167d7449b3726eaec96cb70f3398f2a0",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "f296a18f55996da3ae76d340f0d7d8bfca3feb9504a0854f4717c6fa7262238c",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
+      },
+      "coverage": "actual Source vtable dispatch through slots0/19; populated/null zone slots;11 tracked blocks USED before/not USED immediately after; preallocated queue prevents reuse; retained body/vector/sentinel/queue; flags0 retains group and releases current slot array",
+      "scope_limit": "bounded Source heap-use observations, not global leak freedom or original runtime identity"
+    }
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved": true,
+    "prior_annotation_files": [
+      "local/ghidra-annotations-20261015T210604Z.json",
+      "local/ghidra-annotations-20261015T211152Z.json",
+      "local/ghidra-annotations-20261015T211331Z.json"
+    ],
+    "prototype_repair": "local/goal15d_grid_node_prototype_change.json",
+    "prototype_before": "undefined STL_List_BuyNode_0041c0b0(void)",
+    "prototype_after": "void* __stdcall STL_List_BuyNode_0041c0b0(uint next,uint previous,uint* value_source)",
+    "prototype_evidence": "full51B body and EAX consumer004238BD; opaque DWORD data, no payload class invented",
+    "exports_refreshed": [
+      "0041c0b0",
+      "0041f600",
+      "0041d0c0",
+      "0041de70",
+      "0041e940"
+    ],
+    "snapshot_log": "local/goal15d_snapshot.log",
+    "dependent_export_refreshed": [
+      "00423640"
+    ],
+    "dependent_export_reason": "Node prototype correction affects sole caller return/input analysis; caller decompilation refreshed"
+  },
+  "report_call_rows_passed": 13,
+  "markdown_direct_call_claims_passed": 7,
+  "new_tracked_tests": 0,
+  "historical_record_preservation": "Three earlier typed/projection records are field-identical to main; new Source entries have separate names/coverage",
+  "remaining_adoption_work": [
+    "New Source manager dispatch requires groups already carrying the matching actual Source vtable; original production group construction/adoption is not supplied by this batch",
+    "Actual Native exception/unwind/heap/virtual-table ABI and gameplay validation remain open"
+  ]
+}

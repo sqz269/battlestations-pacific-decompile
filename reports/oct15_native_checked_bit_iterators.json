@@ -1,0 +1,358 @@
+{
+  "packet": "oct15_native_checked_bit_iterators",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_checked_bit_iterators.cpp",
+  "header": "include/bsp/native_checked_bit_iterators.hpp",
+  "documentation": "docs/OCT15_NATIVE_CHECKED_BIT_ITERATORS.md",
+  "routines": [
+    {
+      "address": "0048d3b0",
+      "implementation": "advance_native_checked_bit_iterator_0048d3b0",
+      "old_name": "STL_BitIterator_Advance_0048D3B0",
+      "kind": "function",
+      "original_abi": "ECX actual12B iterator(owner0,word4,bit8); EDX unconsumed, stacked signed displacement; RET4/EAXsame iterator.",
+      "last_inclusive": "0048d47a",
+      "bytes": 203,
+      "instructions": 82,
+      "sha256": "9f7b7c43d63b244f3a5f1fe745f41f749e5fd67685760054788bee2465a96286",
+      "complete_typed_body": true,
+      "live_equals_installed_PE": true,
+      "all_export_starts_equal_disk_capstone": true
+    },
+    {
+      "address": "0048f290",
+      "implementation": "end_native_checked_bit_vector_0048f290",
+      "old_name": "STL_inst_0048f290",
+      "kind": "function",
+      "original_abi": "ECX actual packed-bit header(count0,begin8,endC); EDX unconsumed, stacked12B output; RET4/EAXoutput.",
+      "last_inclusive": "0048f2d6",
+      "bytes": 71,
+      "instructions": 27,
+      "sha256": "897e21eec50a4b6ae2f309a112c43072ddda578e2529af26eab6b8b83f943ec6",
+      "complete_typed_body": true,
+      "live_equals_installed_PE": true,
+      "all_export_starts_equal_disk_capstone": true
+    },
+    {
+      "address": "0048f2e0",
+      "implementation": "copy_advance_native_checked_bit_iterator_0048f2e0",
+      "old_name": "FUN_0048f2e0",
+      "kind": "function",
+      "original_abi": "ECX source iterator; EDX unconsumed, stacked output/displacement; RET8/EAXoutput. Calls advance with original current-owner bits in unconsumedEDX.",
+      "last_inclusive": "0048f343",
+      "bytes": 100,
+      "instructions": 33,
+      "sha256": "1d7b24a1f6ab902c601adf6435f31297a22402f9fcc9ff331c49b64540d3052b",
+      "complete_typed_body": true,
+      "live_equals_installed_PE": true,
+      "all_export_starts_equal_disk_capstone": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0048d3cb",
+      "function": "0048d3b0",
+      "native": "00bf6713",
+      "binding": "Accepted direct current SDK invalid-parameter noinfo policy, may return or throw; preserve later current field reads. Original CRT policy differs."
+    },
+    {
+      "address": "0048d3e6",
+      "function": "0048d3b0",
+      "native": "00bf6713",
+      "binding": "Accepted direct current SDK invalid-parameter noinfo policy, may return or throw; preserve later current field reads. Original CRT policy differs."
+    },
+    {
+      "address": "0048d407",
+      "function": "0048d3b0",
+      "native": "00bf6713",
+      "binding": "Accepted direct current SDK invalid-parameter noinfo policy, may return or throw; preserve later current field reads. Original CRT policy differs."
+    },
+    {
+      "address": "0048d421",
+      "function": "0048d3b0",
+      "native": "00bf6713",
+      "binding": "Accepted direct current SDK invalid-parameter noinfo policy, may return or throw; preserve later current field reads. Original CRT policy differs."
+    },
+    {
+      "address": "0048f29d",
+      "function": "0048f290",
+      "native": "00bf6713",
+      "binding": "Accepted direct current SDK invalid-parameter noinfo policy, may return or throw; preserve later current field reads. Original CRT policy differs."
+    },
+    {
+      "address": "0048f2ba",
+      "function": "0048f290",
+      "native": "00bf6713",
+      "binding": "Accepted direct current SDK invalid-parameter noinfo policy, may return or throw; preserve later current field reads. Original CRT policy differs."
+    },
+    {
+      "address": "0048f2ca",
+      "function": "0048f290",
+      "native": "0048d3b0",
+      "binding": "Direct whole actual checked advance in this packet; private12B storage in copy form, actual output in end form."
+    },
+    {
+      "address": "0048f2fa",
+      "function": "0048f2e0",
+      "native": "00bf6713",
+      "binding": "Accepted direct current SDK invalid-parameter noinfo policy, may return or throw; preserve later current field reads. Original CRT policy differs."
+    },
+    {
+      "address": "0048f30e",
+      "function": "0048f2e0",
+      "native": "0048d3b0",
+      "binding": "Direct whole actual checked advance in this packet; private12B storage in copy form, actual output in end form."
+    },
+    {
+      "address": "0048f333",
+      "function": "0048f2e0",
+      "native": "00bf6713",
+      "binding": "Accepted direct current SDK invalid-parameter noinfo policy, may return or throw; preserve later current field reads. Original CRT policy differs."
+    }
+  ],
+  "typed_capture": "local/oct15_checked_bit_iterators_typed_flow.json",
+  "typed_modification": "439",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "local_eh": "No local EH/FH3 frame/catch in any complete body. Source adds no catch/cleanup/handler.",
+  "build": {
+    "status": "passed",
+    "configuration": "MSVC Win32 Release",
+    "source_commit": "37fcbbcd8",
+    "existing_tests": "3/3 passed",
+    "ctest_seconds": 7.43,
+    "log": "local/oct15_thirteenth_eight_function_build.log",
+    "new_tests": 0,
+    "new_entries_natively_executed": false
+  },
+  "independent_source_review": {
+    "packet": "oct15_checked_bit_iterators_independent_source_review",
+    "read_only": true,
+    "utc": "2026-10-15T21:19:40.775570+00:00",
+    "decision": "pass_no_behavioral_findings",
+    "findings": [],
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "inputs": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\src\\native_checked_bit_iterators.cpp",
+        "snapshot": "local\\oct15_checked_bit_iterators_review_native_checked_bit_iterators.cpp",
+        "sha256": "8185786c4dcca2fccf8abb5fa29b41cd4a46bdfacc068f8d4c0cf41999193bb7",
+        "lines": 134,
+        "after_sha256": "8185786c4dcca2fccf8abb5fa29b41cd4a46bdfacc068f8d4c0cf41999193bb7",
+        "unchanged": true
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\include\\bsp\\native_checked_bit_iterators.hpp",
+        "snapshot": "local\\oct15_checked_bit_iterators_review_native_checked_bit_iterators.hpp",
+        "sha256": "3e98fff184186cfc30e06bce55b851c79f83060d1780f2ea2bc90db3e608564b",
+        "lines": 41,
+        "after_sha256": "3e98fff184186cfc30e06bce55b851c79f83060d1780f2ea2bc90db3e608564b",
+        "unchanged": true
+      }
+    ],
+    "native_bodies": [
+      {
+        "address": "0048d3b0",
+        "complete": true,
+        "range_count": 1,
+        "bytes": 203,
+        "no_return": false,
+        "is_thunk": false,
+        "listing": "local\\oct15_checked_bit_iterators_review_live_0048d3b0.txt",
+        "listing_sha256": "67a82a43bf694b62291ee12df0a5ac7adf80bbc6127ba8104df507187d730b46"
+      },
+      {
+        "address": "0048f290",
+        "complete": true,
+        "range_count": 1,
+        "bytes": 71,
+        "no_return": false,
+        "is_thunk": false,
+        "listing": "local\\oct15_checked_bit_iterators_review_live_0048f290.txt",
+        "listing_sha256": "63e07fae087f316243194cd2a0f4b6641a4111c62169409e1254a9c1d9d25101"
+      },
+      {
+        "address": "0048f2e0",
+        "complete": true,
+        "range_count": 1,
+        "bytes": 100,
+        "no_return": false,
+        "is_thunk": false,
+        "listing": "local\\oct15_checked_bit_iterators_review_live_0048f2e0.txt",
+        "listing_sha256": "9c420cbfa0a01e73e90a2a303ef52123f57c721ae6698a7f6687fceaa110f04f"
+      }
+    ],
+    "typed_capture": "local\\oct15_checked_bit_iterators_review_typed_flow.json",
+    "typed_modification": "442",
+    "review": "Complete134lineSource/41lineheader and complete cached/currentlive82/27/33instruction native listings;374B body envelopes. This is an independent behavioral Source audit, not a new disk/live byte-proof or build/runtime result.",
+    "checks": [
+      {
+        "id": "physical_interfaces",
+        "result": "pass",
+        "evidence": "48D3B0 nativeECX12Biterator/stack signed displacement/RET4/EAXself;48F290 nativeECXbitheader/stackoutput/RET4/EAXoutput;48F2E0 nativeECXsource/stackoutput,displacement/RET8/EAXoutput. Source retains these words and qualified deadEDX."
+      },
+      {
+        "id": "zero_and_short_circuit",
+        "result": "pass",
+        "evidence": "48D3BA zero returns before pointed reads.48D3C0/C5 owner test then conditionally word test; Source|| keeps the second read skipped when owner0. After returning48D3CB diagnostic, owner is reloaded."
+      },
+      {
+        "id": "captured_bounds_inputs",
+        "result": "pass",
+        "evidence": "48D3D0/D3/DC loads owner,backingbegin,bit before either capacity diagnostic. Source owner/begin/captured_bit retain those exact captures; capacity end read uses capturedowner+0C."
+      },
+      {
+        "id": "negative_bounds",
+        "result": "pass",
+        "evidence": "48D3EB..400 reloads CURRENT word after capacity diagnostic, uses capturedbegin/capturedbit, SAR2/SHL5 wrap, then unsigned compare with DWORD negated displacement. No extra owner/count read."
+      },
+      {
+        "id": "positive_bounds",
+        "result": "pass",
+        "evidence": "48D40C/F reload CURRENT word THEN CURRENT owner after capacity diagnostic, compute wrapped position with capturedbegin/capturedbit/distance, compare CURRENT count through reloadedowner. Returning48D421 continues update."
+      },
+      {
+        "id": "signed_and_unsigned_arithmetic",
+        "result": "pass",
+        "evidence": "signed displacement branches;0u-distance handles INT_MIN without signed overflow. sar_two is x86SAR2; Word shifts/additions preserve SHL5/add wrap. Capacity and position/magnitude comparisons are unsigned."
+      },
+      {
+        "id": "negative_borrow",
+        "result": "pass",
+        "evidence": "48D42C tests freshbit against unsignedmagnitude; if smaller,sum=freshbit+distance, delta=-4-(((-1-sum)>>5)*4) with DWORDwrap/logicalSHR. Source expression exactly matches48D437..44A."
+      },
+      {
+        "id": "update_current_rmw",
+        "result": "pass",
+        "evidence": "Negative no-borrow reaches a SECOND freshbit load48D45C. Both final paths execute current memoryADD atword+4 before publishing bit=sum&31 at+8. Source add_word has actual x86 memoryRMW, avoiding a stale word snapshot."
+      },
+      {
+        "id": "end_precheck_and_capture",
+        "result": "pass",
+        "evidence": "48F295 captured begin precedes begin>end diagnostic; pointed header read occurs before nullowner test. Source retains capturedbegin if diagnostic returns and adds no null receiver guard."
+      },
+      {
+        "id": "end_output_alias_order",
+        "result": "pass",
+        "evidence": "48F2A8/AE/B1 stores owner0,word=capturedbegin,bit0; captured receiver null diagnostic comes after these stores. Publish receiver owner at48F2BF BEFORE reading CURRENT receiver count48F2C1. Output/receiver aliases therefore affect count exactly as native."
+      },
+      {
+        "id": "end_count_signed_bits",
+        "result": "pass",
+        "evidence": "48F2C3/C5 TEST/JBE skips only count0; nonzero rawDWORD count goes to signed displacement child. signed_word preserves all bits and dead childEDX is normalized0."
+      },
+      {
+        "id": "copy_pre_diagnostic_capture",
+        "result": "pass",
+        "evidence": "48F2E6 owner test then word/bit reads and private word/bit stores precede48F2FA diagnostic. Only owner is reloaded afterward48F303 into private12B cell. Source preserves pre-diagnostic word/bit and post-diagnostic owner, then advances the private iterator."
+      },
+      {
+        "id": "copy_post_child_output_alias",
+        "result": "pass",
+        "evidence": "After48F30E, private owner/word/bit are captured before output stores48F325/32B/32E. Captured owner-null reporting48F333 occurs after owner0/word/bit writes; final48F338 publishes CAPTURED owner even if diagnostic returns after mutating output. Output/source aliases cannot overwrite yet-unread input fields."
+      },
+      {
+        "id": "failure_and_interface_limits",
+        "result": "pass",
+        "evidence": "Accepted currentSDK00BF6713 may return or throw. Source adds no callbacks, guards, throw conversion, catch/rollback/repair or localFH3. Current diagnostic partial effects and captured/reloaded storage are retained; private frame aliases/registerspill/fault/SEH/nativeABI/gameplay identity remain qualified."
+      }
+    ],
+    "host_steps": [
+      {
+        "address": "0048d3cb",
+        "native": "00bf6713",
+        "function": "0048d3b0"
+      },
+      {
+        "address": "0048d3e6",
+        "native": "00bf6713",
+        "function": "0048d3b0"
+      },
+      {
+        "address": "0048d407",
+        "native": "00bf6713",
+        "function": "0048d3b0"
+      },
+      {
+        "address": "0048d421",
+        "native": "00bf6713",
+        "function": "0048d3b0"
+      },
+      {
+        "address": "0048f29d",
+        "native": "00bf6713",
+        "function": "0048f290"
+      },
+      {
+        "address": "0048f2ba",
+        "native": "00bf6713",
+        "function": "0048f290"
+      },
+      {
+        "address": "0048f2fa",
+        "native": "00bf6713",
+        "function": "0048f2e0"
+      },
+      {
+        "address": "0048f333",
+        "native": "00bf6713",
+        "function": "0048f2e0"
+      },
+      {
+        "address": "0048f2ca",
+        "native": "0048d3b0",
+        "function": "0048f290"
+      },
+      {
+        "address": "0048f30e",
+        "native": "0048d3b0",
+        "function": "0048f2e0"
+      }
+    ],
+    "validation": {
+      "checks_passed": 14,
+      "transfer_check": "10/10 live CALL rows passed;0failed",
+      "root_hashes_stable": true,
+      "source_changes": false,
+      "metadata_changes": false,
+      "new_claims": false,
+      "cmake_changes": false,
+      "ghidra_mutations": false,
+      "builds": 0,
+      "new_tests": 0,
+      "commits": 0,
+      "worker_tracked_tree_clean": true
+    },
+    "accepted_fill_pin": "1aec7c3db797048cee329dd01b63d8e7daf50b08 unchanged; its lease was separately released on explicit parent acceptance. No root bititerator lease touched.",
+    "limits": "No root file/Ghidra/CMake mutation or new build. Only ignored local review captures/receipt; original ABI, Source/currentSDK diagnostic, CRT/SEH/fault/exception/runtime/gameplay boundaries remain distinct."
+  },
+  "source_hashes": {
+    "src/native_checked_bit_iterators.cpp": "8185786c4dcca2fccf8abb5fa29b41cd4a46bdfacc068f8d4c0cf41999193bb7",
+    "include/bsp/native_checked_bit_iterators.hpp": "3e98fff184186cfc30e06bce55b851c79f83060d1780f2ea2bc90db3e608564b"
+  },
+  "schedule": [
+    "Advance zero distance skips all pointed reads; otherwise short-circuit owner/word checks, capture current owner/begin/bit. Negative bound uses current word and captured begin/bit; positive bound reads word then CURRENT owner/count. Returning diagnostics preserve these reloads.",
+    "After diagnostics, negative borrow reads CURRENT bit, unsigned wraps sum, computes -4-(((0xffffffff-sum)>>5)*4). Common path reloads CURRENT bit, uses logical shift. CURRENT word ADD RMW precedes bit-mask store.",
+    "End retains begin across report, writes0/word/bit, reports receiver null, publishes owner, then reads CURRENT bit count and optionally advances. Receiver/output aliases preserve native schedule.",
+    "Copy checks owner then captures word/bit before report, reloads CURRENT owner into real private12B storage, advances, captures all private fields, writes0/word/bit, reports captured-owner null then publishes captured owner."
+  ],
+  "limits": [
+    "All reached actual storage/returning-diagnostic read-write targets admitted; no added guard/repair, callbacks, snapshots, rollback, host container or simplified bounded iterator substitute.",
+    "Current SDK policy and Source private output/context/register spill conventions differ from original native ABI/CRT/FH3/SEH/fault/exception/private-frame aliases. Dead EDX normalized where unconsumed.",
+    "Names remain hypotheses; older bounded keyboard fragments/fixtures stay separate. No original new-entry native differential, failure injection or gameplay validation; parent bit resize remains incomplete."
+  ],
+  "current_start_validation": {
+    "exact_queried_starts": 142,
+    "mnemonics_match_PE": true,
+    "verified_mnemonic_aliases": {
+      "jz": "je",
+      "jnz": "jne",
+      "jnc": "jae"
+    },
+    "all_direct_CALL_context_targets_match_PE": true,
+    "capture": "local/oct15_checked_bit_current_context.json",
+    "instruction_proof": "local/oct15_checked_bit_instruction_proof.json",
+    "flow_property_backend": "Script execution disabled by server; no enabling, mutation fallback or override query claim."
+  }
+}
