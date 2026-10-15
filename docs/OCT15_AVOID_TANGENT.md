@@ -70,7 +70,10 @@ the snapshot loops require stable membership. Polygon validity and host/CRT
 requirements remain those of the reused interfaces. There are no invented global
 values or unresolved-call stubs.
 
-Validation is recorded in `reports/oct15_avoid_tangent.json`. Win32 compilation
+Validation is recorded in `reports/oct15_avoid_tangent.json`. `./scripts/build.ps1`
+passed on source commit `2f362246a`, including `reconstructed_math` and `tool_tests`
+(2/2); native differential fixtures were not configured in this isolated worktree.
+All five direct call rows and the staged diff check passed. Compilation
 and existing checks establish source/build evidence only. No new tests, original
 byte differential execution, native ABI replacement, game wiring or gameplay
 validation is claimed; floating-point exception/status equivalence is not claimed.
