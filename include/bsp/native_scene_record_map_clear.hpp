@@ -18,10 +18,12 @@ void clear_native_scene_record_map_0046b460(void* actual_tree,
 // Zero count skips all work. Otherwise validate/visit current iterator, capture
 // mapped+14h, zero that slot BEFORE its current vtable slot0 deleting call(flag1),
 // then increment the actual iterator. Finally destroy nodes and reset head/count.
-// actual_iterator8 provides stable initialized backing for native private
+// On reached nonzero-count work, actual_iterator8 provides stable writable
+// backing for native private
 // {owner,node} cells. It is written NODE then OWNER on entry, read after each
 // increment; payload aliases are admitted, original physical-stack aliases are
-// unproved. It must remain valid through handlers, virtual calls and cleanup.
+// unproved. No initial iterator contents are read. It must remain valid through
+// reached handlers, virtual calls and cleanup; zero count does not inspect it.
 void clear_native_scene_database_hidden_records_0046b680(void* actual_database,
     void* actual_iterator8, NativeStringRawPoolContext&);
 
