@@ -32,6 +32,9 @@ public:
     // claimed universally immutable. Shader E17654 borrowers use this SAME byte.
     const char* property_empty_00e177e4() const noexcept;
     const char* query_empty_00e17654() const noexcept;
+    // Distinct stable-zero ordinary clone-key role for Original F89450.
+    // This does not assert universal immutability of Original writable .data.
+    const char* clone_empty_00f89450() const noexcept;
 private:
     friend GameNativeStringProcess& game_native_string_process();
     GameNativeStringProcess() noexcept = default;
@@ -48,6 +51,8 @@ private:
     void* volatile allocation_stats_0109cefc_{};
     NativeParticleModelManagerStorage* volatile particle_manager_00f8c274_{};
     bool particle_manager_domain_claimed_{};
+    // Append after all established authorities; never alias either fallback.
+    const char clone_empty_00f89450_{};
 };
 
 // Intentionally retained through process termination. No C++ exit destructor
