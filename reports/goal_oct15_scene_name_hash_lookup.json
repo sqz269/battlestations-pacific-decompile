@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_scene_name_hash_lookup",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "base_revision": "feb971d9f3576ee9533dbc637436e73c7496e677",
+  "source": "src/native_scene_name_hash_lookup.cpp",
+  "header": "include/bsp/native_scene_name_hash_lookup.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_NAME_HASH_LOOKUP.md",
+  "status": "whole_actual_raw_source_registration_build_pending",
+  "routines": [
+    {
+      "address": "00468660",
+      "name_hypothesis_retained": "BSP_SceneDatabase_ClassIdToName",
+      "body_end_inclusive": "004686b3",
+      "body_bytes": 84,
+      "instructions": 30,
+      "physical_calls": 2,
+      "implementation": "find_native_scene_database_class_name_00468660",
+      "coverage": "complete_actual_raw_source_with_explicit_live_parameter4_private_iterator12_and_accepted_providers",
+      "original_abi": "ECX database;EDX unused;DWORD input at entryESP+4;RET4;ESI preserved;EBX/EDI/EBP untouched;private iterator at entryESP-C,nodeESP-8,indexESP-4;savedESI atESP-10;rawEAX zero or captured payload/name/fallback pointer",
+      "live_installed_equal": true,
+      "live_hex": "83ec0c83c134890c24568d4c2404e83de5ffff8b44240885c0741d8b742414908b48083931741a8d4c2404e870e5ffff8b44240885c075e833c05e83c40cc204008b400485c075f2b86085e1005e83c40cc20400",
+      "sha256": "0cd7dffe6bce8f61fdcf9782dea8b60e9b20cdb11f54f538debec90360df8ba4"
+    },
+    {
+      "address": "00467ee0",
+      "name_hypothesis_retained": "BSP_SceneNameHash_FindByValue",
+      "body_end_inclusive": "00467f29",
+      "body_bytes": 74,
+      "instructions": 27,
+      "physical_calls": 2,
+      "implementation": "find_native_scene_name_hash_value_00467ee0",
+      "coverage": "complete_actual_raw_source_with_explicit_live_parameter4_private_iterator12_and_accepted_providers",
+      "original_abi": "ECX database;EDX unused;DWORD input at entryESP+4;RET4;ESI preserved;EBX/EDI/EBP untouched;private iterator at entryESP-C,nodeESP-8,indexESP-4;savedESI atESP-10;rawEAX zero or captured payload/name/fallback pointer",
+      "live_installed_equal": true,
+      "live_hex": "83ec0c83c134890c24568d4c2404e8bdecffff8b44240885c0741d8b742414908b48083931741a8d4c2404e8f0ecffff8b44240885c075e833c05e83c40cc204008bc15e83c40cc20400",
+      "sha256": "77b4ac25e1f29adf5a69e7749d370bf2238c377a0539f263909c17c551c74bc6"
+    }
+  ],
+  "coverage_totals": {
+    "bytes": 158,
+    "instructions": 57,
+    "physical_calls": 4
+  },
+  "host_steps": [
+    {
+      "address": "0046866e",
+      "native": "00466bb0",
+      "function": "00468660",
+      "kind": "call"
+    },
+    {
+      "address": "0046868b",
+      "native": "00466c00",
+      "function": "00468660",
+      "kind": "call"
+    },
+    {
+      "address": "00467eee",
+      "native": "00466bb0",
+      "function": "00467ee0",
+      "kind": "call"
+    },
+    {
+      "address": "00467f0b",
+      "native": "00466c00",
+      "function": "00467ee0",
+      "kind": "call"
+    },
+    {
+      "address": "0046beaf",
+      "native": "00468660",
+      "function": "0046be90",
+      "kind": "call"
+    },
+    {
+      "address": "0046d41c",
+      "native": "00468660",
+      "function": "0046cf40",
+      "kind": "call"
+    },
+    {
+      "address": "0046db1d",
+      "native": "00468660",
+      "function": "0046d930",
+      "kind": "call"
+    },
+    {
+      "address": "0046de6b",
+      "native": "00468660",
+      "function": "0046dc10",
+      "kind": "call"
+    }
+  ],
+  "argument_alias_schedule": "Only table0=database+34 modulo32 initialized;actual Begin then current node4;initial zero skips key read;otherwise actual parameter4 captured once across all Next;capture node+8 then read its DWORD;Next EAX ignored/current node4 reloaded. 67EE0 returns captured payload pointer;68660 reads matched node+4 once/null selects bound E18560 role;exhaustion returns0.",
+  "frame_domain": "Explicit input4/private12 and stable separate Source metadata/bindings;reached storage valid;payload aliases with actual input/private cells admitted. Native entryESP+4 versus privateESP-C layout documented,not equated to compiler/helper/private/return/registersave/EH/spill/async aliases. No snapshot guard,prezero,count/owner/nullpayload guard,nominal class,CString validity,ownership or lifetime inference.",
+  "provider_composition": "Complete raw native_scene_name_hash_iterator Begin/Next;no callbacks/stubs or invented service. Stable borrowed existing GameNativeStringProcess E18560 role supplied by binding;core does not construct authority,own it,read its byte or introduce a native child edge.",
+  "provider_file_sha256": {
+    "src/native_scene_name_hash_iterator.cpp": "69e1661e27018e38d57bf45e892c3fa11d021c166f9de0ee18aa9becc6746297",
+    "include/bsp/native_scene_name_hash_iterator.hpp": "d067020450fc886c6d994dff94913a067d60023aa15a5581caff6ab489ba20ee",
+    "src/game_native_string_process.cpp": "a117e420da472dda443bf81a6ee4231c4356e61ac75d94c614e007fe2b4c8b0b",
+    "include/bsp/game_native_string_process.hpp": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30"
+  },
+  "empty_role": {
+    "original_instruction": "004686a8 MOV EAX,00e18560 immediate address;no pointer-cell or byte read",
+    "source_authority": "existing distinct GameNativeStringProcess::library_empty_00e18560();borrow by stable binding,no new owner",
+    "live_bytes": "00;local/goal_oct15_scene_hash_lookup_empty_bytes.txt",
+    "pe_virtual_zero_proof": ".data RVA A08000,virtual size297EDC,raw size10000,address offset10560 beyond raw bytes;zero initialized virtual tail",
+    "qualification": "Original writable DATA may change at runtime;no universal immutability or physical Source address identity"
+  },
+  "callers": {
+    "class_name_live_direct_sites": 13,
+    "functions": [
+      "0046be90",
+      "0046cf40",
+      "0046d930",
+      "0046dc10"
+    ],
+    "scope": "representative bounded actual setups/consumers only;no complete 13-caller-body claim",
+    "payload_live_references": 0,
+    "zero_xref_qualification": "not proof of dead code or an inferred external ABI",
+    "xref_receipt": "local/goal_oct15_scene_hash_lookup_incoming.txt",
+    "contexts": [
+      "local/goal_oct15_scene_hash_lookup_caller_context.json",
+      "local/goal_oct15_scene_hash_lookup_other_caller_context.json"
+    ]
+  },
+  "corrections": [
+    {
+      "was": "67EE0 prior evidence described node return",
+      "is": "captured node+8 payload pointer",
+      "evidence": "00467f00 MOV ECX,[EAX+8];00467f03 CMP[ECX],ESI;00467f21 MOV EAX,ECX"
+    },
+    {
+      "was": "SCENE_ENTITY_FACTORY.md claimed initial E18560 bytes Ys",
+      "is": "current live zero and PE zero initialized virtual tail;later runtime mutations unproved",
+      "evidence": "live E18560 bytes and PE section geometry;return instruction never reads byte"
+    },
+    {
+      "was": "seg6_cc13.cpp uses host callbacks/zeroed private iterator and by-value early key admission",
+      "is": "whole raw actual storage interfaces/only table initialized/late reached key capture",
+      "evidence": "both complete native bodies;older Source preserved"
+    }
+  ],
+  "annotation": {
+    "before_comments": "local/goal_oct15_scene_name_hash_lookup_before_comments.json",
+    "before_documentation": "local/goal_oct15_scene_name_hash_lookup_before_documentation.json",
+    "names": "retained existing descriptive hypotheses;append corrected behavioral evidence without erasing history",
+    "locked_apply_save": "passed;two owned retained hypotheses,evidence appended under tool write lock,all prior comments preserved,project saved",
+    "refreshed_exports": "passed;both owned exports forced after evidence update",
+    "readback": "passed;both retained names,prior full comments and late-key evidence verified in local/goal_oct15_scene_name_hash_lookup_after_comments.json",
+    "log": "local/ghidra-annotations-20261015T232958Z.json"
+  },
+  "verification": {
+    "project_program_guard": "bsp.py Client.verify every live batch;C:/Users/sqz269/bsp.gpr,/battlestationspacific.exe,x86:LE:32:default,image00400000",
+    "whole_assembly_abi_and_actual_provider_source": "passed complete 57-op bodies and complete accepted raw iterator Source",
+    "live_installed_bytes": "passed whole158B including both RET4 tails per body",
+    "typed_body_receipt": "local/goal_oct15_scene_hash_lookup_typed_flow.json;read-only accepted at modification2261",
+    "typed_native_transfers": "passed;8 JSON rows and8 representative Markdown claims;0failed/unchecked/warnings",
+    "source_file_sha256": {
+      "src/native_scene_name_hash_lookup.cpp": "818e5b812f84c71dc54447dd62e3739c78900faf1abf5684cb5b41d1e467dae3",
+      "include/bsp/native_scene_name_hash_lookup.hpp": "b8283e180ee5693ff3c5707a84374253ff9c223c6f9778e655e2c726405213dd"
+    },
+    "cmake_registration": "queued behind current holder;no exclusive registry lease",
+    "strict_win32_build_and_existing_ctest": "pending",
+    "compiled_object_review": "pending",
+    "new_tests": false,
+    "packet_native_differential": "not run",
+    "game_validation": "not run"
+  },
+  "limits": [
+    "New ordinary raw interfaces;no Original register/stack/mangling/binary ABI,implicit private frame,fault/SEH/exception identity.",
+    "Only reached storage valid and stable explicit bindings;payload aliases admitted;no asynchronous/hidden compiler/helper/return/EH/registersave/spill aliases.",
+    "Raw pointer bits only;no nominal class,CString validity,ownership/lifetime or Original writable DATA immutability inference.",
+    "Actual E18560 authority is borrowed outside core;no extra native call or owner invented.",
+    "No production projection replacement,packet-specific native execution or game validation."
+  ]
+}
