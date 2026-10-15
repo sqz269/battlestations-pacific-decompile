@@ -162,8 +162,8 @@ public:
     // (stored as a float by the caller).
     virtual float interpolate_clamped_00419010(float x0, float y0, float x1, float y1,
                                                float x) = 0;
-    // 00BF6713, the checked-iterator report; native default handling terminates
-    // and an implementation must not return.
+    // 00BF6713, the checked-iterator report. Handler return/failure policy is
+    // external; returning requires valid state for the caller's continuation.
     virtual void invalid_parameter_00bf6713() = 0;
 };
 
@@ -216,7 +216,8 @@ public:
     // The store to the singleton slot [00E17620].
     virtual void store_registry_singleton_00e17620(void* value) = 0;
     // 00BF6713, the CRT invalid-parameter report from the checked iterators.
-    // Native default handling terminates; an implementation must not return.
+    // Handler return/failure policy is external; the wrapper has a plain RET.
+    // Returning requires valid state for the caller's continuation.
     virtual void invalid_parameter_00bf6713() = 0;
 };
 
