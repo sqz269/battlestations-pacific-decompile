@@ -75,8 +75,37 @@ references. Caller bodies and the existing provider remain outside this packet.
 
 ## Validation
 
-Initial Source draft: full listing, live boundaries/bytes, six native caller
-sites and concrete provider Source reviewed. Required strict MSVC Win32 build,
-existing CTests, focused object review, report transfer verification, locked
-annotation/save/export, and final metadata are pending. No new tests are added.
-Packet-specific native differential and game validation have not run.
+Source draft `59c0ac1ab718631fd29beb8e1679e679ecff8870` passed the worker's
+required `scripts/build.ps1` Release MSVC Win32 build with `/W4 /WX /fp:strict`.
+Only `/MP4` was added to this process's CL options for parallel compilation.
+All three existing CTests passed in 8.51 seconds: reconstructed math 0.24s,
+native math differential 0.04s, and tool tests 8.16s. The build retained an
+unrelated existing `LNK4006` duplicate `spawn_request_id_matches` warning.
+No new tests were added. Existing math differential coverage does not exercise
+this packet; packet-specific native differential and game validation did not run.
+
+All three complete live byte spans match the installed PE (123 bytes/50
+instructions); the receipt is `local/goal_oct15_scene_map_increment_bytes.json`.
+Eight typed native transfer rows pass `verify_report_calls.py`; the Markdown
+check reports 26 cited addresses with zero failures, unchecked claims or warnings.
+Prior comments and full documentation were archived. The annotation tool retained
+all three existing names and comments under its write lock, saved the project,
+and recorded prior values in `local/ghidra-annotations-20261015T203624Z.json`.
+All three exports were refreshed with `--force` and comments read back.
+
+Focused review of the actual compiled object found a 108-byte core plus two
+12-byte wrappers. The core calls the concrete report at offset `+09`, reloads
+the current node at `+0E`, and emits POP-ESI/JMP at `+18/+19` for nil-node
+failure. Its ascent reloads iterator.node at `+50`, reads parent.right at
+`+53`, publishes the parent at `+5A`, then loads that parent's parent at
+`+5D`; the final unconditional publication is `+67`. Right-leftmost traversal
+also retains all volatile link/nil reads and its final selected-node publication.
+Both wrappers contain PUSH ESI, MOV ESI,ECX, CALL core, MOV EAX,ESI, POP ESI, RET;
+their call relocation is at `+04`. The core has exactly two code relocations,
+both to the existing concrete report service. This verifies the intended access
+and transfer schedule without claiming native byte or COFF identity.
+
+The object is 2093 bytes with SHA-256
+`2d17720da35712f2c65d60a3b6839e21dff0b391623efdf5e0607dae2077abd6`.
+The disassembly/relocation receipt is
+`local/goal_oct15_scene_map_increment_object.txt`. Diff whitespace checks pass.

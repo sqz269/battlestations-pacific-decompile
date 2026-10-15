@@ -10,7 +10,7 @@
   "header": "include/bsp/native_scene_record_map_increment.hpp",
   "documentation": "docs/GOAL_OCT15_SCENE_MAP_INCREMENT.md",
   "owned_addresses": ["00467980", "004681f0", "004688d0"],
-  "status": "whole_actual_storage_source_build_pending",
+  "status": "whole_actual_storage_source_strict_win32_existing_ctest_and_compiler_checked",
   "routines": [
     {
       "address": "00467980",
@@ -75,17 +75,59 @@
     {"address": "0046bd6a", "native": "00467980", "function": "0046bd10", "transfer": "call", "contract": "ECX LEA ESP+14 actual iterator;reload current node+4 then owner+0 after child;parent outside packet"}
   ],
   "implementation_search": "no whole implementation in include/src;seg6_cc13 only contains an injected host-call declaration/use;existing decrement and concrete CRT provider reviewed",
-  "annotation": {"preserve_names_comments": true, "locked_apply_save": "pending", "refreshed_exports": "pending"},
+  "byte_evidence": {
+    "receipt": "local/goal_oct15_scene_map_increment_bytes.json",
+    "complete_live_spans_match_installed_pe": true,
+    "sha256": {
+      "00467980": "b9d0f41670ad5441a68501cc7b4dee85ab147a7638f187f73bfb321a687e796e",
+      "004681f0": "b210175ce6b3adb07bb1cc53d0d208f87eefcb6668c9ff871f37c04e373379fe",
+      "004688d0": "b23b88a576082c34544ea75c03e18d7bd57681f66d991d619ed66ac5142fc435"
+    }
+  },
+  "annotation": {
+    "before_comments": "local/goal_oct15_scene_map_increment_before_comments.json",
+    "before_documentation": "local/goal_oct15_scene_map_increment_before_documentation.json",
+    "preserve_names_comments": true,
+    "locked_apply_save": "passed;local/ghidra-annotations-20261015T203624Z.json;3 prior-value receipts/applied entries;project saved",
+    "refreshed_exports": "passed;all3 owned addresses refreshed --force",
+    "readback": "local/goal_oct15_scene_map_increment_after_comments.json"
+  },
   "verification": {
     "project_program_guard": "bsp.py Client.verify before each live batch;bsp,/battlestationspacific.exe,x86:LE:32:default,image00400000",
     "full_listing_boundaries_live_bytes_callers_and_concrete_provider": "passed",
     "verify_report_calls": "passed;8 native transfer rows,0 failed;markdown26addresses,0 failed/unchecked/warnings",
-    "strict_win32_build_and_existing_ctest": "pending",
-    "compiled_object_review": "pending",
+    "strict_win32_build_and_existing_ctest": "passed worker scripts/build.ps1 Release at Source draft59c0ac1ab718631fd29beb8e1679e679ecff8870;all3 existing CTests8.51s",
+    "compiled_object_review": "passed;108Bcore,12B+12Bwrappers;returnable call/current-node reload,nil tail,volatile descent and ascent,current-node reread,intermediate store before parent load,final store,captured wrapper returns and exact provider/core REL32 targets",
     "diff_check": "passed",
     "new_tests": false,
     "packet_native_differential": "not run",
-    "game_validation": "not run"
+    "game_validation": "not run",
+    "verify_seeds": "passed;all8 existing seed byte ranges match installed PE",
+    "worker_build": {
+      "command": "scripts/build.ps1",
+      "configuration": "Release MSVC Win32 /W4 /WX /fp:strict",
+      "parallel_only_addition": "CL=/MP4",
+      "source_revision": "59c0ac1ab718631fd29beb8e1679e679ecff8870",
+      "log": "local/goal_oct15_scene_map_increment_build.log",
+      "result": "exit0;3/3 CTests,0fail,total8.51s",
+      "ctests": {"reconstructed_math": "pass0.24s", "native_math_differential": "pass0.04s", "tool_tests": "pass8.16s"},
+      "existing_warning": "LNK4006 duplicate spawn_request_id_matches from lua_binding_spawn.obj/lua_spawn_new.obj;no packet compiler warning",
+      "packet_native_differential": "not run;existing math differential is unrelated to this entry"
+    },
+    "compiled_object": {
+      "path": "build/win32/bsp_core.dir/Release/native_scene_record_map_increment.obj",
+      "receipt": "local/goal_oct15_scene_map_increment_object.txt",
+      "tool": "MSVC dumpbin14.51.36244.0 /DISASM /RELOCATIONS /SYMBOLS",
+      "bytes": 2093,
+      "sha256": "2d17720da35712f2c65d60a3b6839e21dff0b391623efdf5e0607dae2077abd6",
+      "core_bytes": 108,
+      "wrapper_bytes_each": 12,
+      "core_offsets": {"owner_load": "03", "report_call": "09", "current_node_reload": "0e", "nil_report_tail": "19", "ascent_current_node_reload": "50", "parent_right_read": "53", "intermediate_store": "5a", "parent_reload": "5d", "final_store": "67"},
+      "core_code_relocations": "REL32+0A,+1A both invoke_native_invalid_parameter_00bf6713",
+      "wrapper_code_relocations": "each REL32+04 to increment_native_scene_record_map_iterator_00467980",
+      "wrapper_schedule": "PUSH ESI;MOV ESI,ECX;CALL core;MOV EAX,ESI;POP ESI;RET",
+      "identity_claim": "access/transfer schedule and observed ECX/RET shape only;no native bytes/COFF/private-frame/register residue identity"
+    }
   },
   "limits": [
     "current CRT handler policy differs from original encoded handler/debugger/Watson path",
