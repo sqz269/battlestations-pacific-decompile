@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-15",
+  "state": "reconstruction_in_progress",
+  "evidence_root": "J:/PROG/battlestations-pacific-decompile-goal15_integrator",
+  "packets": [
+    {"id": "goal15b_list_tidy", "entries": ["0041d710", "0041e290"], "state": "worker_reconstruction"},
+    {"id": "goal15b_vector_tidy", "entries": ["0041f950"], "state": "worker_reconstruction"},
+    {"id": "goal15b_grid_byte_vector_resize", "entries": ["004219a0", "00420dd0", "0041d7d0"], "state": "max_effort_reconstruction"}
+  ],
+  "annotation_corrections": [
+    {
+      "address": "00418540",
+      "was": "Hypothesis, not a recovered symbol. docs/CC13_BAND_0040_0044.md. n == 0 -> null; if 0FFFFFFFFh / n == 0 throws std::bad_alloc (00E03CC0) else operator_new(n) (allocator<char>::allocate); caller 00420DD0",
+      "is": "Retain STL_allocator_allocate_00418540. A zero request calls operator_new(0); it does not return a literal null. For nonzero uint32 n, UINT_MAX/n is at least one, so the local allocation-error throw branch is unreachable for those inputs. The call to operator_new(n) can itself fail or throw under its own policy.",
+      "evidence": "00418547 TEST ECX,ECX; 00418549 JA positive; zero XOR ECX; PUSH ECX; CALL 00BF681B at 0041854E; ADD ESP,4; RET4. Positive path OR EAX,FFFFFFFF; XOR EDX,EDX; DIV ECX; CMP EAX,1; JNC 0041854D. Independent full assembly inspection; live body00418540..00418594.",
+      "state": "old_value_recorded_before_ledger_and_ghidra_edit"
+    }
+  ],
+  "registered_build": "pending",
+  "new_entry_native_abi_or_gameplay_proof": false
+}
