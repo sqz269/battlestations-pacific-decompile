@@ -1,0 +1,262 @@
+{
+  "packet": "cc12_native_texture_runtime_frontier17",
+  "captured_utc": "2026-10-15T02:31:43.131299+00:00",
+  "status": "D3D9_DEVICE_CREATION_FAILED_BEFORE_RELOAD",
+  "prior_integrated_Source_build": "reports/cc12_native_post_texture_integration_15.json",
+  "compiled_fixture_authority": "Frozen f083137 application objects plus three complete libraries. Only forwarding-main artifact output-directory declaration changed. Manifest checkout revision is launch metadata.",
+  "slot_managed_attempt": {
+    "slot": 0,
+    "core": 2,
+    "wrapper_record": {
+      "started_utc": "2026-10-15T02:16:42.0302142Z",
+      "wrapper_pid": 91772,
+      "status": "TERMINAL",
+      "target_attempts": 1,
+      "prior_parameter_failure": "launcher_preflight01; no target started",
+      "actual_build_authority": "f083 frozen137 application objects and three libraries, forwarding main artifact-directory override only",
+      "exit_code": 4,
+      "seconds": 7.9270745,
+      "finished_utc": "2026-10-15T02:16:49.9869566Z"
+    },
+    "reload_body_entered": false,
+    "device_creation_retry_hresult": "0x88760868",
+    "frame_or_resource_success": false
+  },
+  "prelaunch_failures_preserved": [
+    "Before prepare completed, a build command found no output directory; no compile or target.",
+    "Native PowerShell5 -File rejected -- before slot or target; preserved under launcher_preflight01. Corrected call uses an explicit GameArgs array."
+  ],
+  "independent_existing_diagnostic": {
+    "pid": 92004,
+    "exit_code": 1,
+    "started_utc": "2026-10-15T02:22:33.510811+00:00",
+    "finished_utc": "2026-10-15T02:22:34.289977+00:00",
+    "exe_sha256": "696e2b4bfc5ec017d16ea536a3bba6d5e7c45614db85eb75120c8c85d36a4c28",
+    "source_sha256": "8e29dd26aba25ef195d42f371754f9ca409dd6483103ec55bd8a7df91793eb48",
+    "existing_tool_unmodified": true,
+    "embedded_manifest": true,
+    "original_game_not_launched": true
+  },
+  "diagnostic_scope": {
+    "source_unmodified": true,
+    "manifested_Win32": true,
+    "original_game_not_launched": true,
+    "basic_CreateDevice_fallback_flags": "0x24",
+    "fallback_hresult": "0x88760868",
+    "initial_flags": "0x44",
+    "initial_hresult_logged": false,
+    "FPU_behavior_admitted": false
+  },
+  "user_display_state": "User confirmed on and unlocked in this turn.",
+  "machinewide_changes": false,
+  "other_agents_interrupted": false,
+  "inference": "The basic Direct3D9 device-creation failure reproduces outside the game reconstruction. Its cause remains unconfirmed; do not classify this attempt as a texture reload or native Text failure.",
+  "worker_successful_f083_comparison_retained": true,
+  "additional_Root_texture_comparison_pass": false,
+  "next_work": "Read-only platform diagnosis plus independent Source reconstruction; no repeated unchanged GPU launch.",
+  "artifacts": [
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/build_result.json",
+      "bytes": 1012,
+      "sha256": "c6eae764892672853e3b4444266528666dae92e3da7201b3a0d5dad78fc5c5aa"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/frozen_after_slot_run.json",
+      "bytes": 187,
+      "sha256": "93def3f9ab20d438ef37078185b7dfc88472f78c047a537c05059789cd0bbd85"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/frozen_before.json",
+      "bytes": 187,
+      "sha256": "93def3f9ab20d438ef37078185b7dfc88472f78c047a537c05059789cd0bbd85"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/preparation_order_observation.json",
+      "bytes": 304,
+      "sha256": "5c34df39bcec26758e8ee2d5e3d1f0e1dd9098234e096b3610634e98c9b17c7c"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/prepared.json",
+      "bytes": 79325,
+      "sha256": "d5a43bd49bb718f7f2a08da561d14345232a0dc311f7bb008406f3faabeafc43"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/build/build.log",
+      "bytes": 23,
+      "sha256": "74363d7c69921cb65c8bb252d51a1c13cd1a7cd91a1fd5ef1dd84ac45a82f11a"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/build/build_parent.cmd",
+      "bytes": 471,
+      "sha256": "66f8239ea80ff28ba7a235e82fa1b61bfd863060cc98216e4aeda1a59b1d8c96"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/build/compile.rsp",
+      "bytes": 1009,
+      "sha256": "5ff3f9ca4936aca5a3cd594a40ac3330b4bf1947d557af199c62f5ceb46e2886"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/build/forwarded_main.diff",
+      "bytes": 692,
+      "sha256": "0ea47124f22d36a6317d54ffd2096b81982eeca5529422b9a04ba6cda0026778"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/build/forwarding.hpp",
+      "bytes": 2407,
+      "sha256": "7440af384a8c9a311e849e0bc7bce44a1a51a05dbb6343b7c980aa404bf08626"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/build/link.rsp",
+      "bytes": 25993,
+      "sha256": "19811e754a132ab969b40402683007d3d17cd960763c0ded28e106cefa19d6a4"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/build/native_bytes.hpp",
+      "bytes": 3932,
+      "sha256": "f2751ebf06b2c8f4b9deeedf7a66408bd17ef4d2c91ee2ec790c5b30ed2580cf"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/build/parent_probe_main.asm",
+      "bytes": 4774264,
+      "sha256": "9ce20996d0bac65e800d08b00724eeb7a94d93ba60c624b3043d04d348bc87d9"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/build/parent_probe_main.cpp",
+      "bytes": 77028,
+      "sha256": "0993317224d273b6c8a4c2550045930401c56491a7fa27da1fa75cf89a534a7d"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/build/parent_probe_main.obj",
+      "bytes": 682961,
+      "sha256": "d60cb25af95f22ee9200b7ebc5beeb613a7dc3e7684ab49512343731907f03de"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/build/parent_reload_probe.exe",
+      "bytes": 5612544,
+      "sha256": "7097c92c2f54e64ee5b55ade97b33959302ce17f0656c65b0a6f60412e543647"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/build/parent_reload_probe.map",
+      "bytes": 8346565,
+      "sha256": "f712a231dc18004736f48296f0259da08900b16c5cfd9bedabeae092e3b55c70"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/build/reload_fixture.hpp",
+      "bytes": 15732,
+      "sha256": "5647ec30238df0a8322f18afdd3b3ecf544b277e43ea973e89baa4c56d55a633"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/runtime_artifacts/native_pins.json",
+      "bytes": 338,
+      "sha256": "733340eb4cfb1362351c2974486dc2fc54a9699a656f3dac29f1303181ef4cb2"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/runtime_artifacts/reload.bin",
+      "bytes": 747,
+      "sha256": "2040b2711596de753d0e87c2119184dc72ea843f173cc9fc7037efab5bee0b09"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/runtime_artifacts/runtime.json",
+      "bytes": 435,
+      "sha256": "516f886a985ca73936dab00a9ef634e0f7f7505881f5c5b54a242b64a2a2c8ab"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/runtime_artifacts/runtime.log",
+      "bytes": 9969,
+      "sha256": "cedd4ecc69e526d9b38132d598d687ab7c12a63eb6aec7445ef2c2cd84f1a4c8"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/runtime_artifacts/runtime.log.manifest.json",
+      "bytes": 3556,
+      "sha256": "4b8a40b74f333696da18be3bcbf9bee336a96905f45b2c4718c4d25d1385fcbb"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/runtime_artifacts/run_claim.json",
+      "bytes": 356,
+      "sha256": "a2cc99250701c8607f6c54eae2f3d913925645e661a67c0b3b7405646f50e7ba"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/runtime_artifacts/verify_artifacts.py",
+      "bytes": 4215,
+      "sha256": "0c26a964797b0d7d09623930d82013f36b1db5f78f8fae694e6e8aa4198d892e"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/runtime_artifacts/launcher_preflight01/launcher.log",
+      "bytes": 593,
+      "sha256": "8a8c90bd3234a08ce0aba8667d94d1b5170ddb08a2077fa5d9d48644ab7bb8f5"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/runtime_artifacts/launcher_preflight01/live_launcher.json",
+      "bytes": 1890,
+      "sha256": "8981595fb333cbeb5276715cf027341386786ccf93b5ac871c6fccdca3524591"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/runtime_artifacts/launcher_preflight01/runtime.json",
+      "bytes": 1980,
+      "sha256": "325ab77c76973b2af77f248b14b6fb4d545857c745a4de1a985b2a76a0eefca4"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/runtime_artifacts/launcher_preflight01/run_claim.json",
+      "bytes": 1762,
+      "sha256": "570110cd13fc61ae8121444787b5148dc3e3ee7da9c84662b7c59a10ff42c0a7"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/runtime_artifacts/runtime.log.inputs/xlive_stub.dll",
+      "bytes": 32768,
+      "sha256": "a4854e3dd42edd2387a6c85edcea5468a7524ff5ec645d1c6186c903bcb33c8b"
+    },
+    {
+      "path": "local/cc12_texture_reload_parent_review_03/personal/Battlestations-Pacific/options.txt",
+      "bytes": 226,
+      "sha256": "ff5cf3959932cb634374b8a9bf5e6c0d04c50699cc6ba585e7fa7969f7b563d8"
+    },
+    {
+      "path": "local/cc12_d3d9_device_diagnostic_01/build.cmd",
+      "bytes": 298,
+      "sha256": "a019c4044758568c19e240a1fa2b4db950ff5634647e86a15b43563c611eb9b0"
+    },
+    {
+      "path": "local/cc12_d3d9_device_diagnostic_01/build.log",
+      "bytes": 20,
+      "sha256": "d618fdbc863192856f3cabbb388dd62f09f3fdfe129a2fff5372ce0d4bde8abf"
+    },
+    {
+      "path": "local/cc12_d3d9_device_diagnostic_01/d3d9_fpu_probe.cpp",
+      "bytes": 3177,
+      "sha256": "8e29dd26aba25ef195d42f371754f9ca409dd6483103ec55bd8a7df91793eb48"
+    },
+    {
+      "path": "local/cc12_d3d9_device_diagnostic_01/d3d9_fpu_probe.exe",
+      "bytes": 10752,
+      "sha256": "696e2b4bfc5ec017d16ea536a3bba6d5e7c45614db85eb75120c8c85d36a4c28"
+    },
+    {
+      "path": "local/cc12_d3d9_device_diagnostic_01/d3d9_fpu_probe.obj",
+      "bytes": 7834,
+      "sha256": "6de446ca7ba2277ccdf39b300e09122ba83b75c9ea90e75950b1354773d71d4b"
+    },
+    {
+      "path": "local/cc12_d3d9_device_diagnostic_01/runtime.json",
+      "bytes": 429,
+      "sha256": "84434fab8342aa51733d17c767e4f842e2bde7c20f8991287076cb566a8d6ffc"
+    },
+    {
+      "path": "local/cc12_d3d9_device_diagnostic_01/runtime.log",
+      "bytes": 167,
+      "sha256": "294c9dcfae20e42a44c3d9868bb8c91f54b801bbc81251859ae6e65f2839d2b1"
+    },
+    {
+      "path": "local/cc12_run_slot_texture_03.py",
+      "bytes": 4080,
+      "sha256": "0af04d4e92b10e271753bf2627871eefa06cfaca1df011ad939bdab180d006d6"
+    },
+    {
+      "path": "local/cc12_run_slot_texture_03b.ps1",
+      "bytes": 2689,
+      "sha256": "da4ecf1cdf83c6a0e696a00aaa3a285c6b0fd5844e312cea7739a89526dac392"
+    }
+  ],
+  "original_ABI_validated": false,
+  "gameplay_validated": false,
+  "overall_goal": "ACTIVE"
+}
