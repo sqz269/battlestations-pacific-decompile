@@ -1,0 +1,182 @@
+{
+  "packet": "goal_oct15_scene_map_extrema",
+  "status": "complete_functional_actual_raw_extrema_win32_build_and_two_enabled_existing_tests_passed",
+  "source_ready": true,
+  "source": "src/native_scene_record_map_extrema.cpp",
+  "header": "include/bsp/native_scene_record_map_extrema.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_MAP_EXTREMA.md",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Every live bsp.py client verifies expected project/program/x86 language/image base before batch",
+    "annotation": "Applied under ghidra_annotate write lock; existing correct native names/comments preserved, prior values recorded, project saved, both exports refreshed; no prototype repair",
+    "live_prototype_repair": false,
+    "binary_path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "readiness": {
+    "indexed_reconstruction_before_packet": false,
+    "existing_source_search": "No owned extrema implementation under either address or related spelling",
+    "dependencies": "None: both native bodies have no callees/providers"
+  },
+  "routines": [
+    {
+      "address": "00466a00",
+      "name": "maximum_native_scene_record_map_node_00466a00",
+      "native_name_preserved": "STL_Tree_Max_00466a00",
+      "coverage": "complete_functional_actual_raw_storage_Source; unreachable_alignment_excluded",
+      "original_abi": "ECX initial node; EDX scratch; no stack arguments; plainRET; EAX current-node result. Source fastcall one-pointer argument/result; no binary ABI claim.",
+      "envelope_end_exclusive": "00466a1c",
+      "envelope_bytes": 28,
+      "functional_executed_bytes": 25,
+      "semantic_instruction_bytes": 25,
+      "executable_ranges": [
+        {
+          "start": "00466a00",
+          "end_exclusive": "00466a0d",
+          "bytes": 13
+        },
+        {
+          "start": "00466a10",
+          "end_exclusive": "00466a1c",
+          "bytes": 12
+        }
+      ],
+      "unreachable_alignment": {
+        "start": "00466a0d",
+        "end_exclusive": "00466a10",
+        "bytes": 3,
+        "hex": "8d4900",
+        "evidence": "JMP00466A10 at00466A0B skips this gap; initial JNZ00466A1B also skips it. No functional execution reconstructed here."
+      },
+      "original_envelope_bytes_hex": "8bc18b5008807a19007510eb038d49008bc28b5008807a190074f5c3",
+      "schedule": "Current node=input; read node+8 child FIRST, then child+19 sentinel; while zero advance current=child, read current+8 next child and its sentinel. Return current node, not sentinel child. Initial-node sentinel never read.",
+      "host_steps": [],
+      "original_envelope_sha256": "6f640fcf9f202b2fd9542a1da5578933f953aefd242bd1af3a0d59f1f5c5c5c8",
+      "live_dump_equals_installed_PE": true
+    },
+    {
+      "address": "00466a20",
+      "name": "minimum_native_scene_record_map_node_00466a20",
+      "native_name_preserved": "STL_Tree_Min_00466a20",
+      "coverage": "complete_functional_actual_raw_storage_Source; reachable_neutral_alignment_has_no_Source_effect",
+      "original_abi": "ECX initial node; EDX scratch; no stack arguments; plainRET; EAX current-node result. Reachable LEAEBX,[EBX] preserves EBX. Source fastcall one-pointer argument/result; no binary ABI claim.",
+      "envelope_end_exclusive": "00466a3b",
+      "envelope_bytes": 27,
+      "functional_executed_bytes": 27,
+      "semantic_instruction_bytes": 21,
+      "executable_ranges": [
+        {
+          "start": "00466a20",
+          "end_exclusive": "00466a3b",
+          "bytes": 27
+        }
+      ],
+      "reachable_neutral_alignment": {
+        "start": "00466a2a",
+        "end_exclusive": "00466a30",
+        "bytes": 6,
+        "hex": "8d9b00000000",
+        "evidence": "LEAEBX,[EBX] reached only when initial child is non-sentinel; register/flags/memory identity, omitted from Source functional operations."
+      },
+      "original_envelope_bytes_hex": "8bc18b10807a190075108d9b000000008bc28b10807a190074f6c3",
+      "schedule": "Current node=input; read node+0 child FIRST, then child+19 sentinel; while zero advance current=child, read current+0 next child and its sentinel. Return current node, not sentinel child. Initial-node sentinel never read.",
+      "host_steps": [],
+      "original_envelope_sha256": "b9b972cb8e9c9c854d087b568d5dc0f6cfa90558c3ce70ab4726e69ddef04613",
+      "live_dump_equals_installed_PE": true
+    }
+  ],
+  "coverage_totals": {
+    "envelope_bytes": 55,
+    "executable_bytes": 52,
+    "semantic_instruction_bytes": 46,
+    "unreachable_alignment_bytes": 3,
+    "reachable_neutral_alignment_bytes": 6
+  },
+  "caller_evidence": [
+    {
+      "address": "0046a572",
+      "native": "00466a00",
+      "function": "0046a470",
+      "contract": "ECX=EDI, no stack arguments; plainRET result EAX immediately stored into current captured-head+8 at0046A577. Caller guards EDI sentinel before selecting call."
+    },
+    {
+      "address": "0046a550",
+      "native": "00466a20",
+      "function": "0046a470",
+      "contract": "ECX=EDI, no stack arguments; plainRET result EAX immediately stored into current captured-head+0 at0046A555. Caller guards EDI sentinel before selecting call."
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Saved current pseudocode represents both routines as void and discards return value",
+      "is": "Source returns actual current-node pointer in EAX; no live prototype mutation",
+      "evidence": "Both full listings begin MOVEAX,ECX and update EAX only when advancing to non-sentinel child; plainRET; caller A555/A577 stores EAX after direct calls"
+    }
+  ],
+  "layout_authority": {
+    "reference": "docs/SCENE_RECORD_MAP.md and actual constructor/insertion/lookup evidence read in same continuing stream",
+    "fields": "Actual node left+0,right+8,sentinel byte+19 only",
+    "new_node_or_owner_overlay": false,
+    "initial_sentinel": "No initial-node sentinel check added; a sentinel input still reads its selected child and may descend through it",
+    "mapped_type": "Unchanged uncertainty; no mapped field access or ownership conversion"
+  },
+  "verification": {
+    "original_bytes": "Both live-dump envelopes match installed PE:55 bytes;52 executable bytes, 3 unreachable max alignment bytes excluded; per-envelope hashes recorded",
+    "verify_report_calls": "2 call rows checked,0 failed",
+    "win32_build": "scripts/build.ps1 Release Win32 passed exit0; registered new source compiled and all targets linked; local/goal_oct15_scene_map_extrema_build.log",
+    "existing_tests": {
+      "enabled": 2,
+      "passed": 2,
+      "failed": 0,
+      "suites": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "total_seconds": 7.85,
+      "native_math_differential_enabled": false,
+      "dedicated_native_extrema_differential": false
+    },
+    "diff_check": "passed before Source draft",
+    "new_tests": 0,
+    "direct_native_extrema_execution": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "application_adoption": false,
+    "cmake_registration": "Holder released; fresh unleased owner/queue check, left queue, appended exactly one unique source line without exclusive shared-registry lease",
+    "documentation_claim_check": "16 addresses,0 failed,1 unchecked caller sentence covered by exact JSON rows;1 expected warning for explicitly excluded unowned alignment gap",
+    "source_commit": "af4feef5e",
+    "registration_commit": "a6bf90804",
+    "inherited_linker_warning": [
+      "lua_binding_spawn.obj : warning LNK4006: \"bool __cdecl bsp::spawn_request_id_matches(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)\" (?spawn_request_id_matches@bsp@@YA_NABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z) already defined in lua_spawn_new.obj; second definition ignored [J:\\PROG\\battlestations-pacific-decompile-goal_oct15_erase\\build\\win32\\bsp_core.vcxproj]"
+    ]
+  },
+  "limits": [
+    "Complete functional bodies with 3 unreachable max alignment bytes excluded; min's6 reachable neutral bytes separately identified, no inflated functional count",
+    "No original mangling/binary/private-frame/SEH/instruction-fault identity established; live Ghidra void prototypes preserved",
+    "Valid backing for every taken child DWORD/sentinel-byte read required, including sentinel inputs; no null, positive-only, initial-sentinel or cycle guard",
+    "No direct original-byte extrema execution, application adoption or game validation; existing builds/regression checks are separate evidence"
+  ],
+  "annotation_history": [
+    {
+      "address": "00466a00",
+      "before": {
+        "address": "00466a00",
+        "function_name": "STL_Tree_Max_00466a00"
+      },
+      "name_preserved": "STL_Tree_Max_00466a00",
+      "status": "applied"
+    },
+    {
+      "address": "00466a20",
+      "before": {
+        "address": "00466a20",
+        "function_name": "STL_Tree_Min_00466a20"
+      },
+      "name_preserved": "STL_Tree_Min_00466a20",
+      "status": "applied"
+    }
+  ],
+  "cmake_source_line": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_scene_record_map_extrema.cpp)"
+}
