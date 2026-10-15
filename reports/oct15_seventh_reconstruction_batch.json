@@ -1,0 +1,176 @@
+{
+  "packet": "oct15_seventh_reconstruction_batch",
+  "status": "integrated_reviewed_build_checked_annotated",
+  "goal_status": "active",
+  "created_utc": "2026-10-15T18:58:36.718937+00:00",
+  "base_published_main": "e15b3999b25e4c7024bb1c0186283032a10df5b8",
+  "source_integration_commit": "22239cedc19eb108f866dd1f3b7ee105c98c37cc",
+  "source_entries": [
+    "008d48e0",
+    "00558640",
+    "005590c0",
+    "00559dc0",
+    "00559e00",
+    "0055a950",
+    "0044f410"
+  ],
+  "scope_fragments": [
+    "00c6d930",
+    "00c6d9f0",
+    "00559e5a",
+    "0044f5c8",
+    "0044f5e5",
+    "0044f653",
+    "0044f6b5"
+  ],
+  "fragments_are_not_independent_Source_APIs": true,
+  "packets": [
+    {
+      "report": "reports/oct15_native_string_vector_casefold_equal.json",
+      "commit": "d0c908ef2ba1b2bb4fabf4f75c3fd53544437dce",
+      "source_entries": [
+        "008d48e0"
+      ],
+      "scope_fragments": [],
+      "checked_native_call_rows": 2
+    },
+    {
+      "report": "reports/oct15_nested_string_vector_wrappers.json",
+      "commit": "f4e1a69203e92e6d25d91d2063298cb8f0ba8b44",
+      "source_entries": [
+        "00558640",
+        "005590c0",
+        "00559dc0"
+      ],
+      "scope_fragments": [
+        "00c6d930",
+        "00c6d9f0"
+      ],
+      "checked_native_call_rows": 12
+    },
+    {
+      "report": "reports/oct15_nested_string_vector_copy.json",
+      "commit": "adc6d766690ec6549fd055545c363fede0f64436",
+      "source_entries": [
+        "00559e00",
+        "0055a950"
+      ],
+      "scope_fragments": [
+        "00559e5a"
+      ],
+      "checked_native_call_rows": 6
+    },
+    {
+      "report": "reports/oct15_raw_string_vector_insert.json",
+      "commit": "22ed4514d1b32373af56d98be716aa67698bfb6b",
+      "source_entries": [
+        "0044f410"
+      ],
+      "scope_fragments": [
+        "0044f5c8",
+        "0044f5e5",
+        "0044f653",
+        "0044f6b5"
+      ],
+      "checked_native_call_rows": 24
+    }
+  ],
+  "primary_review": [
+    "Full Source/header and native instruction schedules reviewed for all seven normal entries and their scopes; no imported pseudocode or stub providers.",
+    "InsertCount: temporary copy precedes count check; all count0/growth/short-tail/long-or-equal-tail branches, wrapped threshold/growth arithmetic, parent completed-prefix updates, try boundaries before old cleanup, current begin/end reloads, capacity/end/begin publication and cleanup failure limits inspected.",
+    "Current typed metadata confirmedF5E5 belongs to catchF5C8 and terminates at actual no-return BF6885; F6B5 belongs to normalF410, with no function-at/call. Forced owned export refresh resolved historical stale cache without Ghidra flow mutation.",
+    "Outer helper copies actual16B checked owning headers through557BC0; conditional null skip still advances into completed prefix; failed current excluded; catch has no null skip and no outer backing free. Dispatcher preserves five physical stack words/dead tags and semantic return.",
+    "Placement wrappers retain conditional null behavior and qualified EAX residue; current Sourcevoid APIs do not invent nullptr returns. Both compiler placement-delete actions independently confirmed RET-only401130, no storage cleanup.",
+    "Tidy559DC0 proven equivalent to accepted432440/4324A0; alwaysclear4/8/C, preserve0 and free current begin only after destruction. Historical callback projections preserved.",
+    "Equality008D48E0 actual0Ch vector and8h string-header schedule: signed nonpositive equal-count success, zero-length branch ignores data, nonzero unequal stored lengths permitted, currentCRT NUL comparison and current count/base reloads. Full109B disk/live match.",
+    "Merge conflicts in CMake and00550000 appended ledgers resolved throughtools/merge_resolve.py only after failed merges; all worker entries retained. One unchecked nested-copy prose claim replaced by exact CALL block; Source unchanged."
+  ],
+  "validation": {
+    "exact_combined_win32_release": {
+      "command": "./scripts/build.ps1",
+      "source_commit": "22239cedc19eb108f866dd1f3b7ee105c98c37cc",
+      "passed": true,
+      "existing_suites": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "ctest_seconds": 7.24,
+      "log": "local/oct15_seventh_combined_build.log"
+    },
+    "prior_root_casefold_build": {
+      "passed": true,
+      "ctest_seconds": 6.84,
+      "log": "local/oct15_casefold_equal_build.log"
+    },
+    "prior_casefold_wrappers_combined_build": {
+      "passed": true,
+      "ctest_seconds": 6.78,
+      "log": "local/oct15_wrappers_combined_build.log"
+    },
+    "native_call_rows": {
+      "checked": 44,
+      "unique_sites": 43,
+      "failed": 0,
+      "final_markdown_unchecked": 0,
+      "scope": "31 current packet body rows,3 compiler-action rows,2 accepted dependency rows,8 incoming interface rows. One nested catch CALL occurs in both packets. Static evidence, not44new functions or dynamic comparisons."
+    },
+    "new_tracked_tests": 0,
+    "new_function_native_execution": false,
+    "native_math_differential_scope": "Existing verified seed routines only; these new string/vector functions are not covered.",
+    "promotion_source_commit": "b859913d58115d86e8bdd0c2d613723e7cf51912",
+    "promotion_exact_combined_win32_release": {
+      "source_commit": "b859913d58115d86e8bdd0c2d613723e7cf51912",
+      "command": "./scripts/build.ps1",
+      "passed": true,
+      "ctest_seconds": 7.69,
+      "log": "local/oct15_seventh_promotion_build.log",
+      "existing_suites": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ]
+    }
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved": true,
+    "prior_names_comments_preimages_preserved": true,
+    "annotation_logs": [
+      "local/ghidra-annotations-20261015T184852Z.json",
+      "local/ghidra-annotations-20261015T185354Z.json",
+      "local/ghidra-annotations-20261015T185637Z.json",
+      "local/ghidra-annotations-20261015T185658Z.json"
+    ],
+    "no_fake_function_annotations": [
+      "0044f5e5",
+      "0044f6b5"
+    ],
+    "forced_snapshot_and_exports_after_final_annotations": {
+      "snapshot": "completed",
+      "exports": 12,
+      "interior_fragment_functions_not_fabricated": 2
+    }
+  },
+  "concurrent_main": {
+    "preserved": "Canonical enum/process allocator support and sampler/provider diagnostics from other harnesses; excluded from our function count. Exact combined build includes latest main a17cca944.",
+    "no_unrelated_untracked_files_staged": true,
+    "latest_preserved_commit": "b859913d58115d86e8bdd0c2d613723e7cf51912",
+    "latest_addition": "Other-harness enum symbol declaration and canonical provider validation retained; promotion build includes them."
+  },
+  "limits": [
+    "New interfaces add actual contexts and may change physical register/stack/private-frame/return residue behavior; no drop-in binaryABI claim.",
+    "Source C++ catches and currentCRT allocation/comparison/copy differ from native FH3/SEH/RTTI and cleanup-failure identity.",
+    "Actual raw pool, process publications, ownership, readable taken accesses, admitted alias/storage and inherited child contracts required.",
+    "No new-function differential execution, fault identity, startup, livegame or gameplay validation."
+  ],
+  "next_wave": {
+    "status": "three workers assigned",
+    "packets": [
+      "oct15_native_string_vector_insert_one",
+      "oct15_native_string_vector_resize",
+      "oct15_nested_string_vector_allocation"
+    ]
+  }
+}
