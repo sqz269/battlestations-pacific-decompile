@@ -1,0 +1,165 @@
+{
+  "date": "2026-10-15",
+  "state": "registered_seven_entry_source_chain_build_real_heap_fixtures_static_eh_and_saved_annotations_passed",
+  "base_commit": "eb5dfa27d",
+  "evidence_root": "J:/PROG/battlestations-pacific-decompile-goal15_integrator",
+  "entries": [
+    "0041bf50",
+    "0041e1b0",
+    "00417ca0",
+    "0041e200",
+    "00421500",
+    "0041f980",
+    "00420680"
+  ],
+  "packets": [
+    "goal15e_hull_head",
+    "goal15e_group_factory",
+    "goal15e_manager_lifetime"
+  ],
+  "limits": [
+    "Original runtime ABI and gameplay validation remain open",
+    "Manager Source deleting slot requires an explicit EDX publication context",
+    "Final CE3818 profile word is not a callable Source base vtable",
+    "Current unwind guards do not prove original FH3/SEH or exception-frame identity",
+    "Prior semantic and typed records remain separate and preserved"
+  ],
+  "tested_source_commit": "5d01d71b689a9be0b294faca2131482144543934",
+  "worker_commits": {
+    "head": "003cc906cace2c63d26db9668fda23f2e6ae02f1",
+    "factory_source": "2b48105bcb2c62a495bd097f34b44cc494131eca",
+    "factory_evidence": "8d20d8e335726a741dcc7dbe72b26e5b250790c3",
+    "manager": "d99902e06aa5f4784f629c0aaf96c5e42479391e"
+  },
+  "build": {
+    "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1",
+    "final_log": "local/goal15e_final_build.log",
+    "tests": {
+      "reconstructed_math": "PASS",
+      "native_math_differential": "PASS existing math seeds; not new-entry Native ABI evidence",
+      "tool_tests": "PASS"
+    },
+    "initial_logs": [
+      "local/goal15e_registered_build_stage1.log",
+      "local/goal15e_registered_build.log"
+    ]
+  },
+  "registered_coff": {
+    "native_kernel_bytes": 325,
+    "source_kernel_bytes": 325,
+    "kernels": {
+      "0041bf50": 26,
+      "0041e1b0": 22,
+      "00417ca0": 185,
+      "0041e200": 62,
+      "00420680": 30
+    },
+    "only_exclusions": "seven verified CALL rel32 operands and one actual Source group-vtable DWORD operand",
+    "logs": [
+      "local/goal15e_head_coff.log",
+      "local/goal15e_factory_coff.log",
+      "local/goal15e_manager_coff.log"
+    ],
+    "constructor_destructor": "Native171B/145B versus current Source208B/230B main bodies, deliberately not normalized/equated; real current EH/provider/table/guard relocations and cleanup phases checked"
+  },
+  "source_fixtures": [
+    {
+      "receipt": "local/goal15e_head_probe_result.json",
+      "kind": "Source fixture linked against registered archive and real current services",
+      "manifest_embedded": true,
+      "exit_code": 0,
+      "stdout": "Source hull head probe: PASS self-links, header proxy/count/result, actual heap/free\n",
+      "stderr": "",
+      "sha256": {
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_zone_cleanup\\local\\goal15e_hull_head\\hull_head_probe.cpp": "1f2ea60851276db442a131c4c7e467be14574679c1531c483fb2d3ec363cfd51",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15e_head_probe.obj": "505cf49dccb35eb8c97dee9886e88445bba2a769c4a816084f0508a85ec214f8",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15e_head_probe.exe": "241a0388bdaf27ac7d6949d55a4a99c52e6af4c3651889ded15a35d123a65102",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "49b89c5b1fcbaea832b69c44472e08ab5daa2d0326fdec7edb283129a95e48c2",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
+      }
+    },
+    {
+      "receipt": "local/goal15e_lifecycle_probe_result.json",
+      "kind": "Source fixture linked against registered archive and real current services",
+      "manifest_embedded": true,
+      "exit_code": 0,
+      "stdout": "Group factory/manager Source composition: PASS (nonempty E200, signed order/find, genuine groups, clear, flag0/flag1, publications, proxies, lock/head/body/group frees, retained queue)\n",
+      "stderr": "",
+      "sha256": {
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_pool_cleanup\\local\\output\\avoid_group_factory_probe.cpp": "82500ae58f8adc6f2c4737644070365f1e31efc335fadb03cce3135e3db49cf2",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15e_lifecycle_probe.obj": "d9e8956a6fe2ceca0bc4b3d285bb18d0a248cdacc799a225f9456afc3d7280b4",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15e_lifecycle_probe.exe": "3405f41420f2194792ecf6787224a76c67cd5b2072042e384b277e40159e5659",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "49b89c5b1fcbaea832b69c44472e08ab5daa2d0326fdec7edb283129a95e48c2",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
+      }
+    }
+  ],
+  "reviews": {
+    "primary": "complete Source, raw kernels, cleanup phases, contexts, actual providers and original ABI reviewed; no blockers",
+    "peer": "zone_cleanup read-only review of all4 Native manager listings and emitted phases; no blockers",
+    "direct_call_rows_passed": 17,
+    "parsed_markdown_claims_passed": 7,
+    "factory_unparsed_markdown_claims": {
+      "count": 3,
+      "resolution": "allocator table row and two historical correction sentences; actual00417CC9 allocator and both00424DBE/00424DDA callers explicitly verified"
+    },
+    "logs": [
+      "local/goal15e_head_call_review.log",
+      "local/goal15e_factory_call_review.log",
+      "local/goal15e_manager_call_review.log"
+    ]
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved_original_prototypes": 7,
+    "source_extra_edx_context_in_original_prototypes": false,
+    "prototype_rollback_and_readback": "local/goal15e_original_prototype_changes.json",
+    "prior_annotations": "local/ghidra-annotations-20261015T215357Z.json",
+    "annotation_log": "local/goal15e_annotation.log",
+    "refreshed_exports": [
+      "0041bf50",
+      "0041e1b0",
+      "00417ca0",
+      "0041e200",
+      "00421500",
+      "0041f980",
+      "00420680",
+      "00424d00",
+      "004218e0",
+      "0041f230",
+      "0041e3a0"
+    ],
+    "export_log": "local/goal15e_exports.log",
+    "snapshot_log": "local/goal15e_snapshot.log"
+  },
+  "history_preservation": {
+    "baseline": "eb5dfa27d",
+    "reconstruction_shard_diff": {
+      "00410000": {
+        "added": 5,
+        "removed": 0
+      },
+      "00420000": {
+        "added": 2,
+        "removed": 0
+      }
+    },
+    "old_records": "all prior typed/projection records retained without deletion"
+  },
+  "registered_artifacts_sha256": {
+    "build/win32/Release/bsp_core.lib": "49b89c5b1fcbaea832b69c44472e08ab5daa2d0326fdec7edb283129a95e48c2",
+    "build/win32/bsp_core.dir/Release/native_hull_list_head.obj": "220cf702cce75054763a2b6656f88aa44a6cd267d57bb43f500c189fd7c155cd",
+    "build/win32/bsp_core.dir/Release/native_avoid_group_factory.obj": "567ed2975f381246c27af88f9ce280fd75d9641e799359cbee55367c18ed4a0f",
+    "build/win32/bsp_core.dir/Release/native_avoid_manager_lifetime.obj": "5f7244a55b0d3b78e99aac0f2060a27a9e4ea29f7a4e65bda2d1390a903c4c0b"
+  },
+  "integration": {
+    "target": "main",
+    "method": "merge workers into primary staging, union shared ledgers/CMake, verify current-main Source, fast-forward main and push once",
+    "new_test_targets": 0,
+    "native_runtime_abi_gameplay": "not established",
+    "goal": "continues after this bounded batch"
+  }
+}

@@ -1,7 +1,7 @@
 {
   "packet": "oct15_fourteenth_reconstruction_batch",
-  "status": "seven_complete_ordinary_entries_four_consumed_full_prefixes_verified_pending_main_integration",
-  "source_commit_tested": "7f340c290",
+  "status": "seven_complete_ordinary_entries_four_consumed_full_prefixes_integrated_main_win32_build_passed",
+  "source_commit_tested": "6bc26ad83a0d2ea8c2b2bbae1838459a8a9abe92",
   "component_pins": {
     "integer_map_full_cleanup": "5a15a409427fba9a415883273382d2ebb35e5a81",
     "dword_uninitialized_copy": "43375e9af932e6f3748ba7df0204876484b0cfdf",
@@ -77,8 +77,8 @@
     "configuration": "MSVC Win32 Release",
     "build": "passed",
     "existing_tests": "3/3 passed",
-    "ctest_seconds": 8.03,
-    "log": "local/oct15_fourteenth_initial_build.log",
+    "ctest_seconds": 8.84,
+    "log": "local/oct15_fourteenth_publication_union_build.log",
     "report_transfer_rows": 51,
     "distinct_transfer_sites": 51,
     "documentation_claims": 51,
@@ -86,7 +86,10 @@
     "transfer_log": "local/oct15_fourteenth_transfer_verification.log",
     "transfer_evidence_scope": "Some rows explicitly cover excluded diagnostics/partial branches/nativeproducer/reference context; they do not promote those paths to reconstructed Source.",
     "new_tests": 0,
-    "new_entries_natively_executed": false
+    "new_entries_natively_executed": false,
+    "initial_integrated_source": "7f340c290",
+    "initial_integrated_tests": "3/3 passed in8.03s",
+    "publication_union_reason": "Repeated after latest enum-to-Lua registration and string-property Source integration. Tested6bc26ad83 and Mainc9c29d562 Source/header/CMake/tools/scripts compare equal."
   },
   "reviews": {
     "worker_sources": "Primary reviewed all complete Source/header/native listings for the three immutable worker pins with no findings; frozen-pin acceptance recorded in each component report.",
@@ -111,5 +114,5 @@
     "Older real AV/bounded/provider-bearing interfaces and fixture evidence remain separate. Existing math native differential tests execute older seeds, not these new ordinary entries.",
     "Ordinary partial erasers, general insertion, input record/pair/scalar-delete destruction and loader remain separate incomplete work; this batch does not claim their closure."
   ],
-  "main_source_integration_commit": null
+  "main_source_integration_commit": "c9c29d5622eba83c11632036d8a694aaf0a234f0"
 }
