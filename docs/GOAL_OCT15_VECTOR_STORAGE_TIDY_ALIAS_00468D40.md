@@ -24,5 +24,4 @@ private frames or expand its coverage to those cleanup bodies.
 All reached raw storage and releases must be valid for the current CRT.
 This does not prove original heap, static CRT, register/flags/private-frame,
 FH3/SEH, fault or mangling compatibility. No new-entry native differential,
-application adoption or game validation is claimed. Default Win32 build,
-independent review and whole live/installed-byte checks are pending.
+application adoption or game validation is claimed. Whole live/installed-byte checks and independent full-body/canonical Source review passed. The combined default MSVC Release Win32 build passed all three existing CTests in 8.09s; no new tests were added. Receipt: reports/goal_oct15_vector_callers_primary_review.json.

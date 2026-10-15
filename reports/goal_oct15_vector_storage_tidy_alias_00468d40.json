@@ -1,7 +1,7 @@
 {
   "packet": "goal_oct15_vector_storage_tidy_alias_00468d40",
-  "status": "whole_raw_Source_independent_review_and_default_build_pending",
-  "source_ready": false,
+  "status": "whole_Source_independently_assembly_reviewed_default_Win32_three_existing_checks_passed",
+  "source_ready": true,
   "source": "src/native_vector_storage_tidy_alias.cpp",
   "header": "include/bsp/native_vector_storage_tidy_alias.hpp",
   "documentation": "docs/GOAL_OCT15_VECTOR_STORAGE_TIDY_ALIAS_00468D40.md",
@@ -169,5 +169,39 @@
       "function": "00c62086",
       "kind": "tail_jump"
     }
-  ]
+  ],
+  "validation": {
+    "combined_build": {
+      "revision": "4f164cfc6bd72752edc55a0d0c41186b78ee8afb",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_vector_callers_combined_build.log",
+      "log_sha256": "d1af069a04e97eae679a73f143bc039fbebde9eb8de4502ae2e6a988d90fb3cd",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 8.09,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake",
+      "scope": "existing regression checks; native math seeds do not execute these new bodies"
+    },
+    "typed_rows_passed": 3,
+    "new_tests": 0
+  },
+  "independent_review": {
+    "reviewer": "string_allocate",
+    "result": "passed whole native body,canonical actual Source,header,new API and both incoming tail jumps",
+    "source_sha256": "40f85bcb9f23ccdc8a78c9bb635feedb43b73e47a9ba20a2fcfeab2a887afbac",
+    "header_sha256": "11d145160262b76899c740dc6f50dd4335c0baebbc7afbadfb7401846422b887"
+  },
+  "annotation": {
+    "prior_values_log": "local/ghidra-annotations-20261015T225244Z.json",
+    "native_name_retained": true,
+    "project_saved": true,
+    "exports_refreshed": true
+  }
 }
