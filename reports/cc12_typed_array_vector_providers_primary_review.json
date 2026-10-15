@@ -1,0 +1,71 @@
+{
+  "schema": "bsp.scene_typed_array_vector_providers_primary_review.v1",
+  "Source_commit": "261426e4936d6bda59983cbe251fa258e3e475b0",
+  "status": "whole_ordinary_Source_primary_peer_accepted_CMake_queued_Main_build_pending",
+  "Source": "src/native_scene_typed_array_vector_providers.cpp",
+  "primary_all_Original_listings_complete_Source_header_and_immediate_raw_Source_read": true,
+  "Original_contracts": {
+    "008f3590": {
+      "entry": "add_native_scene_property_type10_array_008f3590",
+      "bytes": 116,
+      "instructions": 36,
+      "Original_ABI": "ECX114h bag, stack key/data/count/fullDWORDflags, RET10h; count/data/flags raw10 ctor"
+    },
+    "008f3610": {
+      "entry": "add_native_scene_property_type11_array_008f3610",
+      "bytes": 116,
+      "instructions": 36,
+      "Original_ABI": "ECX114h bag, stack key/data/count/fullDWORDflags, RET10h; count/data/flags raw11 ctor"
+    },
+    "008f3690": {
+      "entry": "add_native_scene_property_three_word_008f3690",
+      "bytes": 113,
+      "instructions": 41,
+      "Original_ABI": "ECX114h bag, stack key/borrowed12B payload, RET8; inline tag7 construction then insertion"
+    }
+  },
+  "independent_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_enum_reader_review_oct15\\local\\SceneTypedArrayVectorProvidersIndependentReview01\\review.compact.DATA.json",
+    "bytes": 5280,
+    "sha256": "46cef5a9fe1c6793ce79c07e6311125b46dd59098e6037fd555b6ff1d8db05ed"
+  },
+  "primary_peer_inputs": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_typed_array_vector_providers_integration_20261015\\primary_peer_input_pins.DATA.json",
+    "bytes": 194214,
+    "sha256": "561936db042147a849208511ced7a665696fe29d9660e40c2e6cecb8eb7d2d46"
+  },
+  "contract": [
+    "Whole345B/113 Original instructions/9directcalls/4targets. Canonical38h root allocation, fullDWORD flags and exact raw10/11 count/data/flags ordering; null allocation still goes to33F0 insertion. No added recovery.",
+    "Low flag byte zero retains genuine sole-owned same-currentCRT allocated data, caller-managed through construction then transferred with owning root on successful publication. Never borrowed/stack/static/shared/foreign payload. Nonzero copies and caller retains original. Tags10/11 free stored payload independent of copy flags or +2C.",
+    "Scalar Source explicitly reuses accepted raw8EF270 where Original inlines: phase/tag7, three interleaved DWORD loads/stores,45written/11preserved bytes; payload always borrowed, never retained/freed. +2C occurs before frame staging in Source, and call/register effects differ. Ordinary stable disjoint successful nonthrowing effects agree; no Original CALL or ABI claim.",
+    "Same genuine114h bag/keys/raw strings/physical process and initialized E175B0/E188B4/cell authorities. Finite unique disjoint ownership graphs and positive nonoverflowing counts; no FP/vector class interpretation, startup, EH recovery or Original class ABI."
+  ],
+  "strict": {
+    "initial_chunk": "2f4341",
+    "exit_code": 0,
+    "runtime_library": "MD",
+    "sections": 7,
+    "symbol_slots": 27,
+    "code_sections": 3,
+    "code_bytes": 378,
+    "instructions": 141,
+    "code_relocations": 15,
+    "metadata_relocations": 0
+  },
+  "author_normal": {
+    "initial_chunk": "6ca04e",
+    "session": 57901,
+    "terminal_chunk": "9575c9",
+    "exit_code": 0,
+    "configured_tests": 2,
+    "seconds": 7.7,
+    "new_TU_registered": false
+  },
+  "Main_registered": false,
+  "Main_build": "pending",
+  "Original_ABI_compatible": false,
+  "Original_EH_or_private_CRT_compatible": false,
+  "new_Source_runtime_executed": false,
+  "game_validated": false,
+  "whole_parser_equivalent": false
+}
