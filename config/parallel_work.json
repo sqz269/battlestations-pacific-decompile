@@ -39607,6 +39607,33 @@
       "game_validated": false,
       "actual_compiler_archive_gate": "pass",
       "Main_validation": "reports/cc12_typed_property_providers_Main_validation.json"
+    },
+    {
+      "id": "cc12_scene_typed_array_vector_providers",
+      "done": false,
+      "state": "whole_ordinary_Source_primary_peer_accepted_CMake_queued_Main_build_pending",
+      "worker": "library_insert_source",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "008f3590",
+        "008f3610",
+        "008f3690"
+      ],
+      "output_files": [
+        "docs/NATIVE_SCENE_TYPED_ARRAY_VECTOR_PROVIDERS_CC12.md",
+        "include/bsp/native_scene_typed_array_vector_providers.hpp",
+        "reports/native_scene_typed_array_vector_providers_cc12.json",
+        "src/native_scene_typed_array_vector_providers.cpp"
+      ],
+      "depends_on": [],
+      "source_ready": true,
+      "code_revision": "261426e4936d6bda59983cbe251fa258e3e475b0",
+      "primary_review": "reports/cc12_typed_array_vector_providers_primary_review.json",
+      "Main_build_gate": "pending",
+      "contract": "Whole ordinary typed10/11 owning array providers and tag7 three-word inline reconstruction via explicitly reused raw Source; no Original ABI/EH/privateCRT/FP/startup/runtime/game/whole-parser credit.",
+      "Original_ABI_compatible": false,
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {
