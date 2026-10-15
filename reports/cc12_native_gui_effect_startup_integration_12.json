@@ -1,0 +1,249 @@
+{
+  "packet": "cc12_actual_GUI06_terminal_12",
+  "captured_utc": "2026-10-15T01:14:07.406199+00:00",
+  "source_revision": "8df36847324ada1f5770f3e45712bb4f2cb298bf",
+  "build": {
+    "target": "MSVC Win32 Release",
+    "status": "PASS3/3",
+    "test_seconds": 11.93,
+    "log": "local/cc12_sampler_entry_combined_gui06_release_build_01.log",
+    "temporary_cmake_overlay": false
+  },
+  "runtime": {
+    "attempt": "06",
+    "status": "PASS_BOUNDED_ACTUAL_GUI_EFFECT_STARTUP_AND_RETIREMENT",
+    "exec_session": "13746 terminal0",
+    "actual_source_revision": "8df36847324ada1f5770f3e45712bb4f2cb298bf",
+    "actual_executable": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_startup_receipts\\8df36847324ada1f5770f3e45712bb4f2cb298bf\\build\\win32\\cc12_followup_release\\bsp_game.exe",
+    "actual_executable_sha256": "996236bfa480b44f23d789f8c423a57dc7cfefd83e157c3036c3f891bf344487",
+    "launcher_checkout_head": "702d0b5c0fe5cf9f1a9745214118f5a51711a4ee",
+    "launcher_checkout_head_is_build_source": false,
+    "source_authority": "Frozen prelaunch build receipt, immutable snapshot and exact executable hash; manifest build_checkout/host heads are launch-time checkout discovery only.",
+    "slot": 5,
+    "affinity_core": 12,
+    "started_utc": "2026-10-15T01:07:27.7544563Z",
+    "finished_utc": "2026-10-15T01:07:30.0293699Z",
+    "exit_code": 0,
+    "actual_process_started": true,
+    "environment": {
+      "BSP_NATIVE_FONT_PROBE": "0",
+      "BSP_NATIVE_GUI_EFFECT_PROBE": "1"
+    },
+    "resources": [
+      {
+        "name": "GuiFont.mshd",
+        "actual_identity": "12A9C890",
+        "profile": "00d61a00",
+        "refs_on_return": 2,
+        "caller_retired_from": 2,
+        "caller_retired_to": 1,
+        "fallback": false
+      },
+      {
+        "name": "GuiFontBilinear.mshd",
+        "actual_identity": "12A9DAF0",
+        "profile": "00d61a00",
+        "refs_on_return": 2,
+        "caller_retired_from": 2,
+        "caller_retired_to": 1,
+        "fallback": false
+      }
+    ],
+    "shader_cache": {
+      "identity": "09134628",
+      "source_mode": 0,
+      "load_variants": 0,
+      "creation_returned": true,
+      "release_guard_passed": true,
+      "evidence": "Both caller retirements require Source stage ready after release_shader_cache and its publication-null guard.",
+      "record_count_and_lookup_cursor_not_logged": true
+    },
+    "private_sampler_word_consumption_passed": true,
+    "unknown_word_guard_fired": false,
+    "actual_captured_word_logged": false,
+    "pre_entry_unknown_scope_words_are_not_captured_residue": true,
+    "second_acquisition_entered": true,
+    "actual_effect_acquisition_observed": true,
+    "caller_retirement_observed": true,
+    "original_shared_drain_observed": true,
+    "frames_requested": 120,
+    "frames_presented": 119,
+    "presents_skipped": 1,
+    "loop_finished": true,
+    "final_device_release": 0,
+    "final_api_release": 0,
+    "host_methods_concrete": 122,
+    "host_methods_unimplemented": 43,
+    "installed_original_unchanged_after_run": true,
+    "installed_shader_cache_unchanged_after_run": true,
+    "installed_shader_cache_sha256": "dcc65686e26e0b7b4f4179b45b153aaa353696b0b1b08c32251fbc7c97c0ecf8",
+    "log": "local/cc12_actual_native_gui_effect_startup_06.log",
+    "manifest": "local/cc12_actual_native_gui_effect_startup_06.log.manifest.json",
+    "launcher_result": "local/cc12_actual_native_gui_effect_startup_06_launcher.log",
+    "bounded_GUI_effect_startup_validated": true,
+    "startup_validated": false,
+    "native_text_draw_validated": false,
+    "faithful_game_startup_validated": false,
+    "gameplay_validated": false,
+    "limits": "Font resource probe disabled; no Native text draw, full D5E13C scene, Original private ABI/FH3 or faithful gameplay validation. Neutral/unimplemented host paths remain.",
+    "runtime_receipt": "reports/cc12_native_gui_effect_startup_integration_12.json"
+  },
+  "verified_frozen_build_artifacts": 23,
+  "verified_immutable_launch_artifacts": 29,
+  "artifacts": [
+    {
+      "path": "build_snapshot/local/cc12_sampler_entry_combined_gui06_release_build_01.log",
+      "bytes": 4362,
+      "sha256": "37bceebfc7811be8723a0cccbde0e755134ef2def7a39563d4206ac64f923faf"
+    },
+    {
+      "path": "build_snapshot/build/win32/Release/bsp_core.lib",
+      "bytes": 92039554,
+      "sha256": "aee7757ff5512438a23691b3f1b41798edd50f21b5c3b6c7b48c94943918d4ce"
+    },
+    {
+      "path": "build_snapshot/build/win32/bsp_game.map",
+      "bytes": 8306027,
+      "sha256": "ca1e08f3dbd4afb9c362053d5e6c56cfbe479b3e04d681f323a536f09a3f00f3"
+    },
+    {
+      "path": "build_snapshot/build/win32/cc12_followup_release/bsp_game.exe",
+      "bytes": 5590016,
+      "sha256": "996236bfa480b44f23d789f8c423a57dc7cfefd83e157c3036c3f891bf344487"
+    },
+    {
+      "path": "build_snapshot/build/win32/cc12_followup_release/xlive_stub.dll",
+      "bytes": 32768,
+      "sha256": "b2416673d6d2fbcc02f0b6e4699f0b18ba691f8e2f33a1adeb2463d73d8c79f2"
+    },
+    {
+      "path": "build_snapshot/build/win32/CMakeCache.txt",
+      "bytes": 19835,
+      "sha256": "dce4b4a92074e24d00695de30205f4e7ecadb90770f2740cbcf483cec092d2e4"
+    },
+    {
+      "path": "build_snapshot/cmake/startup.cmake",
+      "bytes": 226958,
+      "sha256": "7c187ac7ff1f9b1de34ea101c7092d4c046ec9dca719270615350e73b35c7479"
+    },
+    {
+      "path": "build_snapshot/build/win32/bsp_core.dir/Release/native_material_program_compiler_actual.obj",
+      "bytes": 223620,
+      "sha256": "fd5447e29e43cfc85d51edca18c988ddd1f09e789cb03ce55430b0aeb76cb8a3"
+    },
+    {
+      "path": "build_snapshot/build/win32/bsp_core.dir/Release/native_material_pass_shader_slots.obj",
+      "bytes": 15274,
+      "sha256": "47a142b8809fcc361ac9da3a8ff6de0453e55d3971301d8fc6748b0779e33dfd"
+    },
+    {
+      "path": "build_snapshot/build/win32/bsp_game.dir/Release/game_native_gui_effect_probe.obj",
+      "bytes": 106670,
+      "sha256": "5bc13658f526f5b47d816838ddfff4c13c404562b094ef5b574af8a7d6040478"
+    },
+    {
+      "path": "build_snapshot/src/native_material_program_compiler_actual.cpp",
+      "bytes": 29346,
+      "sha256": "8fff69fa386cd63678174f0c8582a4223c291f7e47d2948d40daaecbf5393698"
+    },
+    {
+      "path": "build_snapshot/include/bsp/native_material_program_compiler_actual.hpp",
+      "bytes": 8556,
+      "sha256": "790bf45a49e30dd9c658a3aaae0ee45f419d3fc052f04ffa59f1d48a4204b557"
+    },
+    {
+      "path": "build_snapshot/src/native_sampler_entry_word_boundary.inc",
+      "bytes": 14008,
+      "sha256": "6b430b459c839ae8aff2ba7cb0e2e48d5facb96e727a9ab61adcf465a8d4e606"
+    },
+    {
+      "path": "build_snapshot/src/native_material_pass_shader_slots.cpp",
+      "bytes": 5435,
+      "sha256": "b67269c731e0bc5be863013c01ebb4bb19144e848b21af3a589f544e2e08ee88"
+    },
+    {
+      "path": "build_snapshot/include/bsp/native_material_pass_shader_slots.hpp",
+      "bytes": 3500,
+      "sha256": "115394e43811e8f8a39fb980b9746bb7e5148b61d12e6c383d2a154b5b1a31ba"
+    },
+    {
+      "path": "build_snapshot/src/game_native_gui_effect_probe.cpp",
+      "bytes": 25084,
+      "sha256": "4a1dd7f7948a43a6356a3ffcfd2d183f238a625a7e69a423636797296265aacb"
+    },
+    {
+      "path": "build_snapshot/src/game_native_renderer_application.cpp",
+      "bytes": 52167,
+      "sha256": "94ccf8b2f10f1a0c02b1a00201ef871a486763cf581c23b8315a374e09afc169"
+    },
+    {
+      "path": "build_snapshot/src/game_native_renderer_device.inc",
+      "bytes": 4582,
+      "sha256": "8924bda710641aa6a60fa3c5313a08e9b69dbee00c65fe7cdea26f6473c9f4d1"
+    },
+    {
+      "path": "build_snapshot/include/bsp/game_native_renderer_application.hpp",
+      "bytes": 13342,
+      "sha256": "10dd654bd108b2f6a82bc6a7e34e737507c86a0ea6dbcf4f82207d3dd541bf64"
+    },
+    {
+      "path": "build_snapshot/include/bsp/native_renderer_reset_process.hpp",
+      "bytes": 3312,
+      "sha256": "703e00a9bd048d31aa3298ece0786c63012536e2949f0920e4a75a17deade193"
+    },
+    {
+      "path": "build_snapshot/src/native_renderer_reset_process.cpp",
+      "bytes": 10518,
+      "sha256": "0d6fd899db8b2ee214d73ede35fc875b4d2ba5da9b5b2b9960ec20132e8d0978"
+    },
+    {
+      "path": "build_snapshot/src/game_native_gui_sampler_application.cpp",
+      "bytes": 10919,
+      "sha256": "d47b03291cecad3927dc742325c448121f663ab0b40f493c8e88116ef544ed1e"
+    },
+    {
+      "path": "build_snapshot/include/bsp/game_native_gui_sampler_application.hpp",
+      "bytes": 3249,
+      "sha256": "2aa6bf3276f649e8fc02eb5d0c1f78902303f8c798208ea1e97c22b8672d2fd9"
+    },
+    {
+      "path": "previous_GUI_report.json",
+      "bytes": 24192,
+      "sha256": "83c2bf2ba575ddff7dcc79cdd2419c12c8d076d021cf06548f3e1e0ec7556d2a"
+    },
+    {
+      "path": "local/cc12_actual_native_gui_effect_startup_06.log",
+      "bytes": 66225,
+      "sha256": "bbe38c369aab139c67f74501d6ebdaf66b563768d3d1e81323432c69745b9be4"
+    },
+    {
+      "path": "local/cc12_actual_native_gui_effect_startup_06.log.manifest.json",
+      "bytes": 3356,
+      "sha256": "ac4712eb1179f7c8f5975fe94e5d9bf808d8b6aeab53f24281470d9a91c36347"
+    },
+    {
+      "path": "local/cc12_actual_native_gui_effect_startup_06_launcher.log",
+      "bytes": 591,
+      "sha256": "2fe9b79c49fc7416cd1330143ae3d1a9cc68e76c60db6639bf06e97711c78c57"
+    },
+    {
+      "path": "local/cc12_native_pre_gui06_build_receipts/8df36847324ada1f5770f3e45712bb4f2cb298bf/receipt.json",
+      "bytes": 4687,
+      "sha256": "2dae2f1a4cc103a9f9a95ba38019ade0c27f0a29329865080c17d69f86bb5e04"
+    },
+    {
+      "path": "local/cc12_native_gui_startup_receipts/8df36847324ada1f5770f3e45712bb4f2cb298bf/root_launch_receipt_06.json",
+      "bytes": 6303,
+      "sha256": "d4d78b9be5a18f9d9fb17f41757042eb6c41e7a2a7ba0b2207d393c50d1356e9"
+    },
+    {
+      "path": "local/cc12_run_gui_effect_probe_06.ps1",
+      "bytes": 4997,
+      "sha256": "fdb217823bbd1e10bacb73312818dc4dcee7744186900f7814c60ec81d079801"
+    }
+  ],
+  "original_abi_compatible": false,
+  "world_D5E13C_admitted": false,
+  "gameplay_validated": false,
+  "overall_goal": "ACTIVE"
+}
