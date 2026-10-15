@@ -1,0 +1,118 @@
+{
+  "packet": "oct15_fourteenth_reconstruction_batch",
+  "status": "seven_complete_ordinary_entries_four_consumed_full_prefixes_integrated_main_win32_build_passed",
+  "source_commit_tested": "6bc26ad83a0d2ea8c2b2bbae1838459a8a9abe92",
+  "component_pins": {
+    "integer_map_full_cleanup": "5a15a409427fba9a415883273382d2ebb35e5a81",
+    "dword_uninitialized_copy": "43375e9af932e6f3748ba7df0204876484b0cfdf",
+    "vector_map_full_cleanup": "bee75c0f8022f6409f623f237443187d92ac660e",
+    "dword_inplace_ranges_source": "7f340c290"
+  },
+  "complete_ordinary_functions": [
+    "0055b490",
+    "00696d40",
+    "00697860",
+    "0055a3f0",
+    "0055aab0",
+    "006970b0",
+    "00697440"
+  ],
+  "consumed_full_prefixes": [
+    {
+      "address": "004cef40",
+      "bytes": 127,
+      "instructions": 49,
+      "ordinary_helper_complete": false
+    },
+    {
+      "address": "0055b230",
+      "bytes": 127,
+      "instructions": 49,
+      "ordinary_helper_complete": false
+    },
+    {
+      "address": "00559110",
+      "bytes": 127,
+      "instructions": 49,
+      "ordinary_helper_complete": false
+    },
+    {
+      "address": "005599c0",
+      "bytes": 127,
+      "instructions": 49,
+      "ordinary_helper_complete": false
+    }
+  ],
+  "native_owned_scope": {
+    "ordinary_body_bytes": 314,
+    "ordinary_instruction_starts": 135,
+    "fragment_bytes": 508,
+    "fragment_starts": 196,
+    "total_owned_bytes": 822,
+    "total_owned_starts": 331
+  },
+  "packet_reports": [
+    "reports/oct15_input_integer_map_full_cleanup.json",
+    "reports/oct15_native_dword_uninitialized_copy.json",
+    "reports/oct15_input_vector_map_full_cleanup.json",
+    "reports/oct15_native_dword_inplace_ranges.json"
+  ],
+  "source_hashes_sha256": {
+    "include/bsp/native_input_integer_map_full_cleanup.hpp": "9ff19bc567f8a7665239cd1193f1dfe6fcde5dd4d7eb8975fb6f5e7c4de2abe3",
+    "src/native_input_integer_map_full_cleanup.cpp": "b2b5edf15d1ae2efe8dbed53019388a51e5cb12158cdc65067b2e329c7ed0210",
+    "include/bsp/native_dword_uninitialized_copy.hpp": "0693c7ad5327afc2d5d9b48413493f95a6d829c3fb96a979da964404a0422363",
+    "src/native_dword_uninitialized_copy.cpp": "a6a8fa0ad704f108fb8106a8bc2a4811d891b3c4532c4d0ca9b74e9a576574e6",
+    "include/bsp/native_input_vector_map_full_cleanup.hpp": "c129be5e584082ca6e09aa11beb26fd82c16d86ddb7b11a977b47f80651a6dca",
+    "src/native_input_vector_map_full_cleanup.cpp": "0db280f9c23a16037359632e2b4a299c0116a5b13a8ffc75b5dacb90dff26320",
+    "include/bsp/native_dword_inplace_ranges.hpp": "ac208972c62c9c4cfbf1810f38b670f3b44d1e7121d8fd3c13d0362f9a1e5c3d",
+    "src/native_dword_inplace_ranges.cpp": "2ba89ef169f0454bde1e42cda3ee42371a7752d169a38574bac1ca5b66129f31"
+  },
+  "behavior": [
+    "Exact whole integer/word-vector/descriptor-vector map destructors retain head/head.left capture, private iterator output and proven full-range selection, CURRENT head free,4then8clears, preservedopaque0 and definedEAX0.",
+    "Four actual full-prefix fragments preserve native selection TEST/CMP/load ordering, owning accepted subtrees, CURRENT-head reset/reload/output and propagation of raw pooled-key getter failures. Ordinary diagnostics/partial paths remain incomplete.",
+    "Whole uninitialized DWORD copy/core dispatch retain nullskip/currentsource-read/store/progressive aliases, opaque producer metadata union, wrapped source/output advancement and propagated EAX.",
+    "Whole in-place DWORD fill/backward-copy retain conditional value ADDRESS capture/currentvalue reread and independently precomputed SAR2*4/backward displacement return and load/decrement/store schedule."
+  ],
+  "validation": {
+    "configuration": "MSVC Win32 Release",
+    "build": "passed",
+    "existing_tests": "3/3 passed",
+    "ctest_seconds": 8.84,
+    "log": "local/oct15_fourteenth_publication_union_build.log",
+    "report_transfer_rows": 51,
+    "distinct_transfer_sites": 51,
+    "documentation_claims": 51,
+    "failed_unchecked_warnings": 0,
+    "transfer_log": "local/oct15_fourteenth_transfer_verification.log",
+    "transfer_evidence_scope": "Some rows explicitly cover excluded diagnostics/partial branches/nativeproducer/reference context; they do not promote those paths to reconstructed Source.",
+    "new_tests": 0,
+    "new_entries_natively_executed": false,
+    "initial_integrated_source": "7f340c290",
+    "initial_integrated_tests": "3/3 passed in8.03s",
+    "publication_union_reason": "Repeated after latest enum-to-Lua registration and string-property Source integration. Tested6bc26ad83 and Mainc9c29d562 Source/header/CMake/tools/scripts compare equal."
+  },
+  "reviews": {
+    "worker_sources": "Primary reviewed all complete Source/header/native listings for the three immutable worker pins with no findings; frozen-pin acceptance recorded in each component report.",
+    "root_source": "Independent14-check Source/native review passed with stable hashes;83live/disk bytes and37 current starts agree.",
+    "all_components": "Full typed-body/envelope/owned region distinctions, exact rel32-only normalized comparisons, producer metadata and privateframe/currentCRT/RawCtx qualifications remain explicit in component evidence."
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved_annotations": 11,
+    "prior_names_comments_preserved": true,
+    "preimage_logs": [
+      "local/ghidra-annotations-20261015T214409Z.json",
+      "local/ghidra-annotations-20261015T214625Z.json"
+    ],
+    "forced_snapshot": "local/oct15_fourteenth_snapshot.log",
+    "eleven_forced_exports": "local/oct15_fourteenth_exports.log"
+  },
+  "limits": [
+    "Valid reached actual storage/ownership, matching pool/CRT and stable full-selection conditions admitted. No added callback, guard, unsupported-path stub, rollback, retry or noexcept string-storage bridge.",
+    "Source private arguments/helpers/output cells and added RawPoolContext/currentCRT/C++ policies do not prove native register/stack/flags/FH3/SEH/fault/heap/exception identity, original binary ABI or gameplay.",
+    "Older real AV/bounded/provider-bearing interfaces and fixture evidence remain separate. Existing math native differential tests execute older seeds, not these new ordinary entries.",
+    "Ordinary partial erasers, general insertion, input record/pair/scalar-delete destruction and loader remain separate incomplete work; this batch does not claim their closure."
+  ],
+  "main_source_integration_commit": "c9c29d5622eba83c11632036d8a694aaf0a234f0"
+}

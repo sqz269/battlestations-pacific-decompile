@@ -1,0 +1,306 @@
+{
+  "packet": "oct15_native_dword_uninitialized_copy",
+  "status": "complete_source_win32_build_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_dword_uninitialized_copy.cpp",
+  "header": "include/bsp/native_dword_uninitialized_copy.hpp",
+  "documentation": "docs/OCT15_NATIVE_DWORD_UNINITIALIZED_COPY.md",
+  "base_commit": "0efed000efc9adc7dfaad6584664f381dd50c094",
+  "routines": [
+    {
+      "address": "00696d40",
+      "original_name": "STL_UninitCopy_00696d40",
+      "cpp_name": "copy_native_dword_uninitialized_00696d40",
+      "coverage": "complete_normal_scalar_loop_and_result",
+      "original_abi": "ECX first,EDX last; four stacked DWORDs(destination,owner,opaque metadata,tag),RET10h,EAX advanced destination",
+      "consumed_stack_slots": [
+        "ESP+4 destination,including empty range"
+      ],
+      "dead_stack_slots": [
+        "ESP+8 owner",
+        "ESP+C opaque metadata:duplicate destination OR requested count",
+        "ESP+10 tag"
+      ]
+    },
+    {
+      "address": "00697860",
+      "original_name": "STL_TagDispatch_00697860",
+      "cpp_name": "copy_native_dword_uninitialized_dispatch_00697860",
+      "coverage": "complete_dispatch_and_core_result_propagation",
+      "original_abi": "ECX owner,EDX unconsumed; stack(first,last,destination),RET0Ch,EAX propagated core result",
+      "core_stack_schedule": [
+        "destination",
+        "owner",
+        "destination bits",
+        "owner bits masked FFFFFF00"
+      ]
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0069787c",
+      "native": "00696d40",
+      "function": "00697860",
+      "kind": "call",
+      "contract": "owned dispatcher: pass actual first/last/destination and propagate core result",
+      "bytes_hex": "e8bff4ffff",
+      "current_instruction_start": true,
+      "current_body_owner": true,
+      "default_effective_target_verified": true,
+      "current_flow_override": "NONE",
+      "disk_live_equal": true
+    },
+    {
+      "address": "006974cc",
+      "native": "00696d40",
+      "function": "006974b0",
+      "kind": "call",
+      "contract": "external dispatcher: same physical core schedule; metadata duplicates destination",
+      "bytes_hex": "e86ff8ffff",
+      "current_instruction_start": true,
+      "current_body_owner": true,
+      "default_effective_target_verified": true,
+      "current_flow_override": "NONE",
+      "disk_live_equal": true
+    },
+    {
+      "address": "00697a7a",
+      "native": "00696d40",
+      "function": "00697990",
+      "kind": "call",
+      "contract": "growth prefix: current begin to insertion, new buffer, owner,count,private tag",
+      "bytes_hex": "e8c1f2ffff",
+      "current_instruction_start": true,
+      "current_body_owner": true,
+      "default_effective_target_verified": true,
+      "current_flow_override": "NONE",
+      "disk_live_equal": true
+    },
+    {
+      "address": "00697aa2",
+      "native": "00696d40",
+      "function": "00697990",
+      "kind": "call",
+      "contract": "growth suffix: insertion to reloaded current end, post-fill output, owner,count,modified-value tag",
+      "bytes_hex": "e899f2ffff",
+      "current_instruction_start": true,
+      "current_body_owner": true,
+      "default_effective_target_verified": true,
+      "current_flow_override": "NONE",
+      "disk_live_equal": true
+    },
+    {
+      "address": "00697b28",
+      "native": "00697860",
+      "function": "00697990",
+      "kind": "call",
+      "contract": "short-tail: insertion to captured oldend, destination insertion+count*4",
+      "bytes_hex": "e833fdffff",
+      "current_instruction_start": true,
+      "current_body_owner": true,
+      "default_effective_target_verified": true,
+      "current_flow_override": "NONE",
+      "disk_live_equal": true
+    },
+    {
+      "address": "00697b92",
+      "native": "00697860",
+      "function": "00697990",
+      "kind": "call",
+      "contract": "long-tail: oldend-count*4 to oldend, destination oldend; returned output is published",
+      "bytes_hex": "e8c9fcffff",
+      "current_instruction_start": true,
+      "current_body_owner": true,
+      "default_effective_target_verified": true,
+      "current_flow_override": "NONE",
+      "disk_live_equal": true
+    }
+  ],
+  "native_evidence": {
+    "utc": "2026-10-15T21:31:21.200351+00:00",
+    "typed_modification": "456",
+    "complete_current_body_ranges": true,
+    "owned_bytes": 75,
+    "owned_instruction_count": 29,
+    "current_owned_starts_confirmed": 29,
+    "owned_call_count": 1,
+    "external_producer_call_count": 5,
+    "total_transfer_rows": 6,
+    "unique_current_starts_including_external_producer_sites": 34,
+    "all_current_xrefs_accounted": true,
+    "indirect_calls": 0,
+    "external_tail_jumps": 0,
+    "bodies": [
+      {
+        "address": "00696d40",
+        "established_name": "STL_UninitCopy_00696d40",
+        "end_exclusive": "00696d66",
+        "bytes": 38,
+        "bytes_hex": "3bca8b442404741b568da4240000000085c074048b31893083c10483c0043bca75ee5ec21000",
+        "sha256": "05af6819c3b96517ac02f40647d76ca373be619a871579246e5dd53f7248483b",
+        "disk_live_equal": true,
+        "instruction_count": 15,
+        "current_instruction_starts": [
+          "00696d40",
+          "00696d42",
+          "00696d46",
+          "00696d48",
+          "00696d49",
+          "00696d50",
+          "00696d52",
+          "00696d54",
+          "00696d56",
+          "00696d58",
+          "00696d5b",
+          "00696d5e",
+          "00696d60",
+          "00696d62",
+          "00696d63"
+        ],
+        "disk_export_current_start_sets_equal": true,
+        "current_no_return": false,
+        "live_capture": "local/oct15_dword_copy_core_live.txt"
+      },
+      {
+        "address": "00697860",
+        "established_name": "STL_TagDispatch_00697860",
+        "end_exclusive": "00697885",
+        "bytes": 37,
+        "bytes_hex": "518b542410c60424008b0424508b442414528b542414518b4c241450e8bff4ffff59c20c00",
+        "sha256": "886cba40c974651c3445e52848da0e9429db151bed3b77acc1018712d8795428",
+        "disk_live_equal": true,
+        "instruction_count": 14,
+        "current_instruction_starts": [
+          "00697860",
+          "00697861",
+          "00697865",
+          "00697869",
+          "0069786c",
+          "0069786d",
+          "00697871",
+          "00697872",
+          "00697876",
+          "00697877",
+          "0069787b",
+          "0069787c",
+          "00697881",
+          "00697882"
+        ],
+        "disk_export_current_start_sets_equal": true,
+        "current_no_return": false,
+        "live_capture": "local/oct15_dword_copy_dispatch_live.txt"
+      }
+    ],
+    "separately_scoped_producer_bytes": 587,
+    "producer_bodies": [
+      {
+        "start": "006974b0",
+        "end_exclusive": "006974d5",
+        "function": "006974b0",
+        "bytes": 37,
+        "sha256": "e4d13f9169bdc8cdaef73abbcbb7a11cb0ed60c097b15a0b3362590eb285d77a",
+        "disk_live_equal": true,
+        "live_capture": "local/oct15_dword_copy_other_dispatch_live.txt",
+        "scope": "read-only producer body/ABI proof; no Source reconstruction ownership"
+      },
+      {
+        "start": "00697990",
+        "end_exclusive": "00697af1",
+        "function": "00697990",
+        "bytes": 353,
+        "sha256": "a97fbd64486c81eb3d3f6399a2c29a7b3e5b91858446e463853c2552338145de",
+        "disk_live_equal": true,
+        "live_capture": "local/oct15_dword_copy_insert_first_live.txt",
+        "scope": "read-only producer body/ABI proof; no Source reconstruction ownership"
+      },
+      {
+        "start": "00697b06",
+        "end_exclusive": "00697bcb",
+        "function": "00697990",
+        "bytes": 197,
+        "sha256": "de228763021ff115a8a93936c78bf3e86b5cd7a0cf15ab18ef77743fe052723b",
+        "disk_live_equal": true,
+        "live_capture": "local/oct15_dword_copy_insert_second_live.txt",
+        "scope": "read-only producer body/ABI proof; no Source reconstruction ownership"
+      }
+    ],
+    "ignored_receipts": [
+      "local/oct15_dword_copy_current_functions.json",
+      "local/oct15_dword_copy_current_starts.json",
+      "local/oct15_dword_copy_producers.json"
+    ]
+  },
+  "semantics": [
+    "Core compares first/last,reads destination stack slot even when empty,then branches with preserved comparison flags. Empty returns destination with no pointed access.",
+    "Until captured first equals captured last,nonnull destination reads current source DWORD immediately before storing. Null destination skips BOTH accesses,but both cursors still advance4 with DWORD wrap.",
+    "Source uses explicit volatile DWORD loads/stores; overlap is progressive forward copy,not a source snapshot or memmove semantics. No count is derived and no misalignment/overlap/range guard is added.",
+    "Core returns its actual advanced destination; dispatcher propagates that result rather than independently deriving it from a source distance.",
+    "Dispatch saves incoming owner bits,clears only low byte for dead tag,and passes destination duplicate. Direct parent calls pass requested count in the third dead slot and private high tag bits. No dead word creates ownership or a callback."
+  ],
+  "corrections": [
+    {
+      "was": "Earlier readiness shorthand called the third core stack slot duplicate destination",
+      "is": "Opaque unused DWORD:dispatcher supplies duplicate destination,but direct insertion supplies requested count",
+      "evidence": "6974CC/69787C dispatcher setups versus697A6B/697A9D PUSH count before697A7A/697AA2;callee reads only ESP+4 destination."
+    },
+    {
+      "was": "Cached graph attributes697860 caller toCatch_All697AF1",
+      "is": "Both697B28/697B92 belong to current697990 second normal body[697B06,697BCB)",
+      "evidence": "Complete current typed bodies and six call-site owner/default/effective-target checks;no repair or Ghidra mutation."
+    }
+  ],
+  "ownership_and_eh": {
+    "allocation": false,
+    "owning_elements": false,
+    "owner_cleanup": false,
+    "native_eh_frame_or_action": false,
+    "source_catch_or_cleanup": false,
+    "note": "No external CRT or exception-service dependency is introduced. Hardware fault/private-frame and original SEH domains are distinct from this Source interface."
+  },
+  "preserved_provenance": "Prior checked-word/string/settings storage projections and native component fixtures remain unchanged;no old semantic service or generic allocator bridge is wired here.",
+  "parent_readiness": "This packet removes only forward-uninitialized-copy/dispatch blockers. It does not reconstruct697990,697DC0,697F40,other in-place helpers,allocator553260 or length-error556C20.",
+  "frozen_review_files": [
+    {
+      "path": "src/native_dword_uninitialized_copy.cpp",
+      "sha256": "a6a8fa0ad704f108fb8106a8bc2a4811d891b3c4532c4d0ca9b74e9a576574e6"
+    },
+    {
+      "path": "include/bsp/native_dword_uninitialized_copy.hpp",
+      "sha256": "0693c7ad5327afc2d5d9b48413493f95a6d829c3fb96a979da964404a0422363"
+    }
+  ],
+  "root_review": "pending immutable-pin review;frozen Source/header hashes retained",
+  "coordination": {
+    "prerequisite_merge": "c6c39baef7df9c7b7591080b4e5e72d7db43da5c",
+    "note": "Premature prerequisite merge followed a refused lease in a prior batch. Audited:main parent2c611cd77 is published;only already-accepted fill differences retained;no copy registration present at that point. Later successful lease/merge/append/release was explicitly gated on exit0 before build.",
+    "ignored_receipt": "local/oct15_dword_copy_prerequisite_merge_receipt.json",
+    "registration_lease_released_before_build": true
+  },
+  "validation": {
+    "win32_release": "passed",
+    "existing_tests": "3/3 passed",
+    "new_tests": 0,
+    "build_log": "local/oct15_native_dword_uninitialized_copy_build.log",
+    "report_call_verifier": "6 rows checked,0 failed",
+    "documentation_call_verifier": "6 claims checked,0 failed,0 unchecked,0 warnings",
+    "git_diff_check": "passed",
+    "build_exit_code": 0,
+    "ctest_seconds": 8.22,
+    "report_call_log": "local/oct15_dword_copy_report_calls.log",
+    "documentation_call_log": "local/oct15_dword_copy_doc_calls.log",
+    "existing_test_scope": "Established math/native-seed/tool suites; no new-copy dedicated execution"
+  },
+  "limits": [
+    "New explicit C++ functions expose __fastcall physical shapes,not proven original binary ABI,private-frame aliases,ambient volatile-register state or original code generation.",
+    "Volatile raw DWORD loads/stores and unsigned32 integer-address wrap target MSVC Win32/x86;portable pointer/alignment/fault/SEH semantics are not promised.",
+    "No callbacks,allocation,validation,ownership object or modern STL copy substitute. No exception or cleanup behavior is invented for these leaves.",
+    "Existing suites cover established math/native-seed/tool checks;no dedicated new-copy native differential,fixture,game startup or gameplay execution is claimed."
+  ],
+  "integration_source_review": {
+    "reviewer": "primary",
+    "status": "passed_no_findings",
+    "accepted_pin": "43375e9af932e6f3748ba7df0204876484b0cfdf",
+    "scope": "Complete Source/header and both whole native listings reviewed. Destination capture evenempty, progressive nullskip/currentDWORD read-store, wrapped source/output increments, opaque metadata union and propagatedEAX match."
+  }
+}

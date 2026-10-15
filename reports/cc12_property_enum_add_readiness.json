@@ -1,0 +1,211 @@
+{
+  "schema": "bsp.cc12.property_enum_add_readiness_primary.v1",
+  "Source_ready": true,
+  "Source_implemented": false,
+  "primary_whole_two_Original_listings_and_complete_contract_read": true,
+  "addresses": [
+    "008F39B0",
+    "008F3A20"
+  ],
+  "Originals": [
+    {
+      "begin": "008F39B0",
+      "end_exclusive": "008F3A18",
+      "bytes": 104,
+      "instructions": 36,
+      "sha256": "91447bc034078db92daa69f967fa555038b46a13b88f7ba8bf8449c00564816a",
+      "ABI": "ECX genuine114h bag; entryESP+4 property-key CString, +8 opaque fullDWORD declaration identity, +C opaque fullDWORD value. RET0Ch on both paths. EAX is bag returned by whole33F0, not a new-record pointer or count.",
+      "exact_ordinary_sequence": [
+        "Retain bag, request canonical current-CRT raw38h object storage through existing singleton_lifetime_allocate({object,0x38,0x38}).",
+        "If allocation nonnull, read declaration stackword and physically store phase00=CE89D4; DWORD04=4; DWORD18=0;1C=0;20=0;24=0;DWORD28=full declaration identity.",
+        "Read full raw value stackword after+28. Physically store DWORD30=0, DWORD34=0, DWORD0C=full value, BYTE2C=1, in that order. Preserve every unwritten byte.",
+        "Call complete insert_native_scene_property_bag_008f33f0(actualbag,propertykey,record,same retainedcontext) and return its actual bag result. Null allocation follows a separate Original branch to the SAME insertion with nullptr; no recovery/default."
+      ],
+      "written_bytes": 41,
+      "preserved_bytes": 15,
+      "preserved_ranges": [
+        "+08..+0B",
+        "+10..+17",
+        "+2D..+2F"
+      ],
+      "EH": "No native FS/EH frame in this104B body. No new cleanup/transaction/rollback or exception claim proposed."
+    },
+    {
+      "begin": "008F3A20",
+      "end_exclusive": "008F3AB9",
+      "bytes": 153,
+      "instructions": 49,
+      "sha256": "74a97ef1dd3d4a94945722fe02dd1c2ecb84fb9358cb14530c457f5530cda0e1",
+      "ABI": "ECX genuine114h bag; entryESP+4 property-key CString, +8 genuine enum declaration/owner word, +C borrowed symbol CString. RET0Ch, EAX bag from33F0. At48E840 call ECX=actual enum owner and one stack CString; getter RET4 returns opaqueDWORD.",
+      "exact_ordinary_sequence": [
+        "Retain bag; allocate canonical current-CRT38h root. Native saved-allocation EH state0 is armed after return and before null test.",
+        "If nonnull, read symbol and declaration arguments; physically store phase00=CE89D4; DWORD04=4; DWORD18=0;1C=0;20=0;24=0; DWORD30=0; DWORD28=actual enum owner full bits.",
+        "Only NOW call whole read_native_enum_symbol_word_0048e840(actualenum,symbol,SAME actual rawstrings,E186ED,E17654). It constructs/destroys a genuine raw8B temporary key and captures known-found node+8 as opaqueDWORD before temporary release.",
+        "After getter returns, physically store DWORD0C=its complete32-bit result, DWORD34=0, then BYTE2C=1. No range/type/name/numeric/duplicate filter, missing-key default or enum cast.",
+        "If allocation null, skip ALL record stores AND skip48E840. Both paths clear native allocation-EH state before whole33F0(bag,key,record), including literalnullptr. Return actual bag; no invented failure recovery."
+      ],
+      "written_bytes": 41,
+      "preserved_bytes": 15,
+      "preserved_ranges": [
+        "+08..+0B",
+        "+10..+17",
+        "+2D..+2F"
+      ],
+      "EH": {
+        "handler": "00CA49CB",
+        "FuncInfo": "00DD769C",
+        "states": [
+          {
+            "state": 0,
+            "to_state": -1,
+            "action": "00CA49C0"
+          }
+        ],
+        "allocation_action": "00CA49C0: read savedallocation [EBP-10], push, callBF65AC realfree, pop, ret. State0 covers partially initialized record/lookup; state-1 before33F0 disarms allocation cleanup.",
+        "limitation": "Evidence identifies native allocation cleanup only. Ordinary Source readiness requires successful nonthrowing services; it provides no Original FS/FH/SEH, fault/lookup-miss/CRT/EH equivalence. Do not invent broader cleanup or rollback."
+      }
+    }
+  ],
+  "provider_matrix": [
+    {
+      "target": "00BF681B",
+      "Source": "singleton_lifetime_allocate(const SingletonAllocationRequest&)",
+      "files": [
+        "include/bsp/singleton_lifetime.hpp",
+        "src/singleton_lifetime.cpp"
+      ],
+      "ready": true,
+      "contract": "Existing explicit currentCRT malloc/_callnewh retry/bad_alloc boundary. Request object native_bytes=host_bytes=0x38, raw allocation with existing bytes preserved. Admitted ordinary domain successful allocation/nonthrowing. Source normally returnsnonnull or throws; preserve syntactic nullptr-to-insertion branch without manufacturing a nullable failure allocator."
+    },
+    {
+      "target": "008F33F0",
+      "Source": "insert_native_scene_property_bag_008f33f0(void*,const char*,void*,NativeScenePropertyInsertionContext&)",
+      "files": [
+        "include/bsp/native_scene_property_insertion.hpp",
+        "src/native_scene_property_insertion.cpp"
+      ],
+      "ready": true,
+      "contract": "Whole155B46 accepted actual-storage body; same canonical keys/context, copied owning temporary property key -> whole map insertion/replacement -> current raw key release -> record ordinal test -> owner stamp -> conditional old ordinal allocation -> returnbag. New root ownership transfers on successful publication. Literalnullptr eventually faults (including record+34); no success-null contract or recovery. Replaced graph retirement remains inside accepted whole provider."
+    },
+    {
+      "target": "0048E840 (symbol body only)",
+      "Source": "read_native_enum_symbol_word_0048e840(const void*,const char*,NativeStringRawPoolContext&,const char*,const char*)",
+      "files": [
+        "include/bsp/native_enum_dictionary_word_getters.hpp",
+        "src/native_enum_dictionary_word_getters.cpp"
+      ],
+      "ready": true,
+      "contract": "Whole129B accepted actual owner+4 symbol finder. Real raw8B temporary, actual borrowed node, full node+8 DWORD captured before current raw temporary release. Nonalias local bucket. Known-found only, no model/default/stub. Retain actual distinct E186ED/E17654 and currentC locale."
+    },
+    {
+      "target": "00BF65AC (Original unwind action only)",
+      "Source": "singleton_lifetime_free(void*) noexcept",
+      "files": [
+        "include/bsp/singleton_lifetime.hpp",
+        "src/singleton_lifetime.cpp"
+      ],
+      "ready": true,
+      "contract": "Existing real currentCRT std::free host boundary; Original library free thunk retained. Not a no-op and no Original privateCRT/EH parity claim."
+    }
+  ],
+  "missing_direct_providers": [],
+  "raw_helper_comparison": {
+    "address": "008EF230",
+    "whole_raw_helper_bytes": 56,
+    "instructions": 16,
+    "actual_written_bytes": 41,
+    "preserved_bytes": 15,
+    "helper_store_offsets": [
+      "00",
+      "04",
+      "18",
+      "1C",
+      "20",
+      "24",
+      "28",
+      "30",
+      "0C",
+      "34",
+      "2C"
+    ],
+    "raw_leaf_store_offsets": [
+      "00",
+      "04",
+      "18",
+      "1C",
+      "20",
+      "24",
+      "28",
+      "30",
+      "34",
+      "0C",
+      "2C"
+    ],
+    "symbol_leaf_store_offsets": [
+      "00",
+      "04",
+      "18",
+      "1C",
+      "20",
+      "24",
+      "30",
+      "28",
+      "CALL48E840",
+      "0C",
+      "34",
+      "2C"
+    ],
+    "reuse_allowed": false,
+    "reason": "Raw leaf reverses the helper0C/34 order. Symbol leaf moves30 ahead of28 and requires actual lookup call after28 before0C/34/2C. Complete helper cannot place that call correctly. Do not call helper and patch fields, memset the record or coalesce/reorder physical stores; author explicit exact-width ordered stores."
+  },
+  "ordinary_domain": [
+    "MSVC Win32, stable valid aligned/disjoint accessible storage, actual positive owning provenance, matching currentCRT heap and canonical contexts.",
+    "Closed NUL-free ASCII property/symbol keys with matching buffers, nonnull CString inputs, currentCRT C locale; symbol known found; finite coherent chains and adequate key pool capacity.",
+    "Successful nonoverflowing nonthrowing allocation/lookup/insertion/release; no missing-key fault, OOM, reentry, concurrent mutation or invalid memory. Preserve literal invalid/null-allocation path without invented recovery.",
+    "New C++ values may materialize before the Original caller-stack loads; Original loads identity/value after allocation and specific stores. Stable/disjoint arguments/callframe and no mutation/reentry make ordinary effects comparable; no Original stack/register or literal argument-load timing claim."
+  ],
+  "canonical_context": {
+    "bag": "Genuine raw61-produced live114h bag, actual108h map atbag+4; finite unshared acyclic ownership, no fake class/phase graph.",
+    "record": "Fresh same-currentCRT unowned38h allocation, disjoint from map/key/old record/enum/symbol/call frame. All41 written bytes exact;15 preimage bytes retained. PhaseCE89D4 is data, no numeric vtable dispatch.",
+    "transfer": "Root/finite record graph transfers into bag on successful whole33F0 publication. Type4 value and +28 declaration are nonowning opaque words; common release resets4/C/28/8 without freeing declaration. Neither borrowed property-key CString nor symbol CString is consumed by these leaves.",
+    "process": "Same actual GameNativeStringProcess supplies insertion.lifetimes().keys() and symbol getter raw_context(), actual distinct property E177E4/query E17654/enum E186ED roles; identity of those retained contexts is a caller contract, not a new callback or registry.",
+    "physical": "Insertion retains alreadyinitialized genuine E175B0 physical property-node pool on commonE188B4 list. Actual enum symbol nodes use distinct canonical E17578, never substitute property/tableE175E8. Explicit startups and real producers are outside these leaves; retain same processes/generations and externally serialize shared mutation.",
+    "owner": "Symbol path requires genuine live19Ch enum from accepted actual initializer8F4DD0/symbol production. Raw identity is fullDWORD with no dereference in39B0; if used as declaration by later consumers keep genuine enum live until all borrowing records retire. No enum/root/key owner invented from a pointer or phaseword.",
+    "lifetime": "Retain all enum/type/key/node/string/process storage through lookup, publication and every later borrowed-declaration use. Retire property record/key/node graphs before pool teardown, and borrowed enum users before enum retirement."
+  },
+  "outside_composition": [
+    "008F5A00 actual typed-property parser remains outside this packet; its existing scene_file.cpp projection/ledger name is not a proved raw-owner whole-body implementation.",
+    "008F67B0 whole library loader/registration/startup remains outside this packet."
+  ],
+  "proposal": {
+    "packet": "cc12_scene_property_enum_add_008f39b0_008f3a20",
+    "addresses": [
+      "008F39B0",
+      "008F3A20"
+    ],
+    "exact_new_files": [
+      "include/bsp/native_scene_property_enum_add.hpp",
+      "src/native_scene_property_enum_add.cpp",
+      "docs/NATIVE_SCENE_PROPERTY_ENUM_ADD_CC12.md",
+      "reports/native_scene_property_enum_add_cc12.json"
+    ],
+    "proposed_local": "local/WholeScenePropertyEnumAddSource01",
+    "Source_authorization": false,
+    "APIs": [
+      "void* add_native_scene_property_enum_word_008f39b0(void* actual_bag,const char* key,std::uint32_t declaration_identity_bits,std::uint32_t value_bits,NativeScenePropertyInsertionContext&)",
+      "void* add_native_scene_property_enum_symbol_008f3a20(void* actual_bag,const char* key,const void* actual_enum_owner,const char* symbol,game::GameNativeStringProcess& actual_strings,NativeScenePropertyInsertionContext&)"
+    ],
+    "minimality": "One new HPP/CPP/doc/report holds both short whole bodies and private physical store helpers. No existing/shared Source, enum wrappers, process headers, CMake, registry or ledger edits; no new callback/context model. These are proposals only, not emitted or compiled Source."
+  },
+  "sealed_readiness": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\ScenePropertyEnumLeafReadiness01\\family_receipt.DATA.json",
+    "bytes": 40526,
+    "sha256": "528c7e0ecb84581d6ea9efc0c9a7ad07f6c812b94082e346c136c916d58214f5"
+  },
+  "primary_verified_inputs": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_oct13_integrator\\local\\cc12_property_enum_readiness_primary_20261015\\verified_readiness_inputs.DATA.json",
+    "bytes": 64415,
+    "sha256": "2289f71ce3d8f473e475fa0099f0b0139795bf2825afe8b62c9f7e9203330874"
+  },
+  "limits": "Ready for explicit same-context new C++ Source only; no Original calling/class/FS/EH/privateCRT/fault/startup/runtime/game/wholeparser equivalence."
+}
