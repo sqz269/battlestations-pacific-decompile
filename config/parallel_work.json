@@ -39535,20 +39535,28 @@
     {
       "id": "cc12_enum_lua_declaration",
       "done": false,
-      "state": "readiness_only_waiting_concrete_raw_float_formatter",
-      "source_ready": false,
+      "state": "whole_ordinary_current_CRT_ready_formatter_Main_gate_closed_no_Source_yet",
+      "source_ready": true,
       "function_addresses": [
         "008f2f70"
       ],
-      "output_files": [],
-      "depends_on": [],
-      "readiness_report": "reports/cc12_enum_lua_declaration_readiness.json",
-      "missing_provider_addresses": [
-        "0043bdf0"
+      "output_files": [
+        "include/bsp/native_enum_lua_declaration.hpp",
+        "src/native_enum_lua_declaration.cpp",
+        "include/bsp/game_native_enum_lua_declaration.hpp",
+        "src/game_native_enum_lua_declaration.cpp",
+        "docs/NATIVE_ENUM_LUA_DECLARATION_CC12.md",
+        "reports/native_enum_lua_declaration_cc12.json"
       ],
+      "depends_on": [
+        "cc12_native_string_float_format"
+      ],
+      "readiness_report": "reports/cc12_enum_lua_declaration_readiness.json",
+      "missing_provider_addresses": [],
       "model": "gpt-6.1-sol",
       "reasoning_effort": "max",
-      "contract": "Genuine19Ch enum and owning8B input key, actual[E188A8]+1A0C LuaState, not a property bag or tokenizer. Actual-storage Lua display provider exists but its number arm lacks concrete canonical raw8B float formatter. Preserve F89450 writable PE zero-fill role; no implementation admission."
+      "contract": "Whole553B152Original instructions, genuine19Ch enum and consumed8B key. Name/type writes precede CURRENT E188A8 world read, SAME+1A0C Lua owner, canonical sameprocess string/physical/fallback domains. Fixed currentCRT formatter Main gate closed. Explicit full32bit featureword nonzero projection and accepted conversiontail under stable noFP-trap ordinarydomain; no boolalias/newCPU/default/privateCRT/ABI/EH/longjmp/startup/runtime/game/wholeparser claim. Source not yet implemented.",
+      "worker": "scene_token_text_review"
     },
     {
       "id": "cc12_scene_file_tokenizer",

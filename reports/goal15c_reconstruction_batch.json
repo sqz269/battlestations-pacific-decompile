@@ -1,0 +1,183 @@
+{
+  "date": "2026-10-15",
+  "state": "registered_4_new_routines_and_existing_hull_repair_build_and_source_fixtures_passed",
+  "evidence_root": "J:/PROG/battlestations-pacific-decompile-goal15_integrator",
+  "packets": [
+    {
+      "id": "goal15c_list_count_guards",
+      "entries": [
+        "00420140",
+        "0041fdd0"
+      ],
+      "worker_commit": "e42e4a01aec16f9008cfe9c3b338c07778ad3eb2",
+      "report_rows_passed": 11,
+      "markdown_calls_passed": 5,
+      "qualification": "Complete current-SDK Source normal/error behavior; legacy exception/FH3 identity and physical operand-read ordering unproved",
+      "peer_review": "No findings: unsigned wrap, current SDK errors and physical/native ABI qualifications checked independently"
+    },
+    {
+      "id": "goal15c_dyn_release_queue",
+      "entries": [
+        "00c34f70"
+      ],
+      "worker_commit": "8a0a5c625d946c37d0f85053cf697f21c35d0609",
+      "report_rows_passed": 3,
+      "markdown_calls_passed": 1,
+      "native_disk_and_live_bytes_sha256": "8efa7916b080aff33cde8b1f16f81d8d7e752f45faa73a91f347bbe044b00143",
+      "qualification": "Owned 146-byte kernel comparison excludes exactly two redirected CALL rel32 operands; current allocator/CRT identity remains qualified",
+      "peer_review": "No findings: late stacked load, alias/count/copy/free/publish schedules and actual services checked independently"
+    },
+    {
+      "id": "goal15c_avoid_cache_cleanup",
+      "entries": [
+        "0041e960"
+      ],
+      "repaired_existing_entry": "00c37450",
+      "worker_commit": "198b7787ec827fd9eb9399df4e867fa04b99aea0",
+      "report_rows_passed": 10,
+      "markdown_calls_passed": 0,
+      "peer_review": "No correctness blockers; publication/validation/copy/list schedules and real providers independently checked",
+      "native_disk_and_live_bytes_sha256": "389f1117e1ebd4f84b4c19a33de818d8ce33ab7f0c0421ed5ddf8bf293461b9b",
+      "qualification": "Source198B vs Native196B: added context PUSH/POP, six-byte publication load substitution, seven redirected CALL operands; all other registered COFF bytes agree"
+    }
+  ],
+  "hull_publication_regression": {
+    "entry": "00c37450",
+    "baseline": "local/goal15c_hull_baseline_probe_result.json",
+    "baseline_exit_code": 1,
+    "baseline_release_indices": [
+      0,
+      4,
+      5
+    ],
+    "expected_release_indices": [
+      0,
+      1,
+      2
+    ],
+    "scope": "Actual typed function linked from retained registered library, genuine heap releases and valid alternate publication; Source regression, not native runtime proof",
+    "peer_review": "No findings: one captured data pointer, adjacency release before vertices field read, final cached data release; valid alternate publication fixture independently reviewed",
+    "candidate": "local/goal15c_hull_candidate_probe_result.json",
+    "candidate_exit_code": 0,
+    "candidate_release_indices": [
+      0,
+      1,
+      2
+    ]
+  },
+  "limits": [
+    "Original CRT, exception/SEH metadata, allocator and physics-engine provider identity are not established by Source fixtures",
+    "No drop-in production/native ABI or gameplay validation",
+    "Historical 719 hull pipeline cases are retained historical evidence and were not rerun in this batch",
+    "No new tracked tests or test target"
+  ],
+  "registered_build": {
+    "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1",
+    "log": "local/goal15c_final_registered_build.log",
+    "exit_code": 0,
+    "ctests_passed": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "built_source_commit": "dab72252b61e68a9eea036b08f3e6d6e093bb802",
+    "scope": "Complete registered Win32 build; existing native differential covers its existing math seeds, not these new entries"
+  },
+  "source_fixtures": {
+    "list_guards": {
+      "kind": "Source fixture linked against registered archive and real current services",
+      "manifest_embedded": true,
+      "exit_code": 0,
+      "stdout": "Source list count guard fixture: 10 cases passed (both entries).\n",
+      "stderr": "",
+      "sha256": {
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_zone_cleanup\\local\\goal15c_list_count_guards\\list_count_guard_probe.cpp": "4ec6f81db3990a5e89e116a53ee0429fe37addd2783a5f1a3f0cd25305cbabe6",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15c_list_guard_probe.obj": "8b7adef45f6c59693648c18270519a4787b6ad569cfff967eee3f917143d3d41",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15c_list_guard_probe.exe": "678669811c53ab8a2527799e7892ca578904cc0d4a1b8ba62a0f7dda4803dde5",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "39e70731ae13d0a3dc0a674675d1de45708dac2699de6cb95426206feb9077d2",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
+      }
+    },
+    "queue": {
+      "kind": "Source fixture linked against registered archive and real current services",
+      "manifest_embedded": true,
+      "exit_code": 0,
+      "stdout": "Source release-queue growth/alias/wrap probe: PASS\n",
+      "stderr": "",
+      "sha256": {
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_pool_cleanup\\local\\output\\dyn_release_queue_probe.cpp": "a2887feb905bd7a2fddc225f232a620c51dd2e33617661229a3d705b0162e347",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15c_queue_probe.obj": "0280117d912672271981a6b8b10477aaef45ebf467f577b5568ae1ad41a93b1c",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15c_queue_probe.exe": "9fb2c8bb25a4a9bfebf4e0bd6f7b78200c6e9e62c506a187106f6c348c2b624e",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "39e70731ae13d0a3dc0a674675d1de45708dac2699de6cb95426206feb9077d2",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
+      }
+    },
+    "hull_publication": {
+      "kind": "Source fixture linked against registered archive and real current services",
+      "manifest_embedded": true,
+      "exit_code": 0,
+      "stdout": "Source hull publication fixture: PASS; release indices 0,1,2 (expected 0,1,2)\n",
+      "stderr": "",
+      "sha256": {
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_zone_leaf\\local\\goal15c_hull_publication_probe.cpp": "3e991d2ffadf65102ef1df0fe4c5acbe04e35ff4bb83c2a289cf87b47402c2ae",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15c_hull_candidate_probe.obj": "7e504708d9375c8f1517cde101ed13ffe25b373b51feb8f33cd966e18e4bb6c3",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15c_hull_candidate_probe.exe": "36b2bac9c1042f0eb4a4c9047f17198f40a38209ccafd4f4a50e3ea93472c98b",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "39e70731ae13d0a3dc0a674675d1de45708dac2699de6cb95426206feb9077d2",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
+      }
+    },
+    "cache_composition": {
+      "kind": "Source fixture linked against registered archive and real current services",
+      "manifest_embedded": true,
+      "exit_code": 0,
+      "stdout": "Source cache composition fixture: PASS; queued body, retained capacity/sentinel, hull/node freed,11 blocks reclaimed\n",
+      "stderr": "",
+      "sha256": {
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_zone_leaf\\local\\goal15c_cache_composition_probe.cpp": "cbdeeb3e28a1c6ce66c575a925bad23f07e5b85989546cc5ca8a44bb3599a538",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15c_cache_composition_probe.obj": "4cb882b79f1e4f7aade9c152aad00ef8fbfa094c20e1c99b7ede49cef086d8f7",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15c_cache_composition_probe.exe": "f14776071e33fecff020e02d1bbff16059fe4f3b5fecb652b851e2a273f3b7e7",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "39e70731ae13d0a3dc0a674675d1de45708dac2699de6cb95426206feb9077d2",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
+      }
+    }
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved": true,
+    "prior_annotation_files": [
+      "local/ghidra-annotations-20261015T204142Z.json",
+      "local/ghidra-annotations-20261015T204215Z.json",
+      "local/ghidra-annotations-20261015T204806Z.json"
+    ],
+    "exports_refreshed": [
+      "00420140",
+      "0041fdd0",
+      "00c34f70",
+      "0041e960",
+      "00c37450"
+    ],
+    "snapshot": "local/goal15c_final_snapshot.log"
+  },
+  "report_calls_passed": 24,
+  "markdown_call_claims_passed": 6,
+  "registered_coff_comparisons": {
+    "queue": {
+      "native_bytes": 146,
+      "source_bytes": 146,
+      "exclusions": "exactly two CALL rel32 operands",
+      "result": "PASS"
+    },
+    "cache_cleanup": {
+      "native_bytes": 196,
+      "source_bytes": 198,
+      "exclusions": "context PUSH/POP, six-byte publication-load substitution, seven CALL rel32 operands",
+      "result": "PASS"
+    }
+  },
+  "ledger_preservation": "Historical00C37450 full-function719 record and allocator00418540 zero-size correction retained; repair recorded separately"
+}

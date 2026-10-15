@@ -1,0 +1,64 @@
+{
+  "packet": "goal15c_avoid_cache_cleanup",
+  "status": "complete_source_cleanup_and_captured_hull_data_fix_strict_compile_static_schedule_checked",
+  "source": "src/native_avoid_cache_cleanup.cpp",
+  "header": "include/bsp/native_avoid_cache_cleanup.hpp",
+  "existing_source_repaired": "src/avoid_zone_dyn_hull.cpp; include/bsp/avoid_zone_dyn_hull.hpp",
+  "documentation": "docs/GOAL15C_AVOID_CACHE_CLEANUP.md",
+  "target": {"project_file":"C:/Users/sqz269/bsp.gpr","project":"bsp","program":"/battlestationspacific.exe","language":"x86:LE:32:default","image_base":"00400000","verification":"target-verifying bsp.py bridge, complete listings/live ranges read; no repair or mutation"},
+  "routines": [
+    {"address":"0041e960","end":"0041ea23","coverage":"complete owned cleanup instruction schedule through genuine queue/free/existing typed hull providers","original_abi":"ECX manager, no stack arguments, plain RET;196B","source_api":"clear_native_avoid_cache_0041e960: fastcall ECX manager, EDX actual publication-cell address;198B explicit borrowed Source context"},
+    {"address":"00c37450","end":"00c37480","coverage":"existing complete typed hull destructor repaired to capture data once and reload fields after calls; original719 finite-input proof retained","original_abi":"ECX handle, no stack arguments, plain RET;49B","source_api":"existing avoid_zone_dyn_hull_destroy_00c37450(handle&,memory&) unchanged signature; new cache fix only"}
+  ],
+  "host_steps": [
+    {"address":"0041e98a","native":"00bf6713","containing_function":"0041e960"},
+    {"address":"0041e99f","native":"00c34f70","containing_function":"0041e960"},
+    {"address":"0041e9b0","native":"00bf6713","containing_function":"0041e960"},
+    {"address":"0041e9bd","native":"00bf6713","containing_function":"0041e960"},
+    {"address":"0041e9e1","native":"00bf67a7","containing_function":"0041e960"},
+    {"address":"0041ea0b","native":"00c37450","containing_function":"0041e960"},
+    {"address":"0041ea11","native":"00bf65ac","containing_function":"0041e960"},
+    {"address":"00c3745f","native":"00bf6989","containing_function":"00c37450"},
+    {"address":"00c3746e","native":"00bf6989","containing_function":"00c37450"},
+    {"address":"00c37477","native":"00bf65ac","containing_function":"00c37450"}
+  ],
+  "caller_tail_transfer": {"site":"0041f635","target":"0041e960","operation":"JMP","containing_function":"0041f600","evidence":"whole caller listing read; group clear then manager in ECX; no gameplay path claim"},
+  "dependencies": {
+    "schema":"Existing78h Cc13AvoidZoneManagerNative, typed16B hull list node/value+8,8B AvoidZoneDynHullHandle; no duplicate ownership schema",
+    "queue":"Concrete native_dyn_release_queue implementation, independent commit8a0a5c625d946c37d0f85053cf697f21c35d0609; full native body read; stable public Source fastcall API; no body destruction/drain here",
+    "publication":"Explicit actual00E188A8 publication-cell ADDRESS supplied in Source EDX and retained on stack; current cell value and game+18 service reloaded at each queue site; no global/shadow state",
+    "hull_and_free":"Existing typed destructor with genuine singleton_lifetime_allocate/free pair supplied through existing memory contract; nodes freed by singleton_lifetime_free",
+    "crt":"Actual current SDK memmove_s and existing qualified returning BF6713 Source entry; no fake success callbacks; original heap/CRT/handler/exception/frame identity unproven"
+  },
+  "corrections": [
+    {"was":"typed destructor reread handle.data in each of three release expressions","is":"cache data once; release its adjacency, reload its vertices after callback, finally release cached data; no later handle read/store","evidence":"00C37451 MOV ESI,[ECX];00C37467 MOV EAX,[ESI];00C37476 PUSH ESI; optimized Source listing uses one handle read intoEDI and same post-call field sequence"}
+  ],
+  "validation": {
+    "strict_compile":"PASS both Source TUs, MSVC Win32 /std:c++17 /EHsc /MD /W4 /WX /fp:strict /O2; local/goal15c_avoid_cache_compile.cmd",
+    "static_cleanup_bytes":"PASS Source198B vs live Native196B: only added1B context PUSH,1B POP,6B publication-load substitution and7 expected CALL rel32 operands excluded; every other byte equal. local/goal15c_compare_cache_bytes.py accepts optional object argv1",
+    "typed_listing":"PASS one handle.data load intoEDI; data+0C before first callback, data+00 after it, then cached EDI release; no later handle read",
+    "call_checker":"PASS10 rows,0 failures (2026-10-15)",
+    "source_publication_fixture":"local/goal15c_hull_publication_probe.cpp/.obj strict compile PASS; real heap release republishes valid alternate; expected original indices0,1,2 and handle/field04 preserved; safe cleanup of unreleased blocks",
+    "baseline_fixture":"Primary reproduced retained archive FAIL exit1, indices0,4,5; artifact J:/PROG/battlestations-pacific-decompile-goal15_integrator/local/goal15c_hull_baseline_probe_result.json",
+    "candidate_fixture":"pending primary registered rebuild and relink with actual archives /MD /MANIFEST:EMBED",
+    "composition_fixture":"one ignored ordinary nonempty Source cleanup fixture in preparation; no new target/framework",
+    "historical_hull_validation":"Existing27-span/719 finite original-byte cases and719 retained-copy receipt remains unchanged in reports/avoid_zone_dyn_hull.json; not freshly rerun or broadened by this repair",
+    "existing_check_commands":"python tools/verify_report_calls.py reports/avoid_zone_dyn_hull.json; primary scripts/build.ps1; historical local/dyn_hull_probe.cpp relink only if retained, no fresh719 claim",
+    "full_build_ctest":"primary integration owns registration and full checks; pending worker commit",
+    "native_execution_abi_gameplay":"no new Native execution, production binding, provider identity, game/gameplay or drop-in ABI proof"
+  },
+  "notes":"No Ghidra/CMake/packet registry writes. Preserve correct DYN library name and original complete-function719 receipt; append fix evidence and separate repair fragment only. Primary owns annotation/integration; lease transfer after commit.",
+  "primary_integration_validation": {
+  "registered_build": "PASS scripts/build.ps1; all3 existing CTests passed",
+  "build_log": "local/goal15c_final_registered_build.log",
+  "batch_report": "reports/goal15c_reconstruction_batch.json",
+  "native_abi_and_gameplay": "not established",
+  "source_fixture": "registered-archive cleanup composition passed; 4 node/hull blocks freed, retained vector/sentinel/body/queue intact, all11 fixture blocks reclaimed",
+  "hull_regression": "old registered archive failed0,4,5; corrected registered archive passed0,1,2 with genuine heap releases and valid alternate publication",
+  "registered_coff": "Source198B vs Native196B; context PUSH/POP,6B publication substitution,7 CALL operands excluded; remainder equal",
+  "report_rows": 10,
+  "markdown_claims": 0,
+  "historical_719_cases": "preserved, not rerun",
+  "saved_annotations_and_exports": "PASS; target verified, old annotations retained in local rollback JSON; project saved and targeted exports refreshed"
+}
+}
