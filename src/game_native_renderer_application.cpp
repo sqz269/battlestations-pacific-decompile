@@ -70,6 +70,7 @@
 #include "bsp/native_render_queue_destruction.hpp"
 #include "bsp/native_texture_loading_cache.hpp"
 #include "bsp/native_material_effect_runtime.hpp"
+#include "bsp/native_material_texture_refresh.hpp"
 #include "bsp/game_native_resource_pools.hpp"
 #include "bsp/game_native_resource_application.hpp"
 #include "bsp/native_mesh_buffer_fields.hpp"
@@ -572,6 +573,14 @@ const NativeCockpitViewportReleaseContext& GameNativeRendererApplication::cockpi
 }
 NativeTextureCacheContext& GameNativeRendererApplication::texture_cache() noexcept {
     return impl_->texture_loading.cache;
+}
+NativeMaterialTextureRefreshContext GameNativeRendererApplication::material_texture_refresh_context(
+    const NativeMaterialTextureNameLiterals& literals) {
+    check(impl_->phase==Impl::Phase::ready,"material texture refresh requires the ready renderer");
+    check(literals.nil_00f8d438 && literals.non_string_00ce3a0c,
+        "material texture refresh requires actual name literal bindings");
+    return {impl_->texture_loading.cache,impl_->owners,impl_->lua_publication,
+        impl_->profiles(0x00d5f0a8),literals};
 }
 const void* const volatile& GameNativeRendererApplication::loading_platform_focus_publication() {
     check(impl_->phase==Impl::Phase::ready,"loading focus publication requires the ready application renderer");

@@ -14,6 +14,8 @@ class NativeXLiveDeviceAdapter;
 class XLiveLibrary;
 struct NativeRendererPresentObservation;
 struct NativeTextureCacheContext;
+struct NativeMaterialTextureRefreshContext;
+struct NativeMaterialTextureNameLiterals;
 struct NativeEffectRegistryDestructionContext;
 class NativeRenderActualOwnerRegistry;
 struct NativeCameraEnvironment;
@@ -109,6 +111,11 @@ public:
     // release ordinary returned references before the shared renderer drain;
     // its own fallback reference follows the native cache cleanup schedule.
     NativeTextureCacheContext& texture_cache() noexcept;
+    // Ready-only B19000 domain: SAME texture cache, actual owners, CURRENT
+    // F8D434 publication and mapped renderer profile. The caller supplies the
+    // actual F8D438 mutable/CE3A0C literal bindings and keeps them alive.
+    NativeMaterialTextureRefreshContext material_texture_refresh_context(
+        const NativeMaterialTextureNameLiterals&);
     // Legacy pointer-value entry only, with its original ready-phase guard.
     // Its +30/+41 focus storage is not a whole native platform. Borrowed-entry
     // callers use borrow_platform_publication_0109cf04 instead; this accessor
