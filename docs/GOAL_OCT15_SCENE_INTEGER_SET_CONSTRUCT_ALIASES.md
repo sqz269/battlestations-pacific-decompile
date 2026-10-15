@@ -59,5 +59,19 @@ report. Unique CMake registration was appended after an immediate unleased check
 and removal of this worker's queue request, without an exclusive whole-file lease.
 The primary independently reviewed both complete native listings and the exact
 Source/header draft `01a59b48453ea5ad3731b0387757d5b909f86c0e`, without a mismatch.
-Strict Win32 build, existing checks and focused compiler inspection are pending.
-No new tests are added; packet-specific native differential/game checks are unrun.
+Required `scripts/build.ps1` at `09729637cf30e923462890ab428becbac55154a3`
+passed strict Win32 and all 3 existing CTests in 8.38s. The log is
+`local/goal_oct15_scene_integer_set_construct_aliases_build.log`. Exact Source and
+header hashes remain unchanged from the independently reviewed draft.
+
+Focused actual-object inspection found the `00468940` Source entry is 44 bytes:
+concrete allocator transfer+3, head publication+Bh, captured nil store+Eh, three separate
+reloads+12h/+18h/+1Dh, final count store+23h, and RET+2Bh with the last head still
+in EAX. The 9-byte `0046CF10` Source entry tail-jumps at+4 to the accepted ordinary
+constructor. Its actual provider object inlines the concrete allocation and link
+initialization before constructor head publication+62h, nil11+65h, three reloads
++69h/+6Fh/+74h and final count+7Ah; EAX retains original tree. Both object hashes
+and receipts are recorded in the report. These current compiler transfers are
+separate from the two verified original native transfer rows. Native private frames,
+argument homes, instruction/COFF identity and fault behavior are not claimed.
+No new tests were added; packet-specific native differential/game checks are unrun.

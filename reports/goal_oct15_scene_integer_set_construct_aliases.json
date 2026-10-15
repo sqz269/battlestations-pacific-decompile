@@ -8,7 +8,7 @@
   "header": "include/bsp/native_scene_integer_set_construct_aliases.hpp",
   "documentation": "docs/GOAL_OCT15_SCENE_INTEGER_SET_CONSTRUCT_ALIASES.md",
   "base_revision": "21279d6961b7721eb19832d686391e40474a0635",
-  "status": "whole_actual_storage_source_build_pending",
+  "status": "whole_actual_storage_source_strict_win32_existing_ctest_and_compiler_checked",
   "routines": [
     {
       "address": "00468940",
@@ -84,8 +84,34 @@
     "live_installed_bytes": "passed;84 bytes/29 instructions;both whole bodies including RET",
     "typed_native_transfer_verification": "passed;2 typed rows and 2 Markdown call claims;8 cited addresses;0 failed/unchecked/warnings",
     "cmake_registration": "passed;unique append after immediate unleased check and own queue removal;no exclusive whole-file lease",
-    "strict_win32_build_and_existing_ctest": "pending",
-    "compiled_object_review": "pending",
+    "strict_win32_build_and_existing_ctest": {
+      "result": "passed",
+      "command": "./scripts/build.ps1",
+      "build_revision": "09729637cf30e923462890ab428becbac55154a3",
+      "source_revision": "01a59b48453ea5ad3731b0387757d5b909f86c0e",
+      "configuration": "MSVC Release Win32;process-local CL /MP4",
+      "log": "local/goal_oct15_scene_integer_set_construct_aliases_build.log",
+      "log_sha256": "561ba559d9f020ff05819ed68a3a0e150c8556c5e798295c39f32cc96c58ec27",
+      "ctest": "3/3 passed: reconstructed_math0.22s,native_math_differential0.05s,tool_tests8.06s;total8.38s",
+      "source_and_header_unchanged_from_reviewed_draft": true,
+      "qualification": "existing unrelated LNK4006 duplicate spawn_request_id_matches Lua objects;no packet compile warning;existing math differential checks do not execute these new constructor entries"
+    },
+    "compiled_object_review": {
+      "result": "passed focused actual MSVC Release Win32 objects",
+      "object": "build/win32/bsp_core.dir/Release/native_scene_integer_set_construct_aliases.obj",
+      "bytes": 1453,
+      "sha256": "a2cd18a9346c4f5db4299d4e71ac960432800d4354f1a60ab7029413842e178a",
+      "dumpbin_version": "14.51.36244.0",
+      "receipt": "local/goal_oct15_scene_integer_set_construct_aliases_object.txt",
+      "entry_00468940": "44B;real accepted allocator CALL+3,head publication+B,captured nil11 store+E;three independent current-head reloads+12/+18/+1D;count store+23;RET+2B retaining last head in EAX;one REL32 allocator relocation+4",
+      "entry_0046cf10": "9B;tail JMP+4 to accepted construct_native_scene_integer_set_head_00468ea0;one REL32 Source provider relocation+5;separate from actual native direct head allocator CALL",
+      "provider_object": "build/win32/bsp_core.dir/Release/native_scene_integer_set_head.obj",
+      "provider_object_bytes": 2366,
+      "provider_sha256": "dc294205fac7d711c424618c06842e5f4d9b5fe483b40384da3b07b20c27c0c9",
+      "provider_receipt": "local/goal_oct15_scene_integer_set_construct_aliases_provider_object.txt",
+      "provider_schedule": "143B canonical Source entry inlines actual allocation and conditional link/color/nil initialization before constructor publication+62,nil11+65,current head reloads+69/+6F/+74,count+7A;original tree retained in EAX",
+      "qualification": "ordinary Source value/argument and current compiler evidence;no native stack/register/private-frame/argument-home/instruction/COFF/fault identity"
+    },
     "source_file_sha256": {
       "src/native_scene_integer_set_construct_aliases.cpp": "ae9806e830461ee251b053edf4e61350e9077ee97cc48978c6c30653bae35147",
       "include/bsp/native_scene_integer_set_construct_aliases.hpp": "45b1bbed828cce914632acc85a5efd5ceb6d0559cbd2e0072f39ac2c3a5797f2"
@@ -94,7 +120,7 @@
     "packet_native_differential": "not run",
     "game_validation": "not run",
     "diff_check": "passed",
-    "primary_independent_source_review": "passed;complete native listings and exact Source/header draft01a59b48453ea5ad3731b0387757d5b909f86c0e;no mismatch;Source hashes retained"
+    "primary_independent_source_review": "passed;all native instructions,ABI and exact Source/header at 01a59b48453ea5ad3731b0387757d5b909f86c0e;no mismatch;final hashes verified identical"
   },
   "limits": [
     "New ordinary C++ interfaces;no Original register/stack/private-frame/CRT/instruction/fault identity.",
