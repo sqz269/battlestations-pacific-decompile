@@ -1,6 +1,6 @@
 {
   "packet": "goal_oct15_dword_vector_ranges",
-  "status": "complete_actual_dword_range_source_build_pending",
+  "status": "complete_actual_dword_range_source_win32_build_and_two_enabled_existing_checks_passed",
   "source_ready": true,
   "source": "src/native_scene_dword_vector_ranges.cpp",
   "header": "include/bsp/native_scene_dword_vector_ranges.hpp",
@@ -617,8 +617,19 @@
     "fill_reference46B_comparison_not_extra_coverage": true,
     "exact_typed_body_branch_outgoing_and_allcaller_rows_read": true,
     "report_calls": "4exactcall rows checked,0failed",
-    "build": "pending",
-    "existing_tests": "pending",
+    "build": "PASS normal scripts/build.ps1 Release Win32 exit0; registered ownedSource compiled and all targets linked",
+    "existing_tests": {
+      "enabled": 2,
+      "passed": 2,
+      "failed": 0,
+      "suites": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "total_seconds": 7.96,
+      "native_math_differential_enabled": false,
+      "new_entries_native_differential": false
+    },
     "new_tests": 0,
     "cmake_registration": "Rechecked unleased after holder release,unqueued onlyown,appended unique Source line without exclusivelease",
     "direct_native_new_entries_execution": false,
@@ -627,16 +638,25 @@
     "application_adoption": false,
     "documentation_claim_check": "11addresses cited,4calls checked,0failed,0unchecked,0warnings",
     "annotation_readback": "BothlivecorrectSTLnames and exactreconstruction comments verified",
-    "diff_check": "passed before Source draft"
+    "diff_check": "passed before Source draft and finalmetadata commit",
+    "source_commit": "a4d2625ec",
+    "tested_revision": "a4d2625ec",
+    "build_log": "local/goal_oct15_dword_vector_ranges_build.log",
+    "build_log_sha256": "2a738ee1a61c431244bf6266079693e63563b1cb381bfdc3a146b9583cb9663b",
+    "inherited_linker_warning": "LNK4006 spawn_request_id_matches duplicate in unchanged lua_binding_spawn.obj/lua_spawn_new.obj;second definition ignored"
   },
   "source_hashes": {
     "src/native_scene_dword_vector_ranges.cpp": {
       "bytes_sha256": "1396e216684fde725c976a35d84102c7a74886698ca9192a8bd94ef00a793072",
-      "normalized_lf_sha256": "1396e216684fde725c976a35d84102c7a74886698ca9192a8bd94ef00a793072"
+      "normalized_lf_sha256": "1396e216684fde725c976a35d84102c7a74886698ca9192a8bd94ef00a793072",
+      "git_blob_bytes_sha256": "1396e216684fde725c976a35d84102c7a74886698ca9192a8bd94ef00a793072",
+      "source_revision": "a4d2625ec"
     },
     "include/bsp/native_scene_dword_vector_ranges.hpp": {
       "bytes_sha256": "445c8c1c56b3f6172602411f46c9524d69099d3b54199b68aaf8adbda5f14442",
-      "normalized_lf_sha256": "445c8c1c56b3f6172602411f46c9524d69099d3b54199b68aaf8adbda5f14442"
+      "normalized_lf_sha256": "445c8c1c56b3f6172602411f46c9524d69099d3b54199b68aaf8adbda5f14442",
+      "git_blob_bytes_sha256": "445c8c1c56b3f6172602411f46c9524d69099d3b54199b68aaf8adbda5f14442",
+      "source_revision": "a4d2625ec"
     }
   },
   "cmake_requested_line": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_scene_dword_vector_ranges.cpp)",

@@ -63,8 +63,20 @@ the SDK-call edge and all three parent call edges are retained without repair.
 Guarded live batches verify C:/Users/sqz269/bsp.gpr and program
 /battlestationspacific.exe, x86 image base00400000. Annotation records old values,
 preserves names/comments, takes the write lock, saves, exports and reads back.
-The Source draft awaits normal Win32 compilation and configured existing checks.
+Normal Win32 compilation and configured existing checks pass as recorded below.
 No new routine tests are added. Reached backing must remain valid; original
 private argument/frame/payload coincidences and asynchronous mutation are not
 exposed by these value interfaces. No original binary ABI, dedicated native
 differential, application adoption or gameplay proof is implied.
+
+Final worker validation: Source `a4d2625ec`, including its unique registration,
+passed normal `scripts/build.ps1` Release Win32. The owned Source compiled and
+all targets linked. Both enabled existing checks (`reconstructed_math`,
+`tool_tests`) passed in7.96s. Native differential is disabled in this worker tree;
+these entries were not directly native-tested. Log
+`local/goal_oct15_dword_vector_ranges_build.log` and exact log/source/header
+hashes are recorded in JSON. The inherited duplicate `spawn_request_id_matches`
+LNK4006 warning remains. All four exact typed native call rows, documentation
+claims, annotation readback and staged whitespace checks pass. No parent
+readiness, original CRT/register/private-frame/binary ABI, application or game
+proof is inferred from this leaf validation.
