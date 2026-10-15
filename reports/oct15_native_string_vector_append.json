@@ -1,0 +1,1194 @@
+{
+  "schema": 1,
+  "packet": "oct15_native_string_vector_append",
+  "title": "Actual pooled-string vector ordinary Append",
+  "state": "complete_actual_pooled_string_vector_append_source_build_tested",
+  "addresses": [
+    "00450540"
+  ],
+  "sources": [
+    "include/bsp/native_string_vector_append.hpp",
+    "src/native_string_vector_append.cpp"
+  ],
+  "documentation": "docs/OCT15_NATIVE_STRING_VECTOR_APPEND.md",
+  "established_library_name": "STL_CheckedNativeStringVector_Append_00450540",
+  "source_function": "append_native_string_header_vector_00450540",
+  "original_abi": {
+    "receiver": "ECX: actual 10h raw vector header",
+    "unused": "Incoming EDX is unconsumed; no semantic EAX result",
+    "stack": [
+      "borrowed actual 8-byte NativeString header pointer"
+    ],
+    "cleanup": "RET 4",
+    "new_source_parameters": "Explicit NativeStringRawPoolContext reference; not a binary ABI replacement",
+    "private_slots": "Native eight-byte scratch overlays low-byte CE20 tag and InsertOne output pair; Source does not reproduce stack aliases or unspecified upper tag bytes"
+  },
+  "storage": {
+    "header_bytes": 16,
+    "opaque_word_offset": 0,
+    "begin_offset": 4,
+    "end_offset": 8,
+    "capacity_offset": 12,
+    "element_bytes": 8,
+    "element": "Actual length/data header using accepted NativeStringRawPoolContext services",
+    "producer_evidence": "Accepted actual InsertOne/InsertCount and raw vector allocation/copy/fill/destruction services; 150 bounded direct reference setups",
+    "arithmetic": "Wrapping DWORD differences, SAR 3 bit patterns, unsigned size/capacity comparison"
+  },
+  "paths": [
+    {
+      "path": "null begin",
+      "behavior": "Initial size is zero without end load; capacity unread; capture current end and use slow path"
+    },
+    {
+      "path": "nonnull size < capacity",
+      "behavior": "Capture current end after count/capacity tests; CE20 count one; publish captured end + 8 only after success"
+    },
+    {
+      "path": "nonnull size >= capacity",
+      "behavior": "Capture current end; report initial begin > captured end and continue if handler returns; actual InsertOne with owner receiver and retained position"
+    }
+  ],
+  "dependencies": [
+    {
+      "address": "00450589",
+      "native": "0044ce20",
+      "function": "00450540",
+      "kind": "call",
+      "contract": "Actual uninitialized NativeString fill. ECX=captured end, EDX=1; consumed stack value/owner; duplicate value and high-part-unspecified low-byte-zero tag are dead physical arguments"
+    },
+    {
+      "address": "004505a3",
+      "native": "00bf6713",
+      "function": "00450540",
+      "kind": "call",
+      "contract": "Current invalid-parameter adapter, may return; retain original begin and captured end; original native CRT identity remains qualified"
+    },
+    {
+      "address": "004505b6",
+      "native": "00450180",
+      "function": "00450540",
+      "kind": "call",
+      "contract": "Actual InsertOne, receiver/owner header, retained end position, borrowed value, discarded private two-word result; child EDX unconsumed"
+    }
+  ],
+  "ownership_eh": {
+    "wrapper": "No native registration, owned value, cleanup state, catch, rollback, or wrapper Source catch",
+    "fast": "CE20 constructs at captured end; its accepted completed-prefix cleanup governs failure; escaping failure skips end publication",
+    "slow": "Accepted actual InsertOne/InsertCount owns its temporary, growth and in-place cleanup; Append owns only non-owning output scratch",
+    "borrowed_value": "Caller retains prototype ownership; wrapper performs no temporary copy or destructor",
+    "boundaries": "Original FH3/SEH, native frame, cleanup-failure termination, invalid pointer faults and nonlocal jumps are not reproduced by current C++ services"
+  },
+  "evidence": {
+    "body": {
+      "start": "00450540",
+      "end_exclusive": "004505c3",
+      "bytes": 131,
+      "sha256": "b78e4c1224ccfaca9b23e5da76842bdc791be527bdac8df87c0897e2bc390c3d",
+      "instruction_count": 53,
+      "disk_live_match": true,
+      "disk_export_instruction_starts_match": true
+    },
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "read_only": true,
+    "ghidra_mutation_or_repair": false,
+    "caller_reference_count": 150,
+    "caller_function_count": 61,
+    "native_call_count": 149,
+    "native_tail_jump_count": 1,
+    "caller_contexts": "All direct references inspected with bounded before/after instruction contexts; not full semantics of all containing bodies",
+    "tail_forwarder": {
+      "entry": "00aa0d30",
+      "bytes_hex": "83c104e908f89aff",
+      "disk_live_match": true,
+      "stack": "Unchanged inherited one-argument stack; ECX adjusted +4",
+      "default_flow": "UNCONDITIONAL_JUMP",
+      "override": "CALL_RETURN",
+      "effective_flow": "CALL_TERMINATOR"
+    },
+    "queued_value_setups": [
+      "008ed33c",
+      "008ed354",
+      "008ecaee"
+    ],
+    "queued_value_contract": "Value pointer pushed before map lookup key; 008EC460 RET 4 at 008EC545 consumes key only, leaving value pointer; returned vector moved to ECX"
+  },
+  "caller_sites": [
+    {
+      "address": "0053322d",
+      "native": "00450540",
+      "function": "00533120",
+      "kind": "call",
+      "caller_name": "BSP_MenuPromptScreen_Construct"
+    },
+    {
+      "address": "00533291",
+      "native": "00450540",
+      "function": "00533120",
+      "kind": "call",
+      "caller_name": "BSP_MenuPromptScreen_Construct"
+    },
+    {
+      "address": "005332f5",
+      "native": "00450540",
+      "function": "00533120",
+      "kind": "call",
+      "caller_name": "BSP_MenuPromptScreen_Construct"
+    },
+    {
+      "address": "00533359",
+      "native": "00450540",
+      "function": "00533120",
+      "kind": "call",
+      "caller_name": "BSP_MenuPromptScreen_Construct"
+    },
+    {
+      "address": "005333bd",
+      "native": "00450540",
+      "function": "00533120",
+      "kind": "call",
+      "caller_name": "BSP_MenuPromptScreen_Construct"
+    },
+    {
+      "address": "00533421",
+      "native": "00450540",
+      "function": "00533120",
+      "kind": "call",
+      "caller_name": "BSP_MenuPromptScreen_Construct"
+    },
+    {
+      "address": "00533485",
+      "native": "00450540",
+      "function": "00533120",
+      "kind": "call",
+      "caller_name": "BSP_MenuPromptScreen_Construct"
+    },
+    {
+      "address": "005334ec",
+      "native": "00450540",
+      "function": "00533120",
+      "kind": "call",
+      "caller_name": "BSP_MenuPromptScreen_Construct"
+    },
+    {
+      "address": "00533550",
+      "native": "00450540",
+      "function": "00533120",
+      "kind": "call",
+      "caller_name": "BSP_MenuPromptScreen_Construct"
+    },
+    {
+      "address": "005335b4",
+      "native": "00450540",
+      "function": "00533120",
+      "kind": "call",
+      "caller_name": "BSP_MenuPromptScreen_Construct"
+    },
+    {
+      "address": "00533618",
+      "native": "00450540",
+      "function": "00533120",
+      "kind": "call",
+      "caller_name": "BSP_MenuPromptScreen_Construct"
+    },
+    {
+      "address": "0053367c",
+      "native": "00450540",
+      "function": "00533120",
+      "kind": "call",
+      "caller_name": "BSP_MenuPromptScreen_Construct"
+    },
+    {
+      "address": "005336e0",
+      "native": "00450540",
+      "function": "00533120",
+      "kind": "call",
+      "caller_name": "BSP_MenuPromptScreen_Construct"
+    },
+    {
+      "address": "00533744",
+      "native": "00450540",
+      "function": "00533120",
+      "kind": "call",
+      "caller_name": "BSP_MenuPromptScreen_Construct"
+    },
+    {
+      "address": "004e3cd3",
+      "native": "00450540",
+      "function": "004e3aa0",
+      "kind": "call",
+      "caller_name": "BSP_Game_OnInit"
+    },
+    {
+      "address": "006a7e7a",
+      "native": "00450540",
+      "function": "006a7be0",
+      "kind": "call",
+      "caller_name": "BSP_InputSettings_LoadDataTables"
+    },
+    {
+      "address": "006a7f91",
+      "native": "00450540",
+      "function": "006a7be0",
+      "kind": "call",
+      "caller_name": "BSP_InputSettings_LoadDataTables"
+    },
+    {
+      "address": "006a8055",
+      "native": "00450540",
+      "function": "006a7be0",
+      "kind": "call",
+      "caller_name": "BSP_InputSettings_LoadDataTables"
+    },
+    {
+      "address": "006a8356",
+      "native": "00450540",
+      "function": "006a7be0",
+      "kind": "call",
+      "caller_name": "BSP_InputSettings_LoadDataTables"
+    },
+    {
+      "address": "006a8852",
+      "native": "00450540",
+      "function": "006a7be0",
+      "kind": "call",
+      "caller_name": "BSP_InputSettings_LoadDataTables"
+    },
+    {
+      "address": "006a8905",
+      "native": "00450540",
+      "function": "006a7be0",
+      "kind": "call",
+      "caller_name": "BSP_InputSettings_LoadDataTables"
+    },
+    {
+      "address": "006b9715",
+      "native": "00450540",
+      "function": "006b9450",
+      "kind": "call",
+      "caller_name": "BSP_AchievementTable_Load"
+    },
+    {
+      "address": "0050e9b1",
+      "native": "00450540",
+      "function": "0050e3c0",
+      "kind": "call",
+      "caller_name": "BSP_TacticalLibraryScreen_OpenEntryAsUnlocks"
+    },
+    {
+      "address": "0050a728",
+      "native": "00450540",
+      "function": "0050a400",
+      "kind": "call",
+      "caller_name": "BSP_TacticalLibrary_ReadVehicleClassRow"
+    },
+    {
+      "address": "0050a8f8",
+      "native": "00450540",
+      "function": "0050a820",
+      "kind": "call",
+      "caller_name": "BSP_TacticalLibrary_ReceiveDlcList"
+    },
+    {
+      "address": "0054b684",
+      "native": "00450540",
+      "function": "0054b530",
+      "kind": "call",
+      "caller_name": "BSP_MainMenuCommandBar_Rebuild"
+    },
+    {
+      "address": "0054b6ff",
+      "native": "00450540",
+      "function": "0054b530",
+      "kind": "call",
+      "caller_name": "BSP_MainMenuCommandBar_Rebuild"
+    },
+    {
+      "address": "0054b77c",
+      "native": "00450540",
+      "function": "0054b530",
+      "kind": "call",
+      "caller_name": "BSP_MainMenuCommandBar_Rebuild"
+    },
+    {
+      "address": "0054b7f7",
+      "native": "00450540",
+      "function": "0054b530",
+      "kind": "call",
+      "caller_name": "BSP_MainMenuCommandBar_Rebuild"
+    },
+    {
+      "address": "0054b874",
+      "native": "00450540",
+      "function": "0054b530",
+      "kind": "call",
+      "caller_name": "BSP_MainMenuCommandBar_Rebuild"
+    },
+    {
+      "address": "0087d9f1",
+      "native": "00450540",
+      "function": "0087d7b0",
+      "kind": "call",
+      "caller_name": "BSP_GlobalConfig_LoadFromLuaGlobals"
+    },
+    {
+      "address": "006281d5",
+      "native": "00450540",
+      "function": "00627960",
+      "kind": "call",
+      "caller_name": "FUN_00627960"
+    },
+    {
+      "address": "00628385",
+      "native": "00450540",
+      "function": "00627960",
+      "kind": "call",
+      "caller_name": "FUN_00627960"
+    },
+    {
+      "address": "006284a8",
+      "native": "00450540",
+      "function": "00627960",
+      "kind": "call",
+      "caller_name": "FUN_00627960"
+    },
+    {
+      "address": "006286a5",
+      "native": "00450540",
+      "function": "00627960",
+      "kind": "call",
+      "caller_name": "FUN_00627960"
+    },
+    {
+      "address": "00628bae",
+      "native": "00450540",
+      "function": "00627960",
+      "kind": "call",
+      "caller_name": "FUN_00627960"
+    },
+    {
+      "address": "00628df0",
+      "native": "00450540",
+      "function": "00627960",
+      "kind": "call",
+      "caller_name": "FUN_00627960"
+    },
+    {
+      "address": "00628f09",
+      "native": "00450540",
+      "function": "00627960",
+      "kind": "call",
+      "caller_name": "FUN_00627960"
+    },
+    {
+      "address": "00629134",
+      "native": "00450540",
+      "function": "00627960",
+      "kind": "call",
+      "caller_name": "FUN_00627960"
+    },
+    {
+      "address": "0062962b",
+      "native": "00450540",
+      "function": "00627960",
+      "kind": "call",
+      "caller_name": "FUN_00627960"
+    },
+    {
+      "address": "00629853",
+      "native": "00450540",
+      "function": "00627960",
+      "kind": "call",
+      "caller_name": "FUN_00627960"
+    },
+    {
+      "address": "00629984",
+      "native": "00450540",
+      "function": "00627960",
+      "kind": "call",
+      "caller_name": "FUN_00627960"
+    },
+    {
+      "address": "00629bc9",
+      "native": "00450540",
+      "function": "00627960",
+      "kind": "call",
+      "caller_name": "FUN_00627960"
+    },
+    {
+      "address": "004a4f4e",
+      "native": "00450540",
+      "function": "004a4b70",
+      "kind": "call",
+      "caller_name": "FUN_004a4b70"
+    },
+    {
+      "address": "0097b99a",
+      "native": "00450540",
+      "function": "0097b960",
+      "kind": "call",
+      "caller_name": "BSP_Session_HandleWarningStringMessage"
+    },
+    {
+      "address": "0097b92f",
+      "native": "00450540",
+      "function": "0097b8c0",
+      "kind": "call",
+      "caller_name": "BSP_WarningChannel_Evaluate"
+    },
+    {
+      "address": "00aa0d33",
+      "native": "00450540",
+      "function": "00aa0d30",
+      "kind": "tail_jump",
+      "caller_name": "BSP_Localization_RegisterTableName"
+    },
+    {
+      "address": "009106cc",
+      "native": "00450540",
+      "function": "009105f0",
+      "kind": "call",
+      "caller_name": "FUN_009105f0"
+    },
+    {
+      "address": "009106ed",
+      "native": "00450540",
+      "function": "009105f0",
+      "kind": "call",
+      "caller_name": "FUN_009105f0"
+    },
+    {
+      "address": "0091070e",
+      "native": "00450540",
+      "function": "009105f0",
+      "kind": "call",
+      "caller_name": "FUN_009105f0"
+    },
+    {
+      "address": "0091072f",
+      "native": "00450540",
+      "function": "009105f0",
+      "kind": "call",
+      "caller_name": "FUN_009105f0"
+    },
+    {
+      "address": "00910750",
+      "native": "00450540",
+      "function": "009105f0",
+      "kind": "call",
+      "caller_name": "FUN_009105f0"
+    },
+    {
+      "address": "00910771",
+      "native": "00450540",
+      "function": "009105f0",
+      "kind": "call",
+      "caller_name": "FUN_009105f0"
+    },
+    {
+      "address": "0045079f",
+      "native": "00450540",
+      "function": "00450750",
+      "kind": "call",
+      "caller_name": "BSP_DialogRegistry_CollectActiveIds"
+    },
+    {
+      "address": "0049fe69",
+      "native": "00450540",
+      "function": "0049fc80",
+      "kind": "call",
+      "caller_name": "FUN_0049fc80"
+    },
+    {
+      "address": "0049ffb9",
+      "native": "00450540",
+      "function": "0049fc80",
+      "kind": "call",
+      "caller_name": "FUN_0049fc80"
+    },
+    {
+      "address": "004a0102",
+      "native": "00450540",
+      "function": "0049fc80",
+      "kind": "call",
+      "caller_name": "FUN_0049fc80"
+    },
+    {
+      "address": "004a0248",
+      "native": "00450540",
+      "function": "0049fc80",
+      "kind": "call",
+      "caller_name": "FUN_0049fc80"
+    },
+    {
+      "address": "004a3c05",
+      "native": "00450540",
+      "function": "004a3610",
+      "kind": "call",
+      "caller_name": "FUN_004a3610"
+    },
+    {
+      "address": "004a6122",
+      "native": "00450540",
+      "function": "004a5f30",
+      "kind": "call",
+      "caller_name": "FUN_004a5f30"
+    },
+    {
+      "address": "008ed33c",
+      "native": "00450540",
+      "function": "008ecec0",
+      "kind": "call",
+      "caller_name": "BSP_PowerupConfig_LoadLua"
+    },
+    {
+      "address": "008ed354",
+      "native": "00450540",
+      "function": "008ecec0",
+      "kind": "call",
+      "caller_name": "BSP_PowerupConfig_LoadLua"
+    },
+    {
+      "address": "0097f6ff",
+      "native": "00450540",
+      "function": "0097f570",
+      "kind": "call",
+      "caller_name": "BSP_WarningManager_LoadMessageTree"
+    },
+    {
+      "address": "0057d159",
+      "native": "00450540",
+      "function": "0057d0d0",
+      "kind": "call",
+      "caller_name": "BSP_LoadingScreen_BuildDefaultConfig"
+    },
+    {
+      "address": "0057d1bb",
+      "native": "00450540",
+      "function": "0057d0d0",
+      "kind": "call",
+      "caller_name": "BSP_LoadingScreen_BuildDefaultConfig"
+    },
+    {
+      "address": "0057d21d",
+      "native": "00450540",
+      "function": "0057d0d0",
+      "kind": "call",
+      "caller_name": "BSP_LoadingScreen_BuildDefaultConfig"
+    },
+    {
+      "address": "005c5c0c",
+      "native": "00450540",
+      "function": "005c5b40",
+      "kind": "call",
+      "caller_name": "BSP_MissionTree_AppendBriefingLayerNames"
+    },
+    {
+      "address": "005c5c96",
+      "native": "00450540",
+      "function": "005c5b40",
+      "kind": "call",
+      "caller_name": "BSP_MissionTree_AppendBriefingLayerNames"
+    },
+    {
+      "address": "005c5caf",
+      "native": "00450540",
+      "function": "005c5b40",
+      "kind": "call",
+      "caller_name": "BSP_MissionTree_AppendBriefingLayerNames"
+    },
+    {
+      "address": "0055eeb2",
+      "native": "00450540",
+      "function": "0055e3a0",
+      "kind": "call",
+      "caller_name": "BSP_ControlBindingScreen_RefreshPage"
+    },
+    {
+      "address": "0056025d",
+      "native": "00450540",
+      "function": "00560210",
+      "kind": "call",
+      "caller_name": "BSP_ControlBindingScreen_ConfirmOrNextDevice"
+    },
+    {
+      "address": "005602ac",
+      "native": "00450540",
+      "function": "00560210",
+      "kind": "call",
+      "caller_name": "BSP_ControlBindingScreen_ConfirmOrNextDevice"
+    },
+    {
+      "address": "005602f8",
+      "native": "00450540",
+      "function": "00560210",
+      "kind": "call",
+      "caller_name": "BSP_ControlBindingScreen_ConfirmOrNextDevice"
+    },
+    {
+      "address": "005c5931",
+      "native": "00450540",
+      "function": "005c5860",
+      "kind": "call",
+      "caller_name": "BSP_MissionTree_ReadStringVector"
+    },
+    {
+      "address": "005c59d7",
+      "native": "00450540",
+      "function": "005c5990",
+      "kind": "call",
+      "caller_name": "BSP_MissionTreeScreen_CollectMissingPrerequisites"
+    },
+    {
+      "address": "005c5add",
+      "native": "00450540",
+      "function": "005c5990",
+      "kind": "call",
+      "caller_name": "BSP_MissionTreeScreen_CollectMissingPrerequisites"
+    },
+    {
+      "address": "005d3045",
+      "native": "00450540",
+      "function": "005d2f90",
+      "kind": "call",
+      "caller_name": "BSP_MultiErrorScreen_Construct"
+    },
+    {
+      "address": "005d30a9",
+      "native": "00450540",
+      "function": "005d2f90",
+      "kind": "call",
+      "caller_name": "BSP_MultiErrorScreen_Construct"
+    },
+    {
+      "address": "005d310d",
+      "native": "00450540",
+      "function": "005d2f90",
+      "kind": "call",
+      "caller_name": "BSP_MultiErrorScreen_Construct"
+    },
+    {
+      "address": "005d3171",
+      "native": "00450540",
+      "function": "005d2f90",
+      "kind": "call",
+      "caller_name": "BSP_MultiErrorScreen_Construct"
+    },
+    {
+      "address": "005d31d5",
+      "native": "00450540",
+      "function": "005d2f90",
+      "kind": "call",
+      "caller_name": "BSP_MultiErrorScreen_Construct"
+    },
+    {
+      "address": "005d323c",
+      "native": "00450540",
+      "function": "005d2f90",
+      "kind": "call",
+      "caller_name": "BSP_MultiErrorScreen_Construct"
+    },
+    {
+      "address": "005d32a0",
+      "native": "00450540",
+      "function": "005d2f90",
+      "kind": "call",
+      "caller_name": "BSP_MultiErrorScreen_Construct"
+    },
+    {
+      "address": "005d3304",
+      "native": "00450540",
+      "function": "005d2f90",
+      "kind": "call",
+      "caller_name": "BSP_MultiErrorScreen_Construct"
+    },
+    {
+      "address": "005d3368",
+      "native": "00450540",
+      "function": "005d2f90",
+      "kind": "call",
+      "caller_name": "BSP_MultiErrorScreen_Construct"
+    },
+    {
+      "address": "005d33cc",
+      "native": "00450540",
+      "function": "005d2f90",
+      "kind": "call",
+      "caller_name": "BSP_MultiErrorScreen_Construct"
+    },
+    {
+      "address": "005e15f2",
+      "native": "00450540",
+      "function": "005e12a0",
+      "kind": "call",
+      "caller_name": "BSP_MultiGameLobby_LoadWeatherTable"
+    },
+    {
+      "address": "005e16a2",
+      "native": "00450540",
+      "function": "005e12a0",
+      "kind": "call",
+      "caller_name": "BSP_MultiGameLobby_LoadWeatherTable"
+    },
+    {
+      "address": "00629e4b",
+      "native": "00450540",
+      "function": "00629d10",
+      "kind": "call",
+      "caller_name": "BSP_RewardsScreen_Register"
+    },
+    {
+      "address": "00629eb4",
+      "native": "00450540",
+      "function": "00629d10",
+      "kind": "call",
+      "caller_name": "BSP_RewardsScreen_Register"
+    },
+    {
+      "address": "00629f1d",
+      "native": "00450540",
+      "function": "00629d10",
+      "kind": "call",
+      "caller_name": "BSP_RewardsScreen_Register"
+    },
+    {
+      "address": "00629f86",
+      "native": "00450540",
+      "function": "00629d10",
+      "kind": "call",
+      "caller_name": "BSP_RewardsScreen_Register"
+    },
+    {
+      "address": "00629fef",
+      "native": "00450540",
+      "function": "00629d10",
+      "kind": "call",
+      "caller_name": "BSP_RewardsScreen_Register"
+    },
+    {
+      "address": "0062a058",
+      "native": "00450540",
+      "function": "00629d10",
+      "kind": "call",
+      "caller_name": "BSP_RewardsScreen_Register"
+    },
+    {
+      "address": "0068569c",
+      "native": "00450540",
+      "function": "00685300",
+      "kind": "call",
+      "caller_name": "BSP_LogoSequence_LoadTable"
+    },
+    {
+      "address": "006a34c3",
+      "native": "00450540",
+      "function": "006a33f0",
+      "kind": "call",
+      "caller_name": "BSP_InputSettings_CollectActionBindingTexts"
+    },
+    {
+      "address": "006a3568",
+      "native": "00450540",
+      "function": "006a33f0",
+      "kind": "call",
+      "caller_name": "BSP_InputSettings_CollectActionBindingTexts"
+    },
+    {
+      "address": "006a362d",
+      "native": "00450540",
+      "function": "006a33f0",
+      "kind": "call",
+      "caller_name": "BSP_InputSettings_CollectActionBindingTexts"
+    },
+    {
+      "address": "006a376a",
+      "native": "00450540",
+      "function": "006a33f0",
+      "kind": "call",
+      "caller_name": "BSP_InputSettings_CollectActionBindingTexts"
+    },
+    {
+      "address": "006a382d",
+      "native": "00450540",
+      "function": "006a33f0",
+      "kind": "call",
+      "caller_name": "BSP_InputSettings_CollectActionBindingTexts"
+    },
+    {
+      "address": "006a3857",
+      "native": "00450540",
+      "function": "006a33f0",
+      "kind": "call",
+      "caller_name": "BSP_InputSettings_CollectActionBindingTexts"
+    },
+    {
+      "address": "006b0215",
+      "native": "00450540",
+      "function": "006b0020",
+      "kind": "call",
+      "caller_name": "BSP_MissionLoad_DecodeTableByStringKey"
+    },
+    {
+      "address": "006b02a5",
+      "native": "00450540",
+      "function": "006b0020",
+      "kind": "call",
+      "caller_name": "BSP_MissionLoad_DecodeTableByStringKey"
+    },
+    {
+      "address": "006b0d85",
+      "native": "00450540",
+      "function": "006b0be0",
+      "kind": "call",
+      "caller_name": "BSP_MissionLoad_DecodeTableByNumberKey"
+    },
+    {
+      "address": "006b0e15",
+      "native": "00450540",
+      "function": "006b0be0",
+      "kind": "call",
+      "caller_name": "BSP_MissionLoad_DecodeTableByNumberKey"
+    },
+    {
+      "address": "006b08d4",
+      "native": "00450540",
+      "function": "006b0650",
+      "kind": "call",
+      "caller_name": "BSP_MissionSave_NameTablesByIntKey"
+    },
+    {
+      "address": "006b1b04",
+      "native": "00450540",
+      "function": "006b1870",
+      "kind": "call",
+      "caller_name": "BSP_MissionSave_NameTablesByStringKey"
+    },
+    {
+      "address": "006b20d4",
+      "native": "00450540",
+      "function": "006b1e40",
+      "kind": "call",
+      "caller_name": "BSP_MissionSave_NameTablesByNumberKey"
+    },
+    {
+      "address": "006b12f3",
+      "native": "00450540",
+      "function": "006b1190",
+      "kind": "call",
+      "caller_name": "BSP_MissionSave_StripTableNames"
+    },
+    {
+      "address": "006b15f2",
+      "native": "00450540",
+      "function": "006b1490",
+      "kind": "call",
+      "caller_name": "BSP_MissionLoad_StripVisitMarks"
+    },
+    {
+      "address": "006b2582",
+      "native": "00450540",
+      "function": "006b23e0",
+      "kind": "call",
+      "caller_name": "BSP_MissionLoad_DecodeLuaState"
+    },
+    {
+      "address": "006b3467",
+      "native": "00450540",
+      "function": "006b3130",
+      "kind": "call",
+      "caller_name": "BSP_MissionSave_EncodeTableByIntKey"
+    },
+    {
+      "address": "006b3522",
+      "native": "00450540",
+      "function": "006b3130",
+      "kind": "call",
+      "caller_name": "BSP_MissionSave_EncodeTableByIntKey"
+    },
+    {
+      "address": "006b35df",
+      "native": "00450540",
+      "function": "006b3130",
+      "kind": "call",
+      "caller_name": "BSP_MissionSave_EncodeTableByIntKey"
+    },
+    {
+      "address": "006b4318",
+      "native": "00450540",
+      "function": "006b3fd0",
+      "kind": "call",
+      "caller_name": "BSP_MissionSave_EncodeTableByStringKey"
+    },
+    {
+      "address": "006b43d3",
+      "native": "00450540",
+      "function": "006b3fd0",
+      "kind": "call",
+      "caller_name": "BSP_MissionSave_EncodeTableByStringKey"
+    },
+    {
+      "address": "006b4490",
+      "native": "00450540",
+      "function": "006b3fd0",
+      "kind": "call",
+      "caller_name": "BSP_MissionSave_EncodeTableByStringKey"
+    },
+    {
+      "address": "006b4ff9",
+      "native": "00450540",
+      "function": "006b4cb0",
+      "kind": "call",
+      "caller_name": "BSP_MissionSave_EncodeTableByNumberKey"
+    },
+    {
+      "address": "006b50b4",
+      "native": "00450540",
+      "function": "006b4cb0",
+      "kind": "call",
+      "caller_name": "BSP_MissionSave_EncodeTableByNumberKey"
+    },
+    {
+      "address": "006b5171",
+      "native": "00450540",
+      "function": "006b4cb0",
+      "kind": "call",
+      "caller_name": "BSP_MissionSave_EncodeTableByNumberKey"
+    },
+    {
+      "address": "006b5f67",
+      "native": "00450540",
+      "function": "006b5bf0",
+      "kind": "call",
+      "caller_name": "BSP_MissionSave_EncodeTableByCStringKey"
+    },
+    {
+      "address": "006b601c",
+      "native": "00450540",
+      "function": "006b5bf0",
+      "kind": "call",
+      "caller_name": "BSP_MissionSave_EncodeTableByCStringKey"
+    },
+    {
+      "address": "006b60d3",
+      "native": "00450540",
+      "function": "006b5bf0",
+      "kind": "call",
+      "caller_name": "BSP_MissionSave_EncodeTableByCStringKey"
+    },
+    {
+      "address": "006b69f2",
+      "native": "00450540",
+      "function": "006b68c0",
+      "kind": "call",
+      "caller_name": "BSP_MissionSave_EncodeLuaState"
+    },
+    {
+      "address": "006b6ed2",
+      "native": "00450540",
+      "function": "006b68c0",
+      "kind": "call",
+      "caller_name": "BSP_MissionSave_EncodeLuaState"
+    },
+    {
+      "address": "008eca32",
+      "native": "00450540",
+      "function": "008ec650",
+      "kind": "call",
+      "caller_name": "BSP_Powerup_PickFromBracketList_Provisional"
+    },
+    {
+      "address": "008eca56",
+      "native": "00450540",
+      "function": "008ec650",
+      "kind": "call",
+      "caller_name": "BSP_Powerup_PickFromBracketList_Provisional"
+    },
+    {
+      "address": "008ecaee",
+      "native": "00450540",
+      "function": "008ec650",
+      "kind": "call",
+      "caller_name": "BSP_Powerup_PickFromBracketList_Provisional"
+    },
+    {
+      "address": "00986d94",
+      "native": "00450540",
+      "function": "00986b00",
+      "kind": "call",
+      "caller_name": "BSP_WarningManager_DispatchHpEventChannel"
+    },
+    {
+      "address": "007fcab9",
+      "native": "00450540",
+      "function": "007fc9f0",
+      "kind": "call",
+      "caller_name": "BSP_PlayerProfile_GrantBonusValue"
+    },
+    {
+      "address": "007fcc87",
+      "native": "00450540",
+      "function": "007fcbc0",
+      "kind": "call",
+      "caller_name": "BSP_PlayerProfile_GrantBonusText"
+    },
+    {
+      "address": "007fe253",
+      "native": "00450540",
+      "function": "007fdf00",
+      "kind": "call",
+      "caller_name": "BSP_PlayerProfile_ReadArchive"
+    },
+    {
+      "address": "008d0ae5",
+      "native": "00450540",
+      "function": "008d08b0",
+      "kind": "call",
+      "caller_name": "BSP_LuaBinding_DisplayMessage"
+    },
+    {
+      "address": "008d0c12",
+      "native": "00450540",
+      "function": "008d08b0",
+      "kind": "call",
+      "caller_name": "BSP_LuaBinding_DisplayMessage"
+    },
+    {
+      "address": "008d1027",
+      "native": "00450540",
+      "function": "008d0ea0",
+      "kind": "call",
+      "caller_name": "BSP_LuaBinding_OverrideMessage"
+    },
+    {
+      "address": "008d1152",
+      "native": "00450540",
+      "function": "008d0ea0",
+      "kind": "call",
+      "caller_name": "BSP_LuaBinding_OverrideMessage"
+    },
+    {
+      "address": "008eb8c6",
+      "native": "00450540",
+      "function": "008eb7e0",
+      "kind": "call",
+      "caller_name": "BSP_SessionMessage69_Read"
+    },
+    {
+      "address": "0097b584",
+      "native": "00450540",
+      "function": "0097b4d0",
+      "kind": "call",
+      "caller_name": "BSP_StringListWarning_LoadArchive"
+    },
+    {
+      "address": "0097d81a",
+      "native": "00450540",
+      "function": "0097d650",
+      "kind": "call",
+      "caller_name": "BSP_Warning_ResolveEntitySoundKeys"
+    },
+    {
+      "address": "0097d8d5",
+      "native": "00450540",
+      "function": "0097d650",
+      "kind": "call",
+      "caller_name": "BSP_Warning_ResolveEntitySoundKeys"
+    },
+    {
+      "address": "0097d9a0",
+      "native": "00450540",
+      "function": "0097d650",
+      "kind": "call",
+      "caller_name": "BSP_Warning_ResolveEntitySoundKeys"
+    },
+    {
+      "address": "0097da69",
+      "native": "00450540",
+      "function": "0097d650",
+      "kind": "call",
+      "caller_name": "BSP_Warning_ResolveEntitySoundKeys"
+    },
+    {
+      "address": "0097dac7",
+      "native": "00450540",
+      "function": "0097d650",
+      "kind": "call",
+      "caller_name": "BSP_Warning_ResolveEntitySoundKeys"
+    },
+    {
+      "address": "0097db51",
+      "native": "00450540",
+      "function": "0097d650",
+      "kind": "call",
+      "caller_name": "BSP_Warning_ResolveEntitySoundKeys"
+    },
+    {
+      "address": "009826d6",
+      "native": "00450540",
+      "function": "00982540",
+      "kind": "call",
+      "caller_name": "BSP_WarningManager_PumpInputChannel"
+    },
+    {
+      "address": "00a9e716",
+      "native": "00450540",
+      "function": "00a9e400",
+      "kind": "call",
+      "caller_name": "BSP_GuiListbox_ReadProperties"
+    },
+    {
+      "address": "00b17222",
+      "native": "00450540",
+      "function": "00b171c0",
+      "kind": "call",
+      "caller_name": "BSP_SceneRenderer_ToggleStatsFilterName"
+    },
+    {
+      "address": "00b6aa92",
+      "native": "00450540",
+      "function": "00b6a390",
+      "kind": "call",
+      "caller_name": "BSP_LuaObject_WriteLuaSourceText"
+    },
+    {
+      "address": "00bebe4a",
+      "native": "00450540",
+      "function": "00bebd90",
+      "kind": "call",
+      "caller_name": "BSP_PcStorage_EnumerateFiles"
+    },
+    {
+      "address": "008eb793",
+      "native": "00450540",
+      "function": "008eb710",
+      "kind": "call",
+      "caller_name": "BSP_PowerUpManager_BroadcastCommandBuildingBindings"
+    }
+  ],
+  "preserved_prior_work": "append_checked_native_string_storage in native_checked_string_storage.cpp and its bounded interface, fixtures, source records and provenance are unchanged",
+  "verification": {
+    "warm_build": "./scripts/build.ps1 passed MSVC Win32",
+    "existing_suites": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "suites_passed": 3,
+    "ctest_total_seconds": 9.48,
+    "native_differential_scope": "Existing math seeds only; no Append runtime differential",
+    "new_tests": 0,
+    "existing_warning": "Unrelated LNK4006 spawn_request_id_matches duplicate definition",
+    "report_call_verifier": "153 JSON rows passed (152 CALL, 1 explicit tail JMP); Markdown 3 passed, 0 unchecked, 0 warnings",
+    "index": "python tools/bsp.py index --if-stale completed",
+    "diff_check": "git diff --check passed",
+    "owned_ledger_preservation": "Only 00450540 name evidence appended with all prior fields preserved; exactly one new Source function record; prior fragment untouched; exact one-line CMake append"
+  },
+  "limits": [
+    "New Source context/private scratch interface, not original register/stack binary ABI",
+    "Current CRT adapter and C++ exception domain, not original CRT/FH3/SEH identity or cleanup-failure termination proof",
+    "Dead upper tag bytes, original argument aliases, invalid-memory faults, nonlocal jumps and concurrency equivalence are outside the Source contract",
+    "No new Append native runtime differential or gameplay validation"
+  ]
+}
