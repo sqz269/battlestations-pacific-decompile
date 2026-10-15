@@ -97,8 +97,13 @@ All providers are concrete existing raw header/map/pool implementations or
 actual current CRT services. The map domain is bounded, not a named missing
 body; unrestricted upstream admission is still unproved. Exact live/installed
 spans, Source/provider hashes, original ABI and prior annotation evidence are
-recorded in JSON. Required Win32 build/checks and locked annotation/export
-await the queued registry/ledger turns. No new tests are added. Original
+recorded in JSON. Required `scripts/build.ps1` passed at registered revision
+`f0d3fc0d9`, targeting MSVC Win32. Both enabled existing checks passed in
+6.94 seconds: math and tool tests. Optional native differential fixtures are
+not enabled in this worker build. The existing unrelated LNK4006 duplicate
+`spawn_request_id_matches` warning remains. Locked annotation/export awaits
+the held 8F ledger turn; Source and build evidence do not bypass that boundary.
+No new tests are added. Original
 static-CRT heap/errno/handler/locale, RTTI/FH3/SEH/register/fault/binary identity,
 new-entry native differential, application and game proof remain unclaimed.
 

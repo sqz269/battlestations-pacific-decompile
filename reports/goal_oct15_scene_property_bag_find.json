@@ -313,8 +313,29 @@
     "source_ready": false,
     "whole_control_flow_source_available": true,
     "unrestricted_parent_admission_proved": false,
-    "build": "pending required scripts/build.ps1 after owned registration",
-    "existing_ctests": "pending",
+    "build": {
+      "command": "scripts/build.ps1",
+      "result": "PASS",
+      "exit_code": 0,
+      "revision": "f0d3fc0d9",
+      "platform": "MSVC Win32",
+      "log": "local/goal_oct15_scene_property_bag_find_build.log",
+      "log_sha256": "f0ef0c8e67510e80c2fd0dc125771afc4cd28b3b014167f56b673efa8c916d3a",
+      "warnings": [
+        "existing unrelated LNK4006 duplicate spawn_request_id_matches in lua_binding_spawn.obj/lua_spawn_new.obj"
+      ]
+    },
+    "existing_ctests": {
+      "enabled": 2,
+      "passed": 2,
+      "failed": 0,
+      "seconds": 6.94,
+      "names": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "optional_native_differential_enabled": false
+    },
     "report_call_verification": "PASS13 typed rows and13 documentation claims;0failures/unchecked/warnings",
     "new_tests": 0,
     "abi_compatible": false,
