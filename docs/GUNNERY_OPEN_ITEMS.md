@@ -15204,3 +15204,39 @@ Variants of this section: `ta`/`tb` (bow-on torpedoes, Fuso 53.6k / 86.9k), `tc`
 - `g46_exports.ps1`: builds exports.
 - Readers: `g46_counts.py`, `g46_deaths.py`, `g46_hits.py`, `g46_hpseries.py`, `g46_traj.py`, `g46_mind.py`.
 - The export dirs are `g46_p1` (`3f25f26ce`) and `g46_p2` (`a65c06700`).
+
+## 260. `008FFF20` coverage, and the reload half of the TorpedoBot ready test (cc9-gunnery47, 2026-10-15)
+
+**Finding: `gun_bot_heading_accepted_008fff20` is not the host's model of the tick.** The ledger's function
+record for `008FFF20` points at that three-line helper (the `009003C6` FLT_MAX compare), which is why the cc13 audit
+read it as a placeholder. The host models the TorpedoBot tick piecewise inside the generic gun tick of
+`src/game_hosts_gunnery.cpp`, one switch per image range:
+
+| Image range | What it does | Host |
+| --- | --- | --- |
+| `008FFF20..008FFF8A` | owner/target `+5Dh` dead, other party (`00803510`) -> `vt+38h(0)` | the kill step (CC13_VER_13 row "gun bots") |
+| `008FFF8A..0090002A` | `008FBCE0` idle rest timer; a surface owner drops a submerged target | the host's idle timer; `kTorpedoSubmergedTargetDropBound` |
+| `0090002C..00900097` | role slot not 8 and not AI-held (`00927F10`) -> return; owner `unit+184h` (player-controlled) -> return; no gun -> return | `!player_seat` scope |
+| `009000DD..00900101` | thinkTimeLeft, 0.2 s | `kTorpedoBotThinkTimerBound` |
+| `009000FC..00900117` | bot+64h (a submarine owner) and `008527E0` false -> return, trigger untouched | not modelled here; the submarine category gate `008627A0` (`kSubmarineCategoryGateBound`) refuses category 7 by the same test at target selection. Residual: a held trigger is not kept |
+| `009001A8..0090031E` | gate A, intercept `008FBB00`, spread `unit+6D4h`, gate B | `kTorpedoBotAttackRangeBound`, `kTorpedoBotNoInterceptDropBound`, `kTorpedoSpreadBound`, `kTorpedoBotStaleFlagBound` |
+| `00900380..00900433` | heading snap `0085AB50`, FLT_MAX abort, 1-degree test, `vt+1D0h(1)` | `kTorpedoBotReadyGateBound` for the window; **the reload half is this packet** |
+| `0090043D..009007F6` | gyro run line, friendly-crossing walk | `kTorpedoGyroHeadingBound`, `kTorpedoFriendlyCrossingBound` |
+| `00900800..00900888` | AngleErr jitter (two stream-1 draws), inhibit `unit+634h` bit 2 | `kTorpedoGyroHeadingBound` (draws at shot creation); inhibit is the constant `false` (no writer modelled) |
+| `0090088E..009008EB` | launch zone `004218E0`/`00417940` | `kTorpedoLaunchZoneBound` |
+| `009008F1..00900951` | shot command `007311B0`/`0072AC20`, `vt+1F0h()`, `00951FC0` spread flip | every TORPEDO device in this installation's realistic `deviceclasses.lua` (29 rows, mtime 2024-07-13) is `Single_Turning_Gun`, so `vt+1F0h` is `006FDC50` = `vt+1E8h(1)`, the latch the host raises with `want_fire`; `kTorpedoSpreadBound` flips |
+
+**The gap bound here (`kTorpedoBotCanFireReloadBound`, OFF).** `0090042F vt+1D0h(1)` is the whole `0085A830`
+CanFire with the reload check: `gun+490h`, the window at the current angles, then `00729A80(1)` (barrel delay
+`+450h`, stagger `+478h`, unit torpedo cooldown `+6FCh`, every barrel's reload timer). A refusal goes to
+`00900974`, `vt+1E8h(0)`. The host's ready test took the window only (CC13_AUDIT_CC9_RECENT_2 section 2, note (a)),
+so a tube's request stayed high through its reload and fired on the first step it was out. In the image the trigger
+drops on every evaluating tick of a reload (`006FDCD0` ignores the drop while an MSTGun salvo holds `+4D8h`), and
+the first evaluation after the reload raises the latch afresh, which draws a new stagger `U(0, 0.12)`.
+ON: `image_ready` also needs `torpedo_tube_can_fire_1d0(g)`, the same gate the fire pass builds, read before this
+step's `0072D130` countdown (the order of the bot tick and the gun tick inside one step is not read: uncertainty).
+
+**Predictions (written before the pairs).** OFF counts `torpedo ready reload refusals` > 0 on every mission with AI
+torpedo guns. ON: AI torpedo launches after the first salvo move later by up to one think period plus the stagger
+(<= 0.32 s); the launch count may change by a few; no change on missions without AI torpedo tubes. Missions:
+USN15 (`usn15_g46_u15_tl`), JM06 (`jm06_s49_j6_s`), IJN08 (`ijn08_p9_i08_w`, already lost on main).
