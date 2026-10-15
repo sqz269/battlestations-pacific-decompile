@@ -8,7 +8,7 @@
   "header": "include/bsp/native_scene_dword_move_nonzero.hpp",
   "documentation": "docs/GOAL_OCT15_DWORD_MOVE_NONZERO.md",
   "base_revision": "6477c28764ddd4c0df1864435b36fd253b8f192e",
-  "status": "whole_actual_raw_source_build_pending",
+  "status": "whole_actual_raw_source_strict_win32_existing_ctest_and_compiler_checked",
   "routine": {
     "address": "00468f60",
     "body_end_inclusive": "00468f8f",
@@ -87,8 +87,32 @@
     "live_installed_bytes": "passed;whole48B/18instructions including RET0Ch",
     "typed_native_transfers": "passed;5 actual rows (1 ownSDK+4 incoming) and5 Markdown siteclaims;13 citedaddresses;0 failed/unchecked/warnings",
     "cmake_registration": "passed;unique append after immediate unleased check;no exclusive file lease",
-    "strict_win32_build_and_existing_ctest": "pending",
-    "compiled_object_review": "pending",
+    "strict_win32_build_and_existing_ctest": {
+      "result": "passed",
+      "command": "./scripts/build.ps1",
+      "build_and_source_revision": "32e7e0edf4bd2da8377ac2fb58682d2be3e400a3",
+      "configuration": "MSVC Release Win32;normal startup registry;process-local CL /MP4",
+      "log": "local/goal_oct15_dword_move_nonzero_build.log",
+      "log_sha256": "287e1baf27353749add0d809f7af0f6579d504af3ed4b91478a329d97f364f93",
+      "ctest": "3/3 passed: reconstructed_math0.23s,native_math_differential0.04s,tool_tests7.88s;total8.20s",
+      "source_header_unchanged_from_draft": true,
+      "qualification": "existing unrelated LNK4006 duplicate spawn_request_id_matches Lua objects;no packet compile warning;existing native math differential checks do not exercise this new body"
+    },
+    "compiled_object_review": {
+      "result": "passed focused actual MSVC Release Win32 object",
+      "object": "build/win32/bsp_core.dir/Release/native_scene_dword_move_nonzero.obj",
+      "bytes": 1214,
+      "sha256": "0d9ca8d4fcb87ae523a4c925cfc858c432325f01ceb1f0d85e4cfa0dc8fc6b7c",
+      "dumpbin_version": "14.51.36244.0",
+      "receipt": "local/goal_oct15_dword_move_nonzero_object.txt",
+      "entry_code_bytes": 97,
+      "input_and_arithmetic_schedule": "last load+3,first+6,destination+1A in that relative order;SUB+9,explicit SAR bits SHR+0D/SAR31+10/AND+13/OR+18;bytesLEA+1E;preSDK resultESI+25",
+      "nonzero_negative_guard": "JE+28 preserves OR(words) ZF through MOV/PUSH/LEAs;skips only0 including no signed-positive guard;SDK TEST(bytes)+2A likewise admits negative bits",
+      "real_sdk_schedule": "current SDK memmove_s inline implementation;real errno import+32,EINVAL store+38,returnable invalid_parameter_noinfo import+3E;pointer checks+2E/+4B;actualmemmove+52;equal size/count removes SDK too-small branch",
+      "captured_return_schedule": "ESI preSDK result restored to EAX+44 on returning diagnostic path and+5A on normal/zero path;RET0Ch+48/+5E",
+      "relocations": "DIR32 errno import+34,DIR32 invalid_parameter_noinfo import+40,REL32 actualmemmove+53",
+      "qualification": "compiler SDK inlining/current errno/handler behavior and pointer-value Source evidence only;no native private-frame/argument-home/fault/SEH/instruction/COFF/staticCRT/binaryABI identity"
+    },
     "source_file_sha256": {
       "src/native_scene_dword_move_nonzero.cpp": "b7cb4a0d41a6c2c1715f13a1d45f69a02d6026308d5d3a3f582770fb058f323f",
       "include/bsp/native_scene_dword_move_nonzero.hpp": "b6c522fddc880ddeb9b0ad78dfbf001e951fb678b1488666bba05833981f0419"

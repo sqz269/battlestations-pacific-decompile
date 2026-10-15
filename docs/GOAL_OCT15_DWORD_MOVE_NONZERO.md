@@ -59,6 +59,24 @@ The five actual native transfer rows are verified separately from SDK Source
 composition. Locked annotation preserves old values/comments/evidence, saves the
 project and refreshes the affected export with readback recorded in the report.
 Unique CMake registration requires an immediate unleased check without a whole-
-file lease. Required normal Win32 build, existing checks and focused compiler
-inspection are pending. No new tests are added; native differential of this body,
-original binary ABI and game behavior remain unproved.
+file lease. Prior-value annotation log:
+`local/ghidra-annotations-20261015T221222Z.json`.
+
+Required normal `scripts/build.ps1` at
+`32e7e0edf4bd2da8377ac2fb58682d2be3e400a3` passed strict Win32 and all 3 existing
+CTests in 8.20s. Log: `local/goal_oct15_dword_move_nonzero_build.log`.
+Source/header hashes remain unchanged from that draft.
+
+Focused actual-object inspection found a 97-byte stdcall entry. It reads last,
+first and destination in that relative order, constructs the explicit SAR2 bits
+through OR+18h and captures the wrapped result in ESI+25h before SDK effects.
+JE+28h uses the OR's ZF and skips only zero words; no signed-positive guard is
+present. The real current SDK is inlined: its byte-count test+2Ah retains all
+negative counts, real errno/returning-invalid-parameter imports occur+32h/+3Eh,
+and actual memmove is reached+52h after its pointer validation. Both returning
+diagnostics and the normal path restore the captured result from ESI+44h/+5Ah,
+then RET0Ch. These SDK checks belong to the concrete provider, not an invented
+Source filter. Object SHA/offsets/relocations are recorded in the report and
+`local/goal_oct15_dword_move_nonzero_object.txt`.
+No new tests were added; native differential of this body, original binary ABI
+and game behavior remain unproved. Existing math checks do not execute this body.
