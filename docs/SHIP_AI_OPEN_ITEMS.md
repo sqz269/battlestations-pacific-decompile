@@ -17957,3 +17957,26 @@ Scope only; nothing bound.
   stream 00BD2F10 in the image, so every pair touching sinking or damaged ships is RNG-shifted against the image
   there (memory: shared stream). Next step for whichever lane owns ShipSystems effects: identify unit+518h's writer,
   then model the draws (the effects themselves are presentation) behind OFF.
+
+## 255. USNOS opening re-plan on current main (cc9-ships51, 2026-10-14; lead item 2)
+
+Runs: reference env, 200000 frames, `--stop-after-end 40`, `-Traj`, launcher `local\s51_rows.ps1` (s50_rows with its
+own launch-file prefix); order files `local\s51_os_<v>.txt` built with `local\s50_osgen.py`; logs `local\s51_t_<v>.log`
+with manifests; plan census `local\s51_ordsum.py <orders> [unit-regex]`. Build: this tree at e28dc6833..85b535a91.
+- **k28 on current main** (`s51_t_k28`) reproduces k30's collapse line for line: NH <- Shima2 torpedo 975 s, no SetParty.
+- **a1** (k28 + NH/Portland1/Gear16 `attack Shima2`, Portland2/Gear14 `attack Shima3`, 12000-16800 every 600): NH lives,
+  kills Shima3 766, Shima2 921, Shimotsuke 1502.74 (Gear14 lost 1502.19: a knife edge), Ada3, Shima1. No captures: the
+  four transports parked 200-300 m apart near the Enterprise jam for about 2000 frames (TT3 still at (11192, -4508) at
+  46000), so the 34000/36000 capture moves start late. a2 (same from 8000): NH <- Shimotsuke 1486. b1 (NH held at
+  (2000, -6800)): NH <- Shimotsuke 1906.
+- **Parking spread** (a3: TT3 (10600, -5300), TT6 (10700, -4600), TT5 (11700, -5600); a4: TT3 (9900, -4900), TT6 (9800,
+  -4200), TT5 (11700, -5300)): transports leave at once, but NH loses the Shimotsuke duel in both (mission failed 3988 /
+  3873 s, every transport dead).
+- **Portland1/2 `attack Shimotsuke` 26000-31000 every 500** on a3/a4 (a5/a6): Shimotsuke dies 1504 / 1489 s to NH, NH
+  lives (kills Ada3 ~2000 s, Shima1 ~2150 s). New blocker: **Capture Post 04** (fortress_small at (-3700, 3627), about 1015 m
+  from TT3's HQ1 point (-2700, 3800)) kills TT3 on arrival (3163 / 3179 s); NH kills Capture Posts 01/02 at
+  2307/2542 s but 04 only at 5940 s. HQ1 ends neutral (party 2) and uncaptured; TT1 (parked) <- Shima7 torpedo at 9.7 km
+  ~2670 s; TT5 <- Ada1 ~4220 s.
+- **Next:** a7 = a6 + NH `attack "Capture Post 02"` 47000-51500 and `"Capture Post 04"` 52000-61000 (every 500); a8 = a7
+  without TT6's 37400 redirect (TT6 stays on HQ2). Both died at renderer init (hr 0x88760868, display asleep) at
+  19:18-19:32 local and must be re-run. Then: the 251 CB2/HQ2 line, the Betty member hunts (k30), jitter.
