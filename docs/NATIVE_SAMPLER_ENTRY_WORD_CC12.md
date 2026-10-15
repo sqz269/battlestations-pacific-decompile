@@ -118,6 +118,13 @@ contention case demonstrated actual replacement of W, including zero; it does
 not rely on that value being constant. Changed module identity is rejected.
 The probe retires its shader, device, and API to zero.
 
+The final Win32 build passed both existing CTests (`reconstructed_math` and
+`tool_tests`). The unrelated duplicate `spawn_request_id_matches` LNK4006
+warning remains. The final contention probe observed 29,170 changed words in
+200,000 releases, including zero. The complete 96-byte bridge is identical in
+the probe and production COFF objects and in both linked executables; its
+SHA-256 is `d480337b401359dd588edf03898dd6e7feb5e995f0149afa3fc96ce78268e06c`.
+
 The report records the final build/CTest results, exact probe counts, full
 bridge COFF and linked extents, operand bindings, module identities, hashes,
 and frozen artifact bundle. The standalone probe proves the checked boundary
