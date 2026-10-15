@@ -67,6 +67,7 @@ struct NativeMainSceneExecutionPrefixState {
     bool reached_scne_batch_stage{};
     bool reached_scne_capture_stage{};
     bool reached_post_label_stage{};
+    bool reached_post_body_stage{};
 };
 
 // Complete raw leaves. Native ECX command / camera. B1BF40 uses RET and returns
@@ -476,4 +477,41 @@ struct NativeMainSceneScneCaptureFrame {
 void continue_native_main_scene_scne_capture_00b162fe(void* actual_service,
     const NativeMainSceneScneCaptureContext&, NativeMainSceneScneLabelFrame&,
     NativeMainSceneScneCaptureFrame&, NativeMainSceneExecutionPrefixState&);
+
+struct NativeMainScenePostLabelContext {
+    const NativeMainSceneDrshLabelContext& domains;
+    const void* actual_post_bytes_00d5e4f0;
+};
+struct NativeMainScenePostLabelFrame {
+    std::uint32_t temporary_header[2]{};
+    void* captured_data{};
+    void* captured_service{};
+    void* destination_header{};
+    std::int32_t native_cleanup_state{-1};
+    std::uint32_t active_native_site{};
+    std::uint32_t cleanup_native_site{};
+    bool started{};
+    bool completed{};
+    bool failed{};
+    bool temporary_return_started{};
+    bool temporary_return_completed{};
+    bool cleanup_started{};
+    bool cleanup_completed{};
+    bool service_flag_cleared{};
+};
+
+// B1634E..B163F9 only. Clear ORIGINAL service byte680 BEFORE zeroing/resizing
+// the temporary; copy current length+1 from borrowed POST bytes. Capture the
+// CURRENT global service, THEN arm6, preserving alias/current-length gates.
+// Arm8 BEFORE normal captured-data/current-length pool return; reach B163FA
+// with8 armed, before its post-rendering gate. Unarmed failure preserves the
+// cleared flag/zeroed temporary; no rollback, retries or POST-effect execution.
+void continue_native_main_scene_post_label_00b1634e(void* actual_service,
+    const NativeMainScenePostLabelContext&, NativeMainScenePostLabelFrame&,
+    NativeMainSceneExecutionPrefixState&);
+// Explicit source CBC486/CBC491 actions:6 destroys CURRENT temporary,8 resets
+// CURRENT global service. Both disarm to-1 before cleanup; a second cleanup
+// exception terminates. Map7->(6,CBC491) exists but this clause never installs7.
+void unwind_native_main_scene_post_label(const NativeMainScenePostLabelContext&,
+    NativeMainScenePostLabelFrame&) noexcept;
 } // namespace bsp
