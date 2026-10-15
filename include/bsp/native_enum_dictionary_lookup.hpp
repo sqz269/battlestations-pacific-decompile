@@ -23,8 +23,11 @@ namespace bsp {
 // byte promotion into genuine current CRT toupper and modulo-DWORD arithmetic.
 // Supply the distinct property fallback role, Original 00E177E4; no default
 // cell/global is created. Valid null/empty input selects it without dereference.
-// Admit stable actual8h headers and closed NUL-free ASCII buffers whose lengths
-// match storage, null data only when empty, and stable current CRT C locale.
+// Property-only volatile DWORD/BYTE accesses preserve the native read schedule.
+// Admit valid reached actual8h header/sample backing and the existing current
+// CRT ASCII/C-locale ctype boundary. Recorded length controls sampling; no
+// strlen match or NUL-free requirement is imposed. Null data selects the actual
+// fallback, whose reached sample extent must be readable when length is nonzero.
 // No allocation/ownership/map access. Original stack-header/RET4 is not this
 // two-argument C++ interface; no non-ASCII/locale, fault/SEH, ABI or game claim.
 std::uint32_t native_property_key_bucket_0043b760(const void* actual_key_header,
@@ -52,12 +55,23 @@ const void* find_native_enum_table_node_0048d4e0(const void* actual_receiver,
 // untouched. Return the first matching mutable borrowed node, or null.
 // Supply the distinct actual property-node (00E177E4) and query (00E17654)
 // fallback roles. Pointer equality succeeds before null/real CRT stricmp gates.
-// Admit live actual 108h maps, finite consistent correctly bucketed chains,
-// matching closed NUL-free ASCII headers/buffers (null data only when empty),
-// stable nonnull NUL fallback cells and current CRT C locale. Bucket output is
-// writable and nonaliasing; external synchronization keeps all borrowed storage
-// and bindings stable. No allocation, ownership, populated-map producer,
+// Use ordered volatile raw words and a captured hash for the head index after
+// the output store. The raw bucket word may alias map/query/node payload; its
+// write is visible to all subsequent native reloads. Reached storage must be
+// valid for each actual access, including the current fallback/string spans
+// passed to real CRT comparison. No correctly-bucketed, recorded-strlen-match,
+// NUL-free or nonaliasing-bucket requirement is imposed. The hash retains its
+// current CRT ASCII/C-locale admission; other-byte/locale Original parity is
+// unproved. Binding metadata stays stable/disjoint; concurrent C++ data races,
+// fault identity and arbitrary private-stack aliases remain unproved. Native
+// loops are uncapped; termination requires a reached hit or terminal next word.
+// No allocation, ownership, populated-map producer,
 // replacement lifetime, class/Original ABI, fault/SEH or game claim is made.
+void* find_native_property_map_node_0043b8b0(const void* actual_map,
+    const void* actual_query_header, void* actual_bucket4,
+    const char* actual_empty_00e177e4, const char* actual_empty_00e17654);
+
+// Retained typed convenience interface; the raw overload owns the whole body.
 void* find_native_property_map_node_0043b8b0(const void* actual_map,
     const void* actual_query_header, std::uint32_t& bucket,
     const char* actual_empty_00e177e4, const char* actual_empty_00e17654);

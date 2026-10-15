@@ -17,6 +17,23 @@ template<class T> T load(const void* owner, std::uint32_t offset) {
     return value;
 }
 
+std::uint32_t read_property_word(const void* owner, std::uint32_t offset) {
+    const auto address = reinterpret_cast<std::uintptr_t>(owner) + offset;
+    return *reinterpret_cast<const volatile std::uint32_t*>(address);
+}
+
+void write_property_word(void* owner, std::uint32_t value) {
+    *static_cast<volatile std::uint32_t*>(owner) = value;
+}
+
+const char* read_property_data(const void* owner) {
+    return reinterpret_cast<const char*>(read_property_word(owner, 4));
+}
+
+signed char read_property_byte(const char* data) {
+    return *reinterpret_cast<const volatile signed char*>(data);
+}
+
 std::uint32_t bucket_for(const NativeString& key, const char* empty) {
     const char* data = key.data();
     std::uint32_t hash = key.length();
@@ -55,14 +72,14 @@ const void* find_node(const void* receiver, const NativeString& key,
 
 std::uint32_t native_property_key_bucket_0043b760(const void* actual_key_header,
     const char* actual_empty_00e177e4) {
-    const char* data = load<const char*>(actual_key_header, 4);
-    std::uint32_t hash = load<std::uint32_t>(actual_key_header, 0);
+    const char* data = read_property_data(actual_key_header);
+    std::uint32_t hash = read_property_word(actual_key_header, 0);
     const std::uint32_t step = (hash | 0x20u) >> 5;
     std::uint32_t remaining = hash;
     if (!data) data = actual_empty_00e177e4;
     while (remaining >= step) {
         const auto character = static_cast<unsigned char>(
-            std::toupper(static_cast<signed char>(*data)));
+            std::toupper(read_property_byte(data)));
         hash ^= std::uint32_t(character) + (hash << 5) + (hash >> 2);
         remaining -= step;
         ++data;
@@ -92,25 +109,35 @@ const void* find_native_enum_table_node_0048d4e0(const void* receiver,
 }
 
 void* find_native_property_map_node_0043b8b0(const void* actual_map,
-    const void* actual_query_header, std::uint32_t& bucket,
+    const void* actual_query_header, void* actual_bucket4,
     const char* actual_empty_00e177e4, const char* actual_empty_00e17654) {
-    bucket = native_property_key_bucket_0043b760(
+    const auto captured_bucket = native_property_key_bucket_0043b760(
         actual_query_header, actual_empty_00e177e4);
-    void* node = load<void*>(actual_map, 8u + bucket * 4u);
+    write_property_word(actual_bucket4, captured_bucket);
+    void* node = reinterpret_cast<void*>(read_property_word(
+        actual_map, 8u + captured_bucket * 4u));
     if (!node) return nullptr;
-    const auto query_length = load<std::uint32_t>(actual_query_header, 0);
+    const auto query_length = read_property_word(actual_query_header, 0);
     do {
-        if (load<std::uint32_t>(node, 0) == query_length) {
-            const char* data = load<const char*>(node, 4);
+        if (read_property_word(node, 0) == query_length) {
+            const char* data = read_property_data(node);
             if (!data) data = actual_empty_00e177e4;
-            const char* query = load<const char*>(actual_query_header, 4);
+            const char* query = read_property_data(actual_query_header);
             if (!query) query = actual_empty_00e17654;
             if (query == data) return node;
             if (query && data && ::_stricmp(query, data) == 0) return node;
         }
-        node = load<void*>(node, 0x0c);
+        node = reinterpret_cast<void*>(read_property_word(node, 0x0c));
     } while (node);
     return nullptr;
+}
+
+void* find_native_property_map_node_0043b8b0(const void* actual_map,
+    const void* actual_query_header, std::uint32_t& bucket,
+    const char* actual_empty_00e177e4, const char* actual_empty_00e17654) {
+    return find_native_property_map_node_0043b8b0(actual_map,
+        actual_query_header, static_cast<void*>(&bucket),
+        actual_empty_00e177e4, actual_empty_00e17654);
 }
 
 std::uint32_t publish_native_property_map_new_node_008f2930_fragment(
