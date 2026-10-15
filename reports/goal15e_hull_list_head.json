@@ -1,0 +1,40 @@
+{
+  "schema": "bsp.goal15e.hull_list_head.v1",
+  "packet": "goal15e_hull_head",
+  "base_commit": "6cec0c525",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "status": "complete_naked_head26_constructor22_call_normalized_real_heap_source_probe_passed_pending_primary_build",
+  "owned_addresses": ["0041bf50", "0041e1b0"],
+  "outputs": ["include/bsp/native_hull_list_head.hpp", "src/native_hull_list_head.cpp", "docs/GOAL15E_HULL_LIST_HEAD.md", "reports/goal15e_hull_list_head.json"],
+  "routines": [
+    {"address": "0041bf50", "name": "STL_List_BuyHeadNode_0041bf50", "body": "0041bf50-0041bf69", "bytes": 26, "coverage": "complete", "source": "src/native_hull_list_head.cpp", "entry": "buy_native_hull_list_head_0041bf50", "original_abi": "cdecl no receiver/args; EAX head; plain RET", "source_abi": "same ordinary cdecl shape, naked kernel; concrete current CRT adapter/external frames qualified"},
+    {"address": "0041e1b0", "name": "STL_List_Construct_0041E1B0", "body": "0041e1b0-0041e1c5", "bytes": 22, "coverage": "complete", "source": "src/native_hull_list_head.cpp", "entry": "construct_native_hull_list_0041e1b0", "original_abi": "ECX actual0Ch header, EAX same header, ESI preserved; no stack args, plain RET", "source_abi": "one-arg Win32 fastcall, naked kernel; real direct Source head producer"}
+  ],
+  "host_steps": [
+    {"address": "0041bf52", "native": "00bf681b", "function": "0041bf50", "contract": "body read in current worker stream: genuine object16/16 allocation; PUSH10h, ADD ESP4 at0041BF57; real malloc/new-handler/bad_alloc provider, no fake callbacks"},
+    {"address": "0041e1b3", "native": "0041bf50", "function": "0041e1b0", "contract": "complete head producer before any header stores"}
+  ],
+  "consumer_calls": [{"address": "0042153e", "native": "0041bf50", "function": "00421500", "contract": "manager constructor stores EAX at+70h then zero count+74h, list header at+6Ch; no args to head producer"}],
+  "semantics": {
+    "node_schema": "existing Cc13AvoidZoneHullListNode size10h,next0,previous4,value8; no duplicate class",
+    "payload": "DWORD+8 and+Ch untouched/uninitialized/unread; no hull handle construction, zeroing or lifetime invented",
+    "head_order": ["allocate16", "guard EAX and store next self", "compute/guard wrappedEAX+4 and store previous self", "return unchanged allocated EAX"],
+    "header_order": ["capture existing header in ESI", "call genuine head producer", "store head at+4", "zero count+8", "EAX same header, restore ESI, RET"],
+    "untouched_header": "+0h proxy word",
+    "failure_policy": "existing Source CRT allocation policy; no extra null return, retry, rollback or cleanup; no header stores before producer returns",
+    "limits": "current heap/handler/exception identity, provider frames/fault backing, original binary binding and gameplay unclaimed"
+  },
+  "evidence": [
+    {"span": "0041bf50-0041bf69;0041e1b0-0041e1c5", "kind": "complete native assembly/live prototype", "conclusion": "26+22 bytes, exact guards/store order/EAX result and calling shape"},
+    {"span": "0042153e", "kind": "live manager-constructor instruction context", "conclusion": "same existing hull-list sentinel/header schema; returned head consumed at manager+70h"},
+    {"span": "00bf681b;src/singleton_lifetime.cpp", "kind": "callee/provider read earlier in current worker stream", "conclusion": "genuine real heap/new-handler retry/throw with equal16/16 request, matching Source CRT free"}
+  ],
+  "corrections": [
+    {"address": "0041bf50", "was": "undefined STL_List_BuyHeadNode_0041bf50(void)", "is": "cdecl no args, EAX raw16B existing node pointer", "evidence": "allocator result retained throughRET and both consumers store/use EAX; no Ghidra writes by worker"},
+    {"address": "0041e1b0", "was": "undefined STL_List_Construct_0041E1B0(void)", "is": "ECX rawheader, EAX same header, ESI preserved, plainRET", "evidence": "complete native body; correct existing library name retained"}
+  ],
+  "validation": {"focused_compile": "PASS:strict MSVC x86 /std:c++17 /EHsc /MD /W4 /WX /fp:strict /permissive- /O2 /Gy /FAcs /c /Iinclude; zero warnings; local/goal15e_hull_head/compile.cmd", "owned_kernel_bytes": "PASS:actual COFF26+22bytes; only head CALL operand+3h and ctor CALL operand+4h masked, each target verified; every other byte equals live Native; local/goal15e_hull_head/compare_hull_head_bytes.py accepts optional registered object", "normalized_head_sha256": "fe87e1226c574ab0e6bc4d89e898d921e38bc676411fb859d8891e932f7e17b8", "normalized_constructor_sha256": "587bc090c93254b62a3c5df1a92f85bc4597d6fcf1f6d0ea7aac7b44255baa4c", "source_probe": "PASS:one tiny real /MD heap constructor/head probe checks self-links, header proxy/count/result and matching free; no payload-byte read; local/goal15e_hull_head/hull_head_probe.cpp and probe.cmd; /MANIFEST:EMBED; OOM not forced", "report_and_doc_calls": "PASS:3 report rows and3 unique markdown claims; zero failures or warnings", "full_registered_build": "primary responsibility", "new_repository_tests": 0, "ghidra_mutations": 0, "native_differential": false, "game_validated": false},
+  "diff_check": "PASS",
+  "integration": {"target": "bsp_core", "target_sources_add": "src/native_hull_list_head.cpp", "parallel_api": "stable public APIs and source/object paths sent to zone_leaf_max and pool_cleanup", "saved_ghidra_annotation": "primary only", "lease": "release on final transfer"}
+}
