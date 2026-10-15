@@ -1,0 +1,136 @@
+{
+  "packet": "goal_oct15_primary_review",
+  "status": "combined_source_build_and_three_existing_checks_passed_finalizing_integration",
+  "target_project": "C:/Users/sqz269/bsp.gpr",
+  "target_program": "/battlestationspacific.exe",
+  "workers": [
+    {
+      "branch": "agent/goal_oct15_erase",
+      "addresses": [
+        "0043ea00"
+      ],
+      "review": "Source compared to full original listing; raw header/copy/release order and current count decrement match.",
+      "source_revision": "0d3b8598d",
+      "call_rows_checked": 5,
+      "call_rows_failed": 0
+    },
+    {
+      "branch": "agent/goal_oct15_allocate",
+      "addresses": [
+        "0041cb50"
+      ],
+      "review": "Source compared to full original listing; concrete getter before wrapped length increment and actual allocator composition match.",
+      "source_revision": "7d509c1bd90157746243c1e884b3a7c17abea46c",
+      "call_rows_checked": 2,
+      "call_rows_failed": 0
+    },
+    {
+      "branch": "agent/goal_oct15_copy",
+      "addresses": [
+        "00444070",
+        "004440c0"
+      ],
+      "review": "Source/header compared to complete original listings and accepted raw00426060 helper. Header initialization and current-field reloads match; scalar is read late through explicit FLD/FSTP, including identity. Current explicit Source context/CRT/EH qualifications retained.",
+      "source_revision": "246ac8ae719841398f5007b797684ab32a0b33f6",
+      "call_rows_checked": 4,
+      "call_rows_failed": 0
+    }
+  ],
+  "primary": {
+    "address": "00bdd020",
+    "native_bytes": 126,
+    "review": "Complete original listing, all callers, raw mutation schedule and live/installed bytes reviewed.",
+    "call_rows_checked": 4,
+    "call_rows_failed": 0
+  },
+  "native_math_seeds": {
+    "live_installed_equal": 8,
+    "header_generated": "local/seed_reference.hpp",
+    "qualification": "Enables existing native_math_differential; does not exercise new string/VFS entries."
+  },
+  "integration": {
+    "build": "pass",
+    "tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "main_revision": null,
+    "pushed": false,
+    "build_source_revision": "ff5b6fb1a6350c36224f1f53e3bbcbf6c01deb5a",
+    "build_log": "local/goal_oct15_combined_build.log",
+    "build_command": "scripts/build.ps1",
+    "compiler_environment_extra": "/MP4 (parallel compilation only)",
+    "tests_passed": 3,
+    "build_log_sha256": "08bbfa8ca9009de0eb0d77ea9a18adc2a18a8c3291dd8ccc0805343d47c107ea",
+    "archive_members": [
+      "bsp_core.dir\\Release\\native_vfs_remove_content.obj",
+      "bsp_core.dir\\Release\\native_string_allocate_storage.obj",
+      "bsp_core.dir\\Release\\native_string_vector_erase_unordered.obj",
+      "bsp_core.dir\\Release\\native_string_copy_construct.obj"
+    ],
+    "object_hashes": [
+      {
+        "Hash": "CFCA7A295C2CA0BA68DB3FFB82470B9CC4B509546CD79EF171B86494342EA479",
+        "Path": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\build\\win32\\bsp_core.dir\\Release\\native_string_allocate_storage.obj"
+      },
+      {
+        "Hash": "460AFE6BEF213EBFEB0AF763ED216FD47AC6A2216192EE612858DFEC005223C9",
+        "Path": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\build\\win32\\bsp_core.dir\\Release\\native_string_vector_erase_unordered.obj"
+      },
+      {
+        "Hash": "72AA5189CD63B63C2B7A117B9D4282031068D8A128E558368CEFB210B7E3F3B5",
+        "Path": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\build\\win32\\bsp_core.dir\\Release\\native_string_copy_construct.obj"
+      },
+      {
+        "Hash": "6922EC81BD02A8713A9F38391F34649F8751A12D5325CA31C73642F00BA5E2C5",
+        "Path": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\build\\win32\\bsp_core.dir\\Release\\native_vfs_remove_content.obj"
+      }
+    ]
+  },
+  "limits": [
+    "New explicit-context Source interfaces; original stack/register/privateCRT/EH identity unestablished.",
+    "No new function runtime differential fixture or gameplay qualification."
+  ],
+  "aggregate": {
+    "functions": 5,
+    "native_bytes": 411,
+    "call_rows_checked": 15,
+    "call_rows_failed": 0
+  },
+  "independent_live_installed_spans": [
+    {
+      "address": "0041cb50",
+      "bytes": 23,
+      "sha256": "d136a9fba552c319a16d6d7e080eabf88d256367440e57e7d1dac16f59262146",
+      "live_equals_installed": true,
+      "evidence": "independently reviewed worker receipt"
+    },
+    {
+      "address": "0043ea00",
+      "bytes": 115,
+      "live_equals_installed": true,
+      "sha256": "ec7bd9462bc38892c9935013461b605d82b7945125d802d063d73788707cbac4"
+    },
+    {
+      "address": "00444070",
+      "bytes": 75,
+      "live_equals_installed": true,
+      "sha256": "18729a175c8e63fa6ea6e84eaaeed9dccceb2a1a59a60163ec5df89cdcc33534"
+    },
+    {
+      "address": "004440c0",
+      "bytes": 72,
+      "live_equals_installed": true,
+      "sha256": "144ff75873b9464c16c5296c4331f641865acb511231e19067035d115bc28a2b"
+    },
+    {
+      "address": "00bdd020",
+      "bytes": 126,
+      "sha256": "3d2057bff94397bd118e506797dd56f74f067c78a66c0f3741b8df0619b72561",
+      "live_equals_installed": true
+    }
+  ],
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "generated_core_project_has_each_new_translation_unit_once": true
+}

@@ -30,5 +30,9 @@ manager+48h vector and the local iterator-cell address. The parent ends with
 that is listing evidence, not a typed-flow or runtime equivalence proof.
 
 Validation is recorded in `reports/goal_oct15_vfs_remove_content.json`.
+The combined `scripts/build.ps1` Win32 build passed with all three existing
+CTest entries: reconstructed math, native math differential, and tool tests.
+The new VFS object occurs once in the built `bsp_core.lib`. These existing
+tests do not execute this new VFS entry; its behavioral evidence is static.
 Current CRT locale behavior is retained as a dependency. Original private CRT,
 x86 stack/register/EH compatibility and gameplay have not been validated.

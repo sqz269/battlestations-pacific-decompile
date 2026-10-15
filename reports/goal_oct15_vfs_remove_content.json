@@ -4,14 +4,14 @@
   "program": "/battlestationspacific.exe",
   "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
   "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
-  "status": "complete_actual_raw_storage_source_build_pending",
+  "status": "complete_actual_raw_storage_source_strict_win32_build_and_existing_checks_passed",
   "functions": [
     {
       "address": "00bdd020",
       "name": "remove_native_vfs_content_package_00bdd020",
       "source": "src/native_vfs_remove_content.cpp",
       "header": "include/bsp/native_vfs_remove_content.hpp",
-      "status": "complete_actual_raw_storage_source_build_pending",
+      "status": "complete_actual_raw_storage_source_strict_win32_build_and_existing_checks_passed",
       "coverage": "complete",
       "native_end_inclusive": "00bdd09d",
       "native_byte_count": 126,
@@ -62,12 +62,21 @@
     }
   ],
   "validation": {
-    "source_build": "pending child integration",
+    "source_build": "scripts/build.ps1 pass in combined integration",
     "original_fixture_executed": false,
     "Original_ABI_compatible": false,
     "game_validated": false,
     "call_rows_checked": 4,
-    "call_rows_failed": 0
+    "call_rows_failed": 0,
+    "build_source_revision": "ff5b6fb1a6350c36224f1f53e3bbcbf6c01deb5a",
+    "existing_ctests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "existing_ctests_passed": 3,
+    "build_log": "local/goal_oct15_combined_build.log",
+    "build_log_sha256": "08bbfa8ca9009de0eb0d77ea9a18adc2a18a8c3291dd8ccc0805343d47c107ea"
   },
   "ghidra_mutations": [
     {
