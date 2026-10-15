@@ -10,6 +10,7 @@
 #include "bsp/game_native_renderer_application.hpp"
 #include "bsp/game_native_font_probe.hpp"
 #include "bsp/game_native_gui_effect_probe.hpp"
+#include "bsp/game_native_shadow_target_application.hpp"
 #include "bsp/game_native_shader_process.hpp"
 #include "bsp/native_renderer_end_frame.hpp"
 #include "bsp/native_xlive_device_adapter.hpp"
@@ -1622,8 +1623,34 @@ void GameStartupHost::close_native_gui_probe_after_drain() noexcept {
     }
 }
 
+void GameStartupHost::exit_if_native_shadow_incomplete() noexcept {
+    if (!native_shadow_ || !native_shadow_->requires_process_retention()) return;
+    try {
+        const auto& observed = native_shadow_->observation();
+        log_.notef("native startup shadow/renderer graph incomplete: stage=%u failure_stage=%u allocation=%p constructor=%u; retaining settings/renderer/manager graph",
+            static_cast<unsigned>(observed.stage), static_cast<unsigned>(observed.failure_stage),
+            observed.allocated, static_cast<unsigned>(observed.constructor_entered));
+        log_.close();
+    } catch (...) { std::fputs("bsp_game: native startup shadow requires process retention\n", stderr); }
+    std::_Exit(1);
+}
+
+void GameStartupHost::close_native_shadow_after_drain() noexcept {
+    if (!native_shadow_) return;
+    try {
+        native_shadow_->after_native_renderer_drain();
+        native_shadow_.reset();
+        log_.note("native startup shadow metadata closed after genuine shared native drain");
+    } catch (...) {
+        try { log_.note("native startup shadow closure failed; retaining actual renderer/manager graph"); log_.close(); }
+        catch (...) { std::fputs("bsp_game: native startup shadow closure requires process retention\n", stderr); }
+        std::_Exit(1);
+    }
+}
+
 GameStartupHost::~GameStartupHost() {
     exit_if_native_gui_probe_incomplete();
+    exit_if_native_shadow_incomplete();
     if(settings_host_&&settings_host_->requires_process_retention()) {
         try{log_.notef("native settings loader interrupted at %08x; retaining actual settings/catalog/VFS/renderer graph",settings_host_->failure_site());log_.close();}
         catch(...){std::fputs("bsp_game: native settings require process retention\n",stderr);std::fflush(stderr);}
@@ -1657,6 +1684,7 @@ GameStartupHost::~GameStartupHost() {
         if (clock_services_) clock_services_->phase = ClockServices::Phase::drained;
     }
     close_native_gui_probe_after_drain();
+    close_native_shadow_after_drain();
     if (input_) {
         try { input_->core.release_sdk_after_native_drain(); }
         catch (const std::exception& error) {
@@ -1751,6 +1779,7 @@ void GameStartupHost::game_explorer_release() {
 
 void GameStartupHost::exit_process(int code) {
     exit_if_native_gui_probe_incomplete();
+    exit_if_native_shadow_incomplete();
     exit_if_native_renderer_incomplete();
     exit_if_native_lua_interrupted();
     exit_if_frame_clock_failed();
@@ -2255,6 +2284,17 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // cache/power sequence. The parent-process named-pipe peer and application
     // IPC owner composition remain unresolved. Keep its publication null.
     log_.unimplemented("Phase 5 online_manager_initialize", "0073dc7c");
+    // Original 73DCCB..73DD09 follows the window/device and online blocks,
+    // before 73DD12 shader preload and 73DD8E input construction. Capture the
+    // canonical settings+1D once and enter the existing raw2Ch A8FE30 owner.
+    // Keep metadata before entry and through the genuine singleton drain.
+    if (native_shadow_)
+        throw std::logic_error("application shadow target construction cannot be retried");
+    native_shadow_ = std::make_unique<GameNativeShadowTargetApplication>(log_,
+        *native_renderer_, *settings_process_);
+    try { native_shadow_->construct(); }
+    catch (...) { exit_if_native_shadow_incomplete(); throw; }
+    log_.implemented("Phase 7 native shadow target startup", "0073dccb");
     log_.unimplemented("Phase 4 renderer_resources", "00b14a10");
     input_ = std::make_unique<InputServices>(*this);
     input_runtime_ = &input_->core;
@@ -2368,7 +2408,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         // entire application graph; a successful run retires only its caller
         // credits and names, then keeps parent bindings through the raw drain.
         native_gui_probe_ = std::make_unique<GameNativeGuiEffectProbe>(log_, *native_renderer_,
-            *vfs_, *singletons_, *native_data_, *settings_process_, *input_runtime_,
+            *vfs_, *singletons_, *native_data_, *native_shadow_, *input_runtime_,
             native_renderer_->loading_platform_focus_publication());
         try {
             (void)native_gui_probe_->run(include_native_post_cache);

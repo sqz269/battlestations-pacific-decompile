@@ -199,19 +199,18 @@ struct GameNativeGuiEffectProbe::Impl {
     GameVfsHost& vfs;
     GameSingletonHost& singletons;
     GameNativeReadOnlyData& data;
-    GameNativeSettingsProcess& settings;
+    GameNativeShadowTargetApplication& shadow;
     GameInputRuntime& input;
     NativePlatformLoadPublication platform;
     GameNativeVfsRawServices raw;
     GameNativeGuiEffectProbeObservation observed;
     // Reverse destruction preserves parent scopes/header addresses through effect metadata.
-    std::unique_ptr<GameNativeShadowTargetApplication> shadow;
     std::unique_ptr<GameNativeGuiSamplerApplication> sampler;
     std::unique_ptr<GameNativeGuiEffectApplication> effects;
     Impl(GameHostLog& l, GameNativeRendererApplication& r, GameVfsHost& v,
-        GameSingletonHost& s, GameNativeReadOnlyData& d, GameNativeSettingsProcess& settings_process,
+        GameSingletonHost& s, GameNativeReadOnlyData& d, GameNativeShadowTargetApplication& shadow_application,
         GameInputRuntime& i, NativePlatformLoadPublication p)
-        : log(l), renderer(r), vfs(v), singletons(s), data(d), settings(settings_process),
+        : log(l), renderer(r), vfs(v), singletons(s), data(d), shadow(shadow_application),
           input(i), platform(p), raw(v.borrow_raw_services()) {
         observed.resources[0].requested_name = "GuiFont.mshd";
         observed.resources[1].requested_name = "GuiFontBilinear.mshd";
@@ -330,9 +329,9 @@ struct GameNativeGuiEffectProbe::Impl {
 
 GameNativeGuiEffectProbe::GameNativeGuiEffectProbe(GameHostLog& log,
     GameNativeRendererApplication& renderer, GameVfsHost& vfs, GameSingletonHost& singletons,
-    GameNativeReadOnlyData& data, GameNativeSettingsProcess& settings, GameInputRuntime& input,
+    GameNativeReadOnlyData& data, GameNativeShadowTargetApplication& shadow, GameInputRuntime& input,
     NativePlatformLoadPublication platform)
-    : impl_(std::make_unique<Impl>(log, renderer, vfs, singletons, data, settings, input, platform)) {}
+    : impl_(std::make_unique<Impl>(log, renderer, vfs, singletons, data, shadow, input, platform)) {}
 
 GameNativeGuiEffectProbe::~GameNativeGuiEffectProbe() noexcept {
     if (impl_->observed.stage != Stage::prepared && impl_->observed.stage != Stage::closed)
@@ -347,9 +346,7 @@ const GameNativeGuiEffectProbeObservation& GameNativeGuiEffectProbe::run(bool in
     try {
         p.log.notef("native GUI effect probe options include_fakemotion=%d", include_fakemotion ? 1 : 0);
         o.stage = Stage::shadow;
-        p.shadow = std::make_unique<GameNativeShadowTargetApplication>(p.log, p.renderer, p.settings);
-        p.shadow->construct();
-        auto* target = p.shadow->target();
+        auto* target = p.shadow.target();
         require(target != nullptr, "actual shadow allocation returned null; GUI effect probe cannot enter policy consumer");
         p.log.notef("native GUI effect probe shadow owner=%p profile=%08x extent=%u/%u policy=%u",
             target, target->profile_00, target->width_04, target->height_08,
@@ -518,7 +515,6 @@ void GameNativeGuiEffectProbe::after_native_renderer_drain() {
         p.observed.stage = Stage::closing;
         p.effects->after_native_renderer_drain();
         p.sampler->after_native_renderer_drain();
-        p.shadow->after_native_renderer_drain();
         p.observed.stage = Stage::closed;
         p.log.note("native GUI effect probe closed after genuine shared native drain");
     } catch (...) {
@@ -534,7 +530,7 @@ bool GameNativeGuiEffectProbe::requires_process_retention() const noexcept {
     const auto stage = p.observed.stage;
     return stage == Stage::failed ||
         (stage != Stage::prepared && stage != Stage::ready && stage != Stage::retired && stage != Stage::closed) ||
-        (p.shadow && p.shadow->requires_process_retention()) ||
+        p.shadow.requires_process_retention() ||
         (p.sampler && p.sampler->requires_process_retention()) ||
         (p.effects && p.effects->requires_process_retention());
 }
@@ -571,13 +567,13 @@ void GameNativeGuiEffectProbe::emit_failure_observations() const noexcept {
                     call.mode_descriptor, call.mode_sampler_count);
             }
         }
-        if (p.shadow) {
-            const auto& shadow = p.shadow->observation();
+        {
+            const auto& shadow = p.shadow.observation();
             p.log.notef("native GUI shadow stage=%u failure_stage=%u allocated=%p returned=%p ctor=%d extent=%u/%u hires=%u",
                 static_cast<unsigned>(shadow.stage), static_cast<unsigned>(shadow.failure_stage), shadow.allocated,
                 shadow.returned, shadow.constructor_entered ? 1 : 0, shadow.dimensions.width, shadow.dimensions.height,
                 static_cast<unsigned>(shadow.hires_shadow));
-            if (const auto* operation = p.shadow->constructor_operation())
+            if (const auto* operation = p.shadow.constructor_operation())
                 p.log.notef("native GUI shadow operation phase=%u site=%08x state=%08x singleton_state=%08x section=%p entered=%d published=%d",
                     static_cast<unsigned>(operation->phase), operation->native_site, operation->exception_state,
                     operation->singleton_exception_state, operation->captured_section,
