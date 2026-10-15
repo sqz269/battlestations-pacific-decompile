@@ -1,0 +1,91 @@
+{
+  "packet": "oct15_native_dword_vector_erase",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_dword_vector_erase.cpp",
+  "header": "include/bsp/native_dword_vector_erase.hpp",
+  "documentation": "docs/OCT15_NATIVE_DWORD_VECTOR_ERASE.md",
+  "routines": [
+    {
+      "address": "006977f0",
+      "bytes": 99,
+      "instructions": 40,
+      "last_inclusive": "00697852",
+      "old_name": "STL_Vector_EraseRange_006977f0",
+      "sha256": "d24ff4bdd97a9f92a3c1ae7fb4857c0878e49601ea66a968963509d94a6089b0",
+      "typed_complete": true,
+      "live_equal_installed_PE": true,
+      "implementation": "erase_native_checked_dword_vector_range_006977f0"
+    },
+    {
+      "address": "00697890",
+      "bytes": 57,
+      "instructions": 26,
+      "last_inclusive": "006978c8",
+      "old_name": "STL_inst_00697890",
+      "sha256": "27f1b79dea333988c5c6ca05c494351af8ba0eb62671961a81ec5821c1973d36",
+      "typed_complete": true,
+      "live_equal_installed_PE": true,
+      "implementation": "clear_native_checked_dword_vector_00697890"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00697803",
+      "function": "006977f0",
+      "native": "00bf6713"
+    },
+    {
+      "address": "006978a0",
+      "function": "00697890",
+      "native": "00bf6713"
+    },
+    {
+      "address": "006978ad",
+      "function": "00697890",
+      "native": "00bf6713"
+    },
+    {
+      "address": "006978bd",
+      "function": "00697890",
+      "native": "006977f0"
+    },
+    {
+      "address": "00697bf5",
+      "function": "00697bd0",
+      "native": "00697890",
+      "scope": "bounded caller instruction only; whole assignment remains separate"
+    }
+  ],
+  "native_evidence": {
+    "owned_bytes": 156,
+    "owned_starts": 66,
+    "one_additional_caller_start": true,
+    "all_current_starts_and_targets_match_disk": true,
+    "capture": "local/oct15_dword_vector_erase_current.json",
+    "typed_capture": "local/oct15_dword_vector_erase_typed.json",
+    "typed_modification": "1708"
+  },
+  "source_hashes": {
+    "src/native_dword_vector_erase.cpp": "938ff915fdce02bcfba3b8b11157c177e3583ccbb47d86c9497cac03ce7c1c2b",
+    "include/bsp/native_dword_vector_erase.hpp": "5443ed62d1b45c0d1db42485230621620f230678980e39f23a27d20f83fda463"
+  },
+  "actual_diagnostic": "invoke_native_invalid_parameter_00bf6713; accepted currentSDK returning/throwing policy, not nativeCRT/Watson identity",
+  "build": "pending",
+  "independent_source_review": "pending",
+  "original_abi": {
+    "006977f0": "ECXreceiver,EDXunused;5stackwords output,firstowner,first,lastowner,last;RET14h/EAXoutput.",
+    "00697890": "ECXreceiver,EDXunused,no stackinputs,RET/no semanticEAX; privateoutputEAX excluded."
+  },
+  "behavior": [
+    "Only nonnull/equal iterator owners are checked; no owner==receiver restriction. Positions captured after returning diagnostic.",
+    "Equal positions skip receiver.end read/publication. Nonempty range precomputes first+SAR2(end-last)*4 and copies CURRENT DWORDs forwards without nullskip, preserving progressive overlap.",
+    "Only after a nonempty copy loop reload first_owner physicalSource input; empty tail retains initialowner. Headerend publication precedes outputnode thenoutputowner.",
+    "Clear preserves ORIGINALend across first report; captures currentbegin/freshend for second report; calls actualerase with originalend and capturedcurrentbegin. No end=begin shortcut."
+  ],
+  "limits": [
+    "Accessible reached raw storage/finite equality traversal required; no validation, memmove_s, typedarray substitute, fabricated iterator/frame, nullskip, ownership or rollback.",
+    "CurrentSDK diagnostics canreturn/throw; addedSource/privateargs/privateoutput/register/flags/nativeCRT/fault/SEH/binaryABI/game identity unproved.",
+    "Historical actual storage fragments and focused fixtures remain unchanged in their narrower validarray/memmove_s domains; assignment697BD0 stays separately incomplete."
+  ]
+}
