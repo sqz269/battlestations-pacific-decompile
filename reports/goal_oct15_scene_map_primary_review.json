@@ -167,5 +167,18 @@
   ],
   "main_source_integration_revision": "8dd5480f95e3e54dd075e2528c45327741168f99",
   "all_worker_validation_revisions_merged": true,
-  "post_build_changes": "Metadata only; Source/header/CMake diff from tested026da884 to final worker validation is empty."
+  "post_build_changes": "Metadata only; Source/header/CMake diff from tested026da884 to final worker validation is empty.",
+  "concurrent_main_validation": {
+    "report": "reports/oct15_ninth_reconstruction_batch.json",
+    "tested_source_commit": "fd602321f46091bb352553194c615ae421f86a56",
+    "command": "./scripts/build.ps1",
+    "build": "pass",
+    "ctests_passed": 3,
+    "ctest_seconds": 7.41,
+    "log": "J:\\PROG\\battlestations-pacific-decompile-oct15_integrator\\local\\oct15_ninth_final_combined_build.log",
+    "log_sha256": "679a570cb24532dd8fe54259ebcebfffbf0ed7525cb4e2cef6339332c6811314",
+    "production_build_test_and_tool_sources_identical": true,
+    "equality_command": "git diff fd602321f..HEAD -- src include cmake/startup.cmake CMakeLists.txt scripts tests tools",
+    "reason": "Other harness build explicitly includes all four scene-map/ordering translation units. Only metadata differs after final pair validation; no redundant rebuild needed."
+  }
 }
