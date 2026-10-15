@@ -1152,7 +1152,7 @@ constexpr bool kTorpedoBotReadyGateBound = true;   // ON: GUNNERY_OPEN_ITEMS 161
 //    torpedo_tube_can_fire_1d0 (the same gate the fire pass builds, read before
 //    this step's 0072D130 countdown: the order of the bot and gun ticks inside
 //    one step is not read). OFF: the window only, and the refusals are counted.
-constexpr bool kTorpedoBotCanFireReloadBound = false;
+constexpr bool kTorpedoBotCanFireReloadBound = true;   // ON: GUNNERY 260
 //  * kShipyardDeathReleaseBound: packet cc9_g34_shipyard_reidle. 008455A0, the
 //    shipyard's observer slot 08 on each unit it built (registered by AAh
 //    008437D0), runs when the unit dies (00926390): it clears the first hangar
