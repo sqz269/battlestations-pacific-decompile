@@ -55,6 +55,10 @@ inspected. Live query batches verify configured `C:/Users/sqz269/bsp.gpr` and
 PE. Prior annotations are preserved under the Ghidra write lock before save
 and refreshed exports. After the foreign registry lease released, the worker
 removed only its own queue and appended the unique CMake source registration
-without an exclusive registry lease. Strict MSVC Win32 build is pending.
+without an exclusive registry lease. Strict MSVC Win32 `scripts/build.ps1`
+passed for Source/registration revision
+`ec725c4cf28f30ef550615c7c269d7a354b7230d`, including both configured existing
+CTests (`reconstructed_math` and `tool_tests`). Native math differential tests
+were not enabled in this worktree.
 No new routine tests, candidate-specific original-byte differential, private
 physical-stack/CRT/FH3/SEH ABI, startup execution or gameplay proof are claimed.

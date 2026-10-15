@@ -60,15 +60,18 @@
   ],
   "source_registration": "unique bsp_core append after foreign lease release and own queue removal; no exclusive shared registry lease",
   "validation": {
-    "build": "pending",
-    "existing_ctests": "pending",
+    "build": "PASS scripts/build.ps1; strict MSVC Win32; new TU compiled",
+    "existing_ctests": "PASS2/2 configured tests: reconstructed_math,tool_tests; native_math_differential not enabled in this worktree",
     "report_call_verification": "PASS2/2 native transfer rows; markdown0failures,0unchecked,0warnings",
     "new_tests": 0,
     "native_differential_fixture": false,
     "abi_compatible": false,
     "game_executed": false,
     "game_validated": false,
-    "diff_check": "PASS git diff --check"
+    "diff_check": "PASS git diff --check",
+    "tested_commit": "ec725c4cf28f30ef550615c7c269d7a354b7230d",
+    "build_log": "local/goal-oct15-scene-integer-set-node-build.log",
+    "build_warning": "LNK4006 duplicate spawn_request_id_matches in existing lua_binding_spawn.obj/lua_spawn_new.obj; outside packet scope"
   },
   "qualification": "Complete ordinary raw14h node Source over real current-CRT allocation, current post-allocation/interleaved argument reads, full null branch and untouched padding; no new callbacks, nominal enum, private stack/CRT/EH ABI, candidate native differential or game claim",
   "disk_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
