@@ -1,0 +1,261 @@
+{
+  "schema": "cc12_current_renderer_readiness_reconciliation_v1",
+  "captured_utc": "2026-10-14T23:49:55.447727+00:00",
+  "reviewed_source_revision": "3df92c82dd1ea333b60d263c990b09e60c66ab91",
+  "original_parallel_work_sha256": "3efe0a4ef8f72bd72b7370a06f158e7b18458c706f8faf9db9bdf586ed401282",
+  "scope": "Three stale renderer packet states reconciled with current normal Source and validation. Existing done/source_ready flags remain unchanged because full original ABI/runtime domains are not proved.",
+  "current_source_and_report_pins": [
+    {
+      "path": "reports/native_renderer_device_recreation_actual.json",
+      "bytes": 84009,
+      "sha256": "1d1946210d397c90f7c07d7941460eb64813f8a02aba827ffdd96e8b2ac15f1d"
+    },
+    {
+      "path": "reports/native_renderer_device_recreation_aw_validation.json",
+      "bytes": 72950,
+      "sha256": "3163b31751d40b8de63d498aeb22e66f69e66fe91a9caafe28b7355b80e281bf"
+    },
+    {
+      "path": "reports/native_renderer_vertex_binding.json",
+      "bytes": 64401,
+      "sha256": "65b4ea835104ca3c75184c32d758bcda2bd95554b57c354976e2dae37a6baf0b"
+    },
+    {
+      "path": "reports/native_logical_vertex_owner.json",
+      "bytes": 97407,
+      "sha256": "ad2635d6599bc840c1dae48e51c68a20ee02a750b5087e85361be07f2c6a4205"
+    },
+    {
+      "path": "src/native_renderer_device_recreation_actual.cpp",
+      "bytes": 15976,
+      "sha256": "83830b9520186fc9b7d864d1025d41d410493242a75798107970b199da2ee750"
+    },
+    {
+      "path": "src/native_renderer_vertex_binding.cpp",
+      "bytes": 10671,
+      "sha256": "99485b40c4cf8c704a0c810bb38722c14aa09b0a673c887ae1b92b235f6a6e7b"
+    },
+    {
+      "path": "src/native_logical_vertex_owner.cpp",
+      "bytes": 25341,
+      "sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba"
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "bytes": 50933,
+      "sha256": "e5724350d58d3e9d642b904bc2957913bcbe0c6f13174098da2f10bb80298d26"
+    },
+    {
+      "path": "src/game_native_renderer_frame.inc",
+      "bytes": 2445,
+      "sha256": "89450a2211c9e17aa5f590256347fabea9f4afe6ae16a9b58728652bb18ab21a"
+    }
+  ],
+  "exact_packet_changes": [
+    {
+      "id": "native_renderer_recreate_device_actual1",
+      "before": {
+        "id": "native_renderer_recreate_device_actual1",
+        "packet": "native_renderer_recreate_device_actual1",
+        "done": false,
+        "state": "blocked_on_named_and_semantic_actual_storage_dependencies",
+        "worker": null,
+        "function_addresses": [
+          "00b29670"
+        ],
+        "code_ownership": [
+          "include/bsp/native_renderer_recreate_device.hpp",
+          "src/native_renderer_recreate_device.cpp",
+          "docs/NATIVE_RENDERER_RECREATE_DEVICE.md",
+          "reports/native_renderer_recreate_device_audit.json"
+        ],
+        "source_ready": false,
+        "scope": "Whole native device recreation requires native ownership, list/iterator checks, actual tracked section and guard cleanup, all current loads and HRESULT/COM ordering. Existing typed renderer state/cache projections are evidence but are not substitute actual-storage implementations.",
+        "dependencies": [
+          "Full actual-storage renderer unbinding and resource release/restore dependencies",
+          "Full current hardware-layout CreateIfMissing B60A10",
+          "Complete virtual frame-target and gamma path including exact gamma arithmetic",
+          "Actual current registry owners and their virtual reset callbacks",
+          "Actual XLive thunk/provider integration and CRT returning invalid-parameter contract"
+        ],
+        "discovery_evidence": "reports/native_renderer_recreate_device_next.json",
+        "current_readiness_report": "reports/native_renderer_reset_readiness_5.json"
+      },
+      "after": {
+        "id": "native_renderer_recreate_device_actual1",
+        "packet": "native_renderer_recreate_device_actual1",
+        "done": false,
+        "state": "integrated_complete_normal_source_bounded_original_parent_fixture_actual_application_domain_remaining",
+        "worker": null,
+        "function_addresses": [
+          "00b29670"
+        ],
+        "code_ownership": [
+          "include/bsp/native_renderer_recreate_device.hpp",
+          "src/native_renderer_recreate_device.cpp",
+          "docs/NATIVE_RENDERER_RECREATE_DEVICE.md",
+          "reports/native_renderer_recreate_device_audit.json"
+        ],
+        "source_ready": false,
+        "scope": "Whole native device recreation requires native ownership, list/iterator checks, actual tracked section and guard cleanup, all current loads and HRESULT/COM ordering. Existing typed renderer state/cache projections are evidence but are not substitute actual-storage implementations.",
+        "dependencies": [
+          "Full actual-storage renderer unbinding and resource release/restore dependencies",
+          "Full current hardware-layout CreateIfMissing B60A10",
+          "Complete virtual frame-target and gamma path including exact gamma arithmetic",
+          "Actual current registry owners and their virtual reset callbacks",
+          "Actual XLive thunk/provider integration and CRT returning invalid-parameter contract"
+        ],
+        "discovery_evidence": "reports/native_renderer_recreate_device_next.json",
+        "current_readiness_report": "reports/cc12_current_renderer_readiness_reconciliation.json",
+        "current_source_coverage": {
+          "function": "recreate_native_renderer_device_00b29670",
+          "source": "src/native_renderer_device_recreation_actual.cpp",
+          "header": "include/bsp/native_renderer_device_recreation_actual.hpp",
+          "evidence": "reports/native_renderer_device_recreation_actual.json",
+          "exact_combined_validation": "reports/native_renderer_device_recreation_aw_validation.json",
+          "full_original_parent_bytes": 1191,
+          "source_integrated": true,
+          "normal_body_fixture_checked": true,
+          "application_bindings": "src/game_native_renderer_application.cpp"
+        },
+        "remaining_contract_boundaries": [
+          "General native FH3/SEH/private-frame ABI identity and arbitrary owner/profile/concurrent mutation domains remain unproved.",
+          "Application startup/reset/normal drain validation does not prove nonempty render queue or whole gameplay/visual parity.",
+          "Current packet dependencies describe historical implementation blockers; concrete normal Source already exists and must not be reconstructed again."
+        ],
+        "current_source_packet_references": [
+          "orch3_native_renderer_device_recreation_actual_aw"
+        ]
+      }
+    },
+    {
+      "id": "native_vertex_stream_owner_discovery",
+      "before": {
+        "id": "native_vertex_stream_owner_discovery",
+        "packet": "native_vertex_stream_owner_discovery",
+        "worker": "main",
+        "done": false,
+        "state": "full_binding_owner_base_and_reset_native_contracts_captured_base_retained_owner_4C_unresolved",
+        "function_addresses": [],
+        "code_ownership": [
+          "docs/NATIVE_VERTEX_STREAM_OWNER_DISCOVERY.md",
+          "reports/native_vertex_stream_owner_discovery.json"
+        ],
+        "source_ready": false,
+        "evidence": "reports/native_vertex_stream_owner_discovery.json",
+        "scope": "24freshspans2159bytes; fullB24840/B23710/B4B5D0/B4BF10/B62010/B61E20/B24BF0. Trace actualbase4C retainedowner before implementation. Originalreset repeats streamzero4times.",
+        "current_readiness_report": "reports/native_renderer_reset_readiness_5.json"
+      },
+      "after": {
+        "id": "native_vertex_stream_owner_discovery",
+        "packet": "native_vertex_stream_owner_discovery",
+        "worker": "main",
+        "done": false,
+        "state": "normal_actual_storage_owner_bodies_integrated_positive_retained_4c_runtime_profile_still_unresolved",
+        "function_addresses": [],
+        "code_ownership": [
+          "docs/NATIVE_VERTEX_STREAM_OWNER_DISCOVERY.md",
+          "reports/native_vertex_stream_owner_discovery.json"
+        ],
+        "source_ready": false,
+        "evidence": "reports/native_vertex_stream_owner_discovery.json",
+        "scope": "24freshspans2159bytes; fullB24840/B23710/B4B5D0/B4BF10/B62010/B61E20/B24BF0. Trace actualbase4C retainedowner before implementation. Originalreset repeats streamzero4times.",
+        "current_readiness_report": "reports/cc12_current_renderer_readiness_reconciliation.json",
+        "current_source_coverage": {
+          "source": "src/native_logical_vertex_owner.cpp",
+          "header": "include/bsp/native_logical_vertex_owner.hpp",
+          "evidence": "reports/native_logical_vertex_owner.json",
+          "complete_normal_body_addresses": [
+            "00b287c0",
+            "00b62010"
+          ],
+          "raw_current_04_release_sequence_reconstructed": true,
+          "positive_retained_4c_runtime_writer_or_profile_proved": false
+        },
+        "remaining_contract_boundaries": [
+          "Trace an actual nonnull logical-stream+4C producer, pointee/current profile and final-zero terminal. Existing raw release sequence is not positive runtime type evidence.",
+          "Existing geometry/factory/adoption exclusions must not be repeated as a new source-ready finding."
+        ]
+      }
+    },
+    {
+      "id": "native_renderer_binding_reset1",
+      "before": {
+        "id": "native_renderer_binding_reset1",
+        "packet": "native_renderer_binding_reset1",
+        "state": "discovery_verified_not_ready_unresolved_logical_retained_4c_terminal",
+        "done": false,
+        "source_ready": false,
+        "worker": "main",
+        "function_addresses": [
+          "00b24bf0"
+        ],
+        "code_ownership": [
+          "docs/NATIVE_RENDERER_BINDING_RESET.md",
+          "reports/native_renderer_binding_reset_audit.json"
+        ],
+        "prerequisite_packets": [
+          "native_logical_vertex_owner"
+        ],
+        "scope": "Full reset/provider/FH3 discovery only. General old logical owner final-zero terminal remains unresolved.",
+        "evidence": "reports/native_renderer_binding_reset_audit.json",
+        "current_readiness_report": "reports/native_renderer_reset_readiness_5.json"
+      },
+      "after": {
+        "id": "native_renderer_binding_reset1",
+        "packet": "native_renderer_binding_reset1",
+        "state": "integrated_complete_actual_storage_binding_reset_bounded_original_fixture_general_owner_profile_remaining",
+        "done": false,
+        "source_ready": false,
+        "worker": "main",
+        "function_addresses": [
+          "00b24bf0"
+        ],
+        "code_ownership": [
+          "docs/NATIVE_RENDERER_BINDING_RESET.md",
+          "reports/native_renderer_binding_reset_audit.json"
+        ],
+        "prerequisite_packets": [
+          "native_logical_vertex_owner"
+        ],
+        "scope": "Full reset/provider/FH3 discovery only. General old logical owner final-zero terminal remains unresolved.",
+        "evidence": "reports/native_renderer_binding_reset_audit.json",
+        "current_readiness_report": "reports/cc12_current_renderer_readiness_reconciliation.json",
+        "current_source_coverage": {
+          "function": "reset_native_renderer_bindings_00b24bf0",
+          "source": "src/native_renderer_vertex_binding.cpp",
+          "header": "include/bsp/native_renderer_vertex_binding.hpp",
+          "evidence": "reports/native_renderer_vertex_binding.json",
+          "full_original_parent_bytes": 453,
+          "source_integrated": true,
+          "normal_body_fixture_checked": true
+        },
+        "remaining_contract_boundaries": [
+          "Native setter/reset sequence is reconstructed within the documented D5F0A8/D61D6C/D61E34/D61E7C concrete domain.",
+          "A positive nonnull logical-stream+4C runtime writer/pointee profile and arbitrary current final-zero lifetime closure remain unproved.",
+          "Original ABI/FH3/SEH/general concurrency/gameplay are not established by new C++ API and bounded fixtures."
+        ],
+        "current_source_packet_references": [
+          "orch3_native_renderer_vertex_binding_au",
+          "orch3_native_renderer_cache_clear_av"
+        ]
+      }
+    }
+  ],
+  "new_cpp_added": false,
+  "Ghidra_modified": false,
+  "tests_added": 0,
+  "fresh_build_or_runtime_claimed": false,
+  "nonempty_application_queue_admitted": false,
+  "original_ABI_gameplay_qualified": false,
+  "next_actual_requirement": "Concrete nonempty D5E5E0 queue producer plus persistent execution/frame/lifetime ownership; D5E13C additionally requires whole actual B17240/B156C0 scene execution and application owner graph.",
+  "verified_current_replacement_packets": {
+    "native_renderer_recreate_device_actual1": [
+      "orch3_native_renderer_device_recreation_actual_aw"
+    ],
+    "native_renderer_binding_reset1": [
+      "orch3_native_renderer_vertex_binding_au",
+      "orch3_native_renderer_cache_clear_av"
+    ]
+  }
+}

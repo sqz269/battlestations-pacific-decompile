@@ -9,6 +9,18 @@ struct NativeRendererFrameTargetsContext;
 struct NativeCameraFrameCommandContext;
 struct NativeSystemConstantGatherContext;
 struct NativeSystemConstantGatherFrame;
+struct NativeStringRawPoolContext;
+struct NativeRenderBatchPreparationContext;
+struct NativeRenderJobPublicationContext;
+class NativeRenderPreparationJobDispatch;
+struct NativeMaterialEntryDispatchContext;
+struct NativeMaterialEntryDispatchFrame;
+struct NativeRenderSceneSubmissionContext;
+struct NativeRenderSceneSubmissionOperation;
+struct NativeRenderQueueExecutionContext;
+struct NativeRenderQueueExecutionFrame;
+struct NativePostEffectExecutionContext;
+struct NativePostEffectDrawFrame;
 
 struct NativeMainSceneExecutionPrefixContext {
     void* const volatile& actual_renderer_00f8d394;
@@ -46,6 +58,11 @@ struct NativeMainSceneExecutionPrefixState {
     bool render_mode_changed{};
     bool system_gather_started{};
     bool reached_label_stage{};
+    bool reached_drsh_batch_stage{};
+    bool reached_excluded_node_stage{};
+    bool reached_post_drsh_stage{};
+    bool reached_scne_label_stage{};
+    bool reached_scne_target_stage{};
 };
 
 // Complete raw leaves. Native ECX command / camera. B1BF40 uses RET and returns
@@ -144,4 +161,221 @@ struct NativeMainSceneCameraGatherContext {
 void continue_native_main_scene_camera_gather_00b15e78(void* actual_service,
     void* actual_command, const NativeMainSceneCameraGatherContext&,
     NativeMainSceneExecutionPrefixState&);
+
+struct NativeMainSceneDrshLabelContext {
+    const NativeSystemConstantGatherContext& system;
+    NativeStringRawPoolContext& strings;
+    const void* actual_drsh_bytes_00d5e500;
+};
+
+// One fresh persistent external frame, disjoint from actual native owners.
+// The caller overwrites both temporary header words before its first resize;
+// no unknown native local bytes are synthesized. Other fields preserve the
+// native EBX data capture and exact FH3 ownership transitions. No destructor
+// performs cleanup. Retain this frame and the same context at later boundaries.
+struct NativeMainSceneDrshLabelFrame {
+    std::uint32_t temporary_header[2]{};
+    void* captured_data{};
+    void* captured_service{};
+    void* destination_header{};
+    std::int32_t native_cleanup_state{-1};
+    std::uint32_t active_native_site{};
+    std::uint32_t cleanup_native_site{};
+    bool started{};
+    bool completed{};
+    bool failed{};
+    bool temporary_return_started{};
+    bool temporary_return_completed{};
+    bool cleanup_started{};
+    bool cleanup_completed{};
+};
+
+// B15EC4..B15F62 only. Initialize the original local8B header, resize4 through
+// the SAME actual raw string pool, capture EBX data, copy current length+1 from
+// borrowed actual D5E500 bytes, then read current F8D39C and arm native state0.
+// Retain native destination alias and current-length checks; after assignment
+// transition to state2 BEFORE normal captured-data/current-length pool return.
+// State0 unwinds CURRENT temporary header; state2 resets CURRENT service label.
+// On success state2 remains armed across the B15F63 batch-selection boundary.
+// Neither a fixed C++ label literal nor a projected string pool is substituted.
+// Source catch cleanup follows the proven map, without rolling back camera or
+// destination mutations. Later shader/batch code and D5E13C remain unadmitted.
+void continue_native_main_scene_drsh_label_00b15ec4(
+    const NativeMainSceneDrshLabelContext&, NativeMainSceneDrshLabelFrame&,
+    NativeMainSceneExecutionPrefixState&);
+
+// Explicit source lifecycle adapter for CBC460/CBC46B, not a native FH3 entry.
+// Consumes only reached state0 or2, disarming before its real cleanup. State-1
+// does nothing. Keep failed frames/callee state after cleanup; no reset/retry.
+// A second C++ exception while unwinding terminates, as elsewhere in this domain.
+void unwind_native_main_scene_drsh_label(const NativeMainSceneDrshLabelContext&,
+    NativeMainSceneDrshLabelFrame&) noexcept;
+
+// The label frame/context from B15EC4 survives this entire clause. All reached
+// providers borrow the SAME renderer/manager/synchronization and job domain.
+// Optional providers are checked only when their native call is reached.
+struct NativeMainSceneBatchContext {
+    const NativeMainSceneDrshLabelContext& label;
+    NativeRenderBatchPreparationContext* preparation{};
+    NativeRenderJobPublicationContext* jobs{};
+    NativeRenderPreparationJobDispatch* preparation_dispatch{};
+    NativeMaterialEntryDispatchContext* entries{};
+};
+struct NativeMainSceneBatchFrame {
+    NativeMaterialEntryDispatchFrame* entries[2]{};
+    bool started{};
+    bool completed{};
+    bool failed{};
+    bool parallel{};
+    std::uint32_t active_native_site{};
+    std::uint32_t serial_preparations_completed{};
+    std::uint32_t submissions_completed{};
+    bool dispatch_completed{};
+    std::uint32_t executions_completed{};
+};
+
+// Complete B15F63..B16067, stopping BEFORE the optional B10500 node clause.
+// Current raw synchronization byte and signed counts >50 select real job
+// submission/dispatch, followed by batch0 then batch1 execution. Serial path
+// is prepare0/execute0/prepare1/execute1. Preserve each current batch reload,
+// captured profile before B1BF40, and profile slot+08 read AFTER that getter.
+// Parallel +08 mode writes precede each frame getter; captured batch/pool
+// survive the preparation-job getter. No callback substitutes raw providers.
+// State2 remains armed on success; C++ failure consumes it through the SAME
+// explicit label unwind action. No scope/queued-job/native mutation rollback,
+// native FH3 dispatch, later normal B16097 disarm, or D5E13C admission here.
+void continue_native_main_scene_batches_00b15f63(void* actual_command,
+    NativeMainSceneBatchContext&, NativeMainSceneDrshLabelFrame&,
+    NativeMainSceneBatchFrame&, NativeMainSceneExecutionPrefixState&);
+
+// The same retained label context and canonical queue/command/owner/string
+// domains. Optional children are required only at their reached native calls.
+struct NativeMainSceneExcludedNodeContext {
+    const NativeMainSceneDrshLabelContext& label;
+    NativeRenderBatchPreparationContext* queue{};
+    NativeRenderSceneSubmissionContext* submission{};
+    NativeRenderQueueExecutionContext* execution{};
+};
+struct NativeMainSceneExcludedNodeFrame {
+    NativeRenderSceneSubmissionOperation* submission{};
+    NativeRenderQueueExecutionFrame* execution{};
+    std::uint32_t saved_clear_flags{};
+    std::uint32_t active_native_site{};
+    bool started{};
+    bool entered{};
+    bool visibility_raised{};
+    bool flags_cleared{};
+    bool submitted{};
+    bool executed{};
+    bool flags_restored{};
+    bool visibility_cleared{};
+    bool completed{};
+    bool failed{};
+};
+
+// Full B10500..B105AF [176], native ECX service, command/targets, RET8.
+// Service+22C gates all child access. Capture current camera flags after FLD1,
+// set CURRENT service+1C0 node visibility1, clear current-camera flags, capture
+// current-camera scene before queue getter, capture current node before the
+// next camera getter, submit through actual B1F5E0, get CURRENT queue again,
+// execute/pop its last command through raw B1E6D0, restore saved flags on the
+// current camera, then FLDZ and CURRENT node visibility0. No local EH cleanup:
+// failed submission/execution leaves earlier visibility/flags/queue mutations.
+void execute_native_excluded_node_00b10500(void* actual_service,
+    void* actual_command, void* actual_targets, NativeMainSceneExcludedNodeContext&,
+    NativeMainSceneExcludedNodeFrame&);
+
+struct NativeMainSceneExcludedRestoreFrame {
+    NativeMainSceneExcludedNodeFrame excluded;
+    std::uint32_t active_native_site{};
+    bool started{};
+    bool excluded_called{};
+    bool render_mode_restored{};
+    bool label_reset_completed{};
+    bool clear_flags_restored{};
+    bool near_restored{};
+    bool completed{};
+    bool failed{};
+};
+
+// B16068..B160CF. Test CURRENT service+22D before calling full B10500 with
+// current service+1C8 targets. Keep state2 armed through that call and render
+// mode restore. Disarm at B16097 BEFORE normal current-service B160A2 reset;
+// a throwing reset must never reset again. Then restore saved clear flags and
+// near plane on separately reloaded cameras, retaining native FLD/FSTP32 near
+// conversion. Stop BEFORE service+60 virtual10 at B160D0. Source failure only
+// consumes still-armed state2; it never restores earlier native mutations.
+void continue_native_main_scene_excluded_restore_00b16068(void* actual_service,
+    void* actual_command, NativeMainSceneExcludedNodeContext&,
+    NativeMainSceneDrshLabelFrame&, const NativeMainSceneBatchFrame&,
+    NativeMainSceneExcludedRestoreFrame&, NativeMainSceneExecutionPrefixState&);
+
+struct NativeMainScenePostGatherContext {
+    NativePostEffectExecutionContext& post;
+    const NativeSystemConstantGatherContext& system;
+    // B107F0 publishes this actual depth-downscale profile at service+60;
+    // its current +10 must select full raw B4DFB0 -> B4DCC0.
+    const volatile std::uint32_t* depth_profile_00d5e164;
+};
+struct NativeMainScenePostGatherFrame {
+    NativePostEffectDrawFrame& post;
+    NativeSystemConstantGatherFrame& system;
+    std::uint32_t active_native_site{};
+    bool started{};
+    bool depth_draw_completed{};
+    bool system_gather_completed{};
+    bool color_restored{};
+    bool completed{};
+    bool failed{};
+};
+
+// B160D0..B16109: current service+60/current+10 depth draw, fresh camera scene
+// capture before another fresh camera and actual B46A70, then saved color
+// capture before a third fresh camera and B6FE50. Incoming DRSH state is -1;
+// no local cleanup, retry, unmap or earlier-state rollback. Fresh persistent
+// post/material/system frames share the same physical renderer/service domain.
+// Stops BEFORE B1610A SCNE string construction; no whole D5E13C admission.
+void continue_native_main_scene_post_gather_00b160d0(void* actual_service,
+    void* actual_command, NativeMainScenePostGatherContext&,
+    const NativeMainSceneDrshLabelFrame&, const NativeMainSceneExcludedRestoreFrame&,
+    NativeMainScenePostGatherFrame&, NativeMainSceneExecutionPrefixState&);
+
+struct NativeMainSceneScneLabelContext {
+    // Preserve the same actual global-service and raw StringManager cells
+    // already used by DRSH; the SCNE bytes are borrowed from actual D5E4F8.
+    const NativeMainSceneDrshLabelContext& domains;
+    const void* actual_scne_bytes_00d5e4f8;
+};
+struct NativeMainSceneScneLabelFrame {
+    std::uint32_t temporary_header[2]{};
+    void* captured_data{};
+    void* captured_service{};
+    void* destination_header{};
+    std::int32_t native_cleanup_state{-1};
+    std::uint32_t active_native_site{};
+    std::uint32_t cleanup_native_site{};
+    bool started{};
+    bool completed{};
+    bool failed{};
+    bool temporary_return_started{};
+    bool temporary_return_completed{};
+    bool cleanup_started{};
+    bool cleanup_completed{};
+};
+
+// B1610A..B161AC only: initialize the temporary8B header, resize4, capture
+// data, copy current length+1 from borrowed SCNE bytes, capture current global
+// service, THEN arm state3. Preserve destination alias/current-length gates.
+// State5 is installed BEFORE normal captured-data/current-length pool return;
+// successful completion leaves5 armed for the following target-selection body.
+// State3 cleanup destroys CURRENT temporary header; state5 resets CURRENT
+// global service label. No native FH3 entry, automatic destruction or rollback.
+void continue_native_main_scene_scne_label_00b1610a(
+    const NativeMainSceneScneLabelContext&, NativeMainSceneScneLabelFrame&,
+    NativeMainSceneExecutionPrefixState&);
+// Explicit source adapters for CBC473/CBC47E. Both reached map entries go to
+// -1, installed before real cleanup. A failed cleanup during unwind terminates.
+// State4 -> (3,CBC47E) exists in the map but is not installed by this clause.
+void unwind_native_main_scene_scne_label(const NativeMainSceneScneLabelContext&,
+    NativeMainSceneScneLabelFrame&) noexcept;
 } // namespace bsp

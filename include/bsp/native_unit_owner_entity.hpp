@@ -9,6 +9,39 @@
 namespace bsp {
 
 class NativeObserverLifetime;
+class NativeWeakOwnerDomain;
+struct NativeStringRawPoolContext;
+
+// Complete normal 00925CE0..00925EF3 scene-base construction on the actual
+// aligned170h prefix. Caller owns the real weak/observer/raw-string domains
+// and an established atomic<int32> lifetime in the same +28 field. Preserve
+// all untouched bytes, especially world/parent/link preimages. Read actual
+// D7A24C twice and perform both ordered x87 matrix copies to the same +74.
+// Numeric profile words are evidence, not callable Source vtables. Source
+// guards follow the five native unwind owners; Native FH3/SEH/fault/frame
+// identity and exceptions within cleanup remain unproven. This does not
+// compose 928630, establish world publication, or activate a unit receiver.
+void* construct_native_unit_owner_scene_base_00925ce0(
+    void* actual_root, NativeWeakOwnerDomain& weak,
+    NativeObserverLifetime& observers, NativeStringRawPoolContext& strings,
+    const volatile std::uint32_t& actual_one_bits_00d7a24c);
+
+// Qualified 009257A7..009257B9 destructor entry stores, before the held
+// 740270 life-reference release and actual child scalar-delete loop. Stamp
+// only the three numeric profiles; no release, child dispatch or ownership
+// transition is supplied here. These words are not callable Source tables.
+void restore_native_unit_owner_scene_destructor_profiles_009257a7(void* actual_root) noexcept;
+
+// Qualified 009257F5..009258B0 normal continuation, ONLY after the real
+// life-reference release and complete child loop. The same actual170h root,
+// live World/update/sibling/list storage and atomic+28 lifetime are required.
+// Real raw unlinks precede names+15C/+154, weak+24, callback+10 and observed+0
+// retirement. Five Source guards retain Native cleanup ownership at throwing
+// call boundaries; Native FH3/SEH and cleanup-throw behavior remain unproven.
+// This never frees the root or supplies the missing release/child dispatch.
+void finish_native_unit_owner_scene_retirement_009257f5(
+    void* actual_root_after_children, NativeWeakOwnerDomain& weak,
+    NativeObserverLifetime& observers, NativeStringRawPoolContext& strings);
 
 // Qualified normal continuation 0077EF27..0077EFA3 of 0077EED0.
 // Requires the genuine containing allocation, its original factory preimage,

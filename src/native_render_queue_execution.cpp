@@ -82,4 +82,26 @@ void execute_native_render_queue_00b1ebe0(NativeRenderCommandQueueStorage& queue
     }
     if(word(&queue,0x20)==0) resize_native_render_command_pointers_00b1cc80(queue.commands_14,0);
 }
+
+void execute_last_native_render_command_00b1e6d0(NativeRenderCommandQueueStorage& queue,
+    NativeRenderQueueExecutionContext* context,NativeRenderQueueExecutionFrame* frame) {
+    if(word(&queue,0x18)==0) return;
+    auto* const command=current_command(queue,word(&queue,0x18)-1u);
+    const Word profile=word(command);
+    require(context && profile==0x00d5e5e0 && context->actual_command_profile_00d5e5e0 &&
+        context->actual_command_profile_00d5e5e0[0]==0x00b1d950,
+        "raw last command requires current D5E5E0/B1D950 execution");
+    auto& c=*context;
+    execute_native_render_command_00b1d950(command,c.actual_commands,take_frame(frame));
+    // The executed command may have changed both the count and the array.
+    // Destruction uses this newly loaded last pointer, never the first capture.
+    auto* const doomed=current_command(queue,word(&queue,0x18)-1u);
+    if(doomed) {
+        require_lifetime(c);
+        destroy_native_render_command_00b1ddd0(*doomed,*c.actual_lifetime);
+        singleton_lifetime_free(doomed);
+    }
+    const Word count=word(&queue,0x18);
+    if(count!=0) *static_cast<volatile Word*>(at(&queue,0x18))=count-1u;
+}
 } // namespace bsp

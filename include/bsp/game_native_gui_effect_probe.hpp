@@ -16,8 +16,8 @@ class GameNativeSettingsProcess;
 class GameInputRuntime;
 
 enum class GameNativeGuiEffectProbeStage {
-    prepared, shadow, sampler_parent, effect_parent, names, first_effect,
-    second_effect, ready, retiring_references, retiring_names, retired,
+    prepared, shadow, shader_cache, sampler_parent, effect_parent, names, first_effect,
+    second_effect, shader_cache_release, ready, retiring_references, retiring_names, retired,
     closing, closed, failed
 };
 struct GameNativeGuiEffectProbeResource {
@@ -39,6 +39,12 @@ struct GameNativeGuiEffectProbeObservation {
     GameNativeGuiEffectProbeStage failure_stage{GameNativeGuiEffectProbeStage::prepared};
     std::exception_ptr failure;
     std::array<GameNativeGuiEffectProbeResource, 2> resources;
+    // Schedule the existing renderer/process cache, without another owner or
+    // gate override. Failed creation/release keeps its actual frame retained.
+    bool cache_creation_entered{}, cache_creation_returned{};
+    bool cache_release_entered{}, cache_release_returned{};
+    void* cache_identity{}; // Opaque after release, never dereferenced then.
+    std::uint8_t source_mode_on_create{}, load_variants_on_create{};
 };
 
 // Opt-in actual-resource probe, not frontend publication/Text/draw. Construct

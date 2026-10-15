@@ -33,6 +33,28 @@ float dist2(const std::array<float, 2>& a, const std::array<float, 2>& b) {
     return dx * dx + dz * dz;
 }
 
+// 00416270 forms each sum of two products on the x87 stack and stores only the
+// sum (0041630A..00416310, 00416436..0041645A): the products are exact in a
+// double, so one rounding to float matches the image (cc13-avoid1 audit).
+// OFF keeps the SSE float products, each rounded before the add.
+inline constexpr bool kOutlineWalkX87ProductsBound = true;
+
+float sum_of_products_x87(float a, float b, float c, float d) {
+    if constexpr (kOutlineWalkX87ProductsBound) {
+        return static_cast<float>(static_cast<double>(a) * b + static_cast<double>(c) * d);
+    } else {
+        return a * b + c * d;
+    }
+}
+
+// dist2 for 00416270: the two differences are stored as floats, then
+// dx * dx + dz * dz is one x87 expression.
+float dist2_00416270(const std::array<float, 2>& a, const std::array<float, 2>& b) {
+    const float dx = a[0] - b[0];
+    const float dz = a[1] - b[1];
+    return sum_of_products_x87(dx, dx, dz, dz);
+}
+
 // One corner candidate (009DC4CD..009DC5B1 and its three twins): walk the
 // outline from the hit, pull the corner back one unit along the query
 // direction, and if the leg to it crosses the outline again walk that crossing
@@ -77,11 +99,12 @@ bool avoid_zone_outline_walk_00416270(const AvoidZoneSelectedSegment* segment,
         // Forward: near = start, far = end; backward the other way round.
         const std::array<float, 2> near_end = forward ? s->start : s->end;
         const std::array<float, 2> far_end = forward ? s->end : s->start;
-        const float far2 = dist2(far_end, origin);
+        const float far2 = dist2_00416270(far_end, origin);
         // The outline normal n = (e.z - s.z, -(e.x - s.x)), taken at the near end.
         const float nx = s->end[1] - s->start[1];
         const float nz = -(s->end[0] - s->start[0]);
-        const float facing = (origin[0] - near_end[0]) * nx + (origin[1] - near_end[1]) * nz;
+        const float facing =
+            sum_of_products_x87(origin[0] - near_end[0], nx, origin[1] - near_end[1], nz);
         if (facing < 0.0f) {  // 0041636A / 004165CD
             out = near_end;
             return true;
@@ -92,8 +115,9 @@ bool avoid_zone_outline_walk_00416270(const AvoidZoneSelectedSegment* segment,
                 avoid_zone_circle_segment_004f3ba0(origin, near_end, radius, far_end, points, crt);
             if (count >= 2) {
                 // 004163EE..0041646A: the crossing nearer the far end.
-                out = dist2(points[1], far_end) <= dist2(points[0], far_end) ? points[1]
-                                                                            : points[0];
+                out = dist2_00416270(points[1], far_end) <= dist2_00416270(points[0], far_end)
+                          ? points[1]
+                          : points[0];
             } else if (count == 1) {
                 out = points[0];
             } else {

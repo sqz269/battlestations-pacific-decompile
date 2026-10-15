@@ -1,0 +1,106 @@
+{
+  "packet": "cc12_world_post_gather_integrated_release_08",
+  "source_revision": "4d9161bf8e519de52624d847a55fe16561b1c16a",
+  "build": {
+    "status": "PASS",
+    "target": "MSVC Win32 Release",
+    "existing_suites_passed": 3,
+    "existing_suites_failed": 0,
+    "test_seconds": 17.35,
+    "new_tests": 0,
+    "permanent_platform_registration": true,
+    "temporary_cmake_overlay": false,
+    "log": "local/cc12_world_post_gather_combined_release_build_01.log"
+  },
+  "world": {
+    "commit": "a6f018a9b90a69c2b11ac126ea6ab080f216003a",
+    "Root_complete_changed_Source_header_contract_review": true,
+    "Root_verified_frozen_artifacts": 82,
+    "committed_files": 10,
+    "native_bodies": "B4DCC0[555B], B4DFB0[11B], B160D0..B16109[58B]",
+    "Root_frozen_HAL_fixture_rerun": "PASS count3/4,84/112-byte actual buffer writes, target/viewport and VS/PS constant readbacks; Source retained-failure check",
+    "limits": "Caller originals share real Source descendants; prior restoration boundary seeded; material geometry-zero gate; no independent descendant, active material draw, native FH3 or whole scene proof",
+    "next_frontier": "B1610A SCNE string and state3 lifetime",
+    "receipt": "local/cc12_native_parent_receipts/world_a6/receipt.json"
+  },
+  "shader_order": {
+    "commit": "f202726b0077758e36a4c12d9a59b5404903f3b3",
+    "Root_verified_frozen_inputs": 17,
+    "committed_files": 2,
+    "Root_independent_parser_and_candidate_forward_models": "PASS exactEOF1628 rows and all4 F/T combinations, ending cursor706/708",
+    "limits": "Installed data/current Source only, no actual query bytes/cursor/VFS stream identity or fallback observation",
+    "receipt": "local/cc12_native_parent_receipts/shader_order_f202/receipt.json"
+  },
+  "actual_GUI05": {
+    "source_revision": "b8395fc39e553a20d6006fc26f146d2658efa7a9",
+    "status": "Terminal exit1 after real cache creation; unknown B-16 word guard atB3B328",
+    "receipt": "reports/cc12_native_shader_cache_bracket_integration_07.json",
+    "this_build_has_not_been_game_run": true
+  },
+  "upstream": {
+    "cc13_seg87": "5aa878fbb Source hook/storage models and Listbox pool instantiation; no Root fixture or activation admission"
+  },
+  "artifacts": [
+    {
+      "path": "local/cc12_world_post_gather_combined_release_build_01.log",
+      "bytes": 3529,
+      "sha256": "8179ef2b8d90c80a4945e9441fabf965c469c30baddfe394fd0c724648eb9349"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 91907170,
+      "sha256": "c6de49a744ff505ddf1e491329238931e98fe948416e8a8789566969cb00eba9"
+    },
+    {
+      "path": "build/win32/bsp_game.map",
+      "bytes": 8300395,
+      "sha256": "8beed517cb42a099db134ee093b76a0235dc740be54902c259da8528aa3974ee"
+    },
+    {
+      "path": "build/win32/cc12_followup_release/bsp_game.exe",
+      "bytes": 5585408,
+      "sha256": "88595fe4413b948d002c98bb373580d9711e8d75f1691b698c8e700c1f87d3b9"
+    },
+    {
+      "path": "build/win32/cc12_followup_release/xlive_stub.dll",
+      "bytes": 32768,
+      "sha256": "b2416673d6d2fbcc02f0b6e4699f0b18ba691f8e2f33a1adeb2463d73d8c79f2"
+    },
+    {
+      "path": "build/win32/CMakeCache.txt",
+      "bytes": 19835,
+      "sha256": "dce4b4a92074e24d00695de30205f4e7ecadb90770f2740cbcf483cec092d2e4"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 226287,
+      "sha256": "d5f308f1ea3554d1fc75a586bfd391e6dd223aa28adadea853712f6d9c1fdb17"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_post_effect_submission.obj",
+      "bytes": 18779,
+      "sha256": "859f550fd4cdc7efbbb6499e8466fde22170d232b3ec2614aeb4ecba9d3fc4bc"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_main_scene_execution_prefix.obj",
+      "bytes": 48449,
+      "sha256": "b4c62873ec75d5b0a3624bd43cdcdd9f20409c0a4df51927644d6c28ab5c1f6b"
+    },
+    {
+      "path": "local/cc12_world_a6_parent_probe_01.log",
+      "bytes": 617,
+      "sha256": "7f35c967d9e95f4971b361e5eb7ada824ea9b6c644a3b567ed7164cda096201a"
+    },
+    {
+      "path": "local/cc12_shader_order_f202_parent_01.log",
+      "bytes": 531,
+      "sha256": "5480cfc949fd5181e5da1f5140b9fc4d4b61fb295259987631b4dfee7e357c81"
+    }
+  ],
+  "native_text_draw_validated": false,
+  "world_D5E13C_admitted": false,
+  "startup_validated": false,
+  "original_abi_compatible": false,
+  "gameplay_validated": false,
+  "overall_goal": "ACTIVE"
+}

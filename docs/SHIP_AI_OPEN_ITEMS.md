@@ -17819,3 +17819,113 @@ No counter or switch was added: neither state is reachable on the only call path
 `semantic_build_tested` with the corrected ABI (`__thiscall(ECX page, float seconds), RET 4`, not __fastcall/RET),
 and the host's two release labels are corrected (0067BB96 is the change-away release, 0067BC2C..0067BC37 the
 no-controlled release). Uncertainty: unreachability rests on the pump being the sole caller of slot 20h of this page.
+
+## 249. 241 item 4: the hangar fire roll and the shipyard's 00845AC0 stay unbound (cc9-ships50, 2026-10-14; lead item 4)
+
+- **00845AC0** (`BSP_Shipyard_OnHangarsLost`, MShipyard vtable 00D0B770 slot 1A8h, dword 00D0B918; read with
+  `bsp.py show 00845ac0`): returns while any `+784h` record's object passes the 0043F080 live test; otherwise
+  `+71Ch` (a parent CommandBuilding) clear calls vtable+70h(1), set calls vtable+194h("InferiorFailure", 0). The
+  shipyard's slot 194h is 00953DA0 (dword 00D0B904), the base arm that sends message 7Dh and sets `+720h`, the byte
+  Lua's `GetFailure(ent, "InferiorFailure")` / `InferiorIsDisabled` read. Its only caller is the hangar's 00747170
+  after the 1e10 hand-off, and only while the master is still live, which needs a parent CommandBuilding (00958A30's
+  `+71Ch` arm). The host already counts that case (`land master ... die_unhosted`): **0 in every run log of the last
+  two days in all cc9 trees** (1307 logs over 1 MB, summary lines read with `Get-Content -Tail 600`), so no row reaches
+  it. Not bound; a counter exists if a mission ever does.
+- **The 007470B0 fire roll on LandFort hangars** (the host runs it for CommandBuildings only): its outcome is the
+  fire effect (00746320 -> 008689C0), the D1h sync and, from 00745BE0, the secondary-explosion effect, all
+  presentation in the host's model, plus stream-0/1 draws keyed by unit under `BSP_GUNNERY_RNG_STREAMS=1`. Nothing in
+  gameplay reads `+740h`/`+748h`. Not bound. Uncertainty: 00745BE0's class+2Ch point draw (00745E41) is modelled with
+  count 0, as before; if that table spawns damaging explosions, the hangar fire would matter.
+
+## 250. Harness: a held `torpedo <ship> at <target>` is re-sent every frame (cc9-ships50, 2026-10-14; lead item)
+
+Why surface ships never launched (gunnery44: USN15 Fletchers, `trigger_ons=0`): 005484F0 builds one 79h per frame
+from the held fire key (docs/PLAYER_GUN_SEAT.md section 1), and for a ship that is not IsKindOf(8)/(0Eh) the group-4
+arm (0095A1CC; `apply_gun_aim_message_group4`) only trains the tubes toward the snapped bearing and sets the trigger
+once a tube is within 5 degrees of it (0095A2FC) while +34h is held. The harness sent one message at the `at` line and
+one at the `release` line, so the tubes trained for one frame and were let go. Subs take the press arm (0095A380),
+which fires on the press itself; that is why the sub plans launched.
+Now (src/game_hosts_mission_frame.cpp) a `torpedo ... at` that applies registers a hold for that unit, and the held
+message is re-sent at the start of every mission frame until the unit's next group-4 line (`release` or another `at`),
+logged as `helm torpedo hold ends: line N held K re-sent frame(s)`. The hold drops, logged with the reason
+(`helm torpedo hold dropped: ...`), when the unit stops being the controlled unit (another `select`; 005484F0 only
+sends for [00E188D8]) or the gunnery host refuses the message. Plans must hold long enough for the tubes to train
+(a Fletcher's tube trains about 100 degrees in a few seconds) and must not `select` another unit meanwhile; a target
+outside every tube window (dead ahead or astern for a Fletcher) still fails the snap and fires nothing, as for a
+player who does not turn the ship.
+Test (`local\s50_t_u15tt3.log`, `s50_t_u15tt4.log`, this tree's build of the commit, USN15): Fuso dead ahead,
+held 395 frames: 808 snap failures, nothing fired (faithful). Eight beam/quarter targets held 200 frames each:
+`trigger_ons=16 order_launches=10` (one salvo hit the friendly Denver, a test artefact). Before: a 5-frame hold gives
+`trigger_ons=0`.
+
+## 251. USNOS re-plan state; handoff (cc9-ships50, 2026-10-14; lead item 1)
+
+Runs: reference env, 200000 frames, `--stop-after-end 40`, launcher `local\s50_rows.ps1` (s49_rows with its own
+launch-file prefix), generator `local\s50_osgen.py` (s49_osgen plus `raw:<line>`), summary `local\s50_sum.py <log>
+[regex]` (death rows, SetParty, mission end), per-unit csv sampler `local\s50_upos.py`. Order files
+`local\s50_os_k<N>.txt`, logs `local\s50_{f,j3,j5,t}_k<N>.log` with manifests. Builds: k2r..k29 ran this tree at
+0f70e9dee/68fe87dba (exe kept as `local\s50_bsp_game_68fe.exe`); k30 ran 3b30ed84a with origin/main 057d11e10 merged.
+**What the threats are (current host):** the transports die to the airfield squadrons (luaAirfieldManager launches
+fighters/bombers at `Mission.Troops` while an airfield lives), to the armed Cargo7/Cargo8 next to HQ2, to Ada3 (scripted
+to hunt Troops[1]) and Shimotsuke, and to friendly flak bursts (Gear2/Gear18 cat-1 blast hits on already-damaged
+transports). Carrier strikes on the airfields are shredded by the Zao/Shimotsuke AA. Each airfield has one hangar
+section (5500 hp; `Hangar, Large, 08 01` Airfield1, `Hangar, Small, 02 02` Airfield2, `Multi Hangar 1` Airfield3);
+killing it kills the airfield (land master ON).
+**The plan that captures all three bases** (k24 -> k27 -> k28, each from the previous; k2 base): TT1/3/5/6 `moveto`
+next to the Enterprise (11300..11700, -4800..-5400) at 3000-3060; NH on Airfield2's hangar 19500-24000 and Airfield1's
+24600-29000; Portland1/2 on the hangars 19560-30000; Gear14/16 on Cargo7/Cargo8 20000-34000; Gear6/8/10/12 on `Multi
+Hangar 1` 2000-45000; Midway F2G CAP over TT6/3/1/5 every 2500 frames 24000-49000; TT6 to HQ2 at 34000, TT3 to HQ2 at
+36000 then to (-2700, 3800) at 39960 (920 m from HQ1; (-2100, 3300) is 1384 m and never captured), the CB2 route
+shifted to 62000/70000/82000/90000; Loui2 (108600-130000), Loui1 and (k29) DM1 (90000/100000-130000) shell HQ2; TT3
+back to (2300, 4400) at 112000 (k29: 118000); Essex/Intrepid F2Gs at Betty1-6 at 42500-42660 (Betties spawn ~41785).
+k28 (`s50_os_k28.txt`) and k29: HQ1 neutral 1707 s and captured, CB2 captured, HQ2 neutral 5761 s and captured, Yamato,
+Musashi, Haku1-4 and the six Betty leads dead, **no mission end**: seven Betty members (Betty2|.-2/-3/-4, Betty4|.-2/-3,
+Betty6|.-2/-4) still fly, so FinalTrgs never empties (229). k30 adds Lexington/Reprisal hunts on those members (50000-
+50160, their Haku strikes dropped) but ran on the new merged build, where NH is torpedoed by Shima2 at 975 s and the
+plan collapses (no captures). Jitter (k27): 20,5 and 20,3 both lose NH to Shimotsuke near 1500 s.
+**Next:** (1) re-run k28/k30 on current main and re-plan the opening for the NH loss (Shima2 torpedo at 975 s; escort
+NH or keep it out of Shima2's run); (2) then the member hunts (k30's additions); (3) jitter needs the NH-Shimotsuke duel
+won reliably (put Portland1/Gear14/16 on Shimotsuke before 1300 s).
+**Handoff.** Branch `agent/cc9-ships44`. Commits this session: 0f70e9dee (attack refuses dead targets, 247),
+68fe87dba (0067BB50 unreachable, 248), c1186ad17 (241 item 4 unbound, 249), 3b30ed84a (held torpedo press re-sent
+every frame, 250), this one. No leases held. Open: the USNOS items above; 005F98F0 port range; the cc13 soldier
+placeholders (never wire as-is); 004BFED0/004C3A80.
+
+## 252. Avoid-zone registry layer layout (cc9-ships51, 2026-10-14; lead item 1)
+
+From docs/CC13_AVOID1.md adoption note 1, verified: 00424730 builds three default layers through 00424680 (angles
+read from 00CE3990 / 00CE398C / 00CE3988 = 3E32B8C3h / 3EB2B8C3h / 3F9C61ABh, 10 / 20 / 70 degrees, each n = 10, cell
+2400, scale 2.0, zero grid), and 004248A0 calls 0041DED0 at 004248C1 with ECX = the registry (EBP), which deletes
+every list element, so a loaded registry holds only the file's layers. The host kept one ten-degree default ahead of
+the file layers. Bound as `kAvoidZoneRegistryImageLayoutBound` (include/bsp/game_hosts_avoid_zones.hpp), OFF.
+Measured with `local\s51_navlayers.py` over this installation's 253 `.nav` files: all but `missions\chg\PC_cargo.nav`
+(zero layers) hold three 240x240 layers with slope limits 0.1763 / 0.3640 / 2.7475 (10 / 20 / 70 degrees), so
+0041DF40(1.5, true) picks the 70-degree file layer under both layouts (image index 2, OFF host index 3). Scenes with
+no `.nav` (missiontree.lua): USN10 and USN11 (COTP-USN/PRCPUS usn_05 / usn_06) and ALT02 (IJN/ijn_14_prelude_mid);
+there the image keeps the 70-degree default and the OFF host its 10-degree one, which differ only in +14h; the hosted
+readers (game_hosts_units.cpp: 0041BC20 samples and the cell size) never read +14h.
+**Prediction:** gameplay-identical pairs (pair_diff 0 or 1) on every mission; the only moved lines are the
+`summary mission avoid-zone layer` note (registry_layers 4 -> 3, squadron_34c 3 -> 2; on USN10: 1 -> 3 layers,
+squadron_34c 0 -> 2, slope 0.176327 -> 2.747477).
+**Pairs** (020a12d06, `local\s51_off_<row>.log` vs `local\s51_on_<row>.log`, ON = `local\s51_avon` export, manifests
+beside each log): USN10 24000 frames (no `.nav`), USN15 36000, JM06 36000. pair_diff exit 1 on all three, gameplay
+identical (unit tables identical; USN10 deaths 14/14, damage 49475.7 both). Moved: only the avoid-zone summary
+(USN10 registry_layers 1 -> 3, squadron_34c 0 -> 2, slope 0.176327 -> 2.747478; USN15/JM06 4 -> 3 layers, 3 -> 2) plus
+the masked noise counters (ShipAiSectorScan, ship ai free empty/refills). As predicted: **flipped ON**. No mission
+completed in these rows, so no exec-guard line was expected. The scene-contents note "004248a0 appends without
+clearing" (game_hosts_scene_contents.cpp, lua lane) is now stale; routed to the lead.
+
+## 253. 00416270's x87 sums of products; 00417E60 guards labelled (cc9-ships51, 2026-10-14; lead item 3)
+
+00416270 (src/ship_ai_free_bearing.cpp) forms far2 (0041630A..00416310), the facing test (0041634A..0041635C) and the
+two crossing distances (00416426..0041645E) as x87 sums of two products and stores only the sum; the host's SSE build
+rounded each product to float first. `kOutlineWalkX87ProductsBound` (OFF) computes each product in double (exact for
+float operands) and rounds the sum once. Single products elsewhere in the walk (radius2) are unchanged: a float times a
+float rounds the same either way. **Prediction:** gameplay-identical pairs unless a walk sits on a near-tie (a facing
+sign or a far2 comparison within one float ulp); a moved pair would show first in the ShipAiSectorScan counters.
+00417E60's host arm (006F3C5A in game_hosts_ship_ai.cpp) is labelled: its ready() and group != 0 guards are the host's,
+and group_for_layer is 004120D0's walk where the image calls 00412120.
+**Pairs:** ON = `local\s51_x87on` (7c9744416 with the flip) as `local\s51_x87_<row>.log`, against the OFF logs of 252
+(020a12d06's tree build, whose 00416270 is the OFF code; the layout switch was OFF in both): USN10 24000, USN15 36000,
+JM06 36000. pair_diff exit 1, gameplay identical, unit tables identical; only the masked noise moved (ship ai free
+empty/refills, ShipAiSectorScan calls +2 on JM06). **Flipped ON** (faithful, no visible effect).

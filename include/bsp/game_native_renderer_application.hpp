@@ -23,9 +23,11 @@ struct NativeCockpitViewportReleaseContext;
 struct NativeRenderResourcesLifetimeContext;
 class NativeRenderResourcesConstructionAcquired;
 struct NativeShaderBinaryCacheContext;
+struct NativeShaderBinaryCacheOperation;
 struct NativeShaderDescriptorStorage;
 struct NativeShaderDescriptorReadContext;
 class NativeShaderDescriptorReadOperation;
+class NativeLuaServiceBindings;
 struct NativeGameGridContext;
 class NativeShadowDepthTargetContext;
 class GuiTextNativeLayoutServices;
@@ -135,6 +137,11 @@ public:
     // Full preload loop remains separate; these entrypoints perform real I/O.
     void create_shader_cache();
     void release_shader_cache();
+    // Retained lifecycle metadata remains readable after entered failure or
+    // normal release. Cache/allocation pointers are diagnostic identities after
+    // retirement; they do not grant another owner or permit replay/rebinding.
+    const NativeShaderBinaryCacheOperation* shader_cache_creation_operation() const noexcept;
+    bool shader_cache_released() const noexcept;
     NativeShaderBinaryCacheContext& shader_cache_context() noexcept;
     // Same compiler and secondary-pass construction/copy/registration domains.
     // No effect/program load graph is created. The caller keeps persistent
@@ -155,6 +162,11 @@ public:
     // keeps descriptor/name/operation alive and retires descriptor children
     // before this graph. Unknown native stack inputs are never synthesized.
     NativeShaderDescriptorReadContext& shader_descriptor_reader() noexcept;
+    // Ready-only borrow of the SAME retained service bundle used by this
+    // descriptor reader's bootstrap/files and native renderer Lua entries.
+    // Activate it around synchronous borrowed-reader execution; retain this
+    // renderer/application Lua owner through any interrupted Lua state.
+    NativeLuaServiceBindings& lua_service_binding();
     void read_shader_descriptor(NativeShaderDescriptorStorage&,const void* actual_name,
         std::uint32_t generation,NativeShaderDescriptorReadOperation&);
     // One camera domain shares the application's pool, type counter, node

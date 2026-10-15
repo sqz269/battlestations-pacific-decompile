@@ -40,17 +40,335 @@
     "actual_unit_receiver_constructed": false
   },
   "runtime": {
-    "status": "queued; all 6 shared slots occupied",
-    "exec_session": 52984,
-    "command": "./tools/run_game.ps1 -Log local/cc12_actual_native_gui_effect_startup_01.log -- --frames 120",
+    "attempt": "05",
+    "status": "Terminal retained failure at first material texture-reference B-16 stack-word consumption",
+    "exec_session": "47143 terminal",
+    "actual_source_revision": "b8395fc39e553a20d6006fc26f146d2658efa7a9",
+    "actual_executable": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_startup_receipts\\b8395fc39e553a20d6006fc26f146d2658efa7a9\\build\\win32\\cc12_followup_release\\bsp_game.exe",
+    "actual_executable_sha256": "968dca03fc93a844d31f890f18b0fca7d7c8ec05e18c7ae4429368e08f49b7c1",
+    "launcher_checkout_head": "cdf41848f1e1c8acddbe68fd507f994d8baa2b95",
+    "launcher_checkout_head_is_build_source": false,
+    "slot": 2,
+    "affinity_core": 6,
+    "started_utc": "2026-10-14T23:31:02.9088160Z",
+    "finished_utc": "2026-10-14T23:31:04.2732961Z",
+    "exit_code": 1,
+    "actual_process_started": true,
+    "shader_cache": {
+      "creation_entered": true,
+      "creation_returned": true,
+      "release_entered": false,
+      "release_returned": false,
+      "identity_and_current": "0917a8c0",
+      "source_mode": 0,
+      "load_variants": 0,
+      "operation_phase": 2,
+      "function": "00b3a600",
+      "site": "00b3549a",
+      "reported_completed_records": 1628,
+      "reported_load_index": 1628,
+      "temporary_live": false,
+      "actual_query_bytes_or_lookup_cursor_captured": false
+    },
+    "failure": "material texture reference consumes unknown native B-16 residue",
+    "private_sampler_word_guard_reached": true,
+    "failure_site": "00b3b328",
+    "compiler": {
+      "phase": 8,
+      "site": "00b3c018",
+      "resume": "00b3b536",
+      "retained": true
+    },
+    "compiler_tail": {
+      "phase": 3,
+      "site": "00b3c018",
+      "pass_registered": true,
+      "native_null": false
+    },
+    "root_sampler": {
+      "phase": 3,
+      "site": "00b3b328",
+      "index": 0,
+      "steps": 1,
+      "stack_known": false,
+      "captured_owner": "00000000",
+      "owner_obligation": false,
+      "release_entered": false,
+      "release_returned": false
+    },
+    "sampler_parent_scopes": 1,
+    "procedural_creators": 0,
+    "second_acquisition_entered": false,
+    "actual_effect_acquisition_observed": false,
+    "caller_retirement_observed": false,
+    "original_shared_drain_observed": false,
+    "failed_graph_retained_until_no_unwind_exit": true,
+    "installed_shader_cache_unchanged_after_run": true,
+    "installed_shader_cache_sha256": "dcc65686e26e0b7b4f4179b45b153aaa353696b0b1b08c32251fbc7c97c0ecf8",
+    "log": "local/cc12_actual_native_gui_effect_startup_05.log",
+    "manifest": "local/cc12_actual_native_gui_effect_startup_05.log.manifest.json",
+    "launcher_result": {
+      "tool_session": "47143",
+      "terminal_exit_code": 1,
+      "separate_launcher_log": "not created; launcher output observed through exec/write_stdin"
+    },
+    "terminal_artifacts": [
+      {
+        "path": "local\\cc12_native_shader_cache_bracket_receipt_07\\terminal_gui05\\cc12_actual_native_gui_effect_startup_05.log",
+        "bytes": 23745,
+        "sha256": "92615b3975fef4bc461d694d6bce95c0ad2dcdc0754ce65382da317ec5e01469"
+      },
+      {
+        "path": "local\\cc12_native_shader_cache_bracket_receipt_07\\terminal_gui05\\cc12_actual_native_gui_effect_startup_05.log.manifest.json",
+        "bytes": 3354,
+        "sha256": "39ffe841b649046232b7dc65eb965ddf27fa6f5cb8542a84c1df5bfdbbacb690"
+      },
+      {
+        "path": "local\\cc12_native_shader_cache_bracket_receipt_07\\terminal_gui05\\root_launch_receipt_05.json",
+        "bytes": 3835,
+        "sha256": "5c2ead4fd4bf6514dd402e082a35baab719c948e06cdc00b879ccb864e6460c7"
+      }
+    ],
+    "startup_validated": false,
+    "gameplay_validated": false,
+    "attempts": [
+      {
+        "attempt": 1,
+        "exec_session": 52984,
+        "launcher_exit_code": 1,
+        "game_exit_code": null,
+        "reason": "gave up after 2400 s: all 6 slots busy",
+        "actual_process_started": false,
+        "log_created": false,
+        "manifest_created": false
+      },
+      {
+        "attempt": 2,
+        "exec_session": 59647,
+        "status": "executed; failed before effect loader/sampler entry",
+        "executable": "local/cc12_native_gui_startup_receipts/23fbb8a1d/build/win32/Release/bsp_game.exe",
+        "xlive_dll": "local/cc12_native_gui_startup_receipts/23fbb8a1d/build/win32/Release/xlive_stub.dll",
+        "log": "local/cc12_actual_native_gui_effect_startup_02.log",
+        "launcher_log": "local/cc12_actual_native_gui_effect_startup_02_launcher.log",
+        "game_arguments": [
+          "--frames",
+          "120"
+        ],
+        "launcher_exit_code": 1,
+        "game_exit_code": 1,
+        "actual_process_started": true,
+        "manifest_created": true
+      },
+      {
+        "attempt": "03",
+        "status": "Actual numeric cache resolution completed; descriptor failed at missing Lua service activation",
+        "source_revision": "cba30590f2360eeec37db77b63b88dee3feecc7b",
+        "actual_executable": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_startup_receipts\\cba30590f2360eeec37db77b63b88dee3feecc7b\\build\\win32\\cc12_followup_release\\bsp_game.exe",
+        "actual_executable_sha256": "0312a8a9e1dbbd7c85394f932cc31dc3c8556bb4e0fd1f67f19778caf84937c8",
+        "launcher_checkout_head": "58f2320c8032583d52e0b6db55383b190b44d2c6",
+        "launcher_checkout_head_is_build_source": false,
+        "slot": 3,
+        "started_utc": "2026-10-14T22:16:17.7197834Z",
+        "finished_utc": "2026-10-14T22:16:19.0639249Z",
+        "exit_code": 1,
+        "exec_session": "88641 terminal",
+        "rewritten_name_numeric_vfs_resolution_observed": true,
+        "original_name_resolution_entered": false,
+        "key_resolution": {
+          "phase": 2,
+          "step": 10,
+          "site": "00b2eaaf",
+          "original_live": false,
+          "changed_live": false,
+          "output_live": false
+        },
+        "changed_vfs": {
+          "started": true,
+          "returned": true,
+          "result": true,
+          "phase": 4,
+          "site": "00bdf547",
+          "failure_site": "00000000"
+        },
+        "failure": "native Lua callback invoked without active source service binding",
+        "cache_failure_site": "00b3130d",
+        "loader_failure_site": "00b2ed5a",
+        "program_failure_site": "00b45f5e",
+        "descriptor_failure_site": "00b43b4e",
+        "creator_constructor_complete": true,
+        "creator_registered": false,
+        "sampler_parent_scopes": 0,
+        "procedural_creators": 0,
+        "private_sampler_word_guard_reached": false,
+        "actual_effect_acquisition_observed": false,
+        "caller_retirement_observed": false,
+        "original_shared_drain_observed": false,
+        "failed_graph_retained_until_no_unwind_exit": true,
+        "log": "local/cc12_actual_native_gui_effect_startup_03.log",
+        "manifest": "local/cc12_actual_native_gui_effect_startup_03.log.manifest.json",
+        "launcher": "local/cc12_actual_native_gui_effect_startup_03_launcher.log"
+      },
+      {
+        "attempt": "04",
+        "status": "Terminal hardware access violation in shader-cache record lookup; null actual cache publication",
+        "source_revision": "e20f1b31bac3338fe006f4a222fa2119edc75d1b",
+        "actual_executable": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_startup_receipts\\e20f1b31bac3338fe006f4a222fa2119edc75d1b\\build\\win32\\cc12_followup_release\\bsp_game.exe",
+        "actual_executable_sha256": "c14be9b4b25afb29672d1a58556541d959f0e6f4ec0346de34c8b24209248bb6",
+        "pe_timestamp": "6ad005ce",
+        "preferred_and_actual_base": "10000000",
+        "launcher_checkout_head": "9c5991f614a7c716e05f7f0623d7ae31010f2135",
+        "launcher_checkout_head_is_build_source": false,
+        "slot": 5,
+        "affinity_core": 12,
+        "started_utc": "2026-10-14T22:56:04.1589929Z",
+        "finished_utc": "2026-10-14T22:56:06.2370511Z",
+        "exit_code": -1073741819,
+        "exec_session": "48480 terminal",
+        "exception": {
+          "code": "c0000005",
+          "address": "1038eb9d",
+          "read_address": "00000000",
+          "function": "find_native_shader_binary_cache_record_00b34890",
+          "function_start": "1038eb60",
+          "offset": "3d",
+          "instruction": "mov eax,dword ptr [edi]",
+          "EDI": "00000000",
+          "top_cache_argument": "00000000",
+          "source_site": "src/native_shader_compiler_lookups.cpp:56"
+        },
+        "stack": [
+          "cached_shader",
+          "NativeMaterialProgramCompilerActual::continue_material_pass_00b3b3c0",
+          "compile_native_material_program_00b3c3a0",
+          "NativeMaterialEffectCompilerBinding::build_program_00b3c3a0",
+          "NativeMaterialEffectNativeChildren::build_program_00b3c3a0",
+          "load_native_material_effect_programs_00b45ee0",
+          "load_native_material_effect_variants_00b46950",
+          "load_native_material_effect_00b2ebb0",
+          "load_native_cached_material_effect_00b31090",
+          "load_native_renderer_material_effect_00b318b0",
+          "GameNativeGuiEffectApplication::acquire_effect_00b318b0",
+          "GameNativeGuiEffectProbe::run"
+        ],
+        "stack_qualification": "Return addresses resolved against matching map; CDB warns later frame unwinds may be wrong. Faulting instruction/register and top argument are direct dump observations.",
+        "shadow_constructor_and_publication_observed": true,
+        "shadow_profile": "00d5b5e8",
+        "shadow_extent": [
+          2048,
+          2048
+        ],
+        "material_program_compiler_reached": true,
+        "private_sampler_word_guard_reached": "not established",
+        "actual_effect_acquisition_observed": false,
+        "caller_retirement_observed": false,
+        "original_shared_drain_observed": false,
+        "startup_validated": false,
+        "gameplay_validated": false,
+        "log": "local/cc12_actual_native_gui_effect_startup_04.log",
+        "manifest": "local/cc12_actual_native_gui_effect_startup_04.log.manifest.json",
+        "launcher": "local/cc12_actual_native_gui_effect_startup_04_launcher.log",
+        "dump": "local/cc12_actual_native_gui_effect_startup_04.dmp",
+        "frozen_crash_receipt": "local/cc12_gui_crash_receipt_04/receipt.json"
+      },
+      {
+        "attempt": "05",
+        "status": "Terminal retained failure at first material texture-reference B-16 stack-word consumption",
+        "exec_session": "47143 terminal",
+        "actual_source_revision": "b8395fc39e553a20d6006fc26f146d2658efa7a9",
+        "actual_executable": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_startup_receipts\\b8395fc39e553a20d6006fc26f146d2658efa7a9\\build\\win32\\cc12_followup_release\\bsp_game.exe",
+        "actual_executable_sha256": "968dca03fc93a844d31f890f18b0fca7d7c8ec05e18c7ae4429368e08f49b7c1",
+        "launcher_checkout_head": "cdf41848f1e1c8acddbe68fd507f994d8baa2b95",
+        "launcher_checkout_head_is_build_source": false,
+        "slot": 2,
+        "affinity_core": 6,
+        "started_utc": "2026-10-14T23:31:02.9088160Z",
+        "finished_utc": "2026-10-14T23:31:04.2732961Z",
+        "exit_code": 1,
+        "actual_process_started": true,
+        "shader_cache": {
+          "creation_entered": true,
+          "creation_returned": true,
+          "release_entered": false,
+          "release_returned": false,
+          "identity_and_current": "0917a8c0",
+          "source_mode": 0,
+          "load_variants": 0,
+          "operation_phase": 2,
+          "function": "00b3a600",
+          "site": "00b3549a",
+          "reported_completed_records": 1628,
+          "reported_load_index": 1628,
+          "temporary_live": false,
+          "actual_query_bytes_or_lookup_cursor_captured": false
+        },
+        "failure": "material texture reference consumes unknown native B-16 residue",
+        "private_sampler_word_guard_reached": true,
+        "failure_site": "00b3b328",
+        "compiler": {
+          "phase": 8,
+          "site": "00b3c018",
+          "resume": "00b3b536",
+          "retained": true
+        },
+        "compiler_tail": {
+          "phase": 3,
+          "site": "00b3c018",
+          "pass_registered": true,
+          "native_null": false
+        },
+        "root_sampler": {
+          "phase": 3,
+          "site": "00b3b328",
+          "index": 0,
+          "steps": 1,
+          "stack_known": false,
+          "captured_owner": "00000000",
+          "owner_obligation": false,
+          "release_entered": false,
+          "release_returned": false
+        },
+        "sampler_parent_scopes": 1,
+        "procedural_creators": 0,
+        "second_acquisition_entered": false,
+        "actual_effect_acquisition_observed": false,
+        "caller_retirement_observed": false,
+        "original_shared_drain_observed": false,
+        "failed_graph_retained_until_no_unwind_exit": true,
+        "installed_shader_cache_unchanged_after_run": true,
+        "installed_shader_cache_sha256": "dcc65686e26e0b7b4f4179b45b153aaa353696b0b1b08c32251fbc7c97c0ecf8",
+        "log": "local/cc12_actual_native_gui_effect_startup_05.log",
+        "manifest": "local/cc12_actual_native_gui_effect_startup_05.log.manifest.json",
+        "launcher_result": {
+          "tool_session": "47143",
+          "terminal_exit_code": 1,
+          "separate_launcher_log": "not created; launcher output observed through exec/write_stdin"
+        },
+        "terminal_artifacts": [
+          {
+            "path": "local\\cc12_native_shader_cache_bracket_receipt_07\\terminal_gui05\\cc12_actual_native_gui_effect_startup_05.log",
+            "bytes": 23745,
+            "sha256": "92615b3975fef4bc461d694d6bce95c0ad2dcdc0754ce65382da317ec5e01469"
+          },
+          {
+            "path": "local\\cc12_native_shader_cache_bracket_receipt_07\\terminal_gui05\\cc12_actual_native_gui_effect_startup_05.log.manifest.json",
+            "bytes": 3354,
+            "sha256": "39ffe841b649046232b7dc65eb965ddf27fa6f5cb8542a84c1df5bfdbbacb690"
+          },
+          {
+            "path": "local\\cc12_native_shader_cache_bracket_receipt_07\\terminal_gui05\\root_launch_receipt_05.json",
+            "bytes": 3835,
+            "sha256": "5c2ead4fd4bf6514dd402e082a35baab719c948e06cdc00b879ccb864e6460c7"
+          }
+        ],
+        "startup_validated": false,
+        "gameplay_validated": false
+      }
+    ],
     "environment": {
       "BSP_NATIVE_GUI_EFFECT_PROBE": "1",
       "BSP_NATIVE_FONT_PROBE": "0"
     },
-    "actual_resource_acquisition_observed": false,
-    "references_retired_observed": false,
-    "original_shared_drain_observed": false,
-    "exit_code": null
+    "runtime_receipt": "reports/cc12_native_shader_cache_bracket_integration_07.json"
   },
   "original_installation": {
     "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
@@ -123,5 +441,15 @@
   "world_command_D5E13C_admitted": false,
   "original_abi_compatible": false,
   "gameplay_validated": false,
-  "overall_goal": "active"
+  "overall_goal": "active",
+  "latest_actual_executable_source_revision": "b8395fc39e553a20d6006fc26f146d2658efa7a9",
+  "latest_combined_build": {
+    "source_revision": "f6de35fc1aa4cb72e42020272a006e238116cf64",
+    "target": "MSVC Win32 Release",
+    "tests": "PASS3/3",
+    "seconds": 11.02,
+    "permanent_platform_tu_registration": true,
+    "temporary_cmake_include": false,
+    "receipt": "reports/cc12_native_scene_platform_integration_09.json"
+  }
 }

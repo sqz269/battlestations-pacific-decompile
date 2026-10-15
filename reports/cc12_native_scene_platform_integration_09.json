@@ -1,0 +1,133 @@
+{
+  "packet": "cc12_scene_platform_integrated_release_09",
+  "utc": "2026-10-15T00:01:48.461243+00:00",
+  "source_revision": "f6de35fc1aa4cb72e42020272a006e238116cf64",
+  "build": {
+    "status": "PASS",
+    "target": "MSVC Win32 Release",
+    "existing_suites_passed": 3,
+    "existing_suites_failed": 0,
+    "test_seconds": 11.02,
+    "new_tests": 0,
+    "permanent_platform_registration": true,
+    "temporary_cmake_overlay": false,
+    "log": "local/cc12_scene_platform_combined_release_build_01.log"
+  },
+  "scene_label": {
+    "commit": "f0a5963fffffa72fdb9993205799573fbcacb6be",
+    "Root_complete_changed_Source_and_header_review": true,
+    "frozen_artifacts": 53,
+    "committed_files": 6,
+    "caller_extent": "B1610A..B161AC, 163 bytes / 51 instructions",
+    "Root_frozen_manifested_fixture_rerun": "PASS3 Original/Source caller pairs,3 CBC47E changed-publication pairs,1 CBC473 current-header versus captured-data pair; complete raw-pool bytes",
+    "ownership": "Same DRSH/StringManager domains, actual SCNE bytes, state3 current temp header and state5 current global service; disarm before cleanup",
+    "next_frontier": "B161AD target selection and B4CB20/frame/camera stage",
+    "receipt": "local/cc12_native_parent_receipts/world_f0/receipt.json",
+    "limits": "Prior boundary seeded; no native FH3, descendant throw, whole scene execution or D5E13C admission"
+  },
+  "platform_stop": {
+    "commit": "49693d3b5b013d468c136f74abc120f83077ca21",
+    "Root_complete_changed_Source_and_header_review": true,
+    "frozen_artifacts": 52,
+    "committed_files": 6,
+    "whole_native_extent": "BEBF70,37 bytes; two named import relocation operands",
+    "Root_frozen_manifested_fixture_rerun": "PASS all388 owner bytes for sentinel/FALSE/TRUE, captured owner across borrowed publication replacement,6 real isolated-thread WM_QUIT(0) messages drained",
+    "system_settings": "Successful active scheme/full policy/screensaver readbacks unchanged; power writes intercepted and not executed",
+    "receipt": "local/cc12_native_parent_receipts/platform_496/receipt.json",
+    "limits": "Patterned saved policy; no BED223 producer, real power write, actual0109CF04 cell, full message handler/window activation, native EH or application proof"
+  },
+  "upstream": {
+    "large61": "fa9b9b842 six Source hook methods and permanent CMake registration included in this combined build; no Root runtime or gameplay admission",
+    "renderer_readiness": "b056f7891 metadata reconciliation verified9 exact source/report pins; no new readiness or ABI credit"
+  },
+  "latest_actual_GUI": {
+    "attempt": "05",
+    "source_revision": "b8395fc39e553a20d6006fc26f146d2658efa7a9",
+    "status": "Terminal exit1 after real cache creation; unknown B-16 guard at B3B328",
+    "report": "reports/cc12_native_shader_cache_bracket_integration_07.json",
+    "this_combined_build_has_not_been_game_run": true
+  },
+  "artifacts": [
+    {
+      "path": "local/cc12_scene_platform_combined_release_build_01.log",
+      "bytes": 3537,
+      "sha256": "3c30f39ff23a246720c82e6e7cde4a69c7b9780c502f8b5da42126c83e8c28a8"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 91955750,
+      "sha256": "76b1aab49a6c28687fbcdda91c35b0231ec4a703d9cae3ecfddf670469d17f34"
+    },
+    {
+      "path": "build/win32/bsp_game.map",
+      "bytes": 8300395,
+      "sha256": "fb9e748f59ae840123327b6b32af5bd0504b28732a65851269d68f53af7a3465"
+    },
+    {
+      "path": "build/win32/cc12_followup_release/bsp_game.exe",
+      "bytes": 5585408,
+      "sha256": "150c5589c52ce9fcd273c33f560f51501b00e6b340d8030a087684457afc0636"
+    },
+    {
+      "path": "build/win32/cc12_followup_release/xlive_stub.dll",
+      "bytes": 32768,
+      "sha256": "b2416673d6d2fbcc02f0b6e4699f0b18ba691f8e2f33a1adeb2463d73d8c79f2"
+    },
+    {
+      "path": "build/win32/CMakeCache.txt",
+      "bytes": 19835,
+      "sha256": "dce4b4a92074e24d00695de30205f4e7ecadb90770f2740cbcf483cec092d2e4"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 226399,
+      "sha256": "86524efb3176a4571f2349a2bd4a6e611b228eb5ce690db4ad531165650ce1d1"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_main_scene_execution_prefix.obj",
+      "bytes": 53341,
+      "sha256": "2c2c54c3ea9f99603843d4fe829640899fcfae093c7e9ee707a43730209ee74c"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_platform_construction.obj",
+      "bytes": 17827,
+      "sha256": "7f54c806d8f00be5511a4de957690f62fcc618371a9d75a7a298533d8ad1c6c3"
+    },
+    {
+      "path": "src/native_main_scene_execution_prefix.cpp",
+      "bytes": 66197,
+      "sha256": "e376ae5b0a6d0f2e78e1dab541d29bcaddfc44c642de125ed387d9056a3f26e5"
+    },
+    {
+      "path": "include/bsp/native_main_scene_execution_prefix.hpp",
+      "bytes": 18904,
+      "sha256": "d8f37e4f8b0cc575de4e6d077d022d6cdff79969bc61a39ae459b6363ff1dddf"
+    },
+    {
+      "path": "src/native_platform_construction.cpp",
+      "bytes": 12798,
+      "sha256": "4e0b51f70e211d0653f4fac61c9a63c9dded64aaabf6ba3e85249583f475daa0"
+    },
+    {
+      "path": "include/bsp/native_platform_construction.hpp",
+      "bytes": 6925,
+      "sha256": "953e730654caad7f434b069e086acc601cf5df095fcc8d62cc015019acdbbcea"
+    },
+    {
+      "path": "local/cc12_world_f0_parent_probe_01.log",
+      "bytes": 509,
+      "sha256": "38f9d11938660b74a01510baf13e4d4b7b59278b40c11315864a8045a30a2ab5"
+    },
+    {
+      "path": "local/cc12_platform_496_parent_probe_01.log",
+      "bytes": 431,
+      "sha256": "7dfce8af1a00c96e0ae78099a43b6c25ff55170654803fb4a31ff5e772a80a41"
+    }
+  ],
+  "world_D5E13C_admitted": false,
+  "whole_platform_handler_admitted": false,
+  "startup_validated": false,
+  "original_abi_compatible": false,
+  "gameplay_validated": false,
+  "overall_goal": "ACTIVE"
+}

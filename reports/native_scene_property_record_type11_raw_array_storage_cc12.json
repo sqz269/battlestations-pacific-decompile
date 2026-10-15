@@ -2,15 +2,15 @@
   "schema": "bsp.cc12.native-scene-property-record-type11-raw-array-storage.v1",
   "packet": "cc12_property_type10_type11_raw_storage_source",
   "type": 11,
-  "status": "raw_Source_reconstructed_production_compiled_complete_fixture_ABI_qualification_pending",
+  "status": "accepted_bounded_raw_Source_current_provider_domain",
   "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_type10_type11_raw_storage_source",
   "branch": "agent/cc12_property_type10_type11_raw_storage_source",
   "worker_base_revision": "4f21df543211402d96f1c27dd8751ff63070909b",
-  "Source_credit": 0,
-  "Source_admission_credit": 0,
+  "Source_credit": 1,
+  "Source_admission_credit": 1,
   "adapter_native_credit": 0,
-  "ready_Source_credit": 0,
-  "Root_independent_validation_pending": true,
+  "ready_Source_credit": 1,
+  "Root_independent_validation_pending": false,
   "Root_Main_CMake_registration_build_publication_pending": false,
   "tracked_outputs": [
     "src/native_scene_property_record_type11_raw_array_storage.cpp",
@@ -62,11 +62,11 @@
   "evidence_levels": {
     "reconstructed": true,
     "static_Source_listing_review": true,
-    "build_tested": false,
-    "fixture_tested": false,
-    "physical_register_stack_ABI_measured": false,
-    "emitted_code_inspected": false,
-    "complete_retained_helper_closure_qualified": false,
+    "build_tested": true,
+    "fixture_tested": true,
+    "physical_register_stack_ABI_measured": true,
+    "emitted_code_inspected": true,
+    "complete_retained_helper_closure_qualified": true,
     "Original_private_provider_ABI_admitted": false,
     "native_class_or_drop_in_replacement": false,
     "game_validated": false
@@ -189,12 +189,7 @@
     "includes_all8_owned_output_snapshots": true,
     "independent_SHA256": "Supplied in commit handoff; omitted here to avoid circular hashing with exact report snapshot."
   },
-  "pending_primary_work": [
-    "Register Source in owned shared build metadata.",
-    "Compile normal MSVC Win32 production; inspect actual emitted whole body and all retained code/helper/provider closure.",
-    "Run fresh independent successful retain/copy qualification with real current providers and exact transport/storage/lifetime observations.",
-    "Award Source/name/ledger credit only after primary acceptance."
-  ],
+  "pending_primary_work": [],
   "exclusions": [
     "zero-size/overflow/invalid or overlapping spans",
     "allocation failure, copy faults, reentry and exceptional unwind",
@@ -307,7 +302,7 @@
     "performed"
   ],
   "saved_analysis_publication_pending": false,
-  "complete_helper_ABI_qualification_pending": true,
+  "complete_helper_ABI_qualification_pending": false,
   "Root_saved_raw_Source_analysis_publication": {
     "passed": true,
     "Source_admission_credit": 0,
@@ -354,6 +349,226 @@
         "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_three_Source_primary_index.log",
         "size": 16,
         "sha256": "193e6dccd4e88f7a8a44d31dd4e4f64b37e257bc9a75ae34c8e3651da7558e51"
+      }
+    ]
+  },
+  "worker_current_singleprocess_qualification": {
+    "schema": "bsp.cc12.type11-current-singleprocess-qualification.v1",
+    "status": "worker_raw_domain_PASS_parent_admission_pending",
+    "Source_admission_credit": 0,
+    "Source_credit": 0,
+    "Root_independent_validation_pending": true,
+    "current_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type11_current01",
+    "worker_base_revision": "0642ace2587fa65b26e4cb44a7114280769e02c3",
+    "current_Source_unchanged": true,
+    "native_extent": {
+      "start": "008ef460",
+      "end_exclusive": "008ef4d7",
+      "bytes": 119,
+      "instructions": 37,
+      "stride": 12,
+      "sha256": "fdb6bb6f351939abd63f85028eea15df069113701aba2de727bb9a16393978da",
+      "literal_Source_bytes": 111,
+      "CALL_operand_offsets": [
+        54,
+        69
+      ],
+      "live_Ghidra_and_disk_agree_before_after": true,
+      "own_order": "MOV count to EAX before ESI/EDI saves; capture root; LEA3*count; ADD6*count; phase/tag11 stores; ADD12*count; compare low FLAG byte."
+    },
+    "complete_code": {
+      "primary_and_independent_agree": true,
+      "fresh_objects": 3,
+      "retained_sections": 108,
+      "whole_function_bodies": 29,
+      "whole_function_bytes": 5856,
+      "decoded_instructions": 1692,
+      "all_relocations": 628,
+      "weak_entries": 7,
+      "retained_weak_entries": 2,
+      "weak_modes": [
+        1
+      ],
+      "full_support_extents": "Three current archive COFF normal/cookie sections with complete relocated bytes; six current short-import-member identities with complete six-byte IAT thunks.",
+      "runtime_associative_sections_verified": true,
+      "discarded_FPO_sections": "Exact 16-byte non-executable discardable .debug$F records; no mapped base, retained references, or PE FPO entry. Separate Type13 POGO metadata is not FPO.",
+      "CFG_unknown_edges": 0,
+      "internal_unreachable_nonpadding": 0,
+      "GS_failure_frontier": {
+        "name": "___report_gsfailure",
+        "va": 1375742560
+      },
+      "actual_loaded_bytes_before_after_equal_gate": true
+    },
+    "process": {
+      "pid": 56136,
+      "returncode": 0,
+      "start_ns": 1792019692518676800,
+      "end_ns": 1792019692589931500,
+      "one_current_target_process": true,
+      "successful_family_target_attempts": 1,
+      "failed_Type11_target_attempts": 0,
+      "roots": 12,
+      "children": 6,
+      "calls": 12,
+      "raw_Source": 4,
+      "raw_fresh_rebound_Native": 4,
+      "ordinary_Source": 4,
+      "root_free_completions": 12,
+      "child_free_completions": 6,
+      "free_event_instrumentation": false,
+      "ordinary_lane_raw_register_claim": false,
+      "counts": [
+        2,
+        1,
+        2,
+        1
+      ],
+      "full_flag_DWORDs": [
+        "d862a100",
+        "45bc7900",
+        "a71de380",
+        "6fc95401"
+      ],
+      "payload_bytes": [
+        24,
+        12,
+        24,
+        12
+      ]
+    },
+    "observed_contract": {
+      "root_bytes": 56,
+      "written_bytes": 29,
+      "preserved_bytes": 27,
+      "owner_30_preserved": true,
+      "marker_2c_one_both_modes_not_ownership": true,
+      "input_guard_scope": "Inside each 40-byte input array only; no adjacent heap redzones",
+      "all_simultaneously_live_root_input_array_child_extents_disjoint_and_outside_active_thread_stack": true,
+      "opaque_payloads_through_embedded_NUL": true,
+      "raw_stack": "COUNT/INPUT/fullFLAG at observed T+4/T+8/T+C; RET0C physical post stack T+16",
+      "raw_nonvolatile": "EBX/EBP/ESI/EDI and EAX root checked on both raw lanes",
+      "retain": "ECX root, EDX input, EFLAGS&08D5=0044 including AF0",
+      "copy": "Six arithmetic flags from observed ADD(T-24,16); ECX/EDX intentionally unconstrained",
+      "entry_DF_clear": true,
+      "ES_FPU_MXCSR_blanket_claim": false
+    },
+    "final_current_selected_input_count": 226,
+    "final_current_selected_input_bookend_pass": true,
+    "preserved_Type10_families": {
+      "current_manifest": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type10_current02\\artifact_manifest.json",
+        "bytes": 17882,
+        "sha256": "2bdb7613d726eb627505e374b7c6d6f38fee18325f6cae4f12bc4b61caf44f5b"
+      },
+      "current_files": 69,
+      "prior_failed_files": 85,
+      "all_hashes_and_exact_membership_unchanged": true,
+      "no_Type10_object_or_process_credit": true
+    },
+    "evidence_limits": [
+      "Only positive fresh/unowned readable/disjoint successful current allocation/copy/free domain. Dynamic examples use Type11 counts1/2; own full37 constructor instructions and complete retained helper/caller code reviewed.",
+      "Cold bad_alloc/delete/cookie support is structurally covered, not failure-executed. GS failure frontier and external IAT providers are explicit boundaries.",
+      "No old draft pre-interpreter environment/package/host admission is claimed by this isolated workflow.",
+      "No original private CRT/EH/OOM or naked-frame unwind admission.",
+      "No vtable/class/owner publication/free-marker/recursive lifetime or complete clone admission.",
+      "No game ABI drop-in, startup, world construction, renderer activation or gameplay proof."
+    ],
+    "next_gate": "Parent independently reviews current Type11 Source/complete code/provider/frame/runtime evidence and decides bounded Source admission; original private runtime/class/whole-clone and gameplay gates remain open.",
+    "qualification_report": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type11_current01\\qualification.json",
+      "bytes": 15495,
+      "sha256": "043c60d926c2c797e374c73bb9ca891ee2390ebe8956aac56a2bf1ad84c8dfaa"
+    },
+    "primary_artifacts": {
+      "type11_probe.exe": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type11_current01\\type11_probe.exe",
+        "bytes": 17920,
+        "sha256": "e4c19f4d7456411af8eda569738b1c76fbb5c080b8f87b8da259ccbf9bff8f0f"
+      },
+      "type11.obj": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type11_current01\\type11.obj",
+        "bytes": 1825,
+        "sha256": "3b8d574452262081d4652bcc9c98bb9f61223594ac383043f080fd445ce697a4"
+      },
+      "canonical.obj": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type11_current01\\canonical.obj",
+        "bytes": 36622,
+        "sha256": "be67300d0295288ed1e7ee9844ab23f510cec427ce6bc75ea851deee532fc5bf"
+      },
+      "probe.obj": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type11_current01\\probe.obj",
+        "bytes": 28294,
+        "sha256": "514719d05c1329f95517b6ec1f946adba14b226f3567f0561a5389122811bbdc"
+      },
+      "observations.bin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type11_current01\\observations.bin",
+        "bytes": 9043,
+        "sha256": "40c4705a8d4a4d5cca5185d9eeb9d016b40128871c11d85b44ddf22857f0bcf8"
+      },
+      "gate.bin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type11_current01\\gate.bin",
+        "bytes": 6096,
+        "sha256": "b0e895e11230e39e4fbc4b21b12984b7ae480f83f11855afdef926e48cc3ae17"
+      },
+      "independent_code.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type11_current01\\independent_code.json",
+        "bytes": 889915,
+        "sha256": "657164e08695b6ab0fc39503b9ebb78d625f6db07eb6a3055948dacdf85ae854"
+      },
+      "independent_recorded.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type11_current01\\independent_recorded.json",
+        "bytes": 15746,
+        "sha256": "c04cf96754426d223a7ca5c54301a988552e9faa33f6de2991ae007161e903fd"
+      }
+    },
+    "evidence_manifest": "local/type11_current01/artifact_manifest.json; independent hash supplied in handoff; includes final tracked-output snapshots without a hash cycle."
+  },
+  "Root_current_singleprocess_acceptance": {
+    "utc": "2026-10-14T23:19:27.954334+00:00",
+    "status": "accepted_bounded_raw_Source_current_provider_domain",
+    "worker_commit": "45795778858efa2002ef296b755067736e2cee67",
+    "Root_independent_code_reader_rerun": "PASS",
+    "Root_independent_recorded_reader_rerun": "PASS",
+    "new_target_process_launched_by_Root": false,
+    "original_successful_process_pid": 56136,
+    "frozen_current_files_including_manifest": 67,
+    "failed_Type11_attempts": 0,
+    "current_selected_inputs_independently_verified": 226,
+    "whole_function_bodies": 29,
+    "whole_function_bytes": 5856,
+    "decoded_instructions": 1692,
+    "retained_sections": 108,
+    "all_relocations": 628,
+    "calls": 12,
+    "roots": 12,
+    "copied_children": 6,
+    "domain": "Fresh unowned readable/disjoint raw56-byte roots; positive nonoverflowing successful current canonical allocation/copy/free. Retain/copy selected by low FLAG byte. Dynamic examples count2/1; all37 Native constructor instructions reviewed.",
+    "not_admitted": [
+      "Original private CRT/EH/OOM",
+      "naked-frame exceptional unwind",
+      "class/vtable/owner publication/recursive lifetime",
+      "complete clone",
+      "game ABI drop-in",
+      "startup",
+      "gameplay"
+    ],
+    "frozen_receipt": "local\\cc12_native_parent_receipts\\type11_457\\receipt.json",
+    "parent_artifacts": [
+      {
+        "path": "local\\cc12_type11_parent_review_01\\independent_code.json",
+        "bytes": 890014,
+        "sha256": "3d808a8c1d115b31e0e1f2885381854843abc4cf8a9c932caff3d51302718c0a"
+      },
+      {
+        "path": "local\\cc12_type11_parent_review_01\\independent_recorded.json",
+        "bytes": 15755,
+        "sha256": "8c33b588f47bbb4f80e8359fbc202e52ca6cfa52ecda38d7c4569344a38033fa"
+      },
+      {
+        "path": "local\\cc12_type11_parent_review_01\\parent_rerun.log",
+        "bytes": 158,
+        "sha256": "211572f21e52aa76c1c4c3bc16de130113bccba5dcb1a0b906fba5b1a9e153dd"
       }
     ]
   }

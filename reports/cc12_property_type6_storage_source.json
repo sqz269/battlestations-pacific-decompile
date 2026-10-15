@@ -2,7 +2,7 @@
   "schema_version": 1,
   "packet": "cc12_property_type6_storage_source",
   "UTC": "2026-10-08T18:50:17.786575+00:00",
-  "status": "PRIMARY_ACCEPTED_NORMAL_WIN32_AND_STATIC_PRODUCTION_QUALIFIED_NOT_ENTRY_OR_GAME_EXECUTED",
+  "status": "PRIMARY_ACCEPTED_STATIC_SOURCE_AND_BOUNDED_RAW_CONSTRUCTOR_CURRENT_PROVIDER_ENTRY",
   "baseline": "27f2c7ec27d4c654755c76b2ccd56b7f4563a195",
   "readiness_commit": "07a14df5cace343a34ecdf8b3985ab8e506b288f",
   "readiness_primary_main": "27f2c7ec27d4c654755c76b2ccd56b7f4563a195",
@@ -1131,8 +1131,10 @@
     "three_unique_current_archive_members_equal_whole_objects": true,
     "actual_current_I386_CRT_import_and_export_roles": true,
     "normal_final_build_all3_existing_checks_passed": true,
-    "no_CMake_or_Ghidra_or_ledger_changes": true,
-    "no_new_test_or_selected_entry_execution": true
+    "original_static_batch_no_new_test_or_selected_entry_execution": true,
+    "original_static_batch_no_CMake_or_Ghidra_or_ledger_changes": true,
+    "current_raw_constructor_entry_fixture_qualified": true,
+    "Root_current_raw_entry_register_stack_defined_flags_and_complete_memory_reader_PASS": true
   },
   "document": {
     "path": "docs/CC12_PROPERTY_TYPE6_STORAGE_SOURCE.md",
@@ -1168,5 +1170,397 @@
     "fragment_registered": 1,
     "new_entry_execution": false,
     "startup_or_gameplay": false
+  },
+  "current_constructor_entry_qualification": {
+    "status": "accepted_bounded_raw_constructor_current_provider_domain",
+    "new_runtime_admission_credit": 1,
+    "existing_static_Source_admission_preserved": true,
+    "current_Source_unchanged": true,
+    "qualification": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type6_current01\\qualification.json",
+      "bytes": 12968,
+      "sha256": "6e2c06b4f10aa1510f9c8126240485cbdbbffc3fce25e8424d63213332d5f9c0"
+    },
+    "process": {
+      "pid": 97712,
+      "returncode": 0,
+      "start_ns": 1792021605012294200,
+      "end_ns": 1792021605086255500,
+      "one_current_target_process": true
+    },
+    "contract": {
+      "inputs": "Actual fresh canonical56 record in ECX; unused EDX; actual distinct mutable276 empty producer child at entry ESP+4; DF0.",
+      "outputs": "EAX actual record; EDX actual child; ECX0; RET4 returns caller ESP to entry T+8; EBX/EBP/ESI/EDI/ES and DF preserved.",
+      "defined_EFLAGS_mask": "0x8c5",
+      "defined_EFLAGS_value": "0x44",
+      "AF": "undefined and excluded",
+      "FP": "No FP instruction in whole body; no dynamic x87/SSE/MXCSR state claim.",
+      "record_written_bytes": 41,
+      "record_preserved_bytes": 15,
+      "child": "Only child+110 backlink changes to actual record. Whole child276 observed before and after.",
+      "store_order": "Child backlink precedes record+34, byte2C and final+8 by whole58 assembly evidence; no intermediate dynamic store tracing."
+    },
+    "observations": {
+      "calls": 6,
+      "raw_Source": 2,
+      "raw_Native": 2,
+      "ordinary_Source": 2,
+      "poisons": [
+        "0xa6",
+        "0x59"
+      ],
+      "flags_seeds": [
+        "0x202",
+        "0xad7"
+      ],
+      "roots56": 6,
+      "children276": 6,
+      "seeds276": 1,
+      "all_13_live_allocations_disjoint_and_outside_actual_thread_stack": true,
+      "seed_complete276_unchanged": true,
+      "retirement": "Genuine current canonical frees; each empty child before own root, seed last. 6 child,6 root,1 seed completion counts; not per-free event instrumentation."
+    },
+    "code_gate": {
+      "whole_bodies": 37,
+      "whole_bytes": 5941,
+      "instructions": 1653,
+      "retained_sections": 132,
+      "all_relocations": 791,
+      "weak_entries": 10,
+      "edges": 357,
+      "whole_direct_current_TUs": 3,
+      "support_helpers": 9,
+      "unknown_edges": 0,
+      "sole_unexpanded_failure_frontier": "__report_gsfailure; excluded failure path",
+      "duplicate_COMDAT": "Fresh Type6 and canonical TUs share std::exception fallback; global exact map name/VA and complete own section relocation/byte equality qualify selected duplicate, including all weak fallback TagIndex records.",
+      "loaded_whole_code_bookends": true
+    },
+    "fresh_registered_Core": {
+      "receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type6_current01\\fresh_core_receipt.json",
+        "bytes": 2577966,
+        "sha256": "51c2f0d0a7ad525f30f273836e2c491254a2bdbe2553e28161ff274142a9b9af"
+      },
+      "object_count": 2132,
+      "input_bookend_count": 4624,
+      "tracked_build_inputs": 7261,
+      "archives": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type6_current01\\fresh_core02\\Release\\bsp_core.lib",
+          "bytes": 91798820,
+          "sha256": "80138b81fd24d1cbe0fbda4dc416fa8b1b6eb3b6bd066fa0de6332e8bf85fe24"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type6_current01\\fresh_core02\\Release\\bsp_lua511.lib",
+          "bytes": 456216,
+          "sha256": "0fbd39aa0e4a87aba2619bacf9849bccd5288ac32e764a8323b34be72352704c"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type6_current01\\fresh_core02\\Release\\bsp_zlib121.lib",
+          "bytes": 72246,
+          "sha256": "84a0aca059aefce67e55f6be487c8a72f804f1cdea697869b0efb524a391b526"
+        }
+      ],
+      "map_archive_symbol_rows": {
+        "bsp_core": 1245,
+        "bsp_lua511": 1132,
+        "MSVCRT": 140,
+        "vcruntime": 33,
+        "ucrt": 186,
+        "kernel32": 33,
+        "bsp_zlib121": 18,
+        "msvcprt": 8,
+        "user32": 2,
+        "advapi32": 1,
+        "dinput8": 1,
+        "shell32": 1
+      },
+      "scope": "Fresh archive resolves whole-TU sibling references. No archive body is in the Type6 main/helper direct-call closure; other retained archive code, CRT startup and static initialization are not execution/equivalence claims.",
+      "warning": "LNK4006 duplicate spawn_request_id_matches definition in lua_binding_spawn.obj/lua_spawn_new.obj; recorded normal Core archive warning, outside qualified Type6 closure."
+    },
+    "provider_scope": {
+      "actual_entries": [
+        "malloc",
+        "free",
+        "memcpy",
+        "_callnewh"
+      ],
+      "entry_bytes": 32,
+      "disk_hash_identity_and_relocated_live_entry32_bookends": true,
+      "current_host_SysWOW64_CRT": true,
+      "Original_private_CRT_or_deep_allocator_equivalence": false
+    },
+    "selected_inputs": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type6_current01\\selected_inputs.json",
+      "bytes": 3451697,
+      "sha256": "961aa7c25a918bca567f8491c1f297fb11d3c29e6588d3d8a750790865f4d3bb"
+    },
+    "selected_input_count": 12538,
+    "preserved_prior_families": [
+      {
+        "family": "type10_current01",
+        "manifest": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type10_current02\\prior_failed_family_manifest.json",
+          "bytes": 21998,
+          "sha256": "b73853fda0ed5982d519bde52a4fdcb208629764d672d7424b9bc45bf9d9e262"
+        },
+        "files": 85,
+        "exact_membership_and_all_hashes_unchanged": true
+      },
+      {
+        "family": "type10_current02",
+        "manifest": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type10_current02\\artifact_manifest.json",
+          "bytes": 17882,
+          "sha256": "2bdb7613d726eb627505e374b7c6d6f38fee18325f6cae4f12bc4b61caf44f5b"
+        },
+        "files": 68,
+        "exact_membership_and_all_hashes_unchanged": true
+      },
+      {
+        "family": "type11_current01",
+        "manifest": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type11_current01\\artifact_manifest.json",
+          "bytes": 17387,
+          "sha256": "8975e590468de7fe5a1b31b25d8fe6887f98f33736bb9f37909601a14f6cf28f"
+        },
+        "files": 66,
+        "exact_membership_and_all_hashes_unchanged": true
+      }
+    ],
+    "excluded": [
+      "ordinary record-clone fragment008f50ed not executed",
+      "populated child or recursive clone/lifetime",
+      "Native class/vtable dispatch",
+      "null child, allocation failure, Original EH/private CRT",
+      "factory or owning-map lifecycle, double-clear and whole scalar deletion",
+      "startup equivalence, ABI outside bounded raw entry, gameplay"
+    ],
+    "complete_artifact_manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_singleprocess\\local\\type6_current01\\artifact_manifest.json",
+    "manifest_hash_recorded_in_worker_handoff_to_avoid_output_snapshot_cycle": true,
+    "ordinary_008f50ed_fragment_new_execution_credit": 0,
+    "class_recursive_clone_startup_game_credit": 0,
+    "Root_independent_validation_pending": false,
+    "Root_current_singleprocess_acceptance": {
+      "utc": "2026-10-15T00:04:09.076875+00:00",
+      "status": "accepted_bounded_raw_constructor_current_provider_domain",
+      "worker_commit": "c2f690f28fc458d601f6a0ca63ff3cbe42fafb5c",
+      "Root_independent_code_reader_rerun": "PASS",
+      "Root_independent_recorded_reader_rerun": "PASS",
+      "readers_executed_in_separate_Root_copy": true,
+      "sealed_family_files": 8828,
+      "sealed_nonmanifest_bytes": 368174134,
+      "selected_inputs_verified_and_bookended": 12538,
+      "Root_current_direct_Source_header_pins": [
+        {
+          "path": "src/singleton_lifetime.cpp",
+          "bytes": 13257,
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+        },
+        {
+          "path": "include/bsp/singleton_lifetime.hpp",
+          "bytes": 4372,
+          "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+        },
+        {
+          "path": "include/bsp/system_time_constants.hpp",
+          "bytes": 4800,
+          "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+        },
+        {
+          "path": "include/bsp/camera_transform.hpp",
+          "bytes": 7028,
+          "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+        },
+        {
+          "path": "include/bsp/camera_projection.hpp",
+          "bytes": 2413,
+          "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+        },
+        {
+          "path": "include/bsp/render_tail.hpp",
+          "bytes": 15566,
+          "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+        },
+        {
+          "path": "include/bsp/frame_clock.hpp",
+          "bytes": 2475,
+          "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+        },
+        {
+          "path": "include/bsp/game_entry.hpp",
+          "bytes": 5510,
+          "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+        },
+        {
+          "path": "src/native_scene_property_bag_storage.cpp",
+          "bytes": 12600,
+          "sha256": "5a0ee52ea81c2eed2cff928bd7d1b4eaa93e6b46e87fad54f114fc7825678e1f"
+        },
+        {
+          "path": "include/bsp/native_string.hpp",
+          "bytes": 8771,
+          "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+        },
+        {
+          "path": "include/bsp/storage_pool.hpp",
+          "bytes": 5571,
+          "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+        },
+        {
+          "path": "include/bsp/native_scene_property_array_block_release.hpp",
+          "bytes": 618,
+          "sha256": "33487664e85d48efc22745d5aa2a4340b1636e00f96ed3f70441003eba9d8642"
+        },
+        {
+          "path": "include/bsp/native_enum_node_pool.hpp",
+          "bytes": 3553,
+          "sha256": "8ea6578c783aa32a7327b2d7dedddb3a77d08b731be3ea5907ae2dbb97398a1e"
+        },
+        {
+          "path": "include/bsp/allocator_list.hpp",
+          "bytes": 2192,
+          "sha256": "5344cbd4fe4ea86a4206c24f08e2407eea3055f03947f677c46b3a635d4f1570"
+        },
+        {
+          "path": "include/bsp/game_native_string_process.hpp",
+          "bytes": 3108,
+          "sha256": "b8dde55aa8ef2dfe69a7ce14d6ba7752c6feae9c1716ef6962240b3eccadcace"
+        },
+        {
+          "path": "include/bsp/native_string_pool_storage.hpp",
+          "bytes": 2805,
+          "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+        },
+        {
+          "path": "include/bsp/native_string_pool_owner.hpp",
+          "bytes": 5893,
+          "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+        },
+        {
+          "path": "include/bsp/game_native_physical_pool.hpp",
+          "bytes": 3787,
+          "sha256": "96d7cda0fe9674648d77a97b0a5528f4fae5731774c33badc98a2ced4686246d"
+        },
+        {
+          "path": "include/bsp/native_physical_provider_pool.hpp",
+          "bytes": 2319,
+          "sha256": "117ea86d6010a74151de7a4916ebb8ace4ef1e813d3fd971dc621a6cf5d316da"
+        },
+        {
+          "path": "include/bsp/native_scene_property_recursive_lifetime.hpp",
+          "bytes": 4337,
+          "sha256": "1cffe704d444d8511d8a0e448f2c05b8e11e9c1b3040e5f8bdf3406630fae6e1"
+        },
+        {
+          "path": "include/bsp/native_scene_property_record_type6_storage.hpp",
+          "bytes": 2915,
+          "sha256": "b7cb92a00e9071a74407de89d41533820c94052fe89c90de0356220ab74e7fe8"
+        },
+        {
+          "path": "include/bsp/native_scene_property_bag_storage.hpp",
+          "bytes": 2199,
+          "sha256": "ce8f0562a7a39aca690f9b1cbbca924566bca257fcc82bf6ecc85f3a8d93e3a4"
+        }
+      ],
+      "process": {
+        "pid": 97712,
+        "returncode": 0,
+        "start_ns": 1792021605012294200,
+        "end_ns": 1792021605086255500,
+        "one_current_target_process": true
+      },
+      "new_target_process_launched_by_Root": false,
+      "calls": 6,
+      "raw_Source": 2,
+      "copied_installed_Original": 2,
+      "ordinary_Source": 2,
+      "root56_count": 6,
+      "child276_count": 6,
+      "seed276_count": 1,
+      "whole_bodies": 37,
+      "whole_bytes": 5941,
+      "instructions": 1653,
+      "retained_sections": 132,
+      "relocations": 791,
+      "weak_entries": 10,
+      "CFG_edges": 357,
+      "contract": {
+        "inputs": "Actual fresh canonical56 record in ECX; unused EDX; actual distinct mutable276 empty producer child at entry ESP+4; DF0.",
+        "outputs": "EAX actual record; EDX actual child; ECX0; RET4 returns caller ESP to entry T+8; EBX/EBP/ESI/EDI/ES and DF preserved.",
+        "defined_EFLAGS_mask": "0x8c5",
+        "defined_EFLAGS_value": "0x44",
+        "AF": "undefined and excluded",
+        "FP": "No FP instruction in whole body; no dynamic x87/SSE/MXCSR state claim.",
+        "record_written_bytes": 41,
+        "record_preserved_bytes": 15,
+        "child": "Only child+110 backlink changes to actual record. Whole child276 observed before and after.",
+        "store_order": "Child backlink precedes record+34, byte2C and final+8 by whole58 assembly evidence; no intermediate dynamic store tracing."
+      },
+      "retirement": "Genuine current canonical frees; each empty child before own root, seed last. 6 child,6 root,1 seed completion counts; not per-free event instrumentation.",
+      "provider_scope": {
+        "actual_entries": [
+          "malloc",
+          "free",
+          "memcpy",
+          "_callnewh"
+        ],
+        "entry_bytes": 32,
+        "disk_hash_identity_and_relocated_live_entry32_bookends": true,
+        "current_host_SysWOW64_CRT": true,
+        "Original_private_CRT_or_deep_allocator_equivalence": false
+      },
+      "fresh_Core_scope": "Worker fresh2132-object registered Core resolves sibling references; no archive body in the qualified direct helper graph. Not an equivalence claim for all current Root Core or unrelated archive bodies.",
+      "existing_static_Source_credit_preserved": true,
+      "additional_static_Source_credit": 0,
+      "bounded_raw_constructor_runtime_admission_credit": 1,
+      "not_admitted": [
+        "ordinary record-clone fragment008f50ed not executed",
+        "populated child or recursive clone/lifetime",
+        "Native class/vtable dispatch",
+        "null child, allocation failure, Original EH/private CRT",
+        "factory or owning-map lifecycle, double-clear and whole scalar deletion",
+        "startup equivalence, ABI outside bounded raw entry, gameplay"
+      ],
+      "artifacts": [
+        {
+          "path": "local/cc12_type6_parent_review_01/independent_code.json",
+          "bytes": 984173,
+          "sha256": "4841bf1dfb7e1b8a4776cfe8a76a25fdb0488e6bce8579a07df59f84a00cd1f7"
+        },
+        {
+          "path": "local/cc12_type6_parent_review_01/independent_recorded.json",
+          "bytes": 19065,
+          "sha256": "9c53d8754ca657df0d1158f6da893bba984fcac4fed198c095cc5f9bc53daad9"
+        },
+        {
+          "path": "local/cc12_type6_parent_review_01/parent_rerun.log",
+          "bytes": 184,
+          "sha256": "93466535efed99e01e19d971503d4a336a4c7a622b7773e0470865c8bb993b84"
+        }
+      ],
+      "frozen_receipt": "local/cc12_native_parent_receipts/type6_c2/receipt.json",
+      "prior_static_ledger_record": {
+        "source": "src/native_scene_property_bag_storage.cpp",
+        "evidence": "docs/CC12_PROPERTY_TYPE6_STORAGE_SOURCE.md",
+        "validation": [
+          "Win32 normal build and all3 existing checks",
+          "independent wholeCOFF and ordered relocation proof",
+          "same-provider current whole archive membership",
+          "installed Native complete58byte constructor comparison"
+        ],
+        "limitations": [
+          "No selected new entry execution or loaded code proof",
+          "No Native class/world/game, Original EH or populated child domain",
+          "Ordinary parent clone fragment is not whole 008F4F60 or original ABI"
+        ],
+        "address": "008ef780",
+        "name": "construct_native_scene_property_record_type6_storage_008ef780",
+        "status": "complete whole58B Source; primary static ABI/body/production and Win32/all3 checks PASS; selected entry and game execution unvalidated",
+        "original_abi": "ECX record; EDX ignored; stack+4 child; RET4; EAX record, EDX child; EBX/ESI/EDI/EBP/DF preserved; XOR ECX flags; no FP state access",
+        "bytes": 58,
+        "kind": "function"
+      }
+    }
   }
 }

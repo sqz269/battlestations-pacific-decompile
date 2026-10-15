@@ -1,0 +1,466 @@
+{
+  "packet": "cc12_gui_effect_lua_service_scope",
+  "source_base": "58f2320c8032583d52e0b6db55383b190b44d2c6",
+  "owned_application_address": "00b318b0",
+  "classification": "missing_actual_lua_service_activation_on_composed_effect_acquire_entry",
+  "prior_packet": "b4f259da1730bb97a906a0323143bfd94281f431; original cache/probe receipt_01 unchanged",
+  "parent_run03": {
+    "executable_build_source": "cba30590f2360eeec37db77b63b88dee3feecc7b",
+    "launcher_later_checkout_metadata": {
+      "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "head": "58f2320c8032583d52e0b6db55383b190b44d2c6",
+      "dirty": false
+    },
+    "executable": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_gui_startup_receipts\\cba30590f2360eeec37db77b63b88dee3feecc7b\\build\\win32\\cc12_followup_release\\bsp_game.exe",
+    "executable_sha256": "0312a8a9e1dbbd7c85394f932cc31dc3c8556bb4e0fd1f67f19778caf84937c8",
+    "slot": 3,
+    "core": 8,
+    "started_utc": "2026-10-14T22:16:17.7197834Z",
+    "finished_utc": "2026-10-14T22:16:19.0639249Z",
+    "exit_code": 1,
+    "log_sha256": "d9958b552b7e017cdc9e2384457938a645ffe0fb600eb585d85a9b9128c0e185",
+    "manifest_sha256": "a535668ae8a2e102c969918b524329e713f1f047fbffd72947825778a6328650",
+    "cache_key": "complete phase2/step10/B2EAAF; all live flags0; changed VFS returned1/result1; child complete phase4/BDF547/failure_site0; original not entered",
+    "failure": "native Lua callback invoked without active source service binding",
+    "cache": "failed phase3/siteB3130D",
+    "loader": "failed phase10/siteB2ED5A; actual creator nonnull/constructor1/registered0",
+    "program": "failed phase6/siteB45F5E",
+    "descriptor": "failed phase13/siteB43B4E; live Lua retained",
+    "sampler_scopes": 0,
+    "procedural_creators": 0,
+    "returned_effect": false,
+    "guard_arm_qualification": "active() guard is shared by DoFile/override callbacks; run log alone does not identify which arm entered it"
+  },
+  "binding": {
+    "getter": "GameNativeRendererApplication::lua_service_binding() -> same existing impl_->lua_services.binding()",
+    "getter_gate": "Impl::Phase::ready; metadata borrow only, no native/Lua service entered",
+    "graph_borrow": "reference retained in existing effect graph; no private binding/bootstrap/file/VFS clone",
+    "admission": "ready getter same identity; exact descriptor reader files identity; same raw strings; already-selected DoFile callback identical",
+    "native_entry_order": "publish one-shot effect operation -> record borrowed binding -> existing Activation -> actual B318B0 graph",
+    "scope": "whole synchronous acquire including bootstrap/file/DoFile/override/field reads and normal child Lua closes",
+    "nested_restore": "unchanged Activation saves previous TLS pointer and restores it on ordinary return/C++ unwind, for same/different/absent outer binding",
+    "lifetime": "same actual GameNativeLuaServices/VFS/strings/renderer parents outlive reader/effect graph and retained failed state, including shared native drain",
+    "diagnostic": "retained operation records borrowed binding address; probe prints identity only"
+  },
+  "failure_semantics": {
+    "native_operation_published_first": true,
+    "existing_acquire_failure_capture": "exception_ptr, failed operation/graph; prohibits replay/reentry/retarget/drain; same actual child frames retained",
+    "tls_restore": "lexical C++ Activation destruction precedes acquire catch; no state close/repair/rollback added",
+    "interrupted_lua_c_frames": "not reusable; no ABI/FH3/nonlocal-transfer or exception transport proof",
+    "caller": "retain all real parents/providers under existing no-unwind process-exit policy; no failed Lua/creator disposal"
+  },
+  "retirement": [
+    {
+      "entry": "B43B00 normal descriptor cleanup B44665 -> B669A0/lua_close",
+      "covered": "new acquire Activation",
+      "qualification": "normal close/GC can execute callbacks; failed state remains retained, not automatically closed"
+    },
+    {
+      "entry": "synchronous texture-source producer normal Lua close SourceC30878",
+      "covered": "new acquire Activation if reached as an acquisition child",
+      "qualification": "does not cover arbitrary later producer calls"
+    },
+    {
+      "entry": "canonical renderer.read_shader_descriptor()",
+      "covered": "existing same binding Activation",
+      "qualification": "unchanged; effect NativeChildren direct composition now has matching outer acquire scope"
+    },
+    {
+      "entry": "renderer.drain_singletons() -> singleton shutdown -> renderer Lua owner B1BBF0/B1BC1E -> B669A0/lua_close",
+      "covered": "existing drain Activation",
+      "qualification": "current host shutdown with native renderer uses this method; failed graph is not admitted for drain"
+    },
+    {
+      "entry": "probe caller release B32010 before shared drain",
+      "covered": "outside acquire Activation",
+      "qualification": "current descriptor/sampler terminal Source uses strings/arrays/state-list pools, no direct Lua close; successful descriptor has no live temporary Lua state. Arbitrary virtual/current-profile extensions not classified"
+    },
+    {
+      "entry": "after_native_drain()",
+      "covered": "metadata closure only",
+      "qualification": "does not create a Lua execution scope"
+    }
+  ],
+  "original_evidence": {
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "checked_bytes": 153,
+    "spans": [
+      {
+        "label": "effect_root_descriptor_entry",
+        "start": "00b45f48",
+        "end_exclusive": "00b45f63",
+        "length": 27,
+        "live_equals_original_pe": true,
+        "sha256": "2219a7c429de68857902b53c9337bd1a62d407871002fa2c9ddebb6060edbd05",
+        "saved_assembly_sha256": "7d53e86184ec827bd008e14ac6568329c305fc14cc0cdbfcda812ee294cb61d6",
+        "key_instructions": [
+          {
+            "address": "00b45f4b",
+            "saved_equals_live": true,
+            "saved_live": "00b45f4b: PUSH 0x3",
+            "original_pe": "push 3",
+            "original_instruction_bytes": "6a03"
+          },
+          {
+            "address": "00b45f58",
+            "saved_equals_live": true,
+            "saved_live": "00b45f58: MOV dword ptr [EDI + 0xc4],EAX",
+            "original_pe": "mov dword ptr [edi + 0xc4], eax",
+            "original_instruction_bytes": "8987c4000000"
+          },
+          {
+            "address": "00b45f5e",
+            "saved_equals_live": true,
+            "saved_live": "00b45f5e: CALL 0x00b43b00",
+            "original_pe": "call 0xb43b00",
+            "original_instruction_bytes": "e89ddbffff"
+          }
+        ]
+      },
+      {
+        "label": "descriptor_lua_bootstrap_script",
+        "start": "00b43b21",
+        "end_exclusive": "00b43b53",
+        "length": 50,
+        "live_equals_original_pe": true,
+        "sha256": "9044d7f77b2a4dc100af19a31f658610e77a84a3f676bc5f7a41184bd47d5bf7",
+        "saved_assembly_sha256": "dbccc3c58d463a20849e0426e69b1c0724f2d896d4f98802ba80f71f8737b86d",
+        "key_instructions": [
+          {
+            "address": "00b43b25",
+            "saved_equals_live": true,
+            "saved_live": "00b43b25: CALL 0x00b66bd0",
+            "original_pe": "call 0xb66bd0",
+            "original_instruction_bytes": "e8a6300200"
+          },
+          {
+            "address": "00b43b2a",
+            "saved_equals_live": true,
+            "saved_live": "00b43b2a: PUSH 0x1",
+            "original_pe": "push 1",
+            "original_instruction_bytes": "6a01"
+          },
+          {
+            "address": "00b43b3b",
+            "saved_equals_live": true,
+            "saved_live": "00b43b3b: CALL 0x00b6a020",
+            "original_pe": "call 0xb6a020",
+            "original_instruction_bytes": "e8e0640200"
+          },
+          {
+            "address": "00b43b47",
+            "saved_equals_live": true,
+            "saved_live": "00b43b47: PUSH 0x0",
+            "original_pe": "push 0",
+            "original_instruction_bytes": "6a00"
+          },
+          {
+            "address": "00b43b4e",
+            "saved_equals_live": true,
+            "saved_live": "00b43b4e: CALL 0x00b69d40",
+            "original_pe": "call 0xb69d40",
+            "original_instruction_bytes": "e8ed610200"
+          }
+        ]
+      },
+      {
+        "label": "descriptor_lua_close",
+        "start": "00b44643",
+        "end_exclusive": "00b4466a",
+        "length": 39,
+        "live_equals_original_pe": true,
+        "sha256": "2a6f98f125bed9068ca19019b329efac14673823743cafbd9a35c54fdcb78f4e",
+        "saved_assembly_sha256": "dbccc3c58d463a20849e0426e69b1c0724f2d896d4f98802ba80f71f8737b86d",
+        "key_instructions": [
+          {
+            "address": "00b44651",
+            "saved_equals_live": true,
+            "saved_live": "00b44651: CALL 0x00b67700",
+            "original_pe": "call 0xb67700",
+            "original_instruction_bytes": "e8aa300200"
+          },
+          {
+            "address": "00b44665",
+            "saved_equals_live": true,
+            "saved_live": "00b44665: CALL 0x00b669a0",
+            "original_pe": "call 0xb669a0",
+            "original_instruction_bytes": "e836230200"
+          }
+        ]
+      },
+      {
+        "label": "renderer_lua_close_before_base",
+        "start": "00b1bc0d",
+        "end_exclusive": "00b1bc32",
+        "length": 37,
+        "live_equals_original_pe": true,
+        "sha256": "2ca75f266a6ca91c714b997cf84ebf843b27ca6c7574bb086ae3a0d4dd260de7",
+        "saved_assembly_sha256": "c6c4b2336ccba1a136fb16ba338a47eb47d059fa30afa5949f2a312148a48012",
+        "key_instructions": [
+          {
+            "address": "00b1bc13",
+            "saved_equals_live": true,
+            "saved_live": "00b1bc13: LEA ECX,[ESI + 0x4]",
+            "original_pe": "lea ecx, [esi + 4]",
+            "original_instruction_bytes": "8d4e04"
+          },
+          {
+            "address": "00b1bc1e",
+            "saved_equals_live": true,
+            "saved_live": "00b1bc1e: CALL 0x00b669a0",
+            "original_pe": "call 0xb669a0",
+            "original_instruction_bytes": "e87dad0400"
+          },
+          {
+            "address": "00b1bc2d",
+            "saved_equals_live": true,
+            "saved_live": "00b1bc2d: CALL 0x00b1bad0",
+            "original_pe": "call 0xb1bad0",
+            "original_instruction_bytes": "e89efeffff"
+          }
+        ]
+      }
+    ]
+  },
+  "verification": {
+    "strict": {
+      "status": "passed",
+      "exit_code": 0,
+      "target": "MSVC x86",
+      "translation_units": 3,
+      "flags": "/std:c++17 /W4 /WX /EHsc /permissive- /O2 /MD /fp:strict",
+      "artifacts": [
+        {
+          "path": "local/cc12_gui_effect_lua_service_scope/compile.cmd",
+          "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/strict/compile.cmd",
+          "sha256": "7d07e16321cbd38ab0f1cd8d6520d31426f46222c622171c9c13fb34d736fad9"
+        },
+        {
+          "path": "local/cc12_gui_effect_lua_service_scope/compile.log",
+          "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/strict/compile.log",
+          "sha256": "5d9afd8cc2fc2fd152434d9c1b91d0d50b333cc0ae666f8cb5b8d7f7c183cc4c"
+        },
+        {
+          "path": "local/cc12_gui_effect_lua_service_scope/game_native_renderer_application.obj",
+          "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/strict/game_native_renderer_application.obj",
+          "sha256": "7dde6b1e9eba517091542be0a96aa54976ca76b9adc482d41c334ee885315be6",
+          "coff_timestamp_raw_u32": 1792017096
+        },
+        {
+          "path": "local/cc12_gui_effect_lua_service_scope/game_native_gui_effect_application.obj",
+          "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/strict/game_native_gui_effect_application.obj",
+          "sha256": "3536a74e3d47eb9d735288b18a7b4d9400ccc127ffaa69305b0e45ba313daf26",
+          "coff_timestamp_raw_u32": 1792017095
+        },
+        {
+          "path": "local/cc12_gui_effect_lua_service_scope/game_native_gui_effect_probe.obj",
+          "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/strict/game_native_gui_effect_probe.obj",
+          "sha256": "ddd3c4521ddfc029f7ed069a16da35cb58daadb875ebc5b0b22cd80bfb6221d1",
+          "coff_timestamp_raw_u32": 1792017095
+        }
+      ]
+    },
+    "required_default_build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 1,
+      "status": "pending_unrelated_platform_TU_registration",
+      "failure": "native_singleton_destruction unresolved delete_native_win32_platform_00bece30; reviewed native_platform_construction.cpp absent permanent CMake row",
+      "log": {
+        "path": "local/cc12_gui_effect_lua_service_scope/build.log",
+        "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/build/default_build_failure.log",
+        "sha256": "93c07e030cf7bdcf0905447e868b149b158c16d0bc0e630b89d76f441b99ef73"
+      }
+    },
+    "owned_local_overlay_build": {
+      "status": "passed",
+      "exit_code": 0,
+      "overlay": "existing startup.cmake plus deferred target_sources(bsp_core src/native_platform_construction.cpp) only",
+      "ctest": "2/2 passed",
+      "test_seconds": 10.78,
+      "shared_cmake_changed": false,
+      "artifacts": [
+        {
+          "path": "local/cc12_gui_effect_lua_service_scope/overlay.cmake",
+          "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/build/overlay.cmake",
+          "sha256": "c3963a0324cf9664b53891fc573f6cbaf07dcff2958c771d1bc0586472d940d1"
+        },
+        {
+          "path": "local/cc12_gui_effect_lua_service_scope/build_overlay.ps1",
+          "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/build/build_overlay.ps1",
+          "sha256": "2e53c04f5063b30972c09db08ca10ac10b0d50703fa689ebe2b053fb1c69d966"
+        },
+        {
+          "path": "local/cc12_gui_effect_lua_service_scope/build_overlay.log",
+          "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/build/build_overlay.log",
+          "sha256": "766e96fdb865fd70ad0a8cedbd7faab5303cbe3e6d183bd32c7c24b056dc5215"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_platform_construction.obj",
+          "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/build/native_platform_construction.obj",
+          "sha256": "00cf6493de732a7216449806f5cf7a2f3239c4b7021e315943fa89a31a7bbfe5",
+          "coff_timestamp_raw_u32": 1792017347
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_lua_service_bindings.obj",
+          "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/build/native_lua_service_bindings.obj",
+          "sha256": "074431a510878af2a2b8d4c8e33bf86274c7408d8cad012876b7388c5ee1796b",
+          "coff_timestamp_raw_u32": 1791995234
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_native_renderer_application.obj",
+          "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/build/game_native_renderer_application.obj",
+          "sha256": "569af1e8f586afc6ab52ced6cae008d1128918f87a6ba46e2dbed51bcf625962",
+          "coff_timestamp_raw_u32": 1792017180
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_native_gui_effect_application.obj",
+          "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/build/game_native_gui_effect_application.obj",
+          "sha256": "713e0765a6a44939722d07c84a5935b17170dfdc21958959eacfc04831922132",
+          "coff_timestamp_raw_u32": 1792017181
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_native_gui_effect_probe.obj",
+          "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/build/game_native_gui_effect_probe.obj",
+          "sha256": "82215ac3372e03d47216f4d97bfb95e9131429cfc2648042c7d0fd3f40dfeca5",
+          "coff_timestamp_raw_u32": 1792017181
+        },
+        {
+          "path": "build/win32/Release/bsp_game.exe",
+          "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/build/bsp_game.exe",
+          "sha256": "942f30874394b25bd1db236358203c418398b857687e20d86ff7182c26a6cf83"
+        },
+        {
+          "path": "build/win32/bsp_game.map",
+          "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/build/bsp_game.map",
+          "sha256": "165966fee53aad588674a38317835c8bf72fd2f56cb07e86c8b189feff5aaa81"
+        }
+      ],
+      "game_launched": false
+    },
+    "new_tests": "none; Root chose existing Activation review/build plus actual callback run rather than a production observer or wrapper-only test",
+    "runtime_acceptance": "pending Root combined Win32 build and actual opt-in callback/effect run"
+  },
+  "sealed_changed_source": [
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/source/src/game_native_renderer_application.cpp",
+      "sha256": "d3a81056fd2cf7974dd03fe320dd281f17b0924e361def830581d2a1311d20f4"
+    },
+    {
+      "path": "include/bsp/game_native_renderer_application.hpp",
+      "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/source/include/bsp/game_native_renderer_application.hpp",
+      "sha256": "362db7c45eb929984dde6cd2a4b65f1d2a3aa9aabe22f067cfdd6e4cf02cdf3d"
+    },
+    {
+      "path": "src/game_native_gui_effect_application.cpp",
+      "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/source/src/game_native_gui_effect_application.cpp",
+      "sha256": "a6bf1114236353d69a99461e848cadeb40e9c46f3a80699d807b0621c42dad3d"
+    },
+    {
+      "path": "include/bsp/game_native_gui_effect_application.hpp",
+      "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/source/include/bsp/game_native_gui_effect_application.hpp",
+      "sha256": "d870b378100fc91dfc3014158fbcccc62c371108d3c016d0b7beb611a0a96ff1"
+    },
+    {
+      "path": "src/game_native_gui_effect_probe.cpp",
+      "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/source/src/game_native_gui_effect_probe.cpp",
+      "sha256": "889d3132fe4d87f79cc70588b072021e9428b9b560a4cdec73a6b1791aff35d8"
+    }
+  ],
+  "sealed_unchanged_dependency_source": [
+    {
+      "path": "src/native_lua_service_bindings.cpp",
+      "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/dependency/src/native_lua_service_bindings.cpp",
+      "sha256": "fcdf7b2295d2c45b2e36e475f62bea7a53bb6a385a4540bc2b5071d4a147302f"
+    },
+    {
+      "path": "include/bsp/native_lua_service_bindings.hpp",
+      "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/dependency/include/bsp/native_lua_service_bindings.hpp",
+      "sha256": "1614271db4ab18e13ad1443bea31d77b5339d12515c79bc72a3bfd8d96f08093"
+    },
+    {
+      "path": "src/game_native_lua_services.cpp",
+      "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/dependency/src/game_native_lua_services.cpp",
+      "sha256": "9a8b02210f9274fa18e30454fc5e0ae2e6649820145aa623d933b614af406bb7"
+    },
+    {
+      "path": "src/game_native_renderer_descriptors.inc",
+      "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/dependency/src/game_native_renderer_descriptors.inc",
+      "sha256": "9fb8da3ac4603f4cb222394f42efe911e0ddca8fba1961c11f140b4dfad0edf8"
+    },
+    {
+      "path": "src/native_shader_descriptor_reader.cpp",
+      "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/dependency/src/native_shader_descriptor_reader.cpp",
+      "sha256": "37740c3cda68afb0ea707a222a4c24dba8ca7aa8592da37e10ba582617c454d9"
+    },
+    {
+      "path": "src/native_lua_file_loading.cpp",
+      "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/dependency/src/native_lua_file_loading.cpp",
+      "sha256": "5429158efe57f0c14d3829562ee38ca63ab8c526f3282476d419babdeac959ac"
+    },
+    {
+      "path": "src/native_material_effect_runtime.cpp",
+      "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/dependency/src/native_material_effect_runtime.cpp",
+      "sha256": "5907af9db614875e493585ab0d17068b1018080b4119465fcb968ebf13f624d2"
+    },
+    {
+      "path": "src/native_shader_descriptor_owner.cpp",
+      "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/dependency/src/native_shader_descriptor_owner.cpp",
+      "sha256": "007c75c946ecfee303586f2bc8e1f3fbc2cbef485df899e47f87acf38d9a8b48"
+    },
+    {
+      "path": "src/native_shader_sampler_owner.cpp",
+      "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/dependency/src/native_shader_sampler_owner.cpp",
+      "sha256": "48ad13bb14a996c24be81bbcbd755cc21f06b494f8dcb1a0ccf9ca32b374b96f"
+    },
+    {
+      "path": "src/native_renderer_lua_owner.cpp",
+      "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/dependency/src/native_renderer_lua_owner.cpp",
+      "sha256": "10d513a30dec5c8355f4c787f8a3205dee278d039a8fe5605c791d837dbd648a"
+    },
+    {
+      "path": "src/native_lua_objects.cpp",
+      "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/dependency/src/native_lua_objects.cpp",
+      "sha256": "f2d2a7a0a3d3f1141be23b9b0ca3db9f4d561780ed618a74fd6061d5e6a62bf5"
+    },
+    {
+      "path": "src/native_platform_construction.cpp",
+      "frozen": "local/cc12_gui_effect_lua_service_scope/receipt_01/dependency/src/native_platform_construction.cpp",
+      "sha256": "309d14c5aa57c44aec368d4c1e88c72c6ca8088281d2574cc453e332d72f9255"
+    }
+  ],
+  "receipt_policy": "Exact final Source/log/COFF/build artifacts copied and current/frozen hashes verified. Unchanged dependency bytes equal Main58 blobs. Raw COFF timestamps recorded; no older object identity inferred. Tracked report written LF.",
+  "untouched": [
+    "NativeLuaServiceBindings implementation",
+    "reader/callback selection",
+    "Lua bootstrap/files/VFS context",
+    "host/CMake",
+    "native references/cache/flags/fallback policy",
+    "sampler complete-word guard",
+    "private sampler bytes",
+    "D5E13C activation"
+  ],
+  "remaining": [
+    "Root permanent pending platform CMake registration/build",
+    "actual scoped callback and GuiFont acquisition",
+    "later compiler/sampler/cache branches",
+    "native Text/GUI consumer attachment and real draw",
+    "Original ABI/FH3/nonlocal Lua exception equivalence"
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "native_gui_effect_acquired_by_this_packet": false,
+  "rendering_validated": false
+}

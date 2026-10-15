@@ -1,0 +1,1134 @@
+{
+  "status": "raw_construction_and_retirement_strict_win32_overlay_build_and_current_fixture_passed",
+  "updated_utc": "2026-10-14T22:11:47.680966+00:00",
+  "source": "src/native_platform_construction.cpp",
+  "header": "include/bsp/native_platform_construction.hpp",
+  "baseline_commit": "9228d13fe2594cb12405733fcdd5ec0160770b66",
+  "adopted_commit": "0ca920c74f87df949340d01fbb66025973cd9959",
+  "source_and_header_identical_to_adopted_commit": false,
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "historical_candidate": {
+    "exact_report_git_object": "0ca920c74f87df949340d01fbb66025973cd9959:reports/native_platform_construction.json",
+    "report_sha256": "7e03412a1bab726478979c0004580b4c32b77cc23332db7ff36dbd0ce7c1cd2f",
+    "frozen_files": [
+      {
+        "path": "src/native_platform_construction.cpp",
+        "sha256": "93136282f75a07103626db2c321516b283baed389d90ff547bca96b36d48e6ef"
+      },
+      {
+        "path": "include/bsp/native_platform_construction.hpp",
+        "sha256": "309ecfa24cbe65722f23adc6a8b3ffe8972bfcacaf1fd771a098a968db1d9bf1"
+      },
+      {
+        "path": "docs/NATIVE_PLATFORM_CONSTRUCTION.md",
+        "sha256": "610877186b27f5f22fcad4ff0d44a60dc46cd2fa96e54d560d6b8a68e0111524"
+      },
+      {
+        "path": "reports/native_platform_construction.json",
+        "sha256": "7e03412a1bab726478979c0004580b4c32b77cc23332db7ff36dbd0ce7c1cd2f"
+      }
+    ],
+    "old_paths": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_platform_construction",
+        "exists": false
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\checkpoints\\78f2d717\\native-platform-construction\\validation.json",
+        "exists": false
+      }
+    ],
+    "old_binaries_and_local_receipts_available": false,
+    "historical_fixture_results_not_revalidated": true,
+    "historical_fixture_results": "Old renderer/device/reset/installed-effect composition claims are historical report contents only. No old executable or library hash was reconstructed."
+  },
+  "functions": [
+    {
+      "address": "00be2960",
+      "bytes": 145,
+      "source_symbol": "publish_native_platform_base_00be2960",
+      "ghidra_name": "BSP_PlatformBase_RegisterSingleton",
+      "original_abi": "ECX owner, no stack arguments, EAX original owner, RET.",
+      "behavior": "State0 before profile; first manager section capture, Enter/depth then state1; publish, second getter, current publication registration, normal Leave still inside state1; original owner return.",
+      "reconstructed": true,
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00be2a00",
+      "bytes": 153,
+      "source_symbol": "destroy_native_platform_base_00be2a00",
+      "ghidra_name": "BSP_PlatformBase_UnregisterSingleton",
+      "original_abi": "ECX owner, no stack arguments, no specified result, RET.",
+      "behavior": "Profile then state0; first manager section capture; state1 after Enter/depth. Unregister current publication after second getter, clear only on success, leave first section, reset original owner CE3818. Both FH3 cleanup states recovered.",
+      "reconstructed": true,
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00be2ac0",
+      "bytes": 74,
+      "source_symbol": "construct_native_window_platform_base_00be2ac0",
+      "ghidra_name": "BSP_WindowPlatformBase_Construct",
+      "original_abi": "ECX owner, no stack arguments, EAX original owner, RET.",
+      "behavior": "Base publication first. Aspect uses FILD/FIDIV of signed incoming24h/28h, then stores640/480 before FSTP10h. Exact interleaved64byte x87/store sequence preserved in linked source; signed24bit/truncate all-byte/CW/SW original-fragment differential passed.",
+      "reconstructed": true,
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00be2b10",
+      "bytes": 103,
+      "source_symbol": "destroy_native_window_platform_base_00be2b10",
+      "ghidra_name": "BSP_WindowPlatformBase_Destroy",
+      "original_abi": "ECX owner, no stack arguments, no specified result, RET.",
+      "behavior": "D68608 then captured title data, state0. Nonnull data captures length+1 before actual419CC0/BD1510; stale header retained. FH3 E012D0/E012C8 cleanup callsBE2A00; normal base call after disarm, no retry. Real shared-pool title return/reallocation passed.",
+      "reconstructed": true,
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00bec710",
+      "bytes": 26,
+      "source_symbol": "allocate_native_text_queue_sentinel_00bec710",
+      "ghidra_name": "BSP_TextQueue_CreateSentinel",
+      "original_abi": "ECX unused, no stack arguments, EAX allocated node, RET.",
+      "behavior": "Actual0Ch allocation, self-links0/4, payload8..B untouched. Both pointer tests and DWORD wrapping retained; no null-success normalization. Actual sentinel links verified within constructed184h platform.",
+      "reconstructed": true,
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00becda0",
+      "bytes": 132,
+      "source_symbol": "construct_native_win32_platform_00becda0",
+      "ghidra_name": "BSP_Win32Platform_Construct",
+      "original_abi": "ECX actual184h owner, no stack arguments, EAX original owner, RET.",
+      "behavior": "Complete raw base construction, D68CC4, actual 0Ch sentinel at +178h/count +17Ch then ordered clears. Untouched +174h/requested/power/padding bytes retained. E01F94/E01F8C cleanup calls BE2B10.",
+      "reconstructed": true,
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00bec730",
+      "bytes": 72,
+      "source_symbol": "destroy_native_text_queue_00bec730",
+      "ghidra_name": "BSP_TextQueue_Destroy",
+      "original_abi": "ECX actual0Ch queue header, EDX unconsumed, no stack arguments, RET.",
+      "behavior": "Header+0 untouched; current sentinel+4 and count+8. Reset sentinel links and count; save next before each free and reload current sentinel after each free; free and clear sentinel. Exact72-byte COFF/linked match except two actual Source CRT-free rel32 operands.",
+      "reconstructed": true,
+      "build_tested": true,
+      "fixture_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00beca00",
+      "bytes": 42,
+      "source_symbol": "destroy_native_win32_platform_00beca00",
+      "ghidra_name": "BSP_Win32Platform_Destroy",
+      "original_abi": "ECX actual184h owner, no stack arguments, tail JMP BE2B10.",
+      "behavior": "Store D68CC4; actual SystemParametersInfoA(11h,1,nullptr,0), ignored result; raw queue at+174h; BE2B10 title/base/publication cleanup. No power restoration, DestroyWindow or platform-stop call.",
+      "reconstructed": true,
+      "build_tested": true,
+      "fixture_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00bece30",
+      "bytes": 63,
+      "source_symbol": "delete_native_win32_platform_00bece30",
+      "ghidra_name": "BSP_Win32Platform_ScalarDelete",
+      "original_abi": "ECX actual184h owner, stack flags, EAX original owner, RET4.",
+      "behavior": "Same D68CC4/screensaver/queue/base schedule; flags bit0 alone frees original owner using canonical current Source CRT. Canonical D68CC4 singleton deletion dispatch borrows the same creation/publication/manager/string context.",
+      "reconstructed": true,
+      "build_tested": true,
+      "fixture_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "evidence": {
+    "fresh_functions": [
+      {
+        "address": "00be2960",
+        "bytes": 145,
+        "sha256": "b84302df206ac5efc422b76609ed70b8d107b5bf4187a7e92267fa07e0c12ae0",
+        "live_equals_pe": true,
+        "matches_frozen_candidate_digest": true
+      },
+      {
+        "address": "00be2a00",
+        "bytes": 153,
+        "sha256": "ef6e6e53727d69fff70bae60ccfcaad7deb575bab341bdd0a5dc879b98629d9b",
+        "live_equals_pe": true,
+        "matches_frozen_candidate_digest": true
+      },
+      {
+        "address": "00be2ac0",
+        "bytes": 74,
+        "sha256": "01219e9a90dc18596e5f37a5e7a1504012071a425729e8729bdd97f3ce9147e5",
+        "live_equals_pe": true,
+        "matches_frozen_candidate_digest": true
+      },
+      {
+        "address": "00be2b10",
+        "bytes": 103,
+        "sha256": "30dce42e3da00336942d56bc56f7b6c746b197d418176e3dc273bdc8b2992306",
+        "live_equals_pe": true,
+        "matches_frozen_candidate_digest": true
+      },
+      {
+        "address": "00bec710",
+        "bytes": 26,
+        "sha256": "aabd23785a96372f608cd6e5efd51ffa3e52bdef9293595289e5576b9bad17be",
+        "live_equals_pe": true,
+        "matches_frozen_candidate_digest": true
+      },
+      {
+        "address": "00becda0",
+        "bytes": 132,
+        "sha256": "fcdf28baaa13cf9b162a926984ceb7e42be8fc44163479690f8c52fbde57f7f9",
+        "live_equals_pe": true,
+        "matches_frozen_candidate_digest": true
+      }
+    ],
+    "function_bytes": 633,
+    "eh_profile_spans": [
+      {
+        "address": "00cc6ad0",
+        "bytes": 10,
+        "sha256": "76c02cd20a6ad9513bfd7060aefce321e746a639bd4adcd933b548f917bf095b",
+        "live_equals_pe": true,
+        "matches_frozen_candidate_digest": true
+      },
+      {
+        "address": "00e01270",
+        "bytes": 36,
+        "sha256": "391b6749445df49e308c334ba5cf9db4d9beeadcf25dff8d366f00a3866ea816",
+        "live_equals_pe": true,
+        "matches_frozen_candidate_digest": true
+      },
+      {
+        "address": "00e01260",
+        "bytes": 16,
+        "sha256": "61693c47dcf308ce031e05efcf36ab70befe26b8a5c3e76c5424123604cb3a13",
+        "live_equals_pe": true,
+        "matches_frozen_candidate_digest": true
+      },
+      {
+        "address": "00cc6ac0",
+        "bytes": 16,
+        "sha256": "e82782e351650d85601ebde05acd3350d81b9d856255b7565928d00484b096e6",
+        "live_equals_pe": true,
+        "matches_frozen_candidate_digest": true
+      },
+      {
+        "address": "00cc6af0",
+        "bytes": 10,
+        "sha256": "cd2d74ea8b30a999e84d265a45475b4129d09fb3161515a63a5ce884df6bb9f8",
+        "live_equals_pe": true,
+        "matches_frozen_candidate_digest": true
+      },
+      {
+        "address": "00e012a4",
+        "bytes": 36,
+        "sha256": "0768d772e14d50cc46c4c521fc55ad5b5035a02047b6a86bcc2ecff17f38a59c",
+        "live_equals_pe": true,
+        "matches_frozen_candidate_digest": true
+      },
+      {
+        "address": "00e01294",
+        "bytes": 16,
+        "sha256": "c0b1b2cb855c472eafd46dae8271c04c47399c2bee3c76a5c2af55f517d3c5e0",
+        "live_equals_pe": true,
+        "matches_frozen_candidate_digest": true
+      },
+      {
+        "address": "00cc6ae0",
+        "bytes": 16,
+        "sha256": "96e64cf099be3cd244c20a52c927c407d40e7d95c58945d698f51de148af0d98",
+        "live_equals_pe": true,
+        "matches_frozen_candidate_digest": true
+      },
+      {
+        "address": "00cc6b08",
+        "bytes": 10,
+        "sha256": "d089ce19581862762dd8c4261647a40bfc1e9a5c447d6f31fef435d472aa021f",
+        "live_equals_pe": true,
+        "matches_frozen_candidate_digest": true
+      },
+      {
+        "address": "00e012d0",
+        "bytes": 36,
+        "sha256": "22923f2919a6c67fcf0f89bd82ea5d07788f1e5146acb0084c7beeedd71cbf76",
+        "live_equals_pe": true,
+        "matches_frozen_candidate_digest": true
+      },
+      {
+        "address": "00e012c8",
+        "bytes": 8,
+        "sha256": "2a72a828cc78dfaea876820396b88120cc30a3e2c39ad3768446770d33afd805",
+        "live_equals_pe": true,
+        "matches_frozen_candidate_digest": true
+      },
+      {
+        "address": "00cc6b00",
+        "bytes": 8,
+        "sha256": "a174d66dc6457fe51264fc717ca14e653224278d8fcd643236f319e83f0cb1d4",
+        "live_equals_pe": true,
+        "matches_frozen_candidate_digest": true
+      },
+      {
+        "address": "00cc7468",
+        "bytes": 10,
+        "sha256": "1937b3a5f1230c2e327d2f6d63c7f2c297ecd324d9a25593ecf48676df668dd3",
+        "live_equals_pe": true,
+        "matches_frozen_candidate_digest": true
+      },
+      {
+        "address": "00e01f94",
+        "bytes": 36,
+        "sha256": "861c8e32ce43b94a8724ce84b4a0319843e3ac0baeae26fe8129c4b5c107aa72",
+        "live_equals_pe": true,
+        "matches_frozen_candidate_digest": true
+      },
+      {
+        "address": "00e01f8c",
+        "bytes": 8,
+        "sha256": "41db85c70348eeac416662bd57b3beb572a7aa998f4dc5302dbbb3ae6d2f8d66",
+        "live_equals_pe": true,
+        "matches_frozen_candidate_digest": true
+      },
+      {
+        "address": "00cc7460",
+        "bytes": 8,
+        "sha256": "357e778dde3f038691c810a67fdb8949c2456b4d327b8c9988555f91e213c11f",
+        "live_equals_pe": true,
+        "matches_frozen_candidate_digest": true
+      },
+      {
+        "address": "00d68604",
+        "bytes": 4,
+        "sha256": "8c3d1251f8f798f08b0793bb7bb76e89da4913588277ec542887ca6ed2fcfbcb",
+        "live_equals_pe": true,
+        "matches_frozen_candidate_digest": true
+      },
+      {
+        "address": "00d68608",
+        "bytes": 4,
+        "sha256": "7e06c2ef47c4f51d0bc4a6f4861965a0c5947499230a8f362624cacdfaaa2205",
+        "live_equals_pe": true,
+        "matches_frozen_candidate_digest": true
+      },
+      {
+        "address": "00d68cc4",
+        "bytes": 4,
+        "sha256": "4ea2213ff8cfc2b512101f604fecf693eaae203fd4d85cfaf20c7f834eb33a06",
+        "live_equals_pe": true,
+        "matches_frozen_candidate_digest": true
+      },
+      {
+        "address": "00ce3818",
+        "bytes": 4,
+        "sha256": "9b438ce3feae2fd62d0e9bbaf623d6c8501a0d858c6da7d06cc04ccc29ebd57f",
+        "live_equals_pe": true,
+        "matches_frozen_candidate_digest": true
+      },
+      {
+        "address": "00ce37fc",
+        "bytes": 4,
+        "sha256": "8b12438c84805d12f163f8d7b8976a71222f4b4cc6a4be870696607611839f82",
+        "live_equals_pe": true,
+        "matches_frozen_candidate_digest": true
+      }
+    ],
+    "eh_profile_bytes": 300,
+    "calls": [
+      {
+        "address": "00be298e",
+        "function": "00be2960",
+        "native": "00415350"
+      },
+      {
+        "address": "00be29bc",
+        "function": "00be2960",
+        "native": "00415350"
+      },
+      {
+        "address": "00be29ca",
+        "function": "00be2960",
+        "native": "00bd0c30"
+      },
+      {
+        "address": "00be2a2e",
+        "function": "00be2a00",
+        "native": "00415350"
+      },
+      {
+        "address": "00be2a56",
+        "function": "00be2a00",
+        "native": "00415350"
+      },
+      {
+        "address": "00be2a64",
+        "function": "00be2a00",
+        "native": "00bcfca0"
+      },
+      {
+        "address": "00be2ac3",
+        "function": "00be2ac0",
+        "native": "00be2960"
+      },
+      {
+        "address": "00be2b4c",
+        "function": "00be2b10",
+        "native": "00419cc0"
+      },
+      {
+        "address": "00be2b53",
+        "function": "00be2b10",
+        "native": "00bd1510"
+      },
+      {
+        "address": "00be2b62",
+        "function": "00be2b10",
+        "native": "00be2a00"
+      },
+      {
+        "address": "00bec712",
+        "function": "00bec710",
+        "native": "00bf681b"
+      },
+      {
+        "address": "00becdbf",
+        "function": "00becda0",
+        "native": "00be2ac0"
+      },
+      {
+        "address": "00becdd8",
+        "function": "00becda0",
+        "native": "00bec710"
+      }
+    ],
+    "indirect_calls": [
+      {
+        "address": "00be29a7",
+        "function": "00be2960",
+        "kind": "indirect",
+        "operand": "dword ptr [0xce2218]",
+        "import": "EnterCriticalSection"
+      },
+      {
+        "address": "00be29d8",
+        "function": "00be2960",
+        "kind": "indirect",
+        "operand": "dword ptr [0xce2210]",
+        "import": "LeaveCriticalSection"
+      },
+      {
+        "address": "00be2a47",
+        "function": "00be2a00",
+        "kind": "indirect",
+        "operand": "dword ptr [0xce2218]",
+        "import": "EnterCriticalSection"
+      },
+      {
+        "address": "00be2a7c",
+        "function": "00be2a00",
+        "kind": "indirect",
+        "operand": "dword ptr [0xce2210]",
+        "import": "LeaveCriticalSection"
+      }
+    ],
+    "fh3_maps": [
+      {
+        "function": "00be2960",
+        "handler": "00cc6ad0",
+        "func_info": "00e01270",
+        "unwind_map": "00e01260",
+        "states": [
+          {
+            "to_state": -1,
+            "action": "00cc6ac0"
+          },
+          {
+            "to_state": 0,
+            "action": "00cc6ac8"
+          }
+        ]
+      },
+      {
+        "function": "00be2a00",
+        "handler": "00cc6af0",
+        "func_info": "00e012a4",
+        "unwind_map": "00e01294",
+        "states": [
+          {
+            "to_state": -1,
+            "action": "00cc6ae0"
+          },
+          {
+            "to_state": 0,
+            "action": "00cc6ae8"
+          }
+        ]
+      },
+      {
+        "function": "00be2b10",
+        "handler": "00cc6b08",
+        "func_info": "00e012d0",
+        "unwind_map": "00e012c8",
+        "states": [
+          {
+            "to_state": -1,
+            "action": "00cc6b00"
+          }
+        ]
+      },
+      {
+        "function": "00becda0",
+        "handler": "00cc7468",
+        "func_info": "00e01f94",
+        "unwind_map": "00e01f8c",
+        "states": [
+          {
+            "to_state": -1,
+            "action": "00cc7460"
+          }
+        ]
+      }
+    ],
+    "saved_listing_comparison": [
+      {
+        "address": "00be2960",
+        "instruction_count": 40,
+        "saved_equals_live": true,
+        "saved_text_sha256": "f7b2ee72e8695df6437cb9118f89e2836c657f3dfc20724f1c1c74dfd5e88ba2"
+      },
+      {
+        "address": "00be2a00",
+        "instruction_count": 40,
+        "saved_equals_live": true,
+        "saved_text_sha256": "c80f0a9dae24982155ffe48a58a8505f01c6b0b588714f2d698e957779e668bc"
+      },
+      {
+        "address": "00be2ac0",
+        "instruction_count": 22,
+        "saved_equals_live": true,
+        "saved_text_sha256": "53ad4324f893210b4506a400d749c9eeda80dc2dba14ff036a85c7def27b5fe2"
+      },
+      {
+        "address": "00be2b10",
+        "instruction_count": 30,
+        "saved_equals_live": true,
+        "saved_text_sha256": "215cbf3c7672013e496084e49e2d66ceb235d4e9e5cb007325bf60f8826a75e5"
+      },
+      {
+        "address": "00bec710",
+        "instruction_count": 11,
+        "saved_equals_live": true,
+        "saved_text_sha256": "3578b3c13ae26102c12d1d3ab21ce5afa5eb29d9618817eb55b2a0772d09e990"
+      },
+      {
+        "address": "00becda0",
+        "instruction_count": 40,
+        "saved_equals_live": true,
+        "saved_text_sha256": "bcf11da84e2089bf8a0b6bed872c7922adb5c764867f0d831656aeaa53c5cd69"
+      }
+    ],
+    "emitted_x87": {
+      "flags": [
+        "/O2",
+        "/MD",
+        "/EHsc",
+        "/W4",
+        "/WX",
+        "/fp:strict",
+        "/std:c++17",
+        "/Gy"
+      ],
+      "source_sha256": "93136282f75a07103626db2c321516b283baed389d90ff547bca96b36d48e6ef",
+      "object_sha256": "9b5f622d1a0ff46666fc9e9eed20a65a6b55bc6a5d86902e67f126f740c8f3cb",
+      "fragment_sha256": "5ffd2b5eeb9662ca3669f8a850e5f6cb9a5884daee792f0f965bbb318f4e7baa",
+      "exact_original_64_byte_sequence_object_offsets": [
+        2754,
+        3414
+      ],
+      "exact_linked_occurrences": [
+        {
+          "linked_address": "004010f8",
+          "owner_entry": "00401040",
+          "symbol": "?construct_native_win32_platform_00becda0@bsp@@YAPAXPAXAAUNativePlatformConstructionContext@1@@Z",
+          "object": "native_platform_construction.obj"
+        },
+        {
+          "linked_address": "004012b2",
+          "owner_entry": "00401200",
+          "symbol": "?construct_native_window_platform_base_00be2ac0@bsp@@YAPAXPAXAAUNativePlatformConstructionContext@1@@Z",
+          "object": "native_platform_construction.obj"
+        }
+      ]
+    },
+    "original_execution": "Only BE2AC8..BE2B07, unchanged 64-byte fragment, with receiver prelude and return suffix; no whole original body executed."
+  },
+  "dependency_contract": {
+    "manager": "Borrow caller actual raw01090AA0 cell; get_native_singleton_manager_00415350; BD0C30/BCFCA0 current-source raw registration/removal. No semantic SingletonLifetimeDomain or extra manager. BCFCA0 zeros first matching slot without shrinking length or changing later slots.",
+    "strings": "Borrow same raw manager plus actual01090AA8 pool and01090AA4 gate; raw419CC0 getter andBD1510 return. Getter can throw before noexcept return; title header stale.",
+    "allocation": "singleton_lifetime_allocate/free current Source CRT ownership; real0Ch sentinel. No original static CRT or null-allocation success claim.",
+    "publication": "Borrow one0109CF04 reference; publish original receiver, re-read current publication after second manager getter, clear only after successful removal.",
+    "cleanup": "411EE0 captured8-byte guard and412430 generic profile cleanup; four reviewed FH3 maps. Synchronous C++ cleanup expression is not original FH3/SEH ABI.",
+    "raw_queue": "Actual12B header at platform+174h: opaque+0 untouched, current sentinel+4, count+8. Nodes and sentinel use singleton_lifetime allocation/free; private TextInputQueue typed new/delete storage is a different owner. Current sentinel reloads and pre-count-store comparison preserved by exact72-byte instruction match with2 free relocations.",
+    "derived_cleanup": "D68CC4 -> actual SystemParametersInfoA(11h,1,nullptr,0), ignored result -> BEC730 raw queue -> BE2B10 title/base/publication -> scalarflags bit0 free. No DestroyWindow, platform-stop or captured-power restore.",
+    "canonical_deletion_binding": {
+      "profile": "00d68cc4",
+      "native_slot0": "00bece30",
+      "dispatcher_source": "src/native_singleton_destruction.cpp",
+      "binding": "NativeSingletonDeletionBindings::platform",
+      "binding_offset": 200,
+      "binding_structure_bytes": 204,
+      "previous_field_offsets_preserved": true,
+      "missing_binding": "existing fail-closed logic_error",
+      "contract": "Same NativePlatformConstructionContext and actual AA0/CF04/AA8/AA4 cells as creation."
+    }
+  },
+  "readiness": {
+    "source_construction_callable": true,
+    "raw_window_base_retirement_callable": true,
+    "raw_publication_operations_callable": true,
+    "owner_size_bytes": 388,
+    "owner_size_hex": "0x184",
+    "incoming_aspect_preimage_established": false,
+    "original_abi_replacement": false,
+    "full_derived_retirement_ready": true,
+    "application_publication_bound": false,
+    "native_text_activation_ready": false,
+    "cmake_registered_by_this_packet": false,
+    "game_runtime_launched": false,
+    "raw_queue_retirement_callable": true,
+    "canonical_d68cc4_deletion_dispatch_callable": true,
+    "permanent_cmake_registration_done_by_this_packet": false,
+    "temporary_overlay_combined_build_tested": true
+  },
+  "remaining": [
+    "Actual canonical388-byte owner/allocation and incoming24h/28h bytes must be preserved; no invented width/height default or semantic/raw clone.",
+    "Actual shared0109CF04 binding to full configuration, renderer/window focus and Text AB8CE0 signedDWORD+28h consumer is absent. Current0x44 focus storage has only recovered+30HWND/+41active; opaque+28 is not height.",
+    "Actual BECEE0 window/configuration ownership and BEC3B0->BED3B0 message receiver/stack ABI plus render-entry-cache, input/UI/audio/renderer/power-policy bindings remain outside adoption.",
+    "Do not infer a normal-exit+8 stop/power-restore call from construction. Reviewed BECA00/BECE30 retirement only enables screensaver before queue/base cleanup.",
+    "Permanent cmake/startup.cmake row remains independently FIFO coordinated; the current combined build uses an ignored local configure overlay, with no tracked CMake edit."
+  ],
+  "limits": [
+    "Strict current Source compilation and fixture use added context interfaces. Numeric profiles are identity data, never callable host vtables.",
+    "Fixture explicit adversarial incoming bytes are not an original game allocation preimage. Unchanged original64-byte fragment execution is not whole-body/FH3/ABI/game validation.",
+    "Allocation/registration/Leave failures, second-failure termination, hardware-fault unwind, concurrent publication mutation and invalid storage remain unexercised.",
+    "No permanent tests, CMake registration, game_hosts/platform_window/renderer edits, application activation or window/game-runtime launch in this packet.",
+    "Copied Original72 raw queue with only2 free CALL operands rebound and exact Source COFF/linked bytes do not prove original BF65AC allocator behavior or whole-derived-body/ABI execution.",
+    "Populated queue fixture uses stable current sentinel; allocator-induced sentinel mutation is not exercised. Its load schedule is preserved by exact instruction comparison.",
+    "Actual SystemParametersInfoA result is ignored, matching Original. Fixture screensaver state was 0 before/after/restored; no API-success or effective setting-change claim.",
+    "Initial no-overlay full build failed on the known absent platform CMake row. The ignored local configure overlay then built all targets and passed2/2; verify-seeds enabled native differential tests, and the final unchanged scripts/build.ps1 passed3/3."
+  ],
+  "validation_retries": [
+    {
+      "kind": "standalone_link",
+      "reason": "Missing advapi32/shell32 actual Win32 import libraries; added production system imports. No stubs or source changes.",
+      "retained_log": "local/platform_owner_adoption/probe-link-missing-system-imports.log"
+    },
+    {
+      "kind": "fixture_expectation",
+      "reason": "Fixture initially expected BCFCA0 to shrink vector. Existing complete raw contract clears matching slot only; corrected assertions to preserved null holes/length. No candidate source changes.",
+      "retained_output": "local/platform_owner_adoption/probe-first-failure.txt",
+      "retained_executable": "local/platform_owner_adoption/platform_owner_first_probe.exe",
+      "retained_diagnostic_executable": "local/platform_owner_adoption/platform_owner_diagnostic_probe.exe"
+    }
+  ],
+  "ghidra_annotations": {
+    "prior_values": "local/platform_owner_adoption/prior-annotations.json",
+    "prior_values_sha256": "5e6f8038124c9a44b67e8f7bfe1b733b23828ca1dae6f88f05e313413ceddd9e",
+    "all_six_names_retained": true,
+    "prior_comments_preserved": true,
+    "saved": true,
+    "exports_forcibly_refreshed": [
+      "00be2960",
+      "00be2a00",
+      "00be2ac0",
+      "00be2b10",
+      "00bec710",
+      "00becda0"
+    ],
+    "readback": "local/platform_owner_adoption/annotations-readback.json"
+  },
+  "adopted_six_source_bodies_preserved": true,
+  "retirement_baseline_commit": "e7d28388bcd2ecf61278caa481492f1d43f8accb",
+  "adoption_validation": {
+    "utc": "2026-10-14T21:45:02.382481+00:00",
+    "baseline_commit": "9228d13fe2594cb12405733fcdd5ec0160770b66",
+    "candidate_source_commit": "0ca920c74f87df949340d01fbb66025973cd9959",
+    "current_core_build": {
+      "command": "./scripts/build.ps1",
+      "log": "local/platform_owner_adoption/current-core-build.log",
+      "log_sha256": "c7a5e181de357a17e466556c90f6be431b0aacc0b9c20dbe1f710cc9d7af466c",
+      "ctest_summary": "100% tests passed, 0 tests failed out of 2",
+      "new_candidate_registered_in_core": false
+    },
+    "candidate_compile": {
+      "flags": [
+        "/O2",
+        "/MD",
+        "/EHsc",
+        "/W4",
+        "/WX",
+        "/fp:strict",
+        "/std:c++17",
+        "/Gy"
+      ],
+      "source_sha256": "93136282f75a07103626db2c321516b283baed389d90ff547bca96b36d48e6ef",
+      "object_sha256": "9b5f622d1a0ff46666fc9e9eed20a65a6b55bc6a5d86902e67f126f740c8f3cb",
+      "fragment_sha256": "5ffd2b5eeb9662ca3669f8a850e5f6cb9a5884daee792f0f965bbb318f4e7baa",
+      "exact_original_64_byte_sequence_object_offsets": [
+        2754,
+        3414
+      ]
+    },
+    "fresh_libraries": {
+      "bsp_core.lib": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 91500792,
+        "sha256": "696aa04c4bb84ba4637d568a68d87a75f929288e4ae7d027e5fb0cd4f1a5620e"
+      },
+      "bsp_lua511.lib": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\build\\win32\\Release\\bsp_lua511.lib",
+        "bytes": 455384,
+        "sha256": "1459f8e5d692ab96cc18a81ccd0d1f20db1cdc8a3cc4230626a97cb4c9c781ad"
+      },
+      "bsp_zlib121.lib": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\build\\win32\\Release\\bsp_zlib121.lib",
+        "bytes": 71966,
+        "sha256": "8f5763424fa0ccca3a72c61ddae5ad701a53c6fc150dd23955682fe3f8bd9f7b"
+      }
+    },
+    "probe": {
+      "command": [
+        "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_owner_adoption\\platform_owner_probe.exe"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner",
+      "exit": 0,
+      "sha256": "b652e5ec4cbb0b650c77f0161202cc9672f51c347adb4c5e6545a2b529c8c167",
+      "object_sha256": "2c85981dd120f6b957ea5a861e1e00e11a130c0cb78265b250251a06ea22721b",
+      "map_sha256": "90de89b0852b6ee1ecbb23461749c9880643de820c48da0e5c6aefb217606963",
+      "manifest": [
+        {
+          "id": 1,
+          "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+          "as_invoker": true
+        }
+      ],
+      "stdout": [
+        "PASS original64/source window-base 388-byte equality; aspect=C2FFFFFE CW=0C7F SW=0020",
+        "PASS actual raw manager publication/registration/depth; shared pool title return; stale header; base retirement",
+        "PASS derived184h construction/stores/untouched bytes/sentinel; explicit fixture cleanup only"
+      ],
+      "window_or_game_launched": false,
+      "source_fixture_cells_are_application_globals": false,
+      "original_whole_bodies_executed": false,
+      "original_fragment_bytes": 64,
+      "explicit_fixture_preimage": [
+        "80000001",
+        "01000001"
+      ],
+      "preimage_is_game_default": false,
+      "explicit_fixture_teardown_is_derived_retirement": false
+    },
+    "exact_linked_original_x87_sequences": [
+      {
+        "linked_address": "004010f8",
+        "owner_entry": "00401040",
+        "symbol": "?construct_native_win32_platform_00becda0@bsp@@YAPAXPAXAAUNativePlatformConstructionContext@1@@Z",
+        "object": "native_platform_construction.obj"
+      },
+      {
+        "linked_address": "004012b2",
+        "owner_entry": "00401200",
+        "symbol": "?construct_native_window_platform_base_00be2ac0@bsp@@YAPAXPAXAAUNativePlatformConstructionContext@1@@Z",
+        "object": "native_platform_construction.obj"
+      }
+    ],
+    "core_library_invariant_after_probe": {
+      "before": {
+        "build\\win32\\Release\\bsp_core.lib": "696aa04c4bb84ba4637d568a68d87a75f929288e4ae7d027e5fb0cd4f1a5620e",
+        "build\\win32\\Release\\bsp_lua511.lib": "1459f8e5d692ab96cc18a81ccd0d1f20db1cdc8a3cc4230626a97cb4c9c781ad",
+        "build\\win32\\Release\\bsp_zlib121.lib": "8f5763424fa0ccca3a72c61ddae5ad701a53c6fc150dd23955682fe3f8bd9f7b"
+      },
+      "after": {
+        "build\\win32\\Release\\bsp_core.lib": "696aa04c4bb84ba4637d568a68d87a75f929288e4ae7d027e5fb0cd4f1a5620e",
+        "build\\win32\\Release\\bsp_lua511.lib": "1459f8e5d692ab96cc18a81ccd0d1f20db1cdc8a3cc4230626a97cb4c9c781ad",
+        "build\\win32\\Release\\bsp_zlib121.lib": "8f5763424fa0ccca3a72c61ddae5ad701a53c6fc150dd23955682fe3f8bd9f7b"
+      },
+      "unchanged": true
+    }
+  },
+  "adoption_artifact_capture": {
+    "manifest": "local/checkpoints/cc14-native-platform-owner/final/validation.json",
+    "scope": "Fresh candidate, probe, current Core libraries, build inputs, byte evidence and frozen committed historical candidate. No unavailable old binary is represented as preserved."
+  },
+  "adoption_validation_scope": "Frozen earlier e9430ea adoption receipts remain unchanged. The following fresh_validation covers this retirement candidate and current combined Core.",
+  "fresh_validation": {
+    "utc": "2026-10-14T22:11:47.680966+00:00",
+    "baseline_commit": "e7d28388bcd2ecf61278caa481492f1d43f8accb",
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "original_bytes": {
+      "utc": "2026-10-14T22:00:19.353246+00:00",
+      "baseline_commit": "e7d28388bcd2ecf61278caa481492f1d43f8accb",
+      "target": {
+        "project": "bsp",
+        "program": "battlestationspacific.exe",
+        "program_path": "/battlestationspacific.exe",
+        "language": "x86:LE:32:default",
+        "image_base": "00400000",
+        "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+        "ghidra_url": "http://127.0.0.1:8089",
+        "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "project_file": "C:/Users/sqz269/bsp.gpr",
+        "coordination_dir": "C:/Users/sqz269/.bsp"
+      },
+      "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "spans": [
+        {
+          "address": "00bec730",
+          "bytes": 72,
+          "sha256": "080f04b31299e988bbf55b1cffa5978e3ca00a48414b742d1948af8b5e48e695",
+          "live_equals_pe": true,
+          "saved_equals_live": true
+        },
+        {
+          "address": "00beca00",
+          "bytes": 42,
+          "sha256": "c97073267739e0aa514052b7d5ffff33ede1546e83cbb8241922b875b85f6010",
+          "live_equals_pe": true,
+          "saved_equals_live": true
+        },
+        {
+          "address": "00bece30",
+          "bytes": 63,
+          "sha256": "e6747a00ac6cded472183cafa5a10f70c0d638e381ad1279f7dcdf3836949bdd",
+          "live_equals_pe": true,
+          "saved_equals_live": true
+        },
+        {
+          "address": "00d68cc4",
+          "bytes": 4,
+          "sha256": "4ea2213ff8cfc2b512101f604fecf693eaae203fd4d85cfaf20c7f834eb33a06",
+          "live_equals_pe": true
+        }
+      ],
+      "body_bytes": 177,
+      "profile_bytes": 4,
+      "calls": [
+        {
+          "address": "00bec753",
+          "function": "00bec730",
+          "native": "00bf65ac",
+          "kind": "call"
+        },
+        {
+          "address": "00bec767",
+          "function": "00bec730",
+          "native": "00bf65ac",
+          "kind": "call"
+        },
+        {
+          "address": "00beca1d",
+          "function": "00beca00",
+          "native": "00bec730",
+          "kind": "call"
+        },
+        {
+          "address": "00beca25",
+          "function": "00beca00",
+          "native": "00be2b10",
+          "kind": "tail_jump"
+        },
+        {
+          "address": "00bece4d",
+          "function": "00bece30",
+          "native": "00bec730",
+          "kind": "call"
+        },
+        {
+          "address": "00bece54",
+          "function": "00bece30",
+          "native": "00be2b10",
+          "kind": "call"
+        },
+        {
+          "address": "00bece61",
+          "function": "00bece30",
+          "native": "00bf65ac",
+          "kind": "call"
+        }
+      ],
+      "indirect_calls": [
+        {
+          "address": "00beca11",
+          "iat": "00ce2340",
+          "import": "SystemParametersInfoA",
+          "arguments": [
+            17,
+            1,
+            0,
+            0
+          ],
+          "return_ignored": true
+        },
+        {
+          "address": "00bece41",
+          "iat": "00ce2340",
+          "import": "SystemParametersInfoA",
+          "arguments": [
+            17,
+            1,
+            0,
+            0
+          ],
+          "return_ignored": true
+        }
+      ],
+      "local_eh_registration": false,
+      "no_ghidra_mutations": true
+    },
+    "current_combined_build": {
+      "command": "./scripts/build.ps1",
+      "exit": 0,
+      "log": "local/platform_owner_retirement/overlay-full-build-native.log",
+      "log_sha256": "51ff5d9aa5c902c8340322e110e15eb1a130c127293873a2b12600c70acb3be9",
+      "ctest_summary": "100% tests passed, 0 tests failed out of 3",
+      "native_seeds_verified": true,
+      "candidate_registered_in_core_via_temporary_overlay": true,
+      "tracked_cmake_files_edited": false,
+      "overlay": "local/platform_owner_retirement/core_sources.cmake",
+      "overlay_sha256": "34b4460471cbb7f4c0490aa4475a85d83a9cf478d1a08e9f37f0e9f7d3915353",
+      "cmake_cache_entry": "CMAKE_PROJECT_INCLUDE_BEFORE:UNINITIALIZED=J:/PROG/battlestations-pacific-decompile-cc14-platform-owner/local/platform_owner_retirement/core_sources.cmake",
+      "permanent_registration": false
+    },
+    "candidate_compile": {
+      "flags": "/O2 /MD /EHsc /W4 /WX /fp:strict /std:c++17 /Gy",
+      "source": "src/native_platform_construction.cpp",
+      "object_sha256": "49da9f4dc862aca8179667f37e9d6b65039003a08c41a62e340f293305c087ec",
+      "new_interfaces_not_original_abi": true
+    },
+    "emitted_verification": {
+      "candidate_object_sha256": "49da9f4dc862aca8179667f37e9d6b65039003a08c41a62e340f293305c087ec",
+      "coff": [
+        {
+          "symbol": "?destroy_native_text_queue_00bec730@bsp@@YIXPAX0@Z",
+          "section": 23,
+          "bytes": 72,
+          "sha256": "56d8c0c145d53460c9d7a3ea654bf3429706af397919c60fc486a4ebf55d458d",
+          "relocations": [
+            {
+              "offset": 36,
+              "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+              "type": 20
+            },
+            {
+              "offset": 56,
+              "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+              "type": 20
+            }
+          ],
+          "matches_original_except_two_free_rel32_operands": true
+        },
+        {
+          "symbol": "?destroy_native_win32_platform_00beca00@bsp@@YAXPAXAAUNativePlatformConstructionContext@1@@Z",
+          "section": 24,
+          "bytes": 53,
+          "sha256": "67f290356c29ffcb7306e555db800a06f133b06e2e32905d9adb96e5bfc65972",
+          "relocations": [
+            {
+              "offset": 21,
+              "symbol": "__imp__SystemParametersInfoA@16",
+              "type": 6
+            },
+            {
+              "offset": 34,
+              "symbol": "?destroy_native_text_queue_00bec730@bsp@@YIXPAX0@Z",
+              "type": 20
+            },
+            {
+              "offset": 44,
+              "symbol": "?destroy_native_window_platform_base_00be2b10@bsp@@YAXPAXAAUNativePlatformConstructionContext@1@@Z",
+              "type": 20
+            }
+          ]
+        },
+        {
+          "symbol": "?delete_native_win32_platform_00bece30@bsp@@YAPAXPAXIAAUNativePlatformConstructionContext@1@@Z",
+          "section": 19,
+          "bytes": 71,
+          "sha256": "87539a7cdd986dfb857aa45eec4fad323361065275b4cf7cee35f74187994dbe",
+          "relocations": [
+            {
+              "offset": 21,
+              "symbol": "__imp__SystemParametersInfoA@16",
+              "type": 6
+            },
+            {
+              "offset": 34,
+              "symbol": "?destroy_native_text_queue_00bec730@bsp@@YIXPAX0@Z",
+              "type": 20
+            },
+            {
+              "offset": 44,
+              "symbol": "?destroy_native_window_platform_base_00be2b10@bsp@@YAXPAXAAUNativePlatformConstructionContext@1@@Z",
+              "type": 20
+            },
+            {
+              "offset": 60,
+              "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+              "type": 20
+            }
+          ]
+        }
+      ],
+      "linked_queue": {
+        "symbol": "?destroy_native_text_queue_00bec730@bsp@@YIXPAX0@Z",
+        "address": "00401380",
+        "bytes": 72,
+        "matches_original_except_two_free_rel32_operands": true,
+        "free_targets": [
+          {
+            "offset": 36,
+            "address": "00402b00",
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "object": "bsp_core:singleton_lifetime.obj"
+          },
+          {
+            "offset": 56,
+            "address": "00402b00",
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "object": "bsp_core:singleton_lifetime.obj"
+          }
+        ]
+      },
+      "coff_original_x87_64byte_sequence_count": 2,
+      "linked_preserved_original_x87_64byte_sequences": [
+        {
+          "address": "00401158",
+          "symbol": "?construct_native_win32_platform_00becda0@bsp@@YAPAXPAXAAUNativePlatformConstructionContext@1@@Z",
+          "object": "native_platform_construction.obj"
+        }
+      ],
+      "manifest": [
+        {
+          "id": 1,
+          "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+          "as_invoker": true
+        }
+      ]
+    },
+    "fresh_libraries": {
+      "bsp_core.lib": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 91529714,
+        "sha256": "6af393004c1a31fc0e4e95573dbbe93251a375d694d6fc924270259289ed48a3"
+      },
+      "bsp_lua511.lib": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\build\\win32\\Release\\bsp_lua511.lib",
+        "bytes": 455384,
+        "sha256": "1459f8e5d692ab96cc18a81ccd0d1f20db1cdc8a3cc4230626a97cb4c9c781ad"
+      },
+      "bsp_zlib121.lib": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\build\\win32\\Release\\bsp_zlib121.lib",
+        "bytes": 71966,
+        "sha256": "8f5763424fa0ccca3a72c61ddae5ad701a53c6fc150dd23955682fe3f8bd9f7b"
+      }
+    },
+    "core_library_invariant_after_probe": true,
+    "probe": {
+      "command": [
+        "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner\\local\\platform_owner_retirement\\platform_retirement_probe.exe"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc14-platform-owner",
+      "exit": 0,
+      "sha256": "4a0aea41e8232c2e1569fb58b6c9fdc0e35c728be56d4c259ff463d3a7c521bf",
+      "object_sha256": "3a8e570ca95911768bcf6dc6ee81432cb22195a01da78932186f329c58efa119",
+      "map_sha256": "7d65cd137f0843995ee9db63bff90a71c69b98bb1471de70d4a1497ad0005f2c",
+      "source_sha256": "e264d4fed278ab7fc5e78268f7e1364fb4fb8ee134bea2d98fc3a8f36bcbd4cd",
+      "manifest": [
+        {
+          "id": 1,
+          "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+          "as_invoker": true
+        }
+      ],
+      "stdout": [
+        "PASS Original72/current Source populated queue; only two free CALL operands rebound; header+0 preserved, sentinel/count cleared",
+        "PASS Source BECA00/BECE30 bit0-clear populated retirement; all388 bytes, title reuse, publication, registry hole; screensaver before=0 after=0",
+        "PASS canonical D68CC4 flags1 manager drain with same AA0/CF04/AA8/AA4 cells; pool/vector/section retired; screensaver after=0 restored=0"
+      ],
+      "copied_original_queue_bytes": 72,
+      "copied_original_queue_free_rel32_operands_rebound": [
+        36,
+        56
+      ],
+      "original_derived_whole_bodies_executed": false,
+      "window_or_game_launched": false,
+      "fixture_cells_are_application_globals": false,
+      "explicit_fixture_preimage": [
+        "80000001",
+        "01000001"
+      ],
+      "preimage_is_game_default": false,
+      "candidate_derived_retirement_executed": true,
+      "actual_win32_screensaver_api_called": true,
+      "screensaver_before": 0,
+      "screensaver_after_scalar": 0,
+      "screensaver_after_drain": 0,
+      "screensaver_restored_readback": 0
+    },
+    "annotations": {
+      "prior_values": "local/platform_owner_retirement/prior-comments.json",
+      "prior_comments_preserved": true,
+      "all_three_names_retained": true,
+      "saved": true,
+      "write_lock": "tools/ghidra_annotate.py --apply",
+      "readback": "local/platform_owner_retirement/annotations-readback.json",
+      "exports_forcibly_refreshed": [
+        "00bec730",
+        "00beca00",
+        "00bece30"
+      ]
+    },
+    "validation_checker_correction": "Initial emitted checker expected2 linked x87 copies, inherited from broader adoption probe. Current retirement probe references only the derived constructor; the standalone window-base copy is removed by OPT:REF. Final check requires2 exact COFF copies and1 linked derived-owner copy. No candidate code change."
+  },
+  "artifact_capture": {
+    "manifest": "local/checkpoints/cc14-native-platform-owner-retirement/final/validation.json",
+    "immutable": true,
+    "captures_current_source_header_doc_report_ledgers": true,
+    "captures_current_libraries_candidate_and_probe": true,
+    "historical_before_overlay_probe_library_binary_retained": false,
+    "historical_before_overlay_probe_note": "Before-overlay executable/map/output/library hashes retained; the earlier Core archive was superseded by the overlay build. Final validation uses the freshly relinked/rerun probe and all three captured current libraries."
+  }
+}

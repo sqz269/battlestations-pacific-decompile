@@ -1,0 +1,115 @@
+{
+  "source_revision": "39afda6f3700017552f9068e560ca2f49cfe37fd",
+  "workers": {
+    "scene_base": "d318001e77a992008ba8cbb8cd85357116c38382",
+    "drsh": "9ca98fd552fff115256988079c7004577dcb41da"
+  },
+  "primary_validation": {
+    "scene_base_checks": 30,
+    "drsh_caller_pairs": 3,
+    "current_service_cleanup_pairs": 3,
+    "current_header_cleanup_pairs": 1,
+    "inherited_x87_encodings": 325,
+    "emitted_drsh_order": "passed",
+    "failures": 0
+  },
+  "worker_artifacts_verified_and_preserved": {
+    "scene_base": 187,
+    "drsh": 46
+  },
+  "receipt_directories": [
+    "local/cc12_native_parent_receipts/unit_d318",
+    "local/cc12_native_parent_receipts/world_9ca"
+  ],
+  "combined_build": {
+    "status": "passed",
+    "configuration": "MSVC Win32 Release",
+    "tests_passed": 3,
+    "tests_failed": 0,
+    "test_seconds": 11.64,
+    "log": "local/cc12_scene_base_drsh_combined_release_build_01.log",
+    "runtime_output_directory": "build/win32/cc12_followup_release"
+  },
+  "actual_gui_run": {
+    "attempt": 2,
+    "status": "failed at concrete name-resolution binding",
+    "game_exit_code": 1,
+    "executable_built_revision": "23fbb8a1d",
+    "executable_sha256": "915901c409eed7bf6bba24d523ce8f4a97642229e4456cdcc27dae1622344dd6",
+    "manifest_checkout_head": "9cdf1e6a9041bd31b146403e9bd16d995e6fb3f0",
+    "shadow_published": true,
+    "shadow_profile": "00D5B5E8",
+    "shadow_extent": [
+      2048,
+      2048
+    ],
+    "first_effect_failure_site": "00B310B8",
+    "first_effect": "GuiFont.mshd",
+    "failure": "unretained effect name resolution requires an explicitly selected callback",
+    "sampler_scopes_entered": 0,
+    "effects_returned": 0,
+    "references_retired": false,
+    "original_shared_drain_completed": false,
+    "failed_graph_retained_until_process_exit": true,
+    "runtime_log": "local/cc12_actual_native_gui_effect_startup_02.log",
+    "manifest": "local/cc12_actual_native_gui_effect_startup_02.log.manifest.json"
+  },
+  "frontiers": {
+    "scene": "B15F63 batch selection with DRSH state2 still owning reset",
+    "unit": "928630 containing base/factory and remaining lifetimes",
+    "effect": "B310B8 retained name-resolution routing/context"
+  },
+  "limits": [
+    "no native FH3 dispatch, cleanup-throw or asynchronous-fault equivalence",
+    "scene-base caller must establish the same-storage atomic lifetime at+28",
+    "scene-base null-source memcpy arm remains unexecuted",
+    "no full command D5E13C admission or actual unit receiver/tick activation"
+  ],
+  "artifacts": [
+    {
+      "path": "local/cc12_scene_base_drsh_combined_release_build_01.log",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gui_runtime_receipt_02\\local\\cc12_scene_base_drsh_combined_release_build_01.log",
+      "sha256": "64227d14af9d1b75ba2b7e93207d74d7b0d3cea8d19214db051be3affce2faa4"
+    },
+    {
+      "path": "local/cc12_actual_native_gui_effect_startup_02.log",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gui_runtime_receipt_02\\local\\cc12_actual_native_gui_effect_startup_02.log",
+      "sha256": "1c23dc03075f9d8cfe542e54e616e2e7eb84ece4352fa8b17036d67ed1fefe15"
+    },
+    {
+      "path": "local/cc12_actual_native_gui_effect_startup_02.log.manifest.json",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gui_runtime_receipt_02\\local\\cc12_actual_native_gui_effect_startup_02.log.manifest.json",
+      "sha256": "b6bb8311cbeeb54acd5ab2aa157a2d513cd8b6f1947e76254981eee8a6833ac0"
+    },
+    {
+      "path": "local/cc12_actual_native_gui_effect_startup_02_launcher.log",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gui_runtime_receipt_02\\local\\cc12_actual_native_gui_effect_startup_02_launcher.log",
+      "sha256": "7a8e0d9a2a9d080af70103ddebfa960b7284ec098475fad910b6a4bac1814ca0"
+    },
+    {
+      "path": "src/native_unit_owner_entity.cpp",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gui_runtime_receipt_02\\src\\native_unit_owner_entity.cpp",
+      "sha256": "9986cbe37d964c14d3ec43c3d6f66403ed2c0208c49e66ce3c6de52efe373db2"
+    },
+    {
+      "path": "include/bsp/native_unit_owner_entity.hpp",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gui_runtime_receipt_02\\include\\bsp\\native_unit_owner_entity.hpp",
+      "sha256": "91cdda7119581090c2df98c0b2a0a8350e6befa4a4c4e3f6d11dd8a110d161ad"
+    },
+    {
+      "path": "src/native_main_scene_execution_prefix.cpp",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gui_runtime_receipt_02\\src\\native_main_scene_execution_prefix.cpp",
+      "sha256": "e677596444238cd76f33f516ffb8888c9500ee5bb6d6520b59a690cb8f4483aa"
+    },
+    {
+      "path": "include/bsp/native_main_scene_execution_prefix.hpp",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gui_runtime_receipt_02\\include\\bsp\\native_main_scene_execution_prefix.hpp",
+      "sha256": "3937e1b4e475c29b0b9076ee9748f3ab73e5a5fdfc5382342c4ba353cf32c03b"
+    }
+  ],
+  "native_text_draw_validated": false,
+  "world_command_admitted": false,
+  "original_abi_compatible": false,
+  "gameplay_validated": false,
+  "overall_goal": "active"
+}

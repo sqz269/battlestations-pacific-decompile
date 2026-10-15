@@ -4,6 +4,7 @@
 #include <memory>
 
 namespace bsp {
+class NativeLuaServiceBindings;
 struct NativeMaterialDescriptorSamplersContext;
 class NativeMaterialDescriptorSamplersCallFactory;
 }
@@ -33,6 +34,9 @@ struct GameNativeGuiEffectLoadOperation final {
     // Stable borrowed actual8h header, retained by the caller through failure.
     const void* input_name{};
     void* captured_renderer{};
+    // Borrowed existing service identity, not another binding or Lua owner.
+    // Acquire activates it synchronously; interrupted Lua cannot be resumed.
+    NativeLuaServiceBindings* captured_lua_binding{};
     NativeMaterialEffectCacheAcquired cache;
     // Normal return transfers the actual owning reference to the caller.
     // After that this is an opaque diagnostic identity, not another owner.
@@ -49,6 +53,9 @@ struct GameNativeGuiEffectLoadOperation final {
 // B318B0's fixed0/1/1 route returns an actual held effect (or native null).
 // It is the missing production supplier for GuiFont.mshd/GuiFontBilinear.mshd;
 // constructing this graph does not yet attach the current sprite frontend.
+// Cold binary-mode acquisitions require the caller's existing canonical shader
+// cache create/acquire/release bracket. This graph borrows that SAME process
+// publication; it does not create a private cache or bypass the native lookup.
 //
 // Actual B3B3C0, B3C3A0, B43B00, B46950, B2EBB0 and B318B0 bodies are composed
 // from existing established helpers. No new raw register/x87 recovery or ABI

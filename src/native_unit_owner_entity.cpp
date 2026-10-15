@@ -1,13 +1,20 @@
 #include "bsp/native_unit_owner_entity.hpp"
 
 #include "bsp/native_alias_count_growth.hpp"
+#include "bsp/native_camera_matrix_copy.hpp"
+#include "bsp/native_entity_intrusive_unlink.hpp"
 #include "bsp/native_game_array_lifetime.hpp"
 #include "bsp/native_invalid_parameter_noinfo_call.hpp"
+#include "bsp/native_string.hpp"
 #include "bsp/native_unit_owner_list_heads.hpp"
+#include "bsp/native_unit_list_remove.hpp"
+#include "bsp/native_weak_owner.hpp"
 #include "bsp/observer_lifetime.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
 #include <cstddef>
+#include <cstring>
+#include <new>
 
 namespace bsp {
 namespace {
@@ -45,6 +52,45 @@ struct ReconConstructorUnwind {
     }
 };
 
+NativeWeakOwnerView scene_weak_view(void* root) noexcept {
+    void* const owner = bytes_at(root, 0x24);
+    return {owner, *static_cast<std::uint32_t*>(owner),
+        *std::launder(reinterpret_cast<std::atomic<std::int32_t>*>(bytes_at(owner, 4))),
+        *reinterpret_cast<void**>(bytes_at(owner, 8))};
+}
+
+enum class SceneCleanup { observed, callback, weak, first_name, second_name };
+struct SceneConstructorUnwind {
+    void* root;
+    NativeWeakOwnerDomain& weak;
+    NativeObserverLifetime& observers;
+    NativeStringRawPoolContext& strings;
+    SceneCleanup kind;
+    bool armed = false;
+    ~SceneConstructorUnwind() noexcept(false) {
+        if (!armed) return;
+        switch (kind) {
+        case SceneCleanup::observed:
+            observers.destroy_observed_owner_00695760(
+                *static_cast<NativeObserverOwnerStorage*>(root));
+            break;
+        case SceneCleanup::callback:
+            observers.destroy_callback_owner_00695870(
+                *static_cast<NativeObserverOwnerStorage*>(bytes_at(root, 0x10)));
+            break;
+        case SceneCleanup::weak:
+            weak.destroy_00925540(scene_weak_view(root));
+            break;
+        case SceneCleanup::first_name:
+            destroy_native_string_header_0041dd20(bytes_at(root, 0x154), strings);
+            break;
+        case SceneCleanup::second_name:
+            destroy_native_string_header_0041dd20(bytes_at(root, 0x15c), strings);
+            break;
+        }
+    }
+};
+
 void grow_owner_count(void* actual_list, std::uint32_t increment, std::uint32_t bound) {
     const std::uint32_t captured = at<std::uint32_t>(actual_list, 8);
     if (bound - captured < increment) {
@@ -61,6 +107,125 @@ void grow_owner_count(void* actual_list, std::uint32_t increment, std::uint32_t 
     at<std::uint32_t>(actual_list, 8) = captured + increment;
 }
 } // namespace
+
+void* construct_native_unit_owner_scene_base_00925ce0(
+    void* root, NativeWeakOwnerDomain& weak, NativeObserverLifetime& observers,
+    NativeStringRawPoolContext& strings,
+    const volatile std::uint32_t& actual_one_bits_00d7a24c) {
+    SceneConstructorUnwind observed{root, weak, observers, strings, SceneCleanup::observed};
+    SceneConstructorUnwind callback{root, weak, observers, strings, SceneCleanup::callback};
+    SceneConstructorUnwind weak_owner{root, weak, observers, strings, SceneCleanup::weak};
+    SceneConstructorUnwind first_name{root, weak, observers, strings, SceneCleanup::first_name};
+    SceneConstructorUnwind second_name{root, weak, observers, strings, SceneCleanup::second_name};
+    at<std::uint32_t>(root, 0) = 0x00ceccc8u;
+    at<std::uint32_t>(root, 4) = 0;
+    at<std::uint32_t>(root, 8) = 0;
+    at<std::uint32_t>(root, 0xc) = 0;
+    at<std::uint32_t>(root, 0x10) = 0x00ce3cd4u;
+    at<std::uint32_t>(root, 0x14) = 0;
+    at<std::uint32_t>(root, 0x18) = 0;
+    at<std::uint32_t>(root, 0x1c) = 0;
+    observed.armed = true; // Native state0 at 925D23.
+    at<std::uint8_t>(root, 0x20) = 0;
+    callback.armed = true; // Native state1 precedes the actual weak constructor.
+    weak.construct_00925490(scene_weak_view(root)); // 925D34
+    weak_owner.armed = true;
+    const std::uint32_t first_one = actual_one_bits_00d7a24c;
+    at<std::uint32_t>(root, 0) = 0x00d19120u;
+    at<std::uint32_t>(root, 0x10) = 0x00d19104u;
+    at<std::uint32_t>(root, 0x24) = 0x00d190fcu;
+    at<std::uint32_t>(root, 0x4c) = 0;
+    at<std::uint32_t>(root, 0x48) = 0;
+    at<std::uint32_t>(root, 0x50) = 0;
+    const std::uint32_t first_matrix[16] = {
+        first_one, 0, 0, 0, 0, first_one, 0, 0, 0, 0, first_one, 0, 0, 0, 0, first_one};
+    copy_native_camera_matrix_004134f0(bytes_at(root, 0x74), nullptr, first_matrix); // 925DCA
+    at<std::uint32_t>(root, 0x154) = 0;
+    at<std::uint32_t>(root, 0x158) = 0;
+    first_name.armed = true;
+    at<std::uint32_t>(root, 0x15c) = 0;
+    at<std::uint32_t>(root, 0x160) = 0;
+    const std::uint32_t second_one = actual_one_bits_00d7a24c;
+    second_name.armed = true; // Native state4 at 925DF1.
+    at<std::uint32_t>(root, 0xc0) = 0;
+    at<std::uint32_t>(root, 0xc4) = 0;
+    at<std::uint8_t>(root, 0xbd) = 0;
+    at<std::uint8_t>(root, 0x60) = 0;
+    at<std::uint8_t>(root, 0x5f) = 0;
+    at<std::uint8_t>(root, 0x5c) = 0;
+    at<std::uint8_t>(root, 0x5e) = 0;
+    at<std::uint8_t>(root, 0x5d) = 0;
+    at<std::uint32_t>(root, 0x6c) = 0;
+    at<std::uint32_t>(root, 0x70) = 0;
+    at<std::uint32_t>(root, 0x54) = 2;
+    at<std::uint32_t>(root, 0x58) = 0xffffffffu;
+    at<std::uint8_t>(root, 0xbc) = 0;
+    at<std::uint32_t>(root, 0x150) = 0;
+    const std::uint32_t second_matrix[16] = {
+        second_one, 0, 0, 0, 0, second_one, 0, 0, 0, 0, second_one, 0, 0, 0, 0, second_one};
+    copy_native_camera_matrix_004134f0(bytes_at(root, 0x74), nullptr, second_matrix); // 925EA0
+    resize_native_string_header_0041dd40(bytes_at(root, 0x154), strings, 0, false); // 925EA9
+    void* const data = at<void*>(root, 0x158);
+    if (data != nullptr) {
+        const std::uint32_t length = at<std::uint32_t>(root, 0x154);
+        std::memcpy(data, nullptr, length); // 925EBA; Native fault/CRT domain qualified.
+    }
+    at<std::uint32_t>(root, 0x16c) = 0;
+    at<std::uint32_t>(root, 0x168) = 0;
+    at<std::uint8_t>(root, 0x61) = 0;
+    at<std::uint8_t>(root, 0x62) = 0;
+    at<std::uint8_t>(root, 0x68) = 0;
+    at<std::uint32_t>(root, 0x64) = 0;
+    second_name.armed = first_name.armed = weak_owner.armed = callback.armed = observed.armed = false;
+    return root;
+}
+
+void restore_native_unit_owner_scene_destructor_profiles_009257a7(void* root) noexcept {
+    at<std::uint32_t>(root, 0) = 0x00d19120u;
+    at<std::uint32_t>(root, 0x10) = 0x00d19104u;
+    at<std::uint32_t>(root, 0x24) = 0x00d190fcu;
+}
+
+void finish_native_unit_owner_scene_retirement_009257f5(
+    void* root, NativeWeakOwnerDomain& weak, NativeObserverLifetime& observers,
+    NativeStringRawPoolContext& strings) {
+    // The admitted entry is the continuation with Native state4 already
+    // owning all five subobjects, after actual life-ref/child retirement.
+    SceneConstructorUnwind observed{root, weak, observers, strings, SceneCleanup::observed, true};
+    SceneConstructorUnwind callback{root, weak, observers, strings, SceneCleanup::callback, true};
+    SceneConstructorUnwind weak_owner{root, weak, observers, strings, SceneCleanup::weak, true};
+    SceneConstructorUnwind first_name{root, weak, observers, strings, SceneCleanup::first_name, true};
+    SceneConstructorUnwind second_name{root, weak, observers, strings, SceneCleanup::second_name, true};
+    void* const world = at<void*>(root, 0x30);
+    unlink_native_entity_world_chain_00903f30(at<void*>(world, 4), 0, root); // 9257FC
+    void* const parent = at<void*>(root, 0x3c);
+    if (parent != nullptr) {
+        unlink_native_entity_sibling_chain_00924710(bytes_at(parent, 0x48), 0, root); // 92580C
+        at<void*>(root, 0x3c) = nullptr;
+    } else {
+        void* const current_world = at<void*>(root, 0x30);
+        unlink_native_entity_sibling_chain_00924710(at<void*>(current_world, 8), 0, root); // 925820
+        if (at<std::uint32_t>(root, 0xb8) != 0) {
+            void* const list_world = at<void*>(root, 0x30);
+            remove_native_unit_list_payload_004845a0(bytes_at(list_world, 0xc), nullptr, root); // 925835
+        }
+    }
+    // Disarm each member before its normal destruction, exactly the owning
+    // state at calls925856/92587E/925891/92589D/9258AC. A failure leaves
+    // that member's effects intact and unwinds only the still-owned suffix.
+    second_name.armed = false;
+    destroy_native_string_header_0041dd20(bytes_at(root, 0x15c), strings);
+    first_name.armed = false;
+    destroy_native_string_header_0041dd20(bytes_at(root, 0x154), strings);
+    weak_owner.armed = false;
+    weak.destroy_00925540(scene_weak_view(root)); // 925891
+    callback.armed = false;
+    observers.destroy_callback_owner_00695870(
+        *static_cast<NativeObserverOwnerStorage*>(bytes_at(root, 0x10))); // 92589D
+    observed.armed = false;
+    observers.destroy_observed_owner_00695760(
+        *static_cast<NativeObserverOwnerStorage*>(root)); // 9258AC
+}
 
 void construct_native_unit_owner_first_list_0077ef27(void* actual_root_after_recon) {
     void* const root = actual_root_after_recon;

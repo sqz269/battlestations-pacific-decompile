@@ -1,0 +1,1188 @@
+{
+  "status": "exact_static_live_readiness_frontier_no_new_source_credit",
+  "updated_utc": "2026-10-14T22:31:00.517697+00:00",
+  "baseline_commit": "58f2320c8032583d52e0b6db55383b190b44d2c6",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "documentation": "docs/NATIVE_PLATFORM_WINDOW_CONFIGURATION_FRONTIER.md",
+  "body": {
+    "address": "00becee0",
+    "end_exclusive": "00bed28a",
+    "bytes": 938,
+    "original_abi": "cdecl11 DWORD stack arguments including explicit owner; caller ADD ESP,2Ch; callee RET; no consumed return value.",
+    "reconstructed_by_this_packet": false,
+    "new_cpp_interface": null
+  },
+  "original_arguments": [
+    {
+      "argument": 1,
+      "entry_esp_offset": "0x04",
+      "name": "actual_platform",
+      "caller_source": "current0109CF04",
+      "contract": "same184h-byte raw allocation"
+    },
+    {
+      "argument": 2,
+      "entry_esp_offset": "0x08",
+      "name": "title_header",
+      "caller_source": "caller native temporary8B header",
+      "contract": "not a C string or copied header"
+    },
+    {
+      "argument": 3,
+      "entry_esp_offset": "0x0c",
+      "name": "fullscreen_word",
+      "caller_source": "MOVZX byte00F8899E",
+      "contract": "low-byte branch, whole captured word forwarded to renderer"
+    },
+    {
+      "argument": 4,
+      "entry_esp_offset": "0x10",
+      "name": "depth_selector_word",
+      "caller_source": "SETNZ byte00F889E0",
+      "contract": "caller pushes0/1; stored whole at+18 in fullscreen"
+    },
+    {
+      "argument": 5,
+      "entry_esp_offset": "0x14",
+      "name": "x",
+      "caller_source": "00E1AE88",
+      "contract": "signed32 coordinate"
+    },
+    {
+      "argument": 6,
+      "entry_esp_offset": "0x18",
+      "name": "y",
+      "caller_source": "00E1AE8C",
+      "contract": "signed32 coordinate"
+    },
+    {
+      "argument": 7,
+      "entry_esp_offset": "0x1c",
+      "name": "requested_width",
+      "caller_source": "00F88994",
+      "contract": "signed32 extent"
+    },
+    {
+      "argument": 8,
+      "entry_esp_offset": "0x20",
+      "name": "requested_height",
+      "caller_source": "00F88998",
+      "contract": "signed32 extent"
+    },
+    {
+      "argument": 9,
+      "entry_esp_offset": "0x24",
+      "name": "renderer_option",
+      "caller_source": "00F889D8",
+      "contract": "raw DWORD forwarded"
+    },
+    {
+      "argument": 10,
+      "entry_esp_offset": "0x28",
+      "name": "application",
+      "caller_source": "caller EBP loaded from original application argument",
+      "contract": "owner+48"
+    },
+    {
+      "argument": 11,
+      "entry_esp_offset": "0x2c",
+      "name": "instance",
+      "caller_source": "00E1AE7C",
+      "contract": "WinMain HINSTANCE"
+    }
+  ],
+  "window_class": {
+    "style_hex": "0x2000",
+    "style_name": "CS_BYTEALIGNWINDOW",
+    "extra_window_bytes": 24,
+    "original_procedure": "00bec3b0",
+    "create_parameter": "actual argument1 owner",
+    "class_and_title": "current argument2 header+4, fallback actual0109DB8D",
+    "failure_gates_absent_for": [
+      "LoadCursorA",
+      "RegisterClassA",
+      "AdjustWindowRect",
+      "CreateWindowExA",
+      "SetWindowLongA",
+      "SetWindowPos",
+      "GetClientRect",
+      "ReleaseDC",
+      "ShowWindow"
+    ]
+  },
+  "title": {
+    "destination": "actual owner+4 native8B header",
+    "self_alias_skip": true,
+    "resize": "41DD40(current source length,preserve1) through same raw pool",
+    "post_resize": "Reread source length; if nonzero copy current destination length from current source data into current destination data."
+  },
+  "x87_and_store_schedule": [
+    "Requested+34/+38 and app+48 precede current HWND+30 test and conditional BEBF70 slot8 call.",
+    "Returned CreateWindowExA HWND stored at+30 before title copy, desktop RECT and actual dimension stores.",
+    "Desktop RECT incoming bytes are not prezeroed; DWORD subtraction wraps then FILD/FIDIV signed32 at BED0D9/BED0E7.",
+    "BED0F2/+24 width, BED0F5/+28 height, BED0F8/+0C fullscreen byte precede BED0FB FSTP float rounding.",
+    "BED0FF FLD and BED103 FST+3C; windowed branch pops and computes requested width/height.",
+    "BED118 FSTP overwrites original argument8 stack slot with selected float; BED11F reload; BED126 FST+10.",
+    "D5BD98 bits3FAAAAAB; FXCH/FCOMIP/FSTP/JBE makes orderedgreater1 and unordered0 at byte+0D.",
+    "Byte+14 marks1280x720. Fullscreen stores raw argument4 at+18 and zeros+1C/+20; windowed uses BITSPIXEL then originalx/y.",
+    "Byte+42=1 before ShowWindow; renderer consumes current owner+28 after original arg8 stack slot was overwritten."
+  ],
+  "renderer_slots": [
+    "currentHWND+30",
+    "captured argument3 DWORD",
+    "current width+24",
+    "current height+28",
+    "0x15",
+    "1",
+    "argument9",
+    "0x4b",
+    "argument4!=0",
+    "0"
+  ],
+  "renderer_dispatch": {
+    "site": "00bed1e6",
+    "publication_read": "00bed1b7 current00F8D394",
+    "profile_slot": "00d5f0ac",
+    "target": "00b2aeb0",
+    "abi": "ECX actual renderer,10 stackDWORDs,RET28h"
+  },
+  "message_contract": {
+    "thunk": "00bec3b0",
+    "thunk_bytes": 36,
+    "thunk_abi": "stdcall4 WNDPROC args,RET10h",
+    "publication_read": "current0109CF04 on each call",
+    "profile_slot": "00d68cec",
+    "target": "00bed3b0",
+    "handler_bytes": 946,
+    "handler_abi": "stdcall5 explicitactive,HWND,message,WPARAM,LPARAM;RET14h",
+    "window_receiver": "GetWindowLongA(HWND,0) except WM_CREATE captures CREATESTRUCTA.lpCreateParams",
+    "wm_create": "SetWindowLongA(HWND,0,createParam); createParam+40=1; return0",
+    "distinct_receivers_required": true,
+    "explicit_receiver_arms": [
+      "text+170/+174/+44",
+      "WM_CLOSE+180",
+      "WM_SETTINGCHANGE+2C",
+      "later focus/foreground work"
+    ],
+    "window_receiver_arms": [
+      "early WM_ACTIVATE",
+      "early WM_SIZE",
+      "WM_ENTERSIZEMOVE+42",
+      "WM_EXITSIZEMOVE+42"
+    ],
+    "synchronous_creation_reentry_must_be_supported": true,
+    "jump_tables": {
+      "1_to_6": {
+        "1": "00bed508",
+        "2": "00bed669",
+        "3": "00bed669",
+        "4": "00bed669",
+        "5": "00bed525",
+        "6": "00bed3f3"
+      },
+      "16_to_256_nondefault": {
+        "16": "00bed6a0",
+        "26": "00bed6b4",
+        "36": "00bed67e",
+        "256": "00bed607"
+      }
+    }
+  },
+  "eh": {
+    "handler": "00cc748b",
+    "func_info": "00e01fc0",
+    "unwind_map": "00e01fb8",
+    "states": 1,
+    "action": "00cc7480 frees captured allocation via BF65AC",
+    "arm": "BED1FB after14h allocation before optional BEC870 construction",
+    "disarm": "BED216 before BEC3E0(10000), after FE88 publication read",
+    "whole_window_rollback": false,
+    "source_fragment": "initialize_native_window_render_entry_cache_00bed1e8_fragment"
+  },
+  "power": {
+    "producer": "00bed223..00bed276",
+    "actual_scheme_offset": "0x4c",
+    "saved_policy_offset": "0x50",
+    "modified_policy_offset": "0xe0",
+    "policy_bytes": 144,
+    "schedule": [
+      "scheme=-1",
+      "GetActivePwrScheme(&actual+4C)",
+      "if getter succeeds: ReadPwrScheme(scheme,actual+50), ignored result",
+      "capture current scheme; copy24h DWORDs actual+50 toactual+E0",
+      "clear+11C then+118; SetActivePwrScheme(captured,null,actual+E0), ignored result",
+      "SystemParametersInfoA(0x11,0,null,0) regardless of getter outcome"
+    ],
+    "old_window_stop": "BEBF70 only when incoming HWND+30 nonzero; captured+4C!=-1 restores actual+50, clears+42, PostQuitMessage0.",
+    "normal_retirement_power_restore": false
+  },
+  "providers": [
+    {
+      "domain": "raw_platform_lifetime",
+      "source_ready": true,
+      "source": "src/native_platform_construction.cpp",
+      "symbols": [
+        "construct_native_win32_platform_00becda0",
+        "delete_native_win32_platform_00bece30"
+      ],
+      "remaining": "Actual shared CF04 application binding; no default allocation preimage or44B clone."
+    },
+    {
+      "domain": "raw_title_resize",
+      "source_ready": true,
+      "source": "src/native_string.cpp",
+      "symbols": [
+        "resize_native_string_header_0041dd40"
+      ],
+      "remaining": "Actual owner+4/source8B headers and same AA0/AA8/AA4 context; exact post-call rereads."
+    },
+    {
+      "domain": "raw_renderer_device_startup",
+      "source_ready": true,
+      "source": "src/native_renderer_device_startup_actual.cpp",
+      "symbols": [
+        "initialize_native_renderer_device_00b2aeb0"
+      ],
+      "remaining": "Current F8D394 call at BED1E6 with actual10 slots and existing real device/reset/pool graph; no initialized-device substitute."
+    },
+    {
+      "domain": "raw_render_entry_cache",
+      "source_ready": true,
+      "source": "src/native_render_entry_cache.cpp",
+      "symbols": [
+        "initialize_native_window_render_entry_cache_00bed1e8_fragment"
+      ],
+      "remaining": "Same AA0/FE88/D7A24C context after renderer call and before power producer."
+    },
+    {
+      "domain": "actual_win32_creation",
+      "source_ready_for_full_becee0": false,
+      "source": "src/win32_window.cpp",
+      "existing": "Real import-based fragment, with caller WNDPROC, C-string options and added failure returns.",
+      "remaining": "Exact raw title/owner/message re-entry; Original ignores API results and continues."
+    },
+    {
+      "domain": "raw_wndproc_and_message_handler",
+      "source_ready": false,
+      "sources": [
+        "src/engine_services_cc13.cpp",
+        "src/platform_window.cpp",
+        "src/platform_activation.cpp",
+        "src/platform_control_messages.cpp",
+        "src/platform_text_messages.cpp"
+      ],
+      "existing": "Value-supplied callable-vtable wrapper plus projections/callback boundaries; not full raw BED3B0.",
+      "remaining": "Current CF04 per WNDPROC call, correct stdcall4->stdcall5 stack ABI, distinct active and window-extra receivers, actual dependency domains before synchronous creation callbacks."
+    },
+    {
+      "domain": "raw_text_queue_production",
+      "source_ready": false,
+      "source": "src/text_input.cpp",
+      "existing": "Private typed new/delete queue with unlinked-node RAII on count failure.",
+      "remaining": "Actual0Ch header+174 and raw BEC7B0/BED290/BED370 allocation/count/link/failure schedule."
+    },
+    {
+      "domain": "raw_power_policy",
+      "source_ready": false,
+      "source": "src/platform_control_messages.cpp",
+      "existing": "Reviewed actual Win32 imports and producer/stop schedule on projected state and separate POWER_POLICY owners.",
+      "remaining": "Same raw owner+4C/+50/+E0 stores and incoming policy bytes; conditional old-window stop only; no normal-retirement power restore."
+    },
+    {
+      "domain": "canonical_renderer_platform_publication_alias",
+      "source_ready": false,
+      "source": "src/game_native_renderer_device.inc",
+      "existing": "DeviceGraph::platform_publication is a separate const void* volatile cell initialized from pointer value; reset/loading focus borrow that cell.",
+      "remaining": "Borrow actual canonical CF04 cell, preserving current-publication reads and actual+28/+30/+41 backing fields."
+    }
+  ],
+  "validation": {
+    "live_pe_spans": [
+      {
+        "address": "0073d8d1",
+        "bytes": 39,
+        "purpose": "allocation and constructor call",
+        "pe_storage": "file_backed",
+        "sha256": "5566bea56d33293cf395926ffdf1db1c5148d94ab74bdad682352cdf5e91ea28",
+        "live_matches_installed_pe": true
+      },
+      {
+        "address": "0073dbc7",
+        "bytes": 103,
+        "purpose": "eleven stack arguments, indirect slot4 call and caller cleanup",
+        "pe_storage": "file_backed",
+        "sha256": "ba42b6ae305fcc7a1ec36462f241b1f45a266fcf7386f098eccf009a01eff235",
+        "live_matches_installed_pe": true
+      },
+      {
+        "address": "00becee0",
+        "bytes": 938,
+        "purpose": "complete window/configuration body",
+        "pe_storage": "file_backed",
+        "sha256": "8debd8b57b4a83e71ddc03823532c1105f537d55e1b563d0fdb8140f56392e9d",
+        "live_matches_installed_pe": true,
+        "saved_listing_equals_live": true
+      },
+      {
+        "address": "00bec3b0",
+        "bytes": 36,
+        "purpose": "complete WNDPROC thunk",
+        "pe_storage": "file_backed",
+        "sha256": "01e60e1316d293035548925c1dfa9a93708490eb43824567fcde534954951d7d",
+        "live_matches_installed_pe": true,
+        "saved_listing_equals_live": true
+      },
+      {
+        "address": "00bed3b0",
+        "bytes": 946,
+        "purpose": "complete message body, excludes jump tables",
+        "pe_storage": "file_backed",
+        "sha256": "134ba7f6b542be3bcfdf1cc716506cacbd3b3aada3e48a349a0256201f5555e7",
+        "live_matches_installed_pe": true,
+        "saved_listing_equals_live": true
+      },
+      {
+        "address": "00bed764",
+        "bytes": 285,
+        "purpose": "two message jump tables and byte dispatch map",
+        "pe_storage": "file_backed",
+        "sha256": "24c776c722f4b3c00bab75f0c720a72d5daf413d6c88cf266165e037ac3568e5",
+        "live_matches_installed_pe": true
+      },
+      {
+        "address": "00bebf70",
+        "bytes": 37,
+        "purpose": "conditional old-window stop body",
+        "pe_storage": "file_backed",
+        "sha256": "8144c2a4b84d01cd8b096ef0d27ddc41750be60e0af5cf6921bf4120ee80dab3",
+        "live_matches_installed_pe": true,
+        "saved_listing_equals_live": true
+      },
+      {
+        "address": "00cc7480",
+        "bytes": 21,
+        "purpose": "cache allocation unwind action and EH handler",
+        "pe_storage": "file_backed",
+        "sha256": "df41ac1f9118011feee8a5d03fad463f3a8c17dc0783cdc82942ddb69a7f86bf",
+        "live_matches_installed_pe": true
+      },
+      {
+        "address": "00e01fb8",
+        "bytes": 44,
+        "purpose": "one unwind entry and36-byte FH3 FuncInfo",
+        "pe_storage": "file_backed",
+        "sha256": "c7e6bd9a0518a11c4dc9b9100823ece11361ac93bec01b428c9216ff023eeb1d",
+        "live_matches_installed_pe": true
+      },
+      {
+        "address": "00d68cc4",
+        "bytes": 44,
+        "purpose": "platform profile11 slots",
+        "pe_storage": "file_backed",
+        "sha256": "a5be7ed3382a21411c44f1f420bfebf4f3cd9dfb673eea54a0d7645dc45d8035",
+        "live_matches_installed_pe": true
+      },
+      {
+        "address": "00d5f0a8",
+        "bytes": 8,
+        "purpose": "renderer profile first2 slots",
+        "pe_storage": "file_backed",
+        "sha256": "e0ac4947de743c9a8d1cd9bcb34cf1f7c23daad41edf4ec889ed241649598813",
+        "live_matches_installed_pe": true
+      },
+      {
+        "address": "00d5bd98",
+        "bytes": 4,
+        "purpose": "widescreen threshold float",
+        "pe_storage": "file_backed",
+        "sha256": "6f4cd532e8c154c45c348ae70bd34e9a5dffdb04411785cb9aa4d5f2ff1ce765",
+        "live_matches_installed_pe": true
+      },
+      {
+        "address": "0109db8d",
+        "bytes": 1,
+        "purpose": "empty string fallback",
+        "pe_storage": "loader_zero_initialized_virtual_tail",
+        "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+        "live_matches_installed_pe": true
+      }
+    ],
+    "verified_bytes": 2506,
+    "file_backed_bytes": 2505,
+    "loader_zero_bytes": 1,
+    "saved_listing_matches": 4,
+    "decoded_calls": [
+      {
+        "owner": "00becee0",
+        "address": "00becf27",
+        "bytes": "ffd0",
+        "operand": "eax",
+        "register_indirect": true
+      },
+      {
+        "owner": "00becee0",
+        "address": "00becf5a",
+        "bytes": "ff157023ce00",
+        "operand": "dword ptr [0xce2370]",
+        "import_cell": "00ce2370",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "LoadCursorA"
+        }
+      },
+      {
+        "owner": "00becee0",
+        "address": "00becf88",
+        "bytes": "ff150023ce00",
+        "operand": "dword ptr [0xce2300]",
+        "import_cell": "00ce2300",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "RegisterClassA"
+        }
+      },
+      {
+        "owner": "00becee0",
+        "address": "00becfb0",
+        "bytes": "ff152c23ce00",
+        "operand": "dword ptr [0xce232c]",
+        "import_cell": "00ce232c",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "AdjustWindowRect"
+        }
+      },
+      {
+        "owner": "00becee0",
+        "address": "00becffe",
+        "bytes": "ff150423ce00",
+        "operand": "dword ptr [0xce2304]",
+        "import_cell": "00ce2304",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "CreateWindowExA"
+        }
+      },
+      {
+        "owner": "00becee0",
+        "address": "00bed01c",
+        "bytes": "ffd6",
+        "operand": "esi",
+        "register_indirect": true
+      },
+      {
+        "owner": "00becee0",
+        "address": "00bed026",
+        "bytes": "ffd6",
+        "operand": "esi",
+        "register_indirect": true
+      },
+      {
+        "owner": "00becee0",
+        "address": "00bed044",
+        "bytes": "ff152423ce00",
+        "operand": "dword ptr [0xce2324]",
+        "import_cell": "00ce2324",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "SetWindowPos"
+        }
+      },
+      {
+        "owner": "00becee0",
+        "address": "00bed05a",
+        "bytes": "ffd3",
+        "operand": "ebx",
+        "register_indirect": true
+      },
+      {
+        "owner": "00becee0",
+        "address": "00bed067",
+        "bytes": "ffd3",
+        "operand": "ebx",
+        "register_indirect": true
+      },
+      {
+        "owner": "00becee0",
+        "address": "00bed077",
+        "bytes": "ff152423ce00",
+        "operand": "dword ptr [0xce2324]",
+        "import_cell": "00ce2324",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "SetWindowPos"
+        }
+      },
+      {
+        "owner": "00becee0",
+        "address": "00bed096",
+        "bytes": "e8a50c83ff",
+        "operand": "0x41dd40",
+        "direct_target": "0041dd40"
+      },
+      {
+        "owner": "00becee0",
+        "address": "00bed0ab",
+        "bytes": "e8d0a50000",
+        "operand": "0xbf7680",
+        "direct_target": "00bf7680"
+      },
+      {
+        "owner": "00becee0",
+        "address": "00bed0b8",
+        "bytes": "ff156023ce00",
+        "operand": "dword ptr [0xce2360]",
+        "import_cell": "00ce2360",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "GetDesktopWindow"
+        }
+      },
+      {
+        "owner": "00becee0",
+        "address": "00bed0bf",
+        "bytes": "ff156c23ce00",
+        "operand": "dword ptr [0xce236c]",
+        "import_cell": "00ce236c",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "GetClientRect"
+        }
+      },
+      {
+        "owner": "00becee0",
+        "address": "00bed178",
+        "bytes": "ff156423ce00",
+        "operand": "dword ptr [0xce2364]",
+        "import_cell": "00ce2364",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "GetDC"
+        }
+      },
+      {
+        "owner": "00becee0",
+        "address": "00bed183",
+        "bytes": "ff156420ce00",
+        "operand": "dword ptr [0xce2064]",
+        "import_cell": "00ce2064",
+        "import": {
+          "dll": "GDI32.dll",
+          "name": "GetDeviceCaps"
+        }
+      },
+      {
+        "owner": "00becee0",
+        "address": "00bed191",
+        "bytes": "ff153023ce00",
+        "operand": "dword ptr [0xce2330]",
+        "import_cell": "00ce2330",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "ReleaseDC"
+        }
+      },
+      {
+        "owner": "00becee0",
+        "address": "00bed1b1",
+        "bytes": "ff152023ce00",
+        "operand": "dword ptr [0xce2320]",
+        "import_cell": "00ce2320",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "ShowWindow"
+        }
+      },
+      {
+        "owner": "00becee0",
+        "address": "00bed1e6",
+        "bytes": "ffd0",
+        "operand": "eax",
+        "register_indirect": true
+      },
+      {
+        "owner": "00becee0",
+        "address": "00bed1ea",
+        "bytes": "e82c960000",
+        "operand": "0xbf681b",
+        "direct_target": "00bf681b"
+      },
+      {
+        "owner": "00becee0",
+        "address": "00bed203",
+        "bytes": "e868f6ffff",
+        "operand": "0xbec870",
+        "direct_target": "00bec870"
+      },
+      {
+        "owner": "00becee0",
+        "address": "00bed21e",
+        "bytes": "e8bdf1ffff",
+        "operand": "0xbec3e0",
+        "direct_target": "00bec3e0"
+      },
+      {
+        "owner": "00becee0",
+        "address": "00bed22d",
+        "bytes": "e8aa0b0400",
+        "operand": "0xc2dddc",
+        "direct_target": "00c2dddc",
+        "import": {
+          "dll": "POWRPROF.dll",
+          "name": "GetActivePwrScheme"
+        }
+      },
+      {
+        "owner": "00becee0",
+        "address": "00bed23d",
+        "bytes": "e8940b0400",
+        "operand": "0xc2ddd6",
+        "direct_target": "00c2ddd6",
+        "import": {
+          "dll": "POWRPROF.dll",
+          "name": "ReadPwrScheme"
+        }
+      },
+      {
+        "owner": "00becee0",
+        "address": "00bed264",
+        "bytes": "e8670b0400",
+        "operand": "0xc2ddd0",
+        "direct_target": "00c2ddd0",
+        "import": {
+          "dll": "POWRPROF.dll",
+          "name": "SetActivePwrScheme"
+        }
+      },
+      {
+        "owner": "00becee0",
+        "address": "00bed271",
+        "bytes": "ff154023ce00",
+        "operand": "dword ptr [0xce2340]",
+        "import_cell": "00ce2340",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "SystemParametersInfoA"
+        }
+      },
+      {
+        "owner": "00bec3b0",
+        "address": "00bec3cf",
+        "bytes": "ffd0",
+        "operand": "eax",
+        "register_indirect": true
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed3c5",
+        "bytes": "ff157423ce00",
+        "operand": "dword ptr [0xce2374]",
+        "import_cell": "00ce2374",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "GetWindowLongA"
+        }
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed3fa",
+        "bytes": "e8731d0400",
+        "operand": "0xc2f172",
+        "direct_target": "00c2f172",
+        "import": {
+          "dll": "XINPUT1_3.dll",
+          "name": "ordinal5"
+        }
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed41b",
+        "bytes": "ff152423ce00",
+        "operand": "dword ptr [0xce2324]",
+        "import_cell": "00ce2324",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "SetWindowPos"
+        }
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed427",
+        "bytes": "e854d0e8ff",
+        "operand": "0xa7a480",
+        "direct_target": "00a7a480"
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed42e",
+        "bytes": "e8dd428dff",
+        "operand": "0x4c1710",
+        "direct_target": "004c1710"
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed435",
+        "bytes": "e896eee5ff",
+        "operand": "0xa4c2d0",
+        "direct_target": "00a4c2d0"
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed43c",
+        "bytes": "e86f3e8dff",
+        "operand": "0x4c12b0",
+        "direct_target": "004c12b0"
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed443",
+        "bytes": "e8585febff",
+        "operand": "0xaa33a0",
+        "direct_target": "00aa33a0"
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed450",
+        "bytes": "ff15fc22ce00",
+        "operand": "dword ptr [0xce22fc]",
+        "import_cell": "00ce22fc",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "DefWindowProcA"
+        }
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed45f",
+        "bytes": "e80e1d0400",
+        "operand": "0xc2f172",
+        "direct_target": "00c2f172",
+        "import": {
+          "dll": "XINPUT1_3.dll",
+          "name": "ordinal5"
+        }
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed47e",
+        "bytes": "ff152423ce00",
+        "operand": "dword ptr [0xce2324]",
+        "import_cell": "00ce2324",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "SetWindowPos"
+        }
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed48e",
+        "bytes": "e81d3e8dff",
+        "operand": "0x4c12b0",
+        "direct_target": "004c12b0"
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed495",
+        "bytes": "e8065febff",
+        "operand": "0xaa33a0",
+        "direct_target": "00aa33a0"
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed4a0",
+        "bytes": "e8fbcfe8ff",
+        "operand": "0xa7a4a0",
+        "direct_target": "00a7a4a0"
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed4a7",
+        "bytes": "e864428dff",
+        "operand": "0x4c1710",
+        "direct_target": "004c1710"
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed4ae",
+        "bytes": "e81deee5ff",
+        "operand": "0xa4c2d0",
+        "direct_target": "00a4c2d0"
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed4b9",
+        "bytes": "e8f27af3ff",
+        "operand": "0xb24fb0",
+        "direct_target": "00b24fb0"
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed4c6",
+        "bytes": "ff151823ce00",
+        "operand": "dword ptr [0xce2318]",
+        "import_cell": "00ce2318",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "SetForegroundWindow"
+        }
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed4d0",
+        "bytes": "ff151423ce00",
+        "operand": "dword ptr [0xce2314]",
+        "import_cell": "00ce2314",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "SetFocus"
+        }
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed4ee",
+        "bytes": "e8edfcf1ff",
+        "operand": "0xb0d1e0",
+        "direct_target": "00b0d1e0"
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed4fb",
+        "bytes": "ff15fc22ce00",
+        "operand": "dword ptr [0xce22fc]",
+        "import_cell": "00ce22fc",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "DefWindowProcA"
+        }
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed512",
+        "bytes": "ff152823ce00",
+        "operand": "dword ptr [0xce2328]",
+        "import_cell": "00ce2328",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "SetWindowLongA"
+        }
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed549",
+        "bytes": "ff152423ce00",
+        "operand": "dword ptr [0xce2324]",
+        "import_cell": "00ce2324",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "SetWindowPos"
+        }
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed55f",
+        "bytes": "ff151423ce00",
+        "operand": "dword ptr [0xce2314]",
+        "import_cell": "00ce2314",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "SetFocus"
+        }
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed569",
+        "bytes": "ff151823ce00",
+        "operand": "dword ptr [0xce2318]",
+        "import_cell": "00ce2318",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "SetForegroundWindow"
+        }
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed577",
+        "bytes": "ff15fc22ce00",
+        "operand": "dword ptr [0xce22fc]",
+        "import_cell": "00ce22fc",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "DefWindowProcA"
+        }
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed59e",
+        "bytes": "ff152423ce00",
+        "operand": "dword ptr [0xce2324]",
+        "import_cell": "00ce2324",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "SetWindowPos"
+        }
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed5b4",
+        "bytes": "ff15fc22ce00",
+        "operand": "dword ptr [0xce22fc]",
+        "import_cell": "00ce22fc",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "DefWindowProcA"
+        }
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed5ce",
+        "bytes": "ff15fc22ce00",
+        "operand": "dword ptr [0xce22fc]",
+        "import_cell": "00ce22fc",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "DefWindowProcA"
+        }
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed664",
+        "bytes": "e807fdffff",
+        "operand": "0xbed370",
+        "direct_target": "00bed370"
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed671",
+        "bytes": "ff15fc22ce00",
+        "operand": "dword ptr [0xce22fc]",
+        "import_cell": "00ce22fc",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "DefWindowProcA"
+        }
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed693",
+        "bytes": "ff15fc22ce00",
+        "operand": "dword ptr [0xce22fc]",
+        "import_cell": "00ce22fc",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "DefWindowProcA"
+        }
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed6ce",
+        "bytes": "ff15fc22ce00",
+        "operand": "dword ptr [0xce22fc]",
+        "import_cell": "00ce22fc",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "DefWindowProcA"
+        }
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed724",
+        "bytes": "ff15fc22ce00",
+        "operand": "dword ptr [0xce22fc]",
+        "import_cell": "00ce22fc",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "DefWindowProcA"
+        }
+      },
+      {
+        "owner": "00bed3b0",
+        "address": "00bed73d",
+        "bytes": "ff15fc22ce00",
+        "operand": "dword ptr [0xce22fc]",
+        "import_cell": "00ce22fc",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "DefWindowProcA"
+        }
+      },
+      {
+        "owner": "00bebf70",
+        "address": "00bebf82",
+        "bytes": "e8491e0400",
+        "operand": "0xc2ddd0",
+        "direct_target": "00c2ddd0",
+        "import": {
+          "dll": "POWRPROF.dll",
+          "name": "SetActivePwrScheme"
+        }
+      },
+      {
+        "owner": "00bebf70",
+        "address": "00bebf8d",
+        "bytes": "ff154c23ce00",
+        "operand": "dword ptr [0xce234c]",
+        "import_cell": "00ce234c",
+        "import": {
+          "dll": "USER32.dll",
+          "name": "PostQuitMessage"
+        }
+      }
+    ],
+    "wrapper_queries_verify_project_and_program": true,
+    "checker": "local/platform_window_configuration/verify_frontier.py",
+    "checker_sha256": "59067bbeac6d68e3b05b3263e35e8075acbd6106d5413dc897c149b6d3008edc",
+    "raw_results": "local/platform_window_configuration/byte_validation.json",
+    "raw_results_sha256": "88c1896295a947a409358e6229c334390d5e87a6b9d32bab64f92bed18b33531",
+    "checker_correction": "Initial file-only lookup of0109DB8D returned no byte because it is beyond .data raw size. Final check uses the PE mapped image and labels this1-byte loader-zero span explicitly.",
+    "cpp_changed": false,
+    "build_required": false,
+    "new_probe_required": false,
+    "window_or_game_launched": false,
+    "ghidra_annotations": {
+      "all_three_names_retained": true,
+      "all_prior_comments_preserved": true,
+      "write_lock": "tools/ghidra_annotate.py --apply",
+      "project_saved": true,
+      "readback": "local/platform_window_configuration/annotations-readback.json",
+      "force_refreshed_exports": [
+        "00becee0",
+        "00bec3b0",
+        "00bed3b0"
+      ]
+    },
+    "prior_immutable_manifests_unchanged": {
+      "local/checkpoints/cc14-native-platform-owner/final/validation.json": "c7e8df690dc9618fbe54c08c5f160bec4b38392a27624990d1ac7f86ecab2f9d",
+      "local/checkpoints/cc14-native-platform-owner-retirement/final/validation.json": "deb621284ef2e7aa81f107e94c8ec2a2148c57970fbe1b00b6d7191ca9ac5eb2"
+    },
+    "tracked_cpp_headers_cmake_and_reconstruction_ledger_unchanged": true
+  },
+  "current_provider_files": [
+    {
+      "path": "include/bsp/native_platform_construction.hpp",
+      "sha256": "41a3e4f9dcf1222ab98276ae0ab00cf95154c9aba16905ddfdd4b6901e8a5491"
+    },
+    {
+      "path": "src/native_platform_construction.cpp",
+      "sha256": "309d14c5aa57c44aec368d4c1e88c72c6ca8088281d2574cc453e332d72f9255"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+    },
+    {
+      "path": "include/bsp/native_renderer_device_startup_actual.hpp",
+      "sha256": "537f56e5995865d04c25bd105a2ea03fb6cfacf65c826db242a0d57be0b208de"
+    },
+    {
+      "path": "src/native_renderer_device_startup_actual.cpp",
+      "sha256": "d40202b0dabeeae324f3cdd84fcd5c9c6966f2472966f4a05669eb858747a8e7"
+    },
+    {
+      "path": "include/bsp/native_render_entry_cache.hpp",
+      "sha256": "827a16a594dbba5e509c8153a966bbeb1a05ebeb4ca0c933febf1633c7b192cc"
+    },
+    {
+      "path": "src/native_render_entry_cache.cpp",
+      "sha256": "f53fb7e6e79cc58002dd039403c03e7ee8f690ab7cb84c062ca7553bb4aaee87"
+    },
+    {
+      "path": "include/bsp/win32_window.hpp",
+      "sha256": "0754ce190c3154b0200cfa5ae31d8b9b2d5df2744a883e5b0aff3668c5bf75ee"
+    },
+    {
+      "path": "src/win32_window.cpp",
+      "sha256": "020191987aa5b63e631634570888eaad4f61a3f7a0189404e033c860e2065218"
+    },
+    {
+      "path": "include/bsp/platform_window.hpp",
+      "sha256": "86ff92603f4fe79a8e829fab6655cf4d0e35ebfadc192bd7dcc9fd4e0115c205"
+    },
+    {
+      "path": "src/platform_window.cpp",
+      "sha256": "65df336faf133b717496ad21d38c4218a7329c6f4e136e6dc570e7fc667fac03"
+    },
+    {
+      "path": "include/bsp/platform_control_messages.hpp",
+      "sha256": "00107c933bdc8da1f4130be878544369acc733d7a339cf41a4fdb42b1b05bcde"
+    },
+    {
+      "path": "src/platform_control_messages.cpp",
+      "sha256": "6e70aeaac9ec399be43802b4424a4fde8db4d4a23996a2e6b64cc0e2fee417ec"
+    },
+    {
+      "path": "include/bsp/platform_activation.hpp",
+      "sha256": "5e6d6a9d12bfc238cbd7b71ffd044417508dfc1acc9f147305d4983c505008dd"
+    },
+    {
+      "path": "src/platform_activation.cpp",
+      "sha256": "2c1517eb3d5c53a8e21813d6415e3a996941ae3587b0e6ebceb03c5c940829fd"
+    },
+    {
+      "path": "include/bsp/platform_text_messages.hpp",
+      "sha256": "6aa2c868c78a8afcd32533791be2325f6541b4823d74d23412c51a720d15b0c9"
+    },
+    {
+      "path": "src/platform_text_messages.cpp",
+      "sha256": "a0ea17bf48e997da02813a6c592daf040791e7d00eac0fbadfc550de371150bc"
+    },
+    {
+      "path": "include/bsp/text_input.hpp",
+      "sha256": "f71d568b01ca26f7229cd31a5b16bc49a57973837f02736697e6a6c559abde3c"
+    },
+    {
+      "path": "src/text_input.cpp",
+      "sha256": "6a1515ea796ceee4566cf147b09e5866fff89f60f9ad4a8d9f45d9cf9585f050"
+    },
+    {
+      "path": "src/engine_services_cc13.cpp",
+      "sha256": "9a02ce304c1cec3466379a45972a434e658ea0e7c54d363cda51750cf55c8dde"
+    },
+    {
+      "path": "src/game_native_renderer_device.inc",
+      "sha256": "46c1997ca951e55afe7f9400820552a11ef5f6e0100ddb5810d0a695a58507db"
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "sha256": "17c70a00eeb77e8155fe478d097d566cc0d5210f23db6593159a5a5a3ff3f65e"
+    },
+    {
+      "path": "include/bsp/game_native_renderer_application.hpp",
+      "sha256": "9c8b0ad4fb89977dd8a5e9ebbe5615cc43bbff8822f02ab14d3d75f17b9b593b"
+    },
+    {
+      "path": "reports/cc12_native_platform_window_binding_frontier_01.json",
+      "sha256": "7440138caba925a0b14b063570f745f5dfd51ace6e4c6acc15f17da44cafc444"
+    }
+  ],
+  "next_packets": [
+    "Raw message queue production BEC7B0/BED290/BED370 with exact failure domain and actual+174h header.",
+    "Full raw BED3B0 with actual providers and explicitactive/window-extra identity; BEC3B0 currentCF04 routing and original stackABI.",
+    "Canonical CF04 binding to actual388B owner, renderer reset/loading consumers, Text signed+28 and window+30/+41 fields.",
+    "Compose full BECEE0 with exact x87/store schedule, raw string, true device startup, actual cache and raw policy tail; qualify before activation."
+  ],
+  "limits": [
+    "No new C++ body or reconstruction ledger credit. Existing projected/fragment credit is unchanged.",
+    "Static/live byte and dependency evidence only; no native whole-body execution, original ABI/SEH equivalence, active frame, Text activation or gameplay proof.",
+    "Host/probe runtime and permanent CMake integration remain with the primary integrator.",
+    "Prior adoption/retirement manifests and binaries are immutable and not rewritten."
+  ],
+  "artifact_capture": {
+    "manifest": "local/checkpoints/cc14-native-platform-window-configuration/final/validation.json"
+  }
+}
