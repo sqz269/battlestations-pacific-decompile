@@ -1,0 +1,52 @@
+{
+  "packet": "oct15_native_string_vector_insert_one",
+  "status": "complete_actual_header_source_current_cpp_eh_build_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "address": "00450180",
+  "cpp_name": "insert_native_string_header_vector_one_00450180",
+  "source": "src/native_string_vector_insert_one.cpp",
+  "header": "include/bsp/native_string_vector_insert_one.hpp",
+  "documentation": "docs/OCT15_NATIVE_STRING_VECTOR_INSERT_ONE.md",
+  "original_abi": "fastcall ECX actual10h header, EDX unused; stack output,owner,position,value; RET10h; EAX original output",
+  "coverage": "complete_actual_header_Source_wrapper_with_exact_captures_returning_diagnostics_and_ordered_output_publication",
+  "local_eh": "none; no new catch, cleanup or rollback",
+  "prior_qualified_fragments": "native_checked_string_storage append-only fragments and their existing native fixtures remain unchanged and separate",
+  "dependencies": [
+    {"address": "0044f410", "source_api": "insert_native_string_header_vector_count_0044f410", "accepted_worker_commit": "22ed4514d", "accepted_integrator_commit": "22239cedc", "contract": "actual raw-pool full count insertion, count1; incoming EDX word is value-address bits and is unconsumed by child"},
+    {"address": "00bf6713", "source_api": "invoke_native_invalid_parameter_00bf6713", "contract": "current SDK zero-argument CRT policy; returning continuation and thrown failure preserved; no installed callback or noreturn/noexcept fiction"}
+  ],
+  "captures_and_reads": [
+    "Capture original begin once. If null, do not load preliminary end; otherwise capture preliminary end once and test wrapped SAR3(end-begin).",
+    "Only nonzero-size branch performs captured range and owner checks, then computes SAR3(position-original begin); empty branch keeps offset0 without owner validation.",
+    "Call actual count insertion with same owner/position/value and count1; physical EDX overwritten with value-address bits.",
+    "Capture post-child begin; compare it with current end and retain it across returning diagnostics for wrapped result address calculation.",
+    "Read fresh end for result upper bound; only on result<=end read fresh begin for lower bound; one returning diagnostic then ordered output publication without extra validation.",
+    "Write output+4 result before output+0 header; return original output and preserve other output words. Output/header/value aliases are not rejected."
+  ],
+  "host_steps": [
+    {"address": "004501a6", "native": "00bf6713", "function": "00450180", "contract": "captured nonempty range reversed diagnostic"},
+    {"address": "004501b3", "native": "00bf6713", "function": "00450180", "contract": "captured owner diagnostic only on nonempty branch"},
+    {"address": "004501d0", "native": "0044f410", "function": "00450180", "contract": "actual count1 insertion with value bits in unused EDX"},
+    {"address": "004501dd", "native": "00bf6713", "function": "00450180", "contract": "captured new begin versus fresh end diagnostic"},
+    {"address": "004501f3", "native": "00bf6713", "function": "00450180", "contract": "short-circuit fresh bounds result diagnostic"},
+    {"address": "004505b6", "native": "00450180", "function": "00450540", "contract": "sole incoming append physical interface evidence only"}
+  ],
+  "validation": {
+    "win32_release": "passed",
+    "existing_tests": "3/3 passed",
+    "log": "local/oct15_native_string_vector_insert_one_build.log",
+    "ctest_seconds": 7.79,
+    "native_call_sites": "6 checked, 0 failed",
+    "documentation_calls": "6 checked, 0 failed, 0 unchecked, 0 warnings",
+    "new_tests": 0,
+    "complete_entry_bytes": 137,
+    "native_range": "00450180..00450208"
+  },
+  "limits": [
+    "Added raw-pool context and by-value Source inputs are not original binary/stack-private alias ABI.",
+    "Current Source CRT provider and C++ child exception domain do not prove original handler/exception/FH3/SEH identity, fault addresses or cleanup-failure unwind behavior.",
+    "No new wrapper native differential, returning-handler fixture, original-game or gameplay proof.",
+    "Old qualified append fragments remain unchanged; the sole caller is not promoted by this wrapper packet."
+  ]
+}
