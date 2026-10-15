@@ -1,0 +1,85 @@
+{
+  "packet": "goal15_pool_cleanup",
+  "source_base": "09432cdf3",
+  "status": "complete_actual_byte_reconstruction_msvc_x86_object_checked_pending_primary_build",
+  "owned_addresses": ["0041f820"],
+  "owned_files": [
+    "include/bsp/native_pool_storage_cleanup.hpp",
+    "src/native_pool_storage_cleanup.cpp",
+    "docs/GOAL15_POOL_STORAGE_CLEANUP.md",
+    "reports/goal15_pool_storage_cleanup.json"
+  ],
+  "functions": [
+    {
+      "address": "0041f820",
+      "end_exclusive": "0041f867",
+      "bytes": 71,
+      "coverage": "complete",
+      "original_name": "FUN_0041f820",
+      "name": "cleanup_native_pool_storage_0041f820",
+      "cpp_symbol": "bsp::cleanup_native_pool_storage_0041f820",
+      "source": "src/native_pool_storage_cleanup.cpp",
+      "header": "include/bsp/native_pool_storage_cleanup.hpp",
+      "original_abi": "ECX actual record, no stacked arguments, plain RET, ESI preserved",
+      "source_abi": "MSVC Win32 fastcall: ECX actual record, EDX explicit NativeStringRawPoolContext reference",
+      "uncertainty": "Owner identity, producer and full class layout unknown; no native ABI or game-path claim"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0041f82b",
+      "native": "00bf65ac",
+      "containing_function": "0041f820",
+      "contract": "read: conditional cdecl CRT free of pointer+10h; ADD ESP,4 at0041f830",
+      "source": "existing singleton_lifetime_free, backed by std::free"
+    },
+    {
+      "address": "0041f859",
+      "native": "00419cc0",
+      "containing_function": "0041f820",
+      "contract": "read: no explicit arguments; EAX actual singleton pool, plain RET",
+      "source": "raw-context destroy_native_string_header_0041dd20 at record+4 resolves actual pool publication each release"
+    },
+    {
+      "address": "0041f860",
+      "native": "00bd1510",
+      "containing_function": "0041f820",
+      "contract": "read: ECX pool, stack block,size,unused=1; RET0Ch; unused third DWORD omitted by source provider",
+      "source": "existing concrete return_native_string_pool_00bd1510 through interior header destruction"
+    }
+  ],
+  "semantics": {
+    "order": ["conditionally free pointer+10h", "zero DWORD+10h", "zero DWORD+14h", "zero DWORD+18h", "capture pointer+8h", "if nonnull capture DWORD+4h+1 modulo2^32", "get actual pool", "return captured block"],
+    "untouched": "+4h/+8h and every other byte except the three cleared DWORDs",
+    "exception_boundary": "Getter failures propagate after the clears; no rollback or additional cleanup",
+    "producer_boundary": "No record struct or owner identity asserted; interior header body reused for matching reads only"
+  },
+  "evidence": {
+    "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "export": "exports/bsp/functions/0041f820/decompiled.c",
+    "assembly": "exports/bsp/functions/0041f820/assembly.txt",
+    "callee_bodies_and_assembly_read": ["00419cc0", "00bd1510"],
+    "crt_body_read": "00bf65ac live decompile follows thunk to actual CRT free",
+    "all_native_sites_contained_by": "0041f820..0041f866",
+    "physical_census": "python tools/callsite_census.py 0041f820: total0 in scanned sections",
+    "live_xrefs": "No references found"
+  },
+  "verification": {
+    "report_calls": "passed: 3 call rows checked, 0 failed",
+    "diff_check": "passed",
+    "msvc_x86_object_compile": "passed: C++17 /c /W4 /permissive-; compile_pool_cleanup.cmd; no linking",
+    "win32_build_and_existing_ctest": "primary integrator required after target_sources registration",
+    "new_tests": "none",
+    "native_differential": "not run",
+    "runtime_gameplay": "not validated"
+  },
+  "integration": {
+    "target": "bsp_core",
+    "target_sources_add": "src/native_pool_storage_cleanup.cpp",
+    "ghidra_mutation": "none; primary owns annotation and refresh",
+    "candidate_name": "BSP_PoolStorage_Cleanup_Provisional",
+    "candidate_name_evidence": "Complete cleanup schedule proven; pooled-storage owner identity remains unknown"
+  }
+}
