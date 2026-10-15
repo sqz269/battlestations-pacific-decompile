@@ -606,5 +606,31 @@
     "selected_file_count": 2934,
     "basis": "All exact application objects/full libraries, linker-map-selected core source units and MSVC CL.read dependency closure; recipe, native/live bytes, owner/output artifacts, logs, annotation prior values and7 owned outputs.",
     "excludes": "Not a full Windows, toolchain, game-asset or DLL installation copy. Original PE SHA and747 bytes retained; all installed assets/system import modules are not frozen."
+  },
+  "primary_integration_review": {
+    "report": "reports/cc12_native_post_texture_integration_15.json",
+    "Source_entry_reviewed": true,
+    "worker_successful_Original747_Source_case_accepted": true,
+    "additional_Root_comparison_pass": false,
+    "additional_Root_runs": [
+      {
+        "directory": "local/cc12_texture_reload_parent_review_01",
+        "pid": 54668,
+        "exit_code": 2,
+        "seconds": 0.09057289999327622,
+        "reload_body_entered": false,
+        "reason": "Instance tag exceeds32 characters; argument parsing failed before startup."
+      },
+      {
+        "directory": "local/cc12_texture_reload_parent_review_02",
+        "pid": 98520,
+        "exit_code": 4,
+        "seconds": 3.4263181000133045,
+        "reload_body_entered": false,
+        "reason": "Window setup completed; Direct3D CreateDevice returned null, diagnostic retry HRESULT0x88760868; exit4 before texture reload."
+      }
+    ],
+    "normal_existing_suites_passed": 3,
+    "gameplay_validated": false
   }
 }
