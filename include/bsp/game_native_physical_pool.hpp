@@ -45,6 +45,21 @@ public:
     // profile/class lifetime or free permission follows from this raw pointer.
     void* property_node_pool_storage_00e175b0();
 
+    // Independent explicit startup for the DISTINCT E17540 outer library-node
+    // owner. Same one-attempt Source policy as E175B0: cache real registration
+    // status, including nonzero; no retry/reconstruction after a thrown attempt.
+    // This never initializes the inner E175B0 owner or wires application startup.
+    // Externally serialize all owners' mutations of the common E188B4 list;
+    // their separate startup mutexes are not a shared-list concurrency contract.
+    int initialize_property_library_node_pool_once_00cc8a70();
+
+    // Borrow the same retained actual38h cell ONLY after startup returned.
+    // Nonzero registration still leaves an initialized owner without callback.
+    // Mapped bags/inner records+nodes, pooled keys and outer nodes must all
+    // retire before either pool's pages. No populated-node/profile provenance
+    // or payload/class lifetime follows from obtaining this mutable pointer.
+    void* property_library_node_pool_storage_00e17540();
+
 private:
     friend GameNativePhysicalPoolProcess& game_native_physical_pool_process();
     GameNativePhysicalPoolProcess() noexcept;
@@ -66,10 +81,17 @@ private:
     std::mutex property_startup_mutex_;
     StartupState property_startup_state_{StartupState::unattempted};
     int property_registration_status_{};
+
+    // Append only: preserve every old field's position and owner identity.
+    // Loader-zero Source storage is not a constructed pool until CC8A70 returns.
+    alignas(std::max_align_t) std::byte property_library_pool_00e17540_[0x38]{};
+    std::mutex property_library_startup_mutex_;
+    StartupState property_library_startup_state_{StartupState::unattempted};
+    int property_library_registration_status_{};
 };
 
 // Function-local static construction finishes (and its C++ destructor is
-// registered) BEFORE either explicit pool startup registers its CRT callback.
+// registered) BEFORE any explicit pool startup registers its CRT callback.
 // Reverse CRT order tears those pools down while their process/list still live.
 GameNativePhysicalPoolProcess& game_native_physical_pool_process();
 

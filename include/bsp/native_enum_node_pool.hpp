@@ -58,4 +58,23 @@ int initialize_static_native_property_record_pool_00cc8a30();
 // ordinary Source interfaces; original ABI/static-dispatcher/game publication,
 // rebinding/repeated lifecycle, populated maps and record lifetime stay external.
 void destroy_static_native_property_record_pool_00cd9260() noexcept;
+
+// DISTINCT outer property-library14h-node owner00E17540, not E175B0/E175E8.
+// Borrow its actual aligned, initially unconstructed38h Source cell and the
+// SAME canonical E188B4 list. Bind CE37A4/00410CD0 before publishing the pair;
+// this does not initialize/reset a pool or list and is called once pre-startup.
+// Keep owner/list/binding alive through the matching callback. Retire all
+// mapped bags/inner nodes, pooled keys and outer nodes BEFORE page teardown.
+void bind_static_native_property_library_node_pool_00e17540(void* actual_pool,
+    AllocatorListDomain& actual_list);
+
+// Whole CC8A70..CC8A85: genuine00411050, then real std::atexit(CD9270Source).
+// Return the registration result; no native once guard, retry or rollback.
+// Normal current-CRT Source only; construction exceptions precede registration.
+int initialize_static_native_property_library_node_pool_00cc8a70();
+
+// Whole CD9270..CD9279: genuine00410A60 against the SAME owner/list.
+// No alias callbacks/CD9F60/CDEB50, repeated lifecycle, payload retirement,
+// Original static-dispatcher/private-CRT/ABI/EH or game claim is supplied.
+void destroy_static_native_property_library_node_pool_00cd9270() noexcept;
 } // namespace bsp

@@ -74,4 +74,29 @@ void* GameNativePhysicalPoolProcess::property_node_pool_storage_00e175b0() {
     return property_pool_00e175b0_;
 }
 
+int GameNativePhysicalPoolProcess::initialize_property_library_node_pool_once_00cc8a70() {
+    std::lock_guard lock(property_library_startup_mutex_);
+    if (property_library_startup_state_ == StartupState::returned)
+        return property_library_registration_status_;
+    if (property_library_startup_state_ == StartupState::threw)
+        throw std::logic_error("property library node pool startup previously threw");
+
+    // Commit the one Source attempt before binding or native construction.
+    // Never reconstruct a live/partially constructed critical-section owner.
+    property_library_startup_state_ = StartupState::threw;
+    bind_static_native_property_library_node_pool_00e17540(
+        property_library_pool_00e17540_, list_);
+    property_library_registration_status_ =
+        initialize_static_native_property_library_node_pool_00cc8a70();
+    property_library_startup_state_ = StartupState::returned;
+    return property_library_registration_status_;
+}
+
+void* GameNativePhysicalPoolProcess::property_library_node_pool_storage_00e17540() {
+    std::lock_guard lock(property_library_startup_mutex_);
+    if (property_library_startup_state_ != StartupState::returned)
+        throw std::logic_error("property library node pool requires completed explicit startup");
+    return property_library_pool_00e17540_;
+}
+
 } // namespace bsp::game
