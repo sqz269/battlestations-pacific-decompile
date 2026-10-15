@@ -115,14 +115,14 @@
   },
   "registered_build": {
     "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1",
-    "log": "local/goal15d_final_registered_build.log",
+    "log": "local/goal15d_integrated_registered_build.log",
     "exit_code": 0,
     "ctests_passed": [
       "reconstructed_math",
       "native_math_differential",
       "tool_tests"
     ],
-    "built_source_commit": "3be1de2e5bf7aff54198e0a5858568dff9b1caab",
+    "built_source_commit": "19679fe0574349ceef542c1de360af32cad36d02",
     "scope": "Complete registered Win32 build; existing native differential covers existing math seeds, not this new Source chain"
   },
   "source_fixtures": {
@@ -134,9 +134,9 @@
       "stderr": "",
       "sha256": {
         "J:\\PROG\\battlestations-pacific-decompile-goal15_zone_cleanup\\local\\goal15d_grid_node\\grid_node_probe.cpp": "e3dafb0edd23ecbae48c8050c12eaeab8680369988cf23982e99b950d7b1e933",
-        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15d_grid_node_probe.obj": "816b75a53e2ef2ebb87ed1bfd1715db9428d0b31e52545945324cc15f18e0456",
-        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15d_grid_node_probe.exe": "b7bc364f8c139ddb140e75ba1afc977ecfc4f1f2211ca35078a517f02f276a5f",
-        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "f566bf9fcb393ececf3ea5b6b7f48604f81c0193863db0a6908b02ad8c2d15cb",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15d_grid_node_probe.obj": "e63f5d450ec7b75d6309e0c913768aa1be2cb19101d43a44a14eb97de699522a",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15d_grid_node_probe.exe": "4ca470fe6b06d009ca6e2f9faaef98b5050006b2243d70872bf6f9dfb2259b7e",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "f296a18f55996da3ae76d340f0d7d8bfca3feb9504a0854f4717c6fa7262238c",
         "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
         "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
       }
@@ -149,9 +149,9 @@
       "stderr": "",
       "sha256": {
         "J:\\PROG\\battlestations-pacific-decompile-goal15_pool_cleanup\\local\\output\\avoid_manager_clear_probe.cpp": "2547238394e02cb43aa1c7edd85e10e2b7b279e04ff0eba52e84ca8dc9c95561",
-        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15d_manager_group_probe.obj": "41640ac2e7419d35abf25b90dc9abae268efb98760adb0a524545afb9a86cf10",
-        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15d_manager_group_probe.exe": "df9481faf9a7cfd310b4423db2c40c8e46f202903e4f699d0c935435dd16cc58",
-        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "f566bf9fcb393ececf3ea5b6b7f48604f81c0193863db0a6908b02ad8c2d15cb",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15d_manager_group_probe.obj": "636a3ede645e1b243d59fc29008052bb4ef62c9b8bf451f0e83217ec6ba173ab",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\local\\goal15d_manager_group_probe.exe": "395d6f86212f5c8230a45c4ab94ef7b5167d7449b3726eaec96cb70f3398f2a0",
+        "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_core.lib": "f296a18f55996da3ae76d340f0d7d8bfca3feb9504a0854f4717c6fa7262238c",
         "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_lua511.lib": "9dd46731e6505ab8a2d0f5195a729c3559d2376a3c7db22585aa661732cdbcf0",
         "J:\\PROG\\battlestations-pacific-decompile-goal15_integrator\\build\\win32\\Release\\bsp_zlib121.lib": "28a602c8f0438f6eae9634a933c38d401aa0f0d93c1f21ff4977cd26f94980a7"
       },

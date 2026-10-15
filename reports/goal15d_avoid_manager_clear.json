@@ -80,7 +80,7 @@
   "integration":{"target":"bsp_core","target_sources_add":"src/native_avoid_manager_clear.cpp","ghidra_mutations":"none; primary annotation/export owns saved evidence","lease":"release after commit for primary transfer"},
   "primary_integration_validation": {
   "registered_build": "PASS scripts/build.ps1; all3 existing CTests passed",
-  "build_log": "local/goal15d_final_registered_build.log",
+  "build_log": "local/goal15d_integrated_registered_build.log",
   "batch_report": "reports/goal15d_reconstruction_batch.json",
   "saved_annotations_and_exports": "PASS; before annotations/prototype retained in local rollback JSON, program saved and exports refreshed",
   "native_abi_and_gameplay": "not established",
