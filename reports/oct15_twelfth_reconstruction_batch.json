@@ -1,7 +1,7 @@
 {
   "packet": "oct15_twelfth_reconstruction_batch",
-  "status": "six_complete_ordinary_subtree_entries_integrated_source_build_passed_pending_main_publication",
-  "source_commit_tested": "9c99369ab2a0abad7cf6c7c685241e97676ce467",
+  "status": "six_complete_ordinary_subtree_entries_integrated_main_win32_build_and_existing_tests_passed",
+  "source_commit_tested": "1bf0ccdc1b31060ee0f867cca6573aa1728fd982",
   "component_pins": {
     "pooled_key_subtrees": "dfbcdaee3056280ed7eb44f501c618fc1a12795a",
     "provider_free_integer_subtrees": "2ebdba074ea983134ede5451bbab2f2d26eba749",
@@ -46,8 +46,8 @@
   "validation": {
     "build": "MSVC Win32 Release passed",
     "existing_tests": "3/3 passed",
-    "ctest_seconds": 8.26,
-    "log": "local/oct15_twelfth_publish_build.log",
+    "ctest_seconds": 8.76,
+    "log": "local/oct15_twelfth_publication_union_build.log",
     "earlier_combined_source": "772453da3c8b3081ec88eaa3e678c78217394e58",
     "earlier_combined_tests": "3/3 passed in8.03s; repeated only after new main platform Source integration.",
     "transfer_report_rows": 35,
@@ -55,7 +55,10 @@
     "failed_unchecked_warnings": 0,
     "transfer_log": "local/oct15_twelfth_transfer_verification.log",
     "new_tests": 0,
-    "new_entries_natively_executed": false
+    "new_entries_natively_executed": false,
+    "previous_platform_union_source": "9c99369ab2a0abad7cf6c7c685241e97676ce467",
+    "previous_platform_union_tests": "3/3 passed in8.26s",
+    "publication_union_reason": "Included newly integrated scene-map and integer-property Source. Tested1bf0ccdc1 and Main878d6f2e9 Source/header/CMake/tools/scripts compared equal."
   },
   "ghidra": {
     "project": "C:/Users/sqz269/bsp.gpr",
@@ -75,5 +78,5 @@
     "Existing math differential tests cover earlier seeds, not these new ordinary entries. No new-entry runtime, failure-injection or gameplay claim.",
     "Old AV/frontend fixture projections remain separate; whole input record/pair/scalar-delete destruction and loader remain incomplete and are not promoted by this batch."
   ],
-  "main_source_integration_commit": null
+  "main_source_integration_commit": "878d6f2e9127fc069fe5c6e76bb0ef8b7024f964"
 }
