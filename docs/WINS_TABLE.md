@@ -500,3 +500,11 @@ mechanism is in the cd761bb52 section above).
   100000 frames (no fail); 20,11 failed at 1220 s. On the same exe, w completes 20,5 at 4566.03 s and 20,7 at
   4441.52 s, and fails 20,3 at 1530 s and 20,11 at 1615 s. z is the IJN08 row from now on (plain and 20,3). Not
   re-timed on 9228d13fe.
+- **New row USN15 `usn15_g46_u15_tl`** (cc9-gunnery46, GUNNERY 258; recorded by cc9-lua61 from its report).
+  - Plan `config/win_orders/usn15_g46_u15_tl.txt`, dc1c7efc8 on agent/cc9-gunnery36.
+  - Exe 9b25d503, an export of a65c06700 (includes 3b30ed84a), reference env, 144000 mission frames (more than
+    90000 are needed). Log `cc9-gunnery36\local\g46_p2_u15tl.log`.
+  - Reference: EndMission 6331.16 s with FLAGWIN; the guard is logged. Deaths: Nachi 781 s, Yamashiro 1171 s, Fuso
+    3840 s, Ashigara 6326 s.
+  - **Reference-only win**: 20,3 fails at 1422.31 s and 20,5 fails at 1437.33 s. Yamashiro survives under both,
+    because its 1171 s kill is a deterministic Fubuki-07 friendly torpedo.

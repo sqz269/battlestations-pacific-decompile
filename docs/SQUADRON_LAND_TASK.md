@@ -17258,3 +17258,38 @@ flipped). JM08 `j8s` (jm08_p6_j8_f, 40000 fr, no end either side): pair_diff 1, 
 (usnos_s45_os_k, 30000 fr, no end): pair_diff 1, gameplay identical. Neither run logs a `prepare 009B6670` line: no
 level bomber enters prepare, as predicted. A faithful binding that is not exercised on any current row, so it is
 flipped ON. The leader+9C1h substitution (5hs) is the open item if a row ever reaches the wait arm.
+
+## 5ht. Handoff (cc9-lua61, 2026-10-14, paused by the lead)
+
+Tree `J:\PROG\battlestations-pacific-decompile-cc9-lua52` (agent/cc9-lua52, origin/main merged). No runs in flight and
+no leases held. Launchers: `local\l61_lane.ps1` (rows `e8` / `e8s` take `-Orders`) and `local\l61_retime.ps1` (the
+wins re-time queue; exe `local\l61_rt` = main 9228d13fe, A6266C343C18).
+
+Done this session:
+- a7613151b / 6f899650b / 5271333b4: torpedo command writes and the done/prepare formation, both ON (5hp-5hr).
+- f4d728799 / d99550ee5: level-bomb prepare, ON (5hs).
+- 8f513747a: ledger records.
+- 578ea7309: ESMP08 plan `esmp08_l61_e8_f`.
+- 92bcc3c8a and 012f5feee: the WINS_TABLE re-time on 9228d13fe and the ESMP08 recall test.
+
+Records:
+- **FreeFire / LandAndKill: unexercised, dropped by the lead.** No current row reaches UnitFreeFire or
+  SquadronLandAndKill (no log in any tree calls them). kLuaUnitFreeFireBound and kLuaSquadronLandAndKillBound stay
+  OFF.
+- ESMP08 tools, in `local\`:
+  - `l61_e8_alloc.py`: per-class target ranks.
+  - `l61_e8_recall.py`: periodic order 2.
+  - `l61_e8_reorder.py`: held-slot order 3.
+  - `l61_e8_launches.py`: launch census.
+  - `l61_helmdiff.py`: the first helm-order outcome divergence between two logs.
+- The Zero recall finding was relayed to the lead: a recalled squadron's land reaches the leader, but not wingmen
+  in their own close attack, so the slot sticks in state 4.
+
+Next, in order (the lead's queue at the pause):
+1. Time physics10's IJN08 z (`config/win_orders/ijn08_p10_i08_z.txt`; on 610dc9bfd: reference 3006.81 s, 20,3
+   3947.73 s) on the l61_rt exe, reference + 20,3, and record the row. w is superseded.
+2. Re-plan JM08 on current main; the plan must hold the reference and 20,3. The gunnery flips stay ON.
+   Divergences: the first hit moves 5.00 -> 4.65 s; at frame 6600 `build Shipyard 01 class 77` is now accepted;
+   at 6800 `select Gyoraitei #Y1` is refused, which refuses its attack lines; Headquarter 01 falls at 940.94 s.
+   Logs `local\l61rt_j8_ref.log` and the last win `local\l59_m4s_j8.log`.
+3. JM06 s (20,3) and the ESMP08 Zero recall belong to cc9-physics11.
