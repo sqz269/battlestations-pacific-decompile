@@ -1,0 +1,1649 @@
+{
+  "schema": "bsp.native-sampler-source1-owner-binding-readiness.cc12.v1",
+  "status": "read_only_concrete_genuine_factory_owner_binding_comparison_seam_runtime_unexecuted",
+  "source_base": "e12b6755ccdc873f741f13819175a25f48ed7790",
+  "documentation": "docs/NATIVE_SAMPLER_SOURCE1_OWNER_BINDING_READINESS_CC12.md",
+  "new_unique_native_functions": 0,
+  "changes": {
+    "CXX": false,
+    "headers": false,
+    "CMake": false,
+    "ledgers": false,
+    "Ghidra": false,
+    "prior_sealed_families": false
+  },
+  "candidate": {
+    "physical_file": "shaderfx/lights/fog_shadow_uw.shfx",
+    "sampler": "CausticsMap",
+    "source_selector_14": 1,
+    "source_name_18": "CausticsTextureSource",
+    "sampler_index_field_20": 3,
+    "pixel_stage_0c": 0,
+    "expected_sampler_count": 1,
+    "expected_state_count": 0,
+    "expectations_require_real_Lua_VFS_descriptor_observation": true,
+    "compiler_source_mode": 0,
+    "compiler_load_variants": 0
+  },
+  "genuine_composition": {
+    "preload_inputs": [
+      {
+        "name": "coral.mshd",
+        "physical_line": 188
+      },
+      {
+        "name": "seaweed.mshd",
+        "physical_line": 193
+      }
+    ],
+    "root_files": [
+      "terrain/coral.shfx",
+      "terrain/seaweed.shfx"
+    ],
+    "mode": "RM_UNDERWATER",
+    "combiner": "fog_shadow_uw.shfx",
+    "original_call_order": [
+      "00B3C018 root B3B280",
+      "00B3C024 mode B3B280"
+    ],
+    "physical_source_order": "root default Source0 MyTexture, then mode Source1 CausticsMap",
+    "following_Source0_found": false,
+    "VFS_selected_content_or_actual_material_invocation_proved": false
+  },
+  "route": [
+    "Genuine retained BBCB40/BBC900 table setup using SAME AA0/F8D41C and raw_strings, canonical four factories and complete live frame tree.",
+    "B3B2BA/4DE4B0 obtains actual F8D420; B3B2C5/B1B4D0 receives original sampler+18 header.",
+    "B1B4D0 copies/lowercases requested name, builds Default, invokes B1A4F0 on loader+4 with retain/load flags1/1.",
+    "Actual BECCD0 Win32/XLive/message/cursor/online/input chain runs before cache continuation; no fabricated MSG or publication.",
+    "Cold CE7D24+8/B1B810 obtains same B1B730 registry and calls B19E90 with actual resolved name; actual B19D60 tree lookup resolves current node+14 factory.",
+    "Current D644E8+4 selects BBC6F0, allocates34h, C30470/B19980 starts actual+04 at1, writes final resourceD64478.",
+    "Existing production register_creator binds SAME raw allocation and borrowed actual+04 companion to SAME renderer NativeRenderActualOwners without retaining.",
+    "Real cache record append copies resource+28 without retain; creator credit becomes cache credit. 4DDB20 adds actual caller retain.",
+    "B3B2DF/B44CF0/B44690 creates actual10h binding, copies original source_name, adds binding retain and appends through current pass5C/6C.",
+    "B3B2EF decrements actual owner+04 exactly once. Observe actual result; qualifying prior>1/normal return/current provider may establish B-16=B3B2E4."
+  ],
+  "profiles": {
+    "factory_caustics": {
+      "profile": "00D644E8",
+      "scalar": "00BBC890",
+      "create": "00BBC6F0"
+    },
+    "factory_shore": {
+      "profile": "00D644F0",
+      "scalar": "00BBC8E0",
+      "create": "00BBC810"
+    },
+    "resource_caustics": {
+      "profile": "00D64478",
+      "virtual0": "00BD30E0",
+      "scalar": "00BBC6D0"
+    },
+    "resource_shore": {
+      "profile": "00D644B4",
+      "virtual0": "00BD30E0",
+      "scalar": "00BBC7F0"
+    }
+  },
+  "ownership": {
+    "isolated_cold_nonnull_binding_prediction": [
+      1,
+      2,
+      3,
+      2
+    ],
+    "prediction_only": "actual construction, caller retain, binding retain, Source1 caller release; external mutation or allocation-null paths require their own actual observations",
+    "hot_case": "actual current cache-held count C -> C+1 caller -> C+2 binding -> C+1 after caller release, only absent intervening mutation",
+    "binding_word": "current builder+8C, NOT sampler index3",
+    "binding_name": "original CausticsTextureSource, NOT CausticsMap or lowercase temporary",
+    "normal_isolated_retirement": "B42250 binding release2->1, actual4DDA40 loader credit1->0 then BD30E0/current resource scalar/destruction/free/metadata retirement",
+    "resource_record_copy_and_destroy": "4D6F70 and4D45A0 do not retain/release resource+28",
+    "actual_count_rewrite_permitted": false
+  },
+  "smallest_comparison": {
+    "boundary": "Complete original B3B280 with actual builder/pass and actual parsed fog-only descriptor; corresponding complete Source operation over genuine retained domains. First packet may stop at direct B-16 observation, without following Source0.",
+    "original_ABI": "ECX builder; stacked pass, descriptor; RET8. Preserve original native call placement/return PC, with saved parent fields and real child/provider bindings.",
+    "initial_W": "May remain unknown in this Source1-only case; no Source0 consumption precedes actual binding call.",
+    "native_observation_sites": [
+      "00B3B2F5 after actual imported decrement",
+      "00B3B32D nonzero branch destination"
+    ],
+    "required_observations": [
+      "VFS-selected file and real Lua descriptor sampler pointer/C4/C8/+0C/+14/+18/+20/+24 state count",
+      "same manager, registry, loader, native name, current factory node/profile/create target",
+      "actual creator allocation, canonical companion, cache record, caller retain and binding retain",
+      "binding pointer/name/word/retained identity, pass byte80/count and actual builder8C/90/94 deltas",
+      "actual atomic prior/result, normal return/nonzero branch, current imported decrement provider closure",
+      "native B-16 read without stack-writing shim and Source retained observation/invocation/provider agreement"
+    ],
+    "expected_nonnull_fog_deltas": {
+      "builder_8c": 1,
+      "builder_90": 0,
+      "builder_94": 1,
+      "pass_bindings_6c": 1,
+      "pass_pairs_24": 0,
+      "pass_byte_80": 1,
+      "sampler_state_setter_calls": 0
+    },
+    "no_splicing": "Do not append/reorder/fabricate Source0 or reset any cache/count. Direct release-word proof and downstream consumption are distinct.",
+    "larger_boundary": "Actual coral/seaweed underwater root/mode compilation additionally needs real material/VFS/cache selection, earlier root Source0 entry proof, and original compiler cache bracket."
+  },
+  "graphics_prerequisites": {
+    "factory_and_binding": "Creators/constructors and binding use actual allocator/string/atomic operations only; no D3D calls or procedural renderer/update slots. Unwritten remaining Caustics payload is preserved.",
+    "loader_pump": "No direct D3D operation in inspected BECCD0/BECB20 chain, but actual dispatched window messages and reached online/input callbacks must be retained and recorded.",
+    "genuine_pass": "Existing initialize_native_compiler_pass_00b44b10 creates actual state owners and invokes current rendererD5F0A8+64/B319B0 white.tga acquisition, transferring result to pass84.",
+    "application": "Existing descriptor reader and canonical sampler graph require ready renderer/domain. A narrower actual B1B810 creation observation can be done without GPU, but is not the B1B4D0/B3B280 comparison.",
+    "no_fake_pass_or_platform": true
+  },
+  "failure_ownership": [
+    "Retain complete table registration/publication frames; partial setup is not a valid lookup domain and may leave real borrowed factory obligations.",
+    "A creator/record/cache failure retains actual raw creator, companion, temporary names and record/alias states; no automatic cache rollback or guessed release.",
+    "Binding constructor failure cleans its name and B44CF0 frees that raw allocation. Parent retains actual loader caller obligation and all completed prior publications.",
+    "Release has already decremented once if observed zero dispatch fails; retain its phase and never replay.",
+    "Pass binding drain then actual loader/shared domain drain must precede companion disposal; quiesce factory lookup before table retirement. Keep all providers through residual cleanup."
+  ],
+  "readiness_verdict": "Existing ordinary Source factory/loader/binding implementations form an implementable seam; remaining work is genuine guarded table application setup, actual selected descriptor/pass/owner preparation, and one faithful Original/Source execution with native observation. No blanket Source-only prohibition.",
+  "verification": {
+    "fresh_live_spans": 33,
+    "fresh_live_bytes": 4647,
+    "all_live_spans_equal_installed_PE": true,
+    "selected_committed_source_and_evidence_files": 54,
+    "installed_asset_files": 12,
+    "new_build_or_tests": "Not run: read-only docs/report packet. Main Source18 separately records strict Win32 3/3; that does not validate this unexecuted fixture."
+  },
+  "limits": [
+    "No actual Lua descriptor or VFS selection execution",
+    "No actual registry factory or loader owner execution",
+    "No binding/count/B-16 runtime observation",
+    "No complete Original/Source runtime provider closure",
+    "No following Source0 consumption",
+    "No zero-terminal runtime",
+    "No whole-caller register ABI/FH3/SEH admission",
+    "No GPU launch/material compilation/draw/gameplay",
+    "No new Native function credit"
+  ],
+  "audit": {
+    "schema": "bsp.sampler-source1-owner-binding-readiness.audit.v1",
+    "utc": "2026-10-15T03:13:45.947787+00:00",
+    "base": "e12b6755ccdc873f741f13819175a25f48ed7790",
+    "ghidra_validation": "Every live read used bsp.py ghidra bytes, whose client verifies exact bsp project, /battlestationspacific.exe, language and image base before querying. No Ghidra mutation.",
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "installed_exe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "label": "parent",
+        "address": "00b3b280",
+        "length": 306,
+        "sha256": "cdf241047d8ec93b39fa9058ac6b15b71c386832dfb4170b2dc7c0fcce6e28d9",
+        "installed_PE_equal": true,
+        "snapshot": "original/00b3b280_parent.bin"
+      },
+      {
+        "label": "root_mode_call_order",
+        "address": "00b3bffd",
+        "length": 68,
+        "sha256": "7f829da555611838c657e1607bfbcc7a661ea417366066bc7eb959749747417b",
+        "installed_PE_equal": true,
+        "snapshot": "original/00b3bffd_root_mode_call_order.bin"
+      },
+      {
+        "label": "loader_getter",
+        "address": "004de4b0",
+        "length": 199,
+        "sha256": "fa1f9c042b0a54c37c68547e0fed4dc02526fdfe6a8911e5b66e46ed9d541ec2",
+        "installed_PE_equal": true,
+        "snapshot": "original/004de4b0_loader_getter.bin"
+      },
+      {
+        "label": "default_loader",
+        "address": "00b1b4d0",
+        "length": 280,
+        "sha256": "842408999114f6f975691e501a6a8bedbd52c55796eb4d47c694e211ca335ea1",
+        "installed_PE_equal": true,
+        "snapshot": "original/00b1b4d0_default_loader.bin"
+      },
+      {
+        "label": "cache_whole",
+        "address": "00b1a4f0",
+        "length": 1338,
+        "sha256": "002cdaf6ca625b6e3b138575622dc3dc6feb22a468c021f33814f1815a669f62",
+        "installed_PE_equal": true,
+        "snapshot": "original/00b1a4f0_cache_whole.bin"
+      },
+      {
+        "label": "factory_adapter",
+        "address": "00b1b810",
+        "length": 20,
+        "sha256": "8a65e02675980fa957b1a0e9d36c98b9b89afb43e7d2ee3f84189a5421809ce8",
+        "installed_PE_equal": true,
+        "snapshot": "original/00b1b810_factory_adapter.bin"
+      },
+      {
+        "label": "registry_lookup",
+        "address": "00b19e90",
+        "length": 108,
+        "sha256": "c40d13471f483f98b2fd146721acd0730c3ea4040ab2f463eab034f43ed6aa09",
+        "installed_PE_equal": true,
+        "snapshot": "original/00b19e90_registry_lookup.bin"
+      },
+      {
+        "label": "registry_find",
+        "address": "00b19d60",
+        "length": 102,
+        "sha256": "e54bf2cbd98b7e7a158306d4ccc67903521d9373d7e0defa1da6a2f96c928995",
+        "installed_PE_equal": true,
+        "snapshot": "original/00b19d60_registry_find.bin"
+      },
+      {
+        "label": "registry_getter",
+        "address": "00b1b730",
+        "length": 200,
+        "sha256": "bb032fcf785ab485134e3f1b4643154a461e636aaae6c09bfd31f713a09484e4",
+        "installed_PE_equal": true,
+        "snapshot": "original/00b1b730_registry_getter.bin"
+      },
+      {
+        "label": "caustics_create",
+        "address": "00bbc6f0",
+        "length": 80,
+        "sha256": "310c1fb7dad8d55e21d7f1b328a82539bf058e2c355451fe447951ab14510cfd",
+        "installed_PE_equal": true,
+        "snapshot": "original/00bbc6f0_caustics_create.bin"
+      },
+      {
+        "label": "shore_create",
+        "address": "00bbc810",
+        "length": 80,
+        "sha256": "4a25637fc7034fdce68be05e3ff0478dc5b433e444c8a15dadcc94df49613455",
+        "installed_PE_equal": true,
+        "snapshot": "original/00bbc810_shore_create.bin"
+      },
+      {
+        "label": "resource_base",
+        "address": "00b19980",
+        "length": 22,
+        "sha256": "b26833e11b0634915df7b20def4a02519ef23fed4c8cd5afd3d127926d230b40",
+        "installed_PE_equal": true,
+        "snapshot": "original/00b19980_resource_base.bin"
+      },
+      {
+        "label": "resource_construct",
+        "address": "00c30470",
+        "length": 35,
+        "sha256": "29ebfb40b0ac77a7989972ffa487f27a7311848508fc89c18b583e896469c4c0",
+        "installed_PE_equal": true,
+        "snapshot": "original/00c30470_resource_construct.bin"
+      },
+      {
+        "label": "cache_retain",
+        "address": "004ddb20",
+        "length": 21,
+        "sha256": "984d24bc0617becd91f8537f65986b285467e90f1695f65378b419b70861961c",
+        "installed_PE_equal": true,
+        "snapshot": "original/004ddb20_cache_retain.bin"
+      },
+      {
+        "label": "record_copy",
+        "address": "004d6f70",
+        "length": 162,
+        "sha256": "9b61afc2d65f6be817e8a756b8cc68e97692952e4695d5ffe18f5814442df6da",
+        "installed_PE_equal": true,
+        "snapshot": "original/004d6f70_record_copy.bin"
+      },
+      {
+        "label": "record_destroy",
+        "address": "004d45a0",
+        "length": 120,
+        "sha256": "1d548f139c5b4533bd2bc5dfe69092afc226c1b043a672fd7b0617f471458660",
+        "installed_PE_equal": true,
+        "snapshot": "original/004d45a0_record_destroy.bin"
+      },
+      {
+        "label": "binding_append",
+        "address": "00b44cf0",
+        "length": 106,
+        "sha256": "bb34f3378fa7b369d2d58c4f96a9ba82f6a43a983079ddfbc0debedafffa92b1",
+        "installed_PE_equal": true,
+        "snapshot": "original/00b44cf0_binding_append.bin"
+      },
+      {
+        "label": "binding_construct",
+        "address": "00b44690",
+        "length": 188,
+        "sha256": "48f12c9dfdbd6950cdc5e2620055031aa62f7fcfb98a993c3979955bbe336a74",
+        "installed_PE_equal": true,
+        "snapshot": "original/00b44690_binding_construct.bin"
+      },
+      {
+        "label": "binding_destroy",
+        "address": "00b42250",
+        "length": 128,
+        "sha256": "8b374c14a2f456a74d3818c47706ea6f10a1d62da0707d5cdf55afdcfad19e82",
+        "installed_PE_equal": true,
+        "snapshot": "original/00b42250_binding_destroy.bin"
+      },
+      {
+        "label": "pass_construct",
+        "address": "00b44b10",
+        "length": 214,
+        "sha256": "3d94a7c3884c78acd7b8e84878996666c0ea40cd9f1427d68344ad74a4db9ca3",
+        "installed_PE_equal": true,
+        "snapshot": "original/00b44b10_pass_construct.bin"
+      },
+      {
+        "label": "load_messages",
+        "address": "00beccd0",
+        "length": 103,
+        "sha256": "fb8d69fd84a258f76f7fe1a491fc89db03aa373d8aa24fa0e58051b517e67278",
+        "installed_PE_equal": true,
+        "snapshot": "original/00beccd0_load_messages.bin"
+      },
+      {
+        "label": "load_cursor",
+        "address": "00becb20",
+        "length": 424,
+        "sha256": "d49521cd17d5c4bbd55280346ebbf30a23de86a24d5a947fc8ceda875aeef8e3",
+        "installed_PE_equal": true,
+        "snapshot": "original/00becb20_load_cursor.bin"
+      },
+      {
+        "label": "virtual_zero",
+        "address": "00bd30e0",
+        "length": 14,
+        "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+        "installed_PE_equal": true,
+        "snapshot": "original/00bd30e0_virtual_zero.bin"
+      },
+      {
+        "label": "caustics_delete",
+        "address": "00bbc6d0",
+        "length": 30,
+        "sha256": "7e255976b8de2c032cbd5fe24d74ba9862c012453cd9dee6a473c09b6e9ec5c7",
+        "installed_PE_equal": true,
+        "snapshot": "original/00bbc6d0_caustics_delete.bin"
+      },
+      {
+        "label": "shore_delete",
+        "address": "00bbc7f0",
+        "length": 30,
+        "sha256": "73d21946bb0bc7e392a7b10e0dc7193b88ed39dcf1944b1f60ff52f915b8d62f",
+        "installed_PE_equal": true,
+        "snapshot": "original/00bbc7f0_shore_delete.bin"
+      },
+      {
+        "label": "resource_destroy",
+        "address": "00c304a0",
+        "length": 172,
+        "sha256": "0a6910b2f3d70c95dc9afd4e0dfef9fc9c55cbe201e8cb68469e0afc86c735f1",
+        "installed_PE_equal": true,
+        "snapshot": "original/00c304a0_resource_destroy.bin"
+      },
+      {
+        "label": "cache_profile",
+        "address": "00ce7d24",
+        "length": 20,
+        "sha256": "82fed636b359d203664f7b11c3f1d6a12fab8cb5782d4abf7276be51c5a3fec8",
+        "installed_PE_equal": true,
+        "snapshot": "original/00ce7d24_cache_profile.bin"
+      },
+      {
+        "label": "registry_profiles",
+        "address": "00d5e594",
+        "length": 16,
+        "sha256": "c00c0f50c39de292fb1f7372275d131a6332b7dd3b22883957b9bc7df2ee0394",
+        "installed_PE_equal": true,
+        "snapshot": "original/00d5e594_registry_profiles.bin"
+      },
+      {
+        "label": "final_factory_profiles",
+        "address": "00d644e8",
+        "length": 16,
+        "sha256": "54147319170bff1bcfe88d692bca0992f61bb7361a5dc2bf7a38f1ee87ea9ebc",
+        "installed_PE_equal": true,
+        "snapshot": "original/00d644e8_final_factory_profiles.bin"
+      },
+      {
+        "label": "caustics_resource_profile",
+        "address": "00d64478",
+        "length": 8,
+        "sha256": "c916f226b74b983b1bde5e98659bbdacc5206ed84aa7eb64017209cee7933624",
+        "installed_PE_equal": true,
+        "snapshot": "original/00d64478_caustics_resource_profile.bin"
+      },
+      {
+        "label": "shore_resource_profile",
+        "address": "00d644b4",
+        "length": 8,
+        "sha256": "1670667b0edfaefa9793b4f65435dd7b2cc609320a6ab580fcb28dbe55f46421",
+        "installed_PE_equal": true,
+        "snapshot": "original/00d644b4_shore_resource_profile.bin"
+      },
+      {
+        "label": "Default",
+        "address": "00ce3c5c",
+        "length": 8,
+        "sha256": "7670cf4ceda3b9a04325d9e243935446f8064a15b60b5d91e03d6450344e89c8",
+        "installed_PE_equal": true,
+        "snapshot": "original/00ce3c5c_Default.bin"
+      },
+      {
+        "label": "Caustics_name",
+        "address": "00ce7dec",
+        "length": 21,
+        "sha256": "991a438dd356fb69af0887d7fc843a01c9be6fc024e66096d796a3e87f6f2494",
+        "installed_PE_equal": true,
+        "snapshot": "original/00ce7dec_Caustics_name.bin"
+      }
+    ],
+    "span_count": 33,
+    "total_span_bytes": 4647,
+    "sources": [
+      {
+        "path": "src/native_material_descriptor_samplers.cpp",
+        "size": 10274,
+        "sha256": "504b32da7568e27383844e6b77b02f9fa730a767039ac6a4b33c370e0be2661d",
+        "git_blob": "c7981d82a739f9bd939351410f51b2db8db3ffa7"
+      },
+      {
+        "path": "include/bsp/native_material_descriptor_samplers.hpp",
+        "size": 6270,
+        "sha256": "9f9aefd20e9f8263c7af76cc56601a0c9fcb9333ed71ea03b9c60e5caa7f8b7b",
+        "git_blob": "21a55f0d7d878bfeb2c2e983a7adeb673629eac0"
+      },
+      {
+        "path": "src/native_render_context.cpp",
+        "size": 11471,
+        "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+        "git_blob": "cac68c258f191a798e3c5e8e2316370402f17a9c"
+      },
+      {
+        "path": "include/bsp/native_render_context.hpp",
+        "size": 10071,
+        "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+        "git_blob": "86eb5d2ef5cfdfaa7e01f50b02a33f6ed9668808"
+      },
+      {
+        "path": "src/game_native_gui_sampler_application.cpp",
+        "size": 10977,
+        "sha256": "543cb6e0ade63733a08d9d14827d9bfa2a1ecd86f56fd1927a83772a429c3814",
+        "git_blob": "1f0ce367af208b1a724259e07e4d26fe67f22c8c"
+      },
+      {
+        "path": "include/bsp/game_native_gui_sampler_application.hpp",
+        "size": 3249,
+        "sha256": "2aa6bf3276f649e8fc02eb5d0c1f78902303f8c798208ea1e97c22b8672d2fd9",
+        "git_blob": "601f35156be0352ad7b5729dd4a1548809afbac7"
+      },
+      {
+        "path": "src/native_sampler_loader_context.cpp",
+        "size": 2454,
+        "sha256": "3651878adc40bf0a5e0520108d4aa915e0b19b46b559f68a2a41192c232a3d6d",
+        "git_blob": "5c86b13be817c8b9fb6310ef5bb6b1119c944085"
+      },
+      {
+        "path": "include/bsp/native_sampler_loader_context.hpp",
+        "size": 3302,
+        "sha256": "876a3634f2daf08c3743833414a365d4cb47bb938945aa56a5e55b8372b04165",
+        "git_blob": "37f00414c63976a2b0beb1789939f07a04273b2d"
+      },
+      {
+        "path": "src/native_sampler_cache_entry.cpp",
+        "size": 4680,
+        "sha256": "ad95a3c36ae5e5f50aaaddd207799c1e878c634b93cb08abdf959d032c4e3e23",
+        "git_blob": "f4c20f6d71049749b4e21a13b0519386a3a09b61"
+      },
+      {
+        "path": "include/bsp/native_sampler_cache_entry.hpp",
+        "size": 3348,
+        "sha256": "a99dfad2582d3ff437b6b51e40ca643de438daa0574aa4f7c332451a41fa6ce3",
+        "git_blob": "71b43a6927acb4559748cba309a05188a2cee51e"
+      },
+      {
+        "path": "src/native_sampler_cache_operation.cpp",
+        "size": 13201,
+        "sha256": "ceb6dbdb23319df113248fb09fb65103c174f09bb1c4cf152f52c3c308233959",
+        "git_blob": "da2e93c901349bac28a94668565f2881f9299561"
+      },
+      {
+        "path": "include/bsp/native_sampler_cache_operation.hpp",
+        "size": 4056,
+        "sha256": "6f6d353b85a8b604b9952b9d2b35f89e26e14bc673e6582b4e119110307a5a15",
+        "git_blob": "a7a2d50c4c5e577116c35073c57c0b3899114ec5"
+      },
+      {
+        "path": "src/native_resource_registry_lookup.cpp",
+        "size": 2821,
+        "sha256": "06d92bdfc4da4311df3c49007476bcb9317d954827a4832ccf8daf5d822fc414",
+        "git_blob": "9e96ab31afc4427f50512a0c9a0acfdd0f66753f"
+      },
+      {
+        "path": "include/bsp/native_resource_registry_lookup.hpp",
+        "size": 1893,
+        "sha256": "1f3f752e70c8e2264087d1bd8a47cc6089c8e4ac57273a4da4aefdbad71b22a9",
+        "git_blob": "a1b60c18c6e35e8d0fa32ba5ae20958ad568f6d4"
+      },
+      {
+        "path": "src/native_resource_cache_leaves.cpp",
+        "size": 6034,
+        "sha256": "2db1be65e9cd7940759e5b28817ff9bf090f1abdbe8789ce2d62db971be020fa",
+        "git_blob": "6102fcf98f5ddf75cab9af275414af2c9bda1ca2"
+      },
+      {
+        "path": "include/bsp/native_resource_cache_leaves.hpp",
+        "size": 4052,
+        "sha256": "35dce4cb6544e5c59e1da0893669d66637dbb20c27faea4a1a3f10fa7225ee26",
+        "git_blob": "d3fc6e95a8c0b08aeddadfe108b7d2b55df6e601"
+      },
+      {
+        "path": "src/native_resource_record_copy.cpp",
+        "size": 3454,
+        "sha256": "f5ee6fde9661b6d396171fa3f3c530e314fae2c1deea9b457b3f92a8aa0dc8b7",
+        "git_blob": "e58fd426aaf8897ca6eadd7f8d044449290a8d57"
+      },
+      {
+        "path": "include/bsp/native_resource_record_copy.hpp",
+        "size": 1769,
+        "sha256": "f3ca7414372dbc7c67412d8e77fbc26ac921e140aad847abcaa62bb04aeb2ada",
+        "git_blob": "a496ce58b2376e40d3f8a268cbea613d88c17308"
+      },
+      {
+        "path": "src/native_resource_record_vector.cpp",
+        "size": 4748,
+        "sha256": "84b2b2a9014c8f398c82a5420e905819d495310b54b33ef1a3771a4ae9fbe4d4",
+        "git_blob": "d9cf8ce42032e7a1d8fbaf5ee699988bc306c6d8"
+      },
+      {
+        "path": "include/bsp/native_resource_record_vector.hpp",
+        "size": 2136,
+        "sha256": "fb85cb890ab99aeb91cf40b8d06acdf61a6194e28025952569c5c9846c152b47",
+        "git_blob": "588727db095d76106d2e554adb05c5fd7e9e1ece"
+      },
+      {
+        "path": "src/native_procedural_resource_lifetime.cpp",
+        "size": 9785,
+        "sha256": "87108b3f56828a77255b2ce561525db435a463b3a0f06cfe1786d2eecef4961b",
+        "git_blob": "7f27ea310f6ce218d474ece13e2eeb275f8f9cc0"
+      },
+      {
+        "path": "include/bsp/native_procedural_resource_lifetime.hpp",
+        "size": 5891,
+        "sha256": "9cc49e7418f53e49cec2a12074901577f334af26b1e4e036256314756e9ed4fe",
+        "git_blob": "9e279acb7e8c1a850f0a51a0c179c36d0afed94e"
+      },
+      {
+        "path": "src/native_shader_descriptor_samplers.cpp",
+        "size": 4927,
+        "sha256": "7dd8abef1228cb57962a632f4ef3ff111825b63a67f1698d7fb32c29a3393d13",
+        "git_blob": "9f4be212f3c1972415f1ed93a7fdc5e1aa0f4881"
+      },
+      {
+        "path": "include/bsp/native_shader_descriptor_samplers.hpp",
+        "size": 3377,
+        "sha256": "1d187f8610b20d0b92ed5ed3c6940116ead5b768f7907cbd25b4db926b16d977",
+        "git_blob": "d34fb2fbaff1bed05e582e8b635278e69668f94c"
+      },
+      {
+        "path": "src/native_material_pass_copy.cpp",
+        "size": 12938,
+        "sha256": "33e8f824814318affc9c3bb211391a01a92467064559d5cc0f4be30d4235e6d5",
+        "git_blob": "838ecd0c6640c4a425d21133a01ba156de54d832"
+      },
+      {
+        "path": "include/bsp/native_material_pass_copy.hpp",
+        "size": 5304,
+        "sha256": "14fdf93d00083fbdde9a6d4528a39d64bf6da0b928d522d43b43ded1a9197110",
+        "git_blob": "301d36a3911d69461f02fb22d59f1bbd1f8b601e"
+      },
+      {
+        "path": "src/native_material_pass_owner.cpp",
+        "size": 5767,
+        "sha256": "3fd1c2e7ccd4bf0d8793c79fc60298f55e6dc0ef43344fff7fc7f4468525a586",
+        "git_blob": "c6987c294a8c8d709ccd17921b70bba6b86c4304"
+      },
+      {
+        "path": "include/bsp/native_material_pass_owner.hpp",
+        "size": 5800,
+        "sha256": "30ce7e9a5eb8247e4988a947a39427deeecf4991c42cdb969c2ad403f27a4e18",
+        "git_blob": "93c756ad4c1a98bc69f243bf20c254c2ad963c75"
+      },
+      {
+        "path": "src/native_material_compiler_providers.cpp",
+        "size": 4582,
+        "sha256": "a782bc95e420e54553c0e9b00d50def12d49edfd3b57fa7ad9ecae840a9ce410",
+        "git_blob": "a0368bab3b9aaecd96fb2cbcac682c36565aea8a"
+      },
+      {
+        "path": "include/bsp/native_material_compiler_providers.hpp",
+        "size": 3050,
+        "sha256": "91e171c613975045058c377de34277310140ad1a9c90ed710448a4962edd997c",
+        "git_blob": "dedb09466a733955d12d9fd90bd2666497d6c1b4"
+      },
+      {
+        "path": "src/native_particle_clock_shutdown.cpp",
+        "size": 9121,
+        "sha256": "245e497387b9977fd8b9e672249c501d8d350a4a6d22ac9d9718ad72f598362b",
+        "git_blob": "d6c32f573f45da06a12b4ae112992e0c2059d5ba"
+      },
+      {
+        "path": "include/bsp/native_particle_clock_shutdown.hpp",
+        "size": 4045,
+        "sha256": "684933cd42c6606373fd3346a9d223efda0c454df534bb885695358f5525223f",
+        "git_blob": "98448457620ebb9c003e90c72b1d64c982f5dcc3"
+      },
+      {
+        "path": "src/native_shader_sampler_reader.cpp",
+        "size": 6190,
+        "sha256": "ad93db3d23715481fbacea527003b1fdb309a652af5d530f97edfd627ddcbe64",
+        "git_blob": "9a69661d855c557bd67a9e2e5bc86415f24dbaee"
+      },
+      {
+        "path": "include/bsp/native_shader_sampler_reader.hpp",
+        "size": 1606,
+        "sha256": "a38669e5e48d733097b98c4974e97f842ca6a732dfa772b28e5ae17151afe6aa",
+        "git_blob": "0cd88c420180548e217d54b80c984cddcc2eb60e"
+      },
+      {
+        "path": "src/native_shader_sampler_owner.cpp",
+        "size": 5503,
+        "sha256": "48ad13bb14a996c24be81bbcbd755cc21f06b494f8dcb1a0ccf9ca32b374b96f",
+        "git_blob": "76dce46ddb18c0a2c35ebb18a70a0aa25e28e819"
+      },
+      {
+        "path": "include/bsp/native_shader_sampler_owner.hpp",
+        "size": 5020,
+        "sha256": "8a01ca946332bbcc7e4b7130f53cb2070c4cca082d33d75951d69fe152625a93",
+        "git_blob": "a0c2d6d8178c7ffa23735cff7d0590b40199eb00"
+      },
+      {
+        "path": "src/native_shader_field_reader.cpp",
+        "size": 6715,
+        "sha256": "2ce801673cf2618033b93c95ca3b7a4ef8bd09457f38398fb6f9e9c38e51df9a",
+        "git_blob": "d5b4c6449d0b01d46bcb54c56cd128bcb69d351b"
+      },
+      {
+        "path": "include/bsp/native_shader_field_reader.hpp",
+        "size": 3074,
+        "sha256": "d3e80f7624e2c4213c1b4f57e6ef0a3207aca71363f0b064f6d6acfeede709e7",
+        "git_blob": "d31066d425e9fe9855b3a2dcaa69f19591616669"
+      },
+      {
+        "path": "src/native_shader_descriptor_reader.cpp",
+        "size": 11992,
+        "sha256": "37740c3cda68afb0ea707a222a4c24dba8ca7aa8592da37e10ba582617c454d9",
+        "git_blob": "b0011506c5d238131c3449cae761f14b01befe61"
+      },
+      {
+        "path": "include/bsp/native_shader_descriptor_reader.hpp",
+        "size": 3795,
+        "sha256": "1e456fd43c6588784d5c1e9661c89634cd2b018b85ae4e5fdb0972d46a456aa0",
+        "git_blob": "8ed43a5d0c2823dc8ebed70974c58fe8b9f594a8"
+      },
+      {
+        "path": "src/native_platform_load_messages.cpp",
+        "size": 4918,
+        "sha256": "80d4cfb11b9dbe4777470f7273fc6aa8316763697233e4aff7caa38143387c06",
+        "git_blob": "9094763dd00a5f576b2436e4d6212ce29f562780"
+      },
+      {
+        "path": "include/bsp/native_platform_load_messages.hpp",
+        "size": 4063,
+        "sha256": "a1c249d76d2836bc96be0d770292e52f9bdbfd8f6e7f84666f3bed6f892983ad",
+        "git_blob": "8889ae18a84a642da58ac44122d4e071df4c182f"
+      },
+      {
+        "path": "src/game_native_renderer_application.cpp",
+        "size": 53505,
+        "sha256": "516443547ed6f071a13ed531a53dd286f8ff1c09d1140e2336d55ea25cd7f1b3",
+        "git_blob": "fdcf6779bade4de45c2b7cef9e2ec92458689347"
+      },
+      {
+        "path": "src/native_material_program_compiler_actual.cpp",
+        "size": 29346,
+        "sha256": "8fff69fa386cd63678174f0c8582a4223c291f7e47d2948d40daaecbf5393698",
+        "git_blob": "fd23de16d55f12b6f178221b2f2f9439fa127486"
+      },
+      {
+        "path": "include/bsp/game_native_gui_effect_application.hpp",
+        "size": 4833,
+        "sha256": "8c70f812a075b46904dc3ff3a2bd9c4702eb4697ff4b3c16f105ae1a45ba36bd",
+        "git_blob": "8c25ebff039665fd5aa2339ccd1e965cc604f09b"
+      },
+      {
+        "path": "include/bsp/native_shader_combiner_reader.hpp",
+        "size": 1616,
+        "sha256": "3a61a4a5d8ec6a220903526fa45a8021eeb05c4daa13f88a361e226f7e9df449",
+        "git_blob": "6279c4a62e41e7dad27c8dfae8711f9f785ab722"
+      },
+      {
+        "path": "config/target.json",
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+      },
+      {
+        "path": "tools/bsp.py",
+        "size": 84752,
+        "sha256": "133e2cf3f24f0402f6ed7d0e1dd5148c678c7ca10722633d1ec6cdc9b693a9ff",
+        "git_blob": "87bf468735a7cb65b72b8daa4130ebf100f5d4cc"
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "size": 14518,
+        "sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685",
+        "git_blob": "bd937766a7e4d62c015b2ab44a14a9153fbb4542"
+      },
+      {
+        "path": "reports/cc12_native_post_cache_source_integration_18.json",
+        "size": 4274,
+        "sha256": "4702065252af95fad4facc834393fb6d8df6d9ea43883e6cf1605eee85ddf8f4",
+        "git_blob": "8e07bf41e266606f9b5389c8b78b2047841c7e30"
+      },
+      {
+        "path": "docs/NATIVE_SAMPLER_SOURCE1_RELEASE_CC12.md",
+        "size": 8030,
+        "sha256": "c63f37f1ac6bd1ce648e6b05549c1ece2d9fca5854fd0c69fa2cc8f99afe6383",
+        "git_blob": "5b0d6b1df6b2047ece11228d47e573380951a912"
+      },
+      {
+        "path": "reports/native_sampler_source1_release_cc12.json",
+        "size": 19351,
+        "sha256": "c7064106c9dcc4f6c6bda7e304c225bfb5581695225356d62b7ed6511c083513",
+        "git_blob": "90a343923ab4cf594e0a458f4cde0e5be0ecb146"
+      },
+      {
+        "path": "docs/NATIVE_SAMPLER_SOURCE1_OBSERVED_RELEASE_CC12.md",
+        "size": 7188,
+        "sha256": "97316c1d188023487a44e6fc210417023b7f74f8c6dd719c4f5296cfa07d78b8",
+        "git_blob": "057a784eef1ed07de3c560486150dba73502b981"
+      },
+      {
+        "path": "reports/native_sampler_source1_observed_release_cc12.json",
+        "size": 99585,
+        "sha256": "f28570a2e73bf0815a7bfe1290381da896c4ecc284c4498d7a3ced7ad5e7f4a0",
+        "git_blob": "1ec281e172e5ddaef509dc72e9b39dba90b94217"
+      }
+    ],
+    "assets": [
+      {
+        "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/shaderfx/dx9_lua.inc",
+        "snapshot": "installed_shaderfx/dx9_lua.inc",
+        "size": 3117,
+        "sha256": "7766adc9c116a9e396b3dd77e9d97b3ea6d55c84601cb2a5a49a64362605b11f"
+      },
+      {
+        "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/shaderfx/shaderpreload.lua",
+        "snapshot": "installed_shaderfx/shaderpreload.lua",
+        "size": 7881,
+        "sha256": "083b751decc24e70b370c9d291baf3b3112f66ad763d5839e6bc47435786bcee"
+      },
+      {
+        "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/shaderfx/lights/fog_shadow_uw.shfx",
+        "snapshot": "installed_shaderfx/lights/fog_shadow_uw.shfx",
+        "size": 4091,
+        "sha256": "0f6afd9362d4ce3769607528cad936e2c63c9d1b91728f2d67b6982191da3420"
+      },
+      {
+        "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/shaderfx/lights/per_vertex_shadow_uw.shfx",
+        "snapshot": "installed_shaderfx/lights/per_vertex_shadow_uw.shfx",
+        "size": 5181,
+        "sha256": "f95150b0ddfce64c6eaa58fbee1c10f4ae60b588ff95e45a65aab9150ab41715"
+      },
+      {
+        "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/shaderfx/lights/per_vertex_shadow_uw_terrain.shfx",
+        "snapshot": "installed_shaderfx/lights/per_vertex_shadow_uw_terrain.shfx",
+        "size": 5018,
+        "sha256": "1496ca53c99658ee39ac2c841f0219950790665f093d00fbde4e305858cf262c"
+      },
+      {
+        "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/shaderfx/ocean/shore.shfx",
+        "snapshot": "installed_shaderfx/ocean/shore.shfx",
+        "size": 6350,
+        "sha256": "7e724802b88ee0f1aed73efd19b61f9c9b61155d8d6f3890257beda02a3993ca"
+      },
+      {
+        "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/shaderfx/ocean/Nova mapa/shore.shfx",
+        "snapshot": "installed_shaderfx/ocean/Nova mapa/shore.shfx",
+        "size": 6350,
+        "sha256": "7e724802b88ee0f1aed73efd19b61f9c9b61155d8d6f3890257beda02a3993ca"
+      },
+      {
+        "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/shaderfx/lights/shore_map.shfx",
+        "snapshot": "installed_shaderfx/lights/shore_map.shfx",
+        "size": 604,
+        "sha256": "6b9abdfab5578b43319d818a159cbdef1128da937b14f5cd26e5382f3c4aeb6b"
+      },
+      {
+        "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/shaderfx/lights/dummy.shfx",
+        "snapshot": "installed_shaderfx/lights/dummy.shfx",
+        "size": 114,
+        "sha256": "3768df78e6a57ee28563ab40cfb9cf223569c12eb62e8576458365deb0866c5b"
+      },
+      {
+        "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/shaderfx/terrain/coral.shfx",
+        "snapshot": "installed_shaderfx/terrain/coral.shfx",
+        "size": 2652,
+        "sha256": "d16d7db32027ad33d7f034a6ff776c4136cdad401178e95740887884f526c1a7"
+      },
+      {
+        "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/shaderfx/terrain/seaweed.shfx",
+        "snapshot": "installed_shaderfx/terrain/seaweed.shfx",
+        "size": 2040,
+        "sha256": "e9aaa1848d9d595faa23262d6e6b8d82c5878ff8a08af74f0823e179236d12da"
+      },
+      {
+        "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/shaderfx/common/textured.shfx",
+        "snapshot": "installed_shaderfx/common/textured.shfx",
+        "size": 3645,
+        "sha256": "22470ebc6df0e4d94b175b4317d6283acaa0944a90bd0001d0676f0722253e94"
+      }
+    ],
+    "physical_TEXSRC_TEXANIMATOR_candidates": [
+      "lights/fog_shadow_uw.shfx",
+      "lights/per_vertex_shadow_uw.shfx",
+      "lights/per_vertex_shadow_uw_terrain.shfx",
+      "ocean/Nova mapa/shore.shfx",
+      "ocean/shore.shfx"
+    ],
+    "companion_setup_contract": [
+      {
+        "commit": "b208f86b3ec5c877d2a75e810a1c26f759a573db",
+        "path": "docs/NATIVE_PROCEDURAL_FACTORY_SETUP_CC12.md",
+        "size": 14001,
+        "sha256": "3cb410771ef1cfb413628753c75591a913b50168d10b6d0bac45637e80a9cfcc"
+      },
+      {
+        "commit": "b208f86b3ec5c877d2a75e810a1c26f759a573db",
+        "path": "reports/native_procedural_factory_setup_cc12.json",
+        "size": 69209,
+        "sha256": "9770ff05f57c69f192c0b594a9988269b84246e32ca3c2e7594f42d42ea27047"
+      }
+    ],
+    "execution": {
+      "owner_created": false,
+      "descriptor_parsed": false,
+      "native_parent_executed": false,
+      "GPU_launched": false,
+      "tests_added": false,
+      "source_changed": false
+    }
+  },
+  "documentation_pin": {
+    "path": "docs/NATIVE_SAMPLER_SOURCE1_OWNER_BINDING_READINESS_CC12.md",
+    "size": 12798,
+    "sha256": "3a025f1f35b698cd01b5eba5c25a9a3c2754622ceb190a8ba1bead4e12c7079c"
+  },
+  "artifact_receipt": {
+    "archive": {
+      "path": "local/cc12_sampler_source1_owner_binding_readiness/source1_owner_binding_readiness_family.zip",
+      "size": 262584,
+      "sha256": "039216008cde0a0f3a1db9e89250fa97518ab031228bdb7fa67119f701964595"
+    },
+    "files": [
+      {
+        "path": "audit.json",
+        "size": 27893,
+        "sha256": "25f037b7efcd31e9588c2a27e17e7efd00d0d874c18c9d3fca199dede2ed4a22"
+      },
+      {
+        "path": "collect.py",
+        "size": 7307,
+        "sha256": "7aa5fa7a8d8ff1eebde7c6015169a32a8f774172a0dafc61a67f16d1d9f8a1b9"
+      },
+      {
+        "path": "companion_factory_setup/docs/NATIVE_PROCEDURAL_FACTORY_SETUP_CC12.md",
+        "size": 14001,
+        "sha256": "3cb410771ef1cfb413628753c75591a913b50168d10b6d0bac45637e80a9cfcc"
+      },
+      {
+        "path": "companion_factory_setup/reports/native_procedural_factory_setup_cc12.json",
+        "size": 69209,
+        "sha256": "9770ff05f57c69f192c0b594a9988269b84246e32ca3c2e7594f42d42ea27047"
+      },
+      {
+        "path": "config/target.json",
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      {
+        "path": "docs/NATIVE_SAMPLER_SOURCE1_OBSERVED_RELEASE_CC12.md",
+        "size": 7188,
+        "sha256": "97316c1d188023487a44e6fc210417023b7f74f8c6dd719c4f5296cfa07d78b8"
+      },
+      {
+        "path": "docs/NATIVE_SAMPLER_SOURCE1_OWNER_BINDING_READINESS_CC12.md",
+        "size": 12798,
+        "sha256": "3a025f1f35b698cd01b5eba5c25a9a3c2754622ceb190a8ba1bead4e12c7079c"
+      },
+      {
+        "path": "docs/NATIVE_SAMPLER_SOURCE1_RELEASE_CC12.md",
+        "size": 8030,
+        "sha256": "c63f37f1ac6bd1ce648e6b05549c1ece2d9fca5854fd0c69fa2cc8f99afe6383"
+      },
+      {
+        "path": "ghidra/004d45a0_120.txt",
+        "size": 584,
+        "sha256": "a90fae2ec0f0ffeb21111fd9ecfd2d95d0778e647bc863128db5c2bf289a8b88"
+      },
+      {
+        "path": "ghidra/004d6f70_162.txt",
+        "size": 791,
+        "sha256": "dd0051d1368e31fcda789bd65b5259471819872e139d41ea9cba2eeb3d3fa216"
+      },
+      {
+        "path": "ghidra/004ddb20_21.txt",
+        "size": 110,
+        "sha256": "63db750dce2212d53c3e2b8219b499f462f8127d309a53e21207d42a5e252031"
+      },
+      {
+        "path": "ghidra/004de4b0_192.txt",
+        "size": 924,
+        "sha256": "cd2307d6cf18e68015da88c0fe855d8d513f0dd8f073b12aadb0c776f90a9fb9"
+      },
+      {
+        "path": "ghidra/004de570_7.txt",
+        "size": 41,
+        "sha256": "4230b85929678606cf9bad3ded37f27eb25120c14728362dd956d70f83909679"
+      },
+      {
+        "path": "ghidra/00b19980_22.txt",
+        "size": 114,
+        "sha256": "607a4d1b80db21f27ce83edd6c27256ede9084f7c21e522e2a12cd7614bdbfe3"
+      },
+      {
+        "path": "ghidra/00b19d60_102.txt",
+        "size": 499,
+        "sha256": "d4c3d22d2c4304ba8f9cc94a7e11c102bf5ee8e15acdaabb4c151a889767346b"
+      },
+      {
+        "path": "ghidra/00b19e90_108.txt",
+        "size": 523,
+        "sha256": "cb2aa269da8155fda5b65cbd1e09941538a2fcf89f30b4be16ec0af8fd31f7d9"
+      },
+      {
+        "path": "ghidra/00b1a4f0_192.txt",
+        "size": 924,
+        "sha256": "e1cdaed5d089afe950d98b8ce32d16cf26dc2836b11134d2105066776e9b8a43"
+      },
+      {
+        "path": "ghidra/00b1a5b0_192.txt",
+        "size": 924,
+        "sha256": "604d4e31c3f29b338e15542de558352ee10f6b821475c26e10c413e50da5c6e0"
+      },
+      {
+        "path": "ghidra/00b1a670_192.txt",
+        "size": 924,
+        "sha256": "dfa4cf6840153eb26957723a555b2b326e7a39d396c05260ca2ddaa2fa2bd88c"
+      },
+      {
+        "path": "ghidra/00b1a730_192.txt",
+        "size": 924,
+        "sha256": "ff2bb0a7be424e12e7282aa5fe9eceaedd6aeb87bb8e22a6ed98f82937651be9"
+      },
+      {
+        "path": "ghidra/00b1a7f0_192.txt",
+        "size": 924,
+        "sha256": "a157f2648a9dee2bf3a78a0f467ec6a10911be461f9a9a980565f2db0601da44"
+      },
+      {
+        "path": "ghidra/00b1a8b0_192.txt",
+        "size": 924,
+        "sha256": "c5f136cf66d457a987c115155266832242923980ddf47a9a0e89d55ee222386b"
+      },
+      {
+        "path": "ghidra/00b1a970_186.txt",
+        "size": 900,
+        "sha256": "767bd67c9223bdd89f28b8af302af856d0eea4445ac45fb3a7aac4043506a120"
+      },
+      {
+        "path": "ghidra/00b1b4d0_192.txt",
+        "size": 924,
+        "sha256": "445343170168ed1a1a39e275de1aafd97f3ac880b69e05e8d60e0b8da9e14eb0"
+      },
+      {
+        "path": "ghidra/00b1b590_88.txt",
+        "size": 430,
+        "sha256": "80deae6551aeadec225692e262d7806dcb42d418da8cc030b06a5c34eb41a340"
+      },
+      {
+        "path": "ghidra/00b1b730_192.txt",
+        "size": 924,
+        "sha256": "c0a52504ce2fae5c758bf84f46809230cdd1023e20e5ab354e0eb6f0e2e3c4bf"
+      },
+      {
+        "path": "ghidra/00b1b7f0_8.txt",
+        "size": 45,
+        "sha256": "0a8591ee7d340d73d337e16359169c0e567e1692d0f95715f76e5bc279d7d916"
+      },
+      {
+        "path": "ghidra/00b1b810_20.txt",
+        "size": 106,
+        "sha256": "649f9df27f36b8cdd8fc7bad860b6d817dece37bff89825d831b8719e07a1ec7"
+      },
+      {
+        "path": "ghidra/00b3b280_192.txt",
+        "size": 924,
+        "sha256": "168a8ea2a42aae55d3710653d3ba9f6bd9588a72f7979821ae9d3121942f5fa6"
+      },
+      {
+        "path": "ghidra/00b3b340_114.txt",
+        "size": 560,
+        "sha256": "87ed545249704af38ebed6d663c49289c5ce67522a7c4f43625a98fb1e15ecb8"
+      },
+      {
+        "path": "ghidra/00b3bffd_68.txt",
+        "size": 337,
+        "sha256": "83e95bf99e2dfb4ddea4ee2534322905e1c37d6e5e78e9f4cda9487c28bcd4e9"
+      },
+      {
+        "path": "ghidra/00b42250_128.txt",
+        "size": 616,
+        "sha256": "28b73b932cb6c7f36452b98c85ccc1f03b3ae33d30dfc3516daf218b9ebe6797"
+      },
+      {
+        "path": "ghidra/00b44690_188.txt",
+        "size": 908,
+        "sha256": "6af4c0187c35765d249f916e95d07d3f2cae65acc5eb5abf35ebcf56361161f7"
+      },
+      {
+        "path": "ghidra/00b44b10_192.txt",
+        "size": 924,
+        "sha256": "c144371836f3231b5160de84ffbe45674d3f1cecd807a5d28c5ffda29957a7dc"
+      },
+      {
+        "path": "ghidra/00b44bd0_22.txt",
+        "size": 114,
+        "sha256": "e758bd07f41bca360ca409781a924b34d1cc2eecb5b0d48217128e12ba41c1c0"
+      },
+      {
+        "path": "ghidra/00b44cf0_106.txt",
+        "size": 515,
+        "sha256": "400ba695f0d695bf3f6f01868035343fb0fa932ccbacce4958dfb87f23f517b2"
+      },
+      {
+        "path": "ghidra/00bbc6d0_30.txt",
+        "size": 146,
+        "sha256": "30d499afff893854f3e8133c543f84575007ec9b4a7962fb501f0d877d34445f"
+      },
+      {
+        "path": "ghidra/00bbc6f0_80.txt",
+        "size": 385,
+        "sha256": "ba9c756322d31d4d2b1e039b3a16a7c213473dd3c9e4284d0ad3a3edd0749717"
+      },
+      {
+        "path": "ghidra/00bbc7f0_30.txt",
+        "size": 146,
+        "sha256": "4b15d1c7bc1c9a070f8679a0eae556a675a6142c38bbbe3018be6113790abd75"
+      },
+      {
+        "path": "ghidra/00bbc810_80.txt",
+        "size": 385,
+        "sha256": "a21980fdde4847cb0492f467f54e45e291b02933045fea81ca24c09b3042b7c9"
+      },
+      {
+        "path": "ghidra/00bd30e0_14.txt",
+        "size": 69,
+        "sha256": "1d70d9d639234f376753c69e736b613bbef917a14ca52c5d82dc737141237953"
+      },
+      {
+        "path": "ghidra/00becb20_192.txt",
+        "size": 924,
+        "sha256": "adf03153e57fc0e21c5f709d8682f3b6f4b5cb4384f199c49366b43079f30f9d"
+      },
+      {
+        "path": "ghidra/00becbe0_192.txt",
+        "size": 924,
+        "sha256": "3ad19ab8a2f07db91320b504fbeec4c941bb7a09c016307cb10e0777581046e9"
+      },
+      {
+        "path": "ghidra/00becca0_40.txt",
+        "size": 199,
+        "sha256": "3efbd6640a7699ac336bb90bfac7cdc6bfe9abc89a705cfec996030287ad201c"
+      },
+      {
+        "path": "ghidra/00beccd0_103.txt",
+        "size": 503,
+        "sha256": "0dd11b83b76db2a09ab246624df68502510efa798f64ded7631bf0c2665b7531"
+      },
+      {
+        "path": "ghidra/00c30470_35.txt",
+        "size": 179,
+        "sha256": "7fe0c6610e1c2078ec1732aea3ff3536f9f28e3d3babde225a3f358b4b331c0d"
+      },
+      {
+        "path": "ghidra/00c304a0_172.txt",
+        "size": 831,
+        "sha256": "f3767f2bcaf03f079e1b10ab39fdd6e347aa66f93abadc839a39a839b83512a1"
+      },
+      {
+        "path": "ghidra/00ce3c5c_8.txt",
+        "size": 45,
+        "sha256": "638cc7c266646821f502d0d14984ef8f47059d6d208f7ba5c16611c62cae3e51"
+      },
+      {
+        "path": "ghidra/00ce7d24_20.txt",
+        "size": 106,
+        "sha256": "39bd09fe6e7740d516d20e7cd397e5d6ecaf3d5828ff2888dcb730f8d45c0ced"
+      },
+      {
+        "path": "ghidra/00ce7dec_21.txt",
+        "size": 110,
+        "sha256": "2713e30f7926e0a883a5ec19daea8f8c3360df1989ecb094cf807d88bd48d5ad"
+      },
+      {
+        "path": "ghidra/00d5e594_16.txt",
+        "size": 77,
+        "sha256": "721d09e7d4b81eb95ca94506be290792774cf9f411a967931cabd2462d6ab2ae"
+      },
+      {
+        "path": "ghidra/00d64478_8.txt",
+        "size": 45,
+        "sha256": "ee9a099b5279d00e3f3e21e527f86346895cf56c28ccce22dba58bc86cdf8255"
+      },
+      {
+        "path": "ghidra/00d644b4_8.txt",
+        "size": 45,
+        "sha256": "e2355a90ed3ada8f9a9332181112a4cbdb14bc08a054b65c0ba543dcddcba488"
+      },
+      {
+        "path": "ghidra/00d644e8_16.txt",
+        "size": 77,
+        "sha256": "a59610117cbfa7437dc5a3cf849b291d908fae65b4327b7eff804e0c16e41495"
+      },
+      {
+        "path": "include/bsp/game_native_gui_effect_application.hpp",
+        "size": 4833,
+        "sha256": "8c70f812a075b46904dc3ff3a2bd9c4702eb4697ff4b3c16f105ae1a45ba36bd"
+      },
+      {
+        "path": "include/bsp/game_native_gui_sampler_application.hpp",
+        "size": 3249,
+        "sha256": "2aa6bf3276f649e8fc02eb5d0c1f78902303f8c798208ea1e97c22b8672d2fd9"
+      },
+      {
+        "path": "include/bsp/native_material_compiler_providers.hpp",
+        "size": 3050,
+        "sha256": "91e171c613975045058c377de34277310140ad1a9c90ed710448a4962edd997c"
+      },
+      {
+        "path": "include/bsp/native_material_descriptor_samplers.hpp",
+        "size": 6270,
+        "sha256": "9f9aefd20e9f8263c7af76cc56601a0c9fcb9333ed71ea03b9c60e5caa7f8b7b"
+      },
+      {
+        "path": "include/bsp/native_material_pass_copy.hpp",
+        "size": 5304,
+        "sha256": "14fdf93d00083fbdde9a6d4528a39d64bf6da0b928d522d43b43ded1a9197110"
+      },
+      {
+        "path": "include/bsp/native_material_pass_owner.hpp",
+        "size": 5800,
+        "sha256": "30ce7e9a5eb8247e4988a947a39427deeecf4991c42cdb969c2ad403f27a4e18"
+      },
+      {
+        "path": "include/bsp/native_particle_clock_shutdown.hpp",
+        "size": 4045,
+        "sha256": "684933cd42c6606373fd3346a9d223efda0c454df534bb885695358f5525223f"
+      },
+      {
+        "path": "include/bsp/native_platform_load_messages.hpp",
+        "size": 4063,
+        "sha256": "a1c249d76d2836bc96be0d770292e52f9bdbfd8f6e7f84666f3bed6f892983ad"
+      },
+      {
+        "path": "include/bsp/native_procedural_resource_lifetime.hpp",
+        "size": 5891,
+        "sha256": "9cc49e7418f53e49cec2a12074901577f334af26b1e4e036256314756e9ed4fe"
+      },
+      {
+        "path": "include/bsp/native_render_context.hpp",
+        "size": 10071,
+        "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516"
+      },
+      {
+        "path": "include/bsp/native_resource_cache_leaves.hpp",
+        "size": 4052,
+        "sha256": "35dce4cb6544e5c59e1da0893669d66637dbb20c27faea4a1a3f10fa7225ee26"
+      },
+      {
+        "path": "include/bsp/native_resource_record_copy.hpp",
+        "size": 1769,
+        "sha256": "f3ca7414372dbc7c67412d8e77fbc26ac921e140aad847abcaa62bb04aeb2ada"
+      },
+      {
+        "path": "include/bsp/native_resource_record_vector.hpp",
+        "size": 2136,
+        "sha256": "fb85cb890ab99aeb91cf40b8d06acdf61a6194e28025952569c5c9846c152b47"
+      },
+      {
+        "path": "include/bsp/native_resource_registry_lookup.hpp",
+        "size": 1893,
+        "sha256": "1f3f752e70c8e2264087d1bd8a47cc6089c8e4ac57273a4da4aefdbad71b22a9"
+      },
+      {
+        "path": "include/bsp/native_sampler_cache_entry.hpp",
+        "size": 3348,
+        "sha256": "a99dfad2582d3ff437b6b51e40ca643de438daa0574aa4f7c332451a41fa6ce3"
+      },
+      {
+        "path": "include/bsp/native_sampler_cache_operation.hpp",
+        "size": 4056,
+        "sha256": "6f6d353b85a8b604b9952b9d2b35f89e26e14bc673e6582b4e119110307a5a15"
+      },
+      {
+        "path": "include/bsp/native_sampler_loader_context.hpp",
+        "size": 3302,
+        "sha256": "876a3634f2daf08c3743833414a365d4cb47bb938945aa56a5e55b8372b04165"
+      },
+      {
+        "path": "include/bsp/native_shader_combiner_reader.hpp",
+        "size": 1616,
+        "sha256": "3a61a4a5d8ec6a220903526fa45a8021eeb05c4daa13f88a361e226f7e9df449"
+      },
+      {
+        "path": "include/bsp/native_shader_descriptor_reader.hpp",
+        "size": 3795,
+        "sha256": "1e456fd43c6588784d5c1e9661c89634cd2b018b85ae4e5fdb0972d46a456aa0"
+      },
+      {
+        "path": "include/bsp/native_shader_descriptor_samplers.hpp",
+        "size": 3377,
+        "sha256": "1d187f8610b20d0b92ed5ed3c6940116ead5b768f7907cbd25b4db926b16d977"
+      },
+      {
+        "path": "include/bsp/native_shader_field_reader.hpp",
+        "size": 3074,
+        "sha256": "d3e80f7624e2c4213c1b4f57e6ef0a3207aca71363f0b064f6d6acfeede709e7"
+      },
+      {
+        "path": "include/bsp/native_shader_sampler_owner.hpp",
+        "size": 5020,
+        "sha256": "8a01ca946332bbcc7e4b7130f53cb2070c4cca082d33d75951d69fe152625a93"
+      },
+      {
+        "path": "include/bsp/native_shader_sampler_reader.hpp",
+        "size": 1606,
+        "sha256": "a38669e5e48d733097b98c4974e97f842ca6a732dfa772b28e5ae17151afe6aa"
+      },
+      {
+        "path": "installed_shaderfx/common/textured.shfx",
+        "size": 3645,
+        "sha256": "22470ebc6df0e4d94b175b4317d6283acaa0944a90bd0001d0676f0722253e94"
+      },
+      {
+        "path": "installed_shaderfx/dx9_lua.inc",
+        "size": 3117,
+        "sha256": "7766adc9c116a9e396b3dd77e9d97b3ea6d55c84601cb2a5a49a64362605b11f"
+      },
+      {
+        "path": "installed_shaderfx/lights/dummy.shfx",
+        "size": 114,
+        "sha256": "3768df78e6a57ee28563ab40cfb9cf223569c12eb62e8576458365deb0866c5b"
+      },
+      {
+        "path": "installed_shaderfx/lights/fog_shadow_uw.shfx",
+        "size": 4091,
+        "sha256": "0f6afd9362d4ce3769607528cad936e2c63c9d1b91728f2d67b6982191da3420"
+      },
+      {
+        "path": "installed_shaderfx/lights/per_vertex_shadow_uw.shfx",
+        "size": 5181,
+        "sha256": "f95150b0ddfce64c6eaa58fbee1c10f4ae60b588ff95e45a65aab9150ab41715"
+      },
+      {
+        "path": "installed_shaderfx/lights/per_vertex_shadow_uw_terrain.shfx",
+        "size": 5018,
+        "sha256": "1496ca53c99658ee39ac2c841f0219950790665f093d00fbde4e305858cf262c"
+      },
+      {
+        "path": "installed_shaderfx/lights/shore_map.shfx",
+        "size": 604,
+        "sha256": "6b9abdfab5578b43319d818a159cbdef1128da937b14f5cd26e5382f3c4aeb6b"
+      },
+      {
+        "path": "installed_shaderfx/ocean/Nova mapa/shore.shfx",
+        "size": 6350,
+        "sha256": "7e724802b88ee0f1aed73efd19b61f9c9b61155d8d6f3890257beda02a3993ca"
+      },
+      {
+        "path": "installed_shaderfx/ocean/shore.shfx",
+        "size": 6350,
+        "sha256": "7e724802b88ee0f1aed73efd19b61f9c9b61155d8d6f3890257beda02a3993ca"
+      },
+      {
+        "path": "installed_shaderfx/shaderpreload.lua",
+        "size": 7881,
+        "sha256": "083b751decc24e70b370c9d291baf3b3112f66ad763d5839e6bc47435786bcee"
+      },
+      {
+        "path": "installed_shaderfx/terrain/coral.shfx",
+        "size": 2652,
+        "sha256": "d16d7db32027ad33d7f034a6ff776c4136cdad401178e95740887884f526c1a7"
+      },
+      {
+        "path": "installed_shaderfx/terrain/seaweed.shfx",
+        "size": 2040,
+        "sha256": "e9aaa1848d9d595faa23262d6e6b8d82c5878ff8a08af74f0823e179236d12da"
+      },
+      {
+        "path": "original/004d45a0_record_destroy.bin",
+        "size": 120,
+        "sha256": "1d548f139c5b4533bd2bc5dfe69092afc226c1b043a672fd7b0617f471458660"
+      },
+      {
+        "path": "original/004d6f70_record_copy.bin",
+        "size": 162,
+        "sha256": "9b61afc2d65f6be817e8a756b8cc68e97692952e4695d5ffe18f5814442df6da"
+      },
+      {
+        "path": "original/004ddb20_cache_retain.bin",
+        "size": 21,
+        "sha256": "984d24bc0617becd91f8537f65986b285467e90f1695f65378b419b70861961c"
+      },
+      {
+        "path": "original/004de4b0_loader_getter.bin",
+        "size": 199,
+        "sha256": "fa1f9c042b0a54c37c68547e0fed4dc02526fdfe6a8911e5b66e46ed9d541ec2"
+      },
+      {
+        "path": "original/00b19980_resource_base.bin",
+        "size": 22,
+        "sha256": "b26833e11b0634915df7b20def4a02519ef23fed4c8cd5afd3d127926d230b40"
+      },
+      {
+        "path": "original/00b19d60_registry_find.bin",
+        "size": 102,
+        "sha256": "e54bf2cbd98b7e7a158306d4ccc67903521d9373d7e0defa1da6a2f96c928995"
+      },
+      {
+        "path": "original/00b19e90_registry_lookup.bin",
+        "size": 108,
+        "sha256": "c40d13471f483f98b2fd146721acd0730c3ea4040ab2f463eab034f43ed6aa09"
+      },
+      {
+        "path": "original/00b1a4f0_cache_whole.bin",
+        "size": 1338,
+        "sha256": "002cdaf6ca625b6e3b138575622dc3dc6feb22a468c021f33814f1815a669f62"
+      },
+      {
+        "path": "original/00b1b4d0_default_loader.bin",
+        "size": 280,
+        "sha256": "842408999114f6f975691e501a6a8bedbd52c55796eb4d47c694e211ca335ea1"
+      },
+      {
+        "path": "original/00b1b730_registry_getter.bin",
+        "size": 200,
+        "sha256": "bb032fcf785ab485134e3f1b4643154a461e636aaae6c09bfd31f713a09484e4"
+      },
+      {
+        "path": "original/00b1b810_factory_adapter.bin",
+        "size": 20,
+        "sha256": "8a65e02675980fa957b1a0e9d36c98b9b89afb43e7d2ee3f84189a5421809ce8"
+      },
+      {
+        "path": "original/00b3b280_parent.bin",
+        "size": 306,
+        "sha256": "cdf241047d8ec93b39fa9058ac6b15b71c386832dfb4170b2dc7c0fcce6e28d9"
+      },
+      {
+        "path": "original/00b3bffd_root_mode_call_order.bin",
+        "size": 68,
+        "sha256": "7f829da555611838c657e1607bfbcc7a661ea417366066bc7eb959749747417b"
+      },
+      {
+        "path": "original/00b42250_binding_destroy.bin",
+        "size": 128,
+        "sha256": "8b374c14a2f456a74d3818c47706ea6f10a1d62da0707d5cdf55afdcfad19e82"
+      },
+      {
+        "path": "original/00b44690_binding_construct.bin",
+        "size": 188,
+        "sha256": "48f12c9dfdbd6950cdc5e2620055031aa62f7fcfb98a993c3979955bbe336a74"
+      },
+      {
+        "path": "original/00b44b10_pass_construct.bin",
+        "size": 214,
+        "sha256": "3d94a7c3884c78acd7b8e84878996666c0ea40cd9f1427d68344ad74a4db9ca3"
+      },
+      {
+        "path": "original/00b44cf0_binding_append.bin",
+        "size": 106,
+        "sha256": "bb34f3378fa7b369d2d58c4f96a9ba82f6a43a983079ddfbc0debedafffa92b1"
+      },
+      {
+        "path": "original/00bbc6d0_caustics_delete.bin",
+        "size": 30,
+        "sha256": "7e255976b8de2c032cbd5fe24d74ba9862c012453cd9dee6a473c09b6e9ec5c7"
+      },
+      {
+        "path": "original/00bbc6f0_caustics_create.bin",
+        "size": 80,
+        "sha256": "310c1fb7dad8d55e21d7f1b328a82539bf058e2c355451fe447951ab14510cfd"
+      },
+      {
+        "path": "original/00bbc7f0_shore_delete.bin",
+        "size": 30,
+        "sha256": "73d21946bb0bc7e392a7b10e0dc7193b88ed39dcf1944b1f60ff52f915b8d62f"
+      },
+      {
+        "path": "original/00bbc810_shore_create.bin",
+        "size": 80,
+        "sha256": "4a25637fc7034fdce68be05e3ff0478dc5b433e444c8a15dadcc94df49613455"
+      },
+      {
+        "path": "original/00bd30e0_virtual_zero.bin",
+        "size": 14,
+        "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01"
+      },
+      {
+        "path": "original/00becb20_load_cursor.bin",
+        "size": 424,
+        "sha256": "d49521cd17d5c4bbd55280346ebbf30a23de86a24d5a947fc8ceda875aeef8e3"
+      },
+      {
+        "path": "original/00beccd0_load_messages.bin",
+        "size": 103,
+        "sha256": "fb8d69fd84a258f76f7fe1a491fc89db03aa373d8aa24fa0e58051b517e67278"
+      },
+      {
+        "path": "original/00c30470_resource_construct.bin",
+        "size": 35,
+        "sha256": "29ebfb40b0ac77a7989972ffa487f27a7311848508fc89c18b583e896469c4c0"
+      },
+      {
+        "path": "original/00c304a0_resource_destroy.bin",
+        "size": 172,
+        "sha256": "0a6910b2f3d70c95dc9afd4e0dfef9fc9c55cbe201e8cb68469e0afc86c735f1"
+      },
+      {
+        "path": "original/00ce3c5c_Default.bin",
+        "size": 8,
+        "sha256": "7670cf4ceda3b9a04325d9e243935446f8064a15b60b5d91e03d6450344e89c8"
+      },
+      {
+        "path": "original/00ce7d24_cache_profile.bin",
+        "size": 20,
+        "sha256": "82fed636b359d203664f7b11c3f1d6a12fab8cb5782d4abf7276be51c5a3fec8"
+      },
+      {
+        "path": "original/00ce7dec_Caustics_name.bin",
+        "size": 21,
+        "sha256": "991a438dd356fb69af0887d7fc843a01c9be6fc024e66096d796a3e87f6f2494"
+      },
+      {
+        "path": "original/00d5e594_registry_profiles.bin",
+        "size": 16,
+        "sha256": "c00c0f50c39de292fb1f7372275d131a6332b7dd3b22883957b9bc7df2ee0394"
+      },
+      {
+        "path": "original/00d64478_caustics_resource_profile.bin",
+        "size": 8,
+        "sha256": "c916f226b74b983b1bde5e98659bbdacc5206ed84aa7eb64017209cee7933624"
+      },
+      {
+        "path": "original/00d644b4_shore_resource_profile.bin",
+        "size": 8,
+        "sha256": "1670667b0edfaefa9793b4f65435dd7b2cc609320a6ab580fcb28dbe55f46421"
+      },
+      {
+        "path": "original/00d644e8_final_factory_profiles.bin",
+        "size": 16,
+        "sha256": "54147319170bff1bcfe88d692bca0992f61bb7361a5dc2bf7a38f1ee87ea9ebc"
+      },
+      {
+        "path": "reports/cc12_native_post_cache_source_integration_18.json",
+        "size": 4274,
+        "sha256": "4702065252af95fad4facc834393fb6d8df6d9ea43883e6cf1605eee85ddf8f4"
+      },
+      {
+        "path": "reports/native_sampler_source1_observed_release_cc12.json",
+        "size": 99585,
+        "sha256": "f28570a2e73bf0815a7bfe1290381da896c4ecc284c4498d7a3ced7ad5e7f4a0"
+      },
+      {
+        "path": "reports/native_sampler_source1_release_cc12.json",
+        "size": 19351,
+        "sha256": "c7064106c9dcc4f6c6bda7e304c225bfb5581695225356d62b7ed6511c083513"
+      },
+      {
+        "path": "seal.py",
+        "size": 10357,
+        "sha256": "c5808db6c7f3e7ccd7434e1d123b3559c3471f404d4743b7b59c109f9f960c8a"
+      },
+      {
+        "path": "src/game_native_gui_sampler_application.cpp",
+        "size": 10977,
+        "sha256": "543cb6e0ade63733a08d9d14827d9bfa2a1ecd86f56fd1927a83772a429c3814"
+      },
+      {
+        "path": "src/game_native_renderer_application.cpp",
+        "size": 53505,
+        "sha256": "516443547ed6f071a13ed531a53dd286f8ff1c09d1140e2336d55ea25cd7f1b3"
+      },
+      {
+        "path": "src/native_material_compiler_providers.cpp",
+        "size": 4582,
+        "sha256": "a782bc95e420e54553c0e9b00d50def12d49edfd3b57fa7ad9ecae840a9ce410"
+      },
+      {
+        "path": "src/native_material_descriptor_samplers.cpp",
+        "size": 10274,
+        "sha256": "504b32da7568e27383844e6b77b02f9fa730a767039ac6a4b33c370e0be2661d"
+      },
+      {
+        "path": "src/native_material_pass_copy.cpp",
+        "size": 12938,
+        "sha256": "33e8f824814318affc9c3bb211391a01a92467064559d5cc0f4be30d4235e6d5"
+      },
+      {
+        "path": "src/native_material_pass_owner.cpp",
+        "size": 5767,
+        "sha256": "3fd1c2e7ccd4bf0d8793c79fc60298f55e6dc0ef43344fff7fc7f4468525a586"
+      },
+      {
+        "path": "src/native_material_program_compiler_actual.cpp",
+        "size": 29346,
+        "sha256": "8fff69fa386cd63678174f0c8582a4223c291f7e47d2948d40daaecbf5393698"
+      },
+      {
+        "path": "src/native_particle_clock_shutdown.cpp",
+        "size": 9121,
+        "sha256": "245e497387b9977fd8b9e672249c501d8d350a4a6d22ac9d9718ad72f598362b"
+      },
+      {
+        "path": "src/native_platform_load_messages.cpp",
+        "size": 4918,
+        "sha256": "80d4cfb11b9dbe4777470f7273fc6aa8316763697233e4aff7caa38143387c06"
+      },
+      {
+        "path": "src/native_procedural_resource_lifetime.cpp",
+        "size": 9785,
+        "sha256": "87108b3f56828a77255b2ce561525db435a463b3a0f06cfe1786d2eecef4961b"
+      },
+      {
+        "path": "src/native_render_context.cpp",
+        "size": 11471,
+        "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43"
+      },
+      {
+        "path": "src/native_resource_cache_leaves.cpp",
+        "size": 6034,
+        "sha256": "2db1be65e9cd7940759e5b28817ff9bf090f1abdbe8789ce2d62db971be020fa"
+      },
+      {
+        "path": "src/native_resource_record_copy.cpp",
+        "size": 3454,
+        "sha256": "f5ee6fde9661b6d396171fa3f3c530e314fae2c1deea9b457b3f92a8aa0dc8b7"
+      },
+      {
+        "path": "src/native_resource_record_vector.cpp",
+        "size": 4748,
+        "sha256": "84b2b2a9014c8f398c82a5420e905819d495310b54b33ef1a3771a4ae9fbe4d4"
+      },
+      {
+        "path": "src/native_resource_registry_lookup.cpp",
+        "size": 2821,
+        "sha256": "06d92bdfc4da4311df3c49007476bcb9317d954827a4832ccf8daf5d822fc414"
+      },
+      {
+        "path": "src/native_sampler_cache_entry.cpp",
+        "size": 4680,
+        "sha256": "ad95a3c36ae5e5f50aaaddd207799c1e878c634b93cb08abdf959d032c4e3e23"
+      },
+      {
+        "path": "src/native_sampler_cache_operation.cpp",
+        "size": 13201,
+        "sha256": "ceb6dbdb23319df113248fb09fb65103c174f09bb1c4cf152f52c3c308233959"
+      },
+      {
+        "path": "src/native_sampler_loader_context.cpp",
+        "size": 2454,
+        "sha256": "3651878adc40bf0a5e0520108d4aa915e0b19b46b559f68a2a41192c232a3d6d"
+      },
+      {
+        "path": "src/native_shader_descriptor_reader.cpp",
+        "size": 11992,
+        "sha256": "37740c3cda68afb0ea707a222a4c24dba8ca7aa8592da37e10ba582617c454d9"
+      },
+      {
+        "path": "src/native_shader_descriptor_samplers.cpp",
+        "size": 4927,
+        "sha256": "7dd8abef1228cb57962a632f4ef3ff111825b63a67f1698d7fb32c29a3393d13"
+      },
+      {
+        "path": "src/native_shader_field_reader.cpp",
+        "size": 6715,
+        "sha256": "2ce801673cf2618033b93c95ca3b7a4ef8bd09457f38398fb6f9e9c38e51df9a"
+      },
+      {
+        "path": "src/native_shader_sampler_owner.cpp",
+        "size": 5503,
+        "sha256": "48ad13bb14a996c24be81bbcbd755cc21f06b494f8dcb1a0ccf9ca32b374b96f"
+      },
+      {
+        "path": "src/native_shader_sampler_reader.cpp",
+        "size": 6190,
+        "sha256": "ad93db3d23715481fbacea527003b1fdb309a652af5d530f97edfd627ddcbe64"
+      },
+      {
+        "path": "tools/bsp.py",
+        "size": 84752,
+        "sha256": "133e2cf3f24f0402f6ed7d0e1dd5148c678c7ca10722633d1ec6cdc9b693a9ff"
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "size": 14518,
+        "sha256": "66171a58aafde035d62ad9b248743c322d5062b92c772d2721a8f89fa5114685"
+      }
+    ]
+  }
+}
