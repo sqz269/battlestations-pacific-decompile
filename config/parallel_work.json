@@ -40268,8 +40268,8 @@
     },
     {
       "id": "cc12_scene_property_string_add_008f38a0",
-      "done": false,
-      "state": "whole_ordinary_Source_primary_peer_accepted_registered_Main_build_pending",
+      "done": true,
+      "state": "whole_ordinary_Source_registered_Main3checks_actual_code_archive_identity_pass",
       "source_ready": true,
       "function_addresses": [
         "008f38a0"
@@ -40289,12 +40289,14 @@
       "worker": "property_leaf_readiness_oct15",
       "code_revision": "cef178a851f3ef157988724ee4b3ec1700171df1",
       "primary_review": "reports/cc12_property_string_add_primary_review.json",
-      "Main_build_gate": "pending"
+      "Main_build_gate": "pass",
+      "actual_compiler_archive_gate": "pass",
+      "Main_validation": "reports/cc12_property_string_add_Main_validation.json"
     },
     {
       "id": "cc12_scene_property_bool_add",
-      "done": false,
-      "state": "whole_ordinary_Source_primary_peer_accepted_registered_Main_build_pending",
+      "done": true,
+      "state": "whole_ordinary_Source_registered_Main3checks_actual_code_archive_identity_pass",
       "source_ready": true,
       "function_addresses": [
         "008f3940"
@@ -40314,7 +40316,9 @@
       "worker": "property_bool_source_oct15",
       "code_revision": "d6fc29f4db5db0e422603e56575c0cb365adc8f0",
       "primary_review": "reports/cc12_property_bool_add_primary_review.json",
-      "Main_build_gate": "pending"
+      "Main_build_gate": "pass",
+      "actual_compiler_archive_gate": "pass",
+      "Main_validation": "reports/cc12_property_bool_add_Main_validation.json"
     },
     {
       "id": "cc12_scene_property_float_add",
