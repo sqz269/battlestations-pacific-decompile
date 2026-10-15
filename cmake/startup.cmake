@@ -333,7 +333,6 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_recor
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_token_text.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_token_values.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_tokenizer.cpp)
-cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_typed_property_providers.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_file_tokenizer.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_deferred_message_storage.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_message35.cpp)
