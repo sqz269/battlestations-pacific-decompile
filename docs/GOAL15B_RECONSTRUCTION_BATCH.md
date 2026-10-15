@@ -14,5 +14,13 @@ For every positive unsigned 32-bit request, `UINT_MAX / n >= 1`, so its local
 exception-construction branch is unreachable for those inputs. The called
 allocation service retains its separate failure/throw policy.
 
-Source coverage, actual compiler/build checks, original ABI evidence and
-original-game execution remain separate claims throughout this batch.
+The cleanup closures have passed the registered MSVC Win32 build and all three
+existing CTest suites. Primary and independent peer reviews found no blockers;
+11 direct report rows and seven markdown call/jump claims pass. Their Ghidra
+names/comments were saved and exports refreshed, including the allocator
+correction. The thunk's Clear-to-Tidy correction retains its previous name and
+evidence in its packet report. The grid byte-vector family remains in progress.
+
+Source coverage, compiler/build checks, original ABI evidence and original-game
+execution remain separate claims. These existing tests do not execute the new
+cleanup entries or prove their original ABI/gameplay equivalence.
