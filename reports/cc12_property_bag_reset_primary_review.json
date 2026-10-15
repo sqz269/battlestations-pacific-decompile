@@ -17,8 +17,9 @@
   "gates": {
     "worker_strict_compile_passed": true,
     "worker_normal_build_passed": true,
-    "independent_current_complete_COFF_review_passed": false,
-    "registered_Main_library_build_passed": false
+    "independent_current_complete_COFF_review_passed": true,
+    "registered_Main_library_build_passed": true,
+    "registered_Main_machine_review_passed": true
   },
   "runtime_claim": false,
   "Original_ABI_or_EH_game_claim": false,
@@ -28,5 +29,33 @@
     "normal_build": "d54218/exit0",
     "existing_tests_passed": 2
   },
-  "stage": "whole_Source_primary_review_passed_independent_complete_COFF_pending_registration_staged"
+  "stage": "whole_Source_accepted_registered_Main_3checks_and_complete_current_machine_review_passed_runtime_unclaimed",
+  "independent_whole_Source_COFF_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\PropertyMapResetIndependentReview01\\complete_source_COFF_review.DATA.json",
+    "bytes": 43713,
+    "sha256": "4f0d8323eca8e211845f120dcb8c8e70ec99abce18a6d6b37fe688a45c1baac5",
+    "primary_all7_current_inputs_verified": true,
+    "all5sections": 257,
+    "main_bytes": 222,
+    "relocations": 10
+  },
+  "ghidra_annotations": {
+    "actual_apply_and_export_terminal": "604ee4/exit0",
+    "prior_values": "local/ghidra-annotations-20261015T012337Z.json",
+    "project_saved": true
+  },
+  "independent_registered_Main_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_native_gate\\local\\MainCloneResetCOFFIndependentReview01\\complete_Main_objects_review.DATA.json",
+    "bytes": 169652,
+    "sha256": "7879db042b3f6108800764e5e30cb81434f3ec348672f29493e70e176729c862",
+    "primary_all20_current_inputs_verified": true,
+    "selected_functions": 16,
+    "section_bytes": 1282,
+    "instruction_bytes": 1233,
+    "instructions": 437,
+    "table_bytes": 48,
+    "padding_bytes": 1,
+    "relocations": 54,
+    "scope": "whole clone and Reset objects; canonical new getter only"
+  }
 }
