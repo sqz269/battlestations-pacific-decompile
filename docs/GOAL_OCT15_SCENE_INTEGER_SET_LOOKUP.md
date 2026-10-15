@@ -63,9 +63,14 @@ analysis/export batches verify project `C:/Users/sqz269/bsp.gpr`, program
 prior names/comments, retains the correct library name and prior comments,
 saves the project and refreshes the export; final receipt records readback.
 
-Draft status: Source complete; annotation/export, registration, normal MSVC
-Win32 build and configured existing checks are recorded in the report as they
-finish. No new tests are introduced for this bounded leaf. No direct native
+Final validation: normal `./scripts/build.ps1` MSVC Win32 Release build
+passed with this Source compiled and an x86 COFF object retained. Both enabled
+existing checks (`reconstructed_math`, `tool_tests`) passed in8.59 seconds;
+native math differential is not enabled in this worker cache. Primary
+independent full-assembly/Source review passed with unchanged hashes. Unique
+CMake registration used its queue turn and immediately released the short
+registry lease. Four typed CALL rows passed with no failures; documentation
+verification and diff checks passed. No new tests were added. No direct native
 entry execution, original COFF equivalence, drop-in binary ABI, application
 adoption or game validation is claimed. Native private argument/local aliases
 and asynchronous mutation are outside this ordinary Source interface; supplied

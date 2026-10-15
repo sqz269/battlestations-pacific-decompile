@@ -1,6 +1,6 @@
 {
   "packet": "goal_oct15_scene_integer_set_lookup",
-  "status": "complete_actual_integer_set_lookup_source_build_pending",
+  "status": "complete_actual_integer_set_lookup_source_win32_build_and_two_enabled_existing_checks_passed",
   "source_ready": true,
   "source": "src/native_scene_integer_set_lookup.cpp",
   "header": "include/bsp/native_scene_integer_set_lookup.hpp",
@@ -11,7 +11,8 @@
     "program": "/battlestationspacific.exe",
     "verification": "Guarded CLI verifies expected project/program/x86/imagebase before every live batch",
     "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
-    "annotation": "Applied under shared write lock; prior values local/ghidra-annotations-20261015T224756Z.json; correct STL name retained; prior comments preserved; project saved; export refreshed; live comment/name readback matches"
+    "annotation": "Applied under shared write lock; prior values local/ghidra-annotations-20261015T224756Z.json; correct STL name retained; prior comments preserved; project saved; export refreshed; live comment/name readback matches",
+    "final_validation_annotation": "Applied under shared write lock; prior values local/ghidra-annotations-20261015T225258Z.json; correct library name retained and earlier comments preserved; project saved; export refreshed; final live name/comment readback matches"
   },
   "readiness": {
     "indexed_reconstruction_before_packet": false,
@@ -350,15 +351,40 @@
     "all_incoming_callers": 2,
     "exact_typed_body_and_allcaller_rows_read": true,
     "complete_producer_and_native_body_read": true,
-    "report_calls": "4 incoming CALL rows checked,0failed; documentation10addresses,0warnings",
-    "build": "pending",
-    "existing_tests": "pending",
+    "report_calls": "Final:4incomingCALLrows checked,0failed; documentation10addresses,0failures/unchecked/warnings",
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "exit_code": 0,
+      "log": "local/goal_oct15_scene_integer_set_lookup_build.log",
+      "log_sha256": "4f4878ce7cc79022d9d7f919f2d7b4e9cb757a7768d82a04e8498d49c2edab21",
+      "own_Source_compile_line": 38,
+      "object": "build/win32/bsp_core.dir/Release/native_scene_integer_set_lookup.obj",
+      "object_machine": "014c",
+      "object_sha256": "fe59400e725ce7fe1f0f737aa57d0e03005e1880f3038d36a2348a651f92022a",
+      "inherited_warning": "Existing duplicate spawn_request_id_matches LNK4006 in unchanged lua_binding_spawn/lua_spawn_new objects; no new warnings/errors"
+    },
+    "existing_tests": {
+      "enabled": 2,
+      "passed": 2,
+      "failed": 0,
+      "seconds": 8.59,
+      "names": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "native_math_differential": "not enabled in this worker build cache"
+    },
     "new_tests": 0,
     "cmake_registration": "Unique deferred target_sources line appended during own queue turn under short lease; released immediately before build",
     "direct_native_new_entry_execution": false,
     "abi_compatible": false,
     "game_validated": false,
-    "application_adoption": false
+    "application_adoption": false,
+    "build_tested": true,
+    "installed_binary_sha256_rechecked_after_build": true,
+    "lease": "Retained address/file lease for primary integration; short CMake registration lease already released",
+    "diff_check": "git diff --check and staged diff check passed before final commit"
   },
   "source_hashes": {
     "src/native_scene_integer_set_lookup.cpp": {
