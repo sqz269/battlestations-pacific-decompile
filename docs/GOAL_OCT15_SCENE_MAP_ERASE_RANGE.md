@@ -68,3 +68,5 @@ Source uses explicit live private cells and current raw/CRT providers. Original
 binary/CRT/heap/private-frame/register identity, application adoption and game
 behavior remain unvalidated. Existing tests are regression checks, not new-body
 native differential execution.
+
+Final combined default Win32 build passed3/3 existing CTests in8.02s; all10 range transfer rows and five unique batch objects were checked.

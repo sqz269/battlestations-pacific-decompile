@@ -103,7 +103,7 @@
     "child_saved_map": "P-7Ch",
     "source": "stable disjoint metadata, explicit live backing; child metadata nullable/unbacked on full/empty paths; original physical frame aliases unproved"
   },
-  "status": "complete_raw_Source_independent_review_and_build_pending",
+  "status": "whole_Source_independently_reviewed_default_Win32_and_three_existing_checks_passed",
   "abi_compatible": false,
   "game_validated": false,
   "limits": [
@@ -111,5 +111,31 @@
     "All returning current-CRT diagnostic and child failure paths compose; no valid-only admission or invented cleanup.",
     "Current raw provider and reached backing domains remain required; physical private-stack/cross-provider aliases are not supplied.",
     "Existing regression checks do not directly execute this range body against native; application adoption/game proof open."
-  ]
+  ],
+  "verification": {
+    "combined_build": {
+      "revision": "6a5906ff426b1ffa573abecc8e46720ab37164d4",
+      "command": "scripts/build.ps1",
+      "configuration": "MSVC Release Win32",
+      "exit_code": 0,
+      "log": "local\\goal_oct15_integer_combined_build.log",
+      "log_sha256": "3d5f6f18f04560170ab5ddec68667c4b511e526aa37a9dc60fe318fbd983c041",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "ctest_seconds": 8.02,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "scope": "existing regression checks; native math seeds do not exercise the new map/set bodies",
+      "CMAKE_PROJECT_INCLUDE": "J:\\PROG\\battlestations-pacific-decompile-goal_oct15_integrator\\cmake\\startup.cmake"
+    },
+    "typed_transfer_rows_checked": 10,
+    "typed_transfer_rows_failed": 0,
+    "independent_whole_assembly_review": "passed;/root/string_allocate",
+    "annotation_receipt": "local/ghidra-annotations-20261015T210610Z.json",
+    "export_refreshed": "0046b570",
+    "new_tests": false
+  }
 }
