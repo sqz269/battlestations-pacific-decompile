@@ -1,0 +1,248 @@
+{
+  "packet": "oct15_nested_string_vector_uninitialized_copy",
+  "worker": "agent/oct15_avoid_distance",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "project_program_verified_before_analysis_and_export": true,
+  "ghidra_read_only": true,
+  "addresses_owned": [
+    "00559e00",
+    "00559e5a",
+    "0055a950"
+  ],
+  "source": "src/native_nested_string_vector_copy.cpp",
+  "header": "include/bsp/native_nested_string_vector_copy.hpp",
+  "documentation": "docs/OCT15_NESTED_STRING_VECTOR_COPY.md",
+  "routines": [
+    {
+      "address": "00559e00",
+      "normal_ranges_inclusive": [
+        [
+          "00559e00",
+          "00559e59"
+        ],
+        [
+          "00559e7f",
+          "00559e93"
+        ]
+      ],
+      "listed_normal_instructions": 42,
+      "combined_export_instructions_including_catch": 57,
+      "flow_gaps": [],
+      "coverage": "complete_normal_actual16B_copy_and_completed_prefix_Source_catch_at_accepted_child_boundaries",
+      "implementation": "copy_native_nested_string_vector_uninitialized_range_00559e00",
+      "retained_name": "TMPL_NativeStringVector_UninitCopy_00559e00",
+      "original_abi": "ECX first,EDX last; stacked destination,dead_owner,dead_tag3,dead_tag4; RET10h; EAX completed end. New Source retains word positions and adds raw context, RET14h, distinct exception/private-frameABI.",
+      "schedule": "Captured cursors/endpoints. State1 around current actual00557BC0 only for nonzero destination; null skips construction but advances. Then destination+16,state0,publish completed end,source+16,equality loop. No source snapshot/self guard/outer backing free; EAX completed cursor.",
+      "ownership": "Actual16B checked headers, inner8B pooled strings; child establishes+4/+8/+C and preserves+0 opaque preimage. Caller supplies actual construction storage, live source and child pool/currentCRT domain; no borrowed assignment or alternative model.",
+      "null_and_alias": "Empty no element work. Single element with destination0 yields10h without constructor access. Skipped null joins completed prefix; later catch has no null guard, so every actual cleanup access must be admitted. Forward overlap/no-self-guard effects retained where child ownership/access contracts hold.",
+      "arithmetic": "Unsigned32 cursor wrap/equality, no C++ out-of-array pointer arithmetic."
+    },
+    {
+      "address": "00559e5a",
+      "body_end_inclusive": "00559e7e",
+      "listed_instructions": 15,
+      "flow_gaps": [],
+      "coverage": "complete_completed_prefix_cleanup_and_rethrow_Source_scope",
+      "implementation": "catch scope inside copy_native_nested_string_vector_uninitialized_range_00559e00",
+      "retained_name": "Catch_All@00559e5a",
+      "original_abi": "EH catch needs native parent frame; EBP-18 initial destination,EBP+8 completed end,EBP+C ignored owner. No independent callable Source entry.",
+      "schedule": "Ascending16B prefix Tidy; failing current header excluded; no null skip; no outer buffer free; BF6885(0,0) rethrow after all cleanup. Cleanup failure stops later work in qualified Source C++ domain.",
+      "binding": "Exact complete00559DC0/00432440 actual semantic/argument equivalence; direct accepted tidy_native_string_header_vector_00432440, coordinated with peer actual00559DC0 wrapper work. Old host projection not used."
+    },
+    {
+      "address": "0055a950",
+      "body_end_inclusive": "0055a974",
+      "listed_instructions": 14,
+      "flow_gaps": [],
+      "coverage": "complete_dispatch_and_semantic_EAX_at_new_Source_context_ABI",
+      "implementation": "copy_native_nested_string_vector_dispatch_0055a950",
+      "retained_name": "STL_TagDispatch_0055a950",
+      "original_abi": "ECX dead_owner,EDX ignored; FIVE stacked words dead_first_owner,first,dead_last_owner,last,destination; RET14h; EAX helper result. New Source reservesEDX and adds context,RET18h.",
+      "forwarded_words": "Helper(first,last,destination,incoming_ECX,destination_bits,incoming_ECX&FFFFFF00h). Native zeros only low tag byte; upper24 retained; all3 metadata words dead in helper/catch.",
+      "qualification": "Native POP ECX exposes modified local tag as ambient register; no semantic Source output/owner object inferred. No live callers found by current xrefs."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00559e47",
+      "native": "00557bc0",
+      "function": "00559e00",
+      "contract": "complete native constructor listing and accepted actual Source/header read",
+      "arguments": "ECX current nonnull destination; stacked source cursor; native EDX unconsumed. Source supplies0 ignoredEDX plus actual context.",
+      "binding": "construct_native_string_header_vector_copy_00557bc0; actual child allocation/diagnostic/cleanup schedule retained."
+    },
+    {
+      "address": "00559e6a",
+      "native": "00559dc0",
+      "function": "00559e5a",
+      "contract": "both complete00559DC0 and00432440 listings read, exact semantic/argument equivalence verified",
+      "arguments": "ECX dead_owner from parent+Ch; stacked completed header,RET4; owner ignored.",
+      "binding": "Direct accepted tidy_native_string_header_vector_00432440; captures begin/end, actual32050(header,header), freeCURRENTbegin, alwayszero4/8/C, preserve0."
+    },
+    {
+      "address": "00559e7a",
+      "native": "00bf6885",
+      "function": "00559e5a",
+      "contract": "native library noreturn rethrow with two zero arguments; complete catch read",
+      "binding": "Source throw; after completed-prefix cleanup, without original FH3/RTTI/cleanup-failure unwind ABI claim."
+    },
+    {
+      "address": "0055a96c",
+      "native": "00559e00",
+      "function": "0055a950",
+      "contract": "complete actual helper and raw EH read",
+      "arguments": "ECX first(physical stack2),EDX last(stack4); stack destination(stack5),incomingECX,destination_bits,incomingECX&FFFFFF00.",
+      "binding": "Direct own complete actual helper with extra explicit raw context."
+    }
+  ],
+  "eh_action_steps": [
+    {
+      "address": "00c6dac8",
+      "native": "00401130",
+      "function": "00c6dac0",
+      "contract": "complete7-instruction raw state1 action plus actual target singleRET read",
+      "arguments": "Current destination duplicated fromEBP-1C/-20; caller cleans8bytes.",
+      "binding": "Proven no-op placement action omitted as an observable Source operation; no fake deallocator/stub or additional mutation ownership."
+    }
+  ],
+  "caller_sites": [
+    {
+      "address": "0055b1f9",
+      "native": "00559e00",
+      "function": "0055b150",
+      "arguments": "ECX captured sourcebegin,EDX captured sourceend; stacked current destinationbegin,ownerEDI,tag,tag; inner stride16 confirmed by wrapper and callerSHL4.",
+      "result_use": "MOV[EDI+8],EAX at0055B1FE publishes semantic completed end. Full outer constructor behavior outside this packet."
+    }
+  ],
+  "eh_evidence": {
+    "handler": "00c6dad1 MOV EAX,D982B8; JMPBF6B43",
+    "funcinfo": "D982B8 magic19930522,3state entries,mapD982A0,1trymapD9828C,no IP/ESType lists,flags1",
+    "try": "low0,high1,catchhigh2,1handlerD9827C(attributes40,type0,disp0,handler559E5A)",
+    "unwind": "state0->-1/action0;state1->0/actionC6DAC0;state2->-1/action0",
+    "state1_action": "C6DAC0 current pointer duplicates, CALL401130,ADD ESP8,RET; actual401130 is oneC3RET; no allocation/free effect",
+    "source_scope": "C++ try around loop and ordered prefix catch/rethrow. No-op placement action elided. Failing current excluded; no local rollback/outer free; native private frames,FH3/SEH/catch/RTTI/cleanup-failure identity qualified."
+  },
+  "callee_binding_evidence": {
+    "constructor": "Accepted complete00557BC0 source/native count-before-clear, zero4/8/C, real allocation/pool/diagnostics/catch. Source no-self-guard+0preservation inherited, not normalized.",
+    "tidy": "Full00559DC0 and00432440 share capturedbegin/end, identical header/header dead args to32050, freeCURRENTbegin, alwayszero4/8/C,+0preserved. Different physical entries/cleanup explicit.",
+    "peer_handoff": "Worker/root/string_fill owns actual00559DC0 newwrapper, explicitly agreed direct accepted432440 composition; peer ready commitf4e1a69203e92e6d25d91d2063298cb8f0ba8b44 passed3/3. No duplicate5DC0 source or address record here and no dependency on an unmerged header.",
+    "legacy_projection": "frontend_seg12_17_cc13.cpp:639 native_string_vector_tidy_00559dc0 usesFe3TemplateHost callbacks and earlyreturnwhenbegin0, unlike native unconditional field clears; preserved separately, not used/modified."
+  },
+  "original_byte_audit": {
+    "original_binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "image_base": "00400000",
+    "extraction": "Installed original PE32 optional-header image base and section-table RVA-to-raw mapping; full declared spans from disk, not live execution.",
+    "calls": [
+      {
+        "site": "00559e47",
+        "resolved_target": "00557bc0"
+      },
+      {
+        "site": "00559e6a",
+        "resolved_target": "00559dc0"
+      },
+      {
+        "site": "00559e7a",
+        "resolved_target": "00bf6885"
+      },
+      {
+        "site": "0055a96c",
+        "resolved_target": "00559e00"
+      },
+      {
+        "site": "00c6dac8",
+        "resolved_target": "00401130"
+      }
+    ],
+    "spans": [
+      {
+        "entry": "00559e00",
+        "size": 148,
+        "bytes": "558bec6aff68d1dac60064a100000000506489250000000083ec1453568b75085733db8965f08955ec8bf98975e8895dfc3b7dec74498975e48975e03bf3c645fc017408578bcee874ddffff83c610885dfc89750883c710ebd78b75e88b7d083bf774128b5d0c568bcbe851ffffff83c6103bf775f133db5353e806ca69008b4df45f8bc65e64890d000000005b8be55dc21000"
+      },
+      {
+        "entry": "0055a950",
+        "size": 37,
+        "bytes": "518b542418c60424008b0424508b44241c528b54241c518b4c241850e88ff4ffff59c21400"
+      },
+      {
+        "entry": "00559dc0",
+        "size": 63,
+        "bytes": "568b7424088b4e0485c9741a8b4424088b56085056e87682edff8b4e0451e8c9c7690083c404c7460400000000c7460800000000c7460c000000005ec20400"
+      },
+      {
+        "entry": "00432440",
+        "size": 61,
+        "bytes": "51568bf18b4e0485c9741a8b4424048b56085056e8f7fbffff8b4e0451e84a417c0083c404c7460400000000c7460800000000c7460c000000005e59c3"
+      },
+      {
+        "entry": "00c6dac0",
+        "size": 17,
+        "bytes": "8b45e4508b4de051e8633679ff83c408c3"
+      },
+      {
+        "entry": "00c6dad1",
+        "size": 10,
+        "bytes": "b8b882d900e96890f8ff"
+      },
+      {
+        "entry": "00d9827c",
+        "size": 16,
+        "bytes": "4000000000000000000000005a9e5500"
+      },
+      {
+        "entry": "00d9828c",
+        "size": 20,
+        "bytes": "000000000100000002000000010000007c82d900"
+      },
+      {
+        "entry": "00d982a0",
+        "size": 24,
+        "bytes": "ffffffff0000000000000000c0dac600ffffffff00000000"
+      },
+      {
+        "entry": "00d982b8",
+        "size": 36,
+        "bytes": "2205931903000000a082d900010000008c82d90000000000000000000000000001000000"
+      },
+      {
+        "entry": "00401130",
+        "size": 1,
+        "bytes": "c3"
+      }
+    ],
+    "funcinfo": "D982B8: magic19930522;3state entries; unwindmapD982A0;1try mapD9828C; no IP/ESType lists; flags1.",
+    "unwind": "state0 to-1/action0; state1 to0/actionC6DAC0; state2 to-1/action0.",
+    "try": "trylow0,tryhigh1,catchhigh2,1handler atD9827C:attributes40,type0,disp0,handler00559E5A.",
+    "action": "C6DAC0 duplicates current destination fromEBP-1C/-20 into two stack words, calls RET-only401130, ADD ESP8,RET; no observable allocation/free action on admitted private frames.",
+    "checks": "All5 original CALLs independently resolved; native helper RET10h,dispatcher RET14h; exact raw FuncInfo/try/handler/unwind entries asserted; no-op actual401130 byte asserted.",
+    "scope": "Static original disk evidence only; no Source/native byte equality, original EH ABI execution or gameplay claim."
+  },
+  "compiled_source_evidence": {
+    "object": "build/win32/bsp_core.dir/Release/native_nested_string_vector_copy.obj",
+    "dump_file": "local/oct15_nested_string_vector_copy_coff.asm",
+    "dumper": "MSVC dumpbin14.51.36244.0 /DISASM",
+    "helper": "Captured cursors, publish completedend before call, nullskip45->54, actual constructorCALL4F, ADD16 destination54/source57, catch5C completedprefix through actualTidyCALL74, rethrow9C, EAXcurrent82, RET14h95.",
+    "dispatcher": "Forwards context plus native mapped words at03..19, actual helperCALL1A, retainsEAX, RET18h20. Dead first/third stacked words remain unconsumed.",
+    "qualification": "Static exactSource compiled-output inspection; Source has different private frames/parameter reloads, C++EH, context and cleanup counts, not native-byte identity or original ABI execution."
+  },
+  "floating_point": "No x87/FP arithmetic in native helper/catch/dispatcher/action; NaNs not involved.",
+  "uncertainties": [
+    "Retained descriptive names are not recovered source symbols.",
+    "Native original FH3/SEH/RTTI/catch and cleanup-failure unwind identity, CRT/new-handler/heap identity and private-frame/fault addresses remain qualified Source boundaries.",
+    "Actual constructor/pool/currentCRT/diagnostic/zero-copy child preconditions remain inherited; null skipped prefix and overlap are not normalized into safe ordinary C++ vector semantics.",
+    "No packet-specific native differential fixture, original exception execution, binary replacement, startup or gameplay proof."
+  ],
+  "checks": {
+    "build": "pass ./scripts/build.ps1 after exact C++ source changes",
+    "build_log": "local/oct15_nested_string_vector_copy_build.log",
+    "existing_suites": "3/3 pass: reconstructed_math,native_math_differential,tool_tests",
+    "verify_report_calls": "pass6/6 exact direct/catch/action/caller sites and function identities",
+    "git_diff_check": "pass",
+    "new_tests": 0,
+    "packet_native_differential_fixture": false,
+    "abi_compatible": false,
+    "game_validated": false
+  }
+}
