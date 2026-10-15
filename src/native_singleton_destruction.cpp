@@ -1,4 +1,5 @@
 #include "bsp/native_singleton_destruction.hpp"
+#include "bsp/native_avoid_manager_lifetime.hpp"
 #include "bsp/native_fixed_step_job_waves.hpp"
 #include "bsp/native_allocation_stats_lifecycle.hpp"
 #include "bsp/native_particle_model_manager.hpp"
@@ -76,6 +77,15 @@ __declspec(naked) void __cdecl current_crt_invalid_parameter() {
 __declspec(noinline) void __fastcall delete_current_profile(void* owner,
     const NativeSingletonDeletionBindings& bindings, std::uint32_t profile,
     std::uint32_t flags) {
+    // The finite Source dispatcher admits both the recovered Native profile
+    // and its matched actual Source table. Read/popping order stays in the
+    // complete manager body; only this concrete deleting target gains a binding.
+    if ((profile == 0x00ce38f4 || profile == reinterpret_cast<std::uint32_t>(
+            &kNativeAvoidManagerLifetimeSourceVtable)) && bindings.avoid_manager != nullptr) {
+        scalar_delete_native_avoid_manager_00420680(
+            static_cast<Cc13AvoidZoneManagerNative*>(owner), bindings.avoid_manager, flags);
+        return;
+    }
     switch (profile) {
     case 0x00ce7d38:
         if (bindings.particle_clock != nullptr) {
