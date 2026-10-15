@@ -1,0 +1,59 @@
+{
+  "schema": "bsp.goal15c.list_count_guards.v1",
+  "packet": "goal15c_list_count_guards",
+  "base_commit": "ff24a27a7",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "status": "complete_source_normal_and_error_paths_current_sdk_identity_qualified_msvc_x86_and_call_checks_passed",
+  "owned_addresses": ["00420140", "0041fdd0"],
+  "outputs": ["include/bsp/native_list_count_guards.hpp", "src/native_list_count_guards.cpp", "docs/GOAL15C_LIST_COUNT_GUARDS.md", "reports/goal15c_list_count_guards.json"],
+  "routines": [
+    {"address": "00420140", "name": "STL_List_IncrementSizeChecked_00420140", "body": "00420140-004201d2", "bytes": 147, "coverage": "complete Source normal/error behavior; native FH3/legacy exception ABI and instruction identity not reproduced", "source": "src/native_list_count_guards.cpp", "entry": "increment_native_list_count_00420140", "original_abi": "thiscall ECX raw header, stacked uint32 addition, RET4; ESI preserved; no defined result", "source_abi": "fastcall(header,unused_edx,addition): ECX header, ignored EDX, stacked addition, RET4; full native frame/register/exception ABI not claimed"},
+    {"address": "0041fdd0", "name": "STL_inst_0041fdd0", "body": "0041fdd0-0041fe62", "bytes": 147, "coverage": "complete Source normal/error behavior; native FH3/legacy exception ABI and instruction identity not reproduced", "source": "src/native_list_count_guards.cpp", "entry": "increment_native_list_count_0041fdd0", "original_abi": "thiscall ECX raw header, stacked uint32 addition, RET4; ESI preserved; no defined result", "source_abi": "fastcall(header,unused_edx,addition): ECX header, ignored EDX, stacked addition, RET4; full native frame/register/exception ABI not claimed"}
+  ],
+  "native_error_steps": [
+    {"address": "0042018c", "native": "00408720", "function": "00420140", "contract": "body read: counted legacy-string assignment of message/count16; native RET8; Source whole-error composition uses genuine current SDK length_error"},
+    {"address": "004201a1", "native": "00411700", "function": "00420140", "contract": "body read: constructs native legacy logic_error base and copied message member, RET4; Source does not claim this object ABI"},
+    {"address": "004201b8", "native": "00bf6885", "function": "00420140", "contract": "body read: throw object/ThrowInfo00D83F98 via native RaiseException machinery; Source uses current genuine C++ throw"},
+    {"address": "0041fe1c", "native": "00408720", "function": "0041fdd0", "contract": "same inspected native message-assignment service"},
+    {"address": "0041fe31", "native": "00411700", "function": "0041fdd0", "contract": "same inspected native legacy exception construction"},
+    {"address": "0041fe48", "native": "00bf6885", "function": "0041fdd0", "contract": "same inspected native throw service; original FH3/CRT identity not reproduced"}
+  ],
+  "consumer_calls": [
+    {"address": "004247c2", "native": "00420140", "function": "00424730", "contract": "ECX registry+4, stacked addition1, after node allocation before linking"},
+    {"address": "0042481e", "native": "00420140", "function": "00424730", "contract": "same addition1 and raw registry list header"},
+    {"address": "0042487a", "native": "00420140", "function": "00424730", "contract": "same addition1 and raw registry list header"},
+    {"address": "0042495a", "native": "00420140", "function": "004248a0", "contract": "stream loader, same addition1/header before linking"},
+    {"address": "004238bf", "native": "0041fdd0", "function": "00423640", "contract": "ECX current record+18h raw header, stacked addition1; after0041C0B0 node allocation"}
+  ],
+  "semantics": {
+    "header": "existing0Ch raw bytes, uint32 count+8 only; no outer class/lifetime declared",
+    "capture": "one current-count read before condition; addition is by-value Source input",
+    "physical_operand_load_order": "optimized Source loads count before stack addition; Native loads addition first. Both before provider calls/count stores; original frame-cell alias/fault ordering is not reproduced",
+    "condition": "uint32(0x3fffffff-current)<addition; unsigned subtraction wraps even for current above nominal limit",
+    "normal": "store uint32(captured_current+addition) once; no current>limit admission check, clamp or signed arithmetic",
+    "error": "no count store before genuine current SDK std::length_error construction and throw; no rollback of provider effects or success-only callback",
+    "source_exception_boundary": "current SDK object/message allocation, bad_alloc/handler/catching/unwinding identity, not native legacy string/object/FH3 bytes or allocation schedule",
+    "native_exception_boundary": "owned147B bodies fully inspected; original FS chain, FH3 states/handlers, legacy message objects and ThrowInfo not physically reproduced"
+  },
+  "evidence": [
+    {"span": "00420140-004201d2;0041fdd0-0041fe62", "kind": "complete native pseudocode/assembly/live prototype", "conclusion": "same unsigned guard and count increment, conditional legacy length_error path, RET4"},
+    {"span": "00408720;00411700;00bf6885", "kind": "native callee bodies read", "conclusion": "message assignment, legacy error construction and RaiseException throw service confirmed before Source contract"},
+    {"span": "00d693b0-00d693cf", "kind": "live bytes", "conclusion": "native throw record codeE06D7363 and flags1; native handler/resume control backing not supplied"},
+    {"span": "00424730;004248a0;004238a2-004238ca;0041c0b0", "kind": "all five native caller argument setups plus pointer-list node producer body", "conclusion": "addition1 and raw header/count role; distinct outer list owner not conflated"},
+    {"span": "current MSVC14.51.36231 include/stdexcept lines68-74", "kind": "installed primary SDK header", "conclusion": "genuine length_error derives logic_error and const-char constructor delegates message; no fake exception provider"}
+  ],
+  "corrections": [{"address": "00420140", "was": {"saved_name": "STL_xlen_throw_00420140", "inventory_tag": "stl_throw_site (high, rename)", "name_ledger_record": null}, "is": {"name": "STL_List_IncrementSizeChecked_00420140", "meaning": "conditional throw plus ordinary checked count increment", "saved_annotation": "primary only"}, "evidence": "0042016A JNC004201BD; ADD EAX,EDX/store[ECX+8]/RET4 at004201BD..004201D2"}],
+  "validation": {"focused_compile": "PASS:MSVC x86 /std:c++17 /EHsc /W4 /WX /permissive- /O2 /FAcs /c /Iinclude src/native_list_count_guards.cpp; zero warnings", "emitted_listing": "PASS:both public entries use ECX header, stacked addition and RET4; one count load, unsigned SUB/CMP/JB, one normal sum/store; current SDK length_error constructor and C++ throw emitted; physical operand-read order differs and is qualified", "report_and_doc_calls": "PASS:11 report rows and5 markdown claims; zero failures,unchecked claims,warnings", "full_registered_build": "primary responsibility", "source_fixture": "PASS:10 executions,5 constant expected cases through both entries; normal/exact-limit/reject/above-limit/wrapped-sum, actual length_error/message and untouched header words; local/goal15c_list_count_guards/list_count_guard_probe.cpp; probe.cmd; linked with /MANIFEST:EMBED", "new_tracked_tests": 0, "ignored_source_fixture_cases": 10, "ghidra_mutations": 0, "native_runtime_tested": false, "abi_compatible": false, "native_instruction_equivalent": false, "game_validated": false},
+  "integration": {"target": "bsp_core", "target_sources_add": "src/native_list_count_guards.cpp", "saved_ghidra_changes": "primary owns name/comment/tag/export refresh", "lease": "hold until primary transfer"},
+  "primary_integration_validation": {
+  "registered_build": "PASS scripts/build.ps1; all3 existing CTests passed",
+  "build_log": "local/goal15c_final_registered_build.log",
+  "batch_report": "reports/goal15c_reconstruction_batch.json",
+  "native_abi_and_gameplay": "not established",
+  "source_fixture": "10 actual registered-archive executions passed; real SDK exception/message and untouched header words",
+  "report_rows": 11,
+  "markdown_claims": 5,
+  "saved_annotations_and_exports": "PASS; target verified, old annotations retained in local rollback JSON; project saved and targeted exports refreshed"
+}
+}
