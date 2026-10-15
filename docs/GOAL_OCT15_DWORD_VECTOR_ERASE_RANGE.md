@@ -73,7 +73,27 @@ Locked annotation preserves prior name/comments/evidence, saves the project and
 refreshes the affected export with readback recorded in the report. Shared CMake
 registration was appended at this worker's queue turn, after removing only its
 own queue request and immediately verifying the registry is unleased. No exclusive
-registry lease was taken. Required
-normal Win32 build, existing checks and focused compiler inspection are pending.
-No new tests are added; packet-specific native differential/game and original ABI
-remain unproved.
+registry lease was taken. The prior-value annotation log is
+`local/ghidra-annotations-20261015T224743Z.json`.
+
+Required normal `scripts/build.ps1` at
+`78eeb573d80235f334a4aa29491615877c8a39c4` passed strict Win32 and all 3 existing
+CTests in 7.69s. Log: `local/goal_oct15_dword_vector_erase_range_build.log`.
+Reviewed Source/header and all provider hashes remain unchanged.
+
+Focused actual-object review found a 76-byte ordinary Source entry. Captured
+owner+8h survives the real diagnostic+16h; JE+Dh skips last-owner read+Fh on zero.
+Current first/last-node reads+1Bh/+1Eh precede equality branch+26h, which skips
+end load+2Dh, concrete kernel transfer+32h and unconditional end publication+3Dh.
+CURRENT output is loaded+41h only afterward, then node+4 store+44h precedes
+owner+0 store+47h. Current compiler argument homes and a first-node spill differ
+from native frames; they are outside the explicit backing/alias interface.
+
+The actual 101-byte positive-provider entry captures wrapped result+27h before
+its zero/negative branches+2Ah/+2Eh. Those paths return that result; the erase
+entry still stores it to end. Positive paths use the real inlined SDK, including
+returning diagnostic imports and actual memmove, retaining the pre-SDK result.
+Both object hashes/offsets and receipts are in the report. This is current Source
+composition evidence, separate from the two actual native targets. No new tests
+were added; packet-specific native differential/game and original ABI remain
+unproved. Existing native math checks do not execute this new erase body.
