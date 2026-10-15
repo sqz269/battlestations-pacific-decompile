@@ -16,16 +16,18 @@
   packets in the same work stream to maximize context reuse and preserve accumulated
   evidence, contracts, and decisions. Use `followup_task` to assign the next bounded
   packet, and refresh its leases and file/address ownership before work begins.
-  Spawn a new subagent when no suitable existing worker is available, the required
-  model differs, the work stream changes materially, or the worker is nearing its
+  Spawn a new subagent when no suitable existing worker is available, the
+  work stream changes materially, or the worker is nearing its
   context window limit; use a short handoff when replacing a worker.
-- Spawn workers on `gpt-6.1-sol` with `fork_turns: "none"` and a self-contained brief: the packet,
-  its addresses and files, and the contract. Keep the orchestrator and integrator on `gpt-6-astra`.
-  Spawn on `gpt-6-astra` instead when the packet's evidence is x87 arithmetic, register-ABI recovery,
-  control-flow or listing repair, or a body too large to decompile. A full-history fork inherits the
-  parent's model and cannot override it, so `fork_turns` must be `"none"` or a positive integer string
-  whenever `model` is set. Set `reasoning_effort` to `"xhigh"` on every spawn that sets `model`: the
-  parent's effort is not inherited.
+- Use `gpt-6.1-sol` for both the primary orchestrator/integrator and every subagent.
+  Use `reasoning_effort: "xhigh"` for routine bounded work. Raise it to `"max"` on the same
+  model for x87 arithmetic, register-ABI recovery, control-flow or listing repair, a body
+  too large to decompile, or difficult integration.
+  Spawn workers with `model: "gpt-6.1-sol"`, `fork_turns: "none"`, an explicit
+  `reasoning_effort` chosen by that rule, and a self-contained brief covering the packet,
+  its addresses and files, and the contract. A full-history fork inherits the parent's
+  model and cannot override it; the parent's reasoning effort is not inherited when
+  `model` is set.
 
 - Use the existing `C:/Users/sqz269/bsp.gpr`, program `/battlestationspacific.exe`.
   Verify project and program before every analysis/export batch. Do not re-import into `wows`.
