@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "packet": "goal_oct15_scene_integer_set_head",
+  "source": "src/native_scene_integer_set_head.cpp",
+  "header": "include/bsp/native_scene_integer_set_head.hpp",
+  "documentation": "docs/GOAL_OCT15_SCENE_INTEGER_SET_HEAD.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "routines": [
+    {
+      "address": "004682b0",
+      "end_exclusive": "004682e7",
+      "coverage": "complete",
+      "cpp_symbol": "allocate_native_scene_integer_set_head_004682b0",
+      "original_abi": "No native arguments; EAX actual14h head; RET",
+      "bytes": "6a 14 e8 64 e5 78 00 83 c4 04 85 c0 74 06 c7 00 00 00 00 00 8d 48 04 85 c9 74 06 c7 01 00 00 00 00 8d 48 08 85 c9 74 06 c7 01 00 00 00 00 c6 40 10 01 c6 40 11 00 c3",
+      "live_disk_equal": true,
+      "live_callers": 5,
+      "sha256": "05dee6fa637f47fc18609481bbb8a2c15dfe607954d821c4e55534d8f6e940e2"
+    },
+    {
+      "address": "00468ea0",
+      "end_exclusive": "00468ecd",
+      "coverage": "complete",
+      "cpp_symbol": "construct_native_scene_integer_set_head_00468ea0",
+      "original_abi": "ECX actual tree; two unread stacked words; RET8; EAX original tree; ESI preserved",
+      "bytes": "56 8b f1 e8 08 f4 ff ff 89 46 04 c6 40 11 01 8b 46 04 89 40 04 8b 46 04 89 00 8b 46 04 89 40 08 c7 46 08 00 00 00 00 8b c6 5e c2 08 00",
+      "live_disk_equal": true,
+      "live_callers": 0,
+      "sha256": "4416dd0a52abe1da0db804b51197afbce97428f66d2bf981e08d06256420ffa4"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "004682b2",
+      "native": "00bf681b",
+      "function": "004682b0",
+      "contract": "genuine nonnull-or-throw allocation14h; caller ADD ESP,4 at004682B7"
+    },
+    {
+      "address": "00468ea3",
+      "native": "004682b0",
+      "function": "00468ea0",
+      "contract": "no native arguments, EAX head, RET; captured nil11 initialization then current head reloads"
+    }
+  ],
+  "other_caller_sites": [
+    {
+      "address": "00468943",
+      "native": "004682b0",
+      "function": "00468940",
+      "contract": "tiny constructor initializes nil11 and self-links from actual14h head"
+    },
+    {
+      "address": "0046cf13",
+      "native": "004682b0",
+      "function": "0046cf10",
+      "contract": "tiny constructor initializes nil11 and self-links from actual14h head"
+    },
+    {
+      "address": "0046f212",
+      "native": "004682b0",
+      "function": "0046f160",
+      "contract": "scene database tree+158h initialization"
+    },
+    {
+      "address": "0046f23f",
+      "native": "004682b0",
+      "function": "0046f160",
+      "contract": "scene database tree+164h initialization"
+    }
+  ],
+  "source_dependency": {
+    "routine": "00bf681b",
+    "symbol": "singleton_lifetime_allocate",
+    "source": "src/singleton_lifetime.cpp",
+    "kind": "object",
+    "native_bytes": 20,
+    "host_bytes": 20,
+    "modified": false
+  },
+  "prior_annotations": [
+    {
+      "address": "004682b0",
+      "name": "STL_Tree_BuyHeadNode_004682b0",
+      "comment": ""
+    },
+    {
+      "address": "00468ea0",
+      "name": "STL_Tree_Construct_00468ea0",
+      "comment": ""
+    }
+  ],
+  "write_footprint": {
+    "allocator": "conditional link zeroes0/4/8; color10=1,nil11=0; payloadC..F and padding12/13 untouched",
+    "constructor": "tree+4 publication, captured head.nil11=1,3current head reloads before parent/left/right self-links, count+8=0 last; tree+0 untouched"
+  },
+  "source_registration": "cmake/startup.cmake unique bsp_core append while unleased; own queued registration removed; no exclusive registry lease",
+  "validation": {
+    "build": "pending",
+    "existing_ctests": "pending",
+    "report_call_verification": "PASS6/6 direct native call rows; markdown0failures,0unchecked,0warnings",
+    "new_tests": 0,
+    "native_differential_fixture": false,
+    "abi_compatible": false,
+    "game_executed": false,
+    "game_validated": false,
+    "diff_check": "PASS git diff --check"
+  },
+  "qualification": "Complete ordinary actual14h-head Source over real existing current-CRT malloc/new-handler allocation, exact conditional stores/current reloads and untouched fields; supported integer-key set consumer, no nominal enum/class meaning, private CRT/FH3 ABI or candidate native differential/game claim",
+  "disk_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "annotation": {
+    "applied": true,
+    "names_retained": true,
+    "prior_values_log": "local/ghidra-annotations-20261015T204224Z.json",
+    "program_saved": true,
+    "exports_refreshed": true
+  }
+}
