@@ -1,0 +1,180 @@
+{
+  "schema": "bsp.enum_canonical_providers_source.v1",
+  "status": "complete_ordinary_Source_first_strict_changed_TUs_and_registered_worker_build_passed; independent_semantic_admission_separate",
+  "base": "456d623db4058fb706b63765123a1622f7f979c9",
+  "owned_files": [
+    "include/bsp/native_enum_node_pool.hpp",
+    "src/native_enum_node_pool.cpp",
+    "include/bsp/game_native_physical_pool.hpp",
+    "src/game_native_physical_pool.cpp",
+    "include/bsp/game_native_string_process.hpp",
+    "src/game_native_string_process.cpp",
+    "docs/NATIVE_ENUM_CANONICAL_PROVIDERS_CC12.md",
+    "reports/native_enum_canonical_providers_cc12.json"
+  ],
+  "addresses": [
+    "00CC8A10",
+    "00CC8A50",
+    "00CD9280",
+    "00CD9290"
+  ],
+  "Original_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\reports\\cc12_enum_pool_lifecycle_Original_review.json",
+    "bytes": 3578,
+    "sha256": "d1f3a62bbef1bfc87d80c474ab4c8c34155792f512624e2e090136c449ffa53f",
+    "st_nlink": 1
+  },
+  "Original_whole_bytes": 64,
+  "Original_instructions": 16,
+  "Source": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\include\\bsp\\native_enum_node_pool.hpp",
+      "bytes": 6310,
+      "sha256": "0c3706535725110393b2e0e3e07ca35bfb8c015a3c07270bff997449ab38c316",
+      "st_nlink": 1
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\src\\native_enum_node_pool.cpp",
+      "bytes": 14011,
+      "sha256": "9d57e323795d7a1061f11138d09fd2ceb8a2d1fd26e52affaeceeafa32ec867b",
+      "st_nlink": 1
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\include\\bsp\\game_native_physical_pool.hpp",
+      "bytes": 6954,
+      "sha256": "eb9dd2f1b6cfdcb3950bf7912228f346e513526fd0f7c3d4a2e82dfbc86cef70",
+      "st_nlink": 1
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\src\\game_native_physical_pool.cpp",
+      "bytes": 6623,
+      "sha256": "2cacaa43521df1c3698e633ac5d919f2a34d21f7cb3630589cad07aa4b9f9c90",
+      "st_nlink": 1
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\include\\bsp\\game_native_string_process.hpp",
+      "bytes": 4306,
+      "sha256": "b379a865904536e43f3bb07a4a6b12583dfee60190c2ba53898d701bc8080c30",
+      "st_nlink": 1
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\src\\game_native_string_process.cpp",
+      "bytes": 1407,
+      "sha256": "a117e420da472dda443bf81a6ee4231c4356e61ac75d94c614e007fe2b4c8b0b",
+      "st_nlink": 1
+    }
+  ],
+  "before_Source": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeEnumCanonicalProvidersSource01\\before_Source_inputs.DATA.json",
+    "bytes": 4192,
+    "sha256": "34f7638201266181f7a8125888d63c204d7b22d77265599691fd48b66573784f",
+    "st_nlink": 1
+  },
+  "strict_after_Source_bookends_equal": true,
+  "new_ordinary_APIs": {
+    "bindings": [
+      "bind_static_native_enum_table_pool_00e175e8",
+      "bind_static_native_enum_symbol_pool_00e17578"
+    ],
+    "lifecycle": [
+      "initialize_static_native_enum_table_pool_00cc8a10",
+      "initialize_static_native_enum_symbol_pool_00cc8a50",
+      "destroy_static_native_enum_table_pool_00cd9290",
+      "destroy_static_native_enum_symbol_pool_00cd9280"
+    ],
+    "explicit_process_startups": [
+      "initialize_enum_table_pool_once_00cc8a10",
+      "initialize_enum_symbol_pool_once_00cc8a50"
+    ],
+    "guarded_storage": [
+      "enum_table_pool_storage_00e175e8",
+      "enum_symbol_pool_storage_00e17578"
+    ],
+    "string_role": "enum_empty_00e186ed"
+  },
+  "ownership": "Distinct genuine aligned38h E175E8/E17578 cells; same retained canonical E188B4 list and fixed trim binding. E17540/E175B0 remain distinct. Retire real enum payloads/pooled keys/table/symbol slots before pool pages; keep process/list/providers/bindings live; externally serialize shared-list mutation.",
+  "startup_policy": "Per-owner one-attempt SOURCE policy mirrors accepted property owners: commit threw before bind/construction; cache real atexit result and require returned state; nonzero still initialized, thrown attempt not retried. Raw Original ordinary wrappers have no once guard. Constructors/factories start no native pool.",
+  "string_role": "Distinct const stable initial-NUL E186ED appended at+3F, fills old tail padding. Size remains40h, old library+3E and every old field/role unchanged. Original writable DATA not universally immutable.",
+  "layouts": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeEnumCanonicalProvidersSource01\\layout_and_prefix_preservation.DATA.json",
+    "bytes": 12819,
+    "sha256": "582c2c36378eb37b900229fff281f82452e5e05c2bf1f028862229df80e136c5",
+    "st_nlink": 1
+  },
+  "physical_layout": {
+    "before_bytes": 384,
+    "after_bytes": 608,
+    "old_prefix_offsets_exact": true,
+    "table": {
+      "owner": 384,
+      "mutex": 440,
+      "state": 488,
+      "status": 492
+    },
+    "symbol": {
+      "owner": 496,
+      "mutex": 552,
+      "state": 600,
+      "status": 604
+    }
+  },
+  "string_layout": {
+    "before_bytes": 64,
+    "after_bytes": 64,
+    "all_old_offsets_exact": true,
+    "new_enum_byte": 63
+  },
+  "strict_compilation": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeEnumCanonicalProvidersSource01\\original_compiler_tools.DATA.json",
+    "bytes": 5940,
+    "sha256": "9229f08d6cdd600ef791275cfe8cc4362ba338d3f7e8052143ac553a9cdb6a35",
+    "st_nlink": 1
+  },
+  "strict_complete_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeEnumCanonicalProvidersSource01\\complete_strict_review.DATA.json",
+    "bytes": 9367,
+    "sha256": "39722254ef992a842ce147f27f5e720e557ee0cc71cc5bef835392e0f1b28ae4",
+    "st_nlink": 1
+  },
+  "strict_inventory": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeEnumCanonicalProvidersSource01\\strict_code_inventory.DATA.json",
+    "bytes": 56449,
+    "sha256": "759885232db0fdbf07332aed99f322a3a8bc69c0e5bb56140c7eca56fa67d6ef",
+    "st_nlink": 1
+  },
+  "complete_before_after_COFF": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeEnumCanonicalProvidersSource01\\complete_before_after_COFF.DATA.json",
+    "bytes": 2873160,
+    "sha256": "1dfc24d5d19ea79acbf5ba759dfc79da29f5817bee23ba423d7b08d716ba9cf9",
+    "st_nlink": 1
+  },
+  "selected_full_code_listing": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeEnumCanonicalProvidersSource01\\new_changed_and_process_code_listing.txt",
+    "bytes": 82867,
+    "sha256": "7cd74db5d19a4a7eb81dd0f443b76fdf65e3826a7b4ed58b1585523386cec6bd",
+    "st_nlink": 1
+  },
+  "registered_worker_build": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_library_insert_resume\\local\\WholeEnumCanonicalProvidersSource01\\original_normal_build_tools.DATA.json",
+    "bytes": 4265,
+    "sha256": "40fe738d661766fdf8c8c5a818b15b7b93bd7e890b0a564b817d1fea6494b5a3",
+    "st_nlink": 1
+  },
+  "independent_review": "Source/strict artifacts ready; Root owns independent review and semantic admission. Drain-only closes this packet without starting a new review/work stream.",
+  "credit": {
+    "complete_ordinary_Source": true,
+    "strict_three_changed_TUs": true,
+    "actual_before_after_layouts": true,
+    "complete_new_changed_code_and_all_relocations_reviewed": true,
+    "unchanged_old_prefix_evidence": true,
+    "required_registered_worker_build": true,
+    "configured_existing_checks": 2,
+    "new_tests_or_probes": false,
+    "Native_runtime": false,
+    "Original_ABI_EH_privateCRT_class": false,
+    "global_application_startup_publication": false,
+    "game": false
+  },
+  "scope": "Only eight owned files. No enum wrapper/generic allocator algorithm/CMake/ledger/Ghidra/application wiring changes. Alias callbacks CD9F70/CD9F80/CDEB60 external. Accepted providers/semantics not re-proved.",
+  "drain_only": "Commit exactly owned eight files, seal local evidence, release current lease and stop; no followup packet or delegation."
+}

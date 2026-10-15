@@ -77,4 +77,29 @@ int initialize_static_native_property_library_node_pool_00cc8a70();
 // No alias callbacks/CD9F60/CDEB50, repeated lifecycle, payload retirement,
 // Original static-dispatcher/private-CRT/ABI/EH or game claim is supplied.
 void destroy_static_native_property_library_node_pool_00cd9270() noexcept;
+
+// DISTINCT enum table/symbol owners E175E8/E17578, each actual aligned,
+// initially unconstructed38h storage on the SAME retained E188B4 list. Bind
+// CE37A4/00410CD0 before publishing each owner/list pair. Bind once pre-startup;
+// keep both alive through callback. No property-owner substitution, list reset,
+// enum payload construction, registry or application publication is supplied.
+void bind_static_native_enum_table_pool_00e175e8(void* actual_pool,
+    AllocatorListDomain& actual_list);
+void bind_static_native_enum_symbol_pool_00e17578(void* actual_pool,
+    AllocatorListDomain& actual_list);
+
+// Complete CC8A10..CC8A25 / CC8A50..CC8A65: initialize SAME bound owner with
+// whole00411050, then real std::atexit for CD9290 / CD9280 respectively.
+// Return actual registration status; Original has no once guard, retry or
+// rollback. Construction exceptions precede registration. Ordinary Source only.
+int initialize_static_native_enum_table_pool_00cc8a10();
+int initialize_static_native_enum_symbol_pool_00cc8a50();
+
+// Complete CD9290..CD9299 / CD9280..CD9289: whole00410A60 on SAME owner/list.
+// Retire real enum payloads, pooled keys and table/symbol slots before pages.
+// Externally serialize common-list mutations and keep canonical bindings live.
+// Alias callbacks CD9F70/CD9F80/CDEB60 and Original static dispatcher, register/
+// class/FS/SEH, private CRT, exceptional/fault, runtime/game binding are external.
+void destroy_static_native_enum_table_pool_00cd9290() noexcept;
+void destroy_static_native_enum_symbol_pool_00cd9280() noexcept;
 } // namespace bsp
