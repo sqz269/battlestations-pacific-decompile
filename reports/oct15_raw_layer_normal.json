@@ -1,0 +1,84 @@
+{
+  "packet": "oct15_raw_layer_normal",
+  "owner": "agent/oct15_avoid_tangent",
+  "date": "2026-10-15",
+  "status": "complete_source_instruction_schedule_build_existing_checks_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "Read-only verified bsp.py live queries; primary owns all mutations",
+  "sources": ["src/avoid_zone_layer_normal_raw.cpp", "include/bsp/avoid_zone_layer_normal_raw.hpp"],
+  "docs": ["docs/OCT15_RAW_LAYER_NORMAL.md"],
+  "routines": [{
+    "address": "0041bd10",
+    "existing_reviewed_name": "BSP_AvoidZoneLayer_GridNormal",
+    "reconstruction": "layer_normal_raw_kernel_0041bd10",
+    "body_start": "0041bd10",
+    "body_end_inclusive": "0041be81",
+    "body_bytes": 370,
+    "listed_instructions": 118,
+    "original_abi": "ECX mutable layer; stack float3 out/float2 point; EAX out; RET8 at0041be7f",
+    "source_abi": "stdcall(out,point,layer,actual_0109eea4,crt_access); EAX out; RET14h; first two argument slots retain native roles",
+    "coverage": "complete Source instruction schedule over actual mutable raw backing through accepted concrete sampling/converter/length services with qualified existing CRT boundaries",
+    "unread_ranges": [],
+    "abi_compatible": false,
+    "game_validated": false
+  }],
+  "host_steps": [
+    {"function": "0041bd10", "address": "0041bd31", "native": "00417fa0", "contract": "Accepted complete raw WorldToCell: Source ECX layer, EDX output pair, stack x/z RET8; original stacked out/x/z RET0Ch"},
+    {"function": "0041bd10", "address": "0041bd44", "native": "0041bae0", "contract": "Accepted complete raw CellHeight h00: Source ECX layer, EDX x, stack z RET4 ST0; one padding word discarded by caller"},
+    {"function": "0041bd10", "address": "0041bd57", "native": "00bf7420", "contract": "Existing concrete ST0 converter for extended cell_x+double1.0; Source ECX actual mutable0109EEA4 pointer, EAX result"},
+    {"function": "0041bd10", "address": "0041bd62", "native": "0041bae0", "contract": "Raw CellHeight h10, same complete Source contract"},
+    {"function": "0041bd10", "address": "0041bd75", "native": "00bf7420", "contract": "Existing concrete ST0 converter for extended cell_z+double1.0; actual mode re-read at this call"},
+    {"function": "0041bd10", "address": "0041bd82", "native": "0041bae0", "contract": "Raw CellHeight h01, same complete Source contract"},
+    {"function": "0041bd10", "address": "0041bdb4", "native": "0041bae0", "contract": "Raw CellHeight h11 after all first-gradient output writes; live aliased backing retained"},
+    {"function": "0041bd10", "address": "0041be14", "native": "00419440", "contract": "camera_vector_length_00419440 ECX output, EDX borrowed CameraAxesCrtAccess, ST0; finite sqrt core reconstructed, original diagnostics qualified"}
+  ],
+  "dependency_readiness": [
+    {"entry": "00417fa0", "source": "layer_world_to_cell_kernel_00417fa0", "state": "complete accepted Source instruction schedule; four bounded Original output/return cases only"},
+    {"entry": "0041bae0", "source": "layer_cell_height_kernel_0041bae0", "state": "complete accepted raw Source schedule including returning invalid handler and begin reload; one bounded Original wrapped-row case only"},
+    {"entry": "00bf6713", "source": "invoke_native_invalid_parameter_00bf6713", "state": "indirect dependency through CellHeight; actual current Source SDK service, not original encoded-global/handler/debugger/Watson/fault/return identity"},
+    {"entry": "00bf7420", "source": "native_crt_truncate_st0_00bf7420", "state": "existing concrete assembly-only Source helper; explicit actual mutable mode address replaces original direct global read; fallback hardware body already present"},
+    {"entry": "00419440", "source": "camera_vector_length_00419440", "state": "existing complete arithmetic schedule through finite sqrt core and qualified exceptional CRT access/handler boundary; no inferred full CRT diagnostic identity"}
+  ],
+  "corrections": [{
+    "address": "0041bd10",
+    "was": "Earlier complete typed normal control flow requires stable nonalias semantic record/virtual host and separately admitted sampling backing",
+    "is": "Separate full raw Source entry directly consumes actual mutable producer backing and preserves original point/output/layer-byte aliases and live reads; older entry and records unchanged",
+    "evidence": "Full0041bd10-0041be81 listing; first gradient writes0041bda4/0041bda8/0041bdb1 before fourth height0041bdb4; spacing reads0041bd8f/0041bdd1; existing producer/kernel evidence"
+  }],
+  "arithmetic": {
+    "indices": "CVTTSS2SI on stored WorldToCell values for base; neighboring indices consume extended cell+double1.0 via actual BF7420 mode, not integer increment",
+    "heights": "h00,h10,h01,h11 with all native float stores; first gradient output before h11",
+    "sum_and_length": "Native paired differences, two distinct live spacing reads, float-stored sums copied to output before length; saved sums used after possible CRT handler output effects",
+    "reciprocal": "FCOMI/JBE sends nonpositive and unordered length to +0 reciprocal; all final multiplications still execute; positive length extended1/length then float store",
+    "original_bytes": {"0041bdc9": "de ea", "0041be2b": "de f1", "0041be4b": "de ca", "0041be57": "d8 c9"},
+    "source_object_bytes": {"offset00e2": "de ea", "offset0148": "de f1", "offset0168": "de ca", "offset0174": "d8 c9", "offset019c": "c2 14 00"},
+    "dc_form_scan": "0041bd10-0041be81: zero DC register-form sites"
+  },
+  "data_contract": {
+    "raw_backing": "Existing mutable Cc13TerrainGridLayerNative actual layout; producer mapping and original raw sampling obligations apply without semantic adapter admission",
+    "aliases": "Point/output/layer fields/borrowed bytes may overlap; each read/write follows original schedule, no copy or stable-record condition",
+    "source_control": "Additional Source argument slots, private frame/control storage and actual CRT provider/access backing must remain valid; no promise of original frame/global/provider representation identity",
+    "service_mutability": "Actual pointed-to converter mode and CRT state remain mutable at existing service read sites; returning invalid handler obligations remain raw-kernel obligations",
+    "older_interface": "Typed avoid_zone_layer_normal_0041bd10, AvoidZoneLayerNormalHost and semantic adapter records unchanged"
+  },
+  "validation": {
+    "full_body_callee_producer_and_abi_review": "passed; complete118-instruction native body and unchanged accepted Source dependencies",
+    "operand_bytes_and_object_review": "passed: native DE F1/DE CA/D8 C9 correspond to emitted Source forms; Source RET14h verified",
+    "win32_build_and_existing_ctest": "passed: ./scripts/build.ps1; reconstructed_math/native_math_differential/tool_tests,3/3 in7.07seconds; existing seeds only",
+    "build_log": "local/oct15_raw_layer_normal_build.log",
+    "source_object_listing": "local/oct15_raw_layer_normal_object.txt",
+    "verify_report_calls": "passed: eight direct call rows, zero failed",
+    "markdown_checker": "passed:20 cited addresses,zero failed; one unpaired converter-mode narrative supported by full listing and report rows",
+    "diff_check": "passed: git diff --cached --check",
+    "raw_normal_native_probe": "none at worker report time; dependency Original probes do not establish this normal",
+    "dependency_receipt": "Existing primary World4/Cell1/bilinear1 bounded Original cases; no raw-normal, exceptional diagnostics, adapter or gameplay proof"
+  },
+  "limitations": [
+    "Complete Source body coverage through qualified existing services; new ABI is not original binary/drop-in compatible",
+    "Actual backing access, returning-handler reload/read and Source control/provider validity remain required",
+    "Finite sqrt core reconstructed; original exceptional CRT diagnostic/state/handler identity and invalid-parameter SDK identity remain qualified",
+    "Static/build checks and inherited probes do not prove full FP status/traps/other modes, all aliases, native ABI, adapter or gameplay",
+    "No worker tests, copied backing/proxy, duplicate admission layer, replacement callback or existing shared source/header edits"
+  ]
+}
