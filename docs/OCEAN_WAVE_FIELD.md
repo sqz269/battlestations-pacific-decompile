@@ -1312,3 +1312,60 @@ sinking, Zuiho at 03_south_pacific:1246/1400): the carrier's later launches are 
 (006BF620 / 006CD810 paths). Any row in which a carrier takes a runway/hangar section hit moves too: a 20 s launch
 blackout per section failure. ESMP08 and USN04 stay gameplay-identical unless their logs show `component failure
 RunwayFailure|HangarFailure` lines on a carrier.
+
+**Pair (commit 9a51e05d8; exports `local\p11_off` / `local\p11_crf`; reference env, 0.05 s, no orders unless named;
+logs `local\p11off_<row>.log` / `local\p11on_<row>.log` with manifests).**
+
+| Row | Frames | Verdict | Note |
+|---|---|---|---|
+| ESMP03 | 60000 | 1, gameplay identical | `SetFailure "RunwayFailure" on "Zuiho" arm=0` -> `mothership 00758750 72h runway on deck=yes`, arm=10. Zuiho never launches in a no-order run (`base launch site Zuiho: sets=0`), so nothing moves. |
+| USN04 | 45000 | 1, gameplay identical | control |
+| ESMP08 `l61_e8_f` | 140000 | 0, identical | control; no runway/hangar section failure |
+| BSM09 | 60000 | not run | the host cannot start BSM09: `startup failed: unit observer creator projection is unavailable: unit=NEW_Cloud 01` (StationaryClass row with no Type). Not this packet's gap. |
+
+The section path is never reached in these rows: carriers do take component failures (ESMP08: Zuikaku 4, Zuiho 3,
+Chitose, Chiyoda in `cc9-lua52\local\l61rt_e8_j3.log`), but none on a `runway`/`hangar` section (27 such sections in
+this installation's vehicleclasses.lua). Whether hits ever resolve to kind 11 (runway) is open.
+**Flipped ON by mechanism.**
+
+## 37. Ship catapult launch: scoping for the packet (cc9-physics11, 2026-10-15; read-only, lead item 4)
+
+What the host has (all built, none wired): `ship_launch_from_catapult_008141e0` (src/cc13_seg30_seg50.cpp:458, the
+7Bh arm: ready = unit `+638h` > 0 and every catapult's `+1D0h(1)`; several catapults pick by 006ED000 heading),
+`catapult_can_fire_006ebd30` / `catapult_spawn_properties_006ec8e0` / `catapult_after_launch_006ec070`
+(src/air_operations.cpp), `catapult_fire_head_006ed1c0` / `catapult_launch_timeline_006ed261`
+(src/gameplay_seg33_cc13.cpp:389/418), `unit_add_launched_child_00957450` (src/gameplay_seg61_62_cc13.cpp:411),
+`ship_catapult_stock_clamp_009539a0`. The squadron creator to reuse is the kamikaze one,
+`GameScriptOrdersHost::create_dummy_kamikaze_squadron_006fec00` (game_hosts_script_orders.cpp:965): MCatapult::Fire
+006EC8E0 calls the same 004F0AD0 with the bag {Type = owner `+530h` or class `+C0h` LaunchedClass, WingCount 1, Skill
+(vtable 12Ch), Race `+58h`, Party `+54h`, OwnerPlayer `+188h`, **State 3**, PlaneParentID `+174h`, Equipment `+534h`
+or class `+C4h`, Behaviour 1, ResourceUsage launched class `+124h`} at the catapult node's world matrix (`+CCh`).
+
+Chain: ShipUseCatapult 00891D50 (message 7Bh) -> 008141E0 -> 006EB680 (`+488h` startLaunch = 1, `+48Ch` = heading)
+-> tick head 006ED1C0 (can_fire -> message ADh -> 006EC8E0 Fire: spawn, observer pair `+4A8h`, 006EC070 sets
+`launchTick`) -> 006ED261 timeline (VEHICLE_ADD_LAUNCHED at t > 1 s -> ship 00957450: slot `+550h + 18h*i`,
+`+630h` = slot, `+638h` decremented; takeoff at turn_time + 0.5 s with (0, 0, +4D4h) in the plane frame, about
+45 m/s; PLANE_TAKEOFF(1)).
+
+Data (this installation): ship class `Catapult = {Equipment, LaunchedClass, LaunchStock, MaxLaunchedPlanes}`
+(e.g. LaunchedClass 121, stock 10, max 1); the catapult device class (deviceclasses.lua, `Type = "Catapult"`,
+`Function = "CATAPULT"`) carries HorzRotSpeed / VertRotSpeed / HorzRotAngle / ReloadTime / PlaneStartPosY/Z; the
+mapping of these keys onto class `+88h` / `+8Ch` / `+DCh` / `+E4h` / `+E0h` is NOT established (read the device
+class reader before binding the timeline).
+
+Gaps that make this bigger than one packet:
+1. **The plane is spawned with State 3** (held on the catapult until the takeoff impulse). The host's plane control
+   has no catapult-held mode; the nearest substitution is to create the squadron at the takeoff instant as State 7
+   at the ship's pose plus (0, PlaneStartPosY, PlaneStartPosZ), at the takeoff speed. Label it.
+2. **No catapult device instances** exist in the host (008141E0 walks the ship's device list `+48h`/`+44h`,
+   IsKindOf 28h). A one-catapult-per-class substitution is needed, or the device list from the class Weapons.
+3. **Natives.** GetNumCatapulted 00892AA0 and SetCatapultStock 00892C30 are unbound (`num < 4` in jm02.lua:2445
+   then compares nil); GetLastCatapulted / GetCatapultStock answer constants. They must read one per-ship record
+   (`+550h` slots cleared when the child dies, `+630h`, `+638h`) that the launch writes.
+4. Files: game_hosts_lua.cpp (natives) and game_hosts_script_orders.cpp (spawn + per-step tick, next to
+   `run_air_ops_update_006cdc70`) are both shared; put the record and tick in a new file and keep the shared-file
+   hooks to a few lines. Rename `turn_timer_expired_009539e0` (game_hosts_hud.cpp:2361) to spectate_last_catapulted
+   in the same commit.
+
+Reach: jm02.lua:1490/2448 (Repulse and the recon check), jm03.lua:1626, jm05.lua:5493/5512 (the player's Pete);
+ShipUseCatapult appears 19 times in this installation's scripts.
