@@ -12,8 +12,8 @@ namespace bsp {
 // E175E8 table and E17578 symbol pools must be genuine distinct initialized14h
 // owners on the SAME allocator list/current generation for insertion. Never
 // substitute property E17540/E175B0 pools or114h bags. The distinct E186ED enum
-// empty cell is an explicit genuine stable borrowed authority: the retained
-// string process has no accessor for it. Do not alias E18560 or any other role.
+// empty cell is an explicit genuine stable borrowed authority; this context
+// does not select or create it. Do not alias E18560 or any other role.
 // Query E17654 and raw key allocation/return come from the SAME string process.
 // Concrete enum-global startup/publication is outside this conditional binding.
 class NativeEnumTableWrapperContext final {
@@ -60,8 +60,8 @@ void insert_native_cenum_table_name_008f2b90(void* actual_owner,
 // Whole [008F2C10,008F2C95),133B/41 instructions. ECX owner, stack CString,
 // RET4; only AL is Boolean. Call whole0048D4E0 on owner+4 using a private
 // nonalias bucket, capture node!=null BEFORE key cleanup, return Boolean.
-// Missing keys normally return false. Never read mapped+8. This read starts
-// no pool; the retained table/symbol bindings are not accessed by membership.
+// Missing keys normally return false. Never read mapped+8. Membership does not
+// access/start enum pools; temporary key construction may start the string pool.
 bool contains_native_enum_table_name_008f2c10(const void* actual_owner,
     const char* key, NativeEnumTableWrapperContext& context);
 

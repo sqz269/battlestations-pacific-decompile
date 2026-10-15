@@ -31,7 +31,7 @@ The trivial C++ destructor adds no release, header repair or RAII unwind claim.
 and E17578 symbol pools on the same allocator list/current generation. It retains
 the same concrete `GameNativeStringProcess` for raw strings and query-empty
 E17654. The genuine stable enum-empty E186ED authority is supplied explicitly:
-there is no process accessor for it, new default cell or static owner here.
+this packet adds no process accessor for it, default cell or static owner.
 Never substitute property E17540/E175B0 pools, E18560 or114h property bags.
 
 Insertion inherits the whole lower API's conditional domain: old and incoming
