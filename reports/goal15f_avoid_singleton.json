@@ -1,0 +1,67 @@
+{
+  "packet":"goal15f_avoid_singleton",
+  "status":"complete_concrete_source_getter_normal_and_recovered_unwind_strict_compiled_static_reviewed",
+  "source":"src/native_avoid_singleton.cpp",
+  "header":"include/bsp/native_avoid_singleton.hpp",
+  "documentation":"docs/GOAL15F_AVOID_SINGLETON.md",
+  "target":{"project_file":"C:/Users/sqz269/bsp.gpr","project":"bsp","program":"/battlestationspacific.exe","language":"x86:LE:32:default","image_base":"00400000","verification":"target-verifying bsp.py client; whole owned listing/bounds/EHmaps/actions/provider bodies and capped caller refs read; no writes"},
+  "routines":[{"address":"004218e0","end":"0042199c","native_bytes":189,"coverage":"complete original fast/slow operation and recovered captured-allocation/critical-guard cleanup via actual current Source services and C++ guards","original_abi":"cdecl no arguments or incoming register inputs; EAX result; plainRET","source_api":"cdecl get_native_avoid_manager_004218e0(const NativeAvoidSingletonContext&)","source_main_bytes":287,"original_name":"BSP_AvoidZoneManager_GetSingleton"}],
+  "host_steps":[
+    {"address":"00421906","native":"00415350","containing_function":"004218e0","operation":"get actual first lifetime manager through actual01090AA0 cell, capture returned+10 section"},
+    {"address":"0042193c","native":"00bf681b","containing_function":"004218e0","operation":"allocate actual78h rawblock underguardstate0 before allocationstate1"},
+    {"address":"00421953","native":"00421500","containing_function":"004218e0","operation":"construct captured nonnull rawblock understate1, actualmanagercontext"},
+    {"address":"00421966","native":"00415350","containing_function":"004218e0","operation":"after publication reget actual current lifetime manager"},
+    {"address":"00421974","native":"00bd0c30","containing_function":"004218e0","operation":"register current avoidancepublication reloaded AFTER secondgetter, against returned currentmanager"}
+  ],
+  "sdk_imports":[{"site":"0042191f","iat_slot":"00ce2218","service":"EnterCriticalSection","operation":"enter captured actualsection before depth increment/state0"},{"site":"00421982","iat_slot":"00ce2210","service":"LeaveCriticalSection","operation":"leave captured actualsection after depth decrement, guardstillactive"}],
+  "context":{
+    "fields":["void* volatile* actual_01090aa0_publication_cell","Cc13AvoidZoneManagerNative** actual_00e17624_publication_cell","void* const* actual_00e188a8_publication_cell"],
+    "contract":"three actual publication-cell ADDRESSES with stablebindings/lifetimes, changing values allowed; no privateglobal, shadowpublication, typedDomain, injectedcallback or replacementmanager",
+    "source_abi":"explicit Source reference argument; does not become a Native argument or Ghidra prototype input; constructor lifetime context borrows sameavoid/game cells and is live through construction/unwind, not retained byowner"
+  },
+  "schedules":{
+    "fast":"capture first actualavoidpublication; nonnull returnscapturedvalue, no managerlookup/lock/reload/registration",
+    "slow":"firstactualmanagergetter ->capture returned+10 section ->guardprefixCE37FC/section ->conditionalactualEnter ->rawDWORD depth++ ->state0 ->recheckactualavoidpublication; ifnull allocate78h, armstate1onlyafterreturn, constructnonnull, state0BEFOREpublish; regetcurrentmanager, THENreloadcurrentavoidpub/register; conditionalcaptureddepth--/actualLeave; finalslowavoidpublicationreload",
+    "allocation":"actual singleton_lifetime_allocate objectkind native78h/host78h; no null substitute; preserve conditionalnonnullctor and actualCtorresultpublication",
+    "counter":"raw unsigned32 wrapping addition/subtraction at actualsection+18; compilerbarriered memcpy loads/stores retainorder/reloads with no CPUfence or typealias assumption",
+    "scope":"captured lock protocol only, no global thread-safety/gameplay inference from static callers"
+  },
+  "dependencies":{
+    "parent":"existing complete get_native_singleton_manager_00415350 over actual01090AA0cell, genuine raw14h allocation/constructor/publication and ownerrorcleanup; no newparent/domain",
+    "registration":"actual register_native_singleton_object_00bd0c30 rawvector provider, returning-invalid-handler and actualargumentslot/append/error contracts retained, no internal lock/AddRef/duplicate suppression",
+    "manager":"accepted actual construct_native_avoid_manager_00421500 over existing78h Cc13AvoidZoneManagerNative, genuineBF50/SDKlock/completeEH operations and actualSource table; no callback-only success",
+    "critical":"actual Win32 Enter/Leave and tracked rawsection depth18, existing destroy_native_singleton_guard_00411ee0 over actual8B guardprefix; SourceguardAPIcdecl differs fromNativeECX",
+    "heap":"existing genuine singleton_lifetime_allocate/free; Sourcecurrentheap/CRT/error/exception/synchronization/fault/frame identities qualified against originalprivateCRT"
+  },
+  "native_eh":{
+    "handler":"00c5e523","func_info":"00d84968","magic":"19930522","max_state":2,"map":"00d84958","catch_blocks":0,"ip_map_entries":0,"exception_spec_list":0,"eh_flags":1,
+    "state0":{"next":-1,"action":"00c5e510","operation":"LEA ECX,[EBP-14]; tail411EE0, captureguard+4, writeCE37FC, conditionalrawdepth--/actualLeave, preserveguard+4"},
+    "state1":{"next":0,"action":"00c5e518","operation":"free capturedallocation[EBP-18] viaBF65AC atC5E51C, then guardactionfollows"},
+    "phases":"state0 at00421929 onlyafterEnter/depthincrement; state1 at0042194A onlyafterallocationreturns; restoresstate0 at0042195C BEFOREpublication/secondget/register; normaldepthdecrement/Leave remain guarded",
+    "error_contract":"allocatorfailure owns only capturedguard; ctorfailure ctorcleanup then capturedrawfree then guard; registrationfailure retains publication/allocation and onlyguardcleanup; no extra destructor/unregistration/rollback",
+    "ownership":"unowned metadata/actions/helpers consumed as evidence only, no extra entry reconstruction/name/mutation"
+  },
+  "source_eh":{
+    "guards":"real nested current C++ scope guards, rawallocationscope ENDSbeforepublication, criticalguard active through release/finalreload; no catch/replacementexception; genuinefree and establishedguardprovider",
+    "emission":"Source287B with current__CxxFrameHandler3, state1 aroundctor/state0 beforepublication/secondlookup, actualprovider/SDKrelocations and two realcleanupfunclets; currentFuncInfo maxState3 includes extra std_terminate entry unlike Native2",
+    "limits":"successfulcurrentcleanup propagatesoriginalcurrentC++exception; unexpectedexceptioninnoexceptcleanup usescurrentterminationpolicy; mutableNativeEHspill/callerframealiases, register/argumentslot, hardwarefault, FH3/SEH/cookie/funclet/privateCRT/heap identity not transplanted; no runtimeEH proof"
+  },
+  "dispatch_boundary":{
+    "original":"registered realSourcemanager table needsEDX lifetimecontext; OriginalrawCALL_EDX has targetthere and remainsincompatible",
+    "source_integration":"primary independently adds explicit avoid_manager lifetimebinding to finite currentSource singletondispatcher, admitsNativeCE38F4 and actualSource table, invokes genuine scalar with context; this supports actualSourceparentdrain when explicitlybound",
+    "limits":"getter installsno dispatcherbinding/automaticproductionwiring and registersactualpointer unchanged; finite supportedSourceprofiles/missingbindingerror policy are not arbitraryNativevirtualdispatch or NativeABI proof; obsolete manualhandofffixture draft not thefinalrequirement"
+  },
+  "validation":{
+    "strict_compile":"PASS MSVCWin32 /std:c++17 /EHsc /MD /W4 /WX /permissive- /fp:strict /O2; local/goal15f_avoid_singleton_compile.cmd",
+    "object_evidence":"PASS local/goal15f_verify_singleton_object.py [optional_registered_object_path]:287B main/fiveconcretecallsinNativeorder/twoSDKimports/EHstate1then0beforepublication/twocleanupactionsplusSourceextraterminationentry",
+    "raw_byte_comparison":"no supported wholeNative189B/Source287B equivalencenormalization asserted for explicitcontext/currentEH translation",
+    "flow":"51instructions/0bytegaps; typedflow/noreturnqueryunavailable; no repair/write",
+    "call_checker":"PASS five direct Nativecallrows/0failures; markdown20addresses/5callclaims/0unchecked/0warnings (2026-10-15); imports/EHedges recordedseparately",
+    "review":"primaryandpoolpeerSource/Nativewholeassembly/EHreview no blockers",
+    "source_fixture":"primary single genuineheap normal/fast/actualSourceLIFO fixture inpreparation with realparent creation/registration, bothSDKdepths, explicitfiniteSourceavoidbinding and actualBD0400registeredentrydrain, thenrealparentfree; resultpending",
+    "fixture_path":"J:/PROG/battlestations-pacific-decompile-goal15_integrator/local/goal15f_singleton_probe.cpp",
+    "full_registered_build":"primary owns source registration/fullbuild/CTest/actualarchive/object/annotations/export/integration; pending workerreceiptclosure",
+    "native_execution_abi_gameplay":"not established; no injectedexceptioncase, productionwiring, Nativeexecution/differential/originalABI or wholeprocessleak proof"
+  },
+  "history":"Preserve historicalBSP_AvoidZoneManager_GetSingleton partial_projection_build_tested record/API inmission_load_hosts.cpp underits oldname; append complete concrete Sourceentry underdistinctname, retainreviewedname/evidence; no sharedGhidra/CMake/registrywrites"
+}
