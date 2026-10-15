@@ -203,6 +203,9 @@ public:
     // Makes the sprite bridge rebuild its quad list on the next draw, so a
     // visibility change or a newly loaded page is on screen the same frame.
     void invalidate_bridge();
+    // 004c12b0 for callers after startup: the same get-or-create the GUI
+    // startup host runs, returning the one host GUI manager.
+    void* gui_manager_004c12b0();
 
     // ---- milestone 2k: run-time clones of a page's own template ------------
     // The native per-unit minimap icon entry (005bd590 constructs it, 005c0700
