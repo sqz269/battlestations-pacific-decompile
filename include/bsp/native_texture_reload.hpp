@@ -53,7 +53,9 @@ void* construct_native_texture_reload_diagnostic_00b3f5d0(void* actual_output,
 // source functions only; D3D uses the actual COM interface/import providers.
 // Identity and canonical companion remain unchanged. No retained-source +4C,
 // flags, requested-mips +3C or surface-cache modification occurs in this body.
-// No ABI, original-code differential, application binding or game claim.
+// The ready application dispatch and bounded Original-body comparison are
+// documented in NATIVE_PLATFORM_TEXTURE_RELOAD.md. This interface is not a
+// native ABI replacement and does not establish full activation or gameplay.
 void reload_native_texture_00b3fa90(void* actual_owner,
     NativeTextureLoadingContext&, NativeTextureReloadOutputs,
     NativeTextureReloadAcquired&);
