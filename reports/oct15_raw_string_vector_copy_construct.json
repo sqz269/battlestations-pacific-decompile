@@ -1,0 +1,535 @@
+{
+  "packet": "oct15_raw_string_vector_copy_construct",
+  "status": "complete_actual_raw_pool_copy_constructor_and_both_catch_scopes_build_tested_qualified_interfaces",
+  "source_ready": true,
+  "source": "src/native_string_vector_copy_construct.cpp",
+  "header": "include/bsp/native_string_vector_copy_construct.hpp",
+  "documentation": "docs/OCT15_RAW_STRING_VECTOR_COPY_CONSTRUCT.md",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Each bsp.py ghidra query verifies project/program/language/image base through its client before analysis.",
+    "ghidra_mutations": false
+  },
+  "routines": [
+    {
+      "address": "00557bc0",
+      "old_name": "STL_CheckedNativeStringVector_CopyConstruct_00557BC0",
+      "reviewed_name": "STL_CheckedNativeStringVector_CopyConstruct_00557BC0",
+      "name": "construct_native_string_header_vector_copy_00557bc0",
+      "body": "00557bc0-00557c83",
+      "coverage": "complete with accepted current-CRT/raw-pool/new-Source interface qualifications",
+      "original_abi": "__thiscall ECX destination, one stacked source owner, RET4, EAX destination; EDX not consumed. Source __fastcall retains unused EDX and adds explicit stacked raw-pool context.",
+      "producer_layout": "Actual10h header: opaque+0 unchanged, DWORD begin+4/end+8/capacity+C. This constructor and accepted00432090 write the same fields; actual NativeString elements are8h.",
+      "count": "Read source begin before any destination writes; null begin gives count0 without source end read. Otherwise DWORD wrap(end-begin) then SAR3. Clear destination4/8/C in order. Count0 returns without allocation/validation/copy.",
+      "allocation": "Unsigned count>1FFFFFFF calls actual length-error00431F70; direct allocation0042BF40 with ECX=count/EDX0; publish begin/end/capacity. Allocation and length failures precede state0/catch.",
+      "range_schedule": "Capture current source end, read/compare current source begin, then arm state0. Returning report continues. Capture current source begin, compare with fresh end, report/continue preserving captured first. Reload CURRENT destination begin; pass captured first/end and owner plus two dead first-low0 words to00556B10. Publish returned end only after success.",
+      "self_copy": "No self guard. Valid nonempty self-copy captures old count, zeros fields, allocates/publishes new begin=end, then copies an empty range; old live backing is abandoned. No old cleanup is introduced.",
+      "host_steps": [
+        {
+          "address": "00557c13",
+          "native": "00431f70",
+          "function": "00557bc0",
+          "host": "throw_native_string_vector_length_error_00431f70",
+          "contract": "Accepted actual owning28h legacy vector length-error payload through the fully matched00BD0590 Source service; current Source C++ RTTI/EH differs from native throw object/FH3."
+        },
+        {
+          "address": "00557c1c",
+          "native": "0042bf40",
+          "function": "00557bc0",
+          "host": "allocate_native_string_vector_0042bf40",
+          "contract": "Accepted count*8 exact checked allocator using real singleton_lifetime_allocate/current-CRT retry/new-handler policy, not arbitrary callback. Native ECXcount, EDX0; Source exact context accepted separately."
+        },
+        {
+          "address": "00557c3c",
+          "native": "00bf6713",
+          "function": "00557bc0",
+          "host": "invoke_native_invalid_parameter_00bf6713",
+          "contract": "Current source begin versus captured end; existing current-SDK noinfo adapter may return. Native encoded handler/Watson/FH3 identity excluded."
+        },
+        {
+          "address": "00557c4c",
+          "native": "00bf6713",
+          "function": "00557bc0",
+          "host": "invoke_native_invalid_parameter_00bf6713",
+          "contract": "Captured source begin versus fresh current end; returning handler preserves captured begin/end and subsequent CURRENT destination begin read."
+        },
+        {
+          "address": "00557c67",
+          "native": "00556b10",
+          "function": "00557bc0",
+          "host": "copy_native_string_uninitialized_range_00556b10",
+          "contract": "ECX captured first, EDX captured end, four stack words destination/current begin, owner/destination header, unused tag3, unused tag4. Both tags are captured-first bits with low byte0. RET10h consumes all four; result end only then published."
+        }
+      ],
+      "local_eh": "State0 armed at00557C33 after allocation/publication and first source bound reads. Source catch calls actual Tidy over CURRENT header then rethrows; no allocation-failure cleanup or self-assignment behavior added."
+    },
+    {
+      "address": "00556b10",
+      "old_name": "STL_inst_00556b10",
+      "reviewed_name": "STL_NativeStringRange_UninitializedCopy_00556b10",
+      "name": "copy_native_string_uninitialized_range_00556b10",
+      "body": "00556b10-00556b93",
+      "coverage": "complete normal loop and separately recorded catch scope via exact accepted0044D0C0 Source reuse",
+      "original_abi": "ECX first, EDX last; stack destination,owner,unused-tag3,unused-tag4; RET10h; EAX completed destination end. All six physical inputs retained plus actual context; unused words are not read.",
+      "host_steps": [
+        {
+          "address": "00556b4a",
+          "native": "0044bcb0",
+          "function": "00556b10",
+          "host": "construct_native_render_alias_string_0044bcb0 inside accepted0044D0C0",
+          "contract": "Actual raw-pool copy construction. Destination/completed end advances8 only after success; source advances8 afterward. The original destination is saved independently."
+        }
+      ],
+      "equivalence": "Complete normal loop, completed-prefix update point, source/destination captures, owner use, RET10h and catch schedule matched accepted0044D0C0/0044D10A. Source delegates actual Source helper, not a generic uninitialized_copy or callback.",
+      "local_eh": "Original handler/FuncInfo identity is separately recorded below and not replaced by a native alias."
+    },
+    {
+      "address": "00556b5a",
+      "old_name": "Catch_All@00556b5a",
+      "reviewed_name": "Catch_All@00556b5a",
+      "name": "copy_native_string_uninitialized_range_00556b10_completed_prefix_catch",
+      "body": "00556b5a-00556b7e",
+      "coverage": "complete exception-scope fragment through accepted0044D0C0 Source catch; not independent ABI entry",
+      "original_abi": "Requires00556B10 EBP/private frame: saved original destination atEBP-14, completed end inEBP+8, owner inEBP+C. No standalone ordinary arguments/result.",
+      "host_steps": [
+        {
+          "address": "00556b6a",
+          "native": "00431f40",
+          "function": "00556b5a",
+          "host": "destroy_native_string_storage_argument_00431f40 inside accepted0044D0C0 catch",
+          "contract": "Ascending completed prefix only, owner passed as ignored native ECX. Actual destroy0041DD20/current raw-pool manager policy; failing current element excluded; cleanup failure escapes immediately."
+        },
+        {
+          "address": "00556b7a",
+          "native": "00bf6885",
+          "function": "00556b5a",
+          "host": "C++ throw; inside accepted0044D0C0 catch",
+          "contract": "Native pushes0,0 for rethrow through original throw service. Source rethrows current C++ exception; no native throw-object/FH3/SEH or double-exception identity claim."
+        }
+      ]
+    },
+    {
+      "address": "00557c84",
+      "old_name": "Catch_All@00557c84",
+      "reviewed_name": "Catch_All@00557c84",
+      "name": "construct_native_string_header_vector_copy_00557bc0_owner_catch",
+      "body": "00557c84-00557c94",
+      "coverage": "complete exception-scope fragment in new constructor catch; not independent ABI entry",
+      "original_abi": "Requires00557BC0 EBP/private frame; saved destination receiver atEBP-14.",
+      "host_steps": [
+        {
+          "address": "00557c87",
+          "native": "00432440",
+          "function": "00557c84",
+          "host": "tidy_native_string_header_vector_00432440",
+          "contract": "Read actual current header and reuse exact accepted Tidy composition; not captured allocation free. Outer header end remains unadvanced if helper throws unless real providers altered it."
+        },
+        {
+          "address": "00557c90",
+          "native": "00bf6885",
+          "function": "00557c84",
+          "host": "C++ throw;",
+          "contract": "Native pushes0,0. Source rethrow only after Tidy success; if Tidy throws, newer Source exception escapes with no retry or original rethrow; native cleanup-failure personality unproved."
+        }
+      ]
+    },
+    {
+      "address": "00432440",
+      "old_name": "STL_NativeStringVector_Tidy_00432440",
+      "reviewed_name": "STL_NativeStringVector_Tidy_00432440",
+      "name": "tidy_native_string_header_vector_00432440",
+      "body": "00432440-0043247c",
+      "coverage": "complete exact accepted004324A0 actual-header/raw-pool composition",
+      "original_abi": "ECX actual10h vector, no stacked input, plainRET, no semantic result. Source adds actual context inEDX.",
+      "equivalence": "Full00432440 and004324A0 listings have identical instruction/dataflow/callee schedule apart from absolute address/displacements. Captured begin!=0 then captured end; destroy; reload CURRENT begin for free; zero4/8/C. Opaque+0 unchanged.",
+      "host_steps": [
+        {
+          "address": "00432454",
+          "native": "00432050",
+          "function": "00432440",
+          "host": "destroy_native_string_header_range_00432050 inside accepted004324A0",
+          "contract": "Native ECXcaptured begin, EDXcaptured end plus two unused saved-header words, RET8; actual pooled-string range destruction, no synthetic allocator."
+        },
+        {
+          "address": "0043245d",
+          "native": "00bf65ac",
+          "function": "00432440",
+          "host": "singleton_lifetime_free inside accepted004324A0",
+          "contract": "Free CURRENT header begin after destruction; accepted current-CRT exact Source policy. Only after normal return clear4/8/C in order; no catch/noexcept/error conversion."
+        }
+      ]
+    }
+  ],
+  "caller_evidence": [
+    {
+      "address": "005c8545",
+      "native": "00557bc0",
+      "function": "005c81f0",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "005df452",
+      "native": "00557bc0",
+      "function": "005df400",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "005df462",
+      "native": "00557bc0",
+      "function": "005df400",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "005df13f",
+      "native": "00557bc0",
+      "function": "005df0f0",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "005df14f",
+      "native": "00557bc0",
+      "function": "005df0f0",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "006a3259",
+      "native": "00557bc0",
+      "function": "006a3200",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "006a43e8",
+      "native": "00557bc0",
+      "function": "006a43a0",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "006a3397",
+      "native": "00557bc0",
+      "function": "006a3350",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "00559e47",
+      "native": "00557bc0",
+      "function": "00559e00",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "0055b98a",
+      "native": "00557bc0",
+      "function": "0055b920",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "0055b99b",
+      "native": "00557bc0",
+      "function": "0055b920",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "006a5c7d",
+      "native": "00557bc0",
+      "function": "006a5c50",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "00aa5d49",
+      "native": "00557bc0",
+      "function": "00aa5b40",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "008e97f5",
+      "native": "00557bc0",
+      "function": "008e9790",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "008e99c4",
+      "native": "00557bc0",
+      "function": "008e9960",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "0055866c",
+      "native": "00557bc0",
+      "function": "00558640",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "005590f2",
+      "native": "00557bc0",
+      "function": "005590c0",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "0057cf45",
+      "native": "00557bc0",
+      "function": "0057cf20",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "005c5270",
+      "native": "00557bc0",
+      "function": "005c51f0",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "005c5281",
+      "native": "00557bc0",
+      "function": "005c51f0",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "005c5292",
+      "native": "00557bc0",
+      "function": "005c51f0",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "005c52a3",
+      "native": "00557bc0",
+      "function": "005c51f0",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "005c52b4",
+      "native": "00557bc0",
+      "function": "005c51f0",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "005c52c5",
+      "native": "00557bc0",
+      "function": "005c51f0",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "005c52d6",
+      "native": "00557bc0",
+      "function": "005c51f0",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "005c52ed",
+      "native": "00557bc0",
+      "function": "005c51f0",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "005c5304",
+      "native": "00557bc0",
+      "function": "005c51f0",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "005c531b",
+      "native": "00557bc0",
+      "function": "005c51f0",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "005c5332",
+      "native": "00557bc0",
+      "function": "005c51f0",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "005c5349",
+      "native": "00557bc0",
+      "function": "005c51f0",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "005c5360",
+      "native": "00557bc0",
+      "function": "005c51f0",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "005c5377",
+      "native": "00557bc0",
+      "function": "005c51f0",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "005c538e",
+      "native": "00557bc0",
+      "function": "005c51f0",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "005c53a5",
+      "native": "00557bc0",
+      "function": "005c51f0",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "005c53bc",
+      "native": "00557bc0",
+      "function": "005c51f0",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "005c53d3",
+      "native": "00557bc0",
+      "function": "005c51f0",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "005c53ea",
+      "native": "00557bc0",
+      "function": "005c51f0",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "005c5401",
+      "native": "00557bc0",
+      "function": "005c51f0",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "005daf3d",
+      "native": "00557bc0",
+      "function": "005daf10",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    },
+    {
+      "address": "005daf51",
+      "native": "00557bc0",
+      "function": "005daf10",
+      "contract": "Complete bounded native argument setup inspected: ECX destination, one pushed source-owner word; no generic host container, self guard or additional owner validation inferred."
+    }
+  ],
+  "caller_coverage": {
+    "direct_sites": 40,
+    "containing_functions": 17,
+    "evidence": "Live xrefs limit100, all40 bounded12-instruction pre-call contexts reviewed; complete constructor/helper/Tidy native listings and live containing-function checks; both catch entries/metadata read.",
+    "local_receipts": [
+      "local/oct15_raw_vector_copy_ctor_callers.json"
+    ],
+    "scope": "Known direct calls only; no indirect-call/runtime-binding claim."
+  },
+  "exception_metadata": {
+    "helper": {
+      "entry_handler": "00c6d780",
+      "func_info": "00d97b2c",
+      "magic": "19930522",
+      "max_state": 2,
+      "unwind_map": "00d97b08",
+      "unwind_entries": [
+        [
+          -1,
+          0
+        ],
+        [
+          -1,
+          0
+        ]
+      ],
+      "try_map": "00d97b18",
+      "try_record": [
+        0,
+        0,
+        1,
+        1,
+        "00d97af8"
+      ],
+      "handler_record": [
+        "40",
+        0,
+        0,
+        "00556b5a"
+      ]
+    },
+    "owner": {
+      "entry_handler": "00c6d890",
+      "func_info": "00d97d94",
+      "magic": "19930522",
+      "max_state": 2,
+      "unwind_map": "00d97d70",
+      "unwind_entries": [
+        [
+          -1,
+          0
+        ],
+        [
+          -1,
+          0
+        ]
+      ],
+      "try_map": "00d97d80",
+      "try_record": [
+        0,
+        0,
+        1,
+        1,
+        "00d97d60"
+      ],
+      "handler_record": [
+        "40",
+        0,
+        0,
+        "00557c84"
+      ]
+    },
+    "native_boundary": "Both entry handlers load their own FuncInfo then jump00BF6B43. Catch bodies require original EBP/private locals. Source uses explicit nested C++ exception scopes, without fabricating native frame objects or claiming native EH/CRT identity."
+  },
+  "preserved_projection": {
+    "source": "src/native_input_settings_vector_storage.cpp",
+    "header": "include/bsp/native_input_settings_vector_storage.hpp",
+    "action": "unchanged; prior qualified NativeStringStorage/Kind contract and evidence remain separate. New exact actual-pool function/catch/Tidy records appended without replacing earlier source/provenance.",
+    "claim": "Prior AU native fixture/byte results do not validate this new Source interface."
+  },
+  "dependency_readiness": {
+    "0042bf40": "Accepted actual count*8 string-vector allocation at main8a1b9ddd1 from11a686a42, current CRT retry/new-handler/free pairing and qualified native bad_alloc identity.",
+    "00431f70": "Accepted actual vector length-error payload service at main8a1b9ddd1, Source C++ RTTI/EH qualification inherited.",
+    "0044d0c0/0044d10a": "Existing complete actual copyctor/completed-prefix Source composition reused after full schedule equivalence.",
+    "0044bcb0/00431f40": "Existing actual pooled-string copyctor/destroy argument, manager/pool context consumed; failed current header excluded.",
+    "004324a0/00432050/00bf65ac": "Existing actual vector Tidy/range destruction/current-CRT free; full Tidy equivalence verified and reuse approved.",
+    "00bf6713": "Existing current-CRT noinfo invalid parameter adapter, returning continuation preserved.",
+    "00506c80": "Separate full assignment packet accepted/integrated onmain8a1b9ddd1; this packet does not modify it or extend its validation claims."
+  },
+  "corrections": [
+    {
+      "was": "Generic STL_inst helper name obscures the actual eight-byte pooled-string construction and native argument schedule",
+      "is": "Actual native string-range uninitialized copy, six physical arguments with two unused stacked tag words, and completed-prefix catch",
+      "evidence": "Complete00556B10..00556B93 listing, RET10h, sole00557C67 caller's register/four-word setup and independent00556B5A metadata."
+    },
+    {
+      "was": "Copy constructor may be implemented by assignment/Buy or a generic storage-model copy",
+      "is": "Count-before-clear, direct allocator, postpublication source captures, two returning reports, CURRENT destination-begin read and two distinct catch scopes",
+      "evidence": "00557BDF..00557C6C ordering, both full catch bodies and FuncInfo maps; all40 direct caller setups."
+    }
+  ],
+  "checks": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "exit_code": 0,
+      "log": "local/oct15_raw_string_vector_copy_construct_build.log",
+      "existing_suites_passed": ["reconstructed_math", "native_math_differential", "tool_tests"],
+      "native_math_differential_scope": "Existing math seeds only; no new-function native differential probe."
+    },
+    "report_calls": {"json_checked": 52, "documentation_checked": 52, "failed": 0, "documentation_unchecked": 0, "documentation_warnings": 0},
+    "diff_check": "git diff --check and final git diff --cached --check passed",
+    "index": "python tools/bsp.py index --if-stale completed after owned ledger additions",
+    "ledger_scope": "Only five leased addresses changed: two existing name records append evidence, three new name records, three actual Source functions and two exception-scope fragments. Existing name metadata/evidence and all prior reconstruction records preserved.",
+    "new_tests": "none; full native/callee/caller/EH inspection plus existing suites",
+    "existing_build_warning": "Preexisting LNK4006 duplicate spawn_request_id_matches in unrelated existing source; no new warning."
+  },
+  "limits": {
+    "actual_source": "Complete under accepted actual pool/manager/current-CRT services and valid taken backing.",
+    "original_abi_compatible": false,
+    "native_fh3_seh_identity": false,
+    "native_private_stack_aliasing": false,
+    "exception_identity": "Source /EHsc current C++ exceptions/rethrow; old CRT throw object/RTTI/SEH/private frame/fault/double-exception identities not established.",
+    "source_aliases": "Public actual header/data captures and ordered reloads/stores retained; by-value parameters/dead words do not expose native private argument-slot mutation.",
+    "native_differential_for_new_functions": false,
+    "runtime_cache_binding": false,
+    "game_validated": false
+  }
+}
