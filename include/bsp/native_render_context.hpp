@@ -112,6 +112,20 @@ private:
 // companion only on zero. No use of raw storage/companion after its callback.
 void release_native_render_actual_owner(NativeRenderActualOwners&, void* raw_identity);
 
+// Retained metadata for one SAME actual +04 release. The result is derived
+// from the atomic's observed prior value, never a later count read. A failed
+// zero dispatch leaves its entered phase and the already-zero obligation.
+// Observation storage is disjoint from the raw owner and its companion and
+// survives any terminal callback; it must not be reused for another release.
+struct NativeRenderActualOwnerReleaseObservation {
+    void* identity{};
+    std::int32_t previous_count{};
+    std::uint32_t result_bits{};
+    bool entered{}, decremented{}, zero_dispatch_entered{}, zero_dispatch_returned{}, returned{};
+};
+void release_native_render_actual_owner_observed(NativeRenderActualOwners&, void* raw_identity,
+    NativeRenderActualOwnerReleaseObservation&);
+
 // Shared post-zero dispatch ONLY: caller has already decremented the actual
 // live +04 atomic once and observed zero. Resolve the SAME canonical companion,
 // validate its borrowed +04 identity, then invoke its nonthrowing current-profile
