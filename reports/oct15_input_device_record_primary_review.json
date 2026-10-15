@@ -123,5 +123,19 @@
   },
   "findings": [],
   "conclusion": "accepted for integration within explicit CurrentCpp/rawstorage/context domains; originalFH3/SEH/RTTI/heap/privateframe/fault/ABI/game identity unproved",
-  "integration_status": "frozen worker Source accepted;Main integration pending successful CMake turn"
+  "integration_status": "frozen worker Source accepted and integrated into staging;combined buildpassed",
+  "staging_integration_commit": "fcb3131d9f9a922bc2fc0e96474d68d7e53813e3",
+  "combined_validation": {
+    "command": "./scripts/build.ps1",
+    "source_pin": "fcb3131d9f9a922bc2fc0e96474d68d7e53813e3",
+    "platform": "MSVC Win32 Release",
+    "existing_suites": "3/3 passed",
+    "ctest_seconds": 7.13,
+    "new_tests": 0,
+    "report_calls": 53,
+    "markdown_claims": 53,
+    "failed": 0,
+    "unchecked": 0,
+    "log": "local/oct15_sixteenth_parent_union_build.log"
+  }
 }
